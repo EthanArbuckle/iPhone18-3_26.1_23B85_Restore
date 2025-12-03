@@ -1,7 +1,7 @@
 @interface SagaCollaborationResetInvitationURLOperation
-- (SagaCollaborationResetInvitationURLOperation)initWithCoder:(id)a3;
-- (SagaCollaborationResetInvitationURLOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 persistentID:(int64_t)a5;
-- (void)encodeWithCoder:(id)a3;
+- (SagaCollaborationResetInvitationURLOperation)initWithCoder:(id)coder;
+- (SagaCollaborationResetInvitationURLOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity persistentID:(int64_t)d;
+- (void)encodeWithCoder:(id)coder;
 - (void)start;
 @end
 
@@ -13,7 +13,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v28 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting operation", buf, 0xCu);
   }
 
@@ -27,8 +27,8 @@
   [v6 beginTransaction];
   v7 = [ML3Container alloc];
   v8 = *(&self->super._finished + 1);
-  v9 = [(CloudLibraryOperation *)self musicLibrary];
-  v10 = [v7 initWithPersistentID:v8 inLibrary:v9];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+  v10 = [v7 initWithPersistentID:v8 inLibrary:musicLibrary];
 
   v11 = ML3ContainerPropertyCloudGlobalID;
   v12 = ML3ContainerPropertyStoreCloudID;
@@ -41,8 +41,8 @@
   v16 = [v14 objectForKeyedSubscript:v12];
   if ([v15 length] && objc_msgSend(v16, "longLongValue"))
   {
-    v17 = [(CloudLibraryOperation *)self connection];
-    v18 = -[ICCollaborationResetInvitationURLRequest initWithDatabaseID:globalPlaylistID:]([ICCollaborationResetInvitationURLRequest alloc], "initWithDatabaseID:globalPlaylistID:", [v17 databaseID], v15);
+    connection = [(CloudLibraryOperation *)self connection];
+    v18 = -[ICCollaborationResetInvitationURLRequest initWithDatabaseID:globalPlaylistID:]([ICCollaborationResetInvitationURLRequest alloc], "initWithDatabaseID:globalPlaylistID:", [connection databaseID], v15);
     [(ICDRequest *)v18 setVerificationInteractionLevel:2];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
@@ -52,7 +52,7 @@
     v22 = v10;
     v23 = v16;
     v24 = v6;
-    [v17 sendRequest:v18 withResponseHandler:v21];
+    [connection sendRequest:v18 withResponseHandler:v21];
   }
 
   else
@@ -61,7 +61,7 @@
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v28 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%{public}@ Missing playlist global or cloud ID - aborting", buf, 0xCu);
     }
 
@@ -74,37 +74,37 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SagaCollaborationResetInvitationURLOperation;
-  v4 = a3;
-  [(CloudLibraryOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:*(&self->super._finished + 1) forKey:{@"SagaCollaborationResetInvitationURLOperationPersistentIDKey", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CloudLibraryOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:*(&self->super._finished + 1) forKey:{@"SagaCollaborationResetInvitationURLOperationPersistentIDKey", v5.receiver, v5.super_class}];
 }
 
-- (SagaCollaborationResetInvitationURLOperation)initWithCoder:(id)a3
+- (SagaCollaborationResetInvitationURLOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SagaCollaborationResetInvitationURLOperation;
-  v5 = [(CloudLibraryOperation *)&v7 initWithCoder:v4];
+  v5 = [(CloudLibraryOperation *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    *(v5 + 90) = [v4 decodeInt64ForKey:@"SagaCollaborationResetInvitationURLOperationPersistentIDKey"];
+    *(v5 + 90) = [coderCopy decodeInt64ForKey:@"SagaCollaborationResetInvitationURLOperationPersistentIDKey"];
   }
 
   return v5;
 }
 
-- (SagaCollaborationResetInvitationURLOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 persistentID:(int64_t)a5
+- (SagaCollaborationResetInvitationURLOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity persistentID:(int64_t)d
 {
   v7.receiver = self;
   v7.super_class = SagaCollaborationResetInvitationURLOperation;
-  result = [(CloudLibraryOperation *)&v7 initWithConfiguration:a3 clientIdentity:a4];
+  result = [(CloudLibraryOperation *)&v7 initWithConfiguration:configuration clientIdentity:identity];
   if (result)
   {
-    *(&result->super._finished + 1) = a5;
+    *(&result->super._finished + 1) = d;
   }
 
   return result;

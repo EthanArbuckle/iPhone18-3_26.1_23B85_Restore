@@ -1,59 +1,59 @@
 @interface VCTransportSessionIDSMultiLink
-- (VCTransportSessionIDSMultiLink)initWithCallID:(unsigned int)a3 requireEncryptionInfo:(BOOL)a4 reportingAgent:(id)a5 notificationQueue:(id)a6 isMultiwaySession:(BOOL)a7 dataPath:(int)a8;
-- (void)VCIDSSessionInfoSynchronizer:(void *)a3 sendVCIDSSessionInfoRequest:(id)a4;
-- (void)connectionCallback:(id)a3 isInitialConnection:(BOOL)a4;
+- (VCTransportSessionIDSMultiLink)initWithCallID:(unsigned int)d requireEncryptionInfo:(BOOL)info reportingAgent:(id)agent notificationQueue:(id)queue isMultiwaySession:(BOOL)session dataPath:(int)path;
+- (void)VCIDSSessionInfoSynchronizer:(void *)synchronizer sendVCIDSSessionInfoRequest:(id)request;
+- (void)connectionCallback:(id)callback isInitialConnection:(BOOL)connection;
 - (void)dealloc;
-- (void)didEnableDuplication:(BOOL)a3 activeConnection:(id)a4;
-- (void)didLocalNetworkQualityChange:(BOOL)a3 isLocalNetworkQualityBad:(BOOL)a4 isRemoteNetworkQualityBad:(BOOL)a5;
-- (void)didMediaQualityDegrade:(BOOL)a3;
-- (void)didUpdatePreferredInterfaceForDuplication:(unsigned __int8)a3 notifyPeer:(BOOL)a4 enableDuplication:(BOOL)a5 isMediaUnrecoverableSignal:(BOOL)a6;
-- (void)discardConnection:(id)a3;
-- (void)flushLinkProbingStatusWithOptions:(id)a3;
-- (void)handleLinkConnectedWithInfo:(id)a3;
-- (void)handleLinkDisconnectedWithInfo:(id)a3;
-- (void)handleProbingResponse:(id)a3;
+- (void)didEnableDuplication:(BOOL)duplication activeConnection:(id)connection;
+- (void)didLocalNetworkQualityChange:(BOOL)change isLocalNetworkQualityBad:(BOOL)bad isRemoteNetworkQualityBad:(BOOL)qualityBad;
+- (void)didMediaQualityDegrade:(BOOL)degrade;
+- (void)didUpdatePreferredInterfaceForDuplication:(unsigned __int8)duplication notifyPeer:(BOOL)peer enableDuplication:(BOOL)enableDuplication isMediaUnrecoverableSignal:(BOOL)signal;
+- (void)discardConnection:(id)connection;
+- (void)flushLinkProbingStatusWithOptions:(id)options;
+- (void)handleLinkConnectedWithInfo:(id)info;
+- (void)handleLinkDisconnectedWithInfo:(id)info;
+- (void)handleProbingResponse:(id)response;
 - (void)logSignalStrength;
-- (void)optOutAllStreamsForConnection:(id)a3;
-- (void)primaryConnectionChanged:(id)a3 oldPrimaryConnection:(id)a4 activeConnection:(id)a5;
-- (void)queryProbingResultsWithOptions:(id)a3;
-- (void)requestStatsWithOptions:(id)a3;
-- (void)setDefaultLink:(id)a3;
-- (void)setOneToOneModeEnabled:(BOOL)a3 isInitiator:(BOOL)a4;
-- (void)setQuickRelayServerProvider:(int)a3;
+- (void)optOutAllStreamsForConnection:(id)connection;
+- (void)primaryConnectionChanged:(id)changed oldPrimaryConnection:(id)connection activeConnection:(id)activeConnection;
+- (void)queryProbingResultsWithOptions:(id)options;
+- (void)requestStatsWithOptions:(id)options;
+- (void)setDefaultLink:(id)link;
+- (void)setOneToOneModeEnabled:(BOOL)enabled isInitiator:(BOOL)initiator;
+- (void)setQuickRelayServerProvider:(int)provider;
 - (void)setRemoteDeviceVersionIDS;
-- (void)setWiFiAssist:(BOOL)a3;
-- (void)startActiveProbingWithOptions:(id)a3;
-- (void)stopActiveProbingWithOptions:(id)a3;
+- (void)setWiFiAssist:(BOOL)assist;
+- (void)startActiveProbingWithOptions:(id)options;
+- (void)stopActiveProbingWithOptions:(id)options;
 @end
 
 @implementation VCTransportSessionIDSMultiLink
 
-- (VCTransportSessionIDSMultiLink)initWithCallID:(unsigned int)a3 requireEncryptionInfo:(BOOL)a4 reportingAgent:(id)a5 notificationQueue:(id)a6 isMultiwaySession:(BOOL)a7 dataPath:(int)a8
+- (VCTransportSessionIDSMultiLink)initWithCallID:(unsigned int)d requireEncryptionInfo:(BOOL)info reportingAgent:(id)agent notificationQueue:(id)queue isMultiwaySession:(BOOL)session dataPath:(int)path
 {
-  v8 = a7;
-  v10 = *&a3;
+  sessionCopy = session;
+  v10 = *&d;
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = VCTransportSessionIDSMultiLink;
-  v11 = [(VCTransportSessionIDS *)&v14 initWithCallID:*&a3 requireEncryptionInfo:a4 reportingAgent:a5 notificationQueue:a6 dataPath:*&a8];
+  v11 = [(VCTransportSessionIDS *)&v14 initWithCallID:*&d requireEncryptionInfo:info reportingAgent:agent notificationQueue:queue dataPath:*&path];
   if (v11)
   {
-    connectionManager = [[VCConnectionManagerIDS alloc] initWithMultiwayEnabled:v8];
+    connectionManager = [[VCConnectionManagerIDS alloc] initWithMultiwayEnabled:sessionCopy];
     v11->super.super._connectionManager = &connectionManager->super;
-    if (!v8)
+    if (!sessionCopy)
     {
       [(VCConnectionManager *)connectionManager setupConnectionHealthMonitor];
       connectionManager = v11->super.super._connectionManager;
     }
 
-    [(VCConnectionManager *)connectionManager setReportingAgent:a5];
+    [(VCConnectionManager *)connectionManager setReportingAgent:agent];
     [(VCConnectionManager *)v11->super.super._connectionManager setCallID:v10];
     [(VCConnectionManager *)v11->super.super._connectionManager setDelegate:v11];
     [(VCConnectionManager *)v11->super.super._connectionManager setSupportDuplication:[(VCTransportSession *)v11 isHandoverSupported]];
     VTP_RegisterConnectionManagerWithCallID(v11->super.super._connectionManager, [(VCConnectionManager *)v11->super.super._connectionManager callID]);
-    if (v8)
+    if (sessionCopy)
     {
-      v11->_sessionInfoSynchronizer = [[VCIDSSessionInfoSynchronizer alloc] initWithDelegate:v11 connectionManager:v11->super.super._connectionManager reportingAgent:a5];
+      v11->_sessionInfoSynchronizer = [[VCIDSSessionInfoSynchronizer alloc] initWithDelegate:v11 connectionManager:v11->super.super._connectionManager reportingAgent:agent];
     }
   }
 
@@ -70,9 +70,9 @@
   [(VCTransportSessionIDS *)&v3 dealloc];
 }
 
-- (void)handleProbingResponse:(id)a3
+- (void)handleProbingResponse:(id)response
 {
-  if (a3)
+  if (response)
   {
     connectionManager = self->super.super._connectionManager;
 
@@ -89,25 +89,25 @@
   }
 }
 
-- (void)setQuickRelayServerProvider:(int)a3
+- (void)setQuickRelayServerProvider:(int)provider
 {
   connectionManager = self->super.super._connectionManager;
-  if (a3 == 1)
+  if (provider == 1)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = 2 * (a3 == 2);
+    v4 = 2 * (provider == 2);
   }
 
   [(VCConnectionManager *)connectionManager setRelayServerProvider:v4];
 }
 
-- (void)setWiFiAssist:(BOOL)a3
+- (void)setWiFiAssist:(BOOL)assist
 {
-  v3 = a3;
+  assistCopy = assist;
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 8)
   {
@@ -125,14 +125,14 @@
         v15 = 1024;
         v16 = 167;
         v17 = 1024;
-        v18 = v3;
+        v18 = assistCopy;
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d try to setWiFiAssist = %d", buf, 0x22u);
       }
     }
 
     else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(VCTransportSessionIDSMultiLink *)v5 setWiFiAssist:v3, v6];
+      [(VCTransportSessionIDSMultiLink *)v5 setWiFiAssist:assistCopy, v6];
     }
   }
 
@@ -142,7 +142,7 @@
   v9[2] = __48__VCTransportSessionIDSMultiLink_setWiFiAssist___block_invoke;
   v9[3] = &unk_1E85F37A0;
   v9[4] = self;
-  v10 = v3;
+  v10 = assistCopy;
   dispatch_async(stateQueue, v9);
 }
 
@@ -180,7 +180,7 @@ uint64_t __48__VCTransportSessionIDSMultiLink_setWiFiAssist___block_invoke(uint6
   return result;
 }
 
-- (void)setDefaultLink:(id)a3
+- (void)setDefaultLink:(id)link
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -188,7 +188,7 @@ uint64_t __48__VCTransportSessionIDSMultiLink_setWiFiAssist___block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __49__VCTransportSessionIDSMultiLink_setDefaultLink___block_invoke;
   block[3] = &unk_1E85F37F0;
-  block[4] = a3;
+  block[4] = link;
   block[5] = self;
   dispatch_async(stateQueue, block);
 }
@@ -224,14 +224,14 @@ uint64_t __49__VCTransportSessionIDSMultiLink_setDefaultLink___block_invoke(uint
   return [*(*(a1 + 40) + 232) setChannelPreferences:v3];
 }
 
-- (void)primaryConnectionChanged:(id)a3 oldPrimaryConnection:(id)a4 activeConnection:(id)a5
+- (void)primaryConnectionChanged:(id)changed oldPrimaryConnection:(id)connection activeConnection:(id)activeConnection
 {
   *&v27[13] = *MEMORY[0x1E69E9840];
-  [(VCTransportSession *)self updateBasebandForConnection:a5];
-  [(VCTransportSessionIDSMultiLink *)self setDefaultLink:a3];
+  [(VCTransportSession *)self updateBasebandForConnection:activeConnection];
+  [(VCTransportSessionIDSMultiLink *)self setDefaultLink:changed];
   if ([+[VCDefaults forceWiFiAssist] sharedInstance]
   {
-    if (!VCConnection_IsLocalOnCellular(a5))
+    if (!VCConnection_IsLocalOnCellular(activeConnection))
     {
       goto LABEL_12;
     }
@@ -266,7 +266,7 @@ uint64_t __49__VCTransportSessionIDSMultiLink_setDefaultLink___block_invoke(uint
       v14 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        IsLocalOnWiFiOrWired = VCConnection_IsLocalOnWiFiOrWired(a3);
+        IsLocalOnWiFiOrWired = VCConnection_IsLocalOnWiFiOrWired(changed);
         v16 = self->super._datagramChannel;
         *buf = 136316162;
         v21 = v13;
@@ -282,12 +282,12 @@ uint64_t __49__VCTransportSessionIDSMultiLink_setDefaultLink___block_invoke(uint
       }
     }
 
-    v12 = VCConnection_IsLocalOnWiFiOrWired(a5);
+    v12 = VCConnection_IsLocalOnWiFiOrWired(activeConnection);
   }
 
   [(VCTransportSessionIDSMultiLink *)self setWiFiAssist:v12];
 LABEL_12:
-  if (VCConnection_IsEndToEndLink(a3))
+  if (VCConnection_IsEndToEndLink(changed))
   {
     if (!self->_oneToOneModeEnabled && VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -304,38 +304,38 @@ LABEL_12:
     sessionInfoSynchronizer = self->_sessionInfoSynchronizer;
     if (self->_oneToOneModeEnabled)
     {
-      [(VCIDSSessionInfoSynchronizer *)sessionInfoSynchronizer optInAllStreamsForConnection:a3];
+      [(VCIDSSessionInfoSynchronizer *)sessionInfoSynchronizer optInAllStreamsForConnection:changed];
     }
 
     else
     {
-      [(VCIDSSessionInfoSynchronizer *)sessionInfoSynchronizer optInStreamIDsForNewPrimaryConnection:a3 oldPrimaryConnection:a4];
+      [(VCIDSSessionInfoSynchronizer *)sessionInfoSynchronizer optInStreamIDsForNewPrimaryConnection:changed oldPrimaryConnection:connection];
     }
   }
 
   v18[0] = @"transportSessionEventInfoNewPrimary";
   v18[1] = @"transportSessionEventInfoOldPrimary";
-  v19[0] = a3;
-  v19[1] = a4;
+  v19[0] = changed;
+  v19[1] = connection;
   -[VCTransportSession callEventHandlerWithEvent:info:](self, "callEventHandlerWithEvent:info:", 3, [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:2]);
 }
 
-- (void)connectionCallback:(id)a3 isInitialConnection:(BOOL)a4
+- (void)connectionCallback:(id)callback isInitialConnection:(BOOL)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v9[2] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (connection)
   {
-    [(VCTransportSession *)self updateBasebandForConnection:a3];
+    [(VCTransportSession *)self updateBasebandForConnection:callback];
     [(TimingCollection *)self->super.super._perfTimings stopTimingForKey:26];
     [(VCTransportSessionIDS *)self setConnectionSetupTime];
-    [(VCIDSSessionInfoSynchronizer *)self->_sessionInfoSynchronizer optInStreamIDsForConnection:a3];
+    [(VCIDSSessionInfoSynchronizer *)self->_sessionInfoSynchronizer optInStreamIDsForConnection:callback];
   }
 
-  else if (VCConnection_Priority(a3) != 2 && ![(VCConnectionManager *)self->super.super._connectionManager optIntoExistingSubscribedStreams])
+  else if (VCConnection_Priority(callback) != 2 && ![(VCConnectionManager *)self->super.super._connectionManager optIntoExistingSubscribedStreams])
   {
     v7 = VCConnectionManager_CopyPrimaryConnection(self->super.super._connectionManager);
-    [(VCIDSSessionInfoSynchronizer *)self->_sessionInfoSynchronizer optOutStreamIDsForNonPrimaryConnection:a3 sentOnConnection:v7];
+    [(VCIDSSessionInfoSynchronizer *)self->_sessionInfoSynchronizer optOutStreamIDsForNonPrimaryConnection:callback sentOnConnection:v7];
     if (v7)
     {
       CFRelease(v7);
@@ -344,22 +344,22 @@ LABEL_12:
 
   v8[0] = @"transportSessionEventInfoNewLink";
   v8[1] = @"transportSessionEventInfoIsFirstLink";
-  v9[0] = a3;
-  v9[1] = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v9[0] = callback;
+  v9[1] = [MEMORY[0x1E696AD98] numberWithBool:connectionCopy];
   -[VCTransportSession callEventHandlerWithEvent:info:](self, "callEventHandlerWithEvent:info:", 1, [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2]);
 }
 
-- (void)discardConnection:(id)a3
+- (void)discardConnection:(id)connection
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (connection)
   {
     stateQueue = self->super.super._stateQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __52__VCTransportSessionIDSMultiLink_discardConnection___block_invoke;
     block[3] = &unk_1E85F37F0;
-    block[4] = a3;
+    block[4] = connection;
     block[5] = self;
     dispatch_async(stateQueue, block);
   }
@@ -411,17 +411,17 @@ uint64_t __52__VCTransportSessionIDSMultiLink_discardConnection___block_invoke(u
   return [*(a1 + 40) callEventHandlerWithEvent:2 info:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v11, &v10, 1)}];
 }
 
-- (void)didEnableDuplication:(BOOL)a3 activeConnection:(id)a4
+- (void)didEnableDuplication:(BOOL)duplication activeConnection:(id)connection
 {
-  v5 = a3;
+  duplicationCopy = duplication;
   v25[2] = *MEMORY[0x1E69E9840];
-  [(VCTransportSession *)self updateBasebandForConnection:a4];
+  [(VCTransportSession *)self updateBasebandForConnection:connection];
   v24[0] = @"transportSessionEventInfoIsDuplicationEnabled";
   v24[1] = @"transportSessionEventInfoActiveConnection";
-  v25[0] = [MEMORY[0x1E696AD98] numberWithBool:v5];
-  v25[1] = a4;
+  v25[0] = [MEMORY[0x1E696AD98] numberWithBool:duplicationCopy];
+  v25[1] = connection;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:2];
-  IsLocalOnCellular = VCConnection_IsLocalOnCellular(a4);
+  IsLocalOnCellular = VCConnection_IsLocalOnCellular(connection);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v9 = VRTraceErrorLogLevelToCSTR();
@@ -435,26 +435,26 @@ uint64_t __52__VCTransportSessionIDSMultiLink_discardConnection___block_invoke(u
       v16 = 1024;
       v17 = 268;
       v18 = 1024;
-      v19 = v5;
+      v19 = duplicationCopy;
       v20 = 1024;
       v21 = IsLocalOnCellular;
       v22 = 1024;
-      IsRemoteOnCellular = VCConnection_IsRemoteOnCellular(a4);
+      IsRemoteOnCellular = VCConnection_IsRemoteOnCellular(connection);
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d _datagramChannel. isDuplicationEnabled = %d, activeConnection: isLocalOnCellular = %d, isRemoteOnCellular = %d", &v12, 0x2Eu);
     }
   }
 
   if (![+[VCDefaults forceWiFiAssist] sharedInstance]
   {
-    v11 = v5 & IsLocalOnCellular;
+    v11 = duplicationCopy & IsLocalOnCellular;
     if (v11)
     {
       goto LABEL_6;
     }
 
-    if (v5)
+    if (duplicationCopy)
     {
-      if (VCConnection_IsEndToEndLink(a4))
+      if (VCConnection_IsEndToEndLink(connection))
       {
         goto LABEL_8;
       }
@@ -462,14 +462,14 @@ uint64_t __52__VCTransportSessionIDSMultiLink_discardConnection___block_invoke(u
       goto LABEL_18;
     }
 
-    if (VCConnection_IsLocalOnWiFiOrWired(a4))
+    if (VCConnection_IsLocalOnWiFiOrWired(connection))
     {
 LABEL_6:
       [(VCTransportSessionIDSMultiLink *)self setWiFiAssist:!v11];
     }
   }
 
-  if (VCConnection_IsEndToEndLink(a4))
+  if (VCConnection_IsEndToEndLink(connection))
   {
 LABEL_8:
     if (!self->_oneToOneModeEnabled && VRTraceGetErrorLogLevelForModule() >= 3)
@@ -484,67 +484,67 @@ LABEL_8:
     goto LABEL_19;
   }
 
-  if (v5)
+  if (duplicationCopy)
   {
 LABEL_18:
-    [(VCIDSSessionInfoSynchronizer *)self->_sessionInfoSynchronizer optInStreamIDsForConnection:a4];
+    [(VCIDSSessionInfoSynchronizer *)self->_sessionInfoSynchronizer optInStreamIDsForConnection:connection];
     goto LABEL_19;
   }
 
   if ([(VCConnectionManager *)self->super.super._connectionManager secondaryConnection]&& ![(VCConnectionManager *)self->super.super._connectionManager optIntoExistingSubscribedStreams])
   {
-    [(VCIDSSessionInfoSynchronizer *)self->_sessionInfoSynchronizer optOutStreamIDsForNonPrimaryConnection:[(VCConnectionManager *)self->super.super._connectionManager secondaryConnection] sentOnConnection:a4];
+    [(VCIDSSessionInfoSynchronizer *)self->_sessionInfoSynchronizer optOutStreamIDsForNonPrimaryConnection:[(VCConnectionManager *)self->super.super._connectionManager secondaryConnection] sentOnConnection:connection];
   }
 
 LABEL_19:
   [(VCTransportSession *)self callEventHandlerWithEvent:4 info:v7];
 }
 
-- (void)didUpdatePreferredInterfaceForDuplication:(unsigned __int8)a3 notifyPeer:(BOOL)a4 enableDuplication:(BOOL)a5 isMediaUnrecoverableSignal:(BOOL)a6
+- (void)didUpdatePreferredInterfaceForDuplication:(unsigned __int8)duplication notifyPeer:(BOOL)peer enableDuplication:(BOOL)enableDuplication isMediaUnrecoverableSignal:(BOOL)signal
 {
-  v6 = a6;
-  v7 = a4;
-  v8 = a3;
+  signalCopy = signal;
+  peerCopy = peer;
+  duplicationCopy = duplication;
   v11[4] = *MEMORY[0x1E69E9840];
   v10[0] = @"transportSessionEventInfoIsDuplicationEnabled";
-  v11[0] = [MEMORY[0x1E696AD98] numberWithBool:a5];
+  v11[0] = [MEMORY[0x1E696AD98] numberWithBool:enableDuplication];
   v10[1] = @"transportSessionEventInfoPreferredInterfaceForDuplication";
-  v11[1] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v8];
+  v11[1] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:duplicationCopy];
   v10[2] = @"transportSessionEventInfoNotifyPeer";
-  v11[2] = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v11[2] = [MEMORY[0x1E696AD98] numberWithBool:peerCopy];
   v10[3] = @"transportSessionEventInfoIsMediaUnrecoverableSignal";
-  v11[3] = [MEMORY[0x1E696AD98] numberWithBool:v6];
+  v11[3] = [MEMORY[0x1E696AD98] numberWithBool:signalCopy];
   -[VCTransportSession callEventHandlerWithEvent:info:](self, "callEventHandlerWithEvent:info:", 15, [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:4]);
 }
 
-- (void)didMediaQualityDegrade:(BOOL)a3
+- (void)didMediaQualityDegrade:(BOOL)degrade
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v4 = @"transportSessionEventInfoIsMediaQualityDegraded";
-  v5[0] = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v5[0] = [MEMORY[0x1E696AD98] numberWithBool:degrade];
   -[VCTransportSession callEventHandlerWithEvent:info:](self, "callEventHandlerWithEvent:info:", 19, [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1]);
 }
 
-- (void)didLocalNetworkQualityChange:(BOOL)a3 isLocalNetworkQualityBad:(BOOL)a4 isRemoteNetworkQualityBad:(BOOL)a5
+- (void)didLocalNetworkQualityChange:(BOOL)change isLocalNetworkQualityBad:(BOOL)bad isRemoteNetworkQualityBad:(BOOL)qualityBad
 {
-  v5 = a5;
-  v6 = a4;
+  qualityBadCopy = qualityBad;
+  badCopy = bad;
   v9[3] = *MEMORY[0x1E69E9840];
   v8[0] = @"transportSessionEventInfoDidLocalNetworkConditionChange";
-  v9[0] = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v9[0] = [MEMORY[0x1E696AD98] numberWithBool:change];
   v8[1] = @"transportSessionEventInfoIsLocalNetworkQualityDegraded";
-  v9[1] = [MEMORY[0x1E696AD98] numberWithBool:v6];
+  v9[1] = [MEMORY[0x1E696AD98] numberWithBool:badCopy];
   v8[2] = @"transportSessionEventInfoIsRemoteNetworkQualityDegraded";
-  v9[2] = [MEMORY[0x1E696AD98] numberWithBool:v5];
+  v9[2] = [MEMORY[0x1E696AD98] numberWithBool:qualityBadCopy];
   -[VCTransportSession callEventHandlerWithEvent:info:](self, "callEventHandlerWithEvent:info:", 20, [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:3]);
 }
 
-- (void)optOutAllStreamsForConnection:(id)a3
+- (void)optOutAllStreamsForConnection:(id)connection
 {
-  if (VCConnection_Priority(a3) != 2)
+  if (VCConnection_Priority(connection) != 2)
   {
     v5 = VCConnectionManager_CopyPrimaryConnection(self->super.super._connectionManager);
-    [(VCIDSSessionInfoSynchronizer *)self->_sessionInfoSynchronizer optOutStreamIDsForNonPrimaryConnection:a3 sentOnConnection:v5];
+    [(VCIDSSessionInfoSynchronizer *)self->_sessionInfoSynchronizer optOutStreamIDsForNonPrimaryConnection:connection sentOnConnection:v5];
     if (v5)
     {
 
@@ -553,10 +553,10 @@ LABEL_19:
   }
 }
 
-- (void)setOneToOneModeEnabled:(BOOL)a3 isInitiator:(BOOL)a4
+- (void)setOneToOneModeEnabled:(BOOL)enabled isInitiator:(BOOL)initiator
 {
-  v4 = a4;
-  v5 = a3;
+  initiatorCopy = initiator;
+  enabledCopy = enabled;
   v24 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -569,7 +569,7 @@ LABEL_19:
       v15 = v7;
       v16 = 2080;
       v17 = "[VCTransportSessionIDSMultiLink setOneToOneModeEnabled:isInitiator:]";
-      if (v5)
+      if (enabledCopy)
       {
         v9 = "enabled";
       }
@@ -579,13 +579,13 @@ LABEL_19:
       v20 = 2080;
       v21 = v9;
       v22 = 1024;
-      v23 = v4;
+      v23 = initiatorCopy;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d HandoverReport: oneToOneMode %s for isInitiator: %d", buf, 0x2Cu);
     }
   }
 
-  self->_oneToOneModeEnabled = v5;
-  [(VCConnectionManager *)self->super.super._connectionManager setOptIntoExistingSubscribedStreams:v5];
+  self->_oneToOneModeEnabled = enabledCopy;
+  [(VCConnectionManager *)self->super.super._connectionManager setOptIntoExistingSubscribedStreams:enabledCopy];
   if (self->_oneToOneModeEnabled)
   {
     [(VCIDSSessionInfoSynchronizer *)self->_sessionInfoSynchronizer resetPeerSubscribedStreams];
@@ -597,8 +597,8 @@ LABEL_19:
   v11[2] = __69__VCTransportSessionIDSMultiLink_setOneToOneModeEnabled_isInitiator___block_invoke;
   v11[3] = &unk_1E85F41F8;
   v11[4] = self;
-  v12 = v5;
-  v13 = v4;
+  v12 = enabledCopy;
+  v13 = initiatorCopy;
   dispatch_async(stateQueue, v11);
 }
 
@@ -622,7 +622,7 @@ void *__69__VCTransportSessionIDSMultiLink_setOneToOneModeEnabled_isInitiator___
   return result;
 }
 
-- (void)startActiveProbingWithOptions:(id)a3
+- (void)startActiveProbingWithOptions:(id)options
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -631,7 +631,7 @@ void *__69__VCTransportSessionIDSMultiLink_setOneToOneModeEnabled_isInitiator___
   block[2] = __64__VCTransportSessionIDSMultiLink_startActiveProbingWithOptions___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = options;
   dispatch_async(stateQueue, block);
 }
 
@@ -669,7 +669,7 @@ uint64_t __64__VCTransportSessionIDSMultiLink_startActiveProbingWithOptions___bl
   return [*(*(a1 + 32) + 232) startActiveProbingWithOptions:*(a1 + 40)];
 }
 
-- (void)stopActiveProbingWithOptions:(id)a3
+- (void)stopActiveProbingWithOptions:(id)options
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -678,7 +678,7 @@ uint64_t __64__VCTransportSessionIDSMultiLink_startActiveProbingWithOptions___bl
   block[2] = __63__VCTransportSessionIDSMultiLink_stopActiveProbingWithOptions___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = options;
   dispatch_async(stateQueue, block);
 }
 
@@ -710,7 +710,7 @@ uint64_t __63__VCTransportSessionIDSMultiLink_stopActiveProbingWithOptions___blo
   return [*(*(a1 + 32) + 232) stopActiveProbingWithOptions:*(a1 + 40)];
 }
 
-- (void)queryProbingResultsWithOptions:(id)a3
+- (void)queryProbingResultsWithOptions:(id)options
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -719,7 +719,7 @@ uint64_t __63__VCTransportSessionIDSMultiLink_stopActiveProbingWithOptions___blo
   block[2] = __65__VCTransportSessionIDSMultiLink_queryProbingResultsWithOptions___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = options;
   dispatch_async(stateQueue, block);
 }
 
@@ -751,7 +751,7 @@ uint64_t __65__VCTransportSessionIDSMultiLink_queryProbingResultsWithOptions___b
   return [*(*(a1 + 32) + 232) queryProbingResultsWithOptions:*(a1 + 40)];
 }
 
-- (void)flushLinkProbingStatusWithOptions:(id)a3
+- (void)flushLinkProbingStatusWithOptions:(id)options
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -760,7 +760,7 @@ uint64_t __65__VCTransportSessionIDSMultiLink_queryProbingResultsWithOptions___b
   block[2] = __68__VCTransportSessionIDSMultiLink_flushLinkProbingStatusWithOptions___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = options;
   dispatch_async(stateQueue, block);
 }
 
@@ -830,7 +830,7 @@ uint64_t __59__VCTransportSessionIDSMultiLink_setRemoteDeviceVersionIDS__block_i
   return [*(*(a1 + 32) + 232) setChannelPreferences:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v7, &v6, 1)}];
 }
 
-- (void)requestStatsWithOptions:(id)a3
+- (void)requestStatsWithOptions:(id)options
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -839,7 +839,7 @@ uint64_t __59__VCTransportSessionIDSMultiLink_setRemoteDeviceVersionIDS__block_i
   block[2] = __58__VCTransportSessionIDSMultiLink_requestStatsWithOptions___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = options;
   dispatch_async(stateQueue, block);
 }
 
@@ -903,10 +903,10 @@ uint64_t __58__VCTransportSessionIDSMultiLink_requestStatsWithOptions___block_in
   }
 }
 
-- (void)VCIDSSessionInfoSynchronizer:(void *)a3 sendVCIDSSessionInfoRequest:(id)a4
+- (void)VCIDSSessionInfoSynchronizer:(void *)synchronizer sendVCIDSSessionInfoRequest:(id)request
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (synchronizer && request)
   {
     stateQueue = self->super.super._stateQueue;
     v9[0] = MEMORY[0x1E69E9820];
@@ -914,7 +914,7 @@ uint64_t __58__VCTransportSessionIDSMultiLink_requestStatsWithOptions___block_in
     v9[2] = __91__VCTransportSessionIDSMultiLink_VCIDSSessionInfoSynchronizer_sendVCIDSSessionInfoRequest___block_invoke;
     v9[3] = &unk_1E85F37F0;
     v9[4] = self;
-    v9[5] = a4;
+    v9[5] = request;
     dispatch_async(stateQueue, v9);
   }
 
@@ -931,18 +931,18 @@ uint64_t __58__VCTransportSessionIDSMultiLink_requestStatsWithOptions___block_in
       v14 = 1024;
       v15 = 417;
       v16 = 2048;
-      v17 = a3;
+      synchronizerCopy = synchronizer;
       v18 = 2048;
-      v19 = a4;
+      requestCopy = request;
       _os_log_error_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_ERROR, " [%s] %s:%d synchronizer = %p, request = %p", buf, 0x30u);
     }
   }
 }
 
-- (void)handleLinkConnectedWithInfo:(id)a3
+- (void)handleLinkConnectedWithInfo:(id)info
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A46B0]];
+  v4 = [info objectForKeyedSubscript:*MEMORY[0x1E69A46B0]];
   if (v4)
   {
     v5 = v4;
@@ -972,8 +972,8 @@ uint64_t __58__VCTransportSessionIDSMultiLink_requestStatsWithOptions___block_in
               v19 = *MEMORY[0x1E6986650];
               if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
               {
-                v20 = [v13 RATType];
-                v21 = [v13 remoteRATType];
+                rATType = [v13 RATType];
+                remoteRATType = [v13 remoteRATType];
                 *buf = 136316162;
                 v24 = v18;
                 v25 = 2080;
@@ -981,9 +981,9 @@ uint64_t __58__VCTransportSessionIDSMultiLink_requestStatsWithOptions___block_in
                 v27 = 1024;
                 v28 = 99;
                 v29 = 1024;
-                LODWORD(v30[0]) = v20;
+                LODWORD(v30[0]) = rATType;
                 WORD2(v30[0]) = 1024;
-                *(v30 + 6) = v21;
+                *(v30 + 6) = remoteRATType;
                 _os_log_error_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_ERROR, " [%s] %s:%d Discarding link with unknown RAT local %d remote %d", buf, 0x28u);
               }
             }
@@ -1040,10 +1040,10 @@ uint64_t __58__VCTransportSessionIDSMultiLink_requestStatsWithOptions___block_in
   }
 }
 
-- (void)handleLinkDisconnectedWithInfo:(id)a3
+- (void)handleLinkDisconnectedWithInfo:(id)info
 {
   v26 = *MEMORY[0x1E69E9840];
-  obj = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A46C0]];
+  obj = [info objectForKeyedSubscript:*MEMORY[0x1E69A46C0]];
   if (obj)
   {
     v4 = [obj countByEnumeratingWithState:OUTLINED_FUNCTION_3_42() objects:? count:?];

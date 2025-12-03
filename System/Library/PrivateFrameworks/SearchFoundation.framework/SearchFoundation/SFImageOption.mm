@@ -1,46 +1,46 @@
 @interface SFImageOption
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFImageOption)initWithCoder:(id)a3;
-- (SFImageOption)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFImageOption)initWithCoder:(id)coder;
+- (SFImageOption)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFImageOption
 
-- (SFImageOption)initWithProtobuf:(id)a3
+- (SFImageOption)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v15.receiver = self;
   v15.super_class = SFImageOption;
   v5 = [(SFImageOption *)&v15 init];
   if (v5)
   {
-    v6 = [v4 name];
+    name = [protobufCopy name];
 
-    if (v6)
+    if (name)
     {
-      v7 = [v4 name];
-      [(SFImageOption *)v5 setName:v7];
+      name2 = [protobufCopy name];
+      [(SFImageOption *)v5 setName:name2];
     }
 
-    v8 = [v4 defaultValue];
+    defaultValue = [protobufCopy defaultValue];
 
-    if (v8)
+    if (defaultValue)
     {
-      v9 = [v4 defaultValue];
-      [(SFImageOption *)v5 setDefaultValue:v9];
+      defaultValue2 = [protobufCopy defaultValue];
+      [(SFImageOption *)v5 setDefaultValue:defaultValue2];
     }
 
-    v10 = [v4 options];
+    options = [protobufCopy options];
 
-    if (v10)
+    if (options)
     {
-      v11 = [v4 options];
-      v12 = _SFPBStringDictionaryHandwrittenTranslator(v11);
+      options2 = [protobufCopy options];
+      v12 = _SFPBStringDictionaryHandwrittenTranslator(options2);
       [(SFImageOption *)v5 setOptions:v12];
     }
 
@@ -52,32 +52,32 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFImageOption *)self name];
-  v4 = [v3 hash];
-  v5 = [(SFImageOption *)self defaultValue];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SFImageOption *)self options];
-  v8 = [v7 hash];
+  name = [(SFImageOption *)self name];
+  v4 = [name hash];
+  defaultValue = [(SFImageOption *)self defaultValue];
+  v6 = [defaultValue hash] ^ v4;
+  options = [(SFImageOption *)self options];
+  v8 = [options hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFImageOption *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFImageOption *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFImageOption *)self name];
-      v8 = [(SFImageOption *)v6 name];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      name = [(SFImageOption *)self name];
+      name2 = [(SFImageOption *)v6 name];
+      if ((name != 0) == (name2 == 0))
       {
         v11 = 0;
 LABEL_30:
@@ -85,63 +85,63 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v9 = [(SFImageOption *)self name];
-      if (v9)
+      name3 = [(SFImageOption *)self name];
+      if (name3)
       {
-        v3 = [(SFImageOption *)self name];
-        v10 = [(SFImageOption *)v6 name];
-        if (![v3 isEqual:v10])
+        name4 = [(SFImageOption *)self name];
+        name5 = [(SFImageOption *)v6 name];
+        if (![name4 isEqual:name5])
         {
           v11 = 0;
           goto LABEL_28;
         }
 
-        v31 = v10;
+        v31 = name5;
       }
 
-      v12 = [(SFImageOption *)self defaultValue];
-      v13 = [(SFImageOption *)v6 defaultValue];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      defaultValue = [(SFImageOption *)self defaultValue];
+      defaultValue2 = [(SFImageOption *)v6 defaultValue];
+      v14 = defaultValue2;
+      if ((defaultValue != 0) == (defaultValue2 == 0))
       {
 
         v11 = 0;
         goto LABEL_27;
       }
 
-      v15 = [(SFImageOption *)self defaultValue];
-      if (v15)
+      defaultValue3 = [(SFImageOption *)self defaultValue];
+      if (defaultValue3)
       {
-        v25 = v12;
-        v16 = [(SFImageOption *)self defaultValue];
-        v27 = [(SFImageOption *)v6 defaultValue];
-        v28 = v16;
-        if (![v16 isEqual:?])
+        v25 = defaultValue;
+        defaultValue4 = [(SFImageOption *)self defaultValue];
+        defaultValue5 = [(SFImageOption *)v6 defaultValue];
+        v28 = defaultValue4;
+        if (![defaultValue4 isEqual:?])
         {
           v11 = 0;
-          v12 = v25;
+          defaultValue = v25;
           goto LABEL_25;
         }
 
-        v29 = v15;
-        v30 = v3;
-        v12 = v25;
+        v29 = defaultValue3;
+        v30 = name4;
+        defaultValue = v25;
       }
 
       else
       {
         v29 = 0;
-        v30 = v3;
+        v30 = name4;
       }
 
-      v17 = [(SFImageOption *)self options];
-      v18 = [(SFImageOption *)v6 options];
-      if ((v17 != 0) == (v18 == 0))
+      options = [(SFImageOption *)self options];
+      options2 = [(SFImageOption *)v6 options];
+      if ((options != 0) == (options2 == 0))
       {
 
         v11 = 0;
-        v15 = v29;
-        v3 = v30;
+        defaultValue3 = v29;
+        name4 = v30;
         if (!v29)
         {
           goto LABEL_26;
@@ -150,16 +150,16 @@ LABEL_30:
 
       else
       {
-        v24 = v17;
-        v26 = v18;
-        v19 = [(SFImageOption *)self options];
-        v15 = v29;
-        if (v19)
+        v24 = options;
+        v26 = options2;
+        options3 = [(SFImageOption *)self options];
+        defaultValue3 = v29;
+        if (options3)
         {
-          v23 = v19;
-          v22 = [(SFImageOption *)self options];
-          v20 = [(SFImageOption *)v6 options];
-          v11 = [v22 isEqual:?];
+          v23 = options3;
+          options4 = [(SFImageOption *)self options];
+          options5 = [(SFImageOption *)v6 options];
+          v11 = [options4 isEqual:?];
         }
 
         else
@@ -168,7 +168,7 @@ LABEL_30:
           v11 = 1;
         }
 
-        v3 = v30;
+        name4 = v30;
         if (!v29)
         {
           goto LABEL_26;
@@ -179,8 +179,8 @@ LABEL_25:
 
 LABEL_26:
 LABEL_27:
-      v10 = v31;
-      if (!v9)
+      name5 = v31;
+      if (!name3)
       {
 LABEL_29:
 
@@ -200,19 +200,19 @@ LABEL_31:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFImageOption *)self name];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  name = [(SFImageOption *)self name];
+  v6 = [name copy];
   [v4 setName:v6];
 
-  v7 = [(SFImageOption *)self defaultValue];
-  v8 = [v7 copy];
+  defaultValue = [(SFImageOption *)self defaultValue];
+  v8 = [defaultValue copy];
   [v4 setDefaultValue:v8];
 
-  v9 = [(SFImageOption *)self options];
-  v10 = [v9 copy];
+  options = [(SFImageOption *)self options];
+  v10 = [options copy];
   [v4 setOptions:v10];
 
   return v4;
@@ -221,31 +221,31 @@ LABEL_31:
 - (NSData)jsonData
 {
   v2 = [[_SFPBImageOption alloc] initWithFacade:self];
-  v3 = [(_SFPBImageOption *)v2 jsonData];
+  jsonData = [(_SFPBImageOption *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBImageOption alloc] initWithFacade:self];
-  v3 = [(_SFPBImageOption *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBImageOption *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBImageOption alloc] initWithFacade:self];
-  v5 = [(_SFPBImageOption *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBImageOption *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFImageOption)initWithCoder:(id)a3
+- (SFImageOption)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBImageOption alloc] initWithData:v5];
   v7 = [(SFImageOption *)self initWithProtobuf:v6];

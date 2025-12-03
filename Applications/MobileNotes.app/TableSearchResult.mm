@@ -1,5 +1,5 @@
 @interface TableSearchResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)title;
 - (_TtC11MobileNotesP33_3A26B74EEED685164DF9267FE58E345F17TableSearchResult)init;
 - (int64_t)hash;
@@ -20,7 +20,7 @@
   Hasher.init()();
   type metadata accessor for TableID();
   sub_10040B6EC(&qword_1006C7CC0, &type metadata accessor for TableID);
-  v3 = self;
+  selfCopy = self;
   dispatch thunk of Hashable.hash(into:)();
   String.hash(into:)();
   v4 = Hasher.finalize()();
@@ -28,11 +28,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -41,7 +41,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_100401448(v8);

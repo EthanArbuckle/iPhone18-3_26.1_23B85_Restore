@@ -1,12 +1,12 @@
 @interface MFWebMessageDocument
 - (MFWebMessageDocument)init;
-- (MFWebMessageDocument)initWithMimeBody:(id)a3;
-- (MFWebMessageDocument)initWithMimePart:(id)a3;
-- (id)_initWithMimePart:(id)a3 htmlData:(id)a4;
-- (id)attachmentForURL:(id)a3;
+- (MFWebMessageDocument)initWithMimeBody:(id)body;
+- (MFWebMessageDocument)initWithMimePart:(id)part;
+- (id)_initWithMimePart:(id)part htmlData:(id)data;
+- (id)attachmentForURL:(id)l;
 - (id)attachmentsInDocument;
 - (id)fileWrapper;
-- (id)mimePartForURL:(id)a3;
+- (id)mimePartForURL:(id)l;
 - (id)preferredCharacterSet;
 - (void)dealloc;
 @end
@@ -39,34 +39,34 @@
   return v3;
 }
 
-- (MFWebMessageDocument)initWithMimeBody:(id)a3
+- (MFWebMessageDocument)initWithMimeBody:(id)body
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 isHTML])
+  bodyCopy = body;
+  v5 = bodyCopy;
+  if (bodyCopy && [bodyCopy isHTML])
   {
-    v6 = [v5 textHtmlPart];
-    self = [(MFWebMessageDocument *)self initWithMimePart:v6];
+    textHtmlPart = [v5 textHtmlPart];
+    self = [(MFWebMessageDocument *)self initWithMimePart:textHtmlPart];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)_initWithMimePart:(id)a3 htmlData:(id)a4
+- (id)_initWithMimePart:(id)part htmlData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 mimeBody];
-  v10 = v9;
+  partCopy = part;
+  dataCopy = data;
+  mimeBody = [partCopy mimeBody];
+  v10 = mimeBody;
   v11 = 0;
-  if (!v8 || !v7 || !v9)
+  if (!dataCopy || !partCopy || !mimeBody)
   {
     goto LABEL_6;
   }
@@ -75,9 +75,9 @@
   v11 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_htmlPart, a3);
+    objc_storeStrong(&v12->_htmlPart, part);
     objc_storeStrong(&v11->_mimeBody, v10);
-    v13 = v8;
+    v13 = dataCopy;
     self = v11->_htmlData;
     v11->_htmlData = v13;
 LABEL_6:
@@ -86,11 +86,11 @@ LABEL_6:
   return v11;
 }
 
-- (MFWebMessageDocument)initWithMimePart:(id)a3
+- (MFWebMessageDocument)initWithMimePart:(id)part
 {
-  v4 = a3;
-  v5 = [v4 bodyData];
-  v6 = [(MFWebMessageDocument *)self _initWithMimePart:v4 htmlData:v5];
+  partCopy = part;
+  bodyData = [partCopy bodyData];
+  v6 = [(MFWebMessageDocument *)self _initWithMimePart:partCopy htmlData:bodyData];
 
   return v6;
 }
@@ -102,13 +102,13 @@ LABEL_6:
   [(MFWebAttachmentSource *)&v2 dealloc];
 }
 
-- (id)mimePartForURL:(id)a3
+- (id)mimePartForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   [(MFLock *)self->_lock lock];
   if (self->_partsByURL)
   {
-    if (!v4)
+    if (!lCopy)
     {
       goto LABEL_19;
     }
@@ -116,7 +116,7 @@ LABEL_6:
 
   else
   {
-    v25 = v4;
+    v25 = lCopy;
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
     partsByURL = self->_partsByURL;
     self->_partsByURL = v5;
@@ -126,9 +126,9 @@ LABEL_6:
     self->_partsByFilename = v7;
 
     v9 = objc_allocWithZone(MEMORY[0x277CBEB18]);
-    v10 = [(MFWebMessageDocument *)self mimeBody];
-    v11 = [v10 topLevelPart];
-    v12 = [v9 initWithObjects:{v11, 0}];
+    mimeBody = [(MFWebMessageDocument *)self mimeBody];
+    topLevelPart = [mimeBody topLevelPart];
+    v12 = [v9 initWithObjects:{topLevelPart, 0}];
     while (1)
     {
 
@@ -137,59 +137,59 @@ LABEL_6:
         break;
       }
 
-      v10 = [v12 lastObject];
-      v13 = [v10 contentID];
-      v11 = MFCreateURLForContentID(v13);
+      mimeBody = [v12 lastObject];
+      contentID = [mimeBody contentID];
+      topLevelPart = MFCreateURLForContentID(contentID);
 
-      v14 = [v10 contentLocation];
-      v15 = [v10 attachmentFilename];
-      if (v11)
+      contentLocation = [mimeBody contentLocation];
+      attachmentFilename = [mimeBody attachmentFilename];
+      if (topLevelPart)
       {
-        [(NSMutableDictionary *)self->_partsByURL setObject:v10 forKey:v11];
+        [(NSMutableDictionary *)self->_partsByURL setObject:mimeBody forKey:topLevelPart];
       }
 
-      if (v14)
+      if (contentLocation)
       {
-        v16 = [objc_allocWithZone(MEMORY[0x277CBEBC0]) initWithString:v14 relativeToURL:self->_baseURL];
+        v16 = [objc_allocWithZone(MEMORY[0x277CBEBC0]) initWithString:contentLocation relativeToURL:self->_baseURL];
         v17 = v16;
         if (v16)
         {
           v18 = self->_partsByURL;
-          v19 = [v16 absoluteURL];
-          [(NSMutableDictionary *)v18 setObject:v10 forKey:v19];
+          absoluteURL = [v16 absoluteURL];
+          [(NSMutableDictionary *)v18 setObject:mimeBody forKey:absoluteURL];
         }
       }
 
-      if (v15)
+      if (attachmentFilename)
       {
-        [(NSMutableDictionary *)self->_partsByFilename setObject:v10 forKey:v15];
+        [(NSMutableDictionary *)self->_partsByFilename setObject:mimeBody forKey:attachmentFilename];
       }
 
       [v12 removeLastObject];
-      v20 = [v10 subparts];
-      if (v20)
+      subparts = [mimeBody subparts];
+      if (subparts)
       {
-        [v12 addObjectsFromArray:v20];
+        [v12 addObjectsFromArray:subparts];
       }
     }
 
-    v4 = v25;
+    lCopy = v25;
     if (!v25)
     {
       goto LABEL_19;
     }
   }
 
-  v21 = [(NSMutableDictionary *)self->_partsByURL objectForKey:v4];
+  v21 = [(NSMutableDictionary *)self->_partsByURL objectForKey:lCopy];
   if (!v21)
   {
 LABEL_19:
-    v22 = [v4 path];
-    v23 = [v22 lastPathComponent];
+    path = [lCopy path];
+    lastPathComponent = [path lastPathComponent];
 
-    if (v23)
+    if (lastPathComponent)
     {
-      v21 = [(NSMutableDictionary *)self->_partsByFilename objectForKey:v23];
+      v21 = [(NSMutableDictionary *)self->_partsByFilename objectForKey:lastPathComponent];
     }
 
     else
@@ -203,23 +203,23 @@ LABEL_19:
   return v21;
 }
 
-- (id)attachmentForURL:(id)a3
+- (id)attachmentForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = MFWebMessageDocument;
-  v5 = [(MFWebAttachmentSource *)&v10 attachmentForURL:v4];
+  v5 = [(MFWebAttachmentSource *)&v10 attachmentForURL:lCopy];
   if (!v5)
   {
-    v6 = [(MFWebMessageDocument *)self mimePartForURL:v4];
+    v6 = [(MFWebMessageDocument *)self mimePartForURL:lCopy];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 attachments];
-      if ([v8 count])
+      attachments = [v6 attachments];
+      if ([attachments count])
       {
-        v5 = [v8 objectAtIndex:0];
-        [(MFWebAttachmentSource *)self setAttachment:v5 forURL:v4];
+        v5 = [attachments objectAtIndex:0];
+        [(MFWebAttachmentSource *)self setAttachment:v5 forURL:lCopy];
       }
 
       else
@@ -242,16 +242,16 @@ LABEL_19:
   v19 = *MEMORY[0x277D85DE8];
   v3 = [(MFWebMessageDocument *)self mimePartForURL:0];
   [(MFLock *)self->_lock lock];
-  v4 = [(NSMutableDictionary *)self->_partsByURL allKeys];
+  allKeys = [(NSMutableDictionary *)self->_partsByURL allKeys];
   [(MFLock *)self->_lock unlock];
-  if ([v4 count])
+  if ([allKeys count])
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = allKeys;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -294,8 +294,8 @@ LABEL_19:
 {
   if ([(MFWebMessageDocument *)self preferredEncoding]== -1 || (MFCharsetForEncoding(), (v3 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v4 = [(MFWebMessageDocument *)self mimePart];
-    v3 = [v4 bodyParameterForKey:@"charset"];
+    mimePart = [(MFWebMessageDocument *)self mimePart];
+    v3 = [mimePart bodyParameterForKey:@"charset"];
   }
 
   return v3;
@@ -304,11 +304,11 @@ LABEL_19:
 - (id)fileWrapper
 {
   v3 = objc_alloc(MEMORY[0x277D24F38]);
-  v4 = [(MFWebMessageDocument *)self htmlData];
-  v5 = [v3 initRegularFileWithContents:v4];
+  htmlData = [(MFWebMessageDocument *)self htmlData];
+  v5 = [v3 initRegularFileWithContents:htmlData];
 
-  v6 = [(MFWebMessageDocument *)self mimePart];
-  [v6 configureFileWrapper:v5];
+  mimePart = [(MFWebMessageDocument *)self mimePart];
+  [mimePart configureFileWrapper:v5];
 
   return v5;
 }

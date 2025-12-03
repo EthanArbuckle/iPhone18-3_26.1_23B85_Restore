@@ -1,14 +1,14 @@
 @interface HMFPairingIdentity
 + (id)pairingIdentity;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMFPairingIdentity)init;
-- (HMFPairingIdentity)initWithCoder:(id)a3;
-- (HMFPairingIdentity)initWithIdentifier:(id)a3 publicKey:(id)a4 privateKey:(id)a5;
+- (HMFPairingIdentity)initWithCoder:(id)coder;
+- (HMFPairingIdentity)initWithIdentifier:(id)identifier publicKey:(id)key privateKey:(id)privateKey;
 - (HMFPairingIdentity)publicPairingIdentity;
 - (id)attributeDescriptions;
 - (id)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMFPairingIdentity
@@ -28,9 +28,9 @@
   cc_clear();
   cc_clear();
   v8 = objc_alloc(objc_opt_class());
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  v10 = [v9 UUIDString];
-  v11 = [v8 initWithIdentifier:v10 publicKey:v4 privateKey:v7];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v11 = [v8 initWithIdentifier:uUIDString publicKey:v4 privateKey:v7];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -50,20 +50,20 @@
   objc_exception_throw(v7);
 }
 
-- (HMFPairingIdentity)initWithIdentifier:(id)a3 publicKey:(id)a4 privateKey:(id)a5
+- (HMFPairingIdentity)initWithIdentifier:(id)identifier publicKey:(id)key privateKey:(id)privateKey
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  identifierCopy = identifier;
+  keyCopy = key;
+  privateKeyCopy = privateKey;
+  if (!identifierCopy)
   {
     v20 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = HMFGetLogIdentifier(v18);
+      v22 = HMFGetLogIdentifier(selfCopy2);
       *buf = 138543362;
       v28 = v22;
       v23 = "%{public}@The identifier is required";
@@ -78,14 +78,14 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v9)
+  if (!keyCopy)
   {
     v20 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = HMFGetLogIdentifier(v18);
+      v22 = HMFGetLogIdentifier(selfCopy2);
       *buf = 138543362;
       v28 = v22;
       v23 = "%{public}@The public key is required";
@@ -100,21 +100,21 @@ LABEL_11:
   v11 = [(HMFPairingIdentity *)&v26 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [keyCopy copy];
     publicKey = v11->_publicKey;
     v11->_publicKey = v14;
 
-    v16 = [v10 copy];
+    v16 = [privateKeyCopy copy];
     privateKey = v11->_privateKey;
     v11->_privateKey = v16;
   }
 
-  v18 = v11;
-  v19 = v18;
+  selfCopy2 = v11;
+  v19 = selfCopy2;
 LABEL_12:
 
   v24 = *MEMORY[0x277D85DE8];
@@ -123,18 +123,18 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v3 = [(HMFPairingIdentity *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(HMFPairingIdentity *)self publicKey];
-  v6 = [v5 hash];
+  identifier = [(HMFPairingIdentity *)self identifier];
+  v4 = [identifier hash];
+  publicKey = [(HMFPairingIdentity *)self publicKey];
+  v6 = [publicKey hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -144,13 +144,13 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HMFPairingIdentity *)v4 identifier];
-      v6 = [(HMFPairingIdentity *)self identifier];
-      if ([v5 isEqualToString:v6])
+      identifier = [(HMFPairingIdentity *)equalCopy identifier];
+      identifier2 = [(HMFPairingIdentity *)self identifier];
+      if ([identifier isEqualToString:identifier2])
       {
-        v7 = [(HMFPairingIdentity *)v4 publicKey];
-        v8 = [(HMFPairingIdentity *)self publicKey];
-        v9 = [v7 isEqual:v8];
+        publicKey = [(HMFPairingIdentity *)equalCopy publicKey];
+        publicKey2 = [(HMFPairingIdentity *)self publicKey];
+        v9 = [publicKey isEqual:publicKey2];
       }
 
       else
@@ -171,9 +171,9 @@ LABEL_12:
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMFPairingIdentity *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  shortDescription = [objc_opt_class() shortDescription];
+  identifier = [(HMFPairingIdentity *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@ %@", shortDescription, identifier];
 
   return v6;
 }
@@ -182,16 +182,16 @@ LABEL_12:
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v3 = [HMFAttributeDescription alloc];
-  v4 = [(HMFPairingIdentity *)self identifier];
-  v5 = [(HMFAttributeDescription *)v3 initWithName:@"Identifier" value:v4];
+  identifier = [(HMFPairingIdentity *)self identifier];
+  v5 = [(HMFAttributeDescription *)v3 initWithName:@"Identifier" value:identifier];
   v6 = [HMFAttributeDescription alloc];
-  v7 = [(HMFPairingIdentity *)self publicKey];
-  v8 = [(HMFAttributeDescription *)v6 initWithName:@"Public Key" value:v7];
+  publicKey = [(HMFPairingIdentity *)self publicKey];
+  v8 = [(HMFAttributeDescription *)v6 initWithName:@"Public Key" value:publicKey];
   v16[1] = v8;
   v9 = [HMFAttributeDescription alloc];
-  v10 = [(HMFPairingIdentity *)self privateKey];
+  privateKey = [(HMFPairingIdentity *)self privateKey];
   v11 = +[HMFPrivateObjectFormatter defaultFormatter];
-  v12 = [(HMFAttributeDescription *)v9 initWithName:@"Private Key" value:v10 options:2 formatter:v11];
+  v12 = [(HMFAttributeDescription *)v9 initWithName:@"Private Key" value:privateKey options:2 formatter:v11];
   v16[2] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:3];
 
@@ -202,41 +202,41 @@ LABEL_12:
 
 - (HMFPairingIdentity)publicPairingIdentity
 {
-  v3 = [(HMFPairingIdentity *)self privateKey];
+  privateKey = [(HMFPairingIdentity *)self privateKey];
 
-  if (v3)
+  if (privateKey)
   {
     v4 = [HMFPairingIdentity alloc];
-    v5 = [(HMFPairingIdentity *)self identifier];
-    v6 = [(HMFPairingIdentity *)self publicKey];
-    v7 = [(HMFPairingIdentity *)v4 initWithIdentifier:v5 publicKey:v6 privateKey:0];
+    identifier = [(HMFPairingIdentity *)self identifier];
+    publicKey = [(HMFPairingIdentity *)self publicKey];
+    selfCopy = [(HMFPairingIdentity *)v4 initWithIdentifier:identifier publicKey:publicKey privateKey:0];
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (HMFPairingIdentity)initWithCoder:(id)a3
+- (HMFPairingIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HMFPairingIdentity;
   v5 = [(HMFPairingIdentity *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HAP.identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HAP.identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HAP.privateKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HAP.privateKey"];
     privateKey = v5->_privateKey;
     v5->_privateKey = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HAP.publicKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HAP.publicKey"];
     publicKey = v5->_publicKey;
     v5->_publicKey = v10;
   }
@@ -244,17 +244,17 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMFPairingIdentity *)self identifier];
-  [v4 encodeObject:v5 forKey:@"HAP.identifier"];
+  coderCopy = coder;
+  identifier = [(HMFPairingIdentity *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"HAP.identifier"];
 
-  v6 = [(HMFPairingIdentity *)self publicKey];
-  [v4 encodeObject:v6 forKey:@"HAP.publicKey"];
+  publicKey = [(HMFPairingIdentity *)self publicKey];
+  [coderCopy encodeObject:publicKey forKey:@"HAP.publicKey"];
 
-  v7 = [(HMFPairingIdentity *)self privateKey];
-  [v4 encodeObject:v7 forKey:@"HAP.privateKey"];
+  privateKey = [(HMFPairingIdentity *)self privateKey];
+  [coderCopy encodeObject:privateKey forKey:@"HAP.privateKey"];
 }
 
 @end

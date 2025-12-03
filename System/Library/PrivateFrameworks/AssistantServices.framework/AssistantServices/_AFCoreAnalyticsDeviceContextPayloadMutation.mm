@@ -1,5 +1,5 @@
 @interface _AFCoreAnalyticsDeviceContextPayloadMutation
-- (_AFCoreAnalyticsDeviceContextPayloadMutation)initWithBase:(id)a3;
+- (_AFCoreAnalyticsDeviceContextPayloadMutation)initWithBase:(id)base;
 - (id)getAlarmFiring;
 - (id)getContextIdentifier;
 - (id)getHomeAnnouncementRecency;
@@ -19,177 +19,177 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_nearbyProductType;
+    nearbyProductType = self->_nearbyProductType;
   }
 
   else
   {
-    v2 = [(AFCoreAnalyticsDeviceContextPayload *)self->_base nearbyProductType];
+    nearbyProductType = [(AFCoreAnalyticsDeviceContextPayload *)self->_base nearbyProductType];
   }
 
-  return v2;
+  return nearbyProductType;
 }
 
 - (id)getProximity
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_proximity;
+    proximity = self->_proximity;
   }
 
   else
   {
-    v2 = [(AFCoreAnalyticsDeviceContextPayload *)self->_base proximity];
+    proximity = [(AFCoreAnalyticsDeviceContextPayload *)self->_base proximity];
   }
 
-  return v2;
+  return proximity;
 }
 
 - (id)getAlarmFiring
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_alarmFiring;
+    alarmFiring = self->_alarmFiring;
   }
 
   else
   {
-    v2 = [(AFCoreAnalyticsDeviceContextPayload *)self->_base alarmFiring];
+    alarmFiring = [(AFCoreAnalyticsDeviceContextPayload *)self->_base alarmFiring];
   }
 
-  return v2;
+  return alarmFiring;
 }
 
 - (id)getTimerFiring
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_timerFiring;
+    timerFiring = self->_timerFiring;
   }
 
   else
   {
-    v2 = [(AFCoreAnalyticsDeviceContextPayload *)self->_base timerFiring];
+    timerFiring = [(AFCoreAnalyticsDeviceContextPayload *)self->_base timerFiring];
   }
 
-  return v2;
+  return timerFiring;
 }
 
 - (id)getPlaybackState
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_playbackState;
+    playbackState = self->_playbackState;
   }
 
   else
   {
-    v2 = [(AFCoreAnalyticsDeviceContextPayload *)self->_base playbackState];
+    playbackState = [(AFCoreAnalyticsDeviceContextPayload *)self->_base playbackState];
   }
 
-  return v2;
+  return playbackState;
 }
 
 - (id)getPlaybackRecency
 {
   if ((*&self->_mutationFlags & 0x40) != 0)
   {
-    v2 = self->_playbackRecency;
+    playbackRecency = self->_playbackRecency;
   }
 
   else
   {
-    v2 = [(AFCoreAnalyticsDeviceContextPayload *)self->_base playbackRecency];
+    playbackRecency = [(AFCoreAnalyticsDeviceContextPayload *)self->_base playbackRecency];
   }
 
-  return v2;
+  return playbackRecency;
 }
 
 - (id)getHomeAnnouncementState
 {
   if ((*&self->_mutationFlags & 0x80) != 0)
   {
-    v2 = self->_homeAnnouncementState;
+    homeAnnouncementState = self->_homeAnnouncementState;
   }
 
   else
   {
-    v2 = [(AFCoreAnalyticsDeviceContextPayload *)self->_base homeAnnouncementState];
+    homeAnnouncementState = [(AFCoreAnalyticsDeviceContextPayload *)self->_base homeAnnouncementState];
   }
 
-  return v2;
+  return homeAnnouncementState;
 }
 
 - (id)getHomeAnnouncementRecency
 {
   if ((*&self->_mutationFlags & 0x100) != 0)
   {
-    v2 = self->_homeAnnouncementRecency;
+    homeAnnouncementRecency = self->_homeAnnouncementRecency;
   }
 
   else
   {
-    v2 = [(AFCoreAnalyticsDeviceContextPayload *)self->_base homeAnnouncementRecency];
+    homeAnnouncementRecency = [(AFCoreAnalyticsDeviceContextPayload *)self->_base homeAnnouncementRecency];
   }
 
-  return v2;
+  return homeAnnouncementRecency;
 }
 
 - (id)getNearbyDevicesRequestIdentifier
 {
   if ((*&self->_mutationFlags & 0x200) != 0)
   {
-    v2 = self->_nearbyDevicesRequestIdentifier;
+    nearbyDevicesRequestIdentifier = self->_nearbyDevicesRequestIdentifier;
   }
 
   else
   {
-    v2 = [(AFCoreAnalyticsDeviceContextPayload *)self->_base nearbyDevicesRequestIdentifier];
+    nearbyDevicesRequestIdentifier = [(AFCoreAnalyticsDeviceContextPayload *)self->_base nearbyDevicesRequestIdentifier];
   }
 
-  return v2;
+  return nearbyDevicesRequestIdentifier;
 }
 
 - (id)getTargetedResult
 {
   if ((*&self->_mutationFlags & 0x400) != 0)
   {
-    v2 = self->_targetedResult;
+    targetedResult = self->_targetedResult;
   }
 
   else
   {
-    v2 = [(AFCoreAnalyticsDeviceContextPayload *)self->_base targetedResult];
+    targetedResult = [(AFCoreAnalyticsDeviceContextPayload *)self->_base targetedResult];
   }
 
-  return v2;
+  return targetedResult;
 }
 
 - (id)getContextIdentifier
 {
   if ((*&self->_mutationFlags & 0x800) != 0)
   {
-    v2 = self->_contextIdentifier;
+    contextIdentifier = self->_contextIdentifier;
   }
 
   else
   {
-    v2 = [(AFCoreAnalyticsDeviceContextPayload *)self->_base contextIdentifier];
+    contextIdentifier = [(AFCoreAnalyticsDeviceContextPayload *)self->_base contextIdentifier];
   }
 
-  return v2;
+  return contextIdentifier;
 }
 
-- (_AFCoreAnalyticsDeviceContextPayloadMutation)initWithBase:(id)a3
+- (_AFCoreAnalyticsDeviceContextPayloadMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFCoreAnalyticsDeviceContextPayloadMutation;
   v6 = [(_AFCoreAnalyticsDeviceContextPayloadMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

@@ -1,15 +1,15 @@
 @interface _NBMetadataHelper
-+ (BOOL)hasValue:(id)a3;
++ (BOOL)hasValue:(id)value;
 + (id)CCode2CNMap;
 + (id)CN2CCodeMap;
-+ (id)countryCodeFromRegionCode:(id)a3;
-+ (id)jsonObjectFromZippedDataWithBytes:(char *)a3 compressedLength:(unint64_t)a4 expandedLength:(unint64_t)a5;
++ (id)countryCodeFromRegionCode:(id)code;
++ (id)jsonObjectFromZippedDataWithBytes:(char *)bytes compressedLength:(unint64_t)length expandedLength:(unint64_t)expandedLength;
 + (id)phoneNumberDataMap;
-+ (id)regionCodeFromCountryCode:(id)a3;
++ (id)regionCodeFromCountryCode:(id)code;
 - (_NBMetadataHelper)init;
 - (id)getAllMetadata;
-- (id)getMetadataForNonGeographicalRegion:(id)a3;
-- (id)getMetadataForRegion:(id)a3;
+- (id)getMetadataForNonGeographicalRegion:(id)region;
+- (id)getMetadataForRegion:(id)region;
 @end
 
 @implementation _NBMetadataHelper
@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = __39___NBMetadataHelper_phoneNumberDataMap__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_281346940 != -1)
   {
     dispatch_once(&qword_281346940, block);
@@ -52,7 +52,7 @@
   block[1] = 3221225472;
   block[2] = __32___NBMetadataHelper_CCode2CNMap__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_281346950 != -1)
   {
     dispatch_once(&qword_281346950, block);
@@ -65,8 +65,8 @@
 
 + (id)CN2CCodeMap
 {
-  v2 = [a1 phoneNumberDataMap];
-  v3 = [v2 objectForKeyedSubscript:@"countryCodeToRegionCodeMap"];
+  phoneNumberDataMap = [self phoneNumberDataMap];
+  v3 = [phoneNumberDataMap objectForKeyedSubscript:@"countryCodeToRegionCodeMap"];
 
   return v3;
 }
@@ -75,17 +75,17 @@
 {
   v40 = *MEMORY[0x277D85DE8];
   v3 = 0x277CBE000uLL;
-  v4 = [MEMORY[0x277CBEAF8] ISOCountryCodes];
+  iSOCountryCodes = [MEMORY[0x277CBEAF8] ISOCountryCodes];
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
-  v6 = [v4 count];
+  v6 = [iSOCountryCodes count];
   v7 = v5;
-  v8 = self;
+  selfCopy = self;
   v9 = [v7 initWithCapacity:v6];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v4;
+  obj = iSOCountryCodes;
   v34 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v34)
   {
@@ -107,8 +107,8 @@
         v12 = *(*(&v35 + 1) + 8 * v11);
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v12 forKey:{v32, v29}];
         v14 = [*(v3 + 2808) localeIdentifierFromComponents:v13];
-        v15 = [*(v3 + 2808) currentLocale];
-        v16 = [v15 displayNameForKey:v10 value:v14];
+        currentLocale = [*(v3 + 2808) currentLocale];
+        v16 = [currentLocale displayNameForKey:v10 value:v14];
 
         v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
         v18 = v10;
@@ -127,17 +127,17 @@ LABEL_8:
         }
 
         v21 = v3;
-        v22 = v8;
+        v22 = selfCopy;
         v23 = v21;
-        v24 = [*(v21 + 2808) systemLocale];
-        v25 = [v24 displayNameForKey:v18 value:v14];
+        systemLocale = [*(v21 + 2808) systemLocale];
+        v25 = [systemLocale displayNameForKey:v18 value:v14];
 
         if (v25)
         {
           [v19 setObject:v25 forKey:@"name"];
         }
 
-        v8 = v22;
+        selfCopy = v22;
         v3 = v23;
         v9 = v29;
         if (v12)
@@ -146,7 +146,7 @@ LABEL_8:
         }
 
 LABEL_9:
-        v20 = [(_NBMetadataHelper *)v8 getMetadataForRegion:v12];
+        v20 = [(_NBMetadataHelper *)selfCopy getMetadataForRegion:v12];
         if (v20)
         {
           [v19 setObject:v20 forKey:@"metadata"];
@@ -171,13 +171,13 @@ LABEL_9:
   return v9;
 }
 
-+ (id)regionCodeFromCountryCode:(id)a3
++ (id)regionCodeFromCountryCode:(id)code
 {
-  v4 = a3;
-  v5 = [a1 CN2CCodeMap];
-  v6 = [v4 stringValue];
+  codeCopy = code;
+  cN2CCodeMap = [self CN2CCodeMap];
+  stringValue = [codeCopy stringValue];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [cN2CCodeMap objectForKeyedSubscript:stringValue];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 count])
@@ -193,23 +193,23 @@ LABEL_9:
   return v8;
 }
 
-+ (id)countryCodeFromRegionCode:(id)a3
++ (id)countryCodeFromRegionCode:(id)code
 {
-  v4 = a3;
-  v5 = [a1 CCode2CNMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  codeCopy = code;
+  cCode2CNMap = [self CCode2CNMap];
+  v6 = [cCode2CNMap objectForKeyedSubscript:codeCopy];
 
   return v6;
 }
 
-- (id)getMetadataForRegion:(id)a3
+- (id)getMetadataForRegion:(id)region
 {
-  v4 = StringByTrimming(a3);
+  v4 = StringByTrimming(region);
   if ([v4 length])
   {
-    v5 = [v4 uppercaseString];
+    uppercaseString = [v4 uppercaseString];
 
-    v6 = [(NSCache *)self->_metadataCache objectForKey:v5];
+    v6 = [(NSCache *)self->_metadataCache objectForKey:uppercaseString];
     v7 = v6;
     if (v6)
     {
@@ -218,14 +218,14 @@ LABEL_9:
 
     else
     {
-      v9 = [objc_opt_class() phoneNumberDataMap];
-      v10 = [v9 objectForKeyedSubscript:@"countryToMetadata"];
+      phoneNumberDataMap = [objc_opt_class() phoneNumberDataMap];
+      v10 = [phoneNumberDataMap objectForKeyedSubscript:@"countryToMetadata"];
 
-      v11 = [v10 objectForKeyedSubscript:v5];
+      v11 = [v10 objectForKeyedSubscript:uppercaseString];
       if (v11)
       {
         v8 = [[_NBPhoneMetaData alloc] initWithEntry:v11];
-        [(NSCache *)self->_metadataCache setObject:v8 forKey:v5];
+        [(NSCache *)self->_metadataCache setObject:v8 forKey:uppercaseString];
       }
 
       else
@@ -238,36 +238,36 @@ LABEL_9:
   else
   {
     v8 = 0;
-    v5 = v4;
+    uppercaseString = v4;
   }
 
   return v8;
 }
 
-- (id)getMetadataForNonGeographicalRegion:(id)a3
+- (id)getMetadataForNonGeographicalRegion:(id)region
 {
-  v4 = [a3 stringValue];
-  v5 = [(_NBMetadataHelper *)self getMetadataForRegion:v4];
+  stringValue = [region stringValue];
+  v5 = [(_NBMetadataHelper *)self getMetadataForRegion:stringValue];
 
   return v5;
 }
 
-+ (BOOL)hasValue:(id)a3
++ (BOOL)hasValue:(id)value
 {
-  v3 = StringByTrimming(a3);
+  v3 = StringByTrimming(value);
   v4 = [v3 length] != 0;
 
   return v4;
 }
 
-+ (id)jsonObjectFromZippedDataWithBytes:(char *)a3 compressedLength:(unint64_t)a4 expandedLength:(unint64_t)a5
++ (id)jsonObjectFromZippedDataWithBytes:(char *)bytes compressedLength:(unint64_t)length expandedLength:(unint64_t)expandedLength
 {
-  v5 = a4;
-  v7 = [MEMORY[0x277CBEB28] dataWithLength:a5];
+  lengthCopy = length;
+  v7 = [MEMORY[0x277CBEB28] dataWithLength:expandedLength];
   memset(&strm, 0, sizeof(strm));
   inflateInit2_(&strm, 16, "1.2.12", 112);
-  strm.next_in = a3;
-  strm.avail_in = v5;
+  strm.next_in = bytes;
+  strm.avail_in = lengthCopy;
   strm.next_out = [v7 bytes];
   strm.avail_out = [v7 length];
   inflate(&strm, 4);

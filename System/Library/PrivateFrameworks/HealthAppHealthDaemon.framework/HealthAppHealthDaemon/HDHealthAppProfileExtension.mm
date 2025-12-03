@@ -1,29 +1,29 @@
 @interface HDHealthAppProfileExtension
-- (HDHealthAppProfileExtension)initWithProfile:(id)a3;
+- (HDHealthAppProfileExtension)initWithProfile:(id)profile;
 - (HDProfile)profile;
 - (void)_handleDismissInstruction;
 - (void)_handleHoldInstruction;
 - (void)_handleSendInstruction;
-- (void)_healthAppWasUninstalled:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)daemonReady:(id)a3;
+- (void)_healthAppWasUninstalled:(id)uninstalled;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)daemonReady:(id)ready;
 - (void)dealloc;
-- (void)notificationSyncClient:(id)a3 didReceiveInstructionWithAction:(int64_t)a4;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)notificationSyncClient:(id)client didReceiveInstructionWithAction:(int64_t)action;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation HDHealthAppProfileExtension
 
-- (HDHealthAppProfileExtension)initWithProfile:(id)a3
+- (HDHealthAppProfileExtension)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v51.receiver = self;
   v51.super_class = HDHealthAppProfileExtension;
   v5 = [(HDHealthAppProfileExtension *)&v51 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = [HDHealthAppDataObserver alloc];
     WeakRetained = objc_loadWeakRetained(&v6->_profile);
     v9 = [(HDHealthAppDataObserver *)v7 initWithProfile:WeakRetained];
@@ -69,7 +69,7 @@
     v35 = objc_alloc(MEMORY[0x277D107B8]);
     v36 = *MEMORY[0x277CCC1D0];
     v37 = HKCreateSerialDispatchQueue();
-    v38 = [v35 initWithProfile:v4 clientIdentifier:v36 queue:v37];
+    v38 = [v35 initWithProfile:profileCopy clientIdentifier:v36 queue:v37];
     healthSharingNotificationSyncClient = v6->_healthSharingNotificationSyncClient;
     v6->_healthSharingNotificationSyncClient = v38;
 
@@ -82,13 +82,13 @@
     v6->_healthAppNewDeviceNotificationSyncClient = v43;
 
     [(HDNotificationSyncClient *)v6->_healthAppNewDeviceNotificationSyncClient setDelegate:v6];
-    v45 = [[HDAppAnalyticsUpdateManager alloc] initWithProfile:v4];
+    v45 = [[HDAppAnalyticsUpdateManager alloc] initWithProfile:profileCopy];
     appAnalyticsUpdateManager = v6->_appAnalyticsUpdateManager;
     v6->_appAnalyticsUpdateManager = v45;
 
     v47 = objc_loadWeakRetained(&v6->_profile);
-    v48 = [v47 healthDaemon];
-    [v48 registerDaemonReadyObserver:v6 queue:0];
+    healthDaemon = [v47 healthDaemon];
+    [healthDaemon registerDaemonReadyObserver:v6 queue:0];
 
     v49 = objc_loadWeakRetained(&v6->_profile);
     [v49 registerProfileReadyObserver:v6 queue:0];
@@ -107,15 +107,15 @@ HDHealthAppDailyAnalyticsEvent *__47__HDHealthAppProfileExtension_initWithProfil
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HDHealthAppProfileExtension;
   [(HDHealthAppProfileExtension *)&v4 dealloc];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   _HKInitializeLogging();
   v4 = HKLogWellnessDashboard();
@@ -125,13 +125,13 @@ HDHealthAppDailyAnalyticsEvent *__47__HDHealthAppProfileExtension_initWithProfil
     _os_log_impl(&dword_22939E000, v4, OS_LOG_TYPE_DEFAULT, "Health app profile extension reported daemon ready, starting observing for alert sample types", v6, 2u);
   }
 
-  v5 = [(HDHealthAppProfileExtension *)self dataObserver];
-  [v5 start];
+  dataObserver = [(HDHealthAppProfileExtension *)self dataObserver];
+  [dataObserver start];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   _HKInitializeLogging();
   v5 = HKLogWellnessDashboard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -140,8 +140,8 @@ HDHealthAppDailyAnalyticsEvent *__47__HDHealthAppProfileExtension_initWithProfil
     _os_log_impl(&dword_22939E000, v5, OS_LOG_TYPE_DEFAULT, "Health app profile extension reported profile ready, starting observing for Health app install status, and pausing sharing if necessary", buf, 2u);
   }
 
-  v6 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v6 addObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace addObserver:self];
 
   objc_initWeak(buf, self);
   objc_copyWeak(&v7, buf);
@@ -206,15 +206,15 @@ LABEL_5:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  uninstallCopy = uninstall;
+  v5 = [uninstallCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -226,13 +226,13 @@ LABEL_5:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(uninstallCopy);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 bundleIdentifier];
-        v12 = v11;
-        if (v11 == v8)
+        bundleIdentifier = [v10 bundleIdentifier];
+        v12 = bundleIdentifier;
+        if (bundleIdentifier == v8)
         {
 
 LABEL_15:
@@ -250,8 +250,8 @@ LABEL_15:
 
         if (v8)
         {
-          v13 = [v10 bundleIdentifier];
-          v14 = [v13 isEqualToString:v8];
+          bundleIdentifier2 = [v10 bundleIdentifier];
+          v14 = [bundleIdentifier2 isEqualToString:v8];
 
           if (v14)
           {
@@ -264,7 +264,7 @@ LABEL_15:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [uninstallCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v6)
       {
         continue;
@@ -279,14 +279,14 @@ LABEL_18:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_healthAppWasUninstalled:(id)a3
+- (void)_healthAppWasUninstalled:(id)uninstalled
 {
   v13 = *MEMORY[0x277D85DE8];
   [MEMORY[0x277CCDD30] resetBuddy];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained sharingEntryManager];
+  sharingEntryManager = [WeakRetained sharingEntryManager];
   v10 = 0;
-  v6 = [v5 pauseActiveEntriesWithError:&v10];
+  v6 = [sharingEntryManager pauseActiveEntriesWithError:&v10];
   v7 = v10;
 
   if ((v6 & 1) == 0)
@@ -304,7 +304,7 @@ LABEL_18:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notificationSyncClient:(id)a3 didReceiveInstructionWithAction:(int64_t)a4
+- (void)notificationSyncClient:(id)client didReceiveInstructionWithAction:(int64_t)action
 {
   v18 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -322,7 +322,7 @@ LABEL_18:
     _os_log_impl(&dword_22939E000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received instruction with action: %@", &v14, 0x16u);
   }
 
-  switch(a4)
+  switch(action)
   {
     case 1:
       [(HDHealthAppProfileExtension *)self _handleDismissInstruction];
@@ -338,7 +338,7 @@ LABEL_18:
       v11 = HKLogWellnessDashboard();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [(HDHealthAppProfileExtension *)self notificationSyncClient:a4 didReceiveInstructionWithAction:v11];
+        [(HDHealthAppProfileExtension *)self notificationSyncClient:action didReceiveInstructionWithAction:v11];
       }
 
       break;

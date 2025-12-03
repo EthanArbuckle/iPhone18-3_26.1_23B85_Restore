@@ -1,19 +1,19 @@
 @interface CASDFGradientEffect
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)configureLayer:(void *)a3 transaction:(void *)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)configureLayer:(void *)layer transaction:(void *)transaction;
 - (void)dealloc;
 @end
 
 @implementation CASDFGradientEffect
 
-- (void)configureLayer:(void *)a3 transaction:(void *)a4
+- (void)configureLayer:(void *)layer transaction:(void *)transaction
 {
-  v7 = [(CASDFGradientEffect *)self colors];
-  v8 = [(CASDFGradientEffect *)self distances];
-  v9 = [(CASDFGradientEffect *)self interpolations];
-  v10 = [(NSArray *)v7 count];
-  v12 = CA::Context::current_colorspace(a4, v11);
-  v13 = [(CASDFGradientEffect *)self premultiplied];
+  colors = [(CASDFGradientEffect *)self colors];
+  distances = [(CASDFGradientEffect *)self distances];
+  interpolations = [(CASDFGradientEffect *)self interpolations];
+  v10 = [(NSArray *)colors count];
+  v12 = CA::Context::current_colorspace(transaction, v11);
+  premultiplied = [(CASDFGradientEffect *)self premultiplied];
   if (x_malloc_get_zone::once != -1)
   {
     dispatch_once_f(&x_malloc_get_zone::once, 0, malloc_zone_init);
@@ -23,7 +23,7 @@
   v15 = v14;
   if (v14)
   {
-    if (v8)
+    if (distances)
     {
       v16 = 34;
     }
@@ -33,12 +33,12 @@
       v16 = 32;
     }
 
-    if (v9)
+    if (interpolations)
     {
       v16 |= 4u;
     }
 
-    if (v13)
+    if (premultiplied)
     {
       v17 = v16 | 0x10;
     }
@@ -52,38 +52,38 @@
     *v15 = &unk_1EF1FBF20;
   }
 
-  if (v7)
+  if (colors)
   {
-    CA::Render::Gradient::set_colors(v15, v7, v12);
+    CA::Render::Gradient::set_colors(v15, colors, v12);
   }
 
-  if (v8)
+  if (distances)
   {
-    CA::Render::InterpolatedFunction::set_locations(v15, v8);
+    CA::Render::InterpolatedFunction::set_locations(v15, distances);
   }
 
-  if (v9)
+  if (interpolations)
   {
-    CA::Render::InterpolatedFunction::set_interpolations(v15, v9);
+    CA::Render::InterpolatedFunction::set_interpolations(v15, interpolations);
   }
 
-  *(a3 + 136) = 3;
-  *(a3 + 3) = v15;
-  *(a3 + 2) = 0u;
-  *(a3 + 3) = 0u;
-  *(a3 + 4) = 0u;
-  *(a3 + 5) = 0u;
-  *(a3 + 6) = 0u;
-  *(a3 + 7) = 0u;
-  *(a3 + 16) = 0;
+  *(layer + 136) = 3;
+  *(layer + 3) = v15;
+  *(layer + 2) = 0u;
+  *(layer + 3) = 0u;
+  *(layer + 4) = 0u;
+  *(layer + 5) = 0u;
+  *(layer + 6) = 0u;
+  *(layer + 7) = 0u;
+  *(layer + 16) = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = CASDFGradientEffect;
-  v4 = [(CASDFEffect *)&v6 copyWithZone:a3];
+  v4 = [(CASDFEffect *)&v6 copyWithZone:zone];
   if (v4)
   {
     v4[2] = [(NSArray *)self->_colors copy];

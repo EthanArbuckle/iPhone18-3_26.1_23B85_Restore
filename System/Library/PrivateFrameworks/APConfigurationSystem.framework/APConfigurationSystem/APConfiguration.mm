@@ -1,10 +1,10 @@
 @interface APConfiguration
 + (NSString)path;
-- (APConfiguration)initWithConfig:(id)a3 notifier:(id)a4;
+- (APConfiguration)initWithConfig:(id)config notifier:(id)notifier;
 - (NSString)identifier;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (int64_t)version;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation APConfiguration
@@ -42,28 +42,28 @@
   return &stru_1F49DAC40;
 }
 
-- (APConfiguration)initWithConfig:(id)a3 notifier:(id)a4
+- (APConfiguration)initWithConfig:(id)config notifier:(id)notifier
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  notifierCopy = notifier;
   v13.receiver = self;
   v13.super_class = APConfiguration;
   v8 = [(APConfiguration *)&v13 init];
   v10 = v8;
   if (v8)
   {
-    objc_msgSend_setConfigDictionary_(v8, v9, v6);
-    objc_msgSend_setNotifier_(v10, v11, v7);
+    objc_msgSend_setConfigDictionary_(v8, v9, configCopy);
+    objc_msgSend_setNotifier_(v10, v11, notifierCopy);
   }
 
   return v10;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v7 = objc_msgSend_selector(v4, v5, v6);
+  invocationCopy = invocation;
+  v7 = objc_msgSend_selector(invocationCopy, v5, v6);
   v8 = NSStringFromSelector(v7);
   v13 = objc_msgSend_ap_propertyName(v8, v9, v10);
   if (v13)
@@ -91,8 +91,8 @@
       CreateDiagnosticReport();
     }
 
-    objc_msgSend_retainArguments(v4, v18, v19);
-    objc_msgSend_setReturnValue_(v4, v26, &v33);
+    objc_msgSend_retainArguments(invocationCopy, v18, v19);
+    objc_msgSend_setReturnValue_(invocationCopy, v26, &v33);
     v29 = objc_msgSend_notifier(self, v27, v28);
     objc_msgSend_recentlyAccessedObject_(v29, v30, self);
   }
@@ -112,11 +112,11 @@
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v6.receiver = self;
   v6.super_class = APConfiguration;
-  v3 = [(APConfiguration *)&v6 methodSignatureForSelector:a3];
+  v3 = [(APConfiguration *)&v6 methodSignatureForSelector:selector];
   if (!v3)
   {
     v3 = objc_msgSend_signatureWithObjCTypes_(MEMORY[0x1E695DF68], v4, "@@:");

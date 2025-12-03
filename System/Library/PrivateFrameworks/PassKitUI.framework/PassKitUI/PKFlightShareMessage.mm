@@ -4,14 +4,14 @@
 - (PKFlight)flight;
 - (PKFlightShareMessage)init;
 - (UIImage)logoImage;
-- (id)_flightShareMessageDataURLWithData:(id)a3;
-- (id)_flightShareMessageDataWithDataURL:(id)a3;
-- (id)_initWithCommonMessage:(id)a3 url:(id)a4;
+- (id)_flightShareMessageDataURLWithData:(id)data;
+- (id)_flightShareMessageDataWithDataURL:(id)l;
+- (id)_initWithCommonMessage:(id)message url:(id)url;
 - (id)urlRepresentation;
-- (void)setBackgroundColor:(id)a3;
-- (void)setFlight:(id)a3;
-- (void)setForegroundColor:(id)a3;
-- (void)setLogoImage:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setFlight:(id)flight;
+- (void)setForegroundColor:(id)color;
+- (void)setLogoImage:(id)image;
 @end
 
 @implementation PKFlightShareMessage
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)_initWithCommonMessage:(id)a3 url:(id)a4
+- (id)_initWithCommonMessage:(id)message url:(id)url
 {
-  v6 = a4;
+  urlCopy = url;
   v16.receiver = self;
   v16.super_class = PKFlightShareMessage;
-  v7 = [(PKSharingMessageExtensionCommonMessage *)&v16 _initWithCommonMessage:a3 url:v6];
+  v7 = [(PKSharingMessageExtensionCommonMessage *)&v16 _initWithCommonMessage:message url:urlCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 messageData];
-    if (v9 || ([v8 _flightShareMessageDataWithDataURL:v6], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+    messageData = [v7 messageData];
+    if (messageData || ([v8 _flightShareMessageDataWithDataURL:urlCopy], (messageData = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v10 = v9;
-      v11 = [objc_alloc(MEMORY[0x1E69B90A8]) initWithData:v9];
+      v10 = messageData;
+      v11 = [objc_alloc(MEMORY[0x1E69B90A8]) initWithData:messageData];
       v12 = v8[3];
       v8[3] = v11;
     }
@@ -63,38 +63,38 @@
 
 - (id)urlRepresentation
 {
-  v3 = [(PKProtobufFlightShareMessage *)self->_protoMessage data];
-  [(PKSharingMessageExtensionCommonMessage *)self setMessageData:v3];
+  data = [(PKProtobufFlightShareMessage *)self->_protoMessage data];
+  [(PKSharingMessageExtensionCommonMessage *)self setMessageData:data];
 
   v6.receiver = self;
   v6.super_class = PKFlightShareMessage;
-  v4 = [(PKSharingMessageExtensionCommonMessage *)&v6 urlRepresentation];
+  urlRepresentation = [(PKSharingMessageExtensionCommonMessage *)&v6 urlRepresentation];
 
-  return v4;
+  return urlRepresentation;
 }
 
 - (PKFlight)flight
 {
-  v2 = [(PKProtobufFlightShareMessage *)self->_protoMessage flightDataString];
-  v3 = [v2 pk_decodeHexadecimal];
+  flightDataString = [(PKProtobufFlightShareMessage *)self->_protoMessage flightDataString];
+  pk_decodeHexadecimal = [flightDataString pk_decodeHexadecimal];
 
-  v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:0];
+  v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:pk_decodeHexadecimal error:0];
 
   return v4;
 }
 
-- (void)setFlight:(id)a3
+- (void)setFlight:(id)flight
 {
-  v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
-  v4 = [v5 hexEncoding];
-  [(PKProtobufFlightShareMessage *)self->_protoMessage setFlightDataString:v4];
+  v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:flight requiringSecureCoding:1 error:0];
+  hexEncoding = [v5 hexEncoding];
+  [(PKProtobufFlightShareMessage *)self->_protoMessage setFlightDataString:hexEncoding];
 }
 
 - (UIImage)logoImage
 {
-  v2 = [(PKProtobufFlightShareMessage *)self->_protoMessage logoImage];
-  v3 = v2;
-  if (v2 && (v4 = PKCreateCGImage(v2)) != 0)
+  logoImage = [(PKProtobufFlightShareMessage *)self->_protoMessage logoImage];
+  v3 = logoImage;
+  if (logoImage && (v4 = PKCreateCGImage(logoImage)) != 0)
   {
     v5 = v4;
     v6 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:v4];
@@ -109,19 +109,19 @@
   return v6;
 }
 
-- (void)setLogoImage:(id)a3
+- (void)setLogoImage:(id)image
 {
   protoMessage = self->_protoMessage;
-  v4 = UIImagePNGRepresentation(a3);
+  v4 = UIImagePNGRepresentation(image);
   [(PKProtobufFlightShareMessage *)protoMessage setLogoImage:v4];
 }
 
 - (PKColor)foregroundColor
 {
-  v2 = [(PKProtobufFlightShareMessage *)self->_protoMessage foregroundColor];
-  if (v2)
+  foregroundColor = [(PKProtobufFlightShareMessage *)self->_protoMessage foregroundColor];
+  if (foregroundColor)
   {
-    v3 = [MEMORY[0x1E69B8710] colorFromString:v2];
+    v3 = [MEMORY[0x1E69B8710] colorFromString:foregroundColor];
   }
 
   else
@@ -132,19 +132,19 @@
   return v3;
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
   protoMessage = self->_protoMessage;
-  v4 = [a3 string];
-  [(PKProtobufFlightShareMessage *)protoMessage setForegroundColor:v4];
+  string = [color string];
+  [(PKProtobufFlightShareMessage *)protoMessage setForegroundColor:string];
 }
 
 - (PKColor)backgroundColor
 {
-  v2 = [(PKProtobufFlightShareMessage *)self->_protoMessage backgroundColor];
-  if (v2)
+  backgroundColor = [(PKProtobufFlightShareMessage *)self->_protoMessage backgroundColor];
+  if (backgroundColor)
   {
-    v3 = [MEMORY[0x1E69B8710] colorFromString:v2];
+    v3 = [MEMORY[0x1E69B8710] colorFromString:backgroundColor];
   }
 
   else
@@ -155,18 +155,18 @@
   return v3;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   protoMessage = self->_protoMessage;
-  v4 = [a3 string];
-  [(PKProtobufFlightShareMessage *)protoMessage setBackgroundColor:v4];
+  string = [color string];
+  [(PKProtobufFlightShareMessage *)protoMessage setBackgroundColor:string];
 }
 
-- (id)_flightShareMessageDataURLWithData:(id)a3
+- (id)_flightShareMessageDataURLWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = [a3 base64EncodedStringWithOptions:0];
+    v3 = [data base64EncodedStringWithOptions:0];
     if (v3)
     {
       v4 = [PKFlightShareMessageAbsoluteDataURLPrefix stringByAppendingString:v3];
@@ -187,21 +187,21 @@
   return v5;
 }
 
-- (id)_flightShareMessageDataWithDataURL:(id)a3
+- (id)_flightShareMessageDataWithDataURL:(id)l
 {
-  if (!a3)
+  if (!l)
   {
     v7 = 0;
     goto LABEL_10;
   }
 
-  v3 = a3;
-  v4 = [v3 absoluteString];
-  v5 = [v3 scheme];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  scheme = [lCopy scheme];
 
-  if ([v5 isEqualToString:@"data"])
+  if ([scheme isEqualToString:@"data"])
   {
-    v6 = [v4 hasPrefix:PKFlightShareMessageAbsoluteDataURLPrefix];
+    v6 = [absoluteString hasPrefix:PKFlightShareMessageAbsoluteDataURLPrefix];
 
     if (!v6)
     {
@@ -209,8 +209,8 @@
       goto LABEL_9;
     }
 
-    v5 = [v4 substringFromIndex:{objc_msgSend(PKFlightShareMessageAbsoluteDataURLPrefix, "length")}];
-    v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v5 options:1];
+    scheme = [absoluteString substringFromIndex:{objc_msgSend(PKFlightShareMessageAbsoluteDataURLPrefix, "length")}];
+    v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:scheme options:1];
   }
 
   else

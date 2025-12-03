@@ -1,21 +1,21 @@
 @interface BWSmartCropWarpingNode
 + (void)initialize;
-- (int)_initRTSCProcessorWithOutputDimensions:(id)a3;
-- (int)_updateDetectedObjectsInfo:(id)a3;
+- (int)_initRTSCProcessorWithOutputDimensions:(id)dimensions;
+- (int)_updateDetectedObjectsInfo:(id)info;
 - (void)_updateOutputRequirements;
 - (void)dealloc;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)initWithHomographyProvider:(int)a3 aspectRatio:(uint64_t)a4 formatDimensions:(int)a5 maxLossyCompressionLevel:;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
+- (void)initWithHomographyProvider:(int)provider aspectRatio:(uint64_t)ratio formatDimensions:(int)dimensions maxLossyCompressionLevel:;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setActiveAspectRatio:(int)a3;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setActiveAspectRatio:(int)ratio;
 @end
 
 @implementation BWSmartCropWarpingNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -44,9 +44,9 @@
   }
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  if ([a5 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
 
     [(BWSmartCropWarpingNode *)self _updateOutputRequirements];
@@ -56,18 +56,18 @@
   {
     v9.receiver = self;
     v9.super_class = BWSmartCropWarpingNode;
-    [(BWNode *)&v9 didSelectFormat:a3 forInput:a4 forAttachedMediaKey:a5];
+    [(BWNode *)&v9 didSelectFormat:format forInput:input forAttachedMediaKey:key];
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   v22 = 0;
   v23 = 0;
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  v6 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v6 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   memset(&v21, 0, sizeof(v21));
-  CMSampleBufferGetPresentationTimeStamp(&v21, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v21, buffer);
   v7 = *off_1E798A420;
   if ([v6 objectForKeyedSubscript:*off_1E798A420])
   {
@@ -84,13 +84,13 @@
     goto LABEL_14;
   }
 
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   if (!ImageBuffer || (v11 = ImageBuffer, (v12 = [(BWPixelBufferPool *)[(BWNodeOutputMediaProperties *)[(BWNodeOutput *)self->super._output primaryMediaProperties] livePixelBufferPool] newPixelBuffer]) == 0))
   {
 
     v16 = 4294954510;
 LABEL_13:
-    v9 = [BWNodeError newError:v16 sourceNode:self stillImageSettings:CMGetAttachment(a3 metadata:@"StillSettings", 0), v6];
+    v9 = [BWNodeError newError:v16 sourceNode:self stillImageSettings:CMGetAttachment(buffer metadata:@"StillSettings", 0), v6];
     [(BWNodeOutput *)self->super._output emitNodeError:v9];
 LABEL_14:
 
@@ -107,20 +107,20 @@ LABEL_14:
   [(RTSCProcessor *)self->_rtscProcessor setInputPTS:&v18];
   [(RTSCProcessor *)self->_rtscProcessor setInputMetadata:v6];
   [(RTSCProcessor *)self->_rtscProcessor setOutputPixelBuffer:v13];
-  v14 = [(RTSCProcessor *)self->_rtscProcessor process];
-  if (v14 || (v14 = [(RTSCProcessor *)self->_rtscProcessor finishProcessing], v14))
+  process = [(RTSCProcessor *)self->_rtscProcessor process];
+  if (process || (process = [(RTSCProcessor *)self->_rtscProcessor finishProcessing], process))
   {
-    v16 = v14;
+    v16 = process;
   }
 
   else
   {
     FigCaptureMetadataUtilitiesPreventFurtherCropping(v6, v15);
     [(BWSmartCropWarpingNode *)self _updateDetectedObjectsInfo:v6];
-    v16 = BWCMSampleBufferCreateCopyWithNewPixelBuffer(a3, v13, &v22, &v23);
+    v16 = BWCMSampleBufferCreateCopyWithNewPixelBuffer(buffer, v13, &v22, &v23);
     if (v23)
     {
-      v17 = CMSampleBufferGetImageBuffer(a3);
+      v17 = CMSampleBufferGetImageBuffer(buffer);
       CVBufferPropagateAttachments(v17, v13);
       [(BWNodeOutput *)self->super._output emitSampleBuffer:v23];
     }
@@ -172,32 +172,32 @@ uint64_t __53__BWSmartCropWarpingNode__updateDetectedObjectsInfo___block_invoke(
   return result;
 }
 
-- (void)setActiveAspectRatio:(int)a3
+- (void)setActiveAspectRatio:(int)ratio
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  self->_activeAspectRatio = a3;
+  self->_activeAspectRatio = ratio;
   [(BWSmartCropWarpingNode *)self _updateOutputRequirements];
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)initWithHomographyProvider:(int)a3 aspectRatio:(uint64_t)a4 formatDimensions:(int)a5 maxLossyCompressionLevel:
+- (void)initWithHomographyProvider:(int)provider aspectRatio:(uint64_t)ratio formatDimensions:(int)dimensions maxLossyCompressionLevel:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = BWSmartCropWarpingNode;
   v9 = objc_msgSendSuper2(&v16, sel_init);
   if (v9)
   {
     v9[16] = a2;
-    *(v9 + 36) = a3;
-    *(v9 + 148) = a4;
+    *(v9 + 36) = provider;
+    *(v9 + 148) = ratio;
     v10 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v9];
-    v11 = FigCapturePixelFormatsByAddingCompressedVariants(&unk_1F22482C8, a5);
+    v11 = FigCapturePixelFormatsByAddingCompressedVariants(&unk_1F22482C8, dimensions);
     v12 = objc_alloc_init(BWVideoFormatRequirements);
     [(BWVideoFormatRequirements *)v12 setSupportedPixelFormats:v11];
     [(BWNodeInput *)v10 setFormatRequirements:v12];
@@ -217,7 +217,7 @@ uint64_t __53__BWSmartCropWarpingNode__updateDetectedObjectsInfo___block_invoke(
   return v9;
 }
 
-- (int)_initRTSCProcessorWithOutputDimensions:(id)a3
+- (int)_initRTSCProcessorWithOutputDimensions:(id)dimensions
 {
   v4 = BWLoadProcessorBundle(@"RTSC", 1);
   if (!v4)
@@ -240,10 +240,10 @@ uint64_t __53__BWSmartCropWarpingNode__updateDetectedObjectsInfo___block_invoke(
     return -12786;
   }
 
-  v8 = [(RTSCProcessor *)v7 setup];
-  if (v8 || (v8 = [(RTSCProcessor *)self->_rtscProcessor prewarm]) != 0)
+  setup = [(RTSCProcessor *)v7 setup];
+  if (setup || (setup = [(RTSCProcessor *)self->_rtscProcessor prewarm]) != 0)
   {
-    v9 = v8;
+    v9 = setup;
     OUTLINED_FUNCTION_0_8();
 LABEL_12:
     FigDebugAssert3();
@@ -260,15 +260,15 @@ LABEL_12:
   return v9;
 }
 
-- (int)_updateDetectedObjectsInfo:(id)a3
+- (int)_updateDetectedObjectsInfo:(id)info
 {
   v40 = MEMORY[0x1E69E9820];
   v41 = 3221225472;
   v42 = __53__BWSmartCropWarpingNode__updateDetectedObjectsInfo___block_invoke;
   v43 = &unk_1E7990608;
-  v44 = self;
+  selfCopy = self;
   v4 = *off_1E798B220;
-  v5 = [a3 objectForKeyedSubscript:*off_1E798B220];
+  v5 = [info objectForKeyedSubscript:*off_1E798B220];
   if (v5)
   {
     DeepCopy = CFPropertyListCreateDeepCopy(*MEMORY[0x1E695E480], v5, 1uLL);
@@ -276,7 +276,7 @@ LABEL_12:
     {
       v7 = DeepCopy;
       v23 = v4;
-      v24 = a3;
+      infoCopy = info;
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
@@ -347,7 +347,7 @@ LABEL_12:
         while (v28);
       }
 
-      [v24 setObject:v7 forKeyedSubscript:v23];
+      [infoCopy setObject:v7 forKeyedSubscript:v23];
       CFRelease(v7);
       LODWORD(v5) = 0;
     }

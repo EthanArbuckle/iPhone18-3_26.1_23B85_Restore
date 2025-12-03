@@ -1,22 +1,22 @@
 @interface GKExtensionRemoteViewController
 + (id)initialItemsForExtension;
-+ (void)setupCallbackBlocksForExtension:(id)a3 withParentViewController:(id)a4;
-+ (void)viewControllerForExtension:(id)a3 inputItems:(id)a4 completionHandler:(id)a5;
++ (void)setupCallbackBlocksForExtension:(id)extension withParentViewController:(id)controller;
++ (void)viewControllerForExtension:(id)extension inputItems:(id)items completionHandler:(id)handler;
 - (GKExtensionRemoteViewController)init;
 - (id)extensionObjectProxy;
 - (void)cancelExtension;
 - (void)dealloc;
 - (void)extensionIsCanceling;
 - (void)extensionIsFinishing;
-- (void)hostApp:(id)a3 grantingAccessExtensionSandbox:(id)a4 replyWithEndpoint:(id)a5;
-- (void)messageFromClient:(id)a3;
-- (void)messageFromExtension:(id)a3;
-- (void)sendMessageToExtension:(id)a3;
-- (void)setInitialState:(id)a3 withReply:(id)a4;
-- (void)tearDownExtensionWithReply:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)hostApp:(id)app grantingAccessExtensionSandbox:(id)sandbox replyWithEndpoint:(id)endpoint;
+- (void)messageFromClient:(id)client;
+- (void)messageFromExtension:(id)extension;
+- (void)sendMessageToExtension:(id)extension;
+- (void)setInitialState:(id)state withReply:(id)reply;
+- (void)tearDownExtensionWithReply:(id)reply;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation GKExtensionRemoteViewController
@@ -28,14 +28,14 @@
   v2 = [(GKExtensionRemoteViewController *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v4 == 1 && (*MEMORY[0x277D0C258] != 1 || (*MEMORY[0x277D0C8F0] & 1) != 0))
+    if (userInterfaceIdiom == 1 && (*MEMORY[0x277D0C258] != 1 || (*MEMORY[0x277D0C8F0] & 1) != 0))
     {
       [(GKExtensionRemoteViewController *)v2 setModalPresentationStyle:16];
-      v5 = [MEMORY[0x277D0C8C8] sharedTheme];
-      [v5 formSheetSize];
+      mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+      [mEMORY[0x277D0C8C8] formSheetSize];
       [(GKExtensionRemoteViewController *)v2 setPreferredContentSize:?];
     }
 
@@ -50,25 +50,25 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D0C8C8] sharedTheme];
-  [v3 clearResourceCache];
+  mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+  [mEMORY[0x277D0C8C8] clearResourceCache];
 
   v4.receiver = self;
   v4.super_class = GKExtensionRemoteViewController;
   [(GKExtensionRemoteViewController *)&v4 dealloc];
 }
 
-+ (void)setupCallbackBlocksForExtension:(id)a3 withParentViewController:(id)a4
++ (void)setupCallbackBlocksForExtension:(id)extension withParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
-  objc_initWeak(&location, v6);
+  extensionCopy = extension;
+  controllerCopy = controller;
+  objc_initWeak(&location, controllerCopy);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __92__GKExtensionRemoteViewController_setupCallbackBlocksForExtension_withParentViewController___block_invoke;
   v7[3] = &unk_27966C308;
   objc_copyWeak(&v8, &location);
-  [v5 setRequestInterruptionBlock:v7];
+  [extensionCopy setRequestInterruptionBlock:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
@@ -108,13 +108,13 @@ void __92__GKExtensionRemoteViewController_setupCallbackBlocksForExtension_withP
   }
 }
 
-+ (void)viewControllerForExtension:(id)a3 inputItems:(id)a4 completionHandler:(id)a5
++ (void)viewControllerForExtension:(id)extension inputItems:(id)items completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7)
+  extensionCopy = extension;
+  itemsCopy = items;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (extensionCopy)
   {
     v15[0] = 0;
     v15[1] = v15;
@@ -125,20 +125,20 @@ void __92__GKExtensionRemoteViewController_setupCallbackBlocksForExtension_withP
     v11[2] = __91__GKExtensionRemoteViewController_viewControllerForExtension_inputItems_completionHandler___block_invoke_2;
     v11[3] = &unk_27966C358;
     v14 = v15;
-    v12 = v7;
+    v12 = extensionCopy;
     v13 = v10;
-    [v12 instantiateViewControllerWithInputItems:v8 connectionHandler:v11];
+    [v12 instantiateViewControllerWithInputItems:itemsCopy connectionHandler:v11];
 
     _Block_object_dispose(v15, 8);
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __91__GKExtensionRemoteViewController_viewControllerForExtension_inputItems_completionHandler___block_invoke;
     block[3] = &unk_27966A4A8;
-    v17 = v9;
+    v17 = handlerCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -243,26 +243,26 @@ void __91__GKExtensionRemoteViewController_viewControllerForExtension_inputItems
   v14[6] = *MEMORY[0x277D85DE8];
   v13[0] = @"StatusBarHeightKey";
   v2 = MEMORY[0x277CCABB0];
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  [v3 statusBarHeight];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] statusBarHeight];
   v4 = [v2 numberWithDouble:?];
   v14[0] = v4;
   v13[1] = @"HostPIDKey";
   v5 = [MEMORY[0x277CCABB0] numberWithInt:getpid()];
   v14[1] = v5;
   v13[2] = @"currentGame";
-  v6 = [MEMORY[0x277D0C048] currentGame];
-  v14[2] = v6;
+  currentGame = [MEMORY[0x277D0C048] currentGame];
+  v14[2] = currentGame;
   v13[3] = @"localPlayer";
-  v7 = [MEMORY[0x277D0C138] localPlayer];
-  v14[3] = v7;
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
+  v14[3] = localPlayer;
   v13[4] = @"RTLKey";
   v8 = [MEMORY[0x277CCABB0] numberWithBool:GKShouldLayoutRTL()];
   v14[4] = v8;
   v13[5] = @"LocalizationsKey";
-  v9 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = [v9 preferredLocalizations];
-  v14[5] = v10;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  preferredLocalizations = [mainBundle preferredLocalizations];
+  v14[5] = preferredLocalizations;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:6];
 
   return v11;
@@ -273,60 +273,60 @@ void __91__GKExtensionRemoteViewController_viewControllerForExtension_inputItems
   v5.receiver = self;
   v5.super_class = GKExtensionRemoteViewController;
   [(GKExtensionRemoteViewController *)&v5 viewDidLoad];
-  v3 = [(GKExtensionRemoteViewController *)self view];
-  [v3 setBackgroundColor:0];
+  view = [(GKExtensionRemoteViewController *)self view];
+  [view setBackgroundColor:0];
 
-  v4 = [(GKExtensionRemoteViewController *)self view];
-  [v4 setOpaque:0];
+  view2 = [(GKExtensionRemoteViewController *)self view];
+  [view2 setOpaque:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D0C138] local];
-  [v5 hideAccessPoint];
+  appearCopy = appear;
+  local = [MEMORY[0x277D0C138] local];
+  [local hideAccessPoint];
 
   v9.receiver = self;
   v9.super_class = GKExtensionRemoteViewController;
-  [(_UIRemoteViewController *)&v9 viewWillAppear:v3];
-  v6 = [MEMORY[0x277D0C8D0] shared];
-  [v6 setIsShowingRemoteUI:1];
+  [(_UIRemoteViewController *)&v9 viewWillAppear:appearCopy];
+  mEMORY[0x277D0C8D0] = [MEMORY[0x277D0C8D0] shared];
+  [mEMORY[0x277D0C8D0] setIsShowingRemoteUI:1];
 
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v8 != 1 || *MEMORY[0x277D0C258] == 1 && (*MEMORY[0x277D0C8F0] & 1) == 0)
+  if (userInterfaceIdiom != 1 || *MEMORY[0x277D0C258] == 1 && (*MEMORY[0x277D0C8F0] & 1) == 0)
   {
-    [(UIViewController *)self _gkSaveStatusBarStyleAnimated:v3 setToStyle:[(GKExtensionRemoteViewController *)self _desiredStatusBarStyle]];
+    [(UIViewController *)self _gkSaveStatusBarStyleAnimated:appearCopy setToStyle:[(GKExtensionRemoteViewController *)self _desiredStatusBarStyle]];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = GKExtensionRemoteViewController;
   [(_UIRemoteViewController *)&v7 viewDidDisappear:?];
-  v5 = [MEMORY[0x277D0C8D0] shared];
-  [v5 setIsShowingRemoteUI:0];
+  mEMORY[0x277D0C8D0] = [MEMORY[0x277D0C8D0] shared];
+  [mEMORY[0x277D0C8D0] setIsShowingRemoteUI:0];
 
-  [(UIViewController *)self _gkRestoreStatusBarStyle:v3];
-  v6 = [MEMORY[0x277D0C138] local];
-  [v6 showAccessPoint];
+  [(UIViewController *)self _gkRestoreStatusBarStyle:disappearCopy];
+  local = [MEMORY[0x277D0C138] local];
+  [local showAccessPoint];
 }
 
 - (void)cancelExtension
 {
-  v4 = [(GKExtensionRemoteViewController *)self extension];
-  v3 = [(GKExtensionRemoteViewController *)self requestIdentifier];
-  [v4 cancelExtensionRequestWithIdentifier:v3];
+  extension = [(GKExtensionRemoteViewController *)self extension];
+  requestIdentifier = [(GKExtensionRemoteViewController *)self requestIdentifier];
+  [extension cancelExtensionRequestWithIdentifier:requestIdentifier];
 }
 
-- (void)sendMessageToExtension:(id)a3
+- (void)sendMessageToExtension:(id)extension
 {
-  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
-  v4 = [(GKExtensionRemoteViewController *)self extensionObjectProxy];
-  [v4 messageFromClient:v5];
+  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:extension requiringSecureCoding:1 error:0];
+  extensionObjectProxy = [(GKExtensionRemoteViewController *)self extensionObjectProxy];
+  [extensionObjectProxy messageFromClient:v5];
 }
 
 - (void)extensionIsCanceling
@@ -334,8 +334,8 @@ void __91__GKExtensionRemoteViewController_viewControllerForExtension_inputItems
   v6[1] = *MEMORY[0x277D85DE8];
   if ([objc_opt_class() dismissAutomaticallyAfterExtensionCompletion])
   {
-    v3 = [(GKExtensionRemoteViewController *)self presentingViewController];
-    [v3 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(GKExtensionRemoteViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 
   v5 = @"MessageCommandKey";
@@ -349,8 +349,8 @@ void __91__GKExtensionRemoteViewController_viewControllerForExtension_inputItems
   v6[1] = *MEMORY[0x277D85DE8];
   if ([objc_opt_class() dismissAutomaticallyAfterExtensionCompletion])
   {
-    v3 = [(GKExtensionRemoteViewController *)self presentingViewController];
-    [v3 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(GKExtensionRemoteViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 
   v5 = @"MessageCommandKey";
@@ -361,12 +361,12 @@ void __91__GKExtensionRemoteViewController_viewControllerForExtension_inputItems
 
 - (id)extensionObjectProxy
 {
-  v3 = [(GKExtensionRemoteViewController *)self extension];
-  v4 = [(GKExtensionRemoteViewController *)self requestIdentifier];
-  v5 = [v3 _extensionContextForUUID:v4];
+  extension = [(GKExtensionRemoteViewController *)self extension];
+  requestIdentifier = [(GKExtensionRemoteViewController *)self requestIdentifier];
+  v5 = [extension _extensionContextForUUID:requestIdentifier];
 
-  v6 = [v5 _auxiliaryConnection];
-  v7 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_30];
+  _auxiliaryConnection = [v5 _auxiliaryConnection];
+  v7 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_30];
 
   return v7;
 }
@@ -386,52 +386,52 @@ void __55__GKExtensionRemoteViewController_extensionObjectProxy__block_invoke(ui
   }
 }
 
-- (void)messageFromClient:(id)a3
+- (void)messageFromClient:(id)client
 {
-  v4 = a3;
-  v5 = [(GKExtensionRemoteViewController *)self extensionObjectProxy];
-  [v5 messageFromClient:v4];
+  clientCopy = client;
+  extensionObjectProxy = [(GKExtensionRemoteViewController *)self extensionObjectProxy];
+  [extensionObjectProxy messageFromClient:clientCopy];
 }
 
-- (void)setInitialState:(id)a3 withReply:(id)a4
+- (void)setInitialState:(id)state withReply:(id)reply
 {
-  v6 = a4;
-  v11 = [a3 mutableCopy];
+  replyCopy = reply;
+  v11 = [state mutableCopy];
   v7 = MEMORY[0x277CCABB0];
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v7 numberWithInteger:{objc_msgSend(v8, "userInterfaceIdiom")}];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v9 = [v7 numberWithInteger:{objc_msgSend(currentDevice, "userInterfaceIdiom")}];
   [v11 setObject:v9 forKeyedSubscript:@"HostUserInterfaceIdiom"];
 
-  v10 = [(GKExtensionRemoteViewController *)self extensionObjectProxy];
-  [v10 setInitialState:v11 withReply:v6];
+  extensionObjectProxy = [(GKExtensionRemoteViewController *)self extensionObjectProxy];
+  [extensionObjectProxy setInitialState:v11 withReply:replyCopy];
 }
 
-- (void)hostApp:(id)a3 grantingAccessExtensionSandbox:(id)a4 replyWithEndpoint:(id)a5
+- (void)hostApp:(id)app grantingAccessExtensionSandbox:(id)sandbox replyWithEndpoint:(id)endpoint
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(GKExtensionRemoteViewController *)self extensionObjectProxy];
-  [v11 hostApp:v10 grantingAccessExtensionSandbox:v9 replyWithEndpoint:v8];
+  endpointCopy = endpoint;
+  sandboxCopy = sandbox;
+  appCopy = app;
+  extensionObjectProxy = [(GKExtensionRemoteViewController *)self extensionObjectProxy];
+  [extensionObjectProxy hostApp:appCopy grantingAccessExtensionSandbox:sandboxCopy replyWithEndpoint:endpointCopy];
 }
 
-- (void)tearDownExtensionWithReply:(id)a3
+- (void)tearDownExtensionWithReply:(id)reply
 {
-  v5 = a3;
-  v4 = [(GKExtensionRemoteViewController *)self extensionObjectProxy];
+  replyCopy = reply;
+  extensionObjectProxy = [(GKExtensionRemoteViewController *)self extensionObjectProxy];
   if (objc_opt_respondsToSelector())
   {
-    [v4 tearDownExtensionWithReply:v5];
+    [extensionObjectProxy tearDownExtensionWithReply:replyCopy];
   }
 }
 
-- (void)messageFromExtension:(id)a3
+- (void)messageFromExtension:(id)extension
 {
   v4 = MEMORY[0x277CCAAC8];
-  v5 = a3;
+  extensionCopy = extension;
   v6 = GKExtensionProtocolSecureCodedClasses();
   v14 = 0;
-  v7 = [v4 unarchivedObjectOfClasses:v6 fromData:v5 error:&v14];
+  v7 = [v4 unarchivedObjectOfClasses:v6 fromData:extensionCopy error:&v14];
 
   v8 = v14;
   if (v8)
@@ -449,17 +449,17 @@ void __55__GKExtensionRemoteViewController_extensionObjectProxy__block_invoke(ui
   }
 
   v11 = [v7 objectForKeyedSubscript:@"MessageCommandKey"];
-  v12 = [v11 integerValue];
+  integerValue = [v11 integerValue];
 
-  if (v12 == 2)
+  if (integerValue == 2)
   {
     [(GKExtensionRemoteViewController *)self extensionIsFinishing];
   }
 
-  else if (v12 == 1)
+  else if (integerValue == 1)
   {
-    v13 = [MEMORY[0x277D0C138] localPlayer];
-    [v13 reportAuthenticationLoginCanceled];
+    localPlayer = [MEMORY[0x277D0C138] localPlayer];
+    [localPlayer reportAuthenticationLoginCanceled];
 
     [(GKExtensionRemoteViewController *)self extensionIsCanceling];
   }

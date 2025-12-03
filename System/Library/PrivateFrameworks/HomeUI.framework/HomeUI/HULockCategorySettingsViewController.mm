@@ -1,31 +1,31 @@
 @interface HULockCategorySettingsViewController
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HULockCategorySettingsViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4;
-- (HULockCategorySettingsViewController)initWithLockTopic:(id)a3 home:(id)a4;
-- (HULockCategorySettingsViewController)initWithLockTopic:(id)a3 pinCodeManager:(id)a4 home:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)configureCell:(id)a3 forItem:(id)a4;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HULockCategorySettingsViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout;
+- (HULockCategorySettingsViewController)initWithLockTopic:(id)topic home:(id)home;
+- (HULockCategorySettingsViewController)initWithLockTopic:(id)topic pinCodeManager:(id)manager home:(id)home;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)configureCell:(id)cell forItem:(id)item;
 @end
 
 @implementation HULockCategorySettingsViewController
 
-- (HULockCategorySettingsViewController)initWithLockTopic:(id)a3 home:(id)a4
+- (HULockCategorySettingsViewController)initWithLockTopic:(id)topic home:(id)home
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 serviceTypes];
-  v10 = [v9 containsObject:*MEMORY[0x277CD0EB0]];
+  topicCopy = topic;
+  homeCopy = home;
+  serviceTypes = [topicCopy serviceTypes];
+  v10 = [serviceTypes containsObject:*MEMORY[0x277CD0EB0]];
 
   if ((v10 & 1) == 0)
   {
     NSLog(&cfstr_ErrorThisViewC.isa);
   }
 
-  v11 = [[HULockCategorySettingsItemManager alloc] initWithDelegate:0 topic:v7 home:v8];
+  v11 = [[HULockCategorySettingsItemManager alloc] initWithDelegate:0 topic:topicCopy home:homeCopy];
 
   v12 = [objc_alloc(MEMORY[0x277D75290]) initWithAppearance:2];
-  v13 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-  [v12 setBackgroundColor:v13];
+  systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+  [v12 setBackgroundColor:systemGroupedBackgroundColor];
 
   [v12 setHeaderMode:1];
   [v12 setFooterMode:1];
@@ -39,21 +39,21 @@
     [(HULockCategorySettingsViewController *)v15 setTitle:v16];
 
     objc_storeStrong(&v15->_lockSettingsItemManager, v11);
-    objc_storeStrong(&v15->_topic, a3);
+    objc_storeStrong(&v15->_topic, topic);
   }
 
   return v15;
 }
 
-- (HULockCategorySettingsViewController)initWithLockTopic:(id)a3 pinCodeManager:(id)a4 home:(id)a5
+- (HULockCategorySettingsViewController)initWithLockTopic:(id)topic pinCodeManager:(id)manager home:(id)home
 {
-  v8 = a3;
-  v22 = a4;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[HULockCategorySettingsItemManager alloc] initWithDelegate:0 topic:v8 pinCodeManager:v9 home:v10];
-  v12 = [v8 serviceTypes];
-  v13 = [v12 containsObject:*MEMORY[0x277CD0EB0]];
+  topicCopy = topic;
+  managerCopy = manager;
+  managerCopy2 = manager;
+  homeCopy = home;
+  v11 = [[HULockCategorySettingsItemManager alloc] initWithDelegate:0 topic:topicCopy pinCodeManager:managerCopy2 home:homeCopy];
+  serviceTypes = [topicCopy serviceTypes];
+  v13 = [serviceTypes containsObject:*MEMORY[0x277CD0EB0]];
 
   if ((v13 & 1) == 0)
   {
@@ -61,8 +61,8 @@
   }
 
   v14 = [objc_alloc(MEMORY[0x277D75290]) initWithAppearance:2];
-  v15 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-  [v14 setBackgroundColor:v15];
+  systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+  [v14 setBackgroundColor:systemGroupedBackgroundColor];
 
   [v14 setHeaderMode:1];
   [v14 setFooterMode:1];
@@ -85,8 +85,8 @@
     [(HULockCategorySettingsViewController *)v18 setTitle:v19];
 
     objc_storeStrong(&v18->_lockSettingsItemManager, v11);
-    objc_storeStrong(&v18->_topic, a3);
-    objc_storeStrong(&v18->_pinCodeManager, v22);
+    objc_storeStrong(&v18->_topic, topic);
+    objc_storeStrong(&v18->_pinCodeManager, managerCopy);
   }
 
   objc_destroyWeak(&v26);
@@ -147,38 +147,38 @@ id __78__HULockCategorySettingsViewController_initWithLockTopic_pinCodeManager_h
   return v6;
 }
 
-- (HULockCategorySettingsViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4
+- (HULockCategorySettingsViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithLockTopic_home_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HULockCategorySettingsViewController.m" lineNumber:96 description:{@"%s is unavailable; use %@ instead", "-[HULockCategorySettingsViewController initWithItemManager:collectionViewLayout:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HULockCategorySettingsViewController.m" lineNumber:96 description:{@"%s is unavailable; use %@ instead", "-[HULockCategorySettingsViewController initWithItemManager:collectionViewLayout:]", v7}];
 
   return 0;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(HULockCategorySettingsViewController *)self lockSettingsItemManager];
-  v7 = [v6 userItemProvider];
-  v8 = [v7 items];
-  [v8 containsObject:v5];
+  itemCopy = item;
+  lockSettingsItemManager = [(HULockCategorySettingsViewController *)self lockSettingsItemManager];
+  userItemProvider = [lockSettingsItemManager userItemProvider];
+  items = [userItemProvider items];
+  [items containsObject:itemCopy];
 
   v9 = objc_opt_class();
 
   return v9;
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v43.receiver = self;
   v43.super_class = HULockCategorySettingsViewController;
-  [(HUItemCollectionViewController *)&v43 configureCell:v6 forItem:v7];
+  [(HUItemCollectionViewController *)&v43 configureCell:cellCopy forItem:itemCopy];
   objc_opt_class();
-  v8 = v6;
+  v8 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -191,16 +191,16 @@ id __78__HULockCategorySettingsViewController_initWithLockTopic_pinCodeManager_h
 
   v10 = v9;
 
-  v11 = [HUListContentConfigurationUtilities labelDefaultConfigurationForItem:v7];
+  v11 = [HUListContentConfigurationUtilities labelDefaultConfigurationForItem:itemCopy];
   v12 = objc_alloc_init(MEMORY[0x277D75258]);
   v44[0] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:1];
   [v10 setAccessories:v13];
 
-  v14 = [(HULockCategorySettingsViewController *)self lockSettingsItemManager];
-  v15 = [v14 userItemProvider];
-  v16 = [v15 items];
-  v17 = [v16 containsObject:v7];
+  lockSettingsItemManager = [(HULockCategorySettingsViewController *)self lockSettingsItemManager];
+  userItemProvider = [lockSettingsItemManager userItemProvider];
+  items = [userItemProvider items];
+  v17 = [items containsObject:itemCopy];
 
   if (v17)
   {
@@ -216,85 +216,85 @@ id __78__HULockCategorySettingsViewController_initWithLockTopic_pinCodeManager_h
       v19 = 0;
     }
 
-    v20 = v19;
+    imageProperties2 = v19;
 
-    [v20 setShowAccessLevelDescription:1];
-    v21 = [v7 latestResults];
-    v22 = [v21 objectForKeyedSubscript:*MEMORY[0x277D14120]];
+    [imageProperties2 setShowAccessLevelDescription:1];
+    latestResults = [itemCopy latestResults];
+    v22 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14120]];
 
     if (v22)
     {
-      [v20 setUserHandle:v22];
+      [imageProperties2 setUserHandle:v22];
     }
 
     goto LABEL_13;
   }
 
-  v23 = [(HULockCategorySettingsViewController *)self lockSettingsItemManager];
-  v24 = [v23 guestsItem];
-  v25 = [v7 isEqual:v24];
+  lockSettingsItemManager2 = [(HULockCategorySettingsViewController *)self lockSettingsItemManager];
+  guestsItem = [lockSettingsItemManager2 guestsItem];
+  v25 = [itemCopy isEqual:guestsItem];
 
   if (v25)
   {
-    v26 = [v7 latestResults];
-    v27 = [v26 objectForKeyedSubscript:*MEMORY[0x277D13E98]];
+    latestResults2 = [itemCopy latestResults];
+    v27 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13E98]];
     [v11 setImage:v27];
 
-    v28 = [MEMORY[0x277D75348] systemGrayColor];
-    v29 = [v11 imageProperties];
-    [v29 setTintColor:v28];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    imageProperties = [v11 imageProperties];
+    [imageProperties setTintColor:systemGrayColor];
 
     v30 = *MEMORY[0x277D76C88];
-    v20 = [v11 imageProperties];
-    [v20 setReservedLayoutSize:{37.0, v30}];
+    imageProperties2 = [v11 imageProperties];
+    [imageProperties2 setReservedLayoutSize:{37.0, v30}];
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v33 = [(HULockCategorySettingsViewController *)self lockSettingsItemManager];
-  v34 = [v33 lockServiceItemProvider];
-  v35 = [v34 items];
-  v36 = [v35 containsObject:v7];
+  lockSettingsItemManager3 = [(HULockCategorySettingsViewController *)self lockSettingsItemManager];
+  lockServiceItemProvider = [lockSettingsItemManager3 lockServiceItemProvider];
+  items2 = [lockServiceItemProvider items];
+  v36 = [items2 containsObject:itemCopy];
 
   if (v36)
   {
     v37 = [MEMORY[0x277D755B8] systemImageNamed:@"lock.fill"];
     [v11 setImage:v37];
 
-    v38 = [MEMORY[0x277D14378] securityAccessoryTypeGroup];
-    v39 = [v38 hu_tintColor];
-    v40 = [v11 imageProperties];
-    [v40 setTintColor:v39];
+    securityAccessoryTypeGroup = [MEMORY[0x277D14378] securityAccessoryTypeGroup];
+    hu_tintColor = [securityAccessoryTypeGroup hu_tintColor];
+    imageProperties3 = [v11 imageProperties];
+    [imageProperties3 setTintColor:hu_tintColor];
 
     v41 = [MEMORY[0x277D755D0] configurationWithPointSize:26.0];
-    v42 = [v11 imageProperties];
-    [v42 setPreferredSymbolConfiguration:v41];
+    imageProperties4 = [v11 imageProperties];
+    [imageProperties4 setPreferredSymbolConfiguration:v41];
 
     [v11 setSecondaryText:0];
   }
 
 LABEL_14:
   [v10 setContentConfiguration:v11];
-  v31 = [v7 latestResults];
-  v32 = [v31 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+  latestResults3 = [itemCopy latestResults];
+  v32 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
   [v10 setAccessibilityIdentifier:v32];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v47.receiver = self;
   v47.super_class = HULockCategorySettingsViewController;
-  [(HUItemCollectionViewController *)&v47 collectionView:v6 didSelectItemAtIndexPath:v7];
-  v8 = [(HUItemCollectionViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  [(HUItemCollectionViewController *)&v47 collectionView:viewCopy didSelectItemAtIndexPath:pathCopy];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
-  v10 = [(HULockCategorySettingsViewController *)self lockSettingsItemManager];
-  v11 = [v10 userItemProvider];
-  v12 = [v11 items];
-  v13 = [v12 containsObject:v9];
+  lockSettingsItemManager = [(HULockCategorySettingsViewController *)self lockSettingsItemManager];
+  userItemProvider = [lockSettingsItemManager userItemProvider];
+  items = [userItemProvider items];
+  v13 = [items containsObject:v9];
 
   if (v13)
   {
@@ -312,25 +312,25 @@ LABEL_14:
 
     v16 = v15;
 
-    v17 = [v16 user];
-    v18 = [(HUItemCollectionViewController *)self itemManager];
-    v19 = [v18 home];
+    user = [v16 user];
+    itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+    home = [itemManager2 home];
 
     objc_initWeak(&location, self);
-    v20 = [(HULockCategorySettingsViewController *)self pinCodeManager];
-    v21 = [v20 userPinCodes];
+    pinCodeManager = [(HULockCategorySettingsViewController *)self pinCodeManager];
+    userPinCodes = [pinCodeManager userPinCodes];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __80__HULockCategorySettingsViewController_collectionView_didSelectItemAtIndexPath___block_invoke;
     v41[3] = &unk_277DBC550;
     objc_copyWeak(&v45, &location);
-    v22 = v17;
-    v42 = v22;
+    navigationController = user;
+    v42 = navigationController;
     v23 = v16;
     v43 = v23;
-    v24 = v19;
+    v24 = home;
     v44 = v24;
-    v25 = [v21 addSuccessBlock:v41];
+    v25 = [userPinCodes addSuccessBlock:v41];
 
     objc_destroyWeak(&v45);
     objc_destroyWeak(&location);
@@ -338,28 +338,28 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v26 = [(HULockCategorySettingsViewController *)self lockSettingsItemManager];
-  v27 = [v26 guestsItem];
-  v28 = [v9 isEqual:v27];
+  lockSettingsItemManager2 = [(HULockCategorySettingsViewController *)self lockSettingsItemManager];
+  guestsItem = [lockSettingsItemManager2 guestsItem];
+  v28 = [v9 isEqual:guestsItem];
 
   if (v28)
   {
     v29 = [HUGuestsPinCodesViewController alloc];
-    v30 = [(HULockCategorySettingsViewController *)self pinCodeManager];
-    v23 = [(HUGuestsPinCodesViewController *)v29 initWithPinCodeManager:v30 settingsContext:1];
+    pinCodeManager2 = [(HULockCategorySettingsViewController *)self pinCodeManager];
+    v23 = [(HUGuestsPinCodesViewController *)v29 initWithPinCodeManager:pinCodeManager2 settingsContext:1];
 LABEL_13:
 
-    v22 = [(HULockCategorySettingsViewController *)self navigationController];
-    v39 = [v22 hu_pushPreloadableViewController:v23 animated:1];
+    navigationController = [(HULockCategorySettingsViewController *)self navigationController];
+    v39 = [navigationController hu_pushPreloadableViewController:v23 animated:1];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v31 = [(HULockCategorySettingsViewController *)self lockSettingsItemManager];
-  v32 = [v31 lockServiceItemProvider];
-  v33 = [v32 items];
-  v34 = [v33 containsObject:v9];
+  lockSettingsItemManager3 = [(HULockCategorySettingsViewController *)self lockSettingsItemManager];
+  lockServiceItemProvider = [lockSettingsItemManager3 lockServiceItemProvider];
+  items2 = [lockServiceItemProvider items];
+  v34 = [items2 containsObject:v9];
 
   if (v34)
   {
@@ -377,14 +377,14 @@ LABEL_14:
 
     v38 = v37;
 
-    v30 = [(HULockCategorySettingsViewController *)self navigationController];
-    v23 = [HUAccessoryDetailsRouter detailsViewFor:v38 navigationController:v30 dismiss:0];
+    pinCodeManager2 = [(HULockCategorySettingsViewController *)self navigationController];
+    v23 = [HUAccessoryDetailsRouter detailsViewFor:v38 navigationController:pinCodeManager2 dismiss:0];
 
     goto LABEL_13;
   }
 
 LABEL_15:
-  v40 = [v6 cellForItemAtIndexPath:v7];
+  v40 = [viewCopy cellForItemAtIndexPath:pathCopy];
   [v40 setHighlighted:0];
 }
 

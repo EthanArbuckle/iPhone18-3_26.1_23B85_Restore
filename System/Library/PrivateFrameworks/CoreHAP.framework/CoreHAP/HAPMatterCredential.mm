@@ -1,12 +1,12 @@
 @interface HAPMatterCredential
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPMatterCredential)init;
-- (HAPMatterCredential)initWithIssuerKey:(id)a3 readerKey:(id)a4 deviceCredentialKey:(id)a5;
+- (HAPMatterCredential)initWithIssuerKey:(id)key readerKey:(id)readerKey deviceCredentialKey:(id)credentialKey;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPMatterCredential
@@ -14,18 +14,18 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPMatterCredential *)self issuerKey];
-  v5 = [(HAPMatterCredential *)self readerKey];
-  v6 = [(HAPMatterCredential *)self deviceCredentialKey];
-  v7 = [v3 stringWithFormat:@"<HAPMatterCredential issuerKey=%@, readerKey=%@, deviceCredentialKey=%@>", v4, v5, v6];
+  issuerKey = [(HAPMatterCredential *)self issuerKey];
+  readerKey = [(HAPMatterCredential *)self readerKey];
+  deviceCredentialKey = [(HAPMatterCredential *)self deviceCredentialKey];
+  v7 = [v3 stringWithFormat:@"<HAPMatterCredential issuerKey=%@, readerKey=%@, deviceCredentialKey=%@>", issuerKey, readerKey, deviceCredentialKey];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -35,46 +35,46 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(HAPMatterCredential *)self issuerKey];
-      v9 = [(HAPMatterCredential *)v7 issuerKey];
-      if (v8 != v9)
+      v7 = equalCopy;
+      issuerKey = [(HAPMatterCredential *)self issuerKey];
+      issuerKey2 = [(HAPMatterCredential *)v7 issuerKey];
+      if (issuerKey != issuerKey2)
       {
-        v3 = [(HAPMatterCredential *)self issuerKey];
-        v4 = [(HAPMatterCredential *)v7 issuerKey];
-        if (![v3 isEqual:v4])
+        issuerKey3 = [(HAPMatterCredential *)self issuerKey];
+        issuerKey4 = [(HAPMatterCredential *)v7 issuerKey];
+        if (![issuerKey3 isEqual:issuerKey4])
         {
           v10 = 0;
           goto LABEL_19;
         }
       }
 
-      v11 = [(HAPMatterCredential *)self readerKey];
-      v12 = [(HAPMatterCredential *)v7 readerKey];
-      v13 = v12;
-      if (v11 == v12)
+      readerKey = [(HAPMatterCredential *)self readerKey];
+      readerKey2 = [(HAPMatterCredential *)v7 readerKey];
+      v13 = readerKey2;
+      if (readerKey == readerKey2)
       {
-        v28 = v12;
+        v28 = readerKey2;
       }
 
       else
       {
-        v14 = [(HAPMatterCredential *)self readerKey];
-        v27 = [(HAPMatterCredential *)v7 readerKey];
-        if (![v14 isEqual:?])
+        readerKey3 = [(HAPMatterCredential *)self readerKey];
+        readerKey4 = [(HAPMatterCredential *)v7 readerKey];
+        if (![readerKey3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_17;
         }
 
-        v26 = v14;
+        v26 = readerKey3;
         v28 = v13;
       }
 
-      v15 = [(HAPMatterCredential *)self deviceCredentialKey];
-      v16 = [(HAPMatterCredential *)v7 deviceCredentialKey];
-      v17 = v16;
-      if (v15 == v16)
+      deviceCredentialKey = [(HAPMatterCredential *)self deviceCredentialKey];
+      deviceCredentialKey2 = [(HAPMatterCredential *)v7 deviceCredentialKey];
+      v17 = deviceCredentialKey2;
+      if (deviceCredentialKey == deviceCredentialKey2)
       {
 
         v10 = 1;
@@ -83,29 +83,29 @@
       else
       {
         [(HAPMatterCredential *)self deviceCredentialKey];
-        v18 = v25 = v3;
+        v18 = v25 = issuerKey3;
         [(HAPMatterCredential *)v7 deviceCredentialKey];
-        v24 = v11;
-        v19 = v4;
-        v20 = v9;
-        v22 = v21 = v8;
+        v24 = readerKey;
+        v19 = issuerKey4;
+        v20 = issuerKey2;
+        v22 = v21 = issuerKey;
         v10 = [v18 isEqual:v22];
 
-        v8 = v21;
-        v9 = v20;
-        v4 = v19;
-        v11 = v24;
+        issuerKey = v21;
+        issuerKey2 = v20;
+        issuerKey4 = v19;
+        readerKey = v24;
 
-        v3 = v25;
+        issuerKey3 = v25;
       }
 
       v13 = v28;
-      v14 = v26;
-      if (v11 == v28)
+      readerKey3 = v26;
+      if (readerKey == v28)
       {
 LABEL_18:
 
-        if (v8 == v9)
+        if (issuerKey == issuerKey2)
         {
 LABEL_20:
 
@@ -130,18 +130,18 @@ LABEL_21:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPMatterCredential allocWithZone:a3];
-  v5 = [(HAPMatterCredential *)self issuerKey];
-  v6 = [(HAPMatterCredential *)self readerKey];
-  v7 = [(HAPMatterCredential *)self deviceCredentialKey];
-  v8 = [(HAPMatterCredential *)v4 initWithIssuerKey:v5 readerKey:v6 deviceCredentialKey:v7];
+  v4 = [HAPMatterCredential allocWithZone:zone];
+  issuerKey = [(HAPMatterCredential *)self issuerKey];
+  readerKey = [(HAPMatterCredential *)self readerKey];
+  deviceCredentialKey = [(HAPMatterCredential *)self deviceCredentialKey];
+  v8 = [(HAPMatterCredential *)v4 initWithIssuerKey:issuerKey readerKey:readerKey deviceCredentialKey:deviceCredentialKey];
 
   return v8;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
   v53 = 0u;
@@ -166,30 +166,30 @@ LABEL_21:
   v36 = 0u;
   v34 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPMatterCredential *)self issuerKey];
+  issuerKey = [(HAPMatterCredential *)self issuerKey];
 
-  if (v5)
+  if (issuerKey)
   {
-    v6 = [(HAPMatterCredential *)self issuerKey];
+    issuerKey2 = [(HAPMatterCredential *)self issuerKey];
     v33 = 0;
-    v7 = [v6 serializeWithError:&v33];
+    v7 = [issuerKey2 serializeWithError:&v33];
     v8 = v33;
 
     if (!v8)
     {
-      v9 = [v7 bytes];
-      v10 = v9 + [v7 length];
+      bytes = [v7 bytes];
+      v10 = bytes + [v7 length];
       while (1)
       {
-        v11 = (v10 - v9) >= 255 ? 255 : v10 - v9;
+        v11 = (v10 - bytes) >= 255 ? 255 : v10 - bytes;
         v12 = TLV8BufferAppend();
         if (v12)
         {
           goto LABEL_23;
         }
 
-        v9 += v11;
-        if (v9 >= v10)
+        bytes += v11;
+        if (bytes >= v10)
         {
 
           goto LABEL_10;
@@ -201,30 +201,30 @@ LABEL_21:
   }
 
 LABEL_10:
-  v13 = [(HAPMatterCredential *)self readerKey];
+  readerKey = [(HAPMatterCredential *)self readerKey];
 
-  if (v13)
+  if (readerKey)
   {
-    v14 = [(HAPMatterCredential *)self readerKey];
+    readerKey2 = [(HAPMatterCredential *)self readerKey];
     v32 = 0;
-    v7 = [v14 serializeWithError:&v32];
+    v7 = [readerKey2 serializeWithError:&v32];
     v8 = v32;
 
     if (!v8)
     {
-      v15 = [v7 bytes];
-      v16 = v15 + [v7 length];
+      bytes2 = [v7 bytes];
+      v16 = bytes2 + [v7 length];
       while (1)
       {
-        v17 = (v16 - v15) >= 255 ? 255 : v16 - v15;
+        v17 = (v16 - bytes2) >= 255 ? 255 : v16 - bytes2;
         v12 = TLV8BufferAppend();
         if (v12)
         {
           break;
         }
 
-        v15 += v17;
-        if (v15 >= v16)
+        bytes2 += v17;
+        if (bytes2 >= v16)
         {
 
           goto LABEL_19;
@@ -235,11 +235,11 @@ LABEL_23:
       v22 = v12;
 
 LABEL_24:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus(v22);
         v8 = 0;
-        *a3 = v21 = 0;
+        *error = v21 = 0;
         goto LABEL_42;
       }
 
@@ -249,11 +249,11 @@ LABEL_24:
 
 LABEL_21:
 
-    if (a3)
+    if (error)
     {
       v20 = v8;
       v21 = 0;
-      *a3 = v8;
+      *error = v8;
       goto LABEL_42;
     }
 
@@ -263,13 +263,13 @@ LABEL_27:
   }
 
 LABEL_19:
-  v18 = [(HAPMatterCredential *)self deviceCredentialKey];
+  deviceCredentialKey = [(HAPMatterCredential *)self deviceCredentialKey];
 
-  if (v18)
+  if (deviceCredentialKey)
   {
-    v19 = [(HAPMatterCredential *)self deviceCredentialKey];
+    deviceCredentialKey2 = [(HAPMatterCredential *)self deviceCredentialKey];
     v31 = 0;
-    v7 = [v19 serializeWithError:&v31];
+    v7 = [deviceCredentialKey2 serializeWithError:&v31];
     v8 = v31;
 
     if (v8)
@@ -277,18 +277,18 @@ LABEL_19:
       goto LABEL_21;
     }
 
-    v23 = [v7 bytes];
-    v24 = v23 + [v7 length];
+    bytes3 = [v7 bytes];
+    v24 = bytes3 + [v7 length];
     do
     {
-      if ((v24 - v23) >= 255)
+      if ((v24 - bytes3) >= 255)
       {
         v25 = 255;
       }
 
       else
       {
-        v25 = v24 - v23;
+        v25 = v24 - bytes3;
       }
 
       v26 = TLV8BufferAppend();
@@ -302,7 +302,7 @@ LABEL_19:
         v27 = v25;
       }
 
-      v23 += v27;
+      bytes3 += v27;
       if (v26)
       {
         v28 = 1;
@@ -310,7 +310,7 @@ LABEL_19:
 
       else
       {
-        v28 = v23 >= v24;
+        v28 = bytes3 >= v24;
       }
     }
 
@@ -333,11 +333,11 @@ LABEL_42:
   return v21;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v10 = 0;
@@ -356,7 +356,7 @@ LABEL_21:
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  v13 = v7 + v8;
+  v13 = bytes + v8;
   while (1)
   {
     v31 = 0;
@@ -366,10 +366,10 @@ LABEL_21:
     Next = TLV8GetNext();
     if (Next)
     {
-      if (a4)
+      if (error)
       {
         HMErrorFromOSStatus(Next);
-        *a4 = v19 = 0;
+        *error = v19 = 0;
         goto LABEL_28;
       }
 
@@ -385,7 +385,7 @@ LABEL_21:
     {
       case 3:
         v24 = v9;
-        v15 = HAPTLVParseContiguousTlvs(3, v7, v13, v29, &v24);
+        v15 = HAPTLVParseContiguousTlvs(3, bytes, v13, v29, &v24);
         v16 = v24;
 
         if (v16)
@@ -400,7 +400,7 @@ LABEL_21:
         goto LABEL_15;
       case 2:
         v26 = v9;
-        v15 = HAPTLVParseContiguousTlvs(2, v7, v13, v29, &v26);
+        v15 = HAPTLVParseContiguousTlvs(2, bytes, v13, v29, &v26);
         v16 = v26;
 
         if (v16)
@@ -418,7 +418,7 @@ LABEL_15:
         goto LABEL_16;
       case 1:
         v28 = v9;
-        v15 = HAPTLVParseContiguousTlvs(1, v7, v13, v29, &v28);
+        v15 = HAPTLVParseContiguousTlvs(1, bytes, v13, v29, &v28);
         v16 = v28;
 
         if (!v16)
@@ -437,7 +437,7 @@ LABEL_16:
         break;
     }
 
-    v7 = v29[0];
+    bytes = v29[0];
     if (v29[0] >= v13)
     {
       if (!v9)
@@ -458,11 +458,11 @@ LABEL_16:
   }
 
 LABEL_25:
-  if (a4)
+  if (error)
   {
     v21 = v9;
     v19 = 0;
-    *a4 = v9;
+    *error = v9;
     goto LABEL_28;
   }
 
@@ -473,20 +473,20 @@ LABEL_28:
   return v19;
 }
 
-- (HAPMatterCredential)initWithIssuerKey:(id)a3 readerKey:(id)a4 deviceCredentialKey:(id)a5
+- (HAPMatterCredential)initWithIssuerKey:(id)key readerKey:(id)readerKey deviceCredentialKey:(id)credentialKey
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  keyCopy = key;
+  readerKeyCopy = readerKey;
+  credentialKeyCopy = credentialKey;
   v15.receiver = self;
   v15.super_class = HAPMatterCredential;
   v12 = [(HAPMatterCredential *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_issuerKey, a3);
-    objc_storeStrong(&v13->_readerKey, a4);
-    objc_storeStrong(&v13->_deviceCredentialKey, a5);
+    objc_storeStrong(&v12->_issuerKey, key);
+    objc_storeStrong(&v13->_readerKey, readerKey);
+    objc_storeStrong(&v13->_deviceCredentialKey, credentialKey);
   }
 
   return v13;
@@ -499,24 +499,24 @@ LABEL_28:
   return [(HAPMatterCredential *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPMatterCredential);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPMatterCredential *)v6 parseFromData:v5 error:&v11];
+    [(HAPMatterCredential *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

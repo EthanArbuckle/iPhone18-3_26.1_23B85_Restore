@@ -1,20 +1,20 @@
 @interface REMRadarUtilities
-+ (void)createRadarWithTitle:(id)a3 description:(id)a4;
-+ (void)promptUserToFileBugWithAlertMessage:(id)a3 bugTitle:(id)a4 bugDescription:(id)a5;
++ (void)createRadarWithTitle:(id)title description:(id)description;
++ (void)promptUserToFileBugWithAlertMessage:(id)message bugTitle:(id)title bugDescription:(id)description;
 @end
 
 @implementation REMRadarUtilities
 
-+ (void)promptUserToFileBugWithAlertMessage:(id)a3 bugTitle:(id)a4 bugDescription:(id)a5
++ (void)promptUserToFileBugWithAlertMessage:(id)message bugTitle:(id)title bugDescription:(id)description
 {
   v25[5] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  titleCopy = title;
+  descriptionCopy = description;
   if (+[REMSystemUtilities isInternalInstall])
   {
-    v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v12 = [v11 BOOLForKey:@"DisableAssertAlert"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v12 = [standardUserDefaults BOOLForKey:@"DisableAssertAlert"];
 
     if (v12)
     {
@@ -31,9 +31,9 @@
       v24[0] = *MEMORY[0x1E695EE58];
       v24[1] = v14;
       v15 = &stru_1F0D67F00;
-      if (v8)
+      if (messageCopy)
       {
-        v15 = v8;
+        v15 = messageCopy;
       }
 
       v25[0] = @"Internal Reminders Bug";
@@ -51,9 +51,9 @@
       block[2] = __81__REMRadarUtilities_promptUserToFileBugWithAlertMessage_bugTitle_bugDescription___block_invoke;
       block[3] = &unk_1E7508FE0;
       v20 = v17;
-      v23 = a1;
-      v21 = v9;
-      v22 = v10;
+      selfCopy = self;
+      v21 = titleCopy;
+      v22 = descriptionCopy;
       v13 = v17;
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
@@ -115,46 +115,46 @@ void __81__REMRadarUtilities_promptUserToFileBugWithAlertMessage_bugTitle_bugDes
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)createRadarWithTitle:(id)a3 description:(id)a4
++ (void)createRadarWithTitle:(id)title description:(id)description
 {
-  v19 = a3;
+  titleCopy = title;
   v5 = MEMORY[0x1E696AF20];
-  v6 = a4;
+  descriptionCopy = description;
   v7 = objc_alloc_init(v5);
   [v7 setScheme:@"tap-to-radar"];
   [v7 setHost:@"new"];
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v9 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"ComponentName" value:@"Reminders"];
-  [v8 addObject:v9];
+  [array addObject:v9];
 
   v10 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"ComponentVersion" value:@"iOS"];
-  [v8 addObject:v10];
+  [array addObject:v10];
 
   v11 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"ComponentID" value:@"964249"];
-  [v8 addObject:v11];
+  [array addObject:v11];
 
   v12 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"AutoDiagnostics" value:@"phone"];
-  [v8 addObject:v12];
+  [array addObject:v12];
 
   v13 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Classification" value:@"Serious Bug"];
-  [v8 addObject:v13];
+  [array addObject:v13];
 
   v14 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Reproducibility" value:@"Not Applicable"];
-  [v8 addObject:v14];
+  [array addObject:v14];
 
-  if ([v19 length])
+  if ([titleCopy length])
   {
-    v15 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Title" value:v19];
-    [v8 addObject:v15];
+    v15 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Title" value:titleCopy];
+    [array addObject:v15];
   }
 
-  v16 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Description" value:v6];
+  v16 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Description" value:descriptionCopy];
 
-  [v8 addObject:v16];
-  [v7 setQueryItems:v8];
-  v17 = [MEMORY[0x1E6963608] defaultWorkspace];
+  [array addObject:v16];
+  [v7 setQueryItems:array];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v18 = [v7 URL];
-  [v17 openURL:v18 configuration:0 completionHandler:0];
+  [defaultWorkspace openURL:v18 configuration:0 completionHandler:0];
 }
 
 @end

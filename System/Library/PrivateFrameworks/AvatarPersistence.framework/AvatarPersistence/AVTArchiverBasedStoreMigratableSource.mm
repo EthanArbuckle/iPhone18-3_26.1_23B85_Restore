@@ -1,25 +1,25 @@
 @interface AVTArchiverBasedStoreMigratableSource
-- (AVTArchiverBasedStoreMigratableSource)initWithStoreLocation:(id)a3 environment:(id)a4;
-- (BOOL)finalizeMigration:(id *)a3;
+- (AVTArchiverBasedStoreMigratableSource)initWithStoreLocation:(id)location environment:(id)environment;
+- (BOOL)finalizeMigration:(id *)migration;
 - (BOOL)migrationNeeded;
 - (id)createSourceBackend;
-- (id)migratedRecordFromRecord:(id)a3 index:(unint64_t)a4 totalCount:(unint64_t)a5;
+- (id)migratedRecordFromRecord:(id)record index:(unint64_t)index totalCount:(unint64_t)count;
 @end
 
 @implementation AVTArchiverBasedStoreMigratableSource
 
-- (AVTArchiverBasedStoreMigratableSource)initWithStoreLocation:(id)a3 environment:(id)a4
+- (AVTArchiverBasedStoreMigratableSource)initWithStoreLocation:(id)location environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
+  locationCopy = location;
+  environmentCopy = environment;
   v12.receiver = self;
   v12.super_class = AVTArchiverBasedStoreMigratableSource;
   v9 = [(AVTArchiverBasedStoreMigratableSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_storeLocation, a3);
-    objc_storeStrong(&v10->_environment, a4);
+    objc_storeStrong(&v9->_storeLocation, location);
+    objc_storeStrong(&v10->_environment, environment);
   }
 
   return v10;
@@ -27,8 +27,8 @@
 
 - (BOOL)migrationNeeded
 {
-  v2 = [(AVTArchiverBasedStoreMigratableSource *)self storeLocation];
-  v3 = [AVTArchiverBasedStorePersistence contentExistsAtLocation:v2];
+  storeLocation = [(AVTArchiverBasedStoreMigratableSource *)self storeLocation];
+  v3 = [AVTArchiverBasedStorePersistence contentExistsAtLocation:storeLocation];
 
   return v3;
 }
@@ -36,35 +36,35 @@
 - (id)createSourceBackend
 {
   v3 = [AVTArchiverBasedStoreBackend alloc];
-  v4 = [(AVTArchiverBasedStoreMigratableSource *)self storeLocation];
-  v5 = [(AVTArchiverBasedStoreMigratableSource *)self environment];
-  v6 = [(AVTArchiverBasedStoreBackend *)v3 initWithStoreLocation:v4 domainIdentifier:&stru_285387388 environment:v5];
+  storeLocation = [(AVTArchiverBasedStoreMigratableSource *)self storeLocation];
+  environment = [(AVTArchiverBasedStoreMigratableSource *)self environment];
+  v6 = [(AVTArchiverBasedStoreBackend *)v3 initWithStoreLocation:storeLocation domainIdentifier:&stru_285387388 environment:environment];
 
   return v6;
 }
 
-- (id)migratedRecordFromRecord:(id)a3 index:(unint64_t)a4 totalCount:(unint64_t)a5
+- (id)migratedRecordFromRecord:(id)record index:(unint64_t)index totalCount:(unint64_t)count
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = -a5;
-  v8 = a3;
+  v7 = -count;
+  recordCopy = record;
   v9 = [v6 dateWithTimeIntervalSinceNow:v7];
-  v10 = [v9 dateByAddingTimeInterval:a4];
+  v10 = [v9 dateByAddingTimeInterval:index];
   v11 = [AVTAvatarRecord alloc];
-  v12 = [v8 avatarData];
-  v13 = [v8 identifier];
+  avatarData = [recordCopy avatarData];
+  identifier = [recordCopy identifier];
 
-  v14 = [(AVTAvatarRecord *)v11 initWithAvatarData:v12 identifier:v13 orderDate:v10];
+  v14 = [(AVTAvatarRecord *)v11 initWithAvatarData:avatarData identifier:identifier orderDate:v10];
 
   return v14;
 }
 
-- (BOOL)finalizeMigration:(id *)a3
+- (BOOL)finalizeMigration:(id *)migration
 {
-  v4 = [(AVTArchiverBasedStoreMigratableSource *)self storeLocation];
-  LOBYTE(a3) = [AVTArchiverBasedStorePersistence removeFilesAtLocation:v4 error:a3];
+  storeLocation = [(AVTArchiverBasedStoreMigratableSource *)self storeLocation];
+  LOBYTE(migration) = [AVTArchiverBasedStorePersistence removeFilesAtLocation:storeLocation error:migration];
 
-  return a3;
+  return migration;
 }
 
 @end

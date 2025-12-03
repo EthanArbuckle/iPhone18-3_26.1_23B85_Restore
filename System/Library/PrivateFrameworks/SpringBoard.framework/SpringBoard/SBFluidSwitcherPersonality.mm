@@ -1,21 +1,21 @@
 @interface SBFluidSwitcherPersonality
-- (SBFluidSwitcherPersonality)initWithRootModifier:(id)a3;
+- (SBFluidSwitcherPersonality)initWithRootModifier:(id)modifier;
 - (SBSwitcherPersonalityView)view;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)handleEvent:(id)a3 responseHandler:(id)a4;
-- (void)performWithFinalPresentationValue:(id)a3;
-- (void)performWithInterfaceOrientation:(int64_t)a3 block:(id)a4;
-- (void)performWithUpdateMode:(int64_t)a3 block:(id)a4;
-- (void)setTimelineAuditor:(id)a3;
+- (void)handleEvent:(id)event responseHandler:(id)handler;
+- (void)performWithFinalPresentationValue:(id)value;
+- (void)performWithInterfaceOrientation:(int64_t)orientation block:(id)block;
+- (void)performWithUpdateMode:(int64_t)mode block:(id)block;
+- (void)setTimelineAuditor:(id)auditor;
 @end
 
 @implementation SBFluidSwitcherPersonality
 
-- (SBFluidSwitcherPersonality)initWithRootModifier:(id)a3
+- (SBFluidSwitcherPersonality)initWithRootModifier:(id)modifier
 {
-  v6 = a3;
-  if (!v6)
+  modifierCopy = modifier;
+  if (!modifierCopy)
   {
     [(SBFluidSwitcherPersonality *)a2 initWithRootModifier:?];
   }
@@ -26,55 +26,55 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_rootModifier, a3);
+    objc_storeStrong(&v7->_rootModifier, modifier);
     [(SBChainableModifier *)v8 addChildModifier:v8->_rootModifier];
   }
 
   return v8;
 }
 
-- (void)performWithInterfaceOrientation:(int64_t)a3 block:(id)a4
+- (void)performWithInterfaceOrientation:(int64_t)orientation block:(id)block
 {
-  v6 = a4;
-  v7 = [[SBOverrideInterfaceOrientationSwitcherModifier alloc] initWithInterfaceOrientation:a3];
-  [(SBChainableModifier *)self->_rootModifier performTransactionWithTemporaryChildModifier:v7 usingBlock:v6];
+  blockCopy = block;
+  v7 = [[SBOverrideInterfaceOrientationSwitcherModifier alloc] initWithInterfaceOrientation:orientation];
+  [(SBChainableModifier *)self->_rootModifier performTransactionWithTemporaryChildModifier:v7 usingBlock:blockCopy];
 }
 
-- (void)performWithUpdateMode:(int64_t)a3 block:(id)a4
+- (void)performWithUpdateMode:(int64_t)mode block:(id)block
 {
-  v6 = a4;
-  v7 = [[SBFixedLayoutModeSwitcherModifier alloc] initWithUpdateMode:a3];
-  [(SBChainableModifier *)self->_rootModifier performTransactionWithTemporaryChildModifier:v7 usingBlock:v6];
+  blockCopy = block;
+  v7 = [[SBFixedLayoutModeSwitcherModifier alloc] initWithUpdateMode:mode];
+  [(SBChainableModifier *)self->_rootModifier performTransactionWithTemporaryChildModifier:v7 usingBlock:blockCopy];
 }
 
-- (void)performWithFinalPresentationValue:(id)a3
+- (void)performWithFinalPresentationValue:(id)value
 {
   rootModifier = self->_rootModifier;
-  v5 = a3;
-  v7 = [(SBSwitcherModifier *)rootModifier animatablePropertyIdentifiers];
-  v6 = [[SBOverridePresentationValueSwitcherModifier alloc] initWithAnimatablePropertyKeys:v7 presentationValue:1.0];
-  [(SBChainableModifier *)self->_rootModifier performTransactionWithTemporaryChildModifier:v6 usingBlock:v5];
+  valueCopy = value;
+  animatablePropertyIdentifiers = [(SBSwitcherModifier *)rootModifier animatablePropertyIdentifiers];
+  v6 = [[SBOverridePresentationValueSwitcherModifier alloc] initWithAnimatablePropertyKeys:animatablePropertyIdentifiers presentationValue:1.0];
+  [(SBChainableModifier *)self->_rootModifier performTransactionWithTemporaryChildModifier:v6 usingBlock:valueCopy];
 }
 
-- (void)handleEvent:(id)a3 responseHandler:(id)a4
+- (void)handleEvent:(id)event responseHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(SBChainableModifier *)self handleEvent:a3];
-  v6[2](v6, v7);
+  handlerCopy = handler;
+  v7 = [(SBChainableModifier *)self handleEvent:event];
+  handlerCopy[2](handlerCopy, v7);
 }
 
-- (void)setTimelineAuditor:(id)a3
+- (void)setTimelineAuditor:(id)auditor
 {
-  v11 = a3;
+  auditorCopy = auditor;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (v11 && (isKindOfClass & 1) == 0)
+  if (auditorCopy && (isKindOfClass & 1) == 0)
   {
     v5 = [[SBHistorianSwitcherModifier alloc] initWithRootModifier:self->_rootModifier];
-    v6 = [(SBChainableModifier *)self->_rootModifier delegate];
-    [(SBHistorianSwitcherModifier *)v5 setDelegate:v6];
+    delegate = [(SBChainableModifier *)self->_rootModifier delegate];
+    [(SBHistorianSwitcherModifier *)v5 setDelegate:delegate];
 
-    [(SBHistorianSwitcherModifier *)v5 setHistorianDelegate:v11];
+    [(SBHistorianSwitcherModifier *)v5 setHistorianDelegate:auditorCopy];
     rootModifier = self->_rootModifier;
     self->_rootModifier = &v5->super;
 LABEL_7:
@@ -84,12 +84,12 @@ LABEL_7:
 
   objc_opt_class();
   v8 = objc_opt_isKindOfClass();
-  if (!v11 && (v8 & 1) != 0)
+  if (!auditorCopy && (v8 & 1) != 0)
   {
     rootModifier = self->_rootModifier;
-    v9 = [(SBSwitcherModifier *)rootModifier rootModifier];
+    rootModifier = [(SBSwitcherModifier *)rootModifier rootModifier];
     v10 = self->_rootModifier;
-    self->_rootModifier = v9;
+    self->_rootModifier = rootModifier;
 
     goto LABEL_7;
   }
@@ -97,20 +97,20 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFluidSwitcherPersonality *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFluidSwitcherPersonality *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBFluidSwitcherPersonality *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFluidSwitcherPersonality *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (SBSwitcherPersonalityView)view

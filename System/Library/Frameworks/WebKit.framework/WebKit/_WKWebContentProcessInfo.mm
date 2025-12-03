@@ -1,31 +1,31 @@
 @interface _WKWebContentProcessInfo
-- (_WKWebContentProcessInfo)initWithTaskInfo:(const TaskInfo *)a3 process:(const void *)a4;
+- (_WKWebContentProcessInfo)initWithTaskInfo:(const TaskInfo *)info process:(const void *)process;
 @end
 
 @implementation _WKWebContentProcessInfo
 
-- (_WKWebContentProcessInfo)initWithTaskInfo:(const TaskInfo *)a3 process:(const void *)a4
+- (_WKWebContentProcessInfo)initWithTaskInfo:(const TaskInfo *)info process:(const void *)process
 {
   v17.receiver = self;
   v17.super_class = _WKWebContentProcessInfo;
-  v5 = [(_WKProcessInfo *)&v17 initWithTaskInfo:a3];
+  v5 = [(_WKProcessInfo *)&v17 initWithTaskInfo:info];
   v6 = v5;
   if (v5)
   {
     v5->_webContentState = 2;
-    if (*(a4 + 811) == 1)
+    if (*(process + 811) == 1)
     {
       v5->_webContentState = 0;
     }
 
-    else if (*(a4 + 760) == 1)
+    else if (*(process + 760) == 1)
     {
       v5->_webContentState = 1;
     }
 
     else
     {
-      WebKit::WebProcessProxy::pages(a4, &v15);
+      WebKit::WebProcessProxy::pages(process, &v15);
       if (v16)
       {
         v8 = v15;
@@ -62,11 +62,11 @@
       WTF::Vector<WTF::Ref<WebKit::WebPageProxy,WTF::RawPtrTraits<WebKit::WebPageProxy>,WTF::DefaultRefDerefTraits<WebKit::WebPageProxy>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v15, v7);
     }
 
-    v6->_runningServiceWorkers = *(a4 + 896);
-    v6->_runningSharedWorkers = *(a4 + 968);
-    v6->_totalForegroundTime = WebKit::WebProcessProxy::totalForegroundTime(a4);
-    v6->_totalBackgroundTime = WebKit::WebProcessProxy::totalBackgroundTime(a4);
-    v6->_totalSuspendedTime = WebKit::WebProcessProxy::totalSuspendedTime(a4);
+    v6->_runningServiceWorkers = *(process + 896);
+    v6->_runningSharedWorkers = *(process + 968);
+    v6->_totalForegroundTime = WebKit::WebProcessProxy::totalForegroundTime(process);
+    v6->_totalBackgroundTime = WebKit::WebProcessProxy::totalBackgroundTime(process);
+    v6->_totalSuspendedTime = WebKit::WebProcessProxy::totalSuspendedTime(process);
   }
 
   return v6;

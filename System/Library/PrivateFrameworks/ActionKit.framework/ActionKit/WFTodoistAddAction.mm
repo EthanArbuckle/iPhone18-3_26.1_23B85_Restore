@@ -1,14 +1,14 @@
 @interface WFTodoistAddAction
-+ (int64_t)reminderServiceWithReminderType:(id)a3;
++ (int64_t)reminderServiceWithReminderType:(id)type;
 - (void)initializeParameters;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFTodoistAddAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = [(WFTodoistAddAction *)self parameterValueForKey:@"WFTodoistContent" ofClass:objc_opt_class()];
   v6 = [(WFTodoistAddAction *)self parameterValueForKey:@"WFTodoistProject" ofClass:objc_opt_class()];
   v7 = [(WFTodoistAddAction *)self parameterValueForKey:@"WFTodoistDueDate" ofClass:objc_opt_class()];
@@ -43,7 +43,7 @@
   v42[1] = 3221225472;
   v42[2] = __49__WFTodoistAddAction_runAsynchronouslyWithInput___block_invoke_2;
   v42[3] = &unk_278C1B228;
-  v15 = v4;
+  v15 = inputCopy;
   v45 = v49;
   v46 = v48;
   v43 = v15;
@@ -66,7 +66,7 @@
   v41 = v25;
   v21 = v12;
   v35 = v21;
-  v36 = self;
+  selfCopy = self;
   v39 = v48;
   v37 = v16;
   v22 = _Block_copy(v30);
@@ -248,25 +248,25 @@ void __49__WFTodoistAddAction_runAsynchronouslyWithInput___block_invoke_5(uint64
   v7.receiver = self;
   v7.super_class = WFTodoistAddAction;
   [(WFTodoistAddAction *)&v7 initializeParameters];
-  v3 = [(WFTodoistAddAction *)self resourceManager];
-  v4 = [v3 resourceObjectsOfClass:objc_opt_class()];
-  v5 = [v4 anyObject];
+  resourceManager = [(WFTodoistAddAction *)self resourceManager];
+  v4 = [resourceManager resourceObjectsOfClass:objc_opt_class()];
+  anyObject = [v4 anyObject];
 
   v6 = [(WFTodoistAddAction *)self parameterForKey:@"WFTodoistProject"];
-  [v6 setAccessResource:v5];
+  [v6 setAccessResource:anyObject];
 }
 
-+ (int64_t)reminderServiceWithReminderType:(id)a3
++ (int64_t)reminderServiceWithReminderType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Text Message"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Text Message"])
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Push Notification"];
+    v4 = [typeCopy isEqualToString:@"Push Notification"];
   }
 
   return v4;

@@ -1,347 +1,347 @@
 @interface JavaUtilArrays
-+ (BOOL)deepToStringImplContainsWithNSObjectArray:(id)a3 withId:(id)a4;
-+ (int)binarySearchWithByteArray:(id)a3 withByte:(char)a4;
-+ (int)binarySearchWithCharArray:(id)a3 withChar:(unsigned __int16)a4;
-+ (int)binarySearchWithDoubleArray:(id)a3 withDouble:(double)a4;
-+ (int)binarySearchWithFloatArray:(id)a3 withFloat:(float)a4;
-+ (int)binarySearchWithIntArray:(id)a3 withInt:(int)a4;
-+ (int)binarySearchWithLongArray:(id)a3 withLong:(int64_t)a4;
-+ (int)binarySearchWithNSObjectArray:(id)a3 withId:(id)a4;
-+ (int)binarySearchWithNSObjectArray:(id)a3 withId:(id)a4 withJavaUtilComparator:(id)a5;
-+ (int)binarySearchWithShortArray:(id)a3 withShort:(signed __int16)a4;
-+ (int)hashCodeWithBooleanArray:(id)a3;
-+ (int)hashCodeWithByteArray:(id)a3;
-+ (int)hashCodeWithCharArray:(id)a3;
-+ (int)hashCodeWithIntArray:(id)a3;
-+ (int)hashCodeWithLongArray:(id)a3;
-+ (int)hashCodeWithShortArray:(id)a3;
-+ (void)fillWithBooleanArray:(id)a3 withBoolean:(BOOL)a4;
-+ (void)fillWithByteArray:(id)a3 withByte:(char)a4;
-+ (void)fillWithCharArray:(id)a3 withChar:(unsigned __int16)a4;
-+ (void)fillWithDoubleArray:(id)a3 withDouble:(double)a4;
-+ (void)fillWithFloatArray:(id)a3 withFloat:(float)a4;
-+ (void)fillWithIntArray:(id)a3 withInt:(int)a4;
-+ (void)fillWithLongArray:(id)a3 withLong:(int64_t)a4;
-+ (void)fillWithNSObjectArray:(id)a3 withId:(id)a4;
-+ (void)fillWithShortArray:(id)a3 withShort:(signed __int16)a4;
++ (BOOL)deepToStringImplContainsWithNSObjectArray:(id)array withId:(id)id;
++ (int)binarySearchWithByteArray:(id)array withByte:(char)byte;
++ (int)binarySearchWithCharArray:(id)array withChar:(unsigned __int16)char;
++ (int)binarySearchWithDoubleArray:(id)array withDouble:(double)double;
++ (int)binarySearchWithFloatArray:(id)array withFloat:(float)float;
++ (int)binarySearchWithIntArray:(id)array withInt:(int)int;
++ (int)binarySearchWithLongArray:(id)array withLong:(int64_t)long;
++ (int)binarySearchWithNSObjectArray:(id)array withId:(id)id;
++ (int)binarySearchWithNSObjectArray:(id)array withId:(id)id withJavaUtilComparator:(id)comparator;
++ (int)binarySearchWithShortArray:(id)array withShort:(signed __int16)short;
++ (int)hashCodeWithBooleanArray:(id)array;
++ (int)hashCodeWithByteArray:(id)array;
++ (int)hashCodeWithCharArray:(id)array;
++ (int)hashCodeWithIntArray:(id)array;
++ (int)hashCodeWithLongArray:(id)array;
++ (int)hashCodeWithShortArray:(id)array;
++ (void)fillWithBooleanArray:(id)array withBoolean:(BOOL)boolean;
++ (void)fillWithByteArray:(id)array withByte:(char)byte;
++ (void)fillWithCharArray:(id)array withChar:(unsigned __int16)char;
++ (void)fillWithDoubleArray:(id)array withDouble:(double)double;
++ (void)fillWithFloatArray:(id)array withFloat:(float)float;
++ (void)fillWithIntArray:(id)array withInt:(int)int;
++ (void)fillWithLongArray:(id)array withLong:(int64_t)long;
++ (void)fillWithNSObjectArray:(id)array withId:(id)id;
++ (void)fillWithShortArray:(id)array withShort:(signed __int16)short;
 @end
 
 @implementation JavaUtilArrays
 
-+ (int)binarySearchWithByteArray:(id)a3 withByte:(char)a4
++ (int)binarySearchWithByteArray:(id)array withByte:(char)byte
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = *(a3 + 2);
+  v6 = *(array + 2);
 
-  return JavaUtilArrays_binarySearchWithByteArray_withInt_withInt_withByte_(a3, 0, v6, a4);
+  return JavaUtilArrays_binarySearchWithByteArray_withInt_withInt_withByte_(array, 0, v6, byte);
 }
 
-+ (int)binarySearchWithCharArray:(id)a3 withChar:(unsigned __int16)a4
++ (int)binarySearchWithCharArray:(id)array withChar:(unsigned __int16)char
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = *(a3 + 2);
+  v6 = *(array + 2);
 
-  return JavaUtilArrays_binarySearchWithCharArray_withInt_withInt_withChar_(a3, 0, v6, a4);
+  return JavaUtilArrays_binarySearchWithCharArray_withInt_withInt_withChar_(array, 0, v6, char);
 }
 
-+ (int)binarySearchWithDoubleArray:(id)a3 withDouble:(double)a4
++ (int)binarySearchWithDoubleArray:(id)array withDouble:(double)double
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = *(a3 + 2);
+  v6 = *(array + 2);
 
-  return JavaUtilArrays_binarySearchWithDoubleArray_withInt_withInt_withDouble_(a3, 0, v6, a4);
+  return JavaUtilArrays_binarySearchWithDoubleArray_withInt_withInt_withDouble_(array, 0, v6, double);
 }
 
-+ (int)binarySearchWithFloatArray:(id)a3 withFloat:(float)a4
++ (int)binarySearchWithFloatArray:(id)array withFloat:(float)float
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = *(a3 + 2);
+  v6 = *(array + 2);
 
-  return JavaUtilArrays_binarySearchWithFloatArray_withInt_withInt_withFloat_(a3, 0, v6, a4);
+  return JavaUtilArrays_binarySearchWithFloatArray_withInt_withInt_withFloat_(array, 0, v6, float);
 }
 
-+ (int)binarySearchWithIntArray:(id)a3 withInt:(int)a4
++ (int)binarySearchWithIntArray:(id)array withInt:(int)int
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = *(a3 + 2);
+  v6 = *(array + 2);
 
-  return JavaUtilArrays_binarySearchWithIntArray_withInt_withInt_withInt_(a3, 0, v6, a4);
+  return JavaUtilArrays_binarySearchWithIntArray_withInt_withInt_withInt_(array, 0, v6, int);
 }
 
-+ (int)binarySearchWithLongArray:(id)a3 withLong:(int64_t)a4
++ (int)binarySearchWithLongArray:(id)array withLong:(int64_t)long
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = *(a3 + 2);
+  v6 = *(array + 2);
 
-  return JavaUtilArrays_binarySearchWithLongArray_withInt_withInt_withLong_(a3, 0, v6, a4);
+  return JavaUtilArrays_binarySearchWithLongArray_withInt_withInt_withLong_(array, 0, v6, long);
 }
 
-+ (int)binarySearchWithNSObjectArray:(id)a3 withId:(id)a4
++ (int)binarySearchWithNSObjectArray:(id)array withId:(id)id
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = *(a3 + 2);
+  v6 = *(array + 2);
 
-  return JavaUtilArrays_binarySearchWithNSObjectArray_withInt_withInt_withId_(a3, 0, v6, a4);
+  return JavaUtilArrays_binarySearchWithNSObjectArray_withInt_withInt_withId_(array, 0, v6, id);
 }
 
-+ (int)binarySearchWithNSObjectArray:(id)a3 withId:(id)a4 withJavaUtilComparator:(id)a5
++ (int)binarySearchWithNSObjectArray:(id)array withId:(id)id withJavaUtilComparator:(id)comparator
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v7 = *(a3 + 2);
+  v7 = *(array + 2);
 
-  return JavaUtilArrays_binarySearchWithNSObjectArray_withInt_withInt_withId_withJavaUtilComparator_(a3, 0, v7, a4, a5);
+  return JavaUtilArrays_binarySearchWithNSObjectArray_withInt_withInt_withId_withJavaUtilComparator_(array, 0, v7, id, comparator);
 }
 
-+ (int)binarySearchWithShortArray:(id)a3 withShort:(signed __int16)a4
++ (int)binarySearchWithShortArray:(id)array withShort:(signed __int16)short
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = *(a3 + 2);
+  v6 = *(array + 2);
 
-  return JavaUtilArrays_binarySearchWithShortArray_withInt_withInt_withShort_(a3, 0, v6, a4);
+  return JavaUtilArrays_binarySearchWithShortArray_withInt_withInt_withShort_(array, 0, v6, short);
 }
 
-+ (void)fillWithByteArray:(id)a3 withByte:(char)a4
++ (void)fillWithByteArray:(id)array withByte:(char)byte
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  if (*(a3 + 2) >= 1)
+  if (*(array + 2) >= 1)
   {
     v4 = 0;
-    v5 = a3;
+    arrayCopy = array;
     do
     {
-      v5[12] = a4;
+      arrayCopy[12] = byte;
       ++v4;
-      ++v5;
+      ++arrayCopy;
     }
 
-    while (v4 < *(a3 + 2));
+    while (v4 < *(array + 2));
   }
 }
 
-+ (void)fillWithShortArray:(id)a3 withShort:(signed __int16)a4
++ (void)fillWithShortArray:(id)array withShort:(signed __int16)short
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  if (*(a3 + 2) >= 1)
+  if (*(array + 2) >= 1)
   {
     v4 = 0;
-    v5 = a3;
+    arrayCopy = array;
     do
     {
-      v5[6] = a4;
+      arrayCopy[6] = short;
       ++v4;
-      ++v5;
+      ++arrayCopy;
     }
 
-    while (v4 < *(a3 + 2));
+    while (v4 < *(array + 2));
   }
 }
 
-+ (void)fillWithCharArray:(id)a3 withChar:(unsigned __int16)a4
++ (void)fillWithCharArray:(id)array withChar:(unsigned __int16)char
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  if (*(a3 + 2) >= 1)
+  if (*(array + 2) >= 1)
   {
     v4 = 0;
-    v5 = a3;
+    arrayCopy = array;
     do
     {
-      v5[6] = a4;
+      arrayCopy[6] = char;
       ++v4;
-      ++v5;
+      ++arrayCopy;
     }
 
-    while (v4 < *(a3 + 2));
+    while (v4 < *(array + 2));
   }
 }
 
-+ (void)fillWithIntArray:(id)a3 withInt:(int)a4
++ (void)fillWithIntArray:(id)array withInt:(int)int
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  if (*(a3 + 2) >= 1)
+  if (*(array + 2) >= 1)
   {
     v4 = 0;
-    v5 = a3;
+    arrayCopy = array;
     do
     {
-      v5[3] = a4;
+      arrayCopy[3] = int;
       ++v4;
-      ++v5;
+      ++arrayCopy;
     }
 
-    while (v4 < *(a3 + 2));
+    while (v4 < *(array + 2));
   }
 }
 
-+ (void)fillWithLongArray:(id)a3 withLong:(int64_t)a4
++ (void)fillWithLongArray:(id)array withLong:(int64_t)long
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  if (*(a3 + 2) >= 1)
+  if (*(array + 2) >= 1)
   {
     v4 = 0;
-    v5 = a3;
+    arrayCopy = array;
     do
     {
-      v5[2] = a4;
+      arrayCopy[2] = long;
       ++v4;
-      ++v5;
+      ++arrayCopy;
     }
 
-    while (v4 < *(a3 + 2));
+    while (v4 < *(array + 2));
   }
 }
 
-+ (void)fillWithFloatArray:(id)a3 withFloat:(float)a4
++ (void)fillWithFloatArray:(id)array withFloat:(float)float
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  if (*(a3 + 2) >= 1)
+  if (*(array + 2) >= 1)
   {
     v4 = 0;
-    v5 = a3;
+    arrayCopy = array;
     do
     {
-      v5[3] = a4;
+      arrayCopy[3] = float;
       ++v4;
-      ++v5;
+      ++arrayCopy;
     }
 
-    while (v4 < *(a3 + 2));
+    while (v4 < *(array + 2));
   }
 }
 
-+ (void)fillWithDoubleArray:(id)a3 withDouble:(double)a4
++ (void)fillWithDoubleArray:(id)array withDouble:(double)double
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  if (*(a3 + 2) >= 1)
+  if (*(array + 2) >= 1)
   {
     v4 = 0;
-    v5 = a3;
+    arrayCopy = array;
     do
     {
-      v5[2] = a4;
+      arrayCopy[2] = double;
       ++v4;
-      ++v5;
+      ++arrayCopy;
     }
 
-    while (v4 < *(a3 + 2));
+    while (v4 < *(array + 2));
   }
 }
 
-+ (void)fillWithBooleanArray:(id)a3 withBoolean:(BOOL)a4
++ (void)fillWithBooleanArray:(id)array withBoolean:(BOOL)boolean
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  if (*(a3 + 2) >= 1)
+  if (*(array + 2) >= 1)
   {
     v4 = 0;
-    v5 = a3;
+    arrayCopy = array;
     do
     {
-      v5[12] = a4;
+      arrayCopy[12] = boolean;
       ++v4;
-      ++v5;
+      ++arrayCopy;
     }
 
-    while (v4 < *(a3 + 2));
+    while (v4 < *(array + 2));
   }
 }
 
-+ (void)fillWithNSObjectArray:(id)a3 withId:(id)a4
++ (void)fillWithNSObjectArray:(id)array withId:(id)id
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  if (*(a3 + 2) >= 1)
+  if (*(array + 2) >= 1)
   {
     v6 = 0;
     do
     {
-      IOSObjectArray_Set(a3, v6++, a4);
+      IOSObjectArray_Set(array, v6++, id);
     }
 
-    while (v6 < *(a3 + 2));
+    while (v6 < *(array + 2));
   }
 }
 
-+ (int)hashCodeWithBooleanArray:(id)a3
++ (int)hashCodeWithBooleanArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     return 0;
   }
 
-  v3 = a3 + 12;
-  v4 = *(a3 + 2);
+  v3 = array + 12;
+  v4 = *(array + 2);
   result = 1;
-  if (a3 + 12 < a3 + v4 + 12)
+  if (array + 12 < array + v4 + 12)
   {
     do
     {
@@ -365,16 +365,16 @@
   return result;
 }
 
-+ (int)hashCodeWithIntArray:(id)a3
++ (int)hashCodeWithIntArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     return 0;
   }
 
-  v3 = (a3 + 12);
+  v3 = (array + 12);
   result = 1;
-  while (v3 < (a3 + 4 * *(a3 + 2) + 12))
+  while (v3 < (array + 4 * *(array + 2) + 12))
   {
     v5 = *v3++;
     result = v5 - result + 32 * result;
@@ -383,16 +383,16 @@
   return result;
 }
 
-+ (int)hashCodeWithShortArray:(id)a3
++ (int)hashCodeWithShortArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     return 0;
   }
 
-  v3 = (a3 + 12);
+  v3 = (array + 12);
   result = 1;
-  while (v3 < (a3 + 2 * *(a3 + 2) + 12))
+  while (v3 < (array + 2 * *(array + 2) + 12))
   {
     v5 = *v3++;
     result = v5 - result + 32 * result;
@@ -401,16 +401,16 @@
   return result;
 }
 
-+ (int)hashCodeWithCharArray:(id)a3
++ (int)hashCodeWithCharArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     return 0;
   }
 
-  v3 = (a3 + 12);
+  v3 = (array + 12);
   result = 1;
-  while (v3 < (a3 + 2 * *(a3 + 2) + 12))
+  while (v3 < (array + 2 * *(array + 2) + 12))
   {
     v5 = *v3++;
     result = v5 - result + 32 * result;
@@ -419,17 +419,17 @@
   return result;
 }
 
-+ (int)hashCodeWithByteArray:(id)a3
++ (int)hashCodeWithByteArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     return 0;
   }
 
-  v3 = a3 + 12;
-  v4 = *(a3 + 2);
+  v3 = array + 12;
+  v4 = *(array + 2);
   result = 1;
-  if (a3 + 12 < a3 + v4 + 12)
+  if (array + 12 < array + v4 + 12)
   {
     do
     {
@@ -444,16 +444,16 @@
   return result;
 }
 
-+ (int)hashCodeWithLongArray:(id)a3
++ (int)hashCodeWithLongArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     return 0;
   }
 
-  v3 = (a3 + 16);
+  v3 = (array + 16);
   result = 1;
-  while (v3 < (a3 + 8 * *(a3 + 2) + 16))
+  while (v3 < (array + 8 * *(array + 2) + 16))
   {
     v5 = *v3++;
     result = (HIDWORD(v5) ^ v5) - result + 32 * result;
@@ -462,21 +462,21 @@
   return result;
 }
 
-+ (BOOL)deepToStringImplContainsWithNSObjectArray:(id)a3 withId:(id)a4
++ (BOOL)deepToStringImplContainsWithNSObjectArray:(id)array withId:(id)id
 {
-  if (!a3)
+  if (!array)
   {
     return 0;
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
   if (!v4)
   {
     return 0;
   }
 
-  v5 = (a3 + 24);
-  v6 = (a3 + 8 * v4 + 24);
+  v5 = (array + 24);
+  v6 = (array + 8 * v4 + 24);
   do
   {
     result = v5 < v6;
@@ -488,7 +488,7 @@
     v8 = *v5++;
   }
 
-  while (v8 != a4);
+  while (v8 != id);
   return result;
 }
 

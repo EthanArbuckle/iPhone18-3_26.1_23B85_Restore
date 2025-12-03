@@ -1,16 +1,16 @@
 @interface RMPersistentHistoryNotifierChanges
 - (NSSet)deletedObjectIDs;
 - (RMPersistentHistoryNotifierChanges)init;
-- (void)_updatePropertiesWithChange:(id)a3;
-- (void)updateWithChange:(id)a3;
+- (void)_updatePropertiesWithChange:(id)change;
+- (void)updateWithChange:(id)change;
 @end
 
 @implementation RMPersistentHistoryNotifierChanges
 
 - (NSSet)deletedObjectIDs
 {
-  v2 = [(NSMutableDictionary *)self->_tombstoneByObjectID allKeys];
-  v3 = [NSSet setWithArray:v2];
+  allKeys = [(NSMutableDictionary *)self->_tombstoneByObjectID allKeys];
+  v3 = [NSSet setWithArray:allKeys];
 
   return v3;
 }
@@ -42,18 +42,18 @@
   return v2;
 }
 
-- (void)updateWithChange:(id)a3
+- (void)updateWithChange:(id)change
 {
-  v9 = a3;
-  v4 = [v9 changedObjectID];
-  v5 = [v9 changeType];
-  if (v5 == 2)
+  changeCopy = change;
+  changedObjectID = [changeCopy changedObjectID];
+  changeType = [changeCopy changeType];
+  if (changeType == 2)
   {
-    v6 = [v9 tombstone];
-    v7 = v6;
-    if (v6)
+    tombstone = [changeCopy tombstone];
+    v7 = tombstone;
+    if (tombstone)
     {
-      v8 = v6;
+      v8 = tombstone;
     }
 
     else
@@ -61,37 +61,37 @@
       v8 = &__NSDictionary0__struct;
     }
 
-    [(NSMutableDictionary *)self->_tombstoneByObjectID setObject:v8 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_tombstoneByObjectID setObject:v8 forKeyedSubscript:changedObjectID];
   }
 
-  else if (v5 == 1)
+  else if (changeType == 1)
   {
-    [(NSMutableSet *)self->_updatedObjectIDs addObject:v4];
-    [(RMPersistentHistoryNotifierChanges *)self _updatePropertiesWithChange:v9];
+    [(NSMutableSet *)self->_updatedObjectIDs addObject:changedObjectID];
+    [(RMPersistentHistoryNotifierChanges *)self _updatePropertiesWithChange:changeCopy];
   }
 
-  else if (!v5)
+  else if (!changeType)
   {
-    [(NSMutableSet *)self->_insertedObjectIDs addObject:v4];
+    [(NSMutableSet *)self->_insertedObjectIDs addObject:changedObjectID];
   }
 }
 
-- (void)_updatePropertiesWithChange:(id)a3
+- (void)_updatePropertiesWithChange:(id)change
 {
-  v9 = a3;
-  v4 = [v9 updatedProperties];
-  if ([v4 count])
+  changeCopy = change;
+  updatedProperties = [changeCopy updatedProperties];
+  if ([updatedProperties count])
   {
-    v5 = [v9 changedObjectID];
+    changedObjectID = [changeCopy changedObjectID];
     v6 = self->_updatedPropertiesByObjectID;
-    v7 = [(NSMutableDictionary *)v6 objectForKeyedSubscript:v5];
+    v7 = [(NSMutableDictionary *)v6 objectForKeyedSubscript:changedObjectID];
     if (!v7)
     {
       v7 = objc_opt_new();
-      [(NSMutableDictionary *)v6 setObject:v7 forKeyedSubscript:v5];
+      [(NSMutableDictionary *)v6 setObject:v7 forKeyedSubscript:changedObjectID];
     }
 
-    v8 = [v4 valueForKey:@"name"];
+    v8 = [updatedProperties valueForKey:@"name"];
     [v7 unionSet:v8];
   }
 }

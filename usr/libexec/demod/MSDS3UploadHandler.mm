@@ -5,11 +5,11 @@
 - (id)demoLogUploadRequest;
 - (id)getDefaultLogFolderName;
 - (void)clearDemoLogUploadRequest;
-- (void)demoLogUploadCompleted:(id)a3;
-- (void)saveDemoLogUploadRequest:(id)a3;
-- (void)setUploadInProgress:(BOOL)a3;
+- (void)demoLogUploadCompleted:(id)completed;
+- (void)saveDemoLogUploadRequest:(id)request;
+- (void)setUploadInProgress:(BOOL)progress;
 - (void)uploadDemoLogsIfNeeded;
-- (void)uploadDemoLogsTo:(id)a3 HttpHeaders:(id)a4 andMaxAttempts:(int64_t)a5 ofType:(unint64_t)a6;
+- (void)uploadDemoLogsTo:(id)to HttpHeaders:(id)headers andMaxAttempts:(int64_t)attempts ofType:(unint64_t)type;
 @end
 
 @implementation MSDS3UploadHandler
@@ -40,10 +40,10 @@
   return v3;
 }
 
-- (void)uploadDemoLogsTo:(id)a3 HttpHeaders:(id)a4 andMaxAttempts:(int64_t)a5 ofType:(unint64_t)a6
+- (void)uploadDemoLogsTo:(id)to HttpHeaders:(id)headers andMaxAttempts:(int64_t)attempts ofType:(unint64_t)type
 {
-  v10 = a3;
-  v11 = a4;
+  toCopy = to;
+  headersCopy = headers;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -64,7 +64,7 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  if (!v10)
+  if (!toCopy)
   {
     v20 = sub_100063A54();
     sub_1000C5D40(v20, &v37);
@@ -72,23 +72,23 @@ LABEL_11:
   }
 
   [(MSDS3UploadHandler *)self setUploadInProgress:1];
-  v12 = [(MSDS3UploadHandler *)self getDefaultLogFolderName];
-  v13 = [(MSDS3UploadHandler *)self demoLogUploadRequest];
+  getDefaultLogFolderName = [(MSDS3UploadHandler *)self getDefaultLogFolderName];
+  demoLogUploadRequest = [(MSDS3UploadHandler *)self demoLogUploadRequest];
 
-  if (!v13)
+  if (!demoLogUploadRequest)
   {
     v14 = objc_alloc_init(NSMutableDictionary);
-    [v14 setObject:v10 forKey:@"s3URL"];
-    v15 = [NSNumber numberWithInteger:a5];
+    [v14 setObject:toCopy forKey:@"s3URL"];
+    v15 = [NSNumber numberWithInteger:attempts];
     [v14 setObject:v15 forKey:@"maxRetry"];
 
-    [v14 setObject:v12 forKey:@"folderName"];
-    v16 = [NSNumber numberWithUnsignedInteger:a6];
+    [v14 setObject:getDefaultLogFolderName forKey:@"folderName"];
+    v16 = [NSNumber numberWithUnsignedInteger:type];
     [v14 setObject:v16 forKey:@"logType"];
 
-    if (v11)
+    if (headersCopy)
     {
-      [v14 setObject:v11 forKey:@"httpHeaders"];
+      [v14 setObject:headersCopy forKey:@"httpHeaders"];
     }
 
     [(MSDS3UploadHandler *)self saveDemoLogUploadRequest:v14];
@@ -99,14 +99,14 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = sub_10000BF5C;
   block[3] = &unk_100169DF0;
-  v24 = v12;
-  v29 = a6;
-  v25 = v10;
-  v30 = a5;
-  v27 = self;
+  v24 = getDefaultLogFolderName;
+  typeCopy = type;
+  v25 = toCopy;
+  attemptsCopy = attempts;
+  selfCopy = self;
   v28 = &v31;
-  v26 = v11;
-  v18 = v12;
+  v26 = headersCopy;
+  v18 = getDefaultLogFolderName;
   dispatch_async(v17, block);
 
 LABEL_8:
@@ -115,18 +115,18 @@ LABEL_8:
 
 - (void)uploadDemoLogsIfNeeded
 {
-  v3 = [(MSDS3UploadHandler *)self demoLogUploadRequest];
-  v4 = v3;
-  if (v3)
+  demoLogUploadRequest = [(MSDS3UploadHandler *)self demoLogUploadRequest];
+  v4 = demoLogUploadRequest;
+  if (demoLogUploadRequest)
   {
-    v5 = [v3 objectForKey:@"s3URL"];
+    v5 = [demoLogUploadRequest objectForKey:@"s3URL"];
     v6 = [v4 objectForKey:@"folderName"];
     v7 = [v4 objectForKey:@"httpHeaders"];
     v8 = [v4 objectForKey:@"maxRetry"];
-    v9 = [v8 integerValue];
+    integerValue = [v8 integerValue];
 
     v10 = [v4 objectForKey:@"logType"];
-    v11 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
 
     v12 = sub_100063A54();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -135,33 +135,33 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Demod was interrupted in between demo log upload to S3! Lets try again..", v13, 2u);
     }
 
-    [(MSDS3UploadHandler *)self uploadDemoLogsTo:v5 HttpHeaders:v7 andMaxAttempts:v9 ofType:v11];
+    [(MSDS3UploadHandler *)self uploadDemoLogsTo:v5 HttpHeaders:v7 andMaxAttempts:integerValue ofType:unsignedIntegerValue];
   }
 }
 
 - (BOOL)uploadInProgress
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  uploadInProgress = v2->_uploadInProgress;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  uploadInProgress = selfCopy->_uploadInProgress;
+  objc_sync_exit(selfCopy);
 
   return uploadInProgress;
 }
 
-- (void)setUploadInProgress:(BOOL)a3
+- (void)setUploadInProgress:(BOOL)progress
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_uploadInProgress = a3;
+  obj->_uploadInProgress = progress;
   objc_sync_exit(obj);
 }
 
-- (void)saveDemoLogUploadRequest:(id)a3
+- (void)saveDemoLogUploadRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = +[MSDPreferencesFile sharedInstance];
-  [v4 setObject:v3 forKey:@"DemoLogUploadRequest"];
+  [v4 setObject:requestCopy forKey:@"DemoLogUploadRequest"];
 }
 
 - (void)clearDemoLogUploadRequest
@@ -185,32 +185,32 @@ LABEL_8:
   v3 = +[NSDate date];
   v4 = [v2 stringFromDate:v3];
   v5 = +[MSDTargetDevice sharedInstance];
-  v6 = [v5 serialNumber];
+  serialNumber = [v5 serialNumber];
 
-  v7 = [NSString stringWithFormat:@"%@-log-%@", v6, v4];
+  v7 = [NSString stringWithFormat:@"%@-log-%@", serialNumber, v4];
 
   return v7;
 }
 
-- (void)demoLogUploadCompleted:(id)a3
+- (void)demoLogUploadCompleted:(id)completed
 {
-  v8 = a3;
+  completedCopy = completed;
   if (![(MSDS3UploadHandler *)self uploadInProgress])
   {
     [(MSDS3UploadHandler *)self clearDemoLogUploadRequest];
   }
 
-  v4 = v8;
-  if (v8)
+  v4 = completedCopy;
+  if (completedCopy)
   {
-    v5 = [v8 localizedDescription];
+    localizedDescription = [completedCopy localizedDescription];
     v6 = +[MSDTargetDevice sharedInstance];
-    [v6 setS3ServerFailureReason:v5];
+    [v6 setS3ServerFailureReason:localizedDescription];
 
     v7 = +[MSDMailProcessor sharedInstance];
     [v7 reportS3ServerFailed];
 
-    v4 = v8;
+    v4 = completedCopy;
   }
 }
 

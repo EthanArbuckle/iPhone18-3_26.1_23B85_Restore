@@ -1,20 +1,20 @@
 @interface MCDPlayableContentQueueTableViewController
-- (MCDPlayableContentQueueTableViewController)initWithContentManager:(id)a3;
+- (MCDPlayableContentQueueTableViewController)initWithContentManager:(id)manager;
 - (void)viewDidLoad;
 @end
 
 @implementation MCDPlayableContentQueueTableViewController
 
-- (MCDPlayableContentQueueTableViewController)initWithContentManager:(id)a3
+- (MCDPlayableContentQueueTableViewController)initWithContentManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = MCDPlayableContentQueueTableViewController;
   v6 = [(MCDPlayableContentQueueTableViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentManager, a3);
+    objc_storeStrong(&v6->_contentManager, manager);
   }
 
   return v7;
@@ -29,8 +29,8 @@
   v4 = [v3 localizedStringForKey:@"PLAYBACK_QUEUE_TITLE" value:&stru_286C2B080 table:@"MusicCarDisplayUI"];
   [(MCDPlayableContentQueueTableViewController *)self setTitle:v4];
 
-  v5 = [(MCDPlayableContentQueueTableViewController *)self tableView];
-  [(_MCDNowPlayingContentManager *)self->_contentManager setTableView:v5];
+  tableView = [(MCDPlayableContentQueueTableViewController *)self tableView];
+  [(_MCDNowPlayingContentManager *)self->_contentManager setTableView:tableView];
 }
 
 @end

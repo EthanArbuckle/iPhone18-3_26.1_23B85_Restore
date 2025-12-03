@@ -12,58 +12,58 @@
 - (void)MSASAddIsErrorRecovery
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [a1 setObject:v2 forKey:@"isErrorRecovery"];
+  [self setObject:v2 forKey:@"isErrorRecovery"];
 
-  return a1;
+  return self;
 }
 
 - (void)MSASAddNotInterestingKey
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [a1 setObject:v2 forKey:@"notInteresting"];
+  [self setObject:v2 forKey:@"notInteresting"];
 
-  return a1;
+  return self;
 }
 
 - (void)MSASAddIsLocalChange
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [a1 setObject:v2 forKey:@"isLocalChange"];
+  [self setObject:v2 forKey:@"isLocalChange"];
 
-  return a1;
+  return self;
 }
 
 - (void)MSASAddIsAlbumResetSyncAlbumGUID:()MSASServerSideModel
 {
   if (a3)
   {
-    [a1 setObject:a3 forKey:@"isAlbumResetSync"];
+    [self setObject:a3 forKey:@"isAlbumResetSync"];
   }
 
   else
   {
-    [a1 removeObjectForKey:@"isAlbumResetSync"];
+    [self removeObjectForKey:@"isAlbumResetSync"];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)MSASAddIsGlobalResetSync
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [a1 setObject:v2 forKey:@"isGlobalResetSync"];
+  [self setObject:v2 forKey:@"isGlobalResetSync"];
 
-  return a1;
+  return self;
 }
 
 + (id)MSASDictionaryWithCopyOfDictionary:()MSASServerSideModel
 {
   v3 = MEMORY[0x277CBEB38];
   v4 = a3;
-  v5 = [v3 dictionary];
-  [v5 addEntriesFromDictionary:v4];
+  dictionary = [v3 dictionary];
+  [dictionary addEntriesFromDictionary:v4];
 
-  return v5;
+  return dictionary;
 }
 
 @end

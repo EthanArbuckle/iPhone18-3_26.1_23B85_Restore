@@ -16,10 +16,10 @@
 
 - (BOOL)fc_isStateMachineError:()NFStateMachine
 {
-  v5 = [a1 domain];
-  v6 = [v5 isEqualToString:@"com.apple.news.state.machine"];
+  domain = [self domain];
+  v6 = [domain isEqualToString:@"com.apple.news.state.machine"];
 
-  return v6 && [a1 code] == a3;
+  return v6 && [self code] == a3;
 }
 
 @end

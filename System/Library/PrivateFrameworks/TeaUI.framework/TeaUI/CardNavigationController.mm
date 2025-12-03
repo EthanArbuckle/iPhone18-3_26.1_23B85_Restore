@@ -1,31 +1,31 @@
 @interface CardNavigationController
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation CardNavigationController
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  CardNavigationController.navigationController(_:willShow:animated:)(v7, v8, 0);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  CardNavigationController.navigationController(_:willShow:animated:)(controllerCopy, viewControllerCopy, 0);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CardNavigationController.viewDidLoad()();
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v10 = self;
-  CardNavigationController.navigationController(_:didShow:animated:)(&v10->super.super.super, v9, 0);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  CardNavigationController.navigationController(_:didShow:animated:)(&selfCopy->super.super.super, v9, 0);
 }
 
 @end

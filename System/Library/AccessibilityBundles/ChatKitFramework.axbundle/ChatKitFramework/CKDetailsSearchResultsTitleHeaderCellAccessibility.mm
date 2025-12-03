@@ -1,16 +1,16 @@
 @interface CKDetailsSearchResultsTitleHeaderCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation CKDetailsSearchResultsTitleHeaderCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKDetailsSearchResultsTitleHeaderCell" isKindOfClass:@"CKSearchResultsTitleHeaderCell"];
-  [v3 validateClass:@"CKSearchResultsTitleHeaderCell" hasInstanceMethod:@"sectionTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKSearchResultsTitleHeaderCell" hasInstanceMethod:@"showAllButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKDetailsSearchResultsTitleHeaderCell" isKindOfClass:@"CKSearchResultsTitleHeaderCell"];
+  [validationsCopy validateClass:@"CKSearchResultsTitleHeaderCell" hasInstanceMethod:@"sectionTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKSearchResultsTitleHeaderCell" hasInstanceMethod:@"showAllButton" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityElements

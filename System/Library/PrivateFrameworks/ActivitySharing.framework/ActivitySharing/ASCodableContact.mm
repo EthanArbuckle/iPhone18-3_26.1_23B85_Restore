@@ -1,33 +1,33 @@
 @interface ASCodableContact
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDestinations:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDestinations:(id)destinations;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASCodableContact
 
-- (void)addDestinations:(id)a3
+- (void)addDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   destinations = self->_destinations;
-  v8 = v4;
+  v8 = destinationsCopy;
   if (!destinations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_destinations;
     self->_destinations = v6;
 
-    v4 = v8;
+    destinationsCopy = v8;
     destinations = self->_destinations;
   }
 
-  [(NSMutableArray *)destinations addObject:v4];
+  [(NSMutableArray *)destinations addObject:destinationsCopy];
 }
 
 - (id)description
@@ -36,20 +36,20 @@
   v8.receiver = self;
   v8.super_class = ASCodableContact;
   v4 = [(ASCodableContact *)&v8 description];
-  v5 = [(ASCodableContact *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ASCodableContact *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   linkedContactStoreIdentifier = self->_linkedContactStoreIdentifier;
   if (linkedContactStoreIdentifier)
   {
-    [v3 setObject:linkedContactStoreIdentifier forKey:@"linkedContactStoreIdentifier"];
+    [dictionary setObject:linkedContactStoreIdentifier forKey:@"linkedContactStoreIdentifier"];
   }
 
   fullName = self->_fullName;
@@ -73,15 +73,15 @@
   relationshipContainer = self->_relationshipContainer;
   if (relationshipContainer)
   {
-    v10 = [(ASCodableRelationshipContainer *)relationshipContainer dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"relationshipContainer"];
+    dictionaryRepresentation = [(ASCodableRelationshipContainer *)relationshipContainer dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"relationshipContainer"];
   }
 
   remoteRelationshipContainer = self->_remoteRelationshipContainer;
   if (remoteRelationshipContainer)
   {
-    v12 = [(ASCodableRelationshipContainer *)remoteRelationshipContainer dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"remoteRelationshipContainer"];
+    dictionaryRepresentation2 = [(ASCodableRelationshipContainer *)remoteRelationshipContainer dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"remoteRelationshipContainer"];
   }
 
   pendingRelationshipShareItem = self->_pendingRelationshipShareItem;
@@ -99,8 +99,8 @@
   relationshipStorage = self->_relationshipStorage;
   if (relationshipStorage)
   {
-    v16 = [(ASCodableRelationshipStorage *)relationshipStorage dictionaryRepresentation];
-    [v4 setObject:v16 forKey:@"relationshipStorage"];
+    dictionaryRepresentation3 = [(ASCodableRelationshipStorage *)relationshipStorage dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"relationshipStorage"];
   }
 
   if (*&self->_has)
@@ -112,10 +112,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_linkedContactStoreIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -197,67 +197,67 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_linkedContactStoreIdentifier)
   {
-    [v9 setLinkedContactStoreIdentifier:?];
+    [toCopy setLinkedContactStoreIdentifier:?];
   }
 
   if (self->_fullName)
   {
-    [v9 setFullName:?];
+    [toCopy setFullName:?];
   }
 
   if (self->_shortName)
   {
-    [v9 setShortName:?];
+    [toCopy setShortName:?];
   }
 
   if ([(ASCodableContact *)self destinationsCount])
   {
-    [v9 clearDestinations];
-    v4 = [(ASCodableContact *)self destinationsCount];
-    if (v4)
+    [toCopy clearDestinations];
+    destinationsCount = [(ASCodableContact *)self destinationsCount];
+    if (destinationsCount)
     {
-      v5 = v4;
+      v5 = destinationsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ASCodableContact *)self destinationsAtIndex:i];
-        [v9 addDestinations:v7];
+        [toCopy addDestinations:v7];
       }
     }
   }
 
   if (self->_relationshipContainer)
   {
-    [v9 setRelationshipContainer:?];
+    [toCopy setRelationshipContainer:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_remoteRelationshipContainer)
   {
-    [v9 setRemoteRelationshipContainer:?];
-    v8 = v9;
+    [toCopy setRemoteRelationshipContainer:?];
+    v8 = toCopy;
   }
 
   if (self->_pendingRelationshipShareItem)
   {
-    [v9 setPendingRelationshipShareItem:?];
-    v8 = v9;
+    [toCopy setPendingRelationshipShareItem:?];
+    v8 = toCopy;
   }
 
   if (self->_pendingLegacyShareLocations)
   {
-    [v9 setPendingLegacyShareLocations:?];
-    v8 = v9;
+    [toCopy setPendingLegacyShareLocations:?];
+    v8 = toCopy;
   }
 
   if (self->_relationshipStorage)
   {
-    [v9 setRelationshipStorage:?];
-    v8 = v9;
+    [toCopy setRelationshipStorage:?];
+    v8 = toCopy;
   }
 
   if (*&self->_has)
@@ -267,19 +267,19 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_linkedContactStoreIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_linkedContactStoreIdentifier copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_fullName copyWithZone:a3];
+  v8 = [(NSString *)self->_fullName copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSString *)self->_shortName copyWithZone:a3];
+  v10 = [(NSString *)self->_shortName copyWithZone:zone];
   v11 = *(v5 + 72);
   *(v5 + 72) = v10;
 
@@ -303,7 +303,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v30 + 1) + 8 * v16) copyWithZone:{a3, v30}];
+        v17 = [*(*(&v30 + 1) + 8 * v16) copyWithZone:{zone, v30}];
         [v5 addDestinations:v17];
 
         ++v16;
@@ -316,23 +316,23 @@
     while (v14);
   }
 
-  v18 = [(ASCodableRelationshipContainer *)self->_relationshipContainer copyWithZone:a3];
+  v18 = [(ASCodableRelationshipContainer *)self->_relationshipContainer copyWithZone:zone];
   v19 = *(v5 + 48);
   *(v5 + 48) = v18;
 
-  v20 = [(ASCodableRelationshipContainer *)self->_remoteRelationshipContainer copyWithZone:a3];
+  v20 = [(ASCodableRelationshipContainer *)self->_remoteRelationshipContainer copyWithZone:zone];
   v21 = *(v5 + 64);
   *(v5 + 64) = v20;
 
-  v22 = [(NSData *)self->_pendingRelationshipShareItem copyWithZone:a3];
+  v22 = [(NSData *)self->_pendingRelationshipShareItem copyWithZone:zone];
   v23 = *(v5 + 40);
   *(v5 + 40) = v22;
 
-  v24 = [(NSData *)self->_pendingLegacyShareLocations copyWithZone:a3];
+  v24 = [(NSData *)self->_pendingLegacyShareLocations copyWithZone:zone];
   v25 = *(v5 + 32);
   *(v5 + 32) = v24;
 
-  v26 = [(ASCodableRelationshipStorage *)self->_relationshipStorage copyWithZone:a3];
+  v26 = [(ASCodableRelationshipStorage *)self->_relationshipStorage copyWithZone:zone];
   v27 = *(v5 + 56);
   *(v5 + 56) = v26;
 
@@ -346,16 +346,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   linkedContactStoreIdentifier = self->_linkedContactStoreIdentifier;
-  if (linkedContactStoreIdentifier | *(v4 + 3))
+  if (linkedContactStoreIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)linkedContactStoreIdentifier isEqual:?])
     {
@@ -364,7 +364,7 @@
   }
 
   fullName = self->_fullName;
-  if (fullName | *(v4 + 2))
+  if (fullName | *(equalCopy + 2))
   {
     if (![(NSString *)fullName isEqual:?])
     {
@@ -373,7 +373,7 @@
   }
 
   shortName = self->_shortName;
-  if (shortName | *(v4 + 9))
+  if (shortName | *(equalCopy + 9))
   {
     if (![(NSString *)shortName isEqual:?])
     {
@@ -382,7 +382,7 @@
   }
 
   destinations = self->_destinations;
-  if (destinations | *(v4 + 1))
+  if (destinations | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)destinations isEqual:?])
     {
@@ -391,7 +391,7 @@
   }
 
   relationshipContainer = self->_relationshipContainer;
-  if (relationshipContainer | *(v4 + 6))
+  if (relationshipContainer | *(equalCopy + 6))
   {
     if (![(ASCodableRelationshipContainer *)relationshipContainer isEqual:?])
     {
@@ -400,7 +400,7 @@
   }
 
   remoteRelationshipContainer = self->_remoteRelationshipContainer;
-  if (remoteRelationshipContainer | *(v4 + 8))
+  if (remoteRelationshipContainer | *(equalCopy + 8))
   {
     if (![(ASCodableRelationshipContainer *)remoteRelationshipContainer isEqual:?])
     {
@@ -409,7 +409,7 @@
   }
 
   pendingRelationshipShareItem = self->_pendingRelationshipShareItem;
-  if (pendingRelationshipShareItem | *(v4 + 5))
+  if (pendingRelationshipShareItem | *(equalCopy + 5))
   {
     if (![(NSData *)pendingRelationshipShareItem isEqual:?])
     {
@@ -418,7 +418,7 @@
   }
 
   pendingLegacyShareLocations = self->_pendingLegacyShareLocations;
-  if (pendingLegacyShareLocations | *(v4 + 4))
+  if (pendingLegacyShareLocations | *(equalCopy + 4))
   {
     if (![(NSData *)pendingLegacyShareLocations isEqual:?])
     {
@@ -427,7 +427,7 @@
   }
 
   relationshipStorage = self->_relationshipStorage;
-  if (relationshipStorage | *(v4 + 7))
+  if (relationshipStorage | *(equalCopy + 7))
   {
     if (![(ASCodableRelationshipStorage *)relationshipStorage isEqual:?])
     {
@@ -435,10 +435,10 @@
     }
   }
 
-  v14 = (*(v4 + 84) & 1) == 0;
+  v14 = (*(equalCopy + 84) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 84) & 1) == 0)
+    if ((*(equalCopy + 84) & 1) == 0)
     {
 LABEL_22:
       v14 = 0;
@@ -447,13 +447,13 @@ LABEL_22:
 
     if (self->_shouldRemove)
     {
-      if ((*(v4 + 80) & 1) == 0)
+      if ((*(equalCopy + 80) & 1) == 0)
       {
         goto LABEL_22;
       }
     }
 
-    else if (*(v4 + 80))
+    else if (*(equalCopy + 80))
     {
       goto LABEL_22;
     }
@@ -490,21 +490,21 @@ LABEL_23:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(ASCodableContact *)self setLinkedContactStoreIdentifier:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ASCodableContact *)self setFullName:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(ASCodableContact *)self setShortName:?];
   }
@@ -513,7 +513,7 @@ LABEL_23:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -538,7 +538,7 @@ LABEL_23:
   }
 
   relationshipContainer = self->_relationshipContainer;
-  v11 = *(v4 + 6);
+  v11 = *(fromCopy + 6);
   if (relationshipContainer)
   {
     if (v11)
@@ -553,7 +553,7 @@ LABEL_23:
   }
 
   remoteRelationshipContainer = self->_remoteRelationshipContainer;
-  v13 = *(v4 + 8);
+  v13 = *(fromCopy + 8);
   if (remoteRelationshipContainer)
   {
     if (v13)
@@ -567,18 +567,18 @@ LABEL_23:
     [(ASCodableContact *)self setRemoteRelationshipContainer:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ASCodableContact *)self setPendingRelationshipShareItem:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ASCodableContact *)self setPendingLegacyShareLocations:?];
   }
 
   relationshipStorage = self->_relationshipStorage;
-  v15 = *(v4 + 7);
+  v15 = *(fromCopy + 7);
   if (relationshipStorage)
   {
     if (v15)
@@ -592,9 +592,9 @@ LABEL_23:
     [(ASCodableContact *)self setRelationshipStorage:?];
   }
 
-  if (*(v4 + 84))
+  if (*(fromCopy + 84))
   {
-    self->_shouldRemove = *(v4 + 80);
+    self->_shouldRemove = *(fromCopy + 80);
     *&self->_has |= 1u;
   }
 

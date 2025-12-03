@@ -1,13 +1,13 @@
 @interface TranslatePhraseIntent
-- (TranslatePhraseIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (TranslatePhraseIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (TranslatePhraseIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (TranslatePhraseIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation TranslatePhraseIntent
 
-- (TranslatePhraseIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (TranslatePhraseIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     v5 = sub_269424118();
     v7 = v6;
@@ -19,15 +19,15 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return TranslatePhraseIntent.init(identifier:backingStore:)(v5, v7, a4);
+  storeCopy = store;
+  return TranslatePhraseIntent.init(identifier:backingStore:)(v5, v7, store);
 }
 
-- (TranslatePhraseIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (TranslatePhraseIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
   sub_269424118();
   sub_269424118();
-  if (a5)
+  if (name)
   {
     sub_2694240A8();
   }

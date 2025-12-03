@@ -1,42 +1,42 @@
 @interface WFEvernoteAccessResource
 + (ENSession)evernoteSession;
 + (id)userInterfaceClasses;
-- (WFEvernoteAccessResource)initWithDefinition:(id)a3;
-- (id)localizedProtectedResourceDescriptionWithContext:(id)a3;
+- (WFEvernoteAccessResource)initWithDefinition:(id)definition;
+- (id)localizedProtectedResourceDescriptionWithContext:(id)context;
 - (id)username;
 - (unint64_t)status;
 - (void)dealloc;
 - (void)logOut;
-- (void)makeAvailableWithRemoteInterface:(id)a3 completionHandler:(id)a4;
+- (void)makeAvailableWithRemoteInterface:(id)interface completionHandler:(id)handler;
 @end
 
 @implementation WFEvernoteAccessResource
 
 - (void)logOut
 {
-  v2 = [objc_opt_class() evernoteSession];
-  [v2 unauthenticate];
+  evernoteSession = [objc_opt_class() evernoteSession];
+  [evernoteSession unauthenticate];
 }
 
 - (id)username
 {
-  v2 = [objc_opt_class() evernoteSession];
-  v3 = [v2 userDisplayName];
+  evernoteSession = [objc_opt_class() evernoteSession];
+  userDisplayName = [evernoteSession userDisplayName];
 
-  return v3;
+  return userDisplayName;
 }
 
-- (void)makeAvailableWithRemoteInterface:(id)a3 completionHandler:(id)a4
+- (void)makeAvailableWithRemoteInterface:(id)interface completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__WFEvernoteAccessResource_makeAvailableWithRemoteInterface_completionHandler___block_invoke;
   v8[3] = &unk_278C20360;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 authorizeWithCompletionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [interface authorizeWithCompletionHandler:v8];
 }
 
 void __79__WFEvernoteAccessResource_makeAvailableWithRemoteInterface_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -49,8 +49,8 @@ void __79__WFEvernoteAccessResource_makeAvailableWithRemoteInterface_completionH
 
 - (unint64_t)status
 {
-  v2 = [objc_opt_class() evernoteSession];
-  if ([v2 isAuthenticated])
+  evernoteSession = [objc_opt_class() evernoteSession];
+  if ([evernoteSession isAuthenticated])
   {
     v3 = 4;
   }
@@ -63,34 +63,34 @@ void __79__WFEvernoteAccessResource_makeAvailableWithRemoteInterface_completionH
   return v3;
 }
 
-- (id)localizedProtectedResourceDescriptionWithContext:(id)a3
+- (id)localizedProtectedResourceDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"your Evernote account", @"your Evernote account");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"ENSessionDidUnauthenticateNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"ENSessionDidUnauthenticateNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = WFEvernoteAccessResource;
   [(WFAccessResource *)&v4 dealloc];
 }
 
-- (WFEvernoteAccessResource)initWithDefinition:(id)a3
+- (WFEvernoteAccessResource)initWithDefinition:(id)definition
 {
   v7.receiver = self;
   v7.super_class = WFEvernoteAccessResource;
-  v3 = [(WFAccessResource *)&v7 initWithDefinition:a3];
+  v3 = [(WFAccessResource *)&v7 initWithDefinition:definition];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel_refreshAvailabilityWithNotification name:@"ENSessionDidUnauthenticateNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_refreshAvailabilityWithNotification name:@"ENSessionDidUnauthenticateNotification" object:0];
 
     v5 = v3;
   }
@@ -118,7 +118,7 @@ void __79__WFEvernoteAccessResource_makeAvailableWithRemoteInterface_completionH
   block[1] = 3221225472;
   block[2] = __43__WFEvernoteAccessResource_evernoteSession__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (evernoteSession_onceToken != -1)
   {
     dispatch_once(&evernoteSession_onceToken, block);

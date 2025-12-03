@@ -1,9 +1,9 @@
 @interface PRPeer
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PRPeer)init;
-- (PRPeer)initWithCoder:(id)a3;
-- (PRPeer)initWithUUID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PRPeer)initWithCoder:(id)coder;
+- (PRPeer)initWithUUID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PRPeer
@@ -15,31 +15,31 @@
   return 0;
 }
 
-- (PRPeer)initWithUUID:(id)a3
+- (PRPeer)initWithUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = PRPeer;
   v6 = [(PRPeer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uuid, a3);
+    objc_storeStrong(&v6->_uuid, d);
   }
 
   return v7;
 }
 
-- (PRPeer)initWithCoder:(id)a3
+- (PRPeer)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
 
   v6 = [(PRPeer *)self initWithUUID:v5];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PRPeer alloc];
   uuid = self->_uuid;
@@ -47,17 +47,17 @@
   return [(PRPeer *)v4 initWithUUID:uuid];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PRPeer *)self uuid];
-    v7 = [v5 uuid];
+    v5 = equalCopy;
+    uuid = [(PRPeer *)self uuid];
+    uuid2 = [v5 uuid];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [uuid isEqual:uuid2];
   }
 
   else

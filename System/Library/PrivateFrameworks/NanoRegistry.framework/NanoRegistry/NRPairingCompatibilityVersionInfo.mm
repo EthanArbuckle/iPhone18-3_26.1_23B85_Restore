@@ -1,16 +1,16 @@
 @interface NRPairingCompatibilityVersionInfo
-+ (id)stringFromCFPrefs:(id)a3;
++ (id)stringFromCFPrefs:(id)prefs;
 + (id)systemVersions;
-+ (unint64_t)valueForToken:(int)a3;
++ (unint64_t)valueForToken:(int)token;
 - (id)compatibilityIndexDictionary;
 - (id)initInternal;
-- (int64_t)maxPairingCompatibilityVersionForPhoneProductType:(id)a3;
+- (int64_t)maxPairingCompatibilityVersionForPhoneProductType:(id)type;
 - (int64_t)minPairingCompatibilityVersion;
-- (int64_t)minPairingCompatibilityVersionForChipID:(id)a3 name:(id)a4 defaultVersion:(int64_t)a5;
-- (int64_t)minPairingCompatibilityVersionForWatchProductType:(id)a3;
+- (int64_t)minPairingCompatibilityVersionForChipID:(id)d name:(id)name defaultVersion:(int64_t)version;
+- (int64_t)minPairingCompatibilityVersionForWatchProductType:(id)type;
 - (int64_t)minQuickSwitchCompatibilityVersion;
 - (int64_t)pairingCompatibilityVersion;
-- (unint64_t)pairingCompatibilitySupportStateForAdvertisingWatchVersion:(int64_t)a3;
+- (unint64_t)pairingCompatibilitySupportStateForAdvertisingWatchVersion:(int64_t)version;
 @end
 
 @implementation NRPairingCompatibilityVersionInfo
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __51__NRPairingCompatibilityVersionInfo_systemVersions__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED6F0A28 != -1)
   {
     dispatch_once(&qword_1ED6F0A28, block);
@@ -56,35 +56,35 @@
   return [v2 valueForToken:v3];
 }
 
-- (int64_t)minPairingCompatibilityVersionForWatchProductType:(id)a3
+- (int64_t)minPairingCompatibilityVersionForWatchProductType:(id)type
 {
-  v3 = qword_1ED6F0A00;
-  if (a3)
+  integerValue = qword_1ED6F0A00;
+  if (type)
   {
     v4 = [qword_1ED6F0A08 objectForKeyedSubscript:?];
     v5 = v4;
     if (v4)
     {
-      v3 = [v4 integerValue];
+      integerValue = [v4 integerValue];
     }
   }
 
-  return v3;
+  return integerValue;
 }
 
-- (int64_t)maxPairingCompatibilityVersionForPhoneProductType:(id)a3
+- (int64_t)maxPairingCompatibilityVersionForPhoneProductType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(NRPairingCompatibilityVersionInfo *)self compatibilityIndexDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  compatibilityIndexDictionary = [(NRPairingCompatibilityVersionInfo *)self compatibilityIndexDictionary];
+  v6 = [compatibilityIndexDictionary objectForKeyedSubscript:typeCopy];
 
-  v7 = [v6 integerValue];
-  return v7;
+  integerValue = [v6 integerValue];
+  return integerValue;
 }
 
 - (id)compatibilityIndexDictionary
@@ -204,10 +204,10 @@ LABEL_29:
   return v3;
 }
 
-- (unint64_t)pairingCompatibilitySupportStateForAdvertisingWatchVersion:(int64_t)a3
+- (unint64_t)pairingCompatibilitySupportStateForAdvertisingWatchVersion:(int64_t)version
 {
   v20 = *MEMORY[0x1E69E9840];
-  if ([(NRPairingCompatibilityVersionInfo *)self maxPairingCompatibilityVersion]>= a3)
+  if ([(NRPairingCompatibilityVersionInfo *)self maxPairingCompatibilityVersion]>= version)
   {
     v13 = 1;
     goto LABEL_22;
@@ -254,7 +254,7 @@ LABEL_29:
   v11 = 0;
 LABEL_15:
   v14 = [(NRPairingCompatibilityVersionInfo *)self maxPairingCompatibilityVersionForPhoneProductType:v12];
-  if (v14 >= a3 || v14 == 0)
+  if (v14 >= version || v14 == 0)
   {
     v13 = 2;
   }
@@ -269,11 +269,11 @@ LABEL_22:
   return v13;
 }
 
-- (int64_t)minPairingCompatibilityVersionForChipID:(id)a3 name:(id)a4 defaultVersion:(int64_t)a5
+- (int64_t)minPairingCompatibilityVersionForChipID:(id)d name:(id)name defaultVersion:(int64_t)version
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  dCopy = d;
+  if (dCopy)
   {
     v7 = qword_1ED6F0A18;
     if ([v7 length])
@@ -304,12 +304,12 @@ LABEL_22:
             v14 = MEMORY[0x1E696AD98];
             v15 = [v13 objectAtIndexedSubscript:0];
             v16 = [v14 numberWithInteger:{objc_msgSend(v15, "integerValue")}];
-            v17 = [v6 isEqual:v16];
+            v17 = [dCopy isEqual:v16];
 
             if (v17)
             {
               v18 = [v13 objectAtIndexedSubscript:1];
-              a5 = [v18 integerValue];
+              version = [v18 integerValue];
 
               goto LABEL_13;
             }
@@ -333,7 +333,7 @@ LABEL_13:
   }
 
   v19 = *MEMORY[0x1E69E9840];
-  return a5;
+  return version;
 }
 
 - (id)initInternal
@@ -343,9 +343,9 @@ LABEL_13:
   return [(NRPairingCompatibilityVersionInfo *)&v3 init];
 }
 
-+ (id)stringFromCFPrefs:(id)a3
++ (id)stringFromCFPrefs:(id)prefs
 {
-  v3 = CFPreferencesCopyValue(a3, @"com.apple.NanoRegistry", @"mobile", *MEMORY[0x1E695E898]);
+  v3 = CFPreferencesCopyValue(prefs, @"com.apple.NanoRegistry", @"mobile", *MEMORY[0x1E695E898]);
   if (v3)
   {
     v4 = v3;
@@ -468,13 +468,13 @@ void __51__NRPairingCompatibilityVersionInfo_systemVersions__block_invoke(uint64
   qword_1ED6F0A20 = v18;
 }
 
-+ (unint64_t)valueForToken:(int)a3
++ (unint64_t)valueForToken:(int)token
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3 != -1)
+  if (token != -1)
   {
     state64 = 0;
-    state = notify_get_state(a3, &state64);
+    state = notify_get_state(token, &state64);
     if (!state)
     {
       result = state64;

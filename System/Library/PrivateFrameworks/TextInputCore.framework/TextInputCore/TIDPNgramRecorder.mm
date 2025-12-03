@@ -1,44 +1,44 @@
 @interface TIDPNgramRecorder
-+ (void)enumerateNgramsFromSession:(id)a3 n:(unint64_t)a4 usingBlock:(id)a5;
++ (void)enumerateNgramsFromSession:(id)session n:(unint64_t)n usingBlock:(id)block;
 - (BOOL)report;
-- (id)_normalizedWordEntryStringForWordEntry:(id)a3;
+- (id)_normalizedWordEntryStringForWordEntry:(id)entry;
 - (id)delegate;
-- (id)randomRecordsLimitedByCount:(unint64_t)a3;
+- (id)randomRecordsLimitedByCount:(unint64_t)count;
 - (id)recordingKey;
 - (id)records;
 @end
 
 @implementation TIDPNgramRecorder
 
-- (id)_normalizedWordEntryStringForWordEntry:(id)a3
+- (id)_normalizedWordEntryStringForWordEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 originalWord];
-  LOBYTE(self) = [(TIDPRecorder *)self isWordEntryReallyOOV:v5 caseSensitive:0];
+  entryCopy = entry;
+  originalWord = [entryCopy originalWord];
+  LOBYTE(self) = [(TIDPRecorder *)self isWordEntryReallyOOV:originalWord caseSensitive:0];
 
   if (self)
   {
-    v6 = @"u_token";
+    lowercaseString = @"u_token";
   }
 
   else
   {
-    v7 = [v4 originalWord];
-    v8 = [v7 acceptedString];
+    originalWord2 = [entryCopy originalWord];
+    acceptedString = [originalWord2 acceptedString];
 
-    v9 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v10 = [v8 stringByTrimmingCharactersInSet:v9];
-    v6 = [v10 lowercaseString];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v10 = [acceptedString stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
+    lowercaseString = [v10 lowercaseString];
   }
 
-  return v6;
+  return lowercaseString;
 }
 
 - (BOOL)report
 {
   v59 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
-  v40 = self;
+  selfCopy = self;
   if ([(TIDPNgramRecorder *)self shouldDonateNgramSampleRandomly])
   {
     [(TIDPNgramRecorder *)self randomRecords];
@@ -59,12 +59,12 @@
   if (v4)
   {
     v5 = v4;
-    v6 = 0;
+    coderVersion = 0;
     v7 = *v51;
     do
     {
       v8 = 0;
-      v9 = v6;
+      v9 = coderVersion;
       do
       {
         if (*v51 != v7)
@@ -93,10 +93,10 @@
                 objc_enumerationMutation(v12);
               }
 
-              v17 = [*(*(&v46 + 1) + 8 * i) codedWord];
-              if (v17)
+              codedWord = [*(*(&v46 + 1) + 8 * i) codedWord];
+              if (codedWord)
               {
-                [v11 addObject:v17];
+                [v11 addObject:codedWord];
               }
             }
 
@@ -106,12 +106,12 @@
           while (v14);
         }
 
-        v18 = [v12 firstObject];
-        v6 = [v18 coderVersion];
+        firstObject = [v12 firstObject];
+        coderVersion = [firstObject coderVersion];
 
         [v41 addObject:v11];
         ++v8;
-        v9 = v6;
+        v9 = coderVersion;
       }
 
       while (v8 != v5);
@@ -123,7 +123,7 @@
 
   else
   {
-    v6 = 0;
+    coderVersion = 0;
   }
 
   v19 = [v41 copy];
@@ -152,21 +152,21 @@
           }
 
           v25 = *(*(&v42 + 1) + 8 * j);
-          v26 = [v6 UUIDString];
-          v27 = v26;
+          uUIDString = [coderVersion UUIDString];
+          v27 = uUIDString;
           v28 = @"UNKNOWN_VERSION";
-          if (v26)
+          if (uUIDString)
           {
-            v28 = v26;
+            v28 = uUIDString;
           }
 
           v29 = v28;
 
-          v30 = [(TIDPNgramRecorder *)v40 delegate];
+          delegate = [(TIDPNgramRecorder *)selfCopy delegate];
           v54 = @"VersionHash";
           v55 = v29;
           v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
-          [v30 record:v25 metadata:v31];
+          [delegate record:v25 metadata:v31];
         }
 
         v22 = [obja countByEnumeratingWithState:&v42 objects:v56 count:16];
@@ -186,30 +186,30 @@
   return v32;
 }
 
-- (id)randomRecordsLimitedByCount:(unint64_t)a3
+- (id)randomRecordsLimitedByCount:(unint64_t)count
 {
-  v5 = [(TIDPNgramRecorder *)self records];
-  if ([v5 count] <= a3)
+  records = [(TIDPNgramRecorder *)self records];
+  if ([records count] <= count)
   {
-    v15 = v5;
+    v15 = records;
   }
 
   else
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:a3];
-    v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a3];
-    v8 = [(TIDPNgramRecorder *)self records];
-    v9 = [v8 count];
+    v6 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:count];
+    v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:count];
+    records2 = [(TIDPNgramRecorder *)self records];
+    v9 = [records2 count];
 
-    while ([v6 count] < a3)
+    while ([v6 count] < count)
     {
       v10 = arc4random_uniform(v9);
       v11 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
       v12 = [v6 containsObject:v11];
 
-      if ((v12 & 1) == 0 && [v5 count] >= v10)
+      if ((v12 & 1) == 0 && [records count] >= v10)
       {
-        v13 = [v5 objectAtIndex:v10];
+        v13 = [records objectAtIndex:v10];
         [v7 addObject:v13];
         v14 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
         [v6 addObject:v14];
@@ -225,22 +225,22 @@
 - (id)records
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(TIDPRecorder *)self wordCoder];
+  wordCoder = [(TIDPRecorder *)self wordCoder];
 
-  if (v3)
+  if (wordCoder)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v5 = objc_opt_class();
-    v6 = [(TIDPRecorder *)self typingSessionAligned];
+    typingSessionAligned = [(TIDPRecorder *)self typingSessionAligned];
     v7 = [(TIDPNgramRecorderCascading *)self n];
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __28__TIDPNgramRecorder_records__block_invoke;
     v16 = &unk_278733278;
-    v17 = self;
+    selfCopy = self;
     v18 = v4;
     v8 = v4;
-    [v5 enumerateNgramsFromSession:v6 n:v7 usingBlock:&v13];
+    [v5 enumerateNgramsFromSession:typingSessionAligned n:v7 usingBlock:&v13];
 
     v9 = [v8 copy];
   }
@@ -249,11 +249,11 @@
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
-      v10 = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
+      recordingKeyLocaleSubstring = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
       *buf = 136315394;
       v20 = "[TIDPNgramRecorder records]";
       v21 = 2112;
-      v22 = v10;
+      v22 = recordingKeyLocaleSubstring;
       _os_log_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s  Not recording n-grams for locale '%@' because a valid word coder could not be loaded.", buf, 0x16u);
     }
 
@@ -324,13 +324,13 @@ void __28__TIDPNgramRecorder_records__block_invoke(uint64_t a1, void *a2)
 {
   v11.receiver = self;
   v11.super_class = TIDPNgramRecorder;
-  v3 = [(TIDPRecorder *)&v11 delegate];
+  delegate = [(TIDPRecorder *)&v11 delegate];
 
-  if (!v3)
+  if (!delegate)
   {
     v4 = objc_alloc(MEMORY[0x277D05308]);
-    v5 = [(TIDPNgramRecorder *)self recordingKey];
-    v6 = [v4 initWithKey:v5];
+    recordingKey = [(TIDPNgramRecorder *)self recordingKey];
+    v6 = [v4 initWithKey:recordingKey];
 
     v10.receiver = self;
     v10.super_class = TIDPNgramRecorder;
@@ -339,31 +339,31 @@ void __28__TIDPNgramRecorder_records__block_invoke(uint64_t a1, void *a2)
 
   v9.receiver = self;
   v9.super_class = TIDPNgramRecorder;
-  v7 = [(TIDPRecorder *)&v9 delegate];
+  delegate2 = [(TIDPRecorder *)&v9 delegate];
 
-  return v7;
+  return delegate2;
 }
 
 - (id)recordingKey
 {
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.TextInput.WordNgrams.%lu.", -[TIDPNgramRecorderCascading n](self, "n")];
-  v4 = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
-  v5 = [v3 stringByAppendingString:v4];
+  recordingKeyLocaleSubstring = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
+  v5 = [v3 stringByAppendingString:recordingKeyLocaleSubstring];
 
   return v5;
 }
 
-+ (void)enumerateNgramsFromSession:(id)a3 n:(unint64_t)a4 usingBlock:(id)a5
++ (void)enumerateNgramsFromSession:(id)session n:(unint64_t)n usingBlock:(id)block
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 alignedEntries];
-  v10 = [v9 count];
+  sessionCopy = session;
+  blockCopy = block;
+  alignedEntries = [sessionCopy alignedEntries];
+  v10 = [alignedEntries count];
 
-  if (v10 && v10 + 2 >= a4)
+  if (v10 && v10 + 2 >= n)
   {
-    v31 = a4;
+    nCopy = n;
     v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:?];
     v12 = [[TIDPNgramWordEntryPair alloc] initWithWordString:@"<s>"];
     [v11 addObject:v12];
@@ -372,9 +372,9 @@ void __28__TIDPNgramRecorder_records__block_invoke(uint64_t a1, void *a2)
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v32 = v7;
-    v13 = [v7 alignedEntries];
-    v14 = [v13 countByEnumeratingWithState:&v34 objects:v38 count:16];
+    v32 = sessionCopy;
+    alignedEntries2 = [sessionCopy alignedEntries];
+    v14 = [alignedEntries2 countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v14)
     {
       v15 = v14;
@@ -385,21 +385,21 @@ void __28__TIDPNgramRecorder_records__block_invoke(uint64_t a1, void *a2)
         {
           if (*v35 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(alignedEntries2);
           }
 
           v18 = *(*(&v34 + 1) + 8 * i);
-          v19 = [v18 originalWord];
-          v20 = [v19 acceptedString];
+          originalWord = [v18 originalWord];
+          acceptedString = [originalWord acceptedString];
 
-          if (v20)
+          if (acceptedString)
           {
-            v21 = [[TIDPNgramWordEntryPair alloc] initWithWordString:v20 wordEntryAligned:v18];
+            v21 = [[TIDPNgramWordEntryPair alloc] initWithWordString:acceptedString wordEntryAligned:v18];
             [v11 addObject:v21];
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v34 objects:v38 count:16];
+        v15 = [alignedEntries2 countByEnumeratingWithState:&v34 objects:v38 count:16];
       }
 
       while (v15);
@@ -409,9 +409,9 @@ void __28__TIDPNgramRecorder_records__block_invoke(uint64_t a1, void *a2)
     [v11 addObject:v22];
 
     v23 = [v11 count];
-    if (v23 >= v31)
+    if (v23 >= nCopy)
     {
-      v24 = v31;
+      v24 = nCopy;
     }
 
     else
@@ -431,7 +431,7 @@ void __28__TIDPNgramRecorder_records__block_invoke(uint64_t a1, void *a2)
         break;
       }
 
-      v26 = [MEMORY[0x277CBEB18] arrayWithCapacity:v31];
+      v26 = [MEMORY[0x277CBEB18] arrayWithCapacity:nCopy];
 
       if (v24)
       {
@@ -447,13 +447,13 @@ void __28__TIDPNgramRecorder_records__block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v8[2](v8, v26, &v33);
+      blockCopy[2](blockCopy, v26, &v33);
       ++v25;
     }
 
     while (v25 <= [v11 count] - v24);
 
-    v7 = v32;
+    sessionCopy = v32;
   }
 
   v30 = *MEMORY[0x277D85DE8];

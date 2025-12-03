@@ -1,47 +1,47 @@
 @interface SGMContactRejected
 - (SGMContactRejected)init;
-- (void)trackEventWithScalar:(unint64_t)a3 app:(SGMBannerDisplayApp_)a4 extracted:(SGMBannerExtractionType_)a5 selfId:(SGMTypeSafeBool_)a6 extractionModelVersion:(unint64_t)a7 contactDetail:(SGMContactDetailType_)a8;
+- (void)trackEventWithScalar:(unint64_t)scalar app:(SGMBannerDisplayApp_)app extracted:(SGMBannerExtractionType_)extracted selfId:(SGMTypeSafeBool_)id extractionModelVersion:(unint64_t)version contactDetail:(SGMContactDetailType_)detail;
 @end
 
 @implementation SGMContactRejected
 
-- (void)trackEventWithScalar:(unint64_t)a3 app:(SGMBannerDisplayApp_)a4 extracted:(SGMBannerExtractionType_)a5 selfId:(SGMTypeSafeBool_)a6 extractionModelVersion:(unint64_t)a7 contactDetail:(SGMContactDetailType_)a8
+- (void)trackEventWithScalar:(unint64_t)scalar app:(SGMBannerDisplayApp_)app extracted:(SGMBannerExtractionType_)extracted selfId:(SGMTypeSafeBool_)id extractionModelVersion:(unint64_t)version contactDetail:(SGMContactDetailType_)detail
 {
   v31[5] = *MEMORY[0x1E69E9840];
-  if (a4.var0 >= 3)
+  if (app.var0 >= 3)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMBannerDisplayApp_toString(SGMBannerDisplayApp)"];
-    [v15 handleFailureInFunction:v16 file:@"SGMetricsDefines.h" lineNumber:61 description:{@"unrecognized tag %lu on SGMBannerDisplayApp", a4.var0}];
+    [currentHandler handleFailureInFunction:v16 file:@"SGMetricsDefines.h" lineNumber:61 description:{@"unrecognized tag %lu on SGMBannerDisplayApp", app.var0}];
 
     v14 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v14 = off_1E7EFBFB0[a4.var0];
+    v14 = off_1E7EFBFB0[app.var0];
   }
 
-  if (a5.var0 >= 4)
+  if (extracted.var0 >= 4)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMBannerExtractionType_toString(SGMBannerExtractionType)"];
-    [v19 handleFailureInFunction:v20 file:@"SGMetricsDefines.h" lineNumber:111 description:{@"unrecognized tag %lu on SGMBannerExtractionType", a5.var0}];
+    [currentHandler2 handleFailureInFunction:v20 file:@"SGMetricsDefines.h" lineNumber:111 description:{@"unrecognized tag %lu on SGMBannerExtractionType", extracted.var0}];
 
     v17 = @"ERR_UNMATCHED_TAG";
-    if (a6.var0)
+    if (id.var0)
     {
 LABEL_6:
-      if (a6.var0 == 1)
+      if (id.var0 == 1)
       {
         v18 = @"1";
       }
 
       else
       {
-        v21 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
         v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMTypeSafeBool_toString(SGMTypeSafeBool)"];
-        [v21 handleFailureInFunction:v22 file:@"SGMetricsDefines.h" lineNumber:12 description:{@"unrecognized tag %lu on SGMTypeSafeBool", a6.var0}];
+        [currentHandler3 handleFailureInFunction:v22 file:@"SGMetricsDefines.h" lineNumber:12 description:{@"unrecognized tag %lu on SGMTypeSafeBool", id.var0}];
 
         v18 = @"ERR_UNMATCHED_TAG";
       }
@@ -52,8 +52,8 @@ LABEL_6:
 
   else
   {
-    v17 = off_1E7EFBEC8[a5.var0];
-    if (a6.var0)
+    v17 = off_1E7EFBEC8[extracted.var0];
+    if (id.var0)
     {
       goto LABEL_6;
     }
@@ -61,29 +61,29 @@ LABEL_6:
 
   v18 = @"0";
 LABEL_11:
-  if (a8.var0 >= 5)
+  if (detail.var0 >= 5)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMContactDetailType_toString(SGMContactDetailType)"];
-    [v24 handleFailureInFunction:v25 file:@"SGMetricsDefines.h" lineNumber:159 description:{@"unrecognized tag %lu on SGMContactDetailType", a8.var0}];
+    [currentHandler4 handleFailureInFunction:v25 file:@"SGMetricsDefines.h" lineNumber:159 description:{@"unrecognized tag %lu on SGMContactDetailType", detail.var0}];
 
     v23 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v23 = off_1E7EFC2B8[a8.var0];
+    v23 = off_1E7EFC2B8[detail.var0];
   }
 
   tracker = self->_tracker;
   v31[0] = v14;
   v31[1] = v17;
   v31[2] = v18;
-  v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a7];
+  v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:version];
   v31[3] = v27;
   v31[4] = v23;
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:5];
-  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v28 value:a3];
+  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v28 value:scalar];
 
   v29 = *MEMORY[0x1E69E9840];
 }

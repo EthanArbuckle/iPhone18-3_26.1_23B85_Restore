@@ -7,14 +7,14 @@
 
 - (id)if_allIntentDefinitionURLs
 {
-  v2 = [a1 URL];
+  v2 = [self URL];
 
   if (v2)
   {
-    v3 = [a1 intentDefinitionURLs];
-    v4 = [v3 allValues];
+    intentDefinitionURLs = [self intentDefinitionURLs];
+    allValues = [intentDefinitionURLs allValues];
 
-    v5 = [MEMORY[0x277CBEB98] setWithArray:v4];
+    v5 = [MEMORY[0x277CBEB98] setWithArray:allValues];
   }
 
   else
@@ -30,14 +30,14 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = a1;
+    selfCopy = self;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 containingBundleRecord];
+    selfCopy = [self containingBundleRecord];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,10 +45,10 @@
     }
   }
 
-  v2 = 0;
+  selfCopy = 0;
 LABEL_7:
 
-  return v2;
+  return selfCopy;
 }
 
 @end

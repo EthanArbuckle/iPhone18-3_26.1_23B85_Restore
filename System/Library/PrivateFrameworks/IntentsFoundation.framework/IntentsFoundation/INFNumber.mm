@@ -1,21 +1,21 @@
 @interface INFNumber
-+ (id)numberWithIdentifier:(id)a3;
-- (INFNumber)initWithIdentifier:(id)a3;
++ (id)numberWithIdentifier:(id)identifier;
+- (INFNumber)initWithIdentifier:(id)identifier;
 - (id)contributingSentenceContext;
-- (id)stringForContext:(id)a3;
+- (id)stringForContext:(id)context;
 @end
 
 @implementation INFNumber
 
-+ (id)numberWithIdentifier:(id)a3
++ (id)numberWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)stringForContext:(id)a3
+- (id)stringForContext:(id)context
 {
   v4 = objc_alloc_init(MEMORY[0x277CCABB8]);
   [v4 setNumberStyle:1];
@@ -32,14 +32,14 @@
   return v3;
 }
 
-- (INFNumber)initWithIdentifier:(id)a3
+- (INFNumber)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(INFNumber *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     value = v7->_value;
     v7->_value = &unk_28676F068;
   }

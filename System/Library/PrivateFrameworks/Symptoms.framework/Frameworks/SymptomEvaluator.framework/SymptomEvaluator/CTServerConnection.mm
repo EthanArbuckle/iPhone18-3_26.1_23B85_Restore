@@ -1,24 +1,24 @@
 @interface CTServerConnection
-+ (void)registerForCTNofication:(const __CFString *)a3 ctShim:(id)a4 completion:(id)a5;
-+ (void)unregisterForCTNotification:(const __CFString *)a3 ctShim:(id)a4 completion:(id)a5;
++ (void)registerForCTNofication:(const __CFString *)nofication ctShim:(id)shim completion:(id)completion;
++ (void)unregisterForCTNotification:(const __CFString *)notification ctShim:(id)shim completion:(id)completion;
 @end
 
 @implementation CTServerConnection
 
-+ (void)registerForCTNofication:(const __CFString *)a3 ctShim:(id)a4 completion:(id)a5
++ (void)registerForCTNofication:(const __CFString *)nofication ctShim:(id)shim completion:(id)completion
 {
   *&v19[5] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  shimCopy = shim;
+  completionCopy = completion;
   v9 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
   {
     v18 = 138412290;
-    *v19 = a3;
+    *v19 = nofication;
     _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_INFO, "Registering for CT notification %@", &v18, 0xCu);
   }
 
-  [v7 ctServerConnection];
+  [shimCopy ctServerConnection];
   v10 = _CTServerConnectionRegisterForNotification();
   v11 = v10;
   v12 = HIDWORD(v10);
@@ -40,7 +40,7 @@
     v14 = MEMORY[0x277CCA5B8];
 LABEL_10:
     v15 = [v13 errorWithDomain:*v14 code:v11 >> 32 userInfo:0];
-    v8[2](v8, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
 
     goto LABEL_11;
   }
@@ -56,26 +56,26 @@ LABEL_10:
   }
 
 LABEL_5:
-  v8[2](v8, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 LABEL_11:
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)unregisterForCTNotification:(const __CFString *)a3 ctShim:(id)a4 completion:(id)a5
++ (void)unregisterForCTNotification:(const __CFString *)notification ctShim:(id)shim completion:(id)completion
 {
   *&v19[5] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  shimCopy = shim;
+  completionCopy = completion;
   v9 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
   {
     v18 = 138412290;
-    *v19 = a3;
+    *v19 = notification;
     _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_INFO, "Unregistering from CT notification %@", &v18, 0xCu);
   }
 
-  [v7 ctServerConnection];
+  [shimCopy ctServerConnection];
   v10 = _CTServerConnectionUnregisterForNotification();
   v11 = v10;
   v12 = HIDWORD(v10);
@@ -97,7 +97,7 @@ LABEL_11:
     v14 = MEMORY[0x277CCA5B8];
 LABEL_10:
     v15 = [v13 errorWithDomain:*v14 code:v11 >> 32 userInfo:0];
-    v8[2](v8, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
 
     goto LABEL_11;
   }
@@ -113,7 +113,7 @@ LABEL_10:
   }
 
 LABEL_5:
-  v8[2](v8, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 LABEL_11:
 
   v16 = *MEMORY[0x277D85DE8];

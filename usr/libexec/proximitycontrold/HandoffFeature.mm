@@ -1,25 +1,25 @@
 @interface HandoffFeature
 - (NSString)description;
 - (_TtC17proximitycontrold14HandoffFeature)init;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)setDispatchQueue:(id)a3;
-- (void)setInterruptionHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
+- (void)setDispatchQueue:(id)queue;
+- (void)setInterruptionHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
 @end
 
 @implementation HandoffFeature
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
   v4 = *(self + OBJC_IVAR____TtC17proximitycontrold14HandoffFeature_dispatchQueue);
-  *(self + OBJC_IVAR____TtC17proximitycontrold14HandoffFeature_dispatchQueue) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC17proximitycontrold14HandoffFeature_dispatchQueue) = queue;
+  queueCopy = queue;
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -38,13 +38,13 @@
   v9 = *(self + OBJC_IVAR____TtC17proximitycontrold14HandoffFeature_invalidationHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_10002689C(v8);
 }
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -63,22 +63,22 @@
   v9 = *(self + OBJC_IVAR____TtC17proximitycontrold14HandoffFeature_interruptionHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_10002689C(v8);
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_100201174(sub_100104000, v5);
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_100201D80();
 }
 
@@ -91,7 +91,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_100201FCC();
 
   v3 = String._bridgeToObjectiveC()();

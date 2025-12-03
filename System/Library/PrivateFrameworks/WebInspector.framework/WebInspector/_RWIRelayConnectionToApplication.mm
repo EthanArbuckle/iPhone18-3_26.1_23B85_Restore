@@ -1,25 +1,25 @@
 @interface _RWIRelayConnectionToApplication
-- (_RWIRelayConnectionToApplication)initWithConnection:(id)a3;
+- (_RWIRelayConnectionToApplication)initWithConnection:(id)connection;
 - (_RWIRelayConnectionToApplicationDelegate)delegate;
-- (id)_deserializeMessage:(id)a3;
-- (void)_handleEvent:(id)a3;
+- (id)_deserializeMessage:(id)message;
+- (void)_handleEvent:(id)event;
 - (void)close;
 - (void)dealloc;
-- (void)sendMessage:(id)a3 userInfo:(id)a4;
+- (void)sendMessage:(id)message userInfo:(id)info;
 @end
 
 @implementation _RWIRelayConnectionToApplication
 
-- (_RWIRelayConnectionToApplication)initWithConnection:(id)a3
+- (_RWIRelayConnectionToApplication)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v14.receiver = self;
   v14.super_class = _RWIRelayConnectionToApplication;
   v6 = [(_RWIRelayConnectionToApplication *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     xpc_connection_set_target_queue(v7->_connection, MEMORY[0x277D85CD0]);
     connection = v7->_connection;
     handler[0] = MEMORY[0x277D85DD0];
@@ -55,9 +55,9 @@
   [(_RWIRelayConnectionToApplication *)&v3 dealloc];
 }
 
-- (id)_deserializeMessage:(id)a3
+- (id)_deserializeMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = MEMORY[0x2743DBE80]();
   v6 = MEMORY[0x277D86468];
   if (v5 != MEMORY[0x277D86468])
@@ -66,7 +66,7 @@
     goto LABEL_13;
   }
 
-  v8 = xpc_dictionary_get_value(v4, "msgData");
+  v8 = xpc_dictionary_get_value(messageCopy, "msgData");
   v9 = v8;
   if (v8 && MEMORY[0x2743DBE80](v8) == v6)
   {
@@ -92,7 +92,7 @@ LABEL_10:
   if (v11)
   {
     v12 = objc_loadWeakRetained(&self->_delegate);
-    [v12 xpcConnection:self unhandledMessage:v4];
+    [v12 xpcConnection:self unhandledMessage:messageCopy];
     goto LABEL_10;
   }
 
@@ -104,13 +104,13 @@ LABEL_13:
   return v7;
 }
 
-- (void)_handleEvent:(id)a3
+- (void)_handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
+  eventCopy = event;
+  v5 = eventCopy;
   if (self->_connection)
   {
-    v6 = MEMORY[0x2743DBE80](v4);
+    v6 = MEMORY[0x2743DBE80](eventCopy);
     v7 = MEMORY[0x277D86480];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v9 = WeakRetained;
@@ -175,16 +175,16 @@ LABEL_13:
   }
 }
 
-- (void)sendMessage:(id)a3 userInfo:(id)a4
+- (void)sendMessage:(id)message userInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   if (self->_connection)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionaryWithObject:a3 forKey:@"messageName"];
+    v7 = [MEMORY[0x277CBEB38] dictionaryWithObject:message forKey:@"messageName"];
     v8 = v7;
-    if (v6)
+    if (infoCopy)
     {
-      [v7 setObject:v6 forKey:@"userInfo"];
+      [v7 setObject:infoCopy forKey:@"userInfo"];
     }
 
     v9 = RWIMessageTraceLog();

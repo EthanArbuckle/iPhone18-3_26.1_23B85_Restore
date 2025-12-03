@@ -1,40 +1,40 @@
 @interface WiFiAwarePairingInfo
-- (WiFiAwarePairingInfo)initWithCoder:(id)a3;
-- (WiFiAwarePairingInfo)initWithPeerDeviceName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WiFiAwarePairingInfo)initWithCoder:(id)coder;
+- (WiFiAwarePairingInfo)initWithPeerDeviceName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation WiFiAwarePairingInfo
 
-- (WiFiAwarePairingInfo)initWithCoder:(id)a3
+- (WiFiAwarePairingInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePairingMetadata.peerDeviceName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePairingMetadata.peerDeviceName"];
 
   v6 = [(WiFiAwarePairingInfo *)self initWithPeerDeviceName:v5];
   return v6;
 }
 
-- (WiFiAwarePairingInfo)initWithPeerDeviceName:(id)a3
+- (WiFiAwarePairingInfo)initWithPeerDeviceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = WiFiAwarePairingInfo;
   v6 = [(WiFiAwarePairingInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_peerDeviceName, a3);
+    objc_storeStrong(&v6->_peerDeviceName, name);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
-  v4 = [(WiFiAwarePairingInfo *)v3 peerDeviceName];
-  v5 = [(WiFiAwarePairingInfo *)v3 initWithPeerDeviceName:v4];
+  selfCopy = self;
+  peerDeviceName = [(WiFiAwarePairingInfo *)selfCopy peerDeviceName];
+  v5 = [(WiFiAwarePairingInfo *)selfCopy initWithPeerDeviceName:peerDeviceName];
 
   return v5;
 }

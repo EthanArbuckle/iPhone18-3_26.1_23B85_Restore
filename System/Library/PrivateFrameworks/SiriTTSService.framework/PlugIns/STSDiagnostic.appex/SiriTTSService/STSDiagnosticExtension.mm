@@ -1,13 +1,13 @@
 @interface STSDiagnosticExtension
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation STSDiagnosticExtension
 
 - (id)attachmentList
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000107C();
 
   if (v3)
@@ -23,14 +23,14 @@
   return v4.super.isa;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
     sub_100005A60();
   }
 
-  v4 = self;
+  selfCopy = self;
   v5 = sub_100005614();
 
   if (v5)

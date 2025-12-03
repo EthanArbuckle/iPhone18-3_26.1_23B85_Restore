@@ -1,23 +1,23 @@
 @interface NIDeviceCapabilities
-- (NIDeviceCapabilities)initWithFineRangingSupport:(BOOL)a3 coarseRangingSupport:(BOOL)a4 aoaSupport:(BOOL)a5 extendedDistanceMeasurementSupport:(BOOL)a6 syntheticApertureSupport:(BOOL)a7;
+- (NIDeviceCapabilities)initWithFineRangingSupport:(BOOL)support coarseRangingSupport:(BOOL)rangingSupport aoaSupport:(BOOL)aoaSupport extendedDistanceMeasurementSupport:(BOOL)measurementSupport syntheticApertureSupport:(BOOL)apertureSupport;
 - (unsigned)toBitmap;
 @end
 
 @implementation NIDeviceCapabilities
 
-- (NIDeviceCapabilities)initWithFineRangingSupport:(BOOL)a3 coarseRangingSupport:(BOOL)a4 aoaSupport:(BOOL)a5 extendedDistanceMeasurementSupport:(BOOL)a6 syntheticApertureSupport:(BOOL)a7
+- (NIDeviceCapabilities)initWithFineRangingSupport:(BOOL)support coarseRangingSupport:(BOOL)rangingSupport aoaSupport:(BOOL)aoaSupport extendedDistanceMeasurementSupport:(BOOL)measurementSupport syntheticApertureSupport:(BOOL)apertureSupport
 {
   v13.receiver = self;
   v13.super_class = NIDeviceCapabilities;
   result = [(NIDeviceCapabilities *)&v13 init];
   if (result)
   {
-    result->_supportsPreciseDistanceMeasurement = a3;
-    result->_supportsDirectionMeasurement = a5;
-    result->_supportsCameraAssistance = a7;
-    result->_supportsCoarseDistanceMeasurement = a4;
-    result->_supportsDLTDOAMeasurement = a3;
-    result->_supportsExtendedDistanceMeasurement = a6;
+    result->_supportsPreciseDistanceMeasurement = support;
+    result->_supportsDirectionMeasurement = aoaSupport;
+    result->_supportsCameraAssistance = apertureSupport;
+    result->_supportsCoarseDistanceMeasurement = rangingSupport;
+    result->_supportsDLTDOAMeasurement = support;
+    result->_supportsExtendedDistanceMeasurement = measurementSupport;
   }
 
   return result;

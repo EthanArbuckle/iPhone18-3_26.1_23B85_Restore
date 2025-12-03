@@ -1,23 +1,23 @@
 @interface TokenizerOutputObjc
-- (TokenizerOutputObjc)initWithTokenIds:(id)a3 tokenRanges:(id)a4 wordIndexes:(id)a5;
+- (TokenizerOutputObjc)initWithTokenIds:(id)ids tokenRanges:(id)ranges wordIndexes:(id)indexes;
 @end
 
 @implementation TokenizerOutputObjc
 
-- (TokenizerOutputObjc)initWithTokenIds:(id)a3 tokenRanges:(id)a4 wordIndexes:(id)a5
+- (TokenizerOutputObjc)initWithTokenIds:(id)ids tokenRanges:(id)ranges wordIndexes:(id)indexes
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  idsCopy = ids;
+  rangesCopy = ranges;
+  indexesCopy = indexes;
   v15.receiver = self;
   v15.super_class = TokenizerOutputObjc;
   v12 = [(TokenizerOutputObjc *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_tokenIds, a3);
-    objc_storeStrong(&v13->_tokenRanges, a4);
-    objc_storeStrong(&v13->_wordIndexes, a5);
+    objc_storeStrong(&v12->_tokenIds, ids);
+    objc_storeStrong(&v13->_tokenRanges, ranges);
+    objc_storeStrong(&v13->_wordIndexes, indexes);
   }
 
   return v13;

@@ -1,38 +1,38 @@
 @interface _UIInterfaceActionImagePropertyView
 - (CGSize)_sizeToOccupy;
-- (_UIInterfaceActionImagePropertyView)initWithAction:(id)a3 imageProperty:(id)a4;
+- (_UIInterfaceActionImagePropertyView)initWithAction:(id)action imageProperty:(id)property;
 - (id)_interfaceActionViewState;
 - (void)_applyVisualStyleToImageView;
 - (void)_reloadImageContent;
 - (void)dealloc;
-- (void)interfaceAction:(id)a3 reloadDisplayedContentActionProperties:(id)a4;
-- (void)setImage:(id)a3;
+- (void)interfaceAction:(id)action reloadDisplayedContentActionProperties:(id)properties;
+- (void)setImage:(id)image;
 - (void)tintColorDidChange;
 @end
 
 @implementation _UIInterfaceActionImagePropertyView
 
-- (_UIInterfaceActionImagePropertyView)initWithAction:(id)a3 imageProperty:(id)a4
+- (_UIInterfaceActionImagePropertyView)initWithAction:(id)action imageProperty:(id)property
 {
-  v7 = a3;
-  v8 = a4;
+  actionCopy = action;
+  propertyCopy = property;
   v20.receiver = self;
   v20.super_class = _UIInterfaceActionImagePropertyView;
   v9 = [(UIImageView *)&v20 initWithImage:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_action, a3);
-    objc_storeStrong(&v10->_imageProperty, a4);
+    objc_storeStrong(&v9->_action, action);
+    objc_storeStrong(&v10->_imageProperty, property);
     [(UIImageView *)v10 _setDefaultRenderingMode:2];
-    v11 = [(UIView *)v10 widthAnchor];
-    v12 = [v11 constraintEqualToConstant:0.0];
+    widthAnchor = [(UIView *)v10 widthAnchor];
+    v12 = [widthAnchor constraintEqualToConstant:0.0];
     imageWidthConstraint = v10->_imageWidthConstraint;
     v10->_imageWidthConstraint = v12;
 
     [(NSLayoutConstraint *)v10->_imageWidthConstraint setIdentifier:@"imageWidth"];
-    v14 = [(UIView *)v10 heightAnchor];
-    v15 = [v14 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIView *)v10 heightAnchor];
+    v15 = [heightAnchor constraintEqualToConstant:0.0];
     imageHeightConstraint = v10->_imageHeightConstraint;
     v10->_imageHeightConstraint = v15;
 
@@ -56,27 +56,27 @@
   [(UIImageView *)&v3 dealloc];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(UIImageView *)self image];
+  imageCopy = image;
+  image = [(UIImageView *)self image];
 
-  if (v5 != v4)
+  if (image != imageCopy)
   {
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:{self->_imageWidthConstraint, self->_imageHeightConstraint, 0}];
     [(_UIInterfaceActionImagePropertyView *)self _sizeToOccupy];
-    if (v4)
+    if (imageCopy)
     {
-      [v4 size];
+      [imageCopy size];
       v10 = v9;
       v12 = v11;
-      [v4 alignmentRectInsets];
+      [imageCopy alignmentRectInsets];
       v14 = v13;
-      [v4 alignmentRectInsets];
+      [imageCopy alignmentRectInsets];
       v16 = v10 - (v14 + v15);
-      [v4 alignmentRectInsets];
+      [imageCopy alignmentRectInsets];
       v18 = v17;
-      [v4 alignmentRectInsets];
+      [imageCopy alignmentRectInsets];
       v20 = v12 - (v18 + v19);
       [(NSLayoutConstraint *)self->_imageWidthConstraint setConstant:v16];
       imageHeightConstraint = self->_imageHeightConstraint;
@@ -103,7 +103,7 @@
 LABEL_7:
     v25.receiver = self;
     v25.super_class = _UIInterfaceActionImagePropertyView;
-    [(UIImageView *)&v25 setImage:v4];
+    [(UIImageView *)&v25 setImage:imageCopy];
   }
 }
 
@@ -115,19 +115,19 @@ LABEL_7:
   [(UIImageView *)&v3 tintColorDidChange];
 }
 
-- (void)interfaceAction:(id)a3 reloadDisplayedContentActionProperties:(id)a4
+- (void)interfaceAction:(id)action reloadDisplayedContentActionProperties:(id)properties
 {
-  v8 = a4;
-  if ([v8 containsObject:self->_imageProperty])
+  propertiesCopy = properties;
+  if ([propertiesCopy containsObject:self->_imageProperty])
   {
     [(_UIInterfaceActionImagePropertyView *)self _reloadImageContent];
   }
 
   else
   {
-    v5 = [(_UIInterfaceActionImagePropertyView *)self _visualStyle];
-    v6 = [v5 actionPropertiesAffectingImageViewStyling];
-    v7 = [UIInterfaceAction changedProperties:v8 containsAny:v6];
+    _visualStyle = [(_UIInterfaceActionImagePropertyView *)self _visualStyle];
+    actionPropertiesAffectingImageViewStyling = [_visualStyle actionPropertiesAffectingImageViewStyling];
+    v7 = [UIInterfaceAction changedProperties:propertiesCopy containsAny:actionPropertiesAffectingImageViewStyling];
 
     if (v7)
     {
@@ -138,29 +138,29 @@ LABEL_7:
 
 - (void)_applyVisualStyleToImageView
 {
-  v3 = [(UIImageView *)self image];
+  image = [(UIImageView *)self image];
 
-  if (v3)
+  if (image)
   {
-    v6 = [(_UIInterfaceActionImagePropertyView *)self _visualStyle];
+    _visualStyle = [(_UIInterfaceActionImagePropertyView *)self _visualStyle];
     imageProperty = self->_imageProperty;
-    v5 = [(_UIInterfaceActionImagePropertyView *)self _interfaceActionViewState];
-    [v6 configureAttributesForImageView:self imageProperty:imageProperty actionViewState:v5];
+    _interfaceActionViewState = [(_UIInterfaceActionImagePropertyView *)self _interfaceActionViewState];
+    [_visualStyle configureAttributesForImageView:self imageProperty:imageProperty actionViewState:_interfaceActionViewState];
   }
 }
 
 - (id)_interfaceActionViewState
 {
-  v3 = [(_UIInterfaceActionImagePropertyView *)self action];
-  v4 = [UIInterfaceActionViewState viewStateForActionRepresentationViewDescendantView:self action:v3];
+  action = [(_UIInterfaceActionImagePropertyView *)self action];
+  v4 = [UIInterfaceActionViewState viewStateForActionRepresentationViewDescendantView:self action:action];
 
   return v4;
 }
 
 - (CGSize)_sizeToOccupy
 {
-  v3 = [(_UIInterfaceActionImagePropertyView *)self action];
-  [v3 _layoutSizeForImageProperty:self->_imageProperty];
+  action = [(_UIInterfaceActionImagePropertyView *)self action];
+  [action _layoutSizeForImageProperty:self->_imageProperty];
   v5 = v4;
   v7 = v6;
 
@@ -173,8 +173,8 @@ LABEL_7:
 
 - (void)_reloadImageContent
 {
-  v3 = [(_UIInterfaceActionImagePropertyView *)self action];
-  v5 = [v3 valueForKey:self->_imageProperty];
+  action = [(_UIInterfaceActionImagePropertyView *)self action];
+  v5 = [action valueForKey:self->_imageProperty];
 
   [(_UIInterfaceActionImagePropertyView *)self setImage:v5];
   v4 = 1.0;

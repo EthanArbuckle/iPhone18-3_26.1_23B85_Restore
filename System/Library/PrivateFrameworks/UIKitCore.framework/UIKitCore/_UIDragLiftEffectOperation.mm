@@ -1,6 +1,6 @@
 @interface _UIDragLiftEffectOperation
 + (id)defaultTimingParameters;
-- (_UIDragLiftEffectOperation)initWithLiftAnimationDuration:(double)a3 liftTimingParameters:(id)a4;
+- (_UIDragLiftEffectOperation)initWithLiftAnimationDuration:(double)duration liftTimingParameters:(id)parameters;
 @end
 
 @implementation _UIDragLiftEffectOperation
@@ -42,15 +42,15 @@
   return v5;
 }
 
-- (_UIDragLiftEffectOperation)initWithLiftAnimationDuration:(double)a3 liftTimingParameters:(id)a4
+- (_UIDragLiftEffectOperation)initWithLiftAnimationDuration:(double)duration liftTimingParameters:(id)parameters
 {
-  v6 = a4;
+  parametersCopy = parameters;
   v11.receiver = self;
   v11.super_class = _UIDragLiftEffectOperation;
   v7 = [(_UIDragLiftEffectOperation *)&v11 init];
   if (v7)
   {
-    v8 = [[UIViewPropertyAnimator alloc] initWithDuration:v6 timingParameters:a3];
+    v8 = [[UIViewPropertyAnimator alloc] initWithDuration:parametersCopy timingParameters:duration];
     propertyAnimator = v7->_propertyAnimator;
     v7->_propertyAnimator = v8;
   }

@@ -1,10 +1,10 @@
 @interface AAUIAccountRecoveryContactUpsellSelectorVC
-- (AAUIAccountRecoveryContactUpsellSelectorVC)initWithSelectorViewModel:(id)a3 vcDelegate:(id)a4;
-- (AAUIAccountRecoveryContactUpsellSelectorVC)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (AAUIAccountRecoveryContactUpsellSelectorVC)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (AAUIAccountRecoveryContactUpsellSelectorVC)initWithSelectorViewModel:(id)model vcDelegate:(id)delegate;
+- (AAUIAccountRecoveryContactUpsellSelectorVC)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (AAUIAccountRecoveryContactUpsellSelectorVC)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)addButton;
 - (void)didSelectLearnMoreButton;
-- (void)didSelectLocalContactFor:(id)a3;
+- (void)didSelectLocalContactFor:(id)for;
 - (void)dismissLearnMoreSheet;
 - (void)setupLater;
 - (void)viewDidLoad;
@@ -12,11 +12,11 @@
 
 @implementation AAUIAccountRecoveryContactUpsellSelectorVC
 
-- (AAUIAccountRecoveryContactUpsellSelectorVC)initWithSelectorViewModel:(id)a3 vcDelegate:(id)a4
+- (AAUIAccountRecoveryContactUpsellSelectorVC)initWithSelectorViewModel:(id)model vcDelegate:(id)delegate
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](model);
   swift_unknownObjectRetain();
-  return AccountRecoveryContactUpsellSelectorVC.init(selectorViewModel:vcDelegate:)(a3, a4);
+  return AccountRecoveryContactUpsellSelectorVC.init(selectorViewModel:vcDelegate:)(model, delegate);
 }
 
 - (void)viewDidLoad
@@ -40,13 +40,13 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (void)didSelectLocalContactFor:(id)a3
+- (void)didSelectLocalContactFor:(id)for
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](for);
   MEMORY[0x1E69E5928](self);
-  sub_1C54F2B40(a3);
+  sub_1C54F2B40(for);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](for);
 }
 
 - (void)didSelectLearnMoreButton
@@ -63,23 +63,23 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (AAUIAccountRecoveryContactUpsellSelectorVC)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (AAUIAccountRecoveryContactUpsellSelectorVC)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
-  MEMORY[0x1E69E5928](a5);
+  MEMORY[0x1E69E5928](title);
+  MEMORY[0x1E69E5928](text);
+  MEMORY[0x1E69E5928](name);
   sub_1C5596574();
-  if (a4)
+  if (text)
   {
     sub_1C5596574();
-    MEMORY[0x1E69E5920](a4);
+    MEMORY[0x1E69E5920](text);
   }
 
-  if (a5)
+  if (name)
   {
     sub_1C5596574();
     v8 = v6;
-    MEMORY[0x1E69E5920](a5);
+    MEMORY[0x1E69E5920](name);
     v7 = v8;
   }
 
@@ -91,17 +91,17 @@
   AccountRecoveryContactUpsellSelectorVC.init(title:detailText:symbolName:contentLayout:)(v7);
 }
 
-- (AAUIAccountRecoveryContactUpsellSelectorVC)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (AAUIAccountRecoveryContactUpsellSelectorVC)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
-  MEMORY[0x1E69E5928](a5);
+  MEMORY[0x1E69E5928](title);
+  MEMORY[0x1E69E5928](text);
+  MEMORY[0x1E69E5928](icon);
   sub_1C5596574();
-  if (a4)
+  if (text)
   {
     sub_1C5596574();
     v8 = v6;
-    MEMORY[0x1E69E5920](a4);
+    MEMORY[0x1E69E5920](text);
     v7 = v8;
   }
 

@@ -1,17 +1,17 @@
 @interface SBFluidSwitcherIconOverlayView
 - (CGRect)crossfadeViewFrame;
-- (SBFluidSwitcherIconOverlayView)initWithIconView:(id)a3 crossfadeViews:(id)a4 crossfadeViewFrame:(CGRect)a5 contentOrientation:(int64_t)a6 containerOrientation:(int64_t)a7;
-- (double)_alphaForIconOverlayView:(id)a3 crossfadeFraction:(double)a4;
+- (SBFluidSwitcherIconOverlayView)initWithIconView:(id)view crossfadeViews:(id)views crossfadeViewFrame:(CGRect)frame contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation;
+- (double)_alphaForIconOverlayView:(id)view crossfadeFraction:(double)fraction;
 - (double)_currentFadeValue;
 - (double)_iconOverlayScale;
 - (void)_applyIconOverlayViewOverlayScaleProperties;
-- (void)_setCrossfadeViewsAlpha:(double)a3;
+- (void)_setCrossfadeViewsAlpha:(double)alpha;
 - (void)_setUpIconCrossfadeAnimatableProperty;
 - (void)_setUpIconCrossfadeView;
 - (void)dealloc;
 - (void)invalidate;
 - (void)layoutSubviews;
-- (void)setCornerRadius:(double)a3;
+- (void)setCornerRadius:(double)radius;
 @end
 
 @implementation SBFluidSwitcherIconOverlayView
@@ -24,8 +24,8 @@
   y = self->_crossfadeViewFrame.origin.y;
   width = self->_crossfadeViewFrame.size.width;
   height = self->_crossfadeViewFrame.size.height;
-  v7 = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
-  v8 = ((v7 - 1) < 2) ^ (([(BSUIOrientationTransformWrapperView *)self contentOrientation]- 1) < 2);
+  containerOrientation = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
+  v8 = ((containerOrientation - 1) < 2) ^ (([(BSUIOrientationTransformWrapperView *)self contentOrientation]- 1) < 2);
   if (v8)
   {
     v9 = width;
@@ -121,8 +121,8 @@
   v6 = v5;
   width = self->_initialIconOverlayViewBounds.size.width;
   height = self->_initialIconOverlayViewBounds.size.height;
-  v9 = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
-  v10 = ((v9 - 1) < 2) ^ (([(BSUIOrientationTransformWrapperView *)self contentOrientation]- 1) < 2);
+  containerOrientation = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
+  v10 = ((containerOrientation - 1) < 2) ^ (([(BSUIOrientationTransformWrapperView *)self contentOrientation]- 1) < 2);
   if (v10)
   {
     v11 = width;
@@ -205,15 +205,15 @@
   v10 = v9;
   [(SBSwitcherIconZooming *)self->_iconOverlayView bounds];
   v12 = (v11 - self->_initialIconOverlayViewBounds.size.height) * 0.5;
-  v13 = [(SBSwitcherIconZooming *)self->_iconOverlayView iconImageAlignment];
+  iconImageAlignment = [(SBSwitcherIconZooming *)self->_iconOverlayView iconImageAlignment];
   v14 = -v12;
   v15 = 0.0;
-  if (v13)
+  if (iconImageAlignment)
   {
     v15 = v12;
   }
 
-  if (v13 == 2)
+  if (iconImageAlignment == 2)
   {
     v16 = -v12;
   }
@@ -355,18 +355,18 @@ void __71__SBFluidSwitcherIconOverlayView__setUpIconCrossfadeAnimatableProperty_
   [(SBFluidSwitcherIconOverlayView *)&v3 dealloc];
 }
 
-- (SBFluidSwitcherIconOverlayView)initWithIconView:(id)a3 crossfadeViews:(id)a4 crossfadeViewFrame:(CGRect)a5 contentOrientation:(int64_t)a6 containerOrientation:(int64_t)a7
+- (SBFluidSwitcherIconOverlayView)initWithIconView:(id)view crossfadeViews:(id)views crossfadeViewFrame:(CGRect)frame contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v17 = a3;
-  v18 = a4;
-  v19 = v18;
-  if (v17)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  viewsCopy = views;
+  v19 = viewsCopy;
+  if (viewCopy)
   {
-    if (v18)
+    if (viewsCopy)
     {
       goto LABEL_3;
     }
@@ -389,8 +389,8 @@ LABEL_3:
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_iconOverlayView, a3);
-    [v17 bounds];
+    objc_storeStrong(&v20->_iconOverlayView, view);
+    [viewCopy bounds];
     v21->_initialIconOverlayViewBounds.origin.x = v22;
     v21->_initialIconOverlayViewBounds.origin.y = v23;
     v21->_initialIconOverlayViewBounds.size.width = v24;
@@ -405,10 +405,10 @@ LABEL_3:
     v21->_crossfadeViewFrame.size.height = height;
     v35.receiver = v21;
     v35.super_class = SBFluidSwitcherIconOverlayView;
-    [(BSUIOrientationTransformWrapperView *)&v35 setContentOrientation:a6];
+    [(BSUIOrientationTransformWrapperView *)&v35 setContentOrientation:orientation];
     v34.receiver = v21;
     v34.super_class = SBFluidSwitcherIconOverlayView;
-    [(BSUIOrientationTransformWrapperView *)&v34 setContainerOrientation:a7];
+    [(BSUIOrientationTransformWrapperView *)&v34 setContainerOrientation:containerOrientation];
     [(SBFluidSwitcherIconOverlayView *)v21 setUserInteractionEnabled:0];
     v21->_iconCrossfadeC2ThreadLock._os_unfair_lock_opaque = 0;
     v28 = objc_alloc(MEMORY[0x277D75D18]);
@@ -443,16 +443,16 @@ LABEL_3:
   return result;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(SBFluidSwitcherIconOverlayView *)self _applyIconOverlayViewOverlayScaleProperties];
   }
 }
 
-- (void)_setCrossfadeViewsAlpha:(double)a3
+- (void)_setCrossfadeViewsAlpha:(double)alpha
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
@@ -475,7 +475,7 @@ LABEL_3:
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setAlpha:{a3, v9}];
+        [*(*(&v9 + 1) + 8 * v8++) setAlpha:{alpha, v9}];
       }
 
       while (v6 != v8);
@@ -486,11 +486,11 @@ LABEL_3:
   }
 }
 
-- (double)_alphaForIconOverlayView:(id)a3 crossfadeFraction:(double)a4
+- (double)_alphaForIconOverlayView:(id)view crossfadeFraction:(double)fraction
 {
-  v5 = a3;
+  viewCopy = view;
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = viewCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -509,14 +509,14 @@ LABEL_3:
     v8 = 0;
   }
 
-  v9 = 1.0 - a4;
+  v9 = 1.0 - fraction;
   v10 = v8;
 
   if (v10)
   {
-    v11 = [v10 icon];
+    icon = [v10 icon];
     v12 = objc_opt_class();
-    v13 = v11;
+    v13 = icon;
     if (v12)
     {
       if (objc_opt_isKindOfClass())

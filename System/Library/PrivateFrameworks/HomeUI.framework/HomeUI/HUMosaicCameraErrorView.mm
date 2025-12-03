@@ -1,38 +1,38 @@
 @interface HUMosaicCameraErrorView
 - (BOOL)visualEffectViewHidden;
-- (HUMosaicCameraErrorView)initWithFrame:(CGRect)a3;
+- (HUMosaicCameraErrorView)initWithFrame:(CGRect)frame;
 - (NSString)descriptionText;
 - (NSString)titleText;
 - (void)layoutSubviews;
-- (void)setDescriptionText:(id)a3;
-- (void)setTitleText:(id)a3;
-- (void)setVisualEffectViewHidden:(BOOL)a3;
+- (void)setDescriptionText:(id)text;
+- (void)setTitleText:(id)text;
+- (void)setVisualEffectViewHidden:(BOOL)hidden;
 @end
 
 @implementation HUMosaicCameraErrorView
 
-- (HUMosaicCameraErrorView)initWithFrame:(CGRect)a3
+- (HUMosaicCameraErrorView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v65[11] = *MEMORY[0x277D85DE8];
   v64.receiver = self;
   v64.super_class = HUMosaicCameraErrorView;
-  v5 = [(HUMosaicCameraErrorView *)&v64 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(HUMosaicCameraErrorView *)&v64 initWithFrame:frame.origin.x, frame.origin.y];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:0];
     visualEffectView = v5->_visualEffectView;
     v5->_visualEffectView = v6;
 
-    v8 = [MEMORY[0x277D75D58] hu_gridCellBackgroundOffEffects];
-    [(UIVisualEffectView *)v5->_visualEffectView setBackgroundEffects:v8];
+    hu_gridCellBackgroundOffEffects = [MEMORY[0x277D75D58] hu_gridCellBackgroundOffEffects];
+    [(UIVisualEffectView *)v5->_visualEffectView setBackgroundEffects:hu_gridCellBackgroundOffEffects];
 
     [(UIVisualEffectView *)v5->_visualEffectView _setGroupName:@"HUMosiacCameraCell-VisualEffect"];
     [(UIVisualEffectView *)v5->_visualEffectView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HUMosaicCameraErrorView *)v5 addSubview:v5->_visualEffectView];
-    v9 = [MEMORY[0x277D755B8] hu_cameraErrorImage];
-    v63 = [v9 imageWithRenderingMode:2];
+    hu_cameraErrorImage = [MEMORY[0x277D755B8] hu_cameraErrorImage];
+    v63 = [hu_cameraErrorImage imageWithRenderingMode:2];
 
     v10 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v63];
     imageView = v5->_imageView;
@@ -57,11 +57,11 @@
     titleLabel = v5->_titleLabel;
     v5->_titleLabel = v17;
 
-    v19 = [(HUGridCellLayoutOptions *)v5->_layoutOptions font];
-    [(UILabel *)v5->_titleLabel setFont:v19];
+    font = [(HUGridCellLayoutOptions *)v5->_layoutOptions font];
+    [(UILabel *)v5->_titleLabel setFont:font];
 
-    v20 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v5->_titleLabel setColor:v20];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v5->_titleLabel setColor:whiteColor];
 
     [(UILabel *)v5->_titleLabel setAdjustsFontForContentSizeCategory:1];
     [(UIStackView *)v5->_labelStackView addArrangedSubview:v5->_titleLabel];
@@ -69,61 +69,61 @@
     descriptionLabel = v5->_descriptionLabel;
     v5->_descriptionLabel = v21;
 
-    v23 = [(HUMosaicCameraCellLayoutOptions *)v5->_layoutOptions secondaryLabelFont];
-    [(UILabel *)v5->_descriptionLabel setFont:v23];
+    secondaryLabelFont = [(HUMosaicCameraCellLayoutOptions *)v5->_layoutOptions secondaryLabelFont];
+    [(UILabel *)v5->_descriptionLabel setFont:secondaryLabelFont];
 
     v24 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.6];
     [(UILabel *)v5->_descriptionLabel setColor:v24];
 
     [(UILabel *)v5->_descriptionLabel setAdjustsFontForContentSizeCategory:1];
     [(UIStackView *)v5->_labelStackView addArrangedSubview:v5->_descriptionLabel];
-    v62 = [(UIVisualEffectView *)v5->_visualEffectView centerXAnchor];
-    v61 = [(HUMosaicCameraErrorView *)v5 centerXAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61];
+    centerXAnchor = [(UIVisualEffectView *)v5->_visualEffectView centerXAnchor];
+    centerXAnchor2 = [(HUMosaicCameraErrorView *)v5 centerXAnchor];
+    v60 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v65[0] = v60;
-    v59 = [(UIVisualEffectView *)v5->_visualEffectView centerYAnchor];
-    v58 = [(HUMosaicCameraErrorView *)v5 centerYAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58];
+    centerYAnchor = [(UIVisualEffectView *)v5->_visualEffectView centerYAnchor];
+    centerYAnchor2 = [(HUMosaicCameraErrorView *)v5 centerYAnchor];
+    v57 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v65[1] = v57;
-    v56 = [(UIVisualEffectView *)v5->_visualEffectView widthAnchor];
-    v55 = [(HUMosaicCameraErrorView *)v5 widthAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55];
+    widthAnchor = [(UIVisualEffectView *)v5->_visualEffectView widthAnchor];
+    widthAnchor2 = [(HUMosaicCameraErrorView *)v5 widthAnchor];
+    v54 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v65[2] = v54;
-    v53 = [(UIVisualEffectView *)v5->_visualEffectView heightAnchor];
-    v52 = [(HUMosaicCameraErrorView *)v5 heightAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    heightAnchor = [(UIVisualEffectView *)v5->_visualEffectView heightAnchor];
+    heightAnchor2 = [(HUMosaicCameraErrorView *)v5 heightAnchor];
+    v51 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v65[3] = v51;
-    v50 = [(UIImageView *)v5->_imageView heightAnchor];
-    v49 = [(HUMosaicCameraErrorView *)v5 heightAnchor];
-    v48 = [v50 constraintEqualToAnchor:v49 multiplier:0.3];
+    heightAnchor3 = [(UIImageView *)v5->_imageView heightAnchor];
+    heightAnchor4 = [(HUMosaicCameraErrorView *)v5 heightAnchor];
+    v48 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4 multiplier:0.3];
     v65[4] = v48;
-    v47 = [(UIImageView *)v5->_imageView widthAnchor];
-    v46 = [(UIImageView *)v5->_imageView heightAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46 multiplier:1.22];
+    widthAnchor3 = [(UIImageView *)v5->_imageView widthAnchor];
+    heightAnchor5 = [(UIImageView *)v5->_imageView heightAnchor];
+    v45 = [widthAnchor3 constraintEqualToAnchor:heightAnchor5 multiplier:1.22];
     v65[5] = v45;
-    v44 = [(UIImageView *)v5->_imageView centerXAnchor];
-    v43 = [(HUMosaicCameraErrorView *)v5 centerXAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    centerXAnchor3 = [(UIImageView *)v5->_imageView centerXAnchor];
+    centerXAnchor4 = [(HUMosaicCameraErrorView *)v5 centerXAnchor];
+    v42 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v65[6] = v42;
-    v41 = [(UIImageView *)v5->_imageView centerYAnchor];
-    v40 = [(HUMosaicCameraErrorView *)v5 centerYAnchor];
+    centerYAnchor3 = [(UIImageView *)v5->_imageView centerYAnchor];
+    centerYAnchor4 = [(HUMosaicCameraErrorView *)v5 centerYAnchor];
     [(HUMosaicCameraCellLayoutOptions *)v5->_layoutOptions descriptionInset];
-    v38 = [v41 constraintEqualToAnchor:v40 constant:-v25];
+    v38 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4 constant:-v25];
     v65[7] = v38;
-    v26 = [(UIStackView *)v5->_labelStackView bottomAnchor];
-    v27 = [(HUMosaicCameraErrorView *)v5 bottomAnchor];
+    bottomAnchor = [(UIStackView *)v5->_labelStackView bottomAnchor];
+    bottomAnchor2 = [(HUMosaicCameraErrorView *)v5 bottomAnchor];
     [(HUMosaicCameraCellLayoutOptions *)v5->_layoutOptions descriptionInset];
-    v29 = [v26 constraintEqualToAnchor:v27 constant:-v28];
+    v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v28];
     v65[8] = v29;
-    v30 = [(UIStackView *)v5->_labelStackView leadingAnchor];
-    v31 = [(HUMosaicCameraErrorView *)v5 leadingAnchor];
+    leadingAnchor = [(UIStackView *)v5->_labelStackView leadingAnchor];
+    leadingAnchor2 = [(HUMosaicCameraErrorView *)v5 leadingAnchor];
     [(HUMosaicCameraCellLayoutOptions *)v5->_layoutOptions descriptionInset];
-    v32 = [v30 constraintEqualToAnchor:v31 constant:?];
+    v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
     v65[9] = v32;
-    v33 = [(UIStackView *)v5->_labelStackView trailingAnchor];
-    v34 = [(HUMosaicCameraErrorView *)v5 trailingAnchor];
+    trailingAnchor = [(UIStackView *)v5->_labelStackView trailingAnchor];
+    trailingAnchor2 = [(HUMosaicCameraErrorView *)v5 trailingAnchor];
     [(HUMosaicCameraCellLayoutOptions *)v5->_layoutOptions descriptionInset];
-    v36 = [v33 constraintEqualToAnchor:v34 constant:-v35];
+    v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v35];
     v65[10] = v36;
     v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v65 count:11];
 
@@ -140,19 +140,19 @@
   [(HUMosaicCameraErrorView *)&v18 layoutSubviews];
   [(HUMosaicCameraCellLayoutOptions *)self->_layoutOptions descriptionInset];
   v4 = v3;
-  v5 = [(HUMosaicCameraErrorView *)self imageView];
-  [v5 frame];
+  imageView = [(HUMosaicCameraErrorView *)self imageView];
+  [imageView frame];
   CGRectGetMaxY(v19);
-  v6 = [(HUMosaicCameraErrorView *)self labelStackView];
-  [v6 frame];
+  labelStackView = [(HUMosaicCameraErrorView *)self labelStackView];
+  [labelStackView frame];
   v7 = NACGFloatGreaterThanOrEqualToFloat();
 
   if (v7)
   {
     [(HUMosaicCameraErrorView *)self bounds];
     v9 = v8 * 0.3;
-    v10 = [(HUMosaicCameraErrorView *)self labelStackView];
-    [v10 frame];
+    labelStackView2 = [(HUMosaicCameraErrorView *)self labelStackView];
+    [labelStackView2 frame];
     v12 = v11 + v4 * -2.0;
 
     if (v9 >= v12)
@@ -160,8 +160,8 @@
       v9 = v12;
     }
 
-    v13 = [(HUMosaicCameraErrorView *)self labelStackView];
-    [v13 frame];
+    labelStackView3 = [(HUMosaicCameraErrorView *)self labelStackView];
+    [labelStackView3 frame];
     v15 = (v14 - v9) * 0.5;
 
     if ([(HUMosaicCameraErrorView *)self effectiveUserInterfaceLayoutDirection]== 1)
@@ -170,60 +170,60 @@
       v4 = v16 - v9 * 1.22 - v4;
     }
 
-    v17 = [(HUMosaicCameraErrorView *)self imageView];
-    [v17 setFrame:{v4, v15, v9 * 1.22, v9}];
+    imageView2 = [(HUMosaicCameraErrorView *)self imageView];
+    [imageView2 setFrame:{v4, v15, v9 * 1.22, v9}];
   }
 }
 
 - (NSString)titleText
 {
-  v2 = [(HUMosaicCameraErrorView *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(HUMosaicCameraErrorView *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v4 = a3;
-  v5 = [(HUMosaicCameraErrorView *)self titleLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  titleLabel = [(HUMosaicCameraErrorView *)self titleLabel];
+  [titleLabel setText:textCopy];
 
-  v6 = [(HUMosaicCameraErrorView *)self titleLabel];
-  [v6 setHidden:v4 == 0];
+  titleLabel2 = [(HUMosaicCameraErrorView *)self titleLabel];
+  [titleLabel2 setHidden:textCopy == 0];
 }
 
 - (NSString)descriptionText
 {
-  v2 = [(HUMosaicCameraErrorView *)self descriptionLabel];
-  v3 = [v2 text];
+  descriptionLabel = [(HUMosaicCameraErrorView *)self descriptionLabel];
+  text = [descriptionLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setDescriptionText:(id)a3
+- (void)setDescriptionText:(id)text
 {
-  v4 = a3;
-  v5 = [(HUMosaicCameraErrorView *)self descriptionLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  descriptionLabel = [(HUMosaicCameraErrorView *)self descriptionLabel];
+  [descriptionLabel setText:textCopy];
 
-  v6 = [(HUMosaicCameraErrorView *)self descriptionLabel];
-  [v6 setHidden:v4 == 0];
+  descriptionLabel2 = [(HUMosaicCameraErrorView *)self descriptionLabel];
+  [descriptionLabel2 setHidden:textCopy == 0];
 }
 
-- (void)setVisualEffectViewHidden:(BOOL)a3
+- (void)setVisualEffectViewHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(HUMosaicCameraErrorView *)self visualEffectView];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  visualEffectView = [(HUMosaicCameraErrorView *)self visualEffectView];
+  [visualEffectView setHidden:hiddenCopy];
 }
 
 - (BOOL)visualEffectViewHidden
 {
-  v2 = [(HUMosaicCameraErrorView *)self visualEffectView];
-  v3 = [v2 isHidden];
+  visualEffectView = [(HUMosaicCameraErrorView *)self visualEffectView];
+  isHidden = [visualEffectView isHidden];
 
-  return v3;
+  return isHidden;
 }
 
 @end

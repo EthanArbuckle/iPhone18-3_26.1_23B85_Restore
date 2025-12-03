@@ -1,19 +1,19 @@
 @interface NBBloomFilterReader
-- (BOOL)maybeContainsString:(id)a3;
-- (NBBloomFilterReader)initWithData:(id)a3 hashFunctionCount:(unint64_t)a4;
+- (BOOL)maybeContainsString:(id)string;
+- (NBBloomFilterReader)initWithData:(id)data hashFunctionCount:(unint64_t)count;
 @end
 
 @implementation NBBloomFilterReader
 
-- (NBBloomFilterReader)initWithData:(id)a3 hashFunctionCount:(unint64_t)a4
+- (NBBloomFilterReader)initWithData:(id)data hashFunctionCount:(unint64_t)count
 {
-  v6 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = NBBloomFilterReader;
   v7 = [(NBBloomFilterReader *)&v11 init];
   if (v7)
   {
-    v8 = [[NBObjCBloomFilterReader alloc] initWithData:v6 hashFunctionCount:a4];
+    v8 = [[NBObjCBloomFilterReader alloc] initWithData:dataCopy hashFunctionCount:count];
     bloomFilterReader = v7->_bloomFilterReader;
     v7->_bloomFilterReader = v8;
   }
@@ -21,11 +21,11 @@
   return v7;
 }
 
-- (BOOL)maybeContainsString:(id)a3
+- (BOOL)maybeContainsString:(id)string
 {
-  v4 = a3;
-  v5 = [(NBBloomFilterReader *)self bloomFilterReader];
-  v6 = [v5 maybeContainsString:v4];
+  stringCopy = string;
+  bloomFilterReader = [(NBBloomFilterReader *)self bloomFilterReader];
+  v6 = [bloomFilterReader maybeContainsString:stringCopy];
 
   return v6;
 }

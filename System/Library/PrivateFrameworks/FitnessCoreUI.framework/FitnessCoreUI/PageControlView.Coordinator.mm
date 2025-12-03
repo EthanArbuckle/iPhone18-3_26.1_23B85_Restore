@@ -1,11 +1,11 @@
 @interface PageControlView.Coordinator
 - (_TtCV13FitnessCoreUI15PageControlView11Coordinator)init;
-- (void)updateCurrentPageWithSender:(id)a3;
+- (void)updateCurrentPageWithSender:(id)sender;
 @end
 
 @implementation PageControlView.Coordinator
 
-- (void)updateCurrentPageWithSender:(id)a3
+- (void)updateCurrentPageWithSender:(id)sender
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -15,9 +15,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  [v5 currentPage];
+  senderCopy = sender;
+  selfCopy = self;
+  [senderCopy currentPage];
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C7ADC08);
   sub_20C3E8ADC();

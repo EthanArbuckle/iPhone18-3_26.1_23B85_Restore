@@ -1,18 +1,18 @@
 @interface WFTrigger
 + (id)displayGlyph;
 + (id)displayGlyphTintColor;
-+ (id)inputTypeDescriptionForClass:(Class)a3;
++ (id)inputTypeDescriptionForClass:(Class)class;
 + (id)localizedDisplayExplanation;
-+ (id)localizedDisplayNameWithContext:(id)a3;
++ (id)localizedDisplayNameWithContext:(id)context;
 + (id)offIcon;
 + (id)offLabel;
 + (id)onIcon;
 + (id)onLabel;
-+ (id)triggerWithSerializedData:(id)a3;
++ (id)triggerWithSerializedData:(id)data;
 - (BOOL)hasValidConfiguration;
 - (WFTrigger)init;
 - (double)displayGlyphCornerRadius;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)displayGlyph;
 - (id)displayGlyphHierarchicalColors;
@@ -33,10 +33,10 @@
 - (id)localizedPastTenseDescription
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() isAllowedToRunAutomatically];
+  isAllowedToRunAutomatically = [objc_opt_class() isAllowedToRunAutomatically];
   v4 = getWFTriggersLogObject();
   v5 = v4;
-  if (v3)
+  if (isAllowedToRunAutomatically)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
     {
@@ -48,7 +48,7 @@
       _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_FAULT, "%s Subclasses MUST override -localizedPastTenseDescription (but %{public}@ didn't)", &v11, 0x16u);
     }
 
-    v7 = [(WFTrigger *)self localizedDescriptionWithConfigurationSummary];
+    localizedDescriptionWithConfigurationSummary = [(WFTrigger *)self localizedDescriptionWithConfigurationSummary];
   }
 
   else
@@ -63,12 +63,12 @@
       _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_ERROR, "%s Shouldn't have used -localizedPastTenseDescription for %@, because it should always ask before running", &v11, 0x16u);
     }
 
-    v7 = &stru_1F4A1C408;
+    localizedDescriptionWithConfigurationSummary = &stru_1F4A1C408;
   }
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return localizedDescriptionWithConfigurationSummary;
 }
 
 - (id)localizedDescriptionWithConfigurationSummary
@@ -86,8 +86,8 @@
   }
 
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x1E69E0BE0] defaultContext];
-  v6 = [v4 localizedDisplayNameWithContext:v5];
+  defaultContext = [MEMORY[0x1E69E0BE0] defaultContext];
+  v6 = [v4 localizedDisplayNameWithContext:defaultContext];
 
   v7 = *MEMORY[0x1E69E9840];
 
@@ -196,8 +196,8 @@
 - (id)localizedDisplayName
 {
   v2 = objc_opt_class();
-  v3 = [MEMORY[0x1E69E0BE0] defaultContext];
-  v4 = [v2 localizedDisplayNameWithContext:v3];
+  defaultContext = [MEMORY[0x1E69E0BE0] defaultContext];
+  v4 = [v2 localizedDisplayNameWithContext:defaultContext];
 
   return v4;
 }
@@ -209,9 +209,9 @@
   return NSStringFromClass(v2);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 init];
 }
@@ -230,7 +230,7 @@
       *buf = 136315650;
       v10 = "[WFTrigger serializedData]";
       v11 = 2112;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
       v14 = v4;
       _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_ERROR, "%s failed to serialize trigger (%@): %{public}@", buf, 0x20u);
@@ -266,29 +266,29 @@
   return v3;
 }
 
-+ (id)inputTypeDescriptionForClass:(Class)a3
++ (id)inputTypeDescriptionForClass:(Class)class
 {
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    v11 = NSStringFromClass(a3);
-    [v10 handleFailureInMethod:a2 object:a1 file:@"WFTrigger.m" lineNumber:256 description:{@"Class is not of type WFContentItem instead %@", v11}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v11 = NSStringFromClass(class);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTrigger.m" lineNumber:256 description:{@"Class is not of type WFContentItem instead %@", v11}];
   }
 
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]|| [(objc_class *)a3 isSubclassOfClass:objc_opt_class()]|| [(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()]|| [(objc_class *)class isSubclassOfClass:objc_opt_class()]|| [(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v6 = [(objc_class *)a3 localizedPluralTypeDescription];
+    localizedPluralTypeDescription = [(objc_class *)class localizedPluralTypeDescription];
   }
 
   else
   {
-    v6 = [(objc_class *)a3 localizedTypeDescription];
+    localizedPluralTypeDescription = [(objc_class *)class localizedTypeDescription];
   }
 
-  v7 = v6;
-  v8 = [v6 localizedLowercaseString];
+  v7 = localizedPluralTypeDescription;
+  localizedLowercaseString = [localizedPluralTypeDescription localizedLowercaseString];
 
-  return v8;
+  return localizedLowercaseString;
 }
 
 + (id)displayGlyphTintColor
@@ -376,19 +376,19 @@
 
 + (id)displayGlyph
 {
-  v3 = [a1 displayGlyphHierarchicalColors];
+  displayGlyphHierarchicalColors = [self displayGlyphHierarchicalColors];
 
   v4 = MEMORY[0x1E69E0B58];
-  v5 = [a1 displayGlyphName];
-  if (v3)
+  displayGlyphName = [self displayGlyphName];
+  if (displayGlyphHierarchicalColors)
   {
-    v6 = [a1 displayGlyphHierarchicalColors];
-    v7 = [v4 triggerDisplaySymbolNamed:v5 hierarchicalColors:v6];
+    displayGlyphHierarchicalColors2 = [self displayGlyphHierarchicalColors];
+    v7 = [v4 triggerDisplaySymbolNamed:displayGlyphName hierarchicalColors:displayGlyphHierarchicalColors2];
   }
 
   else
   {
-    v7 = [v4 triggerDisplaySymbolNamed:v5 renderingMode:2];
+    v7 = [v4 triggerDisplaySymbolNamed:displayGlyphName renderingMode:2];
   }
 
   return v7;
@@ -412,7 +412,7 @@
   return &stru_1F4A1C408;
 }
 
-+ (id)localizedDisplayNameWithContext:(id)a3
++ (id)localizedDisplayNameWithContext:(id)context
 {
   v11 = *MEMORY[0x1E69E9840];
   v3 = getWFTriggersLogObject();
@@ -430,13 +430,13 @@
   return &stru_1F4A1C408;
 }
 
-+ (id)triggerWithSerializedData:(id)a3
++ (id)triggerWithSerializedData:(id)data
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_alloc_init(WFTriggerMigrator);
   v21 = 0;
-  v5 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v3 error:&v21];
+  v5 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:dataCopy error:&v21];
   v6 = v21;
   [v5 setClass:objc_opt_class() forClassName:@"LSApplicationProxy"];
   [v5 setDelegate:v4];
@@ -445,11 +445,11 @@
     v11 = getWFTriggersLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v6 localizedDescription];
+      localizedDescription = [v6 localizedDescription];
       *buf = 136315394;
       v23 = "+[WFTrigger triggerWithSerializedData:]";
       v24 = 2112;
-      v25 = v16;
+      v25 = localizedDescription;
       _os_log_impl(&dword_1CA256000, v11, OS_LOG_TYPE_ERROR, "%s Failed to create NSKeyedUnarchiver due to error: %@", buf, 0x16u);
     }
 
@@ -468,7 +468,7 @@
     v17 = getWFTriggersLogObject();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v3 length];
+      v18 = [dataCopy length];
       *buf = 136315650;
       v23 = "+[WFTrigger triggerWithSerializedData:]";
       v24 = 2048;
@@ -488,15 +488,15 @@ LABEL_10:
   {
     v11 = v10;
     v12 = objc_opt_new();
-    v13 = [v11 region];
-    [v12 setRegion:v13];
+    region = [v11 region];
+    [v12 setRegion:region];
 
-    v14 = [v11 startTime];
-    [v12 setStartTime:v14];
+    startTime = [v11 startTime];
+    [v12 setStartTime:startTime];
 
-    v15 = [v11 endTime];
+    endTime = [v11 endTime];
 
-    [v12 setEndTime:v15];
+    [v12 setEndTime:endTime];
   }
 
   else

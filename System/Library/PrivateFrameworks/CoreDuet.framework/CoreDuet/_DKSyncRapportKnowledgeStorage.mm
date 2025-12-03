@@ -1,20 +1,20 @@
 @interface _DKSyncRapportKnowledgeStorage
 + (id)sharedInstance;
-- (id)changeSetFromCompressedData:(void *)a3 deviceIdentifier:(NSObject *)a4 sequenceNumber:;
-- (void)fetchAdditionsHighWaterMarkWithPeer:(id)a3 highPriority:(BOOL)a4 completion:(id)a5;
-- (void)fetchDeletedEventIDsFromPeer:(id)a3 sinceDate:(id)a4 streamNames:(id)a5 limit:(unint64_t)a6 highPriority:(BOOL)a7 completion:(id)a8;
-- (void)fetchDeletionsHighWaterMarkWithPeer:(id)a3 highPriority:(BOOL)a4 completion:(id)a5;
-- (void)fetchEventsFromPeer:(id)a3 windows:(id)a4 streamNames:(id)a5 limit:(unint64_t)a6 fetchOrder:(int64_t)a7 highPriority:(BOOL)a8 completion:(id)a9;
-- (void)handleFetchDeletedEventIDsWithRequest:(void *)a3 options:(void *)a4 responseHandler:;
-- (void)handleFetchDeletedEventIDsWithResponse:(void *)a3 options:(void *)a4 error:(void *)a5 peer:(void *)a6 plStartDate:(void *)a7 completion:;
-- (void)handleFetchEventsWithRequest:(void *)a3 options:(void *)a4 responseHandler:;
-- (void)handleFetchEventsWithResponse:(void *)a3 options:(void *)a4 error:(void *)a5 peer:(void *)a6 plStartDate:(void *)a7 completion:;
+- (id)changeSetFromCompressedData:(void *)data deviceIdentifier:(NSObject *)identifier sequenceNumber:;
+- (void)fetchAdditionsHighWaterMarkWithPeer:(id)peer highPriority:(BOOL)priority completion:(id)completion;
+- (void)fetchDeletedEventIDsFromPeer:(id)peer sinceDate:(id)date streamNames:(id)names limit:(unint64_t)limit highPriority:(BOOL)priority completion:(id)completion;
+- (void)fetchDeletionsHighWaterMarkWithPeer:(id)peer highPriority:(BOOL)priority completion:(id)completion;
+- (void)fetchEventsFromPeer:(id)peer windows:(id)windows streamNames:(id)names limit:(unint64_t)limit fetchOrder:(int64_t)order highPriority:(BOOL)priority completion:(id)completion;
+- (void)handleFetchDeletedEventIDsWithRequest:(void *)request options:(void *)options responseHandler:;
+- (void)handleFetchDeletedEventIDsWithResponse:(void *)response options:(void *)options error:(void *)error peer:(void *)peer plStartDate:(void *)date completion:;
+- (void)handleFetchEventsWithRequest:(void *)request options:(void *)options responseHandler:;
+- (void)handleFetchEventsWithResponse:(void *)response options:(void *)options error:(void *)error peer:(void *)peer plStartDate:(void *)date completion:;
 - (void)handleUnexpectedRequest:fromPeer:;
 - (void)handleUnexpectedResponse:fromPeer:;
-- (void)prewarmFetchWithCompletion:(id)a3;
-- (void)registerRequestIDsWithClient:(id)a3;
-- (void)setFetchDelegate:(id)a3;
-- (void)updateStorageWithAddedEvents:(id)a3 deletedEventIDs:(id)a4 highPriority:(BOOL)a5 completion:(id)a6;
+- (void)prewarmFetchWithCompletion:(id)completion;
+- (void)registerRequestIDsWithClient:(id)client;
+- (void)setFetchDelegate:(id)delegate;
+- (void)updateStorageWithAddedEvents:(id)events deletedEventIDs:(id)ds highPriority:(BOOL)priority completion:(id)completion;
 @end
 
 @implementation _DKSyncRapportKnowledgeStorage
@@ -31,36 +31,36 @@
   return v3;
 }
 
-- (void)registerRequestIDsWithClient:(id)a3
+- (void)registerRequestIDsWithClient:(id)client
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63___DKSyncRapportKnowledgeStorage_registerRequestIDsWithClient___block_invoke;
   v6[3] = &unk_1E736AC88;
   v6[4] = self;
-  v4 = a3;
-  [v4 registerRequestID:@"com.apple.coreduet.fetch-events" options:0 handler:v6];
+  clientCopy = client;
+  [clientCopy registerRequestID:@"com.apple.coreduet.fetch-events" options:0 handler:v6];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __63___DKSyncRapportKnowledgeStorage_registerRequestIDsWithClient___block_invoke_2;
   v5[3] = &unk_1E736AC88;
   v5[4] = self;
-  [v4 registerRequestID:@"com.apple.coreduet.fetch-deleted-event-ids" options:0 handler:v5];
+  [clientCopy registerRequestID:@"com.apple.coreduet.fetch-deleted-event-ids" options:0 handler:v5];
 }
 
-- (void)handleFetchEventsWithRequest:(void *)a3 options:(void *)a4 responseHandler:
+- (void)handleFetchEventsWithRequest:(void *)request options:(void *)options responseHandler:
 {
   v168 = *MEMORY[0x1E69E9840];
   v129 = a2;
-  v124 = a3;
-  v123 = a4;
-  v145 = a1;
-  if (a1)
+  requestCopy = request;
+  optionsCopy = options;
+  selfCopy = self;
+  if (self)
   {
     v8 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v8);
 
-    v127 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v9 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -79,17 +79,17 @@
 
     v125 = objc_opt_new();
     v121 = [v129 objectForKeyedSubscript:@"version"];
-    v136 = [v121 integerValue];
+    integerValue = [v121 integerValue];
     v11 = [v129 objectForKeyedSubscript:@"compatibility"];
     v120 = [_DKCompatibility compatibilityFromSerializedCompatibility:v11];
 
     v122 = +[_DKSyncPeerStatusTracker sharedInstance];
-    v119 = [v124 objectForKeyedSubscript:@"senderIDS"];
+    v119 = [requestCopy objectForKeyedSubscript:@"senderIDS"];
     v128 = [v122 existingPeerWithIDSDeviceIdentifier:?];
     if (v128)
     {
-      v12 = [v128 version];
-      v13 = [v121 isEqualToString:v12];
+      version = [v128 version];
+      v13 = [v121 isEqualToString:version];
 
       if ((v13 & 1) == 0)
       {
@@ -97,11 +97,11 @@
       }
     }
 
-    if (*(a1 + 24))
+    if (*(self + 24))
     {
       v14 = [v129 objectForKeyedSubscript:@"queries"];
       v144 = [v129 objectForKeyedSubscript:@"limit"];
-      if (v136 >= 3)
+      if (integerValue >= 3)
       {
         v15 = +[_CDLogging syncChannel];
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -119,7 +119,7 @@
       v150 = 0u;
       obj = v14;
       v16 = [obj countByEnumeratingWithState:&v149 objects:v167 count:16];
-      v17 = 0;
+      allObjects3 = 0;
       if (v16)
       {
         v137 = 0;
@@ -127,7 +127,7 @@
 LABEL_16:
         v131 = v16;
         v18 = 0;
-        v19 = v17;
+        v19 = allObjects3;
         while (1)
         {
           v142 = v19;
@@ -140,16 +140,16 @@ LABEL_16:
           v21 = [v20 objectForKeyedSubscript:@"startDate"];
           v22 = [v20 objectForKeyedSubscript:@"endDate"];
           v23 = [v20 objectForKeyedSubscript:@"streamNames"];
-          if (v136 <= 2)
+          if (integerValue <= 2)
           {
             v24 = [v20 objectForKeyedSubscript:@"limit"];
 
             v144 = v24;
           }
 
-          v25 = [v145 policy];
-          v26 = [v145[3] syncType];
-          v27 = [v25 streamNamesToSyncWithSyncType:v26 transportType:{objc_msgSend(v145, "transportType")}];
+          policy = [selfCopy policy];
+          syncType = [selfCopy[3] syncType];
+          v27 = [policy streamNamesToSyncWithSyncType:syncType transportType:{objc_msgSend(selfCopy, "transportType")}];
 
           v28 = [v27 arrayByAddingObjectsFromArray:&unk_1F05EF740];
 
@@ -159,10 +159,10 @@ LABEL_16:
           v31 = [MEMORY[0x1E695DFD8] setWithArray:v29];
           [v30 intersectSet:v31];
 
-          v32 = [v30 allObjects];
-          LOBYTE(v26) = [v32 isEqual:v23];
+          allObjects = [v30 allObjects];
+          LOBYTE(syncType) = [allObjects isEqual:v23];
 
-          if ((v26 & 1) == 0)
+          if ((syncType & 1) == 0)
           {
             v33 = [MEMORY[0x1E695DFA8] setWithArray:v23];
             v34 = [MEMORY[0x1E695DFD8] setWithArray:v29];
@@ -171,17 +171,17 @@ LABEL_16:
             v35 = +[_CDLogging syncChannel];
             if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
             {
-              v4 = [objc_opt_class() description];
-              v36 = [v33 allObjects];
+              model2 = [objc_opt_class() description];
+              allObjects2 = [v33 allObjects];
               buf = 138543618;
-              v156 = v4;
+              v156 = model2;
               v157 = 2112;
-              v158 = v36;
+              v158 = allObjects2;
               _os_log_impl(&dword_191750000, v35, OS_LOG_TYPE_INFO, "%{public}@: Ignoring request for disabled streams: %@", &buf, 0x16u);
             }
           }
 
-          v17 = [v30 allObjects];
+          allObjects3 = [v30 allObjects];
 
           v37 = !v21 || v22 == 0;
           v38 = v37 || v23 == 0;
@@ -207,7 +207,7 @@ LABEL_16:
           }
 
           ++v18;
-          v19 = v17;
+          v19 = allObjects3;
           if (v131 == v18)
           {
             v16 = [obj countByEnumeratingWithState:&v149 objects:v167 count:16];
@@ -226,14 +226,14 @@ LABEL_16:
         v137 = 0;
       }
 
-      if ([v141 count] && objc_msgSend(v17, "count") && v144)
+      if ([v141 count] && objc_msgSend(allObjects3, "count") && v144)
       {
         v43 = +[_CDLogging syncChannel];
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
         {
           v61 = [objc_opt_class() description];
           v62 = _DKSyncLoggingWindowsDescription(v141);
-          v63 = _CDPrettyPrintCollection(v17, 0, 0, 0);
+          v63 = _CDPrettyPrintCollection(allObjects3, 0, 0, 0);
           buf = 138544130;
           v156 = v61;
           v157 = 2112;
@@ -245,28 +245,28 @@ LABEL_16:
           _os_log_debug_impl(&dword_191750000, v43, OS_LOG_TYPE_DEBUG, "%{public}@: Received fetch events request for up to %@ events in windows %{public}@ for streams %{public}@", &buf, 0x2Au);
         }
 
-        v44 = [v144 unsignedIntegerValue];
-        v45 = v44;
-        if (v44 <= 1)
+        unsignedIntegerValue = [v144 unsignedIntegerValue];
+        v45 = unsignedIntegerValue;
+        if (unsignedIntegerValue <= 1)
         {
-          v46 = v44;
+          v46 = unsignedIntegerValue;
         }
 
         else
         {
-          v46 = v44 + 1;
+          v46 = unsignedIntegerValue + 1;
         }
 
-        v47 = v145[3];
+        v47 = selfCopy[3];
         v148 = v137;
-        v48 = [v47 sortedEventsFromSyncWindows:v141 streamNames:v17 compatibility:v120 limit:v46 fetchOrder:2 error:&v148];
+        v48 = [v47 sortedEventsFromSyncWindows:v141 streamNames:allObjects3 compatibility:v120 limit:v46 fetchOrder:2 error:&v148];
         v49 = v148;
 
         if (v49)
         {
           v50 = MEMORY[0x1E696ABC0];
-          v134 = [v49 domain];
-          v51 = [v50 errorWithDomain:v134 code:objc_msgSend(v49 userInfo:{"code"), 0}];
+          domain = [v49 domain];
+          v51 = [v50 errorWithDomain:domain code:objc_msgSend(v49 userInfo:{"code"), 0}];
 
           v143 = 1;
           v138 = v51;
@@ -311,7 +311,7 @@ LABEL_16:
           }
 
           v147 = 0;
-          v135 = [(_DKSyncRapportKnowledgeStorage *)v145 changeSetForSyncWithEventsToInsert:v48 eventIDsToDeletes:0 error:&v147];
+          v135 = [(_DKSyncRapportKnowledgeStorage *)selfCopy changeSetForSyncWithEventsToInsert:v48 eventIDsToDeletes:0 error:&v147];
           v139 = v147;
           if (v139)
           {
@@ -319,22 +319,22 @@ LABEL_16:
             if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
             {
               v98 = [objc_opt_class() description];
-              v99 = [v139 domain];
-              v100 = [v139 code];
+              domain2 = [v139 domain];
+              code = [v139 code];
               buf = 138544130;
               v156 = v98;
               v157 = 2114;
-              v158 = v99;
+              v158 = domain2;
               v159 = 2048;
-              v160 = v100;
+              v160 = code;
               v161 = 2112;
               v162 = v139;
               _os_log_error_impl(&dword_191750000, v55, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create change set: %{public}@:%lld (%@)", &buf, 0x2Au);
             }
 
             v56 = MEMORY[0x1E696ABC0];
-            v57 = [v139 domain];
-            v58 = [v56 errorWithDomain:v57 code:objc_msgSend(v139 userInfo:{"code"), 0}];
+            domain3 = [v139 domain];
+            v58 = [v56 errorWithDomain:domain3 code:objc_msgSend(v139 userInfo:{"code"), 0}];
 
             v143 = 1;
             v138 = v58;
@@ -343,8 +343,8 @@ LABEL_16:
           else
           {
             v146 = 0;
-            v59 = [v135 eventsToAdd];
-            v143 = [v59 count] == 0;
+            eventsToAdd = [v135 eventsToAdd];
+            v143 = [eventsToAdd count] == 0;
 
             if (v143)
             {
@@ -353,7 +353,7 @@ LABEL_16:
 
             else
             {
-              v60 = [(_DKSyncRapportKnowledgeStorage *)v145 dataFromChangeSet:v135 didCompress:&v146];
+              v60 = [(_DKSyncRapportKnowledgeStorage *)selfCopy dataFromChangeSet:v135 didCompress:&v146];
             }
 
             v132 = v60;
@@ -370,7 +370,7 @@ LABEL_16:
               }
 
               v140 = v64;
-              if (v136 > 2)
+              if (integerValue > 2)
               {
                 if (v54)
                 {
@@ -404,8 +404,8 @@ LABEL_16:
 
               else
               {
-                v65 = [obj firstObject];
-                v66 = v65;
+                firstObject = [obj firstObject];
+                v66 = firstObject;
                 if (v54)
                 {
                   v67 = +[_CDLogging syncChannel];
@@ -413,26 +413,26 @@ LABEL_16:
                   {
                     v104 = [objc_opt_class() description];
                     v105 = [v66 objectForKeyedSubscript:@"startDate"];
-                    v106 = [(NSDate *)v105 dk_localtimeString];
-                    v107 = [(NSDate *)0 dk_localtimeString];
+                    dk_localtimeString = [(NSDate *)v105 dk_localtimeString];
+                    dk_localtimeString2 = [(NSDate *)0 dk_localtimeString];
                     buf = 138543874;
                     v156 = v104;
                     v157 = 2114;
-                    v158 = v106;
+                    v158 = dk_localtimeString;
                     v159 = 2114;
-                    v160 = v107;
+                    v160 = dk_localtimeString2;
                     _os_log_debug_impl(&dword_191750000, v67, OS_LOG_TYPE_DEBUG, "%{public}@: Shrinking window start date from %{public}@ to %{public}@ due to hit limit", &buf, 0x20u);
                   }
 
-                  v68 = [v48 lastObject];
-                  v69 = [v68 creationDate];
+                  lastObject = [v48 lastObject];
+                  creationDate = [lastObject creationDate];
 
                   v70 = [v66 objectForKeyedSubscript:@"endDate"];
                 }
 
                 else
                 {
-                  v69 = [v65 objectForKeyedSubscript:@"startDate"];
+                  creationDate = [firstObject objectForKeyedSubscript:@"startDate"];
                   v70 = [v66 objectForKeyedSubscript:@"endDate"];
                 }
 
@@ -442,7 +442,7 @@ LABEL_16:
                 v165[1] = @"sequenceNumber";
                 v77 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v135, "sequenceNumber")}];
                 v166[1] = v77;
-                v166[2] = v69;
+                v166[2] = creationDate;
                 v165[2] = @"windowStartDate";
                 v165[3] = @"windowEndDate";
                 v166[3] = v75;
@@ -470,19 +470,19 @@ LABEL_16:
                 v116 = +[_DKSyncPeerStatusTracker sharedInstance];
                 v115 = [v129 objectForKeyedSubscript:@"client"];
                 v114 = [v116 existingPeerWithSourceDeviceID:v115];
-                v110 = [v114 identifier];
+                identifier = [v114 identifier];
                 v113 = +[_DKSyncPeerStatusTracker sharedInstance];
                 v83 = [v129 objectForKeyedSubscript:@"client"];
                 v84 = [v113 existingPeerWithSourceDeviceID:v83];
-                v85 = [v84 model];
-                if (v85)
+                model = [v84 model];
+                if (model)
                 {
                   v86 = MEMORY[0x1E696AEC0];
                   v108 = +[_DKSyncPeerStatusTracker sharedInstance];
                   v80 = [v129 objectForKeyedSubscript:@"client"];
                   v75 = [v108 existingPeerWithSourceDeviceID:v80];
-                  v4 = [v75 model];
-                  v87 = [v86 stringWithFormat:@" (%@)", v4];
+                  model2 = [v75 model];
+                  v87 = [v86 stringWithFormat:@" (%@)", model2];
                 }
 
                 else
@@ -497,11 +497,11 @@ LABEL_16:
                 v159 = 2114;
                 v160 = v109;
                 v161 = 2114;
-                v162 = v110;
+                v162 = identifier;
                 v163 = 2114;
                 v164 = v87;
                 _os_log_impl(&dword_191750000, v79, OS_LOG_TYPE_INFO, "%{public}@: Sending %@ events to %{public}@peer %{public}@%{public}@", &buf, 0x34u);
-                if (v85)
+                if (model)
                 {
                 }
               }
@@ -549,12 +549,12 @@ LABEL_16:
       v143 = 1;
     }
 
-    v88 = [v145 myDeviceID];
-    v89 = v88;
+    myDeviceID = [selfCopy myDeviceID];
+    v89 = myDeviceID;
     v90 = &stru_1F05B9908;
-    if (v88)
+    if (myDeviceID)
     {
-      v90 = v88;
+      v90 = myDeviceID;
     }
 
     v91 = v90;
@@ -565,7 +565,7 @@ LABEL_16:
     v154[1] = v125;
     v153[2] = @"version";
     v92 = @"3.0";
-    if (v136 < 3)
+    if (integerValue < 3)
     {
       v92 = @"1.0";
     }
@@ -580,31 +580,31 @@ LABEL_16:
       [_DKSyncRapportKnowledgeStorage handleFetchEventsWithRequest:options:responseHandler:];
     }
 
-    v123[2](v123, v93, 0);
-    if (v127)
+    optionsCopy[2](optionsCopy, v93, 0);
+    if (date)
     {
-      v95 = [MEMORY[0x1E695DF00] date];
-      v96 = [v145[3] syncType];
-      +[_DKSyncPowerlog recordWithSyncType:transportType:startDate:endDate:isEmpty:](_DKSyncPowerlog, "recordWithSyncType:transportType:startDate:endDate:isEmpty:", v96, [v145 transportType], v127, v95, v143);
+      date2 = [MEMORY[0x1E695DF00] date];
+      syncType2 = [selfCopy[3] syncType];
+      +[_DKSyncPowerlog recordWithSyncType:transportType:startDate:endDate:isEmpty:](_DKSyncPowerlog, "recordWithSyncType:transportType:startDate:endDate:isEmpty:", syncType2, [selfCopy transportType], date, date2, v143);
     }
   }
 
   v97 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleFetchDeletedEventIDsWithRequest:(void *)a3 options:(void *)a4 responseHandler:
+- (void)handleFetchDeletedEventIDsWithRequest:(void *)request options:(void *)options responseHandler:
 {
   v109 = *MEMORY[0x1E69E9840];
   v78 = a2;
-  v56 = a3;
-  v57 = a4;
-  v82 = a1;
-  if (a1)
+  requestCopy = request;
+  optionsCopy = options;
+  selfCopy = self;
+  if (self)
   {
     v7 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v7);
 
-    v58 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v8 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -622,7 +622,7 @@ LABEL_16:
     }
 
     v65 = objc_opt_new();
-    if (*(a1 + 24))
+    if (*(self + 24))
     {
       [v78 objectForKeyedSubscript:@"queries"];
       v91 = 0u;
@@ -657,14 +657,14 @@ LABEL_16:
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
           {
             v26 = [objc_opt_class() description];
-            v27 = [(NSDate *)v14 dk_localtimeString];
+            dk_localtimeString = [(NSDate *)v14 dk_localtimeString];
             v28 = _CDPrettyPrintCollection(v15, 0, 0, 0);
             *buf = 138544130;
             v99 = v26;
             v100 = 2112;
             v101 = v16;
             v102 = 2114;
-            v103 = v27;
+            v103 = dk_localtimeString;
             v104 = 2114;
             v105 = v28;
             _os_log_debug_impl(&dword_191750000, v17, OS_LOG_TYPE_DEBUG, "%{public}@: Received fetch deleted event ids request for up to %@ deletions since %{public}@ for streams %{public}@", buf, 0x2Au);
@@ -679,18 +679,18 @@ LABEL_16:
 
           if (v16)
           {
-            v18 = [v16 unsignedIntegerValue];
+            unsignedIntegerValue = [v16 unsignedIntegerValue];
           }
 
           else
           {
-            v18 = 0x7FFFFFFFFFFFFFFFLL;
+            unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
           }
 
-          v20 = v82[3];
+          v20 = selfCopy[3];
           v87 = v11;
           v88 = 0;
-          v85 = [v20 deletedEventIDsSinceDate:v14 streamNames:v15 limit:v18 endDate:&v88 error:&v87];
+          v85 = [v20 deletedEventIDsSinceDate:v14 streamNames:v15 limit:unsignedIntegerValue endDate:&v88 error:&v87];
           v19 = v88;
           v21 = v87;
 
@@ -702,20 +702,20 @@ LABEL_16:
           else
           {
             v86 = 0;
-            v21 = [(_DKSyncRapportKnowledgeStorage *)v82 changeSetForSyncWithEventsToInsert:v85 eventIDsToDeletes:&v86 error:?];
+            v21 = [(_DKSyncRapportKnowledgeStorage *)selfCopy changeSetForSyncWithEventsToInsert:v85 eventIDsToDeletes:&v86 error:?];
             v22 = v86;
             if (!v22)
             {
               v95[0] = 0;
-              v25 = [v21 eventsToAdd];
-              if ([v25 count])
+              eventsToAdd = [v21 eventsToAdd];
+              if ([eventsToAdd count])
               {
 
                 goto LABEL_29;
               }
 
-              v29 = [v21 eventIDsToDelete];
-              v30 = [v29 count] == 0;
+              eventIDsToDelete = [v21 eventIDsToDelete];
+              v30 = [eventIDsToDelete count] == 0;
 
               if (v30)
               {
@@ -725,7 +725,7 @@ LABEL_16:
               else
               {
 LABEL_29:
-                v80 = [(_DKSyncRapportKnowledgeStorage *)v82 dataFromChangeSet:v21 didCompress:v95];
+                v80 = [(_DKSyncRapportKnowledgeStorage *)selfCopy dataFromChangeSet:v21 didCompress:v95];
                 v66 = 0;
               }
 
@@ -750,19 +750,19 @@ LABEL_29:
                   v74 = +[_DKSyncPeerStatusTracker sharedInstance];
                   v73 = [v78 objectForKeyedSubscript:@"client"];
                   v72 = [v74 existingPeerWithSourceDeviceID:v73];
-                  v33 = [v72 identifier];
+                  identifier = [v72 identifier];
                   v71 = +[_DKSyncPeerStatusTracker sharedInstance];
                   v70 = [v78 objectForKeyedSubscript:@"client"];
                   v69 = [v71 existingPeerWithSourceDeviceID:v70];
-                  v34 = [v69 model];
-                  if (v34)
+                  model = [v69 model];
+                  if (model)
                   {
                     v35 = MEMORY[0x1E696AEC0];
                     v63 = +[_DKSyncPeerStatusTracker sharedInstance];
                     v62 = [v78 objectForKeyedSubscript:@"client"];
                     v61 = [v63 existingPeerWithSourceDeviceID:v62];
-                    v60 = [v61 model];
-                    v59 = [v35 stringWithFormat:@" (%@)", v60];
+                    model2 = [v61 model];
+                    v59 = [v35 stringWithFormat:@" (%@)", model2];
                     v36 = v59;
                   }
 
@@ -778,11 +778,11 @@ LABEL_29:
                   v102 = 2114;
                   v103 = v64;
                   v104 = 2114;
-                  v105 = v33;
+                  v105 = identifier;
                   v106 = 2114;
                   v107 = v36;
                   _os_log_impl(&dword_191750000, log, OS_LOG_TYPE_INFO, "%{public}@: Sending %@ deletions to %{public}@peer %{public}@%{public}@", buf, 0x34u);
-                  if (v34)
+                  if (model)
                   {
                   }
                 }
@@ -833,14 +833,14 @@ LABEL_29:
             if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
             {
               v42 = [objc_opt_class() description];
-              v43 = [v23 domain];
-              v44 = [v23 code];
+              domain = [v23 domain];
+              code = [v23 code];
               *buf = 138544130;
               v99 = v42;
               v100 = 2114;
-              v101 = v43;
+              v101 = domain;
               v102 = 2048;
-              v103 = v44;
+              v103 = code;
               v104 = 2112;
               v105 = v23;
               _os_log_error_impl(&dword_191750000, v24, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create change set: %{public}@:%lld (%@)", buf, 0x2Au);
@@ -875,12 +875,12 @@ LABEL_56:
     v11 = +[_DKSyncErrors internalFailure];
     v66 = 1;
 LABEL_57:
-    v47 = [v82 myDeviceID];
-    v48 = v47;
+    myDeviceID = [selfCopy myDeviceID];
+    v48 = myDeviceID;
     v49 = &stru_1F05B9908;
-    if (v47)
+    if (myDeviceID)
     {
-      v49 = v47;
+      v49 = myDeviceID;
     }
 
     v50 = v49;
@@ -900,60 +900,60 @@ LABEL_57:
       [_DKSyncRapportKnowledgeStorage handleFetchDeletedEventIDsWithRequest:options:responseHandler:];
     }
 
-    v57[2](v57, v51, 0, v11);
-    if (v58)
+    optionsCopy[2](optionsCopy, v51, 0, v11);
+    if (date)
     {
-      v53 = [MEMORY[0x1E695DF00] date];
-      v54 = [v82[3] syncType];
-      +[_DKSyncPowerlog recordWithSyncType:transportType:startDate:endDate:isEmpty:](_DKSyncPowerlog, "recordWithSyncType:transportType:startDate:endDate:isEmpty:", v54, [v82 transportType], v58, v53, v66 & 1);
+      date2 = [MEMORY[0x1E695DF00] date];
+      syncType = [selfCopy[3] syncType];
+      +[_DKSyncPowerlog recordWithSyncType:transportType:startDate:endDate:isEmpty:](_DKSyncPowerlog, "recordWithSyncType:transportType:startDate:endDate:isEmpty:", syncType, [selfCopy transportType], date, date2, v66 & 1);
     }
   }
 
   v55 = *MEMORY[0x1E69E9840];
 }
 
-- (void)prewarmFetchWithCompletion:(id)a3
+- (void)prewarmFetchWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)fetchEventsFromPeer:(id)a3 windows:(id)a4 streamNames:(id)a5 limit:(unint64_t)a6 fetchOrder:(int64_t)a7 highPriority:(BOOL)a8 completion:(id)a9
+- (void)fetchEventsFromPeer:(id)peer windows:(id)windows streamNames:(id)names limit:(unint64_t)limit fetchOrder:(int64_t)order highPriority:(BOOL)priority completion:(id)completion
 {
-  v9 = a8;
+  priorityCopy = priority;
   v100[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v67 = a4;
-  v72 = a5;
-  v14 = a9;
+  peerCopy = peer;
+  windowsCopy = windows;
+  namesCopy = names;
+  completionCopy = completion;
   v15 = +[_DKSyncSerializer underlyingQueue];
   dispatch_assert_queue_V2(v15);
 
-  v16 = [(_DKSyncRapportStorage *)self myDeviceID];
-  v17 = [v13 version];
-  v71 = [v17 integerValue];
+  myDeviceID = [(_DKSyncRapportStorage *)self myDeviceID];
+  version = [peerCopy version];
+  integerValue = [version integerValue];
 
-  if (-[_DKSyncRapportStorage isAvailable](self, "isAvailable") && ([v13 idsDeviceIdentifier], (v18 = objc_claimAutoreleasedReturnValue()) != 0) && (v19 = v18, v20 = -[_DKSyncRapportStorage isTransportActiveForPeer:](self, "isTransportActiveForPeer:", v13), v19, v20))
+  if (-[_DKSyncRapportStorage isAvailable](self, "isAvailable") && ([peerCopy idsDeviceIdentifier], (v18 = objc_claimAutoreleasedReturnValue()) != 0) && (v19 = v18, v20 = -[_DKSyncRapportStorage isTransportActiveForPeer:](self, "isTransportActiveForPeer:", peerCopy), v19, v20))
   {
     [MEMORY[0x1E695DF00] date];
-    v63 = v16;
-    v64 = v13;
-    v65 = self;
-    v60 = v62 = v9;
-    v61 = v14;
-    if (v71 <= 2)
+    v63 = myDeviceID;
+    v64 = peerCopy;
+    selfCopy = self;
+    v60 = v62 = priorityCopy;
+    v61 = completionCopy;
+    if (integerValue <= 2)
     {
-      if ([v67 count] < 2)
+      if ([windowsCopy count] < 2)
       {
-        v21 = v67;
+        v21 = windowsCopy;
       }
 
       else
       {
-        v25 = [v67 lastObject];
-        v100[0] = v25;
+        lastObject = [windowsCopy lastObject];
+        v100[0] = lastObject;
         v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v100 count:1];
 
         v26 = +[_CDLogging syncChannel];
@@ -969,30 +969,30 @@ LABEL_57:
           }
 
           v68 = v52;
-          v54 = [v64 identifier];
-          v55 = [v64 model];
-          if (v55)
+          identifier = [v64 identifier];
+          model = [v64 model];
+          if (model)
           {
             v56 = MEMORY[0x1E696AEC0];
-            v59 = [v64 model];
-            v53 = [v56 stringWithFormat:@" (%@)", v59];
+            model2 = [v64 model];
+            v53 = [v56 stringWithFormat:@" (%@)", model2];
           }
 
-          v57 = [v21 firstObject];
-          v58 = [v57 debugDescription];
+          firstObject = [v21 firstObject];
+          v58 = [firstObject debugDescription];
           *buf = 138544386;
           v91 = v70;
           v92 = 2114;
           v93 = v68;
           v94 = 2114;
-          v95 = v54;
+          v95 = identifier;
           v96 = 2114;
           v97 = v53;
           v98 = 2114;
           v99 = v58;
           _os_log_debug_impl(&dword_191750000, v26, OS_LOG_TYPE_DEBUG, "%{public}@: Only sending a single window to v1 %{public}@peer %{public}@%{public}@: window %{public}@", buf, 0x34u);
 
-          if (v55)
+          if (model)
           {
           }
         }
@@ -1001,7 +1001,7 @@ LABEL_57:
 
     else
     {
-      v21 = v67;
+      v21 = windowsCopy;
     }
 
     v69 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v21, "count")}];
@@ -1011,7 +1011,7 @@ LABEL_57:
     v82 = 0u;
     v27 = v21;
     v28 = [v27 countByEnumeratingWithState:&v79 objects:v89 count:16];
-    v67 = v27;
+    windowsCopy = v27;
     if (v28)
     {
       v29 = v28;
@@ -1026,33 +1026,33 @@ LABEL_57:
           }
 
           v32 = *(*(&v79 + 1) + 8 * i);
-          v33 = [(_DKSyncWindow *)v32 startDate];
-          v34 = [(_DKSyncType *)v32 urgency];
-          v35 = v34;
-          if (v71 < 3)
+          startDate = [(_DKSyncWindow *)v32 startDate];
+          urgency = [(_DKSyncType *)v32 urgency];
+          v35 = urgency;
+          if (integerValue < 3)
           {
             v87[0] = @"startDate";
             v87[1] = @"endDate";
-            v88[0] = v33;
-            v88[1] = v34;
-            v88[2] = v72;
+            v88[0] = startDate;
+            v88[1] = urgency;
+            v88[2] = namesCopy;
             v87[2] = @"streamNames";
             v87[3] = @"limit";
-            v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+            v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
             v88[3] = v37;
             v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v88 forKeys:v87 count:4];
 
-            v27 = v67;
+            v27 = windowsCopy;
           }
 
           else
           {
             v85[0] = @"startDate";
             v85[1] = @"endDate";
-            v86[0] = v33;
-            v86[1] = v34;
+            v86[0] = startDate;
+            v86[1] = urgency;
             v85[2] = @"streamNames";
-            v86[2] = v72;
+            v86[2] = namesCopy;
             v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v86 forKeys:v85 count:3];
           }
 
@@ -1065,7 +1065,7 @@ LABEL_57:
       while (v29);
     }
 
-    v16 = v63;
+    myDeviceID = v63;
     v38 = &stru_1F05B9908;
     if (v63)
     {
@@ -1079,22 +1079,22 @@ LABEL_57:
 
     v83[0] = @"client";
     v83[1] = @"queries";
-    v22 = v69;
+    model4 = v69;
     v84[0] = v39;
     v84[1] = v69;
     v83[2] = @"limit";
-    v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+    v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
     v84[2] = v40;
     v84[3] = @"3.0";
     v83[3] = @"version";
     v83[4] = @"compatibility";
     v41 = +[_DKCompatibility currentCompatibility];
-    v42 = [v41 serialize];
-    v84[4] = v42;
+    serialize = [v41 serialize];
+    v84[4] = serialize;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v84 forKeys:v83 count:5];
 
     v43 = +[_CDLogging syncChannel];
-    v13 = v64;
+    peerCopy = v64;
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
     {
       v46 = [objc_opt_class() description];
@@ -1103,13 +1103,13 @@ LABEL_57:
         v38 = @"pseudo ";
       }
 
-      v47 = [v64 identifier];
-      v48 = [v64 model];
-      if (v48)
+      identifier2 = [v64 identifier];
+      model3 = [v64 model];
+      if (model3)
       {
         v50 = MEMORY[0x1E696AEC0];
-        v22 = [v64 model];
-        v49 = [v50 stringWithFormat:@" (%@)", v22];
+        model4 = [v64 model];
+        v49 = [v50 stringWithFormat:@" (%@)", model4];
       }
 
       else
@@ -1122,30 +1122,30 @@ LABEL_57:
       v92 = 2114;
       v93 = v38;
       v94 = 2114;
-      v95 = v47;
+      v95 = identifier2;
       v96 = 2114;
       v97 = v49;
       v98 = 2112;
       v99 = v23;
       _os_log_debug_impl(&dword_191750000, v43, OS_LOG_TYPE_DEBUG, "%{public}@: Sending fetch events request to %{public}@peer %{public}@%{public}@: %@", buf, 0x34u);
-      if (v48)
+      if (model3)
       {
       }
 
-      v22 = v69;
+      model4 = v69;
     }
 
     v75[0] = MEMORY[0x1E69E9820];
     v75[1] = 3221225472;
     v75[2] = __115___DKSyncRapportKnowledgeStorage_fetchEventsFromPeer_windows_streamNames_limit_fetchOrder_highPriority_completion___block_invoke;
     v75[3] = &unk_1E736AD00;
-    v75[4] = v65;
+    v75[4] = selfCopy;
     v76 = v64;
     v77 = v60;
     v78 = v61;
     v44 = v61;
     v45 = v60;
-    [(_DKSyncRapportStorage *)v65 sendRequestID:@"com.apple.coreduet.fetch-events" request:v23 peer:v76 highPriority:v62 options:0 responseHandler:v75];
+    [(_DKSyncRapportStorage *)selfCopy sendRequestID:@"com.apple.coreduet.fetch-events" request:v23 peer:v76 highPriority:v62 options:0 responseHandler:v75];
   }
 
   else
@@ -1154,26 +1154,26 @@ LABEL_57:
     v73[1] = 3221225472;
     v73[2] = __115___DKSyncRapportKnowledgeStorage_fetchEventsFromPeer_windows_streamNames_limit_fetchOrder_highPriority_completion___block_invoke_2;
     v73[3] = &unk_1E7367508;
-    v74 = v14;
-    v22 = v14;
-    [(_DKSyncRapportStorage *)self handleAvailabilityFailureWithPeer:v13 completion:v73];
+    v74 = completionCopy;
+    model4 = completionCopy;
+    [(_DKSyncRapportStorage *)self handleAvailabilityFailureWithPeer:peerCopy completion:v73];
     v23 = v74;
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleFetchEventsWithResponse:(void *)a3 options:(void *)a4 error:(void *)a5 peer:(void *)a6 plStartDate:(void *)a7 completion:
+- (void)handleFetchEventsWithResponse:(void *)response options:(void *)options error:(void *)error peer:(void *)peer plStartDate:(void *)date completion:
 {
   v102 = *MEMORY[0x1E69E9840];
   v76 = a2;
-  v74 = a3;
-  v80 = a4;
-  v75 = a5;
-  v77 = a6;
-  v78 = a7;
-  v79 = a1;
-  if (!a1)
+  responseCopy = response;
+  optionsCopy = options;
+  errorCopy = error;
+  peerCopy = peer;
+  dateCopy = date;
+  selfCopy = self;
+  if (!self)
   {
     goto LABEL_70;
   }
@@ -1189,14 +1189,14 @@ LABEL_57:
     [_DKSyncRapportKnowledgeStorage handleFetchEventsWithResponse:options:error:peer:plStartDate:completion:];
   }
 
-  v15 = v80;
-  if (!v80)
+  v15 = optionsCopy;
+  if (!optionsCopy)
   {
     v20 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
       v57 = [objc_opt_class() description];
-      if ([v75 me])
+      if ([errorCopy me])
       {
         v58 = @"pseudo ";
       }
@@ -1206,18 +1206,18 @@ LABEL_57:
         v58 = &stru_1F05B9908;
       }
 
-      v59 = [v75 identifier];
-      v60 = [v75 model];
-      if (v60)
+      identifier = [errorCopy identifier];
+      model = [errorCopy model];
+      if (model)
       {
         v65 = MEMORY[0x1E696AEC0];
-        a3 = [v75 model];
-        v61 = [v65 stringWithFormat:@" (%@)", a3];
+        response = [errorCopy model];
+        response = [v65 stringWithFormat:@" (%@)", response];
       }
 
       else
       {
-        v61 = &stru_1F05B9908;
+        response = &stru_1F05B9908;
       }
 
       *buf = 138544386;
@@ -1225,19 +1225,19 @@ LABEL_57:
       v94 = 2114;
       v95 = v58;
       v96 = 2114;
-      v97 = v59;
+      v97 = identifier;
       v98 = 2114;
-      v99 = v61;
+      v99 = response;
       v100 = 2112;
       v101 = v76;
       _os_log_debug_impl(&dword_191750000, v20, OS_LOG_TYPE_DEBUG, "%{public}@: Received fetch events response from %{public}@peer %{public}@%{public}@: %@", buf, 0x34u);
-      if (v60)
+      if (model)
       {
       }
     }
 
     v21 = +[_DKSyncErrors invalidResponse];
-    v80 = v21;
+    optionsCopy = v21;
     v73 = [(__CFString *)v76 objectForKeyedSubscript:@"version"];
     [v73 floatValue];
     v23 = v22;
@@ -1322,39 +1322,39 @@ LABEL_57:
 LABEL_34:
         if (v29 | v28)
         {
-          v41 = [v75 sourceDeviceUUID];
-          v42 = [v27 unsignedIntegerValue];
+          sourceDeviceUUID = [errorCopy sourceDeviceUUID];
+          unsignedIntegerValue = [v27 unsignedIntegerValue];
           if (v28)
           {
-            v43 = [(_DKSyncRapportKnowledgeStorage *)v79 changeSetFromCompressedData:v28 deviceIdentifier:v41 sequenceNumber:v42];
-            v44 = [v43 eventsToAdd];
+            v43 = [(_DKSyncRapportKnowledgeStorage *)selfCopy changeSetFromCompressedData:v28 deviceIdentifier:sourceDeviceUUID sequenceNumber:unsignedIntegerValue];
+            eventsToAdd = [v43 eventsToAdd];
           }
 
           else if ([v29 length])
           {
-            v43 = [_DKChangeSet createFromData:v29 deviceIdentifier:v41 sequenceNumber:v42];
-            v44 = [v43 eventsToAdd];
+            v43 = [_DKChangeSet createFromData:v29 deviceIdentifier:sourceDeviceUUID sequenceNumber:unsignedIntegerValue];
+            eventsToAdd = [v43 eventsToAdd];
           }
 
           else
           {
-            v44 = objc_opt_new();
+            eventsToAdd = objc_opt_new();
             v43 = 0;
           }
 
-          v18 = v44;
+          v18 = eventsToAdd;
           v85 = v43;
-          v82 = v41;
-          v19 = [v44 count] == 0;
+          v82 = sourceDeviceUUID;
+          v19 = [eventsToAdd count] == 0;
           if (v18)
           {
             v45 = +[_CDLogging syncChannel];
             if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
             {
               v70 = [objc_opt_class() description];
-              v46 = MEMORY[0x1E696AD98];
+              model3 = MEMORY[0x1E696AD98];
               v68 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v18, "count")}];
-              v47 = [v75 me];
+              v47 = [errorCopy me];
               v48 = &stru_1F05B9908;
               if (v47)
               {
@@ -1362,13 +1362,13 @@ LABEL_34:
               }
 
               v67 = v48;
-              v49 = [v75 identifier];
-              v50 = [v75 model];
-              if (v50)
+              identifier2 = [errorCopy identifier];
+              model2 = [errorCopy model];
+              if (model2)
               {
                 v51 = MEMORY[0x1E696AEC0];
-                v46 = [v75 model];
-                v52 = [v51 stringWithFormat:@" (%@)", v46];
+                model3 = [errorCopy model];
+                v52 = [v51 stringWithFormat:@" (%@)", model3];
               }
 
               else
@@ -1383,17 +1383,17 @@ LABEL_34:
               v96 = 2114;
               v97 = v67;
               v98 = 2114;
-              v99 = v49;
+              v99 = identifier2;
               v100 = 2114;
               v101 = v52;
               _os_log_impl(&dword_191750000, v45, OS_LOG_TYPE_INFO, "%{public}@: Fetched %@ added events from %{public}@peer %{public}@%{public}@", buf, 0x34u);
-              if (v50)
+              if (model2)
               {
               }
             }
 
-            v53 = v80;
-            v80 = 0;
+            v53 = optionsCopy;
+            optionsCopy = 0;
           }
 
           else
@@ -1402,7 +1402,7 @@ LABEL_34:
             if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
             {
               v71 = [objc_opt_class() description];
-              if ([v75 me])
+              if ([errorCopy me])
               {
                 v54 = @"pseudo ";
               }
@@ -1412,13 +1412,13 @@ LABEL_34:
                 v54 = &stru_1F05B9908;
               }
 
-              v69 = [v75 identifier];
-              v55 = [v75 model];
-              if (v55)
+              identifier3 = [errorCopy identifier];
+              model4 = [errorCopy model];
+              if (model4)
               {
                 v66 = MEMORY[0x1E696AEC0];
-                v41 = [v75 model];
-                v56 = [v66 stringWithFormat:@" (%@)", v41];
+                sourceDeviceUUID = [errorCopy model];
+                v56 = [v66 stringWithFormat:@" (%@)", sourceDeviceUUID];
               }
 
               else
@@ -1431,11 +1431,11 @@ LABEL_34:
               v94 = 2114;
               v95 = v54;
               v96 = 2114;
-              v97 = v69;
+              v97 = identifier3;
               v98 = 2114;
               v99 = v56;
               _os_log_debug_impl(&dword_191750000, v53, OS_LOG_TYPE_DEBUG, "%{public}@: Unable to decode events from %{public}@peer %{public}@%{public}@", buf, 0x2Au);
-              if (v55)
+              if (model4)
               {
               }
             }
@@ -1448,7 +1448,7 @@ LABEL_34:
         {
           +[_DKSyncErrors invalidResponse];
           v18 = 0;
-          v80 = v19 = 1;
+          optionsCopy = v19 = 1;
         }
 
         v15 = v73;
@@ -1467,14 +1467,14 @@ LABEL_34:
       }
     }
 
-    v21 = v80;
+    v21 = optionsCopy;
     goto LABEL_34;
   }
 
-  if (-[NSObject code](v80, "code") == -6714 && (-[NSObject domain](v80, "domain"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 isEqualToString:*MEMORY[0x1E69C6BC8]], v16, v15 = v80, v17))
+  if (-[NSObject code](optionsCopy, "code") == -6714 && (-[NSObject domain](optionsCopy, "domain"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 isEqualToString:*MEMORY[0x1E69C6BC8]], v16, v15 = optionsCopy, v17))
   {
     v15 = +[_DKSyncPeerStatusTracker sharedInstance];
-    [v15 removeActiveTransports:objc_msgSend(a1 fromPeer:{"transportType"), v75}];
+    [v15 removeActiveTransports:objc_msgSend(self fromPeer:{"transportType"), errorCopy}];
     v83 = 0;
     v18 = 0;
     v19 = 1;
@@ -1482,61 +1482,61 @@ LABEL_34:
 
   else
   {
-    [a1 transformResponseError:v15];
+    [self transformResponseError:v15];
     v83 = 0;
     v18 = 0;
-    v80 = v19 = 1;
+    optionsCopy = v19 = 1;
   }
 
 LABEL_65:
 
-  if (v77)
+  if (peerCopy)
   {
-    v62 = [MEMORY[0x1E695DF00] date];
-    v63 = [v79[3] syncType];
-    +[_DKSyncPowerlog recordWithSyncType:transportType:startDate:endDate:isEmpty:](_DKSyncPowerlog, "recordWithSyncType:transportType:startDate:endDate:isEmpty:", v63, [v79 transportType], v77, v62, v19);
+    date = [MEMORY[0x1E695DF00] date];
+    syncType = [selfCopy[3] syncType];
+    +[_DKSyncPowerlog recordWithSyncType:transportType:startDate:endDate:isEmpty:](_DKSyncPowerlog, "recordWithSyncType:transportType:startDate:endDate:isEmpty:", syncType, [selfCopy transportType], peerCopy, date, v19);
   }
 
-  if (v78)
+  if (dateCopy)
   {
-    v78[2]();
+    dateCopy[2]();
   }
 
 LABEL_70:
   v64 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchDeletedEventIDsFromPeer:(id)a3 sinceDate:(id)a4 streamNames:(id)a5 limit:(unint64_t)a6 highPriority:(BOOL)a7 completion:(id)a8
+- (void)fetchDeletedEventIDsFromPeer:(id)peer sinceDate:(id)date streamNames:(id)names limit:(unint64_t)limit highPriority:(BOOL)priority completion:(id)completion
 {
-  v9 = a7;
+  priorityCopy = priority;
   v64[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  peerCopy = peer;
+  dateCopy = date;
+  namesCopy = names;
+  completionCopy = completion;
   v18 = +[_DKSyncSerializer underlyingQueue];
   dispatch_assert_queue_V2(v18);
 
-  v19 = [(_DKSyncRapportStorage *)self myDeviceID];
-  if (-[_DKSyncRapportStorage isAvailable](self, "isAvailable") && ([v14 idsDeviceIdentifier], (v20 = objc_claimAutoreleasedReturnValue()) != 0) && (v21 = v20, v22 = -[_DKSyncRapportStorage isTransportActiveForPeer:](self, "isTransportActiveForPeer:", v14), v21, v22))
+  myDeviceID = [(_DKSyncRapportStorage *)self myDeviceID];
+  if (-[_DKSyncRapportStorage isAvailable](self, "isAvailable") && ([peerCopy idsDeviceIdentifier], (v20 = objc_claimAutoreleasedReturnValue()) != 0) && (v21 = v20, v22 = -[_DKSyncRapportStorage isTransportActiveForPeer:](self, "isTransportActiveForPeer:", peerCopy), v21, v22))
   {
-    v43 = v9;
-    v23 = [MEMORY[0x1E695DF00] date];
+    v43 = priorityCopy;
+    date = [MEMORY[0x1E695DF00] date];
     v62[0] = @"sinceDate";
     v62[1] = @"streamNames";
-    v63[0] = v15;
-    v63[1] = v16;
+    v63[0] = dateCopy;
+    v63[1] = namesCopy;
     v62[2] = @"limit";
-    v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+    v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
     v63[2] = v24;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:v62 count:3];
     v64[0] = v25;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:1];
 
     v27 = &stru_1F05B9908;
-    if (v19)
+    if (myDeviceID)
     {
-      v27 = v19;
+      v27 = myDeviceID;
     }
 
     v60[0] = @"client";
@@ -1549,9 +1549,9 @@ LABEL_70:
     v29 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
-      v39 = v23;
+      v39 = date;
       v42 = [objc_opt_class() description];
-      v33 = [v14 me];
+      v33 = [peerCopy me];
       v34 = @"pseudo ";
       v35 = &stru_1F05B9908;
       if (!v33)
@@ -1560,13 +1560,13 @@ LABEL_70:
       }
 
       v38 = v34;
-      v41 = [v14 identifier];
-      v40 = [v14 model];
-      if (v40)
+      identifier = [peerCopy identifier];
+      model = [peerCopy model];
+      if (model)
       {
         v36 = MEMORY[0x1E696AEC0];
-        v37 = [v14 model];
-        v35 = [v36 stringWithFormat:@" (%@)", v37];
+        model2 = [peerCopy model];
+        v35 = [v36 stringWithFormat:@" (%@)", model2];
       }
 
       *buf = 138544386;
@@ -1574,17 +1574,17 @@ LABEL_70:
       v52 = 2114;
       v53 = v38;
       v54 = 2114;
-      v55 = v41;
+      v55 = identifier;
       v56 = 2114;
       v57 = v35;
       v58 = 2112;
       v59 = v28;
       _os_log_debug_impl(&dword_191750000, v29, OS_LOG_TYPE_DEBUG, "%{public}@: Sending deleted event ids request to %{public}@peer %{public}@%{public}@: %@", buf, 0x34u);
-      if (v40)
+      if (model)
       {
       }
 
-      v23 = v39;
+      date = v39;
     }
 
     v46[0] = MEMORY[0x1E69E9820];
@@ -1592,11 +1592,11 @@ LABEL_70:
     v46[2] = __115___DKSyncRapportKnowledgeStorage_fetchDeletedEventIDsFromPeer_sinceDate_streamNames_limit_highPriority_completion___block_invoke;
     v46[3] = &unk_1E736AD00;
     v46[4] = self;
-    v47 = v14;
-    v48 = v23;
-    v49 = v17;
-    v30 = v17;
-    v31 = v23;
+    v47 = peerCopy;
+    v48 = date;
+    v49 = completionCopy;
+    v30 = completionCopy;
+    v31 = date;
     [(_DKSyncRapportStorage *)self sendRequestID:@"com.apple.coreduet.fetch-deleted-event-ids" request:v28 peer:v47 highPriority:v43 options:0 responseHandler:v46];
   }
 
@@ -1606,26 +1606,26 @@ LABEL_70:
     v44[1] = 3221225472;
     v44[2] = __115___DKSyncRapportKnowledgeStorage_fetchDeletedEventIDsFromPeer_sinceDate_streamNames_limit_highPriority_completion___block_invoke_2;
     v44[3] = &unk_1E7367508;
-    v45 = v17;
-    v26 = v17;
-    [(_DKSyncRapportStorage *)self handleAvailabilityFailureWithPeer:v14 completion:v44];
+    v45 = completionCopy;
+    v26 = completionCopy;
+    [(_DKSyncRapportStorage *)self handleAvailabilityFailureWithPeer:peerCopy completion:v44];
     v28 = v45;
   }
 
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleFetchDeletedEventIDsWithResponse:(void *)a3 options:(void *)a4 error:(void *)a5 peer:(void *)a6 plStartDate:(void *)a7 completion:
+- (void)handleFetchDeletedEventIDsWithResponse:(void *)response options:(void *)options error:(void *)error peer:(void *)peer plStartDate:(void *)date completion:
 {
   v95 = *MEMORY[0x1E69E9840];
   v62 = a2;
-  v59 = a3;
-  v70 = a4;
-  v73 = a5;
-  v63 = a6;
-  v64 = a7;
-  v68 = a1;
-  if (!a1)
+  responseCopy = response;
+  optionsCopy = options;
+  errorCopy = error;
+  peerCopy = peer;
+  dateCopy = date;
+  selfCopy = self;
+  if (!self)
   {
     goto LABEL_62;
   }
@@ -1641,14 +1641,14 @@ LABEL_70:
     [_DKSyncRapportKnowledgeStorage handleFetchDeletedEventIDsWithResponse:options:error:peer:plStartDate:completion:];
   }
 
-  v15 = v70;
-  if (!v70)
+  v15 = optionsCopy;
+  if (!optionsCopy)
   {
     v19 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
       v52 = [objc_opt_class() description];
-      if ([v73 me])
+      if ([errorCopy me])
       {
         v53 = @"pseudo ";
       }
@@ -1658,18 +1658,18 @@ LABEL_70:
         v53 = &stru_1F05B9908;
       }
 
-      v54 = [v73 identifier];
-      v55 = [v73 model];
-      if (v55)
+      identifier = [errorCopy identifier];
+      model = [errorCopy model];
+      if (model)
       {
         v57 = MEMORY[0x1E696AEC0];
-        a3 = [v73 model];
-        v56 = [v57 stringWithFormat:@" (%@)", a3];
+        response = [errorCopy model];
+        response = [v57 stringWithFormat:@" (%@)", response];
       }
 
       else
       {
-        v56 = &stru_1F05B9908;
+        response = &stru_1F05B9908;
       }
 
       *buf = 138544386;
@@ -1677,13 +1677,13 @@ LABEL_70:
       v87 = 2114;
       v88 = v53;
       v89 = 2114;
-      v90 = v54;
+      v90 = identifier;
       v91 = 2114;
-      v92 = v56;
+      v92 = response;
       v93 = 2112;
       v94 = v62;
       _os_log_debug_impl(&dword_191750000, v19, OS_LOG_TYPE_DEBUG, "%{public}@: Received fetch deleted event ids response from %{public}@peer %{public}@%{public}@: %@", buf, 0x34u);
-      if (v55)
+      if (model)
       {
       }
     }
@@ -1696,7 +1696,7 @@ LABEL_70:
       v79 = 0;
       v18 = 0;
       v69 = 1;
-      v70 = v20;
+      optionsCopy = v20;
       goto LABEL_57;
     }
 
@@ -1713,7 +1713,7 @@ LABEL_70:
       v79 = 0;
       v22 = 0;
       v69 = 1;
-      v70 = v20;
+      optionsCopy = v20;
       goto LABEL_56;
     }
 
@@ -1722,7 +1722,7 @@ LABEL_70:
     v22 = 0;
     v71 = *v81;
     v69 = 1;
-    v70 = v20;
+    optionsCopy = v20;
     while (1)
     {
       v72 = v21;
@@ -1755,23 +1755,23 @@ LABEL_70:
 
         if (!v29 && v78 != 0)
         {
-          v75 = [v73 sourceDeviceUUID];
+          sourceDeviceUUID = [errorCopy sourceDeviceUUID];
           v31 = [v26 objectForKeyedSubscript:@"sequenceNumber"];
-          v32 = [v31 unsignedIntegerValue];
+          unsignedIntegerValue = [v31 unsignedIntegerValue];
 
           if (v28)
           {
-            v74 = [(_DKSyncRapportKnowledgeStorage *)v68 changeSetFromCompressedData:v28 deviceIdentifier:v75 sequenceNumber:v32];
-            v33 = [v74 eventIDsToDelete];
+            v74 = [(_DKSyncRapportKnowledgeStorage *)selfCopy changeSetFromCompressedData:v28 deviceIdentifier:sourceDeviceUUID sequenceNumber:unsignedIntegerValue];
+            eventIDsToDelete = [v74 eventIDsToDelete];
             goto LABEL_27;
           }
 
           if ([v27 length])
           {
-            v74 = [_DKChangeSet createFromData:v27 deviceIdentifier:v75 sequenceNumber:v32];
-            v33 = [v74 eventIDsToDelete];
+            v74 = [_DKChangeSet createFromData:v27 deviceIdentifier:sourceDeviceUUID sequenceNumber:unsignedIntegerValue];
+            eventIDsToDelete = [v74 eventIDsToDelete];
 LABEL_27:
-            v77 = v33;
+            v77 = eventIDsToDelete;
           }
 
           else
@@ -1788,7 +1788,7 @@ LABEL_27:
             {
               v67 = [objc_opt_class() description];
               v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v77, "count")}];
-              if ([v73 me])
+              if ([errorCopy me])
               {
                 v36 = @"pseudo ";
               }
@@ -1798,13 +1798,13 @@ LABEL_27:
                 v36 = &stru_1F05B9908;
               }
 
-              v37 = [v73 identifier];
-              v38 = [v73 model];
-              if (v38)
+              identifier2 = [errorCopy identifier];
+              model2 = [errorCopy model];
+              if (model2)
               {
                 v39 = MEMORY[0x1E696AEC0];
-                v66 = [v73 model];
-                v65 = [v39 stringWithFormat:@" (%@)", v66];
+                model3 = [errorCopy model];
+                v65 = [v39 stringWithFormat:@" (%@)", model3];
                 v40 = v65;
               }
 
@@ -1820,17 +1820,17 @@ LABEL_27:
               v89 = 2114;
               v90 = v36;
               v91 = 2114;
-              v92 = v37;
+              v92 = identifier2;
               v93 = 2114;
               v94 = v40;
               _os_log_impl(&dword_191750000, v34, OS_LOG_TYPE_INFO, "%{public}@: Fetched %@ deleted event ids from %{public}@peer %{public}@%{public}@", buf, 0x34u);
-              if (v38)
+              if (model2)
               {
               }
             }
 
-            v41 = v70;
-            v70 = 0;
+            v41 = optionsCopy;
+            optionsCopy = 0;
           }
 
           else
@@ -1839,7 +1839,7 @@ LABEL_27:
             if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
             {
               v42 = [objc_opt_class() description];
-              if ([v73 me])
+              if ([errorCopy me])
               {
                 v43 = @"pseudo ";
               }
@@ -1849,14 +1849,14 @@ LABEL_27:
                 v43 = &stru_1F05B9908;
               }
 
-              v44 = [v73 identifier];
-              v45 = [v73 model];
+              identifier3 = [errorCopy identifier];
+              model4 = [errorCopy model];
               v46 = &stru_1F05B9908;
-              if (v45)
+              if (model4)
               {
                 v47 = MEMORY[0x1E696AEC0];
-                v61 = [v73 model];
-                v60 = [v47 stringWithFormat:@" (%@)", v61];
+                model5 = [errorCopy model];
+                v60 = [v47 stringWithFormat:@" (%@)", model5];
                 v46 = v60;
               }
 
@@ -1865,11 +1865,11 @@ LABEL_27:
               v87 = 2114;
               v88 = v43;
               v89 = 2114;
-              v90 = v44;
+              v90 = identifier3;
               v91 = 2114;
               v92 = v46;
               _os_log_debug_impl(&dword_191750000, v41, OS_LOG_TYPE_DEBUG, "%{public}@: Unable to decode deleted event ids from %{public}@peer %{public}@%{public}@", buf, 0x2Au);
-              if (v45)
+              if (model4)
               {
               }
             }
@@ -1896,10 +1896,10 @@ LABEL_56:
     }
   }
 
-  if (-[NSObject code](v70, "code") == -6714 && (-[NSObject domain](v70, "domain"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 isEqualToString:*MEMORY[0x1E69C6BC8]], v16, v15 = v70, v17))
+  if (-[NSObject code](optionsCopy, "code") == -6714 && (-[NSObject domain](optionsCopy, "domain"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 isEqualToString:*MEMORY[0x1E69C6BC8]], v16, v15 = optionsCopy, v17))
   {
     v15 = +[_DKSyncPeerStatusTracker sharedInstance];
-    [v15 removeActiveTransports:objc_msgSend(a1 fromPeer:{"transportType"), v73}];
+    [v15 removeActiveTransports:objc_msgSend(self fromPeer:{"transportType"), errorCopy}];
     v78 = 0;
     v79 = 0;
     v18 = 0;
@@ -1908,26 +1908,26 @@ LABEL_56:
 
   else
   {
-    [a1 transformResponseError:v15];
+    [self transformResponseError:v15];
     v78 = 0;
     v79 = 0;
     v18 = 0;
-    v70 = v69 = 1;
+    optionsCopy = v69 = 1;
   }
 
 LABEL_57:
 
-  if (v63)
+  if (peerCopy)
   {
-    v48 = [MEMORY[0x1E695DF00] date];
-    v49 = [v68[3] syncType];
-    +[_DKSyncPowerlog recordWithSyncType:transportType:startDate:endDate:isEmpty:](_DKSyncPowerlog, "recordWithSyncType:transportType:startDate:endDate:isEmpty:", v49, [v68 transportType], v63, v48, v69);
+    date = [MEMORY[0x1E695DF00] date];
+    syncType = [selfCopy[3] syncType];
+    +[_DKSyncPowerlog recordWithSyncType:transportType:startDate:endDate:isEmpty:](_DKSyncPowerlog, "recordWithSyncType:transportType:startDate:endDate:isEmpty:", syncType, [selfCopy transportType], peerCopy, date, v69);
   }
 
   v50 = v78;
-  if (v64)
+  if (dateCopy)
   {
-    v64[2]();
+    dateCopy[2]();
     v50 = v78;
   }
 
@@ -1935,55 +1935,55 @@ LABEL_62:
   v51 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchDeletionsHighWaterMarkWithPeer:(id)a3 highPriority:(BOOL)a4 completion:(id)a5
+- (void)fetchDeletionsHighWaterMarkWithPeer:(id)peer highPriority:(BOOL)priority completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
     v6 = MEMORY[0x1E695DF00];
-    v7 = a5;
-    v8 = [v6 date];
-    (*(a5 + 2))(v7, v8, 0);
+    completionCopy = completion;
+    date = [v6 date];
+    (*(completion + 2))(completionCopy, date, 0);
   }
 }
 
-- (void)fetchAdditionsHighWaterMarkWithPeer:(id)a3 highPriority:(BOOL)a4 completion:(id)a5
+- (void)fetchAdditionsHighWaterMarkWithPeer:(id)peer highPriority:(BOOL)priority completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
     v6 = MEMORY[0x1E695DF00];
-    v7 = a5;
-    v8 = [v6 date];
-    (*(a5 + 2))(v7, v8, 0);
+    completionCopy = completion;
+    date = [v6 date];
+    (*(completion + 2))(completionCopy, date, 0);
   }
 }
 
-- (void)setFetchDelegate:(id)a3
+- (void)setFetchDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[_DKSyncSerializer underlyingQueue];
   dispatch_assert_queue_V2(v5);
 
   delegate = self->_delegate;
-  self->_delegate = v4;
-  v7 = v4;
+  self->_delegate = delegateCopy;
+  v7 = delegateCopy;
 
-  v8 = [(_DKSyncRemoteKnowledgeStorageFetchDelegate *)self->_delegate deviceUUID];
+  deviceUUID = [(_DKSyncRemoteKnowledgeStorageFetchDelegate *)self->_delegate deviceUUID];
 
-  v9 = [v8 UUIDString];
+  uUIDString = [deviceUUID UUIDString];
 
-  [(_DKSyncRapportStorage *)self setDeviceID:v9];
+  [(_DKSyncRapportStorage *)self setDeviceID:uUIDString];
 }
 
-- (void)updateStorageWithAddedEvents:(id)a3 deletedEventIDs:(id)a4 highPriority:(BOOL)a5 completion:(id)a6
+- (void)updateStorageWithAddedEvents:(id)events deletedEventIDs:(id)ds highPriority:(BOOL)priority completion:(id)completion
 {
-  v8 = a6;
+  completionCopy = completion;
   v6 = +[_DKSyncSerializer underlyingQueue];
   dispatch_assert_queue_V2(v6);
 
-  if (v8)
+  if (completionCopy)
   {
     v7 = +[_DKSyncErrors internalFailure];
-    v8[2](v8, v7);
+    completionCopy[2](completionCopy, v7);
   }
 }
 
@@ -2011,9 +2011,9 @@ LABEL_62:
         [v7 me];
         v12 = &stru_1F05B9908;
         OUTLINED_FUNCTION_22_7();
-        v13 = [v7 identifier];
-        v14 = [v7 model];
-        if (v14)
+        identifier = [v7 identifier];
+        model = [v7 model];
+        if (model)
         {
           v15 = MEMORY[0x1E696AEC0];
           [v7 model];
@@ -2026,7 +2026,7 @@ LABEL_62:
         OUTLINED_FUNCTION_19_8();
         OUTLINED_FUNCTION_25_4();
         _os_log_error_impl(v16, v17, v18, v19, v20, 0x34u);
-        if (v14)
+        if (model)
         {
         }
       }
@@ -2064,9 +2064,9 @@ LABEL_62:
         [v7 me];
         v12 = &stru_1F05B9908;
         OUTLINED_FUNCTION_22_7();
-        v13 = [v7 identifier];
-        v14 = [v7 model];
-        if (v14)
+        identifier = [v7 identifier];
+        model = [v7 model];
+        if (model)
         {
           v15 = MEMORY[0x1E696AEC0];
           [v7 model];
@@ -2079,7 +2079,7 @@ LABEL_62:
         OUTLINED_FUNCTION_19_8();
         OUTLINED_FUNCTION_25_4();
         _os_log_error_impl(v16, v17, v18, v19, v20, 0x34u);
-        if (v14)
+        if (model)
         {
         }
       }
@@ -2093,24 +2093,24 @@ LABEL_62:
   OUTLINED_FUNCTION_72_0();
 }
 
-- (id)changeSetFromCompressedData:(void *)a3 deviceIdentifier:(NSObject *)a4 sequenceNumber:
+- (id)changeSetFromCompressedData:(void *)data deviceIdentifier:(NSObject *)identifier sequenceNumber:
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (a1)
+  dataCopy = data;
+  if (self)
   {
     v8 = a2;
     v9 = [[_DKPRCompressedChangeSet alloc] initWithData:v8];
 
     if (-[_DKPRCompressedChangeSet uncompressedLength](v9) && (-[_DKPRCompressedChangeSet compressedData](v9), objc_claimAutoreleasedReturnValue()) && (v10 = OUTLINED_FUNCTION_28_4(), -[_DKPRCompressedChangeSet compressedData](v10), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 length], v11, _DKPRCompressedChangeSet, v12))
     {
-      v13 = [(_DKPRCompressedChangeSet *)v9 uncompressedLength];
-      malloc_type_malloc(v13 + 32, 0x429C8789uLL);
+      uncompressedLength = [(_DKPRCompressedChangeSet *)v9 uncompressedLength];
+      malloc_type_malloc(uncompressedLength + 32, 0x429C8789uLL);
       v14 = OUTLINED_FUNCTION_28_4();
-      v15 = [(_DKPRCompressedChangeSet *)v14 compressedData];
-      v16 = [v15 bytes];
-      v17 = [(_DKPRCompressedChangeSet *)v9 compressedData];
-      v18 = compression_decode_buffer(_DKPRCompressedChangeSet, v13 + 32, v16, [v17 length], 0, COMPRESSION_LZFSE);
+      compressedData = [(_DKPRCompressedChangeSet *)v14 compressedData];
+      bytes = [compressedData bytes];
+      compressedData2 = [(_DKPRCompressedChangeSet *)v9 compressedData];
+      v18 = compression_decode_buffer(_DKPRCompressedChangeSet, uncompressedLength + 32, bytes, [compressedData2 length], 0, COMPRESSION_LZFSE);
 
       if (v18 == [(_DKPRCompressedChangeSet *)v9 uncompressedLength])
       {
@@ -2118,7 +2118,7 @@ LABEL_62:
         v20 = v19;
         if (v19)
         {
-          v19 = [_DKChangeSet createFromData:v19 deviceIdentifier:v7 sequenceNumber:a4];
+          v19 = [_DKChangeSet createFromData:v19 deviceIdentifier:dataCopy sequenceNumber:identifier];
         }
 
         goto LABEL_12;
@@ -2134,7 +2134,7 @@ LABEL_62:
         v33 = v28;
         v34 = v30;
         v35 = v31;
-        _os_log_error_impl(&dword_191750000, a4, OS_LOG_TYPE_ERROR, "%{public}@: Dropping change set, uncompressed size %@ does not match uncompressed length %@", v32, 0x20u);
+        _os_log_error_impl(&dword_191750000, identifier, OS_LOG_TYPE_ERROR, "%{public}@: Dropping change set, uncompressed size %@ does not match uncompressed length %@", v32, 0x20u);
       }
 
       free(_DKPRCompressedChangeSet);
@@ -2147,7 +2147,7 @@ LABEL_62:
       {
         v26 = [objc_opt_class() description];
         OUTLINED_FUNCTION_1();
-        _os_log_error_impl(&dword_191750000, a4, OS_LOG_TYPE_ERROR, "%{public}@: Dropping change set, unable to decode due to invalid data", v32, 0xCu);
+        _os_log_error_impl(&dword_191750000, identifier, OS_LOG_TYPE_ERROR, "%{public}@: Dropping change set, unable to decode due to invalid data", v32, 0xCu);
       }
     }
 

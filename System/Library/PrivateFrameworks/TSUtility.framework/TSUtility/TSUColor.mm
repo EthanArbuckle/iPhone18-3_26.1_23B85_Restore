@@ -3,14 +3,14 @@
 + (id)blueColor;
 + (id)brownColor;
 + (id)clearColor;
-+ (id)colorWithCGColor:(CGColor *)a3;
-+ (id)colorWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6;
-+ (id)colorWithPatternImage:(id)a3;
-+ (id)colorWithPlatformColor:(id)a3;
-+ (id)colorWithRGBAComponents:(const double *)a3;
-+ (id)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-+ (id)colorWithUIColor:(id)a3;
-+ (id)colorWithWhite:(double)a3 alpha:(double)a4;
++ (id)colorWithCGColor:(CGColor *)color;
++ (id)colorWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha;
++ (id)colorWithPatternImage:(id)image;
++ (id)colorWithPlatformColor:(id)color;
++ (id)colorWithRGBAComponents:(const double *)components;
++ (id)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
++ (id)colorWithUIColor:(id)color;
++ (id)colorWithWhite:(double)white alpha:(double)alpha;
 + (id)cyanColor;
 + (id)grayColor;
 + (id)greenColor;
@@ -22,92 +22,92 @@
 + (id)redColor;
 + (id)whiteColor;
 + (id)yellowColor;
-- (BOOL)isAlmostEqualToColor:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isAlmostEqualToColor:(id)color;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isGrayscaleColor;
 - (BOOL)isNearlyWhite;
-- (TSUColor)colorWithAlphaComponent:(double)a3;
-- (TSUColor)initWithCGColor:(CGColor *)a3;
-- (TSUColor)initWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6;
-- (TSUColor)initWithPatternImage:(id)a3;
-- (TSUColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-- (TSUColor)initWithUIColor:(id)a3;
-- (TSUColor)initWithWhite:(double)a3 alpha:(double)a4;
+- (TSUColor)colorWithAlphaComponent:(double)component;
+- (TSUColor)initWithCGColor:(CGColor *)color;
+- (TSUColor)initWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha;
+- (TSUColor)initWithPatternImage:(id)image;
+- (TSUColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
+- (TSUColor)initWithUIColor:(id)color;
+- (TSUColor)initWithWhite:(double)white alpha:(double)alpha;
 - (double)alphaComponent;
 - (double)brightnessComponent;
 - (double)hueComponent;
 - (double)luminance;
-- (double)p_rgbComponentWithIndex:(unsigned __int8)a3;
+- (double)p_rgbComponentWithIndex:(unsigned __int8)index;
 - (double)saturationComponent;
 - (id)UIColor;
-- (id)blendedColorWithFraction:(double)a3 ofColor:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)darkenedColorByFactor:(double)a3;
+- (id)blendedColorWithFraction:(double)fraction ofColor:(id)color;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)darkenedColorByFactor:(double)factor;
 - (id)grayscaleColor;
 - (id)invertedColor;
-- (id)lightenedColorByFactor:(double)a3;
-- (id)newBlendedColorWithFraction:(double)a3 ofColor:(id)a4;
+- (id)lightenedColorByFactor:(double)factor;
+- (id)newBlendedColorWithFraction:(double)fraction ofColor:(id)color;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)getRGBAComponents:(double *)a3;
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4;
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4;
+- (void)getRGBAComponents:(double *)components;
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context;
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context;
 @end
 
 @implementation TSUColor
 
-+ (id)colorWithCGColor:(CGColor *)a3
++ (id)colorWithCGColor:(CGColor *)color
 {
-  v3 = [[a1 alloc] initWithCGColor:a3];
+  v3 = [[self alloc] initWithCGColor:color];
 
   return v3;
 }
 
-+ (id)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
++ (id)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
-  v6 = [[a1 alloc] initWithRed:a3 green:a4 blue:a5 alpha:a6];
+  v6 = [[self alloc] initWithRed:red green:green blue:blue alpha:alpha];
 
   return v6;
 }
 
-+ (id)colorWithWhite:(double)a3 alpha:(double)a4
++ (id)colorWithWhite:(double)white alpha:(double)alpha
 {
-  v4 = [[a1 alloc] initWithWhite:a3 alpha:a4];
+  v4 = [[self alloc] initWithWhite:white alpha:alpha];
 
   return v4;
 }
 
-+ (id)colorWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6
++ (id)colorWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha
 {
-  v6 = [[a1 alloc] initWithHue:a3 saturation:a4 brightness:a5 alpha:a6];
+  v6 = [[self alloc] initWithHue:hue saturation:saturation brightness:brightness alpha:alpha];
 
   return v6;
 }
 
-+ (id)colorWithPatternImage:(id)a3
++ (id)colorWithPatternImage:(id)image
 {
-  v3 = [[a1 alloc] initWithPatternImage:a3];
+  v3 = [[self alloc] initWithPatternImage:image];
 
   return v3;
 }
 
-+ (id)colorWithRGBAComponents:(const double *)a3
++ (id)colorWithRGBAComponents:(const double *)components
 {
-  v3 = [[a1 alloc] initWithRed:*a3 green:a3[1] blue:a3[2] alpha:a3[3]];
+  v3 = [[self alloc] initWithRed:*components green:components[1] blue:components[2] alpha:components[3]];
 
   return v3;
 }
 
-+ (id)colorWithUIColor:(id)a3
++ (id)colorWithUIColor:(id)color
 {
-  v3 = [[a1 alloc] initWithUIColor:a3];
+  v3 = [[self alloc] initWithUIColor:color];
 
   return v3;
 }
 
-+ (id)colorWithPlatformColor:(id)a3
++ (id)colorWithPlatformColor:(id)color
 {
-  v3 = [[a1 alloc] initWithPlatformColor:a3];
+  v3 = [[self alloc] initWithPlatformColor:color];
 
   return v3;
 }
@@ -122,105 +122,105 @@
 
 + (id)clearColor
 {
-  v2 = [[a1 alloc] initWithWhite:0.0 alpha:0.0];
+  v2 = [[self alloc] initWithWhite:0.0 alpha:0.0];
 
   return v2;
 }
 
 + (id)blackColor
 {
-  v2 = [[a1 alloc] initWithWhite:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithWhite:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)whiteColor
 {
-  v2 = [[a1 alloc] initWithWhite:1.0 alpha:1.0];
+  v2 = [[self alloc] initWithWhite:1.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)grayColor
 {
-  v2 = [[a1 alloc] initWithWhite:0.5 alpha:1.0];
+  v2 = [[self alloc] initWithWhite:0.5 alpha:1.0];
 
   return v2;
 }
 
 + (id)lightGrayColor
 {
-  v2 = [[a1 alloc] initWithWhite:0.667 alpha:1.0];
+  v2 = [[self alloc] initWithWhite:0.667 alpha:1.0];
 
   return v2;
 }
 
 + (id)redColor
 {
-  v2 = [[a1 alloc] initWithRed:1.0 green:0.0 blue:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:1.0 green:0.0 blue:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)greenColor
 {
-  v2 = [[a1 alloc] initWithRed:0.0 green:1.0 blue:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.0 green:1.0 blue:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)blueColor
 {
-  v2 = [[a1 alloc] initWithRed:0.0 green:0.0 blue:1.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.0 green:0.0 blue:1.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)cyanColor
 {
-  v2 = [[a1 alloc] initWithRed:0.0 green:1.0 blue:1.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.0 green:1.0 blue:1.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)yellowColor
 {
-  v2 = [[a1 alloc] initWithRed:1.0 green:1.0 blue:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:1.0 green:1.0 blue:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)magentaColor
 {
-  v2 = [[a1 alloc] initWithRed:1.0 green:0.0 blue:1.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:1.0 green:0.0 blue:1.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)orangeColor
 {
-  v2 = [[a1 alloc] initWithRed:1.0 green:0.5 blue:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:1.0 green:0.5 blue:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)purpleColor
 {
-  v2 = [[a1 alloc] initWithRed:0.5 green:0.0 blue:0.5 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.5 green:0.0 blue:0.5 alpha:1.0];
 
   return v2;
 }
 
 + (id)brownColor
 {
-  v2 = [[a1 alloc] initWithRed:0.6 green:0.4 blue:0.2 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.6 green:0.4 blue:0.2 alpha:1.0];
 
   return v2;
 }
 
-- (TSUColor)initWithCGColor:(CGColor *)a3
+- (TSUColor)initWithCGColor:(CGColor *)color
 {
-  if (!a3)
+  if (!color)
   {
     v5 = +[TSUAssertionHandler currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUColor initWithCGColor:]"];
@@ -232,20 +232,20 @@
   v7 = [(TSUColor *)&v9 init];
   if (v7)
   {
-    v7->mCGColor = CGColorCreateCopy(a3);
+    v7->mCGColor = CGColorCreateCopy(color);
   }
 
   return v7;
 }
 
-- (TSUColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
+- (TSUColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
   components[4] = *MEMORY[0x277D85DE8];
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
-  components[0] = a3;
-  components[1] = a4;
-  components[2] = a5;
-  components[3] = a6;
+  components[0] = red;
+  components[1] = green;
+  components[2] = blue;
+  components[3] = alpha;
   v12 = CGColorCreate(DeviceRGB, components);
   v13 = [(TSUColor *)self initWithCGColor:v12];
   CGColorRelease(v12);
@@ -253,12 +253,12 @@
   return v13;
 }
 
-- (TSUColor)initWithWhite:(double)a3 alpha:(double)a4
+- (TSUColor)initWithWhite:(double)white alpha:(double)alpha
 {
   components[2] = *MEMORY[0x277D85DE8];
   DeviceGray = CGColorSpaceCreateDeviceGray();
-  components[0] = a3;
-  components[1] = a4;
+  components[0] = white;
+  components[1] = alpha;
   v8 = CGColorCreate(DeviceGray, components);
   v9 = [(TSUColor *)self initWithCGColor:v8];
   CGColorRelease(v8);
@@ -266,25 +266,25 @@
   return v9;
 }
 
-- (TSUColor)initWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6
+- (TSUColor)initWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha
 {
-  v7 = TSUCreateCGColorFromHSB(a3, a4, a5, a6);
+  v7 = TSUCreateCGColorFromHSB(hue, saturation, brightness, alpha);
   v8 = [(TSUColor *)self initWithCGColor:v7];
   CGColorRelease(v7);
   return v8;
 }
 
-- (TSUColor)initWithPatternImage:(id)a3
+- (TSUColor)initWithPatternImage:(id)image
 {
-  if (a3)
+  if (image)
   {
     memset(&v12, 0, sizeof(v12));
-    [a3 scale];
+    [image scale];
     v6 = 1.0 / v5;
-    [a3 scale];
+    [image scale];
     CGAffineTransformMakeScale(&v12, v6, 1.0 / v7);
-    [a3 scale];
-    PatternWithImageAndTransform = TSUCGColorCreatePatternWithImageAndTransform([a3 CGImageForContentsScale:?], &v12);
+    [image scale];
+    PatternWithImageAndTransform = TSUCGColorCreatePatternWithImageAndTransform([image CGImageForContentsScale:?], &v12);
     self = [(TSUColor *)self initWithCGColor:PatternWithImageAndTransform];
     CGColorRelease(PatternWithImageAndTransform);
   }
@@ -300,18 +300,18 @@
   return self;
 }
 
-- (TSUColor)initWithUIColor:(id)a3
+- (TSUColor)initWithUIColor:(id)color
 {
-  if (!a3)
+  if (!color)
   {
     v5 = +[TSUAssertionHandler currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUColor initWithUIColor:]"];
     [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUColor.m"), 224, @"invalid nil value for '%s'", "uiColor"}];
   }
 
-  v7 = [a3 CGColor];
+  cGColor = [color CGColor];
 
-  return [(TSUColor *)self initWithCGColor:v7];
+  return [(TSUColor *)self initWithCGColor:cGColor];
 }
 
 - (void)dealloc
@@ -324,16 +324,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(TSUColor *)self CGColor];
+  cGColor = [(TSUColor *)self CGColor];
 
-  return CFHash(v2);
+  return CFHash(cGColor);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   components[5] = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v6 = TSUDynamicCast(v5, a3);
+  v6 = TSUDynamicCast(v5, equal);
   if (!v6)
   {
     return 0;
@@ -345,14 +345,14 @@
     return 0;
   }
 
-  v8 = [(TSUColor *)self CGColor];
-  v9 = [v7 CGColor];
-  if (v8 != v9)
+  cGColor = [(TSUColor *)self CGColor];
+  cGColor2 = [v7 CGColor];
+  if (cGColor != cGColor2)
   {
-    v10 = v9;
+    v10 = cGColor2;
     ColorSpace = CGColorGetColorSpace([(TSUColor *)self CGColor]);
     v12 = v10;
-    v13 = v8;
+    v13 = cGColor;
     v14 = ColorSpace;
     v15 = CGColorGetColorSpace([v7 CGColor]);
     v16 = TSUDeviceGrayColorSpace();
@@ -523,11 +523,11 @@ BOOL __20__TSUColor_isEqual___block_invoke(int a1, CGColorRef color, CGColor *a3
   return result;
 }
 
-- (BOOL)isAlmostEqualToColor:(id)a3
+- (BOOL)isAlmostEqualToColor:(id)color
 {
   [(TSUColor *)self redComponent];
   v6 = v5;
-  [a3 redComponent];
+  [color redComponent];
   if (vabdd_f64(v6, v7) >= 0.00999999978)
   {
     return 0;
@@ -535,7 +535,7 @@ BOOL __20__TSUColor_isEqual___block_invoke(int a1, CGColorRef color, CGColor *a3
 
   [(TSUColor *)self greenComponent];
   v9 = v8;
-  [a3 greenComponent];
+  [color greenComponent];
   if (vabdd_f64(v9, v10) >= 0.00999999978)
   {
     return 0;
@@ -543,7 +543,7 @@ BOOL __20__TSUColor_isEqual___block_invoke(int a1, CGColorRef color, CGColor *a3
 
   [(TSUColor *)self blueComponent];
   v12 = v11;
-  [a3 blueComponent];
+  [color blueComponent];
   if (vabdd_f64(v12, v13) >= 0.00999999978)
   {
     return 0;
@@ -551,21 +551,21 @@ BOOL __20__TSUColor_isEqual___block_invoke(int a1, CGColorRef color, CGColor *a3
 
   [(TSUColor *)self alphaComponent];
   v15 = v14;
-  [a3 alphaComponent];
+  [color alphaComponent];
   return vabdd_f64(v15, v16) < 0.00999999978;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TSUColor allocWithZone:a3];
+  v4 = [TSUColor allocWithZone:zone];
   mCGColor = self->mCGColor;
 
   return [(TSUColor *)v4 initWithCGColor:mCGColor];
 }
 
-- (double)p_rgbComponentWithIndex:(unsigned __int8)a3
+- (double)p_rgbComponentWithIndex:(unsigned __int8)index
 {
-  v3 = a3;
+  indexCopy = index;
   Components = CGColorGetComponents([(TSUColor *)self CGColor]);
   ColorSpace = CGColorGetColorSpace([(TSUColor *)self CGColor]);
   Model = CGColorSpaceGetModel(ColorSpace);
@@ -576,13 +576,13 @@ BOOL __20__TSUColor_isEqual___block_invoke(int a1, CGColorRef color, CGColor *a3
 
   if (Model == kCGColorSpaceModelCMYK)
   {
-    return 1.0 - fmin(Components[3] + Components[v3] * (1.0 - Components[3]), 1.0);
+    return 1.0 - fmin(Components[3] + Components[indexCopy] * (1.0 - Components[3]), 1.0);
   }
 
   result = 0.0;
   if (Model == kCGColorSpaceModelRGB)
   {
-    return Components[v3];
+    return Components[indexCopy];
   }
 
   return result;
@@ -590,14 +590,14 @@ BOOL __20__TSUColor_isEqual___block_invoke(int a1, CGColorRef color, CGColor *a3
 
 - (double)alphaComponent
 {
-  v2 = [(TSUColor *)self CGColor];
+  cGColor = [(TSUColor *)self CGColor];
 
-  return CGColorGetAlpha(v2);
+  return CGColorGetAlpha(cGColor);
 }
 
-- (void)getRGBAComponents:(double *)a3
+- (void)getRGBAComponents:(double *)components
 {
-  if (!a3)
+  if (!components)
   {
     v5 = +[TSUAssertionHandler currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUColor getRGBAComponents:]"];
@@ -605,13 +605,13 @@ BOOL __20__TSUColor_isEqual___block_invoke(int a1, CGColorRef color, CGColor *a3
   }
 
   [(TSUColor *)self redComponent];
-  *a3 = v7;
+  *components = v7;
   [(TSUColor *)self greenComponent];
-  *(a3 + 1) = v8;
+  *(components + 1) = v8;
   [(TSUColor *)self blueComponent];
-  *(a3 + 2) = v9;
+  *(components + 2) = v9;
   [(TSUColor *)self alphaComponent];
-  *(a3 + 3) = v10;
+  *(components + 3) = v10;
 }
 
 - (double)hueComponent
@@ -659,20 +659,20 @@ BOOL __20__TSUColor_isEqual___block_invoke(int a1, CGColorRef color, CGColor *a3
 - (id)UIColor
 {
   v2 = MEMORY[0x277D75348];
-  v3 = [(TSUColor *)self CGColor];
+  cGColor = [(TSUColor *)self CGColor];
 
-  return [v2 colorWithCGColor:v3];
+  return [v2 colorWithCGColor:cGColor];
 }
 
 - (id)grayscaleColor
 {
-  v2 = self;
+  selfCopy = self;
   Components = CGColorGetComponents([(TSUColor *)self CGColor]);
-  ColorSpace = CGColorGetColorSpace([(TSUColor *)v2 CGColor]);
+  ColorSpace = CGColorGetColorSpace([(TSUColor *)selfCopy CGColor]);
   Model = CGColorSpaceGetModel(ColorSpace);
   if (Model == kCGColorSpaceModelMonochrome)
   {
-    return v2;
+    return selfCopy;
   }
 
   if (Model != kCGColorSpaceModelRGB)
@@ -727,14 +727,14 @@ BOOL __20__TSUColor_isEqual___block_invoke(int a1, CGColorRef color, CGColor *a3
   return vabdd_f64(v6, v7) < fabs(v7 * 0.000000999999997);
 }
 
-- (id)lightenedColorByFactor:(double)a3
+- (id)lightenedColorByFactor:(double)factor
 {
   v15[4] = *MEMORY[0x277D85DE8];
-  if (a3 < 0.0 || a3 > 1.0)
+  if (factor < 0.0 || factor > 1.0)
   {
     v6 = +[TSUAssertionHandler currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUColor lightenedColorByFactor:]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUColor.m"), 535, @"Invalid factor: %f", *&a3}];
+    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUColor.m"), 535, @"Invalid factor: %f", *&factor}];
   }
 
   if ([(TSUColor *)self isGrayscaleColor])
@@ -743,7 +743,7 @@ BOOL __20__TSUColor_isEqual___block_invoke(int a1, CGColorRef color, CGColor *a3
     v9 = v8;
     [(TSUColor *)self alphaComponent];
 
-    return [TSUColor colorWithWhite:v9 + (1.0 - v9) * a3 alpha:v10];
+    return [TSUColor colorWithWhite:v9 + (1.0 - v9) * factor alpha:v10];
   }
 
   else
@@ -753,13 +753,13 @@ BOOL __20__TSUColor_isEqual___block_invoke(int a1, CGColorRef color, CGColor *a3
     v12 = 0.0;
     [(TSUColor *)self getRGBAComponents:v15];
     TSURGBToHSB(&v14, &v13, &v12, v15[0], v15[1], v15[2]);
-    v12 = v12 + (1.0 - v12) * a3;
-    v13 = (1.0 - a3) * v13;
+    v12 = v12 + (1.0 - v12) * factor;
+    v13 = (1.0 - factor) * v13;
     return [TSUColor colorWithHue:"colorWithHue:saturation:brightness:alpha:" saturation:v14 brightness:? alpha:?];
   }
 }
 
-- (id)darkenedColorByFactor:(double)a3
+- (id)darkenedColorByFactor:(double)factor
 {
   v12[4] = *MEMORY[0x277D85DE8];
   if ([(TSUColor *)self isGrayscaleColor])
@@ -768,7 +768,7 @@ BOOL __20__TSUColor_isEqual___block_invoke(int a1, CGColorRef color, CGColor *a3
     v6 = v5;
     [(TSUColor *)self alphaComponent];
 
-    return [TSUColor colorWithWhite:(1.0 - a3) * v6 alpha:v7];
+    return [TSUColor colorWithWhite:(1.0 - factor) * v6 alpha:v7];
   }
 
   else
@@ -778,13 +778,13 @@ BOOL __20__TSUColor_isEqual___block_invoke(int a1, CGColorRef color, CGColor *a3
     v9 = 0.0;
     [(TSUColor *)self getRGBAComponents:v12];
     TSURGBToHSB(&v11, &v10, &v9, v12[0], v12[1], v12[2]);
-    return [TSUColor colorWithHue:v11 saturation:(1.0 - a3) * v9 brightness:v10 + (1.0 - v10) * a3 alpha:?];
+    return [TSUColor colorWithHue:v11 saturation:(1.0 - factor) * v9 brightness:v10 + (1.0 - v10) * factor alpha:?];
   }
 }
 
-- (TSUColor)colorWithAlphaComponent:(double)a3
+- (TSUColor)colorWithAlphaComponent:(double)component
 {
-  CopyWithAlpha = CGColorCreateCopyWithAlpha(self->mCGColor, a3);
+  CopyWithAlpha = CGColorCreateCopyWithAlpha(self->mCGColor, component);
   v4 = [TSUColor colorWithCGColor:CopyWithAlpha];
   CGColorRelease(CopyWithAlpha);
   return v4;
@@ -831,61 +831,61 @@ BOOL __20__TSUColor_isEqual___block_invoke(int a1, CGColorRef color, CGColor *a3
   return v9 < 0.05 && v10 > 0.9;
 }
 
-- (id)blendedColorWithFraction:(double)a3 ofColor:(id)a4
+- (id)blendedColorWithFraction:(double)fraction ofColor:(id)color
 {
-  v4 = [(TSUColor *)self newBlendedColorWithFraction:a4 ofColor:a3];
+  v4 = [(TSUColor *)self newBlendedColorWithFraction:color ofColor:fraction];
 
   return v4;
 }
 
-- (id)newBlendedColorWithFraction:(double)a3 ofColor:(id)a4
+- (id)newBlendedColorWithFraction:(double)fraction ofColor:(id)color
 {
   v7 = [TSUColor alloc];
   [(TSUColor *)self redComponent];
   v9 = v8;
-  [a4 redComponent];
-  v11 = TSUMix(v9, v10, a3);
+  [color redComponent];
+  v11 = TSUMix(v9, v10, fraction);
   [(TSUColor *)self greenComponent];
   v13 = v12;
-  [a4 greenComponent];
-  v15 = TSUMix(v13, v14, a3);
+  [color greenComponent];
+  v15 = TSUMix(v13, v14, fraction);
   [(TSUColor *)self blueComponent];
   v17 = v16;
-  [a4 blueComponent];
-  v19 = TSUMix(v17, v18, a3);
+  [color blueComponent];
+  v19 = TSUMix(v17, v18, fraction);
   [(TSUColor *)self alphaComponent];
   v21 = v20;
-  [a4 alphaComponent];
-  v23 = TSUMix(v21, v22, a3);
+  [color alphaComponent];
+  v23 = TSUMix(v21, v22, fraction);
 
   return [(TSUColor *)v7 initWithRed:v11 green:v15 blue:v19 alpha:v23];
 }
 
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  CGContextSaveGState(a4);
-  CGContextSetFillColorWithColor(a4, self->mCGColor);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGContextSaveGState(context);
+  CGContextSetFillColorWithColor(context, self->mCGColor);
   v11.origin.x = x;
   v11.origin.y = y;
   v11.size.width = width;
   v11.size.height = height;
-  CGContextFillRect(a4, v11);
+  CGContextFillRect(context, v11);
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context
 {
-  CGContextSaveGState(a4);
-  CGContextSetFillColorWithColor(a4, self->mCGColor);
-  CGContextAddPath(a4, a3);
-  CGContextFillPath(a4);
+  CGContextSaveGState(context);
+  CGContextSetFillColorWithColor(context, self->mCGColor);
+  CGContextAddPath(context, path);
+  CGContextFillPath(context);
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
 @end

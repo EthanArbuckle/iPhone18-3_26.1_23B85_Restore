@@ -1,26 +1,26 @@
 @interface TUAnimationAffineTransformFunction
 - (CGAffineTransform)endValue;
-- (CGAffineTransform)solveForTime:(SEL)a3;
+- (CGAffineTransform)solveForTime:(SEL)time;
 - (CGAffineTransform)startValue;
-- (TUAnimationAffineTransformFunction)initWithTimingFunction:(id)a3 startTransform:(CGAffineTransform *)a4 endTransform:(CGAffineTransform *)a5 speed:(double)a6;
+- (TUAnimationAffineTransformFunction)initWithTimingFunction:(id)function startTransform:(CGAffineTransform *)transform endTransform:(CGAffineTransform *)endTransform speed:(double)speed;
 - (void)_reloadFunctions;
-- (void)setEndValue:(CGAffineTransform *)a3;
-- (void)setStartValue:(CGAffineTransform *)a3;
+- (void)setEndValue:(CGAffineTransform *)value;
+- (void)setStartValue:(CGAffineTransform *)value;
 @end
 
 @implementation TUAnimationAffineTransformFunction
 
-- (TUAnimationAffineTransformFunction)initWithTimingFunction:(id)a3 startTransform:(CGAffineTransform *)a4 endTransform:(CGAffineTransform *)a5 speed:(double)a6
+- (TUAnimationAffineTransformFunction)initWithTimingFunction:(id)function startTransform:(CGAffineTransform *)transform endTransform:(CGAffineTransform *)endTransform speed:(double)speed
 {
-  v10 = a3;
+  functionCopy = function;
   v19.receiver = self;
   v19.super_class = TUAnimationAffineTransformFunction;
   v11 = [(TUAnimationAffineTransformFunction *)&v19 init];
   if (v11)
   {
-    if (v10)
+    if (functionCopy)
     {
-      v12 = v10;
+      v12 = functionCopy;
     }
 
     else
@@ -31,42 +31,42 @@
     v13 = *(v11 + 1);
     *(v11 + 1) = v12;
 
-    v14 = *&a4->a;
-    v15 = *&a4->c;
-    *(v11 + 104) = *&a4->tx;
+    v14 = *&transform->a;
+    v15 = *&transform->c;
+    *(v11 + 104) = *&transform->tx;
     *(v11 + 88) = v15;
     *(v11 + 72) = v14;
-    v16 = *&a5->a;
-    v17 = *&a5->c;
-    *(v11 + 152) = *&a5->tx;
+    v16 = *&endTransform->a;
+    v17 = *&endTransform->c;
+    *(v11 + 152) = *&endTransform->tx;
     *(v11 + 136) = v17;
     *(v11 + 120) = v16;
-    *(v11 + 2) = a6;
+    *(v11 + 2) = speed;
     [v11 _reloadFunctions];
   }
 
   return v11;
 }
 
-- (CGAffineTransform)solveForTime:(SEL)a3
+- (CGAffineTransform)solveForTime:(SEL)time
 {
-  v24 = [(TUAnimationAffineTransformFunction *)self aFunction];
-  [v24 solveForTime:a4];
+  aFunction = [(TUAnimationAffineTransformFunction *)self aFunction];
+  [aFunction solveForTime:a4];
   v8 = v7;
-  v9 = [(TUAnimationAffineTransformFunction *)self bFunction];
-  [v9 solveForTime:a4];
+  bFunction = [(TUAnimationAffineTransformFunction *)self bFunction];
+  [bFunction solveForTime:a4];
   v11 = v10;
-  v12 = [(TUAnimationAffineTransformFunction *)self cFunction];
-  [v12 solveForTime:a4];
+  cFunction = [(TUAnimationAffineTransformFunction *)self cFunction];
+  [cFunction solveForTime:a4];
   v14 = v13;
-  v15 = [(TUAnimationAffineTransformFunction *)self dFunction];
-  [v15 solveForTime:a4];
+  dFunction = [(TUAnimationAffineTransformFunction *)self dFunction];
+  [dFunction solveForTime:a4];
   v17 = v16;
-  v18 = [(TUAnimationAffineTransformFunction *)self txFunction];
-  [v18 solveForTime:a4];
+  txFunction = [(TUAnimationAffineTransformFunction *)self txFunction];
+  [txFunction solveForTime:a4];
   v20 = v19;
-  v21 = [(TUAnimationAffineTransformFunction *)self tyFunction];
-  [v21 solveForTime:a4];
+  tyFunction = [(TUAnimationAffineTransformFunction *)self tyFunction];
+  [tyFunction solveForTime:a4];
   retstr->a = v8;
   retstr->b = v11;
   retstr->c = v14;
@@ -77,21 +77,21 @@
   return result;
 }
 
-- (void)setStartValue:(CGAffineTransform *)a3
+- (void)setStartValue:(CGAffineTransform *)value
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_startValue.tx = *&a3->tx;
+  v3 = *&value->a;
+  v4 = *&value->c;
+  *&self->_startValue.tx = *&value->tx;
   *&self->_startValue.c = v4;
   *&self->_startValue.a = v3;
   [(TUAnimationAffineTransformFunction *)self _reloadFunctions];
 }
 
-- (void)setEndValue:(CGAffineTransform *)a3
+- (void)setEndValue:(CGAffineTransform *)value
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_endValue.tx = *&a3->tx;
+  v3 = *&value->a;
+  v4 = *&value->c;
+  *&self->_endValue.tx = *&value->tx;
   *&self->_endValue.c = v4;
   *&self->_endValue.a = v3;
   [(TUAnimationAffineTransformFunction *)self _reloadFunctions];

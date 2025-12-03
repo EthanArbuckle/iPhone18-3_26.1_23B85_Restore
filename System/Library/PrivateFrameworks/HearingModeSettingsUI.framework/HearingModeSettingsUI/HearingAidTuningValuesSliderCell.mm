@@ -4,21 +4,21 @@
 - (NSString)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation HearingAidTuningValuesSliderCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = self;
-  sub_251FFFFD0(a3);
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_251FFFFD0(specifier);
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_252001678(type metadata accessor for HearingAidTuningValuesSliderCell);
 }
 
@@ -33,17 +33,17 @@
 - (unint64_t)accessibilityTraits
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.isa) + 0x80);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
-  v5 = [v4 accessibilityTraits];
+  accessibilityTraits = [v4 accessibilityTraits];
 
-  return v5;
+  return accessibilityTraits;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.isa) + 0x80);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   [v4 accessibilityActivationPoint];
   v6 = v5;
@@ -62,7 +62,7 @@
   v3 = swift_allocObject();
   *(v3 + 16) = xmmword_252007360;
   v4 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.isa) + 0x80);
-  v5 = self;
+  selfCopy = self;
   v6 = v4();
   *(v3 + 56) = sub_251FD6770(0, &qword_27F4C7258, 0x277D75A30);
   *(v3 + 32) = v6;

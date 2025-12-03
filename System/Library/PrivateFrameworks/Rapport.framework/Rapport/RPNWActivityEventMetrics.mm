@@ -3,15 +3,15 @@
 - (id)_metricsDictionary;
 - (id)destination;
 - (unint64_t)eventSize;
-- (void)setDestination:(id)a3;
-- (void)setEventSize:(unint64_t)a3;
+- (void)setDestination:(id)destination;
+- (void)setEventSize:(unint64_t)size;
 @end
 
 @implementation RPNWActivityEventMetrics
 
 - (id)destination
 {
-  OUTLINED_FUNCTION_1_3(a1, a2, a3, a4, a5);
+  OUTLINED_FUNCTION_1_3(self, a2, a3, a4, a5);
   OUTLINED_FUNCTION_4_0();
 
   return v6;
@@ -57,10 +57,10 @@
 - (id)_metricsDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(RPNWActivityEventMetrics *)self destination];
-  if (v4)
+  destination = [(RPNWActivityEventMetrics *)self destination];
+  if (destination)
   {
-    [v3 setObject:v4 forKeyedSubscript:@"destination"];
+    [v3 setObject:destination forKeyedSubscript:@"destination"];
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{-[RPNWActivityEventMetrics eventSize](self, "eventSize")}];
@@ -69,9 +69,9 @@
   return v3;
 }
 
-- (void)setDestination:(id)a3
+- (void)setDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   OUTLINED_FUNCTION_0_5();
   OUTLINED_FUNCTION_2_2();
   v15 = v5;
@@ -79,7 +79,7 @@
   OUTLINED_FUNCTION_5_0(v6, v7, v8, v9, v10, v11, v12, v13, v14);
 }
 
-- (void)setEventSize:(unint64_t)a3
+- (void)setEventSize:(unint64_t)size
 {
   OUTLINED_FUNCTION_0_5();
   OUTLINED_FUNCTION_2_2();

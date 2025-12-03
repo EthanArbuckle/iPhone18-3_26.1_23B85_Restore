@@ -1,15 +1,15 @@
 @interface CLBVolumeManager
-- (BOOL)_shouldShowTransientHUDForReason:(id)a3;
+- (BOOL)_shouldShowTransientHUDForReason:(id)reason;
 - (BOOL)isShowingHUD;
-- (CLBVolumeManager)initWithDelegate:(id)a3;
+- (CLBVolumeManager)initWithDelegate:(id)delegate;
 - (CLBVolumeManagerDelegate)delegate;
 - (void)_configureVolumeDelta;
 - (void)_decreaseVolume;
-- (void)_didUpdateAVSystemControllerVolume:(float)a3 shouldShowTransientHUD:(BOOL)a4;
-- (void)_effectiveVolumeChanged:(id)a3;
+- (void)_didUpdateAVSystemControllerVolume:(float)volume shouldShowTransientHUD:(BOOL)d;
+- (void)_effectiveVolumeChanged:(id)changed;
 - (void)_increaseVolume;
 - (void)_showTransientHUD;
-- (void)_updateAVSystemControllerWithVolume:(float)a3;
+- (void)_updateAVSystemControllerWithVolume:(float)volume;
 - (void)startDecreasingVolume;
 - (void)startIncreasingVolume;
 - (void)stopVolumeUpdates;
@@ -17,16 +17,16 @@
 
 @implementation CLBVolumeManager
 
-- (CLBVolumeManager)initWithDelegate:(id)a3
+- (CLBVolumeManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = CLBVolumeManager;
   v5 = [(CLBVolumeManager *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = +[AVSystemController sharedAVSystemController];
     [v7 getActiveCategoryVolume:&v6->_volume andName:0];
     v16 = AVSystemController_EffectiveVolumeDidChangeNotification;
@@ -77,14 +77,14 @@
   self->_timer = 0;
 }
 
-- (void)_updateAVSystemControllerWithVolume:(float)a3
+- (void)_updateAVSystemControllerWithVolume:(float)volume
 {
   BSDispatchQueueAssertMain();
   v5 = +[AVSystemController sharedAVSystemController];
   v11 = 0;
   [v5 getActiveCategoryVolume:0 andName:&v11];
   v6 = v11;
-  *&v7 = a3;
+  *&v7 = volume;
   [v5 setActiveCategoryVolumeTo:v7];
   v8 = +[CLFLog commonLog];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -92,40 +92,40 @@
     *buf = 138412546;
     v13 = v6;
     v14 = 2048;
-    v15 = a3;
+    volumeCopy = volume;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Set volume for category %@ to %f", buf, 0x16u);
   }
 
   v9 = [(CLBVolumeManager *)self _shouldShowTransientHUDForReason:@"ExplicitVolumeChange"];
-  *&v10 = a3;
+  *&v10 = volume;
   [(CLBVolumeManager *)self _didUpdateAVSystemControllerVolume:v9 shouldShowTransientHUD:v10];
 }
 
-- (void)_didUpdateAVSystemControllerVolume:(float)a3 shouldShowTransientHUD:(BOOL)a4
+- (void)_didUpdateAVSystemControllerVolume:(float)volume shouldShowTransientHUD:(BOOL)d
 {
-  v4 = a4;
+  dCopy = d;
   BSDispatchQueueAssertMain();
   volume = self->_volume;
-  v8 = 1.0;
-  if (a3 <= 1.0)
+  volumeCopy = 1.0;
+  if (volume <= 1.0)
   {
-    v8 = a3;
+    volumeCopy = volume;
   }
 
-  if (v8 < 0.0)
+  if (volumeCopy < 0.0)
   {
-    v8 = 0.0;
+    volumeCopy = 0.0;
   }
 
-  self->_volume = v8;
-  if (vabds_f32(volume, v8) > 0.00000011921)
+  self->_volume = volumeCopy;
+  if (vabds_f32(volume, volumeCopy) > 0.00000011921)
   {
     v9 = +[CLFLog commonLog];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = self->_volume;
       v12 = 134218240;
-      v13 = volume;
+      volumeCopy2 = volume;
       v14 = 2048;
       v15 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Volume changed: %f => %f", &v12, 0x16u);
@@ -134,7 +134,7 @@
     v11 = +[NSNotificationCenter defaultCenter];
     [v11 postNotificationName:@"CLBVolumeManagerVolumeDidChangeNotification" object:0];
 
-    if (v4)
+    if (dCopy)
     {
       [(CLBVolumeManager *)self _showTransientHUD];
     }
@@ -195,19 +195,19 @@
   self->_stepAmount = v8;
 }
 
-- (void)_effectiveVolumeChanged:(id)a3
+- (void)_effectiveVolumeChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   [(CLBVolumeManager *)self volume];
   v6 = v5;
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:AVSystemController_EffectiveVolumeNotificationParameter_Volume];
+  userInfo = [changedCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:AVSystemController_EffectiveVolumeNotificationParameter_Volume];
   [v8 floatValue];
   v10 = v9;
 
-  v11 = [v4 userInfo];
+  userInfo2 = [changedCopy userInfo];
 
-  v12 = [v11 objectForKeyedSubscript:AVSystemController_EffectiveVolumeNotificationParameter_VolumeChangeReason];
+  v12 = [userInfo2 objectForKeyedSubscript:AVSystemController_EffectiveVolumeNotificationParameter_VolumeChangeReason];
 
   v13 = +[CLFLog commonLog];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -231,22 +231,22 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (BOOL)_shouldShowTransientHUDForReason:(id)a3
+- (BOOL)_shouldShowTransientHUDForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(CLBVolumeManager *)self delegate];
-  if ([v5 shouldShowHUDForVolumeManager:self] && objc_msgSend(v4, "isEqualToString:", @"ExplicitVolumeChange"))
+  reasonCopy = reason;
+  delegate = [(CLBVolumeManager *)self delegate];
+  if ([delegate shouldShowHUDForVolumeManager:self] && objc_msgSend(reasonCopy, "isEqualToString:", @"ExplicitVolumeChange"))
   {
     v6 = +[CLFSettings sharedInstance];
-    v7 = [v6 volumeButtonsEnabled];
+    volumeButtonsEnabled = [v6 volumeButtonsEnabled];
   }
 
   else
   {
-    v7 = 0;
+    volumeButtonsEnabled = 0;
   }
 
-  return v7;
+  return volumeButtonsEnabled;
 }
 
 - (CLBVolumeManagerDelegate)delegate
@@ -258,9 +258,9 @@
 
 - (BOOL)isShowingHUD
 {
-  v2 = [(CLBVolumeManager *)self window];
-  v3 = v2;
-  if (v2)
+  window = [(CLBVolumeManager *)self window];
+  v3 = window;
+  if (window)
   {
   }
 
@@ -269,12 +269,12 @@
 
 - (void)_showTransientHUD
 {
-  v4 = self;
-  v2 = [(CLBVolumeManager *)v4 window];
-  if (v2)
+  selfCopy = self;
+  window = [(CLBVolumeManager *)selfCopy window];
+  if (window)
   {
-    v3 = v2;
-    [(UIWindow *)v2 setAlpha:1.0];
+    v3 = window;
+    [(UIWindow *)window setAlpha:1.0];
   }
 
   else

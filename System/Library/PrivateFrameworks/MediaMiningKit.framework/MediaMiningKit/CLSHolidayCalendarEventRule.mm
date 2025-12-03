@@ -1,31 +1,31 @@
 @interface CLSHolidayCalendarEventRule
-+ (id)localizedNameForName:(id)a3;
-+ (id)localizedSynonymsForHolidayName:(id)a3;
-- (BOOL)_isMatchingOnlyLocalDate:(id)a3 countryCode:(id)a4;
-- (BOOL)backfillForCountryCode:(id)a3;
-- (BOOL)backfillForLanguageCodes:(id)a3;
-- (BOOL)evaluateWithLocalDate:(id)a3 traits:(id)a4 countryCode:(id)a5;
++ (id)localizedNameForName:(id)name;
++ (id)localizedSynonymsForHolidayName:(id)name;
+- (BOOL)_isMatchingOnlyLocalDate:(id)date countryCode:(id)code;
+- (BOOL)backfillForCountryCode:(id)code;
+- (BOOL)backfillForLanguageCodes:(id)codes;
+- (BOOL)evaluateWithLocalDate:(id)date traits:(id)traits countryCode:(id)code;
 - (BOOL)isCelebration;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)triggerMemoryForCountryCode:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)triggerMemoryForCountryCode:(id)code;
 - (CLSHolidayCalendarEventDateRuleDelegate)dateRuleDelegate;
-- (CLSHolidayCalendarEventRule)initWithEventDescription:(id)a3 deviceRegionCode:(id)a4;
-- (double)languageScoreForLanguageCode:(id)a3;
-- (double)locationScoreForCountryCode:(id)a3;
-- (id)_dateRuleForDate:(id)a3 countryCode:(id)a4;
-- (id)_dateRuleForDate:(id)a3 supportedLocale:(id)a4;
-- (id)_localeOverrideForDescription:(id)a3 uppercaseLocaleCode:(BOOL)a4;
-- (id)_scoreForEventOverride:(id)a3 sceneNames:(id)a4;
+- (CLSHolidayCalendarEventRule)initWithEventDescription:(id)description deviceRegionCode:(id)code;
+- (double)languageScoreForLanguageCode:(id)code;
+- (double)locationScoreForCountryCode:(id)code;
+- (id)_dateRuleForDate:(id)date countryCode:(id)code;
+- (id)_dateRuleForDate:(id)date supportedLocale:(id)locale;
+- (id)_localeOverrideForDescription:(id)description uppercaseLocaleCode:(BOOL)code;
+- (id)_scoreForEventOverride:(id)override sceneNames:(id)names;
 - (id)allSceneNames;
 - (id)description;
-- (id)localDateByEvaluatingRuleForDate:(id)a3 countryCode:(id)a4;
-- (id)localDateByEvaluatingRuleForDate:(id)a3 languageCode:(id)a4;
-- (id)scoreForCountryCode:(id)a3 sceneNames:(id)a4;
-- (id)scoreForLanguageCode:(id)a3 sceneNames:(id)a4;
+- (id)localDateByEvaluatingRuleForDate:(id)date countryCode:(id)code;
+- (id)localDateByEvaluatingRuleForDate:(id)date languageCode:(id)code;
+- (id)scoreForCountryCode:(id)code sceneNames:(id)names;
+- (id)scoreForLanguageCode:(id)code sceneNames:(id)names;
 - (unint64_t)category;
-- (void)_enumerateDatesFromStartDate:(id)a3 toEndDate:(id)a4 supportedLocale:(id)a5 usingBlock:(id)a6;
-- (void)enumerateDatesFromStartDate:(id)a3 toEndDate:(id)a4 countryCode:(id)a5 usingBlock:(id)a6;
-- (void)setDateRuleDelegate:(id)a3;
+- (void)_enumerateDatesFromStartDate:(id)date toEndDate:(id)endDate supportedLocale:(id)locale usingBlock:(id)block;
+- (void)enumerateDatesFromStartDate:(id)date toEndDate:(id)endDate countryCode:(id)code usingBlock:(id)block;
+- (void)setDateRuleDelegate:(id)delegate;
 @end
 
 @implementation CLSHolidayCalendarEventRule
@@ -37,29 +37,29 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   name = self->_name;
-  v4 = [a3 name];
-  LOBYTE(name) = [(NSString *)name isEqual:v4];
+  name = [equal name];
+  LOBYTE(name) = [(NSString *)name isEqual:name];
 
   return name;
 }
 
-- (void)setDateRuleDelegate:(id)a3
+- (void)setDateRuleDelegate:(id)delegate
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_dateRuleDelegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    objc_storeWeak(&self->_dateRuleDelegate, v4);
+    objc_storeWeak(&self->_dateRuleDelegate, delegateCopy);
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -80,7 +80,7 @@
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v30 + 1) + 8 * v10++) setDelegate:v4];
+          [*(*(&v30 + 1) + 8 * v10++) setDelegate:delegateCopy];
         }
 
         while (v8 != v10);
@@ -90,12 +90,12 @@
       while (v8);
     }
 
-    v11 = [(NSDictionary *)self->_commonCelebratedCountryCodes allValues];
+    allValues = [(NSDictionary *)self->_commonCelebratedCountryCodes allValues];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v12 = [v11 countByEnumeratingWithState:&v26 objects:v35 count:16];
+    v12 = [allValues countByEnumeratingWithState:&v26 objects:v35 count:16];
     if (v12)
     {
       v13 = v12;
@@ -107,7 +107,7 @@
         {
           if (*v27 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allValues);
           }
 
           v16 = *(*(&v26 + 1) + 8 * v15);
@@ -115,8 +115,8 @@
           v23 = 0u;
           v24 = 0u;
           v25 = 0u;
-          v17 = [v16 dateRuleOverrides];
-          v18 = [v17 countByEnumeratingWithState:&v22 objects:v34 count:16];
+          dateRuleOverrides = [v16 dateRuleOverrides];
+          v18 = [dateRuleOverrides countByEnumeratingWithState:&v22 objects:v34 count:16];
           if (v18)
           {
             v19 = v18;
@@ -128,14 +128,14 @@
               {
                 if (*v23 != v20)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(dateRuleOverrides);
                 }
 
-                [*(*(&v22 + 1) + 8 * v21++) setDelegate:v4];
+                [*(*(&v22 + 1) + 8 * v21++) setDelegate:delegateCopy];
               }
 
               while (v19 != v21);
-              v19 = [v17 countByEnumeratingWithState:&v22 objects:v34 count:16];
+              v19 = [dateRuleOverrides countByEnumeratingWithState:&v22 objects:v34 count:16];
             }
 
             while (v19);
@@ -145,7 +145,7 @@
         }
 
         while (v15 != v13);
-        v13 = [v11 countByEnumeratingWithState:&v26 objects:v35 count:16];
+        v13 = [allValues countByEnumeratingWithState:&v26 objects:v35 count:16];
       }
 
       while (v13);
@@ -153,24 +153,24 @@
   }
 }
 
-- (BOOL)_isMatchingOnlyLocalDate:(id)a3 countryCode:(id)a4
+- (BOOL)_isMatchingOnlyLocalDate:(id)date countryCode:(id)code
 {
-  v6 = a3;
-  v7 = [(CLSHolidayCalendarEventRule *)self localDateByEvaluatingRuleForDate:v6 countryCode:a4];
-  v8 = [CLSCalendar compareDate:v7 toDate:v6 toUnitGranularities:28];
+  dateCopy = date;
+  v7 = [(CLSHolidayCalendarEventRule *)self localDateByEvaluatingRuleForDate:dateCopy countryCode:code];
+  v8 = [CLSCalendar compareDate:v7 toDate:dateCopy toUnitGranularities:28];
 
   return v8 == 0;
 }
 
-- (BOOL)backfillForLanguageCodes:(id)a3
+- (BOOL)backfillForLanguageCodes:(id)codes
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  codesCopy = codes;
+  v5 = [codesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -181,7 +181,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(codesCopy);
         }
 
         if (self->_backfillForCommonCelebratedLanguages)
@@ -196,7 +196,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [codesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -212,9 +212,9 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)backfillForCountryCode:(id)a3
+- (BOOL)backfillForCountryCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   if (self->_backfillForAllCountryCodes)
   {
     v5 = 1;
@@ -222,7 +222,7 @@ LABEL_12:
 
   else if (self->_backfillForCommonCelebratedCountryCodes)
   {
-    v6 = [(NSDictionary *)self->_commonCelebratedCountryCodes objectForKeyedSubscript:v4];
+    v6 = [(NSDictionary *)self->_commonCelebratedCountryCodes objectForKeyedSubscript:codeCopy];
     v5 = v6 != 0;
   }
 
@@ -234,9 +234,9 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)triggerMemoryForCountryCode:(id)a3
+- (BOOL)triggerMemoryForCountryCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   if (self->_triggerMemoryForAllLocales)
   {
     v5 = 1;
@@ -244,7 +244,7 @@ LABEL_12:
 
   else if (self->_triggerMemoryForCommonCelebratedCountryCodes)
   {
-    v6 = [(NSDictionary *)self->_commonCelebratedCountryCodes objectForKeyedSubscript:v4];
+    v6 = [(NSDictionary *)self->_commonCelebratedCountryCodes objectForKeyedSubscript:codeCopy];
     v5 = v6 != 0;
   }
 
@@ -259,9 +259,9 @@ LABEL_12:
 - (id)allSceneNames
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v4 = [(CLSHolidayCalendarEventRuleRequiredTraits *)self->_requiredTraits defaultScenesWithImportanceString];
-  v5 = [v4 allKeys];
-  [v3 addObjectsFromArray:v5];
+  defaultScenesWithImportanceString = [(CLSHolidayCalendarEventRuleRequiredTraits *)self->_requiredTraits defaultScenesWithImportanceString];
+  allKeys = [defaultScenesWithImportanceString allKeys];
+  [v3 addObjectsFromArray:allKeys];
 
   commonCelebratedCountryCodes = self->_commonCelebratedCountryCodes;
   v17[0] = MEMORY[0x277D85DD0];
@@ -279,9 +279,9 @@ LABEL_12:
   v16 = v7;
   v9 = v7;
   [(NSDictionary *)commonCelebratedLanguages enumerateKeysAndObjectsUsingBlock:&v12];
-  v10 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
-  return v10;
+  return allObjects;
 }
 
 void __44__CLSHolidayCalendarEventRule_allSceneNames__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -312,17 +312,17 @@ void __44__CLSHolidayCalendarEventRule_allSceneNames__block_invoke_2(uint64_t a1
   }
 }
 
-- (id)_scoreForEventOverride:(id)a3 sceneNames:(id)a4
+- (id)_scoreForEventOverride:(id)override sceneNames:(id)names
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  overrideCopy = override;
+  namesCopy = names;
   v8 = objc_alloc_init(CLSHolidayDetectedScenes);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v7;
+  v9 = namesCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -339,9 +339,9 @@ void __44__CLSHolidayCalendarEventRule_allSceneNames__block_invoke_2(uint64_t a1
 
         v14 = *(*(&v20 + 1) + 8 * i);
         v15 = [(CLSHolidayCalendarEventRuleRequiredTraits *)self->_requiredTraits importanceForScene:v14, v20];
-        if (v6)
+        if (overrideCopy)
         {
-          v16 = [v6 sceneImportanceStringForSceneName:v14];
+          v16 = [overrideCopy sceneImportanceStringForSceneName:v14];
           if (v16)
           {
             v17 = v16;
@@ -366,29 +366,29 @@ void __44__CLSHolidayCalendarEventRule_allSceneNames__block_invoke_2(uint64_t a1
   return v8;
 }
 
-- (id)scoreForLanguageCode:(id)a3 sceneNames:(id)a4
+- (id)scoreForLanguageCode:(id)code sceneNames:(id)names
 {
   commonCelebratedLanguages = self->_commonCelebratedLanguages;
-  v7 = a4;
-  v8 = [(NSDictionary *)commonCelebratedLanguages objectForKeyedSubscript:a3];
-  v9 = [(CLSHolidayCalendarEventRule *)self _scoreForEventOverride:v8 sceneNames:v7];
+  namesCopy = names;
+  v8 = [(NSDictionary *)commonCelebratedLanguages objectForKeyedSubscript:code];
+  v9 = [(CLSHolidayCalendarEventRule *)self _scoreForEventOverride:v8 sceneNames:namesCopy];
 
   return v9;
 }
 
-- (id)scoreForCountryCode:(id)a3 sceneNames:(id)a4
+- (id)scoreForCountryCode:(id)code sceneNames:(id)names
 {
   commonCelebratedCountryCodes = self->_commonCelebratedCountryCodes;
-  v7 = a4;
-  v8 = [(NSDictionary *)commonCelebratedCountryCodes objectForKeyedSubscript:a3];
-  v9 = [(CLSHolidayCalendarEventRule *)self _scoreForEventOverride:v8 sceneNames:v7];
+  namesCopy = names;
+  v8 = [(NSDictionary *)commonCelebratedCountryCodes objectForKeyedSubscript:code];
+  v9 = [(CLSHolidayCalendarEventRule *)self _scoreForEventOverride:v8 sceneNames:namesCopy];
 
   return v9;
 }
 
-- (double)languageScoreForLanguageCode:(id)a3
+- (double)languageScoreForLanguageCode:(id)code
 {
-  v3 = [(NSDictionary *)self->_commonCelebratedLanguages objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_commonCelebratedLanguages objectForKeyedSubscript:code];
   v4 = v3;
   if (v3)
   {
@@ -404,10 +404,10 @@ void __44__CLSHolidayCalendarEventRule_allSceneNames__block_invoke_2(uint64_t a1
   return v6;
 }
 
-- (double)locationScoreForCountryCode:(id)a3
+- (double)locationScoreForCountryCode:(id)code
 {
   defaultLocationScore = self->_defaultLocationScore;
-  v4 = [(NSDictionary *)self->_commonCelebratedCountryCodes objectForKeyedSubscript:a3];
+  v4 = [(NSDictionary *)self->_commonCelebratedCountryCodes objectForKeyedSubscript:code];
   v5 = v4;
   if (v4)
   {
@@ -420,42 +420,42 @@ void __44__CLSHolidayCalendarEventRule_allSceneNames__block_invoke_2(uint64_t a1
 
 - (unint64_t)category
 {
-  v2 = [(CLSHolidayCalendarEventRule *)self requiredTraits];
-  v3 = [v2 eventCategory];
+  requiredTraits = [(CLSHolidayCalendarEventRule *)self requiredTraits];
+  eventCategory = [requiredTraits eventCategory];
 
-  return v3;
+  return eventCategory;
 }
 
 - (BOOL)isCelebration
 {
-  v2 = [(CLSHolidayCalendarEventRule *)self requiredTraits];
-  v3 = [v2 isCelebration];
+  requiredTraits = [(CLSHolidayCalendarEventRule *)self requiredTraits];
+  isCelebration = [requiredTraits isCelebration];
 
-  return v3;
+  return isCelebration;
 }
 
-- (void)_enumerateDatesFromStartDate:(id)a3 toEndDate:(id)a4 supportedLocale:(id)a5 usingBlock:(id)a6
+- (void)_enumerateDatesFromStartDate:(id)date toEndDate:(id)endDate supportedLocale:(id)locale usingBlock:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v12 && ([v12 dateRuleOverrides], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "count"), v14, v15))
+  dateCopy = date;
+  endDateCopy = endDate;
+  localeCopy = locale;
+  blockCopy = block;
+  if (localeCopy && ([localeCopy dateRuleOverrides], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "count"), v14, v15))
   {
-    v16 = [v12 dateRuleOverrides];
+    dateRuleOverrides = [localeCopy dateRuleOverrides];
   }
 
   else
   {
-    v16 = self->_defaultDateRules;
+    dateRuleOverrides = self->_defaultDateRules;
   }
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v17 = v16;
+  v17 = dateRuleOverrides;
   v18 = [(NSArray *)v17 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v18)
   {
@@ -471,7 +471,7 @@ void __44__CLSHolidayCalendarEventRule_allSceneNames__block_invoke_2(uint64_t a1
           objc_enumerationMutation(v17);
         }
 
-        [*(*(&v22 + 1) + 8 * v21++) enumerateDatesFromStartDate:v10 toEndDate:v11 usingBlock:{v13, v22}];
+        [*(*(&v22 + 1) + 8 * v21++) enumerateDatesFromStartDate:dateCopy toEndDate:endDateCopy usingBlock:{blockCopy, v22}];
       }
 
       while (v19 != v21);
@@ -482,37 +482,37 @@ void __44__CLSHolidayCalendarEventRule_allSceneNames__block_invoke_2(uint64_t a1
   }
 }
 
-- (void)enumerateDatesFromStartDate:(id)a3 toEndDate:(id)a4 countryCode:(id)a5 usingBlock:(id)a6
+- (void)enumerateDatesFromStartDate:(id)date toEndDate:(id)endDate countryCode:(id)code usingBlock:(id)block
 {
   commonCelebratedCountryCodes = self->_commonCelebratedCountryCodes;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(NSDictionary *)commonCelebratedCountryCodes objectForKeyedSubscript:a5];
-  [(CLSHolidayCalendarEventRule *)self _enumerateDatesFromStartDate:v13 toEndDate:v12 supportedLocale:v14 usingBlock:v11];
+  blockCopy = block;
+  endDateCopy = endDate;
+  dateCopy = date;
+  v14 = [(NSDictionary *)commonCelebratedCountryCodes objectForKeyedSubscript:code];
+  [(CLSHolidayCalendarEventRule *)self _enumerateDatesFromStartDate:dateCopy toEndDate:endDateCopy supportedLocale:v14 usingBlock:blockCopy];
 }
 
-- (id)_dateRuleForDate:(id)a3 supportedLocale:(id)a4
+- (id)_dateRuleForDate:(id)date supportedLocale:(id)locale
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && ([v7 dateRuleOverrides], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v10))
+  dateCopy = date;
+  localeCopy = locale;
+  v8 = localeCopy;
+  if (localeCopy && ([localeCopy dateRuleOverrides], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v10))
   {
-    v11 = [v8 dateRuleOverrides];
+    dateRuleOverrides = [v8 dateRuleOverrides];
   }
 
   else
   {
-    v11 = self->_defaultDateRules;
+    dateRuleOverrides = self->_defaultDateRules;
   }
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = v11;
+  v12 = dateRuleOverrides;
   v13 = [(NSArray *)v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v13)
   {
@@ -528,12 +528,12 @@ void __44__CLSHolidayCalendarEventRule_allSceneNames__block_invoke_2(uint64_t a1
         }
 
         v16 = *(*(&v23 + 1) + 8 * i);
-        v17 = [v16 calendarIdentifier];
-        v18 = [CLSCalendar components:6 fromDate:v6 withCalendarIdentifier:v17];
+        calendarIdentifier = [v16 calendarIdentifier];
+        v18 = [CLSCalendar components:6 fromDate:dateCopy withCalendarIdentifier:calendarIdentifier];
 
         v19 = [v18 era];
-        v20 = [v18 year];
-        if ((![v16 hasExplicitEra] || objc_msgSend(v16, "matchesExplicitEra:", v19)) && (!objc_msgSend(v16, "hasExplicitYear") || objc_msgSend(v16, "matchesExplicitYear:", v20)) && (!objc_msgSend(v16, "hasStartEra") || v19 >= objc_msgSend(v16, "startEra")) && (!objc_msgSend(v16, "hasStartYear") || v20 >= objc_msgSend(v16, "startYear") || objc_msgSend(v16, "hasStartEra") && v19 != objc_msgSend(v16, "startEra")) && (!objc_msgSend(v16, "hasEndEra") || v19 <= objc_msgSend(v16, "endEra")) && (!objc_msgSend(v16, "hasEndYear") || v20 <= objc_msgSend(v16, "endYear") || objc_msgSend(v16, "hasEndEra") && v19 != objc_msgSend(v16, "endEra")))
+        year = [v18 year];
+        if ((![v16 hasExplicitEra] || objc_msgSend(v16, "matchesExplicitEra:", v19)) && (!objc_msgSend(v16, "hasExplicitYear") || objc_msgSend(v16, "matchesExplicitYear:", year)) && (!objc_msgSend(v16, "hasStartEra") || v19 >= objc_msgSend(v16, "startEra")) && (!objc_msgSend(v16, "hasStartYear") || year >= objc_msgSend(v16, "startYear") || objc_msgSend(v16, "hasStartEra") && v19 != objc_msgSend(v16, "startEra")) && (!objc_msgSend(v16, "hasEndEra") || v19 <= objc_msgSend(v16, "endEra")) && (!objc_msgSend(v16, "hasEndYear") || year <= objc_msgSend(v16, "endYear") || objc_msgSend(v16, "hasEndEra") && v19 != objc_msgSend(v16, "endEra")))
         {
           v13 = v16;
 
@@ -557,24 +557,24 @@ LABEL_30:
   return v13;
 }
 
-- (id)_dateRuleForDate:(id)a3 countryCode:(id)a4
+- (id)_dateRuleForDate:(id)date countryCode:(id)code
 {
   commonCelebratedCountryCodes = self->_commonCelebratedCountryCodes;
-  v7 = a3;
-  v8 = [(NSDictionary *)commonCelebratedCountryCodes objectForKeyedSubscript:a4];
-  v9 = [(CLSHolidayCalendarEventRule *)self _dateRuleForDate:v7 supportedLocale:v8];
+  dateCopy = date;
+  v8 = [(NSDictionary *)commonCelebratedCountryCodes objectForKeyedSubscript:code];
+  v9 = [(CLSHolidayCalendarEventRule *)self _dateRuleForDate:dateCopy supportedLocale:v8];
 
   return v9;
 }
 
-- (id)localDateByEvaluatingRuleForDate:(id)a3 languageCode:(id)a4
+- (id)localDateByEvaluatingRuleForDate:(id)date languageCode:(id)code
 {
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_commonCelebratedLanguages objectForKeyedSubscript:a4];
+  dateCopy = date;
+  v7 = [(NSDictionary *)self->_commonCelebratedLanguages objectForKeyedSubscript:code];
   if (v7)
   {
-    v8 = [(CLSHolidayCalendarEventRule *)self _dateRuleForDate:v6 supportedLocale:v7];
-    v9 = [v8 localDateByEvaluatingRuleForDate:v6];
+    v8 = [(CLSHolidayCalendarEventRule *)self _dateRuleForDate:dateCopy supportedLocale:v7];
+    v9 = [v8 localDateByEvaluatingRuleForDate:dateCopy];
   }
 
   else
@@ -585,24 +585,24 @@ LABEL_30:
   return v9;
 }
 
-- (id)localDateByEvaluatingRuleForDate:(id)a3 countryCode:(id)a4
+- (id)localDateByEvaluatingRuleForDate:(id)date countryCode:(id)code
 {
   commonCelebratedCountryCodes = self->_commonCelebratedCountryCodes;
-  v7 = a3;
-  v8 = [(NSDictionary *)commonCelebratedCountryCodes objectForKeyedSubscript:a4];
-  v9 = [(CLSHolidayCalendarEventRule *)self _dateRuleForDate:v7 supportedLocale:v8];
-  v10 = [v9 localDateByEvaluatingRuleForDate:v7];
+  dateCopy = date;
+  v8 = [(NSDictionary *)commonCelebratedCountryCodes objectForKeyedSubscript:code];
+  v9 = [(CLSHolidayCalendarEventRule *)self _dateRuleForDate:dateCopy supportedLocale:v8];
+  v10 = [v9 localDateByEvaluatingRuleForDate:dateCopy];
 
   return v10;
 }
 
-- (BOOL)evaluateWithLocalDate:(id)a3 traits:(id)a4 countryCode:(id)a5
+- (BOOL)evaluateWithLocalDate:(id)date traits:(id)traits countryCode:(id)code
 {
-  v8 = a3;
-  v9 = a5;
-  if ([(CLSHolidayCalendarEventRule *)self evaluateOnlyTraits:a4 evaluateLocationTraits:1])
+  dateCopy = date;
+  codeCopy = code;
+  if ([(CLSHolidayCalendarEventRule *)self evaluateOnlyTraits:traits evaluateLocationTraits:1])
   {
-    v10 = [(CLSHolidayCalendarEventRule *)self _isMatchingOnlyLocalDate:v8 countryCode:v9];
+    v10 = [(CLSHolidayCalendarEventRule *)self _isMatchingOnlyLocalDate:dateCopy countryCode:codeCopy];
   }
 
   else
@@ -624,17 +624,17 @@ LABEL_30:
   return v5;
 }
 
-- (id)_localeOverrideForDescription:(id)a3 uppercaseLocaleCode:(BOOL)a4
+- (id)_localeOverrideForDescription:(id)description uppercaseLocaleCode:(BOOL)code
 {
-  v27 = a4;
+  codeCopy = code;
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v28 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  descriptionCopy = description;
+  v28 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(descriptionCopy, "count")}];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v4;
+  obj = descriptionCopy;
   v29 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v29)
   {
@@ -651,11 +651,11 @@ LABEL_30:
         v6 = *(*(&v36 + 1) + 8 * i);
         v7 = [v6 objectForKeyedSubscript:@"locale"];
         v8 = v7;
-        if (v27)
+        if (codeCopy)
         {
-          v9 = [v7 uppercaseString];
+          uppercaseString = [v7 uppercaseString];
 
-          v8 = v9;
+          v8 = uppercaseString;
         }
 
         v10 = [v6 objectForKeyedSubscript:@"uuid"];
@@ -716,25 +716,25 @@ LABEL_30:
   return v28;
 }
 
-- (CLSHolidayCalendarEventRule)initWithEventDescription:(id)a3 deviceRegionCode:(id)a4
+- (CLSHolidayCalendarEventRule)initWithEventDescription:(id)description deviceRegionCode:(id)code
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  codeCopy = code;
   v50.receiver = self;
   v50.super_class = CLSHolidayCalendarEventRule;
   v8 = [(CLSHolidayCalendarEventRule *)&v50 init];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"nameOverrideByDeviceRegion"];
-    v10 = [v6 objectForKeyedSubscript:@"name"];
+    v9 = [descriptionCopy objectForKeyedSubscript:@"nameOverrideByDeviceRegion"];
+    v10 = [descriptionCopy objectForKeyedSubscript:@"name"];
     name = v8->_name;
     v8->_name = v10;
 
-    if (v7 && v9)
+    if (codeCopy && v9)
     {
-      v12 = [v7 lowercaseString];
-      v13 = [v9 objectForKeyedSubscript:v12];
+      lowercaseString = [codeCopy lowercaseString];
+      v13 = [v9 objectForKeyedSubscript:lowercaseString];
 
       if (v13)
       {
@@ -743,20 +743,20 @@ LABEL_30:
     }
 
     v44 = v9;
-    v45 = v7;
+    v45 = codeCopy;
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v15 = [v14 localizedStringForKey:v8->_name value:v8->_name table:@"Localizable"];
     localizedName = v8->_localizedName;
     v8->_localizedName = v15;
 
-    v43 = [v6 objectForKeyedSubscript:@"traits"];
+    v43 = [descriptionCopy objectForKeyedSubscript:@"traits"];
     v17 = [[CLSHolidayCalendarEventRuleRequiredTraits alloc] initWithDescription:v43];
     requiredTraits = v8->_requiredTraits;
     v8->_requiredTraits = v17;
 
-    v19 = [v6 objectForKeyedSubscript:@"dateRules"];
-    v42 = [v6 objectForKeyedSubscript:@"commonCelebratedCountryCodes"];
-    v20 = [v6 objectForKeyedSubscript:@"commonCelebratedLanguages"];
+    v19 = [descriptionCopy objectForKeyedSubscript:@"dateRules"];
+    v42 = [descriptionCopy objectForKeyedSubscript:@"commonCelebratedCountryCodes"];
+    v20 = [descriptionCopy objectForKeyedSubscript:@"commonCelebratedLanguages"];
     v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v19, "count")}];
     v46 = 0u;
     v47 = 0u;
@@ -791,26 +791,26 @@ LABEL_30:
       while (v24);
     }
 
-    v28 = [v6 objectForKeyedSubscript:@"defaultLocationScore"];
+    v28 = [descriptionCopy objectForKeyedSubscript:@"defaultLocationScore"];
     [v28 doubleValue];
     v8->_defaultLocationScore = v29;
 
-    v30 = [v6 objectForKeyedSubscript:@"triggerMemoryForAllLocales"];
+    v30 = [descriptionCopy objectForKeyedSubscript:@"triggerMemoryForAllLocales"];
     v8->_triggerMemoryForAllLocales = [v30 BOOLValue];
 
-    v31 = [v6 objectForKeyedSubscript:@"triggerMemoryForCommonCelebratedCountryCodes"];
+    v31 = [descriptionCopy objectForKeyedSubscript:@"triggerMemoryForCommonCelebratedCountryCodes"];
     v8->_triggerMemoryForCommonCelebratedCountryCodes = [v31 BOOLValue];
 
-    v32 = [v6 objectForKeyedSubscript:@"backfillForAllCountryCodes"];
+    v32 = [descriptionCopy objectForKeyedSubscript:@"backfillForAllCountryCodes"];
     v8->_backfillForAllCountryCodes = [v32 BOOLValue];
 
-    v33 = [v6 objectForKeyedSubscript:@"backfillForCommonCelebratedCountryCodes"];
+    v33 = [descriptionCopy objectForKeyedSubscript:@"backfillForCommonCelebratedCountryCodes"];
     v8->_backfillForCommonCelebratedCountryCodes = [v33 BOOLValue];
 
-    v34 = [v6 objectForKeyedSubscript:@"backfillForCommonCelebratedLanguages"];
+    v34 = [descriptionCopy objectForKeyedSubscript:@"backfillForCommonCelebratedLanguages"];
     v8->_backfillForCommonCelebratedLanguages = [v34 BOOLValue];
 
-    v35 = [v6 objectForKeyedSubscript:@"skipSceneCriteriaIfInteresting"];
+    v35 = [descriptionCopy objectForKeyedSubscript:@"skipSceneCriteriaIfInteresting"];
     v8->_skipSceneCriteriaIfInteresting = [v35 BOOLValue];
 
     v36 = [(CLSHolidayCalendarEventRule *)v8 _localeOverrideForDescription:v42 uppercaseLocaleCode:1];
@@ -824,16 +824,16 @@ LABEL_30:
     defaultDateRules = v8->_defaultDateRules;
     v8->_defaultDateRules = v21;
 
-    v7 = v45;
+    codeCopy = v45;
   }
 
   return v8;
 }
 
-+ (id)localizedSynonymsForHolidayName:(id)a3
++ (id)localizedSynonymsForHolidayName:(id)name
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [&unk_28449B430 objectForKeyedSubscript:a3];
+  v3 = [&unk_28449B430 objectForKeyedSubscript:name];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -879,12 +879,12 @@ LABEL_30:
   return v4;
 }
 
-+ (id)localizedNameForName:(id)a3
++ (id)localizedNameForName:(id)name
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [v5 localizedStringForKey:v4 value:v4 table:@"Localizable"];
+  v6 = [v5 localizedStringForKey:nameCopy value:nameCopy table:@"Localizable"];
 
   return v6;
 }

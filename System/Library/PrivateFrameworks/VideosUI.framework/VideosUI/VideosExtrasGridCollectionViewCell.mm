@@ -1,51 +1,51 @@
 @interface VideosExtrasGridCollectionViewCell
 - (IKLockupElement)lockupElement;
-- (VideosExtrasGridCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)configureForLockup:(id)a3 cellStyle:(id)a4 withSizing:(BOOL)a5;
+- (VideosExtrasGridCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)configureForLockup:(id)lockup cellStyle:(id)style withSizing:(BOOL)sizing;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation VideosExtrasGridCollectionViewCell
 
-- (VideosExtrasGridCollectionViewCell)initWithFrame:(CGRect)a3
+- (VideosExtrasGridCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v51[2] = *MEMORY[0x1E69E9840];
   v50.receiver = self;
   v50.super_class = VideosExtrasGridCollectionViewCell;
-  v3 = [(VideosExtrasGridCollectionViewCell *)&v50 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VideosExtrasGridCollectionViewCell *)&v50 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(VideosExtrasGridCollectionViewCell *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(VideosExtrasGridCollectionViewCell *)v3 setBackgroundColor:clearColor];
 
-    v5 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
-    [v5 MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [v5 setBackgroundColor:v6];
+    initForAutolayout = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
+    [initForAutolayout MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [initForAutolayout setBackgroundColor:clearColor2];
 
-    [v5 setTextAlignment:1];
+    [initForAutolayout setTextAlignment:1];
     LODWORD(v7) = 1144750080;
-    [v5 setContentHuggingPriority:1 forAxis:v7];
-    v8 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
-    [v8 addSubview:v5];
+    [initForAutolayout setContentHuggingPriority:1 forAxis:v7];
+    contentView = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
+    [contentView addSubview:initForAutolayout];
 
-    [(VideosExtrasGridCollectionViewCell *)v3 setTitleLabel:v5];
-    v9 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
-    [v9 MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [v9 setBackgroundColor:v10];
+    [(VideosExtrasGridCollectionViewCell *)v3 setTitleLabel:initForAutolayout];
+    initForAutolayout2 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
+    [initForAutolayout2 MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
+    clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+    [initForAutolayout2 setBackgroundColor:clearColor3];
 
-    [v9 setTextAlignment:1];
+    [initForAutolayout2 setTextAlignment:1];
     LODWORD(v11) = 1144733696;
-    [v9 setContentHuggingPriority:1 forAxis:v11];
-    v12 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
-    [v12 addSubview:v9];
+    [initForAutolayout2 setContentHuggingPriority:1 forAxis:v11];
+    contentView2 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
+    [contentView2 addSubview:initForAutolayout2];
 
-    [(VideosExtrasGridCollectionViewCell *)v3 setSubtitleLabel:v9];
-    v13 = [[VideosExtrasConstrainedArtworkContainerView alloc] initForAutolayout];
+    [(VideosExtrasGridCollectionViewCell *)v3 setSubtitleLabel:initForAutolayout2];
+    initForAutolayout3 = [[VideosExtrasConstrainedArtworkContainerView alloc] initForAutolayout];
     artworkContainer = v3->_artworkContainer;
-    v3->_artworkContainer = v13;
+    v3->_artworkContainer = initForAutolayout3;
 
     [(VideosExtrasConstrainedArtworkContainerView *)v3->_artworkContainer setClipsToBounds:1];
     [(VideosExtrasConstrainedArtworkContainerView *)v3->_artworkContainer setShouldBottomAlignArtwork:1];
@@ -57,161 +57,161 @@
     artworkContainerHeightConstraint = v3->_artworkContainerHeightConstraint;
     v3->_artworkContainerHeightConstraint = v17;
 
-    v19 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
-    [v19 addSubview:v3->_artworkContainer];
+    contentView3 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
+    [contentView3 addSubview:v3->_artworkContainer];
 
-    v20 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
+    contentView4 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
     v51[0] = v3->_artworkContainerWidthConstraint;
     v51[1] = v3->_artworkContainerHeightConstraint;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:2];
-    [v20 addConstraints:v21];
+    [contentView4 addConstraints:v21];
 
-    v22 = [(VideosExtrasConstrainedArtworkContainerView *)v3->_artworkContainer artworkView];
-    [v22 setDimsWhenHighlighted:1];
-    v23 = [MEMORY[0x1E69DC888] clearColor];
-    [v22 setBackgroundColor:v23];
+    artworkView = [(VideosExtrasConstrainedArtworkContainerView *)v3->_artworkContainer artworkView];
+    [artworkView setDimsWhenHighlighted:1];
+    clearColor4 = [MEMORY[0x1E69DC888] clearColor];
+    [artworkView setBackgroundColor:clearColor4];
 
     v24 = MEMORY[0x1E696ACD8];
-    v25 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
+    contentView5 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
     v26 = *MEMORY[0x1E69DDCE0];
     v27 = *(MEMORY[0x1E69DDCE0] + 8);
     v28 = *(MEMORY[0x1E69DDCE0] + 16);
     v29 = *(MEMORY[0x1E69DDCE0] + 24);
-    v30 = [v24 constraintsByAttachingView:v5 toView:v25 alongEdges:10 insets:{*MEMORY[0x1E69DDCE0], v27, v28, v29}];
+    v30 = [v24 constraintsByAttachingView:initForAutolayout toView:contentView5 alongEdges:10 insets:{*MEMORY[0x1E69DDCE0], v27, v28, v29}];
 
     v31 = MEMORY[0x1E696ACD8];
-    v32 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
-    v33 = [v31 constraintsByAttachingView:v9 toView:v32 alongEdges:10 insets:{v26, v27, v28, v29}];
+    contentView6 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
+    v33 = [v31 constraintsByAttachingView:initForAutolayout2 toView:contentView6 alongEdges:10 insets:{v26, v27, v28, v29}];
 
-    v34 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
-    [v34 addConstraints:v30];
+    contentView7 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
+    [contentView7 addConstraints:v30];
 
-    v35 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
-    [v35 addConstraints:v33];
+    contentView8 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
+    [contentView8 addConstraints:v33];
 
     v36 = MEMORY[0x1E696ACD8];
     v37 = v3->_artworkContainer;
-    v38 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
-    v39 = [v36 constraintsByAttachingView:v37 toView:v38 alongEdges:11 insets:{v26, v27, v28, v29}];
+    contentView9 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
+    v39 = [v36 constraintsByAttachingView:v37 toView:contentView9 alongEdges:11 insets:{v26, v27, v28, v29}];
 
-    v40 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
-    [v40 addConstraints:v39];
+    contentView10 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
+    [contentView10 addConstraints:v39];
 
-    v41 = [objc_alloc(MEMORY[0x1E69DD250]) initForAutolayout];
+    initForAutolayout4 = [objc_alloc(MEMORY[0x1E69DD250]) initForAutolayout];
     spacerView = v3->_spacerView;
-    v3->_spacerView = v41;
+    v3->_spacerView = initForAutolayout4;
 
-    v43 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
-    [v43 addSubview:v3->_spacerView];
+    contentView11 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
+    [contentView11 addSubview:v3->_spacerView];
 
     v44 = MEMORY[0x1E696ACD8];
     v45 = v3->_spacerView;
-    v46 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
-    v47 = [v44 constraintWithItem:v45 attribute:4 relatedBy:0 toItem:v46 attribute:4 multiplier:1.0 constant:0.0];
+    contentView12 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
+    v47 = [v44 constraintWithItem:v45 attribute:4 relatedBy:0 toItem:contentView12 attribute:4 multiplier:1.0 constant:0.0];
 
-    v48 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
-    [v48 addConstraint:v47];
+    contentView13 = [(VideosExtrasGridCollectionViewCell *)v3 contentView];
+    [contentView13 addConstraint:v47];
   }
 
   return v3;
 }
 
-- (void)configureForLockup:(id)a3 cellStyle:(id)a4 withSizing:(BOOL)a5
+- (void)configureForLockup:(id)lockup cellStyle:(id)style withSizing:(BOOL)sizing
 {
   v150 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  [(VideosExtrasGridCollectionViewCell *)self setLockupElement:v7];
-  v9 = [v7 title];
-  v140 = v7;
-  v10 = [v7 subtitle];
-  v139 = v9;
-  v11 = [v9 text];
-  v12 = [v11 length];
+  lockupCopy = lockup;
+  styleCopy = style;
+  [(VideosExtrasGridCollectionViewCell *)self setLockupElement:lockupCopy];
+  title = [lockupCopy title];
+  v140 = lockupCopy;
+  subtitle = [lockupCopy subtitle];
+  v139 = title;
+  text = [title text];
+  v12 = [text length];
 
-  v138 = v10;
-  v13 = [v10 text];
-  v14 = [v13 length];
+  v138 = subtitle;
+  text2 = [subtitle text];
+  titleTextStyle2 = [text2 length];
 
   if (v12)
   {
-    v15 = [v8 titleTextColor];
-    v16 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
-    [v16 setTextColor:v15];
+    titleTextColor = [styleCopy titleTextColor];
+    titleLabel = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
+    [titleLabel setTextColor:titleTextColor];
 
     v17 = MEMORY[0x1E69DB880];
-    v18 = [v8 titleDefaultFontAttributes];
-    v19 = [v17 fontDescriptorWithFontAttributes:v18];
+    titleDefaultFontAttributes = [styleCopy titleDefaultFontAttributes];
+    v19 = [v17 fontDescriptorWithFontAttributes:titleDefaultFontAttributes];
 
-    v20 = [v139 alignment];
-    v21 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
-    v22 = [v8 titleTextStyle];
-    [v21 configureForIKTextElement:v139 fontDescriptor:v19 textStyle:v22];
+    alignment = [v139 alignment];
+    titleLabel2 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
+    titleTextStyle = [styleCopy titleTextStyle];
+    [titleLabel2 configureForIKTextElement:v139 fontDescriptor:v19 textStyle:titleTextStyle];
 
-    v23 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
-    v24 = [v23 numberOfLines];
+    titleLabel3 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
+    numberOfLines = [titleLabel3 numberOfLines];
 
-    if (v24 >= 3)
+    if (numberOfLines >= 3)
     {
-      v25 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
-      [v25 setNumberOfLines:2];
+      titleLabel4 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
+      [titleLabel4 setNumberOfLines:2];
     }
 
-    if (!v20)
+    if (!alignment)
     {
-      v26 = [v8 defaultTextAlignment];
-      v27 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
-      [v27 setTextAlignment:v26];
+      defaultTextAlignment = [styleCopy defaultTextAlignment];
+      titleLabel5 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
+      [titleLabel5 setTextAlignment:defaultTextAlignment];
     }
   }
 
-  if (v14)
+  if (titleTextStyle2)
   {
-    v28 = [v8 subtitleTextColor];
-    v29 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
-    [v29 setTextColor:v28];
+    subtitleTextColor = [styleCopy subtitleTextColor];
+    subtitleLabel = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
+    [subtitleLabel setTextColor:subtitleTextColor];
 
     v30 = MEMORY[0x1E69DB880];
-    v31 = [v8 subtitleDefaultFontAttributes];
-    v32 = [v30 fontDescriptorWithFontAttributes:v31];
+    subtitleDefaultFontAttributes = [styleCopy subtitleDefaultFontAttributes];
+    v32 = [v30 fontDescriptorWithFontAttributes:subtitleDefaultFontAttributes];
 
-    v33 = [v10 alignment];
-    v34 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
-    v35 = [v8 subtitleTextStyle];
-    [v34 configureForIKTextElement:v10 fontDescriptor:v32 textStyle:v35];
+    alignment2 = [subtitle alignment];
+    subtitleLabel2 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
+    subtitleTextStyle = [styleCopy subtitleTextStyle];
+    [subtitleLabel2 configureForIKTextElement:subtitle fontDescriptor:v32 textStyle:subtitleTextStyle];
 
-    v36 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
-    v37 = [v36 numberOfLines];
+    subtitleLabel3 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
+    numberOfLines2 = [subtitleLabel3 numberOfLines];
 
-    if (v37 >= 3)
+    if (numberOfLines2 >= 3)
     {
-      v38 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
-      [v38 setNumberOfLines:2];
+      subtitleLabel4 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
+      [subtitleLabel4 setNumberOfLines:2];
     }
 
-    if (!v33)
+    if (!alignment2)
     {
-      v39 = [v8 defaultTextAlignment];
-      v40 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
-      [v40 setTextAlignment:v39];
+      defaultTextAlignment2 = [styleCopy defaultTextAlignment];
+      subtitleLabel5 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
+      [subtitleLabel5 setTextAlignment:defaultTextAlignment2];
     }
   }
 
-  [v8 imageSize];
+  [styleCopy imageSize];
   v42 = v41;
   v44 = v43;
   [(NSLayoutConstraint *)self->_artworkContainerWidthConstraint setConstant:?];
   [(NSLayoutConstraint *)self->_artworkContainerHeightConstraint setConstant:v44];
-  v45 = [v140 image];
-  if (v45 && !a5)
+  image = [v140 image];
+  if (image && !sizing)
   {
     [v140 overlays];
     v145 = 0u;
     v146 = 0u;
     v147 = 0u;
     v134 = v148 = 0u;
-    v46 = [v134 children];
-    v47 = [v46 countByEnumeratingWithState:&v145 objects:v149 count:16];
+    children = [v134 children];
+    v47 = [children countByEnumeratingWithState:&v145 objects:v149 count:16];
     v137 = v12;
     if (v47)
     {
@@ -223,7 +223,7 @@ LABEL_17:
       {
         if (*v146 != v49)
         {
-          objc_enumerationMutation(v46);
+          objc_enumerationMutation(children);
         }
 
         v51 = *(*(&v145 + 1) + 8 * v50);
@@ -235,7 +235,7 @@ LABEL_17:
 
         if (v48 == ++v50)
         {
-          v48 = [v46 countByEnumeratingWithState:&v145 objects:v149 count:16];
+          v48 = [children countByEnumeratingWithState:&v145 objects:v149 count:16];
           if (v48)
           {
             goto LABEL_17;
@@ -245,37 +245,37 @@ LABEL_17:
         }
       }
 
-      v52 = [v51 resourceImage];
+      resourceImage = [v51 resourceImage];
 
-      if (!v52)
+      if (!resourceImage)
       {
         goto LABEL_27;
       }
 
-      v53 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
-      [v53 setOverlayImage:v52];
+      artworkContainer = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
+      [artworkContainer setOverlayImage:resourceImage];
 
-      v54 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
-      [v54 setOverlayScale:0.3];
+      artworkContainer2 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
+      [artworkContainer2 setOverlayScale:0.3];
 
-      v46 = v52;
+      children = resourceImage;
     }
 
 LABEL_26:
 
 LABEL_27:
-    v55 = [v45 placeholderURL];
-    v56 = [MEMORY[0x1E69DCAB8] imageForPlaceholderURL:v55];
-    v57 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
-    v58 = [v57 artworkView];
-    [v58 setPlaceholderImage:v56];
+    placeholderURL = [image placeholderURL];
+    v56 = [MEMORY[0x1E69DCAB8] imageForPlaceholderURL:placeholderURL];
+    artworkContainer3 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
+    artworkView = [artworkContainer3 artworkView];
+    [artworkView setPlaceholderImage:v56];
 
-    v59 = [v45 borderColor];
-    v60 = v59;
-    v61 = v45;
-    if (v59)
+    borderColor = [image borderColor];
+    v60 = borderColor;
+    v61 = image;
+    if (borderColor)
     {
-      v62 = v59;
+      v62 = borderColor;
     }
 
     else
@@ -285,38 +285,38 @@ LABEL_27:
 
     v63 = v62;
 
-    v64 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
-    v65 = [v64 layer];
-    [v65 setBorderColor:{objc_msgSend(v63, "CGColor")}];
+    artworkContainer4 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
+    layer = [artworkContainer4 layer];
+    [layer setBorderColor:{objc_msgSend(v63, "CGColor")}];
 
-    v66 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
-    v67 = [v66 layer];
-    v68 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v68 scale];
-    [v67 setBorderWidth:1.0 / v69];
+    artworkContainer5 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
+    layer2 = [artworkContainer5 layer];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    [layer2 setBorderWidth:1.0 / v69];
 
-    v45 = v61;
-    v70 = [v61 artworkCatalog];
-    [v70 setFittingSize:{v42, v44}];
+    image = v61;
+    artworkCatalog = [v61 artworkCatalog];
+    [artworkCatalog setFittingSize:{v42, v44}];
     v141[0] = MEMORY[0x1E69E9820];
     v141[1] = 3221225472;
     v141[2] = __78__VideosExtrasGridCollectionViewCell_configureForLockup_cellStyle_withSizing___block_invoke;
     v141[3] = &unk_1E8734650;
     v142 = v140;
-    v143 = self;
+    selfCopy = self;
     v144 = v63;
     v71 = v63;
-    [v70 setDestination:self configurationBlock:v141];
+    [artworkCatalog setDestination:self configurationBlock:v141];
 
     v12 = v137;
   }
 
-  if (!(v12 | v14))
+  if (!(v12 | titleTextStyle2))
   {
     if (self->_topLineHeight)
     {
-      v72 = [(VideosExtrasGridCollectionViewCell *)self contentView];
-      [v72 removeConstraint:self->_topLineHeight];
+      contentView = [(VideosExtrasGridCollectionViewCell *)self contentView];
+      [contentView removeConstraint:self->_topLineHeight];
 
       topLineHeight = self->_topLineHeight;
       self->_topLineHeight = 0;
@@ -324,8 +324,8 @@ LABEL_27:
 
     if (self->_subtitleLineHeight)
     {
-      v74 = [(VideosExtrasGridCollectionViewCell *)self contentView];
-      [v74 removeConstraint:self->_subtitleLineHeight];
+      contentView2 = [(VideosExtrasGridCollectionViewCell *)self contentView];
+      [contentView2 removeConstraint:self->_subtitleLineHeight];
 
       subtitleLineHeight = self->_subtitleLineHeight;
       self->_subtitleLineHeight = 0;
@@ -337,13 +337,13 @@ LABEL_27:
       goto LABEL_49;
     }
 
-    v77 = [(NSLayoutConstraint *)spacerTop secondItem];
+    secondItem = [(NSLayoutConstraint *)spacerTop secondItem];
     artworkContainer = self->_artworkContainer;
 
-    if (v77 != artworkContainer)
+    if (secondItem != artworkContainer)
     {
-      v79 = [(VideosExtrasGridCollectionViewCell *)self contentView];
-      [v79 removeConstraint:self->_spacerTop];
+      contentView3 = [(VideosExtrasGridCollectionViewCell *)self contentView];
+      [contentView3 removeConstraint:self->_spacerTop];
 
       v80 = self->_spacerTop;
       self->_spacerTop = 0;
@@ -356,15 +356,15 @@ LABEL_49:
       v89 = self->_spacerTop;
       self->_spacerTop = v88;
 
-      v90 = [(VideosExtrasGridCollectionViewCell *)self contentView];
-      [v90 addConstraint:self->_spacerTop];
+      contentView4 = [(VideosExtrasGridCollectionViewCell *)self contentView];
+      [contentView4 addConstraint:self->_spacerTop];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v91 = [(VideosExtrasGridCollectionViewCell *)self contentView];
-      [v91 removeConstraint:self->_spacerHeight];
+      contentView5 = [(VideosExtrasGridCollectionViewCell *)self contentView];
+      [contentView5 removeConstraint:self->_spacerHeight];
 
       spacerHeight = self->_spacerHeight;
       self->_spacerHeight = 0;
@@ -377,8 +377,8 @@ LABEL_49:
       v95 = self->_spacerHeight;
       self->_spacerHeight = v94;
 
-      v96 = [(VideosExtrasGridCollectionViewCell *)self contentView];
-      [v96 addConstraint:self->_spacerHeight];
+      contentView6 = [(VideosExtrasGridCollectionViewCell *)self contentView];
+      [contentView6 addConstraint:self->_spacerHeight];
 
       v93 = self->_spacerHeight;
     }
@@ -387,55 +387,55 @@ LABEL_49:
     goto LABEL_81;
   }
 
-  v135 = v45;
-  if (!v12 || !v14)
+  v135 = image;
+  if (!v12 || !titleTextStyle2)
   {
-    if (v12 != 0 && v14 == 0)
+    if (v12 != 0 && titleTextStyle2 == 0)
     {
-      v83 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
-      v14 = [v8 titleTextStyle];
-      v85 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
-      v86 = [v8 titleTextStyle];
+      titleLabel6 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
+      titleTextStyle2 = [styleCopy titleTextStyle];
+      titleLabel7 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
+      titleTextStyle3 = [styleCopy titleTextStyle];
       goto LABEL_56;
     }
 
     if (v12)
     {
-      v83 = 0;
-      v14 = 0;
+      titleLabel6 = 0;
+      titleTextStyle2 = 0;
     }
 
     else
     {
-      if (v14)
+      if (titleTextStyle2)
       {
-        v83 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
-        v84 = [v8 subtitleTextStyle];
+        titleLabel6 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
+        subtitleTextStyle2 = [styleCopy subtitleTextStyle];
         goto LABEL_44;
       }
 
-      v83 = 0;
+      titleLabel6 = 0;
     }
 
-    v85 = 0;
+    titleLabel7 = 0;
     v87 = 0;
     goto LABEL_57;
   }
 
-  v81 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
-  [v81 setNumberOfLines:1];
+  titleLabel8 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
+  [titleLabel8 setNumberOfLines:1];
 
-  v82 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
-  [v82 setNumberOfLines:1];
+  subtitleLabel6 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
+  [subtitleLabel6 setNumberOfLines:1];
 
-  v83 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
-  v84 = [v8 titleTextStyle];
+  titleLabel6 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
+  subtitleTextStyle2 = [styleCopy titleTextStyle];
 LABEL_44:
-  v14 = v84;
-  v85 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
-  v86 = [v8 subtitleTextStyle];
+  titleTextStyle2 = subtitleTextStyle2;
+  titleLabel7 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
+  titleTextStyle3 = [styleCopy subtitleTextStyle];
 LABEL_56:
-  v87 = v86;
+  v87 = titleTextStyle3;
 LABEL_57:
   v97 = self->_topLineHeight;
   if (!v97)
@@ -443,12 +443,12 @@ LABEL_57:
     goto LABEL_61;
   }
 
-  v98 = [(MPUContentSizeLayoutConstraint *)v97 firstItem];
+  firstItem = [(MPUContentSizeLayoutConstraint *)v97 firstItem];
 
-  if (v98 != v83)
+  if (firstItem != titleLabel6)
   {
-    v99 = [(VideosExtrasGridCollectionViewCell *)self contentView];
-    [v99 removeConstraint:self->_topLineHeight];
+    contentView7 = [(VideosExtrasGridCollectionViewCell *)self contentView];
+    [contentView7 removeConstraint:self->_topLineHeight];
 
     v100 = self->_topLineHeight;
     self->_topLineHeight = 0;
@@ -460,27 +460,27 @@ LABEL_57:
 LABEL_61:
     v102 = MEMORY[0x1E69AD980];
     v103 = self->_artworkContainer;
-    [v8 titleFirstBaselineHeight];
-    v105 = [v102 constraintWithAutoupdatingBaselineOfView:v83 relation:0 toView:v103 attribute:4 withTextStyle:v14 multiplier:1.0 nonStandardLeading:v104];
+    [styleCopy titleFirstBaselineHeight];
+    v105 = [v102 constraintWithAutoupdatingBaselineOfView:titleLabel6 relation:0 toView:v103 attribute:4 withTextStyle:titleTextStyle2 multiplier:1.0 nonStandardLeading:v104];
     v106 = self->_topLineHeight;
     self->_topLineHeight = v105;
 
-    v107 = [(VideosExtrasGridCollectionViewCell *)self contentView];
-    [v107 addConstraint:self->_topLineHeight];
+    contentView8 = [(VideosExtrasGridCollectionViewCell *)self contentView];
+    [contentView8 addConstraint:self->_topLineHeight];
 
     v101 = self->_topLineHeight;
   }
 
-  [(MPUContentSizeLayoutConstraint *)v101 setTextStyle:v14];
-  [v8 titleFirstBaselineHeight];
+  [(MPUContentSizeLayoutConstraint *)v101 setTextStyle:titleTextStyle2];
+  [styleCopy titleFirstBaselineHeight];
   [(MPUContentSizeLayoutConstraint *)self->_topLineHeight setDefaultSizeConstant:?];
   v108 = self->_subtitleLineHeight;
-  if (v83 == v85)
+  if (titleLabel6 == titleLabel7)
   {
     if (v108)
     {
-      v118 = [(VideosExtrasGridCollectionViewCell *)self contentView];
-      [v118 removeConstraint:self->_subtitleLineHeight];
+      contentView9 = [(VideosExtrasGridCollectionViewCell *)self contentView];
+      [contentView9 removeConstraint:self->_subtitleLineHeight];
 
       v119 = self->_subtitleLineHeight;
       self->_subtitleLineHeight = 0;
@@ -494,12 +494,12 @@ LABEL_61:
       goto LABEL_67;
     }
 
-    v109 = [(MPUContentSizeLayoutConstraint *)v108 firstItem];
+    firstItem2 = [(MPUContentSizeLayoutConstraint *)v108 firstItem];
 
-    if (v109 != v85)
+    if (firstItem2 != titleLabel7)
     {
-      v110 = [(VideosExtrasGridCollectionViewCell *)self contentView];
-      [v110 removeConstraint:self->_subtitleLineHeight];
+      contentView10 = [(VideosExtrasGridCollectionViewCell *)self contentView];
+      [contentView10 removeConstraint:self->_subtitleLineHeight];
 
       v111 = self->_subtitleLineHeight;
       self->_subtitleLineHeight = 0;
@@ -510,27 +510,27 @@ LABEL_61:
     {
 LABEL_67:
       v113 = MEMORY[0x1E69AD980];
-      [v8 subtitleFirstBaselineHeight];
-      v115 = [v113 constraintWithAutoupdatingBaselineOfView:v85 relation:0 toView:v83 attribute:11 withTextStyle:v87 multiplier:1.0 nonStandardLeading:v114];
+      [styleCopy subtitleFirstBaselineHeight];
+      v115 = [v113 constraintWithAutoupdatingBaselineOfView:titleLabel7 relation:0 toView:titleLabel6 attribute:11 withTextStyle:v87 multiplier:1.0 nonStandardLeading:v114];
       v116 = self->_subtitleLineHeight;
       self->_subtitleLineHeight = v115;
 
-      v117 = [(VideosExtrasGridCollectionViewCell *)self contentView];
-      [v117 addConstraint:self->_subtitleLineHeight];
+      contentView11 = [(VideosExtrasGridCollectionViewCell *)self contentView];
+      [contentView11 addConstraint:self->_subtitleLineHeight];
 
       v112 = self->_subtitleLineHeight;
     }
 
     [(MPUContentSizeLayoutConstraint *)v112 setTextStyle:v87];
-    [v8 subtitleFirstBaselineHeight];
+    [styleCopy subtitleFirstBaselineHeight];
     [(MPUContentSizeLayoutConstraint *)self->_subtitleLineHeight setDefaultSizeConstant:?];
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v120 = [(VideosExtrasGridCollectionViewCell *)self contentView];
-    [v120 removeConstraint:self->_spacerHeight];
+    contentView12 = [(VideosExtrasGridCollectionViewCell *)self contentView];
+    [contentView12 removeConstraint:self->_spacerHeight];
 
     v121 = self->_spacerHeight;
     self->_spacerHeight = 0;
@@ -541,15 +541,15 @@ LABEL_67:
   {
     v123 = MEMORY[0x1E69AD980];
     spacerView = self->_spacerView;
-    [v8 textFirstBaselineToBottom];
-    v122 = [v123 contentSizeAutoupdatingConstraintWithItem:spacerView attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:v14 textStyle:1.0 defaultSizeConstant:v125];
+    [styleCopy textFirstBaselineToBottom];
+    v122 = [v123 contentSizeAutoupdatingConstraintWithItem:spacerView attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:titleTextStyle2 textStyle:1.0 defaultSizeConstant:v125];
     objc_storeStrong(&self->_spacerHeight, v122);
-    v126 = [(VideosExtrasGridCollectionViewCell *)self contentView];
-    [v126 addConstraint:self->_spacerHeight];
+    contentView13 = [(VideosExtrasGridCollectionViewCell *)self contentView];
+    [contentView13 addConstraint:self->_spacerHeight];
   }
 
-  [(NSLayoutConstraint *)v122 setTextStyle:v14];
-  [v8 textFirstBaselineToBottom];
+  [(NSLayoutConstraint *)v122 setTextStyle:titleTextStyle2];
+  [styleCopy textFirstBaselineToBottom];
   [(NSLayoutConstraint *)v122 setDefaultSizeConstant:?];
   v127 = self->_spacerTop;
   if (!v127)
@@ -557,12 +557,12 @@ LABEL_67:
     goto LABEL_79;
   }
 
-  v128 = [(NSLayoutConstraint *)v127 secondItem];
+  secondItem2 = [(NSLayoutConstraint *)v127 secondItem];
 
-  if (v128 != v83)
+  if (secondItem2 != titleLabel6)
   {
-    v129 = [(VideosExtrasGridCollectionViewCell *)self contentView];
-    [v129 removeConstraint:self->_spacerTop];
+    contentView14 = [(VideosExtrasGridCollectionViewCell *)self contentView];
+    [contentView14 removeConstraint:self->_spacerTop];
 
     v130 = self->_spacerTop;
     self->_spacerTop = 0;
@@ -571,15 +571,15 @@ LABEL_67:
   if (!self->_spacerTop)
   {
 LABEL_79:
-    v131 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_spacerView attribute:3 relatedBy:0 toItem:v83 attribute:12 multiplier:1.0 constant:0.0];
+    v131 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_spacerView attribute:3 relatedBy:0 toItem:titleLabel6 attribute:12 multiplier:1.0 constant:0.0];
     v132 = self->_spacerTop;
     self->_spacerTop = v131;
 
-    v133 = [(VideosExtrasGridCollectionViewCell *)self contentView];
-    [v133 addConstraint:self->_spacerTop];
+    contentView15 = [(VideosExtrasGridCollectionViewCell *)self contentView];
+    [contentView15 addConstraint:self->_spacerTop];
   }
 
-  v45 = v135;
+  image = v135;
 LABEL_81:
 }
 
@@ -612,14 +612,14 @@ void __78__VideosExtrasGridCollectionViewCell_configureForLockup_cellStyle_withS
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = VideosExtrasGridCollectionViewCell;
   [(VideosExtrasGridCollectionViewCell *)&v6 setHighlighted:?];
-  v5 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainer artworkView];
-  [v5 setHighlighted:v3];
+  artworkView = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainer artworkView];
+  [artworkView setHighlighted:highlightedCopy];
 }
 
 - (void)prepareForReuse
@@ -627,37 +627,37 @@ void __78__VideosExtrasGridCollectionViewCell_configureForLockup_cellStyle_withS
   v17.receiver = self;
   v17.super_class = VideosExtrasGridCollectionViewCell;
   [(VideosExtrasGridCollectionViewCell *)&v17 prepareForReuse];
-  v3 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
-  v4 = [v3 layer];
-  [v4 setBorderWidth:0.0];
+  artworkContainer = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
+  layer = [artworkContainer layer];
+  [layer setBorderWidth:0.0];
 
-  v5 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
-  v6 = [v5 artworkView];
-  v7 = [v6 layer];
-  [v7 setBorderWidth:0.0];
+  artworkContainer2 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
+  artworkView = [artworkContainer2 artworkView];
+  layer2 = [artworkView layer];
+  [layer2 setBorderWidth:0.0];
 
-  v8 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
-  v9 = [v8 artworkView];
-  [v9 setPlaceholderImage:0];
+  artworkContainer3 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
+  artworkView2 = [artworkContainer3 artworkView];
+  [artworkView2 setPlaceholderImage:0];
 
-  v10 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
-  v11 = [v10 artworkView];
-  [v11 setImage:0];
+  artworkContainer4 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
+  artworkView3 = [artworkContainer4 artworkView];
+  [artworkView3 setImage:0];
 
-  v12 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
-  [v12 setOverlayImage:0];
+  artworkContainer5 = [(VideosExtrasGridCollectionViewCell *)self artworkContainer];
+  [artworkContainer5 setOverlayImage:0];
 
-  v13 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
-  [v13 setText:0];
+  titleLabel = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
+  [titleLabel setText:0];
 
-  v14 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
-  [v14 setAttributedText:0];
+  titleLabel2 = [(VideosExtrasGridCollectionViewCell *)self titleLabel];
+  [titleLabel2 setAttributedText:0];
 
-  v15 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
-  [v15 setText:0];
+  subtitleLabel = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
+  [subtitleLabel setText:0];
 
-  v16 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
-  [v16 setAttributedText:0];
+  subtitleLabel2 = [(VideosExtrasGridCollectionViewCell *)self subtitleLabel];
+  [subtitleLabel2 setAttributedText:0];
 }
 
 - (IKLockupElement)lockupElement

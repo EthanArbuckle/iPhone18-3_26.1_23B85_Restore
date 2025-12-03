@@ -1,5 +1,5 @@
 @interface PPLocationCache
-- (PPLocationCache)initWithLocationStore:(id)a3;
+- (PPLocationCache)initWithLocationStore:(id)store;
 - (id)homeOrWorkAddresses;
 - (id)locationForHome;
 - (id)locationForWork;
@@ -10,25 +10,25 @@
 
 - (void)_refresh
 {
-  v3 = [(PPLocalLocationStore *)self->_locationStore locationRecordOfCategory:5];
-  v4 = v3;
-  if (v3)
+  location = [(PPLocalLocationStore *)self->_locationStore locationRecordOfCategory:5];
+  v4 = location;
+  if (location)
   {
-    v3 = [v3 location];
+    location = [location location];
   }
 
   home = self->_home;
-  self->_home = v3;
+  self->_home = location;
 
-  v6 = [(PPLocalLocationStore *)self->_locationStore locationRecordOfCategory:6];
-  v7 = v6;
-  if (v6)
+  location2 = [(PPLocalLocationStore *)self->_locationStore locationRecordOfCategory:6];
+  v7 = location2;
+  if (location2)
   {
-    v6 = [v6 location];
+    location2 = [location2 location];
   }
 
   work = self->_work;
-  self->_work = v6;
+  self->_work = location2;
 
   v9 = objc_autoreleasePoolPush();
   [(NSMutableSet *)self->_homeOrWorkAddresses removeAllObjects];
@@ -39,15 +39,15 @@
     if (v10)
     {
       homeOrWorkAddresses = self->_homeOrWorkAddresses;
-      v13 = [v10 lowercaseString];
-      [(NSMutableSet *)homeOrWorkAddresses addObject:v13];
+      lowercaseString = [v10 lowercaseString];
+      [(NSMutableSet *)homeOrWorkAddresses addObject:lowercaseString];
     }
 
     if (v11)
     {
       v14 = self->_homeOrWorkAddresses;
-      v15 = [v11 lowercaseString];
-      [(NSMutableSet *)v14 addObject:v15];
+      lowercaseString2 = [v11 lowercaseString];
+      [(NSMutableSet *)v14 addObject:lowercaseString2];
     }
   }
 
@@ -58,15 +58,15 @@
     if (v16)
     {
       v18 = self->_homeOrWorkAddresses;
-      v19 = [v16 lowercaseString];
-      [(NSMutableSet *)v18 addObject:v19];
+      lowercaseString3 = [v16 lowercaseString];
+      [(NSMutableSet *)v18 addObject:lowercaseString3];
     }
 
     if (v17)
     {
       v20 = self->_homeOrWorkAddresses;
-      v21 = [v17 lowercaseString];
-      [(NSMutableSet *)v20 addObject:v21];
+      lowercaseString4 = [v17 lowercaseString];
+      [(NSMutableSet *)v20 addObject:lowercaseString4];
     }
   }
 
@@ -110,9 +110,9 @@
   return home;
 }
 
-- (PPLocationCache)initWithLocationStore:(id)a3
+- (PPLocationCache)initWithLocationStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = PPLocationCache;
   v6 = [(PPLocationCache *)&v11 init];
@@ -120,7 +120,7 @@
   if (v6)
   {
     v6->_valid = 0;
-    objc_storeStrong(&v6->_locationStore, a3);
+    objc_storeStrong(&v6->_locationStore, store);
     v8 = objc_opt_new();
     homeOrWorkAddresses = v7->_homeOrWorkAddresses;
     v7->_homeOrWorkAddresses = v8;

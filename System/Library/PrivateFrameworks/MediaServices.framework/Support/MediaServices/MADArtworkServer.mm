@@ -1,43 +1,43 @@
 @interface MADArtworkServer
 - (MADArtworkServer)init;
-- (void)processArtworkColorAnalysisRequest:(id)a3 withReply:(id)a4;
-- (void)processArtworkRequest:(id)a3 completionHandler:(id)a4;
+- (void)processArtworkColorAnalysisRequest:(id)request withReply:(id)reply;
+- (void)processArtworkRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation MADArtworkServer
 
-- (void)processArtworkColorAnalysisRequest:(id)a3 withReply:(id)a4
+- (void)processArtworkColorAnalysisRequest:(id)request withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v9 = sub_100001B34(3);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 debugDescription];
+    v10 = [requestCopy debugDescription];
     *buf = 138543362;
     v26 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received artwork color analysis request: %{public}@", buf, 0xCu);
   }
 
-  v11 = [v7 operationClass];
-  if (!v11)
+  operationClass = [requestCopy operationClass];
+  if (!operationClass)
   {
     v16 = +[NSAssertionHandler currentHandler];
     [v16 handleFailureInMethod:a2 object:self file:@"MADArtworkServer.m" lineNumber:81 description:@"Artwork service color analysis request must specify an operationClass"];
   }
 
-  v12 = [[v11 alloc] initWithArtworkRequest:v7];
-  [v12 setQueuePriority:{objc_msgSend(v7, "operationPriority")}];
+  v12 = [[operationClass alloc] initWithArtworkRequest:requestCopy];
+  [v12 setQueuePriority:{objc_msgSend(requestCopy, "operationPriority")}];
   objc_initWeak(buf, v12);
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_100000FC0;
   v20 = &unk_1000041B8;
   objc_copyWeak(&v24, buf);
-  v13 = v7;
+  v13 = requestCopy;
   v21 = v13;
-  v14 = v8;
-  v22 = self;
+  v14 = replyCopy;
+  selfCopy = self;
   v23 = v14;
   [v12 setCompletionBlock:&v17];
   v15 = [(MADArtworkServer *)self artworkServiceQueue:v17];
@@ -47,38 +47,38 @@
   objc_destroyWeak(buf);
 }
 
-- (void)processArtworkRequest:(id)a3 completionHandler:(id)a4
+- (void)processArtworkRequest:(id)request completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v9 = sub_100001B34(3);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 debugDescription];
+    v10 = [requestCopy debugDescription];
     *buf = 138543362;
     v26 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received artwork request: %{public}@", buf, 0xCu);
   }
 
-  v11 = [v7 operationClass];
-  if (!v11)
+  operationClass = [requestCopy operationClass];
+  if (!operationClass)
   {
     v16 = +[NSAssertionHandler currentHandler];
     [v16 handleFailureInMethod:a2 object:self file:@"MADArtworkServer.m" lineNumber:45 description:@"Artwork service request must specify an operationClass"];
   }
 
-  v12 = [[v11 alloc] initWithArtworkRequest:v7];
-  [v12 setQueuePriority:{objc_msgSend(v7, "operationPriority")}];
+  v12 = [[operationClass alloc] initWithArtworkRequest:requestCopy];
+  [v12 setQueuePriority:{objc_msgSend(requestCopy, "operationPriority")}];
   objc_initWeak(buf, v12);
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_1000014BC;
   v20 = &unk_1000041B8;
   objc_copyWeak(&v24, buf);
-  v13 = v7;
+  v13 = requestCopy;
   v21 = v13;
-  v14 = v8;
-  v22 = self;
+  v14 = handlerCopy;
+  selfCopy = self;
   v23 = v14;
   [v12 setCompletionBlock:&v17];
   v15 = [(MADArtworkServer *)self artworkServiceQueue:v17];
@@ -98,11 +98,11 @@
     v3 = objc_alloc_init(NSOperationQueue);
     [(MADArtworkServer *)v2 setArtworkServiceQueue:v3];
 
-    v4 = [(MADArtworkServer *)v2 artworkServiceQueue];
-    [v4 setMaxConcurrentOperationCount:1];
+    artworkServiceQueue = [(MADArtworkServer *)v2 artworkServiceQueue];
+    [artworkServiceQueue setMaxConcurrentOperationCount:1];
 
-    v5 = [(MADArtworkServer *)v2 artworkServiceQueue];
-    [v5 setName:@"com.apple.mediaartworkd.artworkServiceQueue"];
+    artworkServiceQueue2 = [(MADArtworkServer *)v2 artworkServiceQueue];
+    [artworkServiceQueue2 setName:@"com.apple.mediaartworkd.artworkServiceQueue"];
 
     v6 = dispatch_queue_create("com.apple.mediaartworkd.calloutQueue", 0);
     calloutQueue = v2->_calloutQueue;

@@ -1,36 +1,36 @@
 @interface TSCEWholeOwnerDependencies
-- (BOOL)addOwnerReference:(const TSCEInternalCellReference *)a3;
-- (TSCEWholeOwnerDependencies)initWithDependTracker:(id)a3 ownerID:(unsigned __int16)a4;
+- (BOOL)addOwnerReference:(const TSCEInternalCellReference *)reference;
+- (TSCEWholeOwnerDependencies)initWithDependTracker:(id)tracker ownerID:(unsigned __int16)d;
 - (id).cxx_construct;
-- (void)addPrecedentsOfCoord:(const TSUCellCoord *)a3 toReferenceSet:(void *)a4;
-- (void)deleteOwnerReferencesFromCell:(TSUCellCoord)a3;
-- (void)encodeToArchive:(void *)a3;
-- (void)encodeToExpandedArchive:(void *)a3;
-- (void)readFromArchive:(const void *)a3;
+- (void)addPrecedentsOfCoord:(const TSUCellCoord *)coord toReferenceSet:(void *)set;
+- (void)deleteOwnerReferencesFromCell:(TSUCellCoord)cell;
+- (void)encodeToArchive:(void *)archive;
+- (void)encodeToExpandedArchive:(void *)archive;
+- (void)readFromArchive:(const void *)archive;
 - (void)removeAllPrecedents;
 - (void)unpackAfterUnarchive;
 @end
 
 @implementation TSCEWholeOwnerDependencies
 
-- (TSCEWholeOwnerDependencies)initWithDependTracker:(id)a3 ownerID:(unsigned __int16)a4
+- (TSCEWholeOwnerDependencies)initWithDependTracker:(id)tracker ownerID:(unsigned __int16)d
 {
   v7.receiver = self;
   v7.super_class = TSCEWholeOwnerDependencies;
   result = [(TSCEWholeOwnerDependencies *)&v7 init];
   if (result)
   {
-    result->_dependencyTracker = a3;
-    result->_internalOwnerID = a4;
+    result->_dependencyTracker = tracker;
+    result->_internalOwnerID = d;
     result->_unarchivedRefSet = 0;
   }
 
   return result;
 }
 
-- (void)readFromArchive:(const void *)a3
+- (void)readFromArchive:(const void *)archive
 {
-  v3 = *(a3 + 6);
+  v3 = *(archive + 6);
   if (v3 >= 1)
   {
     v6 = 8;
@@ -38,7 +38,7 @@
     {
       v37 = 0;
       v36 = 0;
-      v36 = sub_2215C3954(*(*(a3 + 4) + v6));
+      v36 = sub_2215C3954(*(*(archive + 4) + v6));
       v37 = v7;
       dependencyTracker = self->_dependencyTracker;
       if (dependencyTracker)
@@ -78,13 +78,13 @@
   }
 }
 
-- (void)encodeToArchive:(void *)a3
+- (void)encodeToArchive:(void *)archive
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = sub_2213A00D4;
   v3[3] = &unk_27845F588;
-  v3[4] = a3;
+  v3[4] = archive;
   sub_2212DFEC0(&self->_referencesToThisTable, v3);
 }
 
@@ -118,30 +118,30 @@
   _Block_object_dispose(v7, 8);
 }
 
-- (void)encodeToExpandedArchive:(void *)a3
+- (void)encodeToExpandedArchive:(void *)archive
 {
-  *(a3 + 4) |= 1u;
-  v4 = *(a3 + 3);
+  *(archive + 4) |= 1u;
+  v4 = *(archive + 3);
   if (!v4)
   {
-    v6 = *(a3 + 1);
+    v6 = *(archive + 1);
     if (v6)
     {
       v6 = *(v6 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v4 = google::protobuf::Arena::CreateMaybeMessage<TSCE::InternalCellRefSetArchive>(v6);
-    *(a3 + 3) = v4;
+    *(archive + 3) = v4;
   }
 
   sub_2212E0690(&self->_referencesToThisTable, v4);
 }
 
-- (BOOL)addOwnerReference:(const TSCEInternalCellReference *)a3
+- (BOOL)addOwnerReference:(const TSCEInternalCellReference *)reference
 {
-  sub_2212DFCE8(&self->_referencesToThisTable._coordsForOwnerId.__table_.__bucket_list_.__ptr_, a3);
-  objc_msgSend_dgl_wholeOwnerDependenciesForOwnerID_(self->_dependencyTracker, v5, a3->tableID, v6, v7);
-  if (objc_claimAutoreleasedReturnValue() || (objc_msgSend_dgl_registerOwnerID_owner_ownerIndex_(self->_dependencyTracker, v8, a3->tableID, 0, 0), objc_msgSend_dgl_wholeOwnerDependenciesForOwnerID_(self->_dependencyTracker, v9, a3->tableID, v10, v11), objc_claimAutoreleasedReturnValue()))
+  sub_2212DFCE8(&self->_referencesToThisTable._coordsForOwnerId.__table_.__bucket_list_.__ptr_, reference);
+  objc_msgSend_dgl_wholeOwnerDependenciesForOwnerID_(self->_dependencyTracker, v5, reference->tableID, v6, v7);
+  if (objc_claimAutoreleasedReturnValue() || (objc_msgSend_dgl_registerOwnerID_owner_ownerIndex_(self->_dependencyTracker, v8, reference->tableID, 0, 0), objc_msgSend_dgl_wholeOwnerDependenciesForOwnerID_(self->_dependencyTracker, v9, reference->tableID, v10, v11), objc_claimAutoreleasedReturnValue()))
   {
     sub_2213A09F0();
   }
@@ -155,13 +155,13 @@
   return 1;
 }
 
-- (void)deleteOwnerReferencesFromCell:(TSUCellCoord)a3
+- (void)deleteOwnerReferencesFromCell:(TSUCellCoord)cell
 {
-  v23 = a3;
+  cellCopy = cell;
   internalOwnerID = self->_internalOwnerID;
-  v21 = *&a3 & 0xFFFFFFFFFFFFLL;
+  v21 = *&cell & 0xFFFFFFFFFFFFLL;
   v22 = internalOwnerID;
-  v5 = sub_2213A0EB0(&self->_referencesFromThisTable.__table_.__bucket_list_.__ptr_, &v23);
+  v5 = sub_2213A0EB0(&self->_referencesFromThisTable.__table_.__bucket_list_.__ptr_, &cellCopy);
   if (v5 == v6)
   {
     v10 = 0;
@@ -198,7 +198,7 @@
     while (v12 != v13);
   }
 
-  sub_2213A0FCC(&self->_referencesFromThisTable.__table_.__bucket_list_.__ptr_, &v23);
+  sub_2213A0FCC(&self->_referencesFromThisTable.__table_.__bucket_list_.__ptr_, &cellCopy);
 }
 
 - (void)removeAllPrecedents
@@ -244,9 +244,9 @@
   sub_2210BE918(&self->_referencesFromThisTable.__table_.__bucket_list_.__ptr_);
 }
 
-- (void)addPrecedentsOfCoord:(const TSUCellCoord *)a3 toReferenceSet:(void *)a4
+- (void)addPrecedentsOfCoord:(const TSUCellCoord *)coord toReferenceSet:(void *)set
 {
-  v6 = sub_2213A0EB0(&self->_referencesFromThisTable.__table_.__bucket_list_.__ptr_, a3);
+  v6 = sub_2213A0EB0(&self->_referencesFromThisTable.__table_.__bucket_list_.__ptr_, coord);
   if (v6 != v7)
   {
     v10 = v6;
@@ -255,7 +255,7 @@
     {
       v13._lower = objc_msgSend_formulaOwnerUIDForInternalFormulaOwnerID_(self->_dependencyTracker, v7, *(v10 + 12), v8, v9, 0, 0);
       v13._upper = v12;
-      TSCEReferenceSet::insertWholeOwnerRef(a4, &v13);
+      TSCEReferenceSet::insertWholeOwnerRef(set, &v13);
       v10 = *v10;
     }
 

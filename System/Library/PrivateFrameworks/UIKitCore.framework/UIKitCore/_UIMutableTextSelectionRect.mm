@@ -1,13 +1,13 @@
 @interface _UIMutableTextSelectionRect
-+ (id)selectionRectWithRect:(CGRect)a3 fromView:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)selectionRectWithRect:(CGRect)rect fromView:(id)view;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)transform;
 - (CGRect)rect;
 - (_UIMutableTextSelectionRect)init;
 - (id)description;
 - (unint64_t)hash;
-- (void)setRect:(CGRect)a3 fromView:(id)a4;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setRect:(CGRect)rect fromView:(id)view;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation _UIMutableTextSelectionRect
@@ -59,28 +59,28 @@
   return v3;
 }
 
-+ (id)selectionRectWithRect:(CGRect)a3 fromView:(id)a4
++ (id)selectionRectWithRect:(CGRect)rect fromView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
   v9 = objc_opt_new();
-  [v9 setRect:v8 fromView:{x, y, width, height}];
+  [v9 setRect:viewCopy fromView:{x, y, width, height}];
 
   [v9 setWritingDirection:0];
 
   return v9;
 }
 
-- (void)setRect:(CGRect)a3 fromView:(id)a4
+- (void)setRect:(CGRect)rect fromView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
   v17.origin.x = x;
   v17.origin.y = y;
   v17.size.width = width;
@@ -94,7 +94,7 @@
   else
   {
     p_rect = &self->_rect;
-    [v15 _currentScreenScale];
+    [viewCopy _currentScreenScale];
     v11 = UIRectRoundToScale(x, y, width, height, v10);
     y = v12;
     width = v13;
@@ -117,16 +117,16 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if ([(_UIMutableTextSelectionRect *)v4 _ui_isKindOfTextSelectionRect])
+  else if ([(_UIMutableTextSelectionRect *)equalCopy _ui_isKindOfTextSelectionRect])
   {
     v8.receiver = self;
     v8.super_class = _UIMutableTextSelectionRect;
@@ -141,11 +141,11 @@
   return v6;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_transform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_transform.a = *&transform->a;
   *&self->_transform.c = v4;
   *&self->_transform.tx = v3;
 }

@@ -1,9 +1,9 @@
 @interface TransitPayModelData
 - (BOOL)canPresentEducationScreen;
 - (BOOL)hasAllNeededText;
-- (TransitPayModelData)initWithTitle:(id)a3 subtitle:(id)a4 actionTitle:(id)a5 image:(id)a6 paymentMethod:(id)a7 topUpPassUniqueID:(id)a8 isForRemoteDevice:(BOOL)a9;
-- (TransitPayModelData)initWithTitle:(id)a3 subtitle:(id)a4 actionTitle:(id)a5 image:(id)a6 suggestionType:(int)a7 paymentMethods:(id)a8;
-- (TransitPayModelData)initWithTitle:(id)a3 subtitle:(id)a4 actionTitle:(id)a5 image:(id)a6 suggestionType:(int)a7 paymentMethods:(id)a8 educationScreenTitle:(id)a9 educationScreenAssetURLs:(id)a10 educationScreenText:(id)a11 topUpPassUniqueID:(id)a12 isForRemoteDevice:(BOOL)a13;
+- (TransitPayModelData)initWithTitle:(id)title subtitle:(id)subtitle actionTitle:(id)actionTitle image:(id)image paymentMethod:(id)method topUpPassUniqueID:(id)d isForRemoteDevice:(BOOL)device;
+- (TransitPayModelData)initWithTitle:(id)title subtitle:(id)subtitle actionTitle:(id)actionTitle image:(id)image suggestionType:(int)type paymentMethods:(id)methods;
+- (TransitPayModelData)initWithTitle:(id)title subtitle:(id)subtitle actionTitle:(id)actionTitle image:(id)image suggestionType:(int)type paymentMethods:(id)methods educationScreenTitle:(id)screenTitle educationScreenAssetURLs:(id)self0 educationScreenText:(id)self1 topUpPassUniqueID:(id)self2 isForRemoteDevice:(BOOL)self3;
 - (id)analyticsValue;
 - (id)description;
 @end
@@ -12,16 +12,16 @@
 
 - (id)analyticsValue
 {
-  v3 = [(TransitPayModelData *)self suggestionType];
-  if (v3 <= 2)
+  suggestionType = [(TransitPayModelData *)self suggestionType];
+  if (suggestionType <= 2)
   {
     v5 = @"OPEN_LOOP";
-    if (v3 != 2)
+    if (suggestionType != 2)
     {
       v5 = 0;
     }
 
-    if (v3 == 1)
+    if (suggestionType == 1)
     {
       return @"OPEN_LOOP_EXPRESS";
     }
@@ -34,16 +34,16 @@
 
   else
   {
-    switch(v3)
+    switch(suggestionType)
     {
       case 3:
-        v6 = [(TransitPayModelData *)self paymentMethods];
-        v7 = [v6 count];
+        paymentMethods = [(TransitPayModelData *)self paymentMethods];
+        v7 = [paymentMethods count];
 
         if (v7 <= 1)
         {
-          v8 = [(TransitPayModelData *)self paymentMethods];
-          v9 = [v8 count];
+          paymentMethods2 = [(TransitPayModelData *)self paymentMethods];
+          v9 = [paymentMethods2 count];
 
           if (v9 == 1)
           {
@@ -84,20 +84,20 @@
 {
   v3 = objc_alloc_init(NSMutableString);
   [v3 appendFormat:@" TransitPayModelData:\n"];
-  v4 = [(TransitPayModelData *)self title];
-  [v3 appendFormat:@" title:              '%@'\n", v4];
+  title = [(TransitPayModelData *)self title];
+  [v3 appendFormat:@" title:              '%@'\n", title];
 
-  v5 = [(TransitPayModelData *)self subtitle];
-  [v3 appendFormat:@" subtitle:           '%@'\n", v5];
+  subtitle = [(TransitPayModelData *)self subtitle];
+  [v3 appendFormat:@" subtitle:           '%@'\n", subtitle];
 
-  v6 = [(TransitPayModelData *)self actionTitle];
-  [v3 appendFormat:@" actionTitle:        '%@'\n", v6];
+  actionTitle = [(TransitPayModelData *)self actionTitle];
+  [v3 appendFormat:@" actionTitle:        '%@'\n", actionTitle];
 
-  v7 = [(TransitPayModelData *)self image];
-  v8 = [(TransitPayModelData *)self image];
-  [v8 size];
+  image = [(TransitPayModelData *)self image];
+  image2 = [(TransitPayModelData *)self image];
+  [image2 size];
   v9 = NSStringFromCGSize(v22);
-  [v3 appendFormat:@" image:              '%x, size:%@'\n", v7, v9];
+  [v3 appendFormat:@" image:              '%x, size:%@'\n", image, v9];
 
   v10 = [(TransitPayModelData *)self suggestionType]- 1;
   if (v10 > 4)
@@ -111,24 +111,24 @@
   }
 
   [v3 appendFormat:@" suggestionType:     '%@'\n", v11];
-  v12 = [(TransitPayModelData *)self paymentMethods];
-  [v3 appendFormat:@" paymentMethods:     '%@'\n", v12];
+  paymentMethods = [(TransitPayModelData *)self paymentMethods];
+  [v3 appendFormat:@" paymentMethods:     '%@'\n", paymentMethods];
 
-  v13 = [(TransitPayModelData *)self educationScreenTitle];
-  [v3 appendFormat:@" eduScreenTitle:     '%@'\n", v13];
+  educationScreenTitle = [(TransitPayModelData *)self educationScreenTitle];
+  [v3 appendFormat:@" eduScreenTitle:     '%@'\n", educationScreenTitle];
 
-  v14 = [(TransitPayModelData *)self educationScreenAssetURLs];
-  [v3 appendFormat:@" imageURLs:          '%@'\n", v14];
+  educationScreenAssetURLs = [(TransitPayModelData *)self educationScreenAssetURLs];
+  [v3 appendFormat:@" imageURLs:          '%@'\n", educationScreenAssetURLs];
 
-  v15 = [(TransitPayModelData *)self educationScreenText];
-  [v3 appendFormat:@" eduScreenText:      '%@'\n", v15];
+  educationScreenText = [(TransitPayModelData *)self educationScreenText];
+  [v3 appendFormat:@" eduScreenText:      '%@'\n", educationScreenText];
 
-  v16 = [(TransitPayModelData *)self topUpPassUniqueID];
-  [v3 appendFormat:@" topUpUniqueID:      '%@'\n", v16];
+  topUpPassUniqueID = [(TransitPayModelData *)self topUpPassUniqueID];
+  [v3 appendFormat:@" topUpUniqueID:      '%@'\n", topUpPassUniqueID];
 
-  v17 = [(TransitPayModelData *)self isForRemoteDevice];
+  isForRemoteDevice = [(TransitPayModelData *)self isForRemoteDevice];
   v18 = @"NO";
-  if (v17)
+  if (isForRemoteDevice)
   {
     v18 = @"YES";
   }
@@ -141,14 +141,14 @@
 
 - (BOOL)hasAllNeededText
 {
-  v3 = [(TransitPayModelData *)self title];
-  if ([v3 length])
+  title = [(TransitPayModelData *)self title];
+  if ([title length])
   {
-    v4 = [(TransitPayModelData *)self subtitle];
-    if ([v4 length])
+    subtitle = [(TransitPayModelData *)self subtitle];
+    if ([subtitle length])
     {
-      v5 = [(TransitPayModelData *)self actionTitle];
-      v6 = [v5 length] != 0;
+      actionTitle = [(TransitPayModelData *)self actionTitle];
+      v6 = [actionTitle length] != 0;
     }
 
     else
@@ -167,11 +167,11 @@
 
 - (BOOL)canPresentEducationScreen
 {
-  v3 = [(TransitPayModelData *)self educationScreenText];
-  if ([v3 length])
+  educationScreenText = [(TransitPayModelData *)self educationScreenText];
+  if ([educationScreenText length])
   {
-    v4 = [(TransitPayModelData *)self educationScreenTitle];
-    v5 = [v4 length] != 0;
+    educationScreenTitle = [(TransitPayModelData *)self educationScreenTitle];
+    v5 = [educationScreenTitle length] != 0;
   }
 
   else
@@ -182,66 +182,66 @@
   return v5;
 }
 
-- (TransitPayModelData)initWithTitle:(id)a3 subtitle:(id)a4 actionTitle:(id)a5 image:(id)a6 paymentMethod:(id)a7 topUpPassUniqueID:(id)a8 isForRemoteDevice:(BOOL)a9
+- (TransitPayModelData)initWithTitle:(id)title subtitle:(id)subtitle actionTitle:(id)actionTitle image:(id)image paymentMethod:(id)method topUpPassUniqueID:(id)d isForRemoteDevice:(BOOL)device
 {
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
+  dCopy = d;
+  methodCopy = method;
+  imageCopy = image;
+  actionTitleCopy = actionTitle;
+  subtitleCopy = subtitle;
+  titleCopy = title;
   v21 = [TransitPayModelData alloc];
-  v26 = v16;
+  v26 = methodCopy;
   v22 = [NSArray arrayWithObjects:&v26 count:1];
 
-  LOBYTE(v25) = a9;
-  v23 = [(TransitPayModelData *)v21 initWithTitle:v20 subtitle:v19 actionTitle:v18 image:v17 suggestionType:5 paymentMethods:v22 educationScreenTitle:0 educationScreenAssetURLs:0 educationScreenText:0 topUpPassUniqueID:v15 isForRemoteDevice:v25];
+  LOBYTE(v25) = device;
+  v23 = [(TransitPayModelData *)v21 initWithTitle:titleCopy subtitle:subtitleCopy actionTitle:actionTitleCopy image:imageCopy suggestionType:5 paymentMethods:v22 educationScreenTitle:0 educationScreenAssetURLs:0 educationScreenText:0 topUpPassUniqueID:dCopy isForRemoteDevice:v25];
 
   return v23;
 }
 
-- (TransitPayModelData)initWithTitle:(id)a3 subtitle:(id)a4 actionTitle:(id)a5 image:(id)a6 suggestionType:(int)a7 paymentMethods:(id)a8
+- (TransitPayModelData)initWithTitle:(id)title subtitle:(id)subtitle actionTitle:(id)actionTitle image:(id)image suggestionType:(int)type paymentMethods:(id)methods
 {
-  v8 = *&a7;
-  v14 = a8;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  v8 = *&type;
+  methodsCopy = methods;
+  imageCopy = image;
+  actionTitleCopy = actionTitle;
+  subtitleCopy = subtitle;
+  titleCopy = title;
   LOBYTE(v21) = 0;
-  v19 = [[TransitPayModelData alloc] initWithTitle:v18 subtitle:v17 actionTitle:v16 image:v15 suggestionType:v8 paymentMethods:v14 educationScreenTitle:0 educationScreenAssetURLs:0 educationScreenText:0 topUpPassUniqueID:0 isForRemoteDevice:v21];
+  v19 = [[TransitPayModelData alloc] initWithTitle:titleCopy subtitle:subtitleCopy actionTitle:actionTitleCopy image:imageCopy suggestionType:v8 paymentMethods:methodsCopy educationScreenTitle:0 educationScreenAssetURLs:0 educationScreenText:0 topUpPassUniqueID:0 isForRemoteDevice:v21];
 
   return v19;
 }
 
-- (TransitPayModelData)initWithTitle:(id)a3 subtitle:(id)a4 actionTitle:(id)a5 image:(id)a6 suggestionType:(int)a7 paymentMethods:(id)a8 educationScreenTitle:(id)a9 educationScreenAssetURLs:(id)a10 educationScreenText:(id)a11 topUpPassUniqueID:(id)a12 isForRemoteDevice:(BOOL)a13
+- (TransitPayModelData)initWithTitle:(id)title subtitle:(id)subtitle actionTitle:(id)actionTitle image:(id)image suggestionType:(int)type paymentMethods:(id)methods educationScreenTitle:(id)screenTitle educationScreenAssetURLs:(id)self0 educationScreenText:(id)self1 topUpPassUniqueID:(id)self2 isForRemoteDevice:(BOOL)self3
 {
-  v31 = a3;
-  v30 = a4;
-  v29 = a5;
-  v28 = a6;
-  v27 = a8;
-  v26 = a9;
-  v25 = a10;
-  v24 = a11;
-  v19 = a12;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  actionTitleCopy = actionTitle;
+  imageCopy = image;
+  methodsCopy = methods;
+  screenTitleCopy = screenTitle;
+  lsCopy = ls;
+  textCopy = text;
+  dCopy = d;
   v32.receiver = self;
   v32.super_class = TransitPayModelData;
   v20 = [(TransitPayModelData *)&v32 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_title, a3);
-    objc_storeStrong(&v21->_subtitle, a4);
-    objc_storeStrong(&v21->_actionTitle, a5);
-    objc_storeStrong(&v21->_image, a6);
-    v21->_suggestionType = a7;
-    objc_storeStrong(&v21->_paymentMethods, a8);
-    objc_storeStrong(&v21->_educationScreenTitle, a9);
-    objc_storeStrong(&v21->_educationScreenAssetURLs, a10);
-    objc_storeStrong(&v21->_educationScreenText, a11);
-    objc_storeStrong(&v21->_topUpPassUniqueID, a12);
-    v21->_isForRemoteDevice = a13;
+    objc_storeStrong(&v20->_title, title);
+    objc_storeStrong(&v21->_subtitle, subtitle);
+    objc_storeStrong(&v21->_actionTitle, actionTitle);
+    objc_storeStrong(&v21->_image, image);
+    v21->_suggestionType = type;
+    objc_storeStrong(&v21->_paymentMethods, methods);
+    objc_storeStrong(&v21->_educationScreenTitle, screenTitle);
+    objc_storeStrong(&v21->_educationScreenAssetURLs, ls);
+    objc_storeStrong(&v21->_educationScreenText, text);
+    objc_storeStrong(&v21->_topUpPassUniqueID, d);
+    v21->_isForRemoteDevice = device;
   }
 
   return v21;

@@ -1,29 +1,29 @@
 @interface WBStyle
-+ (void)readFrom:(id)a3 wrdStyle:(void *)a4 style:(id)a5;
-+ (void)readTableProperties:(id)a3 style:(id)a4 from:(void *)a5;
++ (void)readFrom:(id)from wrdStyle:(void *)style style:(id)a5;
++ (void)readTableProperties:(id)properties style:(id)style from:(void *)from;
 @end
 
 @implementation WBStyle
 
-+ (void)readFrom:(id)a3 wrdStyle:(void *)a4 style:(id)a5
++ (void)readFrom:(id)from wrdStyle:(void *)style style:(id)a5
 {
-  v26 = a3;
+  fromCopy = from;
   v8 = a5;
-  [v8 setHidden:(*(a4 + 164) >> 1) & 1];
-  v9 = *(a4 + 79);
+  [v8 setHidden:(*(style + 164) >> 1) & 1];
+  v9 = *(style + 79);
   if (v9 != 4095)
   {
-    v10 = [v26 styleAtIndex:v9 expectedType:{objc_msgSend(v8, "type")}];
+    v10 = [fromCopy styleAtIndex:v9 expectedType:{objc_msgSend(v8, "type")}];
     v11 = v10;
     if (v10)
     {
       v12 = v10;
       while (v12 != v8)
       {
-        v13 = [v12 baseStyle];
+        baseStyle = [v12 baseStyle];
 
-        v12 = v13;
-        if (!v13)
+        v12 = baseStyle;
+        if (!baseStyle)
         {
           goto LABEL_8;
         }
@@ -36,53 +36,53 @@ LABEL_8:
     [v8 setBaseStyle:v11];
   }
 
-  v14 = *(a4 + 80);
+  v14 = *(style + 80);
   if (v14 != 4095)
   {
-    v15 = [v26 styleAtIndex:v14 expectedType:{objc_msgSend(v8, "type")}];
+    v15 = [fromCopy styleAtIndex:v14 expectedType:{objc_msgSend(v8, "type")}];
     [v8 setNextStyle:v15];
   }
 
-  v16 = [v8 styleSheet];
-  v17 = [v16 document];
+  styleSheet = [v8 styleSheet];
+  document = [styleSheet document];
 
-  v18 = *(a4 + 4);
-  v19 = *(a4 + 5);
-  v20 = [v8 paragraphProperties];
-  [WBParagraphProperties readFrom:v26 wrdProperties:v18 tracked:v19 document:v17 properties:v20];
+  v18 = *(style + 4);
+  v19 = *(style + 5);
+  paragraphProperties = [v8 paragraphProperties];
+  [WBParagraphProperties readFrom:fromCopy wrdProperties:v18 tracked:v19 document:document properties:paragraphProperties];
 
-  v21 = *(a4 + 6);
-  v22 = *(a4 + 7);
-  v23 = [v8 characterProperties];
-  [WBCharacterProperties readFrom:v26 wrdProperties:v21 tracked:v22 document:v17 properties:v23];
+  v21 = *(style + 6);
+  v22 = *(style + 7);
+  characterProperties = [v8 characterProperties];
+  [WBCharacterProperties readFrom:fromCopy wrdProperties:v21 tracked:v22 document:document properties:characterProperties];
 
-  v24 = [v8 characterProperties];
-  [v24 clearBaseStyle];
+  characterProperties2 = [v8 characterProperties];
+  [characterProperties2 clearBaseStyle];
 
-  v25 = [v8 paragraphProperties];
-  [v25 clearBaseStyle];
+  paragraphProperties2 = [v8 paragraphProperties];
+  [paragraphProperties2 clearBaseStyle];
 
-  [a1 readTableProperties:v26 style:v8 from:a4];
+  [self readTableProperties:fromCopy style:v8 from:style];
 }
 
-+ (void)readTableProperties:(id)a3 style:(id)a4 from:(void *)a5
++ (void)readTableProperties:(id)properties style:(id)style from:(void *)from
 {
-  v13 = a3;
-  v7 = a4;
-  if ([v7 type] == 3)
+  propertiesCopy = properties;
+  styleCopy = style;
+  if ([styleCopy type] == 3)
   {
-    v8 = *(a5 + 8);
-    v9 = [v7 tableRowProperties];
-    [WBTableRowProperties readFrom:v13 wrdProperties:v8 tracked:0 properties:v9];
+    v8 = *(from + 8);
+    tableRowProperties = [styleCopy tableRowProperties];
+    [WBTableRowProperties readFrom:propertiesCopy wrdProperties:v8 tracked:0 properties:tableRowProperties];
 
-    v10 = [v7 tableCellProperties];
-    [WBTableCellStyleProperties readFrom:v8 properties:v10];
+    tableCellProperties = [styleCopy tableCellProperties];
+    [WBTableCellStyleProperties readFrom:v8 properties:tableCellProperties];
 
     v11 = 0;
     do
     {
-      v12 = [v7 tableStyleOverrideForPart:v11];
-      [WBTableStyleOverride readFrom:v13 wrdStyle:a5 style:v7 part:v11 tableStyleOverride:v12];
+      v12 = [styleCopy tableStyleOverrideForPart:v11];
+      [WBTableStyleOverride readFrom:propertiesCopy wrdStyle:from style:styleCopy part:v11 tableStyleOverride:v12];
 
       v11 = (v11 + 1);
     }

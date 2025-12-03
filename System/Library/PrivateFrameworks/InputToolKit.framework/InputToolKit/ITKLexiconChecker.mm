@@ -1,16 +1,16 @@
 @interface ITKLexiconChecker
-+ (BOOL)englishLexiconCheck:(id)a3;
-+ (BOOL)isStringEnglish:(id)a3;
-+ (id)createEnglishNormalizedString:(id)a3;
++ (BOOL)englishLexiconCheck:(id)check;
++ (BOOL)isStringEnglish:(id)english;
++ (id)createEnglishNormalizedString:(id)string;
 @end
 
 @implementation ITKLexiconChecker
 
-+ (BOOL)englishLexiconCheck:(id)a3
++ (BOOL)englishLexiconCheck:(id)check
 {
   v97 = *MEMORY[0x277D85DE8];
-  v55 = a3;
-  if (!v55 || (v69 = 0u, v70 = 0u, v67 = 0u, v68 = 0u, (v3 = [&unk_286710BC0 countByEnumeratingWithState:&v67 objects:v82 count:16]) == 0))
+  checkCopy = check;
+  if (!checkCopy || (v69 = 0u, v70 = 0u, v67 = 0u, v68 = 0u, (v3 = [&unk_286710BC0 countByEnumeratingWithState:&v67 objects:v82 count:16]) == 0))
   {
     v50 = 0;
     goto LABEL_112;
@@ -41,7 +41,7 @@
       }
 
       v7 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v5];
-      v56 = v55;
+      v56 = checkCopy;
       if (_lexiconCheckForLocale(NSLocale *,NSString *)::onceToken != -1)
       {
         +[ITKLexiconChecker englishLexiconCheck:];
@@ -55,16 +55,16 @@
 
       [_getOrCreateCachedLexiconSingletonForLocale(NSLocale *)::cacheAccessLock lock];
       v8 = _getOrCreateCachedLexiconSingletonForLocale(NSLocale *)::lexiconSingletonCache;
-      v9 = [v64 localeIdentifier];
-      v60 = [v8 objectForKeyedSubscript:v9];
+      localeIdentifier = [v64 localeIdentifier];
+      v60 = [v8 objectForKeyedSubscript:localeIdentifier];
 
       [_getOrCreateCachedLexiconSingletonForLocale(NSLocale *)::cacheAccessLock unlock];
       if (!v60)
       {
         v75 = 0;
         v87 = v53;
-        v10 = [v64 localeIdentifier];
-        __p[0] = v10;
+        localeIdentifier2 = [v64 localeIdentifier];
+        __p[0] = localeIdentifier2;
         v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:__p forKeys:&v87 count:1];
         v61 = LXLexiconCreate();
 
@@ -73,9 +73,9 @@
           v47 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit");
           if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
           {
-            v48 = [v64 localeIdentifier];
+            localeIdentifier3 = [v64 localeIdentifier];
             *buffer = v52;
-            *&buffer[4] = v48;
+            *&buffer[4] = localeIdentifier3;
             *&buffer[12] = 2114;
             *&buffer[14] = v75;
             _os_log_error_impl(&dword_254BF2000, v47, OS_LOG_TYPE_ERROR, "Failed to load lexicon for locale identifier: %{public}@: %{public}@", buffer, 0x16u);
@@ -86,22 +86,22 @@
 
         [_getOrCreateCachedLexiconSingletonForLocale(NSLocale *)::cacheAccessLock lock];
         v12 = _getOrCreateCachedLexiconSingletonForLocale(NSLocale *)::lexiconSingletonCache;
-        v13 = [v64 localeIdentifier];
-        [v12 setObject:v61 forKeyedSubscript:v13];
+        localeIdentifier4 = [v64 localeIdentifier];
+        [v12 setObject:v61 forKeyedSubscript:localeIdentifier4];
 
         [_getOrCreateCachedLexiconSingletonForLocale(NSLocale *)::cacheAccessLock unlock];
       }
 
       v14 = v56;
-      v15 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
       v57 = v14;
-      v16 = [v14 stringByTrimmingCharactersInSet:v15];
+      v16 = [v14 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
       v58 = v16;
       if (v58)
       {
-        v17 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-        v18 = [v58 componentsSeparatedByCharactersInSet:v17];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+        v18 = [v58 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
       }
 
       else
@@ -402,12 +402,12 @@ LABEL_112:
   return v50;
 }
 
-+ (BOOL)isStringEnglish:(id)a3
++ (BOOL)isStringEnglish:(id)english
 {
-  v4 = a3;
-  if (v4)
+  englishCopy = english;
+  if (englishCopy)
   {
-    v5 = [a1 englishLexiconCheck:v4];
+    v5 = [self englishLexiconCheck:englishCopy];
   }
 
   else
@@ -418,15 +418,15 @@ LABEL_112:
   return v5;
 }
 
-+ (id)createEnglishNormalizedString:(id)a3
++ (id)createEnglishNormalizedString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy)
   {
-    v5 = v3;
-    v6 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v7 = [v5 stringByTrimmingCharactersInSet:v6];
+    v5 = stringCopy;
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v7 = [v5 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     v8 = v7;
     v9 = v8;

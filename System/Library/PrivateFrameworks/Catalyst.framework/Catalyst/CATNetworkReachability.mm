@@ -1,44 +1,44 @@
 @interface CATNetworkReachability
-+ (BOOL)isReachableForNetworkWithFlags:(unsigned int)a3;
++ (BOOL)isReachableForNetworkWithFlags:(unsigned int)flags;
 + (id)reachabilityForInternetConnection;
 + (id)reachabilityForLocalWiFi;
-+ (id)reachabilityWithAddress:(id)a3;
++ (id)reachabilityWithAddress:(id)address;
 - (BOOL)isReachable;
-- (CATNetworkReachability)initWithAddress:(id)a3;
+- (CATNetworkReachability)initWithAddress:(id)address;
 - (CATNetworkReachabilityDelegate)delegate;
 - (id)debugDescription;
 - (void)configureCallback;
 - (void)dealloc;
 - (void)delegateDidChange;
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4;
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4;
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode;
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode;
 @end
 
 @implementation CATNetworkReachability
 
 - (BOOL)isReachable
 {
-  v3 = [(CATNetworkReachability *)self address];
-  v4 = [v3 isLocalWiFi];
+  address = [(CATNetworkReachability *)self address];
+  isLocalWiFi = [address isLocalWiFi];
 
-  v5 = [(CATNetworkReachability *)self flags];
-  if (v4)
+  flags = [(CATNetworkReachability *)self flags];
+  if (isLocalWiFi)
   {
 
-    return [CATNetworkReachability isReachableForLocalWiFiWithFlags:v5];
+    return [CATNetworkReachability isReachableForLocalWiFiWithFlags:flags];
   }
 
   else
   {
 
-    return [CATNetworkReachability isReachableForNetworkWithFlags:v5];
+    return [CATNetworkReachability isReachableForNetworkWithFlags:flags];
   }
 }
 
-+ (id)reachabilityWithAddress:(id)a3
++ (id)reachabilityWithAddress:(id)address
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithAddress:v4];
+  addressCopy = address;
+  v5 = [[self alloc] initWithAddress:addressCopy];
 
   return v5;
 }
@@ -46,7 +46,7 @@
 + (id)reachabilityForInternetConnection
 {
   v3 = +[CATAddress any];
-  v4 = [a1 reachabilityWithAddress:v3];
+  v4 = [self reachabilityWithAddress:v3];
 
   return v4;
 }
@@ -54,15 +54,15 @@
 + (id)reachabilityForLocalWiFi
 {
   v3 = +[CATAddress localWiFi];
-  v4 = [a1 reachabilityWithAddress:v3];
+  v4 = [self reachabilityWithAddress:v3];
 
   return v4;
 }
 
-- (CATNetworkReachability)initWithAddress:(id)a3
+- (CATNetworkReachability)initWithAddress:(id)address
 {
-  v6 = a3;
-  if (!v6)
+  addressCopy = address;
+  if (!addressCopy)
   {
     [(CATNetworkReachability *)a2 initWithAddress:?];
   }
@@ -71,9 +71,9 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_address, a3);
-    v9 = [v6 data];
-    v8->mReachabilityRef = SCNetworkReachabilityCreateWithAddress(0, [v9 bytes]);
+    objc_storeStrong(&v7->_address, address);
+    data = [addressCopy data];
+    v8->mReachabilityRef = SCNetworkReachabilityCreateWithAddress(0, [data bytes]);
 
     [(CATNetworkReachability *)v8 configureCallback];
   }
@@ -97,31 +97,31 @@
 
 - (id)debugDescription
 {
-  v3 = [(CATNetworkReachability *)self flags];
+  flags = [(CATNetworkReachability *)self flags];
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
-  v6 = [(CATNetworkReachability *)self isReachable];
+  isReachable = [(CATNetworkReachability *)self isReachable];
   v7 = @"unreachable";
-  if (v6)
+  if (isReachable)
   {
     v7 = @"reachable";
   }
 
   v8 = 100;
-  if ((v3 & 0x20000) == 0)
+  if ((flags & 0x20000) == 0)
   {
     v8 = 45;
   }
 
   v22 = v8;
   v9 = 108;
-  if ((v3 & 0x10000) == 0)
+  if ((flags & 0x10000) == 0)
   {
     v9 = 45;
   }
 
   v10 = 68;
-  if ((v3 & 0x20) == 0)
+  if ((flags & 0x20) == 0)
   {
     v10 = 45;
   }
@@ -129,13 +129,13 @@
   v20 = v10;
   v21 = v9;
   v11 = 105;
-  if ((v3 & 0x10) == 0)
+  if ((flags & 0x10) == 0)
   {
     v11 = 45;
   }
 
   v12 = 67;
-  if ((v3 & 8) == 0)
+  if ((flags & 8) == 0)
   {
     v12 = 45;
   }
@@ -143,20 +143,20 @@
   v18 = v12;
   v19 = v11;
   v13 = 99;
-  if ((v3 & 4) == 0)
+  if ((flags & 4) == 0)
   {
     v13 = 45;
   }
 
   v14 = 116;
-  if ((v3 & 1) == 0)
+  if ((flags & 1) == 0)
   {
     v14 = 45;
   }
 
   v17 = v13;
   v15 = 82;
-  if ((v3 & 2) == 0)
+  if ((flags & 2) == 0)
   {
     v15 = 45;
   }
@@ -164,11 +164,11 @@
   return [v4 stringWithFormat:@"<%@: %p { %@, flags = '%c %c%c%c%c%c%c%c' }>", v5, self, v7, v15, v14, v17, v18, v19, v20, v21, v22];
 }
 
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode
 {
   mReachabilityRef = self->mReachabilityRef;
-  v7 = a4;
-  SCNetworkReachabilityScheduleWithRunLoop(mReachabilityRef, [a3 getCFRunLoop], v7);
+  modeCopy = mode;
+  SCNetworkReachabilityScheduleWithRunLoop(mReachabilityRef, [loop getCFRunLoop], modeCopy);
 
   flags = 0;
   if (SCNetworkReachabilityGetFlags(self->mReachabilityRef, &flags))
@@ -177,22 +177,22 @@
   }
 }
 
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode
 {
   mReachabilityRef = self->mReachabilityRef;
-  runLoopMode = a4;
-  SCNetworkReachabilityUnscheduleFromRunLoop(mReachabilityRef, [a3 getCFRunLoop], runLoopMode);
+  runLoopMode = mode;
+  SCNetworkReachabilityUnscheduleFromRunLoop(mReachabilityRef, [loop getCFRunLoop], runLoopMode);
 }
 
 - (void)delegateDidChange
 {
-  v3 = [(CATNetworkReachability *)self delegate];
+  delegate = [(CATNetworkReachability *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CATNetworkReachability *)self delegate];
-    [v5 reachabilityDidChange:self];
+    delegate2 = [(CATNetworkReachability *)self delegate];
+    [delegate2 reachabilityDidChange:self];
   }
 }
 
@@ -206,16 +206,16 @@
   SCNetworkReachabilitySetCallback(self->mReachabilityRef, __REACHABILITY_CALLBACK__, &context);
 }
 
-+ (BOOL)isReachableForNetworkWithFlags:(unsigned int)a3
++ (BOOL)isReachableForNetworkWithFlags:(unsigned int)flags
 {
-  v3 = (a3 & 0x28) != 0;
-  if ((a3 & 0x10) != 0)
+  v3 = (flags & 0x28) != 0;
+  if ((flags & 0x10) != 0)
   {
     v3 = 0;
   }
 
-  v4 = (a3 & 4) == 0 || v3;
-  return (a3 & 2) != 0 && v4;
+  v4 = (flags & 4) == 0 || v3;
+  return (flags & 2) != 0 && v4;
 }
 
 - (CATNetworkReachabilityDelegate)delegate

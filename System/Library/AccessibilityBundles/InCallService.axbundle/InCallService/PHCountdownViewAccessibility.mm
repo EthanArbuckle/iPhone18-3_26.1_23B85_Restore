@@ -1,5 +1,5 @@
 @interface PHCountdownViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)dealloc;
 - (void)pause;
 - (void)startCountdown;
@@ -8,20 +8,20 @@
 
 @implementation PHCountdownViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PHCountdownView" hasInstanceMethod:@"pauseTimer" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHCountdownView" hasInstanceMethod:@"startCountdown" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PHCountdownView" hasInstanceMethod:@"countdownViewModel" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PHCountdownView" hasInstanceMethod:@"stop" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PHCountdownView" hasInstanceMethod:@"pause" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PHCountdownViewModel" hasInstanceMethod:@"playsSound" withFullSignature:{"B", 0}];
-  [v3 validateProtocol:@"PHCountdownViewModel" hasRequiredInstanceMethod:@"countdown"];
-  [v3 validateProtocol:@"PHCountdownViewModel" hasRequiredInstanceMethod:@"countdownString:"];
-  [v3 validateProtocol:@"PHCountdownViewModel" hasRequiredInstanceMethod:@"countdownTickDuration"];
-  [v3 validateClass:@"PHSOSDialCountdownViewModel" conformsToProtocol:@"PHCountdownViewModel"];
-  [v3 validateClass:@"PHSOSNotifyCountdownViewModel" conformsToProtocol:@"PHCountdownViewModel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PHCountdownView" hasInstanceMethod:@"pauseTimer" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHCountdownView" hasInstanceMethod:@"startCountdown" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PHCountdownView" hasInstanceMethod:@"countdownViewModel" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PHCountdownView" hasInstanceMethod:@"stop" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PHCountdownView" hasInstanceMethod:@"pause" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PHCountdownViewModel" hasInstanceMethod:@"playsSound" withFullSignature:{"B", 0}];
+  [validationsCopy validateProtocol:@"PHCountdownViewModel" hasRequiredInstanceMethod:@"countdown"];
+  [validationsCopy validateProtocol:@"PHCountdownViewModel" hasRequiredInstanceMethod:@"countdownString:"];
+  [validationsCopy validateProtocol:@"PHCountdownViewModel" hasRequiredInstanceMethod:@"countdownTickDuration"];
+  [validationsCopy validateClass:@"PHSOSDialCountdownViewModel" conformsToProtocol:@"PHCountdownViewModel"];
+  [validationsCopy validateClass:@"PHSOSNotifyCountdownViewModel" conformsToProtocol:@"PHCountdownViewModel"];
 }
 
 - (void)pause

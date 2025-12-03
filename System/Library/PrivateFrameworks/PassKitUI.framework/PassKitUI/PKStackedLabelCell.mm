@@ -1,32 +1,32 @@
 @interface PKStackedLabelCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKStackedLabelCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKStackedLabelCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_applyLabelStyles;
 - (void)layoutSubviews;
-- (void)setDetailImage:(id)a3;
-- (void)setDetailText:(id)a3;
-- (void)setDetailTextColor:(id)a3;
-- (void)setTitleText:(id)a3;
-- (void)setTitleTextColor:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setDetailImage:(id)image;
+- (void)setDetailText:(id)text;
+- (void)setDetailTextColor:(id)color;
+- (void)setTitleText:(id)text;
+- (void)setTitleTextColor:(id)color;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKStackedLabelCell
 
-- (PKStackedLabelCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKStackedLabelCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v17.receiver = self;
   v17.super_class = PKStackedLabelCell;
-  v4 = [(PKStackedLabelCell *)&v17 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(PKStackedLabelCell *)&v17 initWithStyle:0 reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     titleTextColor = v4->_titleTextColor;
-    v4->_titleTextColor = v5;
+    v4->_titleTextColor = labelColor;
 
-    v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     detailTextColor = v4->_detailTextColor;
-    v4->_detailTextColor = v7;
+    v4->_detailTextColor = secondaryLabelColor;
 
     v9 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     titleLabel = v4->_titleLabel;
@@ -51,10 +51,10 @@
     v4->_detailImageView = v13;
 
     [(PKStackedLabelCell *)v4 _applyLabelStyles];
-    v15 = [(PKStackedLabelCell *)v4 contentView];
-    [v15 addSubview:v4->_titleLabel];
-    [v15 addSubview:v4->_detailLabel];
-    [v15 addSubview:v4->_detailImageView];
+    contentView = [(PKStackedLabelCell *)v4 contentView];
+    [contentView addSubview:v4->_titleLabel];
+    [contentView addSubview:v4->_detailLabel];
+    [contentView addSubview:v4->_detailImageView];
     v4->_isRTL = [(PKStackedLabelCell *)v4 _shouldReverseLayoutDirection];
   }
 
@@ -81,20 +81,20 @@
   [(UILabel *)self->_titleLabel frame];
   [(UILabel *)self->_detailLabel frame];
   [(UIImageView *)self->_detailImageView frame];
-  v3 = [(UILabel *)self->_titleLabel font];
-  [v3 lineHeight];
+  font = [(UILabel *)self->_titleLabel font];
+  [font lineHeight];
   v42 = v4;
 
-  v5 = [(UILabel *)self->_detailLabel font];
-  [v5 lineHeight];
+  font2 = [(UILabel *)self->_detailLabel font];
+  [font2 lineHeight];
 
-  v6 = [(PKStackedLabelCell *)self contentView];
+  contentView = [(PKStackedLabelCell *)self contentView];
   [(UITableViewCell *)self pkui_effectiveLayoutMargins];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v6 bounds];
+  [contentView bounds];
   v16 = v10 + v15;
   v18 = v8 + v17;
   v20 = v19 - (v10 + v14);
@@ -164,9 +164,9 @@
   [(UILabel *)detailLabel setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [(PKStackedLabelCell *)self contentView:a3.width];
+  v4 = [(PKStackedLabelCell *)self contentView:fits.width];
   [(UITableViewCell *)self pkui_effectiveLayoutMargins];
   v6 = v5;
   v8 = v7;
@@ -175,11 +175,11 @@
   [(UILabel *)self->_titleLabel sizeThatFits:v10, 1.79769313e308];
   [(UILabel *)self->_detailLabel sizeThatFits:v10, 1.79769313e308];
   [(UIImageView *)self->_detailImageView sizeThatFits:v10, 1.79769313e308];
-  v11 = [(UILabel *)self->_titleLabel font];
-  [v11 lineHeight];
+  font = [(UILabel *)self->_titleLabel font];
+  [font lineHeight];
 
-  v12 = [(UILabel *)self->_detailLabel font];
-  [v12 lineHeight];
+  font2 = [(UILabel *)self->_detailLabel font];
+  [font2 lineHeight];
 
   PKSizeRoundToPixel();
   v14 = v13;
@@ -192,20 +192,20 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PKStackedLabelCell;
-  [(PKStackedLabelCell *)&v4 traitCollectionDidChange:a3];
+  [(PKStackedLabelCell *)&v4 traitCollectionDidChange:change];
   [(PKStackedLabelCell *)self _applyLabelStyles];
   [(PKStackedLabelCell *)self setNeedsLayout];
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v6 = self->_titleText;
-  v7 = v5;
+  v7 = textCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -224,7 +224,7 @@
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_titleText, a3);
+    objc_storeStrong(&self->_titleText, text);
     [(UILabel *)self->_titleLabel setText:self->_titleText];
     [(UILabel *)self->_titleLabel sizeToFit];
     [(PKStackedLabelCell *)self setNeedsLayout];
@@ -233,11 +233,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setDetailText:(id)a3
+- (void)setDetailText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v6 = self->_detailText;
-  v7 = v5;
+  v7 = textCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -256,7 +256,7 @@ LABEL_9:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_detailText, a3);
+    objc_storeStrong(&self->_detailText, text);
     [(UILabel *)self->_detailLabel setText:v9];
     [(UILabel *)self->_detailLabel sizeToFit];
     [(PKStackedLabelCell *)self setNeedsLayout];
@@ -265,36 +265,36 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setDetailImage:(id)a3
+- (void)setDetailImage:(id)image
 {
-  v5 = a3;
-  if (self->_detailImage != v5)
+  imageCopy = image;
+  if (self->_detailImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_detailImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_detailImage, image);
     [(UIImageView *)self->_detailImageView setImage:v6];
     [(UIImageView *)self->_detailImageView setTintColor:self->_detailTextColor];
     [(PKStackedLabelCell *)self setNeedsLayout];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setTitleTextColor:(id)a3
+- (void)setTitleTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_titleTextColor, a3);
+    objc_storeStrong(&self->_titleTextColor, color);
     [(UILabel *)self->_titleLabel setTextColor:self->_titleTextColor];
   }
 }
 
-- (void)setDetailTextColor:(id)a3
+- (void)setDetailTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_detailTextColor, a3);
+    objc_storeStrong(&self->_detailTextColor, color);
     [(UILabel *)self->_detailLabel setTextColor:self->_detailTextColor];
   }
 }

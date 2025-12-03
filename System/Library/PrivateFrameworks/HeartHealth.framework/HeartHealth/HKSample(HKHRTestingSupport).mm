@@ -19,8 +19,8 @@
 
   v8 = [MEMORY[0x277CBEBB0] timeZoneWithName:v7];
   v26 = *MEMORY[0x277CCC530];
-  v9 = [v8 name];
-  v27[0] = v9;
+  name = [v8 name];
+  v27[0] = name;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
 
   v11 = MEMORY[0x277CCD7E8];
@@ -59,8 +59,8 @@
 
   v8 = [MEMORY[0x277CBEBB0] timeZoneWithName:v7];
   v19 = *MEMORY[0x277CCC530];
-  v9 = [v8 name];
-  v20[0] = v9;
+  name = [v8 name];
+  v20[0] = name;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
 
   v11 = MEMORY[0x277CCD7E8];

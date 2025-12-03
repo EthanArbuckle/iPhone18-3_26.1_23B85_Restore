@@ -1,5 +1,5 @@
 @interface SUTouchCaptureView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)dealloc;
 @end
 
@@ -13,10 +13,10 @@
   [(SUTouchCaptureView *)&v3 dealloc];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v24 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = SUTouchCaptureView;
@@ -43,12 +43,12 @@
           }
 
           v9 = *(*(&v18 + 1) + 8 * i);
-          v16 = [v9 superview];
-          if (v16)
+          superview = [v9 superview];
+          if (superview)
           {
-            v17 = v16;
-            [v16 convertPoint:self fromView:{x, y}];
-            if (v9 == [v17 hitTest:a4 withEvent:?] && v9)
+            v17 = superview;
+            [superview convertPoint:self fromView:{x, y}];
+            if (v9 == [v17 hitTest:event withEvent:?] && v9)
             {
               return v9;
             }
@@ -57,7 +57,7 @@
           else
           {
             [v9 convertPoint:self fromView:{x, y}];
-            v9 = [v9 hitTest:a4 withEvent:?];
+            v9 = [v9 hitTest:event withEvent:?];
             if (v9)
             {
               return v9;

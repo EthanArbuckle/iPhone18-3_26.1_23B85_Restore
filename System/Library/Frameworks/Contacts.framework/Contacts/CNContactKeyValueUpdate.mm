@@ -1,44 +1,44 @@
 @interface CNContactKeyValueUpdate
-- (BOOL)applyToABPerson:(void *)a3 withPropertiesContext:(id)a4 logger:(id)a5 error:(id *)a6;
-- (BOOL)isEqual:(id)a3;
-- (CNContactKeyValueUpdate)initWithProperty:(id)a3 value:(id)a4;
-- (id)posterDataChangeRequestsWithContactIdentifier:(id)a3;
+- (BOOL)applyToABPerson:(void *)person withPropertiesContext:(id)context logger:(id)logger error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (CNContactKeyValueUpdate)initWithProperty:(id)property value:(id)value;
+- (id)posterDataChangeRequestsWithContactIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)applyToMutableContact:(id)a3 withIdentifierMap:(id)a4;
+- (void)applyToMutableContact:(id)contact withIdentifierMap:(id)map;
 @end
 
 @implementation CNContactKeyValueUpdate
 
-- (id)posterDataChangeRequestsWithContactIdentifier:(id)a3
+- (id)posterDataChangeRequestsWithContactIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CNContactKeyValueUpdate *)self property];
-  v6 = [(CNContactKeyValueUpdate *)self value];
-  v7 = [v5 posterDataChangeRequestsForValue:v6 contactIdentifier:v4];
+  identifierCopy = identifier;
+  property = [(CNContactKeyValueUpdate *)self property];
+  value = [(CNContactKeyValueUpdate *)self value];
+  v7 = [property posterDataChangeRequestsForValue:value contactIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (BOOL)applyToABPerson:(void *)a3 withPropertiesContext:(id)a4 logger:(id)a5 error:(id *)a6
+- (BOOL)applyToABPerson:(void *)person withPropertiesContext:(id)context logger:(id)logger error:(id *)error
 {
-  v10 = a5;
+  loggerCopy = logger;
   value = self->_value;
   property = self->_property;
-  v13 = a4;
+  contextCopy = context;
   v14 = [(CNPropertyDescription *)property key];
-  [v10 applyContactUpdateOfKind:"single value" value:value property:v14];
+  [loggerCopy applyContactUpdateOfKind:"single value" value:value property:v14];
 
-  v15 = [(CNContactKeyValueUpdate *)self property];
-  v16 = [(CNContactKeyValueUpdate *)self value];
-  v17 = [v15 setCNValue:v16 onABPerson:a3 withDependentPropertiesContext:v13 error:a6];
+  property = [(CNContactKeyValueUpdate *)self property];
+  value = [(CNContactKeyValueUpdate *)self value];
+  v17 = [property setCNValue:value onABPerson:person withDependentPropertiesContext:contextCopy error:error];
 
-  if (!v17 || a6 && *a6)
+  if (!v17 || error && *error)
   {
     v18 = self->_value;
     v19 = [(CNPropertyDescription *)self->_property key];
-    if (a6)
+    if (error)
     {
-      v20 = *a6;
+      v20 = *error;
     }
 
     else
@@ -46,58 +46,58 @@
       v20 = 0;
     }
 
-    [v10 failedToApplyContactUpdateOfKind:"single value" value:v18 property:v19 error:v20];
+    [loggerCopy failedToApplyContactUpdateOfKind:"single value" value:v18 property:v19 error:v20];
   }
 
   return v17;
 }
 
-- (CNContactKeyValueUpdate)initWithProperty:(id)a3 value:(id)a4
+- (CNContactKeyValueUpdate)initWithProperty:(id)property value:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  propertyCopy = property;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = CNContactKeyValueUpdate;
   v9 = [(CNContactKeyValueUpdate *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_property, a3);
-    objc_storeStrong(&v10->_value, a4);
+    objc_storeStrong(&v9->_property, property);
+    objc_storeStrong(&v10->_value, value);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (void)applyToMutableContact:(id)a3 withIdentifierMap:(id)a4
+- (void)applyToMutableContact:(id)contact withIdentifierMap:(id)map
 {
   value = self->_value;
   property = self->_property;
-  v6 = a3;
+  contactCopy = contact;
   v7 = [(CNPropertyDescription *)property key];
-  [v6 setValue:value forKey:v7];
+  [contactCopy setValue:value forKey:v7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __35__CNContactKeyValueUpdate_isEqual___block_invoke;
   v15[3] = &unk_1E7412228;
   v15[4] = self;
-  v16 = v4;
+  v16 = equalCopy;
   aBlock = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __35__CNContactKeyValueUpdate_isEqual___block_invoke_2;
   v12 = &unk_1E7412228;
-  v13 = self;
-  v14 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v14 = equalCopy;
+  v6 = equalCopy;
   v7 = _Block_copy(&aBlock);
-  LOBYTE(self) = [v5 isObject:self equalToOther:v6 withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, v13}];
+  LOBYTE(self) = [v5 isObject:self equalToOther:v6 withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, selfCopy}];
 
   return self;
 }

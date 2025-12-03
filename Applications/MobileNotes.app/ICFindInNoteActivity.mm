@@ -1,15 +1,15 @@
 @interface ICFindInNoteActivity
-- (ICFindInNoteActivity)initWithFindInNoteBlock:(id)a3;
+- (ICFindInNoteActivity)initWithFindInNoteBlock:(id)block;
 - (id)activityTitle;
 @end
 
 @implementation ICFindInNoteActivity
 
-- (ICFindInNoteActivity)initWithFindInNoteBlock:(id)a3
+- (ICFindInNoteActivity)initWithFindInNoteBlock:(id)block
 {
   v4.receiver = self;
   v4.super_class = ICFindInNoteActivity;
-  return [(ICFindInNoteActivity *)&v4 initWithPerformActivity:a3];
+  return [(ICFindInNoteActivity *)&v4 initWithPerformActivity:block];
 }
 
 - (id)activityTitle

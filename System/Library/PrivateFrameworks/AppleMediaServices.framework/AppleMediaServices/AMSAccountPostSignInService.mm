@@ -1,24 +1,24 @@
 @interface AMSAccountPostSignInService
-+ (void)performPostSignInTasksInDaemonForAccount:(id)a3 credentialSource:(unint64_t)a4;
++ (void)performPostSignInTasksInDaemonForAccount:(id)account credentialSource:(unint64_t)source;
 @end
 
 @implementation AMSAccountPostSignInService
 
-+ (void)performPostSignInTasksInDaemonForAccount:(id)a3 credentialSource:(unint64_t)a4
++ (void)performPostSignInTasksInDaemonForAccount:(id)account credentialSource:(unint64_t)source
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  accountCopy = account;
   v7 = +[AMSLogConfig sharedAccountsConfig];
   v8 = v7;
-  if (v6)
+  if (accountCopy)
   {
     if (!v7)
     {
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [(AMSDaemonConnection *)v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [(AMSDaemonConnection *)v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
@@ -27,20 +27,20 @@
       v21 = 2114;
       v22 = v11;
       v23 = 2114;
-      v24 = v6;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Performing post sign-in tasks for: %{public}@", buf, 0x20u);
+      v24 = accountCopy;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Performing post sign-in tasks for: %{public}@", buf, 0x20u);
     }
 
     v8 = objc_alloc_init(AMSDaemonConnection);
-    v12 = [(AMSDaemonConnection *)v8 accountPostSignInServiceProxy];
+    accountPostSignInServiceProxy = [(AMSDaemonConnection *)v8 accountPostSignInServiceProxy];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __89__AMSAccountPostSignInService_performPostSignInTasksInDaemonForAccount_credentialSource___block_invoke;
     v15[3] = &unk_1E73B3650;
-    v17 = a1;
-    v16 = v6;
-    v18 = a4;
-    [v12 addFinishBlock:v15];
+    selfCopy = self;
+    v16 = accountCopy;
+    sourceCopy = source;
+    [accountPostSignInServiceProxy addFinishBlock:v15];
   }
 
   else
@@ -50,8 +50,8 @@
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [(AMSDaemonConnection *)v8 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    accountPostSignInServiceProxy = [(AMSDaemonConnection *)v8 OSLogObject];
+    if (os_log_type_enabled(accountPostSignInServiceProxy, OS_LOG_TYPE_DEFAULT))
     {
       v13 = objc_opt_class();
       v14 = AMSLogKey();
@@ -59,7 +59,7 @@
       v20 = v13;
       v21 = 2114;
       v22 = v14;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Failed to perform post sign-in tasks", buf, 0x16u);
+      _os_log_impl(&dword_192869000, accountPostSignInServiceProxy, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Failed to perform post sign-in tasks", buf, 0x16u);
     }
   }
 }

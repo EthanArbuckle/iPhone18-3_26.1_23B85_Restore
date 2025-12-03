@@ -1,12 +1,12 @@
 @interface CameraScannerTextOverlayViewController
-- (_TtC18HealthExperienceUI38CameraScannerTextOverlayViewController)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI38CameraScannerTextOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18HealthExperienceUI38CameraScannerTextOverlayViewController)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI38CameraScannerTextOverlayViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation CameraScannerTextOverlayViewController
 
-- (_TtC18HealthExperienceUI38CameraScannerTextOverlayViewController)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI38CameraScannerTextOverlayViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI38CameraScannerTextOverlayViewController_showsBackground) = 1;
   result = sub_1BA4A8018();
@@ -22,11 +22,11 @@
   [(CameraScannerTextOverlayViewController *)&v6 viewDidLoad];
   sub_1BA48D70C();
   sub_1BA0C415C();
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() clearColor];
+    v4 = view;
+    clearColor = [objc_opt_self() clearColor];
     [v4 setBackgroundColor_];
 
     [v2 setOverrideUserInterfaceStyle_];
@@ -38,7 +38,7 @@
   }
 }
 
-- (_TtC18HealthExperienceUI38CameraScannerTextOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18HealthExperienceUI38CameraScannerTextOverlayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

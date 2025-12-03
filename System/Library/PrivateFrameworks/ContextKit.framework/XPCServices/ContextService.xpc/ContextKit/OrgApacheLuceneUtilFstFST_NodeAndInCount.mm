@@ -1,21 +1,21 @@
 @interface OrgApacheLuceneUtilFstFST_NodeAndInCount
-- (OrgApacheLuceneUtilFstFST_NodeAndInCount)initWithInt:(int)a3 withInt:(int)a4;
-- (int)compareToWithId:(id)a3;
+- (OrgApacheLuceneUtilFstFST_NodeAndInCount)initWithInt:(int)int withInt:(int)withInt;
+- (int)compareToWithId:(id)id;
 @end
 
 @implementation OrgApacheLuceneUtilFstFST_NodeAndInCount
 
-- (OrgApacheLuceneUtilFstFST_NodeAndInCount)initWithInt:(int)a3 withInt:(int)a4
+- (OrgApacheLuceneUtilFstFST_NodeAndInCount)initWithInt:(int)int withInt:(int)withInt
 {
-  self->node_ = a3;
-  self->count_ = a4;
+  self->node_ = int;
+  self->count_ = withInt;
   return self;
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -26,7 +26,7 @@
   }
 
   count = self->count_;
-  v6 = *(a3 + 3);
+  v6 = *(id + 3);
   if (count > v6)
   {
     return 1;
@@ -37,7 +37,7 @@
     return -1;
   }
 
-  return *(a3 + 2) - self->node_;
+  return *(id + 2) - self->node_;
 }
 
 @end

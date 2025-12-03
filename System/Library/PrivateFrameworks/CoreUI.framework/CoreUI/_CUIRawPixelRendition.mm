@@ -1,8 +1,8 @@
 @interface _CUIRawPixelRendition
 - (CGSize)unslicedSize;
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
-- (id)imageForSliceIndex:(int64_t)a3;
-- (id)maskForSliceIndex:(int64_t)a3;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
+- (id)imageForSliceIndex:(int64_t)index;
+- (id)maskForSliceIndex:(int64_t)index;
 - (id)metrics;
 - (void)dealloc;
 @end
@@ -28,7 +28,7 @@
   [(CUIThemeRendition *)&v4 dealloc];
 }
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
   size = CGRectZero.size;
   origin = CGRectZero.origin;
@@ -65,10 +65,10 @@
   v110[14] = size;
   v94.receiver = self;
   v94.super_class = _CUIRawPixelRendition;
-  v7 = [(CUIThemeRendition *)&v94 _initWithCSIHeader:a3 version:*&a4];
+  v7 = [(CUIThemeRendition *)&v94 _initWithCSIHeader:header version:*&version];
   if (v7)
   {
-    var6 = a3->var6;
+    var6 = header->var6;
     if (var6 != 1212500294 && var6 != 1246774599)
     {
       v9 = +[NSAssertionHandler currentHandler];
@@ -78,14 +78,14 @@
       [(NSAssertionHandler *)v9 handleFailureInMethod:a2 object:v7 file:@"CUIThemeRendition.m" lineNumber:2022 description:@"CoreUI: [%@ %@] pixel format must be kCSIPixelFormatJPEG/kCSIPixelFormatHEIF"];
     }
 
-    v11 = &a3->var11.var1[a3->var11.var0] + a3->var10;
+    v11 = &header->var11.var1[header->var11.var0] + header->var10;
     v12 = v11 + 4;
     if (*(v11 + 2))
     {
       [_CUIRawPixelRendition _initWithCSIHeader:version:];
     }
 
-    *(v7 + 54) = a3->var6;
+    *(v7 + 54) = header->var6;
     v13 = *(v12 + 2);
     v14 = bswap32(v13);
     if (*v12 == 1146569042)
@@ -113,16 +113,16 @@
       }
     }
 
-    var0 = a3->var11.var0;
+    var0 = header->var11.var0;
     if (var0)
     {
-      v82 = a3;
-      var10 = a3->var10;
+      headerCopy = header;
+      var10 = header->var10;
       if (var10)
       {
         v21 = 0;
         v22 = 0;
-        v23 = &a3->var11.var1[var0 + 1];
+        v23 = &header->var11.var1[var0 + 1];
         v24 = (v23 + var10);
         do
         {
@@ -247,12 +247,12 @@
         Width = v41 + v42 + v45;
         [v7 scale];
         Height = v46 + v43 + v44;
-        v47 = v82;
+        v47 = headerCopy;
       }
 
       else
       {
-        v47 = v82;
+        v47 = headerCopy;
         if ([v7 type] == 2)
         {
           v48 = CGImageGetHeight(*(v7 + 29));
@@ -286,11 +286,11 @@
 
       if ([v7 type] == 3 || objc_msgSend(v7, "type") == 2 || objc_msgSend(v7, "type") == 1)
       {
-        v70 = [v7 type];
+        type = [v7 type];
         v72 = *(v96 + 1);
         v71 = *v96;
         v73 = *v99;
-        if (v70 == 3)
+        if (type == 3)
         {
           v74 = *v110;
         }
@@ -301,7 +301,7 @@
         }
 
         v75 = v99 + 1;
-        if (v70 == 3)
+        if (type == 3)
         {
           v75 = v110 + 1;
         }
@@ -383,33 +383,33 @@
   return result;
 }
 
-- (id)imageForSliceIndex:(int64_t)a3
+- (id)imageForSliceIndex:(int64_t)index
 {
-  if (a3 < 0 || self->_nimages <= a3)
+  if (index < 0 || self->_nimages <= index)
   {
-    _CUILog(4, "Invalid slice index %ld for rendition", a3, v3, v4, v5, v6, v7, a3);
+    _CUILog(4, "Invalid slice index %ld for rendition", index, v3, v4, v5, v6, v7, index);
     return 0;
   }
 
   else
   {
-    v9 = self->_image[a3];
+    v9 = self->_image[index];
 
     return [CUIImage imageWithCGImage:v9];
   }
 }
 
-- (id)maskForSliceIndex:(int64_t)a3
+- (id)maskForSliceIndex:(int64_t)index
 {
-  if (a3 < 0 || self->_nimages <= a3)
+  if (index < 0 || self->_nimages <= index)
   {
-    _CUILog(4, "Invalid slice index %ld for rendition", a3, v3, v4, v5, v6, v7, a3);
+    _CUILog(4, "Invalid slice index %ld for rendition", index, v3, v4, v5, v6, v7, index);
     return 0;
   }
 
   else
   {
-    v8 = self->_image[a3];
+    v8 = self->_image[index];
     *decode = xmmword_18E021C10;
     Width = CGImageGetWidth(v8);
     Height = CGImageGetHeight(v8);

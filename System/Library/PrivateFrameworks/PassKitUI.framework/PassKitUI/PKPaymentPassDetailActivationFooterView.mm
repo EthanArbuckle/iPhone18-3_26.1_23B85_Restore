@@ -1,53 +1,53 @@
 @interface PKPaymentPassDetailActivationFooterView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPaymentPassDetailActivationFooterView)initWithFrame:(CGRect)a3 activationAction:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPaymentPassDetailActivationFooterView)initWithFrame:(CGRect)frame activationAction:(id)action;
 - (void)layoutSubviews;
-- (void)setActivationButtonText:(id)a3;
-- (void)setFooterText:(id)a3;
-- (void)setupActivationButtonWithAction:(id)a3;
+- (void)setActivationButtonText:(id)text;
+- (void)setFooterText:(id)text;
+- (void)setupActivationButtonWithAction:(id)action;
 - (void)setupFooter;
 @end
 
 @implementation PKPaymentPassDetailActivationFooterView
 
-- (PKPaymentPassDetailActivationFooterView)initWithFrame:(CGRect)a3 activationAction:(id)a4
+- (PKPaymentPassDetailActivationFooterView)initWithFrame:(CGRect)frame activationAction:(id)action
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  actionCopy = action;
   v13.receiver = self;
   v13.super_class = PKPaymentPassDetailActivationFooterView;
-  v10 = [(PKPaymentPassDetailActivationFooterView *)&v13 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(PKPaymentPassDetailActivationFooterView *)&v13 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(PKPaymentPassDetailActivationFooterView *)v10 setupActivationButtonWithAction:v9];
+    [(PKPaymentPassDetailActivationFooterView *)height setupActivationButtonWithAction:actionCopy];
     [(PKPaymentPassDetailActivationFooterView *)v11 setupFooter];
   }
 
   return v11;
 }
 
-- (void)setupActivationButtonWithAction:(id)a3
+- (void)setupActivationButtonWithAction:(id)action
 {
   v4 = MEMORY[0x1E69DC740];
   v5 = MEMORY[0x1E69DB878];
   v6 = *MEMORY[0x1E69DDD08];
-  v7 = a3;
+  actionCopy = action;
   v8 = [v5 preferredFontForTextStyle:v6];
   v12 = [v4 pkui_plainConfigurationWithTitle:0 font:v8];
 
   [v12 setButtonSize:2];
   [v12 setContentInsets:{5.0, 0.0, 0.0, 0.0}];
-  v9 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v12 primaryAction:v7];
+  v9 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v12 primaryAction:actionCopy];
 
   activationButton = self->_activationButton;
   self->_activationButton = v9;
 
-  v11 = [(PKPaymentPassDetailActivationFooterView *)self contentView];
-  [v11 addSubview:self->_activationButton];
+  contentView = [(PKPaymentPassDetailActivationFooterView *)self contentView];
+  [contentView addSubview:self->_activationButton];
 }
 
 - (void)setupFooter
@@ -65,27 +65,27 @@
   [(UILabel *)v6 setFont:v7];
 
   v8 = self->_footerTextLabel;
-  v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)v8 setTextColor:v9];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)v8 setTextColor:secondaryLabelColor];
 
-  v10 = [(PKPaymentPassDetailActivationFooterView *)self contentView];
-  [v10 addSubview:self->_footerTextLabel];
+  contentView = [(PKPaymentPassDetailActivationFooterView *)self contentView];
+  [contentView addSubview:self->_footerTextLabel];
 }
 
-- (void)setFooterText:(id)a3
+- (void)setFooterText:(id)text
 {
-  [(UILabel *)self->_footerTextLabel setText:a3];
+  [(UILabel *)self->_footerTextLabel setText:text];
 
   [(PKPaymentPassDetailActivationFooterView *)self setNeedsLayout];
 }
 
-- (void)setActivationButtonText:(id)a3
+- (void)setActivationButtonText:(id)text
 {
   [(UIButton *)self->_activationButton pkui_updateConfigurationWithTitle:?];
-  if (a3)
+  if (text)
   {
-    v5 = [(PKPaymentPassDetailActivationFooterView *)self contentView];
-    [v5 addSubview:self->_activationButton];
+    contentView = [(PKPaymentPassDetailActivationFooterView *)self contentView];
+    [contentView addSubview:self->_activationButton];
   }
 
   else
@@ -101,10 +101,10 @@
   v43.receiver = self;
   v43.super_class = PKPaymentPassDetailActivationFooterView;
   [(PKPaymentPassDetailActivationFooterView *)&v43 layoutSubviews];
-  v3 = [(PKPaymentPassDetailActivationFooterView *)self _shouldReverseLayoutDirection];
-  v4 = [(PKPaymentPassDetailActivationFooterView *)self contentView];
-  [v4 bounds];
-  [v4 directionalLayoutMargins];
+  _shouldReverseLayoutDirection = [(PKPaymentPassDetailActivationFooterView *)self _shouldReverseLayoutDirection];
+  contentView = [(PKPaymentPassDetailActivationFooterView *)self contentView];
+  [contentView bounds];
+  [contentView directionalLayoutMargins];
   UIRectInset();
   v6 = v5;
   v8 = v7;
@@ -117,7 +117,7 @@
   v18 = v8;
   v19 = v10;
   v20 = v12;
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     v21.n128_f64[0] = CGRectGetMaxX(*&v17) - v14;
   }
@@ -143,7 +143,7 @@
     v33 = v8;
     v34 = v10;
     v35 = v12;
-    if (v3)
+    if (_shouldReverseLayoutDirection)
     {
       MinX = CGRectGetMaxX(*&v32) - v29;
     }
@@ -164,12 +164,12 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(PKPaymentPassDetailActivationFooterView *)self contentView];
-  [v6 directionalLayoutMargins];
+  height = fits.height;
+  width = fits.width;
+  contentView = [(PKPaymentPassDetailActivationFooterView *)self contentView];
+  [contentView directionalLayoutMargins];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -179,8 +179,8 @@
   v17 = fmax(width - v10 - v14 - v15 - v16, 0.0);
   [(UILabel *)self->_footerTextLabel sizeThatFits:v17, height];
   v19 = v18;
-  v20 = [(UIButton *)self->_activationButton superview];
-  if (v20)
+  superview = [(UIButton *)self->_activationButton superview];
+  if (superview)
   {
     [(UIButton *)self->_activationButton sizeThatFits:v17, height];
     v22 = v21;
@@ -192,8 +192,8 @@
   }
 
   v23 = v8 + v12 + v22;
-  v24 = [(UILabel *)self->_footerTextLabel text];
-  v25 = [v24 length];
+  text = [(UILabel *)self->_footerTextLabel text];
+  v25 = [text length];
 
   if (v25)
   {

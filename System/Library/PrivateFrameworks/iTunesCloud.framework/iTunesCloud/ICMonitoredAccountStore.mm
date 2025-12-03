@@ -1,23 +1,23 @@
 @interface ICMonitoredAccountStore
 + (ICMonitoredAccountStore)sharedAccountStore;
-- (BOOL)saveAccount:(id)a3 error:(id *)a4;
+- (BOOL)saveAccount:(id)account error:(id *)error;
 - (ICMonitoredAccountStore)init;
 - (id)_registerAndLoadAccountsIfNecessary;
 - (id)acAccountStore;
-- (id)activeStoreAccountWithError:(id *)a3;
-- (id)allStoreAccountsWithError:(id *)a3;
-- (id)localStoreAccountWithError:(id *)a3;
-- (id)primaryAppleAccountWithError:(id *)a3;
-- (id)storeAccountForAltDSID:(id)a3 error:(id *)a4;
-- (id)storeAccountForDSID:(id)a3 error:(id *)a4;
-- (id)storeAccountForHomeUserIdentifier:(id)a3 error:(id *)a4;
-- (id)storeAccountTypeWithError:(id *)a3;
-- (id)storeAccountWithIdentifier:(id)a3 error:(id *)a4;
-- (void)accountCredentialChanged:(id)a3;
-- (void)accountWasAdded:(id)a3;
-- (void)accountWasModified:(id)a3;
-- (void)accountWasRemoved:(id)a3;
-- (void)registerObserver:(id)a3;
+- (id)activeStoreAccountWithError:(id *)error;
+- (id)allStoreAccountsWithError:(id *)error;
+- (id)localStoreAccountWithError:(id *)error;
+- (id)primaryAppleAccountWithError:(id *)error;
+- (id)storeAccountForAltDSID:(id)d error:(id *)error;
+- (id)storeAccountForDSID:(id)d error:(id *)error;
+- (id)storeAccountForHomeUserIdentifier:(id)identifier error:(id *)error;
+- (id)storeAccountTypeWithError:(id *)error;
+- (id)storeAccountWithIdentifier:(id)identifier error:(id *)error;
+- (void)accountCredentialChanged:(id)changed;
+- (void)accountWasAdded:(id)added;
+- (void)accountWasModified:(id)modified;
+- (void)accountWasRemoved:(id)removed;
+- (void)registerObserver:(id)observer;
 @end
 
 @implementation ICMonitoredAccountStore
@@ -73,7 +73,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v37 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_ERROR, "%{public}@ Failed to create insance of account store", buf, 0xCu);
       }
 
@@ -97,7 +97,7 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v37 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Registering for account monitoring", buf, 0xCu);
   }
 
@@ -112,15 +112,15 @@
     goto LABEL_36;
   }
 
-  v28 = self;
-  v12 = [(ACMonitoredAccountStore *)self->_accountStore monitoredAccounts];
+  selfCopy3 = self;
+  monitoredAccounts = [(ACMonitoredAccountStore *)self->_accountStore monitoredAccounts];
 
-  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v12, "count")}];
+  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(monitoredAccounts, "count")}];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v12;
+  obj = monitoredAccounts;
   v13 = [obj countByEnumeratingWithState:&v31 objects:v44 count:16];
   if (!v13)
   {
@@ -145,21 +145,21 @@
       v19 = *(*(&v31 + 1) + 8 * i);
       if ([v19 ic_isITunesAccount])
       {
-        v20 = [v19 ic_description];
-        [v11 addObject:v20];
+        ic_description = [v19 ic_description];
+        [v11 addObject:ic_description];
 LABEL_25:
 
         continue;
       }
 
-      v21 = [v19 accountType];
-      v22 = [v21 identifier];
-      v23 = [v22 isEqualToString:v16];
+      accountType = [v19 accountType];
+      identifier = [accountType identifier];
+      v23 = [identifier isEqualToString:v16];
 
       if (v23 && [v19 aa_isAccountClass:v17])
       {
         [v19 ic_description];
-        v29 = v20 = v29;
+        v29 = ic_description = v29;
         goto LABEL_25;
       }
     }
@@ -171,12 +171,12 @@ LABEL_25:
 LABEL_33:
 
   v24 = os_log_create("com.apple.amp.iTunesCloud", "Default_Oversize");
-  self = v28;
+  self = selfCopy3;
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     v25 = [v11 count];
     *buf = 138544130;
-    v37 = v28;
+    selfCopy4 = selfCopy3;
     v38 = 2048;
     v39 = v25;
     v40 = 2114;
@@ -197,7 +197,7 @@ LABEL_38:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v37 = self;
+      selfCopy4 = self;
       v38 = 2114;
       v39 = v4;
       _os_log_impl(&dword_1B4491000, v26, OS_LOG_TYPE_ERROR, "%{public}@ Failed to register for account monitoring. err=%{public}@", buf, 0x16u);
@@ -229,9 +229,9 @@ uint64_t __45__ICMonitoredAccountStore_sharedAccountStore__block_invoke()
     queue = v2->_queue;
     v2->_queue = v4;
 
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v6;
+    v2->_observers = weakObjectsHashTable;
 
     v2->_lock._os_unfair_lock_opaque = 0;
     v8 = v2->_queue;
@@ -246,17 +246,17 @@ uint64_t __45__ICMonitoredAccountStore_sharedAccountStore__block_invoke()
   return v2;
 }
 
-- (void)accountCredentialChanged:(id)a3
+- (void)accountCredentialChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__ICMonitoredAccountStore_accountCredentialChanged___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(queue, v7);
 }
 
@@ -312,17 +312,17 @@ void __52__ICMonitoredAccountStore_accountCredentialChanged___block_invoke(uint6
   }
 }
 
-- (void)accountWasRemoved:(id)a3
+- (void)accountWasRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__ICMonitoredAccountStore_accountWasRemoved___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = removedCopy;
+  v6 = removedCopy;
   dispatch_async(queue, v7);
 }
 
@@ -378,17 +378,17 @@ void __45__ICMonitoredAccountStore_accountWasRemoved___block_invoke(uint64_t a1)
   }
 }
 
-- (void)accountWasModified:(id)a3
+- (void)accountWasModified:(id)modified
 {
-  v4 = a3;
+  modifiedCopy = modified;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__ICMonitoredAccountStore_accountWasModified___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = modifiedCopy;
+  v6 = modifiedCopy;
   dispatch_async(queue, v7);
 }
 
@@ -444,17 +444,17 @@ void __46__ICMonitoredAccountStore_accountWasModified___block_invoke(uint64_t a1
   }
 }
 
-- (void)accountWasAdded:(id)a3
+- (void)accountWasAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__ICMonitoredAccountStore_accountWasAdded___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = addedCopy;
+  v6 = addedCopy;
   dispatch_async(queue, v7);
 }
 
@@ -510,30 +510,30 @@ void __43__ICMonitoredAccountStore_accountWasAdded___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)saveAccount:(id)a3 error:(id *)a4
+- (BOOL)saveAccount:(id)account error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ICMonitoredAccountStore *)self _registerAndLoadAccountsIfNecessary];
-  if (!v7)
+  accountCopy = account;
+  _registerAndLoadAccountsIfNecessary = [(ICMonitoredAccountStore *)self _registerAndLoadAccountsIfNecessary];
+  if (!_registerAndLoadAccountsIfNecessary)
   {
     accountStore = self->_accountStore;
     v11 = 0;
-    [(ACMonitoredAccountStore *)accountStore saveVerifiedAccount:v6 error:&v11];
-    v7 = v11;
+    [(ACMonitoredAccountStore *)accountStore saveVerifiedAccount:accountCopy error:&v11];
+    _registerAndLoadAccountsIfNecessary = v11;
   }
 
-  if (a4)
+  if (error)
   {
-    v7 = v7;
-    *a4 = v7;
+    _registerAndLoadAccountsIfNecessary = _registerAndLoadAccountsIfNecessary;
+    *error = _registerAndLoadAccountsIfNecessary;
   }
 
-  v9 = v7 == 0;
+  v9 = _registerAndLoadAccountsIfNecessary == 0;
 
   return v9;
 }
 
-- (id)storeAccountTypeWithError:(id *)a3
+- (id)storeAccountTypeWithError:(id *)error
 {
   if (!self->_cachedStoreAccountType)
   {
@@ -544,7 +544,7 @@ void __43__ICMonitoredAccountStore_accountWasAdded___block_invoke(uint64_t a1)
     cachedStoreAccountType = self->_cachedStoreAccountType;
     self->_cachedStoreAccountType = v11;
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -553,11 +553,11 @@ void __43__ICMonitoredAccountStore_accountWasAdded___block_invoke(uint64_t a1)
   }
 
   v5 = 0;
-  if (a3)
+  if (error)
   {
 LABEL_3:
     v6 = v5;
-    *a3 = v5;
+    *error = v5;
   }
 
 LABEL_4:
@@ -567,13 +567,13 @@ LABEL_4:
   return v7;
 }
 
-- (id)primaryAppleAccountWithError:(id *)a3
+- (id)primaryAppleAccountWithError:(id *)error
 {
-  v5 = [(ICMonitoredAccountStore *)self _registerAndLoadAccountsIfNecessary];
-  if (v5)
+  _registerAndLoadAccountsIfNecessary = [(ICMonitoredAccountStore *)self _registerAndLoadAccountsIfNecessary];
+  if (_registerAndLoadAccountsIfNecessary)
   {
     v6 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -581,14 +581,14 @@ LABEL_4:
     goto LABEL_3;
   }
 
-  v9 = [(ACMonitoredAccountStore *)self->_accountStore monitoredAccounts];
-  v6 = [v9 msv_firstWhere:&__block_literal_global_10];
+  monitoredAccounts = [(ACMonitoredAccountStore *)self->_accountStore monitoredAccounts];
+  v6 = [monitoredAccounts msv_firstWhere:&__block_literal_global_10];
 
-  if (a3)
+  if (error)
   {
 LABEL_3:
-    v7 = v5;
-    *a3 = v5;
+    v7 = _registerAndLoadAccountsIfNecessary;
+    *error = _registerAndLoadAccountsIfNecessary;
   }
 
 LABEL_4:
@@ -596,9 +596,9 @@ LABEL_4:
   return v6;
 }
 
-- (id)storeAccountWithIdentifier:(id)a3 error:(id *)a4
+- (id)storeAccountWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v14 = 0;
   v7 = [(ICMonitoredAccountStore *)self allStoreAccountsWithError:&v14];
   v8 = v14;
@@ -609,14 +609,14 @@ LABEL_4:
     v12[1] = 3221225472;
     v12[2] = __60__ICMonitoredAccountStore_storeAccountWithIdentifier_error___block_invoke;
     v12[3] = &unk_1E7BF3928;
-    v13 = v6;
+    v13 = identifierCopy;
     v9 = [v7 msv_firstWhere:v12];
   }
 
-  if (a4)
+  if (error)
   {
     v10 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v9;
@@ -639,9 +639,9 @@ uint64_t __60__ICMonitoredAccountStore_storeAccountWithIdentifier_error___block_
   return v4;
 }
 
-- (id)storeAccountForHomeUserIdentifier:(id)a3 error:(id *)a4
+- (id)storeAccountForHomeUserIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v14 = 0;
   v7 = [(ICMonitoredAccountStore *)self allStoreAccountsWithError:&v14];
   v8 = v14;
@@ -652,14 +652,14 @@ uint64_t __60__ICMonitoredAccountStore_storeAccountWithIdentifier_error___block_
     v12[1] = 3221225472;
     v12[2] = __67__ICMonitoredAccountStore_storeAccountForHomeUserIdentifier_error___block_invoke;
     v12[3] = &unk_1E7BF3928;
-    v13 = v6;
+    v13 = identifierCopy;
     v9 = [v7 msv_firstWhere:v12];
   }
 
-  if (a4)
+  if (error)
   {
     v10 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v9;
@@ -682,9 +682,9 @@ uint64_t __67__ICMonitoredAccountStore_storeAccountForHomeUserIdentifier_error__
   return v5;
 }
 
-- (id)storeAccountForAltDSID:(id)a3 error:(id *)a4
+- (id)storeAccountForAltDSID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v14 = 0;
   v7 = [(ICMonitoredAccountStore *)self allStoreAccountsWithError:&v14];
   v8 = v14;
@@ -695,14 +695,14 @@ uint64_t __67__ICMonitoredAccountStore_storeAccountForHomeUserIdentifier_error__
     v12[1] = 3221225472;
     v12[2] = __56__ICMonitoredAccountStore_storeAccountForAltDSID_error___block_invoke;
     v12[3] = &unk_1E7BF3928;
-    v13 = v6;
+    v13 = dCopy;
     v9 = [v7 msv_firstWhere:v12];
   }
 
-  if (a4)
+  if (error)
   {
     v10 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v9;
@@ -725,9 +725,9 @@ uint64_t __56__ICMonitoredAccountStore_storeAccountForAltDSID_error___block_invo
   return v5;
 }
 
-- (id)storeAccountForDSID:(id)a3 error:(id *)a4
+- (id)storeAccountForDSID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v14 = 0;
   v7 = [(ICMonitoredAccountStore *)self allStoreAccountsWithError:&v14];
   v8 = v14;
@@ -738,14 +738,14 @@ uint64_t __56__ICMonitoredAccountStore_storeAccountForAltDSID_error___block_invo
     v12[1] = 3221225472;
     v12[2] = __53__ICMonitoredAccountStore_storeAccountForDSID_error___block_invoke;
     v12[3] = &unk_1E7BF3928;
-    v13 = v6;
+    v13 = dCopy;
     v9 = [v7 msv_firstWhere:v12];
   }
 
-  if (a4)
+  if (error)
   {
     v10 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v9;
@@ -768,7 +768,7 @@ uint64_t __53__ICMonitoredAccountStore_storeAccountForDSID_error___block_invoke(
   return v5;
 }
 
-- (id)localStoreAccountWithError:(id *)a3
+- (id)localStoreAccountWithError:(id *)error
 {
   v9 = 0;
   v4 = [(ICMonitoredAccountStore *)self allStoreAccountsWithError:&v9];
@@ -779,16 +779,16 @@ uint64_t __53__ICMonitoredAccountStore_storeAccountForDSID_error___block_invoke(
     v6 = [v4 msv_firstWhere:&__block_literal_global_8_2413];
   }
 
-  if (a3)
+  if (error)
   {
     v7 = v5;
-    *a3 = v5;
+    *error = v5;
   }
 
   return v6;
 }
 
-- (id)activeStoreAccountWithError:(id *)a3
+- (id)activeStoreAccountWithError:(id *)error
 {
   v9 = 0;
   v4 = [(ICMonitoredAccountStore *)self allStoreAccountsWithError:&v9];
@@ -799,23 +799,23 @@ uint64_t __53__ICMonitoredAccountStore_storeAccountForDSID_error___block_invoke(
     v6 = [v4 msv_firstWhere:&__block_literal_global_6];
   }
 
-  if (a3)
+  if (error)
   {
     v7 = v5;
-    *a3 = v5;
+    *error = v5;
   }
 
   return v6;
 }
 
-- (id)allStoreAccountsWithError:(id *)a3
+- (id)allStoreAccountsWithError:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [(ICMonitoredAccountStore *)self _registerAndLoadAccountsIfNecessary];
-  if (v5)
+  _registerAndLoadAccountsIfNecessary = [(ICMonitoredAccountStore *)self _registerAndLoadAccountsIfNecessary];
+  if (_registerAndLoadAccountsIfNecessary)
   {
     v6 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -823,13 +823,13 @@ uint64_t __53__ICMonitoredAccountStore_storeAccountForDSID_error___block_invoke(
     goto LABEL_3;
   }
 
-  v9 = [(ACMonitoredAccountStore *)self->_accountStore monitoredAccounts];
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  monitoredAccounts = [(ACMonitoredAccountStore *)self->_accountStore monitoredAccounts];
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(monitoredAccounts, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = v9;
+  v10 = monitoredAccounts;
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
@@ -857,11 +857,11 @@ uint64_t __53__ICMonitoredAccountStore_storeAccountForDSID_error___block_invoke(
     while (v12);
   }
 
-  if (a3)
+  if (error)
   {
 LABEL_3:
-    v7 = v5;
-    *a3 = v5;
+    v7 = _registerAndLoadAccountsIfNecessary;
+    *error = _registerAndLoadAccountsIfNecessary;
   }
 
 LABEL_4:
@@ -871,23 +871,23 @@ LABEL_4:
 
 - (id)acAccountStore
 {
-  v3 = [(ICMonitoredAccountStore *)self _registerAndLoadAccountsIfNecessary];
+  _registerAndLoadAccountsIfNecessary = [(ICMonitoredAccountStore *)self _registerAndLoadAccountsIfNecessary];
   accountStore = self->_accountStore;
 
   return accountStore;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__ICMonitoredAccountStore_registerObserver___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 

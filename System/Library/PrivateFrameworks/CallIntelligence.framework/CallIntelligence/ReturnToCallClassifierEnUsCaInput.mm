@@ -1,6 +1,6 @@
 @interface ReturnToCallClassifierEnUsCaInput
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation ReturnToCallClassifierEnUsCaInput
@@ -14,7 +14,7 @@
   return v2;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   if (sub_1D2EE4A68() == 1954047348 && v4 == 0xE400000000000000)
   {
@@ -25,7 +25,7 @@ LABEL_5:
 
     v8 = sub_1D2EE4A38();
 
-    v9 = [objc_opt_self() featureValueWithString_];
+    featureValueWithString_ = [objc_opt_self() featureValueWithString_];
 
     goto LABEL_7;
   }
@@ -37,10 +37,10 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v9 = 0;
+  featureValueWithString_ = 0;
 LABEL_7:
 
-  return v9;
+  return featureValueWithString_;
 }
 
 @end

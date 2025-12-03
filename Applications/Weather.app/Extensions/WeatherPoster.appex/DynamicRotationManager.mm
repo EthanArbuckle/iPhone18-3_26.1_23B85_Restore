@@ -1,14 +1,14 @@
 @interface DynamicRotationManager
-- (void)displayLinkFired:(id)a3;
+- (void)displayLinkFired:(id)fired;
 @end
 
 @implementation DynamicRotationManager
 
-- (void)displayLinkFired:(id)a3
+- (void)displayLinkFired:(id)fired
 {
-  v3 = a3;
+  firedCopy = fired;
 
-  sub_10002EC68(v3);
+  sub_10002EC68(firedCopy);
 }
 
 @end

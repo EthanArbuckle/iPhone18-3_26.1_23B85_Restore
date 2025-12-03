@@ -1,49 +1,49 @@
 @interface UISegmentedControl
-+ (BOOL)_selectFocusedSegmentAfterFocusUpdateForTraitCollection:(id)a3;
-+ (BOOL)_updateDynamicShadowView:(id)a3 withAnimationDelegate:(id)a4 useDynamicShadow:(BOOL)a5 animated:(BOOL)a6;
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
-+ (CATransform3D)_hiddenSelectionTransformForTraitCollection:(SEL)a3;
-+ (CATransform3D)_highlightSelectionTransformForTraitCollection:(SEL)a3;
-+ (CGColor)_backgroundPrimaryColorSelected:(BOOL)a3 highlighted:(BOOL)a4 traitCollection:(id)a5 tintColor:(id)a6;
-+ (CGColor)_dividerPrimaryColorBackground:(BOOL)a3 traitCollection:(id)a4 tintColor:(id)a5;
-+ (CGRect)_selectionFrameForBounds:(CGRect)a3 hasMaterial:(BOOL)a4 size:(int)a5 traitCollection:(id)a6 accessibilityView:(BOOL)a7;
-+ (double)_cornerRadiusForTraitCollection:(id)a3 size:(CGSize)a4 controlSize:(int)a5;
-+ (double)_cornerRadiusForTraitCollection:(id)a3 size:(int)a4;
++ (BOOL)_selectFocusedSegmentAfterFocusUpdateForTraitCollection:(id)collection;
++ (BOOL)_updateDynamicShadowView:(id)view withAnimationDelegate:(id)delegate useDynamicShadow:(BOOL)shadow animated:(BOOL)animated;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
++ (CATransform3D)_hiddenSelectionTransformForTraitCollection:(SEL)collection;
++ (CATransform3D)_highlightSelectionTransformForTraitCollection:(SEL)collection;
++ (CGColor)_backgroundPrimaryColorSelected:(BOOL)selected highlighted:(BOOL)highlighted traitCollection:(id)collection tintColor:(id)color;
++ (CGColor)_dividerPrimaryColorBackground:(BOOL)background traitCollection:(id)collection tintColor:(id)color;
++ (CGRect)_selectionFrameForBounds:(CGRect)bounds hasMaterial:(BOOL)material size:(int)size traitCollection:(id)collection accessibilityView:(BOOL)view;
++ (double)_cornerRadiusForTraitCollection:(id)collection size:(CGSize)size controlSize:(int)controlSize;
++ (double)_cornerRadiusForTraitCollection:(id)collection size:(int)size;
 + (double)_defaultHeight;
-+ (double)_defaultHeightForTraitCollection:(id)a3 size:(int)a4;
-+ (double)_effectiveCornerRadiusForTraitCollection:(id)a3 hasMaterial:(BOOL)a4 size:(CGSize)a5 controlSize:(int)a6 selected:(BOOL)a7;
-+ (double)_hiddenSelectionScaleForTraitCollection:(id)a3;
-+ (double)_highlightSelectionScaleForTraitCollection:(id)a3;
-+ (double)_lineWidthForTraitCollection:(id)a3 size:(int)a4;
-+ (double)_sectionIndicatorInsetForTraitCollection:(id)a3 hasMaterial:(BOOL)a4 size:(int)a5;
-+ (double)_sectionIndicatorInsetForTraitCollection:(id)a3 size:(int)a4;
-+ (double)_sectionIndicatorOverflowForTraitCollection:(id)a3 size:(int)a4;
-+ (double)_selectionOffsetAdjustmentForSegment:(id)a3;
-+ (double)defaultHeightForStyle:(int64_t)a3;
-+ (double)defaultHeightForStyle:(int64_t)a3 size:(int)a4;
-+ (id)_fontForTraitCollection:(id)a3 size:(int)a4 selected:(BOOL)a5 hasMaterial:(BOOL)a6;
-+ (id)_highlightPinchAnimationForKey:(id)a3 fromValue:(id)a4 toValue:(id)a5;
-+ (id)_modernBackgroundSelected:(BOOL)a3 shadow:(int64_t)a4 maximumSize:(CGSize)a5 highlighted:(BOOL)a6 hasMaterial:(BOOL)a7 traitCollection:(id)a8 tintColor:(id)a9 size:(int)a10;
-+ (id)_modernDividerImageBackground:(BOOL)a3 traitCollection:(id)a4 tintColor:(id)a5 size:(int)a6;
-+ (id)_selectionFadeAnimationForKey:(id)a3 fromValue:(id)a4 toValue:(id)a5;
-+ (id)_selectionOpacityAnimationFromValue:(float)a3 toValue:(float)a4;
-+ (id)_selectionPopAnimationForKey:(id)a3 fromValue:(id)a4 toValue:(id)a5;
-+ (void)_registerStyleProvider:(id)a3 forIdiom:(int64_t)a4;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)a3;
++ (double)_defaultHeightForTraitCollection:(id)collection size:(int)size;
++ (double)_effectiveCornerRadiusForTraitCollection:(id)collection hasMaterial:(BOOL)material size:(CGSize)size controlSize:(int)controlSize selected:(BOOL)selected;
++ (double)_hiddenSelectionScaleForTraitCollection:(id)collection;
++ (double)_highlightSelectionScaleForTraitCollection:(id)collection;
++ (double)_lineWidthForTraitCollection:(id)collection size:(int)size;
++ (double)_sectionIndicatorInsetForTraitCollection:(id)collection hasMaterial:(BOOL)material size:(int)size;
++ (double)_sectionIndicatorInsetForTraitCollection:(id)collection size:(int)size;
++ (double)_sectionIndicatorOverflowForTraitCollection:(id)collection size:(int)size;
++ (double)_selectionOffsetAdjustmentForSegment:(id)segment;
++ (double)defaultHeightForStyle:(int64_t)style;
++ (double)defaultHeightForStyle:(int64_t)style size:(int)size;
++ (id)_fontForTraitCollection:(id)collection size:(int)size selected:(BOOL)selected hasMaterial:(BOOL)material;
++ (id)_highlightPinchAnimationForKey:(id)key fromValue:(id)value toValue:(id)toValue;
++ (id)_modernBackgroundSelected:(BOOL)selected shadow:(int64_t)shadow maximumSize:(CGSize)size highlighted:(BOOL)highlighted hasMaterial:(BOOL)material traitCollection:(id)collection tintColor:(id)color size:(int)self0;
++ (id)_modernDividerImageBackground:(BOOL)background traitCollection:(id)collection tintColor:(id)color size:(int)size;
++ (id)_selectionFadeAnimationForKey:(id)key fromValue:(id)value toValue:(id)toValue;
++ (id)_selectionOpacityAnimationFromValue:(float)value toValue:(float)toValue;
++ (id)_selectionPopAnimationForKey:(id)key fromValue:(id)value toValue:(id)toValue;
++ (void)_registerStyleProvider:(id)provider forIdiom:(int64_t)idiom;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)size;
 - (BOOL)_animateHighlightingSelectionByDefault;
 - (BOOL)_disableSlidingControl;
-- (BOOL)_focusSystem:(id)a3 containsChildOfHostEnvironment:(id)a4;
+- (BOOL)_focusSystem:(id)system containsChildOfHostEnvironment:(id)environment;
 - (BOOL)_hasEnabledSegment;
-- (BOOL)_shouldConsumeEventWithPresses:(id)a3;
+- (BOOL)_shouldConsumeEventWithPresses:(id)presses;
 - (BOOL)canBecomeFocused;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)hasBackdropViewOrMaterial;
 - (BOOL)isEnabledForSegmentAtIndex:(NSUInteger)segment;
-- (BOOL)pointMostlyInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointMostlyInside:(CGPoint)inside withEvent:(id)event;
 - (CGFloat)widthForSegmentAtIndex:(NSUInteger)segment;
 - (CGRect)bounds;
 - (CGRect)frame;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
 - (CGSize)contentOffsetForSegmentAtIndex:(NSUInteger)segment;
 - (NSInteger)segmentIndexForActionIdentifier:(UIActionIdentifier)actionIdentifier;
 - (NSString)titleForSegmentAtIndex:(NSUInteger)segment;
@@ -54,130 +54,130 @@
 - (UIImage)imageForSegmentAtIndex:(NSUInteger)segment;
 - (UIOffset)contentPositionAdjustmentForSegmentType:(UISegmentedControlSegment)leftCenterRightOrAlone barMetrics:(UIBarMetrics)barMetrics;
 - (UISegmentedControl)initWithCoder:(NSCoder *)coder;
-- (UISegmentedControl)initWithFrame:(CGRect)a3 withStyle:(int64_t)a4 withItems:(id)a5;
 - (UISegmentedControl)initWithFrame:(CGRect)frame;
 - (UISegmentedControl)initWithFrame:(CGRect)frame actions:(NSArray *)actions;
+- (UISegmentedControl)initWithFrame:(CGRect)frame withStyle:(int64_t)style withItems:(id)items;
 - (UISegmentedControl)initWithItems:(NSArray *)items;
 - (_UIHostedFocusSystem)_internalFocusSystem;
 - (double)_barHeight;
-- (id)_accessibilitySegmentItemAtIndex:(unint64_t)a3;
+- (id)_accessibilitySegmentItemAtIndex:(unint64_t)index;
 - (id)_additionalTrackingViews;
-- (id)_attributedTitleForSegmentAtIndex:(unint64_t)a3;
-- (id)_badgeValueForSegmentAtIndex:(unint64_t)a3;
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4;
+- (id)_attributedTitleForSegmentAtIndex:(unint64_t)index;
+- (id)_badgeValueForSegmentAtIndex:(unint64_t)index;
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path;
 - (id)_containerViewForLegacyFocusRing;
-- (id)_createAndAddSegmentAtIndex:(int)a3 position:(unsigned int)a4 withInfo:(id)a5;
-- (id)_createSegmentAtIndex:(int)a3 position:(unsigned int)a4 withInfo:(id)a5;
+- (id)_createAndAddSegmentAtIndex:(int)index position:(unsigned int)position withInfo:(id)info;
+- (id)_createSegmentAtIndex:(int)index position:(unsigned int)position withInfo:(id)info;
 - (id)_feedbackGenerator;
-- (id)_pointerEffectWithPreview:(void *)a3 forSegment:(uint64_t)a4 selected:;
-- (id)_preferredFocusEnvironmentsForFocusSystem:(id)a3;
-- (id)_segmentAtIndex:(int)a3;
+- (id)_pointerEffectWithPreview:(void *)preview forSegment:(uint64_t)segment selected:;
+- (id)_preferredFocusEnvironmentsForFocusSystem:(id)system;
+- (id)_segmentAtIndex:(int)index;
 - (id)_selectedSegmentVibrancyEffect;
-- (id)_uiktest_labelsWithState:(unint64_t)a3;
-- (id)_viewForLoweringBaselineLayoutAttribute:(int)a3;
-- (id)focusItemsInRect:(CGRect)a3;
-- (id)infoViewForSegment:(int64_t)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)_uiktest_labelsWithState:(unint64_t)state;
+- (id)_viewForLoweringBaselineLayoutAttribute:(int)attribute;
+- (id)focusItemsInRect:(CGRect)rect;
+- (id)infoViewForSegment:(int64_t)segment;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (id)viewForLastBaselineLayout;
-- (int)_closestSegmentIndexAtPoint:(CGPoint)a3;
-- (int64_t)_segmentIndexToHighlight:(BOOL *)a3;
+- (int)_closestSegmentIndexAtPoint:(CGPoint)point;
+- (int64_t)_segmentIndexToHighlight:(BOOL *)highlight;
 - (void)__initWithFrameCommonOperations;
-- (void)_animateContentChangeWithAnimations:(id)a3 completion:(id)a4;
-- (void)_axLongPressHandler:(id)a3;
+- (void)_animateContentChangeWithAnimations:(id)animations completion:(id)completion;
+- (void)_axLongPressHandler:(id)handler;
 - (void)_cancelDelayedFocusAction;
 - (void)_clearSelectedSegment;
 - (void)_commonSegmentedControlInit;
-- (void)_diagnoseFocusabilityForReport:(id)a3;
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4;
+- (void)_diagnoseFocusabilityForReport:(id)report;
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow;
 - (void)_emitValueChanged;
-- (void)_focusSystem:(id)a3 didFinishUpdatingFocusInContext:(id)a4;
-- (void)_highlightSegment:(int64_t)a3;
+- (void)_focusSystem:(id)system didFinishUpdatingFocusInContext:(id)context;
+- (void)_highlightSegment:(int64_t)segment;
 - (void)_insertHighlightView;
-- (void)_insertSegment:(int)a3 withInfo:(id)a4 animated:(BOOL)a5;
-- (void)_insertSelectionViewForSegment:(id)a3;
+- (void)_insertSegment:(int)segment withInfo:(id)info animated:(BOOL)animated;
+- (void)_insertSelectionViewForSegment:(id)segment;
 - (void)_installVisualStyleDefaults;
 - (void)_reevaluateClipping;
 - (void)_resetForAppearanceChange;
 - (void)_selectFocusedSegment;
 - (void)_sendDelayedFocusActionIfNecessary;
 - (void)_sendValueChanged;
-- (void)_setAction:(id)a3 forSegmentAtIndex:(unint64_t)a4;
-- (void)_setAlwaysEmitValueChanged:(BOOL)a3;
-- (void)_setAnimatingOutDynamicShdaow:(BOOL)a3;
-- (void)_setAppearanceIsTiled:(BOOL)a3 leftCapWidth:(unint64_t)a4 rightCapWidth:(unint64_t)a5;
-- (void)_setAttributedTitle:(id)a3 forSegmentAtIndex:(unint64_t)a4;
-- (void)_setAutosizeText:(BOOL)a3;
-- (void)_setBackgroundImage:(id)a3 forState:(unint64_t)a4 barMetrics:(int64_t)a5;
-- (void)_setBackgroundTintColor:(id)a3;
-- (void)_setBackgroundVerticalPositionAdjustment:(double)a3 forBarMetrics:(int64_t)a4;
-- (void)_setBadgeValue:(id)a3 forSegmentAtIndex:(unint64_t)a4;
-- (void)_setControlSize:(int)a3 andInvalidate:(BOOL)a4;
-- (void)_setDividerImage:(id)a3 forLeftSegmentState:(unint64_t)a4 rightSegmentState:(unint64_t)a5 barMetrics:(int64_t)a6;
-- (void)_setEnabled:(BOOL)a3 forcePropagateToSegments:(BOOL)a4;
-- (void)_setHighlightedSegmentHighlighted:(BOOL)a3;
-- (void)_setHoverOnSegment:(int64_t)a3 hovered:(BOOL)a4;
+- (void)_setAction:(id)action forSegmentAtIndex:(unint64_t)index;
+- (void)_setAlwaysEmitValueChanged:(BOOL)changed;
+- (void)_setAnimatingOutDynamicShdaow:(BOOL)shdaow;
+- (void)_setAppearanceIsTiled:(BOOL)tiled leftCapWidth:(unint64_t)width rightCapWidth:(unint64_t)capWidth;
+- (void)_setAttributedTitle:(id)title forSegmentAtIndex:(unint64_t)index;
+- (void)_setAutosizeText:(BOOL)text;
+- (void)_setBackgroundImage:(id)image forState:(unint64_t)state barMetrics:(int64_t)metrics;
+- (void)_setBackgroundTintColor:(id)color;
+- (void)_setBackgroundVerticalPositionAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics;
+- (void)_setBadgeValue:(id)value forSegmentAtIndex:(unint64_t)index;
+- (void)_setControlSize:(int)size andInvalidate:(BOOL)invalidate;
+- (void)_setDividerImage:(id)image forLeftSegmentState:(unint64_t)state rightSegmentState:(unint64_t)segmentState barMetrics:(int64_t)metrics;
+- (void)_setEnabled:(BOOL)enabled forcePropagateToSegments:(BOOL)segments;
+- (void)_setHighlightedSegmentHighlighted:(BOOL)highlighted;
+- (void)_setHoverOnSegment:(int64_t)segment hovered:(BOOL)hovered;
 - (void)_setNeedsBackgroundAndContentViewUpdate;
-- (void)_setSegmentedControlAppearance:(id *)a3;
-- (void)_setSelected:(BOOL)a3 forSegmentAtIndex:(int)a4 forceInfoDisplay:(BOOL)a5;
-- (void)_setSelected:(BOOL)a3 highlighted:(BOOL)a4 forSegmentAtIndex:(int)a5 forceInfoDisplay:(BOOL)a6;
-- (void)_setSelectedSegmentIndex:(int64_t)a3 notify:(BOOL)a4 animate:(BOOL)a5;
-- (void)_setSelectedSegmentVibrancyEffect:(id)a3;
-- (void)_setTitleTextAttributes:(id)a3 forState:(unint64_t)a4;
-- (void)_setUseGlass:(BOOL)a3;
-- (void)_setUseSpringBoardVibrancy:(BOOL)a3;
-- (void)_tapSegmentAtPoint:(CGPoint)a3 touchDown:(BOOL)a4;
+- (void)_setSegmentedControlAppearance:(id *)appearance;
+- (void)_setSelected:(BOOL)selected forSegmentAtIndex:(int)index forceInfoDisplay:(BOOL)display;
+- (void)_setSelected:(BOOL)selected highlighted:(BOOL)highlighted forSegmentAtIndex:(int)index forceInfoDisplay:(BOOL)display;
+- (void)_setSelectedSegmentIndex:(int64_t)index notify:(BOOL)notify animate:(BOOL)animate;
+- (void)_setSelectedSegmentVibrancyEffect:(id)effect;
+- (void)_setTitleTextAttributes:(id)attributes forState:(unint64_t)state;
+- (void)_setUseGlass:(BOOL)glass;
+- (void)_setUseSpringBoardVibrancy:(BOOL)vibrancy;
+- (void)_tapSegmentAtPoint:(CGPoint)point touchDown:(BOOL)down;
 - (void)_updateAxLongPressGestureRecognizer;
-- (void)_updateDividerImageForSegmentAtIndex:(unint64_t)a3;
-- (void)_updateDynamicShadow:(BOOL)a3 animated:(BOOL)a4;
-- (void)_updateForGlassIfNeededForSuperview:(void *)a3 traitCollection:;
-- (void)_updateHighlightToPosition:(CGPoint)a3 bounds:(CGRect)a4 highlight:(BOOL)a5;
+- (void)_updateDividerImageForSegmentAtIndex:(unint64_t)index;
+- (void)_updateDynamicShadow:(BOOL)shadow animated:(BOOL)animated;
+- (void)_updateForGlassIfNeededForSuperview:(void *)superview traitCollection:;
+- (void)_updateHighlightToPosition:(CGPoint)position bounds:(CGRect)bounds highlight:(BOOL)highlight;
 - (void)_updateSelectionIndicator;
-- (void)_updateSelectionToSegment:(id)a3 highlight:(BOOL)a4 shouldAnimate:(BOOL)a5 sameSegment:(BOOL)a6;
-- (void)addSegmentWithTitle:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)_updateSelectionToSegment:(id)segment highlight:(BOOL)highlight shouldAnimate:(BOOL)animate sameSegment:(BOOL)sameSegment;
+- (void)addSegmentWithTitle:(id)title;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)encodeWithCoder:(id)coder;
 - (void)insertSegmentWithAction:(UIAction *)action atIndex:(NSUInteger)segment animated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesChanged:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesChanged:(id)changed withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 - (void)removeAllSegments;
 - (void)removeSegmentAtIndex:(NSUInteger)segment animated:(BOOL)animated;
 - (void)setAction:(UIAction *)action forSegmentAtIndex:(NSUInteger)segment;
-- (void)setAdjustsForContentSizeCategory:(BOOL)a3;
-- (void)setAlpha:(double)a3;
-- (void)setAlwaysNotifiesDelegateOfSegmentClicks:(BOOL)a3;
+- (void)setAdjustsForContentSizeCategory:(BOOL)category;
+- (void)setAlpha:(double)alpha;
+- (void)setAlwaysNotifiesDelegateOfSegmentClicks:(BOOL)clicks;
 - (void)setApportionsSegmentWidthsByContent:(BOOL)apportionsSegmentWidthsByContent;
 - (void)setBackgroundImage:(UIImage *)backgroundImage forState:(UIControlState)state barMetrics:(UIBarMetrics)barMetrics;
-- (void)setBarStyle:(int64_t)a3;
-- (void)setBounds:(CGRect)a3;
+- (void)setBarStyle:(int64_t)style;
+- (void)setBounds:(CGRect)bounds;
 - (void)setContentOffset:(CGSize)offset forSegmentAtIndex:(NSUInteger)segment;
 - (void)setContentPositionAdjustment:(UIOffset)adjustment forSegmentType:(UISegmentedControlSegment)leftCenterRightOrAlone barMetrics:(UIBarMetrics)barMetrics;
-- (void)setControlSize:(int)a3;
+- (void)setControlSize:(int)size;
 - (void)setDividerImage:(UIImage *)dividerImage forLeftSegmentState:(UIControlState)leftState rightSegmentState:(UIControlState)rightState barMetrics:(UIBarMetrics)barMetrics;
 - (void)setEnabled:(BOOL)enabled forSegmentAtIndex:(NSUInteger)segment;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 - (void)setImage:(UIImage *)image forSegmentAtIndex:(NSUInteger)segment;
-- (void)setImagePadding:(CGSize)a3 forSegment:(unint64_t)a4;
+- (void)setImagePadding:(CGSize)padding forSegment:(unint64_t)segment;
 - (void)setMomentary:(BOOL)momentary;
 - (void)setSelectedSegmentTintColor:(UIColor *)selectedSegmentTintColor;
 - (void)setTitle:(NSString *)title forSegmentAtIndex:(NSUInteger)segment;
 - (void)setTitleTextAttributes:(NSDictionary *)attributes forState:(UIControlState)state;
-- (void)setTransparentBackground:(BOOL)a3;
+- (void)setTransparentBackground:(BOOL)background;
 - (void)setWidth:(CGFloat)width forSegmentAtIndex:(NSUInteger)segment;
 - (void)sizeToFit;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation UISegmentedControl
@@ -204,17 +204,17 @@
     v9 = v8;
     if (v8)
     {
-      v5 = v8;
+      traitCollection2 = v8;
     }
 
     else
     {
       v10 = objc_opt_class();
-      v11 = [(UIView *)self traitCollection];
-      v5 = [v10 _fontForTraitCollection:v11 size:-[UISegmentedControl controlSize](self selected:"controlSize") hasMaterial:{0, 0}];
+      traitCollection = [(UIView *)self traitCollection];
+      traitCollection2 = [v10 _fontForTraitCollection:traitCollection size:-[UISegmentedControl controlSize](self selected:"controlSize") hasMaterial:{0, 0}];
     }
 
-    [v5 lineHeight];
+    [traitCollection2 lineHeight];
     UICeilToViewScale(self);
   }
 
@@ -222,8 +222,8 @@
   {
     v3 = objc_opt_class();
     appearanceStorage = self->_appearanceStorage;
-    v5 = [(UIView *)self traitCollection];
-    v6 = segmentBarHeight(v3, appearanceStorage, v5, *&self->_segmentedControlFlags & 3);
+    traitCollection2 = [(UIView *)self traitCollection];
+    v6 = segmentBarHeight(v3, appearanceStorage, traitCollection2, *&self->_segmentedControlFlags & 3);
   }
 
   v12 = v6;
@@ -287,14 +287,14 @@
   self->_segments = v3;
 
   v5 = objc_opt_class();
-  v6 = [(UIView *)self traitCollection];
-  v8 = UISegmentedControlStyleProviderForIdiom(v5, [v6 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v8 = UISegmentedControlStyleProviderForIdiom(v5, [traitCollection userInterfaceIdiom]);
 
   if ([v8 useTVStyleFocusSelection])
   {
-    v7 = [v8 createBackdropView];
+    createBackdropView = [v8 createBackdropView];
 
-    if (!v7)
+    if (!createBackdropView)
     {
       [UIView _performSystemAppearanceModifications:&__block_literal_global_609_0];
     }
@@ -307,13 +307,13 @@
   self->_highlightedSegment = -1;
   self->_selectedSegment = -1;
   v3 = objc_opt_class();
-  v4 = [(UIView *)self traitCollection];
-  v21 = UISegmentedControlStyleProviderForIdiom(v3, [v4 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v21 = UISegmentedControlStyleProviderForIdiom(v3, [traitCollection userInterfaceIdiom]);
 
   self->_hoveredSegment = -1;
   LODWORD(v3) = [v21 disablePointerEffects];
-  v5 = [(UIControl *)self pointerInteraction];
-  [v5 setEnabled:v3 ^ 1];
+  pointerInteraction = [(UIControl *)self pointerInteraction];
+  [pointerInteraction setEnabled:v3 ^ 1];
 
   self->_initiallyDraggedSegment = -1;
   self->_enabledAlpha = 1.0;
@@ -321,9 +321,9 @@
   {
     -[UIView setClipsToBounds:](self, "setClipsToBounds:", [v21 useTVStyleFocusSelection] ^ 1);
     v6 = objc_opt_class();
-    v7 = [(UIView *)self traitCollection];
+    traitCollection2 = [(UIView *)self traitCollection];
     [(UISegmentedControl *)self bounds];
-    [v6 _cornerRadiusForTraitCollection:v7 size:-[UISegmentedControl controlSize](self controlSize:{"controlSize"), v8, v9}];
+    [v6 _cornerRadiusForTraitCollection:traitCollection2 size:-[UISegmentedControl controlSize](self controlSize:{"controlSize"), v8, v9}];
     [(UIView *)self _setCornerRadius:?];
   }
 
@@ -335,24 +335,24 @@
   v10 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:sel__axLongPressHandler_];
   [(UISegmentedControl *)self setAxLongPressGestureRecognizer:v10];
 
-  v11 = [(UISegmentedControl *)self axLongPressGestureRecognizer];
-  [v11 setMinimumPressDuration:0.15];
+  axLongPressGestureRecognizer = [(UISegmentedControl *)self axLongPressGestureRecognizer];
+  [axLongPressGestureRecognizer setMinimumPressDuration:0.15];
 
-  v12 = [(UISegmentedControl *)self axLongPressGestureRecognizer];
-  [v12 setAllowableMovement:50.0];
+  axLongPressGestureRecognizer2 = [(UISegmentedControl *)self axLongPressGestureRecognizer];
+  [axLongPressGestureRecognizer2 setAllowableMovement:50.0];
 
   [(UISegmentedControl *)self _updateAxLongPressGestureRecognizer];
   if ([v21 useTVStyleFocusSelection])
   {
     [(UISegmentedControl *)self _setUseGlass:_UISolariumEnabled()];
     v13 = objc_opt_class();
-    v14 = [(UIView *)self traitCollection];
+    traitCollection3 = [(UIView *)self traitCollection];
     [(UISegmentedControl *)self bounds];
-    [v13 _cornerRadiusForTraitCollection:v14 size:-[UISegmentedControl controlSize](self controlSize:{"controlSize"), v15, v16}];
+    [v13 _cornerRadiusForTraitCollection:traitCollection3 size:-[UISegmentedControl controlSize](self controlSize:{"controlSize"), v15, v16}];
     [(UIView *)self _setCornerRadius:?];
 
-    v17 = [(UIView *)self layer];
-    [v17 setCornerCurve:*MEMORY[0x1E69796E8]];
+    layer = [(UIView *)self layer];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
   }
 
   v18 = objc_opt_class();
@@ -364,28 +364,28 @@
 - (void)_updateAxLongPressGestureRecognizer
 {
   v3 = objc_opt_class();
-  v4 = [(UIView *)self traitCollection];
-  v8 = UISegmentedControlStyleProviderForIdiom(v3, [v4 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v8 = UISegmentedControlStyleProviderForIdiom(v3, [traitCollection userInterfaceIdiom]);
 
-  v5 = [UIApp preferredContentSizeCategory];
-  if (!UIContentSizeCategoryIsAccessibilityCategory(v5) || (*(&self->_segmentedControlFlags + 1) & 0x40) != 0)
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  if (!UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory) || (*(&self->_segmentedControlFlags + 1) & 0x40) != 0)
   {
   }
 
   else
   {
-    v6 = [v8 supportsAXPopover];
+    supportsAXPopover = [v8 supportsAXPopover];
 
-    if (v6)
+    if (supportsAXPopover)
     {
-      v7 = [(UISegmentedControl *)self axLongPressGestureRecognizer];
-      [(UIView *)self addGestureRecognizer:v7];
+      axLongPressGestureRecognizer = [(UISegmentedControl *)self axLongPressGestureRecognizer];
+      [(UIView *)self addGestureRecognizer:axLongPressGestureRecognizer];
       goto LABEL_7;
     }
   }
 
-  v7 = [(UISegmentedControl *)self axLongPressGestureRecognizer];
-  [(UIView *)self removeGestureRecognizer:v7];
+  axLongPressGestureRecognizer = [(UISegmentedControl *)self axLongPressGestureRecognizer];
+  [(UIView *)self removeGestureRecognizer:axLongPressGestureRecognizer];
 LABEL_7:
 }
 
@@ -393,8 +393,8 @@ LABEL_7:
 {
   v105 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_class();
-  v4 = [(UIView *)self traitCollection];
-  v5 = UISegmentedControlStyleProviderForIdiom(v3, [v4 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v5 = UISegmentedControlStyleProviderForIdiom(v3, [traitCollection userInterfaceIdiom]);
 
   if (objc_opt_respondsToSelector())
   {
@@ -410,25 +410,25 @@ LABEL_7:
   self->_segmentedControlFlags = v7;
   if (v6)
   {
-    v8 = [v6 useLensView];
+    useLensView = [v6 useLensView];
     v9 = 0x400000000;
-    if (!v8)
+    if (!useLensView)
     {
       v9 = 0;
     }
 
     self->_segmentedControlFlags = (*&self->_segmentedControlFlags & 0xFFFFFFFBFFFFFFFFLL | v9);
-    v10 = [v6 useC2Animation];
+    useC2Animation = [v6 useC2Animation];
     v11 = 0x800000000;
-    if (!v10)
+    if (!useC2Animation)
     {
       v11 = 0;
     }
 
     self->_segmentedControlFlags = (*&self->_segmentedControlFlags & 0xFFFFFFF7FFFFFFFFLL | v11);
-    v12 = [v6 allowFreeSelectionSliding];
+    allowFreeSelectionSliding = [v6 allowFreeSelectionSliding];
     v13 = 0x2000000000;
-    if (!v12)
+    if (!allowFreeSelectionSliding)
     {
       v13 = 0;
     }
@@ -443,9 +443,9 @@ LABEL_7:
   }
 
   self->_segmentedControlFlags = (segmentedControlFlags & 0xFFFFFFDFFFFFFFFFLL | v13);
-  v15 = [v5 hasTransparentBackgroundByDefault];
-  v16 = v15;
-  if (v15)
+  hasTransparentBackgroundByDefault = [v5 hasTransparentBackgroundByDefault];
+  v16 = hasTransparentBackgroundByDefault;
+  if (hasTransparentBackgroundByDefault)
   {
     [(UISegmentedControl *)self setTransparentBackground:1];
   }
@@ -455,10 +455,10 @@ LABEL_7:
     [(UISegmentedControl *)self setApportionsSegmentWidthsByContent:1];
   }
 
-  v17 = [v5 defaultBackgroundTintColor];
-  if (v17 && !self->_backgroundTintColor)
+  defaultBackgroundTintColor = [v5 defaultBackgroundTintColor];
+  if (defaultBackgroundTintColor && !self->_backgroundTintColor)
   {
-    [(UISegmentedControl *)self _setBackgroundTintColor:v17];
+    [(UISegmentedControl *)self _setBackgroundTintColor:defaultBackgroundTintColor];
   }
 
   if ([v5 supportsDynamicTypeByDefault])
@@ -472,14 +472,14 @@ LABEL_7:
     [(UISegmentedControl *)self _setInterSegmentSpacing:?];
   }
 
-  v84 = [v5 selectedSegmentDefaultVibrancyEffect];
+  selectedSegmentDefaultVibrancyEffect = [v5 selectedSegmentDefaultVibrancyEffect];
   [v5 selectedSegmentDefaultBlurEffect];
   v83 = v82 = v6;
   if ((*(&self->_segmentedControlFlags + 3) & 1) == 0)
   {
-    if (v84)
+    if (selectedSegmentDefaultVibrancyEffect)
     {
-      v19 = v84;
+      v19 = selectedSegmentDefaultVibrancyEffect;
     }
 
     else
@@ -518,8 +518,8 @@ LABEL_7:
         selectionImageView = self->_selectionImageView;
         self->_selectionImageView = 0;
 
-        v28 = self;
-        backdropView = v28->_backdropView;
+        selfCopy = self;
+        backdropView = selfCopy->_backdropView;
         if (backdropView)
         {
           if ((*(&self->_segmentedControlFlags + 3) & 0x80) != 0)
@@ -529,14 +529,14 @@ LABEL_7:
 
           else
           {
-            [(UIView *)v28 viewWithTag:-2031];
+            [(UIView *)selfCopy viewWithTag:-2031];
           }
           v30 = ;
         }
 
         else
         {
-          v30 = v28;
+          v30 = selfCopy;
         }
 
         v31 = v30;
@@ -549,7 +549,7 @@ LABEL_7:
         }
       }
 
-      v33 = v17;
+      v33 = defaultBackgroundTintColor;
       v99 = 0u;
       v100 = 0u;
       v97 = 0u;
@@ -579,7 +579,7 @@ LABEL_7:
       }
 
       [(UISegmentedControl *)self _setNeedsBackgroundAndContentViewUpdate];
-      v17 = v33;
+      defaultBackgroundTintColor = v33;
       goto LABEL_54;
     }
 
@@ -589,29 +589,29 @@ LABEL_54:
 
   if ((v16 & 1) != 0 || (objc_opt_respondsToSelector() & 1) == 0)
   {
-    v39 = 0;
+    backgroundBlurEffect = 0;
   }
 
   else
   {
-    v39 = [v5 backgroundBlurEffect];
+    backgroundBlurEffect = [v5 backgroundBlurEffect];
   }
 
-  v40 = [v5 createBackdropView];
+  createBackdropView = [v5 createBackdropView];
   v41 = self->_backdropView;
-  self->_backdropView = v40;
+  self->_backdropView = createBackdropView;
 
   v42 = self->_segmentedControlFlags;
   self->_segmentedControlFlags = (*&v42 & 0xFFFFFFFFEFFFFFFFLL | ((self->_backdropView != 0) << 28));
   if (self->_backdropView)
   {
-    v81 = v39;
+    v81 = backgroundBlurEffect;
     v43 = [UIView alloc];
     [(UISegmentedControl *)self bounds];
     v44 = [(UIView *)v43 initWithFrame:?];
     [(UIView *)v44 setTag:-2031];
     [(UIView *)v44 setAutoresizingMask:18];
-    v45 = v17;
+    v45 = defaultBackgroundTintColor;
     if ((*(&self->_segmentedControlFlags + 4) & 4) != 0)
     {
       if (self->_selectionIndicatorView)
@@ -662,8 +662,8 @@ LABEL_54:
       v92 = 0u;
       v89 = 0u;
       v90 = 0u;
-      v46 = [(UIView *)self subviews];
-      v47 = [v46 countByEnumeratingWithState:&v89 objects:v102 count:16];
+      subviews = [(UIView *)self subviews];
+      v47 = [subviews countByEnumeratingWithState:&v89 objects:v102 count:16];
       if (v47)
       {
         v48 = v47;
@@ -674,13 +674,13 @@ LABEL_54:
           {
             if (*v90 != v49)
             {
-              objc_enumerationMutation(v46);
+              objc_enumerationMutation(subviews);
             }
 
             [(UIView *)v44 addSubview:*(*(&v89 + 1) + 8 * k)];
           }
 
-          v48 = [v46 countByEnumeratingWithState:&v89 objects:v102 count:16];
+          v48 = [subviews countByEnumeratingWithState:&v89 objects:v102 count:16];
         }
 
         while (v48);
@@ -692,7 +692,7 @@ LABEL_54:
     }
 
     v66 = [(UIView *)self viewWithTag:-2031];
-    v17 = v45;
+    defaultBackgroundTintColor = v45;
     if (v66)
     {
       v67 = v66;
@@ -713,16 +713,16 @@ LABEL_54:
 
   else
   {
-    if (!v39)
+    if (!backgroundBlurEffect)
     {
       goto LABEL_93;
     }
 
-    v80 = v17;
+    v80 = defaultBackgroundTintColor;
     self->_segmentedControlFlags = (*&v42 | 0x90000000);
     [(UISegmentedControl *)self setTransparentBackground:1];
-    v81 = v39;
-    v44 = [[UIVisualEffectView alloc] initWithEffect:v39];
+    v81 = backgroundBlurEffect;
+    v44 = [[UIVisualEffectView alloc] initWithEffect:backgroundBlurEffect];
     v51 = self->_backdropView;
     self->_backdropView = &v44->super;
 
@@ -730,8 +730,8 @@ LABEL_54:
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
-    v52 = [(UIView *)self subviews];
-    v53 = [v52 countByEnumeratingWithState:&v85 objects:v101 count:16];
+    subviews2 = [(UIView *)self subviews];
+    v53 = [subviews2 countByEnumeratingWithState:&v85 objects:v101 count:16];
     if (v53)
     {
       v54 = v53;
@@ -742,15 +742,15 @@ LABEL_54:
         {
           if (*v86 != v55)
           {
-            objc_enumerationMutation(v52);
+            objc_enumerationMutation(subviews2);
           }
 
           v57 = *(*(&v85 + 1) + 8 * m);
-          v58 = [(UIVisualEffectView *)v44 contentView];
-          [v58 addSubview:v57];
+          contentView = [(UIVisualEffectView *)v44 contentView];
+          [contentView addSubview:v57];
         }
 
-        v54 = [v52 countByEnumeratingWithState:&v85 objects:v101 count:16];
+        v54 = [subviews2 countByEnumeratingWithState:&v85 objects:v101 count:16];
       }
 
       while (v54);
@@ -761,10 +761,10 @@ LABEL_54:
     [(UIView *)self->_backdropView setAutoresizingMask:18];
     [(UIView *)self insertSubview:self->_backdropView atIndex:0];
     v6 = v82;
-    v17 = v80;
+    defaultBackgroundTintColor = v80;
   }
 
-  v39 = v81;
+  backgroundBlurEffect = v81;
 
 LABEL_93:
   v68 = objc_opt_respondsToSelector();
@@ -819,9 +819,9 @@ LABEL_93:
 
 - (_UIHostedFocusSystem)_internalFocusSystem
 {
-  v3 = [(UIView *)self _focusSystem];
+  _focusSystem = [(UIView *)self _focusSystem];
 
-  if (v3)
+  if (_focusSystem)
   {
     internalFocusSystem = self->_internalFocusSystem;
     if (!internalFocusSystem)
@@ -939,30 +939,30 @@ LABEL_93:
 - (void)layoutSubviews
 {
   v143 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  backdropView = v2->_backdropView;
+  selfCopy = self;
+  backdropView = selfCopy->_backdropView;
   if (backdropView)
   {
-    if ((*(&v2->_segmentedControlFlags + 3) & 0x80) != 0)
+    if ((*(&selfCopy->_segmentedControlFlags + 3) & 0x80) != 0)
     {
       [(UIView *)backdropView contentView];
     }
 
     else
     {
-      [(UIView *)v2 viewWithTag:-2031];
+      [(UIView *)selfCopy viewWithTag:-2031];
     }
     v4 = ;
   }
 
   else
   {
-    v4 = v2;
+    v4 = selfCopy;
   }
 
   v5 = v4;
 
-  v6 = v2;
+  v6 = selfCopy;
   v7 = v6->_backdropView;
   v133 = v6;
   if (!v7)
@@ -1021,8 +1021,8 @@ LABEL_14:
     else
     {
       v23 = objc_opt_class();
-      v24 = [(UIView *)v6 traitCollection];
-      [v23 _dividerWidthForTraitCollection:v24 size:{-[UISegmentedControl controlSize](v6, "controlSize")}];
+      traitCollection = [(UIView *)v6 traitCollection];
+      [v23 _dividerWidthForTraitCollection:traitCollection size:{-[UISegmentedControl controlSize](v6, "controlSize")}];
       innerSegmentSpacing = v25;
     }
 
@@ -1035,10 +1035,10 @@ LABEL_14:
   v127 = v20;
   if ((*(&v6->super.super._viewFlags + 18) & 0x40) != 0)
   {
-    v28 = [(NSMutableArray *)v6->_segments reverseObjectEnumerator];
-    v29 = [v28 allObjects];
+    reverseObjectEnumerator = [(NSMutableArray *)v6->_segments reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
-    v27 = v29;
+    v27 = allObjects;
   }
 
   v125 = v14;
@@ -1088,11 +1088,11 @@ LABEL_14:
 
   v38 = v6->_segmentedControlFlags;
   v39 = objc_opt_class();
-  v40 = [(UIView *)v133 traitCollection];
-  v41 = UISegmentedControlStyleProviderForIdiom(v39, [v40 userInterfaceIdiom]);
+  traitCollection2 = [(UIView *)v133 traitCollection];
+  v41 = UISegmentedControlStyleProviderForIdiom(v39, [traitCollection2 userInterfaceIdiom]);
 
   v126 = v41;
-  v132 = [v41 useSelectionIndicatorStyling];
+  useSelectionIndicatorStyling = [v41 useSelectionIndicatorStyling];
   if (v26 < 1)
   {
     v129 = 0;
@@ -1185,9 +1185,9 @@ LABEL_14:
 
       if ((*&v133->_segmentedControlFlags & 0x4080) != 0 && (*&v133->_segmentedControlFlags & 0x1000) == 0)
       {
-        v60 = [v54 label];
-        v61 = v60;
-        if (v60 && ([v60 setAssociatedLabel:0], objc_msgSend(v54, "_positionInfo"), objc_msgSend(v61, "_actualScaleFactor"), v63 = v62, objc_msgSend(v61, "transform"), v64 = v63 * v140, v63 * v140 < v52))
+        label = [v54 label];
+        v61 = label;
+        if (label && ([label setAssociatedLabel:0], objc_msgSend(v54, "_positionInfo"), objc_msgSend(v61, "_actualScaleFactor"), v63 = v62, objc_msgSend(v61, "transform"), v64 = v63 * v140, v63 * v140 < v52))
         {
           v65 = v61;
 
@@ -1216,7 +1216,7 @@ LABEL_14:
       v68 = [v67 viewWithTag:-1030];
       [v68 frame];
       [v68 setFrame:?];
-      if (v132)
+      if (useSelectionIndicatorStyling)
       {
         v69 = v51 + 1;
       }
@@ -1258,7 +1258,7 @@ LABEL_14:
     [(UIView *)v10 bringSubviewToFront:v73];
   }
 
-  if (v132)
+  if (useSelectionIndicatorStyling)
   {
     if ((*&v72->_segmentedControlFlags & 0x80010) != 0x10)
     {
@@ -1287,7 +1287,7 @@ LABEL_14:
     [(UIView *)v10 bringSubviewToFront:v76];
   }
 
-  if ((v132 & 1) == 0)
+  if ((useSelectionIndicatorStyling & 1) == 0)
   {
     highlightedSegment = v72->_highlightedSegment;
     if (highlightedSegment >= 1)
@@ -1324,13 +1324,13 @@ LABEL_94:
         }
 
         v84 = *(rect[4] + 8 * i);
-        v85 = [v84 badgeView];
-        v86 = v85;
-        if (v85)
+        badgeView = [v84 badgeView];
+        v86 = badgeView;
+        if (badgeView)
         {
-          v87 = [v85 superview];
+          superview = [badgeView superview];
 
-          if (!v87)
+          if (!superview)
           {
             [(UIView *)v10 addSubview:v86];
           }
@@ -1411,7 +1411,7 @@ LABEL_94:
     [(UIView *)v133->_backdropView setAlpha:v110];
   }
 
-  if (v132)
+  if (useSelectionIndicatorStyling)
   {
     if ((*(&v133->_segmentedControlFlags + 4) & 2) != 0 && [v126 alwaysUseConcentricCornerRadius])
     {
@@ -1436,9 +1436,9 @@ LABEL_94:
     else
     {
       v114 = objc_opt_class();
-      v115 = [(UIView *)v133 traitCollection];
+      traitCollection3 = [(UIView *)v133 traitCollection];
       [(UISegmentedControl *)v133 bounds];
-      [v114 _cornerRadiusForTraitCollection:v115 size:-[UISegmentedControl controlSize](v133 controlSize:{"controlSize"), v116, v117}];
+      [v114 _cornerRadiusForTraitCollection:traitCollection3 size:-[UISegmentedControl controlSize](v133 controlSize:{"controlSize"), v116, v117}];
       [(UIView *)p_super _setCornerRadius:?];
 
       v107 = v133;
@@ -1517,25 +1517,25 @@ uint64_t __36__UISegmentedControl_layoutSubviews__block_invoke(uint64_t a1, void
 - (void)_updateSelectionIndicator
 {
   v3 = objc_opt_class();
-  v4 = [(UIView *)self traitCollection];
-  v5 = UISegmentedControlStyleProviderForIdiom(v3, [v4 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v5 = UISegmentedControlStyleProviderForIdiom(v3, [traitCollection userInterfaceIdiom]);
 
   if ([v5 useSelectionIndicatorStyling] && ((*(&self->_segmentedControlFlags + 2) & 0x40) == 0 || !objc_msgSend(v5, "shouldHideSelectionOnFocusUpdate") || (*(&self->_segmentedControlFlags + 1) & 0x80) == 0))
   {
     v74 = 0;
     v6 = [(UISegmentedControl *)self _segmentIndexToHighlight:&v74];
-    v7 = 0;
+    animateSlidingSelectionByDefault = 0;
     if (+[UIView areAnimationsEnabled])
     {
-      v8 = [(UIView *)self window];
-      if (v8)
+      window = [(UIView *)self window];
+      if (window)
       {
-        v7 = [v5 animateSlidingSelectionByDefault];
+        animateSlidingSelectionByDefault = [v5 animateSlidingSelectionByDefault];
       }
 
       else
       {
-        v7 = 0;
+        animateSlidingSelectionByDefault = 0;
       }
     }
 
@@ -1570,21 +1570,21 @@ uint64_t __36__UISegmentedControl_layoutSubviews__block_invoke(uint64_t a1, void
                 if ((*&segmentedControlFlags & 0x20000000) == 0)
                 {
                   v34 = *MEMORY[0x1E6979CF8] & ((*&segmentedControlFlags << 27) >> 63);
-                  v35 = [(UIView *)v31 restingBackgroundView];
-                  v36 = [v35 layer];
-                  [v36 setCompositingFilter:v34];
+                  restingBackgroundView = [(UIView *)v31 restingBackgroundView];
+                  layer = [restingBackgroundView layer];
+                  [layer setCompositingFilter:v34];
 
-                  v37 = [(UISegmentedControl *)self selectedSegmentTintColor];
-                  v38 = v37;
-                  if (!v37)
+                  selectedSegmentTintColor = [(UISegmentedControl *)self selectedSegmentTintColor];
+                  v38 = selectedSegmentTintColor;
+                  if (!selectedSegmentTintColor)
                   {
                     v38 = +[UIColor _controlForegroundColor];
                   }
 
-                  v39 = [(UIView *)v32 restingBackgroundView];
-                  [v39 setBackgroundColor:v38];
+                  restingBackgroundView2 = [(UIView *)v32 restingBackgroundView];
+                  [restingBackgroundView2 setBackgroundColor:v38];
 
-                  if (!v37)
+                  if (!selectedSegmentTintColor)
                   {
                   }
 
@@ -1604,10 +1604,10 @@ uint64_t __36__UISegmentedControl_layoutSubviews__block_invoke(uint64_t a1, void
                     v17 = v16;
                     v19 = v18;
                     v68 = (*&self->_segmentedControlFlags >> 29) & 1;
-                    v65 = [(UIView *)self traitCollection];
-                    v20 = [(UISegmentedControl *)self selectedSegmentTintColor];
+                    traitCollection2 = [(UIView *)self traitCollection];
+                    selectedSegmentTintColor2 = [(UISegmentedControl *)self selectedSegmentTintColor];
                     LODWORD(v63) = *&self->_segmentedControlFlags & 3;
-                    v21 = [v71 _modernBackgroundSelected:1 shadow:1 maximumSize:0 highlighted:v68 hasMaterial:v65 traitCollection:v20 tintColor:v17 size:{v19, v63}];
+                    v21 = [v71 _modernBackgroundSelected:1 shadow:1 maximumSize:0 highlighted:v68 hasMaterial:traitCollection2 traitCollection:selectedSegmentTintColor2 tintColor:v17 size:{v19, v63}];
 
                     v22 = v21;
                   }
@@ -1619,8 +1619,8 @@ uint64_t __36__UISegmentedControl_layoutSubviews__block_invoke(uint64_t a1, void
 
                   v73 = v22;
                   [(UIImageView *)self->_selectionImageView setImage:?];
-                  v46 = self;
-                  backdropView = v46->_backdropView;
+                  selfCopy = self;
+                  backdropView = selfCopy->_backdropView;
                   if (backdropView)
                   {
                     if ((*(&self->_segmentedControlFlags + 3) & 0x80) != 0)
@@ -1630,14 +1630,14 @@ uint64_t __36__UISegmentedControl_layoutSubviews__block_invoke(uint64_t a1, void
 
                     else
                     {
-                      [(UIView *)v46 viewWithTag:-2031];
+                      [(UIView *)selfCopy viewWithTag:-2031];
                     }
                     v48 = ;
                   }
 
                   else
                   {
-                    v48 = v46;
+                    v48 = selfCopy;
                   }
 
                   v51 = v48;
@@ -1654,10 +1654,10 @@ uint64_t __36__UISegmentedControl_layoutSubviews__block_invoke(uint64_t a1, void
                       v54 = v53;
                       v56 = v55;
                       v67 = (*&self->_segmentedControlFlags >> 29) & 1;
-                      v57 = [(UIView *)v46 traitCollection];
-                      v58 = [(UISegmentedControl *)v46 selectedSegmentTintColor];
+                      traitCollection3 = [(UIView *)selfCopy traitCollection];
+                      selectedSegmentTintColor3 = [(UISegmentedControl *)selfCopy selectedSegmentTintColor];
                       LODWORD(v63) = *&self->_segmentedControlFlags & 3;
-                      v59 = [v70 _modernBackgroundSelected:1 shadow:2 maximumSize:0 highlighted:v67 hasMaterial:v57 traitCollection:v58 tintColor:v54 size:{v56, v63}];
+                      v59 = [v70 _modernBackgroundSelected:1 shadow:2 maximumSize:0 highlighted:v67 hasMaterial:traitCollection3 traitCollection:selectedSegmentTintColor3 tintColor:v54 size:{v56, v63}];
 
                       [v52 setImage:v59];
                     }
@@ -1668,31 +1668,31 @@ uint64_t __36__UISegmentedControl_layoutSubviews__block_invoke(uint64_t a1, void
 
                 else
                 {
-                  v40 = [(UISegmentedControl *)self transparentBackground];
-                  v72 = [(UISegmentedControl *)self _useDynamicShadow];
-                  v41 = [(UIView *)self traitCollection];
-                  v69 = [(UISegmentedControl *)self selectedSegmentTintColor];
-                  v66 = v40;
+                  transparentBackground = [(UISegmentedControl *)self transparentBackground];
+                  _useDynamicShadow = [(UISegmentedControl *)self _useDynamicShadow];
+                  traitCollection4 = [(UIView *)self traitCollection];
+                  selectedSegmentTintColor4 = [(UISegmentedControl *)self selectedSegmentTintColor];
+                  v66 = transparentBackground;
                   if ([v5 useGeneratedImages])
                   {
                     v64 = objc_opt_class();
                     [(UIView *)self->_selectionImageView bounds];
                     LODWORD(v63) = *&self->_segmentedControlFlags & 3;
-                    v42 = v69;
-                    v45 = [v64 _modernBackgroundSelected:1 shadow:v40 || v72 maximumSize:0 highlighted:(*&self->_segmentedControlFlags >> 29) & 1 hasMaterial:v41 traitCollection:v69 tintColor:v43 size:{v44, v63}];
+                    v42 = selectedSegmentTintColor4;
+                    v45 = [v64 _modernBackgroundSelected:1 shadow:transparentBackground || _useDynamicShadow maximumSize:0 highlighted:(*&self->_segmentedControlFlags >> 29) & 1 hasMaterial:traitCollection4 traitCollection:selectedSegmentTintColor4 tintColor:v43 size:{v44, v63}];
                   }
 
                   else
                   {
                     v45 = 0;
-                    v42 = v69;
+                    v42 = selectedSegmentTintColor4;
                   }
 
                   [(UIImageView *)self->_selectionImageView setImage:v45];
-                  if (v72)
+                  if (_useDynamicShadow)
                   {
                     v15 = &OBJC_IVAR___UITextHighlightView__contentClippingEffectView;
-                    if (!v66 && [objc_opt_class() _useShadowForSelectedTintColor:v42 traitCollection:v41])
+                    if (!v66 && [objc_opt_class() _useShadowForSelectedTintColor:v42 traitCollection:traitCollection4])
                     {
                       [(UISegmentedControl *)self _updateDynamicShadow:1 animated:0];
                     }
@@ -1714,18 +1714,18 @@ uint64_t __36__UISegmentedControl_layoutSubviews__block_invoke(uint64_t a1, void
             else
             {
               [(UISegmentedControl *)self _insertSelectionViewForSegment:v11];
-              v7 = 0;
+              animateSlidingSelectionByDefault = 0;
             }
 
             v60 = v15[58];
             if (*(&self->super.super.super.super.isa + v60) && (objc_opt_respondsToSelector() & 1) != 0)
             {
               v61 = *(&self->super.super.super.super.isa + v60);
-              v62 = [(UIView *)self traitCollection];
-              [v61 setCompositingMode:{objc_msgSend(v5, "selectedSegmentCompositingModeForTraitCollection:", v62)}];
+              traitCollection5 = [(UIView *)self traitCollection];
+              [v61 setCompositingMode:{objc_msgSend(v5, "selectedSegmentCompositingModeForTraitCollection:", traitCollection5)}];
             }
 
-            [(UISegmentedControl *)self _updateSelectionToSegment:v11 highlight:v74 shouldAnimate:v7 sameSegment:v6 == selectionIndicatorSegment];
+            [(UISegmentedControl *)self _updateSelectionToSegment:v11 highlight:v74 shouldAnimate:animateSlidingSelectionByDefault sameSegment:v6 == selectionIndicatorSegment];
 LABEL_34:
 
             goto LABEL_35;
@@ -1745,8 +1745,8 @@ LABEL_34:
     selectionImageView = self->_selectionImageView;
     self->_selectionImageView = 0;
 
-    v26 = self;
-    v27 = v26->_backdropView;
+    selfCopy2 = self;
+    v27 = selfCopy2->_backdropView;
     if (v27)
     {
       if ((*(&self->_segmentedControlFlags + 3) & 0x80) != 0)
@@ -1756,14 +1756,14 @@ LABEL_34:
 
       else
       {
-        [(UIView *)v26 viewWithTag:-2031];
+        [(UIView *)selfCopy2 viewWithTag:-2031];
       }
       v28 = ;
     }
 
     else
     {
-      v28 = v26;
+      v28 = selfCopy2;
     }
 
     v29 = v28;
@@ -1789,11 +1789,11 @@ LABEL_35:
   }
 
   v4 = objc_opt_class();
-  v5 = [(UIView *)self traitCollection];
-  v6 = UISegmentedControlStyleProviderForIdiom(v4, [v5 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v6 = UISegmentedControlStyleProviderForIdiom(v4, [traitCollection userInterfaceIdiom]);
 
-  LOBYTE(v5) = [v6 animateHighlightingSelectionByDefault];
-  return v5;
+  LOBYTE(traitCollection) = [v6 animateHighlightingSelectionByDefault];
+  return traitCollection;
 }
 
 - (BOOL)hasBackdropViewOrMaterial
@@ -1812,12 +1812,12 @@ LABEL_35:
   return (v3 & *&segmentedControlFlags) != 0;
 }
 
-- (id)_viewForLoweringBaselineLayoutAttribute:(int)a3
+- (id)_viewForLoweringBaselineLayoutAttribute:(int)attribute
 {
   v19 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = UISegmentedControl;
-  v4 = [(UIView *)&v17 _viewForLoweringBaselineLayoutAttribute:*&a3];
+  v4 = [(UIView *)&v17 _viewForLoweringBaselineLayoutAttribute:*&attribute];
   v5 = v4;
   if (v4 && [v4 translatesAutoresizingMaskIntoConstraints])
   {
@@ -1841,8 +1841,8 @@ LABEL_35:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) viewForLastBaselineLayout];
-          [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+          viewForLastBaselineLayout = [*(*(&v13 + 1) + 8 * i) viewForLastBaselineLayout];
+          [viewForLastBaselineLayout setTranslatesAutoresizingMaskIntoConstraints:0];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
@@ -1855,50 +1855,50 @@ LABEL_35:
   return v5;
 }
 
-+ (void)_registerStyleProvider:(id)a3 forIdiom:(int64_t)a4
++ (void)_registerStyleProvider:(id)provider forIdiom:(int64_t)idiom
 {
-  v9 = a3;
+  providerCopy = provider;
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
     v5 = qword_1ED4974C8;
     if (!qword_1ED4974C8)
     {
-      v6 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v7 = qword_1ED4974C8;
-      qword_1ED4974C8 = v6;
+      qword_1ED4974C8 = dictionary;
 
       v5 = qword_1ED4974C8;
     }
 
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    [v5 setObject:v9 forKey:v8];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
+    [v5 setObject:providerCopy forKey:v8];
   }
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"selectedSegmentIndex"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"selectedSegmentIndex"])
   {
     v5 = 0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___UISegmentedControl;
-    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v5;
 }
 
-+ (double)_defaultHeightForTraitCollection:(id)a3 size:(int)a4
++ (double)_defaultHeightForTraitCollection:(id)collection size:(int)size
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = UISegmentedControlStyleProviderForIdiom(a1, [v6 userInterfaceIdiom]);
-  [v7 defaultHeightForControlSize:v4 traitCollection:v6];
+  v4 = *&size;
+  collectionCopy = collection;
+  v7 = UISegmentedControlStyleProviderForIdiom(self, [collectionCopy userInterfaceIdiom]);
+  [v7 defaultHeightForControlSize:v4 traitCollection:collectionCopy];
   v9 = v8;
 
   return v9;
@@ -1907,26 +1907,26 @@ LABEL_35:
 + (double)_defaultHeight
 {
   v3 = +[UITraitCollection _fallbackTraitCollection];
-  [a1 _defaultHeightForTraitCollection:v3 size:0];
+  [self _defaultHeightForTraitCollection:v3 size:0];
   v5 = v4;
 
   return v5;
 }
 
-+ (double)defaultHeightForStyle:(int64_t)a3 size:(int)a4
++ (double)defaultHeightForStyle:(int64_t)style size:(int)size
 {
-  v4 = *&a4;
+  v4 = *&size;
   v6 = +[UITraitCollection _fallbackTraitCollection];
-  [a1 _defaultHeightForTraitCollection:v6 size:v4];
+  [self _defaultHeightForTraitCollection:v6 size:v4];
   v8 = v7;
 
   return v8;
 }
 
-+ (double)defaultHeightForStyle:(int64_t)a3
++ (double)defaultHeightForStyle:(int64_t)style
 {
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  [a1 _defaultHeightForTraitCollection:v4 size:0];
+  [self _defaultHeightForTraitCollection:v4 size:0];
   v6 = v5;
 
   return v6;
@@ -1946,36 +1946,36 @@ LABEL_35:
   [(UIView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)_setUseGlass:(BOOL)a3
+- (void)_setUseGlass:(BOOL)glass
 {
-  if (((((*&self->_segmentedControlFlags & 0x40000000) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_segmentedControlFlags & 0x40000000) == 0) ^ glass) & 1) == 0)
   {
     v5 = 0x40000000;
-    if (!a3)
+    if (!glass)
     {
       v5 = 0;
     }
 
     self->_segmentedControlFlags = (*&self->_segmentedControlFlags & 0xFFFFFFFFBFFFFFFFLL | v5);
-    v7 = [(UIView *)self superview];
-    v6 = [(UIView *)self traitCollection];
-    [(UISegmentedControl *)self _updateForGlassIfNeededForSuperview:v7 traitCollection:v6];
+    superview = [(UIView *)self superview];
+    traitCollection = [(UIView *)self traitCollection];
+    [(UISegmentedControl *)self _updateForGlassIfNeededForSuperview:superview traitCollection:traitCollection];
   }
 }
 
-- (void)_updateForGlassIfNeededForSuperview:(void *)a3 traitCollection:
+- (void)_updateForGlassIfNeededForSuperview:(void *)superview traitCollection:
 {
   v39 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  superviewCopy = superview;
+  if (!self)
   {
     goto LABEL_41;
   }
 
   v7 = v5;
-  v8 = v6;
-  if ((*(a1 + 627) & 0x40) != 0)
+  v8 = superviewCopy;
+  if ((*(self + 627) & 0x40) != 0)
   {
     goto LABEL_12;
   }
@@ -1983,11 +1983,11 @@ LABEL_35:
   objc_opt_class();
   if (v7)
   {
-    v9 = v7;
+    superview = v7;
     while ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v9 = [v9 superview];
-      if (!v9)
+      superview = [superview superview];
+      if (!superview)
       {
         goto LABEL_7;
       }
@@ -2016,15 +2016,15 @@ LABEL_7:
   }
 
 LABEL_15:
-  v12 = *(a1 + 624);
+  v12 = *(self + 624);
   if ((v12 & 0x290000000) != 0x210000000 || v11 == ((v12 >> 29) & 1))
   {
     goto LABEL_41;
   }
 
   v14 = objc_opt_class();
-  v15 = [a1 traitCollection];
-  v16 = UISegmentedControlStyleProviderForIdiom(v14, [v15 userInterfaceIdiom]);
+  traitCollection = [self traitCollection];
+  v16 = UISegmentedControlStyleProviderForIdiom(v14, [traitCollection userInterfaceIdiom]);
   if (objc_opt_respondsToSelector())
   {
     v17 = v16;
@@ -2035,17 +2035,17 @@ LABEL_15:
     v17 = 0;
   }
 
-  v18 = *(a1 + 624);
+  v18 = *(self + 624);
   if (v11)
   {
-    *(a1 + 624) = v18 | 0x20000000;
-    v19 = [v17 useTVStyleFocusSelection];
-    v20 = [v17 backgroundMaterial];
-    if (v19)
+    *(self + 624) = v18 | 0x20000000;
+    useTVStyleFocusSelection = [v17 useTVStyleFocusSelection];
+    backgroundMaterial = [v17 backgroundMaterial];
+    if (useTVStyleFocusSelection)
     {
-      [*(a1 + 488) _setBackground:v20];
+      [*(self + 488) _setBackground:backgroundMaterial];
 
-      [a1 addSubview:*(a1 + 488)];
+      [self addSubview:*(self + 488)];
       if ((v12 & 0x400000000) == 0)
       {
         goto LABEL_30;
@@ -2054,7 +2054,7 @@ LABEL_15:
 
     else
     {
-      [a1 _setBackground:v20];
+      [self _setBackground:backgroundMaterial];
 
       if ((v12 & 0x400000000) == 0)
       {
@@ -2065,31 +2065,31 @@ LABEL_15:
 
   else
   {
-    *(a1 + 624) = v18 & 0xFFFFFFFFDFFFFFFFLL;
+    *(self + 624) = v18 & 0xFFFFFFFFDFFFFFFFLL;
     if ([v17 useTVStyleFocusSelection])
     {
-      [*(a1 + 488) _setBackground:0];
+      [*(self + 488) _setBackground:0];
     }
 
-    [a1 _setBackground:0];
+    [self _setBackground:0];
     if ((v12 & 0x400000000) == 0)
     {
       goto LABEL_30;
     }
   }
 
-  [*(a1 + 456) removeFromSuperview];
-  v21 = *(a1 + 456);
-  *(a1 + 456) = 0;
+  [*(self + 456) removeFromSuperview];
+  v21 = *(self + 456);
+  *(self + 456) = 0;
 
-  [a1 _updateSelectionIndicator];
+  [self _updateSelectionIndicator];
 LABEL_30:
-  [a1 setTransparentBackground:v11];
+  [self setTransparentBackground:v11];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v22 = *(a1 + 496);
+  v22 = *(self + 496);
   v23 = [v22 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v23)
   {
@@ -2104,7 +2104,7 @@ LABEL_30:
           objc_enumerationMutation(v22);
         }
 
-        [*(*(&v34 + 1) + 8 * i) _setHasMaterial:{(*(a1 + 624) >> 29) & 1, v34}];
+        [*(*(&v34 + 1) + 8 * i) _setHasMaterial:{(*(self + 624) >> 29) & 1, v34}];
       }
 
       v24 = [v22 countByEnumeratingWithState:&v34 objects:v38 count:16];
@@ -2113,7 +2113,7 @@ LABEL_30:
     while (v24);
   }
 
-  [a1 frame];
+  [self frame];
   v28 = v27;
   v30 = v29;
   v32 = v31;
@@ -2124,24 +2124,24 @@ LABEL_30:
 
   else
   {
-    [a1 _barHeight];
+    [self _barHeight];
   }
 
-  [a1 setFrame:{v28, v30, v32, v33, v34}];
-  [a1 setNeedsLayout];
-  [a1 invalidateIntrinsicContentSize];
+  [self setFrame:{v28, v30, v32, v33, v34}];
+  [self setNeedsLayout];
+  [self invalidateIntrinsicContentSize];
 
 LABEL_41:
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v6.receiver = self;
   v6.super_class = UISegmentedControl;
-  v4 = a3;
-  [(UIView *)&v6 willMoveToSuperview:v4];
+  superviewCopy = superview;
+  [(UIView *)&v6 willMoveToSuperview:superviewCopy];
   v5 = [(UIView *)self traitCollection:v6.receiver];
-  [(UISegmentedControl *)self _updateForGlassIfNeededForSuperview:v4 traitCollection:v5];
+  [(UISegmentedControl *)self _updateForGlassIfNeededForSuperview:superviewCopy traitCollection:v5];
 }
 
 void __67__UISegmentedControl__shouldEffectivelyUseGlassForTraitCollection___block_invoke()
@@ -2268,8 +2268,8 @@ LABEL_17:
   y = frame.origin.y;
   x = frame.origin.x;
   v9 = actions;
-  v10 = [(UISegmentedControl *)self initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(UISegmentedControl *)self initWithFrame:x, y, width, height];
+  if (height)
   {
     v11 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v9];
     v12 = [v11 count];
@@ -2307,7 +2307,7 @@ LABEL_17:
         }
 
         v19 = [v11 objectAtIndexedSubscript:v14];
-        v20 = [(UISegmentedControl *)v10 _createAndAddSegmentAtIndex:v14 position:v18 withInfo:v19];
+        v20 = [(UISegmentedControl *)height _createAndAddSegmentAtIndex:v14 position:v18 withInfo:v19];
 
         ++v14;
       }
@@ -2316,7 +2316,7 @@ LABEL_17:
     }
   }
 
-  return v10;
+  return height;
 }
 
 - (UISegmentedControl)initWithCoder:(NSCoder *)coder
@@ -2403,75 +2403,75 @@ LABEL_17:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = UISegmentedControl;
-  [(UIControl *)&v13 encodeWithCoder:v4];
+  [(UIControl *)&v13 encodeWithCoder:coderCopy];
   segmentedControlFlags = self->_segmentedControlFlags;
   if ((*&segmentedControlFlags & 8) != 0)
   {
-    [v4 encodeBool:1 forKey:@"UIMomentary"];
+    [coderCopy encodeBool:1 forKey:@"UIMomentary"];
     segmentedControlFlags = self->_segmentedControlFlags;
   }
 
   if ((*&segmentedControlFlags & 4) != 0)
   {
-    [v4 encodeBool:1 forKey:@"UISegmentedControlAlwaysEmitValueChanged"];
+    [coderCopy encodeBool:1 forKey:@"UISegmentedControlAlwaysEmitValueChanged"];
   }
 
   if ([(NSMutableArray *)self->_segments count])
   {
-    [v4 encodeObject:self->_segments forKey:@"UISegments"];
+    [coderCopy encodeObject:self->_segments forKey:@"UISegments"];
   }
 
   v6 = self->_segmentedControlFlags;
   if ((*&v6 & 3) != 0)
   {
-    [v4 encodeInteger:*&self->_segmentedControlFlags & 3 forKey:@"UISegmentedControlSize"];
+    [coderCopy encodeInteger:*&self->_segmentedControlFlags & 3 forKey:@"UISegmentedControlSize"];
     v6 = self->_segmentedControlFlags;
   }
 
   if ((*&v6 & 0x20) != 0)
   {
-    [v4 encodeBool:1 forKey:@"UIAutosizeToFitSegments"];
+    [coderCopy encodeBool:1 forKey:@"UIAutosizeToFitSegments"];
     v6 = self->_segmentedControlFlags;
   }
 
   if ((*&v6 & 0x200) != 0)
   {
-    [v4 encodeBool:1 forKey:@"UIUseProportionalWidthSegments"];
+    [coderCopy encodeBool:1 forKey:@"UIUseProportionalWidthSegments"];
   }
 
-  [v4 encodeInteger:self->_selectedSegment forKey:@"UISelectedSegmentIndex"];
+  [coderCopy encodeInteger:self->_selectedSegment forKey:@"UISelectedSegmentIndex"];
   if ([(UISegmentedControl *)self isSpringLoaded])
   {
-    [v4 encodeBool:1 forKey:@"UISpringLoaded"];
+    [coderCopy encodeBool:1 forKey:@"UISpringLoaded"];
   }
 
-  v7 = [(UISegmentedControl *)self selectedSegmentTintColor];
+  selectedSegmentTintColor = [(UISegmentedControl *)self selectedSegmentTintColor];
 
-  if (v7)
+  if (selectedSegmentTintColor)
   {
-    v8 = [(UISegmentedControl *)self selectedSegmentTintColor];
-    [v4 encodeObject:v8 forKey:@"UISegmentedControlSelectedSegmentTintColor"];
+    selectedSegmentTintColor2 = [(UISegmentedControl *)self selectedSegmentTintColor];
+    [coderCopy encodeObject:selectedSegmentTintColor2 forKey:@"UISegmentedControlSelectedSegmentTintColor"];
   }
 
-  v9 = [(UISegmentedControl *)self _selectedSegmentVibrancyEffect];
+  _selectedSegmentVibrancyEffect = [(UISegmentedControl *)self _selectedSegmentVibrancyEffect];
 
-  if (v9)
+  if (_selectedSegmentVibrancyEffect)
   {
-    v10 = [(UISegmentedControl *)self _selectedSegmentVibrancyEffect];
-    [v4 encodeObject:v10 forKey:@"UISegmentedControlSelectedSegmentVibrancyEffect"];
+    _selectedSegmentVibrancyEffect2 = [(UISegmentedControl *)self _selectedSegmentVibrancyEffect];
+    [coderCopy encodeObject:_selectedSegmentVibrancyEffect2 forKey:@"UISegmentedControlSelectedSegmentVibrancyEffect"];
   }
 
-  v11 = [(UISegmentedControl *)self _backgroundTintColor];
+  _backgroundTintColor = [(UISegmentedControl *)self _backgroundTintColor];
 
-  if (v11)
+  if (_backgroundTintColor)
   {
-    v12 = [(UISegmentedControl *)self _backgroundTintColor];
-    [v4 encodeObject:v12 forKey:@"UISegmentedControlBackgroundTintColor"];
+    _backgroundTintColor2 = [(UISegmentedControl *)self _backgroundTintColor];
+    [coderCopy encodeObject:_backgroundTintColor2 forKey:@"UISegmentedControlBackgroundTintColor"];
   }
 }
 
@@ -2483,45 +2483,45 @@ LABEL_17:
   [(UIView *)&v3 dealloc];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v16.receiver = self;
   v16.super_class = UISegmentedControl;
-  [(UIView *)&v16 traitCollectionDidChange:v4];
-  v5 = [(UIView *)self traitCollection];
-  v6 = [v4 userInterfaceIdiom];
-  if (v6 != [v5 userInterfaceIdiom])
+  [(UIView *)&v16 traitCollectionDidChange:changeCopy];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [changeCopy userInterfaceIdiom];
+  if (userInterfaceIdiom != [traitCollection userInterfaceIdiom])
   {
-    v7 = [(UIView *)self traitCollection];
-    v8 = [v7 userInterfaceIdiom];
+    traitCollection2 = [(UIView *)self traitCollection];
+    userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
-    if (v8 != -1 && [v4 userInterfaceIdiom] != -1)
+    if (userInterfaceIdiom2 != -1 && [changeCopy userInterfaceIdiom] != -1)
     {
       [(UISegmentedControl *)self _installVisualStyleDefaults];
     }
   }
 
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
     [(UISegmentedControl *)self _setNeedsBackgroundAndContentViewUpdate];
   }
 
-  if (v5 && (!v4 || v5[13] != v4[13]))
+  if (traitCollection && (!changeCopy || traitCollection[13] != changeCopy[13]))
   {
     [(UISegmentedControl *)self _updateAxLongPressGestureRecognizer];
   }
 
-  v9 = [(UIView *)self superview];
-  [(UISegmentedControl *)self _updateForGlassIfNeededForSuperview:v9 traitCollection:v5];
+  superview = [(UIView *)self superview];
+  [(UISegmentedControl *)self _updateForGlassIfNeededForSuperview:superview traitCollection:traitCollection];
 
-  v10 = [(UIView *)self traitCollection];
-  if (v10)
+  traitCollection3 = [(UIView *)self traitCollection];
+  if (traitCollection3)
   {
-    if (v4)
+    if (changeCopy)
     {
-      v11 = v10[15];
-      v12 = v4[15];
+      v11 = traitCollection3[15];
+      v12 = changeCopy[15];
 
       if (v11 == v12)
       {
@@ -2540,31 +2540,31 @@ LABEL_17:
   if ((*(&self->_segmentedControlFlags + 2) & 0x10) != 0)
   {
     v13 = objc_opt_class();
-    v14 = [(UIView *)self traitCollection];
-    v15 = UISegmentedControlStyleProviderForIdiom(v13, [v14 userInterfaceIdiom]);
+    traitCollection4 = [(UIView *)self traitCollection];
+    v15 = UISegmentedControlStyleProviderForIdiom(v13, [traitCollection4 userInterfaceIdiom]);
 
-    [v15 updateSegmentedControl:self fromTraitCollection:v4];
+    [v15 updateSegmentedControl:self fromTraitCollection:changeCopy];
   }
 }
 
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
-  v6 = a4;
+  toWindowCopy = toWindow;
   v10.receiver = self;
   v10.super_class = UISegmentedControl;
-  [(UIControl *)&v10 _didMoveFromWindow:a3 toWindow:v6];
-  if (v6)
+  [(UIControl *)&v10 _didMoveFromWindow:window toWindow:toWindowCopy];
+  if (toWindowCopy)
   {
-    v7 = [(UIView *)self layer];
-    v8 = [v6 screen];
-    [v8 scale];
-    [v7 setRasterizationScale:?];
+    layer = [(UIView *)self layer];
+    screen = [toWindowCopy screen];
+    [screen scale];
+    [layer setRasterizationScale:?];
 
-    v9 = [(UISegmentedControl *)self _internalFocusSystem];
+    _internalFocusSystem = [(UISegmentedControl *)self _internalFocusSystem];
   }
 }
 
-- (void)_setSegmentedControlAppearance:(id *)a3
+- (void)_setSegmentedControlAppearance:(id *)appearance
 {
   appearanceStorage = self->_appearanceStorage;
   if (!appearanceStorage)
@@ -2576,14 +2576,14 @@ LABEL_17:
     appearanceStorage = self->_appearanceStorage;
   }
 
-  [appearanceStorage setDetail:a3];
+  [appearanceStorage setDetail:appearance];
 
   [(UISegmentedControl *)self _setNeedsAppearanceUpdate];
 }
 
-- (void)_setAppearanceIsTiled:(BOOL)a3 leftCapWidth:(unint64_t)a4 rightCapWidth:(unint64_t)a5
+- (void)_setAppearanceIsTiled:(BOOL)tiled leftCapWidth:(unint64_t)width rightCapWidth:(unint64_t)capWidth
 {
-  v7 = a3;
+  tiledCopy = tiled;
   appearanceStorage = self->_appearanceStorage;
   if (!appearanceStorage)
   {
@@ -2594,18 +2594,18 @@ LABEL_17:
     appearanceStorage = self->_appearanceStorage;
   }
 
-  [appearanceStorage setIsTiled:v7 leftCapWidth:a4 rightCapWidth:a5];
+  [appearanceStorage setIsTiled:tiledCopy leftCapWidth:width rightCapWidth:capWidth];
 
   [(UISegmentedControl *)self _setNeedsAppearanceUpdate];
 }
 
-- (void)_setControlSize:(int)a3 andInvalidate:(BOOL)a4
+- (void)_setControlSize:(int)size andInvalidate:(BOOL)invalidate
 {
-  v4 = a4;
-  v5 = *&a3;
+  invalidateCopy = invalidate;
+  v5 = *&size;
   v25 = *MEMORY[0x1E69E9840];
   segmentedControlFlags = self->_segmentedControlFlags;
-  self->_segmentedControlFlags = (*&segmentedControlFlags & 0xFFFFFFFFFFFFFFFCLL | a3 & 3);
+  self->_segmentedControlFlags = (*&segmentedControlFlags & 0xFFFFFFFFFFFFFFFCLL | size & 3);
   if ((*&segmentedControlFlags & 0x20) != 0)
   {
     [(UISegmentedControl *)self sizeToFit];
@@ -2649,16 +2649,16 @@ LABEL_17:
     while (v17);
   }
 
-  if (v4)
+  if (invalidateCopy)
   {
     [(UIView *)self setNeedsLayout];
     [(UIView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setControlSize:(int)a3
+- (void)setControlSize:(int)size
 {
-  if ((*&self->_segmentedControlFlags & 3) != a3)
+  if ((*&self->_segmentedControlFlags & 3) != size)
   {
     [UISegmentedControl _setControlSize:"_setControlSize:andInvalidate:" andInvalidate:?];
   }
@@ -2685,13 +2685,13 @@ LABEL_17:
   }
 }
 
-- (void)_setAutosizeText:(BOOL)a3
+- (void)_setAutosizeText:(BOOL)text
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (((((*&self->_segmentedControlFlags & 0x80) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_segmentedControlFlags & 0x80) == 0) ^ text) & 1) == 0)
   {
     v4 = 128;
-    if (!a3)
+    if (!text)
     {
       v4 = 0;
     }
@@ -2727,12 +2727,12 @@ LABEL_17:
   }
 }
 
-- (void)setBarStyle:(int64_t)a3
+- (void)setBarStyle:(int64_t)style
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_barStyle != a3)
+  if (self->_barStyle != style)
   {
-    self->_barStyle = a3;
+    self->_barStyle = style;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -2765,12 +2765,12 @@ LABEL_17:
   }
 }
 
-- (void)setTransparentBackground:(BOOL)a3
+- (void)setTransparentBackground:(BOOL)background
 {
-  if (((((*&self->_segmentedControlFlags & 0x100) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_segmentedControlFlags & 0x100) == 0) ^ background) & 1) == 0)
   {
     v3 = 256;
-    if (!a3)
+    if (!background)
     {
       v3 = 0;
     }
@@ -2780,13 +2780,13 @@ LABEL_17:
   }
 }
 
-- (void)setAdjustsForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsForContentSizeCategory:(BOOL)category
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (((((*&self->_segmentedControlFlags & 0x4000) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_segmentedControlFlags & 0x4000) == 0) ^ category) & 1) == 0)
   {
     v4 = 0x4000;
-    if (!a3)
+    if (!category)
     {
       v4 = 0;
     }
@@ -2827,10 +2827,10 @@ LABEL_17:
   }
 }
 
-- (void)_setAnimatingOutDynamicShdaow:(BOOL)a3
+- (void)_setAnimatingOutDynamicShdaow:(BOOL)shdaow
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!shdaow)
   {
     v3 = 0;
   }
@@ -2842,8 +2842,8 @@ LABEL_17:
 {
   v5 = animated;
   v11 = action;
-  v8 = [(UIAction *)v11 identifier];
-  v9 = [(UISegmentedControl *)self segmentIndexForActionIdentifier:v8];
+  identifier = [(UIAction *)v11 identifier];
+  v9 = [(UISegmentedControl *)self segmentIndexForActionIdentifier:identifier];
 
   if (v9 == segment)
   {
@@ -2871,16 +2871,16 @@ LABEL_17:
   }
 }
 
-- (id)_accessibilitySegmentItemAtIndex:(unint64_t)a3
+- (id)_accessibilitySegmentItemAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_segments count]<= a3)
+  if ([(NSMutableArray *)self->_segments count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_segments objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_segments objectAtIndex:index];
   }
 
   return v5;
@@ -2991,18 +2991,18 @@ void __52__UISegmentedControl_removeSegmentAtIndex_animated___block_invoke(uint6
 {
   v6 = title;
   v7 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:segment];
-  v8 = [v7 objectValue];
+  objectValue = [v7 objectValue];
   v9 = v6;
   v11 = v9;
-  if (v8 == v9)
+  if (objectValue == v9)
   {
 
     goto LABEL_11;
   }
 
-  if (v9 && v8)
+  if (v9 && objectValue)
   {
-    v10 = [(NSString *)v8 isEqual:v9];
+    v10 = [(NSString *)objectValue isEqual:v9];
 
     if (v10)
     {
@@ -3027,12 +3027,12 @@ LABEL_11:
 - (NSString)titleForSegmentAtIndex:(NSUInteger)segment
 {
   v3 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:segment];
-  v4 = [v3 objectValue];
+  objectValue = [v3 objectValue];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 string];
+    string = [objectValue string];
   }
 
   else
@@ -3040,7 +3040,7 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = objectValue;
     }
 
     else
@@ -3048,44 +3048,44 @@ LABEL_11:
       v6 = 0;
     }
 
-    v5 = v6;
+    string = v6;
   }
 
-  v7 = v5;
+  v7 = string;
 
   return v7;
 }
 
-- (void)_setAction:(id)a3 forSegmentAtIndex:(unint64_t)a4
+- (void)_setAction:(id)action forSegmentAtIndex:(unint64_t)index
 {
-  v16 = a3;
-  v6 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:a4];
-  [v6 setAction:v16];
-  v7 = [v16 image];
-  if (v7)
+  actionCopy = action;
+  v6 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:index];
+  [v6 setAction:actionCopy];
+  image = [actionCopy image];
+  if (image)
   {
-    v8 = v7;
+    title = image;
   }
 
   else
   {
-    v8 = [v16 title];
+    title = [actionCopy title];
   }
 
-  v9 = v8;
+  v9 = title;
 
-  v10 = [v6 objectValue];
+  objectValue = [v6 objectValue];
   v11 = v9;
   v12 = v11;
-  if (v10 == v11)
+  if (objectValue == v11)
   {
 
     goto LABEL_17;
   }
 
-  if (v11 && v10)
+  if (v11 && objectValue)
   {
-    v13 = [v10 isEqual:v11];
+    v13 = [objectValue isEqual:v11];
 
     if (v13)
     {
@@ -3097,16 +3097,16 @@ LABEL_11:
   {
   }
 
-  v14 = [v16 image];
-  if (v14)
+  image2 = [actionCopy image];
+  if (image2)
   {
-    [v6 setObjectValue:v14];
+    [v6 setObjectValue:image2];
   }
 
   else
   {
-    v15 = [v16 title];
-    [v6 setObjectValue:v15];
+    title2 = [actionCopy title];
+    [v6 setObjectValue:title2];
   }
 
   if ((*&self->_segmentedControlFlags & 0x20) != 0)
@@ -3121,13 +3121,13 @@ LABEL_17:
 - (void)setAction:(UIAction *)action forSegmentAtIndex:(NSUInteger)segment
 {
   v11 = action;
-  v7 = [(UIAction *)v11 identifier];
-  v8 = [(UISegmentedControl *)self segmentIndexForActionIdentifier:v7];
+  identifier = [(UIAction *)v11 identifier];
+  v8 = [(UISegmentedControl *)self segmentIndexForActionIdentifier:identifier];
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL && v8 != segment)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UISegmentedControl.m" lineNumber:4610 description:{@"Attempting to set the action of segment at index %lu with an action whose identifier is the same as the segment at index %lu (action=%@). Identifiers are required to be unique.", segment, v8, v11}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISegmentedControl.m" lineNumber:4610 description:{@"Attempting to set the action of segment at index %lu with an action whose identifier is the same as the segment at index %lu (action=%@). Identifiers are required to be unique.", segment, v8, v11}];
   }
 
   [(UISegmentedControl *)self _setAction:v11 forSegmentAtIndex:segment];
@@ -3137,16 +3137,16 @@ LABEL_17:
 {
   if ([(NSMutableArray *)self->_segments count]<= segment)
   {
-    v6 = 0;
+    action = 0;
   }
 
   else
   {
     v5 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:segment];
-    v6 = [v5 action];
+    action = [v5 action];
   }
 
-  return v6;
+  return action;
 }
 
 - (NSInteger)segmentIndexForActionIdentifier:(UIActionIdentifier)actionIdentifier
@@ -3166,12 +3166,12 @@ LABEL_6:
     while (1)
     {
       v8 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:v7];
-      v9 = [v8 action];
+      action = [v8 action];
 
-      if (v9)
+      if (action)
       {
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [action identifier];
+        v11 = [identifier isEqualToString:v4];
 
         if (v11)
         {
@@ -3189,22 +3189,22 @@ LABEL_6:
   return v7;
 }
 
-- (void)_setAttributedTitle:(id)a3 forSegmentAtIndex:(unint64_t)a4
+- (void)_setAttributedTitle:(id)title forSegmentAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:a4];
-  v8 = [v7 objectValue];
-  v9 = v6;
+  titleCopy = title;
+  v7 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:index];
+  objectValue = [v7 objectValue];
+  v9 = titleCopy;
   v11 = v9;
-  if (v8 == v9)
+  if (objectValue == v9)
   {
 
     goto LABEL_11;
   }
 
-  if (v9 && v8)
+  if (v9 && objectValue)
   {
-    v10 = [v8 isEqual:v9];
+    v10 = [objectValue isEqual:v9];
 
     if (v10)
     {
@@ -3226,15 +3226,15 @@ LABEL_6:
 LABEL_11:
 }
 
-- (id)_attributedTitleForSegmentAtIndex:(unint64_t)a3
+- (id)_attributedTitleForSegmentAtIndex:(unint64_t)index
 {
-  v3 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:a3];
-  v4 = [v3 objectValue];
+  v3 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:index];
+  objectValue = [v3 objectValue];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectValue;
   }
 
   else
@@ -3251,18 +3251,18 @@ LABEL_11:
 {
   v6 = image;
   v7 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:segment];
-  v8 = [v7 objectValue];
+  objectValue = [v7 objectValue];
   v9 = v6;
   v11 = v9;
-  if (v8 == v9)
+  if (objectValue == v9)
   {
 
     goto LABEL_11;
   }
 
-  if (v9 && v8)
+  if (v9 && objectValue)
   {
-    v10 = [(UIImage *)v8 isEqual:v9];
+    v10 = [(UIImage *)objectValue isEqual:v9];
 
     if (v10)
     {
@@ -3287,12 +3287,12 @@ LABEL_11:
 - (UIImage)imageForSegmentAtIndex:(NSUInteger)segment
 {
   v3 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:segment];
-  v4 = [v3 objectValue];
+  objectValue = [v3 objectValue];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectValue;
   }
 
   else
@@ -3369,13 +3369,13 @@ LABEL_11:
 {
   v5 = enabled;
   v9 = [(NSMutableArray *)self->_segments objectAtIndex:segment];
-  v7 = [v9 isEnabled];
+  isEnabled = [v9 isEnabled];
   [v9 setEnabled:v5];
-  if (v7 != v5)
+  if (isEnabled != v5)
   {
-    v8 = [self->_appearanceStorage anyDividerImage];
+    anyDividerImage = [self->_appearanceStorage anyDividerImage];
 
-    if (v8)
+    if (anyDividerImage)
     {
       [(UISegmentedControl *)self _updateDividerImageForSegmentAtIndex:segment];
     }
@@ -3390,21 +3390,21 @@ LABEL_11:
 - (BOOL)isEnabledForSegmentAtIndex:(NSUInteger)segment
 {
   v3 = [(NSMutableArray *)self->_segments objectAtIndex:segment];
-  v4 = [v3 isEnabled];
+  isEnabled = [v3 isEnabled];
 
-  return v4;
+  return isEnabled;
 }
 
-- (void)_setSelectedSegmentIndex:(int64_t)a3 notify:(BOOL)a4 animate:(BOOL)a5
+- (void)_setSelectedSegmentIndex:(int64_t)index notify:(BOOL)notify animate:(BOOL)animate
 {
-  v5 = a5;
-  v6 = a4;
-  if ([(NSMutableArray *)self->_segments count]> a3 && [(UISegmentedControl *)self _shouldSelectSegmentAtIndex:a3])
+  animateCopy = animate;
+  notifyCopy = notify;
+  if ([(NSMutableArray *)self->_segments count]> index && [(UISegmentedControl *)self _shouldSelectSegmentAtIndex:index])
   {
     [(UISegmentedControl *)self willChangeValueForKey:@"selectedSegmentIndex"];
-    if (self->_selectedSegment == a3)
+    if (self->_selectedSegment == index)
     {
-      if ((*&self->_segmentedControlFlags & 4) != 0 && v6)
+      if ((*&self->_segmentedControlFlags & 4) != 0 && notifyCopy)
       {
         [(UISegmentedControl *)self _emitValueChanged];
       }
@@ -3413,8 +3413,8 @@ LABEL_11:
     else
     {
       v9 = objc_opt_class();
-      v10 = [(UIView *)self traitCollection];
-      v11 = UISegmentedControlStyleProviderForIdiom(v9, [v10 userInterfaceIdiom]);
+      traitCollection = [(UIView *)self traitCollection];
+      v11 = UISegmentedControlStyleProviderForIdiom(v9, [traitCollection userInterfaceIdiom]);
 
       [MEMORY[0x1E6979518] begin];
       selectedSegment = self->_selectedSegment;
@@ -3434,14 +3434,14 @@ LABEL_11:
       aBlock[3] = &unk_1E7101EF0;
       v14 = v13;
       v26 = v14;
-      v27 = self;
-      v30 = v5;
-      v29 = a3;
+      selfCopy = self;
+      v30 = animateCopy;
+      indexCopy = index;
       v15 = v11;
       v28 = v15;
       v16 = _Block_copy(aBlock);
       v17 = v16;
-      if (v5)
+      if (animateCopy)
       {
         v20 = MEMORY[0x1E69E9820];
         v21 = 3221225472;
@@ -3449,19 +3449,19 @@ LABEL_11:
         v23 = &unk_1E70F5AC0;
         v24 = v14;
         [UIView animateWithDuration:327685 delay:v17 options:&v20 animations:0.2 completion:0.0];
-        v18 = v24;
+        pointerInteraction = v24;
       }
 
       else
       {
         (*(v16 + 2))(v16);
         [v14 setWasSelected:0];
-        v18 = [(UIControl *)self pointerInteraction];
-        [v18 invalidate];
+        pointerInteraction = [(UIControl *)self pointerInteraction];
+        [pointerInteraction invalidate];
       }
 
       [MEMORY[0x1E6979518] commit];
-      if (v6 && ((*&self->_segmentedControlFlags & 8) == 0 || self->_selectedSegment != -1))
+      if (notifyCopy && ((*&self->_segmentedControlFlags & 8) == 0 || self->_selectedSegment != -1))
       {
         [(UISegmentedControl *)self _emitValueChanged:v20];
       }
@@ -3473,8 +3473,8 @@ LABEL_11:
 
       if ((*&self->_segmentedControlFlags & 8) == 0)
       {
-        v19 = [(UISegmentedControl *)self _internalFocusSystem];
-        [v19 setNeedsFocusUpdate];
+        _internalFocusSystem = [(UISegmentedControl *)self _internalFocusSystem];
+        [_internalFocusSystem setNeedsFocusUpdate];
       }
     }
 
@@ -3528,8 +3528,8 @@ void __62__UISegmentedControl__setSelectedSegmentIndex_notify_animate___block_in
 - (void)_emitValueChanged
 {
   v3 = objc_opt_class();
-  v4 = [(UIView *)self traitCollection];
-  v5 = UISegmentedControlStyleProviderForIdiom(v3, [v4 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v5 = UISegmentedControlStyleProviderForIdiom(v3, [traitCollection userInterfaceIdiom]);
 
   if ([v5 useSelectionIndicatorStyling])
   {
@@ -3553,27 +3553,27 @@ void __62__UISegmentedControl__setSelectedSegmentIndex_notify_animate___block_in
   if ((selectedSegment & 0x8000000000000000) == 0 && selectedSegment < [(NSMutableArray *)self->_segments count])
   {
     v4 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:self->_selectedSegment];
-    v5 = [v4 action];
+    action = [v4 action];
 
-    if (v5)
+    if (action)
     {
-      [(UIControl *)self sendAction:v5];
+      [(UIControl *)self sendAction:action];
     }
   }
 
   [(UIControl *)self sendActionsForControlEvents:4096];
 }
 
-- (void)_animateContentChangeWithAnimations:(id)a3 completion:(id)a4
+- (void)_animateContentChangeWithAnimations:(id)animations completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [UIView _animateWithDuration:4 delay:self options:v7 factory:v6 animations:1.06 / UIAnimationDragCoefficient() completion:0.0];
+  completionCopy = completion;
+  animationsCopy = animations;
+  [UIView _animateWithDuration:4 delay:self options:animationsCopy factory:completionCopy animations:1.06 / UIAnimationDragCoefficient() completion:0.0];
 }
 
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path
 {
-  v4 = [MEMORY[0x1E69794A8] animationWithKeyPath:a4];
+  v4 = [MEMORY[0x1E69794A8] animationWithKeyPath:path];
   [v4 setMass:0.6];
   [v4 setStiffness:350.0];
   [v4 setDamping:23.0];
@@ -3586,43 +3586,43 @@ void __62__UISegmentedControl__setSelectedSegmentIndex_notify_animate___block_in
   return v4;
 }
 
-- (void)_setSelected:(BOOL)a3 highlighted:(BOOL)a4 forSegmentAtIndex:(int)a5 forceInfoDisplay:(BOOL)a6
+- (void)_setSelected:(BOOL)selected highlighted:(BOOL)highlighted forSegmentAtIndex:(int)index forceInfoDisplay:(BOOL)display
 {
-  v6 = a6;
-  v7 = a4;
-  v8 = a3;
-  v10 = a5;
-  v11 = [(NSMutableArray *)self->_segments objectAtIndex:a5];
+  displayCopy = display;
+  highlightedCopy = highlighted;
+  selectedCopy = selected;
+  indexCopy = index;
+  v11 = [(NSMutableArray *)self->_segments objectAtIndex:index];
   [v11 setSelectionIndicatorDragged:(*&self->_segmentedControlFlags >> 12) & 1];
-  [v11 setSelected:v8 highlighted:v7];
-  [(UISegmentedControl *)self _updateDividerImageForSegmentAtIndex:v10];
-  if (v6)
+  [v11 setSelected:selectedCopy highlighted:highlightedCopy];
+  [(UISegmentedControl *)self _updateDividerImageForSegmentAtIndex:indexCopy];
+  if (displayCopy)
   {
     [v11 _forceInfoDisplay];
   }
 }
 
-- (void)_setSelected:(BOOL)a3 forSegmentAtIndex:(int)a4 forceInfoDisplay:(BOOL)a5
+- (void)_setSelected:(BOOL)selected forSegmentAtIndex:(int)index forceInfoDisplay:(BOOL)display
 {
-  v5 = a5;
-  v6 = a3;
-  v8 = a4;
-  v9 = [(NSMutableArray *)self->_segments objectAtIndex:a4];
+  displayCopy = display;
+  selectedCopy = selected;
+  indexCopy = index;
+  v9 = [(NSMutableArray *)self->_segments objectAtIndex:index];
   [v9 setSelectionIndicatorDragged:(*&self->_segmentedControlFlags >> 12) & 1];
-  [v9 setSelected:v6];
-  [(UISegmentedControl *)self _updateDividerImageForSegmentAtIndex:v8];
-  if (v5)
+  [v9 setSelected:selectedCopy];
+  [(UISegmentedControl *)self _updateDividerImageForSegmentAtIndex:indexCopy];
+  if (displayCopy)
   {
     [v9 _forceInfoDisplay];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UISegmentedControl *)self frame];
   v10 = height == v9 && width == v8;
   v12.receiver = self;
@@ -3640,12 +3640,12 @@ void __62__UISegmentedControl__setSelectedSegmentIndex_notify_animate___block_in
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UISegmentedControl *)self bounds];
   v10 = height == v9 && width == v8;
   v12.receiver = self;
@@ -3670,29 +3670,29 @@ void __62__UISegmentedControl__setSelectedSegmentIndex_notify_animate___block_in
   {
     v5.receiver = self;
     v5.super_class = UISegmentedControl;
-    v3 = [(UIView *)&v5 viewForLastBaselineLayout];
+    viewForLastBaselineLayout = [(UIView *)&v5 viewForLastBaselineLayout];
   }
 
   else
   {
-    v2 = [(NSMutableArray *)self->_segments lastObject];
-    v3 = [v2 viewForLastBaselineLayout];
+    lastObject = [(NSMutableArray *)self->_segments lastObject];
+    viewForLastBaselineLayout = [lastObject viewForLastBaselineLayout];
   }
 
-  return v3;
+  return viewForLastBaselineLayout;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(NSMutableArray *)self->_segments lastObject];
-  if (v6)
+  height = size.height;
+  width = size.width;
+  lastObject = [(NSMutableArray *)self->_segments lastObject];
+  if (lastObject)
   {
     [(UISegmentedControl *)self alignmentRectInsets];
     v8 = v7;
     v10 = v9;
-    [v6 _baselineOffsetsAtSize:{width, height + v7 + v9}];
+    [lastObject _baselineOffsetsAtSize:{width, height + v7 + v9}];
     v12 = v11 - v8;
     v14 = v13 - v10;
   }
@@ -3710,9 +3710,9 @@ void __62__UISegmentedControl__setSelectedSegmentIndex_notify_animate___block_in
   return result;
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  [(UISegmentedControl *)self frame:a3.width];
+  [(UISegmentedControl *)self frame:size.width];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -3727,8 +3727,8 @@ void __62__UISegmentedControl__setSelectedSegmentIndex_notify_animate___block_in
   v14 = v13;
   if (!v13)
   {
-    v26 = [(UIView *)self traitCollection];
-    [UISegmentedControl _dividerWidthForTraitCollection:v26 size:[(UISegmentedControl *)self controlSize]];
+    traitCollection = [(UIView *)self traitCollection];
+    [UISegmentedControl _dividerWidthForTraitCollection:traitCollection size:[(UISegmentedControl *)self controlSize]];
     v16 = v27;
 
     if (v12)
@@ -3801,8 +3801,8 @@ LABEL_5:
   v28 = v16 * (v12 - 1) + v25;
 LABEL_19:
   v32 = objc_opt_class();
-  v33 = [(UIView *)self traitCollection];
-  v34 = UISegmentedControlStyleProviderForIdiom(v32, [v33 userInterfaceIdiom]);
+  traitCollection2 = [(UIView *)self traitCollection];
+  v34 = UISegmentedControlStyleProviderForIdiom(v32, [traitCollection2 userInterfaceIdiom]);
   if (objc_opt_respondsToSelector())
   {
     v35 = v34;
@@ -3851,8 +3851,8 @@ LABEL_19:
   else
   {
     v15 = objc_opt_class();
-    v16 = [(UIView *)self traitCollection];
-    v17 = UISegmentedControlStyleProviderForIdiom(v15, [v16 userInterfaceIdiom]);
+    traitCollection = [(UIView *)self traitCollection];
+    v17 = UISegmentedControlStyleProviderForIdiom(v15, [traitCollection userInterfaceIdiom]);
 
     if (self->_barStyle > 2uLL)
     {
@@ -3867,14 +3867,14 @@ LABEL_19:
 
     else
     {
-      v18 = [(UISegmentedControl *)self controlSize];
+      controlSize = [(UISegmentedControl *)self controlSize];
       [(UISegmentedControl *)self bounds];
       v20 = v19;
       v22 = v21;
       v24 = v23;
       v26 = v25;
-      v27 = [(UIView *)self traitCollection];
-      [v17 alignmentInsetsForControlSize:v18 bounds:v27 traitCollection:{v20, v22, v24, v26}];
+      traitCollection2 = [(UIView *)self traitCollection];
+      [v17 alignmentInsetsForControlSize:controlSize bounds:traitCollection2 traitCollection:{v20, v22, v24, v26}];
       v8 = v28;
       v10 = v29;
       v12 = v30;
@@ -3893,28 +3893,28 @@ LABEL_19:
   return result;
 }
 
-+ (CGRect)_selectionFrameForBounds:(CGRect)a3 hasMaterial:(BOOL)a4 size:(int)a5 traitCollection:(id)a6 accessibilityView:(BOOL)a7
++ (CGRect)_selectionFrameForBounds:(CGRect)bounds hasMaterial:(BOOL)material size:(int)size traitCollection:(id)collection accessibilityView:(BOOL)view
 {
-  v8 = *&a5;
-  v9 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a6;
-  v16 = v15;
-  if (a7)
+  v8 = *&size;
+  materialCopy = material;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  collectionCopy = collection;
+  v16 = collectionCopy;
+  if (view)
   {
     goto LABEL_11;
   }
 
-  v17 = UISegmentedControlStyleProviderForIdiom(a1, [v15 userInterfaceIdiom]);
+  v17 = UISegmentedControlStyleProviderForIdiom(self, [collectionCopy userInterfaceIdiom]);
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     v17 = 0;
 LABEL_7:
-    [a1 _sectionIndicatorOverflowForTraitCollection:v16 size:v8];
+    [self _sectionIndicatorOverflowForTraitCollection:v16 size:v8];
     v19 = -v20;
     goto LABEL_8;
   }
@@ -3924,7 +3924,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [a1 _sectionIndicatorInsetForTraitCollection:v16 hasMaterial:v9 size:v8];
+  [self _sectionIndicatorInsetForTraitCollection:v16 hasMaterial:materialCopy size:v8];
   v19 = v18;
 LABEL_8:
   v29.origin.x = x;
@@ -3956,44 +3956,44 @@ LABEL_11:
   return result;
 }
 
-+ (double)_hiddenSelectionScaleForTraitCollection:(id)a3
++ (double)_hiddenSelectionScaleForTraitCollection:(id)collection
 {
-  v3 = UISegmentedControlStyleProviderForIdiom(a1, [a3 userInterfaceIdiom]);
+  v3 = UISegmentedControlStyleProviderForIdiom(self, [collection userInterfaceIdiom]);
   [v3 segmentHidingFinalScaleFactor];
   v5 = v4;
 
   return v5;
 }
 
-+ (CATransform3D)_hiddenSelectionTransformForTraitCollection:(SEL)a3
++ (CATransform3D)_hiddenSelectionTransformForTraitCollection:(SEL)collection
 {
   [a2 _hiddenSelectionScaleForTraitCollection:a4];
 
   return CATransform3DMakeScale(retstr, v5, v5, 1.0);
 }
 
-+ (double)_highlightSelectionScaleForTraitCollection:(id)a3
++ (double)_highlightSelectionScaleForTraitCollection:(id)collection
 {
-  v3 = UISegmentedControlStyleProviderForIdiom(a1, [a3 userInterfaceIdiom]);
+  v3 = UISegmentedControlStyleProviderForIdiom(self, [collection userInterfaceIdiom]);
   [v3 segmentSelectionScaleFactor];
   v5 = v4;
 
   return v5;
 }
 
-+ (CATransform3D)_highlightSelectionTransformForTraitCollection:(SEL)a3
++ (CATransform3D)_highlightSelectionTransformForTraitCollection:(SEL)collection
 {
   [a2 _highlightSelectionScaleForTraitCollection:a4];
 
   return CATransform3DMakeScale(retstr, v5, v5, 1.0);
 }
 
-+ (id)_selectionPopAnimationForKey:(id)a3 fromValue:(id)a4 toValue:(id)a5
++ (id)_selectionPopAnimationForKey:(id)key fromValue:(id)value toValue:(id)toValue
 {
   v7 = MEMORY[0x1E69794A8];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 animationWithKeyPath:a3];
+  toValueCopy = toValue;
+  valueCopy = value;
+  v10 = [v7 animationWithKeyPath:key];
   [v10 setMass:1.0];
   [v10 setStiffness:503.551245];
   [v10 setDamping:44.8798951];
@@ -4001,14 +4001,14 @@ LABEL_11:
   *&v11 = 1.0 / UIAnimationDragCoefficient();
   [v10 setSpeed:v11];
   [v10 setFillMode:*MEMORY[0x1E69797E0]];
-  [v10 setFromValue:v9];
+  [v10 setFromValue:valueCopy];
 
-  [v10 setToValue:v8];
+  [v10 setToValue:toValueCopy];
 
   return v10;
 }
 
-+ (id)_selectionOpacityAnimationFromValue:(float)a3 toValue:(float)a4
++ (id)_selectionOpacityAnimationFromValue:(float)value toValue:(float)toValue
 {
   v6 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"opacity"];
   [v6 setMass:1.0];
@@ -4017,45 +4017,45 @@ LABEL_11:
   [v6 setDuration:0.176376207];
   *&v7 = 1.0 / UIAnimationDragCoefficient();
   [v6 setSpeed:v7];
-  if (a4 == 0.0)
+  if (toValue == 0.0)
   {
     [v6 setBeginTime:CACurrentMediaTime() + 0.1];
   }
 
   [v6 setFillMode:*MEMORY[0x1E69797E0]];
-  *&v8 = a3;
+  *&v8 = value;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   [v6 setFromValue:v9];
 
-  *&v10 = a4;
+  *&v10 = toValue;
   v11 = [MEMORY[0x1E696AD98] numberWithFloat:v10];
   [v6 setToValue:v11];
 
   return v6;
 }
 
-+ (id)_highlightPinchAnimationForKey:(id)a3 fromValue:(id)a4 toValue:(id)a5
++ (id)_highlightPinchAnimationForKey:(id)key fromValue:(id)value toValue:(id)toValue
 {
   v7 = MEMORY[0x1E6979318];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 animationWithKeyPath:a3];
+  toValueCopy = toValue;
+  valueCopy = value;
+  v10 = [v7 animationWithKeyPath:key];
   [v10 setDuration:0.5];
   v11 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED0]];
   [v10 setTimingFunction:v11];
 
-  [v10 setFromValue:v9];
-  [v10 setToValue:v8];
+  [v10 setFromValue:valueCopy];
+  [v10 setToValue:toValueCopy];
 
   return v10;
 }
 
-+ (id)_selectionFadeAnimationForKey:(id)a3 fromValue:(id)a4 toValue:(id)a5
++ (id)_selectionFadeAnimationForKey:(id)key fromValue:(id)value toValue:(id)toValue
 {
   v7 = MEMORY[0x1E69794A8];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 animationWithKeyPath:a3];
+  toValueCopy = toValue;
+  valueCopy = value;
+  v10 = [v7 animationWithKeyPath:key];
   [v10 setMass:0.2];
   [v10 setStiffness:100.0];
   [v10 setDamping:10.0];
@@ -4064,30 +4064,30 @@ LABEL_11:
   [v10 setTimingFunction:v11];
 
   [v10 setFillMode:*MEMORY[0x1E69797D8]];
-  [v10 setFromValue:v9];
+  [v10 setFromValue:valueCopy];
 
-  [v10 setToValue:v8];
+  [v10 setToValue:toValueCopy];
 
   return v10;
 }
 
-- (int64_t)_segmentIndexToHighlight:(BOOL *)a3
+- (int64_t)_segmentIndexToHighlight:(BOOL *)highlight
 {
   if ([(UISegmentedControl *)self _disableSlidingControl])
   {
-    *a3 = 0;
+    *highlight = 0;
     return -1;
   }
 
   else if (((*(&self->_segmentedControlFlags + 1) & 0x10) != 0 || [(UISegmentedControl *)self _animateHighlightingSelectionByDefault]) && (result = self->_highlightedSegment, (result & 0x8000000000000000) == 0))
   {
-    *a3 = 1;
+    *highlight = 1;
   }
 
   else
   {
     selectedSegment = self->_selectedSegment;
-    *a3 = 0;
+    *highlight = 0;
     if (selectedSegment < 0)
     {
       return -1;
@@ -4102,16 +4102,16 @@ LABEL_11:
   return result;
 }
 
-+ (BOOL)_updateDynamicShadowView:(id)a3 withAnimationDelegate:(id)a4 useDynamicShadow:(BOOL)a5 animated:(BOOL)a6
++ (BOOL)_updateDynamicShadowView:(id)view withAnimationDelegate:(id)delegate useDynamicShadow:(BOOL)shadow animated:(BOOL)animated
 {
-  LODWORD(v6) = a6;
-  v7 = a5;
+  LODWORD(layer11) = animated;
+  shadowCopy = shadow;
   v71[3] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (v9)
+  viewCopy = view;
+  delegateCopy = delegate;
+  if (viewCopy)
   {
-    v11 = v6;
+    v11 = layer11;
   }
 
   else
@@ -4119,11 +4119,11 @@ LABEL_11:
     v11 = 1;
   }
 
-  if (!v7)
+  if (!shadowCopy)
   {
     if (v11)
     {
-      if (!v9)
+      if (!viewCopy)
       {
         goto LABEL_22;
       }
@@ -4131,8 +4131,8 @@ LABEL_11:
 
     else
     {
-      v36 = [v9 layer];
-      [v36 shadowOpacity];
+      layer = [viewCopy layer];
+      [layer shadowOpacity];
       v38 = v37;
 
       if (v38 == 0.0)
@@ -4146,7 +4146,7 @@ LABEL_11:
     v41 = v40;
 
     v42 = MEMORY[0x1E695F060];
-    if (v6)
+    if (layer11)
     {
       v43 = [MEMORY[0x1E6979318] animationWithKeyPath:@"shadowOpacity"];
       [v43 setDuration:0.41];
@@ -4171,9 +4171,9 @@ LABEL_11:
       v51 = [MEMORY[0x1E696B098] valueWithSize:{0.0, 2.5}];
       [v49 setToValue:v51];
 
-      v52 = [v9 layer];
-      v53 = [v52 presentationLayer];
-      [v53 shadowOpacity];
+      layer2 = [viewCopy layer];
+      presentationLayer = [layer2 presentationLayer];
+      [presentationLayer shadowOpacity];
       v55 = v54;
 
       if (v55 == 0.0)
@@ -4184,37 +4184,37 @@ LABEL_11:
         [v49 setFromValue:v56];
       }
 
-      v57 = [MEMORY[0x1E6979308] animation];
-      [v57 setDuration:0.41];
+      animation = [MEMORY[0x1E6979308] animation];
+      [animation setDuration:0.41];
       v70[0] = v43;
       v70[1] = v47;
       v70[2] = v49;
       v58 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:3];
-      [v57 setAnimations:v58];
+      [animation setAnimations:v58];
 
-      [v57 setDelegate:v10];
-      v59 = [v9 layer];
-      [v59 addAnimation:v57 forKey:@"ShadowAnimation"];
+      [animation setDelegate:delegateCopy];
+      layer3 = [viewCopy layer];
+      [layer3 addAnimation:animation forKey:@"ShadowAnimation"];
     }
 
-    v61 = [v9 layer];
+    layer4 = [viewCopy layer];
     v60 = v41;
     *&v62 = v60;
-    [v61 setShadowOpacity:v62];
+    [layer4 setShadowOpacity:v62];
 
-    v63 = [v9 layer];
-    [v63 setShadowRadius:3.0];
+    layer5 = [viewCopy layer];
+    [layer5 setShadowRadius:3.0];
 
     v64 = *v42;
     v65 = v42[1];
-    v66 = [v9 layer];
-    [v66 setShadowOffset:{v64, v65}];
+    layer6 = [viewCopy layer];
+    [layer6 setShadowOffset:{v64, v65}];
     goto LABEL_25;
   }
 
   if (v11)
   {
-    if (!v9)
+    if (!viewCopy)
     {
       goto LABEL_22;
     }
@@ -4222,14 +4222,14 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v12 = [v9 layer];
-  [v12 shadowOpacity];
+  layer7 = [viewCopy layer];
+  [layer7 shadowOpacity];
   v14 = v13;
 
   if (v14 == 0.0)
   {
 LABEL_12:
-    if (v6)
+    if (layer11)
     {
       v15 = [MEMORY[0x1E6979318] animationWithKeyPath:@"shadowOpacity"];
       [v15 setDuration:0.41];
@@ -4254,9 +4254,9 @@ LABEL_12:
       v24 = [MEMORY[0x1E696B098] valueWithSize:{*MEMORY[0x1E695F060], v23}];
       [v20 setToValue:v24];
 
-      v25 = [v9 layer];
-      v26 = [v25 presentationLayer];
-      [v26 shadowOpacity];
+      layer8 = [viewCopy layer];
+      presentationLayer2 = [layer8 presentationLayer];
+      [presentationLayer2 shadowOpacity];
       v28 = v27;
 
       if (v28 == 0.0)
@@ -4272,15 +4272,15 @@ LABEL_12:
         [v20 setFromValue:v32];
       }
 
-      v33 = [MEMORY[0x1E6979308] animation];
+      animation2 = [MEMORY[0x1E6979308] animation];
       v71[0] = v15;
       v71[1] = v18;
       v71[2] = v20;
       v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:3];
-      [v33 setAnimations:v34];
+      [animation2 setAnimations:v34];
 
-      v35 = [v9 layer];
-      [v35 addAnimation:v33 forKey:@"ShadowAnimation"];
+      layer9 = [viewCopy layer];
+      [layer9 addAnimation:animation2 forKey:@"ShadowAnimation"];
     }
 
     else
@@ -4289,53 +4289,53 @@ LABEL_12:
       v23 = *(MEMORY[0x1E695F060] + 8);
     }
 
-    v67 = [v9 layer];
+    layer10 = [viewCopy layer];
     LODWORD(v68) = 1025758986;
-    [v67 setShadowOpacity:v68];
+    [layer10 setShadowOpacity:v68];
 
-    v6 = [v9 layer];
-    [v6 setShadowRadius:2.30769231];
+    layer11 = [viewCopy layer];
+    [layer11 setShadowRadius:2.30769231];
 
-    v66 = [v9 layer];
-    [v66 setShadowOffset:{v22, v23}];
-    LOBYTE(v6) = 0;
+    layer6 = [viewCopy layer];
+    [layer6 setShadowOffset:{v22, v23}];
+    LOBYTE(layer11) = 0;
 LABEL_25:
 
     goto LABEL_26;
   }
 
 LABEL_22:
-  LOBYTE(v6) = 0;
+  LOBYTE(layer11) = 0;
 LABEL_26:
 
-  return v6;
+  return layer11;
 }
 
-- (void)_updateDynamicShadow:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateDynamicShadow:(BOOL)shadow animated:(BOOL)animated
 {
-  if ([objc_opt_class() _updateDynamicShadowView:self->_selectionIndicatorView withAnimationDelegate:self useDynamicShadow:a3 animated:a4])
+  if ([objc_opt_class() _updateDynamicShadowView:self->_selectionIndicatorView withAnimationDelegate:self useDynamicShadow:shadow animated:animated])
   {
     *&self->_segmentedControlFlags |= 0x20000uLL;
   }
 }
 
-- (void)_insertSelectionViewForSegment:(id)a3
+- (void)_insertSelectionViewForSegment:(id)segment
 {
-  v69 = a3;
+  segmentCopy = segment;
   v4 = objc_opt_class();
-  v5 = [(UIView *)self traitCollection];
-  v6 = UISegmentedControlStyleProviderForIdiom(v4, [v5 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v6 = UISegmentedControlStyleProviderForIdiom(v4, [traitCollection userInterfaceIdiom]);
 
   v7 = objc_opt_class();
-  [v69 bounds];
+  [segmentCopy bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v16 = (*&self->_segmentedControlFlags >> 29) & 1;
-  v17 = [(UISegmentedControl *)self controlSize];
-  v18 = [(UIView *)self traitCollection];
-  [v7 _selectionFrameForBounds:v16 hasMaterial:v17 size:v18 traitCollection:1 accessibilityView:{v9, v11, v13, v15}];
+  controlSize = [(UISegmentedControl *)self controlSize];
+  traitCollection2 = [(UIView *)self traitCollection];
+  [v7 _selectionFrameForBounds:v16 hasMaterial:controlSize size:traitCollection2 traitCollection:1 accessibilityView:{v9, v11, v13, v15}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -4358,10 +4358,10 @@ LABEL_26:
     {
       v35 = objc_opt_new();
       [v35 setUserInteractionEnabled:0];
-      v36 = [(UISegmentedControl *)self selectedSegmentTintColor];
-      if (v36)
+      selectedSegmentTintColor = [(UISegmentedControl *)self selectedSegmentTintColor];
+      if (selectedSegmentTintColor)
       {
-        [v35 setBackgroundColor:v36];
+        [v35 setBackgroundColor:selectedSegmentTintColor];
       }
 
       else
@@ -4373,8 +4373,8 @@ LABEL_26:
       if ((*(&self->_segmentedControlFlags + 4) & 0x10) != 0)
       {
         v56 = *MEMORY[0x1E6979CF8];
-        v57 = [v35 layer];
-        [v57 setCompositingFilter:v56];
+        layer = [v35 layer];
+        [layer setCompositingFilter:v56];
       }
 
       v39 = [[_UILiquidLensView alloc] initWithRestingBackground:v35];
@@ -4386,7 +4386,7 @@ LABEL_26:
     v58 = UISegmentedControlSegmentContentView(self);
     [(_UILiquidLensView *)v39 setLiftedContentView:v58];
 
-    [v69 center];
+    [segmentCopy center];
     [(UIView *)v39 setCenter:?];
     selectionIndicatorView = self->_selectionIndicatorView;
     self->_selectionIndicatorView = v39;
@@ -4405,10 +4405,10 @@ LABEL_26:
     {
       v30 = objc_opt_class();
       v31 = (*&self->_segmentedControlFlags >> 29) & 1;
-      v32 = [(UIView *)self traitCollection];
-      v33 = [(UISegmentedControl *)self selectedSegmentTintColor];
+      traitCollection3 = [(UIView *)self traitCollection];
+      selectedSegmentTintColor2 = [(UISegmentedControl *)self selectedSegmentTintColor];
       LODWORD(v66) = *&self->_segmentedControlFlags & 3;
-      selectionIndicatorView = [v30 _modernBackgroundSelected:1 shadow:1 maximumSize:0 highlighted:v31 hasMaterial:v32 traitCollection:v33 tintColor:v24 size:{v26, v66}];
+      selectionIndicatorView = [v30 _modernBackgroundSelected:1 shadow:1 maximumSize:0 highlighted:v31 hasMaterial:traitCollection3 traitCollection:selectedSegmentTintColor2 tintColor:v24 size:{v26, v66}];
     }
 
     else
@@ -4421,13 +4421,13 @@ LABEL_26:
     self->_selectionImageView = v45;
 
     [(UIImageView *)self->_selectionImageView setFrame:v20, v22, v24, v26];
-    [v69 center];
+    [segmentCopy center];
     [(UIImageView *)self->_selectionImageView setCenter:?];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v47 = [(UIView *)self->_selectionIndicatorView contentView];
-      [v47 addSubview:self->_selectionImageView];
+      contentView = [(UIView *)self->_selectionIndicatorView contentView];
+      [contentView addSubview:self->_selectionImageView];
     }
 
     else
@@ -4437,24 +4437,24 @@ LABEL_26:
 
     if ([v6 hasShadowWithSelectedSegmentEffect] && objc_msgSend(v6, "useGeneratedImages"))
     {
-      v48 = [v6 createSelectedSegmentEffectShadowView];
-      if (!v48)
+      createSelectedSegmentEffectShadowView = [v6 createSelectedSegmentEffectShadowView];
+      if (!createSelectedSegmentEffectShadowView)
       {
         v49 = objc_opt_class();
         v67 = (*&self->_segmentedControlFlags >> 29) & 1;
-        v50 = [(UIView *)self traitCollection];
-        v51 = [(UISegmentedControl *)self selectedSegmentTintColor];
+        traitCollection4 = [(UIView *)self traitCollection];
+        selectedSegmentTintColor3 = [(UISegmentedControl *)self selectedSegmentTintColor];
         LODWORD(v66) = *&self->_segmentedControlFlags & 3;
-        v68 = [v49 _modernBackgroundSelected:1 shadow:2 maximumSize:0 highlighted:v67 hasMaterial:v50 traitCollection:v51 tintColor:v24 size:{v26, v66}];
+        v68 = [v49 _modernBackgroundSelected:1 shadow:2 maximumSize:0 highlighted:v67 hasMaterial:traitCollection4 traitCollection:selectedSegmentTintColor3 tintColor:v24 size:{v26, v66}];
 
-        v48 = [[UIImageView alloc] initWithImage:selectionIndicatorView];
+        createSelectedSegmentEffectShadowView = [[UIImageView alloc] initWithImage:selectionIndicatorView];
       }
 
-      [(UIView *)v48 setTag:-2030];
-      [(UIView *)v48 setAutoresizingMask:18];
-      [(UIImageView *)v48 setFrame:v20, v22, v24, v26];
-      v52 = self;
-      backdropView = v52->_backdropView;
+      [(UIView *)createSelectedSegmentEffectShadowView setTag:-2030];
+      [(UIView *)createSelectedSegmentEffectShadowView setAutoresizingMask:18];
+      [(UIImageView *)createSelectedSegmentEffectShadowView setFrame:v20, v22, v24, v26];
+      selfCopy = self;
+      backdropView = selfCopy->_backdropView;
       if (backdropView)
       {
         if ((*(&self->_segmentedControlFlags + 3) & 0x80) != 0)
@@ -4464,33 +4464,33 @@ LABEL_26:
 
         else
         {
-          [(UIView *)v52 viewWithTag:-2031];
+          [(UIView *)selfCopy viewWithTag:-2031];
         }
         v54 = ;
       }
 
       else
       {
-        v54 = v52;
+        v54 = selfCopy;
       }
 
       v65 = v54;
 
-      [(UIView *)v65 addSubview:v48];
+      [(UIView *)v65 addSubview:createSelectedSegmentEffectShadowView];
     }
   }
 
   else
   {
-    v40 = [(UISegmentedControl *)self transparentBackground];
-    v41 = [(UISegmentedControl *)self _useDynamicShadow];
+    transparentBackground = [(UISegmentedControl *)self transparentBackground];
+    _useDynamicShadow = [(UISegmentedControl *)self _useDynamicShadow];
     selectionIndicatorView = [(UIView *)self traitCollection];
-    v42 = [(UISegmentedControl *)self selectedSegmentTintColor];
+    selectedSegmentTintColor4 = [(UISegmentedControl *)self selectedSegmentTintColor];
     if ([v6 useGeneratedImages])
     {
       v43 = objc_opt_class();
       LODWORD(v66) = *&self->_segmentedControlFlags & 3;
-      v44 = [v43 _modernBackgroundSelected:1 shadow:v40 || v41 maximumSize:0 highlighted:(*&self->_segmentedControlFlags >> 29) & 1 hasMaterial:selectionIndicatorView traitCollection:v42 tintColor:v24 size:{v26, v66}];
+      v44 = [v43 _modernBackgroundSelected:1 shadow:transparentBackground || _useDynamicShadow maximumSize:0 highlighted:(*&self->_segmentedControlFlags >> 29) & 1 hasMaterial:selectionIndicatorView traitCollection:selectedSegmentTintColor4 tintColor:v24 size:{v26, v66}];
     }
 
     else
@@ -4504,14 +4504,14 @@ LABEL_26:
 
     [(UIImageView *)self->_selectionImageView setFrame:v20, v22, v24, v26];
     objc_storeStrong(&self->_selectionIndicatorView, self->_selectionImageView);
-    if (!v40 && [objc_opt_class() _useShadowForSelectedTintColor:v42 traitCollection:selectionIndicatorView])
+    if (!transparentBackground && [objc_opt_class() _useShadowForSelectedTintColor:selectedSegmentTintColor4 traitCollection:selectionIndicatorView])
     {
       [(UISegmentedControl *)self _updateDynamicShadow:1 animated:0];
     }
   }
 
-  v61 = self;
-  v62 = v61->_backdropView;
+  selfCopy2 = self;
+  v62 = selfCopy2->_backdropView;
   if (v62)
   {
     if ((*(&self->_segmentedControlFlags + 3) & 0x80) != 0)
@@ -4521,46 +4521,46 @@ LABEL_26:
 
     else
     {
-      [(UIView *)v61 viewWithTag:-2031];
+      [(UIView *)selfCopy2 viewWithTag:-2031];
     }
     v63 = ;
   }
 
   else
   {
-    v63 = v61;
+    v63 = selfCopy2;
   }
 
   v64 = v63;
 
-  [(UIView *)v64 insertSubview:v61->_selectionIndicatorView atIndex:[(NSMutableArray *)v61->_segments count]];
-  [(UIView *)v61 setNeedsLayout];
+  [(UIView *)v64 insertSubview:selfCopy2->_selectionIndicatorView atIndex:[(NSMutableArray *)selfCopy2->_segments count]];
+  [(UIView *)selfCopy2 setNeedsLayout];
 }
 
-+ (double)_selectionOffsetAdjustmentForSegment:(id)a3
++ (double)_selectionOffsetAdjustmentForSegment:(id)segment
 {
-  v4 = a3;
-  v5 = [v4 traitCollection];
-  v6 = UISegmentedControlStyleProviderForIdiom(a1, [v5 userInterfaceIdiom]);
+  segmentCopy = segment;
+  traitCollection = [segmentCopy traitCollection];
+  v6 = UISegmentedControlStyleProviderForIdiom(self, [traitCollection userInterfaceIdiom]);
 
   if ((objc_opt_respondsToSelector() & 1) == 0 || (v7 = 0.0, ([v6 useLensView] & 1) == 0))
   {
-    if (![v4 segmentPosition] || (v7 = 0.0, objc_msgSend(v4, "segmentPosition") == 2))
+    if (![segmentCopy segmentPosition] || (v7 = 0.0, objc_msgSend(segmentCopy, "segmentPosition") == 2))
     {
-      v8 = [v4 traitCollection];
-      [a1 _sectionIndicatorOverflowForTraitCollection:v8 size:{objc_msgSend(v4, "controlSize")}];
+      traitCollection2 = [segmentCopy traitCollection];
+      [self _sectionIndicatorOverflowForTraitCollection:traitCollection2 size:{objc_msgSend(segmentCopy, "controlSize")}];
       v10 = v9 + v9;
 
       [v6 segmentSelectionScaleFactor];
       v12 = (1.0 - v11) * 0.5;
-      [v4 frame];
+      [segmentCopy frame];
       v14 = v12 * (v10 + v13);
-      [v4 frame];
+      [segmentCopy frame];
       v7 = v14 - v12 * (v10 + v15);
-      v16 = [v4 segmentPosition];
-      if (v16 != 2)
+      segmentPosition = [segmentCopy segmentPosition];
+      if (segmentPosition != 2)
       {
-        if (v16)
+        if (segmentPosition)
         {
           v7 = 0.0;
         }
@@ -4576,10 +4576,10 @@ LABEL_26:
   return v7;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
+  finishedCopy = finished;
+  stopCopy = stop;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4587,7 +4587,7 @@ LABEL_26:
   if (isKindOfClass)
   {
     self->_segmentedControlFlags = (*&segmentedControlFlags & 0xFFFFFFFFFFFDFFFFLL);
-    if (!v4)
+    if (!finishedCopy)
     {
       return;
     }
@@ -4605,8 +4605,8 @@ LABEL_26:
   else
   {
     self->_segmentedControlFlags = (*&segmentedControlFlags & 0xFFFFFFFFFFFBFFFFLL);
-    v9 = [(UIControl *)self pointerInteraction];
-    [v9 invalidate];
+    pointerInteraction = [(UIControl *)self pointerInteraction];
+    [pointerInteraction invalidate];
 
     selectedSegment = self->_selectedSegment;
     if ((selectedSegment & 0x8000000000000000) != 0 || selectedSegment >= [(NSMutableArray *)self->_segments count])
@@ -4636,11 +4636,11 @@ LABEL_26:
   }
 }
 
-- (void)_updateSelectionToSegment:(id)a3 highlight:(BOOL)a4 shouldAnimate:(BOOL)a5 sameSegment:(BOOL)a6
+- (void)_updateSelectionToSegment:(id)segment highlight:(BOOL)highlight shouldAnimate:(BOOL)animate sameSegment:(BOOL)sameSegment
 {
-  v197 = a5;
-  v6 = a4;
-  v8 = a3;
+  animateCopy = animate;
+  highlightCopy = highlight;
+  segmentCopy = segment;
   if (self)
   {
     v9 = &OBJC_IVAR___UISegmentedControl__selectionImageView;
@@ -4672,17 +4672,17 @@ LABEL_26:
   v257 = 0u;
   v256 = 0u;
   v255 = 0u;
-  v13 = [v12 layer];
-  v14 = [v13 presentationLayer];
-  v15 = [v12 layer];
-  v16 = v15;
-  if (v14)
+  layer = [v12 layer];
+  presentationLayer = [layer presentationLayer];
+  layer2 = [v12 layer];
+  v16 = layer2;
+  if (presentationLayer)
   {
-    v17 = [v15 presentationLayer];
-    v18 = v17;
-    if (v17)
+    presentationLayer2 = [layer2 presentationLayer];
+    v18 = presentationLayer2;
+    if (presentationLayer2)
     {
-      [v17 transform];
+      [presentationLayer2 transform];
     }
 
     else
@@ -4698,9 +4698,9 @@ LABEL_26:
     }
   }
 
-  else if (v15)
+  else if (layer2)
   {
-    [v15 transform];
+    [layer2 transform];
   }
 
   else
@@ -4715,33 +4715,33 @@ LABEL_26:
     v255 = 0u;
   }
 
-  v19 = [v12 layer];
-  v20 = [v19 presentationLayer];
-  v21 = [v12 layer];
-  v22 = v21;
-  if (v20)
+  layer3 = [v12 layer];
+  presentationLayer3 = [layer3 presentationLayer];
+  layer4 = [v12 layer];
+  v22 = layer4;
+  if (presentationLayer3)
   {
-    v23 = [v21 presentationLayer];
-    [v23 position];
+    presentationLayer4 = [layer4 presentationLayer];
+    [presentationLayer4 position];
     v25 = v24;
     v27 = v26;
   }
 
   else
   {
-    [v21 position];
+    [layer4 position];
     v25 = v28;
     v27 = v29;
   }
 
-  v30 = [v12 layer];
-  v31 = [v30 presentationLayer];
-  v32 = [v12 layer];
-  v33 = v32;
-  if (v31)
+  layer5 = [v12 layer];
+  presentationLayer5 = [layer5 presentationLayer];
+  layer6 = [v12 layer];
+  v33 = layer6;
+  if (presentationLayer5)
   {
-    v34 = [v32 presentationLayer];
-    [v34 bounds];
+    presentationLayer6 = [layer6 presentationLayer];
+    [presentationLayer6 bounds];
     v192 = v36;
     v193 = v35;
     v38 = v37;
@@ -4750,15 +4750,15 @@ LABEL_26:
 
   else
   {
-    [v32 bounds];
+    [layer6 bounds];
     v192 = v42;
     v193 = v41;
     v38 = v43;
     v40 = v44;
   }
 
-  v45 = [(UIView *)v8 _backing_outermostLayer];
-  [v45 position];
+  _backing_outermostLayer = [(UIView *)segmentCopy _backing_outermostLayer];
+  [_backing_outermostLayer position];
   v47 = v46;
   v49 = v48;
 
@@ -4767,16 +4767,16 @@ LABEL_26:
   if ((*(&self->_segmentedControlFlags + 4) & 0x20) != 0 && self->_initiallyDraggedSegment != -1)
   {
     v50 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:?];
-    v51 = [(UIView *)v50 _backing_outermostLayer];
-    [v51 position];
+    _backing_outermostLayer2 = [(UIView *)v50 _backing_outermostLayer];
+    [_backing_outermostLayer2 position];
     v53 = v52;
     draggedSegmentOffset = self->_draggedSegmentOffset;
 
-    v55 = [v8 segmentPosition];
-    if (v55 != 3)
+    segmentPosition = [segmentCopy segmentPosition];
+    if (segmentPosition != 3)
     {
       v56 = v53 + draggedSegmentOffset;
-      if (v55 == 2)
+      if (segmentPosition == 2)
       {
         if (v47 >= v56)
         {
@@ -4791,7 +4791,7 @@ LABEL_26:
         v47 = v58 + (1.0 - 1.0 / ((v56 - v58) / 12.0 * 0.55 + 1.0)) * 12.0;
       }
 
-      else if (v55)
+      else if (segmentPosition)
       {
         v47 = v53 + draggedSegmentOffset;
       }
@@ -4814,22 +4814,22 @@ LABEL_26:
   }
 
   v59 = objc_opt_class();
-  v60 = [(UIView *)v8 _backing_outermostLayer];
-  [v60 bounds];
+  _backing_outermostLayer3 = [(UIView *)segmentCopy _backing_outermostLayer];
+  [_backing_outermostLayer3 bounds];
   v62 = v61;
   v64 = v63;
   v66 = v65;
   v68 = v67;
   v69 = (*&self->_segmentedControlFlags >> 29) & 1;
-  v70 = [(UISegmentedControl *)self controlSize];
-  v71 = [(UIView *)self traitCollection];
-  [v59 _selectionFrameForBounds:v69 hasMaterial:v70 size:v71 traitCollection:0 accessibilityView:{v62, v64, v66, v68}];
+  controlSize = [(UISegmentedControl *)self controlSize];
+  traitCollection = [(UIView *)self traitCollection];
+  [v59 _selectionFrameForBounds:v69 hasMaterial:controlSize size:traitCollection traitCollection:0 accessibilityView:{v62, v64, v66, v68}];
   width = v72;
   height = v74;
 
   v76 = MEMORY[0x1E695EFF8];
-  v77 = self;
-  backdropView = v77->_backdropView;
+  selfCopy = self;
+  backdropView = selfCopy->_backdropView;
   if (backdropView)
   {
     if ((*(&self->_segmentedControlFlags + 3) & 0x80) != 0)
@@ -4839,14 +4839,14 @@ LABEL_26:
 
     else
     {
-      [(UIView *)v77 viewWithTag:-2031];
+      [(UIView *)selfCopy viewWithTag:-2031];
     }
     v79 = ;
   }
 
   else
   {
-    v79 = v77;
+    v79 = selfCopy;
   }
 
   v80 = v79;
@@ -4855,13 +4855,13 @@ LABEL_26:
 
   v83 = [(UIView *)v80 viewWithTag:-2030];
 
-  if ([(UISegmentedControl *)v77 _animateHighlightingSelectionByDefault])
+  if ([(UISegmentedControl *)selfCopy _animateHighlightingSelectionByDefault])
   {
-    if (v6 && a6 || ([(UISegmentedControl *)v77 _updateHighlightToPosition:v6 bounds:v47 highlight:v49, v82, v81, width, height], v6))
+    if (highlightCopy && sameSegment || ([(UISegmentedControl *)selfCopy _updateHighlightToPosition:highlightCopy bounds:v47 highlight:v49, v82, v81, width, height], highlightCopy))
     {
-      if ([v8 isHighlighted])
+      if ([segmentCopy isHighlighted])
       {
-        [(UIView *)v77->_highlightImageView center];
+        [(UIView *)selfCopy->_highlightImageView center];
         v85 = v84;
         v87 = v86;
         [v12 center];
@@ -4873,47 +4873,47 @@ LABEL_26:
         v90 = 1;
       }
 
-      [(UIImageView *)v77->_highlightImageView setHidden:v90];
+      [(UIImageView *)selfCopy->_highlightImageView setHidden:v90];
       goto LABEL_120;
     }
 
-    v91 = [v12 layer];
-    [(UIView *)v91 position];
+    layer7 = [v12 layer];
+    [(UIView *)layer7 position];
     if (v93 != v47 || v92 != v49)
     {
-      highlightImageView = v77->_highlightImageView;
+      highlightImageView = selfCopy->_highlightImageView;
 
       if (!highlightImageView)
       {
         goto LABEL_62;
       }
 
-      v188 = v77->_selectionImageView;
-      objc_storeStrong(&v77->_selectionImageView, v77->_highlightImageView);
-      [(UIImageView *)v77->_selectionImageView setHidden:0];
+      v188 = selfCopy->_selectionImageView;
+      objc_storeStrong(&selfCopy->_selectionImageView, selfCopy->_highlightImageView);
+      [(UIImageView *)selfCopy->_selectionImageView setHidden:0];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v95 = [(UIView *)v77->_selectionIndicatorView contentView];
-        [v95 addSubview:v77->_selectionImageView];
+        contentView = [(UIView *)selfCopy->_selectionIndicatorView contentView];
+        [contentView addSubview:selfCopy->_selectionImageView];
       }
 
-      v96 = v77->_highlightImageView;
-      v77->_highlightImageView = 0;
+      v96 = selfCopy->_highlightImageView;
+      selfCopy->_highlightImageView = 0;
 
-      v97 = [(UIView *)v77->_selectionImageView layer];
-      v98 = [v97 animationKeys];
-      v99 = [v98 containsObject:@"HighlightScaleUp"];
+      layer8 = [(UIView *)selfCopy->_selectionImageView layer];
+      animationKeys = [layer8 animationKeys];
+      v99 = [animationKeys containsObject:@"HighlightScaleUp"];
 
       if (v99)
       {
         memset(&v254, 0, sizeof(v254));
-        v100 = [(UIView *)v77->_selectionImageView layer];
-        v101 = [v100 presentationLayer];
-        v102 = v101;
-        if (v101)
+        layer9 = [(UIView *)selfCopy->_selectionImageView layer];
+        presentationLayer7 = [layer9 presentationLayer];
+        v102 = presentationLayer7;
+        if (presentationLayer7)
         {
-          [v101 transform];
+          [presentationLayer7 transform];
         }
 
         else
@@ -4922,11 +4922,11 @@ LABEL_26:
         }
 
         v253 = v254;
-        v103 = [v83 layer];
+        layer10 = [v83 layer];
         a = v253;
-        [v103 setTransform:&a];
+        [layer10 setTransform:&a];
 
-        v187 = [v83 layer];
+        layer11 = [v83 layer];
         v104 = objc_opt_class();
         v251 = v254;
         v105 = [MEMORY[0x1E696B098] valueWithBytes:&v251 objCType:"{CATransform3D=dddddddddddddddd}"];
@@ -4944,7 +4944,7 @@ LABEL_26:
         v250[3] = v109;
         v110 = [MEMORY[0x1E696B098] valueWithBytes:v250 objCType:"{CATransform3D=dddddddddddddddd}"];
         v111 = [v104 _highlightPinchAnimationForKey:@"transform" fromValue:v105 toValue:v110];
-        [v187 addAnimation:v111 forKey:@"ShadowScale"];
+        [layer11 addAnimation:v111 forKey:@"ShadowScale"];
       }
 
       [MEMORY[0x1E6979518] begin];
@@ -4954,14 +4954,14 @@ LABEL_26:
       v248[2] = __84__UISegmentedControl__updateSelectionToSegment_highlight_shouldAnimate_sameSegment___block_invoke;
       v248[3] = &unk_1E70F3590;
       v249 = v188;
-      v91 = v188;
+      layer7 = v188;
       [v112 setCompletionBlock:v248];
       v113 = [objc_opt_class() _selectionFadeAnimationForKey:@"opacity" fromValue:&unk_1EFE30388 toValue:&unk_1EFE303A0];
-      v114 = [(UIView *)v91 layer];
-      [v114 addAnimation:v113 forKey:@"SelectionFadeOut"];
+      v91Layer = [(UIView *)layer7 layer];
+      [v91Layer addAnimation:v113 forKey:@"SelectionFadeOut"];
 
-      v115 = [(UIView *)v91 layer];
-      [v115 setOpacity:0.0];
+      v91Layer2 = [(UIView *)layer7 layer];
+      [v91Layer2 setOpacity:0.0];
 
       [MEMORY[0x1E6979518] commit];
     }
@@ -4970,10 +4970,10 @@ LABEL_26:
 LABEL_62:
   if (v196)
   {
-    if (v8)
+    if (segmentCopy)
     {
       v116 = v11;
-      if (v6)
+      if (highlightCopy)
       {
         if (v11)
         {
@@ -4994,8 +4994,8 @@ LABEL_62:
           v244 = 0;
           v246 = width;
           v247 = height;
-          v118 = v197;
-          [v117 setLifted:1 animated:v197 alongsideAnimations:v242 completion:0];
+          v118 = animateCopy;
+          [v117 setLifted:1 animated:animateCopy alongsideAnimations:v242 completion:0];
 
           v81 = 0.0;
           v82 = 0.0;
@@ -5004,16 +5004,16 @@ LABEL_62:
         else
         {
           v142 = objc_opt_class();
-          v143 = [(UIView *)v77 traitCollection];
-          [v142 _highlightSelectionScaleForTraitCollection:v143];
+          traitCollection2 = [(UIView *)selfCopy traitCollection];
+          [v142 _highlightSelectionScaleForTraitCollection:traitCollection2];
           v145 = v144;
 
           width = width * v145;
           height = height * v145;
-          v118 = v197;
+          v118 = animateCopy;
         }
 
-        [objc_opt_class() _selectionOffsetAdjustmentForSegment:v8];
+        [objc_opt_class() _selectionOffsetAdjustmentForSegment:segmentCopy];
         v47 = v47 + v146;
         if (!v118)
         {
@@ -5054,8 +5054,8 @@ LABEL_89:
     else
     {
       v121 = objc_opt_class();
-      v122 = [(UIView *)v77 traitCollection];
-      [v121 _hiddenSelectionScaleForTraitCollection:v122];
+      traitCollection3 = [(UIView *)selfCopy traitCollection];
+      [v121 _hiddenSelectionScaleForTraitCollection:traitCollection3];
       v124 = v123;
 
       width = width * v124;
@@ -5063,9 +5063,9 @@ LABEL_89:
       v116 = v11;
     }
 
-    if ((v116 & 1) == 0 || v6)
+    if ((v116 & 1) == 0 || highlightCopy)
     {
-      if (!v197)
+      if (!animateCopy)
       {
         goto LABEL_89;
       }
@@ -5075,7 +5075,7 @@ LABEL_89:
     {
       v125 = v12;
       v126 = v125;
-      if ((*(&self->_segmentedControlFlags + 4) & 0x40) != 0 && ([v125 lifted] & 1) == 0 && !a6)
+      if ((*(&self->_segmentedControlFlags + 4) & 0x40) != 0 && ([v125 lifted] & 1) == 0 && !sameSegment)
       {
         v265.origin.x = v82;
         v265.origin.y = v81;
@@ -5093,7 +5093,7 @@ LABEL_89:
         v238 = 0;
         v240 = v127;
         v241 = v128;
-        [v237 setLifted:1 animated:v197 alongsideAnimations:v236 completion:0];
+        [v237 setLifted:1 animated:animateCopy alongsideAnimations:v236 completion:0];
       }
 
       v230[0] = MEMORY[0x1E69E9820];
@@ -5106,16 +5106,16 @@ LABEL_89:
       v234 = width;
       v235 = height;
       v129 = v126;
-      [v129 setLifted:0 animated:v197 alongsideAnimations:v230 completion:0];
+      [v129 setLifted:0 animated:animateCopy alongsideAnimations:v230 completion:0];
 
-      if (!v197)
+      if (!animateCopy)
       {
         goto LABEL_89;
       }
     }
 
 LABEL_83:
-    v132 = v8;
+    v132 = segmentCopy;
     v133 = dbl_18A679AD0[(*&self->_segmentedControlFlags & 0x1000) == 0];
     v134 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:0.85 response:dbl_18A674F10[(*&self->_segmentedControlFlags & 0x1000) == 0]];
     v135 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:0.85 response:v133];
@@ -5142,14 +5142,14 @@ LABEL_83:
       [UIView _animateUsingSpringBehavior:v135 tracking:0 animations:v220 completion:0];
     }
 
-    v8 = v132;
+    segmentCopy = v132;
     goto LABEL_120;
   }
 
   memset(&v254, 0, sizeof(v254));
-  if (v8)
+  if (segmentCopy)
   {
-    if (!v6)
+    if (!highlightCopy)
     {
       v137 = *(MEMORY[0x1E69792E8] + 80);
       *&v254.m31 = *(MEMORY[0x1E69792E8] + 64);
@@ -5169,10 +5169,10 @@ LABEL_99:
     }
 
     v119 = objc_opt_class();
-    v120 = [(UIView *)v77 traitCollection];
+    traitCollection4 = [(UIView *)selfCopy traitCollection];
     if (v119)
     {
-      [v119 _highlightSelectionTransformForTraitCollection:v120];
+      [v119 _highlightSelectionTransformForTraitCollection:traitCollection4];
     }
 
     else
@@ -5181,7 +5181,7 @@ LABEL_99:
     }
 
 LABEL_98:
-    [objc_opt_class() _selectionOffsetAdjustmentForSegment:v8];
+    [objc_opt_class() _selectionOffsetAdjustmentForSegment:segmentCopy];
     b = v254;
     CATransform3DTranslate(&a, &b, v147, 0.0, 0.0);
     *&v254.m31 = *&a.m31;
@@ -5196,10 +5196,10 @@ LABEL_98:
   }
 
   v130 = objc_opt_class();
-  v131 = [(UIView *)v77 traitCollection];
+  traitCollection5 = [(UIView *)selfCopy traitCollection];
   if (v130)
   {
-    [v130 _hiddenSelectionTransformForTraitCollection:v131];
+    [v130 _hiddenSelectionTransformForTraitCollection:traitCollection5];
   }
 
   else
@@ -5207,23 +5207,23 @@ LABEL_98:
     memset(&v254, 0, sizeof(v254));
   }
 
-  if (v6)
+  if (highlightCopy)
   {
     goto LABEL_98;
   }
 
 LABEL_100:
-  if (!v197)
+  if (!animateCopy)
   {
     goto LABEL_118;
   }
 
-  v189 = v8;
-  v148 = [v12 layer];
-  v149 = v148;
-  if (v148)
+  v189 = segmentCopy;
+  layer12 = [v12 layer];
+  v149 = layer12;
+  if (layer12)
   {
-    [v148 transform];
+    [layer12 transform];
   }
 
   else
@@ -5237,22 +5237,22 @@ LABEL_100:
     goto LABEL_111;
   }
 
-  if (a6)
+  if (sameSegment)
   {
 LABEL_117:
 
-    v8 = v189;
+    segmentCopy = v189;
     goto LABEL_118;
   }
 
-  v150 = [v12 layer];
-  [v150 position];
+  layer13 = [v12 layer];
+  [layer13 position];
   if (v152 != v47 || v151 != v49)
   {
 
 LABEL_111:
 LABEL_112:
-    v155 = [v12 layer];
+    layer14 = [v12 layer];
     v156 = objc_opt_class();
     v209[4] = v259;
     v209[5] = v260;
@@ -5266,7 +5266,7 @@ LABEL_112:
     v208 = v254;
     v158 = [MEMORY[0x1E696B098] valueWithBytes:&v208 objCType:"{CATransform3D=dddddddddddddddd}"];
     v159 = [v156 _selectionPopAnimationForKey:@"transform" fromValue:v157 toValue:v158];
-    [v155 addAnimation:v159 forKey:@"SelectionScale"];
+    [layer14 addAnimation:v159 forKey:@"SelectionScale"];
 
     v160 = objc_opt_class();
     v207[0] = v25;
@@ -5277,20 +5277,20 @@ LABEL_112:
     v162 = [MEMORY[0x1E696B098] valueWithBytes:v206 objCType:"{CGPoint=dd}"];
     v149 = [v160 _selectionPopAnimationForKey:@"position" fromValue:v161 toValue:v162];
 
-    if (!a6 && [v189 isHovered])
+    if (!sameSegment && [v189 isHovered])
     {
       *&self->_segmentedControlFlags |= 0x40000uLL;
-      v163 = [(UIControl *)v77 pointerInteraction];
-      [v163 invalidate];
+      pointerInteraction = [(UIControl *)selfCopy pointerInteraction];
+      [pointerInteraction invalidate];
 
-      [v149 setDelegate:v77];
+      [v149 setDelegate:selfCopy];
       [v189 setAnimatingSelectionIndicator:1];
     }
 
-    v164 = [v12 layer];
-    [v164 addAnimation:v149 forKey:@"SelectionPosition"];
+    layer15 = [v12 layer];
+    [layer15 addAnimation:v149 forKey:@"SelectionPosition"];
 
-    v165 = [v12 layer];
+    layer16 = [v12 layer];
     v166 = objc_opt_class();
     v205[0] = v193;
     v205[1] = v192;
@@ -5303,11 +5303,11 @@ LABEL_112:
     *&v204[3] = height;
     v168 = [MEMORY[0x1E696B098] valueWithBytes:v204 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
     v169 = [v166 _selectionPopAnimationForKey:@"bounds" fromValue:v167 toValue:v168];
-    [v165 addAnimation:v169 forKey:@"SelectionBounds"];
+    [layer16 addAnimation:v169 forKey:@"SelectionBounds"];
 
     if (v83)
     {
-      v170 = [v83 layer];
+      layer17 = [v83 layer];
       v171 = objc_opt_class();
       v203[4] = v259;
       v203[5] = v260;
@@ -5321,12 +5321,12 @@ LABEL_112:
       v202 = v254;
       v173 = [MEMORY[0x1E696B098] valueWithBytes:&v202 objCType:"{CATransform3D=dddddddddddddddd}"];
       v174 = [v171 _selectionPopAnimationForKey:@"transform" fromValue:v172 toValue:v173];
-      [v170 addAnimation:v174 forKey:@"SelectionScale"];
+      [layer17 addAnimation:v174 forKey:@"SelectionScale"];
 
-      v175 = [v83 layer];
-      [v175 addAnimation:v149 forKey:@"SelectionPosition"];
+      layer18 = [v83 layer];
+      [layer18 addAnimation:v149 forKey:@"SelectionPosition"];
 
-      v176 = [v83 layer];
+      layer19 = [v83 layer];
       v177 = objc_opt_class();
       v201[0] = v193;
       v201[1] = v192;
@@ -5339,50 +5339,50 @@ LABEL_112:
       *&v200[3] = height;
       v179 = [MEMORY[0x1E696B098] valueWithBytes:v200 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
       v180 = [v177 _selectionPopAnimationForKey:@"bounds" fromValue:v178 toValue:v179];
-      [v176 addAnimation:v180 forKey:@"SelectionBounds"];
+      [layer19 addAnimation:v180 forKey:@"SelectionBounds"];
     }
 
     goto LABEL_117;
   }
 
-  v153 = [v12 layer];
-  [v153 bounds];
+  layer20 = [v12 layer];
+  [layer20 bounds];
   v268.origin.x = v82;
   v268.origin.y = v81;
   v268.size.width = width;
   v268.size.height = height;
   v154 = CGRectEqualToRect(v267, v268);
 
-  v8 = v189;
+  segmentCopy = v189;
   if (!v154)
   {
     goto LABEL_112;
   }
 
 LABEL_118:
-  v181 = [v12 layer];
-  [v181 setPosition:{v47, v49}];
+  layer21 = [v12 layer];
+  [layer21 setPosition:{v47, v49}];
 
-  v182 = [v12 layer];
-  [v182 setBounds:{v82, v81, width, height}];
+  layer22 = [v12 layer];
+  [layer22 setBounds:{v82, v81, width, height}];
 
   v199 = v254;
-  v183 = [v12 layer];
+  layer23 = [v12 layer];
   a = v199;
-  [v183 setTransform:&a];
+  [layer23 setTransform:&a];
 
   if (v83)
   {
-    v184 = [v83 layer];
-    [v184 setPosition:{v47, v49}];
+    layer24 = [v83 layer];
+    [layer24 setPosition:{v47, v49}];
 
-    v185 = [v83 layer];
-    [v185 setBounds:{v82, v81, width, height}];
+    layer25 = [v83 layer];
+    [layer25 setBounds:{v82, v81, width, height}];
 
     v198 = v254;
-    v186 = [v83 layer];
+    layer26 = [v83 layer];
     a = v198;
-    [v186 setTransform:&a];
+    [layer26 setTransform:&a];
   }
 
 LABEL_120:
@@ -5405,17 +5405,17 @@ uint64_t __84__UISegmentedControl__updateSelectionToSegment_highlight_shouldAnim
   return result;
 }
 
-- (void)_updateHighlightToPosition:(CGPoint)a3 bounds:(CGRect)a4 highlight:(BOOL)a5
+- (void)_updateHighlightToPosition:(CGPoint)position bounds:(CGRect)bounds highlight:(BOOL)highlight
 {
-  v5 = a5;
-  if (a5)
+  highlightCopy = highlight;
+  if (highlight)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    v11 = a3.y;
-    v12 = a3.x;
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
+    v11 = position.y;
+    v12 = position.x;
     highlightImageView = self->_highlightImageView;
     if (!highlightImageView)
     {
@@ -5425,8 +5425,8 @@ uint64_t __84__UISegmentedControl__updateSelectionToSegment_highlight_shouldAnim
       v16 = self->_highlightImageView;
       self->_highlightImageView = v15;
 
-      v17 = [(UIImageView *)self->_selectionImageView image];
-      [(UIImageView *)self->_highlightImageView setImage:v17];
+      image = [(UIImageView *)self->_selectionImageView image];
+      [(UIImageView *)self->_highlightImageView setImage:image];
 
       [(UISegmentedControl *)self _insertHighlightView];
       highlightImageView = self->_highlightImageView;
@@ -5439,9 +5439,9 @@ uint64_t __84__UISegmentedControl__updateSelectionToSegment_highlight_shouldAnim
   v18 = self->_highlightImageView;
   if (v18)
   {
-    v19 = [(UIView *)v18 layer:a3.x];
-    v20 = [v19 animationKeys];
-    v21 = [v20 containsObject:@"HighlightScaleUp"];
+    v19 = [(UIView *)v18 layer:position.x];
+    animationKeys = [v19 animationKeys];
+    v21 = [animationKeys containsObject:@"HighlightScaleUp"];
 
     if ((v21 & 1) == 0)
     {
@@ -5453,11 +5453,11 @@ uint64_t __84__UISegmentedControl__updateSelectionToSegment_highlight_shouldAnim
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v22 = [(UIView *)self->_highlightImageView layer];
-      v23 = v22;
-      if (v22)
+      layer = [(UIView *)self->_highlightImageView layer];
+      v23 = layer;
+      if (layer)
       {
-        [v22 transform];
+        [layer transform];
       }
 
       else
@@ -5473,7 +5473,7 @@ uint64_t __84__UISegmentedControl__updateSelectionToSegment_highlight_shouldAnim
       }
 
       memset(&v39, 0, sizeof(v39));
-      if (v5)
+      if (highlightCopy)
       {
         CATransform3DMakeScale(&v39, 0.98, 0.98, 1.0);
         v24 = @"HighlightScaleDown";
@@ -5496,7 +5496,7 @@ uint64_t __84__UISegmentedControl__updateSelectionToSegment_highlight_shouldAnim
         v24 = @"HighlightScaleUp";
       }
 
-      v29 = [(UIView *)self->_highlightImageView layer];
+      layer2 = [(UIView *)self->_highlightImageView layer];
       v30 = objc_opt_class();
       v38[4] = v44;
       v38[5] = v45;
@@ -5510,12 +5510,12 @@ uint64_t __84__UISegmentedControl__updateSelectionToSegment_highlight_shouldAnim
       v37 = v39;
       v32 = [MEMORY[0x1E696B098] valueWithBytes:&v37 objCType:"{CATransform3D=dddddddddddddddd}"];
       v33 = [v30 _highlightPinchAnimationForKey:@"transform" fromValue:v31 toValue:v32];
-      [v29 addAnimation:v33 forKey:v24];
+      [layer2 addAnimation:v33 forKey:v24];
 
       v36 = v39;
-      v34 = [(UIView *)self->_highlightImageView layer];
+      layer3 = [(UIView *)self->_highlightImageView layer];
       v35 = v36;
-      [v34 setTransform:&v35];
+      [layer3 setTransform:&v35];
     }
   }
 }
@@ -5523,8 +5523,8 @@ uint64_t __84__UISegmentedControl__updateSelectionToSegment_highlight_shouldAnim
 - (void)_insertHighlightView
 {
   v3 = objc_opt_class();
-  v4 = [(UIView *)self traitCollection];
-  v20 = UISegmentedControlStyleProviderForIdiom(v3, [v4 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v20 = UISegmentedControlStyleProviderForIdiom(v3, [traitCollection userInterfaceIdiom]);
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -5532,15 +5532,15 @@ uint64_t __84__UISegmentedControl__updateSelectionToSegment_highlight_shouldAnim
     goto LABEL_10;
   }
 
-  v5 = [v20 highlightedSegmentDefaultVibrancyEffect];
-  if (!v5)
+  highlightedSegmentDefaultVibrancyEffect = [v20 highlightedSegmentDefaultVibrancyEffect];
+  if (!highlightedSegmentDefaultVibrancyEffect)
   {
     v7 = 0;
     goto LABEL_10;
   }
 
   selectedSegmentVisualEffect = self->_selectedSegmentVisualEffect;
-  v7 = v5;
+  v7 = highlightedSegmentDefaultVibrancyEffect;
   v8 = selectedSegmentVisualEffect;
   v9 = v8;
   if (v7 == v8)
@@ -5584,25 +5584,25 @@ LABEL_18:
   [(UISegmentedControl *)self bounds];
   [*p_selectionIndicatorView setFrame:?];
   [*p_selectionIndicatorView setAutoresizingMask:18];
-  v16 = self;
-  backdropView = v16->_backdropView;
+  selfCopy = self;
+  backdropView = selfCopy->_backdropView;
   if (backdropView)
   {
-    if ((*(&v16->_segmentedControlFlags + 3) & 0x80) != 0)
+    if ((*(&selfCopy->_segmentedControlFlags + 3) & 0x80) != 0)
     {
       [(UIView *)backdropView contentView];
     }
 
     else
     {
-      [(UIView *)v16 viewWithTag:-2031];
+      [(UIView *)selfCopy viewWithTag:-2031];
     }
     v18 = ;
   }
 
   else
   {
-    v18 = v16;
+    v18 = selfCopy;
   }
 
   v19 = v18;
@@ -5611,8 +5611,8 @@ LABEL_18:
 LABEL_12:
   highlightIndicatorView = *p_selectionIndicatorView;
 LABEL_13:
-  v13 = [(UIView *)highlightIndicatorView contentView];
-  [v13 addSubview:self->_highlightImageView];
+  contentView = [(UIView *)highlightIndicatorView contentView];
+  [contentView addSubview:self->_highlightImageView];
 
 LABEL_14:
 }
@@ -5628,17 +5628,17 @@ void __36__UISegmentedControl_layoutSubviews__block_invoke_2(uint64_t a1, void *
   }
 }
 
-- (void)_setHighlightedSegmentHighlighted:(BOOL)a3
+- (void)_setHighlightedSegmentHighlighted:(BOOL)highlighted
 {
   highlightedSegment = self->_highlightedSegment;
   if ((highlightedSegment & 0x8000000000000000) == 0)
   {
-    v5 = a3;
+    highlightedCopy = highlighted;
     if (highlightedSegment < [(NSMutableArray *)self->_segments count])
     {
       v6 = [(NSMutableArray *)self->_segments objectAtIndex:self->_highlightedSegment];
       [v6 setSelectionIndicatorDragged:(*&self->_segmentedControlFlags >> 12) & 1];
-      [v6 setHighlighted:v5];
+      [v6 setHighlighted:highlightedCopy];
       [(UISegmentedControl *)self _updateDividerImageForSegmentAtIndex:self->_highlightedSegment];
     }
   }
@@ -5646,10 +5646,10 @@ void __36__UISegmentedControl_layoutSubviews__block_invoke_2(uint64_t a1, void *
   [(UISegmentedControl *)self _updateSelectionIndicator];
 }
 
-- (void)_highlightSegment:(int64_t)a3
+- (void)_highlightSegment:(int64_t)segment
 {
   highlightedSegment = self->_highlightedSegment;
-  if (highlightedSegment != a3)
+  if (highlightedSegment != segment)
   {
     if (highlightedSegment != -1)
     {
@@ -5659,11 +5659,11 @@ void __36__UISegmentedControl_layoutSubviews__block_invoke_2(uint64_t a1, void *
     segmentedControlFlags = self->_segmentedControlFlags;
     if ((*&segmentedControlFlags & 0x10) != 0 && self->_highlightedSegment != -1)
     {
-      self->_segmentedControlFlags = (*&segmentedControlFlags & 0xFFFFFFFEFFFFFFFFLL | ((self->_selectedSegment != a3) << 32));
+      self->_segmentedControlFlags = (*&segmentedControlFlags & 0xFFFFFFFEFFFFFFFFLL | ((self->_selectedSegment != segment) << 32));
     }
 
-    self->_highlightedSegment = a3;
-    if (a3 != -1)
+    self->_highlightedSegment = segment;
+    if (segment != -1)
     {
       [(UISegmentedControl *)self _setHighlightedSegmentHighlighted:1];
     }
@@ -5672,20 +5672,20 @@ void __36__UISegmentedControl_layoutSubviews__block_invoke_2(uint64_t a1, void *
   }
 }
 
-- (void)_setHoverOnSegment:(int64_t)a3 hovered:(BOOL)a4
+- (void)_setHoverOnSegment:(int64_t)segment hovered:(BOOL)hovered
 {
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((segment & 0x8000000000000000) == 0)
   {
-    v6 = a4;
-    if ([(NSMutableArray *)self->_segments count]> a3)
+    hoveredCopy = hovered;
+    if ([(NSMutableArray *)self->_segments count]> segment)
     {
-      v7 = [(NSMutableArray *)self->_segments objectAtIndex:a3];
-      [v7 setHovered:v6];
-      [(UISegmentedControl *)self _updateDividerImageForSegmentAtIndex:a3];
+      v7 = [(NSMutableArray *)self->_segments objectAtIndex:segment];
+      [v7 setHovered:hoveredCopy];
+      [(UISegmentedControl *)self _updateDividerImageForSegmentAtIndex:segment];
     }
   }
 
-  if (self->_selectedSegment == a3)
+  if (self->_selectedSegment == segment)
   {
 
     [(UISegmentedControl *)self _updateSelectionIndicator];
@@ -5700,8 +5700,8 @@ void __36__UISegmentedControl_layoutSubviews__block_invoke_2(uint64_t a1, void *
     if (!v2)
     {
       v4 = objc_opt_class();
-      v5 = [(UIView *)self traitCollection];
-      v6 = UISegmentedControlStyleProviderForIdiom(v4, [v5 userInterfaceIdiom]);
+      traitCollection = [(UIView *)self traitCollection];
+      v6 = UISegmentedControlStyleProviderForIdiom(v4, [traitCollection userInterfaceIdiom]);
 
       v2 = [v6 feedbackGeneratorForSegmentedControl:self];
       objc_setAssociatedObject(self, sel__feedbackGenerator, v2, 1);
@@ -5716,13 +5716,13 @@ void __36__UISegmentedControl_layoutSubviews__block_invoke_2(uint64_t a1, void *
   return v2;
 }
 
-- (BOOL)pointMostlyInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointMostlyInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v7 = objc_opt_class();
-  v8 = [(UIView *)self traitCollection];
-  v9 = UISegmentedControlStyleProviderForIdiom(v7, [v8 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v9 = UISegmentedControlStyleProviderForIdiom(v7, [traitCollection userInterfaceIdiom]);
 
   [v9 mostlyInsideMargin];
   v11 = v10;
@@ -5735,33 +5735,33 @@ void __36__UISegmentedControl_layoutSubviews__block_invoke_2(uint64_t a1, void *
   return self;
 }
 
-- (id)_segmentAtIndex:(int)a3
+- (id)_segmentAtIndex:(int)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     v6 = 0;
   }
 
   else
   {
-    if ([(NSMutableArray *)self->_segments count]<= a3)
+    if ([(NSMutableArray *)self->_segments count]<= index)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:a3];
+      v6 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:index];
     }
   }
 
   return v6;
 }
 
-- (int)_closestSegmentIndexAtPoint:(CGPoint)a3
+- (int)_closestSegmentIndexAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = [(NSMutableArray *)self->_segments count];
   v7 = v6;
   if (!v6)
@@ -5801,26 +5801,26 @@ void __36__UISegmentedControl_layoutSubviews__block_invoke_2(uint64_t a1, void *
   return v8;
 }
 
-- (void)_tapSegmentAtPoint:(CGPoint)a3 touchDown:(BOOL)a4
+- (void)_tapSegmentAtPoint:(CGPoint)point touchDown:(BOOL)down
 {
-  v4 = a4;
-  v6 = [(UISegmentedControl *)self _closestSegmentIndexAtPoint:a3.x, a3.y];
+  downCopy = down;
+  v6 = [(UISegmentedControl *)self _closestSegmentIndexAtPoint:point.x, point.y];
   if ((v6 & 0x80000000) == 0)
   {
     v7 = v6;
     v8 = [(NSMutableArray *)self->_segments objectAtIndex:v6];
-    v9 = [v8 isUserInteractionEnabled];
+    isUserInteractionEnabled = [v8 isUserInteractionEnabled];
 
     segmentedControlFlags = self->_segmentedControlFlags;
-    if (v9)
+    if (isUserInteractionEnabled)
     {
       if ((*&segmentedControlFlags & 0x10) != 0)
       {
         v11 = objc_opt_class();
-        v12 = [(UIView *)self traitCollection];
-        v18 = UISegmentedControlStyleProviderForIdiom(v11, [v12 userInterfaceIdiom]);
+        traitCollection = [(UIView *)self traitCollection];
+        v18 = UISegmentedControlStyleProviderForIdiom(v11, [traitCollection userInterfaceIdiom]);
 
-        if ([v18 animateSlidingSelectionByDefault] && !-[UISegmentedControl _disableSlidingControl](self, "_disableSlidingControl") && v4)
+        if ([v18 animateSlidingSelectionByDefault] && !-[UISegmentedControl _disableSlidingControl](self, "_disableSlidingControl") && downCopy)
         {
           selectedSegment = self->_selectedSegment;
           v14 = self->_segmentedControlFlags;
@@ -5841,8 +5841,8 @@ void __36__UISegmentedControl_layoutSubviews__block_invoke_2(uint64_t a1, void *
 
           if (self->_hoveredSegment != -1)
           {
-            v15 = [(UIControl *)self pointerInteraction];
-            [v15 invalidate];
+            pointerInteraction = [(UIControl *)self pointerInteraction];
+            [pointerInteraction invalidate];
 
             [(UISegmentedControl *)self _setHoverOnSegment:self->_selectedSegment hovered:0];
           }
@@ -5858,8 +5858,8 @@ void __36__UISegmentedControl_layoutSubviews__block_invoke_2(uint64_t a1, void *
         {
           if (self->_hoveredSegment == highlightedSegment)
           {
-            v17 = [(UIControl *)self pointerInteraction];
-            [v17 invalidate];
+            pointerInteraction2 = [(UIControl *)self pointerInteraction];
+            [pointerInteraction2 invalidate];
           }
 
           [(UISegmentedControl *)self _highlightSegment:v7];
@@ -5885,21 +5885,21 @@ void __36__UISegmentedControl_layoutSubviews__block_invoke_2(uint64_t a1, void *
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v23 = a4;
+  eventCopy = event;
   v5 = objc_opt_class();
-  v6 = [(UIView *)self traitCollection];
-  v7 = UISegmentedControlStyleProviderForIdiom(v5, [v6 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v7 = UISegmentedControlStyleProviderForIdiom(v5, [traitCollection userInterfaceIdiom]);
 
   if (([v7 useTVStyleFocusSelection] & 1) == 0)
   {
-    v8 = v23;
+    v8 = eventCopy;
     if ([v8 _buttonMask])
     {
-      v9 = [v8 _buttonMask];
+      _buttonMask = [v8 _buttonMask];
 
-      if ((v9 & 1) == 0)
+      if ((_buttonMask & 1) == 0)
       {
         goto LABEL_15;
       }
@@ -5916,10 +5916,10 @@ void __36__UISegmentedControl_layoutSubviews__block_invoke_2(uint64_t a1, void *
     v14 = v13;
     if (![v7 limitInternalLayoutAndInteractionToDefaultHeight] || (v15 = -[UISegmentedControl controlSize](self, "controlSize"), -[UIView traitCollection](self, "traitCollection"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "defaultHeightForControlSize:traitCollection:", v15, v16), v18 = v17, v16, v14 <= v18))
     {
-      v19 = [(UISegmentedControl *)self shouldTrack];
+      shouldTrack = [(UISegmentedControl *)self shouldTrack];
       segmentedControlFlags = self->_segmentedControlFlags;
       v21 = 16;
-      if (!v19)
+      if (!shouldTrack)
       {
         v21 = 0;
       }
@@ -5934,8 +5934,8 @@ void __36__UISegmentedControl_layoutSubviews__block_invoke_2(uint64_t a1, void *
 
       else
       {
-        v22 = [(UISegmentedControl *)self _feedbackGenerator];
-        [v22 pressedDown];
+        _feedbackGenerator = [(UISegmentedControl *)self _feedbackGenerator];
+        [_feedbackGenerator pressedDown];
       }
 
       *&self->_segmentedControlFlags &= ~0x100000000uLL;
@@ -5946,16 +5946,16 @@ void __36__UISegmentedControl_layoutSubviews__block_invoke_2(uint64_t a1, void *
 LABEL_15:
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v15 = a4;
+  eventCopy = event;
   v5 = objc_opt_class();
-  v6 = [(UIView *)self traitCollection];
-  v7 = UISegmentedControlStyleProviderForIdiom(v5, [v6 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v7 = UISegmentedControlStyleProviderForIdiom(v5, [traitCollection userInterfaceIdiom]);
 
   if (([v7 useTVStyleFocusSelection] & 1) == 0 && (*&self->_segmentedControlFlags & 0x10) != 0)
   {
-    v8 = [v15 _firstTouchForView:self];
+    v8 = [eventCopy _firstTouchForView:self];
     [v8 locationInView:self];
     v10 = v9;
     v12 = v11;
@@ -5967,7 +5967,7 @@ LABEL_15:
       segmentedControlFlags = self->_segmentedControlFlags;
     }
 
-    if ((*&segmentedControlFlags & 0x1000) != 0 || [(UISegmentedControl *)self pointMostlyInside:v15 withEvent:v10, v12])
+    if ((*&segmentedControlFlags & 0x1000) != 0 || [(UISegmentedControl *)self pointMostlyInside:eventCopy withEvent:v10, v12])
     {
       [(UISegmentedControl *)self _tapSegmentAtPoint:0 touchDown:v10, v12];
     }
@@ -5979,12 +5979,12 @@ LABEL_15:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v12 = a4;
+  eventCopy = event;
   v5 = objc_opt_class();
-  v6 = [(UIView *)self traitCollection];
-  v7 = UISegmentedControlStyleProviderForIdiom(v5, [v6 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v7 = UISegmentedControlStyleProviderForIdiom(v5, [traitCollection userInterfaceIdiom]);
 
   if (([v7 useTVStyleFocusSelection] & 1) == 0)
   {
@@ -5993,9 +5993,9 @@ LABEL_15:
     {
       self->_segmentedControlFlags = (*&segmentedControlFlags & 0xFFFFFFFFFFFFEFEFLL);
       self->_initiallyDraggedSegment = -1;
-      v9 = [v12 _firstTouchForView:self];
+      v9 = [eventCopy _firstTouchForView:self];
       [v9 locationInView:self];
-      if ((*&segmentedControlFlags & 0x1000) != 0 || [(UISegmentedControl *)self pointMostlyInside:v12 withEvent:?])
+      if ((*&segmentedControlFlags & 0x1000) != 0 || [(UISegmentedControl *)self pointMostlyInside:eventCopy withEvent:?])
       {
         [(UISegmentedControl *)self _setSelectedSegmentIndex:self->_highlightedSegment notify:1 animate:1];
       }
@@ -6011,8 +6011,8 @@ LABEL_15:
 
       else if ((v10 & 0x100000000) != 0)
       {
-        v11 = [(UISegmentedControl *)self _feedbackGenerator];
-        [v11 pressedUp];
+        _feedbackGenerator = [(UISegmentedControl *)self _feedbackGenerator];
+        [_feedbackGenerator pressedUp];
 
         v10 = *&self->_segmentedControlFlags & 0xFFFFFFFEFFFFFFFFLL;
       }
@@ -6024,11 +6024,11 @@ LABEL_15:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5 = objc_opt_class();
-  v6 = [(UIView *)self traitCollection];
-  v8 = UISegmentedControlStyleProviderForIdiom(v5, [v6 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v8 = UISegmentedControlStyleProviderForIdiom(v5, [traitCollection userInterfaceIdiom]);
 
   if (([v8 useTVStyleFocusSelection] & 1) == 0)
   {
@@ -6042,11 +6042,11 @@ LABEL_15:
   }
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UISegmentedControl *)self _shouldConsumeEventWithPresses:v6])
+  beganCopy = began;
+  eventCopy = event;
+  if ([(UISegmentedControl *)self _shouldConsumeEventWithPresses:beganCopy])
   {
     [(UISegment *)self->_focusedSegment _setHighlighted:1 animated:1];
     [(UISegmentedControl *)self _selectFocusedSegment];
@@ -6056,27 +6056,27 @@ LABEL_15:
   {
     v8.receiver = self;
     v8.super_class = UISegmentedControl;
-    [(UIResponder *)&v8 pressesBegan:v6 withEvent:v7];
+    [(UIResponder *)&v8 pressesBegan:beganCopy withEvent:eventCopy];
   }
 }
 
-- (void)pressesChanged:(id)a3 withEvent:(id)a4
+- (void)pressesChanged:(id)changed withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(UISegmentedControl *)self _shouldConsumeEventWithPresses:v6])
+  changedCopy = changed;
+  eventCopy = event;
+  if (![(UISegmentedControl *)self _shouldConsumeEventWithPresses:changedCopy])
   {
     v8.receiver = self;
     v8.super_class = UISegmentedControl;
-    [(UIResponder *)&v8 pressesChanged:v6 withEvent:v7];
+    [(UIResponder *)&v8 pressesChanged:changedCopy withEvent:eventCopy];
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UISegmentedControl *)self _shouldConsumeEventWithPresses:v6])
+  cancelledCopy = cancelled;
+  eventCopy = event;
+  if ([(UISegmentedControl *)self _shouldConsumeEventWithPresses:cancelledCopy])
   {
     [(UISegment *)self->_focusedSegment _setHighlighted:0 animated:1];
   }
@@ -6085,15 +6085,15 @@ LABEL_15:
   {
     v8.receiver = self;
     v8.super_class = UISegmentedControl;
-    [(UIResponder *)&v8 pressesCancelled:v6 withEvent:v7];
+    [(UIResponder *)&v8 pressesCancelled:cancelledCopy withEvent:eventCopy];
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UISegmentedControl *)self _shouldConsumeEventWithPresses:v6])
+  endedCopy = ended;
+  eventCopy = event;
+  if ([(UISegmentedControl *)self _shouldConsumeEventWithPresses:endedCopy])
   {
     [(UISegmentedControl *)self setSelectedSegmentIndex:[(NSMutableArray *)self->_segments indexOfObject:self->_focusedSegment]];
     [(UISegment *)self->_focusedSegment _setHighlighted:0 animated:1];
@@ -6107,13 +6107,13 @@ LABEL_15:
   {
     v8.receiver = self;
     v8.super_class = UISegmentedControl;
-    [(UIResponder *)&v8 pressesEnded:v6 withEvent:v7];
+    [(UIResponder *)&v8 pressesEnded:endedCopy withEvent:eventCopy];
   }
 }
 
-- (BOOL)_shouldConsumeEventWithPresses:(id)a3
+- (BOOL)_shouldConsumeEventWithPresses:(id)presses
 {
-  v4 = _UIPressesContainsPressType(a3, 4);
+  v4 = _UIPressesContainsPressType(presses, 4);
   if (v4)
   {
     focusedSegment = self->_focusedSegment;
@@ -6124,23 +6124,23 @@ LABEL_15:
   return v4;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v7 = a4;
-  v8 = a5;
+  requestCopy = request;
+  regionCopy = region;
   v9 = objc_opt_class();
-  v10 = [(UIView *)self traitCollection];
-  v11 = UISegmentedControlStyleProviderForIdiom(v9, [v10 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v11 = UISegmentedControlStyleProviderForIdiom(v9, [traitCollection userInterfaceIdiom]);
 
   if ([v11 useSelectionIndicatorStyling])
   {
     if ((*(&self->_segmentedControlFlags + 1) & 0x410) != 0)
     {
-      v12 = v8;
+      height = regionCopy;
       goto LABEL_9;
     }
 
-    [v7 location];
+    [requestCopy location];
     v13 = [(UISegmentedControl *)self _closestSegmentIndexAtPoint:?];
     if ((v13 & 0x80000000) == 0)
     {
@@ -6155,32 +6155,32 @@ LABEL_15:
         width = v24.size.width;
         height = v24.size.height;
         v20 = [[_UISegmentedControlSegmentHoverIdentifier alloc] initWithIndex:v14 selected:self->_selectedSegment == v14];
-        v12 = [UIPointerRegion regionWithRect:v20 identifier:x, y, width, height];
+        height = [UIPointerRegion regionWithRect:v20 identifier:x, y, width, height];
 
         goto LABEL_9;
       }
     }
   }
 
-  v12 = 0;
+  height = 0;
 LABEL_9:
 
-  return v12;
+  return height;
 }
 
-- (id)_pointerEffectWithPreview:(void *)a3 forSegment:(uint64_t)a4 selected:
+- (id)_pointerEffectWithPreview:(void *)preview forSegment:(uint64_t)segment selected:
 {
-  v7 = a3;
-  if (a1)
+  previewCopy = preview;
+  if (self)
   {
     v8 = a2;
     v9 = objc_opt_class();
-    v10 = [a1 traitCollection];
-    v11 = UISegmentedControlStyleProviderForIdiom(v9, [v10 userInterfaceIdiom]);
+    traitCollection = [self traitCollection];
+    v11 = UISegmentedControlStyleProviderForIdiom(v9, [traitCollection userInterfaceIdiom]);
 
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v11 pointerEffectClassForSegment:v7 selected:a4];
+      v12 = [v11 pointerEffectClassForSegment:previewCopy selected:segment];
     }
 
     else
@@ -6199,10 +6199,10 @@ LABEL_9:
   return v13;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = a4;
-  v6 = [v5 identifier];
+  regionCopy = region;
+  identifier = [regionCopy identifier];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -6212,23 +6212,23 @@ LABEL_9:
     goto LABEL_24;
   }
 
-  v8 = [v5 identifier];
-  v9 = [v8 index];
-  if ((v9 & 0x8000000000000000) == 0)
+  identifier2 = [regionCopy identifier];
+  index = [identifier2 index];
+  if ((index & 0x8000000000000000) == 0)
   {
-    v10 = v9;
-    v11 = [(NSMutableArray *)self->_segments objectAtIndex:v9];
+    v10 = index;
+    v11 = [(NSMutableArray *)self->_segments objectAtIndex:index];
     v12 = self->_selectedSegment == v10;
     v13 = objc_opt_class();
-    v14 = [(UIView *)self traitCollection];
+    traitCollection = [(UIView *)self traitCollection];
     v15 = (*&self->_segmentedControlFlags >> 29) & 1;
     [(UISegmentedControl *)self bounds];
-    [v13 _effectiveCornerRadiusForTraitCollection:v14 hasMaterial:v15 size:-[UISegmentedControl controlSize](self controlSize:"controlSize") selected:{v12, v16, v17}];
+    [v13 _effectiveCornerRadiusForTraitCollection:traitCollection hasMaterial:v15 size:-[UISegmentedControl controlSize](self controlSize:"controlSize") selected:{v12, v16, v17}];
     v19 = v18;
 
     v20 = objc_opt_class();
-    v21 = [(UIView *)self traitCollection];
-    [v20 _sectionIndicatorInsetForTraitCollection:v21 hasMaterial:(*&self->_segmentedControlFlags >> 29) & 1 size:{-[UISegmentedControl controlSize](self, "controlSize")}];
+    traitCollection2 = [(UIView *)self traitCollection];
+    [v20 _sectionIndicatorInsetForTraitCollection:traitCollection2 hasMaterial:(*&self->_segmentedControlFlags >> 29) & 1 size:{-[UISegmentedControl controlSize](self, "controlSize")}];
     v23 = v22;
 
     [v11 bounds];
@@ -6256,29 +6256,29 @@ LABEL_9:
       v33 = v77.origin.y;
       v34 = v77.size.width;
       v35 = v77.size.height;
-      v36 = [(UIView *)self superview];
-      if ([(UITargetedPreview *)v36 clipsToBounds])
+      superview = [(UIView *)self superview];
+      if ([(UITargetedPreview *)superview clipsToBounds])
       {
-        v37 = [(UITargetedPreview *)v36 superview];
+        v36Superview = [(UITargetedPreview *)superview superview];
 
-        v36 = v37;
+        superview = v36Superview;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v38 = [(UITargetedPreview *)v36 superview];
+        v36Superview2 = [(UITargetedPreview *)superview superview];
 
-        v36 = v38;
+        superview = v36Superview2;
       }
 
       [v11 frame];
-      [(UIView *)self convertPoint:v36 toView:v40 + v39 * 0.5, v42 + v41 * 0.5];
-      v45 = [[UIPreviewTarget alloc] initWithContainer:v36 center:v43, v44];
+      [(UIView *)self convertPoint:superview toView:v40 + v39 * 0.5, v42 + v41 * 0.5];
+      v45 = [[UIPreviewTarget alloc] initWithContainer:superview center:v43, v44];
       v46 = objc_opt_new();
       v47 = [[UITargetedPreview alloc] initWithView:v11 parameters:v46 target:v45];
       v48 = [(UISegmentedControl *)self _pointerEffectWithPreview:v47 forSegment:v11 selected:1];
-      [v11 convertRect:v36 toView:{v32, v33, v34, v35}];
+      [v11 convertRect:superview toView:{v32, v33, v34, v35}];
       v50 = v49;
       v52 = v51;
       v54 = v53;
@@ -6288,26 +6288,26 @@ LABEL_9:
     }
 
     v58 = objc_opt_class();
-    v59 = [(UIView *)self traitCollection];
-    [v58 _dividerWidthForTraitCollection:v59 size:{-[UISegmentedControl controlSize](self, "controlSize")}];
+    traitCollection3 = [(UIView *)self traitCollection];
+    [v58 _dividerWidthForTraitCollection:traitCollection3 size:{-[UISegmentedControl controlSize](self, "controlSize")}];
     v61 = v60;
 
-    v62 = [v11 segmentPosition];
-    if (v62 == 3)
+    segmentPosition = [v11 segmentPosition];
+    if (segmentPosition == 3)
     {
       v63 = v23;
     }
 
     else
     {
-      if (v62 == 2)
+      if (segmentPosition == 2)
       {
         x = x - v61;
       }
 
       else
       {
-        if (v62)
+        if (segmentPosition)
         {
           v63 = -v61;
           goto LABEL_21;
@@ -6330,8 +6330,8 @@ LABEL_21:
     v65 = v79.origin.y;
     v66 = v79.size.width;
     v67 = v79.size.height;
-    v36 = [[UITargetedPreview alloc] initWithView:v11];
-    v48 = [(UISegmentedControl *)self _pointerEffectWithPreview:v36 forSegment:v11 selected:0];
+    superview = [[UITargetedPreview alloc] initWithView:v11];
+    v48 = [(UISegmentedControl *)self _pointerEffectWithPreview:superview forSegment:v11 selected:0];
     [v11 convertRect:self toView:{v64, v65, v66, v67}];
     v50 = v68;
     v52 = v69;
@@ -6353,29 +6353,29 @@ LABEL_24:
   return v57;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v7 = a4;
-  v8 = a5;
+  regionCopy = region;
+  animatorCopy = animator;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __66__UISegmentedControl_pointerInteraction_willEnterRegion_animator___block_invoke;
   v23[3] = &unk_1E70F3590;
   v23[4] = self;
-  [v8 addAnimations:v23];
+  [animatorCopy addAnimations:v23];
   if (![(UISegmentedControl *)self transparentBackground])
   {
-    v9 = [(UISegmentedControl *)self _selectedSegmentVibrancyEffect];
-    if (v9)
+    _selectedSegmentVibrancyEffect = [(UISegmentedControl *)self _selectedSegmentVibrancyEffect];
+    if (_selectedSegmentVibrancyEffect)
     {
     }
 
     else
     {
       v10 = objc_opt_class();
-      v11 = [(UISegmentedControl *)self selectedSegmentTintColor];
-      v12 = [(UIView *)self traitCollection];
-      LODWORD(v10) = [v10 _useShadowForSelectedTintColor:v11 traitCollection:v12];
+      selectedSegmentTintColor = [(UISegmentedControl *)self selectedSegmentTintColor];
+      traitCollection = [(UIView *)self traitCollection];
+      LODWORD(v10) = [v10 _useShadowForSelectedTintColor:selectedSegmentTintColor traitCollection:traitCollection];
 
       if (v10)
       {
@@ -6388,7 +6388,7 @@ LABEL_24:
           v21[3] = &unk_1E70F3590;
           v22 = v13;
           v14 = v13;
-          [v8 addAnimations:v21];
+          [animatorCopy addAnimations:v21];
         }
 
         v20[0] = MEMORY[0x1E69E9820];
@@ -6396,27 +6396,27 @@ LABEL_24:
         v20[2] = __66__UISegmentedControl_pointerInteraction_willEnterRegion_animator___block_invoke_3;
         v20[3] = &unk_1E70F3590;
         v20[4] = self;
-        [v8 addAnimations:v20];
+        [animatorCopy addAnimations:v20];
       }
     }
   }
 
-  v15 = [v7 identifier];
+  identifier = [regionCopy identifier];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v17 = [v7 identifier];
-    v18 = [v17 index];
-    self->_hoveredSegment = v18;
+    identifier2 = [regionCopy identifier];
+    index = [identifier2 index];
+    self->_hoveredSegment = index;
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __66__UISegmentedControl_pointerInteraction_willEnterRegion_animator___block_invoke_4;
     v19[3] = &unk_1E70F32F0;
     v19[4] = self;
-    v19[5] = v18;
-    [v8 addAnimations:v19];
+    v19[5] = index;
+    [animatorCopy addAnimations:v19];
   }
 }
 
@@ -6428,39 +6428,39 @@ uint64_t __66__UISegmentedControl_pointerInteraction_willEnterRegion_animator___
   return [v2 _updateSelectionIndicator];
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v7 = a4;
-  v8 = a5;
+  regionCopy = region;
+  animatorCopy = animator;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __65__UISegmentedControl_pointerInteraction_willExitRegion_animator___block_invoke;
   v23[3] = &unk_1E70F3590;
   v23[4] = self;
-  [v8 addAnimations:v23];
+  [animatorCopy addAnimations:v23];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __65__UISegmentedControl_pointerInteraction_willExitRegion_animator___block_invoke_2;
   aBlock[3] = &unk_1E70F35B8;
   aBlock[4] = self;
-  v9 = v8;
+  v9 = animatorCopy;
   v22 = v9;
   v10 = _Block_copy(aBlock);
-  v11 = [v7 identifier];
+  identifier = [regionCopy identifier];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v13 = [v7 identifier];
-    v14 = [v13 index];
-    v15 = v14;
-    if (self->_hoveredSegment == v14)
+    identifier2 = [regionCopy identifier];
+    index = [identifier2 index];
+    v15 = index;
+    if (self->_hoveredSegment == index)
     {
       self->_hoveredSegment = -1;
     }
 
-    if (v14 == self->_selectedSegment)
+    if (index == self->_selectedSegment)
     {
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
@@ -6575,14 +6575,14 @@ uint64_t __65__UISegmentedControl_pointerInteraction_willExitRegion_animator___b
   return result;
 }
 
-- (void)_setEnabled:(BOOL)a3 forcePropagateToSegments:(BOOL)a4
+- (void)_setEnabled:(BOOL)enabled forcePropagateToSegments:(BOOL)segments
 {
-  v4 = a4;
-  v5 = a3;
+  segmentsCopy = segments;
+  enabledCopy = enabled;
   v28 = *MEMORY[0x1E69E9840];
-  v7 = [(UIControl *)self isEnabled];
-  v8 = v7;
-  if (!v5 && v7)
+  isEnabled = [(UIControl *)self isEnabled];
+  v8 = isEnabled;
+  if (!enabledCopy && isEnabled)
   {
     [(UIView *)self alpha];
     self->_enabledAlpha = v9;
@@ -6590,9 +6590,9 @@ uint64_t __65__UISegmentedControl_pointerInteraction_willExitRegion_animator___b
 
   v26.receiver = self;
   v26.super_class = UISegmentedControl;
-  [(UIControl *)&v26 setEnabled:v5];
-  v10 = v8 ^ v5;
-  if (v8 != v5 || v4)
+  [(UIControl *)&v26 setEnabled:enabledCopy];
+  v10 = v8 ^ enabledCopy;
+  if (v8 != enabledCopy || segmentsCopy)
   {
     v24 = 0u;
     v25 = 0u;
@@ -6614,17 +6614,17 @@ uint64_t __65__UISegmentedControl_pointerInteraction_willExitRegion_animator___b
           }
 
           v16 = *(*(&v22 + 1) + 8 * i);
-          if (v5)
+          if (enabledCopy)
           {
-            v17 = [*(*(&v22 + 1) + 8 * i) isEnabled];
+            isEnabled2 = [*(*(&v22 + 1) + 8 * i) isEnabled];
           }
 
           else
           {
-            v17 = 1;
+            isEnabled2 = 1;
           }
 
-          [v16 _setEnabledAppearance:{v17, v22}];
+          [v16 _setEnabledAppearance:{isEnabled2, v22}];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v22 objects:v27 count:16];
@@ -6633,13 +6633,13 @@ uint64_t __65__UISegmentedControl_pointerInteraction_willExitRegion_animator___b
       while (v13);
     }
 
-    v18 = [(UIView *)self layer];
-    [v18 setShouldRasterize:v5 ^ 1];
+    layer = [(UIView *)self layer];
+    [layer setShouldRasterize:enabledCopy ^ 1];
   }
 
   if (v10)
   {
-    if (v5)
+    if (enabledCopy)
     {
       enabledAlpha = self->_enabledAlpha;
     }
@@ -6659,24 +6659,24 @@ uint64_t __65__UISegmentedControl_pointerInteraction_willExitRegion_animator___b
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  v5 = [(UIControl *)self isEnabled];
-  v6 = 0.5;
-  if (a3 < 0.5 || v5)
+  isEnabled = [(UIControl *)self isEnabled];
+  alphaCopy = 0.5;
+  if (alpha < 0.5 || isEnabled)
   {
-    v6 = a3;
+    alphaCopy = alpha;
   }
 
   v8.receiver = self;
   v8.super_class = UISegmentedControl;
-  [(UIView *)&v8 setAlpha:v6];
+  [(UIView *)&v8 setAlpha:alphaCopy];
 }
 
-- (void)_setAlwaysEmitValueChanged:(BOOL)a3
+- (void)_setAlwaysEmitValueChanged:(BOOL)changed
 {
   v3 = 4;
-  if (!a3)
+  if (!changed)
   {
     v3 = 0;
   }
@@ -6723,13 +6723,13 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)_setSelectedSegmentVibrancyEffect:(id)a3
+- (void)_setSelectedSegmentVibrancyEffect:(id)effect
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  effectCopy = effect;
   *&self->_segmentedControlFlags |= 0x1000000uLL;
   v6 = self->_selectedSegmentVisualEffect;
-  v7 = v5;
+  v7 = effectCopy;
   v8 = v7;
   if (v6 == v7)
   {
@@ -6751,7 +6751,7 @@ LABEL_12:
     {
     }
 
-    objc_storeStrong(&self->_selectedSegmentVisualEffect, a3);
+    objc_storeStrong(&self->_selectedSegmentVisualEffect, effect);
     selectionIndicatorView = self->_selectionIndicatorView;
     if (selectionIndicatorView)
     {
@@ -6762,8 +6762,8 @@ LABEL_12:
       selectionImageView = self->_selectionImageView;
       self->_selectionImageView = 0;
 
-      v13 = self;
-      backdropView = v13->_backdropView;
+      selfCopy = self;
+      backdropView = selfCopy->_backdropView;
       if (backdropView)
       {
         if ((*(&self->_segmentedControlFlags + 3) & 0x80) != 0)
@@ -6773,14 +6773,14 @@ LABEL_12:
 
         else
         {
-          [(UIView *)v13 viewWithTag:-2031];
+          [(UIView *)selfCopy viewWithTag:-2031];
         }
         v15 = ;
       }
 
       else
       {
-        v15 = v13;
+        v15 = selfCopy;
       }
 
       v16 = v15;
@@ -6842,11 +6842,11 @@ LABEL_26:
   return v3;
 }
 
-- (void)_setBackgroundTintColor:(id)a3
+- (void)_setBackgroundTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = self->_backgroundTintColor;
-  v7 = v5;
+  v7 = colorCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -6865,22 +6865,22 @@ LABEL_26:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_backgroundTintColor, a3);
+    objc_storeStrong(&self->_backgroundTintColor, color);
     [(UISegmentedControl *)self _setNeedsBackgroundAndContentViewUpdate];
   }
 
 LABEL_9:
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 view];
-  if (v5 != self && [v4 _isGestureType:0] && objc_msgSend(v4, "numberOfTouchesRequired") == 1)
+  beginCopy = begin;
+  view = [beginCopy view];
+  if (view != self && [beginCopy _isGestureType:0] && objc_msgSend(beginCopy, "numberOfTouchesRequired") == 1)
   {
-    v6 = [v4 numberOfTapsRequired];
+    numberOfTapsRequired = [beginCopy numberOfTapsRequired];
 
-    if (v6 == 1)
+    if (numberOfTapsRequired == 1)
     {
       goto LABEL_16;
     }
@@ -6890,9 +6890,9 @@ LABEL_9:
   {
   }
 
-  if (![v4 _isGestureType:8] || objc_msgSend(v4, "minimumNumberOfTouches") > 1)
+  if (![beginCopy _isGestureType:8] || objc_msgSend(beginCopy, "minimumNumberOfTouches") > 1)
   {
-    if ([v4 _isGestureType:16])
+    if ([beginCopy _isGestureType:16])
     {
       v9 = (*&self->_segmentedControlFlags & 0x10) == 0;
       goto LABEL_17;
@@ -6915,40 +6915,40 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  [v4 locationInView:self];
+  [beginCopy locationInView:self];
   if (![(UIView *)self pointInside:0 withEvent:?])
   {
     goto LABEL_15;
   }
 
-  [v4 translationInView:self];
+  [beginCopy translationInView:self];
   v9 = fabs(v7) <= fabs(v8);
 LABEL_17:
 
   return v9;
 }
 
-- (void)_axLongPressHandler:(id)a3
+- (void)_axLongPressHandler:(id)handler
 {
-  v12 = a3;
-  v4 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  handlerCopy = handler;
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
-    v6 = [(UISegmentedControl *)self axLongPressGestureRecognizer];
-    v7 = [v12 isEqual:v6];
+    axLongPressGestureRecognizer = [(UISegmentedControl *)self axLongPressGestureRecognizer];
+    v7 = [handlerCopy isEqual:axLongPressGestureRecognizer];
 
     if (v7)
     {
-      v8 = [(UISegmentedControl *)self axLongPressGestureRecognizer];
-      v9 = [v8 state];
+      axLongPressGestureRecognizer2 = [(UISegmentedControl *)self axLongPressGestureRecognizer];
+      state = [axLongPressGestureRecognizer2 state];
 
-      if (v9 == 1)
+      if (state == 1)
       {
         v10 = [[UIAccessibilityLargeTextSegmentedViewController alloc] initWithSegmentedControl:self segments:self->_segments delegate:self];
-        v11 = [(UIView *)self _viewControllerForAncestor];
-        [v11 presentViewController:v10 animated:1 completion:0];
+        _viewControllerForAncestor = [(UIView *)self _viewControllerForAncestor];
+        [_viewControllerForAncestor presentViewController:v10 animated:1 completion:0];
       }
     }
   }
@@ -6957,8 +6957,8 @@ LABEL_17:
 - (BOOL)canBecomeFocused
 {
   v3 = objc_opt_class();
-  v4 = [(UIView *)self traitCollection];
-  v5 = UISegmentedControlStyleProviderForIdiom(v3, [v4 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v5 = UISegmentedControlStyleProviderForIdiom(v3, [traitCollection userInterfaceIdiom]);
 
   v8.receiver = self;
   v8.super_class = UISegmentedControl;
@@ -7003,13 +7003,13 @@ LABEL_17:
   return v3;
 }
 
-- (void)_diagnoseFocusabilityForReport:(id)a3
+- (void)_diagnoseFocusabilityForReport:(id)report
 {
-  v5 = a3;
+  reportCopy = report;
   if (![(UISegmentedControl *)self _hasEnabledSegment])
   {
     v4 = [_UIDebugIssue issueWithDescription:@"This segmented control does not have any enabled segments. Segmented controls must have at least one enabled segment in order to be focusable."];
-    [v5 addIssue:v4];
+    [reportCopy addIssue:v4];
   }
 }
 
@@ -7063,9 +7063,9 @@ LABEL_11:
   if (v3)
   {
     v7 = v3;
-    v5 = [(UISegment *)v3 isSelected];
+    isSelected = [(UISegment *)v3 isSelected];
     v4 = v7;
-    if (!v5)
+    if (!isSelected)
     {
       [(UISegmentedControl *)self _cancelDelayedFocusAction];
       v6 = [(NSMutableArray *)self->_segments indexOfObject:v7];
@@ -7080,18 +7080,18 @@ LABEL_11:
   }
 }
 
-+ (BOOL)_selectFocusedSegmentAfterFocusUpdateForTraitCollection:(id)a3
++ (BOOL)_selectFocusedSegmentAfterFocusUpdateForTraitCollection:(id)collection
 {
-  v3 = UISegmentedControlStyleProviderForIdiom(a1, [a3 userInterfaceIdiom]);
-  v4 = [v3 useTVStyleFocusSelection];
+  v3 = UISegmentedControlStyleProviderForIdiom(self, [collection userInterfaceIdiom]);
+  useTVStyleFocusSelection = [v3 useTVStyleFocusSelection];
 
-  return v4;
+  return useTVStyleFocusSelection;
 }
 
 - (void)_sendDelayedFocusActionIfNecessary
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [UISegmentedControl _selectFocusedSegmentAfterFocusUpdateForTraitCollection:v3];
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = [UISegmentedControl _selectFocusedSegmentAfterFocusUpdateForTraitCollection:traitCollection];
 
   if (v4)
   {
@@ -7108,33 +7108,33 @@ LABEL_11:
   [v3 cancelPreviousPerformRequestsWithTarget:self selector:sel__selectFocusedSegment object:0];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = UISegmentedControl;
-  [(UIView *)&v9 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [(UISegmentedControl *)self _internalFocusSystem];
-  v8 = [v6 nextFocusedItem];
+  [(UIView *)&v9 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  _internalFocusSystem = [(UISegmentedControl *)self _internalFocusSystem];
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
-  if (v8 == self)
+  if (nextFocusedItem == self)
   {
-    -[UISegmentedControl set_lastExternalFocusHeading:](self, "set_lastExternalFocusHeading:", [v6 focusHeading]);
-    [v7 _setEnabled:1];
-    [v7 setNeedsFocusUpdate];
+    -[UISegmentedControl set_lastExternalFocusHeading:](self, "set_lastExternalFocusHeading:", [contextCopy focusHeading]);
+    [_internalFocusSystem _setEnabled:1];
+    [_internalFocusSystem setNeedsFocusUpdate];
   }
 
   else
   {
-    [v7 _setEnabled:0];
+    [_internalFocusSystem _setEnabled:0];
   }
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
   v8.receiver = self;
   v8.super_class = UISegmentedControl;
-  v4 = [(UIView *)&v8 focusItemsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(UIView *)&v8 focusItemsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__UISegmentedControl_focusItemsInRect___block_invoke;
@@ -7145,16 +7145,16 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)_focusSystem:(id)a3 containsChildOfHostEnvironment:(id)a4
+- (BOOL)_focusSystem:(id)system containsChildOfHostEnvironment:(id)environment
 {
-  v4 = a4;
+  environmentCopy = environment;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (id)_preferredFocusEnvironmentsForFocusSystem:(id)a3
+- (id)_preferredFocusEnvironmentsForFocusSystem:(id)system
 {
   v4 = [(NSMutableArray *)self->_segments mutableCopy];
   v5 = v4;
@@ -7165,34 +7165,34 @@ LABEL_11:
     [v5 insertObject:v6 atIndex:0];
   }
 
-  v7 = [(UIView *)self traitCollection];
-  v8 = [UISegmentedControl _selectFocusedSegmentAfterFocusUpdateForTraitCollection:v7];
+  traitCollection = [(UIView *)self traitCollection];
+  v8 = [UISegmentedControl _selectFocusedSegmentAfterFocusUpdateForTraitCollection:traitCollection];
 
   if (!v8)
   {
-    v9 = [(UISegmentedControl *)self _lastExternalFocusHeading];
-    if (v9 > 31)
+    _lastExternalFocusHeading = [(UISegmentedControl *)self _lastExternalFocusHeading];
+    if (_lastExternalFocusHeading > 31)
     {
-      if (v9 != 32)
+      if (_lastExternalFocusHeading != 32)
       {
-        if (v9 == 256)
+        if (_lastExternalFocusHeading == 256)
         {
 LABEL_14:
           segments = self->_segments;
 LABEL_15:
-          v12 = [(NSMutableArray *)segments firstObject];
+          firstObject = [(NSMutableArray *)segments firstObject];
 LABEL_16:
-          v13 = v12;
-          if (v12)
+          v13 = firstObject;
+          if (firstObject)
           {
-            [v5 removeObject:v12];
+            [v5 removeObject:firstObject];
             [v5 insertObject:v13 atIndex:0];
           }
 
           goto LABEL_18;
         }
 
-        if (v9 != 512)
+        if (_lastExternalFocusHeading != 512)
         {
           goto LABEL_18;
         }
@@ -7204,7 +7204,7 @@ LABEL_16:
     else
     {
       v10 = *(&self->super.super._viewFlags + 2);
-      switch(v9)
+      switch(_lastExternalFocusHeading)
       {
         case 4:
           segments = self->_segments;
@@ -7229,7 +7229,7 @@ LABEL_16:
       }
     }
 
-    v12 = [(NSMutableArray *)segments lastObject];
+    firstObject = [(NSMutableArray *)segments lastObject];
     goto LABEL_16;
   }
 
@@ -7238,17 +7238,17 @@ LABEL_18:
   return v5;
 }
 
-- (void)_focusSystem:(id)a3 didFinishUpdatingFocusInContext:(id)a4
+- (void)_focusSystem:(id)system didFinishUpdatingFocusInContext:(id)context
 {
-  v14 = a4;
+  contextCopy = context;
   v5 = objc_opt_class();
-  v6 = [(UIView *)self traitCollection];
-  v7 = UISegmentedControlStyleProviderForIdiom(v5, [v6 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v7 = UISegmentedControlStyleProviderForIdiom(v5, [traitCollection userInterfaceIdiom]);
 
   if (-[UISegmentedControl _supportsHidingSelectionIndicatorOnFocusUpdate](self, "_supportsHidingSelectionIndicatorOnFocusUpdate") && [v7 shouldHideSelectionOnFocusUpdate])
   {
-    v8 = [v14 nextFocusedView];
-    v9 = [v8 isDescendantOfView:self];
+    nextFocusedView = [contextCopy nextFocusedView];
+    v9 = [nextFocusedView isDescendantOfView:self];
 
     segmentedControlFlags = self->_segmentedControlFlags;
     if (v9)
@@ -7269,9 +7269,9 @@ LABEL_18:
     }
   }
 
-  v12 = [v14 nextFocusedItem];
+  nextFocusedItem = [contextCopy nextFocusedItem];
   focusedSegment = self->_focusedSegment;
-  self->_focusedSegment = v12;
+  self->_focusedSegment = nextFocusedItem;
 
   [(UIView *)self setNeedsLayout];
   [(UISegmentedControl *)self _sendDelayedFocusActionIfNecessary];
@@ -7279,15 +7279,15 @@ LABEL_18:
 
 - (void)_reevaluateClipping
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_opt_class();
-    v3 = [a1 traitCollection];
-    v7 = UISegmentedControlStyleProviderForIdiom(v2, [v3 userInterfaceIdiom]);
+    traitCollection = [self traitCollection];
+    v7 = UISegmentedControlStyleProviderForIdiom(v2, [traitCollection userInterfaceIdiom]);
 
     if ([v7 useSelectionIndicatorStyling] && (objc_msgSend(v7, "useTVStyleFocusSelection") & 1) == 0)
     {
-      v6 = a1[70];
+      v6 = self[70];
       if (v6)
       {
         v4 = [v6 hasAPICustomizedImages] ^ 1;
@@ -7304,25 +7304,25 @@ LABEL_18:
       v4 = 0;
     }
 
-    if ((a1[78] & 0x490000000) == 0x10000000)
+    if ((self[78] & 0x490000000) == 0x10000000)
     {
-      v5 = [a1 viewWithTag:-2031];
+      v5 = [self viewWithTag:-2031];
       [v5 setClipsToBounds:v4];
     }
 
     else
     {
-      [a1 setClipsToBounds:v4];
+      [self setClipsToBounds:v4];
     }
   }
 }
 
-- (void)_setBackgroundImage:(id)a3 forState:(unint64_t)a4 barMetrics:(int64_t)a5
+- (void)_setBackgroundImage:(id)image forState:(unint64_t)state barMetrics:(int64_t)metrics
 {
-  v8 = a3;
+  imageCopy = image;
   appearanceStorage = self->_appearanceStorage;
-  v13 = v8;
-  if (v8)
+  v13 = imageCopy;
+  if (imageCopy)
   {
     if (!appearanceStorage)
     {
@@ -7339,14 +7339,14 @@ LABEL_18:
     goto LABEL_7;
   }
 
-  v12 = [appearanceStorage backgroundImageForState:a4 isMini:a5 == 1];
+  v12 = [appearanceStorage backgroundImageForState:state isMini:metrics == 1];
 
-  v8 = v13;
+  imageCopy = v13;
   if (v12 != v13)
   {
-    [self->_appearanceStorage setBackgroundImage:v13 forState:a4 isMini:a5 == 1];
+    [self->_appearanceStorage setBackgroundImage:v13 forState:state isMini:metrics == 1];
     [(UISegmentedControl *)self _setNeedsAppearanceUpdate];
-    v8 = v13;
+    imageCopy = v13;
   }
 
 LABEL_7:
@@ -7382,7 +7382,7 @@ LABEL_6:
 {
   if ((barMetrics - 101) > 1)
   {
-    v4 = [self->_appearanceStorage backgroundImageForState:state isMini:barMetrics == UIBarMetricsCompact];
+    uIBarMetricsCompact = [self->_appearanceStorage backgroundImageForState:state isMini:barMetrics == UIBarMetricsCompact];
   }
 
   else
@@ -7393,18 +7393,18 @@ LABEL_6:
       NSLog(&cfstr_SCustomization.isa, a2, state, "UISegmentedControl", @"background image", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
     }
 
-    v4 = 0;
+    uIBarMetricsCompact = 0;
   }
 
-  return v4;
+  return uIBarMetricsCompact;
 }
 
-- (void)_setDividerImage:(id)a3 forLeftSegmentState:(unint64_t)a4 rightSegmentState:(unint64_t)a5 barMetrics:(int64_t)a6
+- (void)_setDividerImage:(id)image forLeftSegmentState:(unint64_t)state rightSegmentState:(unint64_t)segmentState barMetrics:(int64_t)metrics
 {
-  v10 = a3;
+  imageCopy = image;
   appearanceStorage = self->_appearanceStorage;
-  v15 = v10;
-  if (v10)
+  v15 = imageCopy;
+  if (imageCopy)
   {
     if (!appearanceStorage)
     {
@@ -7421,14 +7421,14 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v14 = [appearanceStorage dividerImageForLeftSegmentState:a4 rightSegmentState:a5 isMini:a6 == 1];
+  v14 = [appearanceStorage dividerImageForLeftSegmentState:state rightSegmentState:segmentState isMini:metrics == 1];
 
-  v10 = v15;
+  imageCopy = v15;
   if (v14 != v15)
   {
-    [self->_appearanceStorage setDividerImage:v15 forLeftSegmentState:a4 rightSegmentState:a5 isMini:a6 == 1];
+    [self->_appearanceStorage setDividerImage:v15 forLeftSegmentState:state rightSegmentState:segmentState isMini:metrics == 1];
     [(UISegmentedControl *)self _setNeedsAppearanceUpdate];
-    v10 = v15;
+    imageCopy = v15;
   }
 
 LABEL_7:
@@ -7464,7 +7464,7 @@ LABEL_6:
 {
   if ((barMetrics - 101) > 1)
   {
-    v5 = [self->_appearanceStorage dividerImageForLeftSegmentState:leftState rightSegmentState:rightState isMini:barMetrics == UIBarMetricsCompact];
+    uIBarMetricsCompact = [self->_appearanceStorage dividerImageForLeftSegmentState:leftState rightSegmentState:rightState isMini:barMetrics == UIBarMetricsCompact];
   }
 
   else
@@ -7475,17 +7475,17 @@ LABEL_6:
       NSLog(&cfstr_SCustomization.isa, a2, leftState, rightState, "UISegmentedControl", @"divider image", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
     }
 
-    v5 = 0;
+    uIBarMetricsCompact = 0;
   }
 
-  return v5;
+  return uIBarMetricsCompact;
 }
 
-- (void)_setTitleTextAttributes:(id)a3 forState:(unint64_t)a4
+- (void)_setTitleTextAttributes:(id)attributes forState:(unint64_t)state
 {
-  v6 = a3;
+  attributesCopy = attributes;
   appearanceStorage = self->_appearanceStorage;
-  if (v6)
+  if (attributesCopy)
   {
     if (!appearanceStorage)
     {
@@ -7500,12 +7500,12 @@ LABEL_6:
     return;
   }
 
-  v11 = [v6 _ui_attributesForDictionaryContainingUIStringDrawingKeys];
+  _ui_attributesForDictionaryContainingUIStringDrawingKeys = [attributesCopy _ui_attributesForDictionaryContainingUIStringDrawingKeys];
 
-  v10 = [self->_appearanceStorage textAttributesForState:a4];
-  if (v11 | v10 && ([v11 isEqualToDictionary:v10] & 1) == 0)
+  v10 = [self->_appearanceStorage textAttributesForState:state];
+  if (_ui_attributesForDictionaryContainingUIStringDrawingKeys | v10 && ([_ui_attributesForDictionaryContainingUIStringDrawingKeys isEqualToDictionary:v10] & 1) == 0)
   {
-    [self->_appearanceStorage setTextAttributes:v11 forState:a4];
+    [self->_appearanceStorage setTextAttributes:_ui_attributesForDictionaryContainingUIStringDrawingKeys forState:state];
     [(UISegmentedControl *)self _setNeedsAppearanceUpdate];
   }
 }
@@ -7548,10 +7548,10 @@ LABEL_6:
   }
 }
 
-- (void)_setBackgroundVerticalPositionAdjustment:(double)a3 forBarMetrics:(int64_t)a4
+- (void)_setBackgroundVerticalPositionAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics
 {
   appearanceStorage = self->_appearanceStorage;
-  if (a3 != 0.0 || appearanceStorage != 0)
+  if (adjustment != 0.0 || appearanceStorage != 0)
   {
     if (!appearanceStorage)
     {
@@ -7562,12 +7562,12 @@ LABEL_6:
       appearanceStorage = self->_appearanceStorage;
     }
 
-    [appearanceStorage backgroundPositionAdjustmentForBarMetrics:a4];
-    if (v11 != a3)
+    [appearanceStorage backgroundPositionAdjustmentForBarMetrics:metrics];
+    if (v11 != adjustment)
     {
-      [self->_appearanceStorage setBackgroundPositionAdjustment:a4 forBarMetrics:a3];
-      v12 = [(UIView *)self superview];
-      [v12 setNeedsLayout];
+      [self->_appearanceStorage setBackgroundPositionAdjustment:metrics forBarMetrics:adjustment];
+      superview = [(UIView *)self superview];
+      [superview setNeedsLayout];
     }
   }
 }
@@ -7697,11 +7697,11 @@ LABEL_28:
 {
   if ((barMetrics - 101) > 1)
   {
-    v6 = [self->_appearanceStorage contentPositionOffsetForSegment:leftCenterRightOrAlone inMiniBar:barMetrics == UIBarMetricsCompact];
-    v7 = v6;
-    if (v6)
+    uIBarMetricsCompact = [self->_appearanceStorage contentPositionOffsetForSegment:leftCenterRightOrAlone inMiniBar:barMetrics == UIBarMetricsCompact];
+    v7 = uIBarMetricsCompact;
+    if (uIBarMetricsCompact)
     {
-      [v6 UIOffsetValue];
+      [uIBarMetricsCompact UIOffsetValue];
       v4 = v8;
       v5 = v9;
     }
@@ -7732,36 +7732,36 @@ LABEL_28:
   return result;
 }
 
-- (id)_badgeValueForSegmentAtIndex:(unint64_t)a3
+- (id)_badgeValueForSegmentAtIndex:(unint64_t)index
 {
-  v3 = [(NSMutableArray *)self->_segments objectAtIndex:a3];
-  v4 = [v3 badgeValue];
+  v3 = [(NSMutableArray *)self->_segments objectAtIndex:index];
+  badgeValue = [v3 badgeValue];
 
-  return v4;
+  return badgeValue;
 }
 
-- (void)_setBadgeValue:(id)a3 forSegmentAtIndex:(unint64_t)a4
+- (void)_setBadgeValue:(id)value forSegmentAtIndex:(unint64_t)index
 {
   segments = self->_segments;
-  v7 = a3;
-  v8 = [(NSMutableArray *)segments objectAtIndex:a4];
-  [v8 setBadgeValue:v7];
+  valueCopy = value;
+  v8 = [(NSMutableArray *)segments objectAtIndex:index];
+  [v8 setBadgeValue:valueCopy];
 
   [(UIView *)self setNeedsLayout];
 }
 
-+ (CGColor)_backgroundPrimaryColorSelected:(BOOL)a3 highlighted:(BOOL)a4 traitCollection:(id)a5 tintColor:(id)a6
++ (CGColor)_backgroundPrimaryColorSelected:(BOOL)selected highlighted:(BOOL)highlighted traitCollection:(id)collection tintColor:(id)color
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = UISegmentedControlStyleProviderForIdiom(a1, [v10 userInterfaceIdiom]);
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v12 highlightColorForSegmentSelected:v8 highlighted:v7 traitCollection:v10 tintColor:v11], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
+  highlightedCopy = highlighted;
+  selectedCopy = selected;
+  collectionCopy = collection;
+  colorCopy = color;
+  v12 = UISegmentedControlStyleProviderForIdiom(self, [collectionCopy userInterfaceIdiom]);
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v12 highlightColorForSegmentSelected:selectedCopy highlighted:highlightedCopy traitCollection:collectionCopy tintColor:colorCopy], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    if (v8)
+    if (selectedCopy)
     {
-      if (!v11)
+      if (!colorCopy)
       {
         v14 = +[UIColor _controlForegroundColor];
 LABEL_10:
@@ -7772,61 +7772,61 @@ LABEL_10:
 
     else
     {
-      if (v7)
+      if (highlightedCopy)
       {
         v14 = +[UIColor _controlHighlightColor];
         goto LABEL_10;
       }
 
-      if (!v11)
+      if (!colorCopy)
       {
         v14 = +[UIColor tertiarySystemFillColor];
         goto LABEL_10;
       }
     }
 
-    v14 = v11;
+    v14 = colorCopy;
     goto LABEL_10;
   }
 
 LABEL_11:
-  v15 = [v13 resolvedColorWithTraitCollection:v10];
-  v16 = [v15 CGColor];
+  v15 = [v13 resolvedColorWithTraitCollection:collectionCopy];
+  cGColor = [v15 CGColor];
 
-  return v16;
+  return cGColor;
 }
 
-+ (id)_modernBackgroundSelected:(BOOL)a3 shadow:(int64_t)a4 maximumSize:(CGSize)a5 highlighted:(BOOL)a6 hasMaterial:(BOOL)a7 traitCollection:(id)a8 tintColor:(id)a9 size:(int)a10
++ (id)_modernBackgroundSelected:(BOOL)selected shadow:(int64_t)shadow maximumSize:(CGSize)size highlighted:(BOOL)highlighted hasMaterial:(BOOL)material traitCollection:(id)collection tintColor:(id)color size:(int)self0
 {
-  v11 = a7;
-  v12 = a6;
-  height = a5.height;
-  width = a5.width;
-  v16 = a3;
-  v18 = a8;
-  v19 = a9;
+  materialCopy = material;
+  highlightedCopy = highlighted;
+  height = size.height;
+  width = size.width;
+  selectedCopy = selected;
+  collectionCopy = collection;
+  colorCopy = color;
   if (qword_1ED4974E0 != -1)
   {
     dispatch_once(&qword_1ED4974E0, &__block_literal_global_788);
   }
 
-  v75 = v19;
-  v20 = [a1 _backgroundPrimaryColorSelected:v16 highlighted:v12 traitCollection:v18 tintColor:v19];
-  v21 = UISegmentedControlStyleProviderForIdiom(a1, [v18 userInterfaceIdiom]);
-  v22 = [v21 useSelectionIndicatorStyling];
-  [a1 _cornerRadiusForTraitCollection:v18 size:a10 controlSize:{width, height}];
+  v75 = colorCopy;
+  v20 = [self _backgroundPrimaryColorSelected:selectedCopy highlighted:highlightedCopy traitCollection:collectionCopy tintColor:colorCopy];
+  v21 = UISegmentedControlStyleProviderForIdiom(self, [collectionCopy userInterfaceIdiom]);
+  useSelectionIndicatorStyling = [v21 useSelectionIndicatorStyling];
+  [self _cornerRadiusForTraitCollection:collectionCopy size:a10 controlSize:{width, height}];
   v24 = v23;
-  [a1 _sectionIndicatorInsetForTraitCollection:v18 hasMaterial:v11 size:a10];
+  [self _sectionIndicatorInsetForTraitCollection:collectionCopy hasMaterial:materialCopy size:a10];
   v26 = v25;
-  [a1 _sectionIndicatorOverflowForTraitCollection:v18 size:a10];
+  [self _sectionIndicatorOverflowForTraitCollection:collectionCopy size:a10];
   v28 = v26 + v27;
-  [a1 _effectiveCornerRadiusForTraitCollection:v18 hasMaterial:v11 size:a10 controlSize:v16 selected:{width, height}];
+  [self _effectiveCornerRadiusForTraitCollection:collectionCopy hasMaterial:materialCopy size:a10 controlSize:selectedCopy selected:{width, height}];
   v30 = v29;
-  v31 = [v21 usesContinuousCurveCorners];
+  usesContinuousCurveCorners = [v21 usesContinuousCurveCorners];
   if (![v21 useTVStyleFocusSelection])
   {
     v33 = v30;
-    if (!v31)
+    if (!usesContinuousCurveCorners)
     {
       goto LABEL_11;
     }
@@ -7841,7 +7841,7 @@ LABEL_11:
 
   else
   {
-    v32 = v31;
+    v32 = usesContinuousCurveCorners;
   }
 
   v33 = v30;
@@ -7853,14 +7853,14 @@ LABEL_10:
 
 LABEL_11:
   v34 = 0.0;
-  if ((v16 || v12) & v22)
+  if ((selectedCopy || highlightedCopy) & useSelectionIndicatorStyling)
   {
     v34 = v28;
   }
 
   v35 = v34 + v33;
   v36 = 2.0;
-  if (!(v22 ^ 1 | v16))
+  if (!(useSelectionIndicatorStyling ^ 1 | selectedCopy))
   {
     v36 = 1.0;
   }
@@ -7897,9 +7897,9 @@ LABEL_11:
     v40 = v35;
   }
 
-  if (a4 < 3 && v16)
+  if (shadow < 3 && selectedCopy)
   {
-    v41 = a4 + 1;
+    v41 = shadow + 1;
   }
 
   else
@@ -7908,17 +7908,17 @@ LABEL_11:
   }
 
   v42 = [_UISegmentedControlCacheKey alloc];
-  [v18 displayScale];
+  [collectionCopy displayScale];
   v44 = [(_UISegmentedControlCacheKey *)v42 initWithCornerRadius:v41 capSize:v20 scale:v24 state:v39 primaryColor:v40, v43];
   v45 = [qword_1ED4974D8 objectForKey:v44];
   if (!v45)
   {
     v46 = v39 + v39 + 1.0;
     v47 = v40 + v40 + 1.0;
-    [v18 displayScale];
+    [collectionCopy displayScale];
     _UIGraphicsBeginImageContextWithOptions(0, 0, v46, v47, v48);
-    v74 = [v21 useSelectionIndicatorStyling];
-    if (v74)
+    useSelectionIndicatorStyling2 = [v21 useSelectionIndicatorStyling];
+    if (useSelectionIndicatorStyling2)
     {
       ContextStack = GetContextStack(0);
       if (*ContextStack < 1)
@@ -7933,12 +7933,12 @@ LABEL_11:
 
       CGContextSetFillColorWithColor(v50, v20);
       v63 = 0.0;
-      if (v16)
+      if (selectedCopy)
       {
-        if (a4 != 1 && CGColorGetAlpha(v20) >= 1.0)
+        if (shadow != 1 && CGColorGetAlpha(v20) >= 1.0)
         {
           v64 = +[UIColor _controlShadowColor];
-          v65 = [v64 CGColor];
+          cGColor = [v64 CGColor];
 
           v66 = GetContextStack(0);
           if (*v66 < 1)
@@ -7953,7 +7953,7 @@ LABEL_11:
 
           v77.width = 0.0;
           v77.height = 2.5;
-          CGContextSetShadowWithColor(v67, v77, 6.0, v65);
+          CGContextSetShadowWithColor(v67, v77, 6.0, cGColor);
         }
 
         v78.origin.x = 0.0;
@@ -7972,7 +7972,7 @@ LABEL_11:
 
       v61 = [UIBezierPath bezierPathWithRoundedRect:v68 cornerRadius:v63, v46, v47, v30];
       [v61 fill];
-      if (a4 == 2 && v16)
+      if (shadow == 2 && selectedCopy)
       {
         [v61 fillWithBlendMode:16 alpha:1.0];
       }
@@ -7980,14 +7980,14 @@ LABEL_11:
       goto LABEL_51;
     }
 
-    [a1 _lineWidthForTraitCollection:v18 size:a10];
+    [self _lineWidthForTraitCollection:collectionCopy size:a10];
     v52 = v51;
     v53 = +[UIColor blackColor];
     [v53 set];
 
     v54 = 0.0;
     v55 = 0.0;
-    if (!v16)
+    if (!selectedCopy)
     {
       v56 = v39 + v39 + 1.0;
       v57 = v40 + v40 + 1.0;
@@ -7999,11 +7999,11 @@ LABEL_11:
 
     v60 = [UIBezierPath bezierPathWithRoundedRect:v55 cornerRadius:v54, v46, v47, v24];
     v61 = v60;
-    if (!v16)
+    if (!selectedCopy)
     {
       [v60 setLineWidth:v52];
       [v61 stroke];
-      if (!v12)
+      if (!highlightedCopy)
       {
 LABEL_51:
 
@@ -8011,7 +8011,7 @@ LABEL_51:
         UIGraphicsEndImageContext();
         v45 = [v71 resizableImageWithCapInsets:{v40, v39, v40, v39}];
 
-        if ((v74 & 1) == 0)
+        if ((useSelectionIndicatorStyling2 & 1) == 0)
         {
           v72 = [v45 imageWithRenderingMode:2];
 
@@ -8046,19 +8046,19 @@ void __122__UISegmentedControl__modernBackgroundSelected_shadow_maximumSize_high
   qword_1ED4974D8 = v0;
 }
 
-+ (CGColor)_dividerPrimaryColorBackground:(BOOL)a3 traitCollection:(id)a4 tintColor:(id)a5
++ (CGColor)_dividerPrimaryColorBackground:(BOOL)background traitCollection:(id)collection tintColor:(id)color
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = UISegmentedControlStyleProviderForIdiom(a1, [v8 userInterfaceIdiom]);
+  backgroundCopy = background;
+  collectionCopy = collection;
+  colorCopy = color;
+  v10 = UISegmentedControlStyleProviderForIdiom(self, [collectionCopy userInterfaceIdiom]);
   if ([v10 useSelectionIndicatorStyling])
   {
-    if (v6)
+    if (backgroundCopy)
     {
-      if (v9)
+      if (colorCopy)
       {
-        v11 = v9;
+        v11 = colorCopy;
       }
 
       else
@@ -8073,39 +8073,39 @@ void __122__UISegmentedControl__modernBackgroundSelected_shadow_maximumSize_high
     }
 
     v13 = v11;
-    v14 = [v11 resolvedColorWithTraitCollection:v8];
-    v12 = [v14 CGColor];
+    v14 = [v11 resolvedColorWithTraitCollection:collectionCopy];
+    cGColor = [v14 CGColor];
   }
 
   else
   {
-    v12 = 0;
+    cGColor = 0;
   }
 
-  return v12;
+  return cGColor;
 }
 
-+ (id)_modernDividerImageBackground:(BOOL)a3 traitCollection:(id)a4 tintColor:(id)a5 size:(int)a6
++ (id)_modernDividerImageBackground:(BOOL)background traitCollection:(id)collection tintColor:(id)color size:(int)size
 {
-  v6 = *&a6;
-  v8 = a3;
-  v10 = a4;
-  v11 = a5;
+  v6 = *&size;
+  backgroundCopy = background;
+  collectionCopy = collection;
+  colorCopy = color;
   if (qword_1ED4974F0 != -1)
   {
     dispatch_once(&qword_1ED4974F0, &__block_literal_global_792);
   }
 
-  v12 = [a1 _dividerPrimaryColorBackground:v8 traitCollection:v10 tintColor:v11];
+  v12 = [self _dividerPrimaryColorBackground:backgroundCopy traitCollection:collectionCopy tintColor:colorCopy];
   v13 = [_UISegmentedControlCacheKey alloc];
-  [v10 displayScale];
-  v14 = [(_UISegmentedControlCacheKey *)v13 initWithSize:v6 scale:v12 primaryColor:v8 background:?];
+  [collectionCopy displayScale];
+  v14 = [(_UISegmentedControlCacheKey *)v13 initWithSize:v6 scale:v12 primaryColor:backgroundCopy background:?];
   v15 = [qword_1ED4974E8 objectForKey:v14];
   if (!v15)
   {
-    [a1 _dividerWidthForTraitCollection:v10 size:v6];
+    [self _dividerWidthForTraitCollection:collectionCopy size:v6];
     v17 = v16;
-    v18 = UISegmentedControlStyleProviderForIdiom(a1, [v10 userInterfaceIdiom]);
+    v18 = UISegmentedControlStyleProviderForIdiom(self, [collectionCopy userInterfaceIdiom]);
     v19 = v18;
     if (v17 >= 0.0001)
     {
@@ -8122,7 +8122,7 @@ void __122__UISegmentedControl__modernBackgroundSelected_shadow_maximumSize_high
         }
 
         v21 = v20 + v20 + v17 + 1.0;
-        [v10 displayScale];
+        [collectionCopy displayScale];
         _UIGraphicsBeginImageContextWithOptions(0, 0, v17, v21, v22);
         ContextStack = GetContextStack(0);
         if (*ContextStack < 1)
@@ -8139,7 +8139,7 @@ void __122__UISegmentedControl__modernBackgroundSelected_shadow_maximumSize_high
         CGContextSetFillColorWithColor(v24, v12);
         v29 = 0;
         v30 = 0;
-        if (v8)
+        if (backgroundCopy)
         {
           UIRectFillUsingOperation(1, 0.0, 0.0, v17, v21);
         }
@@ -8205,9 +8205,9 @@ void __83__UISegmentedControl__modernDividerImageBackground_traitCollection_tint
   qword_1ED4974E8 = v0;
 }
 
-+ (double)_sectionIndicatorOverflowForTraitCollection:(id)a3 size:(int)a4
++ (double)_sectionIndicatorOverflowForTraitCollection:(id)collection size:(int)size
 {
-  v4 = UISegmentedControlStyleProviderForIdiom(a1, [a3 userInterfaceIdiom]);
+  v4 = UISegmentedControlStyleProviderForIdiom(self, [collection userInterfaceIdiom]);
   if ([v4 useTVStyleFocusSelection])
   {
     v5 = 0.0;
@@ -8221,32 +8221,32 @@ void __83__UISegmentedControl__modernDividerImageBackground_traitCollection_tint
   return v5;
 }
 
-+ (double)_lineWidthForTraitCollection:(id)a3 size:(int)a4
++ (double)_lineWidthForTraitCollection:(id)collection size:(int)size
 {
-  v4 = *&a4;
-  v5 = UISegmentedControlStyleProviderForIdiom(a1, [a3 userInterfaceIdiom]);
+  v4 = *&size;
+  v5 = UISegmentedControlStyleProviderForIdiom(self, [collection userInterfaceIdiom]);
   [v5 dividerWidthForControlSize:v4];
   v7 = v6;
 
   return v7;
 }
 
-+ (double)_sectionIndicatorInsetForTraitCollection:(id)a3 size:(int)a4
++ (double)_sectionIndicatorInsetForTraitCollection:(id)collection size:(int)size
 {
-  v4 = *&a4;
-  v5 = UISegmentedControlStyleProviderForIdiom(a1, [a3 userInterfaceIdiom]);
+  v4 = *&size;
+  v5 = UISegmentedControlStyleProviderForIdiom(self, [collection userInterfaceIdiom]);
   [v5 selectionIndicatorInsetForControlSize:v4];
   v7 = v6;
 
   return v7;
 }
 
-+ (double)_sectionIndicatorInsetForTraitCollection:(id)a3 hasMaterial:(BOOL)a4 size:(int)a5
++ (double)_sectionIndicatorInsetForTraitCollection:(id)collection hasMaterial:(BOOL)material size:(int)size
 {
-  v5 = *&a5;
-  if (a4)
+  v5 = *&size;
+  if (material)
   {
-    v6 = UISegmentedControlStyleProviderForIdiom(a1, [a3 userInterfaceIdiom]);
+    v6 = UISegmentedControlStyleProviderForIdiom(self, [collection userInterfaceIdiom]);
     if (objc_opt_respondsToSelector())
     {
       v7 = v6;
@@ -8266,28 +8266,28 @@ void __83__UISegmentedControl__modernDividerImageBackground_traitCollection_tint
   else
   {
 
-    [a1 _sectionIndicatorInsetForTraitCollection:a3 size:*&a5];
+    [self _sectionIndicatorInsetForTraitCollection:collection size:*&size];
   }
 
   return result;
 }
 
-+ (double)_cornerRadiusForTraitCollection:(id)a3 size:(int)a4
++ (double)_cornerRadiusForTraitCollection:(id)collection size:(int)size
 {
-  v4 = *&a4;
-  v5 = UISegmentedControlStyleProviderForIdiom(a1, [a3 userInterfaceIdiom]);
+  v4 = *&size;
+  v5 = UISegmentedControlStyleProviderForIdiom(self, [collection userInterfaceIdiom]);
   [v5 cornerRadiusForControlSize:v4];
   v7 = v6;
 
   return v7;
 }
 
-+ (double)_cornerRadiusForTraitCollection:(id)a3 size:(CGSize)a4 controlSize:(int)a5
++ (double)_cornerRadiusForTraitCollection:(id)collection size:(CGSize)size controlSize:(int)controlSize
 {
-  v5 = *&a5;
-  height = a4.height;
-  v8 = a3;
-  v9 = UISegmentedControlStyleProviderForIdiom(a1, [v8 userInterfaceIdiom]);
+  v5 = *&controlSize;
+  height = size.height;
+  collectionCopy = collection;
+  v9 = UISegmentedControlStyleProviderForIdiom(self, [collectionCopy userInterfaceIdiom]);
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v9 alwaysUseConcentricCornerRadius])
   {
     v10 = height * 0.5;
@@ -8295,28 +8295,28 @@ void __83__UISegmentedControl__modernDividerImageBackground_traitCollection_tint
 
   else
   {
-    [a1 _cornerRadiusForTraitCollection:v8 size:v5];
+    [self _cornerRadiusForTraitCollection:collectionCopy size:v5];
     v10 = v11;
   }
 
   return v10;
 }
 
-+ (double)_effectiveCornerRadiusForTraitCollection:(id)a3 hasMaterial:(BOOL)a4 size:(CGSize)a5 controlSize:(int)a6 selected:(BOOL)a7
++ (double)_effectiveCornerRadiusForTraitCollection:(id)collection hasMaterial:(BOOL)material size:(CGSize)size controlSize:(int)controlSize selected:(BOOL)selected
 {
-  v7 = a7;
-  v8 = *&a6;
-  height = a5.height;
-  width = a5.width;
-  v11 = a4;
-  v13 = a3;
-  [a1 _cornerRadiusForTraitCollection:v13 size:v8 controlSize:{width, height}];
+  selectedCopy = selected;
+  v8 = *&controlSize;
+  height = size.height;
+  width = size.width;
+  materialCopy = material;
+  collectionCopy = collection;
+  [self _cornerRadiusForTraitCollection:collectionCopy size:v8 controlSize:{width, height}];
   v15 = v14;
-  if (v7)
+  if (selectedCopy)
   {
-    [a1 _sectionIndicatorInsetForTraitCollection:v13 hasMaterial:v11 size:v8];
+    [self _sectionIndicatorInsetForTraitCollection:collectionCopy hasMaterial:materialCopy size:v8];
     v17 = v16;
-    v18 = UISegmentedControlStyleProviderForIdiom(a1, [v13 userInterfaceIdiom]);
+    v18 = UISegmentedControlStyleProviderForIdiom(self, [collectionCopy userInterfaceIdiom]);
     if ([v18 useSelectionIndicatorStyling])
     {
       v15 = v15 - v17;
@@ -8326,26 +8326,26 @@ void __83__UISegmentedControl__modernDividerImageBackground_traitCollection_tint
   return v15;
 }
 
-+ (id)_fontForTraitCollection:(id)a3 size:(int)a4 selected:(BOOL)a5 hasMaterial:(BOOL)a6
++ (id)_fontForTraitCollection:(id)collection size:(int)size selected:(BOOL)selected hasMaterial:(BOOL)material
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = *&a4;
-  v10 = a3;
+  materialCopy = material;
+  selectedCopy = selected;
+  v8 = *&size;
+  collectionCopy = collection;
   if (qword_1ED497500 != -1)
   {
     dispatch_once(&qword_1ED497500, &__block_literal_global_795);
   }
 
-  v11 = [v10 legibilityWeight] == 1;
-  v12 = UISegmentedControlStyleProviderForIdiom(a1, [v10 userInterfaceIdiom]);
-  v13 = [[_UISegmentedControlFontCacheKey alloc] initWithStyleProvider:v12 size:v8 selected:v7 bold:v11 hasMaterial:v6];
+  v11 = [collectionCopy legibilityWeight] == 1;
+  v12 = UISegmentedControlStyleProviderForIdiom(self, [collectionCopy userInterfaceIdiom]);
+  v13 = [[_UISegmentedControlFontCacheKey alloc] initWithStyleProvider:v12 size:v8 selected:selectedCopy bold:v11 hasMaterial:materialCopy];
   v14 = [qword_1ED4974F8 objectForKey:v13];
   if (!v14)
   {
-    if (v6)
+    if (materialCopy)
     {
-      v15 = UISegmentedControlStyleProviderForIdiom(a1, [v10 userInterfaceIdiom]);
+      v15 = UISegmentedControlStyleProviderForIdiom(self, [collectionCopy userInterfaceIdiom]);
       if (objc_opt_respondsToSelector())
       {
         v16 = v15;
@@ -8356,16 +8356,16 @@ void __83__UISegmentedControl__modernDividerImageBackground_traitCollection_tint
         v16 = 0;
       }
 
-      v17 = [v16 fontWithBackgroundMaterial];
-      v18 = v17;
-      if (v17)
+      fontWithBackgroundMaterial = [v16 fontWithBackgroundMaterial];
+      v18 = fontWithBackgroundMaterial;
+      if (fontWithBackgroundMaterial)
       {
-        v19 = v17;
+        v19 = fontWithBackgroundMaterial;
       }
 
       else
       {
-        v19 = [v12 fontForControlSize:v8 selected:v7];
+        v19 = [v12 fontForControlSize:v8 selected:selectedCopy];
       }
 
       v14 = v19;
@@ -8373,7 +8373,7 @@ void __83__UISegmentedControl__modernDividerImageBackground_traitCollection_tint
 
     else
     {
-      v14 = [v12 fontForControlSize:v8 selected:v7];
+      v14 = [v12 fontForControlSize:v8 selected:selectedCopy];
     }
 
     [qword_1ED4974F8 setObject:v14 forKey:v13];
@@ -8389,13 +8389,13 @@ void __72__UISegmentedControl__fontForTraitCollection_size_selected_hasMaterial_
   qword_1ED4974F8 = v0;
 }
 
-- (id)_createSegmentAtIndex:(int)a3 position:(unsigned int)a4 withInfo:(id)a5
+- (id)_createSegmentAtIndex:(int)index position:(unsigned int)position withInfo:(id)info
 {
-  v7 = a5;
-  v24 = v7;
+  infoCopy = info;
+  v24 = infoCopy;
   if ((*(&self->_segmentedControlFlags + 3) & 2) != 0)
   {
-    v22 = [(UISegmentedControl *)self _createInfoViewForSegmentAtIndex:a3 item:v7];
+    v22 = [(UISegmentedControl *)self _createInfoViewForSegmentAtIndex:index item:infoCopy];
   }
 
   else
@@ -8407,39 +8407,39 @@ void __72__UISegmentedControl__fontForTraitCollection_size_selected_hasMaterial_
   segmentedControlFlags = self->_segmentedControlFlags;
   barStyle = self->_barStyle;
   v21 = v8;
-  v10 = [(UIView *)self tintColor];
+  tintColor = [(UIView *)self tintColor];
   appearanceStorage = self->_appearanceStorage;
   v12 = self->_segmentedControlFlags;
   v13 = (*&v12 >> 7) & 1;
   v14 = (*&v12 >> 14) & 1;
   v15 = (*&v12 >> 29) & 1;
-  v16 = [(UIView *)self traitCollection];
+  traitCollection = [(UIView *)self traitCollection];
   BYTE2(v19) = v15;
   BYTE1(v19) = v14;
   LOBYTE(v19) = v13;
-  v17 = [UISegment initWithInfo:v21 size:"initWithInfo:size:barStyle:tintColor:appearanceStorage:position:autosizeText:adjustsForContentSizeCategory:hasMaterial:customInfoView:traitCollection:" barStyle:v24 tintColor:segmentedControlFlags & 3 appearanceStorage:barStyle position:v10 autosizeText:appearanceStorage adjustsForContentSizeCategory:a4 hasMaterial:v19 customInfoView:v22 traitCollection:v16];
+  v17 = [UISegment initWithInfo:v21 size:"initWithInfo:size:barStyle:tintColor:appearanceStorage:position:autosizeText:adjustsForContentSizeCategory:hasMaterial:customInfoView:traitCollection:" barStyle:v24 tintColor:segmentedControlFlags & 3 appearanceStorage:barStyle position:tintColor autosizeText:appearanceStorage adjustsForContentSizeCategory:position hasMaterial:v19 customInfoView:v22 traitCollection:traitCollection];
 
   [(UISegment *)v17 setMomentary:(*&self->_segmentedControlFlags >> 3) & 1];
 
   return v17;
 }
 
-- (id)_createAndAddSegmentAtIndex:(int)a3 position:(unsigned int)a4 withInfo:(id)a5
+- (id)_createAndAddSegmentAtIndex:(int)index position:(unsigned int)position withInfo:(id)info
 {
-  v7 = [(UISegmentedControl *)self _createSegmentAtIndex:*&a3 position:*&a4 withInfo:a5];
+  v7 = [(UISegmentedControl *)self _createSegmentAtIndex:*&index position:*&position withInfo:info];
   v8 = [(NSMutableArray *)self->_segments count];
-  if (v8 >= a3)
+  if (v8 >= index)
   {
-    v9 = a3;
+    indexCopy = index;
   }
 
   else
   {
-    v9 = v8;
+    indexCopy = v8;
   }
 
-  v10 = v9;
-  [(NSMutableArray *)self->_segments insertObject:v7 atIndex:v9];
+  v10 = indexCopy;
+  [(NSMutableArray *)self->_segments insertObject:v7 atIndex:indexCopy];
   v11 = UISegmentedControlSegmentContentView(self);
   [v11 insertSubview:v7 atIndex:v10];
 
@@ -8449,10 +8449,10 @@ void __72__UISegmentedControl__fontForTraitCollection_size_selected_hasMaterial_
   return v7;
 }
 
-- (void)_insertSegment:(int)a3 withInfo:(id)a4 animated:(BOOL)a5
+- (void)_insertSegment:(int)segment withInfo:(id)info animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
+  animatedCopy = animated;
+  infoCopy = info;
   v9 = [(NSMutableArray *)self->_segments count];
   v10 = v9;
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -8460,29 +8460,29 @@ void __72__UISegmentedControl__fontForTraitCollection_size_selected_hasMaterial_
   aBlock[2] = __55__UISegmentedControl__insertSegment_withInfo_animated___block_invoke;
   aBlock[3] = &unk_1E70F36D0;
   aBlock[4] = self;
-  if (v9 >= a3)
+  if (v9 >= segment)
   {
-    v11 = a3;
+    segmentCopy = segment;
   }
 
   else
   {
-    v11 = v9;
+    segmentCopy = v9;
   }
 
-  v35 = v11;
+  v35 = segmentCopy;
   v36 = v9;
-  v12 = v8;
+  v12 = infoCopy;
   v34 = v12;
   v13 = _Block_copy(aBlock);
   v14 = v13;
-  if (v5)
+  if (animatedCopy)
   {
     v13[2](v13);
-    v15 = [(NSMutableArray *)self->_segments objectAtIndex:v11];
+    v15 = [(NSMutableArray *)self->_segments objectAtIndex:segmentCopy];
     [v15 animateAdd:1];
-    v16 = __OFSUB__(v11, 1);
-    v17 = (v11 - 1);
+    v16 = __OFSUB__(segmentCopy, 1);
+    v17 = (segmentCopy - 1);
     if (v17 < 0 == v16)
     {
       [v15 frame];
@@ -8496,7 +8496,7 @@ void __72__UISegmentedControl__fontForTraitCollection_size_selected_hasMaterial_
       [v15 setFrame:{v27, v19, v21, v23}];
     }
 
-    if (v10 > a3)
+    if (v10 > segment)
     {
       [v15 setShowDivider:1];
     }
@@ -8562,11 +8562,11 @@ uint64_t __55__UISegmentedControl__insertSegment_withInfo_animated___block_invok
   }
 }
 
-- (void)_updateDividerImageForSegmentAtIndex:(unint64_t)a3
+- (void)_updateDividerImageForSegmentAtIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
-    v13 = [(NSMutableArray *)self->_segments objectAtIndex:a3 - 1];
+    v13 = [(NSMutableArray *)self->_segments objectAtIndex:index - 1];
   }
 
   else
@@ -8574,15 +8574,15 @@ uint64_t __55__UISegmentedControl__insertSegment_withInfo_animated___block_invok
     v13 = 0;
   }
 
-  v5 = [(NSMutableArray *)self->_segments objectAtIndex:a3];
-  if ([(NSMutableArray *)self->_segments count]- 1 <= a3)
+  v5 = [(NSMutableArray *)self->_segments objectAtIndex:index];
+  if ([(NSMutableArray *)self->_segments count]- 1 <= index)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(NSMutableArray *)self->_segments objectAtIndex:a3 + 1];
+    v6 = [(NSMutableArray *)self->_segments objectAtIndex:index + 1];
   }
 
   v7 = *(&self->super.super._viewFlags + 2);
@@ -8619,10 +8619,10 @@ uint64_t __55__UISegmentedControl__insertSegment_withInfo_animated___block_invok
   [v11 updateDividerViewForChangedSegment:v5];
 }
 
-- (id)_uiktest_labelsWithState:(unint64_t)a3
+- (id)_uiktest_labelsWithState:(unint64_t)state
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -8643,10 +8643,10 @@ uint64_t __55__UISegmentedControl__insertSegment_withInfo_animated___block_invok
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if ([v11 _segmentState] == a3)
+        if ([v11 _segmentState] == state)
         {
-          v12 = [v11 _segmentLabel];
-          [v5 addObject:v12];
+          _segmentLabel = [v11 _segmentLabel];
+          [array addObject:_segmentLabel];
         }
       }
 
@@ -8656,7 +8656,7 @@ uint64_t __55__UISegmentedControl__insertSegment_withInfo_animated___block_invok
     while (v8);
   }
 
-  v13 = [MEMORY[0x1E695DEC8] arrayWithArray:v5];
+  v13 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
 
   return v13;
 }
@@ -8688,36 +8688,36 @@ void __38__UISegmentedControl_setSpringLoaded___block_invoke_2(uint64_t a1, void
   if (self && (*(&self->_segmentedControlFlags + 4) & 4) != 0)
   {
     v5[0] = self->_selectionIndicatorView;
-    v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
+    _additionalTrackingViews = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = UISegmentedControl;
-    v2 = [(UIControl *)&v4 _additionalTrackingViews];
+    _additionalTrackingViews = [(UIControl *)&v4 _additionalTrackingViews];
   }
 
-  return v2;
+  return _additionalTrackingViews;
 }
 
-- (id)infoViewForSegment:(int64_t)a3
+- (id)infoViewForSegment:(int64_t)segment
 {
-  v3 = [(NSMutableArray *)self->_segments objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->_segments objectAtIndex:segment];
   v4 = v3[64];
   v5 = v4;
 
   return v4;
 }
 
-- (void)_setUseSpringBoardVibrancy:(BOOL)a3
+- (void)_setUseSpringBoardVibrancy:(BOOL)vibrancy
 {
-  v3 = a3;
+  vibrancyCopy = vibrancy;
   v25 = *MEMORY[0x1E69E9840];
   if ([UIApp _isSpringBoard])
   {
     v5 = 0x1000000000;
-    if (!v3)
+    if (!vibrancyCopy)
     {
       v5 = 0;
     }
@@ -8734,7 +8734,7 @@ void __38__UISegmentedControl_setSpringLoaded___block_invoke_2(uint64_t a1, void
     {
       v7 = v6;
       v8 = *v21;
-      if (v3)
+      if (vibrancyCopy)
       {
         v9 = 0x100000;
       }
@@ -8745,7 +8745,7 @@ void __38__UISegmentedControl_setSpringLoaded___block_invoke_2(uint64_t a1, void
       }
 
       v10 = *MEMORY[0x1E6979CF8];
-      if (v3)
+      if (vibrancyCopy)
       {
         v11 = *MEMORY[0x1E6979CF8];
       }
@@ -8768,8 +8768,8 @@ void __38__UISegmentedControl_setSpringLoaded___block_invoke_2(uint64_t a1, void
           if (v13)
           {
             *(v13 + 640) = *(v13 + 640) & 0xFFEFFFFF | v9;
-            v14 = [*(v13 + 512) layer];
-            [v14 setCompositingFilter:v11];
+            layer = [*(v13 + 512) layer];
+            [layer setCompositingFilter:v11];
 
             if ([(UISegment *)v13 _useLensView])
             {
@@ -8784,9 +8784,9 @@ void __38__UISegmentedControl_setSpringLoaded___block_invoke_2(uint64_t a1, void
                 v16 = 0;
               }
 
-              v17 = [v15 restingBackgroundView];
-              v18 = [v17 layer];
-              [v18 setCompositingFilter:v16];
+              restingBackgroundView = [v15 restingBackgroundView];
+              layer2 = [restingBackgroundView layer];
+              [layer2 setCompositingFilter:v16];
             }
           }
         }
@@ -8799,17 +8799,17 @@ void __38__UISegmentedControl_setSpringLoaded___block_invoke_2(uint64_t a1, void
   }
 }
 
-- (UISegmentedControl)initWithFrame:(CGRect)a3 withStyle:(int64_t)a4 withItems:(id)a5
+- (UISegmentedControl)initWithFrame:(CGRect)frame withStyle:(int64_t)style withItems:(id)items
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a5;
-  v11 = [(UISegmentedControl *)self initWithFrame:x, y, width, height];
-  if (v11)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  itemsCopy = items;
+  height = [(UISegmentedControl *)self initWithFrame:x, y, width, height];
+  if (height)
   {
-    v12 = [v10 count];
+    v12 = [itemsCopy count];
     v13 = v12;
     if (v12 >= 1)
     {
@@ -8843,8 +8843,8 @@ void __38__UISegmentedControl_setSpringLoaded___block_invoke_2(uint64_t a1, void
           v18 = v17;
         }
 
-        v19 = [v10 objectAtIndex:v14];
-        v20 = [(UISegmentedControl *)v11 _createAndAddSegmentAtIndex:v14 position:v18 withInfo:v19];
+        v19 = [itemsCopy objectAtIndex:v14];
+        v20 = [(UISegmentedControl *)height _createAndAddSegmentAtIndex:v14 position:v18 withInfo:v19];
 
         ++v14;
       }
@@ -8853,13 +8853,13 @@ void __38__UISegmentedControl_setSpringLoaded___block_invoke_2(uint64_t a1, void
     }
   }
 
-  return v11;
+  return height;
 }
 
-- (void)setAlwaysNotifiesDelegateOfSegmentClicks:(BOOL)a3
+- (void)setAlwaysNotifiesDelegateOfSegmentClicks:(BOOL)clicks
 {
   v3 = 4;
-  if (!a3)
+  if (!clicks)
   {
     v3 = 0;
   }
@@ -8867,11 +8867,11 @@ void __38__UISegmentedControl_setSpringLoaded___block_invoke_2(uint64_t a1, void
   self->_segmentedControlFlags = (*&self->_segmentedControlFlags & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setImagePadding:(CGSize)a3 forSegment:(unint64_t)a4
+- (void)setImagePadding:(CGSize)padding forSegment:(unint64_t)segment
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [(NSMutableArray *)self->_segments objectAtIndex:a4];
+  height = padding.height;
+  width = padding.width;
+  v7 = [(NSMutableArray *)self->_segments objectAtIndex:segment];
   [v7 setContentOffset:{width, height}];
 
   if ((*&self->_segmentedControlFlags & 0x20) != 0)
@@ -8882,10 +8882,10 @@ void __38__UISegmentedControl_setSpringLoaded___block_invoke_2(uint64_t a1, void
   [(UIView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)addSegmentWithTitle:(id)a3
+- (void)addSegmentWithTitle:(id)title
 {
-  v4 = a3;
-  [(UISegmentedControl *)self insertSegmentWithTitle:v4 atIndex:[(UISegmentedControl *)self numberOfSegments] animated:0];
+  titleCopy = title;
+  [(UISegmentedControl *)self insertSegmentWithTitle:titleCopy atIndex:[(UISegmentedControl *)self numberOfSegments] animated:0];
 }
 
 @end

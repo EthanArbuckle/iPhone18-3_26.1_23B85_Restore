@@ -1,12 +1,12 @@
 @interface TSPSaveOperationState
-- (BOOL)hasNewStorageForData:(id)a3;
+- (BOOL)hasNewStorageForData:(id)data;
 - (TSPSaveOperationState)init;
-- (TSPSaveOperationState)initWithUpdateType:(int64_t)a3;
-- (id)saveOperationStateForRemoteStorage:(id)a3;
-- (void)addNewPackageDataStorage:(id)a3 forRemoteDataStorage:(id)a4 changeCount:(unint64_t)a5;
-- (void)enumerateDataAndStoragesUsingBlock:(id)a3;
-- (void)enumerateRemoteDataUsingBlock:(id)a3;
-- (void)willMigrateRemoteDataToTemporaryStorage:(id)a3;
+- (TSPSaveOperationState)initWithUpdateType:(int64_t)type;
+- (id)saveOperationStateForRemoteStorage:(id)storage;
+- (void)addNewPackageDataStorage:(id)storage forRemoteDataStorage:(id)dataStorage changeCount:(unint64_t)count;
+- (void)enumerateDataAndStoragesUsingBlock:(id)block;
+- (void)enumerateRemoteDataUsingBlock:(id)block;
+- (void)willMigrateRemoteDataToTemporaryStorage:(id)storage;
 @end
 
 @implementation TSPSaveOperationState
@@ -27,7 +27,7 @@
   objc_exception_throw(v13);
 }
 
-- (TSPSaveOperationState)initWithUpdateType:(int64_t)a3
+- (TSPSaveOperationState)initWithUpdateType:(int64_t)type
 {
   v19.receiver = self;
   v19.super_class = TSPSaveOperationState;
@@ -49,25 +49,25 @@
     saveOperationStatesForRemoteStorages = v4->_saveOperationStatesForRemoteStorages;
     v4->_saveOperationStatesForRemoteStorages = v15;
 
-    v4->_updateType = a3;
+    v4->_updateType = type;
     v17 = v4;
   }
 
   return v4;
 }
 
-- (BOOL)hasNewStorageForData:(id)a3
+- (BOOL)hasNewStorageForData:(id)data
 {
-  v3 = objc_msgSend_objectForKey_(self->_newDataStorages, a2, a3);
+  v3 = objc_msgSend_objectForKey_(self->_newDataStorages, a2, data);
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)enumerateDataAndStoragesUsingBlock:(id)a3
+- (void)enumerateDataAndStoragesUsingBlock:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v18 = 0;
   v14 = 0u;
   v15 = 0u;
@@ -89,7 +89,7 @@ LABEL_3:
 
       v11 = *(*(&v14 + 1) + 8 * v10);
       v12 = objc_msgSend_objectForKey_(self->_newDataStorages, v7, v11, v14);
-      v4[2](v4, v11, v12, &v18);
+      blockCopy[2](blockCopy, v11, v12, &v18);
       LOBYTE(v11) = v18;
 
       if (v11)
@@ -113,10 +113,10 @@ LABEL_3:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateRemoteDataUsingBlock:(id)a3
+- (void)enumerateRemoteDataUsingBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v16 = 0;
   v12 = 0u;
   v13 = 0u;
@@ -136,7 +136,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      v4[2](v4, *(*(&v12 + 1) + 8 * v9), &v16);
+      blockCopy[2](blockCopy, *(*(&v12 + 1) + 8 * v9), &v16);
       if (v16)
       {
         break;
@@ -158,16 +158,16 @@ LABEL_3:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)willMigrateRemoteDataToTemporaryStorage:(id)a3
+- (void)willMigrateRemoteDataToTemporaryStorage:(id)storage
 {
-  v26 = a3;
+  storageCopy = storage;
   objc_opt_class();
-  v6 = objc_msgSend_storage(v26, v4, v5);
+  v6 = objc_msgSend_storage(storageCopy, v4, v5);
   v7 = TSUDynamicCast();
 
   if (v7)
   {
-    objc_msgSend_addObject_(self->_remoteData, v8, v26);
+    objc_msgSend_addObject_(self->_remoteData, v8, storageCopy);
     v10 = objc_msgSend_objectForKey_(self->_saveOperationStatesForRemoteStorages, v9, v7);
 
     if (v10)
@@ -188,11 +188,11 @@ LABEL_3:
   }
 }
 
-- (void)addNewPackageDataStorage:(id)a3 forRemoteDataStorage:(id)a4 changeCount:(unint64_t)a5
+- (void)addNewPackageDataStorage:(id)storage forRemoteDataStorage:(id)dataStorage changeCount:(unint64_t)count
 {
-  v33 = a3;
-  v9 = a4;
-  if (!v33)
+  storageCopy = storage;
+  dataStorageCopy = dataStorage;
+  if (!storageCopy)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSPSaveOperationState addNewPackageDataStorage:forRemoteDataStorage:changeCount:]");
@@ -202,7 +202,7 @@ LABEL_3:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16);
   }
 
-  v17 = objc_msgSend_objectForKey_(self->_saveOperationStatesForRemoteStorages, v8, v9);
+  v17 = objc_msgSend_objectForKey_(self->_saveOperationStatesForRemoteStorages, v8, dataStorageCopy);
 
   if (v17)
   {
@@ -215,15 +215,15 @@ LABEL_3:
   }
 
   v26 = [TSPRemoteDataStorageSaveOperationState alloc];
-  v29 = objc_msgSend_packageDataStorage(v9, v27, v28);
-  v31 = objc_msgSend_initWithChangeCount_originalPackageDataStorage_updatedPackageDataStorage_(v26, v30, a5, v29, v33);
+  v29 = objc_msgSend_packageDataStorage(dataStorageCopy, v27, v28);
+  v31 = objc_msgSend_initWithChangeCount_originalPackageDataStorage_updatedPackageDataStorage_(v26, v30, count, v29, storageCopy);
 
-  objc_msgSend_setObject_forKey_(self->_saveOperationStatesForRemoteStorages, v32, v31, v9);
+  objc_msgSend_setObject_forKey_(self->_saveOperationStatesForRemoteStorages, v32, v31, dataStorageCopy);
 }
 
-- (id)saveOperationStateForRemoteStorage:(id)a3
+- (id)saveOperationStateForRemoteStorage:(id)storage
 {
-  v3 = objc_msgSend_objectForKey_(self->_saveOperationStatesForRemoteStorages, a2, a3);
+  v3 = objc_msgSend_objectForKey_(self->_saveOperationStatesForRemoteStorages, a2, storage);
 
   return v3;
 }

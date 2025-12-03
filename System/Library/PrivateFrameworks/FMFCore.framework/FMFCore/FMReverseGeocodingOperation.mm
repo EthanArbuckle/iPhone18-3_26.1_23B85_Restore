@@ -1,32 +1,32 @@
 @interface FMReverseGeocodingOperation
 - (_TtC7FMFCore27FMReverseGeocodingOperation)init;
 - (void)main;
-- (void)setFinished:(BOOL)a3;
+- (void)setFinished:(BOOL)finished;
 - (void)start;
 @end
 
 @implementation FMReverseGeocodingOperation
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  v6 = self;
+  selfCopy = self;
   v4 = sub_24A4AB820();
-  [(FMReverseGeocodingOperation *)v6 willChangeValueForKey:v4];
+  [(FMReverseGeocodingOperation *)selfCopy willChangeValueForKey:v4];
 
-  *(&v6->super.super.isa + OBJC_IVAR____TtC7FMFCore27FMReverseGeocodingOperation__isFinished) = a3;
+  *(&selfCopy->super.super.isa + OBJC_IVAR____TtC7FMFCore27FMReverseGeocodingOperation__isFinished) = finished;
   v5 = sub_24A4AB820();
-  [(FMReverseGeocodingOperation *)v6 didChangeValueForKey:v5];
+  [(FMReverseGeocodingOperation *)selfCopy didChangeValueForKey:v5];
 }
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A3E2AAC();
 }
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A3E2C00();
 }
 

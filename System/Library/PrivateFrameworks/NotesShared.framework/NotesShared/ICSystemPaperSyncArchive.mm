@@ -1,6 +1,6 @@
 @interface ICSystemPaperSyncArchive
 - (ICSystemPaperSyncArchive)init;
-- (ICSystemPaperSyncArchive)initWithDatabaseArchive:(id)a3 assetArchives:(id)a4;
+- (ICSystemPaperSyncArchive)initWithDatabaseArchive:(id)archive assetArchives:(id)archives;
 - (NSArray)assetArchives;
 - (NSString)description;
 - (NSURL)databaseArchive;
@@ -30,7 +30,7 @@
   return v2;
 }
 
-- (ICSystemPaperSyncArchive)initWithDatabaseArchive:(id)a3 assetArchives:(id)a4
+- (ICSystemPaperSyncArchive)initWithDatabaseArchive:(id)archive assetArchives:(id)archives
 {
   v5 = sub_2150A3750();
   v6 = *(v5 - 8);
@@ -50,7 +50,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_214FD32EC();
 
   v3 = sub_2150A4A90();

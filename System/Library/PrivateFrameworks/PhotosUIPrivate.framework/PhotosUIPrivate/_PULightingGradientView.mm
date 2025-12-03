@@ -1,14 +1,14 @@
 @interface _PULightingGradientView
-- (_PULightingGradientView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (_PULightingGradientView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation _PULightingGradientView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v24[5] = *MEMORY[0x1E69E9840];
-  [(_PULightingGradientView *)self bounds:a3.origin.x];
+  [(_PULightingGradientView *)self bounds:rect.origin.x];
   if (v5 > 0.0)
   {
     v7 = v3;
@@ -21,10 +21,10 @@
     v27.size.width = v9;
     v27.size.height = v10;
     CGContextClearRect(CurrentContext, v27);
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    v13 = [MEMORY[0x1E69DC888] blackColor];
-    v14 = [MEMORY[0x1E69DC888] clearColor];
-    [v14 set];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [clearColor2 set];
 
     v28.origin.x = v7;
     v28.origin.y = v8;
@@ -36,15 +36,15 @@
     v29.size.width = v9;
     v29.size.height = v10;
     CGContextClipToRect(CurrentContext, v29);
-    v15 = [v12 CGColor];
-    v16 = [v13 CGColor];
-    v24[0] = v16;
-    v24[1] = v16;
-    v24[2] = v16;
-    v24[3] = v15;
-    v24[4] = v15;
+    cGColor = [clearColor CGColor];
+    cGColor2 = [blackColor CGColor];
+    v24[0] = cGColor2;
+    v24[1] = cGColor2;
+    v24[2] = cGColor2;
+    v24[3] = cGColor;
+    v24[4] = cGColor;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:5];
-    ColorSpace = CGColorGetColorSpace([v12 CGColor]);
+    ColorSpace = CGColorGetColorSpace([clearColor CGColor]);
     v19 = CGGradientCreateWithColors(ColorSpace, v17, &v23);
     v30.origin.x = v7;
     v30.origin.y = v8;
@@ -74,11 +74,11 @@
   }
 }
 
-- (_PULightingGradientView)initWithFrame:(CGRect)a3
+- (_PULightingGradientView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _PULightingGradientView;
-  v3 = [(_PULightingGradientView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_PULightingGradientView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

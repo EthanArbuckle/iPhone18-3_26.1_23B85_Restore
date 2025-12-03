@@ -1,40 +1,40 @@
 @interface PXStoryDummyTimelineProducer
-- (id)createTimelineWithConfiguration:(id)a3 detailsFraction:(double)a4;
-- (id)requestTimelineWithConfiguration:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5;
-- (void)setFixedDuration:(id *)a3;
+- (id)createTimelineWithConfiguration:(id)configuration detailsFraction:(double)fraction;
+- (id)requestTimelineWithConfiguration:(id)configuration options:(unint64_t)options resultHandler:(id)handler;
+- (void)setFixedDuration:(id *)duration;
 @end
 
 @implementation PXStoryDummyTimelineProducer
 
-- (void)setFixedDuration:(id *)a3
+- (void)setFixedDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_fixedDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_fixedDuration.epoch = duration->var3;
   *&self->_fixedDuration.value = v3;
 }
 
-- (id)createTimelineWithConfiguration:(id)a3 detailsFraction:(double)a4
+- (id)createTimelineWithConfiguration:(id)configuration detailsFraction:(double)fraction
 {
   v56[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  configurationCopy = configuration;
   v7 = [PXStoryMutableDummyTimeline alloc];
-  v8 = [v6 spec];
-  [v8 viewportSize];
+  spec = [configurationCopy spec];
+  [spec viewportSize];
   v9 = [(PXStoryDummyTimeline *)v7 initWithSize:?];
 
-  v10 = [v6 resourcesDataSource];
-  v11 = [v6 spec];
-  v12 = [v6 style];
-  v13 = [v12 createRandomNumberGenerators];
-  v14 = [v6 errorReporter];
-  v43 = v13;
-  v15 = [v12 timelineStyleWithSpec:v11 resourcesDataSource:v10 randomNumberGenerators:v13 errorReporter:v14];
+  resourcesDataSource = [configurationCopy resourcesDataSource];
+  spec2 = [configurationCopy spec];
+  style = [configurationCopy style];
+  createRandomNumberGenerators = [style createRandomNumberGenerators];
+  errorReporter = [configurationCopy errorReporter];
+  v43 = createRandomNumberGenerators;
+  v15 = [style timelineStyleWithSpec:spec2 resourcesDataSource:resourcesDataSource randomNumberGenerators:createRandomNumberGenerators errorReporter:errorReporter];
 
-  v16 = [v10 keyAssetResource];
-  v42 = v16;
-  if (v16)
+  keyAssetResource = [resourcesDataSource keyAssetResource];
+  v42 = keyAssetResource;
+  if (keyAssetResource)
   {
-    v56[0] = v16;
+    v56[0] = keyAssetResource;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:1];
     CMTimeMakeWithSeconds(&v54, 2.0, 600);
     memset(&range, 0, 40);
@@ -47,20 +47,20 @@
   memset(&v54, 0, sizeof(v54));
   [(PXStoryDummyTimelineProducer *)self fixedDuration];
   flags = v54.flags;
-  v18 = [v10 numberOfDisplayAssetResources];
-  if (v18 >= 1)
+  numberOfDisplayAssetResources = [resourcesDataSource numberOfDisplayAssetResources];
+  if (numberOfDisplayAssetResources >= 1)
   {
-    v19 = v18;
-    v39 = v12;
-    v40 = v11;
-    v41 = v6;
+    v19 = numberOfDisplayAssetResources;
+    v39 = style;
+    v40 = spec2;
+    v41 = configurationCopy;
     memset(&v53, 0, sizeof(v53));
     if (v15)
     {
       [v15 defaultDisplayAssetPresentationDuration];
     }
 
-    v20 = [[_PXStoryDummyDisplayAssetsFetchResult alloc] initWithResourcesDataSource:v10];
+    v20 = [[_PXStoryDummyDisplayAssetsFetchResult alloc] initWithResourcesDataSource:resourcesDataSource];
     v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
     v22 = 0;
     v23 = 0;
@@ -92,7 +92,7 @@
       v28 = 1;
       if (v23)
       {
-        if (v22 / v24 >= a4)
+        if (v22 / v24 >= fraction)
         {
           break;
         }
@@ -120,7 +120,7 @@ LABEL_18:
         v33 = v22 + v32;
         do
         {
-          v34 = [v10 displayAssetResourceAtIndex:v22];
+          v34 = [resourcesDataSource displayAssetResourceAtIndex:v22];
           [v21 addObject:v34];
 
           ++v22;
@@ -186,9 +186,9 @@ LABEL_18:
         }
       }
 
-      v11 = v40;
-      v6 = v41;
-      v12 = v39;
+      spec2 = v40;
+      configurationCopy = v41;
+      style = v39;
       goto LABEL_42;
     }
 
@@ -197,7 +197,7 @@ LABEL_18:
   }
 
 LABEL_42:
-  [v12 songResource];
+  [style songResource];
   if (objc_claimAutoreleasedReturnValue())
   {
     if (v9)
@@ -219,12 +219,12 @@ LABEL_42:
   return v37;
 }
 
-- (id)requestTimelineWithConfiguration:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5
+- (id)requestTimelineWithConfiguration:(id)configuration options:(unint64_t)options resultHandler:(id)handler
 {
-  v7 = a5;
-  v8 = [(PXStoryDummyTimelineProducer *)self createTimelineWithConfiguration:a3 detailsFraction:1.0];
+  handlerCopy = handler;
+  v8 = [(PXStoryDummyTimelineProducer *)self createTimelineWithConfiguration:configuration detailsFraction:1.0];
   v9 = [[PXStoryProducerResult alloc] initWithObject:v8];
-  v7[2](v7, v9);
+  handlerCopy[2](handlerCopy, v9);
 
   return 0;
 }

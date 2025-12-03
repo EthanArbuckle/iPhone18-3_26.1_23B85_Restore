@@ -1,11 +1,11 @@
 @interface UARPTLVPersonalizationFTABSubfileDigestOS
 + (id)metaDataTableEntry;
-+ (id)tlvFromPropertyListValue:(id)a3;
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4;
++ (id)tlvFromPropertyListValue:(id)value;
++ (id)tlvWithLength:(unint64_t)length value:(void *)value;
 - (UARPTLVPersonalizationFTABSubfileDigestOS)init;
 - (id)description;
 - (id)generateTLV;
-- (void)setDigest:(id)a3;
+- (void)setDigest:(id)digest;
 @end
 
 @implementation UARPTLVPersonalizationFTABSubfileDigestOS
@@ -17,16 +17,16 @@
   return [(UARPMetaDataTLVDataOS *)&v3 init];
 }
 
-- (void)setDigest:(id)a3
+- (void)setDigest:(id)digest
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 copy];
-  digest = v5->_digest;
-  v5->_digest = v6;
+  digestCopy = digest;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [digestCopy copy];
+  digest = selfCopy->_digest;
+  selfCopy->_digest = v6;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)description
@@ -65,14 +65,14 @@
   return v3;
 }
 
-+ (id)tlvFromPropertyListValue:(id)a3
++ (id)tlvFromPropertyListValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = objc_opt_new();
-    [v4 setDigest:v3];
+    [v4 setDigest:valueCopy];
   }
 
   else
@@ -83,10 +83,10 @@
   return v4;
 }
 
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4
++ (id)tlvWithLength:(unint64_t)length value:(void *)value
 {
   v6 = objc_opt_new();
-  v7 = [MEMORY[0x29EDB8DA0] dataWithBytes:a4 length:a3];
+  v7 = [MEMORY[0x29EDB8DA0] dataWithBytes:value length:length];
   [v6 setDigest:v7];
 
   return v6;

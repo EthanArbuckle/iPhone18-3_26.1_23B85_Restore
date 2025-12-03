@@ -1,21 +1,21 @@
 @interface PXStoryPrecomposedTimelineProducer
-- (PXStoryPrecomposedTimelineProducer)initWithTimelineKind:(unint64_t)a3;
-- (id)_segmentsForTimelineKind:(unint64_t)a3 spec:(id)a4;
-- (id)createTimelineWithConfiguration:(id)a3;
-- (id)requestTimelineWithConfiguration:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5;
+- (PXStoryPrecomposedTimelineProducer)initWithTimelineKind:(unint64_t)kind;
+- (id)_segmentsForTimelineKind:(unint64_t)kind spec:(id)spec;
+- (id)createTimelineWithConfiguration:(id)configuration;
+- (id)requestTimelineWithConfiguration:(id)configuration options:(unint64_t)options resultHandler:(id)handler;
 @end
 
 @implementation PXStoryPrecomposedTimelineProducer
 
-- (id)_segmentsForTimelineKind:(unint64_t)a3 spec:(id)a4
+- (id)_segmentsForTimelineKind:(unint64_t)kind spec:(id)spec
 {
   v155[3] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
+  specCopy = spec;
+  v8 = specCopy;
   v9 = 0;
-  if (a3 > 1)
+  if (kind > 1)
   {
-    if (a3 == 2)
+    if (kind == 2)
     {
       v59 = [_PXStoryPrecomposedTimelineSegment alloc];
       v151 = v8;
@@ -46,12 +46,12 @@
 
     else
     {
-      if (a3 != 3)
+      if (kind != 3)
       {
         goto LABEL_14;
       }
 
-      [v7 viewportSize];
+      [specCopy viewportSize];
       v11 = v10;
       v150 = v8;
       [v8 viewportSize];
@@ -262,7 +262,7 @@
     goto LABEL_13;
   }
 
-  if (a3 == 1)
+  if (kind == 1)
   {
     v46 = objc_alloc(MEMORY[0x1E695DF70]);
     v47 = [_PXStoryPrecomposedTimelineSegment alloc];
@@ -292,10 +292,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!a3)
+  if (!kind)
   {
-    v73 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v73 handleFailureInMethod:a2 object:self file:@"PXStoryPrecomposedTimelineProducer.m" lineNumber:121 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPrecomposedTimelineProducer.m" lineNumber:121 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -305,20 +305,20 @@ LABEL_14:
   return v9;
 }
 
-- (id)createTimelineWithConfiguration:(id)a3
+- (id)createTimelineWithConfiguration:(id)configuration
 {
   v63 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 spec];
+  configurationCopy = configuration;
+  spec = [configurationCopy spec];
   v6 = [PXStoryMutableConcreteTimeline alloc];
-  [v5 viewportSize];
+  [spec viewportSize];
   v8 = v7;
   v10 = v9;
-  v11 = [v4 resourcesDataSource];
-  v30 = [(PXStoryConcreteTimeline *)v6 initWithSize:v11 resourcesDataSource:v8, v10];
+  resourcesDataSource = [configurationCopy resourcesDataSource];
+  v30 = [(PXStoryConcreteTimeline *)v6 initWithSize:resourcesDataSource resourcesDataSource:v8, v10];
 
-  v31 = v5;
-  [(PXStoryPrecomposedTimelineProducer *)self _segmentsForTimelineKind:[(PXStoryPrecomposedTimelineProducer *)self timelineKind] spec:v5];
+  v31 = spec;
+  [(PXStoryPrecomposedTimelineProducer *)self _segmentsForTimelineKind:[(PXStoryPrecomposedTimelineProducer *)self timelineKind] spec:spec];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
@@ -340,39 +340,39 @@ LABEL_14:
         }
 
         v15 = *(*(&v58 + 1) + 8 * v13);
-        v16 = [v15 clipComposition];
-        v17 = [v15 transitionKind];
-        v18 = [v16 numberOfClips];
-        v19 = [v4 resourcesDataSource];
-        v20 = [v19 numberOfDisplayAssetResources];
-        v12 = v18 + v14;
+        clipComposition = [v15 clipComposition];
+        transitionKind = [v15 transitionKind];
+        numberOfClips = [clipComposition numberOfClips];
+        resourcesDataSource2 = [configurationCopy resourcesDataSource];
+        numberOfDisplayAssetResources = [resourcesDataSource2 numberOfDisplayAssetResources];
+        v12 = numberOfClips + v14;
 
-        if (v20 < v18 + v14)
+        if (numberOfDisplayAssetResources < numberOfClips + v14)
         {
 
           goto LABEL_11;
         }
 
         v21 = objc_alloc_init(_PXStoryPrecomposedDisplayAssetsFetchResult);
-        v22 = [v4 resourcesDataSource];
-        [(_PXStoryPrecomposedDisplayAssetsFetchResult *)v21 configureWithRange:v14 resourcesDataSource:v18, v22];
+        resourcesDataSource3 = [configurationCopy resourcesDataSource];
+        [(_PXStoryPrecomposedDisplayAssetsFetchResult *)v21 configureWithRange:v14 resourcesDataSource:numberOfClips, resourcesDataSource3];
 
         CMTimeMakeWithSeconds((&v54 + 8), 4.0, 600);
         *&v54 = 0;
         v53 = PXStoryTimeZero;
         memset(v57, 0, 40);
         v56 = PXStoryTimeMaximum;
-        PXStorySegmentClipCompositionInfoFromComposition(v16, v52);
+        PXStorySegmentClipCompositionInfoFromComposition(clipComposition, v52);
         v35[0] = MEMORY[0x1E69E9820];
         v35[1] = 3221225472;
         v35[2] = __70__PXStoryPrecomposedTimelineProducer_createTimelineWithConfiguration___block_invoke;
         v35[3] = &unk_1E77483B8;
-        v36 = v16;
-        v37 = self;
-        v41 = v18;
+        v36 = clipComposition;
+        selfCopy = self;
+        v41 = numberOfClips;
         v38 = v31;
         v39 = v21;
-        v23 = v4;
+        v23 = configurationCopy;
         v46 = v56;
         v47 = v57[0];
         v48 = v57[1];
@@ -385,7 +385,7 @@ LABEL_14:
         v32[1] = v54;
         v40 = v23;
         v42 = v14;
-        v51 = v17;
+        v51 = transitionKind;
         v49 = *&v57[2];
         v50 = 0;
         v32[2] = v55;
@@ -393,11 +393,11 @@ LABEL_14:
         v33 = *&v57[2];
         v34 = 0;
         v24 = v21;
-        v25 = v16;
-        [(PXStoryMutableConcreteTimeline *)v30 appendSegmentWithDurationInfo:v32 clipCount:v18 compositionInfo:v52 configuration:v35];
+        v25 = clipComposition;
+        [(PXStoryMutableConcreteTimeline *)v30 appendSegmentWithDurationInfo:v32 clipCount:numberOfClips compositionInfo:v52 configuration:v35];
 
         ++v13;
-        v14 += v18;
+        v14 += numberOfClips;
       }
 
       while (v29 != v13);
@@ -427,33 +427,33 @@ void __70__PXStoryPrecomposedTimelineProducer_createTimelineWithConfiguration___
   PXRectWithOriginAndSize();
 }
 
-- (id)requestTimelineWithConfiguration:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5
+- (id)requestTimelineWithConfiguration:(id)configuration options:(unint64_t)options resultHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [v8 spec];
-  [v9 viewportSize];
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  spec = [configurationCopy spec];
+  [spec viewportSize];
   v11 = v10;
   v13 = v12;
-  v14 = [v8 spec];
-  [v14 nUpDividerWidth];
+  spec2 = [configurationCopy spec];
+  [spec2 nUpDividerWidth];
   self->_clipCompositionContext.viewportSize.width = v11;
   self->_clipCompositionContext.viewportSize.height = v13;
   self->_clipCompositionContext.dividerWidth = v15;
   self->_clipCompositionContext.singleAssetAspectRatio = 0.0;
 
-  v16 = [(PXStoryPrecomposedTimelineProducer *)self createTimelineWithConfiguration:v8];
+  v16 = [(PXStoryPrecomposedTimelineProducer *)self createTimelineWithConfiguration:configurationCopy];
 
   v17 = [[PXStoryProducerResult alloc] initWithObject:v16];
-  v7[2](v7, v17);
+  handlerCopy[2](handlerCopy, v17);
 
   return 0;
 }
 
-- (PXStoryPrecomposedTimelineProducer)initWithTimelineKind:(unint64_t)a3
+- (PXStoryPrecomposedTimelineProducer)initWithTimelineKind:(unint64_t)kind
 {
   v4 = [(PXStoryPrecomposedTimelineProducer *)self init];
-  [(PXStoryPrecomposedTimelineProducer *)v4 setTimelineKind:a3];
+  [(PXStoryPrecomposedTimelineProducer *)v4 setTimelineKind:kind];
   return v4;
 }
 

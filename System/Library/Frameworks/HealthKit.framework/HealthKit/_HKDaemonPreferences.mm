@@ -1,21 +1,21 @@
 @interface _HKDaemonPreferences
-+ (BOOL)_BOOLValueForKey:(id)a3;
++ (BOOL)_BOOLValueForKey:(id)key;
 + (BOOL)isGenerateDemoDataSet;
-+ (BOOL)setValue:(id)a3 forKey:(id)a4;
++ (BOOL)setValue:(id)value forKey:(id)key;
 + (BOOL)shouldGenerateDemoData;
-+ (id)_safePreferenceForKey:(id)a3 expectedReturnClass:(Class)a4;
-+ (id)valueForKey:(id)a3;
++ (id)_safePreferenceForKey:(id)key expectedReturnClass:(Class)class;
++ (id)valueForKey:(id)key;
 @end
 
 @implementation _HKDaemonPreferences
 
 + (BOOL)isGenerateDemoDataSet
 {
-  v3 = [a1 _BOOLValueForKey:@"HealthDemoDataGenerateKey"];
+  v3 = [self _BOOLValueForKey:@"HealthDemoDataGenerateKey"];
   if (v3)
   {
 
-    LOBYTE(v3) = [a1 usingDemoDataDatabase];
+    LOBYTE(v3) = [self usingDemoDataDatabase];
   }
 
   return v3;
@@ -28,19 +28,19 @@
     return 0;
   }
 
-  if ([a1 isGenerateDemoDataSet])
+  if ([self isGenerateDemoDataSet])
   {
     return 1;
   }
 
-  return [a1 isStoreDemoModeSet];
+  return [self isStoreDemoModeSet];
 }
 
-+ (id)valueForKey:(id)a3
++ (id)valueForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v4 = CFPreferencesCopyAppValue(a3, @"com.apple.healthd");
+    v4 = CFPreferencesCopyAppValue(key, @"com.apple.healthd");
   }
 
   else
@@ -51,11 +51,11 @@
   return v4;
 }
 
-+ (BOOL)setValue:(id)a3 forKey:(id)a4
++ (BOOL)setValue:(id)value forKey:(id)key
 {
-  if (a4)
+  if (key)
   {
-    return [a1 _setPreferenceValue:a3 forKey:?];
+    return [self _setPreferenceValue:value forKey:?];
   }
 
   else
@@ -64,27 +64,27 @@
   }
 }
 
-+ (BOOL)_BOOLValueForKey:(id)a3
++ (BOOL)_BOOLValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 _safePreferenceForKey:v4 expectedReturnClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [self _safePreferenceForKey:keyCopy expectedReturnClass:objc_opt_class()];
 
   if (v5)
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-+ (id)_safePreferenceForKey:(id)a3 expectedReturnClass:(Class)a4
++ (id)_safePreferenceForKey:(id)key expectedReturnClass:(Class)class
 {
-  v4 = [a1 valueForKey:a3];
+  v4 = [self valueForKey:key];
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;

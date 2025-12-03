@@ -1,39 +1,39 @@
 @interface NUEmbedDataManager
-- (NUEmbedDataManager)initWithEmbedConfigurationLoader:(id)a3;
-- (id)embedForType:(id)a3;
-- (void)loadEmbedDataWithCompletion:(id)a3;
+- (NUEmbedDataManager)initWithEmbedConfigurationLoader:(id)loader;
+- (id)embedForType:(id)type;
+- (void)loadEmbedDataWithCompletion:(id)completion;
 @end
 
 @implementation NUEmbedDataManager
 
-- (NUEmbedDataManager)initWithEmbedConfigurationLoader:(id)a3
+- (NUEmbedDataManager)initWithEmbedConfigurationLoader:(id)loader
 {
-  v5 = a3;
+  loaderCopy = loader;
   v9.receiver = self;
   v9.super_class = NUEmbedDataManager;
   v6 = [(NUEmbedDataManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_embedConfigurationLoader, a3);
+    objc_storeStrong(&v6->_embedConfigurationLoader, loader);
   }
 
   return v7;
 }
 
-- (void)loadEmbedDataWithCompletion:(id)a3
+- (void)loadEmbedDataWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(NUEmbedDataManager *)self embedConfigurationLoader];
-  v5 = [v4 loadEmbededConfigurationWithCompletion:v6];
+  completionCopy = completion;
+  embedConfigurationLoader = [(NUEmbedDataManager *)self embedConfigurationLoader];
+  v5 = [embedConfigurationLoader loadEmbededConfigurationWithCompletion:completionCopy];
 }
 
-- (id)embedForType:(id)a3
+- (id)embedForType:(id)type
 {
-  v4 = a3;
-  v5 = [(NUEmbedDataManager *)self embedConfigurationLoader];
-  v6 = [v5 embedConfiguration];
-  v7 = [v6 objectForKey:v4];
+  typeCopy = type;
+  embedConfigurationLoader = [(NUEmbedDataManager *)self embedConfigurationLoader];
+  embedConfiguration = [embedConfigurationLoader embedConfiguration];
+  v7 = [embedConfiguration objectForKey:typeCopy];
 
   return v7;
 }

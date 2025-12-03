@@ -1,31 +1,31 @@
 @interface SLReplicatorView
-- (SLReplicatorView)initWithFrame:(CGRect)a3 targetView:(id)a4;
+- (SLReplicatorView)initWithFrame:(CGRect)frame targetView:(id)view;
 - (void)_updateReplicatorLayer;
 - (void)updateConstraints;
-- (void)updateInstanceCount:(unint64_t)a3 replicationPaddingX:(double)a4;
+- (void)updateInstanceCount:(unint64_t)count replicationPaddingX:(double)x;
 @end
 
 @implementation SLReplicatorView
 
-- (SLReplicatorView)initWithFrame:(CGRect)a3 targetView:(id)a4
+- (SLReplicatorView)initWithFrame:(CGRect)frame targetView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = SLReplicatorView;
-  v10 = [(SLReplicatorView *)&v14 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(SLReplicatorView *)&v14 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(SLReplicatorView *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(SLReplicatorView *)v11 setTargetView:v9];
+    [(SLReplicatorView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(SLReplicatorView *)v11 setTargetView:viewCopy];
     [(SLReplicatorView *)v11 setInstanceCount:1];
     [(SLReplicatorView *)v11 setReplicationPaddingX:0.0];
-    v12 = [(SLReplicatorView *)v11 targetView];
-    [(SLReplicatorView *)v11 addSubview:v12];
+    targetView = [(SLReplicatorView *)v11 targetView];
+    [(SLReplicatorView *)v11 addSubview:targetView];
 
     [(SLReplicatorView *)v11 _updateReplicatorLayer];
   }
@@ -33,22 +33,22 @@
   return v11;
 }
 
-- (void)updateInstanceCount:(unint64_t)a3 replicationPaddingX:(double)a4
+- (void)updateInstanceCount:(unint64_t)count replicationPaddingX:(double)x
 {
-  v7 = [(SLReplicatorView *)self instanceCount];
-  if (v7 != a3)
+  instanceCount = [(SLReplicatorView *)self instanceCount];
+  if (instanceCount != count)
   {
-    [(SLReplicatorView *)self setInstanceCount:a3];
+    [(SLReplicatorView *)self setInstanceCount:count];
   }
 
   [(SLReplicatorView *)self replicationPaddingX];
-  if (!SL_CGFloatApproximatelyEqualToFloat(v8, a4))
+  if (!SL_CGFloatApproximatelyEqualToFloat(v8, x))
   {
-    [(SLReplicatorView *)self setReplicationPaddingX:a4];
+    [(SLReplicatorView *)self setReplicationPaddingX:x];
     goto LABEL_7;
   }
 
-  if (v7 != a3)
+  if (instanceCount != count)
   {
 LABEL_7:
     [(SLReplicatorView *)self setNeedsUpdateConstraints];
@@ -64,17 +64,17 @@ LABEL_7:
 
 - (void)_updateReplicatorLayer
 {
-  v3 = [(SLReplicatorView *)self layer];
-  [v3 setInstanceCount:{-[SLReplicatorView instanceCount](self, "instanceCount")}];
-  v4 = [(SLReplicatorView *)self targetView];
-  [v4 frame];
+  layer = [(SLReplicatorView *)self layer];
+  [layer setInstanceCount:{-[SLReplicatorView instanceCount](self, "instanceCount")}];
+  targetView = [(SLReplicatorView *)self targetView];
+  [targetView frame];
   v6 = v5;
   [(SLReplicatorView *)self replicationPaddingX];
   v8 = v7 + v6;
 
   CATransform3DMakeTranslation(&v10, v8, 0.0, 0.0);
   v9 = v10;
-  [v3 setInstanceTransform:&v9];
+  [layer setInstanceTransform:&v9];
   [(SLReplicatorView *)self setNeedsLayout];
   [(SLReplicatorView *)self layoutIfNeeded];
 }
@@ -84,26 +84,26 @@ LABEL_7:
   v45.receiver = self;
   v45.super_class = SLReplicatorView;
   [(SLReplicatorView *)&v45 updateConstraints];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   [(SLReplicatorView *)self replicationPaddingX];
   v6 = v5 * ([(SLReplicatorView *)self instanceCount]- 1);
-  v7 = [(SLReplicatorView *)self widthConstraint];
-  if (v7)
+  widthConstraint = [(SLReplicatorView *)self widthConstraint];
+  if (widthConstraint)
   {
-    v8 = v7;
-    v9 = [(SLReplicatorView *)self widthConstraint];
-    v10 = [v9 firstAnchor];
-    v11 = [(SLReplicatorView *)self targetView];
-    v12 = [v11 widthAnchor];
-    if (v10 == v12)
+    v8 = widthConstraint;
+    widthConstraint2 = [(SLReplicatorView *)self widthConstraint];
+    firstAnchor = [widthConstraint2 firstAnchor];
+    targetView = [(SLReplicatorView *)self targetView];
+    widthAnchor = [targetView widthAnchor];
+    if (firstAnchor == widthAnchor)
     {
-      v13 = [(SLReplicatorView *)self widthConstraint];
-      [v13 multiplier];
+      widthConstraint3 = [(SLReplicatorView *)self widthConstraint];
+      [widthConstraint3 multiplier];
       if (v14 == [(SLReplicatorView *)self instanceCount])
       {
-        v42 = [(SLReplicatorView *)self widthConstraint];
-        [v42 constant];
+        widthConstraint4 = [(SLReplicatorView *)self widthConstraint];
+        [widthConstraint4 constant];
         v44 = v43;
 
         if (v44 == v6)
@@ -117,83 +117,83 @@ LABEL_7:
   }
 
 LABEL_6:
-  v15 = [(SLReplicatorView *)self widthConstraint];
+  widthConstraint5 = [(SLReplicatorView *)self widthConstraint];
 
-  if (v15)
+  if (widthConstraint5)
   {
-    v16 = [(SLReplicatorView *)self widthConstraint];
-    [v4 addObject:v16];
+    widthConstraint6 = [(SLReplicatorView *)self widthConstraint];
+    [array2 addObject:widthConstraint6];
   }
 
-  v17 = [(SLReplicatorView *)self widthAnchor];
-  v18 = [(SLReplicatorView *)self targetView];
-  v19 = [v18 widthAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19 multiplier:-[SLReplicatorView instanceCount](self constant:{"instanceCount"), v6}];
+  widthAnchor2 = [(SLReplicatorView *)self widthAnchor];
+  targetView2 = [(SLReplicatorView *)self targetView];
+  widthAnchor3 = [targetView2 widthAnchor];
+  v20 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3 multiplier:-[SLReplicatorView instanceCount](self constant:{"instanceCount"), v6}];
   [(SLReplicatorView *)self setWidthConstraint:v20];
 
-  v21 = [(SLReplicatorView *)self widthConstraint];
-  [v3 addObject:v21];
+  widthConstraint7 = [(SLReplicatorView *)self widthConstraint];
+  [array addObject:widthConstraint7];
 
 LABEL_9:
-  v22 = [(SLReplicatorView *)self heightConstraint];
+  heightConstraint = [(SLReplicatorView *)self heightConstraint];
 
-  if (!v22)
+  if (!heightConstraint)
   {
-    v25 = [(SLReplicatorView *)self heightAnchor];
-    v26 = [(SLReplicatorView *)self targetView];
-    v27 = [v26 heightAnchor];
-    v28 = [v25 constraintEqualToAnchor:v27];
+    heightAnchor = [(SLReplicatorView *)self heightAnchor];
+    targetView3 = [(SLReplicatorView *)self targetView];
+    heightAnchor2 = [targetView3 heightAnchor];
+    v28 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     [(SLReplicatorView *)self setHeightConstraint:v28];
 
     goto LABEL_13;
   }
 
-  v23 = [(SLReplicatorView *)self heightConstraint];
-  v24 = [v23 isActive];
+  heightConstraint2 = [(SLReplicatorView *)self heightConstraint];
+  isActive = [heightConstraint2 isActive];
 
-  if ((v24 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
 LABEL_13:
-    v29 = [(SLReplicatorView *)self heightConstraint];
-    [v3 addObject:v29];
+    heightConstraint3 = [(SLReplicatorView *)self heightConstraint];
+    [array addObject:heightConstraint3];
   }
 
-  v30 = [(SLReplicatorView *)self targetViewLeadingConstraint];
+  targetViewLeadingConstraint = [(SLReplicatorView *)self targetViewLeadingConstraint];
 
-  if (!v30)
+  if (!targetViewLeadingConstraint)
   {
-    v31 = [(SLReplicatorView *)self targetView];
-    v32 = [v31 leadingAnchor];
-    v33 = [(SLReplicatorView *)self leadingAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    targetView4 = [(SLReplicatorView *)self targetView];
+    leadingAnchor = [targetView4 leadingAnchor];
+    leadingAnchor2 = [(SLReplicatorView *)self leadingAnchor];
+    v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [(SLReplicatorView *)self setTargetViewLeadingConstraint:v34];
 
-    v35 = [(SLReplicatorView *)self targetViewLeadingConstraint];
-    [v3 addObject:v35];
+    targetViewLeadingConstraint2 = [(SLReplicatorView *)self targetViewLeadingConstraint];
+    [array addObject:targetViewLeadingConstraint2];
   }
 
-  v36 = [(SLReplicatorView *)self targetViewTopConstraint];
+  targetViewTopConstraint = [(SLReplicatorView *)self targetViewTopConstraint];
 
-  if (!v36)
+  if (!targetViewTopConstraint)
   {
-    v37 = [(SLReplicatorView *)self targetView];
-    v38 = [v37 topAnchor];
-    v39 = [(SLReplicatorView *)self topAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    targetView5 = [(SLReplicatorView *)self targetView];
+    topAnchor = [targetView5 topAnchor];
+    topAnchor2 = [(SLReplicatorView *)self topAnchor];
+    v40 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [(SLReplicatorView *)self setTargetViewTopConstraint:v40];
 
-    v41 = [(SLReplicatorView *)self targetViewTopConstraint];
-    [v3 addObject:v41];
+    targetViewTopConstraint2 = [(SLReplicatorView *)self targetViewTopConstraint];
+    [array addObject:targetViewTopConstraint2];
   }
 
-  if ([v4 count])
+  if ([array2 count])
   {
-    [MEMORY[0x277CCAAD0] deactivateConstraints:v4];
+    [MEMORY[0x277CCAAD0] deactivateConstraints:array2];
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    [MEMORY[0x277CCAAD0] activateConstraints:v3];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
   }
 }
 

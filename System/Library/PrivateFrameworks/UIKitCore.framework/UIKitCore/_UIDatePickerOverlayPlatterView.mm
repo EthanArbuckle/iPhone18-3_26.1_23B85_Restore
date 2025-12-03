@@ -2,22 +2,22 @@
 - (CGRect)contentBounds;
 - (CGSize)preferredContentSize;
 - (CGSize)preferredPlatterSize;
-- (_UIDatePickerOverlayPlatterView)initWithDatePicker:(id)a3 accessoryView:(id)a4;
+- (_UIDatePickerOverlayPlatterView)initWithDatePicker:(id)picker accessoryView:(id)view;
 - (void)datePickerTransitionAnimation;
 - (void)datePickerTransitionCompletion;
 - (void)layoutSubviews;
-- (void)prepareDatePickerTransitionWithDatePicker:(id)a3;
-- (void)replaceDatePicker:(id)a3;
-- (void)setContentBounds:(CGRect)a3;
+- (void)prepareDatePickerTransitionWithDatePicker:(id)picker;
+- (void)replaceDatePicker:(id)picker;
+- (void)setContentBounds:(CGRect)bounds;
 - (void)updateConstraints;
 @end
 
 @implementation _UIDatePickerOverlayPlatterView
 
-- (_UIDatePickerOverlayPlatterView)initWithDatePicker:(id)a3 accessoryView:(id)a4
+- (_UIDatePickerOverlayPlatterView)initWithDatePicker:(id)picker accessoryView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  pickerCopy = picker;
+  viewCopy = view;
   v23.receiver = self;
   v23.super_class = _UIDatePickerOverlayPlatterView;
   v8 = [(UIView *)&v23 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -26,11 +26,11 @@
   {
     [(UIView *)v8 setUserInteractionEnabled:1];
     [(UIView *)v9 setClipsToBounds:0];
-    v10 = [(UIView *)v9 layer];
-    [v10 setAllowsGroupOpacity:0];
+    layer = [(UIView *)v9 layer];
+    [layer setAllowsGroupOpacity:0];
 
-    v11 = [v6 _style];
-    [v11 overlayPlatterCornerRadius];
+    _style = [pickerCopy _style];
+    [_style overlayPlatterCornerRadius];
     v13 = v12;
 
     v14 = [(_UIRoundedRectShadowView *)[_UICutoutShadowView alloc] initWithCornerRadius:v13];
@@ -38,56 +38,56 @@
     [(UIView *)v9 bounds];
     [(_UIRoundedRectShadowView *)v14 frameWithContentWithFrame:?];
     [(UIImageView *)v14 setFrame:?];
-    v15 = [v6 _style];
-    -[UIImageView setHidden:](v14, "setHidden:", [v15 overlayPlatterWantsShadowView] ^ 1);
+    _style2 = [pickerCopy _style];
+    -[UIImageView setHidden:](v14, "setHidden:", [_style2 overlayPlatterWantsShadowView] ^ 1);
 
     [(UIView *)v9 addSubview:v14];
     shadowView = v9->_shadowView;
     v9->_shadowView = &v14->super;
     v17 = v14;
 
-    v18 = [v6 _style];
-    v19 = [v18 createOverlayBackgroundView];
+    _style3 = [pickerCopy _style];
+    createOverlayBackgroundView = [_style3 createOverlayBackgroundView];
 
-    [(UIView *)v9 addSubview:v19];
+    [(UIView *)v9 addSubview:createOverlayBackgroundView];
     backgroundView = v9->_backgroundView;
-    v9->_backgroundView = v19;
-    v21 = v19;
+    v9->_backgroundView = createOverlayBackgroundView;
+    v21 = createOverlayBackgroundView;
 
-    objc_storeStrong(&v9->_accessoryView, a4);
-    [(_UIDatePickerOverlayPlatterView *)v9 replaceDatePicker:v6];
+    objc_storeStrong(&v9->_accessoryView, view);
+    [(_UIDatePickerOverlayPlatterView *)v9 replaceDatePicker:pickerCopy];
   }
 
   return v9;
 }
 
-- (void)replaceDatePicker:(id)a3
+- (void)replaceDatePicker:(id)picker
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v5 setLayoutMargins:{16.0, 16.0, 16.0, 16.0}];
-  objc_storeStrong(&self->_datePicker, a3);
-  v6 = [v5 _style];
+  pickerCopy = picker;
+  [pickerCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  [pickerCopy setLayoutMargins:{16.0, 16.0, 16.0, 16.0}];
+  objc_storeStrong(&self->_datePicker, picker);
+  _style = [pickerCopy _style];
   datePickerStyle = self->_datePickerStyle;
-  self->_datePickerStyle = v6;
+  self->_datePickerStyle = _style;
 
-  v8 = [(_UIDatePickerOverlayPlatterView *)self accessoryView];
+  accessoryView = [(_UIDatePickerOverlayPlatterView *)self accessoryView];
 
-  if (v8)
+  if (accessoryView)
   {
     v9 = [UIStackView alloc];
-    v21[0] = v5;
-    v10 = [(_UIDatePickerOverlayPlatterView *)self accessoryView];
-    v21[1] = v10;
+    v21[0] = pickerCopy;
+    accessoryView2 = [(_UIDatePickerOverlayPlatterView *)self accessoryView];
+    v21[1] = accessoryView2;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
     v12 = [(UIStackView *)v9 initWithArrangedSubviews:v11];
 
     [(UIView *)v12 setAxis:1];
     [(UIView *)v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [(_UIDatePickerOverlayPlatterView *)self datePickerStyle];
-    v14 = [(_UIDatePickerOverlayPlatterView *)self backgroundView];
-    [v13 addSubview:v12 toOverlayBackgroundView:v14];
+    datePickerStyle = [(_UIDatePickerOverlayPlatterView *)self datePickerStyle];
+    backgroundView = [(_UIDatePickerOverlayPlatterView *)self backgroundView];
+    [datePickerStyle addSubview:v12 toOverlayBackgroundView:backgroundView];
 
     contentView = self->_contentView;
     self->_contentView = v12;
@@ -95,10 +95,10 @@
 
   else
   {
-    v16 = [(_UIDatePickerOverlayPlatterView *)self datePickerStyle];
+    datePickerStyle2 = [(_UIDatePickerOverlayPlatterView *)self datePickerStyle];
     datePicker = self->_datePicker;
-    v18 = [(_UIDatePickerOverlayPlatterView *)self backgroundView];
-    [v16 addSubview:datePicker toOverlayBackgroundView:v18];
+    backgroundView2 = [(_UIDatePickerOverlayPlatterView *)self backgroundView];
+    [datePickerStyle2 addSubview:datePicker toOverlayBackgroundView:backgroundView2];
 
     objc_storeStrong(&self->_contentView, self->_datePicker);
   }
@@ -123,43 +123,43 @@
     [(_UIDatePickerOverlayPlatterView *)self preferredContentSize];
     v4 = v3;
     v6 = v5;
-    v7 = [(UIView *)self->_contentView widthAnchor];
-    v8 = [v7 constraintEqualToConstant:v4];
+    widthAnchor = [(UIView *)self->_contentView widthAnchor];
+    v8 = [widthAnchor constraintEqualToConstant:v4];
     contentWidthConstraint = self->_contentWidthConstraint;
     self->_contentWidthConstraint = v8;
 
-    v10 = [(UIView *)self->_contentView heightAnchor];
-    v11 = [v10 constraintEqualToConstant:v6];
+    heightAnchor = [(UIView *)self->_contentView heightAnchor];
+    v11 = [heightAnchor constraintEqualToConstant:v6];
     contentHeightConstraint = self->_contentHeightConstraint;
     self->_contentHeightConstraint = v11;
 
-    v13 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
-    v38 = [v13 _style];
+    datePicker = [(_UIDatePickerOverlayPlatterView *)self datePicker];
+    _style = [datePicker _style];
 
-    v14 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
-    [v14 _appliedInsetsToEdgeOfContent];
+    datePicker2 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
+    [datePicker2 _appliedInsetsToEdgeOfContent];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
 
-    v23 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
-    [v38 overlayPlatterPaddingForAppliedInsets:objc_msgSend(v23 datePickerMode:{"datePickerMode"), v16, v18, v20, v22}];
+    datePicker3 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
+    [_style overlayPlatterPaddingForAppliedInsets:objc_msgSend(datePicker3 datePickerMode:{"datePickerMode"), v16, v18, v20, v22}];
     v25 = v24;
     v27 = v26;
 
     v28 = MEMORY[0x1E69977A0];
-    v29 = [(_UIDatePickerOverlayPlatterView *)self contentWidthConstraint];
-    v40[0] = v29;
-    v30 = [(_UIDatePickerOverlayPlatterView *)self contentHeightConstraint];
-    v40[1] = v30;
-    v31 = [(UIView *)self->_contentView leftAnchor];
-    v32 = [(UIView *)self leftAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32 constant:v25];
+    contentWidthConstraint = [(_UIDatePickerOverlayPlatterView *)self contentWidthConstraint];
+    v40[0] = contentWidthConstraint;
+    contentHeightConstraint = [(_UIDatePickerOverlayPlatterView *)self contentHeightConstraint];
+    v40[1] = contentHeightConstraint;
+    leftAnchor = [(UIView *)self->_contentView leftAnchor];
+    leftAnchor2 = [(UIView *)self leftAnchor];
+    v33 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v25];
     v40[2] = v33;
-    v34 = [(UIView *)self->_contentView topAnchor];
-    v35 = [(UIView *)self topAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35 constant:v27];
+    topAnchor = [(UIView *)self->_contentView topAnchor];
+    topAnchor2 = [(UIView *)self topAnchor];
+    v36 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v27];
     v40[3] = v36;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:4];
     [v28 activateConstraints:v37];
@@ -171,39 +171,39 @@
   v13.receiver = self;
   v13.super_class = _UIDatePickerOverlayPlatterView;
   [(UIView *)&v13 layoutSubviews];
-  v3 = [(_UIDatePickerOverlayPlatterView *)self shadowView];
+  shadowView = [(_UIDatePickerOverlayPlatterView *)self shadowView];
   [(UIView *)self bounds];
-  [v3 frameWithContentWithFrame:?];
+  [shadowView frameWithContentWithFrame:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(_UIDatePickerOverlayPlatterView *)self shadowView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  shadowView2 = [(_UIDatePickerOverlayPlatterView *)self shadowView];
+  [shadowView2 setFrame:{v5, v7, v9, v11}];
 }
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(UIDatePicker *)self->_datePicker _style];
-  v4 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
-  [v3 idealLayoutFittingSizeForDatePickerMode:{objc_msgSend(v4, "datePickerMode")}];
+  _style = [(UIDatePicker *)self->_datePicker _style];
+  datePicker = [(_UIDatePickerOverlayPlatterView *)self datePicker];
+  [_style idealLayoutFittingSizeForDatePickerMode:{objc_msgSend(datePicker, "datePickerMode")}];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
-  if ([v9 datePickerMode])
+  datePicker2 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
+  if ([datePicker2 datePickerMode])
   {
-    v10 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
-    v11 = [v10 datePickerMode];
+    datePicker3 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
+    datePickerMode = [datePicker3 datePickerMode];
 
-    if (v11 != 3)
+    if (datePickerMode != 3)
     {
       [(NSLayoutConstraint *)self->_contentWidthConstraint setActive:0];
       [(NSLayoutConstraint *)self->_contentHeightConstraint setActive:0];
-      v12 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
+      datePicker4 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
       LODWORD(v13) = 1148846080;
       LODWORD(v14) = 1112014848;
-      [v12 systemLayoutSizeFittingSize:v6 withHorizontalFittingPriority:v8 verticalFittingPriority:{v13, v14}];
+      [datePicker4 systemLayoutSizeFittingSize:v6 withHorizontalFittingPriority:v8 verticalFittingPriority:{v13, v14}];
       v6 = v15;
       v8 = v16;
 
@@ -216,15 +216,15 @@
   {
   }
 
-  v17 = [(_UIDatePickerOverlayPlatterView *)self accessoryView];
+  accessoryView = [(_UIDatePickerOverlayPlatterView *)self accessoryView];
 
-  if (v17)
+  if (accessoryView)
   {
-    v18 = [(_UIDatePickerOverlayPlatterView *)self accessoryView];
-    [v18 sizeToFit];
+    accessoryView2 = [(_UIDatePickerOverlayPlatterView *)self accessoryView];
+    [accessoryView2 sizeToFit];
 
-    v19 = [(_UIDatePickerOverlayPlatterView *)self accessoryView];
-    [v19 bounds];
+    accessoryView3 = [(_UIDatePickerOverlayPlatterView *)self accessoryView];
+    [accessoryView3 bounds];
     v8 = v8 + CGRectGetHeight(v23);
   }
 
@@ -241,27 +241,27 @@
   [(_UIDatePickerOverlayPlatterView *)self preferredContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
-  [v7 _appliedInsetsToEdgeOfContent];
+  datePicker = [(_UIDatePickerOverlayPlatterView *)self datePicker];
+  [datePicker _appliedInsetsToEdgeOfContent];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
-  v17 = [v16 _style];
+  datePicker2 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
+  _style = [datePicker2 _style];
 
-  [v17 overlayPlatterDefaultMargin];
+  [_style overlayPlatterDefaultMargin];
   v19 = v18;
-  [v17 overlayPlatterDefaultMargin];
+  [_style overlayPlatterDefaultMargin];
   v21 = v20 + v20 - (v9 + v13);
   if ([(_UIDatePickerOverlayPlatterView *)self accessoryViewIgnoresDefaultInsets])
   {
-    v22 = [(_UIDatePickerOverlayPlatterView *)self accessoryView];
+    accessoryView = [(_UIDatePickerOverlayPlatterView *)self accessoryView];
 
-    if (v22)
+    if (accessoryView)
     {
-      [v17 overlayPlatterDefaultMargin];
+      [_style overlayPlatterDefaultMargin];
       v21 = v21 - (v23 - v13);
     }
   }
@@ -277,91 +277,91 @@
   return result;
 }
 
-- (void)setContentBounds:(CGRect)a3
+- (void)setContentBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  self->_contentBounds = a3;
-  v6 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
-  v30 = [v6 _style];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  self->_contentBounds = bounds;
+  datePicker = [(_UIDatePickerOverlayPlatterView *)self datePicker];
+  _style = [datePicker _style];
 
-  [v30 overlayPlatterDefaultMargin];
+  [_style overlayPlatterDefaultMargin];
   v29 = v7;
-  [v30 overlayPlatterDefaultMargin];
+  [_style overlayPlatterDefaultMargin];
   v28 = v8;
-  [v30 overlayPlatterDefaultMargin];
+  [_style overlayPlatterDefaultMargin];
   v10 = v9;
-  [v30 overlayPlatterDefaultMargin];
+  [_style overlayPlatterDefaultMargin];
   v12 = v11;
-  v13 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
-  [v13 _appliedInsetsToEdgeOfContent];
+  datePicker2 = [(_UIDatePickerOverlayPlatterView *)self datePicker];
+  [datePicker2 _appliedInsetsToEdgeOfContent];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [(_UIDatePickerOverlayPlatterView *)self accessoryView];
-  if (v22)
+  accessoryView = [(_UIDatePickerOverlayPlatterView *)self accessoryView];
+  if (accessoryView)
   {
-    v23 = v22;
-    v24 = [(_UIDatePickerOverlayPlatterView *)self accessoryViewIgnoresDefaultInsets];
+    v23 = accessoryView;
+    accessoryViewIgnoresDefaultInsets = [(_UIDatePickerOverlayPlatterView *)self accessoryViewIgnoresDefaultInsets];
 
-    if (v24)
+    if (accessoryViewIgnoresDefaultInsets)
     {
-      [v30 overlayPlatterDefaultMargin];
+      [_style overlayPlatterDefaultMargin];
       v19 = v25;
     }
   }
 
-  v26 = [(_UIDatePickerOverlayPlatterView *)self contentWidthConstraint];
-  [v26 setConstant:width - (v28 - v17 + v12 - v21)];
+  contentWidthConstraint = [(_UIDatePickerOverlayPlatterView *)self contentWidthConstraint];
+  [contentWidthConstraint setConstant:width - (v28 - v17 + v12 - v21)];
 
-  v27 = [(_UIDatePickerOverlayPlatterView *)self contentHeightConstraint];
-  [v27 setConstant:height - (v29 - v15 + v10 - v19)];
+  contentHeightConstraint = [(_UIDatePickerOverlayPlatterView *)self contentHeightConstraint];
+  [contentHeightConstraint setConstant:height - (v29 - v15 + v10 - v19)];
 
   [(UIView *)self layoutIfNeeded];
 }
 
-- (void)prepareDatePickerTransitionWithDatePicker:(id)a3
+- (void)prepareDatePickerTransitionWithDatePicker:(id)picker
 {
-  v7 = a3;
-  v4 = [(_UIDatePickerOverlayPlatterView *)self previousContentView];
-  [v4 removeFromSuperview];
+  pickerCopy = picker;
+  previousContentView = [(_UIDatePickerOverlayPlatterView *)self previousContentView];
+  [previousContentView removeFromSuperview];
 
   [(UIDatePicker *)self->_datePicker resignFirstResponder];
-  if (v7)
+  if (pickerCopy)
   {
-    v5 = [(_UIDatePickerOverlayPlatterView *)self contentView];
+    contentView = [(_UIDatePickerOverlayPlatterView *)self contentView];
     previousContentView = self->_previousContentView;
-    self->_previousContentView = v5;
+    self->_previousContentView = contentView;
 
-    [v7 setAlpha:0.0];
-    [(_UIDatePickerOverlayPlatterView *)self replaceDatePicker:v7];
+    [pickerCopy setAlpha:0.0];
+    [(_UIDatePickerOverlayPlatterView *)self replaceDatePicker:pickerCopy];
   }
 }
 
 - (void)datePickerTransitionAnimation
 {
-  v3 = [(_UIDatePickerOverlayPlatterView *)self previousContentView];
+  previousContentView = [(_UIDatePickerOverlayPlatterView *)self previousContentView];
 
-  if (v3)
+  if (previousContentView)
   {
-    v4 = [(_UIDatePickerOverlayPlatterView *)self previousContentView];
-    [v4 setAlpha:0.0];
+    previousContentView2 = [(_UIDatePickerOverlayPlatterView *)self previousContentView];
+    [previousContentView2 setAlpha:0.0];
 
-    v5 = [(_UIDatePickerOverlayPlatterView *)self contentView];
-    [v5 setAlpha:1.0];
+    contentView = [(_UIDatePickerOverlayPlatterView *)self contentView];
+    [contentView setAlpha:1.0];
   }
 }
 
 - (void)datePickerTransitionCompletion
 {
-  v3 = [(_UIDatePickerOverlayPlatterView *)self previousContentView];
+  previousContentView = [(_UIDatePickerOverlayPlatterView *)self previousContentView];
 
-  if (v3)
+  if (previousContentView)
   {
-    v4 = [(_UIDatePickerOverlayPlatterView *)self previousContentView];
-    [v4 removeFromSuperview];
+    previousContentView2 = [(_UIDatePickerOverlayPlatterView *)self previousContentView];
+    [previousContentView2 removeFromSuperview];
 
     previousContentView = self->_previousContentView;
     self->_previousContentView = 0;

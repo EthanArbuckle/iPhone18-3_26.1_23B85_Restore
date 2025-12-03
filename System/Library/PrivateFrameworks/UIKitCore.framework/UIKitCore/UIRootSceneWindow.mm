@@ -1,42 +1,42 @@
 @interface UIRootSceneWindow
-- (UIRootSceneWindow)initWithDisplay:(id)a3;
-- (UIRootSceneWindow)initWithDisplayConfiguration:(id)a3;
-- (UIRootSceneWindow)initWithScreen:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_configureContextOptions:(id)a3;
+- (UIRootSceneWindow)initWithDisplay:(id)display;
+- (UIRootSceneWindow)initWithDisplayConfiguration:(id)configuration;
+- (UIRootSceneWindow)initWithScreen:(id)screen;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_configureContextOptions:(id)options;
 - (void)_updateTransforms;
 - (void)dealloc;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation UIRootSceneWindow
 
-- (UIRootSceneWindow)initWithDisplay:(id)a3
+- (UIRootSceneWindow)initWithDisplay:(id)display
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UIRootSceneWindow.m" lineNumber:34 description:@"you can't call this"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIRootSceneWindow.m" lineNumber:34 description:@"you can't call this"];
 
   return 0;
 }
 
-- (UIRootSceneWindow)initWithScreen:(id)a3
+- (UIRootSceneWindow)initWithScreen:(id)screen
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UIRootSceneWindow.m" lineNumber:39 description:@"you can't call this"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIRootSceneWindow.m" lineNumber:39 description:@"you can't call this"];
 
   return 0;
 }
 
-- (UIRootSceneWindow)initWithDisplayConfiguration:(id)a3
+- (UIRootSceneWindow)initWithDisplayConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = UIRootSceneWindow;
-  v6 = [(_UIRootWindow *)&v15 initWithDisplay:v5];
+  v6 = [(_UIRootWindow *)&v15 initWithDisplay:configurationCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_displayConfiguration, a3);
+    objc_storeStrong(&v6->_displayConfiguration, configuration);
     v8 = objc_alloc_init(UIMutableTransformer);
     sceneTransformer = v7->_sceneTransformer;
     v7->_sceneTransformer = v8;
@@ -68,11 +68,11 @@
   [(_UIRootWindow *)&v3 dealloc];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = UIRootSceneWindow;
-  v5 = [(UIView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -94,12 +94,12 @@
   return v7;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v39 = *MEMORY[0x1E69E9840];
   [(UIView *)self frame];
   v9 = v8;
@@ -153,12 +153,12 @@
   }
 }
 
-- (void)_configureContextOptions:(id)a3
+- (void)_configureContextOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   if ([objc_opt_class() definesDisplayBounds])
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6979688]];
+    [optionsCopy setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6979688]];
   }
 }
 

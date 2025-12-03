@@ -1,10 +1,10 @@
 @interface CRLWPStyleRun
-- (BOOL)coalesceWith:(id)a3;
+- (BOOL)coalesceWith:(id)with;
 - (CRLWPFontHeightInfo)fontHeightInfo;
 - (CRLWPStyleRun)init;
 - (_NSRange)range;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setFontHeightInfo:(CRLWPFontHeightInfo *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setFontHeightInfo:(CRLWPFontHeightInfo *)info;
 @end
 
 @implementation CRLWPStyleRun
@@ -22,18 +22,18 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setCharIndex:{-[CRLWPStyleRun charIndex](self, "charIndex")}];
   [v4 setRunLength:{-[CRLWPStyleRun runLength](self, "runLength")}];
   [v4 setFlags:{-[CRLWPStyleRun flags](self, "flags")}];
-  v5 = [(CRLWPStyleRun *)self characterStyle];
-  [v4 setCharacterStyle:v5];
+  characterStyle = [(CRLWPStyleRun *)self characterStyle];
+  [v4 setCharacterStyle:characterStyle];
 
   [v4 setCtFont:{-[CRLWPStyleRun ctFont](self, "ctFont")}];
-  v6 = [(CRLWPStyleRun *)self attributes];
-  [v4 setAttributes:v6];
+  attributes = [(CRLWPStyleRun *)self attributes];
+  [v4 setAttributes:attributes];
 
   [(CRLWPStyleRun *)self fontHeightInfo];
   v8[2] = v8[8];
@@ -46,38 +46,38 @@
   return v4;
 }
 
-- (BOOL)coalesceWith:(id)a3
+- (BOOL)coalesceWith:(id)with
 {
-  v5 = a3;
-  v6 = [(CRLWPStyleRun *)self charIndex];
-  v7 = [(CRLWPStyleRun *)self runLength];
-  if ((v7 + v6) != [v5 charIndex])
+  withCopy = with;
+  charIndex = [(CRLWPStyleRun *)self charIndex];
+  runLength = [(CRLWPStyleRun *)self runLength];
+  if ((runLength + charIndex) != [withCopy charIndex])
   {
     goto LABEL_19;
   }
 
-  v8 = [(CRLWPStyleRun *)self flags];
-  if (v8 != [v5 flags])
+  flags = [(CRLWPStyleRun *)self flags];
+  if (flags != [withCopy flags])
   {
     goto LABEL_19;
   }
 
-  v9 = [(CRLWPStyleRun *)self characterStyle];
-  v10 = [v5 characterStyle];
-  if (v9 != v10)
+  characterStyle = [(CRLWPStyleRun *)self characterStyle];
+  characterStyle2 = [withCopy characterStyle];
+  if (characterStyle != characterStyle2)
   {
-    v20 = [(CRLWPStyleRun *)self characterStyle];
-    v3 = [v5 characterStyle];
-    if (![v20 isEqual:v3])
+    characterStyle3 = [(CRLWPStyleRun *)self characterStyle];
+    characterStyle4 = [withCopy characterStyle];
+    if (![characterStyle3 isEqual:characterStyle4])
     {
       goto LABEL_17;
     }
   }
 
-  v11 = [(CRLWPStyleRun *)self ctFont];
-  if (v11 != [v5 ctFont] && !CFEqual(-[CRLWPStyleRun ctFont](self, "ctFont"), objc_msgSend(v5, "ctFont")))
+  ctFont = [(CRLWPStyleRun *)self ctFont];
+  if (ctFont != [withCopy ctFont] && !CFEqual(-[CRLWPStyleRun ctFont](self, "ctFont"), objc_msgSend(withCopy, "ctFont")))
   {
-    if (v9 == v10)
+    if (characterStyle == characterStyle2)
     {
 LABEL_18:
 
@@ -91,24 +91,24 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v12 = [(CRLWPStyleRun *)self attributes];
-  v13 = [v5 attributes];
-  v14 = v13;
-  if (v12 == v13)
+  attributes = [(CRLWPStyleRun *)self attributes];
+  attributes2 = [withCopy attributes];
+  v14 = attributes2;
+  if (attributes == attributes2)
   {
 
-    if (v9 != v10)
+    if (characterStyle != characterStyle2)
     {
     }
   }
 
   else
   {
-    v15 = [(CRLWPStyleRun *)self attributes];
-    v16 = [v5 attributes];
-    v17 = [v15 isEqualToDictionary:v16];
+    attributes3 = [(CRLWPStyleRun *)self attributes];
+    attributes4 = [withCopy attributes];
+    v17 = [attributes3 isEqualToDictionary:attributes4];
 
-    if (v9 != v10)
+    if (characterStyle != characterStyle2)
     {
     }
 
@@ -118,7 +118,7 @@ LABEL_17:
     }
   }
 
-  -[CRLWPStyleRun setRunLength:](self, "setRunLength:", [v5 runLength] + -[CRLWPStyleRun runLength](self, "runLength"));
+  -[CRLWPStyleRun setRunLength:](self, "setRunLength:", [withCopy runLength] + -[CRLWPStyleRun runLength](self, "runLength"));
   v18 = 1;
 LABEL_20:
 
@@ -127,10 +127,10 @@ LABEL_20:
 
 - (_NSRange)range
 {
-  v3 = [(CRLWPStyleRun *)self charIndex];
-  v4 = [(CRLWPStyleRun *)self runLength];
-  v5 = v3;
-  result.length = v4;
+  charIndex = [(CRLWPStyleRun *)self charIndex];
+  runLength = [(CRLWPStyleRun *)self runLength];
+  v5 = charIndex;
+  result.length = runLength;
   result.location = v5;
   return result;
 }
@@ -149,15 +149,15 @@ LABEL_20:
   return self;
 }
 
-- (void)setFontHeightInfo:(CRLWPFontHeightInfo *)a3
+- (void)setFontHeightInfo:(CRLWPFontHeightInfo *)info
 {
-  v3 = *&a3->spaceBefore;
-  *&self->_fontHeightInfo.ascent = *&a3->ascent;
+  v3 = *&info->spaceBefore;
+  *&self->_fontHeightInfo.ascent = *&info->ascent;
   *&self->_fontHeightInfo.spaceBefore = v3;
-  v4 = *&a3->descent;
-  v5 = *&a3->leadingBelow;
-  v6 = *&a3->verticalHeight;
-  *&self->_fontHeightInfo.underlinePosition = *&a3->underlinePosition;
+  v4 = *&info->descent;
+  v5 = *&info->leadingBelow;
+  v6 = *&info->verticalHeight;
+  *&self->_fontHeightInfo.underlinePosition = *&info->underlinePosition;
   *&self->_fontHeightInfo.verticalHeight = v6;
   *&self->_fontHeightInfo.leadingBelow = v5;
   *&self->_fontHeightInfo.descent = v4;

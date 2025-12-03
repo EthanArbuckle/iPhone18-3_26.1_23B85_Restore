@@ -1,14 +1,14 @@
 @interface PSGraphViewTableCell
 - (NSMutableArray)graphArray;
 - (PLBatteryUIMoveableGraphView)graphView;
-- (PSGraphViewTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PSGraphViewTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIActivityIndicatorView)activityIndicator;
 - (UIScrollView)scrollView;
 - (void)generateGraphs;
 - (void)layoutSubviews;
-- (void)pinch:(id)a3;
-- (void)setGraphArray:(id)a3;
-- (void)setSpecifier:(id)a3;
+- (void)pinch:(id)pinch;
+- (void)setGraphArray:(id)array;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation PSGraphViewTableCell
@@ -69,8 +69,8 @@
   graphArray = self->_graphArray;
   if (!graphArray)
   {
-    v4 = [(PSGraphViewTableCell *)self specifier];
-    v5 = [v4 propertyForKey:@"GRAPH_ARRAY"];
+    specifier = [(PSGraphViewTableCell *)self specifier];
+    v5 = [specifier propertyForKey:@"GRAPH_ARRAY"];
     v6 = self->_graphArray;
     self->_graphArray = v5;
 
@@ -80,12 +80,12 @@
   return graphArray;
 }
 
-- (void)setGraphArray:(id)a3
+- (void)setGraphArray:(id)array
 {
-  objc_storeStrong(&self->_graphArray, a3);
-  v5 = a3;
-  v6 = [(PSGraphViewTableCell *)self specifier];
-  [v6 setProperty:self->_graphArray forKey:@"GRAPH_ARRAY"];
+  objc_storeStrong(&self->_graphArray, array);
+  arrayCopy = array;
+  specifier = [(PSGraphViewTableCell *)self specifier];
+  [specifier setProperty:self->_graphArray forKey:@"GRAPH_ARRAY"];
 }
 
 - (void)generateGraphs
@@ -147,76 +147,76 @@
     [(PSGraphViewTableCell *)self frame];
     v30 = v29 + -10.0 - v28;
     v31 = (+[PLBatteryUIMoveableGraphView graphHeight]- 20);
-    v32 = [(PSGraphViewTableCell *)self graphView];
-    [v32 setFrame:{0.0, 0.0, v30, v31}];
+    graphView = [(PSGraphViewTableCell *)self graphView];
+    [graphView setFrame:{0.0, 0.0, v30, v31}];
 
-    v33 = [(PSGraphViewTableCell *)self graphView];
-    v34 = [(PSGraphViewTableCell *)self graphArray];
-    [v33 setInputData:v34];
+    graphView2 = [(PSGraphViewTableCell *)self graphView];
+    graphArray = [(PSGraphViewTableCell *)self graphArray];
+    [graphView2 setInputData:graphArray];
 
-    v35 = [(PSGraphViewTableCell *)self backgroundColor];
-    v36 = [(PSGraphViewTableCell *)self graphView];
-    [v36 setBackgroundColor:v35];
+    backgroundColor = [(PSGraphViewTableCell *)self backgroundColor];
+    graphView3 = [(PSGraphViewTableCell *)self graphView];
+    [graphView3 setBackgroundColor:backgroundColor];
 
-    v37 = [(PSGraphViewTableCell *)self backgroundColor];
-    v38 = [(PSGraphViewTableCell *)self graphView];
-    [v38 setGraphBackgroundColor:v37];
+    backgroundColor2 = [(PSGraphViewTableCell *)self backgroundColor];
+    graphView4 = [(PSGraphViewTableCell *)self graphView];
+    [graphView4 setGraphBackgroundColor:backgroundColor2];
 
     labelColor = self->labelColor;
-    v40 = [(PSGraphViewTableCell *)self graphView];
-    [v40 setLabelColor:labelColor];
+    graphView5 = [(PSGraphViewTableCell *)self graphView];
+    [graphView5 setLabelColor:labelColor];
 
     v41 = +[UIColor tableCellBlueTextColor];
-    v42 = [(PSGraphViewTableCell *)self graphView];
-    [v42 setLineColor:v41];
+    graphView6 = [(PSGraphViewTableCell *)self graphView];
+    [graphView6 setLineColor:v41];
 
-    v43 = [(PSGraphViewTableCell *)self specifier];
-    v44 = [v43 propertyForKey:@"DisplayRange"];
+    specifier = [(PSGraphViewTableCell *)self specifier];
+    v44 = [specifier propertyForKey:@"DisplayRange"];
 
     if (v44 && [v44 isEqualToString:@"PLBatteryUIQueryRangeWeekKey"])
     {
-      v45 = [(PSGraphViewTableCell *)self graphView];
-      [v45 setDisplayRange:604800.0];
+      graphView7 = [(PSGraphViewTableCell *)self graphView];
+      [graphView7 setDisplayRange:604800.0];
     }
 
     v46 = v28 + 3.0;
     [(PSGraphViewTableCell *)self frame];
     v48 = v47 + -10.0 - v28 + -3.0;
     v49 = (+[PLBatteryUIMoveableGraphView graphHeight]- 20);
-    v50 = [(PSGraphViewTableCell *)self scrollView];
-    [v50 setFrame:{v46, 10.0, v48, v49}];
+    scrollView = [(PSGraphViewTableCell *)self scrollView];
+    [scrollView setFrame:{v46, 10.0, v48, v49}];
 
-    v51 = [(PSGraphViewTableCell *)self graphView];
-    [v51 size];
+    graphView8 = [(PSGraphViewTableCell *)self graphView];
+    [graphView8 size];
     v53 = v52;
     v55 = v54;
-    v56 = [(PSGraphViewTableCell *)self scrollView];
-    [v56 setContentSize:{v53, v55}];
+    scrollView2 = [(PSGraphViewTableCell *)self scrollView];
+    [scrollView2 setContentSize:{v53, v55}];
 
-    v57 = [(PSGraphViewTableCell *)self scrollView];
-    v58 = [(PSGraphViewTableCell *)self graphView];
-    [v57 addSubview:v58];
+    scrollView3 = [(PSGraphViewTableCell *)self scrollView];
+    graphView9 = [(PSGraphViewTableCell *)self graphView];
+    [scrollView3 addSubview:graphView9];
 
-    v59 = [(PSGraphViewTableCell *)self scrollView];
-    [(PSGraphViewTableCell *)self addSubview:v59];
+    scrollView4 = [(PSGraphViewTableCell *)self scrollView];
+    [(PSGraphViewTableCell *)self addSubview:scrollView4];
 
-    v60 = [(PSGraphViewTableCell *)self scrollView];
-    v61 = [(PSGraphViewTableCell *)self graphView];
-    [v61 size];
+    scrollView5 = [(PSGraphViewTableCell *)self scrollView];
+    graphView10 = [(PSGraphViewTableCell *)self graphView];
+    [graphView10 size];
     v63 = v62;
-    v64 = [(PSGraphViewTableCell *)self scrollView];
-    [v64 frame];
-    [v60 setContentOffset:0 animated:{v63 - v65, 0.0}];
+    scrollView6 = [(PSGraphViewTableCell *)self scrollView];
+    [scrollView6 frame];
+    [scrollView5 setContentOffset:0 animated:{v63 - v65, 0.0}];
 
     self->graphViewDidChange = 0;
   }
 }
 
-- (PSGraphViewTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PSGraphViewTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = PSGraphViewTableCell;
-  v4 = [(PSGraphViewTableCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSGraphViewTableCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[UIColor clearColor];
@@ -226,9 +226,9 @@
     labelColor = v4->labelColor;
     v4->labelColor = v6;
 
-    v8 = [(PSGraphViewTableCell *)v4 backgroundColor];
+    backgroundColor = [(PSGraphViewTableCell *)v4 backgroundColor];
     graphColor = v4->graphColor;
-    v4->graphColor = v8;
+    v4->graphColor = backgroundColor;
 
     graphArray = v4->_graphArray;
     v4->_graphArray = 0;
@@ -252,21 +252,21 @@
   }
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = PSGraphViewTableCell;
-  [(PSGraphViewTableCell *)&v9 setSpecifier:a3];
-  v4 = [(PSGraphViewTableCell *)self graphArray];
+  [(PSGraphViewTableCell *)&v9 setSpecifier:specifier];
+  graphArray = [(PSGraphViewTableCell *)self graphArray];
 
-  if (!v4)
+  if (!graphArray)
   {
     self->waitingForData = 1;
-    v5 = [(PSGraphViewTableCell *)self activityIndicator];
-    [(PSGraphViewTableCell *)self addSubview:v5];
+    activityIndicator = [(PSGraphViewTableCell *)self activityIndicator];
+    [(PSGraphViewTableCell *)self addSubview:activityIndicator];
 
-    v6 = [(PSGraphViewTableCell *)self activityIndicator];
-    [v6 startAnimating];
+    activityIndicator2 = [(PSGraphViewTableCell *)self activityIndicator];
+    [activityIndicator2 startAnimating];
 
     v7 = +[BatteryUsageQueryModule sharedModule];
     [v7 setGraphNames:&off_174CB0];
@@ -279,52 +279,52 @@
   }
 }
 
-- (void)pinch:(id)a3
+- (void)pinch:(id)pinch
 {
-  v33 = a3;
-  if ([v33 numberOfTouches] >= 2)
+  pinchCopy = pinch;
+  if ([pinchCopy numberOfTouches] >= 2)
   {
-    v4 = [(PSGraphViewTableCell *)self graphView];
-    [v33 locationOfTouch:0 inView:v4];
+    graphView = [(PSGraphViewTableCell *)self graphView];
+    [pinchCopy locationOfTouch:0 inView:graphView];
     v6 = v5;
 
-    v7 = [(PSGraphViewTableCell *)self graphView];
-    [v33 locationOfTouch:1 inView:v7];
+    graphView2 = [(PSGraphViewTableCell *)self graphView];
+    [pinchCopy locationOfTouch:1 inView:graphView2];
     v9 = v8;
 
     v10 = v6 + (v9 - v6) * 0.5;
-    v11 = [(PSGraphViewTableCell *)self graphView];
-    [v11 size];
+    graphView3 = [(PSGraphViewTableCell *)self graphView];
+    [graphView3 size];
     v13 = v10 / v12;
 
-    v14 = [(PSGraphViewTableCell *)self scrollView];
-    [v14 contentOffset];
+    scrollView = [(PSGraphViewTableCell *)self scrollView];
+    [scrollView contentOffset];
     v16 = v10 - v15;
 
     self->graphViewDidChange = 1;
-    v17 = [(PSGraphViewTableCell *)self graphView];
-    [v17 displayRange];
+    graphView4 = [(PSGraphViewTableCell *)self graphView];
+    [graphView4 displayRange];
     v19 = v18;
-    [v33 scale];
+    [pinchCopy scale];
     v21 = v19 / v20;
-    v22 = [(PSGraphViewTableCell *)self graphView];
-    [v22 setDisplayRange:v21];
+    graphView5 = [(PSGraphViewTableCell *)self graphView];
+    [graphView5 setDisplayRange:v21];
 
-    v23 = [(PSGraphViewTableCell *)self graphView];
-    [v23 size];
+    graphView6 = [(PSGraphViewTableCell *)self graphView];
+    [graphView6 size];
     v25 = v24;
     v27 = v26;
-    v28 = [(PSGraphViewTableCell *)self scrollView];
-    [v28 setContentSize:{v25, v27}];
+    scrollView2 = [(PSGraphViewTableCell *)self scrollView];
+    [scrollView2 setContentSize:{v25, v27}];
 
-    v29 = [(PSGraphViewTableCell *)self graphView];
-    [v29 size];
+    graphView7 = [(PSGraphViewTableCell *)self graphView];
+    [graphView7 size];
     v31 = v13 * v30;
 
-    v32 = [(PSGraphViewTableCell *)self scrollView];
-    [v32 setContentOffset:0 animated:{v31 - v16, 0.0}];
+    scrollView3 = [(PSGraphViewTableCell *)self scrollView];
+    [scrollView3 setContentOffset:0 animated:{v31 - v16, 0.0}];
 
-    [v33 setScale:1.0];
+    [pinchCopy setScale:1.0];
   }
 }
 

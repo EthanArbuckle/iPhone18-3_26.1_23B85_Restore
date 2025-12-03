@@ -1,25 +1,25 @@
 @interface HKOverlayRoomPillValueProviderSleep
-- (id)_minMaxValueFromChartPoints:(id)a3 displayType:(id)a4 unitPreferenceController:(id)a5;
-- (id)valueFromChartPoints:(id)a3 unit:(id)a4 displayType:(id)a5 timeScope:(int64_t)a6 unitPreferenceController:(id)a7;
+- (id)_minMaxValueFromChartPoints:(id)points displayType:(id)type unitPreferenceController:(id)controller;
+- (id)valueFromChartPoints:(id)points unit:(id)unit displayType:(id)type timeScope:(int64_t)scope unitPreferenceController:(id)controller;
 @end
 
 @implementation HKOverlayRoomPillValueProviderSleep
 
-- (id)valueFromChartPoints:(id)a3 unit:(id)a4 displayType:(id)a5 timeScope:(int64_t)a6 unitPreferenceController:(id)a7
+- (id)valueFromChartPoints:(id)points unit:(id)unit displayType:(id)type timeScope:(int64_t)scope unitPreferenceController:(id)controller
 {
-  v7 = [(HKOverlayRoomPillValueProviderSleep *)self _minMaxValueFromChartPoints:a3 displayType:a5 unitPreferenceController:a7, a6];
-  v8 = [[HKOverlayPillValue alloc] initWithValueString:v7 unitString:&stru_1F42FFBE0];
+  scope = [(HKOverlayRoomPillValueProviderSleep *)self _minMaxValueFromChartPoints:points displayType:type unitPreferenceController:controller, scope];
+  v8 = [[HKOverlayPillValue alloc] initWithValueString:scope unitString:&stru_1F42FFBE0];
 
   return v8;
 }
 
-- (id)_minMaxValueFromChartPoints:(id)a3 displayType:(id)a4 unitPreferenceController:(id)a5
+- (id)_minMaxValueFromChartPoints:(id)points displayType:(id)type unitPreferenceController:(id)controller
 {
   v47 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7 || ![v7 count])
+  pointsCopy = points;
+  typeCopy = type;
+  controllerCopy = controller;
+  if (!pointsCopy || ![pointsCopy count])
   {
     goto LABEL_35;
   }
@@ -28,7 +28,7 @@
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v10 = v7;
+  v10 = pointsCopy;
   v11 = [v10 countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v11)
   {

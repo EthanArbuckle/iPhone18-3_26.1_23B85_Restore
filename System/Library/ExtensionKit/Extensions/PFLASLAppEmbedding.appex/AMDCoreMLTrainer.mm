@@ -1,68 +1,68 @@
 @interface AMDCoreMLTrainer
-- (id)computeAndGetMetrics:(id)a3 programTrainer:(id)a4 numIterationsToTrain:(int64_t)a5 error:(id *)a6 errorDomain:(id)a7 dataProvider:(id)a8 localTrainingStage:(unint64_t)a9;
-- (id)runTask:(id)a3 error:(id *)a4 errorDomain:(id)a5 dataProvider:(id)a6;
-- (id)taskResultFromDict:(id)a3;
+- (id)computeAndGetMetrics:(id)metrics programTrainer:(id)trainer numIterationsToTrain:(int64_t)train error:(id *)error errorDomain:(id)domain dataProvider:(id)provider localTrainingStage:(unint64_t)stage;
+- (id)runTask:(id)task error:(id *)error errorDomain:(id)domain dataProvider:(id)provider;
+- (id)taskResultFromDict:(id)dict;
 @end
 
 @implementation AMDCoreMLTrainer
 
-- (id)runTask:(id)a3 error:(id *)a4 errorDomain:(id)a5 dataProvider:(id)a6
+- (id)runTask:(id)task error:(id *)error errorDomain:(id)domain dataProvider:(id)provider
 {
-  v46 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v44 = a4;
+  objc_storeStrong(location, task);
+  errorCopy = error;
   v43 = 0;
-  objc_storeStrong(&v43, a5);
+  objc_storeStrong(&v43, domain);
   v42 = 0;
-  objc_storeStrong(&v42, a6);
+  objc_storeStrong(&v42, provider);
   v6 = [AMDDODMLModelMetadata alloc];
-  v41 = [(AMDDODMLModelMetadata *)v6 initModelMetadata:location[0] error:v44 errorDomain:v43];
+  v41 = [(AMDDODMLModelMetadata *)v6 initModelMetadata:location[0] error:errorCopy errorDomain:v43];
   if (v41)
   {
-    v20 = [v41 modelPath];
+    modelPath = [v41 modelPath];
     v19 = [NSURL fileURLWithPath:?];
-    v39 = [(NSURL *)v19 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [(NSURL *)v19 URLByDeletingLastPathComponent];
 
     v38 = objc_alloc_init(MLModelConfiguration);
     [v38 setComputeUnits:0];
-    v37 = [MLModel modelWithContentsOfURL:v39 configuration:v38 error:v44];
+    v37 = [MLModel modelWithContentsOfURL:uRLByDeletingLastPathComponent configuration:v38 error:errorCopy];
     if (v37)
     {
       v16 = [MLProgramTrainer alloc];
-      v18 = [v37 program];
-      v17 = [v41 learningRate];
-      [v17 doubleValue];
-      v36 = [v16 initWithProgram:v18 learningRate:v44 error:?];
+      program = [v37 program];
+      learningRate = [v41 learningRate];
+      [learningRate doubleValue];
+      v36 = [v16 initWithProgram:program learningRate:errorCopy error:?];
 
       if (v36)
       {
         v35 = [v42 numberOfIterationsPerEpoch:{objc_msgSend(v41, "batchSize")}];
         if (v35)
         {
-          v34 = [v41 numLocalIterations];
-          v13 = [v41 learningRateSchedule];
+          numLocalIterations = [v41 numLocalIterations];
+          learningRateSchedule = [v41 learningRateSchedule];
           v14 = 0;
-          if (!v13)
+          if (!learningRateSchedule)
           {
             v14 = [v41 numEpochs] > 0;
           }
 
           if (v14)
           {
-            v34 = ([v41 numEpochs] * v35);
+            numLocalIterations = ([v41 numEpochs] * v35);
           }
 
-          v33 = [(AMDCoreMLTrainer *)v46 computeAndGetMetrics:v41 programTrainer:v36 numIterationsToTrain:v34 error:v44 errorDomain:v43 dataProvider:v42 localTrainingStage:0];
+          v33 = [(AMDCoreMLTrainer *)selfCopy computeAndGetMetrics:v41 programTrainer:v36 numIterationsToTrain:numLocalIterations error:errorCopy errorDomain:v43 dataProvider:v42 localTrainingStage:0];
           if (v33)
           {
-            v32 = [(AMDCoreMLTrainer *)v46 computeAndGetMetrics:v41 programTrainer:v36 numIterationsToTrain:v34 error:v44 errorDomain:v43 dataProvider:v42 localTrainingStage:1];
+            v32 = [(AMDCoreMLTrainer *)selfCopy computeAndGetMetrics:v41 programTrainer:v36 numIterationsToTrain:numLocalIterations error:errorCopy errorDomain:v43 dataProvider:v42 localTrainingStage:1];
             if (v32)
             {
-              v31 = [v36 copyCurrentTrainingDelta];
-              v30 = [v31 flattenedModelUpdate];
-              v29 = [(AMDCoreMLTrainer *)v46 computeAndGetMetrics:v41 programTrainer:v36 numIterationsToTrain:v34 error:v44 errorDomain:v43 dataProvider:v42 localTrainingStage:2];
+              copyCurrentTrainingDelta = [v36 copyCurrentTrainingDelta];
+              flattenedModelUpdate = [copyCurrentTrainingDelta flattenedModelUpdate];
+              v29 = [(AMDCoreMLTrainer *)selfCopy computeAndGetMetrics:v41 programTrainer:v36 numIterationsToTrain:numLocalIterations error:errorCopy errorDomain:v43 dataProvider:v42 localTrainingStage:2];
               if (v29)
               {
                 v28 = [v33 objectForKey:LossBeforeEachLocalIteration];
@@ -76,16 +76,16 @@
                 [v25 removeObjectForKey:LossDuringEachLocalIteration];
                 [v25 removeObjectForKey:LossAfterEachLocalIteration];
                 v24 = +[NSMutableDictionary dictionary];
-                [v24 setObject:v30 forKey:ModelDeltas];
+                [v24 setObject:flattenedModelUpdate forKey:ModelDeltas];
                 v11 = v24;
-                v12 = [v41 weightNames];
+                weightNames = [v41 weightNames];
                 [v11 setObject:? forKey:?];
 
                 [v24 setObject:v28 forKey:LossBeforeEachLocalIteration];
                 [v24 setObject:v26 forKey:LossDuringEachLocalIteration];
                 [v24 setObject:v27 forKey:LossAfterEachLocalIteration];
                 [v24 setObject:v25 forKey:ModelMetrics];
-                v47 = [(AMDCoreMLTrainer *)v46 taskResultFromDict:v24];
+                v47 = [(AMDCoreMLTrainer *)selfCopy taskResultFromDict:v24];
                 v40 = 1;
                 objc_storeStrong(&v24, 0);
                 objc_storeStrong(&v25, 0);
@@ -101,8 +101,8 @@
               }
 
               objc_storeStrong(&v29, 0);
-              objc_storeStrong(&v30, 0);
-              objc_storeStrong(&v31, 0);
+              objc_storeStrong(&flattenedModelUpdate, 0);
+              objc_storeStrong(&copyCurrentTrainingDelta, 0);
             }
 
             else
@@ -128,7 +128,7 @@
           v7 = [NSError alloc];
           v15 = [v7 initWithDomain:v43 code:127 userInfo:0];
           v8 = v15;
-          *v44 = v15;
+          *errorCopy = v15;
           v47 = 0;
           v40 = 1;
         }
@@ -151,7 +151,7 @@
 
     objc_storeStrong(&v37, 0);
     objc_storeStrong(&v38, 0);
-    objc_storeStrong(&v39, 0);
+    objc_storeStrong(&uRLByDeletingLastPathComponent, 0);
   }
 
   else
@@ -169,32 +169,32 @@
   return v9;
 }
 
-- (id)computeAndGetMetrics:(id)a3 programTrainer:(id)a4 numIterationsToTrain:(int64_t)a5 error:(id *)a6 errorDomain:(id)a7 dataProvider:(id)a8 localTrainingStage:(unint64_t)a9
+- (id)computeAndGetMetrics:(id)metrics programTrainer:(id)trainer numIterationsToTrain:(int64_t)train error:(id *)error errorDomain:(id)domain dataProvider:(id)provider localTrainingStage:(unint64_t)stage
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, metrics);
   v77 = 0;
-  objc_storeStrong(&v77, a4);
-  v76 = a5;
-  v75 = a6;
+  objc_storeStrong(&v77, trainer);
+  trainCopy = train;
+  errorCopy = error;
   v74 = 0;
-  objc_storeStrong(&v74, a7);
+  objc_storeStrong(&v74, domain);
   v73 = 0;
-  objc_storeStrong(&v73, a8);
-  v72 = a9;
+  objc_storeStrong(&v73, provider);
+  stageCopy = stage;
   v71 = 0;
   v70 = 0;
-  if (a9 == 1)
+  if (stage == 1)
   {
     objc_storeStrong(&v71, LossDuringEachLocalIteration);
     objc_storeStrong(&v70, DuringIterationMetricsSuffix);
   }
 
-  else if (v72)
+  else if (stageCopy)
   {
-    if (v72 == 2)
+    if (stageCopy == 2)
     {
       objc_storeStrong(&v71, LossAfterEachLocalIteration);
       objc_storeStrong(&v70, AfterIterationMetricsSuffix);
@@ -208,29 +208,29 @@
   }
 
   v69 = [[NSMutableDictionary alloc] initWithCapacity:0];
-  for (i = 0; i < v76; ++i)
+  for (i = 0; i < trainCopy; ++i)
   {
     v51 = v73;
-    v9 = [location[0] batchSize];
-    v67 = [v51 fetchData:v9 error:v75 errorDomain:v74];
+    batchSize = [location[0] batchSize];
+    v67 = [v51 fetchData:batchSize error:errorCopy errorDomain:v74];
     if (v67)
     {
-      v50 = [location[0] learningRateSchedule];
+      learningRateSchedule = [location[0] learningRateSchedule];
 
-      if (v50)
+      if (learningRateSchedule)
       {
-        v49 = [location[0] learningRateSchedule];
-        v48 = [v49 objectAtIndexedSubscript:i];
+        learningRateSchedule2 = [location[0] learningRateSchedule];
+        v48 = [learningRateSchedule2 objectAtIndexedSubscript:i];
         [v48 doubleValue];
         [v77 setLearningRate:?];
       }
 
       v65 = 0;
-      if (v72 == 1)
+      if (stageCopy == 1)
       {
         v45 = v77;
         v44 = v67;
-        v47 = [location[0] metricsNames];
+        metricsNames = [location[0] metricsNames];
         v46 = [NSSet setWithArray:?];
         v10 = [v45 trainUsingTrainingData:v44 evaluationMetricNames:? error:?];
         v11 = v65;
@@ -241,7 +241,7 @@
       {
         v41 = v77;
         v40 = v67;
-        v43 = [location[0] metricsNames];
+        metricsNames2 = [location[0] metricsNames];
         v42 = [NSSet setWithArray:?];
         v12 = [v41 evaluateUsingTestData:v40 evaluationMetricNames:? error:?];
         v13 = v65;
@@ -267,12 +267,12 @@
         v36 = [NSNumber numberWithDouble:?];
         [v35 addObject:?];
 
-        v37 = [v65 evaluationMetrics];
-        v63 = [v37 featuresAtIndex:0];
+        evaluationMetrics = [v65 evaluationMetrics];
+        v63 = [evaluationMetrics featuresAtIndex:0];
 
         memset(__b, 0, sizeof(__b));
-        v38 = [location[0] metricsNames];
-        v39 = [v38 countByEnumeratingWithState:__b objects:v80 count:16];
+        metricsNames3 = [location[0] metricsNames];
+        v39 = [metricsNames3 countByEnumeratingWithState:__b objects:v80 count:16];
         if (v39)
         {
           v32 = *__b[2];
@@ -283,15 +283,15 @@
             v31 = v33;
             if (*__b[2] != v32)
             {
-              objc_enumerationMutation(v38);
+              objc_enumerationMutation(metricsNames3);
             }
 
             v62 = *(__b[1] + 8 * v33);
             v60 = [v63 featureValueForName:v62];
             if (v60)
             {
-              v28 = [v60 multiArrayValue];
-              v27 = [v28 objectAtIndexedSubscript:0];
+              multiArrayValue = [v60 multiArrayValue];
+              v27 = [multiArrayValue objectAtIndexedSubscript:0];
               [v27 floatValue];
               v29 = v19;
 
@@ -322,7 +322,7 @@
               v17 = [NSError alloc];
               v30 = [v17 initWithDomain:v74 code:61 userInfo:0];
               v18 = v30;
-              *v75 = v30;
+              *errorCopy = v30;
               v79 = 0;
               v66 = 1;
             }
@@ -337,7 +337,7 @@
             if (v31 + 1 >= v34)
             {
               v33 = 0;
-              v34 = [v38 countByEnumeratingWithState:__b objects:v80 count:16];
+              v34 = [metricsNames3 countByEnumeratingWithState:__b objects:v80 count:16];
               if (!v34)
               {
                 goto LABEL_32;
@@ -398,12 +398,12 @@ LABEL_40:
   return v23;
 }
 
-- (id)taskResultFromDict:(id)a3
+- (id)taskResultFromDict:(id)dict
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dict);
   v7 = [location[0] mutableCopy];
   v6 = [v7 objectForKeyedSubscript:ModelDeltas];
   [v7 removeObjectForKey:ModelDeltas];

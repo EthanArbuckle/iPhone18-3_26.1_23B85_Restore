@@ -1,21 +1,21 @@
 @interface EKCalendarColorEditItem
-- (BOOL)configureWithCalendar:(id)a3;
-- (BOOL)saveStateToCalendar:(id)a3;
+- (BOOL)configureWithCalendar:(id)calendar;
+- (BOOL)saveStateToCalendar:(id)calendar;
 - (EKCalendarColorEditItemDelegate)colorEditItemDelegate;
-- (id)_cellForSymbolicColor:(id)a3;
-- (id)_cellWithText:(id)a3;
-- (id)_checkmarkCellForCustomColor:(id)a3;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (id)_cellForSymbolicColor:(id)color;
+- (id)_cellWithText:(id)text;
+- (id)_checkmarkCellForCustomColor:(id)color;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (id)cells;
 - (id)headerTitle;
 - (unint64_t)numberOfSubitems;
 - (void)_setInitialColorOnCalendar;
-- (void)calendarEditor:(id)a3 didSelectSubitem:(unint64_t)a4;
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5;
-- (void)editItemSelectedColor:(id)a3 symbolicName:(id)a4;
+- (void)calendarEditor:(id)editor didSelectSubitem:(unint64_t)subitem;
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously;
+- (void)editItemSelectedColor:(id)color symbolicName:(id)name;
 - (void)reset;
-- (void)setCalendar:(id)a3 store:(id)a4;
-- (void)setLayoutInline:(BOOL)a3;
+- (void)setCalendar:(id)calendar store:(id)store;
+- (void)setLayoutInline:(BOOL)inline;
 @end
 
 @implementation EKCalendarColorEditItem
@@ -26,34 +26,34 @@
   self->_cells = 0;
 }
 
-- (BOOL)configureWithCalendar:(id)a3
+- (BOOL)configureWithCalendar:(id)calendar
 {
   v6.receiver = self;
   v6.super_class = EKCalendarColorEditItem;
-  v3 = a3;
-  [(EKCalendarEditItem *)&v6 configureWithCalendar:v3];
-  v4 = [v3 source];
+  calendarCopy = calendar;
+  [(EKCalendarEditItem *)&v6 configureWithCalendar:calendarCopy];
+  source = [calendarCopy source];
 
-  LOBYTE(v3) = [v4 isFacebookSource];
-  return v3 ^ 1;
+  LOBYTE(calendarCopy) = [source isFacebookSource];
+  return calendarCopy ^ 1;
 }
 
-- (void)setLayoutInline:(BOOL)a3
+- (void)setLayoutInline:(BOOL)inline
 {
-  self->_layoutInline = a3;
+  self->_layoutInline = inline;
   cells = self->_cells;
   self->_cells = 0;
 }
 
-- (id)_cellWithText:(id)a3
+- (id)_cellWithText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v4 = [[EKUITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
-  v5 = [(EKUITableViewCell *)v4 textLabel];
-  [v5 setText:v3];
+  textLabel = [(EKUITableViewCell *)v4 textLabel];
+  [textLabel setText:textCopy];
 
-  v6 = [(EKUITableViewCell *)v4 textLabel];
-  [v6 setAccessibilityIdentifier:@"calendar-current-selected-color"];
+  textLabel2 = [(EKUITableViewCell *)v4 textLabel];
+  [textLabel2 setAccessibilityIdentifier:@"calendar-current-selected-color"];
 
   [(EKUITableViewCell *)v4 setSelectionStyle:1];
   [(EKUITableViewCell *)v4 setAccessoryType:0];
@@ -62,19 +62,19 @@
   return v4;
 }
 
-- (id)_checkmarkCellForCustomColor:(id)a3
+- (id)_checkmarkCellForCustomColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = EventKitUIBundle();
   v6 = [v5 localizedStringForKey:@"Custom…" value:&stru_1F4EF6790 table:0];
 
   v7 = [(EKCalendarColorEditItem *)self _cellWithText:v6];
-  v8 = [v7 textLabel];
-  v9 = [v8 font];
-  v10 = ScaledCalendarColorChooserDotImageForColor(v4, v9);
+  textLabel = [v7 textLabel];
+  font = [textLabel font];
+  v10 = ScaledCalendarColorChooserDotImageForColor(colorCopy, font);
 
-  v11 = [v7 imageView];
-  [v11 setImage:v10];
+  imageView = [v7 imageView];
+  [imageView setImage:v10];
 
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"calendar-color-cell-custom"];
   [v7 setAccessibilityIdentifier:v12];
@@ -82,23 +82,23 @@
   return v7;
 }
 
-- (id)_cellForSymbolicColor:(id)a3
+- (id)_cellForSymbolicColor:(id)color
 {
   store = self->super._store;
-  v5 = a3;
-  v6 = [(EKEventStore *)store localizedStringForSymbolicColorName:v5];
+  colorCopy = color;
+  v6 = [(EKEventStore *)store localizedStringForSymbolicColorName:colorCopy];
   v7 = [(EKCalendarColorEditItem *)self _cellWithText:v6];
 
-  v8 = [MEMORY[0x1E6966990] displayColorForSymbolicName:v5];
-  v9 = [v7 textLabel];
-  v10 = [v9 font];
-  v11 = ScaledCalendarColorChooserDotImageForColor(v8, v10);
-  v12 = [v7 imageView];
-  [v12 setImage:v11];
+  v8 = [MEMORY[0x1E6966990] displayColorForSymbolicName:colorCopy];
+  textLabel = [v7 textLabel];
+  font = [textLabel font];
+  v11 = ScaledCalendarColorChooserDotImageForColor(v8, font);
+  imageView = [v7 imageView];
+  [imageView setImage:v11];
 
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"calendar-color-cell-%@", v5];
+  colorCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"calendar-color-cell-%@", colorCopy];
 
-  [v7 setAccessibilityIdentifier:v13];
+  [v7 setAccessibilityIdentifier:colorCopy];
 
   return v7;
 }
@@ -128,16 +128,16 @@
         v8 = [(EKEventStore *)self->super._store colorForCalendar:self->super._calendar];
       }
 
-      v9 = [(EKEventStore *)self->super._store colorNamesInRainbowOrder];
-      v10 = [(EKEventStore *)self->super._store defaultCalendarColorsInRainbowOrder];
-      if ([v9 count])
+      colorNamesInRainbowOrder = [(EKEventStore *)self->super._store colorNamesInRainbowOrder];
+      defaultCalendarColorsInRainbowOrder = [(EKEventStore *)self->super._store defaultCalendarColorsInRainbowOrder];
+      if ([colorNamesInRainbowOrder count])
       {
         v11 = 0;
         v12 = 0;
         do
         {
-          v13 = [v10 objectAtIndex:v11];
-          v14 = [v9 objectAtIndex:v11];
+          v13 = [defaultCalendarColorsInRainbowOrder objectAtIndex:v11];
+          v14 = [colorNamesInRainbowOrder objectAtIndex:v11];
           v15 = [(EKCalendarColorEditItem *)self _cellForSymbolicColor:v14];
           if ([v13 isEqual:v8])
           {
@@ -151,7 +151,7 @@
           ++v11;
         }
 
-        while ([v9 count] > v11);
+        while ([colorNamesInRainbowOrder count] > v11);
       }
 
       else
@@ -169,8 +169,8 @@
         self->_customColorPicker = v23;
       }
 
-      v25 = [(UIColorPickerViewController *)self->_customColorPicker selectedColor];
-      v26 = [(EKCalendarColorEditItem *)self _checkmarkCellForCustomColor:v25];
+      selectedColor = [(UIColorPickerViewController *)self->_customColorPicker selectedColor];
+      v26 = [(EKCalendarColorEditItem *)self _checkmarkCellForCustomColor:selectedColor];
 
       if (v12)
       {
@@ -205,15 +205,15 @@
       }
 
       v19 = [(EKEventStore *)self->super._store stringForColor:v8];
-      v9 = [(EKCalendarColorEditItem *)self _cellWithText:v19];
+      colorNamesInRainbowOrder = [(EKCalendarColorEditItem *)self _cellWithText:v19];
 
       v20 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
       v21 = ScaledCalendarColorChooserDotImageForColor(v8, v20);
-      v22 = [v9 imageView];
-      [v22 setImage:v21];
+      imageView = [colorNamesInRainbowOrder imageView];
+      [imageView setImage:v21];
 
-      [v9 setAccessoryType:1];
-      [(NSMutableArray *)self->_cells addObject:v9];
+      [colorNamesInRainbowOrder setAccessoryType:1];
+      [(NSMutableArray *)self->_cells addObject:colorNamesInRainbowOrder];
     }
   }
 
@@ -225,11 +225,11 @@ LABEL_24:
 
 - (void)_setInitialColorOnCalendar
 {
-  v3 = [(EKEventStore *)self->super._store copyCGColorForNewCalendar];
-  v5 = [MEMORY[0x1E69DC888] colorWithCGColor:v3];
-  if (v3)
+  copyCGColorForNewCalendar = [(EKEventStore *)self->super._store copyCGColorForNewCalendar];
+  v5 = [MEMORY[0x1E69DC888] colorWithCGColor:copyCGColorForNewCalendar];
+  if (copyCGColorForNewCalendar)
   {
-    CFRelease(v3);
+    CFRelease(copyCGColorForNewCalendar);
   }
 
   v4 = [(EKEventStore *)self->super._store symbolicNameForColor:v5];
@@ -239,19 +239,19 @@ LABEL_24:
   }
 }
 
-- (void)setCalendar:(id)a3 store:(id)a4
+- (void)setCalendar:(id)calendar store:(id)store
 {
   v6.receiver = self;
   v6.super_class = EKCalendarColorEditItem;
-  [(EKCalendarEditItem *)&v6 setCalendar:a3 store:a4];
+  [(EKCalendarEditItem *)&v6 setCalendar:calendar store:store];
   cells = self->_cells;
   self->_cells = 0;
 }
 
 - (unint64_t)numberOfSubitems
 {
-  v2 = [(EKCalendarColorEditItem *)self cells];
-  v3 = [v2 count];
+  cells = [(EKCalendarColorEditItem *)self cells];
+  v3 = [cells count];
 
   return v3;
 }
@@ -264,60 +264,60 @@ LABEL_24:
   return v3;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
-  v4 = [(EKCalendarColorEditItem *)self cells];
-  v5 = [v4 objectAtIndex:a3];
+  cells = [(EKCalendarColorEditItem *)self cells];
+  v5 = [cells objectAtIndex:index];
 
   return v5;
 }
 
-- (void)calendarEditor:(id)a3 didSelectSubitem:(unint64_t)a4
+- (void)calendarEditor:(id)editor didSelectSubitem:(unint64_t)subitem
 {
-  v22 = a3;
+  editorCopy = editor;
   if (self->_layoutInline)
   {
-    v6 = [(EKCalendarColorEditItem *)self cells];
-    v7 = [v6 objectAtIndex:self->_checkedRow];
+    cells = [(EKCalendarColorEditItem *)self cells];
+    delegate4 = [cells objectAtIndex:self->_checkedRow];
 
-    [v7 setAccessoryType:0];
-    v8 = [(EKCalendarColorEditItem *)self cells];
-    v9 = [v8 objectAtIndex:a4];
+    [delegate4 setAccessoryType:0];
+    cells2 = [(EKCalendarColorEditItem *)self cells];
+    owningNavigationController3 = [cells2 objectAtIndex:subitem];
 
-    [v9 setAccessoryType:3];
-    self->_checkedRow = a4;
-    if ([(EKCalendarColorEditItem *)self lastSubitemIndex]== a4)
+    [owningNavigationController3 setAccessoryType:3];
+    self->_checkedRow = subitem;
+    if ([(EKCalendarColorEditItem *)self lastSubitemIndex]== subitem)
     {
-      v10 = [(EKCalendarEditItem *)self delegate];
-      v11 = [v10 owningNavigationController];
-      v12 = [v11 presentedViewController];
+      delegate = [(EKCalendarEditItem *)self delegate];
+      owningNavigationController = [delegate owningNavigationController];
+      presentedViewController = [owningNavigationController presentedViewController];
 
-      if (v12)
+      if (presentedViewController)
       {
 LABEL_10:
         [(EKCalendarColorEditItem *)self saveStateToCalendar:self->super._calendar];
         goto LABEL_11;
       }
 
-      v13 = [(EKCalendarColorEditItem *)self colorEditItemDelegate];
-      v14 = [(UIColorPickerViewController *)self->_customColorPicker selectedColor];
-      [v13 editItemSelectedColor:v14 symbolicName:0];
+      colorEditItemDelegate = [(EKCalendarColorEditItem *)self colorEditItemDelegate];
+      selectedColor = [(UIColorPickerViewController *)self->_customColorPicker selectedColor];
+      [colorEditItemDelegate editItemSelectedColor:selectedColor symbolicName:0];
 
       [(UIColorPickerViewController *)self->_customColorPicker setModalPresentationStyle:7];
-      v15 = [(UIColorPickerViewController *)self->_customColorPicker popoverPresentationController];
-      [v15 setSourceView:v9];
-      [v15 setPermittedArrowDirections:12];
-      v16 = [(EKCalendarEditItem *)self delegate];
-      v17 = [v16 owningNavigationController];
-      [v17 presentViewController:self->_customColorPicker animated:1 completion:0];
+      popoverPresentationController = [(UIColorPickerViewController *)self->_customColorPicker popoverPresentationController];
+      [popoverPresentationController setSourceView:owningNavigationController3];
+      [popoverPresentationController setPermittedArrowDirections:12];
+      delegate2 = [(EKCalendarEditItem *)self delegate];
+      owningNavigationController2 = [delegate2 owningNavigationController];
+      [owningNavigationController2 presentViewController:self->_customColorPicker animated:1 completion:0];
     }
 
     else
     {
-      v15 = [(EKEventStore *)self->super._store colorNamesInRainbowOrder];
-      v16 = [v15 objectAtIndexedSubscript:self->_checkedRow];
-      v17 = [(EKCalendarColorEditItem *)self colorEditItemDelegate];
-      [v17 editItemSelectedColor:0 symbolicName:v16];
+      popoverPresentationController = [(EKEventStore *)self->super._store colorNamesInRainbowOrder];
+      delegate2 = [popoverPresentationController objectAtIndexedSubscript:self->_checkedRow];
+      owningNavigationController2 = [(EKCalendarColorEditItem *)self colorEditItemDelegate];
+      [owningNavigationController2 editItemSelectedColor:0 symbolicName:delegate2];
     }
 
     goto LABEL_10;
@@ -328,8 +328,8 @@ LABEL_10:
     v18 = objc_alloc_init(EKCalendarColorEditItem);
     [(EKCalendarColorEditItem *)v18 setLayoutInline:1];
     [(EKCalendarColorEditItem *)v18 setCalendar:self->super._calendar store:self->super._store];
-    v19 = [(EKCalendarEditItem *)self delegate];
-    [(EKCalendarEditItem *)v18 setDelegate:v19];
+    delegate3 = [(EKCalendarEditItem *)self delegate];
+    [(EKCalendarEditItem *)v18 setDelegate:delegate3];
 
     [(EKCalendarColorEditItem *)v18 setColorEditItemDelegate:self];
     v20 = objc_alloc_init(EKCalendarColorViewController);
@@ -339,113 +339,113 @@ LABEL_10:
     [(EKCalendarColorViewController *)self->_layoutInlineViewController setEditItem:v18];
   }
 
-  v7 = [(EKCalendarEditItem *)self delegate];
-  v9 = [v7 owningNavigationController];
-  [v9 pushViewController:self->_layoutInlineViewController animated:1];
+  delegate4 = [(EKCalendarEditItem *)self delegate];
+  owningNavigationController3 = [delegate4 owningNavigationController];
+  [owningNavigationController3 pushViewController:self->_layoutInlineViewController animated:1];
 LABEL_11:
 }
 
-- (BOOL)saveStateToCalendar:(id)a3
+- (BOOL)saveStateToCalendar:(id)calendar
 {
-  v4 = a3;
+  calendarCopy = calendar;
   if (self->_layoutInline)
   {
-    v5 = [(EKEventStore *)self->super._store colorNamesInRainbowOrder];
+    colorNamesInRainbowOrder = [(EKEventStore *)self->super._store colorNamesInRainbowOrder];
     checkedRow = self->_checkedRow;
-    if (checkedRow < [v5 count])
+    if (checkedRow < [colorNamesInRainbowOrder count])
     {
-      v7 = [v5 objectAtIndexedSubscript:self->_checkedRow];
-      v8 = [v4 symbolicColorName];
-      v9 = [v8 isEqualToString:v7];
+      delegate2 = [colorNamesInRainbowOrder objectAtIndexedSubscript:self->_checkedRow];
+      symbolicColorName = [calendarCopy symbolicColorName];
+      v9 = [symbolicColorName isEqualToString:delegate2];
 
       if ((v9 & 1) == 0)
       {
-        v10 = [v5 objectAtIndexedSubscript:self->_checkedRow];
-        [v4 setSymbolicColorName:v10];
+        v10 = [colorNamesInRainbowOrder objectAtIndexedSubscript:self->_checkedRow];
+        [calendarCopy setSymbolicColorName:v10];
 
-        v11 = [(EKCalendarEditItem *)self delegate];
-        [v11 calendarItemStartedEditing:self];
+        delegate = [(EKCalendarEditItem *)self delegate];
+        [delegate calendarItemStartedEditing:self];
       }
 
       goto LABEL_8;
     }
 
-    v12 = [(UIColorPickerViewController *)self->_customColorPicker selectedColor];
-    v13 = [v12 CGColor];
+    selectedColor = [(UIColorPickerViewController *)self->_customColorPicker selectedColor];
+    cGColor = [selectedColor CGColor];
 
-    if (!CGColorEqualToColor([v4 CGColor], v13))
+    if (!CGColorEqualToColor([calendarCopy CGColor], cGColor))
     {
-      [v4 setCGColor:v13];
-      v7 = [(EKCalendarEditItem *)self delegate];
-      [v7 calendarItemStartedEditing:self];
+      [calendarCopy setCGColor:cGColor];
+      delegate2 = [(EKCalendarEditItem *)self delegate];
+      [delegate2 calendarItemStartedEditing:self];
 LABEL_8:
     }
   }
 
   else
   {
-    v5 = [(EKCalendarColorViewController *)self->_layoutInlineViewController editItem];
-    [v5 saveStateToCalendar:v4];
+    colorNamesInRainbowOrder = [(EKCalendarColorViewController *)self->_layoutInlineViewController editItem];
+    [colorNamesInRainbowOrder saveStateToCalendar:calendarCopy];
   }
 
   return 1;
 }
 
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously
 {
-  v6 = a4;
+  colorCopy = color;
   v12 = [(EKCalendarColorEditItem *)self cellForSubitemAtIndex:[(EKCalendarColorEditItem *)self lastSubitemIndex]];
-  v7 = [v12 textLabel];
-  v8 = [v7 font];
-  v9 = ScaledCalendarColorChooserDotImageForColor(v6, v8);
-  v10 = [v12 imageView];
-  [v10 setImage:v9];
+  textLabel = [v12 textLabel];
+  font = [textLabel font];
+  v9 = ScaledCalendarColorChooserDotImageForColor(colorCopy, font);
+  imageView = [v12 imageView];
+  [imageView setImage:v9];
 
-  v11 = [(EKCalendarColorEditItem *)self colorEditItemDelegate];
-  [v11 editItemSelectedColor:v6 symbolicName:0];
+  colorEditItemDelegate = [(EKCalendarColorEditItem *)self colorEditItemDelegate];
+  [colorEditItemDelegate editItemSelectedColor:colorCopy symbolicName:0];
 }
 
-- (void)editItemSelectedColor:(id)a3 symbolicName:(id)a4
+- (void)editItemSelectedColor:(id)color symbolicName:(id)name
 {
-  v18 = a3;
-  v6 = a4;
+  colorCopy = color;
+  nameCopy = name;
   if (!self->_layoutInline)
   {
-    v7 = [(EKCalendarColorEditItem *)self cells];
-    v8 = [v7 firstObject];
+    cells = [(EKCalendarColorEditItem *)self cells];
+    firstObject = [cells firstObject];
 
-    if (v6)
+    if (nameCopy)
     {
-      v9 = [(EKEventStore *)self->super._store localizedStringForSymbolicColorName:v6];
-      v10 = [v8 textLabel];
-      [v10 setText:v9];
+      v9 = [(EKEventStore *)self->super._store localizedStringForSymbolicColorName:nameCopy];
+      textLabel = [firstObject textLabel];
+      [textLabel setText:v9];
 
-      v11 = [MEMORY[0x1E6966990] displayColorForSymbolicName:v6];
-      v12 = [v8 textLabel];
-      v13 = [v12 font];
-      v14 = ScaledCalendarColorChooserDotImageForColor(v11, v13);
-      v15 = [v8 imageView];
-      [v15 setImage:v14];
+      textLabel4 = [MEMORY[0x1E6966990] displayColorForSymbolicName:nameCopy];
+      textLabel2 = [firstObject textLabel];
+      font = [textLabel2 font];
+      imageView2 = ScaledCalendarColorChooserDotImageForColor(textLabel4, font);
+      imageView = [firstObject imageView];
+      [imageView setImage:imageView2];
     }
 
     else
     {
-      if (!v18)
+      if (!colorCopy)
       {
 LABEL_7:
 
         goto LABEL_8;
       }
 
-      v16 = [(EKEventStore *)self->super._store stringForColor:v18];
-      v17 = [v8 textLabel];
-      [v17 setText:v16];
+      v16 = [(EKEventStore *)self->super._store stringForColor:colorCopy];
+      textLabel3 = [firstObject textLabel];
+      [textLabel3 setText:v16];
 
-      v11 = [v8 textLabel];
-      v12 = [v11 font];
-      v13 = ScaledCalendarColorChooserDotImageForColor(v18, v12);
-      v14 = [v8 imageView];
-      [v14 setImage:v13];
+      textLabel4 = [firstObject textLabel];
+      textLabel2 = [textLabel4 font];
+      font = ScaledCalendarColorChooserDotImageForColor(colorCopy, textLabel2);
+      imageView2 = [firstObject imageView];
+      [imageView2 setImage:font];
     }
 
     goto LABEL_7;

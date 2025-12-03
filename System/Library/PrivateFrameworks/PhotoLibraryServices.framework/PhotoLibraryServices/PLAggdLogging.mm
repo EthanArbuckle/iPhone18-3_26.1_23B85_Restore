@@ -1,38 +1,38 @@
 @interface PLAggdLogging
-+ (id)_analyticsDescriptionForAssetCount:(int64_t)a3;
-+ (id)_analyticsDescriptionForMediaAge:(double)a3;
-+ (id)_fetchPersistentHistoryStatsWithLibraryPathManager:(id)a3;
-+ (void)_addDistributionStatisticsOfValues:(id)a3 withPrefix:(id)a4 toDictionary:(id)a5 formatter:(id)a6;
-+ (void)_addFileSystemStatsToLibrarySummaryEvent:(id)a3 withLibraryPathManager:(id)a4;
-+ (void)_addLibrarySummaryDataToCollectionIfPresent:(id)a3 fromCPLEventData:(id)a4 forKey:(id)a5;
-+ (void)_addOrphanedSceneClassificationsCountToLibrarySummaryEvent:(id)a3 withContext:(id)a4;
-+ (void)_addPersistentHistoryStatsToLibrarySummaryEvent:(id)a3 withLibraryPathManager:(id)a4;
-+ (void)_addPrefix:(id)a3 toKeysInDictionary:(id)a4 inPrefixedDictionary:(id)a5;
-+ (void)_configureEnumeratorForLibrarySummaryLogging:(id)a3 cloudPhotoLibraryEnabled:(BOOL)a4 dataForCA:(id)a5 libraryServicesManager:(id)a6;
-+ (void)_configureEnumeratorForSyndicationLibrarySummaryLogging:(id)a3 dataForCA:(id)a4;
-+ (void)configureEnumeratorForHyperionLocalResourcesLogging:(id)a3 cloudPhotoLibraryEnabled:(BOOL)a4 dataForCA:(id)a5 dataForCK:(id)a6;
-+ (void)configureEnumeratorForLibrarySizeLogging:(id)a3 cloudPhotoLibraryEnabled:(BOOL)a4 dataForCA:(id)a5 dataForCK:(id)a6;
-+ (void)configureEnumeratorForLibrarySummaryForLibraryEnumerator:(id)a3 withSyndicationLibraryEnumerator:(id)a4 cloudPhotoLibraryEnabled:(BOOL)a5 dataForCA:(id)a6 libraryServicesManager:(id)a7;
-+ (void)performCMMSummaryLogging:(id)a3 cloudPhotoLibraryEnabled:(BOOL)a4;
-+ (void)performLibraryStatisticsLoggingForLibrary:(id)a3 completionHandler:(id)a4;
-+ (void)performMomentsStatisticsLogging:(id)a3;
-+ (void)performSlideshowProjectStatisticsLogging:(id)a3;
++ (id)_analyticsDescriptionForAssetCount:(int64_t)count;
++ (id)_analyticsDescriptionForMediaAge:(double)age;
++ (id)_fetchPersistentHistoryStatsWithLibraryPathManager:(id)manager;
++ (void)_addDistributionStatisticsOfValues:(id)values withPrefix:(id)prefix toDictionary:(id)dictionary formatter:(id)formatter;
++ (void)_addFileSystemStatsToLibrarySummaryEvent:(id)event withLibraryPathManager:(id)manager;
++ (void)_addLibrarySummaryDataToCollectionIfPresent:(id)present fromCPLEventData:(id)data forKey:(id)key;
++ (void)_addOrphanedSceneClassificationsCountToLibrarySummaryEvent:(id)event withContext:(id)context;
++ (void)_addPersistentHistoryStatsToLibrarySummaryEvent:(id)event withLibraryPathManager:(id)manager;
++ (void)_addPrefix:(id)prefix toKeysInDictionary:(id)dictionary inPrefixedDictionary:(id)prefixedDictionary;
++ (void)_configureEnumeratorForLibrarySummaryLogging:(id)logging cloudPhotoLibraryEnabled:(BOOL)enabled dataForCA:(id)a libraryServicesManager:(id)manager;
++ (void)_configureEnumeratorForSyndicationLibrarySummaryLogging:(id)logging dataForCA:(id)a;
++ (void)configureEnumeratorForHyperionLocalResourcesLogging:(id)logging cloudPhotoLibraryEnabled:(BOOL)enabled dataForCA:(id)a dataForCK:(id)k;
++ (void)configureEnumeratorForLibrarySizeLogging:(id)logging cloudPhotoLibraryEnabled:(BOOL)enabled dataForCA:(id)a dataForCK:(id)k;
++ (void)configureEnumeratorForLibrarySummaryForLibraryEnumerator:(id)enumerator withSyndicationLibraryEnumerator:(id)libraryEnumerator cloudPhotoLibraryEnabled:(BOOL)enabled dataForCA:(id)a libraryServicesManager:(id)manager;
++ (void)performCMMSummaryLogging:(id)logging cloudPhotoLibraryEnabled:(BOOL)enabled;
++ (void)performLibraryStatisticsLoggingForLibrary:(id)library completionHandler:(id)handler;
++ (void)performMomentsStatisticsLogging:(id)logging;
++ (void)performSlideshowProjectStatisticsLogging:(id)logging;
 @end
 
 @implementation PLAggdLogging
 
-+ (void)_addOrphanedSceneClassificationsCountToLibrarySummaryEvent:(id)a3 withContext:(id)a4
++ (void)_addOrphanedSceneClassificationsCountToLibrarySummaryEvent:(id)event withContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  contextCopy = context;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __88__PLAggdLogging__addOrphanedSceneClassificationsCountToLibrarySummaryEvent_withContext___block_invoke;
   v9[3] = &unk_1E7578848;
-  v10 = v6;
-  v11 = v5;
-  v7 = v5;
-  v8 = v6;
+  v10 = contextCopy;
+  v11 = eventCopy;
+  v7 = eventCopy;
+  v8 = contextCopy;
   [v8 performBlockAndWait:v9];
 }
 
@@ -46,13 +46,13 @@ void __88__PLAggdLogging__addOrphanedSceneClassificationsCountToLibrarySummaryEv
   }
 }
 
-+ (void)_addFileSystemStatsToLibrarySummaryEvent:(id)a3 withLibraryPathManager:(id)a4
++ (void)_addFileSystemStatsToLibrarySummaryEvent:(id)event withLibraryPathManager:(id)manager
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  eventCopy = event;
   v6 = MEMORY[0x1E69BF228];
-  v7 = [a4 libraryURL];
-  v8 = [v6 capabilitiesWithURL:v7];
+  libraryURL = [manager libraryURL];
+  v8 = [v6 capabilitiesWithURL:libraryURL];
 
   if (v8)
   {
@@ -64,27 +64,27 @@ void __88__PLAggdLogging__addOrphanedSceneClassificationsCountToLibrarySummaryEv
     v13[1] = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
-    [v5 addEntriesFromDictionary:v11];
+    [eventCopy addEntriesFromDictionary:v11];
   }
 }
 
-+ (id)_fetchPersistentHistoryStatsWithLibraryPathManager:(id)a3
++ (id)_fetchPersistentHistoryStatsWithLibraryPathManager:(id)manager
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 photosDatabasePath];
+  managerCopy = manager;
+  photosDatabasePath = [managerCopy photosDatabasePath];
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = photosDatabasePath;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEBUG, "Gathering persistent history statistics from databasePath: %@", &v13, 0xCu);
   }
 
   v6 = MEMORY[0x1E69BF2D8];
-  v7 = [v3 capabilities];
+  capabilities = [managerCopy capabilities];
 
-  v8 = [v6 openDatabaseAtPath:v4 capabilities:v7];
+  v8 = [v6 openDatabaseAtPath:photosDatabasePath capabilities:capabilities];
 
   if (v8)
   {
@@ -95,7 +95,7 @@ void __88__PLAggdLogging__addOrphanedSceneClassificationsCountToLibrarySummaryEv
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v13 = 138412290;
-        v14 = v4;
+        v14 = photosDatabasePath;
         _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Unable to retrieve history stats from database at path: %@", &v13, 0xCu);
       }
     }
@@ -109,7 +109,7 @@ void __88__PLAggdLogging__addOrphanedSceneClassificationsCountToLibrarySummaryEv
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = photosDatabasePath;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "Unable to open database at path: %@", &v13, 0xCu);
     }
 
@@ -119,11 +119,11 @@ void __88__PLAggdLogging__addOrphanedSceneClassificationsCountToLibrarySummaryEv
   return v9;
 }
 
-+ (void)_addPersistentHistoryStatsToLibrarySummaryEvent:(id)a3 withLibraryPathManager:(id)a4
++ (void)_addPersistentHistoryStatsToLibrarySummaryEvent:(id)event withLibraryPathManager:(id)manager
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 _fetchPersistentHistoryStatsWithLibraryPathManager:a4];
+  eventCopy = event;
+  v7 = [self _fetchPersistentHistoryStatsWithLibraryPathManager:manager];
   v8 = v7;
   if (v7)
   {
@@ -145,24 +145,24 @@ void __88__PLAggdLogging__addOrphanedSceneClassificationsCountToLibrarySummaryEv
     v17[3] = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:4];
 
-    [v6 addEntriesFromDictionary:v15];
+    [eventCopy addEntriesFromDictionary:v15];
   }
 }
 
-+ (void)performLibraryStatisticsLoggingForLibrary:(id)a3 completionHandler:(id)a4
++ (void)performLibraryStatisticsLoggingForLibrary:(id)library completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__PLAggdLogging_performLibraryStatisticsLoggingForLibrary_completionHandler___block_invoke;
   aBlock[3] = &unk_1E7572AF0;
-  v27 = a1;
-  v8 = v6;
+  selfCopy = self;
+  v8 = libraryCopy;
   v26 = v8;
   v9 = _Block_copy(aBlock);
   v10 = v9;
-  if (v7)
+  if (handlerCopy)
   {
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -177,7 +177,7 @@ void __88__PLAggdLogging__addOrphanedSceneClassificationsCountToLibrarySummaryEv
     v17[1] = 3221225472;
     v17[2] = __77__PLAggdLogging_performLibraryStatisticsLoggingForLibrary_completionHandler___block_invoke_3;
     v17[3] = &unk_1E7576AA0;
-    v18 = v7;
+    v18 = handlerCopy;
     v14 = v10;
     [v13 performBlock:v19 completionHandler:v17];
   }
@@ -213,11 +213,11 @@ void __77__PLAggdLogging_performLibraryStatisticsLoggingForLibrary_completionHan
   [*(a1 + 40) performCMMSummaryLogging:v3 cloudPhotoLibraryEnabled:{objc_msgSend(*(a1 + 32), "isCloudPhotoLibraryEnabled")}];
 }
 
-+ (void)performCMMSummaryLogging:(id)a3 cloudPhotoLibraryEnabled:(BOOL)a4
++ (void)performCMMSummaryLogging:(id)logging cloudPhotoLibraryEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v70 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  loggingCopy = logging;
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLMomentShare entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -225,7 +225,7 @@ void __77__PLAggdLogging_performLibraryStatisticsLoggingForLibrary_completionHan
   [v9 setResultType:2];
   [v9 setPropertiesToFetch:&unk_1F0FBFF88];
   v60 = 0;
-  v10 = [v6 executeFetchRequest:v9 error:&v60];
+  v10 = [loggingCopy executeFetchRequest:v9 error:&v60];
   v11 = v60;
   if (v11 || !v10)
   {
@@ -248,7 +248,7 @@ void __77__PLAggdLogging_performLibraryStatisticsLoggingForLibrary_completionHan
   {
     v47 = v10;
     v48 = v9;
-    v49 = v6;
+    v49 = loggingCopy;
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
@@ -264,8 +264,8 @@ void __77__PLAggdLogging_performLibraryStatisticsLoggingForLibrary_completionHan
       v16 = 0;
       v17 = 0;
       v18 = *v57;
-      v51 = !v4;
-      v50 = v4;
+      v51 = !enabledCopy;
+      v50 = enabledCopy;
       obj = v12;
       do
       {
@@ -280,26 +280,26 @@ void __77__PLAggdLogging_performLibraryStatisticsLoggingForLibrary_completionHan
           v21 = *(*(&v56 + 1) + 8 * i);
           v22 = objc_autoreleasePoolPush();
           v23 = [v21 objectForKeyedSubscript:@"assetCount"];
-          v24 = [v23 unsignedIntegerValue];
+          unsignedIntegerValue = [v23 unsignedIntegerValue];
 
           v25 = [v21 objectForKeyedSubscript:@"status"];
-          v26 = [v25 unsignedIntegerValue];
+          unsignedIntegerValue2 = [v25 unsignedIntegerValue];
 
-          if (v26 == 1)
+          if (unsignedIntegerValue2 == 1)
           {
             ++v17;
-            v15 += v24;
+            v15 += unsignedIntegerValue;
             v16 = v20;
           }
 
           else
           {
             v16 = v20;
-            if ((v26 & 0xFFFE) == 2)
+            if ((unsignedIntegerValue2 & 0xFFFE) == 2)
             {
               v16 = v20 + v51;
               v53 += v50;
-              v52 += v24;
+              v52 += unsignedIntegerValue;
             }
           }
 
@@ -377,44 +377,44 @@ void __77__PLAggdLogging_performLibraryStatisticsLoggingForLibrary_completionHan
     PLSendCoreAnalyticEvent();
 
     v9 = v48;
-    v6 = v49;
+    loggingCopy = v49;
     v11 = 0;
     v10 = v47;
   }
 }
 
-+ (void)_configureEnumeratorForLibrarySummaryLogging:(id)a3 cloudPhotoLibraryEnabled:(BOOL)a4 dataForCA:(id)a5 libraryServicesManager:(id)a6
++ (void)_configureEnumeratorForLibrarySummaryLogging:(id)logging cloudPhotoLibraryEnabled:(BOOL)enabled dataForCA:(id)a libraryServicesManager:(id)manager
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (!v10)
+  loggingCopy = logging;
+  aCopy = a;
+  managerCopy = manager;
+  if (!loggingCopy)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:a1 file:@"PLAggdLogging.m" lineNumber:811 description:{@"Invalid parameter not satisfying: %@", @"enumerator"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAggdLogging.m" lineNumber:811 description:{@"Invalid parameter not satisfying: %@", @"enumerator"}];
 
-    if (v11)
+    if (aCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:a1 file:@"PLAggdLogging.m" lineNumber:812 description:{@"Invalid parameter not satisfying: %@", @"dataForCA"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAggdLogging.m" lineNumber:812 description:{@"Invalid parameter not satisfying: %@", @"dataForCA"}];
 
     goto LABEL_3;
   }
 
-  if (!v11)
+  if (!aCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v13 = [v10 sourceContext];
-  v14 = [v13 pathManager];
-  v15 = [v14 libraryURL];
-  v34 = a1;
+  sourceContext = [loggingCopy sourceContext];
+  pathManager = [sourceContext pathManager];
+  libraryURL = [pathManager libraryURL];
+  selfCopy = self;
   v16 = objc_alloc_init(PLAnalyticsLibraryCounters);
   v17 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-7776000.0];
   v18 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-2592000.0];
@@ -428,55 +428,55 @@ LABEL_3:
   v57 = v18;
   v20 = v18;
   v21 = v17;
-  [v10 addAssetVisitor:v54];
+  [loggingCopy addAssetVisitor:v54];
   v52[0] = MEMORY[0x1E69E9820];
   v52[1] = 3221225472;
   v52[2] = __120__PLAggdLogging__configureEnumeratorForLibrarySummaryLogging_cloudPhotoLibraryEnabled_dataForCA_libraryServicesManager___block_invoke_2;
   v52[3] = &unk_1E7572A28;
   v22 = v19;
   v53 = v22;
-  [v10 addFaceVisitor:v52];
+  [loggingCopy addFaceVisitor:v52];
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __120__PLAggdLogging__configureEnumeratorForLibrarySummaryLogging_cloudPhotoLibraryEnabled_dataForCA_libraryServicesManager___block_invoke_3;
   v50[3] = &unk_1E7572A50;
   v23 = v22;
   v51 = v23;
-  [v10 addResourceVisitor:v50];
+  [loggingCopy addResourceVisitor:v50];
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
   v48[2] = __120__PLAggdLogging__configureEnumeratorForLibrarySummaryLogging_cloudPhotoLibraryEnabled_dataForCA_libraryServicesManager___block_invoke_4;
   v48[3] = &unk_1E7572A78;
   v24 = v23;
   v49 = v24;
-  [v10 addAlbumVisitor:v48];
+  [loggingCopy addAlbumVisitor:v48];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __120__PLAggdLogging__configureEnumeratorForLibrarySummaryLogging_cloudPhotoLibraryEnabled_dataForCA_libraryServicesManager___block_invoke_5;
   v46[3] = &unk_1E7572AA0;
   v25 = v24;
   v47 = v25;
-  [v10 addPersonVisitor:v46];
+  [loggingCopy addPersonVisitor:v46];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __120__PLAggdLogging__configureEnumeratorForLibrarySummaryLogging_cloudPhotoLibraryEnabled_dataForCA_libraryServicesManager___block_invoke_6;
   v36[3] = &unk_1E7572AC8;
-  v45 = a4;
-  v37 = v13;
+  enabledCopy = enabled;
+  v37 = sourceContext;
   v38 = v25;
-  v39 = v15;
-  v40 = v12;
-  v41 = v11;
-  v42 = v14;
+  v39 = libraryURL;
+  v40 = managerCopy;
+  v41 = aCopy;
+  v42 = pathManager;
   v43 = a2;
-  v44 = v34;
-  v26 = v14;
-  v27 = v11;
-  v28 = v12;
-  v29 = v15;
+  v44 = selfCopy;
+  v26 = pathManager;
+  v27 = aCopy;
+  v28 = managerCopy;
+  v29 = libraryURL;
   v30 = v25;
-  v31 = v13;
-  [v10 addEndOfListVisitor:v36];
+  v31 = sourceContext;
+  [loggingCopy addEndOfListVisitor:v36];
 }
 
 void __120__PLAggdLogging__configureEnumeratorForLibrarySummaryLogging_cloudPhotoLibraryEnabled_dataForCA_libraryServicesManager___block_invoke(uint64_t a1, void *a2)
@@ -1669,15 +1669,15 @@ void __120__PLAggdLogging__configureEnumeratorForLibrarySummaryLogging_cloudPhot
   }
 }
 
-+ (void)_configureEnumeratorForSyndicationLibrarySummaryLogging:(id)a3 dataForCA:(id)a4
++ (void)_configureEnumeratorForSyndicationLibrarySummaryLogging:(id)logging dataForCA:(id)a
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  loggingCopy = logging;
+  aCopy = a;
+  v9 = aCopy;
+  if (!loggingCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"PLAggdLogging.m" lineNumber:720 description:{@"Invalid parameter not satisfying: %@", @"enumerator"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAggdLogging.m" lineNumber:720 description:{@"Invalid parameter not satisfying: %@", @"enumerator"}];
 
     if (v9)
     {
@@ -1685,13 +1685,13 @@ void __120__PLAggdLogging__configureEnumeratorForLibrarySummaryLogging_cloudPhot
     }
 
 LABEL_5:
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"PLAggdLogging.m" lineNumber:721 description:{@"Invalid parameter not satisfying: %@", @"dataForCA"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAggdLogging.m" lineNumber:721 description:{@"Invalid parameter not satisfying: %@", @"dataForCA"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!aCopy)
   {
     goto LABEL_5;
   }
@@ -1710,14 +1710,14 @@ LABEL_3:
   v14 = v11;
   v31 = v14;
   v15 = v12;
-  [v7 addAssetVisitor:v28];
+  [loggingCopy addAssetVisitor:v28];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __83__PLAggdLogging__configureEnumeratorForSyndicationLibrarySummaryLogging_dataForCA___block_invoke_2;
   v26[3] = &unk_1E7572A00;
   v16 = v14;
   v27 = v16;
-  [v7 addConversationVisitor:v26];
+  [loggingCopy addConversationVisitor:v26];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __83__PLAggdLogging__configureEnumeratorForSyndicationLibrarySummaryLogging_dataForCA___block_invoke_3;
@@ -1728,7 +1728,7 @@ LABEL_3:
   v17 = v13;
   v18 = v9;
   v19 = v16;
-  [v7 addEndOfListVisitor:v22];
+  [loggingCopy addEndOfListVisitor:v22];
 }
 
 void __83__PLAggdLogging__configureEnumeratorForSyndicationLibrarySummaryLogging_dataForCA___block_invoke(uint64_t a1, void *a2)
@@ -1924,31 +1924,31 @@ void __83__PLAggdLogging__configureEnumeratorForSyndicationLibrarySummaryLogging
   [v50 addEntriesFromDictionary:v47];
 }
 
-+ (void)configureEnumeratorForLibrarySummaryForLibraryEnumerator:(id)a3 withSyndicationLibraryEnumerator:(id)a4 cloudPhotoLibraryEnabled:(BOOL)a5 dataForCA:(id)a6 libraryServicesManager:(id)a7
++ (void)configureEnumeratorForLibrarySummaryForLibraryEnumerator:(id)enumerator withSyndicationLibraryEnumerator:(id)libraryEnumerator cloudPhotoLibraryEnabled:(BOOL)enabled dataForCA:(id)a libraryServicesManager:(id)manager
 {
-  v9 = a5;
-  v12 = a4;
-  v11 = a6;
-  [PLAggdLogging _configureEnumeratorForLibrarySummaryLogging:a3 cloudPhotoLibraryEnabled:v9 dataForCA:v11 libraryServicesManager:a7];
-  if (v12)
+  enabledCopy = enabled;
+  libraryEnumeratorCopy = libraryEnumerator;
+  aCopy = a;
+  [PLAggdLogging _configureEnumeratorForLibrarySummaryLogging:enumerator cloudPhotoLibraryEnabled:enabledCopy dataForCA:aCopy libraryServicesManager:manager];
+  if (libraryEnumeratorCopy)
   {
-    [PLAggdLogging _configureEnumeratorForSyndicationLibrarySummaryLogging:v12 dataForCA:v11];
+    [PLAggdLogging _configureEnumeratorForSyndicationLibrarySummaryLogging:libraryEnumeratorCopy dataForCA:aCopy];
   }
 }
 
-+ (void)configureEnumeratorForHyperionLocalResourcesLogging:(id)a3 cloudPhotoLibraryEnabled:(BOOL)a4 dataForCA:(id)a5 dataForCK:(id)a6
++ (void)configureEnumeratorForHyperionLocalResourcesLogging:(id)logging cloudPhotoLibraryEnabled:(BOOL)enabled dataForCA:(id)a dataForCK:(id)k
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  loggingCopy = logging;
+  aCopy = a;
+  kCopy = k;
+  if (!loggingCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"PLAggdLogging.m" lineNumber:393 description:{@"Invalid parameter not satisfying: %@", @"enumerator"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAggdLogging.m" lineNumber:393 description:{@"Invalid parameter not satisfying: %@", @"enumerator"}];
   }
 
   v14 = objc_alloc_init(PLAnalyticsResourceCounters);
-  if (a4 || MEMORY[0x19EAEE520]())
+  if (enabled || MEMORY[0x19EAEE520]())
   {
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
@@ -1960,31 +1960,31 @@ void __83__PLAggdLogging__configureEnumeratorForSyndicationLibrarySummaryLogging
     v34 = &unk_1F0FBFF28;
     v35 = &unk_1F0FBFF58;
     v36 = &unk_1F0FBFF40;
-    [v11 addAssetVisitor:v31];
+    [loggingCopy addAssetVisitor:v31];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __114__PLAggdLogging_configureEnumeratorForHyperionLocalResourcesLogging_cloudPhotoLibraryEnabled_dataForCA_dataForCK___block_invoke_2;
     v29[3] = &unk_1E7572988;
     v30 = v15;
-    [v11 addResourceVisitor:v29];
+    [loggingCopy addResourceVisitor:v29];
   }
 
-  v16 = [v11 sourceContext];
+  sourceContext = [loggingCopy sourceContext];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __114__PLAggdLogging_configureEnumeratorForHyperionLocalResourcesLogging_cloudPhotoLibraryEnabled_dataForCA_dataForCK___block_invoke_3;
   v22[3] = &unk_1E75729B0;
   v23 = v14;
-  v24 = v13;
-  v28 = a4;
-  v25 = v12;
-  v26 = v16;
-  v27 = a1;
-  v17 = v16;
-  v18 = v12;
-  v19 = v13;
+  v24 = kCopy;
+  enabledCopy = enabled;
+  v25 = aCopy;
+  v26 = sourceContext;
+  selfCopy = self;
+  v17 = sourceContext;
+  v18 = aCopy;
+  v19 = kCopy;
   v20 = v14;
-  [v11 addEndOfListVisitor:v22];
+  [loggingCopy addEndOfListVisitor:v22];
 }
 
 void __114__PLAggdLogging_configureEnumeratorForHyperionLocalResourcesLogging_cloudPhotoLibraryEnabled_dataForCA_dataForCK___block_invoke(void *a1, void *a2)
@@ -2724,26 +2724,26 @@ void __114__PLAggdLogging_configureEnumeratorForHyperionLocalResourcesLogging_cl
   [*(a1 + 40) addEntriesFromDictionary:v173];
 }
 
-+ (void)configureEnumeratorForLibrarySizeLogging:(id)a3 cloudPhotoLibraryEnabled:(BOOL)a4 dataForCA:(id)a5 dataForCK:(id)a6
++ (void)configureEnumeratorForLibrarySizeLogging:(id)logging cloudPhotoLibraryEnabled:(BOOL)enabled dataForCA:(id)a dataForCK:(id)k
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (!v10)
+  loggingCopy = logging;
+  aCopy = a;
+  kCopy = k;
+  if (!loggingCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PLAggdLogging.m" lineNumber:377 description:{@"Invalid parameter not satisfying: %@", @"enumerator"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAggdLogging.m" lineNumber:377 description:{@"Invalid parameter not satisfying: %@", @"enumerator"}];
   }
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __103__PLAggdLogging_configureEnumeratorForLibrarySizeLogging_cloudPhotoLibraryEnabled_dataForCA_dataForCK___block_invoke;
   v16[3] = &unk_1E7572938;
-  v17 = v12;
-  v18 = v11;
-  v13 = v11;
-  v14 = v12;
-  [PLPhotoLibrary configureEnumeratorForLibrarySizeInfo:v10 completion:v16];
+  v17 = kCopy;
+  v18 = aCopy;
+  v13 = aCopy;
+  v14 = kCopy;
+  [PLPhotoLibrary configureEnumeratorForLibrarySizeInfo:loggingCopy completion:v16];
 }
 
 void __103__PLAggdLogging_configureEnumeratorForLibrarySizeLogging_cloudPhotoLibraryEnabled_dataForCA_dataForCK___block_invoke(uint64_t a1, void *a2)
@@ -2764,33 +2764,33 @@ void __103__PLAggdLogging_configureEnumeratorForLibrarySizeLogging_cloudPhotoLib
   [*(a1 + 40) setObject:v6 forKey:*MEMORY[0x1E69BF960]];
 }
 
-+ (void)_addLibrarySummaryDataToCollectionIfPresent:(id)a3 fromCPLEventData:(id)a4 forKey:(id)a5
++ (void)_addLibrarySummaryDataToCollectionIfPresent:(id)present fromCPLEventData:(id)data forKey:(id)key
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 objectForKeyedSubscript:v8];
+  presentCopy = present;
+  dataCopy = data;
+  keyCopy = key;
+  v9 = [dataCopy objectForKeyedSubscript:keyCopy];
 
   if (v9)
   {
-    v10 = [v7 objectForKeyedSubscript:v8];
-    [v11 setObject:v10 forKey:v8];
+    v10 = [dataCopy objectForKeyedSubscript:keyCopy];
+    [presentCopy setObject:v10 forKey:keyCopy];
   }
 }
 
-+ (void)_addPrefix:(id)a3 toKeysInDictionary:(id)a4 inPrefixedDictionary:(id)a5
++ (void)_addPrefix:(id)prefix toKeysInDictionary:(id)dictionary inPrefixedDictionary:(id)prefixedDictionary
 {
-  v7 = a3;
-  v8 = a5;
+  prefixCopy = prefix;
+  prefixedDictionaryCopy = prefixedDictionary;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__PLAggdLogging__addPrefix_toKeysInDictionary_inPrefixedDictionary___block_invoke;
   v11[3] = &unk_1E7578238;
-  v12 = v8;
-  v13 = v7;
-  v9 = v7;
-  v10 = v8;
-  [a4 enumerateKeysAndObjectsUsingBlock:v11];
+  v12 = prefixedDictionaryCopy;
+  v13 = prefixCopy;
+  v9 = prefixCopy;
+  v10 = prefixedDictionaryCopy;
+  [dictionary enumerateKeysAndObjectsUsingBlock:v11];
 }
 
 void __68__PLAggdLogging__addPrefix_toKeysInDictionary_inPrefixedDictionary___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -2803,54 +2803,54 @@ void __68__PLAggdLogging__addPrefix_toKeysInDictionary_inPrefixedDictionary___bl
   [v5 setObject:v7 forKey:v8];
 }
 
-+ (id)_analyticsDescriptionForAssetCount:(int64_t)a3
++ (id)_analyticsDescriptionForAssetCount:(int64_t)count
 {
-  if (a3 < 1)
+  if (count < 1)
   {
     return @"0";
   }
 
-  if (a3 < 6)
+  if (count < 6)
   {
     return @"1-5";
   }
 
-  if (a3 < 0xB)
+  if (count < 0xB)
   {
     return @"6-10";
   }
 
-  if (a3 < 0x15)
+  if (count < 0x15)
   {
     return @"11-20";
   }
 
-  if (a3 < 0x1F)
+  if (count < 0x1F)
   {
     return @"21-30";
   }
 
-  if (a3 < 0x29)
+  if (count < 0x29)
   {
     return @"31-40";
   }
 
-  if (a3 < 0x33)
+  if (count < 0x33)
   {
     return @"41-50";
   }
 
-  if (a3 < 0x65)
+  if (count < 0x65)
   {
     return @"51-100";
   }
 
-  if (a3 < 0xC9)
+  if (count < 0xC9)
   {
     return @"101-200";
   }
 
-  if (a3 >= 0x1F5)
+  if (count >= 0x1F5)
   {
     return @"501+";
   }
@@ -2858,9 +2858,9 @@ void __68__PLAggdLogging__addPrefix_toKeysInDictionary_inPrefixedDictionary___bl
   return @"201-500";
 }
 
-+ (id)_analyticsDescriptionForMediaAge:(double)a3
++ (id)_analyticsDescriptionForMediaAge:(double)age
 {
-  v4 = a3 / 60.0 / 60.0 / 24.0;
+  v4 = age / 60.0 / 60.0 / 24.0;
   v5 = v4 / 30.0;
   if (v4 / 30.0 >= 1.0)
   {
@@ -2907,30 +2907,30 @@ void __68__PLAggdLogging__addPrefix_toKeysInDictionary_inPrefixedDictionary___bl
   return v6;
 }
 
-+ (void)_addDistributionStatisticsOfValues:(id)a3 withPrefix:(id)a4 toDictionary:(id)a5 formatter:(id)a6
++ (void)_addDistributionStatisticsOfValues:(id)values withPrefix:(id)prefix toDictionary:(id)dictionary formatter:(id)formatter
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v9 count])
+  valuesCopy = values;
+  prefixCopy = prefix;
+  dictionaryCopy = dictionary;
+  formatterCopy = formatter;
+  if ([valuesCopy count])
   {
-    v13 = [v9 sortedArrayUsingSelector:sel_compare_];
-    v14 = [v13 firstObject];
-    v15 = v12[2](v12, v14);
-    v16 = [v10 stringByAppendingString:@"Min"];
-    [v11 setObject:v15 forKeyedSubscript:v16];
+    v13 = [valuesCopy sortedArrayUsingSelector:sel_compare_];
+    firstObject = [v13 firstObject];
+    v15 = formatterCopy[2](formatterCopy, firstObject);
+    v16 = [prefixCopy stringByAppendingString:@"Min"];
+    [dictionaryCopy setObject:v15 forKeyedSubscript:v16];
 
-    v17 = [v13 lastObject];
-    v18 = v12[2](v12, v17);
-    v19 = [v10 stringByAppendingString:@"Max"];
-    [v11 setObject:v18 forKeyedSubscript:v19];
+    lastObject = [v13 lastObject];
+    v18 = formatterCopy[2](formatterCopy, lastObject);
+    v19 = [prefixCopy stringByAppendingString:@"Max"];
+    [dictionaryCopy setObject:v18 forKeyedSubscript:v19];
 
     v20 = [v13 objectAtIndexedSubscript:{objc_msgSend(v13, "count") >> 1}];
-    v21 = v12[2](v12, v20);
-    v22 = [v10 stringByAppendingString:@"Median"];
-    [v11 setObject:v21 forKeyedSubscript:v22];
+    v21 = formatterCopy[2](formatterCopy, v20);
+    v22 = [prefixCopy stringByAppendingString:@"Median"];
+    [dictionaryCopy setObject:v21 forKeyedSubscript:v22];
 
     v35 = 0u;
     v36 = 0u;
@@ -2968,16 +2968,16 @@ void __68__PLAggdLogging__addPrefix_toKeysInDictionary_inPrefixedDictionary___bl
     }
 
     v30 = [MEMORY[0x1E696AD98] numberWithDouble:{v27 / objc_msgSend(v23, "count")}];
-    v31 = v12[2](v12, v30);
-    v32 = [v10 stringByAppendingString:@"Mean"];
-    [v11 setObject:v31 forKeyedSubscript:v32];
+    v31 = formatterCopy[2](formatterCopy, v30);
+    v32 = [prefixCopy stringByAppendingString:@"Mean"];
+    [dictionaryCopy setObject:v31 forKeyedSubscript:v32];
   }
 }
 
-+ (void)performSlideshowProjectStatisticsLogging:(id)a3
++ (void)performSlideshowProjectStatisticsLogging:(id)logging
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  loggingCopy = logging;
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLProjectAlbum entityName];
   v8 = [v6 fetchRequestWithEntityName:v7];
@@ -2995,15 +2995,15 @@ void __68__PLAggdLogging__addPrefix_toKeysInDictionary_inPrefixedDictionary___bl
 
   [v8 setFetchBatchSize:100];
   v48 = 0;
-  v12 = [v5 executeFetchRequest:v8 error:&v48];
+  v12 = [loggingCopy executeFetchRequest:v8 error:&v48];
   v13 = v48;
   v14 = v13;
   if (v12)
   {
     v38 = v13;
-    v39 = a1;
+    selfCopy = self;
     v40 = v8;
-    v41 = v5;
+    v41 = loggingCopy;
     v15 = [v12 count];
     v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v15];
     v37 = v15;
@@ -3028,19 +3028,19 @@ void __68__PLAggdLogging__addPrefix_toKeysInDictionary_inPrefixedDictionary___bl
           }
 
           v23 = *(*(&v44 + 1) + 8 * i);
-          v24 = [v23 creationDate];
-          v25 = v24;
-          if (v24)
+          creationDate = [v23 creationDate];
+          v25 = creationDate;
+          if (creationDate)
           {
             v26 = MEMORY[0x1E696AD98];
-            [v24 timeIntervalSinceNow];
+            [creationDate timeIntervalSinceNow];
             v28 = [v26 numberWithDouble:-v27];
             [v16 addObject:v28];
           }
 
           v29 = MEMORY[0x1E696AD98];
-          v30 = [v23 assets];
-          v31 = [v29 numberWithUnsignedInteger:{objc_msgSend(v30, "count")}];
+          assets = [v23 assets];
+          v31 = [v29 numberWithUnsignedInteger:{objc_msgSend(assets, "count")}];
           [v17 addObject:v31];
         }
 
@@ -3059,19 +3059,19 @@ void __68__PLAggdLogging__addPrefix_toKeysInDictionary_inPrefixedDictionary___bl
     v43[1] = 3221225472;
     v43[2] = __58__PLAggdLogging_performSlideshowProjectStatisticsLogging___block_invoke;
     v43[3] = &__block_descriptor_40_e28___NSString_16__0__NSNumber_8l;
-    v43[4] = v39;
-    [v39 _addDistributionStatisticsOfValues:v16 withPrefix:v34 toDictionary:v32 formatter:v43];
+    v43[4] = selfCopy;
+    [selfCopy _addDistributionStatisticsOfValues:v16 withPrefix:v34 toDictionary:v32 formatter:v43];
     v35 = *MEMORY[0x1E69BFC10];
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __58__PLAggdLogging_performSlideshowProjectStatisticsLogging___block_invoke_2;
     v42[3] = &__block_descriptor_40_e28___NSString_16__0__NSNumber_8l;
-    v42[4] = v39;
-    [v39 _addDistributionStatisticsOfValues:v17 withPrefix:v35 toDictionary:v32 formatter:v42];
+    v42[4] = selfCopy;
+    [selfCopy _addDistributionStatisticsOfValues:v17 withPrefix:v35 toDictionary:v32 formatter:v42];
     PLSendCoreAnalyticEvent();
 
     v8 = v40;
-    v5 = v41;
+    loggingCopy = v41;
     v14 = v38;
   }
 
@@ -3106,10 +3106,10 @@ uint64_t __58__PLAggdLogging_performSlideshowProjectStatisticsLogging___block_in
   return [v2 _analyticsDescriptionForAssetCount:v3];
 }
 
-+ (void)performMomentsStatisticsLogging:(id)a3
++ (void)performMomentsStatisticsLogging:(id)logging
 {
   v57[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  loggingCopy = logging;
   v5 = MEMORY[0x1E695D5E0];
   v6 = +[PLMoment entityName];
   v7 = [v5 fetchRequestWithEntityName:v6];
@@ -3123,7 +3123,7 @@ uint64_t __58__PLAggdLogging_performSlideshowProjectStatisticsLogging___block_in
   [v7 setSortDescriptors:v9];
 
   v50 = 0;
-  v10 = [v4 executeFetchRequest:v7 error:&v50];
+  v10 = [loggingCopy executeFetchRequest:v7 error:&v50];
   v11 = v50;
   if (v11 || !v10)
   {
@@ -3145,7 +3145,7 @@ uint64_t __58__PLAggdLogging_performSlideshowProjectStatisticsLogging___block_in
   else
   {
     v43 = v7;
-    v44 = v4;
+    v44 = loggingCopy;
     v45 = [v10 count];
     v46 = 0u;
     v47 = 0u;
@@ -3172,10 +3172,10 @@ uint64_t __58__PLAggdLogging_performSlideshowProjectStatisticsLogging___block_in
           v19 = *(*(&v46 + 1) + 8 * i);
           v20 = objc_autoreleasePoolPush();
           v21 = [v19 objectForKeyedSubscript:@"cachedCount"];
-          v22 = [v21 unsignedIntegerValue];
+          unsignedIntegerValue = [v21 unsignedIntegerValue];
 
-          v15 += v22;
-          if (v22 == 1)
+          v15 += unsignedIntegerValue;
+          if (unsignedIntegerValue == 1)
           {
             ++v16;
           }
@@ -3203,32 +3203,32 @@ uint64_t __58__PLAggdLogging_performSlideshowProjectStatisticsLogging___block_in
       v11 = 0;
       if ([v28 count] == 1)
       {
-        v29 = [v28 firstObject];
-        v30 = [v29 integerValue];
+        firstObject = [v28 firstObject];
+        integerValue = [firstObject integerValue];
         v10 = v42;
       }
 
       else
       {
         v31 = v27;
-        v29 = [v28 sortedArrayUsingSelector:sel_compare_];
+        firstObject = [v28 sortedArrayUsingSelector:sel_compare_];
         v32 = [v28 count];
-        v33 = [v29 count] >> 1;
+        v33 = [firstObject count] >> 1;
         if (v32)
         {
-          v34 = [v29 objectAtIndex:v33];
-          v30 = [v34 integerValue];
+          v34 = [firstObject objectAtIndex:v33];
+          integerValue = [v34 integerValue];
         }
 
         else
         {
-          v34 = [v29 objectAtIndex:v33 - 1];
+          v34 = [firstObject objectAtIndex:v33 - 1];
           *buf = v34;
-          v35 = [v29 objectAtIndex:v33];
+          v35 = [firstObject objectAtIndex:v33];
           *&buf[8] = v35;
           v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:buf count:2];
           v37 = [v36 valueForKeyPath:@"@avg.self"];
-          v30 = [v37 integerValue];
+          integerValue = [v37 integerValue];
 
           v26 = v45;
         }
@@ -3241,7 +3241,7 @@ uint64_t __58__PLAggdLogging_performSlideshowProjectStatisticsLogging___block_in
 
     else
     {
-      v30 = 0;
+      integerValue = 0;
       v11 = 0;
       v10 = v42;
     }
@@ -3256,13 +3256,13 @@ uint64_t __58__PLAggdLogging_performSlideshowProjectStatisticsLogging___block_in
     v39 = [MEMORY[0x1E696AD98] numberWithInteger:v27];
     v55[2] = v39;
     v54[3] = *MEMORY[0x1E69BFA88];
-    v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v30];
+    v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:integerValue];
     v55[3] = v40;
     v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:v54 count:4];
     PLSendCoreAnalyticEvent();
 
     v7 = v43;
-    v4 = v44;
+    loggingCopy = v44;
   }
 }
 

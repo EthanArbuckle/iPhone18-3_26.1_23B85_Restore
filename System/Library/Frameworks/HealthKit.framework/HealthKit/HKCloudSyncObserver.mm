@@ -1,22 +1,22 @@
 @interface HKCloudSyncObserver
 + (id)clientInterface;
-- (HKCloudSyncObserver)initWithHealthStore:(id)a3 delegate:(id)a4;
+- (HKCloudSyncObserver)initWithHealthStore:(id)store delegate:(id)delegate;
 - (HKCloudSyncObserverDelegate)delegate;
 - (HKCloudSyncObserverStatus)status;
 - (id)exportedInterface;
 - (id)progress;
 - (id)remoteInterface;
-- (void)_clientQueue_didCompleteSyncWithStatus:(int64_t)a3 error:(id)a4;
+- (void)_clientQueue_didCompleteSyncWithStatus:(int64_t)status error:(id)error;
 - (void)_handleAutomaticProxyReconnection;
-- (void)clientRemote_didFailToPopulateStatusWithError:(id)a3;
-- (void)clientRemote_didUpdateObserverWithSyncStatus:(id)a3;
+- (void)clientRemote_didFailToPopulateStatusWithError:(id)error;
+- (void)clientRemote_didUpdateObserverWithSyncStatus:(id)status;
 - (void)clientRemote_syncDidStart;
-- (void)clientRemote_syncRequestDidComplete:(id)a3 success:(BOOL)a4 error:(id)a5;
-- (void)clientRemote_syncRequestDidStart:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setProgress:(id)a3;
-- (void)setStatus:(id)a3;
-- (void)startObservingSyncRequestsMatchingFilter:(unint64_t)a3;
+- (void)clientRemote_syncRequestDidComplete:(id)complete success:(BOOL)success error:(id)error;
+- (void)clientRemote_syncRequestDidStart:(id)start;
+- (void)setDelegate:(id)delegate;
+- (void)setProgress:(id)progress;
+- (void)setStatus:(id)status;
+- (void)startObservingSyncRequestsMatchingFilter:(unint64_t)filter;
 - (void)startObservingSyncStatus;
 - (void)startSyncIfRestoreNotCompleted;
 - (void)stopObservingSyncRequests;
@@ -24,21 +24,21 @@
 
 @implementation HKCloudSyncObserver
 
-- (HKCloudSyncObserver)initWithHealthStore:(id)a3 delegate:(id)a4
+- (HKCloudSyncObserver)initWithHealthStore:(id)store delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = HKCloudSyncObserver;
   v8 = [(HKCloudSyncObserver *)&v17 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v8->_identifier;
-    v8->_identifier = v9;
+    v8->_identifier = uUID;
 
-    objc_storeWeak(&v8->_delegate, v7);
-    v11 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:v6 taskIdentifier:@"HKCloudSyncObserverServerIdentifier" exportedObject:v8 taskUUID:v8->_identifier];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    v11 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:storeCopy taskIdentifier:@"HKCloudSyncObserverServerIdentifier" exportedObject:v8 taskUUID:v8->_identifier];
     proxyProvider = v8->_proxyProvider;
     v8->_proxyProvider = v11;
 
@@ -85,11 +85,11 @@ void __52__HKCloudSyncObserver_initWithHealthStore_delegate___block_invoke(uint6
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -112,11 +112,11 @@ void __52__HKCloudSyncObserver_initWithHealthStore_delegate___block_invoke(uint6
   return v3;
 }
 
-- (void)setStatus:(id)a3
+- (void)setStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [statusCopy copy];
 
   status = self->_status;
   self->_status = v5;
@@ -178,43 +178,43 @@ void __47__HKCloudSyncObserver_startObservingSyncStatus__block_invoke_172(uint64
   }
 }
 
-- (void)clientRemote_didUpdateObserverWithSyncStatus:(id)a3
+- (void)clientRemote_didUpdateObserverWithSyncStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeStrong(&self->_status, a3);
+  objc_storeStrong(&self->_status, status);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   os_unfair_lock_unlock(&self->_lock);
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueue];
+  clientQueue = [(HKProxyProvider *)self->_proxyProvider clientQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__HKCloudSyncObserver_clientRemote_didUpdateObserverWithSyncStatus___block_invoke;
   block[3] = &unk_1E7376640;
   v11 = WeakRetained;
-  v12 = self;
-  v13 = v5;
-  v8 = v5;
+  selfCopy = self;
+  v13 = statusCopy;
+  v8 = statusCopy;
   v9 = WeakRetained;
-  dispatch_sync(v7, block);
+  dispatch_sync(clientQueue, block);
 }
 
-- (void)clientRemote_didFailToPopulateStatusWithError:(id)a3
+- (void)clientRemote_didFailToPopulateStatusWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   os_unfair_lock_unlock(&self->_lock);
-  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueue];
+  clientQueue = [(HKProxyProvider *)self->_proxyProvider clientQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__HKCloudSyncObserver_clientRemote_didFailToPopulateStatusWithError___block_invoke;
   block[3] = &unk_1E7376640;
   v10 = WeakRetained;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = errorCopy;
+  v7 = errorCopy;
   v8 = WeakRetained;
-  dispatch_sync(v6, block);
+  dispatch_sync(clientQueue, block);
 }
 
 uint64_t __69__HKCloudSyncObserver_clientRemote_didFailToPopulateStatusWithError___block_invoke(void *a1)
@@ -242,12 +242,12 @@ uint64_t __69__HKCloudSyncObserver_clientRemote_didFailToPopulateStatusWithError
   return v3;
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   os_unfair_lock_lock(&self->_lock);
   progress = self->_progress;
-  self->_progress = v4;
+  self->_progress = progressCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -316,23 +316,23 @@ void __53__HKCloudSyncObserver_startSyncIfRestoreNotCompleted__block_invoke_4(ui
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_clientQueue_didCompleteSyncWithStatus:(int64_t)a3 error:(id)a4
+- (void)_clientQueue_didCompleteSyncWithStatus:(int64_t)status error:(id)error
 {
-  v8 = a4;
-  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueue];
-  dispatch_assert_queue_V2(v6);
+  errorCopy = error;
+  clientQueue = [(HKProxyProvider *)self->_proxyProvider clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   os_unfair_lock_lock(&self->_lock);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   os_unfair_lock_unlock(&self->_lock);
-  if (a3 == 2)
+  if (status == 2)
   {
     [WeakRetained cloudSyncObserverSyncCompleted:self];
   }
 
-  else if ((a3 & 0xFFFFFFFFFFFFFFFBLL) == 0)
+  else if ((status & 0xFFFFFFFFFFFFFFFBLL) == 0)
   {
-    [WeakRetained cloudSyncObserver:self syncFailedWithError:v8];
+    [WeakRetained cloudSyncObserver:self syncFailedWithError:errorCopy];
   }
 }
 
@@ -343,10 +343,10 @@ void __53__HKCloudSyncObserver_startSyncIfRestoreNotCompleted__block_invoke_4(ui
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startObservingSyncRequestsMatchingFilter:(unint64_t)a3
+- (void)startObservingSyncRequestsMatchingFilter:(unint64_t)filter
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_filter = a3;
+  self->_filter = filter;
   self->_isObservingSyncRequests = 1;
   os_unfair_lock_unlock(&self->_lock);
   proxyProvider = self->_proxyProvider;
@@ -354,7 +354,7 @@ void __53__HKCloudSyncObserver_startSyncIfRestoreNotCompleted__block_invoke_4(ui
   v7[1] = 3221225472;
   v7[2] = __64__HKCloudSyncObserver_startObservingSyncRequestsMatchingFilter___block_invoke;
   v7[3] = &__block_descriptor_40_e46_v16__0___HKCloudSyncObserverServerInterface__8l;
-  v7[4] = a3;
+  v7[4] = filter;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__HKCloudSyncObserver_startObservingSyncRequestsMatchingFilter___block_invoke_2;
@@ -396,22 +396,22 @@ void __48__HKCloudSyncObserver_stopObservingSyncRequests__block_invoke_2(uint64_
   }
 }
 
-- (void)clientRemote_syncRequestDidStart:(id)a3
+- (void)clientRemote_syncRequestDidStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   proxyProvider = self->_proxyProvider;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__HKCloudSyncObserver_clientRemote_syncRequestDidStart___block_invoke;
   v8[3] = &unk_1E737B8F8;
-  v9 = v4;
-  v10 = self;
+  v9 = startCopy;
+  selfCopy = self;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__HKCloudSyncObserver_clientRemote_syncRequestDidStart___block_invoke_4;
   v7[3] = &unk_1E7376898;
   v7[4] = self;
-  v6 = v4;
+  v6 = startCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v8 errorHandler:v7];
 }
 
@@ -466,27 +466,27 @@ void __56__HKCloudSyncObserver_clientRemote_syncRequestDidStart___block_invoke_4
   }
 }
 
-- (void)clientRemote_syncRequestDidComplete:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)clientRemote_syncRequestDidComplete:(id)complete success:(BOOL)success error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  completeCopy = complete;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   os_unfair_lock_unlock(&self->_lock);
-  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueue];
+  clientQueue = [(HKProxyProvider *)self->_proxyProvider clientQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__HKCloudSyncObserver_clientRemote_syncRequestDidComplete_success_error___block_invoke;
   block[3] = &unk_1E737B920;
-  v20 = a4;
+  successCopy = success;
   v16 = WeakRetained;
-  v17 = self;
-  v18 = v8;
-  v19 = v9;
-  v12 = v9;
-  v13 = v8;
+  selfCopy = self;
+  v18 = completeCopy;
+  v19 = errorCopy;
+  v12 = errorCopy;
+  v13 = completeCopy;
   v14 = WeakRetained;
-  dispatch_sync(v11, block);
+  dispatch_sync(clientQueue, block);
 }
 
 uint64_t __73__HKCloudSyncObserver_clientRemote_syncRequestDidComplete_success_error___block_invoke(uint64_t a1)

@@ -1,30 +1,30 @@
 @interface AMSPrivacyAcknowledgementMigrator
-+ (void)migratePrivacyAcknowledgementsWithOptions:(id)a3;
++ (void)migratePrivacyAcknowledgementsWithOptions:(id)options;
 @end
 
 @implementation AMSPrivacyAcknowledgementMigrator
 
-+ (void)migratePrivacyAcknowledgementsWithOptions:(id)a3
++ (void)migratePrivacyAcknowledgementsWithOptions:(id)options
 {
   v47 = *MEMORY[0x1E69E9840];
-  if ([a3 scenario] == 4)
+  if ([options scenario] == 4)
   {
     if (!+[AMSDefaults migratedPrivacyAcknowledgements])
     {
-      v12 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-      v5 = [v12 ams_activeiCloudAccount];
+      ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+      ams_activeiCloudAccount = [ams_sharedAccountStore ams_activeiCloudAccount];
 
-      if (v5)
+      if (ams_activeiCloudAccount)
       {
-        v6 = [MEMORY[0x1E695DF00] date];
+        date = [MEMORY[0x1E695DF00] date];
         v13 = +[AMSLogConfig sharedDataMigrationConfig];
         if (!v13)
         {
           v13 = +[AMSLogConfig sharedConfig];
         }
 
-        v14 = [v13 OSLogObject];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+        oSLogObject = [v13 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
         {
           v15 = objc_opt_class();
           v16 = AMSLogKey();
@@ -35,16 +35,16 @@
           v44 = v16;
           v45 = 2114;
           v46 = v17;
-          _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] %{public}@ started.", buf, 0x20u);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] %{public}@ started.", buf, 0x20u);
         }
 
-        v8 = objc_alloc_init(MEMORY[0x1E695DF10]);
-        [v8 setYear:2019];
-        [v8 setMonth:9];
-        [v8 setDay:19];
-        v18 = [v5 creationDate];
-        v19 = [v8 date];
-        v20 = [v18 compare:v19];
+        oSLogObject4 = objc_alloc_init(MEMORY[0x1E695DF10]);
+        [oSLogObject4 setYear:2019];
+        [oSLogObject4 setMonth:9];
+        [oSLogObject4 setDay:19];
+        creationDate = [ams_activeiCloudAccount creationDate];
+        date2 = [oSLogObject4 date];
+        v20 = [creationDate compare:date2];
 
         if (v20 == -1)
         {
@@ -54,8 +54,8 @@
             v30 = +[AMSLogConfig sharedConfig];
           }
 
-          v31 = [(AMSAcknowledgePrivacyTask *)v30 OSLogObject];
-          if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
+          oSLogObject2 = [(AMSAcknowledgePrivacyTask *)v30 OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
           {
             v34 = objc_opt_class();
             v35 = AMSLogKey();
@@ -66,7 +66,7 @@
             v44 = v35;
             v45 = 2114;
             v46 = v36;
-            _os_log_impl(&dword_192869000, v31, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] %{public}@ skipping. iCloud account was signed in before Apple ID grey text was updated.", buf, 0x20u);
+            _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] %{public}@ skipping. iCloud account was signed in before Apple ID grey text was updated.", buf, 0x20u);
           }
         }
 
@@ -86,8 +86,8 @@
             v23 = +[AMSLogConfig sharedConfig];
           }
 
-          v24 = [v23 OSLogObject];
-          if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+          oSLogObject3 = [v23 OSLogObject];
+          if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
           {
             v25 = objc_opt_class();
             v26 = AMSLogKey();
@@ -98,35 +98,35 @@
             v44 = v26;
             v45 = 2114;
             v46 = v27;
-            _os_log_impl(&dword_192869000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] %{public}@ Recording GDPR acknowledgement for Apple ID based on historical data.", buf, 0x20u);
+            _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] %{public}@ Recording GDPR acknowledgement for Apple ID based on historical data.", buf, 0x20u);
           }
 
           v28 = [AMSAcknowledgePrivacyTask alloc];
           v29 = getOBPrivacyAppleIDIdentifier();
           v30 = [(AMSAcknowledgePrivacyTask *)v28 initWithPrivacyIdentifier:v29];
 
-          v31 = [(AMSAcknowledgePrivacyTask *)v30 acknowledgePrivacy];
+          oSLogObject2 = [(AMSAcknowledgePrivacyTask *)v30 acknowledgePrivacy];
           v37[0] = MEMORY[0x1E69E9820];
           v37[1] = 3221225472;
           v37[2] = __79__AMSPrivacyAcknowledgementMigrator_migratePrivacyAcknowledgementsWithOptions___block_invoke;
           v37[3] = &unk_1E73BABA0;
-          v39 = a1;
+          selfCopy = self;
           v40 = a2;
-          v38 = v6;
-          [v31 addFinishBlock:v37];
+          v38 = date;
+          [oSLogObject2 addFinishBlock:v37];
         }
       }
 
       else
       {
-        v6 = +[AMSLogConfig sharedDataMigrationConfig];
-        if (!v6)
+        date = +[AMSLogConfig sharedDataMigrationConfig];
+        if (!date)
         {
-          v6 = +[AMSLogConfig sharedConfig];
+          date = +[AMSLogConfig sharedConfig];
         }
 
-        v8 = [v6 OSLogObject];
-        if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+        oSLogObject4 = [date OSLogObject];
+        if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_INFO))
         {
           goto LABEL_34;
         }
@@ -140,33 +140,33 @@
         v44 = v30;
         v45 = 2114;
         v46 = v33;
-        _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] %{public}@ skipping. No iCloud account is signed in during upgrade.", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] %{public}@ skipping. No iCloud account is signed in during upgrade.", buf, 0x20u);
       }
 
       goto LABEL_34;
     }
 
-    v5 = +[AMSLogConfig sharedDataMigrationConfig];
-    if (!v5)
+    ams_activeiCloudAccount = +[AMSLogConfig sharedDataMigrationConfig];
+    if (!ams_activeiCloudAccount)
     {
-      v5 = +[AMSLogConfig sharedConfig];
+      ams_activeiCloudAccount = +[AMSLogConfig sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    date = [ams_activeiCloudAccount OSLogObject];
+    if (os_log_type_enabled(date, OS_LOG_TYPE_INFO))
     {
       v7 = objc_opt_class();
-      v8 = AMSLogKey();
+      oSLogObject4 = AMSLogKey();
       v9 = NSStringFromSelector(a2);
       *buf = 138543874;
       v42 = v7;
       v43 = 2114;
-      v44 = v8;
+      v44 = oSLogObject4;
       v45 = 2114;
       v46 = v9;
       v10 = "%{public}@: [%{public}@] %{public}@ skipping. We already migrated.";
 LABEL_11:
-      _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_INFO, v10, buf, 0x20u);
+      _os_log_impl(&dword_192869000, date, OS_LOG_TYPE_INFO, v10, buf, 0x20u);
 
 LABEL_34:
     }
@@ -174,22 +174,22 @@ LABEL_34:
 
   else
   {
-    v5 = +[AMSLogConfig sharedDataMigrationConfig];
-    if (!v5)
+    ams_activeiCloudAccount = +[AMSLogConfig sharedDataMigrationConfig];
+    if (!ams_activeiCloudAccount)
     {
-      v5 = +[AMSLogConfig sharedConfig];
+      ams_activeiCloudAccount = +[AMSLogConfig sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    date = [ams_activeiCloudAccount OSLogObject];
+    if (os_log_type_enabled(date, OS_LOG_TYPE_INFO))
     {
       v11 = objc_opt_class();
-      v8 = AMSLogKey();
+      oSLogObject4 = AMSLogKey();
       v9 = NSStringFromSelector(a2);
       *buf = 138543874;
       v42 = v11;
       v43 = 2114;
-      v44 = v8;
+      v44 = oSLogObject4;
       v45 = 2114;
       v46 = v9;
       v10 = "%{public}@: [%{public}@] %{public}@ skipping. Not valid for erase installs.";

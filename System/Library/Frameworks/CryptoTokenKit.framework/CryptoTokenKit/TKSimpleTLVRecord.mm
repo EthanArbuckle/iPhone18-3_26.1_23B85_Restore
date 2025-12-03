@@ -1,5 +1,5 @@
 @interface TKSimpleTLVRecord
-+ (id)parseFromDataSource:(id)a3 error:(id *)a4;
++ (id)parseFromDataSource:(id)source error:(id *)error;
 - (TKSimpleTLVRecord)initWithTag:(UInt8)tag value:(NSData *)value;
 @end
 
@@ -41,28 +41,28 @@
   return v10;
 }
 
-+ (id)parseFromDataSource:(id)a3 error:(id *)a4
++ (id)parseFromDataSource:(id)source error:(id *)error
 {
-  v5 = a3;
-  if ([v5 bytesSafeToRead:1])
+  sourceCopy = source;
+  if ([sourceCopy bytesSafeToRead:1])
   {
-    v6 = [v5 ptr];
-    v7 = [v5 fetchByte];
-    if (v7 - 255 >= 0xFFFFFF02)
+    v6 = [sourceCopy ptr];
+    fetchByte = [sourceCopy fetchByte];
+    if (fetchByte - 255 >= 0xFFFFFF02)
     {
-      v8 = v7;
-      if ([v5 bytesSafeToRead:1])
+      v8 = fetchByte;
+      if ([sourceCopy bytesSafeToRead:1])
       {
-        v9 = [v5 fetchByte];
-        if (v9 != 255)
+        fetchByte2 = [sourceCopy fetchByte];
+        if (fetchByte2 != 255)
         {
-          v10 = v9;
+          v10 = fetchByte2;
 LABEL_8:
-          v12 = [v5 fetchDataWithLength:v10];
+          v12 = [sourceCopy fetchDataWithLength:v10];
           if (v12)
           {
-            v13 = [a1 alloc];
-            v14 = [v5 dataFromPtr:v6];
+            v13 = [self alloc];
+            v14 = [sourceCopy dataFromPtr:v6];
             v15 = [v13 initWithTag:v8 value:v12 data:v14];
           }
 
@@ -74,10 +74,10 @@ LABEL_8:
           goto LABEL_11;
         }
 
-        if ([v5 bytesSafeToRead:2])
+        if ([sourceCopy bytesSafeToRead:2])
         {
-          v11 = [v5 fetchByte];
-          v10 = [v5 fetchByte] | (v11 << 8);
+          fetchByte3 = [sourceCopy fetchByte];
+          v10 = [sourceCopy fetchByte] | (fetchByte3 << 8);
           goto LABEL_8;
         }
       }

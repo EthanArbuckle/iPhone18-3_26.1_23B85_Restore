@@ -1,38 +1,38 @@
 @interface CRLiOSMiniFormatterViewController
-- (_TtC8Freeform33CRLiOSMiniFormatterViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8Freeform33CRLiOSMiniFormatterViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)crlaxAccessibilityViews;
-- (id)largeContentViewerInteraction:(id)a3 itemAtPoint:(CGPoint)a4;
+- (id)largeContentViewerInteraction:(id)interaction itemAtPoint:(CGPoint)point;
 - (void)loadView;
-- (void)setCrlaxCurrentPresentedRep:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setCrlaxCurrentPresentedRep:(id)rep;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CRLiOSMiniFormatterViewController
 
-- (void)setCrlaxCurrentPresentedRep:(id)a3
+- (void)setCrlaxCurrentPresentedRep:(id)rep
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform33CRLiOSMiniFormatterViewController_crlaxCurrentPresentedRep);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform33CRLiOSMiniFormatterViewController_crlaxCurrentPresentedRep) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform33CRLiOSMiniFormatterViewController_crlaxCurrentPresentedRep) = rep;
+  repCopy = rep;
 }
 
 - (void)loadView
 {
   v3 = objc_allocWithZone(UIView);
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 init];
-  [(CRLiOSMiniFormatterViewController *)v5 setView:v4];
+  [(CRLiOSMiniFormatterViewController *)selfCopy setView:v4];
 }
 
 - (id)crlaxAccessibilityViews
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform33CRLiOSMiniFormatterViewController_stackViewForDisplay);
-  v3 = self;
-  v4 = [v2 arrangedSubviews];
+  selfCopy = self;
+  arrangedSubviews = [v2 arrangedSubviews];
   sub_100006370(0, &qword_1019F6D00);
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -45,36 +45,36 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100A6B770();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for CRLiOSMiniFormatterViewController();
   v4 = v5.receiver;
-  [(CRLiOSMiniFormatterViewController *)&v5 viewDidAppear:v3];
+  [(CRLiOSMiniFormatterViewController *)&v5 viewDidAppear:appearCopy];
   sub_100020E58(&v4[OBJC_IVAR____TtC8Freeform33CRLiOSMiniFormatterViewController_delegate], *&v4[OBJC_IVAR____TtC8Freeform33CRLiOSMiniFormatterViewController_delegate + 24]);
   sub_1007254CC();
   v4[OBJC_IVAR____TtC8Freeform33CRLiOSMiniFormatterViewController_viewDidAppear] = 1;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = type metadata accessor for CRLiOSMiniFormatterViewController();
   swift_unknownObjectRetain();
   v7 = v10.receiver;
-  [(CRLiOSMiniFormatterViewController *)&v10 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
-  v8 = [v7 view];
-  if (v8)
+  [(CRLiOSMiniFormatterViewController *)&v10 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
+  view = [v7 view];
+  if (view)
   {
-    v9 = v8;
-    [v8 setNeedsLayout];
+    v9 = view;
+    [view setNeedsLayout];
 
     swift_unknownObjectRelease();
   }
@@ -87,7 +87,7 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100A6C338();
 }
 
@@ -103,19 +103,19 @@
   }
 }
 
-- (_TtC8Freeform33CRLiOSMiniFormatterViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8Freeform33CRLiOSMiniFormatterViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)largeContentViewerInteraction:(id)a3 itemAtPoint:(CGPoint)a4
+- (id)largeContentViewerInteraction:(id)interaction itemAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = self;
+  y = point.y;
+  x = point.x;
+  interactionCopy = interaction;
+  selfCopy = self;
   v9 = sub_100A71320(x, y);
 
   return v9;

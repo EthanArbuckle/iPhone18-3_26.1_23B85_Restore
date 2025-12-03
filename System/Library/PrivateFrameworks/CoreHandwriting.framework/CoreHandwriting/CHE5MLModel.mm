@@ -1,24 +1,24 @@
 @interface CHE5MLModel
-+ (id)createProgramLibraryWithError:(id *)a3;
++ (id)createProgramLibraryWithError:(id *)error;
 + (id)defaultURLOfModelInThisBundle;
 + (id)inputNames;
-+ (id)loadHashWithURL:(id)a3;
++ (id)loadHashWithURL:(id)l;
 + (id)modelHash;
 + (id)outputNames;
 @end
 
 @implementation CHE5MLModel
 
-+ (id)loadHashWithURL:(id)a3
++ (id)loadHashWithURL:(id)l
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v15 = 0;
-  v8 = objc_msgSend_checkResourceIsReachableAndReturnError_(v3, v4, &v15, v5, v6, v7);
+  v8 = objc_msgSend_checkResourceIsReachableAndReturnError_(lCopy, v4, &v15, v5, v6, v7);
   v11 = v15;
   if (v8)
   {
-    v12 = objc_msgSend_stringWithContentsOfURL_encoding_error_(MEMORY[0x1E696AEC0], v9, v3, 4, 0, v10);
+    v12 = objc_msgSend_stringWithContentsOfURL_encoding_error_(MEMORY[0x1E696AEC0], v9, lCopy, 4, 0, v10);
   }
 
   else
@@ -48,7 +48,7 @@
   block[1] = 3221225472;
   block[2] = sub_18398F820;
   block[3] = &unk_1E6DDC0E0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1EA84D2E0 == -1)
   {
     v2 = qword_1EA84D2D8;
@@ -63,9 +63,9 @@
   return v2;
 }
 
-+ (id)createProgramLibraryWithError:(id *)a3
++ (id)createProgramLibraryWithError:(id *)error
 {
-  v7 = objc_msgSend_defaultURLOfModelInThisBundle(a1, a2, a3, v3, v4, v5);
+  v7 = objc_msgSend_defaultURLOfModelInThisBundle(self, a2, error, v3, v4, v5);
   if (v7)
   {
     v12 = v7;
@@ -78,7 +78,7 @@
     }
 
     v19 = [CHE5MLProgramLibrary alloc];
-    v23 = objc_msgSend_initWithModelURL_error_(v19, v20, v12, a3, v21, v22);
+    v23 = objc_msgSend_initWithModelURL_error_(v19, v20, v12, error, v21, v22);
 
     v24 = v23;
   }

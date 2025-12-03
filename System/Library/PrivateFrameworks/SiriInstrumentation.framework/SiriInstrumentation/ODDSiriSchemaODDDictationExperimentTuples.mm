@@ -1,36 +1,36 @@
 @interface ODDSiriSchemaODDDictationExperimentTuples
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDDictationExperimentTuples)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDDictationExperimentTuples)initWithJSON:(id)a3;
-- (float)endpointDelayInMsAtIndex:(unint64_t)a3;
-- (float)launchTimeInMsAtIndex:(unint64_t)a3;
-- (float)siriResponseTimeInMsAtIndex:(unint64_t)a3;
-- (float)timeToFirstWordInMsAtIndex:(unint64_t)a3;
-- (float)timeToUufrInMsAtIndex:(unint64_t)a3;
+- (ODDSiriSchemaODDDictationExperimentTuples)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDDictationExperimentTuples)initWithJSON:(id)n;
+- (float)endpointDelayInMsAtIndex:(unint64_t)index;
+- (float)launchTimeInMsAtIndex:(unint64_t)index;
+- (float)siriResponseTimeInMsAtIndex:(unint64_t)index;
+- (float)timeToFirstWordInMsAtIndex:(unint64_t)index;
+- (float)timeToUufrInMsAtIndex:(unint64_t)index;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addEndpointDelayInMs:(float)a3;
-- (void)addLaunchTimeInMs:(float)a3;
-- (void)addSiriResponseTimeInMs:(float)a3;
-- (void)addTimeToFirstWordInMs:(float)a3;
-- (void)addTimeToUufrInMs:(float)a3;
-- (void)writeTo:(id)a3;
+- (void)addEndpointDelayInMs:(float)ms;
+- (void)addLaunchTimeInMs:(float)ms;
+- (void)addSiriResponseTimeInMs:(float)ms;
+- (void)addTimeToFirstWordInMs:(float)ms;
+- (void)addTimeToUufrInMs:(float)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDDictationExperimentTuples
 
-- (ODDSiriSchemaODDDictationExperimentTuples)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDDictationExperimentTuples)initWithDictionary:(id)dictionary
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v66.receiver = self;
   v66.super_class = ODDSiriSchemaODDDictationExperimentTuples;
   v5 = [(ODDSiriSchemaODDDictationExperimentTuples *)&v66 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"launchTimeInMs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"launchTimeInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,7 +69,7 @@
       }
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"endpointDelayInMs"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"endpointDelayInMs"];
     objc_opt_class();
     v45 = v13;
     if (objc_opt_isKindOfClass())
@@ -109,7 +109,7 @@
       }
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"siriResponseTimeInMs"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"siriResponseTimeInMs"];
     objc_opt_class();
     v44 = v20;
     if (objc_opt_isKindOfClass())
@@ -149,7 +149,7 @@
       }
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"timeToUufrInMs"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"timeToUufrInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -188,7 +188,7 @@
       }
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"timeToFirstWordInMs"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"timeToFirstWordInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -236,30 +236,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDDictationExperimentTuples)initWithJSON:(id)a3
+- (ODDSiriSchemaODDDictationExperimentTuples)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDDictationExperimentTuples *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDDictationExperimentTuples *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDDictationExperimentTuples *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -272,45 +272,45 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_endpointDelayInMs count])
   {
-    v4 = [(ODDSiriSchemaODDDictationExperimentTuples *)self endpointDelayInMs];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"endpointDelayInMs"];
+    endpointDelayInMs = [(ODDSiriSchemaODDDictationExperimentTuples *)self endpointDelayInMs];
+    v5 = [endpointDelayInMs copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"endpointDelayInMs"];
   }
 
   if ([(NSArray *)self->_launchTimeInMs count])
   {
-    v6 = [(ODDSiriSchemaODDDictationExperimentTuples *)self launchTimeInMs];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"launchTimeInMs"];
+    launchTimeInMs = [(ODDSiriSchemaODDDictationExperimentTuples *)self launchTimeInMs];
+    v7 = [launchTimeInMs copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"launchTimeInMs"];
   }
 
   if ([(NSArray *)self->_siriResponseTimeInMs count])
   {
-    v8 = [(ODDSiriSchemaODDDictationExperimentTuples *)self siriResponseTimeInMs];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"siriResponseTimeInMs"];
+    siriResponseTimeInMs = [(ODDSiriSchemaODDDictationExperimentTuples *)self siriResponseTimeInMs];
+    v9 = [siriResponseTimeInMs copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"siriResponseTimeInMs"];
   }
 
   if ([(NSArray *)self->_timeToFirstWordInMs count])
   {
-    v10 = [(ODDSiriSchemaODDDictationExperimentTuples *)self timeToFirstWordInMs];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"timeToFirstWordInMs"];
+    timeToFirstWordInMs = [(ODDSiriSchemaODDDictationExperimentTuples *)self timeToFirstWordInMs];
+    v11 = [timeToFirstWordInMs copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"timeToFirstWordInMs"];
   }
 
   if ([(NSArray *)self->_timeToUufrInMs count])
   {
-    v12 = [(ODDSiriSchemaODDDictationExperimentTuples *)self timeToUufrInMs];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"timeToUufrInMs"];
+    timeToUufrInMs = [(ODDSiriSchemaODDDictationExperimentTuples *)self timeToUufrInMs];
+    v13 = [timeToUufrInMs copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"timeToUufrInMs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -322,28 +322,28 @@
   return v6 ^ [(NSArray *)self->_timeToFirstWordInMs hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(ODDSiriSchemaODDDictationExperimentTuples *)self launchTimeInMs];
-  v6 = [v4 launchTimeInMs];
-  if ((v5 != 0) == (v6 == 0))
+  launchTimeInMs = [(ODDSiriSchemaODDDictationExperimentTuples *)self launchTimeInMs];
+  launchTimeInMs2 = [equalCopy launchTimeInMs];
+  if ((launchTimeInMs != 0) == (launchTimeInMs2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(ODDSiriSchemaODDDictationExperimentTuples *)self launchTimeInMs];
-  if (v7)
+  launchTimeInMs3 = [(ODDSiriSchemaODDDictationExperimentTuples *)self launchTimeInMs];
+  if (launchTimeInMs3)
   {
-    v8 = v7;
-    v9 = [(ODDSiriSchemaODDDictationExperimentTuples *)self launchTimeInMs];
-    v10 = [v4 launchTimeInMs];
-    v11 = [v9 isEqual:v10];
+    v8 = launchTimeInMs3;
+    launchTimeInMs4 = [(ODDSiriSchemaODDDictationExperimentTuples *)self launchTimeInMs];
+    launchTimeInMs5 = [equalCopy launchTimeInMs];
+    v11 = [launchTimeInMs4 isEqual:launchTimeInMs5];
 
     if (!v11)
     {
@@ -355,20 +355,20 @@
   {
   }
 
-  v5 = [(ODDSiriSchemaODDDictationExperimentTuples *)self endpointDelayInMs];
-  v6 = [v4 endpointDelayInMs];
-  if ((v5 != 0) == (v6 == 0))
+  launchTimeInMs = [(ODDSiriSchemaODDDictationExperimentTuples *)self endpointDelayInMs];
+  launchTimeInMs2 = [equalCopy endpointDelayInMs];
+  if ((launchTimeInMs != 0) == (launchTimeInMs2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(ODDSiriSchemaODDDictationExperimentTuples *)self endpointDelayInMs];
-  if (v12)
+  endpointDelayInMs = [(ODDSiriSchemaODDDictationExperimentTuples *)self endpointDelayInMs];
+  if (endpointDelayInMs)
   {
-    v13 = v12;
-    v14 = [(ODDSiriSchemaODDDictationExperimentTuples *)self endpointDelayInMs];
-    v15 = [v4 endpointDelayInMs];
-    v16 = [v14 isEqual:v15];
+    v13 = endpointDelayInMs;
+    endpointDelayInMs2 = [(ODDSiriSchemaODDDictationExperimentTuples *)self endpointDelayInMs];
+    endpointDelayInMs3 = [equalCopy endpointDelayInMs];
+    v16 = [endpointDelayInMs2 isEqual:endpointDelayInMs3];
 
     if (!v16)
     {
@@ -380,20 +380,20 @@
   {
   }
 
-  v5 = [(ODDSiriSchemaODDDictationExperimentTuples *)self siriResponseTimeInMs];
-  v6 = [v4 siriResponseTimeInMs];
-  if ((v5 != 0) == (v6 == 0))
+  launchTimeInMs = [(ODDSiriSchemaODDDictationExperimentTuples *)self siriResponseTimeInMs];
+  launchTimeInMs2 = [equalCopy siriResponseTimeInMs];
+  if ((launchTimeInMs != 0) == (launchTimeInMs2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(ODDSiriSchemaODDDictationExperimentTuples *)self siriResponseTimeInMs];
-  if (v17)
+  siriResponseTimeInMs = [(ODDSiriSchemaODDDictationExperimentTuples *)self siriResponseTimeInMs];
+  if (siriResponseTimeInMs)
   {
-    v18 = v17;
-    v19 = [(ODDSiriSchemaODDDictationExperimentTuples *)self siriResponseTimeInMs];
-    v20 = [v4 siriResponseTimeInMs];
-    v21 = [v19 isEqual:v20];
+    v18 = siriResponseTimeInMs;
+    siriResponseTimeInMs2 = [(ODDSiriSchemaODDDictationExperimentTuples *)self siriResponseTimeInMs];
+    siriResponseTimeInMs3 = [equalCopy siriResponseTimeInMs];
+    v21 = [siriResponseTimeInMs2 isEqual:siriResponseTimeInMs3];
 
     if (!v21)
     {
@@ -405,20 +405,20 @@
   {
   }
 
-  v5 = [(ODDSiriSchemaODDDictationExperimentTuples *)self timeToUufrInMs];
-  v6 = [v4 timeToUufrInMs];
-  if ((v5 != 0) == (v6 == 0))
+  launchTimeInMs = [(ODDSiriSchemaODDDictationExperimentTuples *)self timeToUufrInMs];
+  launchTimeInMs2 = [equalCopy timeToUufrInMs];
+  if ((launchTimeInMs != 0) == (launchTimeInMs2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(ODDSiriSchemaODDDictationExperimentTuples *)self timeToUufrInMs];
-  if (v22)
+  timeToUufrInMs = [(ODDSiriSchemaODDDictationExperimentTuples *)self timeToUufrInMs];
+  if (timeToUufrInMs)
   {
-    v23 = v22;
-    v24 = [(ODDSiriSchemaODDDictationExperimentTuples *)self timeToUufrInMs];
-    v25 = [v4 timeToUufrInMs];
-    v26 = [v24 isEqual:v25];
+    v23 = timeToUufrInMs;
+    timeToUufrInMs2 = [(ODDSiriSchemaODDDictationExperimentTuples *)self timeToUufrInMs];
+    timeToUufrInMs3 = [equalCopy timeToUufrInMs];
+    v26 = [timeToUufrInMs2 isEqual:timeToUufrInMs3];
 
     if (!v26)
     {
@@ -430,12 +430,12 @@
   {
   }
 
-  v5 = [(ODDSiriSchemaODDDictationExperimentTuples *)self timeToFirstWordInMs];
-  v6 = [v4 timeToFirstWordInMs];
-  if ((v5 != 0) != (v6 == 0))
+  launchTimeInMs = [(ODDSiriSchemaODDDictationExperimentTuples *)self timeToFirstWordInMs];
+  launchTimeInMs2 = [equalCopy timeToFirstWordInMs];
+  if ((launchTimeInMs != 0) != (launchTimeInMs2 == 0))
   {
-    v27 = [(ODDSiriSchemaODDDictationExperimentTuples *)self timeToFirstWordInMs];
-    if (!v27)
+    timeToFirstWordInMs = [(ODDSiriSchemaODDDictationExperimentTuples *)self timeToFirstWordInMs];
+    if (!timeToFirstWordInMs)
     {
 
 LABEL_30:
@@ -443,10 +443,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(ODDSiriSchemaODDDictationExperimentTuples *)self timeToFirstWordInMs];
-    v30 = [v4 timeToFirstWordInMs];
-    v31 = [v29 isEqual:v30];
+    v28 = timeToFirstWordInMs;
+    timeToFirstWordInMs2 = [(ODDSiriSchemaODDDictationExperimentTuples *)self timeToFirstWordInMs];
+    timeToFirstWordInMs3 = [equalCopy timeToFirstWordInMs];
+    v31 = [timeToFirstWordInMs2 isEqual:timeToFirstWordInMs3];
 
     if (v31)
     {
@@ -466,10 +466,10 @@ LABEL_28:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -631,132 +631,132 @@ LABEL_28:
   }
 }
 
-- (float)timeToFirstWordInMsAtIndex:(unint64_t)a3
+- (float)timeToFirstWordInMsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_timeToFirstWordInMs objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_timeToFirstWordInMs objectAtIndexedSubscript:index];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addTimeToFirstWordInMs:(float)a3
+- (void)addTimeToFirstWordInMs:(float)ms
 {
   timeToFirstWordInMs = self->_timeToFirstWordInMs;
   if (!timeToFirstWordInMs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_timeToFirstWordInMs;
-    self->_timeToFirstWordInMs = v6;
+    self->_timeToFirstWordInMs = array;
 
     timeToFirstWordInMs = self->_timeToFirstWordInMs;
   }
 
-  *&v8 = a3;
+  *&v8 = ms;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   [(NSArray *)timeToFirstWordInMs addObject:v9];
 }
 
-- (float)timeToUufrInMsAtIndex:(unint64_t)a3
+- (float)timeToUufrInMsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_timeToUufrInMs objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_timeToUufrInMs objectAtIndexedSubscript:index];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addTimeToUufrInMs:(float)a3
+- (void)addTimeToUufrInMs:(float)ms
 {
   timeToUufrInMs = self->_timeToUufrInMs;
   if (!timeToUufrInMs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_timeToUufrInMs;
-    self->_timeToUufrInMs = v6;
+    self->_timeToUufrInMs = array;
 
     timeToUufrInMs = self->_timeToUufrInMs;
   }
 
-  *&v8 = a3;
+  *&v8 = ms;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   [(NSArray *)timeToUufrInMs addObject:v9];
 }
 
-- (float)siriResponseTimeInMsAtIndex:(unint64_t)a3
+- (float)siriResponseTimeInMsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_siriResponseTimeInMs objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_siriResponseTimeInMs objectAtIndexedSubscript:index];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addSiriResponseTimeInMs:(float)a3
+- (void)addSiriResponseTimeInMs:(float)ms
 {
   siriResponseTimeInMs = self->_siriResponseTimeInMs;
   if (!siriResponseTimeInMs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_siriResponseTimeInMs;
-    self->_siriResponseTimeInMs = v6;
+    self->_siriResponseTimeInMs = array;
 
     siriResponseTimeInMs = self->_siriResponseTimeInMs;
   }
 
-  *&v8 = a3;
+  *&v8 = ms;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   [(NSArray *)siriResponseTimeInMs addObject:v9];
 }
 
-- (float)endpointDelayInMsAtIndex:(unint64_t)a3
+- (float)endpointDelayInMsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_endpointDelayInMs objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_endpointDelayInMs objectAtIndexedSubscript:index];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addEndpointDelayInMs:(float)a3
+- (void)addEndpointDelayInMs:(float)ms
 {
   endpointDelayInMs = self->_endpointDelayInMs;
   if (!endpointDelayInMs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_endpointDelayInMs;
-    self->_endpointDelayInMs = v6;
+    self->_endpointDelayInMs = array;
 
     endpointDelayInMs = self->_endpointDelayInMs;
   }
 
-  *&v8 = a3;
+  *&v8 = ms;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   [(NSArray *)endpointDelayInMs addObject:v9];
 }
 
-- (float)launchTimeInMsAtIndex:(unint64_t)a3
+- (float)launchTimeInMsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_launchTimeInMs objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_launchTimeInMs objectAtIndexedSubscript:index];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addLaunchTimeInMs:(float)a3
+- (void)addLaunchTimeInMs:(float)ms
 {
   launchTimeInMs = self->_launchTimeInMs;
   if (!launchTimeInMs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_launchTimeInMs;
-    self->_launchTimeInMs = v6;
+    self->_launchTimeInMs = array;
 
     launchTimeInMs = self->_launchTimeInMs;
   }
 
-  *&v8 = a3;
+  *&v8 = ms;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   [(NSArray *)launchTimeInMs addObject:v9];
 }

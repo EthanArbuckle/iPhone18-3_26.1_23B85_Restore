@@ -1,10 +1,10 @@
 @interface CKRemotePeoplePickerViewController
-- (BOOL)shouldAcceptXPCConnection:(id)a3;
-- (CKRemotePeoplePickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)dismissViewControllerWithSuccess:(BOOL)a3;
+- (BOOL)shouldAcceptXPCConnection:(id)connection;
+- (CKRemotePeoplePickerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)dismissViewControllerWithSuccess:(BOOL)success;
 - (void)loadView;
-- (void)requestActivity:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)requestActivity:(id)activity;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -12,34 +12,34 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   RemotePeoplePickerViewController.loadView()();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   RemotePeoplePickerViewController.viewDidLoad()();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  RemotePeoplePickerViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  RemotePeoplePickerViewController.viewDidDisappear(_:)(disappear);
 }
 
-- (BOOL)shouldAcceptXPCConnection:(id)a3
+- (BOOL)shouldAcceptXPCConnection:(id)connection
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = RemotePeoplePickerViewController.shouldAcceptXPCConnection(_:)(v4);
+  connectionCopy = connection;
+  selfCopy = self;
+  LOBYTE(self) = RemotePeoplePickerViewController.shouldAcceptXPCConnection(_:)(connectionCopy);
 
   return self & 1;
 }
 
-- (CKRemotePeoplePickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CKRemotePeoplePickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -51,23 +51,23 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return RemotePeoplePickerViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return RemotePeoplePickerViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
-- (void)requestActivity:(id)a3
+- (void)requestActivity:(id)activity
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(activity);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   RemotePeoplePickerViewController.requestActivity(completionHandler:)(partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned UIImage?) -> (), v5);
 }
 
-- (void)dismissViewControllerWithSuccess:(BOOL)a3
+- (void)dismissViewControllerWithSuccess:(BOOL)success
 {
-  v4 = self;
-  RemotePeoplePickerViewController.dismissViewController(success:)(a3);
+  selfCopy = self;
+  RemotePeoplePickerViewController.dismissViewController(success:)(success);
 }
 
 @end

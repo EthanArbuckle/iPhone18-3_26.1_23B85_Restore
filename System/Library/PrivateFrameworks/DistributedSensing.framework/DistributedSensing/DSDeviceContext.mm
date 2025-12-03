@@ -1,16 +1,16 @@
 @interface DSDeviceContext
-- (DSDeviceContext)initWithCBDevice:(id)a3 error:(id *)a4;
-- (DSDeviceContext)initWithXPCObject:(id)a3 error:(id *)a4;
-- (void)encodeSelf:(id)a3;
-- (void)updateWithCBDevice:(id)a3;
+- (DSDeviceContext)initWithCBDevice:(id)device error:(id *)error;
+- (DSDeviceContext)initWithXPCObject:(id)object error:(id *)error;
+- (void)encodeSelf:(id)self;
+- (void)updateWithCBDevice:(id)device;
 @end
 
 @implementation DSDeviceContext
 
-- (DSDeviceContext)initWithXPCObject:(id)a3 error:(id *)a4
+- (DSDeviceContext)initWithXPCObject:(id)object error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  objectCopy = object;
   v38.receiver = self;
   v38.super_class = DSDeviceContext;
   v7 = [(DSDeviceContext *)&v38 init];
@@ -27,7 +27,7 @@
     goto LABEL_54;
   }
 
-  if (MEMORY[0x24C1EF810](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x24C1EF810](objectCopy) != MEMORY[0x277D86468])
   {
     v36 = DSLogObjectForCategory_DSDeviceContext();
     if (!os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -40,7 +40,7 @@
     goto LABEL_54;
   }
 
-  v8 = xpc_dictionary_get_BOOL(v6, "kDSDevCtxIsMe");
+  v8 = xpc_dictionary_get_BOOL(objectCopy, "kDSDevCtxIsMe");
   if (onceTokenDSDeviceContext != -1)
   {
     [DSDeviceContext initWithXPCObject:error:];
@@ -61,7 +61,7 @@
   }
 
   v7->_isMe = v8;
-  string = xpc_dictionary_get_string(v6, "kDSDevCtxDevID");
+  string = xpc_dictionary_get_string(objectCopy, "kDSDevCtxDevID");
   if (string)
   {
     v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:string];
@@ -78,14 +78,14 @@
     {
       v15 = v7->_identifier;
       v16 = v14;
-      v17 = [(NSString *)v15 UTF8String];
+      uTF8String = [(NSString *)v15 UTF8String];
       *buf = 136315138;
-      v40 = v17;
+      v40 = uTF8String;
       _os_log_impl(&dword_249027000, v16, OS_LOG_TYPE_DEFAULT, "Identifier : %s", buf, 0xCu);
     }
   }
 
-  uint64 = xpc_dictionary_get_uint64(v6, "kDSCoordStatus");
+  uint64 = xpc_dictionary_get_uint64(objectCopy, "kDSCoordStatus");
   if (uint64 >= 0x100)
   {
     v36 = DSLogObjectForCategory_DSDeviceContext();
@@ -124,7 +124,7 @@
   }
 
   v7->_coordinationStatus = v19;
-  v22 = xpc_dictionary_get_uint64(v6, "kDSVehicleState");
+  v22 = xpc_dictionary_get_uint64(objectCopy, "kDSVehicleState");
   if (v22 >= 0x100)
   {
     v36 = DSLogObjectForCategory_DSDeviceContext();
@@ -163,7 +163,7 @@
   }
 
   v7->_vehicleState = v23;
-  v26 = xpc_dictionary_get_uint64(v6, "kDSVehicleConfidence");
+  v26 = xpc_dictionary_get_uint64(objectCopy, "kDSVehicleConfidence");
   if (v26 >= 0x100)
   {
     v36 = DSLogObjectForCategory_DSDeviceContext();
@@ -192,7 +192,7 @@
   }
 
   v7->_vehicleConfidence = v27;
-  v29 = xpc_dictionary_get_uint64(v6, "kDSTiebreaker");
+  v29 = xpc_dictionary_get_uint64(objectCopy, "kDSTiebreaker");
   if (v29 >= 0x100)
   {
     v36 = DSLogObjectForCategory_DSDeviceContext();
@@ -208,11 +208,11 @@ LABEL_54:
 LABEL_55:
 
     v33 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DSErrorDomain" code:1 userInfo:0];
-    if (a4)
+    if (error)
     {
       v33 = v33;
       v32 = 0;
-      *a4 = v33;
+      *error = v33;
     }
 
     else
@@ -246,9 +246,9 @@ LABEL_41:
   return v32;
 }
 
-- (void)encodeSelf:(id)a3
+- (void)encodeSelf:(id)self
 {
-  xdict = a3;
+  xdict = self;
   if (self->_isMe)
   {
     xpc_dictionary_set_BOOL(xdict, "kDSDevCtxIsMe", 1);
@@ -285,65 +285,65 @@ LABEL_41:
   }
 }
 
-- (DSDeviceContext)initWithCBDevice:(id)a3 error:(id *)a4
+- (DSDeviceContext)initWithCBDevice:(id)device error:(id *)error
 {
-  v7 = a3;
+  deviceCopy = device;
   v21.receiver = self;
   v21.super_class = DSDeviceContext;
   v8 = [(DSDeviceContext *)&v21 init];
   v9 = v8;
   if (!v8)
   {
-    [DSDeviceContext initWithCBDevice:a4 error:&v22];
+    [DSDeviceContext initWithCBDevice:error error:&v22];
     v19 = v22;
     goto LABEL_28;
   }
 
   v8->_isMe = 0;
-  v10 = [v7 identifier];
+  identifier = [deviceCopy identifier];
   identifier = v9->_identifier;
-  v9->_identifier = v10;
+  v9->_identifier = identifier;
 
-  v12 = [v7 dsInfoVehicleState];
-  if (v12 == 2)
+  dsInfoVehicleState = [deviceCopy dsInfoVehicleState];
+  if (dsInfoVehicleState == 2)
   {
     v13 = 2;
   }
 
   else
   {
-    v13 = v12 == 1;
+    v13 = dsInfoVehicleState == 1;
   }
 
   v9->_vehicleState = v13;
-  v14 = [v7 dsInfoVehicleConfidence];
+  dsInfoVehicleConfidence = [deviceCopy dsInfoVehicleConfidence];
   v15 = 0;
-  if (v14 > 10)
+  if (dsInfoVehicleConfidence > 10)
   {
-    if (v14 != 11 && v14 != 15)
+    if (dsInfoVehicleConfidence != 11 && dsInfoVehicleConfidence != 15)
     {
       goto LABEL_12;
     }
   }
 
-  else if (v14 != 4 && v14 != 7)
+  else if (dsInfoVehicleConfidence != 4 && dsInfoVehicleConfidence != 7)
   {
     goto LABEL_12;
   }
 
-  v15 = v14;
+  v15 = dsInfoVehicleConfidence;
 LABEL_12:
   v9->_vehicleConfidence = v15;
-  v16 = [v7 dsActionFlags];
+  dsActionFlags = [deviceCopy dsActionFlags];
   v17 = 0;
-  if (v16 <= 3)
+  if (dsActionFlags <= 3)
   {
-    if (v16 == 1)
+    if (dsActionFlags == 1)
     {
       v17 = 1;
     }
 
-    else if (v16 == 2)
+    else if (dsActionFlags == 2)
     {
       v17 = 3;
     }
@@ -351,7 +351,7 @@ LABEL_12:
 
   else
   {
-    switch(v16)
+    switch(dsActionFlags)
     {
       case 4:
         v17 = 2;
@@ -366,20 +366,20 @@ LABEL_12:
   }
 
   v9->_coordinationStatus = v17;
-  v9->_tiebreaker = [v7 dsActionTieBreaker];
-  if (([v7 discoveryFlags] & 0x800000000000000) != 0)
+  v9->_tiebreaker = [deviceCopy dsActionTieBreaker];
+  if (([deviceCopy discoveryFlags] & 0x800000000000000) != 0)
   {
     v9->_discoveryFlag |= 2uLL;
     v9->_dsInfoIsAlreadyFound = 1;
   }
 
-  if (([v7 discoveryFlags] & 0x1000000000000000) != 0)
+  if (([deviceCopy discoveryFlags] & 0x1000000000000000) != 0)
   {
     v9->_discoveryFlag |= 4uLL;
     v9->_dsActionIsAlreadyFound = 1;
   }
 
-  objc_storeStrong(&v9->_bleDevice, a3);
+  objc_storeStrong(&v9->_bleDevice, device);
   v18 = v9;
   v19 = 0;
 LABEL_28:
@@ -387,29 +387,29 @@ LABEL_28:
   return v9;
 }
 
-- (void)updateWithCBDevice:(id)a3
+- (void)updateWithCBDevice:(id)device
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  deviceCopy = device;
+  v6 = deviceCopy;
   self->_changedFlag = 0;
   p_changedFlag = &self->_changedFlag;
-  if (!v5 || self->_bleDevice == v5)
+  if (!deviceCopy || self->_bleDevice == deviceCopy)
   {
     goto LABEL_88;
   }
 
-  if (([(CBDevice *)v5 discoveryFlags]& 0x800000000000000) != 0)
+  if (([(CBDevice *)deviceCopy discoveryFlags]& 0x800000000000000) != 0)
   {
-    v9 = [(CBDevice *)v6 dsInfoVehicleState];
-    if (v9 == 2)
+    dsInfoVehicleState = [(CBDevice *)v6 dsInfoVehicleState];
+    if (dsInfoVehicleState == 2)
     {
       v10 = 2;
     }
 
     else
     {
-      v10 = v9 == 1;
+      v10 = dsInfoVehicleState == 1;
     }
 
     if (self->_vehicleState == v10)
@@ -427,8 +427,8 @@ LABEL_28:
       v11 = logObjDSDeviceContext;
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(CBDevice *)v6 identifier];
-        v13 = [v12 UTF8String];
+        identifier = [(CBDevice *)v6 identifier];
+        uTF8String = [identifier UTF8String];
         vehicleState = self->_vehicleState;
         if (vehicleState > 2)
         {
@@ -442,7 +442,7 @@ LABEL_28:
 
         v16 = off_278F85B38[v10];
         v44 = 136315650;
-        v45 = v13;
+        v45 = uTF8String;
         v46 = 2080;
         *v47 = v15;
         *&v47[8] = 2080;
@@ -454,11 +454,11 @@ LABEL_28:
       v8 = 2;
     }
 
-    v17 = [(CBDevice *)v6 dsInfoVehicleConfidence];
+    dsInfoVehicleConfidence = [(CBDevice *)v6 dsInfoVehicleConfidence];
     v18 = 0;
-    if (v17 > 10)
+    if (dsInfoVehicleConfidence > 10)
     {
-      if (v17 != 11 && v17 != 15)
+      if (dsInfoVehicleConfidence != 11 && dsInfoVehicleConfidence != 15)
       {
 LABEL_25:
         if (self->_vehicleConfidence == v18)
@@ -497,8 +497,8 @@ LABEL_51:
         }
 
         v20 = v19;
-        v21 = [(CBDevice *)v6 identifier];
-        v22 = [v21 UTF8String];
+        identifier2 = [(CBDevice *)v6 identifier];
+        uTF8String2 = [identifier2 UTF8String];
         vehicleConfidence = self->_vehicleConfidence;
         if (vehicleConfidence <= 6)
         {
@@ -557,7 +557,7 @@ LABEL_41:
               }
 
               v44 = 136315650;
-              v45 = v22;
+              v45 = uTF8String2;
               v46 = 2080;
               *v47 = v24;
               *&v47[8] = 2080;
@@ -573,12 +573,12 @@ LABEL_41:
       }
     }
 
-    else if (v17 != 4 && v17 != 7)
+    else if (dsInfoVehicleConfidence != 4 && dsInfoVehicleConfidence != 7)
     {
       goto LABEL_25;
     }
 
-    v18 = v17;
+    v18 = dsInfoVehicleConfidence;
     goto LABEL_25;
   }
 
@@ -586,16 +586,16 @@ LABEL_41:
 LABEL_56:
   if (([(CBDevice *)v6 discoveryFlags]& 0x1000000000000000) != 0)
   {
-    v28 = [(CBDevice *)v6 dsActionFlags];
+    dsActionFlags = [(CBDevice *)v6 dsActionFlags];
     v29 = 0;
-    if (v28 <= 3)
+    if (dsActionFlags <= 3)
     {
-      if (v28 == 1)
+      if (dsActionFlags == 1)
       {
         v29 = 1;
       }
 
-      else if (v28 == 2)
+      else if (dsActionFlags == 2)
       {
         v29 = 3;
       }
@@ -603,7 +603,7 @@ LABEL_56:
 
     else
     {
-      switch(v28)
+      switch(dsActionFlags)
       {
         case 4:
           v29 = 2;
@@ -627,8 +627,8 @@ LABEL_56:
       v30 = logObjDSDeviceContext;
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [(CBDevice *)v6 identifier];
-        v32 = [v31 UTF8String];
+        identifier3 = [(CBDevice *)v6 identifier];
+        uTF8String3 = [identifier3 UTF8String];
         coordinationStatus = self->_coordinationStatus;
         if (coordinationStatus > 5)
         {
@@ -642,7 +642,7 @@ LABEL_56:
 
         v35 = off_278F85B50[v29];
         v44 = 136315650;
-        v45 = v32;
+        v45 = uTF8String3;
         v46 = 2080;
         *v47 = v34;
         *&v47[8] = 2080;
@@ -654,10 +654,10 @@ LABEL_56:
       v8 = 4;
     }
 
-    v36 = [(CBDevice *)v6 dsActionTieBreaker];
-    if (v36 != self->_tiebreaker)
+    dsActionTieBreaker = [(CBDevice *)v6 dsActionTieBreaker];
+    if (dsActionTieBreaker != self->_tiebreaker)
     {
-      v37 = v36;
+      v37 = dsActionTieBreaker;
       if (onceTokenDSDeviceContext != -1)
       {
         [DSDeviceContext initWithXPCObject:error:];
@@ -667,11 +667,11 @@ LABEL_56:
       if (os_log_type_enabled(logObjDSDeviceContext, OS_LOG_TYPE_DEFAULT))
       {
         v39 = v38;
-        v40 = [(CBDevice *)v6 identifier];
-        v41 = [v40 UTF8String];
+        identifier4 = [(CBDevice *)v6 identifier];
+        uTF8String4 = [identifier4 UTF8String];
         tiebreaker = self->_tiebreaker;
         v44 = 136315650;
-        v45 = v41;
+        v45 = uTF8String4;
         v46 = 1024;
         *v47 = tiebreaker;
         *&v47[4] = 1024;
@@ -698,7 +698,7 @@ LABEL_56:
     *p_changedFlag |= v8;
   }
 
-  objc_storeStrong(&self->_bleDevice, a3);
+  objc_storeStrong(&self->_bleDevice, device);
 LABEL_88:
 
   v43 = *MEMORY[0x277D85DE8];

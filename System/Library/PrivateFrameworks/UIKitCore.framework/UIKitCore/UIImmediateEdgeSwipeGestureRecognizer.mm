@@ -1,14 +1,14 @@
 @interface UIImmediateEdgeSwipeGestureRecognizer
-- (void)_processTouches:(id)a3 withEvent:(id)a4;
+- (void)_processTouches:(id)touches withEvent:(id)event;
 @end
 
 @implementation UIImmediateEdgeSwipeGestureRecognizer
 
-- (void)_processTouches:(id)a3 withEvent:(id)a4
+- (void)_processTouches:(id)touches withEvent:(id)event
 {
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible)
   {
-    if (_UIEventHasEdgePendingOrLocked(a4))
+    if (_UIEventHasEdgePendingOrLocked(event))
     {
       v6 = 3;
     }

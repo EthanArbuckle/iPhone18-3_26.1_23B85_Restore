@@ -1,20 +1,20 @@
 @interface SBFLockScreenAlternateDateLabel
 + (BOOL)showAlternateDate;
 + (id)_lunarCalendarIdentifier;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SBFLockScreenAlternateDateLabel)initWithSettings:(id)a3 strength:(double)a4 font:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SBFLockScreenAlternateDateLabel)initWithSettings:(id)settings strength:(double)strength font:(id)font;
 - (UIEdgeInsets)characterOverflowInsets;
 - (id)_alternateDateString;
 - (void)layoutSubviews;
-- (void)setDate:(id)a3;
+- (void)setDate:(id)date;
 @end
 
 @implementation SBFLockScreenAlternateDateLabel
 
-- (SBFLockScreenAlternateDateLabel)initWithSettings:(id)a3 strength:(double)a4 font:(id)a5
+- (SBFLockScreenAlternateDateLabel)initWithSettings:(id)settings strength:(double)strength font:(id)font
 {
-  v7 = a3;
-  v8 = a5;
+  settingsCopy = settings;
+  fontCopy = font;
   v18.receiver = self;
   v18.super_class = SBFLockScreenAlternateDateLabel;
   v9 = [(SBFLockScreenAlternateDateLabel *)&v18 init];
@@ -39,13 +39,13 @@
     v11 = v10;
     _Block_object_dispose(&v20, 8);
     v12 = [v10 alloc];
-    v13 = [v12 initWithSettings:v7 strength:0 string:v8 font:*MEMORY[0x1E69DE9E8]];
+    v13 = [v12 initWithSettings:settingsCopy strength:0 string:fontCopy font:*MEMORY[0x1E69DE9E8]];
     label = v9->_label;
     v9->_label = v13;
 
     v15 = v9->_label;
-    v16 = [MEMORY[0x1E69DC888] clearColor];
-    [(SBUILegibilityLabel *)v15 setBackgroundColor:v16];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SBUILegibilityLabel *)v15 setBackgroundColor:clearColor];
 
     [(SBFLockScreenAlternateDateLabel *)v9 addSubview:v9->_label];
   }
@@ -63,9 +63,9 @@
   [(SBUILegibilityLabel *)label setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(SBUILegibilityLabel *)self->_label sizeThatFits:a3.width, a3.height];
+  [(SBUILegibilityLabel *)self->_label sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -73,24 +73,24 @@
 
 + (BOOL)showAlternateDate
 {
-  v2 = [a1 _lunarCalendarIdentifier];
-  v3 = [v2 length] != 0;
+  _lunarCalendarIdentifier = [self _lunarCalendarIdentifier];
+  v3 = [_lunarCalendarIdentifier length] != 0;
 
   return v3;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v5 = a3;
-  if (self->_date != v5)
+  dateCopy = date;
+  if (self->_date != dateCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_date, a3);
+    v8 = dateCopy;
+    objc_storeStrong(&self->_date, date);
     label = self->_label;
-    v7 = [(SBFLockScreenAlternateDateLabel *)self _alternateDateString];
-    [(SBUILegibilityLabel *)label setString:v7];
+    _alternateDateString = [(SBFLockScreenAlternateDateLabel *)self _alternateDateString];
+    [(SBUILegibilityLabel *)label setString:_alternateDateString];
 
-    v5 = v8;
+    dateCopy = v8;
   }
 }
 
@@ -139,13 +139,13 @@ void __59__SBFLockScreenAlternateDateLabel__lunarCalendarIdentifier__block_invok
 
 - (id)_alternateDateString
 {
-  v2 = [objc_opt_class() _lunarCalendarIdentifier];
-  if (v2)
+  _lunarCalendarIdentifier = [objc_opt_class() _lunarCalendarIdentifier];
+  if (_lunarCalendarIdentifier)
   {
-    v3 = [objc_alloc(MEMORY[0x1E695DEE8]) initWithCalendarIdentifier:v2];
+    v3 = [objc_alloc(MEMORY[0x1E695DEE8]) initWithCalendarIdentifier:_lunarCalendarIdentifier];
     if (v3)
     {
-      v4 = [MEMORY[0x1E69AAE08] localeForCalendarID:v2];
+      v4 = [MEMORY[0x1E69AAE08] localeForCalendarID:_lunarCalendarIdentifier];
       if (v4)
       {
         v5 = objc_opt_new();
@@ -153,8 +153,8 @@ void __59__SBFLockScreenAlternateDateLabel__lunarCalendarIdentifier__block_invok
         [v5 setLocale:v4];
         [v5 setDateStyle:2];
         [v5 setLocalizedDateFormatFromTemplate:@"UMMMd"];
-        v6 = [MEMORY[0x1E695DF00] date];
-        v7 = [v5 stringFromDate:v6];
+        date = [MEMORY[0x1E695DF00] date];
+        v7 = [v5 stringFromDate:date];
       }
 
       else

@@ -2,18 +2,18 @@
 + (id)defaultBeginOptions;
 + (id)defaultEndOptions;
 + (id)defaultOptions;
-- (BOOL)isEqual:(id)a3;
-- (RTISessionOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTISessionOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTISessionOptions
 
 + (id)defaultBeginOptions
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setAnimated:1];
   [v2 setOffscreenDirection:0];
 
@@ -22,7 +22,7 @@
 
 + (id)defaultOptions
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setShouldResign:1];
   [v2 setAnimated:1];
   [v2 setOffscreenDirection:0];
@@ -32,7 +32,7 @@
 
 + (id)defaultEndOptions
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setShouldResign:1];
   [v2 setAnimated:1];
   [v2 setOffscreenDirection:0];
@@ -40,24 +40,24 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The coder must allow keyed coding."];
   }
 
-  [v4 encodeBool:self->_shouldResign forKey:@"shouldResign"];
-  [v4 encodeBool:self->_animated forKey:@"animated"];
-  [v4 encodeInteger:self->_offscreenDirection forKey:@"offscreenDirection"];
-  [v4 encodeBool:self->_enhancedWindowingModeEnabled forKey:@"enhancedWindowingModeEnabled"];
+  [coderCopy encodeBool:self->_shouldResign forKey:@"shouldResign"];
+  [coderCopy encodeBool:self->_animated forKey:@"animated"];
+  [coderCopy encodeInteger:self->_offscreenDirection forKey:@"offscreenDirection"];
+  [coderCopy encodeBool:self->_enhancedWindowingModeEnabled forKey:@"enhancedWindowingModeEnabled"];
 }
 
-- (RTISessionOptions)initWithCoder:(id)a3
+- (RTISessionOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The decoder must allow keyed coding."];
   }
@@ -67,16 +67,16 @@
   v5 = [(RTISessionOptions *)&v7 init];
   if (v5)
   {
-    v5->_shouldResign = [v4 decodeBoolForKey:@"shouldResign"];
-    v5->_animated = [v4 decodeBoolForKey:@"animated"];
-    v5->_offscreenDirection = [v4 decodeIntegerForKey:@"offscreenDirection"];
-    v5->_enhancedWindowingModeEnabled = [v4 decodeBoolForKey:@"enhancedWindowingModeEnabled"];
+    v5->_shouldResign = [coderCopy decodeBoolForKey:@"shouldResign"];
+    v5->_animated = [coderCopy decodeBoolForKey:@"animated"];
+    v5->_offscreenDirection = [coderCopy decodeIntegerForKey:@"offscreenDirection"];
+    v5->_enhancedWindowingModeEnabled = [coderCopy decodeBoolForKey:@"enhancedWindowingModeEnabled"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[RTISessionOptions allocWithZone:?]];
   *(result + 8) = self->_shouldResign;
@@ -86,10 +86,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -99,12 +99,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTISessionOptions *)self shouldResign];
-      if (v6 == [(RTISessionOptions *)v5 shouldResign]&& (v7 = [(RTISessionOptions *)self animated], v7 == [(RTISessionOptions *)v5 animated]))
+      v5 = equalCopy;
+      shouldResign = [(RTISessionOptions *)self shouldResign];
+      if (shouldResign == [(RTISessionOptions *)v5 shouldResign]&& (v7 = [(RTISessionOptions *)self animated], v7 == [(RTISessionOptions *)v5 animated]))
       {
-        v9 = [(RTISessionOptions *)self offscreenDirection];
-        v8 = v9 == [(RTISessionOptions *)v5 offscreenDirection];
+        offscreenDirection = [(RTISessionOptions *)self offscreenDirection];
+        v8 = offscreenDirection == [(RTISessionOptions *)v5 offscreenDirection];
       }
 
       else

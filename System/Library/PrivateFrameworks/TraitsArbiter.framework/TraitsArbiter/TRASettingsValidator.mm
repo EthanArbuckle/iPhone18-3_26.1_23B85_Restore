@@ -1,33 +1,33 @@
 @interface TRASettingsValidator
-- (void)setOrientationSettings:(id)a3;
-- (void)validateOrientationSettingsWithBlock:(id)a3;
+- (void)setOrientationSettings:(id)settings;
+- (void)validateOrientationSettingsWithBlock:(id)block;
 @end
 
 @implementation TRASettingsValidator
 
-- (void)setOrientationSettings:(id)a3
+- (void)setOrientationSettings:(id)settings
 {
   self->_orientationSettingsValidated = 0;
   orientationSettingsValidatedReason = self->_orientationSettingsValidatedReason;
   self->_orientationSettingsValidatedReason = 0;
-  v5 = a3;
+  settingsCopy = settings;
 
-  v6 = [v5 copy];
+  v6 = [settingsCopy copy];
   orientationSettings = self->_orientationSettings;
   self->_orientationSettings = v6;
 }
 
-- (void)validateOrientationSettingsWithBlock:(id)a3
+- (void)validateOrientationSettingsWithBlock:(id)block
 {
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [TRASettingsValidator validateOrientationSettingsWithBlock:];
   }
 
   orientationSettings = self->_orientationSettings;
   v10 = 0;
-  v6 = v4[2](v4, orientationSettings, &v10);
+  v6 = blockCopy[2](blockCopy, orientationSettings, &v10);
   v7 = v10;
   self->_orientationSettingsValidated = v6;
   v8 = [v7 copy];

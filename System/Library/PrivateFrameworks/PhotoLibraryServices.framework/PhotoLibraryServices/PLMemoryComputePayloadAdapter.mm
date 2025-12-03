@@ -1,26 +1,26 @@
 @interface PLMemoryComputePayloadAdapter
 - (BOOL)isValidForJournalPersistence;
-- (id)payloadForChangedKeys:(id)a3;
+- (id)payloadForChangedKeys:(id)keys;
 - (id)payloadID;
-- (id)payloadIDForTombstone:(id)a3;
+- (id)payloadIDForTombstone:(id)tombstone;
 @end
 
 @implementation PLMemoryComputePayloadAdapter
 
-- (id)payloadIDForTombstone:(id)a3
+- (id)payloadIDForTombstone:(id)tombstone
 {
-  v3 = [a3 objectForKeyedSubscript:@"uuid"];
+  v3 = [tombstone objectForKeyedSubscript:@"uuid"];
   v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v3];
 
   return v4;
 }
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   if ([(PLMemoryComputePayloadAdapter *)self isValidForJournalPersistence])
   {
-    v5 = [(PLManagedObjectJournalEntryPayload *)[PLMemoryComputeJournalEntryPayload alloc] initWithInsertAdapter:self changedKeys:v4];
+    v5 = [(PLManagedObjectJournalEntryPayload *)[PLMemoryComputeJournalEntryPayload alloc] initWithInsertAdapter:self changedKeys:keysCopy];
   }
 
   else
@@ -33,20 +33,20 @@
 
 - (id)payloadID
 {
-  v2 = [(PLMemoryComputePayloadAdapter *)self memory];
-  v3 = [v2 uuid];
-  v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v3];
+  memory = [(PLMemoryComputePayloadAdapter *)self memory];
+  uuid = [memory uuid];
+  v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:uuid];
 
   return v4;
 }
 
 - (BOOL)isValidForJournalPersistence
 {
-  v3 = [(PLMemoryComputePayloadAdapter *)self memory];
-  if ([v3 pendingState] == 2)
+  memory = [(PLMemoryComputePayloadAdapter *)self memory];
+  if ([memory pendingState] == 2)
   {
-    v4 = [(PLMemoryComputePayloadAdapter *)self memory];
-    v5 = [v4 rejected] ^ 1;
+    memory2 = [(PLMemoryComputePayloadAdapter *)self memory];
+    v5 = [memory2 rejected] ^ 1;
   }
 
   else

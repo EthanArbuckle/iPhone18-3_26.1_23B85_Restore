@@ -1,5 +1,5 @@
 @interface BKAudiobookPreviewHelper
-- (BKAudiobookPreviewHelper)initWithMAsset:(id)a3 lockupProfile:(id)a4;
+- (BKAudiobookPreviewHelper)initWithMAsset:(id)asset lockupProfile:(id)profile;
 - (BOOL)_valid;
 - (NSDictionary)lockupProfileDictionary;
 - (NSString)description;
@@ -7,26 +7,26 @@
 - (double)previewDuration;
 - (id)_previewDictionary;
 - (id)helperCoverImage;
-- (id)helperMetadataForKey:(id)a3 needsCoordination:(BOOL)a4;
+- (id)helperMetadataForKey:(id)key needsCoordination:(BOOL)coordination;
 - (id)helperMinifiedController;
-- (void)helperCoverImageWithCompletion:(id)a3;
-- (void)helperViewControllerWithOptions:(id)a3 completion:(id)a4;
+- (void)helperCoverImageWithCompletion:(id)completion;
+- (void)helperViewControllerWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation BKAudiobookPreviewHelper
 
-- (BKAudiobookPreviewHelper)initWithMAsset:(id)a3 lockupProfile:(id)a4
+- (BKAudiobookPreviewHelper)initWithMAsset:(id)asset lockupProfile:(id)profile
 {
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  profileCopy = profile;
   v13.receiver = self;
   v13.super_class = BKAudiobookPreviewHelper;
   v9 = [(BKAudiobookPreviewHelper *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mAsset, a3);
-    objc_storeStrong(&v10->__lockupProfile, a4);
+    objc_storeStrong(&v9->_mAsset, asset);
+    objc_storeStrong(&v10->__lockupProfile, profile);
   }
 
   if (![(BKAudiobookPreviewHelper *)v10 _valid])
@@ -45,17 +45,17 @@
 
 - (NSURL)previewURL
 {
-  v2 = [(BKAudiobookPreviewHelper *)self mAsset];
-  v3 = [v2 previewURL];
+  mAsset = [(BKAudiobookPreviewHelper *)self mAsset];
+  previewURL = [mAsset previewURL];
 
-  return v3;
+  return previewURL;
 }
 
 - (double)previewDuration
 {
   objc_opt_class();
-  v3 = [(BKAudiobookPreviewHelper *)self _previewDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"duration"];
+  _previewDictionary = [(BKAudiobookPreviewHelper *)self _previewDictionary];
+  v4 = [_previewDictionary objectForKeyedSubscript:@"duration"];
   v5 = BUDynamicCast();
 
   [v5 doubleValue];
@@ -67,8 +67,8 @@
 - (NSDictionary)lockupProfileDictionary
 {
   objc_opt_class();
-  v3 = [(BKAudiobookPreviewHelper *)self _lockupProfile];
-  v4 = [v3 profileDictionary];
+  _lockupProfile = [(BKAudiobookPreviewHelper *)self _lockupProfile];
+  profileDictionary = [_lockupProfile profileDictionary];
   v5 = BUDynamicCast();
 
   return v5;
@@ -79,10 +79,10 @@
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   v5 = [(BKAudiobookPreviewHelper *)self helperMetadataForKey:AEHelperStringMetadataTitleKey needsCoordination:0];
-  v6 = [(BKAudiobookPreviewHelper *)self previewURL];
-  v7 = [(BKAudiobookPreviewHelper *)self mAsset];
-  v8 = [v7 id];
-  v9 = [NSString stringWithFormat:@"<%@: %p> [Title: %@] [URL: %@] [AssetID: %@]", v4, self, v5, v6, v8];
+  previewURL = [(BKAudiobookPreviewHelper *)self previewURL];
+  mAsset = [(BKAudiobookPreviewHelper *)self mAsset];
+  v8 = [mAsset id];
+  v9 = [NSString stringWithFormat:@"<%@: %p> [Title: %@] [URL: %@] [AssetID: %@]", v4, self, v5, previewURL, v8];
 
   return v9;
 }
@@ -112,15 +112,15 @@
   return v5;
 }
 
-- (void)helperCoverImageWithCompletion:(id)a3
+- (void)helperCoverImageWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKAudiobookPreviewHelper *)self mAsset];
-  v6 = [v5 artworkURL];
+  completionCopy = completion;
+  mAsset = [(BKAudiobookPreviewHelper *)self mAsset];
+  artworkURL = [mAsset artworkURL];
 
-  if ([v6 length])
+  if ([artworkURL length])
   {
-    v7 = [v6 jsa_normalizedArtworkURLOfSize:@"jpg" withFormat:1500.0, 1500.0];
+    v7 = [artworkURL jsa_normalizedArtworkURLOfSize:@"jpg" withFormat:1500.0, 1500.0];
     v8 = [NSURL URLWithString:v7];
 
     objc_initWeak(&location, self);
@@ -132,7 +132,7 @@
       v12[2] = sub_1000E92C0;
       v12[3] = &unk_100A06FC8;
       objc_copyWeak(&v14, &location);
-      v13 = v4;
+      v13 = completionCopy;
       v10 = [v9 dataTaskWithURL:v8 completionHandler:v12];
 
       [v10 resume];
@@ -146,7 +146,7 @@
     objc_initWeak(&location, self);
   }
 
-  v11 = objc_retainBlock(v4);
+  v11 = objc_retainBlock(completionCopy);
   v8 = v11;
   if (v11)
   {
@@ -158,10 +158,10 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)helperViewControllerWithOptions:(id)a3 completion:(id)a4
+- (void)helperViewControllerWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v8 = +[BKAudiobookNowPlayingModuleFactory instantiate];
   if (v8)
   {
@@ -172,7 +172,7 @@ LABEL_7:
     v11[3] = &unk_100A06FF0;
     objc_copyWeak(&v14, &location);
     v12 = 0;
-    v13 = v7;
+    v13 = completionCopy;
     [v8 setHelper:self completion:v11];
 
     objc_destroyWeak(&v14);
@@ -181,7 +181,7 @@ LABEL_7:
 
   else
   {
-    v9 = objc_retainBlock(v7);
+    v9 = objc_retainBlock(completionCopy);
     v10 = v9;
     if (v9)
     {
@@ -190,36 +190,36 @@ LABEL_7:
   }
 }
 
-- (id)helperMetadataForKey:(id)a3 needsCoordination:(BOOL)a4
+- (id)helperMetadataForKey:(id)key needsCoordination:(BOOL)coordination
 {
-  v5 = a3;
-  if ([v5 isEqualToString:AEHelperStringMetadataAssetIDKey])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:AEHelperStringMetadataAssetIDKey])
   {
     goto LABEL_2;
   }
 
-  if ([v5 isEqualToString:AEHelperStringMetadataAuthorKey])
+  if ([keyCopy isEqualToString:AEHelperStringMetadataAuthorKey])
   {
-    v6 = [(BKAudiobookPreviewHelper *)self mAsset];
-    v7 = [v6 artistName];
+    mAsset = [(BKAudiobookPreviewHelper *)self mAsset];
+    artistName = [mAsset artistName];
     goto LABEL_5;
   }
 
-  if ([v5 isEqualToString:AEHelperStringMetadataStoreIDKey])
+  if ([keyCopy isEqualToString:AEHelperStringMetadataStoreIDKey])
   {
 LABEL_2:
-    v6 = [(BKAudiobookPreviewHelper *)self mAsset];
-    v7 = [v6 id];
+    mAsset = [(BKAudiobookPreviewHelper *)self mAsset];
+    artistName = [mAsset id];
 LABEL_5:
-    v8 = v7;
+    v8 = artistName;
 
     goto LABEL_6;
   }
 
-  if ([v5 isEqualToString:AEHelperStringMetadataTitleKey])
+  if ([keyCopy isEqualToString:AEHelperStringMetadataTitleKey])
   {
-    v6 = [(BKAudiobookPreviewHelper *)self mAsset];
-    v7 = [v6 name];
+    mAsset = [(BKAudiobookPreviewHelper *)self mAsset];
+    artistName = [mAsset name];
     goto LABEL_5;
   }
 
@@ -241,11 +241,11 @@ LABEL_6:
   objc_opt_class();
   objc_opt_class();
   objc_opt_class();
-  v3 = [(BKAudiobookPreviewHelper *)self _lockupProfile];
-  v4 = [v3 offer];
-  v5 = [v4 objectForKeyedSubscript:@"assets"];
+  _lockupProfile = [(BKAudiobookPreviewHelper *)self _lockupProfile];
+  offer = [_lockupProfile offer];
+  v5 = [offer objectForKeyedSubscript:@"assets"];
   v6 = BUDynamicCast();
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
   v8 = BUDynamicCast();
   v9 = [v8 objectForKeyedSubscript:@"preview"];
   v10 = BUDynamicCast();
@@ -255,15 +255,15 @@ LABEL_6:
 
 - (BOOL)_valid
 {
-  v3 = [(BKAudiobookPreviewHelper *)self _lockupProfile];
-  if (v3)
+  _lockupProfile = [(BKAudiobookPreviewHelper *)self _lockupProfile];
+  if (_lockupProfile)
   {
-    v4 = [(BKAudiobookPreviewHelper *)self mAsset];
-    v5 = [v4 id];
+    mAsset = [(BKAudiobookPreviewHelper *)self mAsset];
+    v5 = [mAsset id];
     if ([v5 length])
     {
-      v6 = [(BKAudiobookPreviewHelper *)self previewURL];
-      if (v6)
+      previewURL = [(BKAudiobookPreviewHelper *)self previewURL];
+      if (previewURL)
       {
         [(BKAudiobookPreviewHelper *)self previewDuration];
         v8 = v7 > 0.0;

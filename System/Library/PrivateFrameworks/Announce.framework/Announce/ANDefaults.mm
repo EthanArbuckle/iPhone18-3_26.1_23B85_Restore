@@ -1,9 +1,9 @@
 @interface ANDefaults
 + (id)sharedInstance;
 - (ANDefaults)init;
-- (BOOL)BOOLForDefault:(id)a3;
-- (id)numberForDefault:(id)a3;
-- (id)objectForDefault:(id)a3;
+- (BOOL)BOOLForDefault:(id)default;
+- (id)numberForDefault:(id)default;
+- (id)objectForDefault:(id)default;
 @end
 
 @implementation ANDefaults
@@ -203,7 +203,7 @@
   block[1] = 3221225472;
   block[2] = __28__ANDefaults_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -221,45 +221,45 @@ uint64_t __28__ANDefaults_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)objectForDefault:(id)a3
+- (id)objectForDefault:(id)default
 {
-  v4 = a3;
-  v5 = [(NSUserDefaults *)self->_defaults objectForKey:v4];
-  if (!v5)
+  defaultCopy = default;
+  defaultValue = [(NSUserDefaults *)self->_defaults objectForKey:defaultCopy];
+  if (!defaultValue)
   {
-    v6 = [(NSDictionary *)self->_defaultsItems objectForKeyedSubscript:v4];
-    v5 = [v6 defaultValue];
+    v6 = [(NSDictionary *)self->_defaultsItems objectForKeyedSubscript:defaultCopy];
+    defaultValue = [v6 defaultValue];
   }
 
-  return v5;
+  return defaultValue;
 }
 
-- (id)numberForDefault:(id)a3
+- (id)numberForDefault:(id)default
 {
-  v4 = a3;
-  v5 = [(NSUserDefaults *)self->_defaults objectForKey:v4];
-  if (!v5)
+  defaultCopy = default;
+  defaultValue = [(NSUserDefaults *)self->_defaults objectForKey:defaultCopy];
+  if (!defaultValue)
   {
-    v6 = [(NSDictionary *)self->_defaultsItems objectForKeyedSubscript:v4];
-    v5 = [v6 defaultValue];
+    v6 = [(NSDictionary *)self->_defaultsItems objectForKeyedSubscript:defaultCopy];
+    defaultValue = [v6 defaultValue];
   }
 
-  return v5;
+  return defaultValue;
 }
 
-- (BOOL)BOOLForDefault:(id)a3
+- (BOOL)BOOLForDefault:(id)default
 {
-  v4 = a3;
-  v5 = [(NSUserDefaults *)self->_defaults objectForKey:v4];
-  if (!v5)
+  defaultCopy = default;
+  defaultValue = [(NSUserDefaults *)self->_defaults objectForKey:defaultCopy];
+  if (!defaultValue)
   {
-    v6 = [(NSDictionary *)self->_defaultsItems objectForKeyedSubscript:v4];
-    v5 = [v6 defaultValue];
+    v6 = [(NSDictionary *)self->_defaultsItems objectForKeyedSubscript:defaultCopy];
+    defaultValue = [v6 defaultValue];
   }
 
-  v7 = [v5 BOOLValue];
+  bOOLValue = [defaultValue BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface HMModernMessagingClient
 + (id)logCategory;
 - (HMHome)home;
-- (HMModernMessagingClient)initWithHome:(id)a3 idsTopic:(id)a4;
+- (HMModernMessagingClient)initWithHome:(id)home idsTopic:(id)topic;
 - (id)attributeDescriptions;
 - (id)logIdentifier;
-- (void)registerModernMessagingRequestHandlerWithMessageName:(id)a3 options:(id)a4 requestHandler:(id)a5 completionHandler:(id)a6;
-- (void)sendModernMessagingRequestWithMessageName:(id)a3 destination:(id)a4 requestPayload:(id)a5 options:(id)a6 responseHandler:(id)a7 completionHandler:(id)a8;
-- (void)unregisterModernMessagingRequestHandlerWithMessageName:(id)a3 completionHandler:(id)a4;
+- (void)registerModernMessagingRequestHandlerWithMessageName:(id)name options:(id)options requestHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)sendModernMessagingRequestWithMessageName:(id)name destination:(id)destination requestPayload:(id)payload options:(id)options responseHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)unregisterModernMessagingRequestHandlerWithMessageName:(id)name completionHandler:(id)handler;
 @end
 
 @implementation HMModernMessagingClient
@@ -21,60 +21,60 @@
 - (id)logIdentifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(HMModernMessagingClient *)self home];
-  v5 = [v4 uuid];
-  v6 = [v5 UUIDString];
-  v7 = [(HMModernMessagingClient *)self idsTopic];
-  v8 = [v3 stringWithFormat:@"%@:%@", v6, v7];
+  home = [(HMModernMessagingClient *)self home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
+  idsTopic = [(HMModernMessagingClient *)self idsTopic];
+  v8 = [v3 stringWithFormat:@"%@:%@", uUIDString, idsTopic];
 
   return v8;
 }
 
-- (void)sendModernMessagingRequestWithMessageName:(id)a3 destination:(id)a4 requestPayload:(id)a5 options:(id)a6 responseHandler:(id)a7 completionHandler:(id)a8
+- (void)sendModernMessagingRequestWithMessageName:(id)name destination:(id)destination requestPayload:(id)payload options:(id)options responseHandler:(id)handler completionHandler:(id)completionHandler
 {
   v45 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  nameCopy = name;
+  destinationCopy = destination;
+  payloadCopy = payload;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v20 = objc_autoreleasePoolPush();
-  v21 = self;
+  selfCopy = self;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     HMFGetLogIdentifier();
-    v23 = v33 = v16;
+    v23 = v33 = payloadCopy;
     v24 = HMFBooleanToString();
     *buf = 138544386;
     v36 = v23;
     v37 = 2112;
-    v38 = v14;
+    v38 = nameCopy;
     v39 = 2112;
-    v40 = v15;
+    v40 = destinationCopy;
     v41 = 2112;
-    v42 = v17;
+    v42 = optionsCopy;
     v43 = 2112;
     v44 = v24;
     _os_log_impl(&dword_19BB39000, v22, OS_LOG_TYPE_INFO, "%{public}@Sending hmmm message with message name: %@, destination: %@, options: %@, oneway: %@", buf, 0x34u);
 
-    v16 = v33;
+    payloadCopy = v33;
   }
 
   objc_autoreleasePoolPop(v20);
-  v25 = [(HMModernMessagingClient *)v21 home];
-  v26 = v25;
-  if (v25)
+  home = [(HMModernMessagingClient *)selfCopy home];
+  v26 = home;
+  if (home)
   {
-    [v25 sendModernMessagingRequestWithMessageName:v14 destination:v15 requestPayload:v16 options:v17 responseHandler:v18 completionHandler:v19];
+    [home sendModernMessagingRequestWithMessageName:nameCopy destination:destinationCopy requestPayload:payloadCopy options:optionsCopy responseHandler:handlerCopy completionHandler:completionHandlerCopy];
   }
 
   else
   {
-    v34 = v16;
+    v34 = payloadCopy;
     v27 = objc_autoreleasePoolPush();
-    v28 = v21;
+    v28 = selfCopy;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -85,24 +85,24 @@
     }
 
     objc_autoreleasePoolPop(v27);
-    v16 = v34;
-    if (v19)
+    payloadCopy = v34;
+    if (completionHandlerCopy)
     {
       v31 = [MEMORY[0x1E696ABC0] hmErrorWithCode:2];
-      v19[2](v19, v31);
+      completionHandlerCopy[2](completionHandlerCopy, v31);
     }
   }
 
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterModernMessagingRequestHandlerWithMessageName:(id)a3 completionHandler:(id)a4
+- (void)unregisterModernMessagingRequestHandlerWithMessageName:(id)name completionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -110,22 +110,22 @@
     v20 = 138543618;
     v21 = v11;
     v22 = 2112;
-    v23 = v6;
+    v23 = nameCopy;
     _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_INFO, "%{public}@Unregistering hmmm request handler with message name: %@", &v20, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMModernMessagingClient *)v9 home];
-  v13 = v12;
-  if (v12)
+  home = [(HMModernMessagingClient *)selfCopy home];
+  v13 = home;
+  if (home)
   {
-    [v12 unregisterModernMessagingRequestHandlerWithMessageName:v6 completionHandler:v7];
+    [home unregisterModernMessagingRequestHandlerWithMessageName:nameCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = v9;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -136,25 +136,25 @@
     }
 
     objc_autoreleasePoolPop(v14);
-    if (v7)
+    if (handlerCopy)
     {
       v18 = [MEMORY[0x1E696ABC0] hmErrorWithCode:2];
-      v7[2](v7, v18);
+      handlerCopy[2](handlerCopy, v18);
     }
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerModernMessagingRequestHandlerWithMessageName:(id)a3 options:(id)a4 requestHandler:(id)a5 completionHandler:(id)a6
+- (void)registerModernMessagingRequestHandlerWithMessageName:(id)name options:(id)options requestHandler:(id)handler completionHandler:(id)completionHandler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -162,24 +162,24 @@
     v26 = 138543874;
     v27 = v17;
     v28 = 2112;
-    v29 = v10;
+    v29 = nameCopy;
     v30 = 2112;
-    v31 = v11;
+    v31 = optionsCopy;
     _os_log_impl(&dword_19BB39000, v16, OS_LOG_TYPE_INFO, "%{public}@Registering hmmm request handler with message name: %@, options: %@", &v26, 0x20u);
   }
 
   objc_autoreleasePoolPop(v14);
-  v18 = [(HMModernMessagingClient *)v15 home];
-  v19 = v18;
-  if (v18)
+  home = [(HMModernMessagingClient *)selfCopy home];
+  v19 = home;
+  if (home)
   {
-    [v18 registerModernMessagingRequestHandlerWithMessageName:v10 options:v11 requestHandler:v12 completionHandler:v13];
+    [home registerModernMessagingRequestHandlerWithMessageName:nameCopy options:optionsCopy requestHandler:handlerCopy completionHandler:completionHandlerCopy];
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = v15;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -190,10 +190,10 @@
     }
 
     objc_autoreleasePoolPop(v20);
-    if (v13)
+    if (completionHandlerCopy)
     {
       v24 = [MEMORY[0x1E696ABC0] hmErrorWithCode:2];
-      v13[2](v13, v24);
+      completionHandlerCopy[2](completionHandlerCopy, v24);
     }
   }
 
@@ -204,13 +204,13 @@
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMModernMessagingClient *)self home];
-  v5 = [v4 uuid];
-  v6 = [v3 initWithName:@"HomeUUID" value:v5];
+  home = [(HMModernMessagingClient *)self home];
+  uuid = [home uuid];
+  v6 = [v3 initWithName:@"HomeUUID" value:uuid];
   v13[0] = v6;
   v7 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v8 = [(HMModernMessagingClient *)self idsTopic];
-  v9 = [v7 initWithName:@"IDSTopic" value:v8];
+  idsTopic = [(HMModernMessagingClient *)self idsTopic];
+  v9 = [v7 initWithName:@"IDSTopic" value:idsTopic];
   v13[1] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
 
@@ -219,18 +219,18 @@
   return v10;
 }
 
-- (HMModernMessagingClient)initWithHome:(id)a3 idsTopic:(id)a4
+- (HMModernMessagingClient)initWithHome:(id)home idsTopic:(id)topic
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  topicCopy = topic;
   v13.receiver = self;
   v13.super_class = HMModernMessagingClient;
   v8 = [(HMModernMessagingClient *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_home, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_home, homeCopy);
+    v10 = [topicCopy copy];
     idsTopic = v9->_idsTopic;
     v9->_idsTopic = v10;
   }

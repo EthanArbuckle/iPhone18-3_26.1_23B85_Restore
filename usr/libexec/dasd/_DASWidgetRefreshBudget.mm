@@ -1,28 +1,28 @@
 @interface _DASWidgetRefreshBudget
-- (_DASWidgetRefreshBudget)initWithCoder:(id)a3;
-- (_DASWidgetRefreshBudget)initWithDictionary:(id)a3;
+- (_DASWidgetRefreshBudget)initWithCoder:(id)coder;
+- (_DASWidgetRefreshBudget)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DASWidgetRefreshBudget
 
-- (_DASWidgetRefreshBudget)initWithDictionary:(id)a3
+- (_DASWidgetRefreshBudget)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _DASWidgetRefreshBudget;
-  v5 = [(_DASBudget *)&v11 initWithDictionary:v4];
+  v5 = [(_DASBudget *)&v11 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"budgetID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"budgetID"];
     widgetBudgetID = v5->_widgetBudgetID;
     v5->_widgetBudgetID = v6;
 
     if (!v5->_widgetBudgetID)
     {
-      v8 = [v4 objectForKeyedSubscript:@"widgetID"];
+      v8 = [dictionaryCopy objectForKeyedSubscript:@"widgetID"];
       v9 = v5->_widgetBudgetID;
       v5->_widgetBudgetID = v8;
     }
@@ -33,8 +33,8 @@
 
 - (id)description
 {
-  v3 = [(_DASBudget *)self name];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"com.apple.dasd.widget_" withString:&stru_1001BA3C0];
+  name = [(_DASBudget *)self name];
+  v4 = [name stringByReplacingOccurrencesOfString:@"com.apple.dasd.widget_" withString:&stru_1001BA3C0];
 
   [(_DASBudget *)self balance];
   v6 = v5;
@@ -48,39 +48,39 @@
 {
   v6.receiver = self;
   v6.super_class = _DASWidgetRefreshBudget;
-  v3 = [(_DASBudget *)&v6 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(_DASBudget *)&v6 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   [v4 setObject:self->_widgetBudgetID forKeyedSubscript:@"budgetID"];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _DASWidgetRefreshBudget;
-  v4 = a3;
-  [(_DASBudget *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_widgetBudgetID forKey:{@"budgetID", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(_DASBudget *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_widgetBudgetID forKey:{@"budgetID", v5.receiver, v5.super_class}];
 }
 
-- (_DASWidgetRefreshBudget)initWithCoder:(id)a3
+- (_DASWidgetRefreshBudget)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = _DASWidgetRefreshBudget;
-  v5 = [(_DASBudget *)&v10 initWithCoder:v4];
+  v5 = [(_DASBudget *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"budgetID"];
+    v6 = [coderCopy decodeObjectForKey:@"budgetID"];
     [(_DASWidgetRefreshBudget *)v5 setWidgetBudgetID:v6];
 
-    v7 = [(_DASWidgetRefreshBudget *)v5 widgetBudgetID];
+    widgetBudgetID = [(_DASWidgetRefreshBudget *)v5 widgetBudgetID];
 
-    if (!v7)
+    if (!widgetBudgetID)
     {
-      v8 = [v4 decodeObjectForKey:@"widgetID"];
+      v8 = [coderCopy decodeObjectForKey:@"widgetID"];
       [(_DASWidgetRefreshBudget *)v5 setWidgetBudgetID:v8];
     }
   }

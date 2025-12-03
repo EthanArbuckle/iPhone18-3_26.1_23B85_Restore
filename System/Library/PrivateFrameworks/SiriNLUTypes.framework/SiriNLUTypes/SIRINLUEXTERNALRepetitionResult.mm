@@ -1,33 +1,33 @@
 @interface SIRINLUEXTERNALRepetitionResult
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRepetitionType:(id)a3;
+- (int)StringAsRepetitionType:(id)type;
 - (int)repetitionType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRepetitionType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRepetitionType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALRepetitionResult
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 16);
+  fromCopy = from;
+  v5 = *(fromCopy + 16);
   if (v5)
   {
-    self->_asrHypothesisIndex = *(v4 + 2);
+    self->_asrHypothesisIndex = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 16);
+    v5 = *(fromCopy + 16);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_repetitionType = *(v4 + 3);
+    self->_repetitionType = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 }
@@ -58,33 +58,33 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) == 0 || self->_asrHypothesisIndex != *(v4 + 2))
+    if ((*(equalCopy + 16) & 1) == 0 || self->_asrHypothesisIndex != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 16))
+  else if (*(equalCopy + 16))
   {
 LABEL_11:
     v5 = 0;
     goto LABEL_12;
   }
 
-  v5 = (*(v4 + 16) & 2) == 0;
+  v5 = (*(equalCopy + 16) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 16) & 2) == 0 || self->_repetitionType != *(v4 + 3))
+    if ((*(equalCopy + 16) & 2) == 0 || self->_repetitionType != *(equalCopy + 3))
     {
       goto LABEL_11;
     }
@@ -97,9 +97,9 @@ LABEL_12:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -117,34 +117,34 @@ LABEL_12:
   return result;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_asrHypothesisIndex;
-    *(v4 + 16) |= 1u;
+    toCopy[2] = self->_asrHypothesisIndex;
+    *(toCopy + 16) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[3] = self->_repetitionType;
-    *(v4 + 16) |= 2u;
+    toCopy[3] = self->_repetitionType;
+    *(toCopy + 16) |= 2u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     asrHypothesisIndex = self->_asrHypothesisIndex;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -152,18 +152,18 @@ LABEL_12:
   {
     repetitionType = self->_repetitionType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_asrHypothesisIndex];
-    [v3 setObject:v5 forKey:@"asr_hypothesis_index"];
+    [dictionary setObject:v5 forKey:@"asr_hypothesis_index"];
 
     has = self->_has;
   }
@@ -181,10 +181,10 @@ LABEL_12:
       v7 = off_1E8327F58[repetitionType];
     }
 
-    [v3 setObject:v7 forKey:@"repetition_type"];
+    [dictionary setObject:v7 forKey:@"repetition_type"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -193,31 +193,31 @@ LABEL_12:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALRepetitionResult;
   v4 = [(SIRINLUEXTERNALRepetitionResult *)&v8 description];
-  v5 = [(SIRINLUEXTERNALRepetitionResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALRepetitionResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsRepetitionType:(id)a3
+- (int)StringAsRepetitionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NOT_AVAILABLE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"NOT_AVAILABLE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NO"])
+  else if ([typeCopy isEqualToString:@"NO"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PARTIAL"])
+  else if ([typeCopy isEqualToString:@"PARTIAL"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FULL"])
+  else if ([typeCopy isEqualToString:@"FULL"])
   {
     v4 = 3;
   }
@@ -230,9 +230,9 @@ LABEL_12:
   return v4;
 }
 
-- (void)setHasRepetitionType:(BOOL)a3
+- (void)setHasRepetitionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

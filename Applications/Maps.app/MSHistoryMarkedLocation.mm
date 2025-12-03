@@ -1,35 +1,35 @@
 @interface MSHistoryMarkedLocation
-- (BOOL)isEqualToMarkedLocation:(id)a3;
-- (BOOL)isEqualToSearchResult:(id)a3;
-- (MSHistoryMarkedLocation)initWithDroppedPin:(id)a3;
-- (MSHistoryMarkedLocation)initWithSearchResult:(id)a3;
+- (BOOL)isEqualToMarkedLocation:(id)location;
+- (BOOL)isEqualToSearchResult:(id)result;
+- (MSHistoryMarkedLocation)initWithDroppedPin:(id)pin;
+- (MSHistoryMarkedLocation)initWithSearchResult:(id)result;
 - (id)droppedPin;
-- (void)updateWithDroppedPin:(id)a3;
-- (void)updateWithSearchResult:(id)a3;
+- (void)updateWithDroppedPin:(id)pin;
+- (void)updateWithSearchResult:(id)result;
 @end
 
 @implementation MSHistoryMarkedLocation
 
-- (BOOL)isEqualToMarkedLocation:(id)a3
+- (BOOL)isEqualToMarkedLocation:(id)location
 {
-  v4 = a3;
-  if (v4)
+  locationCopy = location;
+  if (locationCopy)
   {
-    v5 = [(MSHistoryMarkedLocation *)self customName];
-    v6 = [v4 customName];
-    if ([v5 isEqualToString:v6])
+    customName = [(MSHistoryMarkedLocation *)self customName];
+    customName2 = [locationCopy customName];
+    if ([customName isEqualToString:customName2])
     {
-      v7 = [(MSHistoryMarkedLocation *)self latitude];
-      v8 = [v4 latitude];
-      if ([v7 isEqualToNumber:v8])
+      latitude = [(MSHistoryMarkedLocation *)self latitude];
+      latitude2 = [locationCopy latitude];
+      if ([latitude isEqualToNumber:latitude2])
       {
-        v9 = [(MSHistoryMarkedLocation *)self longitude];
-        v10 = [v4 longitude];
-        if ([v9 isEqualToNumber:v10] && (v11 = -[MSHistoryMarkedLocation floorOrdinal](self, "floorOrdinal"), v11 == objc_msgSend(v4, "floorOrdinal")))
+        longitude = [(MSHistoryMarkedLocation *)self longitude];
+        longitude2 = [locationCopy longitude];
+        if ([longitude isEqualToNumber:longitude2] && (v11 = -[MSHistoryMarkedLocation floorOrdinal](self, "floorOrdinal"), v11 == objc_msgSend(locationCopy, "floorOrdinal")))
         {
-          v12 = [(MSHistoryMarkedLocation *)self muid];
-          v13 = [v4 muid];
-          v14 = [v12 isEqualToNumber:v13];
+          muid = [(MSHistoryMarkedLocation *)self muid];
+          muid2 = [locationCopy muid];
+          v14 = [muid isEqualToNumber:muid2];
         }
 
         else
@@ -58,30 +58,30 @@
   return v14;
 }
 
-- (BOOL)isEqualToSearchResult:(id)a3
+- (BOOL)isEqualToSearchResult:(id)result
 {
-  v4 = a3;
-  if (v4)
+  resultCopy = result;
+  if (resultCopy)
   {
-    v5 = [(MSHistoryMarkedLocation *)self customName];
-    v6 = [v4 name];
-    if ([v5 isEqualToString:v6])
+    customName = [(MSHistoryMarkedLocation *)self customName];
+    name = [resultCopy name];
+    if ([customName isEqualToString:name])
     {
-      v7 = [(MSHistoryMarkedLocation *)self latitude];
-      [v4 coordinate];
+      latitude = [(MSHistoryMarkedLocation *)self latitude];
+      [resultCopy coordinate];
       v8 = [NSNumber numberWithDouble:?];
-      if ([v7 isEqualToNumber:v8])
+      if ([latitude isEqualToNumber:v8])
       {
-        v9 = [(MSHistoryMarkedLocation *)self longitude];
-        [v4 coordinate];
+        longitude = [(MSHistoryMarkedLocation *)self longitude];
+        [resultCopy coordinate];
         v11 = [NSNumber numberWithDouble:v10];
-        if ([v9 isEqualToNumber:v11] && (v12 = -[MSHistoryMarkedLocation floorOrdinal](self, "floorOrdinal"), v12 == objc_msgSend(v4, "floorOrdinal")))
+        if ([longitude isEqualToNumber:v11] && (v12 = -[MSHistoryMarkedLocation floorOrdinal](self, "floorOrdinal"), v12 == objc_msgSend(resultCopy, "floorOrdinal")))
         {
-          v17 = [(MSHistoryMarkedLocation *)self muid];
-          v18 = [v4 mapItem];
-          v13 = [v18 _geoMapItem];
-          v14 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v13 _muid]);
-          v15 = [v17 isEqualToNumber:v14];
+          muid = [(MSHistoryMarkedLocation *)self muid];
+          mapItem = [resultCopy mapItem];
+          _geoMapItem = [mapItem _geoMapItem];
+          v14 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [_geoMapItem _muid]);
+          v15 = [muid isEqualToNumber:v14];
         }
 
         else
@@ -110,36 +110,36 @@
   return v15;
 }
 
-- (void)updateWithSearchResult:(id)a3
+- (void)updateWithSearchResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 name];
-  [(MSHistoryMarkedLocation *)self setCustomName:v5];
+  resultCopy = result;
+  name = [resultCopy name];
+  [(MSHistoryMarkedLocation *)self setCustomName:name];
 
-  -[MSHistoryMarkedLocation setFloorOrdinal:](self, "setFloorOrdinal:", [v4 floorOrdinal]);
-  v8 = [v4 mapItem];
+  -[MSHistoryMarkedLocation setFloorOrdinal:](self, "setFloorOrdinal:", [resultCopy floorOrdinal]);
+  mapItem = [resultCopy mapItem];
 
-  v6 = [v8 _geoMapItem];
-  v7 = [GEOMapItemStorage mapItemStorageForGEOMapItem:v6];
+  _geoMapItem = [mapItem _geoMapItem];
+  v7 = [GEOMapItemStorage mapItemStorageForGEOMapItem:_geoMapItem];
   [(MSHistoryMarkedLocation *)self setMapItemStorage:v7];
 }
 
-- (void)updateWithDroppedPin:(id)a3
+- (void)updateWithDroppedPin:(id)pin
 {
-  v4 = a3;
-  v5 = [v4 latLng];
-  [v5 lat];
+  pinCopy = pin;
+  latLng = [pinCopy latLng];
+  [latLng lat];
   v6 = [NSNumber numberWithDouble:?];
   [(MSHistoryMarkedLocation *)self setLatitude:v6];
 
-  v7 = [v4 latLng];
-  [v7 lng];
+  latLng2 = [pinCopy latLng];
+  [latLng2 lng];
   v8 = [NSNumber numberWithDouble:?];
   [(MSHistoryMarkedLocation *)self setLongitude:v8];
 
-  v9 = [v4 floorOrdinal];
+  floorOrdinal = [pinCopy floorOrdinal];
 
-  [(MSHistoryMarkedLocation *)self setFloorOrdinal:v9];
+  [(MSHistoryMarkedLocation *)self setFloorOrdinal:floorOrdinal];
 }
 
 - (id)droppedPin
@@ -148,51 +148,51 @@
   v4 = objc_alloc_init(GEOLatLng);
   [v3 setLatLng:v4];
 
-  v5 = [(MSHistoryMarkedLocation *)self latitude];
-  [v5 doubleValue];
+  latitude = [(MSHistoryMarkedLocation *)self latitude];
+  [latitude doubleValue];
   v7 = v6;
-  v8 = [v3 latLng];
-  [v8 setLat:v7];
+  latLng = [v3 latLng];
+  [latLng setLat:v7];
 
-  v9 = [(MSHistoryMarkedLocation *)self longitude];
-  [v9 doubleValue];
+  longitude = [(MSHistoryMarkedLocation *)self longitude];
+  [longitude doubleValue];
   v11 = v10;
-  v12 = [v3 latLng];
-  [v12 setLng:v11];
+  latLng2 = [v3 latLng];
+  [latLng2 setLng:v11];
 
   [v3 setFloorOrdinal:{-[MSHistoryMarkedLocation floorOrdinal](self, "floorOrdinal")}];
-  v13 = [(MSHistoryMarkedLocation *)self createTime];
-  [v13 timeIntervalSinceReferenceDate];
+  createTime = [(MSHistoryMarkedLocation *)self createTime];
+  [createTime timeIntervalSinceReferenceDate];
   [v3 setTimestamp:?];
 
   return v3;
 }
 
-- (MSHistoryMarkedLocation)initWithSearchResult:(id)a3
+- (MSHistoryMarkedLocation)initWithSearchResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v8.receiver = self;
   v8.super_class = MSHistoryMarkedLocation;
   v5 = [(MSHistoryMarkedLocation *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MSHistoryMarkedLocation *)v5 updateWithSearchResult:v4];
+    [(MSHistoryMarkedLocation *)v5 updateWithSearchResult:resultCopy];
   }
 
   return v6;
 }
 
-- (MSHistoryMarkedLocation)initWithDroppedPin:(id)a3
+- (MSHistoryMarkedLocation)initWithDroppedPin:(id)pin
 {
-  v4 = a3;
+  pinCopy = pin;
   v8.receiver = self;
   v8.super_class = MSHistoryMarkedLocation;
   v5 = [(MSHistoryMarkedLocation *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MSHistoryMarkedLocation *)v5 updateWithDroppedPin:v4];
+    [(MSHistoryMarkedLocation *)v5 updateWithDroppedPin:pinCopy];
   }
 
   return v6;

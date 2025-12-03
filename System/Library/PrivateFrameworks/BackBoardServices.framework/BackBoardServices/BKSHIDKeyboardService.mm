@@ -2,15 +2,15 @@
 + (id)new;
 + (id)sharedInstance;
 - (BKSHIDKeyboardService)init;
-- (_BKSHIDKeyboardDeviceClientProxy)_proxyDeviceForConcreteDevice:(uint64_t)a1;
-- (id)_addObserver:(uint64_t)a3 forReason:;
-- (id)_proxyDevicesForConcreteDevices:(void *)a1;
-- (id)addKeyboardObserver:(id)a3;
+- (_BKSHIDKeyboardDeviceClientProxy)_proxyDeviceForConcreteDevice:(uint64_t)device;
+- (id)_addObserver:(uint64_t)observer forReason:;
+- (id)_proxyDevicesForConcreteDevices:(void *)devices;
+- (id)addKeyboardObserver:(id)observer;
 - (id)allKeyboardDevices;
-- (id)keyboardDeviceForSenderID:(unint64_t)a3;
-- (void)_evaluateObservationStateAfterReconnect:(uint64_t)a1;
-- (void)_updateKeyboards:(uint64_t)a1;
-- (void)setConnectedKeyboards:(id)a3 withReply:(id)a4;
+- (id)keyboardDeviceForSenderID:(unint64_t)d;
+- (void)_evaluateObservationStateAfterReconnect:(uint64_t)reconnect;
+- (void)_updateKeyboards:(uint64_t)keyboards;
+- (void)setConnectedKeyboards:(id)keyboards withReply:(id)reply;
 @end
 
 @implementation BKSHIDKeyboardService
@@ -31,8 +31,8 @@
 {
   v3 = [(BKSHIDKeyboardService *)&self->super.isa _addObserver:@"allKeyboardDevices" forReason:?];
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(BSOrderedDictionary *)self->_lock_senderIDToDevice allValues];
-  v5 = [v4 copy];
+  allValues = [(BSOrderedDictionary *)self->_lock_senderIDToDevice allValues];
+  v5 = [allValues copy];
 
   os_unfair_lock_unlock(&self->_lock);
   v6 = [(BKSHIDKeyboardService *)self _proxyDevicesForConcreteDevices:v5];
@@ -168,28 +168,28 @@ void __39__BKSHIDKeyboardService_sharedInstance__block_invoke()
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setConnectedKeyboards:(id)a3 withReply:(id)a4
+- (void)setConnectedKeyboards:(id)keyboards withReply:(id)reply
 {
-  v7 = a4;
-  [(BKSHIDKeyboardService *)self _updateKeyboards:a3];
-  v6 = v7;
-  if (v7)
+  replyCopy = reply;
+  [(BKSHIDKeyboardService *)self _updateKeyboards:keyboards];
+  v6 = replyCopy;
+  if (replyCopy)
   {
-    (*(v7 + 2))(v7, 0);
-    v6 = v7;
+    (*(replyCopy + 2))(replyCopy, 0);
+    v6 = replyCopy;
   }
 }
 
-- (void)_updateKeyboards:(uint64_t)a1
+- (void)_updateKeyboards:(uint64_t)keyboards
 {
   v101 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (keyboards)
   {
-    os_unfair_lock_lock((a1 + 8));
+    os_unfair_lock_lock((keyboards + 8));
     v4 = [v3 count];
-    v5 = [*(a1 + 40) count];
-    v70 = a1;
+    v5 = [*(keyboards + 40) count];
+    keyboardsCopy = keyboards;
     if (v4)
     {
       if (v5)
@@ -197,7 +197,7 @@ void __39__BKSHIDKeyboardService_sharedInstance__block_invoke()
         v67 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v66 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v62 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        v63 = *(a1 + 40);
+        v63 = *(keyboards + 40);
         v6 = objc_alloc_init(MEMORY[0x1E698E6F8]);
         v86 = 0u;
         v87 = 0u;
@@ -221,13 +221,13 @@ void __39__BKSHIDKeyboardService_sharedInstance__block_invoke()
 
               v11 = *(*(&v86 + 1) + 8 * i);
               v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v11, "senderID")}];
-              v13 = [*(a1 + 40) objectForKey:v12];
+              v13 = [*(keyboards + 40) objectForKey:v12];
               if (v13)
               {
                 v14 = v13;
-                v15 = [v11 layout];
-                v16 = [v14 layout];
-                v17 = [v15 isEqual:v16];
+                layout = [v11 layout];
+                layout2 = [v14 layout];
+                v17 = [layout isEqual:layout2];
 
                 if ((v17 & 1) == 0)
                 {
@@ -235,7 +235,7 @@ void __39__BKSHIDKeyboardService_sharedInstance__block_invoke()
                   [v14 _replaceProperties:v11];
                 }
 
-                a1 = v70;
+                keyboards = keyboardsCopy;
               }
 
               else
@@ -262,14 +262,14 @@ void __39__BKSHIDKeyboardService_sharedInstance__block_invoke()
         v19 = v62;
         v85 = v19;
         [v63 enumerateKeysAndObjectsUsingBlock:v83];
-        v20 = *(v70 + 40);
-        *(v70 + 40) = v18;
+        v20 = *(keyboardsCopy + 40);
+        *(keyboardsCopy + 40) = v18;
         v21 = v18;
         v22 = v66;
-        v23 = v19;
-        v24 = v67;
+        allValues2 = v19;
+        allValues = v67;
 
-        a1 = v70;
+        keyboards = keyboardsCopy;
         v3 = v64;
       }
 
@@ -307,13 +307,13 @@ void __39__BKSHIDKeyboardService_sharedInstance__block_invoke()
           while (v29);
         }
 
-        v24 = [v26 allValues];
-        v35 = *(v70 + 40);
-        *(v70 + 40) = v26;
-        a1 = v70;
+        allValues = [v26 allValues];
+        v35 = *(keyboardsCopy + 40);
+        *(keyboardsCopy + 40) = v26;
+        keyboards = keyboardsCopy;
 
         v22 = 0;
-        v23 = 0;
+        allValues2 = 0;
       }
     }
 
@@ -321,9 +321,9 @@ void __39__BKSHIDKeyboardService_sharedInstance__block_invoke()
     {
       if (v5)
       {
-        v23 = [*(a1 + 40) allValues];
-        v25 = *(a1 + 40);
-        *(a1 + 40) = 0;
+        allValues2 = [*(keyboards + 40) allValues];
+        v25 = *(keyboards + 40);
+        *(keyboards + 40) = 0;
 
         v22 = 0;
       }
@@ -331,29 +331,29 @@ void __39__BKSHIDKeyboardService_sharedInstance__block_invoke()
       else
       {
         v22 = 0;
-        v23 = 0;
+        allValues2 = 0;
       }
 
-      v24 = 0;
+      allValues = 0;
     }
 
-    v36 = [*(a1 + 16) orderedContext];
-    v37 = [v36 copy];
+    orderedContext = [*(keyboards + 16) orderedContext];
+    v37 = [orderedContext copy];
 
-    os_unfair_lock_unlock((a1 + 8));
-    if ([v24 count])
+    os_unfair_lock_unlock((keyboards + 8));
+    if ([allValues count])
     {
       v38 = BKLogKeyboard();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v98 = v24;
+        v98 = allValues;
         _os_log_impl(&dword_186345000, v38, OS_LOG_TYPE_DEFAULT, "connected: %{public}@", buf, 0xCu);
       }
 
       if ([v37 count])
       {
-        v39 = [(BKSHIDKeyboardService *)a1 _proxyDevicesForConcreteDevices:v24];
+        v39 = [(BKSHIDKeyboardService *)keyboards _proxyDevicesForConcreteDevices:allValues];
         v79 = 0u;
         v80 = 0u;
         v81 = 0u;
@@ -382,7 +382,7 @@ void __39__BKSHIDKeyboardService_sharedInstance__block_invoke()
           while (v42);
         }
 
-        a1 = v70;
+        keyboards = keyboardsCopy;
       }
     }
 
@@ -398,9 +398,9 @@ void __39__BKSHIDKeyboardService_sharedInstance__block_invoke()
 
       if ([v37 count])
       {
-        v68 = v24;
+        v68 = allValues;
         v65 = v3;
-        v46 = [(BKSHIDKeyboardService *)a1 _proxyDevicesForConcreteDevices:v22];
+        v46 = [(BKSHIDKeyboardService *)keyboards _proxyDevicesForConcreteDevices:v22];
         v75 = 0u;
         v76 = 0u;
         v77 = 0u;
@@ -434,25 +434,25 @@ void __39__BKSHIDKeyboardService_sharedInstance__block_invoke()
         }
 
         v3 = v65;
-        a1 = v70;
-        v24 = v68;
+        keyboards = keyboardsCopy;
+        allValues = v68;
       }
     }
 
-    if ([v23 count])
+    if ([allValues2 count])
     {
       v53 = BKLogKeyboard();
       if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v98 = v23;
+        v98 = allValues2;
         _os_log_impl(&dword_186345000, v53, OS_LOG_TYPE_DEFAULT, "disconnected: %{public}@", buf, 0xCu);
       }
 
       if ([v37 count])
       {
-        v54 = v24;
-        v55 = [(BKSHIDKeyboardService *)a1 _proxyDevicesForConcreteDevices:v23];
+        v54 = allValues;
+        v55 = [(BKSHIDKeyboardService *)keyboards _proxyDevicesForConcreteDevices:allValues2];
         v71 = 0u;
         v72 = 0u;
         v73 = 0u;
@@ -481,7 +481,7 @@ void __39__BKSHIDKeyboardService_sharedInstance__block_invoke()
           while (v58);
         }
 
-        v24 = v54;
+        allValues = v54;
       }
     }
   }
@@ -500,28 +500,28 @@ void __42__BKSHIDKeyboardService__updateKeyboards___block_invoke(uint64_t a1, ui
   }
 }
 
-- (id)_proxyDevicesForConcreteDevices:(void *)a1
+- (id)_proxyDevicesForConcreteDevices:(void *)devices
 {
-  if (a1)
+  if (devices)
   {
     var28[0] = MEMORY[0x1E69E9820];
     var28[1] = 3221225472;
     var28[2] = __57__BKSHIDKeyboardService__proxyDevicesForConcreteDevices___block_invoke;
     var28[3] = &unk_1E6F465A8;
-    var28[4] = a1;
-    a1 = [a2 bs_map:var28];
+    var28[4] = devices;
+    devices = [a2 bs_map:var28];
     v2 = var28[6];
   }
 
-  return a1;
+  return devices;
 }
 
-- (_BKSHIDKeyboardDeviceClientProxy)_proxyDeviceForConcreteDevice:(uint64_t)a1
+- (_BKSHIDKeyboardDeviceClientProxy)_proxyDeviceForConcreteDevice:(uint64_t)device
 {
   v2 = 0;
-  if (a1 && a2)
+  if (device && a2)
   {
-    v3 = *(a1 + 24);
+    v3 = *(device + 24);
     v4 = MEMORY[0x1E696AEC0];
     v5 = a2;
     v6 = [v4 stringWithFormat:@"proxy:%p", v5];
@@ -533,7 +533,7 @@ void __42__BKSHIDKeyboardService__updateKeyboards___block_invoke(uint64_t a1, ui
   return v2;
 }
 
-- (id)keyboardDeviceForSenderID:(unint64_t)a3
+- (id)keyboardDeviceForSenderID:(unint64_t)d
 {
   if (keyboardDeviceForSenderID__onceToken != -1)
   {
@@ -542,20 +542,20 @@ void __42__BKSHIDKeyboardService__updateKeyboards___block_invoke(uint64_t a1, ui
 
   v5 = [(BKSHIDKeyboardService *)&self->super.isa _addObserver:@"keyboardDeviceWithSenderID:" forReason:?];
   os_unfair_lock_lock(&self->_lock);
-  if (a3 && (v6 = keyboardDeviceForSenderID__axSenders, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3], v7 = objc_claimAutoreleasedReturnValue(), LODWORD(v6) = objc_msgSend(v6, "containsObject:", v7), v7, !v6))
+  if (d && (v6 = keyboardDeviceForSenderID__axSenders, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d], v7 = objc_claimAutoreleasedReturnValue(), LODWORD(v6) = objc_msgSend(v6, "containsObject:", v7), v7, !v6))
   {
     lock_senderIDToDevice = self->_lock_senderIDToDevice;
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
-    v9 = [(BSOrderedDictionary *)lock_senderIDToDevice objectForKey:v8];
+    allValues = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
+    lastObject = [(BSOrderedDictionary *)lock_senderIDToDevice objectForKey:allValues];
   }
 
   else
   {
-    v8 = [(BSOrderedDictionary *)self->_lock_senderIDToDevice allValues];
-    v9 = [v8 lastObject];
+    allValues = [(BSOrderedDictionary *)self->_lock_senderIDToDevice allValues];
+    lastObject = [allValues lastObject];
   }
 
-  v11 = v9;
+  v11 = lastObject;
 
   os_unfair_lock_unlock(&self->_lock);
   v12 = [(BKSHIDKeyboardService *)self _proxyDeviceForConcreteDevice:v11];
@@ -564,15 +564,15 @@ void __42__BKSHIDKeyboardService__updateKeyboards___block_invoke(uint64_t a1, ui
   return v12;
 }
 
-- (id)_addObserver:(uint64_t)a3 forReason:
+- (id)_addObserver:(uint64_t)observer forReason:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[2] acquireForReason:a3 withContext:a2];
+    self = [self[2] acquireForReason:observer withContext:a2];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 uint64_t __51__BKSHIDKeyboardService_keyboardDeviceForSenderID___block_invoke()
@@ -582,12 +582,12 @@ uint64_t __51__BKSHIDKeyboardService_keyboardDeviceForSenderID___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)addKeyboardObserver:(id)a3
+- (id)addKeyboardObserver:(id)observer
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [v4 stringWithFormat:@"<%@: %p>", objc_opt_class(), v5];
-  v7 = [(BKSHIDKeyboardService *)&self->super.isa _addObserver:v5 forReason:v6];
+  observerCopy = observer;
+  observerCopy = [v4 stringWithFormat:@"<%@: %p>", objc_opt_class(), observerCopy];
+  v7 = [(BKSHIDKeyboardService *)&self->super.isa _addObserver:observerCopy forReason:observerCopy];
 
   return v7;
 }
@@ -605,7 +605,7 @@ uint64_t __51__BKSHIDKeyboardService_keyboardDeviceForSenderID___block_invoke()
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDKeyboardService.m";
     v17 = 1024;
@@ -658,50 +658,50 @@ void __45__BKSHIDKeyboardService__initWithConnection___block_invoke_4(uint64_t a
   }
 }
 
-- (void)_evaluateObservationStateAfterReconnect:(uint64_t)a1
+- (void)_evaluateObservationStateAfterReconnect:(uint64_t)reconnect
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!reconnect)
   {
 LABEL_13:
     v10 = *MEMORY[0x1E69E9840];
     return;
   }
 
-  os_unfair_lock_lock((a1 + 8));
-  if ([*(a1 + 16) isActive])
+  os_unfair_lock_lock((reconnect + 8));
+  if ([*(reconnect + 16) isActive])
   {
-    v4 = 1;
+    isActive = 1;
   }
 
   else
   {
-    v4 = [*(a1 + 24) isActive];
+    isActive = [*(reconnect + 24) isActive];
   }
 
-  if ((v4 & a2 & 1) != 0 || *(a1 + 32) != v4)
+  if ((isActive & a2 & 1) != 0 || *(reconnect + 32) != isActive)
   {
-    *(a1 + 32) = v4;
+    *(reconnect + 32) = isActive;
     v6 = BKLogKeyboard();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v11[0] = 67109120;
-      v11[1] = v4;
+      v11[1] = isActive;
       _os_log_impl(&dword_186345000, v6, OS_LOG_TYPE_DEFAULT, "currently observing: %{BOOL}u", v11, 8u);
     }
 
-    os_unfair_lock_unlock((a1 + 8));
-    v7 = [*(a1 + 48) remoteTarget];
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-    v9 = [v7 setObservingUsableKeyboardConnections:v8];
+    os_unfair_lock_unlock((reconnect + 8));
+    remoteTarget = [*(reconnect + 48) remoteTarget];
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:isActive];
+    v9 = [remoteTarget setObservingUsableKeyboardConnections:v8];
 
-    [(BKSHIDKeyboardService *)a1 _updateKeyboards:v9];
+    [(BKSHIDKeyboardService *)reconnect _updateKeyboards:v9];
     goto LABEL_13;
   }
 
   v5 = *MEMORY[0x1E69E9840];
 
-  os_unfair_lock_unlock((a1 + 8));
+  os_unfair_lock_unlock((reconnect + 8));
 }
 
 + (id)new
@@ -717,7 +717,7 @@ LABEL_13:
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = a1;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDKeyboardService.m";
     v17 = 1024;

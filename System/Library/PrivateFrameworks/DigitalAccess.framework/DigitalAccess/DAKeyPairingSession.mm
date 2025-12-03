@@ -1,39 +1,39 @@
 @interface DAKeyPairingSession
-- (DAKeyPairingSession)initWithCoder:(id)a3;
-- (DAKeyPairingSession)initWithDelegate:(id)a3;
-- (id)getKeyPairingProxy:(void *)a1;
-- (id)preWarmForManufacturer:(id)a3;
-- (id)sendTrackingReceipt:(void *)a3 otherJSONData:(void *)a4 forKeyWithIdentifier:;
-- (id)setTrackingReceipt:(id)a3 decryptedDeviceData:(id)a4 forKeyWithIdentifier:(id)a5;
-- (id)setTrackingReceipt:(id)a3 forKeyWithIdentifier:(id)a4;
-- (id)setTrackingReceipt:(id)a3 slotIdentifier:(id)a4 confidentialMailboxData:(id)a5 ephemeralPublicKey:(id)a6 forKeyWithIdentifier:(id)a7;
-- (id)setTrackingReceipt:(id)a3 vehicleMobilizationData:(id)a4 forKeyWithIdentifier:(id)a5;
-- (id)startKeyPairingWithPassword:(id)a3 displayName:(id)a4;
-- (id)startKeyPairingWithPassword:(id)a3 displayName:(id)a4 transport:(int64_t)a5;
-- (id)startKeyPairingWithPassword:(id)a3 displayName:(id)a4 transport:(int64_t)a5 bindingAttestation:(id)a6;
+- (DAKeyPairingSession)initWithCoder:(id)coder;
+- (DAKeyPairingSession)initWithDelegate:(id)delegate;
+- (id)getKeyPairingProxy:(void *)proxy;
+- (id)preWarmForManufacturer:(id)manufacturer;
+- (id)sendTrackingReceipt:(void *)receipt otherJSONData:(void *)data forKeyWithIdentifier:;
+- (id)setTrackingReceipt:(id)receipt decryptedDeviceData:(id)data forKeyWithIdentifier:(id)identifier;
+- (id)setTrackingReceipt:(id)receipt forKeyWithIdentifier:(id)identifier;
+- (id)setTrackingReceipt:(id)receipt slotIdentifier:(id)identifier confidentialMailboxData:(id)data ephemeralPublicKey:(id)key forKeyWithIdentifier:(id)withIdentifier;
+- (id)setTrackingReceipt:(id)receipt vehicleMobilizationData:(id)data forKeyWithIdentifier:(id)identifier;
+- (id)startKeyPairingWithPassword:(id)password displayName:(id)name;
+- (id)startKeyPairingWithPassword:(id)password displayName:(id)name transport:(int64_t)transport;
+- (id)startKeyPairingWithPassword:(id)password displayName:(id)name transport:(int64_t)transport bindingAttestation:(id)attestation;
 - (id)startProbing;
-- (void)didEnd:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)endPointPrivacyDecryption:(id)a3 encryptedData:(id)a4 publicKey:(id)a5 callback:(id)a6;
-- (void)handleFirstTransactionCompletionResult:(id)a3;
-- (void)handleKeyPairingCompletionResult:(id)a3 keyInformation:(id)a4 trackingRequest:(id)a5;
+- (void)didEnd:(id)end;
+- (void)encodeWithCoder:(id)coder;
+- (void)endPointPrivacyDecryption:(id)decryption encryptedData:(id)data publicKey:(id)key callback:(id)callback;
+- (void)handleFirstTransactionCompletionResult:(id)result;
+- (void)handleKeyPairingCompletionResult:(id)result keyInformation:(id)information trackingRequest:(id)request;
 - (void)handlePairingDidStart;
-- (void)handlePreWarmCompletionResult:(id)a3;
-- (void)handleProbingCompletionWithBrandCode:(unint64_t)a3 error:(id)a4;
+- (void)handlePreWarmCompletionResult:(id)result;
+- (void)handleProbingCompletionWithBrandCode:(unint64_t)code error:(id)error;
 @end
 
 @implementation DAKeyPairingSession
 
-- (DAKeyPairingSession)initWithDelegate:(id)a3
+- (DAKeyPairingSession)initWithDelegate:(id)delegate
 {
   v4.receiver = self;
   v4.super_class = DAKeyPairingSession;
-  return [(DASession *)&v4 initWithDelegate:a3];
+  return [(DASession *)&v4 initWithDelegate:delegate];
 }
 
-- (id)preWarmForManufacturer:(id)a3
+- (id)preWarmForManufacturer:(id)manufacturer
 {
-  v4 = a3;
+  manufacturerCopy = manufacturer;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -41,7 +41,7 @@
   v15 = __Block_byref_object_dispose_;
   v16 = 0;
   v5 = KmlLogger();
-  [(DAKeyPairingSession *)v5 preWarmForManufacturer:v4];
+  [(DAKeyPairingSession *)v5 preWarmForManufacturer:manufacturerCopy];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -54,7 +54,7 @@
   v9[2] = __46__DAKeyPairingSession_preWarmForManufacturer___block_invoke_13;
   v9[3] = &unk_278F6FB00;
   v9[4] = &v11;
-  [v6 preWarmForManufacturer:v4 callback:v9];
+  [v6 preWarmForManufacturer:manufacturerCopy callback:v9];
 
   v7 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -114,19 +114,19 @@ void __46__DAKeyPairingSession_preWarmForManufacturer___block_invoke_13(uint64_t
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)startKeyPairingWithPassword:(id)a3 displayName:(id)a4 transport:(int64_t)a5 bindingAttestation:(id)a6
+- (id)startKeyPairingWithPassword:(id)password displayName:(id)name transport:(int64_t)transport bindingAttestation:(id)attestation
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  passwordCopy = password;
+  nameCopy = name;
+  attestationCopy = attestation;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy_;
   v32 = __Block_byref_object_dispose_;
   v33 = 0;
-  if (![v10 length])
+  if (![passwordCopy length])
   {
     v16 = KmlLogger();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -147,7 +147,7 @@ void __46__DAKeyPairingSession_preWarmForManufacturer___block_invoke_13(uint64_t
     goto LABEL_12;
   }
 
-  if (![v11 length])
+  if (![nameCopy length])
   {
     v20 = KmlLogger();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -175,8 +175,8 @@ LABEL_12:
   v13 = KmlLogger();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = DAKeyTransportTypeAsString(a5);
-    [DAKeyPairingSession startKeyPairingWithPassword:v14 displayName:v11 transport:buf bindingAttestation:v13];
+    v14 = DAKeyTransportTypeAsString(transport);
+    [DAKeyPairingSession startKeyPairingWithPassword:v14 displayName:nameCopy transport:buf bindingAttestation:v13];
   }
 
   v27[0] = MEMORY[0x277D85DD0];
@@ -190,7 +190,7 @@ LABEL_12:
   v26[2] = __92__DAKeyPairingSession_startKeyPairingWithPassword_displayName_transport_bindingAttestation___block_invoke_14;
   v26[3] = &unk_278F6FB00;
   v26[4] = &v28;
-  [v15 startKeyPairingWithPassword:v10 keyName:v11 transport:a5 bindingAttestation:v12 callback:v26];
+  [v15 startKeyPairingWithPassword:passwordCopy keyName:nameCopy transport:transport bindingAttestation:attestationCopy callback:v26];
 LABEL_13:
 
   v23 = v29[5];
@@ -254,11 +254,11 @@ void __92__DAKeyPairingSession_startKeyPairingWithPassword_displayName_transport
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)startKeyPairingWithPassword:(id)a3 displayName:(id)a4 transport:(int64_t)a5
+- (id)startKeyPairingWithPassword:(id)password displayName:(id)name transport:(int64_t)transport
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a3;
+  nameCopy = name;
+  passwordCopy = password;
   v10 = KmlLogger();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -269,20 +269,20 @@ void __92__DAKeyPairingSession_startKeyPairingWithPassword_displayName_transport
     _os_log_impl(&dword_248BF3000, v10, OS_LOG_TYPE_INFO, "%s : %i : This API is deprecated, use startKeyPairingWithPassword:displayName:transport:bindingAttestation: instead", &v16, 0x12u);
   }
 
-  v11 = [MEMORY[0x277CCAD78] UUID];
-  v12 = kmlUtilUUIDToData(v11);
-  v13 = [(DAKeyPairingSession *)self startKeyPairingWithPassword:v9 displayName:v8 transport:a5 bindingAttestation:v12];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v12 = kmlUtilUUIDToData(uUID);
+  v13 = [(DAKeyPairingSession *)self startKeyPairingWithPassword:passwordCopy displayName:nameCopy transport:transport bindingAttestation:v12];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-- (id)startKeyPairingWithPassword:(id)a3 displayName:(id)a4
+- (id)startKeyPairingWithPassword:(id)password displayName:(id)name
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  passwordCopy = password;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -293,7 +293,7 @@ void __92__DAKeyPairingSession_startKeyPairingWithPassword_displayName_transport
     _os_log_impl(&dword_248BF3000, v8, OS_LOG_TYPE_INFO, "%s : %i : This API is deprecated, use startKeyPairingWithPassword:displayName:transport:bindingAttestation: instead", &v12, 0x12u);
   }
 
-  v9 = [(DAKeyPairingSession *)self startKeyPairingWithPassword:v7 displayName:v6 transport:1];
+  v9 = [(DAKeyPairingSession *)self startKeyPairingWithPassword:passwordCopy displayName:nameCopy transport:1];
 
   v10 = *MEMORY[0x277D85DE8];
 
@@ -387,16 +387,16 @@ void __35__DAKeyPairingSession_startProbing__block_invoke_16(uint64_t a1, int a2
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sendTrackingReceipt:(void *)a3 otherJSONData:(void *)a4 forKeyWithIdentifier:
+- (id)sendTrackingReceipt:(void *)receipt otherJSONData:(void *)data forKeyWithIdentifier:
 {
   v22[1] = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  receiptCopy = receipt;
+  dataCopy = data;
+  if (self)
   {
-    kmlUtilLogLargeData(@"Tracking Receipt Data", v8);
-    if (v9)
+    kmlUtilLogLargeData(@"Tracking Receipt Data", receiptCopy);
+    if (dataCopy)
     {
       v15 = 0;
       v16 = &v15;
@@ -409,28 +409,28 @@ void __35__DAKeyPairingSession_startProbing__block_invoke_16(uint64_t a1, int a2
       v14[2] = __78__DAKeyPairingSession_sendTrackingReceipt_otherJSONData_forKeyWithIdentifier___block_invoke;
       v14[3] = &unk_278F6FB00;
       v14[4] = &v15;
-      v10 = [a1 getRemoteProxy:v14];
+      v10 = [self getRemoteProxy:v14];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __78__DAKeyPairingSession_sendTrackingReceipt_otherJSONData_forKeyWithIdentifier___block_invoke_21;
       v13[3] = &unk_278F6FB00;
       v13[4] = &v15;
-      [v10 consumeTrackingReceipt:v7 otherJSONData:v8 forKeyWithIdentifier:v9 callback:v13];
+      [v10 consumeTrackingReceipt:v7 otherJSONData:receiptCopy forKeyWithIdentifier:dataCopy callback:v13];
 
-      a1 = v16[5];
+      self = v16[5];
       _Block_object_dispose(&v15, 8);
     }
 
     else
     {
       [DAKeyPairingSession sendTrackingReceipt:v22 otherJSONData:&v15 forKeyWithIdentifier:?];
-      a1 = v15;
+      self = v15;
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
 void __78__DAKeyPairingSession_sendTrackingReceipt_otherJSONData_forKeyWithIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -486,11 +486,11 @@ void __78__DAKeyPairingSession_sendTrackingReceipt_otherJSONData_forKeyWithIdent
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)setTrackingReceipt:(id)a3 forKeyWithIdentifier:(id)a4
+- (id)setTrackingReceipt:(id)receipt forKeyWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  receiptCopy = receipt;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -509,23 +509,23 @@ void __78__DAKeyPairingSession_sendTrackingReceipt_otherJSONData_forKeyWithIdent
     v15 = 1024;
     v16 = 167;
     v17 = 2112;
-    v18 = v6;
+    v18 = identifierCopy;
     _os_log_impl(&dword_248BF3000, v9, OS_LOG_TYPE_DEBUG, "%s : %i : keyIdentifier: %@", &v13, 0x1Cu);
   }
 
-  v10 = [(DAKeyPairingSession *)self sendTrackingReceipt:v7 otherJSONData:0 forKeyWithIdentifier:v6];
+  v10 = [(DAKeyPairingSession *)self sendTrackingReceipt:receiptCopy otherJSONData:0 forKeyWithIdentifier:identifierCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 
   return v10;
 }
 
-- (id)setTrackingReceipt:(id)a3 vehicleMobilizationData:(id)a4 forKeyWithIdentifier:(id)a5
+- (id)setTrackingReceipt:(id)receipt vehicleMobilizationData:(id)data forKeyWithIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  identifierCopy = identifier;
+  dataCopy = data;
+  receiptCopy = receipt;
   v11 = KmlLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
@@ -544,24 +544,24 @@ void __78__DAKeyPairingSession_sendTrackingReceipt_otherJSONData_forKeyWithIdent
     v19 = 1024;
     v20 = 178;
     v21 = 2112;
-    v22 = v8;
+    v22 = identifierCopy;
     _os_log_impl(&dword_248BF3000, v12, OS_LOG_TYPE_DEBUG, "%s : %i : keyIdentifier: %@", &v17, 0x1Cu);
   }
 
-  v13 = [DAUtils decryptVehicleMobilizationData:v9 forKeyWithIdentifier:v8];
+  v13 = [DAUtils decryptVehicleMobilizationData:dataCopy forKeyWithIdentifier:identifierCopy];
 
-  v14 = [(DAKeyPairingSession *)self sendTrackingReceipt:v10 otherJSONData:v13 forKeyWithIdentifier:v8];
+  v14 = [(DAKeyPairingSession *)self sendTrackingReceipt:receiptCopy otherJSONData:v13 forKeyWithIdentifier:identifierCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 
   return v14;
 }
 
-- (id)setTrackingReceipt:(id)a3 slotIdentifier:(id)a4 confidentialMailboxData:(id)a5 ephemeralPublicKey:(id)a6 forKeyWithIdentifier:(id)a7
+- (id)setTrackingReceipt:(id)receipt slotIdentifier:(id)identifier confidentialMailboxData:(id)data ephemeralPublicKey:(id)key forKeyWithIdentifier:(id)withIdentifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v9 = a7;
-  v10 = a3;
+  withIdentifierCopy = withIdentifier;
+  receiptCopy = receipt;
   v11 = KmlLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
@@ -580,24 +580,24 @@ void __78__DAKeyPairingSession_sendTrackingReceipt_otherJSONData_forKeyWithIdent
     v18 = 1024;
     v19 = 193;
     v20 = 2112;
-    v21 = v9;
+    v21 = withIdentifierCopy;
     _os_log_impl(&dword_248BF3000, v12, OS_LOG_TYPE_DEBUG, "%s : %i : keyIdentifier: %@", &v16, 0x1Cu);
   }
 
-  v13 = [(DAKeyPairingSession *)self sendTrackingReceipt:v10 otherJSONData:0 forKeyWithIdentifier:v9];
+  v13 = [(DAKeyPairingSession *)self sendTrackingReceipt:receiptCopy otherJSONData:0 forKeyWithIdentifier:withIdentifierCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-- (void)endPointPrivacyDecryption:(id)a3 encryptedData:(id)a4 publicKey:(id)a5 callback:(id)a6
+- (void)endPointPrivacyDecryption:(id)decryption encryptedData:(id)data publicKey:(id)key callback:(id)callback
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  decryptionCopy = decryption;
+  dataCopy = data;
+  keyCopy = key;
+  callbackCopy = callback;
   v13 = KmlLogger();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -608,17 +608,17 @@ void __78__DAKeyPairingSession_sendTrackingReceipt_otherJSONData_forKeyWithIdent
     _os_log_impl(&dword_248BF3000, v13, OS_LOG_TYPE_INFO, "%s : %i : API Deprecated, please stop use", buf, 0x12u);
   }
 
-  if (v9 && v10 && v11)
+  if (decryptionCopy && dataCopy && keyCopy)
   {
-    v14 = kmlUtilDataForHexString(v11);
-    v15 = kmlUtilDataForHexString(v10);
+    v14 = kmlUtilDataForHexString(keyCopy);
+    v15 = kmlUtilDataForHexString(dataCopy);
     v16 = SESEndPointPrivacyDecryption();
     v17 = 0;
     v18 = KmlLogger();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_INFO);
     if (v17)
     {
-      v26 = v11;
+      v26 = keyCopy;
       if (v19)
       {
         *buf = 136315650;
@@ -631,11 +631,11 @@ void __78__DAKeyPairingSession_sendTrackingReceipt_otherJSONData_forKeyWithIdent
       }
 
       v20 = MEMORY[0x277CCA9B8];
-      v21 = [v17 userInfo];
-      v22 = [v20 errorWithDomain:@"DigitalAccessError" code:204 userInfo:v21];
+      userInfo = [v17 userInfo];
+      v22 = [v20 errorWithDomain:@"DigitalAccessError" code:204 userInfo:userInfo];
 
-      v12[2](v12, 0, v22);
-      v11 = v26;
+      callbackCopy[2](callbackCopy, 0, v22);
+      keyCopy = v26;
     }
 
     else
@@ -651,7 +651,7 @@ void __78__DAKeyPairingSession_sendTrackingReceipt_otherJSONData_forKeyWithIdent
         _os_log_impl(&dword_248BF3000, v18, OS_LOG_TYPE_INFO, "%s : %i : endPointPrivacyDecryption: got decrypted data: %@", buf, 0x1Cu);
       }
 
-      (v12)[2](v12, v16, 0);
+      (callbackCopy)[2](callbackCopy, v16, 0);
     }
   }
 
@@ -673,18 +673,18 @@ void __78__DAKeyPairingSession_sendTrackingReceipt_otherJSONData_forKeyWithIdent
     v34[0] = v14;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
     v16 = [v24 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v15];
-    v12[2](v12, 0, v16);
+    callbackCopy[2](callbackCopy, 0, v16);
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)setTrackingReceipt:(id)a3 decryptedDeviceData:(id)a4 forKeyWithIdentifier:(id)a5
+- (id)setTrackingReceipt:(id)receipt decryptedDeviceData:(id)data forKeyWithIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  identifierCopy = identifier;
+  dataCopy = data;
+  receiptCopy = receipt;
   v11 = KmlLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -693,21 +693,21 @@ void __78__DAKeyPairingSession_sendTrackingReceipt_otherJSONData_forKeyWithIdent
     v17 = 1024;
     v18 = 231;
     v19 = 2112;
-    v20 = v8;
+    v20 = identifierCopy;
     _os_log_impl(&dword_248BF3000, v11, OS_LOG_TYPE_DEBUG, "%s : %i : keyIdentifier: %@", &v15, 0x1Cu);
   }
 
-  v12 = [(DAKeyPairingSession *)self sendTrackingReceipt:v10 otherJSONData:v9 forKeyWithIdentifier:v8];
+  v12 = [(DAKeyPairingSession *)self sendTrackingReceipt:receiptCopy otherJSONData:dataCopy forKeyWithIdentifier:identifierCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-- (void)didEnd:(id)a3
+- (void)didEnd:(id)end
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  endCopy = end;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -720,30 +720,30 @@ void __78__DAKeyPairingSession_sendTrackingReceipt_otherJSONData_forKeyWithIdent
 
   v7.receiver = self;
   v7.super_class = DAKeyPairingSession;
-  [(DASession *)&v7 didEnd:v4];
+  [(DASession *)&v7 didEnd:endCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleKeyPairingCompletionResult:(id)a3 keyInformation:(id)a4 trackingRequest:(id)a5
+- (void)handleKeyPairingCompletionResult:(id)result keyInformation:(id)information trackingRequest:(id)request
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DASession *)self getDelegate];
+  resultCopy = result;
+  informationCopy = information;
+  requestCopy = request;
+  getDelegate = [(DASession *)self getDelegate];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __87__DAKeyPairingSession_handleKeyPairingCompletionResult_keyInformation_trackingRequest___block_invoke;
   v16[3] = &unk_278F6FB50;
-  v17 = v8;
-  v18 = v11;
-  v19 = self;
-  v20 = v9;
-  v21 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v11;
-  v15 = v8;
+  v17 = resultCopy;
+  v18 = getDelegate;
+  selfCopy = self;
+  v20 = informationCopy;
+  v21 = requestCopy;
+  v12 = requestCopy;
+  v13 = informationCopy;
+  v14 = getDelegate;
+  v15 = resultCopy;
   [(DASession *)self dispatchOnCallbackQueue:v16];
 }
 
@@ -753,19 +753,19 @@ void __87__DAKeyPairingSession_handleKeyPairingCompletionResult_keyInformation_t
   [*(a1 + 40) keyPairingSession:*(a1 + 48) didFinishPairingWithKey:*(a1 + 56) trackingRequest:*(a1 + 64) error:v2];
 }
 
-- (void)handleFirstTransactionCompletionResult:(id)a3
+- (void)handleFirstTransactionCompletionResult:(id)result
 {
-  v4 = a3;
-  v5 = [(DASession *)self getDelegate];
+  resultCopy = result;
+  getDelegate = [(DASession *)self getDelegate];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__DAKeyPairingSession_handleFirstTransactionCompletionResult___block_invoke;
   v8[3] = &unk_278F6FB78;
-  v9 = v4;
-  v10 = v5;
-  v11 = self;
-  v6 = v5;
-  v7 = v4;
+  v9 = resultCopy;
+  v10 = getDelegate;
+  selfCopy = self;
+  v6 = getDelegate;
+  v7 = resultCopy;
   [(DASession *)self dispatchOnCallbackQueue:v8];
 }
 
@@ -775,18 +775,18 @@ void __62__DAKeyPairingSession_handleFirstTransactionCompletionResult___block_in
   [*(a1 + 40) didFinishFirstTransactionForSession:*(a1 + 48) error:v2];
 }
 
-- (void)handlePreWarmCompletionResult:(id)a3
+- (void)handlePreWarmCompletionResult:(id)result
 {
-  v4 = a3;
-  v5 = [(DASession *)self getDelegate];
+  resultCopy = result;
+  getDelegate = [(DASession *)self getDelegate];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__DAKeyPairingSession_handlePreWarmCompletionResult___block_invoke;
   v8[3] = &unk_278F6FBA0;
-  v9 = v4;
-  v10 = v5;
-  v6 = v5;
-  v7 = v4;
+  v9 = resultCopy;
+  v10 = getDelegate;
+  v6 = getDelegate;
+  v7 = resultCopy;
   [(DASession *)self dispatchOnCallbackQueue:v8];
 }
 
@@ -796,19 +796,19 @@ void __53__DAKeyPairingSession_handlePreWarmCompletionResult___block_invoke(uint
   [*(a1 + 40) didFinishPreWarmWithResult:v2];
 }
 
-- (void)handleProbingCompletionWithBrandCode:(unint64_t)a3 error:(id)a4
+- (void)handleProbingCompletionWithBrandCode:(unint64_t)code error:(id)error
 {
-  v6 = a4;
-  v7 = [(DASession *)self getDelegate];
+  errorCopy = error;
+  getDelegate = [(DASession *)self getDelegate];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __66__DAKeyPairingSession_handleProbingCompletionWithBrandCode_error___block_invoke;
   v10[3] = &unk_278F6FBC8;
-  v12 = v6;
-  v13 = a3;
-  v11 = v7;
-  v8 = v6;
-  v9 = v7;
+  v12 = errorCopy;
+  codeCopy = code;
+  v11 = getDelegate;
+  v8 = errorCopy;
+  v9 = getDelegate;
   [(DASession *)self dispatchOnCallbackQueue:v10];
 }
 
@@ -833,13 +833,13 @@ void __66__DAKeyPairingSession_handleProbingCompletionWithBrandCode_error___bloc
     _os_log_impl(&dword_248BF3000, v3, OS_LOG_TYPE_DEBUG, "%s : %i : ", buf, 0x12u);
   }
 
-  v4 = [(DASession *)self getDelegate];
+  getDelegate = [(DASession *)self getDelegate];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__DAKeyPairingSession_handlePairingDidStart__block_invoke;
   v7[3] = &unk_278F6FBF0;
-  v8 = v4;
-  v5 = v4;
+  v8 = getDelegate;
+  v5 = getDelegate;
   [(DASession *)self dispatchOnCallbackQueue:v7];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -859,29 +859,29 @@ uint64_t __44__DAKeyPairingSession_handlePairingDidStart__block_invoke(uint64_t 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = DAKeyPairingSession;
-  [(DASession *)&v3 encodeWithCoder:a3];
+  [(DASession *)&v3 encodeWithCoder:coder];
 }
 
-- (DAKeyPairingSession)initWithCoder:(id)a3
+- (DAKeyPairingSession)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = DAKeyPairingSession;
-  return [(DASession *)&v4 initWithCoder:a3];
+  return [(DASession *)&v4 initWithCoder:coder];
 }
 
-- (id)getKeyPairingProxy:(void *)a1
+- (id)getKeyPairingProxy:(void *)proxy
 {
-  if (a1)
+  if (proxy)
   {
-    a1 = [a1 getRemoteProxy:a2];
+    proxy = [proxy getRemoteProxy:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return proxy;
 }
 
 - (void)preWarmForManufacturer:(NSObject *)a1 .cold.1(NSObject *a1, uint64_t a2)

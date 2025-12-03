@@ -1,56 +1,56 @@
 @interface HMICameraActivityZone
-+ (id)activityZonesFromString:(id)a3 isInclusion:(BOOL)a4;
-+ (id)filterEvents:(id)a3 withActivityZones:(id)a4 motionDetection:(id)a5 insetPercentageInclusion:(float)a6 insetPercentageExclusion:(float)a7;
-+ (void)generateAndSubmitStats:(id)a3 filteredEvents:(id)a4 motionDetection:(id)a5 activityZones:(id)a6;
-+ (void)submitCoreAnalyticsEvent:(id)a3 filteringLevel:(id)a4 numberOfDetectedObjects:(id)a5;
-- (BOOL)checkIfObjectIsStaticWithBoundingBox:(CGRect)a3 motionDetection:(id)a4 eventClass:(Class)a5;
-- (BOOL)containsEvent:(id)a3 withInsetPercentage:(float)a4;
-- (BOOL)containsVectorWithSource:(CGPoint)a3 destination:(CGPoint)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)overlapsWithElipseInsideRect:(CGRect)a3;
-- (BOOL)overlapsWithElipseInsideRect:(CGRect)a3 withInsetPercentage:(float)a4;
-- (BOOL)saveToJsonActivityZones:(id)a3 motionDetection:(id)a4 videoFragmentUrl:(id)a5 frameId:(id)a6 UUID:(id)a7 detectionID:(id)a8 zoneID:(id)a9;
-- (HMICameraActivityZone)initWithCoder:(id)a3;
-- (HMICameraActivityZone)initWithPoints:(id)a3 isInclusion:(BOOL)a4;
++ (id)activityZonesFromString:(id)string isInclusion:(BOOL)inclusion;
++ (id)filterEvents:(id)events withActivityZones:(id)zones motionDetection:(id)detection insetPercentageInclusion:(float)inclusion insetPercentageExclusion:(float)exclusion;
++ (void)generateAndSubmitStats:(id)stats filteredEvents:(id)events motionDetection:(id)detection activityZones:(id)zones;
++ (void)submitCoreAnalyticsEvent:(id)event filteringLevel:(id)level numberOfDetectedObjects:(id)objects;
+- (BOOL)checkIfObjectIsStaticWithBoundingBox:(CGRect)box motionDetection:(id)detection eventClass:(Class)class;
+- (BOOL)containsEvent:(id)event withInsetPercentage:(float)percentage;
+- (BOOL)containsVectorWithSource:(CGPoint)source destination:(CGPoint)destination;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)overlapsWithElipseInsideRect:(CGRect)rect;
+- (BOOL)overlapsWithElipseInsideRect:(CGRect)rect withInsetPercentage:(float)percentage;
+- (BOOL)saveToJsonActivityZones:(id)zones motionDetection:(id)detection videoFragmentUrl:(id)url frameId:(id)id UUID:(id)d detectionID:(id)iD zoneID:(id)zoneID;
+- (HMICameraActivityZone)initWithCoder:(id)coder;
+- (HMICameraActivityZone)initWithPoints:(id)points isInclusion:(BOOL)inclusion;
 - (NSString)description;
-- (id)jsonReperesentaionOfDetectedObject:(id)a3 motionDetection:(id)a4 eventClass:(id)a5;
+- (id)jsonReperesentaionOfDetectedObject:(id)object motionDetection:(id)detection eventClass:(id)class;
 - (unint64_t)activityZoneType;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMICameraActivityZone
 
-- (HMICameraActivityZone)initWithCoder:(id)a3
+- (HMICameraActivityZone)initWithCoder:(id)coder
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v12[0] = objc_opt_class();
   v12[1] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
   v7 = [v4 setWithArray:v6];
 
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"HMIAZ.p"];
-  v9 = [v5 decodeBoolForKey:@"HMIAZ.i"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"HMIAZ.p"];
+  v9 = [coderCopy decodeBoolForKey:@"HMIAZ.i"];
 
   v10 = [(HMICameraActivityZone *)self initWithPoints:v8 isInclusion:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(HMICameraActivityZone *)self points];
-  [v5 encodeObject:v4 forKey:@"HMIAZ.p"];
+  coderCopy = coder;
+  points = [(HMICameraActivityZone *)self points];
+  [coderCopy encodeObject:points forKey:@"HMIAZ.p"];
 
-  [v5 encodeBool:-[HMICameraActivityZone isInclusion](self forKey:{"isInclusion"), @"HMIAZ.i"}];
+  [coderCopy encodeBool:-[HMICameraActivityZone isInclusion](self forKey:{"isInclusion"), @"HMIAZ.i"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -60,15 +60,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMICameraActivityZone *)self points];
-      v7 = [(HMICameraActivityZone *)v5 points];
-      v8 = [v6 isEqualToArray:v7];
+      v5 = equalCopy;
+      points = [(HMICameraActivityZone *)self points];
+      points2 = [(HMICameraActivityZone *)v5 points];
+      v8 = [points isEqualToArray:points2];
 
-      v9 = [(HMICameraActivityZone *)self isInclusion];
-      LOBYTE(v6) = [(HMICameraActivityZone *)v5 isInclusion];
+      isInclusion = [(HMICameraActivityZone *)self isInclusion];
+      LOBYTE(points) = [(HMICameraActivityZone *)v5 isInclusion];
 
-      v10 = v8 & (v9 ^ v6 ^ 1);
+      v10 = v8 & (isInclusion ^ points ^ 1);
     }
 
     else
@@ -82,25 +82,25 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMICameraActivityZone *)self points];
-  v3 = [v2 hash];
+  points = [(HMICameraActivityZone *)self points];
+  v3 = [points hash];
 
   return v3;
 }
 
-- (HMICameraActivityZone)initWithPoints:(id)a3 isInclusion:(BOOL)a4
+- (HMICameraActivityZone)initWithPoints:(id)points isInclusion:(BOOL)inclusion
 {
-  v6 = a3;
+  pointsCopy = points;
   v11.receiver = self;
   v11.super_class = HMICameraActivityZone;
   v7 = [(HMICameraActivityZone *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [pointsCopy copy];
     points = v7->_points;
     v7->_points = v8;
 
-    v7->_inclusion = a4;
+    v7->_inclusion = inclusion;
   }
 
   return v7;
@@ -108,12 +108,12 @@
 
 - (unint64_t)activityZoneType
 {
-  v3 = [(HMICameraActivityZone *)self points];
-  if ([v3 count] == 5)
+  points = [(HMICameraActivityZone *)self points];
+  if ([points count] == 5)
   {
-    v4 = [(HMICameraActivityZone *)self isInclusion];
+    isInclusion = [(HMICameraActivityZone *)self isInclusion];
 
-    if (!v4)
+    if (!isInclusion)
     {
       return 2;
     }
@@ -126,13 +126,13 @@
   return [(HMICameraActivityZone *)self isInclusion]^ 1;
 }
 
-- (BOOL)overlapsWithElipseInsideRect:(CGRect)a3
+- (BOOL)overlapsWithElipseInsideRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MidX = CGRectGetMidX(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  MidX = CGRectGetMidX(rect);
   v63 = x;
   v64 = y;
   v75.origin.x = x;
@@ -142,21 +142,21 @@
   v75.size.width = width;
   v75.size.height = height;
   MidY = CGRectGetMidY(v75);
-  v10 = [(HMICameraActivityZone *)self points];
-  v11 = HMICreatePathFromPoints(v10);
+  points = [(HMICameraActivityZone *)self points];
+  v11 = HMICreatePathFromPoints(points);
 
   v71 = MidX;
   v73.x = MidX;
   v73.y = MidY;
-  LOBYTE(v10) = CGPathContainsPoint(v11, 0, v73, 0);
+  LOBYTE(points) = CGPathContainsPoint(v11, 0, v73, 0);
   CGPathRelease(v11);
-  if (v10)
+  if (points)
   {
     return 1;
   }
 
-  v13 = [(HMICameraActivityZone *)self points];
-  v14 = [v13 count];
+  points2 = [(HMICameraActivityZone *)self points];
+  v14 = [points2 count];
 
   if (v14 != 1)
   {
@@ -169,21 +169,21 @@
     v69 = MidY;
     do
     {
-      v18 = [(HMICameraActivityZone *)self points];
-      v19 = [v18 objectAtIndexedSubscript:v17 - 1];
+      points3 = [(HMICameraActivityZone *)self points];
+      v19 = [points3 objectAtIndexedSubscript:v17 - 1];
       [v19 point];
       v21 = v20 - v71;
-      v22 = [(HMICameraActivityZone *)self points];
-      v23 = [v22 objectAtIndexedSubscript:v17 - 1];
+      points4 = [(HMICameraActivityZone *)self points];
+      v23 = [points4 objectAtIndexedSubscript:v17 - 1];
       [v23 point];
       v25 = v24 - MidY;
 
-      v26 = [(HMICameraActivityZone *)self points];
-      v27 = [v26 objectAtIndexedSubscript:v17];
+      points5 = [(HMICameraActivityZone *)self points];
+      v27 = [points5 objectAtIndexedSubscript:v17];
       [v27 point];
       v29 = v28 - v71;
-      v30 = [(HMICameraActivityZone *)self points];
-      v31 = [v30 objectAtIndexedSubscript:v17];
+      points6 = [(HMICameraActivityZone *)self points];
+      v31 = [points6 objectAtIndexedSubscript:v17];
       [v31 point];
       v33 = v32 - MidY;
 
@@ -300,8 +300,8 @@ LABEL_33:
   v76.size.width = v66;
   v76.size.height = v67;
   v59 = CGPathCreateWithRect(v76, 0);
-  v60 = [(HMICameraActivityZone *)self points];
-  v61 = [v60 objectAtIndexedSubscript:0];
+  points7 = [(HMICameraActivityZone *)self points];
+  v61 = [points7 objectAtIndexedSubscript:0];
   [v61 point];
   v62 = CGPathContainsPoint(v59, 0, v74, 0);
 
@@ -309,9 +309,9 @@ LABEL_33:
   return v62;
 }
 
-- (BOOL)overlapsWithElipseInsideRect:(CGRect)a3 withInsetPercentage:(float)a4
+- (BOOL)overlapsWithElipseInsideRect:(CGRect)rect withInsetPercentage:(float)percentage
 {
-  v5 = HMICGRectScaleAroundCenter(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4);
+  v5 = HMICGRectScaleAroundCenter(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, percentage);
 
   return [(HMICameraActivityZone *)self overlapsWithElipseInsideRect:v5];
 }
@@ -325,8 +325,8 @@ LABEL_33:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(HMICameraActivityZone *)self points];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  points = [(HMICameraActivityZone *)self points];
+  v5 = [points countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -337,13 +337,13 @@ LABEL_33:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(points);
         }
 
         [v3 appendFormat:@" %@", *(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [points countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -355,28 +355,28 @@ LABEL_33:
   return v9;
 }
 
-- (id)jsonReperesentaionOfDetectedObject:(id)a3 motionDetection:(id)a4 eventClass:(id)a5
+- (id)jsonReperesentaionOfDetectedObject:(id)object motionDetection:(id)detection eventClass:(id)class
 {
   v55[4] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  detectionCopy = detection;
+  classCopy = class;
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([(HMICameraActivityZone *)self activityZoneType])
   {
     v13 = 0.21;
     LODWORD(v12) = 1045891645;
-    v14 = [(HMICameraActivityZone *)self containsEvent:v8 withInsetPercentage:v12];
+    v14 = [(HMICameraActivityZone *)self containsEvent:objectCopy withInsetPercentage:v12];
   }
 
   else
   {
-    [v8 boundingBox];
+    [objectCopy boundingBox];
     v13 = 0.16;
     if ([HMICameraActivityZone overlapsWithElipseInsideRect:"overlapsWithElipseInsideRect:withInsetPercentage:" withInsetPercentage:?])
     {
-      [v8 boundingBox];
-      v14 = [(HMICameraActivityZone *)self checkIfObjectIsStaticWithBoundingBox:v9 motionDetection:objc_opt_class() eventClass:v15, v16, v17, v18]^ 1;
+      [objectCopy boundingBox];
+      v14 = [(HMICameraActivityZone *)self checkIfObjectIsStaticWithBoundingBox:detectionCopy motionDetection:objc_opt_class() eventClass:v15, v16, v17, v18]^ 1;
     }
 
     else
@@ -385,7 +385,7 @@ LABEL_33:
     }
   }
 
-  [v8 boundingBox];
+  [objectCopy boundingBox];
   v23 = HMICGRectScaleAroundCenter(v19, v20, v21, v22, v13);
   v25 = v24;
   v27 = v26;
@@ -399,7 +399,7 @@ LABEL_33:
     v29 = v33;
   }
 
-  v55[0] = v10;
+  v55[0] = classCopy;
   v54[0] = @"class-label";
   v54[1] = @"coordinates";
   v58.origin.x = v23;
@@ -422,8 +422,8 @@ LABEL_33:
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v39 = [(HMICameraActivityZone *)self points];
-  v40 = [v39 countByEnumeratingWithState:&v47 objects:v53 count:16];
+  points = [(HMICameraActivityZone *)self points];
+  v40 = [points countByEnumeratingWithState:&v47 objects:v53 count:16];
   if (v40)
   {
     v41 = v40;
@@ -434,7 +434,7 @@ LABEL_33:
       {
         if (*v48 != v42)
         {
-          objc_enumerationMutation(v39);
+          objc_enumerationMutation(points);
         }
 
         [*(*(&v47 + 1) + 8 * i) point];
@@ -442,7 +442,7 @@ LABEL_33:
         [v38 addObject:v44];
       }
 
-      v41 = [v39 countByEnumeratingWithState:&v47 objects:v53 count:16];
+      v41 = [points countByEnumeratingWithState:&v47 objects:v53 count:16];
     }
 
     while (v41);
@@ -456,11 +456,11 @@ LABEL_33:
   return v11;
 }
 
-- (BOOL)containsEvent:(id)a3 withInsetPercentage:(float)a4
+- (BOOL)containsEvent:(id)event withInsetPercentage:(float)percentage
 {
-  v6 = a3;
-  [v6 boundingBox];
-  v11 = HMICGRectScaleAroundCenter(v7, v8, v9, v10, a4);
+  eventCopy = event;
+  [eventCopy boundingBox];
+  v11 = HMICGRectScaleAroundCenter(v7, v8, v9, v10, percentage);
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -474,8 +474,8 @@ LABEL_33:
     v17 = v21;
   }
 
-  v22 = [(HMICameraActivityZone *)self points];
-  v23 = HMICreatePathFromPoints(v22);
+  points = [(HMICameraActivityZone *)self points];
+  v23 = HMICreatePathFromPoints(points);
 
   v28.x = v11;
   v28.y = v13;
@@ -495,53 +495,53 @@ LABEL_33:
   return v26;
 }
 
-- (BOOL)saveToJsonActivityZones:(id)a3 motionDetection:(id)a4 videoFragmentUrl:(id)a5 frameId:(id)a6 UUID:(id)a7 detectionID:(id)a8 zoneID:(id)a9
+- (BOOL)saveToJsonActivityZones:(id)zones motionDetection:(id)detection videoFragmentUrl:(id)url frameId:(id)id UUID:(id)d detectionID:(id)iD zoneID:(id)zoneID
 {
   v75 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v67 = a8;
-  v20 = a9;
+  zonesCopy = zones;
+  detectionCopy = detection;
+  urlCopy = url;
+  idCopy = id;
+  dCopy = d;
+  iDCopy = iD;
+  zoneIDCopy = zoneID;
   v66 = [HMIVideoAnalyzerEvent shortNameForEventClass:objc_opt_class()];
-  v21 = [v17 absoluteString];
-  LODWORD(a7) = [v21 hasPrefix:@"HKD://"];
+  absoluteString = [urlCopy absoluteString];
+  LODWORD(d) = [absoluteString hasPrefix:@"HKD://"];
 
-  v63 = v19;
-  v61 = v17;
-  if (a7)
+  v63 = dCopy;
+  v61 = urlCopy;
+  if (d)
   {
-    v22 = v19;
+    stringByDeletingPathExtension = dCopy;
   }
 
   else
   {
-    v23 = [v17 lastPathComponent];
-    v22 = [v23 stringByDeletingPathExtension];
+    lastPathComponent = [urlCopy lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
   }
 
-  v64 = v18;
-  v62 = v22;
-  v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@-%@-%@.json", v22, v18, v20, v67];
+  v64 = idCopy;
+  v62 = stringByDeletingPathExtension;
+  iDCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@-%@-%@.json", stringByDeletingPathExtension, idCopy, zoneIDCopy, iDCopy];
   v25 = MEMORY[0x277CCACA8];
   v26 = NSTemporaryDirectory();
   v27 = [v25 stringWithFormat:@"%@/%@", v26, @"analyzed-video-frames"];
 
-  v28 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v70 = 0;
-  v29 = [v28 createDirectoryAtPath:v27 withIntermediateDirectories:1 attributes:0 error:&v70];
+  v29 = [defaultManager createDirectoryAtPath:v27 withIntermediateDirectories:1 attributes:0 error:&v70];
   v30 = v70;
 
-  v65 = v16;
+  v65 = detectionCopy;
   if (v29)
   {
-    v58 = v24;
-    v59 = v20;
-    v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/activityzone-%@", v27, v24];
+    v58 = iDCopy;
+    v59 = zoneIDCopy;
+    v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/activityzone-%@", v27, iDCopy];
     v32 = objc_autoreleasePoolPush();
-    v33 = self;
+    selfCopy = self;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
@@ -554,8 +554,8 @@ LABEL_33:
     }
 
     objc_autoreleasePoolPop(v32);
-    v60 = v15;
-    v36 = [(HMICameraActivityZone *)v33 jsonReperesentaionOfDetectedObject:v15 motionDetection:v16 eventClass:v66];
+    v60 = zonesCopy;
+    v36 = [(HMICameraActivityZone *)selfCopy jsonReperesentaionOfDetectedObject:zonesCopy motionDetection:detectionCopy eventClass:v66];
     v69 = v30;
     v37 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v36 options:1 error:&v69];
     v38 = v69;
@@ -571,7 +571,7 @@ LABEL_33:
       if ((v41 & 1) == 0)
       {
         context = objc_autoreleasePoolPush();
-        v43 = v33;
+        v43 = selfCopy;
         v44 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
         {
@@ -592,7 +592,7 @@ LABEL_33:
     else
     {
       v51 = objc_autoreleasePoolPush();
-      v52 = v33;
+      v52 = selfCopy;
       v53 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
       {
@@ -609,28 +609,28 @@ LABEL_33:
     }
 
     v30 = v38;
-    v20 = v59;
-    v15 = v60;
+    zoneIDCopy = v59;
+    zonesCopy = v60;
     v50 = v63;
-    v24 = v58;
+    iDCopy = v58;
   }
 
   else
   {
     v45 = objc_autoreleasePoolPush();
-    v46 = self;
+    selfCopy2 = self;
     v47 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
-      v49 = v48 = v20;
+      v49 = v48 = zoneIDCopy;
       *buf = 138543618;
       v72 = v49;
       v73 = 2112;
       v74 = v30;
       _os_log_impl(&dword_22D12F000, v47, OS_LOG_TYPE_ERROR, "%{public}@Error creating activity zone result directory: %@", buf, 0x16u);
 
-      v20 = v48;
+      zoneIDCopy = v48;
     }
 
     objc_autoreleasePoolPop(v45);
@@ -641,29 +641,29 @@ LABEL_33:
   return v41;
 }
 
-- (BOOL)checkIfObjectIsStaticWithBoundingBox:(CGRect)a3 motionDetection:(id)a4 eventClass:(Class)a5
+- (BOOL)checkIfObjectIsStaticWithBoundingBox:(CGRect)box motionDetection:(id)detection eventClass:(Class)class
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v55 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  if (objc_opt_class() != a5)
+  detectionCopy = detection;
+  if (objc_opt_class() != class)
   {
     goto LABEL_25;
   }
 
-  v12 = [MEMORY[0x277CBEB18] array];
-  v13 = [(HMICameraActivityZone *)self points];
-  v14 = HMICreatePathFromPoints(v13);
+  array = [MEMORY[0x277CBEB18] array];
+  points = [(HMICameraActivityZone *)self points];
+  v14 = HMICreatePathFromPoints(points);
 
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v15 = [v11 motionVectors];
-  v16 = [v15 countByEnumeratingWithState:&v45 objects:v54 count:16];
+  motionVectors = [detectionCopy motionVectors];
+  v16 = [motionVectors countByEnumeratingWithState:&v45 objects:v54 count:16];
   if (v16)
   {
     v17 = v16;
@@ -674,18 +674,18 @@ LABEL_33:
       {
         if (*v46 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(motionVectors);
         }
 
         v20 = *(*(&v45 + 1) + 8 * i);
         [v20 target];
         if (CGPathContainsPoint(v14, 0, v56, 0))
         {
-          [v12 addObject:v20];
+          [array addObject:v20];
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v45 objects:v54 count:16];
+      v17 = [motionVectors countByEnumeratingWithState:&v45 objects:v54 count:16];
     }
 
     while (v17);
@@ -695,7 +695,7 @@ LABEL_33:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v21 = v12;
+  v21 = array;
   v22 = [v21 countByEnumeratingWithState:&v41 objects:v53 count:16];
   if (v22)
   {
@@ -743,7 +743,7 @@ LABEL_33:
   CGPathRelease(v14);
   v34 = v33 / (height * width + 0.00000011920929);
   v35 = objc_autoreleasePoolPush();
-  v36 = self;
+  selfCopy = self;
   v37 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
   {
@@ -770,14 +770,14 @@ LABEL_25:
   return v39;
 }
 
-- (BOOL)containsVectorWithSource:(CGPoint)a3 destination:(CGPoint)a4
+- (BOOL)containsVectorWithSource:(CGPoint)source destination:(CGPoint)destination
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v8 = [(HMICameraActivityZone *)self points];
-  v9 = HMICreatePathFromPoints(v8);
+  y = destination.y;
+  x = destination.x;
+  v6 = source.y;
+  v7 = source.x;
+  points = [(HMICameraActivityZone *)self points];
+  v9 = HMICreatePathFromPoints(points);
 
   v12.x = v7;
   v12.y = v6;
@@ -793,32 +793,32 @@ LABEL_25:
   return v10;
 }
 
-+ (id)filterEvents:(id)a3 withActivityZones:(id)a4 motionDetection:(id)a5 insetPercentageInclusion:(float)a6 insetPercentageExclusion:(float)a7
++ (id)filterEvents:(id)events withActivityZones:(id)zones motionDetection:(id)detection insetPercentageInclusion:(float)inclusion insetPercentageExclusion:(float)exclusion
 {
   v93 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if ([v12 count])
+  eventsCopy = events;
+  zonesCopy = zones;
+  detectionCopy = detection;
+  if ([zonesCopy count])
   {
-    v14 = [v12 firstObject];
-    v15 = [v14 isInclusion];
+    firstObject = [zonesCopy firstObject];
+    isInclusion = [firstObject isInclusion];
 
     v78[0] = MEMORY[0x277D85DD0];
     v78[1] = 3221225472;
     v78[2] = __122__HMICameraActivityZone_filterEvents_withActivityZones_motionDetection_insetPercentageInclusion_insetPercentageExclusion___block_invoke;
     v78[3] = &__block_descriptor_33_e31_B16__0__HMICameraActivityZone_8l;
-    v59 = v15;
-    v79 = v15;
-    [v12 na_all:v78];
+    v59 = isInclusion;
+    v79 = isInclusion;
+    [zonesCopy na_all:v78];
     v58 = [MEMORY[0x277CBEB58] set];
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
-    v56 = v11;
-    obj = v11;
-    v61 = v12;
+    v56 = eventsCopy;
+    obj = eventsCopy;
+    v61 = zonesCopy;
     v63 = [obj countByEnumeratingWithState:&v74 objects:v92 count:16];
     if (v63)
     {
@@ -837,7 +837,7 @@ LABEL_25:
           v71 = 0u;
           v72 = 0u;
           v73 = 0u;
-          v18 = v12;
+          v18 = zonesCopy;
           v19 = [v18 countByEnumeratingWithState:&v70 objects:v91 count:16];
           if (v19)
           {
@@ -855,11 +855,11 @@ LABEL_25:
                 v23 = *(*(&v70 + 1) + 8 * j);
                 if ([v23 activityZoneType])
                 {
-                  *&v24 = a7;
+                  *&v24 = exclusion;
                   if ([v23 containsEvent:v17 withInsetPercentage:v24])
                   {
                     v29 = objc_autoreleasePoolPush();
-                    v30 = a1;
+                    selfCopy = self;
                     v31 = HMFGetOSLogHandle();
                     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
                     {
@@ -876,12 +876,12 @@ LABEL_25:
                       v87 = 2112;
                       v88 = *&DictionaryRepresentation;
                       v89 = 2048;
-                      v90 = a7;
+                      inclusionCopy = exclusion;
                       _os_log_impl(&dword_22D12F000, v31, OS_LOG_TYPE_INFO, "%{public}@Exclusion zone:%@ intersecting with:(%@) Object coordinate %@ insetThreshold %f", buf, 0x34u);
                     }
 
                     objc_autoreleasePoolPop(v29);
-                    v12 = v61;
+                    zonesCopy = v61;
                     goto LABEL_28;
                   }
                 }
@@ -892,10 +892,10 @@ LABEL_25:
                   if ([v23 overlapsWithElipseInsideRect:? withInsetPercentage:?])
                   {
                     [v17 boundingBox];
-                    if (([v23 checkIfObjectIsStaticWithBoundingBox:v13 motionDetection:objc_opt_class() eventClass:{v25, v26, v27, v28}] & 1) == 0)
+                    if (([v23 checkIfObjectIsStaticWithBoundingBox:detectionCopy motionDetection:objc_opt_class() eventClass:{v25, v26, v27, v28}] & 1) == 0)
                     {
                       v36 = objc_autoreleasePoolPush();
-                      v37 = a1;
+                      selfCopy2 = self;
                       v38 = HMFGetOSLogHandle();
                       if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
                       {
@@ -913,14 +913,14 @@ LABEL_25:
                         v87 = 2112;
                         v88 = *&v41;
                         v89 = 2048;
-                        v90 = a6;
+                        inclusionCopy = inclusion;
                         _os_log_impl(&dword_22D12F000, v38, OS_LOG_TYPE_INFO, "%{public}@Inclusion zone:%@ intersecting with:(%@) Object coordinate %@ insetThreshold %f", buf, 0x34u);
 
                         v36 = v57;
                       }
 
                       objc_autoreleasePoolPop(v36);
-                      v12 = v61;
+                      zonesCopy = v61;
                       goto LABEL_27;
                     }
                   }
@@ -965,15 +965,15 @@ LABEL_28:
       v44 = *v67;
       if (v59)
       {
-        v45 = a6;
+        exclusionCopy2 = inclusion;
       }
 
       else
       {
-        v45 = a7;
+        exclusionCopy2 = exclusion;
       }
 
-      v46 = v45;
+      v46 = exclusionCopy2;
       do
       {
         for (k = 0; k != v43; ++k)
@@ -985,7 +985,7 @@ LABEL_28:
 
           v48 = *(*(&v66 + 1) + 8 * k);
           v49 = objc_autoreleasePoolPush();
-          v50 = a1;
+          selfCopy3 = self;
           v51 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
           {
@@ -1013,27 +1013,27 @@ LABEL_28:
       while (v43);
     }
 
-    v11 = v56;
-    v12 = v61;
+    eventsCopy = v56;
+    zonesCopy = v61;
   }
 
   else
   {
-    v64 = v11;
+    v64 = eventsCopy;
   }
 
   return v64;
 }
 
-+ (id)activityZonesFromString:(id)a3 isInclusion:(BOOL)a4
++ (id)activityZonesFromString:(id)string isInclusion:(BOOL)inclusion
 {
-  v31 = a4;
+  inclusionCopy = inclusion;
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"{}"];
-  v29 = v4;
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  v29 = stringCopy;
+  v6 = [stringCopy componentsSeparatedByCharactersInSet:v5];
 
   v42 = 0u;
   v43 = 0u;
@@ -1060,7 +1060,7 @@ LABEL_28:
           v9 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"()"];
           v10 = [v8 componentsSeparatedByCharactersInSet:v9];
 
-          v11 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
           v36 = 0u;
           v37 = 0u;
           v38 = 0u;
@@ -1094,7 +1094,7 @@ LABEL_28:
                   [v24 doubleValue];
                   v26 = [(HMIPoint *)v20 initWithPoint:v23, v25];
 
-                  [v11 addObject:v26];
+                  [array addObject:v26];
                 }
               }
 
@@ -1104,7 +1104,7 @@ LABEL_28:
             while (v14);
           }
 
-          v27 = [[HMICameraActivityZone alloc] initWithPoints:v11 isInclusion:v31];
+          v27 = [[HMICameraActivityZone alloc] initWithPoints:array isInclusion:inclusionCopy];
           [v32 addObject:v27];
 
           i = v35;
@@ -1120,51 +1120,51 @@ LABEL_28:
   return v32;
 }
 
-+ (void)submitCoreAnalyticsEvent:(id)a3 filteringLevel:(id)a4 numberOfDetectedObjects:(id)a5
++ (void)submitCoreAnalyticsEvent:(id)event filteringLevel:(id)level numberOfDetectedObjects:(id)objects
 {
   v7 = MEMORY[0x277CBEB38];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 dictionary];
-  [v11 setObject:v10 forKeyedSubscript:@"zoneType"];
+  objectsCopy = objects;
+  levelCopy = level;
+  eventCopy = event;
+  dictionary = [v7 dictionary];
+  [dictionary setObject:eventCopy forKeyedSubscript:@"zoneType"];
 
-  [v11 setObject:v9 forKeyedSubscript:@"filteringLevel"];
-  [v11 setObject:v8 forKeyedSubscript:@"numDetectedObjects"];
+  [dictionary setObject:levelCopy forKeyedSubscript:@"filteringLevel"];
+  [dictionary setObject:objectsCopy forKeyedSubscript:@"numDetectedObjects"];
 
-  v13 = v11;
-  v12 = v11;
+  v13 = dictionary;
+  v12 = dictionary;
   AnalyticsSendEventLazy();
 }
 
-+ (void)generateAndSubmitStats:(id)a3 filteredEvents:(id)a4 motionDetection:(id)a5 activityZones:(id)a6
++ (void)generateAndSubmitStats:(id)stats filteredEvents:(id)events motionDetection:(id)detection activityZones:(id)zones
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v10 firstObject];
-  v15 = [v14 isInclusion];
+  zonesCopy = zones;
+  detectionCopy = detection;
+  eventsCopy = events;
+  statsCopy = stats;
+  firstObject = [zonesCopy firstObject];
+  isInclusion = [firstObject isInclusion];
 
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v13, "count")}];
-  if (v15)
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(statsCopy, "count")}];
+  if (isInclusion)
   {
     v17 = @"inclusion";
-    [a1 submitCoreAnalyticsEvent:@"inclusion" filteringLevel:@"noFiltering" numberOfDetectedObjects:v16];
+    [self submitCoreAnalyticsEvent:@"inclusion" filteringLevel:@"noFiltering" numberOfDetectedObjects:v16];
 
     v18 = MEMORY[0x277CCABB0];
-    v19 = [v12 count];
+    v19 = [eventsCopy count];
 
     v20 = [v18 numberWithUnsignedInteger:v19];
-    [a1 submitCoreAnalyticsEvent:@"inclusion" filteringLevel:@"resize_0" numberOfDetectedObjects:v20];
+    [self submitCoreAnalyticsEvent:@"inclusion" filteringLevel:@"resize_0" numberOfDetectedObjects:v20];
 
     LODWORD(v21) = 1028443341;
-    v22 = [a1 filterEvents:v13 withActivityZones:v10 motionDetection:v11 insetPercentageInclusion:v21 insetPercentageExclusion:0.0];
+    v22 = [self filterEvents:statsCopy withActivityZones:zonesCopy motionDetection:detectionCopy insetPercentageInclusion:v21 insetPercentageExclusion:0.0];
     v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v22, "count")}];
-    [a1 submitCoreAnalyticsEvent:@"inclusion" filteringLevel:@"resize_10" numberOfDetectedObjects:v23];
+    [self submitCoreAnalyticsEvent:@"inclusion" filteringLevel:@"resize_10" numberOfDetectedObjects:v23];
 
     LODWORD(v24) = 1036831949;
-    v34 = [a1 filterEvents:v13 withActivityZones:v10 motionDetection:v11 insetPercentageInclusion:v24 insetPercentageExclusion:0.0];
+    v34 = [self filterEvents:statsCopy withActivityZones:zonesCopy motionDetection:detectionCopy insetPercentageInclusion:v24 insetPercentageExclusion:0.0];
 
     v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v34, "count")}];
     v26 = @"resize_20";
@@ -1173,27 +1173,27 @@ LABEL_28:
   else
   {
     v17 = @"exclusion";
-    [a1 submitCoreAnalyticsEvent:@"exclusion" filteringLevel:@"noFiltering" numberOfDetectedObjects:v16];
+    [self submitCoreAnalyticsEvent:@"exclusion" filteringLevel:@"noFiltering" numberOfDetectedObjects:v16];
 
     v27 = MEMORY[0x277CCABB0];
-    v28 = [v12 count];
+    v28 = [eventsCopy count];
 
     v29 = [v27 numberWithUnsignedInteger:v28];
-    [a1 submitCoreAnalyticsEvent:@"exclusion" filteringLevel:@"resize_20" numberOfDetectedObjects:v29];
+    [self submitCoreAnalyticsEvent:@"exclusion" filteringLevel:@"resize_20" numberOfDetectedObjects:v29];
 
     LODWORD(v30) = 1040522936;
-    v31 = [a1 filterEvents:v13 withActivityZones:v10 motionDetection:v11 insetPercentageInclusion:0.0 insetPercentageExclusion:v30];
+    v31 = [self filterEvents:statsCopy withActivityZones:zonesCopy motionDetection:detectionCopy insetPercentageInclusion:0.0 insetPercentageExclusion:v30];
     v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v31, "count")}];
-    [a1 submitCoreAnalyticsEvent:@"exclusion" filteringLevel:@"resize_26" numberOfDetectedObjects:v32];
+    [self submitCoreAnalyticsEvent:@"exclusion" filteringLevel:@"resize_26" numberOfDetectedObjects:v32];
 
     LODWORD(v33) = 1043878380;
-    v34 = [a1 filterEvents:v13 withActivityZones:v10 motionDetection:v11 insetPercentageInclusion:0.0 insetPercentageExclusion:v33];
+    v34 = [self filterEvents:statsCopy withActivityZones:zonesCopy motionDetection:detectionCopy insetPercentageInclusion:0.0 insetPercentageExclusion:v33];
 
     v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v34, "count")}];
     v26 = @"resize_36";
   }
 
-  [a1 submitCoreAnalyticsEvent:v17 filteringLevel:v26 numberOfDetectedObjects:v25];
+  [self submitCoreAnalyticsEvent:v17 filteringLevel:v26 numberOfDetectedObjects:v25];
 }
 
 @end

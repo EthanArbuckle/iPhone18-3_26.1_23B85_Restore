@@ -1,13 +1,13 @@
 @interface EKAttendee
 + (id)knownSingleValueKeysForComparison;
-+ (int)_calAttendeeStatusFromEKParticipantStatus:(int64_t)a3;
-+ (int64_t)_ekParticipantStatusFromCalAttendeeStatus:(int)a3;
++ (int)_calAttendeeStatusFromEKParticipantStatus:(int64_t)status;
++ (int64_t)_ekParticipantStatusFromCalAttendeeStatus:(int)status;
 - (BOOL)hasProposedStartDate;
 - (BOOL)isCurrentUser;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)proposedStartDate;
-- (id)proposedStartDateForEvent:(id)a3;
+- (id)proposedStartDateForEvent:(id)event;
 - (int)pendingStatusRaw;
 - (int)proposedStartDateStatus;
 - (int)statusRaw;
@@ -16,30 +16,30 @@
 - (int64_t)participantType;
 - (int64_t)pendingStatus;
 - (unsigned)flags;
-- (void)_setFlag:(unsigned int)a3 value:(BOOL)a4;
-- (void)setParticipantRole:(int64_t)a3;
-- (void)setParticipantStatus:(int64_t)a3;
-- (void)setParticipantType:(int64_t)a3;
-- (void)setPendingStatus:(int64_t)a3;
-- (void)setProposedStartDate:(id)a3 forEvent:(id)a4;
+- (void)_setFlag:(unsigned int)flag value:(BOOL)value;
+- (void)setParticipantRole:(int64_t)role;
+- (void)setParticipantStatus:(int64_t)status;
+- (void)setParticipantType:(int64_t)type;
+- (void)setPendingStatus:(int64_t)status;
+- (void)setProposedStartDate:(id)date forEvent:(id)event;
 @end
 
 @implementation EKAttendee
 
 - (int64_t)participantStatus
 {
-  v2 = [(EKAttendee *)self statusRaw];
+  statusRaw = [(EKAttendee *)self statusRaw];
   v3 = objc_opt_class();
 
-  return [v3 _ekParticipantStatusFromCalAttendeeStatus:v2];
+  return [v3 _ekParticipantStatusFromCalAttendeeStatus:statusRaw];
 }
 
 - (int)statusRaw
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992538]];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 + (id)knownSingleValueKeysForComparison
@@ -48,7 +48,7 @@
   block[1] = 3221225472;
   block[2] = __47__EKAttendee_knownSingleValueKeysForComparison__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (knownSingleValueKeysForComparison_onceToken_5 != -1)
   {
     dispatch_once(&knownSingleValueKeysForComparison_onceToken_5, block);
@@ -91,22 +91,22 @@ void __47__EKAttendee_knownSingleValueKeysForComparison__block_invoke(uint64_t a
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([MEMORY[0x1E6992F30] isProgramSDKAtLeast:0x7E30901FFFFFFFFLL])
   {
     v11.receiver = self;
     v11.super_class = EKAttendee;
-    return [(EKObject *)&v11 copyWithZone:a3];
+    return [(EKObject *)&v11 copyWithZone:zone];
   }
 
   else
   {
-    v6 = [(EKParticipant *)self name];
-    v7 = [(EKParticipant *)self emailAddress];
-    v8 = [(EKParticipant *)self phoneNumber];
+    name = [(EKParticipant *)self name];
+    emailAddress = [(EKParticipant *)self emailAddress];
+    phoneNumber = [(EKParticipant *)self phoneNumber];
     v9 = [(EKParticipant *)self URL];
-    v5 = [EKAttendee attendeeWithName:v6 emailAddress:v7 phoneNumber:v8 url:v9];
+    v5 = [EKAttendee attendeeWithName:name emailAddress:emailAddress phoneNumber:phoneNumber url:v9];
 
     if (v5)
     {
@@ -124,52 +124,52 @@ void __47__EKAttendee_knownSingleValueKeysForComparison__block_invoke(uint64_t a
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKParticipant *)self UUID];
-  v6 = [(EKParticipant *)self name];
-  v7 = [(EKParticipant *)self emailAddress];
-  v8 = [(EKParticipant *)self phoneNumber];
-  v9 = [v3 stringWithFormat:@"%@ <%p> {UUID = %@ name = %@; email = %@; phone = %@; status = %ld; role = %ld; type = %ld}", v4, self, v5, v6, v7, v8, -[EKAttendee participantStatus](self, "participantStatus"), -[EKAttendee participantRole](self, "participantRole"), -[EKAttendee participantType](self, "participantType")];;
+  uUID = [(EKParticipant *)self UUID];
+  name = [(EKParticipant *)self name];
+  emailAddress = [(EKParticipant *)self emailAddress];
+  phoneNumber = [(EKParticipant *)self phoneNumber];
+  v9 = [v3 stringWithFormat:@"%@ <%p> {UUID = %@ name = %@; email = %@; phone = %@; status = %ld; role = %ld; type = %ld}", v4, self, uUID, name, emailAddress, phoneNumber, -[EKAttendee participantStatus](self, "participantStatus"), -[EKAttendee participantRole](self, "participantRole"), -[EKAttendee participantType](self, "participantType")];;
 
   return v9;
 }
 
-+ (int64_t)_ekParticipantStatusFromCalAttendeeStatus:(int)a3
++ (int64_t)_ekParticipantStatusFromCalAttendeeStatus:(int)status
 {
-  if (*MEMORY[0x1E6992428] == a3)
+  if (*MEMORY[0x1E6992428] == status)
   {
     return -1;
   }
 
-  if (a3 < 8)
+  if (status < 8)
   {
-    return qword_1A81C3DE8[a3];
+    return qword_1A81C3DE8[status];
   }
 
   v5 = EKLogHandle;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
   {
-    [(EKAttendee *)a3 _ekParticipantStatusFromCalAttendeeStatus:v5];
+    [(EKAttendee *)status _ekParticipantStatusFromCalAttendeeStatus:v5];
   }
 
   return 0;
 }
 
-+ (int)_calAttendeeStatusFromEKParticipantStatus:(int64_t)a3
++ (int)_calAttendeeStatusFromEKParticipantStatus:(int64_t)status
 {
-  v3 = a3;
-  if (a3 <= 2)
+  statusCopy = status;
+  if (status <= 2)
   {
-    if (a3 > 0)
+    if (status > 0)
     {
-      return a3 != 1;
+      return status != 1;
     }
 
-    if (a3 == -1)
+    if (status == -1)
     {
       return *MEMORY[0x1E6992428];
     }
 
-    if (!a3)
+    if (!status)
     {
       return 7;
     }
@@ -177,9 +177,9 @@ void __47__EKAttendee_knownSingleValueKeysForComparison__block_invoke(uint64_t a
     goto LABEL_18;
   }
 
-  if (a3 > 4)
+  if (status > 4)
   {
-    switch(a3)
+    switch(status)
     {
       case 5:
         return 4;
@@ -193,13 +193,13 @@ LABEL_18:
     v5 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
     {
-      [(EKAttendee *)v3 _calAttendeeStatusFromEKParticipantStatus:v5];
+      [(EKAttendee *)statusCopy _calAttendeeStatusFromEKParticipantStatus:v5];
     }
 
     return 7;
   }
 
-  if (a3 == 3)
+  if (status == 3)
   {
     return 2;
   }
@@ -210,9 +210,9 @@ LABEL_18:
   }
 }
 
-- (void)setParticipantStatus:(int64_t)a3
+- (void)setParticipantStatus:(int64_t)status
 {
-  v4 = [objc_opt_class() _calAttendeeStatusFromEKParticipantStatus:a3];
+  v4 = [objc_opt_class() _calAttendeeStatusFromEKParticipantStatus:status];
   [(EKAttendee *)self setStatusRaw:v4];
 
   [(EKAttendee *)self setPendingStatusRaw:v4];
@@ -221,36 +221,36 @@ LABEL_18:
 - (int64_t)participantRole
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992520]];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setParticipantRole:(int64_t)a3
+- (void)setParticipantRole:(int64_t)role
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:role];
   [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E6992520]];
 }
 
 - (int)pendingStatusRaw
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992530]];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)pendingStatus
 {
-  v2 = [(EKAttendee *)self pendingStatusRaw];
+  pendingStatusRaw = [(EKAttendee *)self pendingStatusRaw];
   v3 = objc_opt_class();
 
-  return [v3 _ekParticipantStatusFromCalAttendeeStatus:v2];
+  return [v3 _ekParticipantStatusFromCalAttendeeStatus:pendingStatusRaw];
 }
 
-- (void)setPendingStatus:(int64_t)a3
+- (void)setPendingStatus:(int64_t)status
 {
-  v4 = [objc_opt_class() _calAttendeeStatusFromEKParticipantStatus:a3];
+  v4 = [objc_opt_class() _calAttendeeStatusFromEKParticipantStatus:status];
 
   [(EKAttendee *)self setPendingStatusRaw:v4];
 }
@@ -258,14 +258,14 @@ LABEL_18:
 - (int64_t)participantType
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992528]];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setParticipantType:(int64_t)a3
+- (void)setParticipantType:(int64_t)type
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E6992528]];
 }
 
@@ -277,31 +277,31 @@ LABEL_18:
   }
 
   v4 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992510]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (unsigned)flags
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992508]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
-- (void)_setFlag:(unsigned int)a3 value:(BOOL)a4
+- (void)_setFlag:(unsigned int)flag value:(BOOL)value
 {
-  v4 = a4;
-  v7 = [(EKAttendee *)self flags];
-  if (v4)
+  valueCopy = value;
+  flags = [(EKAttendee *)self flags];
+  if (valueCopy)
   {
-    v8 = v7 | a3;
+    v8 = flags | flag;
   }
 
   else
   {
-    v8 = v7 & ~a3;
+    v8 = flags & ~flag;
   }
 
   [(EKAttendee *)self setFlags:v8];
@@ -326,36 +326,36 @@ LABEL_18:
 
 - (BOOL)hasProposedStartDate
 {
-  v2 = [(EKAttendee *)self proposedStartDate];
-  v3 = v2 != 0;
+  proposedStartDate = [(EKAttendee *)self proposedStartDate];
+  v3 = proposedStartDate != 0;
 
   return v3;
 }
 
-- (id)proposedStartDateForEvent:(id)a3
+- (id)proposedStartDateForEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(EKAttendee *)self proposedStartDate];
+  eventCopy = event;
+  proposedStartDate = [(EKAttendee *)self proposedStartDate];
   v10 = 0;
-  v6 = [v4 adjustedPersistedDateForDate:v5 withAdjustmentMode:1 pinMode:0 clientCalendarDate:&v10];
+  v6 = [eventCopy adjustedPersistedDateForDate:proposedStartDate withAdjustmentMode:1 pinMode:0 clientCalendarDate:&v10];
   v7 = v10;
 
-  v8 = [v7 date];
+  date = [v7 date];
 
-  return v8;
+  return date;
 }
 
-- (void)setProposedStartDate:(id)a3 forEvent:(id)a4
+- (void)setProposedStartDate:(id)date forEvent:(id)event
 {
-  v8 = [a4 adjustedPersistedDateForDate:a3 withAdjustmentMode:0 pinMode:0 clientCalendarDate:0];
-  v6 = [(EKAttendee *)self proposedStartDate];
-  v7 = [v8 isEqualToDate:v6];
+  v8 = [event adjustedPersistedDateForDate:date withAdjustmentMode:0 pinMode:0 clientCalendarDate:0];
+  proposedStartDate = [(EKAttendee *)self proposedStartDate];
+  v7 = [v8 isEqualToDate:proposedStartDate];
 
   if ((v7 & 1) == 0)
   {
     [(EKAttendee *)self setProposedStartDate:v8];
     [(EKAttendee *)self setProposedStartDateStatus:0];
-    if (a3)
+    if (date)
     {
       if ([(EKAttendee *)self participantStatus]== 2 || [(EKParticipant *)self needsResponse])
       {
@@ -368,9 +368,9 @@ LABEL_18:
 - (int)proposedStartDateStatus
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992B88]];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 + (void)_ekParticipantStatusFromCalAttendeeStatus:(int)a1 .cold.1(int a1, NSObject *a2)

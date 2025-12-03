@@ -1,43 +1,43 @@
 @interface OTSOSMissingAdapter
-- (BOOL)joinAfterRestore:(id *)a3;
-- (BOOL)preloadOctagonKeySetOnAccount:(id)a3 error:(id *)a4;
-- (BOOL)resetToOffering:(id *)a3;
-- (BOOL)updateCKKS4AllStatus:(BOOL)a3 error:(id *)a4;
-- (BOOL)updateOctagonKeySetWithAccount:(id)a3 error:(id *)a4;
+- (BOOL)joinAfterRestore:(id *)restore;
+- (BOOL)preloadOctagonKeySetOnAccount:(id)account error:(id *)error;
+- (BOOL)resetToOffering:(id *)offering;
+- (BOOL)updateCKKS4AllStatus:(BOOL)status error:(id *)error;
+- (BOOL)updateOctagonKeySetWithAccount:(id)account error:(id *)error;
 - (OTSOSMissingAdapter)init;
-- (id)currentSOSSelf:(id *)a3;
+- (id)currentSOSSelf:(id *)self;
 - (id)currentState;
-- (id)fetchSelfPeers:(id *)a3;
-- (id)fetchTrustedPeers:(id *)a3;
+- (id)fetchSelfPeers:(id *)peers;
+- (id)fetchTrustedPeers:(id *)peers;
 @end
 
 @implementation OTSOSMissingAdapter
 
-- (BOOL)resetToOffering:(id *)a3
+- (BOOL)resetToOffering:(id *)offering
 {
-  if (a3)
+  if (offering)
   {
-    *a3 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS unsupported on this platform"];
+    *offering = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS unsupported on this platform"];
   }
 
   return 0;
 }
 
-- (BOOL)joinAfterRestore:(id *)a3
+- (BOOL)joinAfterRestore:(id *)restore
 {
-  if (a3)
+  if (restore)
   {
-    *a3 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS unsupported on this platform"];
+    *restore = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS unsupported on this platform"];
   }
 
   return 0;
 }
 
-- (BOOL)preloadOctagonKeySetOnAccount:(id)a3 error:(id *)a4
+- (BOOL)preloadOctagonKeySetOnAccount:(id)account error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS unsupported on this platform"];
+    *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS unsupported on this platform"];
   }
 
   return 0;
@@ -47,57 +47,57 @@
 {
   v3 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS unsupported on this platform"];
   v4 = [CKKSPeerProviderState alloc];
-  v5 = [(OTSOSMissingAdapter *)self providerID];
-  v6 = [(CKKSPeerProviderState *)v4 initWithPeerProviderID:v5 essential:[(OTSOSMissingAdapter *)self essential] selfPeers:0 selfPeersError:v3 trustedPeers:0 trustedPeersError:v3];
+  providerID = [(OTSOSMissingAdapter *)self providerID];
+  v6 = [(CKKSPeerProviderState *)v4 initWithPeerProviderID:providerID essential:[(OTSOSMissingAdapter *)self essential] selfPeers:0 selfPeersError:v3 trustedPeers:0 trustedPeersError:v3];
 
   return v6;
 }
 
-- (id)fetchSelfPeers:(id *)a3
+- (id)fetchSelfPeers:(id *)peers
 {
-  if (a3)
+  if (peers)
   {
-    *a3 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS unsupported on this platform"];
+    *peers = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS unsupported on this platform"];
   }
 
   return 0;
 }
 
-- (BOOL)updateCKKS4AllStatus:(BOOL)a3 error:(id *)a4
+- (BOOL)updateCKKS4AllStatus:(BOOL)status error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS unsupported on this platform"];
+    *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS unsupported on this platform"];
   }
 
   return 0;
 }
 
-- (BOOL)updateOctagonKeySetWithAccount:(id)a3 error:(id *)a4
+- (BOOL)updateOctagonKeySetWithAccount:(id)account error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS unsupported on this platform"];
+    *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS unsupported on this platform"];
   }
 
   return 0;
 }
 
-- (id)fetchTrustedPeers:(id *)a3
+- (id)fetchTrustedPeers:(id *)peers
 {
-  if (a3)
+  if (peers)
   {
-    *a3 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS unsupported on this platform"];
+    *peers = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS unsupported on this platform"];
   }
 
   return 0;
 }
 
-- (id)currentSOSSelf:(id *)a3
+- (id)currentSOSSelf:(id *)self
 {
-  if (a3)
+  if (self)
   {
-    *a3 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS unsupported on this platform"];
+    *self = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS unsupported on this platform"];
   }
 
   return 0;

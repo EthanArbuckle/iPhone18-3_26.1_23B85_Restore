@@ -1,18 +1,18 @@
 @interface PRXIconContentView
-- (PRXIconContentView)initWithCardStyle:(int64_t)a3;
-- (void)setBodyLabel:(id)a3;
-- (void)setImageViews:(id)a3;
+- (PRXIconContentView)initWithCardStyle:(int64_t)style;
+- (void)setBodyLabel:(id)label;
+- (void)setImageViews:(id)views;
 - (void)updateConstraints;
 @end
 
 @implementation PRXIconContentView
 
-- (PRXIconContentView)initWithCardStyle:(int64_t)a3
+- (PRXIconContentView)initWithCardStyle:(int64_t)style
 {
   v35[7] = *MEMORY[0x277D85DE8];
   v34.receiver = self;
   v34.super_class = PRXIconContentView;
-  v3 = [(PRXCardContentView *)&v34 initWithCardStyle:a3];
+  v3 = [(PRXCardContentView *)&v34 initWithCardStyle:style];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756D0]);
@@ -20,39 +20,39 @@
     v3->_imageViewsGuide = v4;
 
     [(PRXIconContentView *)v3 addLayoutGuide:v3->_imageViewsGuide];
-    v6 = [(PRXCardContentView *)v3 mainContentGuide];
-    v7 = [(UILayoutGuide *)v3->_imageViewsGuide widthAnchor];
-    v33 = [v7 constraintEqualToConstant:0.0];
+    mainContentGuide = [(PRXCardContentView *)v3 mainContentGuide];
+    widthAnchor = [(UILayoutGuide *)v3->_imageViewsGuide widthAnchor];
+    v33 = [widthAnchor constraintEqualToConstant:0.0];
 
     LODWORD(v8) = 1112276992;
     [v33 setPriority:v8];
-    v9 = [(UILayoutGuide *)v3->_imageViewsGuide heightAnchor];
-    v10 = [v9 constraintEqualToConstant:0.0];
+    heightAnchor = [(UILayoutGuide *)v3->_imageViewsGuide heightAnchor];
+    v10 = [heightAnchor constraintEqualToConstant:0.0];
 
     v11 = v10;
     v23 = v10;
     LODWORD(v12) = 1112276992;
     [v10 setPriority:v12];
     v26 = MEMORY[0x277CCAAD0];
-    v32 = [(UILayoutGuide *)v3->_imageViewsGuide topAnchor];
-    v31 = [v6 topAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31];
+    topAnchor = [(UILayoutGuide *)v3->_imageViewsGuide topAnchor];
+    topAnchor2 = [mainContentGuide topAnchor];
+    v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v35[0] = v30;
-    v29 = [(UILayoutGuide *)v3->_imageViewsGuide leadingAnchor];
-    v28 = [v6 leadingAnchor];
-    v27 = [v29 constraintGreaterThanOrEqualToAnchor:v28];
+    leadingAnchor = [(UILayoutGuide *)v3->_imageViewsGuide leadingAnchor];
+    leadingAnchor2 = [mainContentGuide leadingAnchor];
+    v27 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
     v35[1] = v27;
-    v25 = [(UILayoutGuide *)v3->_imageViewsGuide trailingAnchor];
-    v24 = [v6 trailingAnchor];
-    v13 = [v25 constraintLessThanOrEqualToAnchor:v24];
+    trailingAnchor = [(UILayoutGuide *)v3->_imageViewsGuide trailingAnchor];
+    trailingAnchor2 = [mainContentGuide trailingAnchor];
+    v13 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     v35[2] = v13;
-    v14 = [(UILayoutGuide *)v3->_imageViewsGuide centerXAnchor];
-    v15 = [v6 centerXAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    centerXAnchor = [(UILayoutGuide *)v3->_imageViewsGuide centerXAnchor];
+    centerXAnchor2 = [mainContentGuide centerXAnchor];
+    v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v35[3] = v16;
-    v17 = [(UILayoutGuide *)v3->_imageViewsGuide bottomAnchor];
-    v18 = [v6 bottomAnchor];
-    v19 = [v17 constraintLessThanOrEqualToAnchor:v18];
+    bottomAnchor = [(UILayoutGuide *)v3->_imageViewsGuide bottomAnchor];
+    bottomAnchor2 = [mainContentGuide bottomAnchor];
+    v19 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     v35[4] = v19;
     v35[5] = v33;
     v35[6] = v11;
@@ -73,7 +73,7 @@
   [(PRXCardContentView *)&v49 updateConstraints];
   if ([(NSArray *)self->_imageViews count]&& !self->_imageViewsConstraints)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
@@ -96,46 +96,46 @@
           }
 
           v8 = *(*(&v45 + 1) + 8 * v6);
-          v9 = [v8 centerYAnchor];
-          v10 = [v7 centerYAnchor];
-          v11 = v10;
-          if (!v10)
+          centerYAnchor = [v8 centerYAnchor];
+          centerYAnchor2 = [v7 centerYAnchor];
+          v11 = centerYAnchor2;
+          if (!centerYAnchor2)
           {
-            v2 = [(UILayoutGuide *)self->_imageViewsGuide centerYAnchor];
-            v11 = v2;
+            centerYAnchor3 = [(UILayoutGuide *)self->_imageViewsGuide centerYAnchor];
+            v11 = centerYAnchor3;
           }
 
-          v12 = [v9 constraintEqualToAnchor:v11];
-          [v4 addObject:v12];
+          v12 = [centerYAnchor constraintEqualToAnchor:v11];
+          [array addObject:v12];
 
-          if (!v10)
+          if (!centerYAnchor2)
           {
           }
 
-          v13 = [v8 topAnchor];
-          v14 = [(UILayoutGuide *)self->_imageViewsGuide topAnchor];
-          v15 = [v13 constraintGreaterThanOrEqualToAnchor:v14];
-          [v4 addObject:v15];
+          topAnchor = [v8 topAnchor];
+          topAnchor2 = [(UILayoutGuide *)self->_imageViewsGuide topAnchor];
+          v15 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
+          [array addObject:v15];
 
-          v16 = [v8 bottomAnchor];
-          v17 = [(UILayoutGuide *)self->_imageViewsGuide bottomAnchor];
-          v18 = [v16 constraintLessThanOrEqualToAnchor:v17];
-          [v4 addObject:v18];
+          bottomAnchor = [v8 bottomAnchor];
+          bottomAnchor2 = [(UILayoutGuide *)self->_imageViewsGuide bottomAnchor];
+          v18 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
+          [array addObject:v18];
 
-          v19 = [v8 leadingAnchor];
+          leadingAnchor = [v8 leadingAnchor];
           if (v7)
           {
-            v20 = [v7 trailingAnchor];
-            [v19 constraintEqualToAnchor:v20 constant:10.0];
+            trailingAnchor = [v7 trailingAnchor];
+            [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:10.0];
           }
 
           else
           {
-            v20 = [(UILayoutGuide *)self->_imageViewsGuide leadingAnchor];
-            [v19 constraintEqualToAnchor:v20];
+            trailingAnchor = [(UILayoutGuide *)self->_imageViewsGuide leadingAnchor];
+            [leadingAnchor constraintEqualToAnchor:trailingAnchor];
           }
           v21 = ;
-          [v4 addObject:v21];
+          [array addObject:v21];
 
           v5 = v8;
           ++v6;
@@ -149,12 +149,12 @@
       while (v43);
     }
 
-    v22 = [v5 trailingAnchor];
-    v23 = [(UILayoutGuide *)self->_imageViewsGuide trailingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
-    [v4 addObject:v24];
+    trailingAnchor2 = [v5 trailingAnchor];
+    trailingAnchor3 = [(UILayoutGuide *)self->_imageViewsGuide trailingAnchor];
+    v24 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
+    [array addObject:v24];
 
-    v25 = [v4 copy];
+    v25 = [array copy];
     imageViewsConstraints = self->_imageViewsConstraints;
     self->_imageViewsConstraints = v25;
 
@@ -165,22 +165,22 @@
   {
     if (!self->_bodyLabelConstraints)
     {
-      v27 = [(PRXCardContentView *)self mainContentGuide];
-      v44 = [(PRXLabel *)self->_bodyLabel topAnchor];
-      v42 = [(UILayoutGuide *)self->_imageViewsGuide bottomAnchor];
-      obja = [v44 constraintEqualToAnchor:v42 constant:20.0];
+      mainContentGuide = [(PRXCardContentView *)self mainContentGuide];
+      topAnchor3 = [(PRXLabel *)self->_bodyLabel topAnchor];
+      bottomAnchor3 = [(UILayoutGuide *)self->_imageViewsGuide bottomAnchor];
+      obja = [topAnchor3 constraintEqualToAnchor:bottomAnchor3 constant:20.0];
       v50[0] = obja;
-      v38 = [(PRXLabel *)self->_bodyLabel leadingAnchor];
-      v37 = [v27 leadingAnchor];
-      v28 = [v38 constraintEqualToAnchor:v37];
+      leadingAnchor2 = [(PRXLabel *)self->_bodyLabel leadingAnchor];
+      leadingAnchor3 = [mainContentGuide leadingAnchor];
+      v28 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
       v50[1] = v28;
-      v29 = [(PRXLabel *)self->_bodyLabel trailingAnchor];
-      v30 = [v27 trailingAnchor];
-      v31 = [v29 constraintEqualToAnchor:v30];
+      trailingAnchor4 = [(PRXLabel *)self->_bodyLabel trailingAnchor];
+      trailingAnchor5 = [mainContentGuide trailingAnchor];
+      v31 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
       v50[2] = v31;
-      v32 = [(PRXLabel *)self->_bodyLabel bottomAnchor];
-      v33 = [v27 bottomAnchor];
-      v34 = [v32 constraintLessThanOrEqualToAnchor:v33];
+      bottomAnchor4 = [(PRXLabel *)self->_bodyLabel bottomAnchor];
+      bottomAnchor5 = [mainContentGuide bottomAnchor];
+      v34 = [bottomAnchor4 constraintLessThanOrEqualToAnchor:bottomAnchor5];
       v50[3] = v34;
       v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:4];
       bodyLabelConstraints = self->_bodyLabelConstraints;
@@ -191,12 +191,12 @@
   }
 }
 
-- (void)setImageViews:(id)a3
+- (void)setImageViews:(id)views
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  viewsCopy = views;
   imageViews = self->_imageViews;
-  if (imageViews != v5 && ![(NSArray *)imageViews isEqualToArray:v5])
+  if (imageViews != viewsCopy && ![(NSArray *)imageViews isEqualToArray:viewsCopy])
   {
     v25 = 0u;
     v26 = 0u;
@@ -226,7 +226,7 @@
       while (v9);
     }
 
-    objc_storeStrong(&self->_imageViews, a3);
+    objc_storeStrong(&self->_imageViews, views);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
@@ -267,15 +267,15 @@
   }
 }
 
-- (void)setBodyLabel:(id)a3
+- (void)setBodyLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   bodyLabel = self->_bodyLabel;
-  v8 = v5;
-  if (bodyLabel != v5)
+  v8 = labelCopy;
+  if (bodyLabel != labelCopy)
   {
     [(PRXLabel *)bodyLabel removeFromSuperview];
-    objc_storeStrong(&self->_bodyLabel, a3);
+    objc_storeStrong(&self->_bodyLabel, label);
     [(PRXLabel *)self->_bodyLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PRXIconContentView *)self addSubview:self->_bodyLabel];
     bodyLabelConstraints = self->_bodyLabelConstraints;

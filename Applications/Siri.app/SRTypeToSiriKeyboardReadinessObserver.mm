@@ -1,14 +1,14 @@
 @interface SRTypeToSiriKeyboardReadinessObserver
 - (SRTypeToSiriKeyboardReadinessObserver)init;
-- (SRTypeToSiriKeyboardReadinessObserver)initWithDelegate:(id)a3;
-- (void)keyboardCanRespondToUserInputWithNotification:(id)a3;
+- (SRTypeToSiriKeyboardReadinessObserver)initWithDelegate:(id)delegate;
+- (void)keyboardCanRespondToUserInputWithNotification:(id)notification;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation SRTypeToSiriKeyboardReadinessObserver
 
-- (SRTypeToSiriKeyboardReadinessObserver)initWithDelegate:(id)a3
+- (SRTypeToSiriKeyboardReadinessObserver)initWithDelegate:(id)delegate
 {
   v4 = OBJC_IVAR___SRTypeToSiriKeyboardReadinessObserver_notificationCenter;
   v5 = objc_opt_self();
@@ -27,24 +27,24 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_100094918();
 }
 
 - (void)stop
 {
-  v2 = self;
+  selfCopy = self;
   sub_100094F90();
 }
 
-- (void)keyboardCanRespondToUserInputWithNotification:(id)a3
+- (void)keyboardCanRespondToUserInputWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_100095214();
 
   (*(v5 + 8))(v7, v4);

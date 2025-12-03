@@ -1,11 +1,11 @@
 @interface MFPRedEyeCorrectionEffect
-- (MFPRedEyeCorrectionEffect)initWithAreas:(const void *)a3;
+- (MFPRedEyeCorrectionEffect)initWithAreas:(const void *)areas;
 - (void)dealloc;
 @end
 
 @implementation MFPRedEyeCorrectionEffect
 
-- (MFPRedEyeCorrectionEffect)initWithAreas:(const void *)a3
+- (MFPRedEyeCorrectionEffect)initWithAreas:(const void *)areas
 {
   v4.receiver = self;
   v4.super_class = MFPRedEyeCorrectionEffect;

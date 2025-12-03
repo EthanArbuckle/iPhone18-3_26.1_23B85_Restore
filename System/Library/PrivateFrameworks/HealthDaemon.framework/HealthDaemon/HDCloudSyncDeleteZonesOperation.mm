@@ -1,17 +1,17 @@
 @interface HDCloudSyncDeleteZonesOperation
-- (HDCloudSyncDeleteZonesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
+- (HDCloudSyncDeleteZonesOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
 - (NSArray)zonesToDelete;
 - (void)main;
-- (void)setZonesToDelete:(id)a3;
+- (void)setZonesToDelete:(id)delete;
 @end
 
 @implementation HDCloudSyncDeleteZonesOperation
 
-- (HDCloudSyncDeleteZonesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncDeleteZonesOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v10.receiver = self;
   v10.super_class = HDCloudSyncDeleteZonesOperation;
-  v4 = [(HDCloudSyncOperation *)&v10 initWithConfiguration:a3 cloudState:a4];
+  v4 = [(HDCloudSyncOperation *)&v10 initWithConfiguration:configuration cloudState:state];
   v5 = v4;
   if (v4)
   {
@@ -37,17 +37,17 @@
   return v3;
 }
 
-- (void)setZonesToDelete:(id)a3
+- (void)setZonesToDelete:(id)delete
 {
-  v5 = a3;
+  deleteCopy = delete;
   if ([(HDCloudSyncOperation *)self status])
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HDCloudSyncDeleteZonesOperation.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncDeleteZonesOperation.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v6 = [v5 copy];
+  v6 = [deleteCopy copy];
 
   zonesToDelete = self->_zonesToDelete;
   self->_zonesToDelete = v6;
@@ -58,18 +58,18 @@
 - (void)main
 {
   v49 = *MEMORY[0x277D85DE8];
-  v29 = [(HDCloudSyncDeleteZonesOperation *)self zonesToDelete];
+  zonesToDelete = [(HDCloudSyncDeleteZonesOperation *)self zonesToDelete];
   [(HDSynchronousTaskGroup *)self->_taskGroup beginTask];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 repository];
-  v5 = [v4 allCKContainers];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  allCKContainers = [repository allCKContainers];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v31 objects:v40 count:16];
+  obj = allCKContainers;
+  v6 = [allCKContainers countByEnumeratingWithState:&v31 objects:v40 count:16];
   if (v6)
   {
     v8 = v6;
@@ -91,7 +91,7 @@
         v30[2] = __39__HDCloudSyncDeleteZonesOperation_main__block_invoke;
         v30[3] = &unk_278616300;
         v30[4] = v10;
-        v11 = [v29 hk_filter:{v30, v26}];
+        v11 = [zonesToDelete hk_filter:{v30, v26}];
         if ([v11 count])
         {
           v12 = v11;
@@ -104,21 +104,21 @@
           {
             v16 = v15;
             v17 = [v12 count];
-            v18 = [v13 containerIdentifier];
+            containerIdentifier = [v13 containerIdentifier];
             *buf = v26;
-            v42 = self;
+            selfCopy = self;
             v43 = 2048;
             v44 = v17;
             v45 = 2114;
-            v46 = v18;
+            v46 = containerIdentifier;
             v47 = 2114;
             v48 = v14;
             _os_log_impl(&dword_228986000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: Deleting %ld zones in %{public}@: %{public}@", buf, 0x2Au);
           }
 
           v19 = [HDCloudSyncModifyRecordZonesOperation alloc];
-          v20 = [(HDCloudSyncOperation *)self configuration];
-          v21 = [(HDCloudSyncModifyRecordZonesOperation *)v19 initWithConfiguration:v20 container:v13 recordZonesToSave:0 recordZoneIDsToDelete:v14];
+          configuration2 = [(HDCloudSyncOperation *)self configuration];
+          v21 = [(HDCloudSyncModifyRecordZonesOperation *)v19 initWithConfiguration:configuration2 container:v13 recordZonesToSave:0 recordZoneIDsToDelete:v14];
 
           v38[0] = MEMORY[0x277D85DD0];
           v38[1] = 3221225472;

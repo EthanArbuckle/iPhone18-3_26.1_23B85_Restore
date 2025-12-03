@@ -1,21 +1,21 @@
 @interface WGWidgetListViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_invokeBlockWithPlatterViewsVisibleInBounds:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_invokeBlockWithPlatterViewsVisibleInBounds:(id)bounds;
 @end
 
 @implementation WGWidgetListViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WGWidgetListViewController" hasInstanceMethod:@"_invokeBlockWithPlatterViewsVisibleInBounds:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"WGWidgetListViewController" hasInstanceMethod:@"_invokeBlockWithPlatterViewsVisibleInRect: block:" withFullSignature:{"v", "{CGRect={CGPoint=dd}{CGSize=dd}}", "@?", 0}];
-  [v3 validateClass:@"WGWidgetListViewController" hasInstanceMethod:@"_scrollViewIfLoaded" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WGWidgetListViewController" hasInstanceMethod:@"_invokeBlockWithPlatterViewsVisibleInBounds:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"WGWidgetListViewController" hasInstanceMethod:@"_invokeBlockWithPlatterViewsVisibleInRect: block:" withFullSignature:{"v", "{CGRect={CGPoint=dd}{CGSize=dd}}", "@?", 0}];
+  [validationsCopy validateClass:@"WGWidgetListViewController" hasInstanceMethod:@"_scrollViewIfLoaded" withFullSignature:{"@", 0}];
 }
 
-- (void)_invokeBlockWithPlatterViewsVisibleInBounds:(id)a3
+- (void)_invokeBlockWithPlatterViewsVisibleInBounds:(id)bounds
 {
-  v4 = a3;
+  boundsCopy = bounds;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -50,9 +50,9 @@
         v14 = 3221225472;
         v15 = __87__WGWidgetListViewControllerAccessibility__invokeBlockWithPlatterViewsVisibleInBounds___block_invoke;
         v16 = &unk_29F322988;
-        v17 = self;
+        selfCopy = self;
         v20 = v29;
-        v18 = v4;
+        v18 = boundsCopy;
         v19 = &v22;
         AXPerformSafeBlock();
       }
@@ -63,7 +63,7 @@
   {
     v12.receiver = self;
     v12.super_class = WGWidgetListViewControllerAccessibility;
-    [(WGWidgetListViewControllerAccessibility *)&v12 _invokeBlockWithPlatterViewsVisibleInBounds:v4];
+    [(WGWidgetListViewControllerAccessibility *)&v12 _invokeBlockWithPlatterViewsVisibleInBounds:boundsCopy];
   }
 
   _Block_object_dispose(&v22, 8);

@@ -1,21 +1,21 @@
 @interface PGSettlingEffectWallpaperSuggester
-+ (BOOL)candidate:(id)a3 passesFilteringWithContext:(id)a4 curationContext:(id)a5 statistics:(id *)a6;
-+ (BOOL)passesFilteringWithAsset:(id)a3 curationContext:(id)a4 orientation:(int64_t)a5 reason:(id *)a6;
-+ (id)analyticsPayloadFromFRCFilteringStatistics:(id *)a3 photoLibrary:(id)a4;
-+ (id)analyticsPayloadFromHighlightStatistics:(id *)a3;
-+ (id)analyticsPayloadFromPostFilteringStatistics:(id)a3;
-+ (id)prefilteringInternalPredicateWithForbiddenAssetUUIDs:(id)a3;
++ (BOOL)candidate:(id)candidate passesFilteringWithContext:(id)context curationContext:(id)curationContext statistics:(id *)statistics;
++ (BOOL)passesFilteringWithAsset:(id)asset curationContext:(id)context orientation:(int64_t)orientation reason:(id *)reason;
++ (id)analyticsPayloadFromFRCFilteringStatistics:(id *)statistics photoLibrary:(id)library;
++ (id)analyticsPayloadFromHighlightStatistics:(id *)statistics;
++ (id)analyticsPayloadFromPostFilteringStatistics:(id)statistics;
++ (id)prefilteringInternalPredicateWithForbiddenAssetUUIDs:(id)ds;
 - (BOOL)hasEnoughSettlingEffectAssets;
-- (PGSettlingEffectWallpaperSuggester)initWithSession:(id)a3;
-- (id)consolidatedCandidatesFromWallpaperCandidates:(id)a3 highlightCandidates:(id)a4;
+- (PGSettlingEffectWallpaperSuggester)initWithSession:(id)session;
+- (id)consolidatedCandidatesFromWallpaperCandidates:(id)candidates highlightCandidates:(id)highlightCandidates;
 - (id)fetchCandidateSuggestions;
-- (id)fetchSortedWallpaperCandidatesWithProgressReporter:(id)a3;
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4;
+- (id)fetchSortedWallpaperCandidatesWithProgressReporter:(id)reporter;
+- (id)suggestionsWithOptions:(id)options progress:(id)progress;
 - (unint64_t)totalLivePhotos;
 - (void)deleteLegacySettlingEffectSuggestions;
-- (void)processFRCFromCandidates:(id)a3 withProgressReporter:(id)a4;
+- (void)processFRCFromCandidates:(id)candidates withProgressReporter:(id)reporter;
 - (void)sendSettlingEffectStatisticsEvent;
-- (void)setAvailableFeaturesForCandidates:(id)a3 pass:(BOOL)a4;
+- (void)setAvailableFeaturesForCandidates:(id)candidates pass:(BOOL)pass;
 @end
 
 @implementation PGSettlingEffectWallpaperSuggester
@@ -24,9 +24,9 @@
 {
   v31 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(PGAbstractSuggester *)self session];
+  session = [(PGAbstractSuggester *)self session];
   v5 = objc_opt_class();
-  v6 = [v4 photoLibrary];
+  photoLibrary = [session photoLibrary];
   v7 = *&self->_filteringStatistics.highlightStatistics.numberOfEliminationsThruSettlingEffectScore;
   v27 = *&self->_filteringStatistics.frcGatingStatistics.numberOfEliminationsThruVideoDecision;
   v28 = v7;
@@ -38,7 +38,7 @@
   v9 = *&self->_filteringStatistics.frcGatingStatistics.numberOfEliminationsThruStabilization;
   v25 = *&self->_filteringStatistics.frcGatingStatistics.numberOfEliminationsThruResourceAvailability;
   v26 = v9;
-  v10 = [v5 analyticsPayloadFromFRCFilteringStatistics:&v23 photoLibrary:v6];
+  v10 = [v5 analyticsPayloadFromFRCFilteringStatistics:&v23 photoLibrary:photoLibrary];
 
   [v3 addEntriesFromDictionary:v10];
   v11 = [objc_opt_class() analyticsPayloadFromPostFilteringStatistics:*&self->_filteringStatistics.postfilteringStatistics];
@@ -57,18 +57,18 @@
   LODWORD(v25) = self->_filteringStatistics.highlightStatistics.highlightStatistics.numberOfEliminationsThruDeviceOwner;
   v16 = [v14 analyticsPayloadFromHighlightStatistics:&v23];
   [v3 addEntriesFromDictionary:v16];
-  v17 = [v4 workingContext];
-  v18 = [v17 analytics];
+  workingContext = [session workingContext];
+  analytics = [workingContext analytics];
   v19 = MEMORY[0x277D3B5A0];
-  [v18 sendEvent:*MEMORY[0x277D3B5A0] withPayload:v3];
+  [analytics sendEvent:*MEMORY[0x277D3B5A0] withPayload:v3];
 
-  v20 = [v4 loggingConnection];
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
+  loggingConnection = [session loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
     v21 = *v19;
     LODWORD(v23) = 138412290;
     *(&v23 + 4) = v21;
-    _os_log_impl(&dword_22F0FC000, v20, OS_LOG_TYPE_INFO, "[PGSettlingEffectWallpaperSuggester] Sent %@ event", &v23, 0xCu);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGSettlingEffectWallpaperSuggester] Sent %@ event", &v23, 0xCu);
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -76,17 +76,17 @@
 
 - (unint64_t)totalLivePhotos
 {
-  v2 = [(PGAbstractSuggester *)self session];
-  v3 = [v2 photoLibrary];
+  session = [(PGAbstractSuggester *)self session];
+  photoLibrary = [session photoLibrary];
 
   v4 = MEMORY[0x277CD97B8];
-  v5 = [v3 librarySpecificFetchOptions];
-  v6 = [v4 fetchAssetCollectionsWithType:2 subtype:213 options:v5];
-  v7 = [v6 firstObject];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  v6 = [v4 fetchAssetCollectionsWithType:2 subtype:213 options:librarySpecificFetchOptions];
+  firstObject = [v6 firstObject];
 
-  v8 = [v3 librarySpecificFetchOptions];
-  [v8 setShouldPrefetchCount:1];
-  v9 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v7 options:v8];
+  librarySpecificFetchOptions2 = [photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions2 setShouldPrefetchCount:1];
+  v9 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:firstObject options:librarySpecificFetchOptions2];
   v10 = [v9 count];
 
   return v10;
@@ -95,19 +95,19 @@
 - (BOOL)hasEnoughSettlingEffectAssets
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v2 = [(PGAbstractSuggester *)self session];
-  v3 = [v2 photoLibrary];
-  v4 = [v3 librarySpecificFetchOptions];
+  session = [(PGAbstractSuggester *)self session];
+  photoLibrary = [session photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v4 setFetchLimit:100];
+  [librarySpecificFetchOptions setFetchLimit:100];
   v19[0] = *MEMORY[0x277CD9AA8];
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-  [v4 setFetchPropertySets:v5];
+  [librarySpecificFetchOptions setFetchPropertySets:v5];
 
-  v6 = [MEMORY[0x277D3C810] settlingEffectAssetInternalSortDescriptors];
-  [v4 setInternalSortDescriptors:v6];
+  settlingEffectAssetInternalSortDescriptors = [MEMORY[0x277D3C810] settlingEffectAssetInternalSortDescriptors];
+  [librarySpecificFetchOptions setInternalSortDescriptors:settlingEffectAssetInternalSortDescriptors];
 
-  v7 = [MEMORY[0x277D3C810] fetchLivePhotoTabHighlightSettlingEffectAssetsWithOptions:v4 excludeExistingWallpapers:0];
+  v7 = [MEMORY[0x277D3C810] fetchLivePhotoTabHighlightSettlingEffectAssetsWithOptions:librarySpecificFetchOptions excludeExistingWallpapers:0];
   v8 = [v7 count];
   v9 = @"Not enough content";
   if (v8 > 0x63)
@@ -116,8 +116,8 @@
   }
 
   v10 = v9;
-  v11 = [v2 loggingConnection];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+  loggingConnection = [session loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
     v14[0] = 67109634;
     v14[1] = [v7 count];
@@ -125,23 +125,23 @@
     v16 = 100;
     v17 = 2112;
     v18 = v10;
-    _os_log_impl(&dword_22F0FC000, v11, OS_LOG_TYPE_INFO, "[PGSettlingEffectWallpaperSuggester] Found %d (target:%d) FRC eligible highlight assets. %@", v14, 0x18u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGSettlingEffectWallpaperSuggester] Found %d (target:%d) FRC eligible highlight assets. %@", v14, 0x18u);
   }
 
   v12 = *MEMORY[0x277D85DE8];
   return v8 > 0x63;
 }
 
-- (void)processFRCFromCandidates:(id)a3 withProgressReporter:(id)a4
+- (void)processFRCFromCandidates:(id)candidates withProgressReporter:(id)reporter
 {
   v91 = *MEMORY[0x277D85DE8];
-  v72 = a3;
+  candidatesCopy = candidates;
   v86 = 0;
   v87 = &v86;
   v88 = 0x2020000000;
   v89 = 0;
-  v73 = a4;
-  v6 = [v73 isCancelledWithProgress:0.0];
+  reporterCopy = reporter;
+  v6 = [reporterCopy isCancelledWithProgress:0.0];
   *(v87 + 24) = v6;
   if (v6)
   {
@@ -157,19 +157,19 @@
     goto LABEL_75;
   }
 
-  v60 = [(PGAbstractSuggester *)self session];
-  v7 = [v60 loggingConnection];
-  v65 = [v72 count];
-  v59 = [MEMORY[0x277CBEAA8] date];
-  v64 = [v59 dateByAddingTimeInterval:300.0];
-  v8 = v7;
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
+  v65 = [candidatesCopy count];
+  date = [MEMORY[0x277CBEAA8] date];
+  v64 = [date dateByAddingTimeInterval:300.0];
+  v8 = loggingConnection;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = [MEMORY[0x277CCABB0] numberWithDouble:300.0];
     *buf = 67109890;
     *&buf[4] = v65;
     *&buf[8] = 2112;
-    *&buf[10] = v59;
+    *&buf[10] = date;
     *&buf[18] = 2112;
     *&buf[20] = v9;
     *&buf[28] = 2112;
@@ -195,15 +195,15 @@
   mach_timebase_info(&info);
   v56 = mach_absolute_time();
   v14 = [PGSettlingEffectConfig alloc];
-  v15 = [v60 photoLibrary];
-  v62 = [(PGSettlingEffectConfig *)v14 initWithPhotoLibrary:v15 loggingConnection:v71];
+  photoLibrary = [session photoLibrary];
+  v62 = [(PGSettlingEffectConfig *)v14 initWithPhotoLibrary:photoLibrary loggingConnection:v71];
 
-  v66 = [(PGSettlingEffectConfig *)v62 maxL1FailuresAllowed];
-  v63 = [(PGSettlingEffectConfig *)v62 maxFRCRequestsAllowed];
+  maxL1FailuresAllowed = [(PGSettlingEffectConfig *)v62 maxL1FailuresAllowed];
+  maxFRCRequestsAllowed = [(PGSettlingEffectConfig *)v62 maxFRCRequestsAllowed];
   if ([(PGSettlingEffectWallpaperSuggester *)self hasEnoughSettlingEffectAssets])
   {
-    v66 = [(PGSettlingEffectConfig *)v62 defaultL1FailuresAllowed];
-    v63 = [(PGSettlingEffectConfig *)v62 defaultFRCRequestsAllowed];
+    maxL1FailuresAllowed = [(PGSettlingEffectConfig *)v62 defaultL1FailuresAllowed];
+    maxFRCRequestsAllowed = [(PGSettlingEffectConfig *)v62 defaultFRCRequestsAllowed];
   }
 
   v69 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -230,12 +230,12 @@
   while (1)
   {
     context = objc_autoreleasePoolPush();
-    v19 = [v72 objectAtIndexedSubscript:v16];
-    v80 = [v19 asset];
-    v20 = [v19 suggestion];
-    v79 = v20 == 0;
+    v19 = [candidatesCopy objectAtIndexedSubscript:v16];
+    asset = [v19 asset];
+    suggestion = [v19 suggestion];
+    v79 = suggestion == 0;
 
-    if (v20)
+    if (suggestion)
     {
       v21 = @"suggestion";
     }
@@ -248,7 +248,7 @@
     v22 = v71;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v23 = [v80 uuid];
+      uuid = [asset uuid];
       *buf = 67109890;
       *&buf[4] = v16 + 1;
       *&buf[8] = 1024;
@@ -256,11 +256,11 @@
       *&buf[14] = 2112;
       *&buf[16] = v21;
       *&buf[24] = 2112;
-      *&buf[26] = v23;
+      *&buf[26] = uuid;
       _os_log_impl(&dword_22F0FC000, v22, OS_LOG_TYPE_INFO, "[PGSettlingEffectWallpaperSuggester] Check FRC eligibility (%d/%d) for %@ asset: %@", buf, 0x22u);
     }
 
-    v24 = self;
+    selfCopy = self;
     assetGater = self->_assetGater;
     if (assetGater)
     {
@@ -273,18 +273,18 @@
     }
 
     v26 = [PGWallpaperSuggestionAssetGater numberOfFailuresAfterStabilizationFromStatistics:buf];
-    v27 = v24->_assetGater;
+    v27 = selfCopy->_assetGater;
     v81[0] = MEMORY[0x277D85DD0];
     v81[1] = 3221225472;
     v81[2] = __84__PGSettlingEffectWallpaperSuggester_processFRCFromCandidates_withProgressReporter___block_invoke;
     v81[3] = &unk_27887F968;
     v83 = &v86;
-    v28 = v73;
+    v28 = reporterCopy;
     v82 = v28;
     v84 = v18 * v16;
-    v29 = [(PGWallpaperSuggestionAssetGater *)v27 gateAsset:v80 progressBlock:v81];
+    v29 = [(PGWallpaperSuggestionAssetGater *)v27 gateAsset:asset progressBlock:v81];
     v30 = v29;
-    if (v20)
+    if (suggestion)
     {
       if ([v29 passesSettlingEffect])
       {
@@ -304,9 +304,9 @@
       v67 += [v29 passesSettlingEffect];
     }
 
-    if ([(PGWallpaperSuggestionAssetGater *)v24->_assetGater isLastGatingCallingMediaAnalysis])
+    if ([(PGWallpaperSuggestionAssetGater *)selfCopy->_assetGater isLastGatingCallingMediaAnalysis])
     {
-      v32 = v24->_assetGater;
+      v32 = selfCopy->_assetGater;
       if (v32)
       {
         [(PGWallpaperSuggestionAssetGater *)v32 settlingEffectGatingStatistics];
@@ -336,12 +336,12 @@
 
       v75 = v34;
       v76 = v35;
-      v36 = [v30 passesSettlingEffect];
-      v37 = [v30 didTimeout];
-      v38 = [MEMORY[0x277CBEAA8] date];
-      [v64 timeIntervalSinceDate:v38];
+      passesSettlingEffect = [v30 passesSettlingEffect];
+      didTimeout = [v30 didTimeout];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [v64 timeIntervalSinceDate:date2];
       v40 = v39;
-      v70 += v36;
+      v70 += passesSettlingEffect;
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         *buf = 67110144;
@@ -357,20 +357,20 @@
         _os_log_impl(&dword_22F0FC000, v22, OS_LOG_TYPE_INFO, "[PGSettlingEffectWallpaperSuggester] Attempted FRC for %d items, %d failed L1, %d failed FRC, %d passed. %.3fs processing time left.", buf, 0x24u);
       }
 
-      v74 += v37;
-      if (v76 >= v66 || v75 >= v63 || v74 > 1 || v40 < 0.0)
+      v74 += didTimeout;
+      if (v76 >= maxL1FailuresAllowed || v75 >= maxFRCRequestsAllowed || v74 > 1 || v40 < 0.0)
       {
-        self = v24;
+        self = selfCopy;
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           *buf = 67110912;
           *&buf[4] = v76;
           *&buf[8] = 1024;
-          *&buf[10] = v66;
+          *&buf[10] = maxL1FailuresAllowed;
           *&buf[14] = 1024;
           *&buf[16] = v75;
           *&buf[20] = 1024;
-          *&buf[22] = v63;
+          *&buf[22] = maxFRCRequestsAllowed;
           *&buf[26] = 1024;
           *&buf[28] = v74;
           *&buf[32] = 1024;
@@ -382,7 +382,7 @@
           _os_log_impl(&dword_22F0FC000, v22, OS_LOG_TYPE_INFO, "[PGSettlingEffectWallpaperSuggester] Reached (%d/%d) MAD L1 failures OR (%d/%d) FRC requests OR (%d/%d) timeouts allowed. %d untried. %.3fs processing time left.", buf, 0x36u);
         }
 
-        if (v24->_noLimit)
+        if (selfCopy->_noLimit)
         {
           if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
           {
@@ -403,7 +403,7 @@
       }
     }
 
-    self = v24;
+    self = selfCopy;
     if (v87[3])
     {
       *(v87 + 24) = 1;
@@ -413,7 +413,7 @@
     {
       v41 = [v28 isCancelledWithProgress:v18 * v16];
       *(v87 + 24) = v41;
-      self = v24;
+      self = selfCopy;
       if ((v41 & 1) == 0)
       {
         v42 = 0;
@@ -546,30 +546,30 @@ uint64_t __84__PGSettlingEffectWallpaperSuggester_processFRCFromCandidates_withP
   return result;
 }
 
-- (id)consolidatedCandidatesFromWallpaperCandidates:(id)a3 highlightCandidates:(id)a4
+- (id)consolidatedCandidatesFromWallpaperCandidates:(id)candidates highlightCandidates:(id)highlightCandidates
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v39 = a4;
-  v7 = [(PGAbstractSuggester *)self session];
-  v8 = [v7 loggingConnection];
+  candidatesCopy = candidates;
+  highlightCandidatesCopy = highlightCandidates;
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   context = objc_autoreleasePoolPush();
   v10 = MEMORY[0x277D3C810];
-  v11 = [v7 photoLibrary];
-  v12 = [v10 fetchSettlingEffectSuggestionsInPhotoLibrary:v11];
+  photoLibrary = [session photoLibrary];
+  v12 = [v10 fetchSettlingEffectSuggestionsInPhotoLibrary:photoLibrary];
 
   v13 = [v12 count];
   v14 = MEMORY[0x277D3C810];
-  v15 = [v7 photoLibrary];
-  v16 = [v15 librarySpecificFetchOptions];
-  v17 = [v14 fetchLivePhotoTabHighlightSettlingEffectAssetsWithOptions:v16 excludeExistingWallpapers:1];
+  photoLibrary2 = [session photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary2 librarySpecificFetchOptions];
+  v17 = [v14 fetchLivePhotoTabHighlightSettlingEffectAssetsWithOptions:librarySpecificFetchOptions excludeExistingWallpapers:1];
 
   v18 = [v17 count];
-  v40 = v8;
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  v40 = loggingConnection;
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
-    v19 = v8;
+    v19 = loggingConnection;
     *buf = 67109632;
     v42 = [v12 count];
     v43 = 1024;
@@ -580,11 +580,11 @@ uint64_t __84__PGSettlingEffectWallpaperSuggester_processFRCFromCandidates_withP
   }
 
   objc_autoreleasePoolPop(context);
-  v20 = [v39 copy];
+  v20 = [highlightCandidatesCopy copy];
   v21 = v20;
   if (v13 == v18)
   {
-    v22 = v7;
+    v22 = session;
   }
 
   else
@@ -605,7 +605,7 @@ uint64_t __84__PGSettlingEffectWallpaperSuggester_processFRCFromCandidates_withP
     v26 = [v21 arrayByExcludingObjectsInArray:v25];
 
     v27 = v40;
-    v22 = v7;
+    v22 = session;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
       v28 = [v25 count];
@@ -617,7 +617,7 @@ uint64_t __84__PGSettlingEffectWallpaperSuggester_processFRCFromCandidates_withP
     v21 = v26;
   }
 
-  v29 = [v6 count];
+  v29 = [candidatesCopy count];
   v30 = [v21 count];
   if (v29 <= v30)
   {
@@ -636,7 +636,7 @@ uint64_t __84__PGSettlingEffectWallpaperSuggester_processFRCFromCandidates_withP
     {
       if (i < v29)
       {
-        v34 = [v6 objectAtIndex:i];
+        v34 = [candidatesCopy objectAtIndex:i];
         [v9 addObject:v34];
       }
 
@@ -653,11 +653,11 @@ uint64_t __84__PGSettlingEffectWallpaperSuggester_processFRCFromCandidates_withP
   return v9;
 }
 
-- (id)fetchSortedWallpaperCandidatesWithProgressReporter:(id)a3
+- (id)fetchSortedWallpaperCandidatesWithProgressReporter:(id)reporter
 {
   v78 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isCancelledWithProgress:0.0])
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -672,25 +672,25 @@ uint64_t __84__PGSettlingEffectWallpaperSuggester_processFRCFromCandidates_withP
     goto LABEL_39;
   }
 
-  v6 = [(PGAbstractSuggester *)self session];
-  v7 = [v6 loggingConnection];
-  v8 = [(PGSettlingEffectWallpaperSuggester *)self fetchCandidateSuggestions];
-  v9 = [v6 photoLibrary];
-  v10 = [v9 librarySpecificFetchOptions];
-  [v10 setCacheSizeForFetch:200];
-  [v10 setChunkSizeForFetch:200];
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
+  fetchCandidateSuggestions = [(PGSettlingEffectWallpaperSuggester *)self fetchCandidateSuggestions];
+  photoLibrary = [session photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setCacheSizeForFetch:200];
+  [librarySpecificFetchOptions setChunkSizeForFetch:200];
   v11 = [PGWallpaperSuggestionUtilities assetFetchPropertySetsIncludingGating:1];
-  [v10 setFetchPropertySets:v11];
+  [librarySpecificFetchOptions setFetchPropertySets:v11];
 
   v12 = objc_opt_class();
-  v13 = [v6 forbiddenAssetUUIDs];
-  v14 = [v12 prefilteringInternalPredicateWithForbiddenAssetUUIDs:v13];
-  [v10 setInternalPredicate:v14];
+  forbiddenAssetUUIDs = [session forbiddenAssetUUIDs];
+  v14 = [v12 prefilteringInternalPredicateWithForbiddenAssetUUIDs:forbiddenAssetUUIDs];
+  [librarySpecificFetchOptions setInternalPredicate:v14];
 
-  v73 = [MEMORY[0x277CD97A8] fetchKeyAssetBySuggestionUUIDForSuggestions:v8 options:v10];
+  v73 = [MEMORY[0x277CD97A8] fetchKeyAssetBySuggestionUUIDForSuggestions:fetchCandidateSuggestions options:librarySpecificFetchOptions];
   p_filteringStatistics = &self->_filteringStatistics;
   self->_filteringStatistics.numberOfLivePhotoWallpaperSuggestions = [v73 count];
-  if ([v4 isCancelledWithProgress:0.2])
+  if ([reporterCopy isCancelledWithProgress:0.2])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -705,12 +705,12 @@ uint64_t __84__PGSettlingEffectWallpaperSuggester_processFRCFromCandidates_withP
     goto LABEL_38;
   }
 
-  v67 = self;
-  v55 = v10;
-  v56 = v9;
+  selfCopy = self;
+  v55 = librarySpecificFetchOptions;
+  v56 = photoLibrary;
   v70 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v57 = v7;
-  v15 = v7;
+  v57 = loggingConnection;
+  v15 = loggingConnection;
   v16 = os_signpost_id_generate(v15);
   v17 = v15;
   v18 = v17;
@@ -728,15 +728,15 @@ uint64_t __84__PGSettlingEffectWallpaperSuggester_processFRCFromCandidates_withP
   v53 = mach_absolute_time();
   p_filteringStatistics->postfilteringStatistics = 0;
   p_postfilteringStatistics = &p_filteringStatistics->postfilteringStatistics;
-  v58 = v6;
-  v68 = [v6 curationContext];
+  v58 = session;
+  curationContext = [session curationContext];
   v69 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v19 = [v8 count];
+  v19 = [fetchCandidateSuggestions count];
   v66 = 0;
   v20 = 0;
   v59 = v19 / 0xC8;
   v21 = 1.0 / v19 * 0.8;
-  v61 = v8;
+  v61 = fetchCandidateSuggestions;
   v62 = v19;
   v22 = v19;
   v60 = v18;
@@ -753,7 +753,7 @@ uint64_t __84__PGSettlingEffectWallpaperSuggester_processFRCFromCandidates_withP
     v24 = 200 * v20;
     v25 = v62 - 200 * v20 >= 0xC8 ? 200 : v62 - 200 * v20;
     v65 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{200 * v20, v25}];
-    v74 = [v8 objectsAtIndexes:?];
+    v74 = [fetchCandidateSuggestions objectsAtIndexes:?];
     if (v62 != v24)
     {
       break;
@@ -764,22 +764,22 @@ LABEL_30:
     v38 = v60;
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
     {
-      v39 = [v65 firstIndex];
-      v40 = [v65 lastIndex];
+      firstIndex = [v65 firstIndex];
+      lastIndex = [v65 lastIndex];
       *buf = 134218240;
-      *v77 = v39;
+      *v77 = firstIndex;
       *&v77[8] = 2048;
-      *&v77[10] = v40;
+      *&v77[10] = lastIndex;
       _os_log_debug_impl(&dword_22F0FC000, v38, OS_LOG_TYPE_DEBUG, "[PGSettlingEffectWallpaperSuggester] processed candidates from %lu to %lu", buf, 0x16u);
     }
 
     v66 += 200;
     v22 = v63;
     v20 = v64 + 1;
-    v8 = v61;
+    fetchCandidateSuggestions = v61;
     if (v64 == v59)
     {
-      [(PGSettlingEffectWallpaperSuggester *)v67 setAvailableFeaturesForCandidates:v69 pass:0];
+      [(PGSettlingEffectWallpaperSuggester *)selfCopy setAvailableFeaturesForCandidates:v69 pass:0];
       v43 = +[PGSettlingEffectWallpaperSuggestionCandidate sortDescriptorsForProcessing];
       v5 = [v70 sortedArrayUsingDescriptors:v43];
 
@@ -797,10 +797,10 @@ LABEL_30:
       denom = info.denom;
       v50 = v44;
       v51 = v50;
-      v7 = v57;
-      v6 = v58;
-      v10 = v55;
-      v9 = v56;
+      loggingConnection = v57;
+      session = v58;
+      librarySpecificFetchOptions = v55;
+      photoLibrary = v56;
       if (v54 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v50))
       {
         *buf = 0;
@@ -826,8 +826,8 @@ LABEL_30:
   {
     v28 = objc_autoreleasePoolPush();
     v29 = [v74 objectAtIndexedSubscript:v26];
-    v30 = [v29 uuid];
-    v31 = [v73 objectForKeyedSubscript:v30];
+    uuid = [v29 uuid];
+    v31 = [v73 objectForKeyedSubscript:uuid];
 
     if (v31)
     {
@@ -847,11 +847,11 @@ LABEL_29:
 
   v32 = [[PGSettlingEffectWallpaperSuggestionCandidate alloc] initWithAsset:v31 suggestion:v29];
   v33 = objc_opt_class();
-  [(PGSettlingEffectWallpaperSuggester *)v67 filteringContext];
-  v35 = v34 = v4;
-  LODWORD(v33) = [v33 candidate:v32 passesFilteringWithContext:v35 curationContext:v68 statistics:p_postfilteringStatistics];
+  [(PGSettlingEffectWallpaperSuggester *)selfCopy filteringContext];
+  v35 = v34 = reporterCopy;
+  LODWORD(v33) = [v33 candidate:v32 passesFilteringWithContext:v35 curationContext:curationContext statistics:p_postfilteringStatistics];
 
-  v4 = v34;
+  reporterCopy = v34;
   if (v33)
   {
     v36 = v70;
@@ -880,12 +880,12 @@ LABEL_29:
 
   objc_autoreleasePoolPop(v28);
   v5 = MEMORY[0x277CBEBF8];
-  v7 = v57;
-  v6 = v58;
+  loggingConnection = v57;
+  session = v58;
   v37 = v60;
-  v8 = v61;
-  v10 = v55;
-  v9 = v56;
+  fetchCandidateSuggestions = v61;
+  librarySpecificFetchOptions = v55;
+  photoLibrary = v56;
 LABEL_37:
 
 LABEL_38:
@@ -899,10 +899,10 @@ LABEL_39:
 - (id)fetchCandidateSuggestions
 {
   v33[2] = *MEMORY[0x277D85DE8];
-  v3 = [(PGAbstractSuggester *)self session];
-  v4 = [v3 loggingConnection];
-  v5 = os_signpost_id_generate(v4);
-  v6 = v4;
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
+  v5 = os_signpost_id_generate(loggingConnection);
+  v6 = loggingConnection;
   v7 = v6;
   if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
   {
@@ -913,19 +913,19 @@ LABEL_39:
   info = 0;
   mach_timebase_info(&info);
   v27 = mach_absolute_time();
-  v8 = [v3 photoLibrary];
-  v9 = [v8 librarySpecificFetchOptions];
+  photoLibrary = [session photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v10 = MEMORY[0x277CCA920];
   v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != %d", @"state", 4];
   v33[0] = v11;
-  v12 = [MEMORY[0x277CD99E0] predicateForAllFeaturedStateEnabledSuggestionTypesForWallpaper];
-  v33[1] = v12;
+  predicateForAllFeaturedStateEnabledSuggestionTypesForWallpaper = [MEMORY[0x277CD99E0] predicateForAllFeaturedStateEnabledSuggestionTypesForWallpaper];
+  v33[1] = predicateForAllFeaturedStateEnabledSuggestionTypesForWallpaper;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
   v14 = [v10 andPredicateWithSubpredicates:v13];
-  [v9 setPredicate:v14];
+  [librarySpecificFetchOptions setPredicate:v14];
 
-  v15 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:v9];
+  v15 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:librarySpecificFetchOptions];
   p_filteringStatistics = &self->_filteringStatistics;
   self->_filteringStatistics.numberOfWallpaperSuggestions = [v15 count];
   v17 = v7;
@@ -965,25 +965,25 @@ LABEL_39:
   return v15;
 }
 
-- (void)setAvailableFeaturesForCandidates:(id)a3 pass:(BOOL)a4
+- (void)setAvailableFeaturesForCandidates:(id)candidates pass:(BOOL)pass
 {
-  v4 = a4;
+  passCopy = pass;
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(PGAbstractSuggester *)self session];
-  v8 = [v7 loggingConnection];
-  v9 = [v7 photoLibrary];
+  candidatesCopy = candidates;
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
+  photoLibrary = [session photoLibrary];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __77__PGSettlingEffectWallpaperSuggester_setAvailableFeaturesForCandidates_pass___block_invoke;
   v19[3] = &unk_278881280;
-  v10 = v6;
+  v10 = candidatesCopy;
   v20 = v10;
-  v11 = v8;
+  v11 = loggingConnection;
   v21 = v11;
-  v22 = v4;
+  v22 = passCopy;
   v18 = 0;
-  v12 = [v9 performChangesAndWait:v19 error:&v18];
+  v12 = [photoLibrary performChangesAndWait:v19 error:&v18];
   v13 = v18;
 
   if (v12)
@@ -991,7 +991,7 @@ LABEL_39:
     v14 = v11;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      if (v4)
+      if (passCopy)
       {
         v15 = @"Set";
       }
@@ -1088,14 +1088,14 @@ LABEL_10:
 - (void)deleteLegacySettlingEffectSuggestions
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(PGAbstractSuggester *)self session];
-  v3 = [v2 loggingConnection];
-  v4 = [v2 photoLibrary];
-  v5 = [v4 librarySpecificFetchOptions];
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
+  photoLibrary = [session photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %d", @"subtype", 680];
-  [v5 setPredicate:v6];
+  [librarySpecificFetchOptions setPredicate:v6];
 
-  v7 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:v5];
+  v7 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:librarySpecificFetchOptions];
   if ([v7 count])
   {
     v15[0] = MEMORY[0x277D85DD0];
@@ -1105,11 +1105,11 @@ LABEL_10:
     v8 = v7;
     v16 = v8;
     v14 = 0;
-    v9 = [v4 performChangesAndWait:v15 error:&v14];
+    v9 = [photoLibrary performChangesAndWait:v15 error:&v14];
     v10 = v14;
     if (v9)
     {
-      v11 = v3;
+      v11 = loggingConnection;
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v12 = [v8 count];
@@ -1119,32 +1119,32 @@ LABEL_10:
       }
     }
 
-    else if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    else if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v18 = v10;
-      _os_log_error_impl(&dword_22F0FC000, v3, OS_LOG_TYPE_ERROR, "[PGSettlingEffectWallpaperSuggester] Error deleting legacy settling effect suggestions: %@", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGSettlingEffectWallpaperSuggester] Error deleting legacy settling effect suggestions: %@", buf, 0xCu);
     }
   }
 
-  else if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+  else if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
-    _os_log_impl(&dword_22F0FC000, v3, OS_LOG_TYPE_INFO, "[PGSettlingEffectWallpaperSuggester] No legacy settling effect suggestions to delete.", buf, 2u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGSettlingEffectWallpaperSuggester] No legacy settling effect suggestions to delete.", buf, 2u);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)suggestionsWithOptions:(id)options progress:(id)progress
 {
   v82 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277D22C80] progressReporterWithProgressBlock:a4];
+  optionsCopy = options;
+  v7 = [MEMORY[0x277D22C80] progressReporterWithProgressBlock:progress];
   if (![v7 isCancelledWithProgress:0.0])
   {
-    v8 = [(PGAbstractSuggester *)self session];
-    v9 = [v8 loggingConnection];
+    session = [(PGAbstractSuggester *)self session];
+    loggingConnection = [session loggingConnection];
     p_filteringStatistics = &self->_filteringStatistics;
     *&self->_filteringStatistics.numberOfLivePhotos = 0u;
     *&self->_filteringStatistics.postfilteringStatistics.numberOfEliminationsThruSettlingEffectScore = 0u;
@@ -1178,11 +1178,11 @@ LABEL_17:
 
     if (([MEMORY[0x277D3A950] currentDeviceSupportsSettlingEffect] & 1) == 0)
     {
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v12 = "[PGSettlingEffectWallpaperSuggester] The current device doesn't support SettlingEffect, returning 0 suggestions";
-        v11 = v9;
+        v11 = loggingConnection;
         v13 = OS_LOG_TYPE_DEFAULT;
         v14 = 2;
         goto LABEL_17;
@@ -1191,12 +1191,12 @@ LABEL_17:
       goto LABEL_70;
     }
 
-    v15 = [v6 noLimitPerFeature];
-    self->_noLimit = v15;
-    if (v15 && os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    noLimitPerFeature = [optionsCopy noLimitPerFeature];
+    self->_noLimit = noLimitPerFeature;
+    if (noLimitPerFeature && os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_INFO, "[PGSettlingEffectWallpaperSuggester] no limit mode: ON", buf, 2u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGSettlingEffectWallpaperSuggester] no limit mode: ON", buf, 2u);
     }
 
     [(PGSettlingEffectWallpaperSuggester *)self deleteLegacySettlingEffectSuggestions];
@@ -1218,13 +1218,13 @@ LABEL_70:
       goto LABEL_71;
     }
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_INFO, "[PGSettlingEffectWallpaperSuggester] Starting to generate Settling Effect on existing wallpaper suggestions", buf, 2u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGSettlingEffectWallpaperSuggester] Starting to generate Settling Effect on existing wallpaper suggestions", buf, 2u);
     }
 
-    v16 = v9;
+    v16 = loggingConnection;
     v17 = os_signpost_id_generate(v16);
     v18 = v16;
     v19 = v18;
@@ -1262,8 +1262,8 @@ LABEL_70:
     v63 = v20;
     v23 = [v7 childProgressReporterFromStart:0.21 toEnd:0.29];
     v24 = [PGSettlingEffectHighlightProcessor alloc];
-    v25 = [v8 photoLibrary];
-    v26 = [(PGSettlingEffectHighlightProcessor *)v24 initWithPhotoLibrary:v25];
+    photoLibrary = [session photoLibrary];
+    v26 = [(PGSettlingEffectHighlightProcessor *)v24 initWithPhotoLibrary:photoLibrary];
 
     v27 = v26;
     v61 = v23;
@@ -1511,12 +1511,12 @@ LABEL_71:
   return MEMORY[0x277CBEBF8];
 }
 
-- (PGSettlingEffectWallpaperSuggester)initWithSession:(id)a3
+- (PGSettlingEffectWallpaperSuggester)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v18.receiver = self;
   v18.super_class = PGSettlingEffectWallpaperSuggester;
-  v5 = [(PGAbstractSuggester *)&v18 initWithSession:v4];
+  v5 = [(PGAbstractSuggester *)&v18 initWithSession:sessionCopy];
   if (v5)
   {
     v6 = -[PGSettlingEffectWallpaperSuggesterFilteringContext initInOrientation:]([PGSettlingEffectWallpaperSuggesterFilteringContext alloc], "initInOrientation:", [MEMORY[0x277D3C810] primaryOrientation]);
@@ -1524,8 +1524,8 @@ LABEL_71:
     v5->_filteringContext = v6;
 
     v8 = [PGWallpaperSuggestionAssetGater alloc];
-    v9 = [v4 loggingConnection];
-    v10 = [(PGWallpaperSuggestionAssetGater *)v8 initWithType:5 loggingConnection:v9];
+    loggingConnection = [sessionCopy loggingConnection];
+    v10 = [(PGWallpaperSuggestionAssetGater *)v8 initWithType:5 loggingConnection:loggingConnection];
     assetGater = v5->_assetGater;
     v5->_assetGater = v10;
 
@@ -1533,8 +1533,8 @@ LABEL_71:
     v5->_loggingPrefix = @"[PGSettlingEffectWallpaperSuggester]";
 
     v13 = [PGSettlingEffectWallpaperSuggesterLogger alloc];
-    v14 = [v4 loggingConnection];
-    v15 = [(PGSettlingEffectWallpaperSuggesterLogger *)v13 initWithLoggingConnection:v14];
+    loggingConnection2 = [sessionCopy loggingConnection];
+    v15 = [(PGSettlingEffectWallpaperSuggesterLogger *)v13 initWithLoggingConnection:loggingConnection2];
     logger = v5->_logger;
     v5->_logger = v15;
   }
@@ -1542,24 +1542,24 @@ LABEL_71:
   return v5;
 }
 
-+ (id)analyticsPayloadFromHighlightStatistics:(id *)a3
++ (id)analyticsPayloadFromHighlightStatistics:(id *)statistics
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v5 = [MEMORY[0x277CCABB0] numberWithInt:a3->var0];
+  v5 = [MEMORY[0x277CCABB0] numberWithInt:statistics->var0];
   [v4 setObject:v5 forKeyedSubscript:@"HighlightCandidatesForFRC"];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithInt:a3->var1];
+  v6 = [MEMORY[0x277CCABB0] numberWithInt:statistics->var1];
   [v4 setObject:v6 forKeyedSubscript:@"HighlightFailedSettlingEffectScore"];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithInt:a3->var2];
+  v7 = [MEMORY[0x277CCABB0] numberWithInt:statistics->var2];
   [v4 setObject:v7 forKeyedSubscript:@"HighlightSettlingEffectScoreRequested"];
 
-  var0 = a3->var3.var0;
-  var1 = a3->var3.var1;
-  var2 = a3->var3.var2;
-  var3 = a3->var3.var3;
-  var4 = a3->var3.var4;
-  var5 = a3->var3.var5;
+  var0 = statistics->var3.var0;
+  var1 = statistics->var3.var1;
+  var2 = statistics->var3.var2;
+  var3 = statistics->var3.var3;
+  var4 = statistics->var3.var4;
+  var5 = statistics->var3.var5;
   v14 = [MEMORY[0x277CCABB0] numberWithInt:var0];
   [v4 setObject:v14 forKeyedSubscript:@"HighlightAssets"];
 
@@ -1581,11 +1581,11 @@ LABEL_71:
   return v4;
 }
 
-+ (id)analyticsPayloadFromPostFilteringStatistics:(id)a3
++ (id)analyticsPayloadFromPostFilteringStatistics:(id)statistics
 {
-  var1 = a3.var1;
+  var1 = statistics.var1;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [MEMORY[0x277CCABB0] numberWithInt:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithInt:statistics];
   [v5 setObject:v6 forKeyedSubscript:@"WallpaperFailedSettlingEffectScore"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithInt:var1];
@@ -1594,65 +1594,65 @@ LABEL_71:
   return v5;
 }
 
-+ (id)analyticsPayloadFromFRCFilteringStatistics:(id *)a3 photoLibrary:(id)a4
++ (id)analyticsPayloadFromFRCFilteringStatistics:(id *)statistics photoLibrary:(id)library
 {
   v5 = MEMORY[0x277CBEB38];
-  v6 = a4;
+  libraryCopy = library;
   v7 = objc_alloc_init(v5);
-  v8 = [MEMORY[0x277CCABB0] numberWithInt:a3->var0];
+  v8 = [MEMORY[0x277CCABB0] numberWithInt:statistics->var0];
   [v7 setObject:v8 forKeyedSubscript:@"LivePhotos"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInt:a3->var3];
+  v9 = [MEMORY[0x277CCABB0] numberWithInt:statistics->var3];
   [v7 setObject:v9 forKeyedSubscript:@"LivePhotoWallpaper"];
 
-  v10 = [MEMORY[0x277D3C810] fetchSettlingEffectSuggestionsInPhotoLibrary:v6];
+  v10 = [MEMORY[0x277D3C810] fetchSettlingEffectSuggestionsInPhotoLibrary:libraryCopy];
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
   [v7 setObject:v11 forKeyedSubscript:@"CurrentWallpaperPassFRC"];
 
   v12 = MEMORY[0x277CD97A8];
-  v13 = [v6 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
 
-  v14 = [v12 fetchKeyAssetForEachSuggestion:v10 options:v13];
+  v14 = [v12 fetchKeyAssetForEachSuggestion:v10 options:librarySpecificFetchOptions];
 
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v14, "count")}];
   [v7 setObject:v15 forKeyedSubscript:@"CurrentWallpaperAssetPassFRC"];
 
-  v16 = [MEMORY[0x277CCABB0] numberWithInt:a3->var7];
+  v16 = [MEMORY[0x277CCABB0] numberWithInt:statistics->var7];
   [v7 setObject:v16 forKeyedSubscript:@"ProcessedWallpaperFRCEligibleCandidates"];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithInt:a3->var8];
+  v17 = [MEMORY[0x277CCABB0] numberWithInt:statistics->var8];
   [v7 setObject:v17 forKeyedSubscript:@"ProcessedHighlightFRCEligibleCandidates"];
 
   return v7;
 }
 
-+ (BOOL)passesFilteringWithAsset:(id)a3 curationContext:(id)a4 orientation:(int64_t)a5 reason:(id *)a6
++ (BOOL)passesFilteringWithAsset:(id)asset curationContext:(id)context orientation:(int64_t)orientation reason:(id *)reason
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v37 = [v10 photoLibrary];
-  v12 = [v37 librarySpecificFetchOptions];
-  v13 = [a1 prefilteringInternalPredicateWithForbiddenAssetUUIDs:0];
-  [v12 setInternalPredicate:v13];
+  assetCopy = asset;
+  contextCopy = context;
+  photoLibrary = [assetCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  v13 = [self prefilteringInternalPredicateWithForbiddenAssetUUIDs:0];
+  [librarySpecificFetchOptions setInternalPredicate:v13];
 
   v14 = MEMORY[0x277CD97A8];
-  v15 = [v10 localIdentifier];
-  v52[0] = v15;
+  localIdentifier = [assetCopy localIdentifier];
+  v52[0] = localIdentifier;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:1];
-  v17 = [v14 fetchAssetsWithLocalIdentifiers:v16 options:v12];
-  v18 = [v17 firstObject];
+  v17 = [v14 fetchAssetsWithLocalIdentifiers:v16 options:librarySpecificFetchOptions];
+  firstObject = [v17 firstObject];
 
-  if (v18)
+  if (firstObject)
   {
-    v19 = [[PGSettlingEffectWallpaperSuggestionCandidate alloc] initWithAsset:v10 suggestion:0];
-    v20 = [[PGSettlingEffectWallpaperSuggesterFilteringContext alloc] initInOrientation:a5];
+    v19 = [[PGSettlingEffectWallpaperSuggestionCandidate alloc] initWithAsset:assetCopy suggestion:0];
+    v20 = [[PGSettlingEffectWallpaperSuggesterFilteringContext alloc] initInOrientation:orientation];
     v51 = 0;
-    v21 = v11;
-    if ([a1 candidate:v19 passesFilteringWithContext:v20 curationContext:v11 statistics:&v51])
+    v21 = contextCopy;
+    if ([self candidate:v19 passesFilteringWithContext:v20 curationContext:contextCopy statistics:&v51])
     {
-      v22 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v23 = [v22 BOOLForKey:*MEMORY[0x277D3CA10]];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v23 = [standardUserDefaults BOOLForKey:*MEMORY[0x277D3CA10]];
 
       if (v23)
       {
@@ -1660,20 +1660,20 @@ LABEL_71:
         v25 = [(PGWallpaperSuggestionAssetGater *)v24 initWithType:5 loggingConnection:MEMORY[0x277D86220]];
         [(PGWallpaperSuggestionAssetGater *)v25 setCoversTracks:1];
         [(PGWallpaperSuggestionAssetGater *)v25 setIsUserInitiated:1];
-        v26 = [(PGWallpaperSuggestionAssetGater *)v25 gateAsset:v10 progressBlock:&__block_literal_global_5982];
-        v27 = [v26 passesSettlingEffect];
-        if (a6 && (v27 & 1) == 0)
+        v26 = [(PGWallpaperSuggestionAssetGater *)v25 gateAsset:assetCopy progressBlock:&__block_literal_global_5982];
+        passesSettlingEffect = [v26 passesSettlingEffect];
+        if (reason && (passesSettlingEffect & 1) == 0)
         {
           v28 = v26;
           if (v25)
           {
             [(PGWallpaperSuggestionAssetGater *)v25 settlingEffectGatingStatistics];
-            v21 = v11;
+            v21 = contextCopy;
             if (v50 > 0)
             {
               v29 = @"Failed feature enablement check";
 LABEL_53:
-              v36 = a6;
+              reasonCopy3 = reason;
               goto LABEL_54;
             }
 
@@ -1724,7 +1724,7 @@ LABEL_53:
             {
               v29 = @"Failed video quality";
 LABEL_52:
-              v21 = v11;
+              v21 = contextCopy;
               goto LABEL_53;
             }
 
@@ -1757,8 +1757,8 @@ LABEL_52:
             }
 
             [(PGWallpaperSuggestionAssetGater *)v25 settlingEffectGatingStatistics];
-            v21 = v11;
-            v36 = a6;
+            v21 = contextCopy;
+            reasonCopy3 = reason;
             if (v38 > 0)
             {
               v29 = @"Failed still transition";
@@ -1768,21 +1768,21 @@ LABEL_52:
 
           else
           {
-            v36 = a6;
-            v21 = v11;
+            reasonCopy3 = reason;
+            v21 = contextCopy;
           }
 
           v29 = @"Unknown Reason";
 LABEL_54:
-          v31 = v37;
-          *v36 = v29;
+          v31 = photoLibrary;
+          *reasonCopy3 = v29;
 
           v30 = 0;
           goto LABEL_26;
         }
       }
 
-      if (a6)
+      if (reason)
       {
         if (v23)
         {
@@ -1794,14 +1794,14 @@ LABEL_54:
           v33 = @"Pass w/o FRC";
         }
 
-        *a6 = v33;
+        *reason = v33;
       }
 
       v30 = 1;
-      v21 = v11;
+      v21 = contextCopy;
     }
 
-    else if (a6)
+    else if (reason)
     {
       v30 = 0;
       if (v51 < 1)
@@ -1814,7 +1814,7 @@ LABEL_54:
         v32 = @"Low Settling Effect Score";
       }
 
-      *a6 = v32;
+      *reason = v32;
     }
 
     else
@@ -1822,44 +1822,44 @@ LABEL_54:
       v30 = 0;
     }
 
-    v31 = v37;
+    v31 = photoLibrary;
 LABEL_26:
 
     goto LABEL_27;
   }
 
   v30 = 0;
-  if (a6)
+  if (reason)
   {
-    *a6 = @"Fails Predicate";
+    *reason = @"Fails Predicate";
   }
 
-  v21 = v11;
-  v31 = v37;
+  v21 = contextCopy;
+  v31 = photoLibrary;
 LABEL_27:
 
   v34 = *MEMORY[0x277D85DE8];
   return v30;
 }
 
-+ (BOOL)candidate:(id)a3 passesFilteringWithContext:(id)a4 curationContext:(id)a5 statistics:(id *)a6
++ (BOOL)candidate:(id)candidate passesFilteringWithContext:(id)context curationContext:(id)curationContext statistics:(id *)statistics
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 asset];
-  v9 = [v7 suggestion];
+  candidateCopy = candidate;
+  asset = [candidateCopy asset];
+  suggestion = [candidateCopy suggestion];
 
-  if (v9)
+  if (suggestion)
   {
-    v10 = [v9 subtype];
-    v11 = v10 != 655 && v10 != 605;
-    if (v10 == 605)
+    subtype = [suggestion subtype];
+    v11 = subtype != 655 && subtype != 605;
+    if (subtype == 605)
     {
       goto LABEL_17;
     }
 
-    v12 = v10;
-    if (v10 == 655)
+    v12 = subtype;
+    if (subtype == 655)
     {
       goto LABEL_17;
     }
@@ -1871,15 +1871,15 @@ LABEL_27:
   }
 
   v21 = 0;
-  [PGSettlingEffectScoreHelper analyzedSettlingEffectScoreForAsset:v8 requestedOnDemand:&v21];
+  [PGSettlingEffectScoreHelper analyzedSettlingEffectScoreForAsset:asset requestedOnDemand:&v21];
   v14 = v13;
   if (v21 == 1)
   {
-    ++a6->var1;
+    ++statistics->var1;
   }
 
-  v15 = [v8 mediaAnalysisProperties];
-  +[PGSettlingEffectWallpaperSuggesterFilteringContext minimumSettlingEffectScoreForSuggestionSubtype:mediaAnalysisVersion:](PGSettlingEffectWallpaperSuggesterFilteringContext, "minimumSettlingEffectScoreForSuggestionSubtype:mediaAnalysisVersion:", v12, [v15 mediaAnalysisVersion]);
+  mediaAnalysisProperties = [asset mediaAnalysisProperties];
+  +[PGSettlingEffectWallpaperSuggesterFilteringContext minimumSettlingEffectScoreForSuggestionSubtype:mediaAnalysisVersion:](PGSettlingEffectWallpaperSuggesterFilteringContext, "minimumSettlingEffectScoreForSuggestionSubtype:mediaAnalysisVersion:", v12, [mediaAnalysisProperties mediaAnalysisVersion]);
   v17 = v16;
 
   v18 = v14;
@@ -1904,7 +1904,7 @@ LABEL_27:
   else
   {
     v11 = 0;
-    ++a6->var0;
+    ++statistics->var0;
   }
 
 LABEL_17:
@@ -1913,16 +1913,16 @@ LABEL_17:
   return v11;
 }
 
-+ (id)prefilteringInternalPredicateWithForbiddenAssetUUIDs:(id)a3
++ (id)prefilteringInternalPredicateWithForbiddenAssetUUIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [MEMORY[0x277D3C810] settlingEffectLivePhotoPredicate];
-  [v4 addObject:v5];
-  if ([v3 count])
+  settlingEffectLivePhotoPredicate = [MEMORY[0x277D3C810] settlingEffectLivePhotoPredicate];
+  [v4 addObject:settlingEffectLivePhotoPredicate];
+  if ([dsCopy count])
   {
-    v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"uuid", v3];
-    [v4 addObject:v6];
+    dsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"uuid", dsCopy];
+    [v4 addObject:dsCopy];
   }
 
   v7 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v4];

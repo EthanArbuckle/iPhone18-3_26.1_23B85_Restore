@@ -1,7 +1,7 @@
 @interface Autocompleter.AutocompleterDelegate
 - (_TtCV8EventKit13AutocompleterP33_DEA997DC7EC58B9D25A8208EE08F08CD21AutocompleterDelegate)init;
-- (void)autocompleter:(id)a3 finishedWithError:(id)a4;
-- (void)autocompleterUpdated:(id)a3;
+- (void)autocompleter:(id)autocompleter finishedWithError:(id)error;
+- (void)autocompleterUpdated:(id)updated;
 @end
 
 @implementation Autocompleter.AutocompleterDelegate
@@ -17,18 +17,18 @@
   return [(Autocompleter.AutocompleterDelegate *)&v6 init];
 }
 
-- (void)autocompleterUpdated:(id)a3
+- (void)autocompleterUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A81974F8(v4);
+  updatedCopy = updated;
+  selfCopy = self;
+  sub_1A81974F8(updatedCopy);
 }
 
-- (void)autocompleter:(id)a3 finishedWithError:(id)a4
+- (void)autocompleter:(id)autocompleter finishedWithError:(id)error
 {
-  v5 = a3;
-  v6 = self;
-  sub_1A81974F8(v5);
+  autocompleterCopy = autocompleter;
+  selfCopy = self;
+  sub_1A81974F8(autocompleterCopy);
 }
 
 @end

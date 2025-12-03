@@ -1,59 +1,59 @@
 @interface UIMutableCarPlayApplicationSceneSettings
 - (BOOL)blackWallpaperModeEnabled;
 - (BOOL)disableFiveRowKeyboards;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
-- (void)setBlackWallpaperModeEnabled:(BOOL)a3;
-- (void)setDisableFiveRowKeyboards:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
+- (void)setBlackWallpaperModeEnabled:(BOOL)enabled;
+- (void)setDisableFiveRowKeyboards:(BOOL)keyboards;
 @end
 
 @implementation UIMutableCarPlayApplicationSceneSettings
 
 - (BOOL)disableFiveRowKeyboards
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:34];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:34];
 
   return v3;
 }
 
-- (void)setDisableFiveRowKeyboards:(BOOL)a3
+- (void)setDisableFiveRowKeyboards:(BOOL)keyboards
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:34];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:34];
 }
 
 - (BOOL)blackWallpaperModeEnabled
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:45];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:45];
 
   return v3;
 }
 
-- (void)setBlackWallpaperModeEnabled:(BOOL)a3
+- (void)setBlackWallpaperModeEnabled:(BOOL)enabled
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:45];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:45];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [UICarPlayApplicationSceneSettings allocWithZone:a3];
+  v4 = [UICarPlayApplicationSceneSettings allocWithZone:zone];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
   v6 = @"blackWallpaperModeEnabled";
-  if (a3 != 45)
+  if (setting != 45)
   {
     v6 = 0;
   }
 
-  if (a3 == 34)
+  if (setting == 34)
   {
     v6 = @"disableFiveRowKeyboards";
   }
@@ -67,7 +67,7 @@
     {
       v9.receiver = self;
       v9.super_class = UIMutableCarPlayApplicationSceneSettings;
-      v7 = [(UIMutableApplicationSceneSettings *)&v9 keyDescriptionForSetting:a3];
+      v7 = [(UIMutableApplicationSceneSettings *)&v9 keyDescriptionForSetting:setting];
     }
 
     else
@@ -79,10 +79,10 @@
   return v7;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v9 = a4;
-  v10 = UICarPlayApplicationSceneSettingValueDescription(a5, a3, v9);
+  objectCopy = object;
+  v10 = UICarPlayApplicationSceneSettingValueDescription(setting, flag, objectCopy);
   if (!v10)
   {
     v13.receiver = self;
@@ -91,7 +91,7 @@
     {
       v12.receiver = self;
       v12.super_class = UIMutableCarPlayApplicationSceneSettings;
-      v10 = [(UIMutableApplicationSceneSettings *)&v12 valueDescriptionForFlag:a3 object:v9 ofSetting:a5];
+      v10 = [(UIMutableApplicationSceneSettings *)&v12 valueDescriptionForFlag:flag object:objectCopy ofSetting:setting];
     }
 
     else

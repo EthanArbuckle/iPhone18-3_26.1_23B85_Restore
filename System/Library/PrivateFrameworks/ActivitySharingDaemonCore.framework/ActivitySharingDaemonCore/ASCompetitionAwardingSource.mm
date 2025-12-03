@@ -1,14 +1,14 @@
 @interface ASCompetitionAwardingSource
 - (ASCompetitionAwardingSourceDataProvider)dataProvider;
 - (id)_allCompetitionsOrderedByEndDate;
-- (id)_queue_earnedInstancesForInterval:(id)a3 selectingCompetitionsUsingFilter:(id)a4;
-- (id)earnedInstancesForIncrementalInterval:(id)a3;
-- (id)initForCreatorDevice:(unsigned __int8)a3;
+- (id)_queue_earnedInstancesForInterval:(id)interval selectingCompetitionsUsingFilter:(id)filter;
+- (id)earnedInstancesForIncrementalInterval:(id)interval;
+- (id)initForCreatorDevice:(unsigned __int8)device;
 @end
 
 @implementation ASCompetitionAwardingSource
 
-- (id)initForCreatorDevice:(unsigned __int8)a3
+- (id)initForCreatorDevice:(unsigned __int8)device
 {
   v9.receiver = self;
   v9.super_class = ASCompetitionAwardingSource;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_creatorDevice = a3;
+    v4->_creatorDevice = device;
     v6 = HKCreateSerialDispatchQueue();
     serialQueue = v5->_serialQueue;
     v5->_serialQueue = v6;
@@ -25,16 +25,16 @@
   return v5;
 }
 
-- (id)earnedInstancesForIncrementalInterval:(id)a3
+- (id)earnedInstancesForIncrementalInterval:(id)interval
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intervalCopy = interval;
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE8FC0];
   if (os_log_type_enabled(*MEMORY[0x277CE8FC0], OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = intervalCopy;
     _os_log_impl(&dword_23E5E3000, v5, OS_LOG_TYPE_DEFAULT, "Responding to earned instances for incremental interval: %@", &buf, 0xCu);
   }
 
@@ -49,10 +49,10 @@
   block[1] = 3221225472;
   block[2] = __69__ASCompetitionAwardingSource_earnedInstancesForIncrementalInterval___block_invoke;
   block[3] = &unk_278C4BAD0;
-  v12 = v4;
+  v12 = intervalCopy;
   p_buf = &buf;
   block[4] = self;
-  v7 = v4;
+  v7 = intervalCopy;
   dispatch_sync(serialQueue, block);
   v8 = *(*(&buf + 1) + 40);
 
@@ -72,21 +72,21 @@ uint64_t __69__ASCompetitionAwardingSource_earnedInstancesForIncrementalInterval
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_queue_earnedInstancesForInterval:(id)a3 selectingCompetitionsUsingFilter:(id)a4
+- (id)_queue_earnedInstancesForInterval:(id)interval selectingCompetitionsUsingFilter:(id)filter
 {
   v77 = *MEMORY[0x277D85DE8];
-  v51 = a3;
-  v54 = a4;
-  v62 = [(ASCompetitionAwardingSource *)self _allCompetitionsOrderedByEndDate];
+  intervalCopy = interval;
+  filterCopy = filter;
+  _allCompetitionsOrderedByEndDate = [(ASCompetitionAwardingSource *)self _allCompetitionsOrderedByEndDate];
   v63 = [MEMORY[0x277CBEB58] set];
   WeakRetained = objc_loadWeakRetained(&self->_dataProvider);
-  v7 = [WeakRetained friends];
+  friends = [WeakRetained friends];
 
   v70 = 0u;
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  obj = v7;
+  obj = friends;
   v55 = [obj countByEnumeratingWithState:&v68 objects:v73 count:16];
   if (v55)
   {
@@ -111,18 +111,18 @@ uint64_t __69__ASCompetitionAwardingSource_earnedInstancesForIncrementalInterval
         if (os_log_type_enabled(*MEMORY[0x277CE8FC0], OS_LOG_TYPE_DEFAULT))
         {
           v11 = v10;
-          v12 = [v9 UUID];
-          v13 = [v9 displayName];
+          uUID = [v9 UUID];
+          displayName = [v9 displayName];
           *buf = 138543618;
-          *&buf[4] = v12;
+          *&buf[4] = uUID;
           *&buf[12] = 2112;
-          *&buf[14] = v13;
+          *&buf[14] = displayName;
           _os_log_impl(&dword_23E5E3000, v11, OS_LOG_TYPE_DEFAULT, "Collecting completed competitions for %{public}@ - %@", buf, 0x16u);
         }
 
         v58 = v9;
-        v14 = [v9 completedCompetitions];
-        v15 = [v14 hk_filter:v54];
+        completedCompetitions = [v9 completedCompetitions];
+        v15 = [completedCompetitions hk_filter:filterCopy];
 
         ASLoggingInitialize();
         v16 = *MEMORY[0x277CE8FC0];
@@ -160,21 +160,21 @@ uint64_t __69__ASCompetitionAwardingSource_earnedInstancesForIncrementalInterval
               if (os_log_type_enabled(*MEMORY[0x277CE8FC0], OS_LOG_TYPE_DEFAULT))
               {
                 v25 = v24;
-                v26 = [v23 UUID];
-                v27 = [v23 myTotalScore];
-                v28 = [v23 opponentTotalScore];
+                uUID2 = [v23 UUID];
+                myTotalScore = [v23 myTotalScore];
+                opponentTotalScore = [v23 opponentTotalScore];
                 *buf = 138543874;
-                *&buf[4] = v26;
+                *&buf[4] = uUID2;
                 *&buf[12] = 2048;
-                *&buf[14] = v27;
+                *&buf[14] = myTotalScore;
                 *&buf[22] = 2048;
-                v75 = v28;
+                v75 = opponentTotalScore;
                 _os_log_impl(&dword_23E5E3000, v25, OS_LOG_TYPE_DEFAULT, "Building earned instance for competition participation: %{public}@, %lu - %lu", buf, 0x20u);
               }
 
-              v29 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-              v30 = [v23 endDate];
-              v31 = [v29 components:v61 fromDate:v30];
+              hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+              endDate = [v23 endDate];
+              v31 = [hk_gregorianCalendar components:v61 fromDate:endDate];
 
               v32 = v23;
               *buf = MEMORY[0x277D85DD0];
@@ -183,9 +183,9 @@ uint64_t __69__ASCompetitionAwardingSource_earnedInstancesForIncrementalInterval
               v75 = &unk_278C4CFE0;
               v76 = v32;
               v33 = v32;
-              v34 = [v62 indexOfObjectPassingTest:buf];
+              v34 = [_allCompetitionsOrderedByEndDate indexOfObjectPassingTest:buf];
 
-              v35 = [MEMORY[0x277CBEAA8] date];
+              date = [MEMORY[0x277CBEAA8] date];
               ASLoggingInitialize();
               v36 = *MEMORY[0x277CE8FC0];
               if (os_log_type_enabled(*MEMORY[0x277CE8FC0], OS_LOG_TYPE_DEFAULT))
@@ -198,10 +198,10 @@ uint64_t __69__ASCompetitionAwardingSource_earnedInstancesForIncrementalInterval
               v37 = objc_alloc_init(MEMORY[0x277CE8D38]);
               [v37 setTemplateUniqueName:v60];
               [v37 setEarnedDateComponents:v31];
-              [v37 setCreatedDate:v35];
+              [v37 setCreatedDate:date];
               v38 = MEMORY[0x277CCD7E8];
-              v39 = [MEMORY[0x277CCDAB0] countUnit];
-              v40 = [v38 quantityWithUnit:v39 doubleValue:v34];
+              countUnit = [MEMORY[0x277CCDAB0] countUnit];
+              v40 = [v38 quantityWithUnit:countUnit doubleValue:v34];
               [v37 setValue:v40];
 
               [v63 addObject:v37];
@@ -216,15 +216,15 @@ uint64_t __69__ASCompetitionAwardingSource_earnedInstancesForIncrementalInterval
                 }
 
                 v42 = objc_alloc_init(MEMORY[0x277CE8D38]);
-                v43 = [v58 UUID];
+                uUID3 = [v58 UUID];
                 v44 = ASCompetitionVictoryTemplateNameForFriend();
                 [v42 setTemplateUniqueName:v44];
 
                 [v42 setEarnedDateComponents:v31];
-                [v42 setCreatedDate:v35];
+                [v42 setCreatedDate:date];
                 v45 = MEMORY[0x277CCD7E8];
-                v46 = [MEMORY[0x277CCDAB0] countUnit];
-                v47 = [v45 quantityWithUnit:v46 doubleValue:{objc_msgSend(v33, "victoryBadgeStyle")}];
+                countUnit2 = [MEMORY[0x277CCDAB0] countUnit];
+                v47 = [v45 quantityWithUnit:countUnit2 doubleValue:{objc_msgSend(v33, "victoryBadgeStyle")}];
                 [v42 setValue:v47];
 
                 [v63 addObject:v42];
@@ -258,13 +258,13 @@ uint64_t __69__ASCompetitionAwardingSource_earnedInstancesForIncrementalInterval
 {
   v20 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_dataProvider);
-  v3 = [WeakRetained friends];
+  friends = [WeakRetained friends];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v3;
+  v4 = friends;
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -282,8 +282,8 @@ uint64_t __69__ASCompetitionAwardingSource_earnedInstancesForIncrementalInterval
           objc_enumerationMutation(v4);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v9) completedCompetitions];
-        v8 = [v10 arrayByAddingObjectsFromArray:v11];
+        completedCompetitions = [*(*(&v15 + 1) + 8 * v9) completedCompetitions];
+        v8 = [v10 arrayByAddingObjectsFromArray:completedCompetitions];
 
         ++v9;
         v10 = v8;

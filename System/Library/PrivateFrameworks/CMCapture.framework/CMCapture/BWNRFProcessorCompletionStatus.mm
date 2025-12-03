@@ -1,6 +1,6 @@
 @interface BWNRFProcessorCompletionStatus
 - (void)dealloc;
-- (void)initWithCompletionStatus:(void *)a1;
+- (void)initWithCompletionStatus:(void *)status;
 @end
 
 @implementation BWNRFProcessorCompletionStatus
@@ -12,14 +12,14 @@
   [(BWNRFProcessorCompletionStatus *)&v3 dealloc];
 }
 
-- (void)initWithCompletionStatus:(void *)a1
+- (void)initWithCompletionStatus:(void *)status
 {
-  if (!a1)
+  if (!status)
   {
     return 0;
   }
 
-  v5.receiver = a1;
+  v5.receiver = status;
   v5.super_class = BWNRFProcessorCompletionStatus;
   v3 = objc_msgSendSuper2(&v5, sel_init);
   if (v3)

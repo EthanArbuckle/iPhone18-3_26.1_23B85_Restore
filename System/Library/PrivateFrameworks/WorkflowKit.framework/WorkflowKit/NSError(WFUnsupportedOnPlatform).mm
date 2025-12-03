@@ -10,21 +10,21 @@
 - (id)wf_localizedErrorStringWithActionName:()WFUnsupportedOnPlatform
 {
   v4 = a3;
-  if (![a1 wf_isUnsupportedOnPlatformError])
+  if (![self wf_isUnsupportedOnPlatformError])
   {
     v16 = 0;
     goto LABEL_36;
   }
 
-  v5 = [a1 userInfo];
-  v6 = [v5 objectForKey:@"WFUnsupportedOnPlatformIdiom"];
-  v7 = [v6 integerValue];
+  userInfo = [self userInfo];
+  v6 = [userInfo objectForKey:@"WFUnsupportedOnPlatformIdiom"];
+  integerValue = [v6 integerValue];
 
-  v8 = [a1 userInfo];
-  v9 = [v8 objectForKey:@"WFUnsupportedOnPlatformErrorType"];
+  userInfo2 = [self userInfo];
+  v9 = [userInfo2 objectForKey:@"WFUnsupportedOnPlatformErrorType"];
 
-  v10 = WFDisplayNameForDeviceIdiom(v7, v9);
-  if (![a1 code])
+  v10 = WFDisplayNameForDeviceIdiom(integerValue, v9);
+  if (![self code])
   {
     if ([v4 length])
     {
@@ -82,8 +82,8 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v11 = [a1 userInfo];
-  v12 = [v11 objectForKey:@"WFUnsupportedOnPlatformParameterName"];
+  userInfo3 = [self userInfo];
+  v12 = [userInfo3 objectForKey:@"WFUnsupportedOnPlatformParameterName"];
 
   if (v10)
   {
@@ -142,8 +142,8 @@ LABEL_36:
 
 - (uint64_t)wf_isUnsupportedOnPlatformError
 {
-  v1 = [a1 domain];
-  v2 = [v1 isEqualToString:@"WFUnsupportedOnPlatformErrorDomain"];
+  domain = [self domain];
+  v2 = [domain isEqualToString:@"WFUnsupportedOnPlatformErrorDomain"];
 
   return v2;
 }
@@ -155,8 +155,8 @@ LABEL_36:
   v10 = a4;
   if (!v10)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"NSError+WFUnsupportedOnPlatform.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"errorType"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSError+WFUnsupportedOnPlatform.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"errorType"}];
   }
 
   v11 = MEMORY[0x1E696ABC0];
@@ -181,8 +181,8 @@ LABEL_36:
   v7 = a3;
   if (!v7)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"NSError+WFUnsupportedOnPlatform.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"errorType"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSError+WFUnsupportedOnPlatform.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"errorType"}];
   }
 
   v8 = MEMORY[0x1E696ABC0];

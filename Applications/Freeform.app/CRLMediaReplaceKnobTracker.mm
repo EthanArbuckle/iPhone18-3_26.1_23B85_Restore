@@ -1,19 +1,19 @@
 @interface CRLMediaReplaceKnobTracker
-- (CRLMediaReplaceKnobTracker)initWithRep:(id)a3 knob:(id)a4;
+- (CRLMediaReplaceKnobTracker)initWithRep:(id)rep knob:(id)knob;
 - (id)p_mediaReplacingRep;
 - (void)endMovingKnob;
-- (void)moveKnobToRepPosition:(CGPoint)a3;
-- (void)p_setTapToReplaceButtonHighlighted:(BOOL)a3;
+- (void)moveKnobToRepPosition:(CGPoint)position;
+- (void)p_setTapToReplaceButtonHighlighted:(BOOL)highlighted;
 - (void)showMediaReplaceUI;
 @end
 
 @implementation CRLMediaReplaceKnobTracker
 
-- (CRLMediaReplaceKnobTracker)initWithRep:(id)a3 knob:(id)a4
+- (CRLMediaReplaceKnobTracker)initWithRep:(id)rep knob:(id)knob
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 conformsToProtocol:&OBJC_PROTOCOL___CRLMediaReplacingRep] & 1) == 0)
+  repCopy = rep;
+  knobCopy = knob;
+  if (([repCopy conformsToProtocol:&OBJC_PROTOCOL___CRLMediaReplacingRep] & 1) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -74,7 +74,7 @@
 
   v16.receiver = self;
   v16.super_class = CRLMediaReplaceKnobTracker;
-  v14 = [(CRLCanvasButtonKnobTracker *)&v16 initWithRep:v6 knob:v7];
+  v14 = [(CRLCanvasButtonKnobTracker *)&v16 initWithRep:repCopy knob:knobCopy];
 
   return v14;
 }
@@ -88,23 +88,23 @@
   return v9;
 }
 
-- (void)moveKnobToRepPosition:(CGPoint)a3
+- (void)moveKnobToRepPosition:(CGPoint)position
 {
   v6.receiver = self;
   v6.super_class = CRLMediaReplaceKnobTracker;
-  [(CRLCanvasButtonKnobTracker *)&v6 moveKnobToRepPosition:a3.x, a3.y];
-  v4 = [(CRLCanvasKnobTracker *)self knob];
+  [(CRLCanvasButtonKnobTracker *)&v6 moveKnobToRepPosition:position.x, position.y];
+  knob = [(CRLCanvasKnobTracker *)self knob];
   [(CRLCanvasKnobTracker *)self currentPosition];
-  v5 = [v4 isHitByUnscaledPoint:1 inputType:?];
+  v5 = [knob isHitByUnscaledPoint:1 inputType:?];
 
   [(CRLMediaReplaceKnobTracker *)self p_setTapToReplaceButtonHighlighted:v5];
 }
 
 - (void)endMovingKnob
 {
-  v3 = [(CRLCanvasKnobTracker *)self knob];
+  knob = [(CRLCanvasKnobTracker *)self knob];
   [(CRLCanvasKnobTracker *)self currentPosition];
-  v4 = [v3 isHitByUnscaledPoint:1 inputType:?];
+  v4 = [knob isHitByUnscaledPoint:1 inputType:?];
 
   if (v4)
   {
@@ -118,41 +118,41 @@
 
 - (void)showMediaReplaceUI
 {
-  v2 = [(CRLMediaReplaceKnobTracker *)self p_mediaReplacingRep];
-  v3 = [v2 interactiveCanvasController];
-  [v3 endEditing];
-  v4 = [v3 canvasEditor];
-  v5 = [v2 info];
-  v6 = [v4 selectionPathWithInfo:v5];
-  v7 = [v3 editorController];
-  [v7 setSelectionPath:v6];
+  p_mediaReplacingRep = [(CRLMediaReplaceKnobTracker *)self p_mediaReplacingRep];
+  interactiveCanvasController = [p_mediaReplacingRep interactiveCanvasController];
+  [interactiveCanvasController endEditing];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  info = [p_mediaReplacingRep info];
+  v6 = [canvasEditor selectionPathWithInfo:info];
+  editorController = [interactiveCanvasController editorController];
+  [editorController setSelectionPath:v6];
 
-  v8 = [v3 mediaReplacer];
+  mediaReplacer = [interactiveCanvasController mediaReplacer];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001BF498;
   v11[3] = &unk_10183AE28;
-  v12 = v3;
-  v13 = v2;
-  v9 = v2;
-  v10 = v3;
-  [v8 hideMediaReplacerWithCompletionBlock:v11];
+  v12 = interactiveCanvasController;
+  v13 = p_mediaReplacingRep;
+  v9 = p_mediaReplacingRep;
+  v10 = interactiveCanvasController;
+  [mediaReplacer hideMediaReplacerWithCompletionBlock:v11];
 }
 
-- (void)p_setTapToReplaceButtonHighlighted:(BOOL)a3
+- (void)p_setTapToReplaceButtonHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v13 = [(CRLMediaReplaceKnobTracker *)self p_mediaReplacingRep];
-  v5 = [v13 visibleMediaReplaceButtonRenderable];
-  v6 = [v13 canvas];
-  [v6 contentsScale];
+  highlightedCopy = highlighted;
+  p_mediaReplacingRep = [(CRLMediaReplaceKnobTracker *)self p_mediaReplacingRep];
+  visibleMediaReplaceButtonRenderable = [p_mediaReplacingRep visibleMediaReplaceButtonRenderable];
+  canvas = [p_mediaReplacingRep canvas];
+  [canvas contentsScale];
   v8 = v7;
 
   v9 = objc_opt_class();
-  v10 = [(CRLCanvasKnobTracker *)self knob];
-  v11 = sub_100014370(v9, v10);
+  knob = [(CRLCanvasKnobTracker *)self knob];
+  v11 = sub_100014370(v9, knob);
 
-  if (v3)
+  if (highlightedCopy)
   {
     [v11 highlightedImage];
   }
@@ -162,7 +162,7 @@
     [v11 image];
   }
   v12 = ;
-  [v5 setContents:{objc_msgSend(v12, "CGImageForContentsScale:", v8)}];
+  [visibleMediaReplaceButtonRenderable setContents:{objc_msgSend(v12, "CGImageForContentsScale:", v8)}];
 }
 
 @end

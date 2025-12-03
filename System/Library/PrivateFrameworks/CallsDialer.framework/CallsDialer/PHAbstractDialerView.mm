@@ -1,8 +1,8 @@
 @interface PHAbstractDialerView
-- (id)senderIdentityMenuForDialerField:(id)a3 selectedSenderIdentity:(id)a4;
+- (id)senderIdentityMenuForDialerField:(id)field selectedSenderIdentity:(id)identity;
 - (void)dealloc;
-- (void)dialerField:(id)a3 stringWasPasted:(id)a4;
-- (void)dialerLCDFieldTextDidChange:(id)a3;
+- (void)dialerField:(id)field stringWasPasted:(id)pasted;
+- (void)dialerLCDFieldTextDidChange:(id)change;
 - (void)updateIDSStatus;
 @end
 
@@ -16,9 +16,9 @@
   [(PHAbstractDialerView *)&v3 dealloc];
 }
 
-- (void)dialerLCDFieldTextDidChange:(id)a3
+- (void)dialerLCDFieldTextDidChange:(id)change
 {
-  if (self->_lcdView == a3)
+  if (self->_lcdView == change)
   {
     delegate = self->_delegate;
     if (objc_opt_respondsToSelector())
@@ -30,13 +30,13 @@
   }
 }
 
-- (void)dialerField:(id)a3 stringWasPasted:(id)a4
+- (void)dialerField:(id)field stringWasPasted:(id)pasted
 {
-  v6 = a4;
-  if (self->_lcdView == a3)
+  pastedCopy = pasted;
+  if (self->_lcdView == field)
   {
     delegate = self->_delegate;
-    v8 = v6;
+    v8 = pastedCopy;
     if (objc_opt_respondsToSelector())
     {
       [(DialerViewDelegate *)self->_delegate dialerView:self stringWasPasted:v8];
@@ -46,12 +46,12 @@
   MEMORY[0x2821F9730]();
 }
 
-- (id)senderIdentityMenuForDialerField:(id)a3 selectedSenderIdentity:(id)a4
+- (id)senderIdentityMenuForDialerField:(id)field selectedSenderIdentity:(id)identity
 {
-  v6 = a4;
-  if (self->_lcdView == a3 && (delegate = self->_delegate, (objc_opt_respondsToSelector() & 1) != 0))
+  identityCopy = identity;
+  if (self->_lcdView == field && (delegate = self->_delegate, (objc_opt_respondsToSelector() & 1) != 0))
   {
-    v8 = [(DialerViewDelegate *)self->_delegate senderIdentityMenuForDialerView:self selectedSenderIdentity:v6];
+    v8 = [(DialerViewDelegate *)self->_delegate senderIdentityMenuForDialerView:self selectedSenderIdentity:identityCopy];
   }
 
   else

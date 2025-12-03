@@ -40,13 +40,13 @@
   }
 
   os_unfair_lock_lock(&gClientsLock);
-  v2 = [gClients allValues];
+  allValues = [gClients allValues];
   os_unfair_lock_unlock(&gClientsLock);
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v3 = v2;
+  v3 = allValues;
   v4 = [v3 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v4)
   {

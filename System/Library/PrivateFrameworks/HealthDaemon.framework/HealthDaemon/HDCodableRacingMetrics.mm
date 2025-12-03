@@ -1,22 +1,22 @@
 @interface HDCodableRacingMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRoutePoints:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addRoutePoints:(id)points;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasStartDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableRacingMetrics
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -44,22 +44,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addRoutePoints:(id)a3
+- (void)addRoutePoints:(id)points
 {
-  v4 = a3;
+  pointsCopy = points;
   routePoints = self->_routePoints;
-  v8 = v4;
+  v8 = pointsCopy;
   if (!routePoints)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_routePoints;
     self->_routePoints = v6;
 
-    v4 = v8;
+    pointsCopy = v8;
     routePoints = self->_routePoints;
   }
 
-  [(NSMutableArray *)routePoints addObject:v4];
+  [(NSMutableArray *)routePoints addObject:pointsCopy];
 }
 
 - (id)description
@@ -68,8 +68,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableRacingMetrics;
   v4 = [(HDCodableRacingMetrics *)&v8 description];
-  v5 = [(HDCodableRacingMetrics *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableRacingMetrics *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -77,12 +77,12 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   workoutUUID = self->_workoutUUID;
   if (workoutUUID)
   {
-    [v3 setObject:workoutUUID forKey:@"workoutUUID"];
+    [dictionary setObject:workoutUUID forKey:@"workoutUUID"];
   }
 
   has = self->_has;
@@ -142,8 +142,8 @@ LABEL_7:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -160,10 +160,10 @@ LABEL_7:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_workoutUUID)
   {
     PBDataWriterWriteDataField();
@@ -234,14 +234,14 @@ LABEL_7:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_workoutUUID)
   {
-    [v4 setWorkoutUUID:?];
-    v4 = v10;
+    [toCopy setWorkoutUUID:?];
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -253,8 +253,8 @@ LABEL_7:
     }
 
 LABEL_15:
-    *(v4 + 2) = *&self->_duration;
-    *(v4 + 48) |= 2u;
+    *(toCopy + 2) = *&self->_duration;
+    *(toCopy + 48) |= 2u;
     if ((*&self->_has & 1) == 0)
     {
       goto LABEL_7;
@@ -263,8 +263,8 @@ LABEL_15:
     goto LABEL_6;
   }
 
-  *(v4 + 3) = *&self->_startDate;
-  *(v4 + 48) |= 4u;
+  *(toCopy + 3) = *&self->_startDate;
+  *(toCopy + 48) |= 4u;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -275,18 +275,18 @@ LABEL_5:
   if (has)
   {
 LABEL_6:
-    *(v4 + 1) = *&self->_distance;
-    *(v4 + 48) |= 1u;
+    *(toCopy + 1) = *&self->_distance;
+    *(toCopy + 48) |= 1u;
   }
 
 LABEL_7:
   if ([(HDCodableRacingMetrics *)self routePointsCount])
   {
     [v10 clearRoutePoints];
-    v6 = [(HDCodableRacingMetrics *)self routePointsCount];
-    if (v6)
+    routePointsCount = [(HDCodableRacingMetrics *)self routePointsCount];
+    if (routePointsCount)
     {
-      v7 = v6;
+      v7 = routePointsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(HDCodableRacingMetrics *)self routePointsAtIndex:i];
@@ -296,11 +296,11 @@ LABEL_7:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_workoutUUID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_workoutUUID copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -356,7 +356,7 @@ LABEL_5:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{a3, v17}];
+        v14 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{zone, v17}];
         [v5 addRoutePoints:v14];
       }
 
@@ -370,16 +370,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   workoutUUID = self->_workoutUUID;
-  if (workoutUUID | *(v4 + 5))
+  if (workoutUUID | *(equalCopy + 5))
   {
     if (![(NSData *)workoutUUID isEqual:?])
     {
@@ -387,16 +387,16 @@ LABEL_5:
     }
   }
 
-  v6 = *(v4 + 48);
+  v6 = *(equalCopy + 48);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_startDate != *(v4 + 3))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_startDate != *(equalCopy + 3))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
 LABEL_21:
     v8 = 0;
@@ -405,32 +405,32 @@ LABEL_21:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_duration != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_duration != *(equalCopy + 2))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_21;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_distance != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_distance != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_21;
   }
 
   routePoints = self->_routePoints;
-  if (routePoints | *(v4 + 4))
+  if (routePoints | *(equalCopy + 4))
   {
     v8 = [(NSMutableArray *)routePoints isEqual:?];
   }
@@ -552,21 +552,21 @@ LABEL_22:
   return v6 ^ v3 ^ v10 ^ v14 ^ [(NSMutableArray *)self->_routePoints hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
     [(HDCodableRacingMetrics *)self setWorkoutUUID:?];
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 4) != 0)
   {
-    self->_startDate = *(v4 + 3);
+    self->_startDate = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -579,17 +579,17 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 48) & 2) == 0)
+  else if ((*(fromCopy + 48) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_duration = *(v4 + 2);
+  self->_duration = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
 LABEL_6:
-    self->_distance = *(v4 + 1);
+    self->_distance = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -598,7 +598,7 @@ LABEL_7:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

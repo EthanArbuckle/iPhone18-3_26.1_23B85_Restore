@@ -1,5 +1,5 @@
 @interface sec_LWCR
-+ (id)withData:(id)a3 withError:(id *)a4;
++ (id)withData:(id)data withError:(id *)error;
 - (BOOL)hasRequirements;
 - (id).cxx_construct;
 - (sec_LWCR)init;
@@ -58,15 +58,15 @@
   return v3;
 }
 
-+ (id)withData:(id)a3 withError:(id *)a4
++ (id)withData:(id)data withError:(id *)error
 {
   v53[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dataCopy = data;
   v39 = 0;
   v44 = 0uLL;
   *&v45 = 0;
-  CFDataGetBytePtr(v6);
-  CFDataGetLength(v6);
+  CFDataGetBytePtr(dataCopy);
+  CFDataGetLength(dataCopy);
   v7 = CEValidateWithOptions();
   v8 = MEMORY[0x1E69E50B8];
   v9 = *MEMORY[0x1E69E50B8];
@@ -81,7 +81,7 @@
   if (v7 == v9)
   {
     v11 = objc_alloc_init(sec_LWCR);
-    objc_storeStrong(&v11->backingStorage, a3);
+    objc_storeStrong(&v11->backingStorage, data);
     v12 = v39;
     v11->backingContext = v39;
     runtime = v12->der_context.runtime;
@@ -192,7 +192,7 @@
       v22 = 31;
     }
 
-    if (a4)
+    if (error)
     {
       v24 = MEMORY[0x1E696ABC0];
       v52[0] = *MEMORY[0x1E696AA08];
@@ -202,7 +202,7 @@
       v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:v21 length:v22 encoding:4];
       v53[1] = v26;
       v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:2];
-      *a4 = [v24 errorWithDomain:@"LWCRError" code:1 userInfo:v27];
+      *error = [v24 errorWithDomain:@"LWCRError" code:1 userInfo:v27];
     }
 
     v10 = 0;
@@ -211,10 +211,10 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"LWCRError" code:2 userInfo:0];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else

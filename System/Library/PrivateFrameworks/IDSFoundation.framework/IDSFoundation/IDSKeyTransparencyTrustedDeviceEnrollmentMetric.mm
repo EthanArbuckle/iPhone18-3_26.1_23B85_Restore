@@ -1,18 +1,18 @@
 @interface IDSKeyTransparencyTrustedDeviceEnrollmentMetric
-- (IDSKeyTransparencyTrustedDeviceEnrollmentMetric)initWithKeyTransparencyVersion:(unint64_t)a3 cloudKitSuccess:(BOOL)a4 cloudKitErrorDomain:(id)a5 cloudKitErrorCode:(int64_t)a6 cloudKitUnderlyingErrorDomain:(id)a7 cloudKitUnderlyingErrorCode:(int64_t)a8 cloudKitOperationTimeInterval:(double)a9 accountKeySuccess:(BOOL)a10 accountKeyErrorDomain:(id)a11 accountKeyErrorCode:(int64_t)a12 accountKeyUnderlyingErrorDomain:(id)a13 accountKeyUnderlyingErrorCode:(int64_t)a14 accountKeyOperationTimeInterval:(double)a15;
-- (IDSKeyTransparencyTrustedDeviceEnrollmentMetric)initWithKeyTransparencyVersion:(unint64_t)a3 kvsSuccess:(BOOL)a4 kvsErrorDomain:(id)a5 kvsErrorCode:(int64_t)a6 kvsSyncTimeInterval:(double)a7 kvsUnderlyingErrorDomain:(id)a8 kvsUnderlyingErrorCode:(int64_t)a9;
+- (IDSKeyTransparencyTrustedDeviceEnrollmentMetric)initWithKeyTransparencyVersion:(unint64_t)version cloudKitSuccess:(BOOL)success cloudKitErrorDomain:(id)domain cloudKitErrorCode:(int64_t)code cloudKitUnderlyingErrorDomain:(id)errorDomain cloudKitUnderlyingErrorCode:(int64_t)errorCode cloudKitOperationTimeInterval:(double)interval accountKeySuccess:(BOOL)self0 accountKeyErrorDomain:(id)self1 accountKeyErrorCode:(int64_t)self2 accountKeyUnderlyingErrorDomain:(id)self3 accountKeyUnderlyingErrorCode:(int64_t)self4 accountKeyOperationTimeInterval:(double)self5;
+- (IDSKeyTransparencyTrustedDeviceEnrollmentMetric)initWithKeyTransparencyVersion:(unint64_t)version kvsSuccess:(BOOL)success kvsErrorDomain:(id)domain kvsErrorCode:(int64_t)code kvsSyncTimeInterval:(double)interval kvsUnderlyingErrorDomain:(id)errorDomain kvsUnderlyingErrorCode:(int64_t)errorCode;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)description;
 @end
 
 @implementation IDSKeyTransparencyTrustedDeviceEnrollmentMetric
 
-- (IDSKeyTransparencyTrustedDeviceEnrollmentMetric)initWithKeyTransparencyVersion:(unint64_t)a3 cloudKitSuccess:(BOOL)a4 cloudKitErrorDomain:(id)a5 cloudKitErrorCode:(int64_t)a6 cloudKitUnderlyingErrorDomain:(id)a7 cloudKitUnderlyingErrorCode:(int64_t)a8 cloudKitOperationTimeInterval:(double)a9 accountKeySuccess:(BOOL)a10 accountKeyErrorDomain:(id)a11 accountKeyErrorCode:(int64_t)a12 accountKeyUnderlyingErrorDomain:(id)a13 accountKeyUnderlyingErrorCode:(int64_t)a14 accountKeyOperationTimeInterval:(double)a15
+- (IDSKeyTransparencyTrustedDeviceEnrollmentMetric)initWithKeyTransparencyVersion:(unint64_t)version cloudKitSuccess:(BOOL)success cloudKitErrorDomain:(id)domain cloudKitErrorCode:(int64_t)code cloudKitUnderlyingErrorDomain:(id)errorDomain cloudKitUnderlyingErrorCode:(int64_t)errorCode cloudKitOperationTimeInterval:(double)interval accountKeySuccess:(BOOL)self0 accountKeyErrorDomain:(id)self1 accountKeyErrorCode:(int64_t)self2 accountKeyUnderlyingErrorDomain:(id)self3 accountKeyUnderlyingErrorCode:(int64_t)self4 accountKeyOperationTimeInterval:(double)self5
 {
-  v23 = a5;
-  v24 = a7;
-  v25 = a11;
-  v26 = a13;
+  domainCopy = domain;
+  errorDomainCopy = errorDomain;
+  keyErrorDomainCopy = keyErrorDomain;
+  underlyingErrorDomainCopy = underlyingErrorDomain;
   v38.receiver = self;
   v38.super_class = IDSKeyTransparencyTrustedDeviceEnrollmentMetric;
   v27 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)&v38 init];
@@ -20,40 +20,40 @@
   if (v27)
   {
     v27->_isKVSMetric = 0;
-    v27->_keyTransparencyVersion = a3;
-    v27->_cloudKitSuccess = a4;
-    v29 = [v23 copy];
+    v27->_keyTransparencyVersion = version;
+    v27->_cloudKitSuccess = success;
+    v29 = [domainCopy copy];
     cloudKitErrorDomain = v28->_cloudKitErrorDomain;
     v28->_cloudKitErrorDomain = v29;
 
-    v28->_cloudKitErrorCode = a6;
-    v31 = [v24 copy];
+    v28->_cloudKitErrorCode = code;
+    v31 = [errorDomainCopy copy];
     cloudKitUnderlyingErrorDomain = v28->_cloudKitUnderlyingErrorDomain;
     v28->_cloudKitUnderlyingErrorDomain = v31;
 
-    v28->_cloudKitUnderlyingErrorCode = a8;
-    v28->_cloudKitOperationTimeInterval = ceil(a9);
-    v28->_accountKeySuccess = a10;
-    v33 = [v25 copy];
+    v28->_cloudKitUnderlyingErrorCode = errorCode;
+    v28->_cloudKitOperationTimeInterval = ceil(interval);
+    v28->_accountKeySuccess = keySuccess;
+    v33 = [keyErrorDomainCopy copy];
     accountKeyErrorDomain = v28->_accountKeyErrorDomain;
     v28->_accountKeyErrorDomain = v33;
 
-    v28->_accountKeyErrorCode = a12;
-    v35 = [v26 copy];
+    v28->_accountKeyErrorCode = keyErrorCode;
+    v35 = [underlyingErrorDomainCopy copy];
     accountKeyUnderlyingErrorDomain = v28->_accountKeyUnderlyingErrorDomain;
     v28->_accountKeyUnderlyingErrorDomain = v35;
 
-    v28->_accountKeyUnderlyingErrorCode = a14;
-    v28->_accountKeyOperationTimeInterval = ceil(a15);
+    v28->_accountKeyUnderlyingErrorCode = underlyingErrorCode;
+    v28->_accountKeyOperationTimeInterval = ceil(timeInterval);
   }
 
   return v28;
 }
 
-- (IDSKeyTransparencyTrustedDeviceEnrollmentMetric)initWithKeyTransparencyVersion:(unint64_t)a3 kvsSuccess:(BOOL)a4 kvsErrorDomain:(id)a5 kvsErrorCode:(int64_t)a6 kvsSyncTimeInterval:(double)a7 kvsUnderlyingErrorDomain:(id)a8 kvsUnderlyingErrorCode:(int64_t)a9
+- (IDSKeyTransparencyTrustedDeviceEnrollmentMetric)initWithKeyTransparencyVersion:(unint64_t)version kvsSuccess:(BOOL)success kvsErrorDomain:(id)domain kvsErrorCode:(int64_t)code kvsSyncTimeInterval:(double)interval kvsUnderlyingErrorDomain:(id)errorDomain kvsUnderlyingErrorCode:(int64_t)errorCode
 {
-  v16 = a5;
-  v17 = a8;
+  domainCopy = domain;
+  errorDomainCopy = errorDomain;
   v23.receiver = self;
   v23.super_class = IDSKeyTransparencyTrustedDeviceEnrollmentMetric;
   v18 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)&v23 init];
@@ -61,16 +61,16 @@
   if (v18)
   {
     v18->_isKVSMetric = 1;
-    v18->_keyTransparencyVersion = a3;
-    v18->_kvsSuccess = a4;
-    v20 = [v16 copy];
+    v18->_keyTransparencyVersion = version;
+    v18->_kvsSuccess = success;
+    v20 = [domainCopy copy];
     kvsErrorDomain = v19->_kvsErrorDomain;
     v19->_kvsErrorDomain = v20;
 
-    v19->_kvsErrorCode = a6;
-    v19->_kvsSyncTimeInterval = ceil(a7);
-    objc_storeStrong(&v19->_kvsUnderlyingErrorDomain, a8);
-    v19->_kvsUnderlyingErrorCode = a9;
+    v19->_kvsErrorCode = code;
+    v19->_kvsSyncTimeInterval = ceil(interval);
+    objc_storeStrong(&v19->_kvsUnderlyingErrorDomain, errorDomain);
+    v19->_kvsUnderlyingErrorCode = errorCode;
   }
 
   return v19;
@@ -80,37 +80,37 @@
 {
   isKVSMetric = self->_isKVSMetric;
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self name];
-  v6 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self keyTransparencyVersion];
+  name = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self name];
+  keyTransparencyVersion = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self keyTransparencyVersion];
   if (isKVSMetric)
   {
-    v7 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self kvsSuccess];
-    v8 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self kvsErrorDomain];
-    v9 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self kvsErrorCode];
+    kvsSuccess = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self kvsSuccess];
+    kvsErrorDomain = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self kvsErrorDomain];
+    kvsErrorCode = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self kvsErrorCode];
     [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self kvsSyncTimeInterval];
     v11 = v10;
-    v12 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self kvsUnderlyingErrorDomain];
-    v13 = [v4 stringWithFormat:@"%@, <vers: %ld, kvs-success: %ld, kvs-error-d: %@, kvs-error-c: %ld, kvs-time: %d, kvs-uerror-d: %@, kvs-uerror-c: %ld>", v5, v6, v7, v8, v9, v11, v12, -[IDSKeyTransparencyTrustedDeviceEnrollmentMetric kvsUnderlyingErrorCode](self, "kvsUnderlyingErrorCode")];
+    kvsUnderlyingErrorDomain = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self kvsUnderlyingErrorDomain];
+    v13 = [v4 stringWithFormat:@"%@, <vers: %ld, kvs-success: %ld, kvs-error-d: %@, kvs-error-c: %ld, kvs-time: %d, kvs-uerror-d: %@, kvs-uerror-c: %ld>", name, keyTransparencyVersion, kvsSuccess, kvsErrorDomain, kvsErrorCode, v11, kvsUnderlyingErrorDomain, -[IDSKeyTransparencyTrustedDeviceEnrollmentMetric kvsUnderlyingErrorCode](self, "kvsUnderlyingErrorCode")];
   }
 
   else
   {
-    v27 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self cloudKitSuccess];
-    v8 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self cloudKitErrorDomain];
-    v26 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self cloudKitErrorCode];
-    v12 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self cloudKitUnderlyingErrorDomain];
-    v24 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self cloudKitUnderlyingErrorCode];
+    cloudKitSuccess = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self cloudKitSuccess];
+    kvsErrorDomain = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self cloudKitErrorDomain];
+    cloudKitErrorCode = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self cloudKitErrorCode];
+    kvsUnderlyingErrorDomain = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self cloudKitUnderlyingErrorDomain];
+    cloudKitUnderlyingErrorCode = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self cloudKitUnderlyingErrorCode];
     [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self cloudKitOperationTimeInterval];
     v25 = v4;
     v15 = v14;
-    v23 = v6;
-    v16 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self accountKeySuccess];
-    v17 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self accountKeyErrorDomain];
-    v18 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self accountKeyErrorCode];
-    v19 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self accountKeyUnderlyingErrorDomain];
-    v20 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self accountKeyUnderlyingErrorCode];
+    v23 = keyTransparencyVersion;
+    accountKeySuccess = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self accountKeySuccess];
+    accountKeyErrorDomain = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self accountKeyErrorDomain];
+    accountKeyErrorCode = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self accountKeyErrorCode];
+    accountKeyUnderlyingErrorDomain = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self accountKeyUnderlyingErrorDomain];
+    accountKeyUnderlyingErrorCode = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self accountKeyUnderlyingErrorCode];
     [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self accountKeyOperationTimeInterval];
-    v13 = [v25 stringWithFormat:@"%@: <vers: %ld, ck-success: %ld, ck-error-d: %@, ck-error-c: %ld, ck-uerror-d: %@, ck-uerror-c: %ld, ck-time: %d, ak-success: %ld, ak-error-d: %@, ak-error-c: %ld, ak-uerror-d: %@, ak-uerror-c: %ld, ak-time: %d>", v5, v23, v27, v8, v26, v12, v24, v15, v16, v17, v18, v19, v20, v21];
+    v13 = [v25 stringWithFormat:@"%@: <vers: %ld, ck-success: %ld, ck-error-d: %@, ck-error-c: %ld, ck-uerror-d: %@, ck-uerror-c: %ld, ck-time: %d, ak-success: %ld, ak-error-d: %@, ak-error-c: %ld, ak-uerror-d: %@, ak-uerror-c: %ld, ak-time: %d>", name, v23, cloudKitSuccess, kvsErrorDomain, cloudKitErrorCode, kvsUnderlyingErrorDomain, cloudKitUnderlyingErrorCode, v15, accountKeySuccess, accountKeyErrorDomain, accountKeyErrorCode, accountKeyUnderlyingErrorDomain, accountKeyUnderlyingErrorCode, v21];
   }
 
   return v13;
@@ -133,12 +133,12 @@
       CFDictionarySetValue(v3, @"KVSSuccess", v5);
     }
 
-    v6 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self kvsErrorDomain];
-    v7 = v6;
+    kvsErrorDomain = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self kvsErrorDomain];
+    v7 = kvsErrorDomain;
     v8 = &stru_1F1AC8480;
-    if (v6)
+    if (kvsErrorDomain)
     {
-      v8 = v6;
+      v8 = kvsErrorDomain;
     }
 
     v9 = v8;
@@ -158,10 +158,10 @@
       CFDictionarySetValue(v3, @"KVSSyncTimeInterval", v13);
     }
 
-    v14 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self kvsUnderlyingErrorDomain];
-    if (v14)
+    kvsUnderlyingErrorDomain = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self kvsUnderlyingErrorDomain];
+    if (kvsUnderlyingErrorDomain)
     {
-      CFDictionarySetValue(v3, @"KVSUnderlyingErrDomain", v14);
+      CFDictionarySetValue(v3, @"KVSUnderlyingErrDomain", kvsUnderlyingErrorDomain);
     }
 
     v15 = [MEMORY[0x1E696AD98] numberWithInteger:{-[IDSKeyTransparencyTrustedDeviceEnrollmentMetric kvsUnderlyingErrorCode](self, "kvsUnderlyingErrorCode")}];
@@ -181,11 +181,11 @@ LABEL_44:
       CFDictionarySetValue(v3, @"CKSuccess", v17);
     }
 
-    v18 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self cloudKitErrorDomain];
-    v19 = v18;
-    if (v18)
+    cloudKitErrorDomain = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self cloudKitErrorDomain];
+    v19 = cloudKitErrorDomain;
+    if (cloudKitErrorDomain)
     {
-      v20 = v18;
+      v20 = cloudKitErrorDomain;
     }
 
     else
@@ -202,11 +202,11 @@ LABEL_44:
       CFDictionarySetValue(v3, @"CKErrorCode", v22);
     }
 
-    v23 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self cloudKitUnderlyingErrorDomain];
-    v24 = v23;
-    if (v23)
+    cloudKitUnderlyingErrorDomain = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self cloudKitUnderlyingErrorDomain];
+    v24 = cloudKitUnderlyingErrorDomain;
+    if (cloudKitUnderlyingErrorDomain)
     {
-      v25 = v23;
+      v25 = cloudKitUnderlyingErrorDomain;
     }
 
     else
@@ -237,11 +237,11 @@ LABEL_44:
       CFDictionarySetValue(v3, @"AKSuccess", v31);
     }
 
-    v32 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self accountKeyErrorDomain];
-    v33 = v32;
-    if (v32)
+    accountKeyErrorDomain = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self accountKeyErrorDomain];
+    v33 = accountKeyErrorDomain;
+    if (accountKeyErrorDomain)
     {
-      v34 = v32;
+      v34 = accountKeyErrorDomain;
     }
 
     else
@@ -258,11 +258,11 @@ LABEL_44:
       CFDictionarySetValue(v3, @"AKErrorCode", v36);
     }
 
-    v37 = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self accountKeyUnderlyingErrorDomain];
-    v38 = v37;
-    if (v37)
+    accountKeyUnderlyingErrorDomain = [(IDSKeyTransparencyTrustedDeviceEnrollmentMetric *)self accountKeyUnderlyingErrorDomain];
+    v38 = accountKeyUnderlyingErrorDomain;
+    if (accountKeyUnderlyingErrorDomain)
     {
-      v39 = v37;
+      v39 = accountKeyUnderlyingErrorDomain;
     }
 
     else

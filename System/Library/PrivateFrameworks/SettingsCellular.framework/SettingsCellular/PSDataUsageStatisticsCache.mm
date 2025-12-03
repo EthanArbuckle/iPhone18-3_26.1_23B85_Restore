@@ -3,31 +3,31 @@
 - (BOOL)billingCycleSupported;
 - (BOOL)useCalendarMonthBillingCycle;
 - (PSDataUsageStatisticsCache)init;
-- (PSDataUsageStatisticsCache)initWithCoreTelephonyClient:(id)a3;
+- (PSDataUsageStatisticsCache)initWithCoreTelephonyClient:(id)client;
 - (id)billingCycleEndDate;
-- (id)bundleIDsForAppType:(unint64_t)a3;
-- (id)displayNameForHotspotClientID:(id)a3;
-- (id)displayNamesForBundleIDs:(id)a3 appType:(unint64_t)a4;
-- (id)hotspotClientIDsForPeriod:(unint64_t)a3;
+- (id)bundleIDsForAppType:(unint64_t)type;
+- (id)displayNameForHotspotClientID:(id)d;
+- (id)displayNamesForBundleIDs:(id)ds appType:(unint64_t)type;
+- (id)hotspotClientIDsForPeriod:(unint64_t)period;
 - (id)initPrivate;
 - (id)previousBillingCycleEndDate;
-- (id)totalHiddenAppUsageForPeriod:(unint64_t)a3;
-- (id)totalSystemServicesUsageForPeriod:(unint64_t)a3;
-- (id)totalUninstalledAppUsageForPeriod:(unint64_t)a3;
-- (id)totalWatchOnlyAppUsageForPeriod:(unint64_t)a3;
-- (id)usageForBundleID:(id)a3 inPeriod:(unint64_t)a4;
-- (id)wifiAssistUsageForPeriod:(unint64_t)a3;
-- (unint64_t)totalCellularUsageForPeriod:(unint64_t)a3;
-- (unint64_t)totalHotspotClientUsageForPeriod:(unint64_t)a3;
-- (unint64_t)totalRoamingUsageForPeriod:(unint64_t)a3;
-- (unint64_t)totalSatelliteUsageForPeriod:(unint64_t)a3;
-- (unint64_t)usageForHotspotClientID:(id)a3 inPeriod:(unint64_t)a4;
+- (id)totalHiddenAppUsageForPeriod:(unint64_t)period;
+- (id)totalSystemServicesUsageForPeriod:(unint64_t)period;
+- (id)totalUninstalledAppUsageForPeriod:(unint64_t)period;
+- (id)totalWatchOnlyAppUsageForPeriod:(unint64_t)period;
+- (id)usageForBundleID:(id)d inPeriod:(unint64_t)period;
+- (id)wifiAssistUsageForPeriod:(unint64_t)period;
+- (unint64_t)totalCellularUsageForPeriod:(unint64_t)period;
+- (unint64_t)totalHotspotClientUsageForPeriod:(unint64_t)period;
+- (unint64_t)totalRoamingUsageForPeriod:(unint64_t)period;
+- (unint64_t)totalSatelliteUsageForPeriod:(unint64_t)period;
+- (unint64_t)usageForHotspotClientID:(id)d inPeriod:(unint64_t)period;
 - (void)_clearCache;
 - (void)_handleUsageOrInfoChanged;
 - (void)dataRatesChanged;
 - (void)dealloc;
 - (void)fetchDeviceDataUsage;
-- (void)fetchDeviceDataUsageWithCompletion:(id)a3;
+- (void)fetchDeviceDataUsageWithCompletion:(id)completion;
 - (void)fetchHotspotClientsUsage;
 - (void)fetchWorkspaceInfo;
 - (void)refreshCacheIfNeeded;
@@ -66,9 +66,9 @@ uint64_t __44__PSDataUsageStatisticsCache_sharedInstance__block_invoke()
   return v6;
 }
 
-- (PSDataUsageStatisticsCache)initWithCoreTelephonyClient:(id)a3
+- (PSDataUsageStatisticsCache)initWithCoreTelephonyClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v10.receiver = self;
   v10.super_class = PSDataUsageStatisticsCache;
   v6 = [(PSDataUsageStatisticsCache *)&v10 init];
@@ -76,10 +76,10 @@ uint64_t __44__PSDataUsageStatisticsCache_sharedInstance__block_invoke()
   if (v6)
   {
     [(PSDataUsageStatisticsCache *)v6 _clearCache];
-    objc_storeStrong(&v7->_client, a3);
+    objc_storeStrong(&v7->_client, client);
     [(CoreTelephonyClient *)v7->_client setDelegate:v7];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
   }
 
   return v7;
@@ -87,11 +87,11 @@ uint64_t __44__PSDataUsageStatisticsCache_sharedInstance__block_invoke()
 
 - (PSDataUsageStatisticsCache)init
 {
-  v2 = [(PSDataUsageStatisticsCache *)self getLogger];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+  getLogger = [(PSDataUsageStatisticsCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
   {
     *v3 = 0;
-    _os_log_error_impl(&dword_2658CA000, v2, OS_LOG_TYPE_ERROR, "unsupported initializer called", v3, 2u);
+    _os_log_error_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_ERROR, "unsupported initializer called", v3, 2u);
   }
 
   objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"Unsupported initializer" reason:@"Unsupported initializer called" userInfo:0]);
@@ -99,8 +99,8 @@ uint64_t __44__PSDataUsageStatisticsCache_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PSDataUsageStatisticsCache;
@@ -109,11 +109,11 @@ uint64_t __44__PSDataUsageStatisticsCache_sharedInstance__block_invoke()
 
 - (void)willEnterForeground
 {
-  v3 = [(PSDataUsageStatisticsCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSDataUsageStatisticsCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_2658CA000, v3, OS_LOG_TYPE_DEFAULT, "Re-querying usage due to entering foreground", v4, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Re-querying usage due to entering foreground", v4, 2u);
   }
 
   [(PSDataUsageStatisticsCache *)self _handleUsageOrInfoChanged];
@@ -121,57 +121,57 @@ uint64_t __44__PSDataUsageStatisticsCache_sharedInstance__block_invoke()
 
 - (void)_clearCache
 {
-  v3 = [(PSDataUsageStatisticsCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSDataUsageStatisticsCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
-    _os_log_impl(&dword_2658CA000, v3, OS_LOG_TYPE_DEFAULT, "Clearing data usage stats cache", v5, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Clearing data usage stats cache", v5, 2u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  [(PSDataUsageStatisticsCache *)v4 setCachedDeviceDataUsage:0];
-  [(PSDataUsageStatisticsCache *)v4 setWorkspaceInfo:0];
-  [(PSDataUsageStatisticsCache *)v4 setHotspotClientsUsage:0];
-  [(PSDataUsageStatisticsCache *)v4 setCacheNeedsRefresh:1];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSDataUsageStatisticsCache *)selfCopy setCachedDeviceDataUsage:0];
+  [(PSDataUsageStatisticsCache *)selfCopy setWorkspaceInfo:0];
+  [(PSDataUsageStatisticsCache *)selfCopy setHotspotClientsUsage:0];
+  [(PSDataUsageStatisticsCache *)selfCopy setCacheNeedsRefresh:1];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)fetchDeviceDataUsage
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(PSDataUsageStatisticsCache *)v2 refreshInProgress])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(PSDataUsageStatisticsCache *)selfCopy refreshInProgress])
   {
-    v3 = [(PSDataUsageStatisticsCache *)v2 getLogger];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSDataUsageStatisticsCache *)selfCopy getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_2658CA000, v3, OS_LOG_TYPE_DEFAULT, "Refresh already in progress", buf, 2u);
+      _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Refresh already in progress", buf, 2u);
     }
 
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    [(PSDataUsageStatisticsCache *)v2 setWorkspaceInfo:0];
-    [(PSDataUsageStatisticsCache *)v2 setRefreshInProgress:1];
-    objc_sync_exit(v2);
+    [(PSDataUsageStatisticsCache *)selfCopy setWorkspaceInfo:0];
+    [(PSDataUsageStatisticsCache *)selfCopy setRefreshInProgress:1];
+    objc_sync_exit(selfCopy);
 
-    v4 = [(PSDataUsageStatisticsCache *)v2 getLogger];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    getLogger2 = [(PSDataUsageStatisticsCache *)selfCopy getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_2658CA000, v4, OS_LOG_TYPE_INFO, "Executing fetch", buf, 2u);
+      _os_log_impl(&dword_2658CA000, getLogger2, OS_LOG_TYPE_INFO, "Executing fetch", buf, 2u);
     }
 
-    client = v2->_client;
+    client = selfCopy->_client;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __50__PSDataUsageStatisticsCache_fetchDeviceDataUsage__block_invoke;
     v6[3] = &unk_279BA84D0;
-    v6[4] = v2;
+    v6[4] = selfCopy;
     [(CoreTelephonyClient *)client dataUsageForLastPeriods:2 completion:v6];
   }
 }
@@ -244,9 +244,9 @@ void __50__PSDataUsageStatisticsCache_fetchDeviceDataUsage__block_invoke(uint64_
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchDeviceDataUsageWithCompletion:(id)a3
+- (void)fetchDeviceDataUsageWithCompletion:(id)completion
 {
-  [(PSDataUsageStatisticsCache *)self setRefreshCompletionHandler:a3];
+  [(PSDataUsageStatisticsCache *)self setRefreshCompletionHandler:completion];
 
   [(PSDataUsageStatisticsCache *)self fetchDeviceDataUsage];
 }
@@ -271,13 +271,13 @@ void __50__PSDataUsageStatisticsCache_fetchDeviceDataUsage__block_invoke(uint64_
     v6 = WiFiManagerClientCopyProperty();
     [(PSDataUsageStatisticsCache *)self setHotspotClientsUsage:v6];
 
-    v7 = [(PSDataUsageStatisticsCache *)self getLogger];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    getLogger = [(PSDataUsageStatisticsCache *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [(PSDataUsageStatisticsCache *)self hotspotClientsUsage];
+      hotspotClientsUsage = [(PSDataUsageStatisticsCache *)self hotspotClientsUsage];
       v11 = 138543362;
-      v12 = v10;
-      _os_log_debug_impl(&dword_2658CA000, v7, OS_LOG_TYPE_DEBUG, "Hotspot usage: %{public}@", &v11, 0xCu);
+      v12 = hotspotClientsUsage;
+      _os_log_debug_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEBUG, "Hotspot usage: %{public}@", &v11, 0xCu);
     }
 
     CFRelease(v5);
@@ -285,68 +285,68 @@ void __50__PSDataUsageStatisticsCache_fetchDeviceDataUsage__block_invoke(uint64_
 
   else
   {
-    v8 = [(PSDataUsageStatisticsCache *)self getLogger];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    getLogger2 = [(PSDataUsageStatisticsCache *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v11) = 0;
-      _os_log_error_impl(&dword_2658CA000, v8, OS_LOG_TYPE_ERROR, "Could not create WiFiManagerClient", &v11, 2u);
+      _os_log_error_impl(&dword_2658CA000, getLogger2, OS_LOG_TYPE_ERROR, "Could not create WiFiManagerClient", &v11, 2u);
     }
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)bundleIDsForAppType:(unint64_t)a3
+- (id)bundleIDsForAppType:(unint64_t)type
 {
   v31 = *MEMORY[0x277D85DE8];
   [(PSDataUsageStatisticsCache *)self refreshCacheIfNeeded];
   v5 = objc_opt_new();
   v6 = 0;
-  if (a3 > 2)
+  if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3uLL:
-        v10 = [(PSDataUsageStatisticsCache *)self hotspotClientsUsage];
+        hotspotClientsUsage = [(PSDataUsageStatisticsCache *)self hotspotClientsUsage];
 
-        if (!v10)
+        if (!hotspotClientsUsage)
         {
           [(PSDataUsageStatisticsCache *)self fetchHotspotClientsUsage];
         }
 
         v7 = MEMORY[0x277CBEA60];
-        v8 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-        v9 = [v8 systemServiceDataUsageForPeriod:0];
+        cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+        v9 = [cachedDeviceDataUsage systemServiceDataUsageForPeriod:0];
         goto LABEL_15;
       case 4uLL:
-        v22 = [(PSDataUsageStatisticsCache *)self hotspotClientIDsForPeriod:0];
+        allObjects = [(PSDataUsageStatisticsCache *)self hotspotClientIDsForPeriod:0];
         goto LABEL_28;
       case 5uLL:
         v7 = MEMORY[0x277CBEA60];
-        v8 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-        v9 = [v8 hiddenAppDataUsageForPeriod:0];
+        cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+        v9 = [cachedDeviceDataUsage hiddenAppDataUsageForPeriod:0];
         goto LABEL_15;
     }
   }
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 0uLL:
         v7 = MEMORY[0x277CBEA60];
-        v8 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-        v9 = [v8 appDataUsageForPeriod:0];
+        cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+        v9 = [cachedDeviceDataUsage appDataUsageForPeriod:0];
         goto LABEL_15;
       case 1uLL:
         v7 = MEMORY[0x277CBEA60];
-        v8 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-        v9 = [v8 uninstalledAppDataUsageForPeriod:0];
+        cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+        v9 = [cachedDeviceDataUsage uninstalledAppDataUsageForPeriod:0];
         goto LABEL_15;
       case 2uLL:
         v7 = MEMORY[0x277CBEA60];
-        v8 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-        v9 = [v8 proxiedOnlyAppDataUsageForPeriod:0];
+        cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+        v9 = [cachedDeviceDataUsage proxiedOnlyAppDataUsageForPeriod:0];
 LABEL_15:
         v11 = v9;
         v6 = [v7 arrayWithArray:v9];
@@ -355,7 +355,7 @@ LABEL_15:
     }
   }
 
-  v25 = self;
+  selfCopy = self;
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -376,24 +376,24 @@ LABEL_15:
         }
 
         v17 = *(*(&v26 + 1) + 8 * i);
-        if (a3 == 3)
+        if (type == 3)
         {
-          v18 = [*(*(&v26 + 1) + 8 * i) bundleId];
-          v19 = [v18 isEqualToString:@"com.apple.datausage.personalhotspot"];
+          bundleId = [*(*(&v26 + 1) + 8 * i) bundleId];
+          v19 = [bundleId isEqualToString:@"com.apple.datausage.personalhotspot"];
 
           if (v19)
           {
-            v20 = [(PSDataUsageStatisticsCache *)v25 hotspotClientsUsage];
+            hotspotClientsUsage2 = [(PSDataUsageStatisticsCache *)selfCopy hotspotClientsUsage];
 
-            if (v20)
+            if (hotspotClientsUsage2)
             {
               continue;
             }
           }
         }
 
-        v21 = [v17 bundleId];
-        [v5 addObject:v21];
+        bundleId2 = [v17 bundleId];
+        [v5 addObject:bundleId2];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -402,62 +402,62 @@ LABEL_15:
     while (v14);
   }
 
-  v22 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
 LABEL_28:
   v23 = *MEMORY[0x277D85DE8];
 
-  return v22;
+  return allObjects;
 }
 
-- (id)displayNamesForBundleIDs:(id)a3 appType:(unint64_t)a4
+- (id)displayNamesForBundleIDs:(id)ds appType:(unint64_t)type
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v31 = self;
+  dsCopy = ds;
+  selfCopy = self;
   [(PSDataUsageStatisticsCache *)self refreshCacheIfNeeded];
-  v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v32 = 0;
-  if (a4 <= 1)
+  if (type <= 1)
   {
-    if (a4)
+    if (type)
     {
-      if (a4 != 1)
+      if (type != 1)
       {
         goto LABEL_13;
       }
 
       v8 = MEMORY[0x277CBEA60];
-      v9 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-      v10 = [v9 uninstalledAppDataUsageForPeriod:0];
+      cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+      v10 = [cachedDeviceDataUsage uninstalledAppDataUsageForPeriod:0];
     }
 
     else
     {
       v8 = MEMORY[0x277CBEA60];
-      v9 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-      v10 = [v9 appDataUsageForPeriod:0];
+      cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+      v10 = [cachedDeviceDataUsage appDataUsageForPeriod:0];
     }
   }
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 2uLL:
         v8 = MEMORY[0x277CBEA60];
-        v9 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-        v10 = [v9 proxiedOnlyAppDataUsageForPeriod:0];
+        cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+        v10 = [cachedDeviceDataUsage proxiedOnlyAppDataUsageForPeriod:0];
         break;
       case 3uLL:
         v8 = MEMORY[0x277CBEA60];
-        v9 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-        v10 = [v9 systemServiceDataUsageForPeriod:0];
+        cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+        v10 = [cachedDeviceDataUsage systemServiceDataUsageForPeriod:0];
         break;
       case 5uLL:
         v8 = MEMORY[0x277CBEA60];
-        v9 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-        v10 = [v9 hiddenAppDataUsageForPeriod:0];
+        cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+        v10 = [cachedDeviceDataUsage hiddenAppDataUsageForPeriod:0];
         break;
       default:
         goto LABEL_13;
@@ -472,14 +472,14 @@ LABEL_13:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v6;
+  obj = dsCopy;
   v12 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v39;
     v28 = *v39;
-    v29 = a4;
+    typeCopy = type;
     do
     {
       v15 = 0;
@@ -492,9 +492,9 @@ LABEL_13:
         }
 
         v16 = *(*(&v38 + 1) + 8 * v15);
-        if (a4 == 4)
+        if (type == 4)
         {
-          v17 = [(PSDataUsageStatisticsCache *)v31 displayNameForHotspotClientID:*(*(&v38 + 1) + 8 * v15)];
+          v17 = [(PSDataUsageStatisticsCache *)selfCopy displayNameForHotspotClientID:*(*(&v38 + 1) + 8 * v15)];
           [v7 setObject:v17 forKey:v16];
         }
 
@@ -520,13 +520,13 @@ LABEL_13:
                 }
 
                 v22 = *(*(&v34 + 1) + 8 * i);
-                v23 = [v22 bundleId];
-                v24 = [v16 isEqualToString:v23];
+                bundleId = [v22 bundleId];
+                v24 = [v16 isEqualToString:bundleId];
 
                 if (v24)
                 {
-                  v25 = [v22 displayName];
-                  [v7 setObject:v25 forKey:v16];
+                  displayName = [v22 displayName];
+                  [v7 setObject:displayName forKey:v16];
                 }
               }
 
@@ -535,7 +535,7 @@ LABEL_13:
 
             while (v19);
             v14 = v28;
-            a4 = v29;
+            type = typeCopy;
             v13 = v30;
           }
         }
@@ -555,49 +555,49 @@ LABEL_13:
   return v7;
 }
 
-- (id)totalWatchOnlyAppUsageForPeriod:(unint64_t)a3
+- (id)totalWatchOnlyAppUsageForPeriod:(unint64_t)period
 {
   [(PSDataUsageStatisticsCache *)self refreshCacheIfNeeded];
-  v5 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-  v6 = [v5 totalProxiedOnlyAppDataUsedForPeriod:a3];
+  cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+  v6 = [cachedDeviceDataUsage totalProxiedOnlyAppDataUsedForPeriod:period];
 
   return v6;
 }
 
-- (id)totalSystemServicesUsageForPeriod:(unint64_t)a3
+- (id)totalSystemServicesUsageForPeriod:(unint64_t)period
 {
   [(PSDataUsageStatisticsCache *)self refreshCacheIfNeeded];
-  v5 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-  v6 = [v5 totalSystemServiceDataUsedForPeriod:a3];
+  cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+  v6 = [cachedDeviceDataUsage totalSystemServiceDataUsedForPeriod:period];
 
   return v6;
 }
 
-- (id)totalUninstalledAppUsageForPeriod:(unint64_t)a3
+- (id)totalUninstalledAppUsageForPeriod:(unint64_t)period
 {
   [(PSDataUsageStatisticsCache *)self refreshCacheIfNeeded];
-  v5 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-  v6 = [v5 totalUninstalledAppDataUsedForPeriod:a3];
+  cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+  v6 = [cachedDeviceDataUsage totalUninstalledAppDataUsedForPeriod:period];
 
   return v6;
 }
 
-- (id)hotspotClientIDsForPeriod:(unint64_t)a3
+- (id)hotspotClientIDsForPeriod:(unint64_t)period
 {
   v48 = *MEMORY[0x277D85DE8];
   v5 = [(PSDataUsageStatisticsCache *)self totalHotspotClientUsageForPeriod:?];
-  v6 = [(PSDataUsageStatisticsCache *)self hotspotClientsUsage];
+  hotspotClientsUsage = [(PSDataUsageStatisticsCache *)self hotspotClientsUsage];
 
-  if (!v6)
+  if (!hotspotClientsUsage)
   {
     [(PSDataUsageStatisticsCache *)self fetchHotspotClientsUsage];
   }
 
   v7 = objc_opt_new();
-  v8 = [(PSDataUsageStatisticsCache *)self hotspotClientsUsage];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v10 = [v9 stringValue];
-  v11 = [v8 objectForKeyedSubscript:v10];
+  hotspotClientsUsage2 = [(PSDataUsageStatisticsCache *)self hotspotClientsUsage];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:period];
+  stringValue = [v9 stringValue];
+  v11 = [hotspotClientsUsage2 objectForKeyedSubscript:stringValue];
 
   if (v11 && [v11 count])
   {
@@ -651,8 +651,8 @@ LABEL_13:
                 v20 = *(*(&v38 + 1) + 8 * i);
                 v21 = [v20 objectForKey:v37];
                 v22 = [v20 objectForKey:v36];
-                v23 = [v22 unsignedIntegerValue];
-                v12 += v23 + [v21 unsignedIntegerValue];
+                unsignedIntegerValue = [v22 unsignedIntegerValue];
+                v12 += unsignedIntegerValue + [v21 unsignedIntegerValue];
                 v24 = [v20 objectForKey:v13];
                 [v7 addObject:v24];
               }
@@ -689,34 +689,34 @@ LABEL_13:
 
   if (v7)
   {
-    v25 = [v7 allObjects];
+    allObjects = [v7 allObjects];
   }
 
   else
   {
-    v25 = 0;
+    allObjects = 0;
   }
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v25;
+  return allObjects;
 }
 
-- (id)displayNameForHotspotClientID:(id)a3
+- (id)displayNameForHotspotClientID:(id)d
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSDataUsageStatisticsCache *)self hotspotClientsUsage];
+  dCopy = d;
+  hotspotClientsUsage = [(PSDataUsageStatisticsCache *)self hotspotClientsUsage];
 
-  if (!v5)
+  if (!hotspotClientsUsage)
   {
     [(PSDataUsageStatisticsCache *)self fetchHotspotClientsUsage];
   }
 
-  v6 = [(PSDataUsageStatisticsCache *)self hotspotClientsUsage];
+  hotspotClientsUsage2 = [(PSDataUsageStatisticsCache *)self hotspotClientsUsage];
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:0];
-  v8 = [v7 stringValue];
-  v9 = [v6 objectForKeyedSubscript:v8];
+  stringValue = [v7 stringValue];
+  v9 = [hotspotClientsUsage2 objectForKeyedSubscript:stringValue];
 
   if (v9 && [v9 count])
   {
@@ -765,7 +765,7 @@ LABEL_13:
 
                 v19 = *(*(&v32 + 1) + 8 * j);
                 v20 = [v19 objectForKey:v11];
-                if ([v20 isEqualToString:v4])
+                if ([v20 isEqualToString:dCopy])
                 {
                   v21 = [v19 objectForKey:v28];
 
@@ -808,7 +808,7 @@ LABEL_20:
 
   else
   {
-    v22 = v4;
+    v22 = dCopy;
   }
 
   v23 = v22;
@@ -817,21 +817,21 @@ LABEL_20:
   return v22;
 }
 
-- (unint64_t)totalHotspotClientUsageForPeriod:(unint64_t)a3
+- (unint64_t)totalHotspotClientUsageForPeriod:(unint64_t)period
 {
   [(PSDataUsageStatisticsCache *)self refreshCacheIfNeeded];
-  v5 = [(PSDataUsageStatisticsCache *)self usageForBundleID:@"com.apple.datausage.personalhotspot" inPeriod:a3];
+  v5 = [(PSDataUsageStatisticsCache *)self usageForBundleID:@"com.apple.datausage.personalhotspot" inPeriod:period];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 native];
-    v8 = [v7 cellularHome];
-    v9 = [v6 native];
-    v10 = [v9 cellularRoaming] + v8;
-    v11 = [v6 proxied];
-    v12 = [v11 cellularHome];
-    v13 = [v6 proxied];
-    v14 = v10 + v12 + [v13 cellularRoaming];
+    native = [v5 native];
+    cellularHome = [native cellularHome];
+    native2 = [v6 native];
+    v10 = [native2 cellularRoaming] + cellularHome;
+    proxied = [v6 proxied];
+    cellularHome2 = [proxied cellularHome];
+    proxied2 = [v6 proxied];
+    v14 = v10 + cellularHome2 + [proxied2 cellularRoaming];
   }
 
   else
@@ -842,22 +842,22 @@ LABEL_20:
   return v14;
 }
 
-- (unint64_t)usageForHotspotClientID:(id)a3 inPeriod:(unint64_t)a4
+- (unint64_t)usageForHotspotClientID:(id)d inPeriod:(unint64_t)period
 {
   v51 = *MEMORY[0x277D85DE8];
-  v40 = a3;
-  v6 = [(PSDataUsageStatisticsCache *)self totalHotspotClientUsageForPeriod:a4];
-  v7 = [(PSDataUsageStatisticsCache *)self hotspotClientsUsage];
+  dCopy = d;
+  v6 = [(PSDataUsageStatisticsCache *)self totalHotspotClientUsageForPeriod:period];
+  hotspotClientsUsage = [(PSDataUsageStatisticsCache *)self hotspotClientsUsage];
 
-  if (!v7)
+  if (!hotspotClientsUsage)
   {
     [(PSDataUsageStatisticsCache *)self fetchHotspotClientsUsage];
   }
 
-  v8 = [(PSDataUsageStatisticsCache *)self hotspotClientsUsage];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  v10 = [v9 stringValue];
-  v11 = [v8 objectForKeyedSubscript:v10];
+  hotspotClientsUsage2 = [(PSDataUsageStatisticsCache *)self hotspotClientsUsage];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:period];
+  stringValue = [v9 stringValue];
+  v11 = [hotspotClientsUsage2 objectForKeyedSubscript:stringValue];
 
   if (v11 && [v11 count])
   {
@@ -912,12 +912,12 @@ LABEL_20:
                 v22 = [v21 objectForKey:v39];
                 v23 = [v21 objectForKey:v38];
                 v24 = [v21 objectForKey:v13];
-                v25 = [v24 unsignedIntegerValue];
-                v12 += v25 + [v23 unsignedIntegerValue];
-                if ([v22 isEqualToString:v40])
+                unsignedIntegerValue = [v24 unsignedIntegerValue];
+                v12 += unsignedIntegerValue + [v23 unsignedIntegerValue];
+                if ([v22 isEqualToString:dCopy])
                 {
-                  v26 = [v24 unsignedIntegerValue];
-                  v36 += v26 + [v23 unsignedIntegerValue];
+                  unsignedIntegerValue2 = [v24 unsignedIntegerValue];
+                  v36 += unsignedIntegerValue2 + [v23 unsignedIntegerValue];
 
                   goto LABEL_20;
                 }
@@ -959,7 +959,7 @@ LABEL_20:
     v27 = 0;
   }
 
-  if (([v40 isEqualToString:@"Others"] & (v6 > v12)) != 0)
+  if (([dCopy isEqualToString:@"Others"] & (v6 > v12)) != 0)
   {
     v27 = v6 - v12;
   }
@@ -968,22 +968,22 @@ LABEL_20:
   return v27;
 }
 
-- (id)totalHiddenAppUsageForPeriod:(unint64_t)a3
+- (id)totalHiddenAppUsageForPeriod:(unint64_t)period
 {
   [(PSDataUsageStatisticsCache *)self refreshCacheIfNeeded];
-  v5 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-  v6 = [v5 totalHiddenAppDataUsedForPeriod:a3];
+  cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+  v6 = [cachedDeviceDataUsage totalHiddenAppDataUsedForPeriod:period];
 
   return v6;
 }
 
-- (id)usageForBundleID:(id)a3 inPeriod:(unint64_t)a4
+- (id)usageForBundleID:(id)d inPeriod:(unint64_t)period
 {
   v87 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   [(PSDataUsageStatisticsCache *)self refreshCacheIfNeeded];
-  v7 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-  v8 = [v7 appDataUsageForPeriod:a4];
+  cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+  v8 = [cachedDeviceDataUsage appDataUsageForPeriod:period];
 
   v80 = 0u;
   v81 = 0u;
@@ -1005,12 +1005,12 @@ LABEL_20:
         }
 
         v14 = *(*(&v78 + 1) + 8 * i);
-        v15 = [v14 bundleId];
-        v16 = [v6 isEqualToString:v15];
+        bundleId = [v14 bundleId];
+        v16 = [dCopy isEqualToString:bundleId];
 
         if (v16)
         {
-          v50 = [v14 used];
+          used = [v14 used];
           v19 = v9;
           goto LABEL_52;
         }
@@ -1026,9 +1026,9 @@ LABEL_20:
     }
   }
 
-  v17 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-  v59 = a4;
-  v18 = [v17 proxiedOnlyAppDataUsageForPeriod:a4];
+  cachedDeviceDataUsage2 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+  periodCopy = period;
+  v18 = [cachedDeviceDataUsage2 proxiedOnlyAppDataUsageForPeriod:period];
 
   v76 = 0u;
   v77 = 0u;
@@ -1050,12 +1050,12 @@ LABEL_20:
         }
 
         v24 = *(*(&v74 + 1) + 8 * j);
-        v25 = [v24 bundleId];
-        v26 = [v6 isEqualToString:v25];
+        bundleId2 = [v24 bundleId];
+        v26 = [dCopy isEqualToString:bundleId2];
 
         if (v26)
         {
-          v50 = [v24 used];
+          used = [v24 used];
           v56 = v19;
           goto LABEL_51;
         }
@@ -1071,8 +1071,8 @@ LABEL_20:
     }
   }
 
-  v27 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-  v28 = [v27 systemServiceDataUsageForPeriod:v59];
+  cachedDeviceDataUsage3 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+  v28 = [cachedDeviceDataUsage3 systemServiceDataUsageForPeriod:periodCopy];
 
   v72 = 0u;
   v73 = 0u;
@@ -1095,12 +1095,12 @@ LABEL_20:
         }
 
         v34 = *(*(&v70 + 1) + 8 * k);
-        v35 = [v34 bundleId];
-        v36 = [v6 isEqualToString:v35];
+        bundleId3 = [v34 bundleId];
+        v36 = [dCopy isEqualToString:bundleId3];
 
         if (v36)
         {
-          v50 = [v34 used];
+          used = [v34 used];
           v56 = obj;
           v46 = obj;
           goto LABEL_50;
@@ -1118,8 +1118,8 @@ LABEL_20:
     }
   }
 
-  v37 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-  v38 = [v37 uninstalledAppDataUsageForPeriod:v59];
+  cachedDeviceDataUsage4 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+  v38 = [cachedDeviceDataUsage4 uninstalledAppDataUsageForPeriod:periodCopy];
 
   v68 = 0u;
   v69 = 0u;
@@ -1141,12 +1141,12 @@ LABEL_20:
         }
 
         v43 = *(*(&v66 + 1) + 8 * m);
-        v44 = [v43 bundleId];
-        v45 = [v6 isEqualToString:v44];
+        bundleId4 = [v43 bundleId];
+        v45 = [dCopy isEqualToString:bundleId4];
 
         if (v45)
         {
-          v50 = [v43 used];
+          used = [v43 used];
           v46 = v60;
           v49 = v60;
           goto LABEL_49;
@@ -1165,21 +1165,21 @@ LABEL_20:
 
   v46 = v60;
 
-  v47 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-  v48 = [v47 hiddenAppDataUsageForPeriod:v59];
+  cachedDeviceDataUsage5 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+  v48 = [cachedDeviceDataUsage5 hiddenAppDataUsageForPeriod:periodCopy];
 
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
   v49 = v48;
-  v50 = [v49 countByEnumeratingWithState:&v62 objects:v82 count:16];
-  if (v50)
+  used = [v49 countByEnumeratingWithState:&v62 objects:v82 count:16];
+  if (used)
   {
     v51 = *v63;
     while (2)
     {
-      for (n = 0; n != v50; n = n + 1)
+      for (n = 0; n != used; n = n + 1)
       {
         if (*v63 != v51)
         {
@@ -1187,18 +1187,18 @@ LABEL_20:
         }
 
         v53 = *(*(&v62 + 1) + 8 * n);
-        v54 = [v53 bundleId];
-        v55 = [v6 isEqualToString:v54];
+        bundleId5 = [v53 bundleId];
+        v55 = [dCopy isEqualToString:bundleId5];
 
         if (v55)
         {
-          v50 = [v53 used];
+          used = [v53 used];
           goto LABEL_47;
         }
       }
 
-      v50 = [v49 countByEnumeratingWithState:&v62 objects:v82 count:16];
-      if (v50)
+      used = [v49 countByEnumeratingWithState:&v62 objects:v82 count:16];
+      if (used)
       {
         continue;
       }
@@ -1219,72 +1219,72 @@ LABEL_51:
 LABEL_52:
   v57 = *MEMORY[0x277D85DE8];
 
-  return v50;
+  return used;
 }
 
-- (id)wifiAssistUsageForPeriod:(unint64_t)a3
+- (id)wifiAssistUsageForPeriod:(unint64_t)period
 {
   [(PSDataUsageStatisticsCache *)self refreshCacheIfNeeded];
-  v5 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-  v6 = [v5 totalWifiAssistUsageForPeriod:a3];
+  cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+  v6 = [cachedDeviceDataUsage totalWifiAssistUsageForPeriod:period];
 
   return v6;
 }
 
-- (unint64_t)totalCellularUsageForPeriod:(unint64_t)a3
+- (unint64_t)totalCellularUsageForPeriod:(unint64_t)period
 {
   [(PSDataUsageStatisticsCache *)self refreshCacheIfNeeded];
-  v5 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-  v6 = [v5 totalDataUsedForPeriod:a3];
+  cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+  v6 = [cachedDeviceDataUsage totalDataUsedForPeriod:period];
 
-  v7 = [v6 native];
-  v8 = [v7 cellularHome];
-  v9 = [v6 native];
-  v10 = [v9 cellularRoaming] + v8;
-  v11 = [v6 proxied];
-  v12 = [v11 cellularHome];
-  v13 = [v6 proxied];
-  v14 = v12 + [v13 cellularRoaming];
+  native = [v6 native];
+  cellularHome = [native cellularHome];
+  native2 = [v6 native];
+  v10 = [native2 cellularRoaming] + cellularHome;
+  proxied = [v6 proxied];
+  cellularHome2 = [proxied cellularHome];
+  proxied2 = [v6 proxied];
+  v14 = cellularHome2 + [proxied2 cellularRoaming];
 
   return v10 + v14;
 }
 
-- (unint64_t)totalRoamingUsageForPeriod:(unint64_t)a3
+- (unint64_t)totalRoamingUsageForPeriod:(unint64_t)period
 {
   [(PSDataUsageStatisticsCache *)self refreshCacheIfNeeded];
-  v5 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-  v6 = [v5 totalDataUsedForPeriod:a3];
+  cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+  v6 = [cachedDeviceDataUsage totalDataUsedForPeriod:period];
 
-  v7 = [v6 native];
-  v8 = [v7 cellularRoaming];
-  v9 = [v6 proxied];
-  v10 = [v9 cellularRoaming];
+  native = [v6 native];
+  cellularRoaming = [native cellularRoaming];
+  proxied = [v6 proxied];
+  cellularRoaming2 = [proxied cellularRoaming];
 
-  return v10 + v8;
+  return cellularRoaming2 + cellularRoaming;
 }
 
-- (unint64_t)totalSatelliteUsageForPeriod:(unint64_t)a3
+- (unint64_t)totalSatelliteUsageForPeriod:(unint64_t)period
 {
   [(PSDataUsageStatisticsCache *)self refreshCacheIfNeeded];
-  v5 = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
-  v6 = [v5 totalDataUsedForPeriod:a3];
+  cachedDeviceDataUsage = [(PSDataUsageStatisticsCache *)self cachedDeviceDataUsage];
+  v6 = [cachedDeviceDataUsage totalDataUsedForPeriod:period];
 
-  v7 = [v6 native];
-  v8 = [v7 satellite];
-  v9 = [v6 proxied];
-  v10 = [v9 satellite];
+  native = [v6 native];
+  satellite = [native satellite];
+  proxied = [v6 proxied];
+  satellite2 = [proxied satellite];
 
-  return v10 + v8;
+  return satellite2 + satellite;
 }
 
 - (void)fetchWorkspaceInfo
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(PSDataUsageStatisticsCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+  getLogger = [(PSDataUsageStatisticsCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEBUG))
   {
     *buf = 0;
-    _os_log_debug_impl(&dword_2658CA000, v3, OS_LOG_TYPE_DEBUG, "Fetching workspace info", buf, 2u);
+    _os_log_debug_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEBUG, "Fetching workspace info", buf, 2u);
   }
 
   client = self->_client;
@@ -1293,21 +1293,21 @@ LABEL_52:
   v6 = v9;
   if (v6)
   {
-    v7 = [(PSDataUsageStatisticsCache *)self getLogger];
-    if (os_log_type_enabled(&v7->super, OS_LOG_TYPE_ERROR))
+    selfCopy = [(PSDataUsageStatisticsCache *)self getLogger];
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v11 = v6;
-      _os_log_error_impl(&dword_2658CA000, &v7->super, OS_LOG_TYPE_ERROR, "Failed to get the data usage workspace information with error: %@", buf, 0xCu);
+      _os_log_error_impl(&dword_2658CA000, &selfCopy->super, OS_LOG_TYPE_ERROR, "Failed to get the data usage workspace information with error: %@", buf, 0xCu);
     }
   }
 
   else
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    [(PSDataUsageStatisticsCache *)v7 setWorkspaceInfo:v5];
-    objc_sync_exit(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(PSDataUsageStatisticsCache *)selfCopy setWorkspaceInfo:v5];
+    objc_sync_exit(selfCopy);
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -1315,82 +1315,82 @@ LABEL_52:
 
 - (BOOL)billingCycleSupported
 {
-  v3 = [(PSDataUsageStatisticsCache *)self workspaceInfo];
+  workspaceInfo = [(PSDataUsageStatisticsCache *)self workspaceInfo];
 
-  if (!v3)
+  if (!workspaceInfo)
   {
     [(PSDataUsageStatisticsCache *)self fetchWorkspaceInfo];
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(PSDataUsageStatisticsCache *)v4 workspaceInfo];
-  v6 = [v5 billingCycleSupported];
-  v7 = [v6 BOOLValue];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  workspaceInfo2 = [(PSDataUsageStatisticsCache *)selfCopy workspaceInfo];
+  billingCycleSupported = [workspaceInfo2 billingCycleSupported];
+  bOOLValue = [billingCycleSupported BOOLValue];
 
-  objc_sync_exit(v4);
-  return v7;
+  objc_sync_exit(selfCopy);
+  return bOOLValue;
 }
 
 - (BOOL)useCalendarMonthBillingCycle
 {
-  v3 = [(PSDataUsageStatisticsCache *)self workspaceInfo];
+  workspaceInfo = [(PSDataUsageStatisticsCache *)self workspaceInfo];
 
-  if (!v3)
+  if (!workspaceInfo)
   {
     [(PSDataUsageStatisticsCache *)self fetchWorkspaceInfo];
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(PSDataUsageStatisticsCache *)v4 workspaceInfo];
-  v6 = [v5 billingCycleSupported];
-  v7 = [v6 BOOLValue];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  workspaceInfo2 = [(PSDataUsageStatisticsCache *)selfCopy workspaceInfo];
+  billingCycleSupported = [workspaceInfo2 billingCycleSupported];
+  bOOLValue = [billingCycleSupported BOOLValue];
 
-  v8 = [(PSDataUsageStatisticsCache *)v4 workspaceInfo];
-  v9 = [v8 carrierSpaceSupported];
-  v10 = [v9 BOOLValue];
+  workspaceInfo3 = [(PSDataUsageStatisticsCache *)selfCopy workspaceInfo];
+  carrierSpaceSupported = [workspaceInfo3 carrierSpaceSupported];
+  bOOLValue2 = [carrierSpaceSupported BOOLValue];
 
-  objc_sync_exit(v4);
-  return v7 & (v10 ^ 1);
+  objc_sync_exit(selfCopy);
+  return bOOLValue & (bOOLValue2 ^ 1);
 }
 
 - (id)billingCycleEndDate
 {
-  v3 = [(PSDataUsageStatisticsCache *)self workspaceInfo];
+  workspaceInfo = [(PSDataUsageStatisticsCache *)self workspaceInfo];
 
-  if (!v3)
+  if (!workspaceInfo)
   {
     [(PSDataUsageStatisticsCache *)self fetchWorkspaceInfo];
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(PSDataUsageStatisticsCache *)v4 workspaceInfo];
-  v6 = [v5 billingCycleEndDate];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  workspaceInfo2 = [(PSDataUsageStatisticsCache *)selfCopy workspaceInfo];
+  billingCycleEndDate = [workspaceInfo2 billingCycleEndDate];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  return v6;
+  return billingCycleEndDate;
 }
 
 - (id)previousBillingCycleEndDate
 {
-  v3 = [(PSDataUsageStatisticsCache *)self workspaceInfo];
+  workspaceInfo = [(PSDataUsageStatisticsCache *)self workspaceInfo];
 
-  if (!v3)
+  if (!workspaceInfo)
   {
     [(PSDataUsageStatisticsCache *)self fetchWorkspaceInfo];
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(PSDataUsageStatisticsCache *)v4 workspaceInfo];
-  v6 = [v5 previousBillingCycleDate];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  workspaceInfo2 = [(PSDataUsageStatisticsCache *)selfCopy workspaceInfo];
+  previousBillingCycleDate = [workspaceInfo2 previousBillingCycleDate];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  return v6;
+  return previousBillingCycleDate;
 }
 
 - (void)_handleUsageOrInfoChanged
@@ -1398,29 +1398,29 @@ LABEL_52:
   v11 = *MEMORY[0x277D85DE8];
   [(PSDataUsageStatisticsCache *)self _clearCache];
   v3 = [MEMORY[0x277CCAB88] notificationWithName:@"PSWirelessDataUsageChangedNotification" object:0];
-  v4 = [(PSDataUsageStatisticsCache *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSDataUsageStatisticsCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[PSDataUsageStatisticsCache _handleUsageOrInfoChanged]";
     v9 = 2112;
     v10 = @"PSWirelessDataUsageChangedNotification";
-    _os_log_impl(&dword_2658CA000, v4, OS_LOG_TYPE_DEFAULT, "%s posting notification %@ from main thread", &v7, 0x16u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "%s posting notification %@ from main thread", &v7, 0x16u);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 performSelectorOnMainThread:sel_postNotification_ withObject:v3 waitUntilDone:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter performSelectorOnMainThread:sel_postNotification_ withObject:v3 waitUntilDone:0];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
 - (void)refreshDataUsageUINotification
 {
-  v3 = [(PSDataUsageStatisticsCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSDataUsageStatisticsCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658CA000, v3, OS_LOG_TYPE_DEFAULT, "Received notification to refresh data usage UI", buf, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Received notification to refresh data usage UI", buf, 2u);
   }
 
   block[0] = MEMORY[0x277D85DD0];
@@ -1433,11 +1433,11 @@ LABEL_52:
 
 - (void)dataRatesChanged
 {
-  v3 = [(PSDataUsageStatisticsCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSDataUsageStatisticsCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_2658CA000, v3, OS_LOG_TYPE_DEFAULT, "Data Rates Changed.", v4, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Data Rates Changed.", v4, 2u);
   }
 
   [(PSDataUsageStatisticsCache *)self refreshDataUsageUINotification];

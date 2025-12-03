@@ -1,5 +1,5 @@
 @interface MCSessionPeerState
-- (MCSessionPeerState)initWithPeer:(id)a3;
+- (MCSessionPeerState)initWithPeer:(id)peer;
 - (id)description;
 - (unsigned)newStreamID;
 - (unsigned)newStreamOpenRequestID;
@@ -8,14 +8,14 @@
 
 @implementation MCSessionPeerState
 
-- (MCSessionPeerState)initWithPeer:(id)a3
+- (MCSessionPeerState)initWithPeer:(id)peer
 {
   v6.receiver = self;
   v6.super_class = MCSessionPeerState;
   v4 = [(MCSessionPeerState *)&v6 init];
   if (v4)
   {
-    v4->_peerID = [a3 copy];
+    v4->_peerID = [peer copy];
     v4->_state = 0;
     v4->_certificateDecision = 0;
     v4->_incomingStreams = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -54,17 +54,17 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MCPeerID *)[(MCSessionPeerState *)self peerID] displayNameAndPID];
+  displayNameAndPID = [(MCPeerID *)[(MCSessionPeerState *)self peerID] displayNameAndPID];
   v5 = [MCSession stringForSessionState:[(MCSessionPeerState *)self state]];
-  v6 = [(MCSessionPeerState *)self certificateDecision];
-  if (v6 > 3)
+  certificateDecision = [(MCSessionPeerState *)self certificateDecision];
+  if (certificateDecision > 3)
   {
     v7 = @"?";
   }
 
   else
   {
-    v7 = *(&off_278B44108 + v6);
+    v7 = *(&off_278B44108 + certificateDecision);
   }
 
   if ([(MCSessionPeerState *)self connectPeerCalled])
@@ -77,7 +77,7 @@
     v8 = "no";
   }
 
-  return [v3 stringWithFormat:@"Peer:%@ State:%@ CertDecision:%@ ConnectPeerCalled:%s OstreamRequests:%d Ostreams:%d Istreams:%d.", v4, v5, v7, v8, -[NSMutableDictionary count](-[MCSessionPeerState outgoingStreamRequests](self, "outgoingStreamRequests"), "count"), -[NSMutableDictionary count](-[MCSessionPeerState outgoingStreams](self, "outgoingStreams"), "count"), -[NSMutableDictionary count](-[MCSessionPeerState incomingStreams](self, "incomingStreams"), "count")];
+  return [v3 stringWithFormat:@"Peer:%@ State:%@ CertDecision:%@ ConnectPeerCalled:%s OstreamRequests:%d Ostreams:%d Istreams:%d.", displayNameAndPID, v5, v7, v8, -[NSMutableDictionary count](-[MCSessionPeerState outgoingStreamRequests](self, "outgoingStreamRequests"), "count"), -[NSMutableDictionary count](-[MCSessionPeerState outgoingStreams](self, "outgoingStreams"), "count"), -[NSMutableDictionary count](-[MCSessionPeerState incomingStreams](self, "incomingStreams"), "count")];
 }
 
 @end

@@ -37,20 +37,20 @@ id __80__TrophyCaseSectionCellAccessibility__accessibilityLoadAccessibilityInfor
   v3 = [(TrophyCaseSectionCellAccessibility *)self safeSwiftValueForKey:@"achievementTitleLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 attributedText];
-  v6 = [v5 string];
-  v7 = v6;
-  if (v6)
+  attributedText = [v4 attributedText];
+  string = [attributedText string];
+  v7 = string;
+  if (string)
   {
-    v8 = v6;
+    text = string;
   }
 
   else
   {
-    v8 = [v4 text];
+    text = [v4 text];
   }
 
-  v9 = v8;
+  v9 = text;
 
   v10 = [v9 stringByReplacingOccurrencesOfString:@"\n" withString:{@", "}];
 

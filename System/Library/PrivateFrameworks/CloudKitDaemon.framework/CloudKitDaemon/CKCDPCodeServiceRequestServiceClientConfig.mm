@@ -1,12 +1,12 @@
 @interface CKCDPCodeServiceRequestServiceClientConfig
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKCDPCodeServiceRequestServiceClientConfig
@@ -42,48 +42,48 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_host)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     port = self->_port;
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   host = self->_host;
   if (host)
   {
-    v7 = v4;
-    objc_msgSend_setHost_(v4, v5, host);
-    v4 = v7;
+    v7 = toCopy;
+    objc_msgSend_setHost_(toCopy, v5, host);
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_port;
-    *(v4 + 20) |= 1u;
+    *(toCopy + 4) = self->_port;
+    *(toCopy + 20) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_host, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_host, v11, zone);
   v13 = *(v10 + 8);
   *(v10 + 8) = v12;
 
@@ -96,17 +96,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_8;
   }
 
   host = self->_host;
-  v9 = v4[1];
+  v9 = equalCopy[1];
   if (host | v9)
   {
     if (!objc_msgSend_isEqual_(host, v7, v9))
@@ -115,10 +115,10 @@
     }
   }
 
-  v10 = (*(v4 + 20) & 1) == 0;
+  v10 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) != 0 && self->_port == *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) != 0 && self->_port == *(equalCopy + 4))
     {
       v10 = 1;
       goto LABEL_9;
@@ -149,20 +149,20 @@ LABEL_9:
   return v5 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = *(v4 + 1);
+  fromCopy = from;
+  v6 = *(fromCopy + 1);
   if (v6)
   {
-    v7 = v4;
+    v7 = fromCopy;
     objc_msgSend_setHost_(self, v5, v6);
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
-    self->_port = *(v4 + 4);
+    self->_port = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 }

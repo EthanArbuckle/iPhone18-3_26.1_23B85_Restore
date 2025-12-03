@@ -1,105 +1,105 @@
 @interface WBSCloudHistory
 - (BOOL)_shouldSyncProfiles;
-- (WBSCloudHistory)initWithDatabase:(id)a3 configuration:(id)a4 databaseStore:(id)a5 completionBlock:(id)a6;
+- (WBSCloudHistory)initWithDatabase:(id)database configuration:(id)configuration databaseStore:(id)store completionBlock:(id)block;
 - (WBSHistoryServiceDatabaseStore)databaseStore;
-- (double)_backoffTimeIntervalFromError:(id)a3;
+- (double)_backoffTimeIntervalFromError:(id)error;
 - (id).cxx_construct;
-- (id)_convertProfileLocalIdentifierToServerIdentifier:(id)a3;
-- (id)_convertProfileServerIdentifierToLocalIdentifier:(id)a3;
+- (id)_convertProfileLocalIdentifierToServerIdentifier:(id)identifier;
+- (id)_convertProfileServerIdentifierToLocalIdentifier:(id)identifier;
 - (id)_currentFetchChangesThrottlerPolicyString;
 - (id)_currentSaveChangesThrottlerPolicyString;
-- (id)_manateeErrorCode:(id)a3;
+- (id)_manateeErrorCode:(id)code;
 - (id)dateOfNextPermittedSaveChangesAttempt;
-- (id)recordOfPastOperationsForThrottler:(id)a3;
-- (int64_t)_priorityForSaveWithVisits:(id)a3 tombstones:(id)a4 bypassingThrottler:(BOOL)a5;
-- (int64_t)_resultFromError:(id)a3;
-- (void)_backOffWithInterval:(double)a3;
-- (void)_callAndResetFetchCompletionHandlerWithError:(id)a3;
-- (void)_callAndResetSaveCompletionHandlerWithError:(id)a3;
+- (id)recordOfPastOperationsForThrottler:(id)throttler;
+- (int64_t)_priorityForSaveWithVisits:(id)visits tombstones:(id)tombstones bypassingThrottler:(BOOL)throttler;
+- (int64_t)_resultFromError:(id)error;
+- (void)_backOffWithInterval:(double)interval;
+- (void)_callAndResetFetchCompletionHandlerWithError:(id)error;
+- (void)_callAndResetSaveCompletionHandlerWithError:(id)error;
 - (void)_deleteAllCloudHistoryAndSaveAgain;
-- (void)_determineCloudHistoryStoreWithCompletion:(id)a3;
-- (void)_determineNumberOfDevicesInSyncCircleForOperation:(id)a3 completionHandler:(id)a4;
-- (void)_enumerateDatabasesWithProfileLocalIdentifiers:(id)a3 createIfNeeded:(BOOL)a4 enumerationBlock:(id)a5 completionBlock:(id)a6;
-- (void)_fetchAddedProfileLocalIdentifiers:(id)a3;
-- (void)_fetchAndMergeChangesWithServerChangeTokenData:(id)a3 withPriority:(int64_t)a4;
-- (void)_fetchChangesInResponseToPushNotification:(id)a3;
+- (void)_determineCloudHistoryStoreWithCompletion:(id)completion;
+- (void)_determineNumberOfDevicesInSyncCircleForOperation:(id)operation completionHandler:(id)handler;
+- (void)_enumerateDatabasesWithProfileLocalIdentifiers:(id)identifiers createIfNeeded:(BOOL)needed enumerationBlock:(id)block completionBlock:(id)completionBlock;
+- (void)_fetchAddedProfileLocalIdentifiers:(id)identifiers;
+- (void)_fetchAndMergeChangesWithServerChangeTokenData:(id)data withPriority:(int64_t)priority;
+- (void)_fetchChangesInResponseToPushNotification:(id)notification;
 - (void)_fetchChangesWhenHistoryLoads;
-- (void)_getServerChangeTokenDataWithCompletion:(id)a3;
-- (void)_handleManateeErrorIfNeeded:(id)a3;
+- (void)_getServerChangeTokenDataWithCompletion:(id)completion;
+- (void)_handleManateeErrorIfNeeded:(id)needed;
 - (void)_initializePushNotificationSupport;
 - (void)_loadMetadataAsynchronously;
-- (void)_pcsIdentitiesChangedNotification:(id)a3;
-- (void)_persistLongLivedSaveOperationDictionaryWithOperationID:(id)a3 databaseGenerations:(id)a4;
-- (void)_persistedLongLivedSaveOperationID:(id *)a3 databaseGenerations:(id *)a4;
-- (void)_postSaveChangesAttemptCompletedNotificationWithAllPendingDataSaved:(BOOL)a3;
+- (void)_pcsIdentitiesChangedNotification:(id)notification;
+- (void)_persistLongLivedSaveOperationDictionaryWithOperationID:(id)d databaseGenerations:(id)generations;
+- (void)_persistedLongLivedSaveOperationID:(id *)d databaseGenerations:(id *)generations;
+- (void)_postSaveChangesAttemptCompletedNotificationWithAllPendingDataSaved:(BOOL)saved;
 - (void)_processPendingPushNotifications;
 - (void)_pruneTombstonesThatCanNoLongerMatchVisitsFetchedFromCloud;
-- (void)_pushNotificationReceived:(id)a3;
-- (void)_pushNotificationsAreInitializedWithCompletionHandler:(id)a3;
-- (void)_registerFetchCompletionHandler:(id)a3;
-- (void)_registerSaveCompletionHandler:(id)a3;
+- (void)_pushNotificationReceived:(id)received;
+- (void)_pushNotificationsAreInitializedWithCompletionHandler:(id)handler;
+- (void)_registerFetchCompletionHandler:(id)handler;
+- (void)_registerSaveCompletionHandler:(id)handler;
 - (void)_removePersistedLongLivedSaveOperationDictionary;
 - (void)_replayPersistedLongLivedSaveOperationIfNecessary;
-- (void)_resetCloudHistoryDataWithCompletionHandler:(id)a3;
-- (void)_resetForAccountChangeWithCompletionHandler:(id)a3;
+- (void)_resetCloudHistoryDataWithCompletionHandler:(id)handler;
+- (void)_resetForAccountChangeWithCompletionHandler:(id)handler;
 - (void)_saveChangesWhenHistoryLoads;
-- (void)_saveVisits:(id)a3 tombstones:(id)a4 toCloudHistoryBypassingThrottler:(BOOL)a5 longLivedOperationPersistenceCompletion:(id)a6 withCallback:(id)a7;
-- (void)_serverBackoffTimerFired:(id)a3;
-- (void)_setCachedNumberOfDevicesInSyncCircle:(unint64_t)a3;
-- (void)_setPushNotificationAreInitialized:(BOOL)a3;
-- (void)_transitionCloudHistoryStoreToManateeState:(int64_t)a3 completion:(id)a4;
+- (void)_saveVisits:(id)visits tombstones:(id)tombstones toCloudHistoryBypassingThrottler:(BOOL)throttler longLivedOperationPersistenceCompletion:(id)completion withCallback:(id)callback;
+- (void)_serverBackoffTimerFired:(id)fired;
+- (void)_setCachedNumberOfDevicesInSyncCircle:(unint64_t)circle;
+- (void)_setPushNotificationAreInitialized:(BOOL)initialized;
+- (void)_transitionCloudHistoryStoreToManateeState:(int64_t)state completion:(id)completion;
 - (void)_updateDeviceCountInResponseToPushNotification;
-- (void)_updateHistoryAfterSuccessfulPersistedLongLivedSaveOperationWithGenerations:(id)a3 completion:(id)a4;
+- (void)_updateHistoryAfterSuccessfulPersistedLongLivedSaveOperationWithGenerations:(id)generations completion:(id)completion;
 - (void)_updateProfileLocalIdentifiersToServerIdentifiersMapInDatabase;
 - (void)_updateProfileServerIdentifiersToLocalIdentifiersMapBasedOnLocalToServerMap;
 - (void)_updateThrottlerPolicies;
 - (void)dealloc;
-- (void)fetchAndMergeChangesBypassingThrottler:(BOOL)a3 completionHandler:(id)a4;
-- (void)fetchDateOfNextPermittedSaveChangesAttemptWithCompletionHandler:(id)a3;
-- (void)getVisitsAndTombstonesNeedingSyncWithVisitSyncWindow:(double)a3 completion:(id)a4;
-- (void)resetForAccountChangeWithCompletionHandler:(id)a3;
-- (void)saveChangesBypassingThrottler:(BOOL)a3 completionHandler:(id)a4;
-- (void)setCloudHistoryEnabled:(BOOL)a3;
-- (void)setNumberOfDevicesInSyncCircle:(unint64_t)a3;
-- (void)setRecordOfPastOperations:(id)a3 forThrottler:(id)a4;
-- (void)updateConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)updateProfileLocalIdentifiersToServerIdentifiersMap:(id)a3 completionHandler:(id)a4;
+- (void)fetchAndMergeChangesBypassingThrottler:(BOOL)throttler completionHandler:(id)handler;
+- (void)fetchDateOfNextPermittedSaveChangesAttemptWithCompletionHandler:(id)handler;
+- (void)getVisitsAndTombstonesNeedingSyncWithVisitSyncWindow:(double)window completion:(id)completion;
+- (void)resetForAccountChangeWithCompletionHandler:(id)handler;
+- (void)saveChangesBypassingThrottler:(BOOL)throttler completionHandler:(id)handler;
+- (void)setCloudHistoryEnabled:(BOOL)enabled;
+- (void)setNumberOfDevicesInSyncCircle:(unint64_t)circle;
+- (void)setRecordOfPastOperations:(id)operations forThrottler:(id)throttler;
+- (void)updateConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)updateProfileLocalIdentifiersToServerIdentifiersMap:(id)map completionHandler:(id)handler;
 @end
 
 @implementation WBSCloudHistory
 
-- (WBSCloudHistory)initWithDatabase:(id)a3 configuration:(id)a4 databaseStore:(id)a5 completionBlock:(id)a6
+- (WBSCloudHistory)initWithDatabase:(id)database configuration:(id)configuration databaseStore:(id)store completionBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  databaseCopy = database;
+  configurationCopy = configuration;
+  storeCopy = store;
+  blockCopy = block;
   v46.receiver = self;
   v46.super_class = WBSCloudHistory;
   v15 = [(WBSCloudHistory *)&v46 init];
   if (v15)
   {
     objc_initWeak(&location, v15);
-    objc_storeStrong(&v15->_database, a3);
-    objc_storeWeak(&v15->_databaseStore, v13);
+    objc_storeStrong(&v15->_database, database);
+    objc_storeWeak(&v15->_databaseStore, storeCopy);
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.SafariShared.WBSCloudHistory.%@.%p.internalQueue", objc_opt_class(), v15];
     v17 = dispatch_queue_create([v16 UTF8String], 0);
     cloudHistoryQueue = v15->_cloudHistoryQueue;
     v15->_cloudHistoryQueue = v17;
 
     v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.SafariShared.WBSCloudHistory.%@.%p.waitForMetadata", objc_opt_class(), v15];
-    v20 = [v19 UTF8String];
+    uTF8String = [v19 UTF8String];
     v21 = dispatch_queue_attr_make_initially_inactive(0);
-    v22 = dispatch_queue_create(v20, v21);
+    v22 = dispatch_queue_create(uTF8String, v21);
     waitUntilMetadataHasLoadedQueue = v15->_waitUntilMetadataHasLoadedQueue;
     v15->_waitUntilMetadataHasLoadedQueue = v22;
 
-    objc_storeStrong(&v15->_configuration, a4);
+    objc_storeStrong(&v15->_configuration, configuration);
     v24 = objc_opt_class();
     v25 = objc_opt_class();
-    v26 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     storeDeterminationCompletionBlocks = v15->_storeDeterminationCompletionBlocks;
-    v15->_storeDeterminationCompletionBlocks = v26;
+    v15->_storeDeterminationCompletionBlocks = array;
 
     v28 = objc_alloc_init(v24);
     v29 = [[v25 alloc] initWithContainerIdentifier:@"com.apple.SafariShared.History" appleAccountInformationProvider:v28];
@@ -123,17 +123,17 @@
     v40[3] = &unk_1E7FB6F08;
     v33 = v15;
     v41 = v33;
-    v42 = v14;
+    v42 = blockCopy;
     [(WBSCloudHistory *)v33 _performBlockAsynchronouslyOnCloudHistoryQueueAfterMetadataHasLoaded:v40];
     v34 = objc_alloc_init(MEMORY[0x1E695DF90]);
     syncCircleSizeRetrievalCompletionHandlersByOperation = v33->_syncCircleSizeRetrievalCompletionHandlersByOperation;
     v33->_syncCircleSizeRetrievalCompletionHandlersByOperation = v34;
 
-    v36 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v36 addObserver:v33 selector:sel__cloudHistoryConfigurationChanged_ name:@"WBSCloudHistoryConfigurationChangedNotification" object:v15->_configuration];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v33 selector:sel__cloudHistoryConfigurationChanged_ name:@"WBSCloudHistoryConfigurationChangedNotification" object:v15->_configuration];
 
-    v37 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v37 addObserver:v33 selector:sel__pushNotificationReceived_ name:@"com.apple.SafariShared.CloudHistory.PushReceived" object:0];
+    defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter2 addObserver:v33 selector:sel__pushNotificationReceived_ name:@"com.apple.SafariShared.CloudHistory.PushReceived" object:0];
 
     v38 = v33;
     objc_destroyWeak(&v44);
@@ -264,19 +264,19 @@ void __80__WBSCloudHistory_initWithDatabase_configuration_databaseStore_completi
   }
 }
 
-- (void)_determineCloudHistoryStoreWithCompletion:(id)a3
+- (void)_determineCloudHistoryStoreWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_store && !self->_manateeStateNeedsUpdate)
   {
-    (*(v4 + 2))(v4);
+    (*(completionCopy + 2))(completionCopy);
   }
 
   else
   {
     storeDeterminationCompletionBlocks = self->_storeDeterminationCompletionBlocks;
-    v7 = MEMORY[0x1BFB13CE0](v4);
+    v7 = MEMORY[0x1BFB13CE0](completionCopy);
     [(NSMutableArray *)storeDeterminationCompletionBlocks addObject:v7];
 
     if (!self->_determiningStoreType)
@@ -367,23 +367,23 @@ uint64_t __61__WBSCloudHistory__determineCloudHistoryStoreWithCompletion___block
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter2 removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = WBSCloudHistory;
   [(WBSCloudHistory *)&v5 dealloc];
 }
 
-- (void)setCloudHistoryEnabled:(BOOL)a3
+- (void)setCloudHistoryEnabled:(BOOL)enabled
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (self->_cloudHistoryEnabled != a3)
+  if (self->_cloudHistoryEnabled != enabled)
   {
-    self->_cloudHistoryEnabled = a3;
+    self->_cloudHistoryEnabled = enabled;
     v4 = WBS_LOG_CHANNEL_PREFIXCloudHistory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -406,8 +406,8 @@ uint64_t __61__WBSCloudHistory__determineCloudHistoryStoreWithCompletion___block
 
 - (BOOL)_shouldSyncProfiles
 {
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v4 = [v3 safari_numberForKey:@"WBSEnableSafariProfileCloudHistorySyncing"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v4 = [safari_browserDefaults safari_numberForKey:@"WBSEnableSafariProfileCloudHistorySyncing"];
 
   store = self->_store;
   if (v4)
@@ -418,30 +418,30 @@ uint64_t __61__WBSCloudHistory__determineCloudHistoryStoreWithCompletion___block
       goto LABEL_7;
     }
 
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v6 = [(WBSCloudHistoryDataStore *)store useManateeContainer];
+    bOOLValue = [(WBSCloudHistoryDataStore *)store useManateeContainer];
   }
 
-  v7 = v6;
+  v7 = bOOLValue;
 LABEL_7:
 
   return v7;
 }
 
-- (void)saveChangesBypassingThrottler:(BOOL)a3 completionHandler:(id)a4
+- (void)saveChangesBypassingThrottler:(BOOL)throttler completionHandler:(id)handler
 {
-  v4 = a3;
+  throttlerCopy = throttler;
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v8 = [v7 BOOLForKey:@"WBSCloudHistoryIgnoreThrottlingPolicy"];
+  handlerCopy = handler;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v8 = [standardUserDefaults BOOLForKey:@"WBSCloudHistoryIgnoreThrottlingPolicy"];
 
   v9 = WBS_LOG_CHANNEL_PREFIXCloudHistory();
-  v10 = v8 | v4;
+  v10 = v8 | throttlerCopy;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v11 = @"respecting the throttler";
@@ -480,10 +480,10 @@ LABEL_7:
     _os_log_impl(&dword_1BB6F3000, v14, OS_LOG_TYPE_INFO, "iCloud History is not enabled. Nothing to do when saving changes!", &buf, 2u);
   }
 
-  if (v6)
+  if (handlerCopy)
   {
     v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WBSCloudHistory" code:1 userInfo:0];
-    v6[2](v6, v15);
+    handlerCopy[2](handlerCopy, v15);
   }
 }
 
@@ -983,16 +983,16 @@ uint64_t __67__WBSCloudHistory_saveChangesBypassingThrottler_completionHandler__
   return [v3 _postSaveChangesAttemptCompletedNotificationWithAllPendingDataSaved:v4];
 }
 
-- (void)_registerSaveCompletionHandler:(id)a3
+- (void)_registerSaveCompletionHandler:(id)handler
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     saveCompletionHandlers = self->_saveCompletionHandlers;
     p_saveCompletionHandlers = &self->_saveCompletionHandlers;
-    v8 = MEMORY[0x1BFB13CE0](v4);
+    v8 = MEMORY[0x1BFB13CE0](handlerCopy);
     v9 = [(NSArray *)saveCompletionHandlers arrayByAddingObject:v8];
     if (v9)
     {
@@ -1010,10 +1010,10 @@ uint64_t __67__WBSCloudHistory_saveChangesBypassingThrottler_completionHandler__
   }
 }
 
-- (void)_callAndResetSaveCompletionHandlerWithError:(id)a3
+- (void)_callAndResetSaveCompletionHandlerWithError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = self->_saveCompletionHandlers;
   saveCompletionHandlers = self->_saveCompletionHandlers;
   self->_saveCompletionHandlers = 0;
@@ -1049,14 +1049,14 @@ uint64_t __67__WBSCloudHistory_saveChangesBypassingThrottler_completionHandler__
   }
 }
 
-- (id)_convertProfileLocalIdentifierToServerIdentifier:(id)a3
+- (id)_convertProfileLocalIdentifierToServerIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 length];
+  identifierCopy = identifier;
+  v5 = [identifierCopy length];
   v6 = *MEMORY[0x1E69C8B58];
-  if (v5 && ![v4 isEqualToString:*MEMORY[0x1E69C8B58]])
+  if (v5 && ![identifierCopy isEqualToString:*MEMORY[0x1E69C8B58]])
   {
-    v7 = [(NSDictionary *)self->_namedProfileLocalIdentifiersToServerIdentifiersMap objectForKeyedSubscript:v4];
+    v7 = [(NSDictionary *)self->_namedProfileLocalIdentifiersToServerIdentifiersMap objectForKeyedSubscript:identifierCopy];
   }
 
   else
@@ -1069,14 +1069,14 @@ uint64_t __67__WBSCloudHistory_saveChangesBypassingThrottler_completionHandler__
   return v8;
 }
 
-- (id)_convertProfileServerIdentifierToLocalIdentifier:(id)a3
+- (id)_convertProfileServerIdentifierToLocalIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 length];
+  identifierCopy = identifier;
+  v5 = [identifierCopy length];
   v6 = *MEMORY[0x1E69C8B58];
-  if (v5 && ![v4 isEqualToString:*MEMORY[0x1E69C8B58]])
+  if (v5 && ![identifierCopy isEqualToString:*MEMORY[0x1E69C8B58]])
   {
-    v7 = [(NSDictionary *)self->_namedProfileServerIdentifiersToLocalIdentifiersMap objectForKeyedSubscript:v4];
+    v7 = [(NSDictionary *)self->_namedProfileServerIdentifiersToLocalIdentifiersMap objectForKeyedSubscript:identifierCopy];
   }
 
   else
@@ -1089,23 +1089,23 @@ uint64_t __67__WBSCloudHistory_saveChangesBypassingThrottler_completionHandler__
   return v8;
 }
 
-- (void)_enumerateDatabasesWithProfileLocalIdentifiers:(id)a3 createIfNeeded:(BOOL)a4 enumerationBlock:(id)a5 completionBlock:(id)a6
+- (void)_enumerateDatabasesWithProfileLocalIdentifiers:(id)identifiers createIfNeeded:(BOOL)needed enumerationBlock:(id)block completionBlock:(id)completionBlock
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  identifiersCopy = identifiers;
   WeakRetained = objc_loadWeakRetained(&self->_databaseStore);
   cloudHistoryQueue = self->_cloudHistoryQueue;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __114__WBSCloudHistory__enumerateDatabasesWithProfileLocalIdentifiers_createIfNeeded_enumerationBlock_completionBlock___block_invoke;
   v17[3] = &unk_1E7FB7860;
-  v20 = a4;
+  neededCopy = needed;
   v18 = WeakRetained;
-  v19 = v10;
-  v15 = v10;
+  v19 = blockCopy;
+  v15 = blockCopy;
   v16 = WeakRetained;
-  [v12 safari_enumerateAsynchronouslyOnQueue:cloudHistoryQueue enumerationBlock:v17 completionBlock:v11];
+  [identifiersCopy safari_enumerateAsynchronouslyOnQueue:cloudHistoryQueue enumerationBlock:v17 completionBlock:completionBlockCopy];
 }
 
 void __114__WBSCloudHistory__enumerateDatabasesWithProfileLocalIdentifiers_createIfNeeded_enumerationBlock_completionBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -1149,14 +1149,14 @@ void __114__WBSCloudHistory__enumerateDatabasesWithProfileLocalIdentifiers_creat
   }
 }
 
-- (void)getVisitsAndTombstonesNeedingSyncWithVisitSyncWindow:(double)a3 completion:(id)a4
+- (void)getVisitsAndTombstonesNeedingSyncWithVisitSyncWindow:(double)window completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = [MEMORY[0x1E695DF70] arrayWithObject:*MEMORY[0x1E69C8B58]];
   if ([(WBSCloudHistory *)self _shouldSyncProfiles])
   {
-    v8 = [(NSDictionary *)self->_namedProfileLocalIdentifiersToServerIdentifiersMap allKeys];
-    [v7 addObjectsFromArray:v8];
+    allKeys = [(NSDictionary *)self->_namedProfileLocalIdentifiersToServerIdentifiersMap allKeys];
+    [v7 addObjectsFromArray:allKeys];
   }
 
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -1167,7 +1167,7 @@ void __114__WBSCloudHistory__enumerateDatabasesWithProfileLocalIdentifiers_creat
   v25[1] = 3221225472;
   v25[2] = __83__WBSCloudHistory_getVisitsAndTombstonesNeedingSyncWithVisitSyncWindow_completion___block_invoke;
   v25[3] = &unk_1E7FB78B0;
-  v30 = a3;
+  windowCopy = window;
   v25[4] = self;
   v26 = v9;
   v27 = v10;
@@ -1177,7 +1177,7 @@ void __114__WBSCloudHistory__enumerateDatabasesWithProfileLocalIdentifiers_creat
   v18[1] = 3221225472;
   v18[2] = __83__WBSCloudHistory_getVisitsAndTombstonesNeedingSyncWithVisitSyncWindow_completion___block_invoke_3;
   v18[3] = &unk_1E7FB7978;
-  v13 = v6;
+  v13 = completionCopy;
   v24 = v13;
   v14 = v26;
   v19 = v14;
@@ -1186,7 +1186,7 @@ void __114__WBSCloudHistory__enumerateDatabasesWithProfileLocalIdentifiers_creat
   v16 = v28;
   v21 = v16;
   v22 = v29;
-  v23 = self;
+  selfCopy = self;
   v17 = v29;
   [(WBSCloudHistory *)self _enumerateDatabasesWithProfileLocalIdentifiers:v7 createIfNeeded:0 enumerationBlock:v25 completionBlock:v18, v11, v9];
 }
@@ -1348,23 +1348,23 @@ void __83__WBSCloudHistory_getVisitsAndTombstonesNeedingSyncWithVisitSyncWindow_
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)_saveVisits:(id)a3 tombstones:(id)a4 toCloudHistoryBypassingThrottler:(BOOL)a5 longLivedOperationPersistenceCompletion:(id)a6 withCallback:(id)a7
+- (void)_saveVisits:(id)visits tombstones:(id)tombstones toCloudHistoryBypassingThrottler:(BOOL)throttler longLivedOperationPersistenceCompletion:(id)completion withCallback:(id)callback
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(WBSCloudHistory *)self _priorityForSaveWithVisits:v12 tombstones:v13 bypassingThrottler:v9];
-  if (![v12 count] && !objc_msgSend(v13, "count"))
+  throttlerCopy = throttler;
+  visitsCopy = visits;
+  tombstonesCopy = tombstones;
+  completionCopy = completion;
+  callbackCopy = callback;
+  v16 = [(WBSCloudHistory *)self _priorityForSaveWithVisits:visitsCopy tombstones:tombstonesCopy bypassingThrottler:throttlerCopy];
+  if (![visitsCopy count] && !objc_msgSend(tombstonesCopy, "count"))
   {
-    (*(v15 + 2))(v15, v16, 0, 0);
+    (*(callbackCopy + 2))(callbackCopy, v16, 0, 0);
     goto LABEL_7;
   }
 
   if (([(WBSCloudKitThrottler *)self->_saveChangesThrottler permitsOperationWithPriority:v16]& 1) == 0)
   {
-    (*(v15 + 2))(v15, v16, 1, 0);
+    (*(callbackCopy + 2))(callbackCopy, v16, 1, 0);
 LABEL_7:
     std::unique_ptr<SafariShared::SuddenTerminationDisabler>::reset[abi:sn200100](&self->_saveOperationSuddenTerminationDisabler, 0);
     goto LABEL_8;
@@ -1375,17 +1375,17 @@ LABEL_7:
   v26[2] = __128__WBSCloudHistory__saveVisits_tombstones_toCloudHistoryBypassingThrottler_longLivedOperationPersistenceCompletion_withCallback___block_invoke;
   v26[3] = &unk_1E7FB79A0;
   v26[4] = self;
-  v27 = v14;
+  v27 = completionCopy;
   v17 = MEMORY[0x1BFB13CE0](v26);
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __128__WBSCloudHistory__saveVisits_tombstones_toCloudHistoryBypassingThrottler_longLivedOperationPersistenceCompletion_withCallback___block_invoke_3;
   v19[3] = &unk_1E7FB7A18;
-  v20 = v12;
-  v22 = self;
+  v20 = visitsCopy;
+  selfCopy = self;
   v23 = v17;
-  v21 = v13;
-  v24 = v15;
+  v21 = tombstonesCopy;
+  v24 = callbackCopy;
   v25 = v16;
   v18 = v17;
   [(WBSCloudHistory *)self _determineCloudHistoryStoreWithCompletion:v19];
@@ -1453,38 +1453,38 @@ id *__128__WBSCloudHistory__saveVisits_tombstones_toCloudHistoryBypassingThrottl
   return std::unique_ptr<SafariShared::SuddenTerminationDisabler>::reset[abi:sn200100](v2, 0);
 }
 
-- (void)_postSaveChangesAttemptCompletedNotificationWithAllPendingDataSaved:(BOOL)a3
+- (void)_postSaveChangesAttemptCompletedNotificationWithAllPendingDataSaved:(BOOL)saved
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"WBSCloudHistoryAllPendingDataSavedToCloudKey";
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:saved];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"WBSCloudHistorySaveChangesAttemptDidCompleteNotification" object:self userInfo:v5];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"WBSCloudHistorySaveChangesAttemptDidCompleteNotification" object:self userInfo:v5];
 }
 
 - (id)dateOfNextPermittedSaveChangesAttempt
 {
   saveChangesThrottler = self->_saveChangesThrottler;
-  v3 = [(WBSCloudHistory *)self _estimatedPriorityForPotentialSaveAttempt];
+  _estimatedPriorityForPotentialSaveAttempt = [(WBSCloudHistory *)self _estimatedPriorityForPotentialSaveAttempt];
 
-  return [(WBSCloudKitThrottler *)saveChangesThrottler dateOfNextPermittedOperationWithPriority:v3];
+  return [(WBSCloudKitThrottler *)saveChangesThrottler dateOfNextPermittedOperationWithPriority:_estimatedPriorityForPotentialSaveAttempt];
 }
 
-- (void)fetchAndMergeChangesBypassingThrottler:(BOOL)a3 completionHandler:(id)a4
+- (void)fetchAndMergeChangesBypassingThrottler:(BOOL)throttler completionHandler:(id)handler
 {
-  v4 = a3;
+  throttlerCopy = throttler;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v8 = [v7 BOOLForKey:@"WBSCloudHistoryIgnoreThrottlingPolicy"];
+  handlerCopy = handler;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v8 = [standardUserDefaults BOOLForKey:@"WBSCloudHistoryIgnoreThrottlingPolicy"];
 
   if ([(WBSCloudHistory *)self isCloudHistoryEnabled])
   {
     v9 = WBS_LOG_CHANNEL_PREFIXCloudHistory();
-    v10 = v8 | v4;
+    v10 = v8 | throttlerCopy;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = @"respecting the throttler";
@@ -1514,10 +1514,10 @@ id *__128__WBSCloudHistory__saveVisits_tombstones_toCloudHistoryBypassingThrottl
     _os_log_impl(&dword_1BB6F3000, v12, OS_LOG_TYPE_DEFAULT, "iCloud History is not enabled. Nothing to do when fetching changes!", &buf, 2u);
   }
 
-  if (v6)
+  if (handlerCopy)
   {
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WBSCloudHistory" code:1 userInfo:0];
-    v6[2](v6, v13);
+    handlerCopy[2](handlerCopy, v13);
   }
 }
 
@@ -1709,16 +1709,16 @@ void __76__WBSCloudHistory_fetchAndMergeChangesBypassingThrottler_completionHand
   }
 }
 
-- (void)_registerFetchCompletionHandler:(id)a3
+- (void)_registerFetchCompletionHandler:(id)handler
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     fetchCompletionHandlers = self->_fetchCompletionHandlers;
     p_fetchCompletionHandlers = &self->_fetchCompletionHandlers;
-    v8 = MEMORY[0x1BFB13CE0](v4);
+    v8 = MEMORY[0x1BFB13CE0](handlerCopy);
     v9 = [(NSArray *)fetchCompletionHandlers arrayByAddingObject:v8];
     if (v9)
     {
@@ -1736,10 +1736,10 @@ void __76__WBSCloudHistory_fetchAndMergeChangesBypassingThrottler_completionHand
   }
 }
 
-- (void)_callAndResetFetchCompletionHandlerWithError:(id)a3
+- (void)_callAndResetFetchCompletionHandlerWithError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = self->_fetchCompletionHandlers;
   fetchCompletionHandlers = self->_fetchCompletionHandlers;
   self->_fetchCompletionHandlers = 0;
@@ -1775,16 +1775,16 @@ void __76__WBSCloudHistory_fetchAndMergeChangesBypassingThrottler_completionHand
   }
 }
 
-- (void)_getServerChangeTokenDataWithCompletion:(id)a3
+- (void)_getServerChangeTokenDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   database = self->_database;
   v6 = [MEMORY[0x1E695DFD8] setWithObject:@"server_change_token"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__WBSCloudHistory__getServerChangeTokenDataWithCompletion___block_invoke;
   v8[3] = &unk_1E7FB7AE0;
-  v7 = v4;
+  v7 = completionCopy;
   v9 = v7;
   [(WBSHistoryServiceDatabaseProtocol *)database fetchMetadataForKeys:v6 completionHandler:v8];
 }
@@ -1824,7 +1824,7 @@ void __41__WBSCloudHistory__setServerChangeToken___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)_pcsIdentitiesChangedNotification:(id)a3
+- (void)_pcsIdentitiesChangedNotification:(id)notification
 {
   cloudHistoryQueue = self->_cloudHistoryQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1879,25 +1879,25 @@ uint64_t __53__WBSCloudHistory__pcsIdentitiesChangedNotification___block_invoke_
   return [v2 saveChangesToCloudHistoryStore];
 }
 
-- (id)_manateeErrorCode:(id)a3
+- (id)_manateeErrorCode:(id)code
 {
-  v3 = a3;
-  if ([v3 safari_hasOrContainsErrorWithCloudKitErrorCode:110])
+  codeCopy = code;
+  if ([codeCopy safari_hasOrContainsErrorWithCloudKitErrorCode:110])
   {
     v4 = &unk_1F3A9AA18;
   }
 
-  else if ([v3 safari_hasOrContainsErrorWithCloudKitErrorCode:112])
+  else if ([codeCopy safari_hasOrContainsErrorWithCloudKitErrorCode:112])
   {
     v4 = &unk_1F3A9AA30;
   }
 
-  else if ([v3 safari_errorOrAnyPartialErrorHasCloudKitInternalErrorCode:5004])
+  else if ([codeCopy safari_errorOrAnyPartialErrorHasCloudKitInternalErrorCode:5004])
   {
     v4 = &unk_1F3A9AA48;
   }
 
-  else if ([v3 safari_hasOrContainsErrorWithCloudKitErrorCode:111])
+  else if ([codeCopy safari_hasOrContainsErrorWithCloudKitErrorCode:111])
   {
     v4 = &unk_1F3A9AA60;
   }
@@ -1910,19 +1910,19 @@ uint64_t __53__WBSCloudHistory__pcsIdentitiesChangedNotification___block_invoke_
   return v4;
 }
 
-- (void)_handleManateeErrorIfNeeded:(id)a3
+- (void)_handleManateeErrorIfNeeded:(id)needed
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WBSCloudHistory *)self _manateeErrorCode:v4];
+  neededCopy = needed;
+  v5 = [(WBSCloudHistory *)self _manateeErrorCode:neededCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 integerValue];
-    v8 = v7;
-    if (v7 > 111)
+    integerValue = [v5 integerValue];
+    v8 = integerValue;
+    if (integerValue > 111)
     {
-      if (v7 == 112 || v7 == 5004)
+      if (integerValue == 112 || integerValue == 5004)
       {
         v11 = WBS_LOG_CHANNEL_PREFIXCloudHistory();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1936,7 +1936,7 @@ uint64_t __53__WBSCloudHistory__pcsIdentitiesChangedNotification___block_invoke_
       }
     }
 
-    else if (v7 == 110)
+    else if (integerValue == 110)
     {
       v12 = WBS_LOG_CHANNEL_PREFIXCloudHistory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1948,7 +1948,7 @@ uint64_t __53__WBSCloudHistory__pcsIdentitiesChangedNotification___block_invoke_
       self->_manateeStateNeedsUpdate = 1;
     }
 
-    else if (v7 == 111)
+    else if (integerValue == 111)
     {
       v9 = WBS_LOG_CHANNEL_PREFIXCloudHistory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1958,27 +1958,27 @@ uint64_t __53__WBSCloudHistory__pcsIdentitiesChangedNotification___block_invoke_
       }
 
       self->_isWaitingForPCSIdentityUpdate = 1;
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v10 addObserver:self selector:sel__pcsIdentitiesChangedNotification_ name:*MEMORY[0x1E695B768] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__pcsIdentitiesChangedNotification_ name:*MEMORY[0x1E695B768] object:0];
     }
   }
 }
 
-- (void)_transitionCloudHistoryStoreToManateeState:(int64_t)a3 completion:(id)a4
+- (void)_transitionCloudHistoryStoreToManateeState:(int64_t)state completion:(id)completion
 {
   *&v20[5] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = WBS_LOG_CHANNEL_PREFIXCloudHistory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    *v20 = a3;
+    *v20 = state;
     _os_log_impl(&dword_1BB6F3000, v7, OS_LOG_TYPE_DEFAULT, "Transitioning history store to PCS state %ld", buf, 0xCu);
   }
 
   currentManateeState = self->_currentManateeState;
-  self->_currentManateeState = a3;
-  if (self->_store && (v9 = currentManateeState != 1, (a3 != 1) == v9))
+  self->_currentManateeState = state;
+  if (self->_store && (v9 = currentManateeState != 1, (state != 1) == v9))
   {
     v12 = WBS_LOG_CHANNEL_PREFIXCloudHistory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1986,11 +1986,11 @@ uint64_t __53__WBSCloudHistory__pcsIdentitiesChangedNotification___block_invoke_
       *buf = 67109376;
       v20[0] = v9;
       LOWORD(v20[1]) = 1024;
-      *(&v20[1] + 2) = a3 != 1;
+      *(&v20[1] + 2) = state != 1;
       _os_log_impl(&dword_1BB6F3000, v12, OS_LOG_TYPE_DEFAULT, "No need to transition the history store. Currently using PCS cloud history store %d, should use PCS cloud history store %d", buf, 0xEu);
     }
 
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -2008,9 +2008,9 @@ uint64_t __53__WBSCloudHistory__pcsIdentitiesChangedNotification___block_invoke_
     v13[3] = &unk_1E7FB7C20;
     v13[4] = self;
     v14 = v10;
-    v17 = a3 != 1;
-    v15 = v6;
-    v16[1] = a3;
+    v17 = state != 1;
+    v15 = completionCopy;
+    v16[1] = state;
     v11 = v10;
     objc_copyWeak(v16, buf);
     [(WBSCloudHistory *)self _performBlockAsynchronouslyOnCloudHistoryQueueAfterMetadataHasLoaded:v13];
@@ -2324,17 +2324,17 @@ void __53__WBSCloudHistory__deleteAllCloudHistoryAndSaveAgain__block_invoke_2_18
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_fetchAndMergeChangesWithServerChangeTokenData:(id)a3 withPriority:(int64_t)a4
+- (void)_fetchAndMergeChangesWithServerChangeTokenData:(id)data withPriority:(int64_t)priority
 {
-  v6 = a3;
+  dataCopy = data;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __79__WBSCloudHistory__fetchAndMergeChangesWithServerChangeTokenData_withPriority___block_invoke;
   v8[3] = &unk_1E7FB7D88;
-  v9 = v6;
-  v10 = self;
-  v11 = a4;
-  v7 = v6;
+  v9 = dataCopy;
+  selfCopy = self;
+  priorityCopy = priority;
+  v7 = dataCopy;
   [(WBSCloudHistory *)self _determineCloudHistoryStoreWithCompletion:v8];
 }
 
@@ -2662,9 +2662,9 @@ uint64_t __79__WBSCloudHistory__fetchAndMergeChangesWithServerChangeTokenData_wi
 
 - (void)_pruneTombstonesThatCanNoLongerMatchVisitsFetchedFromCloud
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   [(WBSCloudHistoryConfiguration *)self->_configuration syncWindow];
-  v5 = [v3 dateByAddingTimeInterval:-v4];
+  v5 = [date dateByAddingTimeInterval:-v4];
 
   [(WBSHistoryServiceDatabaseProtocol *)self->_database pruneTombstonesWithEndDatePriorToDate:v5 completionHandler:&__block_literal_global_197];
 }
@@ -2804,12 +2804,12 @@ void __68__WBSCloudHistory__replayPersistedLongLivedSaveOperationIfNecessary__bl
   }
 }
 
-- (void)_updateHistoryAfterSuccessfulPersistedLongLivedSaveOperationWithGenerations:(id)a3 completion:(id)a4
+- (void)_updateHistoryAfterSuccessfulPersistedLongLivedSaveOperationWithGenerations:(id)generations completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  generationsCopy = generations;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_databaseStore);
-  v9 = [v6 allKeys];
+  allKeys = [generationsCopy allKeys];
   cloudHistoryQueue = self->_cloudHistoryQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -2818,9 +2818,9 @@ void __68__WBSCloudHistory__replayPersistedLongLivedSaveOperationIfNecessary__bl
   v13[4] = self;
   v11 = WeakRetained;
   v14 = v11;
-  v12 = v6;
+  v12 = generationsCopy;
   v15 = v12;
-  [v9 safari_enumerateAsynchronouslyOnQueue:cloudHistoryQueue enumerationBlock:v13 completionBlock:v7];
+  [allKeys safari_enumerateAsynchronouslyOnQueue:cloudHistoryQueue enumerationBlock:v13 completionBlock:completionCopy];
 }
 
 void __106__WBSCloudHistory__updateHistoryAfterSuccessfulPersistedLongLivedSaveOperationWithGenerations_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -2907,11 +2907,11 @@ void __106__WBSCloudHistory__updateHistoryAfterSuccessfulPersistedLongLivedSaveO
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_persistedLongLivedSaveOperationID:(id *)a3 databaseGenerations:(id *)a4
+- (void)_persistedLongLivedSaveOperationID:(id *)d databaseGenerations:(id *)generations
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  *a3 = 0;
-  *a4 = 0;
+  *d = 0;
+  *generations = 0;
   v6 = self->_longLivedSaveOperationData;
   if (v6)
   {
@@ -2926,10 +2926,10 @@ void __106__WBSCloudHistory__updateHistoryAfterSuccessfulPersistedLongLivedSaveO
         if (v9)
         {
           v10 = v8;
-          *a3 = v8;
+          *d = v8;
           v14 = *MEMORY[0x1E69C8B58];
           v15[0] = v9;
-          *a4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
+          *generations = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
         }
 
         else
@@ -2939,9 +2939,9 @@ void __106__WBSCloudHistory__updateHistoryAfterSuccessfulPersistedLongLivedSaveO
           if (objc_opt_isKindOfClass())
           {
             v12 = v8;
-            *a3 = v8;
+            *d = v8;
             v13 = v11;
-            *a4 = v11;
+            *generations = v11;
           }
         }
       }
@@ -2949,15 +2949,15 @@ void __106__WBSCloudHistory__updateHistoryAfterSuccessfulPersistedLongLivedSaveO
   }
 }
 
-- (void)_persistLongLivedSaveOperationDictionaryWithOperationID:(id)a3 databaseGenerations:(id)a4
+- (void)_persistLongLivedSaveOperationDictionaryWithOperationID:(id)d databaseGenerations:(id)generations
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  generationsCopy = generations;
   v12[0] = @"operationID";
   v12[1] = @"generations";
-  v13[0] = v6;
-  v13[1] = v7;
+  v13[0] = dCopy;
+  v13[1] = generationsCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v9 = [MEMORY[0x1E696AE40] dataWithPropertyList:v8 format:200 options:0 error:0];
   longLivedSaveOperationData = self->_longLivedSaveOperationData;
@@ -3099,9 +3099,9 @@ void __53__WBSCloudHistory__initializePushNotificationSupport__block_invoke_2(ui
   [*(a1 + 32) fetchAndMergeChanges];
 }
 
-- (void)_pushNotificationsAreInitializedWithCompletionHandler:(id)a3
+- (void)_pushNotificationsAreInitializedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   database = self->_database;
   v6 = [MEMORY[0x1E695DFD8] setWithObject:@"push_notifications_initialized"];
   v8[0] = MEMORY[0x1E69E9820];
@@ -3109,7 +3109,7 @@ void __53__WBSCloudHistory__initializePushNotificationSupport__block_invoke_2(ui
   v8[2] = __73__WBSCloudHistory__pushNotificationsAreInitializedWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7FB7B30;
   v8[4] = self;
-  v7 = v4;
+  v7 = handlerCopy;
   v9 = v7;
   [(WBSHistoryServiceDatabaseProtocol *)database fetchMetadataForKeys:v6 completionHandler:v8];
 }
@@ -3142,10 +3142,10 @@ uint64_t __73__WBSCloudHistory__pushNotificationsAreInitializedWithCompletionHan
   return v5(v2, v3, v4);
 }
 
-- (void)_setPushNotificationAreInitialized:(BOOL)a3
+- (void)_setPushNotificationAreInitialized:(BOOL)initialized
 {
   database = self->_database;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:initialized];
   [WBSHistoryServiceDatabaseProtocol setMetadataValue:"setMetadataValue:forKey:completionHandler:" forKey:? completionHandler:?];
 }
 
@@ -3164,7 +3164,7 @@ void __54__WBSCloudHistory__setPushNotificationAreInitialized___block_invoke(uin
   }
 }
 
-- (void)_pushNotificationReceived:(id)a3
+- (void)_pushNotificationReceived:(id)received
 {
   v4 = WBS_LOG_CHANNEL_PREFIXCloudHistory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -3309,7 +3309,7 @@ LABEL_21:
   }
 }
 
-- (void)_fetchChangesInResponseToPushNotification:(id)a3
+- (void)_fetchChangesInResponseToPushNotification:(id)notification
 {
   pushNotificationFetchTimer = self->_pushNotificationFetchTimer;
   self->_pushNotificationFetchTimer = 0;
@@ -3329,31 +3329,31 @@ LABEL_21:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_determineNumberOfDevicesInSyncCircleForOperation:(id)a3 completionHandler:(id)a4
+- (void)_determineNumberOfDevicesInSyncCircleForOperation:(id)operation completionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_syncCircleSizeRetrievalCompletionHandlersByOperation objectForKeyedSubscript:v6];
+  operationCopy = operation;
+  handlerCopy = handler;
+  v8 = [(NSMutableDictionary *)self->_syncCircleSizeRetrievalCompletionHandlersByOperation objectForKeyedSubscript:operationCopy];
 
   if (v8)
   {
     v9 = WBS_LOG_CHANNEL_PREFIXCloudHistory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [WBSCloudHistory _determineNumberOfDevicesInSyncCircleForOperation:v6 completionHandler:v9];
+      [WBSCloudHistory _determineNumberOfDevicesInSyncCircleForOperation:operationCopy completionHandler:v9];
     }
   }
 
   else
   {
-    v10 = [v7 copy];
-    [(NSMutableDictionary *)self->_syncCircleSizeRetrievalCompletionHandlersByOperation setObject:v10 forKeyedSubscript:v6];
+    v10 = [handlerCopy copy];
+    [(NSMutableDictionary *)self->_syncCircleSizeRetrievalCompletionHandlersByOperation setObject:v10 forKeyedSubscript:operationCopy];
 
     if ([(NSMutableDictionary *)self->_syncCircleSizeRetrievalCompletionHandlersByOperation count]<= 1)
     {
-      v11 = [(WBSCloudHistory *)self _cachedNumberOfDevicesInSyncCircle];
-      v12 = v11 == 0;
+      _cachedNumberOfDevicesInSyncCircle = [(WBSCloudHistory *)self _cachedNumberOfDevicesInSyncCircle];
+      v12 = _cachedNumberOfDevicesInSyncCircle == 0;
       v13 = [(WBSCloudKitThrottler *)self->_syncCircleSizeRetrievalThrottler permitsOperationWithPriority:v12];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
@@ -3380,14 +3380,14 @@ LABEL_21:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           v17 = [(WBSCloudKitThrottler *)self->_syncCircleSizeRetrievalThrottler dateOfNextPermittedOperationWithPriority:v12];
-          v18 = [MEMORY[0x1E695DF00] date];
-          [v17 timeIntervalSinceDate:v18];
+          date = [MEMORY[0x1E695DF00] date];
+          [v17 timeIntervalSinceDate:date];
           *buf = 134217984;
           v25 = v19;
           _os_log_impl(&dword_1BB6F3000, v16, OS_LOG_TYPE_DEFAULT, "Determining size of sync circle was denied by throttler. Query will be permitted in %f seconds.", buf, 0xCu);
         }
 
-        v15[2](v15, v11, 0);
+        v15[2](v15, _cachedNumberOfDevicesInSyncCircle, 0);
       }
     }
   }
@@ -3479,13 +3479,13 @@ uint64_t __87__WBSCloudHistory__determineNumberOfDevicesInSyncCircleForOperation
 
 - (void)_updateProfileServerIdentifiersToLocalIdentifiersMapBasedOnLocalToServerMap
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   namedProfileLocalIdentifiersToServerIdentifiersMap = self->_namedProfileLocalIdentifiersToServerIdentifiersMap;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __94__WBSCloudHistory__updateProfileServerIdentifiersToLocalIdentifiersMapBasedOnLocalToServerMap__block_invoke;
   v8[3] = &unk_1E7FB7FD0;
-  v5 = v3;
+  v5 = dictionary;
   v9 = v5;
   [(NSDictionary *)namedProfileLocalIdentifiersToServerIdentifiersMap enumerateKeysAndObjectsUsingBlock:v8];
   namedProfileServerIdentifiersToLocalIdentifiersMap = self->_namedProfileServerIdentifiersToLocalIdentifiersMap;
@@ -3512,19 +3512,19 @@ void __81__WBSCloudHistory__updateProfileLocalIdentifiersToServerIdentifiersMapI
   }
 }
 
-- (void)updateProfileLocalIdentifiersToServerIdentifiersMap:(id)a3 completionHandler:(id)a4
+- (void)updateProfileLocalIdentifiersToServerIdentifiersMap:(id)map completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __89__WBSCloudHistory_updateProfileLocalIdentifiersToServerIdentifiersMap_completionHandler___block_invoke;
   v10[3] = &unk_1E7FB7CC0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = mapCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = mapCopy;
   [(WBSCloudHistory *)self _performBlockAsynchronouslyOnCloudHistoryQueueAfterMetadataHasLoaded:v10];
 }
 
@@ -3560,16 +3560,16 @@ void __89__WBSCloudHistory_updateProfileLocalIdentifiersToServerIdentifiersMap_c
   }
 }
 
-- (void)_fetchAddedProfileLocalIdentifiers:(id)a3
+- (void)_fetchAddedProfileLocalIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__WBSCloudHistory__fetchAddedProfileLocalIdentifiers___block_invoke;
   v6[3] = &unk_1E7FB8048;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifiersCopy;
+  v5 = identifiersCopy;
   [(WBSCloudHistory *)self _determineCloudHistoryStoreWithCompletion:v6];
 }
 
@@ -3749,12 +3749,12 @@ void __46__WBSCloudHistory__loadMetadataAsynchronously__block_invoke_2(uint64_t 
   dispatch_activate(*(*(a1 + 32) + 16));
 }
 
-- (int64_t)_priorityForSaveWithVisits:(id)a3 tombstones:(id)a4 bypassingThrottler:(BOOL)a5
+- (int64_t)_priorityForSaveWithVisits:(id)visits tombstones:(id)tombstones bypassingThrottler:(BOOL)throttler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (a5)
+  tombstonesCopy = tombstones;
+  v7 = tombstonesCopy;
+  if (throttler)
   {
     v8 = 2;
   }
@@ -3765,8 +3765,8 @@ void __46__WBSCloudHistory__loadMetadataAsynchronously__block_invoke_2(uint64_t 
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = [v6 allValues];
-    v8 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allValues = [tombstonesCopy allValues];
+    v8 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v10 = 0;
@@ -3778,14 +3778,14 @@ void __46__WBSCloudHistory__loadMetadataAsynchronously__block_invoke_2(uint64_t 
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues);
           }
 
           v10 += [*(*(&v14 + 1) + 8 * v12++) count];
         }
 
         while (v8 != v12);
-        v8 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -3796,36 +3796,36 @@ void __46__WBSCloudHistory__loadMetadataAsynchronously__block_invoke_2(uint64_t 
   return v8;
 }
 
-- (int64_t)_resultFromError:(id)a3
+- (int64_t)_resultFromError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v5 = [(WBSCloudHistory *)self _manateeErrorCode:v4];
+    v5 = [(WBSCloudHistory *)self _manateeErrorCode:errorCopy];
 
     if (v5)
     {
       v6 = 7;
     }
 
-    else if ([v4 safari_hasOrContainsErrorWithCloudKitErrorCode:26] & 1) != 0 || (objc_msgSend(v4, "safari_hasOrContainsErrorWithCloudKitErrorCode:", 28))
+    else if ([errorCopy safari_hasOrContainsErrorWithCloudKitErrorCode:26] & 1) != 0 || (objc_msgSend(errorCopy, "safari_hasOrContainsErrorWithCloudKitErrorCode:", 28))
     {
       v6 = 6;
     }
 
-    else if ([v4 safari_errorOrAnyPartialErrorHasCloudKitInternalErrorCode:5008])
+    else if ([errorCopy safari_errorOrAnyPartialErrorHasCloudKitInternalErrorCode:5008])
     {
       v6 = 5;
     }
 
     else
     {
-      v8 = [v4 domain];
-      v9 = [v8 isEqualToString:*MEMORY[0x1E695B738]];
+      domain = [errorCopy domain];
+      v9 = [domain isEqualToString:*MEMORY[0x1E695B738]];
 
-      if ((v9 & 1) != 0 && ([v4 code] & 0xFFFFFFFFFFFFFFFELL) == 6)
+      if ((v9 & 1) != 0 && ([errorCopy code] & 0xFFFFFFFFFFFFFFFELL) == 6)
       {
-        [(WBSCloudHistory *)self _backoffTimeIntervalFromError:v4];
+        [(WBSCloudHistory *)self _backoffTimeIntervalFromError:errorCopy];
         if (v10 == 0.0)
         {
           v6 = 4;
@@ -3852,10 +3852,10 @@ void __46__WBSCloudHistory__loadMetadataAsynchronously__block_invoke_2(uint64_t 
   return v6;
 }
 
-- (double)_backoffTimeIntervalFromError:(id)a3
+- (double)_backoffTimeIntervalFromError:(id)error
 {
-  v3 = a3;
-  if ([v3 safari_errorOrAnyPartialErrorHasCloudKitInternalErrorCode:5008])
+  errorCopy = error;
+  if ([errorCopy safari_errorOrAnyPartialErrorHasCloudKitInternalErrorCode:5008])
   {
     v4 = WBS_LOG_CHANNEL_PREFIXCloudHistory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -3869,8 +3869,8 @@ void __46__WBSCloudHistory__loadMetadataAsynchronously__block_invoke_2(uint64_t 
 
   else
   {
-    v6 = [v3 userInfo];
-    v7 = [v6 safari_numberForKey:*MEMORY[0x1E695B750]];
+    userInfo = [errorCopy userInfo];
+    v7 = [userInfo safari_numberForKey:*MEMORY[0x1E695B750]];
     [v7 doubleValue];
     v9 = v8;
 
@@ -3892,11 +3892,11 @@ void __46__WBSCloudHistory__loadMetadataAsynchronously__block_invoke_2(uint64_t 
   return v5;
 }
 
-- (void)_backOffWithInterval:(double)a3
+- (void)_backOffWithInterval:(double)interval
 {
   [(WBSOneShotTimer *)self->_serverBackoffTimer invalidate];
   v5 = [WBSOneShotTimer alloc];
-  v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:a3];
+  v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:interval];
   v6 = MEMORY[0x1E69E96A0];
   v7 = MEMORY[0x1E69E96A0];
   v8 = [(WBSOneShotTimer *)v5 initWithFireDate:v10 queue:v6 target:self selector:sel__serverBackoffTimerFired_];
@@ -3904,7 +3904,7 @@ void __46__WBSCloudHistory__loadMetadataAsynchronously__block_invoke_2(uint64_t 
   self->_serverBackoffTimer = v8;
 }
 
-- (void)_serverBackoffTimerFired:(id)a3
+- (void)_serverBackoffTimerFired:(id)fired
 {
   serverBackoffTimer = self->_serverBackoffTimer;
   self->_serverBackoffTimer = 0;
@@ -3922,23 +3922,23 @@ void __46__WBSCloudHistory__loadMetadataAsynchronously__block_invoke_2(uint64_t 
   *&self->_saveChangesWhenBackoffTimerFires = 0;
 }
 
-- (id)recordOfPastOperationsForThrottler:(id)a3
+- (id)recordOfPastOperationsForThrottler:(id)throttler
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_saveChangesThrottler == v4)
+  throttlerCopy = throttler;
+  v5 = throttlerCopy;
+  if (self->_saveChangesThrottler == throttlerCopy)
   {
     v7 = 32;
   }
 
-  else if (self->_fetchChangesThrottler == v4)
+  else if (self->_fetchChangesThrottler == throttlerCopy)
   {
     v7 = 40;
   }
 
   else
   {
-    if (self->_syncCircleSizeRetrievalThrottler != v4)
+    if (self->_syncCircleSizeRetrievalThrottler != throttlerCopy)
     {
       v6 = 0;
       goto LABEL_9;
@@ -3953,18 +3953,18 @@ LABEL_9:
   return v6;
 }
 
-- (void)setRecordOfPastOperations:(id)a3 forThrottler:(id)a4
+- (void)setRecordOfPastOperations:(id)operations forThrottler:(id)throttler
 {
-  v6 = a3;
-  v7 = a4;
+  operationsCopy = operations;
+  throttlerCopy = throttler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__WBSCloudHistory_setRecordOfPastOperations_forThrottler___block_invoke;
   v13[3] = &unk_1E7FB78D8;
-  v8 = v7;
+  v8 = throttlerCopy;
   v14 = v8;
   v9 = MEMORY[0x1BFB13CE0](v13);
-  v10 = [v6 copy];
+  v10 = [operationsCopy copy];
 
   if (self->_saveChangesThrottler == v8)
   {
@@ -4042,16 +4042,16 @@ void __58__WBSCloudHistory_setRecordOfPastOperations_forThrottler___block_invoke
   return v4;
 }
 
-- (void)setNumberOfDevicesInSyncCircle:(unint64_t)a3
+- (void)setNumberOfDevicesInSyncCircle:(unint64_t)circle
 {
-  if ([(WBSCloudHistory *)self _cachedNumberOfDevicesInSyncCircle]!= a3)
+  if ([(WBSCloudHistory *)self _cachedNumberOfDevicesInSyncCircle]!= circle)
   {
-    [(WBSCloudHistory *)self _setCachedNumberOfDevicesInSyncCircle:a3];
+    [(WBSCloudHistory *)self _setCachedNumberOfDevicesInSyncCircle:circle];
   }
 
-  if (self->_numberOfDevicesInSyncCircle != a3)
+  if (self->_numberOfDevicesInSyncCircle != circle)
   {
-    self->_numberOfDevicesInSyncCircle = a3;
+    self->_numberOfDevicesInSyncCircle = circle;
 
     [(WBSCloudHistory *)self _updateThrottlerPolicies];
   }
@@ -4075,19 +4075,19 @@ void __58__WBSCloudHistory_setRecordOfPastOperations_forThrottler___block_invoke
 
 - (void)_updateThrottlerPolicies
 {
-  v3 = [(WBSCloudHistory *)self _currentSaveChangesThrottlerPolicyString];
+  _currentSaveChangesThrottlerPolicyString = [(WBSCloudHistory *)self _currentSaveChangesThrottlerPolicyString];
   [(WBSCloudKitThrottler *)self->_saveChangesThrottler setPolicyString:?];
 
-  v4 = [(WBSCloudHistory *)self _currentFetchChangesThrottlerPolicyString];
+  _currentFetchChangesThrottlerPolicyString = [(WBSCloudHistory *)self _currentFetchChangesThrottlerPolicyString];
   [(WBSCloudKitThrottler *)self->_fetchChangesThrottler setPolicyString:?];
 
-  v5 = [(WBSCloudHistory *)self _currentSyncCircleSizeRetrievalThrottlerPolicyString];
+  _currentSyncCircleSizeRetrievalThrottlerPolicyString = [(WBSCloudHistory *)self _currentSyncCircleSizeRetrievalThrottlerPolicyString];
   [(WBSCloudKitThrottler *)self->_syncCircleSizeRetrievalThrottler setPolicyString:?];
 }
 
-- (void)_setCachedNumberOfDevicesInSyncCircle:(unint64_t)a3
+- (void)_setCachedNumberOfDevicesInSyncCircle:(unint64_t)circle
 {
-  self->_syncCircleSize = a3;
+  self->_syncCircleSize = circle;
   database = self->_database;
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
   [WBSHistoryServiceDatabaseProtocol setMetadataValue:"setMetadataValue:forKey:completionHandler:" forKey:? completionHandler:?];
@@ -4108,16 +4108,16 @@ void __57__WBSCloudHistory__setCachedNumberOfDevicesInSyncCircle___block_invoke(
   }
 }
 
-- (void)_resetCloudHistoryDataWithCompletionHandler:(id)a3
+- (void)_resetCloudHistoryDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   database = self->_database;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__WBSCloudHistory__resetCloudHistoryDataWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB7E48;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WBSHistoryServiceDatabaseProtocol *)database resetCloudHistoryDataWithCompletionHandler:v7];
 }
 
@@ -4138,9 +4138,9 @@ void __63__WBSCloudHistory__resetCloudHistoryDataWithCompletionHandler___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_resetForAccountChangeWithCompletionHandler:(id)a3
+- (void)_resetForAccountChangeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = WBS_LOG_CHANNEL_PREFIXCloudHistory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -4153,7 +4153,7 @@ void __63__WBSCloudHistory__resetCloudHistoryDataWithCompletionHandler___block_i
   v7[2] = __63__WBSCloudHistory__resetForAccountChangeWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
   [(WBSCloudHistory *)self _resetCloudHistoryDataWithCompletionHandler:v7];
 }
@@ -4190,31 +4190,31 @@ uint64_t __63__WBSCloudHistory__resetForAccountChangeWithCompletionHandler___blo
   return result;
 }
 
-- (void)updateConfiguration:(id)a3 completionHandler:(id)a4
+- (void)updateConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v5 = a3;
+  configurationCopy = configuration;
   cloudHistoryQueue = self->_cloudHistoryQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__WBSCloudHistory_updateConfiguration_completionHandler___block_invoke;
   v8[3] = &unk_1E7FB7F10;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = configurationCopy;
+  v7 = configurationCopy;
   dispatch_async(cloudHistoryQueue, v8);
 }
 
-- (void)resetForAccountChangeWithCompletionHandler:(id)a3
+- (void)resetForAccountChangeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   cloudHistoryQueue = self->_cloudHistoryQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__WBSCloudHistory_resetForAccountChangeWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(cloudHistoryQueue, v7);
 }
 
@@ -4229,17 +4229,17 @@ void __62__WBSCloudHistory_resetForAccountChangeWithCompletionHandler___block_in
   [v1 _resetForAccountChangeWithCompletionHandler:v2];
 }
 
-- (void)fetchDateOfNextPermittedSaveChangesAttemptWithCompletionHandler:(id)a3
+- (void)fetchDateOfNextPermittedSaveChangesAttemptWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   cloudHistoryQueue = self->_cloudHistoryQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __83__WBSCloudHistory_fetchDateOfNextPermittedSaveChangesAttemptWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB6BC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(cloudHistoryQueue, v7);
 }
 

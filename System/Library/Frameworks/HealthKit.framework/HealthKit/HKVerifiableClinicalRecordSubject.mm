@@ -1,10 +1,10 @@
 @interface HKVerifiableClinicalRecordSubject
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKVerifiableClinicalRecordSubject)init;
-- (HKVerifiableClinicalRecordSubject)initWithCoder:(id)a3;
-- (HKVerifiableClinicalRecordSubject)initWithFullName:(id)a3 dateOfBirthComponents:(id)a4;
+- (HKVerifiableClinicalRecordSubject)initWithCoder:(id)coder;
+- (HKVerifiableClinicalRecordSubject)initWithFullName:(id)name dateOfBirthComponents:(id)components;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKVerifiableClinicalRecordSubject
@@ -19,20 +19,20 @@
   return 0;
 }
 
-- (HKVerifiableClinicalRecordSubject)initWithFullName:(id)a3 dateOfBirthComponents:(id)a4
+- (HKVerifiableClinicalRecordSubject)initWithFullName:(id)name dateOfBirthComponents:(id)components
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  componentsCopy = components;
   v14.receiver = self;
   v14.super_class = HKVerifiableClinicalRecordSubject;
   v8 = [(HKVerifiableClinicalRecordSubject *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     fullName = v8->_fullName;
     v8->_fullName = v9;
 
-    v11 = [v7 copy];
+    v11 = [componentsCopy copy];
     dateOfBirthComponents = v8->_dateOfBirthComponents;
     v8->_dateOfBirthComponents = v11;
   }
@@ -40,10 +40,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -53,16 +53,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = equalCopy;
       fullName = self->_fullName;
-      v9 = [(HKVerifiableClinicalRecordSubject *)v7 fullName];
-      if (fullName == v9)
+      fullName = [(HKVerifiableClinicalRecordSubject *)v7 fullName];
+      if (fullName == fullName)
       {
         goto LABEL_9;
       }
 
-      v10 = [(HKVerifiableClinicalRecordSubject *)v7 fullName];
-      if (!v10)
+      fullName2 = [(HKVerifiableClinicalRecordSubject *)v7 fullName];
+      if (!fullName2)
       {
         v12 = 0;
 LABEL_17:
@@ -70,16 +70,16 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v3 = v10;
+      v3 = fullName2;
       v11 = self->_fullName;
-      v4 = [(HKVerifiableClinicalRecordSubject *)v7 fullName];
-      if ([(NSString *)v11 isEqualToString:v4])
+      fullName3 = [(HKVerifiableClinicalRecordSubject *)v7 fullName];
+      if ([(NSString *)v11 isEqualToString:fullName3])
       {
 LABEL_9:
         dateOfBirthComponents = self->_dateOfBirthComponents;
-        v14 = [(HKVerifiableClinicalRecordSubject *)v7 dateOfBirthComponents];
-        v15 = v14;
-        if (dateOfBirthComponents == v14)
+        dateOfBirthComponents = [(HKVerifiableClinicalRecordSubject *)v7 dateOfBirthComponents];
+        v15 = dateOfBirthComponents;
+        if (dateOfBirthComponents == dateOfBirthComponents)
         {
 
           v12 = 1;
@@ -87,13 +87,13 @@ LABEL_9:
 
         else
         {
-          v16 = [(HKVerifiableClinicalRecordSubject *)v7 dateOfBirthComponents];
-          if (v16)
+          dateOfBirthComponents2 = [(HKVerifiableClinicalRecordSubject *)v7 dateOfBirthComponents];
+          if (dateOfBirthComponents2)
           {
-            v17 = v16;
+            v17 = dateOfBirthComponents2;
             v18 = self->_dateOfBirthComponents;
-            v19 = [(HKVerifiableClinicalRecordSubject *)v7 dateOfBirthComponents];
-            v12 = [(NSDateComponents *)v18 isEqual:v19];
+            dateOfBirthComponents3 = [(HKVerifiableClinicalRecordSubject *)v7 dateOfBirthComponents];
+            v12 = [(NSDateComponents *)v18 isEqual:dateOfBirthComponents3];
           }
 
           else
@@ -103,7 +103,7 @@ LABEL_9:
           }
         }
 
-        if (fullName == v9)
+        if (fullName == fullName)
         {
           goto LABEL_17;
         }
@@ -135,15 +135,15 @@ LABEL_18:
   return v6;
 }
 
-- (HKVerifiableClinicalRecordSubject)initWithCoder:(id)a3
+- (HKVerifiableClinicalRecordSubject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = HKVerifiableClinicalRecordSubject;
   v5 = [(HKVerifiableClinicalRecordSubject *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FullName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FullName"];
     fullName = v5->_fullName;
     v5->_fullName = v6;
 
@@ -153,7 +153,7 @@ LABEL_18:
       goto LABEL_6;
     }
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DateOfBirthComponents"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DateOfBirthComponents"];
     dateOfBirthComponents = v5->_dateOfBirthComponents;
     v5->_dateOfBirthComponents = v8;
   }
@@ -164,12 +164,12 @@ LABEL_6:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   fullName = self->_fullName;
-  v5 = a3;
-  [v5 encodeObject:fullName forKey:@"FullName"];
-  [v5 encodeObject:self->_dateOfBirthComponents forKey:@"DateOfBirthComponents"];
+  coderCopy = coder;
+  [coderCopy encodeObject:fullName forKey:@"FullName"];
+  [coderCopy encodeObject:self->_dateOfBirthComponents forKey:@"DateOfBirthComponents"];
 }
 
 @end

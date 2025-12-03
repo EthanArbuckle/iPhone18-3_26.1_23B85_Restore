@@ -9,14 +9,14 @@
 
 + (id)ax_errorWithDomain:()AXExtensions description:
 {
-  v9 = [a1 ax_errorWithDomain:a3 code:0 description:a4 arguments:&a9];
+  v9 = [self ax_errorWithDomain:a3 code:0 description:a4 arguments:&a9];
 
   return v9;
 }
 
 + (id)ax_errorWithDomain:()AXExtensions code:description:
 {
-  v9 = [a1 ax_errorWithDomain:a3 code:a4 description:a5 arguments:&a9];
+  v9 = [self ax_errorWithDomain:a3 code:a4 description:a5 arguments:&a9];
 
   return v9;
 }
@@ -42,7 +42,7 @@
     }
   }
 
-  v15 = [a1 errorWithDomain:v10 code:a4 userInfo:a5];
+  v15 = [self errorWithDomain:v10 code:a4 userInfo:a5];
 
   return v15;
 }
@@ -50,10 +50,10 @@
 - (id)ax_nonRedundantDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 domain];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "code")}];
-  v5 = [a1 localizedDescription];
-  v6 = [v2 stringWithFormat:@"Domain:%@ Code:%@ Reason:%@", v3, v4, v5];
+  domain = [self domain];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "code")}];
+  localizedDescription = [self localizedDescription];
+  v6 = [v2 stringWithFormat:@"Domain:%@ Code:%@ Reason:%@", domain, v4, localizedDescription];
 
   return v6;
 }

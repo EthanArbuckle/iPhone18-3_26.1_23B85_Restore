@@ -1,12 +1,12 @@
 @interface PDFActionRemoteGoTo
 - (CGPoint)point;
-- (PDFActionRemoteGoTo)initWithActionDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4 forPage:(id)a5;
+- (PDFActionRemoteGoTo)initWithActionDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document forPage:(id)page;
 - (PDFActionRemoteGoTo)initWithPageIndex:(NSUInteger)pageIndex atPoint:(CGPoint)point fileURL:(NSURL *)url;
 - (__CFDictionary)createDictionaryRef;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)toolTipNoLabel;
-- (void)addDestinationToDictionaryRef:(__CFDictionary *)a3;
+- (void)addDestinationToDictionaryRef:(__CFDictionary *)ref;
 - (void)commonInit;
 - (void)setURL:(NSURL *)URL;
 @end
@@ -36,7 +36,7 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v15.receiver = self;
   v15.super_class = PDFActionRemoteGoTo;
@@ -49,12 +49,12 @@
 
     *(v5[2] + 8) = self->_private2->pageIndex;
     *(v5[2] + 16) = self->_private2->point;
-    v8 = [(NSURL *)self->_private2->url copyWithZone:a3];
+    v8 = [(NSURL *)self->_private2->url copyWithZone:zone];
     v9 = v5[2];
     v10 = *(v9 + 32);
     *(v9 + 32) = v8;
 
-    v11 = [(PDFDestination *)self->_private2->destination copyWithZone:a3];
+    v11 = [(PDFDestination *)self->_private2->destination copyWithZone:zone];
     v12 = v5[2];
     v13 = *(v12 + 40);
     *(v12 + 40) = v11;
@@ -86,27 +86,27 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(PDFActionRemoteGoTo *)self toolTip];
-  v4 = [v2 stringWithFormat:@"GoToR Action - %@", v3];
+  toolTip = [(PDFActionRemoteGoTo *)self toolTip];
+  v4 = [v2 stringWithFormat:@"GoToR Action - %@", toolTip];
 
   return v4;
 }
 
-- (PDFActionRemoteGoTo)initWithActionDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4 forPage:(id)a5
+- (PDFActionRemoteGoTo)initWithActionDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document forPage:(id)page
 {
-  v8 = a4;
+  documentCopy = document;
   v29.receiver = self;
   v29.super_class = PDFActionRemoteGoTo;
-  v9 = [(PDFAction *)&v29 initWithActionDictionary:a3 forDocument:v8 forPage:a5];
+  v9 = [(PDFAction *)&v29 initWithActionDictionary:dictionary forDocument:documentCopy forPage:page];
   if (v9)
   {
     value = 0;
-    if (CGPDFDictionaryGetObject(a3, "F", &value))
+    if (CGPDFDictionaryGetObject(dictionary, "F", &value))
     {
       v10 = value;
-      v11 = [v8 documentURL];
-      v12 = [v11 path];
-      v13 = getFilepathFromObjectDetermineEncoding(v10, [v12 stringByDeletingLastPathComponent]);
+      documentURL = [documentCopy documentURL];
+      path = [documentURL path];
+      v13 = getFilepathFromObjectDetermineEncoding(v10, [path stringByDeletingLastPathComponent]);
 
       if (v13)
       {
@@ -122,7 +122,7 @@
       v17 = [[PDFDocument alloc] initWithURL:v9->_private2->url];
       if (v17)
       {
-        v18 = [[PDFDestination alloc] initWithDictionary:a3 forDocument:v17];
+        v18 = [[PDFDestination alloc] initWithDictionary:dictionary forDocument:v17];
         v19 = v9->_private2;
         destination = v19->destination;
         v19->destination = v18;
@@ -130,8 +130,8 @@
         v21 = v9->_private2->destination;
         if (v21)
         {
-          v22 = [(PDFDestination *)v21 page];
-          v9->_private2->pageIndex = [(PDFDocument *)v17 indexForPage:v22];
+          page = [(PDFDestination *)v21 page];
+          v9->_private2->pageIndex = [(PDFDocument *)v17 indexForPage:page];
 
           v23 = v9->_private2;
           [(PDFDestination *)v23->destination point];
@@ -177,18 +177,18 @@
   return Mutable;
 }
 
-- (void)addDestinationToDictionaryRef:(__CFDictionary *)a3
+- (void)addDestinationToDictionaryRef:(__CFDictionary *)ref
 {
   v4 = self->_private2->destination;
   if (v4)
   {
     v6 = v4;
-    v5 = [(PDFDestination *)v4 createArrayRef];
+    createArrayRef = [(PDFDestination *)v4 createArrayRef];
     v4 = v6;
-    if (v5)
+    if (createArrayRef)
     {
-      CFDictionarySetValue(a3, @"/D", v5);
-      CFRelease(v5);
+      CFDictionarySetValue(ref, @"/D", createArrayRef);
+      CFRelease(createArrayRef);
       v4 = v6;
     }
   }
@@ -202,9 +202,9 @@
     v4 = MEMORY[0x1E696AEC0];
     v5 = PDFKitLocalizedString(@"Go to file %@, page %lu");
     v6 = [(PDFActionRemoteGoTo *)self URL];
-    v7 = [v6 path];
-    v8 = [v7 lastPathComponent];
-    v9 = [v4 stringWithFormat:v5, v8, self->_private2->pageIndex + 1];
+    path = [v6 path];
+    lastPathComponent = [path lastPathComponent];
+    v9 = [v4 stringWithFormat:v5, lastPathComponent, self->_private2->pageIndex + 1];
   }
 
   else

@@ -1,20 +1,20 @@
 @interface NSIndexSet
-- (NSIndexSet)indexSetWithMaximum:(int64_t)a3;
-- (NSIndexSet)indexSetWithOffset:(int64_t)a3;
-- (int64_t)indexAtIndex:(int64_t)a3;
-- (int64_t)locationOfIndex:(int64_t)a3;
+- (NSIndexSet)indexSetWithMaximum:(int64_t)maximum;
+- (NSIndexSet)indexSetWithOffset:(int64_t)offset;
+- (int64_t)indexAtIndex:(int64_t)index;
+- (int64_t)locationOfIndex:(int64_t)index;
 @end
 
 @implementation NSIndexSet
 
-- (int64_t)locationOfIndex:(int64_t)a3
+- (int64_t)locationOfIndex:(int64_t)index
 {
-  v5 = [(NSIndexSet *)self firstIndex];
+  firstIndex = [(NSIndexSet *)self firstIndex];
   v6 = 0;
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+  if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = v5;
-    if (v5 != a3)
+    v7 = firstIndex;
+    if (firstIndex != index)
     {
       v6 = 0;
       do
@@ -29,24 +29,24 @@
         v7 = v8;
       }
 
-      while (v8 != a3);
+      while (v8 != index);
     }
   }
 
   return v6;
 }
 
-- (int64_t)indexAtIndex:(int64_t)a3
+- (int64_t)indexAtIndex:(int64_t)index
 {
-  v5 = [(NSIndexSet *)self firstIndex];
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL && a3)
+  firstIndex = [(NSIndexSet *)self firstIndex];
+  if (firstIndex != 0x7FFFFFFFFFFFFFFFLL && index)
   {
-    v6 = a3 - 1;
+    v6 = index - 1;
     do
     {
       v7 = v6;
-      v5 = [(NSIndexSet *)self indexGreaterThanIndex:v5];
-      if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+      firstIndex = [(NSIndexSet *)self indexGreaterThanIndex:firstIndex];
+      if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
       }
@@ -57,33 +57,33 @@
     while (v7);
   }
 
-  return v5;
+  return firstIndex;
 }
 
-- (NSIndexSet)indexSetWithOffset:(int64_t)a3
+- (NSIndexSet)indexSetWithOffset:(int64_t)offset
 {
   v5 = +[NSMutableIndexSet indexSet];
-  v6 = [(NSIndexSet *)self firstIndex];
-  if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+  firstIndex = [(NSIndexSet *)self firstIndex];
+  if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (i = v6; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSIndexSet *)self indexGreaterThanIndex:i])
+    for (i = firstIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSIndexSet *)self indexGreaterThanIndex:i])
     {
-      [(NSIndexSet *)v5 addIndex:i + a3];
+      [(NSIndexSet *)v5 addIndex:i + offset];
     }
   }
 
   return v5;
 }
 
-- (NSIndexSet)indexSetWithMaximum:(int64_t)a3
+- (NSIndexSet)indexSetWithMaximum:(int64_t)maximum
 {
   v5 = +[NSMutableIndexSet indexSet];
-  v6 = [(NSIndexSet *)self firstIndex];
-  if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+  firstIndex = [(NSIndexSet *)self firstIndex];
+  if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (i = v6; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSIndexSet *)self indexGreaterThanIndex:i])
+    for (i = firstIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSIndexSet *)self indexGreaterThanIndex:i])
     {
-      if (i <= a3)
+      if (i <= maximum)
       {
         [(NSIndexSet *)v5 addIndex:i];
       }

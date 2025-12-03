@@ -1,5 +1,5 @@
 @interface MapsBannerContent
-- (MapsBannerContent)initWithHeaderView:(id)a3 iconView:(id)a4 leadingTopView:(id)a5 trailingTopView:(id)a6 bottomView:(id)a7 footerView:(id)a8;
+- (MapsBannerContent)initWithHeaderView:(id)view iconView:(id)iconView leadingTopView:(id)topView trailingTopView:(id)trailingTopView bottomView:(id)bottomView footerView:(id)footerView;
 - (NSArray)allViews;
 - (NSObject)visibilityFingerprint;
 @end
@@ -60,26 +60,26 @@
   return v5;
 }
 
-- (MapsBannerContent)initWithHeaderView:(id)a3 iconView:(id)a4 leadingTopView:(id)a5 trailingTopView:(id)a6 bottomView:(id)a7 footerView:(id)a8
+- (MapsBannerContent)initWithHeaderView:(id)view iconView:(id)iconView leadingTopView:(id)topView trailingTopView:(id)trailingTopView bottomView:(id)bottomView footerView:(id)footerView
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  viewCopy = view;
+  iconViewCopy = iconView;
+  topViewCopy = topView;
+  trailingTopViewCopy = trailingTopView;
+  bottomViewCopy = bottomView;
+  footerViewCopy = footerView;
   v24.receiver = self;
   v24.super_class = MapsBannerContent;
   v18 = [(MapsBannerContent *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_headerView, a3);
-    objc_storeStrong(&v19->_iconView, a4);
-    objc_storeStrong(&v19->_leadingTopView, a5);
-    objc_storeStrong(&v19->_trailingTopView, a6);
-    objc_storeStrong(&v19->_bottomView, a7);
-    objc_storeStrong(&v19->_footerView, a8);
+    objc_storeStrong(&v18->_headerView, view);
+    objc_storeStrong(&v19->_iconView, iconView);
+    objc_storeStrong(&v19->_leadingTopView, topView);
+    objc_storeStrong(&v19->_trailingTopView, trailingTopView);
+    objc_storeStrong(&v19->_bottomView, bottomView);
+    objc_storeStrong(&v19->_footerView, footerView);
   }
 
   return v19;

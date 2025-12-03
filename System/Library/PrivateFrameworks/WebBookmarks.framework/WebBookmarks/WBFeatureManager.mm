@@ -1,7 +1,7 @@
 @interface WBFeatureManager
 + (WBFeatureManager)sharedFeatureManager;
 - (WBFeatureManager)init;
-- (void)_updateToAccessLevel:(int64_t)a3;
+- (void)_updateToAccessLevel:(int64_t)level;
 @end
 
 @implementation WBFeatureManager
@@ -70,15 +70,15 @@ uint64_t __40__WBFeatureManager_sharedFeatureManager__block_invoke()
   return v2;
 }
 
-- (void)_updateToAccessLevel:(int64_t)a3
+- (void)_updateToAccessLevel:(int64_t)level
 {
   *&self->_offlineReadingListAvailable = 1;
-  if (a3 == 1)
+  if (level == 1)
   {
     self->_offlineReadingListAvailable = 0;
   }
 
-  else if (a3 == 2)
+  else if (level == 2)
   {
     self->_favoritesFolderSelectionShouldSync = 1;
   }

@@ -1,86 +1,86 @@
 @interface EKAlarmSemanticIdentifierGenerator
-+ (id)_stringForAlarmProximity:(int64_t)a3;
-+ (id)semanticIdentifierForAlarm:(id)a3;
-+ (id)semanticIdentifierForAlarmIsDefault:(BOOL)a3 absoluteDate:(id)a4 relativeOffset:(id)a5 emailAddress:(id)a6 url:(id)a7;
++ (id)_stringForAlarmProximity:(int64_t)proximity;
++ (id)semanticIdentifierForAlarm:(id)alarm;
++ (id)semanticIdentifierForAlarmIsDefault:(BOOL)default absoluteDate:(id)date relativeOffset:(id)offset emailAddress:(id)address url:(id)url;
 @end
 
 @implementation EKAlarmSemanticIdentifierGenerator
 
-+ (id)semanticIdentifierForAlarm:(id)a3
++ (id)semanticIdentifierForAlarm:(id)alarm
 {
-  v3 = a3;
-  if ([v3 isDefaultAlarm])
+  alarmCopy = alarm;
+  if ([alarmCopy isDefaultAlarm])
   {
     v4 = @"kDefaultAlarmSemanticIdentifier";
   }
 
   else
   {
-    v5 = [v3 absoluteDate];
+    absoluteDate = [alarmCopy absoluteDate];
     v6 = MEMORY[0x1E696AD98];
-    [v3 relativeOffset];
+    [alarmCopy relativeOffset];
     v7 = [v6 numberWithDouble:?];
-    v4 = [EKAlarmSemanticIdentifierGenerator semanticIdentifierForAlarmIsDefault:0 absoluteDate:v5 relativeOffset:v7 emailAddress:0 url:0];
+    v4 = [EKAlarmSemanticIdentifierGenerator semanticIdentifierForAlarmIsDefault:0 absoluteDate:absoluteDate relativeOffset:v7 emailAddress:0 url:0];
   }
 
   return v4;
 }
 
-+ (id)semanticIdentifierForAlarmIsDefault:(BOOL)a3 absoluteDate:(id)a4 relativeOffset:(id)a5 emailAddress:(id)a6 url:(id)a7
++ (id)semanticIdentifierForAlarmIsDefault:(BOOL)default absoluteDate:(id)date relativeOffset:(id)offset emailAddress:(id)address url:(id)url
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if (a3)
+  dateCopy = date;
+  offsetCopy = offset;
+  addressCopy = address;
+  urlCopy = url;
+  if (default)
   {
     v15 = @"kDefaultAlarmSemanticIdentifier";
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AD60] string];
-    if (v11)
+    string = [MEMORY[0x1E696AD60] string];
+    if (dateCopy)
     {
-      [v11 timeIntervalSinceReferenceDate];
-      [v16 appendFormat:@"ABSOLUTE=%f;", v17];
+      [dateCopy timeIntervalSinceReferenceDate];
+      [string appendFormat:@"ABSOLUTE=%f;", v17];
     }
 
     else
     {
-      [v12 doubleValue];
-      [v16 appendFormat:@"RELATIVE=%f;", v18];
+      [offsetCopy doubleValue];
+      [string appendFormat:@"RELATIVE=%f;", v18];
     }
 
-    if (v13)
+    if (addressCopy)
     {
-      [v16 appendFormat:@"EMAIL=%@;", v13];
+      [string appendFormat:@"EMAIL=%@;", addressCopy];
     }
 
-    v19 = [v14 absoluteString];
+    absoluteString = [urlCopy absoluteString];
 
-    if (v19)
+    if (absoluteString)
     {
-      v20 = [v14 absoluteString];
-      [v16 appendFormat:@"URL=%@;", v20];
+      absoluteString2 = [urlCopy absoluteString];
+      [string appendFormat:@"URL=%@;", absoluteString2];
     }
 
-    v15 = [v16 copy];
+    v15 = [string copy];
   }
 
   return v15;
 }
 
-+ (id)_stringForAlarmProximity:(int64_t)a3
++ (id)_stringForAlarmProximity:(int64_t)proximity
 {
-  if ((a3 - 1) > 3)
+  if ((proximity - 1) > 3)
   {
     return @"None";
   }
 
   else
   {
-    return off_1E77FE250[a3 - 1];
+    return off_1E77FE250[proximity - 1];
   }
 }
 

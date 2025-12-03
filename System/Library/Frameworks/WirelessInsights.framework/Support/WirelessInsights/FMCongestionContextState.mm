@@ -1,20 +1,20 @@
 @interface FMCongestionContextState
-- (FMCongestionContextState)initWithStartTime:(id)a3 subscriptionID:(id)a4;
+- (FMCongestionContextState)initWithStartTime:(id)time subscriptionID:(id)d;
 @end
 
 @implementation FMCongestionContextState
 
-- (FMCongestionContextState)initWithStartTime:(id)a3 subscriptionID:(id)a4
+- (FMCongestionContextState)initWithStartTime:(id)time subscriptionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  timeCopy = time;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = FMCongestionContextState;
-  v8 = [(FMContextState *)&v18 initWithStartTime:v6];
+  v8 = [(FMContextState *)&v18 initWithStartTime:timeCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_subscriptionID, a4);
+    objc_storeStrong(&v8->_subscriptionID, d);
     v10 = objc_alloc_init(NSMutableArray);
     prevCells = v9->_prevCells;
     v9->_prevCells = v10;

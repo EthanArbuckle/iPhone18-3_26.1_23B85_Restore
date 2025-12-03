@@ -1,17 +1,17 @@
 @interface TSDSizedImageDescription
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSizedImageDescription:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSizedImageDescription:(id)description;
 - (CGSize)size;
-- (TSDSizedImageDescription)initWithSize:(CGSize)a3 isWideGamut:(BOOL)a4 hasBakedMask:(BOOL)a5;
+- (TSDSizedImageDescription)initWithSize:(CGSize)size isWideGamut:(BOOL)gamut hasBakedMask:(BOOL)mask;
 - (unint64_t)hash;
 @end
 
 @implementation TSDSizedImageDescription
 
-- (TSDSizedImageDescription)initWithSize:(CGSize)a3 isWideGamut:(BOOL)a4 hasBakedMask:(BOOL)a5
+- (TSDSizedImageDescription)initWithSize:(CGSize)size isWideGamut:(BOOL)gamut hasBakedMask:(BOOL)mask
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = TSDSizedImageDescription;
   result = [(TSDSizedImageDescription *)&v10 init];
@@ -19,23 +19,23 @@
   {
     result->_size.width = width;
     result->_size.height = height;
-    result->_isWideGamut = a4;
-    result->_hasBakedMask = a5;
+    result->_isWideGamut = gamut;
+    result->_hasBakedMask = mask;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
 
   if (v6)
   {
@@ -59,10 +59,10 @@
   return v4 ^ v5;
 }
 
-- (BOOL)isEqualToSizedImageDescription:(id)a3
+- (BOOL)isEqualToSizedImageDescription:(id)description
 {
-  v4 = a3;
-  if (self == v4)
+  descriptionCopy = description;
+  if (self == descriptionCopy)
   {
     LOBYTE(v13) = 1;
   }
@@ -72,12 +72,12 @@
     [(TSDSizedImageDescription *)self size];
     v6 = v5;
     v8 = v7;
-    [(TSDSizedImageDescription *)v4 size];
+    [(TSDSizedImageDescription *)descriptionCopy size];
     v11 = v6 == v10 && v8 == v9;
-    if (v11 && (v12 = [(TSDSizedImageDescription *)self isWideGamut], v12 == [(TSDSizedImageDescription *)v4 isWideGamut]))
+    if (v11 && (v12 = [(TSDSizedImageDescription *)self isWideGamut], v12 == [(TSDSizedImageDescription *)descriptionCopy isWideGamut]))
     {
-      v14 = [(TSDSizedImageDescription *)self hasBakedMask];
-      v13 = v14 ^ [(TSDSizedImageDescription *)v4 hasBakedMask]^ 1;
+      hasBakedMask = [(TSDSizedImageDescription *)self hasBakedMask];
+      v13 = hasBakedMask ^ [(TSDSizedImageDescription *)descriptionCopy hasBakedMask]^ 1;
     }
 
     else

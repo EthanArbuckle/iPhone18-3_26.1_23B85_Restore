@@ -1,18 +1,18 @@
 @interface PBBridgeCursiveTextPath
-- (CGAffineTransform)transformForRect:(SEL)a3 pointSize:(CGRect)a4 flipped:(double)a5;
-- (CGPath)pathForFraction:(float)a3 calculateLength:(BOOL)a4 startFraction:(float)a5;
+- (CGAffineTransform)transformForRect:(SEL)rect pointSize:(CGRect)size flipped:(double)flipped;
+- (CGPath)pathForFraction:(float)fraction calculateLength:(BOOL)length startFraction:(float)startFraction;
 - (CGRect)boundingBoxOfPath;
-- (PBBridgeCursiveTextPath)initWithURL:(id)a3 options:(id)a4;
+- (PBBridgeCursiveTextPath)initWithURL:(id)l options:(id)options;
 - (float)animationDuration;
 @end
 
 @implementation PBBridgeCursiveTextPath
 
-- (PBBridgeCursiveTextPath)initWithURL:(id)a3 options:(id)a4
+- (PBBridgeCursiveTextPath)initWithURL:(id)l options:(id)options
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  optionsCopy = options;
   v23.receiver = self;
   v23.super_class = PBBridgeCursiveTextPath;
   v8 = [(PBBridgeCursiveTextPath *)&v23 init];
@@ -26,7 +26,7 @@ LABEL_13:
 
   *&v8->_initialWeight = 0x3F8000003F266666;
   v8->_rampTime = 0.25;
-  v10 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v6];
+  v10 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy];
   if (v10)
   {
     v11 = v10;
@@ -36,23 +36,23 @@ LABEL_13:
       pathDefinition = v9->_pathDefinition;
       v9->_pathDefinition = v12;
 
-      v14 = [v7 objectForKeyedSubscript:@"resolution"];
+      v14 = [optionsCopy objectForKeyedSubscript:@"resolution"];
       v15 = v14;
       if (v14)
       {
-        v16 = [v14 intValue];
+        intValue = [v14 intValue];
       }
 
       else
       {
-        v16 = 40;
+        intValue = 40;
       }
 
-      v9->_resolution = v16;
+      v9->_resolution = intValue;
       v18 = [(PBBridgeCursiveTextPath *)v9 pathForFraction:1 calculateLength:0.0 startFraction:0.0];
       v9->_boundingBoxOfPath = CGPathGetPathBoundingBox(v18);
       CGPathRelease(v18);
-      v19 = [v7 objectForKeyedSubscript:@"enableErase"];
+      v19 = [optionsCopy objectForKeyedSubscript:@"enableErase"];
       v20 = v19;
       if (v19)
       {
@@ -74,7 +74,7 @@ LABEL_13:
       *buf = 136315394;
       v25 = "[PBBridgeCursiveTextPath initWithURL:options:]";
       v26 = 2112;
-      v27 = v6;
+      v27 = lCopy;
       _os_log_impl(&dword_25DE64000, v11, OS_LOG_TYPE_DEFAULT, "%s - No data loaded from URL: %@", buf, 0x16u);
     }
   }
@@ -86,15 +86,15 @@ LABEL_14:
   return v17;
 }
 
-- (CGAffineTransform)transformForRect:(SEL)a3 pointSize:(CGRect)a4 flipped:(double)a5
+- (CGAffineTransform)transformForRect:(SEL)rect pointSize:(CGRect)size flipped:(double)flipped
 {
   result = self->_pathDefinition;
   if (result)
   {
     v9 = a6;
-    height = a4.size.height;
-    width = a4.size.width;
-    v13 = [(CGAffineTransform *)result objectForKeyedSubscript:@"unitsPerEm", a4.origin.x, a4.origin.y];
+    height = size.size.height;
+    width = size.size.width;
+    v13 = [(CGAffineTransform *)result objectForKeyedSubscript:@"unitsPerEm", size.origin.x, size.origin.y];
     [v13 floatValue];
     v15 = v14;
 
@@ -108,7 +108,7 @@ LABEL_14:
 
     v22 = v18 - v21;
     v23 = -v21 / (v18 - v21);
-    v24 = v22 / v15 * a5;
+    v24 = v22 / v15 * flipped;
     v25 = (height - v24) * 0.5;
     *&v22 = v22;
     self->_lineHeight = *&v22;
@@ -129,15 +129,15 @@ LABEL_14:
     }
 
     v29 = v25 + v28 * v24;
-    v30 = a5 / v15;
+    v30 = flipped / v15;
     self->_scale = v30;
-    v31 = -(a5 / v15);
+    v31 = -(flipped / v15);
     if (!v9)
     {
-      v31 = a5 / v15;
+      v31 = flipped / v15;
     }
 
-    CGAffineTransformMakeScale(&t2, a5 / v15, v31);
+    CGAffineTransformMakeScale(&t2, flipped / v15, v31);
     v32 = *&retstr->c;
     *&v39.a = *&retstr->a;
     *&v39.c = v32;
@@ -196,9 +196,9 @@ LABEL_14:
   return result;
 }
 
-- (CGPath)pathForFraction:(float)a3 calculateLength:(BOOL)a4 startFraction:(float)a5
+- (CGPath)pathForFraction:(float)fraction calculateLength:(BOOL)length startFraction:(float)startFraction
 {
-  v6 = a4;
+  lengthCopy = length;
   v172 = *MEMORY[0x277D85DE8];
   duration = self->_duration;
   if (duration == 0.0)
@@ -213,7 +213,7 @@ LABEL_14:
 
   v136 = v10;
   v11 = 0x277CBE000uLL;
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = [(NSDictionary *)self->_pathDefinition objectForKeyedSubscript:@"scale"];
   v14 = v13;
   __asm { FMOV            V0.4S, #1.0 }
@@ -250,16 +250,16 @@ LABEL_14:
     v28 = v27;
     v29 = 0;
     v30 = 0;
-    v31 = -v136 + (v136 + 1.0) * a3;
-    v32 = a5 * 1.25 + -0.25;
+    v31 = -v136 + (v136 + 1.0) * fraction;
+    v32 = startFraction * 1.25 + -0.25;
     v33 = *v164;
-    v133 = (a5 * -0.5) + 1.0;
+    v133 = (startFraction * -0.5) + 1.0;
     v134 = v31;
     v135 = v136 + v31;
     v143 = 0u;
     v34 = 0.0;
     v123 = *v164;
-    v124 = v12;
+    v124 = array;
     do
     {
       v35 = 0;
@@ -272,7 +272,7 @@ LABEL_14:
 
         v125 = v35;
         v36 = *(*(&v163 + 1) + 8 * v35);
-        v37 = [*(v11 + 2840) array];
+        array2 = [*(v11 + 2840) array];
         v159 = 0u;
         v160 = 0u;
         v161 = 0u;
@@ -342,14 +342,14 @@ LABEL_21:
                   if (v60 >= v32)
                   {
                     path1a = v55;
-                    if (a5 <= 0.0)
+                    if (startFraction <= 0.0)
                     {
-                      v63 = a5;
+                      startFractionCopy = startFraction;
                       initialWeight = self->_initialWeight;
                       finalWeight = self->_finalWeight;
                       *&v62 = powf((1.0 - fminf(fmaxf((v60 - v134) / v136, 0.0), 1.0)) + -1.0, 3.0);
                       v66 = finalWeight - initialWeight;
-                      a5 = v63;
+                      startFraction = startFractionCopy;
                       *&v62 = initialWeight + ((*&v62 + 1.0) * v66);
                     }
 
@@ -359,10 +359,10 @@ LABEL_21:
                       *&v62 = ((powf(fminf(fmaxf((v60 - v32) * 4.0, 0.0), 1.0) + -1.0, 3.0) + 1.0) * (v61 + -0.2)) + 0.2;
                     }
 
-                    if (!v6 && v60 > v135)
+                    if (!lengthCopy && v60 > v135)
                     {
-                      v12 = v124;
-                      [v124 addObject:{v37, v62}];
+                      array = v124;
+                      [v124 addObject:{array2, v62}];
 
                       v26 = v127;
                       goto LABEL_41;
@@ -373,7 +373,7 @@ LABEL_21:
                     *&v69 = v67;
                     *&v70 = v34;
                     v71 = [(PathPoint *)v68 initWithP:*v144.i64 n:COERCE_DOUBLE(vbsl_s8(vdup_n_s32(0xFFFFFFFF) r:path1a l:0x3F80000000000000)), v69, v70];
-                    [v37 addObject:v71];
+                    [array2 addObject:v71];
                   }
 
                   ++v44;
@@ -401,7 +401,7 @@ LABEL_34:
             }
 
             v26 = v127;
-            v12 = v124;
+            array = v124;
             v11 = 0x277CBE000;
             v28 = v122;
             v128 = [obj countByEnumeratingWithState:&v159 objects:v170 count:16];
@@ -410,7 +410,7 @@ LABEL_34:
           while (v128);
         }
 
-        [v12 addObject:v37];
+        [array addObject:array2];
         v35 = v125 + 1;
         v33 = v123;
       }
@@ -429,7 +429,7 @@ LABEL_34:
 
 LABEL_41:
 
-  if (v6)
+  if (lengthCopy)
   {
     self->_length = v34;
   }
@@ -439,7 +439,7 @@ LABEL_41:
   v156 = 0u;
   v157 = 0u;
   v158 = 0u;
-  v137 = v12;
+  v137 = array;
   v72 = [v137 countByEnumeratingWithState:&v155 objects:v169 count:16];
   if (v72)
   {
@@ -520,8 +520,8 @@ LABEL_41:
           v150 = 0u;
           v147 = 0u;
           v148 = 0u;
-          v109 = [v88 reverseObjectEnumerator];
-          v110 = [v109 countByEnumeratingWithState:&v147 objects:v167 count:16];
+          reverseObjectEnumerator = [v88 reverseObjectEnumerator];
+          v110 = [reverseObjectEnumerator countByEnumeratingWithState:&v147 objects:v167 count:16];
           if (v110)
           {
             v111 = v110;
@@ -532,7 +532,7 @@ LABEL_41:
               {
                 if (*v148 != v112)
                 {
-                  objc_enumerationMutation(v109);
+                  objc_enumerationMutation(reverseObjectEnumerator);
                 }
 
                 v114 = *(*(&v147 + 1) + 8 * m);
@@ -545,7 +545,7 @@ LABEL_41:
                 CGPathAddLineToPoint(Mutable, 0, v119.f32[0], v119.f32[1]);
               }
 
-              v111 = [v109 countByEnumeratingWithState:&v147 objects:v167 count:16];
+              v111 = [reverseObjectEnumerator countByEnumeratingWithState:&v147 objects:v167 count:16];
             }
 
             while (v111);

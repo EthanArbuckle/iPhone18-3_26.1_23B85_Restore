@@ -1,22 +1,22 @@
 @interface CVNLPTextDecodingResultCandidate
-- (CVNLPTextDecodingResultCandidate)initWithTokens:(id)a3 score:(double)a4 activationScore:(double)a5;
+- (CVNLPTextDecodingResultCandidate)initWithTokens:(id)tokens score:(double)score activationScore:(double)activationScore;
 - (NSString)fullString;
 @end
 
 @implementation CVNLPTextDecodingResultCandidate
 
-- (CVNLPTextDecodingResultCandidate)initWithTokens:(id)a3 score:(double)a4 activationScore:(double)a5
+- (CVNLPTextDecodingResultCandidate)initWithTokens:(id)tokens score:(double)score activationScore:(double)activationScore
 {
-  v9 = a3;
+  tokensCopy = tokens;
   v13.receiver = self;
   v13.super_class = CVNLPTextDecodingResultCandidate;
   v10 = [(CVNLPTextDecodingResultCandidate *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_tokens, a3);
-    v11->_score = a4;
-    v11->_activationScore = a5;
+    objc_storeStrong(&v10->_tokens, tokens);
+    v11->_score = score;
+    v11->_activationScore = activationScore;
   }
 
   return v11;

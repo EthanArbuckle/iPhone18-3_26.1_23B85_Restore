@@ -1,7 +1,7 @@
 @interface VUIASDDialogObserver
 - (UIViewController)presenterViewController;
-- (void)handleAuthenticateRequest:(id)a3 resultHandler:(id)a4;
-- (void)handleDialogRequest:(id)a3 resultHandler:(id)a4;
+- (void)handleAuthenticateRequest:(id)request resultHandler:(id)handler;
+- (void)handleDialogRequest:(id)request resultHandler:(id)handler;
 - (void)startListening;
 - (void)stopListening;
 @end
@@ -10,29 +10,29 @@
 
 - (void)startListening
 {
-  v3 = [MEMORY[0x1E698B508] defaultCenter];
-  [v3 setDialogObserver:self];
+  defaultCenter = [MEMORY[0x1E698B508] defaultCenter];
+  [defaultCenter setDialogObserver:self];
 }
 
 - (void)stopListening
 {
-  v2 = [MEMORY[0x1E698B508] defaultCenter];
-  [v2 setDialogObserver:0];
+  defaultCenter = [MEMORY[0x1E698B508] defaultCenter];
+  [defaultCenter setDialogObserver:0];
 }
 
-- (void)handleAuthenticateRequest:(id)a3 resultHandler:(id)a4
+- (void)handleAuthenticateRequest:(id)request resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __64__VUIASDDialogObserver_handleAuthenticateRequest_resultHandler___block_invoke;
   v14 = &unk_1E872DE00;
   objc_copyWeak(&v17, &location);
-  v8 = v6;
+  v8 = requestCopy;
   v15 = v8;
-  v9 = v7;
+  v9 = handlerCopy;
   v16 = v9;
   v10 = &v11;
   if ([MEMORY[0x1E696AF00] isMainThread])
@@ -100,19 +100,19 @@ void __64__VUIASDDialogObserver_handleAuthenticateRequest_resultHandler___block_
   }
 }
 
-- (void)handleDialogRequest:(id)a3 resultHandler:(id)a4
+- (void)handleDialogRequest:(id)request resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __58__VUIASDDialogObserver_handleDialogRequest_resultHandler___block_invoke;
   v14 = &unk_1E872DE00;
   objc_copyWeak(&v17, &location);
-  v8 = v6;
+  v8 = requestCopy;
   v15 = v8;
-  v9 = v7;
+  v9 = handlerCopy;
   v16 = v9;
   v10 = &v11;
   if ([MEMORY[0x1E696AF00] isMainThread])

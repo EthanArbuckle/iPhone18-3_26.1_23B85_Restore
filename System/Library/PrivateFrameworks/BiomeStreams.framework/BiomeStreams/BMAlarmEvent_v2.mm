@@ -1,18 +1,18 @@
 @interface BMAlarmEvent_v2
-- (BMAlarmEvent_v2)initWithProto:(id)a3;
+- (BMAlarmEvent_v2)initWithProto:(id)proto;
 @end
 
 @implementation BMAlarmEvent_v2
 
-- (BMAlarmEvent_v2)initWithProto:(id)a3
+- (BMAlarmEvent_v2)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       v6 = [v5 eventType]- 1;
       if (v6 >= 6)
       {
@@ -43,11 +43,11 @@
       }
 
       v12 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v13 = [v5 alarmID];
-      v14 = [v12 initWithUUIDString:v13];
+      alarmID = [v5 alarmID];
+      v14 = [v12 initWithUUIDString:alarmID];
       self = [(BMAlarmEvent *)self initWithEventType:v7 lastEventType:v10 alarmID:v14 isSleepAlarm:[v5 isSleepAlarm]];
 
-      v8 = self;
+      selfCopy = self;
     }
 
     else
@@ -58,16 +58,16 @@
         [BMAlarmEvent initWithProto:];
       }
 
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

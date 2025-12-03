@@ -1,12 +1,12 @@
 @interface CDCSKClient
 - (OS_dispatch_queue)dispatchQueue;
 - (_TtC10companiond11CDCSKClient)init;
-- (_TtC10companiond11CDCSKClient)initWithBluetoothDevice:(id)a3 discoveryType:(int)a4;
+- (_TtC10companiond11CDCSKClient)initWithBluetoothDevice:(id)device discoveryType:(int)type;
 - (id)setupNotNeededHandler;
 - (void)activate;
 - (void)invalidate;
-- (void)setDispatchQueue:(id)a3;
-- (void)setSetupNotNeededHandler:(id)a3;
+- (void)setDispatchQueue:(id)queue;
+- (void)setSetupNotNeededHandler:(id)handler;
 @end
 
 @implementation CDCSKClient
@@ -18,13 +18,13 @@
   return *(self + v3);
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
   v5 = OBJC_IVAR____TtC10companiond11CDCSKClient_dispatchQueue;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = queue;
+  queueCopy = queue;
 }
 
 - (id)setupNotNeededHandler
@@ -51,9 +51,9 @@
   return v4;
 }
 
-- (void)setSetupNotNeededHandler:(id)a3
+- (void)setSetupNotNeededHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -72,22 +72,22 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_100025C1C(v7);
 }
 
-- (_TtC10companiond11CDCSKClient)initWithBluetoothDevice:(id)a3 discoveryType:(int)a4
+- (_TtC10companiond11CDCSKClient)initWithBluetoothDevice:(id)device discoveryType:(int)type
 {
   *(self + OBJC_IVAR____TtC10companiond11CDCSKClient_invalidateDone) = 0;
   v7 = OBJC_IVAR____TtC10companiond11CDCSKClient_dispatchQueue;
   sub_100025DE4();
-  v8 = a3;
+  deviceCopy = device;
   *(self + v7) = static OS_dispatch_queue.main.getter();
   v9 = (self + OBJC_IVAR____TtC10companiond11CDCSKClient_setupNotNeededHandler);
   *v9 = 0;
   v9[1] = 0;
-  *(self + OBJC_IVAR____TtC10companiond11CDCSKClient_bluetoothDevice) = v8;
-  *(self + OBJC_IVAR____TtC10companiond11CDCSKClient_discoveryType) = a4;
+  *(self + OBJC_IVAR____TtC10companiond11CDCSKClient_bluetoothDevice) = deviceCopy;
+  *(self + OBJC_IVAR____TtC10companiond11CDCSKClient_discoveryType) = type;
   v11.receiver = self;
   v11.super_class = type metadata accessor for CDCSKClient();
   return [(CDCSKClient *)&v11 init];
@@ -95,13 +95,13 @@
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   CDCSKClient.activate()();
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   CDCSKClient.invalidate()();
 }
 

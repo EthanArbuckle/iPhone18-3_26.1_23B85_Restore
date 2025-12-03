@@ -2,8 +2,8 @@
 + (id)hmbProperties;
 - (int64_t)currentAccessModeChangeReason;
 - (unint64_t)currentAccessMode;
-- (void)setCurrentAccessMode:(unint64_t)a3;
-- (void)setCurrentAccessModeChangeReason:(int64_t)a3;
+- (void)setCurrentAccessMode:(unint64_t)mode;
+- (void)setCurrentAccessModeChangeReason:(int64_t)reason;
 @end
 
 @implementation HMDCameraProfileSettingsDerivedPropertiesModel
@@ -41,33 +41,33 @@ void __63__HMDCameraProfileSettingsDerivedPropertiesModel_hmbProperties__block_i
 
 - (int64_t)currentAccessModeChangeReason
 {
-  v2 = [(HMDCameraProfileSettingsDerivedPropertiesModel *)self currentAccessModeChangeReasonField];
-  v3 = [v2 unsignedIntegerValue];
+  currentAccessModeChangeReasonField = [(HMDCameraProfileSettingsDerivedPropertiesModel *)self currentAccessModeChangeReasonField];
+  unsignedIntegerValue = [currentAccessModeChangeReasonField unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setCurrentAccessModeChangeReason:(int64_t)a3
+- (void)setCurrentAccessModeChangeReason:(int64_t)reason
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:reason];
   [(HMDCameraProfileSettingsDerivedPropertiesModel *)self setCurrentAccessModeChangeReasonField:v4];
 }
 
 - (unint64_t)currentAccessMode
 {
-  v2 = [(HMDCameraProfileSettingsDerivedPropertiesModel *)self currentAccessModeField];
-  v3 = [v2 unsignedIntegerValue];
+  currentAccessModeField = [(HMDCameraProfileSettingsDerivedPropertiesModel *)self currentAccessModeField];
+  unsignedIntegerValue = [currentAccessModeField unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setCurrentAccessMode:(unint64_t)a3
+- (void)setCurrentAccessMode:(unint64_t)mode
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:mode];
   [(HMDCameraProfileSettingsDerivedPropertiesModel *)self setCurrentAccessModeField:v4];
 
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(HMDCameraProfileSettingsDerivedPropertiesModel *)self setCurrentAccessModeChangeDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(HMDCameraProfileSettingsDerivedPropertiesModel *)self setCurrentAccessModeChangeDate:date];
 }
 
 @end

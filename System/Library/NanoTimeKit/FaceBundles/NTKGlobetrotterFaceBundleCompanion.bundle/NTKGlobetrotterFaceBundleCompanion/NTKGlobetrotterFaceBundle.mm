@@ -1,34 +1,34 @@
 @interface NTKGlobetrotterFaceBundle
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryEditOptionsForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryEditOptionsForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
 @end
 
 @implementation NTKGlobetrotterFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKGlobetrotterFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKGlobetrotterFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if (([v4 supportsPDRCapability:360081074] & 1) != 0 || !objc_msgSend(v4, "supportsPDRCapability:", 4094027452))
+  deviceCopy = device;
+  if (([deviceCopy supportsPDRCapability:360081074] & 1) != 0 || !objc_msgSend(deviceCopy, "supportsPDRCapability:", 4094027452))
   {
     v9 = &__NSArray0__struct;
   }
 
   else
   {
-    if ([v4 deviceCategory] == &dword_0 + 3)
+    if ([deviceCopy deviceCategory] == &dword_0 + 3)
     {
       v5 = 100;
     }
@@ -38,7 +38,7 @@
       v5 = 200;
     }
 
-    v6 = [(NTKGlobetrotterFaceBundle *)self defaultFaceForDevice:v4];
+    v6 = [(NTKGlobetrotterFaceBundle *)self defaultFaceForDevice:deviceCopy];
     v7 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v6 priority:v5];
     v8 = v7;
     if (v7)
@@ -56,19 +56,19 @@
   return v9;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
   v5.receiver = self;
   v5.super_class = NTKGlobetrotterFaceBundle;
-  v3 = [(NTKGlobetrotterFaceBundle *)&v5 galleryFacesForDevice:a3];
+  v3 = [(NTKGlobetrotterFaceBundle *)&v5 galleryFacesForDevice:device];
   [v3 enumerateObjectsUsingBlock:&stru_10510];
 
   return v3;
 }
 
-- (id)galleryEditOptionsForDevice:(id)a3
+- (id)galleryEditOptionsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5[0] = &off_115B0;
     v5[1] = &off_115F8;
@@ -85,9 +85,9 @@
   return v3;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5[0] = ntk_evergreen_navyBlue;
     v5[1] = ntk_evergreen_white;

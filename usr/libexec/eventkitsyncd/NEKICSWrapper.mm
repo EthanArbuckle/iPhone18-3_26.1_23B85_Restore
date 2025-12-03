@@ -1,65 +1,65 @@
 @interface NEKICSWrapper
-+ (void)setAllPropertiesForItem:(id)a3 identifier:(id)a4 wrapper:(id)a5 needsInvite:(id)a6 eventStore:(id)a7 calendar:(id)a8;
-+ (void)setAllPropertiesForReminder:(id)a3 identifier:(id)a4 wrapper:(id)a5 store:(id)a6 list:(id)a7 oldListIdentifier:(id)a8;
-+ (void)setMinimalPropertiesForItem:(id)a3 identifier:(id)a4 wrapper:(id)a5;
-+ (void)setMinimalPropertiesForReminder:(id)a3 identifier:(id)a4 wrapper:(id)a5;
-+ (void)setPropertiesForWrapper:(id)a3 withCalendarItems:(id)a4 needsInvite:(id)a5 sendAllProperties:(BOOL)a6 eventStore:(id)a7 calendar:(id)a8 originalEvent:(id)a9;
-+ (void)setPropertiesForWrapper:(id)a3 withReminders:(id)a4 oldListIdentifier:(id)a5 sendAllProperties:(BOOL)a6 store:(id)a7 list:(id)a8;
-- (BOOL)attendeeCommentForIdentifier:(id)a3;
-- (BOOL)attendeeStatusFlagForIdentifier:(id)a3;
-- (BOOL)dateChangedForIdentifier:(id)a3;
-- (BOOL)hasPropertiesForIdentifier:(id)a3;
-- (BOOL)locationChangedForIdentifier:(id)a3;
-- (BOOL)timeChangedForIdentifier:(id)a3;
-- (BOOL)titleChangedForIdentifier:(id)a3;
++ (void)setAllPropertiesForItem:(id)item identifier:(id)identifier wrapper:(id)wrapper needsInvite:(id)invite eventStore:(id)store calendar:(id)calendar;
++ (void)setAllPropertiesForReminder:(id)reminder identifier:(id)identifier wrapper:(id)wrapper store:(id)store list:(id)list oldListIdentifier:(id)listIdentifier;
++ (void)setMinimalPropertiesForItem:(id)item identifier:(id)identifier wrapper:(id)wrapper;
++ (void)setMinimalPropertiesForReminder:(id)reminder identifier:(id)identifier wrapper:(id)wrapper;
++ (void)setPropertiesForWrapper:(id)wrapper withCalendarItems:(id)items needsInvite:(id)invite sendAllProperties:(BOOL)properties eventStore:(id)store calendar:(id)calendar originalEvent:(id)event;
++ (void)setPropertiesForWrapper:(id)wrapper withReminders:(id)reminders oldListIdentifier:(id)identifier sendAllProperties:(BOOL)properties store:(id)store list:(id)list;
+- (BOOL)attendeeCommentForIdentifier:(id)identifier;
+- (BOOL)attendeeStatusFlagForIdentifier:(id)identifier;
+- (BOOL)dateChangedForIdentifier:(id)identifier;
+- (BOOL)hasPropertiesForIdentifier:(id)identifier;
+- (BOOL)locationChangedForIdentifier:(id)identifier;
+- (BOOL)timeChangedForIdentifier:(id)identifier;
+- (BOOL)titleChangedForIdentifier:(id)identifier;
 - (NSData)ICSData;
 - (NSDictionary)startDateMap;
 - (id)ICSWrapperMetadata;
 - (id)description;
-- (id)externalIDForIdentifier:(id)a3;
-- (id)invitationStatusForIdentifier:(id)a3;
-- (id)locationPredictionStateForIdentifier:(id)a3;
+- (id)externalIDForIdentifier:(id)identifier;
+- (id)invitationStatusForIdentifier:(id)identifier;
+- (id)locationPredictionStateForIdentifier:(id)identifier;
 - (id)objectIdentifier;
-- (id)properInvitationStatusForIdentifier:(id)a3;
-- (id)selfAttendeeEmailForIdentifier:(id)a3;
-- (id)selfAttendeeUUIDForIdentifier:(id)a3;
-- (id)selfOrganizerEmailForIdentifier:(id)a3;
-- (id)selfOrganizerUUIDForIdentifier:(id)a3;
-- (id)settablePropertiesForCalendarItemIdentifier:(id)a3;
-- (id)startDateForIdentifier:(id)a3;
-- (int64_t)attendeeStatusForIdentifier:(id)a3;
-- (int64_t)objectTypeForCalendarItemWithIdentifier:(id)a3;
-- (unint64_t)entityTypeForCalendarItemWithIdentifier:(id)a3;
-- (void)enumerateCalendarItemIdentifiersUsingBlock:(id)a3;
-- (void)setAttendeeStatus:(int64_t)a3 forIdentifier:(id)a4;
-- (void)setExternalID:(id)a3 forIdentifier:(id)a4;
-- (void)setICSData:(id)a3;
-- (void)setInvitationStatus:(unint64_t)a3 forIdentifier:(id)a4;
-- (void)setLocationPredictionState:(int64_t)a3 forIdentifier:(id)a4;
-- (void)setMetadata:(id)a3 forCalendarItemIdentifier:(id)a4;
-- (void)setProperInvitationStatus:(unint64_t)a3 forIdentifier:(id)a4;
-- (void)setSelfAttendeeEmail:(id)a3 forIdentifier:(id)a4;
-- (void)setSelfAttendeeUUID:(id)a3 forIdentifier:(id)a4;
-- (void)setSelfOrganizerEmail:(id)a3 forIdentifier:(id)a4;
-- (void)setSelfOrganizerUUID:(id)a3 forIdentifier:(id)a4;
-- (void)setStartDate:(id)a3 forIdentifier:(id)a4;
+- (id)properInvitationStatusForIdentifier:(id)identifier;
+- (id)selfAttendeeEmailForIdentifier:(id)identifier;
+- (id)selfAttendeeUUIDForIdentifier:(id)identifier;
+- (id)selfOrganizerEmailForIdentifier:(id)identifier;
+- (id)selfOrganizerUUIDForIdentifier:(id)identifier;
+- (id)settablePropertiesForCalendarItemIdentifier:(id)identifier;
+- (id)startDateForIdentifier:(id)identifier;
+- (int64_t)attendeeStatusForIdentifier:(id)identifier;
+- (int64_t)objectTypeForCalendarItemWithIdentifier:(id)identifier;
+- (unint64_t)entityTypeForCalendarItemWithIdentifier:(id)identifier;
+- (void)enumerateCalendarItemIdentifiersUsingBlock:(id)block;
+- (void)setAttendeeStatus:(int64_t)status forIdentifier:(id)identifier;
+- (void)setExternalID:(id)d forIdentifier:(id)identifier;
+- (void)setICSData:(id)data;
+- (void)setInvitationStatus:(unint64_t)status forIdentifier:(id)identifier;
+- (void)setLocationPredictionState:(int64_t)state forIdentifier:(id)identifier;
+- (void)setMetadata:(id)metadata forCalendarItemIdentifier:(id)identifier;
+- (void)setProperInvitationStatus:(unint64_t)status forIdentifier:(id)identifier;
+- (void)setSelfAttendeeEmail:(id)email forIdentifier:(id)identifier;
+- (void)setSelfAttendeeUUID:(id)d forIdentifier:(id)identifier;
+- (void)setSelfOrganizerEmail:(id)email forIdentifier:(id)identifier;
+- (void)setSelfOrganizerUUID:(id)d forIdentifier:(id)identifier;
+- (void)setStartDate:(id)date forIdentifier:(id)identifier;
 @end
 
 @implementation NEKICSWrapper
 
 - (id)ICSWrapperMetadata
 {
-  v2 = [(NEKICSWrapper *)self properties];
-  v3 = [v2 allValues];
+  properties = [(NEKICSWrapper *)self properties];
+  allValues = [properties allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (NSData)ICSData
 {
   if (self->_zICSData)
   {
-    v2 = [(NSData *)self->_zICSData NEKFluff];
+    nEKFluff = [(NSData *)self->_zICSData NEKFluff];
   }
 
   else
@@ -67,46 +67,46 @@
     rICSData = self->_rICSData;
     if (rICSData)
     {
-      v2 = rICSData;
+      nEKFluff = rICSData;
     }
 
     else
     {
-      v2 = 0;
+      nEKFluff = 0;
     }
   }
 
-  return v2;
+  return nEKFluff;
 }
 
-- (void)setICSData:(id)a3
+- (void)setICSData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v5 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
       v12[0] = 67109120;
-      v12[1] = [v4 length];
+      v12[1] = [dataCopy length];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Setting ICS, len:%d", v12, 8u);
     }
 
-    if ([v4 length] < 0x800)
+    if ([dataCopy length] < 0x800)
     {
       zICSData = self->_zICSData;
       self->_zICSData = 0;
 
-      v11 = [v4 copy];
+      v11 = [dataCopy copy];
       rICSData = self->_rICSData;
       self->_rICSData = v11;
       goto LABEL_9;
     }
 
-    v7 = [v4 NEKSqueeze];
+    nEKSqueeze = [dataCopy NEKSqueeze];
     v8 = self->_zICSData;
-    self->_zICSData = v7;
+    self->_zICSData = nEKSqueeze;
   }
 
   else
@@ -136,32 +136,32 @@ LABEL_9:
   return v3;
 }
 
-- (id)settablePropertiesForCalendarItemIdentifier:(id)a3
+- (id)settablePropertiesForCalendarItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_properties objectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_properties objectForKey:identifierCopy];
   if (!v5)
   {
     v5 = objc_alloc_init(NEKICSWrapperMetadata);
-    [(NSMutableDictionary *)self->_properties setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_properties setObject:v5 forKey:identifierCopy];
   }
 
   return v5;
 }
 
-- (BOOL)hasPropertiesForIdentifier:(id)a3
+- (BOOL)hasPropertiesForIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:identifier];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)setMetadata:(id)a3 forCalendarItemIdentifier:(id)a4
+- (void)setMetadata:(id)metadata forCalendarItemIdentifier:(id)identifier
 {
-  if (a3)
+  if (metadata)
   {
-    if (a4)
+    if (identifier)
     {
       [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
     }
@@ -195,8 +195,8 @@ LABEL_9:
 
           v10 = *(*(&v16 + 1) + 8 * i);
           v11 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:v10];
-          v12 = [v11 startDate];
-          [v4 setObject:v10 forKey:v12];
+          startDate = [v11 startDate];
+          [v4 setObject:v10 forKey:startDate];
         }
 
         v7 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -215,142 +215,142 @@ LABEL_9:
   return startDateMap;
 }
 
-- (BOOL)dateChangedForIdentifier:(id)a3
+- (BOOL)dateChangedForIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
-  v4 = [v3 dateChanged];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
+  dateChanged = [v3 dateChanged];
 
-  return v4;
+  return dateChanged;
 }
 
-- (BOOL)timeChangedForIdentifier:(id)a3
+- (BOOL)timeChangedForIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
-  v4 = [v3 timeChanged];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
+  timeChanged = [v3 timeChanged];
 
-  return v4;
+  return timeChanged;
 }
 
-- (BOOL)titleChangedForIdentifier:(id)a3
+- (BOOL)titleChangedForIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
-  v4 = [v3 titleChanged];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
+  titleChanged = [v3 titleChanged];
 
-  return v4;
+  return titleChanged;
 }
 
-- (BOOL)locationChangedForIdentifier:(id)a3
+- (BOOL)locationChangedForIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
-  v4 = [v3 locationChanged];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
+  locationChanged = [v3 locationChanged];
 
-  return v4;
+  return locationChanged;
 }
 
-- (BOOL)attendeeCommentForIdentifier:(id)a3
+- (BOOL)attendeeCommentForIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
-  v4 = [v3 attendeeComment];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
+  attendeeComment = [v3 attendeeComment];
 
-  return v4;
+  return attendeeComment;
 }
 
-- (void)setSelfAttendeeEmail:(id)a3 forIdentifier:(id)a4
+- (void)setSelfAttendeeEmail:(id)email forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v8 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:a4];
-  v7 = sub_100003498(v6);
+  emailCopy = email;
+  v8 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:identifier];
+  v7 = sub_100003498(emailCopy);
 
   [v8 setSelfAttendeeEmail:v7];
 }
 
-- (id)selfAttendeeEmailForIdentifier:(id)a3
+- (id)selfAttendeeEmailForIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
-  v4 = [v3 selfAttendeeEmail];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
+  selfAttendeeEmail = [v3 selfAttendeeEmail];
 
-  return v4;
+  return selfAttendeeEmail;
 }
 
-- (void)setSelfAttendeeUUID:(id)a3 forIdentifier:(id)a4
+- (void)setSelfAttendeeUUID:(id)d forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v8 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:a4];
-  v7 = sub_100003498(v6);
+  dCopy = d;
+  v8 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:identifier];
+  v7 = sub_100003498(dCopy);
 
   [v8 setSelfAttendeeUUID:v7];
 }
 
-- (id)selfAttendeeUUIDForIdentifier:(id)a3
+- (id)selfAttendeeUUIDForIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
-  v4 = [v3 selfAttendeeUUID];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
+  selfAttendeeUUID = [v3 selfAttendeeUUID];
 
-  return v4;
+  return selfAttendeeUUID;
 }
 
-- (void)setSelfOrganizerEmail:(id)a3 forIdentifier:(id)a4
+- (void)setSelfOrganizerEmail:(id)email forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v8 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:a4];
-  v7 = sub_100003498(v6);
+  emailCopy = email;
+  v8 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:identifier];
+  v7 = sub_100003498(emailCopy);
 
   [v8 setSelfOrganizerEmail:v7];
 }
 
-- (id)selfOrganizerEmailForIdentifier:(id)a3
+- (id)selfOrganizerEmailForIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
-  v4 = [v3 selfOrganizerEmail];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
+  selfOrganizerEmail = [v3 selfOrganizerEmail];
 
-  return v4;
+  return selfOrganizerEmail;
 }
 
-- (void)setSelfOrganizerUUID:(id)a3 forIdentifier:(id)a4
+- (void)setSelfOrganizerUUID:(id)d forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v8 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:a4];
-  v7 = sub_100003498(v6);
+  dCopy = d;
+  v8 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:identifier];
+  v7 = sub_100003498(dCopy);
 
   [v8 setSelfOrganizerUUID:v7];
 }
 
-- (id)selfOrganizerUUIDForIdentifier:(id)a3
+- (id)selfOrganizerUUIDForIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
-  v4 = [v3 selfOrganizerUUID];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
+  selfOrganizerUUID = [v3 selfOrganizerUUID];
 
-  return v4;
+  return selfOrganizerUUID;
 }
 
-- (void)setInvitationStatus:(unint64_t)a3 forIdentifier:(id)a4
+- (void)setInvitationStatus:(unint64_t)status forIdentifier:(id)identifier
 {
-  v5 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:a4];
-  [v5 setInvitationStatus:a3];
+  v5 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:identifier];
+  [v5 setInvitationStatus:status];
 }
 
-- (id)invitationStatusForIdentifier:(id)a3
+- (id)invitationStatusForIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
   v4 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 invitationStatus]);
 
   return v4;
 }
 
-- (void)setProperInvitationStatus:(unint64_t)a3 forIdentifier:(id)a4
+- (void)setProperInvitationStatus:(unint64_t)status forIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:v6];
-  [v7 setProperInvitationStatus:a3];
+  identifierCopy = identifier;
+  v7 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:identifierCopy];
+  [v7 setProperInvitationStatus:status];
 
-  v8 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:v6];
+  v8 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:identifierCopy];
 
   [v8 setHasProperInvitationStatus:1];
 }
 
-- (id)properInvitationStatusForIdentifier:(id)a3
+- (id)properInvitationStatusForIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
   if ([v3 hasProperInvitationStatus])
   {
     v4 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 properInvitationStatus]);
@@ -364,81 +364,81 @@ LABEL_9:
   return v4;
 }
 
-- (void)setLocationPredictionState:(int64_t)a3 forIdentifier:(id)a4
+- (void)setLocationPredictionState:(int64_t)state forIdentifier:(id)identifier
 {
-  v5 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:a4];
-  [v5 setLocationPredictionState:a3];
+  v5 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:identifier];
+  [v5 setLocationPredictionState:state];
 }
 
-- (id)locationPredictionStateForIdentifier:(id)a3
+- (id)locationPredictionStateForIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
   v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 locationPredictionState]);
 
   return v4;
 }
 
-- (void)setAttendeeStatus:(int64_t)a3 forIdentifier:(id)a4
+- (void)setAttendeeStatus:(int64_t)status forIdentifier:(id)identifier
 {
-  v5 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:a4];
-  [v5 setAttendeeStatus:a3];
+  v5 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:identifier];
+  [v5 setAttendeeStatus:status];
 }
 
-- (int64_t)attendeeStatusForIdentifier:(id)a3
+- (int64_t)attendeeStatusForIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
-  v4 = [v3 attendeeStatus];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
+  attendeeStatus = [v3 attendeeStatus];
 
-  return v4;
+  return attendeeStatus;
 }
 
-- (BOOL)attendeeStatusFlagForIdentifier:(id)a3
+- (BOOL)attendeeStatusFlagForIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
-  v4 = [v3 attendeeStatusFlag];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
+  attendeeStatusFlag = [v3 attendeeStatusFlag];
 
-  return v4;
+  return attendeeStatusFlag;
 }
 
-- (void)setExternalID:(id)a3 forIdentifier:(id)a4
+- (void)setExternalID:(id)d forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:a4];
-  [v7 setExternalID:v6];
+  dCopy = d;
+  v7 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:identifier];
+  [v7 setExternalID:dCopy];
 }
 
-- (id)externalIDForIdentifier:(id)a3
+- (id)externalIDForIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
-  v4 = [v3 externalID];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
+  externalID = [v3 externalID];
 
-  return v4;
+  return externalID;
 }
 
-- (void)setStartDate:(id)a3 forIdentifier:(id)a4
+- (void)setStartDate:(id)date forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:a4];
-  [v7 setStartDate:v6];
+  dateCopy = date;
+  v7 = [(NEKICSWrapper *)self settablePropertiesForCalendarItemIdentifier:identifier];
+  [v7 setStartDate:dateCopy];
 }
 
-- (id)startDateForIdentifier:(id)a3
+- (id)startDateForIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
-  v4 = [v3 startDate];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
+  startDate = [v3 startDate];
 
-  return v4;
+  return startDate;
 }
 
-- (void)enumerateCalendarItemIdentifiersUsingBlock:(id)a3
+- (void)enumerateCalendarItemIdentifiersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMutableDictionary *)self->_properties keyEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  keyEnumerator = [(NSMutableDictionary *)self->_properties keyEnumerator];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -450,33 +450,33 @@ LABEL_9:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9));
+        blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9));
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (unint64_t)entityTypeForCalendarItemWithIdentifier:(id)a3
+- (unint64_t)entityTypeForCalendarItemWithIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
-  v4 = [v3 entityType];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
+  entityType = [v3 entityType];
 
   v5 = 1;
-  if (v4 != 3)
+  if (entityType != 3)
   {
     v5 = -1;
   }
 
-  if (v4 == 2)
+  if (entityType == 2)
   {
     return 0;
   }
@@ -487,12 +487,12 @@ LABEL_9:
   }
 }
 
-- (int64_t)objectTypeForCalendarItemWithIdentifier:(id)a3
+- (int64_t)objectTypeForCalendarItemWithIdentifier:(id)identifier
 {
-  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:a3];
-  v4 = [v3 entityType];
+  v3 = [(NEKICSWrapper *)self propertiesForCalendarItemIdentifier:identifier];
+  entityType = [v3 entityType];
 
-  if (v4 == 1)
+  if (entityType == 1)
   {
     return 3;
   }
@@ -510,101 +510,101 @@ LABEL_9:
     v13 = objc_opt_class();
     v5 = NSStringFromClass(v13);
     calendarIdentifier = self->_calendarIdentifier;
-    v9 = [(NEKICSWrapper *)self oldCalendarIdentifier];
-    v10 = [NSNumber numberWithInteger:self->_calendarItemCount];
-    v12 = [NSString stringWithFormat:@"<%@ %p, calendarIdentifier = %@ oldCalendarIdentifier = %@; count = %@>", v5, self, calendarIdentifier, v9, v10];;
+    oldCalendarIdentifier = [(NEKICSWrapper *)self oldCalendarIdentifier];
+    title2 = [NSNumber numberWithInteger:self->_calendarItemCount];
+    v12 = [NSString stringWithFormat:@"<%@ %p, calendarIdentifier = %@ oldCalendarIdentifier = %@; count = %@>", v5, self, calendarIdentifier, oldCalendarIdentifier, title2];;
     goto LABEL_5;
   }
 
-  v3 = [(NEKICSWrapper *)self title];
+  title = [(NEKICSWrapper *)self title];
 
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   syncId = self->_syncId;
   v7 = self->_calendarIdentifier;
-  v8 = [(NEKICSWrapper *)self oldCalendarIdentifier];
-  v9 = v8;
-  if (v3)
+  oldCalendarIdentifier2 = [(NEKICSWrapper *)self oldCalendarIdentifier];
+  oldCalendarIdentifier = oldCalendarIdentifier2;
+  if (title)
   {
-    v10 = [(NEKICSWrapper *)self title];
-    v11 = sub_10002CDF8(v10);
-    v12 = [NSString stringWithFormat:@"<%@ %p identifier=%@; calendarIdentifier=%@; oldCalendarIdentifier=%@; title='%@'>", v5, self, syncId, v7, v9, v11];;
+    title2 = [(NEKICSWrapper *)self title];
+    v11 = sub_10002CDF8(title2);
+    v12 = [NSString stringWithFormat:@"<%@ %p identifier=%@; calendarIdentifier=%@; oldCalendarIdentifier=%@; title='%@'>", v5, self, syncId, v7, oldCalendarIdentifier, v11];;
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v12 = [NSString stringWithFormat:@"<%@ %p identifier=%@; calendarIdentifier=%@; oldCalendarIdentifier=%@>", v5, self, syncId, v7, v8];;
+  v12 = [NSString stringWithFormat:@"<%@ %p identifier=%@; calendarIdentifier=%@; oldCalendarIdentifier=%@>", v5, self, syncId, v7, oldCalendarIdentifier2];;
 LABEL_6:
 
   return v12;
 }
 
-+ (void)setAllPropertiesForReminder:(id)a3 identifier:(id)a4 wrapper:(id)a5 store:(id)a6 list:(id)a7 oldListIdentifier:(id)a8
++ (void)setAllPropertiesForReminder:(id)reminder identifier:(id)identifier wrapper:(id)wrapper store:(id)store list:(id)list oldListIdentifier:(id)listIdentifier
 {
-  v19 = a4;
-  v12 = a5;
-  v13 = a7;
-  v14 = a8;
-  v15 = [a3 externalIdentifier];
-  if (v15)
+  identifierCopy = identifier;
+  wrapperCopy = wrapper;
+  listCopy = list;
+  listIdentifierCopy = listIdentifier;
+  externalIdentifier = [reminder externalIdentifier];
+  if (externalIdentifier)
   {
-    [v12 setExternalID:v15 forIdentifier:v19];
+    [wrapperCopy setExternalID:externalIdentifier forIdentifier:identifierCopy];
   }
 
-  if (v14)
+  if (listIdentifierCopy)
   {
-    [v12 setOldCalendarIdentifier:v14];
+    [wrapperCopy setOldCalendarIdentifier:listIdentifierCopy];
   }
 
   else
   {
-    v16 = [v13 objectID];
-    v17 = [v16 uuid];
-    v18 = [v17 UUIDString];
-    [v12 setOldCalendarIdentifier:v18];
+    objectID = [listCopy objectID];
+    uuid = [objectID uuid];
+    uUIDString = [uuid UUIDString];
+    [wrapperCopy setOldCalendarIdentifier:uUIDString];
   }
 }
 
-+ (void)setMinimalPropertiesForReminder:(id)a3 identifier:(id)a4 wrapper:(id)a5
++ (void)setMinimalPropertiesForReminder:(id)reminder identifier:(id)identifier wrapper:(id)wrapper
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 isCompleted])
+  reminderCopy = reminder;
+  identifierCopy = identifier;
+  wrapperCopy = wrapper;
+  if ([reminderCopy isCompleted])
   {
-    v10 = [v7 completionDate];
-    [v9 setTaskCompleted:1];
-    [v10 timeIntervalSinceReferenceDate];
-    [v9 setTaskCompletionDate:?];
+    completionDate = [reminderCopy completionDate];
+    [wrapperCopy setTaskCompleted:1];
+    [completionDate timeIntervalSinceReferenceDate];
+    [wrapperCopy setTaskCompletionDate:?];
     v11 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543618;
-      v13 = v8;
+      v13 = identifierCopy;
       v14 = 2114;
-      v15 = v10;
+      v15 = completionDate;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Setting task with identifier %{public}@ as completed, completion date is %{public}@", &v12, 0x16u);
     }
   }
 }
 
-+ (void)setPropertiesForWrapper:(id)a3 withReminders:(id)a4 oldListIdentifier:(id)a5 sendAllProperties:(BOOL)a6 store:(id)a7 list:(id)a8
++ (void)setPropertiesForWrapper:(id)wrapper withReminders:(id)reminders oldListIdentifier:(id)identifier sendAllProperties:(BOOL)properties store:(id)store list:(id)list
 {
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = v10;
-  v18 = a1;
-  v49 = v16;
-  v48 = a7;
-  v47 = a8;
+  propertiesCopy = properties;
+  wrapperCopy = wrapper;
+  remindersCopy = reminders;
+  identifierCopy = identifier;
+  v17 = propertiesCopy;
+  selfCopy = self;
+  v49 = identifierCopy;
+  storeCopy = store;
+  listCopy = list;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v15;
+  obj = remindersCopy;
   v19 = [obj countByEnumeratingWithState:&v52 objects:v62 count:16];
   if (v19)
   {
@@ -613,7 +613,7 @@ LABEL_6:
     *&v20 = 138543618;
     v44 = v20;
     v45 = v17;
-    v46 = a1;
+    selfCopy2 = self;
     do
     {
       v22 = 0;
@@ -626,12 +626,12 @@ LABEL_6:
 
         v23 = *(*(&v52 + 1) + 8 * v22);
         v24 = objc_autoreleasePoolPush();
-        v25 = [v23 daCalendarItemUniqueIdentifier];
-        if (v25)
+        daCalendarItemUniqueIdentifier = [v23 daCalendarItemUniqueIdentifier];
+        if (daCalendarItemUniqueIdentifier)
         {
-          v26 = v25;
+          uUIDString = daCalendarItemUniqueIdentifier;
 LABEL_11:
-          v30 = [v14 settablePropertiesForCalendarItemIdentifier:{v26, v44}];
+          v30 = [wrapperCopy settablePropertiesForCalendarItemIdentifier:{uUIDString, v44}];
           [v30 setEntityType:1];
           if (os_variant_has_internal_diagnostics())
           {
@@ -642,20 +642,20 @@ LABEL_11:
               if (v32)
               {
                 v33 = v31;
-                v34 = [v23 eks_debugDesc];
-                v35 = [v23 daCalendarItemUniqueIdentifier];
+                eks_debugDesc = [v23 eks_debugDesc];
+                daCalendarItemUniqueIdentifier2 = [v23 daCalendarItemUniqueIdentifier];
                 *buf = 138412546;
-                v57 = v34;
+                v57 = eks_debugDesc;
                 v58 = 2114;
-                v59 = v35;
+                v59 = daCalendarItemUniqueIdentifier2;
                 _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Setting all properties on %@, identifier: %{public}@", buf, 0x16u);
 
-                v18 = v46;
+                selfCopy = selfCopy2;
                 v17 = v45;
               }
 
 LABEL_16:
-              [v18 setAllPropertiesForReminder:v23 identifier:v26 wrapper:v14 store:v48 list:v47 oldListIdentifier:v49];
+              [selfCopy setAllPropertiesForReminder:v23 identifier:uUIDString wrapper:wrapperCopy store:storeCopy list:listCopy oldListIdentifier:v49];
 LABEL_20:
 
               goto LABEL_21;
@@ -664,16 +664,16 @@ LABEL_20:
             if (v32)
             {
               v36 = v31;
-              v37 = [v23 eks_debugDesc];
-              v38 = [v23 daCalendarItemUniqueIdentifier];
+              eks_debugDesc2 = [v23 eks_debugDesc];
+              daCalendarItemUniqueIdentifier3 = [v23 daCalendarItemUniqueIdentifier];
               *buf = 138412546;
-              v57 = v37;
+              v57 = eks_debugDesc2;
               v58 = 2114;
-              v59 = v38;
+              v59 = daCalendarItemUniqueIdentifier3;
               _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Setting minimal properties on %@, identifier: %{public}@", buf, 0x16u);
 
               v17 = v45;
-              v18 = v46;
+              selfCopy = selfCopy2;
             }
           }
 
@@ -682,7 +682,7 @@ LABEL_20:
             goto LABEL_16;
           }
 
-          [v18 setMinimalPropertiesForReminder:v23 identifier:v26 wrapper:v14];
+          [selfCopy setMinimalPropertiesForReminder:v23 identifier:uUIDString wrapper:wrapperCopy];
           goto LABEL_20;
         }
 
@@ -692,11 +692,11 @@ LABEL_20:
           sub_10006EE70(v60, v27, v23, &v61);
         }
 
-        v28 = [v23 remObjectID];
-        v29 = [v28 uuid];
-        v26 = [v29 UUIDString];
+        remObjectID = [v23 remObjectID];
+        uuid = [remObjectID uuid];
+        uUIDString = [uuid UUIDString];
 
-        if (v26)
+        if (uUIDString)
         {
           goto LABEL_11;
         }
@@ -705,15 +705,15 @@ LABEL_20:
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
         {
           v40 = v39;
-          v41 = [v23 eks_debugDesc];
-          v42 = [v23 daCalendarItemUniqueIdentifier];
+          eks_debugDesc3 = [v23 eks_debugDesc];
+          daCalendarItemUniqueIdentifier4 = [v23 daCalendarItemUniqueIdentifier];
           *buf = v44;
-          v57 = v41;
+          v57 = eks_debugDesc3;
           v58 = 2114;
-          v59 = v42;
+          v59 = daCalendarItemUniqueIdentifier4;
           _os_log_debug_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEBUG, "Can't create canonical unique identifier for reminder %{public}@. Identifier returned by REMReminder is %{public}@", buf, 0x16u);
 
-          v18 = v46;
+          selfCopy = selfCopy2;
         }
 
 LABEL_21:
@@ -730,97 +730,97 @@ LABEL_21:
   }
 }
 
-+ (void)setAllPropertiesForItem:(id)a3 identifier:(id)a4 wrapper:(id)a5 needsInvite:(id)a6 eventStore:(id)a7 calendar:(id)a8
++ (void)setAllPropertiesForItem:(id)item identifier:(id)identifier wrapper:(id)wrapper needsInvite:(id)invite eventStore:(id)store calendar:(id)calendar
 {
-  v38 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = [v38 selfAttendee];
-  v19 = v18;
-  if (v18)
+  itemCopy = item;
+  identifierCopy = identifier;
+  wrapperCopy = wrapper;
+  inviteCopy = invite;
+  storeCopy = store;
+  calendarCopy = calendar;
+  selfAttendee = [itemCopy selfAttendee];
+  v19 = selfAttendee;
+  if (selfAttendee)
   {
-    [v14 setAttendeeStatus:objc_msgSend(v18 forIdentifier:{"participantStatus"), v13}];
-    v20 = [v19 emailAddress];
-    [v14 setSelfAttendeeEmail:v20 forIdentifier:v13];
+    [wrapperCopy setAttendeeStatus:objc_msgSend(selfAttendee forIdentifier:{"participantStatus"), identifierCopy}];
+    emailAddress = [v19 emailAddress];
+    [wrapperCopy setSelfAttendeeEmail:emailAddress forIdentifier:identifierCopy];
     v21 = [v19 URL];
-    v22 = [v21 absoluteString];
-    [v14 setSelfAttendeeUUID:v22 forIdentifier:v13];
+    absoluteString = [v21 absoluteString];
+    [wrapperCopy setSelfAttendeeUUID:absoluteString forIdentifier:identifierCopy];
   }
 
-  v23 = [v38 organizer];
-  v24 = v23;
-  if (v23 && [v23 isCurrentUser])
+  organizer = [itemCopy organizer];
+  v24 = organizer;
+  if (organizer && [organizer isCurrentUser])
   {
-    v25 = [v24 emailAddress];
-    [v14 setSelfOrganizerEmail:v25 forIdentifier:v13];
+    emailAddress2 = [v24 emailAddress];
+    [wrapperCopy setSelfOrganizerEmail:emailAddress2 forIdentifier:identifierCopy];
     v26 = [v24 URL];
-    v27 = [v26 absoluteString];
-    [v14 setSelfOrganizerUUID:v27 forIdentifier:v13];
+    absoluteString2 = [v26 absoluteString];
+    [wrapperCopy setSelfOrganizerUUID:absoluteString2 forIdentifier:identifierCopy];
   }
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v29 = v38;
+  v29 = itemCopy;
   if (isKindOfClass)
   {
-    v30 = v38;
-    v31 = [v30 startDate];
-    [v14 setStartDate:v31 forIdentifier:v13];
+    v30 = itemCopy;
+    startDate = [v30 startDate];
+    [wrapperCopy setStartDate:startDate forIdentifier:identifierCopy];
 
-    [v14 setDateChanged:objc_msgSend(v30 forIdentifier:{"dateChanged"), v13}];
-    [v14 setTimeChanged:objc_msgSend(v30 forIdentifier:{"timeChanged"), v13}];
-    [v14 setTitleChanged:objc_msgSend(v30 forIdentifier:{"titleChanged"), v13}];
-    [v14 setLocationChanged:objc_msgSend(v30 forIdentifier:{"locationChanged"), v13}];
-    [v14 setAttendeeComment:objc_msgSend(v30 forIdentifier:{"attendeeComment"), v13}];
-    [v14 setAttendeeStatusFlag:objc_msgSend(v30 forIdentifier:{"attendeeStatus"), v13}];
-    v32 = [v30 invitationStatus];
-    if ([v15 containsObject:v13])
+    [wrapperCopy setDateChanged:objc_msgSend(v30 forIdentifier:{"dateChanged"), identifierCopy}];
+    [wrapperCopy setTimeChanged:objc_msgSend(v30 forIdentifier:{"timeChanged"), identifierCopy}];
+    [wrapperCopy setTitleChanged:objc_msgSend(v30 forIdentifier:{"titleChanged"), identifierCopy}];
+    [wrapperCopy setLocationChanged:objc_msgSend(v30 forIdentifier:{"locationChanged"), identifierCopy}];
+    [wrapperCopy setAttendeeComment:objc_msgSend(v30 forIdentifier:{"attendeeComment"), identifierCopy}];
+    [wrapperCopy setAttendeeStatusFlag:objc_msgSend(v30 forIdentifier:{"attendeeStatus"), identifierCopy}];
+    invitationStatus = [v30 invitationStatus];
+    if ([inviteCopy containsObject:identifierCopy])
     {
-      [v14 setInvitationStatus:v32 forIdentifier:v13];
+      [wrapperCopy setInvitationStatus:invitationStatus forIdentifier:identifierCopy];
     }
 
-    [v14 setProperInvitationStatus:v32 forIdentifier:v13];
+    [wrapperCopy setProperInvitationStatus:invitationStatus forIdentifier:identifierCopy];
 
-    v29 = v38;
+    v29 = itemCopy;
   }
 
-  v33 = [v29 externalID];
-  if (v33)
+  externalID = [v29 externalID];
+  if (externalID)
   {
-    [v14 setExternalID:v33 forIdentifier:v13];
+    [wrapperCopy setExternalID:externalID forIdentifier:identifierCopy];
   }
 
-  if (v17)
+  if (calendarCopy)
   {
-    v34 = sub_1000624F8(v17);
-    if (!v16)
+    v34 = sub_1000624F8(calendarCopy);
+    if (!storeCopy)
     {
-      [v14 setOldCalendarIdentifier:v34];
+      [wrapperCopy setOldCalendarIdentifier:v34];
 LABEL_21:
 
       goto LABEL_22;
     }
 
-    v35 = [v16 calendarIdentifierInRowMappingForEventOrTask:v38];
+    v35 = [storeCopy calendarIdentifierInRowMappingForEventOrTask:itemCopy];
     if (v35)
     {
-      v36 = v14;
+      v36 = wrapperCopy;
       v37 = v35;
     }
 
     else
     {
-      if ([v16 hasRowMappingForEntity:v38])
+      if ([storeCopy hasRowMappingForEntity:itemCopy])
       {
 LABEL_20:
 
         goto LABEL_21;
       }
 
-      v36 = v14;
+      v36 = wrapperCopy;
       v37 = v34;
     }
 
@@ -831,29 +831,29 @@ LABEL_20:
 LABEL_22:
 }
 
-+ (void)setMinimalPropertiesForItem:(id)a3 identifier:(id)a4 wrapper:(id)a5
++ (void)setMinimalPropertiesForItem:(id)item identifier:(id)identifier wrapper:(id)wrapper
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 objectID];
-  v11 = [v10 entityType];
+  itemCopy = item;
+  identifierCopy = identifier;
+  wrapperCopy = wrapper;
+  objectID = [itemCopy objectID];
+  entityType = [objectID entityType];
 
-  if (v11 == 3)
+  if (entityType == 3)
   {
-    v12 = [v7 completionDate];
-    if (v12)
+    completionDate = [itemCopy completionDate];
+    if (completionDate)
     {
-      [v9 setTaskCompleted:1];
-      [v12 timeIntervalSinceReferenceDate];
-      [v9 setTaskCompletionDate:?];
+      [wrapperCopy setTaskCompleted:1];
+      [completionDate timeIntervalSinceReferenceDate];
+      [wrapperCopy setTaskCompletionDate:?];
       v15 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138543618;
-        *v17 = v8;
+        *v17 = identifierCopy;
         *&v17[8] = 2114;
-        *&v17[10] = v12;
+        *&v17[10] = completionDate;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Setting task with identifier %{public}@ as completed, completion date is %{public}@", &v16, 0x16u);
       }
     }
@@ -861,50 +861,50 @@ LABEL_22:
     goto LABEL_10;
   }
 
-  if (v11 == 2)
+  if (entityType == 2)
   {
-    v12 = [v7 selfAttendee];
-    if (v12)
+    completionDate = [itemCopy selfAttendee];
+    if (completionDate)
     {
       v13 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v14 = v13;
         v16 = 67109378;
-        *v17 = [v12 participantStatus];
+        *v17 = [completionDate participantStatus];
         *&v17[4] = 2114;
-        *&v17[6] = v8;
+        *&v17[6] = identifierCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "self attendee status is 0x%08x for event with identifier %{public}@", &v16, 0x12u);
       }
 
-      [v9 setAttendeeStatus:objc_msgSend(v12 forIdentifier:{"participantStatus"), v8}];
+      [wrapperCopy setAttendeeStatus:objc_msgSend(completionDate forIdentifier:{"participantStatus"), identifierCopy}];
     }
 
 LABEL_10:
   }
 }
 
-+ (void)setPropertiesForWrapper:(id)a3 withCalendarItems:(id)a4 needsInvite:(id)a5 sendAllProperties:(BOOL)a6 eventStore:(id)a7 calendar:(id)a8 originalEvent:(id)a9
++ (void)setPropertiesForWrapper:(id)wrapper withCalendarItems:(id)items needsInvite:(id)invite sendAllProperties:(BOOL)properties eventStore:(id)store calendar:(id)calendar originalEvent:(id)event
 {
-  v11 = a6;
-  v14 = a3;
-  v15 = a4;
-  v43 = a5;
-  v42 = a7;
-  v41 = a8;
-  v38 = a9;
+  propertiesCopy = properties;
+  wrapperCopy = wrapper;
+  itemsCopy = items;
+  inviteCopy = invite;
+  storeCopy = store;
+  calendarCopy = calendar;
+  eventCopy = event;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v15;
+  obj = itemsCopy;
   v16 = [obj countByEnumeratingWithState:&v47 objects:v57 count:16];
   if (v16)
   {
     v17 = v16;
     v46 = *v48;
-    v40 = v14;
-    v39 = v11;
+    v40 = wrapperCopy;
+    v39 = propertiesCopy;
     do
     {
       for (i = 0; i != v17; i = i + 1)
@@ -916,67 +916,67 @@ LABEL_10:
 
         v19 = *(*(&v47 + 1) + 8 * i);
         v20 = objc_autoreleasePoolPush();
-        v21 = [v19 uniqueId];
-        if (v21)
+        uniqueId = [v19 uniqueId];
+        if (uniqueId)
         {
-          v22 = [v14 settablePropertiesForCalendarItemIdentifier:v21];
-          v23 = [v19 objectID];
-          v24 = [v23 entityType];
+          v22 = [wrapperCopy settablePropertiesForCalendarItemIdentifier:uniqueId];
+          objectID = [v19 objectID];
+          entityType = [objectID entityType];
 
-          [v22 setEntityType:v24 == 3];
+          [v22 setEntityType:entityType == 3];
           if (os_variant_has_internal_diagnostics())
           {
-            v25 = [v19 attendees];
-            v26 = [v25 count];
+            attendees = [v19 attendees];
+            v26 = [attendees count];
 
             v27 = *(qword_1000D18A8 + 8);
             v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
-            if (v11)
+            if (propertiesCopy)
             {
               if (v28)
               {
                 v29 = v27;
-                v30 = [v19 eks_debugDesc];
-                v31 = [v19 uniqueIdentifier];
+                eks_debugDesc = [v19 eks_debugDesc];
+                uniqueIdentifier = [v19 uniqueIdentifier];
                 *buf = 138412802;
-                v52 = v30;
+                v52 = eks_debugDesc;
                 v53 = 2114;
-                v54 = v31;
+                v54 = uniqueIdentifier;
                 v55 = 1024;
                 v56 = v26;
                 _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Setting all properties on %@, identifier: %{public}@, attendees: %d", buf, 0x1Cu);
 
-                v14 = v40;
-                v11 = v39;
+                wrapperCopy = v40;
+                propertiesCopy = v39;
               }
             }
 
             else if (v28)
             {
               v35 = v27;
-              v36 = [v19 eks_debugDesc];
-              v37 = [v19 uniqueIdentifier];
+              eks_debugDesc2 = [v19 eks_debugDesc];
+              uniqueIdentifier2 = [v19 uniqueIdentifier];
               *buf = 138412802;
-              v52 = v36;
+              v52 = eks_debugDesc2;
               v53 = 2114;
-              v54 = v37;
+              v54 = uniqueIdentifier2;
               v55 = 1024;
               v56 = v26;
               _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Setting minimal properties on %@, identifier: %{public}@, attendees: %d", buf, 0x1Cu);
 
-              v11 = v39;
-              v14 = v40;
+              propertiesCopy = v39;
+              wrapperCopy = v40;
             }
           }
 
-          if (v11)
+          if (propertiesCopy)
           {
-            [a1 setAllPropertiesForItem:v19 identifier:v21 wrapper:v14 needsInvite:v43 eventStore:v42 calendar:v41];
+            [self setAllPropertiesForItem:v19 identifier:uniqueId wrapper:wrapperCopy needsInvite:inviteCopy eventStore:storeCopy calendar:calendarCopy];
           }
 
           else
           {
-            [a1 setMinimalPropertiesForItem:v19 identifier:v21 wrapper:v14];
+            [self setMinimalPropertiesForItem:v19 identifier:uniqueId wrapper:wrapperCopy];
           }
         }
 
@@ -986,15 +986,15 @@ LABEL_10:
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
           {
             v33 = v32;
-            v34 = [v19 uniqueId];
+            uniqueId2 = [v19 uniqueId];
             *buf = 138543618;
             v52 = v19;
             v53 = 2114;
-            v54 = v34;
+            v54 = uniqueId2;
             _os_log_debug_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEBUG, "Can't create canonical unique identifier for event %{public}@. Identifier returned by CalCalendarItemCopyUniqueIdentifier is %{public}@", buf, 0x16u);
 
-            v11 = v39;
-            v14 = v40;
+            propertiesCopy = v39;
+            wrapperCopy = v40;
           }
         }
 

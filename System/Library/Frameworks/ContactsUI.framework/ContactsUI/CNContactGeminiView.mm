@@ -2,55 +2,55 @@
 - (BOOL)_hasBaseline;
 - (BOOL)doesLayoutRequireTwoLines;
 - (BOOL)shouldDisplayBadge;
-- (CGSize)sizeForSingleLineLayoutFittingSize:(CGSize)a3;
-- (CGSize)sizeForTwoLineLayoutFittingSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CNContactGeminiView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeForSingleLineLayoutFittingSize:(CGSize)size;
+- (CGSize)sizeForTwoLineLayoutFittingSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CNContactGeminiView)initWithFrame:(CGRect)frame;
 - (id)geminiViewChevronImage;
-- (id)localizedChannelSubtitleForGeminiResult:(id)a3;
-- (id)localizedChannelUsageFromGeminiResult:(id)a3;
-- (id)localizedChannelUsageFromGeminiUsage:(int64_t)a3;
-- (id)localizedLabelFromGeminiChannel:(id)a3;
-- (id)localizedLabelFromGeminiResult:(id)a3;
+- (id)localizedChannelSubtitleForGeminiResult:(id)result;
+- (id)localizedChannelUsageFromGeminiResult:(id)result;
+- (id)localizedChannelUsageFromGeminiUsage:(int64_t)usage;
+- (id)localizedLabelFromGeminiChannel:(id)channel;
+- (id)localizedLabelFromGeminiResult:(id)result;
 - (id)singleLineLayoutConstraints;
 - (id)twoLineLayoutConstraints;
 - (void)calculateLayoutIfNeeded;
 - (void)layoutSubviews;
-- (void)setAb_textAttributes:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setGeminiChannel:(id)a3;
-- (void)setGeminiResult:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setAb_textAttributes:(id)attributes;
+- (void)setBackgroundColor:(id)color;
+- (void)setGeminiChannel:(id)channel;
+- (void)setGeminiResult:(id)result;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)updateConstraints;
-- (void)updateGeminiViewForChannel:(id)a3 channelUsage:(int64_t)a4 calculateLayout:(BOOL)a5;
+- (void)updateGeminiViewForChannel:(id)channel channelUsage:(int64_t)usage calculateLayout:(BOOL)layout;
 @end
 
 @implementation CNContactGeminiView
 
 - (BOOL)shouldDisplayBadge
 {
-  v2 = [(CNContactGeminiView *)self geminiResult];
-  v3 = [v2 channel];
-  v4 = [v3 isAvailable];
+  geminiResult = [(CNContactGeminiView *)self geminiResult];
+  channel = [geminiResult channel];
+  isAvailable = [channel isAvailable];
 
-  return v4;
+  return isAvailable;
 }
 
 - (id)geminiViewChevronImage
 {
-  v3 = [(CNContactGeminiView *)self geminiResult];
-  v4 = [v3 usage];
+  geminiResult = [(CNContactGeminiView *)self geminiResult];
+  usage = [geminiResult usage];
 
   v5 = MEMORY[0x1E69DCAB8];
-  v6 = [(CNContactGeminiView *)self backgroundColor];
-  if (v4 == 4)
+  backgroundColor = [(CNContactGeminiView *)self backgroundColor];
+  if (usage == 4)
   {
-    [v5 cnui_symbolImageForUnknownNumberContactCardChevronWithColor:v6];
+    [v5 cnui_symbolImageForUnknownNumberContactCardChevronWithColor:backgroundColor];
   }
 
   else
   {
-    [v5 cnui_symbolImageForDynamicallySizedContactCardChevronWithColor:v6];
+    [v5 cnui_symbolImageForDynamicallySizedContactCardChevronWithColor:backgroundColor];
   }
   v7 = ;
 
@@ -59,68 +59,68 @@
 
 - (BOOL)_hasBaseline
 {
-  v2 = [(CNContactGeminiView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom] == 3;
+  traitCollection = [(CNContactGeminiView *)self traitCollection];
+  v3 = [traitCollection userInterfaceIdiom] == 3;
 
   return v3;
 }
 
-- (void)setGeminiChannel:(id)a3
+- (void)setGeminiChannel:(id)channel
 {
   geminiResult = self->_geminiResult;
-  v5 = a3;
-  v6 = [(CNGeminiResult *)geminiResult channel];
-  [(CNContactGeminiView *)self updateGeminiViewForChannel:v5 channelUsage:3 calculateLayout:v6 != v5];
+  channelCopy = channel;
+  channel = [(CNGeminiResult *)geminiResult channel];
+  [(CNContactGeminiView *)self updateGeminiViewForChannel:channelCopy channelUsage:3 calculateLayout:channel != channelCopy];
 }
 
-- (void)updateGeminiViewForChannel:(id)a3 channelUsage:(int64_t)a4 calculateLayout:(BOOL)a5
+- (void)updateGeminiViewForChannel:(id)channel channelUsage:(int64_t)usage calculateLayout:(BOOL)layout
 {
-  v5 = a5;
-  v28 = a3;
-  v8 = [(CNContactGeminiView *)self chevronView];
-  v9 = [v8 isHidden];
+  layoutCopy = layout;
+  channelCopy = channel;
+  chevronView = [(CNContactGeminiView *)self chevronView];
+  isHidden = [chevronView isHidden];
 
-  v10 = [(CNContactGeminiView *)self geminiBadge];
-  v11 = [v10 isHidden];
+  geminiBadge = [(CNContactGeminiView *)self geminiBadge];
+  isHidden2 = [geminiBadge isHidden];
 
-  v12 = [(CNContactGeminiView *)self localizedChannelUsageFromGeminiUsage:a4];
+  v12 = [(CNContactGeminiView *)self localizedChannelUsageFromGeminiUsage:usage];
   if ([(CNContactGeminiView *)self shouldDisplayBadge])
   {
-    v13 = [v28 localizedBadgeLabel];
+    localizedBadgeLabel = [channelCopy localizedBadgeLabel];
   }
 
   else
   {
-    v13 = @"-";
+    localizedBadgeLabel = @"-";
   }
 
-  v14 = [(CNContactGeminiView *)self localizedLabelFromGeminiChannel:v28];
-  v15 = [(CNContactGeminiView *)self typeLabel];
-  [v15 setText:v12];
+  v14 = [(CNContactGeminiView *)self localizedLabelFromGeminiChannel:channelCopy];
+  typeLabel = [(CNContactGeminiView *)self typeLabel];
+  [typeLabel setText:v12];
 
-  LODWORD(v15) = [(CNContactGeminiView *)self shouldDisplayBadge];
-  v16 = [(CNContactGeminiView *)self geminiBadge];
-  [v16 setHidden:v15 ^ 1];
+  LODWORD(typeLabel) = [(CNContactGeminiView *)self shouldDisplayBadge];
+  geminiBadge2 = [(CNContactGeminiView *)self geminiBadge];
+  [geminiBadge2 setHidden:typeLabel ^ 1];
 
-  v17 = [(CNContactGeminiView *)self geminiBadge];
-  [v17 setText:v13];
+  geminiBadge3 = [(CNContactGeminiView *)self geminiBadge];
+  [geminiBadge3 setText:localizedBadgeLabel];
 
-  v18 = [(CNContactGeminiView *)self geminiLabel];
-  [v18 setText:v14];
+  geminiLabel = [(CNContactGeminiView *)self geminiLabel];
+  [geminiLabel setText:v14];
 
-  v19 = [(CNContactGeminiView *)self backgroundColor];
-  v20 = [(CNContactGeminiView *)self geminiBadge];
-  [v20 setTextColor:v19];
+  backgroundColor = [(CNContactGeminiView *)self backgroundColor];
+  geminiBadge4 = [(CNContactGeminiView *)self geminiBadge];
+  [geminiBadge4 setTextColor:backgroundColor];
 
-  v21 = [(CNContactGeminiView *)self geminiViewChevronImage];
-  v22 = [(CNContactGeminiView *)self chevronView];
-  [v22 setImage:v21];
+  geminiViewChevronImage = [(CNContactGeminiView *)self geminiViewChevronImage];
+  chevronView2 = [(CNContactGeminiView *)self chevronView];
+  [chevronView2 setImage:geminiViewChevronImage];
 
-  LODWORD(v21) = [(CNContactGeminiView *)self shouldDisplayChevron];
-  v23 = [(CNContactGeminiView *)self chevronView];
-  [v23 setHidden:v21 ^ 1];
+  LODWORD(geminiViewChevronImage) = [(CNContactGeminiView *)self shouldDisplayChevron];
+  chevronView3 = [(CNContactGeminiView *)self chevronView];
+  [chevronView3 setHidden:geminiViewChevronImage ^ 1];
 
-  if (v5)
+  if (layoutCopy)
   {
     [(CNContactGeminiView *)self setNeedsCalculateLayout];
     [(CNContactGeminiView *)self bounds];
@@ -130,13 +130,13 @@
     }
   }
 
-  v25 = [(CNContactGeminiView *)self chevronView];
-  if (v9 == [v25 isHidden])
+  chevronView4 = [(CNContactGeminiView *)self chevronView];
+  if (isHidden == [chevronView4 isHidden])
   {
-    v26 = [(CNContactGeminiView *)self geminiBadge];
-    v27 = [v26 isHidden];
+    geminiBadge5 = [(CNContactGeminiView *)self geminiBadge];
+    isHidden3 = [geminiBadge5 isHidden];
 
-    if (v11 == v27)
+    if (isHidden2 == isHidden3)
     {
       goto LABEL_11;
     }
@@ -150,27 +150,27 @@
 LABEL_11:
 }
 
-- (void)setGeminiResult:(id)a3
+- (void)setGeminiResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   geminiResult = self->_geminiResult;
-  self->_geminiResult = v4;
-  v9 = v4;
+  self->_geminiResult = resultCopy;
+  v9 = resultCopy;
   v6 = geminiResult;
 
-  v7 = [(CNGeminiResult *)v9 channel];
-  v8 = [(CNGeminiResult *)v9 usage];
+  channel = [(CNGeminiResult *)v9 channel];
+  usage = [(CNGeminiResult *)v9 usage];
 
-  [(CNContactGeminiView *)self updateGeminiViewForChannel:v7 channelUsage:v8 calculateLayout:v6 != v9];
+  [(CNContactGeminiView *)self updateGeminiViewForChannel:channel channelUsage:usage calculateLayout:v6 != v9];
 }
 
-- (id)localizedLabelFromGeminiChannel:(id)a3
+- (id)localizedLabelFromGeminiChannel:(id)channel
 {
-  v3 = a3;
-  v4 = [v3 isAvailable];
+  channelCopy = channel;
+  isAvailable = [channelCopy isAvailable];
   v5 = CNContactsUIBundle();
   v6 = v5;
-  if (v4)
+  if (isAvailable)
   {
     v7 = @"PREFERRED_LINE_CONTACT_HEADER_VALUE-%@";
   }
@@ -183,31 +183,31 @@ LABEL_11:
   v8 = [v5 localizedStringForKey:v7 value:&stru_1F0CE7398 table:@"Localized-GEMINI"];
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [v3 localizedLabel];
+  localizedLabel = [channelCopy localizedLabel];
 
-  v11 = [v9 stringWithFormat:v8, v10];
+  v11 = [v9 stringWithFormat:v8, localizedLabel];
 
   return v11;
 }
 
-- (id)localizedLabelFromGeminiResult:(id)a3
+- (id)localizedLabelFromGeminiResult:(id)result
 {
-  v4 = [a3 channel];
-  v5 = [(CNContactGeminiView *)self localizedLabelFromGeminiChannel:v4];
+  channel = [result channel];
+  v5 = [(CNContactGeminiView *)self localizedLabelFromGeminiChannel:channel];
 
   return v5;
 }
 
-- (id)localizedChannelSubtitleForGeminiResult:(id)a3
+- (id)localizedChannelSubtitleForGeminiResult:(id)result
 {
-  v3 = [a3 usage];
-  if (v3 == 2)
+  usage = [result usage];
+  if (usage == 2)
   {
     v4 = @"PREFERRED_LINE_PICKER_SUBTITLE_LAST_USED";
     goto LABEL_5;
   }
 
-  if (v3 == 3)
+  if (usage == 3)
   {
     v4 = @"PREFERRED_LINE_PICKER_SUBTITLE_DEFAULT";
 LABEL_5:
@@ -223,24 +223,24 @@ LABEL_7:
   return v6;
 }
 
-- (id)localizedChannelUsageFromGeminiUsage:(int64_t)a3
+- (id)localizedChannelUsageFromGeminiUsage:(int64_t)usage
 {
-  v4 = [(CNContactGeminiView *)self useDualSimParity];
+  useDualSimParity = [(CNContactGeminiView *)self useDualSimParity];
   v5 = CNContactsUIBundle();
   v6 = v5;
-  if (v4)
+  if (useDualSimParity)
   {
     v7 = @"PREFERRED_LINE_CONTACT_HEADER_UNKNOWN_CONTACT_SIM_LINE";
   }
 
-  else if ((a3 - 1) > 3)
+  else if ((usage - 1) > 3)
   {
     v7 = @"PREFERRED_LINE_CONTACT_HEADER_DEFAULT_LABEL";
   }
 
   else
   {
-    v7 = off_1E74E4858[a3 - 1];
+    v7 = off_1E74E4858[usage - 1];
   }
 
   v8 = [v5 localizedStringForKey:v7 value:&stru_1F0CE7398 table:@"Localized-GEMINI"];
@@ -248,94 +248,94 @@ LABEL_7:
   return v8;
 }
 
-- (id)localizedChannelUsageFromGeminiResult:(id)a3
+- (id)localizedChannelUsageFromGeminiResult:(id)result
 {
-  v4 = [a3 usage];
+  usage = [result usage];
 
-  return [(CNContactGeminiView *)self localizedChannelUsageFromGeminiUsage:v4];
+  return [(CNContactGeminiView *)self localizedChannelUsageFromGeminiUsage:usage];
 }
 
 - (id)twoLineLayoutConstraints
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = MEMORY[0x1E696ACD8];
-  v5 = [(CNContactGeminiView *)self layoutGuide];
-  v6 = [v4 constraintWithItem:self attribute:8 relatedBy:0 toItem:v5 attribute:8 multiplier:1.0 constant:0.0];
-  [v3 addObject:v6];
+  layoutGuide = [(CNContactGeminiView *)self layoutGuide];
+  v6 = [v4 constraintWithItem:self attribute:8 relatedBy:0 toItem:layoutGuide attribute:8 multiplier:1.0 constant:0.0];
+  [array addObject:v6];
 
   v7 = MEMORY[0x1E696ACD8];
-  v8 = [(CNContactGeminiView *)self layoutGuide];
-  v9 = [v7 constraintWithItem:self attribute:9 relatedBy:0 toItem:v8 attribute:9 multiplier:1.0 constant:0.0];
-  [v3 addObject:v9];
+  layoutGuide2 = [(CNContactGeminiView *)self layoutGuide];
+  v9 = [v7 constraintWithItem:self attribute:9 relatedBy:0 toItem:layoutGuide2 attribute:9 multiplier:1.0 constant:0.0];
+  [array addObject:v9];
 
   v10 = MEMORY[0x1E696ACD8];
-  v11 = [(CNContactGeminiView *)self geminiLabelLayoutGuide];
-  v12 = [(CNContactGeminiView *)self geminiLabel];
-  v13 = [v10 constraintWithItem:v11 attribute:8 relatedBy:1 toItem:v12 attribute:8 multiplier:1.0 constant:0.0];
-  [v3 addObject:v13];
+  geminiLabelLayoutGuide = [(CNContactGeminiView *)self geminiLabelLayoutGuide];
+  geminiLabel = [(CNContactGeminiView *)self geminiLabel];
+  v13 = [v10 constraintWithItem:geminiLabelLayoutGuide attribute:8 relatedBy:1 toItem:geminiLabel attribute:8 multiplier:1.0 constant:0.0];
+  [array addObject:v13];
 
   if ([(CNContactGeminiView *)self shouldDisplayBadge])
   {
     v14 = MEMORY[0x1E696ACD8];
-    v15 = [(CNContactGeminiView *)self geminiLabelLayoutGuide];
-    v16 = [(CNContactGeminiView *)self geminiBadge];
-    v17 = [v14 constraintWithItem:v15 attribute:8 relatedBy:1 toItem:v16 attribute:8 multiplier:1.0 constant:0.0];
-    [v3 addObject:v17];
+    geminiLabelLayoutGuide2 = [(CNContactGeminiView *)self geminiLabelLayoutGuide];
+    geminiBadge = [(CNContactGeminiView *)self geminiBadge];
+    v17 = [v14 constraintWithItem:geminiLabelLayoutGuide2 attribute:8 relatedBy:1 toItem:geminiBadge attribute:8 multiplier:1.0 constant:0.0];
+    [array addObject:v17];
   }
 
   v18 = MEMORY[0x1E696ACD8];
-  v19 = [(CNContactGeminiView *)self geminiLabelLayoutGuide];
-  v20 = [v18 constraintWithItem:v19 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
-  [v3 addObject:v20];
+  geminiLabelLayoutGuide3 = [(CNContactGeminiView *)self geminiLabelLayoutGuide];
+  v20 = [v18 constraintWithItem:geminiLabelLayoutGuide3 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
+  [array addObject:v20];
 
   v21 = MEMORY[0x1E696ACD8];
-  v22 = [(CNContactGeminiView *)self typeLabel];
-  v23 = [v21 constraintWithItem:self attribute:3 relatedBy:0 toItem:v22 attribute:3 multiplier:1.0 constant:0.0];
-  [v3 addObject:v23];
+  typeLabel = [(CNContactGeminiView *)self typeLabel];
+  v23 = [v21 constraintWithItem:self attribute:3 relatedBy:0 toItem:typeLabel attribute:3 multiplier:1.0 constant:0.0];
+  [array addObject:v23];
 
   v24 = MEMORY[0x1E696ACD8];
-  v25 = [(CNContactGeminiView *)self geminiLabel];
-  v26 = [(CNContactGeminiView *)self typeLabel];
-  v27 = [v24 constraintWithItem:v25 attribute:3 relatedBy:0 toItem:v26 attribute:4 multiplier:1.0 constant:5.0];
-  [v3 addObject:v27];
+  geminiLabel2 = [(CNContactGeminiView *)self geminiLabel];
+  typeLabel2 = [(CNContactGeminiView *)self typeLabel];
+  v27 = [v24 constraintWithItem:geminiLabel2 attribute:3 relatedBy:0 toItem:typeLabel2 attribute:4 multiplier:1.0 constant:5.0];
+  [array addObject:v27];
 
   v28 = MEMORY[0x1E696ACD8];
-  v29 = [(CNContactGeminiView *)self geminiLabel];
-  v30 = [v28 constraintWithItem:v29 attribute:4 relatedBy:0 toItem:self attribute:4 multiplier:1.0 constant:0.0];
-  [v3 addObject:v30];
+  geminiLabel3 = [(CNContactGeminiView *)self geminiLabel];
+  v30 = [v28 constraintWithItem:geminiLabel3 attribute:4 relatedBy:0 toItem:self attribute:4 multiplier:1.0 constant:0.0];
+  [array addObject:v30];
 
   if ([(CNContactGeminiView *)self shouldDisplayChevron])
   {
     v31 = MEMORY[0x1E696ACD8];
-    v32 = [(CNContactGeminiView *)self chevronView];
-    v33 = [v31 constraintWithItem:self attribute:10 relatedBy:0 toItem:v32 attribute:10 multiplier:1.0 constant:0.0];
-    [v3 addObject:v33];
+    chevronView = [(CNContactGeminiView *)self chevronView];
+    v33 = [v31 constraintWithItem:self attribute:10 relatedBy:0 toItem:chevronView attribute:10 multiplier:1.0 constant:0.0];
+    [array addObject:v33];
   }
 
   if ([(CNContactGeminiView *)self shouldDisplayBadge])
   {
     v34 = MEMORY[0x1E696ACD8];
-    v35 = [(CNContactGeminiView *)self geminiBadge];
-    v36 = [(CNContactGeminiView *)self geminiLabel];
-    v37 = [v34 constraintWithItem:v35 attribute:10 relatedBy:0 toItem:v36 attribute:10 multiplier:1.0 constant:0.0];
-    [v3 addObject:v37];
+    geminiBadge2 = [(CNContactGeminiView *)self geminiBadge];
+    geminiLabel4 = [(CNContactGeminiView *)self geminiLabel];
+    v37 = [v34 constraintWithItem:geminiBadge2 attribute:10 relatedBy:0 toItem:geminiLabel4 attribute:10 multiplier:1.0 constant:0.0];
+    [array addObject:v37];
   }
 
   v38 = MEMORY[0x1E696ACD8];
-  v39 = [(CNContactGeminiView *)self layoutGuide];
-  v40 = [(CNContactGeminiView *)self typeLabel];
-  v41 = [v38 constraintWithItem:v39 attribute:5 relatedBy:-1 toItem:v40 attribute:5 multiplier:1.0 constant:0.0];
-  [v3 addObject:v41];
+  layoutGuide3 = [(CNContactGeminiView *)self layoutGuide];
+  typeLabel3 = [(CNContactGeminiView *)self typeLabel];
+  v41 = [v38 constraintWithItem:layoutGuide3 attribute:5 relatedBy:-1 toItem:typeLabel3 attribute:5 multiplier:1.0 constant:0.0];
+  [array addObject:v41];
 
   v42 = MEMORY[0x1E696ACD8];
-  v43 = [(CNContactGeminiView *)self typeLabel];
-  v44 = [v42 constraintWithItem:self attribute:9 relatedBy:0 toItem:v43 attribute:9 multiplier:1.0 constant:0.0];
-  [v3 addObject:v44];
+  typeLabel4 = [(CNContactGeminiView *)self typeLabel];
+  v44 = [v42 constraintWithItem:self attribute:9 relatedBy:0 toItem:typeLabel4 attribute:9 multiplier:1.0 constant:0.0];
+  [array addObject:v44];
 
-  LOBYTE(v40) = [(CNContactGeminiView *)self shouldDisplayChevron];
+  LOBYTE(typeLabel3) = [(CNContactGeminiView *)self shouldDisplayChevron];
   v45 = MEMORY[0x1E696ACD8];
-  v46 = [(CNContactGeminiView *)self layoutGuide];
-  if (v40)
+  layoutGuide4 = [(CNContactGeminiView *)self layoutGuide];
+  if (typeLabel3)
   {
     [(CNContactGeminiView *)self chevronView];
   }
@@ -345,13 +345,13 @@ LABEL_7:
     [(CNContactGeminiView *)self typeLabel];
   }
   v47 = ;
-  v48 = [v45 constraintWithItem:v46 attribute:6 relatedBy:1 toItem:v47 attribute:6 multiplier:1.0 constant:0.0];
-  [v3 addObject:v48];
+  v48 = [v45 constraintWithItem:layoutGuide4 attribute:6 relatedBy:1 toItem:v47 attribute:6 multiplier:1.0 constant:0.0];
+  [array addObject:v48];
 
   v49 = MEMORY[0x1E696ACD8];
-  v50 = [(CNContactGeminiView *)self typeLabel];
-  v51 = [v49 constraintWithItem:self attribute:5 relatedBy:-1 toItem:v50 attribute:5 multiplier:1.0 constant:0.0];
-  [v3 addObject:v51];
+  typeLabel5 = [(CNContactGeminiView *)self typeLabel];
+  v51 = [v49 constraintWithItem:self attribute:5 relatedBy:-1 toItem:typeLabel5 attribute:5 multiplier:1.0 constant:0.0];
+  [array addObject:v51];
 
   if ([(CNContactGeminiView *)self shouldDisplayBadge])
   {
@@ -364,97 +364,97 @@ LABEL_7:
   }
   v52 = ;
   v53 = MEMORY[0x1E696ACD8];
-  v54 = [(CNContactGeminiView *)self layoutGuide];
-  v55 = [v53 constraintWithItem:v54 attribute:5 relatedBy:-1 toItem:v52 attribute:5 multiplier:1.0 constant:0.0];
-  [v3 addObject:v55];
+  layoutGuide5 = [(CNContactGeminiView *)self layoutGuide];
+  v55 = [v53 constraintWithItem:layoutGuide5 attribute:5 relatedBy:-1 toItem:v52 attribute:5 multiplier:1.0 constant:0.0];
+  [array addObject:v55];
 
   if (![(CNContactGeminiView *)self shouldDisplayChevron])
   {
     v56 = MEMORY[0x1E696ACD8];
-    v57 = [(CNContactGeminiView *)self layoutGuide];
-    v58 = [(CNContactGeminiView *)self geminiLabel];
-    v59 = [v56 constraintWithItem:v57 attribute:6 relatedBy:1 toItem:v58 attribute:6 multiplier:1.0 constant:0.0];
-    [v3 addObject:v59];
+    layoutGuide6 = [(CNContactGeminiView *)self layoutGuide];
+    geminiLabel5 = [(CNContactGeminiView *)self geminiLabel];
+    v59 = [v56 constraintWithItem:layoutGuide6 attribute:6 relatedBy:1 toItem:geminiLabel5 attribute:6 multiplier:1.0 constant:0.0];
+    [array addObject:v59];
   }
 
-  v60 = [(CNContactGeminiView *)self shouldDisplayBadge];
+  shouldDisplayBadge = [(CNContactGeminiView *)self shouldDisplayBadge];
   v61 = MEMORY[0x1E696ACD8];
-  if (v60)
+  if (shouldDisplayBadge)
   {
-    v62 = [(CNContactGeminiView *)self geminiBadge];
-    v63 = [v61 constraintWithItem:self attribute:5 relatedBy:-1 toItem:v62 attribute:5 multiplier:1.0 constant:0.0];
-    [v3 addObject:v63];
+    geminiBadge3 = [(CNContactGeminiView *)self geminiBadge];
+    v63 = [v61 constraintWithItem:self attribute:5 relatedBy:-1 toItem:geminiBadge3 attribute:5 multiplier:1.0 constant:0.0];
+    [array addObject:v63];
 
     v64 = MEMORY[0x1E696ACD8];
-    v65 = [(CNContactGeminiView *)self geminiBadge];
-    v66 = [(CNContactGeminiView *)self geminiLabel];
-    v67 = [v64 constraintWithItem:v65 attribute:6 relatedBy:0 toItem:v66 attribute:5 multiplier:1.0 constant:-6.0];
-    [v3 addObject:v67];
+    geminiBadge4 = [(CNContactGeminiView *)self geminiBadge];
+    geminiLabel6 = [(CNContactGeminiView *)self geminiLabel];
+    v67 = [v64 constraintWithItem:geminiBadge4 attribute:6 relatedBy:0 toItem:geminiLabel6 attribute:5 multiplier:1.0 constant:-6.0];
+    [array addObject:v67];
 
     v68 = MEMORY[0x1E696ACD8];
-    v69 = [(CNContactGeminiView *)self geminiLabelLayoutGuide];
+    geminiLabelLayoutGuide4 = [(CNContactGeminiView *)self geminiLabelLayoutGuide];
     [(CNContactGeminiView *)self geminiBadge];
   }
 
   else
   {
-    v70 = [(CNContactGeminiView *)self geminiLabel];
-    v71 = [v61 constraintWithItem:self attribute:5 relatedBy:-1 toItem:v70 attribute:5 multiplier:1.0 constant:0.0];
-    [v3 addObject:v71];
+    geminiLabel7 = [(CNContactGeminiView *)self geminiLabel];
+    v71 = [v61 constraintWithItem:self attribute:5 relatedBy:-1 toItem:geminiLabel7 attribute:5 multiplier:1.0 constant:0.0];
+    [array addObject:v71];
 
     v68 = MEMORY[0x1E696ACD8];
-    v69 = [(CNContactGeminiView *)self geminiLabelLayoutGuide];
+    geminiLabelLayoutGuide4 = [(CNContactGeminiView *)self geminiLabelLayoutGuide];
     [(CNContactGeminiView *)self geminiLabel];
   }
   v72 = ;
-  v73 = [v68 constraintWithItem:v69 attribute:5 relatedBy:0 toItem:v72 attribute:5 multiplier:1.0 constant:0.0];
-  [v3 addObject:v73];
+  v73 = [v68 constraintWithItem:geminiLabelLayoutGuide4 attribute:5 relatedBy:0 toItem:v72 attribute:5 multiplier:1.0 constant:0.0];
+  [array addObject:v73];
 
   v74 = MEMORY[0x1E696ACD8];
-  v75 = [(CNContactGeminiView *)self geminiLabelLayoutGuide];
-  v76 = [(CNContactGeminiView *)self geminiLabel];
-  v77 = [v74 constraintWithItem:v75 attribute:6 relatedBy:0 toItem:v76 attribute:6 multiplier:1.0 constant:0.0];
-  [v3 addObject:v77];
+  geminiLabelLayoutGuide5 = [(CNContactGeminiView *)self geminiLabelLayoutGuide];
+  geminiLabel8 = [(CNContactGeminiView *)self geminiLabel];
+  v77 = [v74 constraintWithItem:geminiLabelLayoutGuide5 attribute:6 relatedBy:0 toItem:geminiLabel8 attribute:6 multiplier:1.0 constant:0.0];
+  [array addObject:v77];
 
-  v78 = [(CNContactGeminiView *)self shouldDisplayChevron];
+  shouldDisplayChevron = [(CNContactGeminiView *)self shouldDisplayChevron];
   v79 = MEMORY[0x1E696ACD8];
-  if (v78)
+  if (shouldDisplayChevron)
   {
-    v80 = [(CNContactGeminiView *)self chevronView];
-    v81 = [v79 constraintWithItem:v80 attribute:6 relatedBy:-1 toItem:self attribute:6 multiplier:1.0 constant:0.0];
-    [v3 addObject:v81];
+    chevronView2 = [(CNContactGeminiView *)self chevronView];
+    v81 = [v79 constraintWithItem:chevronView2 attribute:6 relatedBy:-1 toItem:self attribute:6 multiplier:1.0 constant:0.0];
+    [array addObject:v81];
 
     v82 = MEMORY[0x1E696ACD8];
-    v83 = [(CNContactGeminiView *)self typeLabel];
-    v84 = [(CNContactGeminiView *)self chevronView];
-    v85 = [v82 constraintWithItem:v83 attribute:6 relatedBy:-1 toItem:v84 attribute:5 multiplier:1.0 constant:-4.0];
-    [v3 addObject:v85];
+    typeLabel6 = [(CNContactGeminiView *)self typeLabel];
+    chevronView3 = [(CNContactGeminiView *)self chevronView];
+    v85 = [v82 constraintWithItem:typeLabel6 attribute:6 relatedBy:-1 toItem:chevronView3 attribute:5 multiplier:1.0 constant:-4.0];
+    [array addObject:v85];
 
     v86 = MEMORY[0x1E696ACD8];
-    v87 = [(CNContactGeminiView *)self geminiLabel];
-    v88 = [(CNContactGeminiView *)self chevronView];
-    v89 = [v86 constraintWithItem:v87 attribute:6 relatedBy:-1 toItem:v88 attribute:5 multiplier:1.0 constant:-4.0];
-    [v3 addObject:v89];
+    geminiLabel9 = [(CNContactGeminiView *)self geminiLabel];
+    chevronView4 = [(CNContactGeminiView *)self chevronView];
+    v89 = [v86 constraintWithItem:geminiLabel9 attribute:6 relatedBy:-1 toItem:chevronView4 attribute:5 multiplier:1.0 constant:-4.0];
+    [array addObject:v89];
   }
 
   else
   {
-    v90 = [(CNContactGeminiView *)self typeLabel];
-    v91 = [v79 constraintWithItem:v90 attribute:6 relatedBy:-1 toItem:self attribute:6 multiplier:1.0 constant:0.0];
-    [v3 addObject:v91];
+    typeLabel7 = [(CNContactGeminiView *)self typeLabel];
+    v91 = [v79 constraintWithItem:typeLabel7 attribute:6 relatedBy:-1 toItem:self attribute:6 multiplier:1.0 constant:0.0];
+    [array addObject:v91];
 
     v92 = MEMORY[0x1E696ACD8];
-    v87 = [(CNContactGeminiView *)self geminiLabel];
-    v88 = [v92 constraintWithItem:v87 attribute:6 relatedBy:-1 toItem:self attribute:6 multiplier:1.0 constant:0.0];
-    [v3 addObject:v88];
+    geminiLabel9 = [(CNContactGeminiView *)self geminiLabel];
+    chevronView4 = [v92 constraintWithItem:geminiLabel9 attribute:6 relatedBy:-1 toItem:self attribute:6 multiplier:1.0 constant:0.0];
+    [array addObject:chevronView4];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)singleLineLayoutConstraints
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(CNContactGeminiView *)self shouldDisplayChevron])
   {
     [(CNContactGeminiView *)self chevronView];
@@ -466,98 +466,98 @@ LABEL_7:
   }
   v4 = ;
   v5 = MEMORY[0x1E696ACD8];
-  v6 = [(CNContactGeminiView *)self layoutGuide];
-  v7 = [v5 constraintWithItem:self attribute:8 relatedBy:0 toItem:v6 attribute:8 multiplier:1.0 constant:0.0];
-  [v3 addObject:v7];
+  layoutGuide = [(CNContactGeminiView *)self layoutGuide];
+  v7 = [v5 constraintWithItem:self attribute:8 relatedBy:0 toItem:layoutGuide attribute:8 multiplier:1.0 constant:0.0];
+  [array addObject:v7];
 
   v8 = MEMORY[0x1E696ACD8];
-  v9 = [(CNContactGeminiView *)self layoutGuide];
-  v10 = [(CNContactGeminiView *)self typeLabel];
-  v11 = [v8 constraintWithItem:v9 attribute:5 relatedBy:0 toItem:v10 attribute:5 multiplier:1.0 constant:0.0];
-  [v3 addObject:v11];
+  layoutGuide2 = [(CNContactGeminiView *)self layoutGuide];
+  typeLabel = [(CNContactGeminiView *)self typeLabel];
+  v11 = [v8 constraintWithItem:layoutGuide2 attribute:5 relatedBy:0 toItem:typeLabel attribute:5 multiplier:1.0 constant:0.0];
+  [array addObject:v11];
 
   v12 = MEMORY[0x1E696ACD8];
-  v13 = [(CNContactGeminiView *)self layoutGuide];
-  v14 = [v12 constraintWithItem:v13 attribute:6 relatedBy:0 toItem:v4 attribute:6 multiplier:1.0 constant:0.0];
-  [v3 addObject:v14];
+  layoutGuide3 = [(CNContactGeminiView *)self layoutGuide];
+  v14 = [v12 constraintWithItem:layoutGuide3 attribute:6 relatedBy:0 toItem:v4 attribute:6 multiplier:1.0 constant:0.0];
+  [array addObject:v14];
 
   v15 = MEMORY[0x1E696ACD8];
-  v16 = [(CNContactGeminiView *)self layoutGuide];
-  v17 = [v15 constraintWithItem:self attribute:9 relatedBy:0 toItem:v16 attribute:9 multiplier:1.0 constant:0.0];
-  [v3 addObject:v17];
+  layoutGuide4 = [(CNContactGeminiView *)self layoutGuide];
+  v17 = [v15 constraintWithItem:self attribute:9 relatedBy:0 toItem:layoutGuide4 attribute:9 multiplier:1.0 constant:0.0];
+  [array addObject:v17];
 
   v18 = MEMORY[0x1E696ACD8];
-  v19 = [(CNContactGeminiView *)self typeLabel];
-  v20 = [v18 constraintWithItem:self attribute:8 relatedBy:0 toItem:v19 attribute:8 multiplier:1.0 constant:0.0];
-  [v3 addObject:v20];
+  typeLabel2 = [(CNContactGeminiView *)self typeLabel];
+  v20 = [v18 constraintWithItem:self attribute:8 relatedBy:0 toItem:typeLabel2 attribute:8 multiplier:1.0 constant:0.0];
+  [array addObject:v20];
 
   v21 = MEMORY[0x1E696ACD8];
-  v22 = [(CNContactGeminiView *)self geminiLabel];
-  v23 = [v21 constraintWithItem:self attribute:8 relatedBy:0 toItem:v22 attribute:8 multiplier:1.0 constant:0.0];
-  [v3 addObject:v23];
+  geminiLabel = [(CNContactGeminiView *)self geminiLabel];
+  v23 = [v21 constraintWithItem:self attribute:8 relatedBy:0 toItem:geminiLabel attribute:8 multiplier:1.0 constant:0.0];
+  [array addObject:v23];
 
   v24 = MEMORY[0x1E696ACD8];
-  v25 = [(CNContactGeminiView *)self typeLabel];
-  v26 = [v24 constraintWithItem:self attribute:10 relatedBy:0 toItem:v25 attribute:10 multiplier:1.0 constant:0.0];
-  [v3 addObject:v26];
+  typeLabel3 = [(CNContactGeminiView *)self typeLabel];
+  v26 = [v24 constraintWithItem:self attribute:10 relatedBy:0 toItem:typeLabel3 attribute:10 multiplier:1.0 constant:0.0];
+  [array addObject:v26];
 
   v27 = MEMORY[0x1E696ACD8];
-  v28 = [(CNContactGeminiView *)self geminiLabel];
-  v29 = [v27 constraintWithItem:self attribute:10 relatedBy:0 toItem:v28 attribute:10 multiplier:1.0 constant:0.0];
-  [v3 addObject:v29];
+  geminiLabel2 = [(CNContactGeminiView *)self geminiLabel];
+  v29 = [v27 constraintWithItem:self attribute:10 relatedBy:0 toItem:geminiLabel2 attribute:10 multiplier:1.0 constant:0.0];
+  [array addObject:v29];
 
   if ([(CNContactGeminiView *)self shouldDisplayChevron])
   {
     v30 = MEMORY[0x1E696ACD8];
-    v31 = [(CNContactGeminiView *)self chevronView];
-    v32 = [v30 constraintWithItem:self attribute:10 relatedBy:0 toItem:v31 attribute:10 multiplier:1.0 constant:0.0];
-    [v3 addObject:v32];
+    chevronView = [(CNContactGeminiView *)self chevronView];
+    v32 = [v30 constraintWithItem:self attribute:10 relatedBy:0 toItem:chevronView attribute:10 multiplier:1.0 constant:0.0];
+    [array addObject:v32];
   }
 
   if ([(CNContactGeminiView *)self shouldDisplayBadge])
   {
     v33 = MEMORY[0x1E696ACD8];
-    v34 = [(CNContactGeminiView *)self typeLabel];
-    v35 = [(CNContactGeminiView *)self geminiBadge];
-    v36 = [v33 constraintWithItem:v34 attribute:10 relatedBy:0 toItem:v35 attribute:10 multiplier:1.0 constant:0.0];
-    [v3 addObject:v36];
+    typeLabel4 = [(CNContactGeminiView *)self typeLabel];
+    geminiBadge = [(CNContactGeminiView *)self geminiBadge];
+    v36 = [v33 constraintWithItem:typeLabel4 attribute:10 relatedBy:0 toItem:geminiBadge attribute:10 multiplier:1.0 constant:0.0];
+    [array addObject:v36];
   }
 
   v37 = MEMORY[0x1E696ACD8];
-  v38 = [(CNContactGeminiView *)self typeLabel];
-  v39 = [v37 constraintWithItem:self attribute:5 relatedBy:-1 toItem:v38 attribute:5 multiplier:1.0 constant:0.0];
-  [v3 addObject:v39];
+  typeLabel5 = [(CNContactGeminiView *)self typeLabel];
+  v39 = [v37 constraintWithItem:self attribute:5 relatedBy:-1 toItem:typeLabel5 attribute:5 multiplier:1.0 constant:0.0];
+  [array addObject:v39];
 
-  LODWORD(v38) = [(CNContactGeminiView *)self shouldDisplayBadge];
+  LODWORD(typeLabel5) = [(CNContactGeminiView *)self shouldDisplayBadge];
   v40 = MEMORY[0x1E696ACD8];
-  v41 = [(CNContactGeminiView *)self typeLabel];
-  if (v38)
+  typeLabel6 = [(CNContactGeminiView *)self typeLabel];
+  if (typeLabel5)
   {
-    v42 = [(CNContactGeminiView *)self geminiBadge];
-    v43 = [v40 constraintWithItem:v41 attribute:6 relatedBy:0 toItem:v42 attribute:5 multiplier:1.0 constant:-6.0];
-    [v3 addObject:v43];
+    geminiBadge2 = [(CNContactGeminiView *)self geminiBadge];
+    v43 = [v40 constraintWithItem:typeLabel6 attribute:6 relatedBy:0 toItem:geminiBadge2 attribute:5 multiplier:1.0 constant:-6.0];
+    [array addObject:v43];
 
     v40 = MEMORY[0x1E696ACD8];
-    v41 = [(CNContactGeminiView *)self geminiBadge];
+    typeLabel6 = [(CNContactGeminiView *)self geminiBadge];
   }
 
-  v44 = [(CNContactGeminiView *)self geminiLabel];
-  v45 = [v40 constraintWithItem:v41 attribute:6 relatedBy:0 toItem:v44 attribute:5 multiplier:1.0 constant:-6.0];
-  [v3 addObject:v45];
+  geminiLabel3 = [(CNContactGeminiView *)self geminiLabel];
+  v45 = [v40 constraintWithItem:typeLabel6 attribute:6 relatedBy:0 toItem:geminiLabel3 attribute:5 multiplier:1.0 constant:-6.0];
+  [array addObject:v45];
 
   if ([(CNContactGeminiView *)self shouldDisplayChevron])
   {
     v46 = MEMORY[0x1E696ACD8];
-    v47 = [(CNContactGeminiView *)self chevronView];
-    v48 = [(CNContactGeminiView *)self geminiLabel];
-    v49 = [v46 constraintWithItem:v47 attribute:5 relatedBy:0 toItem:v48 attribute:6 multiplier:1.0 constant:4.0];
-    [v3 addObject:v49];
+    chevronView2 = [(CNContactGeminiView *)self chevronView];
+    geminiLabel4 = [(CNContactGeminiView *)self geminiLabel];
+    v49 = [v46 constraintWithItem:chevronView2 attribute:5 relatedBy:0 toItem:geminiLabel4 attribute:6 multiplier:1.0 constant:4.0];
+    [array addObject:v49];
   }
 
   v50 = [MEMORY[0x1E696ACD8] constraintWithItem:self attribute:6 relatedBy:1 toItem:v4 attribute:6 multiplier:1.0 constant:0.0];
-  [v3 addObject:v50];
+  [array addObject:v50];
 
-  return v3;
+  return array;
 }
 
 - (void)updateConstraints
@@ -566,8 +566,8 @@ LABEL_7:
   v6.super_class = CNContactGeminiView;
   [(CNContactGeminiView *)&v6 updateConstraints];
   v3 = MEMORY[0x1E696ACD8];
-  v4 = [(CNContactGeminiView *)self activatedConstraints];
-  [v3 deactivateConstraints:v4];
+  activatedConstraints = [(CNContactGeminiView *)self activatedConstraints];
+  [v3 deactivateConstraints:activatedConstraints];
 
   if ([(CNContactGeminiView *)self isUsingTwoLineLayout])
   {
@@ -585,27 +585,27 @@ LABEL_7:
 
 - (BOOL)doesLayoutRequireTwoLines
 {
-  v3 = [(CNContactGeminiView *)self typeLabel];
+  typeLabel = [(CNContactGeminiView *)self typeLabel];
   [(CNContactGeminiView *)self bounds];
-  [v3 sizeThatFits:{v4, v5}];
+  [typeLabel sizeThatFits:{v4, v5}];
   v7 = v6;
 
-  v8 = [(CNContactGeminiView *)self geminiBadge];
+  geminiBadge = [(CNContactGeminiView *)self geminiBadge];
   [(CNContactGeminiView *)self bounds];
-  [v8 sizeThatFits:{v9, v10}];
+  [geminiBadge sizeThatFits:{v9, v10}];
   v12 = v11;
 
-  v13 = [(CNContactGeminiView *)self geminiLabel];
+  geminiLabel = [(CNContactGeminiView *)self geminiLabel];
   [(CNContactGeminiView *)self bounds];
-  [v13 sizeThatFits:{v14, v15}];
+  [geminiLabel sizeThatFits:{v14, v15}];
   v17 = v16;
 
   v18 = v7 + 12.0 + v12 + v17;
   if ([(CNContactGeminiView *)self shouldDisplayChevron])
   {
-    v19 = [(CNContactGeminiView *)self chevronView];
+    chevronView = [(CNContactGeminiView *)self chevronView];
     [(CNContactGeminiView *)self bounds];
-    [v19 sizeThatFits:{v20, v21}];
+    [chevronView sizeThatFits:{v20, v21}];
     v18 = v18 + v22 + 4.0;
   }
 
@@ -625,19 +625,19 @@ LABEL_7:
 {
   if (![(CNContactGeminiView *)self didCalculateLayout])
   {
-    v3 = [(CNContactGeminiView *)self geminiResult];
-    if (v3)
+    geminiResult = [(CNContactGeminiView *)self geminiResult];
+    if (geminiResult)
     {
-      v4 = v3;
+      v4 = geminiResult;
       [(CNContactGeminiView *)self bounds];
       v6 = v5;
 
       if (v6 > 0.0)
       {
-        v7 = [(CNContactGeminiView *)self isUsingTwoLineLayout];
+        isUsingTwoLineLayout = [(CNContactGeminiView *)self isUsingTwoLineLayout];
         [(CNContactGeminiView *)self setIsUsingTwoLineLayout:[(CNContactGeminiView *)self doesLayoutRequireTwoLines]];
         [(CNContactGeminiView *)self setDidCalculateLayout:1];
-        if (v7 != [(CNContactGeminiView *)self isUsingTwoLineLayout])
+        if (isUsingTwoLineLayout != [(CNContactGeminiView *)self isUsingTwoLineLayout])
         {
           [(CNContactGeminiView *)self setNeedsUpdateConstraints];
 
@@ -648,23 +648,23 @@ LABEL_7:
   }
 }
 
-- (void)setAb_textAttributes:(id)a3
+- (void)setAb_textAttributes:(id)attributes
 {
-  objc_storeStrong(&self->_ab_textAttributes, a3);
-  v5 = a3;
-  v6 = [(CNContactGeminiView *)self typeLabel];
-  [v6 setAb_textAttributes:v5];
+  objc_storeStrong(&self->_ab_textAttributes, attributes);
+  attributesCopy = attributes;
+  typeLabel = [(CNContactGeminiView *)self typeLabel];
+  [typeLabel setAb_textAttributes:attributesCopy];
 
-  v7 = [(CNContactGeminiView *)self geminiLabel];
-  [v7 setAb_textAttributes:v5];
+  geminiLabel = [(CNContactGeminiView *)self geminiLabel];
+  [geminiLabel setAb_textAttributes:attributesCopy];
 }
 
-- (CGSize)sizeForTwoLineLayoutFittingSize:(CGSize)a3
+- (CGSize)sizeForTwoLineLayoutFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CNContactGeminiView *)self typeLabel];
-  [v6 sizeThatFits:{width, height}];
+  height = size.height;
+  width = size.width;
+  typeLabel = [(CNContactGeminiView *)self typeLabel];
+  [typeLabel sizeThatFits:{width, height}];
   v8 = v7;
   v31 = v9;
 
@@ -672,8 +672,8 @@ LABEL_7:
   v11 = *MEMORY[0x1E695F060];
   if ([(CNContactGeminiView *)self shouldDisplayBadge])
   {
-    v12 = [(CNContactGeminiView *)self geminiBadge];
-    [v12 sizeThatFits:{width, height}];
+    geminiBadge = [(CNContactGeminiView *)self geminiBadge];
+    [geminiBadge sizeThatFits:{width, height}];
     v14 = v13;
     v16 = v15;
   }
@@ -684,21 +684,21 @@ LABEL_7:
     v14 = v11;
   }
 
-  v17 = [(CNContactGeminiView *)self geminiLabel];
-  [v17 sizeThatFits:{width, height}];
+  geminiLabel = [(CNContactGeminiView *)self geminiLabel];
+  [geminiLabel sizeThatFits:{width, height}];
   v19 = v18;
   v21 = v20;
 
   if ([(CNContactGeminiView *)self shouldDisplayChevron])
   {
-    v22 = [(CNContactGeminiView *)self chevronView];
-    [v22 sizeThatFits:{width, height}];
+    chevronView = [(CNContactGeminiView *)self chevronView];
+    [chevronView sizeThatFits:{width, height}];
     v11 = v23;
   }
 
-  v24 = [(CNContactGeminiView *)self shouldDisplayBadge];
+  shouldDisplayBadge = [(CNContactGeminiView *)self shouldDisplayBadge];
   v25 = v14 + 6.0 + v19;
-  if (!v24)
+  if (!shouldDisplayBadge)
   {
     v25 = v19;
   }
@@ -713,9 +713,9 @@ LABEL_7:
     v26 = v25;
   }
 
-  v27 = [(CNContactGeminiView *)self shouldDisplayChevron];
+  shouldDisplayChevron = [(CNContactGeminiView *)self shouldDisplayChevron];
   v28 = v11 + 4.0 + v26;
-  if (!v27)
+  if (!shouldDisplayChevron)
   {
     v28 = v26;
   }
@@ -741,12 +741,12 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)sizeForSingleLineLayoutFittingSize:(CGSize)a3
+- (CGSize)sizeForSingleLineLayoutFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CNContactGeminiView *)self typeLabel];
-  [v6 sizeThatFits:{width, height}];
+  height = size.height;
+  width = size.width;
+  typeLabel = [(CNContactGeminiView *)self typeLabel];
+  [typeLabel sizeThatFits:{width, height}];
   v30 = v7;
   v9 = v8;
 
@@ -754,8 +754,8 @@ LABEL_7:
   v11 = *MEMORY[0x1E695F060];
   if ([(CNContactGeminiView *)self shouldDisplayBadge])
   {
-    v12 = [(CNContactGeminiView *)self geminiBadge];
-    [v12 sizeThatFits:{width, height}];
+    geminiBadge = [(CNContactGeminiView *)self geminiBadge];
+    [geminiBadge sizeThatFits:{width, height}];
     v14 = v13;
     v16 = v15;
   }
@@ -766,29 +766,29 @@ LABEL_7:
     v14 = v11;
   }
 
-  v17 = [(CNContactGeminiView *)self geminiLabel];
-  [v17 sizeThatFits:{width, height}];
+  geminiLabel = [(CNContactGeminiView *)self geminiLabel];
+  [geminiLabel sizeThatFits:{width, height}];
   v19 = v18;
   v21 = v20;
 
   if ([(CNContactGeminiView *)self shouldDisplayChevron])
   {
-    v22 = [(CNContactGeminiView *)self chevronView];
-    [v22 sizeThatFits:{width, height}];
+    chevronView = [(CNContactGeminiView *)self chevronView];
+    [chevronView sizeThatFits:{width, height}];
     v11 = v23;
   }
 
-  v24 = [(CNContactGeminiView *)self shouldDisplayBadge];
+  shouldDisplayBadge = [(CNContactGeminiView *)self shouldDisplayBadge];
   v25 = 6.0;
-  if (v24)
+  if (shouldDisplayBadge)
   {
     v25 = v14 + 6.0 + 6.0;
   }
 
   v26 = v30 + v19 + v25;
-  v27 = [(CNContactGeminiView *)self shouldDisplayChevron];
+  shouldDisplayChevron = [(CNContactGeminiView *)self shouldDisplayChevron];
   v28 = v11 + 4.0 + v26;
-  if (!v27)
+  if (!shouldDisplayChevron)
   {
     v28 = v26;
   }
@@ -818,10 +818,10 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if ([(CNContactGeminiView *)self isUsingTwoLineLayout])
   {
 
@@ -839,34 +839,34 @@ LABEL_7:
   return result;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  objc_storeStrong(&self->_backgroundColor, a3);
-  v5 = a3;
-  v6 = [(CNContactGeminiView *)self geminiViewChevronImage];
-  v8 = [(CNContactGeminiView *)self geminiBadge];
-  v7 = [v8 _textEncapsulation];
-  [v7 setColor:v5];
+  objc_storeStrong(&self->_backgroundColor, color);
+  colorCopy = color;
+  geminiViewChevronImage = [(CNContactGeminiView *)self geminiViewChevronImage];
+  geminiBadge = [(CNContactGeminiView *)self geminiBadge];
+  _textEncapsulation = [geminiBadge _textEncapsulation];
+  [_textEncapsulation setColor:colorCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v14.receiver = self;
   v14.super_class = CNContactGeminiView;
   [(CNContactGeminiView *)&v14 setHighlighted:?];
-  v5 = [(CNContactGeminiView *)self typeLabel];
-  [v5 setHighlighted:v3];
+  typeLabel = [(CNContactGeminiView *)self typeLabel];
+  [typeLabel setHighlighted:highlightedCopy];
 
-  v6 = [(CNContactGeminiView *)self geminiLabel];
-  [v6 setHighlighted:v3];
+  geminiLabel = [(CNContactGeminiView *)self geminiLabel];
+  [geminiLabel setHighlighted:highlightedCopy];
 
-  v7 = [(CNContactGeminiView *)self chevronView];
-  [v7 setHighlighted:v3];
+  chevronView = [(CNContactGeminiView *)self chevronView];
+  [chevronView setHighlighted:highlightedCopy];
 
-  v8 = [(CNContactGeminiView *)self typeLabel];
-  v9 = v8;
-  if (v3)
+  typeLabel2 = [(CNContactGeminiView *)self typeLabel];
+  v9 = typeLabel2;
+  if (highlightedCopy)
   {
     v10 = 0.5;
   }
@@ -876,23 +876,23 @@ LABEL_7:
     v10 = 1.0;
   }
 
-  [v8 setAlpha:v10];
+  [typeLabel2 setAlpha:v10];
 
-  v11 = [(CNContactGeminiView *)self geminiLabel];
-  [v11 setAlpha:v10];
+  geminiLabel2 = [(CNContactGeminiView *)self geminiLabel];
+  [geminiLabel2 setAlpha:v10];
 
-  v12 = [(CNContactGeminiView *)self geminiBadge];
-  [v12 setAlpha:v10];
+  geminiBadge = [(CNContactGeminiView *)self geminiBadge];
+  [geminiBadge setAlpha:v10];
 
-  v13 = [(CNContactGeminiView *)self chevronView];
-  [v13 setAlpha:v10];
+  chevronView2 = [(CNContactGeminiView *)self chevronView];
+  [chevronView2 setAlpha:v10];
 }
 
-- (CNContactGeminiView)initWithFrame:(CGRect)a3
+- (CNContactGeminiView)initWithFrame:(CGRect)frame
 {
   v31.receiver = self;
   v31.super_class = CNContactGeminiView;
-  v3 = [(CNContactGeminiView *)&v31 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNContactGeminiView *)&v31 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -931,8 +931,8 @@ LABEL_7:
     LODWORD(v19) = 1148846080;
     [(UILabel *)v3->_geminiLabel setContentCompressionResistancePriority:1 forAxis:v19];
     [(CNContactGeminiView *)v3 addSubview:v3->_geminiLabel];
-    v20 = [MEMORY[0x1E69DCAB8] cnui_symbolImageForContactCardChevron];
-    v21 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v20];
+    cnui_symbolImageForContactCardChevron = [MEMORY[0x1E69DCAB8] cnui_symbolImageForContactCardChevron];
+    v21 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:cnui_symbolImageForContactCardChevron];
     chevronView = v3->_chevronView;
     v3->_chevronView = v21;
 

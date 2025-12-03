@@ -1,12 +1,12 @@
 @interface GDEntityResolutionAssetDownloadRequestResult
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEntityResolutionAssetDownloadRequestResult:(id)a3;
-- (GDEntityResolutionAssetDownloadRequestResult)initWithCoder:(id)a3;
-- (GDEntityResolutionAssetDownloadRequestResult)initWithURL:(id)a3 isEmbedded:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEntityResolutionAssetDownloadRequestResult:(id)result;
+- (GDEntityResolutionAssetDownloadRequestResult)initWithCoder:(id)coder;
+- (GDEntityResolutionAssetDownloadRequestResult)initWithURL:(id)l isEmbedded:(BOOL)embedded;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GDEntityResolutionAssetDownloadRequestResult
@@ -18,17 +18,17 @@
   return v2;
 }
 
-- (GDEntityResolutionAssetDownloadRequestResult)initWithURL:(id)a3 isEmbedded:(BOOL)a4
+- (GDEntityResolutionAssetDownloadRequestResult)initWithURL:(id)l isEmbedded:(BOOL)embedded
 {
-  v7 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = GDEntityResolutionAssetDownloadRequestResult;
   v8 = [(GDEntityResolutionAssetDownloadRequestResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_filepathURL, a3);
-    v9->_isEmbedded = a4;
+    objc_storeStrong(&v8->_filepathURL, l);
+    v9->_isEmbedded = embedded;
   }
 
   return v9;
@@ -53,20 +53,20 @@
   return v6 + v4;
 }
 
-- (BOOL)isEqualToEntityResolutionAssetDownloadRequestResult:(id)a3
+- (BOOL)isEqualToEntityResolutionAssetDownloadRequestResult:(id)result
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  resultCopy = result;
+  v5 = resultCopy;
+  if (resultCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4)
+  else if (resultCopy)
   {
     filepathURL = self->_filepathURL;
-    v7 = [(GDEntityResolutionAssetDownloadRequestResult *)v4 filepathURL];
-    if (filepathURL == v7)
+    filepathURL = [(GDEntityResolutionAssetDownloadRequestResult *)resultCopy filepathURL];
+    if (filepathURL == filepathURL)
     {
       isEmbedded = self->_isEmbedded;
       v8 = isEmbedded == [(GDEntityResolutionAssetDownloadRequestResult *)v5 isEmbedded];
@@ -86,10 +86,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -97,66 +97,66 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(GDEntityResolutionAssetDownloadRequestResult *)self isEqualToEntityResolutionAssetDownloadRequestResult:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(GDEntityResolutionAssetDownloadRequestResult *)self isEqualToEntityResolutionAssetDownloadRequestResult:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [GDEntityResolutionAssetDownloadRequestResult allocWithZone:a3];
+  v4 = [GDEntityResolutionAssetDownloadRequestResult allocWithZone:zone];
   filepathURL = self->_filepathURL;
   isEmbedded = self->_isEmbedded;
 
   return [(GDEntityResolutionAssetDownloadRequestResult *)v4 initWithURL:filepathURL isEmbedded:isEmbedded];
 }
 
-- (GDEntityResolutionAssetDownloadRequestResult)initWithCoder:(id)a3
+- (GDEntityResolutionAssetDownloadRequestResult)initWithCoder:(id)coder
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_filepathURL);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = NSStringFromSelector(sel_isEmbedded);
-  v9 = [v4 decodeBoolForKey:v8];
+  v9 = [coderCopy decodeBoolForKey:v8];
 
-  v10 = [v4 error];
+  error = [coderCopy error];
 
-  if (v10)
+  if (error)
   {
     v11 = MEMORY[0x1E696ABC0];
     v17 = *MEMORY[0x1E696A578];
     v18[0] = @"GDEntityResolutionAssetDownloadRequestResult requested could not be decoded";
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v13 = [v11 errorWithDomain:@"GDErrorDomain" code:9 userInfo:v12];
-    [v4 failWithError:v13];
+    [coderCopy failWithError:v13];
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GDEntityResolutionAssetDownloadRequestResult *)self initWithURL:v7 isEmbedded:v9];
-    v14 = self;
+    selfCopy = self;
   }
 
   v15 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   filepathURL = self->_filepathURL;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_filepathURL);
-  [v5 encodeObject:filepathURL forKey:v6];
+  [coderCopy encodeObject:filepathURL forKey:v6];
 
   isEmbedded = self->_isEmbedded;
   v8 = NSStringFromSelector(sel_isEmbedded);
-  [v5 encodeBool:isEmbedded forKey:v8];
+  [coderCopy encodeBool:isEmbedded forKey:v8];
 }
 
 @end

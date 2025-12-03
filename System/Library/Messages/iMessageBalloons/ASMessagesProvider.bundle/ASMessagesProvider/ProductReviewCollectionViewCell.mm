@@ -1,12 +1,12 @@
 @interface ProductReviewCollectionViewCell
-- (_TtC18ASMessagesProvider31ProductReviewCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider31ProductReviewCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation ProductReviewCollectionViewCell
 
-- (_TtC18ASMessagesProvider31ProductReviewCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider31ProductReviewCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider31ProductReviewCollectionViewCell_itemLayoutContext;
   v5 = sub_75C840();
@@ -21,13 +21,13 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_308AF0();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_308BD4();
 }
 

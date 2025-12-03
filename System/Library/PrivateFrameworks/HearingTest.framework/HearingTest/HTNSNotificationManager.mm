@@ -13,42 +13,42 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver_];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for HTNSNotificationManager();
   [(HTNSNotificationManager *)&v6 dealloc];
 }
 
 - (void)handleDidEnterBackground
 {
-  v2 = self;
+  selfCopy = self;
   sub_2520A947C();
 }
 
 - (void)handleWillDeactivate
 {
-  v2 = self;
+  selfCopy = self;
   sub_2520A94E0();
 }
 
 - (void)handleDidActivate
 {
-  v2 = self;
+  selfCopy = self;
   sub_2520A9720();
 }
 
 - (void)handleWillTerminate
 {
-  v2 = self;
+  selfCopy = self;
   sub_2520A9784();
 }
 
 - (void)notifyTestResumed
 {
-  v2 = self;
+  selfCopy = self;
   sub_2520A9AD4();
 }
 
@@ -61,8 +61,8 @@
   MEMORY[0x28223BE20](v4);
   v6 = v56 - v5;
   v7 = objc_opt_self();
-  v8 = [v7 processInfo];
-  v9 = [v8 processName];
+  processInfo = [v7 processInfo];
+  processName = [processInfo processName];
 
   v10 = sub_252141B9C();
   v12 = v11;
@@ -70,18 +70,18 @@
   v13 = objc_allocWithZone(MEMORY[0x277CBEBD0]);
   v57 = "tat";
   v14 = sub_252141B6C();
-  v15 = [v13 initWithSuiteName_];
+  initWithSuiteName_ = [v13 initWithSuiteName_];
 
-  if (!v15)
+  if (!initWithSuiteName_)
   {
     __break(1u);
     goto LABEL_28;
   }
 
   v16 = sub_252141B6C();
-  v17 = [v15 stringForKey_];
+  stringForKey_ = [initWithSuiteName_ stringForKey_];
 
-  if (v17)
+  if (stringForKey_)
   {
     v56[1] = 0xD000000000000014;
     v18 = sub_252141B9C();
@@ -115,8 +115,8 @@ LABEL_8:
         v27 = swift_slowAlloc();
         v58 = v27;
         *v26 = 136315138;
-        v28 = [v7 processInfo];
-        v29 = [v28 processName];
+        processInfo2 = [v7 processInfo];
+        processName2 = [processInfo2 processName];
 
         v30 = sub_252141B9C();
         v32 = v31;
@@ -132,9 +132,9 @@ LABEL_8:
 
       v34 = objc_allocWithZone(MEMORY[0x277CBEBD0]);
       v35 = sub_252141B6C();
-      v36 = [v34 initWithSuiteName_];
+      initWithSuiteName_2 = [v34 initWithSuiteName_];
 
-      if (v36)
+      if (initWithSuiteName_2)
       {
         sub_25214187C();
         v37 = sub_25214188C();
@@ -149,39 +149,39 @@ LABEL_8:
         }
 
         v40 = sub_252141B6C();
-        [v36 setValue:v39 forKey:v40];
+        [initWithSuiteName_2 setValue:v39 forKey:v40];
 
         swift_unknownObjectRelease();
         sub_2520AA4DC(v6);
         v41 = objc_allocWithZone(MEMORY[0x277CBEBD0]);
         v42 = sub_252141B6C();
-        v43 = [v41 initWithSuiteName_];
+        initWithSuiteName_3 = [v41 initWithSuiteName_];
 
-        if (v43)
+        if (initWithSuiteName_3)
         {
-          v44 = [v7 processInfo];
-          v45 = [v44 processName];
+          processInfo3 = [v7 processInfo];
+          processName3 = [processInfo3 processName];
 
-          if (!v45)
+          if (!processName3)
           {
             sub_252141B9C();
-            v45 = sub_252141B6C();
+            processName3 = sub_252141B6C();
           }
 
           v46 = sub_252141B6C();
-          [v43 setValue:v45 forKey:v46];
+          [initWithSuiteName_3 setValue:processName3 forKey:v46];
 
           v47 = objc_allocWithZone(MEMORY[0x277CBEBD0]);
           v48 = sub_252141B6C();
-          v49 = [v47 initWithSuiteName_];
+          initWithSuiteName_4 = [v47 initWithSuiteName_];
 
-          if (v49)
+          if (initWithSuiteName_4)
           {
             sub_2520DC654();
             v50 = sub_252141B6C();
 
             v51 = sub_252141B6C();
-            [v49 setValue:v50 forKey:v51];
+            [initWithSuiteName_4 setValue:v50 forKey:v51];
 
             return;
           }

@@ -1,31 +1,31 @@
 @interface SSVSubscriptionEntitlements
-+ (id)_parseJSONDictionary:(id)a3;
-+ (id)_valueForKey:(id)a3 fromDictionary:(id)a4 ofType:(Class)a5;
-- (SSVSubscriptionEntitlements)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)_parseJSONDictionary:(id)dictionary;
++ (id)_valueForKey:(id)key fromDictionary:(id)dictionary ofType:(Class)type;
+- (SSVSubscriptionEntitlements)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 @end
 
 @implementation SSVSubscriptionEntitlements
 
-+ (id)_parseJSONDictionary:(id)a3
++ (id)_parseJSONDictionary:(id)dictionary
 {
   v68 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_alloc_init(SSVSubscriptionEntitlements);
-  v6 = [a1 _valueForKey:@"user" fromDictionary:v4 ofType:objc_opt_class()];
-  v35 = [a1 _valueForKey:@"ISO3Country" fromDictionary:v6 ofType:objc_opt_class()];
+  v6 = [self _valueForKey:@"user" fromDictionary:dictionaryCopy ofType:objc_opt_class()];
+  v35 = [self _valueForKey:@"ISO3Country" fromDictionary:v6 ofType:objc_opt_class()];
   [(SSVSubscriptionEntitlements *)v5 setAccountISO3Country:?];
-  v34 = [a1 _valueForKey:@"dsId" fromDictionary:v6 ofType:objc_opt_class()];
+  v34 = [self _valueForKey:@"dsId" fromDictionary:v6 ofType:objc_opt_class()];
   [(SSVSubscriptionEntitlements *)v5 setAccountIdentifier:?];
   v36 = v6;
-  v33 = [a1 _valueForKey:@"storeFrontId" fromDictionary:v6 ofType:objc_opt_class()];
+  v33 = [self _valueForKey:@"storeFrontId" fromDictionary:v6 ofType:objc_opt_class()];
   [(SSVSubscriptionEntitlements *)v5 setAccountStoreFrontIdentifier:?];
-  [a1 _valueForKey:@"cacheTimestamp" fromDictionary:v4 ofType:objc_opt_class()];
+  [self _valueForKey:@"cacheTimestamp" fromDictionary:dictionaryCopy ofType:objc_opt_class()];
   v32 = v38 = v5;
   [(SSVSubscriptionEntitlements *)v5 setCachedTimestamp:?];
-  v37 = v4;
-  v7 = [a1 _valueForKey:@"subscriptions" fromDictionary:v4 ofType:objc_opt_class()];
+  v37 = dictionaryCopy;
+  v7 = [self _valueForKey:@"subscriptions" fromDictionary:dictionaryCopy ofType:objc_opt_class()];
   v44 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v62 = 0u;
   v63 = 0u;
@@ -55,9 +55,9 @@
         {
           v43 = v11;
           v13 = v12;
-          v46 = [a1 _valueForKey:@"appAdamId" fromDictionary:v13 ofType:objc_opt_class()];
+          v46 = [self _valueForKey:@"appAdamId" fromDictionary:v13 ofType:objc_opt_class()];
           v42 = v13;
-          v14 = [a1 _valueForKey:@"inAppSubscriptions" fromDictionary:v13 ofType:objc_opt_class()];
+          v14 = [self _valueForKey:@"inAppSubscriptions" fromDictionary:v13 ofType:objc_opt_class()];
           v58 = 0u;
           v59 = 0u;
           v60 = 0u;
@@ -87,15 +87,15 @@
                   v20 = v19;
                   v21 = objc_alloc_init(SSVSubscriptionEntitlementsSubscription);
                   [(SSVSubscriptionEntitlementsSubscription *)v21 setAppAdamId:v46];
-                  v57 = [a1 _valueForKey:@"appVersion" fromDictionary:v20 ofType:objc_opt_class()];
+                  v57 = [self _valueForKey:@"appVersion" fromDictionary:v20 ofType:objc_opt_class()];
                   [(SSVSubscriptionEntitlementsSubscription *)v21 setAppVersion:?];
-                  v56 = [a1 _valueForKey:@"chargeCountryCode" fromDictionary:v20 ofType:objc_opt_class()];
+                  v56 = [self _valueForKey:@"chargeCountryCode" fromDictionary:v20 ofType:objc_opt_class()];
                   [(SSVSubscriptionEntitlementsSubscription *)v21 setChargeCountryCode:?];
-                  v55 = [a1 _valueForKey:@"chargeCurrencyCode" fromDictionary:v20 ofType:objc_opt_class()];
+                  v55 = [self _valueForKey:@"chargeCurrencyCode" fromDictionary:v20 ofType:objc_opt_class()];
                   [(SSVSubscriptionEntitlementsSubscription *)v21 setChargeCurrencyCode:?];
-                  v54 = [a1 _valueForKey:@"chargeStoreFrontId" fromDictionary:v20 ofType:objc_opt_class()];
+                  v54 = [self _valueForKey:@"chargeStoreFrontId" fromDictionary:v20 ofType:objc_opt_class()];
                   [(SSVSubscriptionEntitlementsSubscription *)v21 setChargeStoreFrontIdentifier:?];
-                  v22 = [a1 _valueForKey:@"expireDate" fromDictionary:v20 ofType:objc_opt_class()];
+                  v22 = [self _valueForKey:@"expireDate" fromDictionary:v20 ofType:objc_opt_class()];
                   if (v22)
                   {
                     v23 = objc_alloc_init(MEMORY[0x1E696AB78]);
@@ -107,26 +107,26 @@
                     }
                   }
 
-                  v53 = [a1 _valueForKey:@"familyId" fromDictionary:v20 ofType:objc_opt_class()];
+                  v53 = [self _valueForKey:@"familyId" fromDictionary:v20 ofType:objc_opt_class()];
                   [(SSVSubscriptionEntitlementsSubscription *)v21 setFamilyId:v53];
-                  v52 = [a1 _valueForKey:@"inAppAdamId" fromDictionary:v20 ofType:objc_opt_class()];
+                  v52 = [self _valueForKey:@"inAppAdamId" fromDictionary:v20 ofType:objc_opt_class()];
                   [(SSVSubscriptionEntitlementsSubscription *)v21 setInAppAdamId:v52];
-                  v51 = [a1 _valueForKey:@"inAppVersion" fromDictionary:v20 ofType:objc_opt_class()];
+                  v51 = [self _valueForKey:@"inAppVersion" fromDictionary:v20 ofType:objc_opt_class()];
                   [(SSVSubscriptionEntitlementsSubscription *)v21 setInAppVersion:v51];
-                  v50 = [a1 _valueForKey:@"isNewsAppPurchase" fromDictionary:v20 ofType:objc_opt_class()];
+                  v50 = [self _valueForKey:@"isNewsAppPurchase" fromDictionary:v20 ofType:objc_opt_class()];
                   -[SSVSubscriptionEntitlementsSubscription setNewsAppPurchase:](v21, "setNewsAppPurchase:", [v50 BOOLValue]);
-                  v25 = [a1 _valueForKey:@"offerIdentifier" fromDictionary:v20 ofType:objc_opt_class()];
+                  v25 = [self _valueForKey:@"offerIdentifier" fromDictionary:v20 ofType:objc_opt_class()];
                   [(SSVSubscriptionEntitlementsSubscription *)v21 setOfferIdentifier:v25];
-                  v26 = [a1 _valueForKey:@"originalPurchaseDownloadId" fromDictionary:v20 ofType:objc_opt_class()];
+                  v26 = [self _valueForKey:@"originalPurchaseDownloadId" fromDictionary:v20 ofType:objc_opt_class()];
                   [(SSVSubscriptionEntitlementsSubscription *)v21 setOriginalPurchaseDownloadId:v26];
-                  [a1 _valueForKey:@"purchasabilityType" fromDictionary:v20 ofType:objc_opt_class()];
+                  [self _valueForKey:@"purchasabilityType" fromDictionary:v20 ofType:objc_opt_class()];
                   v27 = v49 = v22;
                   [(SSVSubscriptionEntitlementsSubscription *)v21 setPurchasabilityType:v27];
-                  v28 = [a1 _valueForKey:@"purchaseDownloadId" fromDictionary:v20 ofType:objc_opt_class()];
+                  v28 = [self _valueForKey:@"purchaseDownloadId" fromDictionary:v20 ofType:objc_opt_class()];
                   [(SSVSubscriptionEntitlementsSubscription *)v21 setPurchaseDownloadId:v28];
-                  v29 = [a1 _valueForKey:@"quantity" fromDictionary:v20 ofType:objc_opt_class()];
+                  v29 = [self _valueForKey:@"quantity" fromDictionary:v20 ofType:objc_opt_class()];
                   [(SSVSubscriptionEntitlementsSubscription *)v21 setQuantity:v29];
-                  v30 = [a1 _valueForKey:@"vendorIdentifier" fromDictionary:v20 ofType:objc_opt_class()];
+                  v30 = [self _valueForKey:@"vendorIdentifier" fromDictionary:v20 ofType:objc_opt_class()];
                   [(SSVSubscriptionEntitlementsSubscription *)v21 setVendorIdentifier:v30];
                   [v44 addObject:v21];
 
@@ -164,9 +164,9 @@
   return v38;
 }
 
-+ (id)_valueForKey:(id)a3 fromDictionary:(id)a4 ofType:(Class)a5
++ (id)_valueForKey:(id)key fromDictionary:(id)dictionary ofType:(Class)type
 {
-  v5 = [a4 valueForKey:a3];
+  v5 = [dictionary valueForKey:key];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -182,32 +182,32 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SSVSubscriptionEntitlements *)self accountIdentifier];
-  [v4 setAccountIdentifier:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  accountIdentifier = [(SSVSubscriptionEntitlements *)self accountIdentifier];
+  [v4 setAccountIdentifier:accountIdentifier];
 
-  v6 = [(SSVSubscriptionEntitlements *)self accountStoreFrontIdentifier];
-  [v4 setAccountStoreFrontIdentifier:v6];
+  accountStoreFrontIdentifier = [(SSVSubscriptionEntitlements *)self accountStoreFrontIdentifier];
+  [v4 setAccountStoreFrontIdentifier:accountStoreFrontIdentifier];
 
-  v7 = [(SSVSubscriptionEntitlements *)self accountISO3Country];
-  [v4 setAccountISO3Country:v7];
+  accountISO3Country = [(SSVSubscriptionEntitlements *)self accountISO3Country];
+  [v4 setAccountISO3Country:accountISO3Country];
 
-  v8 = [(SSVSubscriptionEntitlements *)self cachedTimestamp];
-  [v4 setCachedTimestamp:v8];
+  cachedTimestamp = [(SSVSubscriptionEntitlements *)self cachedTimestamp];
+  [v4 setCachedTimestamp:cachedTimestamp];
 
-  v9 = [(SSVSubscriptionEntitlements *)self entitledSubscriptions];
-  [v4 setEntitledSubscriptions:v9];
+  entitledSubscriptions = [(SSVSubscriptionEntitlements *)self entitledSubscriptions];
+  [v4 setEntitledSubscriptions:entitledSubscriptions];
 
   return v4;
 }
 
-- (SSVSubscriptionEntitlements)initWithXPCEncoding:(id)a3
+- (SSVSubscriptionEntitlements)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v25.receiver = self;
     v25.super_class = SSVSubscriptionEntitlements;

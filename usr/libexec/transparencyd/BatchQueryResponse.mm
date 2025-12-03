@@ -1,27 +1,27 @@
 @interface BatchQueryResponse
 + (id)descriptor;
 - (id)diagnosticsJsonDictionary;
-- (unint64_t)verifyWithError:(id *)a3;
-- (void)setFollowUp:(id)a3;
-- (void)setMetadataValue:(id)a3 key:(id)a4;
-- (void)setOptInServer:(id)a3;
+- (unint64_t)verifyWithError:(id *)error;
+- (void)setFollowUp:(id)up;
+- (void)setMetadataValue:(id)value key:(id)key;
+- (void)setOptInServer:(id)server;
 @end
 
 @implementation BatchQueryResponse
 
-- (void)setOptInServer:(id)a3
+- (void)setOptInServer:(id)server
 {
-  if (a3)
+  if (server)
   {
-    objc_setAssociatedObject(self, @"optInServerKey", a3, 1);
+    objc_setAssociatedObject(self, @"optInServerKey", server, 1);
   }
 }
 
-- (void)setFollowUp:(id)a3
+- (void)setFollowUp:(id)up
 {
-  if (a3)
+  if (up)
   {
-    objc_setAssociatedObject(self, @"followUpKey", a3, 1);
+    objc_setAssociatedObject(self, @"followUpKey", up, 1);
   }
 }
 
@@ -36,8 +36,8 @@
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(BatchQueryResponse *)self queryInfoArray];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  queryInfoArray = [(BatchQueryResponse *)self queryInfoArray];
+  v7 = [queryInfoArray countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -48,14 +48,14 @@
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(queryInfoArray);
         }
 
-        v11 = [*(*(&v20 + 1) + 8 * i) diagnosticsJsonDictionary];
-        [v5 addObject:v11];
+        diagnosticsJsonDictionary = [*(*(&v20 + 1) + 8 * i) diagnosticsJsonDictionary];
+        [v5 addObject:diagnosticsJsonDictionary];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [queryInfoArray countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
@@ -71,74 +71,74 @@
     v12 = [(BatchQueryResponse *)self smh];
     v13 = [SignedMapHead signedTypeWithObject:v12];
 
-    v14 = [v13 diagnosticsJsonDictionary];
-    [v3 setObject:v14 forKeyedSubscript:@"smh"];
+    diagnosticsJsonDictionary2 = [v13 diagnosticsJsonDictionary];
+    [v3 setObject:diagnosticsJsonDictionary2 forKeyedSubscript:@"smh"];
   }
 
   if ([(BatchQueryResponse *)self hasPerApplicationTreeEntry])
   {
-    v15 = [(BatchQueryResponse *)self perApplicationTreeEntry];
-    v16 = [v15 diagnosticsJsonDictionary];
-    [v3 setObject:v16 forKeyedSubscript:@"patEntry"];
+    perApplicationTreeEntry = [(BatchQueryResponse *)self perApplicationTreeEntry];
+    diagnosticsJsonDictionary3 = [perApplicationTreeEntry diagnosticsJsonDictionary];
+    [v3 setObject:diagnosticsJsonDictionary3 forKeyedSubscript:@"patEntry"];
   }
 
   if ([(BatchQueryResponse *)self hasTopLevelTreeEntry])
   {
-    v17 = [(BatchQueryResponse *)self topLevelTreeEntry];
-    v18 = [v17 diagnosticsJsonDictionary];
-    [v3 setObject:v18 forKeyedSubscript:@"tltEntry"];
+    topLevelTreeEntry = [(BatchQueryResponse *)self topLevelTreeEntry];
+    diagnosticsJsonDictionary4 = [topLevelTreeEntry diagnosticsJsonDictionary];
+    [v3 setObject:diagnosticsJsonDictionary4 forKeyedSubscript:@"tltEntry"];
   }
 
   return v3;
 }
 
-- (unint64_t)verifyWithError:(id *)a3
+- (unint64_t)verifyWithError:(id *)error
 {
   if (![(BatchQueryResponse *)self hasSmh]|| ([(BatchQueryResponse *)self smh], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     v23 = -12;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_9;
     }
 
 LABEL_8:
-    *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:v23 description:@"KT Inclusion proof data required for verification"];
+    *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:v23 description:@"KT Inclusion proof data required for verification"];
     goto LABEL_9;
   }
 
   if (![(BatchQueryResponse *)self hasTopLevelTreeEntry]|| ([(BatchQueryResponse *)self hasPerApplicationTreeEntry]& 1) != 0)
   {
     v6 = [TransparencyLogEntryVerifier alloc];
-    v7 = [(BatchQueryResponse *)self verifier];
-    v8 = [v7 keyBag];
-    v9 = [v8 appSthKeyStore];
-    v10 = [(TransparencyLogEntryVerifier *)v6 initWithTrustedKeyStore:v9];
+    verifier = [(BatchQueryResponse *)self verifier];
+    keyBag = [verifier keyBag];
+    appSthKeyStore = [keyBag appSthKeyStore];
+    v10 = [(TransparencyLogEntryVerifier *)v6 initWithTrustedKeyStore:appSthKeyStore];
 
     v11 = [TransparencyLogEntryVerifier alloc];
-    v12 = [(BatchQueryResponse *)self verifier];
-    v13 = [v12 keyBag];
-    v14 = [v13 tltKeyStore];
-    v15 = [(TransparencyLogEntryVerifier *)v11 initWithTrustedKeyStore:v14];
+    verifier2 = [(BatchQueryResponse *)self verifier];
+    keyBag2 = [verifier2 keyBag];
+    tltKeyStore = [keyBag2 tltKeyStore];
+    v15 = [(TransparencyLogEntryVerifier *)v11 initWithTrustedKeyStore:tltKeyStore];
 
-    v16 = [(BatchQueryResponse *)self dataStore];
+    dataStore = [(BatchQueryResponse *)self dataStore];
     v17 = [(BatchQueryResponse *)self smh];
-    v18 = [(TransparencyLogEntryVerifier *)v10 trustedKeyStore];
-    v19 = [v18 signatureVerifier];
-    v20 = [(BatchQueryResponse *)self dataStore];
-    v21 = [SignedMapHead signedTypeWithObject:v17 verifier:v19 dataStore:v20];
+    trustedKeyStore = [(TransparencyLogEntryVerifier *)v10 trustedKeyStore];
+    signatureVerifier = [trustedKeyStore signatureVerifier];
+    dataStore2 = [(BatchQueryResponse *)self dataStore];
+    v21 = [SignedMapHead signedTypeWithObject:v17 verifier:signatureVerifier dataStore:dataStore2];
 
     if ([(BatchQueryResponse *)self hasPerApplicationTreeEntry])
     {
-      v22 = [(BatchQueryResponse *)self perApplicationTreeEntry];
-      [v21 setOverrideBeginTimeFromLogEntry:v22];
+      perApplicationTreeEntry = [(BatchQueryResponse *)self perApplicationTreeEntry];
+      [v21 setOverrideBeginTimeFromLogEntry:perApplicationTreeEntry];
     }
 
     else
     {
-      v22 = [(BatchQueryResponse *)self verifier];
-      v26 = [v22 keyBag];
-      [v21 setOverrideBeginTime:{objc_msgSend(v26, "patLogBeginningMs")}];
+      perApplicationTreeEntry = [(BatchQueryResponse *)self verifier];
+      keyBag3 = [perApplicationTreeEntry keyBag];
+      [v21 setOverrideBeginTime:{objc_msgSend(keyBag3, "patLogBeginningMs")}];
     }
 
     [(BatchQueryResponse *)self setVerifiableSmh:v21];
@@ -148,10 +148,10 @@ LABEL_8:
     [TransparencyMapEntryVerifier storeSMHSignatureResult:v25 smh:v21 error:v27];
     if (v25 != 1)
     {
-      if (a3 && v27)
+      if (error && v27)
       {
         v37 = v27;
-        *a3 = v27;
+        *error = v27;
       }
 
       goto LABEL_31;
@@ -159,38 +159,38 @@ LABEL_8:
 
     if ([(BatchQueryResponse *)self hasPerApplicationTreeEntry])
     {
-      v28 = [(BatchQueryResponse *)self perApplicationTreeEntry];
+      perApplicationTreeEntry2 = [(BatchQueryResponse *)self perApplicationTreeEntry];
 
-      if (v28)
+      if (perApplicationTreeEntry2)
       {
         v41 = v15;
-        v28 = [(BatchQueryResponse *)self perApplicationTreeEntry];
-        [v28 setVerifier:v10];
-        [v28 setDataStore:v16];
-        v29 = [(BatchQueryResponse *)self metadata];
+        perApplicationTreeEntry2 = [(BatchQueryResponse *)self perApplicationTreeEntry];
+        [perApplicationTreeEntry2 setVerifier:v10];
+        [perApplicationTreeEntry2 setDataStore:dataStore];
+        metadata = [(BatchQueryResponse *)self metadata];
         v30 = kTransparencyResponseMetadataKeyServerHint;
-        v31 = [v29 objectForKeyedSubscript:kTransparencyResponseMetadataKeyServerHint];
-        [v28 setMetadataValue:v31 key:v30];
+        v31 = [metadata objectForKeyedSubscript:kTransparencyResponseMetadataKeyServerHint];
+        [perApplicationTreeEntry2 setMetadataValue:v31 key:v30];
 
-        v32 = [(BatchQueryResponse *)self optInServer];
-        [v28 setOptInServer:v32];
+        optInServer = [(BatchQueryResponse *)self optInServer];
+        [perApplicationTreeEntry2 setOptInServer:optInServer];
 
         if ([(BatchQueryResponse *)self hasTopLevelTreeEntry]&& ([(BatchQueryResponse *)self topLevelTreeEntry], v33 = objc_claimAutoreleasedReturnValue(), v33, v33))
         {
-          v34 = [(BatchQueryResponse *)self topLevelTreeEntry];
-          [v34 setVerifier:v41];
-          [v34 setDataStore:v16];
-          v40 = [(BatchQueryResponse *)self metadata];
-          v35 = [v40 objectForKeyedSubscript:v30];
-          [v34 setMetadataValue:v35 key:v30];
+          topLevelTreeEntry = [(BatchQueryResponse *)self topLevelTreeEntry];
+          [topLevelTreeEntry setVerifier:v41];
+          [topLevelTreeEntry setDataStore:dataStore];
+          metadata2 = [(BatchQueryResponse *)self metadata];
+          v35 = [metadata2 objectForKeyedSubscript:v30];
+          [topLevelTreeEntry setMetadataValue:v35 key:v30];
 
-          v36 = [(BatchQueryResponse *)self optInServer];
-          [v34 setOptInServer:v36];
+          optInServer2 = [(BatchQueryResponse *)self optInServer];
+          [topLevelTreeEntry setOptInServer:optInServer2];
         }
 
         else
         {
-          v34 = 0;
+          topLevelTreeEntry = 0;
         }
 
         v15 = v41;
@@ -200,20 +200,20 @@ LABEL_8:
 
     else
     {
-      v28 = 0;
+      perApplicationTreeEntry2 = 0;
     }
 
-    v34 = 0;
+    topLevelTreeEntry = 0;
 LABEL_30:
-    v38 = [(BatchQueryResponse *)self verifier];
-    v25 = [v38 verifyPerApplicationTreeEntry:v28 mapHead:v21 topLevelTreeEntry:v34 error:a3];
+    verifier3 = [(BatchQueryResponse *)self verifier];
+    v25 = [verifier3 verifyPerApplicationTreeEntry:perApplicationTreeEntry2 mapHead:v21 topLevelTreeEntry:topLevelTreeEntry error:error];
 
 LABEL_31:
     return v25;
   }
 
   v23 = -11;
-  if (a3)
+  if (error)
   {
     goto LABEL_8;
   }
@@ -248,21 +248,21 @@ LABEL_9:
   return v2;
 }
 
-- (void)setMetadataValue:(id)a3 key:(id)a4
+- (void)setMetadataValue:(id)value key:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9)
+  valueCopy = value;
+  keyCopy = key;
+  if (valueCopy)
   {
-    v7 = [(BatchQueryResponse *)self metadata];
-    v8 = [v7 mutableCopy];
+    metadata = [(BatchQueryResponse *)self metadata];
+    v8 = [metadata mutableCopy];
 
     if (!v8)
     {
       v8 = objc_alloc_init(NSMutableDictionary);
     }
 
-    [v8 setObject:v9 forKeyedSubscript:v6];
+    [v8 setObject:valueCopy forKeyedSubscript:keyCopy];
     [(BatchQueryResponse *)self setMetadata:v8];
   }
 }

@@ -1,17 +1,17 @@
 @interface AVTCarouselControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
-- (void)presentEditorForCreatingAvatar:(id)a3;
+- (void)presentEditorForCreatingAvatar:(id)avatar;
 @end
 
 @implementation AVTCarouselControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTCarouselController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AVTCarouselController" hasInstanceMethod:@"presentEditorForCreatingAvatar:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTCarouselController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AVTCarouselController" hasInstanceMethod:@"presentEditorForCreatingAvatar:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -29,11 +29,11 @@
   [(AVTCarouselControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)presentEditorForCreatingAvatar:(id)a3
+- (void)presentEditorForCreatingAvatar:(id)avatar
 {
   v3.receiver = self;
   v3.super_class = AVTCarouselControllerAccessibility;
-  [(AVTCarouselControllerAccessibility *)&v3 presentEditorForCreatingAvatar:a3];
+  [(AVTCarouselControllerAccessibility *)&v3 presentEditorForCreatingAvatar:avatar];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
 }
 

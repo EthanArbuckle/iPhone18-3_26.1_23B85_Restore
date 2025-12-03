@@ -29,7 +29,7 @@
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:6];
   v4 = objc_opt_class();
   v5 = +[ABSConstantsMapping ABToCNPersonAddressConstantsMapping];
-  v6 = [a1 dictionaryBasedMultiValueTransformWithLabelMapping:v2 inputKeys:v3 destinationClass:v4 valueMapping:v5];
+  v6 = [self dictionaryBasedMultiValueTransformWithLabelMapping:v2 inputKeys:v3 destinationClass:v4 valueMapping:v5];
 
   return v6;
 }
@@ -50,7 +50,7 @@
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:6];
   v7 = objc_opt_class();
   v8 = +[ABSConstantsMapping CNToABPersonAddressConstantsMapping];
-  v9 = [a1 dictionaryBasedMultiValueTransformWithLabelMapping:v2 inputKeys:v6 destinationClass:v7 valueMapping:v8];
+  v9 = [self dictionaryBasedMultiValueTransformWithLabelMapping:v2 inputKeys:v6 destinationClass:v7 valueMapping:v8];
 
   return v9;
 }

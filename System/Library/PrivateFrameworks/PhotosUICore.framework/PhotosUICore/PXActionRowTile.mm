@@ -1,22 +1,22 @@
 @interface PXActionRowTile
 - (BOOL)isEnabled;
 - (BOOL)showsMenu;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PXActionRowTile)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PXActionRowTile)initWithFrame:(CGRect)frame;
 - (PXActionRowTileDelegate)delegate;
 - (void)_setupButton;
 - (void)_setupDecoratedButton;
 - (void)_updateButtonAction;
 - (void)_updateButtonTitle;
 - (void)becomeReusable;
-- (void)handleButtonTap:(id)a3 forEvent:(id)a4;
+- (void)handleButtonTap:(id)tap forEvent:(id)event;
 - (void)prepareForReuse;
-- (void)setEnabled:(BOOL)a3;
-- (void)setIdiom:(int64_t)a3;
-- (void)setShowsMenu:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setIdiom:(int64_t)idiom;
+- (void)setShowsMenu:(BOOL)menu;
+- (void)setTitle:(id)title;
 - (void)tintColorDidChange;
-- (void)widgetFooterView:(id)a3 didSelectDisclosure:(id)a4;
+- (void)widgetFooterView:(id)view didSelectDisclosure:(id)disclosure;
 @end
 
 @implementation PXActionRowTile
@@ -28,24 +28,24 @@
   return WeakRetained;
 }
 
-- (void)widgetFooterView:(id)a3 didSelectDisclosure:(id)a4
+- (void)widgetFooterView:(id)view didSelectDisclosure:(id)disclosure
 {
-  v5 = [(PXActionRowTile *)self delegate:a3];
+  v5 = [(PXActionRowTile *)self delegate:view];
   [v5 actionRowTileSelected:self tapPositionInTile:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
 }
 
-- (void)handleButtonTap:(id)a3 forEvent:(id)a4
+- (void)handleButtonTap:(id)tap forEvent:(id)event
 {
-  v5 = [a4 touchesForView:a3];
-  v12 = [v5 anyObject];
+  v5 = [event touchesForView:tap];
+  anyObject = [v5 anyObject];
 
-  v6 = [(PXActionRowTile *)self view];
-  [v12 locationInView:v6];
+  view = [(PXActionRowTile *)self view];
+  [anyObject locationInView:view];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(PXActionRowTile *)self delegate];
-  [v11 actionRowTileSelected:self tapPositionInTile:{v8, v10}];
+  delegate = [(PXActionRowTile *)self delegate];
+  [delegate actionRowTileSelected:self tapPositionInTile:{v8, v10}];
 }
 
 - (void)prepareForReuse
@@ -65,32 +65,32 @@
   [(PXUIWidgetFooterView *)footer setHidden:1];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(PXActionRowTile *)self _button];
-  v7 = [v6 titleLabel];
-  v8 = [v7 font];
-  v9 = v8;
-  if (v8)
+  height = fits.height;
+  width = fits.width;
+  _button = [(PXActionRowTile *)self _button];
+  titleLabel = [_button titleLabel];
+  font = [titleLabel font];
+  v9 = font;
+  if (font)
   {
-    v10 = v8;
+    font2 = font;
   }
 
   else
   {
-    v11 = [(PXActionRowTile *)self _footer];
-    v10 = [v11 font];
+    _footer = [(PXActionRowTile *)self _footer];
+    font2 = [_footer font];
   }
 
-  if (v10)
+  if (font2)
   {
-    [v10 ascender];
+    [font2 ascender];
     v13 = v12;
-    [v10 descender];
+    [font2 descender];
     v15 = v13 - v14;
-    [v10 _scaledValueForValue:11.5];
+    [font2 _scaledValueForValue:11.5];
     height = v15 + v16;
   }
 
@@ -112,8 +112,8 @@
 - (void)_updateButtonAction
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXActionRowTile *)self _button];
-  if ([v3 showsMenuAsPrimaryAction])
+  _button = [(PXActionRowTile *)self _button];
+  if ([_button showsMenuAsPrimaryAction])
   {
     objc_initWeak(&location, self);
     v4 = MEMORY[0x1E69DC928];
@@ -127,7 +127,7 @@
     v15[0] = v5;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:{1, v9, v10, v11, v12}];
     v8 = [v6 menuWithChildren:v7];
-    [v3 setMenu:v8];
+    [_button setMenu:v8];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -135,7 +135,7 @@
 
   else
   {
-    [v3 setMenu:0];
+    [_button setMenu:0];
   }
 }
 
@@ -162,29 +162,29 @@ void __38__PXActionRowTile__updateButtonAction__block_invoke(uint64_t a1, void *
   v30[2] = *MEMORY[0x1E69E9840];
   if (self->_idiom == 3)
   {
-    v23 = [(PXActionRowTile *)self title];
-    v3 = [(PXActionRowTile *)self _footer];
-    [v3 setDisclosureTitle:v23];
+    title = [(PXActionRowTile *)self title];
+    _footer = [(PXActionRowTile *)self _footer];
+    [_footer setDisclosureTitle:title];
   }
 
   else
   {
-    v4 = [(PXActionRowTile *)self _button];
-    v5 = [(PXActionRowTile *)self tintColor];
-    v6 = v5;
-    if (v5)
+    _button = [(PXActionRowTile *)self _button];
+    tintColor = [(PXActionRowTile *)self tintColor];
+    v6 = tintColor;
+    if (tintColor)
     {
-      v7 = v5;
+      labelColor = tintColor;
     }
 
     else
     {
-      v7 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
     }
 
-    v8 = v7;
+    v8 = labelColor;
 
-    v9 = [(PXActionRowTile *)self title];
+    title2 = [(PXActionRowTile *)self title];
     v10 = MEMORY[0x1A590C430](7, 0x8000, 7);
     v11 = *MEMORY[0x1E69DB648];
     v12 = *MEMORY[0x1E69DB650];
@@ -193,9 +193,9 @@ void __38__PXActionRowTile__updateButtonAction__block_invoke(uint64_t a1, void *
     v30[0] = v10;
     v30[1] = v8;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
-    if (v9)
+    if (title2)
     {
-      v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v9 attributes:v13];
+      v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:title2 attributes:v13];
     }
 
     else
@@ -203,7 +203,7 @@ void __38__PXActionRowTile__updateButtonAction__block_invoke(uint64_t a1, void *
       v14 = 0;
     }
 
-    [v4 setAttributedTitle:v14 forState:0];
+    [_button setAttributedTitle:v14 forState:0];
     v27[1] = v12;
     v28[0] = v10;
     v27[0] = v11;
@@ -212,9 +212,9 @@ void __38__PXActionRowTile__updateButtonAction__block_invoke(uint64_t a1, void *
     v28[1] = v15;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
 
-    if (v9)
+    if (title2)
     {
-      v17 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v9 attributes:v16];
+      v17 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:title2 attributes:v16];
     }
 
     else
@@ -222,17 +222,17 @@ void __38__PXActionRowTile__updateButtonAction__block_invoke(uint64_t a1, void *
       v17 = 0;
     }
 
-    [v4 setAttributedTitle:v17 forState:1];
+    [_button setAttributedTitle:v17 forState:1];
     v25[1] = v12;
     v26[0] = v10;
     v25[0] = v11;
-    v18 = [MEMORY[0x1E69DC888] grayColor];
-    v26[1] = v18;
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
+    v26[1] = grayColor;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
 
-    if (v9)
+    if (title2)
     {
-      v20 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v9 attributes:v19];
+      v20 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:title2 attributes:v19];
     }
 
     else
@@ -240,57 +240,57 @@ void __38__PXActionRowTile__updateButtonAction__block_invoke(uint64_t a1, void *
       v20 = 0;
     }
 
-    [v4 setAttributedTitle:v20 forState:2];
-    [v4 setContentHorizontalAlignment:0];
-    v21 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-    [v4 setBackgroundColor:v21];
+    [_button setAttributedTitle:v20 forState:2];
+    [_button setContentHorizontalAlignment:0];
+    quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+    [_button setBackgroundColor:quaternarySystemFillColor];
 
-    v22 = [v4 layer];
-    [v22 setCornerRadius:8.0];
+    layer = [_button layer];
+    [layer setCornerRadius:8.0];
   }
 }
 
 - (BOOL)showsMenu
 {
-  v2 = [(PXActionRowTile *)self _button];
-  v3 = [v2 showsMenuAsPrimaryAction];
+  _button = [(PXActionRowTile *)self _button];
+  showsMenuAsPrimaryAction = [_button showsMenuAsPrimaryAction];
 
-  return v3;
+  return showsMenuAsPrimaryAction;
 }
 
-- (void)setShowsMenu:(BOOL)a3
+- (void)setShowsMenu:(BOOL)menu
 {
-  v3 = a3;
-  v5 = [(PXActionRowTile *)self _button];
-  [v5 setShowsMenuAsPrimaryAction:v3];
+  menuCopy = menu;
+  _button = [(PXActionRowTile *)self _button];
+  [_button setShowsMenuAsPrimaryAction:menuCopy];
 
   [(PXActionRowTile *)self _updateButtonAction];
 }
 
 - (BOOL)isEnabled
 {
-  v2 = [(PXActionRowTile *)self _button];
-  v3 = [v2 isEnabled];
+  _button = [(PXActionRowTile *)self _button];
+  isEnabled = [_button isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(PXActionRowTile *)self _button];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  _button = [(PXActionRowTile *)self _button];
+  [_button setEnabled:enabledCopy];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   title = self->_title;
-  if (title != v4)
+  if (title != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)title isEqual:v4];
-    v4 = v9;
+    v9 = titleCopy;
+    v6 = [(NSString *)title isEqual:titleCopy];
+    titleCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSString *)v9 copy];
@@ -298,7 +298,7 @@ void __38__PXActionRowTile__updateButtonAction__block_invoke(uint64_t a1, void *
       self->_title = v7;
 
       [(PXActionRowTile *)self _updateButtonTitle];
-      v4 = v9;
+      titleCopy = v9;
     }
   }
 }
@@ -363,12 +363,12 @@ void __38__PXActionRowTile__updateButtonAction__block_invoke(uint64_t a1, void *
   [(PXActionRowTile *)self _updateButtonTitle];
 }
 
-- (void)setIdiom:(int64_t)a3
+- (void)setIdiom:(int64_t)idiom
 {
-  if (self->_idiom != a3)
+  if (self->_idiom != idiom)
   {
-    self->_idiom = a3;
-    if (a3 == 3)
+    self->_idiom = idiom;
+    if (idiom == 3)
     {
       [(PXActionRowTile *)self _setupDecoratedButton];
     }
@@ -380,11 +380,11 @@ void __38__PXActionRowTile__updateButtonAction__block_invoke(uint64_t a1, void *
   }
 }
 
-- (PXActionRowTile)initWithFrame:(CGRect)a3
+- (PXActionRowTile)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PXActionRowTile;
-  v3 = [(PXActionRowTile *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXActionRowTile *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

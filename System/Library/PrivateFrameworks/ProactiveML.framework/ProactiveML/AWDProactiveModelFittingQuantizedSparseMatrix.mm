@@ -1,81 +1,81 @@
 @interface AWDProactiveModelFittingQuantizedSparseMatrix
-+ (id)quantizedSparseMatrixFromSparseMatrix:(id)a3 numberOfBuckets:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (float)originalValueAtRow:(unint64_t)a3 column:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)quantizedSparseMatrixFromSparseMatrix:(id)matrix numberOfBuckets:(unint64_t)buckets;
+- (BOOL)isEqual:(id)equal;
+- (float)originalValueAtRow:(unint64_t)row column:(unint64_t)column;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)columnIndicesAtIndex:(unint64_t)a3;
-- (unsigned)rowIndicesAtIndex:(unint64_t)a3;
-- (unsigned)valuesAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)columnIndicesAtIndex:(unint64_t)index;
+- (unsigned)rowIndicesAtIndex:(unint64_t)index;
+- (unsigned)valuesAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasColumnLength:(BOOL)a3;
-- (void)setHasMinValue:(BOOL)a3;
-- (void)setHasRowLength:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasColumnLength:(BOOL)length;
+- (void)setHasMinValue:(BOOL)value;
+- (void)setHasRowLength:(BOOL)length;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDProactiveModelFittingQuantizedSparseMatrix
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v14 = a3;
-  v4 = [v14 columnIndicesCount];
-  if (v4)
+  fromCopy = from;
+  columnIndicesCount = [fromCopy columnIndicesCount];
+  if (columnIndicesCount)
   {
-    v5 = v4;
+    v5 = columnIndicesCount;
     for (i = 0; i != v5; ++i)
     {
-      -[AWDProactiveModelFittingQuantizedSparseMatrix addColumnIndices:](self, "addColumnIndices:", [v14 columnIndicesAtIndex:i]);
+      -[AWDProactiveModelFittingQuantizedSparseMatrix addColumnIndices:](self, "addColumnIndices:", [fromCopy columnIndicesAtIndex:i]);
     }
   }
 
-  if ((*(v14 + 96) & 2) != 0)
+  if ((*(fromCopy + 96) & 2) != 0)
   {
-    self->_columnLength = *(v14 + 21);
+    self->_columnLength = *(fromCopy + 21);
     *&self->_has |= 2u;
   }
 
-  v7 = [v14 rowIndicesCount];
-  if (v7)
+  rowIndicesCount = [fromCopy rowIndicesCount];
+  if (rowIndicesCount)
   {
-    v8 = v7;
+    v8 = rowIndicesCount;
     for (j = 0; j != v8; ++j)
     {
-      -[AWDProactiveModelFittingQuantizedSparseMatrix addRowIndices:](self, "addRowIndices:", [v14 rowIndicesAtIndex:j]);
+      -[AWDProactiveModelFittingQuantizedSparseMatrix addRowIndices:](self, "addRowIndices:", [fromCopy rowIndicesAtIndex:j]);
     }
   }
 
-  if ((*(v14 + 96) & 8) != 0)
+  if ((*(fromCopy + 96) & 8) != 0)
   {
-    self->_rowLength = *(v14 + 23);
+    self->_rowLength = *(fromCopy + 23);
     *&self->_has |= 8u;
   }
 
-  v10 = [v14 valuesCount];
-  if (v10)
+  valuesCount = [fromCopy valuesCount];
+  if (valuesCount)
   {
-    v11 = v10;
+    v11 = valuesCount;
     for (k = 0; k != v11; ++k)
     {
-      -[AWDProactiveModelFittingQuantizedSparseMatrix addValues:](self, "addValues:", [v14 valuesAtIndex:k]);
+      -[AWDProactiveModelFittingQuantizedSparseMatrix addValues:](self, "addValues:", [fromCopy valuesAtIndex:k]);
     }
   }
 
-  v13 = *(v14 + 96);
+  v13 = *(fromCopy + 96);
   if ((v13 & 4) != 0)
   {
-    self->_minValue = *(v14 + 22);
+    self->_minValue = *(fromCopy + 22);
     *&self->_has |= 4u;
-    v13 = *(v14 + 96);
+    v13 = *(fromCopy + 96);
   }
 
   if (v13)
   {
-    self->_bucketSize = *(v14 + 20);
+    self->_bucketSize = *(fromCopy + 20);
     *&self->_has |= 1u;
   }
 }
@@ -185,24 +185,24 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v10 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || !PBRepeatedUInt32IsEqual())
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || !PBRepeatedUInt32IsEqual())
   {
     goto LABEL_24;
   }
 
-  v5 = *(v4 + 96);
+  v5 = *(equalCopy + 96);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 96) & 2) == 0 || self->_columnLength != *(v4 + 21))
+    if ((*(equalCopy + 96) & 2) == 0 || self->_columnLength != *(equalCopy + 21))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 96) & 2) != 0)
+  else if ((*(equalCopy + 96) & 2) != 0)
   {
     goto LABEL_24;
   }
@@ -212,16 +212,16 @@
     goto LABEL_24;
   }
 
-  v6 = *(v4 + 96);
+  v6 = *(equalCopy + 96);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 96) & 8) == 0 || self->_rowLength != *(v4 + 23))
+    if ((*(equalCopy + 96) & 8) == 0 || self->_rowLength != *(equalCopy + 23))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 96) & 8) != 0)
+  else if ((*(equalCopy + 96) & 8) != 0)
   {
     goto LABEL_24;
   }
@@ -235,21 +235,21 @@ LABEL_24:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 96) & 4) == 0 || self->_minValue != *(v4 + 22))
+    if ((*(equalCopy + 96) & 4) == 0 || self->_minValue != *(equalCopy + 22))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 96) & 4) != 0)
+  else if ((*(equalCopy + 96) & 4) != 0)
   {
     goto LABEL_24;
   }
 
-  v7 = (*(v4 + 96) & 1) == 0;
+  v7 = (*(equalCopy + 96) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 96) & 1) == 0 || self->_bucketSize != *(v4 + 20))
+    if ((*(equalCopy + 96) & 1) == 0 || self->_bucketSize != *(equalCopy + 20))
     {
       goto LABEL_24;
     }
@@ -262,9 +262,9 @@ LABEL_25:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedUInt32Copy();
   if ((*&self->_has & 2) != 0)
   {
@@ -297,59 +297,59 @@ LABEL_25:
   return v4;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   if ([(AWDProactiveModelFittingQuantizedSparseMatrix *)self columnIndicesCount])
   {
-    [v14 clearColumnIndices];
-    v4 = [(AWDProactiveModelFittingQuantizedSparseMatrix *)self columnIndicesCount];
-    if (v4)
+    [toCopy clearColumnIndices];
+    columnIndicesCount = [(AWDProactiveModelFittingQuantizedSparseMatrix *)self columnIndicesCount];
+    if (columnIndicesCount)
     {
-      v5 = v4;
+      v5 = columnIndicesCount;
       for (i = 0; i != v5; ++i)
       {
-        [v14 addColumnIndices:{-[AWDProactiveModelFittingQuantizedSparseMatrix columnIndicesAtIndex:](self, "columnIndicesAtIndex:", i)}];
+        [toCopy addColumnIndices:{-[AWDProactiveModelFittingQuantizedSparseMatrix columnIndicesAtIndex:](self, "columnIndicesAtIndex:", i)}];
       }
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v14 + 21) = self->_columnLength;
-    *(v14 + 96) |= 2u;
+    *(toCopy + 21) = self->_columnLength;
+    *(toCopy + 96) |= 2u;
   }
 
   if ([(AWDProactiveModelFittingQuantizedSparseMatrix *)self rowIndicesCount])
   {
-    [v14 clearRowIndices];
-    v7 = [(AWDProactiveModelFittingQuantizedSparseMatrix *)self rowIndicesCount];
-    if (v7)
+    [toCopy clearRowIndices];
+    rowIndicesCount = [(AWDProactiveModelFittingQuantizedSparseMatrix *)self rowIndicesCount];
+    if (rowIndicesCount)
     {
-      v8 = v7;
+      v8 = rowIndicesCount;
       for (j = 0; j != v8; ++j)
       {
-        [v14 addRowIndices:{-[AWDProactiveModelFittingQuantizedSparseMatrix rowIndicesAtIndex:](self, "rowIndicesAtIndex:", j)}];
+        [toCopy addRowIndices:{-[AWDProactiveModelFittingQuantizedSparseMatrix rowIndicesAtIndex:](self, "rowIndicesAtIndex:", j)}];
       }
     }
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v14 + 23) = self->_rowLength;
-    *(v14 + 96) |= 8u;
+    *(toCopy + 23) = self->_rowLength;
+    *(toCopy + 96) |= 8u;
   }
 
   if ([(AWDProactiveModelFittingQuantizedSparseMatrix *)self valuesCount])
   {
-    [v14 clearValues];
-    v10 = [(AWDProactiveModelFittingQuantizedSparseMatrix *)self valuesCount];
-    if (v10)
+    [toCopy clearValues];
+    valuesCount = [(AWDProactiveModelFittingQuantizedSparseMatrix *)self valuesCount];
+    if (valuesCount)
     {
-      v11 = v10;
+      v11 = valuesCount;
       for (k = 0; k != v11; ++k)
       {
-        [v14 addValues:{-[AWDProactiveModelFittingQuantizedSparseMatrix valuesAtIndex:](self, "valuesAtIndex:", k)}];
+        [toCopy addValues:{-[AWDProactiveModelFittingQuantizedSparseMatrix valuesAtIndex:](self, "valuesAtIndex:", k)}];
       }
     }
   }
@@ -357,21 +357,21 @@ LABEL_25:
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v14 + 22) = LODWORD(self->_minValue);
-    *(v14 + 96) |= 4u;
+    *(toCopy + 22) = LODWORD(self->_minValue);
+    *(toCopy + 96) |= 4u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v14 + 20) = LODWORD(self->_bucketSize);
-    *(v14 + 96) |= 1u;
+    *(toCopy + 20) = LODWORD(self->_bucketSize);
+    *(toCopy + 96) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_columnIndices.count)
   {
     PBDataWriterPlaceMark();
@@ -458,34 +458,34 @@ LABEL_25:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v4 forKey:@"columnIndices"];
+  [dictionary setObject:v4 forKey:@"columnIndices"];
 
   if ((*&self->_has & 2) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_columnLength];
-    [v3 setObject:v5 forKey:@"columnLength"];
+    [dictionary setObject:v5 forKey:@"columnLength"];
   }
 
   v6 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v6 forKey:@"rowIndices"];
+  [dictionary setObject:v6 forKey:@"rowIndices"];
 
   if ((*&self->_has & 8) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_rowLength];
-    [v3 setObject:v7 forKey:@"rowLength"];
+    [dictionary setObject:v7 forKey:@"rowLength"];
   }
 
   v8 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v8 forKey:@"values"];
+  [dictionary setObject:v8 forKey:@"values"];
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     *&v9 = self->_minValue;
     v11 = [MEMORY[0x277CCABB0] numberWithFloat:v9];
-    [v3 setObject:v11 forKey:@"minValue"];
+    [dictionary setObject:v11 forKey:@"minValue"];
 
     has = self->_has;
   }
@@ -494,10 +494,10 @@ LABEL_25:
   {
     *&v9 = self->_bucketSize;
     v12 = [MEMORY[0x277CCABB0] numberWithFloat:v9];
-    [v3 setObject:v12 forKey:@"bucketSize"];
+    [dictionary setObject:v12 forKey:@"bucketSize"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -506,15 +506,15 @@ LABEL_25:
   v8.receiver = self;
   v8.super_class = AWDProactiveModelFittingQuantizedSparseMatrix;
   v4 = [(AWDProactiveModelFittingQuantizedSparseMatrix *)&v8 description];
-  v5 = [(AWDProactiveModelFittingQuantizedSparseMatrix *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDProactiveModelFittingQuantizedSparseMatrix *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasMinValue:(BOOL)a3
+- (void)setHasMinValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -527,25 +527,25 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (unsigned)valuesAtIndex:(unint64_t)a3
+- (unsigned)valuesAtIndex:(unint64_t)index
 {
   p_values = &self->_values;
   count = self->_values.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_values->list[a3];
+  return p_values->list[index];
 }
 
-- (void)setHasRowLength:(BOOL)a3
+- (void)setHasRowLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 8;
   }
@@ -558,25 +558,25 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (unsigned)rowIndicesAtIndex:(unint64_t)a3
+- (unsigned)rowIndicesAtIndex:(unint64_t)index
 {
   p_rowIndices = &self->_rowIndices;
   count = self->_rowIndices.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_rowIndices->list[a3];
+  return p_rowIndices->list[index];
 }
 
-- (void)setHasColumnLength:(BOOL)a3
+- (void)setHasColumnLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 2;
   }
@@ -589,20 +589,20 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)columnIndicesAtIndex:(unint64_t)a3
+- (unsigned)columnIndicesAtIndex:(unint64_t)index
 {
   p_columnIndices = &self->_columnIndices;
   count = self->_columnIndices.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_columnIndices->list[a3];
+  return p_columnIndices->list[index];
 }
 
 - (void)dealloc
@@ -615,13 +615,13 @@ LABEL_25:
   [(AWDProactiveModelFittingQuantizedSparseMatrix *)&v3 dealloc];
 }
 
-- (float)originalValueAtRow:(unint64_t)a3 column:(unint64_t)a4
+- (float)originalValueAtRow:(unint64_t)row column:(unint64_t)column
 {
   v7 = 0.0;
   if ([(AWDProactiveModelFittingQuantizedSparseMatrix *)self valuesCount])
   {
     v8 = 0;
-    while ([(AWDProactiveModelFittingQuantizedSparseMatrix *)self rowIndices][4 * v8] != a3 || [(AWDProactiveModelFittingQuantizedSparseMatrix *)self columnIndices][4 * v8] != a4)
+    while ([(AWDProactiveModelFittingQuantizedSparseMatrix *)self rowIndices][4 * v8] != row || [(AWDProactiveModelFittingQuantizedSparseMatrix *)self columnIndices][4 * v8] != column)
     {
       if (++v8 >= [(AWDProactiveModelFittingQuantizedSparseMatrix *)self valuesCount])
       {
@@ -641,41 +641,41 @@ LABEL_25:
   return v7;
 }
 
-+ (id)quantizedSparseMatrixFromSparseMatrix:(id)a3 numberOfBuckets:(unint64_t)a4
++ (id)quantizedSparseMatrixFromSparseMatrix:(id)matrix numberOfBuckets:(unint64_t)buckets
 {
-  v7 = a3;
-  if ([v7 numberOfRows] >> 32)
+  matrixCopy = matrix;
+  if ([matrixCopy numberOfRows] >> 32)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"AWDProactiveModelFittingQuantizedSparseMatrix+PML.m" lineNumber:16 description:{@"Too big matrix (rows: %tu)", objc_msgSend(v7, "numberOfRows")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AWDProactiveModelFittingQuantizedSparseMatrix+PML.m" lineNumber:16 description:{@"Too big matrix (rows: %tu)", objc_msgSend(matrixCopy, "numberOfRows")}];
   }
 
-  if ([v7 numberOfColumns] >> 32)
+  if ([matrixCopy numberOfColumns] >> 32)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"AWDProactiveModelFittingQuantizedSparseMatrix+PML.m" lineNumber:17 description:{@"Too big matrix (cols: %tu)", objc_msgSend(v7, "numberOfColumns")}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"AWDProactiveModelFittingQuantizedSparseMatrix+PML.m" lineNumber:17 description:{@"Too big matrix (cols: %tu)", objc_msgSend(matrixCopy, "numberOfColumns")}];
   }
 
   v8 = objc_opt_new();
-  [v7 minValue];
+  [matrixCopy minValue];
   v10 = v9;
-  [v7 maxValue];
+  [matrixCopy maxValue];
   v19[1] = 3221225472;
   v19[0] = MEMORY[0x277D85DD0];
   v19[2] = __108__AWDProactiveModelFittingQuantizedSparseMatrix_PML__quantizedSparseMatrixFromSparseMatrix_numberOfBuckets___block_invoke;
   v19[3] = &unk_279AC01F0;
-  v12 = (v11 - v10) / a4;
+  v12 = (v11 - v10) / buckets;
   v21 = v12;
   v22 = v10;
   v13 = v8;
   v20 = v13;
-  [v7 enumerateNonZeroValuesWithBlock:v19];
+  [matrixCopy enumerateNonZeroValuesWithBlock:v19];
   *&v14 = v12;
   [v13 setBucketSize:v14];
   *&v15 = v10;
   [v13 setMinValue:v15];
-  [v13 setColumnLength:{objc_msgSend(v7, "numberOfColumns")}];
-  [v13 setRowLength:{objc_msgSend(v7, "numberOfRows")}];
+  [v13 setColumnLength:{objc_msgSend(matrixCopy, "numberOfColumns")}];
+  [v13 setRowLength:{objc_msgSend(matrixCopy, "numberOfRows")}];
 
   return v13;
 }

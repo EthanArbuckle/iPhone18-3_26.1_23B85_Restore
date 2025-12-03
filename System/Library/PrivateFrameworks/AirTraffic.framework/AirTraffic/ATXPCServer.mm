@@ -1,20 +1,20 @@
 @interface ATXPCServer
 - (BOOL)_doingWork;
 - (id)_connections;
-- (id)_handlerForMessageName:(id)a3;
-- (id)initListenerWithServiceName:(id)a3;
-- (void)_handleNewConnection:(id)a3;
-- (void)_rescheduleIdleTimerSourceWithInterval:(double)a3;
+- (id)_handlerForMessageName:(id)name;
+- (id)initListenerWithServiceName:(id)name;
+- (void)_handleNewConnection:(id)connection;
+- (void)_rescheduleIdleTimerSourceWithInterval:(double)interval;
 - (void)_resetMessageFlag;
 - (void)_runShutdownHandler;
 - (void)dealloc;
-- (void)setHandlerForMessageName:(id)a3 handler:(id)a4;
-- (void)setIdleTimerInterval:(double)a3;
+- (void)setHandlerForMessageName:(id)name handler:(id)handler;
+- (void)setIdleTimerInterval:(double)interval;
 @end
 
 @implementation ATXPCServer
 
-- (void)setIdleTimerInterval:(double)a3
+- (void)setIdleTimerInterval:(double)interval
 {
   timerQueue = self->_timerQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -22,11 +22,11 @@
   v4[2] = __36__ATXPCServer_setIdleTimerInterval___block_invoke;
   v4[3] = &unk_278C6DCF8;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = interval;
   dispatch_async(timerQueue, v4);
 }
 
-- (void)_rescheduleIdleTimerSourceWithInterval:(double)a3
+- (void)_rescheduleIdleTimerSourceWithInterval:(double)interval
 {
   idleTimerSource = self->_idleTimerSource;
   if (idleTimerSource)
@@ -40,7 +40,7 @@
   v8 = self->_idleTimerSource;
   self->_idleTimerSource = v7;
 
-  dispatch_source_set_timer(self->_idleTimerSource, 0, 1000000000 * a3, 0);
+  dispatch_source_set_timer(self->_idleTimerSource, 0, 1000000000 * interval, 0);
   v9 = self->_idleTimerSource;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
@@ -129,11 +129,11 @@ LABEL_11:
   }
 }
 
-- (void)setHandlerForMessageName:(id)a3 handler:(id)a4
+- (void)setHandlerForMessageName:(id)name handler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11)
+  nameCopy = name;
+  handlerCopy = handler;
+  if (nameCopy)
   {
     handlerMap = self->_handlerMap;
     if (!handlerMap)
@@ -145,13 +145,13 @@ LABEL_11:
       handlerMap = self->_handlerMap;
     }
 
-    v10 = [v6 copy];
-    [(NSMutableDictionary *)handlerMap setObject:v10 forKey:v11];
+    v10 = [handlerCopy copy];
+    [(NSMutableDictionary *)handlerMap setObject:v10 forKey:nameCopy];
   }
 
   else
   {
-    [(ATXPCServer *)self setDefaultMessageHandler:v6];
+    [(ATXPCServer *)self setDefaultMessageHandler:handlerCopy];
   }
 }
 
@@ -162,17 +162,17 @@ LABEL_11:
   [(ATXPCServer *)&v2 dealloc];
 }
 
-- (id)initListenerWithServiceName:(id)a3
+- (id)initListenerWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = ATXPCServer;
   v5 = [(ATXPCServer *)&v18 init];
   if (v5)
   {
-    v6 = [v4 UTF8String];
-    v7 = [(ATXPCServer *)v5 _highAvailabilityQueue];
-    mach_service = xpc_connection_create_mach_service(v6, v7, 1uLL);
+    uTF8String = [nameCopy UTF8String];
+    _highAvailabilityQueue = [(ATXPCServer *)v5 _highAvailabilityQueue];
+    mach_service = xpc_connection_create_mach_service(uTF8String, _highAvailabilityQueue, 1uLL);
     conn = v5->_conn;
     v5->_conn = mach_service;
 
@@ -229,15 +229,15 @@ void __43__ATXPCServer_initListenerWithServiceName___block_invoke(uint64_t a1, v
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleNewConnection:(id)a3
+- (void)_handleNewConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   [(ATXPCServer *)self _resetMessageFlag];
   objc_initWeak(&location, self);
-  v5 = [[ATXPCConnection alloc] initWithXPCConnection:v4];
+  v5 = [[ATXPCConnection alloc] initWithXPCConnection:connectionCopy];
   objc_initWeak(&from, v5);
-  v6 = [(ATXPCServer *)self _connections];
-  [v6 addObject:v5];
+  _connections = [(ATXPCServer *)self _connections];
+  [_connections addObject:v5];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -315,9 +315,9 @@ void __36__ATXPCServer__handleNewConnection___block_invoke_3(uint64_t a1, uint64
   }
 }
 
-- (id)_handlerForMessageName:(id)a3
+- (id)_handlerForMessageName:(id)name
 {
-  v4 = [(NSMutableDictionary *)self->_handlerMap objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_handlerMap objectForKey:name];
   if (!v4)
   {
     v4 = MEMORY[0x23EF20000](self->_defaultMessageHandler);

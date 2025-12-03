@@ -1,17 +1,17 @@
 @interface AMSDialogRequest
-+ (AMSDialogRequest)requestWithTitle:(id)a3 message:(id)a4;
++ (AMSDialogRequest)requestWithTitle:(id)title message:(id)message;
 - (AMSDialogRequest)init;
-- (AMSDialogRequest)initWithCoder:(id)a3;
-- (AMSDialogRequest)initWithError:(id)a3;
-- (AMSDialogRequest)initWithTitle:(id)a3 message:(id)a4;
-- (AMSDialogRequest)initWithTitle:(id)a3 message:(id)a4 appearanceInfo:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AMSDialogRequest)initWithCoder:(id)coder;
+- (AMSDialogRequest)initWithError:(id)error;
+- (AMSDialogRequest)initWithTitle:(id)title message:(id)message;
+- (AMSDialogRequest)initWithTitle:(id)title message:(id)message appearanceInfo:(id)info;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)locateActionWithIdentifier:(id)a3;
-- (void)addButtonAction:(id)a3;
-- (void)addTextField:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)replaceAction:(id)a3;
+- (id)locateActionWithIdentifier:(id)identifier;
+- (void)addButtonAction:(id)action;
+- (void)addTextField:(id)field;
+- (void)encodeWithCoder:(id)coder;
+- (void)replaceAction:(id)action;
 @end
 
 @implementation AMSDialogRequest
@@ -31,52 +31,52 @@
   return v2;
 }
 
-- (AMSDialogRequest)initWithError:(id)a3
+- (AMSDialogRequest)initWithError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 ams_title];
-  v6 = [v4 ams_message];
+  errorCopy = error;
+  ams_title = [errorCopy ams_title];
+  ams_message = [errorCopy ams_message];
 
-  v7 = [(AMSDialogRequest *)self initWithTitle:v5 message:v6];
+  v7 = [(AMSDialogRequest *)self initWithTitle:ams_title message:ams_message];
   return v7;
 }
 
-- (AMSDialogRequest)initWithTitle:(id)a3 message:(id)a4
+- (AMSDialogRequest)initWithTitle:(id)title message:(id)message
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  messageCopy = message;
   v9 = [(AMSDialogRequest *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_title, a3);
+    objc_storeStrong(&v9->_title, title);
     v11 = AMSSetLogKeyIfNeeded();
     logKey = v10->_logKey;
     v10->_logKey = v11;
 
-    objc_storeStrong(&v10->_message, a4);
+    objc_storeStrong(&v10->_message, message);
   }
 
   return v10;
 }
 
-+ (AMSDialogRequest)requestWithTitle:(id)a3 message:(id)a4
++ (AMSDialogRequest)requestWithTitle:(id)title message:(id)message
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithTitle:v6 message:v5];
+  messageCopy = message;
+  titleCopy = title;
+  v7 = [objc_alloc(objc_opt_class()) initWithTitle:titleCopy message:messageCopy];
 
   return v7;
 }
 
-- (AMSDialogRequest)initWithTitle:(id)a3 message:(id)a4 appearanceInfo:(id)a5
+- (AMSDialogRequest)initWithTitle:(id)title message:(id)message appearanceInfo:(id)info
 {
-  v9 = a5;
-  v10 = [(AMSDialogRequest *)self initWithTitle:a3 message:a4];
+  infoCopy = info;
+  v10 = [(AMSDialogRequest *)self initWithTitle:title message:message];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_appearanceInfo, a5);
+    objc_storeStrong(&v10->_appearanceInfo, info);
   }
 
   return v11;
@@ -86,28 +86,28 @@
 {
   if (os_variant_has_internal_content())
   {
-    v3 = [(AMSDialogRequest *)self title];
+    title = [(AMSDialogRequest *)self title];
   }
 
   else
   {
-    v3 = @"<private>";
+    title = @"<private>";
   }
 
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(AMSDialogRequest *)self identifier];
-  v6 = [(AMSDialogRequest *)self defaultAction];
-  v7 = [(AMSDialogRequest *)self buttonActions];
-  v8 = [v4 stringWithFormat:@"{ id: %@, title: %@, default: %@, actions: %@ }", v5, v3, v6, v7];
+  identifier = [(AMSDialogRequest *)self identifier];
+  defaultAction = [(AMSDialogRequest *)self defaultAction];
+  buttonActions = [(AMSDialogRequest *)self buttonActions];
+  v8 = [v4 stringWithFormat:@"{ id: %@, title: %@, default: %@, actions: %@ }", identifier, title, defaultAction, buttonActions];
 
   return v8;
 }
 
-- (void)addButtonAction:(id)a3
+- (void)addButtonAction:(id)action
 {
-  v4 = a3;
-  v5 = [(AMSDialogRequest *)self buttonActions];
-  v6 = [v5 mutableCopy];
+  actionCopy = action;
+  buttonActions = [(AMSDialogRequest *)self buttonActions];
+  v6 = [buttonActions mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -121,15 +121,15 @@
 
   v9 = v8;
 
-  [v9 addObject:v4];
+  [v9 addObject:actionCopy];
   [(AMSDialogRequest *)self setButtonActions:v9];
 }
 
-- (void)addTextField:(id)a3
+- (void)addTextField:(id)field
 {
-  v4 = a3;
-  v5 = [(AMSDialogRequest *)self textFields];
-  v6 = [v5 mutableCopy];
+  fieldCopy = field;
+  textFields = [(AMSDialogRequest *)self textFields];
+  v6 = [textFields mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -143,23 +143,23 @@
 
   v9 = v8;
 
-  [v9 addObject:v4];
+  [v9 addObject:fieldCopy];
   [(AMSDialogRequest *)self setTextFields:v9];
 }
 
-- (id)locateActionWithIdentifier:(id)a3
+- (id)locateActionWithIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(AMSDialogRequest *)self defaultAction];
-    v6 = [v5 identifier];
-    v7 = [v6 isEqualToString:v4];
+    defaultAction = [(AMSDialogRequest *)self defaultAction];
+    identifier = [defaultAction identifier];
+    v7 = [identifier isEqualToString:identifierCopy];
 
     if (v7)
     {
-      v8 = [(AMSDialogRequest *)self defaultAction];
+      defaultAction2 = [(AMSDialogRequest *)self defaultAction];
       goto LABEL_15;
     }
 
@@ -167,8 +167,8 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [(AMSDialogRequest *)self buttonActions];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    buttonActions = [(AMSDialogRequest *)self buttonActions];
+    v10 = [buttonActions countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -179,22 +179,22 @@
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(buttonActions);
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
-          v15 = [v14 identifier];
-          v16 = [v15 isEqualToString:v4];
+          identifier2 = [v14 identifier];
+          v16 = [identifier2 isEqualToString:identifierCopy];
 
           if (v16)
           {
-            v8 = v14;
+            defaultAction2 = v14;
 
             goto LABEL_15;
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [buttonActions countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v11)
         {
           continue;
@@ -205,40 +205,40 @@
     }
   }
 
-  v8 = 0;
+  defaultAction2 = 0;
 LABEL_15:
 
-  return v8;
+  return defaultAction2;
 }
 
-- (void)replaceAction:(id)a3
+- (void)replaceAction:(id)action
 {
-  v19 = a3;
-  v4 = [v19 identifier];
-  if (v4)
+  actionCopy = action;
+  identifier = [actionCopy identifier];
+  if (identifier)
   {
-    v5 = [(AMSDialogRequest *)self defaultAction];
-    v6 = [v5 identifier];
-    v7 = [v6 isEqualToString:v4];
+    defaultAction = [(AMSDialogRequest *)self defaultAction];
+    identifier2 = [defaultAction identifier];
+    v7 = [identifier2 isEqualToString:identifier];
 
     if (v7)
     {
-      [(AMSDialogRequest *)self setDefaultAction:v19];
+      [(AMSDialogRequest *)self setDefaultAction:actionCopy];
     }
 
-    v8 = [(AMSDialogRequest *)self buttonActions];
-    v9 = [v8 count];
+    buttonActions = [(AMSDialogRequest *)self buttonActions];
+    v9 = [buttonActions count];
 
     if (v9)
     {
       v10 = 0;
       while (1)
       {
-        v11 = [(AMSDialogRequest *)self buttonActions];
-        v12 = [v11 objectAtIndexedSubscript:v10];
+        buttonActions2 = [(AMSDialogRequest *)self buttonActions];
+        v12 = [buttonActions2 objectAtIndexedSubscript:v10];
 
-        v13 = [v12 identifier];
-        v14 = [v13 isEqualToString:v4];
+        identifier3 = [v12 identifier];
+        v14 = [identifier3 isEqualToString:identifier];
 
         if (v14)
         {
@@ -246,8 +246,8 @@ LABEL_15:
         }
 
         ++v10;
-        v15 = [(AMSDialogRequest *)self buttonActions];
-        v16 = [v15 count];
+        buttonActions3 = [(AMSDialogRequest *)self buttonActions];
+        v16 = [buttonActions3 count];
 
         if (v10 >= v16)
         {
@@ -255,10 +255,10 @@ LABEL_15:
         }
       }
 
-      v17 = [(AMSDialogRequest *)self buttonActions];
-      v18 = [v17 mutableCopy];
+      buttonActions4 = [(AMSDialogRequest *)self buttonActions];
+      v18 = [buttonActions4 mutableCopy];
 
-      [v18 setObject:v19 atIndexedSubscript:v10];
+      [v18 setObject:actionCopy atIndexedSubscript:v10];
       [(AMSDialogRequest *)self setButtonActions:v18];
     }
   }
@@ -266,147 +266,147 @@ LABEL_15:
 LABEL_10:
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v36 = a3;
-  v4 = [(AMSDialogRequest *)self appearanceInfo];
+  coderCopy = coder;
+  appearanceInfo = [(AMSDialogRequest *)self appearanceInfo];
 
-  if (v4)
+  if (appearanceInfo)
   {
-    v5 = [(AMSDialogRequest *)self appearanceInfo];
-    [v36 encodeObject:v5 forKey:@"kCodingKeyAppearanceInfo"];
+    appearanceInfo2 = [(AMSDialogRequest *)self appearanceInfo];
+    [coderCopy encodeObject:appearanceInfo2 forKey:@"kCodingKeyAppearanceInfo"];
   }
 
-  v6 = [(AMSDialogRequest *)self buttonActions];
+  buttonActions = [(AMSDialogRequest *)self buttonActions];
 
-  if (v6)
+  if (buttonActions)
   {
-    v7 = [(AMSDialogRequest *)self buttonActions];
-    [v36 encodeObject:v7 forKey:@"kCodingKeyButtonActions"];
+    buttonActions2 = [(AMSDialogRequest *)self buttonActions];
+    [coderCopy encodeObject:buttonActions2 forKey:@"kCodingKeyButtonActions"];
   }
 
-  v8 = [(AMSDialogRequest *)self clickstreamMetricsEvent];
+  clickstreamMetricsEvent = [(AMSDialogRequest *)self clickstreamMetricsEvent];
 
-  if (v8)
+  if (clickstreamMetricsEvent)
   {
-    v9 = [(AMSDialogRequest *)self clickstreamMetricsEvent];
-    [v36 encodeObject:v9 forKey:@"kCodingKeyClickstreamMetricsEvent"];
+    clickstreamMetricsEvent2 = [(AMSDialogRequest *)self clickstreamMetricsEvent];
+    [coderCopy encodeObject:clickstreamMetricsEvent2 forKey:@"kCodingKeyClickstreamMetricsEvent"];
   }
 
-  v10 = [(AMSDialogRequest *)self defaultAction];
+  defaultAction = [(AMSDialogRequest *)self defaultAction];
 
-  if (v10)
+  if (defaultAction)
   {
-    v11 = [(AMSDialogRequest *)self defaultAction];
-    [v36 encodeObject:v11 forKey:@"kCodingKeyDefaultAction"];
+    defaultAction2 = [(AMSDialogRequest *)self defaultAction];
+    [coderCopy encodeObject:defaultAction2 forKey:@"kCodingKeyDefaultAction"];
   }
 
-  v12 = [(AMSDialogRequest *)self iconURL];
+  iconURL = [(AMSDialogRequest *)self iconURL];
 
-  if (v12)
+  if (iconURL)
   {
-    v13 = [(AMSDialogRequest *)self iconURL];
-    [v36 encodeObject:v13 forKey:@"kCodingKeyIconURL"];
+    iconURL2 = [(AMSDialogRequest *)self iconURL];
+    [coderCopy encodeObject:iconURL2 forKey:@"kCodingKeyIconURL"];
   }
 
-  v14 = [(AMSDialogRequest *)self identifier];
+  identifier = [(AMSDialogRequest *)self identifier];
 
-  if (v14)
+  if (identifier)
   {
-    v15 = [(AMSDialogRequest *)self identifier];
-    [v36 encodeObject:v15 forKey:@"kCodingKeyIdentifier"];
+    identifier2 = [(AMSDialogRequest *)self identifier];
+    [coderCopy encodeObject:identifier2 forKey:@"kCodingKeyIdentifier"];
   }
 
-  v16 = [(AMSDialogRequest *)self logKey];
+  logKey = [(AMSDialogRequest *)self logKey];
 
-  if (v16)
+  if (logKey)
   {
-    v17 = [(AMSDialogRequest *)self logKey];
-    [v36 encodeObject:v17 forKey:@"kCodingKeyLogKey"];
+    logKey2 = [(AMSDialogRequest *)self logKey];
+    [coderCopy encodeObject:logKey2 forKey:@"kCodingKeyLogKey"];
   }
 
-  v18 = [(AMSDialogRequest *)self message];
+  message = [(AMSDialogRequest *)self message];
 
-  if (v18)
+  if (message)
   {
-    v19 = [(AMSDialogRequest *)self message];
-    [v36 encodeObject:v19 forKey:@"kCodingKeyMessage"];
+    message2 = [(AMSDialogRequest *)self message];
+    [coderCopy encodeObject:message2 forKey:@"kCodingKeyMessage"];
   }
 
-  v20 = [(AMSDialogRequest *)self messageAccessibilityLabel];
+  messageAccessibilityLabel = [(AMSDialogRequest *)self messageAccessibilityLabel];
 
-  if (v20)
+  if (messageAccessibilityLabel)
   {
-    v21 = [(AMSDialogRequest *)self messageAccessibilityLabel];
-    [v36 encodeObject:v21 forKey:@"kCodingKeyMessageAccessibilityLabel"];
+    messageAccessibilityLabel2 = [(AMSDialogRequest *)self messageAccessibilityLabel];
+    [coderCopy encodeObject:messageAccessibilityLabel2 forKey:@"kCodingKeyMessageAccessibilityLabel"];
   }
 
-  v22 = [(AMSDialogRequest *)self metricsEvent];
+  metricsEvent = [(AMSDialogRequest *)self metricsEvent];
 
-  if (v22)
+  if (metricsEvent)
   {
-    v23 = [(AMSDialogRequest *)self metricsEvent];
-    v24 = [v23 underlyingDictionary];
-    [v36 encodeObject:v24 forKey:@"kCodingKeyMetrics"];
+    metricsEvent2 = [(AMSDialogRequest *)self metricsEvent];
+    underlyingDictionary = [metricsEvent2 underlyingDictionary];
+    [coderCopy encodeObject:underlyingDictionary forKey:@"kCodingKeyMetrics"];
   }
 
-  [v36 encodeInteger:-[AMSDialogRequest style](self forKey:{"style"), @"kCodingKeyStyle"}];
-  v25 = [(AMSDialogRequest *)self preferredButtonActionIdentifier];
+  [coderCopy encodeInteger:-[AMSDialogRequest style](self forKey:{"style"), @"kCodingKeyStyle"}];
+  preferredButtonActionIdentifier = [(AMSDialogRequest *)self preferredButtonActionIdentifier];
 
-  if (v25)
+  if (preferredButtonActionIdentifier)
   {
-    v26 = [(AMSDialogRequest *)self preferredButtonActionIdentifier];
-    [v36 encodeObject:v26 forKey:@"preferredButtonActionIdentifier"];
+    preferredButtonActionIdentifier2 = [(AMSDialogRequest *)self preferredButtonActionIdentifier];
+    [coderCopy encodeObject:preferredButtonActionIdentifier2 forKey:@"preferredButtonActionIdentifier"];
   }
 
-  [v36 encodeBool:-[AMSDialogRequest preventsCancelButtonStyle](self forKey:{"preventsCancelButtonStyle"), @"kPreventsCancelButtonStyle"}];
-  v27 = [(AMSDialogRequest *)self textFields];
+  [coderCopy encodeBool:-[AMSDialogRequest preventsCancelButtonStyle](self forKey:{"preventsCancelButtonStyle"), @"kPreventsCancelButtonStyle"}];
+  textFields = [(AMSDialogRequest *)self textFields];
 
-  if (v27)
+  if (textFields)
   {
-    v28 = [(AMSDialogRequest *)self textFields];
-    [v36 encodeObject:v28 forKey:@"kCodingKeyTextFields"];
+    textFields2 = [(AMSDialogRequest *)self textFields];
+    [coderCopy encodeObject:textFields2 forKey:@"kCodingKeyTextFields"];
   }
 
-  v29 = [(AMSDialogRequest *)self title];
+  title = [(AMSDialogRequest *)self title];
 
-  if (v29)
+  if (title)
   {
-    v30 = [(AMSDialogRequest *)self title];
-    [v36 encodeObject:v30 forKey:@"kCodingKeyTitle"];
+    title2 = [(AMSDialogRequest *)self title];
+    [coderCopy encodeObject:title2 forKey:@"kCodingKeyTitle"];
   }
 
-  v31 = [(AMSDialogRequest *)self titleAccessibilityLabel];
+  titleAccessibilityLabel = [(AMSDialogRequest *)self titleAccessibilityLabel];
 
-  if (v31)
+  if (titleAccessibilityLabel)
   {
-    v32 = [(AMSDialogRequest *)self titleAccessibilityLabel];
-    [v36 encodeObject:v32 forKey:@"kCodingKeyTitleAccessibilityLabel"];
+    titleAccessibilityLabel2 = [(AMSDialogRequest *)self titleAccessibilityLabel];
+    [coderCopy encodeObject:titleAccessibilityLabel2 forKey:@"kCodingKeyTitleAccessibilityLabel"];
   }
 
-  v33 = [(AMSDialogRequest *)self userInfo];
+  userInfo = [(AMSDialogRequest *)self userInfo];
 
-  v34 = v36;
-  if (v33)
+  v34 = coderCopy;
+  if (userInfo)
   {
-    v35 = [(AMSDialogRequest *)self userInfo];
-    [v36 encodeObject:v35 forKey:@"kCodingKeyUserInfo"];
+    userInfo2 = [(AMSDialogRequest *)self userInfo];
+    [coderCopy encodeObject:userInfo2 forKey:@"kCodingKeyUserInfo"];
 
-    v34 = v36;
+    v34 = coderCopy;
   }
 }
 
-- (AMSDialogRequest)initWithCoder:(id)a3
+- (AMSDialogRequest)initWithCoder:(id)coder
 {
   v54[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v52.receiver = self;
   v52.super_class = AMSDialogRequest;
   v5 = [(AMSDialogRequest *)&v52 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"kCodingKeyAppearanceInfo"];
+    ams_JSONClasses = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+    v7 = [coderCopy decodeObjectOfClasses:ams_JSONClasses forKey:@"kCodingKeyAppearanceInfo"];
     appearanceInfo = v5->_appearanceInfo;
     v5->_appearanceInfo = v7;
 
@@ -415,41 +415,41 @@ LABEL_10:
     v54[1] = objc_opt_class();
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:2];
     v11 = [v9 setWithArray:v10];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"kCodingKeyButtonActions"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"kCodingKeyButtonActions"];
     buttonActions = v5->_buttonActions;
     v5->_buttonActions = v12;
 
-    v14 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"kCodingKeyClickstreamMetricsEvent"];
+    ams_JSONClasses2 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+    v15 = [coderCopy decodeObjectOfClasses:ams_JSONClasses2 forKey:@"kCodingKeyClickstreamMetricsEvent"];
     clickstreamMetricsEvent = v5->_clickstreamMetricsEvent;
     v5->_clickstreamMetricsEvent = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyDefaultAction"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyDefaultAction"];
     defaultAction = v5->_defaultAction;
     v5->_defaultAction = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyIconURL"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyIconURL"];
     iconURL = v5->_iconURL;
     v5->_iconURL = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyIdentifier"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyLogKey"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyLogKey"];
     logKey = v5->_logKey;
     v5->_logKey = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyMessage"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyMessage"];
     message = v5->_message;
     v5->_message = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyMessageAccessibilityLabel"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyMessageAccessibilityLabel"];
     messageAccessibilityLabel = v5->_messageAccessibilityLabel;
     v5->_messageAccessibilityLabel = v27;
 
-    v29 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-    v30 = [v4 decodeObjectOfClasses:v29 forKey:@"kCodingKeyMetrics"];
+    ams_JSONClasses3 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+    v30 = [coderCopy decodeObjectOfClasses:ams_JSONClasses3 forKey:@"kCodingKeyMetrics"];
 
     if (v30)
     {
@@ -458,13 +458,13 @@ LABEL_10:
       v5->_metricsEvent = v31;
     }
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredButtonActionIdentifier"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredButtonActionIdentifier"];
     preferredButtonActionIdentifier = v5->_preferredButtonActionIdentifier;
     v5->_preferredButtonActionIdentifier = v33;
 
-    v5->_preventsCancelButtonStyle = [v4 decodeBoolForKey:@"kPreventsCancelButtonStyle"];
-    v5->_style = [v4 decodeIntegerForKey:@"kCodingKeyStyle"];
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeySystemSymbolName"];
+    v5->_preventsCancelButtonStyle = [coderCopy decodeBoolForKey:@"kPreventsCancelButtonStyle"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"kCodingKeyStyle"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeySystemSymbolName"];
     systemSymbolName = v5->_systemSymbolName;
     v5->_systemSymbolName = v35;
 
@@ -473,20 +473,20 @@ LABEL_10:
     v53[1] = objc_opt_class();
     v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:2];
     v39 = [v37 setWithArray:v38];
-    v40 = [v4 decodeObjectOfClasses:v39 forKey:@"kCodingKeyTextFields"];
+    v40 = [coderCopy decodeObjectOfClasses:v39 forKey:@"kCodingKeyTextFields"];
     textFields = v5->_textFields;
     v5->_textFields = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyTitle"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyTitle"];
     title = v5->_title;
     v5->_title = v42;
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyTitleAccessibilityLabel"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyTitleAccessibilityLabel"];
     titleAccessibilityLabel = v5->_titleAccessibilityLabel;
     v5->_titleAccessibilityLabel = v44;
 
-    v46 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-    v47 = [v4 decodeObjectOfClasses:v46 forKey:@"kCodingKeyUserInfo"];
+    ams_JSONClasses4 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+    v47 = [coderCopy decodeObjectOfClasses:ams_JSONClasses4 forKey:@"kCodingKeyUserInfo"];
     v48 = v47;
     if (v47)
     {
@@ -505,138 +505,138 @@ LABEL_10:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[AMSDialogRequest allocWithZone:](AMSDialogRequest init];
-  v6 = [(AMSDialogRequest *)self appearanceInfo];
+  appearanceInfo = [(AMSDialogRequest *)self appearanceInfo];
   appearanceInfo = v5->_appearanceInfo;
-  v5->_appearanceInfo = v6;
+  v5->_appearanceInfo = appearanceInfo;
 
-  v8 = [(AMSDialogRequest *)self buttonActions];
+  buttonActions = [(AMSDialogRequest *)self buttonActions];
 
-  if (v8)
+  if (buttonActions)
   {
-    v9 = [(AMSDialogRequest *)self buttonActions];
-    v10 = [v9 copyWithZone:a3];
+    buttonActions2 = [(AMSDialogRequest *)self buttonActions];
+    v10 = [buttonActions2 copyWithZone:zone];
     [(AMSDialogRequest *)v5 setButtonActions:v10];
   }
 
-  v11 = [(AMSDialogRequest *)self clickstreamMetricsEvent];
+  clickstreamMetricsEvent = [(AMSDialogRequest *)self clickstreamMetricsEvent];
 
-  if (v11)
+  if (clickstreamMetricsEvent)
   {
-    v12 = [(AMSDialogRequest *)self clickstreamMetricsEvent];
-    v13 = [v12 copyWithZone:a3];
+    clickstreamMetricsEvent2 = [(AMSDialogRequest *)self clickstreamMetricsEvent];
+    v13 = [clickstreamMetricsEvent2 copyWithZone:zone];
     [(AMSDialogRequest *)v5 setClickstreamMetricsEvent:v13];
   }
 
-  v14 = [(AMSDialogRequest *)self defaultAction];
+  defaultAction = [(AMSDialogRequest *)self defaultAction];
 
-  if (v14)
+  if (defaultAction)
   {
-    v15 = [(AMSDialogRequest *)self defaultAction];
-    v16 = [v15 copyWithZone:a3];
+    defaultAction2 = [(AMSDialogRequest *)self defaultAction];
+    v16 = [defaultAction2 copyWithZone:zone];
     [(AMSDialogRequest *)v5 setDefaultAction:v16];
   }
 
-  v17 = [(AMSDialogRequest *)self iconURL];
+  iconURL = [(AMSDialogRequest *)self iconURL];
 
-  if (v17)
+  if (iconURL)
   {
-    v18 = [(AMSDialogRequest *)self iconURL];
-    v19 = [v18 copyWithZone:a3];
+    iconURL2 = [(AMSDialogRequest *)self iconURL];
+    v19 = [iconURL2 copyWithZone:zone];
     [(AMSDialogRequest *)v5 setIconURL:v19];
   }
 
-  v20 = [(AMSDialogRequest *)self identifier];
+  identifier = [(AMSDialogRequest *)self identifier];
 
-  if (v20)
+  if (identifier)
   {
-    v21 = [(AMSDialogRequest *)self identifier];
-    v22 = [v21 copyWithZone:a3];
+    identifier2 = [(AMSDialogRequest *)self identifier];
+    v22 = [identifier2 copyWithZone:zone];
     [(AMSDialogRequest *)v5 setIdentifier:v22];
   }
 
-  v23 = [(AMSDialogRequest *)self logKey];
+  logKey = [(AMSDialogRequest *)self logKey];
 
-  if (v23)
+  if (logKey)
   {
-    v24 = [(AMSDialogRequest *)self logKey];
-    v25 = [v24 copyWithZone:a3];
+    logKey2 = [(AMSDialogRequest *)self logKey];
+    v25 = [logKey2 copyWithZone:zone];
     [(AMSDialogRequest *)v5 setLogKey:v25];
   }
 
-  v26 = [(AMSDialogRequest *)self message];
+  message = [(AMSDialogRequest *)self message];
 
-  if (v26)
+  if (message)
   {
-    v27 = [(AMSDialogRequest *)self message];
-    v28 = [v27 copyWithZone:a3];
+    message2 = [(AMSDialogRequest *)self message];
+    v28 = [message2 copyWithZone:zone];
     [(AMSDialogRequest *)v5 setMessage:v28];
   }
 
-  v29 = [(AMSDialogRequest *)self messageAccessibilityLabel];
+  messageAccessibilityLabel = [(AMSDialogRequest *)self messageAccessibilityLabel];
 
-  if (v29)
+  if (messageAccessibilityLabel)
   {
-    v30 = [(AMSDialogRequest *)self messageAccessibilityLabel];
-    v31 = [v30 copyWithZone:a3];
+    messageAccessibilityLabel2 = [(AMSDialogRequest *)self messageAccessibilityLabel];
+    v31 = [messageAccessibilityLabel2 copyWithZone:zone];
     [(AMSDialogRequest *)v5 setMessage:v31];
   }
 
-  v32 = [(AMSDialogRequest *)self metricsEvent];
+  metricsEvent = [(AMSDialogRequest *)self metricsEvent];
 
-  if (v32)
+  if (metricsEvent)
   {
-    v33 = [(AMSDialogRequest *)self metricsEvent];
-    v34 = [v33 copyWithZone:a3];
+    metricsEvent2 = [(AMSDialogRequest *)self metricsEvent];
+    v34 = [metricsEvent2 copyWithZone:zone];
     [(AMSDialogRequest *)v5 setMetricsEvent:v34];
   }
 
-  v35 = [(AMSDialogRequest *)self preferredButtonActionIdentifier];
+  preferredButtonActionIdentifier = [(AMSDialogRequest *)self preferredButtonActionIdentifier];
 
-  if (v35)
+  if (preferredButtonActionIdentifier)
   {
-    v36 = [(AMSDialogRequest *)self preferredButtonActionIdentifier];
-    v37 = [v36 copyWithZone:a3];
+    preferredButtonActionIdentifier2 = [(AMSDialogRequest *)self preferredButtonActionIdentifier];
+    v37 = [preferredButtonActionIdentifier2 copyWithZone:zone];
     [(AMSDialogRequest *)v5 setPreferredButtonActionIdentifier:v37];
   }
 
   [(AMSDialogRequest *)v5 setPreventsCancelButtonStyle:[(AMSDialogRequest *)self preventsCancelButtonStyle]];
   [(AMSDialogRequest *)v5 setStyle:[(AMSDialogRequest *)self style]];
-  v38 = [(AMSDialogRequest *)self textFields];
+  textFields = [(AMSDialogRequest *)self textFields];
 
-  if (v38)
+  if (textFields)
   {
-    v39 = [(AMSDialogRequest *)self textFields];
-    v40 = [v39 copyWithZone:a3];
+    textFields2 = [(AMSDialogRequest *)self textFields];
+    v40 = [textFields2 copyWithZone:zone];
     [(AMSDialogRequest *)v5 setTextFields:v40];
   }
 
-  v41 = [(AMSDialogRequest *)self title];
+  title = [(AMSDialogRequest *)self title];
 
-  if (v41)
+  if (title)
   {
-    v42 = [(AMSDialogRequest *)self title];
-    v43 = [v42 copyWithZone:a3];
+    title2 = [(AMSDialogRequest *)self title];
+    v43 = [title2 copyWithZone:zone];
     [(AMSDialogRequest *)v5 setTitle:v43];
   }
 
-  v44 = [(AMSDialogRequest *)self titleAccessibilityLabel];
+  titleAccessibilityLabel = [(AMSDialogRequest *)self titleAccessibilityLabel];
 
-  if (v44)
+  if (titleAccessibilityLabel)
   {
-    v45 = [(AMSDialogRequest *)self titleAccessibilityLabel];
-    v46 = [v45 copyWithZone:a3];
+    titleAccessibilityLabel2 = [(AMSDialogRequest *)self titleAccessibilityLabel];
+    v46 = [titleAccessibilityLabel2 copyWithZone:zone];
     [(AMSDialogRequest *)v5 setTitle:v46];
   }
 
-  v47 = [(AMSDialogRequest *)self userInfo];
+  userInfo = [(AMSDialogRequest *)self userInfo];
 
-  if (v47)
+  if (userInfo)
   {
-    v48 = [(AMSDialogRequest *)self userInfo];
-    v49 = [v48 copyWithZone:a3];
+    userInfo2 = [(AMSDialogRequest *)self userInfo];
+    v49 = [userInfo2 copyWithZone:zone];
     [(AMSDialogRequest *)v5 setUserInfo:v49];
   }
 

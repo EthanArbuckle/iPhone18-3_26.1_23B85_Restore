@@ -1,9 +1,9 @@
 @interface MOTukeyOutlierDetector
-- (BOOL)fitData:(id)a3;
+- (BOOL)fitData:(id)data;
 - (MOTukeyOutlierDetector)init;
-- (id)_testDatum:(id)a3;
-- (id)sortData:(id)a3;
-- (id)testData:(id)a3;
+- (id)_testDatum:(id)datum;
+- (id)sortData:(id)data;
+- (id)testData:(id)data;
 @end
 
 @implementation MOTukeyOutlierDetector
@@ -15,9 +15,9 @@
   return [(MOTukeyOutlierDetector *)&v3 init];
 }
 
-- (id)sortData:(id)a3
+- (id)sortData:(id)data
 {
-  v3 = [a3 mutableCopy];
+  v3 = [data mutableCopy];
   v4 = [NSSortDescriptor sortDescriptorWithKey:@"value" ascending:1];
   v7 = v4;
   v5 = [NSArray arrayWithObjects:&v7 count:1];
@@ -26,18 +26,18 @@
   return v3;
 }
 
-- (BOOL)fitData:(id)a3
+- (BOOL)fitData:(id)data
 {
-  v5 = a3;
-  v6 = [[MOAnalyticsStats alloc] initWithTimeSeries:v5];
+  dataCopy = data;
+  v6 = [[MOAnalyticsStats alloc] initWithTimeSeries:dataCopy];
   trainDataStats = self->_trainDataStats;
   self->_trainDataStats = v6;
 
   self->_valid = 0;
-  if ([v5 count])
+  if ([dataCopy count])
   {
-    v8 = [v5 count];
-    v9 = [(MOTukeyOutlierDetector *)self sortData:v5];
+    v8 = [dataCopy count];
+    v9 = [(MOTukeyOutlierDetector *)self sortData:dataCopy];
     v10 = v8;
     v11 = [v9 objectAtIndexedSubscript:{vcvtd_n_f64_u64(v8, 2uLL)}];
     [v11 value];
@@ -93,17 +93,17 @@
   return v25;
 }
 
-- (id)testData:(id)a3
+- (id)testData:(id)data
 {
-  v4 = a3;
-  v5 = [[MOAnalyticsStats alloc] initWithTimeSeries:v4];
+  dataCopy = data;
+  v5 = [[MOAnalyticsStats alloc] initWithTimeSeries:dataCopy];
   testDataStats = self->_testDataStats;
   self->_testDataStats = v5;
 
   if (self->_valid)
   {
-    v7 = [(MOTukeyOutlierDetector *)self sortData:v4];
-    v8 = [v7 objectAtIndexedSubscript:{vcvtd_n_f64_u64(objc_msgSend(v4, "count"), 1uLL)}];
+    v7 = [(MOTukeyOutlierDetector *)self sortData:dataCopy];
+    v8 = [v7 objectAtIndexedSubscript:{vcvtd_n_f64_u64(objc_msgSend(dataCopy, "count"), 1uLL)}];
     v9 = [(MOTukeyOutlierDetector *)self _testDatum:v8];
   }
 
@@ -115,26 +115,26 @@
   return v9;
 }
 
-- (id)_testDatum:(id)a3
+- (id)_testDatum:(id)datum
 {
-  v5 = a3;
+  datumCopy = datum;
   if (self->_valid)
   {
     v6 = objc_opt_new();
     iqr = self->_iqr;
     v8 = self->_q1 + iqr * -1.5;
     v9 = self->_q3 + iqr * 1.5;
-    v10 = [v5 date];
-    [v6 setDate:v10];
+    date = [datumCopy date];
+    [v6 setDate:date];
 
-    [v5 value];
+    [datumCopy value];
     [v6 setActual:?];
-    [v5 value];
+    [datumCopy value];
     [v6 setScore:v11 - self->_q2];
-    [v5 value];
+    [datumCopy value];
     if (v12 >= v8)
     {
-      [v5 value];
+      [datumCopy value];
       v13 = v9 < v14;
     }
 
@@ -149,7 +149,7 @@
     {
       v16 = NSStringFromSelector(a2);
       valid = self->_valid;
-      [v5 value];
+      [datumCopy value];
       v19 = v18;
       [v6 score];
       v22 = 138413570;

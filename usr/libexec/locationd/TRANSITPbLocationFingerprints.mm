@@ -1,13 +1,13 @@
 @interface TRANSITPbLocationFingerprints
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addLocationFingerprint:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addLocationFingerprint:(id)fingerprint;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TRANSITPbLocationFingerprints
@@ -20,7 +20,7 @@
   [(TRANSITPbLocationFingerprints *)&v3 dealloc];
 }
 
-- (void)addLocationFingerprint:(id)a3
+- (void)addLocationFingerprint:(id)fingerprint
 {
   locationFingerprints = self->_locationFingerprints;
   if (!locationFingerprints)
@@ -29,7 +29,7 @@
     self->_locationFingerprints = locationFingerprints;
   }
 
-  [(NSMutableArray *)locationFingerprints addObject:a3];
+  [(NSMutableArray *)locationFingerprints addObject:fingerprint];
 }
 
 - (id)description
@@ -82,7 +82,7 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v8 = 0u;
   v9 = 0u;
@@ -113,26 +113,26 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ([(TRANSITPbLocationFingerprints *)self locationFingerprintsCount])
   {
-    [a3 clearLocationFingerprints];
-    v5 = [(TRANSITPbLocationFingerprints *)self locationFingerprintsCount];
-    if (v5)
+    [to clearLocationFingerprints];
+    locationFingerprintsCount = [(TRANSITPbLocationFingerprints *)self locationFingerprintsCount];
+    if (locationFingerprintsCount)
     {
-      v6 = v5;
+      v6 = locationFingerprintsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addLocationFingerprint:{-[TRANSITPbLocationFingerprints locationFingerprintAtIndex:](self, "locationFingerprintAtIndex:", i)}];
+        [to addLocationFingerprint:{-[TRANSITPbLocationFingerprints locationFingerprintAtIndex:](self, "locationFingerprintAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -153,7 +153,7 @@
           objc_enumerationMutation(locationFingerprints);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addLocationFingerprint:v11];
 
         v10 = v10 + 1;
@@ -169,13 +169,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     locationFingerprints = self->_locationFingerprints;
-    if (locationFingerprints | *(a3 + 1))
+    if (locationFingerprints | *(equal + 1))
     {
 
       LOBYTE(v5) = [(NSMutableArray *)locationFingerprints isEqual:?];
@@ -190,13 +190,13 @@
   return v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {

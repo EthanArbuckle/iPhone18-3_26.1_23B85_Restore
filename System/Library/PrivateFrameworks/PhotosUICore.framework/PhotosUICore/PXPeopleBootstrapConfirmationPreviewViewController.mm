@@ -1,5 +1,5 @@
 @interface PXPeopleBootstrapConfirmationPreviewViewController
-- (PXPeopleBootstrapConfirmationPreviewViewController)initWithPerson:(id)a3 keyAsset:(id)a4 useLowMemoryMode:(BOOL)a5;
+- (PXPeopleBootstrapConfirmationPreviewViewController)initWithPerson:(id)person keyAsset:(id)asset useLowMemoryMode:(BOOL)mode;
 - (void)dealloc;
 - (void)loadView;
 - (void)viewDidLoad;
@@ -12,21 +12,21 @@
   v23.receiver = self;
   v23.super_class = PXPeopleBootstrapConfirmationPreviewViewController;
   [(PXPeopleBootstrapConfirmationPreviewViewController *)&v23 viewDidLoad];
-  v4 = [(PXPeopleBootstrapConfirmationPreviewViewController *)self keyAsset];
-  v5 = [(PXPeopleBootstrapConfirmationPreviewViewController *)self traitCollection];
-  [v5 displayScale];
+  keyAsset = [(PXPeopleBootstrapConfirmationPreviewViewController *)self keyAsset];
+  traitCollection = [(PXPeopleBootstrapConfirmationPreviewViewController *)self traitCollection];
+  [traitCollection displayScale];
   v7 = v6;
 
-  v8 = [v4 pixelWidth] / v7;
-  v9 = [v4 pixelHeight] / v7;
+  v8 = [keyAsset pixelWidth] / v7;
+  v9 = [keyAsset pixelHeight] / v7;
   [(PXPeopleBootstrapConfirmationPreviewViewController *)self setPreferredContentSize:v8, v9];
-  v10 = [(PXPeopleBootstrapConfirmationPreviewViewController *)self view];
-  if (!v10)
+  view = [(PXPeopleBootstrapConfirmationPreviewViewController *)self view];
+  if (!view)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    [v15 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationPreviewViewController.m" lineNumber:58 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.view", v17}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationPreviewViewController.m" lineNumber:58 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.view", v17}];
 LABEL_6:
 
     goto LABEL_3;
@@ -35,11 +35,11 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = objc_opt_class();
     v17 = NSStringFromClass(v18);
-    v19 = [v10 px_descriptionForAssertionMessage];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationPreviewViewController.m" lineNumber:58 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.view", v17, v19}];
+    px_descriptionForAssertionMessage = [view px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationPreviewViewController.m" lineNumber:58 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.view", v17, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
@@ -52,16 +52,16 @@ LABEL_3:
   [v11 setResizeMode:1];
   [v11 setDeliveryMode:0];
   [v11 setUseLowMemoryMode:{-[PXPeopleBootstrapConfirmationPreviewViewController useLowMemoryMode](self, "useLowMemoryMode")}];
-  v12 = [MEMORY[0x1E6978860] defaultManager];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __65__PXPeopleBootstrapConfirmationPreviewViewController_viewDidLoad__block_invoke;
   v20[3] = &unk_1E7745FC0;
-  v21 = v10;
-  v22 = v4;
-  v13 = v4;
-  v14 = v10;
-  -[PXPeopleBootstrapConfirmationPreviewViewController setRequestID:](self, "setRequestID:", [v12 requestImageForAsset:v13 targetSize:0 contentMode:v11 options:v20 resultHandler:{v8, v9}]);
+  v21 = view;
+  v22 = keyAsset;
+  v13 = keyAsset;
+  v14 = view;
+  -[PXPeopleBootstrapConfirmationPreviewViewController setRequestID:](self, "setRequestID:", [defaultManager requestImageForAsset:v13 targetSize:0 contentMode:v11 options:v20 resultHandler:{v8, v9}]);
 }
 
 void __65__PXPeopleBootstrapConfirmationPreviewViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -105,27 +105,27 @@ void __65__PXPeopleBootstrapConfirmationPreviewViewController_viewDidLoad__block
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E6978860] defaultManager];
-  [v3 cancelImageRequest:{-[PXPeopleBootstrapConfirmationPreviewViewController requestID](self, "requestID")}];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
+  [defaultManager cancelImageRequest:{-[PXPeopleBootstrapConfirmationPreviewViewController requestID](self, "requestID")}];
 
   v4.receiver = self;
   v4.super_class = PXPeopleBootstrapConfirmationPreviewViewController;
   [(PXPeopleBootstrapConfirmationPreviewViewController *)&v4 dealloc];
 }
 
-- (PXPeopleBootstrapConfirmationPreviewViewController)initWithPerson:(id)a3 keyAsset:(id)a4 useLowMemoryMode:(BOOL)a5
+- (PXPeopleBootstrapConfirmationPreviewViewController)initWithPerson:(id)person keyAsset:(id)asset useLowMemoryMode:(BOOL)mode
 {
-  v9 = a3;
-  v10 = a4;
+  personCopy = person;
+  assetCopy = asset;
   v14.receiver = self;
   v14.super_class = PXPeopleBootstrapConfirmationPreviewViewController;
   v11 = [(PXPeopleBootstrapConfirmationPreviewViewController *)&v14 initWithNibName:0 bundle:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_person, a3);
-    objc_storeStrong(&v12->_keyAsset, a4);
-    v12->_useLowMemoryMode = a5;
+    objc_storeStrong(&v11->_person, person);
+    objc_storeStrong(&v12->_keyAsset, asset);
+    v12->_useLowMemoryMode = mode;
   }
 
   return v12;

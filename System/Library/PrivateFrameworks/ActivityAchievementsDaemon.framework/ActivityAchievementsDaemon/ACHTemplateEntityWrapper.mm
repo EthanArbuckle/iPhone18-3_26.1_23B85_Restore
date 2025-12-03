@@ -1,85 +1,85 @@
 @interface ACHTemplateEntityWrapper
 - (ACHTemplateEntitySyncedTemplatesObserver)syncedTemplatesObserver;
-- (ACHTemplateEntityWrapper)initWithProfile:(id)a3;
-- (BOOL)insertTemplates:(id)a3 provenance:(int64_t)a4 databaseContext:(id)a5 error:(id *)a6;
-- (BOOL)removeTemplates:(id)a3 error:(id *)a4;
+- (ACHTemplateEntityWrapper)initWithProfile:(id)profile;
+- (BOOL)insertTemplates:(id)templates provenance:(int64_t)provenance databaseContext:(id)context error:(id *)error;
+- (BOOL)removeTemplates:(id)templates error:(id *)error;
 - (HDProfile)profile;
-- (id)allTemplatesWithError:(id *)a3;
-- (void)setSyncedTemplatesObserver:(id)a3;
-- (void)templateEntityDidReceiveSyncedTemplates:(id)a3 provenance:(int64_t)a4;
+- (id)allTemplatesWithError:(id *)error;
+- (void)setSyncedTemplatesObserver:(id)observer;
+- (void)templateEntityDidReceiveSyncedTemplates:(id)templates provenance:(int64_t)provenance;
 @end
 
 @implementation ACHTemplateEntityWrapper
 
-- (ACHTemplateEntityWrapper)initWithProfile:(id)a3
+- (ACHTemplateEntityWrapper)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = ACHTemplateEntityWrapper;
   v5 = [(ACHTemplateEntityWrapper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
 }
 
-- (void)setSyncedTemplatesObserver:(id)a3
+- (void)setSyncedTemplatesObserver:(id)observer
 {
-  v4 = objc_storeWeak(&self->_syncedTemplatesObserver, a3);
-  if (a3)
+  v4 = objc_storeWeak(&self->_syncedTemplatesObserver, observer);
+  if (observer)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  [ACHTemplateEntity setSyncedTemplatesObserver:v5];
+  [ACHTemplateEntity setSyncedTemplatesObserver:selfCopy];
 }
 
-- (BOOL)insertTemplates:(id)a3 provenance:(int64_t)a4 databaseContext:(id)a5 error:(id *)a6
+- (BOOL)insertTemplates:(id)templates provenance:(int64_t)provenance databaseContext:(id)context error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [(ACHTemplateEntityWrapper *)self profile];
-  LOBYTE(a6) = [ACHTemplateEntity insertTemplates:v11 provenance:a4 useLegacySyncIdentity:0 profile:v12 databaseContext:v10 error:a6];
+  contextCopy = context;
+  templatesCopy = templates;
+  profile = [(ACHTemplateEntityWrapper *)self profile];
+  LOBYTE(error) = [ACHTemplateEntity insertTemplates:templatesCopy provenance:provenance useLegacySyncIdentity:0 profile:profile databaseContext:contextCopy error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)removeTemplates:(id)a3 error:(id *)a4
+- (BOOL)removeTemplates:(id)templates error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ACHTemplateEntityWrapper *)self profile];
-  LOBYTE(a4) = [ACHTemplateEntity removeTemplates:v6 profile:v7 error:a4];
+  templatesCopy = templates;
+  profile = [(ACHTemplateEntityWrapper *)self profile];
+  LOBYTE(error) = [ACHTemplateEntity removeTemplates:templatesCopy profile:profile error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)allTemplatesWithError:(id *)a3
+- (id)allTemplatesWithError:(id *)error
 {
-  v4 = [(ACHTemplateEntityWrapper *)self profile];
-  v5 = [ACHTemplateEntity allTemplatesWithProfile:v4 error:a3];
+  profile = [(ACHTemplateEntityWrapper *)self profile];
+  v5 = [ACHTemplateEntity allTemplatesWithProfile:profile error:error];
 
   return v5;
 }
 
-- (void)templateEntityDidReceiveSyncedTemplates:(id)a3 provenance:(int64_t)a4
+- (void)templateEntityDidReceiveSyncedTemplates:(id)templates provenance:(int64_t)provenance
 {
-  v6 = a3;
+  templatesCopy = templates;
   v7 = ACHLogSync();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [ACHTemplateEntityWrapper templateEntityDidReceiveSyncedTemplates:v7 provenance:?];
   }
 
-  v8 = [(ACHTemplateEntityWrapper *)self syncedTemplatesObserver];
-  [v8 templateEntityDidReceiveSyncedTemplates:v6 provenance:a4];
+  syncedTemplatesObserver = [(ACHTemplateEntityWrapper *)self syncedTemplatesObserver];
+  [syncedTemplatesObserver templateEntityDidReceiveSyncedTemplates:templatesCopy provenance:provenance];
 }
 
 - (HDProfile)profile

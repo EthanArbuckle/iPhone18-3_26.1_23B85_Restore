@@ -1,21 +1,21 @@
 @interface SUAddiTunesPassOperation
-- (SUAddiTunesPassOperation)initWithViewController:(id)a3;
-- (void)addPassesViewControllerDidFinish:(id)a3;
+- (SUAddiTunesPassOperation)initWithViewController:(id)controller;
+- (void)addPassesViewControllerDidFinish:(id)finish;
 - (void)run;
 @end
 
 @implementation SUAddiTunesPassOperation
 
-- (SUAddiTunesPassOperation)initWithViewController:(id)a3
+- (SUAddiTunesPassOperation)initWithViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = SUAddiTunesPassOperation;
   v6 = [(SUAddiTunesPassOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_authenticationContext, a3);
+    objc_storeStrong(&v6->_authenticationContext, controller);
   }
 
   return v7;
@@ -24,11 +24,11 @@
 - (void)run
 {
   v68 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69D4890] defaultStore];
-  v4 = [v3 activeAccount];
-  v5 = [v4 ITunesPassSerialNumber];
+  defaultStore = [MEMORY[0x1E69D4890] defaultStore];
+  activeAccount = [defaultStore activeAccount];
+  iTunesPassSerialNumber = [activeAccount ITunesPassSerialNumber];
 
-  if (!v5)
+  if (!iTunesPassSerialNumber)
   {
 LABEL_11:
     v13 = objc_alloc(MEMORY[0x1E69E4770]);
@@ -36,24 +36,24 @@ LABEL_11:
     v6 = [v13 initWithBagContext:v14];
 
     [v6 start];
-    v15 = [v6 URLBag];
-    v8 = v15;
-    if (!v15)
+    uRLBag = [v6 URLBag];
+    v8 = uRLBag;
+    if (!uRLBag)
     {
-      v9 = [MEMORY[0x1E69D4938] sharedConfig];
-      v38 = [v9 shouldLog];
-      if ([v9 shouldLogToDisk])
+      mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+      if ([mEMORY[0x1E69D4938] shouldLogToDisk])
       {
-        v39 = v38 | 2;
+        v39 = shouldLog | 2;
       }
 
       else
       {
-        v39 = v38;
+        v39 = shouldLog;
       }
 
-      v12 = [v9 OSLogObject];
-      if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v39 &= 2u;
       }
@@ -66,21 +66,21 @@ LABEL_11:
       goto LABEL_36;
     }
 
-    v9 = [v15 valueForKey:@"getAddCreditPassUrl"];
-    if ([v9 length])
+    mEMORY[0x1E69D4938] = [uRLBag valueForKey:@"getAddCreditPassUrl"];
+    if ([mEMORY[0x1E69D4938] length])
     {
-      v16 = [MEMORY[0x1E695DFF8] URLWithString:v9];
+      v16 = [MEMORY[0x1E695DFF8] URLWithString:mEMORY[0x1E69D4938]];
       if (v16)
       {
-        v12 = v16;
+        oSLogObject = v16;
         v17 = objc_alloc_init(MEMORY[0x1E69E47E0]);
-        v18 = [MEMORY[0x1E69E4738] provider];
-        [v17 setDataProvider:v18];
+        provider = [MEMORY[0x1E69E4738] provider];
+        [v17 setDataProvider:provider];
 
-        v19 = [(SUAddiTunesPassOperation *)self authenticationContext];
-        [v17 setAuthenticationContext:v19];
+        authenticationContext = [(SUAddiTunesPassOperation *)self authenticationContext];
+        [v17 setAuthenticationContext:authenticationContext];
 
-        v20 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:v12];
+        v20 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:oSLogObject];
         [v17 setRequestProperties:v20];
 
         v63 = 0;
@@ -89,21 +89,21 @@ LABEL_11:
         v21 = v63;
         if (v21 || ([v17 dataProvider], v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "output"), v23 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v23, v21 = 0, v22, (isKindOfClass & 1) == 0))
         {
-          v42 = [MEMORY[0x1E69D4938] sharedConfig];
-          v43 = [v42 shouldLog];
-          if ([v42 shouldLogToDisk])
+          mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+          shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+          if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
           {
-            v43 |= 2u;
+            shouldLog2 |= 2u;
           }
 
-          v44 = v42;
-          v27 = [v42 OSLogObject];
-          if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+          v44 = mEMORY[0x1E69D4938]2;
+          oSLogObject2 = [mEMORY[0x1E69D4938]2 OSLogObject];
+          if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
           {
-            v43 &= 2u;
+            shouldLog2 &= 2u;
           }
 
-          if (v43)
+          if (shouldLog2)
           {
             v45 = objc_opt_class();
             v64 = 138543618;
@@ -124,7 +124,7 @@ LABEL_58:
               goto LABEL_59;
             }
 
-            v27 = [MEMORY[0x1E696AEC0] stringWithCString:v47 encoding:{4, &v64, v53}];
+            oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v47 encoding:{4, &v64, v53}];
             free(v47);
             v32 = v44;
             SSFileLog();
@@ -141,16 +141,16 @@ LABEL_57:
           goto LABEL_58;
         }
 
-        v25 = [v17 dataProvider];
-        v26 = [v25 output];
+        dataProvider = [v17 dataProvider];
+        output = [dataProvider output];
 
         v62 = 0;
-        v55 = v26;
-        v27 = [objc_alloc(ISWeakLinkedClassForString()) initWithData:v26 error:&v62];
+        v55 = output;
+        oSLogObject2 = [objc_alloc(ISWeakLinkedClassForString()) initWithData:output error:&v62];
         v21 = v62;
-        if (v27)
+        if (oSLogObject2)
         {
-          [(SUAddiTunesPassOperation *)self setPresentedPass:v27];
+          [(SUAddiTunesPassOperation *)self setPresentedPass:oSLogObject2];
           v28 = dispatch_semaphore_create(0);
           [(SUAddiTunesPassOperation *)self setSemaphore:v28];
 
@@ -158,38 +158,38 @@ LABEL_57:
           block[1] = 3221225472;
           block[2] = __31__SUAddiTunesPassOperation_run__block_invoke;
           block[3] = &unk_1E81644A8;
-          v60 = v27;
-          v61 = self;
+          v60 = oSLogObject2;
+          selfCopy = self;
           dispatch_async(MEMORY[0x1E69E96A0], block);
-          v29 = [(SUAddiTunesPassOperation *)self semaphore];
-          dispatch_semaphore_wait(v29, 0xFFFFFFFFFFFFFFFFLL);
+          semaphore = [(SUAddiTunesPassOperation *)self semaphore];
+          dispatch_semaphore_wait(semaphore, 0xFFFFFFFFFFFFFFFFLL);
 
           if ([(SUAddiTunesPassOperation *)self addedCard])
           {
-            v30 = [(SUAddiTunesPassOperation *)self presentedPass];
-            [(SUAddiTunesPassOperation *)self setPass:v30];
+            presentedPass = [(SUAddiTunesPassOperation *)self presentedPass];
+            [(SUAddiTunesPassOperation *)self setPass:presentedPass];
 
             [(SUAddiTunesPassOperation *)self setSuccess:1];
           }
 
-          v31 = v60;
+          mEMORY[0x1E69D4938]3 = v60;
           goto LABEL_20;
         }
 
-        v31 = [MEMORY[0x1E69D4938] sharedConfig];
-        v48 = [v31 shouldLog];
-        if ([v31 shouldLogToDisk])
+        mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
+        shouldLog3 = [mEMORY[0x1E69D4938]3 shouldLog];
+        if ([mEMORY[0x1E69D4938]3 shouldLogToDisk])
         {
-          v48 |= 2u;
+          shouldLog3 |= 2u;
         }
 
-        v54 = [v31 OSLogObject];
-        if (!os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
+        oSLogObject3 = [mEMORY[0x1E69D4938]3 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
         {
-          v48 &= 2u;
+          shouldLog3 &= 2u;
         }
 
-        if (v48)
+        if (shouldLog3)
         {
           v57 = v21;
           v49 = objc_opt_class();
@@ -218,7 +218,7 @@ LABEL_56:
 
         else
         {
-          v52 = v54;
+          v52 = oSLogObject3;
           v32 = v55;
         }
 
@@ -226,20 +226,20 @@ LABEL_56:
       }
     }
 
-    v12 = [MEMORY[0x1E69D4938] sharedConfig];
-    v33 = [v12 shouldLog];
-    if ([v12 shouldLogToDisk])
+    oSLogObject = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog4 = [oSLogObject shouldLog];
+    if ([oSLogObject shouldLogToDisk])
     {
-      v34 = v33 | 2;
+      v34 = shouldLog4 | 2;
     }
 
     else
     {
-      v34 = v33;
+      v34 = shouldLog4;
     }
 
-    v35 = [v12 OSLogObject];
-    if (!os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+    v12OSLogObject = [oSLogObject OSLogObject];
+    if (!os_log_type_enabled(v12OSLogObject, OS_LOG_TYPE_ERROR))
     {
       v34 &= 2u;
     }
@@ -259,7 +259,7 @@ LABEL_59:
         goto LABEL_60;
       }
 
-      v35 = [MEMORY[0x1E696AEC0] stringWithCString:v37 encoding:{4, &v64, v53}];
+      v12OSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v37 encoding:{4, &v64, v53}];
       free(v37);
       SSFileLog();
     }
@@ -268,7 +268,7 @@ LABEL_59:
   }
 
   v6 = objc_alloc_init(ISWeakLinkedClassForString());
-  v7 = [v6 passWithPassTypeIdentifier:@"pass.com.apple.itunes.storecredit" serialNumber:v5];
+  v7 = [v6 passWithPassTypeIdentifier:@"pass.com.apple.itunes.storecredit" serialNumber:iTunesPassSerialNumber];
   if (!v7)
   {
 
@@ -276,20 +276,20 @@ LABEL_59:
   }
 
   v8 = v7;
-  v9 = [MEMORY[0x1E69D4938] sharedConfig];
-  v10 = [v9 shouldLog];
-  if ([v9 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog5 = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog5 | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog5;
   }
 
-  v12 = [v9 OSLogObject];
-  if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v11 &= 2u;
   }
@@ -308,7 +308,7 @@ LABEL_36:
 
   if (v41)
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithCString:v41 encoding:{4, &v64, v53}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v41 encoding:{4, &v64, v53}];
     free(v41);
     SSFileLog();
     goto LABEL_59;
@@ -325,26 +325,26 @@ void __31__SUAddiTunesPassOperation_run__block_invoke(uint64_t a1)
   [v2 presentViewController:v3 animated:1 completion:0];
 }
 
-- (void)addPassesViewControllerDidFinish:(id)a3
+- (void)addPassesViewControllerDidFinish:(id)finish
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  finishCopy = finish;
   v5 = objc_alloc_init(ISWeakLinkedClassForString());
-  v6 = [(SUAddiTunesPassOperation *)self presentedPass];
-  v7 = [v5 containsPass:v6];
+  presentedPass = [(SUAddiTunesPassOperation *)self presentedPass];
+  v7 = [v5 containsPass:presentedPass];
 
   if (v7)
   {
-    v8 = [MEMORY[0x1E69D4890] defaultStore];
-    v9 = [v8 activeAccount];
+    defaultStore = [MEMORY[0x1E69D4890] defaultStore];
+    activeAccount = [defaultStore activeAccount];
 
-    v10 = [(SUAddiTunesPassOperation *)self presentedPass];
-    v11 = [v10 serialNumber];
-    [v9 setITunesPassSerialNumber:v11];
+    presentedPass2 = [(SUAddiTunesPassOperation *)self presentedPass];
+    serialNumber = [presentedPass2 serialNumber];
+    [activeAccount setITunesPassSerialNumber:serialNumber];
 
-    v12 = [MEMORY[0x1E69D4890] defaultStore];
+    defaultStore2 = [MEMORY[0x1E69D4890] defaultStore];
     v24 = 0;
-    [v12 saveAccount:v9 error:&v24];
+    [defaultStore2 saveAccount:activeAccount error:&v24];
     v13 = v24;
 
     if (!v13)
@@ -353,20 +353,20 @@ void __31__SUAddiTunesPassOperation_run__block_invoke(uint64_t a1)
       goto LABEL_14;
     }
 
-    v14 = [MEMORY[0x1E69D4938] sharedConfig];
-    v15 = [v14 shouldLog];
-    if ([v14 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog;
     }
 
-    v17 = [v14 OSLogObject];
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v16 &= 2u;
     }
@@ -391,9 +391,9 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v17 = [MEMORY[0x1E696AEC0] stringWithCString:v20 encoding:{4, &v25, v23}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v20 encoding:{4, &v25, v23}];
       free(v20);
-      v22 = v17;
+      v22 = oSLogObject;
       SSFileLog();
     }
 
@@ -401,9 +401,9 @@ LABEL_14:
   }
 
 LABEL_15:
-  [v4 dismissViewControllerAnimated:1 completion:{0, v22}];
-  v21 = [(SUAddiTunesPassOperation *)self semaphore];
-  dispatch_semaphore_signal(v21);
+  [finishCopy dismissViewControllerAnimated:1 completion:{0, v22}];
+  semaphore = [(SUAddiTunesPassOperation *)self semaphore];
+  dispatch_semaphore_signal(semaphore);
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface RDPredefinedObjectKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_TtC7remindd21RDPredefinedObjectKey)init;
 - (int64_t)hash;
@@ -7,11 +7,11 @@
 
 @implementation RDPredefinedObjectKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -20,7 +20,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_100743930(v8);
@@ -32,9 +32,9 @@
 - (int64_t)hash
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC7remindd21RDPredefinedObjectKey_accountID);
-  v3 = self;
+  selfCopy = self;
   v4 = NSObject.hashValue.getter();
-  v5 = *(&v3->super.isa + OBJC_IVAR____TtC7remindd21RDPredefinedObjectKey_objectID);
+  v5 = *(&selfCopy->super.isa + OBJC_IVAR____TtC7remindd21RDPredefinedObjectKey_objectID);
   v6 = NSObject.hashValue.getter();
 
   return v6 ^ v4;
@@ -42,7 +42,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_100743B88();
 
   v3 = String._bridgeToObjectiveC()();

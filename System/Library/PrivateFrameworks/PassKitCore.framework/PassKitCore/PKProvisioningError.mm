@@ -1,42 +1,42 @@
 @interface PKProvisioningError
-+ (id)errorWithCommonType:(unint64_t)a3 severity:(unint64_t)a4;
-+ (id)errorWithSeverity:(unint64_t)a3;
-+ (id)errorWithTitle:(id)a3 message:(id)a4 severity:(unint64_t)a5;
-+ (id)errorWithTitle:(id)a3 message:(id)a4 severity:(unint64_t)a5 recoveryTitle:(id)a6 recoveryURL:(id)a7;
-+ (id)errorWithTitleKey:(id)a3 messageKey:(id)a4 severity:(unint64_t)a5;
-+ (id)errorWithUnderlyingError:(id)a3 defaultSeverity:(unint64_t)a4;
++ (id)errorWithCommonType:(unint64_t)type severity:(unint64_t)severity;
++ (id)errorWithSeverity:(unint64_t)severity;
++ (id)errorWithTitle:(id)title message:(id)message severity:(unint64_t)severity;
++ (id)errorWithTitle:(id)title message:(id)message severity:(unint64_t)severity recoveryTitle:(id)recoveryTitle recoveryURL:(id)l;
++ (id)errorWithTitleKey:(id)key messageKey:(id)messageKey severity:(unint64_t)severity;
++ (id)errorWithUnderlyingError:(id)error defaultSeverity:(unint64_t)severity;
 + (id)userCancelError;
 - (BOOL)hasLocalizedTitleAndMessage;
 - (NSError)displayableError;
 - (NSString)localizedMessage;
 - (NSString)localizedRecoveryDescription;
 - (NSString)localizedTitle;
-- (PKProvisioningError)initWithCoder:(id)a3;
-- (id)_initWithSeverity:(unint64_t)a3 localizedTitle:(id)a4 localizedMessage:(id)a5;
-- (id)_initWithSeverity:(unint64_t)a3 userInfo:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKProvisioningError)initWithCoder:(id)coder;
+- (id)_initWithSeverity:(unint64_t)severity localizedTitle:(id)title localizedMessage:(id)message;
+- (id)_initWithSeverity:(unint64_t)severity userInfo:(id)info;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)userInfo;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLocalizedMessage:(id)a3;
-- (void)setLocalizedRecoveryDescription:(id)a3;
-- (void)setLocalizedTitle:(id)a3;
-- (void)setRecoveryUrl:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLocalizedMessage:(id)message;
+- (void)setLocalizedRecoveryDescription:(id)description;
+- (void)setLocalizedTitle:(id)title;
+- (void)setRecoveryUrl:(id)url;
 @end
 
 @implementation PKProvisioningError
 
-- (id)_initWithSeverity:(unint64_t)a3 userInfo:(id)a4
+- (id)_initWithSeverity:(unint64_t)severity userInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = PKProvisioningError;
-  v7 = [(PKProvisioningError *)&v14 initWithDomain:@"PKProvisioningErrorDomain" code:a3 userInfo:v6];
+  v7 = [(PKProvisioningError *)&v14 initWithDomain:@"PKProvisioningErrorDomain" code:severity userInfo:infoCopy];
   v8 = v7;
   if (v7)
   {
-    v7->_severity = a3;
-    v9 = [v6 mutableCopy];
+    v7->_severity = severity;
+    v9 = [infoCopy mutableCopy];
     v10 = v9;
     if (!v9)
     {
@@ -56,56 +56,56 @@
   return v8;
 }
 
-- (id)_initWithSeverity:(unint64_t)a3 localizedTitle:(id)a4 localizedMessage:(id)a5
+- (id)_initWithSeverity:(unint64_t)severity localizedTitle:(id)title localizedMessage:(id)message
 {
   v8 = MEMORY[0x1E695DF90];
-  v9 = a5;
-  v10 = a4;
+  messageCopy = message;
+  titleCopy = title;
   v11 = objc_alloc_init(v8);
-  v12 = [v10 copy];
+  v12 = [titleCopy copy];
 
   [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x1E696A578]];
-  v13 = [v9 copy];
+  v13 = [messageCopy copy];
 
   [v11 setObject:v13 forKeyedSubscript:*MEMORY[0x1E696A598]];
-  v14 = [(PKProvisioningError *)self _initWithSeverity:a3 userInfo:v11];
+  v14 = [(PKProvisioningError *)self _initWithSeverity:severity userInfo:v11];
 
   return v14;
 }
 
-+ (id)errorWithTitleKey:(id)a3 messageKey:(id)a4 severity:(unint64_t)a5
++ (id)errorWithTitleKey:(id)key messageKey:(id)messageKey severity:(unint64_t)severity
 {
-  v7 = a4;
-  v8 = a3;
+  messageKeyCopy = messageKey;
+  keyCopy = key;
   v9 = [PKProvisioningError alloc];
-  v10 = PKLocalizedPaymentString(v8, 0);
+  v10 = PKLocalizedPaymentString(keyCopy, 0);
 
-  v11 = PKLocalizedPaymentString(v7, 0);
+  v11 = PKLocalizedPaymentString(messageKeyCopy, 0);
 
-  v12 = [(PKProvisioningError *)v9 _initWithSeverity:a5 localizedTitle:v10 localizedMessage:v11];
+  v12 = [(PKProvisioningError *)v9 _initWithSeverity:severity localizedTitle:v10 localizedMessage:v11];
 
   return v12;
 }
 
-+ (id)errorWithTitle:(id)a3 message:(id)a4 severity:(unint64_t)a5
++ (id)errorWithTitle:(id)title message:(id)message severity:(unint64_t)severity
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[PKProvisioningError alloc] _initWithSeverity:a5 localizedTitle:v8 localizedMessage:v7];
+  messageCopy = message;
+  titleCopy = title;
+  v9 = [[PKProvisioningError alloc] _initWithSeverity:severity localizedTitle:titleCopy localizedMessage:messageCopy];
 
   return v9;
 }
 
-+ (id)errorWithTitle:(id)a3 message:(id)a4 severity:(unint64_t)a5 recoveryTitle:(id)a6 recoveryURL:(id)a7
++ (id)errorWithTitle:(id)title message:(id)message severity:(unint64_t)severity recoveryTitle:(id)recoveryTitle recoveryURL:(id)l
 {
   v25[3] = *MEMORY[0x1E69E9840];
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
+  lCopy = l;
+  recoveryTitleCopy = recoveryTitle;
+  messageCopy = message;
+  titleCopy = title;
   v15 = [PKProvisioningError alloc];
   v24[0] = *MEMORY[0x1E696A590];
-  v16 = PKLocalizedPaymentString(v12, 0);
+  v16 = PKLocalizedPaymentString(recoveryTitleCopy, 0);
 
   v23 = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
@@ -113,32 +113,32 @@
   v25[1] = MEMORY[0x1E695E118];
   v24[1] = @"PKDisplayableErrorIsPreferredActionKey";
   v24[2] = @"PKErrorRecoveryURL";
-  v25[2] = v11;
+  v25[2] = lCopy;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:3];
 
-  v19 = [(PKProvisioningError *)v15 _initWithSeverity:a5 userInfo:v18];
-  v20 = PKLocalizedPaymentString(v14, 0);
+  v19 = [(PKProvisioningError *)v15 _initWithSeverity:severity userInfo:v18];
+  v20 = PKLocalizedPaymentString(titleCopy, 0);
 
   [v19 setLocalizedTitle:v20];
-  v21 = PKLocalizedPaymentString(v13, 0);
+  v21 = PKLocalizedPaymentString(messageCopy, 0);
 
   [v19 setLocalizedMessage:v21];
 
   return v19;
 }
 
-+ (id)errorWithCommonType:(unint64_t)a3 severity:(unint64_t)a4
++ (id)errorWithCommonType:(unint64_t)type severity:(unint64_t)severity
 {
-  v5 = PKDisplayableErrorForCommonType(a3, 0);
-  v6 = [PKProvisioningError errorWithUnderlyingError:v5 defaultSeverity:a4];
+  v5 = PKDisplayableErrorForCommonType(type, 0);
+  v6 = [PKProvisioningError errorWithUnderlyingError:v5 defaultSeverity:severity];
 
   return v6;
 }
 
-+ (id)errorWithUnderlyingError:(id)a3 defaultSeverity:(unint64_t)a4
++ (id)errorWithUnderlyingError:(id)error defaultSeverity:(unint64_t)severity
 {
   v69[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  errorCopy = error;
   v63 = 0;
   v64 = &v63;
   v65 = 0x3032000000;
@@ -155,45 +155,45 @@
   v54 = &v53;
   v55 = 0x2020000000;
   v56 = 0;
-  v7 = [v6 userInfo];
-  v8 = [v7 mutableCopy];
+  userInfo = [errorCopy userInfo];
+  v8 = [userInfo mutableCopy];
 
   v9 = [v8 objectForKeyedSubscript:@"PKErrorSeverity"];
   v10 = PKProvisioningErrorSeverityFromString(v9);
 
   if (v10)
   {
-    v11 = v10;
+    severityCopy = v10;
   }
 
   else
   {
-    v11 = a4;
+    severityCopy = severity;
   }
 
-  v54[3] = v11;
+  v54[3] = severityCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __64__PKProvisioningError_errorWithUnderlyingError_defaultSeverity___block_invoke;
   aBlock[3] = &unk_1E79CFE60;
-  v12 = v6;
+  v12 = errorCopy;
   v49 = v12;
   v50 = &v63;
   v51 = &v57;
   v52 = &v53;
   v13 = _Block_copy(aBlock);
-  v14 = [v12 domain];
-  v15 = [v12 code];
-  if ([v14 isEqualToString:@"PKProvisioningErrorDomain"])
+  domain = [v12 domain];
+  code = [v12 code];
+  if ([domain isEqualToString:@"PKProvisioningErrorDomain"])
   {
     v16 = [v12 copy];
     v17 = 0;
     goto LABEL_38;
   }
 
-  if (![v14 isEqualToString:@"PKDisplayableError"])
+  if (![domain isEqualToString:@"PKDisplayableError"])
   {
-    if ([v14 isEqualToString:*MEMORY[0x1E696A978]])
+    if ([domain isEqualToString:*MEMORY[0x1E696A978]])
     {
       v24 = PKLocalizedPaymentString(&cfstr_CouldNotConnec.isa, 0);
       v25 = v64[5];
@@ -205,8 +205,8 @@
 
       v17 = PKLocalizedPaymentString(&cfstr_CouldNotConnec_1.isa, 0);
       v28 = v54;
-      v22 = 0;
-      if (v15 == -1005)
+      localizedFailureReason = 0;
+      if (code == -1005)
       {
         v29 = 2;
       }
@@ -219,23 +219,23 @@
       goto LABEL_22;
     }
 
-    if ([v14 isEqualToString:@"PKWebServiceErrorDomain"])
+    if ([domain isEqualToString:@"PKWebServiceErrorDomain"])
     {
-      v22 = 0;
+      localizedFailureReason = 0;
       v23 = 1;
-      if (v15 > 40455)
+      if (code > 40455)
       {
-        if (((v15 - 60039) > 0x33 || ((1 << (v15 + 121)) & 0x9100000007FFFLL) == 0) && (v15 - 40456) >= 2)
+        if (((code - 60039) > 0x33 || ((1 << (code + 121)) & 0x9100000007FFFLL) == 0) && (code - 40456) >= 2)
         {
           v17 = 0;
-          if ((v15 - 60009) >= 2)
+          if ((code - 60009) >= 2)
           {
             goto LABEL_31;
           }
         }
 
 LABEL_16:
-        v22 = 0;
+        localizedFailureReason = 0;
         v17 = 0;
         v28 = v54;
         v29 = 3;
@@ -246,14 +246,14 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      if (v15 <= 1)
+      if (code <= 1)
       {
-        if (v15)
+        if (code)
         {
           v17 = 0;
-          if (v15 == 1)
+          if (code == 1)
           {
-            v22 = 0;
+            localizedFailureReason = 0;
             v17 = 0;
             v23 = 1;
             v54[3] = 1;
@@ -263,10 +263,10 @@ LABEL_30:
         }
       }
 
-      else if ((v15 - 2) >= 4)
+      else if ((code - 2) >= 4)
       {
         v17 = 0;
-        if (v15 != 40107)
+        if (code != 40107)
         {
           goto LABEL_31;
         }
@@ -274,46 +274,46 @@ LABEL_30:
         goto LABEL_16;
       }
 
-      v22 = [v12 localizedFailureReason];
+      localizedFailureReason = [v12 localizedFailureReason];
 
-      if (!v22)
+      if (!localizedFailureReason)
       {
 LABEL_29:
         v17 = 0;
         goto LABEL_30;
       }
 
-      v35 = [v12 localizedFailureReason];
+      localizedFailureReason2 = [v12 localizedFailureReason];
       v36 = v64[5];
-      v64[5] = v35;
+      v64[5] = localizedFailureReason2;
 
-      v37 = [v12 localizedRecoverySuggestion];
+      localizedRecoverySuggestion = [v12 localizedRecoverySuggestion];
       v38 = v58[5];
-      v58[5] = v37;
+      v58[5] = localizedRecoverySuggestion;
 
 LABEL_28:
-      v22 = 0;
+      localizedFailureReason = 0;
       goto LABEL_29;
     }
 
-    if (![v14 isEqualToString:@"PKPaymentWebServiceErrorDomain"])
+    if (![domain isEqualToString:@"PKPaymentWebServiceErrorDomain"])
     {
       v13[2](v13);
       goto LABEL_28;
     }
 
-    v30 = [v12 localizedFailureReason];
+    localizedFailureReason3 = [v12 localizedFailureReason];
     v31 = v64[5];
-    v64[5] = v30;
+    v64[5] = localizedFailureReason3;
 
-    v32 = [v12 localizedRecoverySuggestion];
+    localizedRecoverySuggestion2 = [v12 localizedRecoverySuggestion];
     v33 = v58[5];
-    v58[5] = v32;
+    v58[5] = localizedRecoverySuggestion2;
 
     v34 = 3;
-    if (v15 > 40500)
+    if (code > 40500)
     {
-      switch(v15)
+      switch(code)
       {
         case 60000:
         case 60001:
@@ -425,7 +425,7 @@ LABEL_28:
         case 60102:
           goto LABEL_78;
         default:
-          if (v15 == 40601)
+          if (code == 40601)
           {
             goto LABEL_20;
           }
@@ -435,12 +435,12 @@ LABEL_28:
       }
     }
 
-    if (v15 > 40306)
+    if (code > 40306)
     {
-      if (v15 > 40398)
+      if (code > 40398)
       {
-        v45 = v15 + 49;
-        if ((v15 - 40399) > 0x3A)
+        v45 = code + 49;
+        if ((code - 40399) > 0x3A)
         {
           goto LABEL_78;
         }
@@ -457,7 +457,7 @@ LABEL_28:
 
 LABEL_78:
         v47 = [v8 PKNumberForKey:@"PKErrorHTTPResponseStatusCodeKey"];
-        v22 = v47;
+        localizedFailureReason = v47;
         v23 = v47 == 0;
         if (v47 && [v47 integerValue] == 500)
         {
@@ -472,14 +472,14 @@ LABEL_78:
         goto LABEL_8;
       }
 
-      if (v15 == 40307)
+      if (code == 40307)
       {
 LABEL_76:
         v34 = 4;
         goto LABEL_77;
       }
 
-      if (v15 == 40308)
+      if (code == 40308)
       {
         goto LABEL_20;
       }
@@ -489,11 +489,11 @@ LABEL_76:
 
     else
     {
-      if (v15 > 40101)
+      if (code > 40101)
       {
-        if (v15 <= 40109)
+        if (code <= 40109)
         {
-          if ((v15 - 40106) >= 2)
+          if ((code - 40106) >= 2)
           {
             v44 = 40102;
             goto LABEL_75;
@@ -504,16 +504,16 @@ LABEL_77:
           goto LABEL_78;
         }
 
-        if (v15 == 40110)
+        if (code == 40110)
         {
           goto LABEL_77;
         }
 
-        if (v15 != 40116)
+        if (code != 40116)
         {
           v44 = 40301;
 LABEL_75:
-          if (v15 != v44)
+          if (code != v44)
           {
             goto LABEL_78;
           }
@@ -526,14 +526,14 @@ LABEL_20:
         goto LABEL_77;
       }
 
-      if (v15 > 40012)
+      if (code > 40012)
       {
-        if ((v15 - 40013) < 2)
+        if ((code - 40013) < 2)
         {
           goto LABEL_77;
         }
 
-        if (v15 == 40016)
+        if (code == 40016)
         {
           goto LABEL_20;
         }
@@ -541,7 +541,7 @@ LABEL_20:
         goto LABEL_78;
       }
 
-      if (!v15)
+      if (!code)
       {
         goto LABEL_20;
       }
@@ -549,7 +549,7 @@ LABEL_20:
       v46 = 40001;
     }
 
-    if (v15 == v46)
+    if (code == v46)
     {
       goto LABEL_77;
     }
@@ -561,11 +561,11 @@ LABEL_20:
   v19 = v64[5];
   v64[5] = v18;
 
-  v20 = [v12 localizedRecoverySuggestion];
+  localizedRecoverySuggestion3 = [v12 localizedRecoverySuggestion];
   v21 = v58[5];
-  v58[5] = v20;
+  v58[5] = localizedRecoverySuggestion3;
 
-  v22 = 0;
+  localizedFailureReason = 0;
   v23 = 0;
 LABEL_8:
   v17 = 0;
@@ -584,16 +584,16 @@ LABEL_31:
   [v8 setObject:0 forKeyedSubscript:*MEMORY[0x1E696AA08]];
   v40 = [PKProvisioningError alloc];
   v16 = [(PKProvisioningError *)v40 _initWithSeverity:v54[3] userInfo:v8];
-  objc_storeStrong(v16 + 9, a3);
+  objc_storeStrong(v16 + 9, error);
   if (v23)
   {
-    v41 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Underlying(D: %@, Code: %ld)", v14, v15];
+    v41 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Underlying(D: %@, Code: %ld)", domain, code];
     [v16 addInternalDebugDescription:v41];
   }
 
-  if (v22)
+  if (localizedFailureReason)
   {
-    v42 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Received HTTP %@", v22];
+    v42 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Received HTTP %@", localizedFailureReason];
     [v16 addInternalDebugDescription:v42];
   }
 
@@ -638,9 +638,9 @@ void __64__PKProvisioningError_errorWithUnderlyingError_defaultSeverity___block_
   }
 }
 
-+ (id)errorWithSeverity:(unint64_t)a3
++ (id)errorWithSeverity:(unint64_t)severity
 {
-  v3 = [[PKProvisioningError alloc] _initWithSeverity:a3 userInfo:0];
+  v3 = [[PKProvisioningError alloc] _initWithSeverity:severity userInfo:0];
 
   return v3;
 }
@@ -671,9 +671,9 @@ void __64__PKProvisioningError_errorWithUnderlyingError_defaultSeverity___block_
   return v5;
 }
 
-- (void)setLocalizedTitle:(id)a3
+- (void)setLocalizedTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   [(NSMutableDictionary *)self->_userInfo setObject:v4 forKeyedSubscript:*MEMORY[0x1E696A578]];
 }
 
@@ -718,9 +718,9 @@ void __64__PKProvisioningError_errorWithUnderlyingError_defaultSeverity___block_
   return v11;
 }
 
-- (void)setLocalizedMessage:(id)a3
+- (void)setLocalizedMessage:(id)message
 {
-  v4 = [a3 copy];
+  v4 = [message copy];
   [(NSMutableDictionary *)self->_userInfo setObject:v4 forKeyedSubscript:*MEMORY[0x1E696A598]];
 }
 
@@ -743,11 +743,11 @@ void __64__PKProvisioningError_errorWithUnderlyingError_defaultSeverity___block_
 
 - (NSError)displayableError
 {
-  v3 = [(PKProvisioningError *)self localizedTitle];
-  v4 = [(PKProvisioningError *)self localizedMessage];
-  v5 = [(PKProvisioningError *)self underlyingError];
-  v6 = [(PKProvisioningError *)self userInfo];
-  v7 = PKDisplayableErrorCustomWithType(-1, v3, v4, v5, v6);
+  localizedTitle = [(PKProvisioningError *)self localizedTitle];
+  localizedMessage = [(PKProvisioningError *)self localizedMessage];
+  underlyingError = [(PKProvisioningError *)self underlyingError];
+  userInfo = [(PKProvisioningError *)self userInfo];
+  v7 = PKDisplayableErrorCustomWithType(-1, localizedTitle, localizedMessage, underlyingError, userInfo);
 
   return v7;
 }
@@ -755,21 +755,21 @@ void __64__PKProvisioningError_errorWithUnderlyingError_defaultSeverity___block_
 - (NSString)localizedRecoveryDescription
 {
   v2 = [(NSMutableDictionary *)self->_userInfo objectForKeyedSubscript:*MEMORY[0x1E696A590]];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (void)setLocalizedRecoveryDescription:(id)a3
+- (void)setLocalizedRecoveryDescription:(id)description
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (description)
   {
-    v10 = a3;
+    descriptionCopy = description;
     v5 = MEMORY[0x1E695DEC8];
-    v6 = a3;
-    v7 = [v5 arrayWithObjects:&v10 count:1];
-    [(NSMutableDictionary *)self->_userInfo setObject:v7 forKeyedSubscript:*MEMORY[0x1E696A590], v10, v11];
+    descriptionCopy2 = description;
+    v7 = [v5 arrayWithObjects:&descriptionCopy count:1];
+    [(NSMutableDictionary *)self->_userInfo setObject:v7 forKeyedSubscript:*MEMORY[0x1E696A590], descriptionCopy, v11];
 
     userInfo = self->_userInfo;
     v9 = MEMORY[0x1E695E118];
@@ -785,12 +785,12 @@ void __64__PKProvisioningError_errorWithUnderlyingError_defaultSeverity___block_
   [(NSMutableDictionary *)userInfo setObject:v9 forKeyedSubscript:@"PKDisplayableErrorIsPreferredActionKey"];
 }
 
-- (void)setRecoveryUrl:(id)a3
+- (void)setRecoveryUrl:(id)url
 {
   userInfo = self->_userInfo;
-  if (a3)
+  if (url)
   {
-    [(NSMutableDictionary *)userInfo setObject:a3 forKeyedSubscript:@"PKErrorRecoveryURL"];
+    [(NSMutableDictionary *)userInfo setObject:url forKeyedSubscript:@"PKErrorRecoveryURL"];
     v5 = MEMORY[0x1E695E118];
   }
 
@@ -812,7 +812,7 @@ void __64__PKProvisioningError_errorWithUnderlyingError_defaultSeverity___block_
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PKProvisioningError alloc] _initWithSeverity:self->_severity userInfo:self->_userInfo];
   v5 = [(NSError *)self->_underlyingError copy];
@@ -826,25 +826,25 @@ void __64__PKProvisioningError_errorWithUnderlyingError_defaultSeverity___block_
   return v4;
 }
 
-- (PKProvisioningError)initWithCoder:(id)a3
+- (PKProvisioningError)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = PKProvisioningError;
-  v5 = [(PKProvisioningError *)&v24 initWithCoder:v4];
+  v5 = [(PKProvisioningError *)&v24 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"underlyingError"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"underlyingError"];
     underlyingError = v5->_underlyingError;
     v5->_underlyingError = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"severity"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"severity"];
     v5->_severity = PKProvisioningErrorSeverityFromString(v8);
 
     v9 = MEMORY[0x1E695DFD8];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"internalDebugDescriptions"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"internalDebugDescriptions"];
     v13 = [v12 mutableCopy];
     internalDebugDescriptions = v5->_internalDebugDescriptions;
     v5->_internalDebugDescriptions = v13;
@@ -854,7 +854,7 @@ void __64__PKProvisioningError_errorWithUnderlyingError_defaultSeverity___block_
     v17 = objc_opt_class();
     v18 = objc_opt_class();
     v19 = [v15 setWithObjects:{v16, v17, v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"userInfo"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"userInfo"];
     v21 = [v20 mutableCopy];
     userInfo = v5->_userInfo;
     v5->_userInfo = v21;
@@ -863,19 +863,19 @@ void __64__PKProvisioningError_errorWithUnderlyingError_defaultSeverity___block_
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = PKProvisioningError;
-  v4 = a3;
-  [(PKProvisioningError *)&v7 encodeWithCoder:v4];
-  [v4 encodeObject:self->_underlyingError forKey:{@"underlyingError", v7.receiver, v7.super_class}];
+  coderCopy = coder;
+  [(PKProvisioningError *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_underlyingError forKey:{@"underlyingError", v7.receiver, v7.super_class}];
   v5 = PKProvisioningErrorSeverityToString(self->_severity);
-  [v4 encodeObject:v5 forKey:@"severity"];
+  [coderCopy encodeObject:v5 forKey:@"severity"];
 
-  [v4 encodeObject:self->_internalDebugDescriptions forKey:@"internalDebugDescriptions"];
+  [coderCopy encodeObject:self->_internalDebugDescriptions forKey:@"internalDebugDescriptions"];
   v6 = [(NSMutableDictionary *)self->_userInfo copy];
-  [v4 encodeObject:v6 forKey:@"userInfo"];
+  [coderCopy encodeObject:v6 forKey:@"userInfo"];
 }
 
 - (id)description

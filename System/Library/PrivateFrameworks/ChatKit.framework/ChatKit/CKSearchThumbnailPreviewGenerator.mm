@@ -1,42 +1,42 @@
 @interface CKSearchThumbnailPreviewGenerator
 + (id)sharedInstance;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_calculateDurationForVideoResult:(SEL)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)durationForVideoResult:(SEL)a3;
-- (BOOL)_checkResultForLivePhotoComplement:(id)a3;
-- (BOOL)_checkResultForSpatialMedia:(id)a3;
-- (BOOL)hasCachedLinkMetadataForQueryResult:(id)a3;
-- (BOOL)hasCachedMapPreviewForQueryResult:(id)a3 traitCollection:(id)a4;
-- (BOOL)hasCachedPreviewForKey:(id)a3;
-- (BOOL)hasCachedPreviewForQueryResult:(id)a3;
-- (BOOL)hasCachedWalletItemLinkPropertiesForQueryResult:(id)a3;
-- (BOOL)queryResultHasLivePhoto:(id)a3;
-- (BOOL)queryResultIsSpatial:(id)a3;
-- (BOOL)queryResultIsVideo:(id)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_calculateDurationForVideoResult:(SEL)result;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)durationForVideoResult:(SEL)result;
+- (BOOL)_checkResultForLivePhotoComplement:(id)complement;
+- (BOOL)_checkResultForSpatialMedia:(id)media;
+- (BOOL)hasCachedLinkMetadataForQueryResult:(id)result;
+- (BOOL)hasCachedMapPreviewForQueryResult:(id)result traitCollection:(id)collection;
+- (BOOL)hasCachedPreviewForKey:(id)key;
+- (BOOL)hasCachedPreviewForQueryResult:(id)result;
+- (BOOL)hasCachedWalletItemLinkPropertiesForQueryResult:(id)result;
+- (BOOL)queryResultHasLivePhoto:(id)photo;
+- (BOOL)queryResultIsSpatial:(id)spatial;
+- (BOOL)queryResultIsVideo:(id)video;
 - (CKSearchThumbnailPreviewGenerator)init;
 - (id)_lpPreviewLoadQueue;
 - (id)_lpWalletItemLinkPreviewLoadQueue;
-- (id)_mapMetadataForQueryResult:(id)a3 image:(id)a4;
+- (id)_mapMetadataForQueryResult:(id)result image:(id)image;
 - (id)_previewLoadQueue;
-- (id)cachedLinkMetadataForQueryResult:(id)a3;
-- (id)cachedMapPreviewForQueryResult:(id)a3 traitCollection:(id)a4;
-- (id)cachedPreviewForKey:(id)a3;
-- (id)cachedPreviewForQueryResult:(id)a3;
-- (id)cachedPreviewOrNullForKey:(id)a3;
-- (id)cachedWalletItemLinkPropertiesForQueryResult:(id)a3;
-- (id)mapKeyForQueryResult:(id)a3 traitCollection:(id)a4;
-- (id)mapPlaceholderImageForTraitCollection:(id)a3;
-- (void)_asyncLoadCachedDiskPreviewForKeyIfAvailable:(id)a3 completion:(id)a4;
-- (void)_fetchLinkMetadataForQueryResult:(id)a3 postNotification:(BOOL)a4 completion:(id)a5;
-- (void)_generateMapThumbnailForKey:(id)a3 attributes:(id)a4 traitCollection:(id)a5 completion:(id)a6;
-- (void)_generatePreviewForQueryResult:(id)a3 postNotification:(BOOL)a4 completion:(id)a5;
-- (void)_generateWebLinkPresentationPropertiesForQueryResult:(id)a3 postNofication:(BOOL)a4 completion:(id)a5;
-- (void)_persistPreview:(id)a3 atURL:(id)a4;
-- (void)_prewarmLinkMetadata:(id)a3;
-- (void)generateAndCacheIconWithURL:(id)a3 key:(id)a4 completion:(id)a5;
-- (void)generateAndCachePassWithURL:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)generateAndCacheThumbnailWithURL:(id)a3 request:(id)a4 key:(id)a5 completion:(id)a6;
-- (void)generateMapLinkMetadataForQueryResult:(id)a3 traitCollection:(id)a4 completion:(id)a5;
-- (void)generateMapPreviewForQueryResult:(id)a3 traitCollection:(id)a4;
+- (id)cachedLinkMetadataForQueryResult:(id)result;
+- (id)cachedMapPreviewForQueryResult:(id)result traitCollection:(id)collection;
+- (id)cachedPreviewForKey:(id)key;
+- (id)cachedPreviewForQueryResult:(id)result;
+- (id)cachedPreviewOrNullForKey:(id)key;
+- (id)cachedWalletItemLinkPropertiesForQueryResult:(id)result;
+- (id)mapKeyForQueryResult:(id)result traitCollection:(id)collection;
+- (id)mapPlaceholderImageForTraitCollection:(id)collection;
+- (void)_asyncLoadCachedDiskPreviewForKeyIfAvailable:(id)available completion:(id)completion;
+- (void)_fetchLinkMetadataForQueryResult:(id)result postNotification:(BOOL)notification completion:(id)completion;
+- (void)_generateMapThumbnailForKey:(id)key attributes:(id)attributes traitCollection:(id)collection completion:(id)completion;
+- (void)_generatePreviewForQueryResult:(id)result postNotification:(BOOL)notification completion:(id)completion;
+- (void)_generateWebLinkPresentationPropertiesForQueryResult:(id)result postNofication:(BOOL)nofication completion:(id)completion;
+- (void)_persistPreview:(id)preview atURL:(id)l;
+- (void)_prewarmLinkMetadata:(id)metadata;
+- (void)generateAndCacheIconWithURL:(id)l key:(id)key completion:(id)completion;
+- (void)generateAndCachePassWithURL:(id)l forKey:(id)key completion:(id)completion;
+- (void)generateAndCacheThumbnailWithURL:(id)l request:(id)request key:(id)key completion:(id)completion;
+- (void)generateMapLinkMetadataForQueryResult:(id)result traitCollection:(id)collection completion:(id)completion;
+- (void)generateMapPreviewForQueryResult:(id)result traitCollection:(id)collection;
 @end
 
 @implementation CKSearchThumbnailPreviewGenerator
@@ -47,7 +47,7 @@
   block[1] = 3221225472;
   block[2] = __51__CKSearchThumbnailPreviewGenerator_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once_1 != -1)
   {
     dispatch_once(&sharedInstance_once_1, block);
@@ -194,55 +194,55 @@ void __70__CKSearchThumbnailPreviewGenerator__lpWalletItemLinkPreviewLoadQueue__
   _lpWalletItemLinkPreviewLoadQueue_sLPPassPreviewLoadQueue = v0;
 }
 
-- (void)_generatePreviewForQueryResult:(id)a3 postNotification:(BOOL)a4 completion:(id)a5
+- (void)_generatePreviewForQueryResult:(id)result postNotification:(BOOL)notification completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  resultCopy = result;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (resultCopy)
   {
-    v11 = [v8 identifier];
-    if ([(CKSearchThumbnailPreviewGenerator *)self hasCachedPreviewForQueryResult:v8])
+    identifier = [resultCopy identifier];
+    if ([(CKSearchThumbnailPreviewGenerator *)self hasCachedPreviewForQueryResult:resultCopy])
     {
-      v12 = [(CKSearchThumbnailPreviewGenerator *)self cachedPreviewForKey:v11];
+      v12 = [(CKSearchThumbnailPreviewGenerator *)self cachedPreviewForKey:identifier];
       (v10)[2](v10, v12);
     }
 
     else
     {
-      v13 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightGeneration];
-      v14 = [v13 containsObject:v11];
+      keysWithInFlightGeneration = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightGeneration];
+      v14 = [keysWithInFlightGeneration containsObject:identifier];
 
       if ((v14 & 1) == 0)
       {
-        v15 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightGeneration];
-        [v15 addObject:v11];
+        keysWithInFlightGeneration2 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightGeneration];
+        [keysWithInFlightGeneration2 addObject:identifier];
 
-        v16 = [v8 item];
-        v17 = [v16 attributeSet];
-        v18 = [v17 contentURL];
+        item = [resultCopy item];
+        attributeSet = [item attributeSet];
+        contentURL = [attributeSet contentURL];
 
-        if (v18)
+        if (contentURL)
         {
           v19 = +[CKUIBehavior sharedBehaviors];
           [v19 searchPhotosThumbnailWidth];
           v21 = v20;
 
-          v22 = [MEMORY[0x1E69DCEB0] mainScreen];
-          [v22 scale];
+          mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+          [mainScreen scale];
           v24 = v23;
 
-          v25 = [objc_alloc(MEMORY[0x1E697A0E0]) initWithFileAtURL:v18 size:4 scale:v21 representationTypes:{v21, v24}];
+          v25 = [objc_alloc(MEMORY[0x1E697A0E0]) initWithFileAtURL:contentURL size:4 scale:v21 representationTypes:{v21, v24}];
           [v25 setShouldUseRestrictedExtension:1];
           v26[0] = MEMORY[0x1E69E9820];
           v26[1] = 3221225472;
           v26[2] = __96__CKSearchThumbnailPreviewGenerator__generatePreviewForQueryResult_postNotification_completion___block_invoke;
           v26[3] = &unk_1E72F4060;
           v26[4] = self;
-          v27 = v11;
-          v28 = v18;
-          v31 = a4;
-          v29 = v8;
+          v27 = identifier;
+          v28 = contentURL;
+          notificationCopy = notification;
+          v29 = resultCopy;
           v30 = v10;
           [(CKSearchThumbnailPreviewGenerator *)self generateAndCacheThumbnailWithURL:v28 request:v25 key:v27 completion:v26];
         }
@@ -261,7 +261,7 @@ void __70__CKSearchThumbnailPreviewGenerator__lpWalletItemLinkPreviewLoadQueue__
 
   else
   {
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -384,13 +384,13 @@ void __96__CKSearchThumbnailPreviewGenerator__generatePreviewForQueryResult_post
   }
 }
 
-- (id)cachedPreviewForKey:(id)a3
+- (id)cachedPreviewForKey:(id)key
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = [(CKSearchThumbnailPreviewGenerator *)self cachedPreviewOrNullForKey:v4];
+    v5 = [(CKSearchThumbnailPreviewGenerator *)self cachedPreviewOrNullForKey:keyCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -400,7 +400,7 @@ void __96__CKSearchThumbnailPreviewGenerator__generatePreviewForQueryResult_post
         if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
         {
           v9 = 138412290;
-          v10 = v4;
+          v10 = keyCopy;
           _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Returning nil cached thumbnail. Previous attempt at generating thumbnail failed for key %@", &v9, 0xCu);
         }
       }
@@ -422,13 +422,13 @@ void __96__CKSearchThumbnailPreviewGenerator__generatePreviewForQueryResult_post
   return v7;
 }
 
-- (id)cachedPreviewOrNullForKey:(id)a3
+- (id)cachedPreviewOrNullForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v4 = a3;
-    v5 = [(CKSearchThumbnailPreviewGenerator *)self thumbnailCache];
-    v6 = [v5 objectForKey:v4];
+    keyCopy = key;
+    thumbnailCache = [(CKSearchThumbnailPreviewGenerator *)self thumbnailCache];
+    v6 = [thumbnailCache objectForKey:keyCopy];
   }
 
   else
@@ -439,41 +439,41 @@ void __96__CKSearchThumbnailPreviewGenerator__generatePreviewForQueryResult_post
   return v6;
 }
 
-- (BOOL)hasCachedPreviewForKey:(id)a3
+- (BOOL)hasCachedPreviewForKey:(id)key
 {
-  v3 = [(CKSearchThumbnailPreviewGenerator *)self cachedPreviewOrNullForKey:a3];
+  v3 = [(CKSearchThumbnailPreviewGenerator *)self cachedPreviewOrNullForKey:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)hasCachedPreviewForQueryResult:(id)a3
+- (BOOL)hasCachedPreviewForQueryResult:(id)result
 {
-  if (!a3)
+  if (!result)
   {
     return 0;
   }
 
-  v4 = [a3 identifier];
-  v5 = [(CKSearchThumbnailPreviewGenerator *)self cachedPreviewOrNullForKey:v4];
+  identifier = [result identifier];
+  v5 = [(CKSearchThumbnailPreviewGenerator *)self cachedPreviewOrNullForKey:identifier];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (id)cachedPreviewForQueryResult:(id)a3
+- (id)cachedPreviewForQueryResult:(id)result
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  resultCopy = result;
+  v5 = resultCopy;
+  if (!resultCopy)
   {
     v9 = 0;
     goto LABEL_12;
   }
 
-  v6 = [v4 identifier];
-  v7 = [(CKSearchThumbnailPreviewGenerator *)self cachedPreviewOrNullForKey:v6];
+  identifier = [resultCopy identifier];
+  v7 = [(CKSearchThumbnailPreviewGenerator *)self cachedPreviewOrNullForKey:identifier];
 
   if (v7)
   {
@@ -504,11 +504,11 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)queryResultHasLivePhoto:(id)a3
+- (BOOL)queryResultHasLivePhoto:(id)photo
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (!v5)
+  photoCopy = photo;
+  identifier = [photoCopy identifier];
+  if (!identifier)
   {
     v7 = IMLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -519,18 +519,18 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  v6 = [(CKSearchThumbnailPreviewGenerator *)self livePhotoStatusCache];
-  v7 = [v6 objectForKey:v5];
+  livePhotoStatusCache = [(CKSearchThumbnailPreviewGenerator *)self livePhotoStatusCache];
+  v7 = [livePhotoStatusCache objectForKey:identifier];
 
   if (!v7)
   {
-    v9 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightLivePhotoStatus];
-    v10 = [v9 containsObject:v5];
+    keysWithInFlightLivePhotoStatus = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightLivePhotoStatus];
+    v10 = [keysWithInFlightLivePhotoStatus containsObject:identifier];
 
     if ((v10 & 1) == 0)
     {
-      v11 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightLivePhotoStatus];
-      [v11 addObject:v5];
+      keysWithInFlightLivePhotoStatus2 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightLivePhotoStatus];
+      [keysWithInFlightLivePhotoStatus2 addObject:identifier];
 
       v12 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x1E69E9820];
@@ -538,20 +538,20 @@ LABEL_12:
       block[2] = __61__CKSearchThumbnailPreviewGenerator_queryResultHasLivePhoto___block_invoke;
       block[3] = &unk_1E72EB880;
       block[4] = self;
-      v15 = v4;
-      v16 = v5;
+      v15 = photoCopy;
+      v16 = identifier;
       dispatch_async(v12, block);
     }
 
 LABEL_8:
-    v8 = 0;
+    bOOLValue = 0;
     goto LABEL_9;
   }
 
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 LABEL_9:
 
-  return v8;
+  return bOOLValue;
 }
 
 void __61__CKSearchThumbnailPreviewGenerator_queryResultHasLivePhoto___block_invoke(id *a1)
@@ -584,26 +584,26 @@ void __61__CKSearchThumbnailPreviewGenerator_queryResultHasLivePhoto___block_inv
   }
 }
 
-- (BOOL)_checkResultForLivePhotoComplement:(id)a3
+- (BOOL)_checkResultForLivePhotoComplement:(id)complement
 {
-  if (!a3)
+  if (!complement)
   {
     return 0;
   }
 
-  v3 = [a3 item];
-  v4 = [v3 attributeSet];
-  v5 = [v4 contentURL];
+  item = [complement item];
+  attributeSet = [item attributeSet];
+  contentURL = [attributeSet contentURL];
 
-  if (v5)
+  if (contentURL)
   {
-    v6 = [v5 lastPathComponent];
+    lastPathComponent = [contentURL lastPathComponent];
     v7 = +[CKMediaObjectManager sharedInstance];
-    v8 = [v7 classForFilename:v6];
+    v8 = [v7 classForFilename:lastPathComponent];
 
     if ([v8 isEqual:objc_opt_class()])
     {
-      v9 = [CKLivePhotoBundleUtilities calculateLivePhotoVideoPath:v5];
+      v9 = [CKLivePhotoBundleUtilities calculateLivePhotoVideoPath:contentURL];
       v10 = v9 != 0;
     }
 
@@ -627,11 +627,11 @@ void __61__CKSearchThumbnailPreviewGenerator_queryResultHasLivePhoto___block_inv
   return v10;
 }
 
-- (BOOL)queryResultIsSpatial:(id)a3
+- (BOOL)queryResultIsSpatial:(id)spatial
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (!v5)
+  spatialCopy = spatial;
+  identifier = [spatialCopy identifier];
+  if (!identifier)
   {
     v7 = IMLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -642,18 +642,18 @@ void __61__CKSearchThumbnailPreviewGenerator_queryResultHasLivePhoto___block_inv
     goto LABEL_8;
   }
 
-  v6 = [(CKSearchThumbnailPreviewGenerator *)self spatialStatusCache];
-  v7 = [v6 objectForKey:v5];
+  spatialStatusCache = [(CKSearchThumbnailPreviewGenerator *)self spatialStatusCache];
+  v7 = [spatialStatusCache objectForKey:identifier];
 
   if (!v7)
   {
-    v9 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightSpatialStatus];
-    v10 = [v9 containsObject:v5];
+    keysWithInFlightSpatialStatus = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightSpatialStatus];
+    v10 = [keysWithInFlightSpatialStatus containsObject:identifier];
 
     if ((v10 & 1) == 0)
     {
-      v11 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightSpatialStatus];
-      [v11 addObject:v5];
+      keysWithInFlightSpatialStatus2 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightSpatialStatus];
+      [keysWithInFlightSpatialStatus2 addObject:identifier];
 
       v12 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x1E69E9820];
@@ -661,20 +661,20 @@ void __61__CKSearchThumbnailPreviewGenerator_queryResultHasLivePhoto___block_inv
       block[2] = __58__CKSearchThumbnailPreviewGenerator_queryResultIsSpatial___block_invoke;
       block[3] = &unk_1E72EB880;
       block[4] = self;
-      v15 = v4;
-      v16 = v5;
+      v15 = spatialCopy;
+      v16 = identifier;
       dispatch_async(v12, block);
     }
 
 LABEL_8:
-    v8 = 0;
+    bOOLValue = 0;
     goto LABEL_9;
   }
 
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 LABEL_9:
 
-  return v8;
+  return bOOLValue;
 }
 
 void __58__CKSearchThumbnailPreviewGenerator_queryResultIsSpatial___block_invoke(id *a1)
@@ -707,19 +707,19 @@ void __58__CKSearchThumbnailPreviewGenerator_queryResultIsSpatial___block_invoke
   }
 }
 
-- (BOOL)_checkResultForSpatialMedia:(id)a3
+- (BOOL)_checkResultForSpatialMedia:(id)media
 {
-  if (a3)
+  if (media)
   {
-    v3 = [a3 item];
-    v4 = [v3 attributeSet];
-    v5 = [v4 contentURL];
+    item = [media item];
+    attributeSet = [item attributeSet];
+    contentURL = [attributeSet contentURL];
 
     v6 = IMPreviewExtension();
     v7 = IMAttachmentPreviewFileURL();
 
-    v8 = [v7 URLByDeletingPathExtension];
-    v9 = [v8 URLByAppendingPathExtension:@"plist"];
+    uRLByDeletingPathExtension = [v7 URLByDeletingPathExtension];
+    v9 = [uRLByDeletingPathExtension URLByAppendingPathExtension:@"plist"];
 
     v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v9];
     if (v10)
@@ -729,15 +729,15 @@ void __58__CKSearchThumbnailPreviewGenerator_queryResultIsSpatial___block_invoke
       if (objc_opt_isKindOfClass())
       {
         v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E69A7090]];
-        v13 = [v12 BOOLValue];
+        bOOLValue = [v12 BOOLValue];
       }
 
       else
       {
-        v13 = 0;
+        bOOLValue = 0;
       }
 
-      if (!v5)
+      if (!contentURL)
       {
 LABEL_10:
         v14 = IMLogHandleForCategory();
@@ -746,41 +746,41 @@ LABEL_10:
           [CKSearchThumbnailPreviewGenerator _checkResultForSpatialMedia:];
         }
 
-        v13 = 0;
+        bOOLValue = 0;
       }
     }
 
     else
     {
-      v13 = 0;
-      if (!v5)
+      bOOLValue = 0;
+      if (!contentURL)
       {
         goto LABEL_10;
       }
     }
 
-    return v13;
+    return bOOLValue;
   }
 
   return 0;
 }
 
-- (BOOL)queryResultIsVideo:(id)a3
+- (BOOL)queryResultIsVideo:(id)video
 {
-  if (!a3)
+  if (!video)
   {
     return 0;
   }
 
-  v3 = [a3 item];
-  v4 = [v3 attributeSet];
-  v5 = [v4 contentURL];
+  item = [video item];
+  attributeSet = [item attributeSet];
+  contentURL = [attributeSet contentURL];
 
-  if (v5)
+  if (contentURL)
   {
-    v6 = [v5 lastPathComponent];
+    lastPathComponent = [contentURL lastPathComponent];
     v7 = +[CKMediaObjectManager sharedInstance];
-    v8 = [v7 classForFilename:v6];
+    v8 = [v7 classForFilename:lastPathComponent];
 
     v9 = [v8 isEqual:objc_opt_class()];
   }
@@ -799,17 +799,17 @@ LABEL_10:
   return v9;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)durationForVideoResult:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)durationForVideoResult:(SEL)result
 {
   v6 = a4;
   v7 = MEMORY[0x193AF5ED0]("kCMTimeInvalid", @"CoreMedia");
   v20 = *v7;
   v21 = *(v7 + 16);
-  v8 = [v6 identifier];
-  if (v8)
+  identifier = [v6 identifier];
+  if (identifier)
   {
-    v9 = [(CKSearchThumbnailPreviewGenerator *)self videoDurationCache];
-    v10 = [v9 objectForKey:v8];
+    videoDurationCache = [(CKSearchThumbnailPreviewGenerator *)self videoDurationCache];
+    v10 = [videoDurationCache objectForKey:identifier];
 
     if (v10)
     {
@@ -818,13 +818,13 @@ LABEL_10:
 
     else
     {
-      v12 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightVideoDurationCalculation];
-      v13 = [v12 containsObject:v8];
+      keysWithInFlightVideoDurationCalculation = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightVideoDurationCalculation];
+      v13 = [keysWithInFlightVideoDurationCalculation containsObject:identifier];
 
       if ((v13 & 1) == 0)
       {
-        v14 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightVideoDurationCalculation];
-        [v14 addObject:v8];
+        keysWithInFlightVideoDurationCalculation2 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightVideoDurationCalculation];
+        [keysWithInFlightVideoDurationCalculation2 addObject:identifier];
 
         v15 = dispatch_get_global_queue(0, 0);
         block[0] = MEMORY[0x1E69E9820];
@@ -833,7 +833,7 @@ LABEL_10:
         block[3] = &unk_1E72EB880;
         block[4] = self;
         v18 = v6;
-        v19 = v8;
+        v19 = identifier;
         dispatch_async(v15, block);
       }
 
@@ -895,7 +895,7 @@ void __60__CKSearchThumbnailPreviewGenerator_durationForVideoResult___block_invo
   [v5 postNotificationName:@"CKSearchVideoDurationDidChange" object:*(a1 + 48)];
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_calculateDurationForVideoResult:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_calculateDurationForVideoResult:(SEL)result
 {
   if (!a4)
   {
@@ -906,11 +906,11 @@ void __60__CKSearchThumbnailPreviewGenerator_durationForVideoResult___block_invo
     return result;
   }
 
-  v5 = [a4 item];
-  v6 = [v5 attributeSet];
-  v7 = [v6 contentURL];
+  item = [a4 item];
+  attributeSet = [item attributeSet];
+  contentURL = [attributeSet contentURL];
 
-  if (!v7)
+  if (!contentURL)
   {
     v15 = IMLogHandleForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -925,16 +925,16 @@ void __60__CKSearchThumbnailPreviewGenerator_durationForVideoResult___block_invo
     goto LABEL_15;
   }
 
-  v8 = [v7 lastPathComponent];
+  lastPathComponent = [contentURL lastPathComponent];
   v9 = +[CKMediaObjectManager sharedInstance];
-  v10 = [v9 classForFilename:v8];
+  v10 = [v9 classForFilename:lastPathComponent];
 
   if (![v10 isEqual:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v11 = CKAVURLAssetForURL(v7);
+  v11 = CKAVURLAssetForURL(contentURL);
   if (!v11)
   {
     v18 = IMLogHandleForCategory();
@@ -960,12 +960,12 @@ LABEL_15:
   return result;
 }
 
-- (void)generateAndCacheThumbnailWithURL:(id)a3 request:(id)a4 key:(id)a5 completion:(id)a6
+- (void)generateAndCacheThumbnailWithURL:(id)l request:(id)request key:(id)key completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  requestCopy = request;
+  keyCopy = key;
+  completionCopy = completion;
   v14 = dispatch_group_create();
   dispatch_group_enter(v14);
   v29[0] = 0;
@@ -981,21 +981,21 @@ LABEL_15:
   v28 = v29;
   v15 = v14;
   v27 = v15;
-  [(CKSearchThumbnailPreviewGenerator *)self _asyncLoadCachedDiskPreviewForKeyIfAvailable:v12 completion:v26];
+  [(CKSearchThumbnailPreviewGenerator *)self _asyncLoadCachedDiskPreviewForKeyIfAvailable:keyCopy completion:v26];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __93__CKSearchThumbnailPreviewGenerator_generateAndCacheThumbnailWithURL_request_key_completion___block_invoke_2;
   v20[3] = &unk_1E72F4128;
   v20[4] = self;
-  v21 = v12;
-  v24 = v13;
+  v21 = keyCopy;
+  v24 = completionCopy;
   v25 = v29;
-  v22 = v10;
-  v23 = v11;
-  v16 = v11;
-  v17 = v10;
-  v18 = v13;
-  v19 = v12;
+  v22 = lCopy;
+  v23 = requestCopy;
+  v16 = requestCopy;
+  v17 = lCopy;
+  v18 = completionCopy;
+  v19 = keyCopy;
   dispatch_group_notify(v15, MEMORY[0x1E69E96A0], v20);
 
   _Block_object_dispose(v29, 8);
@@ -1158,35 +1158,35 @@ void __93__CKSearchThumbnailPreviewGenerator_generateAndCacheThumbnailWithURL_re
   }
 }
 
-- (void)generateAndCacheIconWithURL:(id)a3 key:(id)a4 completion:(id)a5
+- (void)generateAndCacheIconWithURL:(id)l key:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  keyCopy = key;
+  completionCopy = completion;
   v11 = objc_opt_new();
   v12 = +[CKUIBehavior sharedBehaviors];
   [v12 searchPhotosThumbnailWidth];
   v14 = v13;
 
-  v15 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v15 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v17 = v16;
 
   [v11 setSize:{v14, v14}];
   [v11 setScale:v17];
   [v11 setVariantOptions:1];
-  v18 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithURL:v8];
+  v18 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithURL:lCopy];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __80__CKSearchThumbnailPreviewGenerator_generateAndCacheIconWithURL_key_completion___block_invoke;
   v22[3] = &unk_1E72F4150;
-  v23 = v8;
-  v24 = self;
-  v25 = v9;
-  v26 = v10;
-  v19 = v10;
-  v20 = v9;
-  v21 = v8;
+  v23 = lCopy;
+  selfCopy = self;
+  v25 = keyCopy;
+  v26 = completionCopy;
+  v19 = completionCopy;
+  v20 = keyCopy;
+  v21 = lCopy;
   [v18 getImageForImageDescriptor:v11 completion:v22];
 }
 
@@ -1263,23 +1263,23 @@ uint64_t __80__CKSearchThumbnailPreviewGenerator_generateAndCacheIconWithURL_key
   return result;
 }
 
-- (void)generateAndCachePassWithURL:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)generateAndCachePassWithURL:(id)l forKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  keyCopy = key;
+  completionCopy = completion;
   v11 = dispatch_get_global_queue(2, 0);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __83__CKSearchThumbnailPreviewGenerator_generateAndCachePassWithURL_forKey_completion___block_invoke;
   v15[3] = &unk_1E72EDE00;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = lCopy;
+  selfCopy = self;
+  v18 = keyCopy;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = keyCopy;
+  v14 = lCopy;
   dispatch_async(v11, v15);
 }
 
@@ -1382,31 +1382,31 @@ void __83__CKSearchThumbnailPreviewGenerator_generateAndCachePassWithURL_forKey_
   }
 }
 
-- (void)_asyncLoadCachedDiskPreviewForKeyIfAvailable:(id)a3 completion:(id)a4
+- (void)_asyncLoadCachedDiskPreviewForKeyIfAvailable:(id)available completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKSearchThumbnailPreviewGenerator *)self _previewURLForKey:v6];
+  availableCopy = available;
+  completionCopy = completion;
+  v8 = [(CKSearchThumbnailPreviewGenerator *)self _previewURLForKey:availableCopy];
   if (v8)
   {
     v9 = +[CKUIBehavior sharedBehaviors];
     [v9 searchPhotosThumbnailWidth];
     v11 = v10;
 
-    v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v12 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v14 = v13;
 
-    v15 = [(CKSearchThumbnailPreviewGenerator *)self _previewLoadQueue];
+    _previewLoadQueue = [(CKSearchThumbnailPreviewGenerator *)self _previewLoadQueue];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __93__CKSearchThumbnailPreviewGenerator__asyncLoadCachedDiskPreviewForKeyIfAvailable_completion___block_invoke;
     v17[3] = &unk_1E72F2D40;
     v18 = v8;
     v21 = v11 * v14;
-    v20 = v7;
-    v19 = v6;
-    dispatch_async(v15, v17);
+    v20 = completionCopy;
+    v19 = availableCopy;
+    dispatch_async(_previewLoadQueue, v17);
   }
 
   else
@@ -1417,9 +1417,9 @@ void __83__CKSearchThumbnailPreviewGenerator_generateAndCachePassWithURL_forKey_
       [CKSearchThumbnailPreviewGenerator _asyncLoadCachedDiskPreviewForKeyIfAvailable:completion:];
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -1542,33 +1542,33 @@ LABEL_24:
 LABEL_29:
 }
 
-- (void)generateMapPreviewForQueryResult:(id)a3 traitCollection:(id)a4
+- (void)generateMapPreviewForQueryResult:(id)result traitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && ![(CKSearchThumbnailPreviewGenerator *)self hasCachedMapPreviewForQueryResult:v6 traitCollection:v7])
+  resultCopy = result;
+  collectionCopy = collection;
+  if (resultCopy && ![(CKSearchThumbnailPreviewGenerator *)self hasCachedMapPreviewForQueryResult:resultCopy traitCollection:collectionCopy])
   {
-    v8 = [(CKSearchThumbnailPreviewGenerator *)self mapKeyForQueryResult:v6 traitCollection:v7];
+    v8 = [(CKSearchThumbnailPreviewGenerator *)self mapKeyForQueryResult:resultCopy traitCollection:collectionCopy];
     if (v8)
     {
-      v9 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightGeneration];
-      v10 = [v9 containsObject:v8];
+      keysWithInFlightGeneration = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightGeneration];
+      v10 = [keysWithInFlightGeneration containsObject:v8];
 
       if ((v10 & 1) == 0)
       {
-        v11 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightGeneration];
-        [v11 addObject:v8];
+        keysWithInFlightGeneration2 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightGeneration];
+        [keysWithInFlightGeneration2 addObject:v8];
 
-        v12 = [v6 item];
-        v13 = [v12 attributeSet];
+        item = [resultCopy item];
+        attributeSet = [item attributeSet];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __86__CKSearchThumbnailPreviewGenerator_generateMapPreviewForQueryResult_traitCollection___block_invoke;
         v15[3] = &unk_1E72F4178;
         v15[4] = self;
         v16 = v8;
-        v17 = v6;
-        [(CKSearchThumbnailPreviewGenerator *)self _generateMapThumbnailForKey:v16 attributes:v13 traitCollection:v7 completion:v15];
+        v17 = resultCopy;
+        [(CKSearchThumbnailPreviewGenerator *)self _generateMapThumbnailForKey:v16 attributes:attributeSet traitCollection:collectionCopy completion:v15];
       }
     }
 
@@ -1619,56 +1619,56 @@ void __86__CKSearchThumbnailPreviewGenerator_generateMapPreviewForQueryResult_tr
   }
 }
 
-- (void)generateMapLinkMetadataForQueryResult:(id)a3 traitCollection:(id)a4 completion:(id)a5
+- (void)generateMapLinkMetadataForQueryResult:(id)result traitCollection:(id)collection completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 item];
-  v12 = [v11 domainIdentifier];
-  v13 = [v12 isEqualToString:@"attachmentDomain"];
+  resultCopy = result;
+  collectionCopy = collection;
+  completionCopy = completion;
+  item = [resultCopy item];
+  domainIdentifier = [item domainIdentifier];
+  v13 = [domainIdentifier isEqualToString:@"attachmentDomain"];
 
   if (v13)
   {
-    if (v8)
+    if (resultCopy)
     {
-      if ([(CKSearchThumbnailPreviewGenerator *)self hasCachedMapPreviewForQueryResult:v8 traitCollection:v9])
+      if ([(CKSearchThumbnailPreviewGenerator *)self hasCachedMapPreviewForQueryResult:resultCopy traitCollection:collectionCopy])
       {
-        v14 = [(CKSearchThumbnailPreviewGenerator *)self cachedMapPreviewForQueryResult:v8 traitCollection:v9];
-        v15 = [(CKSearchThumbnailPreviewGenerator *)self _mapMetadataForQueryResult:v8 image:v14];
-        v10[2](v10, v15);
+        v14 = [(CKSearchThumbnailPreviewGenerator *)self cachedMapPreviewForQueryResult:resultCopy traitCollection:collectionCopy];
+        v15 = [(CKSearchThumbnailPreviewGenerator *)self _mapMetadataForQueryResult:resultCopy image:v14];
+        completionCopy[2](completionCopy, v15);
       }
 
       else
       {
-        v14 = [(CKSearchThumbnailPreviewGenerator *)self mapKeyForQueryResult:v8 traitCollection:v9];
+        v14 = [(CKSearchThumbnailPreviewGenerator *)self mapKeyForQueryResult:resultCopy traitCollection:collectionCopy];
         if (v14)
         {
-          v16 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightGeneration];
-          v17 = [v16 containsObject:v14];
+          keysWithInFlightGeneration = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightGeneration];
+          v17 = [keysWithInFlightGeneration containsObject:v14];
 
           if ((v17 & 1) == 0)
           {
-            v18 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightGeneration];
-            [v18 addObject:v14];
+            keysWithInFlightGeneration2 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightGeneration];
+            [keysWithInFlightGeneration2 addObject:v14];
 
-            v19 = [v8 item];
-            v20 = [v19 attributeSet];
+            item2 = [resultCopy item];
+            attributeSet = [item2 attributeSet];
             v21[0] = MEMORY[0x1E69E9820];
             v21[1] = 3221225472;
             v21[2] = __102__CKSearchThumbnailPreviewGenerator_generateMapLinkMetadataForQueryResult_traitCollection_completion___block_invoke;
             v21[3] = &unk_1E72F41A0;
             v21[4] = self;
             v22 = v14;
-            v24 = v10;
-            v23 = v8;
-            [(CKSearchThumbnailPreviewGenerator *)self _generateMapThumbnailForKey:v22 attributes:v20 traitCollection:v9 completion:v21];
+            v24 = completionCopy;
+            v23 = resultCopy;
+            [(CKSearchThumbnailPreviewGenerator *)self _generateMapThumbnailForKey:v22 attributes:attributeSet traitCollection:collectionCopy completion:v21];
           }
 
           goto LABEL_13;
         }
 
-        v10[2](v10, 0);
+        completionCopy[2](completionCopy, 0);
         v15 = IMLogHandleForCategory();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
@@ -1680,12 +1680,12 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    [(CKSearchThumbnailPreviewGenerator *)self _fetchLinkMetadataForQueryResult:v8 postNotification:0 completion:v10];
+    [(CKSearchThumbnailPreviewGenerator *)self _fetchLinkMetadataForQueryResult:resultCopy postNotification:0 completion:completionCopy];
   }
 
 LABEL_14:
@@ -1731,70 +1731,70 @@ void __102__CKSearchThumbnailPreviewGenerator_generateMapLinkMetadataForQueryRes
   }
 }
 
-- (id)_mapMetadataForQueryResult:(id)a3 image:(id)a4
+- (id)_mapMetadataForQueryResult:(id)result image:(id)image
 {
-  v5 = a4;
-  v6 = [a3 item];
-  v7 = [v6 attributeSet];
+  imageCopy = image;
+  item = [result item];
+  attributeSet = [item attributeSet];
 
-  v8 = [v7 __ck_spotlightItemSnippet];
+  __ck_spotlightItemSnippet = [attributeSet __ck_spotlightItemSnippet];
   v9 = objc_alloc_init(MEMORY[0x1E696ECA0]);
   v10 = objc_alloc_init(MEMORY[0x1E696ECD0]);
-  v11 = [objc_alloc(MEMORY[0x1E696EC68]) initWithPlatformImage:v5];
+  v11 = [objc_alloc(MEMORY[0x1E696EC68]) initWithPlatformImage:imageCopy];
 
-  v12 = [v7 latitude];
-  [v12 floatValue];
+  latitude = [attributeSet latitude];
+  [latitude floatValue];
   v14 = v13;
 
-  v15 = [v7 longitude];
-  [v15 floatValue];
+  longitude = [attributeSet longitude];
+  [longitude floatValue];
   v17 = v16;
 
   v18 = CLLocationCoordinate2DMake(v14, v17);
   [v10 setLocation:{v18.latitude, v18.longitude}];
   [v10 setImage:v11];
-  [v10 setName:v8];
-  v19 = [v7 thoroughfare];
-  [v10 setAddress:v19];
+  [v10 setName:__ck_spotlightItemSnippet];
+  thoroughfare = [attributeSet thoroughfare];
+  [v10 setAddress:thoroughfare];
 
   [v9 setSpecialization:v10];
   [v9 _populateMetadataForBackwardCompatibility];
-  v20 = [v7 URL];
+  v20 = [attributeSet URL];
   [v9 setOriginalURL:v20];
 
   return v9;
 }
 
-- (id)mapKeyForQueryResult:(id)a3 traitCollection:(id)a4
+- (id)mapKeyForQueryResult:(id)result traitCollection:(id)collection
 {
   v4 = 0;
-  if (a3 && a4)
+  if (result && collection)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = a4;
-    v8 = [a3 identifier];
-    v9 = [v7 userInterfaceStyle];
+    collectionCopy = collection;
+    identifier = [result identifier];
+    userInterfaceStyle = [collectionCopy userInterfaceStyle];
 
-    v4 = [v6 stringWithFormat:@"%@-%ld", v8, v9];
+    v4 = [v6 stringWithFormat:@"%@-%ld", identifier, userInterfaceStyle];
   }
 
   return v4;
 }
 
-- (BOOL)hasCachedMapPreviewForQueryResult:(id)a3 traitCollection:(id)a4
+- (BOOL)hasCachedMapPreviewForQueryResult:(id)result traitCollection:(id)collection
 {
-  v4 = self;
-  v5 = [(CKSearchThumbnailPreviewGenerator *)self mapKeyForQueryResult:a3 traitCollection:a4];
-  LOBYTE(v4) = [(CKSearchThumbnailPreviewGenerator *)v4 hasCachedPreviewForKey:v5];
+  selfCopy = self;
+  v5 = [(CKSearchThumbnailPreviewGenerator *)self mapKeyForQueryResult:result traitCollection:collection];
+  LOBYTE(selfCopy) = [(CKSearchThumbnailPreviewGenerator *)selfCopy hasCachedPreviewForKey:v5];
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)cachedMapPreviewForQueryResult:(id)a3 traitCollection:(id)a4
+- (id)cachedMapPreviewForQueryResult:(id)result traitCollection:(id)collection
 {
-  if (a3)
+  if (result)
   {
-    v5 = [(CKSearchThumbnailPreviewGenerator *)self mapKeyForQueryResult:a3 traitCollection:a4];
+    v5 = [(CKSearchThumbnailPreviewGenerator *)self mapKeyForQueryResult:result traitCollection:collection];
     v6 = [(CKSearchThumbnailPreviewGenerator *)self cachedPreviewForKey:v5];
   }
 
@@ -1806,12 +1806,12 @@ void __102__CKSearchThumbnailPreviewGenerator_generateMapLinkMetadataForQueryRes
   return v6;
 }
 
-- (void)_generateMapThumbnailForKey:(id)a3 attributes:(id)a4 traitCollection:(id)a5 completion:(id)a6
+- (void)_generateMapThumbnailForKey:(id)key attributes:(id)attributes traitCollection:(id)collection completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyCopy = key;
+  attributesCopy = attributes;
+  collectionCopy = collection;
+  completionCopy = completion;
   v14 = dispatch_group_create();
   dispatch_group_enter(v14);
   v27[0] = 0;
@@ -1827,19 +1827,19 @@ void __102__CKSearchThumbnailPreviewGenerator_generateMapLinkMetadataForQueryRes
   v26 = v27;
   v15 = v14;
   v25 = v15;
-  [(CKSearchThumbnailPreviewGenerator *)self _asyncLoadCachedDiskPreviewForKeyIfAvailable:v10 completion:v24];
+  [(CKSearchThumbnailPreviewGenerator *)self _asyncLoadCachedDiskPreviewForKeyIfAvailable:keyCopy completion:v24];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __103__CKSearchThumbnailPreviewGenerator__generateMapThumbnailForKey_attributes_traitCollection_completion___block_invoke_2;
   block[3] = &unk_1E72F41F0;
-  v22 = v13;
+  v22 = completionCopy;
   v23 = v27;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v16 = v11;
-  v17 = v13;
-  v18 = v10;
+  v20 = keyCopy;
+  v21 = attributesCopy;
+  v16 = attributesCopy;
+  v17 = completionCopy;
+  v18 = keyCopy;
   dispatch_group_notify(v15, MEMORY[0x1E69E96A0], block);
 
   _Block_object_dispose(v27, 8);
@@ -2048,18 +2048,18 @@ void __103__CKSearchThumbnailPreviewGenerator__generateMapThumbnailForKey_attrib
   }
 }
 
-- (id)mapPlaceholderImageForTraitCollection:(id)a3
+- (id)mapPlaceholderImageForTraitCollection:(id)collection
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hash-%ld", objc_msgSend(v4, "userInterfaceStyle")];
-  v6 = [(CKSearchThumbnailPreviewGenerator *)self mapHashesCache];
-  v7 = [v6 objectForKey:v5];
+  collectionCopy = collection;
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hash-%ld", objc_msgSend(collectionCopy, "userInterfaceStyle")];
+  mapHashesCache = [(CKSearchThumbnailPreviewGenerator *)self mapHashesCache];
+  v7 = [mapHashesCache objectForKey:v5];
 
   if (v7)
   {
-    v8 = [(CKSearchThumbnailPreviewGenerator *)self mapHashesCache];
-    v9 = [v8 objectForKey:v5];
+    mapHashesCache2 = [(CKSearchThumbnailPreviewGenerator *)self mapHashesCache];
+    v9 = [mapHashesCache2 objectForKey:v5];
   }
 
   else
@@ -2067,8 +2067,8 @@ void __103__CKSearchThumbnailPreviewGenerator__generateMapThumbnailForKey_attrib
     v10 = [(CKSearchThumbnailPreviewGenerator *)self _previewURLForKey:v5];
     if (v10 && (v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v10 options:1 error:0]) != 0 && (v12 = v11, objc_msgSend(MEMORY[0x1E69DCAB8], "ckImageWithData:", v11), v9 = objc_claimAutoreleasedReturnValue(), v12, v9))
     {
-      v13 = [(CKSearchThumbnailPreviewGenerator *)self mapHashesCache];
-      [v13 setObject:v9 forKey:v5];
+      mapHashesCache3 = [(CKSearchThumbnailPreviewGenerator *)self mapHashesCache];
+      [mapHashesCache3 setObject:v9 forKey:v5];
     }
 
     else
@@ -2084,7 +2084,7 @@ void __103__CKSearchThumbnailPreviewGenerator__generateMapThumbnailForKey_attrib
       {
         v15 = objc_alloc_init(v14);
         [v15 setMapType:105];
-        [v15 setTraitCollection:v4];
+        [v15 setTraitCollection:collectionCopy];
         v16 = +[CKUIBehavior sharedBehaviors];
         v17 = +[CKUIBehavior sharedBehaviors];
         [v17 searchPhotosThumbnailWidth];
@@ -2119,7 +2119,7 @@ void __103__CKSearchThumbnailPreviewGenerator__generateMapThumbnailForKey_attrib
               if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412290;
-                v42 = self;
+                selfCopy = self;
                 _os_log_impl(&dword_19020E000, v28, OS_LOG_TYPE_INFO, "%@ thumbnail generation timed out.", buf, 0xCu);
               }
             }
@@ -2133,8 +2133,8 @@ void __103__CKSearchThumbnailPreviewGenerator__generateMapThumbnailForKey_attrib
           v29 = v36[5];
           if (v29)
           {
-            v30 = [(CKSearchThumbnailPreviewGenerator *)self mapHashesCache];
-            [v30 setObject:v36[5] forKey:v5];
+            mapHashesCache4 = [(CKSearchThumbnailPreviewGenerator *)self mapHashesCache];
+            [mapHashesCache4 setObject:v36[5] forKey:v5];
 
             [(CKSearchThumbnailPreviewGenerator *)self _persistPreview:v36[5] atURL:v10];
             v29 = v36[5];
@@ -2194,19 +2194,19 @@ void __75__CKSearchThumbnailPreviewGenerator_mapPlaceholderImageForTraitCollecti
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)_persistPreview:(id)a3 atURL:(id)a4
+- (void)_persistPreview:(id)preview atURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  previewCopy = preview;
+  lCopy = l;
+  v7 = lCopy;
+  if (previewCopy && lCopy)
   {
     v8 = dispatch_get_global_queue(0, 0);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __59__CKSearchThumbnailPreviewGenerator__persistPreview_atURL___block_invoke;
     v10[3] = &unk_1E72EB8D0;
-    v11 = v5;
+    v11 = previewCopy;
     v12 = v7;
     dispatch_async(v8, v10);
 
@@ -2283,47 +2283,47 @@ void __59__CKSearchThumbnailPreviewGenerator__persistPreview_atURL___block_invok
   }
 }
 
-- (void)_fetchLinkMetadataForQueryResult:(id)a3 postNotification:(BOOL)a4 completion:(id)a5
+- (void)_fetchLinkMetadataForQueryResult:(id)result postNotification:(BOOL)notification completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  resultCopy = result;
+  completionCopy = completion;
+  if (resultCopy)
   {
-    if ([(CKSearchThumbnailPreviewGenerator *)self hasCachedLinkMetadataForQueryResult:v8])
+    if ([(CKSearchThumbnailPreviewGenerator *)self hasCachedLinkMetadataForQueryResult:resultCopy])
     {
-      v10 = [(CKSearchThumbnailPreviewGenerator *)self cachedLinkMetadataForQueryResult:v8];
-      v9[2](v9, v10);
+      uniqueIdentifier = [(CKSearchThumbnailPreviewGenerator *)self cachedLinkMetadataForQueryResult:resultCopy];
+      completionCopy[2](completionCopy, uniqueIdentifier);
 LABEL_16:
 
       goto LABEL_17;
     }
 
-    v12 = [v8 item];
-    v10 = [v12 uniqueIdentifier];
+    item = [resultCopy item];
+    uniqueIdentifier = [item uniqueIdentifier];
 
-    v13 = [v8 identifier];
-    if (v13 && v10)
+    identifier = [resultCopy identifier];
+    if (identifier && uniqueIdentifier)
     {
-      v14 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightLPLinkMetadataGeneration];
-      v15 = [v14 containsObject:v13];
+      keysWithInFlightLPLinkMetadataGeneration = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightLPLinkMetadataGeneration];
+      v15 = [keysWithInFlightLPLinkMetadataGeneration containsObject:identifier];
 
       if (!v15)
       {
-        v16 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightLPLinkMetadataGeneration];
-        [v16 addObject:v13];
+        keysWithInFlightLPLinkMetadataGeneration2 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightLPLinkMetadataGeneration];
+        [keysWithInFlightLPLinkMetadataGeneration2 addObject:identifier];
 
-        v17 = [MEMORY[0x1E69A5AE8] sharedInstance];
+        mEMORY[0x1E69A5AE8] = [MEMORY[0x1E69A5AE8] sharedInstance];
         v19[0] = MEMORY[0x1E69E9820];
         v19[1] = 3221225472;
         v19[2] = __98__CKSearchThumbnailPreviewGenerator__fetchLinkMetadataForQueryResult_postNotification_completion___block_invoke;
         v19[3] = &unk_1E72F4260;
         v19[4] = self;
-        v20 = v8;
-        v21 = v10;
-        v22 = v13;
-        v24 = a4;
-        v23 = v9;
-        [v17 loadMessageItemWithGUID:v21 completionBlock:v19];
+        v20 = resultCopy;
+        v21 = uniqueIdentifier;
+        v22 = identifier;
+        notificationCopy = notification;
+        v23 = completionCopy;
+        [mEMORY[0x1E69A5AE8] loadMessageItemWithGUID:v21 completionBlock:v19];
 
 LABEL_15:
         goto LABEL_16;
@@ -2339,7 +2339,7 @@ LABEL_15:
       }
     }
 
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_15;
   }
 
@@ -2349,7 +2349,7 @@ LABEL_15:
     [CKSearchThumbnailPreviewGenerator _fetchLinkMetadataForQueryResult:postNotification:completion:];
   }
 
-  v9[2](v9, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_17:
 }
 
@@ -2492,35 +2492,35 @@ uint64_t __98__CKSearchThumbnailPreviewGenerator__fetchLinkMetadataForQueryResul
   return v6();
 }
 
-- (BOOL)hasCachedLinkMetadataForQueryResult:(id)a3
+- (BOOL)hasCachedLinkMetadataForQueryResult:(id)result
 {
-  if (!a3)
+  if (!result)
   {
     return 0;
   }
 
-  v4 = [a3 identifier];
-  v5 = [(CKSearchThumbnailPreviewGenerator *)self lpLinkMetadataCache];
-  v6 = [v5 objectForKey:v4];
+  identifier = [result identifier];
+  lpLinkMetadataCache = [(CKSearchThumbnailPreviewGenerator *)self lpLinkMetadataCache];
+  v6 = [lpLinkMetadataCache objectForKey:identifier];
   v7 = v6 != 0;
 
   return v7;
 }
 
-- (id)cachedLinkMetadataForQueryResult:(id)a3
+- (id)cachedLinkMetadataForQueryResult:(id)result
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  resultCopy = result;
+  v5 = resultCopy;
+  if (!resultCopy)
   {
     v10 = 0;
     goto LABEL_12;
   }
 
-  v6 = [v4 identifier];
-  v7 = [(CKSearchThumbnailPreviewGenerator *)self lpLinkMetadataCache];
-  v8 = [v7 objectForKey:v6];
+  identifier = [resultCopy identifier];
+  lpLinkMetadataCache = [(CKSearchThumbnailPreviewGenerator *)self lpLinkMetadataCache];
+  v8 = [lpLinkMetadataCache objectForKey:identifier];
 
   if (v8)
   {
@@ -2551,42 +2551,42 @@ LABEL_12:
   return v10;
 }
 
-- (void)_prewarmLinkMetadata:(id)a3
+- (void)_prewarmLinkMetadata:(id)metadata
 {
-  v9 = a3;
+  metadataCopy = metadata;
   if (objc_opt_respondsToSelector())
   {
     v3 = +[CKUIBehavior sharedBehaviors];
-    v4 = [v3 isAccessibilityPreferredContentSizeCategory];
+    isAccessibilityPreferredContentSizeCategory = [v3 isAccessibilityPreferredContentSizeCategory];
 
     v5 = +[CKUIBehavior sharedBehaviors];
     [v5 searchLinksThumbnailWidth];
     v7 = v6;
 
     v8 = 0.85;
-    if (v4)
+    if (isAccessibilityPreferredContentSizeCategory)
     {
       v8 = 1.2;
     }
 
-    [v9 _decodeAllImagesWithMaximumSize:{v7, v8 * v7}];
+    [metadataCopy _decodeAllImagesWithMaximumSize:{v7, v8 * v7}];
   }
 }
 
-- (void)_generateWebLinkPresentationPropertiesForQueryResult:(id)a3 postNofication:(BOOL)a4 completion:(id)a5
+- (void)_generateWebLinkPresentationPropertiesForQueryResult:(id)result postNofication:(BOOL)nofication completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  resultCopy = result;
+  completionCopy = completion;
+  if (resultCopy)
   {
-    v10 = [v8 item];
-    v11 = [v10 attributeSet];
-    v12 = [v11 contentURL];
+    item = [resultCopy item];
+    attributeSet = [item attributeSet];
+    contentURL = [attributeSet contentURL];
 
-    v13 = [v8 identifier];
-    if (v13 && v12)
+    identifier = [resultCopy identifier];
+    if (identifier && contentURL)
     {
-      if ([(CKSearchThumbnailPreviewGenerator *)self hasCachedWalletItemLinkPropertiesForQueryResult:v8])
+      if ([(CKSearchThumbnailPreviewGenerator *)self hasCachedWalletItemLinkPropertiesForQueryResult:resultCopy])
       {
         if (IMOSLoggingEnabled())
         {
@@ -2598,34 +2598,34 @@ LABEL_12:
           }
         }
 
-        v15 = [(CKSearchThumbnailPreviewGenerator *)self lpWalletItemPropertiesMetadataCache];
-        v16 = [v15 objectForKey:v13];
+        lpWalletItemPropertiesMetadataCache = [(CKSearchThumbnailPreviewGenerator *)self lpWalletItemPropertiesMetadataCache];
+        v16 = [lpWalletItemPropertiesMetadataCache objectForKey:identifier];
 
-        v9[2](v9, v16);
+        completionCopy[2](completionCopy, v16);
       }
 
       else
       {
-        v19 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightLPWalletItemPropertiesMetadataGeneration];
-        v20 = [v19 containsObject:v13];
+        keysWithInFlightLPWalletItemPropertiesMetadataGeneration = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightLPWalletItemPropertiesMetadataGeneration];
+        v20 = [keysWithInFlightLPWalletItemPropertiesMetadataGeneration containsObject:identifier];
 
         if ((v20 & 1) == 0)
         {
-          v21 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightLPWalletItemPropertiesMetadataGeneration];
-          [v21 addObject:v13];
+          keysWithInFlightLPWalletItemPropertiesMetadataGeneration2 = [(CKSearchThumbnailPreviewGenerator *)self keysWithInFlightLPWalletItemPropertiesMetadataGeneration];
+          [keysWithInFlightLPWalletItemPropertiesMetadataGeneration2 addObject:identifier];
 
-          v22 = [(CKSearchThumbnailPreviewGenerator *)self _lpWalletItemLinkPreviewLoadQueue];
+          _lpWalletItemLinkPreviewLoadQueue = [(CKSearchThumbnailPreviewGenerator *)self _lpWalletItemLinkPreviewLoadQueue];
           v23[0] = MEMORY[0x1E69E9820];
           v23[1] = 3221225472;
           v23[2] = __116__CKSearchThumbnailPreviewGenerator__generateWebLinkPresentationPropertiesForQueryResult_postNofication_completion___block_invoke;
           v23[3] = &unk_1E72F3DA0;
-          v24 = v12;
-          v25 = self;
-          v26 = v13;
-          v29 = a4;
-          v27 = v8;
-          v28 = v9;
-          dispatch_async(v22, v23);
+          v24 = contentURL;
+          selfCopy = self;
+          v26 = identifier;
+          noficationCopy = nofication;
+          v27 = resultCopy;
+          v28 = completionCopy;
+          dispatch_async(_lpWalletItemLinkPreviewLoadQueue, v23);
         }
       }
     }
@@ -2638,7 +2638,7 @@ LABEL_12:
         [CKSearchThumbnailPreviewGenerator _generateWebLinkPresentationPropertiesForQueryResult:postNofication:completion:];
       }
 
-      v9[2](v9, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -2650,7 +2650,7 @@ LABEL_12:
       [CKSearchThumbnailPreviewGenerator _fetchLinkMetadataForQueryResult:postNotification:completion:];
     }
 
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -2804,35 +2804,35 @@ uint64_t __116__CKSearchThumbnailPreviewGenerator__generateWebLinkPresentationPr
   return v8();
 }
 
-- (BOOL)hasCachedWalletItemLinkPropertiesForQueryResult:(id)a3
+- (BOOL)hasCachedWalletItemLinkPropertiesForQueryResult:(id)result
 {
-  if (!a3)
+  if (!result)
   {
     return 0;
   }
 
-  v4 = [a3 identifier];
-  v5 = [(CKSearchThumbnailPreviewGenerator *)self lpWalletItemPropertiesMetadataCache];
-  v6 = [v5 objectForKey:v4];
+  identifier = [result identifier];
+  lpWalletItemPropertiesMetadataCache = [(CKSearchThumbnailPreviewGenerator *)self lpWalletItemPropertiesMetadataCache];
+  v6 = [lpWalletItemPropertiesMetadataCache objectForKey:identifier];
   v7 = v6 != 0;
 
   return v7;
 }
 
-- (id)cachedWalletItemLinkPropertiesForQueryResult:(id)a3
+- (id)cachedWalletItemLinkPropertiesForQueryResult:(id)result
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  resultCopy = result;
+  v5 = resultCopy;
+  if (!resultCopy)
   {
     v10 = 0;
     goto LABEL_12;
   }
 
-  v6 = [v4 identifier];
-  v7 = [(CKSearchThumbnailPreviewGenerator *)self lpWalletItemPropertiesMetadataCache];
-  v8 = [v7 objectForKey:v6];
+  identifier = [resultCopy identifier];
+  lpWalletItemPropertiesMetadataCache = [(CKSearchThumbnailPreviewGenerator *)self lpWalletItemPropertiesMetadataCache];
+  v8 = [lpWalletItemPropertiesMetadataCache objectForKey:identifier];
 
   if (v8)
   {

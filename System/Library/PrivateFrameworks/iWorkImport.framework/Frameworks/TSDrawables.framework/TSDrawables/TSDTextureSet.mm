@@ -1,62 +1,62 @@
 @interface TSDTextureSet
-+ (id)newFlattenedTextureFromTextures:(id)a3 newRect:(CGRect)a4;
-- (BOOL)canReuseMetalTexturesWith:(id)a3;
++ (id)newFlattenedTextureFromTextures:(id)textures newRect:(CGRect)rect;
+- (BOOL)canReuseMetalTexturesWith:(id)with;
 - (BOOL)containsFinalTextures;
-- (BOOL)hasTexture:(id)a3 beenFlattenedForKey:(id)a4;
+- (BOOL)hasTexture:(id)texture beenFlattenedForKey:(id)key;
 - (BOOL)isFlippedVertically;
 - (BOOL)isImageSource;
 - (BOOL)isRenderable;
-- (BOOL)p_areAttributes:(id)a3 equalToAttributes:(id)a4;
-- (BOOL)shouldAnimateBackgroundTexturesWithStage:(int64_t)a3 isBuildIn:(BOOL)a4;
+- (BOOL)p_areAttributes:(id)attributes equalToAttributes:(id)toAttributes;
+- (BOOL)shouldAnimateBackgroundTexturesWithStage:(int64_t)stage isBuildIn:(BOOL)in;
 - (CALayer)layer;
 - (CGPoint)center;
 - (CGPoint)originalPosition;
 - (CGRect)boundingRect;
-- (CGRect)boundingRectForStage:(int64_t)a3 isBuildIn:(BOOL)a4 isContentBuild:(BOOL)a5;
+- (CGRect)boundingRectForStage:(int64_t)stage isBuildIn:(BOOL)in isContentBuild:(BOOL)build;
 - (CGRect)frame;
-- (CGRect)p_frameAtEventIndex:(unint64_t)a3;
+- (CGRect)p_frameAtEventIndex:(unint64_t)index;
 - (NSArray)visibleTextures;
 - (NSArray)visibleTexturesIncludingCaptions;
 - (TSDRep)rep;
 - (TSDTextureSet)init;
 - (double)hdrHeadroom;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)finalTexturesForStage:(int64_t)a3;
-- (id)firstVisibleTextureForTextureType:(int64_t)a3;
-- (id)p_insertNewFlattenedTextureWithArray:(id)a3 rect:(CGRect)a4 stage:(int64_t)a5 insertAfter:(id)a6 flattenKey:(id)a7;
-- (id)viewLayerAtEventIndex:(unint64_t)a3;
-- (id)visibleTexturesBeforeStage:(int64_t)a3 isBuildIn:(BOOL)a4 isContentBuild:(BOOL)a5 shouldFlatten:(BOOL)a6 flattenKey:(id)a7;
-- (id)visibleTexturesForStage:(int64_t)a3 isBuildIn:(BOOL)a4 isContentBuild:(BOOL)a5 shouldFlatten:(BOOL)a6 flattenKey:(id)a7 shouldIncludeCaptions:(BOOL)a8;
-- (id)visibleTexturesWithTextureType:(int64_t)a3;
-- (int64_t)stageIndexForTexture:(id)a3;
-- (void)addFinalTexture:(id)a3 forStage:(int64_t)a4;
-- (void)addPerspectiveLayerToTexture:(id)a3 withShowSize:(CGSize)a4;
-- (void)adjustAnchorPointRelativeToCenterOfRotationAtEventIndex:(unint64_t)a3;
-- (void)applyActionEffect:(id)a3 viewScale:(double)a4 isMagicMove:(BOOL)a5 shouldBake:(BOOL)a6 applyScaleOnly:(BOOL)a7 ignoreScale:(BOOL)a8 shouldCheckActionKeys:(BOOL)a9 eventIndex:(unint64_t)a10;
+- (id)finalTexturesForStage:(int64_t)stage;
+- (id)firstVisibleTextureForTextureType:(int64_t)type;
+- (id)p_insertNewFlattenedTextureWithArray:(id)array rect:(CGRect)rect stage:(int64_t)stage insertAfter:(id)after flattenKey:(id)key;
+- (id)viewLayerAtEventIndex:(unint64_t)index;
+- (id)visibleTexturesBeforeStage:(int64_t)stage isBuildIn:(BOOL)in isContentBuild:(BOOL)build shouldFlatten:(BOOL)flatten flattenKey:(id)key;
+- (id)visibleTexturesForStage:(int64_t)stage isBuildIn:(BOOL)in isContentBuild:(BOOL)build shouldFlatten:(BOOL)flatten flattenKey:(id)key shouldIncludeCaptions:(BOOL)captions;
+- (id)visibleTexturesWithTextureType:(int64_t)type;
+- (int64_t)stageIndexForTexture:(id)texture;
+- (void)addFinalTexture:(id)texture forStage:(int64_t)stage;
+- (void)addPerspectiveLayerToTexture:(id)texture withShowSize:(CGSize)size;
+- (void)adjustAnchorPointRelativeToCenterOfRotationAtEventIndex:(unint64_t)index;
+- (void)applyActionEffect:(id)effect viewScale:(double)scale isMagicMove:(BOOL)move shouldBake:(BOOL)bake applyScaleOnly:(BOOL)only ignoreScale:(BOOL)ignoreScale shouldCheckActionKeys:(BOOL)keys eventIndex:(unint64_t)self0;
 - (void)clearLiveMetalTextureCaches;
 - (void)dealloc;
 - (void)evictRenderedResources;
 - (void)flattenToFinalTexturesForMagicMove;
-- (void)hideLayersOfFinalTexturesAtEventIndex:(unint64_t)a3;
-- (void)p_addRenderable:(id)a3 forStage:(int64_t)a4 shouldAdjustBounds:(BOOL)a5;
-- (void)p_applyPositionFromAttributes:(id)a3 viewScale:(double)a4 eventIndex:(unint64_t)a5;
-- (void)p_getComponentsOpacity:(double *)a3 scale:(double *)a4 angle:(double *)a5 fromAttributes:(id)a6 shouldApplyOpacity:(BOOL *)a7 shouldApplyAngle:(BOOL *)a8 shouldApplyScale:(BOOL *)a9;
-- (void)p_resetAttributesWithViewScale:(double)a3 eventIndex:(unint64_t)a4;
-- (void)p_setLayerGeometryWithLayer:(id)a3;
+- (void)hideLayersOfFinalTexturesAtEventIndex:(unint64_t)index;
+- (void)p_addRenderable:(id)renderable forStage:(int64_t)stage shouldAdjustBounds:(BOOL)bounds;
+- (void)p_applyPositionFromAttributes:(id)attributes viewScale:(double)scale eventIndex:(unint64_t)index;
+- (void)p_getComponentsOpacity:(double *)opacity scale:(double *)scale angle:(double *)angle fromAttributes:(id)attributes shouldApplyOpacity:(BOOL *)applyOpacity shouldApplyAngle:(BOOL *)applyAngle shouldApplyScale:(BOOL *)applyScale;
+- (void)p_resetAttributesWithViewScale:(double)scale eventIndex:(unint64_t)index;
+- (void)p_setLayerGeometryWithLayer:(id)layer;
 - (void)removeAllPerspectiveLayers;
-- (void)removeRenderable:(id)a3;
-- (void)renderIntoContext:(CGContext *)a3 eventIndex:(unint64_t)a4 requiresTransparentBackground:(BOOL)a5;
+- (void)removeRenderable:(id)renderable;
+- (void)renderIntoContext:(CGContext *)context eventIndex:(unint64_t)index requiresTransparentBackground:(BOOL)background;
 - (void)renderLayerContentsIfNeeded;
-- (void)resetAnchorPointAtEventIndex:(unint64_t)a3;
+- (void)resetAnchorPointAtEventIndex:(unint64_t)index;
 - (void)resetLayers;
-- (void)resetToOriginalSourceAtEventIndex:(unint64_t)a3;
-- (void)setBitmapRenderingQualityInfo:(id)a3;
-- (void)setBoundingRect:(CGRect)a3;
-- (void)setBoundingRect:(CGRect)a3 forStage:(int64_t)a4;
-- (void)setIsBaked:(BOOL)a3;
-- (void)setLayerGeometryAtEventIndex:(unint64_t)a3;
-- (void)setTextureOpacity:(double)a3;
+- (void)resetToOriginalSourceAtEventIndex:(unint64_t)index;
+- (void)setBitmapRenderingQualityInfo:(id)info;
+- (void)setBoundingRect:(CGRect)rect;
+- (void)setBoundingRect:(CGRect)rect forStage:(int64_t)stage;
+- (void)setIsBaked:(BOOL)baked;
+- (void)setLayerGeometryAtEventIndex:(unint64_t)index;
+- (void)setTextureOpacity:(double)opacity;
 - (void)teardown;
 @end
 
@@ -196,11 +196,11 @@
   [(TSDTextureSet *)&v2 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v79 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v74 = 0u;
   v75 = 0u;
@@ -302,18 +302,18 @@
   return fabs(textureAngle + -3.14159265) < 0.00999999978 || textureAngle == 3.14159265;
 }
 
-- (void)setTextureOpacity:(double)a3
+- (void)setTextureOpacity:(double)opacity
 {
-  self->_textureOpacity = a3;
-  *&a3 = a3;
-  objc_msgSend_setOpacity_(self->_layer, a2, v3, a3);
+  self->_textureOpacity = opacity;
+  *&opacity = opacity;
+  objc_msgSend_setOpacity_(self->_layer, a2, v3, opacity);
 }
 
-- (CGRect)boundingRectForStage:(int64_t)a3 isBuildIn:(BOOL)a4 isContentBuild:(BOOL)a5
+- (CGRect)boundingRectForStage:(int64_t)stage isBuildIn:(BOOL)in isContentBuild:(BOOL)build
 {
-  v6 = a4;
+  inCopy = in;
   boundingRectForStageMap = self->_boundingRectForStageMap;
-  v10 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], a2, a3);
+  v10 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], a2, stage);
   v12 = objc_msgSend_objectForKey_(boundingRectForStageMap, v11, v10);
 
   if (v12 || (objc_msgSend_objectForKey_(self->_boundingRectForStageMap, v13, &unk_28859C388), (v12 = objc_claimAutoreleasedReturnValue()) != 0))
@@ -330,28 +330,28 @@
   y = v17;
   width = v18;
   height = v19;
-  if (a3)
+  if (stage)
   {
     v24 = 0;
   }
 
   else
   {
-    v24 = v6;
+    v24 = inCopy;
   }
 
-  if (v24 || a5)
+  if (v24 || build)
   {
     goto LABEL_12;
   }
 
-  if (v6)
+  if (inCopy)
   {
     v25 = v12;
     goto LABEL_15;
   }
 
-  if (self->_maxStageIndex == a3)
+  if (self->_maxStageIndex == stage)
   {
 LABEL_12:
     v25 = objc_msgSend_objectForKey_(self->_boundingRectForStageMap, v15, &unk_28859C388);
@@ -374,16 +374,16 @@ LABEL_12:
       height = v44.size.height;
     }
 
-    if (v6)
+    if (inCopy)
     {
 LABEL_15:
-      v31 = !v6;
-      if (a3)
+      v31 = !inCopy;
+      if (stage)
       {
         v31 = 0;
       }
 
-      if (v31 || self->_maxStageIndex == a3)
+      if (v31 || self->_maxStageIndex == stage)
       {
         goto LABEL_24;
       }
@@ -397,7 +397,7 @@ LABEL_15:
     v25 = v12;
   }
 
-  if (!a3 && !v6)
+  if (!stage && !inCopy)
   {
 LABEL_24:
     v32 = objc_msgSend_objectForKey_(self->_boundingRectForStageMap, v15, &unk_28859C3A0);
@@ -440,12 +440,12 @@ LABEL_27:
   return result;
 }
 
-- (void)p_addRenderable:(id)a3 forStage:(int64_t)a4 shouldAdjustBounds:(BOOL)a5
+- (void)p_addRenderable:(id)renderable forStage:(int64_t)stage shouldAdjustBounds:(BOOL)bounds
 {
-  v5 = a5;
+  boundsCopy = bounds;
   v103 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (!objc_msgSend_textureType(v8, v9, v10))
+  renderableCopy = renderable;
+  if (!objc_msgSend_textureType(renderableCopy, v9, v10))
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSDTextureSet p_addRenderable:forStage:shouldAdjustBounds:]");
@@ -455,7 +455,7 @@ LABEL_27:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19);
   }
 
-  if (objc_msgSend_textureType(v8, v11, v12) == 15)
+  if (objc_msgSend_textureType(renderableCopy, v11, v12) == 15)
   {
     v22 = 0;
     v23 = 24;
@@ -463,7 +463,7 @@ LABEL_27:
 
   else
   {
-    v24 = objc_msgSend_textureType(v8, v20, v21);
+    v24 = objc_msgSend_textureType(renderableCopy, v20, v21);
     v23 = 24;
     if (v24 == 16)
     {
@@ -473,18 +473,18 @@ LABEL_27:
     else
     {
       v23 = 32;
-      v22 = v5;
+      v22 = boundsCopy;
     }
   }
 
-  objc_msgSend_addObject_(*(&self->super.isa + v23), v20, v8);
-  objc_msgSend_addObject_(self->_allTextures, v25, v8);
-  objc_msgSend_setParent_(v8, v26, self);
-  v28 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v27, a4);
-  objc_msgSend_setObject_forKey_(self->_textureToStageIndexMap, v29, v28, v8);
+  objc_msgSend_addObject_(*(&self->super.isa + v23), v20, renderableCopy);
+  objc_msgSend_addObject_(self->_allTextures, v25, renderableCopy);
+  objc_msgSend_setParent_(renderableCopy, v26, self);
+  v28 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v27, stage);
+  objc_msgSend_setObject_forKey_(self->_textureToStageIndexMap, v29, v28, renderableCopy);
   if (v22)
   {
-    objc_msgSend_frame(v8, v30, v31);
+    objc_msgSend_frame(renderableCopy, v30, v31);
     v106.origin.x = v32;
     v106.origin.y = v33;
     v106.size.width = v34;
@@ -494,7 +494,7 @@ LABEL_27:
   }
 
   v38 = objc_msgSend_objectForKey_(self->_boundingRectForStageMap, v30, v28);
-  v97 = a4;
+  stageCopy = stage;
   v95 = v38;
   if (v38)
   {
@@ -513,7 +513,7 @@ LABEL_27:
     v48 = *(MEMORY[0x277CBF398] + 24);
   }
 
-  objc_msgSend_frame(v8, v39, v40);
+  objc_msgSend_frame(renderableCopy, v39, v40);
   v107.origin.x = v49;
   v107.origin.y = v50;
   v107.size.width = v51;
@@ -554,10 +554,10 @@ LABEL_27:
         v74 = objc_msgSend_nonretainedObjectValue(v71, v72, v73);
 
         v77 = objc_msgSend_textureType(v74, v75, v76);
-        if (v77 > objc_msgSend_textureType(v8, v78, v79))
+        if (v77 > objc_msgSend_textureType(renderableCopy, v78, v79))
         {
           layer = self->_layer;
-          v87 = objc_msgSend_layer(v8, v80, v81);
+          v87 = objc_msgSend_layer(renderableCopy, v80, v81);
           objc_msgSend_insertSublayer_below_(layer, v88, v87, v70);
 
           goto LABEL_23;
@@ -575,7 +575,7 @@ LABEL_27:
   }
 
   v82 = self->_layer;
-  v63 = objc_msgSend_layer(v8, v83, v84);
+  v63 = objc_msgSend_layer(renderableCopy, v83, v84);
   objc_msgSend_addSublayer_(v82, v85, v63);
 LABEL_23:
 
@@ -583,9 +583,9 @@ LABEL_23:
   MidY = CGRectGetMidY(self->_boundingRect);
   self->_center.x = MidX;
   self->_center.y = MidY;
-  if (self->_maxStageIndex < v97)
+  if (self->_maxStageIndex < stageCopy)
   {
-    self->_maxStageIndex = v97;
+    self->_maxStageIndex = stageCopy;
   }
 
   v93 = objc_msgSend_copy(self->_boundingRectForStageMap, v90, v91);
@@ -593,14 +593,14 @@ LABEL_23:
   self->_origBoundingRectForStageMap = v93;
 }
 
-- (void)addFinalTexture:(id)a3 forStage:(int64_t)a4
+- (void)addFinalTexture:(id)texture forStage:(int64_t)stage
 {
-  v35 = a3;
-  objc_msgSend_addObject_(self->_allTextures, v6, v35);
-  objc_msgSend_setParent_(v35, v7, self);
+  textureCopy = texture;
+  objc_msgSend_addObject_(self->_allTextures, v6, textureCopy);
+  objc_msgSend_setParent_(textureCopy, v7, self);
   textureToStageIndexMap = self->_textureToStageIndexMap;
-  v10 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v9, a4);
-  objc_msgSend_setObject_forKey_(textureToStageIndexMap, v11, v10, v35);
+  v10 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v9, stage);
+  objc_msgSend_setObject_forKey_(textureToStageIndexMap, v11, v10, textureCopy);
 
   finalTextures = self->_finalTextures;
   if (!finalTextures)
@@ -612,8 +612,8 @@ LABEL_23:
     finalTextures = self->_finalTextures;
   }
 
-  objc_msgSend_addObject_(finalTextures, v12, v35);
-  objc_msgSend_frame(v35, v16, v17);
+  objc_msgSend_addObject_(finalTextures, v12, textureCopy);
+  objc_msgSend_frame(textureCopy, v16, v17);
   v37.origin.x = v18;
   v37.origin.y = v19;
   v37.size.width = v20;
@@ -621,14 +621,14 @@ LABEL_23:
   self->_boundingRect = CGRectUnion(self->_boundingRect, v37);
   objc_msgSend_setFrame_(self->_layer, v22, v23);
   layer = self->_layer;
-  v27 = objc_msgSend_layer(v35, v25, v26);
+  v27 = objc_msgSend_layer(textureCopy, v25, v26);
   objc_msgSend_addSublayer_(layer, v28, v27);
 
   MidX = CGRectGetMidX(self->_boundingRect);
   MidY = CGRectGetMidY(self->_boundingRect);
   self->_center.x = MidX;
   self->_center.y = MidY;
-  v33 = objc_msgSend_layer(v35, v31, v32);
+  v33 = objc_msgSend_layer(textureCopy, v31, v32);
   objc_msgSend_setHidden_(v33, v34, 1);
 }
 
@@ -895,18 +895,18 @@ LABEL_23:
   return v9;
 }
 
-- (id)visibleTexturesForStage:(int64_t)a3 isBuildIn:(BOOL)a4 isContentBuild:(BOOL)a5 shouldFlatten:(BOOL)a6 flattenKey:(id)a7 shouldIncludeCaptions:(BOOL)a8
+- (id)visibleTexturesForStage:(int64_t)stage isBuildIn:(BOOL)in isContentBuild:(BOOL)build shouldFlatten:(BOOL)flatten flattenKey:(id)key shouldIncludeCaptions:(BOOL)captions
 {
-  v8 = a8;
-  v9 = a6;
-  v83 = a5;
-  v85 = a4;
-  v12 = a7;
+  captionsCopy = captions;
+  flattenCopy = flatten;
+  buildCopy = build;
+  inCopy = in;
+  keyCopy = key;
   v84 = objc_msgSend_array(MEMORY[0x277CBEB18], v13, v14);
   v17 = self->_animatableTextures;
-  v80 = v12;
-  HIDWORD(v79) = v9;
-  if (v8)
+  v80 = keyCopy;
+  HIDWORD(v79) = flattenCopy;
+  if (captionsCopy)
   {
     v18 = objc_msgSend_titleAndCaptionTextures(self, v15, v16);
     v20 = objc_msgSend_arrayByAddingObjectsFromArray_(v17, v19, v18);
@@ -1004,21 +1004,21 @@ LABEL_23:
   {
     v50 = 0;
     v51 = 0;
-    v53 = v29 != a3 || v29 == -1;
-    v55 = v22 == a3 && v22 != -1;
+    v53 = v29 != stage || v29 == -1;
+    v55 = v22 == stage && v22 != -1;
     LODWORD(v79) = v55;
     v56 = 1;
-    v82 = v83 || v53;
-    v81 = v43 | v83;
+    v82 = buildCopy || v53;
+    v81 = v43 | buildCopy;
     while (1)
     {
       v57 = objc_msgSend_objectAtIndex_(v17, v48, v50, v79);
       if ((objc_msgSend_isFlattenedRepresentation(v57, v58, v59) & 1) == 0)
       {
         v63 = objc_msgSend_stageIndexForTexture_(self, v60, v57);
-        if (v63 == a3)
+        if (v63 == stage)
         {
-          if (v83)
+          if (buildCopy)
           {
             if (isIncomingContent)
             {
@@ -1032,18 +1032,18 @@ LABEL_23:
           }
         }
 
-        if (v63 == -1 && v85 && v22 == a3 && objc_msgSend_count(v17, v61, v62) != a3)
+        if (v63 == -1 && inCopy && v22 == stage && objc_msgSend_count(v17, v61, v62) != stage)
         {
           goto LABEL_63;
         }
 
-        v64 = v85;
+        v64 = inCopy;
         if (v63 != -1)
         {
           v64 = 1;
         }
 
-        if (((v64 | v82) & 1) == 0 || !((v63 != -1) | v81 & 1) || v63 == -2 && !v85 && v29 == a3 && objc_msgSend_count(v17, v61, v62) != a3)
+        if (((v64 | v82) & 1) == 0 || !((v63 != -1) | v81 & 1) || v63 == -2 && !inCopy && v29 == stage && objc_msgSend_count(v17, v61, v62) != stage)
         {
 LABEL_63:
           if (!v51)
@@ -1076,7 +1076,7 @@ LABEL_63:
           goto LABEL_68;
         }
 
-        v65 = v63 != -2 || !v85;
+        v65 = v63 != -2 || !inCopy;
         if (v65)
         {
           if (v63 != -2)
@@ -1111,25 +1111,25 @@ LABEL_68:
 LABEL_71:
   if ((v79 & 0x100000000) != 0 && objc_msgSend_count(v84, v48, v49) >= 2 && v51)
   {
-    v77 = objc_msgSend_p_insertNewFlattenedTextureWithArray_rect_stage_insertAfter_flattenKey_(self, v76, v84, a3, v51, v80, x, y, width, height);
+    v77 = objc_msgSend_p_insertNewFlattenedTextureWithArray_rect_stage_insertAfter_flattenKey_(self, v76, v84, stage, v51, v80, x, y, width, height);
   }
 
   return v84;
 }
 
-- (id)visibleTexturesBeforeStage:(int64_t)a3 isBuildIn:(BOOL)a4 isContentBuild:(BOOL)a5 shouldFlatten:(BOOL)a6 flattenKey:(id)a7
+- (id)visibleTexturesBeforeStage:(int64_t)stage isBuildIn:(BOOL)in isContentBuild:(BOOL)build shouldFlatten:(BOOL)flatten flattenKey:(id)key
 {
-  v82 = a5;
-  v8 = a4;
-  v11 = a7;
+  buildCopy = build;
+  inCopy = in;
+  keyCopy = key;
   if (objc_msgSend_containsFinalTextures(self, v12, v13))
   {
-    v16 = objc_msgSend_finalTexturesForStage_(self, v14, a3 - 1);
+    v16 = objc_msgSend_finalTexturesForStage_(self, v14, stage - 1);
     goto LABEL_66;
   }
 
-  v79 = a6;
-  v80 = v11;
+  flattenCopy = flatten;
+  v80 = keyCopy;
   v83 = objc_msgSend_array(MEMORY[0x277CBEB18], v14, v15);
   v17 = MEMORY[0x277CBF398];
   v20 = objc_msgSend_count(self->_animatableTextures, v18, v19);
@@ -1214,12 +1214,12 @@ LABEL_21:
   if (objc_msgSend_count(self->_animatableTextures, v23, v24))
   {
     v47 = 0;
-    v49 = v27 > a3 && v27 != -1;
-    v51 = v20 < a3 && v20 != -1 && v8;
+    v49 = v27 > stage && v27 != -1;
+    v51 = v20 < stage && v20 != -1 && inCopy;
     v77 = v51;
     v78 = v49;
     v52 = 1;
-    v81 = v40 | v82;
+    v81 = v40 | buildCopy;
     do
     {
       v53 = objc_msgSend_objectAtIndex_(self->_animatableTextures, v45, v47);
@@ -1227,28 +1227,28 @@ LABEL_21:
       {
         v57 = objc_msgSend_stageIndexForTexture_(self, v56, v53);
         v60 = v57;
-        if (v8)
+        if (inCopy)
         {
-          if (v57 < a3 && v57 != -1)
+          if (v57 < stage && v57 != -1)
           {
             goto LABEL_56;
           }
         }
 
-        else if (v57 > a3)
+        else if (v57 > stage)
         {
           goto LABEL_56;
         }
 
-        v62 = v57 != -1 || v8;
-        if (((!v82 | v62 & isIncomingContent) & 1) == 0 || !((v57 != -1) | v81 & 1) || v57 == -1 && v8 && v20 < a3 && v20 != objc_msgSend_count(self->_animatableTextures, v58, v59))
+        v62 = v57 != -1 || inCopy;
+        if (((!buildCopy | v62 & isIncomingContent) & 1) == 0 || !((v57 != -1) | v81 & 1) || v57 == -1 && inCopy && v20 < stage && v20 != objc_msgSend_count(self->_animatableTextures, v58, v59))
         {
           goto LABEL_56;
         }
 
-        if ((v62 | v82))
+        if ((v62 | buildCopy))
         {
-          if (v60 != -2 || v8 || v27 <= a3)
+          if (v60 != -2 || inCopy || v27 <= stage)
           {
             if (v60 != -2 || !v77)
             {
@@ -1295,20 +1295,20 @@ LABEL_57:
     while (v39);
   }
 
-  if (v79)
+  if (flattenCopy)
   {
     v16 = v83;
-    v11 = v80;
+    keyCopy = v80;
     if (objc_msgSend_count(v83, v45, v46) >= 2)
     {
       v73 = objc_msgSend_firstObject(v83, v71, v72);
-      v75 = objc_msgSend_p_insertNewFlattenedTextureWithArray_rect_stage_insertAfter_flattenKey_(self, v74, v83, a3, v73, v80, x, y, width, height);
+      v75 = objc_msgSend_p_insertNewFlattenedTextureWithArray_rect_stage_insertAfter_flattenKey_(self, v74, v83, stage, v73, v80, x, y, width, height);
     }
   }
 
   else
   {
-    v11 = v80;
+    keyCopy = v80;
     v16 = v83;
   }
 
@@ -1317,11 +1317,11 @@ LABEL_66:
   return v16;
 }
 
-- (BOOL)shouldAnimateBackgroundTexturesWithStage:(int64_t)a3 isBuildIn:(BOOL)a4
+- (BOOL)shouldAnimateBackgroundTexturesWithStage:(int64_t)stage isBuildIn:(BOOL)in
 {
-  v4 = a4;
+  inCopy = in;
   v25 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_count(self->_animatableTextures, a2, a3);
+  v7 = objc_msgSend_count(self->_animatableTextures, a2, stage);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -1381,28 +1381,28 @@ LABEL_66:
     v14 = -1;
   }
 
-  if (v4)
+  if (inCopy)
   {
-    return v7 >= a3;
+    return v7 >= stage;
   }
 
   else
   {
-    return v14 <= a3;
+    return v14 <= stage;
   }
 }
 
-- (id)p_insertNewFlattenedTextureWithArray:(id)a3 rect:(CGRect)a4 stage:(int64_t)a5 insertAfter:(id)a6 flattenKey:(id)a7
+- (id)p_insertNewFlattenedTextureWithArray:(id)array rect:(CGRect)rect stage:(int64_t)stage insertAfter:(id)after flattenKey:(id)key
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v100 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  if (objc_msgSend_count(v15, v18, v19) <= 1)
+  arrayCopy = array;
+  afterCopy = after;
+  keyCopy = key;
+  if (objc_msgSend_count(arrayCopy, v18, v19) <= 1)
   {
     v21 = MEMORY[0x277D81150];
     v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, "[TSDTextureSet p_insertNewFlattenedTextureWithArray:rect:stage:insertAfter:flattenKey:]");
@@ -1412,7 +1412,7 @@ LABEL_66:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27);
   }
 
-  if (!v16)
+  if (!afterCopy)
   {
     v28 = MEMORY[0x277D81150];
     v29 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, "[TSDTextureSet p_insertNewFlattenedTextureWithArray:rect:stage:insertAfter:flattenKey:]");
@@ -1471,12 +1471,12 @@ LABEL_66:
   v44 = 0;
 LABEL_16:
   v50 = objc_opt_class();
-  v52 = objc_msgSend_newFlattenedTextureFromTextures_newRect_(v50, v51, v15, x, y, width, height);
+  v52 = objc_msgSend_newFlattenedTextureFromTextures_newRect_(v50, v51, arrayCopy, x, y, width, height);
   objc_msgSend_setOffset_(v52, v53, v54, x, y);
   objc_msgSend_setParent_(v52, v55, self);
   objc_msgSend_setIsFlattenedRepresentation_(v52, v56, 1);
   textureToStageIndexMap = self->_textureToStageIndexMap;
-  v59 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v58, a5);
+  v59 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v58, stage);
   objc_msgSend_setObject_forKey_(textureToStageIndexMap, v60, v59, v52);
 
   flattenKeyToFlattenedTextureMap = self->_flattenKeyToFlattenedTextureMap;
@@ -1489,20 +1489,20 @@ LABEL_16:
     flattenKeyToFlattenedTextureMap = self->_flattenKeyToFlattenedTextureMap;
   }
 
-  v66 = objc_msgSend_copy(v15, v61, v62);
-  objc_msgSend_setObject_forKey_(flattenKeyToFlattenedTextureMap, v67, v66, v17);
+  v66 = objc_msgSend_copy(arrayCopy, v61, v62);
+  objc_msgSend_setObject_forKey_(flattenKeyToFlattenedTextureMap, v67, v66, keyCopy);
 
   allTextures = self->_allTextures;
-  v70 = objc_msgSend_indexOfObject_(allTextures, v69, v16);
+  v70 = objc_msgSend_indexOfObject_(allTextures, v69, afterCopy);
   objc_msgSend_insertObject_atIndex_(allTextures, v71, v52, v70 + 1);
   animatableTextures = self->_animatableTextures;
-  v74 = objc_msgSend_indexOfObject_(animatableTextures, v73, v16);
+  v74 = objc_msgSend_indexOfObject_(animatableTextures, v73, afterCopy);
   objc_msgSend_insertObject_atIndex_(animatableTextures, v75, v52, v74 + 1);
   v92 = 0u;
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v76 = v15;
+  v76 = arrayCopy;
   v78 = objc_msgSend_countByEnumeratingWithState_objects_count_(v76, v77, &v90, v98, 16);
   if (v78)
   {
@@ -1533,28 +1533,28 @@ LABEL_16:
   return v52;
 }
 
-- (BOOL)hasTexture:(id)a3 beenFlattenedForKey:(id)a4
+- (BOOL)hasTexture:(id)texture beenFlattenedForKey:(id)key
 {
   flattenKeyToFlattenedTextureMap = self->_flattenKeyToFlattenedTextureMap;
-  v6 = a3;
-  v8 = objc_msgSend_objectForKey_(flattenKeyToFlattenedTextureMap, v7, a4);
-  LOBYTE(flattenKeyToFlattenedTextureMap) = objc_msgSend_containsObject_(v8, v9, v6);
+  textureCopy = texture;
+  v8 = objc_msgSend_objectForKey_(flattenKeyToFlattenedTextureMap, v7, key);
+  LOBYTE(flattenKeyToFlattenedTextureMap) = objc_msgSend_containsObject_(v8, v9, textureCopy);
 
   return flattenKeyToFlattenedTextureMap;
 }
 
-- (void)removeRenderable:(id)a3
+- (void)removeRenderable:(id)renderable
 {
   allTextures = self->_allTextures;
-  v5 = a3;
-  objc_msgSend_removeObject_(allTextures, v6, v5);
-  objc_msgSend_removeObject_(self->_animatableTextures, v7, v5);
-  v12 = objc_msgSend_layer(v5, v8, v9);
+  renderableCopy = renderable;
+  objc_msgSend_removeObject_(allTextures, v6, renderableCopy);
+  objc_msgSend_removeObject_(self->_animatableTextures, v7, renderableCopy);
+  v12 = objc_msgSend_layer(renderableCopy, v8, v9);
 
   objc_msgSend_removeFromSuperlayer(v12, v10, v11);
 }
 
-- (id)firstVisibleTextureForTextureType:(int64_t)a3
+- (id)firstVisibleTextureForTextureType:(int64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
@@ -1577,7 +1577,7 @@ LABEL_16:
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if (objc_msgSend_textureType(v12, v7, v8, v15) == a3)
+        if (objc_msgSend_textureType(v12, v7, v8, v15) == type)
         {
           v13 = v12;
           goto LABEL_11;
@@ -1600,7 +1600,7 @@ LABEL_11:
   return v13;
 }
 
-- (id)visibleTexturesWithTextureType:(int64_t)a3
+- (id)visibleTexturesWithTextureType:(int64_t)type
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
@@ -1624,7 +1624,7 @@ LABEL_11:
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
-        if (objc_msgSend_textureType(v14, v9, v10, v16) == a3)
+        if (objc_msgSend_textureType(v14, v9, v10, v16) == type)
         {
           objc_msgSend_addObject_(v5, v9, v14);
         }
@@ -1639,13 +1639,13 @@ LABEL_11:
   return v5;
 }
 
-+ (id)newFlattenedTextureFromTextures:(id)a3 newRect:(CGRect)a4
++ (id)newFlattenedTextureFromTextures:(id)textures newRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = objc_msgSend_copy(a3, a2, a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = objc_msgSend_copy(textures, a2, textures);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_2766AC66C;
@@ -1666,9 +1666,9 @@ LABEL_11:
   return v17;
 }
 
-- (int64_t)stageIndexForTexture:(id)a3
+- (int64_t)stageIndexForTexture:(id)texture
 {
-  v3 = objc_msgSend_objectForKey_(self->_textureToStageIndexMap, a2, a3);
+  v3 = objc_msgSend_objectForKey_(self->_textureToStageIndexMap, a2, texture);
   v6 = v3;
   if (v3)
   {
@@ -1683,10 +1683,10 @@ LABEL_11:
   return v7;
 }
 
-- (id)finalTexturesForStage:(int64_t)a3
+- (id)finalTexturesForStage:(int64_t)stage
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3);
+  v5 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, stage);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1707,7 +1707,7 @@ LABEL_11:
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        if (objc_msgSend_stageIndexForTexture_(self, v9, v13, v15) == a3)
+        if (objc_msgSend_stageIndexForTexture_(self, v9, v13, v15) == stage)
         {
           objc_msgSend_addObject_(v5, v9, v13);
         }
@@ -1722,7 +1722,7 @@ LABEL_11:
   return v5;
 }
 
-- (void)hideLayersOfFinalTexturesAtEventIndex:(unint64_t)a3
+- (void)hideLayersOfFinalTexturesAtEventIndex:(unint64_t)index
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -1745,7 +1745,7 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v11 = objc_msgSend_viewLayerAtEventIndex_(*(*(&v13 + 1) + 8 * v10), v7, a3, v13);
+        v11 = objc_msgSend_viewLayerAtEventIndex_(*(*(&v13 + 1) + 8 * v10), v7, index, v13);
         objc_msgSend_setHidden_(v11, v12, 1);
 
         ++v10;
@@ -1759,16 +1759,16 @@ LABEL_11:
   }
 }
 
-- (void)setLayerGeometryAtEventIndex:(unint64_t)a3
+- (void)setLayerGeometryAtEventIndex:(unint64_t)index
 {
-  v5 = objc_msgSend_viewLayerAtEventIndex_(self, a2, a3);
+  v5 = objc_msgSend_viewLayerAtEventIndex_(self, a2, index);
   objc_msgSend_p_setLayerGeometryWithLayer_(self, v4, v5);
 }
 
-- (void)p_setLayerGeometryWithLayer:(id)a3
+- (void)p_setLayerGeometryWithLayer:(id)layer
 {
   v107 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layerCopy = layer;
   v9 = objc_msgSend_rep(self, v5, v6);
   if (!v9)
   {
@@ -1802,7 +1802,7 @@ LABEL_11:
     v25 = *(MEMORY[0x277CD9DE8] + 48);
     v104[2] = *(MEMORY[0x277CD9DE8] + 32);
     v104[3] = v25;
-    objc_msgSend_setTransform_(v4, v20, v104);
+    objc_msgSend_setTransform_(layerCopy, v20, v104);
     v28 = objc_msgSend_layout(v9, v26, v27);
     v31 = objc_msgSend_geometry(v28, v29, v30);
     objc_msgSend_frame(v31, v32, v33);
@@ -1812,7 +1812,7 @@ LABEL_11:
     v103 = 0u;
     v100 = 0u;
     v101 = 0u;
-    v36 = objc_msgSend_sublayers(v4, v34, v35);
+    v36 = objc_msgSend_sublayers(layerCopy, v34, v35);
     v38 = objc_msgSend_countByEnumeratingWithState_objects_count_(v36, v37, &v100, v106, 16);
     if (v38)
     {
@@ -1855,9 +1855,9 @@ LABEL_11:
   }
 
   TSURectWithSize();
-  objc_msgSend_setBounds_(v4, v52, v53);
+  objc_msgSend_setBounds_(layerCopy, v52, v53);
   TSUCenterOfRect();
-  objc_msgSend_setPosition_(v4, v54, v55);
+  objc_msgSend_setPosition_(layerCopy, v54, v55);
   v56 = v9;
   v59 = objc_msgSend_parentRep(v56, v57, v58);
 
@@ -1890,7 +1890,7 @@ LABEL_11:
   self->_center.x = v75;
   self->_center.y = v76;
   layer = self->_layer;
-  if (layer == v4)
+  if (layer == layerCopy)
   {
     objc_msgSend_frame(layer, v73, v74);
     TSUCenterOfRect();
@@ -1929,14 +1929,14 @@ LABEL_11:
 
   else
   {
-    objc_msgSend_frame(v4, v73, v74);
+    objc_msgSend_frame(layerCopy, v73, v74);
     TSUCenterOfRect();
     v80 = objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v78, v79);
-    objc_msgSend_setValue_forKey_(v4, v81, v80, @"kTSDTextureLayerKeyOriginalPosition");
+    objc_msgSend_setValue_forKey_(layerCopy, v81, v80, @"kTSDTextureLayerKeyOriginalPosition");
   }
 }
 
-- (void)adjustAnchorPointRelativeToCenterOfRotationAtEventIndex:(unint64_t)a3
+- (void)adjustAnchorPointRelativeToCenterOfRotationAtEventIndex:(unint64_t)index
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -1959,7 +1959,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        objc_msgSend_adjustAnchorRelativeToCenterOfRotation_atEventIndex_(*(*(&v12 + 1) + 8 * v11++), v8, a3, self->_center.x, self->_center.y, v12);
+        objc_msgSend_adjustAnchorRelativeToCenterOfRotation_atEventIndex_(*(*(&v12 + 1) + 8 * v11++), v8, index, self->_center.x, self->_center.y, v12);
       }
 
       while (v9 != v11);
@@ -1970,7 +1970,7 @@ LABEL_11:
   }
 }
 
-- (void)resetAnchorPointAtEventIndex:(unint64_t)a3
+- (void)resetAnchorPointAtEventIndex:(unint64_t)index
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -1993,7 +1993,7 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        objc_msgSend_resetAnchorPointAtEventIndex_(*(*(&v11 + 1) + 8 * v10++), v7, a3, v11);
+        objc_msgSend_resetAnchorPointAtEventIndex_(*(*(&v11 + 1) + 8 * v10++), v7, index, v11);
       }
 
       while (v8 != v10);
@@ -2004,10 +2004,10 @@ LABEL_11:
   }
 }
 
-- (void)p_resetAttributesWithViewScale:(double)a3 eventIndex:(unint64_t)a4
+- (void)p_resetAttributesWithViewScale:(double)scale eventIndex:(unint64_t)index
 {
   v107 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_viewLayerAtEventIndex_(self, a2, a4, a3);
+  v6 = objc_msgSend_viewLayerAtEventIndex_(self, a2, index, scale);
   v9 = v6;
   if (v6 == self->_layer)
   {
@@ -2084,7 +2084,7 @@ LABEL_11:
         }
 
         v35 = *(*(&v96 + 1) + 8 * i);
-        v38 = objc_msgSend_viewLayerAtEventIndex_(v35, v31, a4);
+        v38 = objc_msgSend_viewLayerAtEventIndex_(v35, v31, index);
         *&v100.a = v93;
         *&v100.c = v91;
         *&v100.tx = v89;
@@ -2144,11 +2144,11 @@ LABEL_11:
   }
 }
 
-- (void)p_applyPositionFromAttributes:(id)a3 viewScale:(double)a4 eventIndex:(unint64_t)a5
+- (void)p_applyPositionFromAttributes:(id)attributes viewScale:(double)scale eventIndex:(unint64_t)index
 {
-  v7 = a3;
-  v23 = objc_msgSend_viewLayerAtEventIndex_(self, v8, a5);
-  v10 = objc_msgSend_valueForKey_(v7, v9, @"New Position Delta");
+  attributesCopy = attributes;
+  v23 = objc_msgSend_viewLayerAtEventIndex_(self, v8, index);
+  v10 = objc_msgSend_valueForKey_(attributesCopy, v9, @"New Position Delta");
 
   if (v10)
   {
@@ -2170,47 +2170,47 @@ LABEL_11:
   }
 }
 
-- (void)p_getComponentsOpacity:(double *)a3 scale:(double *)a4 angle:(double *)a5 fromAttributes:(id)a6 shouldApplyOpacity:(BOOL *)a7 shouldApplyAngle:(BOOL *)a8 shouldApplyScale:(BOOL *)a9
+- (void)p_getComponentsOpacity:(double *)opacity scale:(double *)scale angle:(double *)angle fromAttributes:(id)attributes shouldApplyOpacity:(BOOL *)applyOpacity shouldApplyAngle:(BOOL *)applyAngle shouldApplyScale:(BOOL *)applyScale
 {
-  v14 = a6;
-  if (v14)
+  attributesCopy = attributes;
+  if (attributesCopy)
   {
-    v36 = v14;
-    v16 = objc_msgSend_valueForKey_(v14, v15, @"sfx-action-color-alpha");
+    v36 = attributesCopy;
+    v16 = objc_msgSend_valueForKey_(attributesCopy, v15, @"sfx-action-color-alpha");
     v19 = v16;
-    if (a3)
+    if (opacity)
     {
       if (v16)
       {
         objc_msgSend_floatValue(v16, v17, v18);
-        *a3 = (v20 / 100.0);
-        if (a7)
+        *opacity = (v20 / 100.0);
+        if (applyOpacity)
         {
-          *a7 = 1;
+          *applyOpacity = 1;
         }
       }
     }
 
     v21 = objc_msgSend_valueForKey_(v36, v17, @"sfx-action-rotation-angle");
     v25 = objc_msgSend_valueForKey_(v36, v22, @"sfx-action-rotation-direction");
-    if (a5 && v21)
+    if (angle && v21)
     {
       objc_msgSend_floatValue(v21, v23, v24);
-      *a5 = v27 * 0.0174532925;
+      *angle = v27 * 0.0174532925;
       if (v25 && objc_msgSend_intValue(v25, v23, v26) == 32)
       {
-        *a5 = -*a5;
+        *angle = -*angle;
       }
 
-      if (a8)
+      if (applyAngle)
       {
-        *a8 = 1;
+        *applyAngle = 1;
       }
     }
 
     v28 = objc_msgSend_valueForKey_(v36, v23, @"sfx-action-scale-size");
     v31 = v28;
-    if (a4 && v28)
+    if (scale && v28)
     {
       objc_msgSend_floatValue(v28, v29, v30);
       v33 = v32;
@@ -2221,18 +2221,18 @@ LABEL_11:
         v35 = v33;
       }
 
-      *a4 = v35;
-      if (a9)
+      *scale = v35;
+      if (applyScale)
       {
-        *a9 = 1;
+        *applyScale = 1;
       }
     }
 
-    v14 = v36;
+    attributesCopy = v36;
   }
 }
 
-- (BOOL)p_areAttributes:(id)a3 equalToAttributes:(id)a4
+- (BOOL)p_areAttributes:(id)attributes equalToAttributes:(id)toAttributes
 {
   v15 = 1.0;
   v13 = 1.0;
@@ -2240,31 +2240,31 @@ LABEL_11:
   v11 = 0.0;
   v12 = 1.0;
   v10 = 1.0;
-  v6 = a4;
-  objc_msgSend_p_getComponentsOpacity_scale_angle_fromAttributes_shouldApplyOpacity_shouldApplyAngle_shouldApplyScale_(self, v7, &v15, &v13, &v14, a3, 0, 0, 0);
-  objc_msgSend_p_getComponentsOpacity_scale_angle_fromAttributes_shouldApplyOpacity_shouldApplyAngle_shouldApplyScale_(self, v8, &v12, &v10, &v11, v6, 0, 0, 0);
+  toAttributesCopy = toAttributes;
+  objc_msgSend_p_getComponentsOpacity_scale_angle_fromAttributes_shouldApplyOpacity_shouldApplyAngle_shouldApplyScale_(self, v7, &v15, &v13, &v14, attributes, 0, 0, 0);
+  objc_msgSend_p_getComponentsOpacity_scale_angle_fromAttributes_shouldApplyOpacity_shouldApplyAngle_shouldApplyScale_(self, v8, &v12, &v10, &v11, toAttributesCopy, 0, 0, 0);
 
   return v15 == v12 && v13 == v10 && v14 == v11;
 }
 
-- (void)applyActionEffect:(id)a3 viewScale:(double)a4 isMagicMove:(BOOL)a5 shouldBake:(BOOL)a6 applyScaleOnly:(BOOL)a7 ignoreScale:(BOOL)a8 shouldCheckActionKeys:(BOOL)a9 eventIndex:(unint64_t)a10
+- (void)applyActionEffect:(id)effect viewScale:(double)scale isMagicMove:(BOOL)move shouldBake:(BOOL)bake applyScaleOnly:(BOOL)only ignoreScale:(BOOL)ignoreScale shouldCheckActionKeys:(BOOL)keys eventIndex:(unint64_t)self0
 {
-  v10 = a9;
-  v13 = a6;
-  v14 = a5;
+  keysCopy = keys;
+  bakeCopy = bake;
+  moveCopy = move;
   v145 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v20 = v17;
-  if (!v13)
+  effectCopy = effect;
+  v20 = effectCopy;
+  if (!bakeCopy)
   {
 LABEL_7:
-    v106 = v10;
+    v106 = keysCopy;
     v23 = 0x277CD9000uLL;
     objc_msgSend_begin(MEMORY[0x277CD9FF0], v18, v19);
     objc_msgSend_setDisableActions_(MEMORY[0x277CD9FF0], v24, 1);
-    if (!v20 && !v14)
+    if (!v20 && !moveCopy)
     {
-      objc_msgSend_p_resetAttributesWithViewScale_eventIndex_(self, v25, a10, a4);
+      objc_msgSend_p_resetAttributesWithViewScale_eventIndex_(self, v25, index, scale);
 LABEL_54:
       objc_msgSend_commit(*(v23 + 4080), v26, v27);
       goto LABEL_55;
@@ -2282,17 +2282,17 @@ LABEL_54:
       v130[1] = 3221225472;
       v130[2] = sub_2766AE010;
       v130[3] = &unk_27A6CCB88;
-      v131 = a7;
-      v132 = v13;
-      v133 = v14;
+      onlyCopy = only;
+      v132 = bakeCopy;
+      v133 = moveCopy;
       v134 = v138;
-      v135 = v10;
+      v135 = keysCopy;
       *&v130[5] = angle;
       *&v130[6] = sx;
-      v136 = a8;
+      ignoreScaleCopy = ignoreScale;
       v137 = HIBYTE(v139);
       v130[4] = self;
-      v130[7] = a10;
+      v130[7] = index;
       v28 = MEMORY[0x277C9C8B0](v130);
       v29 = v28;
       if (self->_alternateLayer)
@@ -2337,7 +2337,7 @@ LABEL_54:
 
       else
       {
-        v103 = v14;
+        v103 = moveCopy;
         v105 = v20;
         v128 = 0u;
         v129 = 0u;
@@ -2345,13 +2345,13 @@ LABEL_54:
         v127 = 0u;
         obj = self->_allTextures;
         v45 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v44, &v126, v144, 16);
-        v104 = v13;
+        v104 = bakeCopy;
         if (v45)
         {
           v47 = v45;
           v48 = *v127;
           v49 = 1;
-          v50 = v10;
+          v50 = keysCopy;
           do
           {
             for (i = 0; i != v47; ++i)
@@ -2362,7 +2362,7 @@ LABEL_54:
               }
 
               v52 = *(*(&v126 + 1) + 8 * i);
-              v53 = objc_msgSend_viewLayerAtEventIndex_(v52, v46, a10);
+              v53 = objc_msgSend_viewLayerAtEventIndex_(v52, v46, index);
               (v29)[2](v29, v52, v53);
               if (v50)
               {
@@ -2386,7 +2386,7 @@ LABEL_54:
           v49 = 1;
         }
 
-        v13 = v104;
+        bakeCopy = v104;
         if (v103)
         {
           v20 = v105;
@@ -2404,7 +2404,7 @@ LABEL_54:
         }
       }
 
-      self->_isBaked = v13;
+      self->_isBaked = bakeCopy;
     }
 
     else
@@ -2414,7 +2414,7 @@ LABEL_54:
 
     if (v139 == 1)
     {
-      v60 = objc_msgSend_viewLayerAtEventIndex_(self, v26, a10);
+      v60 = objc_msgSend_viewLayerAtEventIndex_(self, v26, index);
       HIDWORD(v61) = HIDWORD(v142);
       *&v61 = v142;
       objc_msgSend_setOpacity_(v60, v62, v63, v61);
@@ -2422,7 +2422,7 @@ LABEL_54:
       if ((v49 & 1) == 0)
       {
 LABEL_40:
-        if (!v13)
+        if (!bakeCopy)
         {
           goto LABEL_54;
         }
@@ -2436,8 +2436,8 @@ LABEL_40:
       goto LABEL_40;
     }
 
-    objc_msgSend_p_applyPositionFromAttributes_viewScale_eventIndex_(self, v26, v20, a10, a4);
-    if (!v13)
+    objc_msgSend_p_applyPositionFromAttributes_viewScale_eventIndex_(self, v26, v20, index, scale);
+    if (!bakeCopy)
     {
       goto LABEL_54;
     }
@@ -2521,7 +2521,7 @@ LABEL_44:
     goto LABEL_54;
   }
 
-  if (!self->_isBaked || (v19 = self->_bakedAttributes) == 0 || !objc_msgSend_isEqualToDictionary_(v17, v18, v19))
+  if (!self->_isBaked || (v19 = self->_bakedAttributes) == 0 || !objc_msgSend_isEqualToDictionary_(effectCopy, v18, v19))
   {
     v21 = objc_msgSend_copy(v20, v18, v19);
     bakedAttributes = self->_bakedAttributes;
@@ -2530,24 +2530,24 @@ LABEL_44:
     goto LABEL_7;
   }
 
-  objc_msgSend_p_applyPositionFromAttributes_viewScale_eventIndex_(self, v18, v20, a10, a4);
+  objc_msgSend_p_applyPositionFromAttributes_viewScale_eventIndex_(self, v18, v20, index, scale);
 LABEL_55:
 }
 
-- (void)setBoundingRect:(CGRect)a3
+- (void)setBoundingRect:(CGRect)rect
 {
-  self->_boundingRect = a3;
-  MidX = CGRectGetMidX(a3);
+  self->_boundingRect = rect;
+  MidX = CGRectGetMidX(rect);
   MidY = CGRectGetMidY(self->_boundingRect);
   self->_center.x = MidX;
   self->_center.y = MidY;
 }
 
-- (void)setBoundingRect:(CGRect)a3 forStage:(int64_t)a4
+- (void)setBoundingRect:(CGRect)rect forStage:(int64_t)stage
 {
   boundingRectForStageMap = self->_boundingRectForStageMap;
-  v9 = objc_msgSend_valueWithCGRect_(MEMORY[0x277CCAE60], a2, a4, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
-  v7 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v6, a4);
+  v9 = objc_msgSend_valueWithCGRect_(MEMORY[0x277CCAE60], a2, stage, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+  v7 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v6, stage);
   objc_msgSend_setObject_forKey_(boundingRectForStageMap, v8, v9, v7);
 }
 
@@ -2561,22 +2561,22 @@ LABEL_55:
   return result;
 }
 
-- (void)setIsBaked:(BOOL)a3
+- (void)setIsBaked:(BOOL)baked
 {
-  if (self->_isBaked && !a3)
+  if (self->_isBaked && !baked)
   {
     bakedAttributes = self->_bakedAttributes;
     self->_bakedAttributes = 0;
   }
 
-  self->_isBaked = a3;
+  self->_isBaked = baked;
 }
 
-- (void)setBitmapRenderingQualityInfo:(id)a3
+- (void)setBitmapRenderingQualityInfo:(id)info
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  self->_bitmapRenderingQualityInfo = v4;
+  infoCopy = info;
+  self->_bitmapRenderingQualityInfo = infoCopy;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -2597,7 +2597,7 @@ LABEL_55:
           objc_enumerationMutation(v5);
         }
 
-        objc_msgSend_setBitmapRenderingQualityInfo_(*(*(&v12 + 1) + 8 * v11++), v8, v4, v12);
+        objc_msgSend_setBitmapRenderingQualityInfo_(*(*(&v12 + 1) + 8 * v11++), v8, infoCopy, v12);
       }
 
       while (v9 != v11);
@@ -2608,10 +2608,10 @@ LABEL_55:
   }
 }
 
-- (CGRect)p_frameAtEventIndex:(unint64_t)a3
+- (CGRect)p_frameAtEventIndex:(unint64_t)index
 {
   v38 = *MEMORY[0x277D85DE8];
-  objc_msgSend_frame(self, a2, a3);
+  objc_msgSend_frame(self, a2, index);
   x = v5;
   y = v7;
   width = v9;
@@ -2638,7 +2638,7 @@ LABEL_55:
             objc_enumerationMutation(v15);
           }
 
-          v22 = objc_msgSend_viewLayerAtEventIndex_(*(*(&v33 + 1) + 8 * v21), v18, a3, v33);
+          v22 = objc_msgSend_viewLayerAtEventIndex_(*(*(&v33 + 1) + 8 * v21), v18, index, v33);
           objc_msgSend_frame(v22, v23, v24);
           v42.origin.x = v25;
           v42.origin.y = v26;
@@ -2676,30 +2676,30 @@ LABEL_55:
   return result;
 }
 
-- (void)renderIntoContext:(CGContext *)a3 eventIndex:(unint64_t)a4 requiresTransparentBackground:(BOOL)a5
+- (void)renderIntoContext:(CGContext *)context eventIndex:(unint64_t)index requiresTransparentBackground:(BOOL)background
 {
-  v5 = a5;
+  backgroundCopy = background;
   v64 = *MEMORY[0x277D85DE8];
-  v9 = objc_msgSend_viewLayerAtEventIndex_(self, a2, a4);
+  v9 = objc_msgSend_viewLayerAtEventIndex_(self, a2, index);
   if (objc_msgSend_isHidden(v9, v10, v11))
   {
     goto LABEL_27;
   }
 
-  objc_msgSend_p_frameAtEventIndex_(self, v12, a4);
+  objc_msgSend_p_frameAtEventIndex_(self, v12, index);
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   objc_msgSend_frame(v9, v21, v22);
   v24 = v23;
   objc_msgSend_frame(v9, v25, v26);
-  CGContextTranslateCTM(a3, v24, v27);
+  CGContextTranslateCTM(context, v24, v27);
   objc_msgSend_opacity(v9, v28, v29);
   if (v30 == 1.0)
   {
-    if (!v5)
+    if (!backgroundCopy)
     {
       v31 = 0;
       goto LABEL_6;
@@ -2708,21 +2708,21 @@ LABEL_55:
 
   else
   {
-    CGContextSetAlpha(a3, v30);
+    CGContextSetAlpha(context, v30);
   }
 
   v65.origin.x = v14;
   v65.origin.y = v16;
   v65.size.width = v18;
   v65.size.height = v20;
-  CGContextBeginTransparencyLayerWithRect(a3, v65, 0);
+  CGContextBeginTransparencyLayerWithRect(context, v65, 0);
   v31 = 1;
 LABEL_6:
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v53 = self;
+  selfCopy = self;
   v32 = self->_allTextures;
   v34 = objc_msgSend_countByEnumeratingWithState_objects_count_(v32, v33, &v58, v63, 16);
   if (v34)
@@ -2743,7 +2743,7 @@ LABEL_6:
         v41 = *(*(&v58 + 1) + 8 * v40);
         if (!v31 || objc_msgSend_textureType(*(*(&v58 + 1) + 8 * v40), v35, v36) != 15 && objc_msgSend_textureType(v41, v35, v36) != 16)
         {
-          objc_msgSend_renderIntoContext_eventIndex_shouldApplyAlpha_shouldClipToBounds_(v41, v35, a3, a4, 1, v38 & 1);
+          objc_msgSend_renderIntoContext_eventIndex_shouldApplyAlpha_shouldClipToBounds_(v41, v35, context, index, 1, v38 & 1);
           v38 |= objc_msgSend_textureType(v41, v42, v43) == 6;
         }
 
@@ -2759,13 +2759,13 @@ LABEL_6:
 
   if (v31)
   {
-    CGContextEndTransparencyLayer(a3);
-    CGContextSetAlpha(a3, 1.0);
+    CGContextEndTransparencyLayer(context);
+    CGContextSetAlpha(context, 1.0);
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v46 = objc_msgSend_titleAndCaptionTextures(v53, v44, v45);
+    v46 = objc_msgSend_titleAndCaptionTextures(selfCopy, v44, v45);
     v48 = objc_msgSend_countByEnumeratingWithState_objects_count_(v46, v47, &v54, v62, 16);
     if (v48)
     {
@@ -2781,7 +2781,7 @@ LABEL_6:
             objc_enumerationMutation(v46);
           }
 
-          objc_msgSend_renderIntoContext_eventIndex_shouldApplyAlpha_shouldClipToBounds_(*(*(&v54 + 1) + 8 * v52++), v49, a3, a4, 1, 0);
+          objc_msgSend_renderIntoContext_eventIndex_shouldApplyAlpha_shouldClipToBounds_(*(*(&v54 + 1) + 8 * v52++), v49, context, index, 1, 0);
         }
 
         while (v50 != v52);
@@ -2792,7 +2792,7 @@ LABEL_6:
     }
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 LABEL_27:
 }
 
@@ -2883,7 +2883,7 @@ LABEL_27:
   }
 }
 
-- (void)resetToOriginalSourceAtEventIndex:(unint64_t)a3
+- (void)resetToOriginalSourceAtEventIndex:(unint64_t)index
 {
   v23 = *MEMORY[0x277D85DE8];
   if (self->_isBaked)
@@ -2912,7 +2912,7 @@ LABEL_27:
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
-          objc_msgSend_resetToSourceImageAtEventIndex_(v13, v9, a3, v18);
+          objc_msgSend_resetToSourceImageAtEventIndex_(v13, v9, index, v18);
           objc_msgSend_releaseMetalTexture(v13, v14, v15);
         }
 
@@ -2923,9 +2923,9 @@ LABEL_27:
     }
   }
 
-  if (!a3)
+  if (!index)
   {
-    v16 = objc_msgSend_copy(self->_origBoundingRectForStageMap, a2, a3);
+    v16 = objc_msgSend_copy(self->_origBoundingRectForStageMap, a2, index);
     boundingRectForStageMap = self->_boundingRectForStageMap;
     self->_boundingRectForStageMap = v16;
   }
@@ -2970,18 +2970,18 @@ LABEL_27:
   }
 }
 
-- (void)addPerspectiveLayerToTexture:(id)a3 withShowSize:(CGSize)a4
+- (void)addPerspectiveLayerToTexture:(id)texture withShowSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v62 = a3;
-  v9 = objc_msgSend_layer(v62, v7, v8);
+  height = size.height;
+  width = size.width;
+  textureCopy = texture;
+  v9 = objc_msgSend_layer(textureCopy, v7, v8);
   v12 = objc_msgSend_superlayer(v9, v10, v11);
   v15 = objc_msgSend_layer(self, v13, v14);
 
   if (v12 == v15)
   {
-    v18 = objc_msgSend_layer(v62, v16, v17);
+    v18 = objc_msgSend_layer(textureCopy, v16, v17);
     v19 = objc_alloc_init(MEMORY[0x277CD9ED0]);
     v22 = objc_msgSend_layer(self, v20, v21);
     objc_msgSend_frame(v22, v23, v24);
@@ -3074,33 +3074,33 @@ LABEL_27:
   }
 }
 
-- (id)viewLayerAtEventIndex:(unint64_t)a3
+- (id)viewLayerAtEventIndex:(unint64_t)index
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (a3 == 0x7FFFFFFF || (objc_msgSend_currentThread(MEMORY[0x277CCACC8], v5, v6), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend_threadDictionary(v7, v8, v9), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKeyedSubscript_(v10, v11, @"kTSDTexturePreCachingOperation"), v12 = objc_claimAutoreleasedReturnValue(), v12, v10, v7, !v12))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (index == 0x7FFFFFFF || (objc_msgSend_currentThread(MEMORY[0x277CCACC8], v5, v6), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend_threadDictionary(v7, v8, v9), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKeyedSubscript_(v10, v11, @"kTSDTexturePreCachingOperation"), v12 = objc_claimAutoreleasedReturnValue(), v12, v10, v7, !v12))
   {
-    v17 = v4->_layer;
+    v17 = selfCopy->_layer;
   }
 
   else
   {
-    eventIndexToViewLayerMap = v4->_eventIndexToViewLayerMap;
-    v15 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v13, a3);
+    eventIndexToViewLayerMap = selfCopy->_eventIndexToViewLayerMap;
+    v15 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v13, index);
     v17 = objc_msgSend_objectForKey_(eventIndexToViewLayerMap, v16, v15);
 
     if (!v17)
     {
       v17 = objc_msgSend_layer(MEMORY[0x277CD9ED0], v18, v19);
-      objc_msgSend_opacity(v4->_layer, v20, v21);
+      objc_msgSend_opacity(selfCopy->_layer, v20, v21);
       objc_msgSend_setOpacity_(v17, v22, v23);
-      objc_msgSend_bounds(v4->_layer, v24, v25);
+      objc_msgSend_bounds(selfCopy->_layer, v24, v25);
       objc_msgSend_setBounds_(v17, v26, v27);
-      objc_msgSend_anchorPoint(v4->_layer, v28, v29);
+      objc_msgSend_anchorPoint(selfCopy->_layer, v28, v29);
       objc_msgSend_setAnchorPoint_(v17, v30, v31);
-      objc_msgSend_position(v4->_layer, v32, v33);
+      objc_msgSend_position(selfCopy->_layer, v32, v33);
       objc_msgSend_setPosition_(v17, v34, v35);
-      layer = v4->_layer;
+      layer = selfCopy->_layer;
       if (layer)
       {
         objc_msgSend_transform(layer, v36, v37);
@@ -3127,22 +3127,22 @@ LABEL_27:
       v47[2] = v50;
       v47[3] = v51;
       objc_msgSend_setTransform_(v17, v36, v47);
-      v42 = v4->_eventIndexToViewLayerMap;
+      v42 = selfCopy->_eventIndexToViewLayerMap;
       if (!v42)
       {
         v43 = objc_msgSend_strongToStrongObjectsMapTable(MEMORY[0x277CCAB00], v40, v41);
-        v44 = v4->_eventIndexToViewLayerMap;
-        v4->_eventIndexToViewLayerMap = v43;
+        v44 = selfCopy->_eventIndexToViewLayerMap;
+        selfCopy->_eventIndexToViewLayerMap = v43;
 
-        v42 = v4->_eventIndexToViewLayerMap;
+        v42 = selfCopy->_eventIndexToViewLayerMap;
       }
 
-      v45 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v40, a3);
+      v45 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v40, index);
       objc_msgSend_setObject_forKey_(v42, v46, v17, v45);
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v17;
 }
@@ -3221,12 +3221,12 @@ LABEL_27:
   return v26;
 }
 
-- (BOOL)canReuseMetalTexturesWith:(id)a3
+- (BOOL)canReuseMetalTexturesWith:(id)with
 {
-  v4 = a3;
-  v7 = objc_msgSend_textureDescription(v4, v5, v6);
+  withCopy = with;
+  v7 = objc_msgSend_textureDescription(withCopy, v5, v6);
   WeakRetained = objc_loadWeakRetained(&self->_rep);
-  if (!WeakRetained || (v9 = WeakRetained, v10 = objc_loadWeakRetained(&self->_rep), objc_msgSend_rep(v4, v11, v12), v13 = objc_claimAutoreleasedReturnValue(), v13, v10, v9, v10 != v13))
+  if (!WeakRetained || (v9 = WeakRetained, v10 = objc_loadWeakRetained(&self->_rep), objc_msgSend_rep(withCopy, v11, v12), v13 = objc_claimAutoreleasedReturnValue(), v13, v10, v9, v10 != v13))
   {
 LABEL_3:
     LOBYTE(v16) = 0;
@@ -3251,7 +3251,7 @@ LABEL_3:
     }
 
     isEqual = objc_msgSend_isEqual_(self->_textureDescription, v14, v7);
-    if (self->_textureAngle == 0.0 && (objc_msgSend_textureAngle(v4, v19, v20), v22 == 0.0))
+    if (self->_textureAngle == 0.0 && (objc_msgSend_textureAngle(withCopy, v19, v20), v22 == 0.0))
     {
       v23 = 1;
     }
@@ -3269,7 +3269,7 @@ LABEL_3:
 
     else
     {
-      v43 = objc_msgSend_containsFinalTextures(v4, v41, v42) ^ 1;
+      v43 = objc_msgSend_containsFinalTextures(withCopy, v41, v42) ^ 1;
     }
 
     v44 = objc_msgSend_stage(self->_textureDescription, v41, v42);
@@ -3303,7 +3303,7 @@ LABEL_3:
     v25 = objc_loadWeakRetained(&self->_rep);
     v26 = TSUDynamicCast();
 
-    if (self->_textureAngle == 0.0 && (objc_msgSend_textureAngle(v4, v27, v28), v29 == 0.0))
+    if (self->_textureAngle == 0.0 && (objc_msgSend_textureAngle(withCopy, v27, v28), v29 == 0.0))
     {
       v16 = 1;
     }

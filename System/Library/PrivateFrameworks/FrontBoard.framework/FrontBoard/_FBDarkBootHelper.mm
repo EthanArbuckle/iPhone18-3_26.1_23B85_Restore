@@ -1,6 +1,6 @@
 @interface _FBDarkBootHelper
 - (BOOL)isBootingDark;
-- (void)_setDarkBootEnabled:(BOOL)a3;
+- (void)_setDarkBootEnabled:(BOOL)enabled;
 - (void)isBootingDark;
 @end
 
@@ -61,11 +61,11 @@ LABEL_5:
   return v5;
 }
 
-- (void)_setDarkBootEnabled:(BOOL)a3
+- (void)_setDarkBootEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (enabled)
   {
     v4 = 2;
   }
@@ -90,7 +90,7 @@ LABEL_5:
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = "NO";
-    if (v3)
+    if (enabledCopy)
     {
       v8 = "YES";
     }
@@ -107,7 +107,7 @@ LABEL_5:
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_1A89DD000, a2, OS_LOG_TYPE_ERROR, "failed to read darkboot state ->  %{darwin.errno}i", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }

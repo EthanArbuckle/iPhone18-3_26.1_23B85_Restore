@@ -1,21 +1,21 @@
 @interface TSDPartitionedPartialLayout
 - (CGRect)bounds;
-- (TSDPartitionedPartialLayout)initWithInfo:(id)a3 bounds:(CGRect)a4 partitioner:(id)a5 isLayoutRTL:(BOOL)a6;
+- (TSDPartitionedPartialLayout)initWithInfo:(id)info bounds:(CGRect)bounds partitioner:(id)partitioner isLayoutRTL:(BOOL)l;
 - (id)computeLayoutGeometry;
 @end
 
 @implementation TSDPartitionedPartialLayout
 
-- (TSDPartitionedPartialLayout)initWithInfo:(id)a3 bounds:(CGRect)a4 partitioner:(id)a5 isLayoutRTL:(BOOL)a6
+- (TSDPartitionedPartialLayout)initWithInfo:(id)info bounds:(CGRect)bounds partitioner:(id)partitioner isLayoutRTL:(BOOL)l
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a5;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  partitionerCopy = partitioner;
   v18.receiver = self;
   v18.super_class = TSDPartitionedPartialLayout;
-  v15 = [(TSDLayout *)&v18 initWithInfo:a3];
+  v15 = [(TSDLayout *)&v18 initWithInfo:info];
   v16 = v15;
   if (v15)
   {
@@ -23,8 +23,8 @@
     v15->_bounds.origin.y = y;
     v15->_bounds.size.width = width;
     v15->_bounds.size.height = height;
-    objc_storeStrong(&v15->_partitioner, a5);
-    v16->_isLayoutRTL = a6;
+    objc_storeStrong(&v15->_partitioner, partitioner);
+    v16->_isLayoutRTL = l;
   }
 
   return v16;

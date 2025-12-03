@@ -4,12 +4,12 @@
 - (CLKUIColoringLabel)topLabel;
 - (NTKAlaskanChronoButton)resetButton;
 - (NTKAlaskanChronoButton)startStopButton;
-- (NTKAlaskanChronographView)initWithFrame:(CGRect)a3;
+- (NTKAlaskanChronographView)initWithFrame:(CGRect)frame;
 - (NTKAlaskanChronographViewDelegate)delegate;
 - (NTKHandView)secondaryHandView;
 - (UIView)chronometerHandsParentView;
-- (double)_stopwatchCurrentLapTimeForFutureDate:(id)a3;
-- (double)_stopwatchElapsedTimeForFutureDate:(id)a3;
+- (double)_stopwatchCurrentLapTimeForFutureDate:(id)date;
+- (double)_stopwatchElapsedTimeForFutureDate:(id)date;
 - (double)largeAnalogHandsFullRotationDuration;
 - (double)largeHandsAnimationFPS;
 - (double)leftSubdialAnalogHandsFullRotationDuration;
@@ -17,66 +17,66 @@
 - (double)rightSubdialAnalogHandsFullRotationDuration;
 - (double)secondsAngleForCurrentDate;
 - (double)startStopButtonAlpha;
-- (id)_currentLapStartDateRelativeToDate:(id)a3;
-- (id)_lapTimelapsedTextProviderWithDate:(id)a3;
+- (id)_currentLapStartDateRelativeToDate:(id)date;
+- (id)_lapTimelapsedTextProviderWithDate:(id)date;
 - (id)_newCenterLabel;
-- (id)_stopwatchStartDateRelativeToDate:(id)a3;
-- (id)_tachymeterTextProviderWithTimeInterval:(double)a3 dropPrefix:(BOOL)a4 dropSuffix:(BOOL)a5;
-- (id)_totalTimelapsedTextProviderWithDate:(id)a3;
+- (id)_stopwatchStartDateRelativeToDate:(id)date;
+- (id)_tachymeterTextProviderWithTimeInterval:(double)interval dropPrefix:(BOOL)prefix dropSuffix:(BOOL)suffix;
+- (id)_totalTimelapsedTextProviderWithDate:(id)date;
 - (id)currentClockDate;
 - (id)currentStopwatchDate;
-- (id)dialViewForTimeScale:(unint64_t)a3;
+- (id)dialViewForTimeScale:(unint64_t)scale;
 - (id)layerDisabledActions;
 - (id)leftSubdialViewForTimeScale:(unint64_t)timeScale;
 - (id)rightSubdialViewForTimeScale:(unint64_t)timeScale;
-- (id)titleForTimeScale:(unint64_t)a3;
+- (id)titleForTimeScale:(unint64_t)scale;
 - (unint64_t)nextTimeScale;
 - (unint64_t)previousTimeScale;
-- (void)_cleanupSubdialView:(id)a3;
-- (void)_setUpUIForTimeScale:(unint64_t)a3;
+- (void)_cleanupSubdialView:(id)view;
+- (void)_setUpUIForTimeScale:(unint64_t)scale;
 - (void)_updateElapsedTimeLabel;
 - (void)_updateTachymeterLabel;
-- (void)applyPalette:(id)a3;
-- (void)applyTransitionFromTimeModeToChronometerModeWithfraction:(double)a3;
-- (void)applyTransitionFromTimeScale:(unint64_t)a3 toTimeScale:(unint64_t)a4 fraction:(double)a5;
-- (void)applyTransitionFromView:(id)a3 toView:(id)a4 fraction:(double)a5;
+- (void)applyPalette:(id)palette;
+- (void)applyTransitionFromTimeModeToChronometerModeWithfraction:(double)withfraction;
+- (void)applyTransitionFromTimeScale:(unint64_t)scale toTimeScale:(unint64_t)timeScale fraction:(double)fraction;
+- (void)applyTransitionFromView:(id)view toView:(id)toView fraction:(double)fraction;
 - (void)cleanUpTimeScaleTransition;
-- (void)configureHandsAnimation:(id)a3 currentRadians:(double)a4 durationOfFullRotation:(double)a5 fps:(double)a6;
+- (void)configureHandsAnimation:(id)animation currentRadians:(double)radians durationOfFullRotation:(double)rotation fps:(double)fps;
 - (void)dealloc;
 - (void)enableDisableResetButton;
 - (void)handleResetButtonTap;
 - (void)handleStartStopButtonTap;
-- (void)handleTapGestureRecognizer:(id)a3;
+- (void)handleTapGestureRecognizer:(id)recognizer;
 - (void)layoutSubviews;
 - (void)removeAllTransitionViews;
-- (void)setChronometerHandsParentView:(id)a3;
-- (void)setDialTickView:(id)a3;
-- (void)setDiameter:(double)a3;
-- (void)setIsChronoMode:(BOOL)a3 completionBlock:(id)a4 animated:(BOOL)a5;
-- (void)setIsEditing:(BOOL)a3;
-- (void)setPalette:(id)a3;
-- (void)setStopwatchModel:(id)a3;
-- (void)setStopwatchModel:(id)a3 animating:(BOOL)a4;
-- (void)setTimeScale:(unint64_t)a3;
-- (void)setupForChronographModeWithCompletionBlock:(id)a3;
-- (void)setupForTimeModeWithCompletionBlock:(id)a3 animated:(BOOL)a4;
+- (void)setChronometerHandsParentView:(id)view;
+- (void)setDialTickView:(id)view;
+- (void)setDiameter:(double)diameter;
+- (void)setIsChronoMode:(BOOL)mode completionBlock:(id)block animated:(BOOL)animated;
+- (void)setIsEditing:(BOOL)editing;
+- (void)setPalette:(id)palette;
+- (void)setStopwatchModel:(id)model;
+- (void)setStopwatchModel:(id)model animating:(BOOL)animating;
+- (void)setTimeScale:(unint64_t)scale;
+- (void)setupForChronographModeWithCompletionBlock:(id)block;
+- (void)setupForTimeModeWithCompletionBlock:(id)block animated:(BOOL)animated;
 - (void)startAnimatingBottomSubdialHand;
 - (void)startAnimatingHands;
-- (void)startStopTachymeterUnitUpdates:(BOOL)a3;
+- (void)startStopTachymeterUnitUpdates:(BOOL)updates;
 - (void)stopAnimatingBottomSubdialHand;
 - (void)stopAnimatingHands;
-- (void)stopHandAnimation:(id)a3;
+- (void)stopHandAnimation:(id)animation;
 - (void)switchBottomSubDialView;
-- (void)switchDialViewForTimeScale:(unint64_t)a3 setTopLabel:(BOOL)a4;
-- (void)switchLeftSubDialViewsForTimeScale:(unint64_t)a3;
-- (void)switchRightSubDialViewsForTimeScale:(unint64_t)a3;
-- (void)switchSubDialViewsForTimeScale:(unint64_t)a3;
+- (void)switchDialViewForTimeScale:(unint64_t)scale setTopLabel:(BOOL)label;
+- (void)switchLeftSubDialViewsForTimeScale:(unint64_t)scale;
+- (void)switchRightSubDialViewsForTimeScale:(unint64_t)scale;
+- (void)switchSubDialViewsForTimeScale:(unint64_t)scale;
 - (void)updateBottomSubdialHandPosition;
 - (void)updateCenterLabelColor;
 - (void)updateCenterLabelColorForChronometerMode;
 - (void)updateCenterLabelColorForTimeMode;
 - (void)updateChronoLargeHandsCenterPoint;
-- (void)updateClockHandsPositionAnimated:(BOOL)a3;
+- (void)updateClockHandsPositionAnimated:(BOOL)animated;
 - (void)updateHandsPosition;
 - (void)updateInnerCircleColor;
 - (void)updateSecondaryHandVisibility;
@@ -86,17 +86,17 @@
 
 @implementation NTKAlaskanChronographView
 
-- (NTKAlaskanChronographView)initWithFrame:(CGRect)a3
+- (NTKAlaskanChronographView)initWithFrame:(CGRect)frame
 {
   v35.receiver = self;
   v35.super_class = NTKAlaskanChronographView;
-  v3 = [(NTKAlaskanChronographView *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKAlaskanChronographView *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[NTKFaceViewRenderingContext sharedRenderingContext];
-    v5 = [v4 device];
+    device = [v4 device];
     device = v3->_device;
-    v3->_device = v5;
+    v3->_device = device;
 
     v3->_updateFidelity = 0;
     v7 = objc_alloc_init(NTKAlaskanDialViewFactory);
@@ -115,39 +115,39 @@
     topLabelSuffixColor = v3->_topLabelSuffixColor;
     v3->_topLabelSuffixColor = v13;
 
-    v15 = [(NTKAlaskanChronographView *)v3 layerDisabledActions];
+    layerDisabledActions = [(NTKAlaskanChronographView *)v3 layerDisabledActions];
     v16 = objc_opt_new();
     outerBackgroundCircle = v3->_outerBackgroundCircle;
     v3->_outerBackgroundCircle = v16;
 
     [(CALayer *)v3->_outerBackgroundCircle setMasksToBounds:1];
-    [(CALayer *)v3->_outerBackgroundCircle setActions:v15];
-    v18 = [(NTKAlaskanChronographView *)v3 layer];
-    [v18 addSublayer:v3->_outerBackgroundCircle];
+    [(CALayer *)v3->_outerBackgroundCircle setActions:layerDisabledActions];
+    layer = [(NTKAlaskanChronographView *)v3 layer];
+    [layer addSublayer:v3->_outerBackgroundCircle];
 
     v19 = objc_opt_new();
     innerBackgroundCircle = v3->_innerBackgroundCircle;
     v3->_innerBackgroundCircle = v19;
 
     [(CALayer *)v3->_innerBackgroundCircle setMasksToBounds:1];
-    [(CALayer *)v3->_innerBackgroundCircle setActions:v15];
-    v21 = [(NTKAlaskanChronographView *)v3 layer];
-    [v21 addSublayer:v3->_innerBackgroundCircle];
+    [(CALayer *)v3->_innerBackgroundCircle setActions:layerDisabledActions];
+    layer2 = [(NTKAlaskanChronographView *)v3 layer];
+    [layer2 addSublayer:v3->_innerBackgroundCircle];
 
-    v22 = [(NTKAlaskanChronographView *)v3 device];
-    v23 = [CLKUIAnalogHandConfiguration defaultSecondConfigurationForDevice:v22];
+    device2 = [(NTKAlaskanChronographView *)v3 device];
+    v23 = [CLKUIAnalogHandConfiguration defaultSecondConfigurationForDevice:device2];
 
     v24 = [NTKHandView alloc];
-    v25 = [(NTKAlaskanChronographView *)v3 device];
-    v26 = [v24 initWithConfiguration:v23 forDevice:v25 maskedShadow:1];
+    device3 = [(NTKAlaskanChronographView *)v3 device];
+    v26 = [v24 initWithConfiguration:v23 forDevice:device3 maskedShadow:1];
     primaryHandView = v3->_primaryHandView;
     v3->_primaryHandView = v26;
 
     [(NTKHandView *)v3->_primaryHandView anchorPointFromConfiguration];
     v29 = v28;
     v31 = v30;
-    v32 = [(NTKHandView *)v3->_primaryHandView layer];
-    [v32 setAnchorPoint:{v29, v31}];
+    layer3 = [(NTKHandView *)v3->_primaryHandView layer];
+    [layer3 setAnchorPoint:{v29, v31}];
 
     [(NTKAlaskanChronographView *)v3 addSubview:v3->_primaryHandView];
     v33 = [[UITapGestureRecognizer alloc] initWithTarget:v3 action:"handleTapGestureRecognizer:"];
@@ -196,14 +196,14 @@
   [(NTKAlaskanChronographView *)&v4 dealloc];
 }
 
-- (void)setIsEditing:(BOOL)a3
+- (void)setIsEditing:(BOOL)editing
 {
-  v3 = a3;
-  self->_isEditing = a3;
+  editingCopy = editing;
+  self->_isEditing = editing;
   [(CLKUIColoringLabel *)self->_topLabel setHidden:?];
-  [(NTKAlaskanChronoButton *)self->_resetButton setHidden:v3];
-  [(NTKAlaskanChronoButton *)self->_startStopButton setHidden:v3];
-  if (!v3)
+  [(NTKAlaskanChronoButton *)self->_resetButton setHidden:editingCopy];
+  [(NTKAlaskanChronoButton *)self->_startStopButton setHidden:editingCopy];
+  if (!editingCopy)
   {
     [(CLKUIColoringLabel *)self->_transitionCenterLabel removeFromSuperview];
     transitionCenterLabel = self->_transitionCenterLabel;
@@ -211,33 +211,33 @@
   }
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  objc_storeStrong(&self->_originalPalette, a3);
-  v5 = a3;
-  [(NTKAlaskanChronographView *)self applyPalette:v5];
+  objc_storeStrong(&self->_originalPalette, palette);
+  paletteCopy = palette;
+  [(NTKAlaskanChronographView *)self applyPalette:paletteCopy];
 }
 
-- (void)applyPalette:(id)a3
+- (void)applyPalette:(id)palette
 {
-  objc_storeStrong(&self->_palette, a3);
-  v5 = a3;
-  [(NTKAlaskanDialViewFactory *)self->_dialViewFactory setPalette:v5];
-  [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory setPalette:v5];
-  v6 = [(NTKChronographProFacePalette *)self->_palette ring];
-  -[CALayer setBackgroundColor:](self->_outerBackgroundCircle, "setBackgroundColor:", [v6 CGColor]);
+  objc_storeStrong(&self->_palette, palette);
+  paletteCopy = palette;
+  [(NTKAlaskanDialViewFactory *)self->_dialViewFactory setPalette:paletteCopy];
+  [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory setPalette:paletteCopy];
+  ring = [(NTKChronographProFacePalette *)self->_palette ring];
+  -[CALayer setBackgroundColor:](self->_outerBackgroundCircle, "setBackgroundColor:", [ring CGColor]);
 
-  v7 = [(NTKChronographProFacePalette *)self->_palette lapHand1];
-  [(NTKHandView *)self->_primaryHandView setTintColor:v7];
+  lapHand1 = [(NTKChronographProFacePalette *)self->_palette lapHand1];
+  [(NTKHandView *)self->_primaryHandView setTintColor:lapHand1];
 
-  v8 = [(NTKChronographProFacePalette *)self->_palette lapHand2];
-  [(NTKHandView *)self->_secondaryHandView setTintColor:v8];
+  lapHand2 = [(NTKChronographProFacePalette *)self->_palette lapHand2];
+  [(NTKHandView *)self->_secondaryHandView setTintColor:lapHand2];
 
-  v9 = [(NTKChronographProFacePalette *)self->_palette resetButton];
-  [(NTKAlaskanChronoButton *)self->_resetButton setTintColor:v9];
+  resetButton = [(NTKChronographProFacePalette *)self->_palette resetButton];
+  [(NTKAlaskanChronoButton *)self->_resetButton setTintColor:resetButton];
 
-  v10 = [(NTKAlaskanChronographView *)self dialTickView];
-  [v10 updateWithColorPalette:self->_palette];
+  dialTickView = [(NTKAlaskanChronographView *)self dialTickView];
+  [dialTickView updateWithColorPalette:self->_palette];
 
   [(NTKAlaskanChronoSubdialView *)self->_leftSubdialView updateWithColorPalette:self->_palette];
   [(NTKAlaskanChronoSubdialView *)self->_rightSubdialView updateWithColorPalette:self->_palette];
@@ -251,18 +251,18 @@
 
 - (void)updateStartStopButtonColor
 {
-  v3 = [(NTKAlaskanChronographView *)self isRunning];
+  isRunning = [(NTKAlaskanChronographView *)self isRunning];
   palette = self->_palette;
-  if (v3)
+  if (isRunning)
   {
-    v6 = [(NTKChronographProFacePalette *)palette stopButton];
-    v5 = [(NTKAlaskanChronographView *)self startStopButton];
-    [v5 setTintColor:v6];
+    stopButton = [(NTKChronographProFacePalette *)palette stopButton];
+    startStopButton = [(NTKAlaskanChronographView *)self startStopButton];
+    [startStopButton setTintColor:stopButton];
   }
 
   else
   {
-    v6 = [(NTKChronographProFacePalette *)palette startButton];
+    stopButton = [(NTKChronographProFacePalette *)palette startButton];
     [(NTKAlaskanChronoButton *)self->_startStopButton setTintColor:?];
   }
 }
@@ -300,25 +300,25 @@
 
 - (void)updateCenterLabelColorForTimeMode
 {
-  v4 = [(NTKChronographProFacePalette *)self->_palette timeLapsedInactiveLabel];
-  v3 = [(NTKAlaskanChronographView *)self centerLabel];
-  [v3 setTextColor:v4];
+  timeLapsedInactiveLabel = [(NTKChronographProFacePalette *)self->_palette timeLapsedInactiveLabel];
+  centerLabel = [(NTKAlaskanChronographView *)self centerLabel];
+  [centerLabel setTextColor:timeLapsedInactiveLabel];
 
   if ([(NTKAlaskanChronographView *)self isEditing])
   {
-    [(CLKUIColoringLabel *)self->_transitionCenterLabel setTextColor:v4];
+    [(CLKUIColoringLabel *)self->_transitionCenterLabel setTextColor:timeLapsedInactiveLabel];
   }
 }
 
 - (void)updateCenterLabelColorForChronometerMode
 {
-  v4 = [(NTKChronographProFacePalette *)self->_palette timeLapsedLabel];
-  v3 = [(NTKAlaskanChronographView *)self centerLabel];
-  [v3 setTextColor:v4];
+  timeLapsedLabel = [(NTKChronographProFacePalette *)self->_palette timeLapsedLabel];
+  centerLabel = [(NTKAlaskanChronographView *)self centerLabel];
+  [centerLabel setTextColor:timeLapsedLabel];
 
   if ([(NTKAlaskanChronographView *)self isEditing])
   {
-    [(CLKUIColoringLabel *)self->_transitionCenterLabel setTextColor:v4];
+    [(CLKUIColoringLabel *)self->_transitionCenterLabel setTextColor:timeLapsedLabel];
   }
 }
 
@@ -327,26 +327,26 @@
   secondaryHandView = self->_secondaryHandView;
   if (!secondaryHandView)
   {
-    v4 = [(NTKAlaskanChronographView *)self device];
-    v5 = [CLKUIAnalogHandConfiguration defaultSecondConfigurationForDevice:v4];
+    device = [(NTKAlaskanChronographView *)self device];
+    v5 = [CLKUIAnalogHandConfiguration defaultSecondConfigurationForDevice:device];
 
     v6 = [NTKHandView alloc];
-    v7 = [(NTKAlaskanChronographView *)self device];
-    v8 = [v6 initWithConfiguration:v5 forDevice:v7 maskedShadow:1];
+    device2 = [(NTKAlaskanChronographView *)self device];
+    v8 = [v6 initWithConfiguration:v5 forDevice:device2 maskedShadow:1];
     v9 = self->_secondaryHandView;
     self->_secondaryHandView = v8;
 
     [(NTKHandView *)self->_secondaryHandView anchorPointFromConfiguration];
     v11 = v10;
     v13 = v12;
-    v14 = [(NTKHandView *)self->_secondaryHandView layer];
-    [v14 setAnchorPoint:{v11, v13}];
+    layer = [(NTKHandView *)self->_secondaryHandView layer];
+    [layer setAnchorPoint:{v11, v13}];
 
-    v15 = [(NTKChronographProFacePalette *)self->_palette lapHand2];
-    [(NTKHandView *)self->_secondaryHandView setTintColor:v15];
+    lapHand2 = [(NTKChronographProFacePalette *)self->_palette lapHand2];
+    [(NTKHandView *)self->_secondaryHandView setTintColor:lapHand2];
 
-    v16 = [(NTKAlaskanChronographView *)self chronometerHandsParentView];
-    [v16 addSubview:self->_secondaryHandView];
+    chronometerHandsParentView = [(NTKAlaskanChronographView *)self chronometerHandsParentView];
+    [chronometerHandsParentView addSubview:self->_secondaryHandView];
 
     secondaryHandView = self->_secondaryHandView;
   }
@@ -370,8 +370,8 @@
     v7 = self->_resetButton;
     self->_resetButton = v6;
 
-    v8 = [(NTKChronographProFacePalette *)self->_palette resetButton];
-    [(NTKAlaskanChronoButton *)self->_resetButton setTintColor:v8];
+    resetButton = [(NTKChronographProFacePalette *)self->_palette resetButton];
+    [(NTKAlaskanChronoButton *)self->_resetButton setTintColor:resetButton];
 
     [(NTKAlaskanChronoButton *)self->_resetButton addTarget:self action:"handleResetButtonTap" forControlEvents:64];
     [(NTKAlaskanChronoButton *)self->_resetButton setHidden:1];
@@ -398,8 +398,8 @@
     v7 = self->_startStopButton;
     self->_startStopButton = v6;
 
-    v8 = [(NTKChronographProFacePalette *)self->_palette startButton];
-    [(NTKAlaskanChronoButton *)self->_startStopButton setTintColor:v8];
+    startButton = [(NTKChronographProFacePalette *)self->_palette startButton];
+    [(NTKAlaskanChronoButton *)self->_startStopButton setTintColor:startButton];
 
     [(NTKAlaskanChronoButton *)self->_startStopButton addTarget:self action:"handleStartStopButtonTap" forControlEvents:64];
     [(NTKAlaskanChronoButton *)self->_startStopButton setHidden:1];
@@ -417,8 +417,8 @@
   {
     v26 = 0;
     memset(v25, 0, sizeof(v25));
-    v4 = [(NTKAlaskanChronographView *)self device];
-    sub_1CDA8(v4, v25);
+    device = [(NTKAlaskanChronographView *)self device];
+    sub_1CDA8(device, v25);
 
     v5 = [CLKUIColoringLabel labelWithOptions:0];
     v6 = self->_topLabel;
@@ -430,7 +430,7 @@
     [(CLKUIColoringLabel *)self->_topLabel setUsesTextProviderTintColoring:1];
     v8 = *(v25 + 1);
     v9 = [CLKFont compactSoftFontOfSize:*(v25 + 1) weight:UIFontWeightSemibold];
-    v10 = [v9 fontDescriptor];
+    fontDescriptor = [v9 fontDescriptor];
     v30[0] = UIFontFeatureTypeIdentifierKey;
     v30[1] = UIFontFeatureSelectorIdentifierKey;
     v31[0] = &off_3A9F8;
@@ -441,7 +441,7 @@
     v12 = [NSArray arrayWithObjects:&v27 count:1];
     v29 = v12;
     v13 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-    v14 = [v10 fontDescriptorByAddingAttributes:v13];
+    v14 = [fontDescriptor fontDescriptorByAddingAttributes:v13];
 
     objc_initWeak(&location, self);
     v15 = self->_topLabel;
@@ -474,19 +474,19 @@
   centerLabel = self->_centerLabel;
   if (!centerLabel)
   {
-    v4 = [(NTKAlaskanChronographView *)self _newCenterLabel];
+    _newCenterLabel = [(NTKAlaskanChronographView *)self _newCenterLabel];
     v5 = self->_centerLabel;
-    self->_centerLabel = v4;
+    self->_centerLabel = _newCenterLabel;
 
     v6 = +[CALayer layer];
     centerLabelBackgroundLayer = self->_centerLabelBackgroundLayer;
     self->_centerLabelBackgroundLayer = v6;
 
-    v8 = [(NTKAlaskanChronographView *)self layerDisabledActions];
-    [(CALayer *)self->_centerLabelBackgroundLayer setActions:v8];
+    layerDisabledActions = [(NTKAlaskanChronographView *)self layerDisabledActions];
+    [(CALayer *)self->_centerLabelBackgroundLayer setActions:layerDisabledActions];
 
-    v9 = [(NTKAlaskanChronographView *)self layer];
-    [v9 addSublayer:self->_centerLabelBackgroundLayer];
+    layer = [(NTKAlaskanChronographView *)self layer];
+    [layer addSublayer:self->_centerLabelBackgroundLayer];
 
     objc_initWeak(&location, self);
     v10 = self->_centerLabel;
@@ -517,22 +517,22 @@
 
   v3 = [CLKUIColoringLabel labelWithOptions:0];
   v4 = [CLKFont compactSoftFontOfSize:*&v8 weight:UIFontWeightSemibold];
-  v5 = [v4 CLKFontWithMonospacedNumbers];
-  [v3 setFont:v5];
+  cLKFontWithMonospacedNumbers = [v4 CLKFontWithMonospacedNumbers];
+  [v3 setFont:cLKFontWithMonospacedNumbers];
 
   [v3 setTextAlignment:1];
   [v3 setNumberOfLines:1];
   return v3;
 }
 
-- (void)setDialTickView:(id)a3
+- (void)setDialTickView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   dialTickView = self->_dialTickView;
-  if (dialTickView != v5)
+  if (dialTickView != viewCopy)
   {
     [(NTKAlaskanChronoDialView *)dialTickView removeFromSuperview];
-    objc_storeStrong(&self->_dialTickView, a3);
+    objc_storeStrong(&self->_dialTickView, view);
     [(NTKAlaskanChronographView *)self insertSubview:self->_dialTickView atIndex:1];
     v7 = self->_dialTickView;
     [(NTKAlaskanChronographView *)self bounds];
@@ -542,44 +542,44 @@
   _objc_release_x1(dialTickView);
 }
 
-- (void)setChronometerHandsParentView:(id)a3
+- (void)setChronometerHandsParentView:(id)view
 {
-  v4 = a3;
-  objc_storeWeak(&self->_chronometerHandsParentView, v4);
-  v5 = [(NTKAlaskanChronographView *)self primaryHandView];
-  [v5 removeFromSuperview];
+  viewCopy = view;
+  objc_storeWeak(&self->_chronometerHandsParentView, viewCopy);
+  primaryHandView = [(NTKAlaskanChronographView *)self primaryHandView];
+  [primaryHandView removeFromSuperview];
 
-  v6 = [(NTKAlaskanChronographView *)self primaryHandView];
-  [v4 addSubview:v6];
+  primaryHandView2 = [(NTKAlaskanChronographView *)self primaryHandView];
+  [viewCopy addSubview:primaryHandView2];
 
-  v7 = [(NTKAlaskanChronographView *)self secondaryHandView];
-  [v7 removeFromSuperview];
+  secondaryHandView = [(NTKAlaskanChronographView *)self secondaryHandView];
+  [secondaryHandView removeFromSuperview];
 
-  v8 = [(NTKAlaskanChronographView *)self secondaryHandView];
-  [v4 addSubview:v8];
+  secondaryHandView2 = [(NTKAlaskanChronographView *)self secondaryHandView];
+  [viewCopy addSubview:secondaryHandView2];
 
   [(NTKAlaskanChronographView *)self updateSecondaryHandVisibility];
 
   [(NTKAlaskanChronographView *)self updateChronoLargeHandsCenterPoint];
 }
 
-- (void)setStopwatchModel:(id)a3
+- (void)setStopwatchModel:(id)model
 {
-  v8 = a3;
-  v4 = [(NTKAlaskanChronographView *)self primaryHandView];
-  v5 = [v4 layer];
-  v6 = [v5 animationForKey:@"NTKAlaskanChronographHandsAnimationKey"];
+  modelCopy = model;
+  primaryHandView = [(NTKAlaskanChronographView *)self primaryHandView];
+  layer = [primaryHandView layer];
+  v6 = [layer animationForKey:@"NTKAlaskanChronographHandsAnimationKey"];
   v7 = v6 != 0;
 
-  [(NTKAlaskanChronographView *)self setStopwatchModel:v8 animating:v7];
+  [(NTKAlaskanChronographView *)self setStopwatchModel:modelCopy animating:v7];
 }
 
-- (void)setStopwatchModel:(id)a3 animating:(BOOL)a4
+- (void)setStopwatchModel:(id)model animating:(BOOL)animating
 {
-  v4 = a4;
-  v8 = a3;
-  objc_storeStrong(&self->_stopwatchModel, a3);
-  if (v8 && ([v8 isRunning] & 1) != 0 || objc_msgSend(v8, "isPaused"))
+  animatingCopy = animating;
+  modelCopy = model;
+  objc_storeStrong(&self->_stopwatchModel, model);
+  if (modelCopy && ([modelCopy isRunning] & 1) != 0 || objc_msgSend(modelCopy, "isPaused"))
   {
     [(NTKAlaskanChronographView *)self setIsChronoMode:1];
   }
@@ -589,9 +589,9 @@
     [(NTKAlaskanChronographView *)self updateSecondaryHandVisibility];
   }
 
-  v7 = [(NTKAlaskanChronographView *)self isRunning];
+  isRunning = [(NTKAlaskanChronographView *)self isRunning];
   [(NTKAlaskanChronographView *)self stopAnimatingHands];
-  if (v7 && v4)
+  if (isRunning && animatingCopy)
   {
     [(NTKAlaskanChronographView *)self startAnimatingHands];
   }
@@ -601,7 +601,7 @@
     [(NTKAlaskanChronographView *)self updateHandsPosition];
   }
 
-  if (v8)
+  if (modelCopy)
   {
     [(NTKAlaskanChronographView *)self updateStartStopButtonColor];
   }
@@ -610,11 +610,11 @@
   [(NTKAlaskanChronographView *)self enableDisableResetButton];
 }
 
-- (void)updateClockHandsPositionAnimated:(BOOL)a3
+- (void)updateClockHandsPositionAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(NTKAlaskanChronographView *)self stopAnimatingBottomSubdialHand];
-  if (v3)
+  if (animatedCopy)
   {
 
     [(NTKAlaskanChronographView *)self startAnimatingBottomSubdialHand];
@@ -659,29 +659,29 @@
   return v3;
 }
 
-- (void)applyTransitionFromTimeScale:(unint64_t)a3 toTimeScale:(unint64_t)a4 fraction:(double)a5
+- (void)applyTransitionFromTimeScale:(unint64_t)scale toTimeScale:(unint64_t)timeScale fraction:(double)fraction
 {
-  if (a3 == a4)
+  if (scale == timeScale)
   {
 
-    [(NTKAlaskanChronographView *)self setTimeScale:a5];
+    [(NTKAlaskanChronographView *)self setTimeScale:fraction];
     return;
   }
 
-  v9 = [(NTKAlaskanChronographView *)self dialTickView];
-  v10 = [v9 tag];
+  dialTickView = [(NTKAlaskanChronographView *)self dialTickView];
+  v10 = [dialTickView tag];
 
-  if (v10 != a3)
+  if (v10 != scale)
   {
-    [(NTKAlaskanChronographView *)self switchDialViewForTimeScale:a3];
+    [(NTKAlaskanChronographView *)self switchDialViewForTimeScale:scale];
   }
 
   if (self->_transitionDialTickView)
   {
-    v11 = [(NTKAlaskanChronographView *)self transitionDialTickView];
-    v12 = [v11 tag];
+    transitionDialTickView = [(NTKAlaskanChronographView *)self transitionDialTickView];
+    v12 = [transitionDialTickView tag];
 
-    if (v12 == a4)
+    if (v12 == timeScale)
     {
       goto LABEL_12;
     }
@@ -695,31 +695,31 @@
   }
 
   [(NTKAlaskanChronoDialView *)transitionDialTickView removeFromSuperview];
-  v14 = [(NTKAlaskanChronographView *)self dialViewForTimeScale:a4];
+  v14 = [(NTKAlaskanChronographView *)self dialViewForTimeScale:timeScale];
   v15 = self->_transitionDialTickView;
   self->_transitionDialTickView = v14;
 
-  [(NTKAlaskanChronoDialView *)self->_transitionDialTickView setTag:a4];
+  [(NTKAlaskanChronoDialView *)self->_transitionDialTickView setTag:timeScale];
   [(NTKAlaskanChronographView *)self insertSubview:self->_transitionDialTickView aboveSubview:self->_dialTickView];
   v16 = self->_transitionDialTickView;
   [(NTKAlaskanChronoDialView *)self->_dialTickView bounds];
   [(NTKAlaskanChronoDialView *)v16 ntk_setBoundsAndPositionFromFrame:?];
 LABEL_12:
-  v54 = [(NTKAlaskanChronographView *)self dialTickView];
-  v17 = [(NTKAlaskanChronographView *)self transitionDialTickView];
-  [(NTKAlaskanChronographView *)self applyTransitionFromView:v54 toView:v17 fraction:a5];
-  v18 = [(NTKAlaskanChronographView *)self leftSubdialViewForTimeScale:a3];
+  dialTickView2 = [(NTKAlaskanChronographView *)self dialTickView];
+  transitionDialTickView2 = [(NTKAlaskanChronographView *)self transitionDialTickView];
+  [(NTKAlaskanChronographView *)self applyTransitionFromView:dialTickView2 toView:transitionDialTickView2 fraction:fraction];
+  v18 = [(NTKAlaskanChronographView *)self leftSubdialViewForTimeScale:scale];
   v19 = [v18 tag];
 
-  v20 = [(NTKAlaskanChronographView *)self leftSubdialViewForTimeScale:a4];
+  v20 = [(NTKAlaskanChronographView *)self leftSubdialViewForTimeScale:timeScale];
   v21 = [v20 tag];
 
-  v22 = [(NTKAlaskanChronographView *)self leftSubdialView];
-  v23 = [v22 tag];
+  leftSubdialView = [(NTKAlaskanChronographView *)self leftSubdialView];
+  v23 = [leftSubdialView tag];
 
   if (v23 != v19)
   {
-    [(NTKAlaskanChronographView *)self switchLeftSubDialViewsForTimeScale:a3];
+    [(NTKAlaskanChronographView *)self switchLeftSubDialViewsForTimeScale:scale];
   }
 
   if (v19 == v21)
@@ -743,7 +743,7 @@ LABEL_12:
     v25 = self->_transitionLeftSubdialView;
 LABEL_19:
     [(NTKAlaskanChronoSubdialView *)v25 removeFromSuperview];
-    v26 = [(NTKAlaskanChronographView *)self leftSubdialViewForTimeScale:a4];
+    v26 = [(NTKAlaskanChronographView *)self leftSubdialViewForTimeScale:timeScale];
     v27 = self->_transitionLeftSubdialView;
     self->_transitionLeftSubdialView = v26;
 
@@ -755,35 +755,35 @@ LABEL_19:
     v29 = +[UIColor clearColor];
     [(NTKAlaskanChronoSubdialView *)self->_transitionLeftSubdialView setBackgroundColor:v29];
 
-    v30 = [(NTKAlaskanChronoSubdialView *)self->_transitionLeftSubdialView analogHand];
-    [v30 setHidden:1];
+    analogHand = [(NTKAlaskanChronoSubdialView *)self->_transitionLeftSubdialView analogHand];
+    [analogHand setHidden:1];
   }
 
-  v31 = [(NTKAlaskanChronographView *)self leftSubdialView];
-  v32 = [v31 markersView];
+  leftSubdialView2 = [(NTKAlaskanChronographView *)self leftSubdialView];
+  markersView = [leftSubdialView2 markersView];
 
-  v33 = [(NTKAlaskanChronoSubdialView *)self->_transitionLeftSubdialView markersView];
+  markersView2 = [(NTKAlaskanChronoSubdialView *)self->_transitionLeftSubdialView markersView];
 
-  [(NTKAlaskanChronographView *)self applyTransitionFromView:v32 toView:v33 fraction:a5];
-  v34 = [(NTKAlaskanChronographView *)self leftSubdialView];
-  v54 = [v34 tickView];
+  [(NTKAlaskanChronographView *)self applyTransitionFromView:markersView toView:markersView2 fraction:fraction];
+  leftSubdialView3 = [(NTKAlaskanChronographView *)self leftSubdialView];
+  dialTickView2 = [leftSubdialView3 tickView];
 
-  v17 = [(NTKAlaskanChronoSubdialView *)self->_transitionLeftSubdialView tickView];
+  transitionDialTickView2 = [(NTKAlaskanChronoSubdialView *)self->_transitionLeftSubdialView tickView];
 
-  [(NTKAlaskanChronographView *)self applyTransitionFromView:v54 toView:v17 fraction:a5];
+  [(NTKAlaskanChronographView *)self applyTransitionFromView:dialTickView2 toView:transitionDialTickView2 fraction:fraction];
 LABEL_21:
-  v35 = [(NTKAlaskanChronographView *)self rightSubdialViewForTimeScale:a3];
+  v35 = [(NTKAlaskanChronographView *)self rightSubdialViewForTimeScale:scale];
   v36 = [v35 tag];
 
-  v37 = [(NTKAlaskanChronographView *)self rightSubdialViewForTimeScale:a4];
+  v37 = [(NTKAlaskanChronographView *)self rightSubdialViewForTimeScale:timeScale];
   v38 = [v37 tag];
 
-  v39 = [(NTKAlaskanChronographView *)self rightSubdialView];
-  v40 = [v39 tag];
+  rightSubdialView = [(NTKAlaskanChronographView *)self rightSubdialView];
+  v40 = [rightSubdialView tag];
 
   if (v40 != v36)
   {
-    [(NTKAlaskanChronographView *)self switchRightSubDialViewsForTimeScale:a3];
+    [(NTKAlaskanChronographView *)self switchRightSubDialViewsForTimeScale:scale];
   }
 
   if (v36 == v38)
@@ -807,7 +807,7 @@ LABEL_21:
     v42 = self->_transitionRightSubdialView;
 LABEL_28:
     [(NTKAlaskanChronoSubdialView *)v42 removeFromSuperview];
-    v43 = [(NTKAlaskanChronographView *)self rightSubdialViewForTimeScale:a4];
+    v43 = [(NTKAlaskanChronographView *)self rightSubdialViewForTimeScale:timeScale];
     v44 = self->_transitionRightSubdialView;
     self->_transitionRightSubdialView = v43;
 
@@ -819,29 +819,29 @@ LABEL_28:
     v46 = +[UIColor clearColor];
     [(NTKAlaskanChronoSubdialView *)self->_transitionRightSubdialView setBackgroundColor:v46];
 
-    v47 = [(NTKAlaskanChronoSubdialView *)self->_transitionRightSubdialView analogHand];
-    [v47 setHidden:1];
+    analogHand2 = [(NTKAlaskanChronoSubdialView *)self->_transitionRightSubdialView analogHand];
+    [analogHand2 setHidden:1];
   }
 
-  v48 = [(NTKAlaskanChronographView *)self rightSubdialView];
-  v49 = [v48 markersView];
+  rightSubdialView2 = [(NTKAlaskanChronographView *)self rightSubdialView];
+  markersView3 = [rightSubdialView2 markersView];
 
-  v50 = [(NTKAlaskanChronoSubdialView *)self->_transitionRightSubdialView markersView];
+  markersView4 = [(NTKAlaskanChronoSubdialView *)self->_transitionRightSubdialView markersView];
 
-  [(NTKAlaskanChronographView *)self applyTransitionFromView:v49 toView:v50 fraction:a5];
-  v51 = [(NTKAlaskanChronographView *)self rightSubdialView];
-  v54 = [v51 tickView];
+  [(NTKAlaskanChronographView *)self applyTransitionFromView:markersView3 toView:markersView4 fraction:fraction];
+  rightSubdialView3 = [(NTKAlaskanChronographView *)self rightSubdialView];
+  dialTickView2 = [rightSubdialView3 tickView];
 
-  v17 = [(NTKAlaskanChronoSubdialView *)self->_transitionRightSubdialView tickView];
+  transitionDialTickView2 = [(NTKAlaskanChronoSubdialView *)self->_transitionRightSubdialView tickView];
 
-  [(NTKAlaskanChronographView *)self applyTransitionFromView:v54 toView:v17 fraction:a5];
+  [(NTKAlaskanChronographView *)self applyTransitionFromView:dialTickView2 toView:transitionDialTickView2 fraction:fraction];
 LABEL_30:
   if (![(NTKAlaskanChronographView *)self isEditing])
   {
-    if (a5 >= 0.5)
+    if (fraction >= 0.5)
     {
       [(NTKAlaskanChronographView *)self _updateElapsedTimeLabel];
-      if (a3)
+      if (scale)
       {
         goto LABEL_35;
       }
@@ -849,54 +849,54 @@ LABEL_30:
       goto LABEL_34;
     }
 
-    v52 = [(NTKAlaskanChronographView *)self titleForTimeScale:a3];
-    v53 = [(NTKAlaskanChronographView *)self topLabel];
-    [v53 setText:v52];
+    v52 = [(NTKAlaskanChronographView *)self titleForTimeScale:scale];
+    topLabel = [(NTKAlaskanChronographView *)self topLabel];
+    [topLabel setText:v52];
   }
 
-  if (!a3)
+  if (!scale)
   {
 LABEL_34:
-    [(NTKAlaskanChronographView *)self applyTransitionFromTimeModeToChronometerModeWithfraction:a5];
+    [(NTKAlaskanChronographView *)self applyTransitionFromTimeModeToChronometerModeWithfraction:fraction];
   }
 
 LABEL_35:
 }
 
-- (void)_cleanupSubdialView:(id)a3
+- (void)_cleanupSubdialView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 markersView];
-  [v4 setAlpha:1.0];
+  viewCopy = view;
+  markersView = [viewCopy markersView];
+  [markersView setAlpha:1.0];
 
-  v5 = [v3 tickView];
-  [v5 setAlpha:1.0];
+  tickView = [viewCopy tickView];
+  [tickView setAlpha:1.0];
 
-  v6 = [v3 markersView];
+  markersView2 = [viewCopy markersView];
   v9 = *&CGAffineTransformIdentity.c;
   v11 = *&CGAffineTransformIdentity.a;
   v10 = v11;
   v12 = v9;
   v13 = *&CGAffineTransformIdentity.tx;
   v8 = v13;
-  [v6 setTransform:&v11];
+  [markersView2 setTransform:&v11];
 
-  v7 = [v3 tickView];
+  tickView2 = [viewCopy tickView];
 
   v11 = v10;
   v12 = v9;
   v13 = v8;
-  [v7 setTransform:&v11];
+  [tickView2 setTransform:&v11];
 }
 
-- (void)applyTransitionFromTimeModeToChronometerModeWithfraction:(double)a3
+- (void)applyTransitionFromTimeModeToChronometerModeWithfraction:(double)withfraction
 {
   CLKCompressFraction();
   v6 = v5;
   CLKCompressFraction();
   v8 = v7;
-  v9 = [(NTKChronographProFacePalette *)self->_palette backgroundTimeMode];
-  v10 = [(NTKChronographProFacePalette *)self->_palette backgroundChronometerMode];
+  backgroundTimeMode = [(NTKChronographProFacePalette *)self->_palette backgroundTimeMode];
+  backgroundChronometerMode = [(NTKChronographProFacePalette *)self->_palette backgroundChronometerMode];
   v11 = NTKInterpolateBetweenColors();
   -[CALayer setBackgroundColor:](self->_innerBackgroundCircle, "setBackgroundColor:", [v11 CGColor]);
 
@@ -905,9 +905,9 @@ LABEL_35:
     transitionCenterLabel = self->_transitionCenterLabel;
     if (!transitionCenterLabel)
     {
-      v13 = [(NTKAlaskanChronographView *)self _newCenterLabel];
+      _newCenterLabel = [(NTKAlaskanChronographView *)self _newCenterLabel];
       v14 = self->_transitionCenterLabel;
-      self->_transitionCenterLabel = v13;
+      self->_transitionCenterLabel = _newCenterLabel;
 
       [(CLKUIColoringLabel *)self->_transitionCenterLabel setAlpha:0.0];
       [(NTKAlaskanChronographView *)self _updateElapsedTimeLabel];
@@ -915,25 +915,25 @@ LABEL_35:
       transitionCenterLabel = self->_transitionCenterLabel;
     }
 
-    [(NTKAlaskanChronographView *)self applyTransitionFromView:self->_centerLabel toView:transitionCenterLabel fraction:a3];
+    [(NTKAlaskanChronographView *)self applyTransitionFromView:self->_centerLabel toView:transitionCenterLabel fraction:withfraction];
   }
 
-  if (a3 >= 0.5)
+  if (withfraction >= 0.5)
   {
     [(NTKAlaskanChronographView *)self updateCenterLabelColorForChronometerMode];
     if (![(NTKAlaskanChronographView *)self isEditing])
     {
-      v18 = [(NTKAlaskanChronographView *)self centerLabel];
-      [v18 setAlpha:v8];
+      centerLabel = [(NTKAlaskanChronographView *)self centerLabel];
+      [centerLabel setAlpha:v8];
     }
 
-    v19 = [(NTKAlaskanChronographView *)self primaryHandView];
-    [v19 setHidden:0];
+    primaryHandView = [(NTKAlaskanChronographView *)self primaryHandView];
+    [primaryHandView setHidden:0];
 
     CLKInterpolateBetweenFloatsClipped();
     v21 = v20;
-    v17 = [(NTKAlaskanChronographView *)self primaryHandView];
-    [v17 setAlpha:v21];
+    primaryHandView2 = [(NTKAlaskanChronographView *)self primaryHandView];
+    [primaryHandView2 setAlpha:v21];
   }
 
   else
@@ -941,15 +941,15 @@ LABEL_35:
     [(NTKAlaskanChronographView *)self updateCenterLabelColorForTimeMode];
     if (![(NTKAlaskanChronographView *)self isEditing])
     {
-      v15 = [(NTKAlaskanChronographView *)self centerLabel];
-      [v15 setAlpha:1.0 - v6];
+      centerLabel2 = [(NTKAlaskanChronographView *)self centerLabel];
+      [centerLabel2 setAlpha:1.0 - v6];
     }
 
-    v16 = [(NTKAlaskanChronographView *)self primaryHandView];
-    [v16 setAlpha:0.0];
+    primaryHandView3 = [(NTKAlaskanChronographView *)self primaryHandView];
+    [primaryHandView3 setAlpha:0.0];
 
-    v17 = [(NTKAlaskanChronographView *)self primaryHandView];
-    [v17 setHidden:1];
+    primaryHandView2 = [(NTKAlaskanChronographView *)self primaryHandView];
+    [primaryHandView2 setHidden:1];
   }
 
   if (![(NTKAlaskanChronographView *)self isEditing])
@@ -971,9 +971,9 @@ LABEL_35:
 
 - (double)startStopButtonAlpha
 {
-  v2 = [(NTKAlaskanChronographView *)self isChronoMode];
+  isChronoMode = [(NTKAlaskanChronographView *)self isChronoMode];
   result = 0.0;
-  if (v2)
+  if (isChronoMode)
   {
     return 1.0;
   }
@@ -983,18 +983,18 @@ LABEL_35:
 
 - (double)resetButtonAlpha
 {
-  v3 = [(NTKAlaskanChronographView *)self isChronoMode];
+  isChronoMode = [(NTKAlaskanChronographView *)self isChronoMode];
   result = 0.0;
-  if (v3)
+  if (isChronoMode)
   {
     result = 1.0;
     if (self->_timeScale == 1)
     {
-      v5 = [(NTKAlaskanChronographView *)self stopwatchModel];
-      v6 = [v5 isRunning];
+      stopwatchModel = [(NTKAlaskanChronographView *)self stopwatchModel];
+      isRunning = [stopwatchModel isRunning];
 
       result = 0.3;
-      if ((v6 & 1) == 0)
+      if ((isRunning & 1) == 0)
       {
         return 1.0;
       }
@@ -1004,10 +1004,10 @@ LABEL_35:
   return result;
 }
 
-- (void)applyTransitionFromView:(id)a3 toView:(id)a4 fraction:(double)a5
+- (void)applyTransitionFromView:(id)view toView:(id)toView fraction:(double)fraction
 {
-  v6 = a4;
-  v7 = a3;
+  toViewCopy = toView;
+  viewCopy = view;
   CLKCompressFraction();
   CLKCompressFraction();
   CLKInterpolateBetweenFloatsClipped();
@@ -1016,8 +1016,8 @@ LABEL_35:
   v11 = v10;
   CGAffineTransformMakeScale(&v18, v9, v9);
   v17 = v18;
-  [v7 setTransform:&v17];
-  [v7 setAlpha:v11];
+  [viewCopy setTransform:&v17];
+  [viewCopy setAlpha:v11];
 
   CLKInterpolateBetweenFloatsClipped();
   v13 = v12;
@@ -1025,48 +1025,48 @@ LABEL_35:
   v15 = v14;
   CGAffineTransformMakeScale(&v16, v13, v13);
   v17 = v16;
-  [v6 setTransform:&v17];
-  [v6 setAlpha:v15];
+  [toViewCopy setTransform:&v17];
+  [toViewCopy setAlpha:v15];
 }
 
-- (void)setTimeScale:(unint64_t)a3
+- (void)setTimeScale:(unint64_t)scale
 {
-  v5 = [(NTKAlaskanChronographView *)self transitionDialTickView];
+  transitionDialTickView = [(NTKAlaskanChronographView *)self transitionDialTickView];
 
-  if (v5)
+  if (transitionDialTickView)
   {
     [(NTKAlaskanChronographView *)self removeAllTransitionViews];
   }
 
-  else if (self->_timeScale == a3)
+  else if (self->_timeScale == scale)
   {
     return;
   }
 
-  self->_timeScale = a3;
+  self->_timeScale = scale;
 
-  [(NTKAlaskanChronographView *)self _setUpUIForTimeScale:a3];
+  [(NTKAlaskanChronographView *)self _setUpUIForTimeScale:scale];
 }
 
-- (void)_setUpUIForTimeScale:(unint64_t)a3
+- (void)_setUpUIForTimeScale:(unint64_t)scale
 {
   [(NTKAlaskanChronographView *)self updateSecondaryHandVisibility];
-  [(NTKAlaskanChronographView *)self switchSubDialViewsForTimeScale:a3];
+  [(NTKAlaskanChronographView *)self switchSubDialViewsForTimeScale:scale];
   [(NTKAlaskanChronographView *)self _updateElapsedTimeLabel];
   if ([(NTKAlaskanChronographView *)self isChronoMode])
   {
-    [(NTKAlaskanChronographView *)self switchDialViewForTimeScale:a3];
+    [(NTKAlaskanChronographView *)self switchDialViewForTimeScale:scale];
     [(NTKAlaskanChronographView *)self enableDisableResetButton];
     [(NTKAlaskanChronographView *)self setStopwatchModel:self->_stopwatchModel];
   }
 
-  v5 = [(NTKAlaskanChronographView *)self delegate];
+  delegate = [(NTKAlaskanChronographView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(NTKAlaskanChronographView *)self delegate];
-    [v7 alaskanChronographView:self didChangeTimeScale:a3];
+    delegate2 = [(NTKAlaskanChronographView *)self delegate];
+    [delegate2 alaskanChronographView:self didChangeTimeScale:scale];
   }
 }
 
@@ -1080,81 +1080,81 @@ LABEL_35:
 
 - (void)removeAllTransitionViews
 {
-  v3 = [(NTKAlaskanChronographView *)self transitionDialTickView];
-  [v3 removeFromSuperview];
+  transitionDialTickView = [(NTKAlaskanChronographView *)self transitionDialTickView];
+  [transitionDialTickView removeFromSuperview];
 
   [(NTKAlaskanChronographView *)self setTransitionDialTickView:0];
-  v4 = [(NTKAlaskanChronographView *)self transitionLeftSubdialView];
-  [v4 removeFromSuperview];
+  transitionLeftSubdialView = [(NTKAlaskanChronographView *)self transitionLeftSubdialView];
+  [transitionLeftSubdialView removeFromSuperview];
 
   [(NTKAlaskanChronographView *)self setTransitionLeftSubdialView:0];
-  v5 = [(NTKAlaskanChronographView *)self transitionRightSubdialView];
-  [v5 removeFromSuperview];
+  transitionRightSubdialView = [(NTKAlaskanChronographView *)self transitionRightSubdialView];
+  [transitionRightSubdialView removeFromSuperview];
 
   [(NTKAlaskanChronographView *)self setTransitionRightSubdialView:0];
 }
 
-- (void)setIsChronoMode:(BOOL)a3 completionBlock:(id)a4 animated:(BOOL)a5
+- (void)setIsChronoMode:(BOOL)mode completionBlock:(id)block animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a3;
-  v8 = a4;
-  if (self->_isChronoMode != v6)
+  animatedCopy = animated;
+  modeCopy = mode;
+  blockCopy = block;
+  if (self->_isChronoMode != modeCopy)
   {
-    self->_isChronoMode = v6;
-    if (v6)
+    self->_isChronoMode = modeCopy;
+    if (modeCopy)
     {
-      v8 = [(NTKAlaskanChronographView *)self setupForChronographModeWithCompletionBlock:v8];
+      blockCopy = [(NTKAlaskanChronographView *)self setupForChronographModeWithCompletionBlock:blockCopy];
     }
 
     else
     {
-      v8 = [(NTKAlaskanChronographView *)self setupForTimeModeWithCompletionBlock:v8 animated:v5];
+      blockCopy = [(NTKAlaskanChronographView *)self setupForTimeModeWithCompletionBlock:blockCopy animated:animatedCopy];
     }
   }
 
-  _objc_release_x1(v8);
+  _objc_release_x1(blockCopy);
 }
 
-- (void)setupForChronographModeWithCompletionBlock:(id)a3
+- (void)setupForChronographModeWithCompletionBlock:(id)block
 {
   timeScale = self->_timeScale;
-  v5 = a3;
+  blockCopy = block;
   [(NTKAlaskanChronographView *)self switchDialViewForTimeScale:timeScale];
   [(NTKAlaskanChronographView *)self updateInnerCircleColor];
   [(NTKAlaskanChronographView *)self setStopwatchModel:self->_stopwatchModel animating:0];
   [(NTKAlaskanChronographView *)self updateCenterLabelColor];
-  v6 = [(NTKAlaskanChronographView *)self resetButton];
-  [v6 setAlpha:1.0];
+  resetButton = [(NTKAlaskanChronographView *)self resetButton];
+  [resetButton setAlpha:1.0];
 
-  v7 = [(NTKAlaskanChronographView *)self startStopButton];
-  [v7 setAlpha:1.0];
+  startStopButton = [(NTKAlaskanChronographView *)self startStopButton];
+  [startStopButton setAlpha:1.0];
 
-  v8 = [(NTKAlaskanChronographView *)self topLabel];
+  topLabel = [(NTKAlaskanChronographView *)self topLabel];
   [(NTKAlaskanChronographView *)self switchSubDialViewsForTimeScale:self->_timeScale];
   [(NTKAlaskanChronographView *)self updateSecondaryHandVisibility];
   [(NTKAlaskanChronographView *)self removeAllTransitionViews];
-  v9 = [(NTKAlaskanChronographView *)self primaryHandView];
-  [v9 setHidden:0];
+  primaryHandView = [(NTKAlaskanChronographView *)self primaryHandView];
+  [primaryHandView setHidden:0];
 
-  v10 = [(NTKAlaskanChronographView *)self primaryHandView];
-  [v10 setAlpha:1.0];
+  primaryHandView2 = [(NTKAlaskanChronographView *)self primaryHandView];
+  [primaryHandView2 setAlpha:1.0];
 
-  v11 = [(NTKAlaskanChronographView *)self delegate];
-  [v11 alaskanChronographViewDidEnterChronometerMode:self completionBlock:v5];
+  delegate = [(NTKAlaskanChronographView *)self delegate];
+  [delegate alaskanChronographViewDidEnterChronometerMode:self completionBlock:blockCopy];
 }
 
-- (void)setupForTimeModeWithCompletionBlock:(id)a3 animated:(BOOL)a4
+- (void)setupForTimeModeWithCompletionBlock:(id)block animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   dialViewFactory = self->_dialViewFactory;
-  v7 = a3;
-  v8 = [(NTKAlaskanDialViewFactory *)dialViewFactory _12HourDialView];
-  [(NTKAlaskanChronographView *)self setDialTickView:v8];
+  blockCopy = block;
+  _12HourDialView = [(NTKAlaskanDialViewFactory *)dialViewFactory _12HourDialView];
+  [(NTKAlaskanChronographView *)self setDialTickView:_12HourDialView];
 
   v9 = [(NTKAlaskanChronographView *)self titleForTimeScale:self->_timeScale];
-  v10 = [(NTKAlaskanChronographView *)self centerLabel];
-  [v10 setText:v9];
+  centerLabel = [(NTKAlaskanChronographView *)self centerLabel];
+  [centerLabel setText:v9];
 
   [(NTKAlaskanChronographView *)self updateInnerCircleColor];
   [(NTKAlaskanChronographView *)self updateCenterLabelColor];
@@ -1167,26 +1167,26 @@ LABEL_35:
   [(NTKAlaskanChronographView *)self switchSubDialViewsForTimeScale:self->_timeScale];
   [(NTKAlaskanChronographView *)self updateSecondaryHandVisibility];
   [(NTKAlaskanChronographView *)self removeAllTransitionViews];
-  v12 = [(NTKAlaskanChronographView *)self primaryHandView];
-  [v12 setHidden:1];
+  primaryHandView = [(NTKAlaskanChronographView *)self primaryHandView];
+  [primaryHandView setHidden:1];
 
-  v13 = [(NTKAlaskanChronographView *)self primaryHandView];
-  [v13 setAlpha:0.0];
+  primaryHandView2 = [(NTKAlaskanChronographView *)self primaryHandView];
+  [primaryHandView2 setAlpha:0.0];
 
-  v14 = [(NTKAlaskanChronographView *)self delegate];
-  [v14 alaskanChronographViewDidExitChronometerMode:self completionBlock:v7 animated:v4];
+  delegate = [(NTKAlaskanChronographView *)self delegate];
+  [delegate alaskanChronographViewDidExitChronometerMode:self completionBlock:blockCopy animated:animatedCopy];
 }
 
-- (void)switchLeftSubDialViewsForTimeScale:(unint64_t)a3
+- (void)switchLeftSubDialViewsForTimeScale:(unint64_t)scale
 {
   [(NTKAlaskanChronoSubdialView *)self->_leftSubdialView removeFromSuperview];
-  v5 = [(NTKAlaskanChronographView *)self leftSubdialViewForTimeScale:a3];
+  v5 = [(NTKAlaskanChronographView *)self leftSubdialViewForTimeScale:scale];
   leftSubdialView = self->_leftSubdialView;
   self->_leftSubdialView = v5;
 
-  v7 = [(NTKChronographProFacePalette *)self->_palette subdialClockHand];
-  v8 = [(NTKAlaskanChronoSubdialView *)self->_leftSubdialView analogHand];
-  [v8 setTintColor:v7];
+  subdialClockHand = [(NTKChronographProFacePalette *)self->_palette subdialClockHand];
+  analogHand = [(NTKAlaskanChronoSubdialView *)self->_leftSubdialView analogHand];
+  [analogHand setTintColor:subdialClockHand];
 
   [(NTKAlaskanChronographView *)self updateHandsPosition];
   [(NTKAlaskanChronographView *)self addSubview:self->_leftSubdialView];
@@ -1194,16 +1194,16 @@ LABEL_35:
   [(NTKAlaskanChronographView *)self updateSubdialViewFrames];
 }
 
-- (void)switchRightSubDialViewsForTimeScale:(unint64_t)a3
+- (void)switchRightSubDialViewsForTimeScale:(unint64_t)scale
 {
   [(NTKAlaskanChronoSubdialView *)self->_rightSubdialView removeFromSuperview];
-  v5 = [(NTKAlaskanChronographView *)self rightSubdialViewForTimeScale:a3];
+  v5 = [(NTKAlaskanChronographView *)self rightSubdialViewForTimeScale:scale];
   rightSubdialView = self->_rightSubdialView;
   self->_rightSubdialView = v5;
 
-  v7 = [(NTKChronographProFacePalette *)self->_palette subdialClockHand];
-  v8 = [(NTKAlaskanChronoSubdialView *)self->_rightSubdialView analogHand];
-  [v8 setTintColor:v7];
+  subdialClockHand = [(NTKChronographProFacePalette *)self->_palette subdialClockHand];
+  analogHand = [(NTKAlaskanChronoSubdialView *)self->_rightSubdialView analogHand];
+  [analogHand setTintColor:subdialClockHand];
 
   [(NTKAlaskanChronographView *)self updateHandsPosition];
   [(NTKAlaskanChronographView *)self addSubview:self->_rightSubdialView];
@@ -1214,13 +1214,13 @@ LABEL_35:
 - (void)switchBottomSubDialView
 {
   [(NTKAlaskanChronoSubdialView *)self->_bottomSubdialView removeFromSuperview];
-  v3 = [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory _60secondsSubdialView];
+  _60secondsSubdialView = [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory _60secondsSubdialView];
   bottomSubdialView = self->_bottomSubdialView;
-  self->_bottomSubdialView = v3;
+  self->_bottomSubdialView = _60secondsSubdialView;
 
-  v5 = [(NTKChronographProFacePalette *)self->_palette subdialClockHand];
-  v6 = [(NTKAlaskanChronoSubdialView *)self->_bottomSubdialView analogHand];
-  [v6 setTintColor:v5];
+  subdialClockHand = [(NTKChronographProFacePalette *)self->_palette subdialClockHand];
+  analogHand = [(NTKAlaskanChronoSubdialView *)self->_bottomSubdialView analogHand];
+  [analogHand setTintColor:subdialClockHand];
 
   [(NTKAlaskanChronographView *)self updateBottomSubdialHandPosition];
   [(NTKAlaskanChronographView *)self addSubview:self->_bottomSubdialView];
@@ -1228,19 +1228,19 @@ LABEL_35:
   [(NTKAlaskanChronographView *)self updateSubdialViewFrames];
 }
 
-- (void)switchSubDialViewsForTimeScale:(unint64_t)a3
+- (void)switchSubDialViewsForTimeScale:(unint64_t)scale
 {
   [(NTKAlaskanChronographView *)self switchLeftSubDialViewsForTimeScale:?];
-  [(NTKAlaskanChronographView *)self switchRightSubDialViewsForTimeScale:a3];
+  [(NTKAlaskanChronographView *)self switchRightSubDialViewsForTimeScale:scale];
   if (!self->_bottomSubdialView)
   {
-    v5 = [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory _60secondsSubdialView];
+    _60secondsSubdialView = [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory _60secondsSubdialView];
     bottomSubdialView = self->_bottomSubdialView;
-    self->_bottomSubdialView = v5;
+    self->_bottomSubdialView = _60secondsSubdialView;
 
-    v7 = [(NTKChronographProFacePalette *)self->_palette subdialClockHand];
-    v8 = [(NTKAlaskanChronoSubdialView *)self->_bottomSubdialView analogHand];
-    [v8 setTintColor:v7];
+    subdialClockHand = [(NTKChronographProFacePalette *)self->_palette subdialClockHand];
+    analogHand = [(NTKAlaskanChronoSubdialView *)self->_bottomSubdialView analogHand];
+    [analogHand setTintColor:subdialClockHand];
 
     [(NTKAlaskanChronographView *)self addSubview:self->_bottomSubdialView];
   }
@@ -1248,69 +1248,69 @@ LABEL_35:
   [(NTKAlaskanChronographView *)self updateSubdialViewFrames];
 }
 
-- (void)switchDialViewForTimeScale:(unint64_t)a3 setTopLabel:(BOOL)a4
+- (void)switchDialViewForTimeScale:(unint64_t)scale setTopLabel:(BOOL)label
 {
-  v4 = a4;
+  labelCopy = label;
   v7 = [(NTKAlaskanChronographView *)self dialViewForTimeScale:?];
   [(NTKAlaskanChronographView *)self setDialTickView:v7];
 
-  v8 = [(NTKAlaskanChronographView *)self dialTickView];
-  [v8 setTag:a3];
+  dialTickView = [(NTKAlaskanChronographView *)self dialTickView];
+  [dialTickView setTag:scale];
 
-  if (v4 && ![(NTKAlaskanChronographView *)self isEditing]&& [(NTKAlaskanChronographView *)self isChronoMode])
+  if (labelCopy && ![(NTKAlaskanChronographView *)self isEditing]&& [(NTKAlaskanChronographView *)self isChronoMode])
   {
     v10 = [(NTKAlaskanChronographView *)self titleForTimeScale:self->_timeScale];
-    v9 = [(NTKAlaskanChronographView *)self topLabel];
-    [v9 setText:v10];
+    topLabel = [(NTKAlaskanChronographView *)self topLabel];
+    [topLabel setText:v10];
   }
 }
 
-- (id)dialViewForTimeScale:(unint64_t)a3
+- (id)dialViewForTimeScale:(unint64_t)scale
 {
   dialViewFactory = self->_dialViewFactory;
-  if (a3 <= 2)
+  if (scale <= 2)
   {
-    if (a3 == 1)
+    if (scale == 1)
     {
-      v4 = [(NTKAlaskanDialViewFactory *)dialViewFactory _tachymeterDialView];
+      _tachymeterDialView = [(NTKAlaskanDialViewFactory *)dialViewFactory _tachymeterDialView];
       goto LABEL_13;
     }
 
-    if (a3 == 2)
+    if (scale == 2)
     {
-      v4 = [(NTKAlaskanDialViewFactory *)dialViewFactory _60secondsDialView];
+      _tachymeterDialView = [(NTKAlaskanDialViewFactory *)dialViewFactory _60secondsDialView];
       goto LABEL_13;
     }
   }
 
   else
   {
-    switch(a3)
+    switch(scale)
     {
       case 3uLL:
-        v4 = [(NTKAlaskanDialViewFactory *)dialViewFactory _30secondsDialView];
+        _tachymeterDialView = [(NTKAlaskanDialViewFactory *)dialViewFactory _30secondsDialView];
         goto LABEL_13;
       case 4uLL:
-        v4 = [(NTKAlaskanDialViewFactory *)dialViewFactory _6secondsDialView];
+        _tachymeterDialView = [(NTKAlaskanDialViewFactory *)dialViewFactory _6secondsDialView];
         goto LABEL_13;
       case 5uLL:
-        v4 = [(NTKAlaskanDialViewFactory *)dialViewFactory _3secondsDialView];
+        _tachymeterDialView = [(NTKAlaskanDialViewFactory *)dialViewFactory _3secondsDialView];
         goto LABEL_13;
     }
   }
 
-  v4 = [(NTKAlaskanDialViewFactory *)dialViewFactory _12HourDialView];
+  _tachymeterDialView = [(NTKAlaskanDialViewFactory *)dialViewFactory _12HourDialView];
 LABEL_13:
 
-  return v4;
+  return _tachymeterDialView;
 }
 
-- (id)titleForTimeScale:(unint64_t)a3
+- (id)titleForTimeScale:(unint64_t)scale
 {
   v3 = 0;
-  if (a3 <= 2)
+  if (scale <= 2)
   {
-    if (a3 == 1)
+    if (scale == 1)
     {
       v4 = @"EDIT_OPTION_LABEL_SHARK_TIME_SCALE_TACHYMETER";
       v5 = @"TACHYMETER";
@@ -1318,7 +1318,7 @@ LABEL_13:
 
     else
     {
-      if (a3 != 2)
+      if (scale != 2)
       {
         goto LABEL_13;
       }
@@ -1330,7 +1330,7 @@ LABEL_13:
 
   else
   {
-    switch(a3)
+    switch(scale)
     {
       case 3uLL:
         v4 = @"EDIT_OPTION_LABEL_SHARK_TIME_SCALE_30";
@@ -1364,15 +1364,15 @@ LABEL_13:
 
   if (timeScale > 3 && (timeScale == 4 || timeScale == 5))
   {
-    v3 = [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory _60MinutesSubdialView];
+    _60MinutesSubdialView = [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory _60MinutesSubdialView];
   }
 
   else
   {
-    v3 = [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory _12HoursSubdialView];
+    _60MinutesSubdialView = [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory _12HoursSubdialView];
   }
 
-  return v3;
+  return _60MinutesSubdialView;
 }
 
 - (id)rightSubdialViewForTimeScale:(unint64_t)timeScale
@@ -1386,12 +1386,12 @@ LABEL_13:
   {
     if (timeScale - 1 >= 2 && timeScale == 3)
     {
-      v3 = [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory _15MinutesSubdialView];
+      _15MinutesSubdialView = [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory _15MinutesSubdialView];
       goto LABEL_12;
     }
 
 LABEL_5:
-    v3 = [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory _30MinutesSubdialView];
+    _15MinutesSubdialView = [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory _30MinutesSubdialView];
     goto LABEL_12;
   }
 
@@ -1399,29 +1399,29 @@ LABEL_5:
   {
     if (timeScale == 5)
     {
-      v3 = [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory _2MinutesSubdialView];
+      _15MinutesSubdialView = [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory _2MinutesSubdialView];
       goto LABEL_12;
     }
 
     goto LABEL_5;
   }
 
-  v3 = [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory _3MinutesSubdialView];
+  _15MinutesSubdialView = [(NTKAlaskanSubdialViewFactory *)self->_subdialViewFactory _3MinutesSubdialView];
 LABEL_12:
 
-  return v3;
+  return _15MinutesSubdialView;
 }
 
 - (void)_updateElapsedTimeLabel
 {
-  v3 = [(NTKAlaskanChronographView *)self isRunning];
+  isRunning = [(NTKAlaskanChronographView *)self isRunning];
   if ([(NTKAlaskanChronographView *)self isChronoMode])
   {
-    v4 = [(NTKAlaskanChronographView *)self currentStopwatchDate];
-    v5 = [(NTKAlaskanChronographView *)self _stopwatchStartDateRelativeToDate:v4];
+    currentStopwatchDate = [(NTKAlaskanChronographView *)self currentStopwatchDate];
+    v5 = [(NTKAlaskanChronographView *)self _stopwatchStartDateRelativeToDate:currentStopwatchDate];
 
     v6 = [(NTKAlaskanChronographView *)self _totalTimelapsedTextProviderWithDate:v5];
-    v7 = v3 ^ 1;
+    v7 = isRunning ^ 1;
     [v6 setPaused:v7];
     if ([(NTKAlaskanChronographView *)self isEditing])
     {
@@ -1449,8 +1449,8 @@ LABEL_12:
       [(NTKAlaskanStopwatch *)self->_stopwatchModel currentLapTime];
       v13 = [v5 dateByAddingTimeInterval:v11 - v12];
       v14 = [(NTKAlaskanChronographView *)self _lapTimelapsedTextProviderWithDate:v13];
-      v15 = [(NTKAlaskanChronographView *)self topLabel];
-      [v15 setTextProvider:v14];
+      topLabel = [(NTKAlaskanChronographView *)self topLabel];
+      [topLabel setTextProvider:v14];
     }
   }
 
@@ -1459,14 +1459,14 @@ LABEL_12:
     v9 = [(NTKAlaskanChronographView *)self titleForTimeScale:self->_timeScale];
     [(CLKUIColoringLabel *)self->_centerLabel setText:v9];
 
-    v7 = v3 ^ 1;
+    v7 = isRunning ^ 1;
   }
 
-  v16 = [(CLKUIColoringLabel *)self->_topLabel textProvider];
-  [v16 setPaused:v7];
+  textProvider = [(CLKUIColoringLabel *)self->_topLabel textProvider];
+  [textProvider setPaused:v7];
 
-  v17 = [(CLKUIColoringLabel *)self->_centerLabel textProvider];
-  [v17 setPaused:v7];
+  textProvider2 = [(CLKUIColoringLabel *)self->_centerLabel textProvider];
+  [textProvider2 setPaused:v7];
 
   if ([(NTKAlaskanStopwatch *)self->_stopwatchModel isStopped]&& ![(NTKAlaskanChronographView *)self isEditing]&& [(NTKAlaskanChronographView *)self isChronoMode])
   {
@@ -1474,8 +1474,8 @@ LABEL_12:
     [(CLKUIColoringLabel *)self->_topLabel setText:v18];
   }
 
-  v19 = [(NTKAlaskanChronographView *)self timeScale]== &dword_0 + 1 && [(NTKAlaskanChronographView *)self isRunning];
-  [(NTKAlaskanChronographView *)self startStopTachymeterUnitUpdates:v19];
+  isRunning2 = [(NTKAlaskanChronographView *)self timeScale]== &dword_0 + 1 && [(NTKAlaskanChronographView *)self isRunning];
+  [(NTKAlaskanChronographView *)self startStopTachymeterUnitUpdates:isRunning2];
 
   [(NTKAlaskanChronographView *)self setNeedsLayout];
 }
@@ -1525,9 +1525,9 @@ LABEL_12:
   }
 
   [(NTKAlaskanChronographView *)self setDiameter:v16];
-  v17 = [(NTKAlaskanChronographView *)self centerLabel];
+  centerLabel = [(NTKAlaskanChronographView *)self centerLabel];
 
-  if (v17)
+  if (centerLabel)
   {
     [(CALayer *)self->_innerBackgroundCircle bounds];
     [(CLKUIColoringLabel *)self->_centerLabel setMaxWidth:*&v45 * v18];
@@ -1539,12 +1539,12 @@ LABEL_12:
     [(CLKUIColoringLabel *)self->_centerLabel setFrame:0.0, 0.0, v23 + *(&v45 + 1), v24];
     [(NTKAlaskanChronographView *)self bounds];
     CGRectGetMidX(v48);
-    v25 = [(NTKAlaskanChronographView *)self device];
+    device = [(NTKAlaskanChronographView *)self device];
     CLKRoundForDevice();
     v27 = v26;
     [(NTKAlaskanChronographView *)self bounds];
     CGRectGetMidY(v49);
-    v28 = [(NTKAlaskanChronographView *)self device];
+    device2 = [(NTKAlaskanChronographView *)self device];
     CLKRoundForDevice();
     [(CLKUIColoringLabel *)self->_centerLabel setCenter:v27, v29];
 
@@ -1558,7 +1558,7 @@ LABEL_12:
     v51 = CGRectInset(v50, 0.0, dy);
     [(CALayer *)self->_centerLabelBackgroundLayer setFrame:v51.origin.x, v51.origin.y, v51.size.width, v51.size.height];
     [(CALayer *)self->_centerLabelBackgroundLayer frame];
-    v30 = [(NTKAlaskanChronographView *)self device];
+    device3 = [(NTKAlaskanChronographView *)self device];
     CLKRoundForDevice();
     [(CALayer *)self->_centerLabelBackgroundLayer setCornerRadius:?];
   }
@@ -1588,14 +1588,14 @@ LABEL_12:
   CLKRectGetCenter();
   v4 = v3;
   v6 = v5;
-  v7 = [(NTKAlaskanChronographView *)self window];
-  [v7 convertPoint:self fromView:{v4, v6}];
+  window = [(NTKAlaskanChronographView *)self window];
+  [window convertPoint:self fromView:{v4, v6}];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(NTKAlaskanChronographView *)self window];
-  v13 = [(NTKAlaskanChronographView *)self chronometerHandsParentView];
-  [v12 convertPoint:v13 toView:{v9, v11}];
+  window2 = [(NTKAlaskanChronographView *)self window];
+  chronometerHandsParentView = [(NTKAlaskanChronographView *)self chronometerHandsParentView];
+  [window2 convertPoint:chronometerHandsParentView toView:{v9, v11}];
   v15 = v14;
   v17 = v16;
 
@@ -1633,9 +1633,9 @@ LABEL_12:
   [(NTKAlaskanChronoSubdialView *)bottomSubdialView setCenter:v8, v9];
 }
 
-- (void)setDiameter:(double)a3
+- (void)setDiameter:(double)diameter
 {
-  if (self->_diameter != a3)
+  if (self->_diameter != diameter)
   {
     v22 = v8;
     v23 = v7;
@@ -1643,11 +1643,11 @@ LABEL_12:
     v25 = v5;
     v26 = v3;
     v27 = v4;
-    self->_diameter = a3;
+    self->_diameter = diameter;
     v21 = 0;
     memset(v20, 0, sizeof(v20));
-    v10 = [(NTKAlaskanChronographView *)self device];
-    sub_1CDA8(v10, v20);
+    device = [(NTKAlaskanChronographView *)self device];
+    sub_1CDA8(device, v20);
 
     [(NTKAlaskanChronographView *)self bounds];
     v11 = *v20;
@@ -1676,50 +1676,50 @@ LABEL_12:
 {
   if ([(NTKAlaskanChronographView *)self isRunning])
   {
-    v3 = [(NTKAlaskanChronographView *)self delegate];
-    [v3 alaskanChronographViewDidTapStartNewLapButton:self];
+    delegate = [(NTKAlaskanChronographView *)self delegate];
+    [delegate alaskanChronographViewDidTapStartNewLapButton:self];
   }
 
   else
   {
     [(NTKAlaskanChronographView *)self setIsChronoMode:0];
-    v3 = [(NTKAlaskanChronographView *)self delegate];
-    [v3 alaskanChronographViewDidTapResetButton:self];
+    delegate = [(NTKAlaskanChronographView *)self delegate];
+    [delegate alaskanChronographViewDidTapResetButton:self];
   }
 }
 
 - (void)handleStartStopButtonTap
 {
-  v3 = [(NTKAlaskanChronographView *)self isRunning];
-  v4 = [(NTKAlaskanChronographView *)self delegate];
-  v5 = v4;
-  if (v3)
+  isRunning = [(NTKAlaskanChronographView *)self isRunning];
+  delegate = [(NTKAlaskanChronographView *)self delegate];
+  v5 = delegate;
+  if (isRunning)
   {
-    [v4 alaskanChronographViewDidTapPauseButton:self];
+    [delegate alaskanChronographViewDidTapPauseButton:self];
   }
 
   else
   {
-    [v4 alaskanChronographViewDidTapStartButton:self];
+    [delegate alaskanChronographViewDidTapStartButton:self];
   }
 }
 
-- (void)handleTapGestureRecognizer:(id)a3
+- (void)handleTapGestureRecognizer:(id)recognizer
 {
   if (![(NTKAlaskanChronographView *)self isChronoMode])
   {
     [(NTKAlaskanChronographView *)self setIsChronoMode:1];
-    v4 = [(NTKAlaskanChronographView *)self delegate];
-    [v4 alaskanChronographViewDidTapView:self];
+    delegate = [(NTKAlaskanChronographView *)self delegate];
+    [delegate alaskanChronographViewDidTapView:self];
   }
 }
 
 - (unint64_t)nextTimeScale
 {
-  v2 = [(NTKAlaskanChronographView *)self timeScale];
-  if (v2 + 1 <= 5)
+  timeScale = [(NTKAlaskanChronographView *)self timeScale];
+  if (timeScale + 1 <= 5)
   {
-    return v2 + 1;
+    return timeScale + 1;
   }
 
   else
@@ -1730,15 +1730,15 @@ LABEL_12:
 
 - (unint64_t)previousTimeScale
 {
-  v2 = [(NTKAlaskanChronographView *)self timeScale];
-  if (v2 == 1)
+  timeScale = [(NTKAlaskanChronographView *)self timeScale];
+  if (timeScale == 1)
   {
     return 5;
   }
 
   else
   {
-    return v2 - 1;
+    return timeScale - 1;
   }
 }
 
@@ -1746,40 +1746,40 @@ LABEL_12:
 {
   [(NTKAlaskanChronographView *)self largeAnalogHandsFullRotationDuration];
   v4 = v3;
-  v5 = [(NTKAlaskanChronographView *)self currentStopwatchDate];
-  [(NTKAlaskanChronographView *)self _stopwatchElapsedTimeForFutureDate:v5];
+  currentStopwatchDate = [(NTKAlaskanChronographView *)self currentStopwatchDate];
+  [(NTKAlaskanChronographView *)self _stopwatchElapsedTimeForFutureDate:currentStopwatchDate];
   v7 = v6;
 
-  v8 = [(NTKAlaskanChronographView *)self currentStopwatchDate];
-  [(NTKAlaskanChronographView *)self _stopwatchCurrentLapTimeForFutureDate:v8];
+  currentStopwatchDate2 = [(NTKAlaskanChronographView *)self currentStopwatchDate];
+  [(NTKAlaskanChronographView *)self _stopwatchCurrentLapTimeForFutureDate:currentStopwatchDate2];
   v10 = v9;
 
-  v11 = [(NTKAlaskanChronographView *)self primaryHandView];
+  primaryHandView = [(NTKAlaskanChronographView *)self primaryHandView];
   *&v4 = v4;
   LODWORD(v12) = LODWORD(v4);
   [(NTKAlaskanChronographView *)self zRotationForTime:v7 withDuration:v12];
-  [v11 setZRotation:v13];
+  [primaryHandView setZRotation:v13];
 
-  v14 = [(NTKAlaskanChronographView *)self secondaryHandView];
+  secondaryHandView = [(NTKAlaskanChronographView *)self secondaryHandView];
   LODWORD(v15) = LODWORD(v4);
   [(NTKAlaskanChronographView *)self zRotationForTime:v10 withDuration:v15];
-  [v14 setZRotation:v16];
+  [secondaryHandView setZRotation:v16];
 
   [(NTKAlaskanChronographView *)self leftSubdialAnalogHandsFullRotationDuration];
   *&v18 = v17;
   [(NTKAlaskanChronographView *)self zRotationForTime:v7 withDuration:v18];
   CGAffineTransformMakeRotation(&v27, v19);
-  v20 = [(NTKAlaskanChronoSubdialView *)self->_leftSubdialView analogHand];
+  analogHand = [(NTKAlaskanChronoSubdialView *)self->_leftSubdialView analogHand];
   v26 = v27;
-  [v20 setTransform:&v26];
+  [analogHand setTransform:&v26];
 
   [(NTKAlaskanChronographView *)self rightSubdialAnalogHandsFullRotationDuration];
   *&v22 = v21;
   [(NTKAlaskanChronographView *)self zRotationForTime:v7 withDuration:v22];
   CGAffineTransformMakeRotation(&v25, v23);
-  v24 = [(NTKAlaskanChronoSubdialView *)self->_rightSubdialView analogHand];
+  analogHand2 = [(NTKAlaskanChronoSubdialView *)self->_rightSubdialView analogHand];
   v26 = v25;
-  [v24 setTransform:&v26];
+  [analogHand2 setTransform:&v26];
 }
 
 - (void)startAnimatingHands
@@ -1805,46 +1805,46 @@ LABEL_12:
   [(NTKAlaskanChronographView *)self configureHandsAnimation:secondaryHandView currentRadians:v18 durationOfFullRotation:v4 fps:v19];
   [(NTKAlaskanChronographView *)self leftSubdialAnalogHandsFullRotationDuration];
   v21 = v20;
-  v22 = [(NTKAlaskanChronoSubdialView *)self->_leftSubdialView analogHand];
+  analogHand = [(NTKAlaskanChronoSubdialView *)self->_leftSubdialView analogHand];
   *&v23 = v21;
   [(NTKAlaskanChronographView *)self zRotationForTime:v6 withDuration:v23];
   v25 = v24;
   [(NTKAlaskanChronographView *)self leftSubdialHandsAnimationFPS];
-  [(NTKAlaskanChronographView *)self configureHandsAnimation:v22 currentRadians:v25 durationOfFullRotation:v21 fps:v26];
+  [(NTKAlaskanChronographView *)self configureHandsAnimation:analogHand currentRadians:v25 durationOfFullRotation:v21 fps:v26];
 
   [(NTKAlaskanChronographView *)self rightSubdialAnalogHandsFullRotationDuration];
   v28 = v27;
-  v33 = [(NTKAlaskanChronoSubdialView *)self->_rightSubdialView analogHand];
+  analogHand2 = [(NTKAlaskanChronoSubdialView *)self->_rightSubdialView analogHand];
   *&v29 = v28;
   [(NTKAlaskanChronographView *)self zRotationForTime:v6 withDuration:v29];
   v31 = v30;
   [(NTKAlaskanChronographView *)self rightSubdialHandsAnimationFPS];
-  [(NTKAlaskanChronographView *)self configureHandsAnimation:v33 currentRadians:v31 durationOfFullRotation:v28 fps:v32];
+  [(NTKAlaskanChronographView *)self configureHandsAnimation:analogHand2 currentRadians:v31 durationOfFullRotation:v28 fps:v32];
 }
 
 - (void)startAnimatingBottomSubdialHand
 {
   [(NTKAlaskanChronographView *)self bottomSubdialAnalogHandsFullRotationDuration];
   v4 = v3;
-  v8 = [(NTKAlaskanChronoSubdialView *)self->_bottomSubdialView analogHand];
+  analogHand = [(NTKAlaskanChronoSubdialView *)self->_bottomSubdialView analogHand];
   [(NTKAlaskanChronographView *)self secondsAngleForCurrentDate];
   v6 = v5;
   [(NTKAlaskanChronographView *)self bottomSubdialHandsAnimationFPS];
-  [(NTKAlaskanChronographView *)self configureHandsAnimation:v8 currentRadians:v6 durationOfFullRotation:v4 fps:v7];
+  [(NTKAlaskanChronographView *)self configureHandsAnimation:analogHand currentRadians:v6 durationOfFullRotation:v4 fps:v7];
 }
 
 - (void)updateBottomSubdialHandPosition
 {
   [(NTKAlaskanChronographView *)self secondsAngleForCurrentDate];
   CGAffineTransformMakeRotation(&v6, v3);
-  v4 = [(NTKAlaskanChronoSubdialView *)self->_bottomSubdialView analogHand];
+  analogHand = [(NTKAlaskanChronoSubdialView *)self->_bottomSubdialView analogHand];
   v5 = v6;
-  [v4 setTransform:&v5];
+  [analogHand setTransform:&v5];
 }
 
-- (void)configureHandsAnimation:(id)a3 currentRadians:(double)a4 durationOfFullRotation:(double)a5 fps:(double)a6
+- (void)configureHandsAnimation:(id)animation currentRadians:(double)radians durationOfFullRotation:(double)rotation fps:(double)fps
 {
-  v9 = a3;
+  animationCopy = animation;
   v15 = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
   LODWORD(v10) = 2139095040;
   [v15 setRepeatCount:v10];
@@ -1853,60 +1853,60 @@ LABEL_12:
 
   [v15 setRemovedOnCompletion:0];
   [v15 setFillMode:kCAFillModeForwards];
-  if (a4 < 0.0)
+  if (radians < 0.0)
   {
-    a4 = a4 + 6.28318531;
+    radians = radians + 6.28318531;
   }
 
-  v12 = [NSNumber numberWithDouble:a4];
+  v12 = [NSNumber numberWithDouble:radians];
   [v15 setFromValue:v12];
 
-  v13 = [NSNumber numberWithDouble:a4 + 6.28318531];
+  v13 = [NSNumber numberWithDouble:radians + 6.28318531];
   [v15 setToValue:v13];
 
-  [v15 setDuration:a5];
-  [v15 setFrameInterval:1.0 / a6];
-  v14 = [v9 layer];
+  [v15 setDuration:rotation];
+  [v15 setFrameInterval:1.0 / fps];
+  layer = [animationCopy layer];
 
-  [v14 addAnimation:v15 forKey:@"NTKAlaskanChronographHandsAnimationKey"];
+  [layer addAnimation:v15 forKey:@"NTKAlaskanChronographHandsAnimationKey"];
 }
 
 - (void)stopAnimatingHands
 {
-  v3 = [(NTKHandView *)self->_primaryHandView layer];
-  [(NTKAlaskanChronographView *)self stopHandAnimation:v3];
+  layer = [(NTKHandView *)self->_primaryHandView layer];
+  [(NTKAlaskanChronographView *)self stopHandAnimation:layer];
 
-  v4 = [(NTKHandView *)self->_secondaryHandView layer];
-  [(NTKAlaskanChronographView *)self stopHandAnimation:v4];
+  layer2 = [(NTKHandView *)self->_secondaryHandView layer];
+  [(NTKAlaskanChronographView *)self stopHandAnimation:layer2];
 
-  v5 = [(NTKAlaskanChronoSubdialView *)self->_rightSubdialView analogHand];
-  v6 = [v5 layer];
-  [(NTKAlaskanChronographView *)self stopHandAnimation:v6];
+  analogHand = [(NTKAlaskanChronoSubdialView *)self->_rightSubdialView analogHand];
+  layer3 = [analogHand layer];
+  [(NTKAlaskanChronographView *)self stopHandAnimation:layer3];
 
-  v8 = [(NTKAlaskanChronoSubdialView *)self->_leftSubdialView analogHand];
-  v7 = [v8 layer];
-  [(NTKAlaskanChronographView *)self stopHandAnimation:v7];
+  analogHand2 = [(NTKAlaskanChronoSubdialView *)self->_leftSubdialView analogHand];
+  layer4 = [analogHand2 layer];
+  [(NTKAlaskanChronographView *)self stopHandAnimation:layer4];
 }
 
 - (void)stopAnimatingBottomSubdialHand
 {
-  v4 = [(NTKAlaskanChronoSubdialView *)self->_bottomSubdialView analogHand];
-  v3 = [v4 layer];
-  [(NTKAlaskanChronographView *)self stopHandAnimation:v3];
+  analogHand = [(NTKAlaskanChronoSubdialView *)self->_bottomSubdialView analogHand];
+  layer = [analogHand layer];
+  [(NTKAlaskanChronographView *)self stopHandAnimation:layer];
 }
 
-- (void)stopHandAnimation:(id)a3
+- (void)stopHandAnimation:(id)animation
 {
-  v6 = a3;
-  v3 = [v6 animationForKey:@"NTKAlaskanChronographHandsAnimationKey"];
+  animationCopy = animation;
+  v3 = [animationCopy animationForKey:@"NTKAlaskanChronographHandsAnimationKey"];
 
   if (v3)
   {
-    v4 = [v6 presentationLayer];
-    v5 = [v4 valueForKeyPath:@"transform.rotation"];
-    [v6 setValue:v5 forKeyPath:@"transform.rotation"];
+    presentationLayer = [animationCopy presentationLayer];
+    v5 = [presentationLayer valueForKeyPath:@"transform.rotation"];
+    [animationCopy setValue:v5 forKeyPath:@"transform.rotation"];
 
-    [v6 removeAnimationForKey:@"NTKAlaskanChronographHandsAnimationKey"];
+    [animationCopy removeAnimationForKey:@"NTKAlaskanChronographHandsAnimationKey"];
   }
 }
 
@@ -1958,13 +1958,13 @@ LABEL_12:
   return result;
 }
 
-- (id)_totalTimelapsedTextProviderWithDate:(id)a3
+- (id)_totalTimelapsedTextProviderWithDate:(id)date
 {
-  v4 = [CLKRelativeDateTextProvider textProviderWithDate:a3 style:2 units:224];
+  v4 = [CLKRelativeDateTextProvider textProviderWithDate:date style:2 units:224];
   if (![(NTKAlaskanChronographView *)self isRunning])
   {
-    v5 = [(NTKAlaskanChronographView *)self currentStopwatchDate];
-    [v4 setRelativeToDate:v5];
+    currentStopwatchDate = [(NTKAlaskanChronographView *)self currentStopwatchDate];
+    [v4 setRelativeToDate:currentStopwatchDate];
   }
 
   [v4 setPaused:{-[NTKAlaskanChronographView isRunning](self, "isRunning") ^ 1}];
@@ -1974,13 +1974,13 @@ LABEL_12:
   return v4;
 }
 
-- (id)_lapTimelapsedTextProviderWithDate:(id)a3
+- (id)_lapTimelapsedTextProviderWithDate:(id)date
 {
-  v4 = [CLKRelativeDateTextProvider textProviderWithDate:a3 style:2 units:224];
+  v4 = [CLKRelativeDateTextProvider textProviderWithDate:date style:2 units:224];
   if (![(NTKAlaskanChronographView *)self isRunning])
   {
-    v5 = [(NTKAlaskanChronographView *)self currentStopwatchDate];
-    [v4 setRelativeToDate:v5];
+    currentStopwatchDate = [(NTKAlaskanChronographView *)self currentStopwatchDate];
+    [v4 setRelativeToDate:currentStopwatchDate];
   }
 
   [v4 setPaused:{-[NTKAlaskanChronographView isRunning](self, "isRunning") ^ 1}];
@@ -1988,8 +1988,8 @@ LABEL_12:
   [v4 setTwoDigitMinuteZeroPadding:1];
   [v4 setTintColor:self->_topLabelSuffixColor];
   v6 = [NTKAlaskanFaceBundle localizedStringForKey:@"ALASKAN_CHRONO_LAP_COUNT" comment:@"LAP %lu: %@"];
-  v7 = [(NTKAlaskanStopwatch *)self->_stopwatchModel laps];
-  v8 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [v7 count] + 1);
+  laps = [(NTKAlaskanStopwatch *)self->_stopwatchModel laps];
+  v8 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [laps count] + 1);
 
   v9 = [CLKSimpleTextProvider textProviderWithText:v8];
   [v9 setTintColor:self->_topLabelPrefixColor];
@@ -2003,8 +2003,8 @@ LABEL_12:
   updateFidelity = self->_updateFidelity;
   if (updateFidelity < 2 || updateFidelity == 2 && ![(NTKAlaskanChronographView *)self isRunning])
   {
-    v4 = [(NTKAlaskanChronographView *)self currentStopwatchDate];
-    [(NTKAlaskanChronographView *)self _stopwatchElapsedTimeForFutureDate:v4];
+    currentStopwatchDate = [(NTKAlaskanChronographView *)self currentStopwatchDate];
+    [(NTKAlaskanChronographView *)self _stopwatchElapsedTimeForFutureDate:currentStopwatchDate];
     v6 = v5;
 
     v7 = [(NTKAlaskanChronographView *)self _tachymeterTextProviderWithTimeInterval:v6];
@@ -2015,8 +2015,8 @@ LABEL_12:
     v16 = 0u;
     v17 = 0u;
     memset(v15, 0, sizeof(v15));
-    v8 = [(NTKAlaskanChronographView *)self device];
-    sub_1CDA8(v8, v15);
+    device = [(NTKAlaskanChronographView *)self device];
+    sub_1CDA8(device, v15);
 
     [(NTKAlaskanChronographView *)self bounds];
     v10 = v9 - *(&v16 + 1);
@@ -2047,9 +2047,9 @@ LABEL_12:
   }
 }
 
-- (id)_tachymeterTextProviderWithTimeInterval:(double)a3 dropPrefix:(BOOL)a4 dropSuffix:(BOOL)a5
+- (id)_tachymeterTextProviderWithTimeInterval:(double)interval dropPrefix:(BOOL)prefix dropSuffix:(BOOL)suffix
 {
-  if (a4)
+  if (prefix)
   {
     v8 = &stru_395D8;
   }
@@ -2061,7 +2061,7 @@ LABEL_12:
 
   v9 = [CLKSimpleTextProvider textProviderWithText:v8];
   [v9 setTintColor:self->_topLabelPrefixColor];
-  if (a5)
+  if (suffix)
   {
     v10 = @"%lu";
   }
@@ -2071,7 +2071,7 @@ LABEL_12:
     v10 = [NTKAlaskanFaceBundle localizedStringForKey:@"ALASKAN_CHRONO_TACHY_LABEL" table:@"AlaskanFormats" comment:@"%lu UNITS/HOUR"];
   }
 
-  v11 = [NSString localizedStringWithFormat:v10, vcvtpd_u64_f64(3600.0 / a3)];
+  v11 = [NSString localizedStringWithFormat:v10, vcvtpd_u64_f64(3600.0 / interval)];
   v12 = [CLKSimpleTextProvider textProviderWithText:v11];
   [v12 setTintColor:self->_topLabelSuffixColor];
   if (CLKLayoutIsRTL())
@@ -2088,7 +2088,7 @@ LABEL_12:
   return v13;
 }
 
-- (void)startStopTachymeterUnitUpdates:(BOOL)a3
+- (void)startStopTachymeterUnitUpdates:(BOOL)updates
 {
   tachymeterTimerToken = self->_tachymeterTimerToken;
   if (tachymeterTimerToken)
@@ -2098,12 +2098,12 @@ LABEL_12:
 
   else
   {
-    v5 = !a3;
+    v5 = !updates;
   }
 
   if (v5)
   {
-    if (tachymeterTimerToken && !a3)
+    if (tachymeterTimerToken && !updates)
     {
       v6 = +[CLKClockTimer sharedInstance];
       [v6 stopUpdatesForToken:self->_tachymeterTimerToken];
@@ -2154,8 +2154,8 @@ LABEL_12:
   stopwatchModel = self->_stopwatchModel;
   if (stopwatchModel)
   {
-    v4 = [(NTKAlaskanStopwatch *)stopwatchModel laps];
-    if ([v4 count] && -[NTKAlaskanChronographView timeScale](self, "timeScale") != &dword_0 + 1)
+    laps = [(NTKAlaskanStopwatch *)stopwatchModel laps];
+    if ([laps count] && -[NTKAlaskanChronographView timeScale](self, "timeScale") != &dword_0 + 1)
     {
       v5 = [(NTKAlaskanChronographView *)self isChronoMode]^ 1;
     }
@@ -2171,61 +2171,61 @@ LABEL_12:
     v5 = 1;
   }
 
-  v6 = [(NTKAlaskanChronographView *)self secondaryHandView];
-  [v6 setHidden:v5];
+  secondaryHandView = [(NTKAlaskanChronographView *)self secondaryHandView];
+  [secondaryHandView setHidden:v5];
 }
 
 - (double)secondsAngleForCurrentDate
 {
   v3 = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
-  v4 = [(NTKAlaskanChronographView *)self currentClockDate];
+  currentClockDate = [(NTKAlaskanChronographView *)self currentClockDate];
   NTKHourMinuteSecondAnglesForTime();
 
   return 0.0;
 }
 
-- (double)_stopwatchCurrentLapTimeForFutureDate:(id)a3
+- (double)_stopwatchCurrentLapTimeForFutureDate:(id)date
 {
   stopwatchModel = self->_stopwatchModel;
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
 
   [(NTKAlaskanStopwatch *)stopwatchModel elapsedLapDurationForFutureTime:?];
   return result;
 }
 
-- (double)_stopwatchElapsedTimeForFutureDate:(id)a3
+- (double)_stopwatchElapsedTimeForFutureDate:(id)date
 {
   stopwatchModel = self->_stopwatchModel;
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
 
   [(NTKAlaskanStopwatch *)stopwatchModel elapsedDurationForFutureTime:?];
   return result;
 }
 
-- (id)_stopwatchStartDateRelativeToDate:(id)a3
+- (id)_stopwatchStartDateRelativeToDate:(id)date
 {
-  v4 = a3;
-  [(NTKAlaskanChronographView *)self _stopwatchElapsedTimeForFutureDate:v4];
-  v6 = [NSDate dateWithTimeInterval:v4 sinceDate:-v5];
+  dateCopy = date;
+  [(NTKAlaskanChronographView *)self _stopwatchElapsedTimeForFutureDate:dateCopy];
+  v6 = [NSDate dateWithTimeInterval:dateCopy sinceDate:-v5];
 
   return v6;
 }
 
-- (id)_currentLapStartDateRelativeToDate:(id)a3
+- (id)_currentLapStartDateRelativeToDate:(id)date
 {
-  v4 = a3;
-  [(NTKAlaskanChronographView *)self _stopwatchCurrentLapTimeForFutureDate:v4];
-  v6 = [NSDate dateWithTimeInterval:v4 sinceDate:-v5];
+  dateCopy = date;
+  [(NTKAlaskanChronographView *)self _stopwatchCurrentLapTimeForFutureDate:dateCopy];
+  v6 = [NSDate dateWithTimeInterval:dateCopy sinceDate:-v5];
 
   return v6;
 }
 
 - (BOOL)isRunning
 {
-  v2 = [(NTKAlaskanChronographView *)self stopwatchModel];
-  v3 = [v2 isRunning];
+  stopwatchModel = [(NTKAlaskanChronographView *)self stopwatchModel];
+  isRunning = [stopwatchModel isRunning];
 
-  return v3;
+  return isRunning;
 }
 
 - (NTKAlaskanChronographViewDelegate)delegate

@@ -1,8 +1,8 @@
 @interface FMSymbolBulletedListView
 - (_TtC6FindMy24FMSymbolBulletedListView)init;
-- (_TtC6FindMy24FMSymbolBulletedListView)initWithCoder:(id)a3;
-- (_TtC6FindMy24FMSymbolBulletedListView)initWithFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC6FindMy24FMSymbolBulletedListView)initWithCoder:(id)coder;
+- (_TtC6FindMy24FMSymbolBulletedListView)initWithFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FMSymbolBulletedListView
@@ -20,7 +20,7 @@
   return v2;
 }
 
-- (_TtC6FindMy24FMSymbolBulletedListView)initWithCoder:(id)a3
+- (_TtC6FindMy24FMSymbolBulletedListView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy24FMSymbolBulletedListView_bulletViews) = _swiftEmptyArrayStorage;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -28,13 +28,13 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = type metadata accessor for FMSymbolBulletedListView();
-  v4 = a3;
+  changeCopy = change;
   v5 = v11.receiver;
-  [(FMSymbolBulletedListView *)&v11 traitCollectionDidChange:v4];
+  [(FMSymbolBulletedListView *)&v11 traitCollectionDidChange:changeCopy];
   if (qword_1006AEB98 != -1)
   {
     swift_once();
@@ -49,7 +49,7 @@
   [v5 setSpacing:v10];
 }
 
-- (_TtC6FindMy24FMSymbolBulletedListView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy24FMSymbolBulletedListView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

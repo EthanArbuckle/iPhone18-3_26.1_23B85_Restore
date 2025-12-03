@@ -3,41 +3,41 @@
 + (BOOL)deviceSupportsMultipleUsers;
 + (id)sharedController;
 - (AMSDCloudDataContainer)cloudContainer;
-- (AMSDMultiUserController)initWithCloudDataManager:(id)a3 homeManager:(id)a4;
-- (BOOL)_refreshShouldUseCloudDataWithHomes:(id)a3;
+- (AMSDMultiUserController)initWithCloudDataManager:(id)manager homeManager:(id)homeManager;
+- (BOOL)_refreshShouldUseCloudDataWithHomes:(id)homes;
 - (BOOL)multiUserRefreshThrottlingActive;
 - (BOOL)shouldEnablePushTopic;
 - (NSString)pushTopic;
 - (id)_isCloudDataAvailable;
-- (id)_isRefreshThrottlingDisabledWithOptions:(id)a3;
+- (id)_isRefreshThrottlingDisabledWithOptions:(id)options;
 - (id)_refreshThrottlingDate;
-- (id)_scheduleRefreshWithOptions:(id)a3;
-- (id)databaseForHome:(id)a3 user:(id)a4;
-- (id)refreshWithOptions:(id)a3 metrics:(id)a4;
-- (void)_setLastSuccessfulRefreshDateWithHomes:(id)a3;
-- (void)_setRefreshThrottlingDateWithTimeInterval:(double)a3;
-- (void)cloudDataManagerDataSource:(id)a3 didChangeWithType:(unint64_t)a4;
-- (void)handlePushNotification:(id)a3;
-- (void)homeManagerDataSource:(id)a3 didChangeWithType:(unint64_t)a4;
-- (void)homeManagerDataSource:(id)a3 didReceiveCloudDataRepairRequestForHome:(id)a4;
-- (void)homeManagerDataSource:(id)a3 didReceiveCloudShare:(id)a4 completion:(id)a5;
+- (id)_scheduleRefreshWithOptions:(id)options;
+- (id)databaseForHome:(id)home user:(id)user;
+- (id)refreshWithOptions:(id)options metrics:(id)metrics;
+- (void)_setLastSuccessfulRefreshDateWithHomes:(id)homes;
+- (void)_setRefreshThrottlingDateWithTimeInterval:(double)interval;
+- (void)cloudDataManagerDataSource:(id)source didChangeWithType:(unint64_t)type;
+- (void)handlePushNotification:(id)notification;
+- (void)homeManagerDataSource:(id)source didChangeWithType:(unint64_t)type;
+- (void)homeManagerDataSource:(id)source didReceiveCloudDataRepairRequestForHome:(id)home;
+- (void)homeManagerDataSource:(id)source didReceiveCloudShare:(id)share completion:(id)completion;
 - (void)teardownMultiUser;
 @end
 
 @implementation AMSDMultiUserController
 
-- (AMSDMultiUserController)initWithCloudDataManager:(id)a3 homeManager:(id)a4
+- (AMSDMultiUserController)initWithCloudDataManager:(id)manager homeManager:(id)homeManager
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  homeManagerCopy = homeManager;
   v14.receiver = self;
   v14.super_class = AMSDMultiUserController;
   v9 = [(AMSDMultiUserController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cloudDataManager, a3);
-    objc_storeStrong(&v10->_homeManager, a4);
+    objc_storeStrong(&v9->_cloudDataManager, manager);
+    objc_storeStrong(&v10->_homeManager, homeManager);
     v11 = objc_alloc_init(AMSThreadSafeObject);
     previousCloudContainerStatus = v10->_previousCloudContainerStatus;
     v10->_previousCloudContainerStatus = v11;
@@ -48,8 +48,8 @@
 
 - (void)teardownMultiUser
 {
-  v3 = [(AMSDMultiUserController *)self homeManager];
-  [v3 teardownMultiUser];
+  homeManager = [(AMSDMultiUserController *)self homeManager];
+  [homeManager teardownMultiUser];
 
   [(AMSDMultiUserController *)self setHomeManager:0];
 }
@@ -60,7 +60,7 @@
   block[1] = 3221225472;
   block[2] = sub_10006749C;
   block[3] = &unk_1002B0760;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002E3240 != -1)
   {
     dispatch_once(&qword_1002E3240, block);
@@ -85,8 +85,8 @@
 
   v7 = v6;
 
-  v8 = [(AMSDMultiUserController *)self cloudDataManager];
-  v9 = [v8 containerWithContainerIdentifier:v7 options:v3];
+  cloudDataManager = [(AMSDMultiUserController *)self cloudDataManager];
+  v9 = [cloudDataManager containerWithContainerIdentifier:v7 options:v3];
 
   return v9;
 }
@@ -113,56 +113,56 @@
 
 - (NSString)pushTopic
 {
-  v2 = [(AMSDMultiUserController *)self cloudDataManager];
-  v3 = [v2 pushNotificationTopic];
+  cloudDataManager = [(AMSDMultiUserController *)self cloudDataManager];
+  pushNotificationTopic = [cloudDataManager pushNotificationTopic];
 
-  return v3;
+  return pushNotificationTopic;
 }
 
-- (id)databaseForHome:(id)a3 user:(id)a4
+- (id)databaseForHome:(id)home user:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 users];
+  homeCopy = home;
+  userCopy = user;
+  users = [homeCopy users];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000678C4;
   v18[3] = &unk_1002B0248;
-  v9 = v7;
+  v9 = userCopy;
   v19 = v9;
-  v10 = [v8 ams_anyWithTest:v18];
+  v10 = [users ams_anyWithTest:v18];
 
   if (!v10)
   {
     goto LABEL_4;
   }
 
-  v11 = [v6 currentUser];
-  v12 = [v11 identifier];
-  v13 = [v9 identifier];
-  v14 = [v12 isEqual:v13];
+  currentUser = [homeCopy currentUser];
+  identifier = [currentUser identifier];
+  identifier2 = [v9 identifier];
+  v14 = [identifier isEqual:identifier2];
 
   if (v14)
   {
-    v15 = [(AMSDMultiUserController *)self cloudContainer];
-    v16 = [v15 privateDatabase];
+    cloudContainer = [(AMSDMultiUserController *)self cloudContainer];
+    privateDatabase = [cloudContainer privateDatabase];
   }
 
   else
   {
 LABEL_4:
-    v16 = 0;
+    privateDatabase = 0;
   }
 
-  return v16;
+  return privateDatabase;
 }
 
 - (BOOL)multiUserRefreshThrottlingActive
 {
-  v2 = self;
-  v3 = [(AMSDMultiUserController *)self _refreshThrottlingDate];
+  selfCopy = self;
+  _refreshThrottlingDate = [(AMSDMultiUserController *)self _refreshThrottlingDate];
   v4 = +[NSDate date];
-  v5 = [v4 compare:v3];
+  v5 = [v4 compare:_refreshThrottlingDate];
 
   if (v5 != 1)
   {
@@ -172,16 +172,16 @@ LABEL_4:
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 = AMSLogKey();
       v9 = objc_opt_class();
       v10 = v9;
       if (v8)
       {
-        v2 = AMSLogKey();
-        [NSString stringWithFormat:@"%@: [%@] ", v10, v2];
+        selfCopy = AMSLogKey();
+        [NSString stringWithFormat:@"%@: [%@] ", v10, selfCopy];
       }
 
       else
@@ -192,12 +192,12 @@ LABEL_4:
       *buf = 138543618;
       v14 = v11;
       v15 = 2114;
-      v16 = v3;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Refresh throttling is active. nextRefresh = %{public}@", buf, 0x16u);
+      v16 = _refreshThrottlingDate;
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Refresh throttling is active. nextRefresh = %{public}@", buf, 0x16u);
       if (v8)
       {
 
-        v11 = v2;
+        v11 = selfCopy;
       }
     }
   }
@@ -205,10 +205,10 @@ LABEL_4:
   return v5 != 1;
 }
 
-- (id)refreshWithOptions:(id)a3 metrics:(id)a4
+- (id)refreshWithOptions:(id)options metrics:(id)metrics
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  metricsCopy = metrics;
   if (+[AMSDevice deviceIsAppleWatch])
   {
     v8 = AMSError();
@@ -217,7 +217,7 @@ LABEL_4:
 
   else
   {
-    [v6 schedulingInterval];
+    [optionsCopy schedulingInterval];
     if (v10 == 0.0)
     {
       v11 = +[AMSLogConfig sharedAccountsMultiUserConfig];
@@ -226,8 +226,8 @@ LABEL_4:
         v11 = +[AMSLogConfig sharedConfig];
       }
 
-      v12 = [v11 OSLogObject];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v11 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v13 = objc_opt_class();
         v14 = AMSLogKey();
@@ -238,7 +238,7 @@ LABEL_4:
         *&buf[14] = v14;
         *&buf[22] = 2114;
         v29 = v15;
-        _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Queuing a new Multi-User refresh. options = %{public}@", buf, 0x20u);
+        _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Queuing a new Multi-User refresh. options = %{public}@", buf, 0x20u);
       }
 
       v16 = objc_alloc_init(AMSMutablePromise);
@@ -253,8 +253,8 @@ LABEL_4:
       v24[2] = sub_100067EC0;
       v24[3] = &unk_1002B0380;
       v24[4] = self;
-      v25 = v6;
-      v26 = v7;
+      v25 = optionsCopy;
+      v26 = metricsCopy;
       v27 = v16;
       v18 = v24;
       v19 = v16;
@@ -278,14 +278,14 @@ LABEL_4:
 
     else
     {
-      v9 = [(AMSDMultiUserController *)self _scheduleRefreshWithOptions:v6];
+      v9 = [(AMSDMultiUserController *)self _scheduleRefreshWithOptions:optionsCopy];
     }
   }
 
   return v9;
 }
 
-- (void)cloudDataManagerDataSource:(id)a3 didChangeWithType:(unint64_t)a4
+- (void)cloudDataManagerDataSource:(id)source didChangeWithType:(unint64_t)type
 {
   v6 = +[AMSLogConfig sharedAccountsMultiUserConfig];
   if (!v6)
@@ -293,8 +293,8 @@ LABEL_4:
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = AMSLogKey();
@@ -303,16 +303,16 @@ LABEL_4:
     v26 = 2114;
     v27 = v9;
     v28 = 2048;
-    v29 = a4;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Cloud data manager changed. changeType = %lu", buf, 0x20u);
+    typeCopy = type;
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Cloud data manager changed. changeType = %lu", buf, 0x20u);
   }
 
-  if (a4)
+  if (type)
   {
-    v10 = objc_alloc_init(AMSDMultiUserMetrics);
-    v11 = [(AMSDMultiUserMetrics *)v10 enqueueCloudKitSaveReceivedEvent];
-    v12 = [NSString stringWithFormat:@"Cloud data manager changed. changeType = %lu", a4];
-    v13 = [[AMSDRefreshMultiUserOptions alloc] initWithReason:v12];
+    status = objc_alloc_init(AMSDMultiUserMetrics);
+    enqueueCloudKitSaveReceivedEvent = [(AMSDMultiUserMetrics *)status enqueueCloudKitSaveReceivedEvent];
+    type = [NSString stringWithFormat:@"Cloud data manager changed. changeType = %lu", type];
+    v13 = [[AMSDRefreshMultiUserOptions alloc] initWithReason:type];
     [(AMSDRefreshMultiUserOptions *)v13 setShouldUseCloudData:1];
     if ([(AMSDMultiUserController *)self multiUserRefreshThrottlingActive])
     {
@@ -322,8 +322,8 @@ LABEL_4:
         v14 = +[AMSLogConfig sharedConfig];
       }
 
-      v15 = [v14 OSLogObject];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v14 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v16 = AMSLogKey();
         v17 = objc_opt_class();
@@ -338,46 +338,46 @@ LABEL_4:
         {
           [NSString stringWithFormat:@"%@: ", v17];
         }
-        v19 = ;
+        selfCopy = ;
         *buf = 138543362;
-        v25 = v19;
-        _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@Dropping cloud data manager changed Notification, throttled", buf, 0xCu);
+        v25 = selfCopy;
+        _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Dropping cloud data manager changed Notification, throttled", buf, 0xCu);
         if (v16)
         {
 
-          v19 = self;
+          selfCopy = self;
         }
       }
     }
 
     else
     {
-      v21 = [(AMSDMultiUserController *)self refreshWithOptions:v13 metrics:v10];
+      v21 = [(AMSDMultiUserController *)self refreshWithOptions:v13 metrics:status];
     }
   }
 
   else
   {
-    v20 = [(AMSDMultiUserController *)self cloudContainer];
-    v10 = [v20 status];
+    cloudContainer = [(AMSDMultiUserController *)self cloudContainer];
+    status = [cloudContainer status];
 
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100068E7C;
     v23[3] = &unk_1002AFDD8;
     v23[4] = self;
-    [(AMSDMultiUserMetrics *)v10 addErrorBlock:v23];
+    [(AMSDMultiUserMetrics *)status addErrorBlock:v23];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100068FB0;
     v22[3] = &unk_1002B1168;
     v22[4] = self;
     v22[5] = 0;
-    [(AMSDMultiUserMetrics *)v10 addSuccessBlock:v22];
+    [(AMSDMultiUserMetrics *)status addSuccessBlock:v22];
   }
 }
 
-- (void)homeManagerDataSource:(id)a3 didChangeWithType:(unint64_t)a4
+- (void)homeManagerDataSource:(id)source didChangeWithType:(unint64_t)type
 {
   v6 = +[AMSLogConfig sharedAccountsMultiUserConfig];
   if (!v6)
@@ -385,8 +385,8 @@ LABEL_4:
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = AMSLogKey();
@@ -395,23 +395,23 @@ LABEL_4:
     v24 = 2114;
     v25 = v9;
     v26 = 2048;
-    v27 = a4;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Home manager changed. changeType = %lu", buf, 0x20u);
+    typeCopy = type;
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Home manager changed. changeType = %lu", buf, 0x20u);
   }
 
   v10 = objc_alloc_init(AMSDMultiUserMetrics);
-  v11 = [(AMSDMultiUserMetrics *)v10 enqueueHomeKitChangedReceivedEvent];
-  v12 = [NSString stringWithFormat:@"Home manager changed (changeType = %lu)", a4];
-  v13 = [[AMSDRefreshMultiUserOptions alloc] initWithReason:v12];
+  enqueueHomeKitChangedReceivedEvent = [(AMSDMultiUserMetrics *)v10 enqueueHomeKitChangedReceivedEvent];
+  type = [NSString stringWithFormat:@"Home manager changed (changeType = %lu)", type];
+  v13 = [[AMSDRefreshMultiUserOptions alloc] initWithReason:type];
   [(AMSDRefreshMultiUserOptions *)v13 setShouldUseCloudData:0];
-  if (a4 == 2)
+  if (type == 2)
   {
     v14 = 0;
   }
 
   else
   {
-    if (a4 != 3)
+    if (type != 3)
     {
       goto LABEL_10;
     }
@@ -430,8 +430,8 @@ LABEL_10:
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v17 = AMSLogKey();
       v18 = objc_opt_class();
@@ -446,14 +446,14 @@ LABEL_10:
       {
         [NSString stringWithFormat:@"%@: ", v18];
       }
-      v20 = ;
+      selfCopy = ;
       *buf = 138543362;
-      v23 = v20;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@Dropping Home Manager Changed Notification, throttled", buf, 0xCu);
+      v23 = selfCopy;
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Dropping Home Manager Changed Notification, throttled", buf, 0xCu);
       if (v17)
       {
 
-        v20 = self;
+        selfCopy = self;
       }
     }
   }
@@ -464,18 +464,18 @@ LABEL_10:
   }
 }
 
-- (void)homeManagerDataSource:(id)a3 didReceiveCloudDataRepairRequestForHome:(id)a4
+- (void)homeManagerDataSource:(id)source didReceiveCloudDataRepairRequestForHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  homeCopy = home;
   v8 = +[AMSLogConfig sharedAccountsMultiUserConfig];
   if (!v8)
   {
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = AMSLogKey();
@@ -486,12 +486,12 @@ LABEL_10:
     *&buf[14] = v11;
     *&buf[22] = 2114;
     v35 = v12;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Data source received a cloud data repair request, queuing. home = %{public}@", buf, 0x20u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Data source received a cloud data repair request, queuing. home = %{public}@", buf, 0x20u);
   }
 
   v13 = objc_alloc_init(AMSDMultiUserMetrics);
-  v14 = [(AMSDMultiUserMetrics *)v13 enqueueHomeKitRepairRequestReceivedEvent];
-  if ([v7 isCurrentUserRestrictedGuest])
+  enqueueHomeKitRepairRequestReceivedEvent = [(AMSDMultiUserMetrics *)v13 enqueueHomeKitRepairRequestReceivedEvent];
+  if ([homeCopy isCurrentUserRestrictedGuest])
   {
     v15 = +[AMSLogConfig sharedAccountsMultiUserConfig];
     if (!v15)
@@ -499,8 +499,8 @@ LABEL_10:
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v17 = objc_opt_class();
       v18 = AMSLogKey();
@@ -508,7 +508,7 @@ LABEL_10:
       *&buf[4] = v17;
       *&buf[12] = 2114;
       *&buf[14] = v18;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Current User is restricted guest in home, not updating multi-user token, task will not be queued.", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Current User is restricted guest in home, not updating multi-user token, task will not be queued.", buf, 0x16u);
     }
   }
 
@@ -530,8 +530,8 @@ LABEL_10:
     v27 = 3221225472;
     v28 = sub_100069A88;
     v29 = &unk_1002B11D8;
-    v30 = self;
-    v20 = v7;
+    selfCopy = self;
+    v20 = homeCopy;
     v31 = v20;
     v15 = v19;
     v32 = v15;
@@ -542,9 +542,9 @@ LABEL_10:
 
     os_unfair_lock_lock_with_options();
     v23 = [AMSDUpdateMultiUserTokenTask alloc];
-    v24 = [(AMSDUpdateMultiUserTokenTask *)v23 initWithController:self home:v20, v26, v27, v28, v29, v30];
-    [(AMSDUpdateMultiUserTokenTask *)v24 setMetrics:v13];
-    [v15 addObject:v24];
+    selfCopy = [(AMSDUpdateMultiUserTokenTask *)v23 initWithController:self home:v20, v26, v27, v28, v29, selfCopy];
+    [(AMSDUpdateMultiUserTokenTask *)selfCopy setMetrics:v13];
+    [v15 addObject:selfCopy];
     v25 = [v15 count];
     os_unfair_lock_unlock(&unk_1002E3260);
     if (v25 == 1)
@@ -556,18 +556,18 @@ LABEL_10:
   }
 }
 
-- (void)homeManagerDataSource:(id)a3 didReceiveCloudShare:(id)a4 completion:(id)a5
+- (void)homeManagerDataSource:(id)source didReceiveCloudShare:(id)share completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  shareCopy = share;
+  completionCopy = completion;
   v9 = +[AMSLogConfig sharedAccountsMultiUserConfig];
   if (!v9)
   {
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     v12 = AMSLogKey();
@@ -578,25 +578,25 @@ LABEL_10:
     v22 = v12;
     v23 = 2114;
     v24 = v13;
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Data source received a cloud share. share = %{public}@", buf, 0x20u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Data source received a cloud share. share = %{public}@", buf, 0x20u);
   }
 
-  v14 = [[AMSDAcceptHomeCloudShareTask alloc] initWithController:self cloudShare:v7];
-  v15 = [(AMSDAcceptHomeCloudShareTask *)v14 performTask];
+  v14 = [[AMSDAcceptHomeCloudShareTask alloc] initWithController:self cloudShare:shareCopy];
+  performTask = [(AMSDAcceptHomeCloudShareTask *)v14 performTask];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10006A048;
   v17[3] = &unk_1002B0EB8;
-  v18 = v8;
-  v16 = v8;
-  [v15 addFinishBlock:v17];
+  v18 = completionCopy;
+  v16 = completionCopy;
+  [performTask addFinishBlock:v17];
 }
 
-- (void)handlePushNotification:(id)a3
+- (void)handlePushNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(AMSDMultiUserController *)self cloudDataManager];
-  [v5 handlePushNotification:v4];
+  notificationCopy = notification;
+  cloudDataManager = [(AMSDMultiUserController *)self cloudDataManager];
+  [cloudDataManager handlePushNotification:notificationCopy];
 }
 
 - (BOOL)shouldEnablePushTopic
@@ -608,25 +608,25 @@ LABEL_10:
 
 - (id)_isCloudDataAvailable
 {
-  v3 = [(AMSDMultiUserController *)self cloudContainer];
-  v4 = [v3 status];
+  cloudContainer = [(AMSDMultiUserController *)self cloudContainer];
+  status = [cloudContainer status];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10006A1AC;
   v8[3] = &unk_1002B1228;
   v8[4] = self;
-  v5 = [v4 continueWithBlock:v8];
-  v6 = [v5 binaryPromiseAdapter];
+  v5 = [status continueWithBlock:v8];
+  binaryPromiseAdapter = [v5 binaryPromiseAdapter];
 
-  return v6;
+  return binaryPromiseAdapter;
 }
 
-- (id)_isRefreshThrottlingDisabledWithOptions:(id)a3
+- (id)_isRefreshThrottlingDisabledWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(AMSDMultiUserController *)self _refreshThrottlingDate];
+  optionsCopy = options;
+  _refreshThrottlingDate = [(AMSDMultiUserController *)self _refreshThrottlingDate];
   v6 = +[NSDate date];
-  v7 = [v6 compare:v5];
+  v7 = [v6 compare:_refreshThrottlingDate];
 
   if (v7 != -1)
   {
@@ -635,7 +635,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v4 ignoreThrottling])
+  if ([optionsCopy ignoreThrottling])
   {
     v8 = +[AMSLogConfig sharedAccountsMultiUserConfig];
     if (!v8)
@@ -643,8 +643,8 @@ LABEL_8:
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
@@ -652,13 +652,13 @@ LABEL_8:
       v17 = v10;
       v18 = 2114;
       v19 = v11;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Ignoring active refresh throttling.", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Ignoring active refresh throttling.", buf, 0x16u);
     }
 
     goto LABEL_8;
   }
 
-  v14 = [NSString stringWithFormat:@"Refresh throttling is active. nextRefresh = %@", v5];
+  v14 = [NSString stringWithFormat:@"Refresh throttling is active. nextRefresh = %@", _refreshThrottlingDate];
   v15 = AMSError();
   v12 = [AMSBinaryPromise promiseWithError:v15];
 
@@ -667,9 +667,9 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)_refreshShouldUseCloudDataWithHomes:(id)a3
+- (BOOL)_refreshShouldUseCloudDataWithHomes:(id)homes
 {
-  v3 = a3;
+  homesCopy = homes;
   v4 = [AMSStorage _valueForKey:@"AMSDLastMultiUserRefresh"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -704,7 +704,7 @@ LABEL_9:
       v14 = 0;
     }
 
-    v15 = [v3 ams_mapWithTransform:&stru_1002B1268];
+    v15 = [homesCopy ams_mapWithTransform:&stru_1002B1268];
     v16 = v15;
     LOBYTE(v12) = 1;
     if (v14 && v15)
@@ -743,40 +743,40 @@ LABEL_9:
   return [NSDate dateWithTimeIntervalSinceReferenceDate:v5];
 }
 
-- (void)_setLastSuccessfulRefreshDateWithHomes:(id)a3
+- (void)_setLastSuccessfulRefreshDateWithHomes:(id)homes
 {
-  v3 = a3;
+  homesCopy = homes;
   v4 = +[NSDate date];
   [v4 timeIntervalSinceReferenceDate];
   v5 = [NSNumber numberWithDouble:?];
   [AMSStorage _setValue:v5 forKey:@"AMSDLastMultiUserRefresh"];
 
-  v6 = [v3 ams_mapWithTransform:&stru_1002B1288];
+  v6 = [homesCopy ams_mapWithTransform:&stru_1002B1288];
 
   [AMSStorage _setValue:v6 forKey:@"AMSDLastMultiUserRefreshHomes"];
 }
 
-- (void)_setRefreshThrottlingDateWithTimeInterval:(double)a3
+- (void)_setRefreshThrottlingDateWithTimeInterval:(double)interval
 {
   v4 = +[NSDate date];
-  v6 = [v4 dateByAddingTimeInterval:a3];
+  v6 = [v4 dateByAddingTimeInterval:interval];
 
   [v6 timeIntervalSinceReferenceDate];
   v5 = [NSNumber numberWithDouble:?];
   [AMSStorage _setValue:v5 forKey:@"AMSDNextRefresh"];
 }
 
-- (id)_scheduleRefreshWithOptions:(id)a3
+- (id)_scheduleRefreshWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[AMSLogConfig sharedAccountsMultiUserConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -787,33 +787,33 @@ LABEL_9:
     v23 = v8;
     v24 = 2114;
     v25 = v9;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Scheduling a refresh. options = %{public}@", buf, 0x20u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Scheduling a refresh. options = %{public}@", buf, 0x20u);
   }
 
-  [v4 schedulingInterval];
+  [optionsCopy schedulingInterval];
   v10 = [NSDate dateWithTimeIntervalSinceNow:?];
-  v11 = [(AMSDMultiUserController *)self _refreshThrottlingDate];
-  if ([v10 compare:v11] == 1)
+  _refreshThrottlingDate = [(AMSDMultiUserController *)self _refreshThrottlingDate];
+  if ([v10 compare:_refreshThrottlingDate] == 1)
   {
-    [v4 throttlingInterval];
+    [optionsCopy throttlingInterval];
     v13 = v12;
     if (v12 != 0.0)
     {
-      [v4 throttlingInterval];
+      [optionsCopy throttlingInterval];
       [(AMSDMultiUserController *)self _setRefreshThrottlingDateWithTimeInterval:?];
     }
 
     v14 = [[AMSDBackgroundActivityScheduler alloc] initWithIdentifier:@"com.apple.amsaccountsd.refresh"];
-    v15 = [objc_opt_class() _scheduledRefreshActivityBlock];
-    [(AMSDBackgroundActivityScheduler *)v14 setActivityBlock:v15];
+    _scheduledRefreshActivityBlock = [objc_opt_class() _scheduledRefreshActivityBlock];
+    [(AMSDBackgroundActivityScheduler *)v14 setActivityBlock:_scheduledRefreshActivityBlock];
 
     [(AMSDBackgroundActivityScheduler *)v14 setAllowBattery:1];
-    [v4 schedulingInterval];
+    [optionsCopy schedulingInterval];
     [(AMSDBackgroundActivityScheduler *)v14 setInterval:?];
     [(AMSDBackgroundActivityScheduler *)v14 setQualityOfService:17];
     [(AMSDBackgroundActivityScheduler *)v14 setRequireNetworkConnection:1];
     [(AMSDBackgroundActivityScheduler *)v14 schedule];
-    v16 = [[AMSDRefreshMultiUserResult alloc] initWithHomes:0 options:v4];
+    v16 = [[AMSDRefreshMultiUserResult alloc] initWithHomes:0 options:optionsCopy];
     [(AMSDRefreshMultiUserResult *)v16 setEnabledThrottling:v13 != 0.0];
     [(AMSDRefreshMultiUserResult *)v16 setScheduled:1];
     v17 = [AMSPromise promiseWithResult:v16];
@@ -821,7 +821,7 @@ LABEL_9:
 
   else
   {
-    v14 = [NSString stringWithFormat:@"Refresh throttling is active. nextRefresh = %@", v11];
+    v14 = [NSString stringWithFormat:@"Refresh throttling is active. nextRefresh = %@", _refreshThrottlingDate];
     v16 = AMSError();
     v17 = [AMSPromise promiseWithError:v16];
   }

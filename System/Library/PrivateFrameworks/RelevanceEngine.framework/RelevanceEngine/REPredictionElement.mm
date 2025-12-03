@@ -1,36 +1,36 @@
 @interface REPredictionElement
-+ (id)predictionElementFromElement:(id)a3;
-+ (id)predictionElementWithIdentifier:(id)a3 relevanceProviders:(id)a4 bundleIdentifier:(id)a5;
-- (REPredictionElement)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)predictionElementFromElement:(id)element;
++ (id)predictionElementWithIdentifier:(id)identifier relevanceProviders:(id)providers bundleIdentifier:(id)bundleIdentifier;
+- (REPredictionElement)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REPredictionElement
 
-+ (id)predictionElementFromElement:(id)a3
++ (id)predictionElementFromElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4 = objc_opt_new();
-  v5 = [v3 identifier];
+  identifier = [elementCopy identifier];
   v6 = *(v4 + 8);
-  *(v4 + 8) = v5;
+  *(v4 + 8) = identifier;
 
-  *(v4 + 16) = [v3 privacyBehavior];
-  v7 = [v3 relevanceProviders];
+  *(v4 + 16) = [elementCopy privacyBehavior];
+  relevanceProviders = [elementCopy relevanceProviders];
   v8 = *(v4 + 24);
-  *(v4 + 24) = v7;
+  *(v4 + 24) = relevanceProviders;
 
-  v9 = [v3 bundleIdentifier];
+  bundleIdentifier = [elementCopy bundleIdentifier];
   v10 = *(v4 + 32);
-  *(v4 + 32) = v9;
+  *(v4 + 32) = bundleIdentifier;
 
-  v11 = [v3 applicationBundleIdentifier];
+  applicationBundleIdentifier = [elementCopy applicationBundleIdentifier];
   v12 = *(v4 + 40);
-  *(v4 + 40) = v11;
+  *(v4 + 40) = applicationBundleIdentifier;
 
-  v13 = [v3 content];
+  content = [elementCopy content];
 
-  v14 = [v13 objectForKey:@"REContentInteractionKey"];
+  v14 = [content objectForKey:@"REContentInteractionKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -48,24 +48,24 @@
   return v4;
 }
 
-- (REPredictionElement)initWithCoder:(id)a3
+- (REPredictionElement)initWithCoder:(id)coder
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = REPredictionElement;
   v5 = [(REPredictionElement *)&v33 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationBundleIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationBundleIdentifier"];
     applicationBundleIdentifier = v5->_applicationBundleIdentifier;
     v5->_applicationBundleIdentifier = v10;
 
@@ -75,8 +75,8 @@
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v12 setWithObjects:{v13, v14, v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"relevanceProviders"];
-    v18 = [MEMORY[0x277CBEB18] array];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"relevanceProviders"];
+    array = [MEMORY[0x277CBEB18] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -98,7 +98,7 @@
           }
 
           v24 = [[RECustomRelevanceProvider alloc] initWithDictionary:*(*(&v29 + 1) + 8 * v23)];
-          [v18 addObject:v24];
+          [array addObject:v24];
 
           ++v23;
         }
@@ -110,7 +110,7 @@
       while (v21);
     }
 
-    v25 = [v18 copy];
+    v25 = [array copy];
     relevanceProviders = v5->_relevanceProviders;
     v5->_relevanceProviders = v25;
   }
@@ -119,14 +119,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 encodeObject:self->_identifier forKey:@"identifier"];
-  [v4 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
-  [v4 encodeObject:self->_applicationBundleIdentifier forKey:@"applicationBundleIdentifier"];
-  v5 = [MEMORY[0x277CBEB18] array];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_applicationBundleIdentifier forKey:@"applicationBundleIdentifier"];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -147,8 +147,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) dictionaryEncoding];
-        [v5 addObject:v11];
+        dictionaryEncoding = [*(*(&v14 + 1) + 8 * v10) dictionaryEncoding];
+        [array addObject:dictionaryEncoding];
 
         ++v10;
       }
@@ -160,28 +160,28 @@
     while (v8);
   }
 
-  v12 = [v5 copy];
-  [v4 encodeObject:v12 forKey:@"relevanceProviders"];
+  v12 = [array copy];
+  [coderCopy encodeObject:v12 forKey:@"relevanceProviders"];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)predictionElementWithIdentifier:(id)a3 relevanceProviders:(id)a4 bundleIdentifier:(id)a5
++ (id)predictionElementWithIdentifier:(id)identifier relevanceProviders:(id)providers bundleIdentifier:(id)bundleIdentifier
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  providersCopy = providers;
+  bundleIdentifierCopy = bundleIdentifier;
   v11 = objc_opt_new();
-  objc_storeStrong((v11 + 8), a3);
-  objc_storeStrong((v11 + 32), a5);
+  objc_storeStrong((v11 + 8), identifier);
+  objc_storeStrong((v11 + 32), bundleIdentifier);
   objc_storeStrong((v11 + 48), @"REElementInteractionDefault");
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v13 = v9;
+  v13 = providersCopy;
   v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v14)
   {
@@ -200,7 +200,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v12 addObject:{v18, v23}];
+          [array addObject:{v18, v23}];
         }
       }
 
@@ -210,7 +210,7 @@
     while (v15);
   }
 
-  v19 = [v12 copy];
+  v19 = [array copy];
   v20 = *(v11 + 24);
   *(v11 + 24) = v19;
 

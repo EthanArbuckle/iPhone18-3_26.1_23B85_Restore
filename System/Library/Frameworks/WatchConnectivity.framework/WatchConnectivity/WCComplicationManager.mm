@@ -1,10 +1,10 @@
 @interface WCComplicationManager
 - (WCComplicationManager)init;
 - (WCComplicationManagerDelegate)delegate;
-- (void)xpcManager:(id)a3 handlePairedSyncComplicationsStartedWithCompletionHandler:(id)a4;
-- (void)xpcManager:(id)a3 handlePingForExtensionBundleID:(id)a4;
-- (void)xpcManager:(id)a3 isExtensionPrivileged:(id)a4 completionHandler:(id)a5;
-- (void)xpcManager:(id)a3 shouldWakeAppWithBundleID:(id)a4 completionHandler:(id)a5;
+- (void)xpcManager:(id)manager handlePairedSyncComplicationsStartedWithCompletionHandler:(id)handler;
+- (void)xpcManager:(id)manager handlePingForExtensionBundleID:(id)d;
+- (void)xpcManager:(id)manager isExtensionPrivileged:(id)privileged completionHandler:(id)handler;
+- (void)xpcManager:(id)manager shouldWakeAppWithBundleID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation WCComplicationManager
@@ -27,51 +27,51 @@
   return v2;
 }
 
-- (void)xpcManager:(id)a3 handlePingForExtensionBundleID:(id)a4
+- (void)xpcManager:(id)manager handlePingForExtensionBundleID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dCopy = d;
   v6 = wc_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136446466;
     v10 = "[WCComplicationManager xpcManager:handlePingForExtensionBundleID:]";
     v11 = 2114;
-    v12 = v5;
+    v12 = dCopy;
     _os_log_impl(&dword_23B2FA000, v6, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", &v9, 0x16u);
   }
 
-  v7 = [(WCComplicationManager *)self delegate];
-  [v7 handlePingForExtensionBundleID:v5];
+  delegate = [(WCComplicationManager *)self delegate];
+  [delegate handlePingForExtensionBundleID:dCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)xpcManager:(id)a3 isExtensionPrivileged:(id)a4 completionHandler:(id)a5
+- (void)xpcManager:(id)manager isExtensionPrivileged:(id)privileged completionHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  privilegedCopy = privileged;
+  handlerCopy = handler;
   v9 = wc_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136446466;
     v13 = "[WCComplicationManager xpcManager:isExtensionPrivileged:completionHandler:]";
     v14 = 2114;
-    v15 = v7;
+    v15 = privilegedCopy;
     _os_log_impl(&dword_23B2FA000, v9, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", &v12, 0x16u);
   }
 
-  v10 = [(WCComplicationManager *)self delegate];
-  [v10 isExtensionPrivileged:v7 completionHandler:v8];
+  delegate = [(WCComplicationManager *)self delegate];
+  [delegate isExtensionPrivileged:privilegedCopy completionHandler:handlerCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)xpcManager:(id)a3 handlePairedSyncComplicationsStartedWithCompletionHandler:(id)a4
+- (void)xpcManager:(id)manager handlePairedSyncComplicationsStartedWithCompletionHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  handlerCopy = handler;
   v6 = wc_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -80,14 +80,14 @@
     _os_log_impl(&dword_23B2FA000, v6, OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
   }
 
-  v7 = [(WCComplicationManager *)self delegate];
+  delegate = [(WCComplicationManager *)self delegate];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __94__WCComplicationManager_xpcManager_handlePairedSyncComplicationsStartedWithCompletionHandler___block_invoke;
   v10[3] = &unk_278B7C3F8;
-  v11 = v5;
-  v8 = v5;
-  [v7 handleDeviceHasBecomeActiveWithCompletionHandler:v10];
+  v11 = handlerCopy;
+  v8 = handlerCopy;
+  [delegate handleDeviceHasBecomeActiveWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -111,11 +111,11 @@ void __94__WCComplicationManager_xpcManager_handlePairedSyncComplicationsStarted
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)xpcManager:(id)a3 shouldWakeAppWithBundleID:(id)a4 completionHandler:(id)a5
+- (void)xpcManager:(id)manager shouldWakeAppWithBundleID:(id)d completionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
+  handlerCopy = handler;
+  dCopy = d;
   v9 = wc_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -124,14 +124,14 @@ void __94__WCComplicationManager_xpcManager_handlePairedSyncComplicationsStarted
     _os_log_impl(&dword_23B2FA000, v9, OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
   }
 
-  v10 = [(WCComplicationManager *)self delegate];
+  delegate = [(WCComplicationManager *)self delegate];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __80__WCComplicationManager_xpcManager_shouldWakeAppWithBundleID_completionHandler___block_invoke;
   v13[3] = &unk_278B7C420;
-  v14 = v7;
-  v11 = v7;
-  [v10 shouldWakeAppWithBundleID:v8 completionHandler:v13];
+  v14 = handlerCopy;
+  v11 = handlerCopy;
+  [delegate shouldWakeAppWithBundleID:dCopy completionHandler:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }

@@ -9,7 +9,7 @@
 {
   v13 = a3;
   v6 = a4;
-  v7 = [a1 length];
+  v7 = [self length];
   if (v7)
   {
     v8 = 0;
@@ -19,7 +19,7 @@
     {
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v11 = [a1 subdataWithRange:{v9, 1}];
+        v11 = [self subdataWithRange:{v9, 1}];
         if ([v13 ef_containsData:v11])
         {
           ++v8;
@@ -28,15 +28,15 @@ LABEL_12:
           goto LABEL_13;
         }
 
-        [a1 ef_deleteBytesInRange:{v9 + 1, v8}];
+        [self ef_deleteBytesInRange:{v9 + 1, v8}];
 
         v8 = 0;
       }
 
       v12 = [v6 length];
-      if (v9 + v12 <= [a1 length])
+      if (v9 + v12 <= [self length])
       {
-        v11 = [a1 subdataWithRange:{v9, objc_msgSend(v6, "length")}];
+        v11 = [self subdataWithRange:{v9, objc_msgSend(v6, "length")}];
         if ([v11 isEqualToData:v6])
         {
           v10 = v9;
@@ -63,20 +63,20 @@ LABEL_13:
 {
   v11 = a3;
   v6 = a4;
-  v7 = [a1 length];
+  v7 = [self length];
   if (v7)
   {
     v8 = 0;
     do
     {
       v9 = v7 - 1;
-      v10 = [a1 subdataWithRange:{v7 - 1, 1}];
+      v10 = [self subdataWithRange:{v7 - 1, 1}];
       if ([v11 ef_containsData:v10])
       {
         ++v8;
         if (v7 == 1)
         {
-          [a1 replaceBytesInRange:0 withBytes:v8 length:{objc_msgSend(v6, "bytes"), objc_msgSend(v6, "length")}];
+          [self replaceBytesInRange:0 withBytes:v8 length:{objc_msgSend(v6, "bytes"), objc_msgSend(v6, "length")}];
 
           break;
         }
@@ -84,7 +84,7 @@ LABEL_13:
 
       else if (v8)
       {
-        [a1 replaceBytesInRange:v7 withBytes:v8 length:{objc_msgSend(v6, "bytes"), objc_msgSend(v6, "length")}];
+        [self replaceBytesInRange:v7 withBytes:v8 length:{objc_msgSend(v6, "bytes"), objc_msgSend(v6, "length")}];
         v8 = 0;
       }
 

@@ -1,34 +1,34 @@
 @interface HAPCharacteristicValueRange
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPCharacteristicValueRange)init;
-- (HAPCharacteristicValueRange)initWithLowerBound:(id)a3 upperBound:(id)a4;
+- (HAPCharacteristicValueRange)initWithLowerBound:(id)bound upperBound:(id)upperBound;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPCharacteristicValueRange
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPCharacteristicValueRange);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPCharacteristicValueRange *)v6 parseFromData:v5 error:&v11];
+    [(HAPCharacteristicValueRange *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -48,28 +48,28 @@
   return [(HAPCharacteristicValueRange *)&v3 init];
 }
 
-- (HAPCharacteristicValueRange)initWithLowerBound:(id)a3 upperBound:(id)a4
+- (HAPCharacteristicValueRange)initWithLowerBound:(id)bound upperBound:(id)upperBound
 {
-  v7 = a3;
-  v8 = a4;
+  boundCopy = bound;
+  upperBoundCopy = upperBound;
   v12.receiver = self;
   v12.super_class = HAPCharacteristicValueRange;
   v9 = [(HAPCharacteristicValueRange *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_lowerBound, a3);
-    objc_storeStrong(&v10->_upperBound, a4);
+    objc_storeStrong(&v9->_lowerBound, bound);
+    objc_storeStrong(&v10->_upperBound, upperBound);
   }
 
   return v10;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v9 = 0;
@@ -85,7 +85,7 @@ LABEL_18:
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  v12 = v7 + v8;
+  v12 = bytes + v8;
   while (1)
   {
     v28 = 0;
@@ -95,10 +95,10 @@ LABEL_18:
     Next = TLV8GetNext();
     if (Next)
     {
-      if (a4)
+      if (error)
       {
         sub_100041618(Next);
-        *a4 = v18 = 0;
+        *error = v18 = 0;
         goto LABEL_25;
       }
 
@@ -113,7 +113,7 @@ LABEL_18:
     if (v28 == 2)
     {
       v23 = v11;
-      v14 = sub_100021B74(2, v7, v12, v26, &v23);
+      v14 = sub_100021B74(2, bytes, v12, v26, &v23);
       v15 = v23;
 
       if (v15)
@@ -135,7 +135,7 @@ LABEL_13:
     if (v28 == 1)
     {
       v25 = v11;
-      v14 = sub_100021B74(1, v7, v12, v26, &v25);
+      v14 = sub_100021B74(1, bytes, v12, v26, &v25);
       v15 = v25;
 
       if (!v15)
@@ -153,7 +153,7 @@ LABEL_10:
     }
 
 LABEL_14:
-    v7 = v26[0];
+    bytes = v26[0];
     if (v26[0] >= v12)
     {
       if (!v11)
@@ -174,11 +174,11 @@ LABEL_14:
   }
 
 LABEL_22:
-  if (a4)
+  if (error)
   {
     v20 = v11;
     v18 = 0;
-    *a4 = v11;
+    *error = v11;
     goto LABEL_25;
   }
 
@@ -189,7 +189,7 @@ LABEL_25:
   return v18;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v46 = 0u;
   v47 = 0u;
@@ -213,18 +213,18 @@ LABEL_25:
   v29 = 0u;
   v27 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPCharacteristicValueRange *)self lowerBound];
+  lowerBound = [(HAPCharacteristicValueRange *)self lowerBound];
 
-  if (!v5)
+  if (!lowerBound)
   {
 LABEL_10:
-    v13 = [(HAPCharacteristicValueRange *)self upperBound];
+    upperBound = [(HAPCharacteristicValueRange *)self upperBound];
 
-    if (v13)
+    if (upperBound)
     {
-      v14 = [(HAPCharacteristicValueRange *)self upperBound];
+      upperBound2 = [(HAPCharacteristicValueRange *)self upperBound];
       v25 = 0;
-      v7 = [v14 serializeWithError:&v25];
+      v7 = [upperBound2 serializeWithError:&v25];
       v8 = v25;
 
       if (v8)
@@ -232,18 +232,18 @@ LABEL_10:
         goto LABEL_12;
       }
 
-      v18 = [v7 bytes];
-      v19 = [v7 length] + v18;
+      bytes = [v7 bytes];
+      v19 = [v7 length] + bytes;
       do
       {
-        if (v19 - v18 >= 255)
+        if (v19 - bytes >= 255)
         {
           v20 = 255;
         }
 
         else
         {
-          v20 = v19 - v18;
+          v20 = v19 - bytes;
         }
 
         v21 = TLV8BufferAppend();
@@ -257,7 +257,7 @@ LABEL_10:
           v22 = v20;
         }
 
-        v18 += v22;
+        bytes += v22;
         if (v21)
         {
           v23 = 1;
@@ -265,7 +265,7 @@ LABEL_10:
 
         else
         {
-          v23 = v18 >= v19;
+          v23 = bytes >= v19;
         }
       }
 
@@ -275,11 +275,11 @@ LABEL_10:
       if (v17)
       {
 LABEL_28:
-        if (a3)
+        if (error)
         {
           sub_100041618(v17);
           v8 = 0;
-          *a3 = v16 = 0;
+          *error = v16 = 0;
           goto LABEL_33;
         }
 
@@ -293,26 +293,26 @@ LABEL_28:
     goto LABEL_33;
   }
 
-  v6 = [(HAPCharacteristicValueRange *)self lowerBound];
+  lowerBound2 = [(HAPCharacteristicValueRange *)self lowerBound];
   v26 = 0;
-  v7 = [v6 serializeWithError:&v26];
+  v7 = [lowerBound2 serializeWithError:&v26];
   v8 = v26;
 
   if (!v8)
   {
-    v9 = [v7 bytes];
-    v10 = [v7 length] + v9;
+    bytes2 = [v7 bytes];
+    v10 = [v7 length] + bytes2;
     while (1)
     {
-      v11 = v10 - v9 >= 255 ? 255 : v10 - v9;
+      v11 = v10 - bytes2 >= 255 ? 255 : v10 - bytes2;
       v12 = TLV8BufferAppend();
       if (v12)
       {
         break;
       }
 
-      v9 += v11;
-      if (v9 >= v10)
+      bytes2 += v11;
+      if (bytes2 >= v10)
       {
 
         goto LABEL_10;
@@ -326,11 +326,11 @@ LABEL_28:
 
 LABEL_12:
 
-  if (a3)
+  if (error)
   {
     v15 = v8;
     v16 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_33;
   }
 
@@ -342,20 +342,20 @@ LABEL_33:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPCharacteristicValueRange allocWithZone:a3];
-  v5 = [(HAPCharacteristicValueRange *)self lowerBound];
-  v6 = [(HAPCharacteristicValueRange *)self upperBound];
-  v7 = [(HAPCharacteristicValueRange *)v4 initWithLowerBound:v5 upperBound:v6];
+  v4 = [HAPCharacteristicValueRange allocWithZone:zone];
+  lowerBound = [(HAPCharacteristicValueRange *)self lowerBound];
+  upperBound = [(HAPCharacteristicValueRange *)self upperBound];
+  v7 = [(HAPCharacteristicValueRange *)v4 initWithLowerBound:lowerBound upperBound:upperBound];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -365,14 +365,14 @@ LABEL_33:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPCharacteristicValueRange *)self lowerBound];
-      v8 = [(HAPCharacteristicValueRange *)v6 lowerBound];
-      if (v7 != v8)
+      v6 = equalCopy;
+      lowerBound = [(HAPCharacteristicValueRange *)self lowerBound];
+      lowerBound2 = [(HAPCharacteristicValueRange *)v6 lowerBound];
+      if (lowerBound != lowerBound2)
       {
-        v9 = [(HAPCharacteristicValueRange *)self lowerBound];
-        v3 = [(HAPCharacteristicValueRange *)v6 lowerBound];
-        if (![v9 isEqual:v3])
+        lowerBound3 = [(HAPCharacteristicValueRange *)self lowerBound];
+        lowerBound4 = [(HAPCharacteristicValueRange *)v6 lowerBound];
+        if (![lowerBound3 isEqual:lowerBound4])
         {
           v10 = 0;
 LABEL_13:
@@ -381,25 +381,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = lowerBound3;
       }
 
-      v11 = [(HAPCharacteristicValueRange *)self upperBound];
-      v12 = [(HAPCharacteristicValueRange *)v6 upperBound];
-      if (v11 == v12)
+      upperBound = [(HAPCharacteristicValueRange *)self upperBound];
+      upperBound2 = [(HAPCharacteristicValueRange *)v6 upperBound];
+      if (upperBound == upperBound2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HAPCharacteristicValueRange *)self upperBound];
-        v14 = [(HAPCharacteristicValueRange *)v6 upperBound];
-        v10 = [v13 isEqual:v14];
+        upperBound3 = [(HAPCharacteristicValueRange *)self upperBound];
+        upperBound4 = [(HAPCharacteristicValueRange *)v6 upperBound];
+        v10 = [upperBound3 isEqual:upperBound4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      lowerBound3 = v16;
+      if (lowerBound == lowerBound2)
       {
         goto LABEL_14;
       }
@@ -417,9 +417,9 @@ LABEL_15:
 
 - (NSString)description
 {
-  v3 = [(HAPCharacteristicValueRange *)self lowerBound];
-  v4 = [(HAPCharacteristicValueRange *)self upperBound];
-  v5 = [NSString stringWithFormat:@"<HAPCharacteristicValueRange lowerBound=%@, upperBound=%@>", v3, v4];
+  lowerBound = [(HAPCharacteristicValueRange *)self lowerBound];
+  upperBound = [(HAPCharacteristicValueRange *)self upperBound];
+  v5 = [NSString stringWithFormat:@"<HAPCharacteristicValueRange lowerBound=%@, upperBound=%@>", lowerBound, upperBound];
 
   return v5;
 }

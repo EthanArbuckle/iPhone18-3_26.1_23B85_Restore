@@ -1,62 +1,62 @@
 @interface FCOfflineANFArticlesFetchOperation
 - (BOOL)validateOperation;
-- (id)initWithContext:(void *)a3 config:(void *)a4 ANFHelper:(void *)a5 articleIDs:;
-- (id)initWithContext:(void *)a3 config:(void *)a4 ANFHelper:(void *)a5 headlines:;
-- (void)operationWillFinishWithError:(id)a3;
+- (id)initWithContext:(void *)context config:(void *)config ANFHelper:(void *)helper articleIDs:;
+- (id)initWithContext:(void *)context config:(void *)config ANFHelper:(void *)helper headlines:;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
 @end
 
 @implementation FCOfflineANFArticlesFetchOperation
 
-- (id)initWithContext:(void *)a3 config:(void *)a4 ANFHelper:(void *)a5 articleIDs:
+- (id)initWithContext:(void *)context config:(void *)config ANFHelper:(void *)helper articleIDs:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a1)
+  contextCopy = context;
+  configCopy = config;
+  helperCopy = helper;
+  if (self)
   {
-    v18.receiver = a1;
+    v18.receiver = self;
     v18.super_class = FCOfflineANFArticlesFetchOperation;
     v14 = objc_msgSendSuper2(&v18, sel_init);
-    a1 = v14;
+    self = v14;
     if (v14)
     {
       objc_storeStrong(v14 + 54, a2);
-      objc_storeStrong(a1 + 55, a3);
-      objc_storeStrong(a1 + 56, a4);
-      v15 = [v13 copy];
-      v16 = a1[57];
-      a1[57] = v15;
+      objc_storeStrong(self + 55, context);
+      objc_storeStrong(self + 56, config);
+      v15 = [helperCopy copy];
+      v16 = self[57];
+      self[57] = v15;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)initWithContext:(void *)a3 config:(void *)a4 ANFHelper:(void *)a5 headlines:
+- (id)initWithContext:(void *)context config:(void *)config ANFHelper:(void *)helper headlines:
 {
-  v9 = a5;
-  if (a1)
+  helperCopy = helper;
+  if (self)
   {
-    v10 = a4;
-    v11 = a3;
+    configCopy = config;
+    contextCopy = context;
     v12 = a2;
-    v13 = [v9 fc_arrayByTransformingWithBlock:&__block_literal_global_142];
-    v14 = [(FCOfflineANFArticlesFetchOperation *)a1 initWithContext:v12 config:v11 ANFHelper:v10 articleIDs:v13];
+    v13 = [helperCopy fc_arrayByTransformingWithBlock:&__block_literal_global_142];
+    v14 = [(FCOfflineANFArticlesFetchOperation *)self initWithContext:v12 config:contextCopy ANFHelper:configCopy articleIDs:v13];
 
     if (v14)
     {
-      v15 = [v9 copy];
+      v15 = [helperCopy copy];
       v16 = v14[58];
       v14[58] = v15;
     }
 
-    a1 = v14;
+    self = v14;
   }
 
-  return a1;
+  return self;
 }
 
 - (BOOL)validateOperation
@@ -355,9 +355,9 @@ id __54__FCOfflineANFArticlesFetchOperation_performOperation__block_invoke_2_25(
   return v7;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  fetchCompletionHandler = a3;
+  fetchCompletionHandler = error;
   v5 = fetchCompletionHandler;
   if (self)
   {

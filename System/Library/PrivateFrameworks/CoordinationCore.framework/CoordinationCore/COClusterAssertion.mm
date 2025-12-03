@@ -1,35 +1,35 @@
 @interface COClusterAssertion
-+ (id)assertionForCluster:(id)a3 delegate:(id)a4;
++ (id)assertionForCluster:(id)cluster delegate:(id)delegate;
 - (COClusterAssertionDelegate)delegate;
-- (id)_initWithCluster:(id)a3 delegate:(id)a4;
+- (id)_initWithCluster:(id)cluster delegate:(id)delegate;
 - (void)_notifyInvalidated;
 - (void)dealloc;
 @end
 
 @implementation COClusterAssertion
 
-- (id)_initWithCluster:(id)a3 delegate:(id)a4
+- (id)_initWithCluster:(id)cluster delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  clusterCopy = cluster;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = COClusterAssertion;
   v9 = [(COClusterAssertion *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_cluster, a3);
-    objc_storeWeak(p_isa + 1, v8);
+    objc_storeStrong(&v9->_cluster, cluster);
+    objc_storeWeak(p_isa + 1, delegateCopy);
   }
 
   return p_isa;
 }
 
-+ (id)assertionForCluster:(id)a3 delegate:(id)a4
++ (id)assertionForCluster:(id)cluster delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithCluster:v7 delegate:v6];
+  delegateCopy = delegate;
+  clusterCopy = cluster;
+  v8 = [[self alloc] _initWithCluster:clusterCopy delegate:delegateCopy];
 
   return v8;
 }
@@ -44,14 +44,14 @@
 
 - (void)_notifyInvalidated
 {
-  v3 = [(COClusterAssertion *)self delegate];
-  if (v3)
+  delegate = [(COClusterAssertion *)self delegate];
+  if (delegate)
   {
-    v5 = v3;
-    v4 = [(COClusterAssertion *)self cluster];
-    [v5 didInvalidateAssertionForCluster:v4];
+    v5 = delegate;
+    cluster = [(COClusterAssertion *)self cluster];
+    [v5 didInvalidateAssertionForCluster:cluster];
 
-    v3 = v5;
+    delegate = v5;
   }
 }
 

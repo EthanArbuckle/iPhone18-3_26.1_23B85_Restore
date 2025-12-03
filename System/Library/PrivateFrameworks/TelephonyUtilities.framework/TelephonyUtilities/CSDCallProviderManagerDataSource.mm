@@ -1,35 +1,35 @@
 @interface CSDCallProviderManagerDataSource
-+ (id)dataForProviders:(id)a3;
-- (BOOL)_saveProviders:(id)a3 forKeychainItem:(id)a4 error:(id *)a5;
++ (id)dataForProviders:(id)providers;
+- (BOOL)_saveProviders:(id)providers forKeychainItem:(id)item error:(id *)error;
 - (BOOL)isDevicePasscodeLocked;
-- (BOOL)isProviderInstalled:(id)a3;
+- (BOOL)isProviderInstalled:(id)installed;
 - (BOOL)isRelayCallingGuaranteed;
-- (BOOL)isSymbolicLinkAtURL:(id)a3;
-- (CSDCallProviderManagerDataSource)initWithSerialQueue:(id)a3;
-- (CSDCallProviderManagerDataSource)initWithSerialQueue:(id)a3 localKeychainItem:(id)a4 pairedHostKeychainItem:(id)a5;
+- (BOOL)isSymbolicLinkAtURL:(id)l;
+- (CSDCallProviderManagerDataSource)initWithSerialQueue:(id)queue;
+- (CSDCallProviderManagerDataSource)initWithSerialQueue:(id)queue localKeychainItem:(id)item pairedHostKeychainItem:(id)keychainItem;
 - (CSDCallProviderManagerDataSourceDelegate)delegate;
 - (NSDictionary)registeredLocalProvidersByIdentifier;
 - (NSDictionary)registeredPairedHostDeviceProvidersByIdentifier;
 - (NSSet)providerIdentifiersForExistingCalls;
-- (id)_providersForKeychainItem:(id)a3;
-- (id)_providersForPreferenceKey:(id)a3;
-- (id)createLinkIfNecessaryWithFilename:(id)a3 toURL:(id)a4;
-- (void)callsChangedForCallCenterObserver:(id)a3;
+- (id)_providersForKeychainItem:(id)item;
+- (id)_providersForPreferenceKey:(id)key;
+- (id)createLinkIfNecessaryWithFilename:(id)filename toURL:(id)l;
+- (void)callsChangedForCallCenterObserver:(id)observer;
 - (void)dealloc;
 - (void)didChangeRelayCallingAvailability;
-- (void)handleApplicationUnregisteredNotification:(id)a3;
+- (void)handleApplicationUnregisteredNotification:(id)notification;
 - (void)moveExistingPreferencesToKeychain;
-- (void)openUserActivity:(id)a3 usingApplicationWithBundleIdentifier:(id)a4 frontBoardOptions:(id)a5 completion:(id)a6;
-- (void)removeLinksForFilenamesNotInArray:(id)a3;
-- (void)setRegisteredLocalProvidersByIdentifier:(id)a3;
-- (void)setRegisteredPairedHostDeviceProvidersByIdentifier:(id)a3;
+- (void)openUserActivity:(id)activity usingApplicationWithBundleIdentifier:(id)identifier frontBoardOptions:(id)options completion:(id)completion;
+- (void)removeLinksForFilenamesNotInArray:(id)array;
+- (void)setRegisteredLocalProvidersByIdentifier:(id)identifier;
+- (void)setRegisteredPairedHostDeviceProvidersByIdentifier:(id)identifier;
 @end
 
 @implementation CSDCallProviderManagerDataSource
 
-- (CSDCallProviderManagerDataSource)initWithSerialQueue:(id)a3
+- (CSDCallProviderManagerDataSource)initWithSerialQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = [CSDKeychainPasswordItem alloc];
   v6 = +[CSDKeychainPasswordItem serviceName];
   v7 = +[CSDKeychainPasswordItem accessGroupName];
@@ -40,32 +40,32 @@
   v11 = +[CSDKeychainPasswordItem accessGroupName];
   v12 = [(CSDKeychainPasswordItem *)v9 initWithService:v10 account:@"registeredRelayProviders" accessGroup:v11];
 
-  v13 = [(CSDCallProviderManagerDataSource *)self initWithSerialQueue:v4 localKeychainItem:v8 pairedHostKeychainItem:v12];
+  v13 = [(CSDCallProviderManagerDataSource *)self initWithSerialQueue:queueCopy localKeychainItem:v8 pairedHostKeychainItem:v12];
   return v13;
 }
 
-- (CSDCallProviderManagerDataSource)initWithSerialQueue:(id)a3 localKeychainItem:(id)a4 pairedHostKeychainItem:(id)a5
+- (CSDCallProviderManagerDataSource)initWithSerialQueue:(id)queue localKeychainItem:(id)item pairedHostKeychainItem:(id)keychainItem
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  itemCopy = item;
+  keychainItemCopy = keychainItem;
   v21.receiver = self;
   v21.super_class = CSDCallProviderManagerDataSource;
   v12 = [(CSDCallProviderManagerDataSource *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_queue, a3);
-    v14 = [(CSDCallProviderManagerDataSource *)v13 queue];
+    objc_storeStrong(&v12->_queue, queue);
+    queue = [(CSDCallProviderManagerDataSource *)v13 queue];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10020C7FC;
     v16[3] = &unk_10061A450;
     v17 = v13;
-    v18 = v10;
-    v19 = v11;
-    v20 = v9;
-    dispatch_async(v14, v16);
+    v18 = itemCopy;
+    v19 = keychainItemCopy;
+    v20 = queueCopy;
+    dispatch_async(queue, v16);
   }
 
   return v13;
@@ -84,16 +84,16 @@
 - (BOOL)isRelayCallingGuaranteed
 {
   v2 = +[CSDCallCapabilities sharedInstance];
-  v3 = [v2 callCapabilitiesState];
-  v4 = [v3 relayCallingAvailability] == 2;
+  callCapabilitiesState = [v2 callCapabilitiesState];
+  v4 = [callCapabilitiesState relayCallingAvailability] == 2;
 
   return v4;
 }
 
 - (NSDictionary)registeredLocalProvidersByIdentifier
 {
-  v3 = [(CSDCallProviderManagerDataSource *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = +[NSMutableDictionary dictionary];
   v31 = 0u;
@@ -116,8 +116,8 @@
         }
 
         v10 = *(*(&v31 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        [v4 setObject:v10 forKeyedSubscript:v11];
+        identifier = [v10 identifier];
+        [v4 setObject:v10 forKeyedSubscript:identifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v31 objects:v40 count:16];
@@ -143,8 +143,8 @@
 
   else
   {
-    v13 = [(CSDCallProviderManagerDataSource *)self keychainItem];
-    v14 = [(CSDCallProviderManagerDataSource *)self _providersForKeychainItem:v13];
+    keychainItem = [(CSDCallProviderManagerDataSource *)self keychainItem];
+    v14 = [(CSDCallProviderManagerDataSource *)self _providersForKeychainItem:keychainItem];
 
     if ([v14 count])
     {
@@ -182,8 +182,8 @@
           }
 
           v22 = *(*(&v27 + 1) + 8 * j);
-          v23 = [v22 identifier];
-          [v4 setObject:v22 forKeyedSubscript:v23];
+          identifier2 = [v22 identifier];
+          [v4 setObject:v22 forKeyedSubscript:identifier2];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v27 objects:v39 count:16];
@@ -206,24 +206,24 @@
   return v25;
 }
 
-- (void)setRegisteredLocalProvidersByIdentifier:(id)a3
+- (void)setRegisteredLocalProvidersByIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDCallProviderManagerDataSource *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "registeredLocalProvidersByIdentifier: %@", buf, 0xCu);
   }
 
-  v7 = [v4 allValues];
-  v8 = [(CSDCallProviderManagerDataSource *)self keychainItem];
+  allValues = [identifierCopy allValues];
+  keychainItem = [(CSDCallProviderManagerDataSource *)self keychainItem];
   v12 = 0;
-  [(CSDCallProviderManagerDataSource *)self _saveProviders:v7 forKeychainItem:v8 error:&v12];
+  [(CSDCallProviderManagerDataSource *)self _saveProviders:allValues forKeychainItem:keychainItem error:&v12];
   v9 = v12;
 
   if (v9)
@@ -242,12 +242,12 @@
 
 - (NSDictionary)registeredPairedHostDeviceProvidersByIdentifier
 {
-  v3 = [(CSDCallProviderManagerDataSource *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [(CSDCallProviderManagerDataSource *)self pairedHostKeychainItem];
-  v6 = [(CSDCallProviderManagerDataSource *)self _providersForKeychainItem:v5];
+  pairedHostKeychainItem = [(CSDCallProviderManagerDataSource *)self pairedHostKeychainItem];
+  v6 = [(CSDCallProviderManagerDataSource *)self _providersForKeychainItem:pairedHostKeychainItem];
 
   if ([v6 count])
   {
@@ -286,8 +286,8 @@
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [v14 identifier];
-        [v4 setObject:v14 forKeyedSubscript:v15];
+        identifier = [v14 identifier];
+        [v4 setObject:v14 forKeyedSubscript:identifier];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v19 objects:v25 count:16];
@@ -309,24 +309,24 @@
   return v17;
 }
 
-- (void)setRegisteredPairedHostDeviceProvidersByIdentifier:(id)a3
+- (void)setRegisteredPairedHostDeviceProvidersByIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDCallProviderManagerDataSource *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "registeredPairedHostDeviceProvidersByIdentifier: %@", buf, 0xCu);
   }
 
-  v7 = [v4 allValues];
-  v8 = [(CSDCallProviderManagerDataSource *)self pairedHostKeychainItem];
+  allValues = [identifierCopy allValues];
+  pairedHostKeychainItem = [(CSDCallProviderManagerDataSource *)self pairedHostKeychainItem];
   v11 = 0;
-  [(CSDCallProviderManagerDataSource *)self _saveProviders:v7 forKeychainItem:v8 error:&v11];
+  [(CSDCallProviderManagerDataSource *)self _saveProviders:allValues forKeychainItem:pairedHostKeychainItem error:&v11];
   v9 = v11;
 
   if (v9)
@@ -341,8 +341,8 @@
 
 - (BOOL)isDevicePasscodeLocked
 {
-  v2 = [(CSDCallProviderManagerDataSource *)self queue];
-  dispatch_assert_queue_V2(v2);
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v3 = MKBGetDeviceLockState();
   if (v3 != 1)
@@ -355,42 +355,42 @@
 
 - (NSSet)providerIdentifiersForExistingCalls
 {
-  v3 = [(CSDCallProviderManagerDataSource *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   providerIdentifiersForExistingCalls = self->_providerIdentifiersForExistingCalls;
 
   return providerIdentifiersForExistingCalls;
 }
 
-- (void)openUserActivity:(id)a3 usingApplicationWithBundleIdentifier:(id)a4 frontBoardOptions:(id)a5 completion:(id)a6
+- (void)openUserActivity:(id)activity usingApplicationWithBundleIdentifier:(id)identifier frontBoardOptions:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(CSDCallProviderManagerDataSource *)self queue];
-  dispatch_assert_queue_V2(v14);
+  activityCopy = activity;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  completionCopy = completion;
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v15 = sub_100004778();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412802;
-    v21 = v10;
+    v21 = activityCopy;
     v22 = 2112;
-    v23 = v11;
+    v23 = identifierCopy;
     v24 = 2112;
-    v25 = v12;
+    v25 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Opening user activity %@ for bundle identifier %@ with options %@", &v20, 0x20u);
   }
 
-  v16 = [LSApplicationRecord csd_applicationRecordForBundleIdentifier:v11];
+  v16 = [LSApplicationRecord csd_applicationRecordForBundleIdentifier:identifierCopy];
   v17 = objc_alloc_init(_LSOpenConfiguration);
-  [v17 setFrontBoardOptions:v12];
+  [v17 setFrontBoardOptions:optionsCopy];
   if (v16)
   {
     v18 = +[LSApplicationWorkspace defaultWorkspace];
-    [v18 openUserActivity:v10 usingApplicationRecord:v16 configuration:v17 completionHandler:v13];
+    [v18 openUserActivity:activityCopy usingApplicationRecord:v16 configuration:v17 completionHandler:completionCopy];
   }
 
   else
@@ -402,21 +402,21 @@
     }
 
     v18 = [NSError errorWithDomain:TUBundleIdentifierTelephonyUtilitiesFramework code:1 userInfo:0];
-    v13[2](v13, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
   }
 }
 
-- (BOOL)isSymbolicLinkAtURL:(id)a3
+- (BOOL)isSymbolicLinkAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [(CSDCallProviderManagerDataSource *)self queue];
-  dispatch_assert_queue_V2(v5);
+  lCopy = l;
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[NSFileManager defaultManager];
-  v7 = [v4 path];
+  path = [lCopy path];
 
   v13 = 0;
-  v8 = [v6 attributesOfItemAtPath:v7 error:&v13];
+  v8 = [v6 attributesOfItemAtPath:path error:&v13];
   v9 = v13;
 
   if (v8)
@@ -439,16 +439,16 @@
   return v11;
 }
 
-- (id)createLinkIfNecessaryWithFilename:(id)a3 toURL:(id)a4
+- (id)createLinkIfNecessaryWithFilename:(id)filename toURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDCallProviderManagerDataSource *)self queue];
-  dispatch_assert_queue_V2(v8);
+  filenameCopy = filename;
+  lCopy = l;
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDCallProviderManagerDataSource *)self ringtonesSandboxExtensionDirectory];
+  ringtonesSandboxExtensionDirectory = [(CSDCallProviderManagerDataSource *)self ringtonesSandboxExtensionDirectory];
   v14 = 0;
-  v10 = [v9 createLinkIfNecessaryWithFilename:v6 toURL:v7 error:&v14];
+  v10 = [ringtonesSandboxExtensionDirectory createLinkIfNecessaryWithFilename:filenameCopy toURL:lCopy error:&v14];
   v11 = v14;
 
   if (!v10)
@@ -457,9 +457,9 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v16 = v7;
+      v16 = lCopy;
       v17 = 2112;
-      v18 = v6;
+      v18 = filenameCopy;
       v19 = 2112;
       v20 = v11;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Error creating link to source URL '%@' with filename '%@': %@", buf, 0x20u);
@@ -469,15 +469,15 @@
   return v10;
 }
 
-- (void)removeLinksForFilenamesNotInArray:(id)a3
+- (void)removeLinksForFilenamesNotInArray:(id)array
 {
-  v4 = a3;
-  v5 = [(CSDCallProviderManagerDataSource *)self queue];
-  dispatch_assert_queue_V2(v5);
+  arrayCopy = array;
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDCallProviderManagerDataSource *)self ringtonesSandboxExtensionDirectory];
+  ringtonesSandboxExtensionDirectory = [(CSDCallProviderManagerDataSource *)self ringtonesSandboxExtensionDirectory];
   v10 = 0;
-  v7 = [v6 removeLinksForFilenamesNotInArray:v4 error:&v10];
+  v7 = [ringtonesSandboxExtensionDirectory removeLinksForFilenamesNotInArray:arrayCopy error:&v10];
   v8 = v10;
 
   if ((v7 & 1) == 0)
@@ -490,17 +490,17 @@
   }
 }
 
-- (BOOL)isProviderInstalled:(id)a3
+- (BOOL)isProviderInstalled:(id)installed
 {
-  v4 = a3;
-  v5 = [(CSDCallProviderManagerDataSource *)self queue];
-  dispatch_assert_queue_V2(v5);
+  installedCopy = installed;
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 bundleIdentifier];
+  bundleIdentifier = [installedCopy bundleIdentifier];
 
-  if (v6)
+  if (bundleIdentifier)
   {
-    v7 = [LSApplicationRecord csd_applicationRecordForBundleIdentifier:v6];
+    v7 = [LSApplicationRecord csd_applicationRecordForBundleIdentifier:bundleIdentifier];
   }
 
   else
@@ -508,16 +508,16 @@
     v7 = 0;
   }
 
-  v8 = [v7 applicationState];
-  v9 = [v8 isInstalled];
+  applicationState = [v7 applicationState];
+  isInstalled = [applicationState isInstalled];
 
-  return v9;
+  return isInstalled;
 }
 
 - (void)moveExistingPreferencesToKeychain
 {
-  v3 = [(CSDCallProviderManagerDataSource *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [(CSDCallProviderManagerDataSource *)self _providersForPreferenceKey:@"registeredProviders"];
   if ([v4 count])
@@ -529,9 +529,9 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Found local provider data to move into keychain", buf, 2u);
     }
 
-    v6 = [(CSDCallProviderManagerDataSource *)self keychainItem];
+    keychainItem = [(CSDCallProviderManagerDataSource *)self keychainItem];
     v17 = 0;
-    [(CSDCallProviderManagerDataSource *)self _saveProviders:v4 forKeychainItem:v6 error:&v17];
+    [(CSDCallProviderManagerDataSource *)self _saveProviders:v4 forKeychainItem:keychainItem error:&v17];
     v7 = v17;
 
     v8 = sub_100004778();
@@ -566,9 +566,9 @@
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Found paired host provider data to move into keychain", buf, 2u);
     }
 
-    v12 = [(CSDCallProviderManagerDataSource *)self pairedHostKeychainItem];
+    pairedHostKeychainItem = [(CSDCallProviderManagerDataSource *)self pairedHostKeychainItem];
     v16 = 0;
-    [(CSDCallProviderManagerDataSource *)self _saveProviders:v10 forKeychainItem:v12 error:&v16];
+    [(CSDCallProviderManagerDataSource *)self _saveProviders:v10 forKeychainItem:pairedHostKeychainItem error:&v16];
     v13 = v16;
 
     v14 = sub_100004778();
@@ -594,15 +594,15 @@
   }
 }
 
-+ (id)dataForProviders:(id)a3
++ (id)dataForProviders:(id)providers
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  providersCopy = providers;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [providersCopy count]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = providersCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -618,8 +618,8 @@
         }
 
         v10 = [[CSDMessagingCallProvider alloc] initWithProvider:*(*(&v18 + 1) + 8 * i)];
-        v11 = [(CSDMessagingCallProvider *)v10 data];
-        [v4 addObject:v11];
+        data = [(CSDMessagingCallProvider *)v10 data];
+        [v4 addObject:data];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -650,18 +650,18 @@
   return v15;
 }
 
-- (BOOL)_saveProviders:(id)a3 forKeychainItem:(id)a4 error:(id *)a5
+- (BOOL)_saveProviders:(id)providers forKeychainItem:(id)item error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CSDCallProviderManagerDataSource *)self queue];
-  dispatch_assert_queue_V2(v10);
+  providersCopy = providers;
+  itemCopy = item;
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = [v8 mutableCopy];
+  v11 = [providersCopy mutableCopy];
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
   v13 = v11;
   if (v12)
@@ -710,22 +710,22 @@ LABEL_12:
 
 LABEL_13:
   v18 = [objc_opt_class() dataForProviders:v11];
-  [v9 saveData:v18 error:a5];
-  [(CSDCallProviderManagerDataSource *)self setSucceededAccessingKeychainOnLastAttempt:a5 == 0];
-  v19 = [(CSDCallProviderManagerDataSource *)self hasSucceededAccessingKeychainOnLastAttempt];
+  [itemCopy saveData:v18 error:error];
+  [(CSDCallProviderManagerDataSource *)self setSucceededAccessingKeychainOnLastAttempt:error == 0];
+  hasSucceededAccessingKeychainOnLastAttempt = [(CSDCallProviderManagerDataSource *)self hasSucceededAccessingKeychainOnLastAttempt];
 
-  return v19;
+  return hasSucceededAccessingKeychainOnLastAttempt;
 }
 
-- (id)_providersForKeychainItem:(id)a3
+- (id)_providersForKeychainItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CSDCallProviderManagerDataSource *)self queue];
-  dispatch_assert_queue_V2(v5);
+  itemCopy = item;
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[NSMutableArray array];
   v37 = 0;
-  v7 = [v4 readDataAndReturnError:&v37];
+  v7 = [itemCopy readDataAndReturnError:&v37];
   v8 = v37;
   if (v8)
   {
@@ -775,7 +775,7 @@ LABEL_13:
       v28 = v11;
       v29 = v10;
       v30 = v7;
-      v31 = v4;
+      v31 = itemCopy;
       v15 = *v33;
       while (1)
       {
@@ -792,11 +792,11 @@ LABEL_13:
           if (objc_opt_isKindOfClass())
           {
             v18 = [[CSDMessagingCallProvider alloc] initWithData:v17];
-            v19 = [(CSDMessagingCallProvider *)v18 provider];
+            provider = [(CSDMessagingCallProvider *)v18 provider];
 
-            if (v19)
+            if (provider)
             {
-              [v6 addObject:v19];
+              [v6 addObject:provider];
               goto LABEL_21;
             }
 
@@ -815,8 +815,8 @@ LABEL_13:
 
           else
           {
-            v19 = sub_100004778();
-            if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+            provider = sub_100004778();
+            if (!os_log_type_enabled(provider, OS_LOG_TYPE_ERROR))
             {
               goto LABEL_21;
             }
@@ -827,7 +827,7 @@ LABEL_13:
             v40 = 2112;
             v41 = v12;
             v21 = v20;
-            v22 = v19;
+            v22 = provider;
             v23 = "Archived object was of unexpected class %@: %@";
             v24 = 22;
           }
@@ -844,7 +844,7 @@ LABEL_21:
         v14 = v25;
         if (!v25)
         {
-          v4 = v31;
+          itemCopy = v31;
           v11 = v28;
           goto LABEL_29;
         }
@@ -867,15 +867,15 @@ LABEL_30:
   return v26;
 }
 
-- (id)_providersForPreferenceKey:(id)a3
+- (id)_providersForPreferenceKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CSDCallProviderManagerDataSource *)self queue];
-  dispatch_assert_queue_V2(v5);
+  keyCopy = key;
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[NSMutableArray array];
-  v7 = [(CSDCallProviderManagerDataSource *)self preferencesForKeyBlock];
-  v8 = (v7)[2](v7, v4);
+  preferencesForKeyBlock = [(CSDCallProviderManagerDataSource *)self preferencesForKeyBlock];
+  v8 = (preferencesForKeyBlock)[2](preferencesForKeyBlock, keyCopy);
 
   if (v8)
   {
@@ -895,7 +895,7 @@ LABEL_30:
 
       v11 = v10;
       v25 = v8;
-      v26 = v4;
+      v26 = keyCopy;
       v12 = *v28;
       while (1)
       {
@@ -912,11 +912,11 @@ LABEL_30:
           if (objc_opt_isKindOfClass())
           {
             v15 = [[CSDMessagingCallProvider alloc] initWithData:v14];
-            v16 = [(CSDMessagingCallProvider *)v15 provider];
+            provider = [(CSDMessagingCallProvider *)v15 provider];
 
-            if (v16)
+            if (provider)
             {
-              [v6 addObject:v16];
+              [v6 addObject:provider];
               goto LABEL_15;
             }
 
@@ -935,8 +935,8 @@ LABEL_30:
 
           else
           {
-            v16 = sub_100004778();
-            if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+            provider = sub_100004778();
+            if (!os_log_type_enabled(provider, OS_LOG_TYPE_ERROR))
             {
               goto LABEL_15;
             }
@@ -947,7 +947,7 @@ LABEL_30:
             v33 = 2112;
             v34 = v9;
             v18 = v17;
-            v19 = v16;
+            v19 = provider;
             v20 = "Archived object was of unexpected class %@: %@";
             v21 = 22;
           }
@@ -983,29 +983,29 @@ LABEL_23:
   return v23;
 }
 
-- (void)handleApplicationUnregisteredNotification:(id)a3
+- (void)handleApplicationUnregisteredNotification:(id)notification
 {
-  v4 = [(CSDCallProviderManagerDataSource *)self queue];
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10020E718;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
-- (void)callsChangedForCallCenterObserver:(id)a3
+- (void)callsChangedForCallCenterObserver:(id)observer
 {
-  v4 = [(CSDCallProviderManagerDataSource *)self callCenterObserver];
-  v5 = [v4 callContainer];
-  v6 = [v5 currentAudioAndVideoCalls];
+  callCenterObserver = [(CSDCallProviderManagerDataSource *)self callCenterObserver];
+  callContainer = [callCenterObserver callContainer];
+  currentAudioAndVideoCalls = [callContainer currentAudioAndVideoCalls];
 
-  v7 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v6 count]);
+  v7 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [currentAudioAndVideoCalls count]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v6;
+  v8 = currentAudioAndVideoCalls;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -1021,12 +1021,12 @@ LABEL_23:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v19 + 1) + 8 * v12) provider];
-        v14 = [v13 identifier];
+        provider = [*(*(&v19 + 1) + 8 * v12) provider];
+        identifier = [provider identifier];
 
-        if ([v14 length])
+        if ([identifier length])
         {
-          [v7 addObject:v14];
+          [v7 addObject:identifier];
         }
 
         v12 = v12 + 1;
@@ -1039,7 +1039,7 @@ LABEL_23:
     while (v10);
   }
 
-  v15 = [(CSDCallProviderManagerDataSource *)self queue];
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10020E96C;
@@ -1047,16 +1047,16 @@ LABEL_23:
   v17[4] = self;
   v18 = v7;
   v16 = v7;
-  dispatch_async(v15, v17);
+  dispatch_async(queue, v17);
 }
 
 - (void)didChangeRelayCallingAvailability
 {
-  v3 = [(CSDCallProviderManagerDataSource *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDCallProviderManagerDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDCallProviderManagerDataSource *)self delegate];
-  [v4 relayCallingStateChangedForDataSource:self];
+  delegate = [(CSDCallProviderManagerDataSource *)self delegate];
+  [delegate relayCallingStateChangedForDataSource:self];
 }
 
 - (CSDCallProviderManagerDataSourceDelegate)delegate

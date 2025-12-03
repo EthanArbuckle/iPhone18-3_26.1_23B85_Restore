@@ -1,45 +1,45 @@
 @interface TSPFileManager
-+ (BOOL)linkFileAtPath:(id)a3 toPath:(id)a4;
-+ (BOOL)linkFileAtURL:(id)a3 toURL:(id)a4;
-+ (BOOL)linkOrCopyURL:(id)a3 decryptionKey:(id)a4 toURL:(id)a5 encryptionKey:(id)a6;
++ (BOOL)linkFileAtPath:(id)path toPath:(id)toPath;
++ (BOOL)linkFileAtURL:(id)l toURL:(id)rL;
++ (BOOL)linkOrCopyURL:(id)l decryptionKey:(id)key toURL:(id)rL encryptionKey:(id)encryptionKey;
 @end
 
 @implementation TSPFileManager
 
-+ (BOOL)linkFileAtURL:(id)a3 toURL:(id)a4
++ (BOOL)linkFileAtURL:(id)l toURL:(id)rL
 {
-  v6 = a4;
-  v7 = [a3 path];
-  v8 = [v6 path];
+  rLCopy = rL;
+  path = [l path];
+  path2 = [rLCopy path];
 
-  LOBYTE(a1) = [a1 linkFileAtPath:v7 toPath:v8];
-  return a1;
+  LOBYTE(self) = [self linkFileAtPath:path toPath:path2];
+  return self;
 }
 
-+ (BOOL)linkFileAtPath:(id)a3 toPath:(id)a4
++ (BOOL)linkFileAtPath:(id)path toPath:(id)toPath
 {
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  toPathCopy = toPath;
   v7 = UnsafePointer();
-  v8 = [v7 bundlePath];
-  v9 = [v8 stringByStandardizingPath];
+  bundlePath = [v7 bundlePath];
+  stringByStandardizingPath = [bundlePath stringByStandardizingPath];
 
-  v10 = [v5 stringByStandardizingPath];
-  v11 = [v9 stringByAppendingString:@"/"];
-  v12 = [v10 hasPrefix:v11];
+  stringByStandardizingPath2 = [pathCopy stringByStandardizingPath];
+  v11 = [stringByStandardizingPath stringByAppendingString:@"/"];
+  v12 = [stringByStandardizingPath2 hasPrefix:v11];
 
   v13 = (v12 & 1) == 0 && TSULink() == 0;
   return v13;
 }
 
-+ (BOOL)linkOrCopyURL:(id)a3 decryptionKey:(id)a4 toURL:(id)a5 encryptionKey:(id)a6
++ (BOOL)linkOrCopyURL:(id)l decryptionKey:(id)key toURL:(id)rL encryptionKey:(id)encryptionKey
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  keyCopy = key;
+  rLCopy = rL;
+  encryptionKeyCopy = encryptionKey;
   v14 = 0;
-  if (v10 && v12)
+  if (lCopy && rLCopy)
   {
     v33 = 0;
     v34 = &v33;
@@ -47,7 +47,7 @@
     v36 = 0;
     if (SFUEqualCryptoKeys())
     {
-      v15 = [a1 linkFileAtURL:v10 toURL:v12];
+      v15 = [self linkFileAtURL:lCopy toURL:rLCopy];
       *(v34 + 24) = v15;
       if (v15)
       {
@@ -57,9 +57,9 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v16 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v32 = 0;
-      v17 = [v16 copyItemAtURL:v10 toURL:v12 error:&v32];
+      v17 = [defaultManager copyItemAtURL:lCopy toURL:rLCopy error:&v32];
       v18 = v32;
       *(v34 + 24) = v17;
 
@@ -71,9 +71,9 @@ LABEL_11:
 
     else
     {
-      v18 = [objc_alloc(MEMORY[0x277D6C2D0]) initForReadingURL:v10];
-      v19 = [objc_alloc(MEMORY[0x277D6C2D0]) initForStreamWritingURL:v12];
-      v20 = [[TSPCryptoTranscodeReadChannel alloc] initWithReadChannel:v18 decryptionKey:v11 encryptionKey:v13];
+      v18 = [objc_alloc(MEMORY[0x277D6C2D0]) initForReadingURL:lCopy];
+      v19 = [objc_alloc(MEMORY[0x277D6C2D0]) initForStreamWritingURL:rLCopy];
+      v20 = [[TSPCryptoTranscodeReadChannel alloc] initWithReadChannel:v18 decryptionKey:keyCopy encryptionKey:encryptionKeyCopy];
       if (v20)
       {
         v21 = dispatch_queue_create("com.apple.iWork.CRYPTOREADCHANNEL", 0);

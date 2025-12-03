@@ -9,18 +9,18 @@
 {
   v10.receiver = self;
   v10.super_class = EscrowChangeSMSTargetRequest;
-  v3 = [(EscrowPasswordAuthenticatedRequest *)&v10 validateInput];
-  if (!v3)
+  validateInput = [(EscrowPasswordAuthenticatedRequest *)&v10 validateInput];
+  if (!validateInput)
   {
-    v4 = [(EscrowGenericRequest *)self countryDialCode];
-    if ([v4 length])
+    countryDialCode = [(EscrowGenericRequest *)self countryDialCode];
+    if ([countryDialCode length])
     {
-      v5 = [(EscrowGenericRequest *)self phoneNumber];
-      v6 = [v5 length];
+      phoneNumber = [(EscrowGenericRequest *)self phoneNumber];
+      v6 = [phoneNumber length];
 
       if (v6)
       {
-        v3 = 0;
+        validateInput = 0;
         goto LABEL_9;
       }
     }
@@ -29,7 +29,7 @@
     {
     }
 
-    v3 = [CloudServicesError errorWithCode:22 error:0 format:@"Missing parameters"];
+    validateInput = [CloudServicesError errorWithCode:22 error:0 format:@"Missing parameters"];
     v7 = CloudServicesLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -40,37 +40,37 @@
 
 LABEL_9:
 
-  return v3;
+  return validateInput;
 }
 
 - (id)bodyDictionary
 {
   v11.receiver = self;
   v11.super_class = EscrowChangeSMSTargetRequest;
-  v3 = [(EscrowGenericRequest *)&v11 bodyDictionary];
-  v4 = [(EscrowGenericRequest *)self countryDialCode];
-  [v3 setObject:v4 forKeyedSubscript:@"countryDialCode"];
+  bodyDictionary = [(EscrowGenericRequest *)&v11 bodyDictionary];
+  countryDialCode = [(EscrowGenericRequest *)self countryDialCode];
+  [bodyDictionary setObject:countryDialCode forKeyedSubscript:@"countryDialCode"];
 
-  v5 = [(EscrowGenericRequest *)self phoneNumber];
-  [v3 setObject:v5 forKeyedSubscript:@"phoneNumber"];
+  phoneNumber = [(EscrowGenericRequest *)self phoneNumber];
+  [bodyDictionary setObject:phoneNumber forKeyedSubscript:@"phoneNumber"];
 
-  v6 = [(EscrowGenericRequest *)self countryCode];
+  countryCode = [(EscrowGenericRequest *)self countryCode];
 
-  if (v6)
+  if (countryCode)
   {
-    v7 = [(EscrowGenericRequest *)self countryCode];
-    [v3 setObject:v7 forKeyedSubscript:@"countryISOCode"];
+    countryCode2 = [(EscrowGenericRequest *)self countryCode];
+    [bodyDictionary setObject:countryCode2 forKeyedSubscript:@"countryISOCode"];
   }
 
-  v8 = [(EscrowGenericRequest *)self bypassToken];
+  bypassToken = [(EscrowGenericRequest *)self bypassToken];
 
-  if (v8)
+  if (bypassToken)
   {
-    v9 = [(EscrowGenericRequest *)self bypassToken];
-    [v3 setObject:v9 forKeyedSubscript:@"phoneNumberToken"];
+    bypassToken2 = [(EscrowGenericRequest *)self bypassToken];
+    [bodyDictionary setObject:bypassToken2 forKeyedSubscript:@"phoneNumberToken"];
   }
 
-  return v3;
+  return bodyDictionary;
 }
 
 @end

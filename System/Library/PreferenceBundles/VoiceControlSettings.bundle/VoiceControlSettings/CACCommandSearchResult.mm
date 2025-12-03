@@ -1,29 +1,29 @@
 @interface CACCommandSearchResult
-+ (id)searchResultWithGroup:(id)a3;
-- (CACCommandSearchResult)initWithGroup:(id)a3;
++ (id)searchResultWithGroup:(id)group;
+- (CACCommandSearchResult)initWithGroup:(id)group;
 @end
 
 @implementation CACCommandSearchResult
 
-- (CACCommandSearchResult)initWithGroup:(id)a3
+- (CACCommandSearchResult)initWithGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   v9.receiver = self;
   v9.super_class = CACCommandSearchResult;
   v6 = [(CACCommandSearchResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_commandGroup, a3);
+    objc_storeStrong(&v6->_commandGroup, group);
   }
 
   return v7;
 }
 
-+ (id)searchResultWithGroup:(id)a3
++ (id)searchResultWithGroup:(id)group
 {
-  v3 = a3;
-  v4 = [[CACCommandSearchResult alloc] initWithGroup:v3];
+  groupCopy = group;
+  v4 = [[CACCommandSearchResult alloc] initWithGroup:groupCopy];
 
   return v4;
 }

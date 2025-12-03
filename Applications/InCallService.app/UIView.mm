@@ -1,12 +1,12 @@
 @interface UIView
 - (void)applyClearGlassBackground;
-- (void)applyClearGlassBackgroundWithTintColor:(id)a3;
-- (void)applyDiscreetRegularGlassBackgroundWithTintColor:(id)a3;
+- (void)applyClearGlassBackgroundWithTintColor:(id)color;
+- (void)applyDiscreetRegularGlassBackgroundWithTintColor:(id)color;
 - (void)applyGlassBackground;
 - (void)applyRegularGlassBackground;
-- (void)applyRegularGlassBackgroundWithTintColor:(id)a3;
+- (void)applyRegularGlassBackgroundWithTintColor:(id)color;
 - (void)applySmallClearGlassBackground;
-- (void)applySmallClearGlassBackgroundWithTintColor:(id)a3;
+- (void)applySmallClearGlassBackgroundWithTintColor:(id)color;
 - (void)removeBackground;
 @end
 
@@ -14,60 +14,60 @@
 
 - (void)applyGlassBackground
 {
-  v2 = self;
+  selfCopy = self;
   UIView.applyGlassBackground()();
 }
 
 - (void)applyClearGlassBackground
 {
-  v2 = self;
+  selfCopy = self;
   UIView.applyClearGlassBackground()();
 }
 
-- (void)applyClearGlassBackgroundWithTintColor:(id)a3
+- (void)applyClearGlassBackgroundWithTintColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  UIView.applyClearGlassBackgroundWithTintColor(_:)(v4);
+  colorCopy = color;
+  selfCopy = self;
+  UIView.applyClearGlassBackgroundWithTintColor(_:)(colorCopy);
 }
 
 - (void)applyRegularGlassBackground
 {
-  v2 = self;
+  selfCopy = self;
   UIView.applyRegularGlassBackground()();
 }
 
-- (void)applyRegularGlassBackgroundWithTintColor:(id)a3
+- (void)applyRegularGlassBackgroundWithTintColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  UIView.applyRegularGlassBackgroundWithTintColor(_:)(v4);
+  colorCopy = color;
+  selfCopy = self;
+  UIView.applyRegularGlassBackgroundWithTintColor(_:)(colorCopy);
 }
 
-- (void)applyDiscreetRegularGlassBackgroundWithTintColor:(id)a3
+- (void)applyDiscreetRegularGlassBackgroundWithTintColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  UIView.applyDiscreetRegularGlassBackgroundWithTintColor(_:)(v4);
+  colorCopy = color;
+  selfCopy = self;
+  UIView.applyDiscreetRegularGlassBackgroundWithTintColor(_:)(colorCopy);
 }
 
 - (void)removeBackground
 {
-  v2 = self;
+  selfCopy = self;
   UIView.removeBackground()();
 }
 
 - (void)applySmallClearGlassBackground
 {
-  v2 = self;
+  selfCopy = self;
   UIView.applySmallClearGlassBackground()();
 }
 
-- (void)applySmallClearGlassBackgroundWithTintColor:(id)a3
+- (void)applySmallClearGlassBackgroundWithTintColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  UIView.applySmallClearGlassBackgroundWithTintColor(_:)(v4);
+  colorCopy = color;
+  selfCopy = self;
+  UIView.applySmallClearGlassBackgroundWithTintColor(_:)(colorCopy);
 }
 
 @end

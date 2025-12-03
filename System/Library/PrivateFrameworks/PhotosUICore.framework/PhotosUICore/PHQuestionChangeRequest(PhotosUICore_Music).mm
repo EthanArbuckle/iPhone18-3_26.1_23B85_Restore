@@ -12,19 +12,19 @@
   v14[3] = *MEMORY[0x1E69E9840];
   v13[0] = @"songIdentifier";
   v5 = a3;
-  v6 = [v5 identifier];
-  v14[0] = v6;
+  identifier = [v5 identifier];
+  v14[0] = identifier;
   v13[1] = @"songType";
-  v7 = [v5 catalog];
+  catalog = [v5 catalog];
 
-  if (v7 > 4)
+  if (catalog > 4)
   {
     v8 = @"Mock";
   }
 
   else
   {
-    v8 = off_1E773ED58[v7];
+    v8 = off_1E773ED58[catalog];
   }
 
   v9 = v8;
@@ -65,9 +65,9 @@
   v6 = a3;
   v7 = [v5 changeRequestForQuestion:v6];
   v8 = MEMORY[0x1E695DF90];
-  v9 = [v6 additionalInfo];
+  additionalInfo = [v6 additionalInfo];
 
-  v10 = [v8 dictionaryWithDictionary:v9];
+  v10 = [v8 dictionaryWithDictionary:additionalInfo];
 
   if ((a4 - 1) > 4)
   {
@@ -89,13 +89,13 @@
 {
   v7 = MEMORY[0x1E6978A18];
   v8 = a4;
-  v9 = [a3 uuid];
+  uuid = [a3 uuid];
   v10 = [objc_opt_class() _questionStateFromFeedbackType:a5];
   v11 = [objc_opt_class() _questionAdditionalInfoFromAudioAsset:v8 feedbackType:a5];
 
-  v12 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   LOWORD(v15) = 0;
-  v13 = [v7 creationRequestForQuestionWithEntityIdentifier:v9 type:15 state:v10 entityType:2 displayType:5 score:v11 additionalInfo:0.0 creationDate:v12 questionVersion:v15];
+  v13 = [v7 creationRequestForQuestionWithEntityIdentifier:uuid type:15 state:v10 entityType:2 displayType:5 score:v11 additionalInfo:0.0 creationDate:date questionVersion:v15];
 
   return v13;
 }

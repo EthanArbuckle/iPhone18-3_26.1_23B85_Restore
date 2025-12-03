@@ -1,6 +1,6 @@
 @interface CHDAxesCollection
-- (id)axesAtPosition:(int)a3;
-- (id)axisAtPosition:(int)a3;
+- (id)axesAtPosition:(int)position;
+- (id)axisAtPosition:(int)position;
 - (void)adjustAxesPositionForHorizontalChart;
 @end
 
@@ -20,30 +20,30 @@
   }
 }
 
-- (id)axesAtPosition:(int)a3
+- (id)axesAtPosition:(int)position
 {
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [(EDCollection *)self count];
   if (v6)
   {
     for (i = 0; i != v6; ++i)
     {
       v8 = [(EDCollection *)self objectAtIndex:i];
-      if ([v8 axisPosition] == a3)
+      if ([v8 axisPosition] == position)
       {
-        [v5 addObject:v8];
+        [array addObject:v8];
       }
     }
   }
 
-  return v5;
+  return array;
 }
 
-- (id)axisAtPosition:(int)a3
+- (id)axisAtPosition:(int)position
 {
   v5 = [(CHDAxesCollection *)self axesAtPosition:?];
   v6 = [v5 count];
-  v7 = a3 & 0xFFFFFFFE;
+  v7 = position & 0xFFFFFFFE;
   if (v6)
   {
     v8 = 0;
@@ -71,17 +71,17 @@
 
   v10 = 0;
 LABEL_7:
-  if (a3 >= 4)
+  if (position >= 4)
   {
-    v11 = a3;
+    positionCopy = position;
   }
 
   else
   {
-    v11 = (3 - a3);
+    positionCopy = (3 - position);
   }
 
-  v12 = [(CHDAxesCollection *)self axesAtPosition:v11];
+  v12 = [(CHDAxesCollection *)self axesAtPosition:positionCopy];
 
   v13 = 0;
   v14 = [v12 count];

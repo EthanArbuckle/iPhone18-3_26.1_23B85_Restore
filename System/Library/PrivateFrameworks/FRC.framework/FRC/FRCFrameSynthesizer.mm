@@ -1,26 +1,26 @@
 @interface FRCFrameSynthesizer
-- (BOOL)checkForwardFlow:(__CVBuffer *)a3 backwardFlow:(__CVBuffer *)a4;
-- (BOOL)configureSynthesisWithMode:(int64_t)a3;
-- (FRCFrameSynthesizer)initWithUsage:(int64_t)a3 qualityMode:(int64_t)a4 useLegacyNormalization:(BOOL)a5;
-- (id)errorWithErrorCode:(int64_t)a3;
-- (id)synthesizeFramesFromFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 numberOfFrames:(unint64_t)a7 withError:(id *)a8;
-- (id)synthesizeFramesFromFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)scaledForwardFlow backwardFlow:(__CVBuffer *)scaledBackwardFlow timeScales:(id)a7 withError:(id *)a8;
+- (BOOL)checkForwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow;
+- (BOOL)configureSynthesisWithMode:(int64_t)mode;
+- (FRCFrameSynthesizer)initWithUsage:(int64_t)usage qualityMode:(int64_t)mode useLegacyNormalization:(BOOL)normalization;
+- (id)errorWithErrorCode:(int64_t)code;
+- (id)synthesizeFramesFromFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow numberOfFrames:(unint64_t)frames withError:(id *)error;
+- (id)synthesizeFramesFromFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame forwardFlow:(__CVBuffer *)scaledForwardFlow backwardFlow:(__CVBuffer *)scaledBackwardFlow timeScales:(id)scales withError:(id *)error;
 - (void)allocateResources;
 - (void)allocateScaledFlow;
 - (void)dealloc;
 - (void)releaseResources;
 - (void)releaseScaledFlow;
-- (void)setFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6;
-- (void)synthesizeFrameForTimeScale:(float)a3 destination:(__CVBuffer *)a4;
-- (void)synthesizeFrameFromFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 timeScale:(float)a7 destination:(__CVBuffer *)a8;
+- (void)setFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow;
+- (void)synthesizeFrameForTimeScale:(float)scale destination:(__CVBuffer *)destination;
+- (void)synthesizeFrameFromFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow timeScale:(float)scale destination:(__CVBuffer *)destination;
 - (void)updateFlowSize;
 @end
 
 @implementation FRCFrameSynthesizer
 
-- (FRCFrameSynthesizer)initWithUsage:(int64_t)a3 qualityMode:(int64_t)a4 useLegacyNormalization:(BOOL)a5
+- (FRCFrameSynthesizer)initWithUsage:(int64_t)usage qualityMode:(int64_t)mode useLegacyNormalization:(BOOL)normalization
 {
-  v5 = a5;
+  normalizationCopy = normalization;
   v38 = *MEMORY[0x277D85DE8];
   v31.receiver = self;
   v31.super_class = FRCFrameSynthesizer;
@@ -36,22 +36,22 @@ LABEL_11:
   logger = v8->_logger;
   v8->_logger = v9;
 
-  if ((a3 & 0x1000) != 0)
+  if ((usage & 0x1000) != 0)
   {
-    v11 = a3 & 0xFFF;
+    usageCopy = usage & 0xFFF;
   }
 
   else
   {
-    v11 = a3;
+    usageCopy = usage;
   }
 
-  v8->_usage = v11;
-  v8->_inputRotation = (a3 & 0x1000) >> 11;
-  FRCGetInputFrameSizeForUsage(v11, &v8->_width, &v8->_height);
+  v8->_usage = usageCopy;
+  v8->_inputRotation = (usage & 0x1000) >> 11;
+  FRCGetInputFrameSizeForUsage(usageCopy, &v8->_width, &v8->_height);
   v12 = [FRCImageProcessor alloc];
   usage = v8->_usage;
-  if (v5)
+  if (normalizationCopy)
   {
     v14 = [(FRCImageProcessor *)v12 initLegacyModeWithUsage:usage];
   }
@@ -64,7 +64,7 @@ LABEL_11:
   processor = v8->_processor;
   v8->_processor = v14;
 
-  if ([(FRCFrameSynthesizer *)v8 configureSynthesisWithMode:a4])
+  if ([(FRCFrameSynthesizer *)v8 configureSynthesisWithMode:mode])
   {
     [(FRCFrameSynthesizer *)v8 updateFlowSize];
     [(FRCFrameSynthesizer *)v8 allocateResources];
@@ -76,21 +76,21 @@ LABEL_11:
       synthesis = v8->_synthesis;
       v20 = v16;
       LODWORD(synthesis) = [(Synthesis *)synthesis synthesisMode];
-      v21 = [(Synthesis *)v8->_synthesis temporalFiltering];
+      temporalFiltering = [(Synthesis *)v8->_synthesis temporalFiltering];
       *buf = 134219520;
-      v33 = v8;
+      usageCopy2 = v8;
       v34 = 1024;
-      *v35 = a3;
+      *v35 = usage;
       *&v35[4] = 2048;
       *&v35[6] = width;
       *&v35[14] = 2048;
       *&v35[16] = height;
       *&v35[24] = 1024;
-      *&v35[26] = a4;
+      *&v35[26] = mode;
       LOWORD(v36) = 1024;
       *(&v36 + 2) = synthesis;
       HIWORD(v36) = 1024;
-      v37 = v21;
+      v37 = temporalFiltering;
       _os_log_impl(&dword_24A8C8000, v20, OS_LOG_TYPE_DEFAULT, "Initialized successfully (%p) [usage:%d (%ldx%ld), mode:%d, synthesis mode:%d, temporal filtering:%d].", buf, 0x38u);
     }
 
@@ -104,17 +104,17 @@ LABEL_11:
     v27 = v8->_height;
     v28 = v8->_synthesis;
     v29 = v23;
-    v30 = [(Synthesis *)v28 synthesisMode];
+    synthesisMode = [(Synthesis *)v28 synthesisMode];
     *buf = 134219008;
-    v33 = a3;
+    usageCopy2 = usage;
     v34 = 2048;
     *v35 = v26;
     *&v35[8] = 2048;
     *&v35[10] = v27;
     *&v35[18] = 2048;
-    *&v35[20] = a4;
+    *&v35[20] = mode;
     *&v35[28] = 2048;
-    v36 = v30;
+    v36 = synthesisMode;
     _os_log_error_impl(&dword_24A8C8000, v29, OS_LOG_TYPE_ERROR, "Initialization failed [usage:%ld (%ldx%ld), mode:%ld, synthesis mode:%ld].", buf, 0x34u);
   }
 
@@ -125,25 +125,25 @@ LABEL_15:
   return v22;
 }
 
-- (BOOL)configureSynthesisWithMode:(int64_t)a3
+- (BOOL)configureSynthesisWithMode:(int64_t)mode
 {
   v5 = objc_alloc_init(Synthesis);
   synthesis = self->_synthesis;
   self->_synthesis = v5;
 
-  if (FRCGetNumberOfPixelsForUsage(self->_usage) > 0x7E8FFF && a3 == 0)
+  if (FRCGetNumberOfPixelsForUsage(self->_usage) > 0x7E8FFF && mode == 0)
   {
-    v8 = 1;
+    modeCopy = 1;
   }
 
   else
   {
-    v8 = a3;
+    modeCopy = mode;
   }
 
-  if (v8 > 1)
+  if (modeCopy > 1)
   {
-    if (v8 == 2)
+    if (modeCopy == 2)
     {
       v9 = self->_synthesis;
       v10 = 2;
@@ -151,9 +151,9 @@ LABEL_15:
 
     else
     {
-      if (v8 != 3)
+      if (modeCopy != 3)
       {
-        if (v8 == 4)
+        if (modeCopy == 4)
         {
           [(Synthesis *)self->_synthesis setSynthesisMode:3];
           [(Synthesis *)self->_synthesis setTwoLayerFlowSplatting:1];
@@ -172,14 +172,14 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v8)
+  if (!modeCopy)
   {
     v9 = self->_synthesis;
     v10 = 0;
     goto LABEL_18;
   }
 
-  if (v8 == 1)
+  if (modeCopy == 1)
   {
     [(Synthesis *)self->_synthesis setSynthesisMode:FRCGetNumberOfPixelsForUsage(self->_usage) > 0xE0FFF];
     [(Synthesis *)self->_synthesis setTemporalFiltering:1];
@@ -226,7 +226,7 @@ LABEL_19:
   {
     usage = self->_usage;
     *buf = 134218240;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
     v11 = usage;
     _os_log_impl(&dword_24A8C8000, logger, OS_LOG_TYPE_DEFAULT, "Released (%p) [usage:%ld]", buf, 0x16u);
@@ -238,18 +238,18 @@ LABEL_19:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)synthesizeFrameFromFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 timeScale:(float)a7 destination:(__CVBuffer *)a8
+- (void)synthesizeFrameFromFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow timeScale:(float)scale destination:(__CVBuffer *)destination
 {
-  scaledBackwardFlow = a6;
-  scaledForwardFlow = a5;
-  if ([(FRCFrameSynthesizer *)self checkForwardFlow:a5 backwardFlow:a6])
+  scaledBackwardFlow = backwardFlow;
+  scaledForwardFlow = flow;
+  if ([(FRCFrameSynthesizer *)self checkForwardFlow:flow backwardFlow:backwardFlow])
   {
     if (!self->_resourcePreAllocated)
     {
       [(Synthesis *)self->_synthesis allocateResources];
     }
 
-    [(FRCImageProcessor *)self->_processor preProcessFirstInput:a3 secondInput:a4 waitForCompletion:0];
+    [(FRCImageProcessor *)self->_processor preProcessFirstInput:frame secondInput:secondFrame waitForCompletion:0];
     if (self->_inputFlowScaling)
     {
       [(Synthesis *)self->_synthesis upscaleForwardFlow:scaledForwardFlow backwardFlow:scaledBackwardFlow upscaledForwardFlow:self->_scaledForwardFlow upscaledBackwardFlow:self->_scaledBackwardFlow];
@@ -258,10 +258,10 @@ LABEL_19:
     }
 
     [(Synthesis *)self->_synthesis createFeaturesFromFirstImage:[(FRCImageProcessor *)self->_processor normalizedFirst] secondImage:[(FRCImageProcessor *)self->_processor normalizedSecond] flowForward:scaledForwardFlow flowBackward:scaledBackwardFlow];
-    *&v15 = a7;
+    *&v15 = scale;
     v16 = [(Synthesis *)self->_synthesis synthesizeFrameForTimeScale:0 frameIndex:v15];
-    *&v17 = a7;
-    [(FRCImageProcessor *)self->_processor postProcessNormalizedFrame:v16 output:a8 timeScale:1 waitForCompletion:v17];
+    *&v17 = scale;
+    [(FRCImageProcessor *)self->_processor postProcessNormalizedFrame:v16 output:destination timeScale:1 waitForCompletion:v17];
     CVPixelBufferRelease(v16);
     [(Synthesis *)self->_synthesis releaseFeatures];
     if (!self->_resourcePreAllocated)
@@ -273,7 +273,7 @@ LABEL_19:
   }
 }
 
-- (void)setFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6
+- (void)setFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow
 {
   v22 = *MEMORY[0x277D85DE8];
   logger = self->_logger;
@@ -281,13 +281,13 @@ LABEL_19:
   {
     v12 = logger;
     v14 = 134218752;
-    Width = CVPixelBufferGetWidth(a3);
+    Width = CVPixelBufferGetWidth(frame);
     v16 = 2048;
-    Height = CVPixelBufferGetHeight(a3);
+    Height = CVPixelBufferGetHeight(frame);
     v18 = 2048;
-    v19 = CVPixelBufferGetWidth(a5);
+    v19 = CVPixelBufferGetWidth(flow);
     v20 = 2048;
-    v21 = CVPixelBufferGetHeight(a5);
+    v21 = CVPixelBufferGetHeight(flow);
     _os_log_impl(&dword_24A8C8000, v12, OS_LOG_TYPE_DEFAULT, "New frame pair set: [frame size: %ldx %ld, flow Size : %ld x %ld]", &v14, 0x2Au);
   }
 
@@ -302,29 +302,29 @@ LABEL_19:
   }
 
   [(FRCImageProcessor *)self->_processor setInputRotation:self->_inputRotation];
-  [(FRCImageProcessor *)self->_processor preProcessFirstInput:a3 secondInput:a4 waitForCompletion:0];
-  [(Synthesis *)self->_synthesis createFeaturesFromFirstImage:[(FRCImageProcessor *)self->_processor normalizedFirst] secondImage:[(FRCImageProcessor *)self->_processor normalizedSecond] flowForward:a5 flowBackward:a6];
+  [(FRCImageProcessor *)self->_processor preProcessFirstInput:frame secondInput:secondFrame waitForCompletion:0];
+  [(Synthesis *)self->_synthesis createFeaturesFromFirstImage:[(FRCImageProcessor *)self->_processor normalizedFirst] secondImage:[(FRCImageProcessor *)self->_processor normalizedSecond] flowForward:flow flowBackward:backwardFlow];
   self->_featureCreated = 1;
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)synthesizeFrameForTimeScale:(float)a3 destination:(__CVBuffer *)a4
+- (void)synthesizeFrameForTimeScale:(float)scale destination:(__CVBuffer *)destination
 {
   v14 = *MEMORY[0x277D85DE8];
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134217984;
-    v13 = a3;
+    scaleCopy = scale;
     _os_log_impl(&dword_24A8C8000, logger, OS_LOG_TYPE_DEFAULT, "Synthesize frame [Time Scale: %.2f]", &v12, 0xCu);
   }
 
   if (self->_featureCreated)
   {
-    *&v8 = a3;
+    *&v8 = scale;
     v9 = [(Synthesis *)self->_synthesis synthesizeFrameForTimeScale:0 frameIndex:v8];
-    *&v10 = a3;
-    [(FRCImageProcessor *)self->_processor postProcessNormalizedFrame:v9 output:a4 timeScale:1 waitForCompletion:v10];
+    *&v10 = scale;
+    [(FRCImageProcessor *)self->_processor postProcessNormalizedFrame:v9 output:destination timeScale:1 waitForCompletion:v10];
     CVPixelBufferRelease(v9);
   }
 
@@ -336,17 +336,17 @@ LABEL_19:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)synthesizeFramesFromFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 numberOfFrames:(unint64_t)a7 withError:(id *)a8
+- (id)synthesizeFramesFromFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow numberOfFrames:(unint64_t)frames withError:(id *)error
 {
-  v14 = uniformTimeScales(a7);
-  v15 = [(FRCFrameSynthesizer *)self synthesizeFramesFromFirstFrame:a3 secondFrame:a4 forwardFlow:a5 backwardFlow:a6 timeScales:v14 withError:a8];
+  v14 = uniformTimeScales(frames);
+  v15 = [(FRCFrameSynthesizer *)self synthesizeFramesFromFirstFrame:frame secondFrame:secondFrame forwardFlow:flow backwardFlow:backwardFlow timeScales:v14 withError:error];
 
   return v15;
 }
 
-- (id)synthesizeFramesFromFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)scaledForwardFlow backwardFlow:(__CVBuffer *)scaledBackwardFlow timeScales:(id)a7 withError:(id *)a8
+- (id)synthesizeFramesFromFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame forwardFlow:(__CVBuffer *)scaledForwardFlow backwardFlow:(__CVBuffer *)scaledBackwardFlow timeScales:(id)scales withError:(id *)error
 {
-  v14 = a7;
+  scalesCopy = scales;
   if ([(FRCFrameSynthesizer *)self checkForwardFlow:scaledForwardFlow backwardFlow:scaledBackwardFlow])
   {
     if (!self->_resourcePreAllocated)
@@ -354,7 +354,7 @@ LABEL_19:
       [(Synthesis *)self->_synthesis allocateResources];
     }
 
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(frame);
     if (self->_inputFlowScaling)
     {
       [(Synthesis *)self->_synthesis upscaleForwardFlow:scaledForwardFlow backwardFlow:scaledBackwardFlow upscaledForwardFlow:self->_scaledForwardFlow upscaledBackwardFlow:self->_scaledBackwardFlow];
@@ -362,9 +362,9 @@ LABEL_19:
       scaledBackwardFlow = self->_scaledBackwardFlow;
     }
 
-    [(FRCImageProcessor *)self->_processor preProcessFirstInput:a3 secondInput:a4 waitForCompletion:0];
+    [(FRCImageProcessor *)self->_processor preProcessFirstInput:frame secondInput:secondFrame waitForCompletion:0];
     [(Synthesis *)self->_synthesis createFeaturesFromFirstImage:[(FRCImageProcessor *)self->_processor normalizedFirst] secondImage:[(FRCImageProcessor *)self->_processor normalizedSecond] flowForward:scaledForwardFlow flowBackward:scaledBackwardFlow];
-    v16 = [v14 count];
+    v16 = [scalesCopy count];
     v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
     if (v16)
     {
@@ -375,19 +375,19 @@ LABEL_19:
       v20 = *(MEMORY[0x277CC08F0] + 16);
       do
       {
-        v21 = [v14 objectAtIndexedSubscript:{v19, v35}];
+        v21 = [scalesCopy objectAtIndexedSubscript:{v19, v35}];
         [v21 floatValue];
         v23 = v22;
 
         LODWORD(v24) = v23;
-        v25 = v14;
+        v25 = scalesCopy;
         v26 = [(Synthesis *)self->_synthesis synthesizeFrameForTimeScale:v19 frameIndex:v24];
         v27 = PixelFormatType;
         PixelBuffer = createPixelBuffer(self->_width, self->_height, PixelFormatType, 0);
         LODWORD(v29) = v23;
         [(FRCImageProcessor *)self->_processor postProcessNormalizedFrame:v26 output:PixelBuffer timeScale:v36 == v19 waitForCompletion:v29];
         v30 = v26;
-        v14 = v25;
+        scalesCopy = v25;
         CVPixelBufferRelease(v30);
         v31 = [FRCFrame alloc];
         v37 = v35;
@@ -411,10 +411,10 @@ LABEL_19:
     }
   }
 
-  else if (a8)
+  else if (error)
   {
     [(FRCFrameSynthesizer *)self errorWithErrorCode:-22008];
-    *a8 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
@@ -425,14 +425,14 @@ LABEL_19:
   return v17;
 }
 
-- (BOOL)checkForwardFlow:(__CVBuffer *)a3 backwardFlow:(__CVBuffer *)a4
+- (BOOL)checkForwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  v8 = CVPixelBufferGetPixelFormatType(a4);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(flow);
+  v8 = CVPixelBufferGetPixelFormatType(backwardFlow);
   if (PixelFormatType == 1278226536 && v8 == 1278226536)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(flow);
+    Height = CVPixelBufferGetHeight(flow);
     if (Width == self->_flowWidth >> 1 && Height == self->_flowHeight)
     {
       result = 1;
@@ -450,8 +450,8 @@ LABEL_19:
     v12 = self->_height;
     if (Width == v13 >> 1 && Height == v12)
     {
-      v14 = CVPixelBufferGetWidth(a4);
-      v15 = CVPixelBufferGetHeight(a4);
+      v14 = CVPixelBufferGetWidth(backwardFlow);
+      v15 = CVPixelBufferGetHeight(backwardFlow);
       v17 = self->_width;
       v16 = self->_height;
       if (v14 == v17 >> 1 && v15 == v16)
@@ -476,9 +476,9 @@ LABEL_19:
   return 0;
 }
 
-- (id)errorWithErrorCode:(int64_t)a3
+- (id)errorWithErrorCode:(int64_t)code
 {
-  if (a3 == -22008)
+  if (code == -22008)
   {
     v4 = @"Incorrect optical flow buffers.";
   }
@@ -489,7 +489,7 @@ LABEL_19:
   }
 
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v4 forKey:*MEMORY[0x277CCA450]];
-  v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.FRC" code:a3 userInfo:v5];
+  v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.FRC" code:code userInfo:v5];
 
   return v6;
 }

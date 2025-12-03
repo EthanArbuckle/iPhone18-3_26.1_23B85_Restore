@@ -1,130 +1,130 @@
 @interface _TUIHBoxDynamicArrayLayout
-- (_TUIHBoxDynamicArrayLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
-- (_TUIHBoxItemLayoutSummary)summaryForRange:(_NSRange)a3;
+- (_TUIHBoxDynamicArrayLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller;
+- (_TUIHBoxItemLayoutSummary)summaryForRange:(_NSRange)range;
 - (id).cxx_construct;
-- (void)_updateIndex:(unint64_t)a3 width:(double)a4 height:(double)a5 heightAbovePivot:(double)a6;
-- (void)enumerateChildren:(id)a3;
-- (void)layoutDeleteAtIndex:(unint64_t)a3;
-- (void)layoutInsertAtIndex:(unint64_t)a3;
-- (void)layoutMoveFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (void)layoutUpdateWindowRange:(_NSRange)a3;
+- (void)_updateIndex:(unint64_t)index width:(double)width height:(double)height heightAbovePivot:(double)pivot;
+- (void)enumerateChildren:(id)children;
+- (void)layoutDeleteAtIndex:(unint64_t)index;
+- (void)layoutInsertAtIndex:(unint64_t)index;
+- (void)layoutMoveFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)layoutUpdateWindowRange:(_NSRange)range;
 - (void)updateSummariesFromChildren;
 @end
 
 @implementation _TUIHBoxDynamicArrayLayout
 
-- (_TUIHBoxDynamicArrayLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (_TUIHBoxDynamicArrayLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  parentCopy = parent;
+  controllerCopy = controller;
   v25.receiver = self;
   v25.super_class = _TUIHBoxDynamicArrayLayout;
-  v11 = [(TUILayoutContainer *)&v25 initWithModel:v8 parent:v9 controller:v10];
+  v11 = [(TUILayoutContainer *)&v25 initWithModel:modelCopy parent:parentCopy controller:controllerCopy];
   if (v11)
   {
-    [v8 estimatedWidth];
+    [modelCopy estimatedWidth];
     v23.n128_u64[0] = v12;
-    [v8 estimatedHeight];
+    [modelCopy estimatedHeight];
     v23.n128_u64[1] = v13;
-    [v8 estimatedHeightAbovePivot];
+    [modelCopy estimatedHeightAbovePivot];
     v24 = v14;
-    for (i = [v8 windowCount]; i; --i)
+    for (i = [modelCopy windowCount]; i; --i)
     {
       sub_16C560(v11 + 6, *(v11 + 7), &v23);
     }
 
-    v16 = [(TUILayout *)[_TUIHBoxDynamicSpacerLayout alloc] initWithModel:0 parent:v11 controller:v10];
+    v16 = [(TUILayout *)[_TUIHBoxDynamicSpacerLayout alloc] initWithModel:0 parent:v11 controller:controllerCopy];
     v17 = *(v11 + 11);
     *(v11 + 11) = v16;
 
-    v18 = [(TUILayout *)[_TUIHBoxDynamicSpacerLayout alloc] initWithModel:0 parent:v11 controller:v10];
+    v18 = [(TUILayout *)[_TUIHBoxDynamicSpacerLayout alloc] initWithModel:0 parent:v11 controller:controllerCopy];
     v19 = *(v11 + 12);
     *(v11 + 12) = v18;
 
-    v20 = [v8 windowRange];
-    [v11 layoutUpdateWindowRange:{v20, v21}];
+    windowRange = [modelCopy windowRange];
+    [v11 layoutUpdateWindowRange:{windowRange, v21}];
   }
 
   return v11;
 }
 
-- (void)enumerateChildren:(id)a3
+- (void)enumerateChildren:(id)children
 {
-  v4 = a3;
-  v4[2](v4, self->_preRangeSpacer);
+  childrenCopy = children;
+  childrenCopy[2](childrenCopy, self->_preRangeSpacer);
   v5.receiver = self;
   v5.super_class = _TUIHBoxDynamicArrayLayout;
-  [(TUILayoutContainer *)&v5 enumerateChildren:v4];
-  v4[2](v4, self->_postRangeSpacer);
+  [(TUILayoutContainer *)&v5 enumerateChildren:childrenCopy];
+  childrenCopy[2](childrenCopy, self->_postRangeSpacer);
 }
 
-- (void)_updateIndex:(unint64_t)a3 width:(double)a4 height:(double)a5 heightAbovePivot:(double)a6
+- (void)_updateIndex:(unint64_t)index width:(double)width height:(double)height heightAbovePivot:(double)pivot
 {
-  v6 = &self->_summaries.__begin_[a3];
-  v6->width = a4;
-  v6->height = a5;
-  v6->heightAbovePivot = a6;
+  v6 = &self->_summaries.__begin_[index];
+  v6->width = width;
+  v6->height = height;
+  v6->heightAbovePivot = pivot;
 }
 
-- (void)layoutUpdateWindowRange:(_NSRange)a3
+- (void)layoutUpdateWindowRange:(_NSRange)range
 {
-  self->_windowRange = a3;
-  [(_TUIHBoxDynamicSpacerLayout *)self->_preRangeSpacer setRange:0, a3.location];
+  self->_windowRange = range;
+  [(_TUIHBoxDynamicSpacerLayout *)self->_preRangeSpacer setRange:0, range.location];
   postRangeSpacer = self->_postRangeSpacer;
 
   [(_TUIHBoxDynamicSpacerLayout *)postRangeSpacer setRange:?];
 }
 
-- (void)layoutDeleteAtIndex:(unint64_t)a3
+- (void)layoutDeleteAtIndex:(unint64_t)index
 {
   p_summaries = &self->_summaries;
   end = self->_summaries.__end_;
-  v5 = &self->_summaries.__begin_[a3];
+  v5 = &self->_summaries.__begin_[index];
   v6 = end - &v5[1];
   if (end != &v5[1])
   {
-    memmove(&self->_summaries.__begin_[a3], &v5[1], end - &v5[1]);
+    memmove(&self->_summaries.__begin_[index], &v5[1], end - &v5[1]);
   }
 
   p_summaries->__end_ = (v5 + v6);
 }
 
-- (void)layoutInsertAtIndex:(unint64_t)a3
+- (void)layoutInsertAtIndex:(unint64_t)index
 {
-  v5 = [(TUILayoutContainer *)self model];
-  [v5 estimatedWidth];
+  model = [(TUILayoutContainer *)self model];
+  [model estimatedWidth];
   v11.n128_u64[0] = v6;
 
-  v7 = [(TUILayoutContainer *)self model];
-  [v7 estimatedHeight];
+  model2 = [(TUILayoutContainer *)self model];
+  [model2 estimatedHeight];
   v11.n128_u64[1] = v8;
 
-  v9 = [(TUILayoutContainer *)self model];
-  [v9 estimatedHeightAbovePivot];
+  model3 = [(TUILayoutContainer *)self model];
+  [model3 estimatedHeightAbovePivot];
   v12 = v10;
 
-  sub_16C560(&self->_summaries.__begin_, &self->_summaries.__begin_[a3], &v11);
+  sub_16C560(&self->_summaries.__begin_, &self->_summaries.__begin_[index], &v11);
 }
 
-- (void)layoutMoveFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)layoutMoveFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
   p_summaries = &self->_summaries;
   begin = self->_summaries.__begin_;
   end = self->_summaries.__end_;
-  v8 = &begin[a3];
+  v8 = &begin[index];
   v9 = *&v8->width;
   heightAbovePivot = v8->heightAbovePivot;
   v11 = v9;
   v10 = (end - &v8[1]);
   if (end != &v8[1])
   {
-    memmove(&begin[a3], &v8[1], end - &v8[1]);
+    memmove(&begin[index], &v8[1], end - &v8[1]);
     begin = p_summaries->__begin_;
   }
 
   p_summaries->__end_ = &v10[v8];
-  sub_16C560(p_summaries, &begin[a4], &v11);
+  sub_16C560(p_summaries, &begin[toIndex], &v11);
 }
 
 - (void)updateSummariesFromChildren
@@ -190,12 +190,12 @@
   }
 }
 
-- (_TUIHBoxItemLayoutSummary)summaryForRange:(_NSRange)a3
+- (_TUIHBoxItemLayoutSummary)summaryForRange:(_NSRange)range
 {
-  if (a3.length)
+  if (range.length)
   {
-    v3 = &self->_summaries.__begin_[a3.location];
-    v4 = &v3[a3.length];
+    v3 = &self->_summaries.__begin_[range.location];
+    v4 = &v3[range.length];
     v5 = 0.0;
     v6 = 0.0;
     v7 = 0.0;

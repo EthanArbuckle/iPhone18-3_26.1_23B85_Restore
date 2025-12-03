@@ -26,105 +26,105 @@
   v3 = objc_alloc(MEMORY[0x1E696AD60]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WKWebsiteDataRecord *)self displayName];
-  v7 = [(WKWebsiteDataRecord *)self dataTypes];
+  displayName = [(WKWebsiteDataRecord *)self displayName];
+  dataTypes = [(WKWebsiteDataRecord *)self dataTypes];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([(NSSet *)v7 containsObject:@"WKWebsiteDataTypeDiskCache"])
+  if ([(NSSet *)dataTypes containsObject:@"WKWebsiteDataTypeDiskCache"])
   {
     [v8 addObject:@"Disk Cache"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"WKWebsiteDataTypeFetchCache"])
+  if ([(NSSet *)dataTypes containsObject:@"WKWebsiteDataTypeFetchCache"])
   {
     [v8 addObject:@"Fetch Cache"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"WKWebsiteDataTypeMemoryCache"])
+  if ([(NSSet *)dataTypes containsObject:@"WKWebsiteDataTypeMemoryCache"])
   {
     [v8 addObject:@"Memory Cache"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"WKWebsiteDataTypeOfflineWebApplicationCache"])
+  if ([(NSSet *)dataTypes containsObject:@"WKWebsiteDataTypeOfflineWebApplicationCache"])
   {
     [v8 addObject:@"Offline Web Application Cache"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"WKWebsiteDataTypeCookies"])
+  if ([(NSSet *)dataTypes containsObject:@"WKWebsiteDataTypeCookies"])
   {
     [v8 addObject:@"Cookies"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"WKWebsiteDataTypeSessionStorage"])
+  if ([(NSSet *)dataTypes containsObject:@"WKWebsiteDataTypeSessionStorage"])
   {
     [v8 addObject:@"Session Storage"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"WKWebsiteDataTypeLocalStorage"])
+  if ([(NSSet *)dataTypes containsObject:@"WKWebsiteDataTypeLocalStorage"])
   {
     [v8 addObject:@"Local Storage"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"WKWebsiteDataTypeWebSQLDatabases"])
+  if ([(NSSet *)dataTypes containsObject:@"WKWebsiteDataTypeWebSQLDatabases"])
   {
     [v8 addObject:@"Web SQL"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"WKWebsiteDataTypeIndexedDBDatabases"])
+  if ([(NSSet *)dataTypes containsObject:@"WKWebsiteDataTypeIndexedDBDatabases"])
   {
     [v8 addObject:@"IndexedDB"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"WKWebsiteDataTypeServiceWorkerRegistrations"])
+  if ([(NSSet *)dataTypes containsObject:@"WKWebsiteDataTypeServiceWorkerRegistrations"])
   {
     [v8 addObject:@"Service Worker Registrations"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"_WKWebsiteDataTypeHSTSCache"])
+  if ([(NSSet *)dataTypes containsObject:@"_WKWebsiteDataTypeHSTSCache"])
   {
     [v8 addObject:@"HSTS Cache"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"WKWebsiteDataTypeMediaKeys"])
+  if ([(NSSet *)dataTypes containsObject:@"WKWebsiteDataTypeMediaKeys"])
   {
     [v8 addObject:@"Media Keys"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"WKWebsiteDataTypeHashSalt"])
+  if ([(NSSet *)dataTypes containsObject:@"WKWebsiteDataTypeHashSalt"])
   {
     [v8 addObject:@"Hash Salt"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"WKWebsiteDataTypeSearchFieldRecentSearches"])
+  if ([(NSSet *)dataTypes containsObject:@"WKWebsiteDataTypeSearchFieldRecentSearches"])
   {
     [v8 addObject:@"Search Field Recent Searches"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"WKWebsiteDataTypeFileSystem"])
+  if ([(NSSet *)dataTypes containsObject:@"WKWebsiteDataTypeFileSystem"])
   {
     [v8 addObject:@"File System"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"_WKWebsiteDataTypeResourceLoadStatistics"])
+  if ([(NSSet *)dataTypes containsObject:@"_WKWebsiteDataTypeResourceLoadStatistics"])
   {
     [v8 addObject:@"Resource Load Statistics"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"_WKWebsiteDataTypeCredentials"])
+  if ([(NSSet *)dataTypes containsObject:@"_WKWebsiteDataTypeCredentials"])
   {
     [v8 addObject:@"Credentials"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"_WKWebsiteDataTypeAdClickAttributions"]|| [(NSSet *)v7 containsObject:@"_WKWebsiteDataTypePrivateClickMeasurements"])
+  if ([(NSSet *)dataTypes containsObject:@"_WKWebsiteDataTypeAdClickAttributions"]|| [(NSSet *)dataTypes containsObject:@"_WKWebsiteDataTypePrivateClickMeasurements"])
   {
     [v8 addObject:@"Private Click Measurements"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"_WKWebsiteDataTypeAlternativeServices"])
+  if ([(NSSet *)dataTypes containsObject:@"_WKWebsiteDataTypeAlternativeServices"])
   {
     [v8 addObject:@"Alternative Services"];
   }
 
-  if ([(NSSet *)v7 containsObject:@"WKWebsiteDataTypeScreenTime"])
+  if ([(NSSet *)dataTypes containsObject:@"WKWebsiteDataTypeScreenTime"])
   {
     [v8 addObject:@"Screen Time"];
   }
@@ -134,11 +134,11 @@
   {
   }
 
-  v10 = [v3 initWithFormat:@"<%@: %p; displayName = %@; dataTypes = { %@ }", v5, self, v6, v9];
-  v11 = [(WKWebsiteDataRecord *)self _dataSize];
-  if (v11)
+  v10 = [v3 initWithFormat:@"<%@: %p; displayName = %@; dataTypes = { %@ }", v5, self, displayName, v9];
+  _dataSize = [(WKWebsiteDataRecord *)self _dataSize];
+  if (_dataSize)
   {
-    [v10 appendFormat:@"; _dataSize = { %llu bytes }", -[_WKWebsiteDataSize totalSize](v11, "totalSize")];
+    [v10 appendFormat:@"; _dataSize = { %llu bytes }", -[_WKWebsiteDataSize totalSize](_dataSize, "totalSize")];
   }
 
   [v10 appendString:@">"];

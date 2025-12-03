@@ -1,45 +1,45 @@
 @interface TVLockScreenSceneDelegate
 - (TVLockScreenRemoteDelegate)lockScreenRemoteDelegate;
 - (id)_mainViewController;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
 @end
 
 @implementation TVLockScreenSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   v11 = _TVRUIServiceAppLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 description];
+    v12 = [sceneCopy description];
     v26 = 138412802;
     v27 = v12;
     v28 = 2112;
-    v29 = v9;
+    v29 = sessionCopy;
     v30 = 2112;
-    v31 = v10;
+    v31 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[TVLockScreenSceneDelegate] -scene:willConnectToSession:withOptions: %@, %@, %@", &v26, 0x20u);
   }
 
-  v13 = v8;
+  v13 = sceneCopy;
   v14 = +[UIApplication sharedApplication];
-  v15 = [v14 delegate];
-  objc_storeWeak(&self->_lockScreenRemoteDelegate, v15);
+  delegate = [v14 delegate];
+  objc_storeWeak(&self->_lockScreenRemoteDelegate, delegate);
 
   v16 = [[TVRemoteWindow alloc] initWithWindowScene:v13];
   window = self->_window;
   self->_window = &v16->super;
 
-  v18 = [(TVLockScreenSceneDelegate *)self _mainViewController];
+  _mainViewController = [(TVLockScreenSceneDelegate *)self _mainViewController];
   mainViewController = self->_mainViewController;
-  self->_mainViewController = v18;
+  self->_mainViewController = _mainViewController;
 
   v20 = self->_mainViewController;
   if (!v20)
@@ -52,15 +52,15 @@
   }
 
   [(TVRemoteViewController *)v20 willEnterLockScreenScene];
-  v23 = [(TVLockScreenSceneDelegate *)self mainViewController];
-  v24 = [(TVLockScreenSceneDelegate *)self window];
-  [v24 setRootViewController:v23];
+  mainViewController = [(TVLockScreenSceneDelegate *)self mainViewController];
+  window = [(TVLockScreenSceneDelegate *)self window];
+  [window setRootViewController:mainViewController];
 
-  v25 = [(TVLockScreenSceneDelegate *)self window];
-  [v25 makeKeyAndVisible];
+  window2 = [(TVLockScreenSceneDelegate *)self window];
+  [window2 makeKeyAndVisible];
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   v4 = _TVRUIServiceAppLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -70,18 +70,18 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s", &v9, 0xCu);
   }
 
-  v5 = [(TVLockScreenSceneDelegate *)self mainViewController];
-  v6 = [v5 isConfigured];
+  mainViewController = [(TVLockScreenSceneDelegate *)self mainViewController];
+  isConfigured = [mainViewController isConfigured];
 
-  if ((v6 & 1) == 0)
+  if ((isConfigured & 1) == 0)
   {
     v7 = [[TVRViewServiceConfigContext alloc] _initWithLaunchContext:14];
-    v8 = [(TVLockScreenSceneDelegate *)self mainViewController];
-    [v8 configureWithContext:v7];
+    mainViewController2 = [(TVLockScreenSceneDelegate *)self mainViewController];
+    [mainViewController2 configureWithContext:v7];
   }
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   v4 = _TVRUIServiceAppLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -91,11 +91,11 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
   }
 
-  v5 = [(TVLockScreenSceneDelegate *)self mainViewController];
-  [v5 willEnterLockScreenScene];
+  mainViewController = [(TVLockScreenSceneDelegate *)self mainViewController];
+  [mainViewController willEnterLockScreenScene];
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
   v4 = _TVRUIServiceAppLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -105,11 +105,11 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
   }
 
-  v5 = [(TVLockScreenSceneDelegate *)self mainViewController];
-  [v5 willExitLockScreenScene];
+  mainViewController = [(TVLockScreenSceneDelegate *)self mainViewController];
+  [mainViewController willExitLockScreenScene];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v4 = _TVRUIServiceAppLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -119,40 +119,40 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s ", &v13, 0xCu);
   }
 
-  v5 = [(TVLockScreenSceneDelegate *)self window];
-  [v5 setRootViewController:0];
+  window = [(TVLockScreenSceneDelegate *)self window];
+  [window setRootViewController:0];
 
   window = self->_window;
   self->_window = 0;
 
-  v7 = [(TVLockScreenSceneDelegate *)self mainViewController];
-  [v7 willExitLockScreenScene];
+  mainViewController = [(TVLockScreenSceneDelegate *)self mainViewController];
+  [mainViewController willExitLockScreenScene];
 
-  v8 = [(TVLockScreenSceneDelegate *)self mainViewController];
-  [v8 dismiss];
+  mainViewController2 = [(TVLockScreenSceneDelegate *)self mainViewController];
+  [mainViewController2 dismiss];
 
   mainViewController = self->_mainViewController;
   self->_mainViewController = 0;
 
-  v10 = [(TVLockScreenSceneDelegate *)self lockScreenRemoteDelegate];
+  lockScreenRemoteDelegate = [(TVLockScreenSceneDelegate *)self lockScreenRemoteDelegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(TVLockScreenSceneDelegate *)self lockScreenRemoteDelegate];
-    [v12 lockScreenSceneDelegateSceneDidDisconnect:self];
+    lockScreenRemoteDelegate2 = [(TVLockScreenSceneDelegate *)self lockScreenRemoteDelegate];
+    [lockScreenRemoteDelegate2 lockScreenSceneDelegateSceneDidDisconnect:self];
   }
 }
 
 - (id)_mainViewController
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
 
-  v4 = [v3 defaultSceneDelegate];
-  v5 = [v4 mainViewController];
+  defaultSceneDelegate = [delegate defaultSceneDelegate];
+  mainViewController = [defaultSceneDelegate mainViewController];
 
-  return v5;
+  return mainViewController;
 }
 
 - (TVLockScreenRemoteDelegate)lockScreenRemoteDelegate

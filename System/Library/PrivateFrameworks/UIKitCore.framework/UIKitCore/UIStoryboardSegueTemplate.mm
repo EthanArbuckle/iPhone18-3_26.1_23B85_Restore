@@ -2,15 +2,15 @@
 - (NSString)customPrepareForChildViewControllerSelectorName;
 - (SEL)prepareForChildViewControllerSelector;
 - (UIStoryboardSegueTemplate)init;
-- (UIStoryboardSegueTemplate)initWithCoder:(id)a3;
+- (UIStoryboardSegueTemplate)initWithCoder:(id)coder;
 - (UIViewController)viewController;
-- (id)_perform:(id)a3;
-- (id)_performWithDestinationViewController:(id)a3 sender:(id)a4;
-- (id)instantiateOrFindDestinationViewControllerWithSender:(id)a3;
-- (id)perform:(id)a3;
-- (id)segueWithDestinationViewController:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCustomPrepareForChildViewControllerSelectorName:(id)a3;
+- (id)_perform:(id)_perform;
+- (id)_performWithDestinationViewController:(id)controller sender:(id)sender;
+- (id)instantiateOrFindDestinationViewControllerWithSender:(id)sender;
+- (id)perform:(id)perform;
+- (id)segueWithDestinationViewController:(id)controller;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCustomPrepareForChildViewControllerSelectorName:(id)name;
 @end
 
 @implementation UIStoryboardSegueTemplate
@@ -29,33 +29,33 @@
   return result;
 }
 
-- (UIStoryboardSegueTemplate)initWithCoder:(id)a3
+- (UIStoryboardSegueTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = UIStoryboardSegueTemplate;
   v5 = [(UIStoryboardSegueTemplate *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UIIdentifier"];
+    v6 = [coderCopy decodeObjectForKey:@"UIIdentifier"];
     v7 = [v6 copy];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 decodeObjectForKey:@"UISegueClassName"];
+    v9 = [coderCopy decodeObjectForKey:@"UISegueClassName"];
     v10 = [v9 copy];
     segueClassName = v5->_segueClassName;
     v5->_segueClassName = v10;
 
-    v12 = [v4 decodeObjectForKey:@"UIDestinationViewControllerIdentifier"];
+    v12 = [coderCopy decodeObjectForKey:@"UIDestinationViewControllerIdentifier"];
     v13 = [v12 copy];
     destinationViewControllerIdentifier = v5->_destinationViewControllerIdentifier;
     v5->_destinationViewControllerIdentifier = v13;
 
-    v5->_performOnViewLoad = [v4 decodeBoolForKey:@"UIPerformOnViewLoad"];
-    if ([v4 containsValueForKey:@"UIAnimates"])
+    v5->_performOnViewLoad = [coderCopy decodeBoolForKey:@"UIPerformOnViewLoad"];
+    if ([coderCopy containsValueForKey:@"UIAnimates"])
     {
-      v15 = [v4 decodeBoolForKey:@"UIAnimates"];
+      v15 = [coderCopy decodeBoolForKey:@"UIAnimates"];
     }
 
     else
@@ -64,7 +64,7 @@
     }
 
     v5->_animates = v15;
-    v16 = [v4 decodeObjectForKey:@"UICustomPrepareForChildViewControllersSegueName"];
+    v16 = [coderCopy decodeObjectForKey:@"UICustomPrepareForChildViewControllersSegueName"];
     v17 = v16;
     if (v16 && (v18 = NSSelectorFromString(v16)) != 0)
     {
@@ -82,25 +82,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   identifier = self->_identifier;
-  v9 = v4;
+  v9 = coderCopy;
   if (identifier)
   {
-    [v4 encodeObject:identifier forKey:@"UIIdentifier"];
-    v4 = v9;
+    [coderCopy encodeObject:identifier forKey:@"UIIdentifier"];
+    coderCopy = v9;
   }
 
   segueClassName = self->_segueClassName;
   if (segueClassName)
   {
-    [v4 encodeObject:segueClassName forKey:@"UISegueClassName"];
-    v4 = v9;
+    [coderCopy encodeObject:segueClassName forKey:@"UISegueClassName"];
+    coderCopy = v9;
   }
 
-  [v4 encodeObject:self->_destinationViewControllerIdentifier forKey:@"UIDestinationViewControllerIdentifier"];
+  [coderCopy encodeObject:self->_destinationViewControllerIdentifier forKey:@"UIDestinationViewControllerIdentifier"];
   if (self->_performOnViewLoad)
   {
     [v9 encodeBool:1 forKey:@"UIPerformOnViewLoad"];
@@ -133,10 +133,10 @@
   }
 }
 
-- (void)setCustomPrepareForChildViewControllerSelectorName:(id)a3
+- (void)setCustomPrepareForChildViewControllerSelectorName:(id)name
 {
   p_prepareForChildViewControllerSelector = &self->_prepareForChildViewControllerSelector;
-  v4 = NSSelectorFromString(a3);
+  v4 = NSSelectorFromString(name);
   if (v4)
   {
     v5 = v4;
@@ -163,27 +163,27 @@
   }
 }
 
-- (id)instantiateOrFindDestinationViewControllerWithSender:(id)a3
+- (id)instantiateOrFindDestinationViewControllerWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = [(UIStoryboardSegueTemplate *)self viewController];
-  v6 = [v5 storyboard];
-  v7 = [v6 _instantiateViewControllerWithIdentifier:self->_destinationViewControllerIdentifier creator:0 storyboardSegueTemplate:self sender:v4];
+  senderCopy = sender;
+  viewController = [(UIStoryboardSegueTemplate *)self viewController];
+  storyboard = [viewController storyboard];
+  v7 = [storyboard _instantiateViewControllerWithIdentifier:self->_destinationViewControllerIdentifier creator:0 storyboardSegueTemplate:self sender:senderCopy];
 
   return v7;
 }
 
-- (id)segueWithDestinationViewController:(id)a3
+- (id)segueWithDestinationViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   segueClassName = self->_segueClassName;
   if (segueClassName)
   {
     v7 = NSClassFromString(segueClassName);
     if (!v7)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"UIStoryboardSegueTemplate.m" lineNumber:104 description:{@"Could not create a segue of class '%@'", 0}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIStoryboardSegueTemplate.m" lineNumber:104 description:{@"Could not create a segue of class '%@'", 0}];
 
       v7 = 0;
     }
@@ -197,7 +197,7 @@
   v9 = [v7 alloc];
   identifier = self->_identifier;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v12 = [v9 initWithIdentifier:identifier source:WeakRetained destination:v5];
+  v12 = [v9 initWithIdentifier:identifier source:WeakRetained destination:controllerCopy];
 
   v13 = [(UIStoryboardSegueTemplate *)self newDefaultPrepareHandlerForSegue:v12];
   [v12 setPrepareHandler:v13];
@@ -207,29 +207,29 @@
   return v12;
 }
 
-- (id)_perform:(id)a3
+- (id)_perform:(id)_perform
 {
-  v4 = a3;
-  v5 = [(UIStoryboardSegueTemplate *)self instantiateOrFindDestinationViewControllerWithSender:v4];
-  v6 = [(UIStoryboardSegueTemplate *)self _performWithDestinationViewController:v5 sender:v4];
+  _performCopy = _perform;
+  v5 = [(UIStoryboardSegueTemplate *)self instantiateOrFindDestinationViewControllerWithSender:_performCopy];
+  v6 = [(UIStoryboardSegueTemplate *)self _performWithDestinationViewController:v5 sender:_performCopy];
 
   return v6;
 }
 
-- (id)_performWithDestinationViewController:(id)a3 sender:(id)a4
+- (id)_performWithDestinationViewController:(id)controller sender:(id)sender
 {
-  v7 = a4;
-  v8 = [(UIStoryboardSegueTemplate *)self segueWithDestinationViewController:a3];
+  senderCopy = sender;
+  v8 = [(UIStoryboardSegueTemplate *)self segueWithDestinationViewController:controller];
   if (!v8)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UIStoryboardSegueTemplate.m" lineNumber:126 description:@"Failed to create a segue"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIStoryboardSegueTemplate.m" lineNumber:126 description:@"Failed to create a segue"];
   }
 
-  [v8 setSender:v7];
+  [v8 setSender:senderCopy];
   [v8 _prepare];
-  v9 = [(UIStoryboardSegueTemplate *)self viewController];
-  [v9 prepareForSegue:v8 sender:v7];
+  viewController = [(UIStoryboardSegueTemplate *)self viewController];
+  [viewController prepareForSegue:v8 sender:senderCopy];
 
   v10 = +[UIView areAnimationsEnabled];
   [UIView setAnimationsEnabled:[(UIStoryboardSegueTemplate *)self animates]];
@@ -240,16 +240,16 @@
   return v8;
 }
 
-- (id)perform:(id)a3
+- (id)perform:(id)perform
 {
-  v4 = a3;
-  v5 = [(UIStoryboardSegueTemplate *)self viewController];
-  v6 = [(UIStoryboardSegueTemplate *)self identifier];
-  v7 = [v5 shouldPerformSegueWithIdentifier:v6 sender:v4];
+  performCopy = perform;
+  viewController = [(UIStoryboardSegueTemplate *)self viewController];
+  identifier = [(UIStoryboardSegueTemplate *)self identifier];
+  v7 = [viewController shouldPerformSegueWithIdentifier:identifier sender:performCopy];
 
   if (v7)
   {
-    v8 = [(UIStoryboardSegueTemplate *)self _perform:v4];
+    v8 = [(UIStoryboardSegueTemplate *)self _perform:performCopy];
   }
 
   else

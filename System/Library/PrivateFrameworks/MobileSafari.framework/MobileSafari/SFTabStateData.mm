@@ -1,65 +1,65 @@
 @interface SFTabStateData
-+ (id)uncompressedDataWithRawData:(id)a3 uncompressedSize:(unint64_t)a4;
++ (id)uncompressedDataWithRawData:(id)data uncompressedSize:(unint64_t)size;
 - (NSData)compressedSessionStateData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFTabStateData)initWithDictionaryRepresentation:(id)a3;
-- (SFTabStateData)initWithSQLiteRow:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFTabStateData)initWithDictionaryRepresentation:(id)representation;
+- (SFTabStateData)initWithSQLiteRow:(id)row;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_uncompressSessionStateDataIfNeeded;
 @end
 
 @implementation SFTabStateData
 
-- (SFTabStateData)initWithDictionaryRepresentation:(id)a3
+- (SFTabStateData)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v32.receiver = self;
   v32.super_class = SFTabStateData;
   v5 = [(SFTabStateData *)&v32 init];
   if (v5)
   {
-    v6 = [v4 safari_stringForKey:@"SafariStateDocumentUUID"];
+    v6 = [representationCopy safari_stringForKey:@"SafariStateDocumentUUID"];
     UUIDString = v5->_UUIDString;
     v5->_UUIDString = v6;
 
-    v8 = [v4 safari_stringForKey:@"SafariStateDocumentTitle"];
+    v8 = [representationCopy safari_stringForKey:@"SafariStateDocumentTitle"];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 safari_stringForKey:@"SafariStateDocumentURL"];
+    v10 = [representationCopy safari_stringForKey:@"SafariStateDocumentURL"];
     url = v5->_url;
     v5->_url = v10;
 
-    v12 = [v4 safari_stringForKey:@"SafariStateDocumentUserVisibleURL"];
+    v12 = [representationCopy safari_stringForKey:@"SafariStateDocumentUserVisibleURL"];
     userVisibleURL = v5->_userVisibleURL;
     v5->_userVisibleURL = v12;
 
-    v14 = [v4 safari_numberForKey:@"SafariStateDocumentOrderIndex"];
+    v14 = [representationCopy safari_numberForKey:@"SafariStateDocumentOrderIndex"];
     v5->_orderIndex = [v14 integerValue];
 
-    v15 = [v4 safari_numberForKey:@"SafariStateDocumentLastViewedTime"];
+    v15 = [representationCopy safari_numberForKey:@"SafariStateDocumentLastViewedTime"];
     [v15 doubleValue];
     v5->_lastViewedTime = v16;
 
-    v17 = [v4 safari_numberForKey:@"SafariStateDocumentBookmark"];
+    v17 = [representationCopy safari_numberForKey:@"SafariStateDocumentBookmark"];
     v5->_readingListBookmarkID = [v17 intValue];
 
-    v5->_wasOpenedFromLink = [v4 safari_BOOLForKey:@"SafariStateDocumentWasOpenedFromLink"];
-    v5->_showingReader = [v4 safari_BOOLForKey:@"SafariStateDocumentShouldRestoreReader"];
-    v18 = [v4 safari_numberForKey:@"SafariStateDocumentReaderViewTopScrollOffset"];
+    v5->_wasOpenedFromLink = [representationCopy safari_BOOLForKey:@"SafariStateDocumentWasOpenedFromLink"];
+    v5->_showingReader = [representationCopy safari_BOOLForKey:@"SafariStateDocumentShouldRestoreReader"];
+    v18 = [representationCopy safari_numberForKey:@"SafariStateDocumentReaderViewTopScrollOffset"];
     v5->_readerViewTopScrollOffset = [v18 integerValue];
 
-    v5->_privateBrowsing = [v4 safari_BOOLForKey:@"SafariStateDocumentUsesPrivateBrowsingStyle"];
-    v5->_displayingStandaloneImage = [v4 safari_BOOLForKey:@"SafariStateDocumentDisplayingStandaloneImage"];
-    v19 = [v4 safari_dataForKey:@"SafariStateDocumentSessionState"];
+    v5->_privateBrowsing = [representationCopy safari_BOOLForKey:@"SafariStateDocumentUsesPrivateBrowsingStyle"];
+    v5->_displayingStandaloneImage = [representationCopy safari_BOOLForKey:@"SafariStateDocumentDisplayingStandaloneImage"];
+    v19 = [representationCopy safari_dataForKey:@"SafariStateDocumentSessionState"];
     sessionStateData = v5->_sessionStateData;
     v5->_sessionStateData = v19;
 
-    v21 = [v4 safari_stringForKey:@"SafariStateDocumentOwningBrowserWindowUUID"];
+    v21 = [representationCopy safari_stringForKey:@"SafariStateDocumentOwningBrowserWindowUUID"];
     owningBrowserWindowUUIDString = v5->_owningBrowserWindowUUIDString;
     v5->_owningBrowserWindowUUIDString = v21;
 
-    v23 = [v4 safari_stringForKey:@"SafariStateDocumentTabGroupUUID"];
+    v23 = [representationCopy safari_stringForKey:@"SafariStateDocumentTabGroupUUID"];
     v24 = v23;
     if (v23)
     {
@@ -73,7 +73,7 @@
 
     objc_storeStrong(&v5->_tabGroupUUID, v25);
 
-    v26 = [v4 safari_stringForKey:@"SafariStateDocumentProfileUUID"];
+    v26 = [representationCopy safari_stringForKey:@"SafariStateDocumentProfileUUID"];
     v27 = v26;
     if (v26)
     {
@@ -102,48 +102,48 @@
   return v5;
 }
 
-- (SFTabStateData)initWithSQLiteRow:(id)a3
+- (SFTabStateData)initWithSQLiteRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v23.receiver = self;
   v23.super_class = SFTabStateData;
   v5 = [(SFTabStateData *)&v23 init];
   if (v5)
   {
-    v6 = [v4 stringAtIndex:1];
+    v6 = [rowCopy stringAtIndex:1];
     UUIDString = v5->_UUIDString;
     v5->_UUIDString = v6;
 
-    v8 = [v4 stringAtIndex:2];
+    v8 = [rowCopy stringAtIndex:2];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 stringAtIndex:3];
+    v10 = [rowCopy stringAtIndex:3];
     url = v5->_url;
     v5->_url = v10;
 
-    v12 = [v4 stringAtIndex:4];
+    v12 = [rowCopy stringAtIndex:4];
     userVisibleURL = v5->_userVisibleURL;
     v5->_userVisibleURL = v12;
 
-    v5->_orderIndex = [v4 intAtIndex:5];
-    [v4 doubleAtIndex:6];
+    v5->_orderIndex = [rowCopy intAtIndex:5];
+    [rowCopy doubleAtIndex:6];
     v5->_lastViewedTime = v14;
-    v5->_readingListBookmarkID = [v4 intAtIndex:7];
-    v5->_wasOpenedFromLink = [v4 intAtIndex:8] != 0;
-    v5->_showingReader = [v4 BOOLAtIndex:9];
-    v5->_readerViewTopScrollOffset = [v4 intAtIndex:10];
-    v5->_privateBrowsing = [v4 BOOLAtIndex:11];
-    v5->_displayingStandaloneImage = [v4 BOOLAtIndex:12];
-    v15 = [v4 stringAtIndex:13];
+    v5->_readingListBookmarkID = [rowCopy intAtIndex:7];
+    v5->_wasOpenedFromLink = [rowCopy intAtIndex:8] != 0;
+    v5->_showingReader = [rowCopy BOOLAtIndex:9];
+    v5->_readerViewTopScrollOffset = [rowCopy intAtIndex:10];
+    v5->_privateBrowsing = [rowCopy BOOLAtIndex:11];
+    v5->_displayingStandaloneImage = [rowCopy BOOLAtIndex:12];
+    v15 = [rowCopy stringAtIndex:13];
     owningBrowserWindowUUIDString = v5->_owningBrowserWindowUUIDString;
     v5->_owningBrowserWindowUUIDString = v15;
 
-    v17 = [v4 stringAtIndex:15];
+    v17 = [rowCopy stringAtIndex:15];
     tabGroupUUID = v5->_tabGroupUUID;
     v5->_tabGroupUUID = v17;
 
-    v19 = [v4 stringAtIndex:16];
+    v19 = [rowCopy stringAtIndex:16];
     profileIdentifier = v5->_profileIdentifier;
     v5->_profileIdentifier = v19;
 
@@ -193,14 +193,14 @@ LABEL_7:
   }
 }
 
-+ (id)uncompressedDataWithRawData:(id)a3 uncompressedSize:(unint64_t)a4
++ (id)uncompressedDataWithRawData:(id)data uncompressedSize:(unint64_t)size
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 && [v5 length] && objc_msgSend(v6, "length") != a4)
+  dataCopy = data;
+  v6 = dataCopy;
+  if (size && [dataCopy length] && objc_msgSend(v6, "length") != size)
   {
-    v9 = malloc_type_malloc(a4, 0x100004077774924uLL);
-    v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:v9 length:{compression_decode_buffer(v9, a4, objc_msgSend(v6, "bytes"), objc_msgSend(v6, "length"), 0, COMPRESSION_LZ4)}];
+    v9 = malloc_type_malloc(size, 0x100004077774924uLL);
+    v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:v9 length:{compression_decode_buffer(v9, size, objc_msgSend(v6, "bytes"), objc_msgSend(v6, "length"), 0, COMPRESSION_LZ4)}];
     v7 = v6;
     v6 = v10;
   }
@@ -252,10 +252,10 @@ LABEL_7:
   v29 = v11;
   v20[12] = @"SafariStateDocumentSessionState";
   sessionStateData = self->_sessionStateData;
-  v13 = sessionStateData;
+  data = sessionStateData;
   if (!sessionStateData)
   {
-    v13 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
   }
 
   owningBrowserWindowUUIDString = self->_owningBrowserWindowUUIDString;
@@ -264,7 +264,7 @@ LABEL_7:
     owningBrowserWindowUUIDString = &stru_1EFF36230;
   }
 
-  v30 = v13;
+  v30 = data;
   v31 = owningBrowserWindowUUIDString;
   v20[13] = @"SafariStateDocumentOwningBrowserWindowUUID";
   v20[14] = @"SafariStateDocumentTabGroupUUID";
@@ -278,11 +278,11 @@ LABEL_7:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [SFTabStateData allocWithZone:a3];
-  v5 = [(SFTabStateData *)self dictionaryRepresentation];
-  v6 = [(SFTabStateData *)v4 initWithDictionaryRepresentation:v5];
+  v4 = [SFTabStateData allocWithZone:zone];
+  dictionaryRepresentation = [(SFTabStateData *)self dictionaryRepresentation];
+  v6 = [(SFTabStateData *)v4 initWithDictionaryRepresentation:dictionaryRepresentation];
 
   return v6;
 }

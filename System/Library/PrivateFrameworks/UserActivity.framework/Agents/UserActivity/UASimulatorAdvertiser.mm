@@ -1,28 +1,28 @@
 @interface UASimulatorAdvertiser
 - (BOOL)active;
 - (BOOL)advertising;
-- (BOOL)updateItem:(id)a3;
-- (UASimulatorAdvertiser)initWithSimulator:(id)a3;
+- (BOOL)updateItem:(id)item;
+- (UASimulatorAdvertiser)initWithSimulator:(id)simulator;
 - (id)advertisableItems;
 - (id)pairedDevices;
 - (id)statusString;
-- (void)setAdvertisableItems:(id)a3;
+- (void)setAdvertisableItems:(id)items;
 @end
 
 @implementation UASimulatorAdvertiser
 
-- (UASimulatorAdvertiser)initWithSimulator:(id)a3
+- (UASimulatorAdvertiser)initWithSimulator:(id)simulator
 {
-  v5 = a3;
-  v6 = [v5 controller];
-  v7 = [v6 manager];
+  simulatorCopy = simulator;
+  controller = [simulatorCopy controller];
+  manager = [controller manager];
   v12.receiver = self;
   v12.super_class = UASimulatorAdvertiser;
-  v8 = [(UAAdvertiser *)&v12 initWithManager:v7 name:@"SimAdvertiser"];
+  v8 = [(UAAdvertiser *)&v12 initWithManager:manager name:@"SimAdvertiser"];
 
   if (v8)
   {
-    objc_storeStrong((v8 + 57), a3);
+    objc_storeStrong((v8 + 57), simulator);
     v9 = +[NSMutableArray array];
     v10 = *(v8 + 49);
     *(v8 + 49) = v9;
@@ -33,35 +33,35 @@
 
 - (id)advertisableItems
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [*(&v2->super._shouldAdvertiseAutoPullActivityList + 1) copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [*(&selfCopy->super._shouldAdvertiseAutoPullActivityList + 1) copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setAdvertisableItems:(id)a3
+- (void)setAdvertisableItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = sub_100001A30(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 description];
+    v6 = [itemsCopy description];
     v7 = sub_100009684(v6);
     *buf = 138477827;
     v27 = v7;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Setting advertisable items to %{private}@", buf, 0xCu);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  [*(&v8->super._shouldAdvertiseAutoPullActivityList + 1) removeAllObjects];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [*(&selfCopy->super._shouldAdvertiseAutoPullActivityList + 1) removeAllObjects];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v4;
+  v9 = itemsCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -80,13 +80,13 @@
         if ((objc_opt_isKindOfClass() & 1) == 0 && [v13 eligibleForHandoff])
         {
           v14 = [UASimulatorSuggestedItem alloc];
-          v15 = [(UASimulatorAdvertiser *)v8 simulator];
-          v16 = [v15 peeredDevice];
-          v17 = [(UASimulatorAdvertiser *)v8 simulator];
-          v18 = [(UASimulatorSuggestedItem *)v14 initWithUserActivityInfo:v13 peerDevice:v16 simulator:v17];
+          simulator = [(UASimulatorAdvertiser *)selfCopy simulator];
+          peeredDevice = [simulator peeredDevice];
+          simulator2 = [(UASimulatorAdvertiser *)selfCopy simulator];
+          v18 = [(UASimulatorSuggestedItem *)v14 initWithUserActivityInfo:v13 peerDevice:peeredDevice simulator:simulator2];
 
           [(UASimulatorSuggestedItem *)v18 setActive:1];
-          [*(&v8->super._shouldAdvertiseAutoPullActivityList + 1) addObject:v18];
+          [*(&selfCopy->super._shouldAdvertiseAutoPullActivityList + 1) addObject:v18];
 
           goto LABEL_14;
         }
@@ -104,11 +104,11 @@
 
 LABEL_14:
 
-  v19 = [(UASimulatorAdvertiser *)v8 advertisableItems];
-  v20 = [v19 firstObject];
-  [(UASimulatorAdvertiser *)v8 updateItem:v20];
+  advertisableItems = [(UASimulatorAdvertiser *)selfCopy advertisableItems];
+  firstObject = [advertisableItems firstObject];
+  [(UASimulatorAdvertiser *)selfCopy updateItem:firstObject];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)active
@@ -120,43 +120,43 @@ LABEL_14:
 
 - (BOOL)advertising
 {
-  v2 = [(UASimulatorAdvertiser *)self advertisableItems];
-  v3 = [v2 firstObject];
-  v4 = v3 != 0;
+  advertisableItems = [(UASimulatorAdvertiser *)self advertisableItems];
+  firstObject = [advertisableItems firstObject];
+  v4 = firstObject != 0;
 
   return v4;
 }
 
-- (BOOL)updateItem:(id)a3
+- (BOOL)updateItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = sub_100001A30(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 uuid];
-    v7 = [v6 UUIDString];
+    uuid = [itemCopy uuid];
+    uUIDString = [uuid UUIDString];
     v10 = 138543619;
-    v11 = v7;
+    v11 = uUIDString;
     v12 = 2113;
-    v13 = v4;
+    v13 = itemCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "SIMULATOR: Telling paired client that the advertised item %{public}@/%{private}@ changed.", &v10, 0x16u);
   }
 
-  v8 = [(UASimulatorAdvertiser *)self simulator];
-  sub_10007ABEC([v8 pairedClientPort]);
+  simulator = [(UASimulatorAdvertiser *)self simulator];
+  sub_10007ABEC([simulator pairedClientPort]);
 
   return 1;
 }
 
 - (id)pairedDevices
 {
-  v3 = [(UASimulatorAdvertiser *)self simulator];
-  v4 = [v3 peeredDevice];
-  if (v4)
+  simulator = [(UASimulatorAdvertiser *)self simulator];
+  peeredDevice = [simulator peeredDevice];
+  if (peeredDevice)
   {
-    v5 = [(UASimulatorAdvertiser *)self simulator];
-    v6 = [v5 peeredDevice];
-    v7 = [NSSet setWithObject:v6];
+    simulator2 = [(UASimulatorAdvertiser *)self simulator];
+    peeredDevice2 = [simulator2 peeredDevice];
+    v7 = [NSSet setWithObject:peeredDevice2];
   }
 
   else
@@ -169,8 +169,8 @@ LABEL_14:
 
 - (id)statusString
 {
-  v3 = [(UASimulatorAdvertiser *)self advertisableItems];
-  v4 = [v3 count];
+  advertisableItems = [(UASimulatorAdvertiser *)self advertisableItems];
+  v4 = [advertisableItems count];
 
   if (!v4)
   {
@@ -179,9 +179,9 @@ LABEL_14:
 
   v5 = +[NSMutableString string];
   [v5 appendFormat:@"### UASimulatorAdvertiser:"];
-  v6 = [(UASimulatorAdvertiser *)self advertisableItems];
-  v7 = [v6 firstObject];
-  [v5 appendFormat:@"%@", v7];
+  advertisableItems2 = [(UASimulatorAdvertiser *)self advertisableItems];
+  firstObject = [advertisableItems2 firstObject];
+  [v5 appendFormat:@"%@", firstObject];
 
   [v5 appendString:@"\n"];
   if (v5)

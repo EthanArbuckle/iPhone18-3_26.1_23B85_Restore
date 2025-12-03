@@ -1,66 +1,66 @@
 @interface MOEventPhoto
-+ (id)descriptionOfPhotoMomentSource:(unint64_t)a3;
-- (MOEventPhoto)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)descriptionOfPhotoMomentSource:(unint64_t)source;
+- (MOEventPhoto)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOEventPhoto
 
-+ (id)descriptionOfPhotoMomentSource:(unint64_t)a3
++ (id)descriptionOfPhotoMomentSource:(unint64_t)source
 {
-  if (a3 > 3)
+  if (source > 3)
   {
     return @"Invalid";
   }
 
   else
   {
-    return *(&off_100338978 + a3);
+    return *(&off_100338978 + source);
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   extendedAttributes = self->_extendedAttributes;
-  v5 = a3;
-  [v5 encodeObject:extendedAttributes forKey:@"extendedAttributes"];
-  [v5 encodeInteger:self->_photoMomentSource forKey:@"photoMomentSource"];
-  [v5 encodeObject:self->_photoMemoryTitle forKey:@"photoMemoryTitle"];
-  [v5 encodeInteger:self->_photoMemoryCategory forKey:@"photoMemoryCategory"];
-  [v5 encodeInteger:self->_photoMemorySubCategory forKey:@"photoMemorySubCategory"];
-  [v5 encodeInteger:self->_photoMemoryRelevanceScore forKey:@"photoMemoryRelevanceScore"];
-  [v5 encodeInteger:self->_photoMemoryIsFavorite forKey:@"photoMemoryIsFavorite"];
+  coderCopy = coder;
+  [coderCopy encodeObject:extendedAttributes forKey:@"extendedAttributes"];
+  [coderCopy encodeInteger:self->_photoMomentSource forKey:@"photoMomentSource"];
+  [coderCopy encodeObject:self->_photoMemoryTitle forKey:@"photoMemoryTitle"];
+  [coderCopy encodeInteger:self->_photoMemoryCategory forKey:@"photoMemoryCategory"];
+  [coderCopy encodeInteger:self->_photoMemorySubCategory forKey:@"photoMemorySubCategory"];
+  [coderCopy encodeInteger:self->_photoMemoryRelevanceScore forKey:@"photoMemoryRelevanceScore"];
+  [coderCopy encodeInteger:self->_photoMemoryIsFavorite forKey:@"photoMemoryIsFavorite"];
 }
 
-- (MOEventPhoto)initWithCoder:(id)a3
+- (MOEventPhoto)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MOEventPhoto;
   v5 = [(MOEventPhoto *)&v11 init];
   if (v5)
   {
-    v5->_photoMomentSource = [v4 decodeIntForKey:@"photoMomentSource"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extendedAttributes"];
+    v5->_photoMomentSource = [coderCopy decodeIntForKey:@"photoMomentSource"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extendedAttributes"];
     extendedAttributes = v5->_extendedAttributes;
     v5->_extendedAttributes = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"photoMemoryTitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"photoMemoryTitle"];
     photoMemoryTitle = v5->_photoMemoryTitle;
     v5->_photoMemoryTitle = v8;
 
-    v5->_photoMemoryCategory = [v4 decodeIntegerForKey:@"photoMemoryCategory"];
-    v5->_photoMemorySubCategory = [v4 decodeIntegerForKey:@"photoMemorySubCategory"];
-    v5->_photoMemoryRelevanceScore = [v4 decodeIntegerForKey:@"photoMemoryRelevanceScore"];
-    v5->_photoMemoryIsFavorite = [v4 decodeIntegerForKey:@"photoMemoryIsFavorite"] != 0;
+    v5->_photoMemoryCategory = [coderCopy decodeIntegerForKey:@"photoMemoryCategory"];
+    v5->_photoMemorySubCategory = [coderCopy decodeIntegerForKey:@"photoMemorySubCategory"];
+    v5->_photoMemoryRelevanceScore = [coderCopy decodeIntegerForKey:@"photoMemoryRelevanceScore"];
+    v5->_photoMemoryIsFavorite = [coderCopy decodeIntegerForKey:@"photoMemoryIsFavorite"] != 0;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MOEventPhoto);
   v4->_photoMomentSource = self->_photoMomentSource;
@@ -80,8 +80,8 @@
   v3 = [NSString alloc];
   extendedAttributes = self->_extendedAttributes;
   v5 = [MOEventPhoto descriptionOfPhotoMomentSource:self->_photoMomentSource];
-  v6 = [(NSString *)self->_photoMemoryTitle mask];
-  v7 = [v3 initWithFormat:@"extendedAttributes, %@, photo source, %@, photoMemoryTitle, %@, photoMemoryCategory, %lu, photoMemorySubCategory, %lu, photoMemoryRelevanceScore, %f, photoMemoryIsFavorite, %d", extendedAttributes, v5, v6, self->_photoMemoryCategory, self->_photoMemorySubCategory, *&self->_photoMemoryRelevanceScore, self->_photoMemoryIsFavorite];
+  mask = [(NSString *)self->_photoMemoryTitle mask];
+  v7 = [v3 initWithFormat:@"extendedAttributes, %@, photo source, %@, photoMemoryTitle, %@, photoMemoryCategory, %lu, photoMemorySubCategory, %lu, photoMemoryRelevanceScore, %f, photoMemoryIsFavorite, %d", extendedAttributes, v5, mask, self->_photoMemoryCategory, self->_photoMemorySubCategory, *&self->_photoMemoryRelevanceScore, self->_photoMemoryIsFavorite];
 
   return v7;
 }

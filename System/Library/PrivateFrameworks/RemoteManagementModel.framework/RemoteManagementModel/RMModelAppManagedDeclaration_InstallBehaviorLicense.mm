@@ -1,10 +1,10 @@
 @interface RMModelAppManagedDeclaration_InstallBehaviorLicense
 + (NSSet)allowedPayloadKeys;
 + (id)buildRequiredOnly;
-+ (id)buildWithAssignment:(id)a3;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildWithAssignment:(id)assignment;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAppManagedDeclaration_InstallBehaviorLicense
@@ -22,11 +22,11 @@
   return v4;
 }
 
-+ (id)buildWithAssignment:(id)a3
++ (id)buildWithAssignment:(id)assignment
 {
-  v3 = a3;
+  assignmentCopy = assignment;
   v4 = objc_opt_new();
-  [v4 setPayloadAssignment:v3];
+  [v4 setPayloadAssignment:assignmentCopy];
 
   return v4;
 }
@@ -38,12 +38,12 @@
   return v2;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
   v7 = MEMORY[0x277CBEB58];
-  v8 = a3;
-  v9 = [v8 allKeys];
-  v10 = [v7 setWithArray:v9];
+  dictionaryCopy = dictionary;
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v7 setWithArray:allKeys];
 
   v11 = +[RMModelAppManagedDeclaration_InstallBehaviorLicense allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -51,26 +51,26 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  LOBYTE(a5) = [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"Assignment" forKeyPath:@"payloadAssignment" isRequired:0 defaultValue:0 error:a5];
-  return a5;
+  LOBYTE(error) = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Assignment" forKeyPath:@"payloadAssignment" isRequired:0 defaultValue:0 error:error];
+  return error;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelAppManagedDeclaration_InstallBehaviorLicense *)self payloadAssignment];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Assignment" value:v5 isRequired:0 defaultValue:0];
+  payloadAssignment = [(RMModelAppManagedDeclaration_InstallBehaviorLicense *)self payloadAssignment];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Assignment" value:payloadAssignment isRequired:0 defaultValue:0];
 
   v6 = [v4 copy];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = RMModelAppManagedDeclaration_InstallBehaviorLicense;
-  v4 = [(RMModelPayloadBase *)&v8 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v8 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadAssignment copy];
   v6 = v4[2];
   v4[2] = v5;

@@ -1,5 +1,5 @@
 @interface AVTUIStickerItem
-- (AVTUIStickerItem)initWithIdentifier:(id)a3 localizedName:(id)a4 resourceProvider:(id)a5;
+- (AVTUIStickerItem)initWithIdentifier:(id)identifier localizedName:(id)name resourceProvider:(id)provider;
 - (CGRect)clippingRect;
 - (NSString)description;
 - (void)clearCachedItems;
@@ -8,25 +8,25 @@
 
 @implementation AVTUIStickerItem
 
-- (AVTUIStickerItem)initWithIdentifier:(id)a3 localizedName:(id)a4 resourceProvider:(id)a5
+- (AVTUIStickerItem)initWithIdentifier:(id)identifier localizedName:(id)name resourceProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
+  providerCopy = provider;
   v19.receiver = self;
   v19.super_class = AVTUIStickerItem;
   v11 = [(AVTUIStickerItem *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     localizedName = v11->_localizedName;
     v11->_localizedName = v14;
 
-    v16 = [v10 copy];
+    v16 = [providerCopy copy];
     resourceProvider = v11->_resourceProvider;
     v11->_resourceProvider = v16;
   }
@@ -48,24 +48,24 @@
   v3 = [(AVTUIStickerItem *)&v10 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(AVTUIStickerItem *)self localizedName];
-  [v4 appendFormat:@" name: %@", v5];
+  localizedName = [(AVTUIStickerItem *)self localizedName];
+  [v4 appendFormat:@" name: %@", localizedName];
 
   if ([(AVTUIStickerItem *)self hasBeenRendered])
   {
     [v4 appendString:@" hasBeenRendered"];
   }
 
-  v6 = [(AVTUIStickerItem *)self cachedMSSticker];
+  cachedMSSticker = [(AVTUIStickerItem *)self cachedMSSticker];
 
-  if (v6)
+  if (cachedMSSticker)
   {
     [v4 appendString:@" has cached MSSticker"];
   }
 
-  v7 = [(AVTUIStickerItem *)self cachedImage];
+  cachedImage = [(AVTUIStickerItem *)self cachedImage];
 
-  if (v7)
+  if (cachedImage)
   {
     [v4 appendString:@" and cached image"];
   }

@@ -1,13 +1,13 @@
 @interface VUIAppLoadingViewController
-- (void)setLoading:(BOOL)a3;
-- (void)setView:(id)a3;
+- (void)setLoading:(BOOL)loading;
+- (void)setView:(id)view;
 @end
 
 @implementation VUIAppLoadingViewController
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (!self->_parentView)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -29,47 +29,47 @@
 
     [(VUIAppSpinnerView *)self->_loadingView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)self->_parentView addSubview:self->_loadingView];
-    v10 = [(VUIAppSpinnerView *)self->_loadingView leadingAnchor];
-    v11 = [(VUIAppLoadingViewController *)self view];
-    v12 = [v11 leadingAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12];
+    leadingAnchor = [(VUIAppSpinnerView *)self->_loadingView leadingAnchor];
+    view = [(VUIAppLoadingViewController *)self view];
+    leadingAnchor2 = [view leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v13 setActive:1];
 
-    v14 = [(VUIAppSpinnerView *)self->_loadingView topAnchor];
-    v15 = [(VUIAppLoadingViewController *)self view];
-    v16 = [v15 topAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16];
+    topAnchor = [(VUIAppSpinnerView *)self->_loadingView topAnchor];
+    view2 = [(VUIAppLoadingViewController *)self view];
+    topAnchor2 = [view2 topAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v17 setActive:1];
 
-    v18 = [(VUIAppSpinnerView *)self->_loadingView trailingAnchor];
-    v19 = [(VUIAppLoadingViewController *)self view];
-    v20 = [v19 trailingAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
+    trailingAnchor = [(VUIAppSpinnerView *)self->_loadingView trailingAnchor];
+    view3 = [(VUIAppLoadingViewController *)self view];
+    trailingAnchor2 = [view3 trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v21 setActive:1];
 
-    v22 = [(VUIAppSpinnerView *)self->_loadingView bottomAnchor];
-    v23 = [(VUIAppLoadingViewController *)self view];
-    v24 = [v23 bottomAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24];
+    bottomAnchor = [(VUIAppSpinnerView *)self->_loadingView bottomAnchor];
+    view4 = [(VUIAppLoadingViewController *)self view];
+    bottomAnchor2 = [view4 bottomAnchor];
+    v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v25 setActive:1];
 
     [(VUIAppSpinnerView *)self->_loadingView setAlpha:0.0];
   }
 
-  [(UIView *)v4 setAutoresizingMask:18];
-  [(UIView *)self->_parentView addSubview:v4];
+  [(UIView *)viewCopy setAutoresizingMask:18];
+  [(UIView *)self->_parentView addSubview:viewCopy];
   principalView = self->_principalView;
-  self->_principalView = v4;
+  self->_principalView = viewCopy;
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  if (self->_loading != a3)
+  if (self->_loading != loading)
   {
     v9[7] = v3;
     v9[8] = v4;
-    self->_loading = a3;
-    if (a3)
+    self->_loading = loading;
+    if (loading)
     {
       v6 = dispatch_time(0, 500000000);
       v9[0] = MEMORY[0x1E69E9820];

@@ -1,31 +1,31 @@
 @interface _MKRightImageButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation _MKRightImageButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_MKRightImageButton" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_MKRightImageButton" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_MKRightImageButton" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_MKRightImageButton" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(_MKRightImageButtonAccessibility *)self safeValueForKey:@"titleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  if (![v4 length])
+  if (![accessibilityLabel length])
   {
     v5 = [(_MKRightImageButtonAccessibility *)self safeValueForKey:@"imageView"];
-    v6 = [v5 accessibilityLabel];
+    accessibilityLabel2 = [v5 accessibilityLabel];
 
-    v4 = v6;
+    accessibilityLabel = accessibilityLabel2;
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 @end

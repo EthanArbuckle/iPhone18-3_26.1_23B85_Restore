@@ -12,8 +12,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [a1 factoids];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  factoids = [self factoids];
+  v5 = [factoids countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -24,7 +24,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(factoids);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -35,7 +35,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [factoids countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -55,8 +55,8 @@ LABEL_11:
 
 - (id)_mapsui_createCombinedTrailTypeAndLengthFactoid
 {
-  v2 = [a1 factoidWithSemantic:4];
-  v3 = [a1 factoidWithSemantic:3];
+  v2 = [self factoidWithSemantic:4];
+  v3 = [self factoidWithSemantic:3];
   v4 = v3;
   v5 = 0;
   if (v2 && v3)

@@ -1,9 +1,9 @@
 @interface HSMatterEcosystem
-+ (id)ecosystemForContainingAppBundleURL:(id)a3;
++ (id)ecosystemForContainingAppBundleURL:(id)l;
 - (BOOL)isAppleHome;
 - (BOOL)isTestEcosystemApp;
-- (HSMatterEcosystem)initWithApplicationRecord:(id)a3;
-- (HSMatterEcosystem)initWithExtensionMessenger:(id)a3;
+- (HSMatterEcosystem)initWithApplicationRecord:(id)record;
+- (HSMatterEcosystem)initWithExtensionMessenger:(id)messenger;
 - (NSString)appBundleIdentifier;
 - (NSString)developerName;
 - (NSString)displayName;
@@ -12,10 +12,10 @@
 
 @implementation HSMatterEcosystem
 
-+ (id)ecosystemForContainingAppBundleURL:(id)a3
++ (id)ecosystemForContainingAppBundleURL:(id)l
 {
-  v3 = a3;
-  v4 = [[MTSDeviceSetupExtensionMessenger alloc] initWithContainingAppBundleURL:v3];
+  lCopy = l;
+  v4 = [[MTSDeviceSetupExtensionMessenger alloc] initWithContainingAppBundleURL:lCopy];
 
   v10 = 0;
   v5 = [v4 startWithError:&v10];
@@ -39,28 +39,28 @@
   return v7;
 }
 
-- (HSMatterEcosystem)initWithApplicationRecord:(id)a3
+- (HSMatterEcosystem)initWithApplicationRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v8.receiver = self;
   v8.super_class = HSMatterEcosystem;
   v5 = [(HSMatterEcosystem *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(HSMatterEcosystem *)v5 setApplicationRecord:v4];
+    [(HSMatterEcosystem *)v5 setApplicationRecord:recordCopy];
   }
 
   return v6;
 }
 
-- (HSMatterEcosystem)initWithExtensionMessenger:(id)a3
+- (HSMatterEcosystem)initWithExtensionMessenger:(id)messenger
 {
-  v4 = a3;
+  messengerCopy = messenger;
   v5 = [LSApplicationRecord alloc];
-  v6 = [v4 containingAppBundleURL];
+  containingAppBundleURL = [messengerCopy containingAppBundleURL];
   v15 = 0;
-  v7 = [v5 initWithURL:v6 allowPlaceholder:0 error:&v15];
+  v7 = [v5 initWithURL:containingAppBundleURL allowPlaceholder:0 error:&v15];
   v8 = v15;
 
   if (!v7)
@@ -68,66 +68,66 @@
     v9 = HFLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      sub_100077DE8(v4, v8, v9);
+      sub_100077DE8(messengerCopy, v8, v9);
     }
 
-    v10 = [v4 containingAppBundleURL];
-    NSLog(@"Failed to create app record from containing app bundle URL %@: %@", v10, v8);
+    containingAppBundleURL2 = [messengerCopy containingAppBundleURL];
+    NSLog(@"Failed to create app record from containing app bundle URL %@: %@", containingAppBundleURL2, v8);
   }
 
   v11 = [(HSMatterEcosystem *)self initWithApplicationRecord:v7];
   extensionMessenger = v11->_extensionMessenger;
-  v11->_extensionMessenger = v4;
-  v13 = v4;
+  v11->_extensionMessenger = messengerCopy;
+  v13 = messengerCopy;
 
   return v11;
 }
 
 - (NSString)displayName
 {
-  v2 = [(HSMatterEcosystem *)self applicationRecord];
-  v3 = [v2 localizedName];
+  applicationRecord = [(HSMatterEcosystem *)self applicationRecord];
+  localizedName = [applicationRecord localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (NSString)developerName
 {
-  v2 = [(HSMatterEcosystem *)self applicationRecord];
-  v3 = [v2 iTunesMetadata];
-  v4 = [v3 artistName];
+  applicationRecord = [(HSMatterEcosystem *)self applicationRecord];
+  iTunesMetadata = [applicationRecord iTunesMetadata];
+  artistName = [iTunesMetadata artistName];
 
-  return v4;
+  return artistName;
 }
 
 - (NSString)appBundleIdentifier
 {
-  v2 = [(HSMatterEcosystem *)self applicationRecord];
-  v3 = [v2 bundleIdentifier];
+  applicationRecord = [(HSMatterEcosystem *)self applicationRecord];
+  bundleIdentifier = [applicationRecord bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (NSString)teamIdentifier
 {
-  v2 = [(HSMatterEcosystem *)self applicationRecord];
-  v3 = [v2 teamIdentifier];
+  applicationRecord = [(HSMatterEcosystem *)self applicationRecord];
+  teamIdentifier = [applicationRecord teamIdentifier];
 
-  return v3;
+  return teamIdentifier;
 }
 
 - (BOOL)isAppleHome
 {
-  v2 = [(HSMatterEcosystem *)self appBundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.Home"];
+  appBundleIdentifier = [(HSMatterEcosystem *)self appBundleIdentifier];
+  v3 = [appBundleIdentifier isEqualToString:@"com.apple.Home"];
 
   return v3;
 }
 
 - (BOOL)isTestEcosystemApp
 {
-  v2 = [(HSMatterEcosystem *)self appBundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.appleinternal.Chai"];
+  appBundleIdentifier = [(HSMatterEcosystem *)self appBundleIdentifier];
+  v3 = [appBundleIdentifier isEqualToString:@"com.appleinternal.Chai"];
 
   return v3;
 }

@@ -1,7 +1,7 @@
 @interface NURenderJobStatisticsHistory
 - (id)description;
-- (id)initHistoryForJobsWithName:(id)a3 rollingHistoryMaxSize:(unint64_t)a4;
-- (void)addStatisticsToHistory:(id)a3 wasCanceled:(BOOL)a4;
+- (id)initHistoryForJobsWithName:(id)name rollingHistoryMaxSize:(unint64_t)size;
+- (void)addStatisticsToHistory:(id)history wasCanceled:(BOOL)canceled;
 - (void)dealloc;
 - (void)recordJobCreated;
 @end
@@ -192,16 +192,16 @@
   return v12;
 }
 
-- (void)addStatisticsToHistory:(id)a3 wasCanceled:(BOOL)a4
+- (void)addStatisticsToHistory:(id)history wasCanceled:(BOOL)canceled
 {
-  v4 = a4;
-  v30 = a3;
+  canceledCopy = canceled;
+  historyCopy = history;
   v6 = NUAbsoluteTime();
-  if (v4)
+  if (canceledCopy)
   {
     if (+[NUGlobalSettings renderJobDebugCaptureCanceledJobs])
     {
-      [(NURenderJobStatisticsHistogram *)self->_histogram addStatisticsToHistogram:v30];
+      [(NURenderJobStatisticsHistogram *)self->_histogram addStatisticsToHistogram:historyCopy];
     }
 
     ++self->_canceledJobsCount;
@@ -211,7 +211,7 @@
   else
   {
     v7 = v6;
-    [(NURenderJobStatisticsHistogram *)self->_histogram addStatisticsToHistogram:v30];
+    [(NURenderJobStatisticsHistogram *)self->_histogram addStatisticsToHistogram:historyCopy];
     v8 = v7 - self->_prevDeliveredTime;
     if (v8 < 3.0)
     {
@@ -235,29 +235,29 @@
     +[NURenderJobStatisticsHistory setTotalSchedulerDeliveredJobCount:](NURenderJobStatisticsHistory, "setTotalSchedulerDeliveredJobCount:", +[NURenderJobStatisticsHistory totalSchedulerDeliveredJobCount]+ 1);
   }
 
-  [v30 prepareDuration];
+  [historyCopy prepareDuration];
   v15 = v14;
   +[NURenderJobStatisticsHistory totalSchedulerTimeExecutingPrepare];
   [NURenderJobStatisticsHistory setTotalSchedulerTimeExecutingPrepare:v15 + v16];
-  [v30 renderDuration];
+  [historyCopy renderDuration];
   v18 = v17;
   +[NURenderJobStatisticsHistory totalSchedulerTimeExecutingRender];
   [NURenderJobStatisticsHistory setTotalSchedulerTimeExecutingRender:v18 + v19];
-  [v30 completeDuration];
+  [historyCopy completeDuration];
   v21 = v20;
   +[NURenderJobStatisticsHistory totalSchedulerTimeExecutingComplete];
   [NURenderJobStatisticsHistory setTotalSchedulerTimeExecutingComplete:v21 + v22];
-  [v30 duration];
+  [historyCopy duration];
   v24 = v23;
   +[NURenderJobStatisticsHistory totalSchedulerTimeExecuting];
   [NURenderJobStatisticsHistory setTotalSchedulerTimeExecuting:v24 + v25];
-  [v30 prepareDuration];
+  [historyCopy prepareDuration];
   self->_totalTimeExecutingPrepare = v26 + self->_totalTimeExecutingPrepare;
-  [v30 renderDuration];
+  [historyCopy renderDuration];
   self->_totalTimeExecutingRender = v27 + self->_totalTimeExecutingRender;
-  [v30 completeDuration];
+  [historyCopy completeDuration];
   self->_totalTimeExecutingComplete = v28 + self->_totalTimeExecutingComplete;
-  [v30 duration];
+  [historyCopy duration];
   self->_totalTimeExecuting = v29 + self->_totalTimeExecuting;
 }
 
@@ -286,19 +286,19 @@
   self->_prevCreatedTime = v3;
 }
 
-- (id)initHistoryForJobsWithName:(id)a3 rollingHistoryMaxSize:(unint64_t)a4
+- (id)initHistoryForJobsWithName:(id)name rollingHistoryMaxSize:(unint64_t)size
 {
-  v7 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = NURenderJobStatisticsHistory;
   v8 = [(NURenderJobStatisticsHistory *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_jobRequestName, a3);
-    v9->_timeBetweenJobCreations = malloc_type_calloc(a4, 8uLL, 0x100004000313F17uLL);
-    v9->_timeBetweenJobDeliveries = malloc_type_calloc(a4, 8uLL, 0x100004000313F17uLL);
-    v9->_rollingHistoryMaxSize = a4;
+    objc_storeStrong(&v8->_jobRequestName, name);
+    v9->_timeBetweenJobCreations = malloc_type_calloc(size, 8uLL, 0x100004000313F17uLL);
+    v9->_timeBetweenJobDeliveries = malloc_type_calloc(size, 8uLL, 0x100004000313F17uLL);
+    v9->_rollingHistoryMaxSize = size;
     v10 = [[NURenderJobStatisticsHistogram alloc] initWithBins:2048 millisPerBin:0.05];
     histogram = v9->_histogram;
     v9->_histogram = v10;

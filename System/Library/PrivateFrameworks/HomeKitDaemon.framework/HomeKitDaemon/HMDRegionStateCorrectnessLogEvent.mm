@@ -1,6 +1,6 @@
 @interface HMDRegionStateCorrectnessLogEvent
-+ (id)updateWithFirstAccessory:(int64_t)a3 nearbyHome:(int64_t)a4;
-- (HMDRegionStateCorrectnessLogEvent)initWithReason:(unint64_t)a3 firstAccessoryReachable:(BOOL)a4 regionStateAtHome:(int64_t)a5 regionStateNearByHome:(int64_t)a6 isStateCorrect:(BOOL)a7;
++ (id)updateWithFirstAccessory:(int64_t)accessory nearbyHome:(int64_t)home;
+- (HMDRegionStateCorrectnessLogEvent)initWithReason:(unint64_t)reason firstAccessoryReachable:(BOOL)reachable regionStateAtHome:(int64_t)home regionStateNearByHome:(int64_t)byHome isStateCorrect:(BOOL)correct;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -103,16 +103,16 @@
   return v14;
 }
 
-- (HMDRegionStateCorrectnessLogEvent)initWithReason:(unint64_t)a3 firstAccessoryReachable:(BOOL)a4 regionStateAtHome:(int64_t)a5 regionStateNearByHome:(int64_t)a6 isStateCorrect:(BOOL)a7
+- (HMDRegionStateCorrectnessLogEvent)initWithReason:(unint64_t)reason firstAccessoryReachable:(BOOL)reachable regionStateAtHome:(int64_t)home regionStateNearByHome:(int64_t)byHome isStateCorrect:(BOOL)correct
 {
   v14.receiver = self;
   v14.super_class = HMDRegionStateCorrectnessLogEvent;
   result = [(HMMLogEvent *)&v14 init];
   if (result)
   {
-    if (a5)
+    if (home)
     {
-      v12 = a6 == 0;
+      v12 = byHome == 0;
     }
 
     else
@@ -121,53 +121,53 @@
     }
 
     v13 = v12;
-    result->_firstAccessoryReachable = a4;
-    result->_regionStateAtHome = a5 == 1;
-    result->_regionStateNearByHome = a6 == 1;
+    result->_firstAccessoryReachable = reachable;
+    result->_regionStateAtHome = home == 1;
+    result->_regionStateNearByHome = byHome == 1;
     result->_regionStateUnknown = v13;
-    result->_isStateCorrect = a7;
+    result->_isStateCorrect = correct;
   }
 
   return result;
 }
 
-+ (id)updateWithFirstAccessory:(int64_t)a3 nearbyHome:(int64_t)a4
++ (id)updateWithFirstAccessory:(int64_t)accessory nearbyHome:(int64_t)home
 {
-  if (a3 == 1 && a4 == 1)
+  if (accessory == 1 && home == 1)
   {
     goto LABEL_3;
   }
 
-  if ((a3 != 1 || a4 != 2) && (a3 != 1 || a4))
+  if ((accessory != 1 || home != 2) && (accessory != 1 || home))
   {
-    if (a3 == 2 && a4 == 1)
+    if (accessory == 2 && home == 1)
     {
 LABEL_3:
       v4 = 1;
       goto LABEL_9;
     }
 
-    v8 = a4 == 2 || a4 == 0;
-    if ((a3 != 2 || !v8) && (a3 || a4 != 1))
+    v8 = home == 2 || home == 0;
+    if ((accessory != 2 || !v8) && (accessory || home != 1))
     {
-      if (a3)
+      if (accessory)
       {
         v9 = 0;
       }
 
       else
       {
-        v9 = a4 == 2;
+        v9 = home == 2;
       }
 
-      v4 = !v9 && (a4 | a3) == 0;
+      v4 = !v9 && (home | accessory) == 0;
       goto LABEL_9;
     }
   }
 
   v4 = 0;
 LABEL_9:
-  v5 = [[HMDRegionStateCorrectnessLogEvent alloc] initWithReason:0 firstAccessoryReachable:1 regionStateAtHome:a3 regionStateNearByHome:a4 isStateCorrect:v4];
+  v5 = [[HMDRegionStateCorrectnessLogEvent alloc] initWithReason:0 firstAccessoryReachable:1 regionStateAtHome:accessory regionStateNearByHome:home isStateCorrect:v4];
 
   return v5;
 }

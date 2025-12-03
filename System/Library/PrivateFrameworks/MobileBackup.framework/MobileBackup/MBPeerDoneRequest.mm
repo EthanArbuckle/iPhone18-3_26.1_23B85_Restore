@@ -1,6 +1,6 @@
 @interface MBPeerDoneRequest
-- (MBPeerDoneRequest)initWithDictionary:(id)a3 error:(id *)a4;
-- (MBPeerDoneRequest)initWithError:(id)a3;
+- (MBPeerDoneRequest)initWithDictionary:(id)dictionary error:(id *)error;
+- (MBPeerDoneRequest)initWithError:(id)error;
 - (NSString)description;
 - (id)dictionaryRepresentation;
 @end
@@ -9,13 +9,13 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [(MBPeerDoneRequest *)self error];
+  error = [(MBPeerDoneRequest *)self error];
 
-  if (v3)
+  if (error)
   {
-    v4 = [(MBPeerDoneRequest *)self error];
+    error2 = [(MBPeerDoneRequest *)self error];
     v11 = 0;
-    v5 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v11];
+    v5 = [NSKeyedArchiver archivedDataWithRootObject:error2 requiringSecureCoding:1 error:&v11];
     v6 = v11;
 
     if (v5)
@@ -30,14 +30,14 @@
       v5 = MBGetDefaultLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
-        v8 = [(MBPeerDoneRequest *)self error];
+        error3 = [(MBPeerDoneRequest *)self error];
         *buf = 138412546;
-        v15 = v8;
+        v15 = error3;
         v16 = 2112;
         v17 = v6;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Failed to archive error %@: %@", buf, 0x16u);
 
-        v10 = [(MBPeerDoneRequest *)self error];
+        error4 = [(MBPeerDoneRequest *)self error];
         _MBLog();
       }
 
@@ -53,30 +53,30 @@
   return v7;
 }
 
-- (MBPeerDoneRequest)initWithError:(id)a3
+- (MBPeerDoneRequest)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v9.receiver = self;
   v9.super_class = MBPeerDoneRequest;
   v6 = [(MBPeerEmptyMessage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_error, a3);
+    objc_storeStrong(&v6->_error, error);
   }
 
   return v7;
 }
 
-- (MBPeerDoneRequest)initWithDictionary:(id)a3 error:(id *)a4
+- (MBPeerDoneRequest)initWithDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = MBPeerDoneRequest;
   v7 = [(MBPeerEmptyMessage *)&v17 init];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"MBErrorData"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"MBErrorData"];
     if (v8)
     {
       v16 = 0;
@@ -102,10 +102,10 @@
           _MBLog();
         }
 
-        if (a4)
+        if (error)
         {
           v14 = v10;
-          *a4 = v10;
+          *error = v10;
         }
 
         error = v7;
@@ -119,12 +119,12 @@
 
 - (NSString)description
 {
-  v3 = [(MBPeerDoneRequest *)self error];
+  error = [(MBPeerDoneRequest *)self error];
   v4 = objc_opt_class();
   Name = class_getName(v4);
-  if (v3)
+  if (error)
   {
-    [NSString stringWithFormat:@"<%s: %p; error=%@>", Name, self, v3];
+    [NSString stringWithFormat:@"<%s: %p; error=%@>", Name, self, error];
   }
 
   else

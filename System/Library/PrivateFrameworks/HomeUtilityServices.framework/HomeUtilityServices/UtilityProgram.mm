@@ -1,11 +1,11 @@
 @interface UtilityProgram
 - (_TtC19HomeUtilityServices14UtilityProgram)init;
-- (_TtC19HomeUtilityServices14UtilityProgram)initWithProgramID:(id)a3 programDescription:(id)a4 enrollmentStatus:(id)a5;
+- (_TtC19HomeUtilityServices14UtilityProgram)initWithProgramID:(id)d programDescription:(id)description enrollmentStatus:(id)status;
 @end
 
 @implementation UtilityProgram
 
-- (_TtC19HomeUtilityServices14UtilityProgram)initWithProgramID:(id)a3 programDescription:(id)a4 enrollmentStatus:(id)a5
+- (_TtC19HomeUtilityServices14UtilityProgram)initWithProgramID:(id)d programDescription:(id)description enrollmentStatus:(id)status
 {
   v6 = sub_20E0091D4();
   v8 = v7;

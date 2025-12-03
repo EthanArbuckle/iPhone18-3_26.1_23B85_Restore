@@ -1,16 +1,16 @@
 @interface CHDFormula
-+ (CHDFormula)formulaWithReference:(id)a3;
-+ (CHDFormula)formulaWithReferences:(id)a3;
++ (CHDFormula)formulaWithReference:(id)reference;
++ (CHDFormula)formulaWithReferences:(id)references;
 - (BOOL)isConstantStringFormula;
-- (CHDFormula)initWithReference:(id)a3;
-- (CHDFormula)initWithReferences:(id)a3;
-- (CHDFormula)initWithWorkbook:(id)a3;
+- (CHDFormula)initWithReference:(id)reference;
+- (CHDFormula)initWithReferences:(id)references;
+- (CHDFormula)initWithWorkbook:(id)workbook;
 - (id)constantValuesFromConstantStringFormula;
 - (id)references;
 - (id)referencesFromFormula;
 - (unint64_t)countOfCellsBeingReferenced;
 - (void)prepareTokens;
-- (void)setReferences:(id)a3;
+- (void)setReferences:(id)references;
 @end
 
 @implementation CHDFormula
@@ -27,10 +27,10 @@ LABEL_2:
 
   if ([(EDFormula *)self isSupportedFormula]&& [(EDFormula *)self isCleaned])
   {
-    v5 = [(CHDFormula *)self referencesFromFormula];
-    if ([v5 count])
+    referencesFromFormula = [(CHDFormula *)self referencesFromFormula];
+    if ([referencesFromFormula count])
     {
-      [(CHDFormula *)self setReferences:v5];
+      [(CHDFormula *)self setReferences:referencesFromFormula];
     }
 
     else
@@ -54,12 +54,12 @@ LABEL_8:
   if ([(EDFormula *)self isSupportedFormula]&& [(EDFormula *)self tokenCount])
   {
     WeakRetained = objc_loadWeakRetained(&self->mWorkbook);
-    v4 = [WeakRetained resources];
-    v5 = [v4 links];
+    resources = [WeakRetained resources];
+    links = [resources links];
 
     v6 = +[EDReferenceCollection noCoalesceCollection];
-    v7 = [(EDFormula *)self tokenCount];
-    if (v7)
+    tokenCount = [(EDFormula *)self tokenCount];
+    if (tokenCount)
     {
       v8 = 0;
       do
@@ -162,7 +162,7 @@ LABEL_25:
 LABEL_30:
               v14 = 0;
               v15 = 0;
-              if ([v5 convertLinkReferenceIndex:v21 firstSheetIndex:&v15 lastSheetIndex:&v14] && v15 == v14)
+              if ([links convertLinkReferenceIndex:v21 firstSheetIndex:&v15 lastSheetIndex:&v14] && v15 == v14)
               {
                 if (v17 < 0)
                 {
@@ -205,7 +205,7 @@ LABEL_40:
         v8 = (v8 + 1);
       }
 
-      while (v7 != v8);
+      while (tokenCount != v8);
     }
 
     if ([v6 count])
@@ -232,34 +232,34 @@ LABEL_50:
 
 - (unint64_t)countOfCellsBeingReferenced
 {
-  v2 = [(CHDFormula *)self references];
-  v3 = [v2 countOfCellsBeingReferenced];
+  references = [(CHDFormula *)self references];
+  countOfCellsBeingReferenced = [references countOfCellsBeingReferenced];
 
-  return v3;
+  return countOfCellsBeingReferenced;
 }
 
-- (CHDFormula)initWithWorkbook:(id)a3
+- (CHDFormula)initWithWorkbook:(id)workbook
 {
-  v4 = a3;
+  workbookCopy = workbook;
   v8.receiver = self;
   v8.super_class = CHDFormula;
   v5 = [(EDFormula *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mWorkbook, v4);
+    objc_storeWeak(&v5->mWorkbook, workbookCopy);
   }
 
   return v6;
 }
 
-- (CHDFormula)initWithReference:(id)a3
+- (CHDFormula)initWithReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v5 = [(EDFormula *)self init];
   if (v5)
   {
-    v6 = [(EDCollection *)[EDReferenceCollection alloc] initWithObject:v4];
+    v6 = [(EDCollection *)[EDReferenceCollection alloc] initWithObject:referenceCopy];
     mReferences = v5->mReferences;
     v5->mReferences = v6;
   }
@@ -267,41 +267,41 @@ LABEL_50:
   return v5;
 }
 
-- (CHDFormula)initWithReferences:(id)a3
+- (CHDFormula)initWithReferences:(id)references
 {
-  v5 = a3;
+  referencesCopy = references;
   v6 = [(EDFormula *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mReferences, a3);
+    objc_storeStrong(&v6->mReferences, references);
   }
 
   return v7;
 }
 
-+ (CHDFormula)formulaWithReference:(id)a3
++ (CHDFormula)formulaWithReference:(id)reference
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithReference:v3];
+  referenceCopy = reference;
+  v4 = [objc_alloc(objc_opt_class()) initWithReference:referenceCopy];
 
   return v4;
 }
 
-+ (CHDFormula)formulaWithReferences:(id)a3
++ (CHDFormula)formulaWithReferences:(id)references
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithReferences:v3];
+  referencesCopy = references;
+  v4 = [objc_alloc(objc_opt_class()) initWithReferences:referencesCopy];
 
   return v4;
 }
 
-- (void)setReferences:(id)a3
+- (void)setReferences:(id)references
 {
-  v5 = a3;
-  if (self->mReferences != v5)
+  referencesCopy = references;
+  if (self->mReferences != referencesCopy)
   {
-    objc_storeStrong(&self->mReferences, a3);
+    objc_storeStrong(&self->mReferences, references);
     if (self->mReferences)
     {
       [(EDFormula *)self removeAllTokens];
@@ -319,7 +319,7 @@ LABEL_50:
 
   if (![(EDCollection *)mReferences count])
   {
-    v36 = self->mReferences;
+    links = self->mReferences;
     self->mReferences = 0;
 LABEL_46:
 
@@ -340,10 +340,10 @@ LABEL_46:
       if (v11)
       {
         v35 = v11;
-        v12 = [v11 isCellReference];
-        v13 = [v35 isSheedIndexValid];
+        isCellReference = [v11 isCellReference];
+        isSheedIndexValid = [v35 isSheedIndexValid];
         v14 = v35;
-        if (v12)
+        if (isCellReference)
         {
           v15 = 6;
         }
@@ -353,7 +353,7 @@ LABEL_46:
           v15 = 10;
         }
 
-        if (v12)
+        if (isCellReference)
         {
           v16 = 4;
         }
@@ -363,7 +363,7 @@ LABEL_46:
           v16 = 8;
         }
 
-        if (!v13)
+        if (!isSheedIndexValid)
         {
           v15 = v16;
         }
@@ -394,8 +394,8 @@ LABEL_46:
     {
       [(EDFormula *)self removeAllTokens];
       WeakRetained = objc_loadWeakRetained(&self->mWorkbook);
-      v19 = [WeakRetained resources];
-      v36 = [v19 links];
+      resources = [WeakRetained resources];
+      links = [resources links];
 
       [(EDFormula *)self setupTokensWithTokensCount:v6 tokensWithDataCount:v7 extendedDataLength:v9 extendedDataCount:v8];
       for (j = 0; j != v5; ++j)
@@ -404,11 +404,11 @@ LABEL_46:
         v22 = v21;
         if (v21)
         {
-          v23 = [v21 firstRow];
-          if (v23 == [v22 lastRow])
+          firstRow = [v21 firstRow];
+          if (firstRow == [v22 lastRow])
           {
-            v24 = [v22 firstColumn];
-            v25 = v24 != [v22 lastColumn];
+            firstColumn = [v22 firstColumn];
+            v25 = firstColumn != [v22 lastColumn];
           }
 
           else
@@ -416,10 +416,10 @@ LABEL_46:
             v25 = 1;
           }
 
-          v26 = [v22 sheetIndex];
+          sheetIndex = [v22 sheetIndex];
           if ([v22 isSheedIndexValid])
           {
-            v27 = [v36 addOrEquivalentInternalLinkReferenceWithFirstSheetIndex:v26 lastSheetIndex:v26];
+            v27 = [links addOrEquivalentInternalLinkReferenceWithFirstSheetIndex:sheetIndex lastSheetIndex:sheetIndex];
           }
 
           else
@@ -495,10 +495,10 @@ LABEL_46:
 
 - (BOOL)isConstantStringFormula
 {
-  v3 = [(EDFormula *)self tokenCount];
-  if (v3)
+  tokenCount = [(EDFormula *)self tokenCount];
+  if (tokenCount)
   {
-    v4 = v3;
+    v4 = tokenCount;
     v5 = 0;
     while (1)
     {
@@ -511,24 +511,24 @@ LABEL_46:
       v5 = (v5 + 1);
       if (!--v4)
       {
-        LOBYTE(v3) = 1;
-        return v3;
+        LOBYTE(tokenCount) = 1;
+        return tokenCount;
       }
     }
 
-    LOBYTE(v3) = 0;
+    LOBYTE(tokenCount) = 0;
   }
 
-  return v3;
+  return tokenCount;
 }
 
 - (id)constantValuesFromConstantStringFormula
 {
-  v3 = [(EDFormula *)self tokenCount];
-  if (v3)
+  tokenCount = [(EDFormula *)self tokenCount];
+  if (tokenCount)
   {
-    v4 = v3;
-    v5 = 0;
+    v4 = tokenCount;
+    array = 0;
     v6 = 0;
     while (1)
     {
@@ -541,15 +541,15 @@ LABEL_46:
           goto LABEL_14;
         }
 
-        if (!v5)
+        if (!array)
         {
-          v5 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
         }
 
         v12 = 0;
         OcTextFromPtgStrBuffer = extractOcTextFromPtgStrBuffer([(EDFormula *)self lastExtendedDataForTokenAtIndex:v6 length:&v12]);
         v9 = [MEMORY[0x277CCACA8] stringWithOcText:OcTextFromPtgStrBuffer];
-        [v5 addObject:v9];
+        [array addObject:v9];
 
         if (OcTextFromPtgStrBuffer)
         {
@@ -565,10 +565,10 @@ LABEL_46:
     }
   }
 
-  v5 = 0;
+  array = 0;
 LABEL_12:
-  v5 = v5;
-  v10 = v5;
+  array = array;
+  v10 = array;
 LABEL_14:
 
   return v10;

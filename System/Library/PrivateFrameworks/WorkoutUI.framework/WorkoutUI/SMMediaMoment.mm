@@ -9,7 +9,7 @@
 
 - (double)startTime
 {
-  v2 = self;
+  selfCopy = self;
   MediaMoment.startTime.getter();
   v4 = v3;
 
@@ -18,7 +18,7 @@
 
 - (double)duration
 {
-  v2 = self;
+  selfCopy = self;
   MediaMoment.duration.getter();
   v4 = v3;
 
@@ -31,7 +31,7 @@
   v4 = *(v3 - 8);
   MEMORY[0x28223BE20](v3);
   v6 = &v12 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   MediaMoment.artwork.getter();
   v8 = type metadata accessor for ArtworkBridge();
   v9 = objc_allocWithZone(v8);

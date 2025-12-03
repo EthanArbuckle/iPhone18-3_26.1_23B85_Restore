@@ -1,43 +1,43 @@
 @interface CRCTLDDelegateTablesCoarse
-+ (id)delegateWithTableGroups:(id)a3 textRegions:(id)a4;
-- (CRCTLDDelegateTablesCoarse)initWithTableGroups:(id)a3 textRegions:(id)a4;
-- (id)groupWithQuad:(id)a3 layoutDirection:(unint64_t)a4 subregions:(id)a5;
-- (id)tableForRegion:(id)a3 outCell:(id *)a4;
-- (int64_t)groupingConstraintForRegion1:(id)a3 region2:(id)a4;
++ (id)delegateWithTableGroups:(id)groups textRegions:(id)regions;
+- (CRCTLDDelegateTablesCoarse)initWithTableGroups:(id)groups textRegions:(id)regions;
+- (id)groupWithQuad:(id)quad layoutDirection:(unint64_t)direction subregions:(id)subregions;
+- (id)tableForRegion:(id)region outCell:(id *)cell;
+- (int64_t)groupingConstraintForRegion1:(id)region1 region2:(id)region2;
 @end
 
 @implementation CRCTLDDelegateTablesCoarse
 
-- (CRCTLDDelegateTablesCoarse)initWithTableGroups:(id)a3 textRegions:(id)a4
+- (CRCTLDDelegateTablesCoarse)initWithTableGroups:(id)groups textRegions:(id)regions
 {
-  v7 = a3;
-  v8 = a4;
+  groupsCopy = groups;
+  regionsCopy = regions;
   v12.receiver = self;
   v12.super_class = CRCTLDDelegateTablesCoarse;
   v9 = [(CRCTLDDelegateTablesCoarse *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_tableGroups, a3);
-    objc_storeStrong(&v10->_textRegions, a4);
+    objc_storeStrong(&v9->_tableGroups, groups);
+    objc_storeStrong(&v10->_textRegions, regions);
   }
 
   return v10;
 }
 
-+ (id)delegateWithTableGroups:(id)a3 textRegions:(id)a4
++ (id)delegateWithTableGroups:(id)groups textRegions:(id)regions
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[a1 alloc] initWithTableGroups:v6 textRegions:v7];
+  groupsCopy = groups;
+  regionsCopy = regions;
+  v8 = [[self alloc] initWithTableGroups:groupsCopy textRegions:regionsCopy];
 
   return v8;
 }
 
-- (id)tableForRegion:(id)a3 outCell:(id *)a4
+- (id)tableForRegion:(id)region outCell:(id *)cell
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  regionCopy = region;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -62,8 +62,8 @@
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v9 = [v8 cells];
-        v10 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        cells = [v8 cells];
+        v10 = [cells countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v10)
         {
           v11 = *v24;
@@ -73,19 +73,19 @@
             {
               if (*v24 != v11)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(cells);
               }
 
               v13 = *(*(&v23 + 1) + 8 * j);
-              v14 = [v13 subregions];
-              v15 = [v14 containsObject:v5];
+              subregions = [v13 subregions];
+              v15 = [subregions containsObject:regionCopy];
 
               if (v15)
               {
-                if (a4)
+                if (cell)
                 {
                   v17 = v13;
-                  *a4 = v13;
+                  *cell = v13;
                 }
 
                 v16 = v8;
@@ -94,7 +94,7 @@
               }
             }
 
-            v10 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+            v10 = [cells countByEnumeratingWithState:&v23 objects:v31 count:16];
             if (v10)
             {
               continue;
@@ -122,11 +122,11 @@ LABEL_21:
   return v16;
 }
 
-- (int64_t)groupingConstraintForRegion1:(id)a3 region2:(id)a4
+- (int64_t)groupingConstraintForRegion1:(id)region1 region2:(id)region2
 {
-  v6 = a4;
-  v7 = [(CRCTLDDelegateTablesCoarse *)self tableForRegion:a3 outCell:0];
-  v8 = [(CRCTLDDelegateTablesCoarse *)self tableForRegion:v6 outCell:0];
+  region2Copy = region2;
+  v7 = [(CRCTLDDelegateTablesCoarse *)self tableForRegion:region1 outCell:0];
+  v8 = [(CRCTLDDelegateTablesCoarse *)self tableForRegion:region2Copy outCell:0];
   v9 = 1;
   if (v7 == v8)
   {
@@ -146,14 +146,14 @@ LABEL_21:
   return v10;
 }
 
-- (id)groupWithQuad:(id)a3 layoutDirection:(unint64_t)a4 subregions:(id)a5
+- (id)groupWithQuad:(id)quad layoutDirection:(unint64_t)direction subregions:(id)subregions
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v9 count])
+  quadCopy = quad;
+  subregionsCopy = subregions;
+  if ([subregionsCopy count])
   {
-    v10 = [v9 firstObject];
-    v11 = [(CRCTLDDelegateTablesCoarse *)self tableForRegion:v10 outCell:0];
+    firstObject = [subregionsCopy firstObject];
+    v11 = [(CRCTLDDelegateTablesCoarse *)self tableForRegion:firstObject outCell:0];
 
     if (v11)
     {
@@ -162,7 +162,7 @@ LABEL_21:
 
     else
     {
-      v12 = [[CRGroupRegion alloc] initWithBoundingQuad:v8 layoutDirection:a4 subregions:v9];
+      v12 = [[CRGroupRegion alloc] initWithBoundingQuad:quadCopy layoutDirection:direction subregions:subregionsCopy];
     }
 
     v13 = v12;
@@ -170,7 +170,7 @@ LABEL_21:
 
   else
   {
-    v13 = [[CRGroupRegion alloc] initWithBoundingQuad:v8 layoutDirection:a4 subregions:v9];
+    v13 = [[CRGroupRegion alloc] initWithBoundingQuad:quadCopy layoutDirection:direction subregions:subregionsCopy];
   }
 
   return v13;

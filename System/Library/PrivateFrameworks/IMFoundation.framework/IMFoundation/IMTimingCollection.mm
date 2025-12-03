@@ -1,11 +1,11 @@
 @interface IMTimingCollection
-- (BOOL)hasKey:(id)a3;
+- (BOOL)hasKey:(id)key;
 - (IMTimingCollection)init;
-- (double)totalTimeForKey:(id)a3;
+- (double)totalTimeForKey:(id)key;
 - (id)description;
-- (void)removeTimingForKey:(id)a3;
-- (void)startTimingForKey:(id)a3;
-- (void)stopTimingForKey:(id)a3;
+- (void)removeTimingForKey:(id)key;
+- (void)startTimingForKey:(id)key;
+- (void)stopTimingForKey:(id)key;
 @end
 
 @implementation IMTimingCollection
@@ -36,40 +36,40 @@
   return v5;
 }
 
-- (void)startTimingForKey:(id)a3
+- (void)startTimingForKey:(id)key
 {
-  v11 = a3;
+  keyCopy = key;
   v4 = IMTimeOfDay();
   os_unfair_lock_lock(&self->_lock);
-  v8 = objc_msgSend_objectForKey_(self->_timings, v5, v11);
+  v8 = objc_msgSend_objectForKey_(self->_timings, v5, keyCopy);
   if (!v8)
   {
     *&v9 = v4;
     v8 = objc_msgSend_createTimingInstanceWithStartTime_(_IMTimingInstance, v6, v7, v9);
-    objc_msgSend_setObject_forKey_(self->_timings, v10, v8, v11);
+    objc_msgSend_setObject_forKey_(self->_timings, v10, v8, keyCopy);
   }
 
   objc_msgSend_startUsingTime_(v8, v6, v7, v4);
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)stopTimingForKey:(id)a3
+- (void)stopTimingForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = IMTimeOfDay();
   os_unfair_lock_lock(&self->_lock);
-  v7 = objc_msgSend_objectForKey_(self->_timings, v6, v4);
+  v7 = objc_msgSend_objectForKey_(self->_timings, v6, keyCopy);
 
   objc_msgSend_stopUsingTime_(v7, v8, v9, v5);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (double)totalTimeForKey:(id)a3
+- (double)totalTimeForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v6 = objc_msgSend_objectForKey_(self->_timings, v5, v4);
+  v6 = objc_msgSend_objectForKey_(self->_timings, v5, keyCopy);
 
   objc_msgSend_totalTime(v6, v7, v8);
   v10 = v9;
@@ -78,20 +78,20 @@
   return v10;
 }
 
-- (void)removeTimingForKey:(id)a3
+- (void)removeTimingForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  objc_msgSend_removeObjectForKey_(self->_timings, v5, v4);
+  objc_msgSend_removeObjectForKey_(self->_timings, v5, keyCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)hasKey:(id)a3
+- (BOOL)hasKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v6 = objc_msgSend_objectForKey_(self->_timings, v5, v4);
+  v6 = objc_msgSend_objectForKey_(self->_timings, v5, keyCopy);
 
   os_unfair_lock_unlock(&self->_lock);
   return v6 != 0;

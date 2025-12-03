@@ -1,11 +1,11 @@
 @interface ICNoteEditorNavigationItemConfiguration
 - (BOOL)canShowToolbar;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)updateAnimated:(BOOL)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)updateAnimated:(BOOL)animated;
 - (BOOL)usesUndoRedoMenu;
 - (ICMediaActionMenu)mediaActionMenu;
 - (ICNoteEditorContextualInputAccessoryView)contextualInputAccessoryView;
-- (ICNoteEditorNavigationItemConfiguration)initWithDataSource:(id)a3 delegate:(id)a4;
+- (ICNoteEditorNavigationItemConfiguration)initWithDataSource:(id)source delegate:(id)delegate;
 - (ICNoteEditorNavigationItemConfigurationDataSource)dataSource;
 - (ICNoteEditorNavigationItemConfigurationDelegate)delegate;
 - (ICNoteEditorPillOrnamentBarButtonItem)checklistBarButtonItem;
@@ -75,56 +75,56 @@
 - (UIView)presentingSourceView;
 - (UIViewController)presentingViewController;
 - (UIWindowScene)presentingWindowScene;
-- (id)accessibilityCustomContentFor:(id)a3;
+- (id)accessibilityCustomContentFor:(id)for;
 - (id)toolbarButtonConfiguration;
 - (id)toolbarItemSource;
-- (id)undoRedoButtonWithImageName:(id)a3 title:(id)a4 selector:(SEL)a5;
+- (id)undoRedoButtonWithImageName:(id)name title:(id)title selector:(SEL)selector;
 - (unint64_t)hash;
-- (void)addNoteAction:(id)a3 event:(id)a4;
-- (void)backAction:(id)a3;
-- (void)blockQuoteAction:(id)a3;
-- (void)boldAction:(id)a3;
-- (void)checklistAction:(id)a3;
-- (void)closeAuxiliaryWindowAction:(id)a3;
+- (void)addNoteAction:(id)action event:(id)event;
+- (void)backAction:(id)action;
+- (void)blockQuoteAction:(id)action;
+- (void)boldAction:(id)action;
+- (void)checklistAction:(id)action;
+- (void)closeAuxiliaryWindowAction:(id)action;
 - (void)dealloc;
-- (void)deleteAction:(id)a3;
-- (void)doneAction:(id)a3;
-- (void)emphasisAction:(id)a3 colorType:(int64_t)a4;
-- (void)inlineSketchAction:(id)a3;
-- (void)italicAction:(id)a3;
-- (void)leftIndentAction:(id)a3;
-- (void)linkAction:(id)a3;
-- (void)lockAction:(id)a3;
-- (void)moveAction:(id)a3;
-- (void)moveDownAction:(id)a3;
-- (void)moveUpAction:(id)a3;
-- (void)performInlineSketchAnimation:(id)a3;
-- (void)photoLibraryAction:(id)a3;
-- (void)quickNoteAllNotesAction:(id)a3;
-- (void)quickNoteCancelAction:(id)a3;
-- (void)quickNoteSaveAction:(id)a3;
-- (void)redoAction:(id)a3;
+- (void)deleteAction:(id)action;
+- (void)doneAction:(id)action;
+- (void)emphasisAction:(id)action colorType:(int64_t)type;
+- (void)inlineSketchAction:(id)action;
+- (void)italicAction:(id)action;
+- (void)leftIndentAction:(id)action;
+- (void)linkAction:(id)action;
+- (void)lockAction:(id)action;
+- (void)moveAction:(id)action;
+- (void)moveDownAction:(id)action;
+- (void)moveUpAction:(id)action;
+- (void)performInlineSketchAnimation:(id)animation;
+- (void)photoLibraryAction:(id)action;
+- (void)quickNoteAllNotesAction:(id)action;
+- (void)quickNoteCancelAction:(id)action;
+- (void)quickNoteSaveAction:(id)action;
+- (void)redoAction:(id)action;
 - (void)reset;
-- (void)rightIndentAction:(id)a3;
-- (void)setForceHideToolbar:(BOOL)a3;
-- (void)shareAction:(id)a3;
-- (void)sidebarAction:(id)a3;
-- (void)strikethroughAction:(id)a3;
-- (void)styleAction:(id)a3;
-- (void)tableAction:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)underlineAction:(id)a3;
-- (void)undoAction:(id)a3;
+- (void)rightIndentAction:(id)action;
+- (void)setForceHideToolbar:(BOOL)toolbar;
+- (void)shareAction:(id)action;
+- (void)sidebarAction:(id)action;
+- (void)strikethroughAction:(id)action;
+- (void)styleAction:(id)action;
+- (void)tableAction:(id)action;
+- (void)textViewDidChange:(id)change;
+- (void)underlineAction:(id)action;
+- (void)undoAction:(id)action;
 - (void)updateBlockQuoteBarButtonItemImage;
-- (void)updateCompactAnimated:(BOOL)a3;
+- (void)updateCompactAnimated:(BOOL)animated;
 - (void)updateEnabled;
-- (void)updateFormatBarButtonsForChangeInTextView:(id)a3;
+- (void)updateFormatBarButtonsForChangeInTextView:(id)view;
 - (void)updateMenus;
-- (void)updateRegularAnimated:(BOOL)a3;
-- (void)updateSelectionInTextView:(id)a3;
+- (void)updateRegularAnimated:(BOOL)animated;
+- (void)updateSelectionInTextView:(id)view;
 - (void)updateTitlesAndImages;
-- (void)updateToolbarVisibilityAnimated:(BOOL)a3;
-- (void)writingToolsAction:(id)a3;
+- (void)updateToolbarVisibilityAnimated:(BOOL)animated;
+- (void)writingToolsAction:(id)action;
 @end
 
 @implementation ICNoteEditorNavigationItemConfiguration
@@ -159,10 +159,10 @@
 
   else
   {
-    v5 = [(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament];
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = v6;
-    if (v5)
+    usesPillOrnament = [(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v7 = mainBundle;
+    if (usesPillOrnament)
     {
       v8 = @"Create a note";
     }
@@ -172,7 +172,7 @@
       v8 = @"New Note";
     }
 
-    v9 = [v6 localizedStringForKey:v8 value:&stru_282757698 table:0];
+    v9 = [mainBundle localizedStringForKey:v8 value:&stru_282757698 table:0];
 
     v10 = objc_alloc(MEMORY[0x277D751E0]);
     v11 = [MEMORY[0x277D755B8] systemImageNamed:@"square.and.pencil"];
@@ -181,12 +181,12 @@
     self->_addNoteBarButtonItem = v12;
 
     [(UIBarButtonItem *)self->_addNoteBarButtonItem setSpringLoaded:1];
-    v14 = [MEMORY[0x277CCA8D8] mainBundle];
-    v15 = [v14 localizedStringForKey:@"New note" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v15 = [mainBundle2 localizedStringForKey:@"New note" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_addNoteBarButtonItem setAccessibilityLabel:v15];
 
-    v16 = [MEMORY[0x277CCA8D8] mainBundle];
-    v17 = [v16 localizedStringForKey:@"Double tap to compose a new note." value:&stru_282757698 table:0];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v17 = [mainBundle3 localizedStringForKey:@"Double tap to compose a new note." value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_addNoteBarButtonItem setAccessibilityHint:v17];
 
     [(UIBarButtonItem *)self->_addNoteBarButtonItem _setPrefersSeparatePlatter:1];
@@ -297,68 +297,68 @@
   v9 = 0;
 LABEL_8:
 
-  v12 = [(ICNoteEditorNavigationItemConfiguration *)self checklistAccessibilityValue];
-  v13 = [v12 hash];
+  checklistAccessibilityValue = [(ICNoteEditorNavigationItemConfiguration *)self checklistAccessibilityValue];
+  v13 = [checklistAccessibilityValue hash];
   if (!v13)
   {
-    v14 = [MEMORY[0x277CBEB68] null];
-    v13 = [v14 hash];
+    null = [MEMORY[0x277CBEB68] null];
+    v13 = [null hash];
   }
 
-  v71 = [(ICNoteEditorNavigationItemConfiguration *)self indentationAccessibilityValue];
-  if (![v71 hash])
+  indentationAccessibilityValue = [(ICNoteEditorNavigationItemConfiguration *)self indentationAccessibilityValue];
+  if (![indentationAccessibilityValue hash])
   {
-    v15 = [MEMORY[0x277CBEB68] null];
-    [v15 hash];
+    null2 = [MEMORY[0x277CBEB68] null];
+    [null2 hash];
   }
 
   v69 = v13;
-  v67 = [(ICNoteEditorNavigationItemConfiguration *)self emphasisAccessibilityCustomContentValue];
-  if (![v67 hash])
+  emphasisAccessibilityCustomContentValue = [(ICNoteEditorNavigationItemConfiguration *)self emphasisAccessibilityCustomContentValue];
+  if (![emphasisAccessibilityCustomContentValue hash])
   {
-    v16 = [MEMORY[0x277CBEB68] null];
-    [v16 hash];
+    null3 = [MEMORY[0x277CBEB68] null];
+    [null3 hash];
   }
 
-  v64 = [(ICNoteEditorNavigationItemConfiguration *)self collaborationBarButtonItem];
-  if (![v64 hash])
+  collaborationBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self collaborationBarButtonItem];
+  if (![collaborationBarButtonItem hash])
   {
-    v17 = [MEMORY[0x277CBEB68] null];
-    [v17 hash];
+    null4 = [MEMORY[0x277CBEB68] null];
+    [null4 hash];
   }
 
-  v18 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-  if (![v18 hash])
+  inputAssistantItem = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+  if (![inputAssistantItem hash])
   {
     [MEMORY[0x277CBEB68] null];
-    v20 = v19 = v18;
+    v20 = v19 = inputAssistantItem;
     [v20 hash];
 
-    v18 = v19;
+    inputAssistantItem = v19;
   }
 
-  v61 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
-  if (![v61 hash])
+  contextualInputAccessoryView = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
+  if (![contextualInputAccessoryView hash])
   {
-    v21 = [MEMORY[0x277CBEB68] null];
-    [v21 hash];
+    null5 = [MEMORY[0x277CBEB68] null];
+    [null5 hash];
   }
 
-  v22 = [(ICNoteEditorNavigationItemConfiguration *)self inputAccessoryToolbar];
-  if (![v22 hash])
+  inputAccessoryToolbar = [(ICNoteEditorNavigationItemConfiguration *)self inputAccessoryToolbar];
+  if (![inputAccessoryToolbar hash])
   {
-    v23 = [MEMORY[0x277CBEB68] null];
-    [v23 hash];
+    null6 = [MEMORY[0x277CBEB68] null];
+    [null6 hash];
   }
 
-  v24 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
-  if (![v24 hash])
+  toolbarItemSource = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
+  if (![toolbarItemSource hash])
   {
     [MEMORY[0x277CBEB68] null];
-    v33 = v32 = v12;
+    v33 = v32 = checklistAccessibilityValue;
     [v33 hash];
 
-    v12 = v32;
+    checklistAccessibilityValue = v32;
   }
 
   v34 = ICHashWithHashKeys(v9, v25, v26, v27, v28, v29, v30, v31, v69);
@@ -368,8 +368,8 @@ LABEL_8:
 
 - (NSString)checklistAccessibilityValue
 {
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
-  v4 = [v3 noteEditorNavigationItemConfigurationChecklistAccessibilityValue:self];
+  dataSource = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
+  v4 = [dataSource noteEditorNavigationItemConfigurationChecklistAccessibilityValue:self];
 
   return v4;
 }
@@ -383,72 +383,72 @@ LABEL_8:
 
 - (NSString)indentationAccessibilityValue
 {
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
-  v4 = [v3 noteEditorNavigationItemConfigurationIndentationAccessibilityValue:self];
+  dataSource = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
+  v4 = [dataSource noteEditorNavigationItemConfigurationIndentationAccessibilityValue:self];
 
   return v4;
 }
 
 - (NSString)emphasisAccessibilityCustomContentValue
 {
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
-  v4 = [v3 noteEditorNavigationItemConfigurationEmphasisAccessibilityCustomContentValue:self];
+  dataSource = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
+  v4 = [dataSource noteEditorNavigationItemConfigurationEmphasisAccessibilityCustomContentValue:self];
 
   return v4;
 }
 
 - (UIBarButtonItem)collaborationBarButtonItem
 {
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
-  v4 = [v3 noteEditorNavigationItemConfigurationCollaborationBarButtonItem:self];
+  dataSource = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
+  v4 = [dataSource noteEditorNavigationItemConfigurationCollaborationBarButtonItem:self];
 
   return v4;
 }
 
 - (UITextInputAssistantItem)inputAssistantItem
 {
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
-  v4 = [v3 noteEditorNavigationItemConfigurationInputAssistantItem:self];
+  dataSource = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
+  v4 = [dataSource noteEditorNavigationItemConfigurationInputAssistantItem:self];
 
   return v4;
 }
 
 - (ICNoteEditorContextualInputAccessoryView)contextualInputAccessoryView
 {
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
-  v4 = [v3 noteEditorNavigationItemConfigurationContextualInputAccessoryView:self];
+  dataSource = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
+  v4 = [dataSource noteEditorNavigationItemConfigurationContextualInputAccessoryView:self];
 
   return v4;
 }
 
 - (UIToolbar)inputAccessoryToolbar
 {
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
-  v4 = [v3 noteEditorNavigationItemConfigurationInputAccessoryToolbar:self];
+  dataSource = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
+  v4 = [dataSource noteEditorNavigationItemConfigurationInputAccessoryToolbar:self];
 
   return v4;
 }
 
 - (id)toolbarItemSource
 {
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
-  v4 = [v3 noteEditorNavigationItemConfigurationToolbarItemSource:self];
+  dataSource = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
+  v4 = [dataSource noteEditorNavigationItemConfigurationToolbarItemSource:self];
 
   return v4;
 }
 
 - (UINavigationController)navigationController
 {
-  v2 = [(ICNoteEditorNavigationItemConfiguration *)self presentingViewController];
-  v3 = [v2 navigationController];
+  presentingViewController = [(ICNoteEditorNavigationItemConfiguration *)self presentingViewController];
+  navigationController = [presentingViewController navigationController];
 
-  return v3;
+  return navigationController;
 }
 
 - (UIViewController)presentingViewController
 {
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
-  v4 = [v3 noteEditorNavigationItemConfigurationPresentingViewController:self];
+  dataSource = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
+  v4 = [dataSource noteEditorNavigationItemConfigurationPresentingViewController:self];
 
   return v4;
 }
@@ -470,10 +470,10 @@ LABEL_8:
 
 - (UINavigationItem)navigationItem
 {
-  v2 = [(ICNoteEditorNavigationItemConfiguration *)self presentingViewController];
-  v3 = [v2 navigationItem];
+  presentingViewController = [(ICNoteEditorNavigationItemConfiguration *)self presentingViewController];
+  navigationItem = [presentingViewController navigationItem];
 
-  return v3;
+  return navigationItem;
 }
 
 - (UIBarButtonItem)shareBarButtonItem
@@ -486,10 +486,10 @@ LABEL_8:
 
   else
   {
-    v5 = [(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament];
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = v6;
-    if (v5)
+    usesPillOrnament = [(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v7 = mainBundle;
+    if (usesPillOrnament)
     {
       v8 = @"Share this note";
     }
@@ -499,7 +499,7 @@ LABEL_8:
       v8 = @"Share";
     }
 
-    v9 = [v6 localizedStringForKey:v8 value:&stru_282757698 table:0];
+    v9 = [mainBundle localizedStringForKey:v8 value:&stru_282757698 table:0];
 
     v10 = objc_alloc(MEMORY[0x277D751E0]);
     v11 = [MEMORY[0x277D755B8] systemImageNamed:@"square.and.arrow.up"];
@@ -507,12 +507,12 @@ LABEL_8:
     v13 = self->_shareBarButtonItem;
     self->_shareBarButtonItem = v12;
 
-    v14 = [MEMORY[0x277CCA8D8] mainBundle];
-    v15 = [v14 localizedStringForKey:@"Share" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v15 = [mainBundle2 localizedStringForKey:@"Share" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_shareBarButtonItem setAccessibilityLabel:v15];
 
-    v16 = [MEMORY[0x277CCA8D8] mainBundle];
-    v17 = [v16 localizedStringForKey:@"Double tap to add people to the current note" value:&stru_282757698 table:0];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v17 = [mainBundle3 localizedStringForKey:@"Double tap to add people to the current note" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_shareBarButtonItem setAccessibilityHint:v17];
 
     v3 = self->_shareBarButtonItem;
@@ -550,13 +550,13 @@ LABEL_8:
   else
   {
     v5 = MEMORY[0x277D755B8];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v7 = [v5 systemImageNamed:@"checklist" withConfiguration:v6];
+    toolbarButtonConfiguration = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v7 = [v5 systemImageNamed:@"checklist" withConfiguration:toolbarButtonConfiguration];
 
-    LODWORD(v6) = [(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament];
-    v8 = [MEMORY[0x277CCA8D8] mainBundle];
-    v9 = v8;
-    if (v6)
+    LODWORD(toolbarButtonConfiguration) = [(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v9 = mainBundle;
+    if (toolbarButtonConfiguration)
     {
       v10 = @"Make a checklist";
     }
@@ -566,19 +566,19 @@ LABEL_8:
       v10 = @"Checklist";
     }
 
-    v11 = [v8 localizedStringForKey:v10 value:&stru_282757698 table:0];
+    v11 = [mainBundle localizedStringForKey:v10 value:&stru_282757698 table:0];
 
     v12 = [[ICNoteEditorPillOrnamentBarButtonItem alloc] initWithTitle:v11 image:v7 target:self action:sel_checklistAction_ menu:0];
     v13 = self->_checklistBarButtonItem;
     self->_checklistBarButtonItem = v12;
 
     [(ICNoteEditorPillOrnamentBarButtonItem *)self->_checklistBarButtonItem setUsedInPillOrnament:[(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament]];
-    v14 = [MEMORY[0x277CCA8D8] mainBundle];
-    v15 = [v14 localizedStringForKey:@"Checklist" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v15 = [mainBundle2 localizedStringForKey:@"Checklist" value:&stru_282757698 table:0];
     [(ICNoteEditorPillOrnamentBarButtonItem *)self->_checklistBarButtonItem setAccessibilityLabel:v15];
 
-    v16 = [MEMORY[0x277CCA8D8] mainBundle];
-    v17 = [v16 localizedStringForKey:@"Double tap to add a checklist to the current note." value:&stru_282757698 table:0];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v17 = [mainBundle3 localizedStringForKey:@"Double tap to add a checklist to the current note." value:&stru_282757698 table:0];
     [(ICNoteEditorPillOrnamentBarButtonItem *)self->_checklistBarButtonItem setAccessibilityHint:v17];
 
     v3 = self->_checklistBarButtonItem;
@@ -620,8 +620,8 @@ LABEL_8:
     v7 = [v5 systemImageNamed:@"pencil.tip.crop.circle" withConfiguration:v6];
 
     LODWORD(v6) = [(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament];
-    v8 = [MEMORY[0x277CCA8D8] mainBundle];
-    v9 = v8;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v9 = mainBundle;
     if (v6)
     {
       v10 = @"Drawing tools";
@@ -632,19 +632,19 @@ LABEL_8:
       v10 = @"Handwriting";
     }
 
-    v11 = [v8 localizedStringForKey:v10 value:&stru_282757698 table:0];
+    v11 = [mainBundle localizedStringForKey:v10 value:&stru_282757698 table:0];
 
     v12 = [[ICNoteEditorPillOrnamentBarButtonItem alloc] initWithTitle:v11 image:v7 target:self action:sel_inlineSketchAction_ menu:0];
     v13 = self->_inlineSketchBarButtonItem;
     self->_inlineSketchBarButtonItem = v12;
 
     [(ICNoteEditorPillOrnamentBarButtonItem *)self->_inlineSketchBarButtonItem setUsedInPillOrnament:[(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament]];
-    v14 = [MEMORY[0x277CCA8D8] mainBundle];
-    v15 = [v14 localizedStringForKey:@"Handwriting" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v15 = [mainBundle2 localizedStringForKey:@"Handwriting" value:&stru_282757698 table:0];
     [(ICNoteEditorPillOrnamentBarButtonItem *)self->_inlineSketchBarButtonItem setAccessibilityLabel:v15];
 
-    v16 = [MEMORY[0x277CCA8D8] mainBundle];
-    v17 = [v16 localizedStringForKey:@"Double tap to toggle the ink picker" value:&stru_282757698 table:0];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v17 = [mainBundle3 localizedStringForKey:@"Double tap to toggle the ink picker" value:&stru_282757698 table:0];
     [(ICNoteEditorPillOrnamentBarButtonItem *)self->_inlineSketchBarButtonItem setAccessibilityHint:v17];
 
     v3 = self->_inlineSketchBarButtonItem;
@@ -666,13 +666,13 @@ LABEL_8:
     else
     {
       v5 = MEMORY[0x277D755B8];
-      v6 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-      v7 = [v5 systemImageNamed:@"apple.writing.tools" withConfiguration:v6];
+      toolbarButtonConfiguration = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+      v7 = [v5 systemImageNamed:@"apple.writing.tools" withConfiguration:toolbarButtonConfiguration];
 
-      LODWORD(v6) = [(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament];
-      v8 = [MEMORY[0x277CCA8D8] mainBundle];
-      v9 = v8;
-      if (v6)
+      LODWORD(toolbarButtonConfiguration) = [(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v9 = mainBundle;
+      if (toolbarButtonConfiguration)
       {
         v10 = @"Use Writing Tools";
       }
@@ -682,18 +682,18 @@ LABEL_8:
         v10 = @"Writing Tools";
       }
 
-      v11 = [v8 localizedStringForKey:v10 value:&stru_282757698 table:0];
+      v11 = [mainBundle localizedStringForKey:v10 value:&stru_282757698 table:0];
 
       v12 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v11 image:v7 target:self action:sel_writingToolsAction_ menu:0];
       v13 = self->_writingToolsBarButtonItem;
       self->_writingToolsBarButtonItem = v12;
 
-      v14 = [MEMORY[0x277CCA8D8] mainBundle];
-      v15 = [v14 localizedStringForKey:@"Writing Tools" value:&stru_282757698 table:0];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v15 = [mainBundle2 localizedStringForKey:@"Writing Tools" value:&stru_282757698 table:0];
       [(UIBarButtonItem *)self->_writingToolsBarButtonItem setAccessibilityLabel:v15];
 
-      v16 = [MEMORY[0x277CCA8D8] mainBundle];
-      v17 = [v16 localizedStringForKey:@"Double tap to open the Writing Tools popover." value:&stru_282757698 table:0];
+      mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+      v17 = [mainBundle3 localizedStringForKey:@"Double tap to open the Writing Tools popover." value:&stru_282757698 table:0];
       [(UIBarButtonItem *)self->_writingToolsBarButtonItem setAccessibilityHint:v17];
 
       v4 = self->_writingToolsBarButtonItem;
@@ -716,8 +716,8 @@ LABEL_8:
     if (!pillOrnamentViewController)
     {
       v5 = [ICNoteEditorPillOrnamentViewController alloc];
-      v6 = [(ICNoteEditorNavigationItemConfiguration *)self presentingViewController];
-      v7 = [(ICNoteEditorPillOrnamentViewController *)v5 initWithRootViewController:v6];
+      presentingViewController = [(ICNoteEditorNavigationItemConfiguration *)self presentingViewController];
+      v7 = [(ICNoteEditorPillOrnamentViewController *)v5 initWithRootViewController:presentingViewController];
       v8 = self->_pillOrnamentViewController;
       self->_pillOrnamentViewController = v7;
 
@@ -738,61 +738,61 @@ LABEL_8:
 
 - (void)updateEnabled
 {
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self canAddNote];
-  v4 = [(ICNoteEditorNavigationItemConfiguration *)self addNoteBarButtonItem];
-  [v4 setEnabled:v3];
+  canAddNote = [(ICNoteEditorNavigationItemConfiguration *)self canAddNote];
+  addNoteBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self addNoteBarButtonItem];
+  [addNoteBarButtonItem setEnabled:canAddNote];
 
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self canUseWritingTools];
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
-  [v6 setEnabled:v5];
+  canUseWritingTools = [(ICNoteEditorNavigationItemConfiguration *)self canUseWritingTools];
+  writingToolsBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
+  [writingToolsBarButtonItem setEnabled:canUseWritingTools];
 
-  v7 = [(ICNoteEditorNavigationItemConfiguration *)self canAddChecklist];
-  v8 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
-  [v8 setEnabled:v7];
+  canAddChecklist = [(ICNoteEditorNavigationItemConfiguration *)self canAddChecklist];
+  checklistBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
+  [checklistBarButtonItem setEnabled:canAddChecklist];
 
-  v9 = [(ICNoteEditorNavigationItemConfiguration *)self canInlineSketch];
-  v10 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
-  [v10 setEnabled:v9];
+  canInlineSketch = [(ICNoteEditorNavigationItemConfiguration *)self canInlineSketch];
+  inlineSketchBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
+  [inlineSketchBarButtonItem setEnabled:canInlineSketch];
 
-  v11 = [(ICNoteEditorNavigationItemConfiguration *)self canAddMedia];
-  v12 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
-  [v12 setEnabled:v11];
+  canAddMedia = [(ICNoteEditorNavigationItemConfiguration *)self canAddMedia];
+  mediaBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
+  [mediaBarButtonItem setEnabled:canAddMedia];
 
-  v13 = [(ICNoteEditorNavigationItemConfiguration *)self canSaveQuickNote];
-  v14 = [(ICNoteEditorNavigationItemConfiguration *)self quickNoteSaveBarButtonItem];
-  [v14 setEnabled:v13];
+  canSaveQuickNote = [(ICNoteEditorNavigationItemConfiguration *)self canSaveQuickNote];
+  quickNoteSaveBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self quickNoteSaveBarButtonItem];
+  [quickNoteSaveBarButtonItem setEnabled:canSaveQuickNote];
 
-  v15 = [(ICNoteEditorNavigationItemConfiguration *)self canRedo];
-  v16 = [(ICNoteEditorNavigationItemConfiguration *)self redoBarButtonItem];
-  [v16 setEnabled:v15];
+  canRedo = [(ICNoteEditorNavigationItemConfiguration *)self canRedo];
+  redoBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self redoBarButtonItem];
+  [redoBarButtonItem setEnabled:canRedo];
 
-  v17 = [(ICNoteEditorNavigationItemConfiguration *)self canShare];
-  v18 = [(ICNoteEditorNavigationItemConfiguration *)self shareBarButtonItem];
-  [v18 setEnabled:v17];
+  canShare = [(ICNoteEditorNavigationItemConfiguration *)self canShare];
+  shareBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self shareBarButtonItem];
+  [shareBarButtonItem setEnabled:canShare];
 
-  v19 = [(ICNoteEditorNavigationItemConfiguration *)self canChangeStyle];
-  v20 = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
-  [v20 setEnabled:v19];
+  canChangeStyle = [(ICNoteEditorNavigationItemConfiguration *)self canChangeStyle];
+  styleBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
+  [styleBarButtonItem setEnabled:canChangeStyle];
 
-  v21 = [(ICNoteEditorNavigationItemConfiguration *)self canAddTable];
-  v22 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-  [v22 setEnabled:v21];
+  canAddTable = [(ICNoteEditorNavigationItemConfiguration *)self canAddTable];
+  tableBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+  [tableBarButtonItem setEnabled:canAddTable];
 
-  v23 = [(ICNoteEditorNavigationItemConfiguration *)self canUndo]|| [(ICNoteEditorNavigationItemConfiguration *)self usesUndoRedoMenu];
-  v24 = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
-  [v24 setEnabled:v23];
+  usesUndoRedoMenu = [(ICNoteEditorNavigationItemConfiguration *)self canUndo]|| [(ICNoteEditorNavigationItemConfiguration *)self usesUndoRedoMenu];
+  undoBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
+  [undoBarButtonItem setEnabled:usesUndoRedoMenu];
 
-  v25 = [(ICNoteEditorNavigationItemConfiguration *)self canAddLink];
-  v26 = [(ICNoteEditorNavigationItemConfiguration *)self linkBarButtonItem];
-  [v26 setEnabled:v25];
+  canAddLink = [(ICNoteEditorNavigationItemConfiguration *)self canAddLink];
+  linkBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self linkBarButtonItem];
+  [linkBarButtonItem setEnabled:canAddLink];
 
-  LODWORD(v25) = [(ICNoteEditorNavigationItemConfiguration *)self canUndo];
-  v27 = [(ICNoteEditorNavigationItemConfiguration *)self undoMenuItem];
-  [v27 setIc_disabled:v25 ^ 1];
+  LODWORD(canAddLink) = [(ICNoteEditorNavigationItemConfiguration *)self canUndo];
+  undoMenuItem = [(ICNoteEditorNavigationItemConfiguration *)self undoMenuItem];
+  [undoMenuItem setIc_disabled:canAddLink ^ 1];
 
-  LODWORD(v25) = [(ICNoteEditorNavigationItemConfiguration *)self canRedo];
-  v28 = [(ICNoteEditorNavigationItemConfiguration *)self redoMenuItem];
-  [v28 setIc_disabled:v25 ^ 1];
+  LODWORD(canAddLink) = [(ICNoteEditorNavigationItemConfiguration *)self canRedo];
+  redoMenuItem = [(ICNoteEditorNavigationItemConfiguration *)self redoMenuItem];
+  [redoMenuItem setIc_disabled:canAddLink ^ 1];
 }
 
 - (UIBarButtonItem)quickNoteSaveBarButtonItem
@@ -823,8 +823,8 @@ LABEL_8:
 
   else
   {
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Redo" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Redo" value:&stru_282757698 table:0];
 
     v7 = [ICNoteEditorPillOrnamentBarButtonItem alloc];
     v8 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.uturn.forward"];
@@ -852,13 +852,13 @@ LABEL_8:
   else
   {
     v5 = MEMORY[0x277D755B8];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v7 = [v5 systemImageNamed:@"textformat.alt" withConfiguration:v6];
+    toolbarButtonConfiguration = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v7 = [v5 systemImageNamed:@"textformat.alt" withConfiguration:toolbarButtonConfiguration];
 
-    LODWORD(v6) = [(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament];
-    v8 = [MEMORY[0x277CCA8D8] mainBundle];
-    v9 = v8;
-    if (v6)
+    LODWORD(toolbarButtonConfiguration) = [(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v9 = mainBundle;
+    if (toolbarButtonConfiguration)
     {
       v10 = @"Choose a style to apply to text";
     }
@@ -868,7 +868,7 @@ LABEL_8:
       v10 = @"Format";
     }
 
-    v11 = [v8 localizedStringForKey:v10 value:&stru_282757698 table:0];
+    v11 = [mainBundle localizedStringForKey:v10 value:&stru_282757698 table:0];
 
     v12 = [ICNoteEditorPillOrnamentBarButtonItem alloc];
     if ([(ICNoteEditorNavigationItemConfiguration *)self usesStyleMenu])
@@ -886,12 +886,12 @@ LABEL_8:
     self->_styleBarButtonItem = v14;
 
     [(ICNoteEditorPillOrnamentBarButtonItem *)self->_styleBarButtonItem setUsedInPillOrnament:[(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament]];
-    v16 = [MEMORY[0x277CCA8D8] mainBundle];
-    v17 = [v16 localizedStringForKey:@"Format" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v17 = [mainBundle2 localizedStringForKey:@"Format" value:&stru_282757698 table:0];
     [(ICNoteEditorPillOrnamentBarButtonItem *)self->_styleBarButtonItem setAccessibilityLabel:v17];
 
-    v18 = [MEMORY[0x277CCA8D8] mainBundle];
-    v19 = [v18 localizedStringForKey:@"Double tap to choose a style to apply to text." value:&stru_282757698 table:0];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v19 = [mainBundle3 localizedStringForKey:@"Double tap to choose a style to apply to text." value:&stru_282757698 table:0];
     [(ICNoteEditorPillOrnamentBarButtonItem *)self->_styleBarButtonItem setAccessibilityHint:v19];
 
     v3 = self->_styleBarButtonItem;
@@ -911,13 +911,13 @@ LABEL_8:
   else
   {
     v5 = MEMORY[0x277D755B8];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v7 = [v5 systemImageNamed:@"table" withConfiguration:v6];
+    toolbarButtonConfiguration = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v7 = [v5 systemImageNamed:@"table" withConfiguration:toolbarButtonConfiguration];
 
-    LODWORD(v6) = [(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament];
-    v8 = [MEMORY[0x277CCA8D8] mainBundle];
-    v9 = v8;
-    if (v6)
+    LODWORD(toolbarButtonConfiguration) = [(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v9 = mainBundle;
+    if (toolbarButtonConfiguration)
     {
       v10 = @"Add a table";
     }
@@ -927,7 +927,7 @@ LABEL_8:
       v10 = @"Table";
     }
 
-    v11 = [v8 localizedStringForKey:v10 value:&stru_282757698 table:0];
+    v11 = [mainBundle localizedStringForKey:v10 value:&stru_282757698 table:0];
 
     v12 = [[ICNoteEditorPillOrnamentBarButtonItem alloc] initWithTitle:v11 image:v7 target:self action:sel_tableAction_ menu:0];
     v13 = self->_tableBarButtonItem;
@@ -960,8 +960,8 @@ LABEL_8:
 
   else
   {
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Undo" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Undo" value:&stru_282757698 table:0];
 
     v7 = [ICNoteEditorPillOrnamentBarButtonItem alloc];
     v8 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.uturn.backward"];
@@ -980,8 +980,8 @@ LABEL_8:
 
 - (void)updateMenus
 {
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItemMenu];
-  if (v3)
+  mediaBarButtonItemMenu = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItemMenu];
+  if (mediaBarButtonItemMenu)
   {
     v4 = 0;
   }
@@ -991,12 +991,12 @@ LABEL_8:
     v4 = sel_photoLibraryAction_;
   }
 
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
-  [v5 setAction:v4];
+  mediaBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
+  [mediaBarButtonItem setAction:v4];
 
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItemMenu];
-  v7 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
-  [v7 setMenu:v6];
+  mediaBarButtonItemMenu2 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItemMenu];
+  mediaBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
+  [mediaBarButtonItem2 setMenu:mediaBarButtonItemMenu2];
 
   if ([(ICNoteEditorNavigationItemConfiguration *)self isEditingTable])
   {
@@ -1008,53 +1008,53 @@ LABEL_8:
     v8 = sel_tableAction_;
   }
 
-  v9 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-  [v9 setAction:v8];
+  tableBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+  [tableBarButtonItem setAction:v8];
 
-  v10 = [(ICNoteEditorNavigationItemConfiguration *)self isEditingTable];
-  if (v10)
+  isEditingTable = [(ICNoteEditorNavigationItemConfiguration *)self isEditingTable];
+  if (isEditingTable)
   {
-    v11 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItemMenu];
+    tableBarButtonItemMenu = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItemMenu];
   }
 
   else
   {
-    v11 = 0;
+    tableBarButtonItemMenu = 0;
   }
 
-  v12 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-  [v12 setMenu:v11];
+  tableBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+  [tableBarButtonItem2 setMenu:tableBarButtonItemMenu];
 
-  if (v10)
+  if (isEditingTable)
   {
   }
 
-  v13 = [(ICNoteEditorNavigationItemConfiguration *)self usesStyleMenu];
-  v14 = [(ICNoteEditorNavigationItemConfiguration *)self styleSelectorViewController];
-  v15 = v14;
-  if (v13)
+  usesStyleMenu = [(ICNoteEditorNavigationItemConfiguration *)self usesStyleMenu];
+  styleSelectorViewController = [(ICNoteEditorNavigationItemConfiguration *)self styleSelectorViewController];
+  v15 = styleSelectorViewController;
+  if (usesStyleMenu)
   {
-    [v14 makeInlineMenu];
+    [styleSelectorViewController makeInlineMenu];
   }
 
   else
   {
-    [v14 makeShortcutMenu];
+    [styleSelectorViewController makeShortcutMenu];
   }
   v22 = ;
 
-  v16 = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
-  [v16 setMenu:v22];
+  styleBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
+  [styleBarButtonItem setMenu:v22];
 
   objc_opt_class();
-  v17 = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
-  v18 = [v17 customView];
+  undoBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
+  customView = [undoBarButtonItem customView];
   v19 = ICDynamicCast();
 
   if ([(ICNoteEditorNavigationItemConfiguration *)self usesUndoRedoMenu])
   {
-    v20 = [(ICNoteEditorNavigationItemConfiguration *)self undoRedoMenu];
-    [v19 setMenu:v20];
+    undoRedoMenu = [(ICNoteEditorNavigationItemConfiguration *)self undoRedoMenu];
+    [v19 setMenu:undoRedoMenu];
   }
 
   else
@@ -1082,14 +1082,14 @@ LABEL_8:
     if (![(ICNoteEditorNavigationItemConfiguration *)self usesSidecarMenu])
     {
 LABEL_6:
-      v5 = [(ICNoteEditorNavigationItemConfiguration *)self mediaActionMenu];
-      v6 = [v5 makeMenu];
+      mediaActionMenu = [(ICNoteEditorNavigationItemConfiguration *)self mediaActionMenu];
+      makeMenu = [mediaActionMenu makeMenu];
 
       goto LABEL_8;
     }
 
-    v3 = [(ICNoteEditorNavigationItemConfiguration *)self mediaActionMenu];
-    if ([v3 hasSidecarMenuItems])
+    mediaActionMenu2 = [(ICNoteEditorNavigationItemConfiguration *)self mediaActionMenu];
+    if ([mediaActionMenu2 hasSidecarMenuItems])
     {
 
       goto LABEL_6;
@@ -1103,28 +1103,28 @@ LABEL_6:
     }
   }
 
-  v6 = 0;
+  makeMenu = 0;
 LABEL_8:
 
-  return v6;
+  return makeMenu;
 }
 
 - (ICMediaActionMenu)mediaActionMenu
 {
   objc_initWeak(&location, self);
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self lockState];
+  lockState = [(ICNoteEditorNavigationItemConfiguration *)self lockState];
   v4 = [ICMediaActionMenu alloc];
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self isInSecureScreen];
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self presentingViewController];
-  v7 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
-  v8 = [(ICNoteEditorNavigationItemConfiguration *)self presentingSourceView];
-  v9 = [(ICNoteEditorNavigationItemConfiguration *)self sidecarMenuController];
+  isInSecureScreen = [(ICNoteEditorNavigationItemConfiguration *)self isInSecureScreen];
+  presentingViewController = [(ICNoteEditorNavigationItemConfiguration *)self presentingViewController];
+  mediaBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
+  presentingSourceView = [(ICNoteEditorNavigationItemConfiguration *)self presentingSourceView];
+  sidecarMenuController = [(ICNoteEditorNavigationItemConfiguration *)self sidecarMenuController];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__ICNoteEditorNavigationItemConfiguration_mediaActionMenu__block_invoke;
   v12[3] = &unk_2781ADAC0;
   objc_copyWeak(&v13, &location);
-  v10 = [(ICMediaActionMenu *)v4 initWithIsPasswordProtected:v3 != 0 isInSecureScreen:v5 presentingViewController:v6 presentingBarButtonItem:v7 presentingSourceView:v8 sidecarMenuController:v9 completion:v12];
+  v10 = [(ICMediaActionMenu *)v4 initWithIsPasswordProtected:lockState != 0 isInSecureScreen:isInSecureScreen presentingViewController:presentingViewController presentingBarButtonItem:mediaBarButtonItem presentingSourceView:presentingSourceView sidecarMenuController:sidecarMenuController completion:v12];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -1134,8 +1134,8 @@ LABEL_8:
 
 - (UIView)presentingSourceView
 {
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
-  v4 = [v3 noteEditorNavigationItemConfigurationPresentingSourceView:self];
+  dataSource = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
+  v4 = [dataSource noteEditorNavigationItemConfigurationPresentingSourceView:self];
 
   return v4;
 }
@@ -1166,11 +1166,11 @@ LABEL_8:
     objc_destroyWeak(&location);
   }
 
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self presentingViewController];
-  [(ICSidecarInsertMenuController *)self->_sidecarMenuController setPresentingViewController:v5];
+  presentingViewController = [(ICNoteEditorNavigationItemConfiguration *)self presentingViewController];
+  [(ICSidecarInsertMenuController *)self->_sidecarMenuController setPresentingViewController:presentingViewController];
 
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self presentingSourceView];
-  [(ICSidecarInsertMenuController *)self->_sidecarMenuController setPresentingSourceView:v6];
+  presentingSourceView = [(ICNoteEditorNavigationItemConfiguration *)self presentingSourceView];
+  [(ICSidecarInsertMenuController *)self->_sidecarMenuController setPresentingSourceView:presentingSourceView];
 
   v7 = self->_sidecarMenuController;
 
@@ -1179,8 +1179,8 @@ LABEL_8:
 
 - (ICStyleSelectorViewController)styleSelectorViewController
 {
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
-  v4 = [v3 noteEditorNavigationItemConfigurationStyleSelectorViewController:self];
+  dataSource = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
+  v4 = [dataSource noteEditorNavigationItemConfigurationStyleSelectorViewController:self];
 
   return v4;
 }
@@ -1198,34 +1198,34 @@ LABEL_8:
   {
     v5 = MEMORY[0x277D750C8];
     v6 = MEMORY[0x277CCA8D8];
-    v7 = self;
-    v8 = [v6 mainBundle];
-    v9 = [v8 localizedStringForKey:@"Undo" value:&stru_282757698 table:0];
+    selfCopy = self;
+    mainBundle = [v6 mainBundle];
+    v9 = [mainBundle localizedStringForKey:@"Undo" value:&stru_282757698 table:0];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __55__ICNoteEditorNavigationItemConfiguration_undoRedoMenu__block_invoke;
     v23[3] = &unk_2781AC800;
-    v23[4] = v7;
+    v23[4] = selfCopy;
     v10 = [v5 ic_actionWithTitle:v9 imageName:@"arrow.uturn.backward" handler:v23];
-    [(ICNoteEditorNavigationItemConfiguration *)v7 setUndoMenuItem:v10];
+    [(ICNoteEditorNavigationItemConfiguration *)selfCopy setUndoMenuItem:v10];
 
     v11 = MEMORY[0x277D750C8];
-    v12 = [MEMORY[0x277CCA8D8] mainBundle];
-    v13 = [v12 localizedStringForKey:@"Redo" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v13 = [mainBundle2 localizedStringForKey:@"Redo" value:&stru_282757698 table:0];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __55__ICNoteEditorNavigationItemConfiguration_undoRedoMenu__block_invoke_2;
     v22[3] = &unk_2781AC800;
-    v22[4] = v7;
+    v22[4] = selfCopy;
     v14 = [v11 ic_actionWithTitle:v13 imageName:@"arrow.uturn.forward" handler:v22];
-    [(ICNoteEditorNavigationItemConfiguration *)v7 setRedoMenuItem:v14];
+    [(ICNoteEditorNavigationItemConfiguration *)selfCopy setRedoMenuItem:v14];
 
     v15 = MEMORY[0x277D75710];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __55__ICNoteEditorNavigationItemConfiguration_undoRedoMenu__block_invoke_3;
     v21[3] = &unk_2781ADA98;
-    v21[4] = v7;
+    v21[4] = selfCopy;
     v16 = [MEMORY[0x277D753F0] elementWithUncachedProvider:v21];
     v24[0] = v16;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
@@ -1241,94 +1241,94 @@ LABEL_8:
 
 - (void)updateTitlesAndImages
 {
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self checklistAccessibilityValue];
-  v4 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
-  [v4 setAccessibilityValue:v3];
+  checklistAccessibilityValue = [(ICNoteEditorNavigationItemConfiguration *)self checklistAccessibilityValue];
+  checklistBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
+  [checklistBarButtonItem setAccessibilityValue:checklistAccessibilityValue];
 
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self indentationAccessibilityValue];
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self leftIndentBarButtonItem];
-  [v6 setAccessibilityValue:v5];
+  indentationAccessibilityValue = [(ICNoteEditorNavigationItemConfiguration *)self indentationAccessibilityValue];
+  leftIndentBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self leftIndentBarButtonItem];
+  [leftIndentBarButtonItem setAccessibilityValue:indentationAccessibilityValue];
 
-  v7 = [(ICNoteEditorNavigationItemConfiguration *)self indentationAccessibilityValue];
-  v8 = [(ICNoteEditorNavigationItemConfiguration *)self rightIndentBarButtonItem];
-  [v8 setAccessibilityValue:v7];
+  indentationAccessibilityValue2 = [(ICNoteEditorNavigationItemConfiguration *)self indentationAccessibilityValue];
+  rightIndentBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self rightIndentBarButtonItem];
+  [rightIndentBarButtonItem setAccessibilityValue:indentationAccessibilityValue2];
 
   [(ICNoteEditorNavigationItemConfiguration *)self updateBlockQuoteBarButtonItemImage];
-  v9 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchEditingState];
+  inlineSketchEditingState = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchEditingState];
   v93 = 0;
-  if (v9 <= 1)
+  if (inlineSketchEditingState <= 1)
   {
-    if (v9)
+    if (inlineSketchEditingState)
     {
-      if (v9 != 1)
+      if (inlineSketchEditingState != 1)
       {
         goto LABEL_13;
       }
 
       v10 = MEMORY[0x277D755B8];
       v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v12 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-      v93 = [v10 imageNamed:@"pencil.tip.crop.circle.fill" inBundle:v11 withConfiguration:v12];
+      toolbarButtonConfiguration = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+      v93 = [v10 imageNamed:@"pencil.tip.crop.circle.fill" inBundle:v11 withConfiguration:toolbarButtonConfiguration];
 
-      v13 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchAnimationSelectorDelayer];
-      [v13 cancelPreviousFireRequests];
+      inlineSketchAnimationSelectorDelayer = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchAnimationSelectorDelayer];
+      [inlineSketchAnimationSelectorDelayer cancelPreviousFireRequests];
       goto LABEL_12;
     }
 
     v15 = MEMORY[0x277D755B8];
 LABEL_10:
-    v13 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v93 = [v15 systemImageNamed:@"pencil.tip.crop.circle" withConfiguration:v13];
+    inlineSketchAnimationSelectorDelayer = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v93 = [v15 systemImageNamed:@"pencil.tip.crop.circle" withConfiguration:inlineSketchAnimationSelectorDelayer];
     goto LABEL_12;
   }
 
-  if (v9 == 2)
+  if (inlineSketchEditingState == 2)
   {
     v17 = MEMORY[0x277D755B8];
     v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v19 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v93 = [v17 imageNamed:@"pencil.tip.crop.circle.fill" inBundle:v18 withConfiguration:v19];
+    toolbarButtonConfiguration2 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v93 = [v17 imageNamed:@"pencil.tip.crop.circle.fill" inBundle:v18 withConfiguration:toolbarButtonConfiguration2];
 
-    v13 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchAnimationSelectorDelayer];
-    [v13 requestFire];
+    inlineSketchAnimationSelectorDelayer = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchAnimationSelectorDelayer];
+    [inlineSketchAnimationSelectorDelayer requestFire];
     goto LABEL_12;
   }
 
-  if (v9 != 3)
+  if (inlineSketchEditingState != 3)
   {
     goto LABEL_13;
   }
 
-  v14 = [(ICNoteEditorNavigationItemConfiguration *)self isCompact];
+  isCompact = [(ICNoteEditorNavigationItemConfiguration *)self isCompact];
   v15 = MEMORY[0x277D755B8];
-  if (v14)
+  if (isCompact)
   {
     goto LABEL_10;
   }
 
-  v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v16 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-  v93 = [v15 imageNamed:@"pencil.tip.crop.circle.on" inBundle:v13 withConfiguration:v16];
+  inlineSketchAnimationSelectorDelayer = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+  toolbarButtonConfiguration3 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+  v93 = [v15 imageNamed:@"pencil.tip.crop.circle.on" inBundle:inlineSketchAnimationSelectorDelayer withConfiguration:toolbarButtonConfiguration3];
 
 LABEL_12:
 LABEL_13:
-  v20 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
-  [v20 setImage:v93];
+  inlineSketchBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
+  [inlineSketchBarButtonItem setImage:v93];
 
-  v21 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItemMenu];
+  mediaBarButtonItemMenu = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItemMenu];
 
-  v22 = [(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament];
-  v23 = [MEMORY[0x277CCA8D8] mainBundle];
-  v24 = v23;
+  usesPillOrnament = [(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v24 = mainBundle;
   v25 = @"Open the photo library";
   v26 = @"Add files, media, and more";
-  if (!v22)
+  if (!usesPillOrnament)
   {
     v25 = @"Photo Library";
     v26 = @"Attachments";
   }
 
-  if (v21)
+  if (mediaBarButtonItemMenu)
   {
     v27 = v26;
   }
@@ -1338,7 +1338,7 @@ LABEL_13:
     v27 = v25;
   }
 
-  if (v21)
+  if (mediaBarButtonItemMenu)
   {
     v28 = @"paperclip";
   }
@@ -1348,7 +1348,7 @@ LABEL_13:
     v28 = @"photo.on.rectangle";
   }
 
-  if (v21)
+  if (mediaBarButtonItemMenu)
   {
     v29 = @"Attachments";
   }
@@ -1358,7 +1358,7 @@ LABEL_13:
     v29 = @"Photo Library";
   }
 
-  if (v21)
+  if (mediaBarButtonItemMenu)
   {
     v30 = @"Double tap to add a photo or scan a document into the current note.";
   }
@@ -1368,60 +1368,60 @@ LABEL_13:
     v30 = @"Double tap to add a photo into the current note.";
   }
 
-  v31 = [v23 localizedStringForKey:v27 value:&stru_282757698 table:0];
+  v31 = [mainBundle localizedStringForKey:v27 value:&stru_282757698 table:0];
 
-  v32 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
-  [v32 setTitle:v31];
+  mediaBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
+  [mediaBarButtonItem setTitle:v31];
 
   v33 = MEMORY[0x277D755B8];
-  v34 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-  v35 = [v33 systemImageNamed:v28 withConfiguration:v34];
-  v36 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
-  [v36 setImage:v35];
+  toolbarButtonConfiguration4 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+  v35 = [v33 systemImageNamed:v28 withConfiguration:toolbarButtonConfiguration4];
+  mediaBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
+  [mediaBarButtonItem2 setImage:v35];
 
-  v37 = [MEMORY[0x277CCA8D8] mainBundle];
-  v38 = [v37 localizedStringForKey:v29 value:&stru_282757698 table:0];
-  v39 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
-  [v39 setAccessibilityLabel:v38];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v38 = [mainBundle2 localizedStringForKey:v29 value:&stru_282757698 table:0];
+  mediaBarButtonItem3 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
+  [mediaBarButtonItem3 setAccessibilityLabel:v38];
 
-  v40 = [MEMORY[0x277CCA8D8] mainBundle];
-  v41 = [v40 localizedStringForKey:v30 value:&stru_282757698 table:0];
-  v42 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
-  [v42 setAccessibilityHint:v41];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v41 = [mainBundle3 localizedStringForKey:v30 value:&stru_282757698 table:0];
+  mediaBarButtonItem4 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
+  [mediaBarButtonItem4 setAccessibilityHint:v41];
 
   if ([(ICNoteEditorNavigationItemConfiguration *)self isEditingTable])
   {
-    v43 = [MEMORY[0x277CCA8D8] mainBundle];
-    v44 = [v43 localizedStringForKey:@"Table Actions" value:&stru_282757698 table:0];
-    v45 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-    [v45 setTitle:v44];
+    mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+    v44 = [mainBundle4 localizedStringForKey:@"Table Actions" value:&stru_282757698 table:0];
+    tableBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+    [tableBarButtonItem setTitle:v44];
 
     v46 = MEMORY[0x277D755B8];
-    v47 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v48 = [v46 systemImageNamed:@"table.badge.more" withConfiguration:v47];
-    v49 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-    [v49 setImage:v48];
+    toolbarButtonConfiguration5 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v48 = [v46 systemImageNamed:@"table.badge.more" withConfiguration:toolbarButtonConfiguration5];
+    tableBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+    [tableBarButtonItem2 setImage:v48];
 
-    v50 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-    [v50 setImageInsets:{0.0, -5.0, 0.0, -5.0}];
+    tableBarButtonItem3 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+    [tableBarButtonItem3 setImageInsets:{0.0, -5.0, 0.0, -5.0}];
 
-    v51 = [MEMORY[0x277CCA8D8] mainBundle];
-    v52 = [v51 localizedStringForKey:@"Table Actions" value:&stru_282757698 table:0];
-    v53 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-    [v53 setAccessibilityLabel:v52];
+    mainBundle5 = [MEMORY[0x277CCA8D8] mainBundle];
+    v52 = [mainBundle5 localizedStringForKey:@"Table Actions" value:&stru_282757698 table:0];
+    tableBarButtonItem4 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+    [tableBarButtonItem4 setAccessibilityLabel:v52];
 
-    v54 = [MEMORY[0x277CCA8D8] mainBundle];
-    v55 = [v54 localizedStringForKey:@"Double tap to show the table actions menu." value:&stru_282757698 table:0];
-    v56 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-    [v56 setAccessibilityHint:v55];
+    mainBundle6 = [MEMORY[0x277CCA8D8] mainBundle];
+    mainBundle9 = [mainBundle6 localizedStringForKey:@"Double tap to show the table actions menu." value:&stru_282757698 table:0];
+    tableBarButtonItem5 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+    [tableBarButtonItem5 setAccessibilityHint:mainBundle9];
   }
 
   else
   {
-    v57 = [(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament];
-    v58 = [MEMORY[0x277CCA8D8] mainBundle];
-    v59 = v58;
-    if (v57)
+    usesPillOrnament2 = [(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament];
+    mainBundle7 = [MEMORY[0x277CCA8D8] mainBundle];
+    v59 = mainBundle7;
+    if (usesPillOrnament2)
     {
       v60 = @"Add a table";
     }
@@ -1431,62 +1431,62 @@ LABEL_13:
       v60 = @"Table";
     }
 
-    v54 = [v58 localizedStringForKey:v60 value:&stru_282757698 table:0];
+    mainBundle6 = [mainBundle7 localizedStringForKey:v60 value:&stru_282757698 table:0];
 
-    v61 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-    [v61 setTitle:v54];
+    tableBarButtonItem6 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+    [tableBarButtonItem6 setTitle:mainBundle6];
 
     v62 = MEMORY[0x277D755B8];
-    v63 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v64 = [v62 systemImageNamed:@"table" withConfiguration:v63];
-    v65 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-    [v65 setImage:v64];
+    toolbarButtonConfiguration6 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v64 = [v62 systemImageNamed:@"table" withConfiguration:toolbarButtonConfiguration6];
+    tableBarButtonItem7 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+    [tableBarButtonItem7 setImage:v64];
 
     v66 = *MEMORY[0x277D768C8];
     v67 = *(MEMORY[0x277D768C8] + 8);
     v68 = *(MEMORY[0x277D768C8] + 16);
     v69 = *(MEMORY[0x277D768C8] + 24);
-    v70 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-    [v70 setImageInsets:{v66, v67, v68, v69}];
+    tableBarButtonItem8 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+    [tableBarButtonItem8 setImageInsets:{v66, v67, v68, v69}];
 
-    v71 = [MEMORY[0x277CCA8D8] mainBundle];
-    v72 = [v71 localizedStringForKey:@"Table" value:&stru_282757698 table:0];
-    v73 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-    [v73 setAccessibilityLabel:v72];
+    mainBundle8 = [MEMORY[0x277CCA8D8] mainBundle];
+    v72 = [mainBundle8 localizedStringForKey:@"Table" value:&stru_282757698 table:0];
+    tableBarButtonItem9 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+    [tableBarButtonItem9 setAccessibilityLabel:v72];
 
-    v55 = [MEMORY[0x277CCA8D8] mainBundle];
-    v56 = [v55 localizedStringForKey:@"Double tap to add a table to the current note." value:&stru_282757698 table:0];
-    v74 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-    [v74 setAccessibilityHint:v56];
+    mainBundle9 = [MEMORY[0x277CCA8D8] mainBundle];
+    tableBarButtonItem5 = [mainBundle9 localizedStringForKey:@"Double tap to add a table to the current note." value:&stru_282757698 table:0];
+    tableBarButtonItem10 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+    [tableBarButtonItem10 setAccessibilityHint:tableBarButtonItem5];
   }
 
-  v75 = [(ICNoteEditorNavigationItemConfiguration *)self lockState];
-  if (v75 <= 2)
+  lockState = [(ICNoteEditorNavigationItemConfiguration *)self lockState];
+  if (lockState <= 2)
   {
-    v76 = off_2781ADB08[v75];
-    v77 = off_2781ADB20[v75];
-    v78 = off_2781ADB38[v75];
+    v76 = off_2781ADB08[lockState];
+    v77 = off_2781ADB20[lockState];
+    v78 = off_2781ADB38[lockState];
     v79 = MEMORY[0x277D755B8];
-    v80 = off_2781ADB50[v75];
-    v81 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v82 = [v79 systemImageNamed:v76 withConfiguration:v81];
-    v83 = [(ICNoteEditorNavigationItemConfiguration *)self lockBarButtonItem];
-    [v83 setImage:v82];
+    v80 = off_2781ADB50[lockState];
+    toolbarButtonConfiguration7 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v82 = [v79 systemImageNamed:v76 withConfiguration:toolbarButtonConfiguration7];
+    lockBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self lockBarButtonItem];
+    [lockBarButtonItem setImage:v82];
 
-    v84 = [MEMORY[0x277CCA8D8] mainBundle];
-    v85 = [v84 localizedStringForKey:v77 value:&stru_282757698 table:0];
-    v86 = [(ICNoteEditorNavigationItemConfiguration *)self lockBarButtonItem];
-    [v86 setTitle:v85];
+    mainBundle10 = [MEMORY[0x277CCA8D8] mainBundle];
+    v85 = [mainBundle10 localizedStringForKey:v77 value:&stru_282757698 table:0];
+    lockBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self lockBarButtonItem];
+    [lockBarButtonItem2 setTitle:v85];
 
-    v87 = [MEMORY[0x277CCA8D8] mainBundle];
-    v88 = [v87 localizedStringForKey:v78 value:&stru_282757698 table:0];
-    v89 = [(ICNoteEditorNavigationItemConfiguration *)self lockBarButtonItem];
-    [v89 setAccessibilityLabel:v88];
+    mainBundle11 = [MEMORY[0x277CCA8D8] mainBundle];
+    v88 = [mainBundle11 localizedStringForKey:v78 value:&stru_282757698 table:0];
+    lockBarButtonItem3 = [(ICNoteEditorNavigationItemConfiguration *)self lockBarButtonItem];
+    [lockBarButtonItem3 setAccessibilityLabel:v88];
 
-    v90 = [MEMORY[0x277CCA8D8] mainBundle];
-    v91 = [v90 localizedStringForKey:v80 value:&stru_282757698 table:0];
-    v92 = [(ICNoteEditorNavigationItemConfiguration *)self lockBarButtonItem];
-    [v92 setAccessibilityHint:v91];
+    mainBundle12 = [MEMORY[0x277CCA8D8] mainBundle];
+    v91 = [mainBundle12 localizedStringForKey:v80 value:&stru_282757698 table:0];
+    lockBarButtonItem4 = [(ICNoteEditorNavigationItemConfiguration *)self lockBarButtonItem];
+    [lockBarButtonItem4 setAccessibilityHint:v91];
   }
 }
 
@@ -1501,15 +1501,15 @@ LABEL_13:
   else
   {
     v5 = MEMORY[0x277D755B8];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v7 = [v5 systemImageNamed:@"decrease.indent" withConfiguration:v6];
+    toolbarButtonConfiguration = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v7 = [v5 systemImageNamed:@"decrease.indent" withConfiguration:toolbarButtonConfiguration];
 
     v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v7 style:0 target:self action:sel_leftIndentAction_];
     v9 = self->_leftIndentBarButtonItem;
     self->_leftIndentBarButtonItem = v8;
 
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:@"Outdent" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle localizedStringForKey:@"Outdent" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_leftIndentBarButtonItem setAccessibilityLabel:v11];
 
     v3 = self->_leftIndentBarButtonItem;
@@ -1529,15 +1529,15 @@ LABEL_13:
   else
   {
     v5 = MEMORY[0x277D755B8];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v7 = [v5 systemImageNamed:@"increase.indent" withConfiguration:v6];
+    toolbarButtonConfiguration = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v7 = [v5 systemImageNamed:@"increase.indent" withConfiguration:toolbarButtonConfiguration];
 
     v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v7 style:0 target:self action:sel_rightIndentAction_];
     v9 = self->_rightIndentBarButtonItem;
     self->_rightIndentBarButtonItem = v8;
 
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:@"Indent" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle localizedStringForKey:@"Indent" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_rightIndentBarButtonItem setAccessibilityLabel:v11];
 
     v3 = self->_rightIndentBarButtonItem;
@@ -1548,8 +1548,8 @@ LABEL_13:
 
 - (void)updateBlockQuoteBarButtonItemImage
 {
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self blockQuoteBarButtonItemImage];
-  [(UIBarButtonItem *)self->_blockQuoteBarButtonItem setImage:v3];
+  blockQuoteBarButtonItemImage = [(ICNoteEditorNavigationItemConfiguration *)self blockQuoteBarButtonItemImage];
+  [(UIBarButtonItem *)self->_blockQuoteBarButtonItem setImage:blockQuoteBarButtonItemImage];
 }
 
 - (UIImage)blockQuoteBarButtonItemImage
@@ -1558,18 +1558,18 @@ LABEL_13:
   blockQuoteBarButtonItem = self->_blockQuoteBarButtonItem;
   if (blockQuoteBarButtonItem && [(UIBarButtonItem *)blockQuoteBarButtonItem isSelected])
   {
-    v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v10[0] = v3;
-    v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v5 = [v4 colorWithAlphaComponent:0.6];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    v10[0] = systemBackgroundColor;
+    systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+    v5 = [systemBackgroundColor2 colorWithAlphaComponent:0.6];
     v10[1] = v5;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
   }
 
   else
   {
-    v3 = [MEMORY[0x277D75348] colorWithDynamicProvider:&__block_literal_global_7];
-    v9 = v3;
+    systemBackgroundColor = [MEMORY[0x277D75348] colorWithDynamicProvider:&__block_literal_global_7];
+    v9 = systemBackgroundColor;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:&v9 count:1];
   }
 
@@ -1587,12 +1587,12 @@ LABEL_13:
     v5 = self->_lockBarButtonItem;
     self->_lockBarButtonItem = v4;
 
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = [v6 localizedStringForKey:@"Locked" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v7 = [mainBundle localizedStringForKey:@"Locked" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_lockBarButtonItem setAccessibilityLabel:v7];
 
-    v8 = [MEMORY[0x277CCA8D8] mainBundle];
-    v9 = [v8 localizedStringForKey:@"Double tap to open your locked notes" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v9 = [mainBundle2 localizedStringForKey:@"Double tap to open your locked notes" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_lockBarButtonItem setAccessibilityHint:v9];
 
     lockBarButtonItem = self->_lockBarButtonItem;
@@ -1603,26 +1603,26 @@ LABEL_13:
   return v10;
 }
 
-- (ICNoteEditorNavigationItemConfiguration)initWithDataSource:(id)a3 delegate:(id)a4
+- (ICNoteEditorNavigationItemConfiguration)initWithDataSource:(id)source delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = ICNoteEditorNavigationItemConfiguration;
   v8 = [(ICNavigationItemConfiguration *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dataSource, v6);
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v8->_dataSource, sourceCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v9->_showsDoneWhileEditing = 1;
     v9->_usesMediaMenu = 1;
     v9->_canShowContextualFormatBar = 1;
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v9 selector:sel_updateTitlesAndImages name:*MEMORY[0x277D765F0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel_updateTitlesAndImages name:*MEMORY[0x277D765F0] object:0];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v9 selector:sel_updateBlockQuoteBarButtonItemImage name:*MEMORY[0x277D76460] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v9 selector:sel_updateBlockQuoteBarButtonItemImage name:*MEMORY[0x277D76460] object:0];
   }
 
   return v9;
@@ -1630,8 +1630,8 @@ LABEL_13:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICNoteEditorNavigationItemConfiguration;
@@ -1640,17 +1640,17 @@ LABEL_13:
 
 - (UIWindowScene)presentingWindowScene
 {
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
-  v4 = [v3 noteEditorNavigationItemConfigurationPresentingWindowScene:self];
+  dataSource = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
+  v4 = [dataSource noteEditorNavigationItemConfigurationPresentingWindowScene:self];
 
   return v4;
 }
 
-- (void)setForceHideToolbar:(BOOL)a3
+- (void)setForceHideToolbar:(BOOL)toolbar
 {
   forceHideToolbar = self->_forceHideToolbar;
-  self->_forceHideToolbar = a3;
-  if (forceHideToolbar != a3)
+  self->_forceHideToolbar = toolbar;
+  if (forceHideToolbar != toolbar)
   {
     [(ICNoteEditorNavigationItemConfiguration *)self updateToolbarVisibilityAnimated:1];
   }
@@ -1658,27 +1658,27 @@ LABEL_13:
 
 - (ICTableAttachmentViewController)tableAttachmentViewController
 {
-  v3 = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
-  v4 = [v3 noteEditorNavigationItemConfigurationTableAttachmentViewController:self];
+  dataSource = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
+  v4 = [dataSource noteEditorNavigationItemConfigurationTableAttachmentViewController:self];
 
   return v4;
 }
 
-- (BOOL)updateAnimated:(BOOL)a3
+- (BOOL)updateAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(ICNavigationItemConfiguration *)self needsUpdate];
-  if (v5)
+  animatedCopy = animated;
+  needsUpdate = [(ICNavigationItemConfiguration *)self needsUpdate];
+  if (needsUpdate)
   {
-    [(ICNoteEditorNavigationItemConfiguration *)self updateToolbarVisibilityAnimated:v3];
+    [(ICNoteEditorNavigationItemConfiguration *)self updateToolbarVisibilityAnimated:animatedCopy];
     if ([(ICNoteEditorNavigationItemConfiguration *)self isCompact])
     {
-      [(ICNoteEditorNavigationItemConfiguration *)self updateCompactAnimated:v3];
+      [(ICNoteEditorNavigationItemConfiguration *)self updateCompactAnimated:animatedCopy];
     }
 
     else
     {
-      [(ICNoteEditorNavigationItemConfiguration *)self updateRegularAnimated:v3];
+      [(ICNoteEditorNavigationItemConfiguration *)self updateRegularAnimated:animatedCopy];
     }
 
     [(ICNoteEditorNavigationItemConfiguration *)self updateEnabled];
@@ -1686,86 +1686,86 @@ LABEL_13:
     [(ICNoteEditorNavigationItemConfiguration *)self updateTitlesAndImages];
     v7.receiver = self;
     v7.super_class = ICNoteEditorNavigationItemConfiguration;
-    LOBYTE(v5) = [(ICNavigationItemConfiguration *)&v7 updateAnimated:v3];
+    LOBYTE(needsUpdate) = [(ICNavigationItemConfiguration *)&v7 updateAnimated:animatedCopy];
   }
 
-  return v5;
+  return needsUpdate;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   if ([(ICNoteEditorNavigationItemConfiguration *)self canShowContextualFormatBar])
   {
-    [(ICNoteEditorNavigationItemConfiguration *)self updateFormatBarButtonsForChangeInTextView:v5];
-    v4 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
-    [v4 updateFromTextViewDidChange:v5];
+    [(ICNoteEditorNavigationItemConfiguration *)self updateFormatBarButtonsForChangeInTextView:changeCopy];
+    contextualInputAccessoryView = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
+    [contextualInputAccessoryView updateFromTextViewDidChange:changeCopy];
   }
 }
 
-- (void)updateSelectionInTextView:(id)a3
+- (void)updateSelectionInTextView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if ([(ICNoteEditorNavigationItemConfiguration *)self canShowContextualFormatBar])
   {
-    [(ICNoteEditorNavigationItemConfiguration *)self updateFormatBarButtonsForChangeInTextView:v5];
-    v4 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
-    [v4 updateFromSelectionInTextView:v5];
+    [(ICNoteEditorNavigationItemConfiguration *)self updateFormatBarButtonsForChangeInTextView:viewCopy];
+    contextualInputAccessoryView = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
+    [contextualInputAccessoryView updateFromSelectionInTextView:viewCopy];
   }
 }
 
-- (void)updateFormatBarButtonsForChangeInTextView:(id)a3
+- (void)updateFormatBarButtonsForChangeInTextView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 currentBIUSForStyleSelector];
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self boldBarButtonItem];
-  [v6 setSelected:v5 & 1];
+  viewCopy = view;
+  currentBIUSForStyleSelector = [viewCopy currentBIUSForStyleSelector];
+  boldBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self boldBarButtonItem];
+  [boldBarButtonItem setSelected:currentBIUSForStyleSelector & 1];
 
-  v7 = [(ICNoteEditorNavigationItemConfiguration *)self italicBarButtonItem];
-  [v7 setSelected:(v5 >> 1) & 1];
+  italicBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self italicBarButtonItem];
+  [italicBarButtonItem setSelected:(currentBIUSForStyleSelector >> 1) & 1];
 
-  v8 = [(ICNoteEditorNavigationItemConfiguration *)self underlineBarButtonItem];
-  [v8 setSelected:(v5 >> 2) & 1];
+  underlineBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self underlineBarButtonItem];
+  [underlineBarButtonItem setSelected:(currentBIUSForStyleSelector >> 2) & 1];
 
-  v9 = [(ICNoteEditorNavigationItemConfiguration *)self strikethroughBarButtonItem];
-  [v9 setSelected:(v5 >> 3) & 1];
+  strikethroughBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self strikethroughBarButtonItem];
+  [strikethroughBarButtonItem setSelected:(currentBIUSForStyleSelector >> 3) & 1];
 
-  v10 = [(ICNoteEditorNavigationItemConfiguration *)self emphasisMenuButton];
-  v11 = [v4 currentEmphasisColorsForStyleSelector];
-  [v10 setActiveContexts:v11];
+  emphasisMenuButton = [(ICNoteEditorNavigationItemConfiguration *)self emphasisMenuButton];
+  currentEmphasisColorsForStyleSelector = [viewCopy currentEmphasisColorsForStyleSelector];
+  [emphasisMenuButton setActiveContexts:currentEmphasisColorsForStyleSelector];
 
-  v22 = [v4 currentParagraphStyleForStyleSelector];
-  v12 = [v22 isBlockQuote];
-  v13 = [(ICNoteEditorNavigationItemConfiguration *)self blockQuoteBarButtonItem];
-  [v13 setSelected:v12];
+  currentParagraphStyleForStyleSelector = [viewCopy currentParagraphStyleForStyleSelector];
+  isBlockQuote = [currentParagraphStyleForStyleSelector isBlockQuote];
+  blockQuoteBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self blockQuoteBarButtonItem];
+  [blockQuoteBarButtonItem setSelected:isBlockQuote];
 
   [(ICNoteEditorNavigationItemConfiguration *)self updateBlockQuoteBarButtonItemImage];
-  v14 = [(ICNoteEditorNavigationItemConfiguration *)self listSelectorMenuButton];
-  v15 = [v4 currentListStylesForStyleSelector];
+  listSelectorMenuButton = [(ICNoteEditorNavigationItemConfiguration *)self listSelectorMenuButton];
+  currentListStylesForStyleSelector = [viewCopy currentListStylesForStyleSelector];
 
-  [v14 setActiveContexts:v15];
-  LODWORD(v4) = [(ICNoteEditorNavigationItemConfiguration *)self isEditingTable];
-  v16 = [(ICNoteEditorNavigationItemConfiguration *)self leftIndentBarButtonItem];
-  [v16 setEnabled:v4 ^ 1];
+  [listSelectorMenuButton setActiveContexts:currentListStylesForStyleSelector];
+  LODWORD(viewCopy) = [(ICNoteEditorNavigationItemConfiguration *)self isEditingTable];
+  leftIndentBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self leftIndentBarButtonItem];
+  [leftIndentBarButtonItem setEnabled:viewCopy ^ 1];
 
-  LODWORD(v4) = [(ICNoteEditorNavigationItemConfiguration *)self isEditingTable];
-  v17 = [(ICNoteEditorNavigationItemConfiguration *)self rightIndentBarButtonItem];
-  [v17 setEnabled:v4 ^ 1];
+  LODWORD(viewCopy) = [(ICNoteEditorNavigationItemConfiguration *)self isEditingTable];
+  rightIndentBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self rightIndentBarButtonItem];
+  [rightIndentBarButtonItem setEnabled:viewCopy ^ 1];
 
-  LODWORD(v4) = [(ICNoteEditorNavigationItemConfiguration *)self isEditingTable];
-  v18 = [(ICNoteEditorNavigationItemConfiguration *)self moveUpBarButtonItem];
-  [v18 setEnabled:v4 ^ 1];
+  LODWORD(viewCopy) = [(ICNoteEditorNavigationItemConfiguration *)self isEditingTable];
+  moveUpBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self moveUpBarButtonItem];
+  [moveUpBarButtonItem setEnabled:viewCopy ^ 1];
 
-  LODWORD(v4) = [(ICNoteEditorNavigationItemConfiguration *)self isEditingTable];
-  v19 = [(ICNoteEditorNavigationItemConfiguration *)self moveDownBarButtonItem];
-  [v19 setEnabled:v4 ^ 1];
+  LODWORD(viewCopy) = [(ICNoteEditorNavigationItemConfiguration *)self isEditingTable];
+  moveDownBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self moveDownBarButtonItem];
+  [moveDownBarButtonItem setEnabled:viewCopy ^ 1];
 
-  LODWORD(v4) = [(ICNoteEditorNavigationItemConfiguration *)self isEditingTable];
-  v20 = [(ICNoteEditorNavigationItemConfiguration *)self blockQuoteBarButtonItem];
-  [v20 setEnabled:v4 ^ 1];
+  LODWORD(viewCopy) = [(ICNoteEditorNavigationItemConfiguration *)self isEditingTable];
+  blockQuoteBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self blockQuoteBarButtonItem];
+  [blockQuoteBarButtonItem2 setEnabled:viewCopy ^ 1];
 
-  v21 = [(ICNoteEditorNavigationItemConfiguration *)self listSelectorMenuButton];
-  [v21 setEnabled:{-[ICNoteEditorNavigationItemConfiguration isEditingTable](self, "isEditingTable") ^ 1}];
+  listSelectorMenuButton2 = [(ICNoteEditorNavigationItemConfiguration *)self listSelectorMenuButton];
+  [listSelectorMenuButton2 setEnabled:{-[ICNoteEditorNavigationItemConfiguration isEditingTable](self, "isEditingTable") ^ 1}];
 }
 
 - (ICSelectorDelayer)inlineSketchAnimationSelectorDelayer
@@ -1784,17 +1784,17 @@ LABEL_13:
   return v5;
 }
 
-- (void)performInlineSketchAnimation:(id)a3
+- (void)performInlineSketchAnimation:(id)animation
 {
   v4 = MEMORY[0x277D75D18];
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
-  v6 = [v5 ic_view];
+  inlineSketchBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
+  ic_view = [inlineSketchBarButtonItem ic_view];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__ICNoteEditorNavigationItemConfiguration_performInlineSketchAnimation___block_invoke;
   v7[3] = &unk_2781ABCF8;
   v7[4] = self;
-  [v4 transitionWithView:v6 duration:5242880 options:v7 animations:0 completion:0.5];
+  [v4 transitionWithView:ic_view duration:5242880 options:v7 animations:0 completion:0.5];
 }
 
 void __72__ICNoteEditorNavigationItemConfiguration_performInlineSketchAnimation___block_invoke(uint64_t a1)
@@ -1807,15 +1807,15 @@ void __72__ICNoteEditorNavigationItemConfiguration_performInlineSketchAnimation_
   [v4 noteEditorNavigationItemConfiguration:v2 didCompleteAnimationFromInlineSketchBarButtonItem:v3];
 }
 
-- (void)updateCompactAnimated:(BOOL)a3
+- (void)updateCompactAnimated:(BOOL)animated
 {
-  v4 = a3;
+  animatedCopy = animated;
   v218[1] = *MEMORY[0x277D85DE8];
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchEditingState];
-  if ([(ICNoteEditorNavigationItemConfiguration *)self quickNoteType]== 2 && v6 != 3)
+  inlineSketchEditingState = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchEditingState];
+  if ([(ICNoteEditorNavigationItemConfiguration *)self quickNoteType]== 2 && inlineSketchEditingState != 3)
   {
-    v3 = [MEMORY[0x277CCA8D8] mainBundle];
-    v8 = [v3 localizedStringForKey:@"New Quick Note" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v8 = [mainBundle localizedStringForKey:@"New Quick Note" value:&stru_282757698 table:0];
     v7 = 1;
   }
 
@@ -1825,33 +1825,33 @@ void __72__ICNoteEditorNavigationItemConfiguration_performInlineSketchAnimation_
     v8 = 0;
   }
 
-  v9 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-  [v9 setTitle:v8];
+  navigationItem = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+  [navigationItem setTitle:v8];
 
   if (v7)
   {
   }
 
-  v10 = [(ICNoteEditorNavigationItemConfiguration *)self isDeleted];
-  v11 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-  [v11 setStyle:v10];
+  isDeleted = [(ICNoteEditorNavigationItemConfiguration *)self isDeleted];
+  navigationItem2 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+  [navigationItem2 setStyle:isDeleted];
 
   v12 = [(ICNoteEditorNavigationItemConfiguration *)self hidesBackButton]|| [(ICNoteEditorNavigationItemConfiguration *)self auxiliaryWindowType]!= 0;
-  v13 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-  [v13 setHidesBackButton:v12];
+  navigationItem3 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+  [navigationItem3 setHidesBackButton:v12];
 
-  v14 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-  [v14 setLeftItemsSupplementBackButton:1];
+  navigationItem4 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+  [navigationItem4 setLeftItemsSupplementBackButton:1];
 
-  v15 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-  [v15 setLeadingItemGroups:MEMORY[0x277CBEBF8]];
+  navigationItem5 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+  [navigationItem5 setLeadingItemGroups:MEMORY[0x277CBEBF8]];
 
-  v16 = [MEMORY[0x277CBEB18] array];
-  if ([(ICNoteEditorNavigationItemConfiguration *)self quickNoteType]!= 2 || v6 == 3)
+  array = [MEMORY[0x277CBEB18] array];
+  if ([(ICNoteEditorNavigationItemConfiguration *)self quickNoteType]!= 2 || inlineSketchEditingState == 3)
   {
     if ([(ICNoteEditorNavigationItemConfiguration *)self isInSecureScreen])
     {
-      v17 = [(ICNoteEditorNavigationItemConfiguration *)self quickNoteAllNotesBarButtonItem];
+      quickNoteAllNotesBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self quickNoteAllNotesBarButtonItem];
     }
 
     else
@@ -1861,44 +1861,44 @@ void __72__ICNoteEditorNavigationItemConfiguration_performInlineSketchAnimation_
         goto LABEL_18;
       }
 
-      v17 = [(ICNoteEditorNavigationItemConfiguration *)self closeAuxiliaryWindowBarButtonItem];
+      quickNoteAllNotesBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self closeAuxiliaryWindowBarButtonItem];
     }
   }
 
   else
   {
-    v17 = [(ICNoteEditorNavigationItemConfiguration *)self quickNoteCancelBarButtonItem];
+    quickNoteAllNotesBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self quickNoteCancelBarButtonItem];
   }
 
-  v18 = v17;
-  [v16 addObject:v17];
+  v18 = quickNoteAllNotesBarButtonItem;
+  [array addObject:quickNoteAllNotesBarButtonItem];
 
 LABEL_18:
-  v19 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-  v20 = [v16 copy];
-  [v19 setLeftBarButtonItems:v20 animated:v4];
+  navigationItem6 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+  v20 = [array copy];
+  [navigationItem6 setLeftBarButtonItems:v20 animated:animatedCopy];
 
-  v21 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-  [v21 setCenterItemGroups:MEMORY[0x277CBEBF8]];
+  navigationItem7 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+  [navigationItem7 setCenterItemGroups:MEMORY[0x277CBEBF8]];
 
-  v22 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   if ([(ICNoteEditorNavigationItemConfiguration *)self canShowUndoRedo])
   {
-    v23 = [(ICNoteEditorNavigationItemConfiguration *)self usesUndoRedoMenu];
-    if (v23)
+    usesUndoRedoMenu = [(ICNoteEditorNavigationItemConfiguration *)self usesUndoRedoMenu];
+    if (usesUndoRedoMenu)
     {
-      v24 = [(ICNoteEditorNavigationItemConfiguration *)self undoRedoMenu];
+      undoRedoMenu = [(ICNoteEditorNavigationItemConfiguration *)self undoRedoMenu];
     }
 
     else
     {
-      v24 = 0;
+      undoRedoMenu = 0;
     }
 
-    v25 = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
-    [v25 setMenu:v24];
+    undoBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
+    [undoBarButtonItem setMenu:undoRedoMenu];
 
-    if (v23)
+    if (usesUndoRedoMenu)
     {
     }
 
@@ -1912,79 +1912,79 @@ LABEL_18:
       v26 = sel_undoAction_;
     }
 
-    v27 = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
-    [v27 setAction:v26];
+    undoBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
+    [undoBarButtonItem2 setAction:v26];
 
-    LOBYTE(v27) = [(ICNoteEditorNavigationItemConfiguration *)self usesUndoRedoMenu];
-    v28 = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
-    v29 = v28;
-    if (v27)
+    LOBYTE(undoBarButtonItem2) = [(ICNoteEditorNavigationItemConfiguration *)self usesUndoRedoMenu];
+    undoBarButtonItem3 = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
+    v29 = undoBarButtonItem3;
+    if (undoBarButtonItem2)
     {
-      v218[0] = v28;
-      v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v218 count:1];
-      [v22 setArray:v30];
+      v218[0] = undoBarButtonItem3;
+      redoBarButtonItem = [MEMORY[0x277CBEA60] arrayWithObjects:v218 count:1];
+      [array2 setArray:redoBarButtonItem];
     }
 
     else
     {
-      v217[0] = v28;
-      v30 = [(ICNoteEditorNavigationItemConfiguration *)self redoBarButtonItem];
-      v217[1] = v30;
+      v217[0] = undoBarButtonItem3;
+      redoBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self redoBarButtonItem];
+      v217[1] = redoBarButtonItem;
       v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v217 count:2];
-      [v22 setArray:v31];
+      [array2 setArray:v31];
     }
 
-    v32 = [MEMORY[0x277D751E0] fixedSpaceItem];
-    [v22 addObject:v32];
+    fixedSpaceItem = [MEMORY[0x277D751E0] fixedSpaceItem];
+    [array2 addObject:fixedSpaceItem];
   }
 
-  if ([(ICNoteEditorNavigationItemConfiguration *)self quickNoteType]== 2 && v6 != 3)
+  if ([(ICNoteEditorNavigationItemConfiguration *)self quickNoteType]== 2 && inlineSketchEditingState != 3)
   {
-    v33 = [(ICNoteEditorNavigationItemConfiguration *)self quickNoteSaveBarButtonItem];
+    quickNoteSaveBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self quickNoteSaveBarButtonItem];
 LABEL_45:
-    v39 = v33;
-    [v22 addObject:v33];
+    v39 = quickNoteSaveBarButtonItem;
+    [array2 addObject:quickNoteSaveBarButtonItem];
 
     goto LABEL_46;
   }
 
-  if ([(ICNoteEditorNavigationItemConfiguration *)self lockState]&& v6 != 3)
+  if ([(ICNoteEditorNavigationItemConfiguration *)self lockState]&& inlineSketchEditingState != 3)
   {
-    v34 = [(ICNoteEditorNavigationItemConfiguration *)self lockBarButtonItem];
-    [v22 addObject:v34];
+    lockBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self lockBarButtonItem];
+    [array2 addObject:lockBarButtonItem];
   }
 
-  if (![(ICNoteEditorNavigationItemConfiguration *)self isDeleted]&& v6 != 3)
+  if (![(ICNoteEditorNavigationItemConfiguration *)self isDeleted]&& inlineSketchEditingState != 3)
   {
     if ([(ICNoteEditorNavigationItemConfiguration *)self showsCalculatorModeButton])
     {
-      v35 = [(ICNoteEditorNavigationItemConfiguration *)self calculatorModeItem];
-      [v22 addObject:v35];
+      calculatorModeItem = [(ICNoteEditorNavigationItemConfiguration *)self calculatorModeItem];
+      [array2 addObject:calculatorModeItem];
 
-      v36 = [MEMORY[0x277D751E0] fixedSpaceItem];
-      [v22 addObject:v36];
+      fixedSpaceItem2 = [MEMORY[0x277D751E0] fixedSpaceItem];
+      [array2 addObject:fixedSpaceItem2];
     }
 
-    v37 = [(ICNoteEditorNavigationItemConfiguration *)self collaborationBarButtonItem];
+    collaborationBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self collaborationBarButtonItem];
 
-    if (v37)
+    if (collaborationBarButtonItem)
     {
-      v38 = [(ICNoteEditorNavigationItemConfiguration *)self collaborationBarButtonItem];
-      [v22 addObject:v38];
+      collaborationBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self collaborationBarButtonItem];
+      [array2 addObject:collaborationBarButtonItem2];
     }
 
-    v33 = [(ICNoteEditorNavigationItemConfiguration *)self shareBarButtonItem];
+    quickNoteSaveBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self shareBarButtonItem];
     goto LABEL_45;
   }
 
 LABEL_46:
-  v40 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v22, "count")}];
+  v40 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(array2, "count")}];
   v205 = 0u;
   v206 = 0u;
   v207 = 0u;
   v208 = 0u;
-  v41 = [v22 reverseObjectEnumerator];
-  v42 = [v41 countByEnumeratingWithState:&v205 objects:v216 count:16];
+  reverseObjectEnumerator = [array2 reverseObjectEnumerator];
+  v42 = [reverseObjectEnumerator countByEnumeratingWithState:&v205 objects:v216 count:16];
   if (v42)
   {
     v43 = v42;
@@ -1995,119 +1995,119 @@ LABEL_46:
       {
         if (*v206 != v44)
         {
-          objc_enumerationMutation(v41);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         [v40 addObject:*(*(&v205 + 1) + 8 * i)];
       }
 
-      v43 = [v41 countByEnumeratingWithState:&v205 objects:v216 count:16];
+      v43 = [reverseObjectEnumerator countByEnumeratingWithState:&v205 objects:v216 count:16];
     }
 
     while (v43);
   }
 
-  v46 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-  [v46 setRightBarButtonItems:v40 animated:v4];
+  navigationItem8 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+  [navigationItem8 setRightBarButtonItems:v40 animated:animatedCopy];
 
-  v47 = [MEMORY[0x277CBEB18] array];
-  if ([(ICNoteEditorNavigationItemConfiguration *)self isEditing]&& [(ICNoteEditorNavigationItemConfiguration *)self showsDoneWhileEditing]|| v6 == 3)
+  array3 = [MEMORY[0x277CBEB18] array];
+  if ([(ICNoteEditorNavigationItemConfiguration *)self isEditing]&& [(ICNoteEditorNavigationItemConfiguration *)self showsDoneWhileEditing]|| inlineSketchEditingState == 3)
   {
-    v48 = [(ICNoteEditorNavigationItemConfiguration *)self doneBarButtonItem];
-    [v47 addObject:v48];
+    doneBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self doneBarButtonItem];
+    [array3 addObject:doneBarButtonItem];
   }
 
-  v49 = [v47 copy];
-  v50 = [(ICNoteEditorNavigationItemConfiguration *)self pinnedTrailingBarButtonItemGroup];
-  [v50 setBarButtonItems:v49];
+  v49 = [array3 copy];
+  pinnedTrailingBarButtonItemGroup = [(ICNoteEditorNavigationItemConfiguration *)self pinnedTrailingBarButtonItemGroup];
+  [pinnedTrailingBarButtonItemGroup setBarButtonItems:v49];
 
-  v51 = [(ICNoteEditorNavigationItemConfiguration *)self pinnedTrailingBarButtonItemGroup];
-  v52 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-  [v52 setPinnedTrailingGroup:v51];
+  pinnedTrailingBarButtonItemGroup2 = [(ICNoteEditorNavigationItemConfiguration *)self pinnedTrailingBarButtonItemGroup];
+  navigationItem9 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+  [navigationItem9 setPinnedTrailingGroup:pinnedTrailingBarButtonItemGroup2];
 
-  v53 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-  v200 = v4;
-  if (v53)
+  inputAssistantItem = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+  v200 = animatedCopy;
+  if (inputAssistantItem)
   {
-    v54 = v53;
+    v54 = inputAssistantItem;
     if ([(ICNoteEditorNavigationItemConfiguration *)self isEditing])
     {
     }
 
     else
     {
-      v55 = [(ICNoteEditorNavigationItemConfiguration *)self quickNoteType];
+      quickNoteType = [(ICNoteEditorNavigationItemConfiguration *)self quickNoteType];
 
-      if (v55 != 1)
+      if (quickNoteType != 1)
       {
         goto LABEL_73;
       }
     }
 
-    v197 = v47;
-    v56 = [MEMORY[0x277CBEB18] array];
+    v197 = array3;
+    array4 = [MEMORY[0x277CBEB18] array];
     if (![(ICNoteEditorNavigationItemConfiguration *)self usesOnlyTrailingInputAssistantItems])
     {
-      v57 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-      [v56 addObject:v57];
+      tableBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+      [array4 addObject:tableBarButtonItem];
 
-      v58 = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
-      [v56 addObject:v58];
+      styleBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
+      [array4 addObject:styleBarButtonItem];
     }
 
-    v59 = [v56 copy];
-    v60 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantLeadingBarButtonItemGroup];
-    [v60 setBarButtonItems:v59];
+    v59 = [array4 copy];
+    inputAssistantLeadingBarButtonItemGroup = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantLeadingBarButtonItemGroup];
+    [inputAssistantLeadingBarButtonItemGroup setBarButtonItems:v59];
 
-    v61 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-    v62 = [v61 leadingBarButtonGroups];
-    v63 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantLeadingBarButtonItemGroup];
-    v64 = [v62 containsObject:v63];
+    inputAssistantItem2 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+    leadingBarButtonGroups = [inputAssistantItem2 leadingBarButtonGroups];
+    inputAssistantLeadingBarButtonItemGroup2 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantLeadingBarButtonItemGroup];
+    v64 = [leadingBarButtonGroups containsObject:inputAssistantLeadingBarButtonItemGroup2];
 
     if ((v64 & 1) == 0)
     {
-      v65 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-      [v65 _setMarginOverride:11.0];
+      inputAssistantItem3 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+      [inputAssistantItem3 _setMarginOverride:11.0];
 
       v195 = NSStringFromSelector(sel_leadingBarButtonGroups);
-      v66 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-      [v66 willChangeValueForKey:v195];
+      inputAssistantItem4 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+      [inputAssistantItem4 willChangeValueForKey:v195];
 
-      v67 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-      v68 = [v67 leadingBarButtonGroups];
-      v69 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantLeadingBarButtonItemGroup];
-      v70 = [v68 arrayByAddingObject:v69];
+      inputAssistantItem5 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+      leadingBarButtonGroups2 = [inputAssistantItem5 leadingBarButtonGroups];
+      inputAssistantLeadingBarButtonItemGroup3 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantLeadingBarButtonItemGroup];
+      v70 = [leadingBarButtonGroups2 arrayByAddingObject:inputAssistantLeadingBarButtonItemGroup3];
       [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-      v71 = v56;
-      v72 = v22;
-      v74 = v73 = v16;
+      v71 = array4;
+      v72 = array2;
+      v74 = v73 = array;
       [v74 setLeadingBarButtonGroups:v70];
 
-      v16 = v73;
-      v22 = v72;
-      v56 = v71;
+      array = v73;
+      array2 = v72;
+      array4 = v71;
 
-      v75 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-      [v75 didChangeValueForKey:v195];
+      inputAssistantItem6 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+      [inputAssistantItem6 didChangeValueForKey:v195];
     }
 
-    v76 = [MEMORY[0x277CBEB18] array];
+    array5 = [MEMORY[0x277CBEB18] array];
     if ([(ICNoteEditorNavigationItemConfiguration *)self usesOnlyTrailingInputAssistantItems])
     {
-      v77 = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
-      [v76 addObject:v77];
+      styleBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
+      [array5 addObject:styleBarButtonItem2];
 
-      v78 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
-      [v76 addObject:v78];
+      checklistBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
+      [array5 addObject:checklistBarButtonItem];
 
-      v79 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-      [v76 addObject:v79];
+      tableBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+      [array5 addObject:tableBarButtonItem2];
 
-      v80 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
-      [v76 addObject:v80];
+      mediaBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
+      [array5 addObject:mediaBarButtonItem];
 
-      v81 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
-      [v76 addObject:v81];
+      inlineSketchBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
+      [array5 addObject:inlineSketchBarButtonItem];
 
       if (![(ICNoteEditorNavigationItemConfiguration *)self canShowWritingTools])
       {
@@ -2117,70 +2117,70 @@ LABEL_46:
 
     else
     {
-      v82 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
-      [v76 addObject:v82];
+      checklistBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
+      [array5 addObject:checklistBarButtonItem2];
 
-      v83 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
-      [v76 addObject:v83];
+      mediaBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
+      [array5 addObject:mediaBarButtonItem2];
 
-      v84 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
-      [v76 addObject:v84];
+      inlineSketchBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
+      [array5 addObject:inlineSketchBarButtonItem2];
 
       if (![(ICNoteEditorNavigationItemConfiguration *)self canShowWritingTools])
       {
 LABEL_70:
-        v86 = [v76 copy];
-        v87 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantTrailingBarButtonItemGroup];
-        [v87 setBarButtonItems:v86];
+        v86 = [array5 copy];
+        inputAssistantTrailingBarButtonItemGroup = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantTrailingBarButtonItemGroup];
+        [inputAssistantTrailingBarButtonItemGroup setBarButtonItems:v86];
 
-        v88 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-        v89 = [v88 trailingBarButtonGroups];
-        v90 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantTrailingBarButtonItemGroup];
-        v91 = [v89 containsObject:v90];
+        inputAssistantItem7 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+        trailingBarButtonGroups = [inputAssistantItem7 trailingBarButtonGroups];
+        inputAssistantTrailingBarButtonItemGroup2 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantTrailingBarButtonItemGroup];
+        v91 = [trailingBarButtonGroups containsObject:inputAssistantTrailingBarButtonItemGroup2];
 
         if ((v91 & 1) == 0)
         {
           v92 = NSStringFromSelector(sel_trailingBarButtonGroups);
-          v93 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-          [v93 willChangeValueForKey:v92];
+          inputAssistantItem8 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+          [inputAssistantItem8 willChangeValueForKey:v92];
 
-          v94 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantTrailingBarButtonItemGroup];
-          v215 = v94;
+          inputAssistantTrailingBarButtonItemGroup3 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantTrailingBarButtonItemGroup];
+          v215 = inputAssistantTrailingBarButtonItemGroup3;
           v95 = [MEMORY[0x277CBEA60] arrayWithObjects:&v215 count:1];
-          v96 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-          [v96 setTrailingBarButtonGroups:v95];
+          inputAssistantItem9 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+          [inputAssistantItem9 setTrailingBarButtonGroups:v95];
 
-          v97 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-          [v97 didChangeValueForKey:v92];
+          inputAssistantItem10 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+          [inputAssistantItem10 didChangeValueForKey:v92];
         }
 
-        v47 = v197;
+        array3 = v197;
         goto LABEL_73;
       }
     }
 
-    v85 = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
-    [v76 addObject:v85];
+    writingToolsBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
+    [array5 addObject:writingToolsBarButtonItem];
 
     goto LABEL_70;
   }
 
 LABEL_73:
-  v98 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
+  toolbarItemSource = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
 
-  if (v98)
+  if (toolbarItemSource)
   {
-    v99 = [MEMORY[0x277CBEB18] array];
+    array6 = [MEMORY[0x277CBEB18] array];
     if ([(ICNoteEditorNavigationItemConfiguration *)self isDeleted])
     {
-      v100 = [(ICNoteEditorNavigationItemConfiguration *)self deleteBarButtonItem];
-      [v99 addObject:v100];
+      deleteBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self deleteBarButtonItem];
+      [array6 addObject:deleteBarButtonItem];
 
-      v101 = [(ICNoteEditorNavigationItemConfiguration *)self moveBarButtonItem];
-      [v99 addObject:v101];
+      moveBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self moveBarButtonItem];
+      [array6 addObject:moveBarButtonItem];
 
-      v102 = [MEMORY[0x277D751E0] flexibleSpaceItem];
-      v214 = v102;
+      flexibleSpaceItem = [MEMORY[0x277D751E0] flexibleSpaceItem];
+      v214 = flexibleSpaceItem;
       v103 = &v214;
     }
 
@@ -2194,7 +2194,7 @@ LABEL_82:
         v204 = 0u;
         v201 = 0u;
         v202 = 0u;
-        v110 = v99;
+        v110 = array6;
         v111 = [v110 countByEnumeratingWithState:&v201 objects:v212 count:16];
         if (v111)
         {
@@ -2220,104 +2220,104 @@ LABEL_82:
 
         if ([(ICNoteEditorNavigationItemConfiguration *)self canShowContextualFormatBar])
         {
-          v115 = [(ICNoteEditorNavigationItemConfiguration *)self isEditing];
+          isEditing = [(ICNoteEditorNavigationItemConfiguration *)self isEditing];
           v116 = MEMORY[0x277CBEB18];
-          if (v115)
+          if (isEditing)
           {
-            v192 = v16;
+            v192 = array;
             v193 = v109;
-            v198 = v47;
-            v191 = v22;
-            v117 = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
-            v118 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
-            v119 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-            v120 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
-            v121 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
-            v122 = [v116 arrayWithObjects:{v117, v118, v119, v120, v121, 0}];
+            v198 = array3;
+            v191 = array2;
+            styleBarButtonItem3 = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
+            checklistBarButtonItem3 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
+            tableBarButtonItem3 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+            mediaBarButtonItem3 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
+            inlineSketchBarButtonItem3 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
+            v122 = [v116 arrayWithObjects:{styleBarButtonItem3, checklistBarButtonItem3, tableBarButtonItem3, mediaBarButtonItem3, inlineSketchBarButtonItem3, 0}];
 
             if ([(ICNoteEditorNavigationItemConfiguration *)self canShowWritingTools])
             {
-              v123 = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
-              [v122 addObject:v123];
+              writingToolsBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
+              [v122 addObject:writingToolsBarButtonItem2];
             }
 
-            v196 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
+            contextualInputAccessoryView = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
             v183 = [v122 copy];
-            v189 = [(ICNoteEditorNavigationItemConfiguration *)self boldBarButtonItem];
-            v211[0] = v189;
-            v188 = [(ICNoteEditorNavigationItemConfiguration *)self italicBarButtonItem];
-            v211[1] = v188;
-            v187 = [(ICNoteEditorNavigationItemConfiguration *)self underlineBarButtonItem];
-            v211[2] = v187;
-            v186 = [(ICNoteEditorNavigationItemConfiguration *)self strikethroughBarButtonItem];
-            v211[3] = v186;
-            v185 = [(ICNoteEditorNavigationItemConfiguration *)self emphasisBarButtonItem];
-            v211[4] = v185;
-            v184 = [(ICNoteEditorNavigationItemConfiguration *)self linkBarButtonItem];
-            v211[5] = v184;
+            boldBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self boldBarButtonItem];
+            v211[0] = boldBarButtonItem;
+            italicBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self italicBarButtonItem];
+            v211[1] = italicBarButtonItem;
+            underlineBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self underlineBarButtonItem];
+            v211[2] = underlineBarButtonItem;
+            strikethroughBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self strikethroughBarButtonItem];
+            v211[3] = strikethroughBarButtonItem;
+            emphasisBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self emphasisBarButtonItem];
+            v211[4] = emphasisBarButtonItem;
+            linkBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self linkBarButtonItem];
+            v211[5] = linkBarButtonItem;
             v124 = [MEMORY[0x277CBEA60] arrayWithObjects:v211 count:6];
             [(ICNoteEditorNavigationItemConfiguration *)self leftIndentBarButtonItem];
             v182 = v190 = v122;
             v210[0] = v182;
-            v181 = [(ICNoteEditorNavigationItemConfiguration *)self rightIndentBarButtonItem];
-            v210[1] = v181;
-            v125 = [(ICNoteEditorNavigationItemConfiguration *)self moveUpBarButtonItem];
-            v210[2] = v125;
-            v126 = [(ICNoteEditorNavigationItemConfiguration *)self moveDownBarButtonItem];
-            v210[3] = v126;
-            v127 = [(ICNoteEditorNavigationItemConfiguration *)self blockQuoteBarButtonItem];
-            v210[4] = v127;
-            v128 = [(ICNoteEditorNavigationItemConfiguration *)self listSelectorBarButtonItem];
-            v210[5] = v128;
+            rightIndentBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self rightIndentBarButtonItem];
+            v210[1] = rightIndentBarButtonItem;
+            moveUpBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self moveUpBarButtonItem];
+            v210[2] = moveUpBarButtonItem;
+            moveDownBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self moveDownBarButtonItem];
+            v210[3] = moveDownBarButtonItem;
+            blockQuoteBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self blockQuoteBarButtonItem];
+            v210[4] = blockQuoteBarButtonItem;
+            listSelectorBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self listSelectorBarButtonItem];
+            v210[5] = listSelectorBarButtonItem;
             v129 = [MEMORY[0x277CBEA60] arrayWithObjects:v210 count:6];
-            [v196 updateItemsWithStandardScope:v183 characterScope:v124 paragraphScope:v129];
+            [contextualInputAccessoryView updateItemsWithStandardScope:v183 characterScope:v124 paragraphScope:v129];
 
-            v130 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
-            v131 = [(ICNoteEditorNavigationItemConfiguration *)self formatBarButtonItem];
-            v209 = v131;
+            toolbarItemSource2 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
+            formatBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self formatBarButtonItem];
+            v209 = formatBarButtonItem;
             v132 = [MEMORY[0x277CBEA60] arrayWithObjects:&v209 count:1];
-            [v130 setToolbarItems:v132 animated:v200];
+            [toolbarItemSource2 setToolbarItems:v132 animated:v200];
 
-            v133 = v190;
-            v22 = v191;
-            v16 = v192;
-            v47 = v198;
+            array7 = v190;
+            array2 = v191;
+            array = v192;
+            array3 = v198;
             v109 = v193;
           }
 
           else
           {
-            v133 = [MEMORY[0x277CBEB18] array];
+            array7 = [MEMORY[0x277CBEB18] array];
             if ([(ICNoteEditorNavigationItemConfiguration *)self isDeleted])
             {
-              [v133 addObjectsFromArray:v110];
+              [array7 addObjectsFromArray:v110];
             }
 
             else
             {
-              v137 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
+              contextualInputAccessoryView2 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
               v138 = [v110 copy];
-              [v137 updateSingleGroupItems:v138];
+              [contextualInputAccessoryView2 updateSingleGroupItems:v138];
 
-              v139 = [(ICNoteEditorNavigationItemConfiguration *)self formatBarButtonItem];
-              [v133 addObject:v139];
+              formatBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self formatBarButtonItem];
+              [array7 addObject:formatBarButtonItem2];
             }
 
-            [v133 addObjectsFromArray:v109];
-            v140 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
-            [v140 setToolbarItems:v133 animated:v200];
+            [array7 addObjectsFromArray:v109];
+            toolbarItemSource3 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
+            [toolbarItemSource3 setToolbarItems:array7 animated:v200];
           }
         }
 
         else
         {
-          v134 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
+          toolbarItemSource4 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
           v135 = [v110 arrayByAddingObjectsFromArray:v109];
-          [v134 setToolbarItems:v135 animated:v200];
+          [toolbarItemSource4 setToolbarItems:v135 animated:v200];
 
-          v136 = [(ICNoteEditorNavigationItemConfiguration *)self inputAccessoryToolbar];
+          inputAccessoryToolbar = [(ICNoteEditorNavigationItemConfiguration *)self inputAccessoryToolbar];
 
-          if (!v136)
+          if (!inputAccessoryToolbar)
           {
 LABEL_117:
 
@@ -2326,18 +2326,18 @@ LABEL_117:
 
           if ([(ICNoteEditorNavigationItemConfiguration *)self isEditing]&& ![(ICNoteEditorNavigationItemConfiguration *)self isTableSelected])
           {
-            v199 = v47;
+            v199 = array3;
             if ([(ICNoteEditorNavigationItemConfiguration *)self quickNoteType]== 2)
             {
               v194 = v109;
-              v141 = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
-              if (v141)
+              writingToolsBarButtonItem3 = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
+              if (writingToolsBarButtonItem3)
               {
-                v142 = v141;
-                v143 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
-                v144 = [v143 toolbarItems];
-                v145 = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
-                v146 = [v144 containsObject:v145];
+                v142 = writingToolsBarButtonItem3;
+                toolbarItemSource5 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
+                toolbarItems = [toolbarItemSource5 toolbarItems];
+                writingToolsBarButtonItem4 = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
+                v146 = [toolbarItems containsObject:writingToolsBarButtonItem4];
 
                 if (v146)
                 {
@@ -2346,10 +2346,10 @@ LABEL_117:
                 }
               }
 
-              v148 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
-              v149 = [v148 toolbarItems];
-              v150 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
-              v151 = [v149 containsObject:v150];
+              toolbarItemSource6 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
+              toolbarItems2 = [toolbarItemSource6 toolbarItems];
+              checklistBarButtonItem4 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
+              v151 = [toolbarItems2 containsObject:checklistBarButtonItem4];
 
               if (v151)
               {
@@ -2357,10 +2357,10 @@ LABEL_117:
                 self->_checklistBarButtonItem = 0;
               }
 
-              v153 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
-              v154 = [v153 toolbarItems];
-              v155 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
-              v156 = [v154 containsObject:v155];
+              toolbarItemSource7 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
+              toolbarItems3 = [toolbarItemSource7 toolbarItems];
+              mediaBarButtonItem4 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
+              v156 = [toolbarItems3 containsObject:mediaBarButtonItem4];
 
               v109 = v194;
               if (v156)
@@ -2369,10 +2369,10 @@ LABEL_117:
                 self->_mediaBarButtonItem = 0;
               }
 
-              v158 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
-              v159 = [v158 toolbarItems];
-              v160 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
-              v161 = [v159 containsObject:v160];
+              toolbarItemSource8 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
+              toolbarItems4 = [toolbarItemSource8 toolbarItems];
+              inlineSketchBarButtonItem4 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
+              v161 = [toolbarItems4 containsObject:inlineSketchBarButtonItem4];
 
               if (v161)
               {
@@ -2381,155 +2381,155 @@ LABEL_117:
               }
             }
 
-            v133 = [MEMORY[0x277CBEB18] array];
-            v163 = [MEMORY[0x277D751E0] flexibleSpaceItem];
-            [v133 addObject:v163];
+            array7 = [MEMORY[0x277CBEB18] array];
+            flexibleSpaceItem2 = [MEMORY[0x277D751E0] flexibleSpaceItem];
+            [array7 addObject:flexibleSpaceItem2];
 
-            v164 = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
-            [v133 addObject:v164];
+            styleBarButtonItem4 = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
+            [array7 addObject:styleBarButtonItem4];
 
-            v165 = [MEMORY[0x277D751E0] flexibleSpaceItem];
-            [v133 addObject:v165];
+            flexibleSpaceItem3 = [MEMORY[0x277D751E0] flexibleSpaceItem];
+            [array7 addObject:flexibleSpaceItem3];
 
-            v166 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
-            [v133 addObject:v166];
+            checklistBarButtonItem5 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
+            [array7 addObject:checklistBarButtonItem5];
 
-            v167 = [MEMORY[0x277D751E0] flexibleSpaceItem];
-            [v133 addObject:v167];
+            flexibleSpaceItem4 = [MEMORY[0x277D751E0] flexibleSpaceItem];
+            [array7 addObject:flexibleSpaceItem4];
 
-            v168 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-            [v133 addObject:v168];
+            tableBarButtonItem4 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+            [array7 addObject:tableBarButtonItem4];
 
-            v169 = [MEMORY[0x277D751E0] flexibleSpaceItem];
-            [v133 addObject:v169];
+            flexibleSpaceItem5 = [MEMORY[0x277D751E0] flexibleSpaceItem];
+            [array7 addObject:flexibleSpaceItem5];
 
-            v170 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
-            [v133 addObject:v170];
+            mediaBarButtonItem5 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
+            [array7 addObject:mediaBarButtonItem5];
 
-            v171 = [MEMORY[0x277D751E0] flexibleSpaceItem];
-            [v133 addObject:v171];
+            flexibleSpaceItem6 = [MEMORY[0x277D751E0] flexibleSpaceItem];
+            [array7 addObject:flexibleSpaceItem6];
 
-            v172 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
-            [v133 addObject:v172];
+            inlineSketchBarButtonItem5 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
+            [array7 addObject:inlineSketchBarButtonItem5];
 
             if ([(ICNoteEditorNavigationItemConfiguration *)self canShowWritingTools])
             {
-              v173 = [MEMORY[0x277D751E0] flexibleSpaceItem];
-              [v133 addObject:v173];
+              flexibleSpaceItem7 = [MEMORY[0x277D751E0] flexibleSpaceItem];
+              [array7 addObject:flexibleSpaceItem7];
 
-              v174 = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
-              [v133 addObject:v174];
+              writingToolsBarButtonItem5 = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
+              [array7 addObject:writingToolsBarButtonItem5];
             }
 
             v175 = [MEMORY[0x277D751E0] fixedSpaceItemOfWidth:42.0];
-            [v133 addObject:v175];
+            [array7 addObject:v175];
 
-            v176 = [MEMORY[0x277D751E0] flexibleSpaceItem];
-            [v133 addObject:v176];
+            flexibleSpaceItem8 = [MEMORY[0x277D751E0] flexibleSpaceItem];
+            [array7 addObject:flexibleSpaceItem8];
 
-            v177 = [MEMORY[0x277CBEA60] arrayWithArray:v133];
-            v178 = [(ICNoteEditorNavigationItemConfiguration *)self inputAccessoryToolbar];
-            [v178 setItems:v177];
+            v177 = [MEMORY[0x277CBEA60] arrayWithArray:array7];
+            inputAccessoryToolbar2 = [(ICNoteEditorNavigationItemConfiguration *)self inputAccessoryToolbar];
+            [inputAccessoryToolbar2 setItems:v177];
 
-            v47 = v199;
+            array3 = v199;
           }
 
           else
           {
-            v133 = [(ICNoteEditorNavigationItemConfiguration *)self inputAccessoryToolbar];
-            [v133 setItems:MEMORY[0x277CBEBF8]];
+            array7 = [(ICNoteEditorNavigationItemConfiguration *)self inputAccessoryToolbar];
+            [array7 setItems:MEMORY[0x277CBEBF8]];
           }
         }
 
         goto LABEL_117;
       }
 
-      v104 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
-      [v99 addObject:v104];
+      checklistBarButtonItem6 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
+      [array6 addObject:checklistBarButtonItem6];
 
-      v105 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
-      [v99 addObject:v105];
+      mediaBarButtonItem6 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
+      [array6 addObject:mediaBarButtonItem6];
 
-      v106 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
-      [v99 addObject:v106];
+      inlineSketchBarButtonItem6 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
+      [array6 addObject:inlineSketchBarButtonItem6];
 
       if ([(ICNoteEditorNavigationItemConfiguration *)self canShowWritingTools])
       {
-        v107 = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
-        [v99 addObject:v107];
+        writingToolsBarButtonItem6 = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
+        [array6 addObject:writingToolsBarButtonItem6];
       }
 
-      v102 = [MEMORY[0x277D751E0] flexibleSpaceItem];
-      v213 = v102;
+      flexibleSpaceItem = [MEMORY[0x277D751E0] flexibleSpaceItem];
+      v213 = flexibleSpaceItem;
       v103 = &v213;
     }
 
-    v108 = [(ICNoteEditorNavigationItemConfiguration *)self addNoteBarButtonItem];
-    v103[1] = v108;
+    addNoteBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self addNoteBarButtonItem];
+    v103[1] = addNoteBarButtonItem;
     v109 = [MEMORY[0x277CBEA60] arrayWithObjects:v103 count:2];
 
     goto LABEL_82;
   }
 
 LABEL_118:
-  v179 = [(ICNoteEditorNavigationItemConfiguration *)self pillOrnamentViewController];
-  [v179 setToolbarItems:MEMORY[0x277CBEBF8]];
+  pillOrnamentViewController = [(ICNoteEditorNavigationItemConfiguration *)self pillOrnamentViewController];
+  [pillOrnamentViewController setToolbarItems:MEMORY[0x277CBEBF8]];
 
-  v180 = [(ICNoteEditorNavigationItemConfiguration *)self pillOrnamentViewController];
-  [v180 hide];
+  pillOrnamentViewController2 = [(ICNoteEditorNavigationItemConfiguration *)self pillOrnamentViewController];
+  [pillOrnamentViewController2 hide];
 }
 
-- (void)updateRegularAnimated:(BOOL)a3
+- (void)updateRegularAnimated:(BOOL)animated
 {
-  v4 = a3;
+  animatedCopy = animated;
   v150[1] = *MEMORY[0x277D85DE8];
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-  [v6 setTitle:0];
+  navigationItem = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+  [navigationItem setTitle:0];
 
-  v7 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-  [v7 setTitleView:0];
+  navigationItem2 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+  [navigationItem2 setTitleView:0];
 
-  v8 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-  v9 = 1;
-  [v8 setStyle:1];
+  navigationItem3 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+  usesCustomBackButton = 1;
+  [navigationItem3 setStyle:1];
 
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (![(ICNoteEditorNavigationItemConfiguration *)self hidesBackButton])
   {
     if ([(ICNoteEditorNavigationItemConfiguration *)self auxiliaryWindowType])
     {
-      v9 = 1;
+      usesCustomBackButton = 1;
     }
 
     else
     {
-      v9 = [(ICNoteEditorNavigationItemConfiguration *)self usesCustomBackButton];
+      usesCustomBackButton = [(ICNoteEditorNavigationItemConfiguration *)self usesCustomBackButton];
     }
   }
 
-  v11 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-  [v11 setHidesBackButton:v9];
+  navigationItem4 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+  [navigationItem4 setHidesBackButton:usesCustomBackButton];
 
   if ([(ICNoteEditorNavigationItemConfiguration *)self usesCustomBackButton]&& ![(ICNoteEditorNavigationItemConfiguration *)self auxiliaryWindowType])
   {
     v12 = objc_alloc(MEMORY[0x277D751F0]);
-    v13 = [(ICNoteEditorNavigationItemConfiguration *)self customBackBarButtonItem];
-    v150[0] = v13;
-    v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v150 count:1];
-    v14 = [v12 initWithBarButtonItems:v3 representativeItem:0];
+    customBackBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self customBackBarButtonItem];
+    v150[0] = customBackBarButtonItem;
+    addNoteBarButtonItemGroup = [MEMORY[0x277CBEA60] arrayWithObjects:v150 count:1];
+    v14 = [v12 initWithBarButtonItems:addNoteBarButtonItemGroup representativeItem:0];
 
-    [v10 addObject:v14];
+    [array addObject:v14];
   }
 
-  v15 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-  [v15 setLeftItemsSupplementBackButton:1];
+  navigationItem5 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+  [navigationItem5 setLeftItemsSupplementBackButton:1];
 
   if (![(ICNoteEditorNavigationItemConfiguration *)self quickNoteType])
   {
-    v16 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     if ([(ICNoteEditorNavigationItemConfiguration *)self isInSecureScreen])
     {
-      v17 = [(ICNoteEditorNavigationItemConfiguration *)self quickNoteAllNotesBarButtonItem];
+      quickNoteAllNotesBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self quickNoteAllNotesBarButtonItem];
     }
 
     else
@@ -2537,23 +2537,23 @@ LABEL_118:
       if ([(ICNoteEditorNavigationItemConfiguration *)self auxiliaryWindowType]!= 1)
       {
 LABEL_14:
-        if ([v16 count])
+        if ([array2 count])
         {
           v19 = objc_alloc(MEMORY[0x277D751F0]);
-          v3 = [v16 copy];
-          v20 = [v19 initWithBarButtonItems:v3 representativeItem:0];
+          addNoteBarButtonItemGroup = [array2 copy];
+          v20 = [v19 initWithBarButtonItems:addNoteBarButtonItemGroup representativeItem:0];
 
-          [v10 addObject:v20];
+          [array addObject:v20];
         }
 
         goto LABEL_17;
       }
 
-      v17 = [(ICNoteEditorNavigationItemConfiguration *)self closeAuxiliaryWindowBarButtonItem];
+      quickNoteAllNotesBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self closeAuxiliaryWindowBarButtonItem];
     }
 
-    v18 = v17;
-    [v16 addObject:v17];
+    v18 = quickNoteAllNotesBarButtonItem;
+    [array2 addObject:quickNoteAllNotesBarButtonItem];
 
     goto LABEL_14;
   }
@@ -2561,59 +2561,59 @@ LABEL_14:
 LABEL_17:
   if ([(ICNoteEditorNavigationItemConfiguration *)self showsAddNoteButtonOnLeadingEdge])
   {
-    v21 = [(ICNoteEditorNavigationItemConfiguration *)self addNoteBarButtonItem];
-    v149 = v21;
+    addNoteBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self addNoteBarButtonItem];
+    v149 = addNoteBarButtonItem;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v149 count:1];
-    v3 = [(ICNoteEditorNavigationItemConfiguration *)self addNoteBarButtonItemGroup];
-    [v3 setBarButtonItems:v22];
+    addNoteBarButtonItemGroup = [(ICNoteEditorNavigationItemConfiguration *)self addNoteBarButtonItemGroup];
+    [addNoteBarButtonItemGroup setBarButtonItems:v22];
 
-    v23 = [(ICNoteEditorNavigationItemConfiguration *)self addNoteBarButtonItemGroup];
-    [v10 addObject:v23];
+    addNoteBarButtonItemGroup2 = [(ICNoteEditorNavigationItemConfiguration *)self addNoteBarButtonItemGroup];
+    [array addObject:addNoteBarButtonItemGroup2];
   }
 
   if (![(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament]&& [(ICNoteEditorNavigationItemConfiguration *)self canShowUndoRedo])
   {
-    v24 = [(ICNoteEditorNavigationItemConfiguration *)self usesUndoRedoMenu];
-    v25 = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
-    v26 = v25;
-    if (v24)
+    usesUndoRedoMenu = [(ICNoteEditorNavigationItemConfiguration *)self usesUndoRedoMenu];
+    undoBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
+    v26 = undoBarButtonItem;
+    if (usesUndoRedoMenu)
     {
-      v148 = v25;
+      v148 = undoBarButtonItem;
       v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v148 count:1];
     }
 
     else
     {
-      v147[0] = v25;
-      v3 = [(ICNoteEditorNavigationItemConfiguration *)self redoBarButtonItem];
-      v147[1] = v3;
+      v147[0] = undoBarButtonItem;
+      addNoteBarButtonItemGroup = [(ICNoteEditorNavigationItemConfiguration *)self redoBarButtonItem];
+      v147[1] = addNoteBarButtonItemGroup;
       v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v147 count:2];
     }
 
-    v28 = [(ICNoteEditorNavigationItemConfiguration *)self undoRedoBarButtonItemGroup];
-    [v28 setBarButtonItems:v27];
+    undoRedoBarButtonItemGroup = [(ICNoteEditorNavigationItemConfiguration *)self undoRedoBarButtonItemGroup];
+    [undoRedoBarButtonItemGroup setBarButtonItems:v27];
 
-    if (!v24)
+    if (!usesUndoRedoMenu)
     {
 
-      v27 = v3;
+      v27 = addNoteBarButtonItemGroup;
     }
 
-    v29 = [(ICNoteEditorNavigationItemConfiguration *)self usesUndoRedoMenu];
-    if (v29)
+    usesUndoRedoMenu2 = [(ICNoteEditorNavigationItemConfiguration *)self usesUndoRedoMenu];
+    if (usesUndoRedoMenu2)
     {
-      v30 = [(ICNoteEditorNavigationItemConfiguration *)self undoRedoMenu];
+      undoRedoMenu = [(ICNoteEditorNavigationItemConfiguration *)self undoRedoMenu];
     }
 
     else
     {
-      v30 = 0;
+      undoRedoMenu = 0;
     }
 
-    v31 = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
-    [v31 setMenu:v30];
+    undoBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
+    [undoBarButtonItem2 setMenu:undoRedoMenu];
 
-    if (v29)
+    if (usesUndoRedoMenu2)
     {
     }
 
@@ -2627,78 +2627,78 @@ LABEL_17:
       v32 = sel_undoAction_;
     }
 
-    v33 = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
-    [v33 setAction:v32];
+    undoBarButtonItem3 = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
+    [undoBarButtonItem3 setAction:v32];
 
     v34 = [MEMORY[0x277D751E0] fixedSpaceItemOfWidth:0.0];
-    v35 = [v34 creatingFixedGroup];
-    [v10 addObject:v35];
+    creatingFixedGroup = [v34 creatingFixedGroup];
+    [array addObject:creatingFixedGroup];
 
-    v36 = [(ICNoteEditorNavigationItemConfiguration *)self undoRedoBarButtonItemGroup];
-    [v10 addObject:v36];
+    undoRedoBarButtonItemGroup2 = [(ICNoteEditorNavigationItemConfiguration *)self undoRedoBarButtonItemGroup];
+    [array addObject:undoRedoBarButtonItemGroup2];
   }
 
-  v37 = [v10 copy];
-  v38 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-  [v38 setLeadingItemGroups:v37];
+  v37 = [array copy];
+  navigationItem6 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+  [navigationItem6 setLeadingItemGroups:v37];
 
   if ([(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament])
   {
-    v39 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-    [v39 setCenterItemGroups:MEMORY[0x277CBEBF8]];
+    navigationItem7 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+    [navigationItem7 setCenterItemGroups:MEMORY[0x277CBEBF8]];
 
-    v40 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-    [v40 setCustomizationIdentifier:0];
+    navigationItem8 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+    [navigationItem8 setCustomizationIdentifier:0];
   }
 
   else
   {
-    v41 = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
-    v146 = v41;
+    styleBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
+    v146 = styleBarButtonItem;
     v42 = [MEMORY[0x277CBEA60] arrayWithObjects:&v146 count:1];
-    v43 = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItemGroup];
-    [v43 setBarButtonItems:v42];
+    styleBarButtonItemGroup = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItemGroup];
+    [styleBarButtonItemGroup setBarButtonItems:v42];
 
-    v44 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
-    v145 = v44;
+    checklistBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
+    v145 = checklistBarButtonItem;
     v45 = [MEMORY[0x277CBEA60] arrayWithObjects:&v145 count:1];
-    v46 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItemGroup];
-    [v46 setBarButtonItems:v45];
+    checklistBarButtonItemGroup = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItemGroup];
+    [checklistBarButtonItemGroup setBarButtonItems:v45];
 
-    v47 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-    v144 = v47;
+    tableBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+    v144 = tableBarButtonItem;
     v48 = [MEMORY[0x277CBEA60] arrayWithObjects:&v144 count:1];
-    v49 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItemGroup];
-    [v49 setBarButtonItems:v48];
+    tableBarButtonItemGroup = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItemGroup];
+    [tableBarButtonItemGroup setBarButtonItems:v48];
 
-    v50 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
-    v143 = v50;
+    mediaBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
+    v143 = mediaBarButtonItem;
     v51 = [MEMORY[0x277CBEA60] arrayWithObjects:&v143 count:1];
-    v52 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItemGroup];
-    [v52 setBarButtonItems:v51];
+    mediaBarButtonItemGroup = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItemGroup];
+    [mediaBarButtonItemGroup setBarButtonItems:v51];
 
     v53 = MEMORY[0x277CBEB18];
-    v54 = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItemGroup];
-    v55 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItemGroup];
-    v56 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItemGroup];
-    v57 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItemGroup];
-    v40 = [v53 arrayWithObjects:{v54, v55, v56, v57, 0}];
+    styleBarButtonItemGroup2 = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItemGroup];
+    checklistBarButtonItemGroup2 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItemGroup];
+    tableBarButtonItemGroup2 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItemGroup];
+    mediaBarButtonItemGroup2 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItemGroup];
+    navigationItem8 = [v53 arrayWithObjects:{styleBarButtonItemGroup2, checklistBarButtonItemGroup2, tableBarButtonItemGroup2, mediaBarButtonItemGroup2, 0}];
 
     if ([(ICNoteEditorNavigationItemConfiguration *)self canShowWritingTools])
     {
-      v58 = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
-      v142 = v58;
+      writingToolsBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
+      v142 = writingToolsBarButtonItem;
       v59 = [MEMORY[0x277CBEA60] arrayWithObjects:&v142 count:1];
-      v60 = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsButtonItemGroup];
-      [v60 setBarButtonItems:v59];
+      writingToolsButtonItemGroup = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsButtonItemGroup];
+      [writingToolsButtonItemGroup setBarButtonItems:v59];
 
-      v61 = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsButtonItemGroup];
-      [v40 addObject:v61];
+      writingToolsButtonItemGroup2 = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsButtonItemGroup];
+      [navigationItem8 addObject:writingToolsButtonItemGroup2];
     }
 
-    v62 = [v40 copy];
-    v63 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-    [v63 setCenterItemGroups:v62];
+    v62 = [navigationItem8 copy];
+    navigationItem9 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+    [navigationItem9 setCenterItemGroups:v62];
 
     if ([(ICNoteEditorNavigationItemConfiguration *)self canCustomizeCenterItems])
     {
@@ -2710,232 +2710,232 @@ LABEL_17:
       v64 = 0;
     }
 
-    v65 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-    [v65 setCustomizationIdentifier:v64];
+    navigationItem10 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+    [navigationItem10 setCustomizationIdentifier:v64];
   }
 
-  v66 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   if (![(ICNoteEditorNavigationItemConfiguration *)self quickNoteType])
   {
     if ([(ICNoteEditorNavigationItemConfiguration *)self lockState])
     {
-      v67 = [(ICNoteEditorNavigationItemConfiguration *)self lockBarButtonItem];
-      [v66 addObject:v67];
+      lockBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self lockBarButtonItem];
+      [array3 addObject:lockBarButtonItem];
     }
 
     if ([(ICNoteEditorNavigationItemConfiguration *)self isDeleted])
     {
-      v68 = [(ICNoteEditorNavigationItemConfiguration *)self moveBarButtonItem];
-      [v66 addObject:v68];
+      moveBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self moveBarButtonItem];
+      [array3 addObject:moveBarButtonItem];
 
-      v69 = [(ICNoteEditorNavigationItemConfiguration *)self deleteBarButtonItem];
+      deleteBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self deleteBarButtonItem];
 LABEL_55:
-      v75 = v69;
-      [v66 addObject:v69];
+      v75 = deleteBarButtonItem;
+      [array3 addObject:deleteBarButtonItem];
 
       goto LABEL_56;
     }
 
-    v70 = [(ICNoteEditorNavigationItemConfiguration *)self shareBarButtonItem];
-    [v66 addObject:v70];
+    shareBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self shareBarButtonItem];
+    [array3 addObject:shareBarButtonItem];
 
-    v71 = [(ICNoteEditorNavigationItemConfiguration *)self collaborationBarButtonItem];
+    collaborationBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self collaborationBarButtonItem];
 
-    if (v71)
+    if (collaborationBarButtonItem)
     {
-      v72 = [(ICNoteEditorNavigationItemConfiguration *)self collaborationBarButtonItem];
-      [v66 addObject:v72];
+      collaborationBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self collaborationBarButtonItem];
+      [array3 addObject:collaborationBarButtonItem2];
     }
 
     if (![(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament])
     {
-      v73 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
-      [v66 addObject:v73];
+      inlineSketchBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
+      [array3 addObject:inlineSketchBarButtonItem];
     }
 
     if ([(ICNoteEditorNavigationItemConfiguration *)self showsCalculatorModeButton])
     {
       v74 = [MEMORY[0x277D751E0] ic_itemWithFixedWidth:10.0];
-      [v66 addObject:v74];
+      [array3 addObject:v74];
 
-      v69 = [(ICNoteEditorNavigationItemConfiguration *)self calculatorModeItem];
+      deleteBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self calculatorModeItem];
       goto LABEL_55;
     }
   }
 
 LABEL_56:
-  v76 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-  v77 = [v66 copy];
-  [v76 setRightBarButtonItems:v77 animated:v4];
+  navigationItem11 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+  v77 = [array3 copy];
+  [navigationItem11 setRightBarButtonItems:v77 animated:animatedCopy];
 
-  v78 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   if (![(ICNoteEditorNavigationItemConfiguration *)self showsAddNoteButtonOnLeadingEdge])
   {
-    v79 = [(ICNoteEditorNavigationItemConfiguration *)self addNoteBarButtonItem];
-    [v78 addObject:v79];
+    addNoteBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self addNoteBarButtonItem];
+    [array4 addObject:addNoteBarButtonItem2];
   }
 
   if ([(ICNoteEditorNavigationItemConfiguration *)self isEditing]&& [(ICNoteEditorNavigationItemConfiguration *)self showsDoneWhileEditing])
   {
-    v80 = [(ICNoteEditorNavigationItemConfiguration *)self doneBarButtonItem];
-    [v78 addObject:v80];
+    doneBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self doneBarButtonItem];
+    [array4 addObject:doneBarButtonItem];
   }
 
-  v81 = [v78 copy];
-  v82 = [(ICNoteEditorNavigationItemConfiguration *)self pinnedTrailingBarButtonItemGroup];
-  [v82 setBarButtonItems:v81];
+  v81 = [array4 copy];
+  pinnedTrailingBarButtonItemGroup = [(ICNoteEditorNavigationItemConfiguration *)self pinnedTrailingBarButtonItemGroup];
+  [pinnedTrailingBarButtonItemGroup setBarButtonItems:v81];
 
-  v83 = [(ICNoteEditorNavigationItemConfiguration *)self pinnedTrailingBarButtonItemGroup];
-  v84 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
-  [v84 setPinnedTrailingGroup:v83];
+  pinnedTrailingBarButtonItemGroup2 = [(ICNoteEditorNavigationItemConfiguration *)self pinnedTrailingBarButtonItemGroup];
+  navigationItem12 = [(ICNoteEditorNavigationItemConfiguration *)self navigationItem];
+  [navigationItem12 setPinnedTrailingGroup:pinnedTrailingBarButtonItemGroup2];
 
-  v85 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+  inputAssistantItem = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
 
-  if (v85)
+  if (inputAssistantItem)
   {
-    v138 = v66;
-    v86 = v4;
-    v87 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantLeadingBarButtonItemGroup];
-    [v87 setBarButtonItems:MEMORY[0x277CBEBF8]];
+    v138 = array3;
+    v86 = animatedCopy;
+    inputAssistantLeadingBarButtonItemGroup = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantLeadingBarButtonItemGroup];
+    [inputAssistantLeadingBarButtonItemGroup setBarButtonItems:MEMORY[0x277CBEBF8]];
 
-    v88 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-    v89 = [v88 leadingBarButtonGroups];
-    v90 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantLeadingBarButtonItemGroup];
-    v91 = [v89 containsObject:v90];
+    inputAssistantItem2 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+    leadingBarButtonGroups = [inputAssistantItem2 leadingBarButtonGroups];
+    inputAssistantLeadingBarButtonItemGroup2 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantLeadingBarButtonItemGroup];
+    v91 = [leadingBarButtonGroups containsObject:inputAssistantLeadingBarButtonItemGroup2];
 
     if ((v91 & 1) == 0)
     {
       v92 = NSStringFromSelector(sel_leadingBarButtonGroups);
-      v93 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-      [v93 willChangeValueForKey:v92];
+      inputAssistantItem3 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+      [inputAssistantItem3 willChangeValueForKey:v92];
 
-      v94 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-      v95 = [v94 leadingBarButtonGroups];
-      v96 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantLeadingBarButtonItemGroup];
-      [v95 arrayByAddingObject:v96];
-      v97 = v78;
-      v99 = v98 = v10;
-      v100 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-      [v100 setLeadingBarButtonGroups:v99];
+      inputAssistantItem4 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+      leadingBarButtonGroups2 = [inputAssistantItem4 leadingBarButtonGroups];
+      inputAssistantLeadingBarButtonItemGroup3 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantLeadingBarButtonItemGroup];
+      [leadingBarButtonGroups2 arrayByAddingObject:inputAssistantLeadingBarButtonItemGroup3];
+      v97 = array4;
+      v99 = v98 = array;
+      inputAssistantItem5 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+      [inputAssistantItem5 setLeadingBarButtonGroups:v99];
 
-      v10 = v98;
-      v78 = v97;
+      array = v98;
+      array4 = v97;
 
-      v101 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-      [v101 didChangeValueForKey:v92];
+      inputAssistantItem6 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+      [inputAssistantItem6 didChangeValueForKey:v92];
     }
 
-    v102 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantTrailingBarButtonItemGroup];
-    [v102 setBarButtonItems:MEMORY[0x277CBEBF8]];
+    inputAssistantTrailingBarButtonItemGroup = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantTrailingBarButtonItemGroup];
+    [inputAssistantTrailingBarButtonItemGroup setBarButtonItems:MEMORY[0x277CBEBF8]];
 
-    v103 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-    v104 = [v103 trailingBarButtonGroups];
-    v105 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantTrailingBarButtonItemGroup];
-    v106 = [v104 containsObject:v105];
+    inputAssistantItem7 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+    trailingBarButtonGroups = [inputAssistantItem7 trailingBarButtonGroups];
+    inputAssistantTrailingBarButtonItemGroup2 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantTrailingBarButtonItemGroup];
+    v106 = [trailingBarButtonGroups containsObject:inputAssistantTrailingBarButtonItemGroup2];
 
-    v4 = v86;
-    v66 = v138;
+    animatedCopy = v86;
+    array3 = v138;
     if ((v106 & 1) == 0)
     {
       v107 = NSStringFromSelector(sel_trailingBarButtonGroups);
-      v108 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-      [v108 willChangeValueForKey:v107];
+      inputAssistantItem8 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+      [inputAssistantItem8 willChangeValueForKey:v107];
 
-      v109 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantTrailingBarButtonItemGroup];
-      v141 = v109;
+      inputAssistantTrailingBarButtonItemGroup3 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantTrailingBarButtonItemGroup];
+      v141 = inputAssistantTrailingBarButtonItemGroup3;
       v110 = [MEMORY[0x277CBEA60] arrayWithObjects:&v141 count:1];
-      v111 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-      [v111 setTrailingBarButtonGroups:v110];
+      inputAssistantItem9 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+      [inputAssistantItem9 setTrailingBarButtonGroups:v110];
 
-      v112 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
-      [v112 didChangeValueForKey:v107];
+      inputAssistantItem10 = [(ICNoteEditorNavigationItemConfiguration *)self inputAssistantItem];
+      [inputAssistantItem10 didChangeValueForKey:v107];
     }
   }
 
-  v113 = [(ICNoteEditorNavigationItemConfiguration *)self inputAccessoryToolbar];
+  inputAccessoryToolbar = [(ICNoteEditorNavigationItemConfiguration *)self inputAccessoryToolbar];
 
-  if (v113)
+  if (inputAccessoryToolbar)
   {
-    v114 = [(ICNoteEditorNavigationItemConfiguration *)self inputAccessoryToolbar];
-    [v114 setItems:MEMORY[0x277CBEBF8]];
+    inputAccessoryToolbar2 = [(ICNoteEditorNavigationItemConfiguration *)self inputAccessoryToolbar];
+    [inputAccessoryToolbar2 setItems:MEMORY[0x277CBEBF8]];
   }
 
-  v115 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
+  toolbarItemSource = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
 
-  if (v115)
+  if (toolbarItemSource)
   {
-    v116 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
-    [v116 setToolbarItems:MEMORY[0x277CBEBF8] animated:v4];
+    toolbarItemSource2 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarItemSource];
+    [toolbarItemSource2 setToolbarItems:MEMORY[0x277CBEBF8] animated:animatedCopy];
   }
 
   if ([(ICNoteEditorNavigationItemConfiguration *)self usesPillOrnament]&& [(ICNoteEditorNavigationItemConfiguration *)self canShowPillOrnament]&& ![(ICNoteEditorNavigationItemConfiguration *)self inlineSketchEditingState])
   {
-    v132 = v78;
-    v139 = [MEMORY[0x277D751E0] flexibleSpaceItem];
-    v140[0] = v139;
-    v137 = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
-    v140[1] = v137;
+    v132 = array4;
+    flexibleSpaceItem = [MEMORY[0x277D751E0] flexibleSpaceItem];
+    v140[0] = flexibleSpaceItem;
+    undoBarButtonItem4 = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
+    v140[1] = undoBarButtonItem4;
     v136 = [MEMORY[0x277D751E0] fixedSpaceItemOfWidth:16.0];
     v140[2] = v136;
-    v135 = [(ICNoteEditorNavigationItemConfiguration *)self redoBarButtonItem];
-    v140[3] = v135;
+    redoBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self redoBarButtonItem];
+    v140[3] = redoBarButtonItem;
     v134 = [MEMORY[0x277D751E0] fixedSpaceItemOfWidth:16.0];
     v140[4] = v134;
-    v133 = [(ICNoteEditorNavigationItemConfiguration *)self verticalSeparatorBarButtonItem];
-    v140[5] = v133;
+    verticalSeparatorBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self verticalSeparatorBarButtonItem];
+    v140[5] = verticalSeparatorBarButtonItem;
     v131 = [MEMORY[0x277D751E0] fixedSpaceItemOfWidth:16.0];
     v140[6] = v131;
-    v130 = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
-    v140[7] = v130;
+    styleBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
+    v140[7] = styleBarButtonItem2;
     v129 = [MEMORY[0x277D751E0] fixedSpaceItemOfWidth:16.0];
     v140[8] = v129;
-    v128 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
-    v140[9] = v128;
+    checklistBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
+    v140[9] = checklistBarButtonItem2;
     v127 = [MEMORY[0x277D751E0] fixedSpaceItemOfWidth:16.0];
     v140[10] = v127;
-    v126 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-    v140[11] = v126;
+    tableBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+    v140[11] = tableBarButtonItem2;
     v118 = [MEMORY[0x277D751E0] fixedSpaceItemOfWidth:16.0];
     v140[12] = v118;
-    v119 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
-    v140[13] = v119;
+    mediaBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
+    v140[13] = mediaBarButtonItem2;
     v120 = [MEMORY[0x277D751E0] fixedSpaceItemOfWidth:16.0];
     v140[14] = v120;
-    v121 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
-    v140[15] = v121;
-    v122 = [MEMORY[0x277D751E0] flexibleSpaceItem];
-    v140[16] = v122;
+    inlineSketchBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
+    v140[15] = inlineSketchBarButtonItem2;
+    flexibleSpaceItem2 = [MEMORY[0x277D751E0] flexibleSpaceItem];
+    v140[16] = flexibleSpaceItem2;
     v123 = [MEMORY[0x277CBEA60] arrayWithObjects:v140 count:17];
     [(ICNoteEditorNavigationItemConfiguration *)self pillOrnamentViewController];
-    v125 = v124 = v10;
+    v125 = v124 = array;
     [v125 setToolbarItems:v123];
 
-    v10 = v124;
-    v78 = v132;
+    array = v124;
+    array4 = v132;
 
-    v117 = [(ICNoteEditorNavigationItemConfiguration *)self pillOrnamentViewController];
-    [v117 show];
+    pillOrnamentViewController = [(ICNoteEditorNavigationItemConfiguration *)self pillOrnamentViewController];
+    [pillOrnamentViewController show];
   }
 
   else
   {
-    v117 = [(ICNoteEditorNavigationItemConfiguration *)self pillOrnamentViewController];
-    [v117 hide];
+    pillOrnamentViewController = [(ICNoteEditorNavigationItemConfiguration *)self pillOrnamentViewController];
+    [pillOrnamentViewController hide];
   }
 }
 
-- (void)updateToolbarVisibilityAnimated:(BOOL)a3
+- (void)updateToolbarVisibilityAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
-  v6 = [v5 noteEditorNavigationItemConfigurationIsToolbarHidden];
+  animatedCopy = animated;
+  dataSource = [(ICNoteEditorNavigationItemConfiguration *)self dataSource];
+  noteEditorNavigationItemConfigurationIsToolbarHidden = [dataSource noteEditorNavigationItemConfigurationIsToolbarHidden];
 
-  v7 = [(ICNoteEditorNavigationItemConfiguration *)self canShowToolbar];
-  if (v6 == v7)
+  canShowToolbar = [(ICNoteEditorNavigationItemConfiguration *)self canShowToolbar];
+  if (noteEditorNavigationItemConfigurationIsToolbarHidden == canShowToolbar)
   {
-    v8 = v7;
-    v9 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-    [v9 noteEditorNavigationItemConfiguration:self setToolbarHidden:v8 ^ 1u animated:v3];
+    v8 = canShowToolbar;
+    delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+    [delegate noteEditorNavigationItemConfiguration:self setToolbarHidden:v8 ^ 1u animated:animatedCopy];
   }
 }
 
@@ -2946,8 +2946,8 @@ LABEL_56:
   if (!addNoteBarButtonItemGroup)
   {
     v4 = objc_alloc(MEMORY[0x277D751F0]);
-    v5 = [(ICNoteEditorNavigationItemConfiguration *)self addNoteBarButtonItem];
-    v11[0] = v5;
+    addNoteBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self addNoteBarButtonItem];
+    v11[0] = addNoteBarButtonItem;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     v7 = [v4 initWithBarButtonItems:v6 representativeItem:0];
     v8 = self->_addNoteBarButtonItemGroup;
@@ -2976,8 +2976,8 @@ LABEL_56:
   if (!formatBarButtonItem || ([(UIBarButtonItem *)formatBarButtonItem customView], v4 = objc_claimAutoreleasedReturnValue(), [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v4 != v5))
   {
     v6 = objc_alloc(MEMORY[0x277D751E0]);
-    v7 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
-    v8 = [v6 initWithCustomView:v7];
+    contextualInputAccessoryView = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
+    v8 = [v6 initWithCustomView:contextualInputAccessoryView];
     v9 = self->_formatBarButtonItem;
     self->_formatBarButtonItem = v8;
   }
@@ -2998,15 +2998,15 @@ LABEL_56:
   else
   {
     v5 = MEMORY[0x277D755B8];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v7 = [v5 systemImageNamed:@"bold" withConfiguration:v6];
+    toolbarButtonConfiguration = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v7 = [v5 systemImageNamed:@"bold" withConfiguration:toolbarButtonConfiguration];
 
     v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v7 style:0 target:self action:sel_boldAction_];
     v9 = self->_boldBarButtonItem;
     self->_boldBarButtonItem = v8;
 
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:@"Bold" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle localizedStringForKey:@"Bold" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_boldBarButtonItem setAccessibilityLabel:v11];
 
     v3 = self->_boldBarButtonItem;
@@ -3026,15 +3026,15 @@ LABEL_56:
   else
   {
     v5 = MEMORY[0x277D755B8];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v7 = [v5 systemImageNamed:@"italic" withConfiguration:v6];
+    toolbarButtonConfiguration = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v7 = [v5 systemImageNamed:@"italic" withConfiguration:toolbarButtonConfiguration];
 
     v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v7 style:0 target:self action:sel_italicAction_];
     v9 = self->_italicBarButtonItem;
     self->_italicBarButtonItem = v8;
 
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:@"Italic" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle localizedStringForKey:@"Italic" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_italicBarButtonItem setAccessibilityLabel:v11];
 
     v3 = self->_italicBarButtonItem;
@@ -3054,15 +3054,15 @@ LABEL_56:
   else
   {
     v5 = MEMORY[0x277D755B8];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v7 = [v5 systemImageNamed:@"underline" withConfiguration:v6];
+    toolbarButtonConfiguration = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v7 = [v5 systemImageNamed:@"underline" withConfiguration:toolbarButtonConfiguration];
 
     v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v7 style:0 target:self action:sel_underlineAction_];
     v9 = self->_underlineBarButtonItem;
     self->_underlineBarButtonItem = v8;
 
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:@"Underline" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle localizedStringForKey:@"Underline" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_underlineBarButtonItem setAccessibilityLabel:v11];
 
     v3 = self->_underlineBarButtonItem;
@@ -3082,15 +3082,15 @@ LABEL_56:
   else
   {
     v5 = MEMORY[0x277D755B8];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v7 = [v5 systemImageNamed:@"strikethrough" withConfiguration:v6];
+    toolbarButtonConfiguration = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v7 = [v5 systemImageNamed:@"strikethrough" withConfiguration:toolbarButtonConfiguration];
 
     v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v7 style:0 target:self action:sel_strikethroughAction_];
     v9 = self->_strikethroughBarButtonItem;
     self->_strikethroughBarButtonItem = v8;
 
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:@"Strikethrough" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle localizedStringForKey:@"Strikethrough" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_strikethroughBarButtonItem setAccessibilityLabel:v11];
 
     v3 = self->_strikethroughBarButtonItem;
@@ -3109,14 +3109,14 @@ LABEL_56:
 
   else
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6 = 0x277D75000uLL;
     v7 = MEMORY[0x277D755B8];
     val = self;
-    v8 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v9 = [v7 ic_systemImageNamed:@"highlighter.badge.ellipsis" withConfiguration:v8];
+    toolbarButtonConfiguration = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v9 = [v7 ic_systemImageNamed:@"highlighter.badge.ellipsis" withConfiguration:toolbarButtonConfiguration];
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v11 = *MEMORY[0x277D35D80];
     if (*MEMORY[0x277D35D80])
     {
@@ -3130,9 +3130,9 @@ LABEL_56:
         v17 = NSStringForEmphasisColorType();
         v18 = [(ICNoteEditorContextualMenuButtonConfigurationMenuState *)v16 initWithImage:v15 title:v17 context:v12];
 
-        [v5 addObject:v18];
+        [array addObject:v18];
         v19 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
-        [v10 setObject:v9 forKeyedSubscript:v19];
+        [dictionary setObject:v9 forKeyedSubscript:v19];
 
         v6 = v14;
         ++v12;
@@ -3145,35 +3145,35 @@ LABEL_56:
     objc_initWeak(&location, val);
     v20 = [ICNoteEditorContextualMenuButtonConfiguration alloc];
     v21 = *(v6 + 1464);
-    v22 = [(ICNoteEditorNavigationItemConfiguration *)val toolbarButtonConfiguration];
-    v23 = [v21 ic_systemImageNamed:@"highlighter" withConfiguration:v22];
+    toolbarButtonConfiguration2 = [(ICNoteEditorNavigationItemConfiguration *)val toolbarButtonConfiguration];
+    v23 = [v21 ic_systemImageNamed:@"highlighter" withConfiguration:toolbarButtonConfiguration2];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __64__ICNoteEditorNavigationItemConfiguration_emphasisBarButtonItem__block_invoke;
     v39[3] = &unk_2781AD9D8;
-    v24 = v5;
+    v24 = array;
     v40 = v24;
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __64__ICNoteEditorNavigationItemConfiguration_emphasisBarButtonItem__block_invoke_2;
     v37[3] = &unk_2781ADA00;
     objc_copyWeak(&v38, &location);
-    v25 = [(ICNoteEditorContextualMenuButtonConfiguration *)v20 initWithImage:v23 activeImageForContext:v10 menuOptions:v24 defaultMenuOption:v39 stateChangedHandler:v37];
+    v25 = [(ICNoteEditorContextualMenuButtonConfiguration *)v20 initWithImage:v23 activeImageForContext:dictionary menuOptions:v24 defaultMenuOption:v39 stateChangedHandler:v37];
 
     v26 = [[ICNoteEditorContextualMenuButton alloc] initWithConfiguration:v25];
     [(ICNoteEditorNavigationItemConfiguration *)val setEmphasisMenuButton:v26];
 
-    v27 = [MEMORY[0x277CCA8D8] mainBundle];
-    v28 = [v27 localizedStringForKey:@"Highlight" value:&stru_282757698 table:0];
-    v29 = [(ICNoteEditorNavigationItemConfiguration *)val emphasisMenuButton];
-    [v29 setAccessibilityLabel:v28];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v28 = [mainBundle localizedStringForKey:@"Highlight" value:&stru_282757698 table:0];
+    emphasisMenuButton = [(ICNoteEditorNavigationItemConfiguration *)val emphasisMenuButton];
+    [emphasisMenuButton setAccessibilityLabel:v28];
 
-    v30 = [(ICNoteEditorNavigationItemConfiguration *)val emphasisMenuButton];
-    [v30 setAccessibilityDelegate:val];
+    emphasisMenuButton2 = [(ICNoteEditorNavigationItemConfiguration *)val emphasisMenuButton];
+    [emphasisMenuButton2 setAccessibilityDelegate:val];
 
     v31 = objc_alloc(MEMORY[0x277D751E0]);
-    v32 = [(ICNoteEditorNavigationItemConfiguration *)val emphasisMenuButton];
-    v33 = [v31 initWithCustomView:v32];
+    emphasisMenuButton3 = [(ICNoteEditorNavigationItemConfiguration *)val emphasisMenuButton];
+    v33 = [v31 initWithCustomView:emphasisMenuButton3];
     v34 = val->_emphasisBarButtonItem;
     val->_emphasisBarButtonItem = v33;
 
@@ -3213,15 +3213,15 @@ void __64__ICNoteEditorNavigationItemConfiguration_emphasisBarButtonItem__block_
   else
   {
     v5 = MEMORY[0x277D755B8];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v7 = [v5 ic_systemImageNamed:@"link" withConfiguration:v6];
+    toolbarButtonConfiguration = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v7 = [v5 ic_systemImageNamed:@"link" withConfiguration:toolbarButtonConfiguration];
 
     v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v7 style:0 target:self action:sel_linkAction_];
     v9 = self->_linkBarButtonItem;
     self->_linkBarButtonItem = v8;
 
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:@"Link" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle localizedStringForKey:@"Link" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_linkBarButtonItem setAccessibilityLabel:v11];
 
     v3 = self->_linkBarButtonItem;
@@ -3241,15 +3241,15 @@ void __64__ICNoteEditorNavigationItemConfiguration_emphasisBarButtonItem__block_
   else
   {
     v5 = MEMORY[0x277D755B8];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v7 = [v5 systemImageNamed:@"arrow.up.to.line" withConfiguration:v6];
+    toolbarButtonConfiguration = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v7 = [v5 systemImageNamed:@"arrow.up.to.line" withConfiguration:toolbarButtonConfiguration];
 
     v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v7 style:0 target:self action:sel_moveUpAction_];
     v9 = self->_moveUpBarButtonItem;
     self->_moveUpBarButtonItem = v8;
 
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:@"Move Up" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle localizedStringForKey:@"Move Up" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_moveUpBarButtonItem setAccessibilityLabel:v11];
 
     v3 = self->_moveUpBarButtonItem;
@@ -3269,15 +3269,15 @@ void __64__ICNoteEditorNavigationItemConfiguration_emphasisBarButtonItem__block_
   else
   {
     v5 = MEMORY[0x277D755B8];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v7 = [v5 systemImageNamed:@"arrow.down.to.line" withConfiguration:v6];
+    toolbarButtonConfiguration = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v7 = [v5 systemImageNamed:@"arrow.down.to.line" withConfiguration:toolbarButtonConfiguration];
 
     v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v7 style:0 target:self action:sel_moveDownAction_];
     v9 = self->_moveDownBarButtonItem;
     self->_moveDownBarButtonItem = v8;
 
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:@"Move Down" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle localizedStringForKey:@"Move Down" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_moveDownBarButtonItem setAccessibilityLabel:v11];
 
     v3 = self->_moveDownBarButtonItem;
@@ -3292,13 +3292,13 @@ void __64__ICNoteEditorNavigationItemConfiguration_emphasisBarButtonItem__block_
   if (!blockQuoteBarButtonItem)
   {
     v4 = objc_alloc(MEMORY[0x277D751E0]);
-    v5 = [(ICNoteEditorNavigationItemConfiguration *)self blockQuoteBarButtonItemImage];
-    v6 = [v4 initWithImage:v5 style:0 target:self action:sel_blockQuoteAction_];
+    blockQuoteBarButtonItemImage = [(ICNoteEditorNavigationItemConfiguration *)self blockQuoteBarButtonItemImage];
+    v6 = [v4 initWithImage:blockQuoteBarButtonItemImage style:0 target:self action:sel_blockQuoteAction_];
     v7 = self->_blockQuoteBarButtonItem;
     self->_blockQuoteBarButtonItem = v6;
 
-    v8 = [MEMORY[0x277CCA8D8] mainBundle];
-    v9 = [v8 localizedStringForKey:@"Block Quote" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v9 = [mainBundle localizedStringForKey:@"Block Quote" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_blockQuoteBarButtonItem setAccessibilityLabel:v9];
 
     blockQuoteBarButtonItem = self->_blockQuoteBarButtonItem;
@@ -3338,67 +3338,67 @@ id __71__ICNoteEditorNavigationItemConfiguration_blockQuoteBarButtonItemImage__b
   {
     v5 = [ICNoteEditorContextualMenuButtonConfigurationMenuState alloc];
     v6 = MEMORY[0x277D755B8];
-    v59 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v57 = [v6 ic_systemImageNamed:@"list.bullet" withConfiguration:v59];
-    v58 = [MEMORY[0x277CCA8D8] mainBundle];
-    v56 = [v58 localizedStringForKey:@"Bulleted" value:&stru_282757698 table:0];
+    toolbarButtonConfiguration = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v57 = [v6 ic_systemImageNamed:@"list.bullet" withConfiguration:toolbarButtonConfiguration];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v56 = [mainBundle localizedStringForKey:@"Bulleted" value:&stru_282757698 table:0];
     v50 = [(ICNoteEditorContextualMenuButtonConfigurationMenuState *)v5 initWithImage:v57 title:v56 context:100];
     v65[0] = v50;
     v7 = [ICNoteEditorContextualMenuButtonConfigurationMenuState alloc];
     v8 = MEMORY[0x277D755B8];
-    v55 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v9 = [v8 ic_systemImageNamed:@"list.dash" withConfiguration:v55];
-    v54 = [MEMORY[0x277CCA8D8] mainBundle];
-    v53 = [v54 localizedStringForKey:@"Dashed" value:&stru_282757698 table:0];
+    toolbarButtonConfiguration2 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v9 = [v8 ic_systemImageNamed:@"list.dash" withConfiguration:toolbarButtonConfiguration2];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v53 = [mainBundle2 localizedStringForKey:@"Dashed" value:&stru_282757698 table:0];
     v51 = [(ICNoteEditorContextualMenuButtonConfigurationMenuState *)v7 initWithImage:v9 title:v53 context:101];
     v65[1] = v51;
     v10 = [ICNoteEditorContextualMenuButtonConfigurationMenuState alloc];
     v11 = MEMORY[0x277D755B8];
-    v12 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v13 = [v11 ic_systemImageNamed:@"list.number" withConfiguration:v12];
-    v14 = [MEMORY[0x277CCA8D8] mainBundle];
-    v15 = [v14 localizedStringForKey:@"Numbered" value:&stru_282757698 table:0];
+    toolbarButtonConfiguration3 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v13 = [v11 ic_systemImageNamed:@"list.number" withConfiguration:toolbarButtonConfiguration3];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v15 = [mainBundle3 localizedStringForKey:@"Numbered" value:&stru_282757698 table:0];
     v16 = [(ICNoteEditorContextualMenuButtonConfigurationMenuState *)v10 initWithImage:v13 title:v15 context:102];
     v65[2] = v16;
     v52 = [MEMORY[0x277CBEA60] arrayWithObjects:v65 count:3];
 
     v63[0] = &unk_28277E550;
     v17 = MEMORY[0x277D755B8];
-    v18 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v19 = [v17 ic_systemImageNamed:@"list.bullet.badge.ellipsis" withConfiguration:v18];
+    toolbarButtonConfiguration4 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v19 = [v17 ic_systemImageNamed:@"list.bullet.badge.ellipsis" withConfiguration:toolbarButtonConfiguration4];
     v64[0] = v19;
     v63[1] = &unk_28277E568;
     v20 = MEMORY[0x277D755B8];
-    v21 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v22 = [v20 ic_systemImageNamed:@"list.dash.badge.ellipsis" withConfiguration:v21];
+    toolbarButtonConfiguration5 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v22 = [v20 ic_systemImageNamed:@"list.dash.badge.ellipsis" withConfiguration:toolbarButtonConfiguration5];
     v64[1] = v22;
     v63[2] = &unk_28277E580;
     v23 = MEMORY[0x277D755B8];
-    v24 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v25 = [v23 ic_systemImageNamed:@"list.number.badge.ellipsis" withConfiguration:v24];
+    toolbarButtonConfiguration6 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v25 = [v23 ic_systemImageNamed:@"list.number.badge.ellipsis" withConfiguration:toolbarButtonConfiguration6];
     v64[2] = v25;
     v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v64 forKeys:v63 count:3];
 
-    v27 = [MEMORY[0x277CCA8D8] mainBundle];
-    v28 = [v27 localizedStringForKey:@"Bulleted" value:&stru_282757698 table:0];
+    mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+    v28 = [mainBundle4 localizedStringForKey:@"Bulleted" value:&stru_282757698 table:0];
     v29 = [v26 objectForKeyedSubscript:&unk_28277E550];
     [v29 setAccessibilityLabel:v28];
 
-    v30 = [MEMORY[0x277CCA8D8] mainBundle];
-    v31 = [v30 localizedStringForKey:@"Dashed" value:&stru_282757698 table:0];
+    mainBundle5 = [MEMORY[0x277CCA8D8] mainBundle];
+    v31 = [mainBundle5 localizedStringForKey:@"Dashed" value:&stru_282757698 table:0];
     v32 = [v26 objectForKeyedSubscript:&unk_28277E568];
     [v32 setAccessibilityLabel:v31];
 
-    v33 = [MEMORY[0x277CCA8D8] mainBundle];
-    v34 = [v33 localizedStringForKey:@"Numbered" value:&stru_282757698 table:0];
+    mainBundle6 = [MEMORY[0x277CCA8D8] mainBundle];
+    v34 = [mainBundle6 localizedStringForKey:@"Numbered" value:&stru_282757698 table:0];
     v35 = [v26 objectForKeyedSubscript:&unk_28277E580];
     [v35 setAccessibilityLabel:v34];
 
     objc_initWeak(&location, self);
     v36 = [ICNoteEditorContextualMenuButtonConfiguration alloc];
     v37 = MEMORY[0x277D755B8];
-    v38 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
-    v39 = [v37 ic_systemImageNamed:@"list.bullet" withConfiguration:v38];
+    toolbarButtonConfiguration7 = [(ICNoteEditorNavigationItemConfiguration *)self toolbarButtonConfiguration];
+    v39 = [v37 ic_systemImageNamed:@"list.bullet" withConfiguration:toolbarButtonConfiguration7];
     v60[0] = MEMORY[0x277D85DD0];
     v60[1] = 3221225472;
     v60[2] = __68__ICNoteEditorNavigationItemConfiguration_listSelectorBarButtonItem__block_invoke;
@@ -3409,14 +3409,14 @@ id __71__ICNoteEditorNavigationItemConfiguration_blockQuoteBarButtonItemImage__b
     v41 = [[ICNoteEditorContextualMenuButton alloc] initWithConfiguration:v40];
     [(ICNoteEditorNavigationItemConfiguration *)self setListSelectorMenuButton:v41];
 
-    v42 = [MEMORY[0x277CCA8D8] mainBundle];
-    v43 = [v42 localizedStringForKey:@"List Style" value:&stru_282757698 table:0];
-    v44 = [(ICNoteEditorNavigationItemConfiguration *)self listSelectorMenuButton];
-    [v44 setAccessibilityLabel:v43];
+    mainBundle7 = [MEMORY[0x277CCA8D8] mainBundle];
+    v43 = [mainBundle7 localizedStringForKey:@"List Style" value:&stru_282757698 table:0];
+    listSelectorMenuButton = [(ICNoteEditorNavigationItemConfiguration *)self listSelectorMenuButton];
+    [listSelectorMenuButton setAccessibilityLabel:v43];
 
     v45 = objc_alloc(MEMORY[0x277D751E0]);
-    v46 = [(ICNoteEditorNavigationItemConfiguration *)self listSelectorMenuButton];
-    v47 = [v45 initWithCustomView:v46];
+    listSelectorMenuButton2 = [(ICNoteEditorNavigationItemConfiguration *)self listSelectorMenuButton];
+    v47 = [v45 initWithCustomView:listSelectorMenuButton2];
     v48 = self->_listSelectorBarButtonItem;
     self->_listSelectorBarButtonItem = v47;
 
@@ -3458,8 +3458,8 @@ void __68__ICNoteEditorNavigationItemConfiguration_listSelectorBarButtonItem__bl
   if (!closeAuxiliaryWindowBarButtonItem)
   {
     v4 = objc_alloc(MEMORY[0x277D751E0]);
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Close" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Close" value:&stru_282757698 table:0];
     v7 = [v4 initWithTitle:v6 image:0 target:self action:sel_closeAuxiliaryWindowAction_ menu:0];
     v8 = self->_closeAuxiliaryWindowBarButtonItem;
     self->_closeAuxiliaryWindowBarButtonItem = v7;
@@ -3503,19 +3503,19 @@ void __68__ICNoteEditorNavigationItemConfiguration_listSelectorBarButtonItem__bl
   if (!deleteBarButtonItem)
   {
     v4 = objc_alloc(MEMORY[0x277D751E0]);
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Delete Note" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Delete Note" value:&stru_282757698 table:0];
     v7 = [MEMORY[0x277D755B8] systemImageNamed:@"trash"];
     v8 = [v4 initWithTitle:v6 image:v7 target:self action:sel_deleteAction_ menu:0];
     v9 = self->_deleteBarButtonItem;
     self->_deleteBarButtonItem = v8;
 
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:@"Delete Note" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle2 localizedStringForKey:@"Delete Note" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_deleteBarButtonItem setAccessibilityLabel:v11];
 
-    v12 = [MEMORY[0x277CCA8D8] mainBundle];
-    v13 = [v12 localizedStringForKey:@"Double tap to delete the current note." value:&stru_282757698 table:0];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v13 = [mainBundle3 localizedStringForKey:@"Double tap to delete the current note." value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_deleteBarButtonItem setAccessibilityHint:v13];
 
     deleteBarButtonItem = self->_deleteBarButtonItem;
@@ -3549,22 +3549,22 @@ void __68__ICNoteEditorNavigationItemConfiguration_listSelectorBarButtonItem__bl
   if (!moveBarButtonItem)
   {
     v4 = objc_alloc(MEMORY[0x277D751E0]);
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Move Note" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Move Note" value:&stru_282757698 table:0];
     v7 = [MEMORY[0x277D755B8] systemImageNamed:@"folder"];
     v8 = [v4 initWithTitle:v6 image:v7 target:self action:sel_moveAction_ menu:0];
     v9 = self->_moveBarButtonItem;
     self->_moveBarButtonItem = v8;
 
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:@"Move Note" value:&stru_282757698 table:0];
-    v12 = [(ICNoteEditorNavigationItemConfiguration *)self moveBarButtonItem];
-    [v12 setAccessibilityLabel:v11];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle2 localizedStringForKey:@"Move Note" value:&stru_282757698 table:0];
+    moveBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self moveBarButtonItem];
+    [moveBarButtonItem setAccessibilityLabel:v11];
 
-    v13 = [MEMORY[0x277CCA8D8] mainBundle];
-    v14 = [v13 localizedStringForKey:@"Double tap to move the current note." value:&stru_282757698 table:0];
-    v15 = [(ICNoteEditorNavigationItemConfiguration *)self moveBarButtonItem];
-    [v15 setAccessibilityHint:v14];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v14 = [mainBundle3 localizedStringForKey:@"Double tap to move the current note." value:&stru_282757698 table:0];
+    moveBarButtonItem2 = [(ICNoteEditorNavigationItemConfiguration *)self moveBarButtonItem];
+    [moveBarButtonItem2 setAccessibilityHint:v14];
 
     moveBarButtonItem = self->_moveBarButtonItem;
   }
@@ -3580,8 +3580,8 @@ void __68__ICNoteEditorNavigationItemConfiguration_listSelectorBarButtonItem__bl
   if (!quickNoteAllNotesBarButtonItem)
   {
     v4 = objc_alloc(MEMORY[0x277D751E0]);
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"All Notes" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"All Notes" value:&stru_282757698 table:0];
     v7 = [v4 initWithTitle:v6 image:0 target:self action:sel_quickNoteAllNotesAction_ menu:0];
     v8 = self->_quickNoteAllNotesBarButtonItem;
     self->_quickNoteAllNotesBarButtonItem = v7;
@@ -3624,17 +3624,17 @@ void __68__ICNoteEditorNavigationItemConfiguration_listSelectorBarButtonItem__bl
   {
     v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:21 target:0 action:0];
     v6 = objc_alloc(MEMORY[0x277D751F0]);
-    v7 = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
-    v14[0] = v7;
-    v8 = [(ICNoteEditorNavigationItemConfiguration *)self redoBarButtonItem];
-    v14[1] = v8;
+    undoBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self undoBarButtonItem];
+    v14[0] = undoBarButtonItem;
+    redoBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self redoBarButtonItem];
+    v14[1] = redoBarButtonItem;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
     v10 = [v6 initWithBarButtonItems:v9 representativeItem:v5];
     v11 = self->_undoRedoBarButtonItemGroup;
     self->_undoRedoBarButtonItemGroup = v10;
 
-    v12 = [(ICNoteEditorNavigationItemConfiguration *)self undoRedoMenu];
-    [(UIBarButtonItemGroup *)self->_undoRedoBarButtonItemGroup setMenuRepresentation:v12];
+    undoRedoMenu = [(ICNoteEditorNavigationItemConfiguration *)self undoRedoMenu];
+    [(UIBarButtonItemGroup *)self->_undoRedoBarButtonItemGroup setMenuRepresentation:undoRedoMenu];
 
     v3 = self->_undoRedoBarButtonItemGroup;
   }
@@ -3648,19 +3648,19 @@ void __68__ICNoteEditorNavigationItemConfiguration_listSelectorBarButtonItem__bl
   if (!sidebarButtonItem)
   {
     v4 = objc_alloc(MEMORY[0x277D751E0]);
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Sidebar" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Sidebar" value:&stru_282757698 table:0];
     v7 = [MEMORY[0x277D755B8] systemImageNamed:@"sidebar.leading"];
     v8 = [v4 initWithTitle:v6 image:v7 target:self action:sel_sidebarAction_ menu:0];
     v9 = self->_sidebarButtonItem;
     self->_sidebarButtonItem = v8;
 
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:@"Sidebar" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle2 localizedStringForKey:@"Sidebar" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_sidebarButtonItem setAccessibilityLabel:v11];
 
-    v12 = [MEMORY[0x277CCA8D8] mainBundle];
-    v13 = [v12 localizedStringForKey:@"Double tap to toggle the sidebar" value:&stru_282757698 table:0];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v13 = [mainBundle3 localizedStringForKey:@"Double tap to toggle the sidebar" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_sidebarButtonItem setAccessibilityHint:v13];
 
     sidebarButtonItem = self->_sidebarButtonItem;
@@ -3694,19 +3694,19 @@ void __68__ICNoteEditorNavigationItemConfiguration_listSelectorBarButtonItem__bl
     v7 = [v5 menuWithChildren:v6];
 
     v8 = objc_alloc(MEMORY[0x277D751E0]);
-    v9 = [MEMORY[0x277CCA8D8] mainBundle];
-    v10 = [v9 localizedStringForKey:@"Calculator Mode" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v10 = [mainBundle localizedStringForKey:@"Calculator Mode" value:&stru_282757698 table:0];
     v11 = [MEMORY[0x277D755B8] ic_systemImageNamed:@"calculator.fill"];
     v12 = [v8 initWithTitle:v10 image:v11 target:0 action:0 menu:v7];
     v13 = self->_calculatorModeItem;
     self->_calculatorModeItem = v12;
 
-    v14 = [MEMORY[0x277CCA8D8] mainBundle];
-    v15 = [v14 localizedStringForKey:@"Calculator Mode" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v15 = [mainBundle2 localizedStringForKey:@"Calculator Mode" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_calculatorModeItem setAccessibilityLabel:v15];
 
-    v16 = [MEMORY[0x277CCA8D8] mainBundle];
-    v17 = [v16 localizedStringForKey:@"Double tap to pick a calculator mode" value:&stru_282757698 table:0];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v17 = [mainBundle3 localizedStringForKey:@"Double tap to pick a calculator mode" value:&stru_282757698 table:0];
     [(UIBarButtonItem *)self->_calculatorModeItem setAccessibilityHint:v17];
 
     v3 = self->_calculatorModeItem;
@@ -3785,13 +3785,13 @@ void __61__ICNoteEditorNavigationItemConfiguration_calculatorModeItem__block_inv
 - (UIBarButtonItem)verticalSeparatorBarButtonItem
 {
   v3 = objc_alloc(MEMORY[0x277D75D18]);
-  v4 = [(ICNoteEditorNavigationItemConfiguration *)self presentingViewController];
-  v5 = [v4 view];
-  [v5 ic_hairlineWidth];
+  presentingViewController = [(ICNoteEditorNavigationItemConfiguration *)self presentingViewController];
+  view = [presentingViewController view];
+  [view ic_hairlineWidth];
   v7 = [v3 initWithFrame:{0.0, 0.0, v6, 12.0 * -2.0 + 44.0}];
 
-  v8 = [MEMORY[0x277D75348] tertiaryLabelColor];
-  [v7 setBackgroundColor:v8];
+  tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+  [v7 setBackgroundColor:tertiaryLabelColor];
 
   v9 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v7];
   verticalSeparatorBarButtonItem = self->_verticalSeparatorBarButtonItem;
@@ -3854,15 +3854,15 @@ void __64__ICNoteEditorNavigationItemConfiguration_sidecarMenuController__block_
   {
     objc_initWeak(&location, self);
     v3 = [ICTableActionMenu alloc];
-    v4 = [(ICNoteEditorNavigationItemConfiguration *)self tableAttachmentViewController];
-    v5 = [(ICNoteEditorNavigationItemConfiguration *)self presentingViewController];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+    tableAttachmentViewController = [(ICNoteEditorNavigationItemConfiguration *)self tableAttachmentViewController];
+    presentingViewController = [(ICNoteEditorNavigationItemConfiguration *)self presentingViewController];
+    tableBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __58__ICNoteEditorNavigationItemConfiguration_tableActionMenu__block_invoke;
     v9[3] = &unk_2781ADAC0;
     objc_copyWeak(&v10, &location);
-    v7 = [(ICTableActionMenu *)v3 initWithTableAttachmentViewController:v4 presentingViewController:v5 presentingBarButtonItem:v6 completion:v9];
+    v7 = [(ICTableActionMenu *)v3 initWithTableAttachmentViewController:tableAttachmentViewController presentingViewController:presentingViewController presentingBarButtonItem:tableBarButtonItem completion:v9];
     objc_destroyWeak(&v10);
 
     objc_destroyWeak(&location);
@@ -3890,28 +3890,28 @@ void __58__ICNoteEditorNavigationItemConfiguration_tableActionMenu__block_invoke
 
 - (UIMenu)tableBarButtonItemMenu
 {
-  v2 = [(ICNoteEditorNavigationItemConfiguration *)self tableActionMenu];
-  v3 = [v2 makeMenu];
+  tableActionMenu = [(ICNoteEditorNavigationItemConfiguration *)self tableActionMenu];
+  makeMenu = [tableActionMenu makeMenu];
 
-  return v3;
+  return makeMenu;
 }
 
-- (id)undoRedoButtonWithImageName:(id)a3 title:(id)a4 selector:(SEL)a5
+- (id)undoRedoButtonWithImageName:(id)name title:(id)title selector:(SEL)selector
 {
   v8 = MEMORY[0x277D75230];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 plainButtonConfiguration];
-  [v11 setContentInsets:{*MEMORY[0x277D75060], *(MEMORY[0x277D75060] + 8), *(MEMORY[0x277D75060] + 16), *(MEMORY[0x277D75060] + 24)}];
-  v12 = [MEMORY[0x277D755B8] systemImageNamed:v10];
+  titleCopy = title;
+  nameCopy = name;
+  plainButtonConfiguration = [v8 plainButtonConfiguration];
+  [plainButtonConfiguration setContentInsets:{*MEMORY[0x277D75060], *(MEMORY[0x277D75060] + 8), *(MEMORY[0x277D75060] + 16), *(MEMORY[0x277D75060] + 24)}];
+  v12 = [MEMORY[0x277D755B8] systemImageNamed:nameCopy];
 
-  [v11 setImage:v12];
-  v13 = [MEMORY[0x277D75220] buttonWithConfiguration:v11 primaryAction:0];
+  [plainButtonConfiguration setImage:v12];
+  v13 = [MEMORY[0x277D75220] buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
   [v13 setShowsLargeContentViewer:1];
-  [v13 setLargeContentTitle:v9];
+  [v13 setLargeContentTitle:titleCopy];
 
   [v13 setPointerInteractionEnabled:1];
-  [v13 addTarget:self action:a5 forControlEvents:0x2000];
+  [v13 addTarget:self action:selector forControlEvents:0x2000];
 
   return v13;
 }
@@ -3986,11 +3986,11 @@ void __55__ICNoteEditorNavigationItemConfiguration_undoRedoMenu__block_invoke_3(
   if (!styleBarButtonItemGroup)
   {
     v4 = MEMORY[0x277D751F0];
-    v5 = [(ICNoteEditorNavigationItemConfiguration *)self hidesDefaultCenterItems];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
-    v12[0] = v6;
+    hidesDefaultCenterItems = [(ICNoteEditorNavigationItemConfiguration *)self hidesDefaultCenterItems];
+    styleBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self styleBarButtonItem];
+    v12[0] = styleBarButtonItem;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-    v8 = [v4 optionalGroupWithCustomizationIdentifier:@"ICNoteEditorViewControllerNavigationBarCustomizationIDChangeStyle" inDefaultCustomization:!v5 representativeItem:0 items:v7];
+    v8 = [v4 optionalGroupWithCustomizationIdentifier:@"ICNoteEditorViewControllerNavigationBarCustomizationIDChangeStyle" inDefaultCustomization:!hidesDefaultCenterItems representativeItem:0 items:v7];
     v9 = self->_styleBarButtonItemGroup;
     self->_styleBarButtonItemGroup = v8;
 
@@ -4009,11 +4009,11 @@ void __55__ICNoteEditorNavigationItemConfiguration_undoRedoMenu__block_invoke_3(
   if (!checklistBarButtonItemGroup)
   {
     v4 = MEMORY[0x277D751F0];
-    v5 = [(ICNoteEditorNavigationItemConfiguration *)self hidesDefaultCenterItems];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
-    v12[0] = v6;
+    hidesDefaultCenterItems = [(ICNoteEditorNavigationItemConfiguration *)self hidesDefaultCenterItems];
+    checklistBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self checklistBarButtonItem];
+    v12[0] = checklistBarButtonItem;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-    v8 = [v4 optionalGroupWithCustomizationIdentifier:@"ICNoteEditorViewControllerNavigationBarCustomizationIDTodo" inDefaultCustomization:!v5 representativeItem:0 items:v7];
+    v8 = [v4 optionalGroupWithCustomizationIdentifier:@"ICNoteEditorViewControllerNavigationBarCustomizationIDTodo" inDefaultCustomization:!hidesDefaultCenterItems representativeItem:0 items:v7];
     v9 = self->_checklistBarButtonItemGroup;
     self->_checklistBarButtonItemGroup = v8;
 
@@ -4032,11 +4032,11 @@ void __55__ICNoteEditorNavigationItemConfiguration_undoRedoMenu__block_invoke_3(
   if (!tableBarButtonItemGroup)
   {
     v4 = MEMORY[0x277D751F0];
-    v5 = [(ICNoteEditorNavigationItemConfiguration *)self hidesDefaultCenterItems];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
-    v12[0] = v6;
+    hidesDefaultCenterItems = [(ICNoteEditorNavigationItemConfiguration *)self hidesDefaultCenterItems];
+    tableBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self tableBarButtonItem];
+    v12[0] = tableBarButtonItem;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-    v8 = [v4 optionalGroupWithCustomizationIdentifier:@"ICNoteEditorViewControllerNavigationBarCustomizationIDTable" inDefaultCustomization:!v5 representativeItem:0 items:v7];
+    v8 = [v4 optionalGroupWithCustomizationIdentifier:@"ICNoteEditorViewControllerNavigationBarCustomizationIDTable" inDefaultCustomization:!hidesDefaultCenterItems representativeItem:0 items:v7];
     v9 = self->_tableBarButtonItemGroup;
     self->_tableBarButtonItemGroup = v8;
 
@@ -4055,11 +4055,11 @@ void __55__ICNoteEditorNavigationItemConfiguration_undoRedoMenu__block_invoke_3(
   if (!mediaBarButtonItemGroup)
   {
     v4 = MEMORY[0x277D751F0];
-    v5 = [(ICNoteEditorNavigationItemConfiguration *)self hidesDefaultCenterItems];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
-    v12[0] = v6;
+    hidesDefaultCenterItems = [(ICNoteEditorNavigationItemConfiguration *)self hidesDefaultCenterItems];
+    mediaBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self mediaBarButtonItem];
+    v12[0] = mediaBarButtonItem;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-    v8 = [v4 optionalGroupWithCustomizationIdentifier:@"ICNoteEditorViewControllerNavigationBarCustomizationIDInsert" inDefaultCustomization:!v5 representativeItem:0 items:v7];
+    v8 = [v4 optionalGroupWithCustomizationIdentifier:@"ICNoteEditorViewControllerNavigationBarCustomizationIDInsert" inDefaultCustomization:!hidesDefaultCenterItems representativeItem:0 items:v7];
     v9 = self->_mediaBarButtonItemGroup;
     self->_mediaBarButtonItemGroup = v8;
 
@@ -4078,11 +4078,11 @@ void __55__ICNoteEditorNavigationItemConfiguration_undoRedoMenu__block_invoke_3(
   if (!writingToolsButtonItemGroup)
   {
     v4 = MEMORY[0x277D751F0];
-    v5 = [(ICNoteEditorNavigationItemConfiguration *)self hidesDefaultCenterItems];
-    v6 = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
-    v12[0] = v6;
+    hidesDefaultCenterItems = [(ICNoteEditorNavigationItemConfiguration *)self hidesDefaultCenterItems];
+    writingToolsBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self writingToolsBarButtonItem];
+    v12[0] = writingToolsBarButtonItem;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-    v8 = [v4 optionalGroupWithCustomizationIdentifier:@"ICNoteEditorViewControllerNavigationBarCustomizationIDWritingTools" inDefaultCustomization:!v5 representativeItem:0 items:v7];
+    v8 = [v4 optionalGroupWithCustomizationIdentifier:@"ICNoteEditorViewControllerNavigationBarCustomizationIDWritingTools" inDefaultCustomization:!hidesDefaultCenterItems representativeItem:0 items:v7];
     v9 = self->_writingToolsButtonItemGroup;
     self->_writingToolsButtonItemGroup = v8;
 
@@ -4101,8 +4101,8 @@ void __55__ICNoteEditorNavigationItemConfiguration_undoRedoMenu__block_invoke_3(
   if (!inlineSketchButtonItemGroup)
   {
     v4 = MEMORY[0x277D751F0];
-    v5 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
-    v11[0] = v5;
+    inlineSketchBarButtonItem = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchBarButtonItem];
+    v11[0] = inlineSketchBarButtonItem;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     v7 = [v4 movableGroupWithCustomizationIdentifier:@"ICNoteEditorViewControllerNavigationBarCustomizationIDInlineSketch" representativeItem:0 items:v6];
     v8 = self->_inlineSketchButtonItemGroup;
@@ -4116,173 +4116,173 @@ void __55__ICNoteEditorNavigationItemConfiguration_undoRedoMenu__block_invoke_3(
   return v9;
 }
 
-- (void)addNoteAction:(id)a3 event:(id)a4
+- (void)addNoteAction:(id)action event:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v8 noteEditorNavigationItemConfiguration:self addNoteFromBarButtonItem:v7 event:v6];
+  eventCopy = event;
+  actionCopy = action;
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self addNoteFromBarButtonItem:actionCopy event:eventCopy];
 }
 
-- (void)backAction:(id)a3
+- (void)backAction:(id)action
 {
-  v4 = [(ICNoteEditorNavigationItemConfiguration *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(ICNoteEditorNavigationItemConfiguration *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)writingToolsAction:(id)a3
+- (void)writingToolsAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v5 noteEditorNavigationItemConfiguration:self showWritingToolsFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self showWritingToolsFromBarButtonItem:actionCopy];
 }
 
-- (void)boldAction:(id)a3
+- (void)boldAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
-  [v5 skipNextUpdate];
+  actionCopy = action;
+  contextualInputAccessoryView = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
+  [contextualInputAccessoryView skipNextUpdate];
 
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v6 noteEditorNavigationItemConfiguration:self toggleBIUS:1 fromBarButtonItem:v4];
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self toggleBIUS:1 fromBarButtonItem:actionCopy];
 }
 
-- (void)italicAction:(id)a3
+- (void)italicAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
-  [v5 skipNextUpdate];
+  actionCopy = action;
+  contextualInputAccessoryView = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
+  [contextualInputAccessoryView skipNextUpdate];
 
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v6 noteEditorNavigationItemConfiguration:self toggleBIUS:2 fromBarButtonItem:v4];
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self toggleBIUS:2 fromBarButtonItem:actionCopy];
 }
 
-- (void)underlineAction:(id)a3
+- (void)underlineAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
-  [v5 skipNextUpdate];
+  actionCopy = action;
+  contextualInputAccessoryView = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
+  [contextualInputAccessoryView skipNextUpdate];
 
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v6 noteEditorNavigationItemConfiguration:self toggleBIUS:4 fromBarButtonItem:v4];
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self toggleBIUS:4 fromBarButtonItem:actionCopy];
 }
 
-- (void)strikethroughAction:(id)a3
+- (void)strikethroughAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
-  [v5 skipNextUpdate];
+  actionCopy = action;
+  contextualInputAccessoryView = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
+  [contextualInputAccessoryView skipNextUpdate];
 
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v6 noteEditorNavigationItemConfiguration:self toggleBIUS:8 fromBarButtonItem:v4];
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self toggleBIUS:8 fromBarButtonItem:actionCopy];
 }
 
-- (void)emphasisAction:(id)a3 colorType:(int64_t)a4
+- (void)emphasisAction:(id)action colorType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
-  [v7 skipNextUpdate];
+  actionCopy = action;
+  contextualInputAccessoryView = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
+  [contextualInputAccessoryView skipNextUpdate];
 
-  v8 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v8 noteEditorNavigationItemConfiguration:self setEmphasis:a4 fromBarButtonItem:v6];
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self setEmphasis:type fromBarButtonItem:actionCopy];
 }
 
-- (void)linkAction:(id)a3
+- (void)linkAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v5 noteEditorNavigationItemConfiguration:self openLinkEditorWithSender:v4];
+  actionCopy = action;
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self openLinkEditorWithSender:actionCopy];
 }
 
-- (void)rightIndentAction:(id)a3
+- (void)rightIndentAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
-  [v5 skipNextUpdate];
+  actionCopy = action;
+  contextualInputAccessoryView = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
+  [contextualInputAccessoryView skipNextUpdate];
 
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v6 noteEditorNavigationItemConfiguration:self rightIndentWithSender:v4];
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self rightIndentWithSender:actionCopy];
 }
 
-- (void)leftIndentAction:(id)a3
+- (void)leftIndentAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
-  [v5 skipNextUpdate];
+  actionCopy = action;
+  contextualInputAccessoryView = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
+  [contextualInputAccessoryView skipNextUpdate];
 
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v6 noteEditorNavigationItemConfiguration:self leftIndentWithSender:v4];
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self leftIndentWithSender:actionCopy];
 }
 
-- (void)moveUpAction:(id)a3
+- (void)moveUpAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
-  [v5 skipNextUpdate];
+  actionCopy = action;
+  contextualInputAccessoryView = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
+  [contextualInputAccessoryView skipNextUpdate];
 
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v6 noteEditorNavigationItemConfiguration:self moveUpWithSender:v4];
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self moveUpWithSender:actionCopy];
 }
 
-- (void)moveDownAction:(id)a3
+- (void)moveDownAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
-  [v5 skipNextUpdate];
+  actionCopy = action;
+  contextualInputAccessoryView = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
+  [contextualInputAccessoryView skipNextUpdate];
 
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v6 noteEditorNavigationItemConfiguration:self moveDownWithSender:v4];
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self moveDownWithSender:actionCopy];
 }
 
-- (void)blockQuoteAction:(id)a3
+- (void)blockQuoteAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
-  [v5 skipNextUpdate];
+  actionCopy = action;
+  contextualInputAccessoryView = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
+  [contextualInputAccessoryView skipNextUpdate];
 
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v6 noteEditorNavigationItemConfiguration:self toggleBlockQuoteWithSender:v4];
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self toggleBlockQuoteWithSender:actionCopy];
 }
 
-- (void)checklistAction:(id)a3
+- (void)checklistAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
-  [v5 skipNextUpdate];
+  actionCopy = action;
+  contextualInputAccessoryView = [(ICNoteEditorNavigationItemConfiguration *)self contextualInputAccessoryView];
+  [contextualInputAccessoryView skipNextUpdate];
 
-  v6 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v6 noteEditorNavigationItemConfiguration:self addChecklistFromBarButtonItem:v4];
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self addChecklistFromBarButtonItem:actionCopy];
 }
 
-- (void)closeAuxiliaryWindowAction:(id)a3
+- (void)closeAuxiliaryWindowAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v5 noteEditorNavigationItemConfiguration:self closeAuxiliaryWindowFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self closeAuxiliaryWindowFromBarButtonItem:actionCopy];
 }
 
-- (void)deleteAction:(id)a3
+- (void)deleteAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v5 noteEditorNavigationItemConfiguration:self deleteFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self deleteFromBarButtonItem:actionCopy];
 }
 
-- (void)doneAction:(id)a3
+- (void)doneAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   [(ICNoteEditorNavigationItemConfiguration *)self setInlineSketchEditingState:0];
   [(ICNoteEditorNavigationItemConfiguration *)self setEditing:0];
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v5 noteEditorNavigationItemConfiguration:self doneEditingFromBarButtonItem:v4];
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self doneEditingFromBarButtonItem:actionCopy];
 }
 
-- (void)inlineSketchAction:(id)a3
+- (void)inlineSketchAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchEditingState];
-  v6 = v5 != 3;
-  if (v5 == 3)
+  actionCopy = action;
+  inlineSketchEditingState = [(ICNoteEditorNavigationItemConfiguration *)self inlineSketchEditingState];
+  v6 = inlineSketchEditingState != 3;
+  if (inlineSketchEditingState == 3)
   {
     v7 = 0;
   }
@@ -4294,104 +4294,104 @@ void __55__ICNoteEditorNavigationItemConfiguration_undoRedoMenu__block_invoke_3(
 
   [(ICNoteEditorNavigationItemConfiguration *)self setInlineSketchEditingState:v7];
   [(ICNoteEditorNavigationItemConfiguration *)self setEditing:v6];
-  v8 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v8 noteEditorNavigationItemConfiguration:self inlineSketchFromBarButtonItem:v4];
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self inlineSketchFromBarButtonItem:actionCopy];
 }
 
-- (void)lockAction:(id)a3
+- (void)lockAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v5 noteEditorNavigationItemConfiguration:self toggleLockFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self toggleLockFromBarButtonItem:actionCopy];
 }
 
-- (void)moveAction:(id)a3
+- (void)moveAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v5 noteEditorNavigationItemConfiguration:self moveFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self moveFromBarButtonItem:actionCopy];
 }
 
-- (void)photoLibraryAction:(id)a3
+- (void)photoLibraryAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v5 noteEditorNavigationItemConfiguration:self showPhotoLibraryFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self showPhotoLibraryFromBarButtonItem:actionCopy];
 }
 
-- (void)quickNoteAllNotesAction:(id)a3
+- (void)quickNoteAllNotesAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v5 noteEditorNavigationItemConfiguration:self quickNoteShowAllNotesFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self quickNoteShowAllNotesFromBarButtonItem:actionCopy];
 }
 
-- (void)quickNoteCancelAction:(id)a3
+- (void)quickNoteCancelAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v5 noteEditorNavigationItemConfiguration:self quickNoteDidCancelFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self quickNoteDidCancelFromBarButtonItem:actionCopy];
 }
 
-- (void)quickNoteSaveAction:(id)a3
+- (void)quickNoteSaveAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v5 noteEditorNavigationItemConfiguration:self quickNoteDidSaveFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self quickNoteDidSaveFromBarButtonItem:actionCopy];
 }
 
-- (void)redoAction:(id)a3
+- (void)redoAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v5 noteEditorNavigationItemConfiguration:self redoFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self redoFromBarButtonItem:actionCopy];
 }
 
-- (void)shareAction:(id)a3
+- (void)shareAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v5 noteEditorNavigationItemConfiguration:self shareFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self shareFromBarButtonItem:actionCopy];
 }
 
-- (void)sidebarAction:(id)a3
+- (void)sidebarAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v5 noteEditorNavigationItemConfiguration:self toggleSidebarFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self toggleSidebarFromBarButtonItem:actionCopy];
 }
 
-- (void)styleAction:(id)a3
+- (void)styleAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v5 noteEditorNavigationItemConfiguration:self changeStyleFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self changeStyleFromBarButtonItem:actionCopy];
 }
 
-- (void)tableAction:(id)a3
+- (void)tableAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v5 noteEditorNavigationItemConfiguration:self addTableFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self addTableFromBarButtonItem:actionCopy];
 }
 
-- (void)undoAction:(id)a3
+- (void)undoAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
-  [v5 noteEditorNavigationItemConfiguration:self undoFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteEditorNavigationItemConfiguration *)self delegate];
+  [delegate noteEditorNavigationItemConfiguration:self undoFromBarButtonItem:actionCopy];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(ICNoteEditorNavigationItemConfiguration *)self hash];
     v7 = v6 == [(ICNoteEditorNavigationItemConfiguration *)v5 hash];
@@ -4405,13 +4405,13 @@ void __55__ICNoteEditorNavigationItemConfiguration_undoRedoMenu__block_invoke_3(
   return v7;
 }
 
-- (id)accessibilityCustomContentFor:(id)a3
+- (id)accessibilityCustomContentFor:(id)for
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICNoteEditorNavigationItemConfiguration *)self emphasisMenuButton];
+  forCopy = for;
+  emphasisMenuButton = [(ICNoteEditorNavigationItemConfiguration *)self emphasisMenuButton];
 
-  if (v5 != v4)
+  if (emphasisMenuButton != forCopy)
   {
 
 LABEL_3:
@@ -4419,8 +4419,8 @@ LABEL_3:
     goto LABEL_6;
   }
 
-  v7 = [(ICNoteEditorNavigationItemConfiguration *)self emphasisAccessibilityCustomContentValue];
-  v8 = [v7 length];
+  emphasisAccessibilityCustomContentValue = [(ICNoteEditorNavigationItemConfiguration *)self emphasisAccessibilityCustomContentValue];
+  v8 = [emphasisAccessibilityCustomContentValue length];
 
   if (!v8)
   {
@@ -4428,10 +4428,10 @@ LABEL_3:
   }
 
   v9 = MEMORY[0x277CB88D0];
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 localizedStringForKey:@"Emphasis of selection" value:&stru_282757698 table:0];
-  v12 = [(ICNoteEditorNavigationItemConfiguration *)self emphasisAccessibilityCustomContentValue];
-  v13 = [v9 customContentWithLabel:v11 value:v12];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v11 = [mainBundle localizedStringForKey:@"Emphasis of selection" value:&stru_282757698 table:0];
+  emphasisAccessibilityCustomContentValue2 = [(ICNoteEditorNavigationItemConfiguration *)self emphasisAccessibilityCustomContentValue];
+  v13 = [v9 customContentWithLabel:v11 value:emphasisAccessibilityCustomContentValue2];
   v15[0] = v13;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
 

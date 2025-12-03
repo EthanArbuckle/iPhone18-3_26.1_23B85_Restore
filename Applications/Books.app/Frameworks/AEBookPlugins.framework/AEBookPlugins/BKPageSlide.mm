@@ -9,16 +9,16 @@
 - (CGPoint)manualCurlStartPosition;
 - (CGPoint)topViewFromCenter;
 - (CGPoint)topViewToCenter;
-- (id)springAnimationForKeyPath:(id)a3 stiffness:(double)a4 damping:(double)a5 from:(CGPoint)a6 to:(CGPoint)a7;
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)autoSlideFromPages:(id)a3 toPages:(id)a4 inContainer:(id)a5 isForwardAnimation:(BOOL)a6 isRTL:(BOOL)a7 isZoomedToSpread:(BOOL)a8 completion:(id)a9;
-- (void)beginManualAnimationAtLocation:(CGPoint)a3;
+- (id)springAnimationForKeyPath:(id)path stiffness:(double)stiffness damping:(double)damping from:(CGPoint)from to:(CGPoint)to;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)autoSlideFromPages:(id)pages toPages:(id)toPages inContainer:(id)container isForwardAnimation:(BOOL)animation isRTL:(BOOL)l isZoomedToSpread:(BOOL)spread completion:(id)completion;
+- (void)beginManualAnimationAtLocation:(CGPoint)location;
 - (void)cancelManualAnimation;
 - (void)finishManualAnimation;
-- (void)initiateManualAnimationFromPages:(id)a3 toPages:(id)a4 inContainer:(id)a5 isForwardAnimation:(BOOL)a6 isRTL:(BOOL)a7 isZoomedToSpread:(BOOL)a8;
-- (void)setupSlideAnimationFromPages:(id)a3 toPages:(id)a4 inContainer:(id)a5 isForwardAnimation:(BOOL)a6 isRTL:(BOOL)a7 isZoomedToSpread:(BOOL)a8;
-- (void)updateManualAnimationToLocation:(CGPoint)a3;
+- (void)initiateManualAnimationFromPages:(id)pages toPages:(id)toPages inContainer:(id)container isForwardAnimation:(BOOL)animation isRTL:(BOOL)l isZoomedToSpread:(BOOL)spread;
+- (void)setupSlideAnimationFromPages:(id)pages toPages:(id)toPages inContainer:(id)container isForwardAnimation:(BOOL)animation isRTL:(BOOL)l isZoomedToSpread:(BOOL)spread;
+- (void)updateManualAnimationToLocation:(CGPoint)location;
 @end
 
 @implementation BKPageSlide
@@ -36,71 +36,71 @@
   return result;
 }
 
-- (void)setupSlideAnimationFromPages:(id)a3 toPages:(id)a4 inContainer:(id)a5 isForwardAnimation:(BOOL)a6 isRTL:(BOOL)a7 isZoomedToSpread:(BOOL)a8
+- (void)setupSlideAnimationFromPages:(id)pages toPages:(id)toPages inContainer:(id)container isForwardAnimation:(BOOL)animation isRTL:(BOOL)l isZoomedToSpread:(BOOL)spread
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  spreadCopy = spread;
+  lCopy = l;
+  animationCopy = animation;
+  pagesCopy = pages;
+  toPagesCopy = toPages;
+  containerCopy = container;
   [(BKPageAnimation *)self setState:0];
-  v84 = v9;
-  [(BKPageAnimation *)self setIsGoingToNextPage:v10 ^ v9];
-  v17 = v14;
-  [v16 setClipsToBounds:1];
-  v18 = [v15 firstObject];
-  v19 = [v15 lastObject];
-  v81 = v19;
-  v82 = v18;
-  if (v8)
+  v84 = lCopy;
+  [(BKPageAnimation *)self setIsGoingToNextPage:animationCopy ^ lCopy];
+  v17 = pagesCopy;
+  [containerCopy setClipsToBounds:1];
+  firstObject = [toPagesCopy firstObject];
+  lastObject = [toPagesCopy lastObject];
+  v81 = lastObject;
+  v82 = firstObject;
+  if (spreadCopy)
   {
-    v20 = v19;
-    [v18 frame];
+    v20 = lastObject;
+    [firstObject frame];
     v22 = v21;
     v24 = v23;
     v26 = v25;
     v28 = v27;
     [v20 frame];
-    [v18 setFrame:?];
+    [firstObject setFrame:?];
     [v20 setFrame:{v22, v24, v26, v28}];
     v80 = v17;
   }
 
   else
   {
-    [v16 bounds];
-    [v18 setFrame:?];
-    if ([v15 count])
+    [containerCopy bounds];
+    [firstObject setFrame:?];
+    if ([toPagesCopy count])
     {
-      if ([(BKPageAnimation *)self isGoingToNextPage]&& v9)
+      if ([(BKPageAnimation *)self isGoingToNextPage]&& lCopy)
       {
-        v29 = [v15 lastObject];
+        lastObject2 = [toPagesCopy lastObject];
       }
 
       else
       {
-        v29 = [v15 firstObject];
+        lastObject2 = [toPagesCopy firstObject];
       }
 
-      v30 = v29;
-      v31 = [NSArray arrayWithObject:v29];
+      v30 = lastObject2;
+      v31 = [NSArray arrayWithObject:lastObject2];
 
-      v15 = v31;
+      toPagesCopy = v31;
     }
 
-    if ([(BKPageAnimation *)self isGoingToNextPage]&& v9)
+    if ([(BKPageAnimation *)self isGoingToNextPage]&& lCopy)
     {
-      v32 = [v17 firstObject];
+      firstObject2 = [v17 firstObject];
     }
 
     else
     {
-      v32 = [v17 lastObject];
+      firstObject2 = [v17 lastObject];
     }
 
-    v33 = v32;
-    [v16 bounds];
+    v33 = firstObject2;
+    [containerCopy bounds];
     [v33 setFrame:?];
     v80 = [NSArray arrayWithObject:v33];
   }
@@ -112,14 +112,14 @@
 
   else
   {
-    v34 = v15;
+    v34 = toPagesCopy;
   }
 
   v35 = v34;
   v83 = v17;
   if ([(BKPageAnimation *)self isGoingToNextPage])
   {
-    v36 = v15;
+    v36 = toPagesCopy;
   }
 
   else
@@ -129,32 +129,32 @@
 
   v37 = v36;
   v38 = [UIView alloc];
-  [v16 bounds];
+  [containerCopy bounds];
   v39 = [v38 initWithFrame:?];
   v40 = +[UIColor blackColor];
-  v41 = [v40 CGColor];
-  v42 = [v39 layer];
-  [v42 setShadowColor:v41];
+  cGColor = [v40 CGColor];
+  layer = [v39 layer];
+  [layer setShadowColor:cGColor];
 
   [v39 bounds];
   v43 = [UIBezierPath bezierPathWithRect:?];
-  v44 = [v43 CGPath];
-  v45 = [v39 layer];
-  [v45 setShadowPath:v44];
+  cGPath = [v43 CGPath];
+  layer2 = [v39 layer];
+  [layer2 setShadowPath:cGPath];
 
-  v46 = [v39 layer];
-  [v46 setShadowRadius:50.0];
+  layer3 = [v39 layer];
+  [layer3 setShadowRadius:50.0];
 
   height = CGSizeZero.height;
-  v48 = [v39 layer];
-  [v48 setShadowOffset:{CGSizeZero.width, height}];
+  layer4 = [v39 layer];
+  [layer4 setShadowOffset:{CGSizeZero.width, height}];
 
-  v49 = [v39 layer];
+  layer5 = [v39 layer];
   LODWORD(v50) = 1060320051;
-  [v49 setShadowOpacity:v50];
+  [layer5 setShadowOpacity:v50];
 
   v51 = [UIView alloc];
-  [v16 bounds];
+  [containerCopy bounds];
   v52 = [v51 initWithFrame:?];
   v89 = 0u;
   v90 = 0u;
@@ -212,12 +212,12 @@
     while (v60);
   }
 
-  [v16 addSubview:v52];
-  [v16 addSubview:v39];
+  [containerCopy addSubview:v52];
+  [containerCopy addSubview:v39];
   objc_storeStrong(&self->_topPagesView, v39);
   objc_storeStrong(&self->_bottomPagesView, v52);
   v63 = [UIView alloc];
-  [v16 bounds];
+  [containerCopy bounds];
   v64 = [v63 initWithFrame:?];
   scrimView = self->_scrimView;
   self->_scrimView = v64;
@@ -225,15 +225,15 @@
   v66 = +[UIColor blackColor];
   [(UIView *)self->_scrimView setBackgroundColor:v66];
 
-  v67 = [(UIView *)self->_scrimView layer];
+  layer6 = [(UIView *)self->_scrimView layer];
   LODWORD(v68) = 1050253722;
-  [v67 setOpacity:v68];
+  [layer6 setOpacity:v68];
 
   [v52 addSubview:self->_scrimView];
   p_topViewToCenter = &self->_topViewToCenter;
   if (v84)
   {
-    [v16 bounds];
+    [containerCopy bounds];
     Width = CGRectGetWidth(v95);
     [v39 bounds];
     v71 = Width + CGRectGetWidth(v96) * 0.5 + 50.0;
@@ -263,7 +263,7 @@
   self->_bottomViewToCenter.y = v78;
   if (!v84)
   {
-    [v16 bounds];
+    [containerCopy bounds];
     v76 = CGRectGetWidth(v98) - v76;
   }
 
@@ -276,17 +276,17 @@
   }
 }
 
-- (id)springAnimationForKeyPath:(id)a3 stiffness:(double)a4 damping:(double)a5 from:(CGPoint)a6 to:(CGPoint)a7
+- (id)springAnimationForKeyPath:(id)path stiffness:(double)stiffness damping:(double)damping from:(CGPoint)from to:(CGPoint)to
 {
-  y = a7.y;
-  x = a7.x;
-  v9 = a6.y;
-  v10 = a6.x;
-  v14 = [CASpringAnimation animationWithKeyPath:a3];
+  y = to.y;
+  x = to.x;
+  v9 = from.y;
+  v10 = from.x;
+  v14 = [CASpringAnimation animationWithKeyPath:path];
   [v14 setDelegate:self];
   [v14 setMass:1.0];
-  [v14 setStiffness:a4];
-  [v14 setDamping:a5];
+  [v14 setStiffness:stiffness];
+  [v14 setDamping:damping];
   [v14 setInitialVelocity:0.0];
   [v14 setRemovedOnCompletion:0];
   [v14 settlingDuration];
@@ -305,11 +305,11 @@
   return v14;
 }
 
-- (void)autoSlideFromPages:(id)a3 toPages:(id)a4 inContainer:(id)a5 isForwardAnimation:(BOOL)a6 isRTL:(BOOL)a7 isZoomedToSpread:(BOOL)a8 completion:(id)a9
+- (void)autoSlideFromPages:(id)pages toPages:(id)toPages inContainer:(id)container isForwardAnimation:(BOOL)animation isRTL:(BOOL)l isZoomedToSpread:(BOOL)spread completion:(id)completion
 {
-  [(BKPageSlide *)self setupSlideAnimationFromPages:a3 toPages:a4 inContainer:a5 isForwardAnimation:a6 isRTL:a7 isZoomedToSpread:a8];
-  v10 = [(BKPageAnimation *)self pageAnimationDelegate];
-  [v10 pageAnimationWillBegin:self];
+  [(BKPageSlide *)self setupSlideAnimationFromPages:pages toPages:toPages inContainer:container isForwardAnimation:animation isRTL:l isZoomedToSpread:spread];
+  pageAnimationDelegate = [(BKPageAnimation *)self pageAnimationDelegate];
+  [pageAnimationDelegate pageAnimationWillBegin:self];
 
   +[CATransaction begin];
   v22 = [(BKPageSlide *)self springAnimationForKeyPath:@"position" stiffness:250.0 damping:35.0 from:self->_topViewFromCenter.x to:self->_topViewFromCenter.y, self->_topViewToCenter.x, self->_topViewToCenter.y];
@@ -333,16 +333,16 @@
     [v12 ae_reverseValues];
   }
 
-  v17 = [(BKPageSlide *)self topPagesView];
-  v18 = [v17 layer];
-  [v18 addAnimation:v22 forKey:@"kPageSlideAnimationNameTopPages"];
+  topPagesView = [(BKPageSlide *)self topPagesView];
+  layer = [topPagesView layer];
+  [layer addAnimation:v22 forKey:@"kPageSlideAnimationNameTopPages"];
 
-  v19 = [(BKPageSlide *)self bottomPagesView];
-  v20 = [v19 layer];
-  [v20 addAnimation:v11 forKey:@"kPageSlideAnimationNameBottomPages"];
+  bottomPagesView = [(BKPageSlide *)self bottomPagesView];
+  layer2 = [bottomPagesView layer];
+  [layer2 addAnimation:v11 forKey:@"kPageSlideAnimationNameBottomPages"];
 
-  v21 = [(UIView *)self->_scrimView layer];
-  [v21 addAnimation:v12 forKey:@"kPageSlideAnimationNameScrimView"];
+  layer3 = [(UIView *)self->_scrimView layer];
+  [layer3 addAnimation:v12 forKey:@"kPageSlideAnimationNameScrimView"];
 
   +[CATransaction commit];
 }
@@ -423,17 +423,17 @@
   return result;
 }
 
-- (void)initiateManualAnimationFromPages:(id)a3 toPages:(id)a4 inContainer:(id)a5 isForwardAnimation:(BOOL)a6 isRTL:(BOOL)a7 isZoomedToSpread:(BOOL)a8
+- (void)initiateManualAnimationFromPages:(id)pages toPages:(id)toPages inContainer:(id)container isForwardAnimation:(BOOL)animation isRTL:(BOOL)l isZoomedToSpread:(BOOL)spread
 {
-  [(BKPageSlide *)self setupSlideAnimationFromPages:a3 toPages:a4 inContainer:a5 isForwardAnimation:a6 isRTL:a7 isZoomedToSpread:a8];
+  [(BKPageSlide *)self setupSlideAnimationFromPages:pages toPages:toPages inContainer:container isForwardAnimation:animation isRTL:l isZoomedToSpread:spread];
   [(BKPageAnimation *)self setIsInteractive:1];
   if ([(BKPageAnimation *)self isGoingToNextPage])
   {
     [(BKPageSlide *)self topViewFromCenter];
     v10 = v9;
     v12 = v11;
-    v13 = [(BKPageSlide *)self topPagesView];
-    [v13 setCenter:{v10, v12}];
+    topPagesView = [(BKPageSlide *)self topPagesView];
+    [topPagesView setCenter:{v10, v12}];
 
     [(BKPageSlide *)self bottomViewFromCenter];
   }
@@ -443,29 +443,29 @@
     [(BKPageSlide *)self topViewToCenter];
     v17 = v16;
     v19 = v18;
-    v20 = [(BKPageSlide *)self topPagesView];
-    [v20 setCenter:{v17, v19}];
+    topPagesView2 = [(BKPageSlide *)self topPagesView];
+    [topPagesView2 setCenter:{v17, v19}];
 
     [(BKPageSlide *)self bottomViewToCenter];
   }
 
   v21 = v14;
   v22 = v15;
-  v23 = [(BKPageSlide *)self bottomPagesView];
-  [v23 setCenter:{v21, v22}];
+  bottomPagesView = [(BKPageSlide *)self bottomPagesView];
+  [bottomPagesView setCenter:{v21, v22}];
 }
 
-- (void)beginManualAnimationAtLocation:(CGPoint)a3
+- (void)beginManualAnimationAtLocation:(CGPoint)location
 {
-  [(BKPageSlide *)self setManualCurlStartPosition:a3.x, a3.y];
+  [(BKPageSlide *)self setManualCurlStartPosition:location.x, location.y];
   [(BKPageSlide *)self setManualCurlCurrentTime:CFAbsoluteTimeGetCurrent()];
-  v4 = [(BKPageAnimation *)self pageAnimationDelegate];
-  [v4 pageAnimationWillBegin:self];
+  pageAnimationDelegate = [(BKPageAnimation *)self pageAnimationDelegate];
+  [pageAnimationDelegate pageAnimationWillBegin:self];
 }
 
-- (void)updateManualAnimationToLocation:(CGPoint)a3
+- (void)updateManualAnimationToLocation:(CGPoint)location
 {
-  x = a3.x;
+  x = location.x;
   self->_manualCurlCurrentTime = CFAbsoluteTimeGetCurrent();
   [(UIView *)self->_topPagesView bounds];
   v5 = CGRectGetWidth(v27) * 0.5;
@@ -477,28 +477,28 @@
     [(BKPageSlide *)self contextualTopViewFromCenter];
     v10 = v9;
     v12 = v11 - (v11 - v8) * v6;
-    v13 = [(BKPageSlide *)self topPagesView];
-    [v13 setCenter:{v12, v10}];
+    topPagesView = [(BKPageSlide *)self topPagesView];
+    [topPagesView setCenter:{v12, v10}];
 
     [(BKPageSlide *)self contextualBottomViewToCenter];
     v15 = v14;
     [(BKPageSlide *)self contextualBottomViewFromCenter];
     v17 = v16;
     v19 = v18 - (v18 - v15) * v6;
-    v20 = [(BKPageSlide *)self bottomPagesView];
-    [v20 setCenter:{v19, v17}];
+    bottomPagesView = [(BKPageSlide *)self bottomPagesView];
+    [bottomPagesView setCenter:{v19, v17}];
 
-    v21 = [(BKPageAnimation *)self isGoingToNextPage];
+    isGoingToNextPage = [(BKPageAnimation *)self isGoingToNextPage];
     v22 = 1.0 - v6;
-    if (!v21)
+    if (!isGoingToNextPage)
     {
       v22 = v6;
     }
 
     v23 = v22 * 0.300000012;
-    v25 = [(UIView *)self->_scrimView layer];
+    layer = [(UIView *)self->_scrimView layer];
     *&v24 = v23;
-    [v25 setOpacity:v24];
+    [layer setOpacity:v24];
   }
 }
 
@@ -532,7 +532,7 @@
   [UIView animateWithDuration:v3 animations:v2 completion:0.300000012];
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
   [(BKPageAnimation *)self setState:1];
   v4 = [(BKPageSlide *)self ongoingAnimationCount]+ 1;
@@ -540,14 +540,14 @@
   [(BKPageSlide *)self setOngoingAnimationCount:v4];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
+  finishedCopy = finished;
+  stopCopy = stop;
   [(BKPageSlide *)self setOngoingAnimationCount:[(BKPageSlide *)self ongoingAnimationCount]- 1];
   if (![(BKPageSlide *)self ongoingAnimationCount])
   {
-    if (v4)
+    if (finishedCopy)
     {
       v7 = 2;
     }
@@ -559,14 +559,14 @@
 
     [(BKPageAnimation *)self setState:v7];
     [(BKPageAnimation *)self setFinished:1];
-    v8 = [(BKPageAnimation *)self pageAnimationDelegate];
-    [v8 pageAnimation:self didFinish:1];
+    pageAnimationDelegate = [(BKPageAnimation *)self pageAnimationDelegate];
+    [pageAnimationDelegate pageAnimation:self didFinish:1];
 
-    v9 = [(BKPageSlide *)self completionBlock];
-    v10 = v9;
-    if (v9)
+    completionBlock = [(BKPageSlide *)self completionBlock];
+    v10 = completionBlock;
+    if (completionBlock)
     {
-      (*(v9 + 16))(v9);
+      (*(completionBlock + 16))(completionBlock);
     }
 
     [(BKPageSlide *)self setCompletionBlock:0];
@@ -574,10 +574,10 @@
     [(BKPageSlide *)self _cleanup];
   }
 
-  v11 = [(UIView *)self->_scrimView layer];
-  v12 = [v11 animationForKey:@"kPageSlideAnimationNameScrimView"];
+  layer = [(UIView *)self->_scrimView layer];
+  v12 = [layer animationForKey:@"kPageSlideAnimationNameScrimView"];
 
-  if (v12 == v6)
+  if (v12 == stopCopy)
   {
     [(UIView *)self->_scrimView removeFromSuperview];
     scrimView = self->_scrimView;

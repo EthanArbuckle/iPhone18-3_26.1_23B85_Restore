@@ -1,22 +1,22 @@
 @interface DAResolveRecipientsRequest
-- (BOOL)isEqual:(id)a3;
-- (DAResolveRecipientsRequest)initWithEmailAddresses:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DAResolveRecipientsRequest)initWithEmailAddresses:(id)addresses;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation DAResolveRecipientsRequest
 
-- (DAResolveRecipientsRequest)initWithEmailAddresses:(id)a3
+- (DAResolveRecipientsRequest)initWithEmailAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   v8.receiver = self;
   v8.super_class = DAResolveRecipientsRequest;
   v5 = [(DAResolveRecipientsRequest *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DAResolveRecipientsRequest *)v5 setEmailAddresses:v4];
+    [(DAResolveRecipientsRequest *)v5 setEmailAddresses:addressesCopy];
     [(DAResolveRecipientsRequest *)v6 setRetrieveCertificates:1];
     [(DAResolveRecipientsRequest *)v6 setRetrieveAvailablilty:0];
     [(DAResolveRecipientsRequest *)v6 setStartTime:0];
@@ -33,8 +33,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(DAResolveRecipientsRequest *)self emailAddresses];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  emailAddresses = [(DAResolveRecipientsRequest *)self emailAddresses];
+  v3 = [emailAddresses countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -46,13 +46,13 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(emailAddresses);
         }
 
         v5 += [*(*(&v10 + 1) + 8 * i) hash];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [emailAddresses countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -67,17 +67,17 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(DAResolveRecipientsRequest *)self emailAddresses];
-    v7 = [v5 emailAddresses];
+    v5 = equalCopy;
+    emailAddresses = [(DAResolveRecipientsRequest *)self emailAddresses];
+    emailAddresses2 = [v5 emailAddresses];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [emailAddresses isEqual:emailAddresses2];
   }
 
   else
@@ -94,8 +94,8 @@
   v8.receiver = self;
   v8.super_class = DAResolveRecipientsRequest;
   v4 = [(DAResolveRecipientsRequest *)&v8 description];
-  v5 = [(DAResolveRecipientsRequest *)self emailAddresses];
-  v6 = [v3 stringWithFormat:@"%@ emailAddresses %@", v4, v5];
+  emailAddresses = [(DAResolveRecipientsRequest *)self emailAddresses];
+  v6 = [v3 stringWithFormat:@"%@ emailAddresses %@", v4, emailAddresses];
 
   return v6;
 }

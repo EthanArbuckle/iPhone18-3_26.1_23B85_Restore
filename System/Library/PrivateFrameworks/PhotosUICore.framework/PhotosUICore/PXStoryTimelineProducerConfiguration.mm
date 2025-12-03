@@ -1,6 +1,6 @@
 @interface PXStoryTimelineProducerConfiguration
 - (PXStoryTimelineProducerConfiguration)init;
-- (PXStoryTimelineProducerConfiguration)initWithResourcesDataSource:(id)a3 style:(id)a4 spec:(id)a5 options:(unint64_t)a6 loadingCoordinator:(id)a7 errorReporter:(id)a8;
+- (PXStoryTimelineProducerConfiguration)initWithResourcesDataSource:(id)source style:(id)style spec:(id)spec options:(unint64_t)options loadingCoordinator:(id)coordinator errorReporter:(id)reporter;
 - (_NSRange)rangeOfPrioritizedDisplayAssetResources;
 @end
 
@@ -15,25 +15,25 @@
   return result;
 }
 
-- (PXStoryTimelineProducerConfiguration)initWithResourcesDataSource:(id)a3 style:(id)a4 spec:(id)a5 options:(unint64_t)a6 loadingCoordinator:(id)a7 errorReporter:(id)a8
+- (PXStoryTimelineProducerConfiguration)initWithResourcesDataSource:(id)source style:(id)style spec:(id)spec options:(unint64_t)options loadingCoordinator:(id)coordinator errorReporter:(id)reporter
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v26 = a7;
-  v17 = a8;
-  if (v14)
+  sourceCopy = source;
+  styleCopy = style;
+  specCopy = spec;
+  coordinatorCopy = coordinator;
+  reporterCopy = reporter;
+  if (sourceCopy)
   {
-    if (v15)
+    if (styleCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PXStoryTimelineProducer.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"style != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTimelineProducer.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"style != nil"}];
 
-    if (v16)
+    if (specCopy)
     {
       goto LABEL_4;
     }
@@ -41,23 +41,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"PXStoryTimelineProducer.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"resourcesDataSource != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStoryTimelineProducer.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"resourcesDataSource != nil"}];
 
-  if (!v15)
+  if (!styleCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v16)
+  if (specCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"PXStoryTimelineProducer.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"spec != nil"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXStoryTimelineProducer.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"spec != nil"}];
 
 LABEL_4:
   v27.receiver = self;
@@ -66,12 +66,12 @@ LABEL_4:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_resourcesDataSource, a3);
-    objc_storeStrong(&v19->_style, a4);
-    objc_storeStrong(&v19->_spec, a5);
-    v19->_options = a6;
-    objc_storeStrong(&v19->_loadingCoordinator, a7);
-    objc_storeStrong(&v19->_errorReporter, a8);
+    objc_storeStrong(&v18->_resourcesDataSource, source);
+    objc_storeStrong(&v19->_style, style);
+    objc_storeStrong(&v19->_spec, spec);
+    v19->_options = options;
+    objc_storeStrong(&v19->_loadingCoordinator, coordinator);
+    objc_storeStrong(&v19->_errorReporter, reporter);
     v19->_rangeOfPrioritizedDisplayAssetResources = xmmword_1A5380D90;
   }
 
@@ -80,8 +80,8 @@ LABEL_4:
 
 - (PXStoryTimelineProducerConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryTimelineProducer.m" lineNumber:18 description:{@"%s is not available as initializer", "-[PXStoryTimelineProducerConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTimelineProducer.m" lineNumber:18 description:{@"%s is not available as initializer", "-[PXStoryTimelineProducerConfiguration init]"}];
 
   abort();
 }

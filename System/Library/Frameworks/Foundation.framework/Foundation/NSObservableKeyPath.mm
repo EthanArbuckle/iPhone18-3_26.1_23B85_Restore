@@ -1,15 +1,15 @@
 @interface NSObservableKeyPath
 - (NSObservable)changes;
-- (id)addObserver:(id)a3;
+- (id)addObserver:(id)observer;
 @end
 
 @implementation NSObservableKeyPath
 
-- (id)addObserver:(id)a3
+- (id)addObserver:(id)observer
 {
-  v5 = [(NSBoundKeyPath *)self rootObject];
+  rootObject = [(NSBoundKeyPath *)self rootObject];
 
-  return [v5 addObserver:a3 forObservableKeyPath:self];
+  return [rootObject addObserver:observer forObservableKeyPath:self];
 }
 
 - (NSObservable)changes

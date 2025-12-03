@@ -1,60 +1,60 @@
 @interface RTLearnedLocation
-+ (double)confidenceFromDataPointCount:(unint64_t)a3 highConfidenceThreshold:(double)a4;
-+ (id)removeLearnedVisitsInvalid:(id)a3;
-+ (id)removeLearnedVisitsPinned:(id)a3;
-+ (id)removeLearnedVisitsWithShortestDwell:(id)a3;
-+ (id)removeOutlierLearnedLocationsWithLargeHorizontalUncertainty:(id)a3;
-+ (id)shiftLocation:(id)a3 shifter:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (RTLearnedLocation)initWithChinaShiftedLearnedLocations:(id)a3 type:(unint64_t)a4;
-- (RTLearnedLocation)initWithLearnedLocations:(id)a3 type:(unint64_t)a4;
-- (RTLearnedLocation)initWithLearnedVisits:(id)a3;
-- (RTLearnedLocation)initWithLocation:(id)a3 dataPointCount:(unint64_t)a4 confidence:(double)a5;
-- (RTLearnedLocation)initWithLocation:(id)a3 dataPointCount:(unint64_t)a4 type:(unint64_t)a5;
-- (RTLearnedLocation)initWithLocationOfInterest:(id)a3;
-- (RTLearnedLocation)initWithMapItem:(id)a3 type:(unint64_t)a4;
-- (id)aggregateLearnedLocations:(id)a3 updateAltitude:(BOOL)a4;
++ (double)confidenceFromDataPointCount:(unint64_t)count highConfidenceThreshold:(double)threshold;
++ (id)removeLearnedVisitsInvalid:(id)invalid;
++ (id)removeLearnedVisitsPinned:(id)pinned;
++ (id)removeLearnedVisitsWithShortestDwell:(id)dwell;
++ (id)removeOutlierLearnedLocationsWithLargeHorizontalUncertainty:(id)uncertainty;
++ (id)shiftLocation:(id)location shifter:(id)shifter;
+- (BOOL)isEqual:(id)equal;
+- (RTLearnedLocation)initWithChinaShiftedLearnedLocations:(id)locations type:(unint64_t)type;
+- (RTLearnedLocation)initWithLearnedLocations:(id)locations type:(unint64_t)type;
+- (RTLearnedLocation)initWithLearnedVisits:(id)visits;
+- (RTLearnedLocation)initWithLocation:(id)location dataPointCount:(unint64_t)count confidence:(double)confidence;
+- (RTLearnedLocation)initWithLocation:(id)location dataPointCount:(unint64_t)count type:(unint64_t)type;
+- (RTLearnedLocation)initWithLocationOfInterest:(id)interest;
+- (RTLearnedLocation)initWithMapItem:(id)item type:(unint64_t)type;
+- (id)aggregateLearnedLocations:(id)locations updateAltitude:(BOOL)altitude;
 - (id)description;
 - (unint64_t)hash;
-- (void)calculateAltitude:(double *)a3 verticalUncertainty:(double *)a4 learnedLocations:(id)a5;
+- (void)calculateAltitude:(double *)altitude verticalUncertainty:(double *)uncertainty learnedLocations:(id)locations;
 @end
 
 @implementation RTLearnedLocation
 
-- (RTLearnedLocation)initWithLocationOfInterest:(id)a3
+- (RTLearnedLocation)initWithLocationOfInterest:(id)interest
 {
   v4 = MEMORY[0x277D01160];
-  v5 = a3;
+  interestCopy = interest;
   v6 = [v4 alloc];
-  v7 = [v5 location];
-  [v7 latitude];
+  location = [interestCopy location];
+  [location latitude];
   v9 = v8;
-  v10 = [v5 location];
-  [v10 longitude];
+  location2 = [interestCopy location];
+  [location2 longitude];
   v12 = v11;
-  v13 = [v5 location];
-  [v13 horizontalUncertainty];
+  location3 = [interestCopy location];
+  [location3 horizontalUncertainty];
   v15 = v14;
-  v16 = [v5 location];
-  [v16 altitude];
+  location4 = [interestCopy location];
+  [location4 altitude];
   v18 = v17;
-  v19 = [v5 location];
-  [v19 verticalUncertainty];
+  location5 = [interestCopy location];
+  [location5 verticalUncertainty];
   v21 = v20;
-  v22 = [v5 location];
-  v23 = [v6 initWithLatitude:0 longitude:0 horizontalUncertainty:objc_msgSend(v22 altitude:"sourceAccuracy") verticalUncertainty:v9 date:v12 referenceFrame:v15 speed:v18 sourceAccuracy:{v21, 0.0}];
+  location6 = [interestCopy location];
+  v23 = [v6 initWithLatitude:0 longitude:0 horizontalUncertainty:objc_msgSend(location6 altitude:"sourceAccuracy") verticalUncertainty:v9 date:v12 referenceFrame:v15 speed:v18 sourceAccuracy:{v21, 0.0}];
 
-  v24 = [v5 location];
+  location7 = [interestCopy location];
 
-  v25 = -[RTLearnedLocation initWithLocation:dataPointCount:type:](self, "initWithLocation:dataPointCount:type:", v23, [v24 sourceAccuracy] == 2, 2);
+  v25 = -[RTLearnedLocation initWithLocation:dataPointCount:type:](self, "initWithLocation:dataPointCount:type:", v23, [location7 sourceAccuracy] == 2, 2);
   return v25;
 }
 
-- (RTLearnedLocation)initWithLocation:(id)a3 dataPointCount:(unint64_t)a4 confidence:(double)a5
+- (RTLearnedLocation)initWithLocation:(id)location dataPointCount:(unint64_t)count confidence:(double)confidence
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (v9)
+  locationCopy = location;
+  if (locationCopy)
   {
     v15.receiver = self;
     v15.super_class = RTLearnedLocation;
@@ -62,13 +62,13 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_location, a3);
-      v11->_dataPointCount = a4;
-      v11->_confidence = a5;
+      objc_storeStrong(&v10->_location, location);
+      v11->_dataPointCount = count;
+      v11->_confidence = confidence;
     }
 
     self = v11;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -83,17 +83,17 @@
       _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: location (in %s:%d)", buf, 0x12u);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (RTLearnedLocation)initWithLocation:(id)a3 dataPointCount:(unint64_t)a4 type:(unint64_t)a5
+- (RTLearnedLocation)initWithLocation:(id)location dataPointCount:(unint64_t)count type:(unint64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (!v9)
+  locationCopy = location;
+  if (!locationCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -101,12 +101,12 @@
       v16 = 136315394;
       v17 = "[RTLearnedLocation initWithLocation:dataPointCount:type:]";
       v18 = 1024;
-      LODWORD(v19) = 61;
+      LODWORD(typeCopy) = 61;
       _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: location (in %s:%d)", &v16, 0x12u);
     }
   }
 
-  if (a5 >= 3)
+  if (type >= 3)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -115,7 +115,7 @@
       v16 = 138412546;
       v17 = v15;
       v18 = 2048;
-      v19 = a5;
+      typeCopy = type;
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "%@, unsupported learned location type, %lu", &v16, 0x16u);
     }
 
@@ -124,25 +124,25 @@
 
   else
   {
-    v11 = dbl_230B01298[a5];
+    v11 = dbl_230B01298[type];
   }
 
-  [objc_opt_class() confidenceFromDataPointCount:a4 highConfidenceThreshold:v11];
-  v13 = [(RTLearnedLocation *)self initWithLocation:v9 dataPointCount:a4 confidence:?];
+  [objc_opt_class() confidenceFromDataPointCount:count highConfidenceThreshold:v11];
+  v13 = [(RTLearnedLocation *)self initWithLocation:locationCopy dataPointCount:count confidence:?];
 
   return v13;
 }
 
-+ (id)shiftLocation:(id)a3 shifter:(id)a4
++ (id)shiftLocation:(id)location shifter:(id)shifter
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  locationCopy = location;
+  shifterCopy = shifter;
+  v7 = shifterCopy;
+  if (locationCopy)
   {
-    if (v6)
+    if (shifterCopy)
     {
-      v8 = [v6 shiftedLocation:v5 allowNetwork:1 error:0];
+      v8 = [shifterCopy shiftedLocation:locationCopy allowNetwork:1 error:0];
 
       goto LABEL_10;
     }
@@ -157,11 +157,11 @@
 
   else
   {
-    v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    locationCopy = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(locationCopy, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: location", buf, 2u);
+      _os_log_error_impl(&dword_2304B3000, locationCopy, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: location", buf, 2u);
     }
   }
 
@@ -171,12 +171,12 @@ LABEL_10:
   return v8;
 }
 
-+ (id)removeLearnedVisitsPinned:(id)a3
++ (id)removeLearnedVisitsPinned:(id)pinned
 {
-  v3 = a3;
-  if (v3)
+  pinnedCopy = pinned;
+  if (pinnedCopy)
   {
-    v4 = v3;
+    v4 = pinnedCopy;
     v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-4838400.0];
     v6 = MEMORY[0x277CCAC30];
     v14[0] = MEMORY[0x277D85DD0];
@@ -225,23 +225,23 @@ uint64_t __47__RTLearnedLocation_removeLearnedVisitsPinned___block_invoke(uint64
   return v6;
 }
 
-+ (id)removeLearnedVisitsInvalid:(id)a3
++ (id)removeLearnedVisitsInvalid:(id)invalid
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  invalidCopy = invalid;
+  if (invalidCopy)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v5 = v3;
+    v5 = invalidCopy;
     v6 = [v5 countByEnumeratingWithState:&v22 objects:v32 count:16];
     if (v6)
     {
       v7 = v6;
-      v20 = v3;
+      v20 = invalidCopy;
       v8 = *v23;
       do
       {
@@ -253,9 +253,9 @@ uint64_t __47__RTLearnedLocation_removeLearnedVisitsPinned___block_invoke(uint64
           }
 
           v10 = *(*(&v22 + 1) + 8 * i);
-          v11 = [v10 location];
-          v12 = [v11 location];
-          [v12 horizontalUncertainty];
+          location = [v10 location];
+          v11Location = [location location];
+          [v11Location horizontalUncertainty];
           v14 = v13;
 
           if (v14 <= -1.0)
@@ -278,7 +278,7 @@ uint64_t __47__RTLearnedLocation_removeLearnedVisitsPinned___block_invoke(uint64
 
           else
           {
-            [v4 addObject:v10];
+            [array addObject:v10];
           }
         }
 
@@ -286,7 +286,7 @@ uint64_t __47__RTLearnedLocation_removeLearnedVisitsPinned___block_invoke(uint64
       }
 
       while (v7);
-      v3 = v20;
+      invalidCopy = v20;
     }
   }
 
@@ -299,21 +299,21 @@ uint64_t __47__RTLearnedLocation_removeLearnedVisitsPinned___block_invoke(uint64
       _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: learnedVisits", buf, 2u);
     }
 
-    v4 = 0;
+    array = 0;
   }
 
-  return v4;
+  return array;
 }
 
-+ (id)removeLearnedVisitsWithShortestDwell:(id)a3
++ (id)removeLearnedVisitsWithShortestDwell:(id)dwell
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  dwellCopy = dwell;
+  if (dwellCopy)
   {
-    v4 = v3;
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [MEMORY[0x277CBEB18] array];
+    v4 = dwellCopy;
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -334,18 +334,18 @@ uint64_t __47__RTLearnedLocation_removeLearnedVisitsPinned___block_invoke(uint64
           }
 
           v12 = *(*(&v24 + 1) + 8 * i);
-          v13 = [v12 location];
-          v14 = [v13 location];
-          v15 = [v14 sourceAccuracy];
+          location = [v12 location];
+          v13Location = [location location];
+          sourceAccuracy = [v13Location sourceAccuracy];
 
-          if (v15 == 2)
+          if (sourceAccuracy == 2)
           {
-            v16 = v5;
+            v16 = array;
           }
 
           else
           {
-            v16 = v6;
+            v16 = array2;
           }
 
           [v16 addObject:v12];
@@ -357,14 +357,14 @@ uint64_t __47__RTLearnedLocation_removeLearnedVisitsPinned___block_invoke(uint64
       while (v9);
     }
 
-    if ([v5 count] >= 5)
+    if ([array count] >= 5)
     {
-      v17 = [v5 sortedArrayUsingComparator:&__block_literal_global_91];
+      v17 = [array sortedArrayUsingComparator:&__block_literal_global_91];
       v18 = MEMORY[0x277CBEB18];
       v19 = [v17 subarrayWithRange:{0, objc_msgSend(v17, "count") - (objc_msgSend(v17, "count") * 0.2)}];
       v20 = [v18 arrayWithArray:v19];
 
-      [v20 addObjectsFromArray:v6];
+      [v20 addObjectsFromArray:array2];
       v7 = v20;
     }
 
@@ -425,14 +425,14 @@ uint64_t __58__RTLearnedLocation_removeLearnedVisitsWithShortestDwell___block_in
   }
 }
 
-+ (id)removeOutlierLearnedLocationsWithLargeHorizontalUncertainty:(id)a3
++ (id)removeOutlierLearnedLocationsWithLargeHorizontalUncertainty:(id)uncertainty
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  uncertaintyCopy = uncertainty;
+  v5 = uncertaintyCopy;
+  if (uncertaintyCopy)
   {
-    if ([v4 count] > 2)
+    if ([uncertaintyCopy count] > 2)
     {
       v8 = [[_RTMap alloc] initWithInput:v5];
       v9 = [(_RTMap *)v8 withBlock:&__block_literal_global_22_0];
@@ -492,11 +492,11 @@ id __81__RTLearnedLocation_removeOutlierLearnedLocationsWithLargeHorizontalUncer
   return v4;
 }
 
-- (void)calculateAltitude:(double *)a3 verticalUncertainty:(double *)a4 learnedLocations:(id)a5
+- (void)calculateAltitude:(double *)altitude verticalUncertainty:(double *)uncertainty learnedLocations:(id)locations
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a3)
+  locationsCopy = locations;
+  v8 = locationsCopy;
+  if (!altitude)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -513,7 +513,7 @@ LABEL_21:
     goto LABEL_9;
   }
 
-  if (!a4)
+  if (!uncertainty)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -526,9 +526,9 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  *a3 = 0.0;
-  *a4 = -1.0;
-  if ([v7 count])
+  *altitude = 0.0;
+  *uncertainty = -1.0;
+  if ([locationsCopy count])
   {
     *buf = 0;
     v35 = buf;
@@ -593,8 +593,8 @@ LABEL_21:
       *(v35 + 3) = v9;
     }
 
-    *a3 = v9;
-    *a4 = v10[3];
+    *altitude = v9;
+    *uncertainty = v10[3];
 LABEL_15:
     _Block_object_dispose(&v18, 8);
     _Block_object_dispose(&v22, 8);
@@ -648,9 +648,9 @@ void __76__RTLearnedLocation_calculateAltitude_verticalUncertainty_learnedLocati
   }
 }
 
-- (RTLearnedLocation)initWithLearnedVisits:(id)a3
+- (RTLearnedLocation)initWithLearnedVisits:(id)visits
 {
-  v4 = [RTLearnedLocation removeLearnedVisitsInvalid:a3];
+  v4 = [RTLearnedLocation removeLearnedVisitsInvalid:visits];
   v5 = [RTLearnedLocation removeLearnedVisitsPinned:v4];
 
   v6 = [RTLearnedLocation removeLearnedVisitsWithShortestDwell:v5];
@@ -664,17 +664,17 @@ void __76__RTLearnedLocation_calculateAltitude_verticalUncertainty_learnedLocati
   return v10;
 }
 
-- (RTLearnedLocation)initWithLearnedLocations:(id)a3 type:(unint64_t)a4
+- (RTLearnedLocation)initWithLearnedLocations:(id)locations type:(unint64_t)type
 {
   v83 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (![v7 count])
+  locationsCopy = locations;
+  if (![locationsCopy count])
   {
-    v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    array = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: learnedLocations.count != 0", buf, 2u);
+      _os_log_error_impl(&dword_2304B3000, array, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: learnedLocations.count != 0", buf, 2u);
     }
 
     goto LABEL_37;
@@ -684,7 +684,7 @@ void __76__RTLearnedLocation_calculateAltitude_verticalUncertainty_learnedLocati
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v8 = v7;
+  v8 = locationsCopy;
   v9 = [v8 countByEnumeratingWithState:&v73 objects:v82 count:16];
   if (!v9)
   {
@@ -696,13 +696,13 @@ LABEL_41:
       goto LABEL_39;
     }
 
-    v21 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+    array = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
+    if (os_log_type_enabled(array, OS_LOG_TYPE_INFO))
     {
       v48 = NSStringFromSelector(a2);
       *buf = 138412290;
       v79 = v48;
-      _os_log_impl(&dword_2304B3000, v21, OS_LOG_TYPE_INFO, "%@, data point count was 0", buf, 0xCu);
+      _os_log_impl(&dword_2304B3000, array, OS_LOG_TYPE_INFO, "%@, data point count was 0", buf, 0xCu);
     }
 
 LABEL_37:
@@ -711,11 +711,11 @@ LABEL_37:
   }
 
   v10 = v9;
-  v65 = self;
+  selfCopy = self;
   obj = v8;
   aSelector = a2;
-  v63 = a4;
-  v64 = v7;
+  typeCopy = type;
+  v64 = locationsCopy;
   v11 = 0;
   v12 = 0;
   v13 = 0;
@@ -730,16 +730,16 @@ LABEL_37:
       }
 
       v16 = *(*(&v73 + 1) + 8 * i);
-      v17 = [v16 location];
-      v18 = [v17 sourceAccuracy];
+      location = [v16 location];
+      sourceAccuracy = [location sourceAccuracy];
 
-      v19 = [v16 location];
-      v20 = [v19 referenceFrame];
+      location2 = [v16 location];
+      referenceFrame = [location2 referenceFrame];
 
-      if (v20 == 2)
+      if (referenceFrame == 2)
       {
-        v7 = v64;
-        v21 = obj;
+        locationsCopy = v64;
+        array = obj;
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v43 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -754,12 +754,12 @@ LABEL_37:
           }
         }
 
-        v45 = [(RTLearnedLocation *)v65 initWithChinaShiftedLearnedLocations:obj type:v63];
+        v45 = [(RTLearnedLocation *)selfCopy initWithChinaShiftedLearnedLocations:obj type:typeCopy];
         goto LABEL_34;
       }
 
-      v13 |= v18 == 2;
-      if (v18 == 2)
+      v13 |= sourceAccuracy == 2;
+      if (sourceAccuracy == 2)
       {
         ++v11;
       }
@@ -776,8 +776,8 @@ LABEL_37:
     break;
   }
 
-  v7 = v64;
-  self = v65;
+  locationsCopy = v64;
+  self = selfCopy;
   a2 = aSelector;
   if (!v12)
   {
@@ -798,8 +798,8 @@ LABEL_37:
       }
     }
 
-    v21 = [(RTLearnedLocation *)v65 aggregateLearnedLocations:obj updateAltitude:1];
-    if (v63 == 2)
+    array = [(RTLearnedLocation *)selfCopy aggregateLearnedLocations:obj updateAltitude:1];
+    if (typeCopy == 2)
     {
       v51 = 0;
       v52 = 2;
@@ -808,10 +808,10 @@ LABEL_37:
     else
     {
       v51 = v12;
-      v52 = v63;
+      v52 = typeCopy;
     }
 
-    v45 = [(RTLearnedLocation *)v65 initWithLocation:v21 dataPointCount:v51 type:v52];
+    v45 = [(RTLearnedLocation *)selfCopy initWithLocation:array dataPointCount:v51 type:v52];
 LABEL_34:
     self = v45;
     v46 = v45;
@@ -819,8 +819,8 @@ LABEL_34:
   }
 
   [obj count];
-  v21 = [MEMORY[0x277CBEB18] array];
-  v22 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
@@ -841,17 +841,17 @@ LABEL_34:
         }
 
         v28 = *(*(&v69 + 1) + 8 * j);
-        v29 = [v28 location];
-        v30 = [v29 sourceAccuracy];
+        location3 = [v28 location];
+        sourceAccuracy2 = [location3 sourceAccuracy];
 
-        if (v30 == 2)
+        if (sourceAccuracy2 == 2)
         {
-          v31 = v21;
+          v31 = array;
         }
 
         else
         {
-          v31 = v22;
+          v31 = array2;
         }
 
         [v31 addObject:v28];
@@ -863,12 +863,12 @@ LABEL_34:
     while (v25);
   }
 
-  v32 = [(RTLearnedLocation *)v65 aggregateLearnedLocations:v21 updateAltitude:0];
-  v33 = [(RTLearnedLocation *)v65 aggregateLearnedLocations:v22 updateAltitude:0];
+  v32 = [(RTLearnedLocation *)selfCopy aggregateLearnedLocations:array updateAltitude:0];
+  v33 = [(RTLearnedLocation *)selfCopy aggregateLearnedLocations:array2 updateAltitude:0];
   [v32 horizontalUncertainty];
   v35 = v34;
   [v33 horizontalUncertainty];
-  v7 = v64;
+  locationsCopy = v64;
   if (v32)
   {
     if (v35 >= v36)
@@ -885,18 +885,18 @@ LABEL_34:
     v39 = v38;
     [v32 longitude];
     v41 = v40;
-    v42 = v63;
+    v42 = typeCopy;
 LABEL_55:
     v67 = -1.0;
     v68 = 0.0;
-    [(RTLearnedLocation *)v65 calculateAltitude:&v68 verticalUncertainty:&v67 learnedLocations:v23];
+    [(RTLearnedLocation *)selfCopy calculateAltitude:&v68 verticalUncertainty:&v67 learnedLocations:v23];
     v56 = objc_alloc(MEMORY[0x277D01160]);
     v57 = [v56 initWithLatitude:0 longitude:0 horizontalUncertainty:2 altitude:v39 verticalUncertainty:v41 date:v37 referenceFrame:v68 speed:v67 sourceAccuracy:0.0];
     if (v42 >= 2)
     {
       if (v42 == 2)
       {
-        v12 = [v21 count];
+        v12 = [array count];
       }
 
       else
@@ -914,7 +914,7 @@ LABEL_55:
       }
     }
 
-    v60 = [(RTLearnedLocation *)v65 initWithLocation:v57 dataPointCount:v12 type:v42];
+    v60 = [(RTLearnedLocation *)selfCopy initWithLocation:v57 dataPointCount:v12 type:v42];
 
     self = v60;
     v46 = v60;
@@ -922,7 +922,7 @@ LABEL_55:
 
   else
   {
-    v42 = v63;
+    v42 = typeCopy;
     if (v33)
     {
       [v33 latitude];
@@ -935,7 +935,7 @@ LABEL_55:
     }
 
     v46 = 0;
-    self = v65;
+    self = selfCopy;
   }
 
 LABEL_38:
@@ -944,17 +944,17 @@ LABEL_39:
   return v46;
 }
 
-- (id)aggregateLearnedLocations:(id)a3 updateAltitude:(BOOL)a4
+- (id)aggregateLearnedLocations:(id)locations updateAltitude:(BOOL)altitude
 {
-  v4 = a4;
+  altitudeCopy = altitude;
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 count])
+  locationsCopy = locations;
+  if ([locationsCopy count])
   {
-    if ([v6 count])
+    if ([locationsCopy count])
     {
-      v43 = v4;
-      v42 = self;
+      v43 = altitudeCopy;
+      selfCopy = self;
       v7 = 0;
       v8 = 0;
       v9 = 0;
@@ -968,8 +968,8 @@ LABEL_39:
       v17 = 0.0;
       do
       {
-        v18 = [v6 objectAtIndex:{v10, v42}];
-        v19 = [v18 location];
+        v18 = [locationsCopy objectAtIndex:{v10, selfCopy}];
+        location = [v18 location];
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           v20 = _rt_log_facility_get_os_log(v13);
@@ -977,7 +977,7 @@ LABEL_39:
           {
             NSStringFromSelector(a2);
             v45 = v8;
-            v21 = v6;
+            v21 = locationsCopy;
             v22 = v12;
             v24 = v23 = v13;
             *buf = 138412803;
@@ -985,29 +985,29 @@ LABEL_39:
             v52 = 2048;
             v53 = (v10 + 1);
             v54 = 2117;
-            v55 = v19;
+            v55 = location;
             _os_log_impl(&dword_2304B3000, v20, OS_LOG_TYPE_INFO, "%@, location %lu, %{sensitive}@", buf, 0x20u);
 
             v13 = v23;
             v12 = v22;
-            v6 = v21;
+            locationsCopy = v21;
             v8 = v45;
           }
         }
 
         if (!v8)
         {
-          v8 = v19;
+          v8 = location;
         }
 
-        v25 = [v19 sourceAccuracy];
+        sourceAccuracy = [location sourceAccuracy];
         v48 = 0.0;
         v49 = 0.0;
         v47 = 0.0;
         [v8 latitude];
         [v8 longitude];
-        [v19 latitude];
-        [v19 longitude];
+        [location latitude];
+        [location longitude];
         if ((RTCommonConvertGeodeticToLocalFrame() & 1) == 0)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1025,7 +1025,7 @@ LABEL_39:
           goto LABEL_44;
         }
 
-        if (v25 == 2)
+        if (sourceAccuracy == 2)
         {
           v9 = 2;
         }
@@ -1034,15 +1034,15 @@ LABEL_39:
         v14 = v14 + [v18 dataPointCount] * v47;
         v15 = v15 + [v18 dataPointCount] * (v48 * v48);
         v16 = v16 + [v18 dataPointCount] * (v47 * v47);
-        v26 = [v18 dataPointCount];
-        [v19 horizontalUncertainty];
-        v17 = v17 + v26 * (v27 * v27);
+        dataPointCount = [v18 dataPointCount];
+        [location horizontalUncertainty];
+        v17 = v17 + dataPointCount * (v27 * v27);
         v7 += [v18 dataPointCount];
 
         ++v10;
       }
 
-      while (v10 < [v6 count]);
+      while (v10 < [locationsCopy count]);
       if (!v7)
       {
         goto LABEL_30;
@@ -1072,7 +1072,7 @@ LABEL_39:
           v47 = 0.0;
           if (v43)
           {
-            [(RTLearnedLocation *)v42 calculateAltitude:&v47 verticalUncertainty:&v46 learnedLocations:v6];
+            [(RTLearnedLocation *)selfCopy calculateAltitude:&v47 verticalUncertainty:&v46 learnedLocations:locationsCopy];
           }
 
           v31 = objc_alloc(MEMORY[0x277D01160]);
@@ -1159,11 +1159,11 @@ LABEL_46:
   return v32;
 }
 
-- (RTLearnedLocation)initWithChinaShiftedLearnedLocations:(id)a3 type:(unint64_t)a4
+- (RTLearnedLocation)initWithChinaShiftedLearnedLocations:(id)locations type:(unint64_t)type
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (![v6 count])
+  locationsCopy = locations;
+  if (![locationsCopy count])
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1175,16 +1175,16 @@ LABEL_46:
     goto LABEL_40;
   }
 
-  if (![v6 count])
+  if (![locationsCopy count])
   {
     v7 = 0;
 LABEL_40:
-    v42 = 0;
+    selfCopy2 = 0;
     goto LABEL_43;
   }
 
-  v45 = a4;
-  v46 = self;
+  typeCopy = type;
+  selfCopy = self;
   v7 = 0;
   v8 = 0;
   v9 = 0;
@@ -1198,8 +1198,8 @@ LABEL_40:
   v16 = 0.0;
   while (1)
   {
-    v17 = [v6 objectAtIndex:{v11, v45}];
-    v18 = [v17 location];
+    v17 = [locationsCopy objectAtIndex:{v11, typeCopy}];
+    location = [v17 location];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v19 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -1211,15 +1211,15 @@ LABEL_40:
         v53 = 2048;
         v54 = v11;
         v55 = 2117;
-        v56 = v18;
+        v56 = location;
         _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_INFO, "%@, location %lu, %{sensitive}@", buf, 0x20u);
       }
     }
 
-    v21 = [v17 location];
-    v22 = [v21 referenceFrame];
+    location2 = [v17 location];
+    referenceFrame = [location2 referenceFrame];
 
-    if (v22 == 2)
+    if (referenceFrame == 2)
     {
       goto LABEL_13;
     }
@@ -1229,40 +1229,40 @@ LABEL_40:
       v7 = objc_opt_new();
     }
 
-    v23 = [RTLearnedLocation shiftLocation:v18 shifter:v7];
+    v23 = [RTLearnedLocation shiftLocation:location shifter:v7];
 
     if (!v23)
     {
       break;
     }
 
-    v18 = v23;
+    location = v23;
 LABEL_13:
-    if ([v18 sourceAccuracy] == 2)
+    if ([location sourceAccuracy] == 2)
     {
       ++v10;
-      v24 = [v17 dataPointCount];
-      [v18 latitude];
-      v15 = v15 + v24 * v25;
-      v26 = [v17 dataPointCount];
-      [v18 longitude];
-      v16 = v16 + v26 * v27;
+      dataPointCount = [v17 dataPointCount];
+      [location latitude];
+      v15 = v15 + dataPointCount * v25;
+      dataPointCount2 = [v17 dataPointCount];
+      [location longitude];
+      v16 = v16 + dataPointCount2 * v27;
       v9 += [v17 dataPointCount];
       v48 = 2;
     }
 
-    v28 = [v17 dataPointCount];
-    [v18 latitude];
-    v12 = v12 + v28 * v29;
-    v30 = [v17 dataPointCount];
-    [v18 longitude];
-    v13 = v13 + v30 * v31;
-    v32 = [v17 dataPointCount];
-    [v18 horizontalUncertainty];
-    v14 = v14 + v32 * v33;
+    dataPointCount3 = [v17 dataPointCount];
+    [location latitude];
+    v12 = v12 + dataPointCount3 * v29;
+    dataPointCount4 = [v17 dataPointCount];
+    [location longitude];
+    v13 = v13 + dataPointCount4 * v31;
+    dataPointCount5 = [v17 dataPointCount];
+    [location horizontalUncertainty];
+    v14 = v14 + dataPointCount5 * v33;
     v8 += [v17 dataPointCount];
 
-    if (++v11 >= [v6 count])
+    if (++v11 >= [locationsCopy count])
     {
       if (!v8)
       {
@@ -1301,7 +1301,7 @@ LABEL_13:
 
       v49 = -1.0;
       v50 = 0.0;
-      [(RTLearnedLocation *)v46 calculateAltitude:&v50 verticalUncertainty:&v49 learnedLocations:v6];
+      [(RTLearnedLocation *)selfCopy calculateAltitude:&v50 verticalUncertainty:&v49 learnedLocations:locationsCopy];
       v37 = objc_alloc(MEMORY[0x277D01160]);
       v38 = [v37 initWithLatitude:0 longitude:2 horizontalUncertainty:v48 altitude:v34 verticalUncertainty:v35 date:v36 referenceFrame:v50 speed:v49 sourceAccuracy:0.0];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1318,14 +1318,14 @@ LABEL_13:
         }
       }
 
-      if (v45 >= 2)
+      if (typeCopy >= 2)
       {
-        if (v45 == 2)
+        if (typeCopy == 2)
         {
 LABEL_36:
-          self = [(RTLearnedLocation *)v46 initWithLocation:v38 dataPointCount:v10 type:v45];
+          self = [(RTLearnedLocation *)selfCopy initWithLocation:v38 dataPointCount:v10 type:typeCopy];
 
-          v42 = self;
+          selfCopy2 = self;
           goto LABEL_43;
         }
 
@@ -1336,7 +1336,7 @@ LABEL_36:
           *buf = 138412546;
           v52 = v44;
           v53 = 2048;
-          v54 = v45;
+          v54 = typeCopy;
           _os_log_error_impl(&dword_2304B3000, v41, OS_LOG_TYPE_ERROR, "%@, unsupported learned location type, %lu", buf, 0x16u);
         }
       }
@@ -1347,19 +1347,19 @@ LABEL_36:
   }
 
 LABEL_42:
-  v42 = 0;
-  self = v46;
+  selfCopy2 = 0;
+  self = selfCopy;
 LABEL_43:
 
-  return v42;
+  return selfCopy2;
 }
 
-+ (double)confidenceFromDataPointCount:(unint64_t)a3 highConfidenceThreshold:(double)a4
++ (double)confidenceFromDataPointCount:(unint64_t)count highConfidenceThreshold:(double)threshold
 {
   v4 = 1.0;
-  if (a3 < a4)
+  if (count < threshold)
   {
-    v5 = a3 / a4;
+    v5 = count / threshold;
     if (v5 <= 1.0)
     {
       return v5;
@@ -1372,36 +1372,36 @@ LABEL_43:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTLearnedLocation *)self location];
-  v5 = [(RTLearnedLocation *)self dataPointCount];
+  location = [(RTLearnedLocation *)self location];
+  dataPointCount = [(RTLearnedLocation *)self dataPointCount];
   [(RTLearnedLocation *)self confidence];
-  v7 = [v3 stringWithFormat:@"%@, dataPointCount, %lu, confidence, %.2f", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"%@, dataPointCount, %lu, confidence, %.2f", location, dataPointCount, v6];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 == self)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
     goto LABEL_19;
   }
 
-  if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!equalCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v12 = 0;
     goto LABEL_19;
   }
 
   v7 = v6;
-  v8 = [(RTLearnedLocation *)self location];
-  if (!v8)
+  location = [(RTLearnedLocation *)self location];
+  if (!location)
   {
-    v3 = [(RTLearnedLocation *)v7 location];
-    if (!v3)
+    location2 = [(RTLearnedLocation *)v7 location];
+    if (!location2)
     {
       v11 = 1;
 LABEL_11:
@@ -1410,23 +1410,23 @@ LABEL_11:
     }
   }
 
-  v9 = [(RTLearnedLocation *)self location];
-  v10 = [(RTLearnedLocation *)v7 location];
-  v11 = [v9 isEqual:v10];
+  location3 = [(RTLearnedLocation *)self location];
+  location4 = [(RTLearnedLocation *)v7 location];
+  v11 = [location3 isEqual:location4];
 
-  if (!v8)
+  if (!location)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
 
-  v13 = [(RTLearnedLocation *)self dataPointCount];
-  v14 = [(RTLearnedLocation *)v7 dataPointCount];
+  dataPointCount = [(RTLearnedLocation *)self dataPointCount];
+  dataPointCount2 = [(RTLearnedLocation *)v7 dataPointCount];
   [(RTLearnedLocation *)self confidence];
   v16 = v15;
   [(RTLearnedLocation *)v7 confidence];
-  if (v13 == v14)
+  if (dataPointCount == dataPointCount2)
   {
     v18 = v11;
   }
@@ -1452,8 +1452,8 @@ LABEL_19:
 
 - (unint64_t)hash
 {
-  v3 = [(RTLearnedLocation *)self location];
-  v4 = [v3 hash];
+  location = [(RTLearnedLocation *)self location];
+  v4 = [location hash];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTLearnedLocation dataPointCount](self, "dataPointCount")}];
   v6 = [v5 hash] ^ v4;
   v7 = MEMORY[0x277CCABB0];
@@ -1464,21 +1464,21 @@ LABEL_19:
   return v6 ^ v9;
 }
 
-- (RTLearnedLocation)initWithMapItem:(id)a3 type:(unint64_t)a4
+- (RTLearnedLocation)initWithMapItem:(id)item type:(unint64_t)type
 {
-  v6 = [a3 location];
-  if (v6)
+  location = [item location];
+  if (location)
   {
-    self = [(RTLearnedLocation *)self initWithLocation:v6 dataPointCount:0 type:a4];
-    v7 = self;
+    self = [(RTLearnedLocation *)self initWithLocation:location dataPointCount:0 type:type];
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

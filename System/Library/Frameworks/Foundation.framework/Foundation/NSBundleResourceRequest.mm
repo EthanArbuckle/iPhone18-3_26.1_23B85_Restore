@@ -1,13 +1,13 @@
 @interface NSBundleResourceRequest
-+ (id)_assetPackBundleForBundle:(id)a3 withAssetPackID:(id)a4;
++ (id)_assetPackBundleForBundle:(id)bundle withAssetPackID:(id)d;
 + (id)_connection;
-+ (id)_extensionEndpointForMainBundleOfHostApplication:(id)a3;
-+ (id)_manifestWithBundle:(id)a3 error:(id *)a4;
-+ (void)_addExtensionEndpoint:(id)a3;
-+ (void)_flushCacheForBundle:(id)a3;
-+ (void)_setConnection:(id)a3;
++ (id)_extensionEndpointForMainBundleOfHostApplication:(id)application;
++ (id)_manifestWithBundle:(id)bundle error:(id *)error;
++ (void)_addExtensionEndpoint:(id)endpoint;
++ (void)_flushCacheForBundle:(id)bundle;
++ (void)_setConnection:(id)connection;
 - (NSBundle)bundle;
-- (NSBundleResourceRequest)initWithTag:(id)a3;
+- (NSBundleResourceRequest)initWithTag:(id)tag;
 - (NSBundleResourceRequest)initWithTags:(NSSet *)tags;
 - (NSBundleResourceRequest)initWithTags:(NSSet *)tags bundle:(NSBundle *)bundle;
 - (NSProgress)progress;
@@ -45,37 +45,37 @@ void __38__NSBundleResourceRequest__connection__block_invoke()
   _setupConnection(v0);
 }
 
-+ (void)_setConnection:(id)a3
++ (void)_setConnection:(id)connection
 {
   if (qword_1ED439AC8)
   {
     [qword_1ED439AC8 invalidate];
   }
 
-  v4 = a3;
-  qword_1ED439AC8 = v4;
-  if (a3)
+  connectionCopy = connection;
+  qword_1ED439AC8 = connectionCopy;
+  if (connection)
   {
 
-    _setupConnection(v4);
+    _setupConnection(connectionCopy);
   }
 }
 
-+ (void)_flushCacheForBundle:(id)a3
++ (void)_flushCacheForBundle:(id)bundle
 {
   objc_opt_self();
   os_unfair_lock_lock(&_MergedGlobals_1_0);
   if (qword_1ED439AA8)
   {
-    [qword_1ED439AA8 removeObjectForKey:a3];
+    [qword_1ED439AA8 removeObjectForKey:bundle];
   }
 
   os_unfair_lock_unlock(&_MergedGlobals_1_0);
 }
 
-- (NSBundleResourceRequest)initWithTag:(id)a3
+- (NSBundleResourceRequest)initWithTag:(id)tag
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:tag];
   v5 = +[NSBundle mainBundle];
 
   return [(NSBundleResourceRequest *)self initWithTags:v4 bundle:v5];
@@ -132,12 +132,12 @@ void __38__NSBundleResourceRequest__connection__block_invoke()
   [(NSBundleResourceRequest *)&v4 dealloc];
 }
 
-+ (id)_assetPackBundleForBundle:(id)a3 withAssetPackID:(id)a4
++ (id)_assetPackBundleForBundle:(id)bundle withAssetPackID:(id)d
 {
-  v6 = [_NSBundleODRDataForApplications dataForBundle:a3 createIfRequired:0];
-  if (!v6 || (v7 = v6, [(NSLock *)v6->super._lock lock], v8 = [(NSMutableDictionary *)v7->super._assetPackToURL objectForKey:a4], [(NSLock *)v7->super._lock unlock], !v8))
+  v6 = [_NSBundleODRDataForApplications dataForBundle:bundle createIfRequired:0];
+  if (!v6 || (v7 = v6, [(NSLock *)v6->super._lock lock], v8 = [(NSMutableDictionary *)v7->super._assetPackToURL objectForKey:d], [(NSLock *)v7->super._lock unlock], !v8))
   {
-    v9 = [_NSBundleODRDataForExtensions dataForBundle:a3 createIfRequired:0];
+    v9 = [_NSBundleODRDataForExtensions dataForBundle:bundle createIfRequired:0];
     if (!v9)
     {
       return 0;
@@ -145,7 +145,7 @@ void __38__NSBundleResourceRequest__connection__block_invoke()
 
     v10 = v9;
     [(NSLock *)v9->super._lock lock];
-    v8 = [(NSMutableDictionary *)v10->super._assetPackToURL objectForKey:a4];
+    v8 = [(NSMutableDictionary *)v10->super._assetPackToURL objectForKey:d];
     [(NSLock *)v10->super._lock unlock];
     if (!v8)
     {
@@ -156,25 +156,25 @@ void __38__NSBundleResourceRequest__connection__block_invoke()
   return [NSBundle bundleWithURL:v8];
 }
 
-+ (id)_manifestWithBundle:(id)a3 error:(id *)a4
++ (id)_manifestWithBundle:(id)bundle error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!bundle)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"The bundle was nil" userInfo:0]);
   }
 
-  v5 = [a3 URLForResource:@"OnDemandResources.plist" withExtension:0];
+  v5 = [bundle URLForResource:@"OnDemandResources.plist" withExtension:0];
   if (!v5)
   {
-    if (a4)
+    if (error)
     {
       v8 = 100;
       v9 = 0;
 LABEL_13:
-      v6 = 0;
-      *a4 = [NSError errorWithDomain:@"_NSBundleResourceRequestErrorDomain" code:v8 userInfo:v9];
-      return v6;
+      dictionary = 0;
+      *error = [NSError errorWithDomain:@"_NSBundleResourceRequestErrorDomain" code:v8 userInfo:v9];
+      return dictionary;
     }
 
     return 0;
@@ -183,7 +183,7 @@ LABEL_13:
   v15[0] = 0;
   if (![MEMORY[0x1E695DEF0] dataWithContentsOfURL:v5 options:0 error:v15])
   {
-    if (a4)
+    if (error)
     {
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObject:v15[0] forKey:@"NSUnderlyingError"];
       v8 = 101;
@@ -204,12 +204,12 @@ LABEL_13:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v10 = MEMORY[0x1E695DF20];
       v11 = @"Manifest is not a dictionary";
 LABEL_18:
-      *a4 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"_NSBundleResourceRequestErrorDomain", 101, [v10 dictionaryWithObject:v11 forKey:@"NSDebugDescription"]);
+      *error = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"_NSBundleResourceRequestErrorDomain", 101, [v10 dictionaryWithObject:v11 forKey:@"NSDebugDescription"]);
     }
 
 LABEL_19:
@@ -217,11 +217,11 @@ LABEL_19:
     return 0;
   }
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v7 = [v14 objectForKey:@"NSBundleResourceRequestTags"];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       v10 = MEMORY[0x1E695DF20];
       v11 = @"Manifest has no tags";
@@ -235,10 +235,10 @@ LABEL_19:
   v13[1] = 3221225472;
   v13[2] = __53__NSBundleResourceRequest__manifestWithBundle_error___block_invoke;
   v13[3] = &unk_1E69F6178;
-  v13[4] = v6;
+  v13[4] = dictionary;
   [v7 enumerateKeysAndObjectsUsingBlock:v13];
 
-  return v6;
+  return dictionary;
 }
 
 uint64_t __53__NSBundleResourceRequest__manifestWithBundle_error___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -284,9 +284,9 @@ uint64_t __53__NSBundleResourceRequest__manifestWithBundle_error___block_invoke(
       v8 = [+[NSBundleResourceRequest _connection](NSBundleResourceRequest "_connection")];
       priority = self->_priority;
       tags = self->_tags;
-      v11 = [(NSBundle *)self->_bundle bundleURL];
+      bundleURL = [(NSBundle *)self->_bundle bundleURL];
 
-      [v8 setLoadingPriority:tags forTags:v11 inBundle:priority];
+      [v8 setLoadingPriority:tags forTags:bundleURL inBundle:priority];
     }
   }
 }
@@ -326,7 +326,7 @@ uint64_t __53__NSBundleResourceRequest__manifestWithBundle_error___block_invoke(
     bundle = self->_bundle;
     v17 = [(NSArray *)[(NSSet *)self->_tags allObjects] componentsJoinedByString:@", "];
     *buf = 134218498;
-    v21 = self;
+    selfCopy = self;
     v22 = 2048;
     v23 = bundle;
     v24 = 2114;
@@ -354,7 +354,7 @@ uint64_t __53__NSBundleResourceRequest__manifestWithBundle_error___block_invoke(
   v19[5] = completionHandler;
   v12 = [v8 remoteObjectProxyWithErrorHandler:v19];
   tags = self->_tags;
-  v14 = [(NSBundle *)self->_bundle bundleURL];
+  bundleURL = [(NSBundle *)self->_bundle bundleURL];
   priority = self->_priority;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -363,7 +363,7 @@ uint64_t __53__NSBundleResourceRequest__manifestWithBundle_error___block_invoke(
   v18[4] = v7;
   v18[5] = self;
   v18[6] = completionHandler;
-  [v12 pinTags:tags inBundle:v14 priority:v18 completionHandler:priority];
+  [v12 pinTags:tags inBundle:bundleURL priority:v18 completionHandler:priority];
   [(NSProgress *)v11 resignCurrent];
 }
 
@@ -605,7 +605,7 @@ uint64_t __72__NSBundleResourceRequest_beginAccessingResourcesWithCompletionHand
     bundle = self->_bundle;
     v14 = [(NSArray *)[(NSSet *)self->_tags allObjects] componentsJoinedByString:@", "];
     *buf = 134218498;
-    v18 = self;
+    selfCopy = self;
     v19 = 2048;
     v20 = bundle;
     v21 = 2114;
@@ -622,7 +622,7 @@ uint64_t __72__NSBundleResourceRequest_beginAccessingResourcesWithCompletionHand
   v16[5] = completionHandler;
   v10 = [v9 remoteObjectProxyWithErrorHandler:v16];
   tags = self->_tags;
-  v12 = [(NSBundle *)self->_bundle bundleURL];
+  bundleURL = [(NSBundle *)self->_bundle bundleURL];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __85__NSBundleResourceRequest_conditionallyBeginAccessingResourcesWithCompletionHandler___block_invoke_298;
@@ -630,7 +630,7 @@ uint64_t __72__NSBundleResourceRequest_beginAccessingResourcesWithCompletionHand
   v15[5] = v7;
   v15[6] = completionHandler;
   v15[4] = self;
-  [v10 conditionallyPinTags:tags inBundle:v12 completionHandler:v15];
+  [v10 conditionallyPinTags:tags inBundle:bundleURL completionHandler:v15];
 }
 
 uint64_t __85__NSBundleResourceRequest_conditionallyBeginAccessingResourcesWithCompletionHandler___block_invoke(uint64_t a1)
@@ -778,7 +778,7 @@ uint64_t __85__NSBundleResourceRequest_conditionallyBeginAccessingResourcesWithC
     v13[4] = tags;
     v13[5] = bundle;
     v11 = [v10 remoteObjectProxyWithErrorHandler:v13];
-    v12 = [(NSBundle *)bundle bundleURL];
+    bundleURL = [(NSBundle *)bundle bundleURL];
     *&buf = MEMORY[0x1E69E9820];
     *(&buf + 1) = 3221225472;
     v15 = ___endAccessingResources_block_invoke_2;
@@ -787,18 +787,18 @@ uint64_t __85__NSBundleResourceRequest_conditionallyBeginAccessingResourcesWithC
     v18 = v10;
     v19 = tags;
     v20 = bundle;
-    [v11 unpinTags:tags inBundle:v12 completionHandler:&buf];
+    [v11 unpinTags:tags inBundle:bundleURL completionHandler:&buf];
   }
 }
 
-+ (id)_extensionEndpointForMainBundleOfHostApplication:(id)a3
++ (id)_extensionEndpointForMainBundleOfHostApplication:(id)application
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69E9820];
   v5 = 3221225472;
   v6 = __123__NSBundleResourceRequest__NSBundleResourceRequestAppExtensionAdditions___extensionEndpointForMainBundleOfHostApplication___block_invoke;
   v7 = &unk_1E69F2C00;
-  v8 = a3;
+  applicationCopy = application;
   if (qword_1ED439AF0 != -1)
   {
     dispatch_once(&qword_1ED439AF0, &v4);
@@ -817,14 +817,14 @@ uint64_t __123__NSBundleResourceRequest__NSBundleResourceRequestAppExtensionAddi
   return [v2 resume];
 }
 
-+ (void)_addExtensionEndpoint:(id)a3
++ (void)_addExtensionEndpoint:(id)endpoint
 {
   v9[6] = *MEMORY[0x1E69E9840];
   v4 = +[_NSBundleODRDataForApplications dataForBundle:createIfRequired:](_NSBundleODRDataForApplications, +[NSBundle mainBundle], 1);
   if (v4)
   {
     v5 = v4;
-    v6 = [[NSXPCConnection alloc] initWithListenerEndpoint:a3];
+    v6 = [[NSXPCConnection alloc] initWithListenerEndpoint:endpoint];
     [(NSXPCConnection *)v6 setRemoteObjectInterface:_appExtensionInterface()];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;

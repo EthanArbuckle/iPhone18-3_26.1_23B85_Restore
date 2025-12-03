@@ -1,13 +1,13 @@
 @interface VNFaceGaze
 - (BOOL)hasLocation;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)location;
-- (CGPoint)locationInTopLeftOrigin:(BOOL)a3 orientation:(unsigned int)a4;
+- (CGPoint)locationInTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation;
 - (CGRect)locationBounds;
-- (VNFaceGaze)initWithCoder:(id)a3;
-- (VNFaceGaze)initWithFaceObservationUUID:(id)a3 direction:(int64_t)a4 location:(CGPoint)a5 bounds:(CGRect)a6 horizontalAngle:(float)a7 lookedAtFaceObservationUUID:(id)a8 gazeMask:(id)a9 originatingRequestSpecifier:(id)a10;
+- (VNFaceGaze)initWithCoder:(id)coder;
+- (VNFaceGaze)initWithFaceObservationUUID:(id)d direction:(int64_t)direction location:(CGPoint)location bounds:(CGRect)bounds horizontalAngle:(float)angle lookedAtFaceObservationUUID:(id)iD gazeMask:(id)mask originatingRequestSpecifier:(id)self0;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNFaceGaze
@@ -34,23 +34,23 @@
   return result;
 }
 
-- (VNFaceGaze)initWithCoder:(id)a3
+- (VNFaceGaze)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"face"];
-  v6 = [v4 decodeIntegerForKey:@"direction"];
-  [v4 decodeDoubleForKey:@"locX"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"face"];
+  v6 = [coderCopy decodeIntegerForKey:@"direction"];
+  [coderCopy decodeDoubleForKey:@"locX"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"locY"];
+  [coderCopy decodeDoubleForKey:@"locY"];
   v10 = v9;
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lookFace"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gazeMask"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"oreq"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lookFace"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gazeMask"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"oreq"];
   if (v13)
   {
-    if ([v4 containsValueForKey:@"locBounds"])
+    if ([coderCopy containsValueForKey:@"locBounds"])
     {
-      [v4 vn_decodeRectForKey:@"locBounds"];
+      [coderCopy vn_decodeRectForKey:@"locBounds"];
       v15 = v14;
       v17 = v16;
       v19 = v18;
@@ -65,9 +65,9 @@
       v21 = *(MEMORY[0x1E695F050] + 24);
     }
 
-    if ([v4 containsValueForKey:@"horizAngle"])
+    if ([coderCopy containsValueForKey:@"horizAngle"])
     {
-      [v4 decodeFloatForKey:@"horizAngle"];
+      [coderCopy decodeFloatForKey:@"horizAngle"];
       LODWORD(v23) = v24;
     }
 
@@ -77,37 +77,37 @@
     }
 
     self = [(VNFaceGaze *)self initWithFaceObservationUUID:v5 direction:v6 location:v11 bounds:v12 horizontalAngle:v13 lookedAtFaceObservationUUID:v8 gazeMask:v10 originatingRequestSpecifier:v15, v17, v19, v21, v23];
-    v22 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v22 = 0;
+    selfCopy = 0;
   }
 
-  return v22;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   faceObservationUUID = self->_faceObservationUUID;
-  v6 = a3;
-  [v6 encodeObject:faceObservationUUID forKey:@"face"];
-  [v6 encodeInteger:self->_direction forKey:@"direction"];
-  [v6 encodeDouble:@"locX" forKey:self->_location.x];
-  [v6 encodeDouble:@"locY" forKey:self->_location.y];
-  [v6 encodeObject:self->_lookedAtFaceObservationUUID forKey:@"lookFace"];
-  [v6 encodeObject:self->_gazeMask forKey:@"gazeMask"];
-  [v6 encodeObject:self->_originatingRequestSpecifier forKey:@"oreq"];
-  [v6 vn_encodeRect:@"locBounds" forKey:{self->_locationBounds.origin.x, self->_locationBounds.origin.y, self->_locationBounds.size.width, self->_locationBounds.size.height}];
+  coderCopy = coder;
+  [coderCopy encodeObject:faceObservationUUID forKey:@"face"];
+  [coderCopy encodeInteger:self->_direction forKey:@"direction"];
+  [coderCopy encodeDouble:@"locX" forKey:self->_location.x];
+  [coderCopy encodeDouble:@"locY" forKey:self->_location.y];
+  [coderCopy encodeObject:self->_lookedAtFaceObservationUUID forKey:@"lookFace"];
+  [coderCopy encodeObject:self->_gazeMask forKey:@"gazeMask"];
+  [coderCopy encodeObject:self->_originatingRequestSpecifier forKey:@"oreq"];
+  [coderCopy vn_encodeRect:@"locBounds" forKey:{self->_locationBounds.origin.x, self->_locationBounds.origin.y, self->_locationBounds.size.width, self->_locationBounds.size.height}];
   *&v5 = self->_horizontalAngle;
-  [v6 encodeFloat:@"horizAngle" forKey:v5];
+  [coderCopy encodeFloat:@"horizAngle" forKey:v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v20 = 1;
     goto LABEL_14;
@@ -115,39 +115,39 @@
 
   v43.receiver = self;
   v43.super_class = VNFaceGaze;
-  if (![(VNFaceGaze *)&v43 isEqual:v4]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (![(VNFaceGaze *)&v43 isEqual:equalCopy]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v20 = 0;
     goto LABEL_14;
   }
 
-  v5 = v4;
-  v6 = [(VNFaceGaze *)self faceObservationUUID];
-  v7 = [(VNFaceGaze *)v5 faceObservationUUID];
-  v8 = [v6 isEqual:v7];
+  v5 = equalCopy;
+  faceObservationUUID = [(VNFaceGaze *)self faceObservationUUID];
+  faceObservationUUID2 = [(VNFaceGaze *)v5 faceObservationUUID];
+  v8 = [faceObservationUUID isEqual:faceObservationUUID2];
 
   if (!v8)
   {
     goto LABEL_10;
   }
 
-  v9 = [(VNFaceGaze *)self originatingRequestSpecifier];
-  v10 = [(VNFaceGaze *)v5 originatingRequestSpecifier];
-  v11 = [v9 isEqual:v10];
+  originatingRequestSpecifier = [(VNFaceGaze *)self originatingRequestSpecifier];
+  originatingRequestSpecifier2 = [(VNFaceGaze *)v5 originatingRequestSpecifier];
+  v11 = [originatingRequestSpecifier isEqual:originatingRequestSpecifier2];
 
   if (!v11)
   {
     goto LABEL_10;
   }
 
-  v12 = [(VNFaceGaze *)self direction];
-  if (v12 != [(VNFaceGaze *)v5 direction])
+  direction = [(VNFaceGaze *)self direction];
+  if (direction != [(VNFaceGaze *)v5 direction])
   {
     goto LABEL_10;
   }
 
-  v13 = [(VNFaceGaze *)self lookedAtFaceObservationUUID];
-  v14 = [(VNFaceGaze *)v5 lookedAtFaceObservationUUID];
+  lookedAtFaceObservationUUID = [(VNFaceGaze *)self lookedAtFaceObservationUUID];
+  lookedAtFaceObservationUUID2 = [(VNFaceGaze *)v5 lookedAtFaceObservationUUID];
   v15 = VisionCoreEqualOrNilObjects();
 
   if (!v15)
@@ -155,8 +155,8 @@
     goto LABEL_10;
   }
 
-  v16 = [(VNFaceGaze *)self gazeMask];
-  v17 = [(VNFaceGaze *)v5 gazeMask];
+  gazeMask = [(VNFaceGaze *)self gazeMask];
+  gazeMask2 = [(VNFaceGaze *)v5 gazeMask];
   v18 = VisionCoreEqualOrNilObjects();
 
   if (!v18)
@@ -164,13 +164,13 @@
     goto LABEL_10;
   }
 
-  v19 = [(VNFaceGaze *)self hasLocation];
-  if (v19 != [(VNFaceGaze *)v5 hasLocation])
+  hasLocation = [(VNFaceGaze *)self hasLocation];
+  if (hasLocation != [(VNFaceGaze *)v5 hasLocation])
   {
     goto LABEL_10;
   }
 
-  if (!v19)
+  if (!hasLocation)
   {
     goto LABEL_20;
   }
@@ -223,12 +223,12 @@ LABEL_14:
   v17.receiver = self;
   v17.super_class = VNFaceGaze;
   v4 = [(VNFaceGaze *)&v17 description];
-  v5 = [(VNFaceGaze *)self originatingRequestSpecifier];
-  v6 = [(VNFaceGaze *)self faceObservationUUID];
-  v7 = [v6 UUIDString];
-  v8 = [(VNFaceGaze *)self direction];
-  v9 = v8;
-  if (v8 >= 6)
+  originatingRequestSpecifier = [(VNFaceGaze *)self originatingRequestSpecifier];
+  faceObservationUUID = [(VNFaceGaze *)self faceObservationUUID];
+  uUIDString = [faceObservationUUID UUIDString];
+  direction = [(VNFaceGaze *)self direction];
+  v9 = direction;
+  if (direction >= 6)
   {
     v11 = objc_alloc(MEMORY[0x1E696AEC0]);
     v12 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
@@ -237,17 +237,17 @@ LABEL_14:
 
   else
   {
-    v10 = off_1E77B5BD0[v8];
+    v10 = off_1E77B5BD0[direction];
   }
 
-  [v3 appendFormat:@"%@ %@ face %@ %@", v4, v5, v7, v10];
+  [v3 appendFormat:@"%@ %@ face %@ %@", v4, originatingRequestSpecifier, uUIDString, v10];
 
-  v13 = [(VNFaceGaze *)self lookedAtFaceObservationUUID];
-  v14 = v13;
-  if (v13)
+  lookedAtFaceObservationUUID = [(VNFaceGaze *)self lookedAtFaceObservationUUID];
+  v14 = lookedAtFaceObservationUUID;
+  if (lookedAtFaceObservationUUID)
   {
-    v15 = [v13 UUIDString];
-    [v3 appendFormat:@", looking at %@", v15];
+    uUIDString2 = [lookedAtFaceObservationUUID UUIDString];
+    [v3 appendFormat:@", looking at %@", uUIDString2];
   }
 
   return v3;
@@ -262,50 +262,50 @@ LABEL_14:
   return CGRectContainsPoint(v3, self->_location);
 }
 
-- (VNFaceGaze)initWithFaceObservationUUID:(id)a3 direction:(int64_t)a4 location:(CGPoint)a5 bounds:(CGRect)a6 horizontalAngle:(float)a7 lookedAtFaceObservationUUID:(id)a8 gazeMask:(id)a9 originatingRequestSpecifier:(id)a10
+- (VNFaceGaze)initWithFaceObservationUUID:(id)d direction:(int64_t)direction location:(CGPoint)location bounds:(CGRect)bounds horizontalAngle:(float)angle lookedAtFaceObservationUUID:(id)iD gazeMask:(id)mask originatingRequestSpecifier:(id)self0
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v18 = a5.y;
-  v19 = a5.x;
-  v23 = a3;
-  v24 = a8;
-  v25 = a9;
-  v26 = a10;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v18 = location.y;
+  v19 = location.x;
+  dCopy = d;
+  iDCopy = iD;
+  maskCopy = mask;
+  specifierCopy = specifier;
   v32.receiver = self;
   v32.super_class = VNFaceGaze;
   v27 = [(VNFaceGaze *)&v32 init];
   v28 = v27;
   if (v27)
   {
-    objc_storeStrong(&v27->_faceObservationUUID, a3);
-    v28->_direction = a4;
+    objc_storeStrong(&v27->_faceObservationUUID, d);
+    v28->_direction = direction;
     v28->_location.x = v19;
     v28->_location.y = v18;
     v28->_locationBounds.origin.x = x;
     v28->_locationBounds.origin.y = y;
     v28->_locationBounds.size.width = width;
     v28->_locationBounds.size.height = height;
-    v28->_horizontalAngle = a7;
-    objc_storeStrong(&v28->_lookedAtFaceObservationUUID, a8);
-    v29 = [v25 copy];
+    v28->_horizontalAngle = angle;
+    objc_storeStrong(&v28->_lookedAtFaceObservationUUID, iD);
+    v29 = [maskCopy copy];
     gazeMask = v28->_gazeMask;
     v28->_gazeMask = v29;
 
-    objc_storeStrong(&v28->_originatingRequestSpecifier, a10);
+    objc_storeStrong(&v28->_originatingRequestSpecifier, specifier);
   }
 
   return v28;
 }
 
-- (CGPoint)locationInTopLeftOrigin:(BOOL)a3 orientation:(unsigned int)a4
+- (CGPoint)locationInTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation
 {
   v9 = 0u;
   v10 = 0u;
   v8 = 0u;
-  [(VNFaceGaze *)self location:VNAffineTransformForVisionToTopLeftOriginOrientation(a3];
+  [(VNFaceGaze *)self location:VNAffineTransformForVisionToTopLeftOriginOrientation(origin];
   v6 = vaddq_f64(v10, vmlaq_n_f64(vmulq_n_f64(v9, v4), v8, v5));
   v7 = v6.f64[1];
   result.x = v6.f64[0];

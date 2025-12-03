@@ -1,6 +1,6 @@
 @interface DMDEnableLostModeOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -20,13 +20,13 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[FMDFMIPManager sharedInstance];
-  v6 = [v5 isManagedLostModeActive];
+  isManagedLostModeActive = [v5 isManagedLostModeActive];
 
-  if (v6)
+  if (isManagedLostModeActive)
   {
     [(DMDEnableLostModeOperation *)self endOperationWithResultObject:0];
   }
@@ -39,14 +39,14 @@
     +[DMDLockUtilities lockDevice];
     v8 = objc_opt_new();
     [v8 setLostModeEnabled:1];
-    v9 = [v4 message];
-    [v8 setMessage:v9];
+    message = [requestCopy message];
+    [v8 setMessage:message];
 
-    v10 = [v4 phoneNumber];
-    [v8 setPhoneNumber:v10];
+    phoneNumber = [requestCopy phoneNumber];
+    [v8 setPhoneNumber:phoneNumber];
 
-    v11 = [v4 footnote];
-    [v8 setFootnoteText:v11];
+    footnote = [requestCopy footnote];
+    [v8 setFootnoteText:footnote];
 
     [v8 setDisableSlideToUnlock:1];
     v12 = +[FMDFMIPManager sharedInstance];

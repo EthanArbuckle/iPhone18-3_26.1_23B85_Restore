@@ -1,20 +1,20 @@
 @interface _WKPublicKeyCredentialUserEntity
-- (_WKPublicKeyCredentialUserEntity)initWithName:(id)a3 identifier:(id)a4 displayName:(id)a5;
+- (_WKPublicKeyCredentialUserEntity)initWithName:(id)name identifier:(id)identifier displayName:(id)displayName;
 - (void)dealloc;
 @end
 
 @implementation _WKPublicKeyCredentialUserEntity
 
-- (_WKPublicKeyCredentialUserEntity)initWithName:(id)a3 identifier:(id)a4 displayName:(id)a5
+- (_WKPublicKeyCredentialUserEntity)initWithName:(id)name identifier:(id)identifier displayName:(id)displayName
 {
   v10.receiver = self;
   v10.super_class = _WKPublicKeyCredentialUserEntity;
-  v7 = [(_WKPublicKeyCredentialEntity *)&v10 initWithName:a3];
+  v7 = [(_WKPublicKeyCredentialEntity *)&v10 initWithName:name];
   v8 = v7;
   if (v7)
   {
-    [(_WKPublicKeyCredentialUserEntity *)v7 setIdentifier:a4];
-    [(_WKPublicKeyCredentialUserEntity *)v8 setDisplayName:a5];
+    [(_WKPublicKeyCredentialUserEntity *)v7 setIdentifier:identifier];
+    [(_WKPublicKeyCredentialUserEntity *)v8 setDisplayName:displayName];
   }
 
   return v8;

@@ -1,28 +1,28 @@
 @interface CNAutocompleteContactsSearchTaskContext
-+ (id)contextWithConsumer:(id)a3 text:(id)a4 operations:(id)a5 searchQueries:(id)a6;
++ (id)contextWithConsumer:(id)consumer text:(id)text operations:(id)operations searchQueries:(id)queries;
 - (BOOL)consumerRespondsToCallbacks;
 @end
 
 @implementation CNAutocompleteContactsSearchTaskContext
 
-+ (id)contextWithConsumer:(id)a3 text:(id)a4 operations:(id)a5 searchQueries:(id)a6
++ (id)contextWithConsumer:(id)consumer text:(id)text operations:(id)operations searchQueries:(id)queries
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = objc_alloc_init(a1);
+  consumerCopy = consumer;
+  textCopy = text;
+  operationsCopy = operations;
+  queriesCopy = queries;
+  v15 = objc_alloc_init(self);
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(v15 + 1, a3);
-    v17 = [v12 copy];
+    objc_storeStrong(v15 + 1, consumer);
+    v17 = [textCopy copy];
     v18 = v16[2];
     v16[2] = v17;
 
-    if (v13)
+    if (operationsCopy)
     {
-      v19 = v13;
+      v19 = operationsCopy;
     }
 
     else
@@ -33,9 +33,9 @@
     v20 = v16[3];
     v16[3] = v19;
 
-    if (v14)
+    if (queriesCopy)
     {
-      v21 = v14;
+      v21 = queriesCopy;
     }
 
     else

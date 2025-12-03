@@ -1,12 +1,12 @@
 @interface WatchSetupExtendedMetadata
-- (WatchSetupExtendedMetadata)initWithPackedExtendedMetadataData:(id)a3;
-- (WatchSetupExtendedMetadata)initWithPairingVersion:(unsigned __int8)a3 productVersionMajor:(unsigned __int8)a4 productVersionMinor:(unsigned __int8)a5 postFailSafeObliteration:(BOOL)a6 encodedSystemVersion:(unsigned int)a7;
+- (WatchSetupExtendedMetadata)initWithPackedExtendedMetadataData:(id)data;
+- (WatchSetupExtendedMetadata)initWithPairingVersion:(unsigned __int8)version productVersionMajor:(unsigned __int8)major productVersionMinor:(unsigned __int8)minor postFailSafeObliteration:(BOOL)obliteration encodedSystemVersion:(unsigned int)systemVersion;
 - (id)packedExtendedMetadataData;
 @end
 
 @implementation WatchSetupExtendedMetadata
 
-- (WatchSetupExtendedMetadata)initWithPairingVersion:(unsigned __int8)a3 productVersionMajor:(unsigned __int8)a4 productVersionMinor:(unsigned __int8)a5 postFailSafeObliteration:(BOOL)a6 encodedSystemVersion:(unsigned int)a7
+- (WatchSetupExtendedMetadata)initWithPairingVersion:(unsigned __int8)version productVersionMajor:(unsigned __int8)major productVersionMinor:(unsigned __int8)minor postFailSafeObliteration:(BOOL)obliteration encodedSystemVersion:(unsigned int)systemVersion
 {
   if ([WatchSetupExtendedMetadata _consistencyCheckForPairingVersion:"_consistencyCheckForPairingVersion:productVersionMajor:productVersionMinor:postFailSafeObliteration:encodedSystemVersion:" productVersionMajor:? productVersionMinor:? postFailSafeObliteration:? encodedSystemVersion:?])
   {
@@ -15,30 +15,30 @@
     v13 = [(WatchSetupExtendedMetadata *)&v16 init];
     if (v13)
     {
-      v13->_pairingVersion = a3;
-      v13->_productVersionMajor = a4;
-      v13->_productVersionMinor = a5;
-      v13->_postFailSafeObliteration = a6;
-      v13->_encodedSystemVersion = a7;
+      v13->_pairingVersion = version;
+      v13->_productVersionMajor = major;
+      v13->_productVersionMinor = minor;
+      v13->_postFailSafeObliteration = obliteration;
+      v13->_encodedSystemVersion = systemVersion;
     }
 
     self = v13;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (WatchSetupExtendedMetadata)initWithPackedExtendedMetadataData:(id)a3
+- (WatchSetupExtendedMetadata)initWithPackedExtendedMetadataData:(id)data
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length] > 6)
+  dataCopy = data;
+  if ([dataCopy length] > 6)
   {
     v19.receiver = self;
     v19.super_class = WatchSetupExtendedMetadata;
@@ -47,7 +47,7 @@
     {
       *&buf[3] = 0;
       *buf = 0;
-      [v4 getBytes:buf length:7];
+      [dataCopy getBytes:buf length:7];
       v10 = buf[0];
       v9->_pairingVersion = buf[0] >> 2;
       v11 = buf[1];
@@ -70,7 +70,7 @@
     }
 
     self = v9;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -86,16 +86,16 @@
         *buf = 134218240;
         *&buf[4] = 7;
         v21 = 2048;
-        v22 = [v4 length];
+        v22 = [dataCopy length];
         _os_log_error_impl(&dword_1E0ADF000, v7, OS_LOG_TYPE_ERROR, "Incorrect size of packed extended metadata, expecting >= %lu but got %lu", buf, 0x16u);
       }
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
   v17 = *MEMORY[0x1E69E9840];
-  return v8;
+  return selfCopy;
 }
 
 - (id)packedExtendedMetadataData

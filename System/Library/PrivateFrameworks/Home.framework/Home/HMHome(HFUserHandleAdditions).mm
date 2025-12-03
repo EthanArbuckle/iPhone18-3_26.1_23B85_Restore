@@ -8,48 +8,48 @@
 - (id)hf_userForHandle:()HFUserHandleAdditions
 {
   v5 = a3;
-  v6 = [v5 type];
-  if (v6 == 1)
+  type = [v5 type];
+  if (type == 1)
   {
-    v8 = [a1 users];
+    users = [self users];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __50__HMHome_HFUserHandleAdditions__hf_userForHandle___block_invoke;
     v11[3] = &unk_277DF55C0;
     v12 = v5;
-    v7 = [v8 na_firstObjectPassingTest:v11];
+    currentUser = [users na_firstObjectPassingTest:v11];
   }
 
-  else if (v6)
+  else if (type)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"HFUserHandle.m" lineNumber:83 description:{@"Unknown user handle %@", v5}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFUserHandle.m" lineNumber:83 description:{@"Unknown user handle %@", v5}];
 
-    v7 = 0;
+    currentUser = 0;
   }
 
   else
   {
-    v7 = [a1 currentUser];
+    currentUser = [self currentUser];
   }
 
-  return v7;
+  return currentUser;
 }
 
 - (HFUserHandle)hf_handleForUser:()HFUserHandleAdditions
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 currentUser];
-  v6 = [v5 isEqual:v4];
+  currentUser = [self currentUser];
+  v6 = [currentUser isEqual:v4];
 
-  v7 = [v4 userID];
+  userID = [v4 userID];
 
-  if (v7 || (v6 & 1) != 0)
+  if (userID || (v6 & 1) != 0)
   {
     v10 = [HFUserHandle alloc];
-    v11 = [v4 userID];
-    v9 = [(HFUserHandle *)v10 initWithType:v6 ^ 1u userID:v11];
+    userID2 = [v4 userID];
+    v9 = [(HFUserHandle *)v10 initWithType:v6 ^ 1u userID:userID2];
   }
 
   else

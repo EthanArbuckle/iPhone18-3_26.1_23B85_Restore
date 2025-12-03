@@ -1,20 +1,20 @@
 @interface PREditorBackgroundTask
-- (PREditorBackgroundTask)initWithReason:(id)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (PREditorBackgroundTask)initWithReason:(id)reason;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)dealloc;
 @end
 
 @implementation PREditorBackgroundTask
 
-- (PREditorBackgroundTask)initWithReason:(id)a3
+- (PREditorBackgroundTask)initWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v9.receiver = self;
   v9.super_class = PREditorBackgroundTask;
   v5 = [(PREditorBackgroundTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [reasonCopy copy];
     reason = v5->_reason;
     v5->_reason = v6;
   }
@@ -35,11 +35,11 @@
   [(PREditorBackgroundTask *)&v4 dealloc];
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v6 = a3;
-  v4 = [(PREditorBackgroundTask *)self reason];
-  v5 = [v6 appendObject:v4 withName:@"reason"];
+  formatterCopy = formatter;
+  reason = [(PREditorBackgroundTask *)self reason];
+  v5 = [formatterCopy appendObject:reason withName:@"reason"];
 }
 
 @end

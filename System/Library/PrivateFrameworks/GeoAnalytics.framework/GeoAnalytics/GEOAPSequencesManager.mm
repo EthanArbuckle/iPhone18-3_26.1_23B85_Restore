@@ -24,20 +24,20 @@ uint64_t __38__GEOAPSequencesManager_sharedManager__block_invoke()
   if (v2)
   {
     v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:3];
-    v4 = [(GEOAPSequencesManager *)v2 searchWinSequence];
-    [v3 addObject:v4];
+    searchWinSequence = [(GEOAPSequencesManager *)v2 searchWinSequence];
+    [v3 addObject:searchWinSequence];
 
-    v5 = [(GEOAPSequencesManager *)v2 threeSecondDurationEngagementSequence];
-    [v3 addObject:v5];
+    threeSecondDurationEngagementSequence = [(GEOAPSequencesManager *)v2 threeSecondDurationEngagementSequence];
+    [v3 addObject:threeSecondDurationEngagementSequence];
 
-    v6 = [(GEOAPSequencesManager *)v2 thirtySecondDurationEngagementSequence];
-    [v3 addObject:v6];
+    thirtySecondDurationEngagementSequence = [(GEOAPSequencesManager *)v2 thirtySecondDurationEngagementSequence];
+    [v3 addObject:thirtySecondDurationEngagementSequence];
 
-    v7 = [(GEOAPSequencesManager *)v2 threeSecondDurationCarPlayEngagementSequence];
-    [v3 addObject:v7];
+    threeSecondDurationCarPlayEngagementSequence = [(GEOAPSequencesManager *)v2 threeSecondDurationCarPlayEngagementSequence];
+    [v3 addObject:threeSecondDurationCarPlayEngagementSequence];
 
-    v8 = [(GEOAPSequencesManager *)v2 thirtySecondDurationCarPlayEngagementSequence];
-    [v3 addObject:v8];
+    thirtySecondDurationCarPlayEngagementSequence = [(GEOAPSequencesManager *)v2 thirtySecondDurationCarPlayEngagementSequence];
+    [v3 addObject:thirtySecondDurationCarPlayEngagementSequence];
 
     v9 = [v3 copy];
     sequences = v2->_sequences;

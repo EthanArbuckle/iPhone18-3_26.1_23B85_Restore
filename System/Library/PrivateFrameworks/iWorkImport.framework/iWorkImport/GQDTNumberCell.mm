@@ -1,7 +1,7 @@
 @interface GQDTNumberCell
 - (__CFString)createStringValue;
-- (int)readAttributesForNCell:(_xmlTextReader *)a3;
-- (int)readAttributesForNumberCell:(_xmlTextReader *)a3;
+- (int)readAttributesForNCell:(_xmlTextReader *)cell;
+- (int)readAttributesForNumberCell:(_xmlTextReader *)cell;
 - (void)dealloc;
 @end
 
@@ -22,20 +22,20 @@
   {
     if ([(GQDTComputedFormatSpec *)mComputedFormat isNumberFormat])
     {
-      v4 = [(GQDTComputedFormatSpec *)self->mComputedFormat format];
-      alloc = v4;
-      if (v4)
+      format = [(GQDTComputedFormatSpec *)self->mComputedFormat format];
+      alloc = format;
+      if (format)
       {
-        return [(__CFAllocator *)v4 createStringFromDouble:self->mValue];
+        return [(__CFAllocator *)format createStringFromDouble:self->mValue];
       }
     }
   }
 
   [(GQDSStyle *)self->super.mStyle hasValueForObjectProperty:122 value:&alloc];
-  v4 = alloc;
+  format = alloc;
   if (alloc)
   {
-    return [(__CFAllocator *)v4 createStringFromDouble:self->mValue];
+    return [(__CFAllocator *)format createStringFromDouble:self->mValue];
   }
 
   else
@@ -44,16 +44,16 @@
   }
 }
 
-- (int)readAttributesForNumberCell:(_xmlTextReader *)a3
+- (int)readAttributesForNumberCell:(_xmlTextReader *)cell
 {
-  sub_4290C(a3, qword_A35E8, "value");
+  sub_4290C(cell, qword_A35E8, "value");
   self->mValue = v4;
   return 1;
 }
 
-- (int)readAttributesForNCell:(_xmlTextReader *)a3
+- (int)readAttributesForNCell:(_xmlTextReader *)cell
 {
-  sub_4290C(a3, qword_A35E8, "v");
+  sub_4290C(cell, qword_A35E8, "v");
   self->mValue = v4;
   return 1;
 }

@@ -1,16 +1,16 @@
 @interface PHTextFeature
-+ (id)_momentLocalIdentifierByAssetLocalIdentifiersForAssets:(id)a3;
-+ (id)_textFeaturesByMomentLocalIdentifierForMomentLocalIdentifiers:(id)a3 inPhotoLibrary:(id)a4;
-+ (id)fetchTextFeaturesByAssetLocalIdentifierForAssets:(id)a3;
-+ (id)stringForOrigin:(unint64_t)a3;
-+ (id)stringForType:(int64_t)a3;
-+ (id)textFeatureWithData:(id)a3;
-+ (id)textFeatureWithType:(int64_t)a3 string:(id)a4 weight:(float)a5 origin:(unint64_t)a6;
-- (PHTextFeature)initWithCoder:(id)a3;
-- (PHTextFeature)initWithType:(int64_t)a3 string:(id)a4 weight:(float)a5 origin:(unint64_t)a6;
++ (id)_momentLocalIdentifierByAssetLocalIdentifiersForAssets:(id)assets;
++ (id)_textFeaturesByMomentLocalIdentifierForMomentLocalIdentifiers:(id)identifiers inPhotoLibrary:(id)library;
++ (id)fetchTextFeaturesByAssetLocalIdentifierForAssets:(id)assets;
++ (id)stringForOrigin:(unint64_t)origin;
++ (id)stringForType:(int64_t)type;
++ (id)textFeatureWithData:(id)data;
++ (id)textFeatureWithType:(int64_t)type string:(id)string weight:(float)weight origin:(unint64_t)origin;
+- (PHTextFeature)initWithCoder:(id)coder;
+- (PHTextFeature)initWithType:(int64_t)type string:(id)string weight:(float)weight origin:(unint64_t)origin;
 - (id)description;
 - (id)encodedData;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PHTextFeature
@@ -50,25 +50,25 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v6 = a3;
-  [v6 encodeInteger:type forKey:@"type"];
-  [v6 encodeObject:self->_string forKey:@"string"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeObject:self->_string forKey:@"string"];
   *&v5 = self->_weight;
-  [v6 encodeFloat:@"weight" forKey:v5];
-  [v6 encodeInteger:self->_origin forKey:@"origin"];
+  [coderCopy encodeFloat:@"weight" forKey:v5];
+  [coderCopy encodeInteger:self->_origin forKey:@"origin"];
 }
 
-- (PHTextFeature)initWithCoder:(id)a3
+- (PHTextFeature)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"string"];
-  [v4 decodeFloatForKey:@"weight"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"string"];
+  [coderCopy decodeFloatForKey:@"weight"];
   v8 = v7;
-  v9 = [v4 decodeIntegerForKey:@"origin"];
+  v9 = [coderCopy decodeIntegerForKey:@"origin"];
 
   LODWORD(v10) = v8;
   v11 = [(PHTextFeature *)self initWithType:v5 string:v6 weight:v9 origin:v10];
@@ -80,35 +80,35 @@
 {
   v3 = [[PHTextFeatureEncoder alloc] initRequiringSecureCoding:1];
   [v3 encodeObject:self forKey:*MEMORY[0x1E696A508]];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
-- (PHTextFeature)initWithType:(int64_t)a3 string:(id)a4 weight:(float)a5 origin:(unint64_t)a6
+- (PHTextFeature)initWithType:(int64_t)type string:(id)string weight:(float)weight origin:(unint64_t)origin
 {
-  v11 = a4;
+  stringCopy = string;
   v15.receiver = self;
   v15.super_class = PHTextFeature;
   v12 = [(PHTextFeature *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_string, a4);
-    v13->_type = a3;
-    v13->_weight = a5;
-    v13->_origin = a6;
+    objc_storeStrong(&v12->_string, string);
+    v13->_type = type;
+    v13->_weight = weight;
+    v13->_origin = origin;
   }
 
   return v13;
 }
 
-+ (id)_momentLocalIdentifierByAssetLocalIdentifiersForAssets:(id)a3
++ (id)_momentLocalIdentifierByAssetLocalIdentifiersForAssets:(id)assets
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 firstObject];
-  v5 = [PHFetchOptions fetchOptionsWithPhotoLibrary:0 orObject:v4];
+  assetsCopy = assets;
+  firstObject = [assetsCopy firstObject];
+  v5 = [PHFetchOptions fetchOptionsWithPhotoLibrary:0 orObject:firstObject];
 
   v27[0] = @"PHAssetPropertySetIdentifier";
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
@@ -117,12 +117,12 @@
   [v5 setWantsIncrementalChangeDetails:0];
   [v5 setSortDescriptors:MEMORY[0x1E695E0F0]];
   [v5 setChunkSizeForFetch:2000];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v3;
+  v8 = assetsCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v9)
   {
@@ -145,9 +145,9 @@
         memset(v19, 0, sizeof(v19));
         if ([v15 countByEnumeratingWithState:v19 objects:v24 count:16])
         {
-          v16 = [**(&v19[0] + 1) localIdentifier];
-          v17 = [v13 localIdentifier];
-          [v7 setObject:v16 forKeyedSubscript:v17];
+          localIdentifier = [**(&v19[0] + 1) localIdentifier];
+          localIdentifier2 = [v13 localIdentifier];
+          [dictionary setObject:localIdentifier forKeyedSubscript:localIdentifier2];
         }
       }
 
@@ -157,16 +157,16 @@
     while (v10);
   }
 
-  return v7;
+  return dictionary;
 }
 
-+ (id)_textFeaturesByMomentLocalIdentifierForMomentLocalIdentifiers:(id)a3 inPhotoLibrary:(id)a4
++ (id)_textFeaturesByMomentLocalIdentifierForMomentLocalIdentifiers:(id)identifiers inPhotoLibrary:(id)library
 {
-  v5 = a4;
-  v6 = a3;
+  libraryCopy = library;
+  identifiersCopy = identifiers;
   v7 = objc_opt_new();
   v16 = 0;
-  v8 = [v5 requestTextFeaturesForMomentLocalIdentifiers:v6 error:&v16];
+  v8 = [libraryCopy requestTextFeaturesForMomentLocalIdentifiers:identifiersCopy error:&v16];
 
   v9 = v16;
   v14[0] = MEMORY[0x1E69E9820];
@@ -227,27 +227,27 @@ void __94__PHTextFeature__textFeaturesByMomentLocalIdentifierForMomentLocalIdent
   }
 }
 
-+ (id)fetchTextFeaturesByAssetLocalIdentifierForAssets:(id)a3
++ (id)fetchTextFeaturesByAssetLocalIdentifierForAssets:(id)assets
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 _momentLocalIdentifierByAssetLocalIdentifiersForAssets:v4];
+  assetsCopy = assets;
+  v5 = [self _momentLocalIdentifierByAssetLocalIdentifiersForAssets:assetsCopy];
   if ([v5 count])
   {
-    v6 = [v4 firstObject];
-    v7 = [v6 photoLibrary];
+    firstObject = [assetsCopy firstObject];
+    photoLibrary = [firstObject photoLibrary];
 
-    v8 = [v5 allValues];
-    v20 = v7;
-    v9 = [a1 _textFeaturesByMomentLocalIdentifierForMomentLocalIdentifiers:v8 inPhotoLibrary:v7];
+    allValues = [v5 allValues];
+    v20 = photoLibrary;
+    v9 = [self _textFeaturesByMomentLocalIdentifierForMomentLocalIdentifiers:allValues inPhotoLibrary:photoLibrary];
 
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v21 = v4;
-    v11 = v4;
+    v21 = assetsCopy;
+    v11 = assetsCopy;
     v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
@@ -262,10 +262,10 @@ void __94__PHTextFeature__textFeaturesByMomentLocalIdentifierForMomentLocalIdent
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v22 + 1) + 8 * i) localIdentifier];
-          v17 = [v5 objectForKeyedSubscript:v16];
+          localIdentifier = [*(*(&v22 + 1) + 8 * i) localIdentifier];
+          v17 = [v5 objectForKeyedSubscript:localIdentifier];
           v18 = [v9 objectForKeyedSubscript:v17];
-          [v10 setObject:v18 forKeyedSubscript:v16];
+          [dictionary setObject:v18 forKeyedSubscript:localIdentifier];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -274,49 +274,49 @@ void __94__PHTextFeature__textFeaturesByMomentLocalIdentifierForMomentLocalIdent
       while (v13);
     }
 
-    v4 = v21;
+    assetsCopy = v21;
   }
 
   else
   {
-    v10 = MEMORY[0x1E695E0F8];
+    dictionary = MEMORY[0x1E695E0F8];
   }
 
-  return v10;
+  return dictionary;
 }
 
-+ (id)stringForOrigin:(unint64_t)a3
++ (id)stringForOrigin:(unint64_t)origin
 {
-  if (a3 - 1 > 5)
+  if (origin - 1 > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E75A74B0[a3 - 1];
+    return off_1E75A74B0[origin - 1];
   }
 }
 
-+ (id)stringForType:(int64_t)a3
++ (id)stringForType:(int64_t)type
 {
-  if (a3 > 0x15)
+  if (type > 0x15)
   {
     return 0;
   }
 
   else
   {
-    return off_1E75A7400[a3];
+    return off_1E75A7400[type];
   }
 }
 
-+ (id)textFeatureWithData:(id)a3
++ (id)textFeatureWithData:(id)data
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   v8 = 0;
-  v4 = [[PHTextFeatureDecoder alloc] initForReadingFromData:v3 error:&v8];
+  v4 = [[PHTextFeatureDecoder alloc] initForReadingFromData:dataCopy error:&v8];
 
   v5 = v8;
   if (v4)
@@ -339,14 +339,14 @@ void __94__PHTextFeature__textFeaturesByMomentLocalIdentifierForMomentLocalIdent
   return v6;
 }
 
-+ (id)textFeatureWithType:(int64_t)a3 string:(id)a4 weight:(float)a5 origin:(unint64_t)a6
++ (id)textFeatureWithType:(int64_t)type string:(id)string weight:(float)weight origin:(unint64_t)origin
 {
-  v9 = a4;
-  if ([v9 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v10 = [PHTextFeature alloc];
-    *&v11 = a5;
-    v12 = [(PHTextFeature *)v10 initWithType:a3 string:v9 weight:a6 origin:v11];
+    *&v11 = weight;
+    v12 = [(PHTextFeature *)v10 initWithType:type string:stringCopy weight:origin origin:v11];
   }
 
   else

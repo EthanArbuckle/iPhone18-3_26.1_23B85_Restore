@@ -1,32 +1,32 @@
 @interface WFAddNewContactActionUIKitUserInterface
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)finishWithContactIdentifier:(id)a3 error:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)showWithContactParameters:(id)a3 completionHandler:(id)a4;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)finishWithContactIdentifier:(id)identifier error:(id)error;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)showWithContactParameters:(id)parameters completionHandler:(id)handler;
 @end
 
 @implementation WFAddNewContactActionUIKitUserInterface
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [MEMORY[0x277CCA9B8] userCancelledError];
-  [(WFAddNewContactActionUIKitUserInterface *)self finishWithContactIdentifier:0 error:v4];
+  userCancelledError = [MEMORY[0x277CCA9B8] userCancelledError];
+  [(WFAddNewContactActionUIKitUserInterface *)self finishWithContactIdentifier:0 error:userCancelledError];
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  contactCopy = contact;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__WFAddNewContactActionUIKitUserInterface_contactViewController_didCompleteWithContact___block_invoke;
   block[3] = &unk_278C37058;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = controllerCopy;
+  v12 = contactCopy;
+  selfCopy = self;
+  v8 = contactCopy;
+  v9 = controllerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -69,33 +69,33 @@ void __88__WFAddNewContactActionUIKitUserInterface_contactViewController_didComp
   [v5 finishWithContactIdentifier:v4 error:v6];
 }
 
-- (void)finishWithContactIdentifier:(id)a3 error:(id)a4
+- (void)finishWithContactIdentifier:(id)identifier error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(WFAddNewContactActionUIKitUserInterface *)self completionHandler];
+  identifierCopy = identifier;
+  errorCopy = error;
+  completionHandler = [(WFAddNewContactActionUIKitUserInterface *)self completionHandler];
 
-  if (v7)
+  if (completionHandler)
   {
-    v8 = [(WFAddNewContactActionUIKitUserInterface *)self completionHandler];
-    (v8)[2](v8, v9, v6);
+    completionHandler2 = [(WFAddNewContactActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, identifierCopy, errorCopy);
   }
 
   [(WFAddNewContactActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__WFAddNewContactActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFAddNewContactActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -110,15 +110,15 @@ uint64_t __83__WFAddNewContactActionUIKitUserInterface_cancelPresentationWithCom
   return v4();
 }
 
-- (void)showWithContactParameters:(id)a3 completionHandler:(id)a4
+- (void)showWithContactParameters:(id)parameters completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  parametersCopy = parameters;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (!parametersCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"WFAddNewContactActionUIKitUserInterface.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"contactParameters"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFAddNewContactActionUIKitUserInterface.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"contactParameters"}];
 
     if (v9)
     {
@@ -126,13 +126,13 @@ uint64_t __83__WFAddNewContactActionUIKitUserInterface_cancelPresentationWithCom
     }
 
 LABEL_5:
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFAddNewContactActionUIKitUserInterface.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFAddNewContactActionUIKitUserInterface.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
@@ -144,7 +144,7 @@ LABEL_3:
   v12[2] = __87__WFAddNewContactActionUIKitUserInterface_showWithContactParameters_completionHandler___block_invoke;
   v12[3] = &unk_278C36F00;
   v12[4] = self;
-  [MEMORY[0x277CE8800] contactFromParameters:v7 completionHandler:v12];
+  [MEMORY[0x277CE8800] contactFromParameters:parametersCopy completionHandler:v12];
 }
 
 void __87__WFAddNewContactActionUIKitUserInterface_showWithContactParameters_completionHandler___block_invoke(uint64_t a1, void *a2)

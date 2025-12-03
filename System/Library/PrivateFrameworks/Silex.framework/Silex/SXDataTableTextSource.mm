@@ -1,28 +1,28 @@
 @interface SXDataTableTextSource
 - ($7DEDF3842AEFB7F1E6DF5AF62E424A02)indexPath;
-- (SXDataTableTextSource)initWithFormattedText:(id)a3 indexPath:(id)a4 smartFieldFactory:(id)a5 dataSource:(id)a6 documentLangaugeProvider:(id)a7 fontAttributesConstructor:(id)a8;
-- (void)applyStylingOnTextTangierStorage:(id)a3;
+- (SXDataTableTextSource)initWithFormattedText:(id)text indexPath:(id)path smartFieldFactory:(id)factory dataSource:(id)source documentLangaugeProvider:(id)provider fontAttributesConstructor:(id)constructor;
+- (void)applyStylingOnTextTangierStorage:(id)storage;
 @end
 
 @implementation SXDataTableTextSource
 
-- (SXDataTableTextSource)initWithFormattedText:(id)a3 indexPath:(id)a4 smartFieldFactory:(id)a5 dataSource:(id)a6 documentLangaugeProvider:(id)a7 fontAttributesConstructor:(id)a8
+- (SXDataTableTextSource)initWithFormattedText:(id)text indexPath:(id)path smartFieldFactory:(id)factory dataSource:(id)source documentLangaugeProvider:(id)provider fontAttributesConstructor:(id)constructor
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v14 = a3;
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = [v14 text];
+  var1 = path.var1;
+  var0 = path.var0;
+  textCopy = text;
+  constructorCopy = constructor;
+  providerCopy = provider;
+  sourceCopy = source;
+  factoryCopy = factory;
+  text = [textCopy text];
   v23.receiver = self;
   v23.super_class = SXDataTableTextSource;
-  v20 = [(SXTextSource *)&v23 initWithString:v19 smartFieldFactory:v18 dataSource:v17 documentLanguageProvider:v16 fontAttributesConstructor:v15];
+  v20 = [(SXTextSource *)&v23 initWithString:text smartFieldFactory:factoryCopy dataSource:sourceCopy documentLanguageProvider:providerCopy fontAttributesConstructor:constructorCopy];
 
   if (v20)
   {
-    objc_storeStrong(&v20->_formattedText, a3);
+    objc_storeStrong(&v20->_formattedText, text);
     v20->_indexPath.rowIndex = var0;
     v20->_indexPath.columnIndex = var1;
   }
@@ -30,29 +30,29 @@
   return v20;
 }
 
-- (void)applyStylingOnTextTangierStorage:(id)a3
+- (void)applyStylingOnTextTangierStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v10.receiver = self;
   v10.super_class = SXDataTableTextSource;
-  [(SXTextSource *)&v10 applyStylingOnTextTangierStorage:v4];
-  v5 = [(SXTextSource *)self dataSource];
-  v6 = [v5 componentTextStyleForTextSource:self inheritingFromDefaultStyles:1];
+  [(SXTextSource *)&v10 applyStylingOnTextTangierStorage:storageCopy];
+  dataSource = [(SXTextSource *)self dataSource];
+  v6 = [dataSource componentTextStyleForTextSource:self inheritingFromDefaultStyles:1];
 
   if (-[SXDataTableTextSource defaultTextAlignment](self, "defaultTextAlignment") && ![v6 textAlignment])
   {
-    v7 = [(SXDataTableTextSource *)self defaultTextAlignment];
-    if (v7 == 3)
+    defaultTextAlignment = [(SXDataTableTextSource *)self defaultTextAlignment];
+    if (defaultTextAlignment == 3)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = 2 * (v7 == 2);
+      v8 = 2 * (defaultTextAlignment == 2);
     }
 
-    v9 = [v4 paragraphStyleAtParIndex:0 effectiveRange:0];
+    v9 = [storageCopy paragraphStyleAtParIndex:0 effectiveRange:0];
     [v9 setIntValue:v8 forProperty:86];
   }
 }

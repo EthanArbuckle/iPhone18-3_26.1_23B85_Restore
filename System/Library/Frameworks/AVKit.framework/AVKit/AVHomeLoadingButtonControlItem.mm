@@ -1,81 +1,81 @@
 @interface AVHomeLoadingButtonControlItem
-- (AVHomeLoadingButtonControlItem)initWithTitle:(id)a3 type:(int64_t)a4;
+- (AVHomeLoadingButtonControlItem)initWithTitle:(id)title type:(int64_t)type;
 - (BOOL)showsLoadingIndicator;
-- (void)_buttonTouchUpInside:(id)a3;
+- (void)_buttonTouchUpInside:(id)inside;
 - (void)_updateTintColor;
-- (void)setShowsLoadingIndicator:(BOOL)a3;
-- (void)setTitleFont:(id)a3;
+- (void)setShowsLoadingIndicator:(BOOL)indicator;
+- (void)setTitleFont:(id)font;
 @end
 
 @implementation AVHomeLoadingButtonControlItem
 
 - (void)_updateTintColor
 {
-  v5 = [(AVControlItem *)self tintColor];
-  v3 = [(AVHomeLoadingButtonControlItem *)self loadingButtonView];
-  v4 = [v3 button];
-  [AVBackdropView applyGlyphTintColor:v5 toView:v4];
+  tintColor = [(AVControlItem *)self tintColor];
+  loadingButtonView = [(AVHomeLoadingButtonControlItem *)self loadingButtonView];
+  button = [loadingButtonView button];
+  [AVBackdropView applyGlyphTintColor:tintColor toView:button];
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  v4 = a3;
-  if (!v4)
+  fontCopy = font;
+  if (!fontCopy)
   {
-    v4 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0];
+    fontCopy = [MEMORY[0x1E69DB878] systemFontOfSize:12.0];
   }
 
-  obj = v4;
-  if (([(UIFont *)self->_titleFont isEqual:v4]& 1) == 0)
+  obj = fontCopy;
+  if (([(UIFont *)self->_titleFont isEqual:fontCopy]& 1) == 0)
   {
     objc_storeStrong(&self->_titleFont, obj);
-    v5 = [(AVHomeLoadingButtonControlItem *)self loadingButtonView];
-    v6 = [v5 button];
-    v7 = [v6 titleLabel];
-    [v7 setFont:obj];
+    loadingButtonView = [(AVHomeLoadingButtonControlItem *)self loadingButtonView];
+    button = [loadingButtonView button];
+    titleLabel = [button titleLabel];
+    [titleLabel setFont:obj];
   }
 }
 
 - (BOOL)showsLoadingIndicator
 {
-  v2 = [(AVHomeLoadingButtonControlItem *)self loadingButtonView];
-  v3 = [v2 showsLoadingIndicator];
+  loadingButtonView = [(AVHomeLoadingButtonControlItem *)self loadingButtonView];
+  showsLoadingIndicator = [loadingButtonView showsLoadingIndicator];
 
-  return v3;
+  return showsLoadingIndicator;
 }
 
-- (void)setShowsLoadingIndicator:(BOOL)a3
+- (void)setShowsLoadingIndicator:(BOOL)indicator
 {
-  v3 = a3;
-  v4 = [(AVHomeLoadingButtonControlItem *)self loadingButtonView];
-  [v4 setShowsLoadingIndicator:v3];
+  indicatorCopy = indicator;
+  loadingButtonView = [(AVHomeLoadingButtonControlItem *)self loadingButtonView];
+  [loadingButtonView setShowsLoadingIndicator:indicatorCopy];
 }
 
-- (void)_buttonTouchUpInside:(id)a3
+- (void)_buttonTouchUpInside:(id)inside
 {
-  v4 = [(AVControlItem *)self action];
+  action = [(AVControlItem *)self action];
 
-  if (v4)
+  if (action)
   {
-    v5 = [(AVControlItem *)self action];
-    v5[2]();
+    action2 = [(AVControlItem *)self action];
+    action2[2]();
   }
 }
 
-- (AVHomeLoadingButtonControlItem)initWithTitle:(id)a3 type:(int64_t)a4
+- (AVHomeLoadingButtonControlItem)initWithTitle:(id)title type:(int64_t)type
 {
-  v6 = a3;
+  titleCopy = title;
   v12.receiver = self;
   v12.super_class = AVHomeLoadingButtonControlItem;
-  v7 = [(AVControlItem *)&v12 initWithTitle:v6 type:a4];
+  v7 = [(AVControlItem *)&v12 initWithTitle:titleCopy type:type];
   if (v7)
   {
-    v8 = [[AVLoadingButtonView alloc] initWithTitle:v6];
+    v8 = [[AVLoadingButtonView alloc] initWithTitle:titleCopy];
     loadingButtonView = v7->_loadingButtonView;
     v7->_loadingButtonView = v8;
 
-    v10 = [(AVLoadingButtonView *)v7->_loadingButtonView button];
-    [v10 addTarget:v7 action:sel__buttonTouchUpInside_ forControlEvents:64];
+    button = [(AVLoadingButtonView *)v7->_loadingButtonView button];
+    [button addTarget:v7 action:sel__buttonTouchUpInside_ forControlEvents:64];
   }
 
   return v7;

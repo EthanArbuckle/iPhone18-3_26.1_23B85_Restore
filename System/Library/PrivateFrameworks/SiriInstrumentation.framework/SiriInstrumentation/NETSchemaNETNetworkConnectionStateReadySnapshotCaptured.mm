@@ -1,26 +1,26 @@
 @interface NETSchemaNETNetworkConnectionStateReadySnapshotCaptured
-- (BOOL)isEqual:(id)a3;
-- (NETSchemaNETNetworkConnectionStateReadySnapshotCaptured)initWithDictionary:(id)a3;
-- (NETSchemaNETNetworkConnectionStateReadySnapshotCaptured)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NETSchemaNETNetworkConnectionStateReadySnapshotCaptured)initWithDictionary:(id)dictionary;
+- (NETSchemaNETNetworkConnectionStateReadySnapshotCaptured)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasConnectionEstablishmentAttemptDelay:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasConnectionEstablishmentAttemptDelay:(BOOL)delay;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NETSchemaNETNetworkConnectionStateReadySnapshotCaptured
 
-- (NETSchemaNETNetworkConnectionStateReadySnapshotCaptured)initWithDictionary:(id)a3
+- (NETSchemaNETNetworkConnectionStateReadySnapshotCaptured)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = NETSchemaNETNetworkConnectionStateReadySnapshotCaptured;
   v5 = [(NETSchemaNETNetworkConnectionStateReadySnapshotCaptured *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"connectionInfo"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"connectionInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,14 +28,14 @@
       [(NETSchemaNETNetworkConnectionStateReadySnapshotCaptured *)v5 setConnectionInfo:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"connectionEstablishmentPreviousAttemptCount"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"connectionEstablishmentPreviousAttemptCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETNetworkConnectionStateReadySnapshotCaptured setConnectionEstablishmentPreviousAttemptCount:](v5, "setConnectionEstablishmentPreviousAttemptCount:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"connectionEstablishmentAttemptDelay"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"connectionEstablishmentAttemptDelay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (NETSchemaNETNetworkConnectionStateReadySnapshotCaptured)initWithJSON:(id)a3
+- (NETSchemaNETNetworkConnectionStateReadySnapshotCaptured)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NETSchemaNETNetworkConnectionStateReadySnapshotCaptured *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NETSchemaNETNetworkConnectionStateReadySnapshotCaptured *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NETSchemaNETNetworkConnectionStateReadySnapshotCaptured *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,12 +84,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NETSchemaNETNetworkConnectionStateReadySnapshotCaptured connectionEstablishmentAttemptDelay](self, "connectionEstablishmentAttemptDelay")}];
-    [v3 setObject:v5 forKeyedSubscript:@"connectionEstablishmentAttemptDelay"];
+    [dictionary setObject:v5 forKeyedSubscript:@"connectionEstablishmentAttemptDelay"];
 
     has = self->_has;
   }
@@ -97,19 +97,19 @@
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NETSchemaNETNetworkConnectionStateReadySnapshotCaptured connectionEstablishmentPreviousAttemptCount](self, "connectionEstablishmentPreviousAttemptCount")}];
-    [v3 setObject:v6 forKeyedSubscript:@"connectionEstablishmentPreviousAttemptCount"];
+    [dictionary setObject:v6 forKeyedSubscript:@"connectionEstablishmentPreviousAttemptCount"];
   }
 
   if (self->_connectionInfo)
   {
-    v7 = [(NETSchemaNETNetworkConnectionStateReadySnapshotCaptured *)self connectionInfo];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"connectionInfo"];
+    connectionInfo = [(NETSchemaNETNetworkConnectionStateReadySnapshotCaptured *)self connectionInfo];
+    v8 = [connectionInfo copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"connectionInfo"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -139,30 +139,30 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(NETSchemaNETNetworkConnectionStateReadySnapshotCaptured *)self connectionInfo];
-  v6 = [v4 connectionInfo];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  connectionInfo = [(NETSchemaNETNetworkConnectionStateReadySnapshotCaptured *)self connectionInfo];
+  connectionInfo2 = [equalCopy connectionInfo];
+  v7 = connectionInfo2;
+  if ((connectionInfo != 0) == (connectionInfo2 == 0))
   {
 
     goto LABEL_16;
   }
 
-  v8 = [(NETSchemaNETNetworkConnectionStateReadySnapshotCaptured *)self connectionInfo];
-  if (v8)
+  connectionInfo3 = [(NETSchemaNETNetworkConnectionStateReadySnapshotCaptured *)self connectionInfo];
+  if (connectionInfo3)
   {
-    v9 = v8;
-    v10 = [(NETSchemaNETNetworkConnectionStateReadySnapshotCaptured *)self connectionInfo];
-    v11 = [v4 connectionInfo];
-    v12 = [v10 isEqual:v11];
+    v9 = connectionInfo3;
+    connectionInfo4 = [(NETSchemaNETNetworkConnectionStateReadySnapshotCaptured *)self connectionInfo];
+    connectionInfo5 = [equalCopy connectionInfo];
+    v12 = [connectionInfo4 isEqual:connectionInfo5];
 
     if (!v12)
     {
@@ -175,7 +175,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v14 = v4[24];
+  v14 = equalCopy[24];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_16:
@@ -186,10 +186,10 @@ LABEL_16:
   if (*&has)
   {
     connectionEstablishmentPreviousAttemptCount = self->_connectionEstablishmentPreviousAttemptCount;
-    if (connectionEstablishmentPreviousAttemptCount == [v4 connectionEstablishmentPreviousAttemptCount])
+    if (connectionEstablishmentPreviousAttemptCount == [equalCopy connectionEstablishmentPreviousAttemptCount])
     {
       has = self->_has;
-      v14 = v4[24];
+      v14 = equalCopy[24];
       goto LABEL_12;
     }
 
@@ -206,7 +206,7 @@ LABEL_12:
   if (v16)
   {
     connectionEstablishmentAttemptDelay = self->_connectionEstablishmentAttemptDelay;
-    if (connectionEstablishmentAttemptDelay != [v4 connectionEstablishmentAttemptDelay])
+    if (connectionEstablishmentAttemptDelay != [equalCopy connectionEstablishmentAttemptDelay])
     {
       goto LABEL_16;
     }
@@ -218,12 +218,12 @@ LABEL_17:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(NETSchemaNETNetworkConnectionStateReadySnapshotCaptured *)self connectionInfo];
+  toCopy = to;
+  connectionInfo = [(NETSchemaNETNetworkConnectionStateReadySnapshotCaptured *)self connectionInfo];
 
-  if (v4)
+  if (connectionInfo)
   {
     PBDataWriterWriteStringField();
   }
@@ -235,17 +235,17 @@ LABEL_17:
     has = self->_has;
   }
 
-  v6 = v7;
+  v6 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasConnectionEstablishmentAttemptDelay:(BOOL)a3
+- (void)setHasConnectionEstablishmentAttemptDelay:(BOOL)delay
 {
-  if (a3)
+  if (delay)
   {
     v3 = 2;
   }

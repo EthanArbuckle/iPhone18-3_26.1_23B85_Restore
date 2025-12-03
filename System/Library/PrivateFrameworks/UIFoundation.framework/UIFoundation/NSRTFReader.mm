@@ -4,11 +4,11 @@
 - (BOOL)_currentTableCellIsPlaceholder;
 - (CGSize)paperSize;
 - (CGSize)viewSize;
-- (NSRTFReader)initWithPath:(id)a3;
-- (NSRTFReader)initWithRTF:(id)a3;
-- (NSRTFReader)initWithRTFD:(id)a3;
-- (NSRTFReader)initWithRTFDFileWrapper:(id)a3;
-- (double)_updateFontSizeForTextScalingIfNeeded:(uint64_t)a1;
+- (NSRTFReader)initWithPath:(id)path;
+- (NSRTFReader)initWithRTF:(id)f;
+- (NSRTFReader)initWithRTFD:(id)d;
+- (NSRTFReader)initWithRTFDFileWrapper:(id)wrapper;
+- (double)_updateFontSizeForTextScalingIfNeeded:(uint64_t)needed;
 - (id)_currentTableCell;
 - (id)_mutableParagraphStyle;
 - (id)attributedString;
@@ -24,8 +24,8 @@
 - (uint64_t)_documentInfoDictionary;
 - (uint64_t)_ensureTableCells;
 - (uint64_t)_setTableCells;
-- (void)_addListDefinition:(id)a3 forKey:(int64_t)a4;
-- (void)_addOverride:(int64_t)a3 forKey:(int64_t)a4;
+- (void)_addListDefinition:(id)definition forKey:(int64_t)key;
+- (void)_addOverride:(int64_t)override forKey:(int64_t)key;
 - (void)_currentTableCellIsPlaceholder;
 - (void)_endTableCell;
 - (void)_endTableCellDefinition;
@@ -37,17 +37,17 @@
 - (void)_popTableState;
 - (void)_pushState;
 - (void)_pushTableState;
-- (void)_setRTFDFileWrapper:(id)a3;
-- (void)_setSourceTextScaling:(int64_t)a3;
-- (void)_setTableNestingLevel:(int64_t)a3;
-- (void)_setTargetTextScaling:(int64_t)a3;
+- (void)_setRTFDFileWrapper:(id)wrapper;
+- (void)_setSourceTextScaling:(int64_t)scaling;
+- (void)_setTableNestingLevel:(int64_t)level;
+- (void)_setTargetTextScaling:(int64_t)scaling;
 - (void)_updateAttributes;
 - (void)dealloc;
 - (void)finalize;
-- (void)processString:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setMutableAttributedString:(id)a3;
-- (void)setTextFlow:(unint64_t)a3;
+- (void)processString:(id)string;
+- (void)setBackgroundColor:(id)color;
+- (void)setMutableAttributedString:(id)string;
+- (void)setTextFlow:(unint64_t)flow;
 @end
 
 @implementation NSRTFReader
@@ -225,24 +225,24 @@
       font = self->_attributeInfo.font;
       v20 = *v3;
       fontPalette = self->_attributeInfo.fontPalette;
-      v22 = [(UIFont *)font fontDescriptor];
-      v23 = [(UIFontDescriptor *)v22 symbolicTraits];
+      fontDescriptor = [(UIFont *)font fontDescriptor];
+      symbolicTraits = [(UIFontDescriptor *)fontDescriptor symbolicTraits];
       v24 = __rbit32(v20) >> 30;
       if (fontPalette)
       {
         v26 = *MEMORY[0x1E6965820];
         v27[0] = [MEMORY[0x1E696AD98] numberWithShort:fontPalette];
-        v22 = -[UIFontDescriptor fontDescriptorByAddingAttributes:](v22, "fontDescriptorByAddingAttributes:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1]);
+        fontDescriptor = -[UIFontDescriptor fontDescriptorByAddingAttributes:](fontDescriptor, "fontDescriptorByAddingAttributes:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1]);
       }
 
-      if ((v24 & ~v23) != 0)
+      if ((v24 & ~symbolicTraits) != 0)
       {
-        v22 = [(UIFontDescriptor *)v22 fontDescriptorWithSymbolicTraits:v23 & 0xF0000000 | v24];
+        fontDescriptor = [(UIFontDescriptor *)fontDescriptor fontDescriptorWithSymbolicTraits:symbolicTraits & 0xF0000000 | v24];
       }
 
-      if (![(UIFontDescriptor *)[(UIFont *)font fontDescriptor] isEqual:v22]|| ([(UIFont *)font pointSize], v25 != v19))
+      if (![(UIFontDescriptor *)[(UIFont *)font fontDescriptor] isEqual:fontDescriptor]|| ([(UIFont *)font pointSize], v25 != v19))
       {
-        font = [UIFont fontWithDescriptor:v22 size:v19];
+        font = [UIFont fontWithDescriptor:fontDescriptor size:v19];
       }
     }
 
@@ -279,8 +279,8 @@ LABEL_3:
   paraStyle = self->_attributeInfo.paraStyle;
   if (paraStyle)
   {
-    v9 = [(NSParagraphStyle *)self->_attributeInfo.paraStyle textBlocks];
-    if (v9 == self->_textBlocks || ([(NSArray *)v9 isEqual:?]& 1) != 0)
+    textBlocks = [(NSParagraphStyle *)self->_attributeInfo.paraStyle textBlocks];
+    if (textBlocks == self->_textBlocks || ([(NSArray *)textBlocks isEqual:?]& 1) != 0)
     {
       v10 = [(NSMutableParagraphStyle *)paraStyle copyWithZone:[(NSRTFReader *)self zone]];
     }
@@ -540,19 +540,19 @@ LABEL_14:
   return result;
 }
 
-- (NSRTFReader)initWithRTFD:(id)a3
+- (NSRTFReader)initWithRTFD:(id)d
 {
-  v4 = [objc_allocWithZone(MEMORY[0x1E696AC38]) initWithSerializedRepresentation:a3];
+  v4 = [objc_allocWithZone(MEMORY[0x1E696AC38]) initWithSerializedRepresentation:d];
   if (!v4)
   {
     goto LABEL_13;
   }
 
   v5 = v4;
-  v6 = [v4 isDirectory];
-  if (v6)
+  isDirectory = [v4 isDirectory];
+  if (isDirectory)
   {
-    v7 = rtfDataFromFileWrapper(v5);
+    regularFileContents = rtfDataFromFileWrapper(v5);
   }
 
   else
@@ -565,11 +565,11 @@ LABEL_13:
       return 0;
     }
 
-    v7 = [v5 regularFileContents];
+    regularFileContents = [v5 regularFileContents];
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = regularFileContents;
+  if (!regularFileContents)
   {
     goto LABEL_12;
   }
@@ -582,7 +582,7 @@ LABEL_13:
 
   v9 = [(NSRTFReader *)self initWithRTF:v8];
   self = v9;
-  v10 = v6 ^ 1;
+  v10 = isDirectory ^ 1;
   if (!v9)
   {
     v10 = 1;
@@ -604,7 +604,7 @@ LABEL_13:
   return self;
 }
 
-- (NSRTFReader)initWithPath:(id)a3
+- (NSRTFReader)initWithPath:(id)path
 {
   v11 = 0;
   if (![objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")])
@@ -615,7 +615,7 @@ LABEL_13:
   if (v11 == 1)
   {
     v5 = objc_allocWithZone(MEMORY[0x1E696AC38]);
-    v6 = [v5 initWithURL:objc_msgSend(MEMORY[0x1E695DFF8] options:"fileURLWithPath:" error:{a3), 0, 0}];
+    v6 = [v5 initWithURL:objc_msgSend(MEMORY[0x1E695DFF8] options:"fileURLWithPath:" error:{path), 0, 0}];
     if (v6)
     {
       v7 = v6;
@@ -628,7 +628,7 @@ LABEL_8:
     return 0;
   }
 
-  v9 = [objc_allocWithZone(MEMORY[0x1E695DEF0]) initWithContentsOfFile:a3];
+  v9 = [objc_allocWithZone(MEMORY[0x1E695DEF0]) initWithContentsOfFile:path];
   if (!v9)
   {
     goto LABEL_8;
@@ -647,17 +647,17 @@ LABEL_7:
   return self;
 }
 
-- (NSRTFReader)initWithRTFDFileWrapper:(id)a3
+- (NSRTFReader)initWithRTFDFileWrapper:(id)wrapper
 {
-  v3 = a3;
-  if ([a3 isSymbolicLink])
+  wrapperCopy = wrapper;
+  if ([wrapper isSymbolicLink])
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AC38]) initWithURL:objc_msgSend(v3 options:"symbolicLinkDestinationURL") error:{0, 0}];
+    wrapperCopy = [objc_alloc(MEMORY[0x1E696AC38]) initWithURL:objc_msgSend(wrapperCopy options:"symbolicLinkDestinationURL") error:{0, 0}];
   }
 
-  if ([v3 isDirectory] && (v5 = rtfDataFromFileWrapper(v3)) != 0 && (v6 = v5, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v7 = -[NSRTFReader initWithRTF:](self, "initWithRTF:", v6), (self = v7) != 0))
+  if ([wrapperCopy isDirectory] && (v5 = rtfDataFromFileWrapper(wrapperCopy)) != 0 && (v6 = v5, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v7 = -[NSRTFReader initWithRTF:](self, "initWithRTF:", v6), (self = v7) != 0))
   {
-    [(NSRTFReader *)v7 _setRTFDFileWrapper:v3];
+    [(NSRTFReader *)v7 _setRTFDFileWrapper:wrapperCopy];
   }
 
   else
@@ -669,7 +669,7 @@ LABEL_7:
   return self;
 }
 
-- (NSRTFReader)initWithRTF:(id)a3
+- (NSRTFReader)initWithRTF:(id)f
 {
   v5 = [(NSRTFReader *)self zone];
   v13.receiver = self;
@@ -686,7 +686,7 @@ LABEL_7:
     _NSRTFSetClassCallback(&v7->_private, 3uLL, controlClass);
     _NSRTFSetClassCallback(&v7->_private, 1uLL, groupClass);
     v7->_cocoaVersion = -1;
-    v7->_rtfData = [a3 copyWithZone:v5];
+    v7->_rtfData = [f copyWithZone:v5];
     v7->_curAttributes = [objc_msgSend(MEMORY[0x1E695DF90] allocWithZone:{v5), "initWithCapacity:", 4}];
     v7->_attributesStack = [objc_msgSend(MEMORY[0x1E695DF70] allocWithZone:{v5), "initWithCapacity:", 4}];
     v7->_attributeInfoStack = [objc_msgSend(MEMORY[0x1E695DF88] allocWithZone:{v5), "initWithCapacity:", 192}];
@@ -735,13 +735,13 @@ LABEL_7:
   return v7;
 }
 
-- (void)_setRTFDFileWrapper:(id)a3
+- (void)_setRTFDFileWrapper:(id)wrapper
 {
   document = self->_document;
-  if (document != a3)
+  if (document != wrapper)
   {
 
-    self->_document = a3;
+    self->_document = wrapper;
   }
 }
 
@@ -763,38 +763,38 @@ LABEL_7:
   return result;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   documentBackgroundColor = self->_documentBackgroundColor;
-  if (documentBackgroundColor != a3)
+  if (documentBackgroundColor != color)
   {
 
-    self->_documentBackgroundColor = [a3 copy];
+    self->_documentBackgroundColor = [color copy];
   }
 }
 
-- (void)setTextFlow:(unint64_t)a3
+- (void)setTextFlow:(unint64_t)flow
 {
-  if (self->_textFlow != a3)
+  if (self->_textFlow != flow)
   {
     *(&self->_attributeInfo + 42) &= ~0x20u;
-    self->_textFlow = a3;
+    self->_textFlow = flow;
   }
 }
 
-- (void)_setTargetTextScaling:(int64_t)a3
+- (void)_setTargetTextScaling:(int64_t)scaling
 {
-  if (a3 <= 1)
+  if (scaling <= 1)
   {
-    self->_targetTextScaling = a3;
+    self->_targetTextScaling = scaling;
   }
 }
 
-- (void)_setSourceTextScaling:(int64_t)a3
+- (void)_setSourceTextScaling:(int64_t)scaling
 {
-  if (a3 <= 1)
+  if (scaling <= 1)
   {
-    self->_sourceTextScaling = a3;
+    self->_sourceTextScaling = scaling;
   }
 }
 
@@ -824,7 +824,7 @@ LABEL_7:
   return currentTable & 1 | !self->_setTableCells;
 }
 
-- (void)_setTableNestingLevel:(int64_t)a3
+- (void)_setTableNestingLevel:(int64_t)level
 {
   nestedTables = self->_nestedTables;
   if (nestedTables)
@@ -832,28 +832,28 @@ LABEL_7:
     nestedTables = [nestedTables count];
   }
 
-  if (a3 <= 1)
+  if (level <= 1)
   {
-    v6 = 1;
+    levelCopy = 1;
   }
 
   else
   {
-    v6 = a3;
+    levelCopy = level;
   }
 
-  if (nestedTables + 1 >= v6)
+  if (nestedTables + 1 >= levelCopy)
   {
-    if (nestedTables + 1 > v6)
+    if (nestedTables + 1 > levelCopy)
     {
-      if (nestedTables + 1 - v6 <= 1)
+      if (nestedTables + 1 - levelCopy <= 1)
       {
         v8 = 1;
       }
 
       else
       {
-        v8 = nestedTables + 1 - v6;
+        v8 = nestedTables + 1 - levelCopy;
       }
 
       do
@@ -868,13 +868,13 @@ LABEL_7:
 
   else
   {
-    for (i = v6 + ~nestedTables; i; --i)
+    for (i = levelCopy + ~nestedTables; i; --i)
     {
       [(NSRTFReader *)self _pushTableState];
     }
   }
 
-  if (a3 < 1)
+  if (level < 1)
   {
     [NSRTFReader _setTableNestingLevel:?];
   }
@@ -891,14 +891,14 @@ LABEL_7:
   if (currentDefinitionColumn >= 1)
   {
     v4 = [(NSMutableArray *)self->_currentRowArray objectAtIndex:(currentDefinitionColumn - 1)];
-    v5 = [v4 startingColumn];
-    v6 = [v4 columnSpan];
+    startingColumn = [v4 startingColumn];
+    columnSpan = [v4 columnSpan];
     [(NSMutableArray *)self->_currentRowArray replaceObjectAtIndex:self->_currentDefinitionColumn withObject:v4];
     v7 = self->_currentDefinitionColumn;
-    if (v6 + v5 <= v7)
+    if (columnSpan + startingColumn <= v7)
     {
 
-      [v4 _setColumnSpan:v7 - v5 + 1];
+      [v4 _setColumnSpan:v7 - startingColumn + 1];
     }
   }
 }
@@ -913,24 +913,24 @@ LABEL_7:
       if ([(NSMutableArray *)previousRowArray count]> self->_currentDefinitionColumn)
       {
         v4 = [(NSMutableArray *)self->_previousRowArray objectAtIndex:?];
-        v5 = [v4 startingRow];
-        v6 = [v4 rowSpan];
+        startingRow = [v4 startingRow];
+        rowSpan = [v4 rowSpan];
         [(NSMutableArray *)self->_currentRowArray replaceObjectAtIndex:self->_currentDefinitionColumn withObject:v4];
         currentRow = self->_currentRow;
-        if (v6 + v5 <= currentRow)
+        if (rowSpan + startingRow <= currentRow)
         {
 
-          [v4 _setRowSpan:currentRow - v5 + 1];
+          [v4 _setRowSpan:currentRow - startingRow + 1];
         }
       }
     }
   }
 }
 
-- (void)setMutableAttributedString:(id)a3
+- (void)setMutableAttributedString:(id)string
 {
   topAttributedString = self->_topAttributedString;
-  if (topAttributedString != a3)
+  if (topAttributedString != string)
   {
     if (topAttributedString)
     {
@@ -938,7 +938,7 @@ LABEL_7:
       v7 = self->_topAttributedString;
       if (v6)
       {
-        [a3 setAttributedString:v7];
+        [string setAttributedString:v7];
         v7 = self->_topAttributedString;
       }
     }
@@ -948,7 +948,7 @@ LABEL_7:
       v7 = 0;
     }
 
-    self->_topAttributedString = a3;
+    self->_topAttributedString = string;
   }
 }
 
@@ -1001,7 +1001,7 @@ LABEL_7:
   return v3;
 }
 
-- (void)_addListDefinition:(id)a3 forKey:(int64_t)a4
+- (void)_addListDefinition:(id)definition forKey:(int64_t)key
 {
   listDefinitions = self->_listDefinitions;
   if (!listDefinitions)
@@ -1010,15 +1010,15 @@ LABEL_7:
     self->_listDefinitions = listDefinitions;
   }
 
-  v8 = [MEMORY[0x1E695DEC8] arrayWithArray:a3];
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v8 = [MEMORY[0x1E695DEC8] arrayWithArray:definition];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:key];
 
   [(NSMutableDictionary *)listDefinitions setObject:v8 forKey:v9];
 }
 
-- (void)_addOverride:(int64_t)a3 forKey:(int64_t)a4
+- (void)_addOverride:(int64_t)override forKey:(int64_t)key
 {
-  v6 = -[NSMutableDictionary objectForKey:](self->_listDefinitions, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInteger:a4]);
+  v6 = -[NSMutableDictionary objectForKey:](self->_listDefinitions, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInteger:key]);
   v7 = [v6 count];
   if (v6)
   {
@@ -1033,26 +1033,26 @@ LABEL_7:
   if (!v8)
   {
     v9 = v7;
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v11 = 0;
     do
     {
       v12 = [objc_msgSend(v6 objectAtIndex:{v11), "copy"}];
-      [v10 addObject:v12];
+      [array addObject:v12];
 
       ++v11;
     }
 
     while (v9 != v11);
 
-    [(NSRTFReader *)self _addListDefinition:v10 forKey:a3];
+    [(NSRTFReader *)self _addListDefinition:array forKey:override];
   }
 }
 
-- (void)processString:(id)a3
+- (void)processString:(id)string
 {
   v5 = [(NSMutableAttributedString *)self->_curAttributedString length];
-  [(NSMutableAttributedString *)self->_curAttributedString replaceCharactersInRange:v5 withString:0, a3];
+  [(NSMutableAttributedString *)self->_curAttributedString replaceCharactersInRange:v5 withString:0, string];
   v6 = [(NSMutableAttributedString *)self->_curAttributedString length];
   v7 = (&self->_attributeInfo + 42);
   toUniCharEncoding = *(&self->_attributeInfo + 42);
@@ -1110,7 +1110,7 @@ LABEL_38:
 
         if (textFlow == 4)
         {
-          -[NSMutableAttributedString addAttribute:value:range:](self->_curAttributedString, "addAttribute:value:range:", @"CTVerticalForms", [MEMORY[0x1E696AD98] numberWithInteger:0], v5, objc_msgSend(a3, "length"));
+          -[NSMutableAttributedString addAttribute:value:range:](self->_curAttributedString, "addAttribute:value:range:", @"CTVerticalForms", [MEMORY[0x1E696AD98] numberWithInteger:0], v5, objc_msgSend(string, "length"));
         }
       }
 
@@ -1283,28 +1283,28 @@ LABEL_6:
 
 - (void)_pushTableState
 {
-  if (a1)
+  if (self)
   {
     v4 = objc_alloc_init(NSRTFReaderTableState);
-    [(NSRTFReader *)a1 _ensureTableCells];
+    [(NSRTFReader *)self _ensureTableCells];
     v2 = v4;
-    v4->_currentTable = *(a1 + 2872);
-    v4->_previousTable = *(a1 + 2880);
-    v4->_currentRowArray = *(a1 + 2888);
-    v4->_previousRowArray = *(a1 + 2896);
-    v4->_currentRow = *(a1 + 2904);
-    v4->_currentColumn = *(a1 + 2908);
-    v4->_currentDefinitionColumn = *(a1 + 2912);
-    v4->_currentRowIsLast = *(a1 + 2916);
-    *(a1 + 2901) = 0u;
-    *(a1 + 2872) = 0u;
-    *(a1 + 2888) = 0u;
-    v3 = *(a1 + 2864);
+    v4->_currentTable = *(self + 2872);
+    v4->_previousTable = *(self + 2880);
+    v4->_currentRowArray = *(self + 2888);
+    v4->_previousRowArray = *(self + 2896);
+    v4->_currentRow = *(self + 2904);
+    v4->_currentColumn = *(self + 2908);
+    v4->_currentDefinitionColumn = *(self + 2912);
+    v4->_currentRowIsLast = *(self + 2916);
+    *(self + 2901) = 0u;
+    *(self + 2872) = 0u;
+    *(self + 2888) = 0u;
+    v3 = *(self + 2864);
     if (!v3)
     {
       v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v2 = v4;
-      *(a1 + 2864) = v3;
+      *(self + 2864) = v3;
     }
 
     [v3 addObject:v2];
@@ -1313,33 +1313,33 @@ LABEL_6:
 
 - (void)_popTableState
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 2864) lastObject];
+    lastObject = [*(self + 2864) lastObject];
 
-    if (v2)
+    if (lastObject)
     {
-      *(a1 + 2872) = *(v2 + 8);
-      *(a1 + 2880) = *(v2 + 16);
-      *(a1 + 2888) = *(v2 + 24);
-      *(a1 + 2896) = *(v2 + 32);
-      *(a1 + 2904) = *(v2 + 40);
-      *(a1 + 2908) = *(v2 + 44);
-      *(a1 + 2912) = *(v2 + 48);
-      *(a1 + 2916) = *(v2 + 52);
+      *(self + 2872) = *(lastObject + 8);
+      *(self + 2880) = *(lastObject + 16);
+      *(self + 2888) = *(lastObject + 24);
+      *(self + 2896) = *(lastObject + 32);
+      *(self + 2904) = *(lastObject + 40);
+      *(self + 2908) = *(lastObject + 44);
+      *(self + 2912) = *(lastObject + 48);
+      *(self + 2916) = *(lastObject + 52);
     }
 
     else
     {
-      *(a1 + 2872) = 0u;
-      *(a1 + 2888) = 0u;
+      *(self + 2872) = 0u;
+      *(self + 2888) = 0u;
     }
 
-    [*(a1 + 2864) removeLastObject];
-    if (![*(a1 + 2864) count])
+    [*(self + 2864) removeLastObject];
+    if (![*(self + 2864) count])
     {
 
-      *(a1 + 2864) = 0;
+      *(self + 2864) = 0;
     }
   }
 }
@@ -1486,26 +1486,26 @@ LABEL_9:
   return result;
 }
 
-- (double)_updateFontSizeForTextScalingIfNeeded:(uint64_t)a1
+- (double)_updateFontSizeForTextScalingIfNeeded:(uint64_t)needed
 {
-  if (!a1)
+  if (!needed)
   {
     return 0.0;
   }
 
-  if ((*(a1 + 2992) & 0x8000000000000000) != 0)
+  if ((*(needed + 2992) & 0x8000000000000000) != 0)
   {
-    [(NSRTFReader *)a1 _determineSourceTextScalingType];
+    [(NSRTFReader *)needed _determineSourceTextScalingType];
   }
 
-  v4 = *(a1 + 3000);
+  v4 = *(needed + 3000);
   if (v4 < 0)
   {
-    [(NSRTFReader *)a1 _determineFinalTextScalingType];
-    v4 = *(a1 + 3000);
+    [(NSRTFReader *)needed _determineFinalTextScalingType];
+    v4 = *(needed + 3000);
   }
 
-  v5 = *(a1 + 2992);
+  v5 = *(needed + 2992);
   if (v5 == v4)
   {
     return a2;
@@ -1516,21 +1516,21 @@ LABEL_9:
 
 - (void)_currentTableCellIsPlaceholder
 {
-  [(NSRTFReader *)a1 _ensureTableCells];
-  v4 = [*(a1 + 2888) objectAtIndex:*(a1 + 2908)];
-  v5 = *(a1 + 2908);
+  [(NSRTFReader *)self _ensureTableCells];
+  v4 = [*(self + 2888) objectAtIndex:*(self + 2908)];
+  v5 = *(self + 2908);
   v6 = (v5 - 1);
-  if (v5 >= 1 && (result = [*(a1 + 2888) objectAtIndex:v6], result == v4))
+  if (v5 >= 1 && (result = [*(self + 2888) objectAtIndex:v6], result == v4))
   {
     v8 = 1;
   }
 
   else
   {
-    result = *(a1 + 2896);
-    if (result && (result = [result count], result > *(a1 + 2908)))
+    result = *(self + 2896);
+    if (result && (result = [result count], result > *(self + 2908)))
     {
-      result = [*(a1 + 2896) objectAtIndex:?];
+      result = [*(self + 2896) objectAtIndex:?];
       v8 = result == v4;
     }
 

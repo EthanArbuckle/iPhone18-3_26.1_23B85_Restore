@@ -1,10 +1,10 @@
 @interface RSTextCoachingSignal
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RSTextCoachingSignal
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(RSTextCoachingSignal);
   v4->_type = self->_type;

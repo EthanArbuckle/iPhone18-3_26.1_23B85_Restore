@@ -8,22 +8,22 @@
 - (uint64_t)_cplDecodeCharForKey:()CPLCodingProxy
 {
   v4 = a3;
-  v5 = [a1 error];
+  error = [self error];
 
-  if (v5)
+  if (error)
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v6 = [a1 decodeIntForKey:v4];
-    v7 = [a1 error];
+    v6 = [self decodeIntForKey:v4];
+    error2 = [self error];
 
-    if (v7)
+    if (error2)
     {
-      [a1 __setError:0];
-      LOBYTE(v6) = [a1 decodeBoolForKey:v4];
+      [self __setError:0];
+      LOBYTE(v6) = [self decodeBoolForKey:v4];
     }
   }
 
@@ -33,22 +33,22 @@
 - (uint64_t)_cplDecodeBoolForKey:()CPLCodingProxy
 {
   v4 = a3;
-  v5 = [a1 error];
+  error = [self error];
 
-  if (v5)
+  if (error)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [a1 decodeBoolForKey:v4];
-    v7 = [a1 error];
+    v6 = [self decodeBoolForKey:v4];
+    error2 = [self error];
 
-    if (v7)
+    if (error2)
     {
-      [a1 __setError:0];
-      v6 = [a1 decodeIntForKey:v4] != 0;
+      [self __setError:0];
+      v6 = [self decodeIntForKey:v4] != 0;
     }
   }
 

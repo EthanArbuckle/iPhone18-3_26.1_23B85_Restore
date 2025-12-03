@@ -1,36 +1,36 @@
 @interface IDSMMLMessage
-- (BOOL)addAggregateMessage:(id)a3;
+- (BOOL)addAggregateMessage:(id)message;
 - (BOOL)expectingMoreResponses;
-- (IDSMMLMessage)initWithSendMode:(id)a3 topic:(id)a4 maxSize:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (IDSMMLMessage)initWithSendMode:(id)mode topic:(id)topic maxSize:(unint64_t)size;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)noteResponseForToken:(id)a3;
+- (void)noteResponseForToken:(id)token;
 @end
 
 @implementation IDSMMLMessage
 
-- (IDSMMLMessage)initWithSendMode:(id)a3 topic:(id)a4 maxSize:(unint64_t)a5
+- (IDSMMLMessage)initWithSendMode:(id)mode topic:(id)topic maxSize:(unint64_t)size
 {
-  v8 = a3;
-  v9 = a4;
+  modeCopy = mode;
+  topicCopy = topic;
   v13.receiver = self;
   v13.super_class = IDSMMLMessage;
   v10 = [(IDSMMLMessage *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(IDSMMLMessage *)v10 setSendMode:v8];
-    [(IDSMMLMessage *)v11 setTopic:v9];
-    [(IDSMMLMessage *)v11 setMaxSize:a5];
+    [(IDSMMLMessage *)v10 setSendMode:modeCopy];
+    [(IDSMMLMessage *)v11 setTopic:topicCopy];
+    [(IDSMMLMessage *)v11 setMaxSize:size];
   }
 
   return v11;
 }
 
-- (BOOL)addAggregateMessage:(id)a3
+- (BOOL)addAggregateMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   aggregateMessages = self->_aggregateMessages;
   if (!aggregateMessages)
   {
@@ -41,31 +41,31 @@
     aggregateMessages = self->_aggregateMessages;
   }
 
-  [(NSMutableOrderedSet *)aggregateMessages addObject:v4];
+  [(NSMutableOrderedSet *)aggregateMessages addObject:messageCopy];
   currentSize = self->_currentSize;
-  self->_currentSize = [v4 sizeOfKeysWithValues] + currentSize;
+  self->_currentSize = [messageCopy sizeOfKeysWithValues] + currentSize;
 
   return 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = IDSMMLMessage;
-  v4 = [(IDSMMLMessage *)&v10 copyWithZone:a3];
-  v5 = [(IDSMMLMessage *)self sendMode];
-  [v4 setSendMode:v5];
+  v4 = [(IDSMMLMessage *)&v10 copyWithZone:zone];
+  sendMode = [(IDSMMLMessage *)self sendMode];
+  [v4 setSendMode:sendMode];
 
   [v4 setMaxSize:{-[IDSMMLMessage maxSize](self, "maxSize")}];
   [v4 setCurrentSize:{-[IDSMMLMessage currentSize](self, "currentSize")}];
-  v6 = [(IDSMMLMessage *)self chunkNumber];
-  [v4 setChunkNumber:v6];
+  chunkNumber = [(IDSMMLMessage *)self chunkNumber];
+  [v4 setChunkNumber:chunkNumber];
 
-  v7 = [(IDSMMLMessage *)self identifier];
-  [v4 setIdentifier:v7];
+  identifier = [(IDSMMLMessage *)self identifier];
+  [v4 setIdentifier:identifier];
 
-  v8 = [(IDSMMLMessage *)self aggregateMessages];
-  [v4 setAggregateMessages:v8];
+  aggregateMessages = [(IDSMMLMessage *)self aggregateMessages];
+  [v4 setAggregateMessages:aggregateMessages];
 
   return v4;
 }
@@ -81,8 +81,8 @@
 {
   v18.receiver = self;
   v18.super_class = IDSMMLMessage;
-  v3 = [(IDSMMLMessage *)&v18 messageBody];
-  v4 = [v3 mutableCopy];
+  messageBody = [(IDSMMLMessage *)&v18 messageBody];
+  v4 = [messageBody mutableCopy];
 
   v5 = objc_alloc_init(NSMutableArray);
   v14 = 0u;
@@ -104,8 +104,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) messageBody];
-        [v5 addObject:v11];
+        messageBody2 = [*(*(&v14 + 1) + 8 * i) messageBody];
+        [v5 addObject:messageBody2];
       }
 
       v8 = [(NSMutableOrderedSet *)v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
@@ -114,10 +114,10 @@
     while (v8);
   }
 
-  v12 = [(IDSMMLMessage *)self sendMode];
-  if (v12)
+  sendMode = [(IDSMMLMessage *)self sendMode];
+  if (sendMode)
   {
-    CFDictionarySetValue(v4, IDSDeliverySendModeKey, v12);
+    CFDictionarySetValue(v4, IDSDeliverySendModeKey, sendMode);
   }
 
   if (v5)
@@ -128,9 +128,9 @@
   return v4;
 }
 
-- (void)noteResponseForToken:(id)a3
+- (void)noteResponseForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -151,7 +151,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) noteResponseForToken:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9) noteResponseForToken:{tokenCopy, v10}];
         v9 = v9 + 1;
       }
 

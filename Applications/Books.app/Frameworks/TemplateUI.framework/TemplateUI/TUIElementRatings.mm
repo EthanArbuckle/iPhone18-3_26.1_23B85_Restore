@@ -1,10 +1,10 @@
 @interface TUIElementRatings
 + (id)attributesToIgnoreWhenResolving;
-+ (id)builderWithNode:(id)a3 object:(id)a4 attributes:(id)a5 context:(id)a6;
++ (id)builderWithNode:(id)node object:(id)object attributes:(id)attributes context:(id)context;
 + (id)supportedAttributes;
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5;
-+ (void)preconfigureBox:(id)a3 context:(id)a4;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context;
++ (void)preconfigureBox:(id)box context:(id)context;
 @end
 
 @implementation TUIElementRatings
@@ -33,20 +33,20 @@
   return v3;
 }
 
-+ (void)preconfigureBox:(id)a3 context:(id)a4
++ (void)preconfigureBox:(id)box context:(id)context
 {
-  v4 = a3;
-  [v4 setAXElement:1];
-  [v4 setAxAdjustable:1];
+  boxCopy = box;
+  [boxCopy setAXElement:1];
+  [boxCopy setAxAdjustable:1];
 }
 
-+ (id)builderWithNode:(id)a3 object:(id)a4 attributes:(id)a5 context:(id)a6
++ (id)builderWithNode:(id)node object:(id)object attributes:(id)attributes context:(id)context
 {
-  v8 = a5;
-  v9 = a6;
+  attributesCopy = attributes;
+  contextCopy = context;
   v10 = objc_alloc_init(_TUIElementRatingsBuilder);
-  v11 = [v9 childCountForNode:a3.var0];
-  v12 = [v9 viewStateForNode:a3.var0 binding:{objc_msgSend(v8, "bindingNameForAttribute:node:", 36, a3.var0)}];
+  v11 = [contextCopy childCountForNode:node.var0];
+  v12 = [contextCopy viewStateForNode:node.var0 binding:{objc_msgSend(attributesCopy, "bindingNameForAttribute:node:", 36, node.var0)}];
 
   [(_TUIElementRatingsBuilder *)v10 setViewState:v12];
   if (v11)
@@ -56,51 +56,51 @@
 
   else
   {
-    v9 = [(_TUIElementRatingsBuilder *)v10 viewState];
-    v13 = v9 != 0;
+    contextCopy = [(_TUIElementRatingsBuilder *)v10 viewState];
+    v13 = contextCopy != 0;
   }
 
-  -[_TUIElementRatingsBuilder setEnabled:](v10, "setEnabled:", [v8 BOOLForAttribute:74 withDefault:v13 node:a3.var0]);
+  -[_TUIElementRatingsBuilder setEnabled:](v10, "setEnabled:", [attributesCopy BOOLForAttribute:74 withDefault:v13 node:node.var0]);
   if (!v11)
   {
   }
 
-  v14 = [v8 colorForAttribute:51 node:a3.var0];
+  v14 = [attributesCopy colorForAttribute:51 node:node.var0];
   [(_TUIElementRatingsBuilder *)v10 setColor:v14];
 
-  v15 = [v8 colorForAttribute:198 node:a3.var0];
+  v15 = [attributesCopy colorForAttribute:198 node:node.var0];
   [(_TUIElementRatingsBuilder *)v10 setStartColor:v15];
 
-  v16 = [v8 colorForAttribute:30 node:a3.var0];
+  v16 = [attributesCopy colorForAttribute:30 node:node.var0];
   [(_TUIElementRatingsBuilder *)v10 setBackgroundColor:v16];
 
-  v17 = [v8 stringForAttribute:116 node:a3.var0];
+  v17 = [attributesCopy stringForAttribute:116 node:node.var0];
   [(_TUIElementRatingsBuilder *)v10 setBackgroundKind:[TUIRatingsBox backgroundKindFromString:v17]];
 
-  v18 = [v8 stringForAttribute:138 node:a3.var0];
+  v18 = [attributesCopy stringForAttribute:138 node:node.var0];
   [(_TUIElementRatingsBuilder *)v10 setName:v18];
 
-  [v8 floatForAttribute:164 node:a3.var0];
+  [attributesCopy floatForAttribute:164 node:node.var0];
   [(_TUIElementRatingsBuilder *)v10 setRating:?];
 
   return v10;
 }
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v24 = a3;
-  v8 = a5;
-  v9 = [v8 lengthForAttribute:225 node:a4.var0];
-  [v24 setSize:{+[TUIRatingsBox sizeFromWidth:](TUIRatingsBox, "sizeFromWidth:", v9, v10)}];
-  v11 = [v8 lengthForAttribute:225 node:a4.var0];
-  [v24 setWidth:{v11, v12}];
-  v13 = [v8 lengthForAttribute:98 node:a4.var0];
-  [v24 setHeight:{v13, v14}];
-  v15 = [v24 axLabel];
+  boxCopy = box;
+  attributesCopy = attributes;
+  v9 = [attributesCopy lengthForAttribute:225 node:node.var0];
+  [boxCopy setSize:{+[TUIRatingsBox sizeFromWidth:](TUIRatingsBox, "sizeFromWidth:", v9, v10)}];
+  v11 = [attributesCopy lengthForAttribute:225 node:node.var0];
+  [boxCopy setWidth:{v11, v12}];
+  v13 = [attributesCopy lengthForAttribute:98 node:node.var0];
+  [boxCopy setHeight:{v13, v14}];
+  axLabel = [boxCopy axLabel];
 
-  if (!v15)
+  if (!axLabel)
   {
-    [v8 floatForAttribute:164 node:a4.var0];
+    [attributesCopy floatForAttribute:164 node:node.var0];
     v17 = v16;
     v18 = TUIBundle();
     v19 = [v18 localizedStringForKey:@"Rating" value:&stru_264550 table:@"TemplateUILocalizable"];
@@ -110,64 +110,64 @@
     v22 = v17 / 0.2;
     v23 = [NSString localizedStringWithFormat:v21, vcvtas_u32_f32(v22)];
 
-    [v24 setAxLabel:v19];
-    [v24 setAxValue:v23];
+    [boxCopy setAxLabel:v19];
+    [boxCopy setAxValue:v23];
   }
 }
 
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 axActions];
-  [v7 setAxCustomActions:v10];
+  objectCopy = object;
+  builderCopy = builder;
+  contextCopy = context;
+  axActions = [builderCopy axActions];
+  [objectCopy setAxCustomActions:axActions];
 
   v11 = [TUIElementActionTriggerHandler alloc];
-  v12 = [v8 finalizeTriggers];
-  v13 = [v9 actionObject];
-  v31 = v9;
-  v14 = [v9 actionDelegate];
-  v15 = [(TUIElementActionTriggerHandler *)v11 initWithActionsData:v12 actionObject:v13 actionDelegate:v14];
+  finalizeTriggers = [builderCopy finalizeTriggers];
+  actionObject = [contextCopy actionObject];
+  v31 = contextCopy;
+  actionDelegate = [contextCopy actionDelegate];
+  v15 = [(TUIElementActionTriggerHandler *)v11 initWithActionsData:finalizeTriggers actionObject:actionObject actionDelegate:actionDelegate];
 
-  v16 = [v8 finalizeAnimationGroups];
-  [v7 setAnimationGroups:v16];
+  finalizeAnimationGroups = [builderCopy finalizeAnimationGroups];
+  [objectCopy setAnimationGroups:finalizeAnimationGroups];
 
-  [v7 setTriggerHandler:v15];
-  v17 = [v7 refId];
-  [(TUIElementActionTriggerHandler *)v15 setRefId:v17];
+  [objectCopy setTriggerHandler:v15];
+  refId = [objectCopy refId];
+  [(TUIElementActionTriggerHandler *)v15 setRefId:refId];
 
-  v18 = [v8 viewState];
-  v19 = [v8 name];
-  v20 = [v8 color];
-  v21 = [v8 startColor];
-  v32 = [v8 backgroundColor];
-  v22 = [v8 backgroundKind];
-  LOBYTE(v9) = [v8 enabled];
-  [v8 rating];
+  viewState = [builderCopy viewState];
+  name = [builderCopy name];
+  color = [builderCopy color];
+  startColor = [builderCopy startColor];
+  backgroundColor = [builderCopy backgroundColor];
+  backgroundKind = [builderCopy backgroundKind];
+  LOBYTE(contextCopy) = [builderCopy enabled];
+  [builderCopy rating];
   v24 = v23;
-  objc_initWeak(location, v7);
+  objc_initWeak(location, objectCopy);
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_CDDAC;
   v33[3] = &unk_261540;
   v25 = v15;
   v34 = v25;
-  v26 = v18;
+  v26 = viewState;
   v35 = v26;
   objc_copyWeak(v40, location);
-  v27 = v19;
+  v27 = name;
   v36 = v27;
   v40[1] = v24;
-  v41 = v9;
-  v28 = v20;
+  v41 = contextCopy;
+  v28 = color;
   v37 = v28;
-  v29 = v21;
+  v29 = startColor;
   v38 = v29;
-  v30 = v32;
+  v30 = backgroundColor;
   v39 = v30;
-  v40[2] = v22;
-  [v7 setRenderModelBlock:v33];
+  v40[2] = backgroundKind;
+  [objectCopy setRenderModelBlock:v33];
 
   objc_destroyWeak(v40);
   objc_destroyWeak(location);

@@ -1,35 +1,35 @@
 @interface AVAssetWriterInputInterPassAnalysisHelper
-- (AVAssetWriterInputInterPassAnalysisHelper)initWithWritingHelper:(id)a3;
-- (BOOL)appendPixelBuffer:(__CVBuffer *)a3 withPresentationTime:(id *)a4;
-- (BOOL)appendTaggedPixelBufferGroup:(OpaqueCMTaggedBufferGroup *)a3 withPresentationTime:(id *)a4;
-- (int64_t)appendCaption:(id)a3 error:(id *)a4;
-- (int64_t)appendCaptionGroup:(id)a3 error:(id *)a4;
-- (int64_t)appendSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4;
+- (AVAssetWriterInputInterPassAnalysisHelper)initWithWritingHelper:(id)helper;
+- (BOOL)appendPixelBuffer:(__CVBuffer *)buffer withPresentationTime:(id *)time;
+- (BOOL)appendTaggedPixelBufferGroup:(OpaqueCMTaggedBufferGroup *)group withPresentationTime:(id *)time;
+- (int64_t)appendCaption:(id)caption error:(id *)error;
+- (int64_t)appendCaptionGroup:(id)group error:(id *)error;
+- (int64_t)appendSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error;
 - (void)dealloc;
 - (void)markAsFinished;
 - (void)markCurrentPassAsFinished;
-- (void)requestMediaDataWhenReadyOnQueue:(id)a3 usingBlock:(id)a4;
+- (void)requestMediaDataWhenReadyOnQueue:(id)queue usingBlock:(id)block;
 - (void)startPassAnalysis;
 - (void)stopRequestingMediaData;
 @end
 
 @implementation AVAssetWriterInputInterPassAnalysisHelper
 
-- (AVAssetWriterInputInterPassAnalysisHelper)initWithWritingHelper:(id)a3
+- (AVAssetWriterInputInterPassAnalysisHelper)initWithWritingHelper:(id)helper
 {
-  if (!a3)
+  if (!helper)
   {
     [AVAssetWriterInputInterPassAnalysisHelper initWithWritingHelper:];
   }
 
   v8.receiver = self;
   v8.super_class = AVAssetWriterInputInterPassAnalysisHelper;
-  v5 = -[AVAssetWriterInputHelper initWithConfigurationState:](&v8, sel_initWithConfigurationState_, [a3 configurationState]);
+  v5 = -[AVAssetWriterInputHelper initWithConfigurationState:](&v8, sel_initWithConfigurationState_, [helper configurationState]);
   if (v5)
   {
-    v6 = a3;
-    v5->_writingHelper = v6;
-    v5->_initialPassDescription = [(AVAssetWriterInputWritingHelper *)v6 currentPassDescription];
+    helperCopy = helper;
+    v5->_writingHelper = helperCopy;
+    v5->_initialPassDescription = [(AVAssetWriterInputWritingHelper *)helperCopy currentPassDescription];
   }
 
   return v5;
@@ -44,13 +44,13 @@
 
 - (void)startPassAnalysis
 {
-  v3 = [(AVAssetWriterInputWritingHelper *)self->_writingHelper _assetWriterTrack];
+  _assetWriterTrack = [(AVAssetWriterInputWritingHelper *)self->_writingHelper _assetWriterTrack];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __62__AVAssetWriterInputInterPassAnalysisHelper_startPassAnalysis__block_invoke;
   v4[3] = &unk_1E7463858;
   v4[4] = self;
-  [(AVFigAssetWriterTrack *)v3 endPassWithCompletionHandler:v4];
+  [(AVFigAssetWriterTrack *)_assetWriterTrack endPassWithCompletionHandler:v4];
 }
 
 uint64_t __62__AVAssetWriterInputInterPassAnalysisHelper_startPassAnalysis__block_invoke(uint64_t a1, int a2, uint64_t a3, uint64_t a4)
@@ -81,7 +81,7 @@ uint64_t __62__AVAssetWriterInputInterPassAnalysisHelper_startPassAnalysis__bloc
   }
 }
 
-- (void)requestMediaDataWhenReadyOnQueue:(id)a3 usingBlock:(id)a4
+- (void)requestMediaDataWhenReadyOnQueue:(id)queue usingBlock:(id)block
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
@@ -101,18 +101,18 @@ uint64_t __62__AVAssetWriterInputInterPassAnalysisHelper_startPassAnalysis__bloc
   objc_exception_throw(v12);
 }
 
-- (int64_t)appendSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4
+- (int64_t)appendSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error
 {
-  if (a4)
+  if (error)
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"not allowed between the invocation of %@ and the beginning of the next pass", NSStringFromSelector(sel_markCurrentPassAsFinished)), 0}];
-    *a4 = AVErrorForClientProgrammingError(v5);
+    *error = AVErrorForClientProgrammingError(v5);
   }
 
   return 1;
 }
 
-- (BOOL)appendPixelBuffer:(__CVBuffer *)a3 withPresentationTime:(id *)a4
+- (BOOL)appendPixelBuffer:(__CVBuffer *)buffer withPresentationTime:(id *)time
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
@@ -122,7 +122,7 @@ uint64_t __62__AVAssetWriterInputInterPassAnalysisHelper_startPassAnalysis__bloc
   objc_exception_throw(v14);
 }
 
-- (BOOL)appendTaggedPixelBufferGroup:(OpaqueCMTaggedBufferGroup *)a3 withPresentationTime:(id *)a4
+- (BOOL)appendTaggedPixelBufferGroup:(OpaqueCMTaggedBufferGroup *)group withPresentationTime:(id *)time
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
@@ -132,23 +132,23 @@ uint64_t __62__AVAssetWriterInputInterPassAnalysisHelper_startPassAnalysis__bloc
   objc_exception_throw(v14);
 }
 
-- (int64_t)appendCaption:(id)a3 error:(id *)a4
+- (int64_t)appendCaption:(id)caption error:(id *)error
 {
-  if (a4)
+  if (error)
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"not allowed between the invocation of %@ and the beginning of the next pass", NSStringFromSelector(sel_markCurrentPassAsFinished)), 0}];
-    *a4 = AVErrorForClientProgrammingError(v5);
+    *error = AVErrorForClientProgrammingError(v5);
   }
 
   return 1;
 }
 
-- (int64_t)appendCaptionGroup:(id)a3 error:(id *)a4
+- (int64_t)appendCaptionGroup:(id)group error:(id *)error
 {
-  if (a4)
+  if (error)
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"not allowed between the invocation of %@ and the beginning of the next pass", NSStringFromSelector(sel_markCurrentPassAsFinished)), 0}];
-    *a4 = AVErrorForClientProgrammingError(v5);
+    *error = AVErrorForClientProgrammingError(v5);
   }
 
   return 1;

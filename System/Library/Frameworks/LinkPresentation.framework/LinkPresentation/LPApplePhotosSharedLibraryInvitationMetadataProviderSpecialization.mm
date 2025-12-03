@@ -1,20 +1,20 @@
 @interface LPApplePhotosSharedLibraryInvitationMetadataProviderSpecialization
-+ (id)specializedMetadataProviderForURLWithContext:(id)a3;
-- (void)completeWithOriginatorDisplayName:(id)a3;
++ (id)specializedMetadataProviderForURLWithContext:(id)context;
+- (void)completeWithOriginatorDisplayName:(id)name;
 - (void)start;
 @end
 
 @implementation LPApplePhotosSharedLibraryInvitationMetadataProviderSpecialization
 
-+ (id)specializedMetadataProviderForURLWithContext:(id)a3
++ (id)specializedMetadataProviderForURLWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 postRedirectURL];
-  v5 = [LPPresentationSpecializations isApplePhotosSharedLibraryInvitationURL:v4];
+  contextCopy = context;
+  postRedirectURL = [contextCopy postRedirectURL];
+  v5 = [LPPresentationSpecializations isApplePhotosSharedLibraryInvitationURL:postRedirectURL];
 
   if (v5)
   {
-    v6 = [(LPMetadataProviderSpecialization *)[LPApplePhotosSharedLibraryInvitationMetadataProviderSpecialization alloc] initWithContext:v3];
+    v6 = [(LPMetadataProviderSpecialization *)[LPApplePhotosSharedLibraryInvitationMetadataProviderSpecialization alloc] initWithContext:contextCopy];
   }
 
   else
@@ -29,7 +29,7 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1AE886000, a2, OS_LOG_TYPE_ERROR, "LinkPresentation: Failed to generate metadata - Could not open system photo library: %@", &v2, 0xCu);
 }
 
@@ -159,18 +159,18 @@ void __75__LPApplePhotosSharedLibraryInvitationMetadataProviderSpecialization_st
   }
 }
 
-- (void)completeWithOriginatorDisplayName:(id)a3
+- (void)completeWithOriginatorDisplayName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(LPApplePhotosSharedLibraryInvitationMetadata);
-  if (v4)
+  if (nameCopy)
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = LPLocalizedString(@"%@ wants you to join a Shared Library in Photos");
-    v8 = [v6 localizedStringWithFormat:v7, v4];
-    [(LPApplePhotosSharedLibraryInvitationMetadata *)v5 setMessage:v8];
+    nameCopy = [v6 localizedStringWithFormat:v7, nameCopy];
+    [(LPApplePhotosSharedLibraryInvitationMetadata *)v5 setMessage:nameCopy];
 
-    [(LPApplePhotosSharedLibraryInvitationMetadata *)v5 setOriginatorDisplayName:v4];
+    [(LPApplePhotosSharedLibraryInvitationMetadata *)v5 setOriginatorDisplayName:nameCopy];
   }
 
   v9 = [(LPMetadataProviderSpecialization *)self createMetadataWithSpecialization:v5];

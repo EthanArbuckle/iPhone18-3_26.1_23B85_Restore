@@ -1,7 +1,7 @@
 @interface SBHighlightView
-+ (id)_highlightImageWithHeight:(double)a3 alpha:(double)a4;
++ (id)_highlightImageWithHeight:(double)height alpha:(double)alpha;
 + (id)imageCache;
-- (SBHighlightView)initWithFrame:(CGRect)a3 highlightAlpha:(double)a4 highlightHeight:(double)a5;
+- (SBHighlightView)initWithFrame:(CGRect)frame highlightAlpha:(double)alpha highlightHeight:(double)height;
 - (void)layoutSubviews;
 @end
 
@@ -11,7 +11,7 @@
 {
   if ([*MEMORY[0x1E69DDA98] isFrontBoard])
   {
-    v3 = [MEMORY[0x1E69D3FF8] systemAppPersistenteCache];
+    systemAppPersistenteCache = [MEMORY[0x1E69D3FF8] systemAppPersistenteCache];
   }
 
   else
@@ -20,16 +20,16 @@
     block[1] = 3221225472;
     block[2] = __29__SBHighlightView_imageCache__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (imageCache_onceToken != -1)
     {
       dispatch_once(&imageCache_onceToken, block);
     }
 
-    v3 = imageCache_specialCache;
+    systemAppPersistenteCache = imageCache_specialCache;
   }
 
-  return v3;
+  return systemAppPersistenteCache;
 }
 
 void __29__SBHighlightView_imageCache__block_invoke(uint64_t a1)
@@ -41,17 +41,17 @@ void __29__SBHighlightView_imageCache__block_invoke(uint64_t a1)
   imageCache_specialCache = v3;
 }
 
-+ (id)_highlightImageWithHeight:(double)a3 alpha:(double)a4
++ (id)_highlightImageWithHeight:(double)height alpha:(double)alpha
 {
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"highlight-%.2fa-%.1fh", *&a4, *&a3];
-  v8 = [a1 imageCache];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"highlight-%.2fa-%.1fh", *&alpha, *&height];
+  imageCache = [self imageCache];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __51__SBHighlightView__highlightImageWithHeight_alpha___block_invoke;
   v11[3] = &__block_descriptor_48_e18___UIImage_16__0_Q8l;
-  *&v11[4] = a3;
-  *&v11[5] = a4;
-  v9 = [v8 imageForKey:v7 generatingIfNecessaryWithBlock:v11];
+  *&v11[4] = height;
+  *&v11[5] = alpha;
+  v9 = [imageCache imageForKey:v7 generatingIfNecessaryWithBlock:v11];
 
   return v9;
 }
@@ -89,18 +89,18 @@ void __51__SBHighlightView__highlightImageWithHeight_alpha___block_invoke_2(uint
   CGContextFillRect(v3, *&v7);
 }
 
-- (SBHighlightView)initWithFrame:(CGRect)a3 highlightAlpha:(double)a4 highlightHeight:(double)a5
+- (SBHighlightView)initWithFrame:(CGRect)frame highlightAlpha:(double)alpha highlightHeight:(double)height
 {
   v15.receiver = self;
   v15.super_class = SBHighlightView;
-  v7 = [(SBHighlightView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(SBHighlightView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v7;
   if (v7)
   {
-    v7->_highlightAlpha = fmin(fmax(a4, 0.0), 1.0);
-    v7->_highlightHeight = a5;
+    v7->_highlightAlpha = fmin(fmax(alpha, 0.0), 1.0);
+    v7->_highlightHeight = height;
     v9 = objc_alloc(MEMORY[0x1E69DCAE0]);
-    v10 = [objc_opt_class() _highlightImageWithHeight:a5 alpha:a4];
+    v10 = [objc_opt_class() _highlightImageWithHeight:height alpha:alpha];
     v11 = [v9 initWithImage:v10];
     highlight = v8->_highlight;
     v8->_highlight = v11;

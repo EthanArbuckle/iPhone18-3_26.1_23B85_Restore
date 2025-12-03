@@ -1,21 +1,21 @@
 @interface DaemonPBFuseItemPreference
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)preferenceType;
 - (unint64_t)hash;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCreatedOffsetMillis:(BOOL)a3;
-- (void)setHasPreferenceType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasCreatedOffsetMillis:(BOOL)millis;
+- (void)setHasPreferenceType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DaemonPBFuseItemPreference
 
-- (void)setHasCreatedOffsetMillis:(BOOL)a3
+- (void)setHasCreatedOffsetMillis:(BOOL)millis
 {
-  if (a3)
+  if (millis)
   {
     v3 = 2;
   }
@@ -41,9 +41,9 @@
   }
 }
 
-- (void)setHasPreferenceType:(BOOL)a3
+- (void)setHasPreferenceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -61,8 +61,8 @@
   v7.receiver = self;
   v7.super_class = DaemonPBFuseItemPreference;
   v3 = [(DaemonPBFuseItemPreference *)&v7 description];
-  v4 = [(DaemonPBFuseItemPreference *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(DaemonPBFuseItemPreference *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -103,9 +103,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   PBDataWriterWriteInt32Field();
   if (*&self->_has)
   {
@@ -130,9 +130,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   v5[8] = self->_preference;
   if (*&self->_has)
@@ -141,7 +141,7 @@
     *(v5 + 40) |= 1u;
   }
 
-  v7 = [(NSString *)self->_externalId copyWithZone:a3];
+  v7 = [(NSString *)self->_externalId copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
@@ -162,10 +162,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_preference != *(v4 + 8))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_preference != *(equalCopy + 8))
   {
     goto LABEL_20;
   }
@@ -173,19 +173,19 @@
   has = self->_has;
   if (has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_adamId != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_adamId != *(equalCopy + 1))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_20;
   }
 
   externalId = self->_externalId;
-  if (externalId | *(v4 + 3))
+  if (externalId | *(equalCopy + 3))
   {
     if (![(NSString *)externalId isEqual:?])
     {
@@ -199,21 +199,21 @@ LABEL_20:
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_createdOffsetMillis != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_createdOffsetMillis != *(equalCopy + 2))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_20;
   }
 
-  v7 = (*(v4 + 40) & 4) == 0;
+  v7 = (*(equalCopy + 40) & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_preferenceType != *(v4 + 9))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_preferenceType != *(equalCopy + 9))
     {
       goto LABEL_20;
     }
@@ -264,34 +264,34 @@ LABEL_6:
   return v3 ^ v5 ^ v6 ^ v7 ^ (2654435761 * preference);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_preference = *(v4 + 8);
-  if (*(v4 + 40))
+  fromCopy = from;
+  self->_preference = *(fromCopy + 8);
+  if (*(fromCopy + 40))
   {
-    self->_adamId = *(v4 + 1);
+    self->_adamId = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(DaemonPBFuseItemPreference *)self setExternalId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) != 0)
   {
-    self->_createdOffsetMillis = *(v4 + 2);
+    self->_createdOffsetMillis = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_preferenceType = *(v4 + 9);
+    self->_preferenceType = *(fromCopy + 9);
     *&self->_has |= 4u;
   }
 }

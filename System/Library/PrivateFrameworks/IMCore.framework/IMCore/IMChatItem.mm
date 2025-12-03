@@ -1,13 +1,13 @@
 @interface IMChatItem
 - (BOOL)itemIsReply;
 - (BOOL)itemIsReplyContextPreview;
-- (BOOL)itemIsThreadOriginatorWithThreadIdentifier:(id *)a3;
+- (BOOL)itemIsThreadOriginatorWithThreadIdentifier:(id *)identifier;
 - (NSString)balloonBundleID;
-- (id)_initWithItem:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)threadGroupIdentifier;
-- (void)setNeedsReloadForTransferStatusChangeWithType:(int64_t)a3;
+- (void)setNeedsReloadForTransferStatusChangeWithType:(int64_t)type;
 @end
 
 @implementation IMChatItem
@@ -50,9 +50,9 @@
   return objc_msgSend_isReplyContextPreview(self, v3, v4);
 }
 
-- (BOOL)itemIsThreadOriginatorWithThreadIdentifier:(id *)a3
+- (BOOL)itemIsThreadOriginatorWithThreadIdentifier:(id *)identifier
 {
-  if (objc_msgSend_isReplyContextPreview(self, a2, a3))
+  if (objc_msgSend_isReplyContextPreview(self, a2, identifier))
   {
     return 0;
   }
@@ -60,18 +60,18 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = self;
-    v9 = objc_msgSend_replyCount(v6, v7, v8);
+    selfCopy = self;
+    v9 = objc_msgSend_replyCount(selfCopy, v7, v8);
     v5 = v9 != 0;
-    if (!a3 || !v9)
+    if (!identifier || !v9)
     {
       goto LABEL_12;
     }
 
-    v10 = IMCreateThreadIdentifierForMessagePartChatItem(v6);
+    v10 = IMCreateThreadIdentifierForMessagePartChatItem(selfCopy);
 LABEL_11:
     v15 = v10;
-    *a3 = v15;
+    *identifier = v15;
 
     v5 = 1;
 LABEL_12:
@@ -82,15 +82,15 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = self;
-    v14 = objc_msgSend_replyCount(v11, v12, v13);
+    selfCopy2 = self;
+    v14 = objc_msgSend_replyCount(selfCopy2, v12, v13);
     v5 = v14 != 0;
-    if (!a3 || !v14)
+    if (!identifier || !v14)
     {
       goto LABEL_12;
     }
 
-    v10 = IMCreateThreadIdentifierForRetractedMessagePartChatItem(v11);
+    v10 = IMCreateThreadIdentifierForRetractedMessagePartChatItem(selfCopy2);
     goto LABEL_11;
   }
 
@@ -102,8 +102,8 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
-    v6 = objc_msgSend_threadIdentifier(v3, v4, v5);
+    selfCopy = self;
+    v6 = objc_msgSend_threadIdentifier(selfCopy, v4, v5);
     if (v6)
     {
 LABEL_10:
@@ -113,11 +113,11 @@ LABEL_11:
       goto LABEL_13;
     }
 
-    isReplyContextPreview = objc_msgSend_isReplyContextPreview(v3, v7, v8);
-    v12 = objc_msgSend_replyCount(v3, v10, v11);
+    isReplyContextPreview = objc_msgSend_isReplyContextPreview(selfCopy, v7, v8);
+    v12 = objc_msgSend_replyCount(selfCopy, v10, v11);
     if ((isReplyContextPreview & 1) != 0 || v12)
     {
-      v6 = IMCreateThreadIdentifierForMessagePartChatItem(v3);
+      v6 = IMCreateThreadIdentifierForMessagePartChatItem(selfCopy);
       goto LABEL_10;
     }
 
@@ -129,16 +129,16 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = self;
-    v6 = objc_msgSend_threadIdentifier(v13, v14, v15);
+    selfCopy2 = self;
+    v6 = objc_msgSend_threadIdentifier(selfCopy2, v14, v15);
     if (v6)
     {
       goto LABEL_10;
     }
 
-    if (objc_msgSend_replyCount(v13, v16, v17))
+    if (objc_msgSend_replyCount(selfCopy2, v16, v17))
     {
-      v6 = IMCreateThreadIdentifierForRetractedMessagePartChatItem(v13);
+      v6 = IMCreateThreadIdentifierForRetractedMessagePartChatItem(selfCopy2);
       goto LABEL_10;
     }
 
@@ -162,7 +162,7 @@ LABEL_13:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   item = self->_item;
@@ -170,31 +170,31 @@ LABEL_13:
   return objc_msgSend__initWithItem_(v4, v5, item);
 }
 
-- (void)setNeedsReloadForTransferStatusChangeWithType:(int64_t)a3
+- (void)setNeedsReloadForTransferStatusChangeWithType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     if (!objc_msgSend_supportsCommunicationSafety(self, a2, 1))
     {
       return;
     }
 
-    a3 = 1;
+    type = 1;
   }
 
-  self->_fileTransferReloadStatus = a3;
+  self->_fileTransferReloadStatus = type;
 }
 
-- (id)_initWithItem:(id)a3
+- (id)_initWithItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = IMChatItem;
   v6 = [(IMChatItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_item, a3);
+    objc_storeStrong(&v6->_item, item);
   }
 
   return v7;

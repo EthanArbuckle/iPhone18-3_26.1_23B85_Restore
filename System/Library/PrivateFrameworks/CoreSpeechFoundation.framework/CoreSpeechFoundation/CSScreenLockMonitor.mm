@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (BOOL)_queryIsScreenLocked;
 - (CSScreenLockMonitor)init;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 - (void)dealloc;
 - (void)screenLockStateChanged;
@@ -13,13 +13,13 @@
 - (void)screenLockStateChanged
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(CSScreenLockMonitor *)self _queryIsScreenLocked];
-  self->_isScreenLocked = v3;
+  _queryIsScreenLocked = [(CSScreenLockMonitor *)self _queryIsScreenLocked];
+  self->_isScreenLocked = _queryIsScreenLocked;
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"Unlocked";
-    if (v3)
+    if (_queryIsScreenLocked)
     {
       v5 = @"Locked";
     }
@@ -81,14 +81,14 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__CSScreenLockMonitor__startMonitoringWithQueue___block_invoke;
   block[3] = &unk_1E865CB68;
   block[4] = self;
-  dispatch_async(a3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __49__CSScreenLockMonitor__startMonitoringWithQueue___block_invoke(uint64_t a1)

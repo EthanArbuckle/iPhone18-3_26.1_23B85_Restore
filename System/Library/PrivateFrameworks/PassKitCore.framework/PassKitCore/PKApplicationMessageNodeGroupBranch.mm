@@ -6,12 +6,12 @@
 
 - (id)_primaryRegistration
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [*(a1 + 40) objectAtIndexedSubscript:0];
+  v1 = [*(self + 40) objectAtIndexedSubscript:0];
   v2 = v1;
   if (v1 && (v3 = *(v1 + 40)) != 0)
   {

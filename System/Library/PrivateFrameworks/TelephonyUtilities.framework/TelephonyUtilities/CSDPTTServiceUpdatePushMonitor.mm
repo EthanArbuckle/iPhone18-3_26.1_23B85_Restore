@@ -1,36 +1,36 @@
 @interface CSDPTTServiceUpdatePushMonitor
-+ (BOOL)isPayloadPTTServiceUpdateMessage:(id)a3;
-- (CSDPTTServiceUpdatePushMonitor)initWithServiceUpdatePushBudgetDataSource:(id)a3;
-- (int64_t)remainingPTTWakingServiceUpdateBudgetForApplication:(id)a3;
-- (void)_resetPTTWakingServiceUpdateCountForApplication:(id)a3;
-- (void)displayPTTServiceUpdateOverBugetAlert:(id)a3;
-- (void)incrementPTTWakingServiceUpdateCountForApplication:(id)a3;
++ (BOOL)isPayloadPTTServiceUpdateMessage:(id)message;
+- (CSDPTTServiceUpdatePushMonitor)initWithServiceUpdatePushBudgetDataSource:(id)source;
+- (int64_t)remainingPTTWakingServiceUpdateBudgetForApplication:(id)application;
+- (void)_resetPTTWakingServiceUpdateCountForApplication:(id)application;
+- (void)displayPTTServiceUpdateOverBugetAlert:(id)alert;
+- (void)incrementPTTWakingServiceUpdateCountForApplication:(id)application;
 @end
 
 @implementation CSDPTTServiceUpdatePushMonitor
 
-- (CSDPTTServiceUpdatePushMonitor)initWithServiceUpdatePushBudgetDataSource:(id)a3
+- (CSDPTTServiceUpdatePushMonitor)initWithServiceUpdatePushBudgetDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v8.receiver = self;
   v8.super_class = CSDPTTServiceUpdatePushMonitor;
   v6 = [(CSDPTTServiceUpdatePushMonitor *)&v8 init];
   if (v6)
   {
-    if (!v5)
+    if (!sourceCopy)
     {
       [NSException raise:NSInvalidArgumentException format:@"%s: parameter '%@' cannot be nil", "[CSDPTTServiceUpdatePushMonitor initWithServiceUpdatePushBudgetDataSource:]", @"dataSource"];
     }
 
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v6;
 }
 
-+ (BOOL)isPayloadPTTServiceUpdateMessage:(id)a3
++ (BOOL)isPayloadPTTServiceUpdateMessage:(id)message
 {
-  v3 = [a3 objectForKey:@"aps"];
+  v3 = [message objectForKey:@"aps"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -55,32 +55,32 @@
   return v6;
 }
 
-- (void)_resetPTTWakingServiceUpdateCountForApplication:(id)a3
+- (void)_resetPTTWakingServiceUpdateCountForApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   v5 = [CSDPTTServiceUpdatePushBudget alloc];
-  v6 = [v4 bundleIdentifier];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
 
   v7 = +[NSDate date];
-  v8 = [(CSDPTTServiceUpdatePushBudget *)v5 initWithApplicationBundleIdentifier:v6 budgetStartTime:v7 serviceUpdatesDelivered:0];
+  v8 = [(CSDPTTServiceUpdatePushBudget *)v5 initWithApplicationBundleIdentifier:bundleIdentifier budgetStartTime:v7 serviceUpdatesDelivered:0];
 
   [(CSDPTTServiceUpdatePushBudgetDataSource *)self->_dataSource saveServiceUpdatePushBudget:v8];
 }
 
-- (void)incrementPTTWakingServiceUpdateCountForApplication:(id)a3
+- (void)incrementPTTWakingServiceUpdateCountForApplication:(id)application
 {
-  v4 = [(CSDPTTServiceUpdatePushBudgetDataSource *)self->_dataSource serviceUpdatePushBudgetForApplication:a3];
+  v4 = [(CSDPTTServiceUpdatePushBudgetDataSource *)self->_dataSource serviceUpdatePushBudgetForApplication:application];
   [v4 setServiceUpdatesDelivered:{objc_msgSend(v4, "serviceUpdatesDelivered") + 1}];
   [(CSDPTTServiceUpdatePushBudgetDataSource *)self->_dataSource saveServiceUpdatePushBudget:v4];
 }
 
-- (int64_t)remainingPTTWakingServiceUpdateBudgetForApplication:(id)a3
+- (int64_t)remainingPTTWakingServiceUpdateBudgetForApplication:(id)application
 {
-  v4 = a3;
-  v5 = [(CSDPTTServiceUpdatePushBudgetDataSource *)self->_dataSource serviceUpdatePushBudgetForApplication:v4];
+  applicationCopy = application;
+  v5 = [(CSDPTTServiceUpdatePushBudgetDataSource *)self->_dataSource serviceUpdatePushBudgetForApplication:applicationCopy];
   v6 = +[NSDate date];
-  v7 = [v5 budgetStartTime];
-  [v6 timeIntervalSinceDate:v7];
+  budgetStartTime = [v5 budgetStartTime];
+  [v6 timeIntervalSinceDate:budgetStartTime];
   v9 = v8;
 
   if (v9 <= 3600.0)
@@ -98,22 +98,22 @@
 
   else
   {
-    [(CSDPTTServiceUpdatePushMonitor *)self _resetPTTWakingServiceUpdateCountForApplication:v4];
+    [(CSDPTTServiceUpdatePushMonitor *)self _resetPTTWakingServiceUpdateCountForApplication:applicationCopy];
     v10 = 6;
   }
 
   return v10;
 }
 
-- (void)displayPTTServiceUpdateOverBugetAlert:(id)a3
+- (void)displayPTTServiceUpdateOverBugetAlert:(id)alert
 {
-  v3 = a3;
+  alertCopy = alert;
   v4 = +[NSMutableDictionary dictionary];
   v5 = TUBundle();
   v6 = [v5 localizedStringForKey:@"PUSH_TO_TALK_SERVICE_UPDATE_BUDGET_TITLE" value:&stru_100631E68 table:@"TelephonyUtilities"];
-  v7 = [NSString stringWithFormat:v6, v3];
+  alertCopy = [NSString stringWithFormat:v6, alertCopy];
 
-  [v4 setObject:v7 forKeyedSubscript:kCFUserNotificationAlertHeaderKey];
+  [v4 setObject:alertCopy forKeyedSubscript:kCFUserNotificationAlertHeaderKey];
   v8 = TUBundle();
   v9 = [v8 localizedStringForKey:@"PUSH_TO_TALK_SERVICE_UPDATE_BUDGET_MESSAGE" value:&stru_100631E68 table:@"TelephonyUtilities"];
   [v4 setObject:v9 forKeyedSubscript:kCFUserNotificationAlertMessageKey];

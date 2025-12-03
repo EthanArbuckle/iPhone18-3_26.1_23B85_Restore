@@ -1,65 +1,65 @@
 @interface MNDrivingTurnByTurnLocationTracker
-- (MNDrivingTurnByTurnLocationTracker)initWithNavigationSession:(id)a3;
-- (id)_currentVehicleParkingInfoForParkingType:(int64_t)a3;
-- (id)_matchedLocationForLocation:(id)a3;
-- (id)_newMapMatcherForRoute:(id)a3;
-- (id)_overrideLocationForLocation:(id)a3;
-- (int)_detectedMotionForLocation:(id)a3;
-- (void)_updateForArrivalAtLegIndex:(unint64_t)a3;
-- (void)_updateForLocation:(id)a3;
-- (void)_updateForNewAlternateRoutes:(id)a3;
-- (void)_updateForReroute:(id)a3 rerouteReason:(unint64_t)a4 request:(id)a5 response:(id)a6;
-- (void)_updateForSelectedNewRoute:(id)a3 alternateRoutes:(id)a4;
+- (MNDrivingTurnByTurnLocationTracker)initWithNavigationSession:(id)session;
+- (id)_currentVehicleParkingInfoForParkingType:(int64_t)type;
+- (id)_matchedLocationForLocation:(id)location;
+- (id)_newMapMatcherForRoute:(id)route;
+- (id)_overrideLocationForLocation:(id)location;
+- (int)_detectedMotionForLocation:(id)location;
+- (void)_updateForArrivalAtLegIndex:(unint64_t)index;
+- (void)_updateForLocation:(id)location;
+- (void)_updateForNewAlternateRoutes:(id)routes;
+- (void)_updateForReroute:(id)reroute rerouteReason:(unint64_t)reason request:(id)request response:(id)response;
+- (void)_updateForSelectedNewRoute:(id)route alternateRoutes:(id)routes;
 - (void)_updateWalkingRouteBackgroundLoader;
-- (void)arrivalUpdater:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5;
-- (void)arrivalUpdater:(id)a3 didUpdateVehicleParkingType:(int64_t)a4;
-- (void)setNavigationSessionState:(id)a3;
-- (void)startTrackingWithInitialLocation:(id)a3 targetLegIndex:(unint64_t)a4;
+- (void)arrivalUpdater:(id)updater didUpdateArrivalInfo:(id)info previousState:(int64_t)state;
+- (void)arrivalUpdater:(id)updater didUpdateVehicleParkingType:(int64_t)type;
+- (void)setNavigationSessionState:(id)state;
+- (void)startTrackingWithInitialLocation:(id)location targetLegIndex:(unint64_t)index;
 - (void)stopTracking;
-- (void)tunnelLocationProjector:(id)a3 didUpdateLocation:(id)a4;
-- (void)updateForETAUResponse:(id)a3;
-- (void)updateRequestForETAUpdate:(id)a3;
-- (void)walkingRouteBackgroundLoader:(id)a3 didUpdateWalkingRoute:(id)a4;
+- (void)tunnelLocationProjector:(id)projector didUpdateLocation:(id)location;
+- (void)updateForETAUResponse:(id)response;
+- (void)updateRequestForETAUpdate:(id)update;
+- (void)walkingRouteBackgroundLoader:(id)loader didUpdateWalkingRoute:(id)route;
 @end
 
 @implementation MNDrivingTurnByTurnLocationTracker
 
-- (void)walkingRouteBackgroundLoader:(id)a3 didUpdateWalkingRoute:(id)a4
+- (void)walkingRouteBackgroundLoader:(id)loader didUpdateWalkingRoute:(id)route
 {
-  v5 = a4;
-  v6 = [(MNLocationTracker *)self delegate];
-  [v6 locationTracker:self didUpdateBackgroundWalkingRoute:v5];
+  routeCopy = route;
+  delegate = [(MNLocationTracker *)self delegate];
+  [delegate locationTracker:self didUpdateBackgroundWalkingRoute:routeCopy];
 }
 
-- (void)tunnelLocationProjector:(id)a3 didUpdateLocation:(id)a4
+- (void)tunnelLocationProjector:(id)projector didUpdateLocation:(id)location
 {
-  v4 = a4;
+  locationCopy = location;
   v5 = +[MNLocationManager shared];
-  [v5 pushLocation:v4];
+  [v5 pushLocation:locationCopy];
 }
 
-- (void)arrivalUpdater:(id)a3 didUpdateVehicleParkingType:(int64_t)a4
+- (void)arrivalUpdater:(id)updater didUpdateVehicleParkingType:(int64_t)type
 {
-  v6 = [(MNDrivingTurnByTurnLocationTracker *)self _currentVehicleParkingInfoForParkingType:a4];
-  v5 = [(MNLocationTracker *)self delegate];
-  [v5 locationTracker:self didUpdateVehicleParkingInfo:v6];
+  v6 = [(MNDrivingTurnByTurnLocationTracker *)self _currentVehicleParkingInfoForParkingType:type];
+  delegate = [(MNLocationTracker *)self delegate];
+  [delegate locationTracker:self didUpdateVehicleParkingInfo:v6];
 }
 
 - (void)_updateWalkingRouteBackgroundLoader
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(MNLocationTracker *)self navigationSessionState];
-  v4 = [v3 arrivalState];
+  navigationSessionState = [(MNLocationTracker *)self navigationSessionState];
+  arrivalState = [navigationSessionState arrivalState];
   isInParkingDetectionRegion = 0;
-  if (v4 > 4)
+  if (arrivalState > 4)
   {
-    if (v4 == 6)
+    if (arrivalState == 6)
     {
       isInParkingDetectionRegion = self->_isInParkingDetectionRegion;
       goto LABEL_12;
     }
 
-    if (v4 != 5)
+    if (arrivalState != 5)
     {
       goto LABEL_12;
     }
@@ -67,9 +67,9 @@
     goto LABEL_7;
   }
 
-  if (v4)
+  if (arrivalState)
   {
-    if (v4 != 1)
+    if (arrivalState != 1)
     {
       goto LABEL_12;
     }
@@ -81,7 +81,7 @@ LABEL_7:
 
   if (self->_isInParkingDetectionRegion)
   {
-    isInParkingDetectionRegion = [v3 isDisplayingNavigationTray];
+    isInParkingDetectionRegion = [navigationSessionState isDisplayingNavigationTray];
   }
 
   else
@@ -111,7 +111,7 @@ LABEL_12:
       walkingRouteBackgroundLoader = self->_walkingRouteBackgroundLoader;
     }
 
-    [(MNWalkingRouteBackgroundLoader *)walkingRouteBackgroundLoader setNavigationSessionState:v3];
+    [(MNWalkingRouteBackgroundLoader *)walkingRouteBackgroundLoader setNavigationSessionState:navigationSessionState];
     [(MNWalkingRouteBackgroundLoader *)self->_walkingRouteBackgroundLoader start];
   }
 
@@ -123,14 +123,14 @@ LABEL_12:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)arrivalUpdater:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5
+- (void)arrivalUpdater:(id)updater didUpdateArrivalInfo:(id)info previousState:(int64_t)state
 {
-  v11 = a4;
-  v7 = [v11 arrivalState];
-  if (v7 <= 6 && ((1 << v7) & 0x62) != 0)
+  infoCopy = info;
+  arrivalState = [infoCopy arrivalState];
+  if (arrivalState <= 6 && ((1 << arrivalState) & 0x62) != 0)
   {
     [(MNDrivingTurnByTurnLocationTracker *)self _updateWalkingRouteBackgroundLoader];
-    if ([v11 arrivalState] == 1)
+    if ([infoCopy arrivalState] == 1)
     {
       v9 = 1;
     }
@@ -141,16 +141,16 @@ LABEL_12:
     }
 
     v10 = [(MNDrivingTurnByTurnLocationTracker *)self _currentVehicleParkingInfoForParkingType:v9];
-    [v11 setVehicleParkingInfo:v10];
+    [infoCopy setVehicleParkingInfo:v10];
   }
 
-  [(MNLocationTracker *)self _updateArrivalInfo:v11 previousState:a5];
+  [(MNLocationTracker *)self _updateArrivalInfo:infoCopy previousState:state];
 }
 
-- (int)_detectedMotionForLocation:(id)a3
+- (int)_detectedMotionForLocation:(id)location
 {
-  v4 = a3;
-  if (([v4 locationUnreliable] & 1) != 0 || (objc_msgSend(v4, "horizontalAccuracy"), v5 >= 50.0))
+  locationCopy = location;
+  if (([locationCopy locationUnreliable] & 1) != 0 || (objc_msgSend(locationCopy, "horizontalAccuracy"), v5 >= 50.0))
   {
     self->_vehicleExitConfidence = 0;
     v9 = GEOFindOrCreateLog();
@@ -165,12 +165,12 @@ LABEL_12:
 
   else
   {
-    v6 = [(MNLocationTracker *)self navigationSession];
-    v7 = [v6 motionContext];
+    navigationSession = [(MNLocationTracker *)self navigationSession];
+    motionContext = [navigationSession motionContext];
 
-    if ([v7 isDriving])
+    if ([motionContext isDriving])
     {
-      if ([v7 confidence])
+      if ([motionContext confidence])
       {
         v8 = 0;
       }
@@ -188,24 +188,24 @@ LABEL_12:
     {
       if (!self->_vehicleExitConfidence)
       {
-        v11 = [v4 rawLocation];
-        [v11 coordinate];
+        rawLocation = [locationCopy rawLocation];
+        [rawLocation coordinate];
         self->_vehicleExitCoordinate.latitude = v12;
         self->_vehicleExitCoordinate.longitude = v13;
       }
 
-      if (([v7 isWalking] & 1) != 0 || objc_msgSend(v7, "isRunning"))
+      if (([motionContext isWalking] & 1) != 0 || objc_msgSend(motionContext, "isRunning"))
       {
         self->_vehicleExitConfidence |= 1uLL;
         self->_detectedTransportType = 2;
       }
 
-      if ([v7 exitType] == 1)
+      if ([motionContext exitType] == 1)
       {
         self->_vehicleExitConfidence |= 4uLL;
       }
 
-      if ([v7 exitType] == 2)
+      if ([motionContext exitType] == 2)
       {
         self->_vehicleExitConfidence |= 6uLL;
       }
@@ -217,46 +217,46 @@ LABEL_12:
   return detectedTransportType;
 }
 
-- (void)_updateForNewAlternateRoutes:(id)a3
+- (void)_updateForNewAlternateRoutes:(id)routes
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  routesCopy = routes;
   if ([(MNLocationTracker *)self state]!= 2)
   {
-    v5 = [(MNLocationTracker *)self lastMatchedLocation];
-    [v5 coordinate];
-    v6 = [(MNLocationTracker *)self navigationSession];
-    v7 = [v6 destination];
+    lastMatchedLocation = [(MNLocationTracker *)self lastMatchedLocation];
+    [lastMatchedLocation coordinate];
+    navigationSession = [(MNLocationTracker *)self navigationSession];
+    destination = [navigationSession destination];
 
-    v8 = [v7 geoMapItem];
-    [v8 centerCoordinate];
+    geoMapItem = [destination geoMapItem];
+    [geoMapItem centerCoordinate];
     GEOCalculateDistance();
     v10 = v9;
 
     if (v10 < 1600.0)
     {
 
-      v4 = 0;
+      routesCopy = 0;
     }
   }
 
-  v11 = [(MNLocationTracker *)self navigationSession];
-  v12 = [v11 routeManager];
-  v13 = [v12 currentRouteInfo];
+  navigationSession2 = [(MNLocationTracker *)self navigationSession];
+  routeManager = [navigationSession2 routeManager];
+  currentRouteInfo = [routeManager currentRouteInfo];
 
-  if ([(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater setAlternateRoutes:v4 forMainRoute:v13])
+  if ([(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater setAlternateRoutes:routesCopy forMainRoute:currentRouteInfo])
   {
-    v14 = [(MNLocationTracker *)self delegate];
-    v15 = [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater alternateRoutes];
-    [v14 locationTracker:self didUpdateAlternateRoutes:v15];
+    delegate = [(MNLocationTracker *)self delegate];
+    alternateRoutes = [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater alternateRoutes];
+    [delegate locationTracker:self didUpdateAlternateRoutes:alternateRoutes];
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v16 = [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater alternateRoutes];
-  v17 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  alternateRoutes2 = [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater alternateRoutes];
+  v17 = [alternateRoutes2 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v17)
   {
     v18 = v17;
@@ -268,18 +268,18 @@ LABEL_12:
       {
         if (*v25 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(alternateRoutes2);
         }
 
         v21 = *(*(&v24 + 1) + 8 * v20);
-        v22 = [(MNLocationTracker *)self delegate];
-        [v22 locationTracker:self didUpdateETAForRoute:v21];
+        delegate2 = [(MNLocationTracker *)self delegate];
+        [delegate2 locationTracker:self didUpdateETAForRoute:v21];
 
         ++v20;
       }
 
       while (v18 != v20);
-      v18 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v18 = [alternateRoutes2 countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v18);
@@ -288,116 +288,116 @@ LABEL_12:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateForSelectedNewRoute:(id)a3 alternateRoutes:(id)a4
+- (void)_updateForSelectedNewRoute:(id)route alternateRoutes:(id)routes
 {
-  [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater setAlternateRoutes:a4 forMainRoute:a3];
-  v6 = [(MNLocationTracker *)self delegate];
-  v5 = [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater alternateRoutes];
-  [v6 locationTracker:self didUpdateAlternateRoutes:v5];
+  [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater setAlternateRoutes:routes forMainRoute:route];
+  delegate = [(MNLocationTracker *)self delegate];
+  alternateRoutes = [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater alternateRoutes];
+  [delegate locationTracker:self didUpdateAlternateRoutes:alternateRoutes];
 }
 
-- (void)_updateForArrivalAtLegIndex:(unint64_t)a3
+- (void)_updateForArrivalAtLegIndex:(unint64_t)index
 {
   [(MNTunnelLocationProjector *)self->_tunnelLocationProjector setDelegate:0];
   [(MNTunnelLocationProjector *)self->_tunnelLocationProjector stop];
   v5.receiver = self;
   v5.super_class = MNDrivingTurnByTurnLocationTracker;
-  [(MNTurnByTurnLocationTracker *)&v5 _updateForArrivalAtLegIndex:a3];
+  [(MNTurnByTurnLocationTracker *)&v5 _updateForArrivalAtLegIndex:index];
 }
 
-- (void)_updateForReroute:(id)a3 rerouteReason:(unint64_t)a4 request:(id)a5 response:(id)a6
+- (void)_updateForReroute:(id)reroute rerouteReason:(unint64_t)reason request:(id)request response:(id)response
 {
-  v32 = a3;
-  v10 = a6;
-  v11 = a5;
+  rerouteCopy = reroute;
+  responseCopy = response;
+  requestCopy = request;
   Integer = GEOConfigGetInteger();
   if (Integer)
   {
     v13 = Integer;
-    v14 = [(MNLocationTracker *)self lastMatchedLocation];
-    if (v14)
+    lastMatchedLocation = [(MNLocationTracker *)self lastMatchedLocation];
+    if (lastMatchedLocation)
     {
-      v15 = [(MNLocationTracker *)self lastMatchedLocation];
-      v16 = [v15 routeMatch];
+      lastMatchedLocation2 = [(MNLocationTracker *)self lastMatchedLocation];
+      routeMatch = [lastMatchedLocation2 routeMatch];
 
-      if (v16)
+      if (routeMatch)
       {
-        v17 = [(MNLocationTracker *)self lastMatchedLocation];
-        v18 = [v17 routeMatch];
+        lastMatchedLocation3 = [(MNLocationTracker *)self lastMatchedLocation];
+        routeMatch2 = [lastMatchedLocation3 routeMatch];
 
-        v19 = [v32 route];
-        [v19 distanceToEndFromRouteCoordinate:{objc_msgSend(v18, "routeCoordinate")}];
-        v14 = v20;
+        route = [rerouteCopy route];
+        [route distanceToEndFromRouteCoordinate:{objc_msgSend(routeMatch2, "routeCoordinate")}];
+        lastMatchedLocation = v20;
       }
 
       else
       {
-        v14 = 0;
+        lastMatchedLocation = 0;
       }
     }
 
-    v21 = [(MNLocationTracker *)self targetLegIndex];
-    v22 = [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater alternateRoutes];
-    v23 = [v22 firstObject];
-    [v10 addFakeTrafficIncidentAlert:v13 targetLegIndex:v21 mainRouteInfo:v32 alternateRouteInfo:v23 currentDistance:v14];
+    targetLegIndex = [(MNLocationTracker *)self targetLegIndex];
+    alternateRoutes = [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater alternateRoutes];
+    firstObject = [alternateRoutes firstObject];
+    [responseCopy addFakeTrafficIncidentAlert:v13 targetLegIndex:targetLegIndex mainRouteInfo:rerouteCopy alternateRouteInfo:firstObject currentDistance:lastMatchedLocation];
   }
 
-  [(MNTunnelLocationProjector *)self->_tunnelLocationProjector updateForRouteInfo:v32];
-  [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater updateForReroute:v32 rerouteReason:a4];
-  v24 = [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater alternateRoutes];
-  v25 = [v32 route];
-  v26 = [v25 etauPositions];
-  v27 = [v26 mutableCopy];
+  [(MNTunnelLocationProjector *)self->_tunnelLocationProjector updateForRouteInfo:rerouteCopy];
+  [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater updateForReroute:rerouteCopy rerouteReason:reason];
+  alternateRoutes2 = [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater alternateRoutes];
+  route2 = [rerouteCopy route];
+  etauPositions = [route2 etauPositions];
+  v27 = [etauPositions mutableCopy];
   etauPositions = self->_etauPositions;
   self->_etauPositions = v27;
 
-  v29 = [(MNLocationTracker *)self delegate];
-  [v29 locationTracker:self didReroute:v32 newAlternateRoutes:v24 rerouteReason:a4 request:v11 response:v10];
+  delegate = [(MNLocationTracker *)self delegate];
+  [delegate locationTracker:self didReroute:rerouteCopy newAlternateRoutes:alternateRoutes2 rerouteReason:reason request:requestCopy response:responseCopy];
 
-  if (a4 != 11)
+  if (reason != 11)
   {
-    v30 = [v24 firstObject];
-    v31 = [MNTrafficIncidentAlert validTrafficIncidentAlertsForNewRoute:v32 alternateRouteInfo:v30];
+    firstObject2 = [alternateRoutes2 firstObject];
+    v31 = [MNTrafficIncidentAlert validTrafficIncidentAlertsForNewRoute:rerouteCopy alternateRouteInfo:firstObject2];
     [(MNTurnByTurnLocationTracker *)self _updateForNewTrafficIncidentAlerts:v31];
   }
 }
 
-- (void)_updateForLocation:(id)a3
+- (void)_updateForLocation:(id)location
 {
-  v10 = a3;
-  [(MNTunnelLocationProjector *)self->_tunnelLocationProjector updateLocation:v10];
-  if ([(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater updateForLocation:v10])
+  locationCopy = location;
+  [(MNTunnelLocationProjector *)self->_tunnelLocationProjector updateLocation:locationCopy];
+  if ([(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater updateForLocation:locationCopy])
   {
-    v4 = [(MNLocationTracker *)self delegate];
-    v5 = [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater alternateRoutes];
-    [v4 locationTracker:self didUpdateAlternateRoutes:v5];
+    delegate = [(MNLocationTracker *)self delegate];
+    alternateRoutes = [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater alternateRoutes];
+    [delegate locationTracker:self didUpdateAlternateRoutes:alternateRoutes];
   }
 
-  v6 = [(NSMutableArray *)self->_etauPositions firstObject];
-  if (v6)
+  firstObject = [(NSMutableArray *)self->_etauPositions firstObject];
+  if (firstObject)
   {
-    v7 = [v10 routeMatch];
-    [v7 routeCoordinate];
-    [v6 routeCoordinate];
+    routeMatch = [locationCopy routeMatch];
+    [routeMatch routeCoordinate];
+    [firstObject routeCoordinate];
     v8 = GEOPolylineCoordinateCompare();
 
     if (v8 != -1)
     {
-      v9 = [(MNLocationTracker *)self delegate];
-      [v9 locationTracker:self didReachETAUpdatePosition:v6];
+      delegate2 = [(MNLocationTracker *)self delegate];
+      [delegate2 locationTracker:self didReachETAUpdatePosition:firstObject];
 
-      [(NSMutableArray *)self->_etauPositions removeObject:v6];
+      [(NSMutableArray *)self->_etauPositions removeObject:firstObject];
     }
   }
 }
 
-- (id)_overrideLocationForLocation:(id)a3
+- (id)_overrideLocationForLocation:(id)location
 {
-  v4 = a3;
-  v5 = v4;
+  locationCopy = location;
+  v5 = locationCopy;
   if (self->_lastKnownCourse >= 0.0)
   {
-    [v4 rawCourse];
+    [locationCopy rawCourse];
     if (v6 >= 0.0)
     {
       [v5 rawCourse];
@@ -450,28 +450,28 @@ LABEL_17:
   return v5;
 }
 
-- (id)_newMapMatcherForRoute:(id)a3
+- (id)_newMapMatcherForRoute:(id)route
 {
   v4 = MEMORY[0x1E69A2280];
-  v5 = a3;
+  routeCopy = route;
   v6 = [v4 alloc];
-  v7 = [(MNLocationTracker *)self _auditToken];
-  v8 = [v6 initWithRoute:v5 auditToken:v7];
+  _auditToken = [(MNLocationTracker *)self _auditToken];
+  v8 = [v6 initWithRoute:routeCopy auditToken:_auditToken];
 
   [v8 setUseMatchedCoordinateForMatching:GEOConfigGetBOOL()];
   return v8;
 }
 
-- (id)_matchedLocationForLocation:(id)a3
+- (id)_matchedLocationForLocation:(id)location
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   v5 = MNGetPuckTrackingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 uuid];
+    uuid = [locationCopy uuid];
     *buf = 138412290;
-    v29 = v6;
+    v29 = uuid;
     _os_log_impl(&dword_1D311E000, v5, OS_LOG_TYPE_INFO, "[MN] [%@] - Processing - in MNDrivingTurnByTurnLocationTracker::_matchedLocationForLocation:", buf, 0xCu);
   }
 
@@ -487,8 +487,8 @@ LABEL_17:
 
   if ([(MNTunnelLocationProjector *)self->_tunnelLocationProjector isProjecting])
   {
-    [v4 horizontalAccuracy];
-    if (v11 > 65.0 || ([v4 course], v12 < 0.0) || (objc_msgSend(v4, "speed"), v13 < 0.0))
+    [locationCopy horizontalAccuracy];
+    if (v11 > 65.0 || ([locationCopy course], v12 < 0.0) || (objc_msgSend(locationCopy, "speed"), v13 < 0.0))
     {
       v14 = GEOFindOrCreateLog();
       if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -505,13 +505,13 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v17 = [(MNLocationTracker *)self lastMatchedLocation];
-    v18 = [v17 timestamp];
-    [v18 timeIntervalSinceReferenceDate];
+    lastMatchedLocation = [(MNLocationTracker *)self lastMatchedLocation];
+    timestamp = [lastMatchedLocation timestamp];
+    [timestamp timeIntervalSinceReferenceDate];
     v20 = v19;
 
-    v21 = [v4 timestamp];
-    [v21 timeIntervalSinceReferenceDate];
+    timestamp2 = [locationCopy timestamp];
+    [timestamp2 timeIntervalSinceReferenceDate];
     v23 = v22;
 
     if (v23 + 2.0 < v20)
@@ -530,7 +530,7 @@ LABEL_12:
 
   v27.receiver = self;
   v27.super_class = MNDrivingTurnByTurnLocationTracker;
-  v16 = [(MNTurnByTurnLocationTracker *)&v27 _matchedLocationForLocation:v4];
+  v16 = [(MNTurnByTurnLocationTracker *)&v27 _matchedLocationForLocation:locationCopy];
   v24 = v10;
   v14 = v24;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
@@ -546,31 +546,31 @@ LABEL_18:
   return v16;
 }
 
-- (void)updateForETAUResponse:(id)a3
+- (void)updateForETAUResponse:(id)response
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  responseCopy = response;
   v33.receiver = self;
   v33.super_class = MNDrivingTurnByTurnLocationTracker;
-  [(MNTurnByTurnLocationTracker *)&v33 updateForETAUResponse:v4];
-  v5 = [(MNLocationTracker *)self navigationSessionState];
-  v6 = [v5 currentRouteInfo];
-  v7 = [v6 route];
+  [(MNTurnByTurnLocationTracker *)&v33 updateForETAUResponse:responseCopy];
+  navigationSessionState = [(MNLocationTracker *)self navigationSessionState];
+  currentRouteInfo = [navigationSessionState currentRouteInfo];
+  route = [currentRouteInfo route];
 
   v8 = objc_alloc(MEMORY[0x1E69A2538]);
-  v9 = [v4 waypoints];
-  v10 = [v4 request];
-  v11 = [v10 routeAttributes];
-  v12 = [v4 response];
-  v13 = [v7 styleAttributes];
-  v14 = [v8 initWithWaypoints:v9 routeAttributes:v11 etauResponse:v12 styleAttributes:v13];
+  waypoints = [responseCopy waypoints];
+  request = [responseCopy request];
+  routeAttributes = [request routeAttributes];
+  response = [responseCopy response];
+  styleAttributes = [route styleAttributes];
+  v14 = [v8 initWithWaypoints:waypoints routeAttributes:routeAttributes etauResponse:response styleAttributes:styleAttributes];
 
-  v15 = [v14 allETAUAlternateRouteInfos];
-  v16 = [(MNLocationTracker *)self navigationSession];
-  v17 = [v16 routeManager];
-  v18 = [v17 currentRouteInfo];
-  v19 = [v15 firstObject];
-  v20 = [MNTrafficIncidentAlert validTrafficIncidentAlertsForETAUpdate:v18 alternateRouteInfo:v19];
+  allETAUAlternateRouteInfos = [v14 allETAUAlternateRouteInfos];
+  navigationSession = [(MNLocationTracker *)self navigationSession];
+  routeManager = [navigationSession routeManager];
+  currentRouteInfo2 = [routeManager currentRouteInfo];
+  firstObject = [allETAUAlternateRouteInfos firstObject];
+  v20 = [MNTrafficIncidentAlert validTrafficIncidentAlertsForETAUpdate:currentRouteInfo2 alternateRouteInfo:firstObject];
 
   [(MNTurnByTurnLocationTracker *)self _updateForNewTrafficIncidentAlerts:v20];
   v31 = 0u;
@@ -583,7 +583,7 @@ LABEL_18:
   {
 
 LABEL_11:
-    [(MNDrivingTurnByTurnLocationTracker *)self _updateForNewAlternateRoutes:v15, v29];
+    [(MNDrivingTurnByTurnLocationTracker *)self _updateForNewAlternateRoutes:allETAUAlternateRouteInfos, v29];
     goto LABEL_12;
   }
 
@@ -599,8 +599,8 @@ LABEL_11:
         objc_enumerationMutation(v21);
       }
 
-      v27 = [*(*(&v29 + 1) + 8 * i) alternateRoute];
-      v24 |= v27 != 0;
+      alternateRoute = [*(*(&v29 + 1) + 8 * i) alternateRoute];
+      v24 |= alternateRoute != 0;
     }
 
     v23 = [v21 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -618,22 +618,22 @@ LABEL_12:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateRequestForETAUpdate:(id)a3
+- (void)updateRequestForETAUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v11.receiver = self;
   v11.super_class = MNDrivingTurnByTurnLocationTracker;
-  [(MNTurnByTurnLocationTracker *)&v11 updateRequestForETAUpdate:v4];
-  v5 = [(MNLocationTracker *)self navigationSession];
-  v6 = [v5 serverSessionStateInfo];
-  v7 = [v6 displayedTrafficBanners];
+  [(MNTurnByTurnLocationTracker *)&v11 updateRequestForETAUpdate:updateCopy];
+  navigationSession = [(MNLocationTracker *)self navigationSession];
+  serverSessionStateInfo = [navigationSession serverSessionStateInfo];
+  displayedTrafficBanners = [serverSessionStateInfo displayedTrafficBanners];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__MNDrivingTurnByTurnLocationTracker_updateRequestForETAUpdate___block_invoke;
   v9[3] = &unk_1E842BA58;
-  v10 = v4;
-  v8 = v4;
-  [v7 enumerateKeysAndObjectsUsingBlock:v9];
+  v10 = updateCopy;
+  v8 = updateCopy;
+  [displayedTrafficBanners enumerateKeysAndObjectsUsingBlock:v9];
 }
 
 void __64__MNDrivingTurnByTurnLocationTracker_updateRequestForETAUpdate___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -678,22 +678,22 @@ void __64__MNDrivingTurnByTurnLocationTracker_updateRequestForETAUpdate___block_
   self->_walkingRouteBackgroundLoader = 0;
 }
 
-- (void)startTrackingWithInitialLocation:(id)a3 targetLegIndex:(unint64_t)a4
+- (void)startTrackingWithInitialLocation:(id)location targetLegIndex:(unint64_t)index
 {
   v30.receiver = self;
   v30.super_class = MNDrivingTurnByTurnLocationTracker;
-  [(MNTurnByTurnLocationTracker *)&v30 startTrackingWithInitialLocation:a3 targetLegIndex:a4];
-  v5 = [(MNLocationTracker *)self navigationSession];
-  v6 = [v5 routeManager];
+  [(MNTurnByTurnLocationTracker *)&v30 startTrackingWithInitialLocation:location targetLegIndex:index];
+  navigationSession = [(MNLocationTracker *)self navigationSession];
+  routeManager = [navigationSession routeManager];
 
-  v7 = [(MNLocationTracker *)self navigationSession];
-  v8 = [v7 routeManager];
-  v9 = [v8 currentRouteInfo];
-  v10 = [(MNLocationTracker *)self navigationSession];
-  v11 = [v10 routeManager];
-  v12 = [v11 alternateRoutes];
-  v13 = [v12 firstObject];
-  v14 = [MNTrafficIncidentAlert validTrafficIncidentAlertsForNewRoute:v9 alternateRouteInfo:v13];
+  navigationSession2 = [(MNLocationTracker *)self navigationSession];
+  routeManager2 = [navigationSession2 routeManager];
+  currentRouteInfo = [routeManager2 currentRouteInfo];
+  navigationSession3 = [(MNLocationTracker *)self navigationSession];
+  routeManager3 = [navigationSession3 routeManager];
+  alternateRoutes = [routeManager3 alternateRoutes];
+  firstObject = [alternateRoutes firstObject];
+  v14 = [MNTrafficIncidentAlert validTrafficIncidentAlertsForNewRoute:currentRouteInfo alternateRouteInfo:firstObject];
   [(MNTurnByTurnLocationTracker *)self _updateForNewTrafficIncidentAlerts:v14];
 
   v15 = objc_alloc_init(MNTunnelLocationProjector);
@@ -702,75 +702,75 @@ void __64__MNDrivingTurnByTurnLocationTracker_updateRequestForETAUpdate___block_
 
   [(MNTunnelLocationProjector *)self->_tunnelLocationProjector setDelegate:self];
   v17 = self->_tunnelLocationProjector;
-  v18 = [v6 currentRouteInfo];
-  [(MNTunnelLocationProjector *)v17 updateForRouteInfo:v18];
+  currentRouteInfo2 = [routeManager currentRouteInfo];
+  [(MNTunnelLocationProjector *)v17 updateForRouteInfo:currentRouteInfo2];
 
   v19 = objc_alloc_init(MNAlternateRoutesUpdater);
   alternateRoutesUpdater = self->_alternateRoutesUpdater;
   self->_alternateRoutesUpdater = v19;
 
   v21 = self->_alternateRoutesUpdater;
-  v22 = [v6 alternateRoutes];
-  v23 = [v6 currentRouteInfo];
-  [(MNAlternateRoutesUpdater *)v21 setAlternateRoutes:v22 forMainRoute:v23];
+  alternateRoutes2 = [routeManager alternateRoutes];
+  currentRouteInfo3 = [routeManager currentRouteInfo];
+  [(MNAlternateRoutesUpdater *)v21 setAlternateRoutes:alternateRoutes2 forMainRoute:currentRouteInfo3];
 
-  v24 = [(MNLocationTracker *)self delegate];
-  v25 = [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater alternateRoutes];
-  [v24 locationTracker:self didUpdateAlternateRoutes:v25];
+  delegate = [(MNLocationTracker *)self delegate];
+  alternateRoutes3 = [(MNAlternateRoutesUpdater *)self->_alternateRoutesUpdater alternateRoutes];
+  [delegate locationTracker:self didUpdateAlternateRoutes:alternateRoutes3];
 
-  v26 = [v6 currentRoute];
-  v27 = [v26 etauPositions];
-  v28 = [v27 mutableCopy];
+  currentRoute = [routeManager currentRoute];
+  etauPositions = [currentRoute etauPositions];
+  v28 = [etauPositions mutableCopy];
   etauPositions = self->_etauPositions;
   self->_etauPositions = v28;
 }
 
-- (void)setNavigationSessionState:(id)a3
+- (void)setNavigationSessionState:(id)state
 {
-  v4 = a3;
-  v5 = [(MNLocationTracker *)self navigationSessionState];
-  v6 = [v5 arrivalState];
-  v7 = [v4 arrivalState];
+  stateCopy = state;
+  navigationSessionState = [(MNLocationTracker *)self navigationSessionState];
+  arrivalState = [navigationSessionState arrivalState];
+  arrivalState2 = [stateCopy arrivalState];
 
-  v8 = [(MNLocationTracker *)self navigationSessionState];
-  v9 = [v8 isDisplayingNavigationTray];
-  v10 = [v4 isDisplayingNavigationTray];
+  navigationSessionState2 = [(MNLocationTracker *)self navigationSessionState];
+  isDisplayingNavigationTray = [navigationSessionState2 isDisplayingNavigationTray];
+  isDisplayingNavigationTray2 = [stateCopy isDisplayingNavigationTray];
 
   v11.receiver = self;
   v11.super_class = MNDrivingTurnByTurnLocationTracker;
-  [(MNTurnByTurnLocationTracker *)&v11 setNavigationSessionState:v4];
-  [(MNWalkingRouteBackgroundLoader *)self->_walkingRouteBackgroundLoader setNavigationSessionState:v4];
+  [(MNTurnByTurnLocationTracker *)&v11 setNavigationSessionState:stateCopy];
+  [(MNWalkingRouteBackgroundLoader *)self->_walkingRouteBackgroundLoader setNavigationSessionState:stateCopy];
 
-  if (v6 != v7 || v9 != v10)
+  if (arrivalState != arrivalState2 || isDisplayingNavigationTray != isDisplayingNavigationTray2)
   {
     [(MNDrivingTurnByTurnLocationTracker *)self _updateWalkingRouteBackgroundLoader];
   }
 }
 
-- (id)_currentVehicleParkingInfoForParkingType:(int64_t)a3
+- (id)_currentVehicleParkingInfoForParkingType:(int64_t)type
 {
   v5 = objc_alloc_init(MNVehicleParkingInfo);
-  [(MNVehicleParkingInfo *)v5 setParkingType:a3];
+  [(MNVehicleParkingInfo *)v5 setParkingType:type];
   walkingRouteBackgroundLoader = self->_walkingRouteBackgroundLoader;
   if (walkingRouteBackgroundLoader)
   {
-    v7 = [(MNWalkingRouteBackgroundLoader *)walkingRouteBackgroundLoader walkingRouteInfo];
-    v8 = [v7 route];
-    [(MNVehicleParkingInfo *)v5 setRemainingWalkingRoute:v8];
+    walkingRouteInfo = [(MNWalkingRouteBackgroundLoader *)walkingRouteBackgroundLoader walkingRouteInfo];
+    route = [walkingRouteInfo route];
+    [(MNVehicleParkingInfo *)v5 setRemainingWalkingRoute:route];
 
-    v9 = [(MNWalkingRouteBackgroundLoader *)self->_walkingRouteBackgroundLoader walkingRouteInfo];
-    v10 = [v9 displayETAInfo];
-    [(MNVehicleParkingInfo *)v5 setWalkingRouteDisplayETAInfo:v10];
+    walkingRouteInfo2 = [(MNWalkingRouteBackgroundLoader *)self->_walkingRouteBackgroundLoader walkingRouteInfo];
+    displayETAInfo = [walkingRouteInfo2 displayETAInfo];
+    [(MNVehicleParkingInfo *)v5 setWalkingRouteDisplayETAInfo:displayETAInfo];
   }
 
   return v5;
 }
 
-- (MNDrivingTurnByTurnLocationTracker)initWithNavigationSession:(id)a3
+- (MNDrivingTurnByTurnLocationTracker)initWithNavigationSession:(id)session
 {
   v7.receiver = self;
   v7.super_class = MNDrivingTurnByTurnLocationTracker;
-  v3 = [(MNTurnByTurnLocationTracker *)&v7 initWithNavigationSession:a3];
+  v3 = [(MNTurnByTurnLocationTracker *)&v7 initWithNavigationSession:session];
   v4 = v3;
   if (v3)
   {

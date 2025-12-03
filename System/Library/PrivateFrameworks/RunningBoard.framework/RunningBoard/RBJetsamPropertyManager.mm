@@ -1,27 +1,27 @@
 @interface RBJetsamPropertyManager
 + (id)testJetsamProperties;
 + (id)unmanagedJetsamProperties;
-+ (int)testTaskLimitForPid:(int)a3;
++ (int)testTaskLimitForPid:(int)pid;
 + (uint64_t)_taskLimit;
-- (BOOL)_isNotValidProperties:(_BOOL8)a1;
-- (RBJetsamPropertyManager)initWithEntitlementManager:(id)a3;
-- (RBJetsamPropertyManager)initWithEntitlementManager:(id)a3 properties:(id)a4;
+- (BOOL)_isNotValidProperties:(_BOOL8)properties;
+- (RBJetsamPropertyManager)initWithEntitlementManager:(id)manager;
+- (RBJetsamPropertyManager)initWithEntitlementManager:(id)manager properties:(id)properties;
 - (__CFString)_jetsamTargetType;
-- (id)_encodedValue:(uint64_t)a1;
-- (id)_jetsamPropertiesForAngelProcess:(uint64_t)a1 identity:(uint64_t)a2 bundleProperties:(void *)a3;
-- (id)_jetsamPropertiesForAppProcess:(uint64_t)a1 identity:(uint64_t)a2 bundleProperties:(uint64_t)a3 isPlatformBinary:(uint64_t)a4;
-- (id)_jetsamPropertiesForDaemonProcess:(uint64_t)a1 identity:(uint64_t)a2 bundleProperties:(void *)a3;
-- (id)_jetsamPropertiesForExtensionProcess:(void *)a3 identity:(void *)a4 bundleProperties:;
-- (id)_jetsamPropertiesForProcess:(void *)a3 identifier:(void *)a4 properties:(void *)a5 global:;
-- (id)_jetsamPropertiesForServiceProcess:(uint64_t)a1 identity:(uint64_t)a2 bundleProperties:(uint64_t)a3 isPlatformBinary:(uint64_t)a4;
-- (id)_jetsamPropertiesWithTaskLimit:(void *)a1;
-- (id)_jetsamTryBasePath:(void *)a3 target:(void *)a4 extension:;
-- (id)_jetsamTryPath:(void *)a3 target:(void *)a4 extension:;
+- (id)_encodedValue:(uint64_t)value;
+- (id)_jetsamPropertiesForAngelProcess:(uint64_t)process identity:(uint64_t)identity bundleProperties:(void *)properties;
+- (id)_jetsamPropertiesForAppProcess:(uint64_t)process identity:(uint64_t)identity bundleProperties:(uint64_t)properties isPlatformBinary:(uint64_t)binary;
+- (id)_jetsamPropertiesForDaemonProcess:(uint64_t)process identity:(uint64_t)identity bundleProperties:(void *)properties;
+- (id)_jetsamPropertiesForExtensionProcess:(void *)process identity:(void *)identity bundleProperties:;
+- (id)_jetsamPropertiesForProcess:(void *)process identifier:(void *)identifier properties:(void *)properties global:;
+- (id)_jetsamPropertiesForServiceProcess:(uint64_t)process identity:(uint64_t)identity bundleProperties:(uint64_t)properties isPlatformBinary:(uint64_t)binary;
+- (id)_jetsamPropertiesWithTaskLimit:(void *)limit;
+- (id)_jetsamTryBasePath:(void *)path target:(void *)target extension:;
+- (id)_jetsamTryPath:(void *)path target:(void *)target extension:;
 - (id)_loadJetsamProperties;
-- (uint64_t)_taskLimitForProcess:(uint64_t)a1;
-- (uint64_t)_unLimitForProcess:(uint64_t)a1;
-- (void)_addJetsamValuesForSection:(void *)a3 fromPlist:(void *)a4 toDatabase:;
-- (void)_prepareJetsamData:(id *)a1;
+- (uint64_t)_taskLimitForProcess:(uint64_t)process;
+- (uint64_t)_unLimitForProcess:(uint64_t)process;
+- (void)_addJetsamValuesForSection:(void *)section fromPlist:(void *)plist toDatabase:;
+- (void)_prepareJetsamData:(id *)data;
 @end
 
 @implementation RBJetsamPropertyManager
@@ -137,24 +137,24 @@ LABEL_12:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (RBJetsamPropertyManager)initWithEntitlementManager:(id)a3 properties:(id)a4
+- (RBJetsamPropertyManager)initWithEntitlementManager:(id)manager properties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  propertiesCopy = properties;
   v12.receiver = self;
   v12.super_class = RBJetsamPropertyManager;
   v9 = [(RBJetsamPropertyManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_entitlementManager, a3);
-    [(RBJetsamPropertyManager *)&v10->super.isa _prepareJetsamData:v8];
+    objc_storeStrong(&v9->_entitlementManager, manager);
+    [(RBJetsamPropertyManager *)&v10->super.isa _prepareJetsamData:propertiesCopy];
   }
 
   return v10;
 }
 
-+ (int)testTaskLimitForPid:(int)a3
++ (int)testTaskLimitForPid:(int)pid
 {
   v3 = memorystatus_control();
   if (v3 <= 0)
@@ -192,7 +192,7 @@ LABEL_12:
 - (__CFString)_jetsamTargetType
 {
   v31 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_4_3();
     v6 = sysctlbyname(v1, v2, v3, v4, v5);
@@ -258,25 +258,25 @@ LABEL_14:
   return v8;
 }
 
-- (id)_jetsamTryPath:(void *)a3 target:(void *)a4 extension:
+- (id)_jetsamTryPath:(void *)path target:(void *)target extension:
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = a4;
-    v8 = a3;
+    targetCopy = target;
+    pathCopy = path;
     v9 = a2;
-    v10 = [[v6 alloc] initWithFormat:@"%@.%@.%@", v9, v8, v7];
+    targetCopy = [[v6 alloc] initWithFormat:@"%@.%@.%@", v9, pathCopy, targetCopy];
 
-    v11 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfFile:v10];
+    v11 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfFile:targetCopy];
     if (v11)
     {
       v12 = rbs_jetsam_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v16 = v10;
+        v16 = targetCopy;
         _os_log_impl(&dword_262485000, v12, OS_LOG_TYPE_DEFAULT, "Loaded jetsamproperties from %@", buf, 0xCu);
       }
     }
@@ -292,16 +292,16 @@ LABEL_14:
   return v11;
 }
 
-- (id)_jetsamTryBasePath:(void *)a3 target:(void *)a4 extension:
+- (id)_jetsamTryBasePath:(void *)path target:(void *)target extension:
 {
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  targetCopy = target;
+  if (self)
   {
-    v9 = [(RBJetsamPropertyManager *)a1 _jetsamTryPath:v7 target:a3 extension:v8];
+    v9 = [(RBJetsamPropertyManager *)self _jetsamTryPath:v7 target:path extension:targetCopy];
     if (!v9)
     {
-      v9 = [(RBJetsamPropertyManager *)a1 _jetsamTryPath:v7 target:@"NonUI" extension:v8];
+      v9 = [(RBJetsamPropertyManager *)self _jetsamTryPath:v7 target:@"NonUI" extension:targetCopy];
     }
   }
 
@@ -316,9 +316,9 @@ LABEL_14:
 - (id)_loadJetsamProperties
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [(RBJetsamPropertyManager *)a1 _jetsamTargetType];
+    _jetsamTargetType = [(RBJetsamPropertyManager *)self _jetsamTargetType];
     is_darwinos = os_variant_is_darwinos();
     v4 = @"plist";
     if (is_darwinos)
@@ -327,7 +327,7 @@ LABEL_14:
     }
 
     v5 = v4;
-    if (os_variant_has_internal_content() && ([(RBJetsamPropertyManager *)a1 _jetsamTryBasePath:v2 target:v5 extension:?], (v6 = objc_claimAutoreleasedReturnValue()) != 0) || ([(RBJetsamPropertyManager *)a1 _jetsamTryBasePath:v2 target:v5 extension:?], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (os_variant_has_internal_content() && ([(RBJetsamPropertyManager *)self _jetsamTryBasePath:_jetsamTargetType target:v5 extension:?], (v6 = objc_claimAutoreleasedReturnValue()) != 0) || ([(RBJetsamPropertyManager *)self _jetsamTryBasePath:_jetsamTargetType target:v5 extension:?], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v7 = v6;
     }
@@ -348,7 +348,7 @@ LABEL_14:
         v14 = 138412802;
         v15 = v13;
         v16 = 2112;
-        v17 = v2;
+        v17 = _jetsamTargetType;
         v18 = 2112;
         v19 = v5;
         _os_log_error_impl(&dword_262485000, v10, OS_LOG_TYPE_ERROR, "Can't find jetsamproperties ('%@' | '%@' | '%@')", &v14, 0x20u);
@@ -368,32 +368,32 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)_isNotValidProperties:(_BOOL8)a1
+- (BOOL)_isNotValidProperties:(_BOOL8)properties
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (properties)
   {
     if (v3 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v4 count]))
     {
       objc_opt_class();
-      a1 = (objc_opt_isKindOfClass() & 1) != 0 && [v4 unsignedLongLongValue] == 0;
+      properties = (objc_opt_isKindOfClass() & 1) != 0 && [v4 unsignedLongLongValue] == 0;
     }
 
     else
     {
-      a1 = 1;
+      properties = 1;
     }
   }
 
-  return a1;
+  return properties;
 }
 
-- (void)_prepareJetsamData:(id *)a1
+- (void)_prepareJetsamData:(id *)data
 {
   v124 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (data)
   {
     v101 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v100 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -413,170 +413,170 @@ LABEL_14:
         v15 = OUTLINED_FUNCTION_2_6();
         [(RBJetsamPropertyManager *)v15 _addJetsamValuesForSection:v16 fromPlist:v17 toDatabase:v4];
         v18 = [v4 objectForKeyedSubscript:@"Global"];
-        v19 = a1[7];
-        a1[7] = v18;
+        v19 = data[7];
+        data[7] = v18;
 
-        if ([(RBJetsamPropertyManager *)a1 _isNotValidProperties:?])
+        if ([(RBJetsamPropertyManager *)data _isNotValidProperties:?])
         {
-          v20 = a1[7];
-          a1[7] = &unk_28751B040;
+          v20 = data[7];
+          data[7] = &unk_28751B040;
         }
 
         v21 = OUTLINED_FUNCTION_2_6();
         [(RBJetsamPropertyManager *)v21 _addJetsamValuesForSection:v22 fromPlist:v23 toDatabase:v5];
         v24 = [v5 objectForKeyedSubscript:@"Global"];
-        v25 = a1[9];
-        a1[9] = v24;
+        v25 = data[9];
+        data[9] = v24;
 
-        if ([(RBJetsamPropertyManager *)a1 _isNotValidProperties:?])
+        if ([(RBJetsamPropertyManager *)data _isNotValidProperties:?])
         {
-          v26 = a1[9];
-          a1[9] = &unk_28751B040;
+          v26 = data[9];
+          data[9] = &unk_28751B040;
         }
 
         v27 = OUTLINED_FUNCTION_2_6();
         [(RBJetsamPropertyManager *)v27 _addJetsamValuesForSection:v28 fromPlist:v29 toDatabase:v6];
         v30 = [v6 objectForKeyedSubscript:@"Global"];
-        v31 = a1[11];
-        a1[11] = v30;
+        v31 = data[11];
+        data[11] = v30;
 
-        if ([(RBJetsamPropertyManager *)a1 _isNotValidProperties:?])
+        if ([(RBJetsamPropertyManager *)data _isNotValidProperties:?])
         {
-          v32 = a1[11];
-          a1[11] = &unk_28751B040;
+          v32 = data[11];
+          data[11] = &unk_28751B040;
         }
 
         v33 = OUTLINED_FUNCTION_2_6();
         [(RBJetsamPropertyManager *)v33 _addJetsamValuesForSection:v34 fromPlist:v35 toDatabase:v101];
         v36 = [v101 objectForKeyedSubscript:@"Global"];
-        v37 = a1[3];
-        a1[3] = v36;
+        v37 = data[3];
+        data[3] = v36;
 
-        if ([(RBJetsamPropertyManager *)a1 _isNotValidProperties:?])
+        if ([(RBJetsamPropertyManager *)data _isNotValidProperties:?])
         {
-          v38 = a1[3];
-          a1[3] = &unk_28751B040;
+          v38 = data[3];
+          data[3] = &unk_28751B040;
         }
 
         v39 = OUTLINED_FUNCTION_2_6();
         [(RBJetsamPropertyManager *)v39 _addJetsamValuesForSection:v40 fromPlist:v41 toDatabase:v100];
         v42 = [v100 objectForKeyedSubscript:@"Global"];
-        v43 = a1[5];
-        a1[5] = v42;
+        v43 = data[5];
+        data[5] = v42;
 
-        if ([(RBJetsamPropertyManager *)a1 _isNotValidProperties:?])
+        if ([(RBJetsamPropertyManager *)data _isNotValidProperties:?])
         {
-          v44 = a1[5];
-          a1[5] = &unk_28751B040;
+          v44 = data[5];
+          data[5] = &unk_28751B040;
         }
 
         v45 = OUTLINED_FUNCTION_2_6();
         [(RBJetsamPropertyManager *)v45 _addJetsamValuesForSection:v46 fromPlist:v47 toDatabase:v7];
         v48 = [v7 objectForKeyedSubscript:@"Global"];
-        v49 = a1[13];
-        a1[13] = v48;
+        v49 = data[13];
+        data[13] = v48;
 
-        if ([(RBJetsamPropertyManager *)a1 _isNotValidProperties:?])
+        if ([(RBJetsamPropertyManager *)data _isNotValidProperties:?])
         {
-          v50 = a1[13];
-          a1[13] = &unk_28751B040;
+          v50 = data[13];
+          data[13] = &unk_28751B040;
         }
 
         v51 = OUTLINED_FUNCTION_2_6();
         [(RBJetsamPropertyManager *)v51 _addJetsamValuesForSection:v52 fromPlist:v53 toDatabase:v8];
         v54 = [v8 objectForKeyedSubscript:@"Global"];
-        v55 = a1[15];
-        a1[15] = v54;
+        v55 = data[15];
+        data[15] = v54;
 
-        if ([(RBJetsamPropertyManager *)a1 _isNotValidProperties:?])
+        if ([(RBJetsamPropertyManager *)data _isNotValidProperties:?])
         {
-          v56 = a1[15];
-          a1[15] = &unk_28751B040;
+          v56 = data[15];
+          data[15] = &unk_28751B040;
         }
 
         v57 = OUTLINED_FUNCTION_2_6();
         [(RBJetsamPropertyManager *)v57 _addJetsamValuesForSection:v58 fromPlist:v59 toDatabase:v9];
         v60 = [v9 objectForKeyedSubscript:@"Global"];
-        v61 = a1[19];
-        a1[19] = v60;
+        v61 = data[19];
+        data[19] = v60;
 
-        if ([(RBJetsamPropertyManager *)a1 _isNotValidProperties:?])
+        if ([(RBJetsamPropertyManager *)data _isNotValidProperties:?])
         {
-          v62 = a1[19];
-          a1[19] = &unk_28751B040;
+          v62 = data[19];
+          data[19] = &unk_28751B040;
         }
 
         v63 = OUTLINED_FUNCTION_2_6();
         [(RBJetsamPropertyManager *)v63 _addJetsamValuesForSection:v64 fromPlist:v65 toDatabase:v10];
         v66 = [v10 objectForKeyedSubscript:@"Global"];
-        v67 = a1[17];
-        a1[17] = v66;
+        v67 = data[17];
+        data[17] = v66;
 
-        if ([(RBJetsamPropertyManager *)a1 _isNotValidProperties:?])
+        if ([(RBJetsamPropertyManager *)data _isNotValidProperties:?])
         {
-          v68 = a1[17];
-          a1[17] = &unk_28751B040;
+          v68 = data[17];
+          data[17] = &unk_28751B040;
         }
 
         v69 = [v101 copy];
-        v70 = a1[2];
-        a1[2] = v69;
+        v70 = data[2];
+        data[2] = v69;
 
         v71 = [v100 copy];
-        v72 = a1[4];
-        a1[4] = v71;
+        v72 = data[4];
+        data[4] = v71;
 
         v73 = [v4 copy];
-        v74 = a1[6];
-        a1[6] = v73;
+        v74 = data[6];
+        data[6] = v73;
 
         v75 = [v5 copy];
-        v76 = a1[8];
-        a1[8] = v75;
+        v76 = data[8];
+        data[8] = v75;
 
         v77 = [v6 copy];
-        v78 = a1[10];
-        a1[10] = v77;
+        v78 = data[10];
+        data[10] = v77;
 
         v79 = [v7 copy];
-        v80 = a1[12];
-        a1[12] = v79;
+        v80 = data[12];
+        data[12] = v79;
 
         v81 = [v8 copy];
-        v82 = a1[14];
-        a1[14] = v81;
+        v82 = data[14];
+        data[14] = v81;
 
         v83 = [v9 copy];
-        v84 = a1[18];
-        a1[18] = v83;
+        v84 = data[18];
+        data[18] = v83;
 
         v85 = [v10 copy];
-        v86 = a1[16];
-        a1[16] = v85;
+        v86 = data[16];
+        data[16] = v85;
 
         v12 = rbs_jetsam_log();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v99 = [a1[2] count];
-          v98 = [a1[4] count];
-          v97 = [a1[6] count];
-          v96 = [a1[8] count];
-          v95 = [a1[10] count];
-          v94 = [a1[12] count];
-          v93 = [a1[14] count];
-          v92 = [a1[18] count];
-          v91 = [a1[16] count];
-          v89 = [a1[2] count];
-          v90 = [a1[4] count] + v89;
-          [a1[6] count];
-          [a1[8] count];
+          v99 = [data[2] count];
+          v98 = [data[4] count];
+          v97 = [data[6] count];
+          v96 = [data[8] count];
+          v95 = [data[10] count];
+          v94 = [data[12] count];
+          v93 = [data[14] count];
+          v92 = [data[18] count];
+          v91 = [data[16] count];
+          v89 = [data[2] count];
+          v90 = [data[4] count] + v89;
+          [data[6] count];
+          [data[8] count];
           OUTLINED_FUNCTION_7_2();
-          [a1[10] count];
-          [a1[12] count];
-          [a1[14] count];
+          [data[10] count];
+          [data[12] count];
+          [data[14] count];
           OUTLINED_FUNCTION_7_2();
-          v88 = [a1[18] count];
-          v87 = [a1[16] count];
+          v88 = [data[18] count];
+          v87 = [data[16] count];
           *buf = 134220544;
           v103 = v99;
           v104 = 2048;
@@ -635,25 +635,25 @@ LABEL_8:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addJetsamValuesForSection:(void *)a3 fromPlist:(void *)a4 toDatabase:
+- (void)_addJetsamValuesForSection:(void *)section fromPlist:(void *)plist toDatabase:
 {
   v41 = *MEMORY[0x277D85DE8];
   v28 = a2;
-  v7 = a3;
-  v26 = a1;
-  v27 = a4;
-  if (a1)
+  sectionCopy = section;
+  selfCopy = self;
+  plistCopy = plist;
+  if (self)
   {
-    if (!v7)
+    if (!sectionCopy)
     {
-      v22 = [MEMORY[0x277CCA890] currentHandler];
-      [v22 handleFailureInMethod:sel__addJetsamValuesForSection_fromPlist_toDatabase_ object:a1 file:@"RBJetsamPropertyManager.m" lineNumber:413 description:{@"Invalid parameter not satisfying: %@", @"plist != nil"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__addJetsamValuesForSection_fromPlist_toDatabase_ object:self file:@"RBJetsamPropertyManager.m" lineNumber:413 description:{@"Invalid parameter not satisfying: %@", @"plist != nil"}];
     }
 
-    if (!v27)
+    if (!plistCopy)
     {
-      v23 = [MEMORY[0x277CCA890] currentHandler];
-      [v23 handleFailureInMethod:sel__addJetsamValuesForSection_fromPlist_toDatabase_ object:a1 file:@"RBJetsamPropertyManager.m" lineNumber:414 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel__addJetsamValuesForSection_fromPlist_toDatabase_ object:self file:@"RBJetsamPropertyManager.m" lineNumber:414 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
     }
 
     v8 = RBSDictionaryForKey();
@@ -701,8 +701,8 @@ LABEL_8:
                 [v18 enumerateKeysAndObjectsUsingBlock:v29];
                 if ([v19 count])
                 {
-                  v20 = [(RBJetsamPropertyManager *)v26 _encodedValue:v19];
-                  [v27 setValue:v20 forKey:v15];
+                  v20 = [(RBJetsamPropertyManager *)selfCopy _encodedValue:v19];
+                  [plistCopy setValue:v20 forKey:v15];
                 }
               }
 
@@ -753,11 +753,11 @@ LABEL_8:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_encodedValue:(uint64_t)a1
+- (id)_encodedValue:(uint64_t)value
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (value)
   {
     v5 = [v3 count];
     v6 = [v4 valueForKey:@"ActiveHardMemoryLimit"];
@@ -834,19 +834,19 @@ LABEL_24:
   return v22;
 }
 
-- (RBJetsamPropertyManager)initWithEntitlementManager:(id)a3
+- (RBJetsamPropertyManager)initWithEntitlementManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(RBJetsamPropertyManager *)self _loadJetsamProperties];
-  v6 = [(RBJetsamPropertyManager *)self initWithEntitlementManager:v4 properties:v5];
+  managerCopy = manager;
+  _loadJetsamProperties = [(RBJetsamPropertyManager *)self _loadJetsamProperties];
+  v6 = [(RBJetsamPropertyManager *)self initWithEntitlementManager:managerCopy properties:_loadJetsamProperties];
 
   return v6;
 }
 
-- (uint64_t)_taskLimitForProcess:(uint64_t)a1
+- (uint64_t)_taskLimitForProcess:(uint64_t)process
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (process)
   {
     OUTLINED_FUNCTION_4_3();
     v1 = memorystatus_control();
@@ -875,10 +875,10 @@ LABEL_24:
   return v1;
 }
 
-- (uint64_t)_unLimitForProcess:(uint64_t)a1
+- (uint64_t)_unLimitForProcess:(uint64_t)process
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (process)
   {
     OUTLINED_FUNCTION_4_3();
     v1 = memorystatus_control();
@@ -907,19 +907,19 @@ LABEL_24:
   return v1;
 }
 
-- (id)_jetsamPropertiesForProcess:(void *)a3 identifier:(void *)a4 properties:(void *)a5 global:
+- (id)_jetsamPropertiesForProcess:(void *)process identifier:(void *)identifier properties:(void *)properties global:
 {
-  if (a1)
+  if (self)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
-    v11 = [RBJetsamPropertyManager _taskLimitForProcess:a1];
-    v12 = [RBJetsamPropertyManager _unLimitForProcess:a1];
-    v13 = [v9 valueForKey:v10];
+    propertiesCopy = properties;
+    identifierCopy = identifier;
+    processCopy = process;
+    v11 = [RBJetsamPropertyManager _taskLimitForProcess:self];
+    v12 = [RBJetsamPropertyManager _unLimitForProcess:self];
+    v13 = [identifierCopy valueForKey:processCopy];
 
     v14 = [v13 copy];
-    v15 = [RBJetsamProperties jetsamPropertiesForProperties:v14 globalProperties:v8 taskLimit:v11 unLimit:v12];
+    v15 = [RBJetsamProperties jetsamPropertiesForProperties:v14 globalProperties:propertiesCopy taskLimit:v11 unLimit:v12];
   }
 
   else
@@ -930,12 +930,12 @@ LABEL_24:
   return v15;
 }
 
-- (id)_jetsamPropertiesForAppProcess:(uint64_t)a1 identity:(uint64_t)a2 bundleProperties:(uint64_t)a3 isPlatformBinary:(uint64_t)a4
+- (id)_jetsamPropertiesForAppProcess:(uint64_t)process identity:(uint64_t)identity bundleProperties:(uint64_t)properties isPlatformBinary:(uint64_t)binary
 {
-  if (a1)
+  if (process)
   {
-    v6 = [OUTLINED_FUNCTION_6_2(a1 a2];
-    v7 = [*(v4 + 112) valueForKey:v6];
+    identity = [OUTLINED_FUNCTION_6_2(process identity];
+    v7 = [*(v4 + 112) valueForKey:identity];
 
     if (v7)
     {
@@ -944,7 +944,7 @@ LABEL_24:
 
     else
     {
-      v8 = [*(v4 + 96) valueForKey:v6];
+      v8 = [*(v4 + 96) valueForKey:identity];
 
       v9 = 104;
       v10 = 104;
@@ -971,12 +971,12 @@ LABEL_24:
   return v16;
 }
 
-- (id)_jetsamPropertiesForDaemonProcess:(uint64_t)a1 identity:(uint64_t)a2 bundleProperties:(void *)a3
+- (id)_jetsamPropertiesForDaemonProcess:(uint64_t)process identity:(uint64_t)identity bundleProperties:(void *)properties
 {
-  if (a1)
+  if (process)
   {
-    v5 = [a3 consistentLaunchdJobLabel];
-    v6 = [(RBJetsamPropertyManager *)a1 _jetsamPropertiesForProcess:a2 identifier:v5 properties:*(a1 + 128) global:*(a1 + 136)];
+    consistentLaunchdJobLabel = [properties consistentLaunchdJobLabel];
+    v6 = [(RBJetsamPropertyManager *)process _jetsamPropertiesForProcess:identity identifier:consistentLaunchdJobLabel properties:*(process + 128) global:*(process + 136)];
   }
 
   else
@@ -987,12 +987,12 @@ LABEL_24:
   return v6;
 }
 
-- (id)_jetsamPropertiesForAngelProcess:(uint64_t)a1 identity:(uint64_t)a2 bundleProperties:(void *)a3
+- (id)_jetsamPropertiesForAngelProcess:(uint64_t)process identity:(uint64_t)identity bundleProperties:(void *)properties
 {
-  if (a1)
+  if (process)
   {
-    v5 = [a3 consistentLaunchdJobLabel];
-    v6 = [(RBJetsamPropertyManager *)a1 _jetsamPropertiesForProcess:a2 identifier:v5 properties:*(a1 + 144) global:*(a1 + 152)];
+    consistentLaunchdJobLabel = [properties consistentLaunchdJobLabel];
+    v6 = [(RBJetsamPropertyManager *)process _jetsamPropertiesForProcess:identity identifier:consistentLaunchdJobLabel properties:*(process + 144) global:*(process + 152)];
   }
 
   else
@@ -1003,33 +1003,33 @@ LABEL_24:
   return v6;
 }
 
-- (id)_jetsamPropertiesForExtensionProcess:(void *)a3 identity:(void *)a4 bundleProperties:
+- (id)_jetsamPropertiesForExtensionProcess:(void *)process identity:(void *)identity bundleProperties:
 {
-  v7 = a4;
-  if (a1)
+  identityCopy = identity;
+  if (self)
   {
-    v8 = [a3 isExternal];
-    v9 = [v7 extensionPointIdentifier];
+    isExternal = [process isExternal];
+    extensionPointIdentifier = [identityCopy extensionPointIdentifier];
     v10 = 48;
-    if (v8)
+    if (isExternal)
     {
       v10 = 80;
     }
 
     v11 = 56;
-    if (v8)
+    if (isExternal)
     {
       v11 = 88;
     }
 
-    v12 = [(RBJetsamPropertyManager *)a1 _jetsamPropertiesForProcess:a2 identifier:v9 properties:*(a1 + v10) global:*(a1 + v11)];
+    v12 = [(RBJetsamPropertyManager *)self _jetsamPropertiesForProcess:a2 identifier:extensionPointIdentifier properties:*(self + v10) global:*(self + v11)];
 
-    v13 = [v7 bundleIdentifier];
-    v14 = [(RBJetsamPropertyManager *)a1 _jetsamPropertiesForProcess:a2 identifier:v13 properties:*(a1 + 64) global:*(a1 + 72)];
+    bundleIdentifier = [identityCopy bundleIdentifier];
+    v14 = [(RBJetsamPropertyManager *)self _jetsamPropertiesForProcess:a2 identifier:bundleIdentifier properties:*(self + 64) global:*(self + 72)];
 
-    v15 = *(a1 + 64);
-    v16 = [v7 bundleIdentifier];
-    v17 = [v15 objectForKey:v16];
+    v15 = *(self + 64);
+    bundleIdentifier2 = [identityCopy bundleIdentifier];
+    v17 = [v15 objectForKey:bundleIdentifier2];
 
     if (v17)
     {
@@ -1045,12 +1045,12 @@ LABEL_24:
   return v12;
 }
 
-- (id)_jetsamPropertiesForServiceProcess:(uint64_t)a1 identity:(uint64_t)a2 bundleProperties:(uint64_t)a3 isPlatformBinary:(uint64_t)a4
+- (id)_jetsamPropertiesForServiceProcess:(uint64_t)process identity:(uint64_t)identity bundleProperties:(uint64_t)properties isPlatformBinary:(uint64_t)binary
 {
-  if (a1)
+  if (process)
   {
-    v6 = [OUTLINED_FUNCTION_6_2(a1 a2];
-    v7 = [*(v4 + 32) valueForKey:v6];
+    identity = [OUTLINED_FUNCTION_6_2(process identity];
+    v7 = [*(v4 + 32) valueForKey:identity];
 
     if (v7)
     {
@@ -1059,7 +1059,7 @@ LABEL_24:
 
     else
     {
-      v8 = [*(v4 + 16) valueForKey:v6];
+      v8 = [*(v4 + 16) valueForKey:identity];
 
       v9 = 24;
       v10 = 24;
@@ -1086,15 +1086,15 @@ LABEL_24:
   return v16;
 }
 
-- (id)_jetsamPropertiesWithTaskLimit:(void *)a1
+- (id)_jetsamPropertiesWithTaskLimit:(void *)limit
 {
-  if (a1)
+  if (limit)
   {
-    a1 = [RBJetsamProperties jetsamPropertiesForProperties:&unk_28751B068 globalProperties:MEMORY[0x277CBEC10] taskLimit:a2 unLimit:a2];
+    limit = [RBJetsamProperties jetsamPropertiesForProperties:&unk_28751B068 globalProperties:MEMORY[0x277CBEC10] taskLimit:a2 unLimit:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return limit;
 }
 
 void __37__RBJetsamPropertyManager__taskLimit__block_invoke_cold_1()

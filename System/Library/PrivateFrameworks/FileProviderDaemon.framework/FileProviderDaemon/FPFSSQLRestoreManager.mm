@@ -1,48 +1,48 @@
 @interface FPFSSQLRestoreManager
-- (FPFSSQLRestoreManager)initWithUserURL:(id)a3 fromBuild:(id)a4 restoreType:(id)a5 cleanupOnSuccess:(BOOL)a6;
-- (void)reportDatabaseRestoreCompletionTelemetryWithError:(id)a3 atStep:(id)a4;
-- (void)reportPurgencyRestoreCompletionTelemetryWithError:(id)a3;
-- (void)restoreWithCompletionHandler:(id)a3;
+- (FPFSSQLRestoreManager)initWithUserURL:(id)l fromBuild:(id)build restoreType:(id)type cleanupOnSuccess:(BOOL)success;
+- (void)reportDatabaseRestoreCompletionTelemetryWithError:(id)error atStep:(id)step;
+- (void)reportPurgencyRestoreCompletionTelemetryWithError:(id)error;
+- (void)restoreWithCompletionHandler:(id)handler;
 @end
 
 @implementation FPFSSQLRestoreManager
 
-- (FPFSSQLRestoreManager)initWithUserURL:(id)a3 fromBuild:(id)a4 restoreType:(id)a5 cleanupOnSuccess:(BOOL)a6
+- (FPFSSQLRestoreManager)initWithUserURL:(id)l fromBuild:(id)build restoreType:(id)type cleanupOnSuccess:(BOOL)success
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  lCopy = l;
+  buildCopy = build;
+  typeCopy = type;
   v23.receiver = self;
   v23.super_class = FPFSSQLRestoreManager;
   v13 = [(FPFSSQLRestoreManager *)&v23 init];
   if (v13)
   {
-    v14 = [[_TtC18FileProviderDaemon20FPFSSQLRestoreEngine alloc] initWithUserURL:v10 backupBuild:v11 restoreType:v12];
+    v14 = [[_TtC18FileProviderDaemon20FPFSSQLRestoreEngine alloc] initWithUserURL:lCopy backupBuild:buildCopy restoreType:typeCopy];
     restoreEngine = v13->_restoreEngine;
     v13->_restoreEngine = v14;
 
-    v16 = [MEMORY[0x1E699C730] defaultManager];
-    v17 = [v16 sessionForProviderID:@"d2d_restore_global" version:0];
+    defaultManager = [MEMORY[0x1E699C730] defaultManager];
+    v17 = [defaultManager sessionForProviderID:@"d2d_restore_global" version:0];
     rtcReportingDatabase = v13->_rtcReportingDatabase;
     v13->_rtcReportingDatabase = v17;
 
-    v19 = [MEMORY[0x1E699C730] defaultManager];
-    v20 = [v19 sessionForProviderID:@"d2d_restore_purgency" version:0];
+    defaultManager2 = [MEMORY[0x1E699C730] defaultManager];
+    v20 = [defaultManager2 sessionForProviderID:@"d2d_restore_purgency" version:0];
     rtcReportingPurgency = v13->_rtcReportingPurgency;
     v13->_rtcReportingPurgency = v20;
 
-    v13->_cleanupOnSuccess = a6;
-    objc_storeStrong(&v13->_backupBuild, a4);
-    objc_storeStrong(&v13->_restoreType, a5);
+    v13->_cleanupOnSuccess = success;
+    objc_storeStrong(&v13->_backupBuild, build);
+    objc_storeStrong(&v13->_restoreType, type);
   }
 
   return v13;
 }
 
-- (void)restoreWithCompletionHandler:(id)a3
+- (void)restoreWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   restoreEngine = self->_restoreEngine;
   if (restoreEngine)
   {
@@ -52,13 +52,13 @@
     v8[2] = __54__FPFSSQLRestoreManager_restoreWithCompletionHandler___block_invoke;
     v8[3] = &unk_1E83C0D78;
     v8[4] = self;
-    v9 = v4;
+    v9 = handlerCopy;
     [(FPFSSQLRestoreEngine *)restoreEngine restoreWithCleanupOnSuccess:cleanupOnSuccess completionHandler:v8];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 1, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0);
   }
 }
 
@@ -98,14 +98,14 @@ uint64_t __54__FPFSSQLRestoreManager_restoreWithCompletionHandler___block_invoke
   return v5();
 }
 
-- (void)reportDatabaseRestoreCompletionTelemetryWithError:(id)a3 atStep:(id)a4
+- (void)reportDatabaseRestoreCompletionTelemetryWithError:(id)error atStep:(id)step
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  errorCopy = error;
+  stepCopy = step;
+  if (errorCopy)
   {
-    v8 = v6;
+    v8 = errorCopy;
   }
 
   else
@@ -115,9 +115,9 @@ uint64_t __54__FPFSSQLRestoreManager_restoreWithCompletionHandler___block_invoke
 
   v9 = v8;
   v10 = @"no step";
-  if (v7)
+  if (stepCopy)
   {
-    v10 = v7;
+    v10 = stepCopy;
   }
 
   v11 = v10;
@@ -125,15 +125,15 @@ uint64_t __54__FPFSSQLRestoreManager_restoreWithCompletionHandler___block_invoke
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v15 = @"nil";
-    if (v6)
+    if (errorCopy)
     {
-      v15 = v6;
+      v15 = errorCopy;
     }
 
     *buf = 138412546;
     v20 = v15;
     v21 = 2112;
-    v22 = v7;
+    v22 = stepCopy;
     _os_log_debug_impl(&dword_1CEFC7000, v12, OS_LOG_TYPE_DEBUG, "[DEBUG] reporting d2d database restore telemetry with error %@, step %@", buf, 0x16u);
   }
 
@@ -148,14 +148,14 @@ uint64_t __54__FPFSSQLRestoreManager_restoreWithCompletionHandler___block_invoke
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportPurgencyRestoreCompletionTelemetryWithError:(id)a3
+- (void)reportPurgencyRestoreCompletionTelemetryWithError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = v4;
+    v6 = errorCopy;
   }
 
   else

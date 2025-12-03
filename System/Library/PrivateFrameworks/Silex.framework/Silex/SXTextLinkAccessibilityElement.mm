@@ -1,6 +1,6 @@
 @interface SXTextLinkAccessibilityElement
 - (CGRect)accessibilityFrame;
-- (SXTextLinkAccessibilityElement)initWithHyperlinkField:(id)a3 parentRep:(id)a4;
+- (SXTextLinkAccessibilityElement)initWithHyperlinkField:(id)field parentRep:(id)rep;
 - (SXTextTangierFlowRep)parentRep;
 - (_NSRange)rangeInParentRep;
 - (id)description;
@@ -8,27 +8,27 @@
 
 @implementation SXTextLinkAccessibilityElement
 
-- (SXTextLinkAccessibilityElement)initWithHyperlinkField:(id)a3 parentRep:(id)a4
+- (SXTextLinkAccessibilityElement)initWithHyperlinkField:(id)field parentRep:(id)rep
 {
-  v6 = a3;
-  v7 = a4;
+  fieldCopy = field;
+  repCopy = rep;
   v20.receiver = self;
   v20.super_class = SXTextLinkAccessibilityElement;
-  v8 = [(SXTextLinkAccessibilityElement *)&v20 initWithAccessibilityContainer:v7];
+  v8 = [(SXTextLinkAccessibilityElement *)&v20 initWithAccessibilityContainer:repCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_parentRep, v7);
-    v10 = [v6 range];
-    v9->_rangeInParentRep.location = [v7 sxaxRepRelativeRangeFromStorageRelativeRange:{v10, v11}];
+    objc_storeWeak(&v8->_parentRep, repCopy);
+    range = [fieldCopy range];
+    v9->_rangeInParentRep.location = [repCopy sxaxRepRelativeRangeFromStorageRelativeRange:{range, v11}];
     v9->_rangeInParentRep.length = v12;
-    v13 = [v6 url];
+    v13 = [fieldCopy url];
     v14 = [v13 copy];
     url = v9->_url;
     v9->_url = v14;
 
-    v16 = [v6 displayText];
-    v17 = [v16 copy];
+    displayText = [fieldCopy displayText];
+    v17 = [displayText copy];
     displayText = v9->_displayText;
     v9->_displayText = v17;
   }
@@ -38,9 +38,9 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(SXTextLinkAccessibilityElement *)self parentRep];
-  v4 = [(SXTextLinkAccessibilityElement *)self rangeInParentRep];
-  [v3 _accessibilityBoundsForRange:{v4, v5}];
+  parentRep = [(SXTextLinkAccessibilityElement *)self parentRep];
+  rangeInParentRep = [(SXTextLinkAccessibilityElement *)self rangeInParentRep];
+  [parentRep _accessibilityBoundsForRange:{rangeInParentRep, v5}];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -61,13 +61,13 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(SXTextLinkAccessibilityElement *)self displayText];
+  displayText = [(SXTextLinkAccessibilityElement *)self displayText];
   v12.location = [(SXTextLinkAccessibilityElement *)self rangeInParentRep];
   v6 = NSStringFromRange(v12);
   [(SXTextLinkAccessibilityElement *)self accessibilityFrame];
   v7 = NSStringFromCGRect(v13);
-  v8 = [(SXTextLinkAccessibilityElement *)self parentRep];
-  v9 = [v3 stringWithFormat:@"<%@ %p text=%@ range=%@ frame=%@ parent=%@>", v4, self, v5, v6, v7, v8];
+  parentRep = [(SXTextLinkAccessibilityElement *)self parentRep];
+  v9 = [v3 stringWithFormat:@"<%@ %p text=%@ range=%@ frame=%@ parent=%@>", v4, self, displayText, v6, v7, parentRep];
 
   return v9;
 }

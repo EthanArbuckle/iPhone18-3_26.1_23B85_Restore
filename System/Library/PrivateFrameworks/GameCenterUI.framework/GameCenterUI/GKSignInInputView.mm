@@ -1,17 +1,17 @@
 @interface GKSignInInputView
 - (id)allVariableConstraints;
-- (void)setupConstraintConstantsForOrientation:(int64_t)a3;
+- (void)setupConstraintConstantsForOrientation:(int64_t)orientation;
 @end
 
 @implementation GKSignInInputView
 
-- (void)setupConstraintConstantsForOrientation:(int64_t)a3
+- (void)setupConstraintConstantsForOrientation:(int64_t)orientation
 {
-  v4 = a3 - 3;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  v4 = orientation - 3;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6 == 1)
+  if (userInterfaceIdiom == 1)
   {
     if (*MEMORY[0x277D0C258] == 1)
     {
@@ -28,13 +28,13 @@
 
   else
   {
-    v9 = [MEMORY[0x277D75418] currentDevice];
-    v10 = [v9 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if (v10 != 1)
+    if (userInterfaceIdiom2 != 1)
     {
-      v11 = [MEMORY[0x277D759A0] mainScreen];
-      [v11 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       v13 = v12;
       v15 = v14;
 
@@ -45,8 +45,8 @@
         p_topToSignInBaselineConstraint = &self->_topToSignInBaselineConstraint;
         [(NSLayoutConstraint *)self->_topToSignInBaselineConstraint setConstant:dbl_24E367880[v17]];
         [(NSLayoutConstraint *)self->_signInBaselineToPromptTextTopConstraint setConstant:34.0];
-        v19 = [MEMORY[0x277D759A0] mainScreen];
-        [v19 bounds];
+        mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen2 bounds];
         v21 = v20;
         v23 = v22;
 

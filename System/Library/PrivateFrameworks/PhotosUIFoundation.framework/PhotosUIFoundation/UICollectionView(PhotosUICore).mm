@@ -6,8 +6,8 @@
 
 - (double)_px_currentContentSize
 {
-  v1 = [a1 collectionViewLayout];
-  [v1 collectionViewContentSize];
+  collectionViewLayout = [self collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v3 = v2;
 
   return v3;

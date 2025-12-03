@@ -1,20 +1,20 @@
 @interface CellularNrRsrpRsrqSinrHist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRsrpRsrqPerAntennaPanel:(id)a3;
-- (void)addRsrpRsrqPerAntennaPanelSa:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addRsrpRsrqPerAntennaPanel:(id)panel;
+- (void)addRsrpRsrqPerAntennaPanelSa:(id)sa;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasIsDataPreferred:(BOOL)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasIsDataPreferred:(BOOL)preferred;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularNrRsrpRsrqSinrHist
@@ -29,9 +29,9 @@
   [(CellularNrRsrpRsrqSinrHist *)&v3 dealloc];
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -44,45 +44,45 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addRsrpRsrqPerAntennaPanel:(id)a3
+- (void)addRsrpRsrqPerAntennaPanel:(id)panel
 {
-  v4 = a3;
+  panelCopy = panel;
   rsrpRsrqPerAntennaPanels = self->_rsrpRsrqPerAntennaPanels;
-  v8 = v4;
+  v8 = panelCopy;
   if (!rsrpRsrqPerAntennaPanels)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_rsrpRsrqPerAntennaPanels;
     self->_rsrpRsrqPerAntennaPanels = v6;
 
-    v4 = v8;
+    panelCopy = v8;
     rsrpRsrqPerAntennaPanels = self->_rsrpRsrqPerAntennaPanels;
   }
 
-  [(NSMutableArray *)rsrpRsrqPerAntennaPanels addObject:v4];
+  [(NSMutableArray *)rsrpRsrqPerAntennaPanels addObject:panelCopy];
 }
 
-- (void)addRsrpRsrqPerAntennaPanelSa:(id)a3
+- (void)addRsrpRsrqPerAntennaPanelSa:(id)sa
 {
-  v4 = a3;
+  saCopy = sa;
   rsrpRsrqPerAntennaPanelSas = self->_rsrpRsrqPerAntennaPanelSas;
-  v8 = v4;
+  v8 = saCopy;
   if (!rsrpRsrqPerAntennaPanelSas)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_rsrpRsrqPerAntennaPanelSas;
     self->_rsrpRsrqPerAntennaPanelSas = v6;
 
-    v4 = v8;
+    saCopy = v8;
     rsrpRsrqPerAntennaPanelSas = self->_rsrpRsrqPerAntennaPanelSas;
   }
 
-  [(NSMutableArray *)rsrpRsrqPerAntennaPanelSas addObject:v4];
+  [(NSMutableArray *)rsrpRsrqPerAntennaPanelSas addObject:saCopy];
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 16;
   }
@@ -95,9 +95,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 4;
   }
@@ -110,9 +110,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 8;
   }
@@ -125,9 +125,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsDataPreferred:(BOOL)a3
+- (void)setHasIsDataPreferred:(BOOL)preferred
 {
-  if (a3)
+  if (preferred)
   {
     v3 = 32;
   }
@@ -145,8 +145,8 @@
   v7.receiver = self;
   v7.super_class = CellularNrRsrpRsrqSinrHist;
   v3 = [(CellularNrRsrpRsrqSinrHist *)&v7 description];
-  v4 = [(CellularNrRsrpRsrqSinrHist *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularNrRsrpRsrqSinrHist *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -191,8 +191,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v32 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v32 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v32 objects:v37 count:16];
@@ -226,8 +226,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v28 + 1) + 8 * j) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation2 = [*(*(&v28 + 1) + 8 * j) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation2];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v28 objects:v36 count:16];
@@ -289,9 +289,9 @@ LABEL_27:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -409,31 +409,31 @@ LABEL_16:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 64) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 64) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 4) = self->_duration;
-    *(v4 + 64) |= 2u;
+    *(toCopy + 4) = self->_duration;
+    *(toCopy + 64) |= 2u;
   }
 
-  v15 = v4;
+  v15 = toCopy;
   if ([(CellularNrRsrpRsrqSinrHist *)self rsrpRsrqPerAntennaPanelsCount])
   {
     [v15 clearRsrpRsrqPerAntennaPanels];
-    v6 = [(CellularNrRsrpRsrqSinrHist *)self rsrpRsrqPerAntennaPanelsCount];
-    if (v6)
+    rsrpRsrqPerAntennaPanelsCount = [(CellularNrRsrpRsrqSinrHist *)self rsrpRsrqPerAntennaPanelsCount];
+    if (rsrpRsrqPerAntennaPanelsCount)
     {
-      v7 = v6;
+      v7 = rsrpRsrqPerAntennaPanelsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(CellularNrRsrpRsrqSinrHist *)self rsrpRsrqPerAntennaPanelAtIndex:i];
@@ -483,10 +483,10 @@ LABEL_13:
   if ([(CellularNrRsrpRsrqSinrHist *)self rsrpRsrqPerAntennaPanelSasCount])
   {
     [v15 clearRsrpRsrqPerAntennaPanelSas];
-    v11 = [(CellularNrRsrpRsrqSinrHist *)self rsrpRsrqPerAntennaPanelSasCount];
-    if (v11)
+    rsrpRsrqPerAntennaPanelSasCount = [(CellularNrRsrpRsrqSinrHist *)self rsrpRsrqPerAntennaPanelSasCount];
+    if (rsrpRsrqPerAntennaPanelSasCount)
     {
-      v12 = v11;
+      v12 = rsrpRsrqPerAntennaPanelSasCount;
       for (j = 0; j != v12; ++j)
       {
         v14 = [(CellularNrRsrpRsrqSinrHist *)self rsrpRsrqPerAntennaPanelSaAtIndex:j];
@@ -502,9 +502,9 @@ LABEL_13:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -539,7 +539,7 @@ LABEL_13:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v28 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v28 + 1) + 8 * i) copyWithZone:zone];
         [v6 addRsrpRsrqPerAntennaPanel:v13];
       }
 
@@ -582,7 +582,7 @@ LABEL_15:
   }
 
 LABEL_16:
-  v15 = [(NSData *)self->_plmn copyWithZone:a3];
+  v15 = [(NSData *)self->_plmn copyWithZone:zone];
   v16 = *(v6 + 3);
   *(v6 + 3) = v15;
 
@@ -605,7 +605,7 @@ LABEL_16:
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v24 + 1) + 8 * j) copyWithZone:{a3, v24}];
+        v22 = [*(*(&v24 + 1) + 8 * j) copyWithZone:{zone, v24}];
         [v6 addRsrpRsrqPerAntennaPanelSa:v22];
       }
 
@@ -624,44 +624,44 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
   has = self->_has;
-  v6 = *(v4 + 64);
+  v6 = *(equalCopy + 64);
   if (has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_duration != *(v4 + 4))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_duration != *(equalCopy + 4))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_36;
   }
 
   rsrpRsrqPerAntennaPanels = self->_rsrpRsrqPerAntennaPanels;
-  if (rsrpRsrqPerAntennaPanels | *(v4 + 6))
+  if (rsrpRsrqPerAntennaPanels | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)rsrpRsrqPerAntennaPanels isEqual:?])
     {
@@ -671,54 +671,54 @@ LABEL_16:
     has = self->_has;
   }
 
-  v8 = *(v4 + 64);
+  v8 = *(equalCopy + 64);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 64) & 0x10) == 0 || self->_subsId != *(v4 + 14))
+    if ((*(equalCopy + 64) & 0x10) == 0 || self->_subsId != *(equalCopy + 14))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 64) & 0x10) != 0)
+  else if ((*(equalCopy + 64) & 0x10) != 0)
   {
     goto LABEL_36;
   }
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_numSubs != *(v4 + 5))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_numSubs != *(equalCopy + 5))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
     goto LABEL_36;
   }
 
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0 || self->_psPref != *(v4 + 8))
+    if ((*(equalCopy + 64) & 8) == 0 || self->_psPref != *(equalCopy + 8))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 64) & 8) != 0)
+  else if ((*(equalCopy + 64) & 8) != 0)
   {
     goto LABEL_36;
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 3) && ![(NSData *)plmn isEqual:?])
+  if (plmn | *(equalCopy + 3) && ![(NSData *)plmn isEqual:?])
   {
     goto LABEL_36;
   }
 
   rsrpRsrqPerAntennaPanelSas = self->_rsrpRsrqPerAntennaPanelSas;
-  if (rsrpRsrqPerAntennaPanelSas | *(v4 + 5))
+  if (rsrpRsrqPerAntennaPanelSas | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)rsrpRsrqPerAntennaPanelSas isEqual:?])
     {
@@ -726,20 +726,20 @@ LABEL_16:
     }
   }
 
-  v11 = (*(v4 + 64) & 0x20) == 0;
+  v11 = (*(equalCopy + 64) & 0x20) == 0;
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 64) & 0x20) != 0)
+    if ((*(equalCopy + 64) & 0x20) != 0)
     {
       if (self->_isDataPreferred)
       {
-        if ((*(v4 + 60) & 1) == 0)
+        if ((*(equalCopy + 60) & 1) == 0)
         {
           goto LABEL_36;
         }
       }
 
-      else if (*(v4 + 60))
+      else if (*(equalCopy + 60))
       {
         goto LABEL_36;
       }
@@ -833,21 +833,21 @@ LABEL_13:
   return v4 ^ v3 ^ v6 ^ v7 ^ v8 ^ v5 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 64);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 64);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 64);
+    v6 = *(fromCopy + 64);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_duration = *(v4 + 4);
+    self->_duration = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 
@@ -855,7 +855,7 @@ LABEL_13:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = *(v4 + 6);
+  v7 = *(fromCopy + 6);
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {

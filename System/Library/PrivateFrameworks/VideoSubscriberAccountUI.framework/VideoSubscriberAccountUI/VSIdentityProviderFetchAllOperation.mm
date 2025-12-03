@@ -33,8 +33,8 @@
 {
   v3 = objc_alloc_init(MEMORY[0x277CE2228]);
   v4 = objc_alloc_init(VSIdentityProviderFetchAllFromStoreOperation);
-  v5 = [(VSIdentityProviderFetchAllOperation *)self auditToken];
-  [(VSIdentityProviderFetchAllFromStoreOperation *)v4 setAuditToken:v5];
+  auditToken = [(VSIdentityProviderFetchAllOperation *)self auditToken];
+  [(VSIdentityProviderFetchAllFromStoreOperation *)v4 setAuditToken:auditToken];
 
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277CCA8C8];
@@ -47,14 +47,14 @@
   objc_copyWeak(&v15, &location);
   v8 = v3;
   v13 = v8;
-  v14 = self;
+  selfCopy = self;
   v9 = [v6 blockOperationWithBlock:v11];
   [v9 addDependency:v8];
   [v9 addDependency:v7];
-  v10 = [(VSIdentityProviderFetchAllOperation *)self subqueue];
-  [v10 addOperation:v7];
-  [v10 addOperation:v8];
-  [v10 addOperation:v9];
+  subqueue = [(VSIdentityProviderFetchAllOperation *)self subqueue];
+  [subqueue addOperation:v7];
+  [subqueue addOperation:v8];
+  [subqueue addOperation:v9];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);

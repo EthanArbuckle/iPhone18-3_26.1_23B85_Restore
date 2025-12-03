@@ -1,16 +1,16 @@
 @interface SUAdParameters
-+ (void)setStocksAdEnabled:(BOOL)a3;
++ (void)setStocksAdEnabled:(BOOL)enabled;
 @end
 
 @implementation SUAdParameters
 
-+ (void)setStocksAdEnabled:(BOOL)a3
++ (void)setStocksAdEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CE9718] sharedInstance];
+  enabledCopy = enabled;
+  mEMORY[0x277CE9718] = [MEMORY[0x277CE9718] sharedInstance];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setStocksAdEnabled:v3];
+    [mEMORY[0x277CE9718] setStocksAdEnabled:enabledCopy];
   }
 }
 

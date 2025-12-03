@@ -1,7 +1,7 @@
 @interface WalletPrivacySettingsController
-- (_TtC21WalletPrivacySettings31WalletPrivacySettingsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC21WalletPrivacySettings31WalletPrivacySettingsController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
-- (void)appProtectionCoordinatorDidGainAccess:(id)a3;
+- (void)appProtectionCoordinatorDidGainAccess:(id)access;
 - (void)applicationDidBecomeActive;
 - (void)applicationWillResignActive;
 - (void)dealloc;
@@ -17,9 +17,9 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *&self->PSListController_opaque[OBJC_IVAR____TtC21WalletPrivacySettings31WalletPrivacySettingsController_appProtectionCoordinator];
-  v5 = self;
-  [v4 unregisterObserver:v5];
-  v6.receiver = v5;
+  selfCopy = self;
+  [v4 unregisterObserver:selfCopy];
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(WalletPrivacySettingsController *)&v6 dealloc];
 }
@@ -35,13 +35,13 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1DFC();
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_203C();
 
   if (v3)
@@ -57,28 +57,28 @@
   return v4.super.isa;
 }
 
-- (_TtC21WalletPrivacySettings31WalletPrivacySettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21WalletPrivacySettings31WalletPrivacySettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)appProtectionCoordinatorDidGainAccess:(id)a3
+- (void)appProtectionCoordinatorDidGainAccess:(id)access
 {
-  v3 = self;
+  selfCopy = self;
   sub_33E8(1u);
 }
 
 - (void)didEnterBackground
 {
-  v2 = self;
+  selfCopy = self;
   sub_3B04();
 }
 
 - (void)willEnterForeground
 {
-  v2 = self;
+  selfCopy = self;
   sub_2C98();
 }
 
@@ -87,7 +87,7 @@
   self->PSListController_opaque[OBJC_IVAR____TtC21WalletPrivacySettings31WalletPrivacySettingsController_isApplicationActive] = 0;
   if (self->PSListController_opaque[OBJC_IVAR____TtC21WalletPrivacySettings31WalletPrivacySettingsController_isApplicationInAppSwitcher] == 1)
   {
-    v3 = self;
+    selfCopy = self;
     sub_3B04();
   }
 }
@@ -97,7 +97,7 @@
   self->PSListController_opaque[OBJC_IVAR____TtC21WalletPrivacySettings31WalletPrivacySettingsController_isApplicationActive] = 1;
   if ((self->PSListController_opaque[OBJC_IVAR____TtC21WalletPrivacySettings31WalletPrivacySettingsController_isApplicationInAppSwitcher] & 1) == 0)
   {
-    v3 = self;
+    selfCopy = self;
     sub_2C98();
   }
 }

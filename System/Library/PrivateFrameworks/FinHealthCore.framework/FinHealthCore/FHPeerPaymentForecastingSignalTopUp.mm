@@ -1,26 +1,26 @@
 @interface FHPeerPaymentForecastingSignalTopUp
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FHPeerPaymentForecastingSignalTopUp)init;
-- (FHPeerPaymentForecastingSignalTopUp)initWithCoder:(id)a3;
+- (FHPeerPaymentForecastingSignalTopUp)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FHPeerPaymentForecastingSignalTopUp
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = FHPeerPaymentForecastingSignalTopUp;
-  [(FHPeerPaymentForecastingSignal *)&v3 encodeWithCoder:a3];
+  [(FHPeerPaymentForecastingSignal *)&v3 encodeWithCoder:coder];
 }
 
-- (FHPeerPaymentForecastingSignalTopUp)initWithCoder:(id)a3
+- (FHPeerPaymentForecastingSignalTopUp)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = FHPeerPaymentForecastingSignalTopUp;
-  return [(FHPeerPaymentForecastingSignal *)&v4 initWithCoder:a3];
+  return [(FHPeerPaymentForecastingSignal *)&v4 initWithCoder:coder];
 }
 
 - (FHPeerPaymentForecastingSignalTopUp)init
@@ -55,19 +55,19 @@
   return [(FHPeerPaymentForecastingSignal *)&v3 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(FHPeerPaymentForecastingSignal *)self forecastingType];
-    v7 = v6 == [(FHPeerPaymentForecastingSignal *)v5 forecastingType];
+    forecastingType = [(FHPeerPaymentForecastingSignal *)self forecastingType];
+    v7 = forecastingType == [(FHPeerPaymentForecastingSignal *)v5 forecastingType];
   }
 
   else

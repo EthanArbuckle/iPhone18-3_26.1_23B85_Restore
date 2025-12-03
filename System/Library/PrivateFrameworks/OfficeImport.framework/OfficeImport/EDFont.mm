@@ -1,39 +1,39 @@
 @interface EDFont
-+ (EDFont)fontWithResources:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFont:(id)a3;
-- (EDFont)initWithResources:(id)a3;
++ (EDFont)fontWithResources:(id)resources;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFont:(id)font;
+- (EDFont)initWithResources:(id)resources;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)setBold:(BOOL)a3;
-- (void)setCharSet:(int)a3;
-- (void)setColor:(id)a3;
-- (void)setColorReference:(id)a3;
-- (void)setFamily:(int)a3;
-- (void)setHeight:(double)a3;
-- (void)setItalic:(BOOL)a3;
-- (void)setName:(id)a3;
-- (void)setOutline:(BOOL)a3;
-- (void)setScript:(int)a3;
-- (void)setShadow:(BOOL)a3;
-- (void)setStrike:(BOOL)a3;
-- (void)setUnderline:(int)a3;
-- (void)setWeight:(unsigned int)a3;
+- (void)setBold:(BOOL)bold;
+- (void)setCharSet:(int)set;
+- (void)setColor:(id)color;
+- (void)setColorReference:(id)reference;
+- (void)setFamily:(int)family;
+- (void)setHeight:(double)height;
+- (void)setItalic:(BOOL)italic;
+- (void)setName:(id)name;
+- (void)setOutline:(BOOL)outline;
+- (void)setScript:(int)script;
+- (void)setShadow:(BOOL)shadow;
+- (void)setStrike:(BOOL)strike;
+- (void)setUnderline:(int)underline;
+- (void)setWeight:(unsigned int)weight;
 @end
 
 @implementation EDFont
 
-- (EDFont)initWithResources:(id)a3
+- (EDFont)initWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = EDFont;
   v5 = [(EDFont *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mResources, v4);
+    objc_storeWeak(&v5->mResources, resourcesCopy);
     *&v6->mUnderline = 0;
     v6->mOutline = 0;
     v6->mHeightInTwips = 200.0;
@@ -50,15 +50,15 @@
   return v6;
 }
 
-+ (EDFont)fontWithResources:(id)a3
++ (EDFont)fontWithResources:(id)resources
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithResources:v3];
+  resourcesCopy = resources;
+  v4 = [objc_alloc(objc_opt_class()) initWithResources:resourcesCopy];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
   WeakRetained = objc_loadWeakRetained(&self->mResources);
@@ -66,11 +66,11 @@
 
   if (v7)
   {
-    v8 = [(NSString *)self->mName copyWithZone:a3];
+    v8 = [(NSString *)self->mName copyWithZone:zone];
     v9 = *(v7 + 16);
     *(v7 + 16) = v8;
 
-    v10 = [(EDColorReference *)self->mColorReference copyWithZone:a3];
+    v10 = [(EDColorReference *)self->mColorReference copyWithZone:zone];
     v11 = *(v7 + 24);
     *(v7 + 24) = v10;
 
@@ -98,27 +98,27 @@
   return v7;
 }
 
-- (BOOL)isEqualToFont:(id)a3
+- (BOOL)isEqualToFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   mName = self->mName;
-  v7 = (mName == v4[2] || [(NSString *)mName isEqual:?]) && ((mColorReference = self->mColorReference, mColorReference == v4[3]) || [(EDColorReference *)mColorReference isEqual:?]) && self->mBold == *(v4 + 60) && self->mItalic == *(v4 + 61) && self->mShadow == *(v4 + 62) && self->mStrike == *(v4 + 63) && self->mOutline == *(v4 + 64) && self->mUnderline == *(v4 + 8) && self->mScript == *(v4 + 9) && self->mHeightInTwips == *(v4 + 5) && self->mCharSet == *(v4 + 12) && self->mFamily == *(v4 + 13) && self->mWeight == *(v4 + 14) && self->mUnderlineOverridden == *(v4 + 65) && self->mStrikeOverridden == *(v4 + 66) && self->mBoldOverridden == *(v4 + 67) && self->mItalicOverridden == *(v4 + 69) && self->mWeightOverridden == *(v4 + 68) && self->mNameOverridden == *(v4 + 71);
+  v7 = (mName == fontCopy[2] || [(NSString *)mName isEqual:?]) && ((mColorReference = self->mColorReference, mColorReference == fontCopy[3]) || [(EDColorReference *)mColorReference isEqual:?]) && self->mBold == *(fontCopy + 60) && self->mItalic == *(fontCopy + 61) && self->mShadow == *(fontCopy + 62) && self->mStrike == *(fontCopy + 63) && self->mOutline == *(fontCopy + 64) && self->mUnderline == *(fontCopy + 8) && self->mScript == *(fontCopy + 9) && self->mHeightInTwips == *(fontCopy + 5) && self->mCharSet == *(fontCopy + 12) && self->mFamily == *(fontCopy + 13) && self->mWeight == *(fontCopy + 14) && self->mUnderlineOverridden == *(fontCopy + 65) && self->mStrikeOverridden == *(fontCopy + 66) && self->mBoldOverridden == *(fontCopy + 67) && self->mItalicOverridden == *(fontCopy + 69) && self->mWeightOverridden == *(fontCopy + 68) && self->mNameOverridden == *(fontCopy + 71);
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EDFont *)self isEqualToFont:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EDFont *)self isEqualToFont:v5];
   }
 
   return v6;
@@ -131,124 +131,124 @@
   return v4 ^ [(EDColorReference *)self->mColorReference hash]^ mHeightInTwips;
 }
 
-- (void)setScript:(int)a3
+- (void)setScript:(int)script
 {
   if (!self->mDoNotModify)
   {
-    self->mScript = a3;
+    self->mScript = script;
   }
 }
 
-- (void)setUnderline:(int)a3
+- (void)setUnderline:(int)underline
 {
   if (!self->mDoNotModify)
   {
-    self->mUnderline = a3;
+    self->mUnderline = underline;
     self->mUnderlineOverridden = 1;
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v5 = a3;
-  if (!self->mDoNotModify && self->mName != v5)
+  nameCopy = name;
+  if (!self->mDoNotModify && self->mName != nameCopy)
   {
     self->mNameOverridden = 1;
-    v6 = v5;
-    objc_storeStrong(&self->mName, a3);
-    v5 = v6;
+    v6 = nameCopy;
+    objc_storeStrong(&self->mName, name);
+    nameCopy = v6;
   }
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (!self->mDoNotModify)
   {
-    v9 = v4;
+    v9 = colorCopy;
     v5 = [EDColorReference alloc];
     WeakRetained = objc_loadWeakRetained(&self->mResources);
     v7 = [(EDColorReference *)v5 initWithColor:v9 resources:WeakRetained];
     mColorReference = self->mColorReference;
     self->mColorReference = v7;
 
-    v4 = v9;
+    colorCopy = v9;
   }
 }
 
-- (void)setBold:(BOOL)a3
+- (void)setBold:(BOOL)bold
 {
   if (!self->mDoNotModify)
   {
-    self->mBold = a3;
+    self->mBold = bold;
     self->mBoldOverridden = 1;
   }
 }
 
-- (void)setItalic:(BOOL)a3
+- (void)setItalic:(BOOL)italic
 {
   if (!self->mDoNotModify)
   {
-    self->mItalic = a3;
+    self->mItalic = italic;
     self->mItalicOverridden = 1;
   }
 }
 
-- (void)setShadow:(BOOL)a3
+- (void)setShadow:(BOOL)shadow
 {
   if (!self->mDoNotModify)
   {
-    self->mShadow = a3;
+    self->mShadow = shadow;
   }
 }
 
-- (void)setOutline:(BOOL)a3
+- (void)setOutline:(BOOL)outline
 {
   if (!self->mDoNotModify)
   {
-    self->mOutline = a3;
+    self->mOutline = outline;
   }
 }
 
-- (void)setStrike:(BOOL)a3
+- (void)setStrike:(BOOL)strike
 {
   if (!self->mDoNotModify)
   {
-    self->mStrike = a3;
+    self->mStrike = strike;
     self->mStrikeOverridden = 1;
   }
 }
 
-- (void)setHeight:(double)a3
+- (void)setHeight:(double)height
 {
   if (!self->mDoNotModify)
   {
-    self->mHeightInTwips = a3;
+    self->mHeightInTwips = height;
     self->mHeightOverridden = 1;
   }
 }
 
-- (void)setCharSet:(int)a3
+- (void)setCharSet:(int)set
 {
   if (!self->mDoNotModify)
   {
-    self->mCharSet = a3;
+    self->mCharSet = set;
   }
 }
 
-- (void)setFamily:(int)a3
+- (void)setFamily:(int)family
 {
   if (!self->mDoNotModify)
   {
-    self->mFamily = a3;
+    self->mFamily = family;
   }
 }
 
-- (void)setWeight:(unsigned int)a3
+- (void)setWeight:(unsigned int)weight
 {
   if (!self->mDoNotModify)
   {
-    self->mWeight = a3;
+    self->mWeight = weight;
     self->mWeightOverridden = 1;
   }
 }
@@ -262,18 +262,18 @@
   return v2;
 }
 
-- (void)setColorReference:(id)a3
+- (void)setColorReference:(id)reference
 {
-  v5 = a3;
+  referenceCopy = reference;
   if (!self->mDoNotModify)
   {
     mColorReference = self->mColorReference;
     p_mColorReference = &self->mColorReference;
-    if (mColorReference != v5)
+    if (mColorReference != referenceCopy)
     {
-      v8 = v5;
-      objc_storeStrong(p_mColorReference, a3);
-      v5 = v8;
+      v8 = referenceCopy;
+      objc_storeStrong(p_mColorReference, reference);
+      referenceCopy = v8;
     }
   }
 }

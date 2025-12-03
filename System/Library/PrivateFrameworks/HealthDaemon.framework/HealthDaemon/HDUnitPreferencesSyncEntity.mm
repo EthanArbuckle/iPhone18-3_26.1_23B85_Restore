@@ -1,22 +1,22 @@
 @interface HDUnitPreferencesSyncEntity
-+ (void)didReceiveValuesForKeys:(id)a3 profile:(id)a4;
++ (void)didReceiveValuesForKeys:(id)keys profile:(id)profile;
 @end
 
 @implementation HDUnitPreferencesSyncEntity
 
-+ (void)didReceiveValuesForKeys:(id)a3 profile:(id)a4
++ (void)didReceiveValuesForKeys:(id)keys profile:(id)profile
 {
-  v4 = [a4 unitPreferencesManager];
-  if (v4)
+  unitPreferencesManager = [profile unitPreferencesManager];
+  if (unitPreferencesManager)
   {
-    v6 = v4;
-    os_unfair_lock_lock(v4 + 8);
+    v6 = unitPreferencesManager;
+    os_unfair_lock_lock(unitPreferencesManager + 8);
     v5 = *&v6[4]._os_unfair_lock_opaque;
     *&v6[4]._os_unfair_lock_opaque = 0;
 
     [(HDUnitPreferencesManager *)v6 _lock_notifyObserversWithUnitPreferences];
     os_unfair_lock_unlock(v6 + 8);
-    v4 = v6;
+    unitPreferencesManager = v6;
   }
 }
 

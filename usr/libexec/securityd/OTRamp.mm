@@ -1,12 +1,12 @@
 @interface OTRamp
-- (BOOL)checkRampStateWithError:(id *)a3;
-- (OTRamp)initWithRecordName:(id)a3 localSettingName:(id)a4 container:(id)a5 database:(id)a6 zoneID:(id)a7 accountTracker:(id)a8 lockStateTracker:(id)a9 reachabilityTracker:(id)a10 fetchRecordRecordsOperationClass:(Class)a11;
-- (void)fetchRampRecordWithReply:(id)a3;
+- (BOOL)checkRampStateWithError:(id *)error;
+- (OTRamp)initWithRecordName:(id)name localSettingName:(id)settingName container:(id)container database:(id)database zoneID:(id)d accountTracker:(id)tracker lockStateTracker:(id)stateTracker reachabilityTracker:(id)self0 fetchRecordRecordsOperationClass:(Class)self1;
+- (void)fetchRampRecordWithReply:(id)reply;
 @end
 
 @implementation OTRamp
 
-- (BOOL)checkRampStateWithError:(id *)a3
+- (BOOL)checkRampStateWithError:(id *)error
 {
   v82 = 0;
   v83 = &v82;
@@ -22,13 +22,13 @@
   v73 = &v72;
   v74 = 0x2020000000;
   v75 = 0;
-  v5 = [(OTRamp *)self localSettingName];
-  v6 = CFPreferencesCopyValue(v5, @"com.apple.security", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  localSettingName = [(OTRamp *)self localSettingName];
+  v6 = CFPreferencesCopyValue(localSettingName, @"com.apple.security", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 
   v7 = sub_100006274("octagon");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(OTRamp *)self localSettingName];
+    localSettingName2 = [(OTRamp *)self localSettingName];
     if (v6)
     {
       v9 = "True";
@@ -56,7 +56,7 @@
     }
 
     *buf = 138413058;
-    v99 = v8;
+    v99 = localSettingName2;
     v100 = 2080;
     v101 = "False";
     v102 = 2080;
@@ -70,24 +70,24 @@
   {
 LABEL_20:
     v19 = objc_alloc_init(NSDate);
-    v20 = [(OTRamp *)self lastFetch];
-    [v19 timeIntervalSinceDate:v20];
+    lastFetch = [(OTRamp *)self lastFetch];
+    [v19 timeIntervalSinceDate:lastFetch];
     v22 = v21;
     [(OTRamp *)self retryAfter];
     v24 = v22 < v23;
 
     if (v24)
     {
-      v14 = [(OTRamp *)self cachedFeatureAllowed];
+      cachedFeatureAllowed = [(OTRamp *)self cachedFeatureAllowed];
 LABEL_54:
 
       goto LABEL_55;
     }
 
-    v25 = [(OTRamp *)self lockStateTracker];
-    v26 = [v25 isLocked];
+    lockStateTracker = [(OTRamp *)self lockStateTracker];
+    isLocked = [lockStateTracker isLocked];
 
-    if (v26)
+    if (isLocked)
     {
       v27 = sub_100006274("octagon");
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -103,31 +103,31 @@ LABEL_54:
       v30 = v77[5];
       v77[5] = v29;
 
-      if (a3)
+      if (error)
       {
 LABEL_52:
-        v14 = 0;
-        *a3 = v77[5];
+        cachedFeatureAllowed = 0;
+        *error = v77[5];
         goto LABEL_54;
       }
     }
 
     else
     {
-      v31 = [(OTRamp *)self accountTracker];
-      v32 = [v31 ckAccountInfoInitialized];
-      [v32 wait:5000000000];
+      accountTracker = [(OTRamp *)self accountTracker];
+      ckAccountInfoInitialized = [accountTracker ckAccountInfoInitialized];
+      [ckAccountInfoInitialized wait:5000000000];
 
-      v33 = [(OTRamp *)self accountTracker];
-      v34 = [v33 currentCKAccountInfo];
-      v35 = [v34 accountStatus] == 1;
+      accountTracker2 = [(OTRamp *)self accountTracker];
+      currentCKAccountInfo = [accountTracker2 currentCKAccountInfo];
+      v35 = [currentCKAccountInfo accountStatus] == 1;
 
       if (v35)
       {
-        v36 = [(OTRamp *)self reachabilityTracker];
-        v37 = [v36 currentReachability];
+        reachabilityTracker = [(OTRamp *)self reachabilityTracker];
+        currentReachability = [reachabilityTracker currentReachability];
 
-        if (v37)
+        if (currentReachability)
         {
           v38 = +[CKKSAnalytics logger];
           v39 = [v38 logSystemMetricsForActivityNamed:@"CKKSActivityOTFetchRampState" withAction:0];
@@ -199,9 +199,9 @@ LABEL_52:
             v54 = [NSDictionary dictionaryWithObjects:&v87 forKeys:&v86 count:1];
             [v38 logUnrecoverableError:v53 forEvent:@"OctagonEventRamp" withAttributes:v54];
 
-            if (a3)
+            if (error)
             {
-              *a3 = v77[5];
+              *error = v77[5];
             }
           }
 
@@ -212,7 +212,7 @@ LABEL_52:
 
           [(OTRamp *)self setLastFetch:v19];
           [(OTRamp *)self setCachedFeatureAllowed:*(v83 + 24)];
-          v14 = *(v83 + 24);
+          cachedFeatureAllowed = *(v83 + 24);
 
           goto LABEL_54;
         }
@@ -231,7 +231,7 @@ LABEL_52:
         v62 = v77[5];
         v77[5] = v61;
 
-        if (a3)
+        if (error)
         {
           goto LABEL_52;
         }
@@ -253,14 +253,14 @@ LABEL_52:
         v58 = v77[5];
         v77[5] = v57;
 
-        if (a3)
+        if (error)
         {
           goto LABEL_52;
         }
       }
     }
 
-    v14 = 0;
+    cachedFeatureAllowed = 0;
     goto LABEL_54;
   }
 
@@ -271,12 +271,12 @@ LABEL_52:
     goto LABEL_20;
   }
 
-  v14 = v6 == kCFBooleanTrue;
+  cachedFeatureAllowed = v6 == kCFBooleanTrue;
   v15 = sub_100006274("octagon");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(OTRamp *)self recordName];
-    v17 = v16;
+    recordName = [(OTRamp *)self recordName];
+    v17 = recordName;
     v18 = @"disabled";
     if (v6 == kCFBooleanTrue)
     {
@@ -286,7 +286,7 @@ LABEL_52:
     *buf = 138412546;
     v99 = v18;
     v100 = 2112;
-    v101 = v16;
+    v101 = recordName;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "feature is %@: %@ (local config)", buf, 0x16u);
   }
 
@@ -296,12 +296,12 @@ LABEL_55:
   _Block_object_dispose(&v76, 8);
 
   _Block_object_dispose(&v82, 8);
-  return v14 & 1;
+  return cachedFeatureAllowed & 1;
 }
 
-- (void)fetchRampRecordWithReply:(id)a3
+- (void)fetchRampRecordWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = objc_alloc_init(CKOperationConfiguration);
   [v5 setAllowsCellularAccess:1];
   [v5 setIsCloudKitSupportOperation:1];
@@ -325,12 +325,12 @@ LABEL_55:
   v16[2] = sub_100171B54;
   v16[3] = &unk_1003390F8;
   v17 = v6;
-  v18 = v4;
-  v11 = v4;
+  v18 = replyCopy;
+  v11 = replyCopy;
   v12 = v6;
   [v9 setFetchRecordsCompletionBlock:v16];
-  v13 = [(OTRamp *)self database];
-  [v13 addOperation:v9];
+  database = [(OTRamp *)self database];
+  [database addOperation:v9];
 
   v14 = sub_100006274("octagon");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -340,37 +340,37 @@ LABEL_55:
   }
 }
 
-- (OTRamp)initWithRecordName:(id)a3 localSettingName:(id)a4 container:(id)a5 database:(id)a6 zoneID:(id)a7 accountTracker:(id)a8 lockStateTracker:(id)a9 reachabilityTracker:(id)a10 fetchRecordRecordsOperationClass:(Class)a11
+- (OTRamp)initWithRecordName:(id)name localSettingName:(id)settingName container:(id)container database:(id)database zoneID:(id)d accountTracker:(id)tracker lockStateTracker:(id)stateTracker reachabilityTracker:(id)self0 fetchRecordRecordsOperationClass:(Class)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v33 = a5;
-  v32 = a6;
-  v31 = a7;
-  v30 = a8;
-  v29 = a9;
-  v19 = a10;
+  nameCopy = name;
+  settingNameCopy = settingName;
+  containerCopy = container;
+  databaseCopy = database;
+  dCopy = d;
+  trackerCopy = tracker;
+  stateTrackerCopy = stateTracker;
+  reachabilityTrackerCopy = reachabilityTracker;
   v34.receiver = self;
   v34.super_class = OTRamp;
   v20 = [(OTRamp *)&v34 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_container, a5);
-    v22 = [v17 copy];
+    objc_storeStrong(&v20->_container, container);
+    v22 = [nameCopy copy];
     recordName = v21->_recordName;
     v21->_recordName = v22;
 
-    v24 = [v18 copy];
+    v24 = [settingNameCopy copy];
     localSettingName = v21->_localSettingName;
     v21->_localSettingName = v24;
 
-    objc_storeStrong(&v21->_database, a6);
-    objc_storeStrong(&v21->_zoneID, a7);
-    objc_storeStrong(&v21->_accountTracker, a8);
-    objc_storeStrong(&v21->_lockStateTracker, a9);
-    objc_storeStrong(&v21->_reachabilityTracker, a10);
-    objc_storeStrong(&v21->_fetchRecordRecordsOperationClass, a11);
+    objc_storeStrong(&v21->_database, database);
+    objc_storeStrong(&v21->_zoneID, d);
+    objc_storeStrong(&v21->_accountTracker, tracker);
+    objc_storeStrong(&v21->_lockStateTracker, stateTracker);
+    objc_storeStrong(&v21->_reachabilityTracker, reachabilityTracker);
+    objc_storeStrong(&v21->_fetchRecordRecordsOperationClass, class);
     v26 = +[NSDate distantPast];
     lastFetch = v21->_lastFetch;
     v21->_lastFetch = v26;

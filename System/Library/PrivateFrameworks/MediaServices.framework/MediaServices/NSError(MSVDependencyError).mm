@@ -10,8 +10,8 @@
   v5 = a3;
   if (![v5 count])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"NSError+MSVAdditions.m" lineNumber:333 description:@"Array of dependencies is empty."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSError+MSVAdditions.m" lineNumber:333 description:@"Array of dependencies is empty."];
   }
 
   v6 = MEMORY[0x1E696ABC0];

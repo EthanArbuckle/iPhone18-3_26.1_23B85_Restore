@@ -1,21 +1,21 @@
 @interface NowPlayingQueueViewController.CollectionView
-- (BOOL)beginInteractiveMovementForItemAtIndexPath:(id)a3;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (_TtCC5Music29NowPlayingQueueViewController14CollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (BOOL)beginInteractiveMovementForItemAtIndexPath:(id)path;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (_TtCC5Music29NowPlayingQueueViewController14CollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 - (void)cancelInteractiveMovement;
 - (void)endInteractiveMovement;
 @end
 
 @implementation NowPlayingQueueViewController.CollectionView
 
-- (BOOL)beginInteractiveMovementForItemAtIndexPath:(id)a3
+- (BOOL)beginInteractiveMovementForItemAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1004343A8();
 
   (*(v5 + 8))(v7, v4);
@@ -24,28 +24,28 @@
 
 - (void)endInteractiveMovement
 {
-  v2 = self;
+  selfCopy = self;
   sub_10043454C();
 }
 
 - (void)cancelInteractiveMovement
 {
-  v2 = self;
+  selfCopy = self;
   sub_100434920();
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   sub_100009F78(0, &qword_101197A30);
-  v5 = a3;
-  v6 = self;
-  v7 = [(NowPlayingQueueViewController.CollectionView *)v6 panGestureRecognizer];
+  beginCopy = begin;
+  selfCopy = self;
+  panGestureRecognizer = [(NowPlayingQueueViewController.CollectionView *)selfCopy panGestureRecognizer];
   LOBYTE(self) = static NSObject.== infix(_:_:)();
 
-  if ((self & 1) != 0 && (v8 = *(&v6->super.super.super.super.super.isa + OBJC_IVAR____TtCC5Music29NowPlayingQueueViewController14CollectionView_shouldRecognizePanGestureBlock)) != 0)
+  if ((self & 1) != 0 && (v8 = *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtCC5Music29NowPlayingQueueViewController14CollectionView_shouldRecognizePanGestureBlock)) != 0)
   {
 
-    v9 = v8([v5 locationInView:v6]);
+    v9 = v8([beginCopy locationInView:selfCopy]);
 
     sub_100020438(v8);
   }
@@ -59,12 +59,12 @@
   return v9 & 1;
 }
 
-- (_TtCC5Music29NowPlayingQueueViewController14CollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtCC5Music29NowPlayingQueueViewController14CollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtCC5Music29NowPlayingQueueViewController14CollectionView_interactiveMovementDidBeginBlock);
   *v9 = 0;
   v9[1] = 0;
@@ -78,7 +78,7 @@
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtCC5Music29NowPlayingQueueViewController14CollectionView_hasInteractiveMovement) = 0;
   v13.receiver = self;
   v13.super_class = _s14CollectionViewCMa();
-  return [(NowPlayingQueueViewController.CollectionView *)&v13 initWithFrame:a4 collectionViewLayout:x, y, width, height];
+  return [(NowPlayingQueueViewController.CollectionView *)&v13 initWithFrame:layout collectionViewLayout:x, y, width, height];
 }
 
 @end

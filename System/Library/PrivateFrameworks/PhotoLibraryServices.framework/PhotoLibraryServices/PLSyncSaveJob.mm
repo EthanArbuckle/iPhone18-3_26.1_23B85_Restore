@@ -1,8 +1,8 @@
 @interface PLSyncSaveJob
 - (id)description;
-- (id)initFromSerializedData:(id)a3;
+- (id)initFromSerializedData:(id)data;
 - (id)serializedData;
-- (void)processFacesWithBlock:(id)a3;
+- (void)processFacesWithBlock:(id)block;
 @end
 
 @implementation PLSyncSaveJob
@@ -21,8 +21,8 @@
   {
     if ([(PLSyncSaveJob *)self cleanupSyncState])
     {
-      v5 = [(PLSyncSaveJob *)self cleanupBeforeDate];
-      v4 = [v3 stringByAppendingFormat:@" cleanup sync state (before: %@)", v5];
+      cleanupBeforeDate = [(PLSyncSaveJob *)self cleanupBeforeDate];
+      v4 = [v3 stringByAppendingFormat:@" cleanup sync state (before: %@)", cleanupBeforeDate];
     }
 
     else
@@ -37,40 +37,40 @@
         v6 = @"photo";
       }
 
-      v5 = [(PLSyncSaveJob *)self uuid];
-      v7 = [(PLSyncSaveJob *)self originalAssetURL];
-      v8 = [v7 path];
-      v4 = [v3 stringByAppendingFormat:@" sync %@ %@: %@", v6, v5, v8];
+      cleanupBeforeDate = [(PLSyncSaveJob *)self uuid];
+      originalAssetURL = [(PLSyncSaveJob *)self originalAssetURL];
+      path = [originalAssetURL path];
+      v4 = [v3 stringByAppendingFormat:@" sync %@ %@: %@", v6, cleanupBeforeDate, path];
     }
 
-    v3 = v5;
+    v3 = cleanupBeforeDate;
   }
 
   return v4;
 }
 
-- (void)processFacesWithBlock:(id)a3
+- (void)processFacesWithBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  v17 = a3;
+  blockCopy = block;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(PLSyncSaveJob *)self facesInfo];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  facesInfo = [(PLSyncSaveJob *)self facesInfo];
+  v5 = [facesInfo countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v20;
-    v16 = v17 + 16;
+    v16 = blockCopy + 16;
     do
     {
       for (i = 0; i != v6; ++i)
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(facesInfo);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
@@ -93,13 +93,13 @@
           memset(&rect, 0, sizeof(rect));
           if (CGRectMakeWithDictionaryRepresentation(v12, &rect))
           {
-            v15 = [v11 intValue];
-            (*(v17 + 2))(v17, v15, v10, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+            intValue = [v11 intValue];
+            (*(blockCopy + 2))(blockCopy, intValue, v10, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [facesInfo countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
@@ -109,89 +109,89 @@
 - (id)serializedData
 {
   v47 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(PLSyncSaveJob *)self originalAssetURL];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  originalAssetURL = [(PLSyncSaveJob *)self originalAssetURL];
 
-  if (v4)
+  if (originalAssetURL)
   {
-    v5 = [(PLSyncSaveJob *)self originalAssetURL];
-    v6 = [v5 path];
-    [v3 setObject:v6 forKey:@"path"];
+    originalAssetURL2 = [(PLSyncSaveJob *)self originalAssetURL];
+    path = [originalAssetURL2 path];
+    [dictionary setObject:path forKey:@"path"];
   }
 
-  v7 = [(PLSyncSaveJob *)self videoComplementURL];
+  videoComplementURL = [(PLSyncSaveJob *)self videoComplementURL];
 
-  if (v7)
+  if (videoComplementURL)
   {
-    v8 = [(PLSyncSaveJob *)self videoComplementURL];
-    v9 = [v8 path];
-    [v3 setObject:v9 forKey:@"videoComplementPath"];
+    videoComplementURL2 = [(PLSyncSaveJob *)self videoComplementURL];
+    path2 = [videoComplementURL2 path];
+    [dictionary setObject:path2 forKey:@"videoComplementPath"];
   }
 
-  v10 = [(PLSyncSaveJob *)self hasVideoComplement];
+  hasVideoComplement = [(PLSyncSaveJob *)self hasVideoComplement];
   v11 = MEMORY[0x1E695E4D0];
-  if (v10)
+  if (hasVideoComplement)
   {
-    [v3 setObject:*MEMORY[0x1E695E4D0] forKey:@"hasVideoComplement"];
+    [dictionary setObject:*MEMORY[0x1E695E4D0] forKey:@"hasVideoComplement"];
   }
 
   if ([(PLSyncSaveJob *)self isVideo])
   {
-    [v3 setObject:*v11 forKey:@"isVideo"];
+    [dictionary setObject:*v11 forKey:@"isVideo"];
   }
 
-  v12 = [(PLSyncSaveJob *)self uuid];
+  uuid = [(PLSyncSaveJob *)self uuid];
 
-  if (v12)
+  if (uuid)
   {
-    v13 = [(PLSyncSaveJob *)self uuid];
-    [v3 setObject:v13 forKey:@"UUID"];
+    uuid2 = [(PLSyncSaveJob *)self uuid];
+    [dictionary setObject:uuid2 forKey:@"UUID"];
   }
 
-  v14 = [(PLSyncSaveJob *)self creationDate];
+  creationDate = [(PLSyncSaveJob *)self creationDate];
 
-  if (v14)
+  if (creationDate)
   {
-    v15 = [(PLSyncSaveJob *)self creationDate];
-    [v3 setObject:v15 forKey:@"date"];
+    creationDate2 = [(PLSyncSaveJob *)self creationDate];
+    [dictionary setObject:creationDate2 forKey:@"date"];
   }
 
-  v16 = [(PLSyncSaveJob *)self modificationDate];
+  modificationDate = [(PLSyncSaveJob *)self modificationDate];
 
-  if (v16)
+  if (modificationDate)
   {
-    v17 = [(PLSyncSaveJob *)self modificationDate];
-    [v3 setObject:v17 forKey:@"moddate"];
+    modificationDate2 = [(PLSyncSaveJob *)self modificationDate];
+    [dictionary setObject:modificationDate2 forKey:@"moddate"];
   }
 
-  v18 = [(PLSyncSaveJob *)self location];
-  v19 = v18;
-  if (v18)
+  location = [(PLSyncSaveJob *)self location];
+  v19 = location;
+  if (location)
   {
-    [v18 coordinate];
+    [location coordinate];
     if ([PLLocationUtils canUseCoordinate:?])
     {
       [v19 coordinate];
       v21 = v20;
       v22 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-      [v3 setObject:v22 forKey:@"latitude"];
+      [dictionary setObject:v22 forKey:@"latitude"];
 
       v23 = [MEMORY[0x1E696AD98] numberWithDouble:v21];
-      [v3 setObject:v23 forKey:@"longitude"];
+      [dictionary setObject:v23 forKey:@"longitude"];
     }
   }
 
-  v24 = [(PLSyncSaveJob *)self albumURIs];
+  albumURIs = [(PLSyncSaveJob *)self albumURIs];
 
-  if (v24)
+  if (albumURIs)
   {
-    v25 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v26 = [(PLSyncSaveJob *)self albumURIs];
-    v27 = [v26 countByEnumeratingWithState:&v42 objects:v46 count:16];
+    albumURIs2 = [(PLSyncSaveJob *)self albumURIs];
+    v27 = [albumURIs2 countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v27)
     {
       v28 = v27;
@@ -202,80 +202,80 @@
         {
           if (*v43 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(albumURIs2);
           }
 
           v31 = [*(*(&v42 + 1) + 8 * i) description];
-          [v25 addObject:v31];
+          [array addObject:v31];
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v42 objects:v46 count:16];
+        v28 = [albumURIs2 countByEnumeratingWithState:&v42 objects:v46 count:16];
       }
 
       while (v28);
     }
 
-    [v3 setObject:v25 forKey:@"albums"];
+    [dictionary setObject:array forKey:@"albums"];
   }
 
-  v32 = [(PLSyncSaveJob *)self facesInfo];
+  facesInfo = [(PLSyncSaveJob *)self facesInfo];
 
-  if (v32)
+  if (facesInfo)
   {
-    v33 = [(PLSyncSaveJob *)self facesInfo];
-    [v3 setObject:v33 forKey:@"facesInfo"];
+    facesInfo2 = [(PLSyncSaveJob *)self facesInfo];
+    [dictionary setObject:facesInfo2 forKey:@"facesInfo"];
   }
 
-  v34 = [(PLSyncSaveJob *)self sortToken];
+  sortToken = [(PLSyncSaveJob *)self sortToken];
 
-  if (v34)
+  if (sortToken)
   {
-    v35 = [(PLSyncSaveJob *)self sortToken];
-    [v3 setObject:v35 forKey:@"sortToken"];
+    sortToken2 = [(PLSyncSaveJob *)self sortToken];
+    [dictionary setObject:sortToken2 forKey:@"sortToken"];
   }
 
-  v36 = [(PLSyncSaveJob *)self originalFileName];
+  originalFileName = [(PLSyncSaveJob *)self originalFileName];
 
-  if (v36)
+  if (originalFileName)
   {
-    v37 = [(PLSyncSaveJob *)self originalFileName];
-    [v3 setObject:v37 forKey:@"originalFileName"];
+    originalFileName2 = [(PLSyncSaveJob *)self originalFileName];
+    [dictionary setObject:originalFileName2 forKey:@"originalFileName"];
   }
 
   if ([(PLSyncSaveJob *)self isSyncComplete])
   {
-    [v3 setObject:*v11 forKey:@"isSyncComplete"];
+    [dictionary setObject:*v11 forKey:@"isSyncComplete"];
   }
 
   if ([(PLSyncSaveJob *)self cleanupSyncState])
   {
-    [v3 setObject:*v11 forKey:@"cleanupSyncState"];
+    [dictionary setObject:*v11 forKey:@"cleanupSyncState"];
   }
 
-  v38 = [(PLSyncSaveJob *)self cleanupBeforeDate];
+  cleanupBeforeDate = [(PLSyncSaveJob *)self cleanupBeforeDate];
 
-  if (v38)
+  if (cleanupBeforeDate)
   {
-    v39 = [(PLSyncSaveJob *)self cleanupBeforeDate];
-    [v3 setObject:v39 forKey:@"cleanupBeforeDate"];
+    cleanupBeforeDate2 = [(PLSyncSaveJob *)self cleanupBeforeDate];
+    [dictionary setObject:cleanupBeforeDate2 forKey:@"cleanupBeforeDate"];
   }
 
-  v40 = [MEMORY[0x1E696AE40] dataWithPropertyList:v3 format:200 options:0 error:0];
+  v40 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary format:200 options:0 error:0];
 
   return v40;
 }
 
-- (id)initFromSerializedData:(id)a3
+- (id)initFromSerializedData:(id)data
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v52.receiver = self;
   v52.super_class = PLSyncSaveJob;
   v5 = [(PLSyncSaveJob *)&v52 init];
   if (v5)
   {
     v51 = 0;
-    v6 = [MEMORY[0x1E696AE40] propertyListWithData:v4 options:0 format:0 error:&v51];
+    v6 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:0 format:0 error:&v51];
     v7 = v51;
     if (v6)
     {

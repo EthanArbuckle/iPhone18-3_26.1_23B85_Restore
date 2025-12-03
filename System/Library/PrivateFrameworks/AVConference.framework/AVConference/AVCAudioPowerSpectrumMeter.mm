@@ -1,32 +1,32 @@
 @interface AVCAudioPowerSpectrumMeter
-- (AVCAudioPowerSpectrumMeter)initWithConfig:(_AVCAudioPowerSpectrumMeterConfig *)a3 delegate:(id)a4 queue:(id)a5;
-- (BOOL)dispatchedProcessBasebandRegistrationResult:(id)a3 forTapType:(unsigned int)a4 withError:(id *)a5;
-- (BOOL)dispatchedRegisterPowerSpectrumForCellularTapType:(unsigned int)a3 error:(id *)a4;
-- (BOOL)dispatchedUnregisterPowerSpectrumForCellularTapType:(unsigned int)a3 error:(id *)a4;
-- (BOOL)registerPowerSpectrumForCellularTapType:(unsigned int)a3 error:(id *)a4;
+- (AVCAudioPowerSpectrumMeter)initWithConfig:(_AVCAudioPowerSpectrumMeterConfig *)config delegate:(id)delegate queue:(id)queue;
+- (BOOL)dispatchedProcessBasebandRegistrationResult:(id)result forTapType:(unsigned int)type withError:(id *)error;
+- (BOOL)dispatchedRegisterPowerSpectrumForCellularTapType:(unsigned int)type error:(id *)error;
+- (BOOL)dispatchedUnregisterPowerSpectrumForCellularTapType:(unsigned int)type error:(id *)error;
+- (BOOL)registerPowerSpectrumForCellularTapType:(unsigned int)type error:(id *)error;
 - (BOOL)setupPowerSpectrumMeter;
 - (BOOL)setupXPCConnection;
-- (BOOL)storeDelegate:(id)a3 delegateQueue:(id)a4;
-- (BOOL)unregisterPowerSpectrumForCellularTapType:(unsigned int)a3 error:(id *)a4;
-- (int64_t)streamTokenForCellularTapType:(unsigned int)a3;
-- (void)audioPowerSpectrumMeter:(id)a3 didUpdateAudioPowerSpectrums:(id)a4;
+- (BOOL)storeDelegate:(id)delegate delegateQueue:(id)queue;
+- (BOOL)unregisterPowerSpectrumForCellularTapType:(unsigned int)type error:(id *)error;
+- (int64_t)streamTokenForCellularTapType:(unsigned int)type;
+- (void)audioPowerSpectrumMeter:(id)meter didUpdateAudioPowerSpectrums:(id)spectrums;
 - (void)cleanupDelegate;
 - (void)cleanupXPCConnection;
 - (void)dealloc;
 - (void)deregisterBlocksForService;
-- (void)dispatchedUnregisterBasebandTokensForAudioTapType:(unsigned int)a3;
+- (void)dispatchedUnregisterBasebandTokensForAudioTapType:(unsigned int)type;
 - (void)invalidateBasebandTokens;
 - (void)registerBlocksForNotifications;
-- (void)registerPowerSpectrumForStreamToken:(int64_t)a3;
-- (void)setEnableAsyncTapStart:(BOOL)a3;
+- (void)registerPowerSpectrumForStreamToken:(int64_t)token;
+- (void)setEnableAsyncTapStart:(BOOL)start;
 - (void)setupPowerSpectrumMeter;
 - (void)setupXPCConnection;
-- (void)unregisterPowerSpectrumForStreamToken:(int64_t)a3;
+- (void)unregisterPowerSpectrumForStreamToken:(int64_t)token;
 @end
 
 @implementation AVCAudioPowerSpectrumMeter
 
-- (AVCAudioPowerSpectrumMeter)initWithConfig:(_AVCAudioPowerSpectrumMeterConfig *)a3 delegate:(id)a4 queue:(id)a5
+- (AVCAudioPowerSpectrumMeter)initWithConfig:(_AVCAudioPowerSpectrumMeterConfig *)config delegate:(id)delegate queue:(id)queue
 {
   v15 = *MEMORY[0x1E69E9840];
   VRTraceReset();
@@ -44,13 +44,13 @@
       v9->_stateQueue = v12;
       if (v12)
       {
-        if ([(AVCAudioPowerSpectrumMeter *)v9 storeDelegate:a4 delegateQueue:a5])
+        if ([(AVCAudioPowerSpectrumMeter *)v9 storeDelegate:delegate delegateQueue:queue])
         {
           if ([(AVCAudioPowerSpectrumMeter *)v9 setupXPCConnection])
           {
             v9->_sessionToken = 0;
-            v9->_audioSpectrumBinCount = a3->var2;
-            v9->_audioSpectrumRefreshRate = a3->var3;
+            v9->_audioSpectrumBinCount = config->var2;
+            v9->_audioSpectrumRefreshRate = config->var3;
             if ([(AVCAudioPowerSpectrumMeter *)v9 setupPowerSpectrumMeter])
             {
               return v9;
@@ -124,7 +124,7 @@
     v19 = 2112;
     v20 = v3;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     v6 = " [%s] %s:%d %@(%p) deallocating AVCAudioPowerSpectrumMeter";
     v7 = v10;
     v8 = 48;
@@ -167,7 +167,7 @@ LABEL_12:
   [(AVCAudioPowerSpectrumMeter *)&v12 dealloc];
 }
 
-- (void)registerPowerSpectrumForStreamToken:(int64_t)a3
+- (void)registerPowerSpectrumForStreamToken:(int64_t)token
 {
   v27 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -185,7 +185,7 @@ LABEL_12:
         v19 = 1024;
         v20 = 95;
         v21 = 2048;
-        v22 = a3;
+        tokenCopy = token;
         v8 = " [%s] %s:%d streamToken=%ld";
         v9 = v7;
         v10 = 38;
@@ -220,11 +220,11 @@ LABEL_11:
         v19 = 1024;
         v20 = 95;
         v21 = 2112;
-        v22 = v5;
+        tokenCopy = v5;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v25 = 2048;
-        v26 = a3;
+        tokenCopy2 = token;
         v8 = " [%s] %s:%d %@(%p) streamToken=%ld";
         v9 = v12;
         v10 = 58;
@@ -233,11 +233,11 @@ LABEL_11:
     }
   }
 
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:{a3, @"vcAudioPowerSpectrumStreamToken"}];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:{token, @"vcAudioPowerSpectrumStreamToken"}];
   -[AVConferenceXPCClient sendMessageAsync:arguments:](self->_connection, "sendMessageAsync:arguments:", "vcAudioPowerSpectrumRegisterListener", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v14 forKeys:&v13 count:1]);
 }
 
-- (void)unregisterPowerSpectrumForStreamToken:(int64_t)a3
+- (void)unregisterPowerSpectrumForStreamToken:(int64_t)token
 {
   v27 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -255,7 +255,7 @@ LABEL_11:
         v19 = 1024;
         v20 = 102;
         v21 = 2048;
-        v22 = a3;
+        tokenCopy = token;
         v8 = " [%s] %s:%d streamToken=%ld";
         v9 = v7;
         v10 = 38;
@@ -290,11 +290,11 @@ LABEL_11:
         v19 = 1024;
         v20 = 102;
         v21 = 2112;
-        v22 = v5;
+        tokenCopy = v5;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v25 = 2048;
-        v26 = a3;
+        tokenCopy2 = token;
         v8 = " [%s] %s:%d %@(%p) streamToken=%ld";
         v9 = v12;
         v10 = 58;
@@ -303,21 +303,21 @@ LABEL_11:
     }
   }
 
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:{a3, @"vcAudioPowerSpectrumStreamToken"}];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:{token, @"vcAudioPowerSpectrumStreamToken"}];
   -[AVConferenceXPCClient sendMessageAsync:arguments:](self->_connection, "sendMessageAsync:arguments:", "vcAudioPowerSpectrumUnregisterListener", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v14 forKeys:&v13 count:1]);
 }
 
-- (BOOL)dispatchedProcessBasebandRegistrationResult:(id)a3 forTapType:(unsigned int)a4 withError:(id *)a5
+- (BOOL)dispatchedProcessBasebandRegistrationResult:(id)result forTapType:(unsigned int)type withError:(id *)error
 {
-  v6 = *&a4;
+  v6 = *&type;
   v39 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_stateQueue);
-  v9 = [a3 objectForKeyedSubscript:@"vcBasebandAudioTapDirectionToken"];
+  v9 = [result objectForKeyedSubscript:@"vcBasebandAudioTapDirectionToken"];
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v6];
   if (!v9)
   {
     [AVCAudioPowerSpectrumMeter dispatchedProcessBasebandRegistrationResult:? forTapType:? withError:?];
-    if (!a5)
+    if (!error)
     {
       return 0;
     }
@@ -329,15 +329,15 @@ LABEL_11:
   if (![(NSMutableDictionary *)self->_basebandAudioTapTypeToStreamTokenMap objectForKeyedSubscript:v10])
   {
     [(NSMutableDictionary *)self->_basebandAudioTapTypeToStreamTokenMap setObject:v9 forKeyedSubscript:v11];
-    v12 = [a3 objectForKeyedSubscript:@"vcBasebandAudioTapTapToken"];
+    v12 = [result objectForKeyedSubscript:@"vcBasebandAudioTapTapToken"];
     if (v12)
     {
-      v13 = [v12 longValue];
-      v14 = v13;
+      longValue = [v12 longValue];
+      v14 = longValue;
       sessionToken = self->_sessionToken;
-      if (!sessionToken || v13 == sessionToken)
+      if (!sessionToken || longValue == sessionToken)
       {
-        self->_sessionToken = v13;
+        self->_sessionToken = longValue;
         return 1;
       }
 
@@ -421,7 +421,7 @@ LABEL_11:
 
 LABEL_33:
       _os_log_error_impl(&dword_1DB56E000, v23, OS_LOG_TYPE_ERROR, v22, v35, v24);
-      if (a5)
+      if (error)
       {
         goto LABEL_31;
       }
@@ -430,7 +430,7 @@ LABEL_33:
     }
 
     [AVCAudioPowerSpectrumMeter dispatchedProcessBasebandRegistrationResult:? forTapType:? withError:?];
-    if (!a5)
+    if (!error)
     {
       return 0;
     }
@@ -438,7 +438,7 @@ LABEL_33:
 LABEL_31:
     v33 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32000 detailCode:0 description:{@"Invalid baseband stream token state", *v35, *&v35[16], v36, *v37, *&v37[8], v38}];
     result = 0;
-    *a5 = v33;
+    *error = v33;
     return result;
   }
 
@@ -516,7 +516,7 @@ LABEL_31:
   }
 
 LABEL_30:
-  if (a5)
+  if (error)
   {
     goto LABEL_31;
   }
@@ -524,9 +524,9 @@ LABEL_30:
   return 0;
 }
 
-- (BOOL)dispatchedRegisterPowerSpectrumForCellularTapType:(unsigned int)a3 error:(id *)a4
+- (BOOL)dispatchedRegisterPowerSpectrumForCellularTapType:(unsigned int)type error:(id *)error
 {
-  v5 = *&a3;
+  v5 = *&type;
   v41[3] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_stateQueue);
   v7 = [AVCAudioPowerSpectrumMeter cellularTapTypeWithClientCellularTapType:v5];
@@ -545,9 +545,9 @@ LABEL_30:
       v30 = 1024;
       v31 = 159;
       v32 = 2048;
-      v33 = self;
+      selfCopy = self;
       v34 = 1024;
-      LODWORD(v35) = v5;
+      LODWORD(selfCopy3) = v5;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCAudioPowerSpectrumMeter-registerPowerSpectrumForCellularTapType (%p) type=%u", &v26, 0x2Cu);
     }
   }
@@ -587,9 +587,9 @@ LABEL_30:
       v30 = 1024;
       v31 = 172;
       v32 = 2112;
-      v33 = v14;
+      selfCopy = v14;
       v34 = 2048;
-      v35 = self;
+      selfCopy3 = self;
       v36 = 2112;
       v37 = v8;
       v38 = 2112;
@@ -620,9 +620,9 @@ LABEL_20:
     v30 = 1024;
     v31 = 172;
     v32 = 2112;
-    v33 = v8;
+    selfCopy = v8;
     v34 = 2112;
-    v35 = v12;
+    selfCopy3 = v12;
     v17 = " [%s] %s:%d Failed to register the power spectrum for tap type=%@. error=%@";
     goto LABEL_13;
   }
@@ -637,7 +637,7 @@ LABEL_20:
   v12 = [v11 objectForKeyedSubscript:@"ERROR"];
   if (!v12)
   {
-    LOBYTE(v13) = [(AVCAudioPowerSpectrumMeter *)self dispatchedProcessBasebandRegistrationResult:v11 forTapType:v5 withError:a4];
+    LOBYTE(v13) = [(AVCAudioPowerSpectrumMeter *)self dispatchedProcessBasebandRegistrationResult:v11 forTapType:v5 withError:error];
     goto LABEL_21;
   }
 
@@ -663,9 +663,9 @@ LABEL_20:
     v30 = 1024;
     v31 = 168;
     v32 = 2112;
-    v33 = v8;
+    selfCopy = v8;
     v34 = 2112;
-    v35 = v12;
+    selfCopy3 = v12;
     v17 = " [%s] %s:%d Failed to register the power spectrum for tap type=%@. error=%@";
 LABEL_13:
     v18 = v16;
@@ -702,9 +702,9 @@ LABEL_19:
     v30 = 1024;
     v31 = 168;
     v32 = 2112;
-    v33 = v22;
+    selfCopy = v22;
     v34 = 2048;
-    v35 = self;
+    selfCopy3 = self;
     v36 = 2112;
     v37 = v8;
     v38 = 2112;
@@ -717,15 +717,15 @@ LABEL_18:
   }
 
 LABEL_21:
-  if (a4)
+  if (error)
   {
-    *a4 = v12;
+    *error = v12;
   }
 
   return v13;
 }
 
-- (BOOL)registerPowerSpectrumForCellularTapType:(unsigned int)a3 error:(id *)a4
+- (BOOL)registerPowerSpectrumForCellularTapType:(unsigned int)type error:(id *)error
 {
   v13 = *MEMORY[0x1E69E9840];
   v9 = 0;
@@ -739,8 +739,8 @@ LABEL_21:
   block[3] = &unk_1E85F92C0;
   block[4] = self;
   block[5] = &v9;
-  v8 = a3;
-  block[6] = a4;
+  typeCopy = type;
+  block[6] = error;
   dispatch_sync(stateQueue, block);
   v5 = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
@@ -754,7 +754,7 @@ uint64_t __76__AVCAudioPowerSpectrumMeter_registerPowerSpectrumForCellularTapTyp
   return result;
 }
 
-- (void)setEnableAsyncTapStart:(BOOL)a3
+- (void)setEnableAsyncTapStart:(BOOL)start
 {
   v6 = *MEMORY[0x1E69E9840];
   stateQueue = self->_stateQueue;
@@ -763,11 +763,11 @@ uint64_t __76__AVCAudioPowerSpectrumMeter_registerPowerSpectrumForCellularTapTyp
   block[2] = __53__AVCAudioPowerSpectrumMeter_setEnableAsyncTapStart___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  startCopy = start;
   dispatch_async(stateQueue, block);
 }
 
-- (int64_t)streamTokenForCellularTapType:(unsigned int)a3
+- (int64_t)streamTokenForCellularTapType:(unsigned int)type
 {
   v41 = *MEMORY[0x1E69E9840];
   v21 = 0;
@@ -783,17 +783,17 @@ uint64_t __76__AVCAudioPowerSpectrumMeter_registerPowerSpectrumForCellularTapTyp
   block[3] = &unk_1E85F61A8;
   block[4] = self;
   block[5] = &v21;
-  v20 = a3;
+  typeCopy = type;
   dispatch_sync(stateQueue, block);
   v6 = v22[5];
   if (v6)
   {
-    v7 = [v6 longValue];
+    longValue = [v6 longValue];
   }
 
   else
   {
-    v7 = 0;
+    longValue = 0;
   }
 
   if (objc_opt_class() == self)
@@ -812,9 +812,9 @@ uint64_t __76__AVCAudioPowerSpectrumMeter_registerPowerSpectrumForCellularTapTyp
         v31 = 1024;
         v32 = 205;
         v33 = 2048;
-        v34 = v7;
+        v34 = longValue;
         v35 = 1024;
-        *v36 = a3;
+        *v36 = type;
         *&v36[4] = 2112;
         *&v36[6] = v11;
         v12 = " [%s] %s:%d Querying token=%ld for tapType=%u, mappedNumber=%@";
@@ -856,9 +856,9 @@ LABEL_14:
         v35 = 2048;
         *v36 = self;
         *&v36[8] = 2048;
-        *&v36[10] = v7;
+        *&v36[10] = longValue;
         v37 = 1024;
-        v38 = a3;
+        typeCopy2 = type;
         v39 = 2112;
         v40 = v17;
         v12 = " [%s] %s:%d %@(%p) Querying token=%ld for tapType=%u, mappedNumber=%@";
@@ -870,7 +870,7 @@ LABEL_14:
   }
 
   _Block_object_dispose(&v21, 8);
-  return v7;
+  return longValue;
 }
 
 id __60__AVCAudioPowerSpectrumMeter_streamTokenForCellularTapType___block_invoke(uint64_t a1)
@@ -880,9 +880,9 @@ id __60__AVCAudioPowerSpectrumMeter_streamTokenForCellularTapType___block_invoke
   return result;
 }
 
-- (void)dispatchedUnregisterBasebandTokensForAudioTapType:(unsigned int)a3
+- (void)dispatchedUnregisterBasebandTokensForAudioTapType:(unsigned int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   dispatch_assert_queue_V2(self->_stateQueue);
   -[NSMutableDictionary setObject:forKeyedSubscript:](self->_basebandAudioTapTypeToStreamTokenMap, "setObject:forKeyedSubscript:", 0, [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3]);
   if (![(NSMutableDictionary *)self->_basebandAudioTapTypeToStreamTokenMap count])
@@ -891,9 +891,9 @@ id __60__AVCAudioPowerSpectrumMeter_streamTokenForCellularTapType___block_invoke
   }
 }
 
-- (BOOL)dispatchedUnregisterPowerSpectrumForCellularTapType:(unsigned int)a3 error:(id *)a4
+- (BOOL)dispatchedUnregisterPowerSpectrumForCellularTapType:(unsigned int)type error:(id *)error
 {
-  v5 = *&a3;
+  v5 = *&type;
   v40[1] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_stateQueue);
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCAudioPowerSpectrumMeter-unregisterPowerSpectrumForCellularTapType");
@@ -910,9 +910,9 @@ id __60__AVCAudioPowerSpectrumMeter_streamTokenForCellularTapType___block_invoke
       v29 = 1024;
       v30 = 230;
       v31 = 2048;
-      v32 = self;
+      selfCopy = self;
       v33 = 1024;
-      LODWORD(v34) = v5;
+      LODWORD(selfCopy3) = v5;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCAudioPowerSpectrumMeter-unregisterPowerSpectrumForCellularTapType (%p) type=%u", &v25, 0x2Cu);
     }
   }
@@ -954,9 +954,9 @@ id __60__AVCAudioPowerSpectrumMeter_streamTokenForCellularTapType___block_invoke
       v29 = 1024;
       v30 = 244;
       v31 = 2112;
-      v32 = v13;
+      selfCopy = v13;
       v33 = 2048;
-      v34 = self;
+      selfCopy3 = self;
       v35 = 2112;
       v36 = v10;
       v37 = 2112;
@@ -987,9 +987,9 @@ LABEL_20:
     v29 = 1024;
     v30 = 244;
     v31 = 2112;
-    v32 = v10;
+    selfCopy = v10;
     v33 = 2112;
-    v34 = v11;
+    selfCopy3 = v11;
     v16 = " [%s] %s:%d Failed to unregister the power spectrum for tap type=%@. error=%@";
     goto LABEL_13;
   }
@@ -1026,9 +1026,9 @@ LABEL_20:
     v29 = 1024;
     v30 = 239;
     v31 = 2112;
-    v32 = v10;
+    selfCopy = v10;
     v33 = 2112;
-    v34 = v11;
+    selfCopy3 = v11;
     v16 = " [%s] %s:%d Failed to unregister the power spectrum for tap type=%@. error=%@";
 LABEL_13:
     v17 = v15;
@@ -1065,9 +1065,9 @@ LABEL_19:
     v29 = 1024;
     v30 = 239;
     v31 = 2112;
-    v32 = v21;
+    selfCopy = v21;
     v33 = 2048;
-    v34 = self;
+    selfCopy3 = self;
     v35 = 2112;
     v36 = v10;
     v37 = 2112;
@@ -1080,15 +1080,15 @@ LABEL_18:
   }
 
 LABEL_21:
-  if (a4)
+  if (error)
   {
-    *a4 = v11;
+    *error = v11;
   }
 
   return v12;
 }
 
-- (BOOL)unregisterPowerSpectrumForCellularTapType:(unsigned int)a3 error:(id *)a4
+- (BOOL)unregisterPowerSpectrumForCellularTapType:(unsigned int)type error:(id *)error
 {
   v13 = *MEMORY[0x1E69E9840];
   v9 = 0;
@@ -1102,8 +1102,8 @@ LABEL_21:
   block[3] = &unk_1E85F92C0;
   block[4] = self;
   block[5] = &v9;
-  v8 = a3;
-  block[6] = a4;
+  typeCopy = type;
+  block[6] = error;
   dispatch_sync(stateQueue, block);
   v5 = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
@@ -1159,35 +1159,35 @@ uint64_t __78__AVCAudioPowerSpectrumMeter_unregisterPowerSpectrumForCellularTapT
   allowListedXPCObjects = self->_allowListedXPCObjects;
 }
 
-- (BOOL)storeDelegate:(id)a3 delegateQueue:(id)a4
+- (BOOL)storeDelegate:(id)delegate delegateQueue:(id)queue
 {
-  v4 = self;
+  selfCopy = self;
   v36 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!delegate)
   {
     [AVCAudioPowerSpectrumMeter storeDelegate:? delegateQueue:?];
-    return v4->_delegate && v4->_delegateQueue != 0;
+    return selfCopy->_delegate && selfCopy->_delegateQueue != 0;
   }
 
-  if (a4)
+  if (queue)
   {
-    self->_delegateQueue = a4;
-    dispatch_retain(a4);
+    self->_delegateQueue = queue;
+    dispatch_retain(queue);
   }
 
   else
   {
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(47);
     v7 = dispatch_queue_create_with_target_V2("com.apple.AVConference.AVCAudioPowerSpectrumMeter.notificationQueue", 0, CustomRootQueue);
-    v4->_delegateQueue = v7;
+    selfCopy->_delegateQueue = v7;
     if (!v7)
     {
-      [AVCAudioPowerSpectrumMeter storeDelegate:v4 delegateQueue:?];
-      return v4->_delegate && v4->_delegateQueue != 0;
+      [AVCAudioPowerSpectrumMeter storeDelegate:selfCopy delegateQueue:?];
+      return selfCopy->_delegate && selfCopy->_delegateQueue != 0;
     }
   }
 
-  objc_storeWeak(&v4->_delegate, a3);
+  objc_storeWeak(&selfCopy->_delegate, delegate);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v8 = VRTraceErrorLogLevelToCSTR();
@@ -1204,18 +1204,18 @@ uint64_t __78__AVCAudioPowerSpectrumMeter_unregisterPowerSpectrumForCellularTapT
       v30 = 1024;
       v31 = 292;
       v32 = 2048;
-      *v33 = v4;
+      *v33 = selfCopy;
       *&v33[8] = 2112;
       *&v33[10] = v11;
       *&v33[18] = 2048;
-      *&v33[20] = a3;
+      *&v33[20] = delegate;
       v34 = 2112;
       v35 = NSStringFromClass(v12);
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d self=%p (%@), delegate=%p (%@)", buf, 0x44u);
     }
   }
 
-  v23 = v4;
+  v23 = selfCopy;
   outCount = 0;
   v24 = protocol_copyMethodDescriptionList(&unk_1F57D4340, 0, 1, &outCount);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1281,8 +1281,8 @@ uint64_t __78__AVCAudioPowerSpectrumMeter_unregisterPowerSpectrumForCellularTapT
   }
 
   free(v24);
-  v4 = v23;
-  return v4->_delegate && v4->_delegateQueue != 0;
+  selfCopy = v23;
+  return selfCopy->_delegate && selfCopy->_delegateQueue != 0;
 }
 
 - (void)cleanupDelegate
@@ -1611,7 +1611,7 @@ uint64_t __60__AVCAudioPowerSpectrumMeter_registerBlocksForNotifications__block_
   [(AVConferenceXPCClient *)connection deregisterFromService:"vcAudioPowerSpectrumServerSpectrumInterrupted"];
 }
 
-- (void)audioPowerSpectrumMeter:(id)a3 didUpdateAudioPowerSpectrums:(id)a4
+- (void)audioPowerSpectrumMeter:(id)meter didUpdateAudioPowerSpectrums:(id)spectrums
 {
   block[6] = *MEMORY[0x1E69E9840];
   delegateQueue = self->_delegateQueue;
@@ -1620,7 +1620,7 @@ uint64_t __60__AVCAudioPowerSpectrumMeter_registerBlocksForNotifications__block_
   block[2] = __83__AVCAudioPowerSpectrumMeter_audioPowerSpectrumMeter_didUpdateAudioPowerSpectrums___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a4;
+  block[5] = spectrums;
   dispatch_async(delegateQueue, block);
 }
 
@@ -1935,7 +1935,7 @@ LABEL_11:
 
 - (void)setupXPCConnection
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -2067,7 +2067,7 @@ LABEL_11:
 
 - (void)setupPowerSpectrumMeter
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {

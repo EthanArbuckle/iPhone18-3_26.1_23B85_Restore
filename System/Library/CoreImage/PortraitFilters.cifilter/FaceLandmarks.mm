@@ -2,18 +2,18 @@
 - (CGPoint)leftToRightVec;
 - (CGPoint)upVec;
 - (CGRect)imageRect;
-- (FaceLandmarks)initWithFaceLandmarks:(id)a3 forImageRect:(CGRect)a4;
+- (FaceLandmarks)initWithFaceLandmarks:(id)landmarks forImageRect:(CGRect)rect;
 - (void)dealloc;
 @end
 
 @implementation FaceLandmarks
 
-- (FaceLandmarks)initWithFaceLandmarks:(id)a3 forImageRect:(CGRect)a4
+- (FaceLandmarks)initWithFaceLandmarks:(id)landmarks forImageRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v312.receiver = self;
   v312.super_class = FaceLandmarks;
   v9 = [(FaceLandmarks *)&v312 init];
@@ -30,7 +30,7 @@
   v319.size.height = height;
   v11 = CGRectGetHeight(v319);
   CGAffineTransformMakeScale(&v311, v10, v11);
-  v12 = [a3 objectForKeyedSubscript:@"allPoints"];
+  v12 = [landmarks objectForKeyedSubscript:@"allPoints"];
   v13 = [v12 count];
   v306 = v13;
   if (v13 >= 0x41)
@@ -56,8 +56,8 @@
   }
 
   v297 = [[NSMutableData dataWithLength:?]];
-  v300 = a3;
-  v17 = [a3 objectForKeyedSubscript:@"faceBoundingBox"];
+  landmarksCopy = landmarks;
+  v17 = [landmarks objectForKeyedSubscript:@"faceBoundingBox"];
   [objc_msgSend(v17 objectForKeyedSubscript:{@"x", "doubleValue"}];
   v19 = v18;
   [objc_msgSend(v17 objectForKeyedSubscript:{@"y", "doubleValue"}];
@@ -103,7 +103,7 @@
     while (v27);
   }
 
-  if ([v300 sanityCheckStatus] == -1)
+  if ([landmarksCopy sanityCheckStatus] == -1)
   {
 
     return 0;
@@ -500,19 +500,19 @@ LABEL_72:
 
   [objc_msgSend(objc_msgSend(v9 "mouthPerimeterLinePair")];
   [objc_msgSend(objc_msgSend(v9 "mouthPerimeterLinePair")];
-  v178 = [v9 mouthPerimeterLinePair];
+  mouthPerimeterLinePair = [v9 mouthPerimeterLinePair];
   v179 = *(v9 + 518);
   v180 = v179 * 0.06;
   *&v180 = v179 * 0.06;
   v181 = v179 * 0.02;
   *&v181 = v181;
-  [v178 expandWithToleranceTop:v180 bottom:v181];
+  [mouthPerimeterLinePair expandWithToleranceTop:v180 bottom:v181];
   [objc_msgSend(v9 "mouthPerimeterLinePair")];
   [objc_msgSend(objc_msgSend(v9 "mouthPerimeterLinePair")];
   [objc_msgSend(objc_msgSend(v9 "mouthPerimeterLinePair")];
-  v182 = [v9 mouthPerimeterLinePair];
+  mouthPerimeterLinePair2 = [v9 mouthPerimeterLinePair];
   *&v183 = *(v9 + 518) * 0.0;
-  [v182 constructBezierWithToleranceTop:v183 bottom:COERCE_DOUBLE(LODWORD(v183))];
+  [mouthPerimeterLinePair2 constructBezierWithToleranceTop:v183 bottom:COERCE_DOUBLE(LODWORD(v183))];
   v184 = [PolylinePair alloc];
   LODWORD(v185) = *(v9 + 519);
   *&v186 = v170;
@@ -529,23 +529,23 @@ LABEL_72:
 
   [objc_msgSend(objc_msgSend(v9 "leftEyePair")];
   [objc_msgSend(objc_msgSend(v9 "leftEyePair")];
-  v189 = [v9 leftEyePair];
+  leftEyePair = [v9 leftEyePair];
   v190 = *(v9 + 518);
   v191 = v190 * 0.02;
   *&v191 = v190 * 0.02;
   v192 = v190 * 0.0312;
   *&v192 = v192;
-  [v189 expandWithToleranceTop:v191 bottom:v192];
+  [leftEyePair expandWithToleranceTop:v191 bottom:v192];
   [objc_msgSend(v9 "leftEyePair")];
   [objc_msgSend(objc_msgSend(v9 "leftEyePair")];
   [objc_msgSend(objc_msgSend(v9 "leftEyePair")];
-  v193 = [v9 leftEyePair];
+  leftEyePair2 = [v9 leftEyePair];
   v194 = *(v9 + 518);
   v195 = v194 * 0.08;
   *&v195 = v194 * 0.08;
   v196 = v194 * 0.028;
   *&v196 = v196;
-  [v193 constructBezierWithToleranceTop:v195 bottom:v196];
+  [leftEyePair2 constructBezierWithToleranceTop:v195 bottom:v196];
   v197 = [PolylinePair alloc];
   LODWORD(v198) = *(v9 + 519);
   *&v199 = v170;
@@ -562,23 +562,23 @@ LABEL_72:
 
   [objc_msgSend(objc_msgSend(v9 "rightEyePair")];
   [objc_msgSend(objc_msgSend(v9 "rightEyePair")];
-  v202 = [v9 rightEyePair];
+  rightEyePair = [v9 rightEyePair];
   v203 = *(v9 + 518);
   v204 = v203 * 0.02;
   *&v204 = v203 * 0.02;
   v205 = v203 * 0.0312;
   *&v205 = v205;
-  [v202 expandWithToleranceTop:v204 bottom:v205];
+  [rightEyePair expandWithToleranceTop:v204 bottom:v205];
   [objc_msgSend(v9 "rightEyePair")];
   [objc_msgSend(objc_msgSend(v9 "rightEyePair")];
   [objc_msgSend(objc_msgSend(v9 "rightEyePair")];
-  v206 = [v9 rightEyePair];
+  rightEyePair2 = [v9 rightEyePair];
   v207 = *(v9 + 518);
   v208 = v207 * 0.0806;
   *&v208 = v207 * 0.0806;
   v209 = v207 * 0.028002;
   *&v209 = v209;
-  [v206 constructBezierWithToleranceTop:v208 bottom:v209];
+  [rightEyePair2 constructBezierWithToleranceTop:v208 bottom:v209];
   v210 = [PolylinePair alloc];
   LODWORD(v211) = *(v9 + 519);
   *&v212 = v170;
@@ -593,51 +593,51 @@ LABEL_72:
     [objc_msgSend(objc_msgSend(v9 "teethPair")];
   }
 
-  v215 = [v9 teethPair];
+  teethPair = [v9 teethPair];
   [objc_msgSend(objc_msgSend(v9 "teethPair")];
   v217 = v216;
   [objc_msgSend(objc_msgSend(v9 "teethPair")];
   v219 = v218;
-  v220 = [v9 teethPair];
+  teethPair2 = [v9 teethPair];
   if (v217 >= v219)
   {
-    v221 = [v220 bottom];
+    bottom = [teethPair2 bottom];
   }
 
   else
   {
-    v221 = [v220 top];
+    bottom = [teethPair2 top];
   }
 
-  [v221 s0];
-  [v215 setS0:?];
-  v222 = [v9 teethPair];
+  [bottom s0];
+  [teethPair setS0:?];
+  teethPair3 = [v9 teethPair];
   [objc_msgSend(objc_msgSend(v9 "teethPair")];
   v224 = v223;
   [objc_msgSend(objc_msgSend(v9 "teethPair")];
   v226 = v225;
-  v227 = [v9 teethPair];
+  teethPair4 = [v9 teethPair];
   if (v224 <= v226)
   {
-    v228 = [v227 bottom];
+    bottom2 = [teethPair4 bottom];
   }
 
   else
   {
-    v228 = [v227 top];
+    bottom2 = [teethPair4 top];
   }
 
-  [v228 s1];
-  [v222 setS1:?];
+  [bottom2 s1];
+  [teethPair3 setS1:?];
   [objc_msgSend(objc_msgSend(v9 "teethPair")];
   [objc_msgSend(objc_msgSend(v9 "teethPair")];
-  v229 = [v9 teethPair];
+  teethPair5 = [v9 teethPair];
   v230 = *(v9 + 518);
   v231 = v230 * 0.01;
   *&v231 = v230 * 0.01;
   v232 = v230 * 0.02;
   *&v232 = v232;
-  [v229 constructBezierWithToleranceTop:v231 bottom:v232];
+  [teethPair5 constructBezierWithToleranceTop:v231 bottom:v232];
   v233 = [Polyline alloc];
   v234 = width;
   LODWORD(v235) = *(v9 + 519);
@@ -676,10 +676,10 @@ LABEL_72:
   *&v247 = v244;
   LODWORD(v248) = v246;
   [*(v9 + 262) constructBezierWithToleranceOutside:v247 andInside:v248];
-  v249 = [v9 faceData];
+  faceData = [v9 faceData];
   memset(&v316, 0, sizeof(v316));
   CGAffineTransformMakeScale(&v316, width, v298);
-  v250 = [v300 objectForKeyedSubscript:@"faceBoundingBox"];
+  v250 = [landmarksCopy objectForKeyedSubscript:@"faceBoundingBox"];
   [objc_msgSend(v250 objectForKeyedSubscript:{@"x", "doubleValue"}];
   v252 = v251;
   [objc_msgSend(v250 objectForKeyedSubscript:{@"y", "doubleValue"}];
@@ -699,7 +699,7 @@ LABEL_72:
   v259 = v326.size.height;
   memset(&v315, 0, sizeof(v315));
   CGAffineTransformMakeScale(&v315, v326.size.width, v326.size.height);
-  v260 = [objc_msgSend(v300 objectForKeyedSubscript:{@"leftPupil", "objectAtIndex:", 0}];
+  v260 = [objc_msgSend(landmarksCopy objectForKeyedSubscript:{@"leftPupil", "objectAtIndex:", 0}];
   [objc_msgSend(v260 objectForKeyedSubscript:{@"x", "doubleValue"}];
   v304 = v261;
   [objc_msgSend(v260 objectForKeyedSubscript:{@"y", "doubleValue"}];
@@ -707,23 +707,23 @@ LABEL_72:
   v263.f64[1] = v307;
   v301 = v263;
   v305 = vaddq_f64(v263, vaddq_f64(*&v315.tx, vmlaq_n_f64(vmulq_n_f64(*&v315.c, v262), *&v315.a, v304)));
-  v264 = [objc_msgSend(v300 objectForKeyedSubscript:{@"rightPupil", "objectAtIndex:", 0}];
+  v264 = [objc_msgSend(landmarksCopy objectForKeyedSubscript:{@"rightPupil", "objectAtIndex:", 0}];
   [objc_msgSend(v264 objectForKeyedSubscript:{@"x", "doubleValue"}];
   v299 = v265;
   [objc_msgSend(v264 objectForKeyedSubscript:{@"y", "doubleValue"}];
   v302 = vaddq_f64(v301, vaddq_f64(*&v315.tx, vmlaq_n_f64(vmulq_n_f64(*&v315.c, v266), *&v315.a, v299)));
-  [v249 setFaceIndex:0];
-  [v249 setLeftEye:?];
-  [v249 setRightEye:?];
-  [v249 rightEye];
+  [faceData setFaceIndex:0];
+  [faceData setLeftEye:?];
+  [faceData setRightEye:?];
+  [faceData rightEye];
   v268 = v267;
   v270 = v269;
-  [v249 leftEye];
-  [v249 setBetweenTheEyes:{(v268 + v271) * 0.5, (v270 + v272) * 0.5}];
+  [faceData leftEye];
+  [faceData setBetweenTheEyes:{(v268 + v271) * 0.5, (v270 + v272) * 0.5}];
   v305.f64[0] = vsubq_f64(v302, v305).f64[0];
-  [v249 setLeftRightVec:?];
-  [v249 setIOD:sqrt((v302.f64[1] - v305.f64[1]) * (v302.f64[1] - v305.f64[1]) + v305.f64[0] * v305.f64[0])];
-  [v249 leftRightVec];
+  [faceData setLeftRightVec:?];
+  [faceData setIOD:sqrt((v302.f64[1] - v305.f64[1]) * (v302.f64[1] - v305.f64[1]) + v305.f64[0] * v305.f64[0])];
+  [faceData leftRightVec];
   v275 = sqrt(v273 * v273 + v274 * v274);
   v276 = v275;
   v277 = 0.0;
@@ -752,9 +752,9 @@ LABEL_72:
   }
 
   *&v283 = atanf(v282);
-  [v249 setEyeTiltAngle:v283];
-  [v249 setFaceBounds:{v308, v307, v258, v259}];
-  v284 = [v300 objectForKeyedSubscript:@"innerLips"];
+  [faceData setEyeTiltAngle:v283];
+  [faceData setFaceBounds:{v308, v307, v258, v259}];
+  v284 = [landmarksCopy objectForKeyedSubscript:@"innerLips"];
   memset(&t2, 0, sizeof(t2));
   v314 = 0u;
   v285 = [v284 countByEnumeratingWithState:&t2 objects:&t1 count:16];
@@ -787,9 +787,9 @@ LABEL_72:
   }
 
   v294 = [v284 count];
-  [v249 setMouthCenter:{v277 / v294, v286 / v294}];
-  [objc_msgSend(v300 objectForKeyedSubscript:{@"faceOrientationIndex", "floatValue"}];
-  [v249 setFaceOrientationIndex:?];
+  [faceData setMouthCenter:{v277 / v294, v286 / v294}];
+  [objc_msgSend(landmarksCopy objectForKeyedSubscript:{@"faceOrientationIndex", "floatValue"}];
+  [faceData setFaceOrientationIndex:?];
   return v9;
 }
 

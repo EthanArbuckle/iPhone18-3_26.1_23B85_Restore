@@ -1,13 +1,13 @@
 @interface EDSearchableIndexClientState
 + (id)clientState;
-+ (id)clientStateFromData:(id)a3;
++ (id)clientStateFromData:(id)data;
 + (id)transactionAttributeKey;
 - (EDSearchableIndexClientState)init;
-- (EDSearchableIndexClientState)initWithDictionary:(id)a3;
+- (EDSearchableIndexClientState)initWithDictionary:(id)dictionary;
 - (NSNumber)transactionValue;
 - (id)archiveRepresentation;
 - (id)description;
-- (void)addTransactionValueToAttributeSet:(id)a3;
+- (void)addTransactionValueToAttributeSet:(id)set;
 @end
 
 @implementation EDSearchableIndexClientState
@@ -33,21 +33,21 @@ void __55__EDSearchableIndexClientState_transactionAttributeKey__block_invoke()
 
 + (id)clientState
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)clientStateFromData:(id)a3
++ (id)clientStateFromData:(id)data
 {
-  v4 = a3;
-  if ([v4 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
-    v5 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v4 options:4 error:0];
+    v5 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:4 error:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [[a1 alloc] initWithDictionary:v5];
+      v6 = [[self alloc] initWithDictionary:v5];
     }
 
     else
@@ -67,8 +67,8 @@ void __55__EDSearchableIndexClientState_transactionAttributeKey__block_invoke()
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AB78]);
-  v4 = [MEMORY[0x1E695DF58] ef_posixLocale];
-  [v3 setLocale:v4];
+  ef_posixLocale = [MEMORY[0x1E695DF58] ef_posixLocale];
+  [v3 setLocale:ef_posixLocale];
 
   [v3 setDateFormat:@"yyyy-MM-dd HH:mm:ssZ"];
   v5 = [v3 stringFromDate:self->_transactionDate];
@@ -77,12 +77,12 @@ void __55__EDSearchableIndexClientState_transactionAttributeKey__block_invoke()
   return v6;
 }
 
-- (EDSearchableIndexClientState)initWithDictionary:(id)a3
+- (EDSearchableIndexClientState)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"transaction"];
-  v6 = [v4 objectForKeyedSubscript:@"date"];
-  v7 = [v4 objectForKeyedSubscript:@"build"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"transaction"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"date"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"build"];
   if (objc_opt_respondsToSelector())
   {
     v12.receiver = self;
@@ -137,17 +137,17 @@ void __55__EDSearchableIndexClientState_transactionAttributeKey__block_invoke()
 
 - (id)archiveRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_transaction];
-  [v3 setObject:v4 forKeyedSubscript:@"transaction"];
+  [dictionary setObject:v4 forKeyedSubscript:@"transaction"];
 
   v5 = MEMORY[0x1E696AD98];
   [(NSDate *)self->_transactionDate timeIntervalSince1970];
   v6 = [v5 numberWithDouble:?];
-  [v3 setObject:v6 forKeyedSubscript:@"date"];
+  [dictionary setObject:v6 forKeyedSubscript:@"date"];
 
-  [v3 setObject:self->_systemBuildVersion forKeyedSubscript:@"build"];
-  v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:0 error:0];
+  [dictionary setObject:self->_systemBuildVersion forKeyedSubscript:@"build"];
+  v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:0];
 
   return v7;
 }
@@ -167,14 +167,14 @@ void __55__EDSearchableIndexClientState_transactionAttributeKey__block_invoke()
   return transactionValue;
 }
 
-- (void)addTransactionValueToAttributeSet:(id)a3
+- (void)addTransactionValueToAttributeSet:(id)set
 {
-  v6 = a3;
-  v4 = [(EDSearchableIndexClientState *)self transactionValue];
-  if (v4)
+  setCopy = set;
+  transactionValue = [(EDSearchableIndexClientState *)self transactionValue];
+  if (transactionValue)
   {
-    v5 = [objc_opt_class() transactionAttributeKey];
-    [v6 setValue:v4 forCustomKey:v5];
+    transactionAttributeKey = [objc_opt_class() transactionAttributeKey];
+    [setCopy setValue:transactionValue forCustomKey:transactionAttributeKey];
   }
 }
 

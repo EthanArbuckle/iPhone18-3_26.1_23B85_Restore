@@ -1,18 +1,18 @@
 @interface MTTreatment
-+ (MTTreatment)treatmentWithConfigData:(id)a3;
-- (MTTreatment)initWithConfigDictionary:(id)a3;
-- (id)performTreatment:(id)a3;
++ (MTTreatment)treatmentWithConfigData:(id)data;
+- (MTTreatment)initWithConfigDictionary:(id)dictionary;
+- (id)performTreatment:(id)treatment;
 @end
 
 @implementation MTTreatment
 
-+ (MTTreatment)treatmentWithConfigData:(id)a3
++ (MTTreatment)treatmentWithConfigData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = dataCopy;
     if (treatmentWithConfigData__onceToken != -1)
     {
       +[MTTreatment treatmentWithConfigData:];
@@ -45,23 +45,23 @@ uint64_t __39__MTTreatment_treatmentWithConfigData___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (MTTreatment)initWithConfigDictionary:(id)a3
+- (MTTreatment)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = MTTreatment;
   v5 = [(MTTreatment *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"filters"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"filters"];
     v7 = [MTMetricsDataPredicate predicateWithConfigData:v6];
     [(MTTreatment *)v5 setPredicate:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"eventActions"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"eventActions"];
     v9 = [MTTreatmentAction treatmentActionWithField:0 configData:v8];
     [(MTTreatment *)v5 setEventAction:v9];
 
-    v10 = [v4 objectForKeyedSubscript:@"fieldActions"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"fieldActions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,37 +88,37 @@ void __40__MTTreatment_initWithConfigDictionary___block_invoke(uint64_t a1, void
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (id)performTreatment:(id)a3
+- (id)performTreatment:(id)treatment
 {
-  v4 = a3;
-  v5 = [[MTTreatmentContext alloc] initWithTreatment:self metrics:v4];
-  v6 = [(MTTreatment *)self predicate];
-  if (!v6 || (v7 = v6, -[MTTreatment predicate](self, "predicate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 evaluateWithMetricsData:v4], v8, v7, v9))
+  treatmentCopy = treatment;
+  v5 = [[MTTreatmentContext alloc] initWithTreatment:self metrics:treatmentCopy];
+  predicate = [(MTTreatment *)self predicate];
+  if (!predicate || (v7 = predicate, -[MTTreatment predicate](self, "predicate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 evaluateWithMetricsData:treatmentCopy], v8, v7, v9))
   {
-    v10 = [(MTTreatment *)self eventAction];
+    eventAction = [(MTTreatment *)self eventAction];
 
-    if (v10)
+    if (eventAction)
     {
-      v11 = [(MTTreatment *)self eventAction];
-      [v11 performActionWithContext:v5];
+      eventAction2 = [(MTTreatment *)self eventAction];
+      [eventAction2 performActionWithContext:v5];
     }
 
-    v12 = [(MTTreatment *)self fieldActions];
+    fieldActions = [(MTTreatment *)self fieldActions];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __32__MTTreatment_performTreatment___block_invoke;
     v22[3] = &unk_2798CDF90;
     v13 = v5;
     v23 = v13;
-    [v12 enumerateKeysAndObjectsUsingBlock:v22];
+    [fieldActions enumerateKeysAndObjectsUsingBlock:v22];
 
-    v14 = [(MTTreatment *)self fieldActions];
+    fieldActions2 = [(MTTreatment *)self fieldActions];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __32__MTTreatment_performTreatment___block_invoke_2;
     v20 = &unk_2798CDF90;
     v21 = v13;
-    [v14 enumerateKeysAndObjectsUsingBlock:&v17];
+    [fieldActions2 enumerateKeysAndObjectsUsingBlock:&v17];
   }
 
   v15 = [(MTTreatmentContext *)v5 metrics:v17];

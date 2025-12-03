@@ -1,17 +1,17 @@
 @interface ArticleAdLayoutProcessor
 - (_TtC12NewsArticles24ArticleAdLayoutProcessor)init;
-- (void)processLayoutTask:(id)a3 layoutBlueprint:(id)a4 DOMObjectProvider:(id)a5;
+- (void)processLayoutTask:(id)task layoutBlueprint:(id)blueprint DOMObjectProvider:(id)provider;
 @end
 
 @implementation ArticleAdLayoutProcessor
 
-- (void)processLayoutTask:(id)a3 layoutBlueprint:(id)a4 DOMObjectProvider:(id)a5
+- (void)processLayoutTask:(id)task layoutBlueprint:(id)blueprint DOMObjectProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1D7A1A7AC(v9, v10);
+  taskCopy = task;
+  blueprintCopy = blueprint;
+  providerCopy = provider;
+  selfCopy = self;
+  sub_1D7A1A7AC(blueprintCopy, providerCopy);
 }
 
 - (_TtC12NewsArticles24ArticleAdLayoutProcessor)init

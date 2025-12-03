@@ -1,6 +1,6 @@
 @interface CUIEncapsulatedVectorGlyphConfiguration
-+ (id)newAutomaticCenterConfigurationForEncapsulation:(id)a3 adjustX:(BOOL)a4 adjustY:(BOOL)a5 sizeAdjustment:(int64_t)a6 coordinateSystem:(int64_t)a7;
-+ (id)newMetricCenterConfigurationForEncapsulation:(id)a3 offsetX:(double)a4 offsetY:(double)a5 scaleFactor:(double)a6 coordinateSystem:(int64_t)a7;
++ (id)newAutomaticCenterConfigurationForEncapsulation:(id)encapsulation adjustX:(BOOL)x adjustY:(BOOL)y sizeAdjustment:(int64_t)adjustment coordinateSystem:(int64_t)system;
++ (id)newMetricCenterConfigurationForEncapsulation:(id)encapsulation offsetX:(double)x offsetY:(double)y scaleFactor:(double)factor coordinateSystem:(int64_t)system;
 - (CUIEncapsulatedVectorGlyphConfiguration)init;
 @end
 
@@ -9,8 +9,8 @@
 - (CUIEncapsulatedVectorGlyphConfiguration)init
 {
   v3 = objc_opt_self();
-  v4 = [objc_opt_self() newRoundedRect];
-  v5 = [v3 newEncapsulationWithShape:v4 rect:0.0 canvasSize:0.0 representativePointSize:{0.0, 0.0, 0.0, 0.0, 0.0}];
+  newRoundedRect = [objc_opt_self() newRoundedRect];
+  v5 = [v3 newEncapsulationWithShape:newRoundedRect rect:0.0 canvasSize:0.0 representativePointSize:{0.0, 0.0, 0.0, 0.0, 0.0}];
 
   v6 = self + OBJC_IVAR___CUIEncapsulatedVectorGlyphConfiguration_backing;
   *v6 = 1;
@@ -24,20 +24,20 @@
   return [(CUIEncapsulatedVectorGlyphConfiguration *)&v8 init];
 }
 
-+ (id)newMetricCenterConfigurationForEncapsulation:(id)a3 offsetX:(double)a4 offsetY:(double)a5 scaleFactor:(double)a6 coordinateSystem:(int64_t)a7
++ (id)newMetricCenterConfigurationForEncapsulation:(id)encapsulation offsetX:(double)x offsetY:(double)y scaleFactor:(double)factor coordinateSystem:(int64_t)system
 {
   swift_getObjCClassMetadata();
-  v12 = a3;
-  v13 = sub_18DFFAD38(v12, a7, a4, a5, a6);
+  encapsulationCopy = encapsulation;
+  v13 = sub_18DFFAD38(encapsulationCopy, system, x, y, factor);
 
   return v13;
 }
 
-+ (id)newAutomaticCenterConfigurationForEncapsulation:(id)a3 adjustX:(BOOL)a4 adjustY:(BOOL)a5 sizeAdjustment:(int64_t)a6 coordinateSystem:(int64_t)a7
++ (id)newAutomaticCenterConfigurationForEncapsulation:(id)encapsulation adjustX:(BOOL)x adjustY:(BOOL)y sizeAdjustment:(int64_t)adjustment coordinateSystem:(int64_t)system
 {
   swift_getObjCClassMetadata();
-  v12 = a3;
-  v13 = sub_18DFFAE68(v12, a4, a5, a6, a7);
+  encapsulationCopy = encapsulation;
+  v13 = sub_18DFFAE68(encapsulationCopy, x, y, adjustment, system);
 
   return v13;
 }

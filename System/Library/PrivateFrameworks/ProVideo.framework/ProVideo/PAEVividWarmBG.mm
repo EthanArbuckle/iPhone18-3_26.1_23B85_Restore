@@ -1,14 +1,14 @@
 @interface PAEVividWarmBG
-- (PAEVividWarmBG)initWithAPIManager:(id)a3;
+- (PAEVividWarmBG)initWithAPIManager:(id)manager;
 @end
 
 @implementation PAEVividWarmBG
 
-- (PAEVividWarmBG)initWithAPIManager:(id)a3
+- (PAEVividWarmBG)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEVividWarmBG;
-  result = [(PAEPhotosFilters *)&v4 initWithAPIManager:a3];
+  result = [(PAEPhotosFilters *)&v4 initWithAPIManager:manager];
   if (result)
   {
     result->super.whichFilter = 18;

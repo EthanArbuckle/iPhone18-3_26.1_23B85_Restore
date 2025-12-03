@@ -1,8 +1,8 @@
 @interface APUIRemoteAlertPresentationManager
 - (_TtC18ActivityProgressUI34APUIRemoteAlertPresentationManager)init;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation APUIRemoteAlertPresentationManager
@@ -16,26 +16,26 @@
   return [(APUIRemoteAlertPresentationManager *)&v5 init];
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
+  activateCopy = activate;
+  selfCopy = self;
   APUIRemoteAlertPresentationManager.remoteAlertHandleDidActivate(_:)();
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = self;
-  APUIRemoteAlertPresentationManager.remoteAlertHandleDidDeactivate(_:)(v4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  APUIRemoteAlertPresentationManager.remoteAlertHandleDidDeactivate(_:)(deactivateCopy);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  APUIRemoteAlertPresentationManager.remoteAlertHandle(_:didInvalidateWithError:)(v6, a4);
+  handleCopy = handle;
+  selfCopy = self;
+  errorCopy = error;
+  APUIRemoteAlertPresentationManager.remoteAlertHandle(_:didInvalidateWithError:)(handleCopy, error);
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface CLReductiveFilterSuite
-+ (double)rangeForReductiveFilterOptions:(id)a3;
-+ (double)rangeForTransmitPower:(double)a3;
-+ (id)applyFilterToLocationObservations:(id)a3 options:(id)a4;
-+ (id)applyFilterToLocationTrace:(id)a3 options:(id)a4;
-+ (id)deriveLocationFromLocations:(id)a3;
-+ (id)deriveLocationFromLocations:(id)a3 options:(id)a4;
-+ (id)filterOutliers:(id)a3;
-+ (id)filterOutliers:(id)a3 options:(id)a4;
++ (double)rangeForReductiveFilterOptions:(id)options;
++ (double)rangeForTransmitPower:(double)power;
++ (id)applyFilterToLocationObservations:(id)observations options:(id)options;
++ (id)applyFilterToLocationTrace:(id)trace options:(id)options;
++ (id)deriveLocationFromLocations:(id)locations;
++ (id)deriveLocationFromLocations:(id)locations options:(id)options;
++ (id)filterOutliers:(id)outliers;
++ (id)filterOutliers:(id)outliers options:(id)options;
 @end
 
 @implementation CLReductiveFilterSuite
 
-+ (double)rangeForReductiveFilterOptions:(id)a3
++ (double)rangeForReductiveFilterOptions:(id)options
 {
-  [a3 applyRangeEstimation];
+  [options applyRangeEstimation];
   if (v4 == 0.0)
   {
     return 0.0;
   }
 
-  [a3 transmitPower];
+  [options transmitPower];
 
   MEMORY[0x1EEE66B58](CLReductiveFilterSuite, sel_rangeForTransmitPower_);
   return result;
 }
 
-+ (double)rangeForTransmitPower:(double)a3
++ (double)rangeForTransmitPower:(double)power
 {
-  v3 = a3;
+  powerCopy = power;
   v16 = *MEMORY[0x1E69E9840];
-  if (a3 < 4.0 || a3 > 20.0)
+  if (power < 4.0 || power > 20.0)
   {
     if (qword_1EAFE4768 != -1)
     {
@@ -43,7 +43,7 @@
       v12 = 2082;
       v13 = "";
       v14 = 2050;
-      v15 = v3;
+      v15 = powerCopy;
       _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:rangeForTransmitPower: invalid range of transmit power, transmitPower_dBm:%{public}.6f}", &v11, 0x1Cu);
       if (qword_1EAFE4768 != -1)
       {
@@ -58,49 +58,49 @@
       v12 = 2082;
       v13 = "";
       v14 = 2050;
-      v15 = v3;
+      v15 = powerCopy;
       _os_signpost_emit_with_name_impl(&dword_19B873000, v6, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "rangeForTransmitPower: invalid range of transmit power", "{msg%{public}.0s:rangeForTransmitPower: invalid range of transmit power, transmitPower_dBm:%{public}.6f}", &v11, 0x1Cu);
     }
 
     v7 = 4.0;
-    if (v3 >= 4.0)
+    if (powerCopy >= 4.0)
     {
-      v7 = v3;
+      v7 = powerCopy;
     }
 
-    v3 = fmin(v7, 20.0);
+    powerCopy = fmin(v7, 20.0);
   }
 
-  v8 = __exp10(v3 / 10.0);
+  v8 = __exp10(powerCopy / 10.0);
   v9 = *MEMORY[0x1E69E9840];
   return sqrt(v8 / 1000.0) * 199.526231;
 }
 
-+ (id)filterOutliers:(id)a3
++ (id)filterOutliers:(id)outliers
 {
   v5 = objc_alloc_init(CLReductiveFilterOptions);
 
-  return [a1 filterOutliers:a3 options:v5];
+  return [self filterOutliers:outliers options:v5];
 }
 
-+ (id)filterOutliers:(id)a3 options:(id)a4
++ (id)filterOutliers:(id)outliers options:(id)options
 {
   v98 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!options)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a1 rangeForReductiveFilterOptions:a4];
+  [self rangeForReductiveFilterOptions:options];
   v8 = v7;
-  if ([a3 count])
+  if ([outliers count])
   {
     v61 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v82 = 0u;
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
-    obj = [a3 reverseObjectEnumerator];
+    obj = [outliers reverseObjectEnumerator];
     v9 = [obj countByEnumeratingWithState:&v82 objects:v97 count:16];
     if (v9)
     {
@@ -139,14 +139,14 @@
               }
 
               v19 = *(*(&v78 + 1) + 8 * j);
-              v20 = [v19 firstObject];
-              [v13 distanceFromLocation:v20];
+              firstObject = [v19 firstObject];
+              [v13 distanceFromLocation:firstObject];
               v22 = v21;
               [v13 horizontalAccuracy];
               v24 = v22 - v23;
-              [v20 horizontalAccuracy];
+              [firstObject horizontalAccuracy];
               v26 = v24 - v25;
-              [objc_msgSend(v20 "timestamp")];
+              [objc_msgSend(firstObject "timestamp")];
               v28 = v27;
               [objc_msgSend(v13 "timestamp")];
               if (v26 <= v8)
@@ -368,37 +368,37 @@ LABEL_22:
   return v58;
 }
 
-+ (id)deriveLocationFromLocations:(id)a3
++ (id)deriveLocationFromLocations:(id)locations
 {
   v5 = objc_alloc_init(CLReductiveFilterOptions);
 
-  return [a1 deriveLocationFromLocations:a3 options:v5];
+  return [self deriveLocationFromLocations:locations options:v5];
 }
 
-+ (id)deriveLocationFromLocations:(id)a3 options:(id)a4
++ (id)deriveLocationFromLocations:(id)locations options:(id)options
 {
   v132 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!options)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  result = [a3 count];
+  result = [locations count];
   if (!result)
   {
     goto LABEL_57;
   }
 
-  [a1 rangeForReductiveFilterOptions:a4];
+  [self rangeForReductiveFilterOptions:options];
   v9 = v8;
   v10 = [MEMORY[0x1E695DF00] now];
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v71 = a3;
-  v11 = [a3 reverseObjectEnumerator];
-  v12 = [v11 countByEnumeratingWithState:&v94 objects:v131 count:16];
+  locationsCopy = locations;
+  reverseObjectEnumerator = [locations reverseObjectEnumerator];
+  v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v94 objects:v131 count:16];
   if (v12)
   {
     v13 = v12;
@@ -411,7 +411,7 @@ LABEL_22:
       {
         if (*v95 != v16)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v18 = *(*(&v94 + 1) + 8 * i);
@@ -426,7 +426,7 @@ LABEL_22:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v94 objects:v131 count:16];
+      v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v94 objects:v131 count:16];
       if (v13)
       {
         continue;
@@ -447,7 +447,7 @@ LABEL_16:
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  obj = [a3 reverseObjectEnumerator];
+  obj = [locations reverseObjectEnumerator];
   v20 = [obj countByEnumeratingWithState:&v90 objects:v130 count:16];
   if (!v20)
   {
@@ -455,7 +455,7 @@ LABEL_16:
     v76 = 0;
     v73 = 0;
     v79 = 0;
-    v74 = 0;
+    timestamp = 0;
     v25 = 0.0;
     v84 = 0.0;
     v85 = 0.0;
@@ -470,7 +470,7 @@ LABEL_16:
   v76 = 0;
   v73 = 0;
   v79 = 0;
-  v74 = 0;
+  timestamp = 0;
   v22 = 0;
   v23 = *v91;
   v24 = 1;
@@ -521,17 +521,17 @@ LABEL_16:
       v40 = v34.__sinval * (v36 * 0.99330562 + 0.0);
       [v28 horizontalAccuracy];
       v81 = v41;
-      [a4 biasRateInMeasurement];
+      [options biasRateInMeasurement];
       v80 = v42;
       [v28 horizontalAccuracy];
       v44 = v43;
-      [a4 biasRateInMeasurement];
+      [options biasRateInMeasurement];
       v46 = v45;
       [v28 horizontalAccuracy];
       v48 = v47;
       if (v24)
       {
-        v74 = [v28 timestamp];
+        timestamp = [v28 timestamp];
 LABEL_32:
         v24 = 0;
         v22 = 0;
@@ -640,11 +640,11 @@ LABEL_52:
   v64 = qword_1EAFE4770;
   if (os_log_type_enabled(qword_1EAFE4770, OS_LOG_TYPE_DEBUG))
   {
-    v65 = [v71 count];
-    [a4 transmitPower];
+    v65 = [locationsCopy count];
+    [options transmitPower];
     v66 = v9;
     v68 = v67;
-    v69 = [objc_msgSend(v62 stringFromDate:{v74), "UTF8String"}];
+    v69 = [objc_msgSend(v62 stringFromDate:{timestamp), "UTF8String"}];
     *buf = 68292611;
     v99 = 0;
     v100 = 2082;
@@ -680,23 +680,23 @@ LABEL_52:
     _os_log_impl(&dword_19B873000, v64, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:Reductive filtering, input:%{public}d, outliers:%{public}d, used:%{public}d, transmitPower:%{public}.6f, rangeOfBeacon:%{public}.6f, lat:%{sensitive}.08f, lon:%{sensitive}.08f, hunc:%{private}f, timestamp:%{public, location:escape_only}s, isAccurateLocationAvailable:%{public}hhd, isPastLocationAvailable:%{public}hhd, nLowAccuracyLocations:%{public}hhd, nFutureLocations:%{public}hhd, filtered:%{public}d}", buf, 0x7Eu);
   }
 
-  result = [objc_alloc(MEMORY[0x1E6985C40]) initWithCoordinate:v74 altitude:v60.latitude horizontalAccuracy:v60.longitude verticalAccuracy:0.0 timestamp:{v63, -1.0}];
+  result = [objc_alloc(MEMORY[0x1E6985C40]) initWithCoordinate:timestamp altitude:v60.latitude horizontalAccuracy:v60.longitude verticalAccuracy:0.0 timestamp:{v63, -1.0}];
 LABEL_57:
   v70 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-+ (id)applyFilterToLocationObservations:(id)a3 options:(id)a4
++ (id)applyFilterToLocationObservations:(id)observations options:(id)options
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  if ([a3 count])
+  if ([observations count])
   {
     v34[0] = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"timestamp" ascending:1];
-    v6 = [a3 sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v34, 1)}];
-    v7 = [a3 count];
-    v8 = [CLReductiveFilterSuite filterOutliers:v6 options:a4];
+    v6 = [observations sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v34, 1)}];
+    v7 = [observations count];
+    v8 = [CLReductiveFilterSuite filterOutliers:v6 options:options];
     v9 = [v8 count];
-    v10 = [CLReductiveFilterSuite deriveLocationFromLocations:v8 options:a4];
+    v10 = [CLReductiveFilterSuite deriveLocationFromLocations:v8 options:options];
     if (qword_1EAFE4768 != -1)
     {
       dispatch_once(&qword_1EAFE4768, &unk_1F0E6C410);
@@ -705,18 +705,18 @@ LABEL_57:
     v11 = qword_1EAFE4770;
     if (os_log_type_enabled(qword_1EAFE4770, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [a4 beaconType];
-      [a4 transmitPower];
+      beaconType = [options beaconType];
+      [options transmitPower];
       v14 = v13;
-      [a4 biasRateInMeasurement];
+      [options biasRateInMeasurement];
       v16 = v15;
-      [a4 applyRangeEstimation];
+      [options applyRangeEstimation];
       v22 = 68290050;
       v23 = 0;
       v24 = 2082;
       v25 = "";
       v26 = 2050;
-      v27 = v12;
+      v27 = beaconType;
       v28 = 2050;
       v29 = v14;
       v30 = 2050;
@@ -757,19 +757,19 @@ LABEL_57:
   return v10;
 }
 
-+ (id)applyFilterToLocationTrace:(id)a3 options:(id)a4
++ (id)applyFilterToLocationTrace:(id)trace options:(id)options
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  if ([a3 count])
+  if ([trace count])
   {
-    [a4 setBiasRateInMeasurement:1.0];
-    [a4 setApplyRangeEstimation:0.0];
+    [options setBiasRateInMeasurement:1.0];
+    [options setApplyRangeEstimation:0.0];
     v34[0] = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"timestamp" ascending:1];
-    v6 = [a3 sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v34, 1)}];
-    v7 = [a3 count];
-    v8 = [CLReductiveFilterSuite filterOutliers:v6 options:a4];
+    v6 = [trace sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v34, 1)}];
+    v7 = [trace count];
+    v8 = [CLReductiveFilterSuite filterOutliers:v6 options:options];
     v9 = [v8 count];
-    v10 = [CLReductiveFilterSuite deriveLocationFromLocations:v8 options:a4];
+    v10 = [CLReductiveFilterSuite deriveLocationFromLocations:v8 options:options];
     if (qword_1EAFE4768 != -1)
     {
       dispatch_once(&qword_1EAFE4768, &unk_1F0E6C410);
@@ -778,18 +778,18 @@ LABEL_57:
     v11 = qword_1EAFE4770;
     if (os_log_type_enabled(qword_1EAFE4770, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [a4 beaconType];
-      [a4 transmitPower];
+      beaconType = [options beaconType];
+      [options transmitPower];
       v14 = v13;
-      [a4 biasRateInMeasurement];
+      [options biasRateInMeasurement];
       v16 = v15;
-      [a4 applyRangeEstimation];
+      [options applyRangeEstimation];
       v22 = 68290050;
       v23 = 0;
       v24 = 2082;
       v25 = "";
       v26 = 2050;
-      v27 = v12;
+      v27 = beaconType;
       v28 = 2050;
       v29 = v14;
       v30 = 2050;

@@ -1,16 +1,16 @@
 @interface DIDataPartition
-+ (id)findPartitionSchemeWithIOMedia:(id)a3 error:(id *)a4;
-+ (id)newMountURLWithError:(id *)a3;
-- (BOOL)findPartitionWithDeviceBSDName:(id)a3 error:(id *)a4;
-- (BOOL)findVolumeBSDNameWithError:(id *)a3;
-- (BOOL)resizeFileSystemToMinimumWithError:(id *)a3;
++ (id)findPartitionSchemeWithIOMedia:(id)media error:(id *)error;
++ (id)newMountURLWithError:(id *)error;
+- (BOOL)findPartitionWithDeviceBSDName:(id)name error:(id *)error;
+- (BOOL)findVolumeBSDNameWithError:(id *)error;
+- (BOOL)resizeFileSystemToMinimumWithError:(id *)error;
 @end
 
 @implementation DIDataPartition
 
-+ (id)findPartitionSchemeWithIOMedia:(id)a3 error:(id *)a4
++ (id)findPartitionSchemeWithIOMedia:(id)media error:(id *)error
 {
-  v5 = [a3 newIteratorWithOptions:0 error:?];
+  v5 = [media newIteratorWithOptions:0 error:?];
   if (v5)
   {
     v6 = 0;
@@ -30,7 +30,7 @@
       }
     }
 
-    v7 = [DIError nilWithEnumValue:153 verboseInfo:@"Failed to find partition scheme" error:a4];
+    v7 = [DIError nilWithEnumValue:153 verboseInfo:@"Failed to find partition scheme" error:error];
   }
 
   else
@@ -43,17 +43,17 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)findPartitionWithDeviceBSDName:(id)a3 error:(id *)a4
+- (BOOL)findPartitionWithDeviceBSDName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = [[DIIOMedia alloc] initWithDevName:v6 error:a4];
+  nameCopy = name;
+  v7 = [[DIIOMedia alloc] initWithDevName:nameCopy error:error];
   if (v7)
   {
-    v8 = [DIDataPartition findPartitionSchemeWithIOMedia:v7 error:a4];
+    v8 = [DIDataPartition findPartitionSchemeWithIOMedia:v7 error:error];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 newIteratorWithOptions:0 error:a4];
+      v10 = [v8 newIteratorWithOptions:0 error:error];
       if (v10)
       {
         v26 = v9;
@@ -68,8 +68,8 @@ LABEL_8:
             if (v13)
             {
               v14 = v13;
-              v15 = [(DIDataPartition *)self mediaContentUUID];
-              v16 = [v14 isEqualToString:v15];
+              mediaContentUUID = [(DIDataPartition *)self mediaContentUUID];
+              v16 = [v14 isEqualToString:mediaContentUUID];
 
               if (v16)
               {
@@ -87,14 +87,14 @@ LABEL_8:
           }
 
           [(DIDataPartition *)self setIoMedia:v12];
-          v19 = [(DIDataPartition *)self ioMedia];
-          v20 = [v19 copyPropertyWithClass:objc_opt_class() key:@"Size"];
+          ioMedia = [(DIDataPartition *)self ioMedia];
+          v20 = [ioMedia copyPropertyWithClass:objc_opt_class() key:@"Size"];
 
-          v21 = [(DIDataPartition *)self ioMedia];
-          v22 = [v21 copyPropertyWithClass:objc_opt_class() key:@"Preferred Block Size"];
+          ioMedia2 = [(DIDataPartition *)self ioMedia];
+          v22 = [ioMedia2 copyPropertyWithClass:objc_opt_class() key:@"Preferred Block Size"];
 
-          v23 = [(DIDataPartition *)self ioMedia];
-          v24 = [v23 copyPropertyWithClass:objc_opt_class() key:@"UUID"];
+          ioMedia3 = [(DIDataPartition *)self ioMedia];
+          v24 = [ioMedia3 copyPropertyWithClass:objc_opt_class() key:@"UUID"];
 
           if (v20 && [v20 unsignedLongLongValue] && v22 && objc_msgSend(v22, "unsignedLongLongValue") && v24)
           {
@@ -106,14 +106,14 @@ LABEL_8:
 
           else
           {
-            v18 = [DIError failWithEnumValue:153 verboseInfo:@"Cannot get partition size" error:a4];
+            v18 = [DIError failWithEnumValue:153 verboseInfo:@"Cannot get partition size" error:error];
           }
         }
 
         else
         {
 LABEL_9:
-          v18 = [DIError failWithEnumValue:153 verboseInfo:@"Failed to find the data partition" error:a4];
+          v18 = [DIError failWithEnumValue:153 verboseInfo:@"Failed to find the data partition" error:error];
         }
 
         v9 = v26;
@@ -140,26 +140,26 @@ LABEL_9:
   return v18;
 }
 
-- (BOOL)findVolumeBSDNameWithError:(id *)a3
+- (BOOL)findVolumeBSDNameWithError:(id *)error
 {
-  v4 = [(DIDataPartition *)self ioMedia];
-  v5 = [v4 BSDName];
-  [(DIDataPartition *)self setVolumeBSDName:v5];
+  ioMedia = [(DIDataPartition *)self ioMedia];
+  bSDName = [ioMedia BSDName];
+  [(DIDataPartition *)self setVolumeBSDName:bSDName];
 
   return 1;
 }
 
-+ (id)newMountURLWithError:(id *)a3
++ (id)newMountURLWithError:(id *)error
 {
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 temporaryDirectory];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
 
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  v7 = [v6 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v8 = [v5 URLByAppendingPathComponent:v7];
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v9 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:a3];
+  v8 = [temporaryDirectory URLByAppendingPathComponent:uUIDString];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  v10 = [defaultManager2 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:error];
 
   v11 = 0;
   if (v10)
@@ -170,7 +170,7 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)resizeFileSystemToMinimumWithError:(id *)a3
+- (BOOL)resizeFileSystemToMinimumWithError:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
   v5 = [(DIDataPartition *)self getFileSystemMinimalBlocks:?];
@@ -189,7 +189,7 @@ LABEL_9:
       v21 = 2048;
       v22 = v6;
       v23 = 2048;
-      v24 = [(DIDataPartition *)self numBlocks];
+      numBlocks = [(DIDataPartition *)self numBlocks];
       v9 = _os_log_send_and_compose_impl();
 
       if (v9)
@@ -211,7 +211,7 @@ LABEL_9:
         v21 = 2048;
         v22 = v6;
         v23 = 2048;
-        v24 = [(DIDataPartition *)self numBlocks];
+        numBlocks = [(DIDataPartition *)self numBlocks];
         _os_log_impl(&dword_248DE0000, v10, OS_LOG_TYPE_DEFAULT, "%.*s: Minimum data partition size is %lld blocks (estimation was %lld blocks)", buf, 0x26u);
       }
     }
@@ -221,7 +221,7 @@ LABEL_9:
     {
       if (v6 != [(DIDataPartition *)self numBlocks])
       {
-        LODWORD(v5) = [(DIDataPartition *)self resizeFileSystemWithNumBlocks:v6 error:a3];
+        LODWORD(v5) = [(DIDataPartition *)self resizeFileSystemWithNumBlocks:v6 error:error];
         if (!v5)
         {
           goto LABEL_20;
@@ -266,7 +266,7 @@ LABEL_9:
       goto LABEL_20;
     }
 
-    LOBYTE(v5) = [DIError failWithEnumValue:154 verboseInfo:@"Invalid minimum data partition size" error:a3];
+    LOBYTE(v5) = [DIError failWithEnumValue:154 verboseInfo:@"Invalid minimum data partition size" error:error];
   }
 
 LABEL_20:

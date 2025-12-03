@@ -1,11 +1,11 @@
 @interface MTUpcomingMediaController
 - (MTUpcomingMediaController)init;
-- (void)_setSuggestedEpisodeUuidsImmediately:(id)a3;
-- (void)setEpisodeIntents:(id)a3;
-- (void)setIntents:(id)a3;
-- (void)setStationIntents:(id)a3;
-- (void)setSuggestedEpisodeUuids:(id)a3;
-- (void)setSuggestedStationUuids:(id)a3;
+- (void)_setSuggestedEpisodeUuidsImmediately:(id)immediately;
+- (void)setEpisodeIntents:(id)intents;
+- (void)setIntents:(id)intents;
+- (void)setStationIntents:(id)intents;
+- (void)setSuggestedEpisodeUuids:(id)uuids;
+- (void)setSuggestedStationUuids:(id)uuids;
 @end
 
 @implementation MTUpcomingMediaController
@@ -33,53 +33,53 @@
   return v2;
 }
 
-- (void)setSuggestedEpisodeUuids:(id)a3
+- (void)setSuggestedEpisodeUuids:(id)uuids
 {
-  v4 = a3;
+  uuidsCopy = uuids;
   if ((os_feature_enabled_podcasts_better_media_suggestions() & 1) == 0)
   {
-    [(MTUpcomingMediaController *)self setDeferredEpisodeUuids:v4];
+    [(MTUpcomingMediaController *)self setDeferredEpisodeUuids:uuidsCopy];
     v5 = _MTLogCategorySiri();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v11 = [v4 count];
+      v11 = [uuidsCopy count];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Upcoming Media: Deferring update of %lu suggested episode UUIDs", buf, 0xCu);
     }
 
     objc_initWeak(buf, self);
-    v6 = self;
-    objc_sync_enter(v6);
-    if (![(MTUpcomingMediaController *)v6 pendingDeferredUpdate])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (![(MTUpcomingMediaController *)selfCopy pendingDeferredUpdate])
     {
-      [(MTUpcomingMediaController *)v6 setPendingDeferredUpdate:1];
+      [(MTUpcomingMediaController *)selfCopy setPendingDeferredUpdate:1];
       v7 = dispatch_time(0, 10000000000);
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_1000DBF6C;
       v8[3] = &unk_1004DB990;
-      v8[4] = v6;
+      v8[4] = selfCopy;
       objc_copyWeak(&v9, buf);
       dispatch_after(v7, &_dispatch_main_q, v8);
       objc_destroyWeak(&v9);
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
 
     objc_destroyWeak(buf);
   }
 }
 
-- (void)_setSuggestedEpisodeUuidsImmediately:(id)a3
+- (void)_setSuggestedEpisodeUuidsImmediately:(id)immediately
 {
-  v4 = a3;
+  immediatelyCopy = immediately;
   if ((os_feature_enabled_podcasts_better_media_suggestions() & 1) == 0)
   {
     v5 = _MTLogCategorySiri();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v11 = [v4 count];
+      v11 = [immediatelyCopy count];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Upcoming Media: Setting %lu suggested episode UUIDs", buf, 0xCu);
     }
 
@@ -88,37 +88,37 @@
     v7[1] = 3221225472;
     v7[2] = sub_1000DC14C;
     v7[3] = &unk_1004D8798;
-    v8 = v4;
-    v9 = self;
+    v8 = immediatelyCopy;
+    selfCopy = self;
     [(MTCoalescableWorkController *)suggestedEpisodesWorkController schedule:v7];
   }
 }
 
-- (void)setSuggestedStationUuids:(id)a3
+- (void)setSuggestedStationUuids:(id)uuids
 {
-  v4 = a3;
+  uuidsCopy = uuids;
   suggestedStationsWorkController = self->_suggestedStationsWorkController;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DC76C;
   v7[3] = &unk_1004D8798;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = uuidsCopy;
+  selfCopy = self;
+  v6 = uuidsCopy;
   [(MTCoalescableWorkController *)suggestedStationsWorkController schedule:v7];
 }
 
-- (void)setStationIntents:(id)a3
+- (void)setStationIntents:(id)intents
 {
-  v13 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  objc_storeStrong(&v5->_stationIntents, a3);
-  v6 = [(MTUpcomingMediaController *)v5 episodeIntents];
-  v7 = v6;
-  if (v6)
+  intentsCopy = intents;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_stationIntents, intents);
+  episodeIntents = [(MTUpcomingMediaController *)selfCopy episodeIntents];
+  v7 = episodeIntents;
+  if (episodeIntents)
   {
-    v8 = v6;
+    v8 = episodeIntents;
   }
 
   else
@@ -128,7 +128,7 @@
 
   v9 = v8;
 
-  stationIntents = v5->_stationIntents;
+  stationIntents = selfCopy->_stationIntents;
   if (!stationIntents)
   {
     stationIntents = &__NSArray0__struct;
@@ -136,29 +136,29 @@
 
   v11 = stationIntents;
   v12 = [v9 arrayByAddingObjectsFromArray:v11];
-  [(MTUpcomingMediaController *)v5 setIntents:v12];
+  [(MTUpcomingMediaController *)selfCopy setIntents:v12];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setEpisodeIntents:(id)a3
+- (void)setEpisodeIntents:(id)intents
 {
-  v13 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  objc_storeStrong(&v5->_episodeIntents, a3);
-  episodeIntents = v5->_episodeIntents;
+  intentsCopy = intents;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_episodeIntents, intents);
+  episodeIntents = selfCopy->_episodeIntents;
   if (!episodeIntents)
   {
     episodeIntents = &__NSArray0__struct;
   }
 
   v7 = episodeIntents;
-  v8 = [(MTUpcomingMediaController *)v5 stationIntents];
-  v9 = v8;
-  if (v8)
+  stationIntents = [(MTUpcomingMediaController *)selfCopy stationIntents];
+  v9 = stationIntents;
+  if (stationIntents)
   {
-    v10 = v8;
+    v10 = stationIntents;
   }
 
   else
@@ -169,22 +169,22 @@
   v11 = v10;
 
   v12 = [(NSArray *)v7 arrayByAddingObjectsFromArray:v11];
-  [(MTUpcomingMediaController *)v5 setIntents:v12];
+  [(MTUpcomingMediaController *)selfCopy setIntents:v12];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setIntents:(id)a3
+- (void)setIntents:(id)intents
 {
-  v4 = a3;
-  v22 = self;
-  objc_sync_enter(v22);
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  intentsCopy = intents;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [intentsCopy count]);
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v4;
+  obj = intentsCopy;
   v6 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v6)
   {
@@ -202,12 +202,12 @@
         v9 = *(*(&v24 + 1) + 8 * v8);
         v10 = [[INShortcut alloc] initWithIntent:v9];
         v11 = [[INRelevantShortcut alloc] initWithShortcut:v10];
-        v12 = [v9 mediaContainer];
-        v13 = [v12 title];
+        mediaContainer = [v9 mediaContainer];
+        title = [mediaContainer title];
 
-        v14 = [v9 keyImage];
-        v15 = [[INDefaultCardTemplate alloc] initWithTitle:v13];
-        [v15 setImage:v14];
+        keyImage = [v9 keyImage];
+        v15 = [[INDefaultCardTemplate alloc] initWithTitle:title];
+        [v15 setImage:keyImage];
         [v11 setWatchTemplate:v15];
         [v5 addObject:v11];
 
@@ -237,7 +237,7 @@
   v21 = +[INUpcomingMediaManager sharedManager];
   [v21 setSuggestedMediaIntents:v17];
 
-  objc_sync_exit(v22);
+  objc_sync_exit(selfCopy);
 }
 
 @end

@@ -6,8 +6,8 @@
 
 - (NSString)bypassToken
 {
-  v2 = [(LakituResponse *)self responseDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"phoneNumberToken"];
+  responseDictionary = [(LakituResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKeyedSubscript:@"phoneNumberToken"];
 
   return v3;
 }

@@ -1,20 +1,20 @@
 @interface MBServiceRestoreSession
-+ (MBServiceRestoreSession)restoreSessionWithPropertyList:(id)a3;
-+ (id)currentRestoreSessionWithAccount:(id)a3;
-+ (void)clearCurrentRestoreSessionWithAccount:(id)a3;
-- (MBServiceRestoreSession)initWithPersonaIdentifier:(id)a3;
-- (MBServiceRestoreSession)initWithPropertyList:(id)a3;
++ (MBServiceRestoreSession)restoreSessionWithPropertyList:(id)list;
++ (id)currentRestoreSessionWithAccount:(id)account;
++ (void)clearCurrentRestoreSessionWithAccount:(id)account;
+- (MBServiceRestoreSession)initWithPersonaIdentifier:(id)identifier;
+- (MBServiceRestoreSession)initWithPropertyList:(id)list;
 - (id)description;
 - (id)propertyList;
-- (void)saveAtPath:(id)a3;
+- (void)saveAtPath:(id)path;
 @end
 
 @implementation MBServiceRestoreSession
 
-+ (id)currentRestoreSessionWithAccount:(id)a3
++ (id)currentRestoreSessionWithAccount:(id)account
 {
-  v3 = [a3 persona];
-  v4 = [v3 copyPreferencesValueForKey:@"RestoreSession" class:objc_opt_class()];
+  persona = [account persona];
+  v4 = [persona copyPreferencesValueForKey:@"RestoreSession" class:objc_opt_class()];
 
   if (v4)
   {
@@ -29,23 +29,23 @@
   return v5;
 }
 
-+ (void)clearCurrentRestoreSessionWithAccount:(id)a3
++ (void)clearCurrentRestoreSessionWithAccount:(id)account
 {
-  v3 = [a3 persona];
-  [v3 setPreferencesValue:0 forKey:@"RestoreSession"];
+  persona = [account persona];
+  [persona setPreferencesValue:0 forKey:@"RestoreSession"];
 }
 
-+ (MBServiceRestoreSession)restoreSessionWithPropertyList:(id)a3
++ (MBServiceRestoreSession)restoreSessionWithPropertyList:(id)list
 {
-  v3 = a3;
-  v4 = [[MBServiceRestoreSession alloc] initWithPropertyList:v3];
+  listCopy = list;
+  v4 = [[MBServiceRestoreSession alloc] initWithPropertyList:listCopy];
 
   return v4;
 }
 
-- (MBServiceRestoreSession)initWithPersonaIdentifier:(id)a3
+- (MBServiceRestoreSession)initWithPersonaIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = MBServiceRestoreSession;
   v5 = [(MBServiceRestoreSession *)&v11 init];
@@ -55,7 +55,7 @@
     startDate = v5->_startDate;
     v5->_startDate = v6;
 
-    v8 = [v4 copy];
+    v8 = [identifierCopy copy];
     personaIdentifier = v5->_personaIdentifier;
     v5->_personaIdentifier = v8;
   }
@@ -63,30 +63,30 @@
   return v5;
 }
 
-- (MBServiceRestoreSession)initWithPropertyList:(id)a3
+- (MBServiceRestoreSession)initWithPropertyList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v22.receiver = self;
   v22.super_class = MBServiceRestoreSession;
   v5 = [(MBServiceRestoreSession *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"personaIdentifier"];
+    v6 = [listCopy objectForKeyedSubscript:@"personaIdentifier"];
     personaIdentifier = v5->_personaIdentifier;
     v5->_personaIdentifier = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"backupUDID"];
+    v8 = [listCopy objectForKeyedSubscript:@"backupUDID"];
     backupUDID = v5->_backupUDID;
     v5->_backupUDID = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"snapshotID"];
+    v10 = [listCopy objectForKeyedSubscript:@"snapshotID"];
     v5->_snapshotID = [v10 unsignedIntegerValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"snapshotUUID"];
+    v11 = [listCopy objectForKeyedSubscript:@"snapshotUUID"];
     snapshotUUID = v5->_snapshotUUID;
     v5->_snapshotUUID = v11;
 
-    v13 = [v4 objectForKeyedSubscript:@"startDate"];
+    v13 = [listCopy objectForKeyedSubscript:@"startDate"];
     v14 = v13;
     if (v13)
     {
@@ -101,16 +101,16 @@
     startDate = v5->_startDate;
     v5->_startDate = v15;
 
-    v17 = [v4 objectForKeyedSubscript:@"finishing"];
+    v17 = [listCopy objectForKeyedSubscript:@"finishing"];
     v5->_finishing = [v17 BOOLValue];
 
-    v18 = [v4 objectForKeyedSubscript:@"cancelled"];
+    v18 = [listCopy objectForKeyedSubscript:@"cancelled"];
     v5->_cancelled = [v18 BOOLValue];
 
-    v19 = [v4 objectForKeyedSubscript:@"snapshotBackupPolicy"];
+    v19 = [listCopy objectForKeyedSubscript:@"snapshotBackupPolicy"];
     v5->_snapshotBackupPolicy = [v19 integerValue];
 
-    v20 = [v4 objectForKeyedSubscript:@"telemetryID"];
+    v20 = [listCopy objectForKeyedSubscript:@"telemetryID"];
     v5->_telemetryID = [v20 integerValue];
   }
 
@@ -127,9 +127,9 @@
 
   if (![(MBServiceRestoreSession *)self snapshotID])
   {
-    v4 = [(MBServiceRestoreSession *)self snapshotUUID];
+    snapshotUUID = [(MBServiceRestoreSession *)self snapshotUUID];
 
-    if (!v4)
+    if (!snapshotUUID)
     {
       v5 = +[NSAssertionHandler currentHandler];
       [v5 handleFailureInMethod:a2 object:self file:@"MBServiceRestoreSession.m" lineNumber:58 description:@"Snapshot ID/UUID is not set"];
@@ -165,22 +165,22 @@
   return v6;
 }
 
-- (void)saveAtPath:(id)a3
+- (void)saveAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v34 = v4;
+    v34 = pathCopy;
     v35 = 2112;
-    v36 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Saving restore session at %@: %@", buf, 0x16u);
-    v29 = self;
+    selfCopy2 = self;
     _MBLog();
   }
 
-  v6 = [NSMutableDictionary dictionaryWithContentsOfFile:v4];
+  v6 = [NSMutableDictionary dictionaryWithContentsOfFile:pathCopy];
   v7 = v6;
   if (v6)
   {
@@ -194,13 +194,13 @@
 
   v9 = v8;
 
-  v10 = [(MBServiceRestoreSession *)self propertyList];
-  [v9 setObject:v10 forKeyedSubscript:@"RestoreSession"];
+  propertyList = [(MBServiceRestoreSession *)self propertyList];
+  [v9 setObject:propertyList forKeyedSubscript:@"RestoreSession"];
 
   v11 = +[NSFileManager defaultManager];
-  v12 = [v4 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
   v32 = 0;
-  v13 = [v11 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:0 error:&v32];
+  v13 = [v11 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v32];
   v14 = v32;
 
   if ((v13 & 1) == 0)
@@ -228,7 +228,7 @@ LABEL_21:
       goto LABEL_21;
     }
 
-    v28 = [[MBException alloc] initWithCode:1 format:{@"Error creating restore session dir %@", v14, v29}];
+    v28 = [[MBException alloc] initWithCode:1 format:{@"Error creating restore session dir %@", v14, selfCopy2}];
     goto LABEL_31;
   }
 
@@ -261,12 +261,12 @@ LABEL_25:
       goto LABEL_25;
     }
 
-    v28 = [[MBException alloc] initWithCode:1 format:{@"Failed to serialize property list %@", v16, v29}];
+    v28 = [[MBException alloc] initWithCode:1 format:{@"Failed to serialize property list %@", v16, selfCopy2}];
     goto LABEL_31;
   }
 
   v30 = v16;
-  v17 = [v15 writeToFile:v4 options:268435457 error:&v30];
+  v17 = [v15 writeToFile:pathCopy options:268435457 error:&v30];
   v18 = v30;
 
   if ((v17 & 1) == 0)
@@ -294,7 +294,7 @@ LABEL_29:
       goto LABEL_29;
     }
 
-    v28 = [[MBException alloc] initWithCode:1 format:{@"Failed to write property list %@", v18, v29}];
+    v28 = [[MBException alloc] initWithCode:1 format:{@"Failed to write property list %@", v18, selfCopy2}];
 LABEL_31:
     objc_exception_throw(v28);
   }

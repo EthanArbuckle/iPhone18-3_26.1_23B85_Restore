@@ -1,28 +1,28 @@
 @interface OCXSTValidator
-+ (BOOL)isValidValue:(id)a3 simpleType:(unint64_t)a4;
-+ (id)simpleType:(unint64_t)a3 integerValue:(int64_t)a4;
-+ (id)simpleType:(unint64_t)a3 stringValue:(id)a4;
-+ (id)validateIntegerValue:(int64_t)a3 minValue:(int64_t)a4 maxValue:(int64_t)a5;
++ (BOOL)isValidValue:(id)value simpleType:(unint64_t)type;
++ (id)simpleType:(unint64_t)type integerValue:(int64_t)value;
++ (id)simpleType:(unint64_t)type stringValue:(id)value;
++ (id)validateIntegerValue:(int64_t)value minValue:(int64_t)minValue maxValue:(int64_t)maxValue;
 + (id)validator;
 - (OCXSTValidator)init;
 @end
 
 @implementation OCXSTValidator
 
-+ (id)validateIntegerValue:(int64_t)a3 minValue:(int64_t)a4 maxValue:(int64_t)a5
++ (id)validateIntegerValue:(int64_t)value minValue:(int64_t)minValue maxValue:(int64_t)maxValue
 {
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:?];
   v9 = v8;
-  if (a3 >= a4)
+  if (value >= minValue)
   {
-    if (a3 <= a5)
+    if (value <= maxValue)
     {
       v10 = v8;
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+      v10 = [MEMORY[0x277CCABB0] numberWithInteger:maxValue];
 
       if (TSUDefaultCat_init_token != -1)
       {
@@ -33,7 +33,7 @@
 
   else
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:minValue];
 
     if (TSUDefaultCat_init_token != -1)
     {
@@ -58,14 +58,14 @@ void __57__OCXSTValidator_validateIntegerValue_minValue_maxValue___block_invoke_
   TSUDefaultCat_log_t = v0;
 }
 
-+ (BOOL)isValidValue:(id)a3 simpleType:(unint64_t)a4
++ (BOOL)isValidValue:(id)value simpleType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [a1 validator];
+  valueCopy = value;
+  validator = [self validator];
   v8 = objc_opt_class();
-  v9 = [v7 simpleTypeMap];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  simpleTypeMap = [validator simpleTypeMap];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  v11 = [simpleTypeMap objectForKeyedSubscript:v10];
   v12 = TSUDynamicCast(v8, v11);
 
   if (v12)
@@ -81,8 +81,8 @@ void __57__OCXSTValidator_validateIntegerValue_minValue_maxValue___block_invoke_
     v19 = 0;
     if (v15 && v18)
     {
-      v20 = [v15 compare:v6];
-      v21 = [v18 compare:v6];
+      v20 = [v15 compare:valueCopy];
+      v21 = [v18 compare:valueCopy];
       v19 = (v20 + 1) < 2 && v21 < 2;
     }
   }
@@ -97,8 +97,8 @@ void __57__OCXSTValidator_validateIntegerValue_minValue_maxValue___block_invoke_
 
 + (id)validator
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!+[OCXSTValidator validator]::validator)
   {
     v3 = objc_opt_new();
@@ -106,23 +106,23 @@ void __57__OCXSTValidator_validateIntegerValue_minValue_maxValue___block_invoke_
     +[OCXSTValidator validator]::validator = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = +[OCXSTValidator validator]::validator;
 
   return v5;
 }
 
-+ (id)simpleType:(unint64_t)a3 integerValue:(int64_t)a4
++ (id)simpleType:(unint64_t)type integerValue:(int64_t)value
 {
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  v8 = [a1 validator];
-  if (v8)
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:value];
+  validator = [self validator];
+  if (validator)
   {
     v9 = objc_opt_class();
-    v10 = [v8 simpleTypeMap];
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    v12 = [v10 objectForKeyedSubscript:v11];
+    simpleTypeMap = [validator simpleTypeMap];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+    v12 = [simpleTypeMap objectForKeyedSubscript:v11];
     v13 = TSUDynamicCast(v9, v12);
 
     if (v13)
@@ -137,7 +137,7 @@ void __57__OCXSTValidator_validateIntegerValue_minValue_maxValue___block_invoke_
 
       if (v16 && v19)
       {
-        v20 = [a1 validateIntegerValue:a4 minValue:objc_msgSend(v16 maxValue:{"integerValue"), objc_msgSend(v19, "integerValue")}];
+        v20 = [self validateIntegerValue:value minValue:objc_msgSend(v16 maxValue:{"integerValue"), objc_msgSend(v19, "integerValue")}];
 
         v7 = v20;
       }
@@ -147,18 +147,18 @@ void __57__OCXSTValidator_validateIntegerValue_minValue_maxValue___block_invoke_
   return v7;
 }
 
-+ (id)simpleType:(unint64_t)a3 stringValue:(id)a4
++ (id)simpleType:(unint64_t)type stringValue:(id)value
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [MEMORY[0x277CCACA8] stringWithString:v6];
-  v8 = [a1 validator];
-  if (v8)
+  valueCopy = value;
+  v7 = [MEMORY[0x277CCACA8] stringWithString:valueCopy];
+  validator = [self validator];
+  if (validator)
   {
     v9 = objc_opt_class();
-    v10 = [v8 simpleTypeMap];
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    v12 = [v10 objectForKeyedSubscript:v11];
+    simpleTypeMap = [validator simpleTypeMap];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+    v12 = [simpleTypeMap objectForKeyedSubscript:v11];
     v13 = TSUDynamicCast(v9, v12);
 
     if (!v13)
@@ -184,7 +184,7 @@ void __57__OCXSTValidator_validateIntegerValue_minValue_maxValue___block_invoke_
             objc_enumerationMutation(v14);
           }
 
-          if (![*(*(&v23 + 1) + 8 * i) caseInsensitiveCompare:{v6, v23}])
+          if (![*(*(&v23 + 1) + 8 * i) caseInsensitiveCompare:{valueCopy, v23}])
           {
             v20 = v14;
             goto LABEL_18;

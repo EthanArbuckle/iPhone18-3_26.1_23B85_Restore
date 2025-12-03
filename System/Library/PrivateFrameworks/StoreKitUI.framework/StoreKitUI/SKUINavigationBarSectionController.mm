@@ -1,11 +1,11 @@
 @interface SKUINavigationBarSectionController
 - (SKUIViewElementLayoutContext)viewLayoutContext;
 - (UIView)view;
-- (id)barButtonItemForElementIdentifier:(id)a3;
-- (id)viewForElementIdentifier:(id)a3;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
+- (id)barButtonItemForElementIdentifier:(id)identifier;
+- (id)viewForElementIdentifier:(id)identifier;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
 - (void)dealloc;
-- (void)reloadAfterDocumentUpdateWithNavigationItem:(id)a3;
+- (void)reloadAfterDocumentUpdateWithNavigationItem:(id)item;
 - (void)viewLayoutContext;
 @end
 
@@ -19,7 +19,7 @@
   [(SKUINavigationBarSectionController *)&v3 dealloc];
 }
 
-- (id)barButtonItemForElementIdentifier:(id)a3
+- (id)barButtonItemForElementIdentifier:(id)identifier
 {
   if (os_variant_has_internal_content())
   {
@@ -36,7 +36,7 @@
   return 0;
 }
 
-- (void)reloadAfterDocumentUpdateWithNavigationItem:(id)a3
+- (void)reloadAfterDocumentUpdateWithNavigationItem:(id)item
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -65,7 +65,7 @@
   return 0;
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
   if (os_variant_has_internal_content())
   {
@@ -98,20 +98,20 @@
 
     [(SKUIViewElementLayoutContext *)self->_viewLayoutContext setArtworkRequestDelegate:self];
     v6 = self->_viewLayoutContext;
-    v7 = [(SKUINavigationBarContext *)self->_navigationBarContext clientContext];
-    [(SKUIViewElementLayoutContext *)v6 setClientContext:v7];
+    clientContext = [(SKUINavigationBarContext *)self->_navigationBarContext clientContext];
+    [(SKUIViewElementLayoutContext *)v6 setClientContext:clientContext];
 
     v8 = self->_viewLayoutContext;
-    v9 = [(SKUINavigationBarContext *)self->_navigationBarContext parentViewController];
-    [(SKUIViewElementLayoutContext *)v8 setParentViewController:v9];
+    parentViewController = [(SKUINavigationBarContext *)self->_navigationBarContext parentViewController];
+    [(SKUIViewElementLayoutContext *)v8 setParentViewController:parentViewController];
 
     v10 = self->_viewLayoutContext;
-    v11 = [(SKUINavigationBarContext *)self->_navigationBarContext resourceLoader];
-    [(SKUIViewElementLayoutContext *)v10 setResourceLoader:v11];
+    resourceLoader = [(SKUINavigationBarContext *)self->_navigationBarContext resourceLoader];
+    [(SKUIViewElementLayoutContext *)v10 setResourceLoader:resourceLoader];
 
     v12 = [SKUIViewElementTextLayoutCache alloc];
-    v13 = [(SKUINavigationBarContext *)self->_navigationBarContext textLayoutCache];
-    v14 = [(SKUIViewElementTextLayoutCache *)v12 initWithLayoutCache:v13];
+    textLayoutCache = [(SKUINavigationBarContext *)self->_navigationBarContext textLayoutCache];
+    v14 = [(SKUIViewElementTextLayoutCache *)v12 initWithLayoutCache:textLayoutCache];
 
     [(SKUIViewElementLayoutContext *)self->_viewLayoutContext setLabelLayoutCache:v14];
     viewLayoutContext = self->_viewLayoutContext;
@@ -120,7 +120,7 @@
   return viewLayoutContext;
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {

@@ -1,14 +1,14 @@
 @interface ICRecentNotesController
-+ (id)menuWithViewControllerManager:(id)a3;
++ (id)menuWithViewControllerManager:(id)manager;
 - (ICRecentNotesController)init;
 @end
 
 @implementation ICRecentNotesController
 
-+ (id)menuWithViewControllerManager:(id)a3
++ (id)menuWithViewControllerManager:(id)manager
 {
-  v3 = a3;
-  v4 = sub_10032E384(v3);
+  managerCopy = manager;
+  v4 = sub_10032E384(managerCopy);
 
   return v4;
 }

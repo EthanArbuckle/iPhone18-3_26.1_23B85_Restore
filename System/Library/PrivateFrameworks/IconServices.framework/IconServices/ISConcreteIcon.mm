@@ -1,30 +1,30 @@
 @interface ISConcreteIcon
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToIcon:(id)a3;
-- (ISConcreteIcon)initWithCoder:(id)a3;
-- (ISConcreteIcon)initWithDigest:(id)a3;
-- (id)_cachedImageForDescriptor:(id)a3;
-- (id)_imageForSymbolImageDescriptor:(id)a3;
-- (id)_imageFromStoreForDescriptor:(id)a3;
-- (id)_placeholderImageForError:(id)a3 descriptor:(id)a4;
-- (id)generateImageWithDescriptor:(id)a3;
-- (id)imageForDescriptor:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToIcon:(id)icon;
+- (ISConcreteIcon)initWithCoder:(id)coder;
+- (ISConcreteIcon)initWithDigest:(id)digest;
+- (id)_cachedImageForDescriptor:(id)descriptor;
+- (id)_imageForSymbolImageDescriptor:(id)descriptor;
+- (id)_imageFromStoreForDescriptor:(id)descriptor;
+- (id)_placeholderImageForError:(id)error descriptor:(id)descriptor;
+- (id)generateImageWithDescriptor:(id)descriptor;
+- (id)imageForDescriptor:(id)descriptor;
 - (id)makeResourceProvider;
 - (id)symbol;
-- (unint64_t)assessValidationToken:(id)a3;
+- (unint64_t)assessValidationToken:(id)token;
 - (unint64_t)hash;
-- (void)_prepareImagesForImageDescriptors:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateImageWithDescriptor:(id)a3 completion:(id)a4;
-- (void)getImageForImageDescriptor:(id)a3 completion:(id)a4;
+- (void)_prepareImagesForImageDescriptors:(id)descriptors;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateImageWithDescriptor:(id)descriptor completion:(id)completion;
+- (void)getImageForImageDescriptor:(id)descriptor completion:(id)completion;
 @end
 
 @implementation ISConcreteIcon
 
 - (unint64_t)hash
 {
-  v2 = [(ISConcreteIcon *)self digest];
-  v3 = [v2 hash];
+  digest = [(ISConcreteIcon *)self digest];
+  v3 = [digest hash];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [v5 hash];
@@ -32,40 +32,40 @@
   return v6 ^ v3;
 }
 
-- (ISConcreteIcon)initWithDigest:(id)a3
+- (ISConcreteIcon)initWithDigest:(id)digest
 {
-  v5 = a3;
+  digestCopy = digest;
   v10.receiver = self;
   v10.super_class = ISConcreteIcon;
-  v6 = [(ISCodableIcon *)&v10 _init];
-  if (v6)
+  _init = [(ISCodableIcon *)&v10 _init];
+  if (_init)
   {
     v7 = objc_alloc_init(ISImageCache);
-    imageCache = v6->_imageCache;
-    v6->_imageCache = v7;
+    imageCache = _init->_imageCache;
+    _init->_imageCache = v7;
 
-    objc_storeStrong(&v6->_digest, a3);
+    objc_storeStrong(&_init->_digest, digest);
   }
 
-  return v6;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ISConcreteIcon *)self digest];
-  [v4 encodeObject:v5 forKey:@"digest"];
+  coderCopy = coder;
+  digest = [(ISConcreteIcon *)self digest];
+  [coderCopy encodeObject:digest forKey:@"digest"];
 }
 
-- (ISConcreteIcon)initWithCoder:(id)a3
+- (ISConcreteIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ISConcreteIcon;
-  v5 = [(ISCodableIcon *)&v11 initWithCoder:v4];
+  v5 = [(ISCodableIcon *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"digest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"digest"];
     digest = v5->_digest;
     v5->_digest = v6;
 
@@ -77,20 +77,20 @@
   return v5;
 }
 
-- (BOOL)isEqualToIcon:(id)a3
+- (BOOL)isEqualToIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(ISConcreteIcon *)self digest];
-  v6 = [v4 digest];
+  iconCopy = icon;
+  digest = [(ISConcreteIcon *)self digest];
+  digest2 = [iconCopy digest];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(iconCopy) = [digest isEqual:digest2];
+  return iconCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -98,7 +98,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ISConcreteIcon *)self isEqualToIcon:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ISConcreteIcon *)self isEqualToIcon:equalCopy];
   }
 
   return v5;
@@ -110,34 +110,34 @@
   objc_exception_throw(v2);
 }
 
-- (id)_imageFromStoreForDescriptor:(id)a3
+- (id)_imageFromStoreForDescriptor:(id)descriptor
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ISIcon *)self manager];
-  v6 = [v5 iconCache];
+  descriptorCopy = descriptor;
+  manager = [(ISIcon *)self manager];
+  iconCache = [manager iconCache];
   v49 = 0;
   v50 = 0;
-  v7 = [v6 findStoreUnitForIcon:self descriptor:v4 UUID:&v50 validationToken:&v49];
+  v7 = [iconCache findStoreUnitForIcon:self descriptor:descriptorCopy UUID:&v50 validationToken:&v49];
   v8 = v50;
   v9 = v49;
 
   v10 = 0;
   if (v7)
   {
-    v11 = [(ISIcon *)self manager];
-    v12 = [v11 iconCache];
-    v13 = [v12 storeUnitForUUID:v8];
+    manager2 = [(ISIcon *)self manager];
+    iconCache2 = [manager2 iconCache];
+    v13 = [iconCache2 storeUnitForUUID:v8];
 
-    v14 = [v13 data];
-    if (v14 && (v15 = v14, [v13 UUID], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
+    data = [v13 data];
+    if (data && (v15 = data, [v13 UUID], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
     {
       v17 = objc_alloc(MEMORY[0x1E69A8988]);
-      v18 = [v13 data];
-      v19 = [v13 UUID];
-      v10 = [v17 initWithData:v18 uuid:v19 validationToken:v9];
+      data2 = [v13 data];
+      uUID = [v13 UUID];
+      v10 = [v17 initWithData:data2 uuid:uUID validationToken:v9];
 
-      if (v4)
+      if (descriptorCopy)
       {
         v20 = _ISPrepareISIconSignpostLog();
         v21 = os_signpost_enabled(v20);
@@ -147,8 +147,8 @@
           v41 = v13;
           v42 = v9;
           v43 = v8;
-          v44 = v4;
-          v22 = [(ISIcon *)self _activeSignpostsForDescriptor:v4];
+          v44 = descriptorCopy;
+          v22 = [(ISIcon *)self _activeSignpostsForDescriptor:descriptorCopy];
           v45 = 0u;
           v46 = 0u;
           v47 = 0u;
@@ -176,15 +176,15 @@
                   if (v29)
                   {
                     v30 = _ISPrepareISIconSignpostLog();
-                    v31 = [v27 unsignedLongLongValue];
-                    if ((v31 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+                    unsignedLongLongValue = [v27 unsignedLongLongValue];
+                    if ((unsignedLongLongValue - 1) <= 0xFFFFFFFFFFFFFFFDLL)
                     {
-                      v32 = v31;
+                      v32 = unsignedLongLongValue;
                       if (os_signpost_enabled(v30))
                       {
-                        v33 = [v10 uuid];
+                        uuid = [v10 uuid];
                         *buf = 138412290;
-                        v52 = v33;
+                        selfCopy = uuid;
                         _os_signpost_emit_with_name_impl(&dword_1A77B8000, v30, OS_SIGNPOST_EVENT, v32, "PrepareISIcon", "SATISFIED_PERSISTENT_CACHE: %@", buf, 0xCu);
                       }
                     }
@@ -199,7 +199,7 @@
           }
 
           v8 = v43;
-          v4 = v44;
+          descriptorCopy = v44;
           v13 = v41;
           v9 = v42;
         }
@@ -213,19 +213,19 @@
       v34 = _ISDefaultLog();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
       {
-        v35 = [v13 UUID];
-        v36 = [v35 UUIDString];
-        v37 = [v10 CGImage];
+        uUID2 = [v13 UUID];
+        uUIDString = [uUID2 UUIDString];
+        cGImage = [v10 CGImage];
         *buf = 138413314;
-        v52 = self;
+        selfCopy = self;
         v53 = 2112;
-        v54 = v4;
+        v54 = descriptorCopy;
         v55 = 2112;
-        v56 = v36;
+        v56 = uUIDString;
         v57 = 2112;
         v58 = v10;
         v59 = 2112;
-        v60 = v37;
+        v60 = cGImage;
         _os_log_fault_impl(&dword_1A77B8000, v34, OS_LOG_TYPE_FAULT, "Failed to retrieve persistent cache entry. %@ - %@ with unitUUID: %@. Image: %@. Backing: %@", buf, 0x34u);
       }
     }
@@ -236,7 +236,7 @@
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v52 = v8;
+        selfCopy = v8;
         _os_log_impl(&dword_1A77B8000, v34, OS_LOG_TYPE_DEFAULT, "Store Unit: %@ not found.", buf, 0xCu);
       }
 
@@ -252,24 +252,24 @@ LABEL_28:
   return v10;
 }
 
-- (id)_cachedImageForDescriptor:(id)a3
+- (id)_cachedImageForDescriptor:(id)descriptor
 {
   v68 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ISImageCache *)self->_imageCache imageForDescriptor:v4];
-  v6 = [MEMORY[0x1E69A8980] defaultIconSpecification];
-  [v6 maxSize];
+  descriptorCopy = descriptor;
+  v5 = [(ISImageCache *)self->_imageCache imageForDescriptor:descriptorCopy];
+  defaultIconSpecification = [MEMORY[0x1E69A8980] defaultIconSpecification];
+  [defaultIconSpecification maxSize];
   v8 = v7;
 
-  v9 = [MEMORY[0x1E69A8980] defaultIconSpecification];
-  [v9 maxScale];
+  defaultIconSpecification2 = [MEMORY[0x1E69A8980] defaultIconSpecification];
+  [defaultIconSpecification2 maxScale];
   v11 = v10;
 
-  if (!v5 || ([v5 iconSize], v13 = v12, objc_msgSend(v4, "size"), v13 >= v14) || (objc_msgSend(v5, "iconSize"), v15 == v8) && (objc_msgSend(v5, "scale"), v16 == v11))
+  if (!v5 || ([v5 iconSize], v13 = v12, objc_msgSend(descriptorCopy, "size"), v13 >= v14) || (objc_msgSend(v5, "iconSize"), v15 == v8) && (objc_msgSend(v5, "scale"), v16 == v11))
   {
     [v5 minimumSize];
     v32 = v31;
-    [v4 size];
+    [descriptorCopy size];
     if (v32 > v33)
     {
       v34 = [objc_alloc(MEMORY[0x1E69A89A0]) initWithImage:v5];
@@ -285,12 +285,12 @@ LABEL_28:
 
   else
   {
-    v17 = [MEMORY[0x1E69A8980] iosDocumentIconSpecification];
-    [v4 size];
+    iosDocumentIconSpecification = [MEMORY[0x1E69A8980] iosDocumentIconSpecification];
+    [descriptorCopy size];
     v19 = v18;
     v21 = v20;
-    [v4 scale];
-    v23 = [v17 imageSpecificationForSize:v19 scale:{v21, v22}];
+    [descriptorCopy scale];
+    v23 = [iosDocumentIconSpecification imageSpecificationForSize:v19 scale:{v21, v22}];
 
     [v5 iconSize];
     v25 = v24;
@@ -313,20 +313,20 @@ LABEL_28:
     if (!v5)
     {
 LABEL_16:
-      v5 = [(ISConcreteIcon *)self _imageFromStoreForDescriptor:v4];
+      v5 = [(ISConcreteIcon *)self _imageFromStoreForDescriptor:descriptorCopy];
       if (v5)
       {
-        [(ISImageCache *)self->_imageCache setImage:v5 forDescriptor:v4];
+        [(ISImageCache *)self->_imageCache setImage:v5 forDescriptor:descriptorCopy];
       }
     }
   }
 
-  v35 = [v5 validationToken];
+  validationToken = [v5 validationToken];
 
-  if (v35)
+  if (validationToken)
   {
-    v36 = [v5 validationToken];
-    v37 = [(ISConcreteIcon *)self assessValidationToken:v36];
+    validationToken2 = [v5 validationToken];
+    v37 = [(ISConcreteIcon *)self assessValidationToken:validationToken2];
 
     [v5 setPlaceholder:v37 == 2];
   }
@@ -336,19 +336,19 @@ LABEL_16:
     v38 = _ISDefaultLog();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
     {
-      [v4 size];
+      [descriptorCopy size];
       v42 = v41;
       [v5 size];
       v44 = v43;
-      [v4 size];
+      [descriptorCopy size];
       v46 = v45;
       [v5 size];
       v48 = v47;
       [v5 scale];
       v50 = 138414338;
-      v51 = self;
+      selfCopy = self;
       v52 = 2112;
-      v53 = v4;
+      v53 = descriptorCopy;
       v54 = 2048;
       v55 = v42;
       v56 = 2048;
@@ -360,7 +360,7 @@ LABEL_16:
       v62 = 2048;
       v63 = v49;
       v64 = 1024;
-      v65 = [v5 placeholder];
+      placeholder = [v5 placeholder];
       v66 = 2112;
       v67 = v5;
     }
@@ -371,17 +371,17 @@ LABEL_16:
   return v5;
 }
 
-- (unint64_t)assessValidationToken:(id)a3
+- (unint64_t)assessValidationToken:(id)token
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DEF0] _is_invalidToken];
-  v6 = [v4 isEqual:v5];
+  tokenCopy = token;
+  _is_invalidToken = [MEMORY[0x1E695DEF0] _is_invalidToken];
+  v6 = [tokenCopy isEqual:_is_invalidToken];
 
   if (!v6)
   {
-    v11 = [MEMORY[0x1E695DEF0] _is_staleToken];
-    v12 = [v4 isEqual:v11];
+    _is_staleToken = [MEMORY[0x1E695DEF0] _is_staleToken];
+    v12 = [tokenCopy isEqual:_is_staleToken];
 
     if (v12)
     {
@@ -404,8 +404,8 @@ LABEL_16:
       goto LABEL_36;
     }
 
-    v15 = [MEMORY[0x1E695DEF0] _is_validToken];
-    v16 = [v4 isEqual:v15];
+    _is_validToken = [MEMORY[0x1E695DEF0] _is_validToken];
+    v16 = [tokenCopy isEqual:_is_validToken];
 
     if (v16)
     {
@@ -435,16 +435,16 @@ LABEL_16:
     *uu2 = 0;
     v38 = 0;
     [v10 getUUIDBytes:uu2];
-    if ([v4 length] == 40)
+    if ([tokenCopy length] == 40)
     {
-      v19 = [v4 bytes];
-      if (v19)
+      bytes = [tokenCopy bytes];
+      if (bytes)
       {
-        v20 = v19;
-        if (*(v19 + 16) == v36 && !uuid_compare(v19, uu2))
+        v20 = bytes;
+        if (*(bytes + 16) == v36 && !uuid_compare(bytes, uu2))
         {
-          v23 = _ISDefaultLog();
-          if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
+          latestValidationToken = _ISDefaultLog();
+          if (os_log_type_enabled(latestValidationToken, OS_LOG_TYPE_DEBUG))
           {
             [ISConcreteIcon assessValidationToken:];
           }
@@ -459,15 +459,15 @@ LABEL_16:
           [ISConcreteIcon assessValidationToken:];
         }
 
-        v22 = [(ISConcreteIcon *)self imageCache];
-        v23 = [v22 latestValidationToken];
+        imageCache = [(ISConcreteIcon *)self imageCache];
+        latestValidationToken = [imageCache latestValidationToken];
 
-        if ([v23 length]== 40)
+        if ([latestValidationToken length]== 40)
         {
-          v24 = [v23 bytes];
-          if (v24)
+          bytes2 = [latestValidationToken bytes];
+          if (bytes2)
           {
-            v25 = uuid_compare((v24 + 24), (v20 + 24));
+            v25 = uuid_compare((bytes2 + 24), (v20 + 24));
             v26 = _ISTraceLog();
             v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG);
 
@@ -548,19 +548,19 @@ LABEL_51:
         goto LABEL_46;
       }
 
-      v23 = _ISDefaultLog();
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
+      latestValidationToken = _ISDefaultLog();
+      if (os_log_type_enabled(latestValidationToken, OS_LOG_TYPE_FAULT))
       {
-        [(ISConcreteIcon *)v4 assessValidationToken:v23];
+        [(ISConcreteIcon *)tokenCopy assessValidationToken:latestValidationToken];
       }
     }
 
     else
     {
-      v23 = _ISDefaultLog();
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
+      latestValidationToken = _ISDefaultLog();
+      if (os_log_type_enabled(latestValidationToken, OS_LOG_TYPE_FAULT))
       {
-        [(ISConcreteIcon *)v4 assessValidationToken:v23];
+        [(ISConcreteIcon *)tokenCopy assessValidationToken:latestValidationToken];
       }
     }
 
@@ -595,27 +595,27 @@ LABEL_36:
   return v8;
 }
 
-- (id)_placeholderImageForError:(id)a3 descriptor:(id)a4
+- (id)_placeholderImageForError:(id)error descriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  descriptorCopy = descriptor;
   if (_placeholderImageForError_descriptor__once != -1)
   {
     [ISConcreteIcon _placeholderImageForError:descriptor:];
   }
 
-  if (_placeholderImageForError_descriptor__isInternal == 1 && _ISErrorIsXPCConnectionInterrupted(v6))
+  if (_placeholderImageForError_descriptor__isInternal == 1 && _ISErrorIsXPCConnectionInterrupted(errorCopy))
   {
     v8 = MEMORY[0x1E69A8988];
-    v9 = [(ISConcreteIcon *)self _fallbackKey];
-    v10 = [v8 _debugPlaceholderImageWithImageDescriptor:v7 markAsPlaceholder:0 fallbackTypeID:v9 referenceIcon:self];
+    _fallbackKey = [(ISConcreteIcon *)self _fallbackKey];
+    v10 = [v8 _debugPlaceholderImageWithImageDescriptor:descriptorCopy markAsPlaceholder:0 fallbackTypeID:_fallbackKey referenceIcon:self];
   }
 
   else
   {
     v11 = MEMORY[0x1E69A8988];
-    v9 = [(ISConcreteIcon *)self _fallbackKey];
-    v10 = [v11 _placeholderImageWithImageDescriptor:v7 markAsPlaceholder:0 fallbackTypeID:v9 referenceIcon:self];
+    _fallbackKey = [(ISConcreteIcon *)self _fallbackKey];
+    v10 = [v11 _placeholderImageWithImageDescriptor:descriptorCopy markAsPlaceholder:0 fallbackTypeID:_fallbackKey referenceIcon:self];
   }
 
   v12 = v10;
@@ -634,11 +634,11 @@ uint64_t __55__ISConcreteIcon__placeholderImageForError_descriptor___block_invok
   return result;
 }
 
-- (id)generateImageWithDescriptor:(id)a3
+- (id)generateImageWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = objc_alloc_init(ISGenerationRequest);
-  [(ISGenerationRequest *)v5 setImageDescriptor:v4];
+  [(ISGenerationRequest *)v5 setImageDescriptor:descriptorCopy];
   [(ISGenerationRequest *)v5 setIcon:self];
   v15 = 0;
   v16 = &v15;
@@ -651,7 +651,7 @@ uint64_t __55__ISConcreteIcon__placeholderImageForError_descriptor___block_invok
   v11[2] = __46__ISConcreteIcon_generateImageWithDescriptor___block_invoke;
   v11[3] = &unk_1E77C6940;
   v11[4] = self;
-  v6 = v4;
+  v6 = descriptorCopy;
   v12 = v6;
   v7 = v5;
   v13 = v7;
@@ -763,14 +763,14 @@ void __46__ISConcreteIcon_generateImageWithDescriptor___block_invoke_18(uint64_t
   }
 }
 
-- (void)_prepareImagesForImageDescriptors:(id)a3
+- (void)_prepareImagesForImageDescriptors:(id)descriptors
 {
   v88 = *MEMORY[0x1E69E9840];
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  obj = a3;
+  obj = descriptors;
   v4 = [obj countByEnumeratingWithState:&v78 objects:v87 count:16];
   if (v4)
   {
@@ -778,7 +778,7 @@ void __46__ISConcreteIcon_generateImageWithDescriptor___block_invoke_18(uint64_t
     v6 = *v79;
     v7 = 0x1E77C5000uLL;
     v59 = *v79;
-    v60 = self;
+    selfCopy = self;
     do
     {
       v8 = 0;
@@ -838,10 +838,10 @@ void __46__ISConcreteIcon_generateImageWithDescriptor___block_invoke_18(uint64_t
                         if (v24)
                         {
                           v25 = _ISPrepareISIconSignpostLog();
-                          v26 = [v22 unsignedLongLongValue];
-                          if ((v26 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+                          unsignedLongLongValue = [v22 unsignedLongLongValue];
+                          if ((unsignedLongLongValue - 1) <= 0xFFFFFFFFFFFFFFFDLL)
                           {
-                            v27 = v26;
+                            v27 = unsignedLongLongValue;
                             if (os_signpost_enabled(v25))
                             {
                               *buf = 134217984;
@@ -860,7 +860,7 @@ void __46__ISConcreteIcon_generateImageWithDescriptor___block_invoke_18(uint64_t
                 }
 
                 v6 = v59;
-                self = v60;
+                self = selfCopy;
                 v7 = 0x1E77C5000;
                 v5 = v61;
                 v10 = v63;
@@ -912,10 +912,10 @@ void __46__ISConcreteIcon_generateImageWithDescriptor___block_invoke_18(uint64_t
                       if (v37)
                       {
                         v38 = _ISPrepareISIconSignpostLog();
-                        v39 = [v35 unsignedLongLongValue];
-                        if ((v39 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+                        unsignedLongLongValue2 = [v35 unsignedLongLongValue];
+                        if ((unsignedLongLongValue2 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
                         {
-                          v40 = v39;
+                          v40 = unsignedLongLongValue2;
                           if (os_signpost_enabled(v38))
                           {
                             *buf = 0;
@@ -934,7 +934,7 @@ void __46__ISConcreteIcon_generateImageWithDescriptor___block_invoke_18(uint64_t
 
               v41 = 0;
               v6 = v59;
-              self = v60;
+              self = selfCopy;
               v7 = 0x1E77C5000;
               v5 = v61;
               v10 = v64;
@@ -989,10 +989,10 @@ LABEL_65:
                       if (v52)
                       {
                         v53 = _ISPrepareISIconSignpostLog();
-                        v54 = [v50 unsignedLongLongValue];
-                        if ((v54 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+                        unsignedLongLongValue3 = [v50 unsignedLongLongValue];
+                        if ((unsignedLongLongValue3 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
                         {
-                          v55 = v54;
+                          v55 = unsignedLongLongValue3;
                           if (os_signpost_enabled(v53))
                           {
                             *buf = 0;
@@ -1010,7 +1010,7 @@ LABEL_65:
               }
 
               v6 = v59;
-              self = v60;
+              self = selfCopy;
               v7 = 0x1E77C5000;
               v5 = v61;
               v10 = v65;
@@ -1049,12 +1049,12 @@ LABEL_66:
   v57 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_imageForSymbolImageDescriptor:(id)a3
+- (id)_imageForSymbolImageDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(ISConcreteIcon *)self makeSymbolResourceProvider];
-  v6 = [v5 symbol];
-  v7 = [v6 imageForDescriptor:v4];
+  descriptorCopy = descriptor;
+  makeSymbolResourceProvider = [(ISConcreteIcon *)self makeSymbolResourceProvider];
+  symbol = [makeSymbolResourceProvider symbol];
+  v7 = [symbol imageForDescriptor:descriptorCopy];
 
   return v7;
 }
@@ -1062,29 +1062,29 @@ LABEL_66:
 - (id)symbol
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(ISConcreteIcon *)self makeSymbolResourceProvider];
-  v4 = [v3 symbol];
-  if (!v4)
+  makeSymbolResourceProvider = [(ISConcreteIcon *)self makeSymbolResourceProvider];
+  symbol = [makeSymbolResourceProvider symbol];
+  if (!symbol)
   {
     v5 = _ISDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A77B8000, v5, OS_LOG_TYPE_INFO, "Failed to get symbol for %@", &v8, 0xCu);
     }
   }
 
   v6 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return symbol;
 }
 
-- (id)imageForDescriptor:(id)a3
+- (id)imageForDescriptor:(id)descriptor
 {
   v71 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 copy];
+  descriptorCopy = descriptor;
+  v5 = [descriptorCopy copy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1110,8 +1110,8 @@ LABEL_66:
     {
 LABEL_59:
       v46 = MEMORY[0x1E69A8988];
-      v47 = [(ISConcreteIcon *)self _fallbackKey];
-      v19 = [v46 _placeholderImageWithImageDescriptor:v4 markAsPlaceholder:1 fallbackTypeID:v47 referenceIcon:self];
+      _fallbackKey = [(ISConcreteIcon *)self _fallbackKey];
+      v19 = [v46 _placeholderImageWithImageDescriptor:descriptorCopy markAsPlaceholder:1 fallbackTypeID:_fallbackKey referenceIcon:self];
 
       goto LABEL_60;
     }
@@ -1126,7 +1126,7 @@ LABEL_23:
 
   if (v7)
   {
-    v52 = v4;
+    v52 = descriptorCopy;
     v8 = [(ISIcon *)self _activeSignpostsForDescriptor:v5];
     v64 = 0u;
     v65 = 0u;
@@ -1155,10 +1155,10 @@ LABEL_23:
             if (v15)
             {
               v16 = _ISPrepareISIconSignpostLog();
-              v17 = [v13 unsignedLongLongValue];
-              if ((v17 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+              unsignedLongLongValue = [v13 unsignedLongLongValue];
+              if ((unsignedLongLongValue - 1) <= 0xFFFFFFFFFFFFFFFDLL)
               {
-                v18 = v17;
+                v18 = unsignedLongLongValue;
                 if (os_signpost_enabled(v16))
                 {
                   *buf = 0;
@@ -1176,7 +1176,7 @@ LABEL_23:
     }
 
     v19 = 0;
-    v4 = v52;
+    descriptorCopy = v52;
   }
 
   else
@@ -1200,7 +1200,7 @@ LABEL_25:
       if (v34)
       {
         v51 = v5;
-        v54 = v4;
+        v54 = descriptorCopy;
         v35 = [(ISIcon *)self _activeSignpostsForDescriptor:v5];
         v55 = 0u;
         v56 = 0u;
@@ -1229,10 +1229,10 @@ LABEL_25:
                 if (v42)
                 {
                   v43 = _ISPrepareISIconSignpostLog();
-                  v44 = [v40 unsignedLongLongValue];
-                  if ((v44 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+                  unsignedLongLongValue2 = [v40 unsignedLongLongValue];
+                  if ((unsignedLongLongValue2 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
                   {
-                    v45 = v44;
+                    v45 = unsignedLongLongValue2;
                     if (os_signpost_enabled(v43))
                     {
                       *buf = 0;
@@ -1250,7 +1250,7 @@ LABEL_25:
         }
 
         v5 = v51;
-        v4 = v54;
+        descriptorCopy = v54;
       }
     }
 
@@ -1265,7 +1265,7 @@ LABEL_25:
     if (v21)
     {
       v50 = v19;
-      v53 = v4;
+      v53 = descriptorCopy;
       v22 = [(ISIcon *)self _activeSignpostsForDescriptor:v5];
       v59 = 0u;
       v60 = 0u;
@@ -1294,10 +1294,10 @@ LABEL_25:
               if (v29)
               {
                 v30 = _ISPrepareISIconSignpostLog();
-                v31 = [v27 unsignedLongLongValue];
-                if ((v31 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+                unsignedLongLongValue3 = [v27 unsignedLongLongValue];
+                if ((unsignedLongLongValue3 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
                 {
-                  v32 = v31;
+                  v32 = unsignedLongLongValue3;
                   if (os_signpost_enabled(v30))
                   {
                     *buf = 0;
@@ -1314,7 +1314,7 @@ LABEL_25:
         while (v24);
       }
 
-      v4 = v53;
+      descriptorCopy = v53;
       v19 = v50;
     }
   }
@@ -1326,12 +1326,12 @@ LABEL_60:
   return v19;
 }
 
-- (void)generateImageWithDescriptor:(id)a3 completion:(id)a4
+- (void)generateImageWithDescriptor:(id)descriptor completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
   v8 = objc_alloc_init(ISGenerationRequest);
-  v9 = [v6 copy];
+  v9 = [descriptorCopy copy];
   [(ISGenerationRequest *)v8 setImageDescriptor:v9];
 
   [(ISGenerationRequest *)v8 setIcon:self];
@@ -1346,10 +1346,10 @@ LABEL_60:
   v22[2] = __57__ISConcreteIcon_generateImageWithDescriptor_completion___block_invoke;
   v22[3] = &unk_1E77C6968;
   v22[4] = self;
-  v10 = v6;
+  v10 = descriptorCopy;
   v23 = v10;
   v25 = v26;
-  v11 = v7;
+  v11 = completionCopy;
   v24 = v11;
   v12 = MEMORY[0x1AC55B6D0](v22);
   v17[0] = MEMORY[0x1E69E9820];
@@ -1448,15 +1448,15 @@ void __57__ISConcreteIcon_generateImageWithDescriptor_completion___block_invoke_
   (*(v8 + 16))(v8, v9);
 }
 
-- (void)getImageForImageDescriptor:(id)a3 completion:(id)a4
+- (void)getImageForImageDescriptor:(id)descriptor completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ISConcreteIcon *)self imageForDescriptor:v6];
+  descriptorCopy = descriptor;
+  completionCopy = completion;
+  v8 = [(ISConcreteIcon *)self imageForDescriptor:descriptorCopy];
   v9 = v8;
-  if ((v8 && ![v8 placeholder] || (-[ISConcreteIcon _imageFromStoreForDescriptor:](self, "_imageFromStoreForDescriptor:", v6), v10 = objc_claimAutoreleasedReturnValue(), v9, (v9 = v10) != 0)) && !objc_msgSend(v9, "placeholder"))
+  if ((v8 && ![v8 placeholder] || (-[ISConcreteIcon _imageFromStoreForDescriptor:](self, "_imageFromStoreForDescriptor:", descriptorCopy), v10 = objc_claimAutoreleasedReturnValue(), v9, (v9 = v10) != 0)) && !objc_msgSend(v9, "placeholder"))
   {
-    v7[2](v7, v9);
+    completionCopy[2](completionCopy, v9);
   }
 
   else
@@ -1466,8 +1466,8 @@ void __57__ISConcreteIcon_generateImageWithDescriptor_completion___block_invoke_
     v11[2] = __56__ISConcreteIcon_getImageForImageDescriptor_completion___block_invoke;
     v11[3] = &unk_1E77C69E0;
     v11[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = descriptorCopy;
+    v13 = completionCopy;
     [(ISConcreteIcon *)self generateImageWithDescriptor:v12 completion:v11];
   }
 }

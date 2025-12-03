@@ -1,31 +1,31 @@
 @interface SBIconListGridLayout
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SBIconListGridLayout)init;
-- (SBIconListGridLayout)initWithLayoutConfiguration:(id)a3;
-- (UIEdgeInsets)additionalWidgetLayoutInsetsForOrientation:(int64_t)a3;
-- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)a3;
+- (SBIconListGridLayout)initWithLayoutConfiguration:(id)configuration;
+- (UIEdgeInsets)additionalWidgetLayoutInsetsForOrientation:(int64_t)orientation;
+- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)orientation;
 - (UIEdgeInsets)widgetContentMargins;
 - (id)accessoryBoldFont;
 - (id)accessoryFont;
-- (id)accessoryFontForContentSizeCategory:(id)a3 options:(unint64_t)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)iconGridSizeClassSizesForOrientation:(int64_t)a3;
-- (id)labelFontForContentSizeCategory:(id)a3 options:(unint64_t)a4;
+- (id)accessoryFontForContentSizeCategory:(id)category options:(unint64_t)options;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)iconGridSizeClassSizesForOrientation:(int64_t)orientation;
+- (id)labelFontForContentSizeCategory:(id)category options:(unint64_t)options;
 - (id)succinctDescription;
-- (unint64_t)numberOfColumnsForOrientation:(int64_t)a3;
-- (unint64_t)numberOfRowsForOrientation:(int64_t)a3;
+- (unint64_t)numberOfColumnsForOrientation:(int64_t)orientation;
+- (unint64_t)numberOfRowsForOrientation:(int64_t)orientation;
 @end
 
 @implementation SBIconListGridLayout
 
 - (id)accessoryFont
 {
-  v3 = [MEMORY[0x1E696AF00] isMainThread];
-  if (!v3 || (v4 = self->_accessoryFont) == 0)
+  isMainThread = [MEMORY[0x1E696AF00] isMainThread];
+  if (!isMainThread || (v4 = self->_accessoryFont) == 0)
   {
-    v5 = [(SBIconListGridLayoutConfiguration *)self->_layoutConfiguration iconAccessoryVisualConfiguration];
-    [v5 fontSize];
+    iconAccessoryVisualConfiguration = [(SBIconListGridLayoutConfiguration *)self->_layoutConfiguration iconAccessoryVisualConfiguration];
+    [iconAccessoryVisualConfiguration fontSize];
     v7 = v6;
 
     v8 = 16.0;
@@ -35,7 +35,7 @@
     }
 
     v4 = [MEMORY[0x1E69DB878] systemFontOfSize:v8];
-    if (v3)
+    if (isMainThread)
     {
       objc_storeStrong(&self->_accessoryFont, v4);
     }
@@ -54,15 +54,15 @@
   return result;
 }
 
-- (SBIconListGridLayout)initWithLayoutConfiguration:(id)a3
+- (SBIconListGridLayout)initWithLayoutConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = SBIconListGridLayout;
   v5 = [(SBIconListGridLayout *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     layoutConfiguration = v5->_layoutConfiguration;
     v5->_layoutConfiguration = v6;
 
@@ -83,10 +83,10 @@
   return v4;
 }
 
-- (unint64_t)numberOfColumnsForOrientation:(int64_t)a3
+- (unint64_t)numberOfColumnsForOrientation:(int64_t)orientation
 {
   layoutConfiguration = self->_layoutConfiguration;
-  if ((a3 - 3) > 1)
+  if ((orientation - 3) > 1)
   {
 
     return [(SBIconListGridLayoutConfiguration *)layoutConfiguration numberOfPortraitColumns];
@@ -106,10 +106,10 @@
   return result;
 }
 
-- (unint64_t)numberOfRowsForOrientation:(int64_t)a3
+- (unint64_t)numberOfRowsForOrientation:(int64_t)orientation
 {
   layoutConfiguration = self->_layoutConfiguration;
-  if ((a3 - 3) > 1)
+  if ((orientation - 3) > 1)
   {
 
     return [(SBIconListGridLayoutConfiguration *)layoutConfiguration numberOfPortraitRows];
@@ -129,10 +129,10 @@
   return result;
 }
 
-- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)a3
+- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)orientation
 {
   layoutConfiguration = self->_layoutConfiguration;
-  if ((a3 - 3) > 1)
+  if ((orientation - 3) > 1)
   {
     [(SBIconListGridLayoutConfiguration *)layoutConfiguration portraitLayoutInsets];
   }
@@ -149,10 +149,10 @@
   return result;
 }
 
-- (UIEdgeInsets)additionalWidgetLayoutInsetsForOrientation:(int64_t)a3
+- (UIEdgeInsets)additionalWidgetLayoutInsetsForOrientation:(int64_t)orientation
 {
   layoutConfiguration = self->_layoutConfiguration;
-  if ((a3 - 3) > 1)
+  if ((orientation - 3) > 1)
   {
     [(SBIconListGridLayoutConfiguration *)layoutConfiguration portraitAdditionalWidgetLayoutInsets];
   }
@@ -169,29 +169,29 @@
   return result;
 }
 
-- (id)iconGridSizeClassSizesForOrientation:(int64_t)a3
+- (id)iconGridSizeClassSizesForOrientation:(int64_t)orientation
 {
-  if ((a3 - 3) > 1 || ([(SBIconListGridLayoutConfiguration *)self->_layoutConfiguration rotatedIconGridSizeClassSizes], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((orientation - 3) > 1 || ([(SBIconListGridLayoutConfiguration *)self->_layoutConfiguration rotatedIconGridSizeClassSizes], (iconGridSizeClassSizes = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v4 = [(SBIconListGridLayoutConfiguration *)self->_layoutConfiguration iconGridSizeClassSizes];
+    iconGridSizeClassSizes = [(SBIconListGridLayoutConfiguration *)self->_layoutConfiguration iconGridSizeClassSizes];
   }
 
-  return v4;
+  return iconGridSizeClassSizes;
 }
 
-- (id)labelFontForContentSizeCategory:(id)a3 options:(unint64_t)a4
+- (id)labelFontForContentSizeCategory:(id)category options:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AF00] isMainThread];
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%lu", v6, v4 & 1];
-  if (!v7 || ([(NSMutableDictionary *)self->_labelFonts objectForKey:v8], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  optionsCopy = options;
+  categoryCopy = category;
+  isMainThread = [MEMORY[0x1E696AF00] isMainThread];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%lu", categoryCopy, optionsCopy & 1];
+  if (!isMainThread || ([(NSMutableDictionary *)self->_labelFonts objectForKey:v8], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v10 = [(SBIconListGridLayoutConfiguration *)self->_layoutConfiguration iconLabelVisualConfigurationForContentSizeCategory:v6];
+    v10 = [(SBIconListGridLayoutConfiguration *)self->_layoutConfiguration iconLabelVisualConfigurationForContentSizeCategory:categoryCopy];
     [v10 fontSize];
     if (v11 <= 0.0)
     {
-      [SBIconLabelImageParametersBuilder defaultFontForContentSizeCategory:v6 languageInsets:0];
+      [SBIconLabelImageParametersBuilder defaultFontForContentSizeCategory:categoryCopy languageInsets:0];
     }
 
     else
@@ -199,7 +199,7 @@
       [MEMORY[0x1E69DB878] systemFontOfSize:? weight:?];
     }
     v9 = ;
-    if (v7)
+    if (isMainThread)
     {
       [(NSMutableDictionary *)self->_labelFonts setObject:v9 forKey:v8];
     }
@@ -208,9 +208,9 @@
   return v9;
 }
 
-- (id)accessoryFontForContentSizeCategory:(id)a3 options:(unint64_t)a4
+- (id)accessoryFontForContentSizeCategory:(id)category options:(unint64_t)options
 {
-  if (a4)
+  if (options)
   {
     [(SBIconListGridLayout *)self accessoryBoldFont];
   }
@@ -226,11 +226,11 @@
 
 - (id)accessoryBoldFont
 {
-  v3 = [MEMORY[0x1E696AF00] isMainThread];
-  if (!v3 || (v4 = self->_accessoryBoldFont) == 0)
+  isMainThread = [MEMORY[0x1E696AF00] isMainThread];
+  if (!isMainThread || (v4 = self->_accessoryBoldFont) == 0)
   {
-    v5 = [(SBIconListGridLayoutConfiguration *)self->_layoutConfiguration iconAccessoryVisualConfiguration];
-    [v5 fontSize];
+    iconAccessoryVisualConfiguration = [(SBIconListGridLayoutConfiguration *)self->_layoutConfiguration iconAccessoryVisualConfiguration];
+    [iconAccessoryVisualConfiguration fontSize];
     v7 = v6;
 
     v8 = 16.0;
@@ -240,7 +240,7 @@
     }
 
     v4 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:v8];
-    if (v3)
+    if (isMainThread)
     {
       objc_storeStrong(&self->_accessoryBoldFont, v4);
     }
@@ -249,10 +249,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -278,26 +278,26 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBIconListGridLayout *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIconListGridLayout *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIconListGridLayout *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIconListGridLayout *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBIconListGridLayout *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_layoutConfiguration withName:@"layoutConfiguration"];
+  succinctDescriptionBuilder = [(SBIconListGridLayout *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_layoutConfiguration withName:@"layoutConfiguration"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

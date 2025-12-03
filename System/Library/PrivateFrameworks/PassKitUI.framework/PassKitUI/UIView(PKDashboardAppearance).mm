@@ -6,7 +6,7 @@
 
 - (void)pkui_setMaskType:()PKDashboardAppearance
 {
-  v8 = [a1 layer];
+  layer = [self layer];
   if (_UISolariumFeatureFlagEnabled())
   {
     v4 = 26.0;
@@ -22,7 +22,7 @@
   {
     if (a3)
     {
-      v6 = v8;
+      v6 = layer;
       if (a3 != 1)
       {
         goto LABEL_15;
@@ -42,11 +42,11 @@
   {
     v7 = 12;
 LABEL_13:
-    v6 = v8;
+    v6 = layer;
     goto LABEL_14;
   }
 
-  v6 = v8;
+  v6 = layer;
   if (a3 != 3)
   {
     goto LABEL_15;
@@ -56,9 +56,9 @@ LABEL_13:
 LABEL_14:
   [v6 setMaskedCorners:v7];
 LABEL_15:
-  [v8 setCornerCurve:*MEMORY[0x1E69796E8]];
-  [v8 setCornerRadius:v4];
-  [v8 setMasksToBounds:v5];
+  [layer setCornerCurve:*MEMORY[0x1E69796E8]];
+  [layer setCornerRadius:v4];
+  [layer setMasksToBounds:v5];
 }
 
 @end

@@ -1,122 +1,122 @@
 @interface STMediaStatusDomainCameraDescriptor
-- (BOOL)isEqual:(id)a3;
-- (STMediaStatusDomainCameraDescriptor)initWithCameraIdentifier:(id)a3;
-- (STMediaStatusDomainCameraDescriptor)initWithCameraIdentifier:(id)a3 eligibleForPrivacyIndicator:(BOOL)a4;
-- (STMediaStatusDomainCameraDescriptor)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (STMediaStatusDomainCameraDescriptor)initWithCameraIdentifier:(id)identifier;
+- (STMediaStatusDomainCameraDescriptor)initWithCameraIdentifier:(id)identifier eligibleForPrivacyIndicator:(BOOL)indicator;
+- (STMediaStatusDomainCameraDescriptor)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STMediaStatusDomainCameraDescriptor
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(STMediaStatusDomainCameraDescriptor *)self cameraIdentifier];
-  v5 = [v3 appendString:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  cameraIdentifier = [(STMediaStatusDomainCameraDescriptor *)self cameraIdentifier];
+  v5 = [builder appendString:cameraIdentifier];
 
-  v6 = [v3 appendBool:{-[STMediaStatusDomainCameraDescriptor isEligibleForPrivacyIndicator](self, "isEligibleForPrivacyIndicator")}];
-  v7 = [v3 hash];
+  v6 = [builder appendBool:{-[STMediaStatusDomainCameraDescriptor isEligibleForPrivacyIndicator](self, "isEligibleForPrivacyIndicator")}];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (STMediaStatusDomainCameraDescriptor)initWithCameraIdentifier:(id)a3
+- (STMediaStatusDomainCameraDescriptor)initWithCameraIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_opt_self();
-  v5 = [(STMediaStatusDomainCameraDescriptor *)self initWithCameraIdentifier:v4 eligibleForPrivacyIndicator:1];
+  v5 = [(STMediaStatusDomainCameraDescriptor *)self initWithCameraIdentifier:identifierCopy eligibleForPrivacyIndicator:1];
 
   return v5;
 }
 
-- (STMediaStatusDomainCameraDescriptor)initWithCameraIdentifier:(id)a3 eligibleForPrivacyIndicator:(BOOL)a4
+- (STMediaStatusDomainCameraDescriptor)initWithCameraIdentifier:(id)identifier eligibleForPrivacyIndicator:(BOOL)indicator
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = STMediaStatusDomainCameraDescriptor;
   v7 = [(STMediaStatusDomainCameraDescriptor *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     cameraIdentifier = v7->_cameraIdentifier;
     v7->_cameraIdentifier = v8;
 
-    v7->_eligibleForPrivacyIndicator = a4;
+    v7->_eligibleForPrivacyIndicator = indicator;
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STMediaStatusDomainCameraDescriptor *)self cameraIdentifier];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  cameraIdentifier = [(STMediaStatusDomainCameraDescriptor *)self cameraIdentifier];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __47__STMediaStatusDomainCameraDescriptor_isEqual___block_invoke;
   v18[3] = &unk_1E85DDD28;
-  v7 = v4;
+  v7 = equalCopy;
   v19 = v7;
-  v8 = [v5 appendString:v6 counterpart:v18];
+  v8 = [v5 appendString:cameraIdentifier counterpart:v18];
 
-  v9 = [(STMediaStatusDomainCameraDescriptor *)self isEligibleForPrivacyIndicator];
+  isEligibleForPrivacyIndicator = [(STMediaStatusDomainCameraDescriptor *)self isEligibleForPrivacyIndicator];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __47__STMediaStatusDomainCameraDescriptor_isEqual___block_invoke_2;
   v16 = &unk_1E85DDD50;
   v17 = v7;
   v10 = v7;
-  v11 = [v5 appendBool:v9 counterpart:&v13];
-  LOBYTE(v9) = [v5 isEqual];
+  v11 = [v5 appendBool:isEligibleForPrivacyIndicator counterpart:&v13];
+  LOBYTE(isEligibleForPrivacyIndicator) = [v5 isEqual];
 
-  return v9;
+  return isEligibleForPrivacyIndicator;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STMediaStatusDomainCameraDescriptor *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STMediaStatusDomainCameraDescriptor *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STMediaStatusDomainCameraDescriptor *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STMediaStatusDomainCameraDescriptor *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STMediaStatusDomainCameraDescriptor *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STMediaStatusDomainCameraDescriptor *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __87__STMediaStatusDomainCameraDescriptor__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v10[3] = &unk_1E85DDD00;
-    v7 = v6;
+    v7 = succinctDescriptionBuilder;
     v11 = v7;
-    v12 = a1;
+    selfCopy = self;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
 
     v8 = v7;
@@ -139,20 +139,20 @@ id __87__STMediaStatusDomainCameraDescriptor__descriptionBuilderWithMultilinePre
   return [*(a1 + 32) appendBool:objc_msgSend(*(a1 + 40) withName:{"isEligibleForPrivacyIndicator"), @"eligibleForPrivacyIndicator"}];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(STMediaStatusDomainCameraDescriptor *)self cameraIdentifier];
-  [v5 encodeObject:v4 forKey:@"cameraIdentifier"];
+  coderCopy = coder;
+  cameraIdentifier = [(STMediaStatusDomainCameraDescriptor *)self cameraIdentifier];
+  [coderCopy encodeObject:cameraIdentifier forKey:@"cameraIdentifier"];
 
-  [v5 encodeBool:-[STMediaStatusDomainCameraDescriptor isEligibleForPrivacyIndicator](self forKey:{"isEligibleForPrivacyIndicator"), @"eligibleForPrivacyIndicator"}];
+  [coderCopy encodeBool:-[STMediaStatusDomainCameraDescriptor isEligibleForPrivacyIndicator](self forKey:{"isEligibleForPrivacyIndicator"), @"eligibleForPrivacyIndicator"}];
 }
 
-- (STMediaStatusDomainCameraDescriptor)initWithCoder:(id)a3
+- (STMediaStatusDomainCameraDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cameraIdentifier"];
-  v6 = [v4 decodeBoolForKey:@"eligibleForPrivacyIndicator"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cameraIdentifier"];
+  v6 = [coderCopy decodeBoolForKey:@"eligibleForPrivacyIndicator"];
 
   v7 = [(STMediaStatusDomainCameraDescriptor *)self initWithCameraIdentifier:v5 eligibleForPrivacyIndicator:v6];
   return v7;

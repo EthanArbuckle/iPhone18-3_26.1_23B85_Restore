@@ -3,14 +3,14 @@
 + (void)load;
 - (CAFProminenceInformation)prominenceInformationValue;
 - (id)formattedValue;
-- (void)setProminenceInformationValue:(id)a3;
+- (void)setProminenceInformationValue:(id)value;
 @end
 
 @implementation CAFProminenceInformationCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFProminenceInformationCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -18,22 +18,22 @@
 - (CAFProminenceInformation)prominenceInformationValue
 {
   v3 = [CAFProminenceInformation alloc];
-  v4 = [(CAFDictionaryCharacteristic *)self dictionaryValue];
-  v5 = [(CAFProminenceInformation *)v3 initWithDictionary:v4];
+  dictionaryValue = [(CAFDictionaryCharacteristic *)self dictionaryValue];
+  v5 = [(CAFProminenceInformation *)v3 initWithDictionary:dictionaryValue];
 
   return v5;
 }
 
-- (void)setProminenceInformationValue:(id)a3
+- (void)setProminenceInformationValue:(id)value
 {
-  v4 = [a3 dictionaryRepresentation];
-  [(CAFDictionaryCharacteristic *)self setDictionaryValue:v4];
+  dictionaryRepresentation = [value dictionaryRepresentation];
+  [(CAFDictionaryCharacteristic *)self setDictionaryValue:dictionaryRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFProminenceInformationCharacteristic *)self prominenceInformationValue];
-  v3 = [v2 description];
+  prominenceInformationValue = [(CAFProminenceInformationCharacteristic *)self prominenceInformationValue];
+  v3 = [prominenceInformationValue description];
 
   return v3;
 }

@@ -1,8 +1,8 @@
 @interface URLHandlingTask
-+ (id)taskForURL:(id)a3 referringURL:(id)a4 sourceApplication:(id)a5 sceneOptions:(id)a6 mkOptions:(id)a7 windowSize:(CGSize)a8;
++ (id)taskForURL:(id)l referringURL:(id)rL sourceApplication:(id)application sceneOptions:(id)options mkOptions:(id)mkOptions windowSize:(CGSize)size;
 - (CGSize)windowSize;
 - (NSString)sourceApplication;
-- (URLHandlingTask)initWithURL:(id)a3 referringURL:(id)a4 sourceApplication:(id)a5 sceneOptions:(id)a6 mkOptions:(id)a7;
+- (URLHandlingTask)initWithURL:(id)l referringURL:(id)rL sourceApplication:(id)application sceneOptions:(id)options mkOptions:(id)mkOptions;
 - (id)urlScheme;
 - (void)_populateSessionAnalytics;
 @end
@@ -23,16 +23,16 @@
   sourceApplication = self->_sourceApplication;
   if (sourceApplication)
   {
-    v4 = sourceApplication;
+    sourceApplication = sourceApplication;
   }
 
   else
   {
-    v4 = [(UISceneOpenURLOptions *)self->_sceneOptions sourceApplication];
+    sourceApplication = [(UISceneOpenURLOptions *)self->_sceneOptions sourceApplication];
   }
 
   v5 = self->_sourceApplication;
-  self->_sourceApplication = v4;
+  self->_sourceApplication = sourceApplication;
 
   v6 = self->_sourceApplication;
   if (v6)
@@ -55,18 +55,18 @@
 
 - (id)urlScheme
 {
-  v2 = [(NSURL *)self->_url scheme];
-  v3 = [v2 lowercaseString];
+  scheme = [(NSURL *)self->_url scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  return v3;
+  return lowercaseString;
 }
 
 - (void)_populateSessionAnalytics
 {
-  v3 = [(URLHandlingTask *)self referringURL];
-  v12 = [v3 host];
+  referringURL = [(URLHandlingTask *)self referringURL];
+  host = [referringURL host];
 
-  v4 = [v12 componentsSeparatedByString:@"."];
+  v4 = [host componentsSeparatedByString:@"."];
   if ([v4 count] < 2)
   {
     v6 = 0;
@@ -78,119 +78,119 @@
     v6 = [v5 componentsJoinedByString:@"."];
   }
 
-  v7 = [(URLHandlingTask *)self sourceApplication];
+  sourceApplication = [(URLHandlingTask *)self sourceApplication];
   v8 = +[GEOAPSharedStateData sharedData];
-  [v8 setMapLaunchSourceAppId:v7];
+  [v8 setMapLaunchSourceAppId:sourceApplication];
 
-  v9 = [(URLHandlingTask *)self urlScheme];
+  urlScheme = [(URLHandlingTask *)self urlScheme];
   v10 = +[GEOAPSharedStateData sharedData];
-  [v10 setMapLaunchLaunchUri:v9];
+  [v10 setMapLaunchLaunchUri:urlScheme];
 
   v11 = +[GEOAPSharedStateData sharedData];
   [v11 setMapLaunchReferringWebsite:v6];
 }
 
-- (URLHandlingTask)initWithURL:(id)a3 referringURL:(id)a4 sourceApplication:(id)a5 sceneOptions:(id)a6 mkOptions:(id)a7
+- (URLHandlingTask)initWithURL:(id)l referringURL:(id)rL sourceApplication:(id)application sceneOptions:(id)options mkOptions:(id)mkOptions
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  rLCopy = rL;
+  applicationCopy = application;
+  optionsCopy = options;
+  mkOptionsCopy = mkOptions;
   v21.receiver = self;
   v21.super_class = URLHandlingTask;
   v17 = [(URLHandlingTask *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_url, a3);
-    objc_storeStrong(&v18->_referringURL, a4);
-    objc_storeStrong(&v18->_sourceApplication, a5);
-    objc_storeStrong(&v18->_sceneOptions, a6);
-    objc_storeStrong(&v18->_mkOptions, a7);
+    objc_storeStrong(&v17->_url, l);
+    objc_storeStrong(&v18->_referringURL, rL);
+    objc_storeStrong(&v18->_sourceApplication, application);
+    objc_storeStrong(&v18->_sceneOptions, options);
+    objc_storeStrong(&v18->_mkOptions, mkOptions);
     [(URLHandlingTask *)v18 _populateSessionAnalytics];
   }
 
   return v18;
 }
 
-+ (id)taskForURL:(id)a3 referringURL:(id)a4 sourceApplication:(id)a5 sceneOptions:(id)a6 mkOptions:(id)a7 windowSize:(CGSize)a8
++ (id)taskForURL:(id)l referringURL:(id)rL sourceApplication:(id)application sceneOptions:(id)options mkOptions:(id)mkOptions windowSize:(CGSize)size
 {
-  height = a8.height;
-  width = a8.width;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  rLCopy = rL;
+  applicationCopy = application;
+  optionsCopy = options;
+  mkOptionsCopy = mkOptions;
   v19 = sub_100005610();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v47 = v14;
+    v47 = lCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "taskForURL %{private}@", buf, 0xCu);
   }
 
-  v20 = [v14 scheme];
-  v21 = [v20 lowercaseString];
+  scheme = [lCopy scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  v22 = [v14 query];
-  v23 = [v22 isEqualToString:@"reset=1"];
+  query = [lCopy query];
+  v23 = [query isEqualToString:@"reset=1"];
 
   if (v23)
   {
     v24 = off_1015F6710;
 LABEL_11:
-    v25 = [objc_alloc(*v24) initWithURL:v14 referringURL:v15 sourceApplication:v16 sceneOptions:v17 mkOptions:v18];
+    v25 = [objc_alloc(*v24) initWithURL:lCopy referringURL:rLCopy sourceApplication:applicationCopy sceneOptions:optionsCopy mkOptions:mkOptionsCopy];
 LABEL_12:
     [(URLHandlingTask *)v25 setWindowSize:width, height];
     v26 = v25;
     goto LABEL_13;
   }
 
-  if ([v21 isEqualToString:@"x-maps-ac-auth"])
+  if ([lowercaseString isEqualToString:@"x-maps-ac-auth"])
   {
     v24 = off_1015F66E0;
     goto LABEL_11;
   }
 
-  if ([v21 isEqualToString:@"x-maps-reopen"])
+  if ([lowercaseString isEqualToString:@"x-maps-reopen"])
   {
     v24 = off_1015F6718;
     goto LABEL_11;
   }
 
-  if ([v21 isEqualToString:@"x-maps-punchinhint"])
+  if ([lowercaseString isEqualToString:@"x-maps-punchinhint"])
   {
     v24 = off_1015F6720;
     goto LABEL_11;
   }
 
-  if ([MKDirectionsRequest isDirectionsRequestURL:v14])
+  if ([MKDirectionsRequest isDirectionsRequestURL:lCopy])
   {
-    v28 = [[MKDirectionsRequest alloc] initWithContentsOfURL:v14];
-    v29 = [v28 source];
-    v30 = [v28 destination];
-    if (!v30)
+    v28 = [[MKDirectionsRequest alloc] initWithContentsOfURL:lCopy];
+    source = [v28 source];
+    destination = [v28 destination];
+    if (!destination)
     {
 
       v26 = 0;
       goto LABEL_13;
     }
 
-    v40 = v29;
-    v41 = v30;
-    if (v29)
+    v40 = source;
+    v41 = destination;
+    if (source)
     {
-      v44[0] = v29;
-      v44[1] = v30;
+      v44[0] = source;
+      v44[1] = destination;
       v31 = v44;
       v32 = 2;
     }
 
     else
     {
-      v45 = v30;
+      v45 = destination;
       v31 = &v45;
       v32 = 1;
     }
@@ -201,18 +201,18 @@ LABEL_12:
     v37 = [NSDictionary dictionaryWithObjects:&v43 forKeys:&v42 count:1];
     v38 = [MKMapItem urlForMapItems:v39 options:v37];
 
-    v26 = [[_MKHandlerURLHandlingTask alloc] initWithURL:v38 referringURL:v15 sourceApplication:v16 sceneOptions:v17 mkOptions:v18];
+    v26 = [[_MKHandlerURLHandlingTask alloc] initWithURL:v38 referringURL:rLCopy sourceApplication:applicationCopy sceneOptions:optionsCopy mkOptions:mkOptionsCopy];
     goto LABEL_29;
   }
 
-  if ([v21 isEqualToString:@"x-maps-bulletin"])
+  if ([lowercaseString isEqualToString:@"x-maps-bulletin"])
   {
     v24 = off_1015F66E8;
     goto LABEL_11;
   }
 
-  v33 = [v14 absoluteString];
-  v34 = [v33 containsString:@"add-license-plate"];
+  absoluteString = [lCopy absoluteString];
+  v34 = [absoluteString containsString:@"add-license-plate"];
 
   if (v34)
   {
@@ -220,8 +220,8 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v35 = [v14 absoluteString];
-  v36 = [v35 containsString:@"vehicles"];
+  absoluteString2 = [lCopy absoluteString];
+  v36 = [absoluteString2 containsString:@"vehicles"];
 
   if (v36)
   {
@@ -229,30 +229,30 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if (![v21 caseInsensitiveCompare:@"file"])
+  if (![lowercaseString caseInsensitiveCompare:@"file"])
   {
     v24 = off_1015F66F8;
     goto LABEL_11;
   }
 
-  if (![v21 caseInsensitiveCompare:@"x-maps-category"])
+  if (![lowercaseString caseInsensitiveCompare:@"x-maps-category"])
   {
     v24 = off_1015F66F0;
     goto LABEL_11;
   }
 
-  if ([_MKURLHandler canHandleURL:v14])
+  if ([_MKURLHandler canHandleURL:lCopy])
   {
-    v26 = [[_MKHandlerURLHandlingTask alloc] initWithURL:v14 referringURL:v15 sourceApplication:v16 sceneOptions:v17 mkOptions:v18];
+    v26 = [[_MKHandlerURLHandlingTask alloc] initWithURL:lCopy referringURL:rLCopy sourceApplication:applicationCopy sceneOptions:optionsCopy mkOptions:mkOptionsCopy];
 LABEL_29:
     [(URLHandlingTask *)v26 setWindowSize:width, height];
-    [MKSiriInteraction generateHashForNavigationURL:v14];
+    [MKSiriInteraction generateHashForNavigationURL:lCopy];
     goto LABEL_13;
   }
 
   v25 = 0;
   v26 = 0;
-  if (([v21 isEqualToString:@"test"] & 1) == 0)
+  if (([lowercaseString isEqualToString:@"test"] & 1) == 0)
   {
     goto LABEL_12;
   }

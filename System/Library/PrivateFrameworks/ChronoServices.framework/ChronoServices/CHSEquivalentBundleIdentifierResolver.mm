@@ -1,8 +1,8 @@
 @interface CHSEquivalentBundleIdentifierResolver
 + (id)defaultResolver;
 - (CHSEquivalentBundleIdentifierResolver)init;
-- (CHSEquivalentBundleIdentifierResolver)initWithCategoriesPrimitives:(id)a3;
-- (id)equivalentBundleIdentifiersForBundleIdentifier:(id)a3;
+- (CHSEquivalentBundleIdentifierResolver)initWithCategoriesPrimitives:(id)primitives;
+- (id)equivalentBundleIdentifiersForBundleIdentifier:(id)identifier;
 @end
 
 @implementation CHSEquivalentBundleIdentifierResolver
@@ -10,17 +10,17 @@
 + (id)defaultResolver
 {
   type metadata accessor for ConcreteCategoriesPrimitives();
-  v2 = [objc_allocWithZone(CHSEquivalentBundleIdentifierResolver) initWithCategoriesPrimitives_];
+  initWithCategoriesPrimitives_ = [objc_allocWithZone(CHSEquivalentBundleIdentifierResolver) initWithCategoriesPrimitives_];
 
-  return v2;
+  return initWithCategoriesPrimitives_;
 }
 
-- (CHSEquivalentBundleIdentifierResolver)initWithCategoriesPrimitives:(id)a3
+- (CHSEquivalentBundleIdentifierResolver)initWithCategoriesPrimitives:(id)primitives
 {
   swift_unknownObjectRetain();
   v5 = [(CHSEquivalentBundleIdentifierResolver *)self init];
   v6 = *(&v5->super.isa + OBJC_IVAR___CHSEquivalentBundleIdentifierResolver_categoriesPrimitives);
-  *(&v5->super.isa + OBJC_IVAR___CHSEquivalentBundleIdentifierResolver_categoriesPrimitives) = a3;
+  *(&v5->super.isa + OBJC_IVAR___CHSEquivalentBundleIdentifierResolver_categoriesPrimitives) = primitives;
   swift_unknownObjectRelease();
   return v5;
 }
@@ -34,11 +34,11 @@
   return [(CHSEquivalentBundleIdentifierResolver *)&v4 init];
 }
 
-- (id)equivalentBundleIdentifiersForBundleIdentifier:(id)a3
+- (id)equivalentBundleIdentifiersForBundleIdentifier:(id)identifier
 {
   v4 = sub_195FA08B8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_195EC1C90(v4, v6);
 
   v8 = sub_195FA0BE8();

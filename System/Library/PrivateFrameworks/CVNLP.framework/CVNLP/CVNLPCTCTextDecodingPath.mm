@@ -1,37 +1,37 @@
 @interface CVNLPCTCTextDecodingPath
 + (id)_getQueue;
-+ (void)applyWordLanguageModelProbabilityToPath:(id)a3 stemmedFromPath:(id)a4 isCommittingToken:(BOOL)a5;
++ (void)applyWordLanguageModelProbabilityToPath:(id)path stemmedFromPath:(id)fromPath isCommittingToken:(BOOL)token;
 - (BOOL)hasProblematicMixedScriptWords;
-- (CVNLPCTCTextDecodingPath)initWithLanguageResourceBundle:(id)a3 scoringFunction:(id)a4 initialCharacterLMState:(CVNLPLanguageModelWithState *)a5 characterTokenIDs:(vector<unsigned)int wordTokenIDs:(std:(vector<unsigned)int :(std:(BOOL)a8 :(BOOL)a9 allocator<unsigned int>> *)a7 allocator<unsigned int>> *)a6 optimizingAlignment:hasContext:;
+- (CVNLPCTCTextDecodingPath)initWithLanguageResourceBundle:(id)bundle scoringFunction:(id)function initialCharacterLMState:(CVNLPLanguageModelWithState *)state characterTokenIDs:(vector<unsigned)int wordTokenIDs:(std:(vector<unsigned)int :(std:(BOOL)std :(BOOL)a9 allocator<unsigned int>> *)a7 allocator<unsigned int>> *)a6 optimizingAlignment:hasContext:;
 - (NSString)latestExpandedSymbol;
 - (double)lastTokenBoundaryLogProbability;
 - (double)modelLogProbability;
 - (double)normalizedTotalLogProbability;
-- (double)scoreForTokenIndex:(int64_t)a3;
-- (float)_wordLanguageModelLogProbabilityForString:(id)a3 originalWordRanges:(id)a4 originalWordIDs:(vector<unsigned)int wordRanges:(std:(id)a6 :(vector<unsigned)int allocator<unsigned int>> *)a5 wordIDs:(std::allocator<unsigned int>> *)a7;
+- (double)scoreForTokenIndex:(int64_t)index;
+- (float)_wordLanguageModelLogProbabilityForString:(id)string originalWordRanges:(id)ranges originalWordIDs:(vector<unsigned)int wordRanges:(std:(id)wordRanges :(vector<unsigned)int allocator<unsigned int>> *)a5 wordIDs:(std::allocator<unsigned int>> *)ds;
 - (id).cxx_construct;
-- (id)childPathWithBlankLogProb:(double)a3;
+- (id)childPathWithBlankLogProb:(double)prob;
 - (id)debugDescription;
 - (id)description;
-- (id)pathByExtendingWithString:(id)a3 extendedPathString:(id)a4 blankLogProb:(double)a5 nonBlankLogProb:(double)a6 timestep:(int64_t)a7 commitAction:(int64_t)a8 symbolLogProb:(double)a9;
-- (int64_t)compare:(id)a3;
+- (id)pathByExtendingWithString:(id)string extendedPathString:(id)pathString blankLogProb:(double)prob nonBlankLogProb:(double)logProb timestep:(int64_t)timestep commitAction:(int64_t)action symbolLogProb:(double)symbolLogProb;
+- (int64_t)compare:(id)compare;
 - (unint64_t)_currentTokenStringLength;
-- (void)_updateCharacterLanguageModelLogProbabilityForString:(id)a3 stemmingFromPath:(id)a4 normalizedCodepoint:(unsigned int)a5;
-- (void)_updateLexiconLogProbabilityForString:(id)a3 stemmingFromPath:(id)a4;
-- (void)commitTokenAtTimestep:(int64_t)a3 currentSymbolLogProbability:(double)a4 commitAction:(int64_t)a5 string:(id)a6 stemmingFromPath:(id)a7;
+- (void)_updateCharacterLanguageModelLogProbabilityForString:(id)string stemmingFromPath:(id)path normalizedCodepoint:(unsigned int)codepoint;
+- (void)_updateLexiconLogProbabilityForString:(id)string stemmingFromPath:(id)path;
+- (void)commitTokenAtTimestep:(int64_t)timestep currentSymbolLogProbability:(double)probability commitAction:(int64_t)action string:(id)string stemmingFromPath:(id)path;
 - (void)dealloc;
-- (void)merge:(id)a3 logProbCumulator:(id)a4;
-- (void)setCharacterLMState:(CVNLPLanguageModelWithState *)a3;
-- (void)setLastTokenBoundaryLogProbability:(double)a3;
-- (void)updateLastTokenWithMaxActivation:(int64_t)a3 totalLogProbability:(double)a4 tokenBoundaryLogProbability:(double)a5;
+- (void)merge:(id)merge logProbCumulator:(id)cumulator;
+- (void)setCharacterLMState:(CVNLPLanguageModelWithState *)state;
+- (void)setLastTokenBoundaryLogProbability:(double)probability;
+- (void)updateLastTokenWithMaxActivation:(int64_t)activation totalLogProbability:(double)probability tokenBoundaryLogProbability:(double)logProbability;
 @end
 
 @implementation CVNLPCTCTextDecodingPath
 
-- (CVNLPCTCTextDecodingPath)initWithLanguageResourceBundle:(id)a3 scoringFunction:(id)a4 initialCharacterLMState:(CVNLPLanguageModelWithState *)a5 characterTokenIDs:(vector<unsigned)int wordTokenIDs:(std:(vector<unsigned)int :(std:(BOOL)a8 :(BOOL)a9 allocator<unsigned int>> *)a7 allocator<unsigned int>> *)a6 optimizingAlignment:hasContext:
+- (CVNLPCTCTextDecodingPath)initWithLanguageResourceBundle:(id)bundle scoringFunction:(id)function initialCharacterLMState:(CVNLPLanguageModelWithState *)state characterTokenIDs:(vector<unsigned)int wordTokenIDs:(std:(vector<unsigned)int :(std:(BOOL)std :(BOOL)a9 allocator<unsigned int>> *)a7 allocator<unsigned int>> *)a6 optimizingAlignment:hasContext:
 {
-  v16 = a3;
-  v17 = a4;
+  bundleCopy = bundle;
+  functionCopy = function;
   v24.receiver = self;
   v24.super_class = CVNLPCTCTextDecodingPath;
   v18 = [(CVNLPTextDecodingPath *)&v24 init];
@@ -58,17 +58,17 @@
     }
 
     *(v19 + 16) = 0;
-    v19[288] = a8;
-    v21 = MEMORY[0x1DA741A60](v17);
+    v19[288] = std;
+    v21 = MEMORY[0x1DA741A60](functionCopy);
     v22 = *(v19 + 45);
     *(v19 + 45) = v21;
 
     v19[256] = a9;
-    objc_storeStrong(v19 + 44, a3);
+    objc_storeStrong(v19 + 44, bundle);
     v19[280] = 0;
-    if (a5)
+    if (state)
     {
-      *(v19 + 43) = CFRetain(a5);
+      *(v19 + 43) = CFRetain(state);
     }
   }
 
@@ -89,22 +89,22 @@
   [(CVNLPCTCTextDecodingPath *)&v4 dealloc];
 }
 
-- (void)setCharacterLMState:(CVNLPLanguageModelWithState *)a3
+- (void)setCharacterLMState:(CVNLPLanguageModelWithState *)state
 {
   characterLMState = self->_characterLMState;
-  if (characterLMState != a3)
+  if (characterLMState != state)
   {
     CFRelease(characterLMState);
-    self->_characterLMState = CFRetain(a3);
+    self->_characterLMState = CFRetain(state);
   }
 }
 
-- (void)setLastTokenBoundaryLogProbability:(double)a3
+- (void)setLastTokenBoundaryLogProbability:(double)probability
 {
   end = self->_tokenBoundaryLogProbabilities.__end_;
   if (end != self->_tokenBoundaryLogProbabilities.__begin_)
   {
-    *(end - 1) = a3;
+    *(end - 1) = probability;
   }
 }
 
@@ -173,17 +173,17 @@
   }
 }
 
-- (double)scoreForTokenIndex:(int64_t)a3
+- (double)scoreForTokenIndex:(int64_t)index
 {
   begin = self->_cumulativeTokenLogProbabilities.__begin_;
-  if (a3 < 1)
+  if (index < 1)
   {
-    return begin[a3] - 0.0;
+    return begin[index] - 0.0;
   }
 
   else
   {
-    return begin[a3] - begin[a3 - 1];
+    return begin[index] - begin[index - 1];
   }
 }
 
@@ -232,13 +232,13 @@
   return v12;
 }
 
-- (void)commitTokenAtTimestep:(int64_t)a3 currentSymbolLogProbability:(double)a4 commitAction:(int64_t)a5 string:(id)a6 stemmingFromPath:(id)a7
+- (void)commitTokenAtTimestep:(int64_t)timestep currentSymbolLogProbability:(double)probability commitAction:(int64_t)action string:(id)string stemmingFromPath:(id)path
 {
-  v12 = a6;
-  v16 = a7;
-  if (a5)
+  stringCopy = string;
+  pathCopy = path;
+  if (action)
   {
-    v17 = a3 + 1;
+    v17 = timestep + 1;
     p_tokenMaxActivations = &self->_tokenMaxActivations;
     begin = self->_tokenMaxActivations.__begin_;
     end = self->_tokenMaxActivations.__end_;
@@ -255,15 +255,15 @@
 
     if (v25)
     {
-      if (a5 == 1)
+      if (action == 1)
       {
         v74 = 0;
         sub_1D9D17338(&self->_tokenCommitCharacterLengths.__begin_, &v74);
       }
 
-      else if (a5 == 2)
+      else if (action == 2)
       {
-        v74 = objc_msgSend_lengthOfBytesUsingEncoding_(v12, v22, 2348810496, v24) >> 2;
+        v74 = objc_msgSend_lengthOfBytesUsingEncoding_(stringCopy, v22, 2348810496, v24) >> 2;
         sub_1D9D93888(&self->_tokenCommitCharacterLengths, &v74);
       }
 
@@ -450,7 +450,7 @@
       v65 = self->_tokenBoundaryLogProbabilities.__cap_;
       if (v66 < v65)
       {
-        *v66 = a4;
+        *v66 = probability;
         v67 = (v66 + 1);
 LABEL_73:
         p_tokenBoundaryLogProbabilities->__end_ = v67;
@@ -484,7 +484,7 @@ LABEL_73:
 
       if (!v73)
       {
-        *(8 * v70) = a4;
+        *(8 * v70) = probability;
         v67 = 8 * v70 + 8;
         memcpy(0, v68, v69);
         p_tokenBoundaryLogProbabilities->__begin_ = 0;
@@ -507,7 +507,7 @@ LABEL_75:
       sub_1D9D10E9C();
     }
 
-    if (!v21 || self->_optimizingAlignment && ((objc_msgSend_lastTokenBoundaryLogProbability(self, v22, v23, v24), end != begin) ? (v27 = v26 < a4) : (v27 = 0), v27))
+    if (!v21 || self->_optimizingAlignment && ((objc_msgSend_lastTokenBoundaryLogProbability(self, v22, v23, v24), end != begin) ? (v27 = v26 < probability) : (v27 = 0), v27))
     {
       objc_msgSend_modelLogProbability(self, v22, v23, v24);
       objc_msgSend_updateLastTokenWithMaxActivation_totalLogProbability_tokenBoundaryLogProbability_(self, v28, v17, v29);
@@ -554,9 +554,9 @@ LABEL_74:
   return v38;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  objc_msgSend_normalizedTotalLogProbability(a3, a2, a3, v3);
+  objc_msgSend_normalizedTotalLogProbability(compare, a2, compare, v3);
   v6 = v5;
   objc_msgSend_normalizedTotalLogProbability(self, v7, v8, v9);
   if (v6 >= v10)
@@ -580,31 +580,31 @@ LABEL_74:
   }
 }
 
-- (void)merge:(id)a3 logProbCumulator:(id)a4
+- (void)merge:(id)merge logProbCumulator:(id)cumulator
 {
-  v47 = a3;
-  v6 = a4;
-  self->_nonBlankLogProbability = v6[2](v6, self->_nonBlankLogProbability, *(v47 + 38));
-  self->_blankLogProbability = v6[2](v6, self->_blankLogProbability, *(v47 + 37));
+  mergeCopy = merge;
+  cumulatorCopy = cumulator;
+  self->_nonBlankLogProbability = cumulatorCopy[2](cumulatorCopy, self->_nonBlankLogProbability, *(mergeCopy + 38));
+  self->_blankLogProbability = cumulatorCopy[2](cumulatorCopy, self->_blankLogProbability, *(mergeCopy + 37));
   if (self->_optimizingAlignment)
   {
-    v10 = v47 + 208;
-    v12 = *(v47 + 26);
-    v11 = *(v47 + 27);
+    v10 = mergeCopy + 208;
+    v12 = *(mergeCopy + 26);
+    v11 = *(mergeCopy + 27);
     v13 = v11 - v12;
     if (v11 != v12)
     {
       p_tokenMaxActivations = &self->_tokenMaxActivations;
       begin = self->_tokenMaxActivations.__begin_;
       end = self->_tokenMaxActivations.__end_;
-      objc_msgSend_lastTokenBoundaryLogProbability(v47, v7, v8, v9);
+      objc_msgSend_lastTokenBoundaryLogProbability(mergeCopy, v7, v8, v9);
       v18 = v17;
       objc_msgSend_lastTokenBoundaryLogProbability(self, v19, v20, v21);
       v25 = (v13 >> 3) - 1;
       v26 = end - begin;
       if (v18 <= v27)
       {
-        objc_msgSend_lastTokenBoundaryLogProbability(v47, v22, v23, v24);
+        objc_msgSend_lastTokenBoundaryLogProbability(mergeCopy, v22, v23, v24);
         v31 = v30;
         objc_msgSend_lastTokenBoundaryLogProbability(self, v32, v33, v34);
         v29 = 0;
@@ -612,7 +612,7 @@ LABEL_74:
         v35 = self->_tokenMaxActivations.__end_;
         if (v31 == v36 && v35 != v28)
         {
-          objc_msgSend_scoreForTokenIndex_(v47, v22, v25, v24);
+          objc_msgSend_scoreForTokenIndex_(mergeCopy, v22, v25, v24);
           v38 = v37;
           objc_msgSend_scoreForTokenIndex_(self, v39, (v26 >> 3) - 1, v40);
           v29 = v38 > v41;
@@ -630,8 +630,8 @@ LABEL_10:
           }
 
 LABEL_15:
-          v43 = *(*(v47 + 17) + 8 * v25);
-          objc_msgSend_lastTokenBoundaryLogProbability(v47, v22, v23, v24);
+          v43 = *(*(mergeCopy + 17) + 8 * v25);
+          objc_msgSend_lastTokenBoundaryLogProbability(mergeCopy, v22, v23, v24);
           objc_msgSend_updateLastTokenWithMaxActivation_totalLogProbability_tokenBoundaryLogProbability_(self, v44, v42, v45, v43, v46);
           goto LABEL_16;
         }
@@ -660,19 +660,19 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)updateLastTokenWithMaxActivation:(int64_t)a3 totalLogProbability:(double)a4 tokenBoundaryLogProbability:(double)a5
+- (void)updateLastTokenWithMaxActivation:(int64_t)activation totalLogProbability:(double)probability tokenBoundaryLogProbability:(double)logProbability
 {
   end = self->_tokenMaxActivations.__end_;
   v7 = end - self->_tokenMaxActivations.__begin_;
   if (v7)
   {
-    *(end - 1) = a3;
-    *(self->_cumulativeTokenLogProbabilities.__begin_ + v7 - 8) = a4;
-    objc_msgSend_setLastTokenBoundaryLogProbability_(self, a2, a3, v5, a5);
+    *(end - 1) = activation;
+    *(self->_cumulativeTokenLogProbabilities.__begin_ + v7 - 8) = probability;
+    objc_msgSend_setLastTokenBoundaryLogProbability_(self, a2, activation, v5, logProbability);
   }
 }
 
-- (id)childPathWithBlankLogProb:(double)a3
+- (id)childPathWithBlankLogProb:(double)prob
 {
   v6 = [CVNLPCTCTextDecodingPath alloc];
   languageResourceBundle = self->_languageResourceBundle;
@@ -729,7 +729,7 @@ LABEL_16:
     *(v17 + 72) = v18;
 
     objc_storeStrong((v17 + 272), self->_latestExpandedSymbolIncludingPseudospace);
-    objc_msgSend_setBlankLogProbability_(v17, v20, v21, v22, a3);
+    objc_msgSend_setBlankLogProbability_(v17, v20, v21, v22, prob);
     objc_msgSend_setCharacterLanguageModelLogProbability_(v17, v23, v24, v25, self->super._characterLanguageModelLogProbability);
     objc_msgSend_setHistoryLexiconLogProbability_(v17, v26, v27, v28, self->_historyLexiconLogProbability);
     objc_msgSend_setActiveWordLexiconLogProbability_(v17, v29, v30, v31, self->_activeWordLexiconLogProbability);
@@ -766,10 +766,10 @@ LABEL_16:
   return v17;
 }
 
-- (id)pathByExtendingWithString:(id)a3 extendedPathString:(id)a4 blankLogProb:(double)a5 nonBlankLogProb:(double)a6 timestep:(int64_t)a7 commitAction:(int64_t)a8 symbolLogProb:(double)a9
+- (id)pathByExtendingWithString:(id)string extendedPathString:(id)pathString blankLogProb:(double)prob nonBlankLogProb:(double)logProb timestep:(int64_t)timestep commitAction:(int64_t)action symbolLogProb:(double)symbolLogProb
 {
-  v108 = a3;
-  v107 = a4;
+  stringCopy = string;
+  pathStringCopy = pathString;
   v16 = [CVNLPCTCTextDecodingPath alloc];
   languageResourceBundle = self->_languageResourceBundle;
   scoringFunction = self->_scoringFunction;
@@ -826,17 +826,17 @@ LABEL_16:
     sub_1D9D64204((hasContext + 232), self->_tokenCommitCharacterLengths.__begin_, self->_tokenCommitCharacterLengths.__end_, self->_tokenCommitCharacterLengths.__end_ - self->_tokenCommitCharacterLengths.__begin_);
   }
 
-  v25 = v108;
+  v25 = stringCopy;
   v31 = objc_msgSend_length(v25, v26, v27, v28) == 1 && objc_msgSend_characterAtIndex_(v25, v29, 0, v30) == 57427;
 
-  objc_storeStrong((hasContext + 72), a4);
-  objc_storeStrong((hasContext + 272), a3);
+  objc_storeStrong((hasContext + 72), pathString);
+  objc_storeStrong((hasContext + 272), string);
   *(hasContext + 280) = 1;
   objc_msgSend_setCharacterCount_(hasContext, v32, self->super._characterCount + 1, v33);
   objc_msgSend_setPseudoSpaceCount_(hasContext, v34, self->super._pseudoSpaceCount + v31, v35);
   v39 = *(hasContext + 296);
-  v40 = fmax(v39, a5);
-  v41 = fmin(v39, a5);
+  v40 = fmax(v39, prob);
+  v41 = fmin(v39, prob);
   if (v41 >= -1021.0)
   {
     v42 = exp(v41 - v40);
@@ -845,8 +845,8 @@ LABEL_16:
 
   *(hasContext + 296) = v40;
   v43 = *(hasContext + 304);
-  v44 = fmax(v43, a6);
-  v45 = fmin(v43, a6);
+  v44 = fmax(v43, logProb);
+  v45 = fmin(v43, logProb);
   if (v45 >= -1021.0)
   {
     v46 = exp(v45 - v44);
@@ -856,7 +856,7 @@ LABEL_16:
   *(hasContext + 304) = v44;
   objc_msgSend_lastTokenBoundaryLogProbability(self, v36, v37, v38);
   objc_msgSend_setLastTokenBoundaryLogProbability_(hasContext, v47, v48, v49);
-  objc_msgSend_commitTokenAtTimestep_currentSymbolLogProbability_commitAction_string_stemmingFromPath_(hasContext, v50, a7, a8, v25, self, a9);
+  objc_msgSend_commitTokenAtTimestep_currentSymbolLogProbability_commitAction_string_stemmingFromPath_(hasContext, v50, timestep, action, v25, self, symbolLogProb);
   v57 = objc_msgSend_wordLanguageModel(self->_languageResourceBundle, v51, v52, v53);
   if (v57)
   {
@@ -866,7 +866,7 @@ LABEL_16:
     if (v62 == 1)
     {
       v63 = objc_opt_class();
-      objc_msgSend_applyWordLanguageModelProbabilityToPath_stemmedFromPath_isCommittingToken_(v63, v64, hasContext, self, a8 != 0);
+      objc_msgSend_applyWordLanguageModelProbabilityToPath_stemmedFromPath_isCommittingToken_(v63, v64, hasContext, self, action != 0);
     }
   }
 
@@ -931,10 +931,10 @@ LABEL_34:
   return hasContext;
 }
 
-- (void)_updateCharacterLanguageModelLogProbabilityForString:(id)a3 stemmingFromPath:(id)a4 normalizedCodepoint:(unsigned int)a5
+- (void)_updateCharacterLanguageModelLogProbabilityForString:(id)string stemmingFromPath:(id)path normalizedCodepoint:(unsigned int)codepoint
 {
-  v43 = a3;
-  v7 = a4;
+  stringCopy = string;
+  pathCopy = path;
   v11 = objc_msgSend_languageResourceBundle(self, v8, v9, v10);
   v15 = objc_msgSend_characterLanguageModel(v11, v12, v13, v14);
 
@@ -944,8 +944,8 @@ LABEL_34:
     v23 = 0.0;
     if (v19 == 1)
     {
-      v25 = objc_msgSend_length(v43, v20, v21, v22);
-      if (objc_msgSend_requiredContextLengthForStringLength_(v15, v26, v25, v27) <= ((v7[11] - v7[10]) >> 2))
+      v25 = objc_msgSend_length(stringCopy, v20, v21, v22);
+      if (objc_msgSend_requiredContextLengthForStringLength_(v15, v26, v25, v27) <= ((pathCopy[11] - pathCopy[10]) >> 2))
       {
         objc_msgSend_languageModel(v15, v20, v21, v22);
         LMLanguageModelConditionalProbability();
@@ -955,7 +955,7 @@ LABEL_34:
 
     else if (v19 == 2)
     {
-      CVNLPLanguageModelWithStateConditionalProbability(self->_characterLMState, v43);
+      CVNLPLanguageModelWithStateConditionalProbability(self->_characterLMState, stringCopy);
       v23 = logf(v24);
     }
 
@@ -964,20 +964,20 @@ LABEL_34:
     objc_msgSend_lowerBoundLogProbabilityValue(v33, v34, v35, v36);
     v38 = v37;
 
-    objc_msgSend_characterLanguageModelLogProbability(v7, v39, v40, v41);
+    objc_msgSend_characterLanguageModelLogProbability(pathCopy, v39, v40, v41);
     self->super._characterLanguageModelLogProbability = fmin(v42 + fmax(v23, v38), 0.0);
   }
 }
 
-- (void)_updateLexiconLogProbabilityForString:(id)a3 stemmingFromPath:(id)a4
+- (void)_updateLexiconLogProbabilityForString:(id)string stemmingFromPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (CVNLPIsWordSeparatorForLexicon_0(v6))
+  stringCopy = string;
+  pathCopy = path;
+  if (CVNLPIsWordSeparatorForLexicon_0(stringCopy))
   {
-    objc_msgSend_historyLexiconLogProbability(v7, v8, v9, v10);
+    objc_msgSend_historyLexiconLogProbability(pathCopy, v8, v9, v10);
     v12 = v11;
-    objc_msgSend_activeWordLexiconLogProbability(v7, v13, v14, v15);
+    objc_msgSend_activeWordLexiconLogProbability(pathCopy, v13, v14, v15);
     self->_historyLexiconLogProbability = v16 + v12;
     self->_activeWordLexiconLogProbability = 0.0;
     v20 = objc_msgSend_packagedLexiconRootCursors(self->_languageResourceBundle, v17, v18, v19);
@@ -990,9 +990,9 @@ LABEL_34:
   v125 = &v124;
   v126 = 0x2020000000;
   v127 = 0;
-  v23 = sub_1D9D9F9CC(v6);
-  v24 = sub_1D9D9FA5C(v6);
-  v25 = v6;
+  v23 = sub_1D9D9F9CC(stringCopy);
+  v24 = sub_1D9D9FA5C(stringCopy);
+  v25 = stringCopy;
   if (objc_msgSend_length(v25, v26, v27, v28) == 1)
   {
     v31 = objc_msgSend_characterAtIndex_(v25, v29, 0, v30) != 39;
@@ -1021,7 +1021,7 @@ LABEL_8:
   v121 = &v120;
   v122 = 0x2020000000;
   v123 = 0;
-  v36 = objc_msgSend_cursors(v7, v32, v33, v34);
+  v36 = objc_msgSend_cursors(pathCopy, v32, v33, v34);
   v40 = objc_msgSend_count(v36, v37, v38, v39);
 
   if (v40 >= 1)
@@ -1052,7 +1052,7 @@ LABEL_8:
       v65 = v25;
     }
 
-    v69 = objc_msgSend_cursors(v7, v66, v67, v68);
+    v69 = objc_msgSend_cursors(pathCopy, v66, v67, v68);
     v102 = MEMORY[0x1E69E9820];
     v103 = 3221225472;
     v104 = sub_1D9DAEDD8;
@@ -1090,56 +1090,56 @@ LABEL_8:
   if ((v35 & 1) != 0 || *(v121 + 24) == 1)
   {
     v92 = v125[3];
-    objc_msgSend_activeWordLexiconLogProbability(v7, v89, v90, v91);
+    objc_msgSend_activeWordLexiconLogProbability(pathCopy, v89, v90, v91);
     if (v96 + v92 > v88)
     {
       v97 = v125[3];
-      objc_msgSend_activeWordLexiconLogProbability(v7, v93, v94, v95);
+      objc_msgSend_activeWordLexiconLogProbability(pathCopy, v93, v94, v95);
       v88 = v98 + v97;
     }
   }
 
   else
   {
-    objc_msgSend_activeWordLexiconLogProbability(v7, v89, v90, v91);
+    objc_msgSend_activeWordLexiconLogProbability(pathCopy, v89, v90, v91);
     if (v99 + -36.0436534 > v88)
     {
-      objc_msgSend_activeWordLexiconLogProbability(v7, v93, v94, v95);
+      objc_msgSend_activeWordLexiconLogProbability(pathCopy, v93, v94, v95);
       v88 = v100 + -36.0436534;
     }
   }
 
   self->_activeWordLexiconLogProbability = v88;
-  objc_msgSend_historyLexiconLogProbability(v7, v93, v94, v95);
+  objc_msgSend_historyLexiconLogProbability(pathCopy, v93, v94, v95);
   self->_historyLexiconLogProbability = v101;
   _Block_object_dispose(&v120, 8);
   _Block_object_dispose(&v124, 8);
 LABEL_23:
 }
 
-+ (void)applyWordLanguageModelProbabilityToPath:(id)a3 stemmedFromPath:(id)a4 isCommittingToken:(BOOL)a5
++ (void)applyWordLanguageModelProbabilityToPath:(id)path stemmedFromPath:(id)fromPath isCommittingToken:(BOOL)token
 {
-  v5 = a5;
+  tokenCopy = token;
   v56[5] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v12 = objc_msgSend_languageResourceBundle(v7, v9, v10, v11);
+  pathCopy = path;
+  fromPathCopy = fromPath;
+  v12 = objc_msgSend_languageResourceBundle(pathCopy, v9, v10, v11);
   v16 = objc_msgSend_wordLanguageModel(v12, v13, v14, v15);
 
-  if (v7 != v8)
+  if (pathCopy != fromPathCopy)
   {
-    sub_1D9D829B4(v7 + 13, v8[13], v8[14], (v8[14] - v8[13]) >> 2);
+    sub_1D9D829B4(pathCopy + 13, fromPathCopy[13], fromPathCopy[14], (fromPathCopy[14] - fromPathCopy[13]) >> 2);
   }
 
-  if (v16 && v5)
+  if (v16 && tokenCopy)
   {
-    v20 = objc_msgSend_string(v8, v17, v18, v19);
-    v24 = objc_msgSend_length(v20, v21, v22, v23) - *(v8 + 32);
+    v20 = objc_msgSend_string(fromPathCopy, v17, v18, v19);
+    v24 = objc_msgSend_length(v20, v21, v22, v23) - *(fromPathCopy + 32);
 
     if (v24 >= 1)
     {
-      v28 = v8[16];
-      v29 = objc_msgSend_string(v8, v25, v26, v27);
+      v28 = fromPathCopy[16];
+      v29 = objc_msgSend_string(fromPathCopy, v25, v26, v27);
       v31 = objc_msgSend_substringWithRange_(v29, v30, v28, v24);
 
       v56[0] = 0;
@@ -1164,33 +1164,33 @@ LABEL_23:
       operator new();
     }
 
-    objc_msgSend_wordLanguageModelLogProbability(v8, v25, v26, v27);
-    objc_msgSend_setWordLanguageModelLogProbability_(v7, v40, v41, v42);
-    v46 = objc_msgSend_string(v8, v43, v44, v45);
-    v7[16] = (objc_msgSend_length(v46, v47, v48, v49) + 1);
+    objc_msgSend_wordLanguageModelLogProbability(fromPathCopy, v25, v26, v27);
+    objc_msgSend_setWordLanguageModelLogProbability_(pathCopy, v40, v41, v42);
+    v46 = objc_msgSend_string(fromPathCopy, v43, v44, v45);
+    pathCopy[16] = (objc_msgSend_length(v46, v47, v48, v49) + 1);
   }
 
   else
   {
-    objc_msgSend_wordLanguageModelLogProbability(v8, v17, v18, v19);
-    objc_msgSend_setWordLanguageModelLogProbability_(v7, v37, v38, v39);
-    v7[16] = v8[16];
+    objc_msgSend_wordLanguageModelLogProbability(fromPathCopy, v17, v18, v19);
+    objc_msgSend_setWordLanguageModelLogProbability_(pathCopy, v37, v38, v39);
+    pathCopy[16] = fromPathCopy[16];
   }
 
   v50 = *MEMORY[0x1E69E9840];
 }
 
-- (float)_wordLanguageModelLogProbabilityForString:(id)a3 originalWordRanges:(id)a4 originalWordIDs:(vector<unsigned)int wordRanges:(std:(id)a6 :(vector<unsigned)int allocator<unsigned int>> *)a5 wordIDs:(std::allocator<unsigned int>> *)a7
+- (float)_wordLanguageModelLogProbabilityForString:(id)string originalWordRanges:(id)ranges originalWordIDs:(vector<unsigned)int wordRanges:(std:(id)wordRanges :(vector<unsigned)int allocator<unsigned int>> *)a5 wordIDs:(std::allocator<unsigned int>> *)ds
 {
-  v44 = a3;
-  v39 = a4;
-  v11 = a6;
+  stringCopy = string;
+  rangesCopy = ranges;
+  wordRangesCopy = wordRanges;
   if (qword_1ECB71BF0 != -1)
   {
     dispatch_once(&qword_1ECB71BF0, &unk_1F554F998);
   }
 
-  v12 = objc_msgSend_objectAtIndexedSubscript_(v39, v9, 0, v10);
+  v12 = objc_msgSend_objectAtIndexedSubscript_(rangesCopy, v9, 0, v10);
   v43 = objc_msgSend_rangeValue(v12, v13, v14, v15);
   v42 = v16;
 
@@ -1206,16 +1206,16 @@ LABEL_23:
     sub_1D9D84AB0();
   }
 
-  if (objc_msgSend_count(v11, v17, v18, v19))
+  if (objc_msgSend_count(wordRangesCopy, v17, v18, v19))
   {
-    v24 = objc_msgSend_objectAtIndexedSubscript_(v11, v22, 0, v23);
+    v24 = objc_msgSend_objectAtIndexedSubscript_(wordRangesCopy, v22, 0, v23);
     v28 = objc_msgSend_rangeValue(v24, v25, v26, v27);
     v30 = v29;
 
-    objc_msgSend_rangeOfCharacterFromSet_options_range_(v44, v31, qword_1ECB71BE0, 2, v28, v30);
+    objc_msgSend_rangeOfCharacterFromSet_options_range_(stringCopy, v31, qword_1ECB71BE0, 2, v28, v30);
     if (v28 != v43 || v30 != v42 || (v35 = *a5->__begin_) == 0)
     {
-      v35 = *a7->__begin_;
+      v35 = *ds->__begin_;
     }
 
     v48 = 0;

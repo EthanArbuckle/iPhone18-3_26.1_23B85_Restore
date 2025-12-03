@@ -1,14 +1,14 @@
 @interface UISTransform3DGrader
 - (UISTransform3DGrader)init;
-- (_UISTransform3DGrade)_gradeTransform3D:(SEL)a3;
+- (_UISTransform3DGrade)_gradeTransform3D:(SEL)d;
 - (id).cxx_construct;
-- (unint64_t)gradeStartTransform3D:(CATransform3D *)a3 endTransform3D:(CATransform3D *)a4;
-- (unint64_t)gradeTransform3D:(CATransform3D *)a3;
-- (void)allowRotations:(const double *)a3 count:(unint64_t)a4 lowerMultiplier:(double)a5 lowerConstant:(double)a6 upperMultiplier:(double)a7 upperConstant:(double)a8;
-- (void)allowScales:(const double *)a3 count:(unint64_t)a4 lowerMultiplier:(double)a5 lowerConstant:(double)a6 upperMultiplier:(double)a7 upperConstant:(double)a8;
-- (void)allowShear:(double)a3;
-- (void)allowShift:(double)a3;
-- (void)allowTranslation:(double)a3;
+- (unint64_t)gradeStartTransform3D:(CATransform3D *)d endTransform3D:(CATransform3D *)transform3D;
+- (unint64_t)gradeTransform3D:(CATransform3D *)d;
+- (void)allowRotations:(const double *)rotations count:(unint64_t)count lowerMultiplier:(double)multiplier lowerConstant:(double)constant upperMultiplier:(double)upperMultiplier upperConstant:(double)upperConstant;
+- (void)allowScales:(const double *)scales count:(unint64_t)count lowerMultiplier:(double)multiplier lowerConstant:(double)constant upperMultiplier:(double)upperMultiplier upperConstant:(double)upperConstant;
+- (void)allowShear:(double)shear;
+- (void)allowShift:(double)shift;
+- (void)allowTranslation:(double)translation;
 @end
 
 @implementation UISTransform3DGrader
@@ -32,18 +32,18 @@
   return v3;
 }
 
-- (void)allowRotations:(const double *)a3 count:(unint64_t)a4 lowerMultiplier:(double)a5 lowerConstant:(double)a6 upperMultiplier:(double)a7 upperConstant:(double)a8
+- (void)allowRotations:(const double *)rotations count:(unint64_t)count lowerMultiplier:(double)multiplier lowerConstant:(double)constant upperMultiplier:(double)upperMultiplier upperConstant:(double)upperConstant
 {
   p_allowedRotations = &self->_allowedRotations;
   self->_allowedRotations.__end_ = self->_allowedRotations.__begin_;
-  if (a4)
+  if (count)
   {
-    v13 = a4;
+    countCopy = count;
     do
     {
-      v15 = *a3++;
+      v15 = *rotations++;
       v16 = v15;
-      v17 = (COERCE__INT64(v15 * a5 + a6) >> 63) & 0x7FFFFFFFFFFFFFFFLL ^ COERCE_UNSIGNED_INT64(v15 * a5 + a6);
+      v17 = (COERCE__INT64(v15 * multiplier + constant) >> 63) & 0x7FFFFFFFFFFFFFFFLL ^ COERCE_UNSIGNED_INT64(v15 * multiplier + constant);
       v18 = v17 < 10;
       v19 = v17 - 10;
       if (v18)
@@ -58,7 +58,7 @@
 
       v24 = v20 ^ v19;
       std::vector<double>::push_back[abi:nn200100](p_allowedRotations, &v24);
-      v21 = (COERCE__INT64(v16 * a7 + a8) >> 63) & 0x7FFFFFFFFFFFFFFFLL ^ COERCE_UNSIGNED_INT64(v16 * a7 + a8);
+      v21 = (COERCE__INT64(v16 * upperMultiplier + upperConstant) >> 63) & 0x7FFFFFFFFFFFFFFFLL ^ COERCE_UNSIGNED_INT64(v16 * upperMultiplier + upperConstant);
       v22 = v21 + 10;
       if (v21 >= -10)
       {
@@ -72,25 +72,25 @@
 
       v24 = v23 ^ v22;
       std::vector<double>::push_back[abi:nn200100](p_allowedRotations, &v24);
-      --v13;
+      --countCopy;
     }
 
-    while (v13);
+    while (countCopy);
   }
 }
 
-- (void)allowScales:(const double *)a3 count:(unint64_t)a4 lowerMultiplier:(double)a5 lowerConstant:(double)a6 upperMultiplier:(double)a7 upperConstant:(double)a8
+- (void)allowScales:(const double *)scales count:(unint64_t)count lowerMultiplier:(double)multiplier lowerConstant:(double)constant upperMultiplier:(double)upperMultiplier upperConstant:(double)upperConstant
 {
   p_allowedScales = &self->_allowedScales;
   self->_allowedScales.__end_ = self->_allowedScales.__begin_;
-  if (a4)
+  if (count)
   {
-    v13 = a4;
+    countCopy = count;
     do
     {
-      v15 = *a3++;
+      v15 = *scales++;
       v16 = v15;
-      v17 = (COERCE__INT64(v15 * a5 + a6) >> 63) & 0x7FFFFFFFFFFFFFFFLL ^ COERCE_UNSIGNED_INT64(v15 * a5 + a6);
+      v17 = (COERCE__INT64(v15 * multiplier + constant) >> 63) & 0x7FFFFFFFFFFFFFFFLL ^ COERCE_UNSIGNED_INT64(v15 * multiplier + constant);
       v18 = v17 < 10;
       v19 = v17 - 10;
       if (v18)
@@ -105,7 +105,7 @@
 
       v24 = v20 ^ v19;
       std::vector<double>::push_back[abi:nn200100](p_allowedScales, &v24);
-      v21 = (COERCE__INT64(v16 * a7 + a8) >> 63) & 0x7FFFFFFFFFFFFFFFLL ^ COERCE_UNSIGNED_INT64(v16 * a7 + a8);
+      v21 = (COERCE__INT64(v16 * upperMultiplier + upperConstant) >> 63) & 0x7FFFFFFFFFFFFFFFLL ^ COERCE_UNSIGNED_INT64(v16 * upperMultiplier + upperConstant);
       v22 = v21 + 10;
       if (v21 >= -10)
       {
@@ -119,16 +119,16 @@
 
       v24 = v23 ^ v22;
       std::vector<double>::push_back[abi:nn200100](p_allowedScales, &v24);
-      --v13;
+      --countCopy;
     }
 
-    while (v13);
+    while (countCopy);
   }
 }
 
-- (void)allowShear:(double)a3
+- (void)allowShear:(double)shear
 {
-  v3 = (*&a3 >> 63) & 0x7FFFFFFFFFFFFFFFLL ^ *&a3;
+  v3 = (*&shear >> 63) & 0x7FFFFFFFFFFFFFFFLL ^ *&shear;
   v4 = v3 + 0x3D00000000000000;
   v5 = v3 < 0xC300000000000000;
   v6 = 0x7FFFFFFFFFFFFFFFLL;
@@ -140,9 +140,9 @@
   *&self->_allowedShear = v6 ^ v4;
 }
 
-- (void)allowTranslation:(double)a3
+- (void)allowTranslation:(double)translation
 {
-  v3 = (*&a3 >> 63) & 0x7FFFFFFFFFFFFFFFLL ^ *&a3;
+  v3 = (*&translation >> 63) & 0x7FFFFFFFFFFFFFFFLL ^ *&translation;
   v4 = v3 + 10;
   v5 = v3 < -10;
   v6 = 0x7FFFFFFFFFFFFFFFLL;
@@ -154,9 +154,9 @@
   *&self->_allowedTranslation = v6 ^ v4;
 }
 
-- (void)allowShift:(double)a3
+- (void)allowShift:(double)shift
 {
-  v3 = (*&a3 >> 63) & 0x7FFFFFFFFFFFFFFFLL ^ *&a3;
+  v3 = (*&shift >> 63) & 0x7FFFFFFFFFFFFFFFLL ^ *&shift;
   v4 = v3 + 10;
   v5 = v3 < -10;
   v6 = 0x7FFFFFFFFFFFFFFFLL;
@@ -168,7 +168,7 @@
   *&self->_allowedShift = v6 ^ v4;
 }
 
-- (_UISTransform3DGrade)_gradeTransform3D:(SEL)a3
+- (_UISTransform3DGrade)_gradeTransform3D:(SEL)d
 {
   if ((*&a4->m11 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&a4->m12 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&a4->m13 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&a4->m14 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&a4->m21 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&a4->m22 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&a4->m23 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&a4->m24 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&a4->m31 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&a4->m32 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&a4->m33 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&a4->m34 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&a4->m41 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&a4->m42 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&a4->m43 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&a4->m44 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
@@ -181,7 +181,7 @@
   v59 = v6;
   v60 = v4;
   v61 = v5;
-  v54 = self;
+  selfCopy = self;
   v8 = *&a4->m33;
   *&v57.m31 = *&a4->m31;
   *&v57.m33 = v8;
@@ -194,7 +194,7 @@
   v11 = *&a4->m23;
   *&v57.m21 = *&a4->m21;
   *&v57.m23 = v11;
-  self = MEMORY[0x19A8C5E60](&v57, a3);
+  self = MEMORY[0x19A8C5E60](&v57, d);
   if (self)
   {
     memset(&v56, 0, sizeof(v56));
@@ -212,12 +212,12 @@
     *&v57.m23 = v15;
     CATransform3DGetAffineTransform(&transform, &v57);
     CGAffineTransformDecompose(&v56, &transform);
-    dx = v54->var1.dx;
-    dy = v54->var1.dy;
+    dx = selfCopy->var1.dx;
+    dy = selfCopy->var1.dy;
     if (*&dy != *&dx)
     {
       v20 = (*&dy - *&dx) >> 3;
-      dy = v54->var1.dx;
+      dy = selfCopy->var1.dx;
       do
       {
         v21 = v20 >> 1;
@@ -243,13 +243,13 @@
     v16.i64[0] = *&v56.scale.width;
     v17.i64[0] = *&v56.scale.height;
     v26 = fabs(v56.scale.width);
-    if (LOBYTE(v54[3].var1.dx))
+    if (LOBYTE(selfCopy[3].var1.dx))
     {
       *v16.i64 = v26;
     }
 
     v27 = fabs(v56.scale.height);
-    if (BYTE1(v54[3].var1.dx))
+    if (BYTE1(selfCopy[3].var1.dx))
     {
       *v17.i64 = v27;
     }
@@ -263,8 +263,8 @@
       v29 = 4 * v25;
     }
 
-    v30 = v54[1].var1.dx;
-    v31 = v54[1].var1.dy;
+    v30 = selfCopy[1].var1.dx;
+    v31 = selfCopy[1].var1.dy;
     v32 = *&v31 - *&v30;
     if (*&v31 == *&v30)
     {
@@ -277,7 +277,7 @@
     else
     {
       v33 = v32 >> 3;
-      v34 = v54[1].var1.dx;
+      v34 = selfCopy[1].var1.dx;
       v35 = v33;
       do
       {
@@ -303,7 +303,7 @@
         goto LABEL_47;
       }
 
-      v31 = v54[1].var1.dx;
+      v31 = selfCopy[1].var1.dx;
       do
       {
         v40 = v33 >> 1;
@@ -328,8 +328,8 @@
     if ((((*&v31 - *&v30) >> 3) & 0x8000000000000001) == 1)
     {
 LABEL_48:
-      v46 = v54[2].var1.dy;
-      if (v54[2].var1.dx >= fabs(v56.horizontalShear))
+      v46 = selfCopy[2].var1.dy;
+      if (selfCopy[2].var1.dx >= fabs(v56.horizontalShear))
       {
         v47 = v29;
       }
@@ -365,53 +365,53 @@ LABEL_54:
   return self;
 }
 
-- (unint64_t)gradeTransform3D:(CATransform3D *)a3
+- (unint64_t)gradeTransform3D:(CATransform3D *)d
 {
-  v3 = *&a3->m33;
-  v8[4] = *&a3->m31;
+  v3 = *&d->m33;
+  v8[4] = *&d->m31;
   v8[5] = v3;
-  v4 = *&a3->m43;
-  v8[6] = *&a3->m41;
+  v4 = *&d->m43;
+  v8[6] = *&d->m41;
   v8[7] = v4;
-  v5 = *&a3->m13;
-  v8[0] = *&a3->m11;
+  v5 = *&d->m13;
+  v8[0] = *&d->m11;
   v8[1] = v5;
-  v6 = *&a3->m23;
-  v8[2] = *&a3->m21;
+  v6 = *&d->m23;
+  v8[2] = *&d->m21;
   v8[3] = v6;
   [(UISTransform3DGrader *)self _gradeTransform3D:v8];
   return v9;
 }
 
-- (unint64_t)gradeStartTransform3D:(CATransform3D *)a3 endTransform3D:(CATransform3D *)a4
+- (unint64_t)gradeStartTransform3D:(CATransform3D *)d endTransform3D:(CATransform3D *)transform3D
 {
   v25 = 0;
   v26 = 0.0;
   v27 = 0.0;
-  v6 = *&a3->m33;
-  v21 = *&a3->m31;
+  v6 = *&d->m33;
+  v21 = *&d->m31;
   v22 = v6;
-  v7 = *&a3->m43;
-  v23 = *&a3->m41;
+  v7 = *&d->m43;
+  v23 = *&d->m41;
   v24 = v7;
-  v8 = *&a3->m13;
-  v17 = *&a3->m11;
+  v8 = *&d->m13;
+  v17 = *&d->m11;
   v18 = v8;
-  v9 = *&a3->m23;
-  v19 = *&a3->m21;
+  v9 = *&d->m23;
+  v19 = *&d->m21;
   v20 = v9;
   [(UISTransform3DGrader *)self _gradeTransform3D:&v17];
-  v10 = *&a4->m33;
-  v21 = *&a4->m31;
+  v10 = *&transform3D->m33;
+  v21 = *&transform3D->m31;
   v22 = v10;
-  v11 = *&a4->m43;
-  v23 = *&a4->m41;
+  v11 = *&transform3D->m43;
+  v23 = *&transform3D->m41;
   v24 = v11;
-  v12 = *&a4->m13;
-  v17 = *&a4->m11;
+  v12 = *&transform3D->m13;
+  v17 = *&transform3D->m11;
   v18 = v12;
-  v13 = *&a4->m23;
-  v19 = *&a4->m21;
+  v13 = *&transform3D->m23;
+  v19 = *&transform3D->m21;
   v20 = v13;
   [(UISTransform3DGrader *)self _gradeTransform3D:&v17];
   allowedShift = self->_allowedShift;

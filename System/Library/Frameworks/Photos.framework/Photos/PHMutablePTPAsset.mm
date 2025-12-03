@@ -1,122 +1,122 @@
 @interface PHMutablePTPAsset
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)updateForTranscodeChoiceWithConversionResult:(id)a3;
-- (void)setBurstUUID:(id)a3;
-- (void)setCaptureDateString:(id)a3;
-- (void)setCapturedFilename:(id)a3;
-- (void)setDcfFilename:(id)a3;
-- (void)setDurationString:(id)a3;
-- (void)setFileSystemFilename:(id)a3;
-- (void)setFingerprint:(id)a3;
-- (void)setGroupUUID:(id)a3;
-- (void)setLocationString:(id)a3;
-- (void)setModificationDateString:(id)a3;
-- (void)setObjectCompressedSize:(id)a3;
-- (void)setOriginatingAssetID:(id)a3;
-- (void)setThumbCompressedSize:(id)a3;
-- (void)setThumbOffset:(id)a3;
-- (void)updateWithConversionResult:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)updateForTranscodeChoiceWithConversionResult:(id)result;
+- (void)setBurstUUID:(id)d;
+- (void)setCaptureDateString:(id)string;
+- (void)setCapturedFilename:(id)filename;
+- (void)setDcfFilename:(id)filename;
+- (void)setDurationString:(id)string;
+- (void)setFileSystemFilename:(id)filename;
+- (void)setFingerprint:(id)fingerprint;
+- (void)setGroupUUID:(id)d;
+- (void)setLocationString:(id)string;
+- (void)setModificationDateString:(id)string;
+- (void)setObjectCompressedSize:(id)size;
+- (void)setOriginatingAssetID:(id)d;
+- (void)setThumbCompressedSize:(id)size;
+- (void)setThumbOffset:(id)offset;
+- (void)updateWithConversionResult:(id)result;
 @end
 
 @implementation PHMutablePTPAsset
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PHPTPAsset alloc];
 
   return [(PHPTPAsset *)v4 initWithPTPAsset:self];
 }
 
-- (void)updateWithConversionResult:(id)a3
+- (void)updateWithConversionResult:(id)result
 {
-  v26 = a3;
-  if ([v26 outputVideoCodec])
+  resultCopy = result;
+  if ([resultCopy outputVideoCodec])
   {
-    self->super._videoCodec = [v26 outputVideoCodec];
+    self->super._videoCodec = [resultCopy outputVideoCodec];
   }
 
-  v4 = [v26 outputContentType];
+  outputContentType = [resultCopy outputContentType];
   contentType = self->super._contentType;
-  self->super._contentType = v4;
+  self->super._contentType = outputContentType;
 
-  if ([v26 requiresConversion])
+  if ([resultCopy requiresConversion])
   {
     v6 = [PHPTPAssetHandle alloc];
-    v7 = [(PHPTPAssetHandle *)self->super._resourceHandle resourceType];
-    v8 = [(PHPTPAssetHandle *)self->super._resourceHandle orientation];
-    v9 = [(PHPTPAssetHandle *)self->super._resourceHandle localIdentifier];
-    v10 = [(PHPTPAssetHandle *)v6 initWithResourceType:v7 orientation:v8 localIdentifier:v9 requiresConversion:1];
+    resourceType = [(PHPTPAssetHandle *)self->super._resourceHandle resourceType];
+    orientation = [(PHPTPAssetHandle *)self->super._resourceHandle orientation];
+    localIdentifier = [(PHPTPAssetHandle *)self->super._resourceHandle localIdentifier];
+    v10 = [(PHPTPAssetHandle *)v6 initWithResourceType:resourceType orientation:orientation localIdentifier:localIdentifier requiresConversion:1];
     resourceHandle = self->super._resourceHandle;
     self->super._resourceHandle = v10;
 
-    v12 = [(NSString *)self->super._dcfFilename stringByDeletingPathExtension];
-    v13 = [v26 pathExtension];
-    v14 = [v12 stringByAppendingPathExtension:v13];
+    stringByDeletingPathExtension = [(NSString *)self->super._dcfFilename stringByDeletingPathExtension];
+    pathExtension = [resultCopy pathExtension];
+    v14 = [stringByDeletingPathExtension stringByAppendingPathExtension:pathExtension];
     dcfFilename = self->super._dcfFilename;
     self->super._dcfFilename = v14;
 
-    v16 = [(NSString *)self->super._capturedFilename stringByDeletingPathExtension];
-    v17 = [v26 pathExtension];
-    v18 = [v16 stringByAppendingPathExtension:v17];
+    stringByDeletingPathExtension2 = [(NSString *)self->super._capturedFilename stringByDeletingPathExtension];
+    pathExtension2 = [resultCopy pathExtension];
+    v18 = [stringByDeletingPathExtension2 stringByAppendingPathExtension:pathExtension2];
     capturedFilename = self->super._capturedFilename;
     self->super._capturedFilename = v18;
 
-    v20 = [(NSString *)self->super._fileSystemFilename stringByDeletingPathExtension];
-    v21 = [v26 pathExtension];
-    v22 = [v20 stringByAppendingPathExtension:v21];
+    stringByDeletingPathExtension3 = [(NSString *)self->super._fileSystemFilename stringByDeletingPathExtension];
+    pathExtension3 = [resultCopy pathExtension];
+    v22 = [stringByDeletingPathExtension3 stringByAppendingPathExtension:pathExtension3];
     fileSystemFilename = self->super._fileSystemFilename;
     self->super._fileSystemFilename = v22;
 
-    v24 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v26, "estimatedFileLength")}];
+    v24 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(resultCopy, "estimatedFileLength")}];
     objectCompressedSize = self->super._objectCompressedSize;
     self->super._objectCompressedSize = v24;
   }
 }
 
-- (id)updateForTranscodeChoiceWithConversionResult:(id)a3
+- (id)updateForTranscodeChoiceWithConversionResult:(id)result
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  self->super._videoCodec = [v4 inputVideoCodec];
-  v5 = [v4 inputContentType];
+  resultCopy = result;
+  self->super._videoCodec = [resultCopy inputVideoCodec];
+  inputContentType = [resultCopy inputContentType];
   contentType = self->super._contentType;
-  self->super._contentType = v5;
+  self->super._contentType = inputContentType;
 
-  if ([v4 requiresConversion])
+  if ([resultCopy requiresConversion])
   {
     self->super._conversionGroup = 1;
     v7 = [(PHMutablePTPAsset *)self mutableCopy];
     if (v7)
     {
       v8 = [PHPTPAssetHandle alloc];
-      v9 = [(PHPTPAssetHandle *)self->super._resourceHandle resourceType];
-      v10 = [(PHPTPAssetHandle *)self->super._resourceHandle orientation];
-      v11 = [(PHPTPAssetHandle *)self->super._resourceHandle localIdentifier];
-      v12 = [(PHPTPAssetHandle *)v8 initWithResourceType:v9 orientation:v10 localIdentifier:v11 requiresConversion:1];
+      resourceType = [(PHPTPAssetHandle *)self->super._resourceHandle resourceType];
+      orientation = [(PHPTPAssetHandle *)self->super._resourceHandle orientation];
+      localIdentifier = [(PHPTPAssetHandle *)self->super._resourceHandle localIdentifier];
+      v12 = [(PHPTPAssetHandle *)v8 initWithResourceType:resourceType orientation:orientation localIdentifier:localIdentifier requiresConversion:1];
       [v7 setResourceHandle:v12];
 
       [v7 setConversionGroup:2];
-      v13 = [(NSString *)self->super._capturedFilename stringByDeletingPathExtension];
-      v14 = [v4 pathExtension];
-      v15 = [v13 stringByAppendingPathExtension:v14];
+      stringByDeletingPathExtension = [(NSString *)self->super._capturedFilename stringByDeletingPathExtension];
+      pathExtension = [resultCopy pathExtension];
+      v15 = [stringByDeletingPathExtension stringByAppendingPathExtension:pathExtension];
       [v7 setCapturedFilename:v15];
 
-      v16 = [(NSString *)self->super._dcfFilename stringByDeletingPathExtension];
-      v17 = [v4 pathExtension];
-      v18 = [v16 stringByAppendingPathExtension:v17];
+      stringByDeletingPathExtension2 = [(NSString *)self->super._dcfFilename stringByDeletingPathExtension];
+      pathExtension2 = [resultCopy pathExtension];
+      v18 = [stringByDeletingPathExtension2 stringByAppendingPathExtension:pathExtension2];
       [v7 setDcfFilename:v18];
 
-      v19 = [(NSString *)self->super._fileSystemFilename stringByDeletingPathExtension];
-      v20 = [v4 pathExtension];
-      v21 = [v19 stringByAppendingPathExtension:v20];
+      stringByDeletingPathExtension3 = [(NSString *)self->super._fileSystemFilename stringByDeletingPathExtension];
+      pathExtension3 = [resultCopy pathExtension];
+      v21 = [stringByDeletingPathExtension3 stringByAppendingPathExtension:pathExtension3];
       [v7 setFileSystemFilename:v21];
 
-      v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v4, "estimatedFileLength")}];
+      v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(resultCopy, "estimatedFileLength")}];
       [v7 setObjectCompressedSize:v22];
 
-      [v7 setVideoCodec:{objc_msgSend(v4, "outputVideoCodec")}];
-      v23 = [v4 outputContentType];
-      [v7 setContentType:v23];
+      [v7 setVideoCodec:{objc_msgSend(resultCopy, "outputVideoCodec")}];
+      outputContentType = [resultCopy outputContentType];
+      [v7 setContentType:outputContentType];
 
       v24 = v7;
     }
@@ -127,7 +127,7 @@
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         v27 = 138412290;
-        v28 = self;
+        selfCopy = self;
         _os_log_impl(&dword_19C86F000, v25, OS_LOG_TYPE_ERROR, "Expected a successful copy of %@", &v27, 0xCu);
       }
     }
@@ -141,100 +141,100 @@
   return v7;
 }
 
-- (void)setBurstUUID:(id)a3
+- (void)setBurstUUID:(id)d
 {
-  self->super._burstUUID = [a3 copy];
+  self->super._burstUUID = [d copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setGroupUUID:(id)a3
+- (void)setGroupUUID:(id)d
 {
-  self->super._groupUUID = [a3 copy];
+  self->super._groupUUID = [d copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setLocationString:(id)a3
+- (void)setLocationString:(id)string
 {
-  self->super._locationString = [a3 copy];
+  self->super._locationString = [string copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setDurationString:(id)a3
+- (void)setDurationString:(id)string
 {
-  self->super._durationString = [a3 copy];
+  self->super._durationString = [string copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCaptureDateString:(id)a3
+- (void)setCaptureDateString:(id)string
 {
-  self->super._captureDateString = [a3 copy];
+  self->super._captureDateString = [string copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setModificationDateString:(id)a3
+- (void)setModificationDateString:(id)string
 {
-  self->super._modificationDateString = [a3 copy];
+  self->super._modificationDateString = [string copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setThumbCompressedSize:(id)a3
+- (void)setThumbCompressedSize:(id)size
 {
-  self->super._thumbCompressedSize = [a3 copy];
+  self->super._thumbCompressedSize = [size copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setThumbOffset:(id)a3
+- (void)setThumbOffset:(id)offset
 {
-  self->super._thumbOffset = [a3 copy];
+  self->super._thumbOffset = [offset copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setOriginatingAssetID:(id)a3
+- (void)setOriginatingAssetID:(id)d
 {
-  self->super._originatingAssetID = [a3 copy];
+  self->super._originatingAssetID = [d copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setFingerprint:(id)a3
+- (void)setFingerprint:(id)fingerprint
 {
-  self->super._fingerprint = [a3 copy];
+  self->super._fingerprint = [fingerprint copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setObjectCompressedSize:(id)a3
+- (void)setObjectCompressedSize:(id)size
 {
-  self->super._objectCompressedSize = [a3 copy];
+  self->super._objectCompressedSize = [size copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setFileSystemFilename:(id)a3
+- (void)setFileSystemFilename:(id)filename
 {
-  self->super._fileSystemFilename = [a3 copy];
+  self->super._fileSystemFilename = [filename copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCapturedFilename:(id)a3
+- (void)setCapturedFilename:(id)filename
 {
-  self->super._capturedFilename = [a3 copy];
+  self->super._capturedFilename = [filename copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setDcfFilename:(id)a3
+- (void)setDcfFilename:(id)filename
 {
-  self->super._dcfFilename = [a3 copy];
+  self->super._dcfFilename = [filename copy];
 
   MEMORY[0x1EEE66BB8]();
 }

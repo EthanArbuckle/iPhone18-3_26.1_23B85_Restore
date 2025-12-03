@@ -1,22 +1,22 @@
 @interface CalAccountsDatabaseMigrationReadOnlyAccountStore
-+ (id)_unarchiveData:(id)a3;
-+ (int)_calendarDataClassIdentifier:(sqlite3 *)a3;
-- (CalAccountsDatabaseMigrationReadOnlyAccountStore)initWithDatabaseURL:(id)a3;
-- (id)accountWithIdentifier:(id)a3;
-- (id)childAccountsForAccount:(id)a3 withTypeIdentifier:(id)a4;
-- (id)topLevelAccountsWithAccountTypeIdentifier:(id)a3 error:(id *)a4;
++ (id)_unarchiveData:(id)data;
++ (int)_calendarDataClassIdentifier:(sqlite3 *)identifier;
+- (CalAccountsDatabaseMigrationReadOnlyAccountStore)initWithDatabaseURL:(id)l;
+- (id)accountWithIdentifier:(id)identifier;
+- (id)childAccountsForAccount:(id)account withTypeIdentifier:(id)identifier;
+- (id)topLevelAccountsWithAccountTypeIdentifier:(id)identifier error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation CalAccountsDatabaseMigrationReadOnlyAccountStore
 
-- (CalAccountsDatabaseMigrationReadOnlyAccountStore)initWithDatabaseURL:(id)a3
+- (CalAccountsDatabaseMigrationReadOnlyAccountStore)initWithDatabaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = CalAccountsDatabaseMigrationReadOnlyAccountStore;
   v5 = [(CalAccountsDatabaseMigrationReadOnlyAccountStore *)&v11 init];
-  if (v5 && ([v4 path], v6 = objc_claimAutoreleasedReturnValue(), v7 = sqlite3_open(objc_msgSend(v6, "UTF8String"), &v5->_database), v6, v7))
+  if (v5 && ([lCopy path], v6 = objc_claimAutoreleasedReturnValue(), v7 = sqlite3_open(objc_msgSend(v6, "UTF8String"), &v5->_database), v6, v7))
   {
     v8 = +[CalMigrationLog defaultCategory];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -44,9 +44,9 @@
   [(CalAccountsDatabaseMigrationReadOnlyAccountStore *)&v3 dealloc];
 }
 
-- (id)accountWithIdentifier:(id)a3
+- (id)accountWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   ppStmt = 0;
   if (sqlite3_prepare_v2(self->_database, "SELECT ZACCOUNT.Z_PK, ZPARENTACCOUNT, ZACCOUNTTYPE.ZIDENTIFIER, ZACCOUNTDESCRIPTION, ZVISIBLE, ZAUTHENTICATED, ZUSERNAME, ? IN (SELECT Z_7ENABLEDDATACLASSES FROM Z_2ENABLEDDATACLASSES WHERE Z_2ENABLEDACCOUNTS = ZACCOUNT.Z_PK), ? IN (SELECT Z_7PROVISIONEDDATACLASSES FROM Z_2PROVISIONEDDATACLASSES WHERE Z_2PROVISIONEDACCOUNTS = ZACCOUNT.Z_PK) FROM ZACCOUNT JOIN ZACCOUNTTYPE ON (ZACCOUNT.ZACCOUNTTYPE = ZACCOUNTTYPE.Z_PK) WHERE ZACCOUNT.ZIDENTIFIER = ?", -1, &ppStmt, 0))
   {
@@ -96,7 +96,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (sqlite3_bind_text(ppStmt, 3, [v4 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL))
+  if (sqlite3_bind_text(ppStmt, 3, [identifierCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL))
   {
     v8 = +[CalMigrationLog defaultCategory];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -238,7 +238,7 @@ LABEL_7:
     v34 = v15;
     v38 = v41;
     v32 = v45;
-    v11 = [(CalAccountsDatabaseMigrationReadOnlyAccount *)v40 initWithIdentifier:v4 parentIdentifier:v41 accountTypeIdentifier:v35 description:v36 enabledForCalendarDataClass:v44 != 0 provisionedForCalendarDataClass:v43 != 0 visible:v39 authenticated:v37 username:v21 properties:?];
+    v11 = [(CalAccountsDatabaseMigrationReadOnlyAccount *)v40 initWithIdentifier:identifierCopy parentIdentifier:v41 accountTypeIdentifier:v35 description:v36 enabledForCalendarDataClass:v44 != 0 provisionedForCalendarDataClass:v43 != 0 visible:v39 authenticated:v37 username:v21 properties:?];
 
     v33 = *v47;
   }
@@ -248,7 +248,7 @@ LABEL_7:
     BYTE1(v39) = v17 != 0;
     LOBYTE(v39) = v42 != 0;
     v38 = v41;
-    v11 = [(CalAccountsDatabaseMigrationReadOnlyAccount *)v40 initWithIdentifier:v4 parentIdentifier:v41 accountTypeIdentifier:v35 description:v36 enabledForCalendarDataClass:v44 != 0 provisionedForCalendarDataClass:v43 != 0 visible:v39 authenticated:0 username:v21 properties:?];
+    v11 = [(CalAccountsDatabaseMigrationReadOnlyAccount *)v40 initWithIdentifier:identifierCopy parentIdentifier:v41 accountTypeIdentifier:v35 description:v36 enabledForCalendarDataClass:v44 != 0 provisionedForCalendarDataClass:v43 != 0 visible:v39 authenticated:0 username:v21 properties:?];
   }
 
   if (v34)
@@ -268,7 +268,7 @@ LABEL_16:
   return v11;
 }
 
-- (id)topLevelAccountsWithAccountTypeIdentifier:(id)a3 error:(id *)a4
+- (id)topLevelAccountsWithAccountTypeIdentifier:(id)identifier error:(id *)error
 {
   ppStmt = 0;
   p_database = &self->_database;
@@ -280,10 +280,10 @@ LABEL_16:
       [CalAccountsDatabaseMigrationReadOnlyAccountStore accountWithIdentifier:?];
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"kCalAccountsDatabaseMigrationReadOnlyAccountStoreErrorDomain" code:0 userInfo:0];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
     }
 
     else
@@ -328,9 +328,9 @@ LABEL_16:
       }
 
 LABEL_15:
-      if (a4)
+      if (error)
       {
-        *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kCalAccountsDatabaseMigrationReadOnlyAccountStoreErrorDomain" code:0 userInfo:0];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"kCalAccountsDatabaseMigrationReadOnlyAccountStoreErrorDomain" code:0 userInfo:0];
       }
 
       v8 = 0;
@@ -343,9 +343,9 @@ LABEL_18:
   return v8;
 }
 
-- (id)childAccountsForAccount:(id)a3 withTypeIdentifier:(id)a4
+- (id)childAccountsForAccount:(id)account withTypeIdentifier:(id)identifier
 {
-  v5 = a3;
+  accountCopy = account;
   ppStmt = 0;
   p_database = &self->_database;
   if (sqlite3_prepare_v2(self->_database, "SELECT ZIDENTIFIER FROM ZACCOUNT WHERE ZPARENTACCOUNT = ?", -1, &ppStmt, 0))
@@ -362,8 +362,8 @@ LABEL_9:
   }
 
   v8 = ppStmt;
-  v9 = [v5 identifier];
-  LODWORD(v8) = sqlite3_bind_text(v8, 1, [v9 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  identifier = [accountCopy identifier];
+  LODWORD(v8) = sqlite3_bind_text(v8, 1, [identifier UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
 
   if (v8)
   {
@@ -421,11 +421,11 @@ LABEL_10:
   return v11;
 }
 
-+ (id)_unarchiveData:(id)a3
++ (id)_unarchiveData:(id)data
 {
   v13[4] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB98];
-  v4 = a3;
+  dataCopy = data;
   v5 = [v3 alloc];
   v13[0] = objc_opt_class();
   v13[1] = objc_opt_class();
@@ -435,7 +435,7 @@ LABEL_10:
   v7 = [v5 initWithArray:v6];
 
   v12 = 0;
-  v8 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v7 fromData:v4 error:&v12];
+  v8 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v7 fromData:dataCopy error:&v12];
 
   if (v8)
   {
@@ -447,14 +447,14 @@ LABEL_10:
   return v8;
 }
 
-+ (int)_calendarDataClassIdentifier:(sqlite3 *)a3
++ (int)_calendarDataClassIdentifier:(sqlite3 *)identifier
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __81__CalAccountsDatabaseMigrationReadOnlyAccountStore__calendarDataClassIdentifier___block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
-  v4[4] = a3;
-  v4[5] = a1;
+  v4[4] = identifier;
+  v4[5] = self;
   if (_calendarDataClassIdentifier__onceToken != -1)
   {
     dispatch_once(&_calendarDataClassIdentifier__onceToken, v4);

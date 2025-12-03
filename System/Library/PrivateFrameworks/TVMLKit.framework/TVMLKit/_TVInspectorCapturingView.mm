@@ -1,33 +1,33 @@
 @interface _TVInspectorCapturingView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (UILabel)descriptionLabel;
-- (_TVInspectorCapturingView)initWithFrame:(CGRect)a3;
+- (_TVInspectorCapturingView)initWithFrame:(CGRect)frame;
 - (_TVInspectorCapturingViewDelegate)delegate;
-- (void)didTapView:(id)a3;
+- (void)didTapView:(id)view;
 - (void)layoutSubviews;
 @end
 
 @implementation _TVInspectorCapturingView
 
-- (_TVInspectorCapturingView)initWithFrame:(CGRect)a3
+- (_TVInspectorCapturingView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = _TVInspectorCapturingView;
-  v3 = [(_TVInspectorCapturingView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVInspectorCapturingView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_testingHits = 0;
     [(_TVInspectorCapturingView *)v3 setUserInteractionEnabled:1];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(_TVInspectorCapturingView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(_TVInspectorCapturingView *)v4 setBackgroundColor:clearColor];
 
-    v6 = [(_TVInspectorCapturingView *)v4 layer];
-    v7 = [MEMORY[0x277D75348] systemBlueColor];
-    [v6 setBorderColor:{objc_msgSend(v7, "CGColor")}];
+    layer = [(_TVInspectorCapturingView *)v4 layer];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [layer setBorderColor:{objc_msgSend(systemBlueColor, "CGColor")}];
 
-    v8 = [(_TVInspectorCapturingView *)v4 layer];
-    [v8 setBorderWidth:10.0];
+    layer2 = [(_TVInspectorCapturingView *)v4 layer];
+    [layer2 setBorderWidth:10.0];
 
     v9 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v4 action:sel_didTapView_];
     [v9 setNumberOfTapsRequired:1];
@@ -46,11 +46,11 @@
   {
     v4 = objc_alloc(MEMORY[0x277D756B8]);
     v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-    v6 = [MEMORY[0x277D75348] systemBlueColor];
-    [v5 setBackgroundColor:v6];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [v5 setBackgroundColor:systemBlueColor];
 
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    [v5 setTextColor:v7];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v5 setTextColor:whiteColor];
 
     [v5 setText:@"Tap a view to inspect"];
     [v5 setTextAlignment:1];
@@ -72,22 +72,22 @@
   *&rect.origin.y = self;
   *&rect.size.width = _TVInspectorCapturingView;
   [(CGFloat *)&rect.origin.y layoutSubviews];
-  v3 = [(_TVInspectorCapturingView *)self descriptionLabel];
-  [v3 sizeToFit];
+  descriptionLabel = [(_TVInspectorCapturingView *)self descriptionLabel];
+  [descriptionLabel sizeToFit];
 
   [(_TVInspectorCapturingView *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(_TVInspectorCapturingView *)self descriptionLabel];
-  [v12 bounds];
+  descriptionLabel2 = [(_TVInspectorCapturingView *)self descriptionLabel];
+  [descriptionLabel2 bounds];
   rect.origin.x = v13;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  v20 = [(_TVInspectorCapturingView *)self descriptionLabel];
+  descriptionLabel3 = [(_TVInspectorCapturingView *)self descriptionLabel];
   v24.origin.x = v5;
   v24.origin.y = v7;
   v24.size.width = v9;
@@ -102,48 +102,48 @@
   v26.origin.y = v7;
   v26.size.width = v9;
   v26.size.height = v11;
-  [v20 setFrame:{v22, CGRectGetMaxY(v26) + -10.0 - v19 + -10.0, v17 + 10.0, v19 + 10.0}];
+  [descriptionLabel3 setFrame:{v22, CGRectGetMaxY(v26) + -10.0 - v19 + -10.0, v17 + 10.0, v19 + 10.0}];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = _TVInspectorCapturingView;
-  v5 = [(_TVInspectorCapturingView *)&v7 pointInside:a4 withEvent:a3.x, a3.y];
+  v5 = [(_TVInspectorCapturingView *)&v7 pointInside:event withEvent:inside.x, inside.y];
   return ![(_TVInspectorCapturingView *)self isTestingHits]& v5;
 }
 
-- (void)didTapView:(id)a3
+- (void)didTapView:(id)view
 {
-  v4 = a3;
-  v5 = [(_TVInspectorCapturingView *)self delegate];
+  viewCopy = view;
+  delegate = [(_TVInspectorCapturingView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(_TVInspectorCapturingView *)self delegate];
-    v15 = [v6 rootView];
+    delegate2 = [(_TVInspectorCapturingView *)self delegate];
+    rootView = [delegate2 rootView];
   }
 
   else
   {
-    v15 = 0;
+    rootView = 0;
   }
 
   self->_testingHits = 1;
-  [v4 locationInView:self];
+  [viewCopy locationInView:self];
   v8 = v7;
   v10 = v9;
 
-  v11 = [v15 hitTest:0 withEvent:{v8, v10}];
+  v11 = [rootView hitTest:0 withEvent:{v8, v10}];
   self->_testingHits = 0;
   if (v11)
   {
-    v12 = [(_TVInspectorCapturingView *)self delegate];
+    delegate3 = [(_TVInspectorCapturingView *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(_TVInspectorCapturingView *)self delegate];
-      [v14 capturingView:self didCaptureTapOnView:v11];
+      delegate4 = [(_TVInspectorCapturingView *)self delegate];
+      [delegate4 capturingView:self didCaptureTapOnView:v11];
     }
   }
 }

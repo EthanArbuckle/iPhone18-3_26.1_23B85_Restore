@@ -1,6 +1,6 @@
 @interface NUExportJob
-- (NUExportJob)initWithExportRequest:(id)a3;
-- (NUExportJob)initWithRequest:(id)a3;
+- (NUExportJob)initWithExportRequest:(id)request;
+- (NUExportJob)initWithRequest:(id)request;
 - (id)result;
 - (id)scalePolicy;
 @end
@@ -10,28 +10,28 @@
 - (id)result
 {
   v3 = objc_alloc_init(_NUExportResult);
-  v4 = [(NUExportJob *)self exportRequest];
-  v5 = [v4 destinationURL];
-  [(_NUExportResult *)v3 setDestinationURL:v5];
+  exportRequest = [(NUExportJob *)self exportRequest];
+  destinationURL = [exportRequest destinationURL];
+  [(_NUExportResult *)v3 setDestinationURL:destinationURL];
 
-  v6 = [(NURenderJob *)self outputGeometry];
-  [(_NUExportResult *)v3 setGeometry:v6];
+  outputGeometry = [(NURenderJob *)self outputGeometry];
+  [(_NUExportResult *)v3 setGeometry:outputGeometry];
 
   return v3;
 }
 
 - (id)scalePolicy
 {
-  v2 = [(NUExportJob *)self exportRequest];
-  v3 = [v2 scalePolicy];
+  exportRequest = [(NUExportJob *)self exportRequest];
+  scalePolicy = [exportRequest scalePolicy];
 
-  return v3;
+  return scalePolicy;
 }
 
-- (NUExportJob)initWithRequest:(id)a3
+- (NUExportJob)initWithRequest:(id)request
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_26443);
@@ -75,8 +75,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -92,8 +92,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;
@@ -109,11 +109,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUExportJob initWithRequest:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUExportJob.m", 21, @"Initializer not available: [%@ %@], use designated initializer instead.", v27, v28, v29, v30, v26);
 }
 
-- (NUExportJob)initWithExportRequest:(id)a3
+- (NUExportJob)initWithExportRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = NUExportJob;
-  return [(NURenderJob *)&v4 initWithRequest:a3];
+  return [(NURenderJob *)&v4 initWithRequest:request];
 }
 
 @end

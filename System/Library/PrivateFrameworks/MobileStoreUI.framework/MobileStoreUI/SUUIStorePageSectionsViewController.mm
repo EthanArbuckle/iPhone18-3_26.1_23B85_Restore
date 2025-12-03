@@ -1,124 +1,124 @@
 @interface SUUIStorePageSectionsViewController
-+ (id)viewControllerWithRestorationIdentifierPath:(id)a3 coder:(id)a4;
-- (BOOL)collectionView:(id)a3 canScrollCellAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (BOOL)performTestWithName:(id)a3 options:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
++ (id)viewControllerWithRestorationIdentifierPath:(id)path coder:(id)coder;
+- (BOOL)collectionView:(id)view canScrollCellAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (BOOL)performTestWithName:(id)name options:(id)options;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (SUUICollectionViewPullToRefreshDelegate)pullToRefreshDelegate;
 - (SUUIResourceLoader)resourceLoader;
 - (SUUIStorePageSectionsDelegate)delegate;
-- (SUUIStorePageSectionsViewController)initWithLayoutStyle:(int64_t)a3;
+- (SUUIStorePageSectionsViewController)initWithLayoutStyle:(int64_t)style;
 - (UICollectionView)collectionView;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 pinningContentInsetForItemAtIndexPath:(id)a5;
-- (id)_childSectionsForMenuComponent:(id)a3 selectedIndex:(int64_t)a4;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout pinningContentInsetForItemAtIndexPath:(id)path;
+- (id)_childSectionsForMenuComponent:(id)component selectedIndex:(int64_t)index;
 - (id)_collectionViewSublayouts;
-- (id)_createSectionsForExpandPageComponent:(id)a3 context:(id)a4 newSections:(id)a5 sectionCount:(int64_t)a6 sectionsByViewElement:(id)a7 updateStyle:(int64_t)a8;
+- (id)_createSectionsForExpandPageComponent:(id)component context:(id)context newSections:(id)sections sectionCount:(int64_t)count sectionsByViewElement:(id)element updateStyle:(int64_t)style;
 - (id)_currentBackdropGroupName;
-- (id)_defaultSectionForGridComponent:(id)a3;
-- (id)_defaultSectionForSwooshComponent:(id)a3;
-- (id)_expandContextForMenuComponent:(id)a3;
+- (id)_defaultSectionForGridComponent:(id)component;
+- (id)_defaultSectionForSwooshComponent:(id)component;
+- (id)_expandContextForMenuComponent:(id)component;
 - (id)_impressionableViewElements;
-- (id)_menuContextForMenuComponent:(id)a3;
+- (id)_menuContextForMenuComponent:(id)component;
 - (id)_newSectionContext;
-- (id)_newSectionsWithPageComponent:(id)a3;
-- (id)_newSectionsWithPageComponents:(id)a3;
+- (id)_newSectionsWithPageComponent:(id)component;
+- (id)_newSectionsWithPageComponents:(id)components;
 - (id)_newStorePageCollectionViewLayout;
 - (id)_prepareLayoutForSections;
-- (id)_splitForSectionIndex:(int64_t)a3;
+- (id)_splitForSectionIndex:(int64_t)index;
 - (id)_textLayoutCache;
 - (id)_visibleMetricsImpressionsString;
-- (id)backgroundColorForSection:(int64_t)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)defaultSectionForComponent:(id)a3;
-- (id)indexPathsForGradientItemsInCollectionView:(id)a3 layout:(id)a4;
-- (id)indexPathsForPinningItemsInCollectionView:(id)a3 layout:(id)a4;
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4;
-- (int64_t)collectionView:(id)a3 layout:(id)a4 pinningGroupForItemAtIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 layout:(id)a4 pinningStyleForItemAtIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 layout:(id)a4 pinningTransitionStyleForItemAtIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)SUUICollectionViewWillLayoutSubviews:(id)a3;
-- (void)_applyColorScheme:(id)a3 toIndexBarControl:(id)a4;
+- (id)backgroundColorForSection:(int64_t)section;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)defaultSectionForComponent:(id)component;
+- (id)indexPathsForGradientItemsInCollectionView:(id)view layout:(id)layout;
+- (id)indexPathsForPinningItemsInCollectionView:(id)view layout:(id)layout;
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location;
+- (int64_t)collectionView:(id)view layout:(id)layout pinningGroupForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view layout:(id)layout pinningStyleForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view layout:(id)layout pinningTransitionStyleForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)SUUICollectionViewWillLayoutSubviews:(id)subviews;
+- (void)_applyColorScheme:(id)scheme toIndexBarControl:(id)control;
 - (void)_beginActiveImpressionsForImpressionableViewElements;
-- (void)_deselectCellsForAppearance:(BOOL)a3;
+- (void)_deselectCellsForAppearance:(BOOL)appearance;
 - (void)_endAllPendingActiveImpression;
 - (void)_endIgnoringSectionChanges;
-- (void)_entityProviderDidInvalidateNotification:(id)a3;
-- (void)_enumerateSectionContextsUsingBlock:(id)a3;
-- (void)_enumerateVisibleSectionsUsingBlock:(id)a3;
-- (void)_handleTap:(id)a3;
-- (void)_insertSectionsWithComponents:(id)a3 afterSection:(id)a4;
+- (void)_entityProviderDidInvalidateNotification:(id)notification;
+- (void)_enumerateSectionContextsUsingBlock:(id)block;
+- (void)_enumerateVisibleSectionsUsingBlock:(id)block;
+- (void)_handleTap:(id)tap;
+- (void)_insertSectionsWithComponents:(id)components afterSection:(id)section;
 - (void)_invalidateIfLastKnownWidthChanged;
-- (void)_invalidateLayoutWithNewSize:(CGSize)a3 transitionCoordinator:(id)a4;
-- (void)_longPressAction:(id)a3;
-- (void)_pageSectionDidDismissOverlayController:(id)a3;
-- (void)_registerForNotificationsForEntityProvider:(id)a3;
+- (void)_invalidateLayoutWithNewSize:(CGSize)size transitionCoordinator:(id)coordinator;
+- (void)_longPressAction:(id)action;
+- (void)_pageSectionDidDismissOverlayController:(id)controller;
+- (void)_registerForNotificationsForEntityProvider:(id)provider;
 - (void)_reloadCollectionView;
 - (void)_reloadRelevantEntityProviders;
 - (void)_scrollFirstAppearanceSectionToView;
-- (void)_setActiveProductPageOverlayController:(id)a3;
-- (void)_setPageSize:(CGSize)a3;
-- (void)_setRendersWithParallax:(BOOL)a3;
-- (void)_setRendersWithPerspective:(BOOL)a3;
-- (void)_setSelectedIndex:(int64_t)a3 forMenuSection:(id)a4;
-- (void)_startRefresh:(id)a3;
-- (void)_unregisterForNotificationsForEntityProvider:(id)a3;
-- (void)_updateCollectionViewWithUpdates:(id)a3;
+- (void)_setActiveProductPageOverlayController:(id)controller;
+- (void)_setPageSize:(CGSize)size;
+- (void)_setRendersWithParallax:(BOOL)parallax;
+- (void)_setRendersWithPerspective:(BOOL)perspective;
+- (void)_setSelectedIndex:(int64_t)index forMenuSection:(id)section;
+- (void)_startRefresh:(id)refresh;
+- (void)_unregisterForNotificationsForEntityProvider:(id)provider;
+- (void)_updateCollectionViewWithUpdates:(id)updates;
 - (void)_updateSectionsAfterMenuChange;
-- (void)_updateSectionsForIndex:(int64_t)a3 menuSection:(id)a4;
-- (void)collectionView:(id)a3 didConfirmButtonElement:(id)a4 withClickInfo:(id)a5 forItemAtIndexPath:(id)a6;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didEndEditingItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 editorialView:(id)a4 didSelectLink:(id)a5;
-- (void)collectionView:(id)a3 expandEditorialForLabelElement:(id)a4 indexPath:(id)a5;
-- (void)collectionView:(id)a3 layout:(id)a4 willApplyLayoutAttributes:(id)a5;
-- (void)collectionView:(id)a3 performDefaultActionForViewElement:(id)a4 indexPath:(id)a5;
-- (void)collectionView:(id)a3 willBeginEditingItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)_updateSectionsForIndex:(int64_t)index menuSection:(id)section;
+- (void)collectionView:(id)view didConfirmButtonElement:(id)element withClickInfo:(id)info forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didEndEditingItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view editorialView:(id)editorialView didSelectLink:(id)link;
+- (void)collectionView:(id)view expandEditorialForLabelElement:(id)element indexPath:(id)path;
+- (void)collectionView:(id)view layout:(id)layout willApplyLayoutAttributes:(id)attributes;
+- (void)collectionView:(id)view performDefaultActionForViewElement:(id)element indexPath:(id)path;
+- (void)collectionView:(id)view willBeginEditingItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)decodeRestorableStateWithCoder:(id)a3;
+- (void)decodeRestorableStateWithCoder:(id)coder;
 - (void)dismissOverlays;
-- (void)encodeRestorableStateWithCoder:(id)a3;
+- (void)encodeRestorableStateWithCoder:(id)coder;
 - (void)invalidateAndReload;
-- (void)itemCollectionView:(id)a3 didConfirmItemOfferForCell:(id)a4;
-- (void)itemCollectionView:(id)a3 didTapVideoForCollectionViewCell:(id)a4;
-- (void)itemStateCenter:(id)a3 itemStatesChanged:(id)a4;
-- (void)layoutCacheDidFinishBatch:(id)a3;
+- (void)itemCollectionView:(id)view didConfirmItemOfferForCell:(id)cell;
+- (void)itemCollectionView:(id)view didTapVideoForCollectionViewCell:(id)cell;
+- (void)itemStateCenter:(id)center itemStatesChanged:(id)changed;
+- (void)layoutCacheDidFinishBatch:(id)batch;
 - (void)loadView;
-- (void)previewingContext:(id)a3 commitViewController:(id)a4;
-- (void)productPageOverlayDidDismiss:(id)a3;
-- (void)reloadSections:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setActiveMetricsImpressionSession:(id)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setIndexBarControl:(id)a3;
-- (void)setMetricsController:(id)a3;
-- (void)setPinningTransitionStyle:(int64_t)a3;
-- (void)setSUUIStackedBar:(id)a3;
-- (void)setSectionsWithPageComponents:(id)a3;
-- (void)setSectionsWithSplitsDescription:(id)a3;
-- (void)setUsePullToRefresh:(BOOL)a3;
-- (void)showOverlayWithProductPage:(id)a3 metricsPageEvent:(id)a4;
-- (void)suui_viewWillAppear:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willPresentPreviewViewController:(id)a3 forLocation:(CGPoint)a4 inSourceView:(id)a5;
+- (void)previewingContext:(id)context commitViewController:(id)controller;
+- (void)productPageOverlayDidDismiss:(id)dismiss;
+- (void)reloadSections:(id)sections;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setActiveMetricsImpressionSession:(id)session;
+- (void)setColorScheme:(id)scheme;
+- (void)setDelegate:(id)delegate;
+- (void)setIndexBarControl:(id)control;
+- (void)setMetricsController:(id)controller;
+- (void)setPinningTransitionStyle:(int64_t)style;
+- (void)setSUUIStackedBar:(id)bar;
+- (void)setSectionsWithPageComponents:(id)components;
+- (void)setSectionsWithSplitsDescription:(id)description;
+- (void)setUsePullToRefresh:(BOOL)refresh;
+- (void)showOverlayWithProductPage:(id)page metricsPageEvent:(id)event;
+- (void)suui_viewWillAppear:(BOOL)appear;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willPresentPreviewViewController:(id)controller forLocation:(CGPoint)location inSourceView:(id)view;
 @end
 
 @implementation SUUIStorePageSectionsViewController
 
-- (SUUIStorePageSectionsViewController)initWithLayoutStyle:(int64_t)a3
+- (SUUIStorePageSectionsViewController)initWithLayoutStyle:(int64_t)style
 {
   if (initWithLayoutStyle__onceToken != -1)
   {
@@ -131,7 +131,7 @@
   v6 = v5;
   if (v5)
   {
-    v5->_layoutStyle = a3;
+    v5->_layoutStyle = style;
     v5->_itemsChangedStateWhileDisappeared = 0;
     [(SUUIStorePageSectionsViewController *)v5 setRestorationClass:objc_opt_class()];
     v7 = objc_opt_class();
@@ -141,8 +141,8 @@
     v9 = +[SUUIItemStateCenter defaultCenter];
     [v9 addObserver:v6];
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v6 selector:sel__contentSizeChangeNotification_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__contentSizeChangeNotification_ name:*MEMORY[0x277D76810] object:0];
   }
 
   return v6;
@@ -157,8 +157,8 @@ void __59__SUUIStorePageSectionsViewController_initWithLayoutStyle___block_invok
 - (void)dealloc
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76810] object:0];
   [(SUUIStorePageSplitsDescription *)self->_splitsDescription enumerateSplitsUsingBlock:&__block_literal_global_8];
   v4 = +[SUUIItemStateCenter defaultCenter];
   [v4 removeObserver:self];
@@ -220,11 +220,11 @@ void __46__SUUIStorePageSectionsViewController_dealloc__block_invoke(uint64_t a1
   collectionView = self->_collectionView;
   if (!collectionView)
   {
-    v4 = [(SUUIStorePageSectionsViewController *)self _newStorePageCollectionViewLayout];
+    _newStorePageCollectionViewLayout = [(SUUIStorePageSectionsViewController *)self _newStorePageCollectionViewLayout];
     v5 = [SUUICollectionView alloc];
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    [v6 bounds];
-    v7 = [(SUUICollectionView *)v5 initWithFrame:v4 collectionViewLayout:?];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
+    v7 = [(SUUICollectionView *)v5 initWithFrame:_newStorePageCollectionViewLayout collectionViewLayout:?];
     v8 = self->_collectionView;
     self->_collectionView = v7;
 
@@ -237,19 +237,19 @@ void __46__SUUIStorePageSectionsViewController_dealloc__block_invoke(uint64_t a1
       [(SUUICollectionView *)self->_collectionView setRefreshControl:?];
     }
 
-    v9 = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
-    v10 = v9;
-    if (v9)
+    backgroundColor = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
+    v10 = backgroundColor;
+    if (backgroundColor)
     {
-      v11 = v9;
+      systemBackgroundColor = backgroundColor;
     }
 
     else
     {
-      v11 = [MEMORY[0x277D75348] systemBackgroundColor];
+      systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
     }
 
-    v12 = v11;
+    v12 = systemBackgroundColor;
 
     [(SUUICollectionView *)self->_collectionView setBackgroundColor:v12];
     [(SUUICollectionView *)self->_collectionView setDataSource:self];
@@ -278,19 +278,19 @@ void __46__SUUIStorePageSectionsViewController_dealloc__block_invoke(uint64_t a1
   return collectionView;
 }
 
-- (id)defaultSectionForComponent:(id)a3
+- (id)defaultSectionForComponent:(id)component
 {
-  v4 = a3;
-  v5 = 0;
-  switch([v4 componentType])
+  componentCopy = component;
+  viewElement2 = 0;
+  switch([componentCopy componentType])
   {
     case 1:
       v6 = SUUIAccountButtonsSection;
       goto LABEL_27;
     case 3:
-      v11 = [v4 viewElement];
+      viewElement = [componentCopy viewElement];
 
-      if (v11)
+      if (viewElement)
       {
         v6 = SUUIRowViewElementPageSection;
       }
@@ -313,12 +313,12 @@ void __46__SUUIStorePageSectionsViewController_dealloc__block_invoke(uint64_t a1
       v6 = SUUICarouselPageSection;
       goto LABEL_27;
     case 8:
-      v10 = [(SUUIStorePageSectionsViewController *)self _defaultSectionForGridComponent:v4];
+      v10 = [(SUUIStorePageSectionsViewController *)self _defaultSectionForGridComponent:componentCopy];
       goto LABEL_28;
     case 9:
-      v5 = [v4 viewElement];
+      viewElement2 = [componentCopy viewElement];
 
-      if (v5)
+      if (viewElement2)
       {
         goto LABEL_16;
       }
@@ -334,7 +334,7 @@ void __46__SUUIStorePageSectionsViewController_dealloc__block_invoke(uint64_t a1
       v6 = SUUISpacePageSection;
       goto LABEL_27;
     case 15:
-      v10 = [(SUUIStorePageSectionsViewController *)self _defaultSectionForSwooshComponent:v4];
+      v10 = [(SUUIStorePageSectionsViewController *)self _defaultSectionForSwooshComponent:componentCopy];
       goto LABEL_28;
     case 16:
       v6 = SUUIBrowseItemPageSection;
@@ -350,10 +350,10 @@ void __46__SUUIStorePageSectionsViewController_dealloc__block_invoke(uint64_t a1
       goto LABEL_27;
     case 22:
       v7 = objc_opt_class();
-      v8 = [v4 viewElement];
-      v9 = [v8 isDynamicContainer];
+      viewElement3 = [componentCopy viewElement];
+      isDynamicContainer = [viewElement3 isDynamicContainer];
 
-      if (v9)
+      if (isDynamicContainer)
       {
         v7 = objc_opt_class();
       }
@@ -376,15 +376,15 @@ LABEL_16:
     case 27:
       v6 = SUUIVerticalInfoListPageSection;
 LABEL_27:
-      v10 = [[v6 alloc] initWithPageComponent:v4];
+      v10 = [[v6 alloc] initWithPageComponent:componentCopy];
 LABEL_28:
-      v5 = v10;
+      viewElement2 = v10;
       break;
     default:
       break;
   }
 
-  return v5;
+  return viewElement2;
 }
 
 - (void)dismissOverlays
@@ -402,12 +402,12 @@ LABEL_28:
   textLayoutCache = self->_textLayoutCache;
   self->_textLayoutCache = 0;
 
-  v4 = [(SUUIStorePageSectionsViewController *)self _collectionViewSublayouts];
+  _collectionViewSublayouts = [(SUUIStorePageSectionsViewController *)self _collectionViewSublayouts];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v5 = [_collectionViewSublayouts countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -418,22 +418,22 @@ LABEL_28:
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_collectionViewSublayouts);
         }
 
         [*(*(&v22 + 1) + 8 * i) invalidateLayout];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v6 = [_collectionViewSublayouts countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(SUUICollectionView *)self->_collectionView collectionViewLayout];
-  [v9 invalidateLayout];
+  collectionViewLayout = [(SUUICollectionView *)self->_collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
-  v10 = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
+  _textLayoutCache = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -454,9 +454,9 @@ LABEL_28:
         }
 
         v16 = *(*(&v18 + 1) + 8 * j);
-        v17 = [v16 context];
-        [v17 _setTextLayoutCache:v10];
-        [v16 willAppearInContext:v17];
+        context = [v16 context];
+        [context _setTextLayoutCache:_textLayoutCache];
+        [v16 willAppearInContext:context];
       }
 
       v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -465,21 +465,21 @@ LABEL_28:
     while (v13);
   }
 
-  [v10 commitLayoutRequests];
+  [_textLayoutCache commitLayoutRequests];
   [(SUUICollectionView *)self->_collectionView reloadData];
 }
 
-- (void)reloadSections:(id)a3
+- (void)reloadSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   v5 = MEMORY[0x277D75D18];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__SUUIStorePageSectionsViewController_reloadSections___block_invoke;
   v7[3] = &unk_2798F5AF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sectionsCopy;
+  v6 = sectionsCopy;
   [v5 performWithoutAnimation:v7];
 }
 
@@ -489,8 +489,8 @@ LABEL_28:
   if (!resourceLoader)
   {
     v4 = [SUUIResourceLoader alloc];
-    v5 = [(SUUIViewController *)self clientContext];
-    v6 = [(SUUIResourceLoader *)v4 initWithClientContext:v5];
+    clientContext = [(SUUIViewController *)self clientContext];
+    v6 = [(SUUIResourceLoader *)v4 initWithClientContext:clientContext];
 
     v7 = SUUIResourceLoaderGetNameForObject(self);
     [(SUUIResourceLoader *)v6 setName:v7];
@@ -502,11 +502,11 @@ LABEL_28:
   return resourceLoader;
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  if (self->_colorScheme != a3)
+  if (self->_colorScheme != scheme)
   {
-    v4 = [a3 copy];
+    v4 = [scheme copy];
     colorScheme = self->_colorScheme;
     self->_colorScheme = v4;
 
@@ -516,33 +516,33 @@ LABEL_28:
     v11[3] = &unk_2798F6FF0;
     v11[4] = self;
     [(SUUIStorePageSectionsViewController *)self _enumerateSectionContextsUsingBlock:v11];
-    v6 = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
-    v7 = v6;
-    if (v6)
+    backgroundColor = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
+    v7 = backgroundColor;
+    if (backgroundColor)
     {
-      v8 = v6;
+      systemBackgroundColor = backgroundColor;
     }
 
     else
     {
-      v8 = [MEMORY[0x277D75348] systemBackgroundColor];
+      systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
     }
 
-    v9 = v8;
+    v9 = systemBackgroundColor;
 
     [(SUUICollectionView *)self->_collectionView setBackgroundColor:v9];
     if ([(SUUIStorePageSectionsViewController *)self isViewLoaded])
     {
-      v10 = [(SUUIStorePageSectionsViewController *)self view];
-      [v10 setBackgroundColor:v9];
+      view = [(SUUIStorePageSectionsViewController *)self view];
+      [view setBackgroundColor:v9];
     }
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v7 = a3;
-  v4 = objc_storeWeak(&self->_delegate, v7);
+  delegateCopy = delegate;
+  v4 = objc_storeWeak(&self->_delegate, delegateCopy);
   v5 = objc_opt_respondsToSelector();
 
   self->_delegateWantsDidScroll = v5 & 1;
@@ -550,74 +550,74 @@ LABEL_28:
   self->_delegateWantsWillScrollToOffsetVisibleRange = objc_opt_respondsToSelector() & 1;
 }
 
-- (void)setIndexBarControl:(id)a3
+- (void)setIndexBarControl:(id)control
 {
-  v5 = a3;
-  if (self->_indexBarControl != v5)
+  controlCopy = control;
+  if (self->_indexBarControl != controlCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_indexBarControl, a3);
+    v6 = controlCopy;
+    objc_storeStrong(&self->_indexBarControl, control);
     [(SUUICollectionView *)self->_collectionView setIndexBarControl:self->_indexBarControl];
-    v5 = v6;
+    controlCopy = v6;
   }
 }
 
-- (void)setActiveMetricsImpressionSession:(id)a3
+- (void)setActiveMetricsImpressionSession:(id)session
 {
-  v5 = a3;
-  if (self->_activeMetricsImpressionSession != v5)
+  sessionCopy = session;
+  if (self->_activeMetricsImpressionSession != sessionCopy)
   {
-    objc_storeStrong(&self->_activeMetricsImpressionSession, a3);
+    objc_storeStrong(&self->_activeMetricsImpressionSession, session);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __73__SUUIStorePageSectionsViewController_setActiveMetricsImpressionSession___block_invoke;
     v6[3] = &unk_2798F6FF0;
-    v7 = v5;
+    v7 = sessionCopy;
     [(SUUIStorePageSectionsViewController *)self _enumerateSectionContextsUsingBlock:v6];
   }
 }
 
-- (void)setPinningTransitionStyle:(int64_t)a3
+- (void)setPinningTransitionStyle:(int64_t)style
 {
-  if (self->_pinningTransitionStyle != a3)
+  if (self->_pinningTransitionStyle != style)
   {
     v7[7] = v3;
     v7[8] = v4;
-    self->_pinningTransitionStyle = a3;
+    self->_pinningTransitionStyle = style;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __65__SUUIStorePageSectionsViewController_setPinningTransitionStyle___block_invoke;
     v7[3] = &unk_2798F6FF0;
     v7[4] = self;
     [(SUUIStorePageSectionsViewController *)self _enumerateSectionContextsUsingBlock:v7];
-    v6 = [(SUUICollectionView *)self->_collectionView collectionViewLayout];
-    [v6 invalidateLayout];
+    collectionViewLayout = [(SUUICollectionView *)self->_collectionView collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
   }
 }
 
-- (void)setMetricsController:(id)a3
+- (void)setMetricsController:(id)controller
 {
-  v5 = a3;
-  if (self->_metricsController != v5)
+  controllerCopy = controller;
+  if (self->_metricsController != controllerCopy)
   {
-    objc_storeStrong(&self->_metricsController, a3);
+    objc_storeStrong(&self->_metricsController, controller);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __60__SUUIStorePageSectionsViewController_setMetricsController___block_invoke;
     v6[3] = &unk_2798F6FF0;
-    v7 = v5;
+    v7 = controllerCopy;
     [(SUUIStorePageSectionsViewController *)self _enumerateSectionContextsUsingBlock:v6];
   }
 }
 
-- (void)setSectionsWithPageComponents:(id)a3
+- (void)setSectionsWithPageComponents:(id)components
 {
-  v6 = a3;
-  if (v6)
+  componentsCopy = components;
+  if (componentsCopy)
   {
     v4 = objc_alloc_init(SUUIStorePageSplitsDescription);
     v5 = objc_alloc_init(SUUIStorePageSplit);
-    [(SUUIStorePageSplit *)v5 setPageComponents:v6];
+    [(SUUIStorePageSplit *)v5 setPageComponents:componentsCopy];
     [(SUUIStorePageSplitsDescription *)v4 setTopSplit:v5];
     [(SUUIStorePageSectionsViewController *)self setSectionsWithSplitsDescription:v4];
   }
@@ -628,14 +628,14 @@ LABEL_28:
   }
 }
 
-- (void)setSectionsWithSplitsDescription:(id)a3
+- (void)setSectionsWithSplitsDescription:(id)description
 {
   v59 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  descriptionCopy = description;
+  v6 = descriptionCopy;
   if (self->_ignoreSectionsChangeCount < 1)
   {
-    if (self->_splitsDescription != v5)
+    if (self->_splitsDescription != descriptionCopy)
     {
       v51 = 0;
       v52 = &v51;
@@ -663,13 +663,13 @@ LABEL_28:
             }
 
             v11 = *(*(&v47 + 1) + 8 * i);
-            v12 = [v11 pageComponent];
-            v13 = [v12 viewElement];
-            v14 = [v13 persistenceKey];
+            pageComponent = [v11 pageComponent];
+            viewElement = [pageComponent viewElement];
+            persistenceKey = [viewElement persistenceKey];
 
-            if (v14)
+            if (persistenceKey)
             {
-              [v52[5] setObject:v11 forKey:v14];
+              [v52[5] setObject:v11 forKey:persistenceKey];
             }
           }
 
@@ -679,7 +679,7 @@ LABEL_28:
         while (v8);
       }
 
-      v15 = [(SUUIStorePageSplitsDescription *)self->_splitsDescription numberOfSplits];
+      numberOfSplits = [(SUUIStorePageSplitsDescription *)self->_splitsDescription numberOfSplits];
       menuSectionContexts = self->_menuSectionContexts;
       self->_menuSectionContexts = 0;
 
@@ -694,12 +694,12 @@ LABEL_28:
       splitsDescription = self->_splitsDescription;
       self->_splitsDescription = v20;
 
-      v22 = [(SUUIStorePageSplitsDescription *)self->_splitsDescription numberOfSplits];
+      numberOfSplits2 = [(SUUIStorePageSplitsDescription *)self->_splitsDescription numberOfSplits];
       v43 = 0;
       v44 = &v43;
       v45 = 0x2020000000;
       v46 = 0;
-      if (self->_collectionView && self->_didInitialReload && (v23 = v22, [v52[5] count]) && v15 > 1 != v23 < 2)
+      if (self->_collectionView && self->_didInitialReload && (v23 = numberOfSplits2, [v52[5] count]) && numberOfSplits > 1 != v23 < 2)
       {
         v44[3] = 1;
       }
@@ -771,19 +771,19 @@ LABEL_31:
     }
   }
 
-  else if (v5)
+  else if (descriptionCopy)
   {
-    if (self->_deferredSplitsDescription != v5)
+    if (self->_deferredSplitsDescription != descriptionCopy)
     {
-      objc_storeStrong(&self->_deferredSplitsDescription, a3);
+      objc_storeStrong(&self->_deferredSplitsDescription, description);
     }
   }
 
   else
   {
-    v24 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     deferredSplitsDescription = self->_deferredSplitsDescription;
-    self->_deferredSplitsDescription = v24;
+    self->_deferredSplitsDescription = null;
   }
 }
 
@@ -1036,25 +1036,25 @@ LABEL_29:
   *(*(*(a1 + 80) + 8) + 24) += v9;
 }
 
-- (void)setSUUIStackedBar:(id)a3
+- (void)setSUUIStackedBar:(id)bar
 {
-  v5 = a3;
+  barCopy = bar;
   stackedBar = self->_stackedBar;
-  if (stackedBar != v5)
+  if (stackedBar != barCopy)
   {
-    v7 = v5;
+    v7 = barCopy;
     [(SUUIStackedBar *)stackedBar removeFromSuperview];
-    objc_storeStrong(&self->_stackedBar, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_stackedBar, bar);
+    barCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](stackedBar, v5);
+  MEMORY[0x2821F96F8](stackedBar, barCopy);
 }
 
-- (void)showOverlayWithProductPage:(id)a3 metricsPageEvent:(id)a4
+- (void)showOverlayWithProductPage:(id)page metricsPageEvent:(id)event
 {
-  v11 = a3;
-  v6 = a4;
+  pageCopy = page;
+  eventCopy = event;
   if (self->_overlayController)
   {
     [(SUUIStorePageSectionsViewController *)self dismissOverlays];
@@ -1065,18 +1065,18 @@ LABEL_29:
   self->_overlayController = v7;
 
   v9 = self->_overlayController;
-  v10 = [(SUUIViewController *)self clientContext];
-  [(SUUIProductPageOverlayController *)v9 setClientContext:v10];
+  clientContext = [(SUUIViewController *)self clientContext];
+  [(SUUIProductPageOverlayController *)v9 setClientContext:clientContext];
 
   [(SUUIProductPageOverlayController *)self->_overlayController setDelegate:self];
-  [(SUUIProductPageOverlayController *)self->_overlayController showWithInitialProductPage:v11 metricsPageEvent:v6];
+  [(SUUIProductPageOverlayController *)self->_overlayController showWithInitialProductPage:pageCopy metricsPageEvent:eventCopy];
   [(SUUIStorePageSectionsViewController *)self _setActiveProductPageOverlayController:self->_overlayController];
 }
 
-- (void)setUsePullToRefresh:(BOOL)a3
+- (void)setUsePullToRefresh:(BOOL)refresh
 {
   refreshControl = self->_refreshControl;
-  if (a3)
+  if (refresh)
   {
     if (!refreshControl)
     {
@@ -1112,7 +1112,7 @@ LABEL_29:
   self->_refreshControl = 0;
 }
 
-- (void)_startRefresh:(id)a3
+- (void)_startRefresh:(id)refresh
 {
   WeakRetained = objc_loadWeakRetained(&self->_pullToRefreshDelegate);
   if (WeakRetained)
@@ -1129,14 +1129,14 @@ LABEL_29:
   }
 }
 
-- (void)_longPressAction:(id)a3
+- (void)_longPressAction:(id)action
 {
-  v9 = a3;
-  v4 = [v9 state] == 1;
-  v5 = v9;
+  actionCopy = action;
+  v4 = [actionCopy state] == 1;
+  v5 = actionCopy;
   if (v4)
   {
-    [v9 locationInView:self->_collectionView];
+    [actionCopy locationInView:self->_collectionView];
     v6 = [(SUUICollectionView *)self->_collectionView indexPathForItemAtPoint:?];
     v7 = v6;
     if (v6)
@@ -1145,24 +1145,24 @@ LABEL_29:
       [v8 collectionViewDidLongPressItemAtIndexPath:v7];
     }
 
-    v5 = v9;
+    v5 = actionCopy;
   }
 }
 
-- (void)suui_viewWillAppear:(BOOL)a3
+- (void)suui_viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SUUIStorePageSectionsViewController *)self _deselectCellsForAppearance:?];
   v5.receiver = self;
   v5.super_class = SUUIStorePageSectionsViewController;
-  [(SUUIViewController *)&v5 suui_viewWillAppear:v3];
+  [(SUUIViewController *)&v5 suui_viewWillAppear:appearCopy];
 }
 
-- (void)decodeRestorableStateWithCoder:(id)a3
+- (void)decodeRestorableStateWithCoder:(id)coder
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"overlayURLs"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"overlayURLs"];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1210,40 +1210,40 @@ LABEL_29:
 
   v15.receiver = self;
   v15.super_class = SUUIStorePageSectionsViewController;
-  [(SUUIStorePageSectionsViewController *)&v15 decodeRestorableStateWithCoder:v4];
+  [(SUUIStorePageSectionsViewController *)&v15 decodeRestorableStateWithCoder:coderCopy];
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3
+- (void)encodeRestorableStateWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   WeakRetained = objc_loadWeakRetained(&self->_activeOverlayController);
-  v6 = [WeakRetained URLs];
+  uRLs = [WeakRetained URLs];
 
-  if ([v6 count])
+  if ([uRLs count])
   {
-    [v4 encodeObject:v6 forKey:@"overlayURLs"];
+    [coderCopy encodeObject:uRLs forKey:@"overlayURLs"];
   }
 
   v7.receiver = self;
   v7.super_class = SUUIStorePageSectionsViewController;
-  [(SUUIStorePageSectionsViewController *)&v7 encodeRestorableStateWithCoder:v4];
+  [(SUUIStorePageSectionsViewController *)&v7 encodeRestorableStateWithCoder:coderCopy];
 }
 
 - (void)loadView
 {
   v3 = objc_alloc(MEMORY[0x277D75D18]);
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v19 = [v3 initWithFrame:?];
 
   [(SUUIStorePageSectionsViewController *)self setView:v19];
-  v5 = [(SUUIStorePageSectionsViewController *)self collectionView];
-  [v5 setAutoresizingMask:18];
+  collectionView = [(SUUIStorePageSectionsViewController *)self collectionView];
+  [collectionView setAutoresizingMask:18];
   [v19 bounds];
-  [v5 setFrame:?];
-  [v19 addSubview:v5];
-  v6 = [v5 backgroundColor];
-  [v19 setBackgroundColor:v6];
+  [collectionView setFrame:?];
+  [v19 addSubview:collectionView];
+  backgroundColor = [collectionView backgroundColor];
+  [v19 setBackgroundColor:backgroundColor];
 
   if (self->_stackedBar)
   {
@@ -1253,13 +1253,13 @@ LABEL_29:
     v11 = 0.0;
     if ([(SUUIStackedBar *)self->_stackedBar splitViewStyle])
     {
-      v12 = [(SUUIStorePageSectionsViewController *)self navigationController];
-      v13 = [v12 navigationBar];
-      [v13 frame];
+      navigationController = [(SUUIStorePageSectionsViewController *)self navigationController];
+      navigationBar = [navigationController navigationBar];
+      [navigationBar frame];
       Height = CGRectGetHeight(v21);
 
-      v15 = [MEMORY[0x277D75128] sharedApplication];
-      [v15 statusBarFrame];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      [mEMORY[0x277D75128] statusBarFrame];
       v16 = CGRectGetHeight(v22);
 
       v11 = Height + v16;
@@ -1272,15 +1272,15 @@ LABEL_29:
 
   if (__orbSupported == 1)
   {
-    v17 = [(SUUIStorePageSectionsViewController *)self registerForPreviewingWithDelegate:self sourceView:v5];
+    v17 = [(SUUIStorePageSectionsViewController *)self registerForPreviewingWithDelegate:self sourceView:collectionView];
     viewControllerPreviewing = self->_viewControllerPreviewing;
     self->_viewControllerPreviewing = v17;
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   initialOverlayURLs = self->_initialOverlayURLs;
   if (initialOverlayURLs)
   {
@@ -1291,8 +1291,8 @@ LABEL_29:
       self->_overlayController = v6;
 
       v8 = self->_overlayController;
-      v9 = [(SUUIViewController *)self clientContext];
-      [(SUUIProductPageOverlayController *)v8 setClientContext:v9];
+      clientContext = [(SUUIViewController *)self clientContext];
+      [(SUUIProductPageOverlayController *)v8 setClientContext:clientContext];
 
       [(SUUIProductPageOverlayController *)self->_overlayController setDelegate:self];
       [(SUUIProductPageOverlayController *)self->_overlayController showWithInitialURLs:self->_initialOverlayURLs];
@@ -1307,19 +1307,19 @@ LABEL_29:
   [(SUUIResourceLoader *)self->_resourceLoader enterForeground];
   v10.receiver = self;
   v10.super_class = SUUIStorePageSectionsViewController;
-  [(SUUIStorePageSectionsViewController *)&v10 viewDidAppear:v3];
+  [(SUUIStorePageSectionsViewController *)&v10 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v19 = *MEMORY[0x277D85DE8];
   [(SUUIStorePageSectionsViewController *)self _invalidateIfLastKnownWidthChanged];
-  v5 = [(SUUICollectionView *)self->_collectionView collectionViewLayout];
-  v6 = [(SUUIStorePageSectionsViewController *)self _currentBackdropGroupName];
-  [v5 setBackdropGroupName:v6];
+  collectionViewLayout = [(SUUICollectionView *)self->_collectionView collectionViewLayout];
+  _currentBackdropGroupName = [(SUUIStorePageSectionsViewController *)self _currentBackdropGroupName];
+  [collectionViewLayout setBackdropGroupName:_currentBackdropGroupName];
 
-  [(SUUIStorePageSectionsViewController *)self _deselectCellsForAppearance:v3];
+  [(SUUIStorePageSectionsViewController *)self _deselectCellsForAppearance:appearCopy];
   [(SUUIStorePageSectionsViewController *)self _beginActiveImpressionsForImpressionableViewElements];
   if (self->_itemsChangedStateWhileDisappeared)
   {
@@ -1353,24 +1353,24 @@ LABEL_29:
       while (v9);
     }
 
-    v12 = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
-    [v12 commitLayoutRequests];
+    _textLayoutCache = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
+    [_textLayoutCache commitLayoutRequests];
 
     self->_itemsChangedStateWhileDisappeared = 0;
   }
 
   v13.receiver = self;
   v13.super_class = SUUIStorePageSectionsViewController;
-  [(SUUIViewController *)&v13 viewWillAppear:v3];
+  [(SUUIViewController *)&v13 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(SUUIStorePageSectionsViewController *)self _invalidateIfLastKnownWidthChanged];
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(SUUIStorePageSectionsViewController *)self view];
-  [v6 bounds];
+  view = [(SUUIStorePageSectionsViewController *)self view];
+  [view bounds];
   *&v8 = v7;
   v9 = [v5 numberWithFloat:v8];
   lastKnownWidth = self->_lastKnownWidth;
@@ -1380,25 +1380,25 @@ LABEL_29:
   [(SUUIStorePageSectionsViewController *)self _endAllPendingActiveImpression];
   v11.receiver = self;
   v11.super_class = SUUIStorePageSectionsViewController;
-  [(SUUIStorePageSectionsViewController *)&v11 viewWillDisappear:v3];
+  [(SUUIStorePageSectionsViewController *)&v11 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SUUIStorePageSectionsViewController;
-  [(SUUIStorePageSectionsViewController *)&v4 viewDidDisappear:a3];
+  [(SUUIStorePageSectionsViewController *)&v4 viewDidDisappear:disappear];
   [(SUUIResourceLoader *)self->_resourceLoader enterBackground];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = MEMORY[0x277CCABB0];
-  v8 = a4;
-  v9 = [(SUUIStorePageSectionsViewController *)self view];
-  [v9 bounds];
+  coordinatorCopy = coordinator;
+  view = [(SUUIStorePageSectionsViewController *)self view];
+  [view bounds];
   *&v11 = v10;
   v12 = [v7 numberWithFloat:v11];
   lastKnownWidth = self->_lastKnownWidth;
@@ -1406,77 +1406,77 @@ LABEL_29:
 
   v14.receiver = self;
   v14.super_class = SUUIStorePageSectionsViewController;
-  [(SUUIStorePageSectionsViewController *)&v14 viewWillTransitionToSize:v8 withTransitionCoordinator:width, height];
+  [(SUUIStorePageSectionsViewController *)&v14 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v12.receiver = self;
   v12.super_class = SUUIStorePageSectionsViewController;
-  v4 = a3;
-  [(SUUIStorePageSectionsViewController *)&v12 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(SUUIStorePageSectionsViewController *)&v12 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(SUUIStorePageSectionsViewController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(SUUIStorePageSectionsViewController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v8 = [(SUUICollectionView *)self->_collectionView collectionViewLayout];
+    collectionViewLayout = [(SUUICollectionView *)self->_collectionView collectionViewLayout];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
-      v10 = [v9 indexPathsForPinningItems];
-      if ([v10 count])
+      v9 = collectionViewLayout;
+      indexPathsForPinningItems = [v9 indexPathsForPinningItems];
+      if ([indexPathsForPinningItems count])
       {
         v11 = objc_alloc_init([objc_opt_class() invalidationContextClass]);
         [v11 setInvalidateFlowLayoutAttributes:0];
         [v11 setInvalidateFlowLayoutDelegateMetrics:0];
         [v11 setInvalidateItemPinningLayoutInformation:0];
         [v11 setInvalidatePinnedBackdropViewStyle:1];
-        [v11 invalidateDecorationElementsOfKind:0x286AED1E0 atIndexPaths:v10];
+        [v11 invalidateDecorationElementsOfKind:0x286AED1E0 atIndexPaths:indexPathsForPinningItems];
         [v9 invalidateLayoutWithContext:v11];
       }
     }
   }
 }
 
-- (void)collectionView:(id)a3 editorialView:(id)a4 didSelectLink:(id)a5
+- (void)collectionView:(id)view editorialView:(id)editorialView didSelectLink:(id)link
 {
-  v25 = a5;
-  v8 = a4;
-  v9 = a3;
-  [v8 frame];
+  linkCopy = link;
+  editorialViewCopy = editorialView;
+  viewCopy = view;
+  [editorialViewCopy frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [v8 superview];
+  superview = [editorialViewCopy superview];
 
-  [v9 convertRect:v18 fromView:{v11, v13, v15, v17}];
+  [viewCopy convertRect:superview fromView:{v11, v13, v15, v17}];
   v20 = v19;
   v22 = v21;
 
-  v23 = [v9 indexPathForItemAtPoint:{v20, v22}];
+  v23 = [viewCopy indexPathForItemAtPoint:{v20, v22}];
 
   if (v23)
   {
     v24 = -[NSMutableArray objectAtIndex:](self->_sections, "objectAtIndex:", [v23 section]);
-    [v24 showPageWithLink:v25];
+    [v24 showPageWithLink:linkCopy];
   }
 }
 
-- (void)itemStateCenter:(id)a3 itemStatesChanged:(id)a4
+- (void)itemStateCenter:(id)center itemStatesChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__SUUIStorePageSectionsViewController_itemStateCenter_itemStatesChanged___block_invoke;
   v7[3] = &unk_2798F5AF8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -1611,7 +1611,7 @@ void __73__SUUIStorePageSectionsViewController_itemStateCenter_itemStatesChanged
   }
 }
 
-- (void)layoutCacheDidFinishBatch:(id)a3
+- (void)layoutCacheDidFinishBatch:(id)batch
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -1657,9 +1657,9 @@ uint64_t __65__SUUIStorePageSectionsViewController_layoutCacheDidFinishBatch___b
   return [*(*(a1 + 32) + 1080) reloadData];
 }
 
-- (void)productPageOverlayDidDismiss:(id)a3
+- (void)productPageOverlayDidDismiss:(id)dismiss
 {
-  if (self->_overlayController == a3)
+  if (self->_overlayController == dismiss)
   {
     [(SUUIStorePageSectionsViewController *)self _setActiveProductPageOverlayController:0];
     [(SUUIProductPageOverlayController *)self->_overlayController setDelegate:0];
@@ -1669,8 +1669,8 @@ uint64_t __65__SUUIStorePageSectionsViewController_layoutCacheDidFinishBatch___b
     if (![(NSMutableArray *)self->_sections count])
     {
       v6 = SUUIViewControllerGetAncestorTabBarController(self);
-      v5 = [v6 transientViewController];
-      if (v5 && SUUIViewControllerIsDescendent(self, v5))
+      transientViewController = [v6 transientViewController];
+      if (transientViewController && SUUIViewControllerIsDescendent(self, transientViewController))
       {
         [v6 setTransientViewController:0 animated:0];
       }
@@ -1678,29 +1678,29 @@ uint64_t __65__SUUIStorePageSectionsViewController_layoutCacheDidFinishBatch___b
   }
 }
 
-- (id)backgroundColorForSection:(int64_t)a3
+- (id)backgroundColorForSection:(int64_t)section
 {
-  if ([(NSMutableArray *)self->_sections count]<= a3)
+  if ([(NSMutableArray *)self->_sections count]<= section)
   {
-    v6 = 0;
+    backgroundColorForSection = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_sections objectAtIndex:a3];
-    v6 = [v5 backgroundColorForSection];
+    v5 = [(NSMutableArray *)self->_sections objectAtIndex:section];
+    backgroundColorForSection = [v5 backgroundColorForSection];
   }
 
-  return v6;
+  return backgroundColorForSection;
 }
 
-- (BOOL)collectionView:(id)a3 canScrollCellAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canScrollCellAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  viewCopy = view;
+  pathCopy = path;
+  v8 = pathCopy;
   indexPathOfEditedCell = self->_indexPathOfEditedCell;
-  if (!indexPathOfEditedCell || (v10 = [v7 compare:?], indexPathOfEditedCell = self->_indexPathOfEditedCell, !v10))
+  if (!indexPathOfEditedCell || (v10 = [pathCopy compare:?], indexPathOfEditedCell = self->_indexPathOfEditedCell, !v10))
   {
     if ([(NSIndexPath *)indexPathOfEditedCell compare:v8]== NSOrderedSame)
     {
@@ -1734,7 +1734,7 @@ LABEL_11:
   return v13;
 }
 
-- (void)collectionView:(id)a3 didEndEditingItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didEndEditingItemAtIndexPath:(id)path
 {
   indexPathOfEditedCell = self->_indexPathOfEditedCell;
   self->_indexPathOfEditedCell = 0;
@@ -1744,12 +1744,12 @@ LABEL_11:
   [(UITapGestureRecognizer *)collectionViewTapGestureRecognizer setEnabled:0];
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 pinningContentInsetForItemAtIndexPath:(id)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout pinningContentInsetForItemAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v6 = a5;
-  v7 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [v6 section]);
-  [v7 pinningContentInsetForItemAtIndexPath:v6];
+  pathCopy = path;
+  v7 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+  [v7 pinningContentInsetForItemAtIndexPath:pathCopy];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -1766,83 +1766,83 @@ LABEL_11:
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 layout:(id)a4 pinningStyleForItemAtIndexPath:(id)a5
+- (int64_t)collectionView:(id)view layout:(id)layout pinningStyleForItemAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v6 = a5;
-  v7 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [v6 section]);
-  v8 = [v7 pinningStyleForItemAtIndexPath:v6];
+  pathCopy = path;
+  v7 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+  v8 = [v7 pinningStyleForItemAtIndexPath:pathCopy];
 
   return v8;
 }
 
-- (int64_t)collectionView:(id)a3 layout:(id)a4 pinningGroupForItemAtIndexPath:(id)a5
+- (int64_t)collectionView:(id)view layout:(id)layout pinningGroupForItemAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v6 = a5;
-  v7 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [v6 section]);
-  v8 = [v7 pinningGroupForItemAtIndexPath:v6];
+  pathCopy = path;
+  v7 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+  v8 = [v7 pinningGroupForItemAtIndexPath:pathCopy];
 
   return v8;
 }
 
-- (int64_t)collectionView:(id)a3 layout:(id)a4 pinningTransitionStyleForItemAtIndexPath:(id)a5
+- (int64_t)collectionView:(id)view layout:(id)layout pinningTransitionStyleForItemAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v6 = a5;
-  v7 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [v6 section]);
-  v8 = [v7 pinningTransitionStyleForItemAtIndexPath:v6];
+  pathCopy = path;
+  v7 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+  v8 = [v7 pinningTransitionStyleForItemAtIndexPath:pathCopy];
 
   return v8;
 }
 
-- (void)collectionView:(id)a3 layout:(id)a4 willApplyLayoutAttributes:(id)a5
+- (void)collectionView:(id)view layout:(id)layout willApplyLayoutAttributes:(id)attributes
 {
-  v8 = a5;
-  if (![v8 representedElementCategory])
+  attributesCopy = attributes;
+  if (![attributesCopy representedElementCategory])
   {
-    v6 = [v8 indexPath];
-    v7 = -[NSMutableArray objectAtIndex:](self->_sections, "objectAtIndex:", [v6 section]);
-    [v7 collectionViewWillApplyLayoutAttributes:v8];
+    indexPath = [attributesCopy indexPath];
+    v7 = -[NSMutableArray objectAtIndex:](self->_sections, "objectAtIndex:", [indexPath section]);
+    [v7 collectionViewWillApplyLayoutAttributes:attributesCopy];
   }
 }
 
-- (void)collectionView:(id)a3 willBeginEditingItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view willBeginEditingItemAtIndexPath:(id)path
 {
-  v10 = a4;
-  objc_storeStrong(&self->_indexPathOfEditedCell, a4);
-  v6 = [(SUUICollectionView *)self->_collectionView indexPathsForSelectedItems];
-  v7 = v6;
-  if (v6 && [v6 count])
+  pathCopy = path;
+  objc_storeStrong(&self->_indexPathOfEditedCell, path);
+  indexPathsForSelectedItems = [(SUUICollectionView *)self->_collectionView indexPathsForSelectedItems];
+  v7 = indexPathsForSelectedItems;
+  if (indexPathsForSelectedItems && [indexPathsForSelectedItems count])
   {
     collectionView = self->_collectionView;
-    v9 = [v7 firstObject];
-    [(SUUICollectionView *)collectionView deselectItemAtIndexPath:v9 animated:0];
+    firstObject = [v7 firstObject];
+    [(SUUICollectionView *)collectionView deselectItemAtIndexPath:firstObject animated:0];
   }
 
   [(UITapGestureRecognizer *)self->_collectionViewTapGestureRecognizer setEnabled:1];
 }
 
-- (id)indexPathsForPinningItemsInCollectionView:(id)a3 layout:(id)a4
+- (id)indexPathsForPinningItemsInCollectionView:(id)view layout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  layoutCopy = layout;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3010000000;
   v25 = 0;
   v26 = 0;
   v24 = "";
-  v8 = [(SUUIStorePageSectionsViewController *)self _collectionViewSublayouts];
-  if ([v8 count] > 1)
+  _collectionViewSublayouts = [(SUUIStorePageSectionsViewController *)self _collectionViewSublayouts];
+  if ([_collectionViewSublayouts count] > 1)
   {
     splitsDescription = self->_splitsDescription;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __88__SUUIStorePageSectionsViewController_indexPathsForPinningItemsInCollectionView_layout___block_invoke;
     v17[3] = &unk_2798F70B8;
-    v18 = v7;
-    v19 = v8;
+    v18 = layoutCopy;
+    v19 = _collectionViewSublayouts;
     v20 = &v21;
     [(SUUIStorePageSplitsDescription *)splitsDescription enumerateSplitsUsingBlock:v17];
 
@@ -1869,15 +1869,15 @@ LABEL_11:
     do
     {
       v14 = [(NSMutableArray *)self->_sections objectAtIndex:v12];
-      v15 = [v14 indexPathsForPinningItems];
-      if ([v15 count])
+      indexPathsForPinningItems = [v14 indexPathsForPinningItems];
+      if ([indexPathsForPinningItems count])
       {
         if (!v13)
         {
-          v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v15, "count")}];
+          v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(indexPathsForPinningItems, "count")}];
         }
 
-        [v13 addObjectsFromArray:v15];
+        [v13 addObjectsFromArray:indexPathsForPinningItems];
       }
 
       ++v12;
@@ -1910,26 +1910,26 @@ void __88__SUUIStorePageSectionsViewController_indexPathsForPinningItemsInCollec
   }
 }
 
-- (id)indexPathsForGradientItemsInCollectionView:(id)a3 layout:(id)a4
+- (id)indexPathsForGradientItemsInCollectionView:(id)view layout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  layoutCopy = layout;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3010000000;
   v25 = 0;
   v26 = 0;
   v24 = "";
-  v8 = [(SUUIStorePageSectionsViewController *)self _collectionViewSublayouts];
-  if ([v8 count] > 1)
+  _collectionViewSublayouts = [(SUUIStorePageSectionsViewController *)self _collectionViewSublayouts];
+  if ([_collectionViewSublayouts count] > 1)
   {
     splitsDescription = self->_splitsDescription;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __89__SUUIStorePageSectionsViewController_indexPathsForGradientItemsInCollectionView_layout___block_invoke;
     v17[3] = &unk_2798F70B8;
-    v18 = v7;
-    v19 = v8;
+    v18 = layoutCopy;
+    v19 = _collectionViewSublayouts;
     v20 = &v21;
     [(SUUIStorePageSplitsDescription *)splitsDescription enumerateSplitsUsingBlock:v17];
 
@@ -1956,15 +1956,15 @@ void __88__SUUIStorePageSectionsViewController_indexPathsForPinningItemsInCollec
     do
     {
       v14 = [(NSMutableArray *)self->_sections objectAtIndex:v12];
-      v15 = [v14 indexPathsForBackgroundItems];
-      if ([v15 count])
+      indexPathsForBackgroundItems = [v14 indexPathsForBackgroundItems];
+      if ([indexPathsForBackgroundItems count])
       {
         if (!v13)
         {
-          v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v15, "count")}];
+          v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(indexPathsForBackgroundItems, "count")}];
         }
 
-        [v13 addObjectsFromArray:v15];
+        [v13 addObjectsFromArray:indexPathsForBackgroundItems];
       }
 
       ++v12;
@@ -1997,10 +1997,10 @@ void __89__SUUIStorePageSectionsViewController_indexPathsForGradientItemsInColle
   }
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v7 = [(NSMutableArray *)self->_sections objectAtIndex:a5, a4];
-  if ([(NSMutableArray *)self->_sections count]<= (a5 + 1))
+  layout = [(NSMutableArray *)self->_sections objectAtIndex:index, layout];
+  if ([(NSMutableArray *)self->_sections count]<= (index + 1))
   {
     v8 = 0;
   }
@@ -2010,13 +2010,13 @@ void __89__SUUIStorePageSectionsViewController_indexPathsForGradientItemsInColle
     v8 = [(NSMutableArray *)self->_sections objectAtIndex:?];
   }
 
-  v9 = [v7 pageComponent];
-  v10 = [v9 viewElement];
+  pageComponent = [layout pageComponent];
+  viewElement = [pageComponent viewElement];
   v11 = objc_opt_class();
   if (v11 == objc_opt_class())
   {
-    v12 = [v8 pageComponent];
-    v13 = [v12 viewElement];
+    pageComponent2 = [v8 pageComponent];
+    viewElement2 = [pageComponent2 viewElement];
     v14 = objc_opt_class();
     v15 = objc_opt_class();
 
@@ -2034,7 +2034,7 @@ void __89__SUUIStorePageSectionsViewController_indexPathsForGradientItemsInColle
   {
   }
 
-  [v7 sectionContentInset];
+  [layout sectionContentInset];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -2052,13 +2052,13 @@ LABEL_8:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  [-[NSMutableArray objectAtIndex:](self->_sections objectAtIndex:{objc_msgSend(a5, "section", a3, a4)), "cellSizeForIndexPath:", a5}];
+  [-[NSMutableArray objectAtIndex:](self->_sections objectAtIndex:{objc_msgSend(path, "section", view, layout)), "cellSizeForIndexPath:", path}];
   v8 = v7;
   if (Width < 0.00000011920929)
   {
-    [a3 bounds];
+    [view bounds];
     Width = CGRectGetWidth(v11);
   }
 
@@ -2073,143 +2073,143 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)performTestWithName:(id)a3 options:(id)a4
+- (BOOL)performTestWithName:(id)name options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasPrefix:@"Scroll"])
+  nameCopy = name;
+  optionsCopy = options;
+  if ([nameCopy hasPrefix:@"Scroll"])
   {
-    v8 = [MEMORY[0x277CBEB88] mainRunLoop];
-    v9 = [MEMORY[0x277CBEAA8] date];
-    v10 = [v9 dateByAddingTimeInterval:4.0];
-    [v8 runUntilDate:v10];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    date = [MEMORY[0x277CBEAA8] date];
+    v10 = [date dateByAddingTimeInterval:4.0];
+    [mainRunLoop runUntilDate:v10];
 
-    v11 = [v7 objectForKeyedSubscript:@"iterations"];
-    v12 = [v7 objectForKeyedSubscript:@"offset"];
+    v11 = [optionsCopy objectForKeyedSubscript:@"iterations"];
+    v12 = [optionsCopy objectForKeyedSubscript:@"offset"];
     collectionView = self->_collectionView;
-    v14 = [v11 intValue];
-    v15 = [v12 intValue];
+    intValue = [v11 intValue];
+    intValue2 = [v12 intValue];
     [(SUUICollectionView *)self->_collectionView contentSize];
-    [(SUUICollectionView *)collectionView _performScrollTest:v6 iterations:v14 delta:v15 length:v16];
+    [(SUUICollectionView *)collectionView _performScrollTest:nameCopy iterations:intValue delta:intValue2 length:v16];
   }
 
   return 1;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSMutableArray objectAtIndex:](self->_sections, "objectAtIndex:", [v7 section]);
-  v9 = [v8 cellForIndexPath:v7];
-  v10 = [(SUUIStorePageSectionsViewController *)self metricsController];
-  v11 = [v10 activeImpressionsSession];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSMutableArray objectAtIndex:](self->_sections, "objectAtIndex:", [pathCopy section]);
+  v9 = [v8 cellForIndexPath:pathCopy];
+  metricsController = [(SUUIStorePageSectionsViewController *)self metricsController];
+  activeImpressionsSession = [metricsController activeImpressionsSession];
 
-  if (v11)
+  if (activeImpressionsSession)
   {
-    [v8 addImpressionsForIndexPath:v7 toSession:v11];
+    [v8 addImpressionsForIndexPath:pathCopy toSession:activeImpressionsSession];
   }
 
   if (!v9)
   {
-    v9 = [v6 dequeueReusableCellWithReuseIdentifier:@"UICollectionViewCell" forIndexPath:v7];
+    v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"UICollectionViewCell" forIndexPath:pathCopy];
   }
 
   return v9;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_sections objectAtIndex:a4];
-  v5 = [v4 numberOfCells];
+  v4 = [(NSMutableArray *)self->_sections objectAtIndex:section];
+  numberOfCells = [v4 numberOfCells];
 
-  return v5;
+  return numberOfCells;
 }
 
-- (void)collectionView:(id)a3 didConfirmButtonElement:(id)a4 withClickInfo:(id)a5 forItemAtIndexPath:(id)a6
+- (void)collectionView:(id)view didConfirmButtonElement:(id)element withClickInfo:(id)info forItemAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [v9 section]);
-  [v12 collectionViewDidConfirmButtonElement:v11 withClickInfo:v10 forItemAtIndexPath:v9];
+  pathCopy = path;
+  infoCopy = info;
+  elementCopy = element;
+  v12 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+  [v12 collectionViewDidConfirmButtonElement:elementCopy withClickInfo:infoCopy forItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = [v7 section];
-  if (v8 < [(NSMutableArray *)self->_sections count])
+  cellCopy = cell;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section < [(NSMutableArray *)self->_sections count])
   {
-    v9 = [(NSMutableArray *)self->_sections objectAtIndex:v8];
-    [v9 collectionViewWillDisplayCellForItemAtIndexPath:v7];
-    [v9 registerContextActionsForCell:v10 indexPath:v7 viewController:self];
+    v9 = [(NSMutableArray *)self->_sections objectAtIndex:section];
+    [v9 collectionViewWillDisplayCellForItemAtIndexPath:pathCopy];
+    [v9 registerContextActionsForCell:cellCopy indexPath:pathCopy viewController:self];
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = [v7 section];
-  if (v8 < [(NSMutableArray *)self->_sections count])
+  cellCopy = cell;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section < [(NSMutableArray *)self->_sections count])
   {
-    v9 = [(NSMutableArray *)self->_sections objectAtIndex:v8];
-    [v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:v7];
-    [v9 unregisterContextActionsForCell:v10 indexPath:v7 viewController:self];
+    v9 = [(NSMutableArray *)self->_sections objectAtIndex:section];
+    [v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:pathCopy];
+    [v9 unregisterContextActionsForCell:cellCopy indexPath:pathCopy viewController:self];
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v5 = a4;
-  v6 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [v5 section]);
-  [v6 collectionViewDidSelectItemAtIndexPath:v5];
+  pathCopy = path;
+  v6 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+  [v6 collectionViewDidSelectItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionView:(id)a3 expandEditorialForLabelElement:(id)a4 indexPath:(id)a5
+- (void)collectionView:(id)view expandEditorialForLabelElement:(id)element indexPath:(id)path
 {
   sections = self->_sections;
-  v7 = a5;
-  v8 = a4;
-  v9 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [v7 section]);
-  [v9 expandEditorialForLabelElement:v8 indexPath:v7];
+  pathCopy = path;
+  elementCopy = element;
+  v9 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+  [v9 expandEditorialForLabelElement:elementCopy indexPath:pathCopy];
 }
 
-- (void)collectionView:(id)a3 performDefaultActionForViewElement:(id)a4 indexPath:(id)a5
+- (void)collectionView:(id)view performDefaultActionForViewElement:(id)element indexPath:(id)path
 {
   sections = self->_sections;
-  v7 = a4;
-  v8 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [a5 section]);
-  [v8 performDefaultActionForViewElement:v7];
+  elementCopy = element;
+  v8 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [path section]);
+  [v8 performDefaultActionForViewElement:elementCopy];
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v5 = a4;
-  v6 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [v5 section]);
-  v7 = [v6 collectionViewShouldHighlightItemAtIndexPath:v5];
+  pathCopy = path;
+  v6 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+  v7 = [v6 collectionViewShouldHighlightItemAtIndexPath:pathCopy];
 
   return v7;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v5 = a4;
-  v6 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [v5 section]);
-  v7 = [v6 collectionViewShouldSelectItemAtIndexPath:v5];
+  pathCopy = path;
+  v6 = -[NSMutableArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+  v7 = [v6 collectionViewShouldSelectItemAtIndexPath:pathCopy];
 
   return v7;
 }
 
-- (void)itemCollectionView:(id)a3 didConfirmItemOfferForCell:(id)a4
+- (void)itemCollectionView:(id)view didConfirmItemOfferForCell:(id)cell
 {
-  v5 = [a3 indexPathForCell:a4];
+  v5 = [view indexPathForCell:cell];
   if (v5)
   {
     v7 = v5;
@@ -2220,9 +2220,9 @@ LABEL_8:
   }
 }
 
-- (void)itemCollectionView:(id)a3 didTapVideoForCollectionViewCell:(id)a4
+- (void)itemCollectionView:(id)view didTapVideoForCollectionViewCell:(id)cell
 {
-  v5 = [a3 indexPathForCell:a4];
+  v5 = [view indexPathForCell:cell];
   if (v5)
   {
     v7 = v5;
@@ -2233,28 +2233,28 @@ LABEL_8:
   }
 }
 
-- (void)SUUICollectionViewWillLayoutSubviews:(id)a3
+- (void)SUUICollectionViewWillLayoutSubviews:(id)subviews
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSectionsViewController *)self view];
-  [v5 bounds];
+  subviewsCopy = subviews;
+  view = [(SUUIStorePageSectionsViewController *)self view];
+  [view bounds];
   [(SUUIStorePageSectionsViewController *)self _setPageSize:v6, v7];
 
   lastInterfaceOrientation = self->_lastInterfaceOrientation;
-  v9 = [MEMORY[0x277D75128] sharedApplication];
-  if (lastInterfaceOrientation == [v9 statusBarOrientation])
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  if (lastInterfaceOrientation == [mEMORY[0x277D75128] statusBarOrientation])
   {
     didInitialReload = self->_didInitialReload;
 
     if (didInitialReload)
     {
-      v11 = [MEMORY[0x277D75128] sharedApplication];
+      mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
       v62[0] = MEMORY[0x277D85DD0];
       v62[1] = 3221225472;
       v62[2] = __76__SUUIStorePageSectionsViewController_SUUICollectionViewWillLayoutSubviews___block_invoke;
       v62[3] = &unk_2798F5BE8;
       v62[4] = self;
-      [v11 _performBlockAfterCATransactionCommits:v62];
+      [mEMORY[0x277D75128]2 _performBlockAfterCATransactionCommits:v62];
 
       goto LABEL_6;
     }
@@ -2264,13 +2264,13 @@ LABEL_8:
   {
   }
 
-  v12 = [MEMORY[0x277D75128] sharedApplication];
-  self->_lastInterfaceOrientation = [v12 statusBarOrientation];
+  mEMORY[0x277D75128]3 = [MEMORY[0x277D75128] sharedApplication];
+  self->_lastInterfaceOrientation = [mEMORY[0x277D75128]3 statusBarOrientation];
 
   self->_didInitialReload = 1;
   v13 = MEMORY[0x277CCABB0];
-  v14 = [(SUUIStorePageSectionsViewController *)self view];
-  [v14 bounds];
+  view2 = [(SUUIStorePageSectionsViewController *)self view];
+  [view2 bounds];
   *&v16 = v15;
   v17 = [v13 numberWithFloat:v16];
   lastKnownWidth = self->_lastKnownWidth;
@@ -2285,8 +2285,8 @@ LABEL_6:
     SUUICollectionViewWillLayoutSubviews__sLayoutRespondsToFrame = [MEMORY[0x277D75300] instancesRespondToSelector:sel__frame];
   }
 
-  v19 = [(SUUIStorePageSplitsDescription *)self->_splitsDescription leftSplit];
-  if (v19 && (-[SUUIStorePageSplitsDescription rightSplit](self->_splitsDescription, "rightSplit"), v20 = objc_claimAutoreleasedReturnValue(), v20, v20) && ([v19 dividerColor], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+  leftSplit = [(SUUIStorePageSplitsDescription *)self->_splitsDescription leftSplit];
+  if (leftSplit && (-[SUUIStorePageSplitsDescription rightSplit](self->_splitsDescription, "rightSplit"), v20 = objc_claimAutoreleasedReturnValue(), v20, v20) && ([leftSplit dividerColor], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v22 = v21;
     if (SUUICollectionViewWillLayoutSubviews__sLayoutRespondsToFrame)
@@ -2298,7 +2298,7 @@ LABEL_6:
         v25 = self->_splitsDividerView;
         self->_splitsDividerView = v24;
 
-        [v4 addSubview:self->_splitsDividerView];
+        [subviewsCopy addSubview:self->_splitsDividerView];
         splitsDividerView = self->_splitsDividerView;
       }
 
@@ -2310,21 +2310,21 @@ LABEL_6:
       v26 = *(MEMORY[0x277CBF3A0] + 16);
       v60 = *MEMORY[0x277CBF3A0];
       v61 = v26;
-      v27 = [(SUUIStorePageSectionsViewController *)self _collectionViewSublayouts];
+      _collectionViewSublayouts = [(SUUIStorePageSectionsViewController *)self _collectionViewSublayouts];
       splitsDescription = self->_splitsDescription;
       v49 = MEMORY[0x277D85DD0];
       v50 = 3221225472;
       v51 = __76__SUUIStorePageSectionsViewController_SUUICollectionViewWillLayoutSubviews___block_invoke_2;
       v52 = &unk_2798F70B8;
-      v53 = v19;
-      v29 = v27;
+      v53 = leftSplit;
+      v29 = _collectionViewSublayouts;
       v54 = v29;
       v55 = &v56;
       [(SUUIStorePageSplitsDescription *)splitsDescription enumerateSplitsUsingBlock:&v49];
-      [v4 frame];
+      [subviewsCopy frame];
       v31 = v30;
-      v32 = [MEMORY[0x277D759A0] mainScreen];
-      [v32 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v34 = v33;
 
       ShouldReverseLayoutDirection = storeShouldReverseLayoutDirection();
@@ -2344,9 +2344,9 @@ LABEL_6:
       }
 
       MinY = CGRectGetMinY(v57[1]);
-      [v4 contentOffset];
+      [subviewsCopy contentOffset];
       v44 = v43;
-      [v4 contentInset];
+      [subviewsCopy contentInset];
       v46 = v44 + v45;
       v47 = v57[1].origin.y;
       if (v47 <= 0.00000011920929)
@@ -2392,15 +2392,15 @@ void __76__SUUIStorePageSectionsViewController_SUUICollectionViewWillLayoutSubvi
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
+  deceleratingCopy = decelerating;
   if ([(SUUIResourceLoader *)self->_resourceLoader isIdle])
   {
     [(SUUIStorePageSectionsViewController *)self _prefetchArtworkForVisibleSections];
   }
 
-  if (([v4 isDragging] & 1) == 0 && (objc_msgSend(v4, "isTracking") & 1) == 0 && (objc_msgSend(v4, "isDecelerating") & 1) == 0)
+  if (([deceleratingCopy isDragging] & 1) == 0 && (objc_msgSend(deceleratingCopy, "isTracking") & 1) == 0 && (objc_msgSend(deceleratingCopy, "isDecelerating") & 1) == 0)
   {
     [(SUUIStackedBar *)self->_stackedBar animateToFullSizeIfNecessary];
   }
@@ -2408,9 +2408,9 @@ void __76__SUUIStorePageSectionsViewController_SUUICollectionViewWillLayoutSubvi
   self->_scrollOffsetHasChanged = 1;
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     if ([(SUUIResourceLoader *)self->_resourceLoader isIdle])
     {
@@ -2423,9 +2423,9 @@ void __76__SUUIStorePageSectionsViewController_SUUICollectionViewWillLayoutSubvi
   self->_scrollOffsetHasChanged = 1;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v8 = a3;
+  scrollCopy = scroll;
   if (self->_indexPathOfEditedCell)
   {
     v4 = [(SUUICollectionView *)self->_collectionView cellForItemAtIndexPath:?];
@@ -2447,17 +2447,17 @@ void __76__SUUIStorePageSectionsViewController_SUUICollectionViewWillLayoutSubvi
   }
 
   stackedBar = self->_stackedBar;
-  [v8 contentOffset];
+  [scrollCopy contentOffset];
   [(SUUIStackedBar *)stackedBar setOffset:v7];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a5->x;
-  y = a5->y;
-  v8 = [(SUUICollectionView *)self->_collectionView indexPathForItemAtPoint:a3, a5->x, y];
-  v9 = [v8 item];
-  v10 = [v8 section];
+  x = offset->x;
+  y = offset->y;
+  v8 = [(SUUICollectionView *)self->_collectionView indexPathForItemAtPoint:dragging, offset->x, y];
+  item = [v8 item];
+  section = [v8 section];
   [(SUUICollectionView *)self->_collectionView contentInset];
   v12 = v11;
   [(SUUICollectionView *)self->_collectionView bounds];
@@ -2474,15 +2474,15 @@ void __76__SUUIStorePageSectionsViewController_SUUICollectionViewWillLayoutSubvi
   }
 
   v17 = [(SUUICollectionView *)self->_collectionView indexPathForItemAtPoint:x, v16];
-  v18 = [v17 item];
-  v19 = [v17 section];
+  item2 = [v17 item];
+  section2 = [v17 section];
   v30 = v8;
-  v20 = [v8 section];
+  section3 = [v8 section];
   v21 = [(NSMutableArray *)self->_sections count]- 1;
-  v22 = [v17 section];
-  if (v21 >= v22)
+  section4 = [v17 section];
+  if (v21 >= section4)
   {
-    v23 = v22;
+    v23 = section4;
   }
 
   else
@@ -2490,22 +2490,22 @@ void __76__SUUIStorePageSectionsViewController_SUUICollectionViewWillLayoutSubvi
     v23 = v21;
   }
 
-  if (v20 <= v23)
+  if (section3 <= v23)
   {
     do
     {
-      v24 = [(NSMutableArray *)self->_sections objectAtIndex:v20];
-      v31 = v10;
-      v32 = v9;
-      v33 = v19;
-      v34 = v18;
+      v24 = [(NSMutableArray *)self->_sections objectAtIndex:section3];
+      v31 = section;
+      v32 = item;
+      v33 = section2;
+      v34 = item2;
       [v24 collectionViewWillScrollToOffset:&v31 visibleRange:{x, y}];
 
       v25 = [(NSMutableArray *)self->_sections count]- 1;
-      v26 = [v17 section];
-      if (v25 >= v26)
+      section5 = [v17 section];
+      if (v25 >= section5)
       {
-        v27 = v26;
+        v27 = section5;
       }
 
       else
@@ -2514,60 +2514,60 @@ void __76__SUUIStorePageSectionsViewController_SUUICollectionViewWillLayoutSubvi
       }
     }
 
-    while (v20++ < v27);
+    while (section3++ < v27);
   }
 
   if (self->_delegateWantsWillScrollToOffsetVisibleRange)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v31 = v10;
-    v32 = v9;
-    v33 = v19;
-    v34 = v18;
+    v31 = section;
+    v32 = item;
+    v33 = section2;
+    v34 = item2;
     [WeakRetained sectionsViewController:self willScrollToOffset:&v31 visibleRange:{x, y}];
   }
 
   self->_scrollOffsetHasChanged = 1;
 }
 
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [v7 sourceView];
-  [(SUUICollectionView *)self->_collectionView convertPoint:v8 fromView:x, y];
+  y = location.y;
+  x = location.x;
+  contextCopy = context;
+  sourceView = [contextCopy sourceView];
+  [(SUUICollectionView *)self->_collectionView convertPoint:sourceView fromView:x, y];
   v9 = [(SUUICollectionView *)self->_collectionView indexPathForItemAtPoint:?];
-  v10 = [v9 section];
-  if (v10 >= [(NSMutableArray *)self->_sections count])
+  section = [v9 section];
+  if (section >= [(NSMutableArray *)self->_sections count])
   {
     v12 = 0;
   }
 
   else
   {
-    v11 = [(NSMutableArray *)self->_sections objectAtIndex:v10];
-    v12 = [v11 previewingContext:v7 viewControllerForLocation:{x, y}];
+    v11 = [(NSMutableArray *)self->_sections objectAtIndex:section];
+    v12 = [v11 previewingContext:contextCopy viewControllerForLocation:{x, y}];
   }
 
   return v12;
 }
 
-- (void)previewingContext:(id)a3 commitViewController:(id)a4
+- (void)previewingContext:(id)context commitViewController:(id)controller
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = [(SUUIStorePageSectionsViewController *)self navigationController];
-  v8 = [(SUUIStorePageSectionsViewController *)self parentViewController];
-  if (v8)
+  contextCopy = context;
+  controllerCopy = controller;
+  navigationController = [(SUUIStorePageSectionsViewController *)self navigationController];
+  parentViewController = [(SUUIStorePageSectionsViewController *)self parentViewController];
+  if (parentViewController)
   {
     while (1)
     {
-      v9 = [v8 navigationController];
-      v10 = [(SUUIViewController *)self clientContext];
-      v11 = [v10 applicationController];
-      v12 = [v11 rootViewController];
-      IsDescendent = SUUIViewControllerIsDescendent(v9, v12);
+      navigationController2 = [parentViewController navigationController];
+      clientContext = [(SUUIViewController *)self clientContext];
+      applicationController = [clientContext applicationController];
+      rootViewController = [applicationController rootViewController];
+      IsDescendent = SUUIViewControllerIsDescendent(navigationController2, rootViewController);
 
       if (!IsDescendent)
       {
@@ -2575,41 +2575,41 @@ void __76__SUUIStorePageSectionsViewController_SUUICollectionViewWillLayoutSubvi
         goto LABEL_11;
       }
 
-      if (v9)
+      if (navigationController2)
       {
         break;
       }
 
-      if ([v8 conformsToProtocol:&unk_286C96900])
+      if ([parentViewController conformsToProtocol:&unk_286C96900])
       {
-        v14 = [v8 overlayNavigationController];
+        overlayNavigationController = [parentViewController overlayNavigationController];
         goto LABEL_7;
       }
 
 LABEL_8:
-      v16 = [v8 parentViewController];
+      v8ParentViewController = [parentViewController parentViewController];
 
-      v8 = v16;
-      if (!v16)
+      parentViewController = v8ParentViewController;
+      if (!v8ParentViewController)
       {
         goto LABEL_11;
       }
     }
 
-    v14 = v9;
+    overlayNavigationController = navigationController2;
 LABEL_7:
-    v15 = v14;
+    v15 = overlayNavigationController;
 
-    v7 = v15;
+    navigationController = v15;
     goto LABEL_8;
   }
 
 LABEL_11:
-  v17 = v6;
-  v18 = v17;
+  v17 = controllerCopy;
+  previewCommitViewController = v17;
   if ([v17 conformsToProtocol:&unk_286C4E800])
   {
-    v18 = [v17 previewCommitViewController];
+    previewCommitViewController = [v17 previewCommitViewController];
 
     if (objc_opt_respondsToSelector())
     {
@@ -2617,44 +2617,44 @@ LABEL_11:
     }
   }
 
-  [v7 pushViewController:v18 animated:1];
+  [navigationController pushViewController:previewCommitViewController animated:1];
 }
 
-- (void)willPresentPreviewViewController:(id)a3 forLocation:(CGPoint)a4 inSourceView:(id)a5
+- (void)willPresentPreviewViewController:(id)controller forLocation:(CGPoint)location inSourceView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
-  v22 = a3;
-  v9 = a5;
-  v10 = [(SUUIStorePageSectionsViewController *)self collectionView];
-  [v10 convertPoint:v9 fromView:{x, y}];
+  y = location.y;
+  x = location.x;
+  controllerCopy = controller;
+  viewCopy = view;
+  collectionView = [(SUUIStorePageSectionsViewController *)self collectionView];
+  [collectionView convertPoint:viewCopy fromView:{x, y}];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(SUUIStorePageSectionsViewController *)self collectionView];
-  v16 = [v15 indexPathForItemAtPoint:{v12, v14}];
+  collectionView2 = [(SUUIStorePageSectionsViewController *)self collectionView];
+  v16 = [collectionView2 indexPathForItemAtPoint:{v12, v14}];
 
-  v17 = [(SUUIStorePageSectionsViewController *)self collectionView];
-  v18 = [v17 cellForItemAtIndexPath:v16];
+  collectionView3 = [(SUUIStorePageSectionsViewController *)self collectionView];
+  v18 = [collectionView3 cellForItemAtIndexPath:v16];
 
-  v19 = [v22 presentationController];
-  [v19 setSourceView:v18];
+  presentationController = [controllerCopy presentationController];
+  [presentationController setSourceView:v18];
   [v18 bounds];
-  [v19 setSourceRect:?];
-  v20 = [v16 section];
-  if (v20 < [(NSMutableArray *)self->_sections count])
+  [presentationController setSourceRect:?];
+  section = [v16 section];
+  if (section < [(NSMutableArray *)self->_sections count])
   {
-    v21 = [(NSMutableArray *)self->_sections objectAtIndex:v20];
-    [v21 willPresentPreviewViewController:v22 forLocation:v9 inSourceView:{x, y}];
+    v21 = [(NSMutableArray *)self->_sections objectAtIndex:section];
+    [v21 willPresentPreviewViewController:controllerCopy forLocation:viewCopy inSourceView:{x, y}];
   }
 }
 
-+ (id)viewControllerWithRestorationIdentifierPath:(id)a3 coder:(id)a4
++ (id)viewControllerWithRestorationIdentifierPath:(id)path coder:(id)coder
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   v5 = +[SUUIStateRestorationContext sharedContext];
-  v6 = [v5 clientContext];
-  [v4 setClientContext:v6];
+  clientContext = [v5 clientContext];
+  [v4 setClientContext:clientContext];
 
   return v4;
 }
@@ -2692,22 +2692,22 @@ LABEL_11:
   }
 }
 
-- (void)_insertSectionsWithComponents:(id)a3 afterSection:(id)a4
+- (void)_insertSectionsWithComponents:(id)components afterSection:(id)section
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NSMutableArray *)self->_sections indexOfObjectIdenticalTo:a4];
+  componentsCopy = components;
+  v7 = [(NSMutableArray *)self->_sections indexOfObjectIdenticalTo:section];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = v7;
     v20 = [(SUUIStorePageSectionsViewController *)self _splitForSectionIndex:v7];
-    v9 = [v20 sectionContext];
+    sectionContext = [v20 sectionContext];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v21 = v6;
-    v10 = v6;
+    v21 = componentsCopy;
+    v10 = componentsCopy;
     v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
@@ -2729,8 +2729,8 @@ LABEL_11:
           if (v17)
           {
             [v17 setSectionIndex:v14];
-            [v18 _setContext:v9];
-            [v18 willAppearInContext:v9];
+            [v18 _setContext:sectionContext];
+            [v18 willAppearInContext:sectionContext];
             [(NSMutableArray *)self->_sections insertObject:v18 atIndex:v14++];
             ++v13;
           }
@@ -2748,20 +2748,20 @@ LABEL_11:
     }
 
     [v20 setNumberOfPageSections:{objc_msgSend(v20, "numberOfPageSections") + v13}];
-    v19 = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
-    [v19 commitLayoutRequests];
+    _textLayoutCache = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
+    [_textLayoutCache commitLayoutRequests];
 
     [(SUUIStorePageSectionsViewController *)self _updateSectionsAfterMenuChange];
-    v6 = v21;
+    componentsCopy = v21;
   }
 }
 
-- (void)_pageSectionDidDismissOverlayController:(id)a3
+- (void)_pageSectionDidDismissOverlayController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_activeOverlayController);
-  v6 = a3;
+  controllerCopy = controller;
 
-  if (WeakRetained == v6)
+  if (WeakRetained == controllerCopy)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
     v8 = objc_opt_respondsToSelector();
@@ -2776,19 +2776,19 @@ LABEL_11:
   }
 }
 
-- (void)_setActiveProductPageOverlayController:(id)a3
+- (void)_setActiveProductPageOverlayController:(id)controller
 {
-  v4 = a3;
-  objc_storeWeak(&self->_activeOverlayController, v4);
+  controllerCopy = controller;
+  objc_storeWeak(&self->_activeOverlayController, controllerCopy);
 }
 
-- (void)_setRendersWithPerspective:(BOOL)a3
+- (void)_setRendersWithPerspective:(BOOL)perspective
 {
-  if (self->_rendersWithPerspective != a3)
+  if (self->_rendersWithPerspective != perspective)
   {
-    self->_rendersWithPerspective = a3;
-    v4 = [(SUUICollectionView *)self->_collectionView collectionViewLayout];
-    [v4 setRendersWithPerspective:self->_rendersWithPerspective];
+    self->_rendersWithPerspective = perspective;
+    collectionViewLayout = [(SUUICollectionView *)self->_collectionView collectionViewLayout];
+    [collectionViewLayout setRendersWithPerspective:self->_rendersWithPerspective];
     [(SUUICollectionView *)self->_collectionView setClipsToBounds:!self->_rendersWithPerspective];
     if (self->_rendersWithPerspective)
     {
@@ -2797,31 +2797,31 @@ LABEL_11:
   }
 }
 
-- (void)_setRendersWithParallax:(BOOL)a3
+- (void)_setRendersWithParallax:(BOOL)parallax
 {
-  if (self->_rendersWithParallax != a3)
+  if (self->_rendersWithParallax != parallax)
   {
-    self->_rendersWithParallax = a3;
+    self->_rendersWithParallax = parallax;
   }
 }
 
-- (void)_setSelectedIndex:(int64_t)a3 forMenuSection:(id)a4
+- (void)_setSelectedIndex:(int64_t)index forMenuSection:(id)section
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 pageComponent];
-  v8 = [(SUUIStorePageSectionsViewController *)self _menuContextForMenuComponent:v7];
-  v9 = [v8 selectedIndex];
-  if (v9 != a3)
+  sectionCopy = section;
+  pageComponent = [sectionCopy pageComponent];
+  v8 = [(SUUIStorePageSectionsViewController *)self _menuContextForMenuComponent:pageComponent];
+  selectedIndex = [v8 selectedIndex];
+  if (selectedIndex != index)
   {
-    v10 = [v7 childComponentsForIndex:v9];
+    v10 = [pageComponent childComponentsForIndex:selectedIndex];
     v20 = [v10 count];
 
-    v22 = v6;
-    v19 = [v6 sectionIndex];
+    v22 = sectionCopy;
+    sectionIndex = [sectionCopy sectionIndex];
     v21 = [(SUUIStorePageSectionsViewController *)self _splitForSectionIndex:?];
-    v11 = [v21 sectionContext];
-    v12 = [(SUUIStorePageSectionsViewController *)self _childSectionsForMenuComponent:v7 selectedIndex:a3];
+    sectionContext = [v21 sectionContext];
+    v12 = [(SUUIStorePageSectionsViewController *)self _childSectionsForMenuComponent:pageComponent selectedIndex:index];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -2841,8 +2841,8 @@ LABEL_11:
           }
 
           v17 = *(*(&v23 + 1) + 8 * i);
-          [v17 _setContext:v11];
-          [v17 willAppearInContext:v11];
+          [v17 _setContext:sectionContext];
+          [v17 willAppearInContext:sectionContext];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -2851,33 +2851,33 @@ LABEL_11:
       while (v14);
     }
 
-    [(NSMutableArray *)self->_sections replaceObjectsInRange:v19 + 1 withObjectsFromArray:v20, v12];
-    [v8 setSelectedIndex:a3];
+    [(NSMutableArray *)self->_sections replaceObjectsInRange:sectionIndex + 1 withObjectsFromArray:v20, v12];
+    [v8 setSelectedIndex:index];
     [v21 setNumberOfPageSections:{objc_msgSend(v21, "numberOfPageSections") - v20 + objc_msgSend(v12, "count")}];
-    v18 = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
-    [v18 commitLayoutRequests];
+    _textLayoutCache = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
+    [_textLayoutCache commitLayoutRequests];
 
     [(SUUIStorePageSectionsViewController *)self _updateSectionsAfterMenuChange];
-    v6 = v22;
+    sectionCopy = v22;
   }
 }
 
-- (void)_updateSectionsForIndex:(int64_t)a3 menuSection:(id)a4
+- (void)_updateSectionsForIndex:(int64_t)index menuSection:(id)section
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 pageComponent];
-  v8 = [(SUUIStorePageSectionsViewController *)self _menuContextForMenuComponent:v7];
-  if ([v8 selectedIndex] == a3)
+  sectionCopy = section;
+  pageComponent = [sectionCopy pageComponent];
+  v8 = [(SUUIStorePageSectionsViewController *)self _menuContextForMenuComponent:pageComponent];
+  if ([v8 selectedIndex] == index)
   {
-    v9 = [v8 sectionsForIndex:a3];
+    v9 = [v8 sectionsForIndex:index];
     v10 = [v9 count];
 
     if (!v10)
     {
-      v19 = -[SUUIStorePageSectionsViewController _splitForSectionIndex:](self, "_splitForSectionIndex:", [v6 sectionIndex]);
-      v11 = [v19 sectionContext];
-      v12 = [(SUUIStorePageSectionsViewController *)self _childSectionsForMenuComponent:v7 selectedIndex:a3];
+      v19 = -[SUUIStorePageSectionsViewController _splitForSectionIndex:](self, "_splitForSectionIndex:", [sectionCopy sectionIndex]);
+      sectionContext = [v19 sectionContext];
+      v12 = [(SUUIStorePageSectionsViewController *)self _childSectionsForMenuComponent:pageComponent selectedIndex:index];
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
@@ -2897,8 +2897,8 @@ LABEL_11:
             }
 
             v17 = *(*(&v20 + 1) + 8 * i);
-            [v17 _setContext:v11];
-            [v17 willAppearInContext:v11];
+            [v17 _setContext:sectionContext];
+            [v17 willAppearInContext:sectionContext];
           }
 
           v14 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -2907,10 +2907,10 @@ LABEL_11:
         while (v14);
       }
 
-      -[NSMutableArray replaceObjectsInRange:withObjectsFromArray:](self->_sections, "replaceObjectsInRange:withObjectsFromArray:", [v6 sectionIndex] + 1, 0, v12);
+      -[NSMutableArray replaceObjectsInRange:withObjectsFromArray:](self->_sections, "replaceObjectsInRange:withObjectsFromArray:", [sectionCopy sectionIndex] + 1, 0, v12);
       [v19 setNumberOfPageSections:{objc_msgSend(v12, "count") + objc_msgSend(v19, "numberOfPageSections")}];
-      v18 = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
-      [v18 commitLayoutRequests];
+      _textLayoutCache = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
+      [_textLayoutCache commitLayoutRequests];
 
       [(SUUIStorePageSectionsViewController *)self _updateSectionsAfterMenuChange];
     }
@@ -2921,12 +2921,12 @@ LABEL_11:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(SUUIMetricsImpressionSession);
-  v4 = [(SUUICollectionView *)self->_collectionView indexPathsForVisibleItems];
+  indexPathsForVisibleItems = [(SUUICollectionView *)self->_collectionView indexPathsForVisibleItems];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [indexPathsForVisibleItems countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2937,7 +2937,7 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -2945,27 +2945,27 @@ LABEL_11:
         [v10 addImpressionsForIndexPath:v9 toSession:v3];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [indexPathsForVisibleItems countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [(SUUIMetricsImpressionSession *)v3 impressionsString];
+  impressionsString = [(SUUIMetricsImpressionSession *)v3 impressionsString];
 
-  return v11;
+  return impressionsString;
 }
 
 - (id)_impressionableViewElements
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(SUUIMetricsImpressionSession);
-  v4 = [(SUUICollectionView *)self->_collectionView indexPathsForVisibleItems];
+  indexPathsForVisibleItems = [(SUUICollectionView *)self->_collectionView indexPathsForVisibleItems];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [indexPathsForVisibleItems countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2976,7 +2976,7 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -2984,18 +2984,18 @@ LABEL_11:
         [v10 addImpressionsForIndexPath:v9 toSession:v3];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [indexPathsForVisibleItems countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [(SUUIMetricsImpressionSession *)v3 impressionableViewElements];
+  impressionableViewElements = [(SUUIMetricsImpressionSession *)v3 impressionableViewElements];
 
-  return v11;
+  return impressionableViewElements;
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
   if (self->_indexPathOfEditedCell)
   {
@@ -3007,16 +3007,16 @@ LABEL_11:
   }
 }
 
-- (void)_entityProviderDidInvalidateNotification:(id)a3
+- (void)_entityProviderDidInvalidateNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __80__SUUIStorePageSectionsViewController__entityProviderDidInvalidateNotification___block_invoke;
   v10 = &unk_2798F5AF8;
-  v5 = v4;
+  v5 = notificationCopy;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   v6 = _Block_copy(&v7);
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
@@ -3101,36 +3101,36 @@ void __80__SUUIStorePageSectionsViewController__entityProviderDidInvalidateNotif
   [v7 commitLayoutRequests];
 }
 
-- (void)_applyColorScheme:(id)a3 toIndexBarControl:(id)a4
+- (void)_applyColorScheme:(id)scheme toIndexBarControl:(id)control
 {
-  v9 = a4;
-  v5 = a3;
-  v6 = [v5 backgroundColor];
-  if (v6)
+  controlCopy = control;
+  schemeCopy = scheme;
+  backgroundColor = [schemeCopy backgroundColor];
+  if (backgroundColor)
   {
-    [v9 setBackgroundColor:v6];
+    [controlCopy setBackgroundColor:backgroundColor];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [v9 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [controlCopy setBackgroundColor:clearColor];
   }
 
-  v8 = [v5 primaryTextColor];
+  primaryTextColor = [schemeCopy primaryTextColor];
 
-  [v9 setTintColor:v8];
+  [controlCopy setTintColor:primaryTextColor];
 }
 
 - (void)_beginActiveImpressionsForImpressionableViewElements
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SUUIStorePageSectionsViewController *)self _impressionableViewElements];
+  _impressionableViewElements = [(SUUIStorePageSectionsViewController *)self _impressionableViewElements];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [_impressionableViewElements countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3142,40 +3142,40 @@ void __80__SUUIStorePageSectionsViewController__entityProviderDidInvalidateNotif
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_impressionableViewElements);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(SUUIStorePageSectionsViewController *)self activeMetricsImpressionSession];
-        [v9 beginActiveImpressionForViewElement:v8];
+        activeMetricsImpressionSession = [(SUUIStorePageSectionsViewController *)self activeMetricsImpressionSession];
+        [activeMetricsImpressionSession beginActiveImpressionForViewElement:v8];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [_impressionableViewElements countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)_childSectionsForMenuComponent:(id)a3 selectedIndex:(int64_t)a4
+- (id)_childSectionsForMenuComponent:(id)component selectedIndex:(int64_t)index
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SUUIStorePageSectionsViewController *)self _menuContextForMenuComponent:v6];
-  v8 = [v7 sectionsForIndex:a4];
+  componentCopy = component;
+  v7 = [(SUUIStorePageSectionsViewController *)self _menuContextForMenuComponent:componentCopy];
+  v8 = [v7 sectionsForIndex:index];
   if ([v8 count])
   {
-    v9 = v8;
+    array = v8;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
 
-    v10 = [v6 childComponentsForIndex:a4];
+    v10 = [componentCopy childComponentsForIndex:index];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -3197,7 +3197,7 @@ void __80__SUUIStorePageSectionsViewController__entityProviderDidInvalidateNotif
           v15 = [(SUUIStorePageSectionsViewController *)self defaultSectionForComponent:*(*(&v17 + 1) + 8 * i)];
           if (v15)
           {
-            [v9 addObject:v15];
+            [array addObject:v15];
           }
         }
 
@@ -3207,42 +3207,42 @@ void __80__SUUIStorePageSectionsViewController__entityProviderDidInvalidateNotif
       while (v12);
     }
 
-    [v7 setSections:v9 forIndex:a4];
+    [v7 setSections:array forIndex:index];
   }
 
-  return v9;
+  return array;
 }
 
 - (id)_collectionViewSublayouts
 {
-  v2 = [(SUUICollectionView *)self->_collectionView collectionViewLayout];
+  collectionViewLayout = [(SUUICollectionView *)self->_collectionView collectionViewLayout];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 sublayouts];
+    sublayouts = [collectionViewLayout sublayouts];
   }
 
   else
   {
-    v3 = 0;
+    sublayouts = 0;
   }
 
-  return v3;
+  return sublayouts;
 }
 
-- (id)_createSectionsForExpandPageComponent:(id)a3 context:(id)a4 newSections:(id)a5 sectionCount:(int64_t)a6 sectionsByViewElement:(id)a7 updateStyle:(int64_t)a8
+- (id)_createSectionsForExpandPageComponent:(id)component context:(id)context newSections:(id)sections sectionCount:(int64_t)count sectionsByViewElement:(id)element updateStyle:(int64_t)style
 {
   v80 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v66 = a4;
-  v68 = a5;
-  v14 = a7;
+  componentCopy = component;
+  contextCopy = context;
+  sectionsCopy = sections;
+  elementCopy = element;
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = 5;
   do
   {
-    v17 = [MEMORY[0x277CBEB68] null];
-    [v15 addObject:v17];
+    null = [MEMORY[0x277CBEB68] null];
+    [v15 addObject:null];
 
     --v16;
   }
@@ -3258,22 +3258,22 @@ void __80__SUUIStorePageSectionsViewController__entityProviderDidInvalidateNotif
   v58 = v15;
   [v15 replaceObjectAtIndex:4 withObject:v20];
 
-  [v13 viewElement];
+  [componentCopy viewElement];
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
   v67 = v77 = 0u;
-  v21 = [v67 persistenceKey];
-  v22 = [v21 flattenedChildren];
+  persistenceKey = [v67 persistenceKey];
+  flattenedChildren = [persistenceKey flattenedChildren];
 
-  obj = v22;
-  v64 = [v22 countByEnumeratingWithState:&v74 objects:v79 count:16];
+  obj = flattenedChildren;
+  v64 = [flattenedChildren countByEnumeratingWithState:&v74 objects:v79 count:16];
   if (v64)
   {
     v23 = 0;
     v63 = *v75;
-    v60 = v14;
-    v61 = v13;
+    v60 = elementCopy;
+    v61 = componentCopy;
     do
     {
       v24 = 0;
@@ -3284,10 +3284,10 @@ void __80__SUUIStorePageSectionsViewController__entityProviderDidInvalidateNotif
           objc_enumerationMutation(obj);
         }
 
-        v25 = [*(*(&v74 + 1) + 8 * v24) persistenceKey];
-        if (v25)
+        persistenceKey2 = [*(*(&v74 + 1) + 8 * v24) persistenceKey];
+        if (persistenceKey2)
         {
-          v26 = [v14 objectForKey:v25];
+          v26 = [elementCopy objectForKey:persistenceKey2];
           if (v26)
           {
             v27 = v26;
@@ -3295,13 +3295,13 @@ void __80__SUUIStorePageSectionsViewController__entityProviderDidInvalidateNotif
             v28 = [(NSMutableArray *)self->_sections count];
             [v27 setBottomSection:0];
             [v27 setSectionIndex:v28];
-            [v27 setTopSection:a6 == 0];
-            v29 = [v13 childComponentForIndex:v23];
-            v30 = [v27 updateWithContext:v66 pageComponent:v29];
+            [v27 setTopSection:count == 0];
+            v29 = [componentCopy childComponentForIndex:v23];
+            v30 = [v27 updateWithContext:contextCopy pageComponent:v29];
 
             if (v30 == 1)
             {
-              v31 = v25;
+              v31 = persistenceKey2;
               v32 = v23;
               v33 = 0;
 LABEL_35:
@@ -3310,22 +3310,22 @@ LABEL_35:
               [v58 replaceObjectAtIndex:v33 withObject:v51];
 
               v23 = v32;
-              v25 = v31;
-              v14 = v60;
-              v13 = v61;
+              persistenceKey2 = v31;
+              elementCopy = v60;
+              componentCopy = v61;
             }
 
             else if (v30 == 2)
             {
-              v31 = v25;
+              v31 = persistenceKey2;
               v32 = v23;
               v33 = 1;
               goto LABEL_35;
             }
 
             [(NSMutableArray *)self->_sections addObject:v27];
-            [v14 removeObjectForKey:v25];
-            ++a6;
+            [elementCopy removeObjectForKey:persistenceKey2];
+            ++count;
 LABEL_38:
 
             ++v23;
@@ -3338,7 +3338,7 @@ LABEL_38:
         if ([v67 isOpen])
         {
           v65 = v24;
-          v35 = [v13 childComponentForIndex:v23];
+          v35 = [componentCopy childComponentForIndex:v23];
           v36 = [(SUUIStorePageSectionsViewController *)self _newSectionsWithPageComponent:v35];
 
           v72 = 0u;
@@ -3364,12 +3364,12 @@ LABEL_38:
                 v41 = *(*(&v70 + 1) + 8 * i);
                 [v41 setBottomSection:0];
                 [v41 setSectionIndex:v34];
-                [v41 setTopSection:a6 == 0];
-                if (a8 == 1)
+                [v41 setTopSection:count == 0];
+                if (style == 1)
                 {
-                  [v41 _setContext:v66];
-                  [v41 willAppearInContext:v66];
-                  [v68 addObject:v41];
+                  [v41 _setContext:contextCopy];
+                  [v41 willAppearInContext:contextCopy];
+                  [sectionsCopy addObject:v41];
                   [(NSMutableArray *)self->_sections addObject:v41];
                   if ([v67 isOpen] && (objc_msgSend(v67, "previousIsOpen") & 1) == 0)
                   {
@@ -3389,11 +3389,11 @@ LABEL_38:
 
                 else
                 {
-                  [v68 addObject:v41];
+                  [sectionsCopy addObject:v41];
                   [(NSMutableArray *)self->_sections addObject:v41];
                 }
 
-                ++a6;
+                ++count;
                 ++v34;
               }
 
@@ -3402,8 +3402,8 @@ LABEL_38:
 
             while (v38);
 
-            v14 = v60;
-            v13 = v61;
+            elementCopy = v60;
+            componentCopy = v61;
             v23 = v59;
           }
 
@@ -3414,8 +3414,8 @@ LABEL_38:
           goto LABEL_38;
         }
 
-        v45 = [v67 previousIsOpen];
-        if (a8 == 1 && v45)
+        previousIsOpen = [v67 previousIsOpen];
+        if (style == 1 && previousIsOpen)
         {
           v46 = v24;
           expandRemoveSections = self->_expandRemoveSections;
@@ -3464,9 +3464,9 @@ LABEL_49:
   }
 
 LABEL_50:
-  [v55 replaceObjectAtIndex:2 withObject:v14];
-  [v55 replaceObjectAtIndex:3 withObject:v68];
-  v56 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
+  [v55 replaceObjectAtIndex:2 withObject:elementCopy];
+  [v55 replaceObjectAtIndex:3 withObject:sectionsCopy];
+  v56 = [MEMORY[0x277CCABB0] numberWithInteger:count];
   [v55 replaceObjectAtIndex:4 withObject:v56];
 
   return v55;
@@ -3474,38 +3474,38 @@ LABEL_50:
 
 - (id)_currentBackdropGroupName
 {
-  v2 = [(SUUIStorePageSectionsViewController *)self navigationController];
+  navigationController = [(SUUIStorePageSectionsViewController *)self navigationController];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 _backdropGroupName];
+    _backdropGroupName = [navigationController _backdropGroupName];
   }
 
   else
   {
-    v4 = [v2 navigationBar];
-    v3 = [v4 _backdropViewLayerGroupName];
+    navigationBar = [navigationController navigationBar];
+    _backdropGroupName = [navigationBar _backdropViewLayerGroupName];
   }
 
-  return v3;
+  return _backdropGroupName;
 }
 
-- (id)_defaultSectionForGridComponent:(id)a3
+- (id)_defaultSectionForGridComponent:(id)component
 {
-  v3 = a3;
-  v4 = [v3 gridType];
-  if (v4 > 6)
+  componentCopy = component;
+  gridType = [componentCopy gridType];
+  if (gridType > 6)
   {
     v6 = 0;
   }
 
   else
   {
-    if (((1 << v4) & 0x3B) != 0)
+    if (((1 << gridType) & 0x3B) != 0)
     {
       v5 = SUUIGridPageSection;
     }
 
-    else if (v4 == 2)
+    else if (gridType == 2)
     {
       v5 = SUUIBrickGridPageSection;
     }
@@ -3513,48 +3513,48 @@ LABEL_50:
     else
     {
       v5 = objc_opt_class();
-      v8 = [v3 viewElement];
-      v9 = [v8 isDynamicContainer];
+      viewElement = [componentCopy viewElement];
+      isDynamicContainer = [viewElement isDynamicContainer];
 
-      if (v9)
+      if (isDynamicContainer)
       {
         v5 = objc_opt_class();
       }
     }
 
-    v6 = [[v5 alloc] initWithPageComponent:v3];
+    v6 = [[v5 alloc] initWithPageComponent:componentCopy];
   }
 
   return v6;
 }
 
-- (id)_defaultSectionForSwooshComponent:(id)a3
+- (id)_defaultSectionForSwooshComponent:(id)component
 {
-  v3 = a3;
-  v4 = [v3 swooshType];
-  if (v4 > 2)
+  componentCopy = component;
+  swooshType = [componentCopy swooshType];
+  if (swooshType > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [objc_alloc(*off_2798F7238[v4]) initWithPageComponent:v3];
+    v5 = [objc_alloc(*off_2798F7238[swooshType]) initWithPageComponent:componentCopy];
   }
 
   return v5;
 }
 
-- (void)_deselectCellsForAppearance:(BOOL)a3
+- (void)_deselectCellsForAppearance:(BOOL)appearance
 {
-  v3 = a3;
+  appearanceCopy = appearance;
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [(SUUICollectionView *)self->_collectionView indexPathsForSelectedItems];
+  indexPathsForSelectedItems = [(SUUICollectionView *)self->_collectionView indexPathsForSelectedItems];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  v6 = [indexPathsForSelectedItems countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3566,14 +3566,14 @@ LABEL_50:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
-        [(SUUICollectionView *)self->_collectionView deselectItemAtIndexPath:*(*(&v19 + 1) + 8 * v9++) animated:v3];
+        [(SUUICollectionView *)self->_collectionView deselectItemAtIndexPath:*(*(&v19 + 1) + 8 * v9++) animated:appearanceCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v7 = [indexPathsForSelectedItems countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v7);
@@ -3599,7 +3599,7 @@ LABEL_50:
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v15 + 1) + 8 * v14++) deselectItemsAnimated:{v3, v15}];
+        [*(*(&v15 + 1) + 8 * v14++) deselectItemsAnimated:{appearanceCopy, v15}];
       }
 
       while (v12 != v14);
@@ -3612,20 +3612,20 @@ LABEL_50:
 
 - (void)_endAllPendingActiveImpression
 {
-  v2 = [(SUUIStorePageSectionsViewController *)self activeMetricsImpressionSession];
-  [v2 endAllPendingActiveImpression];
+  activeMetricsImpressionSession = [(SUUIStorePageSectionsViewController *)self activeMetricsImpressionSession];
+  [activeMetricsImpressionSession endAllPendingActiveImpression];
 }
 
-- (void)_enumerateSectionContextsUsingBlock:(id)a3
+- (void)_enumerateSectionContextsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   splitsDescription = self->_splitsDescription;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__SUUIStorePageSectionsViewController__enumerateSectionContextsUsingBlock___block_invoke;
   v7[3] = &unk_2798F7108;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(SUUIStorePageSplitsDescription *)splitsDescription enumerateSplitsUsingBlock:v7];
 }
 
@@ -3636,17 +3636,17 @@ void __75__SUUIStorePageSectionsViewController__enumerateSectionContextsUsingBlo
   (*(v6 + 16))(v6, v7, a3, a4);
 }
 
-- (void)_enumerateVisibleSectionsUsingBlock:(id)a3
+- (void)_enumerateVisibleSectionsUsingBlock:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUUICollectionView *)self->_collectionView indexPathsForVisibleItems];
+  blockCopy = block;
+  indexPathsForVisibleItems = [(SUUICollectionView *)self->_collectionView indexPathsForVisibleItems];
   v6 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = indexPathsForVisibleItems;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -3677,8 +3677,8 @@ void __75__SUUIStorePageSectionsViewController__enumerateSectionContextsUsingBlo
   v13[2] = __75__SUUIStorePageSectionsViewController__enumerateVisibleSectionsUsingBlock___block_invoke;
   v13[3] = &unk_2798F7130;
   v13[4] = self;
-  v14 = v4;
-  v12 = v4;
+  v14 = blockCopy;
+  v12 = blockCopy;
   [v6 enumerateIndexesUsingBlock:v13];
 }
 
@@ -3692,8 +3692,8 @@ void __75__SUUIStorePageSectionsViewController__enumerateVisibleSectionsUsingBlo
 {
   if (self->_lastKnownWidth)
   {
-    v3 = [(SUUIStorePageSectionsViewController *)self view];
-    [v3 bounds];
+    view = [(SUUIStorePageSectionsViewController *)self view];
+    [view bounds];
     v5 = v4;
     v7 = v6;
 
@@ -3713,19 +3713,19 @@ void __75__SUUIStorePageSectionsViewController__enumerateVisibleSectionsUsingBlo
   }
 }
 
-- (void)_invalidateLayoutWithNewSize:(CGSize)a3 transitionCoordinator:(id)a4
+- (void)_invalidateLayoutWithNewSize:(CGSize)size transitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v47 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  coordinatorCopy = coordinator;
   [(SUUIStorePageSectionsViewController *)self _setPageSize:width, height];
-  v8 = [(SUUIStorePageSectionsViewController *)self _collectionViewSublayouts];
+  _collectionViewSublayouts = [(SUUIStorePageSectionsViewController *)self _collectionViewSublayouts];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v40 objects:v46 count:16];
+  v9 = [_collectionViewSublayouts countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v9)
   {
     v10 = v9;
@@ -3736,20 +3736,20 @@ void __75__SUUIStorePageSectionsViewController__enumerateVisibleSectionsUsingBlo
       {
         if (*v41 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_collectionViewSublayouts);
         }
 
         [*(*(&v40 + 1) + 8 * i) invalidateLayout];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v40 objects:v46 count:16];
+      v10 = [_collectionViewSublayouts countByEnumeratingWithState:&v40 objects:v46 count:16];
     }
 
     while (v10);
   }
 
-  v13 = [(SUUICollectionView *)self->_collectionView collectionViewLayout];
-  [v13 invalidateLayout];
+  collectionViewLayout = [(SUUICollectionView *)self->_collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
   v14 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v36 = 0u;
@@ -3772,9 +3772,9 @@ void __75__SUUIStorePageSectionsViewController__enumerateVisibleSectionsUsingBlo
         }
 
         v20 = *(*(&v36 + 1) + 8 * j);
-        v21 = [v20 numberOfCells];
-        [v20 willTransitionToSize:v7 withTransitionCoordinator:{width, height}];
-        if (v21 != [v20 numberOfCells])
+        numberOfCells = [v20 numberOfCells];
+        [v20 willTransitionToSize:coordinatorCopy withTransitionCoordinator:{width, height}];
+        if (numberOfCells != [v20 numberOfCells])
         {
           [v14 addIndex:{objc_msgSend(v20, "sectionIndex")}];
         }
@@ -3786,8 +3786,8 @@ void __75__SUUIStorePageSectionsViewController__enumerateVisibleSectionsUsingBlo
     while (v17);
   }
 
-  v22 = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
-  [v22 commitLayoutRequests];
+  _textLayoutCache = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
+  [_textLayoutCache commitLayoutRequests];
 
   if ([v14 count])
   {
@@ -3834,10 +3834,10 @@ void __75__SUUIStorePageSectionsViewController__enumerateVisibleSectionsUsingBlo
   }
 }
 
-- (id)_expandContextForMenuComponent:(id)a3
+- (id)_expandContextForMenuComponent:(id)component
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_expandSectionContexts objectForKey:v4];
+  componentCopy = component;
+  v5 = [(NSMapTable *)self->_expandSectionContexts objectForKey:componentCopy];
   if (!v5)
   {
     if (!self->_expandSectionContexts)
@@ -3848,16 +3848,16 @@ void __75__SUUIStorePageSectionsViewController__enumerateVisibleSectionsUsingBlo
     }
 
     v5 = objc_alloc_init(SUUIExpandPageSectionContext);
-    [(NSMapTable *)self->_expandSectionContexts setObject:v5 forKey:v4];
+    [(NSMapTable *)self->_expandSectionContexts setObject:v5 forKey:componentCopy];
   }
 
   return v5;
 }
 
-- (id)_menuContextForMenuComponent:(id)a3
+- (id)_menuContextForMenuComponent:(id)component
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_menuSectionContexts objectForKey:v4];
+  componentCopy = component;
+  v5 = [(NSMapTable *)self->_menuSectionContexts objectForKey:componentCopy];
   if (!v5)
   {
     if (!self->_menuSectionContexts)
@@ -3868,8 +3868,8 @@ void __75__SUUIStorePageSectionsViewController__enumerateVisibleSectionsUsingBlo
     }
 
     v5 = objc_alloc_init(SUUIMenuPageSectionContext);
-    -[SUUIMenuPageSectionContext setSelectedIndex:](v5, "setSelectedIndex:", [v4 defaultSelectedIndex]);
-    [(NSMapTable *)self->_menuSectionContexts setObject:v5 forKey:v4];
+    -[SUUIMenuPageSectionContext setSelectedIndex:](v5, "setSelectedIndex:", [componentCopy defaultSelectedIndex]);
+    [(NSMapTable *)self->_menuSectionContexts setObject:v5 forKey:componentCopy];
   }
 
   return v5;
@@ -3884,26 +3884,26 @@ void __75__SUUIStorePageSectionsViewController__enumerateVisibleSectionsUsingBlo
   [(SUUIStorePageSectionContext *)v3 _setLayoutStyle:self->_layoutStyle];
   [(SUUIStorePageSectionContext *)v3 _setMetricsController:self->_metricsController];
   [(SUUIStorePageSectionContext *)v3 _setParentViewController:self];
-  v4 = [(SUUIStorePageSectionsViewController *)self resourceLoader];
-  [(SUUIStorePageSectionContext *)v3 _setResourceLoader:v4];
+  resourceLoader = [(SUUIStorePageSectionsViewController *)self resourceLoader];
+  [(SUUIStorePageSectionContext *)v3 _setResourceLoader:resourceLoader];
 
-  v5 = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
-  [(SUUIStorePageSectionContext *)v3 _setTextLayoutCache:v5];
+  _textLayoutCache = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
+  [(SUUIStorePageSectionContext *)v3 _setTextLayoutCache:_textLayoutCache];
 
   [(SUUIStorePageSectionContext *)v3 _setActiveMetricsImpressionSession:self->_activeMetricsImpressionSession];
   if ([(SUUIStorePageSectionsViewController *)self isViewLoaded])
   {
-    v6 = [(SUUIStorePageSectionsViewController *)self view];
-    [v6 bounds];
+    view = [(SUUIStorePageSectionsViewController *)self view];
+    [view bounds];
     v8 = v7;
     v10 = v9;
 
-    v11 = [(SUUICollectionView *)self->_collectionView indexBarControl];
+    indexBarControl = [(SUUICollectionView *)self->_collectionView indexBarControl];
 
-    if (v11)
+    if (indexBarControl)
     {
-      v12 = [(SUUICollectionView *)self->_collectionView indexBarControl];
-      [v12 sizeThatFits:{v8, v10}];
+      indexBarControl2 = [(SUUICollectionView *)self->_collectionView indexBarControl];
+      [indexBarControl2 sizeThatFits:{v8, v10}];
       v14 = v13;
 
       v8 = v8 - v14;
@@ -3917,13 +3917,13 @@ void __75__SUUIStorePageSectionsViewController__enumerateVisibleSectionsUsingBlo
   return v3;
 }
 
-- (id)_newSectionsWithPageComponent:(id)a3
+- (id)_newSectionsWithPageComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v4 componentType] == 11)
+  if ([componentCopy componentType] == 11)
   {
-    v6 = v4;
+    v6 = componentCopy;
     v7 = [[SUUIMenuPageSection alloc] initWithPageComponent:v6];
     [v5 addObject:v7];
     v8 = -[SUUIStorePageSectionsViewController _childSectionsForMenuComponent:selectedIndex:](self, "_childSectionsForMenuComponent:selectedIndex:", v6, [v6 defaultSelectedIndex]);
@@ -3935,23 +3935,23 @@ void __75__SUUIStorePageSectionsViewController__enumerateVisibleSectionsUsingBlo
 
   else
   {
-    v6 = [(SUUIStorePageSectionsViewController *)self defaultSectionForComponent:v4];
+    v6 = [(SUUIStorePageSectionsViewController *)self defaultSectionForComponent:componentCopy];
     [v5 addObject:v6];
   }
 
   return v5;
 }
 
-- (id)_newSectionsWithPageComponents:(id)a3
+- (id)_newSectionsWithPageComponents:(id)components
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  componentsCopy = components;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = componentsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -3986,8 +3986,8 @@ void __75__SUUIStorePageSectionsViewController__enumerateVisibleSectionsUsingBlo
 - (id)_newStorePageCollectionViewLayout
 {
   v3 = objc_alloc_init(SUUIStorePageCollectionViewLayout);
-  v4 = [(SUUIStorePageSectionsViewController *)self _currentBackdropGroupName];
-  [(SUUIStorePageCollectionViewLayout *)v3 setBackdropGroupName:v4];
+  _currentBackdropGroupName = [(SUUIStorePageSectionsViewController *)self _currentBackdropGroupName];
+  [(SUUIStorePageCollectionViewLayout *)v3 setBackdropGroupName:_currentBackdropGroupName];
 
   [(SUUIStorePageCollectionViewLayout *)v3 setRendersWithPerspective:self->_rendersWithPerspective];
   [(SUUIStorePageCollectionViewLayout *)v3 setRendersWithParallax:self->_rendersWithParallax];
@@ -3999,13 +3999,13 @@ void __75__SUUIStorePageSectionsViewController__enumerateVisibleSectionsUsingBlo
   v21 = *MEMORY[0x277D85DE8];
   if ([(SUUIStorePageSplitsDescription *)self->_splitsDescription numberOfSplits]> 1)
   {
-    v4 = [(SUUIStorePageSectionsViewController *)self _newSectionContext];
+    _newSectionContext = [(SUUIStorePageSectionsViewController *)self _newSectionContext];
     v15[0] = 0;
     v15[1] = v15;
     v15[2] = 0x2020000000;
     v15[3] = 0;
     splitsDescription = self->_splitsDescription;
-    [v4 activePageWidth];
+    [_newSectionContext activePageWidth];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __64__SUUIStorePageSectionsViewController__prepareLayoutForSections__block_invoke;
@@ -4013,19 +4013,19 @@ void __75__SUUIStorePageSectionsViewController__enumerateVisibleSectionsUsingBlo
     v14[4] = self;
     v14[5] = v15;
     [(SUUIStorePageSplitsDescription *)splitsDescription sizeSplitsToFitWidth:v14 usingBlock:?];
-    v10 = objc_alloc_init(SUUIStorePageSplitCollectionViewLayout);
-    v12 = [(SUUIStorePageSectionsViewController *)self _currentBackdropGroupName];
-    [(SUUIStorePageSplitCollectionViewLayout *)v10 setBackdropGroupName:v12];
+    _newStorePageCollectionViewLayout = objc_alloc_init(SUUIStorePageSplitCollectionViewLayout);
+    _currentBackdropGroupName = [(SUUIStorePageSectionsViewController *)self _currentBackdropGroupName];
+    [(SUUIStorePageSplitCollectionViewLayout *)_newStorePageCollectionViewLayout setBackdropGroupName:_currentBackdropGroupName];
 
-    [(SUUIStorePageSplitCollectionViewLayout *)v10 setRendersWithPerspective:self->_rendersWithPerspective];
-    [(SUUIStorePageSplitCollectionViewLayout *)v10 addSublayoutsUsingSplitsDescription:self->_splitsDescription];
+    [(SUUIStorePageSplitCollectionViewLayout *)_newStorePageCollectionViewLayout setRendersWithPerspective:self->_rendersWithPerspective];
+    [(SUUIStorePageSplitCollectionViewLayout *)_newStorePageCollectionViewLayout addSublayoutsUsingSplitsDescription:self->_splitsDescription];
     _Block_object_dispose(v15, 8);
   }
 
   else
   {
-    v3 = [(SUUIStorePageSplitsDescription *)self->_splitsDescription firstSplit];
-    v4 = [v3 sectionContext];
+    firstSplit = [(SUUIStorePageSplitsDescription *)self->_splitsDescription firstSplit];
+    _newSectionContext = [firstSplit sectionContext];
 
     v18 = 0u;
     v19 = 0u;
@@ -4046,8 +4046,8 @@ void __75__SUUIStorePageSectionsViewController__enumerateVisibleSectionsUsingBlo
           }
 
           v9 = *(*(&v16 + 1) + 8 * i);
-          [v9 _setContext:v4];
-          [v9 willAppearInContext:v4];
+          [v9 _setContext:_newSectionContext];
+          [v9 willAppearInContext:_newSectionContext];
         }
 
         v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -4056,10 +4056,10 @@ void __75__SUUIStorePageSectionsViewController__enumerateVisibleSectionsUsingBlo
       while (v6);
     }
 
-    v10 = [(SUUIStorePageSectionsViewController *)self _newStorePageCollectionViewLayout];
+    _newStorePageCollectionViewLayout = [(SUUIStorePageSectionsViewController *)self _newStorePageCollectionViewLayout];
   }
 
-  return v10;
+  return _newStorePageCollectionViewLayout;
 }
 
 void __64__SUUIStorePageSectionsViewController__prepareLayoutForSections__block_invoke(uint64_t a1, void *a2, double a3)
@@ -4095,22 +4095,22 @@ void __64__SUUIStorePageSectionsViewController__prepareLayoutForSections__block_
   *(v8 + 24) = v11;
 }
 
-- (void)_registerForNotificationsForEntityProvider:(id)a3
+- (void)_registerForNotificationsForEntityProvider:(id)provider
 {
-  if (a3)
+  if (provider)
   {
     v4 = MEMORY[0x277CCAB98];
-    v5 = a3;
-    v6 = [v4 defaultCenter];
-    [v6 addObserver:self selector:sel__entityProviderDidInvalidateNotification_ name:*MEMORY[0x277D1AF58] object:v5];
+    providerCopy = provider;
+    defaultCenter = [v4 defaultCenter];
+    [defaultCenter addObserver:self selector:sel__entityProviderDidInvalidateNotification_ name:*MEMORY[0x277D1AF58] object:providerCopy];
   }
 }
 
 - (void)_reloadCollectionView
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = [(SUUIStorePageSectionsViewController *)self _prepareLayoutForSections];
-  [(SUUICollectionView *)self->_collectionView setCollectionViewLayout:v3 animated:0];
+  _prepareLayoutForSections = [(SUUIStorePageSectionsViewController *)self _prepareLayoutForSections];
+  [(SUUICollectionView *)self->_collectionView setCollectionViewLayout:_prepareLayoutForSections animated:0];
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
@@ -4152,68 +4152,68 @@ LABEL_11:
 
   [(SUUICollectionView *)self->_collectionView setAlwaysBounceVertical:v9];
   [(SUUICollectionView *)self->_collectionView setScrollEnabled:v9];
-  v10 = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
-  v11 = v10;
-  if (v10)
+  backgroundColor = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
+  v11 = backgroundColor;
+  if (backgroundColor)
   {
-    v12 = v10;
+    systemBackgroundColor = backgroundColor;
   }
 
   else
   {
-    v12 = [MEMORY[0x277D75348] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
   }
 
-  v13 = v12;
+  v13 = systemBackgroundColor;
 
   [(SUUICollectionView *)self->_collectionView setBackgroundColor:v13];
   if ([(NSMutableArray *)self->_sections count])
   {
-    v33 = v3;
+    v33 = _prepareLayoutForSections;
     p_contentInsetAdjustments = &self->_contentInsetAdjustments;
     top = self->_contentInsetAdjustments.top;
     v16 = [(NSMutableArray *)self->_sections objectAtIndex:0];
     [v16 contentInsetAdjustmentForCollectionView:self->_collectionView];
     self->_contentInsetAdjustments.top = v17;
-    v18 = self;
-    v19 = v18;
+    selfCopy = self;
+    v19 = selfCopy;
     while (![v19 conformsToProtocol:&unk_286C33488])
     {
-      v20 = [v19 parentViewController];
+      parentViewController = [v19 parentViewController];
 
-      v19 = v20;
-      if (!v20)
+      v19 = parentViewController;
+      if (!parentViewController)
       {
         goto LABEL_21;
       }
     }
 
-    v21 = [v19 prefersNavigationBarBackgroundViewHidden];
+    prefersNavigationBarBackgroundViewHidden = [v19 prefersNavigationBarBackgroundViewHidden];
 
-    if (v21)
+    if (prefersNavigationBarBackgroundViewHidden)
     {
-      v22 = [(SUUIStorePageSectionsViewController *)v18 navigationController];
-      v23 = [v22 navigationBar];
-      [v23 frame];
+      navigationController = [(SUUIStorePageSectionsViewController *)selfCopy navigationController];
+      navigationBar = [navigationController navigationBar];
+      [navigationBar frame];
       p_contentInsetAdjustments->top = p_contentInsetAdjustments->top - CGRectGetMaxY(v46);
     }
 
 LABEL_21:
     if ([(NSMutableArray *)self->_sections count]>= 2)
     {
-      v24 = [(NSMutableArray *)self->_sections lastObject];
-      [v24 contentInsetAdjustmentForCollectionView:self->_collectionView];
+      lastObject = [(NSMutableArray *)self->_sections lastObject];
+      [lastObject contentInsetAdjustmentForCollectionView:self->_collectionView];
       self->_contentInsetAdjustments.bottom = v25;
     }
 
     [(SUUICollectionView *)self->_collectionView contentInset];
     [(SUUICollectionView *)self->_collectionView setContentInset:v26 + p_contentInsetAdjustments->top - top];
 
-    v3 = v33;
+    _prepareLayoutForSections = v33;
   }
 
-  v27 = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
-  [v27 commitLayoutRequests];
+  _textLayoutCache = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
+  [_textLayoutCache commitLayoutRequests];
 
   v37 = 0u;
   v38 = 0u;
@@ -4350,8 +4350,8 @@ void __60__SUUIStorePageSectionsViewController__reloadCollectionView__block_invo
         }
 
         v11 = *(*(&v43 + 1) + 8 * j);
-        v12 = [v11 relevantEntityProviders];
-        if ([v12 count])
+        relevantEntityProviders = [v11 relevantEntityProviders];
+        if ([relevantEntityProviders count])
         {
           v34 = j;
           if (!self->_entityProviderToRelevantSections)
@@ -4365,8 +4365,8 @@ void __60__SUUIStorePageSectionsViewController__reloadCollectionView__block_invo
           v42 = 0u;
           v39 = 0u;
           v40 = 0u;
-          v33 = v12;
-          v15 = v12;
+          v33 = relevantEntityProviders;
+          v15 = relevantEntityProviders;
           v16 = [v15 countByEnumeratingWithState:&v39 objects:v52 count:16];
           if (v16)
           {
@@ -4400,7 +4400,7 @@ void __60__SUUIStorePageSectionsViewController__reloadCollectionView__block_invo
             while (v17);
           }
 
-          v12 = v33;
+          relevantEntityProviders = v33;
           j = v34;
         }
       }
@@ -4473,10 +4473,10 @@ void __60__SUUIStorePageSectionsViewController__reloadCollectionView__block_invo
             objc_enumerationMutation(v3);
           }
 
-          v8 = [*(*(&v10 + 1) + 8 * i) firstAppearanceIndexPath];
-          if (v8)
+          firstAppearanceIndexPath = [*(*(&v10 + 1) + 8 * i) firstAppearanceIndexPath];
+          if (firstAppearanceIndexPath)
           {
-            v9 = v8;
+            v9 = firstAppearanceIndexPath;
 
             [(SUUICollectionView *)self->_collectionView scrollToItemAtIndexPath:v9 atScrollPosition:2 animated:0];
             self->_scrollOffsetHasChanged = 1;
@@ -4499,17 +4499,17 @@ LABEL_12:
   }
 }
 
-- (void)_setPageSize:(CGSize)a3
+- (void)_setPageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SUUIStorePageSectionsViewController *)self _collectionViewSublayouts];
-  v7 = [(SUUICollectionView *)self->_collectionView indexBarControl];
+  height = size.height;
+  width = size.width;
+  _collectionViewSublayouts = [(SUUIStorePageSectionsViewController *)self _collectionViewSublayouts];
+  indexBarControl = [(SUUICollectionView *)self->_collectionView indexBarControl];
 
-  if (v7)
+  if (indexBarControl)
   {
-    v8 = [(SUUICollectionView *)self->_collectionView indexBarControl];
-    [v8 sizeThatFits:{width, height}];
+    indexBarControl2 = [(SUUICollectionView *)self->_collectionView indexBarControl];
+    [indexBarControl2 sizeThatFits:{width, height}];
     v10 = v9;
 
     width = width - v10;
@@ -4520,8 +4520,8 @@ LABEL_12:
   v13[1] = 3221225472;
   v13[2] = __52__SUUIStorePageSectionsViewController__setPageSize___block_invoke;
   v13[3] = &unk_2798F71A0;
-  v14 = v6;
-  v12 = v6;
+  v14 = _collectionViewSublayouts;
+  v12 = _collectionViewSublayouts;
   [(SUUIStorePageSplitsDescription *)splitsDescription sizeSplitsToFitWidth:v13 usingBlock:width];
 }
 
@@ -4534,12 +4534,12 @@ void __52__SUUIStorePageSectionsViewController__setPageSize___block_invoke(uint6
   [v7 setOverrideContentWidth:?];
 }
 
-- (id)_splitForSectionIndex:(int64_t)a3
+- (id)_splitForSectionIndex:(int64_t)index
 {
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
-  v13[3] = a3;
+  v13[3] = index;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -4598,34 +4598,34 @@ void __61__SUUIStorePageSectionsViewController__splitForSectionIndex___block_inv
   return textLayoutCache;
 }
 
-- (void)_unregisterForNotificationsForEntityProvider:(id)a3
+- (void)_unregisterForNotificationsForEntityProvider:(id)provider
 {
-  if (a3)
+  if (provider)
   {
     v4 = MEMORY[0x277CCAB98];
-    v5 = a3;
-    v6 = [v4 defaultCenter];
-    [v6 removeObserver:self name:*MEMORY[0x277D1AF58] object:v5];
+    providerCopy = provider;
+    defaultCenter = [v4 defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D1AF58] object:providerCopy];
   }
 }
 
-- (void)_updateCollectionViewWithUpdates:(id)a3
+- (void)_updateCollectionViewWithUpdates:(id)updates
 {
-  v4 = (*(a3 + 2))(a3, a2);
+  v4 = (*(updates + 2))(updates, a2);
   if (v4)
   {
     v5 = v4;
-    v6 = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
-    [v6 commitLayoutRequests];
+    _textLayoutCache = [(SUUIStorePageSectionsViewController *)self _textLayoutCache];
+    [_textLayoutCache commitLayoutRequests];
 
-    v7 = [(SUUICollectionView *)self->_collectionView collectionViewLayout];
+    collectionViewLayout = [(SUUICollectionView *)self->_collectionView collectionViewLayout];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __72__SUUIStorePageSectionsViewController__updateCollectionViewWithUpdates___block_invoke_2;
     aBlock[3] = &unk_2798F71F0;
     v25 = v5;
     aBlock[4] = self;
-    v8 = v7;
+    v8 = collectionViewLayout;
     v24 = v8;
     v9 = _Block_copy(aBlock);
     if ([(NSMutableIndexSet *)self->_expandInsertSections count]|| [(NSMutableIndexSet *)self->_expandRemoveSections count])
@@ -4642,7 +4642,7 @@ void __61__SUUIStorePageSectionsViewController__splitForSectionIndex___block_inv
       v16 = 3221225472;
       v17 = __72__SUUIStorePageSectionsViewController__updateCollectionViewWithUpdates___block_invoke_5;
       v18 = &unk_2798F7218;
-      v19 = self;
+      selfCopy = self;
       v20 = v9;
       [(SUUICollectionView *)collectionView performBatchUpdates:v21 completion:&v15];
     }
@@ -4668,9 +4668,9 @@ void __61__SUUIStorePageSectionsViewController__splitForSectionIndex___block_inv
     overlayController = self->_overlayController;
     if (overlayController)
     {
-      v12 = [(SUUIProductPageOverlayController *)overlayController view];
-      v13 = [v12 superview];
-      [v13 bringSubviewToFront:v12];
+      view = [(SUUIProductPageOverlayController *)overlayController view];
+      superview = [view superview];
+      [superview bringSubviewToFront:view];
     }
   }
 

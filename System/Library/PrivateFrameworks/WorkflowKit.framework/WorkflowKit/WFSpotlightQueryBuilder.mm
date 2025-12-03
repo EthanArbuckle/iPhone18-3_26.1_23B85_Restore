@@ -1,30 +1,30 @@
 @interface WFSpotlightQueryBuilder
-- (_TtC11WorkflowKit23WFSpotlightQueryBuilder)initWithOperator:(int64_t)a3 conditions:(id)a4;
-- (id)addCondition:(id)a3;
+- (_TtC11WorkflowKit23WFSpotlightQueryBuilder)initWithOperator:(int64_t)operator conditions:(id)conditions;
+- (id)addCondition:(id)condition;
 - (id)buildQueryString;
 @end
 
 @implementation WFSpotlightQueryBuilder
 
-- (_TtC11WorkflowKit23WFSpotlightQueryBuilder)initWithOperator:(int64_t)a3 conditions:(id)a4
+- (_TtC11WorkflowKit23WFSpotlightQueryBuilder)initWithOperator:(int64_t)operator conditions:(id)conditions
 {
   type metadata accessor for WFSpotlightQueryCondition();
   v5 = sub_1CA94C658();
-  return sub_1CA440B68(a3, v5);
+  return sub_1CA440B68(operator, v5);
 }
 
-- (id)addCondition:(id)a3
+- (id)addCondition:(id)condition
 {
-  v4 = a3;
-  v5 = self;
-  sub_1CA440C38(v4);
+  conditionCopy = condition;
+  selfCopy = self;
+  sub_1CA440C38(conditionCopy);
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)buildQueryString
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA440D44();
 
   v3 = sub_1CA94C368();

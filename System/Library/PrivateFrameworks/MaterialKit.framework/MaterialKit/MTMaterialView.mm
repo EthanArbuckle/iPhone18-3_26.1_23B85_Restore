@@ -1,30 +1,30 @@
 @interface MTMaterialView
-+ (id)_deprecatedControlCenterMaterialWithRecipe:(int64_t)a3 configuration:(int64_t)a4 initialWeighting:(double)a5 scaleAdjustment:(id)a6;
-+ (id)_recipeNameForTraitCollection:(id)a3 withRecipeNamesByTraitCollection:(id)a4;
-+ (id)materialViewWithRecipe:(int64_t)a3 configuration:(int64_t)a4;
-+ (id)materialViewWithRecipe:(int64_t)a3 configuration:(int64_t)a4 initialWeighting:(double)a5;
-+ (id)materialViewWithRecipe:(int64_t)a3 configuration:(int64_t)a4 initialWeighting:(double)a5 compatibleWithTraitCollection:(id)a6;
-+ (id)materialViewWithRecipe:(int64_t)a3 configuration:(int64_t)a4 initialWeighting:(double)a5 scaleAdjustment:(id)a6;
-+ (id)materialViewWithRecipe:(int64_t)a3 options:(unint64_t)a4 initialWeighting:(double)a5;
-+ (id)materialViewWithRecipe:(int64_t)a3 options:(unint64_t)a4 initialWeighting:(double)a5 compatibleWithTraitCollection:(id)a6;
-+ (id)materialViewWithRecipe:(int64_t)a3 options:(unint64_t)a4 initialWeighting:(double)a5 scaleAdjustment:(id)a6;
-+ (id)materialViewWithRecipe:(int64_t)a3 options:(unint64_t)a4 initialWeighting:(double)a5 scaleAdjustment:(id)a6 compatibleWithTraitCollection:(id)a7;
-+ (id)materialViewWithRecipeNamed:(id)a3 inBundle:(id)a4 options:(unint64_t)a5 initialWeighting:(double)a6 scaleAdjustment:(id)a7;
-+ (id)materialViewWithRecipeNamesByTraitCollection:(id)a3 inBundle:(id)a4 configuration:(int64_t)a5 initialWeighting:(double)a6 scaleAdjustment:(id)a7;
-+ (id)materialViewWithRecipeNamesByTraitCollection:(id)a3 inBundle:(id)a4 options:(unint64_t)a5 initialWeighting:(double)a6 scaleAdjustment:(id)a7 compatibleWithTraitCollection:(id)a8;
-+ (id)materialViewWithVisualStyleFromRecipe:(int64_t)a3 category:(int64_t)a4 style:(int64_t)a5 options:(unint64_t)a6 initialWeighting:(double)a7 compatibleWithTraitCollection:(id)a8;
++ (id)_deprecatedControlCenterMaterialWithRecipe:(int64_t)recipe configuration:(int64_t)configuration initialWeighting:(double)weighting scaleAdjustment:(id)adjustment;
++ (id)_recipeNameForTraitCollection:(id)collection withRecipeNamesByTraitCollection:(id)traitCollection;
++ (id)materialViewWithRecipe:(int64_t)recipe configuration:(int64_t)configuration;
++ (id)materialViewWithRecipe:(int64_t)recipe configuration:(int64_t)configuration initialWeighting:(double)weighting;
++ (id)materialViewWithRecipe:(int64_t)recipe configuration:(int64_t)configuration initialWeighting:(double)weighting compatibleWithTraitCollection:(id)collection;
++ (id)materialViewWithRecipe:(int64_t)recipe configuration:(int64_t)configuration initialWeighting:(double)weighting scaleAdjustment:(id)adjustment;
++ (id)materialViewWithRecipe:(int64_t)recipe options:(unint64_t)options initialWeighting:(double)weighting;
++ (id)materialViewWithRecipe:(int64_t)recipe options:(unint64_t)options initialWeighting:(double)weighting compatibleWithTraitCollection:(id)collection;
++ (id)materialViewWithRecipe:(int64_t)recipe options:(unint64_t)options initialWeighting:(double)weighting scaleAdjustment:(id)adjustment;
++ (id)materialViewWithRecipe:(int64_t)recipe options:(unint64_t)options initialWeighting:(double)weighting scaleAdjustment:(id)adjustment compatibleWithTraitCollection:(id)collection;
++ (id)materialViewWithRecipeNamed:(id)named inBundle:(id)bundle options:(unint64_t)options initialWeighting:(double)weighting scaleAdjustment:(id)adjustment;
++ (id)materialViewWithRecipeNamesByTraitCollection:(id)collection inBundle:(id)bundle configuration:(int64_t)configuration initialWeighting:(double)weighting scaleAdjustment:(id)adjustment;
++ (id)materialViewWithRecipeNamesByTraitCollection:(id)collection inBundle:(id)bundle options:(unint64_t)options initialWeighting:(double)weighting scaleAdjustment:(id)adjustment compatibleWithTraitCollection:(id)traitCollection;
++ (id)materialViewWithVisualStyleFromRecipe:(int64_t)recipe category:(int64_t)category style:(int64_t)style options:(unint64_t)options initialWeighting:(double)weighting compatibleWithTraitCollection:(id)collection;
 + (id)newDefaultHighlightAnimator;
-+ (id)staticMaterialViewWithRecipe:(int64_t)a3;
++ (id)staticMaterialViewWithRecipe:(int64_t)recipe;
 + (void)initialize;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (BOOL)addCompletionForCurrentAnimation:(id)a3 forMaterialLayer:(id)a4 reason:(id *)a5;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (BOOL)addCompletionForCurrentAnimation:(id)animation forMaterialLayer:(id)layer reason:(id *)reason;
 - (BOOL)hasInoperativeAppearance;
 - (BOOL)ignoresScreenClip;
 - (BOOL)isBlurEnabled;
 - (BOOL)isCaptureOnly;
 - (BOOL)isContentReplacedWithSnapshot;
 - (BOOL)isInPlaceFilteringEnabled;
-- (BOOL)isManagingInterpolationForMaterialLayer:(id)a3;
+- (BOOL)isManagingInterpolationForMaterialLayer:(id)layer;
 - (BOOL)isZoomEnabled;
 - (BOOL)shouldCrossfade;
 - (MTMaterialView)init;
@@ -33,26 +33,26 @@
 - (NSString)groupName;
 - (NSString)recipeName;
 - (double)weighting;
-- (id)_coreMaterialVisualStylingProviderForCategory:(id)a3;
-- (id)_groupNameWithBase:(id)a3;
-- (id)_initWithCoreMaterialRecipe:(id)a3 fromBundle:(id)a4 options:(unint64_t)a5 initialWeighting:(double)a6 scaleAdjustment:(id)a7;
-- (id)_initWithRecipe:(int64_t)a3 options:(unint64_t)a4 initialWeighting:(double)a5 scaleAdjustment:(id)a6 compatibleWithTraitCollection:(id)a7;
-- (id)_initWithRecipeNamesByTraitCollection:(id)a3 bundle:(id)a4 options:(unint64_t)a5 initialWeighting:(double)a6 scaleAdjustment:(id)a7 compatibleWithTraitCollection:(id)a8;
+- (id)_coreMaterialVisualStylingProviderForCategory:(id)category;
+- (id)_groupNameWithBase:(id)base;
+- (id)_initWithCoreMaterialRecipe:(id)recipe fromBundle:(id)bundle options:(unint64_t)options initialWeighting:(double)weighting scaleAdjustment:(id)adjustment;
+- (id)_initWithRecipe:(int64_t)recipe options:(unint64_t)options initialWeighting:(double)weighting scaleAdjustment:(id)adjustment compatibleWithTraitCollection:(id)collection;
+- (id)_initWithRecipeNamesByTraitCollection:(id)collection bundle:(id)bundle options:(unint64_t)options initialWeighting:(double)weighting scaleAdjustment:(id)adjustment compatibleWithTraitCollection:(id)traitCollection;
 - (id)_recipeNameForCurrentTraitCollection;
 - (id)backdropScaleAdjustment;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newShadowViewWithCaptureOnlyMaterialView:(BOOL)a3;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newShadowViewWithCaptureOnlyMaterialView:(BOOL)view;
+- (id)visualStylingProviderForCategory:(int64_t)category;
 - (unint64_t)_options;
-- (void)_addObserver:(id)a3;
+- (void)_addObserver:(id)observer;
 - (void)_invalidateAlphaTransformer;
-- (void)_notifyObserversWithBlock:(id)a3;
+- (void)_notifyObserversWithBlock:(id)block;
 - (void)_reduceMotionStatusDidChange;
 - (void)_reduceTransparencyStatusDidChange;
-- (void)_removeObserver:(id)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setCornerRadius:(double)a3;
-- (void)_setRecipeName:(id)a3 withWeighting:(double)a4;
+- (void)_removeObserver:(id)observer;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setCornerRadius:(double)radius;
+- (void)_setRecipeName:(id)name withWeighting:(double)weighting;
 - (void)_setupAlphaTransformer;
 - (void)_setupOrInvalidateAlphaTransformer;
 - (void)_updateGroupNameIfNecessary;
@@ -61,34 +61,34 @@
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)prune;
-- (void)setBackdropScaleAdjustment:(id)a3;
-- (void)setBlurEnabled:(BOOL)a3;
-- (void)setCaptureOnly:(BOOL)a3;
-- (void)setContentReplacedWithSnapshot:(BOOL)a3;
-- (void)setDebugIdentifier:(id)a3;
-- (void)setGroupName:(id)a3;
-- (void)setGroupNameBase:(id)a3;
-- (void)setHasInoperativeAppearance:(BOOL)a3;
+- (void)setBackdropScaleAdjustment:(id)adjustment;
+- (void)setBlurEnabled:(BOOL)enabled;
+- (void)setCaptureOnly:(BOOL)only;
+- (void)setContentReplacedWithSnapshot:(BOOL)snapshot;
+- (void)setDebugIdentifier:(id)identifier;
+- (void)setGroupName:(id)name;
+- (void)setGroupNameBase:(id)base;
+- (void)setHasInoperativeAppearance:(BOOL)appearance;
 - (void)setHighlighted:(BOOL)highlighted;
-- (void)setIgnoresScreenClip:(BOOL)a3;
-- (void)setInPlaceFilteringEnabled:(BOOL)a3;
-- (void)setRecipe:(int64_t)a3;
-- (void)setRecipeDynamic:(BOOL)a3;
-- (void)setRecipeName:(id)a3 fromBundle:(id)a4;
+- (void)setIgnoresScreenClip:(BOOL)clip;
+- (void)setInPlaceFilteringEnabled:(BOOL)enabled;
+- (void)setRecipe:(int64_t)recipe;
+- (void)setRecipeDynamic:(BOOL)dynamic;
+- (void)setRecipeName:(id)name fromBundle:(id)bundle;
 - (void)setShadowed:(BOOL)shadowed;
-- (void)setShouldCrossfade:(BOOL)a3;
-- (void)setUseBuiltInAlphaTransformerAndBackdropScaleAdjustment:(BOOL)a3;
-- (void)setUseBuiltInAlphaTransformerAndBackdropScaleAdjustmentIfNecessary:(BOOL)a3;
-- (void)setWeighting:(double)a3;
-- (void)setZoomEnabled:(BOOL)a3;
+- (void)setShouldCrossfade:(BOOL)crossfade;
+- (void)setUseBuiltInAlphaTransformerAndBackdropScaleAdjustment:(BOOL)adjustment;
+- (void)setUseBuiltInAlphaTransformerAndBackdropScaleAdjustmentIfNecessary:(BOOL)necessary;
+- (void)setWeighting:(double)weighting;
+- (void)setZoomEnabled:(BOOL)enabled;
 @end
 
 @implementation MTMaterialView
 
 - (double)weighting
 {
-  v2 = [(MTMaterialView *)self _materialLayer];
-  [v2 weighting];
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  [_materialLayer weighting];
   v4 = v3;
 
   return v4;
@@ -105,8 +105,8 @@
   v6[3] = &unk_27835D300;
   v6[4] = self;
   v3 = MEMORY[0x223D601D0](v6);
-  v4 = [(MTMaterialView *)self traitCollection];
-  v5 = [v4 valueForNSIntegerTrait:objc_opt_class()];
+  traitCollection = [(MTMaterialView *)self traitCollection];
+  v5 = [traitCollection valueForNSIntegerTrait:objc_opt_class()];
 
   if (v5 == 1)
   {
@@ -137,46 +137,46 @@ void __32__MTMaterialView_layoutSubviews__block_invoke(uint64_t a1)
   {
     if (self->_recipeDynamic)
     {
-      v4 = [(MTMaterialView *)self traitCollection];
-      v5 = [v4 userInterfaceStyle];
+      traitCollection = [(MTMaterialView *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
       recipe = self->_recipe;
     }
 
     else
     {
-      v5 = 0;
+      userInterfaceStyle = 0;
     }
 
-    v6 = MTCoreMaterialRecipeForMaterialRecipeAndUserInterfaceStyleInShadow(recipe, v5, self->_shadowed);
-    if (!v6)
+    _recipeNameForCurrentTraitCollection = MTCoreMaterialRecipeForMaterialRecipeAndUserInterfaceStyleInShadow(recipe, userInterfaceStyle, self->_shadowed);
+    if (!_recipeNameForCurrentTraitCollection)
     {
       goto LABEL_13;
     }
 
 LABEL_9:
-    v10 = v6;
-    v7 = [(MTMaterialView *)self _materialLayer];
-    v8 = [v7 recipeName];
-    v9 = [v8 isEqualToString:v10];
+    v10 = _recipeNameForCurrentTraitCollection;
+    _materialLayer = [(MTMaterialView *)self _materialLayer];
+    recipeName = [_materialLayer recipeName];
+    v9 = [recipeName isEqualToString:v10];
 
     if ((v9 & 1) == 0)
     {
       [(MTMaterialView *)self setRecipeName:v10];
     }
 
-    v6 = v10;
+    _recipeNameForCurrentTraitCollection = v10;
     goto LABEL_13;
   }
 
   if (!self->_recipeNamesByTraitCollection)
   {
-    v6 = 0;
+    _recipeNameForCurrentTraitCollection = 0;
     goto LABEL_13;
   }
 
-  v6 = [(MTMaterialView *)self _recipeNameForCurrentTraitCollection];
-  if (v6)
+  _recipeNameForCurrentTraitCollection = [(MTMaterialView *)self _recipeNameForCurrentTraitCollection];
+  if (_recipeNameForCurrentTraitCollection)
   {
     goto LABEL_9;
   }
@@ -264,18 +264,18 @@ void __40__MTMaterialView__setupAlphaTransformer__block_invoke_73(uint64_t a1)
 - (id)_recipeNameForCurrentTraitCollection
 {
   v3 = objc_opt_class();
-  v4 = [(MTMaterialView *)self traitCollection];
-  v5 = [v3 _recipeNameForTraitCollection:v4 withRecipeNamesByTraitCollection:self->_recipeNamesByTraitCollection];
+  traitCollection = [(MTMaterialView *)self traitCollection];
+  v5 = [v3 _recipeNameForTraitCollection:traitCollection withRecipeNamesByTraitCollection:self->_recipeNamesByTraitCollection];
 
   return v5;
 }
 
 - (BOOL)shouldCrossfade
 {
-  v2 = [(MTMaterialView *)self _materialLayer];
-  v3 = [v2 shouldCrossfade];
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  shouldCrossfade = [_materialLayer shouldCrossfade];
 
-  return v3;
+  return shouldCrossfade;
 }
 
 - (void)didMoveToWindow
@@ -283,8 +283,8 @@ void __40__MTMaterialView__setupAlphaTransformer__block_invoke_73(uint64_t a1)
   v5.receiver = self;
   v5.super_class = MTMaterialView;
   [(MTMaterialView *)&v5 didMoveToWindow];
-  v3 = [(MTMaterialView *)self window];
-  if (v3)
+  window = [(MTMaterialView *)self window];
+  if (window)
   {
     needsLayoutOnMoveToWindow = self->_needsLayoutOnMoveToWindow;
 
@@ -371,34 +371,34 @@ void __40__MTMaterialView__setupAlphaTransformer__block_invoke_2_74(uint64_t a1)
 
 - (BOOL)isZoomEnabled
 {
-  v2 = [(MTMaterialView *)self _materialLayer];
-  v3 = [v2 isZoomEnabled];
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  isZoomEnabled = [_materialLayer isZoomEnabled];
 
-  return v3;
+  return isZoomEnabled;
 }
 
 - (BOOL)isBlurEnabled
 {
-  v2 = [(MTMaterialView *)self _materialLayer];
-  v3 = [v2 isBlurEnabled];
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  isBlurEnabled = [_materialLayer isBlurEnabled];
 
-  return v3;
+  return isBlurEnabled;
 }
 
 - (void)dealloc
 {
   if (self->_reduceTransparencyObserverToken)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 _removeObserver:self->_reduceTransparencyObserverToken];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter _removeObserver:self->_reduceTransparencyObserverToken];
 
     self->_reduceTransparencyObserverToken = 0;
   }
 
   if (self->_reduceMotionObserverToken)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 _removeObserver:self->_reduceMotionObserverToken];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 _removeObserver:self->_reduceMotionObserverToken];
 
     self->_reduceMotionObserverToken = 0;
   }
@@ -412,7 +412,7 @@ void __40__MTMaterialView__setupAlphaTransformer__block_invoke_2_74(uint64_t a1)
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     MTRegisterMaterialKitLogging();
@@ -423,40 +423,40 @@ void __40__MTMaterialView__setupAlphaTransformer__block_invoke_2_74(uint64_t a1)
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_21E600000, a2, OS_LOG_TYPE_DEBUG, "%{public}@: Instantiating backdrop float animatable property", &v2, 0xCu);
 }
 
-- (id)_initWithRecipe:(int64_t)a3 options:(unint64_t)a4 initialWeighting:(double)a5 scaleAdjustment:(id)a6 compatibleWithTraitCollection:(id)a7
+- (id)_initWithRecipe:(int64_t)recipe options:(unint64_t)options initialWeighting:(double)weighting scaleAdjustment:(id)adjustment compatibleWithTraitCollection:(id)collection
 {
-  v12 = a6;
-  v13 = a7;
-  if (!v13)
+  adjustmentCopy = adjustment;
+  collectionCopy = collection;
+  if (!collectionCopy)
   {
-    v13 = [MEMORY[0x277D75C80] currentTraitCollection];
+    collectionCopy = [MEMORY[0x277D75C80] currentTraitCollection];
   }
 
-  v14 = MTCoreMaterialRecipeForMaterialRecipeAndUserInterfaceStyle(a3, [v13 userInterfaceStyle]);
-  v15 = [(MTMaterialView *)self _initWithCoreMaterialRecipe:v14 fromBundle:0 options:a4 initialWeighting:v12 scaleAdjustment:a5];
+  v14 = MTCoreMaterialRecipeForMaterialRecipeAndUserInterfaceStyle(recipe, [collectionCopy userInterfaceStyle]);
+  v15 = [(MTMaterialView *)self _initWithCoreMaterialRecipe:v14 fromBundle:0 options:options initialWeighting:adjustmentCopy scaleAdjustment:weighting];
 
   if (v15)
   {
-    v15[62] = a3;
+    v15[62] = recipe;
   }
 
   return v15;
 }
 
-- (id)_initWithRecipeNamesByTraitCollection:(id)a3 bundle:(id)a4 options:(unint64_t)a5 initialWeighting:(double)a6 scaleAdjustment:(id)a7 compatibleWithTraitCollection:(id)a8
+- (id)_initWithRecipeNamesByTraitCollection:(id)collection bundle:(id)bundle options:(unint64_t)options initialWeighting:(double)weighting scaleAdjustment:(id)adjustment compatibleWithTraitCollection:(id)traitCollection
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a7;
-  v19 = a8;
-  v20 = v19;
-  if (v16)
+  collectionCopy = collection;
+  bundleCopy = bundle;
+  adjustmentCopy = adjustment;
+  traitCollectionCopy = traitCollection;
+  currentTraitCollection = traitCollectionCopy;
+  if (collectionCopy)
   {
-    if (v19)
+    if (traitCollectionCopy)
     {
       goto LABEL_4;
     }
@@ -465,36 +465,36 @@ void __40__MTMaterialView__setupAlphaTransformer__block_invoke_2_74(uint64_t a1)
   }
 
   [MTMaterialView _initWithRecipeNamesByTraitCollection:a2 bundle:self options:? initialWeighting:? scaleAdjustment:? compatibleWithTraitCollection:?];
-  if (!v20)
+  if (!currentTraitCollection)
   {
 LABEL_3:
-    v20 = [MEMORY[0x277D75C80] currentTraitCollection];
+    currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
   }
 
 LABEL_4:
-  v21 = [objc_opt_class() _recipeNameForTraitCollection:v20 withRecipeNamesByTraitCollection:v16];
-  v22 = [(MTMaterialView *)self _initWithCoreMaterialRecipe:v21 fromBundle:v17 options:a5 initialWeighting:v18 scaleAdjustment:a6];
+  v21 = [objc_opt_class() _recipeNameForTraitCollection:currentTraitCollection withRecipeNamesByTraitCollection:collectionCopy];
+  v22 = [(MTMaterialView *)self _initWithCoreMaterialRecipe:v21 fromBundle:bundleCopy options:options initialWeighting:adjustmentCopy scaleAdjustment:weighting];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(v22 + 53, a3);
+    objc_storeStrong(v22 + 53, collection);
   }
 
   return v23;
 }
 
-+ (id)materialViewWithRecipe:(int64_t)a3 options:(unint64_t)a4 initialWeighting:(double)a5
++ (id)materialViewWithRecipe:(int64_t)recipe options:(unint64_t)options initialWeighting:(double)weighting
 {
-  v9 = [MEMORY[0x277D75C80] currentTraitCollection];
-  v10 = [a1 materialViewWithRecipe:a3 options:a4 initialWeighting:v9 compatibleWithTraitCollection:a5];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  v10 = [self materialViewWithRecipe:recipe options:options initialWeighting:currentTraitCollection compatibleWithTraitCollection:weighting];
 
   return v10;
 }
 
-+ (id)materialViewWithRecipe:(int64_t)a3 options:(unint64_t)a4 initialWeighting:(double)a5 compatibleWithTraitCollection:(id)a6
++ (id)materialViewWithRecipe:(int64_t)recipe options:(unint64_t)options initialWeighting:(double)weighting compatibleWithTraitCollection:(id)collection
 {
-  v10 = a6;
-  v11 = [[a1 alloc] _initWithRecipe:a3 options:a4 initialWeighting:0 scaleAdjustment:v10 compatibleWithTraitCollection:a5];
+  collectionCopy = collection;
+  v11 = [[self alloc] _initWithRecipe:recipe options:options initialWeighting:0 scaleAdjustment:collectionCopy compatibleWithTraitCollection:weighting];
 
   return v11;
 }
@@ -510,17 +510,17 @@ LABEL_4:
 
 - (NSString)groupName
 {
-  v2 = [(MTMaterialView *)self _materialLayer];
-  v3 = [v2 groupName];
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  groupName = [_materialLayer groupName];
 
-  return v3;
+  return groupName;
 }
 
-- (void)setGroupName:(id)a3
+- (void)setGroupName:(id)name
 {
-  v4 = a3;
-  v5 = [(MTMaterialView *)self _materialLayer];
-  [v5 setGroupName:v4];
+  nameCopy = name;
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  [_materialLayer setGroupName:nameCopy];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -539,12 +539,12 @@ void __31__MTMaterialView_setGroupName___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setGroupNameBase:(id)a3
+- (void)setGroupNameBase:(id)base
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->_groupNameBase] & 1) == 0)
+  baseCopy = base;
+  if (([baseCopy isEqualToString:self->_groupNameBase] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [baseCopy copy];
     groupNameBase = self->_groupNameBase;
     self->_groupNameBase = v4;
 
@@ -560,17 +560,17 @@ void __31__MTMaterialView_setGroupName___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setWeighting:(double)a3
+- (void)setWeighting:(double)weighting
 {
-  v4 = fmax(fmin(a3, 1.0), 0.0);
+  v4 = fmax(fmin(weighting, 1.0), 0.0);
   [(MTMaterialView *)self weighting];
   if (v4 != v5)
   {
-    v6 = [(MTMaterialView *)self _materialLayer];
-    [v6 setWeighting:v4];
+    _materialLayer = [(MTMaterialView *)self _materialLayer];
+    [_materialLayer setWeighting:v4];
 
-    v7 = [(MTMaterialView *)self _backdropFloatAnimatableProperty];
-    [v7 setValue:v4];
+    _backdropFloatAnimatableProperty = [(MTMaterialView *)self _backdropFloatAnimatableProperty];
+    [_backdropFloatAnimatableProperty setValue:v4];
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -590,58 +590,58 @@ void __31__MTMaterialView_setWeighting___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setRecipe:(int64_t)a3
+- (void)setRecipe:(int64_t)recipe
 {
-  if (self->_recipe != a3)
+  if (self->_recipe != recipe)
   {
-    self->_recipe = a3;
+    self->_recipe = recipe;
     if (self->_recipeDynamic)
     {
-      v6 = [(MTMaterialView *)self traitCollection];
-      v7 = [v6 userInterfaceStyle];
+      traitCollection = [(MTMaterialView *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
     }
 
     else
     {
-      v7 = 0;
+      userInterfaceStyle = 0;
     }
 
-    v8 = MTCoreMaterialRecipeForMaterialRecipeAndUserInterfaceStyleInShadow(a3, v7, self->_shadowed);
+    v8 = MTCoreMaterialRecipeForMaterialRecipeAndUserInterfaceStyleInShadow(recipe, userInterfaceStyle, self->_shadowed);
     [(MTMaterialView *)self setRecipeName:v8];
   }
 }
 
-- (void)setBlurEnabled:(BOOL)a3
+- (void)setBlurEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(MTMaterialView *)self _materialLayer];
-  [v5 setBlurEnabled:v3];
+  enabledCopy = enabled;
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  [_materialLayer setBlurEnabled:enabledCopy];
 
   [(MTMaterialView *)self _updateGroupNameIfNecessary];
 }
 
-- (void)setZoomEnabled:(BOOL)a3
+- (void)setZoomEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(MTMaterialView *)self _materialLayer];
-  [v5 setZoomEnabled:v3];
+  enabledCopy = enabled;
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  [_materialLayer setZoomEnabled:enabledCopy];
 
   [(MTMaterialView *)self _updateGroupNameIfNecessary];
 }
 
 - (BOOL)isCaptureOnly
 {
-  v2 = [(MTMaterialView *)self _materialLayer];
-  v3 = [v2 captureOnly];
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  captureOnly = [_materialLayer captureOnly];
 
-  return v3;
+  return captureOnly;
 }
 
-- (void)setCaptureOnly:(BOOL)a3
+- (void)setCaptureOnly:(BOOL)only
 {
-  v3 = a3;
-  v4 = [(MTMaterialView *)self _materialLayer];
-  [v4 setCaptureOnly:v3];
+  onlyCopy = only;
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  [_materialLayer setCaptureOnly:onlyCopy];
 }
 
 - (void)setShadowed:(BOOL)shadowed
@@ -654,8 +654,8 @@ void __31__MTMaterialView_setWeighting___block_invoke(uint64_t a1, void *a2)
     {
       if (self->_recipeDynamic)
       {
-        v5 = [(MTMaterialView *)self traitCollection];
-        v6 = [v5 userInterfaceStyle];
+        traitCollection = [(MTMaterialView *)self traitCollection];
+        userInterfaceStyle = [traitCollection userInterfaceStyle];
 
         recipe = self->_recipe;
         shadowed = self->_shadowed;
@@ -663,10 +663,10 @@ void __31__MTMaterialView_setWeighting___block_invoke(uint64_t a1, void *a2)
 
       else
       {
-        v6 = 0;
+        userInterfaceStyle = 0;
       }
 
-      v7 = MTCoreMaterialRecipeForMaterialRecipeAndUserInterfaceStyleInShadow(recipe, v6, shadowed);
+      v7 = MTCoreMaterialRecipeForMaterialRecipeAndUserInterfaceStyleInShadow(recipe, userInterfaceStyle, shadowed);
       [(MTMaterialView *)self setRecipeName:v7];
     }
   }
@@ -743,46 +743,46 @@ id __33__MTMaterialView_setHighlighted___block_invoke_2(uint64_t a1, uint64_t a2
 
 - (BOOL)hasInoperativeAppearance
 {
-  v2 = [(MTMaterialView *)self _materialLayer];
-  v3 = [v2 _hasInoperativeAppearance];
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  _hasInoperativeAppearance = [_materialLayer _hasInoperativeAppearance];
 
-  return v3;
+  return _hasInoperativeAppearance;
 }
 
-- (void)setHasInoperativeAppearance:(BOOL)a3
+- (void)setHasInoperativeAppearance:(BOOL)appearance
 {
-  v3 = a3;
-  v4 = [(MTMaterialView *)self _materialLayer];
-  [v4 _setHasInoperativeAppearance:v3 removingIfIdentity:0];
+  appearanceCopy = appearance;
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  [_materialLayer _setHasInoperativeAppearance:appearanceCopy removingIfIdentity:0];
 }
 
 - (NSString)debugIdentifier
 {
-  v2 = [(MTMaterialView *)self _materialLayer];
-  v3 = [v2 debugIdentifier];
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  debugIdentifier = [_materialLayer debugIdentifier];
 
-  return v3;
+  return debugIdentifier;
 }
 
-- (void)setDebugIdentifier:(id)a3
+- (void)setDebugIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MTMaterialView *)self _materialLayer];
-  [v5 setDebugIdentifier:v4];
+  identifierCopy = identifier;
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  [_materialLayer setDebugIdentifier:identifierCopy];
 }
 
 - (void)prune
 {
-  v2 = [(MTMaterialView *)self _materialLayer];
-  [v2 prune];
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  [_materialLayer prune];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MTMaterialView *)self _materialLayer];
-  v6 = [objc_opt_class() mt_implicitlyAnimatableKeys];
-  if ([v6 containsObject:v4])
+  keyCopy = key;
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  mt_implicitlyAnimatableKeys = [objc_opt_class() mt_implicitlyAnimatableKeys];
+  if ([mt_implicitlyAnimatableKeys containsObject:keyCopy])
   {
     v7 = 1;
   }
@@ -791,53 +791,53 @@ id __33__MTMaterialView_setHighlighted___block_invoke_2(uint64_t a1, uint64_t a2
   {
     v9.receiver = self;
     v9.super_class = MTMaterialView;
-    v7 = [(MTMaterialView *)&v9 _shouldAnimatePropertyWithKey:v4];
+    v7 = [(MTMaterialView *)&v9 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v7;
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = MTMaterialView;
   [(MTMaterialView *)&v5 _setCornerRadius:?];
-  [(UIView *)self->_highlightView _setCornerRadius:a3];
+  [(UIView *)self->_highlightView _setCornerRadius:radius];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = MTMaterialView;
   [(MTMaterialView *)&v5 _setContinuousCornerRadius:?];
-  [(UIView *)self->_highlightView _setContinuousCornerRadius:a3];
+  [(UIView *)self->_highlightView _setContinuousCornerRadius:radius];
 }
 
-- (BOOL)isManagingInterpolationForMaterialLayer:(id)a3
+- (BOOL)isManagingInterpolationForMaterialLayer:(id)layer
 {
-  v3 = [MEMORY[0x277D75D18] _isInRetargetableAnimationBlock];
-  if (v3)
+  _isInRetargetableAnimationBlock = [MEMORY[0x277D75D18] _isInRetargetableAnimationBlock];
+  if (_isInRetargetableAnimationBlock)
   {
     v4 = MEMORY[0x277D75D18];
 
-    LOBYTE(v3) = [v4 areAnimationsEnabled];
+    LOBYTE(_isInRetargetableAnimationBlock) = [v4 areAnimationsEnabled];
   }
 
-  return v3;
+  return _isInRetargetableAnimationBlock;
 }
 
-- (BOOL)addCompletionForCurrentAnimation:(id)a3 forMaterialLayer:(id)a4 reason:(id *)a5
+- (BOOL)addCompletionForCurrentAnimation:(id)animation forMaterialLayer:(id)layer reason:(id *)reason
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  animationCopy = animation;
+  layerCopy = layer;
+  if (!animationCopy)
   {
-    if (a5)
+    if (reason)
     {
       v12 = @"no argument block";
 LABEL_13:
       v11 = 0;
-      *a5 = v12;
+      *reason = v12;
       goto LABEL_15;
     }
 
@@ -848,7 +848,7 @@ LABEL_14:
 
   if (![MEMORY[0x277D75D18] _isInAnimationBlockWithAnimationsEnabled])
   {
-    if (a5)
+    if (reason)
     {
       if ([MEMORY[0x277D75D18] _isInAnimationBlock])
       {
@@ -871,21 +871,21 @@ LABEL_14:
   v14[1] = 3221225472;
   v14[2] = __75__MTMaterialView_addCompletionForCurrentAnimation_forMaterialLayer_reason___block_invoke;
   v14[3] = &unk_27835D3D0;
-  v15 = v7;
+  v15 = animationCopy;
   v10 = [v9 _addCompletion:v14];
   v11 = v10;
-  if (a5 && (v10 & 1) == 0)
+  if (reason && (v10 & 1) == 0)
   {
-    *a5 = @"failed to add completion";
+    *reason = @"failed to add completion";
   }
 
 LABEL_15:
   return v11;
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
-  v4 = MTCoreMaterialVisualStyleCategoryForVisualStyleCategory(a3);
+  v4 = MTCoreMaterialVisualStyleCategoryForVisualStyleCategory(category);
   if (v4)
   {
     v5 = [(NSMutableDictionary *)self->_cmVisualStyleCategoriesToProviders objectForKey:v4];
@@ -900,8 +900,8 @@ LABEL_15:
 
       [(MTMaterialView *)self _updateRecipeNameIfNeeded];
       v8 = [(MTMaterialView *)self _coreMaterialVisualStylingProviderForCategory:v4];
-      v9 = [v8 visualStyleSetName];
-      v10 = [v9 length];
+      visualStyleSetName = [v8 visualStyleSetName];
+      v10 = [visualStyleSetName length];
 
       if (v10)
       {
@@ -928,24 +928,24 @@ LABEL_15:
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_21E600000, a2, OS_LOG_TYPE_DEBUG, "%{public}@: Tearing down backdrop float animatable property", &v2, 0xCu);
 }
 
-+ (id)_recipeNameForTraitCollection:(id)a3 withRecipeNamesByTraitCollection:(id)a4
++ (id)_recipeNameForTraitCollection:(id)collection withRecipeNamesByTraitCollection:(id)traitCollection
 {
-  v5 = a4;
-  v6 = v5;
+  traitCollectionCopy = traitCollection;
+  v6 = traitCollectionCopy;
   v7 = 0;
-  if (a3 && v5)
+  if (collection && traitCollectionCopy)
   {
-    v8 = a3;
-    v9 = [v6 allKeys];
+    collectionCopy = collection;
+    allKeys = [v6 allKeys];
     v10 = MEMORY[0x277D75C80];
-    v11 = [v8 userInterfaceStyle];
+    userInterfaceStyle = [collectionCopy userInterfaceStyle];
 
-    v12 = [v10 traitCollectionWithUserInterfaceStyle:v11];
-    v13 = [v9 arrayByAddingObject:v12];
+    v12 = [v10 traitCollectionWithUserInterfaceStyle:userInterfaceStyle];
+    v13 = [allKeys arrayByAddingObject:v12];
 
     v14 = [MEMORY[0x277D75C80] traitCollectionWithTraitsFromCollections:v13];
     if (v14)
@@ -962,14 +962,14 @@ LABEL_15:
   return v7;
 }
 
-- (void)_setRecipeName:(id)a3 withWeighting:(double)a4
+- (void)_setRecipeName:(id)name withWeighting:(double)weighting
 {
-  v6 = a3;
-  v7 = [(MTMaterialView *)self _materialLayer];
-  [v7 setRecipeName:v6 fromBundle:self->_recipeBundle];
+  nameCopy = name;
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  [_materialLayer setRecipeName:nameCopy fromBundle:self->_recipeBundle];
 
-  v8 = [(MTMaterialView *)self _materialLayer];
-  [v8 setWeighting:a4];
+  _materialLayer2 = [(MTMaterialView *)self _materialLayer];
+  [_materialLayer2 setWeighting:weighting];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -989,14 +989,14 @@ void __47__MTMaterialView__setRecipeName_withWeighting___block_invoke(uint64_t a
   }
 }
 
-- (id)_groupNameWithBase:(id)a3
+- (id)_groupNameWithBase:(id)base
 {
   v4 = MEMORY[0x277CCAB68];
-  v5 = a3;
+  baseCopy = base;
   v6 = [v4 alloc];
-  v7 = [(MTMaterialView *)self _materialLayer];
-  v8 = [v7 recipeName];
-  v9 = [v6 initWithFormat:@"%@.%@", v5, v8];
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  recipeName = [_materialLayer recipeName];
+  v9 = [v6 initWithFormat:@"%@.%@", baseCopy, recipeName];
 
   if (![(MTMaterialView *)self isBlurEnabled])
   {
@@ -1013,10 +1013,10 @@ void __47__MTMaterialView__setRecipeName_withWeighting___block_invoke(uint64_t a
     [v9 appendString:@".shadowed"];
   }
 
-  v10 = [(MTMaterialView *)self _materialLayer];
-  v11 = [v10 reducesCaptureBitDepth];
+  _materialLayer2 = [(MTMaterialView *)self _materialLayer];
+  reducesCaptureBitDepth = [_materialLayer2 reducesCaptureBitDepth];
 
-  if (v11)
+  if (reducesCaptureBitDepth)
   {
     [v9 appendString:@".reducesCaptureBitDepth"];
   }
@@ -1027,13 +1027,13 @@ void __47__MTMaterialView__setRecipeName_withWeighting___block_invoke(uint64_t a
 - (void)_reduceMotionStatusDidChange
 {
   IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
-  v4 = [(MTMaterialView *)self _materialLayer];
-  v5 = [v4 isReduceMotionEnabled];
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  isReduceMotionEnabled = [_materialLayer isReduceMotionEnabled];
 
-  if (IsReduceMotionEnabled != v5)
+  if (IsReduceMotionEnabled != isReduceMotionEnabled)
   {
-    v6 = [(MTMaterialView *)self _materialLayer];
-    [v6 setReduceMotionEnabled:IsReduceMotionEnabled];
+    _materialLayer2 = [(MTMaterialView *)self _materialLayer];
+    [_materialLayer2 setReduceMotionEnabled:IsReduceMotionEnabled];
 
     [(MTMaterialView *)self _setupOrInvalidateAlphaTransformer];
   }
@@ -1042,23 +1042,23 @@ void __47__MTMaterialView__setRecipeName_withWeighting___block_invoke(uint64_t a
 - (void)_reduceTransparencyStatusDidChange
 {
   IsReduceTransparencyEnabled = UIAccessibilityIsReduceTransparencyEnabled();
-  v4 = [(MTMaterialView *)self _materialLayer];
-  v5 = [v4 isReduceTransparencyEnabled];
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  isReduceTransparencyEnabled = [_materialLayer isReduceTransparencyEnabled];
 
-  if (IsReduceTransparencyEnabled != v5)
+  if (IsReduceTransparencyEnabled != isReduceTransparencyEnabled)
   {
-    v6 = [(MTMaterialView *)self _materialLayer];
-    [v6 setReduceTransparencyEnabled:IsReduceTransparencyEnabled];
+    _materialLayer2 = [(MTMaterialView *)self _materialLayer];
+    [_materialLayer2 setReduceTransparencyEnabled:IsReduceTransparencyEnabled];
 
     [(MTMaterialView *)self _setupOrInvalidateAlphaTransformer];
   }
 }
 
-- (void)_notifyObserversWithBlock:(id)a3
+- (void)_notifyObserversWithBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     observers = self->_observers;
     if (observers)
@@ -1083,7 +1083,7 @@ void __47__MTMaterialView__setRecipeName_withWeighting___block_invoke(uint64_t a
               objc_enumerationMutation(v6);
             }
 
-            v4[2](v4, *(*(&v11 + 1) + 8 * v10++));
+            blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v10++));
           }
 
           while (v8 != v10);
@@ -1098,13 +1098,13 @@ void __47__MTMaterialView__setRecipeName_withWeighting___block_invoke(uint64_t a
 
 - (NSString)description
 {
-  v3 = [(MTMaterialView *)self debugIdentifier];
+  debugIdentifier = [(MTMaterialView *)self debugIdentifier];
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
   v6 = v5;
-  if (v3)
+  if (debugIdentifier)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@" (%@)", v3];
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@" (%@)", debugIdentifier];
     v8 = [v4 stringWithFormat:@"<%@%@: %p>", v6, v7, self];
   }
 
@@ -1116,56 +1116,56 @@ void __47__MTMaterialView__setRecipeName_withWeighting___block_invoke(uint64_t a
   return v8;
 }
 
-+ (id)materialViewWithRecipe:(int64_t)a3 options:(unint64_t)a4 initialWeighting:(double)a5 scaleAdjustment:(id)a6
++ (id)materialViewWithRecipe:(int64_t)recipe options:(unint64_t)options initialWeighting:(double)weighting scaleAdjustment:(id)adjustment
 {
   v10 = MEMORY[0x277D75C80];
-  v11 = a6;
-  v12 = [v10 currentTraitCollection];
-  v13 = [a1 materialViewWithRecipe:a3 options:a4 initialWeighting:v11 scaleAdjustment:v12 compatibleWithTraitCollection:a5];
+  adjustmentCopy = adjustment;
+  currentTraitCollection = [v10 currentTraitCollection];
+  v13 = [self materialViewWithRecipe:recipe options:options initialWeighting:adjustmentCopy scaleAdjustment:currentTraitCollection compatibleWithTraitCollection:weighting];
 
   return v13;
 }
 
-+ (id)materialViewWithRecipe:(int64_t)a3 options:(unint64_t)a4 initialWeighting:(double)a5 scaleAdjustment:(id)a6 compatibleWithTraitCollection:(id)a7
++ (id)materialViewWithRecipe:(int64_t)recipe options:(unint64_t)options initialWeighting:(double)weighting scaleAdjustment:(id)adjustment compatibleWithTraitCollection:(id)collection
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = [[a1 alloc] _initWithRecipe:a3 options:a4 initialWeighting:v13 scaleAdjustment:v12 compatibleWithTraitCollection:a5];
+  collectionCopy = collection;
+  adjustmentCopy = adjustment;
+  v14 = [[self alloc] _initWithRecipe:recipe options:options initialWeighting:adjustmentCopy scaleAdjustment:collectionCopy compatibleWithTraitCollection:weighting];
 
   return v14;
 }
 
-+ (id)materialViewWithRecipeNamed:(id)a3 inBundle:(id)a4 options:(unint64_t)a5 initialWeighting:(double)a6 scaleAdjustment:(id)a7
++ (id)materialViewWithRecipeNamed:(id)named inBundle:(id)bundle options:(unint64_t)options initialWeighting:(double)weighting scaleAdjustment:(id)adjustment
 {
-  v12 = a7;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[a1 alloc] _initWithCoreMaterialRecipe:v14 fromBundle:v13 options:a5 initialWeighting:v12 scaleAdjustment:a6];
+  adjustmentCopy = adjustment;
+  bundleCopy = bundle;
+  namedCopy = named;
+  v15 = [[self alloc] _initWithCoreMaterialRecipe:namedCopy fromBundle:bundleCopy options:options initialWeighting:adjustmentCopy scaleAdjustment:weighting];
 
   return v15;
 }
 
-+ (id)materialViewWithRecipeNamesByTraitCollection:(id)a3 inBundle:(id)a4 options:(unint64_t)a5 initialWeighting:(double)a6 scaleAdjustment:(id)a7 compatibleWithTraitCollection:(id)a8
++ (id)materialViewWithRecipeNamesByTraitCollection:(id)collection inBundle:(id)bundle options:(unint64_t)options initialWeighting:(double)weighting scaleAdjustment:(id)adjustment compatibleWithTraitCollection:(id)traitCollection
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a4;
-  v17 = a3;
-  v18 = [[a1 alloc] _initWithRecipeNamesByTraitCollection:v17 bundle:v16 options:a5 initialWeighting:v15 scaleAdjustment:v14 compatibleWithTraitCollection:a6];
+  traitCollectionCopy = traitCollection;
+  adjustmentCopy = adjustment;
+  bundleCopy = bundle;
+  collectionCopy = collection;
+  v18 = [[self alloc] _initWithRecipeNamesByTraitCollection:collectionCopy bundle:bundleCopy options:options initialWeighting:adjustmentCopy scaleAdjustment:traitCollectionCopy compatibleWithTraitCollection:weighting];
 
   return v18;
 }
 
-+ (id)materialViewWithVisualStyleFromRecipe:(int64_t)a3 category:(int64_t)a4 style:(int64_t)a5 options:(unint64_t)a6 initialWeighting:(double)a7 compatibleWithTraitCollection:(id)a8
++ (id)materialViewWithVisualStyleFromRecipe:(int64_t)recipe category:(int64_t)category style:(int64_t)style options:(unint64_t)options initialWeighting:(double)weighting compatibleWithTraitCollection:(id)collection
 {
-  v13 = a8;
-  v14 = MTCoreMaterialVisualStyleCategoryForVisualStyleCategory(a4);
-  v15 = MTCoreMaterialVisualStyleForVisualStyle(a5);
+  collectionCopy = collection;
+  v14 = MTCoreMaterialVisualStyleCategoryForVisualStyleCategory(category);
+  v15 = MTCoreMaterialVisualStyleForVisualStyle(style);
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __135__MTMaterialView_Private__materialViewWithVisualStyleFromRecipe_category_style_options_initialWeighting_compatibleWithTraitCollection___block_invoke;
   v28[3] = &unk_27835D480;
-  v31 = a3;
+  recipeCopy = recipe;
   v16 = v14;
   v29 = v16;
   v17 = v15;
@@ -1189,7 +1189,7 @@ void __47__MTMaterialView__setRecipeName_withWeighting___block_invoke(uint64_t a
     [v19 setObject:v23 forKey:v24];
   }
 
-  v25 = [[a1 alloc] _initWithRecipeNamesByTraitCollection:v19 bundle:0 options:a6 initialWeighting:0 scaleAdjustment:v13 compatibleWithTraitCollection:a7];
+  v25 = [[self alloc] _initWithRecipeNamesByTraitCollection:v19 bundle:0 options:options initialWeighting:0 scaleAdjustment:collectionCopy compatibleWithTraitCollection:weighting];
 
   return v25;
 }
@@ -1204,81 +1204,81 @@ id __135__MTMaterialView_Private__materialViewWithVisualStyleFromRecipe_category
 
 - (NSString)recipeName
 {
-  v2 = [(MTMaterialView *)self _materialLayer];
-  v3 = [v2 recipeName];
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  recipeName = [_materialLayer recipeName];
 
-  return v3;
+  return recipeName;
 }
 
-- (void)setRecipeName:(id)a3 fromBundle:(id)a4
+- (void)setRecipeName:(id)name fromBundle:(id)bundle
 {
-  v6 = a4;
-  if (a3 && v6)
+  bundleCopy = bundle;
+  if (name && bundleCopy)
   {
     self->_recipe = 0;
   }
 
   recipeBundle = self->_recipeBundle;
-  self->_recipeBundle = v6;
-  v8 = a3;
+  self->_recipeBundle = bundleCopy;
+  nameCopy = name;
 
-  [(MTMaterialView *)self _setRecipeName:v8 withWeighting:1.0];
+  [(MTMaterialView *)self _setRecipeName:nameCopy withWeighting:1.0];
 }
 
 - (BOOL)isInPlaceFilteringEnabled
 {
-  v2 = [(MTMaterialView *)self _materialLayer];
-  v3 = [v2 allowsInPlaceFiltering];
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  allowsInPlaceFiltering = [_materialLayer allowsInPlaceFiltering];
 
-  return v3;
+  return allowsInPlaceFiltering;
 }
 
-- (void)setInPlaceFilteringEnabled:(BOOL)a3
+- (void)setInPlaceFilteringEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(MTMaterialView *)self _materialLayer];
-  [v4 setAllowsInPlaceFiltering:v3];
+  enabledCopy = enabled;
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  [_materialLayer setAllowsInPlaceFiltering:enabledCopy];
 }
 
 - (id)backdropScaleAdjustment
 {
-  v2 = [(MTMaterialView *)self _materialLayer];
-  v3 = [v2 backdropScaleAdjustment];
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  backdropScaleAdjustment = [_materialLayer backdropScaleAdjustment];
 
-  return v3;
+  return backdropScaleAdjustment;
 }
 
-- (void)setBackdropScaleAdjustment:(id)a3
+- (void)setBackdropScaleAdjustment:(id)adjustment
 {
-  v4 = a3;
-  v5 = [(MTMaterialView *)self _materialLayer];
-  [v5 setBackdropScaleAdjustment:v4];
+  adjustmentCopy = adjustment;
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  [_materialLayer setBackdropScaleAdjustment:adjustmentCopy];
 }
 
-- (void)setShouldCrossfade:(BOOL)a3
+- (void)setShouldCrossfade:(BOOL)crossfade
 {
-  v3 = a3;
-  if ([(MTMaterialView *)self shouldCrossfade]!= a3)
+  crossfadeCopy = crossfade;
+  if ([(MTMaterialView *)self shouldCrossfade]!= crossfade)
   {
-    if (v3)
+    if (crossfadeCopy)
     {
       [(MTMaterialView *)self setUseBuiltInAlphaTransformerAndBackdropScaleAdjustment:0];
     }
 
-    v5 = [(MTMaterialView *)self _materialLayer];
-    [v5 setShouldCrossfade:v3];
+    _materialLayer = [(MTMaterialView *)self _materialLayer];
+    [_materialLayer setShouldCrossfade:crossfadeCopy];
   }
 }
 
-- (void)setUseBuiltInAlphaTransformerAndBackdropScaleAdjustment:(BOOL)a3
+- (void)setUseBuiltInAlphaTransformerAndBackdropScaleAdjustment:(BOOL)adjustment
 {
-  if (self->_useBuiltInAlphaTransformerAndBackdropScaleAdjustment != a3)
+  if (self->_useBuiltInAlphaTransformerAndBackdropScaleAdjustment != adjustment)
   {
-    self->_useBuiltInAlphaTransformerAndBackdropScaleAdjustment = a3;
-    if (a3)
+    self->_useBuiltInAlphaTransformerAndBackdropScaleAdjustment = adjustment;
+    if (adjustment)
     {
-      v4 = [(MTMaterialView *)self _materialLayer];
-      [v4 setShouldCrossfade:0];
+      _materialLayer = [(MTMaterialView *)self _materialLayer];
+      [_materialLayer setShouldCrossfade:0];
 
       [(MTMaterialView *)self _setupOrInvalidateAlphaTransformer];
     }
@@ -1286,29 +1286,29 @@ id __135__MTMaterialView_Private__materialViewWithVisualStyleFromRecipe_category
     else
     {
       [(MTMaterialView *)self _invalidateAlphaTransformer];
-      v5 = [(MTMaterialView *)self _materialLayer];
-      [v5 _reevaluateDefaultShouldCrossfade];
+      _materialLayer2 = [(MTMaterialView *)self _materialLayer];
+      [_materialLayer2 _reevaluateDefaultShouldCrossfade];
     }
   }
 }
 
-- (void)setUseBuiltInAlphaTransformerAndBackdropScaleAdjustmentIfNecessary:(BOOL)a3
+- (void)setUseBuiltInAlphaTransformerAndBackdropScaleAdjustmentIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
-  if (!a3 || MTDynamicBlurRadiusGraphicsQuality() != 100)
+  necessaryCopy = necessary;
+  if (!necessary || MTDynamicBlurRadiusGraphicsQuality() != 100)
   {
 
-    [(MTMaterialView *)self setUseBuiltInAlphaTransformerAndBackdropScaleAdjustment:v3];
+    [(MTMaterialView *)self setUseBuiltInAlphaTransformerAndBackdropScaleAdjustment:necessaryCopy];
   }
 }
 
-- (void)setRecipeDynamic:(BOOL)a3
+- (void)setRecipeDynamic:(BOOL)dynamic
 {
-  if (self->_recipeDynamic != a3)
+  if (self->_recipeDynamic != dynamic)
   {
     v6[7] = v3;
     v6[8] = v4;
-    self->_recipeDynamic = a3;
+    self->_recipeDynamic = dynamic;
     [(MTMaterialView *)self setNeedsLayout];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
@@ -1321,17 +1321,17 @@ id __135__MTMaterialView_Private__materialViewWithVisualStyleFromRecipe_category
 
 - (BOOL)ignoresScreenClip
 {
-  v2 = [(MTMaterialView *)self _materialLayer];
-  v3 = [v2 ignoresScreenClip];
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  ignoresScreenClip = [_materialLayer ignoresScreenClip];
 
-  return v3;
+  return ignoresScreenClip;
 }
 
-- (void)setIgnoresScreenClip:(BOOL)a3
+- (void)setIgnoresScreenClip:(BOOL)clip
 {
-  v3 = a3;
-  v4 = [(MTMaterialView *)self _materialLayer];
-  [v4 setIgnoresScreenClip:v3];
+  clipCopy = clip;
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  [_materialLayer setIgnoresScreenClip:clipCopy];
 }
 
 - (unint64_t)_options
@@ -1358,19 +1358,19 @@ id __135__MTMaterialView_Private__materialViewWithVisualStyleFromRecipe_category
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_recipeNamesByTraitCollection)
   {
     v5 = objc_alloc(objc_opt_class());
     recipeNamesByTraitCollection = self->_recipeNamesByTraitCollection;
     recipeBundle = self->_recipeBundle;
-    v8 = [(MTMaterialView *)self _options];
+    _options = [(MTMaterialView *)self _options];
     [(MTMaterialView *)self weighting];
     v10 = v9;
-    v11 = [(MTMaterialView *)self backdropScaleAdjustment];
-    v12 = [(MTMaterialView *)self traitCollection];
-    v13 = [v5 _initWithRecipeNamesByTraitCollection:recipeNamesByTraitCollection bundle:recipeBundle options:v8 initialWeighting:v11 scaleAdjustment:v12 compatibleWithTraitCollection:v10];
+    backdropScaleAdjustment = [(MTMaterialView *)self backdropScaleAdjustment];
+    traitCollection = [(MTMaterialView *)self traitCollection];
+    v13 = [v5 _initWithRecipeNamesByTraitCollection:recipeNamesByTraitCollection bundle:recipeBundle options:_options initialWeighting:backdropScaleAdjustment scaleAdjustment:traitCollection compatibleWithTraitCollection:v10];
 LABEL_5:
     v20 = v13;
     goto LABEL_6;
@@ -1381,39 +1381,39 @@ LABEL_5:
   if (recipe)
   {
     v16 = self->_recipe;
-    v17 = [(MTMaterialView *)self _options];
+    _options2 = [(MTMaterialView *)self _options];
     [(MTMaterialView *)self weighting];
     v19 = v18;
-    v11 = [(MTMaterialView *)self backdropScaleAdjustment];
-    v12 = [(MTMaterialView *)self traitCollection];
-    v13 = [v15 _initWithRecipe:v16 options:v17 initialWeighting:v11 scaleAdjustment:v12 compatibleWithTraitCollection:v19];
+    backdropScaleAdjustment = [(MTMaterialView *)self backdropScaleAdjustment];
+    traitCollection = [(MTMaterialView *)self traitCollection];
+    v13 = [v15 _initWithRecipe:v16 options:_options2 initialWeighting:backdropScaleAdjustment scaleAdjustment:traitCollection compatibleWithTraitCollection:v19];
     goto LABEL_5;
   }
 
-  v11 = [(MTMaterialView *)self _materialLayer];
-  v12 = [v11 recipe];
-  v23 = v12;
-  if (!v12)
+  backdropScaleAdjustment = [(MTMaterialView *)self _materialLayer];
+  traitCollection = [backdropScaleAdjustment recipe];
+  recipeName = traitCollection;
+  if (!traitCollection)
   {
-    v3 = [(MTMaterialView *)self _materialLayer];
-    v23 = [v3 recipeName];
+    _materialLayer = [(MTMaterialView *)self _materialLayer];
+    recipeName = [_materialLayer recipeName];
   }
 
   v24 = self->_recipeBundle;
-  v25 = [(MTMaterialView *)self _options];
+  _options3 = [(MTMaterialView *)self _options];
   [(MTMaterialView *)self weighting];
   v27 = v26;
-  v28 = [(MTMaterialView *)self backdropScaleAdjustment];
-  v20 = [v15 _initWithCoreMaterialRecipe:v23 fromBundle:v24 options:v25 initialWeighting:v28 scaleAdjustment:v27];
+  backdropScaleAdjustment2 = [(MTMaterialView *)self backdropScaleAdjustment];
+  v20 = [v15 _initWithCoreMaterialRecipe:recipeName fromBundle:v24 options:_options3 initialWeighting:backdropScaleAdjustment2 scaleAdjustment:v27];
 
-  if (!v12)
+  if (!traitCollection)
   {
   }
 
 LABEL_6:
 
-  v21 = [(MTMaterialView *)self groupNameBase];
-  [v20 setGroupNameBase:v21];
+  groupNameBase = [(MTMaterialView *)self groupNameBase];
+  [v20 setGroupNameBase:groupNameBase];
 
   [v20 setShouldCrossfade:{-[MTMaterialView shouldCrossfade](self, "shouldCrossfade")}];
   [v20 setUseBuiltInAlphaTransformerAndBackdropScaleAdjustment:{-[MTMaterialView useBuiltInAlphaTransformerAndBackdropScaleAdjustment](self, "useBuiltInAlphaTransformerAndBackdropScaleAdjustment")}];
@@ -1423,56 +1423,56 @@ LABEL_6:
   return v20;
 }
 
-- (id)newShadowViewWithCaptureOnlyMaterialView:(BOOL)a3
+- (id)newShadowViewWithCaptureOnlyMaterialView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = [[MTMaterialShadowView alloc] initWithMaterialView:self];
-  [(MTMaterialShadowView *)v4 setCaptureOnlyMaterialViewSuppliedByClient:!v3];
+  [(MTMaterialShadowView *)v4 setCaptureOnlyMaterialViewSuppliedByClient:!viewCopy];
   return v4;
 }
 
 - (BOOL)isContentReplacedWithSnapshot
 {
-  v2 = [(MTMaterialView *)self _materialLayer];
-  v3 = [v2 isContentReplacedWithSnapshot];
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  isContentReplacedWithSnapshot = [_materialLayer isContentReplacedWithSnapshot];
 
-  return v3;
+  return isContentReplacedWithSnapshot;
 }
 
-- (void)setContentReplacedWithSnapshot:(BOOL)a3
+- (void)setContentReplacedWithSnapshot:(BOOL)snapshot
 {
-  v3 = a3;
-  v4 = [(MTMaterialView *)self _materialLayer];
-  [v4 setContentReplacedWithSnapshot:v3];
+  snapshotCopy = snapshot;
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  [_materialLayer setContentReplacedWithSnapshot:snapshotCopy];
 }
 
-- (void)_addObserver:(id)a3
+- (void)_addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     observers = self->_observers;
     v9 = v5;
     if (!observers)
     {
-      v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v8 = self->_observers;
-      self->_observers = v7;
+      self->_observers = weakObjectsHashTable;
 
       observers = self->_observers;
     }
 
-    v4 = [(NSHashTable *)observers addObject:v9];
+    observerCopy = [(NSHashTable *)observers addObject:v9];
     v5 = v9;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](observerCopy, v5);
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     observers = self->_observers;
     if (observers)
@@ -1482,70 +1482,70 @@ LABEL_6:
   }
 }
 
-- (id)_initWithCoreMaterialRecipe:(id)a3 fromBundle:(id)a4 options:(unint64_t)a5 initialWeighting:(double)a6 scaleAdjustment:(id)a7
+- (id)_initWithCoreMaterialRecipe:(id)recipe fromBundle:(id)bundle options:(unint64_t)options initialWeighting:(double)weighting scaleAdjustment:(id)adjustment
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  recipeCopy = recipe;
+  bundleCopy = bundle;
+  adjustmentCopy = adjustment;
   v16 = [(MTMaterialView *)self init];
   if (v16)
   {
-    if (!v13)
+    if (!recipeCopy)
     {
       [MTMaterialView(SubclassOverrides) _initWithCoreMaterialRecipe:a2 fromBundle:v16 options:? initialWeighting:? scaleAdjustment:?];
     }
 
-    objc_storeStrong(&v16->_recipeBundle, a4);
+    objc_storeStrong(&v16->_recipeBundle, bundle);
     [(MTMaterialView *)v16 setUserInteractionEnabled:0];
-    [(MTMaterialView *)v16 setBackdropScaleAdjustment:v15];
-    v17 = [(MTMaterialView *)v16 _materialLayer];
-    [v17 setReduceTransparencyEnabled:UIAccessibilityIsReduceTransparencyEnabled()];
+    [(MTMaterialView *)v16 setBackdropScaleAdjustment:adjustmentCopy];
+    _materialLayer = [(MTMaterialView *)v16 _materialLayer];
+    [_materialLayer setReduceTransparencyEnabled:UIAccessibilityIsReduceTransparencyEnabled()];
 
-    v18 = [(MTMaterialView *)v16 _materialLayer];
-    [v18 setReduceMotionEnabled:UIAccessibilityIsReduceMotionEnabled()];
+    _materialLayer2 = [(MTMaterialView *)v16 _materialLayer];
+    [_materialLayer2 setReduceMotionEnabled:UIAccessibilityIsReduceMotionEnabled()];
 
-    v19 = [(MTMaterialView *)v16 _materialLayer];
-    [v19 setRecipeName:v13 fromBundle:v14];
+    _materialLayer3 = [(MTMaterialView *)v16 _materialLayer];
+    [_materialLayer3 setRecipeName:recipeCopy fromBundle:bundleCopy];
 
-    [(MTMaterialView *)v16 setBlurEnabled:(a5 & 1) == 0];
-    [(MTMaterialView *)v16 setZoomEnabled:(a5 & 2) == 0];
-    [(MTMaterialView *)v16 setCaptureOnly:(a5 >> 2) & 1];
-    [(MTMaterialView *)v16 setShadowed:(a5 >> 3) & 1];
-    [(MTMaterialView *)v16 setWeighting:a6];
-    if (fabs(a6) < 2.22044605e-16)
+    [(MTMaterialView *)v16 setBlurEnabled:(options & 1) == 0];
+    [(MTMaterialView *)v16 setZoomEnabled:(options & 2) == 0];
+    [(MTMaterialView *)v16 setCaptureOnly:(options >> 2) & 1];
+    [(MTMaterialView *)v16 setShadowed:(options >> 3) & 1];
+    [(MTMaterialView *)v16 setWeighting:weighting];
+    if (fabs(weighting) < 2.22044605e-16)
     {
-      v20 = [(MTMaterialView *)v16 _materialLayer];
-      [v20 _setNeedsConfiguring];
+      _materialLayer4 = [(MTMaterialView *)v16 _materialLayer];
+      [_materialLayer4 _setNeedsConfiguring];
 
       [(MTMaterialView *)v16 setNeedsLayout];
       [(MTMaterialView *)v16 layoutIfNeeded];
     }
 
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    v16->_reduceTransparencyObserverToken = [v21 _addObserver:v16 selector:sel__reduceTransparencyStatusDidChange name:*MEMORY[0x277D764C8] object:0 options:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v16->_reduceTransparencyObserverToken = [defaultCenter _addObserver:v16 selector:sel__reduceTransparencyStatusDidChange name:*MEMORY[0x277D764C8] object:0 options:0];
 
-    v22 = [MEMORY[0x277CCAB98] defaultCenter];
-    v16->_reduceMotionObserverToken = [v22 _addObserver:v16 selector:sel__reduceMotionStatusDidChange name:*MEMORY[0x277D764C0] object:0 options:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    v16->_reduceMotionObserverToken = [defaultCenter2 _addObserver:v16 selector:sel__reduceMotionStatusDidChange name:*MEMORY[0x277D764C0] object:0 options:0];
   }
 
   return v16;
 }
 
-- (id)_coreMaterialVisualStylingProviderForCategory:(id)a3
+- (id)_coreMaterialVisualStylingProviderForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(MTMaterialView *)self _materialLayer];
-  v6 = [v5 visualStylingProviderForCategory:v4];
+  categoryCopy = category;
+  _materialLayer = [(MTMaterialView *)self _materialLayer];
+  v6 = [_materialLayer visualStylingProviderForCategory:categoryCopy];
 
   return v6;
 }
 
-+ (id)staticMaterialViewWithRecipe:(int64_t)a3
++ (id)staticMaterialViewWithRecipe:(int64_t)recipe
 {
-  v4 = MTCoreMaterialRecipeForMaterialRecipeAndUserInterfaceStyle(a3, 0);
+  v4 = MTCoreMaterialRecipeForMaterialRecipeAndUserInterfaceStyle(recipe, 0);
   if (v4 && [MEMORY[0x277CFFF98] canGenerateVisualStyleSetFromRecipe:v4])
   {
-    v5 = [(MTMaterialView *)_MTStaticVisualStylingMaterialView materialViewWithRecipe:a3];
+    v5 = [(MTMaterialView *)_MTStaticVisualStylingMaterialView materialViewWithRecipe:recipe];
   }
 
   else
@@ -1556,53 +1556,53 @@ LABEL_6:
   return v5;
 }
 
-+ (id)_deprecatedControlCenterMaterialWithRecipe:(int64_t)a3 configuration:(int64_t)a4 initialWeighting:(double)a5 scaleAdjustment:(id)a6
++ (id)_deprecatedControlCenterMaterialWithRecipe:(int64_t)recipe configuration:(int64_t)configuration initialWeighting:(double)weighting scaleAdjustment:(id)adjustment
 {
-  v11 = a6;
-  if (([a1 _isWorkaroundRequiredForRecipe:a3] & 1) == 0)
+  adjustmentCopy = adjustment;
+  if (([self _isWorkaroundRequiredForRecipe:recipe] & 1) == 0)
   {
-    [MTMaterialView(DEPRECATED) _deprecatedControlCenterMaterialWithRecipe:a2 configuration:a1 initialWeighting:? scaleAdjustment:?];
+    [MTMaterialView(DEPRECATED) _deprecatedControlCenterMaterialWithRecipe:a2 configuration:self initialWeighting:? scaleAdjustment:?];
   }
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __120__MTMaterialView_DEPRECATED___deprecatedControlCenterMaterialWithRecipe_configuration_initialWeighting_scaleAdjustment___block_invoke;
   v18[3] = &__block_descriptor_40_e44____MTStaticVisualStylingMaterialView_16__0q8l;
-  v18[4] = a3;
+  v18[4] = recipe;
   v12 = MEMORY[0x223D601D0](v18);
   v13 = v12;
   v14 = 0;
-  if (a4 <= 1)
+  if (configuration <= 1)
   {
-    if (a4)
+    if (configuration)
     {
-      if (a4 != 1)
+      if (configuration != 1)
       {
         goto LABEL_17;
       }
 
-      if (a3 == 4)
+      if (recipe == 4)
       {
-        a3 = 20;
+        recipe = 20;
       }
 
       else
       {
-        a3 = 21;
+        recipe = 21;
       }
     }
   }
 
-  else if (a4 != 2)
+  else if (configuration != 2)
   {
-    if (a4 == 3)
+    if (configuration == 3)
     {
       v15 = *(v12 + 16);
     }
 
     else
     {
-      if (a4 != 4)
+      if (configuration != 4)
       {
         goto LABEL_17;
       }
@@ -1614,7 +1614,7 @@ LABEL_6:
     goto LABEL_16;
   }
 
-  v16 = [a1 materialViewWithRecipe:a3 options:0 initialWeighting:v11 scaleAdjustment:a5];
+  v16 = [self materialViewWithRecipe:recipe options:0 initialWeighting:adjustmentCopy scaleAdjustment:weighting];
 LABEL_16:
   v14 = v16;
 LABEL_17:
@@ -1640,80 +1640,80 @@ id __120__MTMaterialView_DEPRECATED___deprecatedControlCenterMaterialWithRecipe_
   return v8;
 }
 
-+ (id)materialViewWithRecipe:(int64_t)a3 configuration:(int64_t)a4
++ (id)materialViewWithRecipe:(int64_t)recipe configuration:(int64_t)configuration
 {
-  if ([a1 _isWorkaroundRequiredForRecipe:?])
+  if ([self _isWorkaroundRequiredForRecipe:?])
   {
-    [a1 _deprecatedControlCenterMaterialWithRecipe:a3 configuration:a4 initialWeighting:0 scaleAdjustment:1.0];
+    [self _deprecatedControlCenterMaterialWithRecipe:recipe configuration:configuration initialWeighting:0 scaleAdjustment:1.0];
   }
 
   else
   {
-    [a1 materialViewWithRecipe:a3];
+    [self materialViewWithRecipe:recipe];
   }
   v7 = ;
 
   return v7;
 }
 
-+ (id)materialViewWithRecipe:(int64_t)a3 configuration:(int64_t)a4 initialWeighting:(double)a5
++ (id)materialViewWithRecipe:(int64_t)recipe configuration:(int64_t)configuration initialWeighting:(double)weighting
 {
-  if ([a1 _isWorkaroundRequiredForRecipe:?])
+  if ([self _isWorkaroundRequiredForRecipe:?])
   {
-    [a1 _deprecatedControlCenterMaterialWithRecipe:a3 configuration:a4 initialWeighting:0 scaleAdjustment:a5];
+    [self _deprecatedControlCenterMaterialWithRecipe:recipe configuration:configuration initialWeighting:0 scaleAdjustment:weighting];
   }
 
   else
   {
-    [a1 materialViewWithRecipe:a3 options:0 initialWeighting:a5];
+    [self materialViewWithRecipe:recipe options:0 initialWeighting:weighting];
   }
   v9 = ;
 
   return v9;
 }
 
-+ (id)materialViewWithRecipe:(int64_t)a3 configuration:(int64_t)a4 initialWeighting:(double)a5 compatibleWithTraitCollection:(id)a6
++ (id)materialViewWithRecipe:(int64_t)recipe configuration:(int64_t)configuration initialWeighting:(double)weighting compatibleWithTraitCollection:(id)collection
 {
-  v10 = a6;
-  if ([a1 _isWorkaroundRequiredForRecipe:a3])
+  collectionCopy = collection;
+  if ([self _isWorkaroundRequiredForRecipe:recipe])
   {
-    [a1 _deprecatedControlCenterMaterialWithRecipe:a3 configuration:a4 initialWeighting:0 scaleAdjustment:a5];
+    [self _deprecatedControlCenterMaterialWithRecipe:recipe configuration:configuration initialWeighting:0 scaleAdjustment:weighting];
   }
 
   else
   {
-    [a1 materialViewWithRecipe:a3 options:0 initialWeighting:v10 compatibleWithTraitCollection:a5];
+    [self materialViewWithRecipe:recipe options:0 initialWeighting:collectionCopy compatibleWithTraitCollection:weighting];
   }
   v11 = ;
 
   return v11;
 }
 
-+ (id)materialViewWithRecipe:(int64_t)a3 configuration:(int64_t)a4 initialWeighting:(double)a5 scaleAdjustment:(id)a6
++ (id)materialViewWithRecipe:(int64_t)recipe configuration:(int64_t)configuration initialWeighting:(double)weighting scaleAdjustment:(id)adjustment
 {
-  v10 = a6;
-  if ([a1 _isWorkaroundRequiredForRecipe:a3])
+  adjustmentCopy = adjustment;
+  if ([self _isWorkaroundRequiredForRecipe:recipe])
   {
-    [a1 _deprecatedControlCenterMaterialWithRecipe:a3 configuration:a4 initialWeighting:v10 scaleAdjustment:a5];
+    [self _deprecatedControlCenterMaterialWithRecipe:recipe configuration:configuration initialWeighting:adjustmentCopy scaleAdjustment:weighting];
   }
 
   else
   {
-    [a1 materialViewWithRecipe:a3 options:0 initialWeighting:v10 scaleAdjustment:a5];
+    [self materialViewWithRecipe:recipe options:0 initialWeighting:adjustmentCopy scaleAdjustment:weighting];
   }
   v11 = ;
 
   return v11;
 }
 
-+ (id)materialViewWithRecipeNamesByTraitCollection:(id)a3 inBundle:(id)a4 configuration:(int64_t)a5 initialWeighting:(double)a6 scaleAdjustment:(id)a7
++ (id)materialViewWithRecipeNamesByTraitCollection:(id)collection inBundle:(id)bundle configuration:(int64_t)configuration initialWeighting:(double)weighting scaleAdjustment:(id)adjustment
 {
   v11 = MEMORY[0x277D75C80];
-  v12 = a7;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v11 currentTraitCollection];
-  v16 = [a1 materialViewWithRecipeNamesByTraitCollection:v14 inBundle:v13 options:0 initialWeighting:v12 scaleAdjustment:v15 compatibleWithTraitCollection:a6];
+  adjustmentCopy = adjustment;
+  bundleCopy = bundle;
+  collectionCopy = collection;
+  currentTraitCollection = [v11 currentTraitCollection];
+  v16 = [self materialViewWithRecipeNamesByTraitCollection:collectionCopy inBundle:bundleCopy options:0 initialWeighting:adjustmentCopy scaleAdjustment:currentTraitCollection compatibleWithTraitCollection:weighting];
 
   return v16;
 }

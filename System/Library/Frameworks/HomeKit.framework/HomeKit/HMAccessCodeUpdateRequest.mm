@@ -1,5 +1,5 @@
 @interface HMAccessCodeUpdateRequest
-- (HMAccessCodeUpdateRequest)initWithAccessoryAccessCode:(id)a3 updatedAccessCodeValue:(id)a4;
+- (HMAccessCodeUpdateRequest)initWithAccessoryAccessCode:(id)code updatedAccessCodeValue:(id)value;
 - (id)createAccessCodeUpdateRequestValue;
 @end
 
@@ -8,26 +8,26 @@
 - (id)createAccessCodeUpdateRequestValue
 {
   v3 = [HMAccessCodeUpdateRequestValue alloc];
-  v4 = [(HMAccessCodeUpdateRequest *)self accessoryAccessCode];
-  v5 = [v4 createAccessoryAccessCodeValue];
-  v6 = [(HMAccessCodeUpdateRequest *)self updatedAccessCodeValue];
-  v7 = [(HMAccessCodeUpdateRequestValue *)v3 initWithAccessoryAccessCodeValue:v5 updatedAccessCodeValue:v6];
+  accessoryAccessCode = [(HMAccessCodeUpdateRequest *)self accessoryAccessCode];
+  createAccessoryAccessCodeValue = [accessoryAccessCode createAccessoryAccessCodeValue];
+  updatedAccessCodeValue = [(HMAccessCodeUpdateRequest *)self updatedAccessCodeValue];
+  v7 = [(HMAccessCodeUpdateRequestValue *)v3 initWithAccessoryAccessCodeValue:createAccessoryAccessCodeValue updatedAccessCodeValue:updatedAccessCodeValue];
 
   return v7;
 }
 
-- (HMAccessCodeUpdateRequest)initWithAccessoryAccessCode:(id)a3 updatedAccessCodeValue:(id)a4
+- (HMAccessCodeUpdateRequest)initWithAccessoryAccessCode:(id)code updatedAccessCodeValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  codeCopy = code;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = HMAccessCodeUpdateRequest;
   v9 = [(HMAccessCodeUpdateRequest *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accessoryAccessCode, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_accessoryAccessCode, code);
+    v11 = [valueCopy copy];
     updatedAccessCodeValue = v10->_updatedAccessCodeValue;
     v10->_updatedAccessCodeValue = v11;
   }

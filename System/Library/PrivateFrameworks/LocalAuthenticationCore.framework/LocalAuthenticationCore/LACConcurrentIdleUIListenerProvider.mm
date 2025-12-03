@@ -1,24 +1,24 @@
 @interface LACConcurrentIdleUIListenerProvider
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (LACConcurrentIdleUIListenerProvider)initWithHandler:(id)a3 replyQueue:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (LACConcurrentIdleUIListenerProvider)initWithHandler:(id)handler replyQueue:(id)queue;
 - (LACConcurrentIdleUIXPCHandling)handler;
-- (id)anonymousListenerWithIdentifier:(id)a3;
+- (id)anonymousListenerWithIdentifier:(id)identifier;
 @end
 
 @implementation LACConcurrentIdleUIListenerProvider
 
-- (LACConcurrentIdleUIListenerProvider)initWithHandler:(id)a3 replyQueue:(id)a4
+- (LACConcurrentIdleUIListenerProvider)initWithHandler:(id)handler replyQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = LACConcurrentIdleUIListenerProvider;
   v8 = [(LACConcurrentIdleUIListenerProvider *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_handler, v6);
-    objc_storeStrong(&v9->_replyQueue, a4);
+    objc_storeWeak(&v8->_handler, handlerCopy);
+    objc_storeStrong(&v9->_replyQueue, queue);
   }
 
   return v9;
@@ -31,21 +31,21 @@
   return WeakRetained;
 }
 
-- (id)anonymousListenerWithIdentifier:(id)a3
+- (id)anonymousListenerWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  v6.super.isa = LACConcurrentIdleUIListenerProvider.anonymousListener(withIdentifier:)(v4).super.isa;
+  identifierCopy = identifier;
+  selfCopy = self;
+  v6.super.isa = LACConcurrentIdleUIListenerProvider.anonymousListener(withIdentifier:)(identifierCopy).super.isa;
 
   return v6.super.isa;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  LACConcurrentIdleUIListenerProvider.listener(_:shouldAcceptNewConnection:)(v6, v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  LACConcurrentIdleUIListenerProvider.listener(_:shouldAcceptNewConnection:)(listenerCopy, connectionCopy);
 
   return 1;
 }

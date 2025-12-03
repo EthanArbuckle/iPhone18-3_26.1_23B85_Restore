@@ -1,37 +1,37 @@
 @interface CKMergeableRecordValue
-- (BOOL)addDeltasToSaveFromMergeable:(id)a3 error:(id *)a4;
+- (BOOL)addDeltasToSaveFromMergeable:(id)mergeable error:(id *)error;
 - (BOOL)hasAssetBackedDeltas;
-- (BOOL)mergeIntoMergeable:(id)a3 error:(id *)a4;
-- (BOOL)mergeRecordValue:(id)a3 error:(id *)a4;
-- (CKMergeableRecordValue)initWithCoder:(id)a3;
-- (CKMergeableRecordValue)initWithValueID:(id)a3;
+- (BOOL)mergeIntoMergeable:(id)mergeable error:(id *)error;
+- (BOOL)mergeRecordValue:(id)value error:(id *)error;
+- (CKMergeableRecordValue)initWithCoder:(id)coder;
+- (CKMergeableRecordValue)initWithValueID:(id)d;
 - (CKMultiValueMergeableDeltaRegister)multiValueRegister;
-- (id)CKShortDescriptionRedact:(BOOL)a3;
-- (id)deliverableDeltasWithCurrentStateVector:(id)a3 usingDeliveryRequirements:(unint64_t)a4;
-- (void)CKDescribePropertiesUsing:(id)a3;
-- (void)addServerDeltaMetadatas:(id)a3;
-- (void)addUnmergedDeltas:(id)a3;
-- (void)didMergeDeltas:(id)a3;
-- (void)didSaveDeltas:(id)a3 replacementRequests:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeLastKnownServerTimestampVector:(id)a3;
-- (void)mergeLastKnownServerTimestampVectorFromDeltas:(id)a3;
-- (void)sanityCheckDeltas:(id)a3;
-- (void)setLastKnownServerTimestampVector:(id)a3;
+- (id)CKShortDescriptionRedact:(BOOL)redact;
+- (id)deliverableDeltasWithCurrentStateVector:(id)vector usingDeliveryRequirements:(unint64_t)requirements;
+- (void)CKDescribePropertiesUsing:(id)using;
+- (void)addServerDeltaMetadatas:(id)metadatas;
+- (void)addUnmergedDeltas:(id)deltas;
+- (void)didMergeDeltas:(id)deltas;
+- (void)didSaveDeltas:(id)deltas replacementRequests:(id)requests;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeLastKnownServerTimestampVector:(id)vector;
+- (void)mergeLastKnownServerTimestampVectorFromDeltas:(id)deltas;
+- (void)sanityCheckDeltas:(id)deltas;
+- (void)setLastKnownServerTimestampVector:(id)vector;
 @end
 
 @implementation CKMergeableRecordValue
 
-- (CKMergeableRecordValue)initWithValueID:(id)a3
+- (CKMergeableRecordValue)initWithValueID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v25.receiver = self;
   v25.super_class = CKMergeableRecordValue;
   v6 = [(CKMergeableRecordValue *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_valueID, a3);
+    objc_storeStrong(&v6->_valueID, d);
     v10 = objc_msgSend_set(MEMORY[0x1E695DFD8], v8, v9);
     deltasToSave = v7->_deltasToSave;
     v7->_deltasToSave = v10;
@@ -55,21 +55,21 @@
   return v7;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v5 = [CKMergeableRecordValueDescription alloc];
   v8 = objc_msgSend_initWithMergeableRecordValue_shortDescription_(v5, v6, self, 0);
-  objc_msgSend_CKDescribePropertiesUsing_(v8, v7, v4);
+  objc_msgSend_CKDescribePropertiesUsing_(v8, v7, usingCopy);
 }
 
-- (id)CKShortDescriptionRedact:(BOOL)a3
+- (id)CKShortDescriptionRedact:(BOOL)redact
 {
-  v3 = a3;
+  redactCopy = redact;
   v5 = [CKMergeableRecordValueDescription alloc];
   v7 = objc_msgSend_initWithMergeableRecordValue_shortDescription_(v5, v6, self, 1);
   v10 = v7;
-  if (v3)
+  if (redactCopy)
   {
     objc_msgSend_redactedDescription(v7, v8, v9);
   }
@@ -83,12 +83,12 @@
   return v11;
 }
 
-- (CKMergeableRecordValue)initWithCoder:(id)a3
+- (CKMergeableRecordValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_valueID);
-  v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v5, v6);
+  v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v5, v6);
   valueID = self->_valueID;
   self->_valueID = v8;
 
@@ -96,14 +96,14 @@
   if (v11)
   {
     v12 = NSStringFromSelector(sel_isValueIDKnownToServer);
-    v11->_isValueIDKnownToServer = objc_msgSend_decodeBoolForKey_(v4, v13, v12);
+    v11->_isValueIDKnownToServer = objc_msgSend_decodeBoolForKey_(coderCopy, v13, v12);
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v18 = objc_msgSend_setWithObjects_(v14, v17, v15, v16, 0);
     v19 = NSStringFromSelector(sel_deltasToSave);
-    v21 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v20, v18, v19);
+    v21 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v20, v18, v19);
     v22 = v21;
     if (v21)
     {
@@ -123,7 +123,7 @@
     v27 = objc_opt_class();
     v29 = objc_msgSend_setWithObjects_(v25, v28, v26, v27, 0);
     v30 = NSStringFromSelector(sel_pendingReplacementRequests);
-    v32 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v31, v29, v30);
+    v32 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v31, v29, v30);
     v35 = v32;
     if (v32)
     {
@@ -143,7 +143,7 @@
     v40 = objc_opt_class();
     v42 = objc_msgSend_setWithObjects_(v38, v41, v39, v40, 0);
     v43 = NSStringFromSelector(sel_unmergedDeltas);
-    v45 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v44, v42, v43);
+    v45 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v44, v42, v43);
     v46 = v45;
     if (v45)
     {
@@ -160,25 +160,25 @@
 
     v49 = objc_opt_class();
     v50 = NSStringFromSelector(sel_lastKnownServerTimestampVector);
-    v52 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v51, v49, v50);
+    v52 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v51, v49, v50);
     lastKnownServerTimestampVector = v11->_lastKnownServerTimestampVector;
     v11->_lastKnownServerTimestampVector = v52;
 
     v54 = NSStringFromSelector(sel_encryptMetadataTernary);
-    v11->_encryptMetadataTernary = objc_msgSend_decodeIntegerForKey_(v4, v55, v54);
+    v11->_encryptMetadataTernary = objc_msgSend_decodeIntegerForKey_(coderCopy, v55, v54);
 
     v56 = MEMORY[0x1E695DFD8];
     v57 = objc_opt_class();
     v58 = objc_opt_class();
     v60 = objc_msgSend_setWithObjects_(v56, v59, v57, v58, 0);
     v61 = NSStringFromSelector(sel_serverDeltaMetadatas);
-    v63 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v62, v60, v61);
+    v63 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v62, v60, v61);
     serverDeltaMetadatas = v11->_serverDeltaMetadatas;
     v11->_serverDeltaMetadatas = v63;
 
     v65 = objc_opt_class();
     v66 = NSStringFromSelector(sel_multiValueRegisterState);
-    v68 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v67, v65, v66);
+    v68 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v67, v65, v66);
     multiValueRegisterState = v11->_multiValueRegisterState;
     v11->_multiValueRegisterState = v68;
   }
@@ -186,16 +186,16 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v31 = a3;
+  coderCopy = coder;
   valueID = self->_valueID;
   v5 = NSStringFromSelector(sel_valueID);
-  objc_msgSend_encodeObject_forKey_(v31, v6, valueID, v5);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v6, valueID, v5);
 
   isValueIDKnownToServer = self->_isValueIDKnownToServer;
   v8 = NSStringFromSelector(sel_isValueIDKnownToServer);
-  objc_msgSend_encodeBool_forKey_(v31, v9, isValueIDKnownToServer, v8);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v9, isValueIDKnownToServer, v8);
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -205,35 +205,35 @@
 
   deltasToSave = self->_deltasToSave;
   v11 = NSStringFromSelector(sel_deltasToSave);
-  objc_msgSend_encodeObject_forKey_(v31, v12, deltasToSave, v11);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, deltasToSave, v11);
 
   pendingReplacementRequests = self->_pendingReplacementRequests;
   v14 = NSStringFromSelector(sel_pendingReplacementRequests);
-  objc_msgSend_encodeObject_forKey_(v31, v15, pendingReplacementRequests, v14);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v15, pendingReplacementRequests, v14);
 
   if ((byte_1EA90C538 & 1) == 0)
   {
 LABEL_3:
     unmergedDeltas = self->_unmergedDeltas;
     v17 = NSStringFromSelector(sel_unmergedDeltas);
-    objc_msgSend_encodeObject_forKey_(v31, v18, unmergedDeltas, v17);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v18, unmergedDeltas, v17);
   }
 
   lastKnownServerTimestampVector = self->_lastKnownServerTimestampVector;
   v20 = NSStringFromSelector(sel_lastKnownServerTimestampVector);
-  objc_msgSend_encodeObject_forKey_(v31, v21, lastKnownServerTimestampVector, v20);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v21, lastKnownServerTimestampVector, v20);
 
   encryptMetadataTernary = self->_encryptMetadataTernary;
   v23 = NSStringFromSelector(sel_encryptMetadataTernary);
-  objc_msgSend_encodeInteger_forKey_(v31, v24, encryptMetadataTernary, v23);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v24, encryptMetadataTernary, v23);
 
   serverDeltaMetadatas = self->_serverDeltaMetadatas;
   v26 = NSStringFromSelector(sel_serverDeltaMetadatas);
-  objc_msgSend_encodeObject_forKey_(v31, v27, serverDeltaMetadatas, v26);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v27, serverDeltaMetadatas, v26);
 
   multiValueRegisterState = self->_multiValueRegisterState;
   v29 = NSStringFromSelector(sel_multiValueRegisterState);
-  objc_msgSend_encodeObject_forKey_(v31, v30, multiValueRegisterState, v29);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v30, multiValueRegisterState, v29);
 }
 
 - (CKMultiValueMergeableDeltaRegister)multiValueRegister
@@ -316,11 +316,11 @@ LABEL_3:
   return v19;
 }
 
-- (void)setLastKnownServerTimestampVector:(id)a3
+- (void)setLastKnownServerTimestampVector:(id)vector
 {
-  if (self->_lastKnownServerTimestampVector != a3)
+  if (self->_lastKnownServerTimestampVector != vector)
   {
-    v5 = objc_msgSend_mutableCopy(a3, a2, a3);
+    v5 = objc_msgSend_mutableCopy(vector, a2, vector);
     lastKnownServerTimestampVector = self->_lastKnownServerTimestampVector;
     self->_lastKnownServerTimestampVector = v5;
 
@@ -328,13 +328,13 @@ LABEL_3:
   }
 }
 
-- (BOOL)mergeIntoMergeable:(id)a3 error:(id *)a4
+- (BOOL)mergeIntoMergeable:(id)mergeable error:(id *)error
 {
   v74 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!objc_msgSend_conformsToProtocol_(v6, v7, &unk_1EFA8BBD8))
+  mergeableCopy = mergeable;
+  if (!objc_msgSend_conformsToProtocol_(mergeableCopy, v7, &unk_1EFA8BBD8))
   {
-    if (!objc_msgSend_conformsToProtocol_(v6, v8, &unk_1EFA8BB38))
+    if (!objc_msgSend_conformsToProtocol_(mergeableCopy, v8, &unk_1EFA8BB38))
     {
       v32 = NSStringFromProtocol(&unk_1EFA8BB38);
       v33 = NSStringFromProtocol(&unk_1EFA8BBD8);
@@ -353,11 +353,11 @@ LABEL_3:
     if (os_log_type_enabled(ck_log_facility_distributed_sync, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v71 = self;
+      selfCopy4 = self;
       _os_log_debug_impl(&dword_1883EA000, v14, OS_LOG_TYPE_DEBUG, "Merging record value into non-versioned mergeable %@", buf, 0xCu);
     }
 
-    v15 = v6;
+    v15 = mergeableCopy;
     v18 = objc_msgSend_multiValueRegister(self, v16, v17);
     if (objc_opt_respondsToSelector())
     {
@@ -390,7 +390,7 @@ LABEL_3:
           v63 = v42;
           v66 = objc_msgSend_count(v24, v64, v65);
           *buf = 134218242;
-          v71 = v66;
+          selfCopy4 = v66;
           v72 = 2112;
           v73 = v18;
           _os_log_debug_impl(&dword_1883EA000, v63, OS_LOG_TYPE_DEBUG, "Merged %lu deltas into multi-value register %@", buf, 0x16u);
@@ -432,7 +432,7 @@ LABEL_3:
         if (os_log_type_enabled(ck_log_facility_distributed_sync, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v71 = v29;
+          selfCopy4 = v29;
           _os_log_error_impl(&dword_1883EA000, v58, OS_LOG_TYPE_ERROR, "Error merging multi-value register changes into mergeable: %@", buf, 0xCu);
         }
       }
@@ -448,7 +448,7 @@ LABEL_3:
         if (os_log_type_enabled(ck_log_facility_distributed_sync, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v71 = v18;
+          selfCopy4 = v18;
           v72 = 2112;
           v73 = v41;
           _os_log_error_impl(&dword_1883EA000, v57, OS_LOG_TYPE_ERROR, "Error merging deltas into multi-value register %@: %@", buf, 0x16u);
@@ -475,11 +475,11 @@ LABEL_35:
   if (os_log_type_enabled(ck_log_facility_distributed_sync, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v71 = self;
+    selfCopy4 = self;
     _os_log_debug_impl(&dword_1883EA000, v9, OS_LOG_TYPE_DEBUG, "Merging record value into versioned mergeable %@", buf, 0xCu);
   }
 
-  v10 = v6;
+  v10 = mergeableCopy;
   if (objc_opt_respondsToSelector())
   {
     v13 = objc_msgSend_deltaDeliveryRequirements(v10, v11, v12);
@@ -513,12 +513,12 @@ LABEL_37:
     if (os_log_type_enabled(ck_log_facility_distributed_sync, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v71 = self;
+      selfCopy4 = self;
       _os_log_debug_impl(&dword_1883EA000, v55, OS_LOG_TYPE_DEBUG, "Done merging record value %@", buf, 0xCu);
     }
 
     v56 = 1;
-    if (a4)
+    if (error)
     {
       goto LABEL_60;
     }
@@ -545,18 +545,18 @@ LABEL_55:
   if (os_log_type_enabled(ck_log_facility_distributed_sync, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v71 = self;
+    selfCopy4 = self;
     v72 = 2112;
     v73 = v29;
     _os_log_error_impl(&dword_1883EA000, v59, OS_LOG_TYPE_ERROR, "Error merging record value %@: %@", buf, 0x16u);
   }
 
   v56 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_60:
     v60 = v29;
-    *a4 = v29;
+    *error = v29;
   }
 
 LABEL_61:
@@ -565,11 +565,11 @@ LABEL_61:
   return v56;
 }
 
-- (BOOL)mergeRecordValue:(id)a3 error:(id *)a4
+- (BOOL)mergeRecordValue:(id)value error:(id *)error
 {
   v228 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (self != v6)
+  valueCopy = value;
+  if (self != valueCopy)
   {
     if (ck_log_initialization_predicate != -1)
     {
@@ -580,9 +580,9 @@ LABEL_61:
     if (os_log_type_enabled(ck_log_facility_distributed_sync, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v219 = v6;
+      selfCopy2 = valueCopy;
       v220 = 2112;
-      v221 = self;
+      selfCopy = self;
       _os_log_debug_impl(&dword_1883EA000, v7, OS_LOG_TYPE_DEBUG, "Merging record value %@ into %@", buf, 0x16u);
     }
 
@@ -591,7 +591,7 @@ LABEL_61:
     {
       v13 = v10;
       v14 = objc_msgSend_valueID(self, v11, v12);
-      v17 = objc_msgSend_valueID(v6, v15, v16);
+      v17 = objc_msgSend_valueID(valueCopy, v15, v16);
       isEqual = objc_msgSend_isEqual_(v14, v18, v17);
 
       if ((isEqual & 1) == 0)
@@ -608,15 +608,15 @@ LABEL_61:
           _os_log_error_impl(&dword_1883EA000, v58, OS_LOG_TYPE_ERROR, "Can't merge a mergeable with a different value ID.", buf, 2u);
         }
 
-        v61 = objc_msgSend_valueID(v6, v59, v60);
+        v61 = objc_msgSend_valueID(valueCopy, v59, v60);
 
         if (v61)
         {
           v64 = objc_msgSend_valueID(self, v62, v63);
-          v67 = objc_msgSend_valueID(v6, v65, v66);
+          v67 = objc_msgSend_valueID(valueCopy, v65, v66);
           v69 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v68, @"CKErrorDomain", 150, @"Other mergeable value ID doesn't match this value. self=%@ other=%@", v64, v67);
 
-          if (!a4)
+          if (!error)
           {
             goto LABEL_89;
           }
@@ -624,8 +624,8 @@ LABEL_61:
 
         else
         {
-          v69 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v62, @"CKErrorDomain", 12, @"Tried to merge value without an ID into a value that has an ID. self=%@ other=%@", self, v6);
-          if (!a4)
+          v69 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v62, @"CKErrorDomain", 12, @"Tried to merge value without an ID into a value that has an ID. self=%@ other=%@", self, valueCopy);
+          if (!error)
           {
             goto LABEL_89;
           }
@@ -648,17 +648,17 @@ LABEL_61:
       if (os_log_type_enabled(ck_log_facility_distributed_sync, OS_LOG_TYPE_DEBUG))
       {
         v199 = v23;
-        v202 = objc_msgSend_valueID(v6, v200, v201);
+        v202 = objc_msgSend_valueID(valueCopy, v200, v201);
         *buf = 138412290;
-        v219 = v202;
+        selfCopy2 = v202;
         _os_log_debug_impl(&dword_1883EA000, v199, OS_LOG_TYPE_DEBUG, "Assigning value ID from other value %@", buf, 0xCu);
       }
 
-      v26 = objc_msgSend_valueID(v6, v24, v25);
+      v26 = objc_msgSend_valueID(valueCopy, v24, v25);
       objc_msgSend_setValueID_(self, v27, v26);
     }
 
-    if ((objc_msgSend_isValueIDKnownToServer(self, v21, v22) & 1) == 0 && objc_msgSend_isValueIDKnownToServer(v6, v28, v29))
+    if ((objc_msgSend_isValueIDKnownToServer(self, v21, v22) & 1) == 0 && objc_msgSend_isValueIDKnownToServer(valueCopy, v28, v29))
     {
       if (ck_log_initialization_predicate != -1)
       {
@@ -675,18 +675,18 @@ LABEL_61:
       objc_msgSend_setIsValueIDKnownToServer_(self, v31, 1);
     }
 
-    v32 = objc_msgSend_unmergedDeltas(v6, v28, v29);
+    v32 = objc_msgSend_unmergedDeltas(valueCopy, v28, v29);
     v35 = objc_msgSend_count(v32, v33, v34);
 
     if (v35)
     {
       v38 = objc_msgSend_unmergedDeltas(self, v36, v37);
-      v41 = objc_msgSend_unmergedDeltas(v6, v39, v40);
+      v41 = objc_msgSend_unmergedDeltas(valueCopy, v39, v40);
       v43 = objc_msgSend_setByAddingObjectsFromSet_(v38, v42, v41);
       objc_msgSend_setUnmergedDeltas_(self, v44, v43);
     }
 
-    v45 = objc_msgSend_lastKnownServerTimestampVector(v6, v36, v37);
+    v45 = objc_msgSend_lastKnownServerTimestampVector(valueCopy, v36, v37);
 
     if (v45)
     {
@@ -695,30 +695,30 @@ LABEL_61:
       if (v48)
       {
         v51 = objc_msgSend_lastKnownServerTimestampVector(self, v49, v50);
-        v54 = objc_msgSend_lastKnownServerTimestampVector(v6, v52, v53);
+        v54 = objc_msgSend_lastKnownServerTimestampVector(valueCopy, v52, v53);
         objc_msgSend_unionStateVector_(v51, v55, v54);
       }
 
       else
       {
-        v51 = objc_msgSend_lastKnownServerTimestampVector(v6, v49, v50);
+        v51 = objc_msgSend_lastKnownServerTimestampVector(valueCopy, v49, v50);
         objc_msgSend_setLastKnownServerTimestampVector_(self, v70, v51);
       }
     }
 
-    v208 = a4;
-    v71 = objc_msgSend_serverDeltaMetadatas(v6, v46, v47);
+    errorCopy = error;
+    v71 = objc_msgSend_serverDeltaMetadatas(valueCopy, v46, v47);
     v74 = objc_msgSend_count(v71, v72, v73);
 
     if (v74)
     {
       v77 = objc_msgSend_serverDeltaMetadatas(self, v75, v76);
-      v80 = objc_msgSend_serverDeltaMetadatas(v6, v78, v79);
+      v80 = objc_msgSend_serverDeltaMetadatas(valueCopy, v78, v79);
       v82 = objc_msgSend_setByAddingObjectsFromSet_(v77, v81, v80);
       objc_msgSend_setServerDeltaMetadatas_(self, v83, v82);
     }
 
-    v209 = v6;
+    v209 = valueCopy;
     v84 = objc_opt_new();
     v214 = 0u;
     v215 = 0u;
@@ -799,7 +799,7 @@ LABEL_61:
     }
 
     v129 = objc_msgSend_multiValueRegisterState(self, v99, v100);
-    v6 = v209;
+    valueCopy = v209;
     if (v129)
     {
       v132 = v129;
@@ -826,8 +826,8 @@ LABEL_61:
 LABEL_87:
 
             v69 = 0;
-            a4 = v208;
-            if (!v208)
+            error = errorCopy;
+            if (!errorCopy)
             {
 LABEL_89:
               v57 = v69 == 0;
@@ -837,7 +837,7 @@ LABEL_89:
 
 LABEL_88:
             v186 = v69;
-            *a4 = v69;
+            *error = v69;
             goto LABEL_89;
           }
 
@@ -851,9 +851,9 @@ LABEL_88:
           v156 = objc_opt_class();
           v157 = NSStringFromClass(v156);
           *buf = 138413058;
-          v219 = v151;
+          selfCopy2 = v151;
           v220 = 2112;
-          v221 = v153;
+          selfCopy = v153;
           v222 = 2112;
           v223 = v155;
           v224 = 2112;
@@ -896,9 +896,9 @@ LABEL_86:
       v166 = objc_msgSend_vector(v149, v164, v165);
       v169 = objc_msgSend_CKVeryShortDescription(self, v167, v168);
       *buf = 138412546;
-      v219 = v166;
+      selfCopy2 = v166;
       v220 = 2112;
-      v221 = v169;
+      selfCopy = v169;
       _os_log_debug_impl(&dword_1883EA000, v163, OS_LOG_TYPE_DEBUG, "Loading multi-value register state with vector %@ for mergeable record value %@", buf, 0x16u);
     }
 
@@ -915,7 +915,7 @@ LABEL_86:
         v203 = v170;
         v206 = objc_msgSend_CKVeryShortDescription(self, v204, v205);
         *buf = 138412290;
-        v219 = v206;
+        selfCopy2 = v206;
         _os_log_debug_impl(&dword_1883EA000, v203, OS_LOG_TYPE_DEBUG, "Creating multi-value register state for mergeable record value %@", buf, 0xCu);
       }
 
@@ -937,9 +937,9 @@ LABEL_83:
       v195 = objc_msgSend_vector(v192, v193, v194);
       v198 = objc_msgSend_vector(v149, v196, v197);
       *buf = 138412546;
-      v219 = v195;
+      selfCopy2 = v195;
       v220 = 2112;
-      v221 = v198;
+      selfCopy = v198;
       _os_log_debug_impl(&dword_1883EA000, v189, OS_LOG_TYPE_DEBUG, "Merging remote multi-value register with vector %@ into local multi-value register with vector %@ during mergeable record value merge", buf, 0x16u);
     }
 
@@ -961,7 +961,7 @@ LABEL_83:
   if (os_log_type_enabled(ck_log_facility_distributed_sync, OS_LOG_TYPE_FAULT))
   {
     *buf = 138412290;
-    v219 = self;
+    selfCopy2 = self;
     _os_log_fault_impl(&dword_1883EA000, v56, OS_LOG_TYPE_FAULT, "BUG IN CLIENT OF CLOUDKIT: Trying to merge CKMergeableRecordValue into itself: %@", buf, 0xCu);
   }
 
@@ -972,10 +972,10 @@ LABEL_90:
   return v57;
 }
 
-- (id)deliverableDeltasWithCurrentStateVector:(id)a3 usingDeliveryRequirements:(unint64_t)a4
+- (id)deliverableDeltasWithCurrentStateVector:(id)vector usingDeliveryRequirements:(unint64_t)requirements
 {
   v83 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  vectorCopy = vector;
   v9 = objc_msgSend_strongToStrongObjectsMapTable(MEMORY[0x1E696AD18], v7, v8);
   v70 = 0u;
   v71 = 0u;
@@ -1010,7 +1010,7 @@ LABEL_90:
   v23 = MEMORY[0x1E695DFD8];
   v24 = NSAllMapTableKeys(v9);
   v26 = objc_msgSend_setWithArray_(v23, v25, v24);
-  v28 = objc_msgSend_deliverableDeltaMetadatasInDeltaSet_withMergeableValueCurrentStateVector_deliveryRequirements_(CKMergeableDeltaMetadata, v27, v26, v6, a4);
+  v28 = objc_msgSend_deliverableDeltaMetadatasInDeltaSet_withMergeableValueCurrentStateVector_deliveryRequirements_(CKMergeableDeltaMetadata, v27, v26, vectorCopy, requirements);
 
   v68[0] = MEMORY[0x1E69E9820];
   v68[1] = 3221225472;
@@ -1037,7 +1037,7 @@ LABEL_90:
     v76 = 2048;
     v77 = v51;
     v78 = 2048;
-    v79 = a4;
+    requirementsCopy = requirements;
     v80 = 2112;
     v81 = v54;
     v55 = v54;
@@ -1068,7 +1068,7 @@ LABEL_90:
       v76 = 2112;
       v77 = v64;
       v78 = 2112;
-      v79 = v6;
+      requirementsCopy = vectorCopy;
       _os_log_debug_impl(&dword_1883EA000, v56, OS_LOG_TYPE_DEBUG, "Combined delta directory: %@, combined deliverable deltas: %@, local state vector: %@", buf, 0x20u);
     }
   }
@@ -1078,10 +1078,10 @@ LABEL_90:
   return v31;
 }
 
-- (void)addUnmergedDeltas:(id)a3
+- (void)addUnmergedDeltas:(id)deltas
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deltasCopy = deltas;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -1092,26 +1092,26 @@ LABEL_90:
   {
     v18 = v5;
     v21 = 134218242;
-    v22 = objc_msgSend_count(v4, v19, v20);
+    v22 = objc_msgSend_count(deltasCopy, v19, v20);
     v23 = 2112;
-    v24 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_1883EA000, v18, OS_LOG_TYPE_DEBUG, "Adding %ld unmerged deltas to %@", &v21, 0x16u);
   }
 
   v8 = objc_msgSend_unmergedDeltas(self, v6, v7);
   v11 = objc_msgSend_mutableCopy(v8, v9, v10);
 
-  objc_msgSend_addObjectsFromArray_(v11, v12, v4);
+  objc_msgSend_addObjectsFromArray_(v11, v12, deltasCopy);
   v15 = objc_msgSend_copy(v11, v13, v14);
   objc_msgSend_setUnmergedDeltas_(self, v16, v15);
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didMergeDeltas:(id)a3
+- (void)didMergeDeltas:(id)deltas
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deltasCopy = deltas;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -1121,7 +1121,7 @@ LABEL_90:
   if (os_log_type_enabled(ck_log_facility_distributed_sync, OS_LOG_TYPE_DEBUG))
   {
     v37 = v5;
-    v40 = objc_msgSend_count(v4, v38, v39);
+    v40 = objc_msgSend_count(deltasCopy, v38, v39);
     v43 = objc_msgSend_CKVeryShortDescription(self, v41, v42);
     *buf = 134218242;
     v52 = v40;
@@ -1130,11 +1130,11 @@ LABEL_90:
     _os_log_debug_impl(&dword_1883EA000, v37, OS_LOG_TYPE_DEBUG, "Did merge %ld deltas into %@", buf, 0x16u);
   }
 
-  objc_msgSend_sanityCheckDeltas_(self, v6, v4);
+  objc_msgSend_sanityCheckDeltas_(self, v6, deltasCopy);
   v9 = objc_msgSend_unmergedDeltas(self, v7, v8);
   v12 = objc_msgSend_mutableCopy(v9, v10, v11);
 
-  v14 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFD8], v13, v4);
+  v14 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFD8], v13, deltasCopy);
   objc_msgSend_minusSet_(v12, v15, v14);
 
   v44 = v12;
@@ -1146,7 +1146,7 @@ LABEL_90:
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v23 = v4;
+  v23 = deltasCopy;
   v25 = objc_msgSend_countByEnumeratingWithState_objects_count_(v23, v24, &v46, v50, 16);
   if (v25)
   {
@@ -1198,14 +1198,14 @@ LABEL_90:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didSaveDeltas:(id)a3 replacementRequests:(id)a4
+- (void)didSaveDeltas:(id)deltas replacementRequests:(id)requests
 {
   v119 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  deltasCopy = deltas;
+  requestsCopy = requests;
   v8 = objc_opt_new();
-  objc_msgSend_addObjectsFromArray_(v8, v9, v6);
-  v11 = objc_msgSend_CKFlatMap_(v7, v10, &unk_1EFA2EC68);
+  objc_msgSend_addObjectsFromArray_(v8, v9, deltasCopy);
+  v11 = objc_msgSend_CKFlatMap_(requestsCopy, v10, &unk_1EFA2EC68);
   objc_msgSend_addObjectsFromArray_(v8, v12, v11);
 
   v13 = MEMORY[0x1E695DFA8];
@@ -1221,12 +1221,12 @@ LABEL_90:
   if (os_log_type_enabled(ck_log_facility_distributed_sync, OS_LOG_TYPE_DEBUG))
   {
     v91 = v18;
-    v94 = objc_msgSend_count(v6, v92, v93);
+    v94 = objc_msgSend_count(deltasCopy, v92, v93);
     v97 = objc_msgSend_count(v8, v95, v96);
     *buf = 134218240;
     v116 = v94;
     v117 = 2048;
-    v118 = v97 - objc_msgSend_count(v6, v98, v99);
+    v118 = v97 - objc_msgSend_count(deltasCopy, v98, v99);
     _os_log_debug_impl(&dword_1883EA000, v91, OS_LOG_TYPE_DEBUG, "Did save %ld deltas and %ld replacement deltas to server", buf, 0x16u);
   }
 
@@ -1236,7 +1236,7 @@ LABEL_90:
   v26 = objc_msgSend_mutableCopy(v23, v24, v25);
 
   objc_msgSend_unionSet_(v26, v27, v17);
-  if (objc_msgSend_count(v7, v28, v29))
+  if (objc_msgSend_count(requestsCopy, v28, v29))
   {
     if (ck_log_initialization_predicate != -1)
     {
@@ -1244,12 +1244,12 @@ LABEL_90:
     }
 
     v102 = v8;
-    v104 = v6;
+    v104 = deltasCopy;
     v32 = ck_log_facility_distributed_sync;
     if (os_log_type_enabled(ck_log_facility_distributed_sync, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v116 = v7;
+      v116 = requestsCopy;
       _os_log_debug_impl(&dword_1883EA000, v32, OS_LOG_TYPE_DEBUG, "Will remove server metadatas for replacement requests: %@", buf, 0xCu);
     }
 
@@ -1259,8 +1259,8 @@ LABEL_90:
     v110 = 0u;
     v111 = 0u;
     v112 = 0u;
-    v103 = v7;
-    v34 = v7;
+    v103 = requestsCopy;
+    v34 = requestsCopy;
     v36 = objc_msgSend_countByEnumeratingWithState_objects_count_(v34, v35, &v109, v114, 16);
     if (v36)
     {
@@ -1340,8 +1340,8 @@ LABEL_90:
 
     objc_msgSend_minusSet_(v100, v60, v44);
 
-    v7 = v103;
-    v6 = v104;
+    requestsCopy = v103;
+    deltasCopy = v104;
     v8 = v102;
   }
 
@@ -1351,7 +1351,7 @@ LABEL_90:
   v65 = objc_msgSend_deltasToSave(self, v63, v64);
   v68 = objc_msgSend_mutableCopy(v65, v66, v67);
 
-  v70 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFD8], v69, v6);
+  v70 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFD8], v69, deltasCopy);
   objc_msgSend_minusSet_(v68, v71, v70);
 
   v74 = objc_msgSend_copy(v68, v72, v73);
@@ -1361,7 +1361,7 @@ LABEL_90:
   v79 = objc_msgSend_pendingReplacementRequests(self, v77, v78);
   v81 = objc_msgSend_setWithArray_(v76, v80, v79);
 
-  v83 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFD8], v82, v7);
+  v83 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFD8], v82, requestsCopy);
   objc_msgSend_minusSet_(v81, v84, v83);
 
   v87 = objc_msgSend_allObjects(v81, v85, v86);
@@ -1371,14 +1371,14 @@ LABEL_90:
   v90 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sanityCheckDeltas:(id)a3
+- (void)sanityCheckDeltas:(id)deltas
 {
   v83 = *MEMORY[0x1E69E9840];
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  obj = a3;
+  obj = deltas;
   v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v4, &v78, v82, 16);
   if (v5)
   {
@@ -1482,19 +1482,19 @@ LABEL_15:
   v73 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addServerDeltaMetadatas:(id)a3
+- (void)addServerDeltaMetadatas:(id)metadatas
 {
-  v4 = a3;
+  metadatasCopy = metadatas;
   v10 = objc_msgSend_serverDeltaMetadatas(self, v5, v6);
-  v8 = objc_msgSend_setByAddingObjectsFromArray_(v10, v7, v4);
+  v8 = objc_msgSend_setByAddingObjectsFromArray_(v10, v7, metadatasCopy);
 
   objc_msgSend_setServerDeltaMetadatas_(self, v9, v8);
 }
 
-- (void)mergeLastKnownServerTimestampVector:(id)a3
+- (void)mergeLastKnownServerTimestampVector:(id)vector
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  vectorCopy = vector;
   v7 = objc_msgSend_lastKnownServerTimestampVector(self, v5, v6);
 
   if (!v7)
@@ -1503,7 +1503,7 @@ LABEL_15:
     objc_msgSend_setLastKnownServerTimestampVector_(self, v11, v10);
   }
 
-  if (objc_msgSend_timestampCount(v4, v8, v9))
+  if (objc_msgSend_timestampCount(vectorCopy, v8, v9))
   {
     if (ck_log_initialization_predicate != -1)
     {
@@ -1516,23 +1516,23 @@ LABEL_15:
       v18 = v12;
       v20 = objc_msgSend_CKShortDescriptionRedact_(self, v19, 0);
       v21 = 138412546;
-      v22 = v4;
+      v22 = vectorCopy;
       v23 = 2112;
       v24 = v20;
       _os_log_debug_impl(&dword_1883EA000, v18, OS_LOG_TYPE_DEBUG, "Merging last known timestamp %@ into %@", &v21, 0x16u);
     }
 
     v15 = objc_msgSend_lastKnownServerTimestampVector(self, v13, v14);
-    objc_msgSend_unionStateVector_(v15, v16, v4);
+    objc_msgSend_unionStateVector_(v15, v16, vectorCopy);
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)mergeLastKnownServerTimestampVectorFromDeltas:(id)a3
+- (void)mergeLastKnownServerTimestampVectorFromDeltas:(id)deltas
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deltasCopy = deltas;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -1543,9 +1543,9 @@ LABEL_15:
   {
     v34 = v5;
     *buf = 134218242;
-    v43 = objc_msgSend_count(v4, v35, v36);
+    v43 = objc_msgSend_count(deltasCopy, v35, v36);
     v44 = 2112;
-    v45 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_1883EA000, v34, OS_LOG_TYPE_DEBUG, "Merging %lu deltas into %@", buf, 0x16u);
   }
 
@@ -1553,7 +1553,7 @@ LABEL_15:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = v4;
+  v6 = deltasCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v37, v41, 16);
   if (v8)
   {
@@ -1589,7 +1589,7 @@ LABEL_15:
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)addDeltasToSaveFromMergeable:(id)a3 error:(id *)a4
+- (BOOL)addDeltasToSaveFromMergeable:(id)mergeable error:(id *)error
 {
   v391 = *MEMORY[0x1E69E9840];
   v373 = 0;
@@ -1602,41 +1602,41 @@ LABEL_15:
   v370 = &v369;
   v371 = 0x2020000000;
   v372 = 1;
-  v334 = a3;
-  if (objc_msgSend_conformsToProtocol_(v334, v6, &unk_1EFA8BBD8))
+  mergeableCopy = mergeable;
+  if (objc_msgSend_conformsToProtocol_(mergeableCopy, v6, &unk_1EFA8BBD8))
   {
-    v9 = v334;
-    v11 = v334;
+    v9 = mergeableCopy;
+    v11 = mergeableCopy;
   }
 
   else
   {
     v11 = objc_msgSend_multiValueRegister(self, v7, v8);
-    v9 = v334;
+    v9 = mergeableCopy;
   }
 
   v12 = objc_msgSend_conformsToProtocol_(v9, v10, &unk_1EFA8BBD8);
   if (!v11)
   {
-    if (a4)
+    if (error)
     {
       v28 = objc_opt_class();
       v29 = NSStringFromClass(v28);
-      *a4 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v30, @"CKErrorDomain", 12, @"Tried to save a %@ without a mergeable: %@", v29, self);
+      *error = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v30, @"CKErrorDomain", 12, @"Tried to save a %@ without a mergeable: %@", v29, self);
     }
 
     goto LABEL_166;
   }
 
   v13 = v12;
-  v331 = a4;
+  errorCopy = error;
   if ((v12 & 1) == 0)
   {
     v14 = v11;
     v15 = v11;
     v16 = v374 + 5;
     obj = v374[5];
-    v18 = objc_msgSend_mergeableDeltasForMetadata_error_(v334, v17, 0, &obj);
+    v18 = objc_msgSend_mergeableDeltasForMetadata_error_(mergeableCopy, v17, 0, &obj);
     objc_storeStrong(v16, obj);
     if (v18)
     {
@@ -1697,7 +1697,7 @@ LABEL_15:
           if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v384 = v15;
+            selfCopy4 = v15;
             _os_log_debug_impl(&dword_1883EA000, v43, OS_LOG_TYPE_DEBUG, "Generated mergeable deltas for multi-value register %@", buf, 0xCu);
           }
 
@@ -1715,7 +1715,7 @@ LABEL_15:
           if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v384 = v15;
+            selfCopy4 = v15;
             _os_log_debug_impl(&dword_1883EA000, v50, OS_LOG_TYPE_DEBUG, "Populated multi-value register %@", buf, 0xCu);
           }
 
@@ -1749,7 +1749,7 @@ LABEL_32:
     {
       v304 = v374[5];
       *buf = 138412546;
-      v384 = v15;
+      selfCopy4 = v15;
       v385 = 2112;
       v386 = v304;
       _os_log_error_impl(&dword_1883EA000, v24, OS_LOG_TYPE_ERROR, "Failed to generate mergeable deltas for multi-value register %@: %@", buf, 0x16u);
@@ -1758,7 +1758,7 @@ LABEL_32:
 LABEL_37:
 
     v11 = v14;
-    a4 = v331;
+    error = errorCopy;
   }
 
   if (v370[3])
@@ -1774,7 +1774,7 @@ LABEL_37:
     if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v384 = self;
+      selfCopy4 = self;
       _os_log_debug_impl(&dword_1883EA000, v57, OS_LOG_TYPE_DEBUG, "Generating deltas for mergeable %@", buf, 0xCu);
     }
 
@@ -1853,7 +1853,7 @@ LABEL_37:
       v315 = objc_msgSend_valueID(self, v108, v109);
       v318 = objc_msgSend_clockVector(v332, v316, v317);
       *buf = 138412802;
-      v384 = v315;
+      selfCopy4 = v315;
       v385 = 2112;
       v386 = v318;
       v387 = 2112;
@@ -1863,7 +1863,7 @@ LABEL_37:
 
     if (objc_msgSend_enabledFaultErrors(self, v110, v111))
     {
-      if (!v331)
+      if (!errorCopy)
       {
         v63 = 0;
 LABEL_178:
@@ -1950,7 +1950,7 @@ LABEL_69:
               v320 = objc_msgSend_valueID(self, v158, v159);
               v321 = v374[5];
               *buf = 138412546;
-              v384 = v320;
+              selfCopy4 = v320;
               v385 = 2112;
               v386 = v321;
               _os_log_error_impl(&dword_1883EA000, v157, OS_LOG_TYPE_ERROR, "Error calculating replacement deltas for %@: %@", buf, 0x16u);
@@ -1974,7 +1974,7 @@ LABEL_69:
             if (os_log_type_enabled(v167, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
-              v384 = v333;
+              selfCopy4 = v333;
               _os_log_debug_impl(&dword_1883EA000, v167, OS_LOG_TYPE_DEBUG, "Found deltas to replace: %@", buf, 0xCu);
             }
 
@@ -1985,7 +1985,7 @@ LABEL_69:
             v352[3] = &unk_1E70BDDD8;
             v353 = v333;
             v354 = v327;
-            v355 = self;
+            selfCopy2 = self;
             v357 = &v373;
             v358 = &v369;
             v356 = v325;
@@ -2007,7 +2007,7 @@ LABEL_69:
             {
               v322 = objc_msgSend_updatedNextDeltaMetadata(v333, v175, v176);
               *buf = 138412290;
-              v384 = v322;
+              selfCopy4 = v322;
               _os_log_debug_impl(&dword_1883EA000, v174, OS_LOG_TYPE_DEBUG, "Will use updated delta metadata: %@", buf, 0xCu);
             }
 
@@ -2034,7 +2034,7 @@ LABEL_69:
             if (os_log_type_enabled(ck_log_facility_distributed_sync, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
-              v384 = self;
+              selfCopy4 = self;
               _os_log_debug_impl(&dword_1883EA000, v302, OS_LOG_TYPE_DEBUG, "No new data to save for mergeable %@", buf, 0xCu);
             }
 
@@ -2051,7 +2051,7 @@ LABEL_69:
           if (os_log_type_enabled(v188, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v384 = v328;
+            selfCopy4 = v328;
             _os_log_debug_impl(&dword_1883EA000, v188, OS_LOG_TYPE_DEBUG, "Will generate deltas for metadata: %@", buf, 0xCu);
           }
 
@@ -2253,7 +2253,7 @@ LABEL_69:
               {
                 v323 = objc_msgSend_deltasToSave(self, v277, v278);
                 *buf = 138412546;
-                v384 = self;
+                selfCopy4 = self;
                 v385 = 2112;
                 v386 = v323;
                 _os_log_debug_impl(&dword_1883EA000, v276, OS_LOG_TYPE_DEBUG, "Generated deltas for mergeable %@: %@", buf, 0x16u);
@@ -2279,9 +2279,9 @@ LABEL_169:
           if (!os_log_type_enabled(ck_log_facility_distributed_sync, OS_LOG_TYPE_ERROR))
           {
 LABEL_173:
-            if (v331)
+            if (errorCopy)
             {
-              *v331 = v374[5];
+              *errorCopy = v374[5];
             }
 
             v63 = *(v370 + 24);
@@ -2291,7 +2291,7 @@ LABEL_173:
 
           v319 = v374[5];
           *buf = 138412290;
-          v384 = v319;
+          selfCopy4 = v319;
           v281 = "Error generating deltas: %@";
         }
 
@@ -2310,7 +2310,7 @@ LABEL_173:
 
           v280 = v374[5];
           *buf = 138412290;
-          v384 = v280;
+          selfCopy4 = v280;
           v281 = "Not generating deltas due to previous error: %@";
         }
 
@@ -2336,13 +2336,13 @@ LABEL_173:
       if (os_log_type_enabled(ck_log_facility_distributed_sync, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v384 = v332;
+        selfCopy4 = v332;
         v385 = 2112;
         v386 = v330;
         _os_log_error_impl(&dword_1883EA000, v289, OS_LOG_TYPE_ERROR, "Mergeable has a new removal without a corresponding change to the version vector, with current vector %@, server vector %@", buf, 0x16u);
       }
 
-      if (!v331)
+      if (!errorCopy)
       {
         v63 = 0;
 LABEL_177:
@@ -2356,7 +2356,7 @@ LABEL_177:
     }
 
     v63 = 0;
-    *v331 = v294;
+    *errorCopy = v294;
 LABEL_176:
 
     goto LABEL_177;
@@ -2372,9 +2372,9 @@ LABEL_176:
   {
     v303 = v374[5];
     *buf = 138412290;
-    v384 = v303;
+    selfCopy4 = v303;
     _os_log_error_impl(&dword_1883EA000, v62, OS_LOG_TYPE_ERROR, "Error preparing mergeable for upload: %@", buf, 0xCu);
-    if (a4)
+    if (error)
     {
       goto LABEL_49;
     }
@@ -2384,14 +2384,14 @@ LABEL_166:
     goto LABEL_179;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_166;
   }
 
 LABEL_49:
   v63 = 0;
-  *a4 = v374[5];
+  *error = v374[5];
 LABEL_179:
 
   _Block_object_dispose(&v369, 8);

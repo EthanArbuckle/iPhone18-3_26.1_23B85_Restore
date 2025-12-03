@@ -7,10 +7,10 @@
 - (id)bm_userInfo
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [a1 userInfo];
-  v3 = [a1 userInfo];
+  userInfo = [self userInfo];
+  userInfo2 = [self userInfo];
 
-  if (v3)
+  if (userInfo2)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -41,7 +41,7 @@
         _os_log_impl(&dword_1AC15D000, v4, v5, "NSXPCConnection userInfo is of class %@", &buf, 0xCu);
       }
 
-      v2 = 0;
+      userInfo = 0;
     }
   }
 
@@ -49,13 +49,13 @@
   {
     v8 = objc_opt_new();
 
-    [a1 setUserInfo:v8];
-    v2 = v8;
+    [self setUserInfo:v8];
+    userInfo = v8;
   }
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return userInfo;
 }
 
 @end

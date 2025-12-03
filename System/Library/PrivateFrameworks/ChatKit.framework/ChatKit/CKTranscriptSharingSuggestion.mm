@@ -1,6 +1,6 @@
 @interface CKTranscriptSharingSuggestion
-+ (id)bannerWithState:(int64_t)a3;
-- (CKTranscriptSharingSuggestion)initWithState:(int64_t)a3;
++ (id)bannerWithState:(int64_t)state;
+- (CKTranscriptSharingSuggestion)initWithState:(int64_t)state;
 - (CKTranscriptSharingSuggestionDelegate)delegate;
 - (SGSuggestionDelegate)suggestionDelegate;
 - (id)suggestionCategoryId;
@@ -12,21 +12,21 @@
 
 @implementation CKTranscriptSharingSuggestion
 
-+ (id)bannerWithState:(int64_t)a3
++ (id)bannerWithState:(int64_t)state
 {
-  v3 = [[CKTranscriptSharingSuggestion alloc] initWithState:a3];
+  v3 = [[CKTranscriptSharingSuggestion alloc] initWithState:state];
 
   return v3;
 }
 
-- (CKTranscriptSharingSuggestion)initWithState:(int64_t)a3
+- (CKTranscriptSharingSuggestion)initWithState:(int64_t)state
 {
   v5.receiver = self;
   v5.super_class = CKTranscriptSharingSuggestion;
   result = [(CKTranscriptSharingSuggestion *)&v5 init];
   if (result)
   {
-    result->_state = a3;
+    result->_state = state;
   }
 
   return result;
@@ -75,7 +75,7 @@ void __56__CKTranscriptSharingSuggestion_suggestionPrimaryAction__block_invoke(u
   {
     v9[9] = v2;
     v10 = v3;
-    v5 = [(CKTranscriptSharingSuggestion *)self delegate];
+    delegate = [(CKTranscriptSharingSuggestion *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
@@ -112,8 +112,8 @@ void __56__CKTranscriptSharingSuggestion_suggestionDismissAction__block_invoke(u
 {
   v2 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"person.crop.circle.fill"];
   v3 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v2];
-  v4 = [MEMORY[0x1E69DC888] systemGray2Color];
-  [v3 setTintColor:v4];
+  systemGray2Color = [MEMORY[0x1E69DC888] systemGray2Color];
+  [v3 setTintColor:systemGray2Color];
 
   return v3;
 }

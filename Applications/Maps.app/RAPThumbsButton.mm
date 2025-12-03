@@ -1,19 +1,19 @@
 @interface RAPThumbsButton
-+ (id)buttonWithType:(int64_t)a3;
++ (id)buttonWithType:(int64_t)type;
 - (void)_updateColors;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation RAPThumbsButton
 
-+ (id)buttonWithType:(int64_t)a3
++ (id)buttonWithType:(int64_t)type
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___RAPThumbsButton;
-  v3 = objc_msgSendSuper2(&v5, "buttonWithType:", a3);
+  v3 = objc_msgSendSuper2(&v5, "buttonWithType:", type);
   [v3 _updateColors];
 
   return v3;
@@ -23,9 +23,9 @@
 {
   if (([(RAPThumbsButton *)self isHighlighted]& 1) != 0 || ([(RAPThumbsButton *)self isSelected]& 1) != 0)
   {
-    v3 = [(RAPThumbsButton *)self theme];
-    v4 = [v3 keyColor];
-    [(RAPThumbsButton *)self setBackgroundColor:v4];
+    theme = [(RAPThumbsButton *)self theme];
+    keyColor = [theme keyColor];
+    [(RAPThumbsButton *)self setBackgroundColor:keyColor];
 
     v5 = +[UIColor whiteColor];
   }
@@ -39,39 +39,39 @@
   }
 
   v8 = v5;
-  v7 = [(RAPThumbsButton *)self imageView];
-  [v7 setTintColor:v8];
+  imageView = [(RAPThumbsButton *)self imageView];
+  [imageView setTintColor:v8];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = RAPThumbsButton;
-  v4 = a3;
-  [(RAPThumbsButton *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(RAPThumbsButton *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(RAPThumbsButton *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(RAPThumbsButton *)self _updateColors];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = RAPThumbsButton;
-  [(RAPThumbsButton *)&v4 setHighlighted:a3];
+  [(RAPThumbsButton *)&v4 setHighlighted:highlighted];
   [(RAPThumbsButton *)self _updateColors];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = RAPThumbsButton;
-  [(RAPThumbsButton *)&v4 setSelected:a3];
+  [(RAPThumbsButton *)&v4 setSelected:selected];
   [(RAPThumbsButton *)self _updateColors];
 }
 

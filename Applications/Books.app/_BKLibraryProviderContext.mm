@@ -1,7 +1,7 @@
 @interface _BKLibraryProviderContext
 + (id)sharedInstance;
 - (id)initSingleton;
-- (void)_mocDidSaveNotification:(id)a3;
+- (void)_mocDidSaveNotification:(id)notification;
 - (void)dealloc;
 @end
 
@@ -32,8 +32,8 @@
     v2->_moc = v4;
 
     v6 = v2->_moc;
-    v7 = [v3 persistentStoreCoordinator];
-    [(NSManagedObjectContext *)v6 setPersistentStoreCoordinator:v7];
+    persistentStoreCoordinator = [v3 persistentStoreCoordinator];
+    [(NSManagedObjectContext *)v6 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
     [(NSManagedObjectContext *)v2->_moc setUndoManager:0];
     v8 = +[NSNotificationCenter defaultCenter];
@@ -53,25 +53,25 @@
   [(_BKLibraryProviderContext *)&v4 dealloc];
 }
 
-- (void)_mocDidSaveNotification:(id)a3
+- (void)_mocDidSaveNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   moc = self->_moc;
-  if (moc != v5)
+  if (moc != object)
   {
-    v7 = [(NSManagedObjectContext *)moc persistentStoreCoordinator];
-    v8 = [(NSManagedObjectContext *)v5 persistentStoreCoordinator];
-    v9 = v8;
-    if (v7 == v8)
+    persistentStoreCoordinator = [(NSManagedObjectContext *)moc persistentStoreCoordinator];
+    persistentStoreCoordinator2 = [(NSManagedObjectContext *)object persistentStoreCoordinator];
+    v9 = persistentStoreCoordinator2;
+    if (persistentStoreCoordinator == persistentStoreCoordinator2)
     {
     }
 
     else
     {
-      v10 = [(NSManagedObjectContext *)self->_moc persistentStoreCoordinator];
-      v11 = [(NSManagedObjectContext *)v5 persistentStoreCoordinator];
-      v12 = [v10 hasStoreInCommonWith:v11];
+      persistentStoreCoordinator3 = [(NSManagedObjectContext *)self->_moc persistentStoreCoordinator];
+      persistentStoreCoordinator4 = [(NSManagedObjectContext *)object persistentStoreCoordinator];
+      v12 = [persistentStoreCoordinator3 hasStoreInCommonWith:persistentStoreCoordinator4];
 
       if (!v12)
       {
@@ -85,7 +85,7 @@
     v14[2] = sub_1000F287C;
     v14[3] = &unk_100A03440;
     v14[4] = self;
-    v15 = v4;
+    v15 = notificationCopy;
     [v13 performBlock:v14];
   }
 

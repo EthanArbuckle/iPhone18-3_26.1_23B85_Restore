@@ -1,24 +1,24 @@
 @interface CRXFServiceRequest
-- (CRXFServiceRequest)initWithTimeout:(double)a3 completionQueue:(id)a4 completion:(id)a5;
-- (id)createProxyOnConnection:(id)a3;
-- (void)finishWithResult:(id)a3 error:(id)a4;
-- (void)timerDidFire:(id)a3;
+- (CRXFServiceRequest)initWithTimeout:(double)timeout completionQueue:(id)queue completion:(id)completion;
+- (id)createProxyOnConnection:(id)connection;
+- (void)finishWithResult:(id)result error:(id)error;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation CRXFServiceRequest
 
-- (CRXFServiceRequest)initWithTimeout:(double)a3 completionQueue:(id)a4 completion:(id)a5
+- (CRXFServiceRequest)initWithTimeout:(double)timeout completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   v22.receiver = self;
   v22.super_class = CRXFServiceRequest;
   v10 = [(CRXFServiceRequest *)&v22 init];
   if (v10)
   {
-    if (v8)
+    if (queueCopy)
     {
-      v11 = v8;
+      v11 = queueCopy;
     }
 
     else
@@ -29,16 +29,16 @@
     completionQueue = v10->_completionQueue;
     v10->_completionQueue = v11;
 
-    v13 = MEMORY[0x24C1A0F30](v9);
+    v13 = MEMORY[0x24C1A0F30](completionCopy);
     completion = v10->_completion;
     v10->_completion = v13;
 
-    v15 = [CRXUTimer scheduledTimerWithTimeInterval:v10 weakTarget:sel_timerDidFire_ selector:0 repeats:v10->_completionQueue queue:a3];
+    v15 = [CRXUTimer scheduledTimerWithTimeInterval:v10 weakTarget:sel_timerDidFire_ selector:0 repeats:v10->_completionQueue queue:timeout];
     timer = v10->_timer;
     v10->_timer = v15;
 
-    v17 = [MEMORY[0x277CBEAA8] date];
-    [v17 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceReferenceDate];
     v10->_startTime = v18;
 
     v10->_roundTripTime = 0.0;
@@ -51,23 +51,23 @@
   return v10;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v4 = [MEMORY[0x277CCA9B8] crxf_errorWithCode:7 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ServiceClient/CRXFServiceRequest.m" line:62 userInfo:MEMORY[0x277CBEC10]];
   [(CRXFServiceRequest *)self finishWithResult:0 error:v4];
 }
 
-- (id)createProxyOnConnection:(id)a3
+- (id)createProxyOnConnection:(id)connection
 {
-  objc_storeStrong(&self->_connection, a3);
-  v5 = a3;
-  v6 = [(CRXFServiceConnection *)self->_connection activate];
+  objc_storeStrong(&self->_connection, connection);
+  connectionCopy = connection;
+  activate = [(CRXFServiceConnection *)self->_connection activate];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__CRXFServiceRequest_createProxyOnConnection___block_invoke;
   v9[3] = &unk_278E9FE20;
   v9[4] = self;
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v9];
+  v7 = [activate remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -85,39 +85,39 @@ void __46__CRXFServiceRequest_createProxyOnConnection___block_invoke(uint64_t a1
   [*(a1 + 32) finishWithResult:0 error:v3];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  [(CRXUTimer *)v8->_timer invalidate];
-  timer = v8->_timer;
-  v8->_timer = 0;
+  resultCopy = result;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(CRXUTimer *)selfCopy->_timer invalidate];
+  timer = selfCopy->_timer;
+  selfCopy->_timer = 0;
 
-  if (!v8->_finished)
+  if (!selfCopy->_finished)
   {
-    v8->_finished = 1;
-    [(CRXFServiceConnection *)v8->_connection invalidate];
-    v10 = [MEMORY[0x277CBEAA8] date];
-    [v10 timeIntervalSinceReferenceDate];
+    selfCopy->_finished = 1;
+    [(CRXFServiceConnection *)selfCopy->_connection invalidate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceReferenceDate];
     v12 = v11;
 
-    v13 = v12 - v8->_startTime;
-    v8->_roundTripTime = v13;
-    completionQueue = v8->_completionQueue;
+    v13 = v12 - selfCopy->_startTime;
+    selfCopy->_roundTripTime = v13;
+    completionQueue = selfCopy->_completionQueue;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __45__CRXFServiceRequest_finishWithResult_error___block_invoke;
     v15[3] = &unk_278EA07C0;
-    v15[4] = v8;
-    v16 = v6;
+    v15[4] = selfCopy;
+    v16 = resultCopy;
     v18 = v13;
-    v17 = v7;
+    v17 = errorCopy;
     [(CRXUDispatchQueue *)completionQueue dispatchAsync:v15];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 void __46__CRXFServiceRequest_createProxyOnConnection___block_invoke_cold_1(uint64_t a1, NSObject *a2)

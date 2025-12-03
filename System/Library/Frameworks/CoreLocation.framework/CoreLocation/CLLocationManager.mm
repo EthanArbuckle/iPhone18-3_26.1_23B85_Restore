@@ -1,7 +1,7 @@
 @interface CLLocationManager
-+ (BOOL)_checkAndExerciseAuthorizationForBundle:(id)a3 error:(id *)a4;
-+ (BOOL)_checkAndExerciseAuthorizationForBundleID:(id)a3 error:(id *)a4;
-+ (BOOL)bundleSupported:(id)a3;
++ (BOOL)_checkAndExerciseAuthorizationForBundle:(id)bundle error:(id *)error;
++ (BOOL)_checkAndExerciseAuthorizationForBundleID:(id)d error:(id *)error;
++ (BOOL)bundleSupported:(id)supported;
 + (BOOL)deferredLocationUpdatesAvailable;
 + (BOOL)headingAvailable;
 + (BOOL)isMonitoringAvailableForClass:(Class)regionClass;
@@ -10,34 +10,34 @@
 + (BOOL)regionMonitoringAvailable;
 + (CLAuthorizationStatus)authorizationStatus;
 + (id)activeLocationClientsWithInfo;
-+ (id)interestZoneDictionaryIdentifiedById:(id)a3 forLocationDictionary:(id)a4;
-+ (id)interestZonesIdentifierListForLocationDictionary:(id)a3;
-+ (id)metadataForHomekitAccessoryControlEventWithUUID:(id)a3 stateString:(id)a4 serviceUUID:(id)a5 serviceType:(id)a6 characteristicType:(id)a7 serviceGroupUUID:(id)a8 source:(id)a9 roomUUID:(id)a10;
-+ (id)metadataForHomekitActionSetEventWithUUID:(id)a3 name:(id)a4 type:(id)a5 clientName:(id)a6 source:(id)a7 homeName:(id)a8;
-+ (id)metadataForMicroLocationTruthTagEventWithTagUUID:(id)a3;
++ (id)interestZoneDictionaryIdentifiedById:(id)id forLocationDictionary:(id)dictionary;
++ (id)interestZonesIdentifierListForLocationDictionary:(id)dictionary;
++ (id)metadataForHomekitAccessoryControlEventWithUUID:(id)d stateString:(id)string serviceUUID:(id)iD serviceType:(id)type characteristicType:(id)characteristicType serviceGroupUUID:(id)uID source:(id)source roomUUID:(id)self0;
++ (id)metadataForHomekitActionSetEventWithUUID:(id)d name:(id)name type:(id)type clientName:(id)clientName source:(id)source homeName:(id)homeName;
++ (id)metadataForMicroLocationTruthTagEventWithTagUUID:(id)d;
 + (id)sharedManager;
 + (id)sharedQueue;
 + (id)userLocationClientsWithInfo;
 + (id)weakSharedInstance;
-+ (int)_authorizationStatusForBundleIdentifier:(id)a3 bundlePath:(id)a4;
-+ (int)authorizationStatusForBundle:(id)a3;
++ (int)_authorizationStatusForBundleIdentifier:(id)identifier bundlePath:(id)path;
++ (int)authorizationStatusForBundle:(id)bundle;
 + (uint64_t)updatePromptedLatitude:longitude:;
-+ (unint64_t)activeLocationServiceTypesForLocationDictionary:(id)a3;
-+ (unint64_t)entityClassesForLocationDictionary:(id)a3;
-+ (void)_checkAndExerciseForPushClientWithBundleID:(id)a3 completionHandler:(id)a4;
-+ (void)_checkAndExerciseLearnedRoutesAuthorizationForBundleID:(id)a3 orBundlePath:(id)a4 completionHandler:(id)a5;
-+ (void)deleteInterestZoneWithId:(id)a3 registeredForBundle:(id)a4 error:(id *)a5;
-+ (void)dumpDiagnosticFilesWithHandler:(id)a3;
-+ (void)getIncidentalUseMode:(int *)a3 forBundle:(id)a4;
-+ (void)isEligibleForAlwaysAuthorizationRequestForBundleID:(id)a3 orBundlePath:(id)a4 completionHandler:(id)a5;
-+ (void)setAuthorizationStatus:(BOOL)a3 forBundle:(id)a4;
-+ (void)setAuthorizationStatusByType:(int)a3 forBundle:(id)a4;
-+ (void)setBackgroundIndicatorEnabled:(BOOL)a3 forBundle:(id)a4;
-+ (void)setBackgroundIndicatorEnabled:(BOOL)a3 forLocationDictionary:(id)a4;
-+ (void)setDefaultEffectiveBundle:(id)a3;
-+ (void)setEntityAuthorization:(unint64_t)a3 withCorrectiveCompensationType:(int)a4 forLocationDictionary:(id)a5;
-+ (void)setEntityAuthorized:(BOOL)a3 forLocationDictionary:(id)a4;
-+ (void)setRelevance:(BOOL)a3 forInterestZoneWithId:(id)a4 registeredForBundle:(id)a5 error:(id *)a6;
++ (unint64_t)activeLocationServiceTypesForLocationDictionary:(id)dictionary;
++ (unint64_t)entityClassesForLocationDictionary:(id)dictionary;
++ (void)_checkAndExerciseForPushClientWithBundleID:(id)d completionHandler:(id)handler;
++ (void)_checkAndExerciseLearnedRoutesAuthorizationForBundleID:(id)d orBundlePath:(id)path completionHandler:(id)handler;
++ (void)deleteInterestZoneWithId:(id)id registeredForBundle:(id)bundle error:(id *)error;
++ (void)dumpDiagnosticFilesWithHandler:(id)handler;
++ (void)getIncidentalUseMode:(int *)mode forBundle:(id)bundle;
++ (void)isEligibleForAlwaysAuthorizationRequestForBundleID:(id)d orBundlePath:(id)path completionHandler:(id)handler;
++ (void)setAuthorizationStatus:(BOOL)status forBundle:(id)bundle;
++ (void)setAuthorizationStatusByType:(int)type forBundle:(id)bundle;
++ (void)setBackgroundIndicatorEnabled:(BOOL)enabled forBundle:(id)bundle;
++ (void)setBackgroundIndicatorEnabled:(BOOL)enabled forLocationDictionary:(id)dictionary;
++ (void)setDefaultEffectiveBundle:(id)bundle;
++ (void)setEntityAuthorization:(unint64_t)authorization withCorrectiveCompensationType:(int)type forLocationDictionary:(id)dictionary;
++ (void)setEntityAuthorized:(BOOL)authorized forLocationDictionary:(id)dictionary;
++ (void)setRelevance:(BOOL)relevance forInterestZoneWithId:(id)id registeredForBundle:(id)bundle error:(id *)error;
 - (BOOL)_isFusionInfoEnabled;
 - (BOOL)_isGroundAltitudeEnabled;
 - (BOOL)_limitsPrecision;
@@ -67,18 +67,18 @@
 - (CLLocationDegrees)headingFilter;
 - (CLLocationDistance)distanceFilter;
 - (CLLocationDistance)maximumRegionMonitoringDistance;
-- (CLLocationManager)initWithEffectiveBundle:(id)a3;
-- (CLLocationManager)initWithEffectiveBundle:(id)a3 delegate:(id)a4 onQueue:(id)a5;
-- (CLLocationManager)initWithEffectiveBundle:(id)a3 limitingBundleIdentifier:(id)a4 delegate:(id)a5 onQueue:(id)a6;
-- (CLLocationManager)initWithEffectiveBundleIdentifier:(id)a3;
-- (CLLocationManager)initWithEffectiveBundleIdentifier:(id)a3 bundlePath:(id)a4 websiteIdentifier:(id)a5 delegate:(id)a6 silo:(id)a7;
-- (CLLocationManager)initWithEffectiveBundleIdentifier:(id)a3 delegate:(id)a4 onQueue:(id)a5;
-- (CLLocationManager)initWithEffectiveBundleIdentifier:(id)a3 websiteIdentifier:(id)a4;
-- (CLLocationManager)initWithEffectiveBundlePath:(id)a3;
-- (CLLocationManager)initWithEffectiveBundlePath:(id)a3 delegate:(id)a4 onQueue:(id)a5;
-- (CLLocationManager)initWithEffectiveBundlePath:(id)a3 limitingBundleIdentifier:(id)a4 delegate:(id)a5 onQueue:(id)a6;
-- (CLLocationManager)initWithWebsiteIdentifier:(id)a3;
-- (CLLocationManager)initWithWebsiteIdentifier:(id)a3 delegate:(id)a4 onQueue:(id)a5;
+- (CLLocationManager)initWithEffectiveBundle:(id)bundle;
+- (CLLocationManager)initWithEffectiveBundle:(id)bundle delegate:(id)delegate onQueue:(id)queue;
+- (CLLocationManager)initWithEffectiveBundle:(id)bundle limitingBundleIdentifier:(id)identifier delegate:(id)delegate onQueue:(id)queue;
+- (CLLocationManager)initWithEffectiveBundleIdentifier:(id)identifier;
+- (CLLocationManager)initWithEffectiveBundleIdentifier:(id)identifier bundlePath:(id)path websiteIdentifier:(id)websiteIdentifier delegate:(id)delegate silo:(id)silo;
+- (CLLocationManager)initWithEffectiveBundleIdentifier:(id)identifier delegate:(id)delegate onQueue:(id)queue;
+- (CLLocationManager)initWithEffectiveBundleIdentifier:(id)identifier websiteIdentifier:(id)websiteIdentifier;
+- (CLLocationManager)initWithEffectiveBundlePath:(id)path;
+- (CLLocationManager)initWithEffectiveBundlePath:(id)path delegate:(id)delegate onQueue:(id)queue;
+- (CLLocationManager)initWithEffectiveBundlePath:(id)path limitingBundleIdentifier:(id)identifier delegate:(id)delegate onQueue:(id)queue;
+- (CLLocationManager)initWithWebsiteIdentifier:(id)identifier;
+- (CLLocationManager)initWithWebsiteIdentifier:(id)identifier delegate:(id)delegate onQueue:(id)queue;
 - (NSSet)monitoredRegions;
 - (NSSet)rangedBeaconConstraints;
 - (NSSet)rangedRegions;
@@ -86,92 +86,92 @@
 - (NSString)purpose;
 - (__CLClient)internalClient;
 - (double)expectedGpsUpdateInterval;
-- (id)_groundAltitudeAtLocation:(id)a3;
-- (id)_initWithDelegate:(id)a3 onQueue:(id)a4;
-- (id)_startPlaceInferencesCommonLogic:(unint64_t)a3 handler:(id)a4;
+- (id)_groundAltitudeAtLocation:(id)location;
+- (id)_initWithDelegate:(id)delegate onQueue:(id)queue;
+- (id)_startPlaceInferencesCommonLogic:(unint64_t)logic handler:(id)handler;
 - (id)_zAxisStatistics;
 - (id)appsUsingLocationWithDetails;
 - (id)backgroundActivitySession;
 - (id)delegate;
-- (id)getRecordingTriggerUUIDAndRequestMicroLocationRecordingScanWithAdditionalInformation:(id)a3 shouldForceRecording:(BOOL)a4 handler:(id)a5;
-- (id)initOnQueue:(id)a3;
+- (id)getRecordingTriggerUUIDAndRequestMicroLocationRecordingScanWithAdditionalInformation:(id)information shouldForceRecording:(BOOL)recording handler:(id)handler;
+- (id)initOnQueue:(id)queue;
 - (id)privilegedServiceSession;
 - (id)serviceSession;
 - (id)technologiesInUse;
-- (void)_fetchContinuousPlaceInferencesWithFidelityPolicy:(unint64_t)a3 handler:(id)a4;
-- (void)_fetchEstimatedLocationAtDate:(id)a3 handler:(id)a4;
-- (void)_fetchPlaceInferencesWithFidelityPolicy:(unint64_t)a3 handler:(id)a4;
-- (void)_requestTemporaryFullAccuracyWithUsageDescription:(id)a3 completion:(id)a4;
+- (void)_fetchContinuousPlaceInferencesWithFidelityPolicy:(unint64_t)policy handler:(id)handler;
+- (void)_fetchEstimatedLocationAtDate:(id)date handler:(id)handler;
+- (void)_fetchPlaceInferencesWithFidelityPolicy:(unint64_t)policy handler:(id)handler;
+- (void)_requestTemporaryFullAccuracyWithUsageDescription:(id)description completion:(id)completion;
 - (void)_requestVisitState;
 - (void)_startLeechingVisits;
-- (void)_startMonitoringSignificantLocationChangesOfDistance:(double)a3 withPowerBudget:(int)a4;
+- (void)_startMonitoringSignificantLocationChangesOfDistance:(double)distance withPowerBudget:(int)budget;
 - (void)_stopFetchingContinuousPlaceInferences;
-- (void)_updateARSessionState:(unint64_t)a3;
-- (void)_updateVIOEstimation:(id)a3;
-- (void)_updateVLLocalizationResult:(id)a3;
-- (void)addIdentifiableClient:(id)a3;
+- (void)_updateARSessionState:(unint64_t)state;
+- (void)_updateVIOEstimation:(id)estimation;
+- (void)_updateVLLocalizationResult:(id)result;
+- (void)addIdentifiableClient:(id)client;
 - (void)allowDeferredLocationUpdatesUntilTraveled:(CLLocationDistance)distance timeout:(NSTimeInterval)timeout;
-- (void)callPlaceInferenceHandlerWithResult:(id)a3 error:(id)a4;
-- (void)changeFencesStateMatchingHandoffTags:(id)a3 forDeviceID:(id)a4 completion:(id)a5;
+- (void)callPlaceInferenceHandlerWithResult:(id)result error:(id)error;
+- (void)changeFencesStateMatchingHandoffTags:(id)tags forDeviceID:(id)d completion:(id)completion;
 - (void)dealloc;
 - (void)disallowDeferredLocationUpdates;
 - (void)dismissHeadingCalibrationDisplay;
-- (void)donateMicroLocationTruthTagWithTagUUID:(id)a3 correspondingToTriggerUUID:(id)a4 handler:(id)a5;
-- (void)donateMicroLocationTruthTagWithTagUUID:(id)a3 forRecordingEventsBetweenDate:(id)a4 andDate:(id)a5 handler:(id)a6;
-- (void)endTranscriptSessionWithCompletion:(id)a3;
-- (void)exportMicroLocationDataForMigrationWithCompletion:(id)a3;
-- (void)exportMicroLocationDatabaseTablesWithCompletion:(id)a3;
-- (void)isConsideredInRemoteAreaWithCompletion:(id)a3;
+- (void)donateMicroLocationTruthTagWithTagUUID:(id)d correspondingToTriggerUUID:(id)iD handler:(id)handler;
+- (void)donateMicroLocationTruthTagWithTagUUID:(id)d forRecordingEventsBetweenDate:(id)date andDate:(id)andDate handler:(id)handler;
+- (void)endTranscriptSessionWithCompletion:(id)completion;
+- (void)exportMicroLocationDataForMigrationWithCompletion:(id)completion;
+- (void)exportMicroLocationDatabaseTablesWithCompletion:(id)completion;
+- (void)isConsideredInRemoteAreaWithCompletion:(id)completion;
 - (void)markAsHavingReceivedLocation;
-- (void)onClientEvent:(int)a3 supportInfo:(id)a4;
-- (void)onClientEventAuthStatus:(id)a3;
-- (void)onClientEventAutopauseStatus:(id)a3;
-- (void)onClientEventBatch:(id)a3;
-- (void)onClientEventError:(id)a3;
-- (void)onClientEventHeading:(id)a3;
-- (void)onClientEventHeadingCalibration:(id)a3;
-- (void)onClientEventInterrupted:(id)a3;
-- (void)onClientEventLocation:(id)a3 forceMapMatching:(BOOL)a4 type:(id)a5;
-- (void)onClientEventLocationUnavailable:(id)a3;
-- (void)onClientEventNoLocationWatchdog:(id)a3;
-- (void)onClientEventPlaceInferenceError:(id)a3;
-- (void)onClientEventPlaceInferenceResult:(id)a3;
-- (void)onClientEventRanging:(id)a3;
-- (void)onClientEventRangingError:(id)a3;
-- (void)onClientEventRegion:(id)a3;
-- (void)onClientEventRegionError:(id)a3;
-- (void)onClientEventRegionResponseDelayed:(id)a3;
-- (void)onClientEventRegionSetupCompleted:(id)a3;
-- (void)onClientEventRegionState:(id)a3;
-- (void)onClientEventRegistration:(id)a3;
-- (void)onClientEventSignificantLocationVisit:(id)a3;
-- (void)onClientEventSignificantLocationVisitStateRequest:(id)a3;
-- (void)onClientEventVehicleHeading:(id)a3;
-- (void)onClientEventVehicleSpeed:(id)a3;
-- (void)onDidBecomeActive:(id)a3;
-- (void)onDidEnterBackground:(id)a3;
+- (void)onClientEvent:(int)event supportInfo:(id)info;
+- (void)onClientEventAuthStatus:(id)status;
+- (void)onClientEventAutopauseStatus:(id)status;
+- (void)onClientEventBatch:(id)batch;
+- (void)onClientEventError:(id)error;
+- (void)onClientEventHeading:(id)heading;
+- (void)onClientEventHeadingCalibration:(id)calibration;
+- (void)onClientEventInterrupted:(id)interrupted;
+- (void)onClientEventLocation:(id)location forceMapMatching:(BOOL)matching type:(id)type;
+- (void)onClientEventLocationUnavailable:(id)unavailable;
+- (void)onClientEventNoLocationWatchdog:(id)watchdog;
+- (void)onClientEventPlaceInferenceError:(id)error;
+- (void)onClientEventPlaceInferenceResult:(id)result;
+- (void)onClientEventRanging:(id)ranging;
+- (void)onClientEventRangingError:(id)error;
+- (void)onClientEventRegion:(id)region;
+- (void)onClientEventRegionError:(id)error;
+- (void)onClientEventRegionResponseDelayed:(id)delayed;
+- (void)onClientEventRegionSetupCompleted:(id)completed;
+- (void)onClientEventRegionState:(id)state;
+- (void)onClientEventRegistration:(id)registration;
+- (void)onClientEventSignificantLocationVisit:(id)visit;
+- (void)onClientEventSignificantLocationVisitStateRequest:(id)request;
+- (void)onClientEventVehicleHeading:(id)heading;
+- (void)onClientEventVehicleSpeed:(id)speed;
+- (void)onDidBecomeActive:(id)active;
+- (void)onDidEnterBackground:(id)background;
 - (void)onLocationRequestTimeout;
-- (void)onWillEnterForeground:(id)a3;
-- (void)pauseLocationUpdates:(BOOL)a3;
+- (void)onWillEnterForeground:(id)foreground;
+- (void)pauseLocationUpdates:(BOOL)updates;
 - (void)purgeMicroLocationData;
 - (void)purgeMicroLocationSemiSupervisedData;
 - (void)registerAsLocationClient;
-- (void)removeIdentifiableClient:(id)a3;
+- (void)removeIdentifiableClient:(id)client;
 - (void)requestAlwaysAuthorization;
-- (void)requestCurrentMicroLocationWithAdditionalInformation:(id)a3 withCompletion:(id)a4;
+- (void)requestCurrentMicroLocationWithAdditionalInformation:(id)information withCompletion:(id)completion;
 - (void)requestHistoricalLocationsWithPurposeKey:(NSString *)purposeKey sampleCount:(NSInteger)sampleCount completionHandler:(void *)handler;
 - (void)requestLocation;
-- (void)requestMicroLocationLearningWithCompletion:(id)a3;
-- (void)requestMicroLocationRecordingScanWithAdditionalInformation:(id)a3 shouldForceRecording:(BOOL)a4;
-- (void)requestMicroLocationStaticSourcesStatisticsWithCompletion:(id)a3;
+- (void)requestMicroLocationLearningWithCompletion:(id)completion;
+- (void)requestMicroLocationRecordingScanWithAdditionalInformation:(id)information shouldForceRecording:(BOOL)recording;
+- (void)requestMicroLocationStaticSourcesStatisticsWithCompletion:(id)completion;
 - (void)requestStateForRegion:(CLRegion *)region;
 - (void)requestTemporaryFullAccuracyAuthorizationWithPurposeKey:(NSString *)purposeKey;
 - (void)requestTemporaryFullAccuracyAuthorizationWithPurposeKey:(NSString *)purposeKey completion:(void *)completion;
-- (void)requestTemporaryPreciseLocationAuthorizationWithPurposeKey:(id)a3;
-- (void)requestTemporaryPreciseLocationAuthorizationWithPurposeKey:(id)a3 completion:(id)a4;
+- (void)requestTemporaryPreciseLocationAuthorizationWithPurposeKey:(id)key;
+- (void)requestTemporaryPreciseLocationAuthorizationWithPurposeKey:(id)key completion:(id)completion;
 - (void)requestWhenInUseAuthorization;
 - (void)requestWhenInUseAuthorizationWithPrompt;
-- (void)requestWhenInUseAuthorizationWithPurposeKey:(id)a3;
+- (void)requestWhenInUseAuthorizationWithPurposeKey:(id)key;
 - (void)resetApps;
 - (void)resumeLocationUpdates;
 - (void)setActivityType:(CLActivityType)activityType;
@@ -180,19 +180,19 @@
 - (void)setDistanceFilter:(CLLocationDistance)distanceFilter;
 - (void)setHeadingFilter:(CLLocationDegrees)headingFilter;
 - (void)setHeadingOrientation:(CLDeviceOrientation)headingOrientation;
-- (void)setIsActuallyAWatchKitExtension:(BOOL)a3;
+- (void)setIsActuallyAWatchKitExtension:(BOOL)extension;
 - (void)setPausesLocationUpdatesAutomatically:(BOOL)pausesLocationUpdatesAutomatically;
-- (void)setPrivateMode:(BOOL)a3;
+- (void)setPrivateMode:(BOOL)mode;
 - (void)setPurpose:(NSString *)purpose;
-- (void)setSupportInfo:(BOOL)a3;
+- (void)setSupportInfo:(BOOL)info;
 - (void)startMonitoringForRegion:(CLRegion *)region;
 - (void)startMonitoringLocationPushesWithCompletion:(void *)completion;
 - (void)startMonitoringSignificantLocationChanges;
 - (void)startMonitoringVisits;
 - (void)startRangingBeaconsInRegion:(CLBeaconRegion *)region;
 - (void)startRangingBeaconsSatisfyingConstraint:(CLBeaconIdentityConstraint *)constraint;
-- (void)startTranscriptSessionInstantlyWithCompletion:(id)a3;
-- (void)startTranscriptSessionWithCompletion:(id)a3;
+- (void)startTranscriptSessionInstantlyWithCompletion:(id)completion;
+- (void)startTranscriptSessionWithCompletion:(id)completion;
 - (void)startUpdatingHeading;
 - (void)startUpdatingLocation;
 - (void)startUpdatingLocationWithPrompt;
@@ -208,7 +208,7 @@
 - (void)stopUpdatingLocation;
 - (void)stopUpdatingVehicleHeading;
 - (void)stopUpdatingVehicleSpeed;
-- (void)willPromptForTranscriptSessionWithCompletion:(id)a3;
+- (void)willPromptForTranscriptSessionWithCompletion:(id)completion;
 @end
 
 @implementation CLLocationManager
@@ -219,7 +219,7 @@
   internal = self->_internal;
   if ([internal[4] previousAuthorizationStatusValid])
   {
-    v4 = [internal[4] previousAuthorizationStatus];
+    previousAuthorizationStatus = [internal[4] previousAuthorizationStatus];
   }
 
   else
@@ -235,17 +235,17 @@
 
     if (v5)
     {
-      v4 = v6;
+      previousAuthorizationStatus = v6;
     }
 
     else
     {
-      v4 = kCLAuthorizationStatusNotDetermined;
+      previousAuthorizationStatus = kCLAuthorizationStatusNotDetermined;
     }
   }
 
   objc_sync_exit(self);
-  return v4;
+  return previousAuthorizationStatus;
 }
 
 - (CLLocationAccuracy)desiredAccuracy
@@ -274,7 +274,7 @@
     v18 = 2114;
     v19 = v6;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -311,19 +311,19 @@
     v18 = 2114;
     v19 = v6;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  v7 = [*(self->_internal + 4) activityType];
-  if (v7 <= 1)
+  activityType = [*(self->_internal + 4) activityType];
+  if (activityType <= 1)
   {
     v8 = CLActivityTypeOther;
   }
 
   else
   {
-    v8 = v7;
+    v8 = activityType;
   }
 
   os_activity_scope_leave(&v11);
@@ -357,13 +357,13 @@
     *&v23[20] = 2114;
     *&v23[22] = v6;
     *&v23[30] = 2050;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
   [(CLLocationManager *)self collectMetricForFunction:4];
   internal = self->_internal;
-  v8 = [internal delegate];
+  delegate = [internal delegate];
   objc_sync_enter(self);
   [internal performCourtesyPromptIfNeeded];
   if ([*(internal + 4) requestingLocation])
@@ -416,7 +416,7 @@
     v19[2] = sub_19B89E544;
     v19[3] = &unk_1E753D098;
     v19[4] = self;
-    v19[5] = v8;
+    v19[5] = delegate;
     v19[6] = internal;
     if (v12)
     {
@@ -466,7 +466,7 @@
     *&v21[20] = 2114;
     *&v21[22] = v6;
     *&v21[30] = 2050;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -528,15 +528,15 @@
     v17[2] = sub_19B884D98;
     v17[3] = &unk_1E753CC90;
     v17[4] = self;
-    v13 = [*(v11 + 232) newTimer];
+    newTimer = [*(v11 + 232) newTimer];
     *buf = MEMORY[0x1E69E9820];
     *v21 = 3221225472;
     *&v21[8] = sub_19B884DA0;
     *&v21[16] = &unk_1E753CCE0;
     *&v21[24] = v17;
-    [v13 setHandler:buf];
-    [v13 setNextFireDelay:v12];
-    *(internal + 26) = v13;
+    [newTimer setHandler:buf];
+    [newTimer setNextFireDelay:v12];
+    *(internal + 26) = newTimer;
     v14 = *(internal + 1);
     [*(internal + 4) desiredAccuracy];
     CLClientStartLocationUpdatesWithDynamicAccuracyReductionAndAlteredAccessoryLocations_0(v14, v15, 0, 0, *MEMORY[0x1E6985C70]);
@@ -573,7 +573,7 @@
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -605,7 +605,7 @@
   internal = self->_internal;
   if ([internal[4] previousAuthorizationStatusValid])
   {
-    v4 = [internal[4] limitsPrecision];
+    limitsPrecision = [internal[4] limitsPrecision];
   }
 
   else
@@ -613,10 +613,10 @@
     [(CLLocationManager *)self collectMetricForFunction:0x100000];
     v7 = 0;
     sub_19B9BE048(*(internal[1] + 45), *(internal[1] + 46), &v7);
-    v4 = v7 == 0;
+    limitsPrecision = v7 == 0;
   }
 
-  v5 = v4;
+  v5 = limitsPrecision;
   objc_sync_exit(self);
   return v5;
 }
@@ -647,7 +647,7 @@
     v16 = 2114;
     v17 = v6;
     v18 = 2050;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -709,14 +709,14 @@
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  v7 = [*(self->_internal + 4) limitsPrecision];
+  limitsPrecision = [*(self->_internal + 4) limitsPrecision];
   os_activity_scope_leave(&v10);
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return limitsPrecision;
 }
 
 - (void)startMonitoringSignificantLocationChanges
@@ -745,7 +745,7 @@
     v16 = 2114;
     v17 = v6;
     v18 = 2050;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -761,7 +761,7 @@
 
 + (BOOL)headingAvailable
 {
-  [a1 collectMetricForFunction:2];
+  [self collectMetricForFunction:2];
   v2 = sub_19B87AB28();
   if (v2)
   {
@@ -797,7 +797,7 @@
     v23 = 2114;
     v24 = v6;
     v25 = 2050;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -1004,7 +1004,7 @@ LABEL_30:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -1046,7 +1046,7 @@ LABEL_30:
     v16 = 2114;
     v17 = v6;
     v18 = 2050;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -1090,7 +1090,7 @@ LABEL_30:
   }
 
   internal = self->_internal;
-  v8 = [internal delegate];
+  delegate = [internal delegate];
   objc_sync_enter(self);
   if ([*(internal + 4) requestingLocation])
   {
@@ -1134,7 +1134,7 @@ LABEL_30:
         *&buf[18] = 2050;
         *&buf[20] = self;
         *&buf[28] = 2050;
-        *&buf[30] = v8;
+        *&buf[30] = delegate;
         *&buf[38] = 2114;
         *&buf[40] = v20;
         LOWORD(v25) = 1040;
@@ -1144,7 +1144,7 @@ LABEL_30:
         _os_log_impl(&dword_19B873000, v21, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate - request timeout, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, location:%{sensitive, location:CLClientLocation}.*P}", buf, 0x40u);
       }
 
-      [v8 locationManager:self didUpdateLocations:v18];
+      [delegate locationManager:self didUpdateLocations:v18];
     }
 
     else
@@ -1165,13 +1165,13 @@ LABEL_30:
         *&buf[18] = 2050;
         *&buf[20] = self;
         *&buf[28] = 2050;
-        *&buf[30] = v8;
+        *&buf[30] = delegate;
         *&buf[38] = 2114;
         *&buf[40] = v9;
         _os_log_impl(&dword_19B873000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate - request timeout, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@}", buf, 0x30u);
       }
 
-      [v8 locationManager:self didFailWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", @"kCLErrorDomain", 0, 0)}];
+      [delegate locationManager:self didFailWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", @"kCLErrorDomain", 0, 0)}];
     }
   }
 
@@ -1206,7 +1206,7 @@ LABEL_30:
     v21 = 2114;
     v22 = v6;
     v23 = 2050;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -1241,7 +1241,7 @@ LABEL_10:
   return v10;
 }
 
-- (CLLocationManager)initWithEffectiveBundleIdentifier:(id)a3 bundlePath:(id)a4 websiteIdentifier:(id)a5 delegate:(id)a6 silo:(id)a7
+- (CLLocationManager)initWithEffectiveBundleIdentifier:(id)identifier bundlePath:(id)path websiteIdentifier:(id)websiteIdentifier delegate:(id)delegate silo:(id)silo
 {
   v48 = *MEMORY[0x1E69E9840];
   v32.receiver = self;
@@ -1263,7 +1263,7 @@ LABEL_10:
     if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
     {
       v16 = NSStringFromSelector(a2);
-      v17 = [a4 UTF8String];
+      uTF8String = [path UTF8String];
       *buf = 68290306;
       v35 = 0;
       v36 = 2082;
@@ -1275,18 +1275,18 @@ LABEL_10:
       v42 = 2050;
       v43 = v13;
       v44 = 2114;
-      v45 = a3;
+      identifierCopy = identifier;
       v46 = 2082;
-      v47 = v17;
+      v47 = uTF8String;
       _os_log_impl(&dword_19B873000, v15, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, identifier:%{public, location:escape_only}@, bundlePath:%{public, location:escape_only}s}", buf, 0x44u);
     }
 
-    if (!a7)
+    if (!silo)
     {
-      a7 = [objc_alloc(MEMORY[0x1E69AD370]) initWithCurrentRunLoopAndIdentifier:@"CLLocationManager-runloop" bePermissive:1];
+      silo = [objc_alloc(MEMORY[0x1E69AD370]) initWithCurrentRunLoopAndIdentifier:@"CLLocationManager-runloop" bePermissive:1];
     }
 
-    v18 = [[CLLocationManagerInternal alloc] initWithInfo:v13 bundleIdentifier:a3 bundlePath:a4 websiteIdentifier:a5 delegate:a6 silo:a7];
+    v18 = [[CLLocationManagerInternal alloc] initWithInfo:v13 bundleIdentifier:identifier bundlePath:path websiteIdentifier:websiteIdentifier delegate:delegate silo:silo];
     v13->_internal = v18;
     if ([objc_msgSend(objc_msgSend(objc_msgSend(MEMORY[0x1E696AAE8] "mainBundle")])
     {
@@ -1400,10 +1400,10 @@ LABEL_10:
   return v13;
 }
 
-- (CLLocationManager)initWithWebsiteIdentifier:(id)a3
+- (CLLocationManager)initWithWebsiteIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!identifier)
   {
     if (qword_1ED519088 != -1)
     {
@@ -1435,16 +1435,16 @@ LABEL_10:
     }
   }
 
-  result = [(CLLocationManager *)self initWithEffectiveBundleIdentifier:0 bundlePath:0 websiteIdentifier:a3 delegate:0 silo:0];
+  result = [(CLLocationManager *)self initWithEffectiveBundleIdentifier:0 bundlePath:0 websiteIdentifier:identifier delegate:0 silo:0];
   v9 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (CLLocationManager)initWithWebsiteIdentifier:(id)a3 delegate:(id)a4 onQueue:(id)a5
+- (CLLocationManager)initWithWebsiteIdentifier:(id)identifier delegate:(id)delegate onQueue:(id)queue
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v25 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (identifier)
   {
     goto LABEL_12;
   }
@@ -1483,12 +1483,12 @@ LABEL_10:
     }
 
 LABEL_12:
-    if (a4 && a5)
+    if (delegate && queue)
     {
       break;
     }
 
-    v8 = CLLocationManagerInternal.info;
+    identifierCopy = CLLocationManagerInternal.info;
     if (qword_1ED519088 != -1)
     {
       dispatch_once(&qword_1ED519088, &unk_1F0E6B6E0);
@@ -1531,7 +1531,7 @@ LABEL_12:
       }
     }
 
-    a4 = qword_1ED519090;
+    delegate = qword_1ED519090;
     if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_INFO))
     {
       *buf = 68289539;
@@ -1542,7 +1542,7 @@ LABEL_12:
       v22 = "assert";
       v23 = 2081;
       v24 = "delegate && queue";
-      _os_log_impl(&dword_19B873000, a4, OS_LOG_TYPE_INFO, "{msg%{public}.0s:delegate and queue must not be nil, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
+      _os_log_impl(&dword_19B873000, delegate, OS_LOG_TYPE_INFO, "{msg%{public}.0s:delegate and queue must not be nil, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
     }
 
     abort_report_np();
@@ -1550,15 +1550,15 @@ LABEL_28:
     dispatch_once(&qword_1ED519088, &unk_1F0E6B6E0);
   }
 
-  result = -[CLLocationManager initWithEffectiveBundleIdentifier:bundlePath:websiteIdentifier:delegate:silo:](self, "initWithEffectiveBundleIdentifier:bundlePath:websiteIdentifier:delegate:silo:", 0, 0, v8, a4, [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:a5 bePermissive:1]);
+  result = -[CLLocationManager initWithEffectiveBundleIdentifier:bundlePath:websiteIdentifier:delegate:silo:](self, "initWithEffectiveBundleIdentifier:bundlePath:websiteIdentifier:delegate:silo:", 0, 0, identifierCopy, delegate, [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:queue bePermissive:1]);
   v14 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (CLLocationManager)initWithEffectiveBundleIdentifier:(id)a3 websiteIdentifier:(id)a4
+- (CLLocationManager)initWithEffectiveBundleIdentifier:(id)identifier websiteIdentifier:(id)websiteIdentifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (!a3 || !a4)
+  if (!identifier || !websiteIdentifier)
   {
     if (qword_1ED519088 != -1)
     {
@@ -1590,15 +1590,15 @@ LABEL_28:
     }
   }
 
-  result = [(CLLocationManager *)self initWithEffectiveBundleIdentifier:a3 bundlePath:0 websiteIdentifier:a4 delegate:0 silo:0];
+  result = [(CLLocationManager *)self initWithEffectiveBundleIdentifier:identifier bundlePath:0 websiteIdentifier:websiteIdentifier delegate:0 silo:0];
   v11 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (CLLocationManager)initWithEffectiveBundleIdentifier:(id)a3
+- (CLLocationManager)initWithEffectiveBundleIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!identifier)
   {
     if (qword_1ED519088 != -1)
     {
@@ -1630,16 +1630,16 @@ LABEL_28:
     }
   }
 
-  result = [(CLLocationManager *)self initWithEffectiveBundleIdentifier:a3 bundlePath:0 websiteIdentifier:0 delegate:0 silo:0];
+  result = [(CLLocationManager *)self initWithEffectiveBundleIdentifier:identifier bundlePath:0 websiteIdentifier:0 delegate:0 silo:0];
   v9 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (CLLocationManager)initWithEffectiveBundleIdentifier:(id)a3 delegate:(id)a4 onQueue:(id)a5
+- (CLLocationManager)initWithEffectiveBundleIdentifier:(id)identifier delegate:(id)delegate onQueue:(id)queue
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v25 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (identifier)
   {
     goto LABEL_12;
   }
@@ -1678,12 +1678,12 @@ LABEL_28:
     }
 
 LABEL_12:
-    if (a4 && a5)
+    if (delegate && queue)
     {
       break;
     }
 
-    v8 = CLLocationManagerInternal.info;
+    identifierCopy = CLLocationManagerInternal.info;
     if (qword_1ED519088 != -1)
     {
       dispatch_once(&qword_1ED519088, &unk_1F0E6B6E0);
@@ -1726,7 +1726,7 @@ LABEL_12:
       }
     }
 
-    a4 = qword_1ED519090;
+    delegate = qword_1ED519090;
     if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_INFO))
     {
       *buf = 68289539;
@@ -1737,7 +1737,7 @@ LABEL_12:
       v22 = "assert";
       v23 = 2081;
       v24 = "delegate && queue";
-      _os_log_impl(&dword_19B873000, a4, OS_LOG_TYPE_INFO, "{msg%{public}.0s:delegate and queue must not be nil, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
+      _os_log_impl(&dword_19B873000, delegate, OS_LOG_TYPE_INFO, "{msg%{public}.0s:delegate and queue must not be nil, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
     }
 
     abort_report_np();
@@ -1745,15 +1745,15 @@ LABEL_28:
     dispatch_once(&qword_1ED519088, &unk_1F0E6B6E0);
   }
 
-  result = -[CLLocationManager initWithEffectiveBundleIdentifier:bundlePath:websiteIdentifier:delegate:silo:](self, "initWithEffectiveBundleIdentifier:bundlePath:websiteIdentifier:delegate:silo:", v8, 0, 0, a4, [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:a5 bePermissive:1]);
+  result = -[CLLocationManager initWithEffectiveBundleIdentifier:bundlePath:websiteIdentifier:delegate:silo:](self, "initWithEffectiveBundleIdentifier:bundlePath:websiteIdentifier:delegate:silo:", identifierCopy, 0, 0, delegate, [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:queue bePermissive:1]);
   v14 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (CLLocationManager)initWithEffectiveBundlePath:(id)a3
+- (CLLocationManager)initWithEffectiveBundlePath:(id)path
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!path)
   {
     if (qword_1ED519088 != -1)
     {
@@ -1785,23 +1785,23 @@ LABEL_28:
     }
   }
 
-  result = [(CLLocationManager *)self initWithEffectiveBundleIdentifier:0 bundlePath:a3 websiteIdentifier:0 delegate:0 silo:0];
+  result = [(CLLocationManager *)self initWithEffectiveBundleIdentifier:0 bundlePath:path websiteIdentifier:0 delegate:0 silo:0];
   v9 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (CLLocationManager)initWithEffectiveBundle:(id)a3
+- (CLLocationManager)initWithEffectiveBundle:(id)bundle
 {
-  [a3 bundlePath];
+  [bundle bundlePath];
 
   return MEMORY[0x1EEE66B58](self, sel_initWithEffectiveBundlePath_);
 }
 
-- (CLLocationManager)initWithEffectiveBundlePath:(id)a3 delegate:(id)a4 onQueue:(id)a5
+- (CLLocationManager)initWithEffectiveBundlePath:(id)path delegate:(id)delegate onQueue:(id)queue
 {
-  v8 = a3;
+  pathCopy = path;
   v25 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (path)
   {
     goto LABEL_12;
   }
@@ -1840,12 +1840,12 @@ LABEL_28:
     }
 
 LABEL_12:
-    if (a4 && a5)
+    if (delegate && queue)
     {
       break;
     }
 
-    v8 = CLLocationManagerInternal.info;
+    pathCopy = CLLocationManagerInternal.info;
     if (qword_1ED519088 != -1)
     {
       dispatch_once(&qword_1ED519088, &unk_1F0E6B6E0);
@@ -1888,7 +1888,7 @@ LABEL_12:
       }
     }
 
-    a4 = qword_1ED519090;
+    delegate = qword_1ED519090;
     if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_INFO))
     {
       *buf = 68289539;
@@ -1899,7 +1899,7 @@ LABEL_12:
       v22 = "assert";
       v23 = 2081;
       v24 = "delegate && queue";
-      _os_log_impl(&dword_19B873000, a4, OS_LOG_TYPE_INFO, "{msg%{public}.0s:delegate and queue must not be nil, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
+      _os_log_impl(&dword_19B873000, delegate, OS_LOG_TYPE_INFO, "{msg%{public}.0s:delegate and queue must not be nil, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
     }
 
     abort_report_np();
@@ -1907,23 +1907,23 @@ LABEL_28:
     dispatch_once(&qword_1ED519088, &unk_1F0E6B6E0);
   }
 
-  result = -[CLLocationManager initWithEffectiveBundleIdentifier:bundlePath:websiteIdentifier:delegate:silo:](self, "initWithEffectiveBundleIdentifier:bundlePath:websiteIdentifier:delegate:silo:", 0, v8, 0, a4, [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:a5 bePermissive:1]);
+  result = -[CLLocationManager initWithEffectiveBundleIdentifier:bundlePath:websiteIdentifier:delegate:silo:](self, "initWithEffectiveBundleIdentifier:bundlePath:websiteIdentifier:delegate:silo:", 0, pathCopy, 0, delegate, [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:queue bePermissive:1]);
   v14 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (CLLocationManager)initWithEffectiveBundle:(id)a3 delegate:(id)a4 onQueue:(id)a5
+- (CLLocationManager)initWithEffectiveBundle:(id)bundle delegate:(id)delegate onQueue:(id)queue
 {
-  [a3 bundlePath];
+  [bundle bundlePath];
 
   return MEMORY[0x1EEE66B58](self, sel_initWithEffectiveBundlePath_delegate_onQueue_);
 }
 
-- (CLLocationManager)initWithEffectiveBundlePath:(id)a3 limitingBundleIdentifier:(id)a4 delegate:(id)a5 onQueue:(id)a6
+- (CLLocationManager)initWithEffectiveBundlePath:(id)path limitingBundleIdentifier:(id)identifier delegate:(id)delegate onQueue:(id)queue
 {
-  v10 = a3;
+  pathCopy = path;
   v37 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!path)
   {
     p_info = CLLocationManagerInternal.info;
     if (qword_1ED519088 == -1)
@@ -1934,13 +1934,13 @@ LABEL_28:
     goto LABEL_61;
   }
 
-  if ([&unk_1F0E8CC88 containsObject:a3])
+  if ([&unk_1F0E8CC88 containsObject:path])
   {
     while (1)
     {
-      if (a4)
+      if (identifier)
       {
-        if (([&unk_1F0E8CC88 containsObject:a4] & 1) == 0)
+        if (([&unk_1F0E8CC88 containsObject:identifier] & 1) == 0)
         {
           if (qword_1ED519088 != -1)
           {
@@ -1955,7 +1955,7 @@ LABEL_28:
             v31 = 2082;
             v32 = "";
             v33 = 2114;
-            v34 = a4;
+            identifierCopy2 = identifier;
             _os_log_impl(&dword_19B873000, v20, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:initializing CLLocationManager with unsupported limiting identifier, identifier:%{public, location:escape_only}@}", buf, 0x1Cu);
             if (qword_1ED519088 != -1)
             {
@@ -1971,7 +1971,7 @@ LABEL_28:
             v31 = 2082;
             v32 = "";
             v33 = 2114;
-            v34 = a4;
+            identifierCopy2 = identifier;
             v14 = "initializing CLLocationManager with unsupported limiting identifier";
             v15 = "{msg%{public}.0s:initializing CLLocationManager with unsupported limiting identifier, identifier:%{public, location:escape_only}@}";
             v16 = v21;
@@ -2016,13 +2016,13 @@ LABEL_28:
         }
       }
 
-      if (a5 && a6)
+      if (delegate && queue)
       {
-        result = -[CLLocationManager initWithEffectiveBundleIdentifier:bundlePath:websiteIdentifier:delegate:silo:](self, "initWithEffectiveBundleIdentifier:bundlePath:websiteIdentifier:delegate:silo:", a4, v10, 0, a5, [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:a6 bePermissive:1]);
+        result = -[CLLocationManager initWithEffectiveBundleIdentifier:bundlePath:websiteIdentifier:delegate:silo:](self, "initWithEffectiveBundleIdentifier:bundlePath:websiteIdentifier:delegate:silo:", identifier, pathCopy, 0, delegate, [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:queue bePermissive:1]);
         goto LABEL_45;
       }
 
-      a6 = CLLocationManagerInternal.info;
+      queue = CLLocationManagerInternal.info;
       if (qword_1ED519088 != -1)
       {
         dispatch_once(&qword_1ED519088, &unk_1F0E6B6E0);
@@ -2030,8 +2030,8 @@ LABEL_28:
 
       v27 = qword_1ED519090;
       self = &off_19BA89000;
-      a5 = "assert";
-      v10 = "delegate && queue";
+      delegate = "assert";
+      pathCopy = "delegate && queue";
       if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_FAULT))
       {
         *buf = 68289539;
@@ -2039,7 +2039,7 @@ LABEL_28:
         v31 = 2082;
         v32 = "";
         v33 = 2082;
-        v34 = "assert";
+        identifierCopy2 = "assert";
         v35 = 2081;
         v36 = "delegate && queue";
         _os_log_impl(&dword_19B873000, v27, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:delegate and queue must not be nil, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
@@ -2057,7 +2057,7 @@ LABEL_28:
         v31 = 2082;
         v32 = "";
         v33 = 2082;
-        v34 = "assert";
+        identifierCopy2 = "assert";
         v35 = 2081;
         v36 = "delegate && queue";
         _os_signpost_emit_with_name_impl(&dword_19B873000, v28, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "delegate and queue must not be nil", "{msg%{public}.0s:delegate and queue must not be nil, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
@@ -2067,7 +2067,7 @@ LABEL_28:
         }
       }
 
-      a4 = qword_1ED519090;
+      identifier = qword_1ED519090;
       if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_INFO))
       {
         *buf = 68289539;
@@ -2075,10 +2075,10 @@ LABEL_28:
         v31 = 2082;
         v32 = "";
         v33 = 2082;
-        v34 = "assert";
+        identifierCopy2 = "assert";
         v35 = 2081;
         v36 = "delegate && queue";
-        _os_log_impl(&dword_19B873000, a4, OS_LOG_TYPE_INFO, "{msg%{public}.0s:delegate and queue must not be nil, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
+        _os_log_impl(&dword_19B873000, identifier, OS_LOG_TYPE_INFO, "{msg%{public}.0s:delegate and queue must not be nil, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
       }
 
       abort_report_np();
@@ -2125,7 +2125,7 @@ LABEL_11:
     v31 = 2082;
     v32 = "";
     v33 = 2114;
-    v34 = v10;
+    identifierCopy2 = pathCopy;
     _os_log_impl(&dword_19B873000, v12, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:initializing CLLocationManager with unsupported bundle path, bundlePath:%{public, location:escape_only}@}", buf, 0x1Cu);
     if (qword_1ED519088 != -1)
     {
@@ -2141,7 +2141,7 @@ LABEL_11:
     v31 = 2082;
     v32 = "";
     v33 = 2114;
-    v34 = v10;
+    identifierCopy2 = pathCopy;
     v14 = "initializing CLLocationManager with unsupported bundle path";
     v15 = "{msg%{public}.0s:initializing CLLocationManager with unsupported bundle path, bundlePath:%{public, location:escape_only}@}";
     v16 = v13;
@@ -2156,17 +2156,17 @@ LABEL_45:
   return result;
 }
 
-- (CLLocationManager)initWithEffectiveBundle:(id)a3 limitingBundleIdentifier:(id)a4 delegate:(id)a5 onQueue:(id)a6
+- (CLLocationManager)initWithEffectiveBundle:(id)bundle limitingBundleIdentifier:(id)identifier delegate:(id)delegate onQueue:(id)queue
 {
-  [a3 bundlePath];
+  [bundle bundlePath];
 
   return MEMORY[0x1EEE66B58](self, sel_initWithEffectiveBundlePath_limitingBundleIdentifier_delegate_onQueue_);
 }
 
-- (id)_initWithDelegate:(id)a3 onQueue:(id)a4
+- (id)_initWithDelegate:(id)delegate onQueue:(id)queue
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (!a3 || !a4)
+  if (!delegate || !queue)
   {
     if (qword_1ED519088 != -1)
     {
@@ -2226,16 +2226,16 @@ LABEL_45:
     abort_report_np();
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:a4 bePermissive:1];
+  v6 = [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:queue bePermissive:1];
   v7 = *MEMORY[0x1E69E9840];
 
-  return [(CLLocationManager *)self initWithEffectiveBundleIdentifier:0 bundlePath:0 websiteIdentifier:0 delegate:a3 silo:v6];
+  return [(CLLocationManager *)self initWithEffectiveBundleIdentifier:0 bundlePath:0 websiteIdentifier:0 delegate:delegate silo:v6];
 }
 
-- (id)initOnQueue:(id)a3
+- (id)initOnQueue:(id)queue
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!queue)
   {
     if (qword_1ED519088 != -1)
     {
@@ -2295,7 +2295,7 @@ LABEL_45:
     abort_report_np();
   }
 
-  v4 = [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:a3 bePermissive:1];
+  v4 = [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:queue bePermissive:1];
   v5 = *MEMORY[0x1E69E9840];
 
   return [(CLLocationManager *)self initWithEffectiveBundleIdentifier:0 bundlePath:0 websiteIdentifier:0 delegate:0 silo:v4];
@@ -2325,7 +2325,7 @@ LABEL_45:
 
 + (id)weakSharedInstance
 {
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   Weak = objc_loadWeak(&qword_1EAFE50E0);
   if (!Weak)
   {
@@ -2333,13 +2333,13 @@ LABEL_45:
     objc_storeWeak(&qword_1EAFE50E0, Weak);
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   return Weak;
 }
 
 + (BOOL)isMonitoringAvailableForClass:(Class)regionClass
 {
-  [a1 collectMetricForFunction:2];
+  [self collectMetricForFunction:2];
   if (objc_opt_class() == regionClass)
   {
     v5 = 3;
@@ -2370,14 +2370,14 @@ LABEL_45:
 
 + (BOOL)regionMonitoringAvailable
 {
-  [a1 collectMetricForFunction:2];
+  [self collectMetricForFunction:2];
   sub_19B87BBB4();
   return (sub_19B93BE2C() >> 8) & 1;
 }
 
 + (BOOL)isRangingAvailable
 {
-  [a1 collectMetricForFunction:2];
+  [self collectMetricForFunction:2];
   sub_19B87BBB4();
   return (sub_19B93BE2C() >> 22) & 1;
 }
@@ -2408,7 +2408,7 @@ LABEL_45:
     v17 = 2114;
     v18 = v8;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     v21 = 2050;
     v22 = delegate;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, delegate:%{public}p}", buf, 0x3Au);
@@ -2445,14 +2445,14 @@ LABEL_45:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  v7 = [self->_internal delegate];
+  delegate = [self->_internal delegate];
   os_activity_scope_leave(&v10);
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return delegate;
 }
 
 - (void)setDistanceFilter:(CLLocationDistance)distanceFilter
@@ -2481,7 +2481,7 @@ LABEL_45:
     v18 = 2114;
     v19 = v8;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     v22 = 2050;
     v23 = distanceFilter;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, distance:%{public}f}", buf, 0x3Au);
@@ -2526,7 +2526,7 @@ LABEL_45:
     v18 = 2114;
     v19 = v6;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -2563,7 +2563,7 @@ LABEL_45:
     v18 = 2114;
     v19 = v8;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     v22 = 2050;
     v23 = desiredAccuracy;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, accuracy:%{public}f}", buf, 0x3Au);
@@ -2609,7 +2609,7 @@ LABEL_45:
     v19 = 2114;
     v20 = v8;
     v21 = 2050;
-    v22 = self;
+    selfCopy = self;
     v23 = 1026;
     v24 = v3;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, pausesLocationUpdatesAutomatically:%{public}hhd}", buf, 0x36u);
@@ -2673,7 +2673,7 @@ LABEL_45:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -2709,14 +2709,14 @@ LABEL_45:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  v7 = [self->_internal allowsBackgroundLocationUpdates];
+  allowsBackgroundLocationUpdates = [self->_internal allowsBackgroundLocationUpdates];
   os_activity_scope_leave(&v10);
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return allowsBackgroundLocationUpdates;
 }
 
 - (BOOL)showsBackgroundLocationIndicator
@@ -2745,14 +2745,14 @@ LABEL_45:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  v7 = [self->_internal showsBackgroundLocationIndicator];
+  showsBackgroundLocationIndicator = [self->_internal showsBackgroundLocationIndicator];
   os_activity_scope_leave(&v10);
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return showsBackgroundLocationIndicator;
 }
 
 + (BOOL)mapCorrectionAvailable
@@ -2788,7 +2788,7 @@ LABEL_45:
     v16 = 2114;
     v17 = v6;
     v18 = 2050;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -2823,7 +2823,7 @@ LABEL_45:
     v18 = 2114;
     v19 = v6;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -2860,7 +2860,7 @@ LABEL_45:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -2896,7 +2896,7 @@ LABEL_45:
     v16 = 2114;
     v17 = v6;
     v18 = 2050;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -2905,9 +2905,9 @@ LABEL_45:
   return 1.0;
 }
 
-- (void)setSupportInfo:(BOOL)a3
+- (void)setSupportInfo:(BOOL)info
 {
-  v3 = a3;
+  infoCopy = info;
   v26 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
@@ -2932,9 +2932,9 @@ LABEL_45:
     v20 = 2114;
     v21 = v8;
     v22 = 2050;
-    v23 = self;
+    selfCopy = self;
     v24 = 1026;
-    v25 = v3;
+    v25 = infoCopy;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, supportInfo:%{public}hhd}", buf, 0x36u);
     if (qword_1ED519088 != -1)
     {
@@ -2996,7 +2996,7 @@ LABEL_45:
     v16 = 2114;
     v17 = v6;
     v18 = 2050;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -3031,7 +3031,7 @@ LABEL_45:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -3041,9 +3041,9 @@ LABEL_45:
   return v7;
 }
 
-- (void)setPrivateMode:(BOOL)a3
+- (void)setPrivateMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v23 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
@@ -3068,9 +3068,9 @@ LABEL_45:
     v17 = 2114;
     v18 = v8;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     v21 = 1026;
-    v22 = v3;
+    v22 = modeCopy;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, privateMode:%{public}hhd}", buf, 0x36u);
   }
 
@@ -3105,7 +3105,7 @@ LABEL_45:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -3141,7 +3141,7 @@ LABEL_45:
     v18 = 2114;
     v19 = v8;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     v22 = 2113;
     v23 = purpose;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, purpose:%{private, location:escape_only}@}", buf, 0x3Au);
@@ -3181,7 +3181,7 @@ LABEL_45:
     v18 = 2114;
     v19 = v6;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -3220,7 +3220,7 @@ LABEL_45:
     v28 = 2114;
     v29 = v8;
     v30 = 2050;
-    v31 = self;
+    selfCopy = self;
     v32 = 2050;
     v33 = activityType;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, activityType:%{public, location:CLActivityType}lld}", buf, 0x3Au);
@@ -3357,7 +3357,7 @@ LABEL_45:
     v15 = 2114;
     v16 = v6;
     v17 = 2050;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -3366,7 +3366,7 @@ LABEL_45:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)isEligibleForAlwaysAuthorizationRequestForBundleID:(id)a3 orBundlePath:(id)a4 completionHandler:(id)a5
++ (void)isEligibleForAlwaysAuthorizationRequestForBundleID:(id)d orBundlePath:(id)path completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
   v9 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -3383,8 +3383,8 @@ LABEL_45:
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
     v11 = NSStringFromSelector(a2);
-    v12 = [a3 UTF8String];
-    v13 = [a4 UTF8String];
+    uTF8String = [d UTF8String];
+    uTF8String2 = [path UTF8String];
     *buf = 68290306;
     v17 = 0;
     v18 = 2082;
@@ -3394,11 +3394,11 @@ LABEL_45:
     v22 = 2114;
     v23 = v11;
     v24 = 2050;
-    v25 = a1;
+    selfCopy = self;
     v26 = 2082;
-    v27 = v12;
+    v27 = uTF8String;
     v28 = 2082;
-    v29 = v13;
+    v29 = uTF8String2;
     _os_log_impl(&dword_19B873000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, bundleID:%{public, location:escape_only}s, bundlePath:%{public, location:escape_only}s}", buf, 0x44u);
   }
 
@@ -3407,7 +3407,7 @@ LABEL_45:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_checkAndExerciseLearnedRoutesAuthorizationForBundleID:(id)a3 orBundlePath:(id)a4 completionHandler:(id)a5
++ (void)_checkAndExerciseLearnedRoutesAuthorizationForBundleID:(id)d orBundlePath:(id)path completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
   v9 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -3424,8 +3424,8 @@ LABEL_45:
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
     v11 = NSStringFromSelector(a2);
-    v12 = [a3 UTF8String];
-    v13 = [a4 UTF8String];
+    uTF8String = [d UTF8String];
+    uTF8String2 = [path UTF8String];
     *buf = 68290306;
     v17 = 0;
     v18 = 2082;
@@ -3435,11 +3435,11 @@ LABEL_45:
     v22 = 2114;
     v23 = v11;
     v24 = 2050;
-    v25 = a1;
+    selfCopy = self;
     v26 = 2082;
-    v27 = v12;
+    v27 = uTF8String;
     v28 = 2082;
-    v29 = v13;
+    v29 = uTF8String2;
     _os_log_impl(&dword_19B873000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, bundleID:%{public, location:escape_only}s, bundlePath:%{public, location:escape_only}s}", buf, 0x44u);
   }
 
@@ -3448,7 +3448,7 @@ LABEL_45:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_checkAndExerciseForPushClientWithBundleID:(id)a3 completionHandler:(id)a4
++ (void)_checkAndExerciseForPushClientWithBundleID:(id)d completionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
   v7 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -3465,7 +3465,7 @@ LABEL_45:
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
     v9 = NSStringFromSelector(a2);
-    v10 = [a3 UTF8String];
+    uTF8String = [d UTF8String];
     *buf = 68290050;
     v14 = 0;
     v15 = 2082;
@@ -3475,9 +3475,9 @@ LABEL_45:
     v19 = 2114;
     v20 = v9;
     v21 = 2050;
-    v22 = a1;
+    selfCopy = self;
     v23 = 2082;
-    v24 = v10;
+    v24 = uTF8String;
     _os_log_impl(&dword_19B873000, v8, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, bundleID:%{public, location:escape_only}s}", buf, 0x3Au);
   }
 
@@ -3486,7 +3486,7 @@ LABEL_45:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)_checkAndExerciseAuthorizationForBundleID:(id)a3 error:(id *)a4
++ (BOOL)_checkAndExerciseAuthorizationForBundleID:(id)d error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   v7 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -3503,7 +3503,7 @@ LABEL_45:
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
     v9 = NSStringFromSelector(a2);
-    v10 = [a3 UTF8String];
+    uTF8String = [d UTF8String];
     *buf = 68290050;
     v16 = 0;
     v17 = 2082;
@@ -3513,9 +3513,9 @@ LABEL_45:
     v21 = 2114;
     v22 = v9;
     v23 = 2050;
-    v24 = a1;
+    selfCopy = self;
     v25 = 2082;
-    v26 = v10;
+    v26 = uTF8String;
     _os_log_impl(&dword_19B873000, v8, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, bundleID:%{public, location:escape_only}s}", buf, 0x3Au);
   }
 
@@ -3525,7 +3525,7 @@ LABEL_45:
   return v11;
 }
 
-+ (BOOL)_checkAndExerciseAuthorizationForBundle:(id)a3 error:(id *)a4
++ (BOOL)_checkAndExerciseAuthorizationForBundle:(id)bundle error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   v7 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -3542,7 +3542,7 @@ LABEL_45:
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
     v9 = NSStringFromSelector(a2);
-    v10 = [objc_msgSend(a3 "bundlePath")];
+    v10 = [objc_msgSend(bundle "bundlePath")];
     *buf = 68290050;
     v16 = 0;
     v17 = 2082;
@@ -3552,13 +3552,13 @@ LABEL_45:
     v21 = 2114;
     v22 = v9;
     v23 = 2050;
-    v24 = a1;
+    selfCopy = self;
     v25 = 2082;
     v26 = v10;
     _os_log_impl(&dword_19B873000, v8, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, bundlePath:%{public, location:escape_only}s}", buf, 0x3Au);
   }
 
-  [a3 bundlePath];
+  [bundle bundlePath];
   v11 = sub_19B9BF3F0();
   os_activity_scope_leave(&v14);
   v12 = *MEMORY[0x1E69E9840];
@@ -3591,7 +3591,7 @@ LABEL_45:
     v15 = 2114;
     v16 = v6;
     v17 = 2050;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -3627,7 +3627,7 @@ LABEL_45:
     v24 = 2114;
     v25 = v10;
     v26 = 2050;
-    v27 = self;
+    selfCopy = self;
     v28 = 2050;
     v29 = distance;
     v30 = 2050;
@@ -3718,7 +3718,7 @@ LABEL_45:
     v16 = 2114;
     v17 = v6;
     v18 = 2050;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -3733,7 +3733,7 @@ LABEL_45:
 
 + (BOOL)deferredLocationUpdatesAvailable
 {
-  [a1 collectMetricForFunction:32];
+  [self collectMetricForFunction:32];
   sub_19B87BBB4();
   return 0;
 }
@@ -3764,7 +3764,7 @@ LABEL_45:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -3805,7 +3805,7 @@ LABEL_45:
     v20 = 2114;
     v21 = v8;
     v22 = 2050;
-    v23 = self;
+    selfCopy = self;
     v24 = 2050;
     v25 = headingFilter;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, filter:%{public}f}", buf, 0x3Au);
@@ -3862,7 +3862,7 @@ LABEL_45:
     v18 = 2114;
     v19 = v6;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -3899,7 +3899,7 @@ LABEL_45:
     v18 = 2114;
     v19 = v8;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     v22 = 2050;
     v23 = headingOrientation;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, orientation:%{public, location:CLDeviceOrientation}lld}", buf, 0x3Au);
@@ -3947,7 +3947,7 @@ LABEL_45:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -4075,7 +4075,7 @@ LABEL_45:
     v19 = 2114;
     v20 = v6;
     v21 = 2050;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -4144,7 +4144,7 @@ LABEL_45:
     v19 = 2114;
     v20 = v6;
     v21 = 2050;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -4185,11 +4185,11 @@ LABEL_45:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringSignificantLocationChangesOfDistance:(double)a3 withPowerBudget:(int)a4
+- (void)_startMonitoringSignificantLocationChangesOfDistance:(double)distance withPowerBudget:(int)budget
 {
   v24 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v12 = a4;
+  distanceCopy = distance;
+  budgetCopy = budget;
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v11.opaque[0] = 0;
   v11.opaque[1] = 0;
@@ -4213,14 +4213,14 @@ LABEL_45:
     v20 = 2114;
     v21 = v8;
     v22 = 2050;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
   internal = self->_internal;
   objc_sync_enter(self);
   *(internal + 60) = 0xBFF0000000000000;
-  sub_19B880EA0(internal[1], &v13, &v12);
+  sub_19B880EA0(internal[1], &distanceCopy, &budgetCopy);
   objc_sync_exit(self);
   os_activity_scope_leave(&v11);
   v10 = *MEMORY[0x1E69E9840];
@@ -4252,7 +4252,7 @@ LABEL_45:
     v16 = 2114;
     v17 = v6;
     v18 = 2050;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -4291,7 +4291,7 @@ LABEL_45:
     v17 = 2114;
     v18 = v7;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v6, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -4330,7 +4330,7 @@ LABEL_45:
     v16 = 2114;
     v17 = v6;
     v18 = 2050;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -4360,7 +4360,7 @@ LABEL_45:
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
-    v9 = [(CLRegion *)region identifier];
+    identifier = [(CLRegion *)region identifier];
     [(CLRegion *)region center];
     v11 = v10;
     [(CLRegion *)region center];
@@ -4375,9 +4375,9 @@ LABEL_45:
     *&buf[28] = 2114;
     *&buf[30] = v8;
     *&buf[38] = 2050;
-    v37 = self;
+    selfCopy = self;
     v38 = 2113;
-    v39 = v9;
+    v39 = identifier;
     v40 = 2053;
     v41 = v11;
     v42 = 2053;
@@ -4445,10 +4445,10 @@ LABEL_45:
 
   if (v18)
   {
-    v20 = [(CLRegion *)v18 UUID];
+    uUID = [(CLRegion *)v18 UUID];
     if (region)
     {
-      v21 = v20 == 0;
+      v21 = uUID == 0;
     }
 
     else
@@ -4497,7 +4497,7 @@ LABEL_45:
   }
 
   internal = self->_internal;
-  v23 = [internal delegate];
+  delegate = [internal delegate];
   objc_sync_enter(self);
   [internal performCourtesyPromptIfNeeded];
   if (v15 || !sub_19B88A994(internal[1], region))
@@ -4508,7 +4508,7 @@ LABEL_45:
     v32[2] = sub_19B8A0AE8;
     v32[3] = &unk_1E753D098;
     v32[4] = self;
-    v32[5] = v23;
+    v32[5] = delegate;
     v32[6] = region;
     if (v24)
     {
@@ -4544,7 +4544,7 @@ LABEL_45:
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
-    v9 = [(CLRegion *)region identifier];
+    identifier = [(CLRegion *)region identifier];
     [(CLRegion *)region center];
     v11 = v10;
     [(CLRegion *)region center];
@@ -4559,9 +4559,9 @@ LABEL_45:
     v26 = 2114;
     v27 = v8;
     v28 = 2050;
-    v29 = self;
+    selfCopy = self;
     v30 = 2113;
-    v31 = v9;
+    v31 = identifier;
     v32 = 2053;
     v33 = v11;
     v34 = 2053;
@@ -4633,7 +4633,7 @@ LABEL_45:
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
-    v9 = [(CLRegion *)region identifier];
+    identifier = [(CLRegion *)region identifier];
     [(CLRegion *)region center];
     v11 = v10;
     [(CLRegion *)region center];
@@ -4648,9 +4648,9 @@ LABEL_45:
     v26 = 2114;
     v27 = v8;
     v28 = 2050;
-    v29 = self;
+    selfCopy = self;
     v30 = 2113;
-    v31 = v9;
+    v31 = identifier;
     v32 = 2053;
     v33 = v11;
     v34 = 2053;
@@ -4732,7 +4732,7 @@ LABEL_45:
     v16 = 2114;
     v17 = v6;
     v18 = 2050;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -4770,7 +4770,7 @@ LABEL_45:
     *&v26[20] = 2114;
     *&v26[22] = v8;
     *&v26[30] = 2050;
-    v27 = self;
+    selfCopy = self;
     v28 = 2113;
     v29 = region;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, region:%{private, location:escape_only}@}", buf, 0x3Au);
@@ -4820,13 +4820,13 @@ LABEL_45:
     v12 = qword_1ED519090;
     if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(NSString *)[(CLRegion *)region onBehalfOfBundleId] UTF8String];
+      uTF8String = [(NSString *)[(CLRegion *)region onBehalfOfBundleId] UTF8String];
       *buf = 68289282;
       *&buf[4] = 0;
       *v26 = 2082;
       *&v26[2] = "";
       *&v26[10] = 2082;
-      *&v26[12] = v13;
+      *&v26[12] = uTF8String;
       _os_log_impl(&dword_19B873000, v12, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:Cannot start ranging beacons on behalf of another app, onBehalfOf:%{public, location:escape_only}s}", buf, 0x1Cu);
       if (qword_1ED519088 != -1)
       {
@@ -4837,13 +4837,13 @@ LABEL_45:
     v14 = qword_1ED519090;
     if (os_signpost_enabled(qword_1ED519090))
     {
-      v15 = [(NSString *)[(CLRegion *)region onBehalfOfBundleId] UTF8String];
+      uTF8String2 = [(NSString *)[(CLRegion *)region onBehalfOfBundleId] UTF8String];
       *buf = 68289282;
       *&buf[4] = 0;
       *v26 = 2082;
       *&v26[2] = "";
       *&v26[10] = 2082;
-      *&v26[12] = v15;
+      *&v26[12] = uTF8String2;
       _os_signpost_emit_with_name_impl(&dword_19B873000, v14, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Cannot start ranging beacons on behalf of another app", "{msg%{public}.0s:Cannot start ranging beacons on behalf of another app, onBehalfOf:%{public, location:escape_only}s}", buf, 0x1Cu);
     }
 
@@ -4885,7 +4885,7 @@ LABEL_45:
   }
 
   internal = self->_internal;
-  v19 = [internal delegate];
+  delegate = [internal delegate];
   objc_sync_enter(self);
   if (v9 || ([internal performCourtesyPromptIfNeeded], objc_msgSend(objc_msgSend(internal, "rangedRegions"), "removeObject:", region), objc_msgSend(objc_msgSend(internal, "rangedRegions"), "addObject:", region), !sub_19B88D920(internal[1], objc_msgSend(objc_alloc(MEMORY[0x1E695DFA8]), "initWithSet:copyItems:", objc_msgSend(internal, "rangedRegions"), 1), 1)))
   {
@@ -4895,7 +4895,7 @@ LABEL_45:
     v23[2] = sub_19B8A1B60;
     v23[3] = &unk_1E753D098;
     v23[4] = self;
-    v23[5] = v19;
+    v23[5] = delegate;
     v23[6] = region;
     if (v20)
     {
@@ -4940,7 +4940,7 @@ LABEL_45:
     v29 = 2114;
     v30 = v8;
     v31 = 2050;
-    v32 = self;
+    selfCopy = self;
     v33 = 2113;
     v34 = region;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, region:%{private, location:escape_only}@}", buf, 0x3Au);
@@ -5040,13 +5040,13 @@ LABEL_29:
   v9 = qword_1ED519090;
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_ERROR))
   {
-    v10 = [(NSString *)[(CLRegion *)region onBehalfOfBundleId] UTF8String];
+    uTF8String = [(NSString *)[(CLRegion *)region onBehalfOfBundleId] UTF8String];
     *buf = 68289282;
     v24 = 0;
     v25 = 2082;
     v26 = "";
     v27 = 2082;
-    v28 = v10;
+    v28 = uTF8String;
     _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:Cannot stop ranging beacons on behalf of another app, onBehalfOf:%{public, location:escape_only}s}", buf, 0x1Cu);
     if (qword_1ED519088 != -1)
     {
@@ -5057,13 +5057,13 @@ LABEL_29:
   v11 = qword_1ED519090;
   if (os_signpost_enabled(qword_1ED519090))
   {
-    v12 = [(NSString *)[(CLRegion *)region onBehalfOfBundleId] UTF8String];
+    uTF8String2 = [(NSString *)[(CLRegion *)region onBehalfOfBundleId] UTF8String];
     *buf = 68289282;
     v24 = 0;
     v25 = 2082;
     v26 = "";
     v27 = 2082;
-    v28 = v12;
+    v28 = uTF8String2;
     v13 = "Cannot stop ranging beacons on behalf of another app";
     v14 = "{msg%{public}.0s:Cannot stop ranging beacons on behalf of another app, onBehalfOf:%{public, location:escape_only}s}";
     v15 = v11;
@@ -5102,7 +5102,7 @@ LABEL_31:
     *&v28[20] = 2114;
     *&v28[22] = v8;
     *&v28[30] = 2050;
-    v29 = self;
+    selfCopy = self;
     v30 = 2113;
     v31 = constraint;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, constraint:%{private, location:escape_only}@}", buf, 0x3Au);
@@ -5115,7 +5115,7 @@ LABEL_31:
   }
 
   internal = self->_internal;
-  v18 = [internal delegate];
+  delegate = [internal delegate];
   objc_sync_enter(self);
   [objc_msgSend(internal "rangedConstraints")];
   v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -5124,8 +5124,8 @@ LABEL_31:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = [internal rangedConstraints];
-  v12 = [v11 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  rangedConstraints = [internal rangedConstraints];
+  v12 = [rangedConstraints countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v12)
   {
     v13 = *v22;
@@ -5135,13 +5135,13 @@ LABEL_31:
       {
         if (*v22 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(rangedConstraints);
         }
 
         [v10 addObject:{-[CLBeaconRegion initWithBeaconIdentityConstraint:identifier:]([CLBeaconRegion alloc], "initWithBeaconIdentityConstraint:identifier:", *(*(&v21 + 1) + 8 * i), &stru_1F0E6F140)}];
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v12 = [rangedConstraints countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v12);
@@ -5155,7 +5155,7 @@ LABEL_31:
     v20[2] = sub_19B8A2644;
     v20[3] = &unk_1E753D098;
     v20[4] = self;
-    v20[5] = v18;
+    v20[5] = delegate;
     v20[6] = v19;
     if (v15)
     {
@@ -5199,7 +5199,7 @@ LABEL_31:
     v27 = 2114;
     v28 = v8;
     v29 = 2050;
-    v30 = self;
+    selfCopy = self;
     v31 = 2113;
     v32 = constraint;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, constraint:%{private, location:escape_only}@}", &buf, 0x3Au);
@@ -5219,8 +5219,8 @@ LABEL_31:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v11 = [internal rangedConstraints];
-  v12 = [v11 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  rangedConstraints = [internal rangedConstraints];
+  v12 = [rangedConstraints countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v12)
   {
     v13 = *v17;
@@ -5230,13 +5230,13 @@ LABEL_31:
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(rangedConstraints);
         }
 
         [v10 addObject:{-[CLBeaconRegion initWithBeaconIdentityConstraint:identifier:]([CLBeaconRegion alloc], "initWithBeaconIdentityConstraint:identifier:", *(*(&v16 + 1) + 8 * i), &stru_1F0E6F140)}];
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v12 = [rangedConstraints countByEnumeratingWithState:&v16 objects:v21 count:16];
     }
 
     while (v12);
@@ -5274,7 +5274,7 @@ LABEL_31:
     v18 = 2114;
     v19 = v6;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -5314,7 +5314,7 @@ LABEL_31:
     v18 = 2114;
     v19 = v6;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -5328,21 +5328,21 @@ LABEL_31:
   return v8;
 }
 
-+ (id)metadataForHomekitAccessoryControlEventWithUUID:(id)a3 stateString:(id)a4 serviceUUID:(id)a5 serviceType:(id)a6 characteristicType:(id)a7 serviceGroupUUID:(id)a8 source:(id)a9 roomUUID:(id)a10
++ (id)metadataForHomekitAccessoryControlEventWithUUID:(id)d stateString:(id)string serviceUUID:(id)iD serviceType:(id)type characteristicType:(id)characteristicType serviceGroupUUID:(id)uID source:(id)source roomUUID:(id)self0
 {
   v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v16 setValue:a3 forKey:0x1F0E71780];
-  [v16 setValue:a4 forKey:0x1F0E71800];
-  [v16 setValue:a5 forKey:0x1F0E71820];
-  [v16 setValue:a6 forKey:0x1F0E717A0];
-  [v16 setValue:a7 forKey:0x1F0E717C0];
-  [v16 setValue:a8 forKey:0x1F0E71840];
-  [v16 setValue:a9 forKey:0x1F0E717E0];
-  [v16 setValue:a10 forKey:0x1F0E71860];
+  [v16 setValue:d forKey:0x1F0E71780];
+  [v16 setValue:string forKey:0x1F0E71800];
+  [v16 setValue:iD forKey:0x1F0E71820];
+  [v16 setValue:type forKey:0x1F0E717A0];
+  [v16 setValue:characteristicType forKey:0x1F0E717C0];
+  [v16 setValue:uID forKey:0x1F0E71840];
+  [v16 setValue:source forKey:0x1F0E717E0];
+  [v16 setValue:uUID forKey:0x1F0E71860];
   return v16;
 }
 
-- (void)exportMicroLocationDatabaseTablesWithCompletion:(id)a3
+- (void)exportMicroLocationDatabaseTablesWithCompletion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -5368,7 +5368,7 @@ LABEL_31:
     v21 = 2114;
     v22 = v8;
     v23 = 2050;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -5394,14 +5394,14 @@ LABEL_31:
   v13[1] = 3221225472;
   v13[2] = sub_19B8A31E0;
   v13[3] = &unk_1E753D0C0;
-  v13[4] = a3;
+  v13[4] = completion;
   sub_19B88FA04(v11, v13);
   objc_sync_exit(self);
   os_activity_scope_leave(&state);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)exportMicroLocationDataForMigrationWithCompletion:(id)a3
+- (void)exportMicroLocationDataForMigrationWithCompletion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -5427,7 +5427,7 @@ LABEL_31:
     v21 = 2114;
     v22 = v8;
     v23 = 2050;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -5453,14 +5453,14 @@ LABEL_31:
   v13[1] = 3221225472;
   v13[2] = sub_19B8A360C;
   v13[3] = &unk_1E753D0C0;
-  v13[4] = a3;
+  v13[4] = completion;
   sub_19B88FC24(v11, v13);
   objc_sync_exit(self);
   os_activity_scope_leave(&state);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestMicroLocationStaticSourcesStatisticsWithCompletion:(id)a3
+- (void)requestMicroLocationStaticSourcesStatisticsWithCompletion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -5486,7 +5486,7 @@ LABEL_31:
     v21 = 2114;
     v22 = v8;
     v23 = 2050;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -5512,14 +5512,14 @@ LABEL_31:
   v13[1] = 3221225472;
   v13[2] = sub_19B8A3A38;
   v13[3] = &unk_1E753D0C0;
-  v13[4] = a3;
+  v13[4] = completion;
   sub_19B88FE44(v11, v13);
   objc_sync_exit(self);
   os_activity_scope_leave(&state);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestMicroLocationLearningWithCompletion:(id)a3
+- (void)requestMicroLocationLearningWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -5545,7 +5545,7 @@ LABEL_31:
     v19 = 2114;
     v20 = v8;
     v21 = 2050;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -5566,13 +5566,13 @@ LABEL_31:
 
   internal = self->_internal;
   objc_sync_enter(self);
-  sub_19B890064(internal[1], a3);
+  sub_19B890064(internal[1], completion);
   objc_sync_exit(self);
   os_activity_scope_leave(&v12);
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestCurrentMicroLocationWithAdditionalInformation:(id)a3 withCompletion:(id)a4
+- (void)requestCurrentMicroLocationWithAdditionalInformation:(id)information withCompletion:(id)completion
 {
   v51 = *MEMORY[0x1E69E9840];
   v8 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -5597,7 +5597,7 @@ LABEL_31:
     v47 = 2114;
     v48 = v10;
     v49 = 2050;
-    v50 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", &buf, 0x30u);
   }
 
@@ -5618,15 +5618,15 @@ LABEL_31:
   v41[0] = objc_opt_class();
   v41[1] = objc_opt_class();
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
-  v27 = a4;
-  v28 = self;
-  v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:a3 copyItems:1];
+  completionCopy = completion;
+  selfCopy2 = self;
+  v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:information copyItems:1];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = a3;
-  v14 = [a3 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  obj = information;
+  v14 = [information countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v14)
   {
     v15 = *v35;
@@ -5690,17 +5690,17 @@ LABEL_22:
     while (v14);
   }
 
-  v22 = objc_sync_enter(v28);
-  sub_19B88F3B8(v22, v23, v24, v27);
-  objc_sync_exit(v28);
+  v22 = objc_sync_enter(selfCopy2);
+  sub_19B88F3B8(v22, v23, v24, completionCopy);
+  objc_sync_exit(selfCopy2);
   v25 = v13;
   os_activity_scope_leave(&state);
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestMicroLocationRecordingScanWithAdditionalInformation:(id)a3 shouldForceRecording:(BOOL)a4
+- (void)requestMicroLocationRecordingScanWithAdditionalInformation:(id)information shouldForceRecording:(BOOL)recording
 {
-  v4 = a4;
+  recordingCopy = recording;
   v50 = *MEMORY[0x1E69E9840];
   v7 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
@@ -5724,7 +5724,7 @@ LABEL_22:
     v46 = 2114;
     v47 = v9;
     v48 = 2050;
-    v49 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v8, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", &buf, 0x30u);
   }
 
@@ -5740,18 +5740,18 @@ LABEL_22:
     v42 = 2082;
     v43 = "";
     v44 = 1026;
-    LODWORD(v45) = v4;
+    LODWORD(v45) = recordingCopy;
     _os_log_impl(&dword_19B873000, v10, OS_LOG_TYPE_INFO, "{msg%{public}.0s:received recording scan request, forced::%{public}hhd}", &buf, 0x18u);
   }
 
-  if (!a3)
+  if (!information)
   {
-    a3 = objc_alloc_init(MEMORY[0x1E695DF90]);
+    information = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:a3 copyItems:1];
+  v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:information copyItems:1];
   v12 = v11;
-  if (v4)
+  if (recordingCopy)
   {
     v13 = MEMORY[0x1E695E118];
   }
@@ -5771,12 +5771,12 @@ LABEL_22:
   v40[1] = objc_opt_class();
   v40[2] = objc_opt_class();
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:3];
-  v27 = self;
+  selfCopy2 = self;
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v15 = [a3 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  v15 = [information countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v15)
   {
     v16 = *v34;
@@ -5786,7 +5786,7 @@ LABEL_22:
       {
         if (*v34 != v16)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(information);
         }
 
         v18 = *(*(&v33 + 1) + 8 * i);
@@ -5834,22 +5834,22 @@ LABEL_29:
         }
       }
 
-      v15 = [a3 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      v15 = [information countByEnumeratingWithState:&v33 objects:v39 count:16];
     }
 
     while (v15);
   }
 
-  v23 = objc_sync_enter(v27);
+  v23 = objc_sync_enter(selfCopy2);
   sub_19B88F3B8(v23, v24, v25, 0);
-  objc_sync_exit(v27);
+  objc_sync_exit(selfCopy2);
   os_activity_scope_leave(&state);
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getRecordingTriggerUUIDAndRequestMicroLocationRecordingScanWithAdditionalInformation:(id)a3 shouldForceRecording:(BOOL)a4 handler:(id)a5
+- (id)getRecordingTriggerUUIDAndRequestMicroLocationRecordingScanWithAdditionalInformation:(id)information shouldForceRecording:(BOOL)recording handler:(id)handler
 {
-  v6 = a4;
+  recordingCopy = recording;
   v54 = *MEMORY[0x1E69E9840];
   v9 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
@@ -5873,7 +5873,7 @@ LABEL_29:
     v50 = 2114;
     v51 = v11;
     v52 = 2050;
-    v53 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", &buf, 0x30u);
   }
 
@@ -5889,19 +5889,19 @@ LABEL_29:
     v46 = 2082;
     v47 = "";
     v48 = 1026;
-    LODWORD(v49) = v6;
+    LODWORD(v49) = recordingCopy;
     _os_log_impl(&dword_19B873000, v12, OS_LOG_TYPE_INFO, "{msg%{public}.0s:received recording scan request, forced::%{public}hhd}", &buf, 0x18u);
   }
 
-  v31 = [MEMORY[0x1E696AFB0] UUID];
-  if (!a3)
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  if (!information)
   {
-    a3 = objc_alloc_init(MEMORY[0x1E695DF90]);
+    information = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:a3 copyItems:1];
-  [v13 setValue:v31 forKey:0x1F0E71980];
-  if (v6)
+  v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:information copyItems:1];
+  [v13 setValue:uUID forKey:0x1F0E71980];
+  if (recordingCopy)
   {
     v14 = MEMORY[0x1E695E118];
   }
@@ -5912,8 +5912,8 @@ LABEL_29:
   }
 
   [v13 setValue:v14 forKey:0x1F0E71960];
-  v29 = a5;
-  v30 = self;
+  handlerCopy = handler;
+  selfCopy2 = self;
   v44[0] = objc_opt_class();
   v44[1] = objc_opt_class();
   v44[2] = objc_opt_class();
@@ -5922,7 +5922,7 @@ LABEL_29:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v16 = [a3 countByEnumeratingWithState:&v37 objects:v43 count:16];
+  v16 = [information countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v16)
   {
     v17 = *v38;
@@ -5932,7 +5932,7 @@ LABEL_29:
       {
         if (*v38 != v17)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(information);
         }
 
         v19 = *(*(&v37 + 1) + 8 * i);
@@ -5940,7 +5940,7 @@ LABEL_29:
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v20 = [v15 countByEnumeratingWithState:&v33 objects:v42 count:{16, v29}];
+        v20 = [v15 countByEnumeratingWithState:&v33 objects:v42 count:{16, handlerCopy}];
         if (v20)
         {
           v21 = *v34;
@@ -5980,21 +5980,21 @@ LABEL_27:
         }
       }
 
-      v16 = [a3 countByEnumeratingWithState:&v37 objects:v43 count:16];
+      v16 = [information countByEnumeratingWithState:&v37 objects:v43 count:16];
     }
 
     while (v16);
   }
 
-  v24 = objc_sync_enter(v30);
-  sub_19B88F3B8(v24, v25, v26, v29);
-  objc_sync_exit(v30);
+  v24 = objc_sync_enter(selfCopy2);
+  sub_19B88F3B8(v24, v25, v26, handlerCopy);
+  objc_sync_exit(selfCopy2);
   os_activity_scope_leave(&state);
   v27 = *MEMORY[0x1E69E9840];
-  return v31;
+  return uUID;
 }
 
-- (void)donateMicroLocationTruthTagWithTagUUID:(id)a3 correspondingToTriggerUUID:(id)a4 handler:(id)a5
+- (void)donateMicroLocationTruthTagWithTagUUID:(id)d correspondingToTriggerUUID:(id)iD handler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
   v10 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -6020,7 +6020,7 @@ LABEL_27:
     v23 = 2114;
     v24 = v12;
     v25 = 2050;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v11, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -6041,13 +6041,13 @@ LABEL_27:
 
   internal = self->_internal;
   objc_sync_enter(self);
-  sub_19B88F5D4(internal[1], [a3 UUIDString], objc_msgSend(a4, "UUIDString"), a5);
+  sub_19B88F5D4(internal[1], [d UUIDString], objc_msgSend(iD, "UUIDString"), handler);
   objc_sync_exit(self);
   os_activity_scope_leave(&v16);
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)donateMicroLocationTruthTagWithTagUUID:(id)a3 forRecordingEventsBetweenDate:(id)a4 andDate:(id)a5 handler:(id)a6
+- (void)donateMicroLocationTruthTagWithTagUUID:(id)d forRecordingEventsBetweenDate:(id)date andDate:(id)andDate handler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
   v12 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -6073,18 +6073,18 @@ LABEL_27:
     v28 = 2114;
     v29 = v14;
     v30 = 2050;
-    v31 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v13, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  if ([a4 compare:a5] == 1)
+  if ([date compare:andDate] == 1)
   {
-    if (a6)
+    if (handler)
     {
       v15 = objc_alloc(MEMORY[0x1E696ABC0]);
       v20 = *MEMORY[0x1E696A578];
       v21 = @"donateTruthTagLabelForClient failed because startDate is later than endDate";
-      (*(a6 + 2))(a6, [v15 initWithDomain:@"kCLErrorDomainPrivate" code:5 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v21, &v20, 1)}]);
+      (*(handler + 2))(handler, [v15 initWithDomain:@"kCLErrorDomainPrivate" code:5 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v21, &v20, 1)}]);
     }
   }
 
@@ -6107,7 +6107,7 @@ LABEL_27:
 
     internal = self->_internal;
     objc_sync_enter(self);
-    sub_19B88F7EC(internal[1], [a3 UUIDString], a4, a5, a6);
+    sub_19B88F7EC(internal[1], [d UUIDString], date, andDate, handler);
     objc_sync_exit(self);
   }
 
@@ -6115,7 +6115,7 @@ LABEL_27:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startTranscriptSessionInstantlyWithCompletion:(id)a3
+- (void)startTranscriptSessionInstantlyWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -6141,19 +6141,19 @@ LABEL_27:
     v18 = 2114;
     v19 = v8;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
   internal = self->_internal;
   objc_sync_enter(self);
-  sub_19B88B1CC(internal[1], 1, 0, a3);
+  sub_19B88B1CC(internal[1], 1, 0, completion);
   objc_sync_exit(self);
   os_activity_scope_leave(&v11);
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startTranscriptSessionWithCompletion:(id)a3
+- (void)startTranscriptSessionWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -6179,19 +6179,19 @@ LABEL_27:
     v18 = 2114;
     v19 = v8;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
   internal = self->_internal;
   objc_sync_enter(self);
-  sub_19B88B1CC(internal[1], 1, 1, a3);
+  sub_19B88B1CC(internal[1], 1, 1, completion);
   objc_sync_exit(self);
   os_activity_scope_leave(&v11);
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)endTranscriptSessionWithCompletion:(id)a3
+- (void)endTranscriptSessionWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -6217,13 +6217,13 @@ LABEL_27:
     v18 = 2114;
     v19 = v8;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
   internal = self->_internal;
   objc_sync_enter(self);
-  sub_19B88B1CC(internal[1], 0, 0, a3);
+  sub_19B88B1CC(internal[1], 0, 0, completion);
   objc_sync_exit(self);
   os_activity_scope_leave(&v11);
   v10 = *MEMORY[0x1E69E9840];
@@ -6255,7 +6255,7 @@ LABEL_27:
     v20 = 2114;
     v21 = v10;
     v22 = 2050;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -6268,7 +6268,7 @@ LABEL_27:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)willPromptForTranscriptSessionWithCompletion:(id)a3
+- (void)willPromptForTranscriptSessionWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -6294,7 +6294,7 @@ LABEL_27:
     v17 = 2114;
     v18 = v7;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v6, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -6306,7 +6306,7 @@ LABEL_27:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)isConsideredInRemoteAreaWithCompletion:(id)a3
+- (void)isConsideredInRemoteAreaWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -6332,7 +6332,7 @@ LABEL_27:
     v17 = 2114;
     v18 = v7;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v6, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -6344,22 +6344,22 @@ LABEL_27:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)metadataForHomekitActionSetEventWithUUID:(id)a3 name:(id)a4 type:(id)a5 clientName:(id)a6 source:(id)a7 homeName:(id)a8
++ (id)metadataForHomekitActionSetEventWithUUID:(id)d name:(id)name type:(id)type clientName:(id)clientName source:(id)source homeName:(id)homeName
 {
   v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v14 setValue:a3 forKey:0x1F0E71880];
-  [v14 setValue:a4 forKey:0x1F0E718A0];
-  [v14 setValue:a5 forKey:0x1F0E718C0];
-  [v14 setValue:a6 forKey:0x1F0E718E0];
-  [v14 setValue:a7 forKey:0x1F0E71900];
-  [v14 setValue:a8 forKey:0x1F0E71920];
+  [v14 setValue:d forKey:0x1F0E71880];
+  [v14 setValue:name forKey:0x1F0E718A0];
+  [v14 setValue:type forKey:0x1F0E718C0];
+  [v14 setValue:clientName forKey:0x1F0E718E0];
+  [v14 setValue:source forKey:0x1F0E71900];
+  [v14 setValue:homeName forKey:0x1F0E71920];
   return v14;
 }
 
-+ (id)metadataForMicroLocationTruthTagEventWithTagUUID:(id)a3
++ (id)metadataForMicroLocationTruthTagEventWithTagUUID:(id)d
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v4 setValue:a3 forKey:0x1F0E71940];
+  [v4 setValue:d forKey:0x1F0E71940];
   return v4;
 }
 
@@ -6389,7 +6389,7 @@ LABEL_27:
     v18 = 2114;
     v19 = v6;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -6443,7 +6443,7 @@ LABEL_27:
     v18 = 2114;
     v19 = v6;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -6497,7 +6497,7 @@ LABEL_27:
     v15 = 2114;
     v16 = v6;
     v17 = 2050;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -6534,7 +6534,7 @@ LABEL_27:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -6570,7 +6570,7 @@ LABEL_27:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -6606,7 +6606,7 @@ LABEL_27:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -6642,7 +6642,7 @@ LABEL_27:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -6678,7 +6678,7 @@ LABEL_27:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -6688,7 +6688,7 @@ LABEL_27:
   return v7;
 }
 
-- (void)addIdentifiableClient:(id)a3
+- (void)addIdentifiableClient:(id)client
 {
   v20 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -6714,16 +6714,16 @@ LABEL_27:
     *&v15[20] = 2114;
     *&v15[22] = v8;
     v16 = 2050;
-    v17 = self;
+    selfCopy = self;
     v18 = 2050;
-    v19 = a3;
+    clientCopy = client;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, client:%{public}p}", buf, 0x3Au);
   }
 
-  if (a3)
+  if (client)
   {
     internal = self->_internal;
-    objc_initWeak(&location, a3);
+    objc_initWeak(&location, client);
     *buf = MEMORY[0x1E69E9820];
     *v15 = 3221225472;
     *&v15[8] = sub_19B898110;
@@ -6735,15 +6735,15 @@ LABEL_27:
     objc_sync_enter(self);
     [internal[35] addObject:v10];
     objc_sync_exit(self);
-    [a3 setWeakClient:v10];
-    [a3 updateIdentityToken:objc_msgSend(internal withStorageToken:{"clientKeyForIdentityValidation"), objc_msgSend(internal, "monitorLedgerAccessKey")}];
+    [client setWeakClient:v10];
+    [client updateIdentityToken:objc_msgSend(internal withStorageToken:{"clientKeyForIdentityValidation"), objc_msgSend(internal, "monitorLedgerAccessKey")}];
   }
 
   os_activity_scope_leave(&state);
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeIdentifiableClient:(id)a3
+- (void)removeIdentifiableClient:(id)client
 {
   v27 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -6760,7 +6760,7 @@ LABEL_27:
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
-    v9 = [a3 weakClient];
+    weakClient = [client weakClient];
     *buf = 68290306;
     v14 = 0;
     v15 = 2082;
@@ -6770,20 +6770,20 @@ LABEL_27:
     v19 = 2114;
     v20 = v8;
     v21 = 2050;
-    v22 = self;
+    selfCopy = self;
     v23 = 2050;
-    v24 = a3;
+    clientCopy = client;
     v25 = 2050;
-    v26 = v9;
+    v26 = weakClient;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, client:%{public}p, weakClient:%{public}p}", buf, 0x44u);
   }
 
-  if (a3 && [a3 weakClient])
+  if (client && [client weakClient])
   {
     internal = self->_internal;
     objc_sync_enter(self);
-    [internal[35] removeObject:{objc_msgSend(a3, "weakClient")}];
-    [a3 setWeakClient:0];
+    [internal[35] removeObject:{objc_msgSend(client, "weakClient")}];
+    [client setWeakClient:0];
     objc_sync_exit(self);
   }
 
@@ -6793,20 +6793,20 @@ LABEL_27:
 
 - (NSString)processName
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
 
-  return [v2 processName];
+  return [processInfo processName];
 }
 
-- (void)onClientEvent:(int)a3 supportInfo:(id)a4
+- (void)onClientEvent:(int)event supportInfo:(id)info
 {
   if (self->_internal)
   {
-    switch(a3)
+    switch(event)
     {
       case 0:
         v6 = copyLocationsFromLocationMessagePayload();
-        -[CLLocationManager onClientEventLocation:forceMapMatching:type:](self, "onClientEventLocation:forceMapMatching:type:", v6, [objc_msgSend(a4 objectForKeyedSubscript:{@"ForceMapMatching", "BOOLValue"}], objc_msgSend(a4, "objectForKeyedSubscript:", @"kCLClientEventKey"));
+        -[CLLocationManager onClientEventLocation:forceMapMatching:type:](self, "onClientEventLocation:forceMapMatching:type:", v6, [objc_msgSend(info objectForKeyedSubscript:{@"ForceMapMatching", "BOOLValue"}], objc_msgSend(info, "objectForKeyedSubscript:", @"kCLClientEventKey"));
 
         break;
       case 1:
@@ -6907,13 +6907,13 @@ LABEL_27:
   }
 }
 
-- (void)onClientEventRegistration:(id)a3
+- (void)onClientEventRegistration:(id)registration
 {
   v36 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
   internal = self->_internal;
-  v7 = [a3 objectForKey:@"kCLConnectionMessageClientKeyForIdentityValidation"];
-  v8 = [a3 objectForKey:@"kCLConnectionMessageMonitorLedgerAccessKey"];
+  v7 = [registration objectForKey:@"kCLConnectionMessageClientKeyForIdentityValidation"];
+  v8 = [registration objectForKey:@"kCLConnectionMessageMonitorLedgerAccessKey"];
   v9 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -6936,7 +6936,7 @@ LABEL_27:
     v30 = 2114;
     v31 = v11;
     v32 = 2050;
-    v33 = self;
+    selfCopy = self;
     v34 = 2114;
     v35 = v7;
     _os_log_impl(&dword_19B873000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, clientKey:%{public, location:escape_only}@}", &buf, 0x3Au);
@@ -7006,14 +7006,14 @@ LABEL_27:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventAuthStatus:(id)a3
+- (void)onClientEventAuthStatus:(id)status
 {
   v42 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
-  v6 = [internal delegate];
+  delegate = [internal delegate];
   v25 = 0;
   v24 = 0;
-  if (!CLClientGetAuthorizationStatusAndCorrectiveCompensation(a3, &v25, &v24, &v24 + 1))
+  if (!CLClientGetAuthorizationStatusAndCorrectiveCompensation(status, &v25, &v24, &v24 + 1))
   {
     if (qword_1ED519088 != -1)
     {
@@ -7063,7 +7063,7 @@ LABEL_27:
     v12 = HIBYTE(v24);
     [*(internal + 4) setIsAuthorizedForWidgetUpdates:HIBYTE(v24) != 0];
     objc_sync_exit(self);
-    v13 = self;
+    selfCopy = self;
     if (objc_opt_respondsToSelector())
     {
       v14 = NSStringFromSelector(sel_locationManagerDidChangeAuthorization_);
@@ -7080,9 +7080,9 @@ LABEL_27:
         v28 = 2082;
         v29 = "";
         v30 = 2050;
-        v31 = self;
+        selfCopy4 = self;
         v32 = 2050;
-        v33 = v6;
+        v33 = delegate;
         v34 = 2114;
         v35 = v14;
         v36 = 2050;
@@ -7094,7 +7094,7 @@ LABEL_27:
         _os_log_impl(&dword_19B873000, v15, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, authorizationStatus:%{public, location:CLClientAuthorizationStatus}lld, limitsPrecision:%{public}hhd, isAuthorizedForWidgetUpdates:%{public}hhd}", buf, 0x46u);
       }
 
-      [v6 locationManagerDidChangeAuthorization:self];
+      [delegate locationManagerDidChangeAuthorization:self];
     }
 
     else
@@ -7115,9 +7115,9 @@ LABEL_27:
           v28 = 2082;
           v29 = "";
           v30 = 2050;
-          v31 = self;
+          selfCopy4 = self;
           v32 = 2050;
-          v33 = v6;
+          v33 = delegate;
           v34 = 2114;
           v35 = v19;
           v36 = 1026;
@@ -7125,7 +7125,7 @@ LABEL_27:
           _os_log_impl(&dword_19B873000, v20, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, approved:%{public}hhd}", buf, 0x36u);
         }
 
-        [v6 locationManager:self didReceiveApproval:v7 == 3];
+        [delegate locationManager:self didReceiveApproval:v7 == 3];
       }
 
       if (objc_opt_respondsToSelector())
@@ -7144,9 +7144,9 @@ LABEL_27:
           v28 = 2082;
           v29 = "";
           v30 = 2050;
-          v31 = self;
+          selfCopy4 = self;
           v32 = 2050;
-          v33 = v6;
+          v33 = delegate;
           v34 = 2114;
           v35 = v21;
           v36 = 2050;
@@ -7158,7 +7158,7 @@ LABEL_27:
           _os_log_impl(&dword_19B873000, v22, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, authorizationStatus:%{public, location:CLClientAuthorizationStatus}lld, limitsPrecision:%{public}hhd, isAuthorizedForWidgetUpdates:%{public}hhd}", buf, 0x46u);
         }
 
-        [v6 locationManager:self didChangeAuthorizationStatus:v7];
+        [delegate locationManager:self didChangeAuthorizationStatus:v7];
       }
     }
 
@@ -7172,12 +7172,12 @@ LABEL_40:
   objc_sync_exit(self);
 }
 
-- (void)onClientEventLocation:(id)a3 forceMapMatching:(BOOL)a4 type:(id)a5
+- (void)onClientEventLocation:(id)location forceMapMatching:(BOOL)matching type:(id)type
 {
   v72 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
-  v10 = [internal delegate];
-  if (![a3 count])
+  delegate = [internal delegate];
+  if (![location count])
   {
     if (qword_1ED519088 != -1)
     {
@@ -7209,9 +7209,9 @@ LABEL_40:
     goto LABEL_82;
   }
 
-  if (([*(internal + 4) allowsMapCorrection] & 1) == 0 && !a4)
+  if (([*(internal + 4) allowsMapCorrection] & 1) == 0 && !matching)
   {
-    [a3 makeObjectsPerformSelector:sel_unmatch];
+    [location makeObjectsPerformSelector:sel_unmatch];
   }
 
   v63 = 0u;
@@ -7221,10 +7221,10 @@ LABEL_40:
   memset(v61, 0, sizeof(v61));
   v59 = 0u;
   memset(v58, 0, sizeof(v58));
-  v11 = [a3 lastObject];
-  if (v11)
+  lastObject = [location lastObject];
+  if (lastObject)
   {
-    [v11 clientLocation];
+    [lastObject clientLocation];
   }
 
   else
@@ -7238,7 +7238,7 @@ LABEL_40:
     memset(v58, 0, sizeof(v58));
   }
 
-  if ([a3 count] != 1)
+  if ([location count] != 1)
   {
     goto LABEL_50;
   }
@@ -7247,12 +7247,12 @@ LABEL_40:
   {
     if (*(internal + 116) > *(v61 + 12))
     {
-      if (a5)
+      if (type)
       {
         v17 = *(internal + 25);
         if (v17)
         {
-          if (([v17 isEqualToString:a5] & 1) == 0)
+          if (([v17 isEqualToString:type] & 1) == 0)
           {
             if (qword_1ED519088 != -1)
             {
@@ -7330,7 +7330,7 @@ LABEL_50:
     {
     }
 
-    v21 = a5;
+    typeCopy = type;
     v22 = *(internal + 14);
     v23 = *(internal + 60);
     v52 = *(internal + 132);
@@ -7365,7 +7365,7 @@ LABEL_50:
       v30 = 0;
     }
 
-    *(internal + 25) = v21;
+    *(internal + 25) = typeCopy;
     v57 = v22;
     *(internal + 56) = v24;
     if (v32 >= 0.0 && !v30)
@@ -7394,7 +7394,7 @@ LABEL_50:
       }
     }
 
-    v34 = self;
+    selfCopy = self;
     objc_sync_enter(self);
     if ([*(internal + 4) requestingLocation])
     {
@@ -7430,7 +7430,7 @@ LABEL_81:
         *&buf[18] = 2050;
         *v66 = self;
         *&v66[8] = 2050;
-        *&v66[10] = v10;
+        *&v66[10] = delegate;
         *&v66[18] = 2114;
         *&v66[20] = v37;
         *&v66[28] = 1040;
@@ -7438,11 +7438,11 @@ LABEL_81:
         *&v66[34] = 2101;
         *&v66[36] = v58;
         *&v66[44] = 2114;
-        *&v66[46] = a5;
+        *&v66[46] = type;
         _os_log_impl(&dword_19B873000, v38, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, location:%{sensitive, location:CLClientLocation}.*P, eventType:%{public, location:escape_only}@}", buf, 0x4Au);
       }
 
-      [v10 locationManager:self didUpdateLocations:a3];
+      [delegate locationManager:self didUpdateLocations:location];
     }
 
     else if (objc_opt_respondsToSelector())
@@ -7487,13 +7487,13 @@ LABEL_81:
         *&buf[18] = 2050;
         *v66 = self;
         *&v66[8] = 2050;
-        *&v66[10] = v10;
+        *&v66[10] = delegate;
         *&v66[18] = 2114;
         *&v66[20] = v43;
         _os_log_impl(&dword_19B873000, v44, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@}", buf, 0x30u);
       }
 
-      [v10 locationManager:self didUpdateToLocation:objc_msgSend(a3 fromLocation:{"lastObject"), v39}];
+      [delegate locationManager:self didUpdateToLocation:objc_msgSend(location fromLocation:{"lastObject"), v39}];
     }
 
     else
@@ -7538,11 +7538,11 @@ LABEL_82:
   v45 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventLocationUnavailable:(id)a3
+- (void)onClientEventLocationUnavailable:(id)unavailable
 {
   v18 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
-  v5 = [internal delegate];
+  delegate = [internal delegate];
   if ([internal[4] requestingLocation] & 1) == 0 && (objc_opt_respondsToSelector())
   {
     v6 = NSStringFromSelector(sel_locationManager_didFailWithError_);
@@ -7559,25 +7559,25 @@ LABEL_82:
       v10 = 2082;
       v11 = "";
       v12 = 2050;
-      v13 = self;
+      selfCopy = self;
       v14 = 2050;
-      v15 = v5;
+      v15 = delegate;
       v16 = 2114;
       v17 = v6;
       _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate - location unavailable, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@}", v9, 0x30u);
     }
 
-    [v5 locationManager:self didFailWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", @"kCLErrorDomain", 0, 0)}];
+    [delegate locationManager:self didFailWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", @"kCLErrorDomain", 0, 0)}];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventHeading:(id)a3
+- (void)onClientEventHeading:(id)heading
 {
   v26 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
-  v5 = [internal delegate];
+  delegate = [internal delegate];
   v21 = 0;
   v19 = 0u;
   v20 = 0u;
@@ -7615,7 +7615,7 @@ LABEL_82:
         *&buf[18] = 2050;
         *&buf[20] = self;
         *&buf[28] = 2050;
-        *&buf[30] = v5;
+        *&buf[30] = delegate;
         *&buf[38] = 2114;
         *&buf[40] = v9;
         LOWORD(v23) = 2114;
@@ -7623,7 +7623,7 @@ LABEL_82:
         _os_log_impl(&dword_19B873000, v10, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, heading:%{public, location:escape_only}@}", buf, 0x3Au);
       }
 
-      [v5 locationManager:self didUpdateHeading:v7];
+      [delegate locationManager:self didUpdateHeading:v7];
     }
 
     else
@@ -7670,11 +7670,11 @@ LABEL_82:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventHeadingCalibration:(id)a3
+- (void)onClientEventHeadingCalibration:(id)calibration
 {
   v25 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
-  v5 = [internal delegate];
+  delegate = [internal delegate];
   objc_sync_enter(self);
   if (objc_opt_respondsToSelector())
   {
@@ -7692,15 +7692,15 @@ LABEL_82:
       v17 = 2082;
       v18 = "";
       v19 = 2050;
-      v20 = self;
+      selfCopy = self;
       v21 = 2050;
-      v22 = v5;
+      v22 = delegate;
       v23 = 2114;
       v24 = v6;
       _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@}", buf, 0x30u);
     }
 
-    if ([v5 locationManagerShouldDisplayHeadingCalibration:self])
+    if ([delegate locationManagerShouldDisplayHeadingCalibration:self])
     {
       if (qword_1ED519088 != -1)
       {
@@ -7769,7 +7769,7 @@ LABEL_82:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventPlaceInferenceResult:(id)a3
+- (void)onClientEventPlaceInferenceResult:(id)result
 {
   v25 = *MEMORY[0x1E69E9840];
   if (qword_1ED519088 != -1)
@@ -7803,17 +7803,17 @@ LABEL_82:
   }
 
   internal = self->_internal;
-  v9 = [a3 objectForKey:@"kCLConnectionMessagePlaceInferencePlaceInferenceKey"];
+  v9 = [result objectForKey:@"kCLConnectionMessagePlaceInferencePlaceInferenceKey"];
   if (v9)
   {
     v10 = v9;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 0;
   }
 
   else
   {
-    v13 = [a3 objectForKey:@"kCLConnectionMessagePlaceInferencePlaceInferenceFallbackLocationKey"];
+    v13 = [result objectForKey:@"kCLConnectionMessagePlaceInferencePlaceInferenceFallbackLocationKey"];
     if (v13)
     {
       v14 = v13;
@@ -7860,16 +7860,16 @@ LABEL_82:
     }
 
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:5 userInfo:0];
-    v11 = self;
+    selfCopy2 = self;
     v10 = 0;
   }
 
-  [(CLLocationManager *)v11 callPlaceInferenceHandlerWithResult:v10 error:v12];
+  [(CLLocationManager *)selfCopy2 callPlaceInferenceHandlerWithResult:v10 error:v12];
 LABEL_18:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventPlaceInferenceError:(id)a3
+- (void)onClientEventPlaceInferenceError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
   if (qword_1ED519088 != -1)
@@ -7901,7 +7901,7 @@ LABEL_18:
     }
   }
 
-  v8 = [a3 objectForKey:@"kCLConnectionMessageError"];
+  v8 = [error objectForKey:@"kCLConnectionMessageError"];
   if (!v8)
   {
     if (qword_1ED519088 != -1)
@@ -7940,7 +7940,7 @@ LABEL_18:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)callPlaceInferenceHandlerWithResult:(id)a3 error:(id)a4
+- (void)callPlaceInferenceHandlerWithResult:(id)result error:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
@@ -7953,7 +7953,7 @@ LABEL_18:
     v9 = v8[2];
     v10 = *MEMORY[0x1E69E9840];
 
-    v9(v8, a3, a4);
+    v9(v8, result, error);
   }
 
   else
@@ -7977,14 +7977,14 @@ LABEL_18:
   }
 }
 
-- (void)onClientEventError:(id)a3
+- (void)onClientEventError:(id)error
 {
   v30 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
-  v6 = [internal delegate];
+  delegate = [internal delegate];
   v17 = 0;
   v16 = 0;
-  if (CLClientGetError(a3, &v16))
+  if (CLClientGetError(error, &v16))
   {
     if (v16 == 1)
     {
@@ -8045,9 +8045,9 @@ LABEL_18:
         v19 = 0;
         v21 = "";
         v22 = 2050;
-        v23 = self;
+        selfCopy = self;
         v24 = 2050;
-        v25 = v6;
+        v25 = delegate;
         v26 = 2114;
         v27 = v13;
         v28 = 2114;
@@ -8055,7 +8055,7 @@ LABEL_18:
         _os_log_impl(&dword_19B873000, v14, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, error:%{public, location:escape_only}@}", buf, 0x3Au);
       }
 
-      [v6 locationManager:self didFailWithError:v12];
+      [delegate locationManager:self didFailWithError:v12];
     }
   }
 
@@ -8094,14 +8094,14 @@ LABEL_18:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventRegion:(id)a3
+- (void)onClientEventRegion:(id)region
 {
   v92 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
-  v6 = [internal delegate];
+  delegate = [internal delegate];
   v71 = 0;
   v70 = 0;
-  if (sub_19B88D5D0(a3, &v71, &v70))
+  if (sub_19B88D5D0(region, &v71, &v70))
   {
     v7 = v71;
     if (v71)
@@ -8121,7 +8121,7 @@ LABEL_18:
           v23 = qword_1ED519090;
           if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
           {
-            v24 = [v7 identifier];
+            identifier = [v7 identifier];
             [v7 center];
             v26 = v25;
             [v7 center];
@@ -8132,13 +8132,13 @@ LABEL_18:
             v74 = 2082;
             v75 = "";
             v76 = 2050;
-            v77 = self;
+            selfCopy7 = self;
             v78 = 2050;
-            v79 = v6;
+            v79 = delegate;
             v80 = 2114;
             v81 = v22;
             v82 = 2113;
-            v83 = v24;
+            v83 = identifier;
             v84 = 2053;
             v85 = v26;
             v86 = 2053;
@@ -8148,7 +8148,7 @@ LABEL_18:
             _os_log_impl(&dword_19B873000, v23, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, region.identifier:%{private, location:escape_only}@, region.center.latitude:%{sensitive}.08f, region.center.longitude:%{sensitive}.08f, region.radius:%{public}f}", buf, 0x58u);
           }
 
-          [v6 locationManager:self didExit:v7 completion:&unk_1F0E6B6C0];
+          [delegate locationManager:self didExit:v7 completion:&unk_1F0E6B6C0];
         }
 
         else
@@ -8169,7 +8169,7 @@ LABEL_18:
             v48 = qword_1ED519090;
             if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
             {
-              v49 = [v7 identifier];
+              identifier2 = [v7 identifier];
               [v7 center];
               v51 = v50;
               [v7 center];
@@ -8180,13 +8180,13 @@ LABEL_18:
               v74 = 2082;
               v75 = "";
               v76 = 2050;
-              v77 = self;
+              selfCopy7 = self;
               v78 = 2050;
-              v79 = v6;
+              v79 = delegate;
               v80 = 2114;
               v81 = v47;
               v82 = 2113;
-              v83 = v49;
+              v83 = identifier2;
               v84 = 2053;
               v85 = v51;
               v86 = 2053;
@@ -8196,7 +8196,7 @@ LABEL_18:
               _os_log_impl(&dword_19B873000, v48, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, region.identifier:%{private, location:escape_only}@, region.center.latitude:%{sensitive}.08f, region.center.longitude:%{sensitive}.08f, region.radius:%{public}f}", buf, 0x58u);
             }
 
-            [v6 locationManager:self didExitRegion:v7];
+            [delegate locationManager:self didExitRegion:v7];
           }
 
           else
@@ -8215,7 +8215,7 @@ LABEL_18:
               v74 = 2082;
               v75 = "";
               v76 = 2050;
-              v77 = self;
+              selfCopy7 = self;
               _os_log_impl(&dword_19B873000, v56, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Delivering region monitoring event, no delegate, self:%{public}p}", buf, 0x1Cu);
             }
           }
@@ -8243,7 +8243,7 @@ LABEL_18:
           v10 = qword_1ED519090;
           if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
           {
-            v11 = [v7 identifier];
+            identifier3 = [v7 identifier];
             [v7 center];
             v13 = v12;
             [v7 center];
@@ -8254,13 +8254,13 @@ LABEL_18:
             v74 = 2082;
             v75 = "";
             v76 = 2050;
-            v77 = self;
+            selfCopy7 = self;
             v78 = 2050;
-            v79 = v6;
+            v79 = delegate;
             v80 = 2114;
             v81 = v9;
             v82 = 2113;
-            v83 = v11;
+            v83 = identifier3;
             v84 = 2053;
             v85 = v13;
             v86 = 2053;
@@ -8270,7 +8270,7 @@ LABEL_18:
             _os_log_impl(&dword_19B873000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, region.identifier:%{private, location:escape_only}@, region.center.latitude:%{sensitive}.08f, region.center.longitude:%{sensitive}.08f, region.radius:%{public}f}", buf, 0x58u);
           }
 
-          [v6 locationManager:self didEnter:v7 completion:&unk_1F0E6B6C0];
+          [delegate locationManager:self didEnter:v7 completion:&unk_1F0E6B6C0];
         }
 
         else
@@ -8291,7 +8291,7 @@ LABEL_18:
             v36 = qword_1ED519090;
             if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
             {
-              v37 = [v7 identifier];
+              identifier4 = [v7 identifier];
               [v7 center];
               v39 = v38;
               [v7 center];
@@ -8302,13 +8302,13 @@ LABEL_18:
               v74 = 2082;
               v75 = "";
               v76 = 2050;
-              v77 = self;
+              selfCopy7 = self;
               v78 = 2050;
-              v79 = v6;
+              v79 = delegate;
               v80 = 2114;
               v81 = v35;
               v82 = 2113;
-              v83 = v37;
+              v83 = identifier4;
               v84 = 2053;
               v85 = v39;
               v86 = 2053;
@@ -8318,7 +8318,7 @@ LABEL_18:
               _os_log_impl(&dword_19B873000, v36, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, region.identifier:%{private, location:escape_only}@, region.center.latitude:%{sensitive}.08f, region.center.longitude:%{sensitive}.08f, region.radius:%{public}f}", buf, 0x58u);
             }
 
-            [v6 locationManager:self didEnterRegion:v7];
+            [delegate locationManager:self didEnterRegion:v7];
           }
 
           else
@@ -8337,7 +8337,7 @@ LABEL_18:
               v74 = 2082;
               v75 = "";
               v76 = 2050;
-              v77 = self;
+              selfCopy7 = self;
               _os_log_impl(&dword_19B873000, v55, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Delivering region monitoring event, no delegate, self:%{public}p}", buf, 0x1Cu);
             }
           }
@@ -8362,7 +8362,7 @@ LABEL_18:
         v62 = qword_1ED519090;
         if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
         {
-          v63 = [v7 identifier];
+          identifier5 = [v7 identifier];
           [v7 center];
           v65 = v64;
           [v7 center];
@@ -8373,15 +8373,15 @@ LABEL_18:
           v74 = 2082;
           v75 = "";
           v76 = 2050;
-          v77 = self;
+          selfCopy7 = self;
           v78 = 2050;
-          v79 = v6;
+          v79 = delegate;
           v80 = 2114;
           v81 = v61;
           v82 = 2050;
           v83 = v30;
           v84 = 2113;
-          v85 = v63;
+          v85 = identifier5;
           v86 = 2053;
           v87 = v65;
           v88 = 2053;
@@ -8391,7 +8391,7 @@ LABEL_18:
           _os_log_impl(&dword_19B873000, v62, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, state:%{public, location:CLRegionState}lld, region.identifier:%{private, location:escape_only}@, region.center.latitude:%{sensitive}.08f, region.center.longitude:%{sensitive}.08f, region.radius:%{public}f}", buf, 0x62u);
         }
 
-        [v6 locationManager:self didDetermineState:v30 forRegion:v7];
+        [delegate locationManager:self didDetermineState:v30 forRegion:v7];
       }
 
       else
@@ -8468,14 +8468,14 @@ LABEL_18:
   v69 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventRegionState:(id)a3
+- (void)onClientEventRegionState:(id)state
 {
   v51 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
-  v6 = [internal delegate];
+  delegate = [internal delegate];
   v30 = 0;
   v29 = 0;
-  if (sub_19B88D668(a3, &v30, &v29))
+  if (sub_19B88D668(state, &v30, &v29))
   {
     v7 = v30;
     if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -8496,7 +8496,7 @@ LABEL_18:
         v33 = 2082;
         v34 = "";
         v35 = 2050;
-        v36 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_19B873000, v14, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Delivering region monitoring state request, no delegate, self:%{public}p}", buf, 0x1Cu);
       }
 
@@ -8528,7 +8528,7 @@ LABEL_18:
             v33 = 2082;
             v34 = "";
             v35 = 2050;
-            v36 = v29;
+            selfCopy2 = v29;
             _os_log_impl(&dword_19B873000, v17, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#Warning Fence: onClientEventRegionState, unknown state, regionState:%{public, location:CLClientRegionState}lld}", buf, 0x1Cu);
           }
 
@@ -8548,7 +8548,7 @@ LABEL_18:
       v21 = qword_1ED519090;
       if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v30 identifier];
+        identifier = [v30 identifier];
         [v30 center];
         v24 = v23;
         [v30 center];
@@ -8559,15 +8559,15 @@ LABEL_18:
         v33 = 2082;
         v34 = "";
         v35 = 2050;
-        v36 = self;
+        selfCopy2 = self;
         v37 = 2050;
-        v38 = v6;
+        v38 = delegate;
         v39 = 2114;
         v40 = v20;
         v41 = 2050;
         v42 = v8;
         v43 = 2113;
-        v44 = v22;
+        v44 = identifier;
         v45 = 2053;
         v46 = v24;
         v47 = 2053;
@@ -8577,7 +8577,7 @@ LABEL_18:
         _os_log_impl(&dword_19B873000, v21, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, state:%{public, location:CLRegionState}lld, region.identifier:%{private, location:escape_only}@, region.center.latitude:%{sensitive}.08f, region.center.longitude:%{sensitive}.08f, region.radius:%{public}f}", buf, 0x62u);
       }
 
-      [v6 locationManager:self didDetermineState:v8 forRegion:v30];
+      [delegate locationManager:self didDetermineState:v8 forRegion:v30];
 LABEL_39:
 
       goto LABEL_40;
@@ -8596,7 +8596,7 @@ LABEL_39:
       v33 = 2082;
       v34 = "";
       v35 = 2050;
-      v36 = 4;
+      selfCopy2 = 4;
       _os_log_impl(&dword_19B873000, v15, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:Fence: onClientEventRegionState, unknown region type, regionType:%{public, location:CLClientRegionType}lld}", buf, 0x1Cu);
       if (qword_1ED519088 != -1)
       {
@@ -8612,7 +8612,7 @@ LABEL_39:
       v33 = 2082;
       v34 = "";
       v35 = 2050;
-      v36 = 4;
+      selfCopy2 = 4;
       _os_signpost_emit_with_name_impl(&dword_19B873000, v16, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Fence: onClientEventRegionState, unknown region type", "{msg%{public}.0s:Fence: onClientEventRegionState, unknown region type, regionType:%{public, location:CLClientRegionType}lld}", buf, 0x1Cu);
     }
   }
@@ -8653,14 +8653,14 @@ LABEL_40:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventRegionError:(id)a3
+- (void)onClientEventRegionError:(id)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v5 = [self->_internal delegate];
+  delegate = [self->_internal delegate];
   v26 = 0;
   v25 = 0;
   v24 = 0;
-  if (sub_19B88D70C(a3, &v26, &v24))
+  if (sub_19B88D70C(error, &v26, &v24))
   {
     v6 = v26;
     if (sub_19B8AB46C() >= 4)
@@ -8678,7 +8678,7 @@ LABEL_40:
         v29 = 2082;
         v30 = "";
         v31 = 2050;
-        v32 = 4;
+        selfCopy3 = 4;
         _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:Fence: onClientEventRegionError, unknown region type, regionType:%{public, location:CLClientRegionType}lld}", buf, 0x1Cu);
         if (qword_1ED519088 != -1)
         {
@@ -8694,12 +8694,12 @@ LABEL_40:
         v29 = 2082;
         v30 = "";
         v31 = 2050;
-        v32 = 4;
+        selfCopy3 = 4;
         _os_signpost_emit_with_name_impl(&dword_19B873000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Fence: onClientEventRegionError, unknown region type", "{msg%{public}.0s:Fence: onClientEventRegionError, unknown region type, regionType:%{public, location:CLClientRegionType}lld}", buf, 0x1Cu);
       }
     }
 
-    v9 = self;
+    selfCopy = self;
     if (objc_opt_respondsToSelector())
     {
       v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomain" code:v24 userInfo:0];
@@ -8712,7 +8712,7 @@ LABEL_40:
       v12 = qword_1ED519090;
       if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v26 identifier];
+        identifier = [v26 identifier];
         [v26 center];
         v15 = v14;
         [v26 center];
@@ -8723,15 +8723,15 @@ LABEL_40:
         v29 = 2082;
         v30 = "";
         v31 = 2050;
-        v32 = self;
+        selfCopy3 = self;
         v33 = 2050;
-        v34 = v5;
+        v34 = delegate;
         v35 = 2114;
         v36 = v11;
         v37 = 2114;
         v38 = v10;
         v39 = 2113;
-        v40 = v13;
+        v40 = identifier;
         v41 = 2053;
         v42 = v15;
         v43 = 2053;
@@ -8741,7 +8741,7 @@ LABEL_40:
         _os_log_impl(&dword_19B873000, v12, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, error:%{public, location:escape_only}@, region.identifier:%{private, location:escape_only}@, region.center.latitude:%{sensitive}.08f, region.center.longitude:%{sensitive}.08f, region.radius:%{public}f}", buf, 0x62u);
       }
 
-      [v5 locationManager:self monitoringDidFailForRegion:v26 withError:v10];
+      [delegate locationManager:self monitoringDidFailForRegion:v26 withError:v10];
     }
 
     else
@@ -8759,7 +8759,7 @@ LABEL_40:
         v29 = 2082;
         v30 = "";
         v31 = 2050;
-        v32 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_19B873000, v22, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Delivering region monitoring failure, no delegate, self:%{public}p}", buf, 0x1Cu);
       }
     }
@@ -8800,11 +8800,11 @@ LABEL_40:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventRanging:(id)a3
+- (void)onClientEventRanging:(id)ranging
 {
   v46 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
-  v6 = [internal delegate];
+  delegate = [internal delegate];
   v7 = objc_opt_respondsToSelector();
   v8 = objc_opt_respondsToSelector();
   v9 = v8;
@@ -8812,7 +8812,7 @@ LABEL_40:
   {
     v32 = 0;
     v33 = 0;
-    if (sub_19B88DD54(a3, &v33, &v32))
+    if (sub_19B88DD54(ranging, &v33, &v32))
     {
       v27 = v33;
       v12 = objc_alloc(MEMORY[0x1E695DF70]);
@@ -8829,7 +8829,7 @@ LABEL_40:
       [v29 sortUsingDescriptors:{objc_msgSend(v13, "arrayWithObjects:", v14, objc_msgSend(MEMORY[0x1E696AEB0], "sortDescriptorWithKey:ascending:", @"accuracy", 1), 0)}];
       v15 = internal[1];
       entr_act_modify();
-      v16 = [v27 beaconIdentityConstraint];
+      beaconIdentityConstraint = [v27 beaconIdentityConstraint];
       objc_sync_enter(self);
       LODWORD(v14) = [objc_msgSend(internal "rangedConstraints")];
       objc_sync_exit(self);
@@ -8849,17 +8849,17 @@ LABEL_40:
           v36 = 2082;
           v37 = "";
           v38 = 2050;
-          v39 = self;
+          selfCopy2 = self;
           v40 = 2050;
-          v41 = v6;
+          v41 = delegate;
           v42 = 2114;
           v43 = v17;
           v44 = 2113;
-          v45 = v16;
+          v45 = beaconIdentityConstraint;
           _os_log_impl(&dword_19B873000, v18, OS_LOG_TYPE_INFO, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, constraint:%{private, location:escape_only}@}", buf, 0x3Au);
         }
 
-        [v6 locationManager:self didRangeBeacons:v29 satisfyingConstraint:v16];
+        [delegate locationManager:self didRangeBeacons:v29 satisfyingConstraint:beaconIdentityConstraint];
       }
 
       else if (v7)
@@ -8878,9 +8878,9 @@ LABEL_40:
           v36 = 2082;
           v37 = "";
           v38 = 2050;
-          v39 = self;
+          selfCopy2 = self;
           v40 = 2050;
-          v41 = v6;
+          v41 = delegate;
           v42 = 2114;
           v43 = v22;
           v44 = 2113;
@@ -8888,7 +8888,7 @@ LABEL_40:
           _os_log_impl(&dword_19B873000, v23, OS_LOG_TYPE_INFO, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, region:%{private, location:escape_only}@}", buf, 0x3Au);
         }
 
-        [v6 locationManager:self didRangeBeacons:v29 inRegion:v27];
+        [delegate locationManager:self didRangeBeacons:v29 inRegion:v27];
       }
 
       v24 = v33;
@@ -8941,10 +8941,10 @@ LABEL_40:
   }
 }
 
-- (void)onClientEventRangingError:(id)a3
+- (void)onClientEventRangingError:(id)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = [self->_internal delegate];
+  delegate = [self->_internal delegate];
   v6 = objc_opt_respondsToSelector();
   v7 = objc_opt_respondsToSelector();
   v8 = v7;
@@ -8953,7 +8953,7 @@ LABEL_40:
     v26 = 0;
     v25 = 0;
     v24 = 0;
-    if (sub_19B88DE40(a3, &v26, &v24))
+    if (sub_19B88DE40(error, &v26, &v24))
     {
       v9 = v26;
       v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomain" code:v24 userInfo:0];
@@ -8970,9 +8970,9 @@ LABEL_40:
         v29 = 2082;
         v30 = "";
         v31 = 2050;
-        v32 = self;
+        selfCopy3 = self;
         v33 = 2050;
-        v34 = v5;
+        v34 = delegate;
         _os_log_impl(&dword_19B873000, v11, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Delivering range error to client's delegate, self:%{public}p, delegate:%{public}p}", buf, 0x26u);
       }
 
@@ -8980,7 +8980,7 @@ LABEL_40:
       v13 = v26;
       if (v8)
       {
-        v14 = [v12 beaconIdentityConstraint];
+        beaconIdentityConstraint = [v12 beaconIdentityConstraint];
         v15 = NSStringFromSelector(sel_locationManager_didFailRangingBeaconsForConstraint_error_);
         if (qword_1ED519088 != -1)
         {
@@ -8995,19 +8995,19 @@ LABEL_40:
           v29 = 2082;
           v30 = "";
           v31 = 2050;
-          v32 = self;
+          selfCopy3 = self;
           v33 = 2050;
-          v34 = v5;
+          v34 = delegate;
           v35 = 2114;
           v36 = v15;
           v37 = 2113;
-          v38 = v14;
+          v38 = beaconIdentityConstraint;
           v39 = 2114;
           v40 = v10;
           _os_log_impl(&dword_19B873000, v16, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, constraint:%{private, location:escape_only}@, error:%{public, location:escape_only}@}", buf, 0x44u);
         }
 
-        [v5 locationManager:self didFailRangingBeaconsForConstraint:v14 error:v10];
+        [delegate locationManager:self didFailRangingBeaconsForConstraint:beaconIdentityConstraint error:v10];
       }
 
       else
@@ -9026,9 +9026,9 @@ LABEL_40:
           v29 = 2082;
           v30 = "";
           v31 = 2050;
-          v32 = self;
+          selfCopy3 = self;
           v33 = 2050;
-          v34 = v5;
+          v34 = delegate;
           v35 = 2114;
           v36 = v20;
           v37 = 2113;
@@ -9038,7 +9038,7 @@ LABEL_40:
           _os_log_impl(&dword_19B873000, v21, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, region:%{private, location:escape_only}@, error:%{public, location:escape_only}@}", buf, 0x44u);
         }
 
-        [v5 locationManager:self rangingBeaconsDidFailForRegion:v12 withError:v10];
+        [delegate locationManager:self rangingBeaconsDidFailForRegion:v12 withError:v10];
       }
 
       v22 = v26;
@@ -9080,18 +9080,18 @@ LABEL_40:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventRegionResponseDelayed:(id)a3
+- (void)onClientEventRegionResponseDelayed:(id)delayed
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = [self->_internal delegate];
+  delegate = [self->_internal delegate];
   v24 = 0;
   v25 = 0;
   v23 = 0;
-  if (sub_19B88D7B4(a3, &v25, &v23, &v24))
+  if (sub_19B88D7B4(delayed, &v25, &v23, &v24))
   {
     v6 = v25;
     v7 = v24;
-    v8 = self;
+    selfCopy = self;
     if (objc_opt_respondsToSelector())
     {
       if (v23)
@@ -9114,7 +9114,7 @@ LABEL_40:
       v15 = qword_1ED519090;
       if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v25 identifier];
+        identifier = [v25 identifier];
         [v25 center];
         v18 = v17;
         [v25 center];
@@ -9125,15 +9125,15 @@ LABEL_40:
         v28 = 2082;
         v29 = "";
         v30 = 2050;
-        v31 = self;
+        selfCopy2 = self;
         v32 = 2050;
-        v33 = v5;
+        v33 = delegate;
         v34 = 2114;
         v35 = v14;
         v36 = 2114;
         v37 = v13;
         v38 = 2113;
-        v39 = v16;
+        v39 = identifier;
         v40 = 2053;
         v41 = v18;
         v42 = 2053;
@@ -9143,7 +9143,7 @@ LABEL_40:
         _os_log_impl(&dword_19B873000, v15, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, error:%{public, location:escape_only}@, region.identifier:%{private, location:escape_only}@, region.center.latitude:%{sensitive}.08f, region.center.longitude:%{sensitive}.08f, region.radius:%{public}f}", buf, 0x62u);
       }
 
-      [v5 locationManager:self monitoringDidFailForRegion:v25 withError:v13];
+      [delegate locationManager:self monitoringDidFailForRegion:v25 withError:v13];
     }
   }
 
@@ -9182,12 +9182,12 @@ LABEL_40:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventNoLocationWatchdog:(id)a3
+- (void)onClientEventNoLocationWatchdog:(id)watchdog
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = [self->_internal delegate];
+  delegate = [self->_internal delegate];
   v14 = 0.0;
-  if (sub_19B88D8AC(a3, &v14))
+  if (sub_19B88D8AC(watchdog, &v14))
   {
     v6 = v14;
     if (objc_opt_respondsToSelector())
@@ -9206,9 +9206,9 @@ LABEL_40:
         v17 = 2082;
         v18 = "";
         v19 = 2050;
-        v20 = self;
+        selfCopy2 = self;
         v21 = 2050;
-        v22 = v5;
+        v22 = delegate;
         v23 = 2114;
         v24 = v7;
         v25 = 2050;
@@ -9216,7 +9216,7 @@ LABEL_40:
         _os_log_impl(&dword_19B873000, v8, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, duration_s:%{public}.09f}", buf, 0x3Au);
       }
 
-      [v5 locationManager:self didNotReceiveLocationUpdatesForRegionMonitoringInInterval:v6];
+      [delegate locationManager:self didNotReceiveLocationUpdatesForRegionMonitoringInInterval:v6];
     }
 
     else
@@ -9234,7 +9234,7 @@ LABEL_40:
         v17 = 2082;
         v18 = "";
         v19 = 2050;
-        v20 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_19B873000, v12, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Delivering region monitoring watchdog, no delegate, self:%{public}p}", buf, 0x1Cu);
       }
     }
@@ -9275,12 +9275,12 @@ LABEL_40:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventRegionSetupCompleted:(id)a3
+- (void)onClientEventRegionSetupCompleted:(id)completed
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = [self->_internal delegate];
+  delegate = [self->_internal delegate];
   v24 = 0;
-  if (CLClientPopulateRegionFromInfo(&v24, a3))
+  if (CLClientPopulateRegionFromInfo(&v24, completed))
   {
     v6 = v24;
     v7 = v24;
@@ -9301,7 +9301,7 @@ LABEL_40:
         v27 = 2082;
         v28 = "";
         v29 = 2050;
-        v30 = v20;
+        selfCopy = v20;
         _os_log_impl(&dword_19B873000, v21, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:Client region type is not supported.\n, regionType:%{public, location:CLClientRegionType}lld}", buf, 0x1Cu);
         if (qword_1ED519088 != -1)
         {
@@ -9317,7 +9317,7 @@ LABEL_40:
         v27 = 2082;
         v28 = "";
         v29 = 2050;
-        v30 = v20;
+        selfCopy = v20;
         _os_signpost_emit_with_name_impl(&dword_19B873000, v22, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Client region type is not supported.\n", "{msg%{public}.0s:Client region type is not supported.\n, regionType:%{public, location:CLClientRegionType}lld}", buf, 0x1Cu);
       }
     }
@@ -9333,7 +9333,7 @@ LABEL_40:
       v10 = qword_1ED519090;
       if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v6 identifier];
+        identifier = [v6 identifier];
         [v6 center];
         v13 = v12;
         [v6 center];
@@ -9344,13 +9344,13 @@ LABEL_40:
         v27 = 2082;
         v28 = "";
         v29 = 2050;
-        v30 = self;
+        selfCopy = self;
         v31 = 2050;
-        v32 = v5;
+        v32 = delegate;
         v33 = 2114;
         v34 = v9;
         v35 = 2113;
-        v36 = v11;
+        v36 = identifier;
         v37 = 2053;
         v38 = v13;
         v39 = 2053;
@@ -9360,7 +9360,7 @@ LABEL_40:
         _os_log_impl(&dword_19B873000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, region.identifier:%{private, location:escape_only}@, region.center.latitude:%{sensitive}.08f, region.center.longitude:%{sensitive}.08f, region.radius:%{public}f}", buf, 0x58u);
       }
 
-      [v5 locationManager:self didStartMonitoringForRegion:v6];
+      [delegate locationManager:self didStartMonitoringForRegion:v6];
     }
   }
 
@@ -9399,16 +9399,16 @@ LABEL_40:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pauseLocationUpdates:(BOOL)a3
+- (void)pauseLocationUpdates:(BOOL)updates
 {
-  v3 = a3;
+  updatesCopy = updates;
   v22 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
-  v6 = [internal delegate];
+  delegate = [internal delegate];
   objc_sync_enter(self);
   if ([internal[4] updatingLocation])
   {
-    if ([internal[4] pausesLocationUpdatesAutomatically] > 4 || v3)
+    if ([internal[4] pausesLocationUpdatesAutomatically] > 4 || updatesCopy)
     {
       [internal stopUpdatingLocationAutoPaused];
       v8 = objc_opt_respondsToSelector();
@@ -9430,15 +9430,15 @@ LABEL_40:
           v14 = 2082;
           v15 = "";
           v16 = 2050;
-          v17 = self;
+          selfCopy = self;
           v18 = 2050;
-          v19 = v6;
+          v19 = delegate;
           v20 = 2114;
           v21 = v10;
           _os_log_impl(&dword_19B873000, v11, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@}", v13, 0x30u);
         }
 
-        [v6 locationManagerDidPauseLocationUpdates:self];
+        [delegate locationManagerDidPauseLocationUpdates:self];
       }
 
       else
@@ -9452,7 +9452,7 @@ LABEL_40:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onDidBecomeActive:(id)a3
+- (void)onDidBecomeActive:(id)active
 {
   v19 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -9478,13 +9478,13 @@ LABEL_40:
     *&v15[20] = 2114;
     *&v15[22] = v8;
     *&v15[30] = 2050;
-    v16 = self;
+    selfCopy = self;
     v17 = 2113;
-    v18 = a3;
+    activeCopy = active;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, notification:%{private, location:escape_only}@}", buf, 0x3Au);
   }
 
-  if ([objc_msgSend(a3 "name")])
+  if ([objc_msgSend(active "name")])
   {
     v9 = *(self->_internal + 1);
     v12[0] = MEMORY[0x1E69E9820];
@@ -9508,7 +9508,7 @@ LABEL_40:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onWillEnterForeground:(id)a3
+- (void)onWillEnterForeground:(id)foreground
 {
   v23 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -9534,9 +9534,9 @@ LABEL_40:
     v17 = 2114;
     v18 = v8;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     v21 = 2113;
-    v22 = a3;
+    foregroundCopy = foreground;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, notification:%{private, location:escape_only}@}", buf, 0x3Au);
   }
 
@@ -9544,7 +9544,7 @@ LABEL_40:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onDidEnterBackground:(id)a3
+- (void)onDidEnterBackground:(id)background
 {
   v23 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -9570,9 +9570,9 @@ LABEL_40:
     v17 = 2114;
     v18 = v8;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     v21 = 2113;
-    v22 = a3;
+    backgroundCopy = background;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, notification:%{private, location:escape_only}@}", buf, 0x3Au);
   }
 
@@ -9580,12 +9580,12 @@ LABEL_40:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventAutopauseStatus:(id)a3
+- (void)onClientEventAutopauseStatus:(id)status
 {
   v11 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
   v9 = 0;
-  if (sub_19B88E7D8(a3, &v9 + 1, &v9))
+  if (sub_19B88E7D8(status, &v9 + 1, &v9))
   {
     if (HIBYTE(v9))
     {
@@ -9629,15 +9629,15 @@ LABEL_40:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventBatch:(id)a3
+- (void)onClientEventBatch:(id)batch
 {
   v36 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
-  v6 = [internal delegate];
+  delegate = [internal delegate];
   v23 = 0;
   v22 = 0;
   v21 = 0;
-  if (sub_19B88EEEC(*(internal + 1), a3, &v21, &v22))
+  if (sub_19B88EEEC(*(internal + 1), batch, &v21, &v22))
   {
     if (v21)
     {
@@ -9668,9 +9668,9 @@ LABEL_40:
         *v27 = 0;
         *&v27[6] = "";
         v28 = 2050;
-        v29 = self;
+        selfCopy = self;
         v30 = 2050;
-        v31 = v6;
+        v31 = delegate;
         v32 = 2114;
         v33 = v13;
         v34 = 2114;
@@ -9678,7 +9678,7 @@ LABEL_40:
         _os_log_impl(&dword_19B873000, v14, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, error:%{public, location:escape_only}@}", buf, 0x3Au);
       }
 
-      [v6 locationManager:self didFinishDeferredUpdatesWithError:v7];
+      [delegate locationManager:self didFinishDeferredUpdatesWithError:v7];
     }
 
     else
@@ -9777,11 +9777,11 @@ LABEL_40:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventInterrupted:(id)a3
+- (void)onClientEventInterrupted:(id)interrupted
 {
   v33 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
-  v5 = [internal delegate];
+  delegate = [internal delegate];
   objc_sync_enter(self);
   if ([*(internal + 4) batchingLocation])
   {
@@ -9805,9 +9805,9 @@ LABEL_40:
         v22 = 0;
         v24 = "";
         v25 = 2050;
-        v26 = self;
+        selfCopy = self;
         v27 = 2050;
-        v28 = v5;
+        v28 = delegate;
         v29 = 2114;
         v30 = v9;
         v31 = 2114;
@@ -9815,7 +9815,7 @@ LABEL_40:
         _os_log_impl(&dword_19B873000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, error:%{public, location:escape_only}@}", buf, 0x3Au);
       }
 
-      [v5 locationManager:self didFinishDeferredUpdatesWithError:v6];
+      [delegate locationManager:self didFinishDeferredUpdatesWithError:v6];
     }
 
     else
@@ -9863,13 +9863,13 @@ LABEL_40:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventVehicleSpeed:(id)a3
+- (void)onClientEventVehicleSpeed:(id)speed
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [self->_internal delegate];
+  delegate = [self->_internal delegate];
   v14 = 0u;
   v15 = 0u;
-  if (sub_19B88F058(a3, &v14))
+  if (sub_19B88F058(speed, &v14))
   {
     objc_sync_enter(self);
     if (objc_opt_respondsToSelector())
@@ -9890,9 +9890,9 @@ LABEL_40:
         v17 = 0;
         v19 = "";
         v20 = 2050;
-        v21 = self;
+        selfCopy = self;
         v22 = 2050;
-        v23 = v5;
+        v23 = delegate;
         v24 = 2114;
         v25 = v8;
         v26 = 2114;
@@ -9900,7 +9900,7 @@ LABEL_40:
         _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, vehicleSpeed:%{public, location:escape_only}@}", buf, 0x3Au);
       }
 
-      [v5 locationManager:self didUpdateVehicleSpeed:v7];
+      [delegate locationManager:self didUpdateVehicleSpeed:v7];
     }
 
     objc_sync_exit(self);
@@ -9941,13 +9941,13 @@ LABEL_40:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventVehicleHeading:(id)a3
+- (void)onClientEventVehicleHeading:(id)heading
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [self->_internal delegate];
+  delegate = [self->_internal delegate];
   v14 = 0.0;
   v15 = 0.0;
-  if (sub_19B88F104(a3, &v14))
+  if (sub_19B88F104(heading, &v14))
   {
     objc_sync_enter(self);
     if (objc_opt_respondsToSelector())
@@ -9968,9 +9968,9 @@ LABEL_40:
         v17 = 0;
         v19 = "";
         v20 = 2050;
-        v21 = self;
+        selfCopy = self;
         v22 = 2050;
-        v23 = v5;
+        v23 = delegate;
         v24 = 2114;
         v25 = v8;
         v26 = 2114;
@@ -9978,7 +9978,7 @@ LABEL_40:
         _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, vehicleHeading:%{public, location:escape_only}@}", buf, 0x3Au);
       }
 
-      [v5 locationManager:self didUpdateVehicleHeading:v7];
+      [delegate locationManager:self didUpdateVehicleHeading:v7];
     }
 
     objc_sync_exit(self);
@@ -10019,15 +10019,15 @@ LABEL_40:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventSignificantLocationVisit:(id)a3
+- (void)onClientEventSignificantLocationVisit:(id)visit
 {
   v48 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
-  v6 = [internal delegate];
+  delegate = [internal delegate];
   objc_sync_enter(self);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [a3 objectForKey:@"kCLConnectionMessageSignificantLocationVisitKey"];
+    v7 = [visit objectForKey:@"kCLConnectionMessageSignificantLocationVisitKey"];
     v25 = 0;
     v8 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v7 error:&v25];
     if (v25)
@@ -10045,7 +10045,7 @@ LABEL_40:
         v28 = 2082;
         v29 = "";
         v30 = 2114;
-        v31 = v25;
+        selfCopy = v25;
         _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:Unarchiver error in [CLLocationManager onClientEventSignificantLocationVisit:], error:%{public, location:escape_only}@}", buf, 0x1Cu);
         if (qword_1ED519088 != -1)
         {
@@ -10061,7 +10061,7 @@ LABEL_40:
         v28 = 2082;
         v29 = "";
         v30 = 2114;
-        v31 = v25;
+        selfCopy = v25;
         _os_signpost_emit_with_name_impl(&dword_19B873000, v10, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Unarchiver error in [CLLocationManager onClientEventSignificantLocationVisit:]", "{msg%{public}.0s:Unarchiver error in [CLLocationManager onClientEventSignificantLocationVisit:], error:%{public, location:escape_only}@}", buf, 0x1Cu);
       }
     }
@@ -10086,17 +10086,17 @@ LABEL_40:
         v18 = v17;
         [(CLVisit *)v12 horizontalAccuracy];
         v20 = v19;
-        v21 = [(CLVisit *)v12 arrivalDate];
-        v22 = [(CLVisit *)v12 departureDate];
-        v23 = [(CLVisit *)v12 _placeInference];
+        arrivalDate = [(CLVisit *)v12 arrivalDate];
+        departureDate = [(CLVisit *)v12 departureDate];
+        _placeInference = [(CLVisit *)v12 _placeInference];
         *buf = 68291331;
         v27 = 0;
         v28 = 2082;
         v29 = "";
         v30 = 2050;
-        v31 = self;
+        selfCopy = self;
         v32 = 2050;
-        v33 = v6;
+        v33 = delegate;
         v34 = 2114;
         v35 = v13;
         v36 = 2053;
@@ -10106,15 +10106,15 @@ LABEL_40:
         v40 = 2050;
         v41 = v20;
         v42 = 2113;
-        v43 = v21;
+        v43 = arrivalDate;
         v44 = 2113;
-        v45 = v22;
+        v45 = departureDate;
         v46 = 2117;
-        v47 = v23;
+        v47 = _placeInference;
         _os_log_impl(&dword_19B873000, v14, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, visit.coordinate.latitude:%{sensitive}.08f, visit.coordinate.longitude:%{sensitive}.08f, visit.hAcc:%{public}f, visit.arrival:%{private, location:escape_only}@, visit.departure:%{private, location:escape_only}@, visit.placeInference:%{sensitive, location:escape_only}@}", buf, 0x6Cu);
       }
 
-      [v6 locationManager:self didVisit:v12];
+      [delegate locationManager:self didVisit:v12];
       [v11 finishDecoding];
     }
   }
@@ -10128,10 +10128,10 @@ LABEL_40:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onClientEventSignificantLocationVisitStateRequest:(id)a3
+- (void)onClientEventSignificantLocationVisitStateRequest:(id)request
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = [self->_internal delegate];
+  delegate = [self->_internal delegate];
   if (qword_1ED519088 != -1)
   {
     dispatch_once(&qword_1ED519088, &unk_1F0E6B6E0);
@@ -10145,16 +10145,16 @@ LABEL_40:
     v23 = 2082;
     v24 = "";
     v25 = 2050;
-    v26 = self;
+    selfCopy2 = self;
     v27 = 2050;
-    v28 = v5;
+    v28 = delegate;
     _os_log_impl(&dword_19B873000, v6, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:Processing Significant Location Visit State Request Event, self:%{public}p, delegate:%{public}p}", &v21, 0x26u);
   }
 
   objc_sync_enter(self);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [a3 objectForKey:@"kCLConnectionMessageSignificantLocationVisitStateKey"];
+    v7 = [request objectForKey:@"kCLConnectionMessageSignificantLocationVisitStateKey"];
     if (v7)
     {
       v8 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v7 error:0];
@@ -10177,17 +10177,17 @@ LABEL_40:
       v14 = v13;
       [(CLVisit *)v7 horizontalAccuracy];
       v16 = v15;
-      v17 = [(CLVisit *)v7 arrivalDate];
-      v18 = [(CLVisit *)v7 departureDate];
-      v19 = [(CLVisit *)v7 _placeInference];
+      arrivalDate = [(CLVisit *)v7 arrivalDate];
+      departureDate = [(CLVisit *)v7 departureDate];
+      _placeInference = [(CLVisit *)v7 _placeInference];
       v21 = 68291331;
       v22 = 0;
       v23 = 2082;
       v24 = "";
       v25 = 2050;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2050;
-      v28 = v5;
+      v28 = delegate;
       v29 = 2114;
       v30 = v9;
       v31 = 2053;
@@ -10197,45 +10197,45 @@ LABEL_40:
       v35 = 2050;
       v36 = v16;
       v37 = 2113;
-      v38 = v17;
+      v38 = arrivalDate;
       v39 = 2113;
-      v40 = v18;
+      v40 = departureDate;
       v41 = 2117;
-      v42 = v19;
+      v42 = _placeInference;
       _os_log_impl(&dword_19B873000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLLocationManager invoking #delegate, self:%{public}p, delegate:%{public}p, selector:%{public, location:escape_only}@, visit.coordinate.latitude:%{sensitive}.08f, visit.coordinate.longitude:%{sensitive}.08f, visit.hAcc:%{public}f, visit.arrival:%{private, location:escape_only}@, visit.departure:%{private, location:escape_only}@, visit.placeInference:%{sensitive, location:escape_only}@}", &v21, 0x6Cu);
     }
 
-    [v5 locationManager:self didReportVisit:v7];
+    [delegate locationManager:self didReportVisit:v7];
   }
 
   objc_sync_exit(self);
   v20 = *MEMORY[0x1E69E9840];
 }
 
-+ (int)_authorizationStatusForBundleIdentifier:(id)a3 bundlePath:(id)a4
++ (int)_authorizationStatusForBundleIdentifier:(id)identifier bundlePath:(id)path
 {
   v9 = 0;
-  if (a3 | a4)
+  if (identifier | path)
   {
-    v4 = a3;
+    identifierCopy = identifier;
   }
 
   else
   {
-    v4 = qword_1EAFE5B30;
+    identifierCopy = qword_1EAFE5B30;
   }
 
-  if (a3 | a4)
+  if (identifier | path)
   {
-    v5 = a4;
+    pathCopy = path;
   }
 
   else
   {
-    v5 = qword_1EAFE5B40;
+    pathCopy = qword_1EAFE5B40;
   }
 
-  v6 = sub_19B87DBA8(v4, v5, &v9);
+  v6 = sub_19B87DBA8(identifierCopy, pathCopy, &v9);
   v7 = v9;
   if ((v9 - 1) >= 4)
   {
@@ -10253,18 +10253,18 @@ LABEL_40:
   }
 }
 
-+ (int)authorizationStatusForBundle:(id)a3
++ (int)authorizationStatusForBundle:(id)bundle
 {
-  v4 = [a3 bundlePath];
+  bundlePath = [bundle bundlePath];
 
-  return [a1 authorizationStatusForBundlePath:v4];
+  return [self authorizationStatusForBundlePath:bundlePath];
 }
 
 + (CLAuthorizationStatus)authorizationStatus
 {
-  [a1 collectMetricForFunction:0x80000];
+  [self collectMetricForFunction:0x80000];
 
-  return [a1 _authorizationStatus];
+  return [self _authorizationStatus];
 }
 
 - (BOOL)isAuthorizedForPreciseLocation
@@ -10310,7 +10310,7 @@ LABEL_40:
   internal = self->_internal;
   if ([internal[4] previousAuthorizationStatusValid])
   {
-    v4 = [internal[4] isAuthorizedForWidgetUpdates];
+    isAuthorizedForWidgetUpdates = [internal[4] isAuthorizedForWidgetUpdates];
   }
 
   else
@@ -10318,62 +10318,62 @@ LABEL_40:
     [(CLLocationManager *)self collectMetricForFunction:0x200000];
     v7 = 0;
     sub_19B9BE1B8(*(internal[1] + 45), *(internal[1] + 46), &v7);
-    v5 = [(CLLocationManager *)self authorizationStatus];
-    v4 = v5 == kCLAuthorizationStatusAuthorizedAlways || v5 == kCLAuthorizationStatusAuthorizedWhenInUse && v7 == 3;
+    authorizationStatus = [(CLLocationManager *)self authorizationStatus];
+    isAuthorizedForWidgetUpdates = authorizationStatus == kCLAuthorizationStatusAuthorizedAlways || authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse && v7 == 3;
   }
 
   objc_sync_exit(self);
-  return v4;
+  return isAuthorizedForWidgetUpdates;
 }
 
-+ (void)setAuthorizationStatus:(BOOL)a3 forBundle:(id)a4
++ (void)setAuthorizationStatus:(BOOL)status forBundle:(id)bundle
 {
-  [a4 bundlePath];
+  [bundle bundlePath];
 
-  MEMORY[0x1EEE66B58](a1, sel_setAuthorizationStatus_forBundlePath_);
+  MEMORY[0x1EEE66B58](self, sel_setAuthorizationStatus_forBundlePath_);
 }
 
-+ (void)setAuthorizationStatusByType:(int)a3 forBundle:(id)a4
++ (void)setAuthorizationStatusByType:(int)type forBundle:(id)bundle
 {
-  [a4 bundlePath];
+  [bundle bundlePath];
 
-  MEMORY[0x1EEE66B58](a1, sel_setAuthorizationStatusByType_forBundlePath_);
+  MEMORY[0x1EEE66B58](self, sel_setAuthorizationStatusByType_forBundlePath_);
 }
 
-+ (void)getIncidentalUseMode:(int *)a3 forBundle:(id)a4
++ (void)getIncidentalUseMode:(int *)mode forBundle:(id)bundle
 {
-  v5 = [a4 bundlePath];
+  bundlePath = [bundle bundlePath];
 
-  sub_19B9BE1B8(0, v5, a3);
+  sub_19B9BE1B8(0, bundlePath, mode);
 }
 
-+ (void)setRelevance:(BOOL)a3 forInterestZoneWithId:(id)a4 registeredForBundle:(id)a5 error:(id *)a6
++ (void)setRelevance:(BOOL)relevance forInterestZoneWithId:(id)id registeredForBundle:(id)bundle error:(id *)error
 {
-  v8 = a3;
-  v9 = [a5 bundlePath];
+  relevanceCopy = relevance;
+  bundlePath = [bundle bundlePath];
 
-  sub_19B9BE440(0, v9, a4, v8, a6);
+  sub_19B9BE440(0, bundlePath, id, relevanceCopy, error);
 }
 
-+ (void)deleteInterestZoneWithId:(id)a3 registeredForBundle:(id)a4 error:(id *)a5
++ (void)deleteInterestZoneWithId:(id)id registeredForBundle:(id)bundle error:(id *)error
 {
-  v7 = [a4 bundlePath];
+  bundlePath = [bundle bundlePath];
 
-  sub_19B9BE4A8(0, v7, a3, a5);
+  sub_19B9BE4A8(0, bundlePath, id, error);
 }
 
-+ (void)setBackgroundIndicatorEnabled:(BOOL)a3 forBundle:(id)a4
++ (void)setBackgroundIndicatorEnabled:(BOOL)enabled forBundle:(id)bundle
 {
-  [a4 bundlePath];
+  [bundle bundlePath];
 
   sub_19B9C1334();
 }
 
-+ (void)setDefaultEffectiveBundle:(id)a3
++ (void)setDefaultEffectiveBundle:(id)bundle
 {
-  v3 = [a3 bundlePath];
+  bundlePath = [bundle bundlePath];
 
-  sub_19B888CDC(v3);
+  sub_19B888CDC(bundlePath);
 }
 
 - (void)requestWhenInUseAuthorizationWithPrompt
@@ -10402,7 +10402,7 @@ LABEL_40:
     v15 = 2114;
     v16 = v6;
     v17 = 2050;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -10412,7 +10412,7 @@ LABEL_40:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestWhenInUseAuthorizationWithPurposeKey:(id)a3
+- (void)requestWhenInUseAuthorizationWithPurposeKey:(id)key
 {
   v21 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -10438,16 +10438,16 @@ LABEL_40:
     v17 = 2114;
     v18 = v8;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  if (!a3)
+  if (!key)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  sub_19B88948C(*(self->_internal + 1), a3, 4);
+  sub_19B88948C(*(self->_internal + 1), key, 4);
   os_activity_scope_leave(&state);
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -10479,7 +10479,7 @@ LABEL_40:
     v18 = 2114;
     v19 = v6;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     v22 = 2082;
     v23 = Name;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, SEL:%{public, location:escape_only}s}", buf, 0x3Au);
@@ -10507,7 +10507,7 @@ LABEL_40:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)changeFencesStateMatchingHandoffTags:(id)a3 forDeviceID:(id)a4 completion:(id)a5
+- (void)changeFencesStateMatchingHandoffTags:(id)tags forDeviceID:(id)d completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
   v9 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -10533,16 +10533,16 @@ LABEL_40:
     v20 = 2114;
     v21 = v11;
     v22 = 2050;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  sub_19B889210(*(self->_internal + 1), a3, [a4 UUIDString]);
+  sub_19B889210(*(self->_internal + 1), tags, [d UUIDString]);
   os_activity_scope_leave(&v13);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_requestTemporaryFullAccuracyWithUsageDescription:(id)a3 completion:(id)a4
+- (void)_requestTemporaryFullAccuracyWithUsageDescription:(id)description completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
   v7 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -10568,7 +10568,7 @@ LABEL_40:
     v20 = 2114;
     v21 = v9;
     v22 = 2050;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v8, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -10588,12 +10588,12 @@ LABEL_40:
     _os_log_impl(&dword_19B873000, v11, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Requesting temporary accuracy increase}", buf, 0x12u);
   }
 
-  CLClientRequestTemporaryPrecise(internal[1], a3, 0);
+  CLClientRequestTemporaryPrecise(internal[1], description, 0);
   os_activity_scope_leave(&v13);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestTemporaryPreciseLocationAuthorizationWithPurposeKey:(id)a3
+- (void)requestTemporaryPreciseLocationAuthorizationWithPurposeKey:(id)key
 {
   v12 = *MEMORY[0x1E69E9840];
   if (qword_1ED519078 != -1)
@@ -10625,11 +10625,11 @@ LABEL_40:
     _os_signpost_emit_with_name_impl(&dword_19B873000, v6, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "requestTemporaryPreciseLocationAuthorizationWithPurposeKey is deprecated and will be removed in the next seed. use requestTemporaryFullAccuracyAuthorizationWithPurposeKey", "{msg%{public}.0s:requestTemporaryPreciseLocationAuthorizationWithPurposeKey is deprecated and will be removed in the next seed. use requestTemporaryFullAccuracyAuthorizationWithPurposeKey}", &v8, 0x12u);
   }
 
-  [(CLLocationManager *)self requestTemporaryFullAccuracyAuthorizationWithPurposeKey:a3];
+  [(CLLocationManager *)self requestTemporaryFullAccuracyAuthorizationWithPurposeKey:key];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestTemporaryPreciseLocationAuthorizationWithPurposeKey:(id)a3 completion:(id)a4
+- (void)requestTemporaryPreciseLocationAuthorizationWithPurposeKey:(id)key completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
   if (qword_1ED519078 != -1)
@@ -10661,7 +10661,7 @@ LABEL_40:
     _os_signpost_emit_with_name_impl(&dword_19B873000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "requestTemporaryPreciseLocationAuthorizationWithPurposeKey is deprecated and will be removed in the next seed. use requestTemporaryFullAccuracyAuthorizationWithPurposeKey", "{msg%{public}.0s:requestTemporaryPreciseLocationAuthorizationWithPurposeKey is deprecated and will be removed in the next seed. use requestTemporaryFullAccuracyAuthorizationWithPurposeKey}", &v10, 0x12u);
   }
 
-  [(CLLocationManager *)self requestTemporaryFullAccuracyAuthorizationWithPurposeKey:a3 completion:a4];
+  [(CLLocationManager *)self requestTemporaryFullAccuracyAuthorizationWithPurposeKey:key completion:completion];
   v9 = *MEMORY[0x1E69E9840];
 }
 
@@ -10698,7 +10698,7 @@ LABEL_40:
     v18 = 2114;
     v19 = v9;
     v20 = 2050;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v8, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -10734,14 +10734,14 @@ LABEL_40:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  v7 = [*(self->_internal + 4) allowsLocationPrompts];
+  allowsLocationPrompts = [*(self->_internal + 4) allowsLocationPrompts];
   os_activity_scope_leave(&v10);
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return allowsLocationPrompts;
 }
 
 - (BOOL)isDynamicAccuracyReductionEnabled
@@ -10770,14 +10770,14 @@ LABEL_40:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  v7 = [*(self->_internal + 4) dynamicAccuracyReductionEnabled];
+  dynamicAccuracyReductionEnabled = [*(self->_internal + 4) dynamicAccuracyReductionEnabled];
   os_activity_scope_leave(&v10);
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return dynamicAccuracyReductionEnabled;
 }
 
 - (BOOL)allowsAlteredAccessoryLocations
@@ -10806,14 +10806,14 @@ LABEL_40:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  v7 = [*(self->_internal + 4) allowsAlteredAccessoryLocations];
+  allowsAlteredAccessoryLocations = [*(self->_internal + 4) allowsAlteredAccessoryLocations];
   os_activity_scope_leave(&v10);
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return allowsAlteredAccessoryLocations;
 }
 
 - (void)registerAsLocationClient
@@ -10842,7 +10842,7 @@ LABEL_40:
     v15 = 2114;
     v16 = v6;
     v17 = 2050;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -10851,12 +10851,12 @@ LABEL_40:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)dumpDiagnosticFilesWithHandler:(id)a3
++ (void)dumpDiagnosticFilesWithHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (handler)
   {
-    v3 = a3;
+    handlerCopy = handler;
     if (qword_1ED519088 == -1)
     {
       goto LABEL_3;
@@ -10906,7 +10906,7 @@ LABEL_40:
       }
     }
 
-    v3 = qword_1ED519090;
+    handlerCopy = qword_1ED519090;
     if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_INFO))
     {
       *buf = 68289539;
@@ -10917,7 +10917,7 @@ LABEL_40:
       v20 = "assert";
       v21 = 2081;
       v22 = "handler";
-      _os_log_impl(&dword_19B873000, v3, OS_LOG_TYPE_INFO, "{msg%{public}.0s:must pass handler to dumpDiagnosticFilesWithHandler, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
+      _os_log_impl(&dword_19B873000, handlerCopy, OS_LOG_TYPE_INFO, "{msg%{public}.0s:must pass handler to dumpDiagnosticFilesWithHandler, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
     }
 
     abort_report_np();
@@ -10963,24 +10963,24 @@ LABEL_3:
   v12[2] = sub_19B8B1BAC;
   v12[3] = &unk_1E753D160;
   v12[4] = v7;
-  v12[5] = v3;
+  v12[5] = handlerCopy;
   [v8 copyRegisteredFilesWithHandler:v12];
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)bundleSupported:(id)a3
++ (BOOL)bundleSupported:(id)supported
 {
-  if (a3)
+  if (supported)
   {
-    [a3 bundlePath];
+    [supported bundlePath];
   }
 
-  return a3 != 0;
+  return supported != 0;
 }
 
-- (void)setIsActuallyAWatchKitExtension:(BOOL)a3
+- (void)setIsActuallyAWatchKitExtension:(BOOL)extension
 {
-  v3 = a3;
+  extensionCopy = extension;
   v23 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
@@ -11005,13 +11005,13 @@ LABEL_3:
     v17 = 2114;
     v18 = v8;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     v21 = 1026;
-    v22 = v3;
+    v22 = extensionCopy;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, isActuallyAWatchKitExtension:%{public}hhd}", buf, 0x36u);
   }
 
-  sub_19B88A4D4(*(self->_internal + 1), v3);
+  sub_19B88A4D4(*(self->_internal + 1), extensionCopy);
   os_activity_scope_leave(&v10);
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -11063,7 +11063,7 @@ LABEL_3:
     v19 = 2114;
     v20 = v6;
     v21 = 2050;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -11132,7 +11132,7 @@ LABEL_3:
     v19 = 2114;
     v20 = v6;
     v21 = 2050;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -11200,7 +11200,7 @@ LABEL_3:
     v19 = 2114;
     v20 = v6;
     v21 = 2050;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -11269,7 +11269,7 @@ LABEL_3:
     v19 = 2114;
     v20 = v6;
     v21 = 2050;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -11337,14 +11337,14 @@ LABEL_3:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  v7 = [*(self->_internal + 4) matchInfoEnabled];
+  matchInfoEnabled = [*(self->_internal + 4) matchInfoEnabled];
   os_activity_scope_leave(&v10);
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return matchInfoEnabled;
 }
 
 - (BOOL)_isGroundAltitudeEnabled
@@ -11373,17 +11373,17 @@ LABEL_3:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  v7 = [*(self->_internal + 4) groundAltitudeEnabled];
+  groundAltitudeEnabled = [*(self->_internal + 4) groundAltitudeEnabled];
   os_activity_scope_leave(&v10);
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return groundAltitudeEnabled;
 }
 
-- (id)_groundAltitudeAtLocation:(id)a3
+- (id)_groundAltitudeAtLocation:(id)location
 {
   v17 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -11409,27 +11409,27 @@ LABEL_3:
     *&buf[28] = 2114;
     *&buf[30] = v8;
     v15 = 2050;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  if (a3)
+  if (location)
   {
     if ([(CLLocationManager *)self _isGroundAltitudeEnabled]&& (internal = self->_internal, memset(buf, 0, 32), CLClientGetGroundAltitudeAtLocation(internal[1])) && *&buf[8] > 0.0)
     {
       v12 = objc_alloc(MEMORY[0x1E6985C58]);
-      a3 = [v12 initWithEstimate:*&buf[24] uncertainty:*buf undulation:*&buf[8] undulationModel:*&buf[16]];
+      location = [v12 initWithEstimate:*&buf[24] uncertainty:*buf undulation:*&buf[8] undulationModel:*&buf[16]];
     }
 
     else
     {
-      a3 = 0;
+      location = 0;
     }
   }
 
   os_activity_scope_leave(&v13);
   v10 = *MEMORY[0x1E69E9840];
-  return a3;
+  return location;
 }
 
 - (BOOL)_isFusionInfoEnabled
@@ -11458,14 +11458,14 @@ LABEL_3:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  v7 = [*(self->_internal + 4) fusionInfoEnabled];
+  fusionInfoEnabled = [*(self->_internal + 4) fusionInfoEnabled];
   os_activity_scope_leave(&v10);
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return fusionInfoEnabled;
 }
 
 - (BOOL)isTrackRunInfoEnabled
@@ -11494,14 +11494,14 @@ LABEL_3:
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  v7 = [*(self->_internal + 4) trackRunInfoEnabled];
+  trackRunInfoEnabled = [*(self->_internal + 4) trackRunInfoEnabled];
   os_activity_scope_leave(&v10);
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return trackRunInfoEnabled;
 }
 
 - (void)stopMonitoringVisits
@@ -11530,7 +11530,7 @@ LABEL_3:
     v16 = 2114;
     v17 = v6;
     v18 = 2050;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -11568,7 +11568,7 @@ LABEL_3:
     v16 = 2114;
     v17 = v6;
     v18 = 2050;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -11607,7 +11607,7 @@ LABEL_3:
     v19 = 2114;
     v20 = v6;
     v21 = 2050;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -11648,7 +11648,7 @@ LABEL_3:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_startPlaceInferencesCommonLogic:(unint64_t)a3 handler:(id)a4
+- (id)_startPlaceInferencesCommonLogic:(unint64_t)logic handler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
@@ -11696,7 +11696,7 @@ LABEL_3:
       v18[2] = sub_19B8B44C0;
       v18[3] = &unk_1E753CD08;
       v18[4] = v13;
-      v18[5] = a4;
+      v18[5] = handler;
       if (v14)
       {
         v15 = *(v14 + 232);
@@ -11712,8 +11712,8 @@ LABEL_3:
 
   else
   {
-    internal[31] = [a4 copy];
-    internal[32] = a3;
+    internal[31] = [handler copy];
+    internal[32] = logic;
     objc_sync_exit(self);
     v13 = 0;
   }
@@ -11722,7 +11722,7 @@ LABEL_3:
   return v13;
 }
 
-- (void)_fetchPlaceInferencesWithFidelityPolicy:(unint64_t)a3 handler:(id)a4
+- (void)_fetchPlaceInferencesWithFidelityPolicy:(unint64_t)policy handler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
   v8 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -11748,17 +11748,17 @@ LABEL_3:
     v23 = 2114;
     v24 = v10;
     v25 = 2050;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  if (!a4)
+  if (!handler)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   internal = self->_internal;
-  if (![(CLLocationManager *)self _startPlaceInferencesCommonLogic:a3 handler:a4])
+  if (![(CLLocationManager *)self _startPlaceInferencesCommonLogic:policy handler:handler])
   {
     if (qword_1ED519088 != -1)
     {
@@ -11789,14 +11789,14 @@ LABEL_3:
       }
     }
 
-    sub_19B884630(internal[1], a3);
+    sub_19B884630(internal[1], policy);
   }
 
   os_activity_scope_leave(&state);
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_fetchContinuousPlaceInferencesWithFidelityPolicy:(unint64_t)a3 handler:(id)a4
+- (void)_fetchContinuousPlaceInferencesWithFidelityPolicy:(unint64_t)policy handler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
   v8 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -11821,17 +11821,17 @@ LABEL_3:
     v22 = 2114;
     v23 = v10;
     v24 = 2050;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", &buf, 0x30u);
   }
 
-  if (!a4)
+  if (!handler)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   internal = self->_internal;
-  if (![(CLLocationManager *)self _startPlaceInferencesCommonLogic:a3 handler:a4])
+  if (![(CLLocationManager *)self _startPlaceInferencesCommonLogic:policy handler:handler])
   {
     objc_sync_enter(self);
     if (!*(internal + 33))
@@ -11847,8 +11847,8 @@ LABEL_3:
     v14[3] = &unk_1E753D188;
     objc_copyWeak(v15, &buf);
     v14[4] = internal;
-    v14[5] = a4;
-    v15[1] = a3;
+    v14[5] = handler;
+    v15[1] = policy;
     [v12 setHandler:v14];
     [*(internal + 33) setNextFireDelay:0.0 interval:20.0];
     objc_destroyWeak(v15);
@@ -11886,7 +11886,7 @@ LABEL_3:
     v19 = 2114;
     v20 = v6;
     v21 = 2050;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
     internal = self->_internal;
     if (qword_1ED519088 != -1)
@@ -11934,7 +11934,7 @@ LABEL_3:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_fetchEstimatedLocationAtDate:(id)a3 handler:(id)a4
+- (void)_fetchEstimatedLocationAtDate:(id)date handler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
   v8 = _os_activity_create(&dword_19B873000, "CL: CLLocationManager", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -11960,28 +11960,28 @@ LABEL_3:
     v20 = 2114;
     v21 = v10;
     v22 = 2050;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationManager, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
-  if (!a4)
+  if (!handler)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   internal = self->_internal;
   objc_sync_enter(self);
-  sub_19B8905B8(internal[1], a3);
+  sub_19B8905B8(internal[1], date);
   objc_sync_exit(self);
   os_activity_scope_leave(&state);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateVLLocalizationResult:(id)a3
+- (void)_updateVLLocalizationResult:(id)result
 {
   v16 = *MEMORY[0x1E69E9840];
   v9 = 0;
-  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v9];
+  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:result requiringSecureCoding:1 error:&v9];
   if (v9)
   {
     v5 = 1;
@@ -12043,11 +12043,11 @@ LABEL_3:
   return MEMORY[0x1EEE66B58](v0, sel_updatePromptedLatitude_longitude_);
 }
 
-- (void)_updateARSessionState:(unint64_t)a3
+- (void)_updateARSessionState:(unint64_t)state
 {
   v13 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v4 = [MEMORY[0x1E695DEF0] dataWithBytes:&v8 length:8];
+  stateCopy = state;
+  v4 = [MEMORY[0x1E695DEF0] dataWithBytes:&stateCopy length:8];
   if (v4)
   {
     CLClientUpdateARSessionState([(CLLocationManager *)self internalClient], v4);
@@ -12088,11 +12088,11 @@ LABEL_3:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateVIOEstimation:(id)a3
+- (void)_updateVIOEstimation:(id)estimation
 {
   v16 = *MEMORY[0x1E69E9840];
   v9 = 0;
-  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v9];
+  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:estimation requiringSecureCoding:1 error:&v9];
   if (v9)
   {
     v5 = 1;
@@ -12147,9 +12147,9 @@ LABEL_3:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (unint64_t)entityClassesForLocationDictionary:(id)a3
++ (unint64_t)entityClassesForLocationDictionary:(id)dictionary
 {
-  result = [a1 primaryEntityClassForLocationDictionary:a3];
+  result = [self primaryEntityClassForLocationDictionary:dictionary];
   if ((result & 0x3C) != 0)
   {
     result |= 6uLL;
@@ -12158,10 +12158,10 @@ LABEL_3:
   return result;
 }
 
-+ (unint64_t)activeLocationServiceTypesForLocationDictionary:(id)a3
++ (unint64_t)activeLocationServiceTypesForLocationDictionary:(id)dictionary
 {
   v16 = *MEMORY[0x1E69E9840];
-  if ([a1 isEntityAuthorizedForLocationDictionary:?])
+  if ([self isEntityAuthorizedForLocationDictionary:?])
   {
     v4 = 2;
   }
@@ -12171,7 +12171,7 @@ LABEL_3:
     v4 = 0;
   }
 
-  v5 = sub_19B9F756C(a3, v4);
+  v5 = sub_19B9F756C(dictionary, v4);
   if (v5 == 3)
   {
     if (qword_1ED519078 != -1)
@@ -12187,7 +12187,7 @@ LABEL_3:
       v12 = 2082;
       v13 = "";
       v14 = 2114;
-      v15 = a3;
+      dictionaryCopy2 = dictionary;
       _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:Dictionary utilites reported the arrow is in max state?!, clientRecord:%{public, location:escape_only}@}", &v10, 0x1Cu);
       if (qword_1ED519078 != -1)
       {
@@ -12203,7 +12203,7 @@ LABEL_3:
       v12 = 2082;
       v13 = "";
       v14 = 2114;
-      v15 = a3;
+      dictionaryCopy2 = dictionary;
       _os_signpost_emit_with_name_impl(&dword_19B873000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Dictionary utilites reported the arrow is in max state?!", "{msg%{public}.0s:Dictionary utilites reported the arrow is in max state?!, clientRecord:%{public, location:escape_only}@}", &v10, 0x1Cu);
     }
 
@@ -12224,9 +12224,9 @@ LABEL_3:
   return result;
 }
 
-+ (id)interestZonesIdentifierListForLocationDictionary:(id)a3
++ (id)interestZonesIdentifierListForLocationDictionary:(id)dictionary
 {
-  result = sub_19B9F7804(a3, a2);
+  result = sub_19B9F7804(dictionary, a2);
   if (result)
   {
 
@@ -12236,18 +12236,18 @@ LABEL_3:
   return result;
 }
 
-+ (id)interestZoneDictionaryIdentifiedById:(id)a3 forLocationDictionary:(id)a4
++ (id)interestZoneDictionaryIdentifiedById:(id)id forLocationDictionary:(id)dictionary
 {
-  v6 = sub_19B9F7804(a4, a2);
+  v6 = sub_19B9F7804(dictionary, a2);
   v7 = v6;
   if (v6)
   {
-    if ([v6 objectForKey:a3])
+    if ([v6 objectForKey:id])
     {
-      v7 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(v7, "objectForKey:", a3)}];
-      [v7 setObject:a3 forKey:@"ZoneId"];
-      [v7 setObject:objc_msgSend(a4 forKey:{"objectForKey:", @"BundleId", @"BundleId"}];
-      [v7 setObject:objc_msgSend(a4 forKey:{"objectForKey:", @"BundlePath", @"BundlePath"}];
+      v7 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(v7, "objectForKey:", id)}];
+      [v7 setObject:id forKey:@"ZoneId"];
+      [v7 setObject:objc_msgSend(dictionary forKey:{"objectForKey:", @"BundleId", @"BundleId"}];
+      [v7 setObject:objc_msgSend(dictionary forKey:{"objectForKey:", @"BundlePath", @"BundlePath"}];
     }
 
     else
@@ -12259,30 +12259,30 @@ LABEL_3:
   return v7;
 }
 
-+ (void)setEntityAuthorized:(BOOL)a3 forLocationDictionary:(id)a4
++ (void)setEntityAuthorized:(BOOL)authorized forLocationDictionary:(id)dictionary
 {
-  v6 = [a4 objectForKey:@"BundleId"];
-  v7 = [a4 objectForKey:@"BundlePath"];
+  v6 = [dictionary objectForKey:@"BundleId"];
+  v7 = [dictionary objectForKey:@"BundlePath"];
   if (v6)
   {
 
-    MEMORY[0x1EEE66B58](a1, sel_setAuthorizationStatus_forBundleIdentifier_);
+    MEMORY[0x1EEE66B58](self, sel_setAuthorizationStatus_forBundleIdentifier_);
   }
 
   else if (v7)
   {
     [MEMORY[0x1E696AAE8] bundleWithPath:v7];
 
-    MEMORY[0x1EEE66B58](a1, sel_setAuthorizationStatus_forBundle_);
+    MEMORY[0x1EEE66B58](self, sel_setAuthorizationStatus_forBundle_);
   }
 }
 
-+ (void)setEntityAuthorization:(unint64_t)a3 withCorrectiveCompensationType:(int)a4 forLocationDictionary:(id)a5
++ (void)setEntityAuthorization:(unint64_t)authorization withCorrectiveCompensationType:(int)type forLocationDictionary:(id)dictionary
 {
-  v8 = [a5 objectForKey:@"BundleId"];
-  v9 = [a5 objectForKey:@"BundlePath"];
-  v10 = [a5 objectForKey:@"ZoneId"];
-  if (a3 > 4)
+  v8 = [dictionary objectForKey:@"BundleId"];
+  v9 = [dictionary objectForKey:@"BundlePath"];
+  v10 = [dictionary objectForKey:@"ZoneId"];
+  if (authorization > 4)
   {
     if (v10)
     {
@@ -12290,14 +12290,14 @@ LABEL_3:
       if (v8)
       {
 
-        MEMORY[0x1EEE66B58](a1, sel_setAuthorizationStatus_withCorrectiveCompensation_forInterestZoneWithId_registeredForBundleIdentifier_);
+        MEMORY[0x1EEE66B58](self, sel_setAuthorizationStatus_withCorrectiveCompensation_forInterestZoneWithId_registeredForBundleIdentifier_);
       }
 
       else if (v9)
       {
         [MEMORY[0x1E696AAE8] bundleWithPath:v9];
 
-        MEMORY[0x1EEE66B58](a1, sel_setAuthorizationStatus_withCorrectiveCompensation_forInterestZoneWithId_registeredForBundle_);
+        MEMORY[0x1EEE66B58](self, sel_setAuthorizationStatus_withCorrectiveCompensation_forInterestZoneWithId_registeredForBundle_);
       }
 
       return;
@@ -12306,7 +12306,7 @@ LABEL_3:
 
   else
   {
-    v11 = dword_19BA8D260[a3];
+    v11 = dword_19BA8D260[authorization];
     if (v10)
     {
       goto LABEL_3;
@@ -12316,32 +12316,32 @@ LABEL_3:
   if (v8)
   {
 
-    MEMORY[0x1EEE66B58](a1, sel_setAuthorizationStatusByType_withCorrectiveCompensation_forBundleIdentifier_);
+    MEMORY[0x1EEE66B58](self, sel_setAuthorizationStatusByType_withCorrectiveCompensation_forBundleIdentifier_);
   }
 
   else if (v9)
   {
     [MEMORY[0x1E696AAE8] bundleWithPath:v9];
 
-    MEMORY[0x1EEE66B58](a1, sel_setAuthorizationStatusByType_withCorrectiveCompensation_forBundle_);
+    MEMORY[0x1EEE66B58](self, sel_setAuthorizationStatusByType_withCorrectiveCompensation_forBundle_);
   }
 }
 
-+ (void)setBackgroundIndicatorEnabled:(BOOL)a3 forLocationDictionary:(id)a4
++ (void)setBackgroundIndicatorEnabled:(BOOL)enabled forLocationDictionary:(id)dictionary
 {
-  v6 = [a4 objectForKey:@"BundleId"];
-  v7 = [a4 objectForKey:@"BundlePath"];
+  v6 = [dictionary objectForKey:@"BundleId"];
+  v7 = [dictionary objectForKey:@"BundlePath"];
   if (v6)
   {
 
-    MEMORY[0x1EEE66B58](a1, sel_setBackgroundIndicatorEnabled_forBundleIdentifier_);
+    MEMORY[0x1EEE66B58](self, sel_setBackgroundIndicatorEnabled_forBundleIdentifier_);
   }
 
   else if (v7)
   {
     [MEMORY[0x1E696AAE8] bundleWithPath:v7];
 
-    MEMORY[0x1EEE66B58](a1, sel_setBackgroundIndicatorEnabled_forBundle_);
+    MEMORY[0x1EEE66B58](self, sel_setBackgroundIndicatorEnabled_forBundle_);
   }
 }
 

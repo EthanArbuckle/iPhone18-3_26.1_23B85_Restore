@@ -1,20 +1,20 @@
 @interface MFPOP3Fetcher
-+ (int64_t)_fetchWithAccount:(id)a3 intoQueue:(id)a4 newMessages:(unint64_t)a5 oldMessages:(unint64_t)a6 preservingUID:(id)a7 withStore:(id)a8;
-+ (int64_t)fetchWithAccount:(id)a3 newMessages:(unint64_t)a4 oldMessages:(unint64_t)a5 preservingUID:(id)a6 withStore:(id)a7;
++ (int64_t)_fetchWithAccount:(id)account intoQueue:(id)queue newMessages:(unint64_t)messages oldMessages:(unint64_t)oldMessages preservingUID:(id)d withStore:(id)store;
++ (int64_t)fetchWithAccount:(id)account newMessages:(unint64_t)messages oldMessages:(unint64_t)oldMessages preservingUID:(id)d withStore:(id)store;
 @end
 
 @implementation MFPOP3Fetcher
 
-+ (int64_t)_fetchWithAccount:(id)a3 intoQueue:(id)a4 newMessages:(unint64_t)a5 oldMessages:(unint64_t)a6 preservingUID:(id)a7 withStore:(id)a8
++ (int64_t)_fetchWithAccount:(id)account intoQueue:(id)queue newMessages:(unint64_t)messages oldMessages:(unint64_t)oldMessages preservingUID:(id)d withStore:(id)store
 {
   v129 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v122 = a7;
-  v119 = a8;
-  v124 = v11;
-  v117 = v12;
-  v120 = [v11 library];
+  accountCopy = account;
+  queueCopy = queue;
+  dCopy = d;
+  storeCopy = store;
+  v124 = accountCopy;
+  v117 = queueCopy;
+  library = [accountCopy library];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -22,75 +22,75 @@
   }
 
   v13 = objc_alloc(MEMORY[0x277D28268]);
-  v14 = [v11 URLString];
-  v15 = [v13 initWithLibrary:v120 URLString:v14];
+  uRLString = [accountCopy URLString];
+  v15 = [v13 initWithLibrary:library URLString:uRLString];
 
   v118 = v15;
-  objc_storeStrong(v12 + 6, v15);
+  objc_storeStrong(queueCopy + 6, v15);
   v16 = objc_autoreleasePoolPush();
-  if (a5)
+  if (messages)
   {
-    [v11 releaseAllConnections];
+    [accountCopy releaseAllConnections];
   }
 
   v17 = MFLogGeneral();
   context = v16;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [v11 hostname];
-    [MFPOP3Fetcher _fetchWithAccount:v18 intoQueue:v128 newMessages:? oldMessages:? preservingUID:? withStore:?];
+    hostname = [accountCopy hostname];
+    [MFPOP3Fetcher _fetchWithAccount:hostname intoQueue:v128 newMessages:? oldMessages:? preservingUID:? withStore:?];
   }
 
-  v19 = [v11 authenticatedConnection];
-  v121 = v19;
-  [v19 setIsFetching:1];
-  if (v19)
+  authenticatedConnection = [accountCopy authenticatedConnection];
+  v121 = authenticatedConnection;
+  [authenticatedConnection setIsFetching:1];
+  if (authenticatedConnection)
   {
     v20 = MFLogGeneral();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [v11 hostname];
-      [MFPOP3Fetcher _fetchWithAccount:v21 intoQueue:v127 newMessages:? oldMessages:? preservingUID:? withStore:?];
+      hostname2 = [accountCopy hostname];
+      [MFPOP3Fetcher _fetchWithAccount:hostname2 intoQueue:v127 newMessages:? oldMessages:? preservingUID:? withStore:?];
     }
 
-    v22 = v19;
-    v23 = v11;
-    if (([v19 messagesAvailable] & 1) == 0)
+    v22 = authenticatedConnection;
+    v23 = accountCopy;
+    if (([authenticatedConnection messagesAvailable] & 1) == 0)
     {
-      [v19 doStat];
+      [authenticatedConnection doStat];
     }
 
-    if (![v19 messagesAvailable])
+    if (![authenticatedConnection messagesAvailable])
     {
       if (objc_opt_respondsToSelector())
       {
-        [v119 setServerMessageCount:0];
+        [storeCopy setServerMessageCount:0];
       }
 
       if (objc_opt_respondsToSelector())
       {
-        [v119 setServerUnreadOnlyOnServerCount:0];
+        [storeCopy setServerUnreadOnlyOnServerCount:0];
       }
 
       v30 = 0;
       v31 = 0;
       v32 = 0;
-      v33 = 0;
+      allValues = 0;
       goto LABEL_145;
     }
 
     v109 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v24 = [v19 numberOfMessagesAvailable];
-    v25 = [v124 numberOfKnownUIDs];
-    if (!v25)
+    numberOfMessagesAvailable = [authenticatedConnection numberOfMessagesAvailable];
+    numberOfKnownUIDs = [v124 numberOfKnownUIDs];
+    if (!numberOfKnownUIDs)
     {
-      v25 = [v118 numberOfMessageIDs];
-      [v124 setNumberOfKnownUIDs:v25];
+      numberOfKnownUIDs = [v118 numberOfMessageIDs];
+      [v124 setNumberOfKnownUIDs:numberOfKnownUIDs];
     }
 
-    if (a6 || !v24 || v24 != v25)
+    if (oldMessages || !numberOfMessagesAvailable || numberOfMessagesAvailable != numberOfKnownUIDs)
     {
-      if (!v24)
+      if (!numberOfMessagesAvailable)
       {
         goto LABEL_20;
       }
@@ -98,38 +98,38 @@
       goto LABEL_30;
     }
 
-    v26 = [v19 idForMessageNumber:1];
-    v27 = [v124 oldestKnownMessageUID];
-    if (!v27)
+    v26 = [authenticatedConnection idForMessageNumber:1];
+    oldestKnownMessageUID = [v124 oldestKnownMessageUID];
+    if (!oldestKnownMessageUID)
     {
       v42 = [MEMORY[0x277CBEB98] setWithObject:v26];
       v43 = [v118 knownMessageIDsFromSet:v42];
 
       if (![v43 count])
       {
-        v27 = v43;
+        oldestKnownMessageUID = v43;
         goto LABEL_49;
       }
 
-      v27 = [v43 anyObject];
-      [v124 setOldestKnownMessageUID:v27];
+      oldestKnownMessageUID = [v43 anyObject];
+      [v124 setOldestKnownMessageUID:oldestKnownMessageUID];
 
       v23 = v124;
-      if (!v27)
+      if (!oldestKnownMessageUID)
       {
         goto LABEL_50;
       }
     }
 
-    if (v24 == 1)
+    if (numberOfMessagesAvailable == 1)
     {
-      v28 = [v27 isEqual:v26];
+      v28 = [oldestKnownMessageUID isEqual:v26];
 
       v23 = v124;
       if (v28)
       {
 LABEL_20:
-        if ((objc_opt_respondsToSelector() & 1) != 0 && [v119 serverMessageCount] == 0x7FFFFFFFFFFFFFFFLL)
+        if ((objc_opt_respondsToSelector() & 1) != 0 && [storeCopy serverMessageCount] == 0x7FFFFFFFFFFFFFFFLL)
         {
           v29 = 0;
         }
@@ -146,9 +146,9 @@ LABEL_20:
             goto LABEL_53;
           }
 
-          v34 = [v119 serverUnreadOnlyOnServerCount];
+          serverUnreadOnlyOnServerCount = [storeCopy serverUnreadOnlyOnServerCount];
           v35 = 0;
-          if (v34)
+          if (serverUnreadOnlyOnServerCount)
           {
             v36 = 0;
             v37 = 0;
@@ -169,15 +169,15 @@ LABEL_53:
             {
               v49 = [MEMORY[0x277CBEB58] setWithCapacity:v47];
               v50 = MEMORY[0x277CBEB98];
-              v51 = [v124 library];
-              v52 = [v124 URLString];
-              v53 = [v51 hiddenPOPUIDsInMailbox:v52];
+              library2 = [v124 library];
+              uRLString2 = [v124 URLString];
+              v53 = [library2 hiddenPOPUIDsInMailbox:uRLString2];
               v113 = [v50 setWithArray:v53];
 
               v54 = MEMORY[0x277CBEB98];
-              v55 = [v124 library];
-              v56 = [v124 URLString];
-              v57 = [v55 allUIDsInMailbox:v56];
+              library3 = [v124 library];
+              uRLString3 = [v124 URLString];
+              v57 = [library3 allUIDsInMailbox:uRLString3];
               v58 = [v54 setWithArray:v57];
 
               if (v47)
@@ -258,25 +258,25 @@ LABEL_129:
               {
                 if (objc_opt_respondsToSelector())
                 {
-                  [v119 setServerMessageCount:v106];
+                  [storeCopy setServerMessageCount:v106];
                 }
 
                 if (objc_opt_respondsToSelector())
                 {
-                  [v119 setServerUnreadOnlyOnServerCount:v108];
+                  [storeCopy setServerUnreadOnlyOnServerCount:v108];
                 }
               }
 
-              v33 = 0;
+              allValues = 0;
               if (v22)
               {
                 v23 = v124;
                 if (!v31)
                 {
 LABEL_145:
-                  [v23 checkInConnection:v22 currentUIDs:v33];
+                  [v23 checkInConnection:v22 currentUIDs:allValues];
 
-                  v19 = v121;
+                  authenticatedConnection = v121;
                   goto LABEL_146;
                 }
 
@@ -292,12 +292,12 @@ LABEL_145:
                   }
                 }
 
-                v33 = [v31 allValues];
+                allValues = [v31 allValues];
                 if (!v32)
                 {
-                  [v118 deleteUIDsNotInArray:v33];
+                  [v118 deleteUIDsNotInArray:allValues];
 
-                  v33 = 0;
+                  allValues = 0;
                   v23 = v124;
                 }
 
@@ -315,22 +315,22 @@ LABEL_145:
               goto LABEL_145;
             }
 
-            v65 = [v23 messageDeletionPolicy];
-            if (v65 == 2)
+            messageDeletionPolicy = [v23 messageDeletionPolicy];
+            if (messageDeletionPolicy == 2)
             {
-              v72 = [v23 delayedMessageDeletionInterval];
-              v73 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-(86400 * v72)];
+              delayedMessageDeletionInterval = [v23 delayedMessageDeletionInterval];
+              v73 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-(86400 * delayedMessageDeletionInterval)];
               [v73 timeIntervalSinceReferenceDate];
               v75 = v74;
 
               v68 = [v118 messageIDsAddedBeforeDate:v75];
             }
 
-            else if (v65 == 3)
+            else if (messageDeletionPolicy == 3)
             {
-              v66 = [v23 library];
-              v67 = [v23 URLString];
-              v68 = [v66 UIDsToDeleteInMailbox:v67];
+              library4 = [v23 library];
+              uRLString4 = [v23 URLString];
+              v68 = [library4 UIDsToDeleteInMailbox:uRLString4];
             }
 
             else
@@ -340,7 +340,7 @@ LABEL_145:
 
             v31 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v47];
             v114 = v68;
-            if (v122)
+            if (dCopy)
             {
               if (v36)
               {
@@ -351,7 +351,7 @@ LABEL_145:
                   {
                     v77 = [v123 objectAtIndexedSubscript:v76];
                     v78 = [v36 objectForKeyedSubscript:v77];
-                    v79 = [v78 isEqual:v122];
+                    v79 = [v78 isEqual:dCopy];
 
                     v80 = (v76-- == 0) | v79;
                   }
@@ -417,9 +417,9 @@ LABEL_79:
 
                           if (v111)
                           {
-                            if (a6 <= v105)
+                            if (oldMessages <= v105)
                             {
-                              if (!v122)
+                              if (!dCopy)
                               {
                                 v111 = 1;
                                 goto LABEL_94;
@@ -448,7 +448,7 @@ LABEL_91:
                             goto LABEL_92;
                           }
 
-                          if (HIDWORD(v105) >= a5 && (v122 == 0) | v81 & 1)
+                          if (HIDWORD(v105) >= messages && (dCopy == 0) | v81 & 1)
                           {
                             v111 = 0;
                           }
@@ -465,18 +465,18 @@ LABEL_91:
 
                             v108 = v91;
                             ++HIDWORD(v105);
-                            v92 = a6 - 1;
-                            if (!a6)
+                            v92 = oldMessages - 1;
+                            if (!oldMessages)
                             {
                               v92 = 0;
                             }
 
-                            a6 = v92;
+                            oldMessages = v92;
                           }
                         }
 
 LABEL_92:
-                        if (v122)
+                        if (dCopy)
                         {
                           goto LABEL_93;
                         }
@@ -503,7 +503,7 @@ LABEL_114:
                         [v121 quit];
                         v94 = 0;
                         v30 = 0;
-                        v95 = v121;
+                        currentMonitor = v121;
 LABEL_121:
 
 LABEL_122:
@@ -525,8 +525,8 @@ LABEL_122:
 
                       if (!v93)
                       {
-                        v95 = [MEMORY[0x277D281F0] currentMonitor];
-                        [v95 setGotNewMessagesState:1];
+                        currentMonitor = [MEMORY[0x277D281F0] currentMonitor];
+                        [currentMonitor setGotNewMessagesState:1];
                         v94 = v121;
                         goto LABEL_121;
                       }
@@ -539,7 +539,7 @@ LABEL_122:
               }
             }
 
-            v122 = 0;
+            dCopy = 0;
             goto LABEL_79;
           }
 
@@ -562,9 +562,9 @@ LABEL_30:
       goto LABEL_51;
     }
 
-    v39 = [v121 idForMessageNumber:v24];
-    v40 = [v23 newestKnownMessageUID];
-    if (!v40)
+    v39 = [v121 idForMessageNumber:numberOfMessagesAvailable];
+    newestKnownMessageUID = [v23 newestKnownMessageUID];
+    if (!newestKnownMessageUID)
     {
       v45 = [MEMORY[0x277CBEB98] setWithObject:v39];
       v44 = [v118 knownMessageIDsFromSet:v45];
@@ -582,18 +582,18 @@ LABEL_50:
         goto LABEL_51;
       }
 
-      v40 = [v44 anyObject];
-      [v124 setNewestKnownMessageUID:v40];
+      newestKnownMessageUID = [v44 anyObject];
+      [v124 setNewestKnownMessageUID:newestKnownMessageUID];
 
-      if (!v40)
+      if (!newestKnownMessageUID)
       {
         goto LABEL_47;
       }
     }
 
-    if ([v27 isEqual:v26])
+    if ([oldestKnownMessageUID isEqual:v26])
     {
-      v41 = [v40 isEqual:v39];
+      v41 = [newestKnownMessageUID isEqual:v39];
 
       v23 = v124;
       if (v41)
@@ -604,35 +604,35 @@ LABEL_50:
       goto LABEL_30;
     }
 
-    v44 = v40;
+    v44 = newestKnownMessageUID;
     goto LABEL_46;
   }
 
   v22 = 0;
   v30 = -1;
 LABEL_146:
-  [v19 setIsFetching:0];
+  [authenticatedConnection setIsFetching:0];
 
   objc_autoreleasePoolPop(context);
   v103 = *MEMORY[0x277D85DE8];
   return v30;
 }
 
-+ (int64_t)fetchWithAccount:(id)a3 newMessages:(unint64_t)a4 oldMessages:(unint64_t)a5 preservingUID:(id)a6 withStore:(id)a7
++ (int64_t)fetchWithAccount:(id)account newMessages:(unint64_t)messages oldMessages:(unint64_t)oldMessages preservingUID:(id)d withStore:(id)store
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  accountCopy = account;
+  dCopy = d;
+  storeCopy = store;
   v15 = objc_alloc_init(MFPOPDownloadQueue);
-  v16 = [v12 primaryMailboxUid];
+  primaryMailboxUid = [accountCopy primaryMailboxUid];
   mailbox = v15->_mailbox;
-  v15->_mailbox = v16;
+  v15->_mailbox = primaryMailboxUid;
 
-  v18 = [v12 library];
+  library = [accountCopy library];
   library = v15->_library;
-  v15->_library = v18;
+  v15->_library = library;
 
-  v20 = [a1 _fetchWithAccount:v12 intoQueue:v15 newMessages:a4 oldMessages:a5 preservingUID:v13 withStore:v14];
+  v20 = [self _fetchWithAccount:accountCopy intoQueue:v15 newMessages:messages oldMessages:oldMessages preservingUID:dCopy withStore:storeCopy];
   return v20;
 }
 

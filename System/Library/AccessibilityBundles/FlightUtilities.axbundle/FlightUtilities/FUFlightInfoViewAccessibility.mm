@@ -1,49 +1,49 @@
 @interface FUFlightInfoViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
-- (void)setFlight:(id)a3;
+- (void)setFlight:(id)flight;
 @end
 
 @implementation FUFlightInfoViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"leg" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightLeg" hasInstanceMethod:@"duration" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"flightButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"flight" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"leg" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelAirlineName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelFlightCode" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelStatusTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelStatus" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDepartureCity" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDepartureCode" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDepartureInfo1" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDepartureInfo2" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelArrivalCity" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelArrivalCode" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelArrivalInfo1" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelArrivalInfo2" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDepartureTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDepartureDate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDepartureDelay" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelArrivalTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelArrivalDate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelArrivalDelay" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDurationTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDurationValue" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDurationComplete" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelBaggageClaimTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelBaggageClaimValue" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"leg" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightLeg" hasInstanceMethod:@"duration" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"flightButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"flight" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"leg" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelAirlineName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelFlightCode" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelStatusTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelStatus" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDepartureCity" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDepartureCode" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDepartureInfo1" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDepartureInfo2" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelArrivalCity" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelArrivalCode" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelArrivalInfo1" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelArrivalInfo2" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDepartureTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDepartureDate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDepartureDelay" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelArrivalTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelArrivalDate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelArrivalDelay" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDurationTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDurationValue" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelDurationComplete" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelBaggageClaimTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightInfoView" hasInstanceMethod:@"labelBaggageClaimValue" withFullSignature:{"@", 0}];
 }
 
-- (void)setFlight:(id)a3
+- (void)setFlight:(id)flight
 {
   v4.receiver = self;
   v4.super_class = FUFlightInfoViewAccessibility;
-  [(FUFlightInfoViewAccessibility *)&v4 setFlight:a3];
+  [(FUFlightInfoViewAccessibility *)&v4 setFlight:flight];
   [(FUFlightInfoViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
@@ -52,7 +52,7 @@
   v3 = [(FUFlightInfoViewAccessibility *)self _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
   if (!v3)
   {
-    v4 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v234 = 0;
     objc_opt_class();
     v5 = [(FUFlightInfoViewAccessibility *)self safeValueForKey:@"flight"];
@@ -68,10 +68,10 @@
     [(UIAccessibilityFrameRecalculatingElement *)v9 setAccessibilityTraits:?];
     v10 = MEMORY[0x29EDBA0F8];
     v11 = accessibilityLocalizedString(@"flight.code.label");
-    v12 = [v6 airline];
-    v13 = [v12 name];
-    v14 = [v6 flightCode];
-    v15 = [v10 stringWithFormat:v11, v13, v14];
+    airline = [v6 airline];
+    name = [airline name];
+    flightCode = [v6 flightCode];
+    v15 = [v10 stringWithFormat:v11, name, flightCode];
     [(UIAccessibilityFrameRecalculatingElement *)v9 setAccessibilityLabel:v15];
 
     v233[0] = MEMORY[0x29EDCA5F8];
@@ -80,7 +80,7 @@
     v233[3] = &unk_29F2BF258;
     v233[4] = self;
     [(UIAccessibilityFrameRecalculatingElement *)v9 setCalculateFrame:v233];
-    [v4 addObject:v9];
+    [array addObject:v9];
     v234 = 0;
     objc_opt_class();
     v16 = [(FUFlightInfoViewAccessibility *)self safeValueForKey:@"labelStatus"];
@@ -102,8 +102,8 @@
       goto LABEL_71;
     }
 
-    v20 = [v19 text];
-    v21 = [v20 length];
+    text = [v19 text];
+    v21 = [text length];
 
     if (v21)
     {
@@ -119,7 +119,7 @@
       v231 = v17;
       v232 = v19;
       [(UIAccessibilityFrameRecalculatingElement *)v22 setCalculateFrame:v230];
-      [v4 addObject:v22];
+      [array addObject:v22];
     }
 
     v194 = v19;
@@ -147,7 +147,7 @@
       goto LABEL_71;
     }
 
-    v202 = v4;
+    v202 = array;
     v234 = 0;
     objc_opt_class();
     v28 = [(FUFlightInfoViewAccessibility *)self safeValueForKey:@"labelDepartureInfo1"];
@@ -190,7 +190,7 @@
     v189 = v34;
     if (!v8)
     {
-      v41 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{4, v32, v33, v34, v35}];
+      iATACode2 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{4, v32, v33, v34, v35}];
       v42 = MEMORY[0x29C2D6200]();
 LABEL_26:
 
@@ -280,36 +280,36 @@ LABEL_26:
       v183 = v74;
       if (!v204)
       {
-        v81 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{4, v72, v73, v74, v75}];
+        iATACode = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{4, v72, v73, v74, v75}];
         v82 = MEMORY[0x29C2D6200]();
         v80 = 0x29F2BF000;
         goto LABEL_45;
       }
 
-      v76 = [v204 arrival];
-      v77 = [v76 airport];
-      v78 = [v77 name];
-      v79 = v78;
+      arrival = [v204 arrival];
+      airport = [arrival airport];
+      name2 = [airport name];
+      v79 = name2;
       v80 = 0x29F2BF000uLL;
-      if (v78)
+      if (name2)
       {
-        v81 = v78;
+        iATACode = name2;
       }
 
       else
       {
-        v83 = [v204 arrival];
-        v84 = [v83 airport];
-        v81 = [v84 IATACode];
+        arrival2 = [v204 arrival];
+        airport2 = [arrival2 airport];
+        iATACode = [airport2 IATACode];
       }
 
-      v85 = [v204 arrival];
-      v86 = [v85 terminal];
-      v87 = [v86 length];
+      arrival3 = [v204 arrival];
+      terminal = [arrival3 terminal];
+      v87 = [terminal length];
 
-      v88 = [v204 arrival];
-      v89 = [v88 gate];
-      v90 = [v89 length];
+      arrival4 = [v204 arrival];
+      gate = [arrival4 gate];
+      v90 = [gate length];
 
       v91 = MEMORY[0x29EDBA0F8];
       if (v87)
@@ -317,11 +317,11 @@ LABEL_26:
         if (v90)
         {
           v92 = accessibilityLocalizedString(@"flight.arrival.location.label");
-          v93 = [v204 arrival];
-          v94 = [v93 gate];
-          v95 = [v204 arrival];
-          v96 = [v95 terminal];
-          v82 = [v91 stringWithFormat:v92, v94, v96, v81];
+          arrival5 = [v204 arrival];
+          gate2 = [arrival5 gate];
+          arrival6 = [v204 arrival];
+          terminal2 = [arrival6 terminal];
+          v82 = [v91 stringWithFormat:v92, gate2, terminal2, iATACode];
 
           v69 = v202;
 LABEL_43:
@@ -353,7 +353,7 @@ LABEL_45:
             {
               v234 = 0;
               objc_opt_class();
-              v199 = self;
+              selfCopy = self;
               v104 = [(FUFlightInfoViewAccessibility *)self safeValueForKey:@"labelDepartureDelay"];
               v105 = __UIAccessibilityCastAsClass();
 
@@ -371,57 +371,57 @@ LABEL_45:
                 v219 = v107;
                 v197 = v99;
                 [v99 setCalculateFrame:v216];
-                v108 = [v204 departure];
-                v109 = [v108 time];
-                v110 = [v109 date];
-                v111 = [v204 departure];
-                v112 = [v111 airport];
-                v113 = [v112 timeZone];
+                departure = [v204 departure];
+                time = [departure time];
+                date = [time date];
+                departure2 = [v204 departure];
+                airport3 = [departure2 airport];
+                timeZone = [airport3 timeZone];
                 v114 = AXDateStringForFormatWithTimeZone();
 
-                v115 = [v204 status];
+                status = [v204 status];
                 v116 = MEMORY[0x29EDBA0F8];
-                if (v115 == 6)
+                if (status == 6)
                 {
                   v117 = accessibilityLocalizedString(@"flight.departure.schedule.cancel.label");
-                  v118 = [v116 stringWithFormat:v117, v114];
+                  v114 = [v116 stringWithFormat:v117, v114];
                 }
 
                 else
                 {
                   v117 = accessibilityLocalizedString(@"flight.departure.schedule.label");
-                  v119 = [v106 text];
-                  v120 = [v116 stringWithFormat:v117, v119, v114];
-                  v168 = [v107 text];
-                  v118 = __UIAXStringForVariables();
+                  text2 = [v106 text];
+                  v1142 = [v116 stringWithFormat:v117, text2, v114];
+                  text3 = [v107 text];
+                  v114 = __UIAXStringForVariables();
                 }
 
                 v177 = v114;
                 v178 = v107;
                 v180 = v106;
 
-                v176 = v118;
-                [v197 setAccessibilityLabel:v118];
+                v176 = v114;
+                [v197 setAccessibilityLabel:v114];
                 [v202 addObject:v197];
-                v121 = [[UIAccessibilityFrameRecalculatingElement alloc] initWithAccessibilityContainer:v199];
+                v121 = [[UIAccessibilityFrameRecalculatingElement alloc] initWithAccessibilityContainer:selfCopy];
                 [(UIAccessibilityFrameRecalculatingElement *)v121 setAccessibilityTraits:v203];
                 v234 = 0;
                 objc_opt_class();
-                v122 = [(FUFlightInfoViewAccessibility *)v199 safeValueForKey:@"labelArrivalTitle"];
+                v122 = [(FUFlightInfoViewAccessibility *)selfCopy safeValueForKey:@"labelArrivalTitle"];
                 v123 = __UIAccessibilityCastAsClass();
 
                 if (v234 != 1)
                 {
                   v234 = 0;
                   objc_opt_class();
-                  v124 = [(FUFlightInfoViewAccessibility *)v199 safeValueForKey:@"labelArrivalDate"];
+                  v124 = [(FUFlightInfoViewAccessibility *)selfCopy safeValueForKey:@"labelArrivalDate"];
                   v125 = __UIAccessibilityCastAsClass();
 
                   if (v234 != 1)
                   {
                     v234 = 0;
                     objc_opt_class();
-                    v126 = [(FUFlightInfoViewAccessibility *)v199 safeValueForKey:@"labelArrivalDelay"];
+                    v126 = [(FUFlightInfoViewAccessibility *)selfCopy safeValueForKey:@"labelArrivalDelay"];
                     v127 = __UIAccessibilityCastAsClass();
 
                     if (v234 != 1)
@@ -438,57 +438,57 @@ LABEL_45:
                       v215 = v129;
                       v196 = v121;
                       [(UIAccessibilityFrameRecalculatingElement *)v121 setCalculateFrame:v212];
-                      v130 = [v204 arrival];
-                      v131 = [v130 time];
-                      v132 = [v131 date];
-                      v133 = [v204 arrival];
-                      v134 = [v133 airport];
-                      v135 = [v134 timeZone];
+                      arrival7 = [v204 arrival];
+                      time2 = [arrival7 time];
+                      date2 = [time2 date];
+                      arrival8 = [v204 arrival];
+                      airport4 = [arrival8 airport];
+                      timeZone2 = [airport4 timeZone];
                       v136 = AXDateStringForFormatWithTimeZone();
 
-                      v137 = [v204 status];
+                      status2 = [v204 status];
                       v138 = MEMORY[0x29EDBA0F8];
                       v175 = v128;
-                      if (v137 == 6)
+                      if (status2 == 6)
                       {
                         v139 = accessibilityLocalizedString(@"flight.arrival.schedule.cancel.label");
-                        v140 = [v138 stringWithFormat:v139, v136];
+                        v136 = [v138 stringWithFormat:v139, v136];
                       }
 
                       else
                       {
                         v139 = accessibilityLocalizedString(@"flight.arrival.schedule.label");
-                        v141 = [v128 text];
-                        v142 = [v138 stringWithFormat:v139, v141, v136];
-                        v169 = [v129 text];
-                        v140 = __UIAXStringForVariables();
+                        text4 = [v128 text];
+                        v1362 = [v138 stringWithFormat:v139, text4, v136];
+                        text5 = [v129 text];
+                        v136 = __UIAXStringForVariables();
                       }
 
                       v3 = v202;
                       v173 = v136;
 
-                      v172 = v140;
-                      [(UIAccessibilityFrameRecalculatingElement *)v196 setAccessibilityLabel:v140];
+                      v172 = v136;
+                      [(UIAccessibilityFrameRecalculatingElement *)v196 setAccessibilityLabel:v136];
                       [v202 addObject:v196];
-                      v143 = [[UIAccessibilityFrameRecalculatingElement alloc] initWithAccessibilityContainer:v199];
+                      v143 = [[UIAccessibilityFrameRecalculatingElement alloc] initWithAccessibilityContainer:selfCopy];
                       [(UIAccessibilityFrameRecalculatingElement *)v143 setAccessibilityTraits:v203];
                       v234 = 0;
                       objc_opt_class();
-                      v144 = [(FUFlightInfoViewAccessibility *)v199 safeValueForKey:@"labelDurationTitle"];
+                      v144 = [(FUFlightInfoViewAccessibility *)selfCopy safeValueForKey:@"labelDurationTitle"];
                       v145 = __UIAccessibilityCastAsClass();
 
                       if (v234 != 1)
                       {
                         v234 = 0;
                         objc_opt_class();
-                        v146 = [(FUFlightInfoViewAccessibility *)v199 safeValueForKey:@"labelDurationValue"];
+                        v146 = [(FUFlightInfoViewAccessibility *)selfCopy safeValueForKey:@"labelDurationValue"];
                         v147 = __UIAccessibilityCastAsClass();
 
                         if (v234 != 1)
                         {
                           v234 = 0;
                           objc_opt_class();
-                          v148 = [(FUFlightInfoViewAccessibility *)v199 safeValueForKey:@"labelDurationComplete"];
+                          v148 = [(FUFlightInfoViewAccessibility *)selfCopy safeValueForKey:@"labelDurationComplete"];
                           v149 = __UIAccessibilityCastAsClass();
 
                           if (v234 != 1)
@@ -504,28 +504,28 @@ LABEL_45:
                             v150 = v149;
                             v211 = v150;
                             [(UIAccessibilityFrameRecalculatingElement *)v143 setCalculateFrame:v208];
-                            v151 = [v150 text];
-                            v152 = v151;
-                            if (v151)
+                            text6 = [v150 text];
+                            v152 = text6;
+                            if (text6)
                             {
-                              v153 = v151;
-                              v154 = v199;
+                              v158 = text6;
+                              v154 = selfCopy;
                             }
 
                             else
                             {
                               v155 = MEMORY[0x29EDBA0F8];
                               v156 = accessibilityLocalizedString(@"flight.duration.label");
-                              v154 = v199;
-                              v157 = [(FUFlightInfoViewAccessibility *)v199 safeValueForKey:@"leg"];
+                              v154 = selfCopy;
+                              v157 = [(FUFlightInfoViewAccessibility *)selfCopy safeValueForKey:@"leg"];
                               [v157 safeTimeIntervalForKey:@"duration"];
                               v158 = AXDurationStringForDuration();
-                              v153 = [v155 stringWithFormat:v156, v158];
+                              v158 = [v155 stringWithFormat:v156, v158];
 
                               v3 = v202;
                             }
 
-                            [(UIAccessibilityFrameRecalculatingElement *)v143 setAccessibilityLabel:v153];
+                            [(UIAccessibilityFrameRecalculatingElement *)v143 setAccessibilityLabel:v158];
                             [v3 addObject:v143];
                             v159 = [[UIAccessibilityFrameRecalculatingElement alloc] initWithAccessibilityContainer:v154];
                             [(UIAccessibilityFrameRecalculatingElement *)v159 setAccessibilityTraits:v203];
@@ -576,8 +576,8 @@ LABEL_71:
         }
 
         v92 = accessibilityLocalizedString(@"flight.arrival.location.label.nogate");
-        v93 = [v204 arrival];
-        v97 = [v93 terminal];
+        arrival5 = [v204 arrival];
+        terminal3 = [arrival5 terminal];
       }
 
       else
@@ -585,45 +585,45 @@ LABEL_71:
         if (!v90)
         {
           v92 = accessibilityLocalizedString(@"flight.arrival.location.label.noterminal");
-          v82 = [v91 stringWithFormat:v92, v81];
+          v82 = [v91 stringWithFormat:v92, iATACode];
           goto LABEL_44;
         }
 
         v92 = accessibilityLocalizedString(@"flight.arrival.location.label.noterminal.gate");
-        v93 = [v204 arrival];
-        v97 = [v93 gate];
+        arrival5 = [v204 arrival];
+        terminal3 = [arrival5 gate];
       }
 
-      v94 = v97;
-      v82 = [v91 stringWithFormat:v92, v97, v81];
+      gate2 = terminal3;
+      v82 = [v91 stringWithFormat:v92, terminal3, iATACode];
       goto LABEL_43;
     }
 
-    v37 = [v8 departure];
-    v38 = [v37 airport];
-    v39 = [v38 name];
-    v40 = v39;
-    if (v39)
+    departure3 = [v8 departure];
+    airport5 = [departure3 airport];
+    name3 = [airport5 name];
+    v40 = name3;
+    if (name3)
     {
-      v41 = v39;
+      iATACode2 = name3;
     }
 
     else
     {
-      v43 = [v8 departure];
-      v44 = [v43 airport];
-      v41 = [v44 IATACode];
+      departure4 = [v8 departure];
+      airport6 = [departure4 airport];
+      iATACode2 = [airport6 IATACode];
 
       v36 = v202;
     }
 
-    v45 = [v8 departure];
-    v46 = [v45 terminal];
-    v47 = [v46 length];
+    departure5 = [v8 departure];
+    terminal4 = [departure5 terminal];
+    v47 = [terminal4 length];
 
-    v48 = [v8 departure];
-    v49 = [v48 gate];
-    v50 = [v49 length];
+    departure6 = [v8 departure];
+    gate3 = [departure6 gate];
+    v50 = [gate3 length];
 
     v51 = MEMORY[0x29EDBA0F8];
     if (v47)
@@ -631,11 +631,11 @@ LABEL_71:
       if (v50)
       {
         v52 = accessibilityLocalizedString(@"flight.departure.location.label");
-        v53 = [v8 departure];
-        v54 = [v53 gate];
-        v55 = [v8 departure];
-        v56 = [v55 terminal];
-        v42 = [v51 stringWithFormat:v52, v54, v56, v41];
+        departure7 = [v8 departure];
+        gate4 = [departure7 gate];
+        departure8 = [v8 departure];
+        terminal5 = [departure8 terminal];
+        v42 = [v51 stringWithFormat:v52, gate4, terminal5, iATACode2];
 
         v36 = v202;
 LABEL_24:
@@ -645,8 +645,8 @@ LABEL_25:
       }
 
       v52 = accessibilityLocalizedString(@"flight.departure.location.label.nogate");
-      v53 = [v8 departure];
-      v57 = [v53 terminal];
+      departure7 = [v8 departure];
+      terminal6 = [departure7 terminal];
     }
 
     else
@@ -654,17 +654,17 @@ LABEL_25:
       if (!v50)
       {
         v52 = accessibilityLocalizedString(@"flight.departure.location.label.noterminal");
-        v42 = [v51 stringWithFormat:v52, v41];
+        v42 = [v51 stringWithFormat:v52, iATACode2];
         goto LABEL_25;
       }
 
       v52 = accessibilityLocalizedString(@"flight.departure.location.label.noterminal.gate");
-      v53 = [v8 departure];
-      v57 = [v53 gate];
+      departure7 = [v8 departure];
+      terminal6 = [departure7 gate];
     }
 
-    v54 = v57;
-    v42 = [v51 stringWithFormat:v52, v57, v41];
+    gate4 = terminal6;
+    v42 = [v51 stringWithFormat:v52, terminal6, iATACode2];
     goto LABEL_24;
   }
 

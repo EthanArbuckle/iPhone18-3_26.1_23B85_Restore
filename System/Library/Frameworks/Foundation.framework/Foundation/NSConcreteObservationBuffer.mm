@@ -1,8 +1,8 @@
 @interface NSConcreteObservationBuffer
-- (NSConcreteObservationBuffer)initWithMaximumObjectCount:(unint64_t)a3 fullPolicy:(int64_t)a4 outputQueue:(id)a5;
+- (NSConcreteObservationBuffer)initWithMaximumObjectCount:(unint64_t)count fullPolicy:(int64_t)policy outputQueue:(id)queue;
 - (void)_alreadyOnQueueEmitAllObjects;
 - (void)_alreadyOnQueueEmitObject;
-- (void)_receiveBox:(id)a3;
+- (void)_receiveBox:(id)box;
 - (void)dealloc;
 - (void)emitAllObjects;
 - (void)emitObject;
@@ -10,7 +10,7 @@
 
 @implementation NSConcreteObservationBuffer
 
-- (NSConcreteObservationBuffer)initWithMaximumObjectCount:(unint64_t)a3 fullPolicy:(int64_t)a4 outputQueue:(id)a5
+- (NSConcreteObservationBuffer)initWithMaximumObjectCount:(unint64_t)count fullPolicy:(int64_t)policy outputQueue:(id)queue
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -19,9 +19,9 @@
   if (v8)
   {
     v8->_dequeue = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v8->_policy = a4;
-    v8->_maxCount = a3;
-    v8->_outputQueue = a5;
+    v8->_policy = policy;
+    v8->_maxCount = count;
+    v8->_outputQueue = queue;
     v8->_inputQueue = dispatch_queue_create("Input Queue", 0);
     v8->_automaticallyEmitsObjects = 1;
     pthread_mutex_init(&v8->_lock, 0);
@@ -52,7 +52,7 @@
   v11[1] = 3221225472;
   v12 = __56__NSConcreteObservationBuffer__alreadyOnQueueEmitObject__block_invoke;
   v13 = &unk_1E69F30D8;
-  v14 = self;
+  selfCopy = self;
   v15[0] = 0;
   v4 = v3[1];
   v5 = *(v3 + 6);
@@ -98,7 +98,7 @@ id __56__NSConcreteObservationBuffer__alreadyOnQueueEmitObject__block_invoke(id 
   v9[1] = 3221225472;
   v10 = __60__NSConcreteObservationBuffer__alreadyOnQueueEmitAllObjects__block_invoke;
   v11 = &unk_1E69F6A10;
-  v12 = self;
+  selfCopy = self;
   if (!self->_state)
   {
     __60__NSConcreteObservationBuffer__alreadyOnQueueEmitAllObjects__block_invoke(v9, &emptyValue, 1);
@@ -119,8 +119,8 @@ id __56__NSConcreteObservationBuffer__alreadyOnQueueEmitObject__block_invoke(id 
   {
     updated = 0;
 LABEL_5:
-    v5 = [(NSConcreteObservationBuffer *)self bufferFullHandler];
-    v5[2](v5, updated);
+    bufferFullHandler = [(NSConcreteObservationBuffer *)self bufferFullHandler];
+    bufferFullHandler[2](bufferFullHandler, updated);
   }
 
   memset(v13, 0, sizeof(v13));
@@ -204,7 +204,7 @@ id __60__NSConcreteObservationBuffer__alreadyOnQueueEmitAllObjects__block_invoke
   [(NSOperationQueue *)outputQueue addOperationWithBlock:v3];
 }
 
-- (void)_receiveBox:(id)a3
+- (void)_receiveBox:(id)box
 {
   v8[6] = *MEMORY[0x1E69E9840];
   if (self->_state == 2)
@@ -226,7 +226,7 @@ id __60__NSConcreteObservationBuffer__alreadyOnQueueEmitAllObjects__block_invoke
     }
   }
 
-  v6 = [a3 copyToHeap];
+  copyToHeap = [box copyToHeap];
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x3052000000;
@@ -237,7 +237,7 @@ id __60__NSConcreteObservationBuffer__alreadyOnQueueEmitAllObjects__block_invoke
   block[1] = 3221225472;
   block[2] = __43__NSConcreteObservationBuffer__receiveBox___block_invoke;
   block[3] = &unk_1E69F6900;
-  block[4] = v6;
+  block[4] = copyToHeap;
   block[5] = v8;
   dispatch_sync(self->_inputQueue, block);
   _Block_object_dispose(v8, 8);

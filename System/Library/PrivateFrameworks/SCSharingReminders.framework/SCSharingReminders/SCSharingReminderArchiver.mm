@@ -2,12 +2,12 @@
 + (id)sharedInstance;
 - (BOOL)sharingReminderDirectoryExists;
 - (SCSharingReminderArchiver)init;
-- (id)fileURLForKey:(id)a3;
-- (id)getObjectOfClass:(Class)a3 atKey:(id)a4;
+- (id)fileURLForKey:(id)key;
+- (id)getObjectOfClass:(Class)class atKey:(id)key;
 - (id)sharingReminderDirectoryURL;
 - (void)createSharingReminderDirectory;
-- (void)getObjectOfClass:(Class)a3 atKey:(id)a4 completion:(id)a5;
-- (void)setObject:(id)a3 atKey:(id)a4 withCompletion:(id)a5;
+- (void)getObjectOfClass:(Class)class atKey:(id)key completion:(id)completion;
+- (void)setObject:(id)object atKey:(id)key withCompletion:(id)completion;
 - (void)sharingReminderDirectoryExists;
 - (void)sharingReminderDirectoryURL;
 @end
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __43__SCSharingReminderArchiver_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -45,8 +45,8 @@ uint64_t __43__SCSharingReminderArchiver_sharedInstance__block_invoke(uint64_t a
   v2 = [(SCSharingReminderArchiver *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    [(SCSharingReminderArchiver *)v2 setFileManager:v3];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [(SCSharingReminderArchiver *)v2 setFileManager:defaultManager];
 
     v2->_lock._os_unfair_lock_opaque = 0;
     if (![(SCSharingReminderArchiver *)v2 sharingReminderDirectoryExists])
@@ -58,13 +58,13 @@ uint64_t __43__SCSharingReminderArchiver_sharedInstance__block_invoke(uint64_t a
   return v2;
 }
 
-- (void)getObjectOfClass:(Class)a3 atKey:(id)a4 completion:(id)a5
+- (void)getObjectOfClass:(Class)class atKey:(id)key completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (v8 && ![v8 isEqualToString:&stru_2875209E0])
+  keyCopy = key;
+  completionCopy = completion;
+  if (keyCopy && ![keyCopy isEqualToString:&stru_2875209E0])
   {
-    v11 = [(SCSharingReminderArchiver *)self fileURLForKey:v8];
+    v11 = [(SCSharingReminderArchiver *)self fileURLForKey:keyCopy];
     os_unfair_lock_lock(&self->_lock);
     v18 = 0;
     v12 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v11 options:0 error:&v18];
@@ -78,13 +78,13 @@ uint64_t __43__SCSharingReminderArchiver_sharedInstance__block_invoke(uint64_t a
         [SCSharingReminderArchiver getObjectOfClass:atKey:completion:];
       }
 
-      v9[2](v9, 0, v13);
+      completionCopy[2](completionCopy, 0, v13);
     }
 
     else
     {
       v17 = 0;
-      v15 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:a3 fromData:v12 error:&v17];
+      v15 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:class fromData:v12 error:&v17];
       v13 = v17;
       if (v13)
       {
@@ -97,7 +97,7 @@ uint64_t __43__SCSharingReminderArchiver_sharedInstance__block_invoke(uint64_t a
         v15 = 0;
       }
 
-      (v9)[2](v9, v15, v13);
+      (completionCopy)[2](completionCopy, v15, v13);
     }
   }
 
@@ -110,15 +110,15 @@ uint64_t __43__SCSharingReminderArchiver_sharedInstance__block_invoke(uint64_t a
     }
 
     v11 = [SCDaemonError errorWithCode:4];
-    v9[2](v9, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 }
 
-- (id)getObjectOfClass:(Class)a3 atKey:(id)a4
+- (id)getObjectOfClass:(Class)class atKey:(id)key
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && ![v6 isEqualToString:&stru_2875209E0])
+  keyCopy = key;
+  v7 = keyCopy;
+  if (keyCopy && ![keyCopy isEqualToString:&stru_2875209E0])
   {
     v8 = [(SCSharingReminderArchiver *)self fileURLForKey:v7];
     os_unfair_lock_lock(&self->_lock);
@@ -138,7 +138,7 @@ uint64_t __43__SCSharingReminderArchiver_sharedInstance__block_invoke(uint64_t a
     else
     {
       v14 = 0;
-      v9 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:a3 fromData:v10 error:&v14];
+      v9 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:class fromData:v10 error:&v14];
       v11 = v14;
       if (!v11)
       {
@@ -170,15 +170,15 @@ LABEL_15:
   return v9;
 }
 
-- (void)setObject:(id)a3 atKey:(id)a4 withCompletion:(id)a5
+- (void)setObject:(id)object atKey:(id)key withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && v9 && ![v9 isEqualToString:&stru_2875209E0])
+  objectCopy = object;
+  keyCopy = key;
+  completionCopy = completion;
+  if (objectCopy && keyCopy && ![keyCopy isEqualToString:&stru_2875209E0])
   {
     v22 = 0;
-    v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v22];
+    v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:objectCopy requiringSecureCoding:1 error:&v22];
     v13 = v22;
     if (v13)
     {
@@ -188,16 +188,16 @@ LABEL_15:
         [SCSharingReminderArchiver setObject:atKey:withCompletion:];
       }
 
-      v10[2](v10, 0, v13);
+      completionCopy[2](completionCopy, 0, v13);
     }
 
     else
     {
-      v15 = [(SCSharingReminderArchiver *)self fileURLForKey:v9];
+      v15 = [(SCSharingReminderArchiver *)self fileURLForKey:keyCopy];
       os_unfair_lock_lock(&self->_lock);
-      v16 = [(SCSharingReminderArchiver *)self fileManager];
-      v17 = [v15 path];
-      v18 = [v16 fileExistsAtPath:v17];
+      fileManager = [(SCSharingReminderArchiver *)self fileManager];
+      path = [v15 path];
+      v18 = [fileManager fileExistsAtPath:path];
 
       if (v18)
       {
@@ -206,13 +206,13 @@ LABEL_15:
 
       else
       {
-        v20 = [(SCSharingReminderArchiver *)self fileManager];
-        v21 = [v15 path];
-        v19 = [v20 createFileAtPath:v21 contents:v12 attributes:0];
+        fileManager2 = [(SCSharingReminderArchiver *)self fileManager];
+        path2 = [v15 path];
+        v19 = [fileManager2 createFileAtPath:path2 contents:v12 attributes:0];
       }
 
       os_unfair_lock_unlock(&self->_lock);
-      v10[2](v10, v19, 0);
+      completionCopy[2](completionCopy, v19, 0);
     }
   }
 
@@ -224,18 +224,18 @@ LABEL_15:
       [SCSharingReminderArchiver setObject:atKey:withCompletion:];
     }
 
-    v10[2](v10, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 
 - (BOOL)sharingReminderDirectoryExists
 {
   v9 = 0;
-  v3 = [(SCSharingReminderArchiver *)self sharingReminderDirectoryURL];
-  v4 = [v3 path];
+  sharingReminderDirectoryURL = [(SCSharingReminderArchiver *)self sharingReminderDirectoryURL];
+  path = [sharingReminderDirectoryURL path];
 
-  v5 = [(SCSharingReminderArchiver *)self fileManager];
-  v6 = [v5 fileExistsAtPath:v4 isDirectory:&v9];
+  fileManager = [(SCSharingReminderArchiver *)self fileManager];
+  v6 = [fileManager fileExistsAtPath:path isDirectory:&v9];
 
   if (v6 && (v9 & 1) == 0)
   {
@@ -257,20 +257,20 @@ LABEL_15:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fileURLForKey:(id)a3
+- (id)fileURLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SCSharingReminderArchiver *)self sharingReminderDirectoryURL];
-  v6 = [v5 URLByAppendingPathComponent:v4 isDirectory:0];
+  keyCopy = key;
+  sharingReminderDirectoryURL = [(SCSharingReminderArchiver *)self sharingReminderDirectoryURL];
+  v6 = [sharingReminderDirectoryURL URLByAppendingPathComponent:keyCopy isDirectory:0];
 
   return v6;
 }
 
 - (id)sharingReminderDirectoryURL
 {
-  v2 = [(SCSharingReminderArchiver *)self fileManager];
+  fileManager = [(SCSharingReminderArchiver *)self fileManager];
   v8 = 0;
-  v3 = [v2 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:0 error:&v8];
+  v3 = [fileManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:0 error:&v8];
   v4 = v8;
 
   if (v4)

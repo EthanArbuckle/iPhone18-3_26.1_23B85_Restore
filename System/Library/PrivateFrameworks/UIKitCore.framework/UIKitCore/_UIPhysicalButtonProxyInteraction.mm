@@ -1,41 +1,41 @@
 @interface _UIPhysicalButtonProxyInteraction
 - (_UIPhysicalButtonProxyInteraction)init;
 - (id)_driverClasses;
-- (id)initWithConfigurations:(void *)a3 proxyDelegate:;
-- (void)_driver:(id)a3 didCreateProposedAction:(id)a4;
-- (void)_proxyDriver:(id)a3 didReceiveBSAction:(id)a4;
+- (id)initWithConfigurations:(void *)configurations proxyDelegate:;
+- (void)_driver:(id)_driver didCreateProposedAction:(id)action;
+- (void)_proxyDriver:(id)driver didReceiveBSAction:(id)action;
 @end
 
 @implementation _UIPhysicalButtonProxyInteraction
 
 - (_UIPhysicalButtonProxyInteraction)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonProxyInteraction.m" lineNumber:67 description:{@"%s: init is not allowed on %@", "-[_UIPhysicalButtonProxyInteraction init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonProxyInteraction.m" lineNumber:67 description:{@"%s: init is not allowed on %@", "-[_UIPhysicalButtonProxyInteraction init]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)initWithConfigurations:(void *)a3 proxyDelegate:
+- (id)initWithConfigurations:(void *)configurations proxyDelegate:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:sel_initWithConfigurations_proxyDelegate_ object:a1 file:@"_UIPhysicalButtonProxyInteraction.m" lineNumber:75 description:{@"Attempting to initialize %@ with a non-conforming delegate: %@", objc_opt_class(), a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_initWithConfigurations_proxyDelegate_ object:self file:@"_UIPhysicalButtonProxyInteraction.m" lineNumber:75 description:{@"Attempting to initialize %@ with a non-conforming delegate: %@", objc_opt_class(), configurations}];
   }
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = _UIPhysicalButtonProxyInteraction;
-  v6 = objc_msgSendSuper2(&v10, sel_initWithConfigurations_delegate_, a2, a3);
+  v6 = objc_msgSendSuper2(&v10, sel_initWithConfigurations_delegate_, a2, configurations);
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(v6 + 11, a3);
+    objc_storeWeak(v6 + 11, configurations);
   }
 
   return v7;
@@ -50,16 +50,16 @@
   return v2;
 }
 
-- (void)_driver:(id)a3 didCreateProposedAction:(id)a4
+- (void)_driver:(id)_driver didCreateProposedAction:(id)action
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v8 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonProxyInteraction.m" lineNumber:98 description:{@"Unexpected request for a proxy interaction to handle a proposed action: self: %@; driver: %@; proposedAction: %@", self, a3, a4}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonProxyInteraction.m" lineNumber:98 description:{@"Unexpected request for a proxy interaction to handle a proposed action: self: %@; driver: %@; proposedAction: %@", self, _driver, action}];
 }
 
-- (void)_proxyDriver:(id)a3 didReceiveBSAction:(id)a4
+- (void)_proxyDriver:(id)driver didReceiveBSAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_proxyDelegate);
-  [WeakRetained _physicalButtonProxyInteraction:self didReceiveBSAction:a4];
+  [WeakRetained _physicalButtonProxyInteraction:self didReceiveBSAction:action];
 }
 
 @end

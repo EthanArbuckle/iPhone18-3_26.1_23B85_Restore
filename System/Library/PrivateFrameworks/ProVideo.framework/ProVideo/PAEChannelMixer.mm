@@ -1,21 +1,21 @@
 @interface PAEChannelMixer
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)constrainMonoParams:(int)a3 atTime:(id)a4;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)monochromeChanged:(id)a3;
-- (PAEChannelMixer)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)constrainMonoParams:(int)params atTime:(id)time;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)monochromeChanged:(id)changed;
+- (PAEChannelMixer)initWithAPIManager:(id)manager;
 - (id)properties;
-- (void)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6 fromParam:(int)a7 atFxTime:(id)a8;
+- (void)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha fromParam:(int)param atFxTime:(id)time;
 @end
 
 @implementation PAEChannelMixer
 
-- (PAEChannelMixer)initWithAPIManager:(id)a3
+- (PAEChannelMixer)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEChannelMixer;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -84,7 +84,7 @@ uint64_t __29__PAEChannelMixer_properties__block_invoke()
   return v3 != 0;
 }
 
-- (BOOL)monochromeChanged:(id)a3
+- (BOOL)monochromeChanged:(id)changed
 {
   v5 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v6 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E448];
@@ -105,7 +105,7 @@ uint64_t __29__PAEChannelMixer_properties__block_invoke()
 
   v9 = v6;
   v15 = 0;
-  v10 = [v5 getBoolValue:&v15 fromParm:21 atFxTime:a3.var1];
+  v10 = [v5 getBoolValue:&v15 fromParm:21 atFxTime:changed.var1];
   result = 0;
   if (v10)
   {
@@ -133,7 +133,7 @@ uint64_t __29__PAEChannelMixer_properties__block_invoke()
 
         if ((v12 & 4) != 0)
         {
-          return [(PAEChannelMixer *)self constrainMonoParams:2 atTime:a3.var1];
+          return [(PAEChannelMixer *)self constrainMonoParams:2 atTime:changed.var1];
         }
 
         v11 = v12 | 4u;
@@ -158,7 +158,7 @@ uint64_t __29__PAEChannelMixer_properties__block_invoke()
 
         if ((v12 & 4) == 0)
         {
-          return [(PAEChannelMixer *)self constrainMonoParams:2 atTime:a3.var1];
+          return [(PAEChannelMixer *)self constrainMonoParams:2 atTime:changed.var1];
         }
 
         v11 = v12 & 0xFFFFFFFB;
@@ -167,15 +167,15 @@ uint64_t __29__PAEChannelMixer_properties__block_invoke()
       [v9 setParameterFlags:v11 toParm:11];
     }
 
-    return [(PAEChannelMixer *)self constrainMonoParams:2 atTime:a3.var1];
+    return [(PAEChannelMixer *)self constrainMonoParams:2 atTime:changed.var1];
   }
 
   return result;
 }
 
-- (BOOL)constrainMonoParams:(int)a3 atTime:(id)a4
+- (BOOL)constrainMonoParams:(int)params atTime:(id)time
 {
-  if ((a3 - 2) > 3)
+  if ((params - 2) > 3)
   {
     LOBYTE(v13) = 1;
     return v13;
@@ -204,32 +204,32 @@ uint64_t __29__PAEChannelMixer_properties__block_invoke()
   v40 = 0;
   v39 = 1;
   v38 = 0;
-  v13 = [v9 getBoolValue:&v40 fromParm:21 atFxTime:a4.var1];
+  v13 = [v9 getBoolValue:&v40 fromParm:21 atFxTime:time.var1];
   if (v13)
   {
-    v13 = [v9 getBoolValue:&v39 fromParm:22 atFxTime:a4.var1];
+    v13 = [v9 getBoolValue:&v39 fromParm:22 atFxTime:time.var1];
     if (v13)
     {
-      v13 = [v9 getBoolValue:&v38 fromParm:23 atFxTime:a4.var1];
+      v13 = [v9 getBoolValue:&v38 fromParm:23 atFxTime:time.var1];
       if (v13)
       {
-        if (v40 == 1 && (v39 & 1) == 0 && (a3 != 5 || (v38 & 1) != 0))
+        if (v40 == 1 && (v39 & 1) == 0 && (params != 5 || (v38 & 1) != 0))
         {
           v36 = 0.0;
           v37 = 0.0;
           v34 = 0.0;
           v35 = 0.0;
-          [v9 getFloatValue:&v37 fromParm:2 atFxTime:a4.var1];
-          [v9 getFloatValue:&v36 fromParm:3 atFxTime:a4.var1];
-          [v9 getFloatValue:&v35 fromParm:4 atFxTime:a4.var1];
-          [v9 getFloatValue:&v34 fromParm:5 atFxTime:a4.var1];
+          [v9 getFloatValue:&v37 fromParm:2 atFxTime:time.var1];
+          [v9 getFloatValue:&v36 fromParm:3 atFxTime:time.var1];
+          [v9 getFloatValue:&v35 fromParm:4 atFxTime:time.var1];
+          [v9 getFloatValue:&v34 fromParm:5 atFxTime:time.var1];
           *&v14 = v37;
           HIDWORD(v15) = HIDWORD(v35);
           if (v38 == 1)
           {
-            if (a3 > 3)
+            if (params > 3)
             {
-              if (a3 == 4)
+              if (params == 4)
               {
                 v16 = v34;
                 v17 = v36;
@@ -250,7 +250,7 @@ uint64_t __29__PAEChannelMixer_properties__block_invoke()
             {
               v16 = v34;
               v17 = v35;
-              if (a3 == 2)
+              if (params == 2)
               {
                 v18 = v36;
               }
@@ -278,9 +278,9 @@ uint64_t __29__PAEChannelMixer_properties__block_invoke()
             }
 
             v29 = *&v14;
-            if (a3 <= 3)
+            if (params <= 3)
             {
-              if (a3 == 2)
+              if (params == 2)
               {
                 v36 = v26;
                 v37 = v29;
@@ -296,7 +296,7 @@ uint64_t __29__PAEChannelMixer_properties__block_invoke()
               goto LABEL_55;
             }
 
-            if (a3 == 4)
+            if (params == 4)
             {
               v35 = v29;
               v36 = v27;
@@ -315,7 +315,7 @@ uint64_t __29__PAEChannelMixer_properties__block_invoke()
 
           else
           {
-            if (a3 == 3)
+            if (params == 3)
             {
               v19 = v37;
             }
@@ -325,7 +325,7 @@ uint64_t __29__PAEChannelMixer_properties__block_invoke()
               v19 = v36;
             }
 
-            if (a3 == 3)
+            if (params == 3)
             {
               v20 = v36;
             }
@@ -335,7 +335,7 @@ uint64_t __29__PAEChannelMixer_properties__block_invoke()
               v20 = v37;
             }
 
-            if (a3 == 4)
+            if (params == 4)
             {
               v21 = v36;
             }
@@ -345,7 +345,7 @@ uint64_t __29__PAEChannelMixer_properties__block_invoke()
               v21 = v35;
             }
 
-            if (a3 == 4)
+            if (params == 4)
             {
               v22 = v35;
             }
@@ -371,7 +371,7 @@ uint64_t __29__PAEChannelMixer_properties__block_invoke()
             }
 
             v24 = v22;
-            if (a3 == 2)
+            if (params == 2)
             {
               v36 = *&v15;
               v37 = v24;
@@ -379,14 +379,14 @@ uint64_t __29__PAEChannelMixer_properties__block_invoke()
               goto LABEL_60;
             }
 
-            if (a3 == 3)
+            if (params == 3)
             {
               v36 = v24;
               v37 = *&v15;
               v35 = *&v14;
 LABEL_55:
-              [v12 setFloatValue:2 toParm:a4.var1 atFxTime:?];
-              [v12 setFloatValue:4 toParm:a4.var1 atFxTime:v35];
+              [v12 setFloatValue:2 toParm:time.var1 atFxTime:?];
+              [v12 setFloatValue:4 toParm:time.var1 atFxTime:v35];
 LABEL_61:
               if (v38 == 1)
               {
@@ -401,13 +401,13 @@ LABEL_64:
               return v13;
             }
 
-            if (a3 != 4)
+            if (params != 4)
             {
-              [v12 setFloatValue:2 toParm:a4.var1 atFxTime:{v37, v14, v24, v15}];
+              [v12 setFloatValue:2 toParm:time.var1 atFxTime:{v37, v14, v24, v15}];
 LABEL_60:
-              [v12 setFloatValue:3 toParm:a4.var1 atFxTime:?];
-              [v12 setFloatValue:4 toParm:a4.var1 atFxTime:v35];
-              if (a3 == 5)
+              [v12 setFloatValue:3 toParm:time.var1 atFxTime:?];
+              [v12 setFloatValue:4 toParm:time.var1 atFxTime:v35];
+              if (params == 5)
               {
                 goto LABEL_64;
               }
@@ -420,15 +420,15 @@ LABEL_60:
             v36 = *&v14;
           }
 
-          [v12 setFloatValue:2 toParm:a4.var1 atFxTime:?];
-          [v12 setFloatValue:3 toParm:a4.var1 atFxTime:v36];
-          if (a3 != 4)
+          [v12 setFloatValue:2 toParm:time.var1 atFxTime:?];
+          [v12 setFloatValue:3 toParm:time.var1 atFxTime:v36];
+          if (params != 4)
           {
             v30 = v35;
             v31 = v12;
             v32 = 4;
 LABEL_63:
-            [v31 setFloatValue:v32 toParm:a4.var1 atFxTime:v30];
+            [v31 setFloatValue:v32 toParm:time.var1 atFxTime:v30];
             goto LABEL_64;
           }
 
@@ -444,7 +444,7 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v8 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (v8)
@@ -467,20 +467,20 @@ LABEL_7:
     v13 = 0x3FF0000000000000;
     v14 = 0;
     v12 = 0;
-    [(PAEChannelMixer *)self getRed:&v28 green:&v27 blue:&v26 alpha:&v25 fromParam:2 atFxTime:a5->var0.var1];
-    [(PAEChannelMixer *)self getRed:&v24 green:&v23 blue:&v22 alpha:&v21 fromParam:7 atFxTime:a5->var0.var1];
-    [(PAEChannelMixer *)self getRed:&v20 green:&v19 blue:&v18 alpha:&v17 fromParam:12 atFxTime:a5->var0.var1];
-    [(PAEChannelMixer *)self getRed:&v16 green:&v15 blue:&v14 alpha:&v13 fromParam:17 atFxTime:a5->var0.var1];
-    [v9 getBoolValue:&v12 fromParm:21 atFxTime:a5->var0.var1];
-    [v9 mixAmountAtTime:a5->var0.var1];
-    LODWORD(v8) = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
+    [(PAEChannelMixer *)self getRed:&v28 green:&v27 blue:&v26 alpha:&v25 fromParam:2 atFxTime:info->var0.var1];
+    [(PAEChannelMixer *)self getRed:&v24 green:&v23 blue:&v22 alpha:&v21 fromParam:7 atFxTime:info->var0.var1];
+    [(PAEChannelMixer *)self getRed:&v20 green:&v19 blue:&v18 alpha:&v17 fromParam:12 atFxTime:info->var0.var1];
+    [(PAEChannelMixer *)self getRed:&v16 green:&v15 blue:&v14 alpha:&v13 fromParam:17 atFxTime:info->var0.var1];
+    [v9 getBoolValue:&v12 fromParm:21 atFxTime:info->var0.var1];
+    [v9 mixAmountAtTime:info->var0.var1];
+    LODWORD(v8) = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
     if (v8)
     {
-      if ([a4 imageType] == 3)
+      if ([input imageType] == 3)
       {
-        if (a4)
+        if (input)
         {
-          [a4 heliumRef];
+          [input heliumRef];
         }
 
         v10 = HGObject::operator new(0x1A0uLL);
@@ -494,27 +494,27 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 
-- (void)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6 fromParam:(int)a7 atFxTime:(id)a8
+- (void)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha fromParam:(int)param atFxTime:(id)time
 {
-  v9 = *&a7;
+  v9 = *&param;
   v14 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
-  [v14 getFloatValue:a3 fromParm:v9 atFxTime:a8.var1];
-  [v14 getFloatValue:a4 fromParm:(v9 + 1) atFxTime:a8.var1];
-  [v14 getFloatValue:a5 fromParm:(v9 + 2) atFxTime:a8.var1];
+  [v14 getFloatValue:red fromParm:v9 atFxTime:time.var1];
+  [v14 getFloatValue:green fromParm:(v9 + 1) atFxTime:time.var1];
+  [v14 getFloatValue:blue fromParm:(v9 + 2) atFxTime:time.var1];
 
-  [v14 getFloatValue:a6 fromParm:(v9 + 3) atFxTime:a8.var1];
+  [v14 getFloatValue:alpha fromParm:(v9 + 3) atFxTime:time.var1];
 }
 
 @end

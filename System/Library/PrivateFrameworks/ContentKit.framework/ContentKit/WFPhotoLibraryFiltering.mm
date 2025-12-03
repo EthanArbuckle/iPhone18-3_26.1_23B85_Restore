@@ -1,36 +1,36 @@
 @interface WFPhotoLibraryFiltering
-+ (void)performCustomFilteringUsingContentPredicates:(id)a3 compoundPredicateType:(unint64_t)a4 forQuery:(id)a5 withInput:(id)a6 resultHandler:(id)a7;
++ (void)performCustomFilteringUsingContentPredicates:(id)predicates compoundPredicateType:(unint64_t)type forQuery:(id)query withInput:(id)input resultHandler:(id)handler;
 @end
 
 @implementation WFPhotoLibraryFiltering
 
-+ (void)performCustomFilteringUsingContentPredicates:(id)a3 compoundPredicateType:(unint64_t)a4 forQuery:(id)a5 withInput:(id)a6 resultHandler:(id)a7
++ (void)performCustomFilteringUsingContentPredicates:(id)predicates compoundPredicateType:(unint64_t)type forQuery:(id)query withInput:(id)input resultHandler:(id)handler
 {
   v134 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if (!a4)
+  predicatesCopy = predicates;
+  queryCopy = query;
+  inputCopy = input;
+  handlerCopy = handler;
+  if (!type)
   {
-    v15 = [v11 firstObject];
-    v16 = [WFContentCompoundPredicate notPredicateWithSubpredicate:v15];
+    firstObject = [predicatesCopy firstObject];
+    v16 = [WFContentCompoundPredicate notPredicateWithSubpredicate:firstObject];
     v127 = v16;
-    a4 = 1;
+    type = 1;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v127 count:1];
 
-    v11 = v17;
+    predicatesCopy = v17;
   }
 
-  v104 = v13;
-  v105 = v14;
+  v104 = inputCopy;
+  v105 = handlerCopy;
   v18 = getWFPhotoLibraryFilteringLogObject();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     v19 = @"OR";
     v129 = "+[WFPhotoLibraryFiltering performCustomFilteringUsingContentPredicates:compoundPredicateType:forQuery:withInput:resultHandler:]";
     *buf = 136315650;
-    if (a4 == 1)
+    if (type == 1)
     {
       v19 = @"AND";
     }
@@ -38,11 +38,11 @@
     v130 = 2114;
     v131 = v19;
     v132 = 2112;
-    v133 = v11;
+    v133 = predicatesCopy;
     _os_log_impl(&dword_21E1BD000, v18, OS_LOG_TYPE_INFO, "%s Filtering using predicate of type %{public}@ and subpredicates %@", buf, 0x20u);
   }
 
-  v103 = a4;
+  typeCopy = type;
 
   v20 = objc_opt_new();
   v21 = objc_opt_new();
@@ -50,7 +50,7 @@
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
-  v22 = v11;
+  v22 = predicatesCopy;
   v23 = [(__CFString *)v22 countByEnumeratingWithState:&v117 objects:v126 count:16];
   if (v23)
   {
@@ -104,8 +104,8 @@
     }
   }
 
-  v33 = v103;
-  if (v103 != 2 || ![v20 count])
+  v33 = typeCopy;
+  if (typeCopy != 2 || ![v20 count])
   {
     v37 = +[WFSharedPhotoLibrary sharedLibrary];
     v110 = 0;
@@ -141,19 +141,19 @@
 
     else
     {
-      v41 = [v12 sortDescriptors];
-      v42 = [v41 count];
+      sortDescriptors = [queryCopy sortDescriptors];
+      v42 = [sortDescriptors count];
 
       if (v42)
       {
-        v96 = v12;
-        v43 = [v12 sortDescriptors];
+        v96 = queryCopy;
+        sortDescriptors2 = [queryCopy sortDescriptors];
         v44 = objc_opt_new();
         v121 = 0u;
         v122 = 0u;
         v123 = 0u;
         v124 = 0u;
-        obj = v43;
+        obj = sortDescriptors2;
         v45 = [obj countByEnumeratingWithState:&v121 objects:buf count:16];
         if (v45)
         {
@@ -169,9 +169,9 @@
               }
 
               v49 = *(*(&v121 + 1) + 8 * j);
-              v50 = [v49 comparator];
+              comparator = [v49 comparator];
 
-              if (v50)
+              if (comparator)
               {
 
 LABEL_45:
@@ -182,8 +182,8 @@ LABEL_45:
                 goto LABEL_46;
               }
 
-              v51 = [v49 property];
-              v52 = WFPHAssetKeyPathForContentProperty(v51);
+              property = [v49 property];
+              v52 = WFPHAssetKeyPathForContentProperty(property);
 
               if (v52)
               {
@@ -222,12 +222,12 @@ LABEL_46:
         v38 = v101;
         [v101 setSortDescriptors:v55];
 
-        v56 = [v101 sortDescriptors];
-        v39 = v56 != 0;
+        sortDescriptors3 = [v101 sortDescriptors];
+        v39 = sortDescriptors3 != 0;
 
         v34 = v105;
-        v33 = v103;
-        v12 = v96;
+        v33 = typeCopy;
+        queryCopy = v96;
       }
 
       else
@@ -248,7 +248,7 @@ LABEL_46:
     }
 
     v95 = v57;
-    if (v12)
+    if (queryCopy)
     {
       v58 = v57;
     }
@@ -258,7 +258,7 @@ LABEL_46:
       v58 = 0;
     }
 
-    obja = [v12 slice];
+    obja = [queryCopy slice];
     v94 = v59;
     if (v58 && obja == 0x7FFFFFFFFFFFFFFFLL && v59 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -277,9 +277,9 @@ LABEL_46:
         [v61 filterUsingPredicate:v62];
       }
 
-      v63 = [v38 sortDescriptors];
+      sortDescriptors4 = [v38 sortDescriptors];
 
-      if (!v63)
+      if (!sortDescriptors4)
       {
         v65 = v61;
         v58 = v91;
@@ -289,7 +289,7 @@ LABEL_80:
           v93 = v65;
           v78 = v65;
           v79 = v78;
-          v97 = v12;
+          v97 = queryCopy;
           if (v58)
           {
             v80 = WFIndexSetFromContentSlice(obja, v94, [v78 count]);
@@ -331,13 +331,13 @@ LABEL_80:
           if (v95)
           {
             (v105)[2](v105, v82, 0);
-            v12 = v97;
+            queryCopy = v97;
           }
 
           else
           {
-            v12 = v97;
-            [a1 performFallbackFilteringWithItems:v82 withContentPredicates:v20 compoundPredicateType:v103 originalQuery:v97 resultHandler:v105];
+            queryCopy = v97;
+            [self performFallbackFilteringWithItems:v82 withContentPredicates:v20 compoundPredicateType:typeCopy originalQuery:v97 resultHandler:v105];
           }
 
           v36 = v104;
@@ -358,9 +358,9 @@ LABEL_94:
         goto LABEL_95;
       }
 
-      v64 = [v38 sortDescriptors];
+      sortDescriptors5 = [v38 sortDescriptors];
       v65 = v61;
-      [v61 sortUsingDescriptors:v64];
+      [v61 sortUsingDescriptors:sortDescriptors5];
       v58 = v91;
     }
 
@@ -370,43 +370,43 @@ LABEL_94:
       if ([v92 count] && (v33 == 1 || objc_msgSend(v21, "count") == 1))
       {
         v66 = [v92 if_objectsPassingTest:&__block_literal_global_217];
-        v67 = [v66 firstObject];
+        firstObject2 = [v66 firstObject];
 
-        v89 = v67;
-        if (v67)
+        v89 = firstObject2;
+        if (firstObject2)
         {
-          v68 = v67;
+          firstObject3 = firstObject2;
         }
 
         else
         {
-          v68 = [v92 firstObject];
+          firstObject3 = [v92 firstObject];
         }
 
-        v71 = v68;
-        v72 = [v68 assetCollection];
+        v71 = firstObject3;
+        assetCollection = [firstObject3 assetCollection];
         [v21 removeObject:v71];
         if ([v21 count])
         {
-          v73 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:v103 subpredicates:v21];
-          v74 = [v73 wf_photoLibraryFilteringPredicate];
-          [v101 setPredicate:v74];
+          v73 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:typeCopy subpredicates:v21];
+          wf_photoLibraryFilteringPredicate = [v73 wf_photoLibraryFilteringPredicate];
+          [v101 setPredicate:wf_photoLibraryFilteringPredicate];
         }
 
         v75 = getWFPhotoLibraryFilteringLogObject();
         if (os_log_type_enabled(v75, OS_LOG_TYPE_INFO))
         {
-          v76 = [v72 wfName];
+          wfName = [assetCollection wfName];
           *buf = 136315650;
           v129 = "+[WFPhotoLibraryFiltering performCustomFilteringUsingContentPredicates:compoundPredicateType:forQuery:withInput:resultHandler:]";
           v130 = 2112;
-          v131 = v76;
+          v131 = wfName;
           v132 = 2112;
           v133 = v21;
           _os_log_impl(&dword_21E1BD000, v75, OS_LOG_TYPE_INFO, "%s Performing optimized photo lookup for album %@, remaining predicates %@", buf, 0x20u);
         }
 
-        v77 = [getPHAssetClass_11424() fetchAssetsInAssetCollection:v72 options:v101];
+        v77 = [getPHAssetClass_11424() fetchAssetsInAssetCollection:assetCollection options:v101];
 
         v38 = v101;
         v65 = v77;
@@ -419,8 +419,8 @@ LABEL_94:
         if ([v21 count])
         {
           v69 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:v33 subpredicates:v21];
-          v70 = [v69 wf_photoLibraryFilteringPredicate];
-          [v101 setPredicate:v70];
+          wf_photoLibraryFilteringPredicate2 = [v69 wf_photoLibraryFilteringPredicate];
+          [v101 setPredicate:wf_photoLibraryFilteringPredicate2];
 
           v38 = v101;
         }
@@ -428,7 +428,7 @@ LABEL_94:
         v65 = [getPHAssetClass_11424() fetchAssetsWithOptions:v38];
       }
 
-      v64 = v92;
+      sortDescriptors5 = v92;
     }
 
     if (v65)
@@ -443,13 +443,13 @@ LABEL_94:
   v115[1] = 3221225472;
   v115[2] = __127__WFPhotoLibraryFiltering_performCustomFilteringUsingContentPredicates_compoundPredicateType_forQuery_withInput_resultHandler___block_invoke;
   v115[3] = &__block_descriptor_40_e60_v32__0__WFContentPredicate_8Q16___v____NSArray___NSError__24l;
-  v115[4] = a1;
+  v115[4] = self;
   v111[0] = MEMORY[0x277D85DD0];
   v111[1] = 3221225472;
   v111[2] = __127__WFPhotoLibraryFiltering_performCustomFilteringUsingContentPredicates_compoundPredicateType_forQuery_withInput_resultHandler___block_invoke_3;
   v111[3] = &unk_278346FE0;
-  v114 = a1;
-  v112 = v12;
+  selfCopy = self;
+  v112 = queryCopy;
   v34 = v105;
   v113 = v105;
   [(__CFString *)v22 if_flatMapAsynchronously:v115 completionHandler:v111];

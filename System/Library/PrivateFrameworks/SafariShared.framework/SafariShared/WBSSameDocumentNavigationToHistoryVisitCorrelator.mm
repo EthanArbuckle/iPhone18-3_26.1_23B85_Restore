@@ -1,7 +1,7 @@
 @interface WBSSameDocumentNavigationToHistoryVisitCorrelator
 - (WBSSameDocumentNavigationToHistoryVisitCorrelator)init;
-- (id)visitForSameDocumentNavigationToURL:(id)a3;
-- (void)noteVisit:(id)a3;
+- (id)visitForSameDocumentNavigationToURL:(id)l;
+- (void)noteVisit:(id)visit;
 @end
 
 @implementation WBSSameDocumentNavigationToHistoryVisitCorrelator
@@ -23,31 +23,31 @@
   return v2;
 }
 
-- (void)noteVisit:(id)a3
+- (void)noteVisit:(id)visit
 {
-  v4 = a3;
-  if (v4)
+  visitCopy = visit;
+  if (visitCopy)
   {
-    v5 = v4;
+    v5 = visitCopy;
     if ([(NSMutableArray *)self->_visits count]>= 5)
     {
       [(NSMutableArray *)self->_visits removeObjectAtIndex:0];
     }
 
     [(NSMutableArray *)self->_visits addObject:v5];
-    v4 = v5;
+    visitCopy = v5;
   }
 }
 
-- (id)visitForSameDocumentNavigationToURL:(id)a3
+- (id)visitForSameDocumentNavigationToURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   visits = self->_visits;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __89__WBSSameDocumentNavigationToHistoryVisitCorrelator_visitForSameDocumentNavigationToURL___block_invoke;
   v11[3] = &unk_1E7FCA5F8;
-  v6 = v4;
+  v6 = lCopy;
   v12 = v6;
   v7 = [(NSMutableArray *)visits indexOfObjectPassingTest:v11];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)

@@ -1,15 +1,15 @@
 @interface C2MetricOptions
-- (BOOL)clientOperationTriggered:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)operationGroupTriggered:(id)a3;
+- (BOOL)clientOperationTriggered:(id)triggered;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)operationGroupTriggered:(id)triggered;
 - (C2MetricOptions)init;
-- (C2MetricOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (C2MetricOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)generateCloudKitInfo;
-- (int)generateTriggerWithResponseHeader:(unsigned __int8)a3;
+- (int)generateTriggerWithResponseHeader:(unsigned __int8)header;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setC2MetricsEndpoint:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setC2MetricsEndpoint:(id)endpoint;
 @end
 
 @implementation C2MetricOptions
@@ -115,12 +115,12 @@
       v13 = 3221225472;
       v14 = __39__C2MetricOptions_generateCloudKitInfo__block_invoke_2;
       v15 = &unk_278D40028;
-      v16 = self;
+      selfCopy = self;
       v17 = v5;
       v9 = v4;
       v18 = v9;
       [(NSArray *)clientOperations enumerateObjectsUsingBlock:&v12];
-      [(C2MPCloudKitInfo *)v9 setReportClientOperationFrequency:self->_reportClientOperationFrequency, v12, v13, v14, v15, v16];
+      [(C2MPCloudKitInfo *)v9 setReportClientOperationFrequency:self->_reportClientOperationFrequency, v12, v13, v14, v15, selfCopy];
       [(C2MPCloudKitInfo *)v9 setReportClientOperationFrequencyBase:self->_reportClientOperationFrequencyBase];
     }
 
@@ -183,13 +183,13 @@ void __39__C2MetricOptions_generateCloudKitInfo__block_invoke(uint64_t a1, void 
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [C2MetricOptions allocWithZone:a3];
+  v4 = [C2MetricOptions allocWithZone:zone];
   if (v4)
   {
-    v5 = [(C2MetricOptions *)self c2MetricsEndpoint];
-    [(C2MetricOptions *)v4 setC2MetricsEndpoint:v5];
+    c2MetricsEndpoint = [(C2MetricOptions *)self c2MetricsEndpoint];
+    [(C2MetricOptions *)v4 setC2MetricsEndpoint:c2MetricsEndpoint];
 
     [(C2MetricOptions *)v4 setReportFrequency:[(C2MetricOptions *)self reportFrequency]];
     [(C2MetricOptions *)v4 setReportFrequencyBase:[(C2MetricOptions *)self reportFrequencyBase]];
@@ -197,46 +197,46 @@ void __39__C2MetricOptions_generateCloudKitInfo__block_invoke(uint64_t a1, void 
     [(C2MetricOptions *)v4 setReportClientOperationFrequencyBase:[(C2MetricOptions *)self reportClientOperationFrequencyBase]];
     [(C2MetricOptions *)v4 setReportOperationGroupFrequency:[(C2MetricOptions *)self reportOperationGroupFrequency]];
     [(C2MetricOptions *)v4 setReportOperationGroupFrequencyBase:[(C2MetricOptions *)self reportOperationGroupFrequencyBase]];
-    v6 = [(C2MetricOptions *)self clientProcessVersion];
-    [(C2MetricOptions *)v4 setClientProcessVersion:v6];
+    clientProcessVersion = [(C2MetricOptions *)self clientProcessVersion];
+    [(C2MetricOptions *)v4 setClientProcessVersion:clientProcessVersion];
 
-    v7 = [(C2MetricOptions *)self clientProcessBundleId];
-    [(C2MetricOptions *)v4 setClientProcessBundleId:v7];
+    clientProcessBundleId = [(C2MetricOptions *)self clientProcessBundleId];
+    [(C2MetricOptions *)v4 setClientProcessBundleId:clientProcessBundleId];
 
-    v8 = [(C2MetricOptions *)self container];
-    [(C2MetricOptions *)v4 setContainer:v8];
+    container = [(C2MetricOptions *)self container];
+    [(C2MetricOptions *)v4 setContainer:container];
 
-    v9 = [(C2MetricOptions *)self environment];
-    [(C2MetricOptions *)v4 setEnvironment:v9];
+    environment = [(C2MetricOptions *)self environment];
+    [(C2MetricOptions *)v4 setEnvironment:environment];
 
-    v10 = [(C2MetricOptions *)self databaseScope];
-    [(C2MetricOptions *)v4 setDatabaseScope:v10];
+    databaseScope = [(C2MetricOptions *)self databaseScope];
+    [(C2MetricOptions *)v4 setDatabaseScope:databaseScope];
 
     [(C2MetricOptions *)v4 setAnonymous:[(C2MetricOptions *)self anonymous]];
-    v11 = [(C2MetricOptions *)self containerScopedUserIdentifier];
-    [(C2MetricOptions *)v4 setContainerScopedUserIdentifier:v11];
+    containerScopedUserIdentifier = [(C2MetricOptions *)self containerScopedUserIdentifier];
+    [(C2MetricOptions *)v4 setContainerScopedUserIdentifier:containerScopedUserIdentifier];
 
-    v12 = [(C2MetricOptions *)self containerScopedDeviceIdentifier];
-    [(C2MetricOptions *)v4 setContainerScopedDeviceIdentifier:v12];
+    containerScopedDeviceIdentifier = [(C2MetricOptions *)self containerScopedDeviceIdentifier];
+    [(C2MetricOptions *)v4 setContainerScopedDeviceIdentifier:containerScopedDeviceIdentifier];
 
-    v13 = [(C2MetricOptions *)self applicationBundleIdentifierOverrideForContainerAccess];
-    [(C2MetricOptions *)v4 setApplicationBundleIdentifierOverrideForContainerAccess:v13];
+    applicationBundleIdentifierOverrideForContainerAccess = [(C2MetricOptions *)self applicationBundleIdentifierOverrideForContainerAccess];
+    [(C2MetricOptions *)v4 setApplicationBundleIdentifierOverrideForContainerAccess:applicationBundleIdentifierOverrideForContainerAccess];
 
-    v14 = [(C2MetricOptions *)self applicationBundleIdentifierOverrideForNetworkAttribution];
-    [(C2MetricOptions *)v4 setApplicationBundleIdentifierOverrideForNetworkAttribution:v14];
+    applicationBundleIdentifierOverrideForNetworkAttribution = [(C2MetricOptions *)self applicationBundleIdentifierOverrideForNetworkAttribution];
+    [(C2MetricOptions *)v4 setApplicationBundleIdentifierOverrideForNetworkAttribution:applicationBundleIdentifierOverrideForNetworkAttribution];
 
-    v15 = [(C2MetricOptions *)self operationGroups];
-    [(C2MetricOptions *)v4 setOperationGroups:v15];
+    operationGroups = [(C2MetricOptions *)self operationGroups];
+    [(C2MetricOptions *)v4 setOperationGroups:operationGroups];
 
-    v16 = [(C2MetricOptions *)self clientOperations];
-    [(C2MetricOptions *)v4 setClientOperations:v16];
+    clientOperations = [(C2MetricOptions *)self clientOperations];
+    [(C2MetricOptions *)v4 setClientOperations:clientOperations];
 
     [(C2MetricOptions *)v4 setPushTrigger:[(C2MetricOptions *)self pushTrigger]];
-    v17 = [(C2MetricOptions *)self didCompleteWithError];
-    [(C2MetricOptions *)v4 setDidCompleteWithError:v17];
+    didCompleteWithError = [(C2MetricOptions *)self didCompleteWithError];
+    [(C2MetricOptions *)v4 setDidCompleteWithError:didCompleteWithError];
 
-    v18 = [(C2MetricOptions *)self testBehavior_reportMetric];
-    [(C2MetricOptions *)v4 setTestBehavior_reportMetric:v18];
+    testBehavior_reportMetric = [(C2MetricOptions *)self testBehavior_reportMetric];
+    [(C2MetricOptions *)v4 setTestBehavior_reportMetric:testBehavior_reportMetric];
 
     [(C2MetricOptions *)v4 setReportFrequencyRandomValue:[(C2MetricOptions *)self reportFrequencyRandomValue]];
   }
@@ -244,32 +244,32 @@ void __39__C2MetricOptions_generateCloudKitInfo__block_invoke(uint64_t a1, void 
   return v4;
 }
 
-- (void)setC2MetricsEndpoint:(id)a3
+- (void)setC2MetricsEndpoint:(id)endpoint
 {
-  v8 = a3;
-  if (!v8 || ([v8 scheme], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqual:", @"https"), v5, v7 = v8, v6))
+  endpointCopy = endpoint;
+  if (!endpointCopy || ([endpointCopy scheme], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqual:", @"https"), v5, v7 = endpointCopy, v6))
   {
-    objc_storeStrong(&self->_c2MetricsEndpoint, a3);
-    v7 = v8;
+    objc_storeStrong(&self->_c2MetricsEndpoint, endpoint);
+    v7 = endpointCopy;
   }
 }
 
-- (int)generateTriggerWithResponseHeader:(unsigned __int8)a3
+- (int)generateTriggerWithResponseHeader:(unsigned __int8)header
 {
-  v3 = a3;
+  headerCopy = header;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v5 = [MEMORY[0x277CBEBD0] c2DefaultsDomain];
-  v6 = [v5 BOOLForKey:@"C2Metrics"];
+  c2DefaultsDomain = [MEMORY[0x277CBEBD0] c2DefaultsDomain];
+  v6 = [c2DefaultsDomain BOOLForKey:@"C2Metrics"];
 
   if (v6)
   {
     *(v16 + 6) |= 1u;
   }
 
-  if (v3)
+  if (headerCopy)
   {
     *(v16 + 6) |= 4u;
   }
@@ -344,10 +344,10 @@ uint64_t __53__C2MetricOptions_generateTriggerWithResponseHeader___block_invoke_
   return result;
 }
 
-- (BOOL)clientOperationTriggered:(id)a3
+- (BOOL)clientOperationTriggered:(id)triggered
 {
-  v4 = a3;
-  v5 = v4;
+  triggeredCopy = triggered;
+  v5 = triggeredCopy;
   if (!self->_reportClientOperationFrequencyBase)
   {
     goto LABEL_6;
@@ -358,18 +358,18 @@ uint64_t __53__C2MetricOptions_generateTriggerWithResponseHeader___block_invoke_
     goto LABEL_6;
   }
 
-  v6 = [v4 operationId];
+  operationId = [triggeredCopy operationId];
 
-  if (!v6)
+  if (!operationId)
   {
     goto LABEL_6;
   }
 
-  v7 = [v5 operationId];
-  v8 = [v7 c2UniformlyDistributedIdentifier];
+  operationId2 = [v5 operationId];
+  c2UniformlyDistributedIdentifier = [operationId2 c2UniformlyDistributedIdentifier];
   p_reportClientOperationFrequency = &self->_reportClientOperationFrequency;
   reportClientOperationFrequency = self->_reportClientOperationFrequency;
-  v11 = v8 % p_reportClientOperationFrequency[1];
+  v11 = c2UniformlyDistributedIdentifier % p_reportClientOperationFrequency[1];
 
   if (v11 < reportClientOperationFrequency)
   {
@@ -385,10 +385,10 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)operationGroupTriggered:(id)a3
+- (BOOL)operationGroupTriggered:(id)triggered
 {
-  v4 = a3;
-  v5 = v4;
+  triggeredCopy = triggered;
+  v5 = triggeredCopy;
   if (!self->_reportOperationGroupFrequencyBase)
   {
     goto LABEL_6;
@@ -399,18 +399,18 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v6 = [v4 operationGroupId];
+  operationGroupId = [triggeredCopy operationGroupId];
 
-  if (!v6)
+  if (!operationGroupId)
   {
     goto LABEL_6;
   }
 
-  v7 = [v5 operationGroupId];
-  v8 = [v7 c2UniformlyDistributedIdentifier];
+  operationGroupId2 = [v5 operationGroupId];
+  c2UniformlyDistributedIdentifier = [operationGroupId2 c2UniformlyDistributedIdentifier];
   p_reportOperationGroupFrequency = &self->_reportOperationGroupFrequency;
   reportOperationGroupFrequency = self->_reportOperationGroupFrequency;
-  v11 = v8 % p_reportOperationGroupFrequency[1];
+  v11 = c2UniformlyDistributedIdentifier % p_reportOperationGroupFrequency[1];
 
   if (v11 < reportOperationGroupFrequency)
   {
@@ -426,10 +426,10 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -439,11 +439,11 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       c2MetricsEndpoint = self->_c2MetricsEndpoint;
-      v7 = [(C2MetricOptions *)v5 c2MetricsEndpoint];
-      v8 = v7;
-      if (c2MetricsEndpoint == v7)
+      c2MetricsEndpoint = [(C2MetricOptions *)v5 c2MetricsEndpoint];
+      v8 = c2MetricsEndpoint;
+      if (c2MetricsEndpoint == c2MetricsEndpoint)
       {
       }
 
@@ -455,8 +455,8 @@ LABEL_6:
           goto LABEL_71;
         }
 
-        v10 = [(C2MetricOptions *)v5 c2MetricsEndpoint];
-        v11 = [(NSURL *)v9 isEqual:v10];
+        c2MetricsEndpoint2 = [(C2MetricOptions *)v5 c2MetricsEndpoint];
+        v11 = [(NSURL *)v9 isEqual:c2MetricsEndpoint2];
 
         if (!v11)
         {
@@ -501,9 +501,9 @@ LABEL_6:
       }
 
       clientProcessVersion = self->_clientProcessVersion;
-      v20 = [(C2MetricOptions *)v5 clientProcessVersion];
-      v8 = v20;
-      if (clientProcessVersion == v20)
+      clientProcessVersion = [(C2MetricOptions *)v5 clientProcessVersion];
+      v8 = clientProcessVersion;
+      if (clientProcessVersion == clientProcessVersion)
       {
       }
 
@@ -515,8 +515,8 @@ LABEL_6:
           goto LABEL_71;
         }
 
-        v22 = [(C2MetricOptions *)v5 clientProcessVersion];
-        v23 = [(NSString *)v21 isEqual:v22];
+        clientProcessVersion2 = [(C2MetricOptions *)v5 clientProcessVersion];
+        v23 = [(NSString *)v21 isEqual:clientProcessVersion2];
 
         if (!v23)
         {
@@ -525,9 +525,9 @@ LABEL_6:
       }
 
       clientProcessBundleId = self->_clientProcessBundleId;
-      v25 = [(C2MetricOptions *)v5 clientProcessBundleId];
-      v8 = v25;
-      if (clientProcessBundleId == v25)
+      clientProcessBundleId = [(C2MetricOptions *)v5 clientProcessBundleId];
+      v8 = clientProcessBundleId;
+      if (clientProcessBundleId == clientProcessBundleId)
       {
       }
 
@@ -539,8 +539,8 @@ LABEL_6:
           goto LABEL_71;
         }
 
-        v27 = [(C2MetricOptions *)v5 clientProcessBundleId];
-        v28 = [(NSString *)v26 isEqual:v27];
+        clientProcessBundleId2 = [(C2MetricOptions *)v5 clientProcessBundleId];
+        v28 = [(NSString *)v26 isEqual:clientProcessBundleId2];
 
         if (!v28)
         {
@@ -549,9 +549,9 @@ LABEL_6:
       }
 
       container = self->_container;
-      v30 = [(C2MetricOptions *)v5 container];
-      v8 = v30;
-      if (container == v30)
+      container = [(C2MetricOptions *)v5 container];
+      v8 = container;
+      if (container == container)
       {
       }
 
@@ -563,8 +563,8 @@ LABEL_6:
           goto LABEL_71;
         }
 
-        v32 = [(C2MetricOptions *)v5 container];
-        v33 = [(NSString *)v31 isEqual:v32];
+        container2 = [(C2MetricOptions *)v5 container];
+        v33 = [(NSString *)v31 isEqual:container2];
 
         if (!v33)
         {
@@ -573,9 +573,9 @@ LABEL_6:
       }
 
       environment = self->_environment;
-      v35 = [(C2MetricOptions *)v5 environment];
-      v8 = v35;
-      if (environment == v35)
+      environment = [(C2MetricOptions *)v5 environment];
+      v8 = environment;
+      if (environment == environment)
       {
       }
 
@@ -587,8 +587,8 @@ LABEL_6:
           goto LABEL_71;
         }
 
-        v37 = [(C2MetricOptions *)v5 environment];
-        v38 = [(NSString *)v36 isEqual:v37];
+        environment2 = [(C2MetricOptions *)v5 environment];
+        v38 = [(NSString *)v36 isEqual:environment2];
 
         if (!v38)
         {
@@ -597,9 +597,9 @@ LABEL_6:
       }
 
       databaseScope = self->_databaseScope;
-      v40 = [(C2MetricOptions *)v5 databaseScope];
-      v8 = v40;
-      if (databaseScope == v40)
+      databaseScope = [(C2MetricOptions *)v5 databaseScope];
+      v8 = databaseScope;
+      if (databaseScope == databaseScope)
       {
       }
 
@@ -611,8 +611,8 @@ LABEL_6:
           goto LABEL_71;
         }
 
-        v42 = [(C2MetricOptions *)v5 databaseScope];
-        v43 = [(NSString *)v41 isEqual:v42];
+        databaseScope2 = [(C2MetricOptions *)v5 databaseScope];
+        v43 = [(NSString *)v41 isEqual:databaseScope2];
 
         if (!v43)
         {
@@ -627,9 +627,9 @@ LABEL_6:
       }
 
       containerScopedUserIdentifier = self->_containerScopedUserIdentifier;
-      v46 = [(C2MetricOptions *)v5 containerScopedUserIdentifier];
-      v8 = v46;
-      if (containerScopedUserIdentifier == v46)
+      containerScopedUserIdentifier = [(C2MetricOptions *)v5 containerScopedUserIdentifier];
+      v8 = containerScopedUserIdentifier;
+      if (containerScopedUserIdentifier == containerScopedUserIdentifier)
       {
       }
 
@@ -641,8 +641,8 @@ LABEL_6:
           goto LABEL_71;
         }
 
-        v48 = [(C2MetricOptions *)v5 containerScopedUserIdentifier];
-        v49 = [(NSString *)v47 isEqual:v48];
+        containerScopedUserIdentifier2 = [(C2MetricOptions *)v5 containerScopedUserIdentifier];
+        v49 = [(NSString *)v47 isEqual:containerScopedUserIdentifier2];
 
         if (!v49)
         {
@@ -651,9 +651,9 @@ LABEL_6:
       }
 
       containerScopedDeviceIdentifier = self->_containerScopedDeviceIdentifier;
-      v51 = [(C2MetricOptions *)v5 containerScopedDeviceIdentifier];
-      v8 = v51;
-      if (containerScopedDeviceIdentifier == v51)
+      containerScopedDeviceIdentifier = [(C2MetricOptions *)v5 containerScopedDeviceIdentifier];
+      v8 = containerScopedDeviceIdentifier;
+      if (containerScopedDeviceIdentifier == containerScopedDeviceIdentifier)
       {
       }
 
@@ -665,8 +665,8 @@ LABEL_6:
           goto LABEL_71;
         }
 
-        v53 = [(C2MetricOptions *)v5 containerScopedDeviceIdentifier];
-        v54 = [(NSString *)v52 isEqual:v53];
+        containerScopedDeviceIdentifier2 = [(C2MetricOptions *)v5 containerScopedDeviceIdentifier];
+        v54 = [(NSString *)v52 isEqual:containerScopedDeviceIdentifier2];
 
         if (!v54)
         {
@@ -675,9 +675,9 @@ LABEL_6:
       }
 
       applicationBundleIdentifierOverrideForContainerAccess = self->_applicationBundleIdentifierOverrideForContainerAccess;
-      v56 = [(C2MetricOptions *)v5 applicationBundleIdentifierOverrideForContainerAccess];
-      v8 = v56;
-      if (applicationBundleIdentifierOverrideForContainerAccess == v56)
+      applicationBundleIdentifierOverrideForContainerAccess = [(C2MetricOptions *)v5 applicationBundleIdentifierOverrideForContainerAccess];
+      v8 = applicationBundleIdentifierOverrideForContainerAccess;
+      if (applicationBundleIdentifierOverrideForContainerAccess == applicationBundleIdentifierOverrideForContainerAccess)
       {
       }
 
@@ -689,8 +689,8 @@ LABEL_6:
           goto LABEL_71;
         }
 
-        v58 = [(C2MetricOptions *)v5 applicationBundleIdentifierOverrideForContainerAccess];
-        v59 = [(NSString *)v57 isEqual:v58];
+        applicationBundleIdentifierOverrideForContainerAccess2 = [(C2MetricOptions *)v5 applicationBundleIdentifierOverrideForContainerAccess];
+        v59 = [(NSString *)v57 isEqual:applicationBundleIdentifierOverrideForContainerAccess2];
 
         if (!v59)
         {
@@ -699,9 +699,9 @@ LABEL_6:
       }
 
       applicationBundleIdentifierOverrideForNetworkAttribution = self->_applicationBundleIdentifierOverrideForNetworkAttribution;
-      v61 = [(C2MetricOptions *)v5 applicationBundleIdentifierOverrideForNetworkAttribution];
-      v8 = v61;
-      if (applicationBundleIdentifierOverrideForNetworkAttribution == v61)
+      applicationBundleIdentifierOverrideForNetworkAttribution = [(C2MetricOptions *)v5 applicationBundleIdentifierOverrideForNetworkAttribution];
+      v8 = applicationBundleIdentifierOverrideForNetworkAttribution;
+      if (applicationBundleIdentifierOverrideForNetworkAttribution == applicationBundleIdentifierOverrideForNetworkAttribution)
       {
       }
 
@@ -713,8 +713,8 @@ LABEL_6:
           goto LABEL_71;
         }
 
-        v63 = [(C2MetricOptions *)v5 applicationBundleIdentifierOverrideForNetworkAttribution];
-        v64 = [(NSString *)v62 isEqual:v63];
+        applicationBundleIdentifierOverrideForNetworkAttribution2 = [(C2MetricOptions *)v5 applicationBundleIdentifierOverrideForNetworkAttribution];
+        v64 = [(NSString *)v62 isEqual:applicationBundleIdentifierOverrideForNetworkAttribution2];
 
         if (!v64)
         {
@@ -723,9 +723,9 @@ LABEL_6:
       }
 
       operationGroups = self->_operationGroups;
-      v66 = [(C2MetricOptions *)v5 operationGroups];
-      v8 = v66;
-      if (operationGroups == v66)
+      operationGroups = [(C2MetricOptions *)v5 operationGroups];
+      v8 = operationGroups;
+      if (operationGroups == operationGroups)
       {
       }
 
@@ -737,8 +737,8 @@ LABEL_6:
           goto LABEL_71;
         }
 
-        v68 = [(C2MetricOptions *)v5 operationGroups];
-        v69 = [(NSArray *)v67 isEqual:v68];
+        operationGroups2 = [(C2MetricOptions *)v5 operationGroups];
+        v69 = [(NSArray *)v67 isEqual:operationGroups2];
 
         if (!v69)
         {
@@ -747,9 +747,9 @@ LABEL_6:
       }
 
       clientOperations = self->_clientOperations;
-      v71 = [(C2MetricOptions *)v5 clientOperations];
-      v8 = v71;
-      if (clientOperations == v71)
+      clientOperations = [(C2MetricOptions *)v5 clientOperations];
+      v8 = clientOperations;
+      if (clientOperations == clientOperations)
       {
 
 LABEL_76:
@@ -757,14 +757,14 @@ LABEL_76:
         if (pushTrigger == [(C2MetricOptions *)v5 pushTrigger])
         {
           didCompleteWithError = self->_didCompleteWithError;
-          v78 = [(C2MetricOptions *)v5 didCompleteWithError];
+          didCompleteWithError = [(C2MetricOptions *)v5 didCompleteWithError];
 
-          if (didCompleteWithError == v78)
+          if (didCompleteWithError == didCompleteWithError)
           {
             testBehavior_reportMetric = self->_testBehavior_reportMetric;
-            v80 = [(C2MetricOptions *)v5 testBehavior_reportMetric];
+            testBehavior_reportMetric = [(C2MetricOptions *)v5 testBehavior_reportMetric];
 
-            if (testBehavior_reportMetric == v80)
+            if (testBehavior_reportMetric == testBehavior_reportMetric)
             {
               reportFrequencyRandomValue = self->_reportFrequencyRandomValue;
               v12 = reportFrequencyRandomValue == [(C2MetricOptions *)v5 reportFrequencyRandomValue];
@@ -783,8 +783,8 @@ LABEL_73:
       v72 = self->_clientOperations;
       if (v72)
       {
-        v73 = [(C2MetricOptions *)v5 clientOperations];
-        v74 = [(NSArray *)v72 isEqual:v73];
+        clientOperations2 = [(C2MetricOptions *)v5 clientOperations];
+        v74 = [(NSArray *)v72 isEqual:clientOperations2];
 
         if (!v74)
         {
@@ -831,104 +831,104 @@ LABEL_74:
   return *&veor_s8(*v14.i8, *&vextq_s8(v14, v14, 8uLL)) ^ reportOperationGroupFrequency ^ reportOperationGroupFrequencyBase ^ anonymous ^ v13 ^ v12 ^ self->_reportFrequencyRandomValue ^ self->_pushTrigger ^ v11 ^ v10 ^ v9 ^ v8 ^ v6 ^ v5 ^ v4 ^ v16 ^ v21 ^ v22;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   c2MetricsEndpoint = self->_c2MetricsEndpoint;
-  v5 = a3;
-  [v5 encodeObject:c2MetricsEndpoint forKey:@"c2MetricsEndpoint"];
-  [v5 encodeInt64:self->_reportFrequency forKey:@"reportFrequency"];
-  [v5 encodeInt64:self->_reportFrequencyBase forKey:@"reportFrequencyBase"];
-  [v5 encodeInt64:self->_reportClientOperationFrequency forKey:@"reportClientOperationFrequency"];
-  [v5 encodeInt64:self->_reportClientOperationFrequencyBase forKey:@"reportClientOperationFrequencyBase"];
-  [v5 encodeInt64:self->_reportOperationGroupFrequency forKey:@"reportOperationGroupFrequency"];
-  [v5 encodeInt64:self->_reportOperationGroupFrequencyBase forKey:@"reportOperationGroupFrequencyBase"];
-  [v5 encodeObject:self->_clientProcessVersion forKey:@"clientProcessVersion"];
-  [v5 encodeObject:self->_clientProcessBundleId forKey:@"clientProcessBundleId"];
-  [v5 encodeObject:self->_container forKey:@"container"];
-  [v5 encodeObject:self->_environment forKey:@"environment"];
-  [v5 encodeObject:self->_databaseScope forKey:@"databaseScope"];
-  [v5 encodeBool:self->_anonymous forKey:@"anonymous"];
-  [v5 encodeObject:self->_containerScopedUserIdentifier forKey:@"containerScopedUserIdentifier"];
-  [v5 encodeObject:self->_containerScopedDeviceIdentifier forKey:@"containerScopedDeviceIdentifier"];
-  [v5 encodeObject:self->_applicationBundleIdentifierOverrideForContainerAccess forKey:@"applicationBundleIdentifierOverrideForContainerAccess"];
-  [v5 encodeObject:self->_applicationBundleIdentifierOverrideForNetworkAttribution forKey:@"applicationBundleIdentifierOverrideForNetworkAttribution"];
-  [v5 encodeObject:self->_operationGroups forKey:@"operationGroups"];
-  [v5 encodeObject:self->_clientOperations forKey:@"clientOperations"];
-  [v5 encodeBool:self->_pushTrigger forKey:@"pushTrigger"];
-  [v5 encodeInt32:self->_reportFrequencyRandomValue forKey:@"reportFrequencyRandomValue"];
+  coderCopy = coder;
+  [coderCopy encodeObject:c2MetricsEndpoint forKey:@"c2MetricsEndpoint"];
+  [coderCopy encodeInt64:self->_reportFrequency forKey:@"reportFrequency"];
+  [coderCopy encodeInt64:self->_reportFrequencyBase forKey:@"reportFrequencyBase"];
+  [coderCopy encodeInt64:self->_reportClientOperationFrequency forKey:@"reportClientOperationFrequency"];
+  [coderCopy encodeInt64:self->_reportClientOperationFrequencyBase forKey:@"reportClientOperationFrequencyBase"];
+  [coderCopy encodeInt64:self->_reportOperationGroupFrequency forKey:@"reportOperationGroupFrequency"];
+  [coderCopy encodeInt64:self->_reportOperationGroupFrequencyBase forKey:@"reportOperationGroupFrequencyBase"];
+  [coderCopy encodeObject:self->_clientProcessVersion forKey:@"clientProcessVersion"];
+  [coderCopy encodeObject:self->_clientProcessBundleId forKey:@"clientProcessBundleId"];
+  [coderCopy encodeObject:self->_container forKey:@"container"];
+  [coderCopy encodeObject:self->_environment forKey:@"environment"];
+  [coderCopy encodeObject:self->_databaseScope forKey:@"databaseScope"];
+  [coderCopy encodeBool:self->_anonymous forKey:@"anonymous"];
+  [coderCopy encodeObject:self->_containerScopedUserIdentifier forKey:@"containerScopedUserIdentifier"];
+  [coderCopy encodeObject:self->_containerScopedDeviceIdentifier forKey:@"containerScopedDeviceIdentifier"];
+  [coderCopy encodeObject:self->_applicationBundleIdentifierOverrideForContainerAccess forKey:@"applicationBundleIdentifierOverrideForContainerAccess"];
+  [coderCopy encodeObject:self->_applicationBundleIdentifierOverrideForNetworkAttribution forKey:@"applicationBundleIdentifierOverrideForNetworkAttribution"];
+  [coderCopy encodeObject:self->_operationGroups forKey:@"operationGroups"];
+  [coderCopy encodeObject:self->_clientOperations forKey:@"clientOperations"];
+  [coderCopy encodeBool:self->_pushTrigger forKey:@"pushTrigger"];
+  [coderCopy encodeInt32:self->_reportFrequencyRandomValue forKey:@"reportFrequencyRandomValue"];
 }
 
-- (C2MetricOptions)initWithCoder:(id)a3
+- (C2MetricOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v39.receiver = self;
   v39.super_class = C2MetricOptions;
   v5 = [(C2MetricOptions *)&v39 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"c2MetricsEndpoint"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"c2MetricsEndpoint"];
     c2MetricsEndpoint = v5->_c2MetricsEndpoint;
     v5->_c2MetricsEndpoint = v6;
 
-    v5->_reportFrequency = [v4 decodeInt64ForKey:@"reportFrequency"];
-    v5->_reportFrequencyBase = [v4 decodeInt64ForKey:@"reportFrequencyBase"];
-    v5->_reportClientOperationFrequency = [v4 decodeInt64ForKey:@"reportClientOperationFrequency"];
-    v5->_reportClientOperationFrequencyBase = [v4 decodeInt64ForKey:@"reportClientOperationFrequencyBase"];
-    v5->_reportOperationGroupFrequency = [v4 decodeInt64ForKey:@"reportOperationGroupFrequency"];
-    v5->_reportOperationGroupFrequencyBase = [v4 decodeInt64ForKey:@"reportOperationGroupFrequencyBase"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientProcessVersion"];
+    v5->_reportFrequency = [coderCopy decodeInt64ForKey:@"reportFrequency"];
+    v5->_reportFrequencyBase = [coderCopy decodeInt64ForKey:@"reportFrequencyBase"];
+    v5->_reportClientOperationFrequency = [coderCopy decodeInt64ForKey:@"reportClientOperationFrequency"];
+    v5->_reportClientOperationFrequencyBase = [coderCopy decodeInt64ForKey:@"reportClientOperationFrequencyBase"];
+    v5->_reportOperationGroupFrequency = [coderCopy decodeInt64ForKey:@"reportOperationGroupFrequency"];
+    v5->_reportOperationGroupFrequencyBase = [coderCopy decodeInt64ForKey:@"reportOperationGroupFrequencyBase"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientProcessVersion"];
     clientProcessVersion = v5->_clientProcessVersion;
     v5->_clientProcessVersion = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientProcessBundleId"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientProcessBundleId"];
     clientProcessBundleId = v5->_clientProcessBundleId;
     v5->_clientProcessBundleId = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"container"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"container"];
     container = v5->_container;
     v5->_container = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
     environment = v5->_environment;
     v5->_environment = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"databaseScope"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"databaseScope"];
     databaseScope = v5->_databaseScope;
     v5->_databaseScope = v16;
 
-    v5->_anonymous = [v4 decodeBoolForKey:@"anonymous"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerScopedUserIdentifier"];
+    v5->_anonymous = [coderCopy decodeBoolForKey:@"anonymous"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerScopedUserIdentifier"];
     containerScopedUserIdentifier = v5->_containerScopedUserIdentifier;
     v5->_containerScopedUserIdentifier = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerScopedDeviceIdentifier"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerScopedDeviceIdentifier"];
     containerScopedDeviceIdentifier = v5->_containerScopedDeviceIdentifier;
     v5->_containerScopedDeviceIdentifier = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationBundleIdentifierOverrideForContainerAccess"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationBundleIdentifierOverrideForContainerAccess"];
     applicationBundleIdentifierOverrideForContainerAccess = v5->_applicationBundleIdentifierOverrideForContainerAccess;
     v5->_applicationBundleIdentifierOverrideForContainerAccess = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationBundleIdentifierOverrideForNetworkAttribution"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationBundleIdentifierOverrideForNetworkAttribution"];
     applicationBundleIdentifierOverrideForNetworkAttribution = v5->_applicationBundleIdentifierOverrideForNetworkAttribution;
     v5->_applicationBundleIdentifierOverrideForNetworkAttribution = v24;
 
     v26 = MEMORY[0x277CBEB98];
     v27 = objc_opt_class();
     v28 = [v26 setWithObjects:{v27, objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"operationGroups"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"operationGroups"];
     operationGroups = v5->_operationGroups;
     v5->_operationGroups = v29;
 
     v31 = MEMORY[0x277CBEB98];
     v32 = objc_opt_class();
     v33 = [v31 setWithObjects:{v32, objc_opt_class(), 0}];
-    v34 = [v4 decodeObjectOfClasses:v33 forKey:@"clientOperations"];
+    v34 = [coderCopy decodeObjectOfClasses:v33 forKey:@"clientOperations"];
     clientOperations = v5->_clientOperations;
     v5->_clientOperations = v34;
 
-    v5->_pushTrigger = [v4 decodeBoolForKey:@"pushTrigger"];
-    v5->_reportFrequencyRandomValue = [v4 decodeInt32ForKey:@"reportFrequencyRandomValue"];
+    v5->_pushTrigger = [coderCopy decodeBoolForKey:@"pushTrigger"];
+    v5->_reportFrequencyRandomValue = [coderCopy decodeInt32ForKey:@"reportFrequencyRandomValue"];
     didCompleteWithError = v5->_didCompleteWithError;
     v5->_didCompleteWithError = 0;
 

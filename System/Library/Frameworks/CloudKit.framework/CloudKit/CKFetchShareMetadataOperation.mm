@@ -1,21 +1,21 @@
 @interface CKFetchShareMetadataOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
-- (BOOL)CKOperationShouldRun:(id *)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
 - (CKFetchShareMetadataOperation)init;
 - (CKFetchShareMetadataOperation)initWithShareURLs:(NSArray *)shareURLs;
-- (CKFetchShareMetadataOperation)initWithShareURLs:(id)a3 invitationTokensByShareURL:(id)a4;
+- (CKFetchShareMetadataOperation)initWithShareURLs:(id)ls invitationTokensByShareURL:(id)l;
 - (id)activityCreate;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
 - (void)fetchShareMetadataCompletionBlock;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleShareMetadataFetchForURL:(id)a3 shareMetadata:(id)a4 error:(id)a5;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleShareMetadataFetchForURL:(id)l shareMetadata:(id)metadata error:(id)error;
 - (void)perShareMetadataBlock;
 - (void)setFetchShareMetadataCompletionBlock:(void *)fetchShareMetadataCompletionBlock;
-- (void)setFetchShareMetadataCompletionBlockIVar:(id)a3;
+- (void)setFetchShareMetadataCompletionBlockIVar:(id)var;
 - (void)setPerShareMetadataBlock:(void *)perShareMetadataBlock;
 @end
 
@@ -65,13 +65,13 @@
   return v11;
 }
 
-- (CKFetchShareMetadataOperation)initWithShareURLs:(id)a3 invitationTokensByShareURL:(id)a4
+- (CKFetchShareMetadataOperation)initWithShareURLs:(id)ls invitationTokensByShareURL:(id)l
 {
-  v6 = a4;
-  v10 = objc_msgSend_initWithShareURLs_(self, v7, a3);
+  lCopy = l;
+  v10 = objc_msgSend_initWithShareURLs_(self, v7, ls);
   if (v10)
   {
-    v11 = objc_msgSend_copy(v6, v8, v9);
+    v11 = objc_msgSend_copy(lCopy, v8, v9);
     shareInvitationTokensByShareURL = v10->_shareInvitationTokensByShareURL;
     v10->_shareInvitationTokensByShareURL = v11;
   }
@@ -147,9 +147,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setFetchShareMetadataCompletionBlockIVar:(id)a3
+- (void)setFetchShareMetadataCompletionBlockIVar:(id)var
 {
-  v6 = a3;
+  varCopy = var;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -163,16 +163,16 @@ LABEL_9:
     v12[2] = sub_1885ED6F0;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = varCopy;
     dispatch_sync(v11, v12);
 
     fetchShareMetadataCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_fetchShareMetadataCompletionBlock != v6)
+  if (self->_fetchShareMetadataCompletionBlock != varCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(varCopy, v7, v8);
     fetchShareMetadataCompletionBlock = self->_fetchShareMetadataCompletionBlock;
     self->_fetchShareMetadataCompletionBlock = v9;
 LABEL_9:
@@ -223,49 +223,49 @@ LABEL_9:
   objc_msgSend_setFetchShareMetadataCompletionBlockIVar_(self, v6, v7);
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_shareURLs(self, v5, v6);
-  objc_msgSend_setShareURLsToFetch_(v4, v8, v7);
+  objc_msgSend_setShareURLsToFetch_(infoCopy, v8, v7);
 
   RootRecord = objc_msgSend_shouldFetchRootRecord(self, v9, v10);
-  objc_msgSend_setShouldFetchRootRecord_(v4, v12, RootRecord);
+  objc_msgSend_setShouldFetchRootRecord_(infoCopy, v12, RootRecord);
   v15 = objc_msgSend_rootRecordDesiredKeys(self, v13, v14);
-  objc_msgSend_setRootRecordDesiredKeys_(v4, v16, v15);
+  objc_msgSend_setRootRecordDesiredKeys_(infoCopy, v16, v15);
 
   v19 = objc_msgSend_shareInvitationTokensByShareURL(self, v17, v18);
-  objc_msgSend_setShareInvitationTokensByShareURL_(v4, v20, v19);
+  objc_msgSend_setShareInvitationTokensByShareURL_(infoCopy, v20, v19);
 
   v23 = objc_msgSend_overwriteContainerPCSServiceIfManatee(self, v21, v22);
-  objc_msgSend_setOverwriteContainerPCSServiceIfManatee_(v4, v24, v23);
+  objc_msgSend_setOverwriteContainerPCSServiceIfManatee_(infoCopy, v24, v23);
   v27 = objc_msgSend_skipShareDecryption(self, v25, v26);
-  objc_msgSend_setSkipShareDecryption_(v4, v28, v27);
+  objc_msgSend_setSkipShareDecryption_(infoCopy, v28, v27);
   v29.receiver = self;
   v29.super_class = CKFetchShareMetadataOperation;
-  [(CKOperation *)&v29 fillOutOperationInfo:v4];
+  [(CKOperation *)&v29 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v29.receiver = self;
   v29.super_class = CKFetchShareMetadataOperation;
-  v4 = a3;
-  [(CKOperation *)&v29 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_shareURLsToFetch(v4, v5, v6, v29.receiver, v29.super_class);
+  infoCopy = info;
+  [(CKOperation *)&v29 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_shareURLsToFetch(infoCopy, v5, v6, v29.receiver, v29.super_class);
   objc_msgSend_setShareURLs_(self, v8, v7);
 
-  RootRecord = objc_msgSend_shouldFetchRootRecord(v4, v9, v10);
+  RootRecord = objc_msgSend_shouldFetchRootRecord(infoCopy, v9, v10);
   objc_msgSend_setShouldFetchRootRecord_(self, v12, RootRecord);
-  v15 = objc_msgSend_rootRecordDesiredKeys(v4, v13, v14);
+  v15 = objc_msgSend_rootRecordDesiredKeys(infoCopy, v13, v14);
   objc_msgSend_setRootRecordDesiredKeys_(self, v16, v15);
 
-  v19 = objc_msgSend_shareInvitationTokensByShareURL(v4, v17, v18);
+  v19 = objc_msgSend_shareInvitationTokensByShareURL(infoCopy, v17, v18);
   objc_msgSend_setShareInvitationTokensByShareURL_(self, v20, v19);
 
-  v23 = objc_msgSend_overwriteContainerPCSServiceIfManatee(v4, v21, v22);
+  v23 = objc_msgSend_overwriteContainerPCSServiceIfManatee(infoCopy, v21, v22);
   objc_msgSend_setOverwriteContainerPCSServiceIfManatee_(self, v24, v23);
-  v27 = objc_msgSend_skipShareDecryption(v4, v25, v26);
+  v27 = objc_msgSend_skipShareDecryption(infoCopy, v25, v26);
 
   objc_msgSend_setSkipShareDecryption_(self, v28, v27);
 }
@@ -294,11 +294,11 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
-  v3 = a3;
+  runCopy = run;
   v50 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_shareURLs(self, a2, a3);
+  v5 = objc_msgSend_shareURLs(self, a2, run);
   v8 = objc_msgSend_count(v5, v6, v7);
 
   if (v8)
@@ -327,7 +327,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (v3)
+          if (runCopy)
           {
             v34 = objc_opt_class();
             v35 = NSStringFromClass(v34);
@@ -352,12 +352,12 @@ LABEL_4:
 
           if (!v29)
           {
-            if (v3)
+            if (runCopy)
             {
               v39 = objc_opt_class();
               v35 = NSStringFromClass(v39);
               objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v40, @"CKErrorDomain", 12, @"No sharing invitation token for URL %@ was passed to %@", v17, v35);
-              *v3 = LABEL_24:;
+              *runCopy = LABEL_24:;
             }
 
             goto LABEL_25;
@@ -380,7 +380,7 @@ LABEL_4:
         }
       }
 
-      if (v3)
+      if (runCopy)
       {
         v37 = objc_opt_class();
         v35 = NSStringFromClass(v37);
@@ -390,7 +390,7 @@ LABEL_4:
 
 LABEL_25:
 
-      LOBYTE(v3) = 0;
+      LOBYTE(runCopy) = 0;
       goto LABEL_26;
     }
 
@@ -398,30 +398,30 @@ LABEL_15:
 
     v44.receiver = self;
     v44.super_class = CKFetchShareMetadataOperation;
-    LOBYTE(v3) = [(CKOperation *)&v44 CKOperationShouldRun:v3];
+    LOBYTE(runCopy) = [(CKOperation *)&v44 CKOperationShouldRun:runCopy];
 LABEL_26:
   }
 
-  else if (v3)
+  else if (runCopy)
   {
     v31 = objc_opt_class();
     v32 = NSStringFromClass(v31);
-    *v3 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v33, @"CKErrorDomain", 12, @"No share URLs were passed to %@", v32);
+    *runCopy = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v33, @"CKErrorDomain", 12, @"No share URLs were passed to %@", v32);
 
-    LOBYTE(v3) = 0;
+    LOBYTE(runCopy) = 0;
   }
 
   v41 = *MEMORY[0x1E69E9840];
-  return v3;
+  return runCopy;
 }
 
-- (void)handleShareMetadataFetchForURL:(id)a3 shareMetadata:(id)a4 error:(id)a5
+- (void)handleShareMetadataFetchForURL:(id)l shareMetadata:(id)metadata error:(id)error
 {
   v69 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v13 = objc_msgSend_CKClientSuitableError(v10, v11, v12);
+  lCopy = l;
+  metadataCopy = metadata;
+  errorCopy = error;
+  v13 = objc_msgSend_CKClientSuitableError(errorCopy, v11, v12);
   if (self)
   {
     signpost = self->super._signpost;
@@ -470,7 +470,7 @@ LABEL_26:
       }
 
       *v65 = 138412546;
-      *&v65[4] = v8;
+      *&v65[4] = lCopy;
       *&v65[12] = 2112;
       *&v65[14] = v13;
       v28 = "Shared %@ fetched metadata with error: %@";
@@ -517,7 +517,7 @@ LABEL_21:
     }
 
     *v65 = 138412290;
-    *&v65[4] = v8;
+    *&v65[4] = lCopy;
     v28 = "Shared %@ fetched metadata";
     v29 = v22;
     v30 = v40;
@@ -525,12 +525,12 @@ LABEL_21:
     goto LABEL_20;
   }
 
-  v41 = objc_msgSend_CKClientSuitableError(v10, v16, v17, *v65, *&v65[16]);
+  v41 = objc_msgSend_CKClientSuitableError(errorCopy, v16, v17, *v65, *&v65[16]);
 
   if (v41 && (objc_msgSend_canDropItemResultsEarly(self, v42, v43) & 1) == 0)
   {
     v44 = objc_msgSend_errorsByURL(self, v42, v43);
-    objc_msgSend_setObject_forKeyedSubscript_(v44, v45, v41, v8);
+    objc_msgSend_setObject_forKeyedSubscript_(v44, v45, v41, lCopy);
   }
 
   v46 = objc_msgSend_perShareMetadataBlock_wrapper(self, v42, v43);
@@ -558,12 +558,12 @@ LABEL_21:
     {
       v55 = v52;
       v58 = objc_msgSend_operationID(self, v56, v57);
-      v61 = objc_msgSend_share(v9, v59, v60);
+      v61 = objc_msgSend_share(metadataCopy, v59, v60);
       v64 = objc_msgSend_recordID(v61, v62, v63);
       *v65 = 138544130;
       *&v65[4] = v58;
       *&v65[12] = 2112;
-      *&v65[14] = v8;
+      *&v65[14] = lCopy;
       *&v65[22] = 2112;
       v66 = v64;
       v67 = 2112;
@@ -578,19 +578,19 @@ LABEL_21:
 
     else
     {
-      v53 = v9;
+      v53 = metadataCopy;
     }
 
-    (v50)[2](v50, v8, v53, v41);
+    (v50)[2](v50, lCopy, v53, v41);
   }
 
   v54 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -638,7 +638,7 @@ LABEL_21:
     }
   }
 
-  if (!v4)
+  if (!errorCopy)
   {
     v19 = objc_msgSend_errorsByURL(self, v7, v8);
     v22 = objc_msgSend_count(v19, v20, v21);
@@ -649,12 +649,12 @@ LABEL_21:
       v26 = objc_msgSend_errorsByURL(self, v24, v25);
       objc_msgSend_setObject_forKeyedSubscript_(v23, v27, v26, @"CKPartialErrors");
 
-      v4 = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v28, @"CKInternalErrorDomain", 1011, v23, @"Failed to fetch some share info");
+      errorCopy = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v28, @"CKInternalErrorDomain", 1011, v23, @"Failed to fetch some share info");
     }
 
     else
     {
-      v4 = 0;
+      errorCopy = 0;
     }
   }
 
@@ -688,15 +688,15 @@ LABEL_21:
       *buf = 138544130;
       v50 = v44;
       v51 = 2048;
-      v52 = self;
+      selfCopy = self;
       v53 = 2114;
       v54 = v47;
       v55 = 2112;
-      v56 = v4;
+      v56 = errorCopy;
       _os_log_debug_impl(&dword_1883EA000, v42, OS_LOG_TYPE_DEBUG, "Calling fetchShareMetadataCompletionBlock for operation <%{public}@: %p; %{public}@> with error %@", buf, 0x2Au);
     }
 
-    v39 = objc_msgSend_CKClientSuitableError(v4, v37, v38);
+    v39 = objc_msgSend_CKClientSuitableError(errorCopy, v37, v38);
     v33[2](v33, v39);
 
     objc_msgSend_setFetchShareMetadataCompletionBlock_(self, v40, 0);
@@ -705,7 +705,7 @@ LABEL_21:
   objc_msgSend_setPerShareMetadataBlock_(self, v35, 0);
   v48.receiver = self;
   v48.super_class = CKFetchShareMetadataOperation;
-  [(CKOperation *)&v48 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v48 _finishOnCallbackQueueWithError:errorCopy];
 
   v41 = *MEMORY[0x1E69E9840];
 }
@@ -784,10 +784,10 @@ LABEL_21:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -831,7 +831,7 @@ LABEL_21:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKFetchShareMetadataOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -846,15 +846,15 @@ LABEL_21:
   return v2;
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
-  v4 = a3;
+  tweaksCopy = tweaks;
   v5 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v6, v5, sel_handleShareMetadataFetchForURL_shareMetadata_error_, 2, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v6, v5, sel_handleShareMetadataFetchForURL_shareMetadata_error_, 2, 0);
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CKFetchShareMetadataOperation;
-  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, v4);
+  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface LPAudioPlayerMediaPlayableAdaptor
 - (BOOL)isPlaying;
-- (LPAudioPlayerMediaPlayableAdaptor)initWithPlayer:(id)a3;
+- (LPAudioPlayerMediaPlayableAdaptor)initWithPlayer:(id)player;
 - (void)resetPlaybackState;
-- (void)setPlaying:(BOOL)a3;
+- (void)setPlaying:(BOOL)playing;
 @end
 
 @implementation LPAudioPlayerMediaPlayableAdaptor
 
-- (LPAudioPlayerMediaPlayableAdaptor)initWithPlayer:(id)a3
+- (LPAudioPlayerMediaPlayableAdaptor)initWithPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   v9.receiver = self;
   v9.super_class = LPAudioPlayerMediaPlayableAdaptor;
   v5 = [(LPAudioPlayerMediaPlayableAdaptor *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_player, v4);
+    objc_storeWeak(&v5->_player, playerCopy);
     v7 = v6;
   }
 
@@ -31,12 +31,12 @@
   return v3;
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  v3 = a3;
+  playingCopy = playing;
   WeakRetained = objc_loadWeakRetained(&self->_player);
   v5 = WeakRetained;
-  if (v3)
+  if (playingCopy)
   {
     [WeakRetained play];
   }

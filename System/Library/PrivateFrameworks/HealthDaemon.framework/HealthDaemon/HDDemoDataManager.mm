@@ -1,27 +1,27 @@
 @interface HDDemoDataManager
-- (HDDemoDataManager)initWithProfile:(id)a3;
+- (HDDemoDataManager)initWithProfile:(id)profile;
 - (HDProfile)profile;
 - (void)_queue_generateDemoDataIfNeeded;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation HDDemoDataManager
 
-- (HDDemoDataManager)initWithProfile:(id)a3
+- (HDDemoDataManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v10.receiver = self;
   v10.super_class = HDDemoDataManager;
   v5 = [(HDDemoDataManager *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialUtilityDispatchQueue();
     demoDataQueue = v6->_demoDataQueue;
     v6->_demoDataQueue = v7;
 
-    [v4 registerProfileReadyObserver:v6 queue:v6->_demoDataQueue];
+    [profileCopy registerProfileReadyObserver:v6 queue:v6->_demoDataQueue];
   }
 
   return v6;
@@ -29,51 +29,51 @@
 
 - (void)_queue_generateDemoDataIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
+    dispatch_assert_queue_V2(*(self + 8));
     if ([MEMORY[0x277CCDD68] shouldGenerateDemoData])
     {
-      if (!*(a1 + 24))
+      if (!*(self + 24))
       {
         v2 = [HDDemoDataGenerator alloc];
-        WeakRetained = objc_loadWeakRetained((a1 + 16));
-        v4 = [(HDDemoDataGenerator *)v2 initWithProfile:WeakRetained queue:*(a1 + 8)];
-        v5 = *(a1 + 24);
-        *(a1 + 24) = v4;
+        WeakRetained = objc_loadWeakRetained((self + 16));
+        v4 = [(HDDemoDataGenerator *)v2 initWithProfile:WeakRetained queue:*(self + 8)];
+        v5 = *(self + 24);
+        *(self + 24) = v4;
 
-        v6 = [*(a1 + 24) configuration];
-        v7 = +[HDDemoDataPerson defaultPersonWithBiologicalSex:](HDDemoDataPerson, "defaultPersonWithBiologicalSex:", [v6 biologicalSex]);
-        v8 = [*(a1 + 24) gregorianCalendar];
-        v9 = [v7 birthDateComponents];
-        v10 = [v8 dateFromComponents:v9];
+        configuration = [*(self + 24) configuration];
+        v7 = +[HDDemoDataPerson defaultPersonWithBiologicalSex:](HDDemoDataPerson, "defaultPersonWithBiologicalSex:", [configuration biologicalSex]);
+        gregorianCalendar = [*(self + 24) gregorianCalendar];
+        birthDateComponents = [v7 birthDateComponents];
+        v10 = [gregorianCalendar dateFromComponents:birthDateComponents];
         [v7 setBirthDate:v10];
 
-        [v7 setNutritionTrackingType:{objc_msgSend(v6, "nutritionTrackingType")}];
-        [v7 setResultsTrackingType:{objc_msgSend(v6, "resultsTrackingType")}];
-        [v7 applyProfileType:{objc_msgSend(v6, "profileType")}];
-        [v7 setHighFidelityGeneration:{objc_msgSend(v6, "highFidelityGeneration")}];
-        [*(a1 + 24) setDemoPerson:v7];
+        [v7 setNutritionTrackingType:{objc_msgSend(configuration, "nutritionTrackingType")}];
+        [v7 setResultsTrackingType:{objc_msgSend(configuration, "resultsTrackingType")}];
+        [v7 applyProfileType:{objc_msgSend(configuration, "profileType")}];
+        [v7 setHighFidelityGeneration:{objc_msgSend(configuration, "highFidelityGeneration")}];
+        [*(self + 24) setDemoPerson:v7];
       }
 
-      v11 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       if ([MEMORY[0x277CCDD30] runningInStoreDemoModeF201])
       {
-        v12 = [MEMORY[0x277CBEA80] currentCalendar];
-        v13 = [v12 hk_startOfDateByAddingDays:1 toDate:v11];
+        currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+        v13 = [currentCalendar hk_startOfDateByAddingDays:1 toDate:date];
 
-        v11 = v13;
+        date = v13;
       }
 
       Current = CFAbsoluteTimeGetCurrent();
-      v15 = *(a1 + 24);
+      v15 = *(self + 24);
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __52__HDDemoDataManager__queue_generateDemoDataIfNeeded__block_invoke;
       v17[3] = &unk_278629E78;
       *&v17[5] = Current;
-      v17[4] = a1;
-      [v15 generateThroughEndDate:v11 completion:v17];
+      v17[4] = self;
+      [v15 generateThroughEndDate:date completion:v17];
     }
 
     else
@@ -169,7 +169,7 @@ void __52__HDDemoDataManager__queue_generateDemoDataIfNeeded__block_invoke_297(u
   [HDDemoDataManager _queue_generateDemoDataIfNeeded];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   dispatch_assert_queue_V2(self->_demoDataQueue);
 

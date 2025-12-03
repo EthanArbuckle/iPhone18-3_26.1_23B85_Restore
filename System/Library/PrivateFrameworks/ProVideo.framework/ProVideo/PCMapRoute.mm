@@ -1,24 +1,24 @@
 @interface PCMapRoute
-+ (id)decodeFromBlindChannelData:(id)a3;
-- (PCMapRoute)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)decodeFromBlindChannelData:(id)data;
+- (PCMapRoute)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeAsBlindChannelData;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PCMapRoute
 
-- (PCMapRoute)initWithCoder:(id)a3
+- (PCMapRoute)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PCMapRoute;
   v4 = [(PCMapRoute *)&v6 init];
   if (v4)
   {
-    -[PCMapRoute setStartLocation:](v4, "setStartLocation:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"startLocation"]);
-    -[PCMapRoute setEndLocation:](v4, "setEndLocation:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"endLocation"]);
-    -[PCMapRoute setHasEndLocation:](v4, "setHasEndLocation:", [a3 decodeBoolForKey:@"hasEndLocation"]);
+    -[PCMapRoute setStartLocation:](v4, "setStartLocation:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"startLocation"]);
+    -[PCMapRoute setEndLocation:](v4, "setEndLocation:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"endLocation"]);
+    -[PCMapRoute setHasEndLocation:](v4, "setHasEndLocation:", [coder decodeBoolForKey:@"hasEndLocation"]);
   }
 
   return v4;
@@ -31,10 +31,10 @@
   [(PCMapRoute *)&v3 dealloc];
 }
 
-+ (id)decodeFromBlindChannelData:(id)a3
++ (id)decodeFromBlindChannelData:(id)data
 {
   v6 = 0;
-  v3 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:a3 error:&v6];
+  v3 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:data error:&v6];
   v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"Custom Data"];
   if (!v4)
   {
@@ -50,29 +50,29 @@
 {
   v3 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
   [v3 encodeObject:self forKey:@"Custom Data"];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
   [v3 finishEncoding];
 
-  return v4;
+  return encodedData;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setStartLocation:{-[PCMapLocation copy](self->_startLocation, "copy")}];
   [v4 setEndLocation:{-[PCMapLocation copy](self->_endLocation, "copy")}];
   [v4 setHasEndLocation:self->_hasEndLocation];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_startLocation forKey:@"startLocation"];
-  [a3 encodeObject:self->_endLocation forKey:@"endLocation"];
+  [coder encodeObject:self->_startLocation forKey:@"startLocation"];
+  [coder encodeObject:self->_endLocation forKey:@"endLocation"];
   if (self->_hasEndLocation)
   {
 
-    [a3 encodeBool:1 forKey:@"hasEndLocation"];
+    [coder encodeBool:1 forKey:@"hasEndLocation"];
   }
 }
 

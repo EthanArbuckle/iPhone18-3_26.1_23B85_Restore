@@ -1,55 +1,55 @@
 @interface SXArticleLinkComponentView
-- (SXArticleLinkComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 mediaSharingPolicyProvider:(id)a7 interactionHandlerManager:(id)a8 interactionHandlerFactory:(id)a9 URLActionFactory:(id)a10 articleURLFactory:(id)a11;
+- (SXArticleLinkComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory mediaSharingPolicyProvider:(id)policyProvider interactionHandlerManager:(id)manager interactionHandlerFactory:(id)handlerFactory URLActionFactory:(id)self0 articleURLFactory:(id)self1;
 - (SXComponentInteractionHandler)interactionHandler;
-- (void)loadComponent:(id)a3;
+- (void)loadComponent:(id)component;
 @end
 
 @implementation SXArticleLinkComponentView
 
-- (SXArticleLinkComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 mediaSharingPolicyProvider:(id)a7 interactionHandlerManager:(id)a8 interactionHandlerFactory:(id)a9 URLActionFactory:(id)a10 articleURLFactory:(id)a11
+- (SXArticleLinkComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory mediaSharingPolicyProvider:(id)policyProvider interactionHandlerManager:(id)manager interactionHandlerFactory:(id)handlerFactory URLActionFactory:(id)self0 articleURLFactory:(id)self1
 {
-  v24 = a8;
-  v23 = a9;
-  v22 = a10;
-  v21 = a11;
+  managerCopy = manager;
+  handlerFactoryCopy = handlerFactory;
+  actionFactoryCopy = actionFactory;
+  lFactoryCopy = lFactory;
   v25.receiver = self;
   v25.super_class = SXArticleLinkComponentView;
-  v18 = [(SXContainerComponentView *)&v25 initWithDOMObjectProvider:a3 viewport:a4 presentationDelegate:a5 componentStyleRendererFactory:a6 mediaSharingPolicyProvider:a7];
+  v18 = [(SXContainerComponentView *)&v25 initWithDOMObjectProvider:provider viewport:viewport presentationDelegate:delegate componentStyleRendererFactory:factory mediaSharingPolicyProvider:policyProvider];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_interactionHandlerManager, a8);
-    objc_storeStrong(&v19->_interactionHandlerFactory, a9);
-    objc_storeStrong(&v19->_URLActionFactory, a10);
-    objc_storeStrong(&v19->_articleURLFactory, a11);
+    objc_storeStrong(&v18->_interactionHandlerManager, manager);
+    objc_storeStrong(&v19->_interactionHandlerFactory, handlerFactory);
+    objc_storeStrong(&v19->_URLActionFactory, actionFactory);
+    objc_storeStrong(&v19->_articleURLFactory, lFactory);
   }
 
   return v19;
 }
 
-- (void)loadComponent:(id)a3
+- (void)loadComponent:(id)component
 {
   v15.receiver = self;
   v15.super_class = SXArticleLinkComponentView;
-  v4 = a3;
-  [(SXComponentView *)&v15 loadComponent:v4];
+  componentCopy = component;
+  [(SXComponentView *)&v15 loadComponent:componentCopy];
   v5 = [(SXArticleLinkComponentView *)self interactionHandlerManager:v15.receiver];
-  v6 = [(SXArticleLinkComponentView *)self interactionHandler];
-  [v5 removeInteractionHandler:v6 componentView:self];
+  interactionHandler = [(SXArticleLinkComponentView *)self interactionHandler];
+  [v5 removeInteractionHandler:interactionHandler componentView:self];
 
-  v7 = [(SXArticleLinkComponentView *)self articleURLFactory];
-  v8 = [v4 articleIdentifier];
+  articleURLFactory = [(SXArticleLinkComponentView *)self articleURLFactory];
+  articleIdentifier = [componentCopy articleIdentifier];
 
-  v9 = [v7 createArticleURLWithIdentifier:v8];
+  v9 = [articleURLFactory createArticleURLWithIdentifier:articleIdentifier];
 
-  v10 = [(SXArticleLinkComponentView *)self URLActionFactory];
-  v11 = [v10 actionForURL:v9];
+  uRLActionFactory = [(SXArticleLinkComponentView *)self URLActionFactory];
+  v11 = [uRLActionFactory actionForURL:v9];
 
-  v12 = [(SXArticleLinkComponentView *)self interactionHandlerFactory];
-  v13 = [v12 interactionHandlerForAction:v11];
+  interactionHandlerFactory = [(SXArticleLinkComponentView *)self interactionHandlerFactory];
+  v13 = [interactionHandlerFactory interactionHandlerForAction:v11];
 
-  v14 = [(SXArticleLinkComponentView *)self interactionHandlerManager];
-  [v14 addInteractionHandler:v13 componentView:self types:2];
+  interactionHandlerManager = [(SXArticleLinkComponentView *)self interactionHandlerManager];
+  [interactionHandlerManager addInteractionHandler:v13 componentView:self types:2];
 
   [(SXArticleLinkComponentView *)self setInteractionHandler:v13];
 }

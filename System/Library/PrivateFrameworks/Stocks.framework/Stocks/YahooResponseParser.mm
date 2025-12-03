@@ -1,31 +1,31 @@
 @interface YahooResponseParser
-+ (id)arrayWithDictionaryKeyPath:(id)a3 inJSONObject:(id)a4 wrapResultIfDictionary:(BOOL)a5;
-+ (id)dictionaryWithDictionaryKeyPath:(id)a3 inJSONObject:(id)a4;
-+ (id)objectOfClass:(Class)a3 withDictionaryKeyPath:(id)a4 inJSONObject:(id)a5;
-+ (id)parseDataSourceMapFromDataSourceDictionaries:(id)a3;
-+ (void)parseData:(id)a3 resultsHandler:(id)a4;
-+ (void)parseExchangeDictionaries:(id)a3 parsedExchangeResult:(id)a4;
-+ (void)parseStockQuoteDictionaries:(id)a3 withDataSources:(id)a4 parsedStockResult:(id)a5;
++ (id)arrayWithDictionaryKeyPath:(id)path inJSONObject:(id)object wrapResultIfDictionary:(BOOL)dictionary;
++ (id)dictionaryWithDictionaryKeyPath:(id)path inJSONObject:(id)object;
++ (id)objectOfClass:(Class)class withDictionaryKeyPath:(id)path inJSONObject:(id)object;
++ (id)parseDataSourceMapFromDataSourceDictionaries:(id)dictionaries;
++ (void)parseData:(id)data resultsHandler:(id)handler;
++ (void)parseExchangeDictionaries:(id)dictionaries parsedExchangeResult:(id)result;
++ (void)parseStockQuoteDictionaries:(id)dictionaries withDataSources:(id)sources parsedStockResult:(id)result;
 @end
 
 @implementation YahooResponseParser
 
-+ (id)dictionaryWithDictionaryKeyPath:(id)a3 inJSONObject:(id)a4
++ (id)dictionaryWithDictionaryKeyPath:(id)path inJSONObject:(id)object
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 objectOfClass:objc_opt_class() withDictionaryKeyPath:v7 inJSONObject:v6];
+  objectCopy = object;
+  pathCopy = path;
+  v8 = [self objectOfClass:objc_opt_class() withDictionaryKeyPath:pathCopy inJSONObject:objectCopy];
 
   return v8;
 }
 
-+ (id)arrayWithDictionaryKeyPath:(id)a3 inJSONObject:(id)a4 wrapResultIfDictionary:(BOOL)a5
++ (id)arrayWithDictionaryKeyPath:(id)path inJSONObject:(id)object wrapResultIfDictionary:(BOOL)dictionary
 {
-  v5 = a5;
+  dictionaryCopy = dictionary;
   v18[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [a1 objectWithDictionaryKeyPath:v8 inJSONObject:a4];
-  if (v5)
+  pathCopy = path;
+  v9 = [self objectWithDictionaryKeyPath:pathCopy inJSONObject:object];
+  if (dictionaryCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -51,7 +51,7 @@ LABEL_6:
     v14 = 138412546;
     v15 = v9;
     v16 = 2112;
-    v17 = v8;
+    v17 = pathCopy;
     _os_log_impl(&dword_26BAAD000, v12, OS_LOG_TYPE_DEFAULT, "#YQLRequest Unexpected object %@ in key path %@; expected array or dictionary", &v14, 0x16u);
   }
 
@@ -61,10 +61,10 @@ LABEL_10:
   return v11;
 }
 
-+ (id)objectOfClass:(Class)a3 withDictionaryKeyPath:(id)a4 inJSONObject:(id)a5
++ (id)objectOfClass:(Class)class withDictionaryKeyPath:(id)path inJSONObject:(id)object
 {
-  v7 = a4;
-  v8 = a5;
+  pathCopy = path;
+  objectCopy = object;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -79,15 +79,15 @@ LABEL_10:
     v16[2] = 0x3032000000;
     v16[3] = __Block_byref_object_copy__0;
     v16[4] = __Block_byref_object_dispose__0;
-    v17 = v8;
+    v17 = objectCopy;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __72__YahooResponseParser_objectOfClass_withDictionaryKeyPath_inJSONObject___block_invoke;
     v11[3] = &unk_279D16890;
     v13 = v16;
-    v12 = v7;
+    v12 = pathCopy;
     v14 = &v18;
-    v15 = a3;
+    classCopy = class;
     [v12 enumerateObjectsUsingBlock:v11];
 
     _Block_object_dispose(v16, 8);
@@ -143,13 +143,13 @@ LABEL_7:
 LABEL_13:
 }
 
-+ (void)parseData:(id)a3 resultsHandler:(id)a4
++ (void)parseData:(id)data resultsHandler:(id)handler
 {
   v22[6] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v18 = 0;
-  v8 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v6 options:0 error:&v18];
+  v8 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v18];
   v9 = v18;
   v22[0] = @"query";
   v22[1] = @"results";
@@ -158,7 +158,7 @@ LABEL_13:
   v22[4] = @"finance";
   v22[5] = @"quote_service";
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:6];
-  v11 = [a1 dictionaryWithDictionaryKeyPath:v10 inJSONObject:v8];
+  v11 = [self dictionaryWithDictionaryKeyPath:v10 inJSONObject:v8];
 
   if (!v11)
   {
@@ -172,7 +172,7 @@ LABEL_6:
   v21[0] = @"quotes";
   v21[1] = @"quote";
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
-  v13 = [a1 arrayWithDictionaryKeyPath:v12 inJSONObject:v11 wrapResultIfDictionary:1];
+  v13 = [self arrayWithDictionaryKeyPath:v12 inJSONObject:v11 wrapResultIfDictionary:1];
 
   if (!v13)
   {
@@ -183,32 +183,32 @@ LABEL_6:
   v20[0] = @"exchanges";
   v20[1] = @"exchange";
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
-  v15 = [a1 arrayWithDictionaryKeyPath:v14 inJSONObject:v11 wrapResultIfDictionary:1];
+  v15 = [self arrayWithDictionaryKeyPath:v14 inJSONObject:v11 wrapResultIfDictionary:1];
 
   v19[0] = @"data_sources";
   v19[1] = @"data_source";
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
-  v17 = [a1 arrayWithDictionaryKeyPath:v16 inJSONObject:v11 wrapResultIfDictionary:1];
+  v17 = [self arrayWithDictionaryKeyPath:v16 inJSONObject:v11 wrapResultIfDictionary:1];
 
 LABEL_7:
-  v7[2](v7, v15, v13, v17);
+  handlerCopy[2](handlerCopy, v15, v13, v17);
 }
 
-+ (id)parseDataSourceMapFromDataSourceDictionaries:(id)a3
++ (id)parseDataSourceMapFromDataSourceDictionaries:(id)dictionaries
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
+  dictionariesCopy = dictionaries;
+  dictionary = [v3 dictionary];
   v6 = +[YQLConstants YQLDataSourceToStocksKeyMap];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__YahooResponseParser_parseDataSourceMapFromDataSourceDictionaries___block_invoke;
   v12[3] = &unk_279D168E0;
   v13 = v6;
-  v7 = v5;
+  v7 = dictionary;
   v14 = v7;
   v8 = v6;
-  [v4 enumerateObjectsUsingBlock:v12];
+  [dictionariesCopy enumerateObjectsUsingBlock:v12];
 
   v9 = v14;
   v10 = v7;
@@ -264,10 +264,10 @@ void __68__YahooResponseParser_parseDataSourceMapFromDataSourceDictionaries___bl
   }
 }
 
-+ (void)parseExchangeDictionaries:(id)a3 parsedExchangeResult:(id)a4
++ (void)parseExchangeDictionaries:(id)dictionaries parsedExchangeResult:(id)result
 {
-  v5 = a4;
-  v6 = a3;
+  resultCopy = result;
+  dictionariesCopy = dictionaries;
   v7 = +[YQLConstants YQLExchangeToStocksKeyMap];
   if (parseExchangeDictionaries_parsedExchangeResult__onceToken != -1)
   {
@@ -279,10 +279,10 @@ void __68__YahooResponseParser_parseDataSourceMapFromDataSourceDictionaries___bl
   v10[2] = __70__YahooResponseParser_parseExchangeDictionaries_parsedExchangeResult___block_invoke_2;
   v10[3] = &unk_279D16908;
   v11 = v7;
-  v12 = v5;
-  v8 = v5;
+  v12 = resultCopy;
+  v8 = resultCopy;
   v9 = v7;
-  [v6 enumerateObjectsUsingBlock:v10];
+  [dictionariesCopy enumerateObjectsUsingBlock:v10];
 }
 
 void __70__YahooResponseParser_parseExchangeDictionaries_parsedExchangeResult___block_invoke()
@@ -408,18 +408,18 @@ void __70__YahooResponseParser_parseExchangeDictionaries_parsedExchangeResult___
   [v4 setLocale:v5];
 }
 
-+ (void)parseStockQuoteDictionaries:(id)a3 withDataSources:(id)a4 parsedStockResult:(id)a5
++ (void)parseStockQuoteDictionaries:(id)dictionaries withDataSources:(id)sources parsedStockResult:(id)result
 {
   v49 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v33 = a4;
-  v34 = a5;
+  dictionariesCopy = dictionaries;
+  sourcesCopy = sources;
+  resultCopy = result;
   v8 = +[YQLConstants YQLQuoteToStocksKeyMap];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v7;
+  obj = dictionariesCopy;
   v9 = [obj countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v9)
   {
@@ -442,7 +442,7 @@ void __70__YahooResponseParser_parseExchangeDictionaries_parsedExchangeResult___
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
           v39 = 0u;
           v40 = 0u;
           v41 = 0u;
@@ -458,7 +458,7 @@ void __70__YahooResponseParser_parseExchangeDictionaries_parsedExchangeResult___
           v18 = v16;
           v38 = v12;
           v19 = *v40;
-          v20 = 0x7FFFFFFFFFFFFFFFLL;
+          integerValue = 0x7FFFFFFFFFFFFFFFLL;
           do
           {
             for (i = 0; i != v18; ++i)
@@ -480,7 +480,7 @@ void __70__YahooResponseParser_parseExchangeDictionaries_parsedExchangeResult___
                   if ([v22 isEqualToString:@"price"])
                   {
                     v25 = [v24 objectForKey:@"data_source"];
-                    v20 = [v25 integerValue];
+                    integerValue = [v25 integerValue];
                   }
 
                   v26 = [v24 objectForKey:@"raw"];
@@ -489,7 +489,7 @@ void __70__YahooResponseParser_parseExchangeDictionaries_parsedExchangeResult___
                 }
 
                 v27 = [v8 objectForKeyedSubscript:v22];
-                [v14 setObject:v24 forKey:v27];
+                [dictionary setObject:v24 forKey:v27];
               }
             }
 
@@ -501,15 +501,15 @@ void __70__YahooResponseParser_parseExchangeDictionaries_parsedExchangeResult___
           v11 = v35;
           v10 = v36;
           v12 = v38;
-          if (v20 != 0x7FFFFFFFFFFFFFFFLL)
+          if (integerValue != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v28 = [MEMORY[0x277CCABB0] numberWithInteger:v20];
-            v17 = [v33 objectForKeyedSubscript:v28];
+            v28 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
+            v17 = [sourcesCopy objectForKeyedSubscript:v28];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v14 setObject:v17 forKey:v32];
+              [dictionary setObject:v17 forKey:v32];
             }
 
 LABEL_23:
@@ -522,7 +522,7 @@ LABEL_23:
           if (isKindOfClass)
           {
             v31 = [v15 objectForKeyedSubscript:@"id_symbol"];
-            v34[2](v34, v31, v14);
+            resultCopy[2](resultCopy, v31, dictionary);
           }
         }
 

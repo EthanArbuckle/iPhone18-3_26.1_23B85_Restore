@@ -1,39 +1,39 @@
 @interface THChapterViewController
 - (BOOL)p_updateVisibleInfos;
-- (BOOL)widgetHostingAllowInteractionOnPageForRep:(id)a3;
-- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)a3;
-- (CGSize)pageSizeForPagePositionController:(id)a3;
+- (BOOL)widgetHostingAllowInteractionOnPageForRep:(id)rep;
+- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)canvas;
+- (CGSize)pageSizeForPagePositionController:(id)controller;
 - (CGSize)widgetHostExpandedSize;
-- (THChapterViewController)initWithDelegate:(id)a3 pageControlHeight:(double)a4 presentationType:(id)a5;
-- (id)chapterViewTable:(id)a3 entryForIndex:(unint64_t)a4;
-- (id)documentRootForSectionController:(id)a3;
-- (id)reloadViewsAndShowThumbnail:(BOOL)a3;
+- (THChapterViewController)initWithDelegate:(id)delegate pageControlHeight:(double)height presentationType:(id)type;
+- (id)chapterViewTable:(id)table entryForIndex:(unint64_t)index;
+- (id)documentRootForSectionController:(id)controller;
+- (id)reloadViewsAndShowThumbnail:(BOOL)thumbnail;
 - (id)transitionContentView;
-- (unint64_t)chapterViewTableNumberOfEntries:(id)a3;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
-- (void)chapterViewTable:(id)a3 selectedEntryWithIndex:(unint64_t)a4;
-- (void)chapterViewTableDoneButtonPressed:(id)a3;
+- (unint64_t)chapterViewTableNumberOfEntries:(id)entries;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
+- (void)chapterViewTable:(id)table selectedEntryWithIndex:(unint64_t)index;
+- (void)chapterViewTableDoneButtonPressed:(id)pressed;
 - (void)contentSizeCategoryDidChange;
 - (void)dealloc;
-- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)a3;
+- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)thread;
 - (void)p_hideFallbackImageView;
 - (void)p_releaseOutlets;
 - (void)p_teardownCanvas;
 - (void)p_updateVisibleInfosOrRevealCanvas;
-- (void)presentRepExpanded:(id)a3;
-- (void)sectionControllerInfosDidChange:(id)a3;
-- (void)sectionControllerNeedsLayout:(id)a3;
-- (void)showCorruptDocumentAlertForSectionController:(id)a3;
-- (void)updateCanvasViewWithSize:(CGSize)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)presentRepExpanded:(id)expanded;
+- (void)sectionControllerInfosDidChange:(id)change;
+- (void)sectionControllerNeedsLayout:(id)layout;
+- (void)showCorruptDocumentAlertForSectionController:(id)controller;
+- (void)updateCanvasViewWithSize:(CGSize)size;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation THChapterViewController
 
-- (THChapterViewController)initWithDelegate:(id)a3 pageControlHeight:(double)a4 presentationType:(id)a5
+- (THChapterViewController)initWithDelegate:(id)delegate pageControlHeight:(double)height presentationType:(id)type
 {
   v9 = THBundle();
   v16.receiver = self;
@@ -42,14 +42,14 @@
   v11 = v10;
   if (v10)
   {
-    v10->mDelegate = a3;
+    v10->mDelegate = delegate;
     v10->mChapterIndex = 0x7FFFFFFFFFFFFFFFLL;
-    v10->_pageControlHeight = a4;
+    v10->_pageControlHeight = height;
     p_mPageSize = &v10->mPageSize;
-    [a5 pageSize];
+    [type pageSize];
     *&p_mPageSize->width = v13;
     v11->mPageSize.height = v14;
-    [(THChapterViewController *)v11 setSectionController:[[THSectionController alloc] initWithDelegate:v11 pagePositionController:[THPagePositionController presentationType:"paginatedPositionerWithDelegate:" paginatedPositionerWithDelegate:v11], a5]];
+    [(THChapterViewController *)v11 setSectionController:[[THSectionController alloc] initWithDelegate:v11 pagePositionController:[THPagePositionController presentationType:"paginatedPositionerWithDelegate:" paginatedPositionerWithDelegate:v11], type]];
     [(THChapterViewController *)v11 registerForTraitChanges:+[UITraitCollection withAction:"bc_allAPITraits"], "_traitCollectionDidChange:previousTraitCollection:"];
   }
 
@@ -98,18 +98,18 @@
   [(THChapterViewController *)self updateCanvasViewWithSize:v3, v4];
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = [(THChapterViewController *)self traitsCache:a3];
-  v6 = [(THChapterViewController *)self traitCollection];
+  v5 = [(THChapterViewController *)self traitsCache:change];
+  traitCollection = [(THChapterViewController *)self traitCollection];
 
-  [(THiOSTraitsCache *)v5 updateTraitsWithCollection:v6];
+  [(THiOSTraitsCache *)v5 updateTraitsWithCollection:traitCollection];
 }
 
-- (void)updateCanvasViewWithSize:(CGSize)a3
+- (void)updateCanvasViewWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = 0.0;
   if ([(THChapterViewControllerDelegate *)self->mDelegate paginatedTOCShowsStatusBar])
   {
@@ -131,11 +131,11 @@
   [-[THiOSCanvasViewController view](-[THChapterViewController canvasViewController](self "canvasViewController")];
   [(THInteractiveCanvasController *)[(THChapterViewController *)self interactiveCanvasController] setViewScale:THScaleNeededToFitSizeInSize(v9, v11, width, v12)];
   [(UIImageView *)self->mFallbackImageView setFrame:v14, v16, v18, v20];
-  v21 = [(UIImageView *)self->mFallbackImageView image];
-  if (v21)
+  image = [(UIImageView *)self->mFallbackImageView image];
+  if (image)
   {
-    v22 = v21;
-    [(UIImage *)v21 size];
+    v22 = image;
+    [(UIImage *)image size];
     v24 = v23;
     [(UIImage *)v22 size];
     v26 = v25;
@@ -155,20 +155,20 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = THChapterViewController;
-  [(THChapterViewController *)&v4 viewWillAppear:a3];
+  [(THChapterViewController *)&v4 viewWillAppear:appear];
   [(THiOSTraitsCache *)[(THChapterViewController *)self traitsCache] updateTraitsWithCollection:[(THChapterViewController *)self traitCollection]];
   [+[NSNotificationCenter defaultCenter](NSNotificationCenter addObserver:"addObserver:selector:name:object:" selector:self name:"contentSizeCategoryDidChange" object:UIContentSizeCategoryDidChangeNotification, 0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = THChapterViewController;
-  [(THChapterViewController *)&v4 viewDidDisappear:a3];
+  [(THChapterViewController *)&v4 viewDidDisappear:disappear];
   [+[NSNotificationCenter defaultCenter](NSNotificationCenter removeObserver:"removeObserver:name:object:" name:self object:UIContentSizeCategoryDidChangeNotification, 0];
 }
 
@@ -198,16 +198,16 @@
 
 - (void)contentSizeCategoryDidChange
 {
-  v2 = [(THChapterViewController *)self chapterViewTableController];
+  chapterViewTableController = [(THChapterViewController *)self chapterViewTableController];
 
-  [(THChapterViewTableController *)v2 contentSizeCategoryDidChange];
+  [(THChapterViewTableController *)chapterViewTableController contentSizeCategoryDidChange];
 }
 
-- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)a3
+- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)canvas
 {
-  v3 = [(THInteractiveCanvasController *)[(THChapterViewController *)self interactiveCanvasController] canvasView];
+  canvasView = [(THInteractiveCanvasController *)[(THChapterViewController *)self interactiveCanvasController] canvasView];
 
-  [v3 bounds];
+  [canvasView bounds];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -312,19 +312,19 @@ LABEL_8:
   }
 }
 
-- (id)reloadViewsAndShowThumbnail:(BOOL)a3
+- (id)reloadViewsAndShowThumbnail:(BOOL)thumbnail
 {
-  v3 = a3;
+  thumbnailCopy = thumbnail;
   if ([(THChapterViewController *)self isViewLoaded]&& self->mTileModel)
   {
     [-[THChapterViewController view](self "view")];
-    v5 = [(THTOCTileModel *)[(THChapterViewController *)self tileModel] browserPageNode];
-    if ([(THModelContentNode *)v5 nodeBodyExists])
+    browserPageNode = [(THTOCTileModel *)[(THChapterViewController *)self tileModel] browserPageNode];
+    if ([(THModelContentNode *)browserPageNode nodeBodyExists])
     {
-      [(THModelContentNode *)v5 startLoading];
+      [(THModelContentNode *)browserPageNode startLoading];
       if ([(THTOCTileModel *)self->mTileModel tocThumb])
       {
-        v6 = !v3;
+        v6 = !thumbnailCopy;
       }
 
       else
@@ -337,7 +337,7 @@ LABEL_8:
         [(THChapterViewController *)self p_hideFallbackImageView];
         [(THInteractiveCanvasController *)[(THChapterViewController *)self interactiveCanvasController] setStaticLayoutAndRenderOnThread:0];
         [(THInteractiveCanvasController *)[(THChapterViewController *)self interactiveCanvasController] setAllowLayoutAndRenderOnThread:0];
-        [(THModelContentNode *)v5 waitUntilFinishedLoading];
+        [(THModelContentNode *)browserPageNode waitUntilFinishedLoading];
         [(THChapterViewController *)self p_updateVisibleInfos];
       }
 
@@ -379,7 +379,7 @@ LABEL_8:
         v22[3] = &unk_45AE58;
         v22[4] = self;
         v22[5] = mTileModel;
-        [(THModelContentNode *)v5 performWhenFinishedLoading:v22 onError:&stru_45CDD8];
+        [(THModelContentNode *)browserPageNode performWhenFinishedLoading:v22 onError:&stru_45CDD8];
       }
     }
 
@@ -395,10 +395,10 @@ LABEL_8:
     return 0;
   }
 
-  return v5;
+  return browserPageNode;
 }
 
-- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)a3
+- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)thread
 {
   if (([(THInteractiveCanvasController *)[(THChapterViewController *)self interactiveCanvasController] currentlyWaitingOnThreadedLayoutAndRender]& 1) == 0)
   {
@@ -407,37 +407,37 @@ LABEL_8:
   }
 }
 
-- (unint64_t)chapterViewTableNumberOfEntries:(id)a3
+- (unint64_t)chapterViewTableNumberOfEntries:(id)entries
 {
-  v3 = [(THTOCTileModel *)[(THChapterViewController *)self tileModel] landscapeEntries];
+  landscapeEntries = [(THTOCTileModel *)[(THChapterViewController *)self tileModel] landscapeEntries];
 
-  return [(NSArray *)v3 count];
+  return [(NSArray *)landscapeEntries count];
 }
 
-- (id)chapterViewTable:(id)a3 entryForIndex:(unint64_t)a4
+- (id)chapterViewTable:(id)table entryForIndex:(unint64_t)index
 {
-  v5 = [(THTOCTileModel *)[(THChapterViewController *)self tileModel] landscapeEntries];
-  if ([(NSArray *)v5 count]<= a4)
+  landscapeEntries = [(THTOCTileModel *)[(THChapterViewController *)self tileModel] landscapeEntries];
+  if ([(NSArray *)landscapeEntries count]<= index)
   {
     return 0;
   }
 
-  return [(NSArray *)v5 objectAtIndexedSubscript:a4];
+  return [(NSArray *)landscapeEntries objectAtIndexedSubscript:index];
 }
 
-- (void)chapterViewTable:(id)a3 selectedEntryWithIndex:(unint64_t)a4
+- (void)chapterViewTable:(id)table selectedEntryWithIndex:(unint64_t)index
 {
-  if (self->_chapterViewTableController == a3)
+  if (self->_chapterViewTableController == table)
   {
-    v6 = [(THTOCTileModel *)[(THChapterViewController *)self tileModel] landscapeEntries];
-    if ([(NSArray *)v6 count]<= a4)
+    landscapeEntries = [(THTOCTileModel *)[(THChapterViewController *)self tileModel] landscapeEntries];
+    if ([(NSArray *)landscapeEntries count]<= index)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = [(NSArray *)v6 objectAtIndexedSubscript:a4];
+      v7 = [(NSArray *)landscapeEntries objectAtIndexedSubscript:index];
     }
 
     -[THChapterViewControllerDelegate chapterViewController:followLink:](self->mDelegate, "chapterViewController:followLink:", self, [v7 modelLink]);
@@ -447,10 +447,10 @@ LABEL_8:
   }
 }
 
-- (void)chapterViewTableDoneButtonPressed:(id)a3
+- (void)chapterViewTableDoneButtonPressed:(id)pressed
 {
   chapterViewTableController = self->_chapterViewTableController;
-  if (chapterViewTableController == a3)
+  if (chapterViewTableController == pressed)
   {
     [(THChapterViewTableController *)chapterViewTableController dismissAnimated:+[UIView completion:"areAnimationsEnabled"], 0];
 
@@ -458,7 +458,7 @@ LABEL_8:
   }
 }
 
-- (void)presentRepExpanded:(id)a3
+- (void)presentRepExpanded:(id)expanded
 {
   if ([(NSArray *)[(THTOCTileModel *)[(THChapterViewController *)self tileModel] landscapeEntries] count])
   {
@@ -467,11 +467,11 @@ LABEL_8:
       self->_chapterViewTableController = [[THChapterViewTableController alloc] initWithChapterTitle:[(THTOCTileModel *)[(THChapterViewController *)self tileModel] frontTitleText] delegate:self];
     }
 
-    v4 = [(THChapterViewController *)self chapterViewTableController];
+    chapterViewTableController = [(THChapterViewController *)self chapterViewTableController];
     v5 = [(THChapterViewControllerDelegate *)self->mDelegate presentingViewControllerForChapterViewController:self];
     v6 = +[UIView areAnimationsEnabled];
 
-    [(THChapterViewTableController *)v4 presentOnViewController:v5 animated:v6 completion:0];
+    [(THChapterViewTableController *)chapterViewTableController presentOnViewController:v5 animated:v6 completion:0];
   }
 }
 
@@ -485,7 +485,7 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)widgetHostingAllowInteractionOnPageForRep:(id)a3
+- (BOOL)widgetHostingAllowInteractionOnPageForRep:(id)rep
 {
   if (([(THChapterViewController *)self im_isCompactWidth]& 1) != 0)
   {
@@ -498,7 +498,7 @@ LABEL_8:
   }
 }
 
-- (id)documentRootForSectionController:(id)a3
+- (id)documentRootForSectionController:(id)controller
 {
   objc_opt_class();
   [(THTOCTileModel *)[(THChapterViewController *)self tileModel] documentRoot];
@@ -506,14 +506,14 @@ LABEL_8:
   return TSUDynamicCast();
 }
 
-- (void)sectionControllerNeedsLayout:(id)a3
+- (void)sectionControllerNeedsLayout:(id)layout
 {
-  v3 = [(THChapterViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THChapterViewController *)self interactiveCanvasController];
 
-  [(THInteractiveCanvasController *)v3 layoutInvalidated];
+  [(THInteractiveCanvasController *)interactiveCanvasController layoutInvalidated];
 }
 
-- (void)showCorruptDocumentAlertForSectionController:(id)a3
+- (void)showCorruptDocumentAlertForSectionController:(id)controller
 {
   v4 = [THBundle() localizedStringForKey:@"This book is either missing content or contains invalid content." value:&stru_471858 table:0];
   v5 = +[UIAlertController alertControllerWithTitle:message:preferredStyle:](UIAlertController, "alertControllerWithTitle:message:preferredStyle:", v4, [THBundle() localizedStringForKey:@"Try downloading the book again" value:&stru_471858 table:0], 1);
@@ -523,7 +523,7 @@ LABEL_8:
   [(THChapterViewController *)self presentViewController:v5 animated:v6 completion:0];
 }
 
-- (void)sectionControllerInfosDidChange:(id)a3
+- (void)sectionControllerInfosDidChange:(id)change
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [NSString stringWithUTF8String:"[THChapterViewController sectionControllerInfosDidChange:]"];
@@ -532,7 +532,7 @@ LABEL_8:
   [v3 handleFailureInFunction:v4 file:v5 lineNumber:579 description:@"unsupported"];
 }
 
-- (CGSize)pageSizeForPagePositionController:(id)a3
+- (CGSize)pageSizeForPagePositionController:(id)controller
 {
   width = self->mPageSize.width;
   height = self->mPageSize.height;
@@ -543,9 +543,9 @@ LABEL_8:
 
 - (id)transitionContentView
 {
-  v2 = [(THChapterViewController *)self canvasViewController];
+  canvasViewController = [(THChapterViewController *)self canvasViewController];
 
-  return [(THiOSCanvasViewController *)v2 view];
+  return [(THiOSCanvasViewController *)canvasViewController view];
 }
 
 @end

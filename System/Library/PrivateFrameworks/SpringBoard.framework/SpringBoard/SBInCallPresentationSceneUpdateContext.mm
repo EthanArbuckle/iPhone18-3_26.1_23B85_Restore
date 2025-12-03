@@ -1,18 +1,18 @@
 @interface SBInCallPresentationSceneUpdateContext
 - (CGRect)referenceFrame;
-- (SBInCallPresentationSceneUpdateContext)initWithReferenceFrame:(CGRect)a3 analyticsSource:(id)a4 transitionRequestBuilderBlock:(id)a5;
+- (SBInCallPresentationSceneUpdateContext)initWithReferenceFrame:(CGRect)frame analyticsSource:(id)source transitionRequestBuilderBlock:(id)block;
 @end
 
 @implementation SBInCallPresentationSceneUpdateContext
 
-- (SBInCallPresentationSceneUpdateContext)initWithReferenceFrame:(CGRect)a3 analyticsSource:(id)a4 transitionRequestBuilderBlock:(id)a5
+- (SBInCallPresentationSceneUpdateContext)initWithReferenceFrame:(CGRect)frame analyticsSource:(id)source transitionRequestBuilderBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  sourceCopy = source;
+  blockCopy = block;
   v20.receiver = self;
   v20.super_class = SBInCallPresentationSceneUpdateContext;
   v13 = [(SBInCallPresentationSceneUpdateContext *)&v20 init];
@@ -23,11 +23,11 @@
     v13->_referenceFrame.origin.y = y;
     v13->_referenceFrame.size.width = width;
     v13->_referenceFrame.size.height = height;
-    v15 = [v11 copy];
+    v15 = [sourceCopy copy];
     analyticsSource = v14->_analyticsSource;
     v14->_analyticsSource = v15;
 
-    v17 = [v12 copy];
+    v17 = [blockCopy copy];
     transitionRequestBuilderBlock = v14->_transitionRequestBuilderBlock;
     v14->_transitionRequestBuilderBlock = v17;
 

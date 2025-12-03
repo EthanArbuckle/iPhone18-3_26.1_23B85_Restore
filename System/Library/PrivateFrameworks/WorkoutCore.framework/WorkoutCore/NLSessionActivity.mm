@@ -1,15 +1,15 @@
 @interface NLSessionActivity
-+ (double)durationBetweenStartDate:(id)a3 endDate:(id)a4 workoutEvents:(id)a5;
-+ (id)_localizedTimeOfDayFormatStringWithDate:(id)a3;
-+ (unint64_t)_eventForPauseTracking:(BOOL)a3 eventSource:(unint64_t)a4;
++ (double)durationBetweenStartDate:(id)date endDate:(id)endDate workoutEvents:(id)events;
++ (id)_localizedTimeOfDayFormatStringWithDate:(id)date;
++ (unint64_t)_eventForPauseTracking:(BOOL)tracking eventSource:(unint64_t)source;
 - (BOOL)_beforeBuilderActive;
 - (BOOL)handleUserDoubleTap;
 - (BOOL)hasGoal;
-- (BOOL)insertOrUpdateMetadataToSubActivity:(id)a3;
-- (BOOL)isAutoPauseEffectivelyEnabledForActivityType:(unint64_t)a3;
+- (BOOL)insertOrUpdateMetadataToSubActivity:(id)activity;
+- (BOOL)isAutoPauseEffectivelyEnabledForActivityType:(unint64_t)type;
 - (BOOL)isInSession;
 - (BOOL)isMachineWorkout;
-- (NLSessionActivity)initWithConfiguration:(id)a3 UUID:(id)a4 formattingManager:(id)a5 elevationUnit:(id)a6 healthStore:(id)a7 builder:(id)a8 experienceType:(int64_t)a9;
+- (NLSessionActivity)initWithConfiguration:(id)configuration UUID:(id)d formattingManager:(id)manager elevationUnit:(id)unit healthStore:(id)store builder:(id)builder experienceType:(int64_t)type;
 - (NLSessionActivityCadenceAccumulator)cadenceAccumulator;
 - (NLSessionActivityDistanceProvider)distanceProvider;
 - (NLSessionActivityElapsedTimeAccumulator)elapsedTimeAccumulator;
@@ -26,7 +26,7 @@
 - (double)activityDuration;
 - (double)displaySplitDistanceValue;
 - (double)duration;
-- (double)durationWithEndDate:(id)a3;
+- (double)durationWithEndDate:(id)date;
 - (double)videoPlaybackCurrentTime;
 - (id)_latestCompletedIntervalActivityEndDate;
 - (id)_stateDescription;
@@ -39,16 +39,16 @@
 - (void)_configureStateMachine;
 - (void)_createActivityDependentAccumulators;
 - (void)_createIdempotentAccumulators;
-- (void)_didAddWorkoutEvents:(id)a3;
-- (void)_endCollectionWithEndDate:(id)a3;
+- (void)_didAddWorkoutEvents:(id)events;
+- (void)_endCollectionWithEndDate:(id)date;
 - (void)_endTracking;
-- (void)_handleBeginCollectingWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)_handleBuilderPauseResumeRequestWithSuccess:(BOOL)a3 error:(id)a4 pauseTracking:(BOOL)a5 eventSource:(unint64_t)a6;
-- (void)_handleFinishWorkoutWithWorkout:(id)a3 error:(id)a4;
+- (void)_handleBeginCollectingWithSuccess:(BOOL)success error:(id)error;
+- (void)_handleBuilderPauseResumeRequestWithSuccess:(BOOL)success error:(id)error pauseTracking:(BOOL)tracking eventSource:(unint64_t)source;
+- (void)_handleFinishWorkoutWithWorkout:(id)workout error:(id)error;
 - (void)_logStatistics;
-- (void)_notifyDataObserversUpdatedMetricType:(unint64_t)a3;
-- (void)_notifyDataObserversUpdatedMetricTypes:(id)a3;
-- (void)_notifyDataObserversWithBlock:(id)a3;
+- (void)_notifyDataObserversUpdatedMetricType:(unint64_t)type;
+- (void)_notifyDataObserversUpdatedMetricTypes:(id)types;
+- (void)_notifyDataObserversWithBlock:(id)block;
 - (void)_onActivating;
 - (void)_onActive;
 - (void)_onCompleted;
@@ -62,257 +62,257 @@
 - (void)_powerLogWorkoutStart;
 - (void)_powerLogWorkoutStop;
 - (void)_processQueuedWorkoutEvents;
-- (void)_recoverIntoActivity:(id)a3;
-- (void)_segmentMarkerEventReceived:(id)a3;
-- (void)_setPauseTracking:(BOOL)a3 atDate:(id)a4 eventSource:(unint64_t)a5;
-- (void)_setState:(unint64_t)a3;
+- (void)_recoverIntoActivity:(id)activity;
+- (void)_segmentMarkerEventReceived:(id)received;
+- (void)_setPauseTracking:(BOOL)tracking atDate:(id)date eventSource:(unint64_t)source;
+- (void)_setState:(unint64_t)state;
 - (void)_setupActivityTypeDependentConfigurations;
 - (void)_setupGroundElevationManager;
-- (void)_startAccumulatingDataWithStartDate:(id)a3;
-- (void)_startAccumulatingElapsedTimeWithStartDate:(id)a3;
-- (void)_startActivityDependentAccumulatingDataWithStartDate:(id)a3;
-- (void)_startBuilderWithStartDate:(id)a3;
-- (void)_startIdempotentAccumulatingDataWithStartDate:(id)a3;
+- (void)_startAccumulatingDataWithStartDate:(id)date;
+- (void)_startAccumulatingElapsedTimeWithStartDate:(id)date;
+- (void)_startActivityDependentAccumulatingDataWithStartDate:(id)date;
+- (void)_startBuilderWithStartDate:(id)date;
+- (void)_startIdempotentAccumulatingDataWithStartDate:(id)date;
 - (void)_startPrecisionStartAccumulators;
 - (void)_startTracking;
-- (void)_startTrackingWithStartDate:(id)a3;
-- (void)_stopActivityDependentAccumulatorsWithActivity:(id)a3;
-- (void)_stopTrackingActivityWithEndDate:(id)a3;
+- (void)_startTrackingWithStartDate:(id)date;
+- (void)_stopActivityDependentAccumulatorsWithActivity:(id)activity;
+- (void)_stopTrackingActivityWithEndDate:(id)date;
 - (void)_teardownGroundElevationManager;
-- (void)_updateAveragePace:(double)a3;
-- (void)_updateAveragePower:(double)a3;
-- (void)_updateCurrentSpeedWithStatistics:(id)a3 duration:(double)a4;
-- (void)_updateCyclingCadenceWithStatistics:(id)a3 duration:(double)a4 quantityType:(id)a5;
-- (void)_updateCyclingPowerWithStatistics:(id)a3;
-- (void)_updateElapsedTime:(double)a3;
-- (void)_updateElevation:(id)a3;
-- (void)_updateElevationGain:(id)a3;
-- (void)_updateEnergyBurned:(id)a3 statistics:(id)a4;
-- (void)_updateFlightsClimbedWithStatistics:(id)a3;
-- (void)_updateGroundContactTimeWithStatistics:(id)a3;
+- (void)_updateAveragePace:(double)pace;
+- (void)_updateAveragePower:(double)power;
+- (void)_updateCurrentSpeedWithStatistics:(id)statistics duration:(double)duration;
+- (void)_updateCyclingCadenceWithStatistics:(id)statistics duration:(double)duration quantityType:(id)type;
+- (void)_updateCyclingPowerWithStatistics:(id)statistics;
+- (void)_updateElapsedTime:(double)time;
+- (void)_updateElevation:(id)elevation;
+- (void)_updateElevationGain:(id)gain;
+- (void)_updateEnergyBurned:(id)burned statistics:(id)statistics;
+- (void)_updateFlightsClimbedWithStatistics:(id)statistics;
+- (void)_updateGroundContactTimeWithStatistics:(id)statistics;
 - (void)_updateHeartRateUpdateAvailability;
-- (void)_updateHeartRateWithStatistics:(id)a3;
-- (void)_updateInstantaneousPace:(double)a3;
-- (void)_updateInstantaneousPower:(double)a3 sampleDate:(id)a4;
-- (void)_updateIntervalCadenceWithQuantityType:(id)a3;
-- (void)_updateMachineDistance:(double)a3;
+- (void)_updateHeartRateWithStatistics:(id)statistics;
+- (void)_updateInstantaneousPace:(double)pace;
+- (void)_updateInstantaneousPower:(double)power sampleDate:(id)date;
+- (void)_updateIntervalCadenceWithQuantityType:(id)type;
+- (void)_updateMachineDistance:(double)distance;
 - (void)_updateMetadataAtWorkoutFirstActivation;
-- (void)_updateRunningPowerWithStatistics:(id)a3;
-- (void)_updateSplitsWithStatistics:(id)a3 duration:(double)a4;
-- (void)_updateStepCountWithStatistics:(id)a3 duration:(double)a4 quantityType:(id)a5;
-- (void)_updateStrideLengthWithStatistics:(id)a3;
-- (void)_updateTotalDistanceWithStatistics:(id)a3 duration:(double)a4;
-- (void)_updateVerticalOscillationWithStatistics:(id)a3;
-- (void)_updateWaterTemperatureWithStatistics:(id)a3 duration:(double)a4 quantityType:(id)a5;
-- (void)_updateWithCollectedTypes:(id)a3;
-- (void)_updateWithQuantityType:(id)a3 statistics:(id)a4 duration:(double)a5;
-- (void)_updateWorkoutMetric:(unint64_t)a3 withQuantity:(id)a4;
+- (void)_updateRunningPowerWithStatistics:(id)statistics;
+- (void)_updateSplitsWithStatistics:(id)statistics duration:(double)duration;
+- (void)_updateStepCountWithStatistics:(id)statistics duration:(double)duration quantityType:(id)type;
+- (void)_updateStrideLengthWithStatistics:(id)statistics;
+- (void)_updateTotalDistanceWithStatistics:(id)statistics duration:(double)duration;
+- (void)_updateVerticalOscillationWithStatistics:(id)statistics;
+- (void)_updateWaterTemperatureWithStatistics:(id)statistics duration:(double)duration quantityType:(id)type;
+- (void)_updateWithCollectedTypes:(id)types;
+- (void)_updateWithQuantityType:(id)type statistics:(id)statistics duration:(double)duration;
+- (void)_updateWorkoutMetric:(unint64_t)metric withQuantity:(id)quantity;
 - (void)_writeConfigurationMetadata;
-- (void)addActivityChangeObserver:(id)a3;
-- (void)addSessionDataObserver:(id)a3;
-- (void)addSessionStateObserver:(id)a3;
-- (void)addSplitsUpdateObserver:(id)a3;
-- (void)addWorkoutEvents:(id)a3;
+- (void)addActivityChangeObserver:(id)observer;
+- (void)addSessionDataObserver:(id)observer;
+- (void)addSessionStateObserver:(id)observer;
+- (void)addSplitsUpdateObserver:(id)observer;
+- (void)addWorkoutEvents:(id)events;
 - (void)cancelAutomaticTransition;
 - (void)createSplitsAccumulators;
-- (void)cyclingCadenceAccumulatorDidUpdate:(id)a3;
+- (void)cyclingCadenceAccumulatorDidUpdate:(id)update;
 - (void)dealloc;
-- (void)didUpdateMaximumAltitude:(id)a3;
-- (void)didUpdateMinimumAltitude:(id)a3;
-- (void)distanceProviderDidUpdate:(id)a3;
-- (void)downhillSnowSportsAccumulatorDidUpdate:(id)a3;
-- (void)elapsedTimeAccumulatorDidUpdate:(id)a3;
-- (void)elevationAccumulatorDidUpdate:(id)a3;
+- (void)didUpdateMaximumAltitude:(id)altitude;
+- (void)didUpdateMinimumAltitude:(id)altitude;
+- (void)distanceProviderDidUpdate:(id)update;
+- (void)downhillSnowSportsAccumulatorDidUpdate:(id)update;
+- (void)elapsedTimeAccumulatorDidUpdate:(id)update;
+- (void)elevationAccumulatorDidUpdate:(id)update;
 - (void)endCurrentSegment;
-- (void)energyBurnAccumulatorDidUpdate:(id)a3;
+- (void)energyBurnAccumulatorDidUpdate:(id)update;
 - (void)enterAutomaticTransition;
 - (void)evaluatePauseResumeForConnectedDevices;
-- (void)flightsClimbedAccumulatorDidUpdate:(id)a3;
-- (void)ghostPacerAccumulatorDidUpdate:(id)a3;
-- (void)groundContactTimeAccumulatorDidUpdate:(id)a3;
-- (void)groundElevationDidUpdate:(id)a3;
+- (void)flightsClimbedAccumulatorDidUpdate:(id)update;
+- (void)ghostPacerAccumulatorDidUpdate:(id)update;
+- (void)groundContactTimeAccumulatorDidUpdate:(id)update;
+- (void)groundElevationDidUpdate:(id)update;
 - (void)groundElevationManagerDidFinishSetup;
-- (void)gymKitMetricsDataSource:(id)a3 didReceiveMetrics:(id)a4;
-- (void)heartRateAccumulatorDidUpdate:(id)a3;
-- (void)heartRatePrecisionStartAccumulatorDidUpdate:(id)a3;
-- (void)heartRateProviderDidBecomeStale:(id)a3;
-- (void)heartRateZonesAccumulatorDidUpdate:(id)a3;
-- (void)insertLocations:(id)a3 completion:(id)a4;
-- (void)insertOrUpdateMetadata:(id)a3 forceTopLevel:(BOOL)a4;
-- (void)intervalCadenceAccumulatorDidUpdate:(id)a3;
-- (void)locationDidUpdate:(id)a3;
-- (void)locationPositionAccumulator:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationPositionAccumulator:(id)a3 didUpdateRoutePosition:(id)a4;
-- (void)paceAccumulator:(id)a3 didUpdateCurrentPaceInMetersPerSecond:(double)a4;
-- (void)paceAccumulator:(id)a3 didUpdateIsGPSAvailable:(BOOL)a4;
-- (void)paceProviderDidUpdate:(id)a3;
-- (void)pacerDistanceGoalProgressAccumulatorDidUpdate:(id)a3;
-- (void)pedometerCadenceAccumulatorDidUpdate:(id)a3;
-- (void)powerAccumulatorDidUpdate:(id)a3;
-- (void)powerZonesAccumulatorDidUpdate:(id)a3;
-- (void)processDownhillRunEvent:(id)a3;
-- (void)processMotionPauseResumeEvent:(id)a3;
-- (void)processPauseOrResumeRequestEvent:(id)a3;
-- (void)processSplitEvent:(id)a3;
-- (void)queueWorkoutEvents:(BOOL)a3;
-- (void)racePositionProviderDidUpdate:(id)a3;
-- (void)registerMarkerEventWithDate:(id)a3 metadata:(id)a4;
-- (void)removeActivityChangeObserver:(id)a3;
-- (void)removeMetadata:(id)a3 forceTopLevel:(BOOL)a4;
-- (void)removeSessionDataObserver:(id)a3;
-- (void)removeSessionStateObserver:(id)a3;
-- (void)removeSplitsUpdateObserver:(id)a3;
-- (void)rollingPaceAccumulatorDidUpdate:(id)a3;
-- (void)segmentAveragePowerAccumulatorDidUpdate:(id)a3;
-- (void)segmentDistanceAccumulatorDidUpdate:(id)a3;
-- (void)segmentElapsedTimeAccumulatorDidUpdate:(id)a3;
-- (void)segmentEnergyAccumulatorDidUpdate:(id)a3;
-- (void)segmentPaceAccumulatorDidUpdate:(id)a3;
-- (void)setLocationTypeToIndoor:(BOOL)a3;
-- (void)setMachineSessionDevice:(id)a3;
-- (void)setPacerAlertDelegate:(id)a3;
-- (void)setRaceCoordinatorDelegate:(id)a3;
-- (void)setRaceRouteDelegate:(id)a3;
-- (void)setSeymourElapsedTimeAccumulator:(id)a3;
-- (void)setWorkoutAlertDelegate:(id)a3;
+- (void)gymKitMetricsDataSource:(id)source didReceiveMetrics:(id)metrics;
+- (void)heartRateAccumulatorDidUpdate:(id)update;
+- (void)heartRatePrecisionStartAccumulatorDidUpdate:(id)update;
+- (void)heartRateProviderDidBecomeStale:(id)stale;
+- (void)heartRateZonesAccumulatorDidUpdate:(id)update;
+- (void)insertLocations:(id)locations completion:(id)completion;
+- (void)insertOrUpdateMetadata:(id)metadata forceTopLevel:(BOOL)level;
+- (void)intervalCadenceAccumulatorDidUpdate:(id)update;
+- (void)locationDidUpdate:(id)update;
+- (void)locationPositionAccumulator:(id)accumulator didUpdateLocations:(id)locations;
+- (void)locationPositionAccumulator:(id)accumulator didUpdateRoutePosition:(id)position;
+- (void)paceAccumulator:(id)accumulator didUpdateCurrentPaceInMetersPerSecond:(double)second;
+- (void)paceAccumulator:(id)accumulator didUpdateIsGPSAvailable:(BOOL)available;
+- (void)paceProviderDidUpdate:(id)update;
+- (void)pacerDistanceGoalProgressAccumulatorDidUpdate:(id)update;
+- (void)pedometerCadenceAccumulatorDidUpdate:(id)update;
+- (void)powerAccumulatorDidUpdate:(id)update;
+- (void)powerZonesAccumulatorDidUpdate:(id)update;
+- (void)processDownhillRunEvent:(id)event;
+- (void)processMotionPauseResumeEvent:(id)event;
+- (void)processPauseOrResumeRequestEvent:(id)event;
+- (void)processSplitEvent:(id)event;
+- (void)queueWorkoutEvents:(BOOL)events;
+- (void)racePositionProviderDidUpdate:(id)update;
+- (void)registerMarkerEventWithDate:(id)date metadata:(id)metadata;
+- (void)removeActivityChangeObserver:(id)observer;
+- (void)removeMetadata:(id)metadata forceTopLevel:(BOOL)level;
+- (void)removeSessionDataObserver:(id)observer;
+- (void)removeSessionStateObserver:(id)observer;
+- (void)removeSplitsUpdateObserver:(id)observer;
+- (void)rollingPaceAccumulatorDidUpdate:(id)update;
+- (void)segmentAveragePowerAccumulatorDidUpdate:(id)update;
+- (void)segmentDistanceAccumulatorDidUpdate:(id)update;
+- (void)segmentElapsedTimeAccumulatorDidUpdate:(id)update;
+- (void)segmentEnergyAccumulatorDidUpdate:(id)update;
+- (void)segmentPaceAccumulatorDidUpdate:(id)update;
+- (void)setLocationTypeToIndoor:(BOOL)indoor;
+- (void)setMachineSessionDevice:(id)device;
+- (void)setPacerAlertDelegate:(id)delegate;
+- (void)setRaceCoordinatorDelegate:(id)delegate;
+- (void)setRaceRouteDelegate:(id)delegate;
+- (void)setSeymourElapsedTimeAccumulator:(id)accumulator;
+- (void)setWorkoutAlertDelegate:(id)delegate;
 - (void)setup;
-- (void)splitAveragePowerAccumulatorDidUpdate:(id)a3;
-- (void)splitDistanceAccumulatorDidUpdate:(id)a3;
-- (void)splitElapsedTimeAccumulatorDidUpdate:(id)a3;
-- (void)splitPaceAccumulatorDidUpdate:(id)a3;
-- (void)storeMotionPauseResumeEvent:(id)a3;
-- (void)strideLengthAccumulatorDidUpdate:(id)a3;
-- (void)swimmingAccumulatorDidUpdate:(id)a3;
-- (void)updateActivityTypeFromConfiguration:(id)a3;
-- (void)updateDistanceUnit:(id)a3;
-- (void)verticalOscillationAccumulatorDidUpdate:(id)a3;
-- (void)waterTemperatureAccumulatorDidUpdate:(id)a3;
-- (void)weatherDidUpdate:(id)a3;
-- (void)workoutBuilder:(id)a3 didBeginActivity:(id)a4;
-- (void)workoutBuilder:(id)a3 didCollectDataOfTypes:(id)a4;
-- (void)workoutBuilder:(id)a3 didEndActivity:(id)a4;
-- (void)workoutBuilderDidChangeSampleTypesAvailableForCollection:(id)a3;
-- (void)workoutBuilderDidCollectEvent:(id)a3;
-- (void)workoutRouteDataSource:(id)a3 didUpdateAltitude:(id)a4;
-- (void)workoutRouteDataSourceDidUpdateElevation:(id)a3;
-- (void)workoutRouteDataSourceDidUpdateRoute:(id)a3;
+- (void)splitAveragePowerAccumulatorDidUpdate:(id)update;
+- (void)splitDistanceAccumulatorDidUpdate:(id)update;
+- (void)splitElapsedTimeAccumulatorDidUpdate:(id)update;
+- (void)splitPaceAccumulatorDidUpdate:(id)update;
+- (void)storeMotionPauseResumeEvent:(id)event;
+- (void)strideLengthAccumulatorDidUpdate:(id)update;
+- (void)swimmingAccumulatorDidUpdate:(id)update;
+- (void)updateActivityTypeFromConfiguration:(id)configuration;
+- (void)updateDistanceUnit:(id)unit;
+- (void)verticalOscillationAccumulatorDidUpdate:(id)update;
+- (void)waterTemperatureAccumulatorDidUpdate:(id)update;
+- (void)weatherDidUpdate:(id)update;
+- (void)workoutBuilder:(id)builder didBeginActivity:(id)activity;
+- (void)workoutBuilder:(id)builder didCollectDataOfTypes:(id)types;
+- (void)workoutBuilder:(id)builder didEndActivity:(id)activity;
+- (void)workoutBuilderDidChangeSampleTypesAvailableForCollection:(id)collection;
+- (void)workoutBuilderDidCollectEvent:(id)event;
+- (void)workoutRouteDataSource:(id)source didUpdateAltitude:(id)altitude;
+- (void)workoutRouteDataSourceDidUpdateElevation:(id)elevation;
+- (void)workoutRouteDataSourceDidUpdateRoute:(id)route;
 @end
 
 @implementation NLSessionActivity
 
-- (NLSessionActivity)initWithConfiguration:(id)a3 UUID:(id)a4 formattingManager:(id)a5 elevationUnit:(id)a6 healthStore:(id)a7 builder:(id)a8 experienceType:(int64_t)a9
+- (NLSessionActivity)initWithConfiguration:(id)configuration UUID:(id)d formattingManager:(id)manager elevationUnit:(id)unit healthStore:(id)store builder:(id)builder experienceType:(int64_t)type
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v46 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   v44 = 0;
-  objc_storeStrong(&v44, a4);
+  objc_storeStrong(&v44, d);
   v43 = 0;
-  objc_storeStrong(&v43, a5);
+  objc_storeStrong(&v43, manager);
   v42 = 0;
-  objc_storeStrong(&v42, a6);
+  objc_storeStrong(&v42, unit);
   v41 = 0;
-  objc_storeStrong(&v41, a7);
+  objc_storeStrong(&v41, store);
   v40 = 0;
-  objc_storeStrong(&v40, a8);
-  v39 = a9;
-  v9 = v46;
-  v46 = 0;
+  objc_storeStrong(&v40, builder);
+  typeCopy = type;
+  v9 = selfCopy;
+  selfCopy = 0;
   v38.receiver = v9;
   v38.super_class = NLSessionActivity;
   v31 = [(NLSessionActivity *)&v38 init];
-  v46 = v31;
-  objc_storeStrong(&v46, v31);
+  selfCopy = v31;
+  objc_storeStrong(&selfCopy, v31);
   if (v31)
   {
-    objc_storeStrong(&v46->_UUID, v44);
-    v10 = [location[0] activityMoveMode];
-    v46->_activityMoveMode = v10;
-    v11 = [location[0] activityBeginDate];
-    activityBeginDate = v46->_activityBeginDate;
-    v46->_activityBeginDate = v11;
+    objc_storeStrong(&selfCopy->_UUID, v44);
+    activityMoveMode = [location[0] activityMoveMode];
+    selfCopy->_activityMoveMode = activityMoveMode;
+    activityBeginDate = [location[0] activityBeginDate];
+    activityBeginDate = selfCopy->_activityBeginDate;
+    selfCopy->_activityBeginDate = activityBeginDate;
     MEMORY[0x277D82BD8](activityBeginDate);
-    objc_storeStrong(&v46->_healthStore, v41);
-    objc_storeStrong(&v46->_builder, v40);
-    [(HKLiveWorkoutBuilder *)v46->_builder setDelegate:v46];
-    objc_storeStrong(&v46->_configuration, location[0]);
-    v13 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    stateObservers = v46->_stateObservers;
-    v46->_stateObservers = v13;
+    objc_storeStrong(&selfCopy->_healthStore, v41);
+    objc_storeStrong(&selfCopy->_builder, v40);
+    [(HKLiveWorkoutBuilder *)selfCopy->_builder setDelegate:selfCopy];
+    objc_storeStrong(&selfCopy->_configuration, location[0]);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    stateObservers = selfCopy->_stateObservers;
+    selfCopy->_stateObservers = weakObjectsHashTable;
     MEMORY[0x277D82BD8](stateObservers);
-    v15 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    dataObservers = v46->_dataObservers;
-    v46->_dataObservers = v15;
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    dataObservers = selfCopy->_dataObservers;
+    selfCopy->_dataObservers = weakObjectsHashTable2;
     MEMORY[0x277D82BD8](dataObservers);
-    v17 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    changeObservers = v46->_changeObservers;
-    v46->_changeObservers = v17;
+    weakObjectsHashTable3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    changeObservers = selfCopy->_changeObservers;
+    selfCopy->_changeObservers = weakObjectsHashTable3;
     MEMORY[0x277D82BD8](changeObservers);
-    objc_storeStrong(&v46->_formattingManager, v43);
-    objc_storeStrong(&v46->_elevationUnit, v42);
-    v46->_experienceType = v39;
-    v29 = [location[0] catalogWorkoutBridge];
-    [v29 duration];
-    v46->_playbackDuration = v19;
-    MEMORY[0x277D82BD8](v29);
-    v46->_didCollectFirstSample = 0;
+    objc_storeStrong(&selfCopy->_formattingManager, v43);
+    objc_storeStrong(&selfCopy->_elevationUnit, v42);
+    selfCopy->_experienceType = typeCopy;
+    catalogWorkoutBridge = [location[0] catalogWorkoutBridge];
+    [catalogWorkoutBridge duration];
+    selfCopy->_playbackDuration = v19;
+    MEMORY[0x277D82BD8](catalogWorkoutBridge);
+    selfCopy->_didCollectFirstSample = 0;
     v20 = objc_alloc_init(WOSessionActivityDeviceObserver);
-    deviceObserver = v46->_deviceObserver;
-    v46->_deviceObserver = v20;
+    deviceObserver = selfCopy->_deviceObserver;
+    selfCopy->_deviceObserver = v20;
     MEMORY[0x277D82BD8](deviceObserver);
-    v30 = [v40 metadata];
-    v37 = [v30 objectForKeyedSubscript:@"_HKPrivateMetadataKeyAnalyticsIdentifier"];
-    MEMORY[0x277D82BD8](v30);
+    metadata = [v40 metadata];
+    v37 = [metadata objectForKeyedSubscript:@"_HKPrivateMetadataKeyAnalyticsIdentifier"];
+    MEMORY[0x277D82BD8](metadata);
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v37 length])
     {
-      objc_storeStrong(&v46->_analyticsIdentifier, v37);
+      objc_storeStrong(&selfCopy->_analyticsIdentifier, v37);
     }
 
     else
     {
-      v26 = [MEMORY[0x277CCAD78] UUID];
-      v22 = [v26 UUIDString];
-      analyticsIdentifier = v46->_analyticsIdentifier;
-      v46->_analyticsIdentifier = v22;
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      analyticsIdentifier = selfCopy->_analyticsIdentifier;
+      selfCopy->_analyticsIdentifier = uUIDString;
       MEMORY[0x277D82BD8](analyticsIdentifier);
-      MEMORY[0x277D82BD8](v26);
-      v27 = v46;
+      MEMORY[0x277D82BD8](uUID);
+      v27 = selfCopy;
       v47 = @"_HKPrivateMetadataKeyAnalyticsIdentifier";
-      v48[0] = v46->_analyticsIdentifier;
+      v48[0] = selfCopy->_analyticsIdentifier;
       v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:&v47 count:1];
       [NLSessionActivity insertOrUpdateMetadata:v27 forceTopLevel:"insertOrUpdateMetadata:forceTopLevel:"];
       MEMORY[0x277D82BD8](v28);
     }
 
-    [(NLSessionActivity *)v46 setup];
+    [(NLSessionActivity *)selfCopy setup];
     objc_storeStrong(&v37, 0);
   }
 
-  v25 = MEMORY[0x277D82BE0](v46);
+  v25 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v40, 0);
   objc_storeStrong(&v41, 0);
   objc_storeStrong(&v42, 0);
   objc_storeStrong(&v43, 0);
   objc_storeStrong(&v44, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v46, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v25;
 }
 
 - (void)setup
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   [(NLSessionActivity *)self _createIdempotentAccumulators];
-  [(NLSessionActivity *)v14 _setupActivityTypeDependentConfigurations];
-  [(NLSessionActivity *)v14 _observeSettings];
-  [(NLSessionActivity *)v14 _writeConfigurationMetadata];
-  [(NLSessionActivity *)v14 _configureStateMachine];
-  [(WOSessionActivityDeviceObserver *)v14->_deviceObserver setDelegate:v14];
+  [(NLSessionActivity *)selfCopy _setupActivityTypeDependentConfigurations];
+  [(NLSessionActivity *)selfCopy _observeSettings];
+  [(NLSessionActivity *)selfCopy _writeConfigurationMetadata];
+  [(NLSessionActivity *)selfCopy _configureStateMachine];
+  [(WOSessionActivityDeviceObserver *)selfCopy->_deviceObserver setDelegate:selfCopy];
   v13[0] = +[NLWorkoutDemoUtilities workoutDemoSession];
   if (v13[0])
   {
@@ -329,15 +329,15 @@
 
     objc_storeStrong(&location, 0);
     v5 = [NLWorkoutDemoDataProvider alloc];
-    v4 = v14;
-    v7 = [(WOCoreLiveWorkoutConfiguration *)v14->_configuration topLevelActivityType];
-    v6 = [(FIUIWorkoutActivityType *)v7 workoutActivityType];
+    v4 = selfCopy;
+    topLevelActivityType = [(WOCoreLiveWorkoutConfiguration *)selfCopy->_configuration topLevelActivityType];
+    workoutActivityType = [(FIUIWorkoutActivityType *)topLevelActivityType workoutActivityType];
     v2 = [NLWorkoutDemoDataProvider initWithDataProvider:v5 activityType:"initWithDataProvider:activityType:demoSession:" demoSession:v4];
-    demoDataProvider = v14->_demoDataProvider;
-    v14->_demoDataProvider = v2;
+    demoDataProvider = selfCopy->_demoDataProvider;
+    selfCopy->_demoDataProvider = v2;
     MEMORY[0x277D82BD8](demoDataProvider);
-    MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](workoutActivityType);
+    MEMORY[0x277D82BD8](topLevelActivityType);
   }
 
   objc_storeStrong(v13, 0);
@@ -345,33 +345,33 @@
 
 - (NLSessionDataProvider)dataProvider
 {
-  v3 = [(NLSessionActivity *)self demoDataProvider];
-  MEMORY[0x277D82BD8](v3);
-  if (v3)
+  demoDataProvider = [(NLSessionActivity *)self demoDataProvider];
+  MEMORY[0x277D82BD8](demoDataProvider);
+  if (demoDataProvider)
   {
-    v5 = [(NLSessionActivity *)self demoDataProvider];
+    demoDataProvider2 = [(NLSessionActivity *)self demoDataProvider];
   }
 
   else
   {
-    v5 = MEMORY[0x277D82BE0](self);
+    demoDataProvider2 = MEMORY[0x277D82BE0](self);
   }
 
-  return v5;
+  return demoDataProvider2;
 }
 
 - (BOOL)handleUserDoubleTap
 {
   v22 = *MEMORY[0x277D85DE8];
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
-  v15 = [(NLSessionActivity *)self demoDataProvider];
-  MEMORY[0x277D82BD8](v15);
-  if (v15)
+  demoDataProvider = [(NLSessionActivity *)self demoDataProvider];
+  MEMORY[0x277D82BD8](demoDataProvider);
+  if (demoDataProvider)
   {
-    v12 = [(NLSessionActivity *)v19 demoDataProvider];
-    location[0] = [(NLWorkoutDemoDataProvider *)v12 statisticsToAdvance];
-    MEMORY[0x277D82BD8](v12);
+    demoDataProvider2 = [(NLSessionActivity *)selfCopy demoDataProvider];
+    location[0] = [(NLWorkoutDemoDataProvider *)demoDataProvider2 statisticsToAdvance];
+    MEMORY[0x277D82BD8](demoDataProvider2);
     memset(__b, 0, sizeof(__b));
     obj = MEMORY[0x277D82BE0](location[0]);
     v14 = [obj countByEnumeratingWithState:__b objects:v21 count:16];
@@ -389,16 +389,16 @@
         }
 
         v17 = *(__b[1] + 8 * v10);
-        v3 = v19;
-        v7 = [v17 quantityType];
+        v3 = selfCopy;
+        quantityType = [v17 quantityType];
         v4 = v17;
-        v6 = [v17 endDate];
-        v5 = [v17 startDate];
-        [v6 timeIntervalSinceDate:?];
-        [(NLSessionActivity *)v3 _updateWithQuantityType:v7 statistics:v4 duration:?];
-        MEMORY[0x277D82BD8](v5);
-        MEMORY[0x277D82BD8](v6);
-        MEMORY[0x277D82BD8](v7);
+        endDate = [v17 endDate];
+        startDate = [v17 startDate];
+        [endDate timeIntervalSinceDate:?];
+        [(NLSessionActivity *)v3 _updateWithQuantityType:quantityType statistics:v4 duration:?];
+        MEMORY[0x277D82BD8](startDate);
+        MEMORY[0x277D82BD8](endDate);
+        MEMORY[0x277D82BD8](quantityType);
         ++v10;
         if (v8 + 1 >= v11)
         {
@@ -429,61 +429,61 @@
 - (void)_setupActivityTypeDependentConfigurations
 {
   v16 = *MEMORY[0x277D85DE8];
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(WOCoreLiveWorkoutConfiguration *)self->_configuration currentActivityType];
-  activityType = v13->_activityType;
-  v13->_activityType = v2;
+  currentActivityType = [(WOCoreLiveWorkoutConfiguration *)self->_configuration currentActivityType];
+  activityType = selfCopy->_activityType;
+  selfCopy->_activityType = currentActivityType;
   MEMORY[0x277D82BD8](activityType);
-  v9 = [(FIUIFormattingManager *)v13->_formattingManager unitManager];
-  v4 = [v9 userDistanceHKUnitForActivityType:v13->_activityType];
-  distanceUnit = v13->_distanceUnit;
-  v13->_distanceUnit = v4;
+  unitManager = [(FIUIFormattingManager *)selfCopy->_formattingManager unitManager];
+  v4 = [unitManager userDistanceHKUnitForActivityType:selfCopy->_activityType];
+  distanceUnit = selfCopy->_distanceUnit;
+  selfCopy->_distanceUnit = v4;
   MEMORY[0x277D82BD8](distanceUnit);
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](unitManager);
   _HKInitializeLogging();
   location[0] = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v11 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_1_8_64(v15, v13->_activityType);
+    __os_log_helper_16_2_1_8_64(v15, selfCopy->_activityType);
     _os_log_impl(&dword_20AEA4000, location[0], v11, "[multisport] Creating activity type configurations with activity type %@", v15, 0xCu);
   }
 
   objc_storeStrong(location, 0);
-  [(NLSessionActivity *)v13 _stopActivityDependentAccumulatorsWithActivity:0];
-  [(NLSessionActivity *)v13 _createActivityDependentAccumulators];
-  if (!v13->_weatherManager)
+  [(NLSessionActivity *)selfCopy _stopActivityDependentAccumulatorsWithActivity:0];
+  [(NLSessionActivity *)selfCopy _createActivityDependentAccumulators];
+  if (!selfCopy->_weatherManager)
   {
     _HKInitializeLogging();
     oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v8 = oslog;
-      __os_log_helper_16_0_1_8_0(v14, v13);
+      __os_log_helper_16_0_1_8_0(v14, selfCopy);
       _os_log_impl(&dword_20AEA4000, oslog, OS_LOG_TYPE_DEFAULT, "[weather] Create NLSessionActivityWeatherManager from %p", v14, 0xCu);
     }
 
     objc_storeStrong(&oslog, 0);
     v6 = objc_alloc_init(NLSessionActivityWeatherManager);
-    weatherManager = v13->_weatherManager;
-    v13->_weatherManager = v6;
+    weatherManager = selfCopy->_weatherManager;
+    selfCopy->_weatherManager = v6;
     MEMORY[0x277D82BD8](weatherManager);
-    [(NLSessionActivityWeatherManager *)v13->_weatherManager setDelegate:v13];
+    [(NLSessionActivityWeatherManager *)selfCopy->_weatherManager setDelegate:selfCopy];
   }
 
-  [(NLSessionActivityWeatherManager *)v13->_weatherManager setActive:1, v8];
-  [(NLSessionActivity *)v13 _setupGroundElevationManager];
+  [(NLSessionActivityWeatherManager *)selfCopy->_weatherManager setActive:1, v8];
+  [(NLSessionActivity *)selfCopy _setupGroundElevationManager];
   *MEMORY[0x277D85DE8];
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, v5, *MEMORY[0x277D09610], 0);
-  v3.receiver = v5;
+  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, selfCopy, *MEMORY[0x277D09610], 0);
+  v3.receiver = selfCopy;
   v3.super_class = NLSessionActivity;
   [(NLSessionActivity *)&v3 dealloc];
 }
@@ -491,7 +491,7 @@
 - (void)_configureStateMachine
 {
   v261[19] = *MEMORY[0x277D85DE8];
-  v259 = self;
+  selfCopy = self;
   __b[19] = a2;
   memset(__b, 0, 0x98uLL);
   NLActivityStateIdentifierShortHandStruct(__b);
@@ -554,19 +554,19 @@
   MEMORY[0x277D82BD8](v240);
   MEMORY[0x277D82BD8](v241);
   v243 = objc_alloc(MEMORY[0x277D0A800]);
-  v246 = [(NLSessionActivity *)v259 UUID];
+  uUID = [(NLSessionActivity *)selfCopy UUID];
   v245 = FIUIStateMachineLabel();
   v242 = MEMORY[0x277D85CD0];
   v2 = MEMORY[0x277D85CD0];
   v244 = v242;
   v3 = [v243 initWithLabel:v245 queue:?];
-  stateMachine = v259->_stateMachine;
-  v259->_stateMachine = v3;
+  stateMachine = selfCopy->_stateMachine;
+  selfCopy->_stateMachine = v3;
   MEMORY[0x277D82BD8](stateMachine);
   MEMORY[0x277D82BD8](v244);
   MEMORY[0x277D82BD8](v245);
-  MEMORY[0x277D82BD8](v246);
-  v5 = v259->_stateMachine;
+  MEMORY[0x277D82BD8](uUID);
+  v5 = selfCopy->_stateMachine;
   FIUIStateMachineSetDiagnosticAndErrorHandler();
   v256 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v257, "count")}];
   memset(v254, 0, sizeof(v254));
@@ -586,13 +586,13 @@
       }
 
       v255 = *(v254[1] + 8 * v221);
-      v253 = [v255 unsignedIntegerValue];
+      unsignedIntegerValue = [v255 unsignedIntegerValue];
       v217 = objc_alloc(MEMORY[0x277D0A7F8]);
-      v218 = NLActivityStateIdentifierDescription(v253);
+      v218 = NLActivityStateIdentifierDescription(unsignedIntegerValue);
       v252 = [v217 initWithLabel:?];
       MEMORY[0x277D82BD8](v218);
       [v256 setObject:v252 forKeyedSubscript:v255];
-      [(FIUIStateMachine *)v259->_stateMachine addState:v252];
+      [(FIUIStateMachine *)selfCopy->_stateMachine addState:v252];
       objc_storeStrong(&v252, 0);
       ++v221;
       if (v219 + 1 >= v222)
@@ -626,7 +626,7 @@
   MEMORY[0x277D82BD8](v13);
   MEMORY[0x277D82BD8](v14);
   MEMORY[0x277D82BD8](v15);
-  v19 = v259->_stateMachine;
+  v19 = selfCopy->_stateMachine;
   v17 = v250;
   v18 = v251;
   v16 = v256;
@@ -636,7 +636,7 @@
   MEMORY[0x277D82BD8](v20);
   MEMORY[0x277D82BD8](v21);
   v249 = [objc_alloc(MEMORY[0x277D0A7F8]) initWithLabel:@"InSession"];
-  v31 = v259->_stateMachine;
+  v31 = selfCopy->_stateMachine;
   v28 = MEMORY[0x277CBEB98];
   v22 = v256;
   v46 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[8]];
@@ -677,17 +677,17 @@
   MEMORY[0x277D82BD8](v44);
   MEMORY[0x277D82BD8](v45);
   MEMORY[0x277D82BD8](v46);
-  objc_storeStrong(&v259->_stateMap, v256);
-  stateMap = v259->_stateMap;
+  objc_storeStrong(&selfCopy->_stateMap, v256);
+  stateMap = selfCopy->_stateMap;
   v49 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[0]];
   v48 = [(NSDictionary *)stateMap objectForKeyedSubscript:?];
   _RegisterTransition_0(stateMap, v48, v251, 1);
   MEMORY[0x277D82BD8](v48);
   MEMORY[0x277D82BD8](v49);
-  v51 = v259->_stateMap;
+  v51 = selfCopy->_stateMap;
   v55 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[0]];
   v54 = [(NSDictionary *)v51 objectForKeyedSubscript:?];
-  v50 = v259->_stateMap;
+  v50 = selfCopy->_stateMap;
   v53 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[2]];
   v52 = [(NSDictionary *)v50 objectForKeyedSubscript:?];
   _RegisterTransition_0(v51, v54, v52, 2);
@@ -695,10 +695,10 @@
   MEMORY[0x277D82BD8](v53);
   MEMORY[0x277D82BD8](v54);
   MEMORY[0x277D82BD8](v55);
-  v57 = v259->_stateMap;
+  v57 = selfCopy->_stateMap;
   v61 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[2]];
   v60 = [(NSDictionary *)v57 objectForKeyedSubscript:?];
-  v56 = v259->_stateMap;
+  v56 = selfCopy->_stateMap;
   v59 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[8]];
   v58 = [(NSDictionary *)v56 objectForKeyedSubscript:?];
   _RegisterTransition_0(v57, v60, v58, 5);
@@ -706,10 +706,10 @@
   MEMORY[0x277D82BD8](v59);
   MEMORY[0x277D82BD8](v60);
   MEMORY[0x277D82BD8](v61);
-  v63 = v259->_stateMap;
+  v63 = selfCopy->_stateMap;
   v67 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[2]];
   v66 = [(NSDictionary *)v63 objectForKeyedSubscript:?];
-  v62 = v259->_stateMap;
+  v62 = selfCopy->_stateMap;
   v65 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[5]];
   v64 = [(NSDictionary *)v62 objectForKeyedSubscript:?];
   _RegisterTransition_0(v63, v66, v64, 6);
@@ -717,10 +717,10 @@
   MEMORY[0x277D82BD8](v65);
   MEMORY[0x277D82BD8](v66);
   MEMORY[0x277D82BD8](v67);
-  v69 = v259->_stateMap;
+  v69 = selfCopy->_stateMap;
   v73 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[2]];
   v72 = [(NSDictionary *)v69 objectForKeyedSubscript:?];
-  v68 = v259->_stateMap;
+  v68 = selfCopy->_stateMap;
   v71 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[8]];
   v70 = [(NSDictionary *)v68 objectForKeyedSubscript:?];
   _RegisterTransition_0(v69, v72, v70, 7);
@@ -728,10 +728,10 @@
   MEMORY[0x277D82BD8](v71);
   MEMORY[0x277D82BD8](v72);
   MEMORY[0x277D82BD8](v73);
-  v75 = v259->_stateMap;
+  v75 = selfCopy->_stateMap;
   v79 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[1]];
   v78 = [(NSDictionary *)v75 objectForKeyedSubscript:?];
-  v74 = v259->_stateMap;
+  v74 = selfCopy->_stateMap;
   v77 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[3]];
   v76 = [(NSDictionary *)v74 objectForKeyedSubscript:?];
   _RegisterTransition_0(v75, v78, v76, 3);
@@ -739,10 +739,10 @@
   MEMORY[0x277D82BD8](v77);
   MEMORY[0x277D82BD8](v78);
   MEMORY[0x277D82BD8](v79);
-  v81 = v259->_stateMap;
+  v81 = selfCopy->_stateMap;
   v85 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[3]];
   v84 = [(NSDictionary *)v81 objectForKeyedSubscript:?];
-  v80 = v259->_stateMap;
+  v80 = selfCopy->_stateMap;
   v83 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[4]];
   v82 = [(NSDictionary *)v80 objectForKeyedSubscript:?];
   _RegisterTransition_0(v81, v84, v82, 4);
@@ -750,23 +750,23 @@
   MEMORY[0x277D82BD8](v83);
   MEMORY[0x277D82BD8](v84);
   MEMORY[0x277D82BD8](v85);
-  v87 = v259->_stateMap;
+  v87 = selfCopy->_stateMap;
   v86 = v251;
   v89 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[11]];
   v88 = [(NSDictionary *)v87 objectForKeyedSubscript:?];
   _RegisterTransition_0(v87, v86, v88, 12);
   MEMORY[0x277D82BD8](v88);
   MEMORY[0x277D82BD8](v89);
-  v90 = v259->_stateMap;
+  v90 = selfCopy->_stateMap;
   v92 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[4]];
   v91 = [(NSDictionary *)v90 objectForKeyedSubscript:?];
   _RegisterTransition_0(v90, v91, v249, 5);
   MEMORY[0x277D82BD8](v91);
   MEMORY[0x277D82BD8](v92);
-  v94 = v259->_stateMap;
+  v94 = selfCopy->_stateMap;
   v98 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[3]];
   v97 = [(NSDictionary *)v94 objectForKeyedSubscript:?];
-  v93 = v259->_stateMap;
+  v93 = selfCopy->_stateMap;
   v96 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[14]];
   v95 = [(NSDictionary *)v93 objectForKeyedSubscript:?];
   _RegisterTransition_0(v94, v97, v95, 13);
@@ -774,10 +774,10 @@
   MEMORY[0x277D82BD8](v96);
   MEMORY[0x277D82BD8](v97);
   MEMORY[0x277D82BD8](v98);
-  v100 = v259->_stateMap;
+  v100 = selfCopy->_stateMap;
   v104 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[8]];
   v103 = [(NSDictionary *)v100 objectForKeyedSubscript:?];
-  v99 = v259->_stateMap;
+  v99 = selfCopy->_stateMap;
   v102 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[5]];
   v101 = [(NSDictionary *)v99 objectForKeyedSubscript:?];
   _RegisterTransition_0(v100, v103, v101, 6);
@@ -785,10 +785,10 @@
   MEMORY[0x277D82BD8](v102);
   MEMORY[0x277D82BD8](v103);
   MEMORY[0x277D82BD8](v104);
-  v106 = v259->_stateMap;
+  v106 = selfCopy->_stateMap;
   v110 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[5]];
   v109 = [(NSDictionary *)v106 objectForKeyedSubscript:?];
-  v105 = v259->_stateMap;
+  v105 = selfCopy->_stateMap;
   v108 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[8]];
   v107 = [(NSDictionary *)v105 objectForKeyedSubscript:?];
   _RegisterTransition_0(v106, v109, v107, 7);
@@ -796,10 +796,10 @@
   MEMORY[0x277D82BD8](v108);
   MEMORY[0x277D82BD8](v109);
   MEMORY[0x277D82BD8](v110);
-  v112 = v259->_stateMap;
+  v112 = selfCopy->_stateMap;
   v116 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[8]];
   v115 = [(NSDictionary *)v112 objectForKeyedSubscript:?];
-  v111 = v259->_stateMap;
+  v111 = selfCopy->_stateMap;
   v114 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[7]];
   v113 = [(NSDictionary *)v111 objectForKeyedSubscript:?];
   _RegisterTransition_0(v112, v115, v113, 11);
@@ -807,10 +807,10 @@
   MEMORY[0x277D82BD8](v114);
   MEMORY[0x277D82BD8](v115);
   MEMORY[0x277D82BD8](v116);
-  v118 = v259->_stateMap;
+  v118 = selfCopy->_stateMap;
   v122 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[7]];
   v121 = [(NSDictionary *)v118 objectForKeyedSubscript:?];
-  v117 = v259->_stateMap;
+  v117 = selfCopy->_stateMap;
   v120 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[8]];
   v119 = [(NSDictionary *)v117 objectForKeyedSubscript:?];
   _RegisterTransition_0(v118, v121, v119, 10);
@@ -818,10 +818,10 @@
   MEMORY[0x277D82BD8](v120);
   MEMORY[0x277D82BD8](v121);
   MEMORY[0x277D82BD8](v122);
-  v124 = v259->_stateMap;
+  v124 = selfCopy->_stateMap;
   v128 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[5]];
   v127 = [(NSDictionary *)v124 objectForKeyedSubscript:?];
-  v123 = v259->_stateMap;
+  v123 = selfCopy->_stateMap;
   v126 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[6]];
   v125 = [(NSDictionary *)v123 objectForKeyedSubscript:?];
   _RegisterTransition_0(v124, v127, v125, 11);
@@ -829,10 +829,10 @@
   MEMORY[0x277D82BD8](v126);
   MEMORY[0x277D82BD8](v127);
   MEMORY[0x277D82BD8](v128);
-  v130 = v259->_stateMap;
+  v130 = selfCopy->_stateMap;
   v134 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[6]];
   v133 = [(NSDictionary *)v130 objectForKeyedSubscript:?];
-  v129 = v259->_stateMap;
+  v129 = selfCopy->_stateMap;
   v132 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[5]];
   v131 = [(NSDictionary *)v129 objectForKeyedSubscript:?];
   _RegisterTransition_0(v130, v133, v131, 10);
@@ -840,10 +840,10 @@
   MEMORY[0x277D82BD8](v132);
   MEMORY[0x277D82BD8](v133);
   MEMORY[0x277D82BD8](v134);
-  v136 = v259->_stateMap;
+  v136 = selfCopy->_stateMap;
   v140 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[9]];
   v139 = [(NSDictionary *)v136 objectForKeyedSubscript:?];
-  v135 = v259->_stateMap;
+  v135 = selfCopy->_stateMap;
   v138 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[10]];
   v137 = [(NSDictionary *)v135 objectForKeyedSubscript:?];
   _RegisterTransition_0(v136, v139, v137, 11);
@@ -851,10 +851,10 @@
   MEMORY[0x277D82BD8](v138);
   MEMORY[0x277D82BD8](v139);
   MEMORY[0x277D82BD8](v140);
-  v142 = v259->_stateMap;
+  v142 = selfCopy->_stateMap;
   v146 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[10]];
   v145 = [(NSDictionary *)v142 objectForKeyedSubscript:?];
-  v141 = v259->_stateMap;
+  v141 = selfCopy->_stateMap;
   v144 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[9]];
   v143 = [(NSDictionary *)v141 objectForKeyedSubscript:?];
   _RegisterTransition_0(v142, v145, v143, 10);
@@ -862,10 +862,10 @@
   MEMORY[0x277D82BD8](v144);
   MEMORY[0x277D82BD8](v145);
   MEMORY[0x277D82BD8](v146);
-  v148 = v259->_stateMap;
+  v148 = selfCopy->_stateMap;
   v152 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[8]];
   v151 = [(NSDictionary *)v148 objectForKeyedSubscript:?];
-  v147 = v259->_stateMap;
+  v147 = selfCopy->_stateMap;
   v150 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[9]];
   v149 = [(NSDictionary *)v147 objectForKeyedSubscript:?];
   _RegisterTransition_0(v148, v151, v149, 8);
@@ -873,10 +873,10 @@
   MEMORY[0x277D82BD8](v150);
   MEMORY[0x277D82BD8](v151);
   MEMORY[0x277D82BD8](v152);
-  v154 = v259->_stateMap;
+  v154 = selfCopy->_stateMap;
   v158 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[9]];
   v157 = [(NSDictionary *)v154 objectForKeyedSubscript:?];
-  v153 = v259->_stateMap;
+  v153 = selfCopy->_stateMap;
   v156 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[8]];
   v155 = [(NSDictionary *)v153 objectForKeyedSubscript:?];
   _RegisterTransition_0(v154, v157, v155, 9);
@@ -884,10 +884,10 @@
   MEMORY[0x277D82BD8](v156);
   MEMORY[0x277D82BD8](v157);
   MEMORY[0x277D82BD8](v158);
-  v160 = v259->_stateMap;
+  v160 = selfCopy->_stateMap;
   v164 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[9]];
   v163 = [(NSDictionary *)v160 objectForKeyedSubscript:?];
-  v159 = v259->_stateMap;
+  v159 = selfCopy->_stateMap;
   v162 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[8]];
   v161 = [(NSDictionary *)v159 objectForKeyedSubscript:?];
   _RegisterTransition_0(v160, v163, v161, 7);
@@ -895,17 +895,17 @@
   MEMORY[0x277D82BD8](v162);
   MEMORY[0x277D82BD8](v163);
   MEMORY[0x277D82BD8](v164);
-  v166 = v259->_stateMap;
+  v166 = selfCopy->_stateMap;
   v165 = v249;
   v168 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[11]];
   v167 = [(NSDictionary *)v166 objectForKeyedSubscript:?];
   _RegisterTransition_0(v166, v165, v167, 12);
   MEMORY[0x277D82BD8](v167);
   MEMORY[0x277D82BD8](v168);
-  v170 = v259->_stateMap;
+  v170 = selfCopy->_stateMap;
   v174 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[14]];
   v173 = [(NSDictionary *)v170 objectForKeyedSubscript:?];
-  v169 = v259->_stateMap;
+  v169 = selfCopy->_stateMap;
   v172 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[15]];
   v171 = [(NSDictionary *)v169 objectForKeyedSubscript:?];
   _RegisterTransition_0(v170, v173, v171, 16);
@@ -913,10 +913,10 @@
   MEMORY[0x277D82BD8](v172);
   MEMORY[0x277D82BD8](v173);
   MEMORY[0x277D82BD8](v174);
-  v176 = v259->_stateMap;
+  v176 = selfCopy->_stateMap;
   v180 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[15]];
   v179 = [(NSDictionary *)v176 objectForKeyedSubscript:?];
-  v175 = v259->_stateMap;
+  v175 = selfCopy->_stateMap;
   v178 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[17]];
   v177 = [(NSDictionary *)v175 objectForKeyedSubscript:?];
   _RegisterTransition_0(v176, v179, v177, 20);
@@ -924,10 +924,10 @@
   MEMORY[0x277D82BD8](v178);
   MEMORY[0x277D82BD8](v179);
   MEMORY[0x277D82BD8](v180);
-  v182 = v259->_stateMap;
+  v182 = selfCopy->_stateMap;
   v186 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[11]];
   v185 = [(NSDictionary *)v182 objectForKeyedSubscript:?];
-  v181 = v259->_stateMap;
+  v181 = selfCopy->_stateMap;
   v184 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[18]];
   v183 = [(NSDictionary *)v181 objectForKeyedSubscript:?];
   _RegisterTransition_0(v182, v185, v183, 21);
@@ -935,10 +935,10 @@
   MEMORY[0x277D82BD8](v184);
   MEMORY[0x277D82BD8](v185);
   MEMORY[0x277D82BD8](v186);
-  v188 = v259->_stateMap;
+  v188 = selfCopy->_stateMap;
   v192 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[18]];
   v191 = [(NSDictionary *)v188 objectForKeyedSubscript:?];
-  v187 = v259->_stateMap;
+  v187 = selfCopy->_stateMap;
   v190 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[16]];
   v189 = [(NSDictionary *)v187 objectForKeyedSubscript:?];
   _RegisterTransition_0(v188, v191, v189, 17);
@@ -946,10 +946,10 @@
   MEMORY[0x277D82BD8](v190);
   MEMORY[0x277D82BD8](v191);
   MEMORY[0x277D82BD8](v192);
-  v194 = v259->_stateMap;
+  v194 = selfCopy->_stateMap;
   v198 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[18]];
   v197 = [(NSDictionary *)v194 objectForKeyedSubscript:?];
-  v193 = v259->_stateMap;
+  v193 = selfCopy->_stateMap;
   v196 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[14]];
   v195 = [(NSDictionary *)v193 objectForKeyedSubscript:?];
   _RegisterTransition_0(v194, v197, v195, 19);
@@ -957,10 +957,10 @@
   MEMORY[0x277D82BD8](v196);
   MEMORY[0x277D82BD8](v197);
   MEMORY[0x277D82BD8](v198);
-  v200 = v259->_stateMap;
+  v200 = selfCopy->_stateMap;
   v204 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[11]];
   v203 = [(NSDictionary *)v200 objectForKeyedSubscript:?];
-  v199 = v259->_stateMap;
+  v199 = selfCopy->_stateMap;
   v202 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[15]];
   v201 = [(NSDictionary *)v199 objectForKeyedSubscript:?];
   _RegisterTransition_0(v200, v203, v201, 16);
@@ -968,10 +968,10 @@
   MEMORY[0x277D82BD8](v202);
   MEMORY[0x277D82BD8](v203);
   MEMORY[0x277D82BD8](v204);
-  v206 = v259->_stateMap;
+  v206 = selfCopy->_stateMap;
   v210 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[16]];
   v209 = [(NSDictionary *)v206 objectForKeyedSubscript:?];
-  v205 = v259->_stateMap;
+  v205 = selfCopy->_stateMap;
   v208 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[14]];
   v207 = [(NSDictionary *)v205 objectForKeyedSubscript:?];
   _RegisterTransition_0(v206, v209, v207, 18);
@@ -979,10 +979,10 @@
   MEMORY[0x277D82BD8](v208);
   MEMORY[0x277D82BD8](v209);
   MEMORY[0x277D82BD8](v210);
-  v212 = v259->_stateMap;
+  v212 = selfCopy->_stateMap;
   v216 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[16]];
   v215 = [(NSDictionary *)v212 objectForKeyedSubscript:?];
-  v211 = v259->_stateMap;
+  v211 = selfCopy->_stateMap;
   v214 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[17]];
   v213 = [(NSDictionary *)v211 objectForKeyedSubscript:?];
   _RegisterTransition_0(v212, v215, v213, 20);
@@ -990,8 +990,8 @@
   MEMORY[0x277D82BD8](v214);
   MEMORY[0x277D82BD8](v215);
   MEMORY[0x277D82BD8](v216);
-  [(NLSessionActivity *)v259 _configureStateActions];
-  [(FIUIStateMachine *)v259->_stateMachine export];
+  [(NLSessionActivity *)selfCopy _configureStateActions];
+  [(FIUIStateMachine *)selfCopy->_stateMachine export];
   objc_storeStrong(&v249, 0);
   objc_storeStrong(&v250, 0);
   objc_storeStrong(&v251, 0);
@@ -1002,12 +1002,12 @@
 
 - (void)_configureStateActions
 {
-  v166 = self;
+  selfCopy = self;
   __b[19] = a2;
   memset(__b, 0, 0x98uLL);
   NLActivityStateIdentifierShortHandStruct(__b);
-  objc_initWeak(&location, v166);
-  stateMap = v166->_stateMap;
+  objc_initWeak(&location, selfCopy);
+  stateMap = selfCopy->_stateMap;
   v54 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[1]];
   v53 = [(NSDictionary *)stateMap objectForKeyedSubscript:?];
   v158 = MEMORY[0x277D85DD0];
@@ -1019,7 +1019,7 @@
   [v53 setEntry:&v158];
   MEMORY[0x277D82BD8](v53);
   MEMORY[0x277D82BD8](v54);
-  v52 = v166->_stateMap;
+  v52 = selfCopy->_stateMap;
   v51 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[2]];
   v50 = [(NSDictionary *)v52 objectForKeyedSubscript:?];
   v152 = MEMORY[0x277D85DD0];
@@ -1031,7 +1031,7 @@
   [v50 setEntry:&v152];
   MEMORY[0x277D82BD8](v50);
   MEMORY[0x277D82BD8](v51);
-  v49 = v166->_stateMap;
+  v49 = selfCopy->_stateMap;
   v48 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[3]];
   v47 = [(NSDictionary *)v49 objectForKeyedSubscript:?];
   v146 = MEMORY[0x277D85DD0];
@@ -1043,7 +1043,7 @@
   [v47 setEntry:&v146];
   MEMORY[0x277D82BD8](v47);
   MEMORY[0x277D82BD8](v48);
-  v46 = v166->_stateMap;
+  v46 = selfCopy->_stateMap;
   v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[4]];
   v44 = [(NSDictionary *)v46 objectForKeyedSubscript:?];
   v140 = MEMORY[0x277D85DD0];
@@ -1055,7 +1055,7 @@
   [v44 setEntry:&v140];
   MEMORY[0x277D82BD8](v44);
   MEMORY[0x277D82BD8](v45);
-  v43 = v166->_stateMap;
+  v43 = selfCopy->_stateMap;
   v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[8]];
   v41 = [(NSDictionary *)v43 objectForKeyedSubscript:?];
   v134 = MEMORY[0x277D85DD0];
@@ -1067,7 +1067,7 @@
   [v41 setEntry:&v134];
   MEMORY[0x277D82BD8](v41);
   MEMORY[0x277D82BD8](v42);
-  v40 = v166->_stateMap;
+  v40 = selfCopy->_stateMap;
   v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[5]];
   v38 = [(NSDictionary *)v40 objectForKeyedSubscript:?];
   v128 = MEMORY[0x277D85DD0];
@@ -1079,7 +1079,7 @@
   [v38 setEntry:&v128];
   MEMORY[0x277D82BD8](v38);
   MEMORY[0x277D82BD8](v39);
-  v37 = v166->_stateMap;
+  v37 = selfCopy->_stateMap;
   v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[6]];
   v35 = [(NSDictionary *)v37 objectForKeyedSubscript:?];
   v122 = MEMORY[0x277D85DD0];
@@ -1091,7 +1091,7 @@
   [v35 setEntry:&v122];
   MEMORY[0x277D82BD8](v35);
   MEMORY[0x277D82BD8](v36);
-  v34 = v166->_stateMap;
+  v34 = selfCopy->_stateMap;
   v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[7]];
   v32 = [(NSDictionary *)v34 objectForKeyedSubscript:?];
   v116 = MEMORY[0x277D85DD0];
@@ -1103,7 +1103,7 @@
   [v32 setEntry:&v116];
   MEMORY[0x277D82BD8](v32);
   MEMORY[0x277D82BD8](v33);
-  v31 = v166->_stateMap;
+  v31 = selfCopy->_stateMap;
   v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[9]];
   v29 = [(NSDictionary *)v31 objectForKeyedSubscript:?];
   v110 = MEMORY[0x277D85DD0];
@@ -1115,7 +1115,7 @@
   [v29 setEntry:&v110];
   MEMORY[0x277D82BD8](v29);
   MEMORY[0x277D82BD8](v30);
-  v28 = v166->_stateMap;
+  v28 = selfCopy->_stateMap;
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[10]];
   v26 = [(NSDictionary *)v28 objectForKeyedSubscript:?];
   v104 = MEMORY[0x277D85DD0];
@@ -1127,7 +1127,7 @@
   [v26 setEntry:&v104];
   MEMORY[0x277D82BD8](v26);
   MEMORY[0x277D82BD8](v27);
-  v25 = v166->_stateMap;
+  v25 = selfCopy->_stateMap;
   v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[11]];
   v23 = [(NSDictionary *)v25 objectForKeyedSubscript:?];
   v98 = MEMORY[0x277D85DD0];
@@ -1139,7 +1139,7 @@
   [v23 setEntry:&v98];
   MEMORY[0x277D82BD8](v23);
   MEMORY[0x277D82BD8](v24);
-  v22 = v166->_stateMap;
+  v22 = selfCopy->_stateMap;
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[18]];
   v20 = [(NSDictionary *)v22 objectForKeyedSubscript:?];
   v92 = MEMORY[0x277D85DD0];
@@ -1151,7 +1151,7 @@
   [v20 setEntry:&v92];
   MEMORY[0x277D82BD8](v20);
   MEMORY[0x277D82BD8](v21);
-  v19 = v166->_stateMap;
+  v19 = selfCopy->_stateMap;
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[15]];
   v17 = [(NSDictionary *)v19 objectForKeyedSubscript:?];
   v86 = MEMORY[0x277D85DD0];
@@ -1163,7 +1163,7 @@
   [v17 setEntry:&v86];
   MEMORY[0x277D82BD8](v17);
   MEMORY[0x277D82BD8](v18);
-  v16 = v166->_stateMap;
+  v16 = selfCopy->_stateMap;
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[16]];
   v14 = [(NSDictionary *)v16 objectForKeyedSubscript:?];
   v80 = MEMORY[0x277D85DD0];
@@ -1175,7 +1175,7 @@
   [v14 setEntry:&v80];
   MEMORY[0x277D82BD8](v14);
   MEMORY[0x277D82BD8](v15);
-  v13 = v166->_stateMap;
+  v13 = selfCopy->_stateMap;
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[12]];
   v11 = [(NSDictionary *)v13 objectForKeyedSubscript:?];
   v74 = MEMORY[0x277D85DD0];
@@ -1187,7 +1187,7 @@
   [v11 setEntry:&v74];
   MEMORY[0x277D82BD8](v11);
   MEMORY[0x277D82BD8](v12);
-  v10 = v166->_stateMap;
+  v10 = selfCopy->_stateMap;
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[17]];
   v8 = [(NSDictionary *)v10 objectForKeyedSubscript:?];
   v68 = MEMORY[0x277D85DD0];
@@ -1199,7 +1199,7 @@
   [v8 setEntry:&v68];
   MEMORY[0x277D82BD8](v8);
   MEMORY[0x277D82BD8](v9);
-  v7 = v166->_stateMap;
+  v7 = selfCopy->_stateMap;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[13]];
   v5 = [(NSDictionary *)v7 objectForKeyedSubscript:?];
   v62 = MEMORY[0x277D85DD0];
@@ -1211,7 +1211,7 @@
   [v5 setEntry:&v62];
   MEMORY[0x277D82BD8](v5);
   MEMORY[0x277D82BD8](v6);
-  v4 = v166->_stateMap;
+  v4 = selfCopy->_stateMap;
   v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:__b[14]];
   v2 = [(NSDictionary *)v4 objectForKeyedSubscript:?];
   v56 = MEMORY[0x277D85DD0];
@@ -1552,14 +1552,14 @@ void __43__NLSessionActivity__configureStateActions__block_invoke_18(id *a1, voi
 
 - (void)_startPrecisionStartAccumulators
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   objc_initWeak(location, self);
   v11[1] = COERCE_ID(-5.0);
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v11[0] = [v4 dateByAddingTimeInterval:-5.0];
-  MEMORY[0x277D82BD8](v4);
-  heartRatePrecisionStartAccumulator = v13->_heartRatePrecisionStartAccumulator;
+  date = [MEMORY[0x277CBEAA8] date];
+  v11[0] = [date dateByAddingTimeInterval:-5.0];
+  MEMORY[0x277D82BD8](date);
+  heartRatePrecisionStartAccumulator = selfCopy->_heartRatePrecisionStartAccumulator;
   v3 = v11[0];
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
@@ -1587,21 +1587,21 @@ uint64_t __53__NLSessionActivity__startPrecisionStartAccumulators__block_invoke(
 - (id)currentWorkoutActivity
 {
   v11 = *MEMORY[0x277D85DE8];
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v8[0] = 0;
   if ([(NLSessionActivity *)self shouldSplitByActivity])
   {
-    v2 = [(HKLiveWorkoutBuilder *)v9->_builder currentWorkoutActivity];
+    currentWorkoutActivity = [(HKLiveWorkoutBuilder *)selfCopy->_builder currentWorkoutActivity];
     v3 = v8[0];
-    v8[0] = v2;
+    v8[0] = currentWorkoutActivity;
     MEMORY[0x277D82BD8](v3);
     if (!v8[0])
     {
-      v6 = [(HKLiveWorkoutBuilder *)v9->_builder workoutActivities];
-      v8[0] = [v6 lastObject];
+      workoutActivities = [(HKLiveWorkoutBuilder *)selfCopy->_builder workoutActivities];
+      v8[0] = [workoutActivities lastObject];
       MEMORY[0x277D82BD8](0);
-      MEMORY[0x277D82BD8](v6);
+      MEMORY[0x277D82BD8](workoutActivities);
       _HKInitializeLogging();
       oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -1624,21 +1624,21 @@ uint64_t __53__NLSessionActivity__startPrecisionStartAccumulators__block_invoke(
 - (id)currentIntervalWorkoutActivity
 {
   v11 = *MEMORY[0x277D85DE8];
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v8[0] = 0;
   if ([(WOCoreLiveWorkoutConfiguration *)self->_configuration isInterval])
   {
-    v2 = [(HKLiveWorkoutBuilder *)v9->_builder currentWorkoutActivity];
+    currentWorkoutActivity = [(HKLiveWorkoutBuilder *)selfCopy->_builder currentWorkoutActivity];
     v3 = v8[0];
-    v8[0] = v2;
+    v8[0] = currentWorkoutActivity;
     MEMORY[0x277D82BD8](v3);
     if (!v8[0])
     {
-      v6 = [(HKLiveWorkoutBuilder *)v9->_builder workoutActivities];
-      v8[0] = [v6 lastObject];
+      workoutActivities = [(HKLiveWorkoutBuilder *)selfCopy->_builder workoutActivities];
+      v8[0] = [workoutActivities lastObject];
       MEMORY[0x277D82BD8](0);
-      MEMORY[0x277D82BD8](v6);
+      MEMORY[0x277D82BD8](workoutActivities);
       _HKInitializeLogging();
       oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -1660,21 +1660,21 @@ uint64_t __53__NLSessionActivity__startPrecisionStartAccumulators__block_invoke(
 
 - (id)currentActivityStartDate
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(NLSessionActivity *)self currentWorkoutActivity];
   if (location[0])
   {
-    v6 = [location[0] startDate];
+    startDate = [location[0] startDate];
   }
 
   else
   {
-    v6 = [(HKLiveWorkoutBuilder *)v5->_builder startDate];
+    startDate = [(HKLiveWorkoutBuilder *)selfCopy->_builder startDate];
   }
 
   objc_storeStrong(location, 0);
-  v2 = v6;
+  v2 = startDate;
 
   return v2;
 }
@@ -1682,12 +1682,12 @@ uint64_t __53__NLSessionActivity__startPrecisionStartAccumulators__block_invoke(
 - (id)_latestCompletedIntervalActivityEndDate
 {
   v23 = *MEMORY[0x277D85DE8];
-  v21 = self;
+  selfCopy = self;
   v20[1] = a2;
   v20[0] = 0;
   if ([(WOCoreLiveWorkoutConfiguration *)self->_configuration isInterval])
   {
-    location = [(HKLiveWorkoutBuilder *)v21->_builder workoutActivities];
+    location = [(HKLiveWorkoutBuilder *)selfCopy->_builder workoutActivities];
     memset(__b, 0, sizeof(__b));
     obj = MEMORY[0x277D82BE0](location);
     v16 = [obj countByEnumeratingWithState:__b objects:v22 count:16];
@@ -1707,25 +1707,25 @@ uint64_t __53__NLSessionActivity__startPrecisionStartAccumulators__block_invoke(
         v18 = *(__b[1] + 8 * v13);
         if (v20[0])
         {
-          v10 = [v18 endDate];
-          MEMORY[0x277D82BD8](v10);
-          if (v10)
+          endDate = [v18 endDate];
+          MEMORY[0x277D82BD8](endDate);
+          if (endDate)
           {
             v8 = v20[0];
-            v9 = [v18 endDate];
+            endDate2 = [v18 endDate];
             v4 = [v8 laterDate:?];
             v5 = v20[0];
             v20[0] = v4;
             MEMORY[0x277D82BD8](v5);
-            MEMORY[0x277D82BD8](v9);
+            MEMORY[0x277D82BD8](endDate2);
           }
         }
 
         else
         {
-          v2 = [v18 endDate];
+          endDate3 = [v18 endDate];
           v3 = v20[0];
-          v20[0] = v2;
+          v20[0] = endDate3;
           MEMORY[0x277D82BD8](v3);
         }
 
@@ -1756,32 +1756,32 @@ uint64_t __53__NLSessionActivity__startPrecisionStartAccumulators__block_invoke(
 - (void)_onRecovery
 {
   v42 = *MEMORY[0x277D85DE8];
-  v39 = self;
+  selfCopy = self;
   v38[1] = a2;
-  v2 = [(HKLiveWorkoutBuilder *)self->_builder startDate];
-  activityBeginDate = v39->_activityBeginDate;
-  v39->_activityBeginDate = v2;
+  startDate = [(HKLiveWorkoutBuilder *)self->_builder startDate];
+  activityBeginDate = selfCopy->_activityBeginDate;
+  selfCopy->_activityBeginDate = startDate;
   MEMORY[0x277D82BD8](activityBeginDate);
-  v38[0] = [(NLSessionActivity *)v39 currentActivityStartDate];
-  v37 = [(NLSessionActivity *)v39 currentWorkoutEvents];
+  v38[0] = [(NLSessionActivity *)selfCopy currentActivityStartDate];
+  currentWorkoutEvents = [(NLSessionActivity *)selfCopy currentWorkoutEvents];
   _HKInitializeLogging();
   location = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v35 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(location, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v41, v39->_activityBeginDate, v38[0]);
+    __os_log_helper_16_2_2_8_64_8_64(v41, selfCopy->_activityBeginDate, v38[0]);
     _os_log_impl(&dword_20AEA4000, location, v35, "[SessionActivity] Attempting recovery with builder start date %@, current activity start date %@", v41, 0x16u);
   }
 
   objc_storeStrong(&location, 0);
-  [(NLSessionActivity *)v39 _startAccumulatingElapsedTimeWithStartDate:v39->_activityBeginDate];
-  [(NLSessionActivity *)v39 _startIdempotentAccumulatingDataWithStartDate:v39->_activityBeginDate];
-  [(NLSessionActivity *)v39 _startActivityDependentAccumulatingDataWithStartDate:v38[0]];
-  v26 = [(NLSessionActivity *)v39 segmentAccumulator];
-  [(WOSegmentAccumulator *)v26 recoverSegmentMarkersFrom:v37];
-  MEMORY[0x277D82BD8](v26);
+  [(NLSessionActivity *)selfCopy _startAccumulatingElapsedTimeWithStartDate:selfCopy->_activityBeginDate];
+  [(NLSessionActivity *)selfCopy _startIdempotentAccumulatingDataWithStartDate:selfCopy->_activityBeginDate];
+  [(NLSessionActivity *)selfCopy _startActivityDependentAccumulatingDataWithStartDate:v38[0]];
+  segmentAccumulator = [(NLSessionActivity *)selfCopy segmentAccumulator];
+  [(WOSegmentAccumulator *)segmentAccumulator recoverSegmentMarkersFrom:currentWorkoutEvents];
+  MEMORY[0x277D82BD8](segmentAccumulator);
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x277D82BE0](v39->_splitsAccumulators);
+  obj = MEMORY[0x277D82BE0](selfCopy->_splitsAccumulators);
   v28 = [obj countByEnumeratingWithState:__b objects:v40 count:16];
   if (v28)
   {
@@ -1797,7 +1797,7 @@ uint64_t __53__NLSessionActivity__startPrecisionStartAccumulators__block_invoke(
       }
 
       v34 = *(__b[1] + 8 * v24);
-      [v34 recoverFrom:v37];
+      [v34 recoverFrom:currentWorkoutEvents];
       ++v24;
       if (v22 + 1 >= v25)
       {
@@ -1812,81 +1812,81 @@ uint64_t __53__NLSessionActivity__startPrecisionStartAccumulators__block_invoke(
   }
 
   MEMORY[0x277D82BD8](obj);
-  v20 = [(NLSessionActivity *)v39 splitsDisplayAccumulator];
-  [(WOSplitsDisplayAccumulator *)v20 assignStartValues];
-  MEMORY[0x277D82BD8](v20);
-  v21 = [(HKLiveWorkoutBuilder *)v39->_builder metadata];
-  v32 = [v21 objectForKeyedSubscript:@"_HKPrivateMetadataKeyFastestPace"];
-  MEMORY[0x277D82BD8](v21);
+  splitsDisplayAccumulator = [(NLSessionActivity *)selfCopy splitsDisplayAccumulator];
+  [(WOSplitsDisplayAccumulator *)splitsDisplayAccumulator assignStartValues];
+  MEMORY[0x277D82BD8](splitsDisplayAccumulator);
+  metadata = [(HKLiveWorkoutBuilder *)selfCopy->_builder metadata];
+  v32 = [metadata objectForKeyedSubscript:@"_HKPrivateMetadataKeyFastestPace"];
+  MEMORY[0x277D82BD8](metadata);
   if (v32)
   {
-    v19 = [(NLSessionActivity *)v39 paceAccumulator];
+    paceAccumulator = [(NLSessionActivity *)selfCopy paceAccumulator];
     [v32 doubleValue];
-    [(NLSessionActivityPaceAccumulator *)v19 recoverFastestPace:?];
-    MEMORY[0x277D82BD8](v19);
+    [(NLSessionActivityPaceAccumulator *)paceAccumulator recoverFastestPace:?];
+    MEMORY[0x277D82BD8](paceAccumulator);
   }
 
-  [(WORaceCoordinator *)v39->_raceCoordinator recoverRoutePoints];
-  v15 = [(WORaceCoordinator *)v39->_raceCoordinator racePositionProvider];
-  [(WORacePositionProvider *)v15 recoverFrom:v39->_builder];
-  MEMORY[0x277D82BD8](v15);
-  v16 = v39;
-  v17 = [(WORaceCoordinator *)v39->_raceCoordinator racePositionProvider];
+  [(WORaceCoordinator *)selfCopy->_raceCoordinator recoverRoutePoints];
+  racePositionProvider = [(WORaceCoordinator *)selfCopy->_raceCoordinator racePositionProvider];
+  [(WORacePositionProvider *)racePositionProvider recoverFrom:selfCopy->_builder];
+  MEMORY[0x277D82BD8](racePositionProvider);
+  v16 = selfCopy;
+  racePositionProvider2 = [(WORaceCoordinator *)selfCopy->_raceCoordinator racePositionProvider];
   [(NLSessionActivity *)v16 addSessionStateObserver:?];
-  MEMORY[0x277D82BD8](v17);
-  [(NLPacerDistanceGoalProgressAccumulator *)v39->_pacerDistanceGoalProgressAccumulator recoverFrom:v37];
-  v18 = [(HKLiveWorkoutBuilder *)v39->_builder _currentSnapshot];
-  v31 = [v18 fiui_finalWorkoutUUID];
-  MEMORY[0x277D82BD8](v18);
-  if (v31)
+  MEMORY[0x277D82BD8](racePositionProvider2);
+  [(NLPacerDistanceGoalProgressAccumulator *)selfCopy->_pacerDistanceGoalProgressAccumulator recoverFrom:currentWorkoutEvents];
+  _currentSnapshot = [(HKLiveWorkoutBuilder *)selfCopy->_builder _currentSnapshot];
+  fiui_finalWorkoutUUID = [_currentSnapshot fiui_finalWorkoutUUID];
+  MEMORY[0x277D82BD8](_currentSnapshot);
+  if (fiui_finalWorkoutUUID)
   {
-    [(NLSessionActivityElevationAccumulator *)v39->_elevationAccumulator recoverLocationsFromStartDate:v38[0] workoutUUID:v31];
-    [(NLSessionActivityLocationPositionAccumulator *)v39->_locationPositionAccumulator recoverLocationsFromStartDate:v38[0] healthStore:v39->_healthStore workoutUUID:v31];
+    [(NLSessionActivityElevationAccumulator *)selfCopy->_elevationAccumulator recoverLocationsFromStartDate:v38[0] workoutUUID:fiui_finalWorkoutUUID];
+    [(NLSessionActivityLocationPositionAccumulator *)selfCopy->_locationPositionAccumulator recoverLocationsFromStartDate:v38[0] healthStore:selfCopy->_healthStore workoutUUID:fiui_finalWorkoutUUID];
   }
 
-  v8 = [(NLSessionActivity *)v39 builder];
-  v7 = [(HKLiveWorkoutBuilder *)v8 workoutEvents];
+  builder = [(NLSessionActivity *)selfCopy builder];
+  workoutEvents = [(HKLiveWorkoutBuilder *)builder workoutEvents];
   v30 = FIFilterPauseResumeEvents();
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
-  downhillSnowSportsAccumulator = v39->_downhillSnowSportsAccumulator;
-  v11 = [(NLSessionActivity *)v39 builder];
-  v10 = [(HKLiveWorkoutBuilder *)v11 downhillRunEvents];
-  healthStore = v39->_healthStore;
+  MEMORY[0x277D82BD8](workoutEvents);
+  MEMORY[0x277D82BD8](builder);
+  downhillSnowSportsAccumulator = selfCopy->_downhillSnowSportsAccumulator;
+  builder2 = [(NLSessionActivity *)selfCopy builder];
+  downhillRunEvents = [(HKLiveWorkoutBuilder *)builder2 downhillRunEvents];
+  healthStore = selfCopy->_healthStore;
   [NLSessionActivityDownhillSnowSportsAccumulator recoverWithDownhillRunEvents:"recoverWithDownhillRunEvents:pauseResumeEvents:healthStore:completionHandler:" pauseResumeEvents:? healthStore:? completionHandler:?];
-  MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
-  [(NLSessionActivity *)v39 _setState:2];
-  v29 = [(HKLiveWorkoutBuilder *)v39->_builder nl_lastUnbalancedPauseEvent];
-  v13 = [v29 metadata];
-  v12 = [v13 objectForKeyedSubscript:@"_HKPrivateAutoPause"];
-  v14 = [v12 BOOLValue];
+  MEMORY[0x277D82BD8](downhillRunEvents);
+  MEMORY[0x277D82BD8](builder2);
+  [(NLSessionActivity *)selfCopy _setState:2];
+  nl_lastUnbalancedPauseEvent = [(HKLiveWorkoutBuilder *)selfCopy->_builder nl_lastUnbalancedPauseEvent];
+  metadata2 = [nl_lastUnbalancedPauseEvent metadata];
+  v12 = [metadata2 objectForKeyedSubscript:@"_HKPrivateAutoPause"];
+  bOOLValue = [v12 BOOLValue];
   MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
-  if (v14)
+  MEMORY[0x277D82BD8](metadata2);
+  if (bOOLValue)
   {
-    v5 = v39;
-    v6 = [MEMORY[0x277CBEAA8] date];
+    v5 = selfCopy;
+    date = [MEMORY[0x277CBEAA8] date];
     [NLSessionActivity _setPauseTracking:v5 atDate:"_setPauseTracking:atDate:eventSource:" eventSource:0];
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](date);
   }
 
-  else if (v29)
+  else if (nl_lastUnbalancedPauseEvent)
   {
-    [(FIUIStateMachine *)v39->_stateMachine event:6];
+    [(FIUIStateMachine *)selfCopy->_stateMachine event:6];
   }
 
   else
   {
-    [(FIUIStateMachine *)v39->_stateMachine event:5];
+    [(FIUIStateMachine *)selfCopy->_stateMachine event:5];
   }
 
-  [(WOSessionActivityDeviceObserver *)v39->_deviceObserver startObserving];
-  objc_storeStrong(&v29, 0);
+  [(WOSessionActivityDeviceObserver *)selfCopy->_deviceObserver startObserving];
+  objc_storeStrong(&nl_lastUnbalancedPauseEvent, 0);
   objc_storeStrong(&v30, 0);
-  objc_storeStrong(&v31, 0);
+  objc_storeStrong(&fiui_finalWorkoutUUID, 0);
   objc_storeStrong(&v32, 0);
-  objc_storeStrong(&v37, 0);
+  objc_storeStrong(&currentWorkoutEvents, 0);
   objc_storeStrong(v38, 0);
   *MEMORY[0x277D85DE8];
 }
@@ -1916,9 +1916,9 @@ void __32__NLSessionActivity__onRecovery__block_invoke(NSObject *a1, void *a2)
 
 - (void)_onActivating
 {
-  v2 = [(NLSessionActivity *)self weatherManager];
-  [(NLSessionActivityWeatherManager *)v2 setWorkoutStartDate:self->_activityBeginDate];
-  MEMORY[0x277D82BD8](v2);
+  weatherManager = [(NLSessionActivity *)self weatherManager];
+  [(NLSessionActivityWeatherManager *)weatherManager setWorkoutStartDate:self->_activityBeginDate];
+  MEMORY[0x277D82BD8](weatherManager);
   [(NLSessionActivity *)self _startBuilderWithStartDate:self->_activityBeginDate];
   [(NLSessionActivity *)self _startAccumulatingElapsedTimeWithStartDate:self->_activityBeginDate];
 }
@@ -1927,9 +1927,9 @@ void __32__NLSessionActivity__onRecovery__block_invoke(NSObject *a1, void *a2)
 {
   [(NLSessionActivity *)self _stopAccumulatingPrecisionStartAccumulators];
   [(NLSessionActivity *)self _startAccumulatingDataWithStartDate:self->_activityBeginDate];
-  v2 = [(WORaceCoordinator *)self->_raceCoordinator racePositionProvider];
+  racePositionProvider = [(WORaceCoordinator *)self->_raceCoordinator racePositionProvider];
   [(NLSessionActivity *)self addSessionStateObserver:?];
-  MEMORY[0x277D82BD8](v2);
+  MEMORY[0x277D82BD8](racePositionProvider);
   [(NLSessionActivity *)self _powerLogWorkoutStart];
   [(NLSessionActivity *)self _updateMetadataAtWorkoutFirstActivation];
   [(FIUIStateMachine *)self->_stateMachine event:5];
@@ -1937,21 +1937,21 @@ void __32__NLSessionActivity__onRecovery__block_invoke(NSObject *a1, void *a2)
 
 - (void)_updateMetadataAtWorkoutFirstActivation
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
-  v5 = [(NLSessionActivity *)self configuration];
-  v6 = [(WOCoreLiveWorkoutConfiguration *)v5 startSource];
-  MEMORY[0x277D82BD8](v5);
-  if (v6 == 9)
+  configuration = [(NLSessionActivity *)self configuration];
+  startSource = [(WOCoreLiveWorkoutConfiguration *)configuration startSource];
+  MEMORY[0x277D82BD8](configuration);
+  if (startSource == 9)
   {
     v7[0] = [MEMORY[0x277CBEB38] dictionary];
-    v4 = [(NLSessionActivity *)v8 configuration];
-    v3 = [(WOCoreLiveWorkoutConfiguration *)v4 dateUserRequestedToStartWorkout];
+    configuration2 = [(NLSessionActivity *)selfCopy configuration];
+    dateUserRequestedToStartWorkout = [(WOCoreLiveWorkoutConfiguration *)configuration2 dateUserRequestedToStartWorkout];
     v2 = *MEMORY[0x277CCE1A0];
     [v7[0] setObject:? forKeyedSubscript:?];
-    MEMORY[0x277D82BD8](v3);
-    MEMORY[0x277D82BD8](v4);
-    [(NLSessionActivity *)v8 insertOrUpdateMetadata:v7[0] forceTopLevel:1];
+    MEMORY[0x277D82BD8](dateUserRequestedToStartWorkout);
+    MEMORY[0x277D82BD8](configuration2);
+    [(NLSessionActivity *)selfCopy insertOrUpdateMetadata:v7[0] forceTopLevel:1];
     objc_storeStrong(v7, 0);
   }
 }
@@ -1966,61 +1966,61 @@ void __32__NLSessionActivity__onRecovery__block_invoke(NSObject *a1, void *a2)
 - (void)_onEnding
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   [(NLSessionActivity *)self _updateHeartRateUpdateAvailability];
-  [(NLSessionActivity *)v17 _setState:10];
-  v11 = [(WORaceCoordinator *)v17->_raceCoordinator racePositionProvider];
-  [(NLSessionActivity *)v17 removeSessionStateObserver:?];
-  MEMORY[0x277D82BD8](v11);
-  [(NLSessionActivity *)v17 _stopTrackingActivityWithEndDate:v17->_activityEndDate];
-  if (![(NSDate *)v17->_activityEndDate isEqualToDate:v17->_activityBeginDate])
+  [(NLSessionActivity *)selfCopy _setState:10];
+  racePositionProvider = [(WORaceCoordinator *)selfCopy->_raceCoordinator racePositionProvider];
+  [(NLSessionActivity *)selfCopy removeSessionStateObserver:?];
+  MEMORY[0x277D82BD8](racePositionProvider);
+  [(NLSessionActivity *)selfCopy _stopTrackingActivityWithEndDate:selfCopy->_activityEndDate];
+  if (![(NSDate *)selfCopy->_activityEndDate isEqualToDate:selfCopy->_activityBeginDate])
   {
-    [(NLSessionActivity *)v17 _logStatistics];
+    [(NLSessionActivity *)selfCopy _logStatistics];
   }
 
-  [(HKLiveWorkoutBuilder *)v17->_builder elapsedTimeAtDate:v17->_activityEndDate];
+  [(HKLiveWorkoutBuilder *)selfCopy->_builder elapsedTimeAtDate:selfCopy->_activityEndDate];
   v15 = v2;
   _HKInitializeLogging();
   location = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(location, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_2_8_0_8_64(v18, v15, v17->_activityEndDate);
+    __os_log_helper_16_2_2_8_0_8_64(v18, v15, selfCopy->_activityEndDate);
     _os_log_impl(&dword_20AEA4000, location, v13, "[SessionActivity] onEnding called. Builder elapsed time: %f, at end date: %@", v18, 0x16u);
   }
 
   objc_storeStrong(&location, 0);
-  v9 = [(NLSessionActivity *)v17 lifecycleDelegate];
-  v10 = [(NLSessionActivityLifecycleDelegate *)v9 shouldAutoDiscardBasedOnDuration:*&v15];
-  MEMORY[0x277D82BD8](v9);
+  lifecycleDelegate = [(NLSessionActivity *)selfCopy lifecycleDelegate];
+  v10 = [(NLSessionActivityLifecycleDelegate *)lifecycleDelegate shouldAutoDiscardBasedOnDuration:*&v15];
+  MEMORY[0x277D82BD8](lifecycleDelegate);
   if (v10)
   {
-    [(FIUIStateMachine *)v17->_stateMachine event:16];
+    [(FIUIStateMachine *)selfCopy->_stateMachine event:16];
   }
 
   else
   {
-    v12 = [(HKLiveWorkoutBuilder *)v17->_builder _currentSnapshot];
-    v8 = [(NLSessionActivity *)v17 demoDataProvider];
-    MEMORY[0x277D82BD8](v8);
-    if (v8)
+    _currentSnapshot = [(HKLiveWorkoutBuilder *)selfCopy->_builder _currentSnapshot];
+    demoDataProvider = [(NLSessionActivity *)selfCopy demoDataProvider];
+    MEMORY[0x277D82BD8](demoDataProvider);
+    if (demoDataProvider)
     {
-      v7 = [(NLSessionActivity *)v17 demoDataProvider];
-      v3 = [(NLWorkoutDemoDataProvider *)v7 demoWorkoutWithSnapshot:v12];
-      v4 = v12;
-      v12 = v3;
+      demoDataProvider2 = [(NLSessionActivity *)selfCopy demoDataProvider];
+      v3 = [(NLWorkoutDemoDataProvider *)demoDataProvider2 demoWorkoutWithSnapshot:_currentSnapshot];
+      v4 = _currentSnapshot;
+      _currentSnapshot = v3;
       MEMORY[0x277D82BD8](v4);
-      MEMORY[0x277D82BD8](v7);
+      MEMORY[0x277D82BD8](demoDataProvider2);
     }
 
-    v5 = [(NLSessionActivity *)v17 lifecycleDelegate];
-    [(NLSessionActivityLifecycleDelegate *)v5 sessionActivity:v17 willEndWithHKWorkoutSnapshot:v12];
-    MEMORY[0x277D82BD8](v5);
-    v6 = [(NLSessionActivity *)v17 savingDelegate];
-    [(NLSessionActivitySavingDelegate *)v6 activity:v17 willSaveWorkoutForSnapshot:v12];
-    MEMORY[0x277D82BD8](v6);
-    objc_storeStrong(&v12, 0);
+    lifecycleDelegate2 = [(NLSessionActivity *)selfCopy lifecycleDelegate];
+    [(NLSessionActivityLifecycleDelegate *)lifecycleDelegate2 sessionActivity:selfCopy willEndWithHKWorkoutSnapshot:_currentSnapshot];
+    MEMORY[0x277D82BD8](lifecycleDelegate2);
+    savingDelegate = [(NLSessionActivity *)selfCopy savingDelegate];
+    [(NLSessionActivitySavingDelegate *)savingDelegate activity:selfCopy willSaveWorkoutForSnapshot:_currentSnapshot];
+    MEMORY[0x277D82BD8](savingDelegate);
+    objc_storeStrong(&_currentSnapshot, 0);
   }
 
   *MEMORY[0x277D85DE8];
@@ -2028,43 +2028,43 @@ void __32__NLSessionActivity__onRecovery__block_invoke(NSObject *a1, void *a2)
 
 - (void)_onSaving
 {
-  v23 = self;
+  selfCopy = self;
   v22[1] = a2;
   [(NLSessionActivity *)self _stopActivityDependentAccumulatorsWithActivity:0];
-  v22[0] = [(HKLiveWorkoutBuilder *)v23->_builder _currentSnapshot];
-  v8 = [(NLSessionActivity *)v23 demoDataProvider];
-  MEMORY[0x277D82BD8](v8);
-  if (v8)
+  v22[0] = [(HKLiveWorkoutBuilder *)selfCopy->_builder _currentSnapshot];
+  demoDataProvider = [(NLSessionActivity *)selfCopy demoDataProvider];
+  MEMORY[0x277D82BD8](demoDataProvider);
+  if (demoDataProvider)
   {
-    v7 = [(NLSessionActivity *)v23 demoDataProvider];
-    v2 = [(NLWorkoutDemoDataProvider *)v7 demoWorkoutWithSnapshot:v22[0]];
+    demoDataProvider2 = [(NLSessionActivity *)selfCopy demoDataProvider];
+    v2 = [(NLWorkoutDemoDataProvider *)demoDataProvider2 demoWorkoutWithSnapshot:v22[0]];
     v3 = v22[0];
     v22[0] = v2;
     MEMORY[0x277D82BD8](v3);
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](demoDataProvider2);
   }
 
-  v4 = [(NLSessionActivity *)v23 lifecycleDelegate];
-  [(NLSessionActivityLifecycleDelegate *)v4 sessionActivity:v23 didUpdateWorkout:v22[0] workoutIsFinal:0];
-  MEMORY[0x277D82BD8](v4);
-  v5 = v23;
+  lifecycleDelegate = [(NLSessionActivity *)selfCopy lifecycleDelegate];
+  [(NLSessionActivityLifecycleDelegate *)lifecycleDelegate sessionActivity:selfCopy didUpdateWorkout:v22[0] workoutIsFinal:0];
+  MEMORY[0x277D82BD8](lifecycleDelegate);
+  v5 = selfCopy;
   v15 = MEMORY[0x277D85DD0];
   v16 = -1073741824;
   v17 = 0;
   v18 = __30__NLSessionActivity__onSaving__block_invoke;
   v19 = &unk_277D88B48;
-  v20 = MEMORY[0x277D82BE0](v23);
+  v20 = MEMORY[0x277D82BE0](selfCopy);
   v21 = MEMORY[0x277D82BE0](v22[0]);
   [(NLSessionActivity *)v5 _notifyDataObserversWithBlock:&v15];
-  v6 = [(NLSessionActivity *)v23 builder];
+  builder = [(NLSessionActivity *)selfCopy builder];
   v9 = MEMORY[0x277D85DD0];
   v10 = -1073741824;
   v11 = 0;
   v12 = __30__NLSessionActivity__onSaving__block_invoke_2;
   v13 = &unk_277D88B98;
-  v14 = MEMORY[0x277D82BE0](v23);
-  [(HKLiveWorkoutBuilder *)v6 finishWorkoutWithCompletion:&v9];
-  MEMORY[0x277D82BD8](v6);
+  v14 = MEMORY[0x277D82BE0](selfCopy);
+  [(HKLiveWorkoutBuilder *)builder finishWorkoutWithCompletion:&v9];
+  MEMORY[0x277D82BD8](builder);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(&v20, 0);
@@ -2135,7 +2135,7 @@ void __30__NLSessionActivity__onSaving__block_invoke_3(uint64_t a1)
 
 - (void)_onErrorActivating
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   _HKInitializeLogging();
   location[0] = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -2149,20 +2149,20 @@ void __30__NLSessionActivity__onSaving__block_invoke_3(uint64_t a1)
   }
 
   objc_storeStrong(location, 0);
-  [(FIUIStateMachine *)v7->_stateMachine event:16];
+  [(FIUIStateMachine *)selfCopy->_stateMachine event:16];
 }
 
 - (void)_onDiscarding
 {
-  v2 = [(NLSessionActivity *)self builder];
-  [(HKLiveWorkoutBuilder *)v2 discardWorkout];
-  MEMORY[0x277D82BD8](v2);
-  v3 = [(NLSessionActivity *)self lifecycleDelegate];
-  [(NLSessionActivityLifecycleDelegate *)v3 didDiscardSessionActivity:self];
-  MEMORY[0x277D82BD8](v3);
-  v4 = [(NLSessionActivity *)self savingDelegate];
-  [(NLSessionActivitySavingDelegate *)v4 activityDidDiscardWorkout:self];
-  MEMORY[0x277D82BD8](v4);
+  builder = [(NLSessionActivity *)self builder];
+  [(HKLiveWorkoutBuilder *)builder discardWorkout];
+  MEMORY[0x277D82BD8](builder);
+  lifecycleDelegate = [(NLSessionActivity *)self lifecycleDelegate];
+  [(NLSessionActivityLifecycleDelegate *)lifecycleDelegate didDiscardSessionActivity:self];
+  MEMORY[0x277D82BD8](lifecycleDelegate);
+  savingDelegate = [(NLSessionActivity *)self savingDelegate];
+  [(NLSessionActivitySavingDelegate *)savingDelegate activityDidDiscardWorkout:self];
+  MEMORY[0x277D82BD8](savingDelegate);
   [(FIUIStateMachine *)self->_stateMachine event:20];
 }
 
@@ -2177,39 +2177,39 @@ void __30__NLSessionActivity__onSaving__block_invoke_3(uint64_t a1)
 - (void)_startTracking
 {
   v15 = *MEMORY[0x277D85DE8];
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
   if ([(NLSessionActivity *)self state]== 1)
   {
-    activityBeginDate = v12->_activityBeginDate;
+    activityBeginDate = selfCopy->_activityBeginDate;
     v7 = 0;
     if (activityBeginDate)
     {
-      objc_storeStrong(&v12->_activityBeginDate, activityBeginDate);
+      objc_storeStrong(&selfCopy->_activityBeginDate, activityBeginDate);
     }
 
     else
     {
-      v8 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       v7 = 1;
-      objc_storeStrong(&v12->_activityBeginDate, v8);
+      objc_storeStrong(&selfCopy->_activityBeginDate, date);
     }
 
     if (v7)
     {
-      MEMORY[0x277D82BD8](v8);
+      MEMORY[0x277D82BD8](date);
     }
 
     _HKInitializeLogging();
     oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_1_8_66(v13, v12->_activityBeginDate);
+      __os_log_helper_16_2_1_8_66(v13, selfCopy->_activityBeginDate);
       _os_log_impl(&dword_20AEA4000, oslog, OS_LOG_TYPE_DEFAULT, "[SessionActivity] Start tracking with activity begin date %{public}@", v13, 0xCu);
     }
 
     objc_storeStrong(&oslog, 0);
-    [(FIUIStateMachine *)v12->_stateMachine event:3];
+    [(FIUIStateMachine *)selfCopy->_stateMachine event:3];
   }
 
   else
@@ -2221,7 +2221,7 @@ void __30__NLSessionActivity__onSaving__block_invoke_3(uint64_t a1)
     {
       log = v11[0];
       type = v10;
-      v5 = NLSessionActivityStateDescription([(NLSessionActivity *)v12 state]);
+      v5 = NLSessionActivityStateDescription([(NLSessionActivity *)selfCopy state]);
       v9 = MEMORY[0x277D82BE0](v5);
       __os_log_helper_16_2_1_8_64(v14, v9);
       _os_log_error_impl(&dword_20AEA4000, log, type, "*** Start tracking called in incorrect state %@", v14, 0xCu);
@@ -2235,20 +2235,20 @@ void __30__NLSessionActivity__onSaving__block_invoke_3(uint64_t a1)
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_startTrackingWithStartDate:(id)a3
+- (void)_startTrackingWithStartDate:(id)date
 {
   v7 = *MEMORY[0x277D85DE8];
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v5->_activityBeginDate && ![(NSDate *)v5->_activityBeginDate isEqual:location[0]])
+  objc_storeStrong(location, date);
+  if (selfCopy->_activityBeginDate && ![(NSDate *)selfCopy->_activityBeginDate isEqual:location[0]])
   {
     _HKInitializeLogging();
     oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_2_2_8_66_8_66(v6, v5->_activityBeginDate, location[0]);
+      __os_log_helper_16_2_2_8_66_8_66(v6, selfCopy->_activityBeginDate, location[0]);
       _os_log_error_impl(&dword_20AEA4000, oslog, OS_LOG_TYPE_ERROR, "[SessionActivity] *** API Misuse: Trying to modify start date in startTracking call: An activity initialized with a start date cannot modify its start date (%{public}@ != %{public}@)", v6, 0x16u);
     }
 
@@ -2256,8 +2256,8 @@ void __30__NLSessionActivity__onSaving__block_invoke_3(uint64_t a1)
     __assert_rtn("[NLSessionActivity _startTrackingWithStartDate:]", "NLSessionActivity.m", 1104, "false");
   }
 
-  objc_storeStrong(&v5->_activityBeginDate, location[0]);
-  [(NLSessionActivity *)v5 _startTracking];
+  objc_storeStrong(&selfCopy->_activityBeginDate, location[0]);
+  [(NLSessionActivity *)selfCopy _startTracking];
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
@@ -2265,7 +2265,7 @@ void __30__NLSessionActivity__onSaving__block_invoke_3(uint64_t a1)
 - (void)_endTracking
 {
   v43 = *MEMORY[0x277D85DE8];
-  v39 = self;
+  selfCopy = self;
   v38[1] = a2;
   _HKInitializeLogging();
   v38[0] = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -2274,17 +2274,17 @@ void __30__NLSessionActivity__onSaving__block_invoke_3(uint64_t a1)
   {
     log = v38[0];
     type = v37;
-    v21 = [(NLSessionActivity *)v39 _stateDescription];
-    v36 = MEMORY[0x277D82BE0](v21);
-    __os_log_helper_16_2_2_8_66_8_66(v42, v36, v39->_activityEndDate);
+    _stateDescription = [(NLSessionActivity *)selfCopy _stateDescription];
+    v36 = MEMORY[0x277D82BE0](_stateDescription);
+    __os_log_helper_16_2_2_8_66_8_66(v42, v36, selfCopy->_activityEndDate);
     _os_log_impl(&dword_20AEA4000, log, type, "End tracking called with %{public}@; activityEndDate: %{public}@;", v42, 0x16u);
-    MEMORY[0x277D82BD8](v21);
+    MEMORY[0x277D82BD8](_stateDescription);
     objc_storeStrong(&v36, 0);
   }
 
   objc_storeStrong(v38, 0);
-  [(NLSessionActivity *)v39 removeMetadata:@"_HKPrivateMetadataKeyAnalyticsIdentifier" forceTopLevel:1];
-  if (v39->_activityEndDate)
+  [(NLSessionActivity *)selfCopy removeMetadata:@"_HKPrivateMetadataKeyAnalyticsIdentifier" forceTopLevel:1];
+  if (selfCopy->_activityEndDate)
   {
     _HKInitializeLogging();
     v27 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -2302,23 +2302,23 @@ void __30__NLSessionActivity__onSaving__block_invoke_3(uint64_t a1)
 
   else
   {
-    v35 = [(HKLiveWorkoutBuilder *)v39->_builder nl_lastUnbalancedPauseEvent];
-    if (v35)
+    nl_lastUnbalancedPauseEvent = [(HKLiveWorkoutBuilder *)selfCopy->_builder nl_lastUnbalancedPauseEvent];
+    if (nl_lastUnbalancedPauseEvent)
     {
-      v18 = [v35 dateInterval];
-      v34 = [v18 startDate];
-      MEMORY[0x277D82BD8](v18);
-      v33 = [(NLSessionActivity *)v39 _latestCompletedIntervalActivityEndDate];
-      if (v33)
+      dateInterval = [nl_lastUnbalancedPauseEvent dateInterval];
+      startDate = [dateInterval startDate];
+      MEMORY[0x277D82BD8](dateInterval);
+      _latestCompletedIntervalActivityEndDate = [(NLSessionActivity *)selfCopy _latestCompletedIntervalActivityEndDate];
+      if (_latestCompletedIntervalActivityEndDate)
       {
-        v17 = [v35 dateInterval];
-        v16 = [v17 startDate];
-        v2 = [v16 laterDate:v33];
-        v3 = v34;
-        v34 = v2;
+        dateInterval2 = [nl_lastUnbalancedPauseEvent dateInterval];
+        startDate2 = [dateInterval2 startDate];
+        v2 = [startDate2 laterDate:_latestCompletedIntervalActivityEndDate];
+        v3 = startDate;
+        startDate = v2;
         MEMORY[0x277D82BD8](v3);
-        MEMORY[0x277D82BD8](v16);
-        MEMORY[0x277D82BD8](v17);
+        MEMORY[0x277D82BD8](startDate2);
+        MEMORY[0x277D82BD8](dateInterval2);
       }
 
       _HKInitializeLogging();
@@ -2326,14 +2326,14 @@ void __30__NLSessionActivity__onSaving__block_invoke_3(uint64_t a1)
       v31 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_2_1_8_64(v41, v34);
+        __os_log_helper_16_2_1_8_64(v41, startDate);
         _os_log_impl(&dword_20AEA4000, v32, v31, "First call to endTracking while workout is paused, ending at %@.", v41, 0xCu);
       }
 
       objc_storeStrong(&v32, 0);
-      objc_storeStrong(&v39->_activityEndDate, v34);
-      objc_storeStrong(&v33, 0);
-      objc_storeStrong(&v34, 0);
+      objc_storeStrong(&selfCopy->_activityEndDate, startDate);
+      objc_storeStrong(&_latestCompletedIntervalActivityEndDate, 0);
+      objc_storeStrong(&startDate, 0);
     }
 
     else
@@ -2350,29 +2350,29 @@ void __30__NLSessionActivity__onSaving__block_invoke_3(uint64_t a1)
       }
 
       objc_storeStrong(&v30, 0);
-      v4 = [MEMORY[0x277CBEAA8] date];
-      activityEndDate = v39->_activityEndDate;
-      v39->_activityEndDate = v4;
+      date = [MEMORY[0x277CBEAA8] date];
+      activityEndDate = selfCopy->_activityEndDate;
+      selfCopy->_activityEndDate = date;
       MEMORY[0x277D82BD8](activityEndDate);
     }
 
-    objc_storeStrong(&v35, 0);
+    objc_storeStrong(&nl_lastUnbalancedPauseEvent, 0);
   }
 
-  if (!v39->_activityBeginDate)
+  if (!selfCopy->_activityBeginDate)
   {
-    objc_storeStrong(&v39->_activityBeginDate, v39->_activityEndDate);
+    objc_storeStrong(&selfCopy->_activityBeginDate, selfCopy->_activityEndDate);
   }
 
-  if ([(NLSessionActivity *)v39 showVideoPlaybackCurrentTime])
+  if ([(NLSessionActivity *)selfCopy showVideoPlaybackCurrentTime])
   {
-    v24 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v10 = MEMORY[0x277CCD7E8];
-    v11 = [MEMORY[0x277CCDAB0] secondUnit];
-    [(SMSeymourElapsedTimeAccumulator *)v39->_seymourElapsedTimeAccumulator videoPlaybackCurrentTime];
-    v23 = [v10 quantityWithUnit:v11 doubleValue:?];
-    MEMORY[0x277D82BD8](v11);
-    [v24 setObject:v23 forKeyedSubscript:*MEMORY[0x277D0A7B0]];
+    secondUnit = [MEMORY[0x277CCDAB0] secondUnit];
+    [(SMSeymourElapsedTimeAccumulator *)selfCopy->_seymourElapsedTimeAccumulator videoPlaybackCurrentTime];
+    v23 = [v10 quantityWithUnit:secondUnit doubleValue:?];
+    MEMORY[0x277D82BD8](secondUnit);
+    [dictionary setObject:v23 forKeyedSubscript:*MEMORY[0x277D0A7B0]];
     _HKInitializeLogging();
     v22 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -2383,32 +2383,32 @@ void __30__NLSessionActivity__onSaving__block_invoke_3(uint64_t a1)
     }
 
     objc_storeStrong(&v22, 0);
-    [(NLSessionActivity *)v39 insertOrUpdateMetadata:v24 forceTopLevel:1];
+    [(NLSessionActivity *)selfCopy insertOrUpdateMetadata:dictionary forceTopLevel:1];
     objc_storeStrong(&v23, 0);
-    objc_storeStrong(&v24, 0);
+    objc_storeStrong(&dictionary, 0);
   }
 
-  v8 = [(NLSessionActivity *)v39 activityType];
-  v9 = [(FIUIWorkoutActivityType *)v8 supportsTrackRunning];
-  MEMORY[0x277D82BD8](v8);
-  if (v9)
+  activityType = [(NLSessionActivity *)selfCopy activityType];
+  supportsTrackRunning = [(FIUIWorkoutActivityType *)activityType supportsTrackRunning];
+  MEMORY[0x277D82BD8](activityType);
+  if (supportsTrackRunning)
   {
     v7 = +[WOCoreTrackRunningCoordinator shared];
     [(WOCoreTrackRunningCoordinator *)v7 reset];
     MEMORY[0x277D82BD8](v7);
   }
 
-  [(FIUIStateMachine *)v39->_stateMachine event:12];
+  [(FIUIStateMachine *)selfCopy->_stateMachine event:12];
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_endCollectionWithEndDate:(id)a3
+- (void)_endCollectionWithEndDate:(id)date
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v9->_endCollectionCalled)
+  objc_storeStrong(location, date);
+  if (selfCopy->_endCollectionCalled)
   {
     _HKInitializeLogging();
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEBUG))
@@ -2431,11 +2431,11 @@ void __30__NLSessionActivity__onSaving__block_invoke_3(uint64_t a1)
   {
     if (location[0])
     {
-      objc_storeStrong(&v9->_activityEndDate, location[0]);
+      objc_storeStrong(&selfCopy->_activityEndDate, location[0]);
     }
 
-    [(FIUIStateMachine *)v9->_stateMachine event:21];
-    v9->_endCollectionCalled = 1;
+    [(FIUIStateMachine *)selfCopy->_stateMachine event:21];
+    selfCopy->_endCollectionCalled = 1;
   }
 
   objc_storeStrong(location, 0);
@@ -2443,7 +2443,7 @@ void __30__NLSessionActivity__onSaving__block_invoke_3(uint64_t a1)
 
 - (void)_onEndingCollection
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   v3 = MEMORY[0x277D85DD0];
   v4 = -1073741824;
@@ -2452,9 +2452,9 @@ void __30__NLSessionActivity__onSaving__block_invoke_3(uint64_t a1)
   v7 = &unk_277D88BC0;
   v8 = MEMORY[0x277D82BE0](self);
   v9[0] = _Block_copy(&v3);
-  v2 = [(NLSessionActivity *)v10 builder];
-  [(HKLiveWorkoutBuilder *)v2 endCollectionWithEndDate:v10->_activityEndDate completion:v9[0]];
-  MEMORY[0x277D82BD8](v2);
+  builder = [(NLSessionActivity *)selfCopy builder];
+  [(HKLiveWorkoutBuilder *)builder endCollectionWithEndDate:selfCopy->_activityEndDate completion:v9[0]];
+  MEMORY[0x277D82BD8](builder);
   objc_storeStrong(v9, 0);
   objc_storeStrong(&v8, 0);
 }
@@ -2490,13 +2490,13 @@ void __40__NLSessionActivity__onEndingCollection__block_invoke(NSObject *a1, cha
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_setState:(unint64_t)a3
+- (void)_setState:(unint64_t)state
 {
   v23 = *MEMORY[0x277D85DE8];
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
-  if (self->_state != a3)
+  stateCopy = state;
+  if (self->_state != state)
   {
     _HKInitializeLogging();
     v17 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -2505,19 +2505,19 @@ void __40__NLSessionActivity__onEndingCollection__block_invoke(NSObject *a1, cha
     {
       log = v17;
       type = v16;
-      v11 = NLSessionActivityStateDescription(v18);
+      v11 = NLSessionActivityStateDescription(stateCopy);
       v15 = MEMORY[0x277D82BE0](v11);
-      __os_log_helper_16_2_2_8_0_8_66(v22, v18, v15);
+      __os_log_helper_16_2_2_8_0_8_66(v22, stateCopy, v15);
       _os_log_impl(&dword_20AEA4000, log, type, "[W] _setState called. Changing activity state to %lu (%{public}@)", v22, 0x16u);
       MEMORY[0x277D82BD8](v11);
       objc_storeStrong(&v15, 0);
     }
 
     objc_storeStrong(&v17, 0);
-    state = v20->_state;
-    v20->_state = v18;
+    state = selfCopy->_state;
+    selfCopy->_state = stateCopy;
     memset(__b, 0, sizeof(__b));
-    obj = [(NSHashTable *)v20->_stateObservers allObjects];
+    obj = [(NSHashTable *)selfCopy->_stateObservers allObjects];
     v8 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v21 count:16];
     if (v8)
     {
@@ -2533,7 +2533,7 @@ void __40__NLSessionActivity__onEndingCollection__block_invoke(NSObject *a1, cha
         }
 
         v13 = *(__b[1] + 8 * v5);
-        [v13 sessionActivity:v20 didChangeFromState:state toState:v18];
+        [v13 sessionActivity:selfCopy didChangeFromState:state toState:stateCopy];
         ++v5;
         if (v3 + 1 >= v6)
         {
@@ -2555,33 +2555,33 @@ void __40__NLSessionActivity__onEndingCollection__block_invoke(NSObject *a1, cha
 
 - (void)_writeConfigurationMetadata
 {
-  v21 = self;
+  selfCopy = self;
   v20[1] = a2;
   v20[0] = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NLSessionActivity activityMoveMode](v21, "activityMoveMode")}];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NLSessionActivity activityMoveMode](selfCopy, "activityMoveMode")}];
   v2 = *MEMORY[0x277CCE158];
   [v20[0] setObject:? forKey:?];
   MEMORY[0x277D82BD8](v10);
-  v12 = [MEMORY[0x277CBEBB0] localTimeZone];
-  v11 = [v12 name];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  name = [localTimeZone name];
   v3 = *MEMORY[0x277CCC530];
   [v20[0] setObject:? forKey:?];
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
+  MEMORY[0x277D82BD8](name);
+  MEMORY[0x277D82BD8](localTimeZone);
   v13 = MEMORY[0x277CCABB0];
-  v15 = [(NLSessionActivity *)v21 configuration];
-  v14 = [v13 numberWithBool:{-[WOCoreLiveWorkoutConfiguration isUltraMode](v15, "isUltraMode")}];
+  configuration = [(NLSessionActivity *)selfCopy configuration];
+  v14 = [v13 numberWithBool:{-[WOCoreLiveWorkoutConfiguration isUltraMode](configuration, "isUltraMode")}];
   v4 = *MEMORY[0x277CCE188];
   [v20[0] setObject:? forKey:?];
   MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
-  v16 = [(NSUUID *)v21->_UUID UUIDString];
+  MEMORY[0x277D82BD8](configuration);
+  uUIDString = [(NSUUID *)selfCopy->_UUID UUIDString];
   [v20[0] setObject:? forKey:?];
-  MEMORY[0x277D82BD8](v16);
-  v17 = [(NLSessionActivity *)v21 activityType];
-  v18 = [(FIUIWorkoutActivityType *)v17 supportsTrackRunning];
-  MEMORY[0x277D82BD8](v17);
-  if (v18)
+  MEMORY[0x277D82BD8](uUIDString);
+  activityType = [(NLSessionActivity *)selfCopy activityType];
+  supportsTrackRunning = [(FIUIWorkoutActivityType *)activityType supportsTrackRunning];
+  MEMORY[0x277D82BD8](activityType);
+  if (supportsTrackRunning)
   {
     v9 = +[WOCoreTrackRunningCoordinator shared];
     location = [(WOCoreTrackRunningCoordinator *)v9 trackId];
@@ -2594,9 +2594,9 @@ void __40__NLSessionActivity__onEndingCollection__block_invoke(NSObject *a1, cha
     }
 
     v6 = +[WOCoreTrackRunningCoordinator shared];
-    v7 = [(WOCoreTrackRunningCoordinator *)v6 didShowTrackPrompt];
+    didShowTrackPrompt = [(WOCoreTrackRunningCoordinator *)v6 didShowTrackPrompt];
     MEMORY[0x277D82BD8](v6);
-    if (v7)
+    if (didShowTrackPrompt)
     {
       v5 = +[WOTrackRunningMetadataKeys promptedForTrackMode];
       [v20[0] setObject:MEMORY[0x277CBEC38] forKey:?];
@@ -2606,220 +2606,220 @@ void __40__NLSessionActivity__onEndingCollection__block_invoke(NSObject *a1, cha
     objc_storeStrong(&location, 0);
   }
 
-  [(NLSessionActivity *)v21 insertOrUpdateMetadata:v20[0] forceTopLevel:1];
+  [(NLSessionActivity *)selfCopy insertOrUpdateMetadata:v20[0] forceTopLevel:1];
   objc_storeStrong(v20, 0);
 }
 
 - (void)_createIdempotentAccumulators
 {
   v30 = *MEMORY[0x277D85DE8];
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   v2 = [[NLSessionActivityEnergyBurnAccumulator alloc] initWithBuilder:self->_builder];
-  energyBurnAccumulator = v28->_energyBurnAccumulator;
-  v28->_energyBurnAccumulator = v2;
+  energyBurnAccumulator = selfCopy->_energyBurnAccumulator;
+  selfCopy->_energyBurnAccumulator = v2;
   MEMORY[0x277D82BD8](energyBurnAccumulator);
-  v4 = [[NLSessionActivityFlightsClimbedAccumulator alloc] initWithBuilder:v28->_builder];
-  flightsClimbedAccumulator = v28->_flightsClimbedAccumulator;
-  v28->_flightsClimbedAccumulator = v4;
+  v4 = [[NLSessionActivityFlightsClimbedAccumulator alloc] initWithBuilder:selfCopy->_builder];
+  flightsClimbedAccumulator = selfCopy->_flightsClimbedAccumulator;
+  selfCopy->_flightsClimbedAccumulator = v4;
   MEMORY[0x277D82BD8](flightsClimbedAccumulator);
-  v6 = [[NLStrideLengthAccumulator alloc] initWithBuilder:v28->_builder];
-  strideLengthAccumulator = v28->_strideLengthAccumulator;
-  v28->_strideLengthAccumulator = v6;
+  v6 = [[NLStrideLengthAccumulator alloc] initWithBuilder:selfCopy->_builder];
+  strideLengthAccumulator = selfCopy->_strideLengthAccumulator;
+  selfCopy->_strideLengthAccumulator = v6;
   MEMORY[0x277D82BD8](strideLengthAccumulator);
-  v8 = [[NLVerticalOscillationAccumulator alloc] initWithBuilder:v28->_builder];
-  verticalOscillationAccumulator = v28->_verticalOscillationAccumulator;
-  v28->_verticalOscillationAccumulator = v8;
+  v8 = [[NLVerticalOscillationAccumulator alloc] initWithBuilder:selfCopy->_builder];
+  verticalOscillationAccumulator = selfCopy->_verticalOscillationAccumulator;
+  selfCopy->_verticalOscillationAccumulator = v8;
   MEMORY[0x277D82BD8](verticalOscillationAccumulator);
-  v10 = [[NLGroundContactTimeAccumulator alloc] initWithBuilder:v28->_builder];
-  groundContactTimeAccumulator = v28->_groundContactTimeAccumulator;
-  v28->_groundContactTimeAccumulator = v10;
+  v10 = [[NLGroundContactTimeAccumulator alloc] initWithBuilder:selfCopy->_builder];
+  groundContactTimeAccumulator = selfCopy->_groundContactTimeAccumulator;
+  selfCopy->_groundContactTimeAccumulator = v10;
   MEMORY[0x277D82BD8](groundContactTimeAccumulator);
-  if ([(WOCoreLiveWorkoutConfiguration *)v28->_configuration isRace])
+  if ([(WOCoreLiveWorkoutConfiguration *)selfCopy->_configuration isRace])
   {
-    v12 = [WORaceCoordinatorFactory makeWithConfiguration:v28->_configuration builder:v28->_builder healthStore:v28->_healthStore];
-    raceCoordinator = v28->_raceCoordinator;
-    v28->_raceCoordinator = v12;
+    v12 = [WORaceCoordinatorFactory makeWithConfiguration:selfCopy->_configuration builder:selfCopy->_builder healthStore:selfCopy->_healthStore];
+    raceCoordinator = selfCopy->_raceCoordinator;
+    selfCopy->_raceCoordinator = v12;
     MEMORY[0x277D82BD8](raceCoordinator);
     _HKInitializeLogging();
     location[0] = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [(WORaceCoordinator *)v28->_raceCoordinator routeTitle];
-      v25 = [(WORaceCoordinator *)v28->_raceCoordinator clusterUUID];
-      __os_log_helper_16_2_2_8_64_8_64(v29, v26, v25);
+      routeTitle = [(WORaceCoordinator *)selfCopy->_raceCoordinator routeTitle];
+      clusterUUID = [(WORaceCoordinator *)selfCopy->_raceCoordinator clusterUUID];
+      __os_log_helper_16_2_2_8_64_8_64(v29, routeTitle, clusterUUID);
       _os_log_impl(&dword_20AEA4000, location[0], OS_LOG_TYPE_DEFAULT, "Race: Starting for route: %@, cluster %@", v29, 0x16u);
-      MEMORY[0x277D82BD8](v25);
-      MEMORY[0x277D82BD8](v26);
+      MEMORY[0x277D82BD8](clusterUUID);
+      MEMORY[0x277D82BD8](routeTitle);
     }
 
     objc_storeStrong(location, 0);
-    [(WORaceCoordinator *)v28->_raceCoordinator activate];
+    [(WORaceCoordinator *)selfCopy->_raceCoordinator activate];
   }
 
   v14 = [NLSessionActivityNonMachineElapsedTimeAccumulator alloc];
-  v15 = [(NLSessionActivityNonMachineElapsedTimeAccumulator *)v14 initWithBuilder:v28->_builder];
-  nonMachineElapsedTimeAccumulator = v28->_nonMachineElapsedTimeAccumulator;
-  v28->_nonMachineElapsedTimeAccumulator = v15;
+  v15 = [(NLSessionActivityNonMachineElapsedTimeAccumulator *)v14 initWithBuilder:selfCopy->_builder];
+  nonMachineElapsedTimeAccumulator = selfCopy->_nonMachineElapsedTimeAccumulator;
+  selfCopy->_nonMachineElapsedTimeAccumulator = v15;
   MEMORY[0x277D82BD8](nonMachineElapsedTimeAccumulator);
   v17 = objc_alloc_init(NLSessionActivityMachineElapsedTimeAccumulator);
-  machineElapsedTimeAccumulator = v28->_machineElapsedTimeAccumulator;
-  v28->_machineElapsedTimeAccumulator = v17;
+  machineElapsedTimeAccumulator = selfCopy->_machineElapsedTimeAccumulator;
+  selfCopy->_machineElapsedTimeAccumulator = v17;
   MEMORY[0x277D82BD8](machineElapsedTimeAccumulator);
-  [(NLSessionActivity *)v28 addSessionStateObserver:v28->_machineElapsedTimeAccumulator];
+  [(NLSessionActivity *)selfCopy addSessionStateObserver:selfCopy->_machineElapsedTimeAccumulator];
   v22 = MEMORY[0x277CCDBE8];
-  v21 = [(FIUIWorkoutActivityType *)v28->_activityType identifier];
-  [v22 fiui_isHeartRateSupportedForActivityType:v21 isIndoor:{-[FIUIWorkoutActivityType isIndoor](v28->_activityType, "isIndoor")}];
+  identifier = [(FIUIWorkoutActivityType *)selfCopy->_activityType identifier];
+  [v22 fiui_isHeartRateSupportedForActivityType:identifier isIndoor:{-[FIUIWorkoutActivityType isIndoor](selfCopy->_activityType, "isIndoor")}];
   v23 = [WOHeartRatePrecisionStartAccumulator alloc];
-  v24 = [(NLSessionActivity *)v28 healthStore];
+  healthStore = [(NLSessionActivity *)selfCopy healthStore];
   v19 = [WOHeartRatePrecisionStartAccumulator initWithHealthStore:v23 staleTimeout:"initWithHealthStore:staleTimeout:delegate:heartRateSupported:" delegate:30.0 heartRateSupported:?];
-  heartRatePrecisionStartAccumulator = v28->_heartRatePrecisionStartAccumulator;
-  v28->_heartRatePrecisionStartAccumulator = v19;
+  heartRatePrecisionStartAccumulator = selfCopy->_heartRatePrecisionStartAccumulator;
+  selfCopy->_heartRatePrecisionStartAccumulator = v19;
   MEMORY[0x277D82BD8](heartRatePrecisionStartAccumulator);
-  MEMORY[0x277D82BD8](v24);
+  MEMORY[0x277D82BD8](healthStore);
   *MEMORY[0x277D85DE8];
 }
 
 - (void)_createActivityDependentAccumulators
 {
-  v94 = self;
+  selfCopy = self;
   v93[1] = a2;
   if ([(FIUIWorkoutActivityType *)self->_activityType identifier]== 46)
   {
     v2 = objc_alloc_init(NLSessionActivitySwimmingAccumulator);
-    swimmingAccumulator = v94->_swimmingAccumulator;
-    v94->_swimmingAccumulator = v2;
+    swimmingAccumulator = selfCopy->_swimmingAccumulator;
+    selfCopy->_swimmingAccumulator = v2;
     MEMORY[0x277D82BD8](swimmingAccumulator);
     v72 = [NLSessionActivitySwimStrokeAccumulator alloc];
-    v73 = [(NLSessionActivity *)v94 healthStore];
+    healthStore = [(NLSessionActivity *)selfCopy healthStore];
     v4 = [(NLSessionActivitySwimStrokeAccumulator *)v72 initWithHealthStore:?];
-    swimmingStrokeAccumulator = v94->_swimmingStrokeAccumulator;
-    v94->_swimmingStrokeAccumulator = v4;
+    swimmingStrokeAccumulator = selfCopy->_swimmingStrokeAccumulator;
+    selfCopy->_swimmingStrokeAccumulator = v4;
     MEMORY[0x277D82BD8](swimmingStrokeAccumulator);
-    MEMORY[0x277D82BD8](v73);
+    MEMORY[0x277D82BD8](healthStore);
   }
 
   else
   {
-    if ([(FIUIWorkoutActivityType *)v94->_activityType isDownhillSnowSport])
+    if ([(FIUIWorkoutActivityType *)selfCopy->_activityType isDownhillSnowSport])
     {
       v6 = objc_alloc_init(NLSessionActivityDownhillSnowSportsAccumulator);
-      downhillSnowSportsAccumulator = v94->_downhillSnowSportsAccumulator;
-      v94->_downhillSnowSportsAccumulator = v6;
+      downhillSnowSportsAccumulator = selfCopy->_downhillSnowSportsAccumulator;
+      selfCopy->_downhillSnowSportsAccumulator = v6;
     }
 
     else
     {
-      v8 = [[NLSessionActivityDistanceAccumulator alloc] initWithBuilder:v94->_builder activityType:v94->_activityType];
-      distanceAccumulator = v94->_distanceAccumulator;
-      v94->_distanceAccumulator = v8;
+      v8 = [[NLSessionActivityDistanceAccumulator alloc] initWithBuilder:selfCopy->_builder activityType:selfCopy->_activityType];
+      distanceAccumulator = selfCopy->_distanceAccumulator;
+      selfCopy->_distanceAccumulator = v8;
       MEMORY[0x277D82BD8](distanceAccumulator);
       v10 = objc_alloc_init(NLSessionActivityMachineDistanceAccumulator);
-      downhillSnowSportsAccumulator = v94->_machineDistanceAccumulator;
-      v94->_machineDistanceAccumulator = v10;
+      downhillSnowSportsAccumulator = selfCopy->_machineDistanceAccumulator;
+      selfCopy->_machineDistanceAccumulator = v10;
     }
 
     MEMORY[0x277D82BD8](downhillSnowSportsAccumulator);
   }
 
-  v93[0] = [objc_alloc(MEMORY[0x277D0A828]) initWithWorkoutActivityType:v94->_activityType activityMoveMode:v94->_activityMoveMode];
-  v92 = [v93[0] orderedSupportedMetrics];
+  v93[0] = [objc_alloc(MEMORY[0x277D0A828]) initWithWorkoutActivityType:selfCopy->_activityType activityMoveMode:selfCopy->_activityMoveMode];
+  orderedSupportedMetrics = [v93[0] orderedSupportedMetrics];
   location = MEMORY[0x277D82BE0](*MEMORY[0x277CCCC38]);
-  if ([(FIUIWorkoutActivityType *)v94->_activityType identifier]== 13)
+  if ([(FIUIWorkoutActivityType *)selfCopy->_activityType identifier]== 13)
   {
     objc_storeStrong(&location, *MEMORY[0x277CCC9C0]);
   }
 
-  if ([v92 containsObject:&unk_282279820] & 1) != 0 || (objc_msgSend(v92, "containsObject:", &unk_282279838) & 1) != 0 || (objc_msgSend(v92, "containsObject:", &unk_282279850))
+  if ([orderedSupportedMetrics containsObject:&unk_282279820] & 1) != 0 || (objc_msgSend(orderedSupportedMetrics, "containsObject:", &unk_282279838) & 1) != 0 || (objc_msgSend(orderedSupportedMetrics, "containsObject:", &unk_282279850))
   {
-    v90 = [(NLSessionActivityPowerAccumulator *)v94->_powerAccumulator workoutAlertDelegate];
+    workoutAlertDelegate = [(NLSessionActivityPowerAccumulator *)selfCopy->_powerAccumulator workoutAlertDelegate];
     v11 = [NLSessionActivityPowerAccumulator alloc];
-    v12 = [(NLSessionActivityPowerAccumulator *)v11 initWithBuilder:v94->_builder activityType:v94->_activityType healthStore:v94->_healthStore liveWorkoutConfiguration:v94->_configuration workoutSettingsManager:v93[0] quantityTypeIdentifier:location];
-    powerAccumulator = v94->_powerAccumulator;
-    v94->_powerAccumulator = v12;
+    v12 = [(NLSessionActivityPowerAccumulator *)v11 initWithBuilder:selfCopy->_builder activityType:selfCopy->_activityType healthStore:selfCopy->_healthStore liveWorkoutConfiguration:selfCopy->_configuration workoutSettingsManager:v93[0] quantityTypeIdentifier:location];
+    powerAccumulator = selfCopy->_powerAccumulator;
+    selfCopy->_powerAccumulator = v12;
     MEMORY[0x277D82BD8](powerAccumulator);
-    [(NLSessionActivityPowerAccumulator *)v94->_powerAccumulator setWorkoutAlertDelegate:v90];
-    objc_storeStrong(&v90, 0);
+    [(NLSessionActivityPowerAccumulator *)selfCopy->_powerAccumulator setWorkoutAlertDelegate:workoutAlertDelegate];
+    objc_storeStrong(&workoutAlertDelegate, 0);
   }
 
-  if ([v92 containsObject:&unk_282279868] & 1) != 0 || (objc_msgSend(v92, "containsObject:", &unk_282279880))
+  if ([orderedSupportedMetrics containsObject:&unk_282279868] & 1) != 0 || (objc_msgSend(orderedSupportedMetrics, "containsObject:", &unk_282279880))
   {
     v14 = [NLSessionActivityElevationAccumulator alloc];
-    v15 = [(NLSessionActivityElevationAccumulator *)v14 initWithBuilder:v94->_builder healthStore:v94->_healthStore liveWorkoutConfiguration:v94->_configuration workoutSettingsManager:v93[0] elevationUnit:v94->_elevationUnit delegate:v94];
-    elevationAccumulator = v94->_elevationAccumulator;
-    v94->_elevationAccumulator = v15;
+    v15 = [(NLSessionActivityElevationAccumulator *)v14 initWithBuilder:selfCopy->_builder healthStore:selfCopy->_healthStore liveWorkoutConfiguration:selfCopy->_configuration workoutSettingsManager:v93[0] elevationUnit:selfCopy->_elevationUnit delegate:selfCopy];
+    elevationAccumulator = selfCopy->_elevationAccumulator;
+    selfCopy->_elevationAccumulator = v15;
     MEMORY[0x277D82BD8](elevationAccumulator);
   }
 
-  if ([(FIUIWorkoutActivityType *)v94->_activityType supportsLocationPositionTracking])
+  if ([(FIUIWorkoutActivityType *)selfCopy->_activityType supportsLocationPositionTracking])
   {
-    v89 = [(NLSessionActivityLocationPositionAccumulator *)v94->_locationPositionAccumulator alertDelegate];
+    alertDelegate = [(NLSessionActivityLocationPositionAccumulator *)selfCopy->_locationPositionAccumulator alertDelegate];
     v17 = [NLSessionActivityLocationPositionAccumulator alloc];
-    v18 = [(NLSessionActivityLocationPositionAccumulator *)v17 initWithBuilder:v94->_builder liveWorkoutConfiguration:v94->_configuration];
-    locationPositionAccumulator = v94->_locationPositionAccumulator;
-    v94->_locationPositionAccumulator = v18;
+    v18 = [(NLSessionActivityLocationPositionAccumulator *)v17 initWithBuilder:selfCopy->_builder liveWorkoutConfiguration:selfCopy->_configuration];
+    locationPositionAccumulator = selfCopy->_locationPositionAccumulator;
+    selfCopy->_locationPositionAccumulator = v18;
     MEMORY[0x277D82BD8](locationPositionAccumulator);
-    [(NLSessionActivityLocationPositionAccumulator *)v94->_locationPositionAccumulator setDelegate:v94];
-    [(NLSessionActivityLocationPositionAccumulator *)v94->_locationPositionAccumulator setAlertDelegate:v89];
-    objc_storeStrong(&v89, 0);
+    [(NLSessionActivityLocationPositionAccumulator *)selfCopy->_locationPositionAccumulator setDelegate:selfCopy];
+    [(NLSessionActivityLocationPositionAccumulator *)selfCopy->_locationPositionAccumulator setAlertDelegate:alertDelegate];
+    objc_storeStrong(&alertDelegate, 0);
   }
 
-  v94->_currentFastestPace = 0.0;
-  [(NLSessionActivityNonMachinePaceAccumulator *)v94->_nonMachinePaceAccumulator setPaceDelegate:?];
+  selfCopy->_currentFastestPace = 0.0;
+  [(NLSessionActivityNonMachinePaceAccumulator *)selfCopy->_nonMachinePaceAccumulator setPaceDelegate:?];
   v20 = [NLSessionActivityNonMachinePaceAccumulator alloc];
-  v21 = [(NLSessionActivityNonMachinePaceAccumulator *)v20 initWithBuilder:v94->_builder activityType:v94->_activityType activityMoveMode:v94->_activityMoveMode];
-  nonMachinePaceAccumulator = v94->_nonMachinePaceAccumulator;
-  v94->_nonMachinePaceAccumulator = v21;
+  v21 = [(NLSessionActivityNonMachinePaceAccumulator *)v20 initWithBuilder:selfCopy->_builder activityType:selfCopy->_activityType activityMoveMode:selfCopy->_activityMoveMode];
+  nonMachinePaceAccumulator = selfCopy->_nonMachinePaceAccumulator;
+  selfCopy->_nonMachinePaceAccumulator = v21;
   MEMORY[0x277D82BD8](nonMachinePaceAccumulator);
-  [(NLSessionActivityMachinePaceAccumulator *)v94->_machinePaceAccumulator setPaceDelegate:0];
+  [(NLSessionActivityMachinePaceAccumulator *)selfCopy->_machinePaceAccumulator setPaceDelegate:0];
   v23 = [NLSessionActivityMachinePaceAccumulator alloc];
-  v24 = [(NLSessionActivityMachinePaceAccumulator *)v23 initWithActivityType:v94->_activityType];
-  machinePaceAccumulator = v94->_machinePaceAccumulator;
-  v94->_machinePaceAccumulator = v24;
+  v24 = [(NLSessionActivityMachinePaceAccumulator *)v23 initWithActivityType:selfCopy->_activityType];
+  machinePaceAccumulator = selfCopy->_machinePaceAccumulator;
+  selfCopy->_machinePaceAccumulator = v24;
   MEMORY[0x277D82BD8](machinePaceAccumulator);
-  v70 = v94;
-  v71 = [(NLSessionActivity *)v94 paceAccumulator];
-  [(NLSessionActivityPaceAccumulator *)v71 setPaceDelegate:v70];
-  MEMORY[0x277D82BD8](v71);
-  if ([(WOCoreLiveWorkoutConfiguration *)v94->_configuration isPacer])
+  v70 = selfCopy;
+  paceAccumulator = [(NLSessionActivity *)selfCopy paceAccumulator];
+  [(NLSessionActivityPaceAccumulator *)paceAccumulator setPaceDelegate:v70];
+  MEMORY[0x277D82BD8](paceAccumulator);
+  if ([(WOCoreLiveWorkoutConfiguration *)selfCopy->_configuration isPacer])
   {
-    v26 = [NLGhostPacerAccumulatorFactory makeWithActivityType:v94->_activityType liveWorkoutConfiguration:v94->_configuration];
-    ghostPacerAccumulator = v94->_ghostPacerAccumulator;
-    v94->_ghostPacerAccumulator = v26;
+    v26 = [NLGhostPacerAccumulatorFactory makeWithActivityType:selfCopy->_activityType liveWorkoutConfiguration:selfCopy->_configuration];
+    ghostPacerAccumulator = selfCopy->_ghostPacerAccumulator;
+    selfCopy->_ghostPacerAccumulator = v26;
     MEMORY[0x277D82BD8](ghostPacerAccumulator);
-    v28 = [NLPacerDistanceGoalProgressAccumulatorFactory makeWithBuilder:v94->_builder configuration:v94->_configuration];
-    pacerDistanceGoalProgressAccumulator = v94->_pacerDistanceGoalProgressAccumulator;
-    v94->_pacerDistanceGoalProgressAccumulator = v28;
+    v28 = [NLPacerDistanceGoalProgressAccumulatorFactory makeWithBuilder:selfCopy->_builder configuration:selfCopy->_configuration];
+    pacerDistanceGoalProgressAccumulator = selfCopy->_pacerDistanceGoalProgressAccumulator;
+    selfCopy->_pacerDistanceGoalProgressAccumulator = v28;
     MEMORY[0x277D82BD8](pacerDistanceGoalProgressAccumulator);
   }
 
-  if ([v92 containsObject:&unk_282279898])
+  if ([orderedSupportedMetrics containsObject:&unk_282279898])
   {
     v30 = [NLSessionActivityRollingPaceAccumulator alloc];
-    v31 = [(NLSessionActivityRollingPaceAccumulator *)v30 initWithBuilder:v94->_builder activityType:v94->_activityType distanceUnit:v94->_distanceUnit healthStore:v94->_healthStore];
-    rollingPaceAccumulator = v94->_rollingPaceAccumulator;
-    v94->_rollingPaceAccumulator = v31;
+    v31 = [(NLSessionActivityRollingPaceAccumulator *)v30 initWithBuilder:selfCopy->_builder activityType:selfCopy->_activityType distanceUnit:selfCopy->_distanceUnit healthStore:selfCopy->_healthStore];
+    rollingPaceAccumulator = selfCopy->_rollingPaceAccumulator;
+    selfCopy->_rollingPaceAccumulator = v31;
     MEMORY[0x277D82BD8](rollingPaceAccumulator);
   }
 
-  [(NLSessionActivityHeartRateAccumulator *)v94->_heartRateAccumulator setDelegate:0];
-  v69 = [(NLSessionActivity *)v94 configuration];
+  [(NLSessionActivityHeartRateAccumulator *)selfCopy->_heartRateAccumulator setDelegate:0];
+  configuration = [(NLSessionActivity *)selfCopy configuration];
   v87 = 0;
   v85 = 0;
-  if ([(WOCoreLiveWorkoutConfiguration *)v69 isUltraMode])
+  if ([(WOCoreLiveWorkoutConfiguration *)configuration isUltraMode])
   {
     v33 = [NLHeartRateAverageAccumulator alloc];
-    v88 = [(NLHeartRateAverageAccumulator *)v33 initWithBuilder:v94->_builder averageInterval:300.0];
+    v88 = [(NLHeartRateAverageAccumulator *)v33 initWithBuilder:selfCopy->_builder averageInterval:300.0];
     v87 = 1;
-    objc_storeStrong(&v94->_heartRateAccumulator, v88);
+    objc_storeStrong(&selfCopy->_heartRateAccumulator, v88);
   }
 
   else
   {
     v34 = [NLSessionActivityHeartRateAccumulator alloc];
-    v86 = [(NLSessionActivityHeartRateAccumulator *)v34 initWithBuilder:v94->_builder staleTimeout:30.0];
+    v86 = [(NLSessionActivityHeartRateAccumulator *)v34 initWithBuilder:selfCopy->_builder staleTimeout:30.0];
     v85 = 1;
-    objc_storeStrong(&v94->_heartRateAccumulator, v86);
+    objc_storeStrong(&selfCopy->_heartRateAccumulator, v86);
   }
 
   if (v85)
@@ -2832,15 +2832,15 @@ void __40__NLSessionActivity__onEndingCollection__block_invoke(NSObject *a1, cha
     MEMORY[0x277D82BD8](v88);
   }
 
-  MEMORY[0x277D82BD8](v69);
-  [(NLSessionActivityHeartRateAccumulator *)v94->_heartRateAccumulator setDelegate:v94];
+  MEMORY[0x277D82BD8](configuration);
+  [(NLSessionActivityHeartRateAccumulator *)selfCopy->_heartRateAccumulator setDelegate:selfCopy];
   v83 = 0;
-  v68 = 0;
-  if ([v92 containsObject:&unk_2822798B0])
+  supportsHeartRateZones = 0;
+  if ([orderedSupportedMetrics containsObject:&unk_2822798B0])
   {
     v84 = +[WOUserDevicesBehaviors shared];
     v83 = 1;
-    v68 = [(WOUserDevicesBehaviors *)v84 supportsHeartRateZones];
+    supportsHeartRateZones = [(WOUserDevicesBehaviors *)v84 supportsHeartRateZones];
   }
 
   if (v83)
@@ -2848,102 +2848,102 @@ void __40__NLSessionActivity__onEndingCollection__block_invoke(NSObject *a1, cha
     MEMORY[0x277D82BD8](v84);
   }
 
-  if (v68)
+  if (supportsHeartRateZones)
   {
-    v82 = [(NLSessionActivityHeartRateZonesAccumulator *)v94->_heartRateZonesAccumulator workoutAlertDelegate];
-    [WOWorkoutAlertTimingConstants alertHoldoffTimeWithLiveWorkoutConfiguration:v94->_configuration];
+    workoutAlertDelegate2 = [(NLSessionActivityHeartRateZonesAccumulator *)selfCopy->_heartRateZonesAccumulator workoutAlertDelegate];
+    [WOWorkoutAlertTimingConstants alertHoldoffTimeWithLiveWorkoutConfiguration:selfCopy->_configuration];
     v81 = v35;
     v65 = [NLSessionActivityHeartRateZonesAccumulator alloc];
-    builder = v94->_builder;
-    healthStore = v94->_healthStore;
-    v64 = [(NLSessionActivity *)v94 shouldSplitByActivity];
-    v66 = [(WOCoreLiveWorkoutConfiguration *)v94->_configuration currentHeartRateTargetZone];
-    v36 = [(NLSessionActivityHeartRateZonesAccumulator *)v65 initWithBuilder:builder healthStore:healthStore staleTimeout:v64 alertHoldoffTime:30.0 shouldSplitByActivity:v81 targetZone:?];
-    heartRateZonesAccumulator = v94->_heartRateZonesAccumulator;
-    v94->_heartRateZonesAccumulator = v36;
+    builder = selfCopy->_builder;
+    healthStore = selfCopy->_healthStore;
+    shouldSplitByActivity = [(NLSessionActivity *)selfCopy shouldSplitByActivity];
+    currentHeartRateTargetZone = [(WOCoreLiveWorkoutConfiguration *)selfCopy->_configuration currentHeartRateTargetZone];
+    v36 = [(NLSessionActivityHeartRateZonesAccumulator *)v65 initWithBuilder:builder healthStore:healthStore staleTimeout:shouldSplitByActivity alertHoldoffTime:30.0 shouldSplitByActivity:v81 targetZone:?];
+    heartRateZonesAccumulator = selfCopy->_heartRateZonesAccumulator;
+    selfCopy->_heartRateZonesAccumulator = v36;
     MEMORY[0x277D82BD8](heartRateZonesAccumulator);
-    MEMORY[0x277D82BD8](v66);
-    [(NLSessionActivityHeartRateZonesAccumulator *)v94->_heartRateZonesAccumulator setWorkoutAlertDelegate:v82];
-    [(NLSessionActivityHeartRateZonesAccumulator *)v94->_heartRateZonesAccumulator setHeartRateZoneConfigurationDelegate:v94];
+    MEMORY[0x277D82BD8](currentHeartRateTargetZone);
+    [(NLSessionActivityHeartRateZonesAccumulator *)selfCopy->_heartRateZonesAccumulator setWorkoutAlertDelegate:workoutAlertDelegate2];
+    [(NLSessionActivityHeartRateZonesAccumulator *)selfCopy->_heartRateZonesAccumulator setHeartRateZoneConfigurationDelegate:selfCopy];
     v67 = +[WOUserDevicesBehaviors shared];
     v75 = MEMORY[0x277D85DD0];
     v76 = -1073741824;
     v77 = 0;
     v78 = __57__NLSessionActivity__createActivityDependentAccumulators__block_invoke;
     v79 = &unk_277D88BE8;
-    v80 = MEMORY[0x277D82BE0](v94);
+    v80 = MEMORY[0x277D82BE0](selfCopy);
     [(WOUserDevicesBehaviors *)v67 workoutHealthDataAllowedWhenLockedWithCompletion:&v75];
     MEMORY[0x277D82BD8](v67);
     objc_storeStrong(&v80, 0);
-    objc_storeStrong(&v82, 0);
+    objc_storeStrong(&workoutAlertDelegate2, 0);
   }
 
-  if ([v92 containsObject:&unk_2822798C8])
+  if ([orderedSupportedMetrics containsObject:&unk_2822798C8])
   {
-    v74 = [(NLSessionActivityPowerZonesAccumulator *)v94->_powerZonesAccumulator workoutAlertDelegate];
+    workoutAlertDelegate3 = [(NLSessionActivityPowerZonesAccumulator *)selfCopy->_powerZonesAccumulator workoutAlertDelegate];
     v60 = [NLSessionActivityPowerZonesAccumulator alloc];
-    v55 = v94->_builder;
-    activityType = v94->_activityType;
-    v57 = v94->_healthStore;
+    v55 = selfCopy->_builder;
+    activityType = selfCopy->_activityType;
+    v57 = selfCopy->_healthStore;
     v58 = location;
-    configuration = v94->_configuration;
-    v61 = [(WOCoreLiveWorkoutConfiguration *)configuration currentPowerZonesAlertTargetZone];
+    configuration = selfCopy->_configuration;
+    currentPowerZonesAlertTargetZone = [(WOCoreLiveWorkoutConfiguration *)configuration currentPowerZonesAlertTargetZone];
     v38 = [(NLSessionActivityPowerZonesAccumulator *)v60 initWithBuilder:v55 activityType:activityType healthStore:v57 quantityTypeIdentifier:v58 liveWorkoutConfiguration:configuration targetZone:?];
-    powerZonesAccumulator = v94->_powerZonesAccumulator;
-    v94->_powerZonesAccumulator = v38;
+    powerZonesAccumulator = selfCopy->_powerZonesAccumulator;
+    selfCopy->_powerZonesAccumulator = v38;
     MEMORY[0x277D82BD8](powerZonesAccumulator);
-    MEMORY[0x277D82BD8](v61);
-    [(NLSessionActivityPowerZonesAccumulator *)v94->_powerZonesAccumulator setWorkoutAlertDelegate:v74];
-    [(NLSessionActivityPowerZonesAccumulator *)v94->_powerZonesAccumulator setPowerZonesConfigurationDelegate:v94];
-    objc_storeStrong(&v74, 0);
+    MEMORY[0x277D82BD8](currentPowerZonesAlertTargetZone);
+    [(NLSessionActivityPowerZonesAccumulator *)selfCopy->_powerZonesAccumulator setWorkoutAlertDelegate:workoutAlertDelegate3];
+    [(NLSessionActivityPowerZonesAccumulator *)selfCopy->_powerZonesAccumulator setPowerZonesConfigurationDelegate:selfCopy];
+    objc_storeStrong(&workoutAlertDelegate3, 0);
   }
 
-  if ([(FIUIWorkoutActivityType *)v94->_activityType supportsDistanceSplits])
+  if ([(FIUIWorkoutActivityType *)selfCopy->_activityType supportsDistanceSplits])
   {
-    [(NLSessionActivity *)v94 createSplitsAccumulators];
+    [(NLSessionActivity *)selfCopy createSplitsAccumulators];
   }
 
-  if ([v92 containsObject:&unk_2822798E0] & 1) != 0 || (objc_msgSend(v92, "containsObject:", &unk_2822798F8))
+  if ([orderedSupportedMetrics containsObject:&unk_2822798E0] & 1) != 0 || (objc_msgSend(orderedSupportedMetrics, "containsObject:", &unk_2822798F8))
   {
     v40 = [NLSessionActivityCyclingCadenceAccumulator alloc];
-    v41 = [(NLSessionActivityCyclingCadenceAccumulator *)v40 initWithBuilder:v94->_builder];
-    cyclingCadenceAccumulator = v94->_cyclingCadenceAccumulator;
-    v94->_cyclingCadenceAccumulator = v41;
+    v41 = [(NLSessionActivityCyclingCadenceAccumulator *)v40 initWithBuilder:selfCopy->_builder];
+    cyclingCadenceAccumulator = selfCopy->_cyclingCadenceAccumulator;
+    selfCopy->_cyclingCadenceAccumulator = v41;
     MEMORY[0x277D82BD8](cyclingCadenceAccumulator);
     v43 = [NLSessionActivityPedometerCadenceAccumulator alloc];
-    v44 = [(NLSessionActivityPedometerCadenceAccumulator *)v43 initWithBuilder:v94->_builder];
-    pedometerCadenceAccumulator = v94->_pedometerCadenceAccumulator;
-    v94->_pedometerCadenceAccumulator = v44;
+    v44 = [(NLSessionActivityPedometerCadenceAccumulator *)v43 initWithBuilder:selfCopy->_builder];
+    pedometerCadenceAccumulator = selfCopy->_pedometerCadenceAccumulator;
+    selfCopy->_pedometerCadenceAccumulator = v44;
     MEMORY[0x277D82BD8](pedometerCadenceAccumulator);
     v54 = [NLSessionActivityIntervalCadenceAccumulator alloc];
-    v46 = [(NLSessionActivityIntervalCadenceAccumulator *)v54 initWithBuilder:v94->_builder activityType:[(FIUIWorkoutActivityType *)v94->_activityType identifier]];
-    intervalCadenceAccumulator = v94->_intervalCadenceAccumulator;
-    v94->_intervalCadenceAccumulator = v46;
+    v46 = [(NLSessionActivityIntervalCadenceAccumulator *)v54 initWithBuilder:selfCopy->_builder activityType:[(FIUIWorkoutActivityType *)selfCopy->_activityType identifier]];
+    intervalCadenceAccumulator = selfCopy->_intervalCadenceAccumulator;
+    selfCopy->_intervalCadenceAccumulator = v46;
     MEMORY[0x277D82BD8](intervalCadenceAccumulator);
   }
 
-  if ([v92 containsObject:&unk_282279910] & 1) != 0 || (objc_msgSend(v92, "containsObject:", &unk_282279928))
+  if ([orderedSupportedMetrics containsObject:&unk_282279910] & 1) != 0 || (objc_msgSend(orderedSupportedMetrics, "containsObject:", &unk_282279928))
   {
     v48 = [NLSessionActivityWaterTemperatureAccumulator alloc];
-    v49 = [(NLSessionActivityWaterTemperatureAccumulator *)v48 initWithBuilder:v94->_builder];
-    waterTemperatureAccumulator = v94->_waterTemperatureAccumulator;
-    v94->_waterTemperatureAccumulator = v49;
+    v49 = [(NLSessionActivityWaterTemperatureAccumulator *)v48 initWithBuilder:selfCopy->_builder];
+    waterTemperatureAccumulator = selfCopy->_waterTemperatureAccumulator;
+    selfCopy->_waterTemperatureAccumulator = v49;
     MEMORY[0x277D82BD8](waterTemperatureAccumulator);
   }
 
-  if (v94->_segmentAccumulator)
+  if (selfCopy->_segmentAccumulator)
   {
-    [(NLSessionActivity *)v94 removeSessionDataObserver:v94->_segmentAccumulator];
+    [(NLSessionActivity *)selfCopy removeSessionDataObserver:selfCopy->_segmentAccumulator];
   }
 
   v51 = [WOSegmentAccumulator alloc];
-  v52 = [(WOSegmentAccumulator *)v51 initWithBuilder:v94->_builder activityType:v94->_activityType configuration:v94->_configuration powerAccumulator:v94->_powerAccumulator];
-  segmentAccumulator = v94->_segmentAccumulator;
-  v94->_segmentAccumulator = v52;
+  v52 = [(WOSegmentAccumulator *)v51 initWithBuilder:selfCopy->_builder activityType:selfCopy->_activityType configuration:selfCopy->_configuration powerAccumulator:selfCopy->_powerAccumulator];
+  segmentAccumulator = selfCopy->_segmentAccumulator;
+  selfCopy->_segmentAccumulator = v52;
   MEMORY[0x277D82BD8](segmentAccumulator);
-  [(NLSessionActivity *)v94 addSessionDataObserver:v94->_segmentAccumulator];
+  [(NLSessionActivity *)selfCopy addSessionDataObserver:selfCopy->_segmentAccumulator];
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v92, 0);
+  objc_storeStrong(&orderedSupportedMetrics, 0);
   objc_storeStrong(v93, 0);
 }
 
@@ -2991,54 +2991,54 @@ void __57__NLSessionActivity__createActivityDependentAccumulators__block_invoke_
 
 - (void)createSplitsAccumulators
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   if (self->_splitsDisplayAccumulator)
   {
-    [(NLSessionActivity *)v7 removeSessionDataObserver:v7->_splitsDisplayAccumulator];
+    [(NLSessionActivity *)selfCopy removeSessionDataObserver:selfCopy->_splitsDisplayAccumulator];
   }
 
-  v2 = [WOSplitsAccumulatorFactory makeAccumulatorsWithActivityType:v7->_activityType builder:v7->_builder userDistanceUnit:v7->_distanceUnit powerAccumulator:v7->_powerAccumulator];
-  splitsAccumulators = v7->_splitsAccumulators;
-  v7->_splitsAccumulators = v2;
+  v2 = [WOSplitsAccumulatorFactory makeAccumulatorsWithActivityType:selfCopy->_activityType builder:selfCopy->_builder userDistanceUnit:selfCopy->_distanceUnit powerAccumulator:selfCopy->_powerAccumulator];
+  splitsAccumulators = selfCopy->_splitsAccumulators;
+  selfCopy->_splitsAccumulators = v2;
   MEMORY[0x277D82BD8](splitsAccumulators);
-  location[0] = [WOSplitsAccumulatorFactory displayedAccumulatorFor:v7->_splitsAccumulators userDistanceUnit:v7->_distanceUnit];
+  location[0] = [WOSplitsAccumulatorFactory displayedAccumulatorFor:selfCopy->_splitsAccumulators userDistanceUnit:selfCopy->_distanceUnit];
   if (location[0])
   {
-    v4 = [[WOSplitsDisplayAccumulator alloc] initWithBuilder:v7->_builder splitsAccumulator:location[0] activityType:v7->_activityType powerAccumulator:v7->_powerAccumulator];
-    splitsDisplayAccumulator = v7->_splitsDisplayAccumulator;
-    v7->_splitsDisplayAccumulator = v4;
+    v4 = [[WOSplitsDisplayAccumulator alloc] initWithBuilder:selfCopy->_builder splitsAccumulator:location[0] activityType:selfCopy->_activityType powerAccumulator:selfCopy->_powerAccumulator];
+    splitsDisplayAccumulator = selfCopy->_splitsDisplayAccumulator;
+    selfCopy->_splitsDisplayAccumulator = v4;
     MEMORY[0x277D82BD8](splitsDisplayAccumulator);
-    [(NLSessionActivity *)v7 addSessionDataObserver:v7->_splitsDisplayAccumulator];
+    [(NLSessionActivity *)selfCopy addSessionDataObserver:selfCopy->_splitsDisplayAccumulator];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)updateActivityTypeFromConfiguration:(id)a3
+- (void)updateActivityTypeFromConfiguration:(id)configuration
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NLSessionActivity *)v14 _setupActivityTypeDependentConfigurations];
-  v6 = [(NLSessionActivity *)v14 activityBeginDate];
-  MEMORY[0x277D82BD8](v6);
-  if (v6)
+  objc_storeStrong(location, configuration);
+  [(NLSessionActivity *)selfCopy _setupActivityTypeDependentConfigurations];
+  activityBeginDate = [(NLSessionActivity *)selfCopy activityBeginDate];
+  MEMORY[0x277D82BD8](activityBeginDate);
+  if (activityBeginDate)
   {
-    v4 = v14;
-    v5 = [location[0] startDate];
+    v4 = selfCopy;
+    startDate = [location[0] startDate];
     [(NLSessionActivity *)v4 _startActivityDependentAccumulatingDataWithStartDate:?];
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](startDate);
   }
 
-  v3 = v14;
+  v3 = selfCopy;
   v7 = MEMORY[0x277D85DD0];
   v8 = -1073741824;
   v9 = 0;
   v10 = __57__NLSessionActivity_updateActivityTypeFromConfiguration___block_invoke;
   v11 = &unk_277D88C10;
-  v12 = MEMORY[0x277D82BE0](v14);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   [(NLSessionActivity *)v3 _notifyDataObserversWithBlock:&v7];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
@@ -3061,17 +3061,17 @@ void __57__NLSessionActivity_updateActivityTypeFromConfiguration___block_invoke(
 - (void)_setupGroundElevationManager
 {
   v13 = *MEMORY[0x277D85DE8];
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   self->_groundElevationSupported = [MEMORY[0x277CCDBE8] fiui_activitySupportsMetricType:17 activityType:self->_activityType activityMoveMode:self->_activityMoveMode];
-  if (v10->_groundElevationSupported)
+  if (selfCopy->_groundElevationSupported)
   {
     _HKInitializeLogging();
     location[0] = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     v8 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(FIUIWorkoutActivityType *)v10->_activityType description];
+      v6 = [(FIUIWorkoutActivityType *)selfCopy->_activityType description];
       __os_log_helper_16_2_1_8_64(v12, v6);
       _os_log_impl(&dword_20AEA4000, location[0], v8, "[GroundElevation] ground elevation supported, creating GroundElevationManager. activity_type=%@", v12, 0xCu);
       MEMORY[0x277D82BD8](v6);
@@ -3079,9 +3079,9 @@ void __57__NLSessionActivity_updateActivityTypeFromConfiguration___block_invoke(
 
     objc_storeStrong(location, 0);
     v2 = [NLSessionActivityGroundElevationManager alloc];
-    v3 = [(NLSessionActivityGroundElevationManager *)v2 initWithDelegate:v10];
-    groundElevationManager = v10->_groundElevationManager;
-    v10->_groundElevationManager = v3;
+    v3 = [(NLSessionActivityGroundElevationManager *)v2 initWithDelegate:selfCopy];
+    groundElevationManager = selfCopy->_groundElevationManager;
+    selfCopy->_groundElevationManager = v3;
     MEMORY[0x277D82BD8](groundElevationManager);
   }
 
@@ -3091,7 +3091,7 @@ void __57__NLSessionActivity_updateActivityTypeFromConfiguration___block_invoke(
     oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(FIUIWorkoutActivityType *)v10->_activityType description];
+      v5 = [(FIUIWorkoutActivityType *)selfCopy->_activityType description];
       __os_log_helper_16_2_1_8_64(v11, v5);
       _os_log_impl(&dword_20AEA4000, oslog, OS_LOG_TYPE_DEFAULT, "[GroundElevation] ground elevation not supported, not creating GroundElevationManager. activity_type=%@", v11, 0xCu);
       MEMORY[0x277D82BD8](v5);
@@ -3111,55 +3111,55 @@ void __57__NLSessionActivity_updateActivityTypeFromConfiguration___block_invoke(
   objc_storeStrong(&self->_groundElevationManager, 0);
 }
 
-- (void)insertOrUpdateMetadata:(id)a3 forceTopLevel:(BOOL)a4
+- (void)insertOrUpdateMetadata:(id)metadata forceTopLevel:(BOOL)level
 {
   v24 = *MEMORY[0x277D85DE8];
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v20 = a4;
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v19 = [v7 objectForKey:@"SaveMetadataPerActivity"];
-  MEMORY[0x277D82BD8](v7);
+  objc_storeStrong(location, metadata);
+  levelCopy = level;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v19 = [standardUserDefaults objectForKey:@"SaveMetadataPerActivity"];
+  MEMORY[0x277D82BD8](standardUserDefaults);
   if (v19 && ![v19 BOOLValue])
   {
-    v20 = 1;
+    levelCopy = 1;
   }
 
   v18 = 0;
-  if (!v20 && [(WOCoreLiveWorkoutConfiguration *)v22->_configuration isMultiSport])
+  if (!levelCopy && [(WOCoreLiveWorkoutConfiguration *)selfCopy->_configuration isMultiSport])
   {
-    v18 = [(NLSessionActivity *)v22 insertOrUpdateMetadataToSubActivity:location[0]];
+    v18 = [(NLSessionActivity *)selfCopy insertOrUpdateMetadataToSubActivity:location[0]];
   }
 
   if (!v18)
   {
-    v17 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     _HKInitializeLogging();
     v16 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     v15 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_1_8_66(v23, v17);
+      __os_log_helper_16_2_1_8_66(v23, uUID);
       _os_log_impl(&dword_20AEA4000, v16, v15, "[SessionActivity] [META] Adding metadata (%{public}@) to top level", v23, 0xCu);
     }
 
     objc_storeStrong(&v16, 0);
-    v5 = [(NLSessionActivity *)v22 builder];
+    builder = [(NLSessionActivity *)selfCopy builder];
     v4 = location[0];
     v8 = MEMORY[0x277D85DD0];
     v9 = -1073741824;
     v10 = 0;
     v11 = __58__NLSessionActivity_insertOrUpdateMetadata_forceTopLevel___block_invoke;
     v12 = &unk_277D88C38;
-    v13 = MEMORY[0x277D82BE0](v17);
+    v13 = MEMORY[0x277D82BE0](uUID);
     v14 = MEMORY[0x277D82BE0](location[0]);
-    [(HKLiveWorkoutBuilder *)v5 addMetadata:v4 completion:&v8];
-    MEMORY[0x277D82BD8](v5);
+    [(HKLiveWorkoutBuilder *)builder addMetadata:v4 completion:&v8];
+    MEMORY[0x277D82BD8](builder);
     objc_storeStrong(&v14, 0);
     objc_storeStrong(&v13, 0);
-    objc_storeStrong(&v17, 0);
+    objc_storeStrong(&uUID, 0);
   }
 
   objc_storeStrong(&v19, 0);
@@ -3206,46 +3206,46 @@ void __58__NLSessionActivity_insertOrUpdateMetadata_forceTopLevel___block_invoke
   *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)insertOrUpdateMetadataToSubActivity:(id)a3
+- (BOOL)insertOrUpdateMetadataToSubActivity:(id)activity
 {
   v23 = *MEMORY[0x277D85DE8];
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(NLSessionActivity *)v20 builder];
-  v18 = [(HKLiveWorkoutBuilder *)v7 currentWorkoutActivity];
-  MEMORY[0x277D82BD8](v7);
-  if (v18)
+  objc_storeStrong(location, activity);
+  builder = [(NLSessionActivity *)selfCopy builder];
+  currentWorkoutActivity = [(HKLiveWorkoutBuilder *)builder currentWorkoutActivity];
+  MEMORY[0x277D82BD8](builder);
+  if (currentWorkoutActivity)
   {
-    v17 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     _HKInitializeLogging();
     v16 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     v15 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_1_8_66(v22, v17);
+      __os_log_helper_16_2_1_8_66(v22, uUID);
       _os_log_impl(&dword_20AEA4000, v16, v15, "[SessionActivity] [META] Adding metadata (%{public}@) to current activity", v22, 0xCu);
     }
 
     objc_storeStrong(&v16, 0);
-    v6 = [(NLSessionActivity *)v20 builder];
-    v5 = [v18 UUID];
+    builder2 = [(NLSessionActivity *)selfCopy builder];
+    uUID2 = [currentWorkoutActivity UUID];
     v4 = location[0];
     v8 = MEMORY[0x277D85DD0];
     v9 = -1073741824;
     v10 = 0;
     v11 = __57__NLSessionActivity_insertOrUpdateMetadataToSubActivity___block_invoke;
     v12 = &unk_277D88C38;
-    v13 = MEMORY[0x277D82BE0](v17);
+    v13 = MEMORY[0x277D82BE0](uUID);
     v14 = MEMORY[0x277D82BE0](location[0]);
-    [(HKLiveWorkoutBuilder *)v6 updateActivityWithUUID:v5 addMedatata:v4 completion:&v8];
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    [(HKLiveWorkoutBuilder *)builder2 updateActivityWithUUID:uUID2 addMedatata:v4 completion:&v8];
+    MEMORY[0x277D82BD8](uUID2);
+    MEMORY[0x277D82BD8](builder2);
     v21 = 1;
     objc_storeStrong(&v14, 0);
     objc_storeStrong(&v13, 0);
-    objc_storeStrong(&v17, 0);
+    objc_storeStrong(&uUID, 0);
   }
 
   else
@@ -3253,7 +3253,7 @@ void __58__NLSessionActivity_insertOrUpdateMetadata_forceTopLevel___block_invoke
     v21 = 0;
   }
 
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&currentWorkoutActivity, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
   return v21 & 1;
@@ -3298,14 +3298,14 @@ void __57__NLSessionActivity_insertOrUpdateMetadataToSubActivity___block_invoke(
   *MEMORY[0x277D85DE8];
 }
 
-- (void)removeMetadata:(id)a3 forceTopLevel:(BOOL)a4
+- (void)removeMetadata:(id)metadata forceTopLevel:(BOOL)level
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = a4;
-  v5 = [(NLSessionActivity *)v15 builder];
+  objc_storeStrong(location, metadata);
+  levelCopy = level;
+  builder = [(NLSessionActivity *)selfCopy builder];
   v4 = location[0];
   v7 = MEMORY[0x277D85DD0];
   v8 = -1073741824;
@@ -3313,8 +3313,8 @@ void __57__NLSessionActivity_insertOrUpdateMetadataToSubActivity___block_invoke(
   v10 = __50__NLSessionActivity_removeMetadata_forceTopLevel___block_invoke;
   v11 = &unk_277D88BC0;
   v12 = MEMORY[0x277D82BE0](location[0]);
-  [(HKLiveWorkoutBuilder *)v5 _removeMetadata:v4 completion:&v7];
-  MEMORY[0x277D82BD8](v5);
+  [(HKLiveWorkoutBuilder *)builder _removeMetadata:v4 completion:&v7];
+  MEMORY[0x277D82BD8](builder);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 }
@@ -3358,178 +3358,178 @@ void __50__NLSessionActivity_removeMetadata_forceTopLevel___block_invoke(uint64_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)setMachineSessionDevice:(id)a3
+- (void)setMachineSessionDevice:(id)device
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(HKLiveWorkoutBuilder *)v4->_builder _setDevice:location[0]];
+  objc_storeStrong(location, device);
+  [(HKLiveWorkoutBuilder *)selfCopy->_builder _setDevice:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)addSessionStateObserver:(id)a3
+- (void)addSessionStateObserver:(id)observer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSHashTable *)v4->_stateObservers addObject:location[0]];
+  objc_storeStrong(location, observer);
+  [(NSHashTable *)selfCopy->_stateObservers addObject:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)removeSessionStateObserver:(id)a3
+- (void)removeSessionStateObserver:(id)observer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSHashTable *)v4->_stateObservers removeObject:location[0]];
+  objc_storeStrong(location, observer);
+  [(NSHashTable *)selfCopy->_stateObservers removeObject:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)addSplitsUpdateObserver:(id)a3
+- (void)addSplitsUpdateObserver:(id)observer
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(WOSplitsDisplayAccumulator *)v5->_splitsDisplayAccumulator splitsAccumulator];
-  [(NLSessionActivitySplitsAccumulator *)v3 addSplitObserver:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, observer);
+  splitsAccumulator = [(WOSplitsDisplayAccumulator *)selfCopy->_splitsDisplayAccumulator splitsAccumulator];
+  [(NLSessionActivitySplitsAccumulator *)splitsAccumulator addSplitObserver:location[0]];
+  MEMORY[0x277D82BD8](splitsAccumulator);
   objc_storeStrong(location, 0);
 }
 
-- (void)removeSplitsUpdateObserver:(id)a3
+- (void)removeSplitsUpdateObserver:(id)observer
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(WOSplitsDisplayAccumulator *)v5->_splitsDisplayAccumulator splitsAccumulator];
-  [(NLSessionActivitySplitsAccumulator *)v3 removeSplitObserver:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, observer);
+  splitsAccumulator = [(WOSplitsDisplayAccumulator *)selfCopy->_splitsDisplayAccumulator splitsAccumulator];
+  [(NLSessionActivitySplitsAccumulator *)splitsAccumulator removeSplitObserver:location[0]];
+  MEMORY[0x277D82BD8](splitsAccumulator);
   objc_storeStrong(location, 0);
 }
 
-- (void)addSessionDataObserver:(id)a3
+- (void)addSessionDataObserver:(id)observer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSHashTable *)v4->_dataObservers addObject:location[0]];
+  objc_storeStrong(location, observer);
+  [(NSHashTable *)selfCopy->_dataObservers addObject:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)removeSessionDataObserver:(id)a3
+- (void)removeSessionDataObserver:(id)observer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSHashTable *)v4->_dataObservers removeObject:location[0]];
+  objc_storeStrong(location, observer);
+  [(NSHashTable *)selfCopy->_dataObservers removeObject:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)addActivityChangeObserver:(id)a3
+- (void)addActivityChangeObserver:(id)observer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSHashTable *)v4->_changeObservers addObject:location[0]];
+  objc_storeStrong(location, observer);
+  [(NSHashTable *)selfCopy->_changeObservers addObject:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)removeActivityChangeObserver:(id)a3
+- (void)removeActivityChangeObserver:(id)observer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSHashTable *)v4->_changeObservers removeObject:location[0]];
+  objc_storeStrong(location, observer);
+  [(NSHashTable *)selfCopy->_changeObservers removeObject:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)setRaceCoordinatorDelegate:(id)a3
+- (void)setRaceCoordinatorDelegate:(id)delegate
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, delegate);
   v3 = location[0];
-  v4 = [(WORaceCoordinator *)v9->_raceCoordinator racePositionProvider];
-  [(WORacePositionProvider *)v4 setRaceDelegate:v3];
-  MEMORY[0x277D82BD8](v4);
+  racePositionProvider = [(WORaceCoordinator *)selfCopy->_raceCoordinator racePositionProvider];
+  [(WORacePositionProvider *)racePositionProvider setRaceDelegate:v3];
+  MEMORY[0x277D82BD8](racePositionProvider);
   v5 = location[0];
-  v7 = [(WORaceCoordinator *)v9->_raceCoordinator racePositionProvider];
-  v6 = [(WORacePositionProvider *)v7 metadataDelegate];
-  [(WOMetadataSavingDelegate *)v6 setMetadataProvider:v5];
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
+  racePositionProvider2 = [(WORaceCoordinator *)selfCopy->_raceCoordinator racePositionProvider];
+  metadataDelegate = [(WORacePositionProvider *)racePositionProvider2 metadataDelegate];
+  [(WOMetadataSavingDelegate *)metadataDelegate setMetadataProvider:v5];
+  MEMORY[0x277D82BD8](metadataDelegate);
+  MEMORY[0x277D82BD8](racePositionProvider2);
   objc_storeStrong(location, 0);
 }
 
-- (void)setRaceRouteDelegate:(id)a3
+- (void)setRaceRouteDelegate:(id)delegate
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(WORaceCoordinator *)v4->_raceCoordinator setRouteDelegate:location[0]];
+  objc_storeStrong(location, delegate);
+  [(WORaceCoordinator *)selfCopy->_raceCoordinator setRouteDelegate:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)setPacerAlertDelegate:(id)a3
+- (void)setPacerAlertDelegate:(id)delegate
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NLPacerDistanceGoalProgressAccumulator *)v4->_pacerDistanceGoalProgressAccumulator setWorkoutAlertDelegate:location[0]];
+  objc_storeStrong(location, delegate);
+  [(NLPacerDistanceGoalProgressAccumulator *)selfCopy->_pacerDistanceGoalProgressAccumulator setWorkoutAlertDelegate:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)setWorkoutAlertDelegate:(id)a3
+- (void)setWorkoutAlertDelegate:(id)delegate
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, delegate);
   v3 = location[0];
-  v4 = [(NLSessionActivity *)v14 heartRateZonesAccumulator];
-  [(NLSessionActivityHeartRateZonesAccumulator *)v4 setWorkoutAlertDelegate:v3];
-  MEMORY[0x277D82BD8](v4);
+  heartRateZonesAccumulator = [(NLSessionActivity *)selfCopy heartRateZonesAccumulator];
+  [(NLSessionActivityHeartRateZonesAccumulator *)heartRateZonesAccumulator setWorkoutAlertDelegate:v3];
+  MEMORY[0x277D82BD8](heartRateZonesAccumulator);
   v5 = location[0];
-  v6 = [(NLSessionActivity *)v14 powerZonesAccumulator];
-  [(NLSessionActivityPowerZonesAccumulator *)v6 setWorkoutAlertDelegate:v5];
-  MEMORY[0x277D82BD8](v6);
+  powerZonesAccumulator = [(NLSessionActivity *)selfCopy powerZonesAccumulator];
+  [(NLSessionActivityPowerZonesAccumulator *)powerZonesAccumulator setWorkoutAlertDelegate:v5];
+  MEMORY[0x277D82BD8](powerZonesAccumulator);
   v7 = location[0];
-  v8 = [(NLSessionActivity *)v14 powerAccumulator];
-  [(NLSessionActivityPowerAccumulator *)v8 setWorkoutAlertDelegate:v7];
-  MEMORY[0x277D82BD8](v8);
+  powerAccumulator = [(NLSessionActivity *)selfCopy powerAccumulator];
+  [(NLSessionActivityPowerAccumulator *)powerAccumulator setWorkoutAlertDelegate:v7];
+  MEMORY[0x277D82BD8](powerAccumulator);
   v9 = location[0];
-  v10 = [(NLSessionActivity *)v14 locationPositionAccumulator];
-  [(NLSessionActivityLocationPositionAccumulator *)v10 setAlertDelegate:v9];
-  MEMORY[0x277D82BD8](v10);
+  locationPositionAccumulator = [(NLSessionActivity *)selfCopy locationPositionAccumulator];
+  [(NLSessionActivityLocationPositionAccumulator *)locationPositionAccumulator setAlertDelegate:v9];
+  MEMORY[0x277D82BD8](locationPositionAccumulator);
   v11 = location[0];
-  v12 = [(NLSessionActivity *)v14 pacerDistanceGoalProgressAccumulator];
-  [(NLPacerDistanceGoalProgressAccumulator *)v12 setWorkoutAlertDelegate:v11];
-  MEMORY[0x277D82BD8](v12);
+  pacerDistanceGoalProgressAccumulator = [(NLSessionActivity *)selfCopy pacerDistanceGoalProgressAccumulator];
+  [(NLPacerDistanceGoalProgressAccumulator *)pacerDistanceGoalProgressAccumulator setWorkoutAlertDelegate:v11];
+  MEMORY[0x277D82BD8](pacerDistanceGoalProgressAccumulator);
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)hasGoal
 {
-  v4 = [(NLSessionActivity *)self configuration];
-  v3 = [(WOCoreLiveWorkoutConfiguration *)v4 currentGoal];
-  v5 = [(NLSessionActivityGoal *)v3 goalTypeIdentifier];
-  MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
-  if (v5)
+  configuration = [(NLSessionActivity *)self configuration];
+  currentGoal = [(WOCoreLiveWorkoutConfiguration *)configuration currentGoal];
+  goalTypeIdentifier = [(NLSessionActivityGoal *)currentGoal goalTypeIdentifier];
+  MEMORY[0x277D82BD8](currentGoal);
+  MEMORY[0x277D82BD8](configuration);
+  if (goalTypeIdentifier)
   {
-    if ((v5 - 1) <= 2)
+    if ((goalTypeIdentifier - 1) <= 2)
     {
       v6 = 1;
     }
@@ -3545,66 +3545,66 @@ void __50__NLSessionActivity_removeMetadata_forceTopLevel___block_invoke(uint64_
 
 - (BOOL)isMachineWorkout
 {
-  v4 = [(HKLiveWorkoutBuilder *)self->_builder workoutConfiguration];
-  v2 = [v4 fitnessMachineSessionUUID];
-  v5 = v2 != 0;
-  MEMORY[0x277D82BD8](v2);
-  MEMORY[0x277D82BD8](v4);
+  workoutConfiguration = [(HKLiveWorkoutBuilder *)self->_builder workoutConfiguration];
+  fitnessMachineSessionUUID = [workoutConfiguration fitnessMachineSessionUUID];
+  v5 = fitnessMachineSessionUUID != 0;
+  MEMORY[0x277D82BD8](fitnessMachineSessionUUID);
+  MEMORY[0x277D82BD8](workoutConfiguration);
   return v5;
 }
 
 - (double)videoPlaybackCurrentTime
 {
   seymourElapsedTimeAccumulator = self->_seymourElapsedTimeAccumulator;
-  v5 = [(NLSessionActivity *)self effectivePresentationTime];
+  effectivePresentationTime = [(NLSessionActivity *)self effectivePresentationTime];
   [(SMSeymourElapsedTimeAccumulator *)seymourElapsedTimeAccumulator videoPlaybackTimeAt:?];
   v6 = v2;
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](effectivePresentationTime);
   return v6;
 }
 
 - (id)effectivePresentationTime
 {
-  v4 = [(NLSessionActivity *)self inactiveAppearancePresentationTime];
+  inactiveAppearancePresentationTime = [(NLSessionActivity *)self inactiveAppearancePresentationTime];
   v7 = 0;
   v5 = 0;
-  if (v4)
+  if (inactiveAppearancePresentationTime)
   {
-    v8 = [(NLSessionActivity *)self inactiveAppearancePresentationTime];
+    inactiveAppearancePresentationTime2 = [(NLSessionActivity *)self inactiveAppearancePresentationTime];
     v7 = 1;
-    v2 = MEMORY[0x277D82BE0](v8);
+    v2 = MEMORY[0x277D82BE0](inactiveAppearancePresentationTime2);
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v5 = 1;
-    v2 = MEMORY[0x277D82BE0](v6);
+    v2 = MEMORY[0x277D82BE0](date);
   }
 
   v10 = v2;
   if (v5)
   {
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](date);
   }
 
   if (v7)
   {
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](inactiveAppearancePresentationTime2);
   }
 
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](inactiveAppearancePresentationTime);
 
   return v10;
 }
 
-- (double)durationWithEndDate:(id)a3
+- (double)durationWithEndDate:(id)date
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(HKLiveWorkoutBuilder *)v7->_builder elapsedTimeAtDate:location[0]];
+  objc_storeStrong(location, date);
+  [(HKLiveWorkoutBuilder *)selfCopy->_builder elapsedTimeAtDate:location[0]];
   v5 = v3;
   objc_storeStrong(location, 0);
   return v5;
@@ -3645,20 +3645,20 @@ LABEL_7:
   return v4 & 1;
 }
 
-- (void)updateDistanceUnit:(id)a3
+- (void)updateDistanceUnit:(id)unit
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v5->_distanceUnit, location[0]);
-  [(NLSessionActivityRollingPaceAccumulator *)v5->_rollingPaceAccumulator updateDistanceUnit:location[0]];
-  if ([(FIUIWorkoutActivityType *)v5->_activityType supportsDistanceSplits])
+  objc_storeStrong(location, unit);
+  objc_storeStrong(&selfCopy->_distanceUnit, location[0]);
+  [(NLSessionActivityRollingPaceAccumulator *)selfCopy->_rollingPaceAccumulator updateDistanceUnit:location[0]];
+  if ([(FIUIWorkoutActivityType *)selfCopy->_activityType supportsDistanceSplits])
   {
-    v3 = [WOSplitsAccumulatorFactory displayedAccumulatorFor:v5->_splitsAccumulators userDistanceUnit:v5->_distanceUnit];
+    v3 = [WOSplitsAccumulatorFactory displayedAccumulatorFor:selfCopy->_splitsAccumulators userDistanceUnit:selfCopy->_distanceUnit];
     if (v3)
     {
-      [(WOSplitsDisplayAccumulator *)v5->_splitsDisplayAccumulator setSplitsAccumulator:v3];
+      [(WOSplitsDisplayAccumulator *)selfCopy->_splitsDisplayAccumulator setSplitsAccumulator:v3];
     }
 
     objc_storeStrong(&v3, 0);
@@ -3669,28 +3669,28 @@ LABEL_7:
 
 - (NSUUID)fitnessMachineSessionUUID
 {
-  v3 = [(HKLiveWorkoutBuilder *)self->_builder workoutConfiguration];
-  v4 = [v3 fitnessMachineSessionUUID];
-  MEMORY[0x277D82BD8](v3);
+  workoutConfiguration = [(HKLiveWorkoutBuilder *)self->_builder workoutConfiguration];
+  fitnessMachineSessionUUID = [workoutConfiguration fitnessMachineSessionUUID];
+  MEMORY[0x277D82BD8](workoutConfiguration);
 
-  return v4;
+  return fitnessMachineSessionUUID;
 }
 
 - (NSArray)segmentMarkers
 {
-  v3 = [(NLSessionActivity *)self segmentAccumulator];
-  v4 = [(WOSegmentAccumulator *)v3 completedSegments];
-  MEMORY[0x277D82BD8](v3);
+  segmentAccumulator = [(NLSessionActivity *)self segmentAccumulator];
+  completedSegments = [(WOSegmentAccumulator *)segmentAccumulator completedSegments];
+  MEMORY[0x277D82BD8](segmentAccumulator);
 
-  return v4;
+  return completedSegments;
 }
 
-+ (unint64_t)_eventForPauseTracking:(BOOL)a3 eventSource:(unint64_t)a4
++ (unint64_t)_eventForPauseTracking:(BOOL)tracking eventSource:(unint64_t)source
 {
-  if (a4 == 14)
+  if (source == 14)
   {
     v4 = 11;
-    if (!a3)
+    if (!tracking)
     {
       return 10;
     }
@@ -3700,8 +3700,8 @@ LABEL_7:
 
   else
   {
-    v9 = (_PauseEventSourceIsUserInitiated(a4) ^ 1) & 1;
-    if (a3)
+    v9 = (_PauseEventSourceIsUserInitiated(source) ^ 1) & 1;
+    if (tracking)
     {
       v5 = 8;
       if ((v9 & 1) == 0)
@@ -3725,28 +3725,28 @@ LABEL_7:
   }
 }
 
-- (void)_setPauseTracking:(BOOL)a3 atDate:(id)a4 eventSource:(unint64_t)a5
+- (void)_setPauseTracking:(BOOL)tracking atDate:(id)date eventSource:(unint64_t)source
 {
   v64 = *MEMORY[0x277D85DE8];
-  v59 = self;
+  selfCopy = self;
   v58 = a2;
-  v57 = a3;
+  trackingCopy = tracking;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v55 = a5;
+  objc_storeStrong(&location, date);
+  sourceCopy = source;
   _HKInitializeLogging();
   v54 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v53 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"YES";
-    if (!v57)
+    if (!trackingCopy)
     {
       v5 = @"NO";
     }
 
     v26 = v5;
-    v25 = _PauseEventSourceDescription(v55);
+    v25 = _PauseEventSourceDescription(sourceCopy);
     v52 = MEMORY[0x277D82BE0](v25);
     __os_log_helper_16_2_2_8_66_8_66(v63, v26, v52);
     _os_log_impl(&dword_20AEA4000, v54, v53, "[SessionActivity] pauseTracking:%{public}@ eventSource:%{public}@", v63, 0x16u);
@@ -3755,7 +3755,7 @@ LABEL_7:
   }
 
   objc_storeStrong(&v54, 0);
-  [(NLSessionActivity *)v59 isMachineWorkout];
+  [(NLSessionActivity *)selfCopy isMachineWorkout];
   if (!_PauseControlAllowedFromEventSource())
   {
     _HKInitializeLogging();
@@ -3764,21 +3764,21 @@ LABEL_7:
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"Pause";
-      if (!v57)
+      if (!trackingCopy)
       {
         v6 = @"Unpause";
       }
 
       v23 = v6;
-      v24 = [(NLSessionActivity *)v59 isMachineWorkout];
+      isMachineWorkout = [(NLSessionActivity *)selfCopy isMachineWorkout];
       v7 = @"YES";
-      if (!v24)
+      if (!isMachineWorkout)
       {
         v7 = @"NO";
       }
 
       v22 = v7;
-      v21 = _PauseEventSourceDescription(v55);
+      v21 = _PauseEventSourceDescription(sourceCopy);
       v49 = MEMORY[0x277D82BE0](v21);
       __os_log_helper_16_2_3_8_66_8_66_8_66(v62, v23, v22, v49);
       _os_log_impl(&dword_20AEA4000, v51, v50, "[SessionActivity] %{public}@ not allowed with isMachineWorkout=%{public}@ eventSource=%{public}@", v62, 0x20u);
@@ -3791,19 +3791,19 @@ LABEL_7:
     goto LABEL_40;
   }
 
-  if (v57)
+  if (trackingCopy)
   {
     goto LABEL_24;
   }
 
   v46 = 1;
-  v20 = [(NLSessionActivity *)v59 state];
-  switch(v20)
+  state = [(NLSessionActivity *)selfCopy state];
+  switch(state)
   {
     case 4:
       goto LABEL_19;
     case 5:
-      v46 = v55 == 14;
+      v46 = sourceCopy == 14;
       break;
     case 9:
 LABEL_19:
@@ -3830,46 +3830,46 @@ LABEL_19:
   }
 
 LABEL_24:
-  v42 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v17 = 0;
-  if (v57)
+  if (trackingCopy)
   {
-    v17 = v55 == 4;
+    v17 = sourceCopy == 4;
   }
 
   v41 = v17;
   if (v17)
   {
-    [v42 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"_HKPrivateAutoPause"];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"_HKPrivateAutoPause"];
   }
 
   v16 = 0;
-  if (!v57)
+  if (!trackingCopy)
   {
-    v16 = v55 == 13;
+    v16 = sourceCopy == 13;
   }
 
   v40 = v16;
   if (v16)
   {
-    v39 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     _HKInitializeLogging();
     v38 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     v37 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_1_8_64(v61, v39);
+      __os_log_helper_16_2_1_8_64(v61, date);
       _os_log_impl(&dword_20AEA4000, v38, v37, "[SessionActivity] Builder add resume event with resume reminder acceptance_date=%@", v61, 0xCu);
     }
 
     objc_storeStrong(&v38, 0);
-    [v42 setObject:v39 forKeyedSubscript:*MEMORY[0x277CCE1A0]];
-    objc_storeStrong(&v39, 0);
+    [dictionary setObject:date forKeyedSubscript:*MEMORY[0x277CCE1A0]];
+    objc_storeStrong(&date, 0);
   }
 
   v13 = MEMORY[0x277CCDC68];
   v8 = 2;
-  if (v57)
+  if (trackingCopy)
   {
     v8 = 1;
   }
@@ -3877,9 +3877,9 @@ LABEL_24:
   v14 = v8;
   v15 = objc_alloc(MEMORY[0x277CCA970]);
   v12 = [v15 initWithStartDate:location duration:0.0];
-  if ([v42 count])
+  if ([dictionary count])
   {
-    v11 = v42;
+    v11 = dictionary;
   }
 
   else
@@ -3889,8 +3889,8 @@ LABEL_24:
 
   v36 = [v13 workoutEventWithType:v14 dateInterval:v12 metadata:v11];
   MEMORY[0x277D82BD8](v12);
-  objc_initWeak(&from, v59);
-  builder = v59->_builder;
+  objc_initWeak(&from, selfCopy);
+  builder = selfCopy->_builder;
   v60 = v36;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v60 count:1];
   v28 = MEMORY[0x277D85DD0];
@@ -3899,14 +3899,14 @@ LABEL_24:
   v31 = __58__NLSessionActivity__setPauseTracking_atDate_eventSource___block_invoke;
   v32 = &unk_277D88C88;
   objc_copyWeak(v33, &from);
-  v34 = v57;
-  v33[1] = v55;
+  v34 = trackingCopy;
+  v33[1] = sourceCopy;
   [(HKLiveWorkoutBuilder *)builder addWorkoutEvents:v9 completion:&v28];
   MEMORY[0x277D82BD8](v9);
   objc_destroyWeak(v33);
   objc_destroyWeak(&from);
   objc_storeStrong(&v36, 0);
-  objc_storeStrong(&v42, 0);
+  objc_storeStrong(&dictionary, 0);
   v48 = 0;
 LABEL_40:
   objc_storeStrong(&location, 0);
@@ -3947,17 +3947,17 @@ uint64_t __58__NLSessionActivity__setPauseTracking_atDate_eventSource___block_in
   return MEMORY[0x277D82BD8](WeakRetained);
 }
 
-- (void)_handleBuilderPauseResumeRequestWithSuccess:(BOOL)a3 error:(id)a4 pauseTracking:(BOOL)a5 eventSource:(unint64_t)a6
+- (void)_handleBuilderPauseResumeRequestWithSuccess:(BOOL)success error:(id)error pauseTracking:(BOOL)tracking eventSource:(unint64_t)source
 {
   v28 = *MEMORY[0x277D85DE8];
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
-  v23 = a3;
+  successCopy = success;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v21 = a5;
-  v20 = a6;
-  if (v23)
+  objc_storeStrong(&location, error);
+  trackingCopy = tracking;
+  sourceCopy = source;
+  if (successCopy)
   {
     _HKInitializeLogging();
     oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -3966,18 +3966,18 @@ uint64_t __58__NLSessionActivity__setPauseTracking_atDate_eventSource___block_in
     {
       v6 = oslog;
       v7 = v15;
-      v8 = _PauseEventSourceDescription(v20);
+      v8 = _PauseEventSourceDescription(sourceCopy);
       v14 = MEMORY[0x277D82BE0](v8);
-      __os_log_helper_16_2_2_4_0_8_66(v26, v21, v14);
+      __os_log_helper_16_2_2_4_0_8_66(v26, trackingCopy, v14);
       _os_log_impl(&dword_20AEA4000, v6, v7, "[SessionActivity] Builder add pause event success with pauseTracking:%{BOOL}d eventSource:%{public}@", v26, 0x12u);
       MEMORY[0x277D82BD8](v8);
       objc_storeStrong(&v14, 0);
     }
 
     objc_storeStrong(&oslog, 0);
-    v25->_lastPauseEventSource = v20;
-    [(FIUIStateMachine *)v25->_stateMachine event:[NLSessionActivity _eventForPauseTracking:v21 eventSource:v20]];
-    [(NLSessionActivity *)v25 evaluatePauseResumeForConnectedDevices];
+    selfCopy->_lastPauseEventSource = sourceCopy;
+    [(FIUIStateMachine *)selfCopy->_stateMachine event:[NLSessionActivity _eventForPauseTracking:trackingCopy eventSource:sourceCopy]];
+    [(NLSessionActivity *)selfCopy evaluatePauseResumeForConnectedDevices];
   }
 
   else
@@ -3989,9 +3989,9 @@ uint64_t __58__NLSessionActivity__setPauseTracking_atDate_eventSource___block_in
     {
       log = v19;
       type = v18;
-      v11 = _PauseEventSourceDescription(v20);
+      v11 = _PauseEventSourceDescription(sourceCopy);
       v17 = MEMORY[0x277D82BE0](v11);
-      __os_log_helper_16_2_3_4_0_8_66_8_66(v27, v21, v17, location);
+      __os_log_helper_16_2_3_4_0_8_66_8_66(v27, trackingCopy, v17, location);
       _os_log_error_impl(&dword_20AEA4000, log, type, "[SessionActivity] Builder add pause event failed with pauseTracking:%{BOOL}d eventSource:%{public}@, failed with error %{public}@", v27, 0x1Cu);
       MEMORY[0x277D82BD8](v11);
       objc_storeStrong(&v17, 0);
@@ -4004,25 +4004,25 @@ uint64_t __58__NLSessionActivity__setPauseTracking_atDate_eventSource___block_in
   *MEMORY[0x277D85DE8];
 }
 
-- (void)processPauseOrResumeRequestEvent:(id)a3
+- (void)processPauseOrResumeRequestEvent:(id)event
 {
   v27 = *MEMORY[0x277D85DE8];
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, event);
   if (FIUIIsWorkoutPauseByChordPressEnabled())
   {
     IsPaused = 1;
-    if (!NLSessionActivityIsActive(v24))
+    if (!NLSessionActivityIsActive(selfCopy))
     {
-      IsPaused = NLSessionActivityIsPaused(v24);
+      IsPaused = NLSessionActivityIsPaused(selfCopy);
     }
 
     v18 = IsPaused;
     if (IsPaused)
     {
-      v14 = !NLSessionActivityStateIsPaused([(NLSessionActivity *)v24 state]);
+      v14 = !NLSessionActivityStateIsPaused([(NLSessionActivity *)selfCopy state]);
       _HKInitializeLogging();
       oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -4032,13 +4032,13 @@ uint64_t __58__NLSessionActivity__setPauseTracking_atDate_eventSource___block_in
       }
 
       objc_storeStrong(&oslog, 0);
-      v4 = v24;
+      v4 = selfCopy;
       v3 = v14;
-      v6 = [location[0] dateInterval];
-      v5 = [v6 startDate];
+      dateInterval = [location[0] dateInterval];
+      startDate = [dateInterval startDate];
       [NLSessionActivity _setPauseTracking:v4 atDate:"_setPauseTracking:atDate:eventSource:" eventSource:v3];
-      MEMORY[0x277D82BD8](v5);
-      MEMORY[0x277D82BD8](v6);
+      MEMORY[0x277D82BD8](startDate);
+      MEMORY[0x277D82BD8](dateInterval);
       v19 = 0;
     }
 
@@ -4051,7 +4051,7 @@ uint64_t __58__NLSessionActivity__setPauseTracking_atDate_eventSource___block_in
       {
         v7 = v17;
         v8 = v16;
-        v9 = NLSessionActivityStateDescription([(NLSessionActivity *)v24 state]);
+        v9 = NLSessionActivityStateDescription([(NLSessionActivity *)selfCopy state]);
         v15 = MEMORY[0x277D82BE0](v9);
         __os_log_helper_16_2_1_8_64(v26, v15);
         _os_log_impl(&dword_20AEA4000, v7, v8, "[SessionActivity] Cannot handle PauseOrResumeRequestEvent in state %@", v26, 0xCu);
@@ -4085,15 +4085,15 @@ uint64_t __58__NLSessionActivity__setPauseTracking_atDate_eventSource___block_in
   *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isAutoPauseEffectivelyEnabledForActivityType:(unint64_t)a3
+- (BOOL)isAutoPauseEffectivelyEnabledForActivityType:(unint64_t)type
 {
   v5 = 0;
-  if (a3 == 13)
+  if (type == 13)
   {
     v5 = FIUIIsCyclingAutoPauseEnabled();
   }
 
-  else if (a3 == 37)
+  else if (type == 37)
   {
     v5 = FIUIIsRunningAutoPauseEnabled();
   }
@@ -4107,14 +4107,14 @@ uint64_t __58__NLSessionActivity__setPauseTracking_atDate_eventSource___block_in
   return v4 & 1;
 }
 
-- (void)storeMotionPauseResumeEvent:(id)a3
+- (void)storeMotionPauseResumeEvent:(id)event
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  builder = v6->_builder;
+  objc_storeStrong(location, event);
+  builder = selfCopy->_builder;
   v7[0] = location[0];
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   [HKLiveWorkoutBuilder addWorkoutEvents:"addWorkoutEvents:completion:" completion:?];
@@ -4163,20 +4163,20 @@ void __49__NLSessionActivity_storeMotionPauseResumeEvent___block_invoke_2(uint64
   *MEMORY[0x277D85DE8];
 }
 
-- (void)processMotionPauseResumeEvent:(id)a3
+- (void)processMotionPauseResumeEvent:(id)event
 {
   v32 = *MEMORY[0x277D85DE8];
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(NLSessionActivity *)v29 shouldStoreMotionPauseResumeEventsForActivityType:[(FIUIWorkoutActivityType *)v29->_activityType effectiveTypeIdentifier]])
+  objc_storeStrong(location, event);
+  if ([(NLSessionActivity *)selfCopy shouldStoreMotionPauseResumeEventsForActivityType:[(FIUIWorkoutActivityType *)selfCopy->_activityType effectiveTypeIdentifier]])
   {
-    [(NLSessionActivity *)v29 storeMotionPauseResumeEvent:location[0]];
+    [(NLSessionActivity *)selfCopy storeMotionPauseResumeEvent:location[0]];
   }
 
-  v27 = [(NLSessionActivity *)v29 isAutoPauseEffectivelyEnabledForActivityType:[(FIUIWorkoutActivityType *)v29->_activityType effectiveTypeIdentifier]];
-  if ([(NLSessionActivity *)v29 isMachineWorkout]|| !v27 || [(NLSessionActivity *)v29 experienceType]== 1 || [(WOCoreLiveWorkoutConfiguration *)v29->_configuration isInterval])
+  v27 = [(NLSessionActivity *)selfCopy isAutoPauseEffectivelyEnabledForActivityType:[(FIUIWorkoutActivityType *)selfCopy->_activityType effectiveTypeIdentifier]];
+  if ([(NLSessionActivity *)selfCopy isMachineWorkout]|| !v27 || [(NLSessionActivity *)selfCopy experienceType]== 1 || [(WOCoreLiveWorkoutConfiguration *)selfCopy->_configuration isInterval])
   {
     _HKInitializeLogging();
     v26 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -4195,12 +4195,12 @@ void __49__NLSessionActivity_storeMotionPauseResumeEvent___block_invoke_2(uint64
 
   else
   {
-    if ([location[0] type] != 5 || (v13 = 1, v29->_state != 6))
+    if ([location[0] type] != 5 || (v13 = 1, selfCopy->_state != 6))
     {
       v12 = 0;
       if ([location[0] type] == 6)
       {
-        v12 = v29->_state == 8;
+        v12 = selfCopy->_state == 8;
       }
 
       v13 = v12;
@@ -4219,13 +4219,13 @@ void __49__NLSessionActivity_storeMotionPauseResumeEvent___block_invoke_2(uint64
       }
 
       objc_storeStrong(&v16, 0);
-      v4 = v29;
+      v4 = selfCopy;
       v3 = v17;
-      v6 = [location[0] dateInterval];
-      v5 = [v6 startDate];
+      dateInterval = [location[0] dateInterval];
+      startDate = [dateInterval startDate];
       [NLSessionActivity _setPauseTracking:v4 atDate:"_setPauseTracking:atDate:eventSource:" eventSource:v3];
-      MEMORY[0x277D82BD8](v5);
-      MEMORY[0x277D82BD8](v6);
+      MEMORY[0x277D82BD8](startDate);
+      MEMORY[0x277D82BD8](dateInterval);
       v23 = 0;
     }
 
@@ -4238,7 +4238,7 @@ void __49__NLSessionActivity_storeMotionPauseResumeEvent___block_invoke_2(uint64
       {
         v8 = v21;
         v9 = v20;
-        v11 = NLSessionActivityStateDescription(v29->_state);
+        v11 = NLSessionActivityStateDescription(selfCopy->_state);
         v7 = MEMORY[0x277D82BE0](v11);
         v19 = v7;
         [location[0] type];
@@ -4261,42 +4261,42 @@ void __49__NLSessionActivity_storeMotionPauseResumeEvent___block_invoke_2(uint64
   *MEMORY[0x277D85DE8];
 }
 
-- (void)processDownhillRunEvent:(id)a3
+- (void)processDownhillRunEvent:(id)event
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(NLSessionActivity *)v13 builder];
-  v5 = [(HKLiveWorkoutBuilder *)v6 workoutEvents];
+  objc_storeStrong(location, event);
+  builder = [(NLSessionActivity *)selfCopy builder];
+  workoutEvents = [(HKLiveWorkoutBuilder *)builder workoutEvents];
   v11 = FIFilterPauseResumeEvents();
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
-  v7 = [location[0] dateInterval];
+  MEMORY[0x277D82BD8](workoutEvents);
+  MEMORY[0x277D82BD8](builder);
+  dateInterval = [location[0] dateInterval];
   [WODownhillRun calculateWorkoutTimeWithDateInterval:"calculateWorkoutTimeWithDateInterval:pauseResumeEvents:" pauseResumeEvents:?];
   v8 = v3;
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](dateInterval);
   v10[1] = v8;
   v4 = [WODownhillRun alloc];
   v10[0] = [(WODownhillRun *)v4 initWithDownhillRunEvent:location[0] workoutTime:0 distance:*&v8 averageHeartRate:?];
-  v9 = [(NLSessionActivity *)v13 downhillSnowSportsAccumulator];
-  [(NLSessionActivityDownhillSnowSportsAccumulator *)v9 downhillRunDidComplete:v10[0]];
-  MEMORY[0x277D82BD8](v9);
+  downhillSnowSportsAccumulator = [(NLSessionActivity *)selfCopy downhillSnowSportsAccumulator];
+  [(NLSessionActivityDownhillSnowSportsAccumulator *)downhillSnowSportsAccumulator downhillRunDidComplete:v10[0]];
+  MEMORY[0x277D82BD8](downhillSnowSportsAccumulator);
   objc_storeStrong(v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)addWorkoutEvents:(id)a3
+- (void)addWorkoutEvents:(id)events
 {
   v22 = *MEMORY[0x277D85DE8];
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, events);
   v18 = [location[0] sortedArrayUsingComparator:&__block_literal_global_479];
   v17 = 0;
-  v16 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](v18);
   v13 = [obj countByEnumeratingWithState:__b objects:v21 count:16];
@@ -4314,25 +4314,25 @@ void __49__NLSessionActivity_storeMotionPauseResumeEvent___block_invoke_2(uint64
       }
 
       v15 = *(__b[1] + 8 * v10);
-      v7 = [v15 type];
-      if ((v7 - 1) <= 1)
+      type = [v15 type];
+      if ((type - 1) <= 1)
       {
         goto LABEL_19;
       }
 
-      if ((v7 - 3) > 1)
+      if ((type - 3) > 1)
       {
-        if ((v7 - 5) <= 1)
+        if ((type - 5) <= 1)
         {
-          [(NLSessionActivity *)v20 processMotionPauseResumeEvent:v15];
+          [(NLSessionActivity *)selfCopy processMotionPauseResumeEvent:v15];
           goto LABEL_19;
         }
 
-        if (v7 != 7)
+        if (type != 7)
         {
-          if (v7 == 8)
+          if (type == 8)
           {
-            [(NLSessionActivity *)v20 processPauseOrResumeRequestEvent:v15];
+            [(NLSessionActivity *)selfCopy processPauseOrResumeRequestEvent:v15];
           }
 
           goto LABEL_19;
@@ -4345,17 +4345,17 @@ void __49__NLSessionActivity_storeMotionPauseResumeEvent___block_invoke_2(uint64
 
         else
         {
-          v5 = [(NLSessionActivity *)v20 activityType];
-          v6 = [(FIUIWorkoutActivityType *)v5 isDownhillSnowSport];
-          MEMORY[0x277D82BD8](v5);
-          if (v6)
+          activityType = [(NLSessionActivity *)selfCopy activityType];
+          isDownhillSnowSport = [(FIUIWorkoutActivityType *)activityType isDownhillSnowSport];
+          MEMORY[0x277D82BD8](activityType);
+          if (isDownhillSnowSport)
           {
-            [(NLSessionActivity *)v20 processDownhillRunEvent:v15];
+            [(NLSessionActivity *)selfCopy processDownhillRunEvent:v15];
           }
         }
       }
 
-      [v16 addObject:v15];
+      [array addObject:v15];
 LABEL_19:
       ++v10;
       if (v8 + 1 >= v11)
@@ -4373,24 +4373,24 @@ LABEL_19:
   MEMORY[0x277D82BD8](obj);
   if (v17)
   {
-    [(NLSessionActivity *)v20 processSplitEvent:v17];
+    [(NLSessionActivity *)selfCopy processSplitEvent:v17];
   }
 
-  if (!v20->_enqueuedWorkoutEvents)
+  if (!selfCopy->_enqueuedWorkoutEvents)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
-    enqueuedWorkoutEvents = v20->_enqueuedWorkoutEvents;
-    v20->_enqueuedWorkoutEvents = v3;
+    array2 = [MEMORY[0x277CBEB18] array];
+    enqueuedWorkoutEvents = selfCopy->_enqueuedWorkoutEvents;
+    selfCopy->_enqueuedWorkoutEvents = array2;
     MEMORY[0x277D82BD8](enqueuedWorkoutEvents);
   }
 
-  [(NSMutableArray *)v20->_enqueuedWorkoutEvents addObjectsFromArray:v16];
-  if (!v20->_queueWorkoutEvents)
+  [(NSMutableArray *)selfCopy->_enqueuedWorkoutEvents addObjectsFromArray:array];
+  if (!selfCopy->_queueWorkoutEvents)
   {
-    [(NLSessionActivity *)v20 _processQueuedWorkoutEvents];
+    [(NLSessionActivity *)selfCopy _processQueuedWorkoutEvents];
   }
 
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&array, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(location, 0);
@@ -4414,9 +4414,9 @@ uint64_t __38__NLSessionActivity_addWorkoutEvents___block_invoke(void *a1, void 
   return v7;
 }
 
-- (void)queueWorkoutEvents:(BOOL)a3
+- (void)queueWorkoutEvents:(BOOL)events
 {
-  if (a3)
+  if (events)
   {
     self->_queueWorkoutEvents = 1;
   }
@@ -4428,56 +4428,56 @@ uint64_t __38__NLSessionActivity_addWorkoutEvents___block_invoke(void *a1, void 
   }
 }
 
-- (void)processSplitEvent:(id)a3
+- (void)processSplitEvent:(id)event
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, event);
   if ([location[0] fiui_isSplitEvent] & 1) != 0 || (objc_msgSend(location[0], "fiui_isCustomSplitEvent"))
   {
-    if ([(NLSessionActivity *)v28 isInSession])
+    if ([(NLSessionActivity *)selfCopy isInSession])
     {
       if ([location[0] fiui_isSplitEvent])
       {
-        WeakRetained = objc_loadWeakRetained(&v28->_splitsDelegate);
+        WeakRetained = objc_loadWeakRetained(&selfCopy->_splitsDelegate);
         [WeakRetained processSplitEvent:location[0]];
         MEMORY[0x277D82BD8](WeakRetained);
       }
 
       else if ([location[0] fiui_isCustomSplitEvent])
       {
-        v15 = objc_loadWeakRetained(&v28->_customSplitsDelegate);
+        v15 = objc_loadWeakRetained(&selfCopy->_customSplitsDelegate);
         [v15 processCustomSplitEvent:location[0]];
         MEMORY[0x277D82BD8](v15);
       }
 
-      v11 = [location[0] fiui_splitDistance];
-      v10 = [MEMORY[0x277CCDAB0] meterUnit];
-      [v11 doubleValueForUnit:?];
+      fiui_splitDistance = [location[0] fiui_splitDistance];
+      meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+      [fiui_splitDistance doubleValueForUnit:?];
       v12 = v3;
-      MEMORY[0x277D82BD8](v10);
-      MEMORY[0x277D82BD8](v11);
+      MEMORY[0x277D82BD8](meterUnit);
+      MEMORY[0x277D82BD8](fiui_splitDistance);
       v25 = v12;
-      v13 = [(WOSplitsDisplayAccumulator *)v28->_splitsDisplayAccumulator splitsAccumulator];
-      [(NLSessionActivitySplitsAccumulator *)v13 definedDistance];
+      splitsAccumulator = [(WOSplitsDisplayAccumulator *)selfCopy->_splitsDisplayAccumulator splitsAccumulator];
+      [(NLSessionActivitySplitsAccumulator *)splitsAccumulator definedDistance];
       v14 = v4;
-      MEMORY[0x277D82BD8](v13);
+      MEMORY[0x277D82BD8](splitsAccumulator);
       if (v14 == v12)
       {
         v7 = objc_alloc(MEMORY[0x277D0A830]);
         [location[0] fiui_splitActiveDuration];
         v6 = v5;
-        v8 = [location[0] dateInterval];
+        dateInterval = [location[0] dateInterval];
         v24 = [v7 initWithDistance:v25 duration:v6 dateInterval:?];
-        MEMORY[0x277D82BD8](v8);
-        v9 = v28;
+        MEMORY[0x277D82BD8](dateInterval);
+        v9 = selfCopy;
         v17 = MEMORY[0x277D85DD0];
         v18 = -1073741824;
         v19 = 0;
         v20 = __39__NLSessionActivity_processSplitEvent___block_invoke;
         v21 = &unk_277D88B48;
-        v22 = MEMORY[0x277D82BE0](v28);
+        v22 = MEMORY[0x277D82BE0](selfCopy);
         v23 = MEMORY[0x277D82BE0](v24);
         [(NLSessionActivity *)v9 _notifyDataObserversWithBlock:&v17];
         objc_storeStrong(&v23, 0);
@@ -4521,14 +4521,14 @@ void __39__NLSessionActivity_processSplitEvent___block_invoke(uint64_t a1, void 
 
 - (void)_processQueuedWorkoutEvents
 {
-  v19 = self;
+  selfCopy = self;
   v18[1] = a2;
   v18[0] = [(NSMutableArray *)self->_enqueuedWorkoutEvents copy];
-  [(NSMutableArray *)v19->_enqueuedWorkoutEvents removeAllObjects];
+  [(NSMutableArray *)selfCopy->_enqueuedWorkoutEvents removeAllObjects];
   if ([v18[0] count])
   {
-    objc_initWeak(&v13, v19);
-    builder = v19->_builder;
+    objc_initWeak(&v13, selfCopy);
+    builder = selfCopy->_builder;
     v3 = v18[0];
     v6 = MEMORY[0x277D85DD0];
     v7 = -1073741824;
@@ -4611,13 +4611,13 @@ uint64_t __48__NLSessionActivity__processQueuedWorkoutEvents__block_invoke_484(u
   return MEMORY[0x277D82BD8](WeakRetained);
 }
 
-- (void)_didAddWorkoutEvents:(id)a3
+- (void)_didAddWorkoutEvents:(id)events
 {
   v21 = *MEMORY[0x277D85DE8];
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, events);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](location[0]);
   v15 = [obj countByEnumeratingWithState:__b objects:v20 count:16];
@@ -4635,30 +4635,30 @@ uint64_t __48__NLSessionActivity__processQueuedWorkoutEvents__block_invoke_484(u
       }
 
       v17 = *(__b[1] + 8 * v12);
-      v9 = [v17 workoutEventType];
-      if (v9 == 4)
+      workoutEventType = [v17 workoutEventType];
+      if (workoutEventType == 4)
       {
-        v7 = [v17 metadata];
-        v6 = [v7 objectForKey:*MEMORY[0x277D0A710]];
-        v8 = [v6 intValue];
+        metadata = [v17 metadata];
+        v6 = [metadata objectForKey:*MEMORY[0x277D0A710]];
+        intValue = [v6 intValue];
         MEMORY[0x277D82BD8](v6);
-        MEMORY[0x277D82BD8](v7);
-        if (v8 == 1)
+        MEMORY[0x277D82BD8](metadata);
+        if (intValue == 1)
         {
-          [(NLSessionActivity *)v19 _segmentMarkerEventReceived:v17];
+          [(NLSessionActivity *)selfCopy _segmentMarkerEventReceived:v17];
         }
       }
 
-      else if (v9 == 7)
+      else if (workoutEventType == 7)
       {
-        v4 = [v17 metadata];
-        v3 = [v4 objectForKey:*MEMORY[0x277D0A738]];
-        v5 = [v3 intValue];
+        metadata2 = [v17 metadata];
+        v3 = [metadata2 objectForKey:*MEMORY[0x277D0A738]];
+        intValue2 = [v3 intValue];
         MEMORY[0x277D82BD8](v3);
-        MEMORY[0x277D82BD8](v4);
-        if (v5 == 2)
+        MEMORY[0x277D82BD8](metadata2);
+        if (intValue2 == 2)
         {
-          [(NLSessionActivityDataAccumulator *)v19->_pacerDistanceGoalProgressAccumulator stopAccumulating];
+          [(NLSessionActivityDataAccumulator *)selfCopy->_pacerDistanceGoalProgressAccumulator stopAccumulating];
         }
       }
 
@@ -4683,30 +4683,30 @@ uint64_t __48__NLSessionActivity__processQueuedWorkoutEvents__block_invoke_484(u
 - (void)_updateHeartRateUpdateAvailability
 {
   v6 = [MEMORY[0x277CCDBE8] fiui_isHeartRateSupportedForActivityType:-[FIUIWorkoutActivityType identifier](self->_activityType isIndoor:{"identifier"), -[FIUIWorkoutActivityType isIndoor](self->_activityType, "isIndoor")}];
-  v3 = [(NLSessionActivity *)self heartRateAccumulator];
-  [(NLSessionActivityHeartRateAccumulator *)v3 setDisabledForSession:(v6 ^ 1) & 1];
-  MEMORY[0x277D82BD8](v3);
-  v4 = [(NLSessionActivity *)self heartRatePrecisionStartAccumulator];
-  [(WOHeartRatePrecisionStartAccumulator *)v4 setDisabledForSession:(v6 ^ 1) & 1];
-  MEMORY[0x277D82BD8](v4);
-  v5 = 1;
+  heartRateAccumulator = [(NLSessionActivity *)self heartRateAccumulator];
+  [(NLSessionActivityHeartRateAccumulator *)heartRateAccumulator setDisabledForSession:(v6 ^ 1) & 1];
+  MEMORY[0x277D82BD8](heartRateAccumulator);
+  heartRatePrecisionStartAccumulator = [(NLSessionActivity *)self heartRatePrecisionStartAccumulator];
+  [(WOHeartRatePrecisionStartAccumulator *)heartRatePrecisionStartAccumulator setDisabledForSession:(v6 ^ 1) & 1];
+  MEMORY[0x277D82BD8](heartRatePrecisionStartAccumulator);
+  isUltraMode = 1;
   if (v6)
   {
-    v5 = [(WOCoreLiveWorkoutConfiguration *)self->_configuration isUltraMode];
+    isUltraMode = [(WOCoreLiveWorkoutConfiguration *)self->_configuration isUltraMode];
   }
 
-  v2 = [(NLSessionActivity *)self heartRateZonesAccumulator];
-  [(ZonesAccumulator *)v2 setDisabledForSession:v5];
-  MEMORY[0x277D82BD8](v2);
+  heartRateZonesAccumulator = [(NLSessionActivity *)self heartRateZonesAccumulator];
+  [(ZonesAccumulator *)heartRateZonesAccumulator setDisabledForSession:isUltraMode];
+  MEMORY[0x277D82BD8](heartRateZonesAccumulator);
 }
 
-- (void)_startBuilderWithStartDate:(id)a3
+- (void)_startBuilderWithStartDate:(id)date
 {
   v29 = *MEMORY[0x277D85DE8];
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   _HKInitializeLogging();
   v25 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v24 = OS_LOG_TYPE_DEFAULT;
@@ -4717,36 +4717,36 @@ uint64_t __48__NLSessionActivity__processQueuedWorkoutEvents__block_invoke_484(u
   }
 
   objc_storeStrong(&v25, 0);
-  v15 = [(NLSessionActivity *)v27 activityType];
-  v14 = [(FIUIWorkoutActivityType *)v15 metadata];
-  v23 = [v14 mutableCopy];
-  MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
-  v12 = [(NLSessionActivity *)v27 activityType];
-  v13 = [(FIUIWorkoutActivityType *)v12 isIndoor];
-  MEMORY[0x277D82BD8](v12);
-  if (v13)
+  activityType = [(NLSessionActivity *)selfCopy activityType];
+  metadata = [(FIUIWorkoutActivityType *)activityType metadata];
+  v23 = [metadata mutableCopy];
+  MEMORY[0x277D82BD8](metadata);
+  MEMORY[0x277D82BD8](activityType);
+  activityType2 = [(NLSessionActivity *)selfCopy activityType];
+  isIndoor = [(FIUIWorkoutActivityType *)activityType2 isIndoor];
+  MEMORY[0x277D82BD8](activityType2);
+  if (isIndoor)
   {
     v11 = MEMORY[0x277CCABB0];
-    v10 = [(NLSessionActivity *)v27 activityType];
-    v9 = [v11 numberWithBool:{-[FIUIWorkoutActivityType isIndoor](v10, "isIndoor")}];
+    activityType3 = [(NLSessionActivity *)selfCopy activityType];
+    v9 = [v11 numberWithBool:{-[FIUIWorkoutActivityType isIndoor](activityType3, "isIndoor")}];
     v3 = *MEMORY[0x277CCC4C0];
     [v23 setObject:? forKeyedSubscript:?];
     MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](activityType3);
   }
 
   HKSessionTrackerAriadneTrigger();
   v8 = +[WOCoreWorkoutSignposter shared];
   [(WOCoreWorkoutSignposter *)v8 emitWithSignpost:3];
   MEMORY[0x277D82BD8](v8);
-  objc_initWeak(&from, v27);
-  v7 = [(NLSessionActivity *)v27 builder];
+  objc_initWeak(&from, selfCopy);
+  builder = [(NLSessionActivity *)selfCopy builder];
   v6 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCB90]];
-  [(HKLiveWorkoutBuilder *)v7 _setStatisticsComputationMethod:2 forType:?];
+  [(HKLiveWorkoutBuilder *)builder _setStatisticsComputationMethod:2 forType:?];
   MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
-  v4 = [(NLSessionActivity *)v27 builder];
+  MEMORY[0x277D82BD8](builder);
+  builder2 = [(NLSessionActivity *)selfCopy builder];
   v5 = location[0];
   v16 = MEMORY[0x277D85DD0];
   v17 = -1073741824;
@@ -4754,8 +4754,8 @@ uint64_t __48__NLSessionActivity__processQueuedWorkoutEvents__block_invoke_484(u
   v19 = __48__NLSessionActivity__startBuilderWithStartDate___block_invoke;
   v20 = &unk_277D88D40;
   objc_copyWeak(v21, &from);
-  [(HKLiveWorkoutBuilder *)v4 beginCollectionWithStartDate:v5 completion:&v16];
-  MEMORY[0x277D82BD8](v4);
+  [(HKLiveWorkoutBuilder *)builder2 beginCollectionWithStartDate:v5 completion:&v16];
+  MEMORY[0x277D82BD8](builder2);
   objc_destroyWeak(v21);
   objc_destroyWeak(&from);
   objc_storeStrong(&v23, 0);
@@ -4796,14 +4796,14 @@ uint64_t __48__NLSessionActivity__startBuilderWithStartDate___block_invoke_2(uin
   return MEMORY[0x277D82BD8](WeakRetained);
 }
 
-- (void)_handleBeginCollectingWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_handleBeginCollectingWithSuccess:(BOOL)success error:(id)error
 {
   v11 = *MEMORY[0x277D85DE8];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  successCopy = success;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, error);
   HKSessionTrackerAriadneTrigger();
   HKSessionTrackerAriadneTrigger();
   v4 = +[WOCoreWorkoutSignposter shared];
@@ -4813,33 +4813,33 @@ uint64_t __48__NLSessionActivity__startBuilderWithStartDate___block_invoke_2(uin
   oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_2_4_0_8_64(v10, v7, location);
+    __os_log_helper_16_2_2_4_0_8_64(v10, successCopy, location);
     _os_log_impl(&dword_20AEA4000, oslog, OS_LOG_TYPE_DEFAULT, "[SessionActivity] Builder collection started with succcess=%{BOOL}d error=%@", v10, 0x12u);
   }
 
   objc_storeStrong(&oslog, 0);
-  if (v7)
+  if (successCopy)
   {
-    [(FIUIStateMachine *)v9->_stateMachine event:4];
+    [(FIUIStateMachine *)selfCopy->_stateMachine event:4];
   }
 
   else
   {
-    [(FIUIStateMachine *)v9->_stateMachine event:13];
+    [(FIUIStateMachine *)selfCopy->_stateMachine event:13];
   }
 
   objc_storeStrong(&location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_startAccumulatingElapsedTimeWithStartDate:(id)a3
+- (void)_startAccumulatingElapsedTimeWithStartDate:(id)date
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_initWeak(&from, v13);
-  v3 = [(NLSessionActivity *)v13 elapsedTimeAccumulator];
+  objc_storeStrong(location, date);
+  objc_initWeak(&from, selfCopy);
+  elapsedTimeAccumulator = [(NLSessionActivity *)selfCopy elapsedTimeAccumulator];
   v4 = location[0];
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
@@ -4847,8 +4847,8 @@ uint64_t __48__NLSessionActivity__startBuilderWithStartDate___block_invoke_2(uin
   v8 = __64__NLSessionActivity__startAccumulatingElapsedTimeWithStartDate___block_invoke;
   v9 = &unk_277D88B00;
   objc_copyWeak(v10, &from);
-  [(NLSessionActivityElapsedTimeAccumulator *)v3 startAccumulatingWithStartDate:v4 updateHandler:&v5];
-  MEMORY[0x277D82BD8](v3);
+  [(NLSessionActivityElapsedTimeAccumulator *)elapsedTimeAccumulator startAccumulatingWithStartDate:v4 updateHandler:&v5];
+  MEMORY[0x277D82BD8](elapsedTimeAccumulator);
   objc_destroyWeak(v10);
   objc_destroyWeak(&from);
   objc_storeStrong(location, 0);
@@ -4865,26 +4865,26 @@ uint64_t __64__NLSessionActivity__startAccumulatingElapsedTimeWithStartDate___bl
   return MEMORY[0x277D82BD8](WeakRetained);
 }
 
-- (void)_startAccumulatingDataWithStartDate:(id)a3
+- (void)_startAccumulatingDataWithStartDate:(id)date
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NLSessionActivity *)v4 _startIdempotentAccumulatingDataWithStartDate:location[0]];
-  [(NLSessionActivity *)v4 _startActivityDependentAccumulatingDataWithStartDate:location[0]];
-  [(WOSessionActivityDeviceObserver *)v4->_deviceObserver startObserving];
+  objc_storeStrong(location, date);
+  [(NLSessionActivity *)selfCopy _startIdempotentAccumulatingDataWithStartDate:location[0]];
+  [(NLSessionActivity *)selfCopy _startActivityDependentAccumulatingDataWithStartDate:location[0]];
+  [(WOSessionActivityDeviceObserver *)selfCopy->_deviceObserver startObserving];
   objc_storeStrong(location, 0);
 }
 
-- (void)_startIdempotentAccumulatingDataWithStartDate:(id)a3
+- (void)_startIdempotentAccumulatingDataWithStartDate:(id)date
 {
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_initWeak(&v43, v45);
-  energyBurnAccumulator = v45->_energyBurnAccumulator;
+  objc_storeStrong(location, date);
+  objc_initWeak(&v43, selfCopy);
+  energyBurnAccumulator = selfCopy->_energyBurnAccumulator;
   v12 = location[0];
   v37 = MEMORY[0x277D85DD0];
   v38 = -1073741824;
@@ -4893,7 +4893,7 @@ uint64_t __64__NLSessionActivity__startAccumulatingElapsedTimeWithStartDate___bl
   v41 = &unk_277D88B00;
   objc_copyWeak(&v42, &v43);
   [(NLSessionActivityDataAccumulator *)energyBurnAccumulator startAccumulatingWithStartDate:v12 updateHandler:&v37];
-  flightsClimbedAccumulator = v45->_flightsClimbedAccumulator;
+  flightsClimbedAccumulator = selfCopy->_flightsClimbedAccumulator;
   v10 = location[0];
   v31 = MEMORY[0x277D85DD0];
   v32 = -1073741824;
@@ -4902,36 +4902,36 @@ uint64_t __64__NLSessionActivity__startAccumulatingElapsedTimeWithStartDate___bl
   v35 = &unk_277D88B00;
   objc_copyWeak(v36, &v43);
   [(NLSessionActivityDataAccumulator *)flightsClimbedAccumulator startAccumulatingWithStartDate:v10 updateHandler:&v31];
-  strideLengthAccumulator = v45->_strideLengthAccumulator;
-  v7 = [(NLSessionActivity *)v45 activityBeginDate];
+  strideLengthAccumulator = selfCopy->_strideLengthAccumulator;
+  activityBeginDate = [(NLSessionActivity *)selfCopy activityBeginDate];
   v25 = MEMORY[0x277D85DD0];
   v26 = -1073741824;
   v27 = 0;
   v28 = __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate___block_invoke_3;
   v29 = &unk_277D88B00;
   objc_copyWeak(&v30, &v43);
-  [(NLSessionActivityDataAccumulator *)strideLengthAccumulator startAccumulatingWithStartDate:v7 updateHandler:&v25];
-  MEMORY[0x277D82BD8](v7);
-  verticalOscillationAccumulator = v45->_verticalOscillationAccumulator;
-  v5 = [(NLSessionActivity *)v45 activityBeginDate];
+  [(NLSessionActivityDataAccumulator *)strideLengthAccumulator startAccumulatingWithStartDate:activityBeginDate updateHandler:&v25];
+  MEMORY[0x277D82BD8](activityBeginDate);
+  verticalOscillationAccumulator = selfCopy->_verticalOscillationAccumulator;
+  activityBeginDate2 = [(NLSessionActivity *)selfCopy activityBeginDate];
   v19 = MEMORY[0x277D85DD0];
   v20 = -1073741824;
   v21 = 0;
   v22 = __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate___block_invoke_4;
   v23 = &unk_277D88B00;
   objc_copyWeak(&v24, &v43);
-  [(NLSessionActivityDataAccumulator *)verticalOscillationAccumulator startAccumulatingWithStartDate:v5 updateHandler:&v19];
-  MEMORY[0x277D82BD8](v5);
-  groundContactTimeAccumulator = v45->_groundContactTimeAccumulator;
-  v3 = [(NLSessionActivity *)v45 activityBeginDate];
+  [(NLSessionActivityDataAccumulator *)verticalOscillationAccumulator startAccumulatingWithStartDate:activityBeginDate2 updateHandler:&v19];
+  MEMORY[0x277D82BD8](activityBeginDate2);
+  groundContactTimeAccumulator = selfCopy->_groundContactTimeAccumulator;
+  activityBeginDate3 = [(NLSessionActivity *)selfCopy activityBeginDate];
   v13 = MEMORY[0x277D85DD0];
   v14 = -1073741824;
   v15 = 0;
   v16 = __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate___block_invoke_5;
   v17 = &unk_277D88B00;
   objc_copyWeak(&v18, &v43);
-  [(NLSessionActivityDataAccumulator *)groundContactTimeAccumulator startAccumulatingWithStartDate:v3 updateHandler:&v13];
-  MEMORY[0x277D82BD8](v3);
+  [(NLSessionActivityDataAccumulator *)groundContactTimeAccumulator startAccumulatingWithStartDate:activityBeginDate3 updateHandler:&v13];
+  MEMORY[0x277D82BD8](activityBeginDate3);
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v24);
   objc_destroyWeak(&v30);
@@ -4996,53 +4996,53 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
   return MEMORY[0x277D82BD8](WeakRetained);
 }
 
-- (void)_stopActivityDependentAccumulatorsWithActivity:(id)a3
+- (void)_stopActivityDependentAccumulatorsWithActivity:(id)activity
 {
   v29 = *MEMORY[0x277D85DE8];
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, activity);
   v25 = 0.0;
   if (location[0])
   {
     v19 = objc_opt_class();
-    v22 = [location[0] startDate];
-    v21 = [location[0] endDate];
-    v20 = [(HKLiveWorkoutBuilder *)v27->_builder workoutEvents];
-    [v19 durationBetweenStartDate:v22 endDate:v21 workoutEvents:?];
+    startDate = [location[0] startDate];
+    endDate = [location[0] endDate];
+    workoutEvents = [(HKLiveWorkoutBuilder *)selfCopy->_builder workoutEvents];
+    [v19 durationBetweenStartDate:startDate endDate:endDate workoutEvents:?];
     v25 = v3;
-    MEMORY[0x277D82BD8](v20);
-    MEMORY[0x277D82BD8](v21);
-    MEMORY[0x277D82BD8](v22);
+    MEMORY[0x277D82BD8](workoutEvents);
+    MEMORY[0x277D82BD8](endDate);
+    MEMORY[0x277D82BD8](startDate);
   }
 
-  [(NLSessionActivity *)v27 queueWorkoutEvents:1];
-  [(NLSessionActivityDataAccumulator *)v27->_swimmingAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_downhillSnowSportsAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_swimmingStrokeAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_machineDistanceAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_distanceAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_machinePaceAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_nonMachinePaceAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_ghostPacerAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_pacerDistanceGoalProgressAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_rollingPaceAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_heartRateAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_heartRateZonesAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_powerAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_powerZonesAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_elevationAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_pedometerCadenceAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_cyclingCadenceAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_waterTemperatureAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_intervalCadenceAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v27->_locationPositionAccumulator stopAccumulating];
-  v16 = [(WORaceCoordinator *)v27->_raceCoordinator racePositionProvider];
-  [(NLSessionActivityDataAccumulator *)v16 stopAccumulating];
-  MEMORY[0x277D82BD8](v16);
+  [(NLSessionActivity *)selfCopy queueWorkoutEvents:1];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_swimmingAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_downhillSnowSportsAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_swimmingStrokeAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_machineDistanceAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_distanceAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_machinePaceAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_nonMachinePaceAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_ghostPacerAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_pacerDistanceGoalProgressAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_rollingPaceAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_heartRateAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_heartRateZonesAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_powerAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_powerZonesAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_elevationAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_pedometerCadenceAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_cyclingCadenceAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_waterTemperatureAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_intervalCadenceAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_locationPositionAccumulator stopAccumulating];
+  racePositionProvider = [(WORaceCoordinator *)selfCopy->_raceCoordinator racePositionProvider];
+  [(NLSessionActivityDataAccumulator *)racePositionProvider stopAccumulating];
+  MEMORY[0x277D82BD8](racePositionProvider);
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x277D82BE0](v27->_splitsAccumulators);
+  obj = MEMORY[0x277D82BE0](selfCopy->_splitsAccumulators);
   v18 = [obj countByEnumeratingWithState:__b objects:v28 count:16];
   if (v18)
   {
@@ -5073,59 +5073,59 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
   }
 
   MEMORY[0x277D82BD8](obj);
-  v4 = [(WOSplitsDisplayAccumulator *)v27->_splitsDisplayAccumulator distanceAccumulator];
-  [(NLSessionActivityDataAccumulator *)v4 stopAccumulating];
-  MEMORY[0x277D82BD8](v4);
-  v5 = [(WOSplitsDisplayAccumulator *)v27->_splitsDisplayAccumulator elapsedTimeAccumulator];
-  [(NLSessionActivityDataAccumulator *)v5 stopAccumulating];
-  MEMORY[0x277D82BD8](v5);
-  v6 = [(WOSplitsDisplayAccumulator *)v27->_splitsDisplayAccumulator paceAccumulator];
-  [(NLSessionActivityDataAccumulator *)v6 stopAccumulating];
-  MEMORY[0x277D82BD8](v6);
-  v7 = [(WOSplitsDisplayAccumulator *)v27->_splitsDisplayAccumulator averagePowerAccumulator];
-  [(NLSessionActivityDataAccumulator *)v7 stopAccumulating];
-  MEMORY[0x277D82BD8](v7);
-  v8 = [(WOSegmentAccumulator *)v27->_segmentAccumulator distanceAccumulator];
-  [(NLSessionActivityDataAccumulator *)v8 stopAccumulating];
-  MEMORY[0x277D82BD8](v8);
-  v9 = [(WOSegmentAccumulator *)v27->_segmentAccumulator elapsedTimeAccumulator];
-  [(NLSessionActivityDataAccumulator *)v9 stopAccumulating];
-  MEMORY[0x277D82BD8](v9);
-  v10 = [(WOSegmentAccumulator *)v27->_segmentAccumulator energyAccumulator];
-  [(NLSessionActivityDataAccumulator *)v10 stopAccumulating];
-  MEMORY[0x277D82BD8](v10);
-  v11 = [(WOSegmentAccumulator *)v27->_segmentAccumulator paceAccumulator];
-  [(NLSessionActivityDataAccumulator *)v11 stopAccumulating];
-  MEMORY[0x277D82BD8](v11);
-  [(NLSessionActivity *)v27 _teardownGroundElevationManager];
-  [(NLSessionActivity *)v27 queueWorkoutEvents:0];
+  distanceAccumulator = [(WOSplitsDisplayAccumulator *)selfCopy->_splitsDisplayAccumulator distanceAccumulator];
+  [(NLSessionActivityDataAccumulator *)distanceAccumulator stopAccumulating];
+  MEMORY[0x277D82BD8](distanceAccumulator);
+  elapsedTimeAccumulator = [(WOSplitsDisplayAccumulator *)selfCopy->_splitsDisplayAccumulator elapsedTimeAccumulator];
+  [(NLSessionActivityDataAccumulator *)elapsedTimeAccumulator stopAccumulating];
+  MEMORY[0x277D82BD8](elapsedTimeAccumulator);
+  paceAccumulator = [(WOSplitsDisplayAccumulator *)selfCopy->_splitsDisplayAccumulator paceAccumulator];
+  [(NLSessionActivityDataAccumulator *)paceAccumulator stopAccumulating];
+  MEMORY[0x277D82BD8](paceAccumulator);
+  averagePowerAccumulator = [(WOSplitsDisplayAccumulator *)selfCopy->_splitsDisplayAccumulator averagePowerAccumulator];
+  [(NLSessionActivityDataAccumulator *)averagePowerAccumulator stopAccumulating];
+  MEMORY[0x277D82BD8](averagePowerAccumulator);
+  distanceAccumulator2 = [(WOSegmentAccumulator *)selfCopy->_segmentAccumulator distanceAccumulator];
+  [(NLSessionActivityDataAccumulator *)distanceAccumulator2 stopAccumulating];
+  MEMORY[0x277D82BD8](distanceAccumulator2);
+  elapsedTimeAccumulator2 = [(WOSegmentAccumulator *)selfCopy->_segmentAccumulator elapsedTimeAccumulator];
+  [(NLSessionActivityDataAccumulator *)elapsedTimeAccumulator2 stopAccumulating];
+  MEMORY[0x277D82BD8](elapsedTimeAccumulator2);
+  energyAccumulator = [(WOSegmentAccumulator *)selfCopy->_segmentAccumulator energyAccumulator];
+  [(NLSessionActivityDataAccumulator *)energyAccumulator stopAccumulating];
+  MEMORY[0x277D82BD8](energyAccumulator);
+  paceAccumulator2 = [(WOSegmentAccumulator *)selfCopy->_segmentAccumulator paceAccumulator];
+  [(NLSessionActivityDataAccumulator *)paceAccumulator2 stopAccumulating];
+  MEMORY[0x277D82BD8](paceAccumulator2);
+  [(NLSessionActivity *)selfCopy _teardownGroundElevationManager];
+  [(NLSessionActivity *)selfCopy queueWorkoutEvents:0];
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_startActivityDependentAccumulatingDataWithStartDate:(id)a3
+- (void)_startActivityDependentAccumulatingDataWithStartDate:(id)date
 {
   v243 = *MEMORY[0x277D85DE8];
-  v241 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_initWeak(&from, v241);
-  if ([(FIUIWorkoutActivityType *)v241->_activityType identifier]== 46)
+  objc_storeStrong(location, date);
+  objc_initWeak(&from, selfCopy);
+  if ([(FIUIWorkoutActivityType *)selfCopy->_activityType identifier]== 46)
   {
-    v67 = [(WOCoreLiveWorkoutConfiguration *)v241->_configuration hkWorkoutConfiguration];
-    v238 = [(HKWorkoutConfiguration *)v67 suggestedActivityUUID];
-    MEMORY[0x277D82BD8](v67);
-    swimmingAccumulator = v241->_swimmingAccumulator;
+    hkWorkoutConfiguration = [(WOCoreLiveWorkoutConfiguration *)selfCopy->_configuration hkWorkoutConfiguration];
+    suggestedActivityUUID = [(HKWorkoutConfiguration *)hkWorkoutConfiguration suggestedActivityUUID];
+    MEMORY[0x277D82BD8](hkWorkoutConfiguration);
+    swimmingAccumulator = selfCopy->_swimmingAccumulator;
     v66 = location[0];
-    if (v238)
+    if (suggestedActivityUUID)
     {
-      UUID = v238;
+      UUID = suggestedActivityUUID;
     }
 
     else
     {
-      UUID = v241->_UUID;
+      UUID = selfCopy->_UUID;
     }
 
     v232 = MEMORY[0x277D85DD0];
@@ -5135,7 +5135,7 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
     v236 = &unk_277D88B00;
     objc_copyWeak(&v237, &from);
     [(NLSessionActivitySwimmingAccumulator *)swimmingAccumulator accumulatorDidStartWithStartDate:v66 sessionUUID:UUID handler:&v232];
-    swimmingStrokeAccumulator = v241->_swimmingStrokeAccumulator;
+    swimmingStrokeAccumulator = selfCopy->_swimmingStrokeAccumulator;
     v63 = location[0];
     v226 = MEMORY[0x277D85DD0];
     v227 = -1073741824;
@@ -5146,12 +5146,12 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
     [(NLSessionActivitySwimStrokeAccumulator *)swimmingStrokeAccumulator startAccumulatingWithStartDate:v63 updateHandler:&v226];
     objc_destroyWeak(&v231);
     objc_destroyWeak(&v237);
-    objc_storeStrong(&v238, 0);
+    objc_storeStrong(&suggestedActivityUUID, 0);
   }
 
-  else if ([(FIUIWorkoutActivityType *)v241->_activityType isDownhillSnowSport])
+  else if ([(FIUIWorkoutActivityType *)selfCopy->_activityType isDownhillSnowSport])
   {
-    downhillSnowSportsAccumulator = v241->_downhillSnowSportsAccumulator;
+    downhillSnowSportsAccumulator = selfCopy->_downhillSnowSportsAccumulator;
     v220 = MEMORY[0x277D85DD0];
     v221 = -1073741824;
     v222 = 0;
@@ -5164,13 +5164,13 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
 
   else
   {
-    v60 = [(NLSessionActivity *)v241 isMachineWorkout];
-    v59 = [(NLSessionActivity *)v241 activityType];
-    v58 = _UseMachineDistance(v60, [(FIUIWorkoutActivityType *)v59 identifier]);
-    MEMORY[0x277D82BD8](v59);
+    isMachineWorkout = [(NLSessionActivity *)selfCopy isMachineWorkout];
+    activityType = [(NLSessionActivity *)selfCopy activityType];
+    v58 = _UseMachineDistance(isMachineWorkout, [(FIUIWorkoutActivityType *)activityType identifier]);
+    MEMORY[0x277D82BD8](activityType);
     if (v58)
     {
-      machineDistanceAccumulator = v241->_machineDistanceAccumulator;
+      machineDistanceAccumulator = selfCopy->_machineDistanceAccumulator;
       v214 = MEMORY[0x277D85DD0];
       v215 = -1073741824;
       v216 = 0;
@@ -5183,7 +5183,7 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
 
     else
     {
-      distanceAccumulator = v241->_distanceAccumulator;
+      distanceAccumulator = selfCopy->_distanceAccumulator;
       v56 = location[0];
       v208 = MEMORY[0x277D85DD0];
       v209 = -1073741824;
@@ -5196,7 +5196,7 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
     }
   }
 
-  v53 = [(NLSessionActivity *)v241 paceAccumulator];
+  paceAccumulator = [(NLSessionActivity *)selfCopy paceAccumulator];
   v54 = location[0];
   v202 = MEMORY[0x277D85DD0];
   v203 = -1073741824;
@@ -5204,9 +5204,9 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
   v205 = __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStartDate___block_invoke_4;
   v206 = &unk_277D88B00;
   objc_copyWeak(&v207, &from);
-  [(NLSessionActivityPaceAccumulator *)v53 startAccumulatingWithStartDate:v54 updateHandler:&v202];
-  MEMORY[0x277D82BD8](v53);
-  ghostPacerAccumulator = v241->_ghostPacerAccumulator;
+  [(NLSessionActivityPaceAccumulator *)paceAccumulator startAccumulatingWithStartDate:v54 updateHandler:&v202];
+  MEMORY[0x277D82BD8](paceAccumulator);
+  ghostPacerAccumulator = selfCopy->_ghostPacerAccumulator;
   v52 = location[0];
   v196 = MEMORY[0x277D85DD0];
   v197 = -1073741824;
@@ -5215,8 +5215,8 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
   v200 = &unk_277D88B00;
   objc_copyWeak(&v201, &from);
   [(NLSessionActivityDataAccumulator *)ghostPacerAccumulator startAccumulatingWithStartDate:v52 updateHandler:&v196];
-  [(NLPacerDistanceGoalProgressAccumulator *)v241->_pacerDistanceGoalProgressAccumulator setEventPersistenceDelegate:v241];
-  pacerDistanceGoalProgressAccumulator = v241->_pacerDistanceGoalProgressAccumulator;
+  [(NLPacerDistanceGoalProgressAccumulator *)selfCopy->_pacerDistanceGoalProgressAccumulator setEventPersistenceDelegate:selfCopy];
+  pacerDistanceGoalProgressAccumulator = selfCopy->_pacerDistanceGoalProgressAccumulator;
   v50 = location[0];
   v190 = MEMORY[0x277D85DD0];
   v191 = -1073741824;
@@ -5225,7 +5225,7 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
   v194 = &unk_277D88B00;
   objc_copyWeak(&v195, &from);
   [(NLSessionActivityDataAccumulator *)pacerDistanceGoalProgressAccumulator startAccumulatingWithStartDate:v50 updateHandler:&v190];
-  rollingPaceAccumulator = v241->_rollingPaceAccumulator;
+  rollingPaceAccumulator = selfCopy->_rollingPaceAccumulator;
   v48 = location[0];
   v184 = MEMORY[0x277D85DD0];
   v185 = -1073741824;
@@ -5234,47 +5234,47 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
   v188 = &unk_277D88B00;
   objc_copyWeak(&v189, &from);
   [(NLSessionActivityDataAccumulator *)rollingPaceAccumulator startAccumulatingWithStartDate:v48 updateHandler:&v184];
-  heartRateAccumulator = v241->_heartRateAccumulator;
-  v45 = [(NLSessionActivity *)v241 activityBeginDate];
+  heartRateAccumulator = selfCopy->_heartRateAccumulator;
+  activityBeginDate = [(NLSessionActivity *)selfCopy activityBeginDate];
   v178 = MEMORY[0x277D85DD0];
   v179 = -1073741824;
   v180 = 0;
   v181 = __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStartDate___block_invoke_8;
   v182 = &unk_277D88B00;
   objc_copyWeak(&v183, &from);
-  [(NLSessionActivityDataAccumulator *)heartRateAccumulator startAccumulatingWithStartDate:v45 updateHandler:&v178];
-  MEMORY[0x277D82BD8](v45);
-  heartRateZonesAccumulator = v241->_heartRateZonesAccumulator;
-  v43 = [(NLSessionActivity *)v241 activityBeginDate];
+  [(NLSessionActivityDataAccumulator *)heartRateAccumulator startAccumulatingWithStartDate:activityBeginDate updateHandler:&v178];
+  MEMORY[0x277D82BD8](activityBeginDate);
+  heartRateZonesAccumulator = selfCopy->_heartRateZonesAccumulator;
+  activityBeginDate2 = [(NLSessionActivity *)selfCopy activityBeginDate];
   v172 = MEMORY[0x277D85DD0];
   v173 = -1073741824;
   v174 = 0;
   v175 = __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStartDate___block_invoke_9;
   v176 = &unk_277D88B00;
   objc_copyWeak(&v177, &from);
-  [(NLSessionActivityDataAccumulator *)heartRateZonesAccumulator startAccumulatingWithStartDate:v43 updateHandler:&v172];
-  MEMORY[0x277D82BD8](v43);
-  powerAccumulator = v241->_powerAccumulator;
-  v41 = [(NLSessionActivity *)v241 activityBeginDate];
+  [(NLSessionActivityDataAccumulator *)heartRateZonesAccumulator startAccumulatingWithStartDate:activityBeginDate2 updateHandler:&v172];
+  MEMORY[0x277D82BD8](activityBeginDate2);
+  powerAccumulator = selfCopy->_powerAccumulator;
+  activityBeginDate3 = [(NLSessionActivity *)selfCopy activityBeginDate];
   v166 = MEMORY[0x277D85DD0];
   v167 = -1073741824;
   v168 = 0;
   v169 = __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStartDate___block_invoke_10;
   v170 = &unk_277D88B00;
   objc_copyWeak(&v171, &from);
-  [(NLSessionActivityDataAccumulator *)powerAccumulator startAccumulatingWithStartDate:v41 updateHandler:&v166];
-  MEMORY[0x277D82BD8](v41);
-  powerZonesAccumulator = v241->_powerZonesAccumulator;
-  v39 = [(NLSessionActivity *)v241 activityBeginDate];
+  [(NLSessionActivityDataAccumulator *)powerAccumulator startAccumulatingWithStartDate:activityBeginDate3 updateHandler:&v166];
+  MEMORY[0x277D82BD8](activityBeginDate3);
+  powerZonesAccumulator = selfCopy->_powerZonesAccumulator;
+  activityBeginDate4 = [(NLSessionActivity *)selfCopy activityBeginDate];
   v160 = MEMORY[0x277D85DD0];
   v161 = -1073741824;
   v162 = 0;
   v163 = __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStartDate___block_invoke_11;
   v164 = &unk_277D88B00;
   objc_copyWeak(&v165, &from);
-  [(NLSessionActivityDataAccumulator *)powerZonesAccumulator startAccumulatingWithStartDate:v39 updateHandler:&v160];
-  MEMORY[0x277D82BD8](v39);
-  elevationAccumulator = v241->_elevationAccumulator;
+  [(NLSessionActivityDataAccumulator *)powerZonesAccumulator startAccumulatingWithStartDate:activityBeginDate4 updateHandler:&v160];
+  MEMORY[0x277D82BD8](activityBeginDate4);
+  elevationAccumulator = selfCopy->_elevationAccumulator;
   v38 = location[0];
   v154 = MEMORY[0x277D85DD0];
   v155 = -1073741824;
@@ -5283,7 +5283,7 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
   v158 = &unk_277D88B00;
   objc_copyWeak(&v159, &from);
   [(NLSessionActivityDataAccumulator *)elevationAccumulator startAccumulatingWithStartDate:v38 updateHandler:&v154];
-  pedometerCadenceAccumulator = v241->_pedometerCadenceAccumulator;
+  pedometerCadenceAccumulator = selfCopy->_pedometerCadenceAccumulator;
   v36 = location[0];
   v148 = MEMORY[0x277D85DD0];
   v149 = -1073741824;
@@ -5292,7 +5292,7 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
   v152 = &unk_277D88B00;
   objc_copyWeak(&v153, &from);
   [(NLSessionActivityPedometerCadenceAccumulator *)pedometerCadenceAccumulator startAccumulatingWithStartDate:v36 updateHandler:&v148];
-  cyclingCadenceAccumulator = v241->_cyclingCadenceAccumulator;
+  cyclingCadenceAccumulator = selfCopy->_cyclingCadenceAccumulator;
   v34 = location[0];
   v142 = MEMORY[0x277D85DD0];
   v143 = -1073741824;
@@ -5301,7 +5301,7 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
   v146 = &unk_277D88B00;
   objc_copyWeak(&v147, &from);
   [(NLSessionActivityDataAccumulator *)cyclingCadenceAccumulator startAccumulatingWithStartDate:v34 updateHandler:&v142];
-  waterTemperatureAccumulator = v241->_waterTemperatureAccumulator;
+  waterTemperatureAccumulator = selfCopy->_waterTemperatureAccumulator;
   v32 = location[0];
   v136 = MEMORY[0x277D85DD0];
   v137 = -1073741824;
@@ -5310,7 +5310,7 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
   v140 = &unk_277D88B00;
   objc_copyWeak(&v141, &from);
   [(NLSessionActivityDataAccumulator *)waterTemperatureAccumulator startAccumulatingWithStartDate:v32 updateHandler:&v136];
-  intervalCadenceAccumulator = v241->_intervalCadenceAccumulator;
+  intervalCadenceAccumulator = selfCopy->_intervalCadenceAccumulator;
   v30 = location[0];
   v130 = MEMORY[0x277D85DD0];
   v131 = -1073741824;
@@ -5319,7 +5319,7 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
   v134 = &unk_277D88B00;
   objc_copyWeak(&v135, &from);
   [(NLSessionActivityDataAccumulator *)intervalCadenceAccumulator startAccumulatingWithStartDate:v30 updateHandler:&v130];
-  v27 = [(WORaceCoordinator *)v241->_raceCoordinator racePositionProvider];
+  racePositionProvider = [(WORaceCoordinator *)selfCopy->_raceCoordinator racePositionProvider];
   v28 = location[0];
   v124 = MEMORY[0x277D85DD0];
   v125 = -1073741824;
@@ -5327,17 +5327,17 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
   v127 = __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStartDate___block_invoke_17;
   v128 = &unk_277D88B00;
   objc_copyWeak(&v129, &from);
-  [(NLSessionActivityDataAccumulator *)v27 startAccumulatingWithStartDate:v28 updateHandler:&v124];
-  MEMORY[0x277D82BD8](v27);
-  if ([(FIUIWorkoutActivityType *)v241->_activityType supportsLocationPositionTracking])
+  [(NLSessionActivityDataAccumulator *)racePositionProvider startAccumulatingWithStartDate:v28 updateHandler:&v124];
+  MEMORY[0x277D82BD8](racePositionProvider);
+  if ([(FIUIWorkoutActivityType *)selfCopy->_activityType supportsLocationPositionTracking])
   {
-    [(NLSessionActivityDataAccumulator *)v241->_locationPositionAccumulator startAccumulatingWithStartDate:location[0] updateHandler:&__block_literal_global_490];
+    [(NLSessionActivityDataAccumulator *)selfCopy->_locationPositionAccumulator startAccumulatingWithStartDate:location[0] updateHandler:&__block_literal_global_490];
   }
 
-  if ([(FIUIWorkoutActivityType *)v241->_activityType supportsDistanceSplits])
+  if ([(FIUIWorkoutActivityType *)selfCopy->_activityType supportsDistanceSplits])
   {
     memset(__b, 0, sizeof(__b));
-    obj = MEMORY[0x277D82BE0](v241->_splitsAccumulators);
+    obj = MEMORY[0x277D82BE0](selfCopy->_splitsAccumulators);
     v26 = [obj countByEnumeratingWithState:__b objects:v242 count:16];
     if (v26)
     {
@@ -5353,7 +5353,7 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
         }
 
         v123 = *(__b[1] + 8 * v23);
-        [v123 setEventPersistenceDelegate:v241];
+        [v123 setEventPersistenceDelegate:selfCopy];
         [v123 startAccumulatingWithStartDate:location[0] updateHandler:&__block_literal_global_492];
         ++v23;
         if (v21 + 1 >= v24)
@@ -5369,7 +5369,7 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
     }
 
     MEMORY[0x277D82BD8](obj);
-    v19 = [(WOSplitsDisplayAccumulator *)v241->_splitsDisplayAccumulator distanceAccumulator];
+    distanceAccumulator = [(WOSplitsDisplayAccumulator *)selfCopy->_splitsDisplayAccumulator distanceAccumulator];
     v20 = location[0];
     v116 = MEMORY[0x277D85DD0];
     v117 = -1073741824;
@@ -5377,9 +5377,9 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
     v119 = __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStartDate___block_invoke_20;
     v120 = &unk_277D88B00;
     objc_copyWeak(&v121, &from);
-    [(NLSessionActivityDataAccumulator *)v19 startAccumulatingWithStartDate:v20 updateHandler:&v116];
-    MEMORY[0x277D82BD8](v19);
-    v17 = [(WOSplitsDisplayAccumulator *)v241->_splitsDisplayAccumulator elapsedTimeAccumulator];
+    [(NLSessionActivityDataAccumulator *)distanceAccumulator startAccumulatingWithStartDate:v20 updateHandler:&v116];
+    MEMORY[0x277D82BD8](distanceAccumulator);
+    elapsedTimeAccumulator = [(WOSplitsDisplayAccumulator *)selfCopy->_splitsDisplayAccumulator elapsedTimeAccumulator];
     v18 = location[0];
     v110 = MEMORY[0x277D85DD0];
     v111 = -1073741824;
@@ -5387,9 +5387,9 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
     v113 = __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStartDate___block_invoke_21;
     v114 = &unk_277D88B00;
     objc_copyWeak(&v115, &from);
-    [(NLSessionActivityDataAccumulator *)v17 startAccumulatingWithStartDate:v18 updateHandler:&v110];
-    MEMORY[0x277D82BD8](v17);
-    v15 = [(WOSplitsDisplayAccumulator *)v241->_splitsDisplayAccumulator paceAccumulator];
+    [(NLSessionActivityDataAccumulator *)elapsedTimeAccumulator startAccumulatingWithStartDate:v18 updateHandler:&v110];
+    MEMORY[0x277D82BD8](elapsedTimeAccumulator);
+    paceAccumulator2 = [(WOSplitsDisplayAccumulator *)selfCopy->_splitsDisplayAccumulator paceAccumulator];
     v16 = location[0];
     v104 = MEMORY[0x277D85DD0];
     v105 = -1073741824;
@@ -5397,9 +5397,9 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
     v107 = __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStartDate___block_invoke_22;
     v108 = &unk_277D88B00;
     objc_copyWeak(&v109, &from);
-    [(NLSessionActivityDataAccumulator *)v15 startAccumulatingWithStartDate:v16 updateHandler:&v104];
-    MEMORY[0x277D82BD8](v15);
-    v13 = [(WOSplitsDisplayAccumulator *)v241->_splitsDisplayAccumulator averagePowerAccumulator];
+    [(NLSessionActivityDataAccumulator *)paceAccumulator2 startAccumulatingWithStartDate:v16 updateHandler:&v104];
+    MEMORY[0x277D82BD8](paceAccumulator2);
+    averagePowerAccumulator = [(WOSplitsDisplayAccumulator *)selfCopy->_splitsDisplayAccumulator averagePowerAccumulator];
     v14 = location[0];
     v98 = MEMORY[0x277D85DD0];
     v99 = -1073741824;
@@ -5407,17 +5407,17 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
     v101 = __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStartDate___block_invoke_23;
     v102 = &unk_277D88B00;
     objc_copyWeak(&v103, &from);
-    [(NLSessionActivityDataAccumulator *)v13 startAccumulatingWithStartDate:v14 updateHandler:&v98];
-    MEMORY[0x277D82BD8](v13);
+    [(NLSessionActivityDataAccumulator *)averagePowerAccumulator startAccumulatingWithStartDate:v14 updateHandler:&v98];
+    MEMORY[0x277D82BD8](averagePowerAccumulator);
     objc_destroyWeak(&v103);
     objc_destroyWeak(&v109);
     objc_destroyWeak(&v115);
     objc_destroyWeak(&v121);
   }
 
-  if ([(FIUIWorkoutActivityType *)v241->_activityType supportsSegments])
+  if ([(FIUIWorkoutActivityType *)selfCopy->_activityType supportsSegments])
   {
-    v11 = [(WOSegmentAccumulator *)v241->_segmentAccumulator distanceAccumulator];
+    distanceAccumulator2 = [(WOSegmentAccumulator *)selfCopy->_segmentAccumulator distanceAccumulator];
     v12 = location[0];
     v92 = MEMORY[0x277D85DD0];
     v93 = -1073741824;
@@ -5425,9 +5425,9 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
     v95 = __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStartDate___block_invoke_24;
     v96 = &unk_277D88B00;
     objc_copyWeak(&v97, &from);
-    [(NLSessionActivityDataAccumulator *)v11 startAccumulatingWithStartDate:v12 updateHandler:&v92];
-    MEMORY[0x277D82BD8](v11);
-    v9 = [(WOSegmentAccumulator *)v241->_segmentAccumulator elapsedTimeAccumulator];
+    [(NLSessionActivityDataAccumulator *)distanceAccumulator2 startAccumulatingWithStartDate:v12 updateHandler:&v92];
+    MEMORY[0x277D82BD8](distanceAccumulator2);
+    elapsedTimeAccumulator2 = [(WOSegmentAccumulator *)selfCopy->_segmentAccumulator elapsedTimeAccumulator];
     v10 = location[0];
     v86 = MEMORY[0x277D85DD0];
     v87 = -1073741824;
@@ -5435,9 +5435,9 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
     v89 = __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStartDate___block_invoke_25;
     v90 = &unk_277D88B00;
     objc_copyWeak(&v91, &from);
-    [(NLSessionActivityDataAccumulator *)v9 startAccumulatingWithStartDate:v10 updateHandler:&v86];
-    MEMORY[0x277D82BD8](v9);
-    v7 = [(WOSegmentAccumulator *)v241->_segmentAccumulator energyAccumulator];
+    [(NLSessionActivityDataAccumulator *)elapsedTimeAccumulator2 startAccumulatingWithStartDate:v10 updateHandler:&v86];
+    MEMORY[0x277D82BD8](elapsedTimeAccumulator2);
+    energyAccumulator = [(WOSegmentAccumulator *)selfCopy->_segmentAccumulator energyAccumulator];
     v8 = location[0];
     v80 = MEMORY[0x277D85DD0];
     v81 = -1073741824;
@@ -5445,9 +5445,9 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
     v83 = __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStartDate___block_invoke_26;
     v84 = &unk_277D88B00;
     objc_copyWeak(&v85, &from);
-    [(NLSessionActivityDataAccumulator *)v7 startAccumulatingWithStartDate:v8 updateHandler:&v80];
-    MEMORY[0x277D82BD8](v7);
-    v5 = [(WOSegmentAccumulator *)v241->_segmentAccumulator paceAccumulator];
+    [(NLSessionActivityDataAccumulator *)energyAccumulator startAccumulatingWithStartDate:v8 updateHandler:&v80];
+    MEMORY[0x277D82BD8](energyAccumulator);
+    paceAccumulator3 = [(WOSegmentAccumulator *)selfCopy->_segmentAccumulator paceAccumulator];
     v6 = location[0];
     v74 = MEMORY[0x277D85DD0];
     v75 = -1073741824;
@@ -5455,9 +5455,9 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
     v77 = __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStartDate___block_invoke_27;
     v78 = &unk_277D88B00;
     objc_copyWeak(&v79, &from);
-    [(NLSessionActivityDataAccumulator *)v5 startAccumulatingWithStartDate:v6 updateHandler:&v74];
-    MEMORY[0x277D82BD8](v5);
-    v3 = [(WOSegmentAccumulator *)v241->_segmentAccumulator averagePowerAccumulator];
+    [(NLSessionActivityDataAccumulator *)paceAccumulator3 startAccumulatingWithStartDate:v6 updateHandler:&v74];
+    MEMORY[0x277D82BD8](paceAccumulator3);
+    averagePowerAccumulator2 = [(WOSegmentAccumulator *)selfCopy->_segmentAccumulator averagePowerAccumulator];
     v4 = location[0];
     v68 = MEMORY[0x277D85DD0];
     v69 = -1073741824;
@@ -5465,8 +5465,8 @@ uint64_t __67__NLSessionActivity__startIdempotentAccumulatingDataWithStartDate__
     v71 = __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStartDate___block_invoke_28;
     v72 = &unk_277D88B00;
     objc_copyWeak(&v73, &from);
-    [(NLSessionActivityDataAccumulator *)v3 startAccumulatingWithStartDate:v4 updateHandler:&v68];
-    MEMORY[0x277D82BD8](v3);
+    [(NLSessionActivityDataAccumulator *)averagePowerAccumulator2 startAccumulatingWithStartDate:v4 updateHandler:&v68];
+    MEMORY[0x277D82BD8](averagePowerAccumulator2);
     objc_destroyWeak(&v73);
     objc_destroyWeak(&v79);
     objc_destroyWeak(&v85);
@@ -5837,12 +5837,12 @@ uint64_t __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStar
   return MEMORY[0x277D82BD8](WeakRetained);
 }
 
-- (void)_stopTrackingActivityWithEndDate:(id)a3
+- (void)_stopTrackingActivityWithEndDate:(id)date
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   _HKInitializeLogging();
   v16 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v15 = OS_LOG_TYPE_DEFAULT;
@@ -5855,66 +5855,66 @@ uint64_t __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStar
   }
 
   objc_storeStrong(&v16, 0);
-  [(NLSessionActivityDataAccumulator *)v18->_energyBurnAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v18->_distanceAccumulator stopAccumulating];
-  v3 = [(NLSessionActivity *)v18 paceAccumulator];
-  [(NLSessionActivityPaceAccumulator *)v3 stopAccumulating];
-  MEMORY[0x277D82BD8](v3);
-  [(NLSessionActivityDataAccumulator *)v18->_ghostPacerAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v18->_pacerDistanceGoalProgressAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v18->_rollingPaceAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v18->_pedometerCadenceAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v18->_cyclingCadenceAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v18->_waterTemperatureAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v18->_intervalCadenceAccumulator stopAccumulating];
-  v4 = [(NLSessionActivity *)v18 elapsedTimeAccumulator];
-  [(NLSessionActivityElapsedTimeAccumulator *)v4 stopAccumulating];
-  MEMORY[0x277D82BD8](v4);
-  [(NLSessionActivityDataAccumulator *)v18->_heartRateAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v18->_heartRateZonesAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v18->_powerZonesAccumulator stopAccumulating];
-  [(NLSessionActivityWeatherManager *)v18->_weatherManager setActive:0];
-  [(NLSessionActivityDataAccumulator *)v18->_swimmingAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v18->_elevationAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v18->_flightsClimbedAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v18->_powerAccumulator stopAccumulating];
-  v5 = [(WORaceCoordinator *)v18->_raceCoordinator racePositionProvider];
-  [(NLSessionActivityDataAccumulator *)v5 stopAccumulating];
-  MEMORY[0x277D82BD8](v5);
-  v6 = [(WOSegmentAccumulator *)v18->_segmentAccumulator distanceAccumulator];
-  [(NLSessionActivityDataAccumulator *)v6 stopAccumulating];
-  MEMORY[0x277D82BD8](v6);
-  v7 = [(WOSegmentAccumulator *)v18->_segmentAccumulator elapsedTimeAccumulator];
-  [(NLSessionActivityDataAccumulator *)v7 stopAccumulating];
-  MEMORY[0x277D82BD8](v7);
-  v8 = [(WOSegmentAccumulator *)v18->_segmentAccumulator energyAccumulator];
-  [(NLSessionActivityDataAccumulator *)v8 stopAccumulating];
-  MEMORY[0x277D82BD8](v8);
-  v9 = [(WOSegmentAccumulator *)v18->_segmentAccumulator paceAccumulator];
-  [(NLSessionActivityDataAccumulator *)v9 stopAccumulating];
-  MEMORY[0x277D82BD8](v9);
-  v10 = [(WOSegmentAccumulator *)v18->_segmentAccumulator averagePowerAccumulator];
-  [(NLSessionActivityDataAccumulator *)v10 stopAccumulating];
-  MEMORY[0x277D82BD8](v10);
-  [(NLSessionActivityDataAccumulator *)v18->_strideLengthAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v18->_verticalOscillationAccumulator stopAccumulating];
-  [(NLSessionActivityDataAccumulator *)v18->_groundContactTimeAccumulator stopAccumulating];
-  v11 = [(NLSessionActivity *)v18 deviceObserver];
-  [(WOSessionActivityDeviceObserver *)v11 stopObserving];
-  MEMORY[0x277D82BD8](v11);
-  [(NLSessionActivity *)v18 _teardownGroundElevationManager];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_energyBurnAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_distanceAccumulator stopAccumulating];
+  paceAccumulator = [(NLSessionActivity *)selfCopy paceAccumulator];
+  [(NLSessionActivityPaceAccumulator *)paceAccumulator stopAccumulating];
+  MEMORY[0x277D82BD8](paceAccumulator);
+  [(NLSessionActivityDataAccumulator *)selfCopy->_ghostPacerAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_pacerDistanceGoalProgressAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_rollingPaceAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_pedometerCadenceAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_cyclingCadenceAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_waterTemperatureAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_intervalCadenceAccumulator stopAccumulating];
+  elapsedTimeAccumulator = [(NLSessionActivity *)selfCopy elapsedTimeAccumulator];
+  [(NLSessionActivityElapsedTimeAccumulator *)elapsedTimeAccumulator stopAccumulating];
+  MEMORY[0x277D82BD8](elapsedTimeAccumulator);
+  [(NLSessionActivityDataAccumulator *)selfCopy->_heartRateAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_heartRateZonesAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_powerZonesAccumulator stopAccumulating];
+  [(NLSessionActivityWeatherManager *)selfCopy->_weatherManager setActive:0];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_swimmingAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_elevationAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_flightsClimbedAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_powerAccumulator stopAccumulating];
+  racePositionProvider = [(WORaceCoordinator *)selfCopy->_raceCoordinator racePositionProvider];
+  [(NLSessionActivityDataAccumulator *)racePositionProvider stopAccumulating];
+  MEMORY[0x277D82BD8](racePositionProvider);
+  distanceAccumulator = [(WOSegmentAccumulator *)selfCopy->_segmentAccumulator distanceAccumulator];
+  [(NLSessionActivityDataAccumulator *)distanceAccumulator stopAccumulating];
+  MEMORY[0x277D82BD8](distanceAccumulator);
+  elapsedTimeAccumulator2 = [(WOSegmentAccumulator *)selfCopy->_segmentAccumulator elapsedTimeAccumulator];
+  [(NLSessionActivityDataAccumulator *)elapsedTimeAccumulator2 stopAccumulating];
+  MEMORY[0x277D82BD8](elapsedTimeAccumulator2);
+  energyAccumulator = [(WOSegmentAccumulator *)selfCopy->_segmentAccumulator energyAccumulator];
+  [(NLSessionActivityDataAccumulator *)energyAccumulator stopAccumulating];
+  MEMORY[0x277D82BD8](energyAccumulator);
+  paceAccumulator2 = [(WOSegmentAccumulator *)selfCopy->_segmentAccumulator paceAccumulator];
+  [(NLSessionActivityDataAccumulator *)paceAccumulator2 stopAccumulating];
+  MEMORY[0x277D82BD8](paceAccumulator2);
+  averagePowerAccumulator = [(WOSegmentAccumulator *)selfCopy->_segmentAccumulator averagePowerAccumulator];
+  [(NLSessionActivityDataAccumulator *)averagePowerAccumulator stopAccumulating];
+  MEMORY[0x277D82BD8](averagePowerAccumulator);
+  [(NLSessionActivityDataAccumulator *)selfCopy->_strideLengthAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_verticalOscillationAccumulator stopAccumulating];
+  [(NLSessionActivityDataAccumulator *)selfCopy->_groundContactTimeAccumulator stopAccumulating];
+  deviceObserver = [(NLSessionActivity *)selfCopy deviceObserver];
+  [(WOSessionActivityDeviceObserver *)deviceObserver stopObserving];
+  MEMORY[0x277D82BD8](deviceObserver);
+  [(NLSessionActivity *)selfCopy _teardownGroundElevationManager];
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleFinishWorkoutWithWorkout:(id)a3 error:(id)a4
+- (void)_handleFinishWorkoutWithWorkout:(id)workout error:(id)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, workout);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, error);
   _HKInitializeLogging();
   v23 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v22 = OS_LOG_TYPE_DEFAULT;
@@ -5927,40 +5927,40 @@ uint64_t __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStar
   objc_storeStrong(&v23, 0);
   if (location[0])
   {
-    v12 = [(NLSessionActivity *)v26 demoDataProvider];
-    MEMORY[0x277D82BD8](v12);
-    if (v12)
+    demoDataProvider = [(NLSessionActivity *)selfCopy demoDataProvider];
+    MEMORY[0x277D82BD8](demoDataProvider);
+    if (demoDataProvider)
     {
-      v11 = [(NLSessionActivity *)v26 demoDataProvider];
-      v4 = [(NLWorkoutDemoDataProvider *)v11 demoWorkoutWithSnapshot:location[0]];
+      demoDataProvider2 = [(NLSessionActivity *)selfCopy demoDataProvider];
+      v4 = [(NLWorkoutDemoDataProvider *)demoDataProvider2 demoWorkoutWithSnapshot:location[0]];
       v5 = location[0];
       location[0] = v4;
       MEMORY[0x277D82BD8](v5);
-      MEMORY[0x277D82BD8](v11);
+      MEMORY[0x277D82BD8](demoDataProvider2);
     }
 
-    [(NLSessionActivity *)v26 setSavedWorkout:location[0]];
-    v6 = [(NLSessionActivity *)v26 lifecycleDelegate];
-    [(NLSessionActivityLifecycleDelegate *)v6 sessionActivity:v26 didUpdateWorkout:location[0] workoutIsFinal:1];
-    MEMORY[0x277D82BD8](v6);
-    v7 = [(NLSessionActivity *)v26 savingDelegate];
-    [(NLSessionActivitySavingDelegate *)v7 activity:v26 didSaveWorkout:location[0]];
-    MEMORY[0x277D82BD8](v7);
-    v8 = v26;
+    [(NLSessionActivity *)selfCopy setSavedWorkout:location[0]];
+    lifecycleDelegate = [(NLSessionActivity *)selfCopy lifecycleDelegate];
+    [(NLSessionActivityLifecycleDelegate *)lifecycleDelegate sessionActivity:selfCopy didUpdateWorkout:location[0] workoutIsFinal:1];
+    MEMORY[0x277D82BD8](lifecycleDelegate);
+    savingDelegate = [(NLSessionActivity *)selfCopy savingDelegate];
+    [(NLSessionActivitySavingDelegate *)savingDelegate activity:selfCopy didSaveWorkout:location[0]];
+    MEMORY[0x277D82BD8](savingDelegate);
+    v8 = selfCopy;
     v15 = MEMORY[0x277D85DD0];
     v16 = -1073741824;
     v17 = 0;
     v18 = __59__NLSessionActivity__handleFinishWorkoutWithWorkout_error___block_invoke;
     v19 = &unk_277D88B48;
-    v20 = MEMORY[0x277D82BE0](v26);
+    v20 = MEMORY[0x277D82BE0](selfCopy);
     v21 = MEMORY[0x277D82BE0](location[0]);
     [(NLSessionActivity *)v8 _notifyDataObserversWithBlock:&v15];
-    v10 = [(NLSessionActivity *)v26 UUID];
-    v9 = [(NSUUID *)v10 UUIDString];
+    uUID = [(NLSessionActivity *)selfCopy UUID];
+    uUIDString = [(NSUUID *)uUID UUIDString];
     [WOCoreTaskFinalizer finalizeWithIdentifier:?];
-    MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
-    [(FIUIStateMachine *)v26->_stateMachine event:20];
+    MEMORY[0x277D82BD8](uUIDString);
+    MEMORY[0x277D82BD8](uUID);
+    [(FIUIStateMachine *)selfCopy->_stateMachine event:20];
     objc_storeStrong(&v21, 0);
     objc_storeStrong(&v20, 0);
   }
@@ -5976,7 +5976,7 @@ uint64_t __74__NLSessionActivity__startActivityDependentAccumulatingDataWithStar
     }
 
     objc_storeStrong(&v14, 0);
-    [(FIUIStateMachine *)v26->_stateMachine event:18];
+    [(FIUIStateMachine *)selfCopy->_stateMachine event:18];
   }
 
   objc_storeStrong(&v24, 0);
@@ -5997,15 +5997,15 @@ void __59__NLSessionActivity__handleFinishWorkoutWithWorkout_error___block_invok
   objc_storeStrong(location, 0);
 }
 
-- (void)registerMarkerEventWithDate:(id)a3 metadata:(id)a4
+- (void)registerMarkerEventWithDate:(id)date metadata:(id)metadata
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, metadata);
   _HKInitializeLogging();
   v16 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v15 = OS_LOG_TYPE_DEFAULT;
@@ -6018,10 +6018,10 @@ void __59__NLSessionActivity__handleFinishWorkoutWithWorkout_error___block_invok
   }
 
   objc_storeStrong(&v16, 0);
-  v6 = v19;
+  v6 = selfCopy;
   v5 = MEMORY[0x277CCDC68];
   v4 = objc_alloc(MEMORY[0x277CCA970]);
-  v10 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v9 = [v4 initWithStartDate:0.0 duration:?];
   v8 = [v5 workoutEventWithType:4 dateInterval:? metadata:?];
   v20[0] = v8;
@@ -6030,24 +6030,24 @@ void __59__NLSessionActivity__handleFinishWorkoutWithWorkout_error___block_invok
   MEMORY[0x277D82BD8](v7);
   MEMORY[0x277D82BD8](v8);
   MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
+  MEMORY[0x277D82BD8](date);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyDataObserversUpdatedMetricType:(unint64_t)a3
+- (void)_notifyDataObserversUpdatedMetricType:(unint64_t)type
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  typeCopy = type;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __59__NLSessionActivity__notifyDataObserversUpdatedMetricType___block_invoke;
   v8 = &unk_277D88D68;
   v9[0] = MEMORY[0x277D82BE0](self);
-  v9[1] = v10;
+  v9[1] = typeCopy;
   [(NLSessionActivity *)self _notifyDataObserversWithBlock:?];
   objc_storeStrong(v9, 0);
 }
@@ -6065,13 +6065,13 @@ void __59__NLSessionActivity__notifyDataObserversUpdatedMetricType___block_invok
   objc_storeStrong(location, 0);
 }
 
-- (void)_notifyDataObserversUpdatedMetricTypes:(id)a3
+- (void)_notifyDataObserversUpdatedMetricTypes:(id)types
 {
   v14 = *MEMORY[0x277D85DE8];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, types);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](location[0]);
   v8 = [obj countByEnumeratingWithState:__b objects:v13 count:16];
@@ -6089,7 +6089,7 @@ void __59__NLSessionActivity__notifyDataObserversUpdatedMetricType___block_invok
       }
 
       v10 = *(__b[1] + 8 * v5);
-      -[NLSessionActivity _notifyDataObserversUpdatedMetricType:](v12, "_notifyDataObserversUpdatedMetricType:", [v10 integerValue]);
+      -[NLSessionActivity _notifyDataObserversUpdatedMetricType:](selfCopy, "_notifyDataObserversUpdatedMetricType:", [v10 integerValue]);
       ++v5;
       if (v3 + 1 >= v6)
       {
@@ -6108,15 +6108,15 @@ void __59__NLSessionActivity__notifyDataObserversUpdatedMetricType___block_invok
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyDataObserversWithBlock:(id)a3
+- (void)_notifyDataObserversWithBlock:(id)block
 {
   v14 = *MEMORY[0x277D85DE8];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, block);
   memset(__b, 0, sizeof(__b));
-  obj = [(NSHashTable *)v12->_dataObservers allObjects];
+  obj = [(NSHashTable *)selfCopy->_dataObservers allObjects];
   v8 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v13 count:16];
   if (v8)
   {
@@ -6151,77 +6151,77 @@ void __59__NLSessionActivity__notifyDataObserversUpdatedMetricType___block_invok
   *MEMORY[0x277D85DE8];
 }
 
-- (void)energyBurnAccumulatorDidUpdate:(id)a3
+- (void)energyBurnAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279D18];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279D18];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)elevationAccumulatorDidUpdate:(id)a3
+- (void)elevationAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricType:10];
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricType:17];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricType:10];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricType:17];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)flightsClimbedAccumulatorDidUpdate:(id)a3
+- (void)flightsClimbedAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricType:13];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricType:13];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)distanceProviderDidUpdate:(id)a3
+- (void)distanceProviderDidUpdate:(id)update
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v5->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v5 _notifyDataObserversUpdatedMetricType:1];
-    v3 = [(WORaceCoordinator *)v5->_raceCoordinator raceLocationProvider];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricType:1];
+    raceLocationProvider = [(WORaceCoordinator *)selfCopy->_raceCoordinator raceLocationProvider];
     [location[0] distance];
-    [(WORaceLocationProvider *)v3 updateWithDistance:?];
-    MEMORY[0x277D82BD8](v3);
+    [(WORaceLocationProvider *)raceLocationProvider updateWithDistance:?];
+    MEMORY[0x277D82BD8](raceLocationProvider);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)elapsedTimeAccumulatorDidUpdate:(id)a3
+- (void)elapsedTimeAccumulatorDidUpdate:(id)update
 {
   v12 = *MEMORY[0x277D85DE8];
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NLSessionActivity *)v9 activityDuration];
+  objc_storeStrong(location, update);
+  [(NLSessionActivity *)selfCopy activityDuration];
   v7 = v3;
-  if (v9->_state == 6 || v9->_state == 1)
+  if (selfCopy->_state == 6 || selfCopy->_state == 1)
   {
     _HKInitializeLogging();
     oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -6233,8 +6233,8 @@ void __59__NLSessionActivity__notifyDataObserversUpdatedMetricType___block_invok
     }
 
     objc_storeStrong(&oslog, 0);
-    [(NLSessionActivity *)v9 _notifyDataObserversUpdatedMetricType:3];
-    if ([(WOCoreLiveWorkoutConfiguration *)v9->_configuration isUltraMode])
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricType:3];
+    if ([(WOCoreLiveWorkoutConfiguration *)selfCopy->_configuration isUltraMode])
     {
       _HKInitializeLogging();
       v4 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -6249,111 +6249,111 @@ void __59__NLSessionActivity__notifyDataObserversUpdatedMetricType___block_invok
 
     else
     {
-      [(NLSessionActivityNonMachinePaceAccumulator *)v9->_nonMachinePaceAccumulator updateAveragePaceWithElapsedTime:*&v7];
-      [(NLSessionActivityRollingPaceAccumulator *)v9->_rollingPaceAccumulator updateRollingPaceWithElapsedTime:*&v7];
+      [(NLSessionActivityNonMachinePaceAccumulator *)selfCopy->_nonMachinePaceAccumulator updateAveragePaceWithElapsedTime:*&v7];
+      [(NLSessionActivityRollingPaceAccumulator *)selfCopy->_rollingPaceAccumulator updateRollingPaceWithElapsedTime:*&v7];
     }
 
-    [(NLGhostPacerAccumulator *)v9->_ghostPacerAccumulator updateWithElapsedTime:*&v7];
-    [(WORaceCoordinator *)v9->_raceCoordinator updateWithElapsedTime:*&v7];
-    [(NLSessionActivityBuilderAccumulator *)v9->_heartRateZonesAccumulator update];
-    [(NLSessionActivityBuilderAccumulator *)v9->_powerZonesAccumulator update];
+    [(NLGhostPacerAccumulator *)selfCopy->_ghostPacerAccumulator updateWithElapsedTime:*&v7];
+    [(WORaceCoordinator *)selfCopy->_raceCoordinator updateWithElapsedTime:*&v7];
+    [(NLSessionActivityBuilderAccumulator *)selfCopy->_heartRateZonesAccumulator update];
+    [(NLSessionActivityBuilderAccumulator *)selfCopy->_powerZonesAccumulator update];
   }
 
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)heartRateAccumulatorDidUpdate:(id)a3
+- (void)heartRateAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279D30];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279D30];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)powerAccumulatorDidUpdate:(id)a3
+- (void)powerAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279D48];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279D48];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)heartRateZonesAccumulatorDidUpdate:(id)a3
+- (void)heartRateZonesAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279D60];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279D60];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)powerZonesAccumulatorDidUpdate:(id)a3
+- (void)powerZonesAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279D78];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279D78];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)heartRatePrecisionStartAccumulatorDidUpdate:(id)a3
+- (void)heartRatePrecisionStartAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state == 1)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state == 1)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279D90];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279D90];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)paceProviderDidUpdate:(id)a3
+- (void)paceProviderDidUpdate:(id)update
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v12->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v12 _notifyDataObserversUpdatedMetricTypes:&unk_282279DA8];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279DA8];
     [location[0] fastestPaceInMetersPerSecond];
     v10 = v3;
     v9 = v3;
-    [(NLSessionActivity *)v12 currentFastestPace];
+    [(NLSessionActivity *)selfCopy currentFastestPace];
     if (v9 != v4)
     {
-      [(NLSessionActivity *)v12 setCurrentFastestPace:v10];
-      v6 = v12;
+      [(NLSessionActivity *)selfCopy setCurrentFastestPace:v10];
+      v6 = selfCopy;
       v13 = @"_HKPrivateMetadataKeyFastestPace";
       v5 = MEMORY[0x277CCABB0];
-      [(NLSessionActivity *)v12 currentFastestPace];
+      [(NLSessionActivity *)selfCopy currentFastestPace];
       v8 = [v5 numberWithDouble:?];
       v14[0] = v8;
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
@@ -6367,29 +6367,29 @@ void __59__NLSessionActivity__notifyDataObserversUpdatedMetricType___block_invok
   *MEMORY[0x277D85DE8];
 }
 
-- (void)ghostPacerAccumulatorDidUpdate:(id)a3
+- (void)ghostPacerAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279DC0];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279DC0];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)pacerDistanceGoalProgressAccumulatorDidUpdate:(id)a3
+- (void)pacerDistanceGoalProgressAccumulatorDidUpdate:(id)update
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v11->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    v3 = v11;
+    v3 = selfCopy;
     v4 = MEMORY[0x277D85DD0];
     v5 = -1073741824;
     v6 = 0;
@@ -6420,135 +6420,135 @@ void __67__NLSessionActivity_pacerDistanceGoalProgressAccumulatorDidUpdate___blo
   objc_storeStrong(location, 0);
 }
 
-- (void)rollingPaceAccumulatorDidUpdate:(id)a3
+- (void)rollingPaceAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279DD8];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279DD8];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)swimmingAccumulatorDidUpdate:(id)a3
+- (void)swimmingAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279DF0];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279DF0];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)downhillSnowSportsAccumulatorDidUpdate:(id)a3
+- (void)downhillSnowSportsAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279E08];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279E08];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)pedometerCadenceAccumulatorDidUpdate:(id)a3
+- (void)pedometerCadenceAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279E20];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279E20];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)cyclingCadenceAccumulatorDidUpdate:(id)a3
+- (void)cyclingCadenceAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279E38];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279E38];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)waterTemperatureAccumulatorDidUpdate:(id)a3
+- (void)waterTemperatureAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279E50];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279E50];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)intervalCadenceAccumulatorDidUpdate:(id)a3
+- (void)intervalCadenceAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279E68];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279E68];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)racePositionProviderDidUpdate:(id)a3
+- (void)racePositionProviderDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279E80];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279E80];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)locationPositionAccumulator:(id)a3 didUpdateLocations:(id)a4
+- (void)locationPositionAccumulator:(id)accumulator didUpdateLocations:(id)locations
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, accumulator);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  if (v15->_state != 7)
+  objc_storeStrong(&v13, locations);
+  if (selfCopy->_state != 7)
   {
-    v4 = v15;
+    v4 = selfCopy;
     v6 = MEMORY[0x277D85DD0];
     v7 = -1073741824;
     v8 = 0;
     v9 = __68__NLSessionActivity_locationPositionAccumulator_didUpdateLocations___block_invoke;
     v10 = &unk_277D88B48;
-    v11 = MEMORY[0x277D82BE0](v15);
+    v11 = MEMORY[0x277D82BE0](selfCopy);
     v12 = MEMORY[0x277D82BE0](v13);
     [(NLSessionActivity *)v4 _notifyDataObserversWithBlock:&v6];
     objc_storeStrong(&v12, 0);
@@ -6576,23 +6576,23 @@ void __68__NLSessionActivity_locationPositionAccumulator_didUpdateLocations___bl
   objc_storeStrong(location, 0);
 }
 
-- (void)locationPositionAccumulator:(id)a3 didUpdateRoutePosition:(id)a4
+- (void)locationPositionAccumulator:(id)accumulator didUpdateRoutePosition:(id)position
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, accumulator);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  if (v15->_state != 7)
+  objc_storeStrong(&v13, position);
+  if (selfCopy->_state != 7)
   {
-    v4 = v15;
+    v4 = selfCopy;
     v6 = MEMORY[0x277D85DD0];
     v7 = -1073741824;
     v8 = 0;
     v9 = __72__NLSessionActivity_locationPositionAccumulator_didUpdateRoutePosition___block_invoke;
     v10 = &unk_277D88B48;
-    v11 = MEMORY[0x277D82BE0](v15);
+    v11 = MEMORY[0x277D82BE0](selfCopy);
     v12 = MEMORY[0x277D82BE0](v13);
     [(NLSessionActivity *)v4 _notifyDataObserversWithBlock:&v6];
     objc_storeStrong(&v12, 0);
@@ -6620,189 +6620,189 @@ void __72__NLSessionActivity_locationPositionAccumulator_didUpdateRoutePosition_
   objc_storeStrong(location, 0);
 }
 
-- (void)segmentDistanceAccumulatorDidUpdate:(id)a3
+- (void)segmentDistanceAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279E98];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279E98];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)segmentEnergyAccumulatorDidUpdate:(id)a3
+- (void)segmentEnergyAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279EB0];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279EB0];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)segmentElapsedTimeAccumulatorDidUpdate:(id)a3
+- (void)segmentElapsedTimeAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279EC8];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279EC8];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)segmentPaceAccumulatorDidUpdate:(id)a3
+- (void)segmentPaceAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279EE0];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279EE0];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)segmentAveragePowerAccumulatorDidUpdate:(id)a3
+- (void)segmentAveragePowerAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279EF8];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279EF8];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)strideLengthAccumulatorDidUpdate:(id)a3
+- (void)strideLengthAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279F10];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279F10];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)verticalOscillationAccumulatorDidUpdate:(id)a3
+- (void)verticalOscillationAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279F28];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279F28];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)groundContactTimeAccumulatorDidUpdate:(id)a3
+- (void)groundContactTimeAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279F40];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279F40];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)splitDistanceAccumulatorDidUpdate:(id)a3
+- (void)splitDistanceAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279F58];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279F58];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)splitElapsedTimeAccumulatorDidUpdate:(id)a3
+- (void)splitElapsedTimeAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279F70];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279F70];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)splitPaceAccumulatorDidUpdate:(id)a3
+- (void)splitPaceAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279F88];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279F88];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)splitAveragePowerAccumulatorDidUpdate:(id)a3
+- (void)splitAveragePowerAccumulatorDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 7)
+  objc_storeStrong(location, update);
+  if (selfCopy->_state != 7)
   {
-    [(NLSessionActivity *)v4 _notifyDataObserversUpdatedMetricTypes:&unk_282279FA0];
+    [(NLSessionActivity *)selfCopy _notifyDataObserversUpdatedMetricTypes:&unk_282279FA0];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateSplitsWithStatistics:(id)a3 duration:(double)a4
+- (void)_updateSplitsWithStatistics:(id)statistics duration:(double)duration
 {
   v20 = *MEMORY[0x277D85DE8];
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = a4;
-  v12 = [(NLSessionActivity *)v18 paceProvider];
-  v13 = [(NLSessionActivityPaceProvider *)v12 isPaceAvailable];
-  MEMORY[0x277D82BD8](v12);
-  if (v13)
+  objc_storeStrong(location, statistics);
+  durationCopy = duration;
+  paceProvider = [(NLSessionActivity *)selfCopy paceProvider];
+  isPaceAvailable = [(NLSessionActivityPaceProvider *)paceProvider isPaceAvailable];
+  MEMORY[0x277D82BD8](paceProvider);
+  if (isPaceAvailable)
   {
     memset(__b, 0, sizeof(__b));
-    obj = MEMORY[0x277D82BE0](v18->_splitsAccumulators);
+    obj = MEMORY[0x277D82BE0](selfCopy->_splitsAccumulators);
     v10 = [obj countByEnumeratingWithState:__b objects:v19 count:16];
     if (v10)
     {
@@ -6818,7 +6818,7 @@ void __72__NLSessionActivity_locationPositionAccumulator_didUpdateRoutePosition_
         }
 
         v15 = *(__b[1] + 8 * v7);
-        [v15 updateWithStatistics:location[0] elapsedTime:{v16, v8}];
+        [v15 updateWithStatistics:location[0] elapsedTime:{durationCopy, v8}];
         ++v7;
         v8 = v4;
         if (v5 + 1 >= v4)
@@ -6840,18 +6840,18 @@ void __72__NLSessionActivity_locationPositionAccumulator_didUpdateRoutePosition_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)paceAccumulator:(id)a3 didUpdateIsGPSAvailable:(BOOL)a4
+- (void)paceAccumulator:(id)accumulator didUpdateIsGPSAvailable:(BOOL)available
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = a4;
-  if (!a4)
+  objc_storeStrong(location, accumulator);
+  availableCopy = available;
+  if (!available)
   {
-    v17->_lostGPSAtSomePoint = 1;
-    v5 = v17;
+    selfCopy->_lostGPSAtSomePoint = 1;
+    v5 = selfCopy;
     v18 = *MEMORY[0x277D0A878];
     v19[0] = MEMORY[0x277CBEC38];
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
@@ -6859,14 +6859,14 @@ void __72__NLSessionActivity_locationPositionAccumulator_didUpdateRoutePosition_
     MEMORY[0x277D82BD8](v6);
   }
 
-  v4 = v17;
+  v4 = selfCopy;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
   v11 = __61__NLSessionActivity_paceAccumulator_didUpdateIsGPSAvailable___block_invoke;
   v12 = &unk_277D88D90;
-  v13 = MEMORY[0x277D82BE0](v17);
-  v14 = v15;
+  v13 = MEMORY[0x277D82BE0](selfCopy);
+  v14 = availableCopy;
   [(NLSessionActivity *)v4 _notifyDataObserversWithBlock:&v8];
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
@@ -6886,28 +6886,28 @@ void __61__NLSessionActivity_paceAccumulator_didUpdateIsGPSAvailable___block_inv
   objc_storeStrong(location, 0);
 }
 
-- (void)paceAccumulator:(id)a3 didUpdateCurrentPaceInMetersPerSecond:(double)a4
+- (void)paceAccumulator:(id)accumulator didUpdateCurrentPaceInMetersPerSecond:(double)second
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, accumulator);
   objc_storeStrong(location, 0);
 }
 
-- (void)heartRateProviderDidBecomeStale:(id)a3
+- (void)heartRateProviderDidBecomeStale:(id)stale
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
+  objc_storeStrong(location, stale);
+  v3 = selfCopy;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __53__NLSessionActivity_heartRateProviderDidBecomeStale___block_invoke;
   v8 = &unk_277D88C10;
-  v9 = MEMORY[0x277D82BE0](v11);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   [(NLSessionActivity *)v3 _notifyDataObserversWithBlock:?];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
@@ -6925,11 +6925,11 @@ void __53__NLSessionActivity_heartRateProviderDidBecomeStale___block_invoke(id *
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateElapsedTime:(double)a3
+- (void)_updateElapsedTime:(double)time
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  timeCopy = time;
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -6938,8 +6938,8 @@ void __53__NLSessionActivity_heartRateProviderDidBecomeStale___block_invoke(id *
   v8 = 0;
   v9 = __40__NLSessionActivity__updateElapsedTime___block_invoke;
   v10 = &unk_277D88DB8;
-  v11[0] = MEMORY[0x277D82BE0](v14);
-  v11[1] = *&v12;
+  v11[0] = MEMORY[0x277D82BE0](selfCopy);
+  v11[1] = *&timeCopy;
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(v11, 0);
@@ -6952,12 +6952,12 @@ uint64_t __40__NLSessionActivity__updateElapsedTime___block_invoke(uint64_t a1)
   return MEMORY[0x277D82BD8](v3);
 }
 
-- (void)_updateElevationGain:(id)a3
+- (void)_updateElevationGain:(id)gain
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, gain);
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -6966,7 +6966,7 @@ uint64_t __40__NLSessionActivity__updateElapsedTime___block_invoke(uint64_t a1)
   v8 = 0;
   v9 = __42__NLSessionActivity__updateElevationGain___block_invoke;
   v10 = &unk_277D88998;
-  v11 = MEMORY[0x277D82BE0](v14);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
@@ -6975,12 +6975,12 @@ uint64_t __40__NLSessionActivity__updateElapsedTime___block_invoke(uint64_t a1)
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateElevation:(id)a3
+- (void)_updateElevation:(id)elevation
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, elevation);
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -6989,7 +6989,7 @@ uint64_t __40__NLSessionActivity__updateElapsedTime___block_invoke(uint64_t a1)
   v8 = 0;
   v9 = __38__NLSessionActivity__updateElevation___block_invoke;
   v10 = &unk_277D88998;
-  v11 = MEMORY[0x277D82BE0](v14);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
@@ -7006,13 +7006,13 @@ uint64_t __38__NLSessionActivity__updateElevation___block_invoke(uint64_t a1)
   return MEMORY[0x277D82BD8](v3);
 }
 
-- (void)_updateInstantaneousPower:(double)a3 sampleDate:(id)a4
+- (void)_updateInstantaneousPower:(double)power sampleDate:(id)date
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  powerCopy = power;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, date);
   v5 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v5;
@@ -7021,8 +7021,8 @@ uint64_t __38__NLSessionActivity__updateElevation___block_invoke(uint64_t a1)
   v9 = 0;
   v10 = __58__NLSessionActivity__updateInstantaneousPower_sampleDate___block_invoke;
   v11 = &unk_277D88DE0;
-  v12 = MEMORY[0x277D82BE0](v17);
-  v13[1] = *&v15;
+  v12 = MEMORY[0x277D82BE0](selfCopy);
+  v13[1] = *&powerCopy;
   v13[0] = MEMORY[0x277D82BE0](location);
   dispatch_async(queue, &v7);
   MEMORY[0x277D82BD8](queue);
@@ -7031,11 +7031,11 @@ uint64_t __38__NLSessionActivity__updateElevation___block_invoke(uint64_t a1)
   objc_storeStrong(&location, 0);
 }
 
-- (void)_updateAveragePower:(double)a3
+- (void)_updateAveragePower:(double)power
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  powerCopy = power;
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -7044,18 +7044,18 @@ uint64_t __38__NLSessionActivity__updateElevation___block_invoke(uint64_t a1)
   v8 = 0;
   v9 = __41__NLSessionActivity__updateAveragePower___block_invoke;
   v10 = &unk_277D88DB8;
-  v11[0] = MEMORY[0x277D82BE0](v14);
-  v11[1] = *&v12;
+  v11[0] = MEMORY[0x277D82BE0](selfCopy);
+  v11[1] = *&powerCopy;
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(v11, 0);
 }
 
-- (void)_updateInstantaneousPace:(double)a3
+- (void)_updateInstantaneousPace:(double)pace
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  paceCopy = pace;
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -7064,8 +7064,8 @@ uint64_t __38__NLSessionActivity__updateElevation___block_invoke(uint64_t a1)
   v8 = 0;
   v9 = __46__NLSessionActivity__updateInstantaneousPace___block_invoke;
   v10 = &unk_277D88DB8;
-  v11[0] = MEMORY[0x277D82BE0](v14);
-  v11[1] = *&v12;
+  v11[0] = MEMORY[0x277D82BE0](selfCopy);
+  v11[1] = *&paceCopy;
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(v11, 0);
@@ -7079,11 +7079,11 @@ uint64_t __46__NLSessionActivity__updateInstantaneousPace___block_invoke(uint64_
   return MEMORY[0x277D82BD8](v3);
 }
 
-- (void)_updateAveragePace:(double)a3
+- (void)_updateAveragePace:(double)pace
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  paceCopy = pace;
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -7092,21 +7092,21 @@ uint64_t __46__NLSessionActivity__updateInstantaneousPace___block_invoke(uint64_
   v8 = 0;
   v9 = __40__NLSessionActivity__updateAveragePace___block_invoke;
   v10 = &unk_277D88DB8;
-  v11[0] = MEMORY[0x277D82BE0](v14);
-  v11[1] = *&v12;
+  v11[0] = MEMORY[0x277D82BE0](selfCopy);
+  v11[1] = *&paceCopy;
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(v11, 0);
 }
 
-- (void)_updateTotalDistanceWithStatistics:(id)a3 duration:(double)a4
+- (void)_updateTotalDistanceWithStatistics:(id)statistics duration:(double)duration
 {
   v26 = *MEMORY[0x277D85DE8];
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v22 = a4;
+  objc_storeStrong(location, statistics);
+  durationCopy = duration;
   v16 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   v17 = v16;
@@ -7119,52 +7119,52 @@ uint64_t __46__NLSessionActivity__updateInstantaneousPace___block_invoke(uint64_
     v20 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [location[0] quantityType];
-      v13 = [location[0] sumQuantity];
-      v12 = [MEMORY[0x277CCDAB0] meterUnit];
-      [v13 doubleValueForUnit:?];
-      __os_log_helper_16_2_2_8_64_8_0(v25, v14, v5);
+      quantityType = [location[0] quantityType];
+      sumQuantity = [location[0] sumQuantity];
+      meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+      [sumQuantity doubleValueForUnit:?];
+      __os_log_helper_16_2_2_8_64_8_0(v25, quantityType, v5);
       _os_log_impl(&dword_20AEA4000, v21, v20, "Received a sample based distance of %@ to %f", v25, 0x16u);
-      MEMORY[0x277D82BD8](v12);
-      MEMORY[0x277D82BD8](v13);
-      MEMORY[0x277D82BD8](v14);
+      MEMORY[0x277D82BD8](meterUnit);
+      MEMORY[0x277D82BD8](sumQuantity);
+      MEMORY[0x277D82BD8](quantityType);
     }
 
     objc_storeStrong(&v21, 0);
   }
 
   v19 = MEMORY[0x277D82BE0](location[0]);
-  v18 = v22;
-  v11 = [(NLSessionActivity *)v24 demoDataProvider];
-  MEMORY[0x277D82BD8](v11);
-  if (v11)
+  v18 = durationCopy;
+  demoDataProvider = [(NLSessionActivity *)selfCopy demoDataProvider];
+  MEMORY[0x277D82BD8](demoDataProvider);
+  if (demoDataProvider)
   {
-    v10 = [(NLSessionActivity *)v24 demoDataProvider];
-    v6 = [(NLWorkoutDemoDataProvider *)v10 demoAdjustedStatisticsForStatistics:location[0]];
+    demoDataProvider2 = [(NLSessionActivity *)selfCopy demoDataProvider];
+    v6 = [(NLWorkoutDemoDataProvider *)demoDataProvider2 demoAdjustedStatisticsForStatistics:location[0]];
     v7 = v19;
     v19 = v6;
     MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v10);
-    [(NLSessionActivity *)v24 activityDuration];
+    MEMORY[0x277D82BD8](demoDataProvider2);
+    [(NLSessionActivity *)selfCopy activityDuration];
     v18 = v8;
   }
 
-  [(NLSessionActivityDistanceAccumulator *)v24->_distanceAccumulator updateDistanceWithStatistics:v19, &v19];
-  [(NLSessionActivityNonMachinePaceAccumulator *)v24->_nonMachinePaceAccumulator updateAveragePaceWithStatistics:v19 duration:v18];
-  [(NLGhostPacerAccumulator *)v24->_ghostPacerAccumulator updatePacerWithStatistics:v19 duration:v18];
-  [(NLPacerDistanceGoalProgressAccumulator *)v24->_pacerDistanceGoalProgressAccumulator updateProgressWithStatistics:v19 elapsedTime:v18];
-  [(NLSessionActivity *)v24 _updateSplitsWithStatistics:v19 duration:v18];
+  [(NLSessionActivityDistanceAccumulator *)selfCopy->_distanceAccumulator updateDistanceWithStatistics:v19, &v19];
+  [(NLSessionActivityNonMachinePaceAccumulator *)selfCopy->_nonMachinePaceAccumulator updateAveragePaceWithStatistics:v19 duration:v18];
+  [(NLGhostPacerAccumulator *)selfCopy->_ghostPacerAccumulator updatePacerWithStatistics:v19 duration:v18];
+  [(NLPacerDistanceGoalProgressAccumulator *)selfCopy->_pacerDistanceGoalProgressAccumulator updateProgressWithStatistics:v19 elapsedTime:v18];
+  [(NLSessionActivity *)selfCopy _updateSplitsWithStatistics:v19 duration:v18];
   objc_storeStrong(v9, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateMachineDistance:(double)a3
+- (void)_updateMachineDistance:(double)distance
 {
   v18 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = *&a3;
+  v14 = *&distance;
   if ([MEMORY[0x277CCDD30] isAppleInternalInstall])
   {
     _HKInitializeLogging();
@@ -7187,7 +7187,7 @@ uint64_t __46__NLSessionActivity__updateInstantaneousPace___block_invoke(uint64_
   v8 = 0;
   v9 = __44__NLSessionActivity__updateMachineDistance___block_invoke;
   v10 = &unk_277D88DB8;
-  v11[0] = MEMORY[0x277D82BE0](v16);
+  v11[0] = MEMORY[0x277D82BE0](selfCopy);
   v11[1] = v14;
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
@@ -7214,15 +7214,15 @@ void __44__NLSessionActivity__updateMachineDistance___block_invoke(uint64_t a1)
   objc_storeStrong(v7, 0);
 }
 
-- (void)_updateEnergyBurned:(id)a3 statistics:(id)a4
+- (void)_updateEnergyBurned:(id)burned statistics:(id)statistics
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, burned);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, statistics);
   v11 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   v12 = v11;
@@ -7230,12 +7230,12 @@ void __44__NLSessionActivity__updateMachineDistance___block_invoke(uint64_t a1)
   MEMORY[0x277D82BD8](v12);
   if ([MEMORY[0x277CCDD30] isAppleInternalInstall])
   {
-    v8 = [v15 sumQuantity];
-    v7 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
-    [v8 doubleValueForUnit:?];
+    sumQuantity = [v15 sumQuantity];
+    kilocalorieUnit = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+    [sumQuantity doubleValueForUnit:?];
     v9 = v5;
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](kilocalorieUnit);
+    MEMORY[0x277D82BD8](sumQuantity);
     v14 = v9;
     _HKInitializeLogging();
     v13 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -7248,36 +7248,36 @@ void __44__NLSessionActivity__updateMachineDistance___block_invoke(uint64_t a1)
     objc_storeStrong(&v13, 0);
   }
 
-  v6 = [(NLSessionActivity *)v17 energyBurnAccumulator];
-  [(NLSessionActivityEnergyBurnAccumulator *)v6 updateCaloriesWithStatistics:v15];
-  MEMORY[0x277D82BD8](v6);
+  energyBurnAccumulator = [(NLSessionActivity *)selfCopy energyBurnAccumulator];
+  [(NLSessionActivityEnergyBurnAccumulator *)energyBurnAccumulator updateCaloriesWithStatistics:v15];
+  MEMORY[0x277D82BD8](energyBurnAccumulator);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateStepCountWithStatistics:(id)a3 duration:(double)a4 quantityType:(id)a5
+- (void)_updateStepCountWithStatistics:(id)statistics duration:(double)duration quantityType:(id)type
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = a4;
+  objc_storeStrong(location, statistics);
+  durationCopy = duration;
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  [(NLSessionActivityPedometerCadenceAccumulator *)v10->_pedometerCadenceAccumulator updateWithStatistics:location[0] duration:v8];
-  [(NLSessionActivity *)v10 _updateIntervalCadenceWithQuantityType:v7];
+  objc_storeStrong(&v7, type);
+  [(NLSessionActivityPedometerCadenceAccumulator *)selfCopy->_pedometerCadenceAccumulator updateWithStatistics:location[0] duration:durationCopy];
+  [(NLSessionActivity *)selfCopy _updateIntervalCadenceWithQuantityType:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateHeartRateWithStatistics:(id)a3
+- (void)_updateHeartRateWithStatistics:(id)statistics
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (!v11->_didCollectFirstHeartRateSample)
+  objc_storeStrong(location, statistics);
+  if (!selfCopy->_didCollectFirstHeartRateSample)
   {
     _HKInitializeLogging();
     v9 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -7294,28 +7294,28 @@ void __44__NLSessionActivity__updateMachineDistance___block_invoke(uint64_t a1)
     v4 = +[WOCoreWorkoutSignposter shared];
     [(WOCoreWorkoutSignposter *)v4 emitWithSignpost:7];
     MEMORY[0x277D82BD8](v4);
-    v11->_didCollectFirstHeartRateSample = 1;
+    selfCopy->_didCollectFirstHeartRateSample = 1;
   }
 
-  [(NLSessionActivityHeartRateAccumulator *)v11->_heartRateAccumulator updateWithStatistics:location[0], location];
+  [(NLSessionActivityHeartRateAccumulator *)selfCopy->_heartRateAccumulator updateWithStatistics:location[0], location];
   objc_storeStrong(v3, 0);
 }
 
-- (void)_updateFlightsClimbedWithStatistics:(id)a3
+- (void)_updateFlightsClimbedWithStatistics:(id)statistics
 {
   v13 = *MEMORY[0x277D85DE8];
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, statistics);
   if ([MEMORY[0x277CCDD30] isAppleInternalInstall])
   {
-    v6 = [location[0] sumQuantity];
-    v5 = [MEMORY[0x277CCDAB0] countUnit];
-    [v6 doubleValueForUnit:?];
+    sumQuantity = [location[0] sumQuantity];
+    countUnit = [MEMORY[0x277CCDAB0] countUnit];
+    [sumQuantity doubleValueForUnit:?];
     v7 = v3;
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](countUnit);
+    MEMORY[0x277D82BD8](sumQuantity);
     v9 = v7;
     _HKInitializeLogging();
     oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -7328,133 +7328,133 @@ void __44__NLSessionActivity__updateMachineDistance___block_invoke(uint64_t a1)
     objc_storeStrong(&oslog, 0);
   }
 
-  [(NLSessionActivityFlightsClimbedAccumulator *)v11->_flightsClimbedAccumulator updateWithStatistics:location[0], location];
+  [(NLSessionActivityFlightsClimbedAccumulator *)selfCopy->_flightsClimbedAccumulator updateWithStatistics:location[0], location];
   objc_storeStrong(v4, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateRunningPowerWithStatistics:(id)a3
+- (void)_updateRunningPowerWithStatistics:(id)statistics
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = [location[0] averageQuantity];
-  MEMORY[0x277D82BD8](v13);
-  if (v13)
+  objc_storeStrong(location, statistics);
+  averageQuantity = [location[0] averageQuantity];
+  MEMORY[0x277D82BD8](averageQuantity);
+  if (averageQuantity)
   {
-    v10 = v15;
-    v12 = [location[0] averageQuantity];
-    v11 = [MEMORY[0x277CCDAB0] wattUnit];
-    [v12 doubleValueForUnit:?];
+    v10 = selfCopy;
+    averageQuantity2 = [location[0] averageQuantity];
+    wattUnit = [MEMORY[0x277CCDAB0] wattUnit];
+    [averageQuantity2 doubleValueForUnit:?];
     [(NLSessionActivity *)v10 _updateAveragePower:?];
-    MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](wattUnit);
+    MEMORY[0x277D82BD8](averageQuantity2);
   }
 
-  v9 = [location[0] mostRecentQuantity];
-  MEMORY[0x277D82BD8](v9);
-  if (v9)
+  mostRecentQuantity = [location[0] mostRecentQuantity];
+  MEMORY[0x277D82BD8](mostRecentQuantity);
+  if (mostRecentQuantity)
   {
-    v5 = v15;
-    v8 = [location[0] mostRecentQuantity];
-    v7 = [MEMORY[0x277CCDAB0] wattUnit];
-    [v8 doubleValueForUnit:?];
+    v5 = selfCopy;
+    mostRecentQuantity2 = [location[0] mostRecentQuantity];
+    wattUnit2 = [MEMORY[0x277CCDAB0] wattUnit];
+    [mostRecentQuantity2 doubleValueForUnit:?];
     v4 = v3;
-    v6 = [location[0] endDate];
+    endDate = [location[0] endDate];
     [(NLSessionActivity *)v5 _updateInstantaneousPower:v4 sampleDate:?];
-    MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](endDate);
+    MEMORY[0x277D82BD8](wattUnit2);
+    MEMORY[0x277D82BD8](mostRecentQuantity2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateCyclingPowerWithStatistics:(id)a3
+- (void)_updateCyclingPowerWithStatistics:(id)statistics
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = [location[0] averageQuantity];
-  MEMORY[0x277D82BD8](v13);
-  if (v13)
+  objc_storeStrong(location, statistics);
+  averageQuantity = [location[0] averageQuantity];
+  MEMORY[0x277D82BD8](averageQuantity);
+  if (averageQuantity)
   {
-    v10 = v15;
-    v12 = [location[0] averageQuantity];
-    v11 = [MEMORY[0x277CCDAB0] wattUnit];
-    [v12 doubleValueForUnit:?];
+    v10 = selfCopy;
+    averageQuantity2 = [location[0] averageQuantity];
+    wattUnit = [MEMORY[0x277CCDAB0] wattUnit];
+    [averageQuantity2 doubleValueForUnit:?];
     [(NLSessionActivity *)v10 _updateAveragePower:?];
-    MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](wattUnit);
+    MEMORY[0x277D82BD8](averageQuantity2);
   }
 
-  v9 = [location[0] mostRecentQuantity];
-  MEMORY[0x277D82BD8](v9);
-  if (v9)
+  mostRecentQuantity = [location[0] mostRecentQuantity];
+  MEMORY[0x277D82BD8](mostRecentQuantity);
+  if (mostRecentQuantity)
   {
-    v5 = v15;
-    v8 = [location[0] mostRecentQuantity];
-    v7 = [MEMORY[0x277CCDAB0] wattUnit];
-    [v8 doubleValueForUnit:?];
+    v5 = selfCopy;
+    mostRecentQuantity2 = [location[0] mostRecentQuantity];
+    wattUnit2 = [MEMORY[0x277CCDAB0] wattUnit];
+    [mostRecentQuantity2 doubleValueForUnit:?];
     v4 = v3;
-    v6 = [location[0] endDate];
+    endDate = [location[0] endDate];
     [(NLSessionActivity *)v5 _updateInstantaneousPower:v4 sampleDate:?];
-    MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](endDate);
+    MEMORY[0x277D82BD8](wattUnit2);
+    MEMORY[0x277D82BD8](mostRecentQuantity2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateCyclingCadenceWithStatistics:(id)a3 duration:(double)a4 quantityType:(id)a5
+- (void)_updateCyclingCadenceWithStatistics:(id)statistics duration:(double)duration quantityType:(id)type
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = a4;
+  objc_storeStrong(location, statistics);
+  durationCopy = duration;
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  [(NLSessionActivityCyclingCadenceAccumulator *)v10->_cyclingCadenceAccumulator updateWithStatistics:location[0] duration:v8];
-  [(NLSessionActivity *)v10 _updateIntervalCadenceWithQuantityType:v7];
+  objc_storeStrong(&v7, type);
+  [(NLSessionActivityCyclingCadenceAccumulator *)selfCopy->_cyclingCadenceAccumulator updateWithStatistics:location[0] duration:durationCopy];
+  [(NLSessionActivity *)selfCopy _updateIntervalCadenceWithQuantityType:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateWaterTemperatureWithStatistics:(id)a3 duration:(double)a4 quantityType:(id)a5
+- (void)_updateWaterTemperatureWithStatistics:(id)statistics duration:(double)duration quantityType:(id)type
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
+  objc_storeStrong(location, statistics);
+  durationCopy = duration;
   v13 = 0;
-  objc_storeStrong(&v13, a5);
-  [(NLSessionActivityWaterTemperatureAccumulator *)v16->_waterTemperatureAccumulator updateWithStatistics:location[0] duration:v14];
-  v11 = [(NLSessionActivityWaterTemperatureAccumulator *)v16->_waterTemperatureAccumulator averageWaterTemperature];
-  MEMORY[0x277D82BD8](v11);
-  if (v11)
+  objc_storeStrong(&v13, type);
+  [(NLSessionActivityWaterTemperatureAccumulator *)selfCopy->_waterTemperatureAccumulator updateWithStatistics:location[0] duration:durationCopy];
+  averageWaterTemperature = [(NLSessionActivityWaterTemperatureAccumulator *)selfCopy->_waterTemperatureAccumulator averageWaterTemperature];
+  MEMORY[0x277D82BD8](averageWaterTemperature);
+  if (averageWaterTemperature)
   {
-    v6 = v16;
+    v6 = selfCopy;
     v18 = *MEMORY[0x277D0A780];
-    v8 = [(NLSessionActivityWaterTemperatureAccumulator *)v16->_waterTemperatureAccumulator averageWaterTemperature];
-    v19[0] = v8;
+    averageWaterTemperature2 = [(NLSessionActivityWaterTemperatureAccumulator *)selfCopy->_waterTemperatureAccumulator averageWaterTemperature];
+    v19[0] = averageWaterTemperature2;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     [NLSessionActivity insertOrUpdateMetadata:v6 forceTopLevel:"insertOrUpdateMetadata:forceTopLevel:"];
     MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](averageWaterTemperature2);
     _HKInitializeLogging();
     v12 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(NLSessionActivityWaterTemperatureAccumulator *)v16->_waterTemperatureAccumulator averageWaterTemperature];
-      __os_log_helper_16_2_1_8_64(v17, v5);
+      averageWaterTemperature3 = [(NLSessionActivityWaterTemperatureAccumulator *)selfCopy->_waterTemperatureAccumulator averageWaterTemperature];
+      __os_log_helper_16_2_1_8_64(v17, averageWaterTemperature3);
       _os_log_impl(&dword_20AEA4000, v12, OS_LOG_TYPE_DEFAULT, "[SessionActivity] Updated AverageWaterTemperature metadata to %@", v17, 0xCu);
-      MEMORY[0x277D82BD8](v5);
+      MEMORY[0x277D82BD8](averageWaterTemperature3);
     }
 
     objc_storeStrong(&v12, 0);
@@ -7465,20 +7465,20 @@ void __44__NLSessionActivity__updateMachineDistance___block_invoke(uint64_t a1)
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateIntervalCadenceWithQuantityType:(id)a3
+- (void)_updateIntervalCadenceWithQuantityType:(id)type
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = [(NLSessionActivity *)v19 currentIntervalWorkoutActivity];
-  if (v17)
+  objc_storeStrong(location, type);
+  currentIntervalWorkoutActivity = [(NLSessionActivity *)selfCopy currentIntervalWorkoutActivity];
+  if (currentIntervalWorkoutActivity)
   {
-    v16 = [v17 statisticsForType:location[0]];
-    v15 = [v16 endDate];
-    v10 = [v16 startDate];
-    v11 = [v10 compare:v15];
-    MEMORY[0x277D82BD8](v10);
+    v16 = [currentIntervalWorkoutActivity statisticsForType:location[0]];
+    endDate = [v16 endDate];
+    startDate = [v16 startDate];
+    v11 = [startDate compare:endDate];
+    MEMORY[0x277D82BD8](startDate);
     if (v11 == 1)
     {
       _HKInitializeLogging();
@@ -7498,31 +7498,31 @@ void __44__NLSessionActivity__updateMachineDistance___block_invoke(uint64_t a1)
     else
     {
       v4 = objc_opt_class();
-      v6 = [v17 startDate];
-      v5 = [(HKLiveWorkoutBuilder *)v19->_builder workoutEvents];
-      [v4 durationBetweenStartDate:v6 endDate:v15 workoutEvents:?];
+      startDate2 = [currentIntervalWorkoutActivity startDate];
+      workoutEvents = [(HKLiveWorkoutBuilder *)selfCopy->_builder workoutEvents];
+      [v4 durationBetweenStartDate:startDate2 endDate:endDate workoutEvents:?];
       v7 = v3;
-      MEMORY[0x277D82BD8](v5);
-      MEMORY[0x277D82BD8](v6);
-      [(NLSessionActivityIntervalCadenceAccumulator *)v19->_intervalCadenceAccumulator updateWithStatistics:v16 duration:v7];
+      MEMORY[0x277D82BD8](workoutEvents);
+      MEMORY[0x277D82BD8](startDate2);
+      [(NLSessionActivityIntervalCadenceAccumulator *)selfCopy->_intervalCadenceAccumulator updateWithStatistics:v16 duration:v7];
     }
 
-    objc_storeStrong(&v15, 0);
+    objc_storeStrong(&endDate, 0);
     objc_storeStrong(&v16, 0);
   }
 
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&currentIntervalWorkoutActivity, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateCurrentSpeedWithStatistics:(id)a3 duration:(double)a4
+- (void)_updateCurrentSpeedWithStatistics:(id)statistics duration:(double)duration
 {
   v30 = *MEMORY[0x277D85DE8];
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v24 = a4;
+  objc_storeStrong(location, statistics);
+  durationCopy = duration;
   v18 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   v19 = v18;
@@ -7535,29 +7535,29 @@ void __44__NLSessionActivity__updateMachineDistance___block_invoke(uint64_t a1)
     v22 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [location[0] quantityType];
-      v15 = [location[0] mostRecentQuantity];
+      quantityType = [location[0] quantityType];
+      mostRecentQuantity = [location[0] mostRecentQuantity];
       v14 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
-      [v15 doubleValueForUnit:?];
-      __os_log_helper_16_2_2_8_64_8_0(v29, v16, v5);
+      [mostRecentQuantity doubleValueForUnit:?];
+      __os_log_helper_16_2_2_8_64_8_0(v29, quantityType, v5);
       _os_log_impl(&dword_20AEA4000, v23, v22, "[Speed] Received a sample based speed of %@ to %f meters/second", v29, 0x16u);
       MEMORY[0x277D82BD8](v14);
-      MEMORY[0x277D82BD8](v15);
-      MEMORY[0x277D82BD8](v16);
+      MEMORY[0x277D82BD8](mostRecentQuantity);
+      MEMORY[0x277D82BD8](quantityType);
     }
 
     objc_storeStrong(&v23, 0);
   }
 
-  [(NLSessionActivityNonMachinePaceAccumulator *)v26->_nonMachinePaceAccumulator updateCurrentSpeedWithStatistics:location[0] duration:v24];
-  v12 = [location[0] quantityType];
+  [(NLSessionActivityNonMachinePaceAccumulator *)selfCopy->_nonMachinePaceAccumulator updateCurrentSpeedWithStatistics:location[0] duration:durationCopy];
+  quantityType2 = [location[0] quantityType];
   v11 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCC9C8]];
-  v13 = [v12 isEqual:?];
+  v13 = [quantityType2 isEqual:?];
   MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
+  MEMORY[0x277D82BD8](quantityType2);
   if (v13)
   {
-    [(NLSessionActivityNonMachinePaceAccumulator *)v26->_nonMachinePaceAccumulator averagePaceInMetersPerSecond];
+    [(NLSessionActivityNonMachinePaceAccumulator *)selfCopy->_nonMachinePaceAccumulator averagePaceInMetersPerSecond];
     v21 = v6;
     if (v6 > 2.22044605e-16)
     {
@@ -7565,7 +7565,7 @@ void __44__NLSessionActivity__updateMachineDistance___block_invoke(uint64_t a1)
       v8 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
       v20 = [v7 quantityWithUnit:v21 doubleValue:?];
       MEMORY[0x277D82BD8](v8);
-      v9 = v26;
+      v9 = selfCopy;
       v27 = *MEMORY[0x277CCE170];
       v28 = v20;
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
@@ -7579,82 +7579,82 @@ void __44__NLSessionActivity__updateMachineDistance___block_invoke(uint64_t a1)
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateStrideLengthWithStatistics:(id)a3
+- (void)_updateStrideLengthWithStatistics:(id)statistics
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NLStrideLengthAccumulator *)v4->_strideLengthAccumulator updateWithStatistics:location[0]];
+  objc_storeStrong(location, statistics);
+  [(NLStrideLengthAccumulator *)selfCopy->_strideLengthAccumulator updateWithStatistics:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateVerticalOscillationWithStatistics:(id)a3
+- (void)_updateVerticalOscillationWithStatistics:(id)statistics
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NLVerticalOscillationAccumulator *)v4->_verticalOscillationAccumulator updateWithStatistics:location[0]];
+  objc_storeStrong(location, statistics);
+  [(NLVerticalOscillationAccumulator *)selfCopy->_verticalOscillationAccumulator updateWithStatistics:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateGroundContactTimeWithStatistics:(id)a3
+- (void)_updateGroundContactTimeWithStatistics:(id)statistics
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NLGroundContactTimeAccumulator *)v4->_groundContactTimeAccumulator updateWithStatistics:location[0]];
+  objc_storeStrong(location, statistics);
+  [(NLGroundContactTimeAccumulator *)selfCopy->_groundContactTimeAccumulator updateWithStatistics:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)didUpdateMinimumAltitude:(id)a3
+- (void)didUpdateMinimumAltitude:(id)altitude
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, altitude);
   objc_storeStrong(location, 0);
 }
 
-- (void)didUpdateMaximumAltitude:(id)a3
+- (void)didUpdateMaximumAltitude:(id)altitude
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, altitude);
   objc_storeStrong(location, 0);
 }
 
 - (void)endCurrentSegment
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
-  v2 = [(NLSessionActivity *)self segmentAccumulator];
-  [(NLSessionActivity *)v9 duration];
-  [(WOSegmentAccumulator *)v2 endCurrentSegmentWithCurrentElapsedTime:?];
-  MEMORY[0x277D82BD8](v2);
-  v4 = [(NLSessionActivity *)v9 segmentAccumulator];
-  v3 = [(WOSegmentAccumulator *)v4 completedSegments];
-  v8[0] = [(NSArray *)v3 lastObject];
-  MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
-  v5 = v9;
-  v7 = [v8[0] segmentEndDate];
-  v6 = [v8[0] metadataFromSegmentMarker];
-  [(NLSessionActivity *)v5 registerMarkerEventWithDate:v7 metadata:?];
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
+  segmentAccumulator = [(NLSessionActivity *)self segmentAccumulator];
+  [(NLSessionActivity *)selfCopy duration];
+  [(WOSegmentAccumulator *)segmentAccumulator endCurrentSegmentWithCurrentElapsedTime:?];
+  MEMORY[0x277D82BD8](segmentAccumulator);
+  segmentAccumulator2 = [(NLSessionActivity *)selfCopy segmentAccumulator];
+  completedSegments = [(WOSegmentAccumulator *)segmentAccumulator2 completedSegments];
+  v8[0] = [(NSArray *)completedSegments lastObject];
+  MEMORY[0x277D82BD8](completedSegments);
+  MEMORY[0x277D82BD8](segmentAccumulator2);
+  v5 = selfCopy;
+  segmentEndDate = [v8[0] segmentEndDate];
+  metadataFromSegmentMarker = [v8[0] metadataFromSegmentMarker];
+  [(NLSessionActivity *)v5 registerMarkerEventWithDate:segmentEndDate metadata:?];
+  MEMORY[0x277D82BD8](metadataFromSegmentMarker);
+  MEMORY[0x277D82BD8](segmentEndDate);
   objc_storeStrong(v8, 0);
 }
 
-- (void)_segmentMarkerEventReceived:(id)a3
+- (void)_segmentMarkerEventReceived:(id)received
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, received);
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -7664,7 +7664,7 @@ void __44__NLSessionActivity__updateMachineDistance___block_invoke(uint64_t a1)
   v9 = __49__NLSessionActivity__segmentMarkerEventReceived___block_invoke;
   v10 = &unk_277D88998;
   v11 = MEMORY[0x277D82BE0](location[0]);
-  v12 = MEMORY[0x277D82BE0](v14);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v12, 0);
@@ -7709,29 +7709,29 @@ void __49__NLSessionActivity__segmentMarkerEventReceived___block_invoke_2(uint64
   objc_storeStrong(location, 0);
 }
 
-- (void)weatherDidUpdate:(id)a3
+- (void)weatherDidUpdate:(id)update
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v18 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:4];
-  v15 = [location[0] currentTemperature];
+  currentTemperature = [location[0] currentTemperature];
   v3 = *MEMORY[0x277CCC560];
   [v18 setObject:? forKey:?];
-  MEMORY[0x277D82BD8](v15);
-  v16 = [location[0] currentHumidity];
+  MEMORY[0x277D82BD8](currentTemperature);
+  currentHumidity = [location[0] currentHumidity];
   v4 = *MEMORY[0x277CCC558];
   [v18 setObject:? forKey:?];
-  MEMORY[0x277D82BD8](v16);
-  v17 = [location[0] currentAirQualityIndex];
-  MEMORY[0x277D82BD8](v17);
-  if (v17)
+  MEMORY[0x277D82BD8](currentHumidity);
+  currentAirQualityIndex = [location[0] currentAirQualityIndex];
+  MEMORY[0x277D82BD8](currentAirQualityIndex);
+  if (currentAirQualityIndex)
   {
-    v14 = [location[0] currentAirQualityIndex];
+    currentAirQualityIndex2 = [location[0] currentAirQualityIndex];
     v5 = *MEMORY[0x277D0A778];
     [v18 setObject:? forKey:?];
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](currentAirQualityIndex2);
   }
 
   v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(location[0], "hkPrivateWeatherCondition")}];
@@ -7742,81 +7742,81 @@ void __49__NLSessionActivity__segmentMarkerEventReceived___block_invoke_2(uint64
   v7 = *MEMORY[0x277CCE178];
   [v18 setObject:? forKey:?];
   MEMORY[0x277D82BD8](v12);
-  v13 = [location[0] sourceName];
-  MEMORY[0x277D82BD8](v13);
-  if (v13)
+  sourceName = [location[0] sourceName];
+  MEMORY[0x277D82BD8](sourceName);
+  if (sourceName)
   {
-    v10 = [location[0] sourceName];
+    sourceName2 = [location[0] sourceName];
     v8 = *MEMORY[0x277CCE1B8];
     [v18 setObject:? forKey:?];
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](sourceName2);
   }
 
-  [(NLSessionActivity *)v20 insertOrUpdateMetadata:v18 forceTopLevel:0, &v18];
+  [(NLSessionActivity *)selfCopy insertOrUpdateMetadata:v18 forceTopLevel:0, &v18];
   objc_storeStrong(v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)locationDidUpdate:(id)a3
+- (void)locationDidUpdate:(id)update
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [location[0] location];
-  [v7 coordinate];
+  objc_storeStrong(location, update);
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  location = [location[0] location];
+  [location coordinate];
   v12 = v3;
   v13 = v4;
-  MEMORY[0x277D82BD8](v7);
-  v8 = v14;
+  MEMORY[0x277D82BD8](location);
+  v8 = dictionary;
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:v12];
   v5 = *MEMORY[0x277CCE1A8];
   [v8 setObject:? forKey:?];
   MEMORY[0x277D82BD8](v9);
-  v10 = v14;
+  v10 = dictionary;
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
   v6 = *MEMORY[0x277CCE1B0];
   [v10 setObject:? forKey:?];
   MEMORY[0x277D82BD8](v11);
-  [(NLSessionActivity *)v16 insertOrUpdateMetadata:v14 forceTopLevel:0];
-  objc_storeStrong(&v14, 0);
+  [(NLSessionActivity *)selfCopy insertOrUpdateMetadata:dictionary forceTopLevel:0];
+  objc_storeStrong(&dictionary, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)insertLocations:(id)a3 completion:(id)a4
+- (void)insertLocations:(id)locations completion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, locations);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  builder = v10->_builder;
-  v6 = [MEMORY[0x277CCD920] workoutRouteType];
+  objc_storeStrong(&v8, completion);
+  builder = selfCopy->_builder;
+  workoutRouteType = [MEMORY[0x277CCD920] workoutRouteType];
   v7 = [(HKLiveWorkoutBuilder *)builder seriesBuilderForType:?];
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](workoutRouteType);
   [v7 insertRouteData:location[0] completion:v8];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setLocationTypeToIndoor:(BOOL)a3
+- (void)setLocationTypeToIndoor:(BOOL)indoor
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
-  if (!a3 || ([(FIUIWorkoutActivityType *)v13->_activityType isIndoor]& 1) != 0)
+  indoorCopy = indoor;
+  if (!indoor || ([(FIUIWorkoutActivityType *)selfCopy->_activityType isIndoor]& 1) != 0)
   {
-    if (!v11 && ([(FIUIWorkoutActivityType *)v13->_activityType isIndoor]& 1) != 0)
+    if (!indoorCopy && ([(FIUIWorkoutActivityType *)selfCopy->_activityType isIndoor]& 1) != 0)
     {
       v4 = objc_alloc(MEMORY[0x277D0A810]);
-      v3 = [(FIUIWorkoutActivityType *)v13->_activityType identifier];
-      v5 = [(FIUIWorkoutActivityType *)v13->_activityType metadata];
-      v9 = [v4 initWithActivityTypeIdentifier:v3 isIndoor:0 metadata:v5 auxiliaryTypeIdentifier:{-[FIUIWorkoutActivityType auxiliaryTypeIdentifier](v13->_activityType, "auxiliaryTypeIdentifier")}];
-      MEMORY[0x277D82BD8](v5);
-      objc_storeStrong(&v13->_activityType, v9);
+      identifier = [(FIUIWorkoutActivityType *)selfCopy->_activityType identifier];
+      metadata = [(FIUIWorkoutActivityType *)selfCopy->_activityType metadata];
+      v9 = [v4 initWithActivityTypeIdentifier:identifier isIndoor:0 metadata:metadata auxiliaryTypeIdentifier:{-[FIUIWorkoutActivityType auxiliaryTypeIdentifier](selfCopy->_activityType, "auxiliaryTypeIdentifier")}];
+      MEMORY[0x277D82BD8](metadata);
+      objc_storeStrong(&selfCopy->_activityType, v9);
       objc_storeStrong(&v9, 0);
     }
   }
@@ -7824,40 +7824,40 @@ void __49__NLSessionActivity__segmentMarkerEventReceived___block_invoke_2(uint64
   else
   {
     v7 = objc_alloc(MEMORY[0x277D0A810]);
-    v6 = [(FIUIWorkoutActivityType *)v13->_activityType identifier];
-    v8 = [(FIUIWorkoutActivityType *)v13->_activityType metadata];
-    v10 = [v7 initWithActivityTypeIdentifier:v6 isIndoor:1 metadata:v8 auxiliaryTypeIdentifier:{-[FIUIWorkoutActivityType auxiliaryTypeIdentifier](v13->_activityType, "auxiliaryTypeIdentifier")}];
-    MEMORY[0x277D82BD8](v8);
-    objc_storeStrong(&v13->_activityType, v10);
+    identifier2 = [(FIUIWorkoutActivityType *)selfCopy->_activityType identifier];
+    metadata2 = [(FIUIWorkoutActivityType *)selfCopy->_activityType metadata];
+    v10 = [v7 initWithActivityTypeIdentifier:identifier2 isIndoor:1 metadata:metadata2 auxiliaryTypeIdentifier:{-[FIUIWorkoutActivityType auxiliaryTypeIdentifier](selfCopy->_activityType, "auxiliaryTypeIdentifier")}];
+    MEMORY[0x277D82BD8](metadata2);
+    objc_storeStrong(&selfCopy->_activityType, v10);
     objc_storeStrong(&v10, 0);
   }
 }
 
-- (void)setSeymourElapsedTimeAccumulator:(id)a3
+- (void)setSeymourElapsedTimeAccumulator:(id)accumulator
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_seymourElapsedTimeAccumulator, location[0]);
+  objc_storeStrong(location, accumulator);
+  objc_storeStrong(&selfCopy->_seymourElapsedTimeAccumulator, location[0]);
   objc_storeStrong(location, 0);
 }
 
-+ (id)_localizedTimeOfDayFormatStringWithDate:(id)a3
++ (id)_localizedTimeOfDayFormatStringWithDate:(id)date
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v20 = [MEMORY[0x277CBEA80] currentCalendar];
-  v19 = [v20 components:32 fromDate:location[0]];
-  v18 = [v19 hour];
+  objc_storeStrong(location, date);
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v19 = [currentCalendar components:32 fromDate:location[0]];
+  hour = [v19 hour];
   v17 = 0;
-  if (v18 >= 11)
+  if (hour >= 11)
   {
-    if (v18 >= 13)
+    if (hour >= 13)
     {
-      if (v18 < 17)
+      if (hour < 17)
       {
         v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v7 = [v14 localizedStringForKey:@"ACTIVITY_TIME_OF_DAY_AFTERNOON_OBJ" value:&stru_28225A4E8 table:@"Localizable"];
@@ -7902,7 +7902,7 @@ void __49__NLSessionActivity__segmentMarkerEventReceived___block_invoke_2(uint64
   v12 = MEMORY[0x277D82BE0](v17);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v19, 0);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&currentCalendar, 0);
   objc_storeStrong(location, 0);
 
   return v12;
@@ -7938,20 +7938,20 @@ void __49__NLSessionActivity__segmentMarkerEventReceived___block_invoke_2(uint64
       v15 = [(NSString *)v2 stringByAppendingPathComponent:@"Library/Logs/Health"];
       MEMORY[0x277D82BD8](v2);
       v3 = MEMORY[0x277CCACA8];
-      v7 = [MEMORY[0x277D75418] currentDevice];
-      v6 = [v7 name];
-      v5 = [MEMORY[0x277CBEAA8] date];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      name = [currentDevice name];
+      date = [MEMORY[0x277CBEAA8] date];
       v4 = [v16 stringFromDate:?];
-      v14 = [v3 stringWithFormat:@"SessionStats-%@-%@.plist", v6, v4];
+      v14 = [v3 stringWithFormat:@"SessionStats-%@-%@.plist", name, v4];
       MEMORY[0x277D82BD8](v4);
-      MEMORY[0x277D82BD8](v5);
-      MEMORY[0x277D82BD8](v6);
-      MEMORY[0x277D82BD8](v7);
+      MEMORY[0x277D82BD8](date);
+      MEMORY[0x277D82BD8](name);
+      MEMORY[0x277D82BD8](currentDevice);
       v13 = [v15 stringByAppendingPathComponent:v14];
-      v12 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v11 = 0;
       v10 = 0;
-      v8 = [v12 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:&v10];
+      v8 = [defaultManager createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:&v10];
       objc_storeStrong(&v11, v10);
       if ((v8 & 1) == 0)
       {
@@ -7968,7 +7968,7 @@ void __49__NLSessionActivity__segmentMarkerEventReceived___block_invoke_2(uint64
 
       [v17[0] writeToFile:v13 atomically:1];
       objc_storeStrong(&v11, 0);
-      objc_storeStrong(&v12, 0);
+      objc_storeStrong(&defaultManager, 0);
       objc_storeStrong(&v13, 0);
       objc_storeStrong(&v14, 0);
       objc_storeStrong(&v15, 0);
@@ -7983,17 +7983,17 @@ void __49__NLSessionActivity__segmentMarkerEventReceived___block_invoke_2(uint64
 
 - (id)powerLogWorkoutDictionary
 {
-  v16 = self;
+  selfCopy = self;
   v15[1] = a2;
   v15[0] = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v14 = [(WOCoreLiveWorkoutConfiguration *)v16->_configuration topLevelActivityType];
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v14, "effectiveTypeIdentifier")}];
-  v13 = [v7 stringValue];
+  topLevelActivityType = [(WOCoreLiveWorkoutConfiguration *)selfCopy->_configuration topLevelActivityType];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(topLevelActivityType, "effectiveTypeIdentifier")}];
+  stringValue = [v7 stringValue];
   MEMORY[0x277D82BD8](v7);
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:_locationTypeForActivity(v14)];
-  v12 = [v8 stringValue];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:_locationTypeForActivity(topLevelActivityType)];
+  stringValue2 = [v8 stringValue];
   MEMORY[0x277D82BD8](v8);
-  if ([(NLSessionActivity *)v16 experienceType]== 3)
+  if ([(NLSessionActivity *)selfCopy experienceType]== 3)
   {
     v2 = @"NO";
   }
@@ -8004,14 +8004,14 @@ void __49__NLSessionActivity__segmentMarkerEventReceived___block_invoke_2(uint64
   }
 
   v11 = MEMORY[0x277D82BE0](v2);
-  v9 = [v14 localizedName];
-  MEMORY[0x277D82BD8](v9);
-  if (v9)
+  localizedName = [topLevelActivityType localizedName];
+  MEMORY[0x277D82BD8](localizedName);
+  if (localizedName)
   {
     location = MEMORY[0x277D82BE0](@"0");
-    if ([(WOCoreLiveWorkoutConfiguration *)v16->_configuration isLowPowerMode])
+    if ([(WOCoreLiveWorkoutConfiguration *)selfCopy->_configuration isLowPowerMode])
     {
-      if ([(WOCoreLiveWorkoutConfiguration *)v16->_configuration isUltraMode])
+      if ([(WOCoreLiveWorkoutConfiguration *)selfCopy->_configuration isUltraMode])
       {
         objc_storeStrong(&location, @"2");
       }
@@ -8024,20 +8024,20 @@ void __49__NLSessionActivity__segmentMarkerEventReceived___block_invoke_2(uint64
 
     [v15[0] setObject:location forKey:@"power"];
     v5 = v15[0];
-    v6 = [(NSUUID *)v16->_UUID UUIDString];
+    uUIDString = [(NSUUID *)selfCopy->_UUID UUIDString];
     [v5 setObject:? forKey:?];
-    MEMORY[0x277D82BD8](v6);
-    [v15[0] setObject:v13 forKey:@"activityType"];
-    [v15[0] setObject:v12 forKey:@"locationType"];
+    MEMORY[0x277D82BD8](uUIDString);
+    [v15[0] setObject:stringValue forKey:@"activityType"];
+    [v15[0] setObject:stringValue2 forKey:@"locationType"];
     [v15[0] setObject:v11 forKey:@"isFitnessPlusWorkout"];
     objc_storeStrong(&location, 0);
   }
 
   v4 = MEMORY[0x277D82BE0](v15[0]);
   objc_storeStrong(&v11, 0);
-  objc_storeStrong(&v12, 0);
-  objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&stringValue2, 0);
+  objc_storeStrong(&stringValue, 0);
+  objc_storeStrong(&topLevelActivityType, 0);
   objc_storeStrong(v15, 0);
 
   return v4;
@@ -8045,11 +8045,11 @@ void __49__NLSessionActivity__segmentMarkerEventReceived___block_invoke_2(uint64
 
 - (void)_powerLogWorkoutStart
 {
-  v3 = self;
+  selfCopy = self;
   v2[1] = a2;
   if (shouldPowerLogWorkoutStart())
   {
-    v2[0] = [(NLSessionActivity *)v3 powerLogWorkoutDictionary];
+    v2[0] = [(NLSessionActivity *)selfCopy powerLogWorkoutDictionary];
     powerLogEvent(@"WorkoutDidStart", v2[0]);
     objc_storeStrong(v2, 0);
   }
@@ -8057,23 +8057,23 @@ void __49__NLSessionActivity__segmentMarkerEventReceived___block_invoke_2(uint64
 
 - (void)_powerLogWorkoutStop
 {
-  v3 = self;
+  selfCopy = self;
   v2[1] = a2;
   if (shouldPowerLogWorkoutStop())
   {
-    v2[0] = [(NLSessionActivity *)v3 powerLogWorkoutDictionary];
+    v2[0] = [(NLSessionActivity *)selfCopy powerLogWorkoutDictionary];
     powerLogEvent(@"WorkoutDidStop", v2[0]);
     objc_storeStrong(v2, 0);
   }
 }
 
-- (void)workoutBuilderDidChangeSampleTypesAvailableForCollection:(id)a3
+- (void)workoutBuilderDidChangeSampleTypesAvailableForCollection:(id)collection
 {
   v6 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, collection);
   _HKInitializeLogging();
   oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -8087,15 +8087,15 @@ void __49__NLSessionActivity__segmentMarkerEventReceived___block_invoke_2(uint64
   *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutBuilder:(id)a3 didCollectDataOfTypes:(id)a4
+- (void)workoutBuilder:(id)builder didCollectDataOfTypes:(id)types
 {
   v21 = *MEMORY[0x277D85DE8];
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, builder);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, types);
   _HKInitializeLogging();
   v16 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v15 = OS_LOG_TYPE_DEFAULT;
@@ -8114,7 +8114,7 @@ void __49__NLSessionActivity__segmentMarkerEventReceived___block_invoke_2(uint64
   v10 = 0;
   v11 = __58__NLSessionActivity_workoutBuilder_didCollectDataOfTypes___block_invoke;
   v12 = &unk_277D88998;
-  v13 = MEMORY[0x277D82BE0](v19);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](v17);
   dispatch_async(queue, &v8);
   MEMORY[0x277D82BD8](queue);
@@ -8125,13 +8125,13 @@ void __49__NLSessionActivity__segmentMarkerEventReceived___block_invoke_2(uint64
   *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutBuilderDidCollectEvent:(id)a3
+- (void)workoutBuilderDidCollectEvent:(id)event
 {
   v7 = *MEMORY[0x277D85DE8];
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, event);
   _HKInitializeLogging();
   oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -8141,23 +8141,23 @@ void __49__NLSessionActivity__segmentMarkerEventReceived___block_invoke_2(uint64
   }
 
   objc_storeStrong(&oslog, 0);
-  [(NLSessionActivityRollingPaceAccumulator *)v5->_rollingPaceAccumulator workoutBuilderDidCollectEvent];
-  [v5->_heartRateZonesAccumulator workoutBuilderDidCollectEvent];
-  [v5->_powerZonesAccumulator workoutBuilderDidCollectEvent];
+  [(NLSessionActivityRollingPaceAccumulator *)selfCopy->_rollingPaceAccumulator workoutBuilderDidCollectEvent];
+  [selfCopy->_heartRateZonesAccumulator workoutBuilderDidCollectEvent];
+  [selfCopy->_powerZonesAccumulator workoutBuilderDidCollectEvent];
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-+ (double)durationBetweenStartDate:(id)a3 endDate:(id)a4 workoutEvents:(id)a5
++ (double)durationBetweenStartDate:(id)date endDate:(id)endDate workoutEvents:(id)events
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, endDate);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
+  objc_storeStrong(&v14, events);
   v9 = 0;
   v10 = &v9;
   v11 = 0x20000000;
@@ -8201,7 +8201,7 @@ void __68__NLSessionActivity_durationBetweenStartDate_endDate_workoutEvents___bl
 
 - (void)cancelAutomaticTransition
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   v5 = MEMORY[0x277D85CD0];
   v2 = MEMORY[0x277D85CD0];
@@ -8220,26 +8220,26 @@ void __68__NLSessionActivity_durationBetweenStartDate_endDate_workoutEvents___bl
   }
 
   objc_storeStrong(location, 0);
-  v10->_inAutomaticTransition = 0;
-  [(NLSessionActivity *)v10 _updateWithCollectedTypes:v10->_automaticTransitionEnqueuedTypes];
-  objc_storeStrong(&v10->_automaticTransitionEnqueuedTypes, 0);
+  selfCopy->_inAutomaticTransition = 0;
+  [(NLSessionActivity *)selfCopy _updateWithCollectedTypes:selfCopy->_automaticTransitionEnqueuedTypes];
+  objc_storeStrong(&selfCopy->_automaticTransitionEnqueuedTypes, 0);
 }
 
-- (void)_updateWithCollectedTypes:(id)a3
+- (void)_updateWithCollectedTypes:(id)types
 {
   v48 = *MEMORY[0x277D85DE8];
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, types);
   v27 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   v28 = v27;
   dispatch_assert_queue_V2(v28);
   MEMORY[0x277D82BD8](v28);
-  if (v45->_inAutomaticTransition)
+  if (selfCopy->_inAutomaticTransition)
   {
-    [(NSMutableSet *)v45->_automaticTransitionEnqueuedTypes unionSet:location[0]];
+    [(NSMutableSet *)selfCopy->_automaticTransitionEnqueuedTypes unionSet:location[0]];
     v43 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCB90]];
     if ([location[0] containsObject:v43])
     {
@@ -8267,15 +8267,15 @@ void __68__NLSessionActivity_durationBetweenStartDate_endDate_workoutEvents___bl
   }
 
   objc_storeStrong(&v42, 0);
-  if (!v45->_didCollectFirstSample)
+  if (!selfCopy->_didCollectFirstSample)
   {
     v26 = +[WOCoreWorkoutSignposter shared];
     [(WOCoreWorkoutSignposter *)v26 emitWithSignpost:6];
     MEMORY[0x277D82BD8](v26);
-    v45->_didCollectFirstSample = 1;
+    selfCopy->_didCollectFirstSample = 1;
   }
 
-  v40 = [(NLSessionActivity *)v45 currentWorkoutActivity];
+  currentWorkoutActivity = [(NLSessionActivity *)selfCopy currentWorkoutActivity];
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](location[0]);
   v25 = [obj countByEnumeratingWithState:__b objects:v46 count:16];
@@ -8315,16 +8315,16 @@ LABEL_26:
     v37 = MEMORY[0x277D82BE0](v39);
     v36 = 0;
     v35 = 0.0;
-    if (v40)
+    if (currentWorkoutActivity)
     {
-      v6 = [v40 statisticsForType:v37];
+      v6 = [currentWorkoutActivity statisticsForType:v37];
       v7 = v36;
       v36 = v6;
       MEMORY[0x277D82BD8](v7);
-      v34 = [v36 endDate];
-      v18 = [v36 startDate];
-      v19 = [v18 compare:v34];
-      MEMORY[0x277D82BD8](v18);
+      endDate = [v36 endDate];
+      startDate = [v36 startDate];
+      v19 = [startDate compare:endDate];
+      MEMORY[0x277D82BD8](startDate);
       if (v19 == 1)
       {
         _HKInitializeLogging();
@@ -8345,17 +8345,17 @@ LABEL_26:
       else
       {
         v13 = objc_opt_class();
-        v15 = [v40 startDate];
-        v12 = v34;
-        v14 = [(HKLiveWorkoutBuilder *)v45->_builder workoutEvents];
-        [v13 durationBetweenStartDate:v15 endDate:v12 workoutEvents:?];
+        startDate2 = [currentWorkoutActivity startDate];
+        v12 = endDate;
+        workoutEvents = [(HKLiveWorkoutBuilder *)selfCopy->_builder workoutEvents];
+        [v13 durationBetweenStartDate:startDate2 endDate:v12 workoutEvents:?];
         v35 = v8;
-        MEMORY[0x277D82BD8](v14);
-        MEMORY[0x277D82BD8](v15);
+        MEMORY[0x277D82BD8](workoutEvents);
+        MEMORY[0x277D82BD8](startDate2);
         v30 = 0;
       }
 
-      objc_storeStrong(&v34, 0);
+      objc_storeStrong(&endDate, 0);
       if (v30)
       {
 LABEL_25:
@@ -8372,17 +8372,17 @@ LABEL_25:
 
     else
     {
-      v9 = [(HKLiveWorkoutBuilder *)v45->_builder statisticsForType:v37];
+      v9 = [(HKLiveWorkoutBuilder *)selfCopy->_builder statisticsForType:v37];
       v10 = v36;
       v36 = v9;
       MEMORY[0x277D82BD8](v10);
-      v29 = [v36 endDate];
-      [(HKLiveWorkoutBuilder *)v45->_builder elapsedTimeAtDate:v29];
+      endDate2 = [v36 endDate];
+      [(HKLiveWorkoutBuilder *)selfCopy->_builder elapsedTimeAtDate:endDate2];
       v35 = v11;
-      objc_storeStrong(&v29, 0);
+      objc_storeStrong(&endDate2, 0);
     }
 
-    [(NLSessionActivity *)v45 _updateWithQuantityType:v37 statistics:v36 duration:v35];
+    [(NLSessionActivity *)selfCopy _updateWithQuantityType:v37 statistics:v36 duration:v35];
     v30 = 0;
     goto LABEL_25;
   }
@@ -8396,137 +8396,137 @@ LABEL_29:
     v30 = 0;
   }
 
-  objc_storeStrong(&v40, 0);
+  objc_storeStrong(&currentWorkoutActivity, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWithQuantityType:(id)a3 statistics:(id)a4 duration:(double)a5
+- (void)_updateWithQuantityType:(id)type statistics:(id)statistics duration:(double)duration
 {
   v41 = *MEMORY[0x277D85DE8];
-  v39 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   v37 = 0;
-  objc_storeStrong(&v37, a4);
-  v36 = a5;
+  objc_storeStrong(&v37, statistics);
+  durationCopy = duration;
   v33 = _DistanceSampleTypes();
   v34 = [v33 containsObject:location[0]];
   MEMORY[0x277D82BD8](v33);
   if (v34)
   {
-    [(NLSessionActivity *)v39 _updateTotalDistanceWithStatistics:v37 duration:v36];
+    [(NLSessionActivity *)selfCopy _updateTotalDistanceWithStatistics:v37 duration:durationCopy];
   }
 
   else
   {
-    v29 = [location[0] identifier];
-    v30 = [v29 isEqualToString:*MEMORY[0x277CCC918]];
-    MEMORY[0x277D82BD8](v29);
+    identifier = [location[0] identifier];
+    v30 = [identifier isEqualToString:*MEMORY[0x277CCC918]];
+    MEMORY[0x277D82BD8](identifier);
     if (v30 & 1) != 0 || (v27 = [location[0] identifier], v28 = objc_msgSend(v27, "isEqualToString:", *MEMORY[0x277CCC960]), MEMORY[0x277D82BD8](v27), (v28))
     {
-      [(NLSessionActivity *)v39 _updateEnergyBurned:location[0] statistics:v37];
+      [(NLSessionActivity *)selfCopy _updateEnergyBurned:location[0] statistics:v37];
     }
 
     else
     {
-      v25 = [location[0] identifier];
-      v26 = [v25 isEqualToString:*MEMORY[0x277CCCB90]];
-      MEMORY[0x277D82BD8](v25);
+      identifier2 = [location[0] identifier];
+      v26 = [identifier2 isEqualToString:*MEMORY[0x277CCCB90]];
+      MEMORY[0x277D82BD8](identifier2);
       if (v26)
       {
-        [(NLSessionActivity *)v39 _updateHeartRateWithStatistics:v37];
+        [(NLSessionActivity *)selfCopy _updateHeartRateWithStatistics:v37];
       }
 
       else
       {
-        v23 = [location[0] identifier];
-        v24 = [v23 isEqualToString:*MEMORY[0x277CCCC70]];
-        MEMORY[0x277D82BD8](v23);
+        identifier3 = [location[0] identifier];
+        v24 = [identifier3 isEqualToString:*MEMORY[0x277CCCC70]];
+        MEMORY[0x277D82BD8](identifier3);
         if (v24)
         {
-          [(NLSessionActivity *)v39 _updateStepCountWithStatistics:v37 duration:location[0] quantityType:v36];
+          [(NLSessionActivity *)selfCopy _updateStepCountWithStatistics:v37 duration:location[0] quantityType:durationCopy];
         }
 
         else
         {
-          v21 = [location[0] identifier];
-          v22 = [v21 isEqualToString:*MEMORY[0x277CCCB70]];
-          MEMORY[0x277D82BD8](v21);
+          identifier4 = [location[0] identifier];
+          v22 = [identifier4 isEqualToString:*MEMORY[0x277CCCB70]];
+          MEMORY[0x277D82BD8](identifier4);
           if (v22)
           {
-            [(NLSessionActivity *)v39 _updateFlightsClimbedWithStatistics:v37];
+            [(NLSessionActivity *)selfCopy _updateFlightsClimbedWithStatistics:v37];
           }
 
           else
           {
-            v19 = [location[0] identifier];
-            v20 = [v19 isEqualToString:*MEMORY[0x277CCCC38]];
-            MEMORY[0x277D82BD8](v19);
+            identifier5 = [location[0] identifier];
+            v20 = [identifier5 isEqualToString:*MEMORY[0x277CCCC38]];
+            MEMORY[0x277D82BD8](identifier5);
             if (v20)
             {
-              [(NLSessionActivity *)v39 _updateRunningPowerWithStatistics:v37];
+              [(NLSessionActivity *)selfCopy _updateRunningPowerWithStatistics:v37];
             }
 
             else
             {
-              v17 = [location[0] identifier];
-              v18 = [v17 isEqualToString:*MEMORY[0x277CCC9C0]];
-              MEMORY[0x277D82BD8](v17);
+              identifier6 = [location[0] identifier];
+              v18 = [identifier6 isEqualToString:*MEMORY[0x277CCC9C0]];
+              MEMORY[0x277D82BD8](identifier6);
               if (v18)
               {
-                [(NLSessionActivity *)v39 _updateCyclingPowerWithStatistics:v37];
+                [(NLSessionActivity *)selfCopy _updateCyclingPowerWithStatistics:v37];
               }
 
               else
               {
-                v15 = [location[0] identifier];
-                v16 = [v15 isEqualToString:*MEMORY[0x277CCC9B0]];
-                MEMORY[0x277D82BD8](v15);
+                identifier7 = [location[0] identifier];
+                v16 = [identifier7 isEqualToString:*MEMORY[0x277CCC9B0]];
+                MEMORY[0x277D82BD8](identifier7);
                 if (v16)
                 {
-                  [(NLSessionActivity *)v39 _updateCyclingCadenceWithStatistics:v37 duration:location[0] quantityType:v36];
+                  [(NLSessionActivity *)selfCopy _updateCyclingCadenceWithStatistics:v37 duration:location[0] quantityType:durationCopy];
                 }
 
                 else
                 {
-                  v13 = [location[0] identifier];
-                  v14 = [v13 isEqualToString:*MEMORY[0x277CCCCD0]];
-                  MEMORY[0x277D82BD8](v13);
+                  identifier8 = [location[0] identifier];
+                  v14 = [identifier8 isEqualToString:*MEMORY[0x277CCCCD0]];
+                  MEMORY[0x277D82BD8](identifier8);
                   if (v14)
                   {
-                    [(NLSessionActivity *)v39 _updateWaterTemperatureWithStatistics:v37 duration:location[0] quantityType:v36];
+                    [(NLSessionActivity *)selfCopy _updateWaterTemperatureWithStatistics:v37 duration:location[0] quantityType:durationCopy];
                   }
 
                   else
                   {
-                    v11 = [location[0] identifier];
-                    v12 = [v11 isEqualToString:*MEMORY[0x277CCCC48]];
-                    MEMORY[0x277D82BD8](v11);
+                    identifier9 = [location[0] identifier];
+                    v12 = [identifier9 isEqualToString:*MEMORY[0x277CCCC48]];
+                    MEMORY[0x277D82BD8](identifier9);
                     if (v12)
                     {
-                      [(NLSessionActivity *)v39 _updateStrideLengthWithStatistics:v37];
+                      [(NLSessionActivity *)selfCopy _updateStrideLengthWithStatistics:v37];
                     }
 
                     else
                     {
-                      v9 = [location[0] identifier];
-                      v10 = [v9 isEqualToString:*MEMORY[0x277CCCC50]];
-                      MEMORY[0x277D82BD8](v9);
+                      identifier10 = [location[0] identifier];
+                      v10 = [identifier10 isEqualToString:*MEMORY[0x277CCCC50]];
+                      MEMORY[0x277D82BD8](identifier10);
                       if (v10)
                       {
-                        [(NLSessionActivity *)v39 _updateVerticalOscillationWithStatistics:v37];
+                        [(NLSessionActivity *)selfCopy _updateVerticalOscillationWithStatistics:v37];
                       }
 
                       else
                       {
-                        v7 = [location[0] identifier];
-                        v8 = [v7 isEqualToString:*MEMORY[0x277CCCC30]];
-                        MEMORY[0x277D82BD8](v7);
+                        identifier11 = [location[0] identifier];
+                        v8 = [identifier11 isEqualToString:*MEMORY[0x277CCCC30]];
+                        MEMORY[0x277D82BD8](identifier11);
                         if (v8)
                         {
-                          [(NLSessionActivity *)v39 _updateGroundContactTimeWithStatistics:v37];
+                          [(NLSessionActivity *)selfCopy _updateGroundContactTimeWithStatistics:v37];
                         }
 
                         else
@@ -8536,7 +8536,7 @@ LABEL_29:
                           MEMORY[0x277D82BD8](v5);
                           if (v6)
                           {
-                            [(NLSessionActivity *)v39 _updateCurrentSpeedWithStatistics:v37 duration:v36];
+                            [(NLSessionActivity *)selfCopy _updateCurrentSpeedWithStatistics:v37 duration:durationCopy];
                           }
 
                           else
@@ -8569,14 +8569,14 @@ LABEL_29:
   *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutBuilder:(id)a3 didBeginActivity:(id)a4
+- (void)workoutBuilder:(id)builder didBeginActivity:(id)activity
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, builder);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, activity);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -8586,7 +8586,7 @@ LABEL_29:
   v11 = __53__NLSessionActivity_workoutBuilder_didBeginActivity___block_invoke;
   v12 = &unk_277D88998;
   v13 = MEMORY[0x277D82BE0](v15);
-  v14 = MEMORY[0x277D82BE0](v17);
+  v14 = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v8);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v14, 0);
@@ -8652,12 +8652,12 @@ void __53__NLSessionActivity_workoutBuilder_didBeginActivity___block_invoke(uint
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_recoverIntoActivity:(id)a3
+- (void)_recoverIntoActivity:(id)activity
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, activity);
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -8667,7 +8667,7 @@ void __53__NLSessionActivity_workoutBuilder_didBeginActivity___block_invoke(uint
   v9 = __42__NLSessionActivity__recoverIntoActivity___block_invoke;
   v10 = &unk_277D88998;
   v11 = MEMORY[0x277D82BE0](location[0]);
-  v12 = MEMORY[0x277D82BE0](v14);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v12, 0);
@@ -8781,14 +8781,14 @@ void __42__NLSessionActivity__recoverIntoActivity___block_invoke(uint64_t a1)
   *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutBuilder:(id)a3 didEndActivity:(id)a4
+- (void)workoutBuilder:(id)builder didEndActivity:(id)activity
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, builder);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, activity);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -8797,7 +8797,7 @@ void __42__NLSessionActivity__recoverIntoActivity___block_invoke(uint64_t a1)
   v10 = 0;
   v11 = __51__NLSessionActivity_workoutBuilder_didEndActivity___block_invoke;
   v12 = &unk_277D88998;
-  v13 = MEMORY[0x277D82BE0](v17);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](v15);
   dispatch_async(queue, &v8);
   MEMORY[0x277D82BD8](queue);
@@ -8930,13 +8930,13 @@ LABEL_19:
   *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutRouteDataSourceDidUpdateElevation:(id)a3
+- (void)workoutRouteDataSourceDidUpdateElevation:(id)elevation
 {
   v7 = *MEMORY[0x277D85DE8];
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, elevation);
   _HKInitializeLogging();
   oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -8946,23 +8946,23 @@ LABEL_19:
   }
 
   objc_storeStrong(&oslog, 0);
-  [(NLSessionActivity *)v5 _updateElevationGain:location[0]];
+  [(NLSessionActivity *)selfCopy _updateElevationGain:location[0]];
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutRouteDataSource:(id)a3 didUpdateAltitude:(id)a4
+- (void)workoutRouteDataSource:(id)source didUpdateAltitude:(id)altitude
 {
   v16 = *MEMORY[0x277D85DE8];
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, source);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  if (![(NLSessionActivityGroundElevationManager *)v13->_groundElevationManager isGroundElevationAvailable])
+  objc_storeStrong(&v11, altitude);
+  if (![(NLSessionActivityGroundElevationManager *)selfCopy->_groundElevationManager isGroundElevationAvailable])
   {
-    if (v13->_groundElevationSupported)
+    if (selfCopy->_groundElevationSupported)
     {
       _HKInitializeLogging();
       v10 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -8978,7 +8978,7 @@ LABEL_19:
       v5 = objc_opt_new();
       v8 = [WOElevationSample initWithDate:v4 value:"initWithDate:value:"];
       MEMORY[0x277D82BD8](v5);
-      [(NLSessionActivity *)v13 _updateElevation:v8];
+      [(NLSessionActivity *)selfCopy _updateElevation:v8];
       objc_storeStrong(&v8, 0);
     }
 
@@ -8988,7 +8988,7 @@ LABEL_19:
       oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_2_1_8_64(v14, v13->_activityType);
+        __os_log_helper_16_2_1_8_64(v14, selfCopy->_activityType);
         _os_log_impl(&dword_20AEA4000, oslog, OS_LOG_TYPE_DEFAULT, "[SessionActivity][Elevation] Skipping altitude update. %@ does not support elevation", v14, 0xCu);
       }
 
@@ -9001,12 +9001,12 @@ LABEL_19:
   *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutRouteDataSourceDidUpdateRoute:(id)a3
+- (void)workoutRouteDataSourceDidUpdateRoute:(id)route
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, route);
   _HKInitializeLogging();
   v7 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -9025,38 +9025,38 @@ LABEL_19:
 - (void)groundElevationManagerDidFinishSetup
 {
   v7 = *MEMORY[0x277D85DE8];
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
-  v3 = [(NLSessionActivityGroundElevationManager *)self->_groundElevationManager isGroundElevationAvailable];
+  isGroundElevationAvailable = [(NLSessionActivityGroundElevationManager *)self->_groundElevationManager isGroundElevationAvailable];
   _HKInitializeLogging();
   oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_1_4_0(v6, v3);
+    __os_log_helper_16_0_1_4_0(v6, isGroundElevationAvailable);
     _os_log_impl(&dword_20AEA4000, oslog, OS_LOG_TYPE_DEFAULT, "[GroundElevation] ground elevation manager did finish setup with groundElevationAvailable: %{BOOL}d", v6, 8u);
   }
 
   objc_storeStrong(&oslog, 0);
-  if (v3)
+  if (isGroundElevationAvailable)
   {
-    [(NLSessionActivity *)v5 addSessionStateObserver:v5->_groundElevationManager];
-    if (NLSessionActivityIsActive(v5))
+    [(NLSessionActivity *)selfCopy addSessionStateObserver:selfCopy->_groundElevationManager];
+    if (NLSessionActivityIsActive(selfCopy))
     {
-      [(NLSessionActivityGroundElevationManager *)v5->_groundElevationManager setActive:1];
+      [(NLSessionActivityGroundElevationManager *)selfCopy->_groundElevationManager setActive:1];
     }
   }
 
   *MEMORY[0x277D85DE8];
 }
 
-- (void)groundElevationDidUpdate:(id)a3
+- (void)groundElevationDidUpdate:(id)update
 {
   v10 = *MEMORY[0x277D85DE8];
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (*(v7 + 60))
+  objc_storeStrong(location, update);
+  if (*(selfCopy + 60))
   {
     _HKInitializeLogging();
     oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -9068,7 +9068,7 @@ LABEL_19:
     }
 
     objc_storeStrong(&oslog, 0);
-    [v7 _updateElevation:location[0]];
+    [selfCopy _updateElevation:location[0]];
   }
 
   else
@@ -9077,7 +9077,7 @@ LABEL_19:
     v3 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_1_8_64(v8, v7[16]);
+      __os_log_helper_16_2_1_8_64(v8, selfCopy[16]);
       _os_log_impl(&dword_20AEA4000, v3, OS_LOG_TYPE_DEFAULT, "[SessionActivity][Elevation] Skipping ground elevation update. %@ does not support elevation", v8, 0xCu);
     }
 
@@ -9088,18 +9088,18 @@ LABEL_19:
   *MEMORY[0x277D85DE8];
 }
 
-- (void)gymKitMetricsDataSource:(id)a3 didReceiveMetrics:(id)a4
+- (void)gymKitMetricsDataSource:(id)source didReceiveMetrics:(id)metrics
 {
   v20 = *MEMORY[0x277D85DE8];
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, source);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, metrics);
   memset(__b, 0, sizeof(__b));
-  v11 = [v16 allKeys];
-  v12 = [v11 countByEnumeratingWithState:__b objects:v19 count:16];
+  allKeys = [v16 allKeys];
+  v12 = [allKeys countByEnumeratingWithState:__b objects:v19 count:16];
   if (v12)
   {
     v7 = *__b[2];
@@ -9110,20 +9110,20 @@ LABEL_19:
       v6 = v8;
       if (*__b[2] != v7)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(allKeys);
       }
 
       v15 = *(__b[1] + 8 * v8);
-      v13 = [v15 integerValue];
-      v4 = v18;
+      integerValue = [v15 integerValue];
+      v4 = selfCopy;
       v5 = [v16 objectForKeyedSubscript:v15];
-      [(NLSessionActivity *)v4 _updateWorkoutMetric:v13 withQuantity:?];
+      [(NLSessionActivity *)v4 _updateWorkoutMetric:integerValue withQuantity:?];
       MEMORY[0x277D82BD8](v5);
       ++v8;
       if (v6 + 1 >= v9)
       {
         v8 = 0;
-        v9 = [v11 countByEnumeratingWithState:__b objects:v19 count:16];
+        v9 = [allKeys countByEnumeratingWithState:__b objects:v19 count:16];
         if (!v9)
         {
           break;
@@ -9132,20 +9132,20 @@ LABEL_19:
     }
   }
 
-  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](allKeys);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWorkoutMetric:(unint64_t)a3 withQuantity:(id)a4
+- (void)_updateWorkoutMetric:(unint64_t)metric withQuantity:(id)quantity
 {
   v23 = *MEMORY[0x277D85DE8];
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
+  metricCopy = metric;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, quantity);
   _HKInitializeLogging();
   v17 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v16 = OS_LOG_TYPE_DEFAULT;
@@ -9162,46 +9162,46 @@ LABEL_19:
   }
 
   objc_storeStrong(&v17, 0);
-  if (v19)
+  if (metricCopy)
   {
-    if (v19 == 1)
+    if (metricCopy == 1)
     {
-      [(NLSessionActivity *)v21 _updateElapsedTime:_CanonicalMetricValue(1, location)];
+      [(NLSessionActivity *)selfCopy _updateElapsedTime:_CanonicalMetricValue(1, location)];
     }
 
-    else if ((v19 - 2) > 1)
+    else if ((metricCopy - 2) > 1)
     {
-      if ((v19 - 4) <= 1)
+      if ((metricCopy - 4) <= 1)
       {
-        [(NLSessionActivity *)v21 _updateMachineDistance:_CanonicalMetricValue(v19, location)];
+        [(NLSessionActivity *)selfCopy _updateMachineDistance:_CanonicalMetricValue(metricCopy, location)];
       }
 
-      else if ((v19 - 6) > 4)
+      else if ((metricCopy - 6) > 4)
       {
-        if (v19 == 11)
+        if (metricCopy == 11)
         {
-          [(NLSessionActivity *)v21 _updateInstantaneousPace:_CanonicalMetricValue(0xB, location)];
+          [(NLSessionActivity *)selfCopy _updateInstantaneousPace:_CanonicalMetricValue(0xB, location)];
         }
 
-        else if (v19 == 12)
+        else if (metricCopy == 12)
         {
-          [(NLSessionActivity *)v21 _updateAveragePace:_CanonicalMetricValue(0xC, location)];
+          [(NLSessionActivity *)selfCopy _updateAveragePace:_CanonicalMetricValue(0xC, location)];
         }
 
-        else if ((v19 - 13) > 2)
+        else if ((metricCopy - 13) > 2)
         {
-          if (v19 == 16)
+          if (metricCopy == 16)
           {
-            v5 = v21;
+            v5 = selfCopy;
             v4 = _CanonicalMetricValue(0x10, location);
-            v6 = [MEMORY[0x277CBEAA8] date];
+            date = [MEMORY[0x277CBEAA8] date];
             [(NLSessionActivity *)v5 _updateInstantaneousPower:v4 sampleDate:?];
-            MEMORY[0x277D82BD8](v6);
+            MEMORY[0x277D82BD8](date);
           }
 
-          else if (v19 == 17)
+          else if (metricCopy == 17)
           {
-            [(NLSessionActivity *)v21 _updateAveragePower:_CanonicalMetricValue(0x11, location)];
+            [(NLSessionActivity *)selfCopy _updateAveragePower:_CanonicalMetricValue(0x11, location)];
           }
         }
       }
@@ -9304,16 +9304,16 @@ LABEL_19:
 
   else
   {
-    v14 = [(NLSessionActivity *)self demoDataProvider];
-    MEMORY[0x277D82BD8](v14);
-    if (v14)
+    demoDataProvider = [(NLSessionActivity *)self demoDataProvider];
+    MEMORY[0x277D82BD8](demoDataProvider);
+    if (demoDataProvider)
     {
-      v13 = [(NLSessionActivity *)self demoDataProvider];
-      v12 = [(NLWorkoutDemoDataProvider *)v13 elapsedTimeProvider];
-      [(NLSessionActivityElapsedTimeProvider *)v12 elapsedTime];
+      demoDataProvider2 = [(NLSessionActivity *)self demoDataProvider];
+      elapsedTimeProvider = [(NLWorkoutDemoDataProvider *)demoDataProvider2 elapsedTimeProvider];
+      [(NLSessionActivityElapsedTimeProvider *)elapsedTimeProvider elapsedTime];
       v23 = v3;
-      MEMORY[0x277D82BD8](v12);
-      MEMORY[0x277D82BD8](v13);
+      MEMORY[0x277D82BD8](elapsedTimeProvider);
+      MEMORY[0x277D82BD8](demoDataProvider2);
     }
 
     else
@@ -9324,52 +9324,52 @@ LABEL_19:
       v11 = 0;
       if ([(NLSessionActivity *)self _beforeBuilderActive])
       {
-        v20 = [(NLSessionActivity *)self activityBeginDate];
+        activityBeginDate = [(NLSessionActivity *)self activityBeginDate];
         v19 = 1;
         v11 = 0;
-        if (v20)
+        if (activityBeginDate)
         {
-          v18 = [(NLSessionActivity *)self elapsedTimeProvider];
+          elapsedTimeProvider2 = [(NLSessionActivity *)self elapsedTimeProvider];
           v17 = 1;
-          v16 = [(NLSessionActivity *)self nonMachineElapsedTimeAccumulator];
+          nonMachineElapsedTimeAccumulator = [(NLSessionActivity *)self nonMachineElapsedTimeAccumulator];
           v15 = 1;
-          v11 = v18 == v16;
+          v11 = elapsedTimeProvider2 == nonMachineElapsedTimeAccumulator;
         }
       }
 
       if (v15)
       {
-        MEMORY[0x277D82BD8](v16);
+        MEMORY[0x277D82BD8](nonMachineElapsedTimeAccumulator);
       }
 
       if (v17)
       {
-        MEMORY[0x277D82BD8](v18);
+        MEMORY[0x277D82BD8](elapsedTimeProvider2);
       }
 
       if (v19)
       {
-        MEMORY[0x277D82BD8](v20);
+        MEMORY[0x277D82BD8](activityBeginDate);
       }
 
       if (v11)
       {
-        v10 = [MEMORY[0x277CBEAA8] date];
-        v9 = [(NLSessionActivity *)self activityBeginDate];
-        [v10 timeIntervalSinceDate:?];
+        date = [MEMORY[0x277CBEAA8] date];
+        activityBeginDate2 = [(NLSessionActivity *)self activityBeginDate];
+        [date timeIntervalSinceDate:?];
         v21 = v4;
-        MEMORY[0x277D82BD8](v9);
-        MEMORY[0x277D82BD8](v10);
+        MEMORY[0x277D82BD8](activityBeginDate2);
+        MEMORY[0x277D82BD8](date);
       }
 
       else
       {
-        v8 = [(NLSessionActivity *)self elapsedTimeProvider];
-        v7 = [(NLSessionActivity *)self effectivePresentationTime];
-        [(NLSessionActivityElapsedTimeProvider *)v8 elapsedTimeAtPresentationTime:?];
+        elapsedTimeProvider3 = [(NLSessionActivity *)self elapsedTimeProvider];
+        effectivePresentationTime = [(NLSessionActivity *)self effectivePresentationTime];
+        [(NLSessionActivityElapsedTimeProvider *)elapsedTimeProvider3 elapsedTimeAtPresentationTime:?];
         v21 = v5;
-        MEMORY[0x277D82BD8](v7);
-        MEMORY[0x277D82BD8](v8);
+        MEMORY[0x277D82BD8](effectivePresentationTime);
+        MEMORY[0x277D82BD8](elapsedTimeProvider3);
       }
 
       return v21;
@@ -9381,25 +9381,25 @@ LABEL_19:
 
 - (double)activityDuration
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(NLSessionActivity *)self currentWorkoutActivity];
   if (location[0])
   {
     v5 = objc_opt_class();
-    v8 = [location[0] startDate];
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v6 = [(HKLiveWorkoutBuilder *)v10->_builder workoutEvents];
-    [v5 durationBetweenStartDate:v8 endDate:v7 workoutEvents:?];
+    startDate = [location[0] startDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    workoutEvents = [(HKLiveWorkoutBuilder *)selfCopy->_builder workoutEvents];
+    [v5 durationBetweenStartDate:startDate endDate:date workoutEvents:?];
     v11 = v2;
-    MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](workoutEvents);
+    MEMORY[0x277D82BD8](date);
+    MEMORY[0x277D82BD8](startDate);
   }
 
   else
   {
-    [(NLSessionActivity *)v10 duration];
+    [(NLSessionActivity *)selfCopy duration];
     v11 = v3;
   }
 
@@ -9421,10 +9421,10 @@ LABEL_19:
 
   else
   {
-    v3 = [(NLSessionActivity *)self isMachineWorkout];
-    v4 = [(NLSessionActivity *)self activityType];
-    v5 = _UseMachineDistance(v3, [(FIUIWorkoutActivityType *)v4 identifier]);
-    MEMORY[0x277D82BD8](v4);
+    isMachineWorkout = [(NLSessionActivity *)self isMachineWorkout];
+    activityType = [(NLSessionActivity *)self activityType];
+    v5 = _UseMachineDistance(isMachineWorkout, [(FIUIWorkoutActivityType *)activityType identifier]);
+    MEMORY[0x277D82BD8](activityType);
     if (v5)
     {
       v7 = MEMORY[0x277D82BE0](self->_machineDistanceAccumulator);
@@ -9458,44 +9458,44 @@ LABEL_19:
 {
   if ([(FIUIWorkoutActivityType *)self->_activityType isDownhillSnowSport])
   {
-    v4 = MEMORY[0x277D82BE0](self->_downhillSnowSportsAccumulator);
+    paceAccumulator = MEMORY[0x277D82BE0](self->_downhillSnowSportsAccumulator);
   }
 
   else
   {
-    v4 = [(NLSessionActivity *)self paceAccumulator];
+    paceAccumulator = [(NLSessionActivity *)self paceAccumulator];
   }
 
-  return v4;
+  return paceAccumulator;
 }
 
 - (double)displaySplitDistanceValue
 {
-  v4 = [(NLSessionActivity *)self splitProvider];
-  [(NLSessionActivitySplitProvider *)v4 definedSplitDistance];
+  splitProvider = [(NLSessionActivity *)self splitProvider];
+  [(NLSessionActivitySplitProvider *)splitProvider definedSplitDistance];
   v5 = v2;
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](splitProvider);
   return v5;
 }
 
 - (void)evaluatePauseResumeForConnectedDevices
 {
-  v7 = [(NLSessionActivity *)self deviceObserver];
-  v6 = [(NLSessionActivity *)self activityType];
-  v8 = [(WOSessionActivityDeviceObserver *)v7 canResumeWorkoutWithActivityType:?];
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
+  deviceObserver = [(NLSessionActivity *)self deviceObserver];
+  activityType = [(NLSessionActivity *)self activityType];
+  v8 = [(WOSessionActivityDeviceObserver *)deviceObserver canResumeWorkoutWithActivityType:?];
+  MEMORY[0x277D82BD8](activityType);
+  MEMORY[0x277D82BD8](deviceObserver);
   if (v8)
   {
-    v5 = [(NLSessionActivity *)self state];
-    switch(v5)
+    state = [(NLSessionActivity *)self state];
+    switch(state)
     {
       case 4uLL:
         goto LABEL_7;
       case 5uLL:
-        v4 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
         [NLSessionActivity _setPauseTracking:"_setPauseTracking:atDate:eventSource:" atDate:0 eventSource:?];
-        MEMORY[0x277D82BD8](v4);
+        MEMORY[0x277D82BD8](date);
         return;
       case 9uLL:
 LABEL_7:
@@ -9506,15 +9506,15 @@ LABEL_7:
 
   else
   {
-    v3 = [(NLSessionActivity *)self state];
-    switch(v3)
+    state2 = [(NLSessionActivity *)self state];
+    switch(state2)
     {
       case 3uLL:
         goto LABEL_13;
       case 6uLL:
-        v2 = [MEMORY[0x277CBEAA8] date];
+        date2 = [MEMORY[0x277CBEAA8] date];
         [NLSessionActivity _setPauseTracking:"_setPauseTracking:atDate:eventSource:" atDate:1 eventSource:?];
-        MEMORY[0x277D82BD8](v2);
+        MEMORY[0x277D82BD8](date2);
         return;
       case 8uLL:
 LABEL_13:

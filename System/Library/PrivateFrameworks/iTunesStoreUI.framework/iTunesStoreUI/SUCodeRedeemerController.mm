@@ -3,17 +3,17 @@
 - (SUCodeRedeemerControllerDelegate)delegate;
 - (void)_disableBlur;
 - (void)_enableBlur;
-- (void)_setChildViewController:(id)a3;
+- (void)_setChildViewController:(id)controller;
 - (void)_setup;
 - (void)_setupCodeRedeemerController;
 - (void)_setupFlipVisualEffectView;
 - (void)cancel;
-- (void)codeRedeemerController:(id)a3 didEndWithInfo:(id)a4;
-- (void)codeRedeemerControllerDidCancel:(id)a3;
+- (void)codeRedeemerController:(id)controller didEndWithInfo:(id)info;
+- (void)codeRedeemerControllerDidCancel:(id)cancel;
 - (void)recognitionError;
 - (void)recognitionSuccess;
 - (void)startSession;
-- (void)toggleCameraWithCompletion:(id)a3;
+- (void)toggleCameraWithCompletion:(id)completion;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -36,28 +36,28 @@
 
 - (void)cancel
 {
-  v2 = [(SUCodeRedeemerController *)self codeRedeemerController];
-  [v2 cancel];
+  codeRedeemerController = [(SUCodeRedeemerController *)self codeRedeemerController];
+  [codeRedeemerController cancel];
 }
 
 - (void)recognitionError
 {
-  v3 = [(SUCodeRedeemerController *)self codeRedeemerController];
-  v2 = [MEMORY[0x1E69DC888] redColor];
-  [v3 showMessage:0 color:v2 style:3 duration:60.0];
+  codeRedeemerController = [(SUCodeRedeemerController *)self codeRedeemerController];
+  redColor = [MEMORY[0x1E69DC888] redColor];
+  [codeRedeemerController showMessage:0 color:redColor style:3 duration:60.0];
 }
 
 - (void)recognitionSuccess
 {
-  v3 = [(SUCodeRedeemerController *)self codeRedeemerController];
-  v2 = [MEMORY[0x1E69DC888] greenColor];
-  [v3 showMessage:0 color:v2 style:2 duration:60.0];
+  codeRedeemerController = [(SUCodeRedeemerController *)self codeRedeemerController];
+  greenColor = [MEMORY[0x1E69DC888] greenColor];
+  [codeRedeemerController showMessage:0 color:greenColor style:2 duration:60.0];
 }
 
 - (void)startSession
 {
-  v3 = [(SUCodeRedeemerController *)self codeRedeemerController];
-  [v3 startSession];
+  codeRedeemerController = [(SUCodeRedeemerController *)self codeRedeemerController];
+  [codeRedeemerController startSession];
 
   [(SUCodeRedeemerController *)self _enableBlur];
   objc_initWeak(&location, self);
@@ -78,9 +78,9 @@ void __40__SUCodeRedeemerController_startSession__block_invoke(uint64_t a1)
   [WeakRetained _disableBlur];
 }
 
-- (void)toggleCameraWithCompletion:(id)a3
+- (void)toggleCameraWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(SUCodeRedeemerController *)self _enableBlur];
   if ([(SUCodeRedeemerController *)self cameraflipDirection])
   {
@@ -93,15 +93,15 @@ void __40__SUCodeRedeemerController_startSession__block_invoke(uint64_t a1)
   }
 
   v6 = MEMORY[0x1E69DD250];
-  v7 = [(SUCodeRedeemerController *)self view];
+  view = [(SUCodeRedeemerController *)self view];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __55__SUCodeRedeemerController_toggleCameraWithCompletion___block_invoke;
   v12 = &unk_1E8166380;
-  v13 = self;
-  v14 = v4;
-  v8 = v4;
-  [v6 transitionWithView:v7 duration:v5 options:0 animations:&v9 completion:0.3];
+  selfCopy = self;
+  v14 = completionCopy;
+  v8 = completionCopy;
+  [v6 transitionWithView:view duration:v5 options:0 animations:&v9 completion:0.3];
 
   [(SUCodeRedeemerController *)self setCameraflipDirection:[(SUCodeRedeemerController *)self cameraflipDirection:v9]^ 1];
 }
@@ -136,8 +136,8 @@ uint64_t __55__SUCodeRedeemerController_toggleCameraWithCompletion___block_invok
 {
   v3 = objc_alloc_init(MEMORY[0x1E69DD298]);
   [(UIVisualEffectView *)v3 setHidden:1];
-  v4 = [(SUCodeRedeemerController *)self view];
-  [v4 addSubview:v3];
+  view = [(SUCodeRedeemerController *)self view];
+  [view addSubview:v3];
 
   visualEffectView = self->_visualEffectView;
   self->_visualEffectView = v3;
@@ -148,8 +148,8 @@ uint64_t __55__SUCodeRedeemerController_toggleCameraWithCompletion___block_invok
   v4.receiver = self;
   v4.super_class = SUCodeRedeemerController;
   [(SUCodeRedeemerController *)&v4 viewDidLoad];
-  v3 = [(SUCodeRedeemerController *)self codeRedeemerController];
-  [(SUCodeRedeemerController *)self _setChildViewController:v3];
+  codeRedeemerController = [(SUCodeRedeemerController *)self codeRedeemerController];
+  [(SUCodeRedeemerController *)self _setChildViewController:codeRedeemerController];
 }
 
 - (void)viewWillLayoutSubviews
@@ -157,33 +157,33 @@ uint64_t __55__SUCodeRedeemerController_toggleCameraWithCompletion___block_invok
   v8.receiver = self;
   v8.super_class = SUCodeRedeemerController;
   [(SUCodeRedeemerController *)&v8 viewWillLayoutSubviews];
-  v3 = [(SUCodeRedeemerController *)self visualEffectView];
-  v4 = [(SUCodeRedeemerController *)self view];
-  [v4 bounds];
-  [v3 setFrame:?];
+  visualEffectView = [(SUCodeRedeemerController *)self visualEffectView];
+  view = [(SUCodeRedeemerController *)self view];
+  [view bounds];
+  [visualEffectView setFrame:?];
 
-  v5 = [(SUCodeRedeemerController *)self codeRedeemerController];
-  v6 = [v5 view];
-  v7 = [(SUCodeRedeemerController *)self view];
-  [v7 bounds];
-  [v6 setFrame:?];
+  codeRedeemerController = [(SUCodeRedeemerController *)self codeRedeemerController];
+  view2 = [codeRedeemerController view];
+  view3 = [(SUCodeRedeemerController *)self view];
+  [view3 bounds];
+  [view2 setFrame:?];
 }
 
-- (void)codeRedeemerController:(id)a3 didEndWithInfo:(id)a4
+- (void)codeRedeemerController:(id)controller didEndWithInfo:(id)info
 {
   v5 = *MEMORY[0x1E6998FE0];
-  v6 = a4;
-  v9 = [v6 valueForKey:v5];
-  v7 = [v6 valueForKey:*MEMORY[0x1E6998FE8]];
+  infoCopy = info;
+  v9 = [infoCopy valueForKey:v5];
+  v7 = [infoCopy valueForKey:*MEMORY[0x1E6998FE8]];
 
-  v8 = [(SUCodeRedeemerController *)self delegate];
-  [v8 codeRedeemerControllerDidEndWithCode:v9 error:v7];
+  delegate = [(SUCodeRedeemerController *)self delegate];
+  [delegate codeRedeemerControllerDidEndWithCode:v9 error:v7];
 }
 
-- (void)codeRedeemerControllerDidCancel:(id)a3
+- (void)codeRedeemerControllerDidCancel:(id)cancel
 {
-  v3 = [(SUCodeRedeemerController *)self delegate];
-  [v3 codeRedeemerControllerDidCancel];
+  delegate = [(SUCodeRedeemerController *)self delegate];
+  [delegate codeRedeemerControllerDidCancel];
 }
 
 - (void)_disableBlur
@@ -223,27 +223,27 @@ void __40__SUCodeRedeemerController__disableBlur__block_invoke_2(uint64_t a1)
 - (void)_enableBlur
 {
   v5 = [MEMORY[0x1E69DC730] effectWithStyle:4];
-  v3 = [(SUCodeRedeemerController *)self visualEffectView];
-  [v3 setEffect:v5];
+  visualEffectView = [(SUCodeRedeemerController *)self visualEffectView];
+  [visualEffectView setEffect:v5];
 
-  v4 = [(SUCodeRedeemerController *)self visualEffectView];
-  [v4 setHidden:0];
+  visualEffectView2 = [(SUCodeRedeemerController *)self visualEffectView];
+  [visualEffectView2 setHidden:0];
 }
 
-- (void)_setChildViewController:(id)a3
+- (void)_setChildViewController:(id)controller
 {
-  v8 = a3;
-  [v8 willMoveToParentViewController:self];
-  [(SUCodeRedeemerController *)self addChildViewController:v8];
-  v4 = [(SUCodeRedeemerController *)self view];
-  v5 = [v8 view];
-  [v4 addSubview:v5];
+  controllerCopy = controller;
+  [controllerCopy willMoveToParentViewController:self];
+  [(SUCodeRedeemerController *)self addChildViewController:controllerCopy];
+  view = [(SUCodeRedeemerController *)self view];
+  view2 = [controllerCopy view];
+  [view addSubview:view2];
 
-  v6 = [(SUCodeRedeemerController *)self view];
-  v7 = [v8 view];
-  [v6 sendSubviewToBack:v7];
+  view3 = [(SUCodeRedeemerController *)self view];
+  view4 = [controllerCopy view];
+  [view3 sendSubviewToBack:view4];
 
-  [v8 didMoveToParentViewController:self];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
 - (SUCodeRedeemerControllerDelegate)delegate

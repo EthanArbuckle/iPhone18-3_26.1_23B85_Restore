@@ -1,16 +1,16 @@
 @interface GKDashboardMultiplayerPickerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation GKDashboardMultiplayerPickerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GKDashboardMultiplayerPickerViewController" hasInstanceMethod:@"showContactPickerButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GKDashboardMultiplayerPickerViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GKDashboardMultiplayerPickerViewController" hasInstanceMethod:@"showContactPickerButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GKDashboardMultiplayerPickerViewController" isKindOfClass:@"UIViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

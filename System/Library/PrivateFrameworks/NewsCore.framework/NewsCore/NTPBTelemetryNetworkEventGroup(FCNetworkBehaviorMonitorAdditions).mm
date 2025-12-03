@@ -18,8 +18,8 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v2 = [a1 successes];
-  v3 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  successes = [self successes];
+  v3 = [successes countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v3)
   {
     v4 = v3;
@@ -31,17 +31,17 @@
       {
         if (*v23 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(successes);
         }
 
-        v8 = [*(*(&v22 + 1) + 8 * i) startTime];
-        if (v8 < v6)
+        startTime = [*(*(&v22 + 1) + 8 * i) startTime];
+        if (startTime < v6)
         {
-          v6 = v8;
+          v6 = startTime;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v4 = [successes countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v4);
@@ -56,8 +56,8 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [a1 failures];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  failures = [self failures];
+  v10 = [failures countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v10)
   {
     v11 = v10;
@@ -68,17 +68,17 @@
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(failures);
         }
 
-        v14 = [*(*(&v18 + 1) + 8 * j) startTime];
-        if (v14 < v6)
+        startTime2 = [*(*(&v18 + 1) + 8 * j) startTime];
+        if (startTime2 < v6)
         {
-          v6 = v14;
+          v6 = startTime2;
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v11 = [failures countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v11);
@@ -97,8 +97,8 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v2 = [a1 successes];
-  v3 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  successes = [self successes];
+  v3 = [successes countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v3)
   {
     v4 = v3;
@@ -110,17 +110,17 @@
       {
         if (*v23 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(successes);
         }
 
-        v8 = [*(*(&v22 + 1) + 8 * i) startTime];
-        if (v8 > v5)
+        startTime = [*(*(&v22 + 1) + 8 * i) startTime];
+        if (startTime > v5)
         {
-          v5 = v8;
+          v5 = startTime;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v4 = [successes countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v4);
@@ -135,8 +135,8 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [a1 failures];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  failures = [self failures];
+  v10 = [failures countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v10)
   {
     v11 = v10;
@@ -147,17 +147,17 @@
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(failures);
         }
 
-        v14 = [*(*(&v18 + 1) + 8 * j) startTime];
-        if (v14 > v5)
+        startTime2 = [*(*(&v18 + 1) + 8 * j) startTime];
+        if (startTime2 > v5)
         {
-          v5 = v14;
+          v5 = startTime2;
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v11 = [failures countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v11);
@@ -171,8 +171,8 @@
 
 - (FCNetworkEventStats)totalDurationStats
 {
-  v1 = [a1 successes];
-  v2 = [v1 fc_arrayByTransformingWithBlock:&__block_literal_global_314];
+  successes = [self successes];
+  v2 = [successes fc_arrayByTransformingWithBlock:&__block_literal_global_314];
 
   v3 = [[FCNetworkEventStats alloc] initWithValues:v2];
 
@@ -181,8 +181,8 @@
 
 - (FCNetworkEventStats)dnsDurationStats
 {
-  v1 = [a1 successes];
-  v2 = [v1 fc_arrayByTransformingWithBlock:&__block_literal_global_317];
+  successes = [self successes];
+  v2 = [successes fc_arrayByTransformingWithBlock:&__block_literal_global_317];
 
   v3 = [[FCNetworkEventStats alloc] initWithValues:v2];
 
@@ -191,8 +191,8 @@
 
 - (FCNetworkEventStats)connectDurationStats
 {
-  v1 = [a1 successes];
-  v2 = [v1 fc_arrayByTransformingWithBlock:&__block_literal_global_319];
+  successes = [self successes];
+  v2 = [successes fc_arrayByTransformingWithBlock:&__block_literal_global_319];
 
   v3 = [[FCNetworkEventStats alloc] initWithValues:v2];
 
@@ -201,8 +201,8 @@
 
 - (FCNetworkEventStats)timeToFirstByteStats
 {
-  v1 = [a1 successes];
-  v2 = [v1 fc_arrayByTransformingWithBlock:&__block_literal_global_321];
+  successes = [self successes];
+  v2 = [successes fc_arrayByTransformingWithBlock:&__block_literal_global_321];
 
   v3 = [[FCNetworkEventStats alloc] initWithValues:v2];
 
@@ -211,16 +211,16 @@
 
 - (uint64_t)cacheHitCount
 {
-  v1 = [a1 successes];
-  v2 = [v1 fc_countOfObjectsPassingTest:&__block_literal_global_324];
+  successes = [self successes];
+  v2 = [successes fc_countOfObjectsPassingTest:&__block_literal_global_324];
 
   return v2;
 }
 
 - (uint64_t)cacheMissCount
 {
-  v1 = [a1 successes];
-  v2 = [v1 fc_countOfObjectsPassingTest:&__block_literal_global_326];
+  successes = [self successes];
+  v2 = [successes fc_countOfObjectsPassingTest:&__block_literal_global_326];
 
   return v2;
 }

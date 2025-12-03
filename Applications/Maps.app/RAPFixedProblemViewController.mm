@@ -1,35 +1,35 @@
 @interface RAPFixedProblemViewController
 - (RAPFixedProblemViewController)init;
-- (id)labelMarkerOnMapViewWithText:(id)a3;
-- (void)_setAnnotationsWithDetails:(id)a3;
-- (void)_setHeaderText:(id)a3 footerText:(id)a4;
+- (id)labelMarkerOnMapViewWithText:(id)text;
+- (void)_setAnnotationsWithDetails:(id)details;
+- (void)_setHeaderText:(id)text footerText:(id)footerText;
 - (void)_updateMapViewIfLoaded;
 - (void)_updateTextFieldIfLoaded;
-- (void)addRouteOverlayOnView:(id)a3;
+- (void)addRouteOverlayOnView:(id)view;
 - (void)dealloc;
-- (void)handleDone:(id)a3;
-- (void)mapViewDidFinishRenderingMap:(id)a3 fullyRendered:(BOOL)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setProblemStatusResponse:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)handleDone:(id)done;
+- (void)mapViewDidFinishRenderingMap:(id)map fullyRendered:(BOOL)rendered;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setProblemStatusResponse:(id)response;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation RAPFixedProblemViewController
 
-- (id)labelMarkerOnMapViewWithText:(id)a3
+- (id)labelMarkerOnMapViewWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(MKMapView *)self->_mapView _mapLayer];
-  v6 = [v5 labelMarkers];
+  _mapLayer = [(MKMapView *)self->_mapView _mapLayer];
+  labelMarkers = [_mapLayer labelMarkers];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [labelMarkers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -39,12 +39,12 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(labelMarkers);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 text];
-        v12 = [v11 isEqualToString:v4];
+        text = [v10 text];
+        v12 = [text isEqualToString:textCopy];
 
         if (v12)
         {
@@ -53,7 +53,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [labelMarkers countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -68,7 +68,7 @@ LABEL_11:
   return v7;
 }
 
-- (void)mapViewDidFinishRenderingMap:(id)a3 fullyRendered:(BOOL)a4
+- (void)mapViewDidFinishRenderingMap:(id)map fullyRendered:(BOOL)rendered
 {
   v5 = dispatch_time(0, 500000000);
   block[0] = _NSConcreteStackBlock;
@@ -79,10 +79,10 @@ LABEL_11:
   dispatch_after(v5, &_dispatch_main_q, block);
 }
 
-- (void)handleDone:(id)a3
+- (void)handleDone:(id)done
 {
-  v4 = [(RAPFixedProblemViewController *)self navigationController];
-  [v4 handleDone:self];
+  navigationController = [(RAPFixedProblemViewController *)self navigationController];
+  [navigationController handleDone:self];
 }
 
 - (void)_updateTextFieldIfLoaded
@@ -141,19 +141,19 @@ LABEL_11:
     }
 
     [(UITextView *)self->_textView setAttributedText:v25];
-    v21 = [(UITextView *)self->_textView textContainer];
-    [v21 setLineFragmentPadding:v15];
+    textContainer = [(UITextView *)self->_textView textContainer];
+    [textContainer setLineFragmentPadding:v15];
   }
 }
 
-- (void)_setHeaderText:(id)a3 footerText:(id)a4
+- (void)_setHeaderText:(id)text footerText:(id)footerText
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  footerTextCopy = footerText;
+  v7 = [text copy];
   headerText = self->_headerText;
   self->_headerText = v7;
 
-  v9 = [v6 copy];
+  v9 = [footerTextCopy copy];
   footerText = self->_footerText;
   self->_footerText = v9;
 
@@ -164,15 +164,15 @@ LABEL_11:
 {
   if (self->_mapView && [(GEORPProblemStatusResponse *)self->_problemStatusResponse problemStatusCount])
   {
-    v3 = [(GEORPProblemStatusResponse *)self->_problemStatusResponse problemStatus];
-    v4 = [v3 objectAtIndexedSubscript:0];
+    problemStatus = [(GEORPProblemStatusResponse *)self->_problemStatusResponse problemStatus];
+    v4 = [problemStatus objectAtIndexedSubscript:0];
 
     if (self->_annotation)
     {
-      v5 = [v4 details];
-      v6 = [v5 displayStyle];
+      details = [v4 details];
+      displayStyle = [details displayStyle];
 
-      if (v6 != 4)
+      if (displayStyle != 4)
       {
         mapView = self->_mapView;
         if (self->_mapRect.size.width == 0.0 || self->_mapRect.size.height == 0.0)
@@ -189,17 +189,17 @@ LABEL_11:
       }
     }
 
-    v9 = [v4 details];
-    v10 = [v9 mapType];
+    details2 = [v4 details];
+    mapType = [details2 mapType];
 
-    if (v10 - 2 > 2)
+    if (mapType - 2 > 2)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = qword_101215BA0[v10 - 2];
+      v11 = qword_101215BA0[mapType - 2];
     }
 
     [(MKMapView *)self->_mapView setMapType:v11];
@@ -207,42 +207,42 @@ LABEL_11:
     if ((self->_mapRect.origin.x != MKMapRectNull.origin.x || self->_mapRect.origin.y != MKMapRectNull.origin.y) && self->_mapRect.size.width != 0.0 && self->_mapRect.size.height != 0.0)
     {
       v13 = self->_mapView;
-      v14 = [(RAPFixedProblemViewController *)self view];
-      v15 = [v14 safeAreaLayoutGuide];
-      [v15 layoutFrame];
+      view = [(RAPFixedProblemViewController *)self view];
+      safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+      [safeAreaLayoutGuide layoutFrame];
       [(MKMapView *)v13 setVisibleMapRect:0 edgePadding:p_mapRect->origin.x animated:p_mapRect->origin.y, p_mapRect->size.width, p_mapRect->size.height, v16, 0.0, 0.0, 0.0];
     }
   }
 }
 
-- (void)_setAnnotationsWithDetails:(id)a3
+- (void)_setAnnotationsWithDetails:(id)details
 {
-  v4 = a3;
-  v24 = [v4 displayRegion];
-  [v24 southLat];
+  detailsCopy = details;
+  displayRegion = [detailsCopy displayRegion];
+  [displayRegion southLat];
   v6 = v5;
-  [v24 northLat];
+  [displayRegion northLat];
   if (v6 == v7)
   {
-    [v24 westLng];
+    [displayRegion westLng];
     v9 = v8;
-    [v24 eastLng];
+    [displayRegion eastLng];
     if (v9 == v10)
     {
-      [v24 southLat];
-      [v24 westLng];
+      [displayRegion southLat];
+      [displayRegion westLng];
       MKMapRectMakeWithRadialDistance();
       v15 = [[GEOMapRegion alloc] initWithMapRect:{v11, v12, v13, v14}];
 
-      v24 = v15;
+      displayRegion = v15;
     }
   }
 
   v16 = +[MKMapService sharedService];
-  v17 = [v16 mapItemsForPlacesInDetails:v4];
+  v17 = [v16 mapItemsForPlacesInDetails:detailsCopy];
 
-  v18 = [v17 firstObject];
-  v19 = [[RAPAnnotation alloc] initWithMapItem:v18];
+  firstObject = [v17 firstObject];
+  v19 = [[RAPAnnotation alloc] initWithMapItem:firstObject];
   if (self->_annotation)
   {
     [(MKMapView *)self->_mapView removeAnnotation:?];
@@ -262,70 +262,70 @@ LABEL_11:
   [(RAPFixedProblemViewController *)self _updateMapViewIfLoaded];
 }
 
-- (void)setProblemStatusResponse:(id)a3
+- (void)setProblemStatusResponse:(id)response
 {
-  v14 = a3;
-  objc_storeStrong(&self->_problemStatusResponse, a3);
-  v5 = [v14 problemStatus];
-  v6 = [v5 count];
+  responseCopy = response;
+  objc_storeStrong(&self->_problemStatusResponse, response);
+  problemStatus = [responseCopy problemStatus];
+  v6 = [problemStatus count];
 
   if (v6)
   {
-    v7 = [v14 problemStatus];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    problemStatus2 = [responseCopy problemStatus];
+    v8 = [problemStatus2 objectAtIndexedSubscript:0];
 
-    v9 = [v8 details];
-    v10 = [v9 localizedTitle];
+    details = [v8 details];
+    localizedTitle = [details localizedTitle];
 
-    v11 = [v8 details];
-    v12 = [v11 localizedDescription];
+    details2 = [v8 details];
+    localizedDescription = [details2 localizedDescription];
 
-    v13 = [v8 details];
-    [(RAPFixedProblemViewController *)self _setAnnotationsWithDetails:v13];
+    details3 = [v8 details];
+    [(RAPFixedProblemViewController *)self _setAnnotationsWithDetails:details3];
 
-    [(RAPFixedProblemViewController *)self _setHeaderText:v10 footerText:v12];
+    [(RAPFixedProblemViewController *)self _setHeaderText:localizedTitle footerText:localizedDescription];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100D3BC24;
   v4[3] = &unk_101661710;
   v4[4] = self;
-  [a4 animateAlongsideTransition:v4 completion:0];
+  [coordinator animateAlongsideTransition:v4 completion:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = RAPFixedProblemViewController;
-  [(RAPFixedProblemViewController *)&v5 traitCollectionDidChange:a3];
+  [(RAPFixedProblemViewController *)&v5 traitCollectionDidChange:change];
   if ([(RAPFixedProblemViewController *)self isViewLoaded])
   {
-    v4 = [(RAPFixedProblemViewController *)self view];
-    [v4 setNeedsUpdateConstraints];
+    view = [(RAPFixedProblemViewController *)self view];
+    [view setNeedsUpdateConstraints];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = RAPFixedProblemViewController;
   [(RAPFixedProblemViewController *)&v6 viewDidAppear:?];
   annotation = self->_annotation;
   if (annotation)
   {
-    [(MKMapView *)self->_mapView selectAnnotation:annotation animated:v3];
+    [(MKMapView *)self->_mapView selectAnnotation:annotation animated:appearCopy];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   textView = self->_textView;
-  if (textView == a4)
+  if (textView == object)
   {
     [(UITextView *)textView bounds];
     v9 = v8;
@@ -346,21 +346,21 @@ LABEL_11:
   }
 }
 
-- (void)addRouteOverlayOnView:(id)a3
+- (void)addRouteOverlayOnView:(id)view
 {
-  v38 = a3;
+  viewCopy = view;
   if ([(GEORPProblemStatusResponse *)self->_problemStatusResponse problemStatusCount])
   {
-    v4 = [(GEORPProblemStatusResponse *)self->_problemStatusResponse problemStatus];
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v5 details];
+    problemStatus = [(GEORPProblemStatusResponse *)self->_problemStatusResponse problemStatus];
+    v5 = [problemStatus objectAtIndexedSubscript:0];
+    details = [v5 details];
 
     v7 = +[MKMapService sharedService];
-    v8 = [v7 mapItemsForPlacesInDetails:v6];
+    v8 = [v7 mapItemsForPlacesInDetails:details];
 
     if ([v8 count] >= 2)
     {
-      v9 = [v8 firstObject];
+      firstObject = [v8 firstObject];
       v10 = objc_alloc_init(UILabel);
       startLabel = self->_startLabel;
       self->_startLabel = v10;
@@ -374,26 +374,26 @@ LABEL_11:
       [(UILabel *)self->_startLabel setTextColor:v13];
 
       [(UILabel *)self->_startLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-      v37 = v9;
-      v14 = [v9 notificationDisplayName];
-      [(UILabel *)self->_startLabel setText:v14];
+      v37 = firstObject;
+      notificationDisplayName = [firstObject notificationDisplayName];
+      [(UILabel *)self->_startLabel setText:notificationDisplayName];
 
-      v15 = [v8 lastObject];
+      lastObject = [v8 lastObject];
       v16 = objc_alloc_init(UILabel);
       destinationLabel = self->_destinationLabel;
       self->_destinationLabel = v16;
 
-      v18 = [(UILabel *)self->_startLabel font];
-      [(UILabel *)self->_destinationLabel setFont:v18];
+      font = [(UILabel *)self->_startLabel font];
+      [(UILabel *)self->_destinationLabel setFont:font];
 
       [(UILabel *)self->_destinationLabel setNumberOfLines:[(UILabel *)self->_startLabel numberOfLines]];
       [(UILabel *)self->_destinationLabel setTextAlignment:[(UILabel *)self->_startLabel textAlignment]];
-      v19 = [(UILabel *)self->_startLabel textColor];
-      [(UILabel *)self->_destinationLabel setTextColor:v19];
+      textColor = [(UILabel *)self->_startLabel textColor];
+      [(UILabel *)self->_destinationLabel setTextColor:textColor];
 
       [(UILabel *)self->_destinationLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-      v20 = [v15 notificationDisplayName];
-      [(UILabel *)self->_destinationLabel setText:v20];
+      notificationDisplayName2 = [lastObject notificationDisplayName];
+      [(UILabel *)self->_destinationLabel setText:notificationDisplayName2];
 
       v21 = objc_alloc_init(UIImageView);
       transitIconImageView = self->_transitIconImageView;
@@ -405,13 +405,13 @@ LABEL_11:
       self->_transitIconBackgroundImageView = v23;
 
       [(UIImageView *)self->_transitIconBackgroundImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-      if ([v6 directionsType] == 1)
+      if ([details directionsType] == 1)
       {
         v25 = [UIImage imageNamed:@"RAPTransit"];
         v26 = @"RAPTransitBgd";
       }
 
-      else if ([v6 directionsType] == 2)
+      else if ([details directionsType] == 2)
       {
         v25 = [UIImage imageNamed:@"RAPWalking"];
         v26 = @"RAPWalkBgd";
@@ -428,10 +428,10 @@ LABEL_11:
       v27 = [UIImage imageNamed:v26];
       [(UIImageView *)self->_transitIconBackgroundImageView setImage:v27];
 
-      [v38 addSubview:self->_startLabel];
-      [v38 addSubview:self->_destinationLabel];
-      [v38 addSubview:self->_transitIconBackgroundImageView];
-      [v38 addSubview:self->_transitIconImageView];
+      [viewCopy addSubview:self->_startLabel];
+      [viewCopy addSubview:self->_destinationLabel];
+      [viewCopy addSubview:self->_transitIconBackgroundImageView];
+      [viewCopy addSubview:self->_transitIconImageView];
       v28 = _NSDictionaryOfVariableBindings(@"_startLabel, _destinationLabel, _transitIconImageView, _transitIconBackgroundImageView", self->_startLabel, self->_destinationLabel, self->_transitIconImageView, self->_transitIconBackgroundImageView, 0);
       v29 = +[NSMutableArray array];
       v30 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_startLabel]|" options:0 metrics:0 views:v28];
@@ -443,16 +443,16 @@ LABEL_11:
       v32 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(>=0)-[_startLabel]-(verticalSpacing)-[_transitIconBackgroundImageView]-(verticalSpacing)-[_destinationLabel]-(>=0)-|", 0, &off_1016EE5B0, v28);
       [v29 addObjectsFromArray:v32];
 
-      v33 = [NSLayoutConstraint constraintWithItem:self->_transitIconImageView attribute:9 relatedBy:0 toItem:v38 attribute:9 multiplier:1.0 constant:0.0];
+      v33 = [NSLayoutConstraint constraintWithItem:self->_transitIconImageView attribute:9 relatedBy:0 toItem:viewCopy attribute:9 multiplier:1.0 constant:0.0];
       [v29 addObject:v33];
 
-      v34 = [NSLayoutConstraint constraintWithItem:self->_transitIconImageView attribute:10 relatedBy:0 toItem:v38 attribute:10 multiplier:1.0 constant:0.0];
+      v34 = [NSLayoutConstraint constraintWithItem:self->_transitIconImageView attribute:10 relatedBy:0 toItem:viewCopy attribute:10 multiplier:1.0 constant:0.0];
       [v29 addObject:v34];
 
-      v35 = [NSLayoutConstraint constraintWithItem:self->_transitIconBackgroundImageView attribute:9 relatedBy:0 toItem:v38 attribute:9 multiplier:1.0 constant:0.0];
+      v35 = [NSLayoutConstraint constraintWithItem:self->_transitIconBackgroundImageView attribute:9 relatedBy:0 toItem:viewCopy attribute:9 multiplier:1.0 constant:0.0];
       [v29 addObject:v35];
 
-      v36 = [NSLayoutConstraint constraintWithItem:self->_transitIconBackgroundImageView attribute:10 relatedBy:0 toItem:v38 attribute:10 multiplier:1.0 constant:0.0];
+      v36 = [NSLayoutConstraint constraintWithItem:self->_transitIconBackgroundImageView attribute:10 relatedBy:0 toItem:viewCopy attribute:10 multiplier:1.0 constant:0.0];
       [v29 addObject:v36];
 
       [NSLayoutConstraint activateConstraints:v29];
@@ -467,30 +467,30 @@ LABEL_11:
   [(RAPFixedProblemViewController *)&v82 viewDidLoad];
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"Reported Issue" value:@"localized string not found" table:0];
-  v5 = [(RAPFixedProblemViewController *)self navigationItem];
-  [v5 setTitle:v4];
+  navigationItem = [(RAPFixedProblemViewController *)self navigationItem];
+  [navigationItem setTitle:v4];
 
   v6 = [UIBarButtonItem alloc];
-  v7 = [(RAPFixedProblemViewController *)self navigationController];
-  v8 = [v6 initWithBarButtonSystemItem:0 target:v7 action:"handleDone:"];
-  v9 = [(RAPFixedProblemViewController *)self navigationItem];
-  [v9 setRightBarButtonItem:v8];
+  navigationController = [(RAPFixedProblemViewController *)self navigationController];
+  v8 = [v6 initWithBarButtonSystemItem:0 target:navigationController action:"handleDone:"];
+  navigationItem2 = [(RAPFixedProblemViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v8];
 
   v10 = +[UIColor systemBackgroundColor];
-  v11 = [(RAPFixedProblemViewController *)self view];
-  [v11 setBackgroundColor:v10];
+  view = [(RAPFixedProblemViewController *)self view];
+  [view setBackgroundColor:v10];
 
   v12 = [UIView alloc];
-  v13 = [(RAPFixedProblemViewController *)self view];
-  [v13 bounds];
+  view2 = [(RAPFixedProblemViewController *)self view];
+  [view2 bounds];
   v14 = [v12 initWithFrame:?];
 
   [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
   v15 = +[UIColor labelColor];
   [v14 setBackgroundColor:v15];
 
-  v16 = [(RAPFixedProblemViewController *)self view];
-  [v16 addSubview:v14];
+  view3 = [(RAPFixedProblemViewController *)self view];
+  [view3 addSubview:v14];
 
   v17 = objc_alloc_init(UITextView);
   textView = self->_textView;
@@ -507,14 +507,14 @@ LABEL_11:
   [(UITextView *)self->_textView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UITextView *)self->_textView addObserver:self forKeyPath:@"contentSize" options:1 context:0];
   [v14 addSubview:self->_textView];
-  v21 = [(GEORPProblemStatusResponse *)self->_problemStatusResponse problemStatus];
-  v22 = [v21 objectAtIndexedSubscript:0];
+  problemStatus = [(GEORPProblemStatusResponse *)self->_problemStatusResponse problemStatus];
+  v22 = [problemStatus objectAtIndexedSubscript:0];
 
-  v23 = [v22 details];
-  LODWORD(v13) = [v23 displayStyle];
+  details = [v22 details];
+  LODWORD(view2) = [details displayStyle];
 
   v74 = v22;
-  if (v13 == 5)
+  if (view2 == 5)
   {
     v24 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     v25 = [UIImage imageNamed:@"RAPRouteFixed"];
@@ -550,33 +550,33 @@ LABEL_11:
   v71 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(borderSpacing)-[viewToShow]-0-[_textView(>=textViewMinimumHeight)]-(borderSpacing)-|", 0, v29, v28);
   v32 = +[NSMutableArray array];
   v77 = +[NSMutableArray array];
-  v68 = [v14 topAnchor];
-  v69 = [(RAPFixedProblemViewController *)self view];
-  v67 = [v69 safeAreaLayoutGuide];
-  v66 = [v67 topAnchor];
-  v65 = [v68 constraintEqualToAnchor:v66 constant:5.0];
+  topAnchor = [v14 topAnchor];
+  view4 = [(RAPFixedProblemViewController *)self view];
+  safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v65 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
   v84[0] = v65;
-  v63 = [v14 bottomAnchor];
-  v64 = [(RAPFixedProblemViewController *)self view];
-  v62 = [v64 safeAreaLayoutGuide];
-  v61 = [v62 bottomAnchor];
-  v60 = [v63 constraintEqualToAnchor:v61 constant:-5.0];
+  bottomAnchor = [v14 bottomAnchor];
+  view5 = [(RAPFixedProblemViewController *)self view];
+  safeAreaLayoutGuide2 = [view5 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+  v60 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
   v84[1] = v60;
-  v57 = [v14 leadingAnchor];
-  v59 = [(RAPFixedProblemViewController *)self view];
-  v58 = [v59 safeAreaLayoutGuide];
-  v33 = [v58 leadingAnchor];
+  leadingAnchor = [v14 leadingAnchor];
+  view6 = [(RAPFixedProblemViewController *)self view];
+  safeAreaLayoutGuide3 = [view6 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide3 leadingAnchor];
   [&off_1016E9800 floatValue];
-  v35 = [v57 constraintEqualToAnchor:v33 constant:v34];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v34];
   v84[2] = v35;
   v75 = v14;
-  v36 = [v14 trailingAnchor];
-  v76 = self;
-  v37 = [(RAPFixedProblemViewController *)self view];
-  v38 = [v37 safeAreaLayoutGuide];
-  v39 = [v38 trailingAnchor];
+  trailingAnchor = [v14 trailingAnchor];
+  selfCopy = self;
+  view7 = [(RAPFixedProblemViewController *)self view];
+  safeAreaLayoutGuide4 = [view7 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide4 trailingAnchor];
   [&off_1016E9800 floatValue];
-  v41 = [v36 constraintEqualToAnchor:v39 constant:-v40];
+  v41 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v40];
   v84[3] = v41;
   v42 = [NSArray arrayWithObjects:v84 count:4];
   [v77 addObjectsFromArray:v42];
@@ -613,29 +613,29 @@ LABEL_11:
 
   [v32 addObjectsFromArray:v71];
   v50 = [NSLayoutConstraint constraintWithItem:v73 attribute:8 relatedBy:0 toItem:v73 attribute:7 multiplier:1.0 constant:0.0];
-  mapHeightConstraint = v76->_mapHeightConstraint;
-  v76->_mapHeightConstraint = v50;
+  mapHeightConstraint = selfCopy->_mapHeightConstraint;
+  selfCopy->_mapHeightConstraint = v50;
 
   LODWORD(v52) = 1144750080;
-  [(NSLayoutConstraint *)v76->_mapHeightConstraint setPriority:v52];
-  [v32 addObject:v76->_mapHeightConstraint];
+  [(NSLayoutConstraint *)selfCopy->_mapHeightConstraint setPriority:v52];
+  [v32 addObject:selfCopy->_mapHeightConstraint];
   [NSLayoutConstraint activateConstraints:v32];
   [NSLayoutConstraint activateConstraints:v77];
-  v53 = [(RAPFixedProblemViewController *)v76 view];
-  [v53 setNeedsUpdateConstraints];
+  view8 = [(RAPFixedProblemViewController *)selfCopy view];
+  [view8 setNeedsUpdateConstraints];
 
-  [(RAPFixedProblemViewController *)v76 _updateMapViewIfLoaded];
-  [(RAPFixedProblemViewController *)v76 _updateTextFieldIfLoaded];
-  v54 = [v74 details];
-  v55 = [v54 displayStyle];
+  [(RAPFixedProblemViewController *)selfCopy _updateMapViewIfLoaded];
+  [(RAPFixedProblemViewController *)selfCopy _updateTextFieldIfLoaded];
+  details2 = [v74 details];
+  displayStyle = [details2 displayStyle];
 
-  if (v55 == 5)
+  if (displayStyle == 5)
   {
-    [(RAPFixedProblemViewController *)v76 addRouteOverlayOnView:v73];
+    [(RAPFixedProblemViewController *)selfCopy addRouteOverlayOnView:v73];
   }
 
   v56 = +[NSNotificationCenter defaultCenter];
-  [v56 addObserver:v76 selector:"_contentSizeCategoryDidChange" name:UIContentSizeCategoryDidChangeNotification object:0];
+  [v56 addObserver:selfCopy selector:"_contentSizeCategoryDidChange" name:UIContentSizeCategoryDidChangeNotification object:0];
 }
 
 - (void)dealloc

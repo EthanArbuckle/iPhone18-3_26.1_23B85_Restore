@@ -1,11 +1,11 @@
 @interface STMutableRestrictions
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)restrictionsImmutableCopy;
 @end
 
 @implementation STMutableRestrictions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [STMutableRestrictions alloc];
 

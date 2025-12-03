@@ -1,10 +1,10 @@
 @interface PETTestLoggingOutlet
 - (PETTestLoggingOutlet)init;
-- (void)logDoubleValue:(double)a3 forEvent:(id)a4 featureId:(id)a5 stringifiedProperties:(id)a6 metaData:(id)a7;
-- (void)logErrorForEvent:(id)a3 featureId:(id)a4 reason:(id)a5;
-- (void)logUnsignedIntegerValue:(unint64_t)a3 forEvent:(id)a4 featureId:(id)a5 stringifiedProperties:(id)a6 metaData:(id)a7;
+- (void)logDoubleValue:(double)value forEvent:(id)event featureId:(id)id stringifiedProperties:(id)properties metaData:(id)data;
+- (void)logErrorForEvent:(id)event featureId:(id)id reason:(id)reason;
+- (void)logUnsignedIntegerValue:(unint64_t)value forEvent:(id)event featureId:(id)id stringifiedProperties:(id)properties metaData:(id)data;
 - (void)reset;
-- (void)setUnsignedIntegerValue:(unint64_t)a3 forEvent:(id)a4 featureId:(id)a5 stringifiedProperties:(id)a6 metaData:(id)a7;
+- (void)setUnsignedIntegerValue:(unint64_t)value forEvent:(id)event featureId:(id)id stringifiedProperties:(id)properties metaData:(id)data;
 @end
 
 @implementation PETTestLoggingOutlet
@@ -19,27 +19,27 @@
   self->_lastLoggedKey = 0;
 
   self->_lastLoggedDistributionValue = 0.0;
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   allLoggedKeys = self->_allLoggedKeys;
-  self->_allLoggedKeys = v5;
+  self->_allLoggedKeys = array;
 
-  v7 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   allLoggedValues = self->_allLoggedValues;
-  self->_allLoggedValues = v7;
+  self->_allLoggedValues = array2;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)logErrorForEvent:(id)a3 featureId:(id)a4 reason:(id)a5
+- (void)logErrorForEvent:(id)event featureId:(id)id reason:(id)reason
 {
-  v5 = [MEMORY[0x1E695DF30] exceptionWithName:@"PETEventTrackingException" reason:a5 userInfo:0];
+  v5 = [MEMORY[0x1E695DF30] exceptionWithName:@"PETEventTrackingException" reason:reason userInfo:0];
   [v5 raise];
 }
 
-- (void)logDoubleValue:(double)a3 forEvent:(id)a4 featureId:(id)a5 stringifiedProperties:(id)a6 metaData:(id)a7
+- (void)logDoubleValue:(double)value forEvent:(id)event featureId:(id)id stringifiedProperties:(id)properties metaData:(id)data
 {
   v24 = *MEMORY[0x1E69E9840];
-  v9 = [PETLoggingUtils keyStringForEvent:a4 featureId:a5 stringifiedProperties:a6 metaData:a7];
+  v9 = [PETLoggingUtils keyStringForEvent:event featureId:id stringifiedProperties:properties metaData:data];
   if ([v9 length] >= 0x100)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -61,25 +61,25 @@
   self->_lastLoggedKey = v9;
   v12 = v9;
 
-  self->_lastLoggedDistributionValue = a3;
+  self->_lastLoggedDistributionValue = value;
   [(NSMutableArray *)self->_allLoggedKeys addObject:v12];
   allLoggedValues = self->_allLoggedValues;
-  v14 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v14 = [MEMORY[0x1E696AD98] numberWithDouble:value];
   [(NSMutableArray *)allLoggedValues addObject:v14];
 
   v15 = MEMORY[0x1E696AD98];
   v16 = [(NSMutableDictionary *)self->_keyValues objectForKeyedSubscript:v12];
   [v16 doubleValue];
-  v18 = [v15 numberWithDouble:v17 + a3];
-  [(NSMutableDictionary *)self->_keyValues setObject:v18 forKeyedSubscript:v12];
+  value = [v15 numberWithDouble:v17 + value];
+  [(NSMutableDictionary *)self->_keyValues setObject:value forKeyedSubscript:v12];
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setUnsignedIntegerValue:(unint64_t)a3 forEvent:(id)a4 featureId:(id)a5 stringifiedProperties:(id)a6 metaData:(id)a7
+- (void)setUnsignedIntegerValue:(unint64_t)value forEvent:(id)event featureId:(id)id stringifiedProperties:(id)properties metaData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
-  v9 = [PETLoggingUtils keyStringForEvent:a4 featureId:a5 stringifiedProperties:a6 metaData:a7];
+  v9 = [PETLoggingUtils keyStringForEvent:event featureId:id stringifiedProperties:properties metaData:data];
   if ([v9 length] >= 0x100)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -101,22 +101,22 @@
   self->_lastLoggedKey = v9;
   v12 = v9;
 
-  self->_lastLoggedScalarValue = a3;
+  self->_lastLoggedScalarValue = value;
   [(NSMutableArray *)self->_allLoggedKeys addObject:v12];
   allLoggedValues = self->_allLoggedValues;
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:value];
   [(NSMutableArray *)allLoggedValues addObject:v14];
 
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:value];
   [(NSMutableDictionary *)self->_keyValues setObject:v15 forKeyedSubscript:v12];
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logUnsignedIntegerValue:(unint64_t)a3 forEvent:(id)a4 featureId:(id)a5 stringifiedProperties:(id)a6 metaData:(id)a7
+- (void)logUnsignedIntegerValue:(unint64_t)value forEvent:(id)event featureId:(id)id stringifiedProperties:(id)properties metaData:(id)data
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = [PETLoggingUtils keyStringForEvent:a4 featureId:a5 stringifiedProperties:a6 metaData:a7];
+  v9 = [PETLoggingUtils keyStringForEvent:event featureId:id stringifiedProperties:properties metaData:data];
   if ([v9 length] >= 0x100)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -138,15 +138,15 @@
   self->_lastLoggedKey = v9;
   v12 = v9;
 
-  self->_lastLoggedScalarValue = a3;
+  self->_lastLoggedScalarValue = value;
   [(NSMutableArray *)self->_allLoggedKeys addObject:v12];
   allLoggedValues = self->_allLoggedValues;
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:value];
   [(NSMutableArray *)allLoggedValues addObject:v14];
 
   v15 = MEMORY[0x1E696AD98];
   v16 = [(NSMutableDictionary *)self->_keyValues objectForKeyedSubscript:v12];
-  v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(v16, "unsignedIntegerValue") + a3}];
+  v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(v16, "unsignedIntegerValue") + value}];
   [(NSMutableDictionary *)self->_keyValues setObject:v17 forKeyedSubscript:v12];
 
   v18 = *MEMORY[0x1E69E9840];
@@ -159,13 +159,13 @@
   v2 = [(PETTestLoggingOutlet *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     allLoggedKeys = v2->_allLoggedKeys;
-    v2->_allLoggedKeys = v3;
+    v2->_allLoggedKeys = array;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     allLoggedValues = v2->_allLoggedValues;
-    v2->_allLoggedValues = v5;
+    v2->_allLoggedValues = array2;
 
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     keyValues = v2->_keyValues;

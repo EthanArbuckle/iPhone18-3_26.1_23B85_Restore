@@ -2,54 +2,54 @@
 + (id)descriptorForRequiredKeys;
 + (id)os_log;
 - (BOOL)isGroupActionsView;
-- (BOOL)shouldShowDisambiguationForAction:(id)a3;
+- (BOOL)shouldShowDisambiguationForAction:(id)action;
 - (CNActionsView)actionsView;
 - (CNContact)contact;
-- (CNContactInlineActionsViewController)initWithActionListDataSource:(id)a3 environment:(id)a4;
-- (CNContactInlineActionsViewController)initWithContactActionsContext:(id)a3;
-- (CNContactInlineActionsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CNContactInlineActionsViewController)initWithActionListDataSource:(id)source environment:(id)environment;
+- (CNContactInlineActionsViewController)initWithContactActionsContext:(id)context;
+- (CNContactInlineActionsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (CNContactInlineActionsViewControllerDelegate)delegate;
 - (CNUIObjectViewControllerDelegate)objectViewControllerDelegate;
 - (double)throttleDelay;
-- (id)actionImageTextStyleForViewStyle:(int64_t)a3;
+- (id)actionImageTextStyleForViewStyle:(int64_t)style;
 - (id)allModelsObservable;
-- (id)existingActionItemForType:(id)a3;
-- (id)makeActionItemForType:(id)a3;
-- (id)retrieveModelsForType:(id)a3;
-- (void)checkinLaunchTasksForUndiscoverableActionsForContact:(id)a3;
-- (void)contactActionsController:(id)a3 didUpdateWithMenu:(id)a4;
+- (id)existingActionItemForType:(id)type;
+- (id)makeActionItemForType:(id)type;
+- (id)retrieveModelsForType:(id)type;
+- (void)checkinLaunchTasksForUndiscoverableActionsForContact:(id)contact;
+- (void)contactActionsController:(id)controller didUpdateWithMenu:(id)menu;
 - (void)dealloc;
-- (void)didSelectAction:(id)a3;
-- (void)didSelectAction:(id)a3 withSourceView:(id)a4 longPress:(BOOL)a5;
-- (void)didSelectActionType:(id)a3 withSourceView:(id)a4 longPress:(BOOL)a5;
+- (void)didSelectAction:(id)action;
+- (void)didSelectAction:(id)action withSourceView:(id)view longPress:(BOOL)press;
+- (void)didSelectActionType:(id)type withSourceView:(id)view longPress:(BOOL)press;
 - (void)discoverAvailableActionTypes;
-- (void)displayActionForType:(id)a3 withDefaultAction:(id)a4 enabled:(BOOL)a5;
-- (void)displayAdditionalActionItems:(id)a3;
+- (void)displayActionForType:(id)type withDefaultAction:(id)action enabled:(BOOL)enabled;
+- (void)displayAdditionalActionItems:(id)items;
 - (void)displayAllSupportedTypesDisabled;
-- (void)generateActionsControllerForActionType:(id)a3;
+- (void)generateActionsControllerForActionType:(id)type;
 - (void)loadCachedActions;
 - (void)loadView;
-- (void)notifyDelegateOfDisambiguationForActionType:(id)a3;
-- (void)notifyDelegateOfPerformedActionType:(id)a3 fromDisambiguation:(BOOL)a4;
-- (void)performAction:(id)a3;
-- (void)performGroupActionForType:(id)a3;
-- (void)processModels:(id)a3;
-- (void)removeActionForType:(id)a3;
-- (void)removeVisibleActionItems:(id)a3;
+- (void)notifyDelegateOfDisambiguationForActionType:(id)type;
+- (void)notifyDelegateOfPerformedActionType:(id)type fromDisambiguation:(BOOL)disambiguation;
+- (void)performAction:(id)action;
+- (void)performGroupActionForType:(id)type;
+- (void)processModels:(id)models;
+- (void)removeActionForType:(id)type;
+- (void)removeVisibleActionItems:(id)items;
 - (void)reset;
-- (void)setActionTypesInterspace:(double)a3;
-- (void)setContact:(id)a3;
-- (void)setContacts:(id)a3;
-- (void)setDisplaysTitles:(BOOL)a3;
-- (void)setDisplaysUnavailableActionTypes:(BOOL)a3;
-- (void)setPosterTintColor:(id)a3;
-- (void)setSupportedActionTypes:(id)a3;
-- (void)setViewStyle:(int64_t)a3;
+- (void)setActionTypesInterspace:(double)interspace;
+- (void)setContact:(id)contact;
+- (void)setContacts:(id)contacts;
+- (void)setDisplaysTitles:(BOOL)titles;
+- (void)setDisplaysUnavailableActionTypes:(BOOL)types;
+- (void)setPosterTintColor:(id)color;
+- (void)setSupportedActionTypes:(id)types;
+- (void)setViewStyle:(int64_t)style;
 - (void)setupGroupActions;
 - (void)setupSingleContactActions;
-- (void)updateActionItem:(id)a3 withDefaultAction:(id)a4;
+- (void)updateActionItem:(id)item withDefaultAction:(id)action;
 - (void)updateDesiredTitleFontSizeIfNeeded;
-- (void)updateVisibleActionItems:(id)a3;
+- (void)updateVisibleActionItems:(id)items;
 - (void)viewDidLoad;
 @end
 
@@ -76,9 +76,9 @@
   return WeakRetained;
 }
 
-- (id)actionImageTextStyleForViewStyle:(int64_t)a3
+- (id)actionImageTextStyleForViewStyle:(int64_t)style
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 6)
+  if ((style & 0xFFFFFFFFFFFFFFFELL) == 6)
   {
     v3 = MEMORY[0x1E69DDDC8];
   }
@@ -91,77 +91,77 @@
   return *v3;
 }
 
-- (void)notifyDelegateOfDisambiguationForActionType:(id)a3
+- (void)notifyDelegateOfDisambiguationForActionType:(id)type
 {
-  v7 = a3;
-  v4 = [(CNContactInlineActionsViewController *)self delegate];
+  typeCopy = type;
+  delegate = [(CNContactInlineActionsViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNContactInlineActionsViewController *)self delegate];
-    [v6 contactInlineActionsViewController:self willPresentDisambiguationUIForActionType:v7];
+    delegate2 = [(CNContactInlineActionsViewController *)self delegate];
+    [delegate2 contactInlineActionsViewController:self willPresentDisambiguationUIForActionType:typeCopy];
   }
 }
 
-- (void)notifyDelegateOfPerformedActionType:(id)a3 fromDisambiguation:(BOOL)a4
+- (void)notifyDelegateOfPerformedActionType:(id)type fromDisambiguation:(BOOL)disambiguation
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [(CNContactInlineActionsViewController *)self delegate];
+  disambiguationCopy = disambiguation;
+  typeCopy = type;
+  delegate = [(CNContactInlineActionsViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CNContactInlineActionsViewController *)self delegate];
-    [v8 contactInlineActionsViewController:self didPerformActionOfType:v9 fromDisambiguation:v4];
+    delegate2 = [(CNContactInlineActionsViewController *)self delegate];
+    [delegate2 contactInlineActionsViewController:self didPerformActionOfType:typeCopy fromDisambiguation:disambiguationCopy];
   }
 }
 
 - (BOOL)isGroupActionsView
 {
-  v3 = [(CNContactInlineActionsViewController *)self contact];
-  if (v3)
+  contact = [(CNContactInlineActionsViewController *)self contact];
+  if (contact)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(CNContactInlineActionsViewController *)self contacts];
-    v4 = [v5 count] > 1;
+    contacts = [(CNContactInlineActionsViewController *)self contacts];
+    v4 = [contacts count] > 1;
   }
 
   return v4;
 }
 
-- (void)performGroupActionForType:(id)a3
+- (void)performGroupActionForType:(id)type
 {
-  v7 = a3;
+  typeCopy = type;
   if ([(CNContactInlineActionsViewController *)self isGroupActionsView])
   {
-    v4 = [(CNContactInlineActionsViewController *)self delegate];
+    delegate = [(CNContactInlineActionsViewController *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(CNContactInlineActionsViewController *)self delegate];
-      [v6 contactInlineActionsViewController:self didSelectActionOfType:v7];
+      delegate2 = [(CNContactInlineActionsViewController *)self delegate];
+      [delegate2 contactInlineActionsViewController:self didSelectActionOfType:typeCopy];
 
-      [(CNContactInlineActionsViewController *)self notifyDelegateOfPerformedActionType:v7 fromDisambiguation:0];
+      [(CNContactInlineActionsViewController *)self notifyDelegateOfPerformedActionType:typeCopy fromDisambiguation:0];
     }
   }
 }
 
 - (void)setupGroupActions
 {
-  v3 = [(CNContactInlineActionsViewController *)self supportedActionTypes];
+  supportedActionTypes = [(CNContactInlineActionsViewController *)self supportedActionTypes];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __57__CNContactInlineActionsViewController_setupGroupActions__block_invoke;
   v4[3] = &unk_1E74E6A60;
   v4[4] = self;
-  [v3 _cn_each:v4];
+  [supportedActionTypes _cn_each:v4];
 }
 
 void __57__CNContactInlineActionsViewController_setupGroupActions__block_invoke(uint64_t a1, void *a2)
@@ -184,9 +184,9 @@ void __57__CNContactInlineActionsViewController_setupGroupActions__block_invoke(
   [*(a1 + 32) displayActionForType:v7 withDefaultAction:0 enabled:v6];
 }
 
-- (BOOL)shouldShowDisambiguationForAction:(id)a3
+- (BOOL)shouldShowDisambiguationForAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if ([(CNContactInlineActionsViewController *)self isGroupActionsView])
   {
     v5 = 0;
@@ -194,14 +194,14 @@ void __57__CNContactInlineActionsViewController_setupGroupActions__block_invoke(
 
   else
   {
-    v6 = [(CNContactInlineActionsViewController *)self delegate];
+    delegate = [(CNContactInlineActionsViewController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CNContactInlineActionsViewController *)self delegate];
-      v9 = [v4 type];
-      v5 = [v8 contactInlineActionsViewController:self shouldPresentDisambiguationUIForActionOfType:v9];
+      delegate2 = [(CNContactInlineActionsViewController *)self delegate];
+      type = [actionCopy type];
+      v5 = [delegate2 contactInlineActionsViewController:self shouldPresentDisambiguationUIForActionOfType:type];
     }
 
     else
@@ -213,45 +213,45 @@ void __57__CNContactInlineActionsViewController_setupGroupActions__block_invoke(
   return v5;
 }
 
-- (void)generateActionsControllerForActionType:(id)a3
+- (void)generateActionsControllerForActionType:(id)type
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNContactInlineActionsViewController *)self actionsController];
-  [v5 cancelModels];
+  typeCopy = type;
+  actionsController = [(CNContactInlineActionsViewController *)self actionsController];
+  [actionsController cancelModels];
 
-  v6 = [(CNContactInlineActionsViewController *)self delegate];
+  delegate = [(CNContactInlineActionsViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
-  if ((v7 & 1) == 0 || (-[CNContactInlineActionsViewController delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 contactInlineActionsViewController:self shouldPresentDisambiguationUIForActionOfType:v4], v8, v9))
+  if ((v7 & 1) == 0 || (-[CNContactInlineActionsViewController delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 contactInlineActionsViewController:self shouldPresentDisambiguationUIForActionOfType:typeCopy], v8, v9))
   {
     v10 = [CNContactActionsController alloc];
-    v11 = [(CNContactInlineActionsViewController *)self contact];
-    v12 = [(CNContactInlineActionsViewController *)self actionListDataSource];
-    v18[0] = v4;
+    contact = [(CNContactInlineActionsViewController *)self contact];
+    actionListDataSource = [(CNContactInlineActionsViewController *)self actionListDataSource];
+    v18[0] = typeCopy;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-    v14 = [(CNContactActionsController *)v10 initWithContact:v11 dataSource:v12 actionTypes:v13];
+    v14 = [(CNContactActionsController *)v10 initWithContact:contact dataSource:actionListDataSource actionTypes:v13];
     [(CNContactInlineActionsViewController *)self setActionsController:v14];
 
-    v15 = [(CNContactInlineActionsViewController *)self actionsController];
-    [v15 setShouldUseOutlinedActionGlyphStyle:1];
+    actionsController2 = [(CNContactInlineActionsViewController *)self actionsController];
+    [actionsController2 setShouldUseOutlinedActionGlyphStyle:1];
 
-    v16 = [(CNContactInlineActionsViewController *)self actionsController];
-    [v16 setDisplayNonDefaultAppsMenuTitle:1];
+    actionsController3 = [(CNContactInlineActionsViewController *)self actionsController];
+    [actionsController3 setDisplayNonDefaultAppsMenuTitle:1];
 
-    v17 = [(CNContactInlineActionsViewController *)self actionsController];
-    [v17 setDelegate:self];
+    actionsController4 = [(CNContactInlineActionsViewController *)self actionsController];
+    [actionsController4 setDelegate:self];
   }
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNContactInlineActionsViewController *)self delegate];
+  actionCopy = action;
+  delegate = [(CNContactInlineActionsViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
-  if ((v6 & 1) == 0 || (-[CNContactInlineActionsViewController delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), -[__CFString type](v4, "type"), v8 = objc_claimAutoreleasedReturnValue(), -[__CFString contactProperty](v4, "contactProperty"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v7 contactInlineActionsViewController:self shouldPerformActionOfType:v8 withContactProperty:v9], v9, v8, v7, v10))
+  if ((v6 & 1) == 0 || (-[CNContactInlineActionsViewController delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), -[__CFString type](actionCopy, "type"), v8 = objc_claimAutoreleasedReturnValue(), -[__CFString contactProperty](actionCopy, "contactProperty"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v7 contactInlineActionsViewController:self shouldPerformActionOfType:v8 withContactProperty:v9], v9, v8, v7, v10))
   {
     v11 = objc_opt_class();
     if (v11 == objc_opt_class())
@@ -262,57 +262,57 @@ void __57__CNContactInlineActionsViewController_setupGroupActions__block_invoke(
         v36 = objc_opt_class();
         v37 = NSStringFromClass(v36);
         v44 = 138412546;
-        v45 = v37;
+        selfCopy = v37;
         v46 = 2048;
-        v47 = v4;
+        v47 = actionCopy;
         _os_log_fault_impl(&dword_199A75000, v16, OS_LOG_TYPE_FAULT, " CNContactInlineActionsViewController encountered an  unexpected base CNUIUserActionItem - action %@(%p)", &v44, 0x16u);
       }
 
       goto LABEL_28;
     }
 
-    v12 = [(CNContactInlineActionsViewController *)self delegate];
+    delegate2 = [(CNContactInlineActionsViewController *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(CNContactInlineActionsViewController *)self delegate];
-      v15 = [(__CFString *)v4 type];
-      [v14 contactInlineActionsViewController:self willPerformActionOfType:v15];
+      delegate3 = [(CNContactInlineActionsViewController *)self delegate];
+      type = [(__CFString *)actionCopy type];
+      [delegate3 contactInlineActionsViewController:self willPerformActionOfType:type];
     }
 
     v16 = objc_alloc_init(MEMORY[0x1E6996BD0]);
-    v17 = [(CNContactInlineActionsViewController *)self geminiChannelIdentifier];
-    if (v17 && (v18 = v17, -[CNContactInlineActionsViewController geminiChannelIdentifier](self, "geminiChannelIdentifier"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 length], v19, v18, v20))
+    geminiChannelIdentifier = [(CNContactInlineActionsViewController *)self geminiChannelIdentifier];
+    if (geminiChannelIdentifier && (v18 = geminiChannelIdentifier, -[CNContactInlineActionsViewController geminiChannelIdentifier](self, "geminiChannelIdentifier"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 length], v19, v18, v20))
     {
-      v21 = [(CNContactInlineActionsViewController *)self geminiChannelIdentifier];
-      [v16 setChannelIdentifier:v21];
+      geminiChannelIdentifier2 = [(CNContactInlineActionsViewController *)self geminiChannelIdentifier];
+      [v16 setChannelIdentifier:geminiChannelIdentifier2];
     }
 
     else
     {
-      v22 = [(CNContactInlineActionsViewController *)self delegate];
+      delegate4 = [(CNContactInlineActionsViewController *)self delegate];
       v23 = objc_opt_respondsToSelector();
 
       if ((v23 & 1) == 0)
       {
 LABEL_12:
-        v26 = [(__CFString *)v4 contactProperty];
-        v27 = [v26 contact];
-        v28 = [v27 identifier];
-        v29 = v28;
+        contactProperty = [(__CFString *)actionCopy contactProperty];
+        contact = [contactProperty contact];
+        identifier = [contact identifier];
+        v29 = identifier;
         v30 = @"Unknown Contact identifier";
-        if (v28)
+        if (identifier)
         {
-          v30 = v28;
+          v30 = identifier;
         }
 
         v31 = v30;
 
-        v32 = [(CNContactInlineActionsViewController *)self delegate];
-        if (v32)
+        delegate5 = [(CNContactInlineActionsViewController *)self delegate];
+        if (delegate5)
         {
-          v33 = [(CNContactInlineActionsViewController *)self delegate];
+          delegate6 = [(CNContactInlineActionsViewController *)self delegate];
           v34 = objc_opt_class();
           v35 = NSStringFromClass(v34);
         }
@@ -322,50 +322,50 @@ LABEL_12:
           v35 = @"No delegate";
         }
 
-        v38 = [objc_opt_class() os_log];
-        if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
+        os_log = [objc_opt_class() os_log];
+        if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
         {
-          v39 = [(__CFString *)v4 type];
+          type2 = [(__CFString *)actionCopy type];
           v44 = 138543618;
-          v45 = v39;
+          selfCopy = type2;
           v46 = 2114;
           v47 = v31;
-          _os_log_impl(&dword_199A75000, v38, OS_LOG_TYPE_DEFAULT, "CNContactInlineActionsViewController performing action: %{public}@ for: %{public}@", &v44, 0x16u);
+          _os_log_impl(&dword_199A75000, os_log, OS_LOG_TYPE_DEFAULT, "CNContactInlineActionsViewController performing action: %{public}@ for: %{public}@", &v44, 0x16u);
         }
 
-        v40 = [objc_opt_class() os_log];
-        if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
+        os_log2 = [objc_opt_class() os_log];
+        if (os_log_type_enabled(os_log2, OS_LOG_TYPE_DEFAULT))
         {
           v44 = 138543362;
-          v45 = v35;
-          _os_log_impl(&dword_199A75000, v40, OS_LOG_TYPE_DEFAULT, "  Delegate: %{public}@", &v44, 0xCu);
+          selfCopy = v35;
+          _os_log_impl(&dword_199A75000, os_log2, OS_LOG_TYPE_DEFAULT, "  Delegate: %{public}@", &v44, 0xCu);
         }
 
-        v41 = [objc_opt_class() os_log];
-        if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
+        os_log3 = [objc_opt_class() os_log];
+        if (os_log_type_enabled(os_log3, OS_LOG_TYPE_DEFAULT))
         {
           v44 = 138543362;
-          v45 = self;
-          _os_log_impl(&dword_199A75000, v41, OS_LOG_TYPE_DEFAULT, "  View Controller: %{public}@", &v44, 0xCu);
+          selfCopy = self;
+          _os_log_impl(&dword_199A75000, os_log3, OS_LOG_TYPE_DEFAULT, "  View Controller: %{public}@", &v44, 0xCu);
         }
 
-        v42 = [objc_opt_class() os_log];
-        if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+        os_log4 = [objc_opt_class() os_log];
+        if (os_log_type_enabled(os_log4, OS_LOG_TYPE_DEFAULT))
         {
           LOWORD(v44) = 0;
-          _os_log_impl(&dword_199A75000, v42, OS_LOG_TYPE_DEFAULT, "End performing action logging", &v44, 2u);
+          _os_log_impl(&dword_199A75000, os_log4, OS_LOG_TYPE_DEFAULT, "End performing action logging", &v44, 2u);
         }
 
-        v43 = [(__CFString *)v4 performActionWithContext:v16];
+        v43 = [(__CFString *)actionCopy performActionWithContext:v16];
 LABEL_28:
 
         goto LABEL_29;
       }
 
-      v21 = [(CNContactInlineActionsViewController *)self delegate];
-      v24 = [v21 geminiDataSource];
-      v25 = [v24 channelIdentifier];
-      [v16 setChannelIdentifier:v25];
+      geminiChannelIdentifier2 = [(CNContactInlineActionsViewController *)self delegate];
+      geminiDataSource = [geminiChannelIdentifier2 geminiDataSource];
+      channelIdentifier = [geminiDataSource channelIdentifier];
+      [v16 setChannelIdentifier:channelIdentifier];
     }
 
     goto LABEL_12;
@@ -374,104 +374,104 @@ LABEL_28:
 LABEL_29:
 }
 
-- (void)didSelectAction:(id)a3
+- (void)didSelectAction:(id)action
 {
-  v4 = a3;
-  v5 = [(CNContactInlineActionsViewController *)self actionsControllerPresentation];
-  v6 = [v5 presentedViewController];
+  actionCopy = action;
+  actionsControllerPresentation = [(CNContactInlineActionsViewController *)self actionsControllerPresentation];
+  presentedViewController = [actionsControllerPresentation presentedViewController];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__CNContactInlineActionsViewController_didSelectAction___block_invoke;
   v10[3] = &unk_1E74E6A88;
   v10[4] = self;
-  [v6 dismissViewControllerAnimated:1 completion:v10];
+  [presentedViewController dismissViewControllerAnimated:1 completion:v10];
 
-  [(CNContactInlineActionsViewController *)self performAction:v4];
-  v7 = [v4 type];
-  v8 = [(CNContactInlineActionsViewController *)self actionListDataSource];
-  v9 = [(CNContactInlineActionsViewController *)self contact];
-  [v8 consumer:self didSelectItem:v4 forContact:v9 actionType:v7];
+  [(CNContactInlineActionsViewController *)self performAction:actionCopy];
+  type = [actionCopy type];
+  actionListDataSource = [(CNContactInlineActionsViewController *)self actionListDataSource];
+  contact = [(CNContactInlineActionsViewController *)self contact];
+  [actionListDataSource consumer:self didSelectItem:actionCopy forContact:contact actionType:type];
 
-  [(CNContactInlineActionsViewController *)self notifyDelegateOfPerformedActionType:v7 fromDisambiguation:1];
+  [(CNContactInlineActionsViewController *)self notifyDelegateOfPerformedActionType:type fromDisambiguation:1];
   [(CNContactInlineActionsViewController *)self setActionsController:0];
 }
 
-- (void)didSelectAction:(id)a3 withSourceView:(id)a4 longPress:(BOOL)a5
+- (void)didSelectAction:(id)action withSourceView:(id)view longPress:(BOOL)press
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [a3 type];
-  [(CNContactInlineActionsViewController *)self didSelectActionType:v9 withSourceView:v8 longPress:v5];
+  pressCopy = press;
+  viewCopy = view;
+  type = [action type];
+  [(CNContactInlineActionsViewController *)self didSelectActionType:type withSourceView:viewCopy longPress:pressCopy];
 }
 
-- (void)didSelectActionType:(id)a3 withSourceView:(id)a4 longPress:(BOOL)a5
+- (void)didSelectActionType:(id)type withSourceView:(id)view longPress:(BOOL)press
 {
-  v16 = a3;
-  v7 = [(CNContactInlineActionsViewController *)self isGroupActionsView];
-  if (!v7)
+  typeCopy = type;
+  isGroupActionsView = [(CNContactInlineActionsViewController *)self isGroupActionsView];
+  if (!isGroupActionsView)
   {
-    if (a5)
+    if (press)
     {
-      [(CNContactInlineActionsViewController *)self generateActionsControllerForActionType:v16];
-      v9 = [(CNContactInlineActionsViewController *)self actionsController];
-      [v9 retrieveModels];
+      [(CNContactInlineActionsViewController *)self generateActionsControllerForActionType:typeCopy];
+      actionsController = [(CNContactInlineActionsViewController *)self actionsController];
+      [actionsController retrieveModels];
 
-      v7 = [(CNContactInlineActionsViewController *)self notifyDelegateOfDisambiguationForActionType:v16];
+      isGroupActionsView = [(CNContactInlineActionsViewController *)self notifyDelegateOfDisambiguationForActionType:typeCopy];
       goto LABEL_12;
     }
 
-    v10 = [(CNContactInlineActionsViewController *)self defaultActionPerType];
-    v11 = [v10 objectForKeyedSubscript:v16];
+    defaultActionPerType = [(CNContactInlineActionsViewController *)self defaultActionPerType];
+    v11 = [defaultActionPerType objectForKeyedSubscript:typeCopy];
 
     if (v11)
     {
-      v12 = [(CNContactInlineActionsViewController *)self defaultActionPerType];
-      v13 = [v12 objectForKeyedSubscript:v16];
+      defaultActionPerType2 = [(CNContactInlineActionsViewController *)self defaultActionPerType];
+      v13 = [defaultActionPerType2 objectForKeyedSubscript:typeCopy];
       [(CNContactInlineActionsViewController *)self performAction:v13];
     }
 
     else
     {
-      v14 = [(CNContactInlineActionsViewController *)self delegate];
+      delegate = [(CNContactInlineActionsViewController *)self delegate];
       v15 = objc_opt_respondsToSelector();
 
       if ((v15 & 1) == 0)
       {
 LABEL_11:
-        v7 = [(CNContactInlineActionsViewController *)self notifyDelegateOfPerformedActionType:v16 fromDisambiguation:0];
+        isGroupActionsView = [(CNContactInlineActionsViewController *)self notifyDelegateOfPerformedActionType:typeCopy fromDisambiguation:0];
         goto LABEL_12;
       }
 
-      v12 = [(CNContactInlineActionsViewController *)self delegate];
-      [v12 contactInlineActionsViewController:self didSelectActionOfType:v16];
+      defaultActionPerType2 = [(CNContactInlineActionsViewController *)self delegate];
+      [defaultActionPerType2 contactInlineActionsViewController:self didSelectActionOfType:typeCopy];
     }
 
     goto LABEL_11;
   }
 
-  v8 = v16;
-  if (a5)
+  v8 = typeCopy;
+  if (press)
   {
     goto LABEL_13;
   }
 
-  v7 = [(CNContactInlineActionsViewController *)self performGroupActionForType:v16];
+  isGroupActionsView = [(CNContactInlineActionsViewController *)self performGroupActionForType:typeCopy];
 LABEL_12:
-  v8 = v16;
+  v8 = typeCopy;
 LABEL_13:
 
-  MEMORY[0x1EEE66BB8](v7, v8);
+  MEMORY[0x1EEE66BB8](isGroupActionsView, v8);
 }
 
 - (void)reset
 {
-  v3 = [(CNContactInlineActionsViewController *)self actionItems];
-  v4 = [v3 isEqual:MEMORY[0x1E695E0F0]];
+  actionItems = [(CNContactInlineActionsViewController *)self actionItems];
+  v4 = [actionItems isEqual:MEMORY[0x1E695E0F0]];
 
   if ((v4 & 1) == 0)
   {
-    v5 = [(CNContactInlineActionsViewController *)self actionsView];
-    [v5 resetActions];
+    actionsView = [(CNContactInlineActionsViewController *)self actionsView];
+    [actionsView resetActions];
 
     [(CNContactInlineActionsViewController *)self setActionItems:MEMORY[0x1E695E0F0]];
     v6 = MEMORY[0x1E695E0F8];
@@ -480,17 +480,17 @@ LABEL_13:
   }
 }
 
-- (id)existingActionItemForType:(id)a3
+- (id)existingActionItemForType:(id)type
 {
-  v4 = a3;
-  v5 = [(CNContactInlineActionsViewController *)self actionItems];
+  typeCopy = type;
+  actionItems = [(CNContactInlineActionsViewController *)self actionItems];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __66__CNContactInlineActionsViewController_existingActionItemForType___block_invoke;
   v9[3] = &unk_1E74E6A38;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 _cn_firstObjectPassingTest:v9];
+  v10 = typeCopy;
+  v6 = typeCopy;
+  v7 = [actionItems _cn_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -503,45 +503,45 @@ uint64_t __66__CNContactInlineActionsViewController_existingActionItemForType___
   return v4;
 }
 
-- (void)updateActionItem:(id)a3 withDefaultAction:(id)a4
+- (void)updateActionItem:(id)item withDefaultAction:(id)action
 {
-  v12 = a3;
+  itemCopy = item;
   if ([(CNContactInlineActionsViewController *)self displaysTitles])
   {
-    v5 = [(CNContactInlineActionsViewController *)self actionListDataSource];
-    v6 = [v12 type];
-    v7 = [v5 consumer:self localizedButtonDisplayNameForActionType:v6];
+    actionListDataSource = [(CNContactInlineActionsViewController *)self actionListDataSource];
+    type = [itemCopy type];
+    v7 = [actionListDataSource consumer:self localizedButtonDisplayNameForActionType:type];
 
-    [v12 setTitle:v7];
-    v8 = [(CNContactInlineActionsViewController *)self delegate];
-    LOBYTE(v6) = objc_opt_respondsToSelector();
+    [itemCopy setTitle:v7];
+    delegate = [(CNContactInlineActionsViewController *)self delegate];
+    LOBYTE(type) = objc_opt_respondsToSelector();
 
-    if (v6)
+    if (type)
     {
-      v9 = [(CNContactInlineActionsViewController *)self delegate];
-      v10 = [v12 type];
-      v11 = [v9 contactInlineActionsViewController:self overrideTitleForActionOfType:v10];
+      delegate2 = [(CNContactInlineActionsViewController *)self delegate];
+      type2 = [itemCopy type];
+      v11 = [delegate2 contactInlineActionsViewController:self overrideTitleForActionOfType:type2];
 
       if (v11)
       {
-        [v12 setTitle:v11];
+        [itemCopy setTitle:v11];
       }
     }
   }
 }
 
-- (id)makeActionItemForType:(id)a3
+- (id)makeActionItemForType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = [(CNContactInlineActionsViewController *)self actionImageTextStyleForViewStyle:[(CNContactInlineActionsViewController *)self viewStyle]];
-  v6 = [MEMORY[0x1E69DCAB8] cnui_userActionSymbolImageForActionType:v4 scale:-1 withColor:0 compatibleWithTextStyle:v5];
-  v7 = [(CNContactInlineActionsViewController *)self delegate];
+  v6 = [MEMORY[0x1E69DCAB8] cnui_userActionSymbolImageForActionType:typeCopy scale:-1 withColor:0 compatibleWithTextStyle:v5];
+  delegate = [(CNContactInlineActionsViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CNContactInlineActionsViewController *)self delegate];
-    v10 = [v9 contactInlineActionsViewController:self overrideImageForActionOfType:v4];
+    delegate2 = [(CNContactInlineActionsViewController *)self delegate];
+    v10 = [delegate2 contactInlineActionsViewController:self overrideImageForActionOfType:typeCopy];
 
     if (v10)
     {
@@ -558,25 +558,25 @@ uint64_t __66__CNContactInlineActionsViewController_existingActionItemForType___
     v6 = v12;
   }
 
-  v13 = [[CNActionItem alloc] initWithImage:v6 type:v4];
+  v13 = [[CNActionItem alloc] initWithImage:v6 type:typeCopy];
 
   return v13;
 }
 
-- (void)removeActionForType:(id)a3
+- (void)removeActionForType:(id)type
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = [(CNContactInlineActionsViewController *)self existingActionItemForType:a3];
+  v4 = [(CNContactInlineActionsViewController *)self existingActionItemForType:type];
   if (v4)
   {
-    v5 = [(CNContactInlineActionsViewController *)self actionItems];
+    actionItems = [(CNContactInlineActionsViewController *)self actionItems];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __60__CNContactInlineActionsViewController_removeActionForType___block_invoke;
     v9[3] = &unk_1E74E6A38;
     v6 = v4;
     v10 = v6;
-    v7 = [v5 _cn_filter:v9];
+    v7 = [actionItems _cn_filter:v9];
     [(CNContactInlineActionsViewController *)self setActionItems:v7];
 
     v11[0] = v6;
@@ -585,35 +585,35 @@ uint64_t __66__CNContactInlineActionsViewController_existingActionItemForType___
   }
 }
 
-- (void)displayActionForType:(id)a3 withDefaultAction:(id)a4 enabled:(BOOL)a5
+- (void)displayActionForType:(id)type withDefaultAction:(id)action enabled:(BOOL)enabled
 {
-  v5 = a5;
+  enabledCopy = enabled;
   v23[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CNContactInlineActionsViewController *)self existingActionItemForType:v8];
+  typeCopy = type;
+  actionCopy = action;
+  v10 = [(CNContactInlineActionsViewController *)self existingActionItemForType:typeCopy];
   v11 = v10;
   if (!v10)
   {
-    v11 = [(CNContactInlineActionsViewController *)self makeActionItemForType:v8];
+    v11 = [(CNContactInlineActionsViewController *)self makeActionItemForType:typeCopy];
   }
 
-  [v11 setDisabled:!v5];
-  v12 = [(CNContactInlineActionsViewController *)self delegate];
+  [v11 setDisabled:!enabledCopy];
+  delegate = [(CNContactInlineActionsViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v13 = [(CNContactInlineActionsViewController *)self delegate];
+    delegate2 = [(CNContactInlineActionsViewController *)self delegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(CNContactInlineActionsViewController *)self delegate];
-      v16 = [v15 contactInlineActionsViewController:self shouldOverrideEnabledStateForActionOfType:v8];
+      delegate3 = [(CNContactInlineActionsViewController *)self delegate];
+      v16 = [delegate3 contactInlineActionsViewController:self shouldOverrideEnabledStateForActionOfType:typeCopy];
 
       if (v16)
       {
-        v17 = [(CNContactInlineActionsViewController *)self delegate];
-        v18 = [v17 contactInlineActionsViewController:self overrideEnabledStateForActionOfType:v8];
+        delegate4 = [(CNContactInlineActionsViewController *)self delegate];
+        v18 = [delegate4 contactInlineActionsViewController:self overrideEnabledStateForActionOfType:typeCopy];
 
         [v11 setDisabled:v18 ^ 1u];
       }
@@ -624,7 +624,7 @@ uint64_t __66__CNContactInlineActionsViewController_existingActionItemForType___
   {
   }
 
-  [(CNContactInlineActionsViewController *)self updateActionItem:v11 withDefaultAction:v9];
+  [(CNContactInlineActionsViewController *)self updateActionItem:v11 withDefaultAction:actionCopy];
   if (v10)
   {
     v23[0] = v11;
@@ -634,8 +634,8 @@ uint64_t __66__CNContactInlineActionsViewController_existingActionItemForType___
 
   else
   {
-    v20 = [(CNContactInlineActionsViewController *)self actionItems];
-    v21 = [v20 arrayByAddingObject:v11];
+    actionItems = [(CNContactInlineActionsViewController *)self actionItems];
+    v21 = [actionItems arrayByAddingObject:v11];
     [(CNContactInlineActionsViewController *)self setActionItems:v21];
 
     v22 = v11;
@@ -644,11 +644,11 @@ uint64_t __66__CNContactInlineActionsViewController_existingActionItemForType___
   }
 }
 
-- (void)processModels:(id)a3
+- (void)processModels:(id)models
 {
-  v4 = a3;
-  v5 = [(CNContactInlineActionsViewController *)self defaultActionPerType];
-  v6 = [v5 mutableCopy];
+  modelsCopy = models;
+  defaultActionPerType = [(CNContactInlineActionsViewController *)self defaultActionPerType];
+  v6 = [defaultActionPerType mutableCopy];
 
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
@@ -656,17 +656,17 @@ uint64_t __66__CNContactInlineActionsViewController_existingActionItemForType___
   v13 = &unk_1E74E6A10;
   v7 = v6;
   v14 = v7;
-  v15 = self;
-  [v4 _cn_each:&v10];
+  selfCopy = self;
+  [modelsCopy _cn_each:&v10];
 
   [(CNContactInlineActionsViewController *)self setDefaultActionPerType:v7, v10, v11, v12, v13];
-  v8 = [(CNContactInlineActionsViewController *)self delegate];
+  delegate = [(CNContactInlineActionsViewController *)self delegate];
   LOBYTE(v6) = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v9 = [(CNContactInlineActionsViewController *)self delegate];
-    [v9 contactInlineActionsViewControllerDidProcessModels:self];
+    delegate2 = [(CNContactInlineActionsViewController *)self delegate];
+    [delegate2 contactInlineActionsViewControllerDidProcessModels:self];
   }
 }
 
@@ -735,33 +735,33 @@ LABEL_13:
 - (void)discoverAvailableActionTypes
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [(CNContactInlineActionsViewController *)self contact];
-    v16 = [v15 shortDebugDescription];
+    contact = [(CNContactInlineActionsViewController *)self contact];
+    shortDebugDescription = [contact shortDebugDescription];
     *buf = 138412546;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v16;
-    _os_log_debug_impl(&dword_199A75000, v3, OS_LOG_TYPE_DEBUG, "%@ canceling previous action discovering requests, contact now is %@", buf, 0x16u);
+    *&buf[14] = shortDebugDescription;
+    _os_log_debug_impl(&dword_199A75000, os_log, OS_LOG_TYPE_DEBUG, "%@ canceling previous action discovering requests, contact now is %@", buf, 0x16u);
   }
 
-  v4 = [(CNContactInlineActionsViewController *)self tokens];
+  tokens = [(CNContactInlineActionsViewController *)self tokens];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __68__CNContactInlineActionsViewController_discoverAvailableActionTypes__block_invoke;
   v26[3] = &unk_1E74E6998;
   v26[4] = self;
-  [v4 enumerateObjectsUsingBlock:v26];
+  [tokens enumerateObjectsUsingBlock:v26];
 
   [(CNContactInlineActionsViewController *)self setTokens:MEMORY[0x1E695E0F0]];
-  v5 = [(CNContactInlineActionsViewController *)self contact];
-  LOBYTE(v4) = v5 == 0;
+  contact2 = [(CNContactInlineActionsViewController *)self contact];
+  LOBYTE(tokens) = contact2 == 0;
 
-  if ((v4 & 1) == 0)
+  if ((tokens & 1) == 0)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     objc_initWeak(&location, self);
     *buf = 0;
     *&buf[8] = buf;
@@ -769,22 +769,22 @@ LABEL_13:
     v32 = __Block_byref_object_copy__64153;
     v33 = __Block_byref_object_dispose__64154;
     v34[0] = 0;
-    v7 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    os_log2 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [(CNContactInlineActionsViewController *)self contact];
-      v18 = [v17 shortDebugDescription];
+      contact3 = [(CNContactInlineActionsViewController *)self contact];
+      shortDebugDescription2 = [contact3 shortDebugDescription];
       *v27 = 138412546;
-      v28 = self;
+      selfCopy = self;
       v29 = 2112;
-      v30 = v18;
-      _os_log_debug_impl(&dword_199A75000, v7, OS_LOG_TYPE_DEBUG, "%@ subscribing action discovering requests for contact %@.", v27, 0x16u);
+      v30 = shortDebugDescription2;
+      _os_log_debug_impl(&dword_199A75000, os_log2, OS_LOG_TYPE_DEBUG, "%@ subscribing action discovering requests for contact %@.", v27, 0x16u);
     }
 
-    v8 = [(CNContactInlineActionsViewController *)self allModelsObservable];
-    v9 = [(CNContactInlineActionsViewController *)self schedulerProvider];
-    v10 = [v9 backgroundScheduler];
-    v11 = [v8 subscribeOn:v10];
+    allModelsObservable = [(CNContactInlineActionsViewController *)self allModelsObservable];
+    schedulerProvider = [(CNContactInlineActionsViewController *)self schedulerProvider];
+    backgroundScheduler = [schedulerProvider backgroundScheduler];
+    v11 = [allModelsObservable subscribeOn:backgroundScheduler];
     v12 = MEMORY[0x1E69967A0];
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
@@ -795,9 +795,9 @@ LABEL_13:
     v13 = [v12 observerWithResultBlock:&v19];
     v14 = [v11 subscribe:{v13, v19, v20, v21, v22}];
 
-    [v6 addObject:v14];
+    [array addObject:v14];
     objc_storeWeak((*&buf[8] + 40), v14);
-    [(CNContactInlineActionsViewController *)self setTokens:v6];
+    [(CNContactInlineActionsViewController *)self setTokens:array];
 
     objc_destroyWeak(&v24);
     _Block_object_dispose(buf, 8);
@@ -856,14 +856,14 @@ void __68__CNContactInlineActionsViewController_discoverAvailableActionTypes__bl
 
 - (void)loadCachedActions
 {
-  v3 = [(CNContactInlineActionsViewController *)self supportedActionTypes];
+  supportedActionTypes = [(CNContactInlineActionsViewController *)self supportedActionTypes];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__CNContactInlineActionsViewController_loadCachedActions__block_invoke;
   v6[3] = &unk_1E74E6970;
   v6[4] = self;
-  v4 = [v3 _cn_map:v6];
-  v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v4 forKeys:v3];
+  v4 = [supportedActionTypes _cn_map:v6];
+  v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v4 forKeys:supportedActionTypes];
   [(CNContactInlineActionsViewController *)self processModels:v5];
 }
 
@@ -893,23 +893,23 @@ id __57__CNContactInlineActionsViewController_loadCachedActions__block_invoke(ui
 
 - (id)allModelsObservable
 {
-  v3 = [(CNContactInlineActionsViewController *)self supportedActionTypes];
+  supportedActionTypes = [(CNContactInlineActionsViewController *)self supportedActionTypes];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __59__CNContactInlineActionsViewController_allModelsObservable__block_invoke;
   v14[3] = &unk_1E74E6928;
   v14[4] = self;
-  v4 = [v3 _cn_map:v14];
+  v4 = [supportedActionTypes _cn_map:v14];
 
   v5 = MEMORY[0x1E6996798];
-  v6 = [(CNContactInlineActionsViewController *)self schedulerProvider];
-  v7 = [v5 merge:v4 schedulerProvider:v6];
+  schedulerProvider = [(CNContactInlineActionsViewController *)self schedulerProvider];
+  v7 = [v5 merge:v4 schedulerProvider:schedulerProvider];
 
   v8 = [v7 scan:&__block_literal_global_38_64161 seed:MEMORY[0x1E695E0F8]];
   [(CNContactInlineActionsViewController *)self throttleDelay];
   v10 = v9;
-  v11 = [(CNContactInlineActionsViewController *)self schedulerProvider];
-  v12 = [v8 throttle:v11 schedulerProvider:v10];
+  schedulerProvider2 = [(CNContactInlineActionsViewController *)self schedulerProvider];
+  v12 = [v8 throttle:schedulerProvider2 schedulerProvider:v10];
 
   return v12;
 }
@@ -954,54 +954,54 @@ id __59__CNContactInlineActionsViewController_allModelsObservable__block_invoke_
   return v4;
 }
 
-- (id)retrieveModelsForType:(id)a3
+- (id)retrieveModelsForType:(id)type
 {
-  [(CNContactInlineActionsViewController *)self generateActionsControllerForActionType:a3];
-  v4 = [(CNContactInlineActionsViewController *)self actionsController];
-  [v4 retrieveModels];
+  [(CNContactInlineActionsViewController *)self generateActionsControllerForActionType:type];
+  actionsController = [(CNContactInlineActionsViewController *)self actionsController];
+  [actionsController retrieveModels];
 
   return [(CNContactInlineActionsViewController *)self actionsController];
 }
 
-- (void)contactActionsController:(id)a3 didUpdateWithMenu:(id)a4
+- (void)contactActionsController:(id)controller didUpdateWithMenu:(id)menu
 {
-  v15 = a3;
-  v6 = a4;
-  if (v6)
+  controllerCopy = controller;
+  menuCopy = menu;
+  if (menuCopy)
   {
-    v7 = [(CNContactInlineActionsViewController *)self actionsController];
+    actionsController = [(CNContactInlineActionsViewController *)self actionsController];
 
-    if (v7 == v15)
+    if (actionsController == controllerCopy)
     {
-      v8 = [(CNContactInlineActionsViewController *)self actionsView];
-      v9 = [v15 actionTypes];
-      v10 = [v9 firstObject];
-      v11 = [v8 actionViewForType:v10];
+      actionsView = [(CNContactInlineActionsViewController *)self actionsView];
+      actionTypes = [controllerCopy actionTypes];
+      firstObject = [actionTypes firstObject];
+      v11 = [actionsView actionViewForType:firstObject];
 
-      [v11 updateWithMenuItems:v6];
-      if ([v6 count])
+      [v11 updateWithMenuItems:menuCopy];
+      if ([menuCopy count])
       {
-        v12 = [(CNContactInlineActionsViewController *)self delegate];
+        delegate = [(CNContactInlineActionsViewController *)self delegate];
         v13 = objc_opt_respondsToSelector();
 
         if (v13)
         {
-          v14 = [(CNContactInlineActionsViewController *)self delegate];
-          [v14 contactInlineActionsViewControllerDidProcessModels:self];
+          delegate2 = [(CNContactInlineActionsViewController *)self delegate];
+          [delegate2 contactInlineActionsViewControllerDidProcessModels:self];
         }
       }
     }
   }
 }
 
-- (void)updateVisibleActionItems:(id)a3
+- (void)updateVisibleActionItems:(id)items
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __65__CNContactInlineActionsViewController_updateVisibleActionItems___block_invoke;
   v3[3] = &unk_1E74E68D8;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [items enumerateObjectsUsingBlock:v3];
 }
 
 void __65__CNContactInlineActionsViewController_updateVisibleActionItems___block_invoke(uint64_t a1, void *a2)
@@ -1012,14 +1012,14 @@ void __65__CNContactInlineActionsViewController_updateVisibleActionItems___block
   [v4 updateActionItem:v3];
 }
 
-- (void)displayAdditionalActionItems:(id)a3
+- (void)displayAdditionalActionItems:(id)items
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __69__CNContactInlineActionsViewController_displayAdditionalActionItems___block_invoke;
   v3[3] = &unk_1E74E68D8;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [items enumerateObjectsUsingBlock:v3];
 }
 
 void __69__CNContactInlineActionsViewController_displayAdditionalActionItems___block_invoke(uint64_t a1, void *a2)
@@ -1030,14 +1030,14 @@ void __69__CNContactInlineActionsViewController_displayAdditionalActionItems___b
   [v4 addActionItem:v3];
 }
 
-- (void)removeVisibleActionItems:(id)a3
+- (void)removeVisibleActionItems:(id)items
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __65__CNContactInlineActionsViewController_removeVisibleActionItems___block_invoke;
   v3[3] = &unk_1E74E68D8;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [items enumerateObjectsUsingBlock:v3];
 }
 
 void __65__CNContactInlineActionsViewController_removeVisibleActionItems___block_invoke(uint64_t a1, void *a2)
@@ -1054,15 +1054,15 @@ void __65__CNContactInlineActionsViewController_removeVisibleActionItems___block
   v4.super_class = CNContactInlineActionsViewController;
   [(CNContactInlineActionsViewController *)&v4 viewDidLoad];
   [(CNContactInlineActionsViewController *)self updateDesiredTitleFontSizeIfNeeded];
-  v3 = [(CNContactInlineActionsViewController *)self actionItems];
-  [(CNContactInlineActionsViewController *)self displayAdditionalActionItems:v3];
+  actionItems = [(CNContactInlineActionsViewController *)self actionItems];
+  [(CNContactInlineActionsViewController *)self displayAdditionalActionItems:actionItems];
 }
 
 - (void)loadView
 {
   v7 = objc_alloc_init(CNActionsView);
-  v3 = [(CNContactInlineActionsViewController *)self supportedActionTypes];
-  [(CNActionsView *)v7 setSortedActionTypes:v3];
+  supportedActionTypes = [(CNContactInlineActionsViewController *)self supportedActionTypes];
+  [(CNActionsView *)v7 setSortedActionTypes:supportedActionTypes];
 
   [(CNActionsView *)v7 setActionsDelegate:self];
   [(CNContactInlineActionsViewController *)self actionTypesInterspace];
@@ -1070,21 +1070,21 @@ void __65__CNContactInlineActionsViewController_removeVisibleActionItems___block
   [(CNActionsView *)v7 setStyle:[(CNContactInlineActionsViewController *)self viewStyle]];
   [(CNContactInlineActionsViewController *)self setView:v7];
   [(CNContactInlineActionsViewController *)self setActionsView:v7];
-  v4 = [(CNContactInlineActionsViewController *)self supportedActionTypes];
-  v5 = [v4 count];
+  supportedActionTypes2 = [(CNContactInlineActionsViewController *)self supportedActionTypes];
+  v5 = [supportedActionTypes2 count];
 
   if (!v5)
   {
-    v6 = [(CNContactInlineActionsViewController *)self actionsView];
-    [v6 setHidden:1];
+    actionsView = [(CNContactInlineActionsViewController *)self actionsView];
+    [actionsView setHidden:1];
   }
 }
 
 - (double)throttleDelay
 {
-  v2 = [(CNContactInlineActionsViewController *)self displaysUnavailableActionTypes];
+  displaysUnavailableActionTypes = [(CNContactInlineActionsViewController *)self displaysUnavailableActionTypes];
   result = 0.025;
-  if (!v2)
+  if (!displaysUnavailableActionTypes)
   {
     return 0.0;
   }
@@ -1092,72 +1092,72 @@ void __65__CNContactInlineActionsViewController_removeVisibleActionItems___block
   return result;
 }
 
-- (void)setViewStyle:(int64_t)a3
+- (void)setViewStyle:(int64_t)style
 {
-  self->_viewStyle = a3;
-  v4 = [(CNContactInlineActionsViewController *)self actionsView];
-  [v4 setStyle:a3];
+  self->_viewStyle = style;
+  actionsView = [(CNContactInlineActionsViewController *)self actionsView];
+  [actionsView setStyle:style];
 }
 
-- (void)setSupportedActionTypes:(id)a3
+- (void)setSupportedActionTypes:(id)types
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 isEqual:self->_supportedActionTypes] & 1) == 0)
+  typesCopy = types;
+  if (([typesCopy isEqual:self->_supportedActionTypes] & 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [typesCopy copy];
     supportedActionTypes = self->_supportedActionTypes;
     self->_supportedActionTypes = v5;
 
     [(CNContactInlineActionsViewController *)self reset];
-    v7 = [(CNContactInlineActionsViewController *)self supportedActionTypes];
-    v8 = [v7 count] == 0;
-    v9 = [(CNContactInlineActionsViewController *)self actionsView];
-    [v9 setHidden:v8];
+    supportedActionTypes = [(CNContactInlineActionsViewController *)self supportedActionTypes];
+    v8 = [supportedActionTypes count] == 0;
+    actionsView = [(CNContactInlineActionsViewController *)self actionsView];
+    [actionsView setHidden:v8];
 
-    v10 = [(CNContactInlineActionsViewController *)self actionsView];
-    [v10 setSortedActionTypes:v4];
+    actionsView2 = [(CNContactInlineActionsViewController *)self actionsView];
+    [actionsView2 setSortedActionTypes:typesCopy];
 
     if ([(CNContactInlineActionsViewController *)self displaysUnavailableActionTypes])
     {
       [(CNContactInlineActionsViewController *)self displayAllSupportedTypesDisabled];
     }
 
-    v11 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [(CNContactInlineActionsViewController *)self contact];
-      v13 = [v12 shortDebugDescription];
+      contact = [(CNContactInlineActionsViewController *)self contact];
+      shortDebugDescription = [contact shortDebugDescription];
       v14 = 138412546;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
-      v17 = v13;
-      _os_log_debug_impl(&dword_199A75000, v11, OS_LOG_TYPE_DEBUG, "%@ just got new supportedActionTypes, contact is %@. Will discover action types…", &v14, 0x16u);
+      v17 = shortDebugDescription;
+      _os_log_debug_impl(&dword_199A75000, os_log, OS_LOG_TYPE_DEBUG, "%@ just got new supportedActionTypes, contact is %@. Will discover action types…", &v14, 0x16u);
     }
 
     [(CNContactInlineActionsViewController *)self discoverAvailableActionTypes];
   }
 }
 
-- (void)setActionTypesInterspace:(double)a3
+- (void)setActionTypesInterspace:(double)interspace
 {
-  self->_actionTypesInterspace = a3;
-  v4 = [(CNContactInlineActionsViewController *)self actionsView];
-  [v4 setSpacing:a3];
+  self->_actionTypesInterspace = interspace;
+  actionsView = [(CNContactInlineActionsViewController *)self actionsView];
+  [actionsView setSpacing:interspace];
 }
 
-- (void)checkinLaunchTasksForUndiscoverableActionsForContact:(id)a3
+- (void)checkinLaunchTasksForUndiscoverableActionsForContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNContactInlineActionsViewController *)self environment];
-  v17 = [v5 launchCheckinRegistrar];
+  contactCopy = contact;
+  environment = [(CNContactInlineActionsViewController *)self environment];
+  launchCheckinRegistrar = [environment launchCheckinRegistrar];
 
-  v6 = [v4 emailAddresses];
-  v7 = [v6 count];
+  emailAddresses = [contactCopy emailAddresses];
+  v7 = [emailAddresses count];
 
-  v8 = [v4 phoneNumbers];
+  phoneNumbers = [contactCopy phoneNumbers];
 
-  v9 = [v8 count];
+  v9 = [phoneNumbers count];
   v10 = 32 * (v7 == 0);
   if (!v9 || (-[CNContactInlineActionsViewController environment](self, "environment"), v11 = objc_claimAutoreleasedReturnValue(), [v11 actionDiscoveringEnvironment], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "capabilities"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "areTelephonyCallsSupported"), v13, v12, v11, (v14 & 1) == 0))
   {
@@ -1174,11 +1174,11 @@ void __65__CNContactInlineActionsViewController_removeVisibleActionItems___block
     v15 = v10 | 0x10;
   }
 
-  v16 = v17;
+  v16 = launchCheckinRegistrar;
   if (v15)
   {
-    [v17 checkInLaunchTasks:?];
-    v16 = v17;
+    [launchCheckinRegistrar checkInLaunchTasks:?];
+    v16 = launchCheckinRegistrar;
   }
 }
 
@@ -1191,34 +1191,34 @@ void __65__CNContactInlineActionsViewController_removeVisibleActionItems___block
     [(CNContactInlineActionsViewController *)self displayAllSupportedTypesDisabled];
   }
 
-  v3 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [(CNContactInlineActionsViewController *)self contact];
-    v6 = [v5 shortDebugDescription];
-    v7 = [(CNContactInlineActionsViewController *)self actionListDataSource];
+    contact = [(CNContactInlineActionsViewController *)self contact];
+    shortDebugDescription = [contact shortDebugDescription];
+    actionListDataSource = [(CNContactInlineActionsViewController *)self actionListDataSource];
     v8 = 138412802;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v6;
+    v11 = shortDebugDescription;
     v12 = 2112;
-    v13 = v7;
-    _os_log_debug_impl(&dword_199A75000, v3, OS_LOG_TYPE_DEBUG, "%@ just got new contact %@, dataSource is %@. Will discover action types…", &v8, 0x20u);
+    v13 = actionListDataSource;
+    _os_log_debug_impl(&dword_199A75000, os_log, OS_LOG_TYPE_DEBUG, "%@ just got new contact %@, dataSource is %@. Will discover action types…", &v8, 0x20u);
   }
 
   [(CNContactInlineActionsViewController *)self loadCachedActions];
   [(CNContactInlineActionsViewController *)self discoverAvailableActionTypes];
-  v4 = [(CNContactInlineActionsViewController *)self contact];
-  [(CNContactInlineActionsViewController *)self checkinLaunchTasksForUndiscoverableActionsForContact:v4];
+  contact2 = [(CNContactInlineActionsViewController *)self contact];
+  [(CNContactInlineActionsViewController *)self checkinLaunchTasksForUndiscoverableActionsForContact:contact2];
 }
 
-- (void)setContacts:(id)a3
+- (void)setContacts:(id)contacts
 {
-  v5 = a3;
-  if (self->_contacts != v5)
+  contactsCopy = contacts;
+  if (self->_contacts != contactsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_contacts, a3);
+    v6 = contactsCopy;
+    objc_storeStrong(&self->_contacts, contacts);
     if ([(NSArray *)v6 count]< 2)
     {
       [(CNContactInlineActionsViewController *)self setupSingleContactActions];
@@ -1229,36 +1229,36 @@ void __65__CNContactInlineActionsViewController_removeVisibleActionItems___block
       [(CNContactInlineActionsViewController *)self setupGroupActions];
     }
 
-    v5 = v6;
+    contactsCopy = v6;
   }
 }
 
 - (CNContact)contact
 {
-  v3 = [(CNContactInlineActionsViewController *)self contacts];
-  if ([v3 count] > 1)
+  contacts = [(CNContactInlineActionsViewController *)self contacts];
+  if ([contacts count] > 1)
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
   else
   {
-    v4 = [(CNContactInlineActionsViewController *)self contacts];
-    v5 = [v4 firstObject];
+    contacts2 = [(CNContactInlineActionsViewController *)self contacts];
+    firstObject = [contacts2 firstObject];
   }
 
-  return v5;
+  return firstObject;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (contact)
   {
-    v7 = a3;
+    contactCopy = contact;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v7 count:1];
+    contactCopy2 = contact;
+    v6 = [v4 arrayWithObjects:&contactCopy count:1];
   }
 
   else
@@ -1266,15 +1266,15 @@ void __65__CNContactInlineActionsViewController_removeVisibleActionItems___block
     v6 = MEMORY[0x1E695E0F0];
   }
 
-  [(CNContactInlineActionsViewController *)self setContacts:v6, v7, v8];
+  [(CNContactInlineActionsViewController *)self setContacts:v6, contactCopy, v8];
 }
 
-- (void)setDisplaysTitles:(BOOL)a3
+- (void)setDisplaysTitles:(BOOL)titles
 {
-  v3 = a3;
-  v6 = [(CNContactInlineActionsViewController *)self contact];
+  titlesCopy = titles;
+  contact = [(CNContactInlineActionsViewController *)self contact];
 
-  if (v6)
+  if (contact)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D930];
@@ -1282,9 +1282,9 @@ void __65__CNContactInlineActionsViewController_removeVisibleActionItems___block
     [v7 raise:v8 format:{@"You must call %@ before a contact is set", v9}];
   }
 
-  if (self->_displaysTitles != v3)
+  if (self->_displaysTitles != titlesCopy)
   {
-    self->_displaysTitles = v3;
+    self->_displaysTitles = titlesCopy;
 
     [(CNContactInlineActionsViewController *)self updateDesiredTitleFontSizeIfNeeded];
   }
@@ -1292,53 +1292,53 @@ void __65__CNContactInlineActionsViewController_removeVisibleActionItems___block
 
 - (void)displayAllSupportedTypesDisabled
 {
-  v5 = [(CNContactInlineActionsViewController *)self supportedActionTypes];
-  v3 = [v5 _cn_map:&__block_literal_global_25_64173];
-  v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v3 forKeys:v5];
+  supportedActionTypes = [(CNContactInlineActionsViewController *)self supportedActionTypes];
+  v3 = [supportedActionTypes _cn_map:&__block_literal_global_25_64173];
+  v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v3 forKeys:supportedActionTypes];
   [(CNContactInlineActionsViewController *)self processModels:v4];
 }
 
-- (void)setPosterTintColor:(id)a3
+- (void)setPosterTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_posterTintColor != v5)
+  colorCopy = color;
+  if (self->_posterTintColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_posterTintColor, a3);
-    v6 = [(CNContactInlineActionsViewController *)self actionsView];
-    [v6 setPosterTintColor:v7];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_posterTintColor, color);
+    actionsView = [(CNContactInlineActionsViewController *)self actionsView];
+    [actionsView setPosterTintColor:v7];
 
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
 - (void)updateDesiredTitleFontSizeIfNeeded
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactInlineActionsViewController *)self actionsView];
-  v4 = [v3 titleFont];
+  actionsView = [(CNContactInlineActionsViewController *)self actionsView];
+  titleFont = [actionsView titleFont];
 
-  if (!v4)
+  if (!titleFont)
   {
-    v5 = [(CNContactInlineActionsViewController *)self actionsView];
+    actionsView2 = [(CNContactInlineActionsViewController *)self actionsView];
 
-    if (v5)
+    if (actionsView2)
     {
       if (-[CNContactInlineActionsViewController displaysTitles](self, "displaysTitles") && -[CNContactInlineActionsViewController displaysUnavailableActionTypes](self, "displaysUnavailableActionTypes") && ([MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory] & 1) == 0)
       {
-        v6 = [(CNContactInlineActionsViewController *)self supportedActionTypes];
+        supportedActionTypes = [(CNContactInlineActionsViewController *)self supportedActionTypes];
         v24[0] = MEMORY[0x1E69E9820];
         v24[1] = 3221225472;
         v24[2] = __74__CNContactInlineActionsViewController_updateDesiredTitleFontSizeIfNeeded__block_invoke;
         v24[3] = &unk_1E74E6890;
         v24[4] = self;
-        v7 = [v6 _cn_map:v24];
+        v7 = [supportedActionTypes _cn_map:v24];
 
-        v8 = [MEMORY[0x1E6996840] LongestString];
-        v9 = [v7 _cn_reduce:v8];
+        longestString = [MEMORY[0x1E6996840] LongestString];
+        v9 = [v7 _cn_reduce:longestString];
 
-        v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v10 bounds];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen bounds];
         if (v11 <= 320.0)
         {
           v12 = 46.0;
@@ -1379,8 +1379,8 @@ void __65__CNContactInlineActionsViewController_removeVisibleActionItems___block
           }
         }
 
-        v23 = [(CNContactInlineActionsViewController *)self actionsView];
-        [v23 setTitleFont:v13];
+        actionsView3 = [(CNContactInlineActionsViewController *)self actionsView];
+        [actionsView3 setTitleFont:v13];
       }
     }
   }
@@ -1408,12 +1408,12 @@ __CFString *__74__CNContactInlineActionsViewController_updateDesiredTitleFontSiz
   return v7;
 }
 
-- (void)setDisplaysUnavailableActionTypes:(BOOL)a3
+- (void)setDisplaysUnavailableActionTypes:(BOOL)types
 {
-  v3 = a3;
-  v6 = [(CNContactInlineActionsViewController *)self contact];
+  typesCopy = types;
+  contact = [(CNContactInlineActionsViewController *)self contact];
 
-  if (v6)
+  if (contact)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D930];
@@ -1421,8 +1421,8 @@ __CFString *__74__CNContactInlineActionsViewController_updateDesiredTitleFontSiz
     [v7 raise:v8 format:{@"You must call %@ before a contact is set", v9}];
   }
 
-  self->_displaysUnavailableActionTypes = v3;
-  if (v3)
+  self->_displaysUnavailableActionTypes = typesCopy;
+  if (typesCopy)
   {
     [(CNContactInlineActionsViewController *)self updateDesiredTitleFontSizeIfNeeded];
 
@@ -1432,27 +1432,27 @@ __CFString *__74__CNContactInlineActionsViewController_updateDesiredTitleFontSiz
 
 - (void)dealloc
 {
-  v3 = [(CNContactInlineActionsViewController *)self tokens];
-  [v3 enumerateObjectsUsingBlock:&__block_literal_global_10_64183];
+  tokens = [(CNContactInlineActionsViewController *)self tokens];
+  [tokens enumerateObjectsUsingBlock:&__block_literal_global_10_64183];
 
   v4.receiver = self;
   v4.super_class = CNContactInlineActionsViewController;
   [(CNContactInlineActionsViewController *)&v4 dealloc];
 }
 
-- (CNContactInlineActionsViewController)initWithActionListDataSource:(id)a3 environment:(id)a4
+- (CNContactInlineActionsViewController)initWithActionListDataSource:(id)source environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  environmentCopy = environment;
   v23.receiver = self;
   v23.super_class = CNContactInlineActionsViewController;
   v9 = [(CNContactInlineActionsViewController *)&v23 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_actionListDataSource, a3);
-    v11 = [MEMORY[0x1E6996BE8] allSupportedActionTypes];
-    v12 = [v11 copy];
+    objc_storeStrong(&v9->_actionListDataSource, source);
+    allSupportedActionTypes = [MEMORY[0x1E6996BE8] allSupportedActionTypes];
+    v12 = [allSupportedActionTypes copy];
     supportedActionTypes = v10->_supportedActionTypes;
     v10->_supportedActionTypes = v12;
 
@@ -1466,9 +1466,9 @@ __CFString *__74__CNContactInlineActionsViewController_updateDesiredTitleFontSiz
     defaultActionPerType = v10->_defaultActionPerType;
     v10->_defaultActionPerType = MEMORY[0x1E695E0F8];
 
-    v18 = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
+    ab_preferredContentSizeCategoryIsAccessibilityCategory = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
     v19 = 8.0;
-    if (v18)
+    if (ab_preferredContentSizeCategoryIsAccessibilityCategory)
     {
       v19 = 16.0;
     }
@@ -1476,32 +1476,32 @@ __CFString *__74__CNContactInlineActionsViewController_updateDesiredTitleFontSiz
     v10->_actionTypesInterspace = v19;
     v10->_displaysUnavailableActionTypes = 0;
     v10->_displaysTitles = 0;
-    v20 = [v8 defaultSchedulerProvider];
+    defaultSchedulerProvider = [environmentCopy defaultSchedulerProvider];
     schedulerProvider = v10->_schedulerProvider;
-    v10->_schedulerProvider = v20;
+    v10->_schedulerProvider = defaultSchedulerProvider;
 
-    objc_storeStrong(&v10->_environment, a4);
+    objc_storeStrong(&v10->_environment, environment);
   }
 
   return v10;
 }
 
-- (CNContactInlineActionsViewController)initWithContactActionsContext:(id)a3
+- (CNContactInlineActionsViewController)initWithContactActionsContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 dataSource];
-  v6 = [v4 environment];
+  contextCopy = context;
+  dataSource = [contextCopy dataSource];
+  environment = [contextCopy environment];
 
-  v7 = [(CNContactInlineActionsViewController *)self initWithActionListDataSource:v5 environment:v6];
+  v7 = [(CNContactInlineActionsViewController *)self initWithActionListDataSource:dataSource environment:environment];
   return v7;
 }
 
-- (CNContactInlineActionsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CNContactInlineActionsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v5 = [CNUIContactsEnvironment currentEnvironment:a3];
+  v5 = [CNUIContactsEnvironment currentEnvironment:name];
   v6 = objc_alloc(MEMORY[0x1E6996BE8]);
-  v7 = [v5 actionDiscoveringEnvironment];
-  v8 = [v6 initWithDiscoveringEnvironment:v7];
+  actionDiscoveringEnvironment = [v5 actionDiscoveringEnvironment];
+  v8 = [v6 initWithDiscoveringEnvironment:actionDiscoveringEnvironment];
 
   v9 = [(CNContactInlineActionsViewController *)self initWithActionListDataSource:v8 environment:v5];
   return v9;
@@ -1511,8 +1511,8 @@ __CFString *__74__CNContactInlineActionsViewController_updateDesiredTitleFontSiz
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E695CD58];
-  v3 = [MEMORY[0x1E6996BE8] descriptorForRequiredKeys];
-  v8[0] = v3;
+  descriptorForRequiredKeys = [MEMORY[0x1E6996BE8] descriptorForRequiredKeys];
+  v8[0] = descriptorForRequiredKeys;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[CNContactInlineActionsViewController descriptorForRequiredKeys]"];
   v6 = [v2 descriptorWithKeyDescriptors:v4 description:v5];

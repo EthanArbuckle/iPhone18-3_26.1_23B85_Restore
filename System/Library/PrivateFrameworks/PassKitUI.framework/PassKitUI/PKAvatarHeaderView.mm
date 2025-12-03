@@ -1,27 +1,27 @@
 @interface PKAvatarHeaderView
-- (CGSize)_layoutWithBounds:(CGRect)a3 applyLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKAvatarHeaderView)initWithContact:(id)a3 counterpartHandle:(id)a4;
+- (CGSize)_layoutWithBounds:(CGRect)bounds applyLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKAvatarHeaderView)initWithContact:(id)contact counterpartHandle:(id)handle;
 - (void)configureForContact;
 - (void)layoutSubviews;
-- (void)setContact:(id)a3;
-- (void)setCounterpartHandle:(id)a3;
+- (void)setContact:(id)contact;
+- (void)setCounterpartHandle:(id)handle;
 @end
 
 @implementation PKAvatarHeaderView
 
-- (PKAvatarHeaderView)initWithContact:(id)a3 counterpartHandle:(id)a4
+- (PKAvatarHeaderView)initWithContact:(id)contact counterpartHandle:(id)handle
 {
-  v7 = a3;
-  v8 = a4;
+  contactCopy = contact;
+  handleCopy = handle;
   v28.receiver = self;
   v28.super_class = PKAvatarHeaderView;
   v9 = [(PKAvatarHeaderView *)&v28 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_counterpartHandle, a4);
-    objc_storeStrong(&v10->_contact, a3);
+    objc_storeStrong(&v9->_counterpartHandle, handle);
+    objc_storeStrong(&v10->_contact, contact);
     v11 = objc_alloc_init(getCNAvatarViewClass_1[0]());
     avatarView = v10->_avatarView;
     v10->_avatarView = v11;
@@ -32,8 +32,8 @@
     v10->_primaryLabel = v13;
 
     v15 = v10->_primaryLabel;
-    v16 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v15 setTextColor:v16];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v15 setTextColor:labelColor];
 
     [(UILabel *)v10->_primaryLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)v10->_primaryLabel setNumberOfLines:1];
@@ -50,8 +50,8 @@
 
     [(UILabel *)v10->_secondaryLabel setNumberOfLines:1];
     v22 = v10->_secondaryLabel;
-    v23 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v22 setTextColor:v23];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v22 setTextColor:secondaryLabelColor];
 
     v24 = v10->_secondaryLabel;
     v25 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], v18);
@@ -59,8 +59,8 @@
 
     [(UILabel *)v10->_secondaryLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
     [(PKAvatarHeaderView *)v10 addSubview:v10->_secondaryLabel];
-    v26 = [MEMORY[0x1E69DC888] clearColor];
-    [(PKAvatarHeaderView *)v10 setBackgroundColor:v26];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PKAvatarHeaderView *)v10 setBackgroundColor:clearColor];
 
     if (v10->_contact || v10->_counterpartHandle)
     {
@@ -71,9 +71,9 @@
   return v10;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKAvatarHeaderView *)self _layoutWithBounds:0 applyLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, 1.79769313e308];
+  [(PKAvatarHeaderView *)self _layoutWithBounds:0 applyLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, 1.79769313e308];
   result.height = v4;
   result.width = v3;
   return result;
@@ -88,21 +88,21 @@
   [(PKAvatarHeaderView *)self _layoutWithBounds:1 applyLayout:?];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 applyLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds applyLayout:(BOOL)layout
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v22.origin.x = a3.origin.x + 14.0;
-  v22.origin.y = a3.origin.y + 14.0;
-  v22.size.width = a3.size.width + -28.0;
-  v22.size.height = a3.size.height + -14.0;
+  layoutCopy = layout;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v22.origin.x = bounds.origin.x + 14.0;
+  v22.origin.y = bounds.origin.y + 14.0;
+  v22.size.width = bounds.size.width + -28.0;
+  v22.size.height = bounds.size.height + -14.0;
   remainder = v22;
   memset(&v19, 0, sizeof(v19));
   CGRectDivide(v22, &v19, &remainder, 100.0, CGRectMinYEdge);
-  if (v4)
+  if (layoutCopy)
   {
     avatarView = self->_avatarView;
     PKSizeAlignedInRect();
@@ -112,7 +112,7 @@
   CGRectDivide(remainder, &v19, &remainder, 14.0, CGRectMinYEdge);
   [(UILabel *)self->_primaryLabel pkui_sizeThatFits:remainder.size.width, remainder.size.height];
   CGRectDivide(remainder, &v19, &remainder, v11, CGRectMinYEdge);
-  if (v4)
+  if (layoutCopy)
   {
     primaryLabel = self->_primaryLabel;
     PKSizeAlignedInRect();
@@ -127,7 +127,7 @@
   }
 
   CGRectDivide(remainder, &v19, &remainder, v14, CGRectMinYEdge);
-  if (v4)
+  if (layoutCopy)
   {
     secondaryLabel = self->_secondaryLabel;
     PKSizeAlignedInRect();
@@ -165,8 +165,8 @@
 
   [(CNAvatarView *)self->_avatarView setContacts:v3];
   secondaryLabel = self->_secondaryLabel;
-  v6 = [(CNContact *)self->_contact organizationName];
-  [(UILabel *)secondaryLabel setText:v6];
+  organizationName = [(CNContact *)self->_contact organizationName];
+  [(UILabel *)secondaryLabel setText:organizationName];
 
   primaryLabel = self->_primaryLabel;
   v8 = [MEMORY[0x1E69B8F30] displayNameForCounterpartHandle:self->_counterpartHandle contact:self->_contact];
@@ -175,27 +175,27 @@
   [(PKAvatarHeaderView *)self setNeedsLayout];
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v5 = a3;
-  if (self->_contact != v5)
+  contactCopy = contact;
+  if (self->_contact != contactCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_contact, a3);
+    v6 = contactCopy;
+    objc_storeStrong(&self->_contact, contact);
     [(PKAvatarHeaderView *)self configureForContact];
-    v5 = v6;
+    contactCopy = v6;
   }
 }
 
-- (void)setCounterpartHandle:(id)a3
+- (void)setCounterpartHandle:(id)handle
 {
-  v5 = a3;
-  if (self->_counterpartHandle != v5)
+  handleCopy = handle;
+  if (self->_counterpartHandle != handleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_counterpartHandle, a3);
+    v6 = handleCopy;
+    objc_storeStrong(&self->_counterpartHandle, handle);
     [(PKAvatarHeaderView *)self configureForContact];
-    v5 = v6;
+    handleCopy = v6;
   }
 }
 

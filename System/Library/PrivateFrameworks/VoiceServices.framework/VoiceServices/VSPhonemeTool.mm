@@ -1,27 +1,27 @@
 @interface VSPhonemeTool
-+ (id)generateTTSPhonemes:(id)a3 voicePath:(id)a4 phonemeSystem:(int64_t)a5 error:(id *)a6;
++ (id)generateTTSPhonemes:(id)phonemes voicePath:(id)path phonemeSystem:(int64_t)system error:(id *)error;
 @end
 
 @implementation VSPhonemeTool
 
-+ (id)generateTTSPhonemes:(id)a3 voicePath:(id)a4 phonemeSystem:(int64_t)a5 error:(id *)a6
++ (id)generateTTSPhonemes:(id)phonemes voicePath:(id)path phonemeSystem:(int64_t)system error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a5 > 2)
+  phonemesCopy = phonemes;
+  pathCopy = path;
+  v10 = pathCopy;
+  if (system > 2)
   {
     v14 = &stru_2881D71A8;
   }
 
   else
   {
-    v11 = **(&unk_279E4EFD0 + a5);
+    v11 = **(&unk_279E4EFD0 + system);
     v21[0] = 0;
     v21[1] = 0;
     v22 = 0;
-    std::string::basic_string[abi:ne200100]<0>(v19, [v9 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(v19, [pathCopy UTF8String]);
     std::string::basic_string[abi:ne200100]<0>(__p, v11);
     MEMORY[0x2743CE890](v23, v19, __p);
     if (v18 < 0)
@@ -34,8 +34,8 @@
       operator delete(v19[0]);
     }
 
-    v12 = v8;
-    std::string::basic_string[abi:ne200100]<0>(__p, [v8 UTF8String]);
+    v12 = phonemesCopy;
+    std::string::basic_string[abi:ne200100]<0>(__p, [phonemesCopy UTF8String]);
     SiriTTS::TextToPhoneme::text_to_phoneme();
     *v21 = *v19;
     v22 = v20;

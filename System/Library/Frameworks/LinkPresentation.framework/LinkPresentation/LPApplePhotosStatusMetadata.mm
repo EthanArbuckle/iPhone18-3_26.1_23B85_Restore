@@ -1,21 +1,21 @@
 @interface LPApplePhotosStatusMetadata
-- (BOOL)isEqual:(id)a3;
-- (LPApplePhotosStatusMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LPApplePhotosStatusMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)presentationPropertiesForTransformer:(id)transformer;
 @end
 
 @implementation LPApplePhotosStatusMetadata
 
-- (LPApplePhotosStatusMetadata)initWithCoder:(id)a3
+- (LPApplePhotosStatusMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = LPApplePhotosStatusMetadata;
   v5 = [(LPApplePhotosStatusMetadata *)&v10 init];
   if (v5)
   {
-    v6 = decodeAttributedStringForKey(v4, @"title");
+    v6 = decodeAttributedStringForKey(coderCopy, @"title");
     status = v5->_status;
     v5->_status = v6;
 
@@ -25,13 +25,13 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPApplePhotosStatusMetadata allocWithZone:a3];
+  v4 = [LPApplePhotosStatusMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPApplePhotosStatusMetadata *)self status];
-    [(LPApplePhotosStatusMetadata *)v4 setStatus:v5];
+    status = [(LPApplePhotosStatusMetadata *)self status];
+    [(LPApplePhotosStatusMetadata *)v4 setStatus:status];
 
     v6 = v4;
   }
@@ -39,12 +39,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = LPApplePhotosStatusMetadata;
-  if ([(LPApplePhotosStatusMetadata *)&v7 isEqual:v4])
+  if ([(LPApplePhotosStatusMetadata *)&v7 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -54,7 +54,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = objectsAreEqual_0(v4[2], self->_status);
+      v5 = objectsAreEqual_0(equalCopy[2], self->_status);
     }
 
     else
@@ -66,61 +66,61 @@
   return v5;
 }
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
-  v4 = a3;
-  if (sizeClassAllowsStatusTransformation([v4 effectiveSizeClass]))
+  transformerCopy = transformer;
+  if (sizeClassAllowsStatusTransformation([transformerCopy effectiveSizeClass]))
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6 = [v4 metadata];
-    v7 = [v6 image];
+    metadata = [transformerCopy metadata];
+    image = [metadata image];
 
-    if (v7)
+    if (image)
     {
-      v8 = [v4 metadata];
-      v9 = [v8 image];
-      [v5 addObject:v9];
+      metadata2 = [transformerCopy metadata];
+      image2 = [metadata2 image];
+      [v5 addObject:image2];
     }
 
-    v10 = [v4 metadata];
-    v11 = [v10 alternateImages];
+    metadata3 = [transformerCopy metadata];
+    alternateImages = [metadata3 alternateImages];
 
-    if (v11)
+    if (alternateImages)
     {
-      v12 = [v4 metadata];
-      v13 = [v12 alternateImages];
-      [v5 addObjectsFromArray:v13];
+      metadata4 = [transformerCopy metadata];
+      alternateImages2 = [metadata4 alternateImages];
+      [v5 addObjectsFromArray:alternateImages2];
     }
 
-    v14 = [v4 metadata];
-    v15 = [v14 icon];
+    metadata5 = [transformerCopy metadata];
+    icon = [metadata5 icon];
 
-    if (v15)
+    if (icon)
     {
-      v16 = [v4 metadata];
-      v17 = [v16 icon];
-      [v5 addObject:v17];
+      metadata6 = [transformerCopy metadata];
+      icon2 = [metadata6 icon];
+      [v5 addObject:icon2];
     }
 
     if (![v5 count])
     {
-      v18 = [v4 sourceContextIcon];
-      [v5 addObject:v18];
+      sourceContextIcon = [transformerCopy sourceContextIcon];
+      [v5 addObject:sourceContextIcon];
     }
 
     v19 = [LPCardHeadingPresentationProperties alloc];
-    v20 = [v4 metadata];
-    v21 = [v20 title];
-    v22 = [(LPApplePhotosStatusMetadata *)self status];
-    v23 = [(LPCardHeadingPresentationProperties *)v19 initWithStyle:38 topCaption:v21 attributedBottomCaption:v22 icons:v5];
+    metadata7 = [transformerCopy metadata];
+    title = [metadata7 title];
+    status = [(LPApplePhotosStatusMetadata *)self status];
+    unspecializedPresentationProperties = [(LPCardHeadingPresentationProperties *)v19 initWithStyle:38 topCaption:title attributedBottomCaption:status icons:v5];
   }
 
   else
   {
-    v23 = [v4 unspecializedPresentationProperties];
+    unspecializedPresentationProperties = [transformerCopy unspecializedPresentationProperties];
   }
 
-  return v23;
+  return unspecializedPresentationProperties;
 }
 
 @end

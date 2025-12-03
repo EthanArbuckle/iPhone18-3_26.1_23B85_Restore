@@ -1,45 +1,45 @@
 @interface ACHAchievementStore
-- (ACHAchievementStore)initWithClient:(id)a3 templateStore:(id)a4 earnedInstanceStore:(id)a5 templateAssetRegistry:(id)a6 progressEngine:(id)a7;
+- (ACHAchievementStore)initWithClient:(id)client templateStore:(id)store earnedInstanceStore:(id)instanceStore templateAssetRegistry:(id)registry progressEngine:(id)engine;
 - (BOOL)_initialFetchComplete;
-- (id)_lock_ephemeralMonthlyChallengeAchievementForTemplateUniqueName:(id)a3 earnedInstance:(id)a4;
+- (id)_lock_ephemeralMonthlyChallengeAchievementForTemplateUniqueName:(id)name earnedInstance:(id)instance;
 - (id)_lock_populateMostRecentEarnedInstanceAndCountForAllAchievements;
-- (id)_lock_populateMostRecentEarnedInstancesAndCountsForAchievements:(id)a3;
-- (id)achievementWithTemplateUniqueName:(id)a3;
-- (id)achievementsForDateInterval:(id)a3;
-- (id)achievementsForEarnedDateComponents:(id)a3;
-- (id)achievementsForTemplateNames:(id)a3;
+- (id)_lock_populateMostRecentEarnedInstancesAndCountsForAchievements:(id)achievements;
+- (id)achievementWithTemplateUniqueName:(id)name;
+- (id)achievementsForDateInterval:(id)interval;
+- (id)achievementsForEarnedDateComponents:(id)components;
+- (id)achievementsForTemplateNames:(id)names;
 - (id)allAchievements;
-- (id)anniversaryAchievementsForDateComponents:(id)a3 templateUniqueNames:(id)a4;
-- (id)ephemeralAchievementWithTemplateUniqueName:(id)a3;
-- (id)monthlyChallengeAchievementForDateComponents:(id)a3;
+- (id)anniversaryAchievementsForDateComponents:(id)components templateUniqueNames:(id)names;
+- (id)ephemeralAchievementWithTemplateUniqueName:(id)name;
+- (id)monthlyChallengeAchievementForDateComponents:(id)components;
 - (void)_handleProtectedDataAvailabilityChangeNotification;
-- (void)_lock_addProgressAndGoalToAchievements:(id)a3;
-- (void)_lock_addTemplatesToLocalStore:(id)a3;
+- (void)_lock_addProgressAndGoalToAchievements:(id)achievements;
+- (void)_lock_addTemplatesToLocalStore:(id)store;
 - (void)_lock_notifyObserversOfInitialFetchCompletion;
-- (void)_lock_populatePrerequisiteMet:(id)a3;
-- (void)_lock_populatePrerequisiteMetForAchievements:(id)a3;
+- (void)_lock_populatePrerequisiteMet:(id)met;
+- (void)_lock_populatePrerequisiteMetForAchievements:(id)achievements;
 - (void)_lock_populatePrerequisiteMetForAllAchievements;
-- (void)_lock_populateResourcesForAchievementsWithTemplateSourceName:(id)a3;
-- (void)_lock_removeTemplatesFromLocalStore:(id)a3;
-- (void)_notifyObserversOfNewAchievements:(id)a3;
-- (void)_notifyObserversOfRemovedAchievements:(id)a3;
-- (void)_notifyObserversOfUpdatedAchievements:(id)a3;
-- (void)_performWithLock:(id)a3;
-- (void)_updateProgressAndGoalFor:(id)a3 progressQuantity:(id)a4 goalQuantity:(id)a5;
-- (void)addObserver:(id)a3;
+- (void)_lock_populateResourcesForAchievementsWithTemplateSourceName:(id)name;
+- (void)_lock_removeTemplatesFromLocalStore:(id)store;
+- (void)_notifyObserversOfNewAchievements:(id)achievements;
+- (void)_notifyObserversOfRemovedAchievements:(id)achievements;
+- (void)_notifyObserversOfUpdatedAchievements:(id)achievements;
+- (void)_performWithLock:(id)lock;
+- (void)_updateProgressAndGoalFor:(id)for progressQuantity:(id)quantity goalQuantity:(id)goalQuantity;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)earnedInstanceStore:(id)a3 didAddNewEarnedInstances:(id)a4;
-- (void)earnedInstanceStore:(id)a3 didRemoveEarnedInstances:(id)a4;
-- (void)earnedInstanceStoreDidReceiveSyncNotification:(id)a3;
-- (void)loadAllAchievementsFromDatabaseIfNecessaryWithCompletionHandler:(id)a3;
-- (void)processAchievementProgressUpdates:(id)a3;
+- (void)earnedInstanceStore:(id)store didAddNewEarnedInstances:(id)instances;
+- (void)earnedInstanceStore:(id)store didRemoveEarnedInstances:(id)instances;
+- (void)earnedInstanceStoreDidReceiveSyncNotification:(id)notification;
+- (void)loadAllAchievementsFromDatabaseIfNecessaryWithCompletionHandler:(id)handler;
+- (void)processAchievementProgressUpdates:(id)updates;
 - (void)recalculateProgressForAllAchievements;
-- (void)removeObserver:(id)a3;
-- (void)requestUpdateProgressValuesForProgressProvider:(id)a3;
-- (void)templateAssetRegistry:(id)a3 didUpdateResourcesForTemplatesWithSourceName:(id)a4;
-- (void)templateStore:(id)a3 didAddNewTemplates:(id)a4;
-- (void)templateStore:(id)a3 didRemoveTemplates:(id)a4;
-- (void)templateStoreDidFinishInitialFetch:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)requestUpdateProgressValuesForProgressProvider:(id)provider;
+- (void)templateAssetRegistry:(id)registry didUpdateResourcesForTemplatesWithSourceName:(id)name;
+- (void)templateStore:(id)store didAddNewTemplates:(id)templates;
+- (void)templateStore:(id)store didRemoveTemplates:(id)templates;
+- (void)templateStoreDidFinishInitialFetch:(id)fetch;
 @end
 
 @implementation ACHAchievementStore
@@ -96,13 +96,13 @@ void __38__ACHAchievementStore_allAchievements__block_invoke(uint64_t a1)
   *(v5 + 40) = v4;
 }
 
-- (ACHAchievementStore)initWithClient:(id)a3 templateStore:(id)a4 earnedInstanceStore:(id)a5 templateAssetRegistry:(id)a6 progressEngine:(id)a7
+- (ACHAchievementStore)initWithClient:(id)client templateStore:(id)store earnedInstanceStore:(id)instanceStore templateAssetRegistry:(id)registry progressEngine:(id)engine
 {
-  v34 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  clientCopy = client;
+  storeCopy = store;
+  instanceStoreCopy = instanceStore;
+  registryCopy = registry;
+  engineCopy = engine;
   v38.receiver = self;
   v38.super_class = ACHAchievementStore;
   v17 = [(ACHAchievementStore *)&v38 init];
@@ -114,11 +114,11 @@ void __38__ACHAchievementStore_allAchievements__block_invoke(uint64_t a1)
     initialFetchObserversToCall = v18->_initialFetchObserversToCall;
     v18->_initialFetchObserversToCall = v19;
 
-    objc_storeStrong(&v18->_client, a3);
-    objc_storeStrong(&v18->_templateStore, a4);
-    objc_storeStrong(&v18->_earnedInstanceStore, a5);
-    objc_storeStrong(&v18->_templateAssetRegistry, a6);
-    objc_storeStrong(&v18->_progressEngine, a7);
+    objc_storeStrong(&v18->_client, client);
+    objc_storeStrong(&v18->_templateStore, store);
+    objc_storeStrong(&v18->_earnedInstanceStore, instanceStore);
+    objc_storeStrong(&v18->_templateAssetRegistry, registry);
+    objc_storeStrong(&v18->_progressEngine, engine);
     v21 = objc_alloc_init(MEMORY[0x277CBEB38]);
     achievementsByTemplateUniqueName = v18->_achievementsByTemplateUniqueName;
     v18->_achievementsByTemplateUniqueName = v21;
@@ -128,9 +128,9 @@ void __38__ACHAchievementStore_allAchievements__block_invoke(uint64_t a1)
     v18->_achievementsByPrerequisiteTemplateName = v23;
 
     [(ACHTemplateAssetRegistry *)v18->_templateAssetRegistry setDelegate:v18];
-    v25 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v18->_observers;
-    v18->_observers = v25;
+    v18->_observers = weakObjectsHashTable;
 
     v27 = HKCreateSerialDispatchQueue();
     notificationQueue = v18->_notificationQueue;
@@ -141,16 +141,16 @@ void __38__ACHAchievementStore_allAchievements__block_invoke(uint64_t a1)
     v18->_internalQueue = v29;
 
     objc_initWeak(&location, v18);
-    v31 = [*MEMORY[0x277CE8C10] UTF8String];
+    uTF8String = [*MEMORY[0x277CE8C10] UTF8String];
     v32 = v18->_internalQueue;
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __109__ACHAchievementStore_initWithClient_templateStore_earnedInstanceStore_templateAssetRegistry_progressEngine___block_invoke;
     handler[3] = &unk_2784907F8;
     objc_copyWeak(&v36, &location);
-    notify_register_dispatch(v31, &v18->_protectedDataToken, v32, handler);
-    [v13 addObserver:v18];
-    [v14 addObserver:v18];
+    notify_register_dispatch(uTF8String, &v18->_protectedDataToken, v32, handler);
+    [storeCopy addObserver:v18];
+    [instanceStoreCopy addObserver:v18];
     objc_destroyWeak(&v36);
     objc_destroyWeak(&location);
   }
@@ -216,46 +216,46 @@ void __73__ACHAchievementStore__handleProtectedDataAvailabilityChangeNotificatio
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performWithLock:(id)a3
+- (void)_performWithLock:(id)lock
 {
-  v5 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_syncLock);
   v4 = objc_autoreleasePoolPush();
-  v5[2]();
+  lockCopy[2]();
   objc_autoreleasePoolPop(v4);
   os_unfair_lock_unlock(&self->_syncLock);
 }
 
-- (void)loadAllAchievementsFromDatabaseIfNecessaryWithCompletionHandler:(id)a3
+- (void)loadAllAchievementsFromDatabaseIfNecessaryWithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(ACHAchievementStore *)self templateStore];
-  v5 = [v4 loadAllTemplatesFromDatabaseIfNecessary];
+  handlerCopy = handler;
+  templateStore = [(ACHAchievementStore *)self templateStore];
+  loadAllTemplatesFromDatabaseIfNecessary = [templateStore loadAllTemplatesFromDatabaseIfNecessary];
 
-  v6 = v7;
-  if (v7)
+  v6 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v7 + 2))(v7, v5);
-    v6 = v7;
+    (*(handlerCopy + 2))(handlerCopy, loadAllTemplatesFromDatabaseIfNecessary);
+    v6 = handlerCopy;
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(ACHAchievementStore *)self notificationQueue];
-  dispatch_assert_queue_not_V2(v5);
+  observerCopy = observer;
+  notificationQueue = [(ACHAchievementStore *)self notificationQueue];
+  dispatch_assert_queue_not_V2(notificationQueue);
 
-  if ([v4 conformsToProtocol:&unk_28356A0E8])
+  if ([observerCopy conformsToProtocol:&unk_28356A0E8])
   {
-    v6 = [(ACHAchievementStore *)self notificationQueue];
+    notificationQueue2 = [(ACHAchievementStore *)self notificationQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __35__ACHAchievementStore_addObserver___block_invoke;
     v8[3] = &unk_278490898;
     v8[4] = self;
-    v9 = v4;
-    dispatch_sync(v6, v8);
+    v9 = observerCopy;
+    dispatch_sync(notificationQueue2, v8);
   }
 
   else
@@ -263,7 +263,7 @@ void __73__ACHAchievementStore__handleProtectedDataAvailabilityChangeNotificatio
     v7 = ACHLogDefault();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(ACHAchievementStore *)v4 addObserver:v7];
+      [(ACHAchievementStore *)observerCopy addObserver:v7];
     }
   }
 }
@@ -296,7 +296,7 @@ void __35__ACHAchievementStore_addObserver___block_invoke(uint64_t a1)
 
 - (BOOL)_initialFetchComplete
 {
-  v2 = self;
+  selfCopy = self;
   os_unfair_lock_assert_not_owner(&self->_syncLock);
   v5 = 0;
   v6 = &v5;
@@ -306,12 +306,12 @@ void __35__ACHAchievementStore_addObserver___block_invoke(uint64_t a1)
   v4[1] = 3221225472;
   v4[2] = __44__ACHAchievementStore__initialFetchComplete__block_invoke;
   v4[3] = &unk_278490FE8;
-  v4[4] = v2;
+  v4[4] = selfCopy;
   v4[5] = &v5;
-  [(ACHAchievementStore *)v2 _performWithLock:v4];
-  LOBYTE(v2) = *(v6 + 24);
+  [(ACHAchievementStore *)selfCopy _performWithLock:v4];
+  LOBYTE(selfCopy) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __44__ACHAchievementStore__initialFetchComplete__block_invoke(uint64_t a1)
@@ -321,18 +321,18 @@ uint64_t __44__ACHAchievementStore__initialFetchComplete__block_invoke(uint64_t 
   return result;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(ACHAchievementStore *)self notificationQueue];
+  observerCopy = observer;
+  notificationQueue = [(ACHAchievementStore *)self notificationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__ACHAchievementStore_removeObserver___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(notificationQueue, v7);
 }
 
 void __38__ACHAchievementStore_removeObserver___block_invoke(uint64_t a1)
@@ -356,9 +356,9 @@ void __38__ACHAchievementStore_removeObserver___block_invoke(uint64_t a1)
   }
 }
 
-- (id)achievementsForEarnedDateComponents:(id)a3
+- (id)achievementsForEarnedDateComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -370,7 +370,7 @@ void __38__ACHAchievementStore_removeObserver___block_invoke(uint64_t a1)
   v8[2] = __59__ACHAchievementStore_achievementsForEarnedDateComponents___block_invoke;
   v8[3] = &unk_2784908E0;
   v8[4] = self;
-  v5 = v4;
+  v5 = componentsCopy;
   v9 = v5;
   v10 = &v11;
   [(ACHAchievementStore *)self _performWithLock:v8];
@@ -411,9 +411,9 @@ id __59__ACHAchievementStore_achievementsForEarnedDateComponents___block_invoke_
   return v7;
 }
 
-- (id)achievementsForDateInterval:(id)a3
+- (id)achievementsForDateInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -425,7 +425,7 @@ id __59__ACHAchievementStore_achievementsForEarnedDateComponents___block_invoke_
   v8[2] = __51__ACHAchievementStore_achievementsForDateInterval___block_invoke;
   v8[3] = &unk_2784908E0;
   v8[4] = self;
-  v5 = v4;
+  v5 = intervalCopy;
   v9 = v5;
   v10 = &v11;
   [(ACHAchievementStore *)self _performWithLock:v8];
@@ -466,10 +466,10 @@ id __51__ACHAchievementStore_achievementsForDateInterval___block_invoke_2(uint64
   return v7;
 }
 
-- (id)anniversaryAchievementsForDateComponents:(id)a3 templateUniqueNames:(id)a4
+- (id)anniversaryAchievementsForDateComponents:(id)components templateUniqueNames:(id)names
 {
-  v6 = a3;
-  v7 = a4;
+  componentsCopy = components;
+  namesCopy = names;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -481,9 +481,9 @@ id __51__ACHAchievementStore_achievementsForDateInterval___block_invoke_2(uint64
   v12[2] = __84__ACHAchievementStore_anniversaryAchievementsForDateComponents_templateUniqueNames___block_invoke;
   v12[3] = &unk_2784921D8;
   v12[4] = self;
-  v8 = v6;
+  v8 = componentsCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = namesCopy;
   v14 = v9;
   v15 = &v16;
   [(ACHAchievementStore *)self _performWithLock:v12];
@@ -524,9 +524,9 @@ id __84__ACHAchievementStore_anniversaryAchievementsForDateComponents_templateUn
   return v7;
 }
 
-- (id)achievementsForTemplateNames:(id)a3
+- (id)achievementsForTemplateNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -537,9 +537,9 @@ id __84__ACHAchievementStore_anniversaryAchievementsForDateComponents_templateUn
   v8[1] = 3221225472;
   v8[2] = __52__ACHAchievementStore_achievementsForTemplateNames___block_invoke;
   v8[3] = &unk_2784908E0;
-  v5 = v4;
+  v5 = namesCopy;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   [(ACHAchievementStore *)self _performWithLock:v8];
   v6 = [v13[5] copy];
@@ -571,11 +571,11 @@ id __52__ACHAchievementStore_achievementsForTemplateNames___block_invoke_2(uint6
   return v5;
 }
 
-- (id)ephemeralAchievementWithTemplateUniqueName:(id)a3
+- (id)ephemeralAchievementWithTemplateUniqueName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -587,9 +587,9 @@ id __52__ACHAchievementStore_achievementsForTemplateNames___block_invoke_2(uint6
     v8[1] = 3221225472;
     v8[2] = __66__ACHAchievementStore_ephemeralAchievementWithTemplateUniqueName___block_invoke;
     v8[3] = &unk_278492228;
-    v10 = self;
+    selfCopy = self;
     v11 = &v12;
-    v9 = v4;
+    v9 = nameCopy;
     [(ACHAchievementStore *)self _performWithLock:v8];
     v6 = v13[5];
 
@@ -641,20 +641,20 @@ void __66__ACHAchievementStore_ephemeralAchievementWithTemplateUniqueName___bloc
   *(v16 + 40) = v9;
 }
 
-- (id)monthlyChallengeAchievementForDateComponents:(id)a3
+- (id)monthlyChallengeAchievementForDateComponents:(id)components
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%04ld_%02ld", objc_msgSend(v4, "year"), objc_msgSend(v4, "month")];
+  componentsCopy = components;
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%04ld_%02ld", objc_msgSend(componentsCopy, "year"), objc_msgSend(componentsCopy, "month")];
   v6 = objc_alloc_init(MEMORY[0x277CCACA8]);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = [(ACHAchievementStore *)self achievementsByTemplateUniqueName];
-  v8 = [v7 allKeys];
+  achievementsByTemplateUniqueName = [(ACHAchievementStore *)self achievementsByTemplateUniqueName];
+  allKeys = [achievementsByTemplateUniqueName allKeys];
 
-  v9 = [v8 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  v9 = [allKeys countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v9)
   {
     v10 = *v33;
@@ -665,7 +665,7 @@ void __66__ACHAchievementStore_ephemeralAchievementWithTemplateUniqueName___bloc
       {
         if (*v33 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v32 + 1) + 8 * i);
@@ -678,7 +678,7 @@ void __66__ACHAchievementStore_ephemeralAchievementWithTemplateUniqueName___bloc
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v32 objects:v40 count:16];
       if (v9)
       {
         continue;
@@ -711,12 +711,12 @@ LABEL_12:
     v17 = ACHLogDefault();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v4 year];
-      v19 = [v4 month];
+      year = [componentsCopy year];
+      month = [componentsCopy month];
       *buf = 134218240;
-      v37 = v18;
+      v37 = year;
       v38 = 2048;
-      v39 = v19;
+      v39 = month;
       _os_log_impl(&dword_221DDC000, v17, OS_LOG_TYPE_DEFAULT, "Achievement store did not find monthly challenge achievement for month: %ld, and year: %ld", buf, 0x16u);
     }
 
@@ -740,11 +740,11 @@ void __68__ACHAchievementStore_monthlyChallengeAchievementForDateComponents___bl
   *(v3 + 40) = v2;
 }
 
-- (id)achievementWithTemplateUniqueName:(id)a3
+- (id)achievementWithTemplateUniqueName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -758,7 +758,7 @@ void __68__ACHAchievementStore_monthlyChallengeAchievementForDateComponents___bl
     v8[3] = &unk_278491010;
     v10 = &v11;
     v8[4] = self;
-    v9 = v4;
+    v9 = nameCopy;
     [(ACHAchievementStore *)self _performWithLock:v8];
     v6 = v12[5];
 
@@ -782,13 +782,13 @@ void __57__ACHAchievementStore_achievementWithTemplateUniqueName___block_invoke(
   *(v3 + 40) = v2;
 }
 
-- (id)_lock_ephemeralMonthlyChallengeAchievementForTemplateUniqueName:(id)a3 earnedInstance:(id)a4
+- (id)_lock_ephemeralMonthlyChallengeAchievementForTemplateUniqueName:(id)name earnedInstance:(id)instance
 {
-  v6 = a4;
-  v7 = a3;
+  instanceCopy = instance;
+  nameCopy = name;
   os_unfair_lock_assert_owner(&self->_syncLock);
   ACHMonthlyChallengeTypeFromTemplateUniqueName();
-  v8 = [v7 componentsSeparatedByString:@"_"];
+  v8 = [nameCopy componentsSeparatedByString:@"_"];
 
   if ([v8 count] == 3)
   {
@@ -797,17 +797,17 @@ void __57__ACHAchievementStore_achievementWithTemplateUniqueName___block_invoke(
     [v21 integerValue];
     [v20 integerValue];
     v9 = ACHDateComponentsForYearMonthDay();
-    v10 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-    v19 = [v10 dateFromComponents:v9];
-    v18 = [v10 hk_startOfMonthForDate:v19 addingMonths:1];
-    v11 = [v10 hk_startOfDateBySubtractingDays:1 fromDate:v18];
-    v12 = [v10 components:28 fromDate:v11];
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    v19 = [hk_gregorianCalendar dateFromComponents:v9];
+    v18 = [hk_gregorianCalendar hk_startOfMonthForDate:v19 addingMonths:1];
+    v11 = [hk_gregorianCalendar hk_startOfDateBySubtractingDays:1 fromDate:v18];
+    v12 = [hk_gregorianCalendar components:28 fromDate:v11];
     v13 = [objc_alloc(MEMORY[0x277CE8D30]) initWithStartDateComponents:v9 endDateComponents:v12];
     v14 = ACHMonthlyChallengeTemplate();
     [v14 setSourceName:*MEMORY[0x277CE8C90]];
-    v15 = [objc_alloc(MEMORY[0x277CE8CB0]) initWithTemplate:v14 relevantEarnedInstance:v6 earnedInstanceCount:1];
-    v16 = [(ACHAchievementStore *)self templateAssetRegistry];
-    [v16 populateResourcePropertiesForAchievement:v15];
+    v15 = [objc_alloc(MEMORY[0x277CE8CB0]) initWithTemplate:v14 relevantEarnedInstance:instanceCopy earnedInstanceCount:1];
+    templateAssetRegistry = [(ACHAchievementStore *)self templateAssetRegistry];
+    [templateAssetRegistry populateResourcePropertiesForAchievement:v15];
   }
 
   else
@@ -818,16 +818,16 @@ void __57__ACHAchievementStore_achievementWithTemplateUniqueName___block_invoke(
   return v15;
 }
 
-- (void)processAchievementProgressUpdates:(id)a3
+- (void)processAchievementProgressUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__ACHAchievementStore_processAchievementProgressUpdates___block_invoke;
   v6[3] = &unk_278490898;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = updatesCopy;
+  selfCopy = self;
+  v5 = updatesCopy;
   [(ACHAchievementStore *)self _performWithLock:v6];
 }
 
@@ -887,21 +887,21 @@ void __57__ACHAchievementStore_processAchievementProgressUpdates___block_invoke(
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateProgressAndGoalFor:(id)a3 progressQuantity:(id)a4 goalQuantity:(id)a5
+- (void)_updateProgressAndGoalFor:(id)for progressQuantity:(id)quantity goalQuantity:(id)goalQuantity
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  forCopy = for;
+  quantityCopy = quantity;
+  goalQuantityCopy = goalQuantity;
   v10 = ACHLogDefault();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 template];
-    v12 = [v11 uniqueName];
-    v13 = [v8 description];
-    v14 = [v9 description];
+    template = [forCopy template];
+    uniqueName = [template uniqueName];
+    v13 = [quantityCopy description];
+    v14 = [goalQuantityCopy description];
     v16 = 138412802;
-    v17 = v12;
+    v17 = uniqueName;
     v18 = 2112;
     v19 = v13;
     v20 = 2112;
@@ -909,23 +909,23 @@ void __57__ACHAchievementStore_processAchievementProgressUpdates___block_invoke(
     _os_log_impl(&dword_221DDC000, v10, OS_LOG_TYPE_DEFAULT, "Progress Update: %@: [%@/%@]", &v16, 0x20u);
   }
 
-  [v7 setGoal:v9];
-  [v7 setProgress:v8];
+  [forCopy setGoal:goalQuantityCopy];
+  [forCopy setProgress:quantityCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestUpdateProgressValuesForProgressProvider:(id)a3
+- (void)requestUpdateProgressValuesForProgressProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   os_unfair_lock_assert_not_owner(&self->_syncLock);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __70__ACHAchievementStore_requestUpdateProgressValuesForProgressProvider___block_invoke;
   v6[3] = &unk_278490898;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = providerCopy;
+  v5 = providerCopy;
   [(ACHAchievementStore *)self _performWithLock:v6];
 }
 
@@ -958,13 +958,13 @@ uint64_t __70__ACHAchievementStore_requestUpdateProgressValuesForProgressProvide
 {
   if ([(ACHAchievementStore *)self templateStoreFinishedInitialFetch])
   {
-    v3 = [(ACHAchievementStore *)self notificationQueue];
+    notificationQueue = [(ACHAchievementStore *)self notificationQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__ACHAchievementStore__lock_notifyObserversOfInitialFetchCompletion__block_invoke;
     block[3] = &unk_278490870;
     block[4] = self;
-    dispatch_async(v3, block);
+    dispatch_async(notificationQueue, block);
   }
 }
 
@@ -1030,18 +1030,18 @@ void __68__ACHAchievementStore__lock_notifyObserversOfInitialFetchCompletion__bl
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyObserversOfNewAchievements:(id)a3
+- (void)_notifyObserversOfNewAchievements:(id)achievements
 {
-  v4 = a3;
-  v5 = [(ACHAchievementStore *)self notificationQueue];
+  achievementsCopy = achievements;
+  notificationQueue = [(ACHAchievementStore *)self notificationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__ACHAchievementStore__notifyObserversOfNewAchievements___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = achievementsCopy;
+  v6 = achievementsCopy;
+  dispatch_async(notificationQueue, v7);
 }
 
 void __57__ACHAchievementStore__notifyObserversOfNewAchievements___block_invoke(uint64_t a1)
@@ -1080,18 +1080,18 @@ void __57__ACHAchievementStore__notifyObserversOfNewAchievements___block_invoke(
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyObserversOfUpdatedAchievements:(id)a3
+- (void)_notifyObserversOfUpdatedAchievements:(id)achievements
 {
-  v4 = a3;
-  v5 = [(ACHAchievementStore *)self notificationQueue];
+  achievementsCopy = achievements;
+  notificationQueue = [(ACHAchievementStore *)self notificationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__ACHAchievementStore__notifyObserversOfUpdatedAchievements___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = achievementsCopy;
+  v6 = achievementsCopy;
+  dispatch_async(notificationQueue, v7);
 }
 
 void __61__ACHAchievementStore__notifyObserversOfUpdatedAchievements___block_invoke(uint64_t a1)
@@ -1130,18 +1130,18 @@ void __61__ACHAchievementStore__notifyObserversOfUpdatedAchievements___block_inv
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyObserversOfRemovedAchievements:(id)a3
+- (void)_notifyObserversOfRemovedAchievements:(id)achievements
 {
-  v4 = a3;
-  v5 = [(ACHAchievementStore *)self notificationQueue];
+  achievementsCopy = achievements;
+  notificationQueue = [(ACHAchievementStore *)self notificationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__ACHAchievementStore__notifyObserversOfRemovedAchievements___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = achievementsCopy;
+  v6 = achievementsCopy;
+  dispatch_async(notificationQueue, v7);
 }
 
 void __61__ACHAchievementStore__notifyObserversOfRemovedAchievements___block_invoke(uint64_t a1)
@@ -1180,17 +1180,17 @@ void __61__ACHAchievementStore__notifyObserversOfRemovedAchievements___block_inv
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)templateStoreDidFinishInitialFetch:(id)a3
+- (void)templateStoreDidFinishInitialFetch:(id)fetch
 {
-  v4 = a3;
+  fetchCopy = fetch;
   os_unfair_lock_assert_not_owner(&self->_syncLock);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__ACHAchievementStore_templateStoreDidFinishInitialFetch___block_invoke;
   v6[3] = &unk_278490898;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = fetchCopy;
+  v5 = fetchCopy;
   [(ACHAchievementStore *)self _performWithLock:v6];
 }
 
@@ -1206,38 +1206,38 @@ uint64_t __58__ACHAchievementStore_templateStoreDidFinishInitialFetch___block_in
   return [v4 _lock_notifyObserversOfInitialFetchCompletion];
 }
 
-- (void)templateStore:(id)a3 didAddNewTemplates:(id)a4
+- (void)templateStore:(id)store didAddNewTemplates:(id)templates
 {
-  v5 = a4;
+  templatesCopy = templates;
   os_unfair_lock_assert_not_owner(&self->_syncLock);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__ACHAchievementStore_templateStore_didAddNewTemplates___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = templatesCopy;
+  v6 = templatesCopy;
   [(ACHAchievementStore *)self _performWithLock:v7];
 }
 
-- (void)templateStore:(id)a3 didRemoveTemplates:(id)a4
+- (void)templateStore:(id)store didRemoveTemplates:(id)templates
 {
-  v5 = a4;
+  templatesCopy = templates;
   os_unfair_lock_assert_not_owner(&self->_syncLock);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__ACHAchievementStore_templateStore_didRemoveTemplates___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = templatesCopy;
+  v6 = templatesCopy;
   [(ACHAchievementStore *)self _performWithLock:v7];
 }
 
-- (void)earnedInstanceStore:(id)a3 didAddNewEarnedInstances:(id)a4
+- (void)earnedInstanceStore:(id)store didAddNewEarnedInstances:(id)instances
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  instancesCopy = instances;
   os_unfair_lock_assert_not_owner(&self->_syncLock);
   v15 = 0;
   v16 = &v15;
@@ -1249,9 +1249,9 @@ uint64_t __58__ACHAchievementStore_templateStoreDidFinishInitialFetch___block_in
   v11[1] = 3221225472;
   v11[2] = __68__ACHAchievementStore_earnedInstanceStore_didAddNewEarnedInstances___block_invoke;
   v11[3] = &unk_2784908E0;
-  v8 = v7;
+  v8 = instancesCopy;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   [(ACHAchievementStore *)self _performWithLock:v11];
   if ([v16[5] count])
@@ -1326,9 +1326,9 @@ void __68__ACHAchievementStore_earnedInstanceStore_didAddNewEarnedInstances___bl
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)earnedInstanceStoreDidReceiveSyncNotification:(id)a3
+- (void)earnedInstanceStoreDidReceiveSyncNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -1364,10 +1364,10 @@ uint64_t __69__ACHAchievementStore_earnedInstanceStoreDidReceiveSyncNotification
   return [v5 _lock_populatePrerequisiteMetForAllAchievements];
 }
 
-- (void)earnedInstanceStore:(id)a3 didRemoveEarnedInstances:(id)a4
+- (void)earnedInstanceStore:(id)store didRemoveEarnedInstances:(id)instances
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  instancesCopy = instances;
   os_unfair_lock_assert_not_owner(&self->_syncLock);
   v15 = 0;
   v16 = &v15;
@@ -1379,9 +1379,9 @@ uint64_t __69__ACHAchievementStore_earnedInstanceStoreDidReceiveSyncNotification
   v11[1] = 3221225472;
   v11[2] = __68__ACHAchievementStore_earnedInstanceStore_didRemoveEarnedInstances___block_invoke;
   v11[3] = &unk_2784908E0;
-  v8 = v7;
+  v8 = instancesCopy;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   [(ACHAchievementStore *)self _performWithLock:v11];
   if ([v16[5] count])
@@ -1461,17 +1461,17 @@ void __68__ACHAchievementStore_earnedInstanceStore_didRemoveEarnedInstances___bl
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lock_addTemplatesToLocalStore:(id)a3
+- (void)_lock_addTemplatesToLocalStore:(id)store
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  storeCopy = store;
   os_unfair_lock_assert_owner(&self->_syncLock);
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v4;
+  obj = storeCopy;
   v6 = [obj countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v6)
   {
@@ -1500,17 +1500,17 @@ void __68__ACHAchievementStore_earnedInstanceStore_didRemoveEarnedInstances___bl
         v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v42 count:1];
         v15 = [(ACHAchievementStore *)self _lock_populateMostRecentEarnedInstancesAndCountsForAchievements:v14];
 
-        v16 = [(ACHAchievementStore *)self achievementsByTemplateUniqueName];
-        v17 = [v10 uniqueName];
-        [v16 setObject:v13 forKeyedSubscript:v17];
+        achievementsByTemplateUniqueName = [(ACHAchievementStore *)self achievementsByTemplateUniqueName];
+        uniqueName = [v10 uniqueName];
+        [achievementsByTemplateUniqueName setObject:v13 forKeyedSubscript:uniqueName];
 
-        v18 = [v10 prerequisiteTemplateName];
+        prerequisiteTemplateName = [v10 prerequisiteTemplateName];
 
-        if (v18)
+        if (prerequisiteTemplateName)
         {
-          v19 = [(ACHAchievementStore *)self achievementsByPrerequisiteTemplateName];
-          v20 = [v10 prerequisiteTemplateName];
-          [v19 setObject:v13 forKeyedSubscript:v20];
+          achievementsByPrerequisiteTemplateName = [(ACHAchievementStore *)self achievementsByPrerequisiteTemplateName];
+          prerequisiteTemplateName2 = [v10 prerequisiteTemplateName];
+          [achievementsByPrerequisiteTemplateName setObject:v13 forKeyedSubscript:prerequisiteTemplateName2];
         }
 
         [v5 addObject:v13];
@@ -1553,8 +1553,8 @@ void __68__ACHAchievementStore_earnedInstanceStore_didRemoveEarnedInstances___bl
           [(ACHAchievementStore *)v40 _lock_addTemplatesToLocalStore:v26];
         }
 
-        v28 = [(ACHAchievementStore *)self templateAssetRegistry];
-        [v28 populateResourcePropertiesForAchievement:v26];
+        templateAssetRegistry = [(ACHAchievementStore *)self templateAssetRegistry];
+        [templateAssetRegistry populateResourcePropertiesForAchievement:v26];
 
         [(ACHAchievementStore *)self _lock_populatePrerequisiteMet:v26];
         ++v25;
@@ -1579,28 +1579,28 @@ void __68__ACHAchievementStore_earnedInstanceStore_didRemoveEarnedInstances___bl
 
 - (id)_lock_populateMostRecentEarnedInstanceAndCountForAllAchievements
 {
-  v3 = [(ACHAchievementStore *)self achievementsByTemplateUniqueName];
-  v4 = [v3 allValues];
-  v5 = [(ACHAchievementStore *)self _lock_populateMostRecentEarnedInstancesAndCountsForAchievements:v4];
+  achievementsByTemplateUniqueName = [(ACHAchievementStore *)self achievementsByTemplateUniqueName];
+  allValues = [achievementsByTemplateUniqueName allValues];
+  v5 = [(ACHAchievementStore *)self _lock_populateMostRecentEarnedInstancesAndCountsForAchievements:allValues];
 
   return v5;
 }
 
-- (id)_lock_populateMostRecentEarnedInstancesAndCountsForAchievements:(id)a3
+- (id)_lock_populateMostRecentEarnedInstancesAndCountsForAchievements:(id)achievements
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  achievementsCopy = achievements;
   os_unfair_lock_assert_owner(&self->_syncLock);
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [v4 hk_map:&__block_literal_global_22];
-  v7 = [(ACHAchievementStore *)self earnedInstanceStore];
+  v6 = [achievementsCopy hk_map:&__block_literal_global_22];
+  earnedInstanceStore = [(ACHAchievementStore *)self earnedInstanceStore];
   v44 = 0;
-  v33 = [v7 countOfEarnedInstancesForTemplateUniqueNames:v6 error:&v44];
+  v33 = [earnedInstanceStore countOfEarnedInstancesForTemplateUniqueNames:v6 error:&v44];
   v8 = v44;
 
-  v9 = [(ACHAchievementStore *)self earnedInstanceStore];
+  earnedInstanceStore2 = [(ACHAchievementStore *)self earnedInstanceStore];
   v43 = 0;
-  v36 = [v9 mostRecentEarnedInstancesForTemplateUniqueNames:v6 error:&v43];
+  v36 = [earnedInstanceStore2 mostRecentEarnedInstancesForTemplateUniqueNames:v6 error:&v43];
   v10 = v43;
 
   if (([v8 hk_isDatabaseAccessibilityError] & 1) != 0 || objc_msgSend(v10, "hk_isDatabaseAccessibilityError"))
@@ -1612,12 +1612,12 @@ void __68__ACHAchievementStore_earnedInstanceStore_didRemoveEarnedInstances___bl
   v29 = v10;
   v30 = v8;
   v31 = v6;
-  v32 = v4;
+  v32 = achievementsCopy;
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v4;
+  obj = achievementsCopy;
   v11 = v33;
   v37 = [obj countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (!v37)
@@ -1636,15 +1636,15 @@ void __68__ACHAchievementStore_earnedInstanceStore_didRemoveEarnedInstances___bl
       }
 
       v13 = *(*(&v39 + 1) + 8 * i);
-      v14 = [v13 template];
-      v15 = [v14 uniqueName];
+      template = [v13 template];
+      uniqueName = [template uniqueName];
 
-      v16 = [v11 objectForKeyedSubscript:v15];
+      v16 = [v11 objectForKeyedSubscript:uniqueName];
       v17 = v16;
       if (v16)
       {
-        v18 = [v16 unsignedIntegerValue];
-        if ([v13 earnedInstanceCount] != v18)
+        unsignedIntegerValue = [v16 unsignedIntegerValue];
+        if ([v13 earnedInstanceCount] != unsignedIntegerValue)
         {
           goto LABEL_14;
         }
@@ -1652,23 +1652,23 @@ void __68__ACHAchievementStore_earnedInstanceStore_didRemoveEarnedInstances___bl
 
       else if ([v13 earnedInstanceCount])
       {
-        v18 = 0;
+        unsignedIntegerValue = 0;
 LABEL_14:
-        [v13 setEarnedInstanceCount:v18];
+        [v13 setEarnedInstanceCount:unsignedIntegerValue];
         v19 = 1;
         goto LABEL_16;
       }
 
       v19 = 0;
 LABEL_16:
-      v20 = [v36 objectForKeyedSubscript:v15];
-      v21 = [v13 relevantEarnedInstance];
+      v20 = [v36 objectForKeyedSubscript:uniqueName];
+      relevantEarnedInstance = [v13 relevantEarnedInstance];
 
       if (v20)
       {
         v38 = v19;
-        v22 = [v13 relevantEarnedInstance];
-        if (v22)
+        relevantEarnedInstance2 = [v13 relevantEarnedInstance];
+        if (relevantEarnedInstance2)
         {
           [v13 relevantEarnedInstance];
           v24 = v23 = v5;
@@ -1684,7 +1684,7 @@ LABEL_16:
         }
 
         v19 = v38;
-        if (!v21 || (v25 & 1) != 0)
+        if (!relevantEarnedInstance || (v25 & 1) != 0)
         {
 LABEL_26:
           [v13 setRelevantEarnedInstance:v20];
@@ -1694,7 +1694,7 @@ LABEL_27:
         }
       }
 
-      else if (v21)
+      else if (relevantEarnedInstance)
       {
         goto LABEL_26;
       }
@@ -1714,7 +1714,7 @@ LABEL_28:
 LABEL_30:
 
   v6 = v31;
-  v4 = v32;
+  achievementsCopy = v32;
   v10 = v29;
   v8 = v30;
 LABEL_31:
@@ -1733,17 +1733,17 @@ id __87__ACHAchievementStore__lock_populateMostRecentEarnedInstancesAndCountsFor
   return v3;
 }
 
-- (void)_lock_removeTemplatesFromLocalStore:(id)a3
+- (void)_lock_removeTemplatesFromLocalStore:(id)store
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  storeCopy = store;
   os_unfair_lock_assert_owner(&self->_syncLock);
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v4;
+  obj = storeCopy;
   v6 = [obj countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v6)
   {
@@ -1769,15 +1769,15 @@ id __87__ACHAchievementStore__lock_populateMostRecentEarnedInstancesAndCountsFor
           [(ACHAchievementStore *)v38 _lock_removeTemplatesFromLocalStore:v10];
         }
 
-        v13 = [(ACHAchievementStore *)self achievementsByTemplateUniqueName];
-        v14 = [v10 uniqueName];
-        v15 = [v13 objectForKeyedSubscript:v14];
+        achievementsByTemplateUniqueName = [(ACHAchievementStore *)self achievementsByTemplateUniqueName];
+        uniqueName = [v10 uniqueName];
+        v15 = [achievementsByTemplateUniqueName objectForKeyedSubscript:uniqueName];
 
         if (v15)
         {
-          v16 = [(ACHAchievementStore *)self achievementsByTemplateUniqueName];
-          v17 = [v10 uniqueName];
-          [v16 setObject:0 forKeyedSubscript:v17];
+          achievementsByTemplateUniqueName2 = [(ACHAchievementStore *)self achievementsByTemplateUniqueName];
+          uniqueName2 = [v10 uniqueName];
+          [achievementsByTemplateUniqueName2 setObject:0 forKeyedSubscript:uniqueName2];
 
           [v5 addObject:v15];
           if (![v15 earnedInstanceCount])
@@ -1786,10 +1786,10 @@ id __87__ACHAchievementStore__lock_populateMostRecentEarnedInstancesAndCountsFor
           }
 
           v18 = v5;
-          v19 = [(ACHAchievementStore *)self earnedInstanceStore];
-          v20 = [v10 uniqueName];
+          earnedInstanceStore = [(ACHAchievementStore *)self earnedInstanceStore];
+          uniqueName3 = [v10 uniqueName];
           v29 = 0;
-          v21 = [v19 removeEarnedInstancesForTemplateUniqueName:v20 error:&v29];
+          v21 = [earnedInstanceStore removeEarnedInstancesForTemplateUniqueName:uniqueName3 error:&v29];
           v22 = v29;
 
           if ((v21 & 1) == 0)
@@ -1842,32 +1842,32 @@ LABEL_18:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lock_addProgressAndGoalToAchievements:(id)a3
+- (void)_lock_addProgressAndGoalToAchievements:(id)achievements
 {
-  v4 = a3;
+  achievementsCopy = achievements;
   os_unfair_lock_assert_owner(&self->_syncLock);
-  v6 = [(ACHAchievementStore *)self progressEngine];
-  v5 = [v4 allObjects];
+  progressEngine = [(ACHAchievementStore *)self progressEngine];
+  allObjects = [achievementsCopy allObjects];
 
-  [v6 populateProgressAndGoalForAchievements:v5];
+  [progressEngine populateProgressAndGoalForAchievements:allObjects];
 }
 
 - (void)_lock_populatePrerequisiteMetForAllAchievements
 {
-  v4 = [(ACHAchievementStore *)self achievementsByTemplateUniqueName];
-  v3 = [v4 allValues];
-  [(ACHAchievementStore *)self _lock_populatePrerequisiteMetForAchievements:v3];
+  achievementsByTemplateUniqueName = [(ACHAchievementStore *)self achievementsByTemplateUniqueName];
+  allValues = [achievementsByTemplateUniqueName allValues];
+  [(ACHAchievementStore *)self _lock_populatePrerequisiteMetForAchievements:allValues];
 }
 
-- (void)_lock_populatePrerequisiteMetForAchievements:(id)a3
+- (void)_lock_populatePrerequisiteMetForAchievements:(id)achievements
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  achievementsCopy = achievements;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [achievementsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1879,14 +1879,14 @@ LABEL_18:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(achievementsCopy);
         }
 
         [(ACHAchievementStore *)self _lock_populatePrerequisiteMet:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [achievementsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -1895,31 +1895,31 @@ LABEL_18:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lock_populatePrerequisiteMet:(id)a3
+- (void)_lock_populatePrerequisiteMet:(id)met
 {
-  v11 = a3;
+  metCopy = met;
   os_unfair_lock_assert_owner(&self->_syncLock);
-  [v11 setPrerequisiteMet:1];
-  v4 = [v11 template];
-  v5 = [v4 prerequisiteTemplateName];
+  [metCopy setPrerequisiteMet:1];
+  template = [metCopy template];
+  prerequisiteTemplateName = [template prerequisiteTemplateName];
 
-  if (v5 && [v11 unearned])
+  if (prerequisiteTemplateName && [metCopy unearned])
   {
-    v6 = [(ACHAchievementStore *)self achievementsByTemplateUniqueName];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    achievementsByTemplateUniqueName = [(ACHAchievementStore *)self achievementsByTemplateUniqueName];
+    v7 = [achievementsByTemplateUniqueName objectForKeyedSubscript:prerequisiteTemplateName];
 
     if (v7)
     {
-      v8 = [v11 relevantEarnedInstance];
-      if (v8)
+      relevantEarnedInstance = [metCopy relevantEarnedInstance];
+      if (relevantEarnedInstance)
       {
         v9 = 0;
       }
 
       else
       {
-        v10 = [v7 relevantEarnedInstance];
-        v9 = v10 != 0;
+        relevantEarnedInstance2 = [v7 relevantEarnedInstance];
+        v9 = relevantEarnedInstance2 != 0;
       }
     }
 
@@ -1928,39 +1928,39 @@ LABEL_18:
       v9 = 0;
     }
 
-    [v11 setPrerequisiteMet:v9];
+    [metCopy setPrerequisiteMet:v9];
   }
 }
 
-- (void)templateAssetRegistry:(id)a3 didUpdateResourcesForTemplatesWithSourceName:(id)a4
+- (void)templateAssetRegistry:(id)registry didUpdateResourcesForTemplatesWithSourceName:(id)name
 {
-  v5 = a4;
+  nameCopy = name;
   os_unfair_lock_assert_not_owner(&self->_syncLock);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __90__ACHAchievementStore_templateAssetRegistry_didUpdateResourcesForTemplatesWithSourceName___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = nameCopy;
+  v6 = nameCopy;
   [(ACHAchievementStore *)self _performWithLock:v7];
 }
 
-- (void)_lock_populateResourcesForAchievementsWithTemplateSourceName:(id)a3
+- (void)_lock_populateResourcesForAchievementsWithTemplateSourceName:(id)name
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_assert_owner(&self->_syncLock);
   v5 = MEMORY[0x277CBEB98];
-  v6 = [(ACHAchievementStore *)self achievementsByTemplateUniqueName];
-  v7 = [v6 allValues];
-  v8 = [v5 setWithArray:v7];
+  achievementsByTemplateUniqueName = [(ACHAchievementStore *)self achievementsByTemplateUniqueName];
+  allValues = [achievementsByTemplateUniqueName allValues];
+  v8 = [v5 setWithArray:allValues];
 
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __84__ACHAchievementStore__lock_populateResourcesForAchievementsWithTemplateSourceName___block_invoke;
   v34[3] = &unk_278492168;
-  v9 = v4;
+  v9 = nameCopy;
   v35 = v9;
   v10 = [v8 hk_filter:v34];
   if ([v10 count])
@@ -2004,15 +2004,15 @@ LABEL_18:
           v20 = ACHLogAssets();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [v18 template];
-            v22 = [v21 uniqueName];
+            template = [v18 template];
+            uniqueName = [template uniqueName];
             *buf = 138543362;
-            v38 = v22;
+            v38 = uniqueName;
             _os_log_impl(&dword_221DDC000, v20, OS_LOG_TYPE_DEFAULT, "Achievement store updating assets for template %{public}@", buf, 0xCu);
           }
 
-          v23 = [(ACHAchievementStore *)self templateAssetRegistry];
-          [v23 populateResourcePropertiesForAchievement:v18];
+          templateAssetRegistry = [(ACHAchievementStore *)self templateAssetRegistry];
+          [templateAssetRegistry populateResourcePropertiesForAchievement:v18];
 
           objc_autoreleasePoolPop(v19);
         }

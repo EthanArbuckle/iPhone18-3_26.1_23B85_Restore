@@ -1,7 +1,7 @@
 @interface GreenGhostLowLightTuningParams
 - (GreenGhostLowLightTuningParams)init;
 - (LowLightTuning)tuningParams;
-- (int)readPlist:(id)a3;
+- (int)readPlist:(id)plist;
 - (void)setDefaultTuningParams;
 @end
 
@@ -58,10 +58,10 @@
   return v2;
 }
 
-- (int)readPlist:(id)a3
+- (int)readPlist:(id)plist
 {
-  v4 = a3;
-  v7 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"faceBoundaryPaddingRatio", v6);
+  plistCopy = plist;
+  v7 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v5, @"faceBoundaryPaddingRatio", v6);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || objc_msgSend_count(v7, v8, v9, v10) != 2)
   {
@@ -79,7 +79,7 @@ LABEL_99:
   objc_msgSend_floatValue(v20, v21, v22, v23);
   HIDWORD(self[1].super.isa) = v24;
 
-  v27 = objc_msgSend_objectForKeyedSubscript_(v4, v25, @"enabled", v26);
+  v27 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v25, @"enabled", v26);
 
   if (!v27)
   {
@@ -87,10 +87,10 @@ LABEL_99:
     goto LABEL_99;
   }
 
-  v30 = objc_msgSend_objectForKeyedSubscript_(v4, v28, @"enabled", v29);
+  v30 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v28, @"enabled", v29);
   self->_tuningParams.enabled = objc_msgSend_BOOLValue(v30, v31, v32, v33);
 
-  v36 = objc_msgSend_objectForKeyedSubscript_(v4, v34, @"blurThreshold", v35);
+  v36 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v34, @"blurThreshold", v35);
 
   if (!v36)
   {
@@ -98,11 +98,11 @@ LABEL_99:
     goto LABEL_99;
   }
 
-  v39 = objc_msgSend_objectForKeyedSubscript_(v4, v37, @"blurThreshold", v38);
+  v39 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v37, @"blurThreshold", v38);
   objc_msgSend_floatValue(v39, v40, v41, v42);
   self->_tuningParams.blurThreshold = v43;
 
-  v46 = objc_msgSend_objectForKeyedSubscript_(v4, v44, @"maxMaskAverage", v45);
+  v46 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v44, @"maxMaskAverage", v45);
 
   if (!v46)
   {
@@ -110,11 +110,11 @@ LABEL_99:
     goto LABEL_99;
   }
 
-  v49 = objc_msgSend_objectForKeyedSubscript_(v4, v47, @"maxMaskAverage", v48);
+  v49 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v47, @"maxMaskAverage", v48);
   objc_msgSend_floatValue(v49, v50, v51, v52);
   self->_tuningParams.maxMaskAverage = v53;
 
-  v56 = objc_msgSend_objectForKeyedSubscript_(v4, v54, @"greenGhostThreshold", v55);
+  v56 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v54, @"greenGhostThreshold", v55);
 
   if (!v56)
   {
@@ -122,11 +122,11 @@ LABEL_99:
     goto LABEL_99;
   }
 
-  v59 = objc_msgSend_objectForKeyedSubscript_(v4, v57, @"greenGhostThreshold", v58);
+  v59 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v57, @"greenGhostThreshold", v58);
   objc_msgSend_floatValue(v59, v60, v61, v62);
   self->_tuningParams.greenGhostThreshold = v63;
 
-  v66 = objc_msgSend_objectForKeyedSubscript_(v4, v64, @"detection", v65);
+  v66 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v64, @"detection", v65);
   if (!v66)
   {
     sub_2958B268C();
@@ -347,7 +347,7 @@ LABEL_98:
   objc_msgSend_floatValue(v265, v266, v267, v268);
   self[4]._tuningParams.greenGhostThreshold = v269;
 
-  v272 = objc_msgSend_objectForKeyedSubscript_(v4, v270, @"refinement", v271);
+  v272 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v270, @"refinement", v271);
   if (!v272)
   {
     sub_2958B223C(v69);
@@ -414,7 +414,7 @@ LABEL_98:
   objc_msgSend_floatValue(v318, v319, v320, v321);
   self[5]._tuningParams.maxMaskAverage = v322;
 
-  v325 = objc_msgSend_objectForKeyedSubscript_(v4, v323, @"fusion", v324);
+  v325 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v323, @"fusion", v324);
   if (!v325)
   {
     sub_2958B1F3C(v275, v614);
@@ -504,7 +504,7 @@ LABEL_98:
   objc_msgSend_floatValue(v407, v408, v409, v410);
   self[7]._tuningParams.blurThreshold = v411;
 
-  v414 = objc_msgSend_objectForKeyedSubscript_(v4, v412, @"inpaint", v413);
+  v414 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v412, @"inpaint", v413);
   if (!v414)
   {
     sub_2958B1C94(v328, v275, v614);
@@ -691,7 +691,7 @@ LABEL_79:
     goto LABEL_79;
   }
 
-  v580 = v4;
+  v580 = plistCopy;
   v581 = v7;
   v582 = objc_msgSend_objectAtIndexedSubscript_(v574, v578, 0, v579);
   *&self[10]._tuningParams.enabled = objc_msgSend_intValue(v582, v583, v584, v585);
@@ -722,7 +722,7 @@ LABEL_79:
   }
 
   v7 = v581;
-  v4 = v580;
+  plistCopy = v580;
 LABEL_70:
 
   return v612;

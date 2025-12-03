@@ -1,21 +1,21 @@
 @interface ICFallbackSystemTextAttachment
-- (ICFallbackSystemTextAttachment)initWithData:(id)a3 type:(id)a4 contentIdentifier:(id)a5 systemClassName:(id)a6;
+- (ICFallbackSystemTextAttachment)initWithData:(id)data type:(id)type contentIdentifier:(id)identifier systemClassName:(id)name;
 @end
 
 @implementation ICFallbackSystemTextAttachment
 
-- (ICFallbackSystemTextAttachment)initWithData:(id)a3 type:(id)a4 contentIdentifier:(id)a5 systemClassName:(id)a6
+- (ICFallbackSystemTextAttachment)initWithData:(id)data type:(id)type contentIdentifier:(id)identifier systemClassName:(id)name
 {
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = ICFallbackSystemTextAttachment;
-  v13 = [(ICFallbackSystemTextAttachment *)&v16 initWithData:a3 ofType:a4];
+  v13 = [(ICFallbackSystemTextAttachment *)&v16 initWithData:data ofType:type];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_contentIdentifier, a5);
-    objc_storeStrong(&v14->_systemClassName, a6);
+    objc_storeStrong(&v13->_contentIdentifier, identifier);
+    objc_storeStrong(&v14->_systemClassName, name);
   }
 
   return v14;

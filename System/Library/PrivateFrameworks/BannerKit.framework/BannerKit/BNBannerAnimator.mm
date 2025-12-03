@@ -1,46 +1,46 @@
 @interface BNBannerAnimator
-+ (void)_animateInteractive:(BOOL)a3 settings:(id)a4 animations:(id)a5 completion:(id)a6;
-- (BNBannerAnimator)initWithAnimationSettings:(id)a3;
-- (BOOL)_popTransitionForContext:(id)a3;
-- (double)transitionDuration:(id)a3;
-- (void)_pushTransitionForContext:(id)a3;
-- (void)actionsForTransition:(id)a3;
-- (void)animateTransition:(id)a3;
-- (void)retargetTransition:(id)a3;
-- (void)runAnimationsWithActions:(id)a3 animated:(BOOL)a4 completion:(id)a5;
++ (void)_animateInteractive:(BOOL)interactive settings:(id)settings animations:(id)animations completion:(id)completion;
+- (BNBannerAnimator)initWithAnimationSettings:(id)settings;
+- (BOOL)_popTransitionForContext:(id)context;
+- (double)transitionDuration:(id)duration;
+- (void)_pushTransitionForContext:(id)context;
+- (void)actionsForTransition:(id)transition;
+- (void)animateTransition:(id)transition;
+- (void)retargetTransition:(id)transition;
+- (void)runAnimationsWithActions:(id)actions animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation BNBannerAnimator
 
-- (BNBannerAnimator)initWithAnimationSettings:(id)a3
+- (BNBannerAnimator)initWithAnimationSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v9.receiver = self;
   v9.super_class = BNBannerAnimator;
   v6 = [(BNBannerAnimator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_animationSettings, a3);
+    objc_storeStrong(&v6->_animationSettings, settings);
   }
 
   return v7;
 }
 
-- (void)retargetTransition:(id)a3
+- (void)retargetTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(BNBannerAnimator *)self isRetargetable];
-  if (v4 && v5)
+  transitionCopy = transition;
+  isRetargetable = [(BNBannerAnimator *)self isRetargetable];
+  if (transitionCopy && isRetargetable)
   {
-    [(BNBannerAnimator *)self _pushTransitionForContext:v4];
+    [(BNBannerAnimator *)self _pushTransitionForContext:transitionCopy];
     objc_initWeak(&location, self);
     v6 = MEMORY[0x1E69DD250];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __39__BNBannerAnimator_retargetTransition___block_invoke;
     v11[3] = &unk_1E81E4BC8;
-    v7 = v4;
+    v7 = transitionCopy;
     v12 = v7;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -77,16 +77,16 @@ void __39__BNBannerAnimator_retargetTransition___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   objc_initWeak(&location, self);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __38__BNBannerAnimator_animateTransition___block_invoke;
   v18[3] = &unk_1E81E47B0;
   objc_copyWeak(&v20, &location);
-  v5 = v4;
+  v5 = transitionCopy;
   v19 = v5;
   v6 = MEMORY[0x1C6936EC0](v18);
   if ([v5 isAnimated])
@@ -156,7 +156,7 @@ void __38__BNBannerAnimator_animateTransition___block_invoke_2(uint64_t a1)
 LABEL_5:
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   animationSettings = self->_animationSettings;
   if (!animationSettings)
@@ -168,35 +168,35 @@ LABEL_5:
   return result;
 }
 
-+ (void)_animateInteractive:(BOOL)a3 settings:(id)a4 animations:(id)a5 completion:(id)a6
++ (void)_animateInteractive:(BOOL)interactive settings:(id)settings animations:(id)animations completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = v11;
-  if (v10)
+  interactiveCopy = interactive;
+  settingsCopy = settings;
+  animationsCopy = animations;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (animationsCopy)
   {
-    if (v9)
+    if (settingsCopy)
     {
       v13 = MEMORY[0x1E698E7D0];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __71__BNBannerAnimator__animateInteractive_settings_animations_completion___block_invoke;
       v14[3] = &unk_1E81E4FD8;
-      v15 = v11;
-      [v13 animateWithSettings:v9 options:6 actions:v10 completion:v14];
+      v15 = completionCopy;
+      [v13 animateWithSettings:settingsCopy options:6 actions:animationsCopy completion:v14];
     }
 
     else
     {
-      [MEMORY[0x1E69DD250] _animateUsingSpringInteractive:v8 animations:v10 completion:v11];
+      [MEMORY[0x1E69DD250] _animateUsingSpringInteractive:interactiveCopy animations:animationsCopy completion:completionCopy];
     }
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    (*(v11 + 2))(v11, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
@@ -211,53 +211,53 @@ uint64_t __71__BNBannerAnimator__animateInteractive_settings_animations_completi
   return result;
 }
 
-- (void)_pushTransitionForContext:(id)a3
+- (void)_pushTransitionForContext:(id)context
 {
-  if (a3)
+  if (context)
   {
     transitionContextsToTransitionCount = self->_transitionContextsToTransitionCount;
-    v5 = a3;
-    v6 = [(NSMapTable *)transitionContextsToTransitionCount objectForKey:v5];
-    v7 = [v6 unsignedIntegerValue];
+    contextCopy = context;
+    v6 = [(NSMapTable *)transitionContextsToTransitionCount objectForKey:contextCopy];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
 
     v8 = self->_transitionContextsToTransitionCount;
     if (!v8)
     {
-      v9 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+      weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
       v10 = self->_transitionContextsToTransitionCount;
-      self->_transitionContextsToTransitionCount = v9;
+      self->_transitionContextsToTransitionCount = weakToStrongObjectsMapTable;
 
       v8 = self->_transitionContextsToTransitionCount;
     }
 
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7 + 1];
-    [(NSMapTable *)v8 setObject:v11 forKey:v5];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+    [(NSMapTable *)v8 setObject:v11 forKey:contextCopy];
   }
 }
 
-- (BOOL)_popTransitionForContext:(id)a3
+- (BOOL)_popTransitionForContext:(id)context
 {
-  v4 = a3;
-  if (!v4)
+  contextCopy = context;
+  if (!contextCopy)
   {
     goto LABEL_5;
   }
 
-  v5 = [(NSMapTable *)self->_transitionContextsToTransitionCount objectForKey:v4];
-  v6 = [v5 unsignedIntegerValue];
+  v5 = [(NSMapTable *)self->_transitionContextsToTransitionCount objectForKey:contextCopy];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
   transitionContextsToTransitionCount = self->_transitionContextsToTransitionCount;
-  if (!v6)
+  if (!unsignedIntegerValue)
   {
-    [(NSMapTable *)transitionContextsToTransitionCount removeObjectForKey:v4];
+    [(NSMapTable *)transitionContextsToTransitionCount removeObjectForKey:contextCopy];
 LABEL_5:
     v10 = 0;
     goto LABEL_6;
   }
 
-  v8 = v6 - 1;
+  v8 = unsignedIntegerValue - 1;
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
-  [(NSMapTable *)transitionContextsToTransitionCount setObject:v9 forKey:v4];
+  [(NSMapTable *)transitionContextsToTransitionCount setObject:v9 forKey:contextCopy];
 
   v10 = v8 != 0;
 LABEL_6:
@@ -265,34 +265,34 @@ LABEL_6:
   return v10;
 }
 
-- (void)actionsForTransition:(id)a3
+- (void)actionsForTransition:(id)transition
 {
   v3 = *MEMORY[0x1E69DE778];
-  v4 = a3;
-  v14 = [v4 viewControllerForKey:v3];
-  v5 = [v14 view];
-  [v4 finalFrameForViewController:v14];
+  transitionCopy = transition;
+  v14 = [transitionCopy viewControllerForKey:v3];
+  view = [v14 view];
+  [transitionCopy finalFrameForViewController:v14];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  [v5 setFrame:{v7, v9, v11, v13}];
+  [view setFrame:{v7, v9, v11, v13}];
 }
 
-- (void)runAnimationsWithActions:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)runAnimationsWithActions:(id)actions animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v6)
+  animatedCopy = animated;
+  actionsCopy = actions;
+  completionCopy = completion;
+  if (animatedCopy)
   {
     animationSettings = self->_animationSettings;
     v11 = objc_opt_class();
     v12 = v11;
     if (animationSettings)
     {
-      [v11 animateWithSettings:self->_animationSettings animations:v8 completion:v9];
+      [v11 animateWithSettings:self->_animationSettings animations:actionsCopy completion:completionCopy];
     }
 
     else
@@ -301,15 +301,15 @@ LABEL_6:
       v13[1] = 3221225472;
       v13[2] = __84__BNBannerAnimator_SubclassOverrides__runAnimationsWithActions_animated_completion___block_invoke;
       v13[3] = &unk_1E81E4EB8;
-      v14 = v8;
-      [v12 animateInteractive:0 animations:v13 completion:v9];
+      v14 = actionsCopy;
+      [v12 animateInteractive:0 animations:v13 completion:completionCopy];
     }
   }
 
   else
   {
-    v8[2](v8);
-    v9[2](v9, 1, 0);
+    actionsCopy[2](actionsCopy);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 

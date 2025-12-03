@@ -1,10 +1,10 @@
 @interface CNSharedProfileOnboardingStateController
 + (id)log;
 + (id)userDefaults;
-+ (void)writeToDefaultsDidSkipPosterSetup:(BOOL)a3;
++ (void)writeToDefaultsDidSkipPosterSetup:(BOOL)setup;
 - (BOOL)accountCanCreateSNaP;
 - (BOOL)alwaysShowSNaPOnboarding;
-- (BOOL)canShowOnboardingAllowingMultiplePhoneNumbers:(BOOL)a3;
+- (BOOL)canShowOnboardingAllowingMultiplePhoneNumbers:(BOOL)numbers;
 - (BOOL)deviceSupportsPosters;
 - (BOOL)didSkipPosterSetup;
 - (BOOL)hasCompletedOnboarding;
@@ -14,9 +14,9 @@
 - (BOOL)shouldShowOnboarding;
 - (int64_t)lastShowOnboardingVersionInSettings;
 - (int64_t)lastShownOnboardingVersion;
-- (void)writeToDefaultsCompletedOnboarding:(BOOL)a3;
+- (void)writeToDefaultsCompletedOnboarding:(BOOL)onboarding;
 - (void)writeToDefaultsLastShownSettingsOnboardingVersion;
-- (void)writeToDefaultsOnboardingVersion:(int64_t)a3;
+- (void)writeToDefaultsOnboardingVersion:(int64_t)version;
 @end
 
 @implementation CNSharedProfileOnboardingStateController
@@ -29,13 +29,13 @@
     return 1;
   }
 
-  v4 = [(CNSharedProfileOnboardingStateController *)self lastShownOnboardingVersion];
-  v3 = v4 < 1;
+  lastShownOnboardingVersion = [(CNSharedProfileOnboardingStateController *)self lastShownOnboardingVersion];
+  v3 = lastShownOnboardingVersion < 1;
   v5 = [objc_opt_class() log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7[0] = 67109120;
-    v7[1] = v4 < 1;
+    v7[1] = lastShownOnboardingVersion < 1;
     _os_log_debug_impl(&dword_199A75000, v5, OS_LOG_TYPE_DEBUG, "Should show onboarding: newOnboardingAvailable %d", v7, 8u);
   }
 
@@ -44,11 +44,11 @@
 
 - (BOOL)alwaysShowSNaPOnboarding
 {
-  v2 = [objc_opt_class() userDefaults];
-  v3 = [v2 valueForKey:@"CNSharedProfileOnboardingAlwaysShow"];
-  v4 = [v3 BOOLValue];
+  userDefaults = [objc_opt_class() userDefaults];
+  v3 = [userDefaults valueForKey:@"CNSharedProfileOnboardingAlwaysShow"];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     v5 = [objc_opt_class() log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -58,7 +58,7 @@
     }
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (id)userDefaults
@@ -71,8 +71,8 @@
 - (int64_t)lastShownOnboardingVersion
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_class() userDefaults];
-  v3 = [v2 integerForKey:@"CNSharedProfileOnboardingLastShownVersion"];
+  userDefaults = [objc_opt_class() userDefaults];
+  v3 = [userDefaults integerForKey:@"CNSharedProfileOnboardingLastShownVersion"];
 
   v4 = [objc_opt_class() log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -104,20 +104,20 @@ uint64_t __47__CNSharedProfileOnboardingStateController_log__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)writeToDefaultsDidSkipPosterSetup:(BOOL)a3
++ (void)writeToDefaultsDidSkipPosterSetup:(BOOL)setup
 {
-  v3 = a3;
+  setupCopy = setup;
   v7 = *MEMORY[0x1E69E9840];
   v4 = [objc_opt_class() log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = setupCopy;
     _os_log_impl(&dword_199A75000, v4, OS_LOG_TYPE_DEFAULT, "Writing to defaults, user has selected to skip poster setup %d", v6, 8u);
   }
 
-  v5 = [objc_opt_class() userDefaults];
-  [v5 setBool:v3 forKey:@"CNSharedProfileOnboardingDidSkipPosterSetup"];
+  userDefaults = [objc_opt_class() userDefaults];
+  [userDefaults setBool:setupCopy forKey:@"CNSharedProfileOnboardingDidSkipPosterSetup"];
 }
 
 - (void)writeToDefaultsLastShownSettingsOnboardingVersion
@@ -129,15 +129,15 @@ uint64_t __47__CNSharedProfileOnboardingStateController_log__block_invoke()
     _os_log_impl(&dword_199A75000, v2, OS_LOG_TYPE_DEFAULT, "Writing to defaults, user has seen settings onboarding", v4, 2u);
   }
 
-  v3 = [objc_opt_class() userDefaults];
-  [v3 setInteger:1 forKey:@"CNSharedProfileOnboardingLastShownSettingsVersion"];
+  userDefaults = [objc_opt_class() userDefaults];
+  [userDefaults setInteger:1 forKey:@"CNSharedProfileOnboardingLastShownSettingsVersion"];
 }
 
 - (int64_t)lastShowOnboardingVersionInSettings
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_class() userDefaults];
-  v3 = [v2 integerForKey:@"CNSharedProfileOnboardingLastShownSettingsVersion"];
+  userDefaults = [objc_opt_class() userDefaults];
+  v3 = [userDefaults integerForKey:@"CNSharedProfileOnboardingLastShownSettingsVersion"];
 
   v4 = [objc_opt_class() log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -153,8 +153,8 @@ uint64_t __47__CNSharedProfileOnboardingStateController_log__block_invoke()
 - (BOOL)didSkipPosterSetup
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_class() userDefaults];
-  v3 = [v2 BOOLForKey:@"CNSharedProfileOnboardingDidSkipPosterSetup"];
+  userDefaults = [objc_opt_class() userDefaults];
+  v3 = [userDefaults BOOLForKey:@"CNSharedProfileOnboardingDidSkipPosterSetup"];
 
   v4 = [objc_opt_class() log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -167,27 +167,27 @@ uint64_t __47__CNSharedProfileOnboardingStateController_log__block_invoke()
   return v3;
 }
 
-- (void)writeToDefaultsCompletedOnboarding:(BOOL)a3
+- (void)writeToDefaultsCompletedOnboarding:(BOOL)onboarding
 {
-  v3 = a3;
+  onboardingCopy = onboarding;
   v7 = *MEMORY[0x1E69E9840];
   v4 = [objc_opt_class() log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = onboardingCopy;
     _os_log_impl(&dword_199A75000, v4, OS_LOG_TYPE_DEFAULT, "Writing to defaults, completed onboarding %d", v6, 8u);
   }
 
-  v5 = [objc_opt_class() userDefaults];
-  [v5 setBool:v3 forKey:@"CNSharedProfileOnboardingCompleted"];
+  userDefaults = [objc_opt_class() userDefaults];
+  [userDefaults setBool:onboardingCopy forKey:@"CNSharedProfileOnboardingCompleted"];
 }
 
 - (BOOL)hasCompletedOnboarding
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_class() userDefaults];
-  v3 = [v2 BOOLForKey:@"CNSharedProfileOnboardingCompleted"];
+  userDefaults = [objc_opt_class() userDefaults];
+  v3 = [userDefaults BOOLForKey:@"CNSharedProfileOnboardingCompleted"];
 
   v4 = [objc_opt_class() log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -200,19 +200,19 @@ uint64_t __47__CNSharedProfileOnboardingStateController_log__block_invoke()
   return v3;
 }
 
-- (void)writeToDefaultsOnboardingVersion:(int64_t)a3
+- (void)writeToDefaultsOnboardingVersion:(int64_t)version
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = [objc_opt_class() log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    versionCopy = version;
     _os_log_impl(&dword_199A75000, v4, OS_LOG_TYPE_DEFAULT, "Writing to defaults, onboarding versions %ld", &v6, 0xCu);
   }
 
-  v5 = [objc_opt_class() userDefaults];
-  [v5 setInteger:a3 forKey:@"CNSharedProfileOnboardingLastShownVersion"];
+  userDefaults = [objc_opt_class() userDefaults];
+  [userDefaults setInteger:version forKey:@"CNSharedProfileOnboardingLastShownVersion"];
 }
 
 - (BOOL)accountCanCreateSNaP
@@ -234,13 +234,13 @@ LABEL_7:
     return 0;
   }
 
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  if (([v4 isFeatureEnabled:26] & 1) == 0)
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  if (([featureFlags isFeatureEnabled:26] & 1) == 0)
   {
-    v9 = [(CNSharedProfileOnboardingStateController *)self multiplePhoneNumbersTiedToAppleID];
+    multiplePhoneNumbersTiedToAppleID = [(CNSharedProfileOnboardingStateController *)self multiplePhoneNumbersTiedToAppleID];
 
-    if (!v9)
+    if (!multiplePhoneNumbersTiedToAppleID)
     {
       return 1;
     }
@@ -262,10 +262,10 @@ LABEL_7:
 
 - (BOOL)iCloudSignedInToUseNicknames
 {
-  v2 = [getIMNicknameControllerClass() sharedInstance];
-  v3 = [v2 iCloudSignedInToUseNicknames];
+  sharedInstance = [getIMNicknameControllerClass() sharedInstance];
+  iCloudSignedInToUseNicknames = [sharedInstance iCloudSignedInToUseNicknames];
 
-  return v3;
+  return iCloudSignedInToUseNicknames;
 }
 
 - (BOOL)multiplePhoneNumbersTiedToAppleID
@@ -275,33 +275,33 @@ LABEL_7:
   return [IMNicknameControllerClass multiplePhoneNumbersTiedToAppleID];
 }
 
-- (BOOL)canShowOnboardingAllowingMultiplePhoneNumbers:(BOOL)a3
+- (BOOL)canShowOnboardingAllowingMultiplePhoneNumbers:(BOOL)numbers
 {
-  v5 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v6 = [v5 featureFlags];
-  v7 = [v6 isFeatureEnabled:28];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v7 = [featureFlags isFeatureEnabled:28];
 
   if (!v7)
   {
     goto LABEL_6;
   }
 
-  v8 = [(CNSharedProfileOnboardingStateController *)self accountCanCreateSNaP];
-  if (v8)
+  accountCanCreateSNaP = [(CNSharedProfileOnboardingStateController *)self accountCanCreateSNaP];
+  if (accountCanCreateSNaP)
   {
-    if (!a3)
+    if (!numbers)
     {
-      v9 = [MEMORY[0x1E69966E8] currentEnvironment];
-      v10 = [v9 featureFlags];
-      v11 = [v10 isFeatureEnabled:26];
+      currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+      featureFlags2 = [currentEnvironment2 featureFlags];
+      v11 = [featureFlags2 isFeatureEnabled:26];
 
       if (v11)
       {
         if ([(CNSharedProfileOnboardingStateController *)self multiplePhoneNumbersTiedToAppleID])
         {
 LABEL_6:
-          LOBYTE(v8) = 0;
-          return v8;
+          LOBYTE(accountCanCreateSNaP) = 0;
+          return accountCanCreateSNaP;
         }
       }
     }
@@ -313,10 +313,10 @@ LABEL_6:
       _os_log_debug_impl(&dword_199A75000, v12, OS_LOG_TYPE_DEBUG, "User can show onboarding", v14, 2u);
     }
 
-    LOBYTE(v8) = 1;
+    LOBYTE(accountCanCreateSNaP) = 1;
   }
 
-  return v8;
+  return accountCanCreateSNaP;
 }
 
 - (BOOL)isPhotosReadyForOnboarding
@@ -380,8 +380,8 @@ LABEL_6:
 
 - (BOOL)deviceSupportsPosters
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 0;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 0;
 
   return v3;
 }

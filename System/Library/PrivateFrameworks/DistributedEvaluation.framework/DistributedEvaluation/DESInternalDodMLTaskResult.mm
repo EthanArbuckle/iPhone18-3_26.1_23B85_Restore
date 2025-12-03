@@ -1,26 +1,26 @@
 @interface DESInternalDodMLTaskResult
-- (DESInternalDodMLTaskResult)initWithJSONResult:(id)a3 binaryResult:(id)a4 deferred:(BOOL)a5 deferralURL:(id)a6 duration:(double)a7;
+- (DESInternalDodMLTaskResult)initWithJSONResult:(id)result binaryResult:(id)binaryResult deferred:(BOOL)deferred deferralURL:(id)l duration:(double)duration;
 - (id)description;
 @end
 
 @implementation DESInternalDodMLTaskResult
 
-- (DESInternalDodMLTaskResult)initWithJSONResult:(id)a3 binaryResult:(id)a4 deferred:(BOOL)a5 deferralURL:(id)a6 duration:(double)a7
+- (DESInternalDodMLTaskResult)initWithJSONResult:(id)result binaryResult:(id)binaryResult deferred:(BOOL)deferred deferralURL:(id)l duration:(double)duration
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
+  resultCopy = result;
+  binaryResultCopy = binaryResult;
+  lCopy = l;
   v19.receiver = self;
   v19.super_class = DESInternalDodMLTaskResult;
   v16 = [(DESInternalDodMLTaskResult *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_JSONResult, a3);
-    objc_storeStrong(&v17->_binaryResult, a4);
-    v17->_deferred = a5;
-    objc_storeStrong(&v17->_deferralURL, a6);
-    v17->_duration = a7;
+    objc_storeStrong(&v16->_JSONResult, result);
+    objc_storeStrong(&v17->_binaryResult, binaryResult);
+    v17->_deferred = deferred;
+    objc_storeStrong(&v17->_deferralURL, l);
+    v17->_duration = duration;
   }
 
   return v17;
@@ -31,12 +31,12 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(DESInternalDodMLTaskResult *)self binaryResult];
-  v7 = [v6 length];
-  v8 = [(DESInternalDodMLTaskResult *)self deferralURL];
-  v9 = [(DESInternalDodMLTaskResult *)self JSONResult];
+  binaryResult = [(DESInternalDodMLTaskResult *)self binaryResult];
+  v7 = [binaryResult length];
+  deferralURL = [(DESInternalDodMLTaskResult *)self deferralURL];
+  jSONResult = [(DESInternalDodMLTaskResult *)self JSONResult];
   [(DESInternalDodMLTaskResult *)self duration];
-  v11 = [v3 stringWithFormat:@"%@(binaryResult.length=%lu, deferralURL=%@, JSONResult=%@, duration=%.1f)", v5, v7, v8, v9, v10];
+  v11 = [v3 stringWithFormat:@"%@(binaryResult.length=%lu, deferralURL=%@, JSONResult=%@, duration=%.1f)", v5, v7, deferralURL, jSONResult, v10];
 
   return v11;
 }

@@ -3,14 +3,14 @@
 + (id)defaultProperties;
 + (id)nullStroke;
 - (BOOL)isAnythingOverridden;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADLineEnd)head;
 - (OADLineEnd)tail;
 - (OADStroke)init;
 - (OADStroke)initWithDefaults;
 - (float)width;
 - (id)color;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dash;
 - (id)fill;
 - (id)join;
@@ -18,9 +18,9 @@
 - (unint64_t)hash;
 - (unsigned)cap;
 - (unsigned)compoundType;
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3;
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values;
 - (void)removeUnnecessaryOverrides;
-- (void)setParent:(id)a3;
+- (void)setParent:(id)parent;
 @end
 
 @implementation OADStroke
@@ -48,11 +48,11 @@
 {
   v15.receiver = self;
   v15.super_class = OADStroke;
-  v2 = [(OADProperties *)&v15 initWithDefaults];
-  v3 = v2;
-  if (v2)
+  initWithDefaults = [(OADProperties *)&v15 initWithDefaults];
+  v3 = initWithDefaults;
+  if (initWithDefaults)
   {
-    [(OADStroke *)v2 setColor:0];
+    [(OADStroke *)initWithDefaults setColor:0];
     v4 = +[OADNullFill nullFill];
     [(OADStroke *)v3 setFill:v4];
 
@@ -235,47 +235,47 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (*(self + 84))
   {
-    v7 = [(OADColor *)self->mColor copyWithZone:a3];
+    v7 = [(OADColor *)self->mColor copyWithZone:zone];
     [v5 setColor:v7];
   }
 
   mFill = self->mFill;
   if (mFill)
   {
-    v9 = [(OADFill *)mFill copyWithZone:a3];
+    v9 = [(OADFill *)mFill copyWithZone:zone];
     [v5 setFill:v9];
   }
 
   mDash = self->mDash;
   if (mDash)
   {
-    v11 = [(OADDash *)mDash copyWithZone:a3];
+    v11 = [(OADDash *)mDash copyWithZone:zone];
     [v5 setDash:v11];
   }
 
   mJoin = self->mJoin;
   if (mJoin)
   {
-    v13 = [(OADLineJoin *)mJoin copyWithZone:a3];
+    v13 = [(OADLineJoin *)mJoin copyWithZone:zone];
     [v5 setJoin:v13];
   }
 
   mHead = self->mHead;
   if (mHead)
   {
-    v15 = [(OADLineEnd *)mHead copyWithZone:a3];
+    v15 = [(OADLineEnd *)mHead copyWithZone:zone];
     [v5 setHead:v15];
   }
 
   mTail = self->mTail;
   if (mTail)
   {
-    v17 = [(OADLineEnd *)mTail copyWithZone:a3];
+    v17 = [(OADLineEnd *)mTail copyWithZone:zone];
     [v5 setTail:v17];
   }
 
@@ -310,39 +310,39 @@
   return [(OADProperties *)&v4 isAnythingOverridden]|| [(OADStroke *)self isColorOverridden]|| [(OADStroke *)self isFillOverridden]|| [(OADStroke *)self isDashOverridden]|| [(OADStroke *)self isJoinOverridden]|| [(OADStroke *)self isWidthOverridden]|| [(OADStroke *)self isCapOverridden]|| [(OADStroke *)self isCompoundTypeOverridden]|| [(OADStroke *)self isPenAlignmentOverridden]|| [(OADStroke *)self isHeadOverridden]|| [(OADStroke *)self isTailOverridden];
 }
 
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v61.receiver = self;
   v61.super_class = OADStroke;
-  [(OADProperties *)&v61 fixPropertiesForChangingParentPreservingEffectiveValues:v4];
-  if ((*(self + 84) & 1) != 0 || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != v4))
+  [(OADProperties *)&v61 fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
+  if ((*(self + 84) & 1) != 0 || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != valuesCopy))
   {
     v6 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_isColorOverridden];
 
     if (v6)
     {
-      v7 = [(OADStroke *)self color];
+      color = [(OADStroke *)self color];
     }
 
     else
     {
-      v7 = 0;
+      color = 0;
     }
 
-    v8 = [v4 possiblyInexistentOverrideForSelector:sel_isColorOverridden];
+    v8 = [valuesCopy possiblyInexistentOverrideForSelector:sel_isColorOverridden];
 
     if (v8)
     {
-      v9 = [v4 color];
+      color2 = [valuesCopy color];
     }
 
     else
     {
-      v9 = 0;
+      color2 = 0;
     }
 
-    if (TCObjectEqual(v7, v9))
+    if (TCObjectEqual(color, color2))
     {
       mColor = self->mColor;
       self->mColor = 0;
@@ -352,39 +352,39 @@
 
     else if ((*(self + 84) & 1) == 0 && v6)
     {
-      [(OADStroke *)self setColor:v7];
+      [(OADStroke *)self setColor:color];
     }
   }
 
-  if (self->mFill || ([(OADProperties *)self parent], v11 = objc_claimAutoreleasedReturnValue(), v11, v11 != v4))
+  if (self->mFill || ([(OADProperties *)self parent], v11 = objc_claimAutoreleasedReturnValue(), v11, v11 != valuesCopy))
   {
-    v12 = [(OADStroke *)self fill];
+    fill = [(OADStroke *)self fill];
     v13 = objc_alloc_init(objc_opt_class());
 
-    v14 = [(OADStroke *)self fill];
-    [v13 setParent:v14];
+    fill2 = [(OADStroke *)self fill];
+    [v13 setParent:fill2];
 
     objc_storeStrong(&self->mFill, v13);
-    v15 = [v4 possiblyInexistentOverrideForSelector:sel_isFillOverridden];
+    fill3 = [valuesCopy possiblyInexistentOverrideForSelector:sel_isFillOverridden];
 
-    if (v15)
+    if (fill3)
     {
-      v15 = [v4 fill];
+      fill3 = [valuesCopy fill];
     }
 
     mFill = self->mFill;
-    if (mFill != v15)
+    if (mFill != fill3)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       if ((isKindOfClass & 1) == 0)
       {
-        v18 = [objc_opt_class() defaultProperties];
+        defaultProperties = [objc_opt_class() defaultProperties];
 
-        v15 = v18;
+        fill3 = defaultProperties;
       }
 
-      [(OADProperties *)self->mFill changeParentPreservingEffectiveValues:v15];
+      [(OADProperties *)self->mFill changeParentPreservingEffectiveValues:fill3];
       if ((isKindOfClass & 1) == 0 || [(OADProperties *)self->mFill isAnythingOverridden])
       {
         goto LABEL_26;
@@ -398,35 +398,35 @@
 LABEL_26:
   }
 
-  if (self->mDash || ([(OADProperties *)self parent], v19 = objc_claimAutoreleasedReturnValue(), v19, v19 != v4))
+  if (self->mDash || ([(OADProperties *)self parent], v19 = objc_claimAutoreleasedReturnValue(), v19, v19 != valuesCopy))
   {
-    v20 = [(OADStroke *)self dash];
+    dash = [(OADStroke *)self dash];
     v21 = objc_alloc_init(objc_opt_class());
 
-    v22 = [(OADStroke *)self dash];
-    [v21 setParent:v22];
+    dash2 = [(OADStroke *)self dash];
+    [v21 setParent:dash2];
 
     objc_storeStrong(&self->mDash, v21);
-    v23 = [v4 possiblyInexistentOverrideForSelector:sel_isDashOverridden];
+    dash3 = [valuesCopy possiblyInexistentOverrideForSelector:sel_isDashOverridden];
 
-    if (v23)
+    if (dash3)
     {
-      v23 = [v4 dash];
+      dash3 = [valuesCopy dash];
     }
 
     mDash = self->mDash;
-    if (mDash != v23)
+    if (mDash != dash3)
     {
       objc_opt_class();
       v25 = objc_opt_isKindOfClass();
       if ((v25 & 1) == 0)
       {
-        v26 = [objc_opt_class() defaultProperties];
+        defaultProperties2 = [objc_opt_class() defaultProperties];
 
-        v23 = v26;
+        dash3 = defaultProperties2;
       }
 
-      [(OADProperties *)self->mDash changeParentPreservingEffectiveValues:v23];
+      [(OADProperties *)self->mDash changeParentPreservingEffectiveValues:dash3];
       if ((v25 & 1) == 0 || [(OADProperties *)self->mDash isAnythingOverridden])
       {
         goto LABEL_38;
@@ -440,35 +440,35 @@ LABEL_26:
 LABEL_38:
   }
 
-  if (self->mJoin || ([(OADProperties *)self parent], v27 = objc_claimAutoreleasedReturnValue(), v27, v27 != v4))
+  if (self->mJoin || ([(OADProperties *)self parent], v27 = objc_claimAutoreleasedReturnValue(), v27, v27 != valuesCopy))
   {
-    v28 = [(OADStroke *)self join];
+    join = [(OADStroke *)self join];
     v29 = objc_alloc_init(objc_opt_class());
 
-    v30 = [(OADStroke *)self join];
-    [v29 setParent:v30];
+    join2 = [(OADStroke *)self join];
+    [v29 setParent:join2];
 
     objc_storeStrong(&self->mJoin, v29);
-    v31 = [v4 possiblyInexistentOverrideForSelector:sel_isJoinOverridden];
+    join3 = [valuesCopy possiblyInexistentOverrideForSelector:sel_isJoinOverridden];
 
-    if (v31)
+    if (join3)
     {
-      v31 = [v4 join];
+      join3 = [valuesCopy join];
     }
 
     mJoin = self->mJoin;
-    if (mJoin != v31)
+    if (mJoin != join3)
     {
       objc_opt_class();
       v33 = objc_opt_isKindOfClass();
       if ((v33 & 1) == 0)
       {
-        v34 = [objc_opt_class() defaultProperties];
+        defaultProperties3 = [objc_opt_class() defaultProperties];
 
-        v31 = v34;
+        join3 = defaultProperties3;
       }
 
-      [(OADProperties *)self->mJoin changeParentPreservingEffectiveValues:v31];
+      [(OADProperties *)self->mJoin changeParentPreservingEffectiveValues:join3];
       if ((v33 & 1) == 0 || [(OADProperties *)self->mJoin isAnythingOverridden])
       {
         goto LABEL_50;
@@ -482,35 +482,35 @@ LABEL_38:
 LABEL_50:
   }
 
-  if (self->mHead || ([(OADProperties *)self parent], v35 = objc_claimAutoreleasedReturnValue(), v35, v35 != v4))
+  if (self->mHead || ([(OADProperties *)self parent], v35 = objc_claimAutoreleasedReturnValue(), v35, v35 != valuesCopy))
   {
-    v36 = [(OADStroke *)self head];
+    head = [(OADStroke *)self head];
     v37 = objc_alloc_init(objc_opt_class());
 
-    v38 = [(OADStroke *)self head];
-    [v37 setParent:v38];
+    head2 = [(OADStroke *)self head];
+    [v37 setParent:head2];
 
     objc_storeStrong(&self->mHead, v37);
-    v39 = [v4 possiblyInexistentOverrideForSelector:sel_isHeadOverridden];
+    head3 = [valuesCopy possiblyInexistentOverrideForSelector:sel_isHeadOverridden];
 
-    if (v39)
+    if (head3)
     {
-      v39 = [v4 head];
+      head3 = [valuesCopy head];
     }
 
     mHead = self->mHead;
-    if (mHead != v39)
+    if (mHead != head3)
     {
       objc_opt_class();
       v41 = objc_opt_isKindOfClass();
       if ((v41 & 1) == 0)
       {
-        v42 = [objc_opt_class() defaultProperties];
+        defaultProperties4 = [objc_opt_class() defaultProperties];
 
-        v39 = v42;
+        head3 = defaultProperties4;
       }
 
-      [(OADProperties *)self->mHead changeParentPreservingEffectiveValues:v39];
+      [(OADProperties *)self->mHead changeParentPreservingEffectiveValues:head3];
       if ((v41 & 1) == 0 || [(OADLineEnd *)self->mHead isAnythingOverridden])
       {
         goto LABEL_62;
@@ -524,35 +524,35 @@ LABEL_50:
 LABEL_62:
   }
 
-  if (self->mTail || ([(OADProperties *)self parent], v43 = objc_claimAutoreleasedReturnValue(), v43, v43 != v4))
+  if (self->mTail || ([(OADProperties *)self parent], v43 = objc_claimAutoreleasedReturnValue(), v43, v43 != valuesCopy))
   {
-    v44 = [(OADStroke *)self tail];
+    tail = [(OADStroke *)self tail];
     v45 = objc_alloc_init(objc_opt_class());
 
-    v46 = [(OADStroke *)self tail];
-    [v45 setParent:v46];
+    tail2 = [(OADStroke *)self tail];
+    [v45 setParent:tail2];
 
     objc_storeStrong(&self->mTail, v45);
-    v47 = [v4 possiblyInexistentOverrideForSelector:sel_isTailOverridden];
+    tail3 = [valuesCopy possiblyInexistentOverrideForSelector:sel_isTailOverridden];
 
-    if (v47)
+    if (tail3)
     {
-      v47 = [v4 tail];
+      tail3 = [valuesCopy tail];
     }
 
     mTail = self->mTail;
-    if (mTail != v47)
+    if (mTail != tail3)
     {
       objc_opt_class();
       v49 = objc_opt_isKindOfClass();
       if ((v49 & 1) == 0)
       {
-        v50 = [objc_opt_class() defaultProperties];
+        defaultProperties5 = [objc_opt_class() defaultProperties];
 
-        v47 = v50;
+        tail3 = defaultProperties5;
       }
 
-      [(OADProperties *)self->mTail changeParentPreservingEffectiveValues:v47];
+      [(OADProperties *)self->mTail changeParentPreservingEffectiveValues:tail3];
       if ((v49 & 1) == 0 || [(OADLineEnd *)self->mTail isAnythingOverridden])
       {
         goto LABEL_74;
@@ -566,11 +566,11 @@ LABEL_62:
 LABEL_74:
   }
 
-  if ((*(self + 84) & 2) != 0 || ([(OADProperties *)self parent], v51 = objc_claimAutoreleasedReturnValue(), v51, v51 != v4))
+  if ((*(self + 84) & 2) != 0 || ([(OADProperties *)self parent], v51 = objc_claimAutoreleasedReturnValue(), v51, v51 != valuesCopy))
   {
     [(OADStroke *)self width];
     v53 = v52;
-    [v4 width];
+    [valuesCopy width];
     if (v53 == v54)
     {
       *(self + 84) &= ~2u;
@@ -583,10 +583,10 @@ LABEL_74:
     }
   }
 
-  if ((*(self + 84) & 4) != 0 || ([(OADProperties *)self parent], v55 = objc_claimAutoreleasedReturnValue(), v55, v55 != v4))
+  if ((*(self + 84) & 4) != 0 || ([(OADProperties *)self parent], v55 = objc_claimAutoreleasedReturnValue(), v55, v55 != valuesCopy))
   {
     v56 = [(OADStroke *)self cap];
-    if (v56 == [v4 cap])
+    if (v56 == [valuesCopy cap])
     {
       *(self + 84) &= ~4u;
     }
@@ -597,10 +597,10 @@ LABEL_74:
     }
   }
 
-  if ((*(self + 84) & 8) != 0 || ([(OADProperties *)self parent], v57 = objc_claimAutoreleasedReturnValue(), v57, v57 != v4))
+  if ((*(self + 84) & 8) != 0 || ([(OADProperties *)self parent], v57 = objc_claimAutoreleasedReturnValue(), v57, v57 != valuesCopy))
   {
-    v58 = [(OADStroke *)self compoundType];
-    if (v58 == [v4 compoundType])
+    compoundType = [(OADStroke *)self compoundType];
+    if (compoundType == [valuesCopy compoundType])
     {
       *(self + 84) &= ~8u;
     }
@@ -611,10 +611,10 @@ LABEL_74:
     }
   }
 
-  if ((*(self + 84) & 0x10) != 0 || ([(OADProperties *)self parent], v59 = objc_claimAutoreleasedReturnValue(), v59, v59 != v4))
+  if ((*(self + 84) & 0x10) != 0 || ([(OADProperties *)self parent], v59 = objc_claimAutoreleasedReturnValue(), v59, v59 != valuesCopy))
   {
-    v60 = [(OADStroke *)self penAlignment];
-    if (v60 == [v4 penAlignment])
+    penAlignment = [(OADStroke *)self penAlignment];
+    if (penAlignment == [valuesCopy penAlignment])
     {
       *(self + 84) &= ~0x10u;
     }
@@ -628,43 +628,43 @@ LABEL_74:
 
 - (void)removeUnnecessaryOverrides
 {
-  v3 = [(OADProperties *)self parent];
+  parent = [(OADProperties *)self parent];
 
-  if (!v3)
+  if (!parent)
   {
     return;
   }
 
-  v4 = [(OADProperties *)self isMerged];
-  v5 = [(OADProperties *)self isMergedWithParent];
+  isMerged = [(OADProperties *)self isMerged];
+  isMergedWithParent = [(OADProperties *)self isMergedWithParent];
   [(OADProperties *)self setMerged:0];
   [(OADProperties *)self setMergedWithParent:0];
   if ([(OADStroke *)self isColorOverridden])
   {
-    v6 = [(OADProperties *)self parent];
-    v7 = [(OADStroke *)self color];
-    v8 = [v6 color];
+    parent2 = [(OADProperties *)self parent];
+    color = [(OADStroke *)self color];
+    color2 = [parent2 color];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(objc_object *)v7 removeUnnecessaryOverrides];
+      [(objc_object *)color removeUnnecessaryOverrides];
       v9 = objc_opt_class();
       if (v9 != objc_opt_class())
       {
         goto LABEL_9;
       }
 
-      v10 = [(objc_object *)v7 isMergedWithParent];
-      [(objc_object *)v7 setMergedWithParent:0];
-      v11 = [(objc_object *)v7 isAnythingOverridden];
-      [(objc_object *)v7 setMergedWithParent:v10];
-      if (v11)
+      isMergedWithParent2 = [(objc_object *)color isMergedWithParent];
+      [(objc_object *)color setMergedWithParent:0];
+      isAnythingOverridden = [(objc_object *)color isAnythingOverridden];
+      [(objc_object *)color setMergedWithParent:isMergedWithParent2];
+      if (isAnythingOverridden)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!TCObjectEqual(v7, v8))
+    else if (!TCObjectEqual(color, color2))
     {
 LABEL_9:
 
@@ -684,24 +684,24 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  v13 = [(OADProperties *)self parent];
-  v14 = [(OADStroke *)self fill];
-  v15 = [v13 fill];
+  parent3 = [(OADProperties *)self parent];
+  fill = [(OADStroke *)self fill];
+  fill2 = [parent3 fill];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(objc_object *)v14 removeUnnecessaryOverrides];
+    [(objc_object *)fill removeUnnecessaryOverrides];
     v16 = objc_opt_class();
     if (v16 != objc_opt_class())
     {
       goto LABEL_17;
     }
 
-    v17 = [(objc_object *)v14 isMergedWithParent];
-    [(objc_object *)v14 setMergedWithParent:0];
-    v18 = [(objc_object *)v14 isAnythingOverridden];
-    [(objc_object *)v14 setMergedWithParent:v17];
-    if (v18)
+    isMergedWithParent3 = [(objc_object *)fill isMergedWithParent];
+    [(objc_object *)fill setMergedWithParent:0];
+    isAnythingOverridden2 = [(objc_object *)fill isAnythingOverridden];
+    [(objc_object *)fill setMergedWithParent:isMergedWithParent3];
+    if (isAnythingOverridden2)
     {
       goto LABEL_17;
     }
@@ -709,7 +709,7 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  if (TCObjectEqual(v14, v15))
+  if (TCObjectEqual(fill, fill2))
   {
 LABEL_16:
     mFill = self->mFill;
@@ -724,24 +724,24 @@ LABEL_18:
     goto LABEL_26;
   }
 
-  v20 = [(OADProperties *)self parent];
-  v21 = [(OADStroke *)self dash];
-  v22 = [v20 dash];
+  parent4 = [(OADProperties *)self parent];
+  dash = [(OADStroke *)self dash];
+  dash2 = [parent4 dash];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(objc_object *)v21 removeUnnecessaryOverrides];
+    [(objc_object *)dash removeUnnecessaryOverrides];
     v23 = objc_opt_class();
     if (v23 != objc_opt_class())
     {
       goto LABEL_25;
     }
 
-    v24 = [(objc_object *)v21 isMergedWithParent];
-    [(objc_object *)v21 setMergedWithParent:0];
-    v25 = [(objc_object *)v21 isAnythingOverridden];
-    [(objc_object *)v21 setMergedWithParent:v24];
-    if (v25)
+    isMergedWithParent4 = [(objc_object *)dash isMergedWithParent];
+    [(objc_object *)dash setMergedWithParent:0];
+    isAnythingOverridden3 = [(objc_object *)dash isAnythingOverridden];
+    [(objc_object *)dash setMergedWithParent:isMergedWithParent4];
+    if (isAnythingOverridden3)
     {
       goto LABEL_25;
     }
@@ -749,7 +749,7 @@ LABEL_18:
     goto LABEL_24;
   }
 
-  if (TCObjectEqual(v21, v22))
+  if (TCObjectEqual(dash, dash2))
   {
 LABEL_24:
     mDash = self->mDash;
@@ -764,24 +764,24 @@ LABEL_26:
     goto LABEL_34;
   }
 
-  v27 = [(OADProperties *)self parent];
-  v28 = [(OADStroke *)self join];
-  v29 = [v27 join];
+  parent5 = [(OADProperties *)self parent];
+  join = [(OADStroke *)self join];
+  join2 = [parent5 join];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(objc_object *)v28 removeUnnecessaryOverrides];
+    [(objc_object *)join removeUnnecessaryOverrides];
     v30 = objc_opt_class();
     if (v30 != objc_opt_class())
     {
       goto LABEL_33;
     }
 
-    v31 = [(objc_object *)v28 isMergedWithParent];
-    [(objc_object *)v28 setMergedWithParent:0];
-    v32 = [(objc_object *)v28 isAnythingOverridden];
-    [(objc_object *)v28 setMergedWithParent:v31];
-    if (v32)
+    isMergedWithParent5 = [(objc_object *)join isMergedWithParent];
+    [(objc_object *)join setMergedWithParent:0];
+    isAnythingOverridden4 = [(objc_object *)join isAnythingOverridden];
+    [(objc_object *)join setMergedWithParent:isMergedWithParent5];
+    if (isAnythingOverridden4)
     {
       goto LABEL_33;
     }
@@ -789,7 +789,7 @@ LABEL_26:
     goto LABEL_32;
   }
 
-  if (TCObjectEqual(v28, v29))
+  if (TCObjectEqual(join, join2))
   {
 LABEL_32:
     mJoin = self->mJoin;
@@ -804,24 +804,24 @@ LABEL_34:
     goto LABEL_42;
   }
 
-  v34 = [(OADProperties *)self parent];
-  v35 = [(OADStroke *)self head];
-  v36 = [v34 head];
+  parent6 = [(OADProperties *)self parent];
+  head = [(OADStroke *)self head];
+  head2 = [parent6 head];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(objc_object *)v35 removeUnnecessaryOverrides];
+    [(objc_object *)head removeUnnecessaryOverrides];
     v37 = objc_opt_class();
     if (v37 != objc_opt_class())
     {
       goto LABEL_41;
     }
 
-    v38 = [(objc_object *)v35 isMergedWithParent];
-    [(objc_object *)v35 setMergedWithParent:0];
-    v39 = [(objc_object *)v35 isAnythingOverridden];
-    [(objc_object *)v35 setMergedWithParent:v38];
-    if (v39)
+    isMergedWithParent6 = [(objc_object *)head isMergedWithParent];
+    [(objc_object *)head setMergedWithParent:0];
+    isAnythingOverridden5 = [(objc_object *)head isAnythingOverridden];
+    [(objc_object *)head setMergedWithParent:isMergedWithParent6];
+    if (isAnythingOverridden5)
     {
       goto LABEL_41;
     }
@@ -829,7 +829,7 @@ LABEL_34:
     goto LABEL_40;
   }
 
-  if (TCObjectEqual(v35, v36))
+  if (TCObjectEqual(head, head2))
   {
 LABEL_40:
     mHead = self->mHead;
@@ -841,30 +841,30 @@ LABEL_41:
 LABEL_42:
   if ([(OADStroke *)self isTailOverridden])
   {
-    v41 = [(OADProperties *)self parent];
-    v42 = [(OADStroke *)self tail];
-    v43 = [v41 tail];
+    parent7 = [(OADProperties *)self parent];
+    tail = [(OADStroke *)self tail];
+    tail2 = [parent7 tail];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(objc_object *)v42 removeUnnecessaryOverrides];
+      [(objc_object *)tail removeUnnecessaryOverrides];
       v44 = objc_opt_class();
       if (v44 != objc_opt_class())
       {
         goto LABEL_49;
       }
 
-      v45 = [(objc_object *)v42 isMergedWithParent];
-      [(objc_object *)v42 setMergedWithParent:0];
-      v46 = [(objc_object *)v42 isAnythingOverridden];
-      [(objc_object *)v42 setMergedWithParent:v45];
-      if (v46)
+      isMergedWithParent7 = [(objc_object *)tail isMergedWithParent];
+      [(objc_object *)tail setMergedWithParent:0];
+      isAnythingOverridden6 = [(objc_object *)tail isAnythingOverridden];
+      [(objc_object *)tail setMergedWithParent:isMergedWithParent7];
+      if (isAnythingOverridden6)
       {
         goto LABEL_49;
       }
     }
 
-    else if (!TCObjectEqual(v42, v43))
+    else if (!TCObjectEqual(tail, tail2))
     {
 LABEL_49:
 
@@ -880,10 +880,10 @@ LABEL_49:
 LABEL_50:
   if ([(OADStroke *)self isWidthOverridden])
   {
-    v48 = [(OADProperties *)self parent];
+    parent8 = [(OADProperties *)self parent];
     [(OADStroke *)self width];
     v50 = v49;
-    [v48 width];
+    [parent8 width];
     if (v50 == *&v51)
     {
       LODWORD(v51) = 0.75;
@@ -894,9 +894,9 @@ LABEL_50:
 
   if ([(OADStroke *)self isCapOverridden])
   {
-    v52 = [(OADProperties *)self parent];
+    parent9 = [(OADProperties *)self parent];
     v53 = [(OADStroke *)self cap];
-    if (v53 == [v52 cap])
+    if (v53 == [parent9 cap])
     {
       [(OADStroke *)self setCap:2];
       *(self + 84) &= ~4u;
@@ -905,9 +905,9 @@ LABEL_50:
 
   if ([(OADStroke *)self isCompoundTypeOverridden])
   {
-    v54 = [(OADProperties *)self parent];
-    v55 = [(OADStroke *)self compoundType];
-    if (v55 == [v54 compoundType])
+    parent10 = [(OADProperties *)self parent];
+    compoundType = [(OADStroke *)self compoundType];
+    if (compoundType == [parent10 compoundType])
     {
       [(OADStroke *)self setCompoundType:0];
       *(self + 84) &= ~8u;
@@ -916,17 +916,17 @@ LABEL_50:
 
   if ([(OADStroke *)self isPenAlignmentOverridden])
   {
-    v56 = [(OADProperties *)self parent];
-    v57 = [(OADStroke *)self penAlignment];
-    if (v57 == [v56 penAlignment])
+    parent11 = [(OADProperties *)self parent];
+    penAlignment = [(OADStroke *)self penAlignment];
+    if (penAlignment == [parent11 penAlignment])
     {
       [(OADStroke *)self setPenAlignment:0];
       *(self + 84) &= ~0x10u;
     }
   }
 
-  [(OADProperties *)self setMerged:v4];
-  [(OADProperties *)self setMergedWithParent:v5];
+  [(OADProperties *)self setMerged:isMerged];
+  [(OADProperties *)self setMergedWithParent:isMergedWithParent];
   v58.receiver = self;
   v58.super_class = OADStroke;
   [(OADProperties *)&v58 removeUnnecessaryOverrides];
@@ -939,51 +939,51 @@ void __30__OADStroke_defaultProperties__block_invoke()
   +[OADStroke defaultProperties]::defaultProperties = v0;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   v12.receiver = self;
   v12.super_class = OADStroke;
-  [(OADProperties *)&v12 setParent:v4];
+  [(OADProperties *)&v12 setParent:parentCopy];
   if (self->mFill)
   {
-    v5 = [v4 fill];
-    if ([v5 isMemberOfClass:objc_opt_class()])
+    fill = [parentCopy fill];
+    if ([fill isMemberOfClass:objc_opt_class()])
     {
-      [(OADProperties *)self->mFill setParent:v5];
+      [(OADProperties *)self->mFill setParent:fill];
     }
   }
 
   if (self->mDash)
   {
-    v6 = [v4 dash];
-    if ([v6 isMemberOfClass:objc_opt_class()])
+    dash = [parentCopy dash];
+    if ([dash isMemberOfClass:objc_opt_class()])
     {
-      [(OADProperties *)self->mDash setParent:v6];
+      [(OADProperties *)self->mDash setParent:dash];
     }
   }
 
   if (self->mJoin)
   {
-    v7 = [v4 join];
-    if ([v7 isMemberOfClass:objc_opt_class()])
+    join = [parentCopy join];
+    if ([join isMemberOfClass:objc_opt_class()])
     {
-      [(OADProperties *)self->mJoin setParent:v7];
+      [(OADProperties *)self->mJoin setParent:join];
     }
   }
 
   mHead = self->mHead;
   if (mHead)
   {
-    v9 = [v4 head];
-    [(OADProperties *)mHead setParent:v9];
+    head = [parentCopy head];
+    [(OADProperties *)mHead setParent:head];
   }
 
   mTail = self->mTail;
   if (mTail)
   {
-    v11 = [v4 tail];
-    [(OADProperties *)mTail setParent:v11];
+    tail = [parentCopy tail];
+    [(OADProperties *)mTail setParent:tail];
   }
 }
 
@@ -1003,13 +1003,13 @@ void __30__OADStroke_defaultProperties__block_invoke()
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     v8 = *(self + 84);
     v6 = ((v7[84] ^ v8) & 1) == 0 && ((v8 & 1) == 0 || [(OADColor *)self->mColor isEqual:*(v7 + 3)]) && TCObjectEqual(self->mFill, *(v7 + 4)) && TCObjectEqual(self->mDash, *(v7 + 5)) && TCObjectEqual(self->mJoin, *(v7 + 6)) && TCObjectEqual(self->mHead, *(v7 + 7)) && TCObjectEqual(self->mTail, *(v7 + 8)) && ((v7[84] >> 1) & 1) == (*(self + 84) & 2) >> 1 && ((*(self + 84) & 2) == 0 || self->mWidth == *(v7 + 18)) && ((v7[84] >> 2) & 1) == (*(self + 84) & 4) >> 2 && ((*(self + 84) & 4) == 0 || self->mCap == v7[76]) && ((v7[84] >> 3) & 1) == (*(self + 84) & 8) >> 3 && ((*(self + 84) & 8) == 0 || self->mCompoundType == v7[77]) && ((v7[84] >> 4) & 1) == (*(self + 84) & 0x10) >> 4 && ((*(self + 84) & 0x10) == 0 || self->mPenAlignment == *(v7 + 20));
   }

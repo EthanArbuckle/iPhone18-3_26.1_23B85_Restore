@@ -2,8 +2,8 @@
 - (UIBarButtonItem)acceptButton;
 - (UIBarButtonItem)declineButton;
 - (UITextView)textView;
-- (void)accept:(id)a3;
-- (void)decline:(id)a3;
+- (void)accept:(id)accept;
+- (void)decline:(id)decline;
 - (void)didReceiveMemoryWarning;
 - (void)viewDidLoad;
 @end
@@ -23,18 +23,18 @@
   v30[1] = &off_1000E5E58;
   v5 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:2];
   v6 = [v3 initWithURL:v4 options:v5 documentAttributes:0 error:0];
-  v7 = [(iFBALegalViewController *)self textView];
-  [v7 setAttributedText:v6];
+  textView = [(iFBALegalViewController *)self textView];
+  [textView setAttributedText:v6];
 
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"DECLINE" value:&stru_1000E2210 table:0];
-  v10 = [(iFBALegalViewController *)self declineButton];
-  [v10 setTitle:v9];
+  declineButton = [(iFBALegalViewController *)self declineButton];
+  [declineButton setTitle:v9];
 
   v11 = +[NSBundle mainBundle];
   v12 = [v11 localizedStringForKey:@"ACCEPT" value:&stru_1000E2210 table:0];
-  v13 = [(iFBALegalViewController *)self acceptButton];
-  [v13 setTitle:v12];
+  acceptButton = [(iFBALegalViewController *)self acceptButton];
+  [acceptButton setTitle:v12];
 
   v14 = [UITraitCollection traitCollectionWithUserInterfaceStyle:0];
   v15 = [UITraitCollection traitCollectionWithUserInterfaceStyle:2];
@@ -47,17 +47,17 @@
   v18 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:2];
 
   v19 = [UIColor _dynamicColorWithColorsByTraitCollection:v18];
-  v20 = [(iFBALegalViewController *)self view];
-  [v20 setBackgroundColor:v19];
+  view = [(iFBALegalViewController *)self view];
+  [view setBackgroundColor:v19];
 
-  v21 = [(iFBALegalViewController *)self view];
-  v22 = [v21 backgroundColor];
-  v23 = [(iFBALegalViewController *)self textView];
-  [v23 setBackgroundColor:v22];
+  view2 = [(iFBALegalViewController *)self view];
+  backgroundColor = [view2 backgroundColor];
+  textView2 = [(iFBALegalViewController *)self textView];
+  [textView2 setBackgroundColor:backgroundColor];
 
   v24 = +[UIColor labelColor];
-  v25 = [(iFBALegalViewController *)self textView];
-  [v25 setTextColor:v24];
+  textView3 = [(iFBALegalViewController *)self textView];
+  [textView3 setTextColor:v24];
 
   [(iFBALegalViewController *)self setModalInPresentation:1];
 }
@@ -69,7 +69,7 @@
   [(iFBALegalViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)decline:(id)a3
+- (void)decline:(id)decline
 {
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"AGREEMENT_REQUIREMENT" value:&stru_1000E2210 table:0];
@@ -83,15 +83,15 @@
   [(iFBALegalViewController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)accept:(id)a3
+- (void)accept:(id)accept
 {
   v4 = +[iFBAConstants sharedUserDefaults];
   v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", +[FBKSharedConstants currentLegalVersion]);
   [v4 setValue:v5 forKey:FBKAgreedLegalVersionKey];
 
   [(iFBALegalViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v6 = [(iFBALegalViewController *)self completion];
-  v6[2](v6, 1);
+  completion = [(iFBALegalViewController *)self completion];
+  completion[2](completion, 1);
 }
 
 - (UITextView)textView

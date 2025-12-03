@@ -1,5 +1,5 @@
 @interface ManagedApplePayMerchantTokenUsageMetadata
-- (_TtC10FinanceKit41ManagedApplePayMerchantTokenUsageMetadata)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC10FinanceKit41ManagedApplePayMerchantTokenUsageMetadata)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (void)willSave;
 @end
 
@@ -14,11 +14,11 @@
   sub_1B75F766C();
 }
 
-- (_TtC10FinanceKit41ManagedApplePayMerchantTokenUsageMetadata)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC10FinanceKit41ManagedApplePayMerchantTokenUsageMetadata)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(ManagedApplePayMerchantTokenUsageMetadata *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedApplePayMerchantTokenUsageMetadata *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

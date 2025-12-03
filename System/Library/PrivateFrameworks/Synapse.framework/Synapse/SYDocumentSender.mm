@@ -1,28 +1,28 @@
 @interface SYDocumentSender
-- (SYDocumentSender)initWithCoder:(id)a3;
-- (SYDocumentSender)initWithName:(id)a3 handle:(id)a4;
+- (SYDocumentSender)initWithCoder:(id)coder;
+- (SYDocumentSender)initWithName:(id)name handle:(id)handle;
 - (id)description;
-- (id)formattedNameWithStyle:(int64_t)a3;
-- (id)personNameComponentsFormattedWithStyle:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)formattedNameWithStyle:(int64_t)style;
+- (id)personNameComponentsFormattedWithStyle:(int64_t)style;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SYDocumentSender
 
-- (SYDocumentSender)initWithName:(id)a3 handle:(id)a4
+- (SYDocumentSender)initWithName:(id)name handle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handleCopy = handle;
   v14.receiver = self;
   v14.super_class = SYDocumentSender;
   v8 = [(SYDocumentSender *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v7 copy];
+    v11 = [handleCopy copy];
     handle = v8->_handle;
     v8->_handle = v11;
   }
@@ -35,28 +35,28 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SYDocumentSender *)self name];
-  v7 = [(SYDocumentSender *)self handle];
-  v8 = [v3 stringWithFormat:@"<%@: %p> {name = %@, handle = %@}", v5, self, v6, v7];
+  name = [(SYDocumentSender *)self name];
+  handle = [(SYDocumentSender *)self handle];
+  v8 = [v3 stringWithFormat:@"<%@: %p> {name = %@, handle = %@}", v5, self, name, handle];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SYDocumentSender *)self name];
-  [v4 encodeObject:v5 forKey:@"SYDocumentSenderNameKey"];
+  coderCopy = coder;
+  name = [(SYDocumentSender *)self name];
+  [coderCopy encodeObject:name forKey:@"SYDocumentSenderNameKey"];
 
-  v6 = [(SYDocumentSender *)self handle];
-  [v4 encodeObject:v6 forKey:@"SYDocumentSenderHandleKey"];
+  handle = [(SYDocumentSender *)self handle];
+  [coderCopy encodeObject:handle forKey:@"SYDocumentSenderHandleKey"];
 }
 
-- (SYDocumentSender)initWithCoder:(id)a3
+- (SYDocumentSender)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SYDocumentSenderNameKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SYDocumentSenderHandleKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SYDocumentSenderNameKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SYDocumentSenderHandleKey"];
 
   if (v5)
   {
@@ -70,54 +70,54 @@
 
   if (v7)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SYDocumentSender *)self initWithName:v5 handle:v6];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)formattedNameWithStyle:(int64_t)a3
+- (id)formattedNameWithStyle:(int64_t)style
 {
   v25 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CCAC08]);
-  [v5 setStyle:a3];
-  v6 = [(SYDocumentSender *)self name];
-  v7 = [v5 personNameComponentsFromString:v6];
+  [v5 setStyle:style];
+  name = [(SYDocumentSender *)self name];
+  v7 = [v5 personNameComponentsFromString:name];
 
   if (v7)
   {
-    v8 = [v5 stringFromPersonNameComponents:v7];
+    name5 = [v5 stringFromPersonNameComponents:v7];
     goto LABEL_12;
   }
 
   v9 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(SYDocumentSender *)self name];
+    name2 = [(SYDocumentSender *)self name];
     v21 = 138478083;
-    v22 = v10;
+    v22 = name2;
     v23 = 2048;
-    v24 = a3;
+    styleCopy2 = style;
     _os_log_impl(&dword_225901000, v9, OS_LOG_TYPE_DEFAULT, "Unable to get person name components from string: %{private}@, style: %ld", &v21, 0x16u);
   }
 
-  v11 = [(SYDocumentSender *)self name];
-  if ([v11 length])
+  name3 = [(SYDocumentSender *)self name];
+  if ([name3 length])
   {
-    v12 = [(SYDocumentSender *)self name];
-    v13 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v14 = [v12 stringByTrimmingCharactersInSet:v13];
+    name4 = [(SYDocumentSender *)self name];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v14 = [name4 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
     v15 = [v14 length];
 
     if (v15)
     {
-      v8 = [(SYDocumentSender *)self name];
+      name5 = [(SYDocumentSender *)self name];
       goto LABEL_12;
     }
   }
@@ -129,29 +129,29 @@
   v16 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(SYDocumentSender *)self name];
+    name6 = [(SYDocumentSender *)self name];
     v21 = 138478083;
-    v22 = v17;
+    v22 = name6;
     v23 = 2048;
-    v24 = a3;
+    styleCopy2 = style;
     _os_log_impl(&dword_225901000, v16, OS_LOG_TYPE_DEFAULT, "Have to fallback to handle. Name was empty or nil: %{private}@, style: %ld", &v21, 0x16u);
   }
 
-  v8 = [(SYDocumentSender *)self handle];
+  name5 = [(SYDocumentSender *)self handle];
 LABEL_12:
-  v18 = v8;
+  v18 = name5;
 
   v19 = *MEMORY[0x277D85DE8];
 
   return v18;
 }
 
-- (id)personNameComponentsFormattedWithStyle:(int64_t)a3
+- (id)personNameComponentsFormattedWithStyle:(int64_t)style
 {
   v5 = objc_alloc_init(MEMORY[0x277CCAC08]);
-  [v5 setStyle:a3];
-  v6 = [(SYDocumentSender *)self name];
-  v7 = [v5 personNameComponentsFromString:v6];
+  [v5 setStyle:style];
+  name = [(SYDocumentSender *)self name];
+  v7 = [v5 personNameComponentsFromString:name];
 
   return v7;
 }

@@ -21,7 +21,7 @@
   v7[3] = &unk_1E7854418;
   v7[4] = &v8;
   [pui_inspect__inspector_0 observeOtherSetting:a3 withBlock:v7];
-  [pui_inspect__inspector_0 inspectDiff:a1 withContext:0];
+  [pui_inspect__inspector_0 inspectDiff:self withContext:0];
   [pui_inspect__inspector_0 removeAllObservers];
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);

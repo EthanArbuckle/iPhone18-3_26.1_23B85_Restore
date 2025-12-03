@@ -1,15 +1,15 @@
 @interface FPCKService
 - (BOOL)isInvalidated;
-- (FPCKService)initWithConnection:(id)a3;
-- (void)prepareFPCKForDomain:(id)a3 domainUserInfo:(id)a4 domainRootURL:(id)a5 databaseBackupPath:(id)a6 accessingPaths:(id)a7 urls:(id)a8 volumeRole:(unsigned int)a9 options:(unint64_t)a10 reason:(unint64_t)a11 fpfs:(BOOL)a12 iCDPackageDetection:(BOOL)a13 completionHandler:(id)a14;
-- (void)runFPCKWithPauseHandler:(id)a3 contentBarrier:(int64_t)a4 completionHandler:(id)a5;
+- (FPCKService)initWithConnection:(id)connection;
+- (void)prepareFPCKForDomain:(id)domain domainUserInfo:(id)info domainRootURL:(id)l databaseBackupPath:(id)path accessingPaths:(id)paths urls:(id)urls volumeRole:(unsigned int)role options:(unint64_t)self0 reason:(unint64_t)self1 fpfs:(BOOL)self2 iCDPackageDetection:(BOOL)self3 completionHandler:(id)self4;
+- (void)runFPCKWithPauseHandler:(id)handler contentBarrier:(int64_t)barrier completionHandler:(id)completionHandler;
 @end
 
 @implementation FPCKService
 
-- (FPCKService)initWithConnection:(id)a3
+- (FPCKService)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v23.receiver = self;
   v23.super_class = FPCKService;
   v5 = [(FPCKService *)&v23 init];
@@ -55,7 +55,7 @@
     v20[2] = sub_10000144C;
     v20[3] = &unk_100008280;
     objc_copyWeak(&v21, &location);
-    [v4 setInvalidationHandler:v20];
+    [connectionCopy setInvalidationHandler:v20];
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
   }
@@ -63,69 +63,69 @@
   return v6;
 }
 
-- (void)prepareFPCKForDomain:(id)a3 domainUserInfo:(id)a4 domainRootURL:(id)a5 databaseBackupPath:(id)a6 accessingPaths:(id)a7 urls:(id)a8 volumeRole:(unsigned int)a9 options:(unint64_t)a10 reason:(unint64_t)a11 fpfs:(BOOL)a12 iCDPackageDetection:(BOOL)a13 completionHandler:(id)a14
+- (void)prepareFPCKForDomain:(id)domain domainUserInfo:(id)info domainRootURL:(id)l databaseBackupPath:(id)path accessingPaths:(id)paths urls:(id)urls volumeRole:(unsigned int)role options:(unint64_t)self0 reason:(unint64_t)self1 fpfs:(BOOL)self2 iCDPackageDetection:(BOOL)self3 completionHandler:(id)self4
 {
-  v30 = a3;
-  v29 = a4;
-  v28 = a5;
-  v27 = a6;
-  v26 = a7;
-  v21 = a8;
+  domainCopy = domain;
+  infoCopy = info;
+  lCopy = l;
+  pathCopy = path;
+  pathsCopy = paths;
+  urlsCopy = urls;
   if (self->_hasBeenPrepared)
   {
-    (*(a14 + 2))(a14, 0);
+    (*(handler + 2))(handler, 0);
   }
 
   else
   {
-    objc_storeStrong(&self->_domainID, a3);
-    v22 = a14;
-    objc_storeStrong(&self->_domainUserInfo, a4);
-    objc_storeStrong(&self->_domainRootURL, a5);
-    objc_storeStrong(&self->_databaseBackupPath, a6);
-    objc_storeStrong(&self->_accessingPaths, a7);
-    objc_storeStrong(&self->_urls, a8);
-    self->_volumeRole = a9;
-    self->_options = a10;
-    self->_reason = a11;
-    self->_fpfs = a12;
-    self->_iCDPackageDetection = a13;
+    objc_storeStrong(&self->_domainID, domain);
+    handlerCopy = handler;
+    objc_storeStrong(&self->_domainUserInfo, info);
+    objc_storeStrong(&self->_domainRootURL, l);
+    objc_storeStrong(&self->_databaseBackupPath, path);
+    objc_storeStrong(&self->_accessingPaths, paths);
+    objc_storeStrong(&self->_urls, urls);
+    self->_volumeRole = role;
+    self->_options = options;
+    self->_reason = reason;
+    self->_fpfs = fpfs;
+    self->_iCDPackageDetection = detection;
     self->_hasBeenPrepared = 1;
-    v23 = [(NSString *)self->_domainID fp_obfuscatedProviderDomainID];
-    [v23 UTF8String];
+    fp_obfuscatedProviderDomainID = [(NSString *)self->_domainID fp_obfuscatedProviderDomainID];
+    [fp_obfuscatedProviderDomainID UTF8String];
     v24 = fpfs_create_log_for_provider();
     log = self->_log;
     self->_log = v24;
 
-    v22[2](v22, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
 - (BOOL)isInvalidated
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  invalidated = v2->_invalidated;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  invalidated = selfCopy->_invalidated;
+  objc_sync_exit(selfCopy);
 
   return invalidated;
 }
 
-- (void)runFPCKWithPauseHandler:(id)a3 contentBarrier:(int64_t)a4 completionHandler:(id)a5
+- (void)runFPCKWithPauseHandler:(id)handler contentBarrier:(int64_t)barrier completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a5;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   runQueue = self->_runQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100001790;
   v13[3] = &unk_100008418;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
+  v14 = handlerCopy;
+  v15 = completionHandlerCopy;
+  barrierCopy = barrier;
+  v11 = handlerCopy;
+  v12 = completionHandlerCopy;
   dispatch_async(runQueue, v13);
 }
 

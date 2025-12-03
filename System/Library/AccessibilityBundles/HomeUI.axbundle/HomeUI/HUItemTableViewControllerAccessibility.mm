@@ -1,36 +1,36 @@
 @interface HUItemTableViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 @end
 
 @implementation HUItemTableViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUItemTableViewController" hasInstanceMethod:@"tableView:cellForRowAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"HUItemTableViewController" hasInstanceVariable:@"_itemManager" withType:"HFItemManager"];
-  [v3 validateClass:@"HUStatusAndNotificationsItemManager" isKindOfClass:@"HFItemManager"];
-  [v3 validateClass:@"HUStatusAndNotificationsItemManager" hasInstanceMethod:@"conditionModule" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUStatusAndNotificationsItemManager" hasInstanceVariable:@"_conditionModule" withType:"HUTriggerConditionEditorItemModule"];
-  [v3 validateClass:@"HUTriggerConditionEditorItemModule" hasInstanceMethod:@"isShowConditionOptionsItem:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"HUEditableTextCell"];
-  [v3 validateClass:@"HUTitleValueCell" isKindOfClass:@"HUIconCell"];
-  [v3 validateClass:@"HUIconCell" hasInstanceMethod:@"isDisabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"HUTitleValueCell" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUTitleValueCell" hasInstanceMethod:@"valueText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUEditableTextCell" hasInstanceVariable:@"_textField" withType:"UITextField"];
-  [v3 validateClass:@"HUDynamicAlignmentTitleValueCell"];
-  [v3 validateClass:@"HUServiceDetailsRoomItem"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUItemTableViewController" hasInstanceMethod:@"tableView:cellForRowAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"HUItemTableViewController" hasInstanceVariable:@"_itemManager" withType:"HFItemManager"];
+  [validationsCopy validateClass:@"HUStatusAndNotificationsItemManager" isKindOfClass:@"HFItemManager"];
+  [validationsCopy validateClass:@"HUStatusAndNotificationsItemManager" hasInstanceMethod:@"conditionModule" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUStatusAndNotificationsItemManager" hasInstanceVariable:@"_conditionModule" withType:"HUTriggerConditionEditorItemModule"];
+  [validationsCopy validateClass:@"HUTriggerConditionEditorItemModule" hasInstanceMethod:@"isShowConditionOptionsItem:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"HUEditableTextCell"];
+  [validationsCopy validateClass:@"HUTitleValueCell" isKindOfClass:@"HUIconCell"];
+  [validationsCopy validateClass:@"HUIconCell" hasInstanceMethod:@"isDisabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"HUTitleValueCell" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUTitleValueCell" hasInstanceMethod:@"valueText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUEditableTextCell" hasInstanceVariable:@"_textField" withType:"UITextField"];
+  [validationsCopy validateClass:@"HUDynamicAlignmentTitleValueCell"];
+  [validationsCopy validateClass:@"HUServiceDetailsRoomItem"];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v27.receiver = self;
   v27.super_class = HUItemTableViewControllerAccessibility;
-  v8 = [(HUItemTableViewControllerAccessibility *)&v27 tableView:v6 cellForRowAtIndexPath:v7];
+  v8 = [(HUItemTableViewControllerAccessibility *)&v27 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   MEMORY[0x29C2DA460](@"HUEditableTextCell");
   if (objc_opt_isKindOfClass())
   {
@@ -52,7 +52,7 @@
   v9 = [(HUItemTableViewControllerAccessibility *)self safeValueForKey:@"itemManager"];
   v10 = __UIAccessibilityCastAsClass();
 
-  v11 = [v10 displayedItemAtIndexPath:v7];
+  v11 = [v10 displayedItemAtIndexPath:pathCopy];
   if (objc_opt_respondsToSelector())
   {
     location = 0;
@@ -100,8 +100,8 @@
     }
   }
 
-  v14 = [v8 accessibilityTraits];
-  [v8 setAccessibilityTraits:*MEMORY[0x29EDC7F70] | v14];
+  accessibilityTraits = [v8 accessibilityTraits];
+  [v8 setAccessibilityTraits:*MEMORY[0x29EDC7F70] | accessibilityTraits];
   objc_initWeak(&location, v8);
   v16[0] = MEMORY[0x29EDCA5F8];
   v16[1] = 3221225472;

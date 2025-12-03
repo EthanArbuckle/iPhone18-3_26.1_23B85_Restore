@@ -1,7 +1,7 @@
 @interface ZoomSlugColorChooserDetailController
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -12,10 +12,10 @@
   v6.receiver = self;
   v6.super_class = ZoomSlugColorChooserDetailController;
   [(ZoomSlugColorChooserDetailController *)&v6 viewDidLoad];
-  v3 = [(ZoomSlugColorChooserDetailController *)self table];
+  table = [(ZoomSlugColorChooserDetailController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXColorChooserCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 - (id)specifiers
@@ -63,47 +63,47 @@
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = ZoomSlugColorChooserDetailController;
-  v4 = [(ZoomSlugColorChooserDetailController *)&v13 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 circle];
-  [v5 setAccessibilityIgnoresInvertColors:1];
+  v4 = [(ZoomSlugColorChooserDetailController *)&v13 tableView:view cellForRowAtIndexPath:path];
+  circle = [v4 circle];
+  [circle setAccessibilityIgnoresInvertColors:1];
 
-  v6 = [v4 specifier];
-  v7 = [v6 propertyForKey:@"controllerColor"];
-  v8 = [v7 integerValue];
+  specifier = [v4 specifier];
+  v7 = [specifier propertyForKey:@"controllerColor"];
+  integerValue = [v7 integerValue];
 
-  if (v8 == &dword_0 + 1 && _AXSInvertColorsEnabled())
+  if (integerValue == &dword_0 + 1 && _AXSInvertColorsEnabled())
   {
-    v9 = [v4 circle];
+    circle2 = [v4 circle];
     v10 = +[UIColor whiteColor];
-    [v9 setColor:v10];
+    [circle2 setColor:v10];
   }
 
   v11 = +[AXSettings sharedInstance];
-  [v4 setChecked:{objc_msgSend(v11, "zoomControllerColor") == v8}];
+  [v4 setChecked:{objc_msgSend(v11, "zoomControllerColor") == integerValue}];
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = ZoomSlugColorChooserDetailController;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ZoomSlugColorChooserDetailController *)&v13 tableView:v7 cellForRowAtIndexPath:v6];
-  v9 = [v8 specifier];
-  v10 = [v9 propertyForKey:@"controllerColor"];
-  v11 = [v10 integerValue];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(ZoomSlugColorChooserDetailController *)&v13 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  v10 = [specifier propertyForKey:@"controllerColor"];
+  integerValue = [v10 integerValue];
 
   v12 = +[AXSettings sharedInstance];
-  [v12 setZoomControllerColor:v11];
+  [v12 setZoomControllerColor:integerValue];
 
-  [(ZoomSlugColorChooserDetailController *)self updateTableCheckedSelection:v6];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [(ZoomSlugColorChooserDetailController *)self updateTableCheckedSelection:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 @end

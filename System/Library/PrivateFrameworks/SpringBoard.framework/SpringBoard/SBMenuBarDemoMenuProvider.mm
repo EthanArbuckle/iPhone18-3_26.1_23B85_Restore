@@ -1,19 +1,19 @@
 @interface SBMenuBarDemoMenuProvider
-- (BOOL)_shouldMinimizeAfterRestoreForScene:(id)a3;
+- (BOOL)_shouldMinimizeAfterRestoreForScene:(id)scene;
 - (SBMenuBarDemoMenuProviderDelegate)delegate;
 - (id)_activeDisplayWindowScene;
 - (id)_bundleIdsToMinimizeAfterRestore;
 - (id)_demoDisplayItemLayoutAttributesByBundleId;
-- (id)_demoLayoutAttributesForDisplayItem:(id)a3;
-- (id)demoMenuForScene:(id)a3 invokingFromSearch:(BOOL)a4;
+- (id)_demoLayoutAttributesForDisplayItem:(id)item;
+- (id)demoMenuForScene:(id)scene invokingFromSearch:(BOOL)search;
 - (int64_t)menuBarDemoMode;
-- (void)_performAfterDelay:(double)a3 actions:(id)a4;
-- (void)_requestNewWindowForBundleIdentifier:(id)a3;
+- (void)_performAfterDelay:(double)delay actions:(id)actions;
+- (void)_requestNewWindowForBundleIdentifier:(id)identifier;
 - (void)_restoreAllDemoState;
-- (void)_restoreBundleStateForAppsWithBundleIds:(id)a3;
-- (void)_setShouldMinimizeAfterRestore:(BOOL)a3 forScene:(id)a4;
-- (void)_storeDemoLayoutAttributes:(id)a3 forScene:(id)a4;
-- (void)_updateBundleIdToLayoutAttributesDictionary:(id)a3;
+- (void)_restoreBundleStateForAppsWithBundleIds:(id)ids;
+- (void)_setShouldMinimizeAfterRestore:(BOOL)restore forScene:(id)scene;
+- (void)_storeDemoLayoutAttributes:(id)attributes forScene:(id)scene;
+- (void)_updateBundleIdToLayoutAttributesDictionary:(id)dictionary;
 @end
 
 @implementation SBMenuBarDemoMenuProvider
@@ -21,31 +21,31 @@
 - (int64_t)menuBarDemoMode
 {
   v2 = +[SBDefaults localDefaults];
-  v3 = [v2 demoDefaults];
-  v4 = [v3 menuBarDemoMode];
+  demoDefaults = [v2 demoDefaults];
+  menuBarDemoMode = [demoDefaults menuBarDemoMode];
 
-  return v4;
+  return menuBarDemoMode;
 }
 
-- (id)demoMenuForScene:(id)a3 invokingFromSearch:(BOOL)a4
+- (id)demoMenuForScene:(id)scene invokingFromSearch:(BOOL)search
 {
-  v6 = a3;
-  v7 = [v6 clientHandle];
-  v8 = [v7 bundleIdentifier];
+  sceneCopy = scene;
+  clientHandle = [sceneCopy clientHandle];
+  bundleIdentifier = [clientHandle bundleIdentifier];
 
-  v9 = [MEMORY[0x277CBEB18] array];
-  if (v8)
+  array = [MEMORY[0x277CBEB18] array];
+  if (bundleIdentifier)
   {
-    v10 = [(SBMenuBarDemoMenuProvider *)self menuBarDemoMode];
-    if (a4)
+    menuBarDemoMode = [(SBMenuBarDemoMenuProvider *)self menuBarDemoMode];
+    if (search)
     {
-      if (v10 != 1)
+      if (menuBarDemoMode != 1)
       {
         goto LABEL_17;
       }
     }
 
-    else if (v10 != 2)
+    else if (menuBarDemoMode != 2)
     {
       goto LABEL_17;
     }
@@ -57,13 +57,13 @@
     v46[2] = __65__SBMenuBarDemoMenuProvider_demoMenuForScene_invokingFromSearch___block_invoke;
     v46[3] = &unk_2783B66D0;
     v46[4] = self;
-    v13 = v6;
+    v13 = sceneCopy;
     v47 = v13;
     v14 = [v11 actionWithTitle:@"Save This Layout" image:v12 identifier:0 handler:v46];
-    [v9 addObject:v14];
+    [array addObject:v14];
 
-    v15 = [(SBMenuBarDemoMenuProvider *)self _demoDisplayItemLayoutAttributesByBundleId];
-    v16 = [v15 objectForKeyedSubscript:v8];
+    _demoDisplayItemLayoutAttributesByBundleId = [(SBMenuBarDemoMenuProvider *)self _demoDisplayItemLayoutAttributesByBundleId];
+    v16 = [_demoDisplayItemLayoutAttributesByBundleId objectForKeyedSubscript:bundleIdentifier];
 
     if (v16)
     {
@@ -76,11 +76,11 @@
       v44[4] = self;
       v45 = v13;
       v19 = [v17 actionWithTitle:@"Remove This Layout" image:v18 identifier:0 handler:v44];
-      [v9 addObject:v19];
+      [array addObject:v19];
     }
 
-    v20 = [(SBMenuBarDemoMenuProvider *)self _bundleIdsToMinimizeAfterRestore];
-    v21 = [v20 containsObject:v8];
+    _bundleIdsToMinimizeAfterRestore = [(SBMenuBarDemoMenuProvider *)self _bundleIdsToMinimizeAfterRestore];
+    v21 = [_bundleIdsToMinimizeAfterRestore containsObject:bundleIdentifier];
 
     v22 = MEMORY[0x277D750C8];
     if (v21)
@@ -112,7 +112,7 @@
     }
 
     v27 = [v22 actionWithTitle:v25 image:v23 identifier:0 handler:v26];
-    [v9 addObject:v27];
+    [array addObject:v27];
 
     v28 = MEMORY[0x277D750C8];
     v29 = [MEMORY[0x277D755B8] systemImageNamed:@"rectangle.grid.3x1"];
@@ -122,10 +122,10 @@
     v39[3] = &unk_2783B1B68;
     v39[4] = self;
     v30 = [v28 actionWithTitle:@"Restore All Layouts" image:v29 identifier:0 handler:v39];
-    [v9 addObject:v30];
+    [array addObject:v30];
 
-    v31 = [(SBMenuBarDemoMenuProvider *)self menuBarDemoMode];
-    if (v31 == 2)
+    menuBarDemoMode2 = [(SBMenuBarDemoMenuProvider *)self menuBarDemoMode];
+    if (menuBarDemoMode2 == 2)
     {
       v32 = MEMORY[0x277D750C8];
       v33 = [MEMORY[0x277D755B8] systemImageNamed:@"magnifyingglass"];
@@ -134,7 +134,7 @@
 
     else
     {
-      if (v31 != 1)
+      if (menuBarDemoMode2 != 1)
       {
 LABEL_16:
 
@@ -148,13 +148,13 @@ LABEL_16:
     }
 
     v36 = [v32 actionWithTitle:v34 image:v33 identifier:0 handler:v35];
-    [v9 addObject:v36];
+    [array addObject:v36];
 
     goto LABEL_16;
   }
 
 LABEL_17:
-  v37 = [MEMORY[0x277D75710] menuWithTitle:&stru_283094718 image:0 identifier:0 options:1 children:v9];
+  v37 = [MEMORY[0x277D75710] menuWithTitle:&stru_283094718 image:0 identifier:0 options:1 children:array];
 
   return v37;
 }
@@ -181,18 +181,18 @@ void __65__SBMenuBarDemoMenuProvider_demoMenuForScene_invokingFromSearch___block
   [v0 setMenuBarDemoMode:1];
 }
 
-- (void)_storeDemoLayoutAttributes:(id)a3 forScene:(id)a4
+- (void)_storeDemoLayoutAttributes:(id)attributes forScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  sceneCopy = scene;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__SBMenuBarDemoMenuProvider__storeDemoLayoutAttributes_forScene___block_invoke;
   v10[3] = &unk_2783BE7F0;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = sceneCopy;
+  v12 = attributesCopy;
+  v8 = attributesCopy;
+  v9 = sceneCopy;
   [(SBMenuBarDemoMenuProvider *)self _updateBundleIdToLayoutAttributesDictionary:v10];
 }
 
@@ -206,26 +206,26 @@ void __65__SBMenuBarDemoMenuProvider__storeDemoLayoutAttributes_forScene___block
   [v4 setObject:v2 forKeyedSubscript:v5];
 }
 
-- (id)_demoLayoutAttributesForDisplayItem:(id)a3
+- (id)_demoLayoutAttributesForDisplayItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SBMenuBarDemoMenuProvider *)self _demoDisplayItemLayoutAttributesByBundleId];
-  v6 = [v4 bundleIdentifier];
+  itemCopy = item;
+  _demoDisplayItemLayoutAttributesByBundleId = [(SBMenuBarDemoMenuProvider *)self _demoDisplayItemLayoutAttributesByBundleId];
+  bundleIdentifier = [itemCopy bundleIdentifier];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [_demoDisplayItemLayoutAttributesByBundleId objectForKeyedSubscript:bundleIdentifier];
 
   return v7;
 }
 
-- (BOOL)_shouldMinimizeAfterRestoreForScene:(id)a3
+- (BOOL)_shouldMinimizeAfterRestoreForScene:(id)scene
 {
-  v4 = [a3 clientHandle];
-  v5 = [v4 bundleIdentifier];
+  clientHandle = [scene clientHandle];
+  bundleIdentifier = [clientHandle bundleIdentifier];
 
-  if (v5)
+  if (bundleIdentifier)
   {
-    v6 = [(SBMenuBarDemoMenuProvider *)self _bundleIdsToMinimizeAfterRestore];
-    v7 = [v6 containsObject:v5];
+    _bundleIdsToMinimizeAfterRestore = [(SBMenuBarDemoMenuProvider *)self _bundleIdsToMinimizeAfterRestore];
+    v7 = [_bundleIdsToMinimizeAfterRestore containsObject:bundleIdentifier];
   }
 
   else
@@ -236,16 +236,16 @@ void __65__SBMenuBarDemoMenuProvider__storeDemoLayoutAttributes_forScene___block
   return v7;
 }
 
-- (void)_setShouldMinimizeAfterRestore:(BOOL)a3 forScene:(id)a4
+- (void)_setShouldMinimizeAfterRestore:(BOOL)restore forScene:(id)scene
 {
-  v4 = a3;
-  v6 = [a4 clientHandle];
-  v14 = [v6 bundleIdentifier];
+  restoreCopy = restore;
+  clientHandle = [scene clientHandle];
+  bundleIdentifier = [clientHandle bundleIdentifier];
 
-  if (v14)
+  if (bundleIdentifier)
   {
-    v7 = [(SBMenuBarDemoMenuProvider *)self _bundleIdsToMinimizeAfterRestore];
-    v8 = [v7 mutableCopy];
+    _bundleIdsToMinimizeAfterRestore = [(SBMenuBarDemoMenuProvider *)self _bundleIdsToMinimizeAfterRestore];
+    v8 = [_bundleIdsToMinimizeAfterRestore mutableCopy];
     v9 = v8;
     if (v8)
     {
@@ -259,27 +259,27 @@ void __65__SBMenuBarDemoMenuProvider__storeDemoLayoutAttributes_forScene___block
 
     v11 = v10;
 
-    if (v4)
+    if (restoreCopy)
     {
-      [v11 addObject:v14];
+      [v11 addObject:bundleIdentifier];
     }
 
     else
     {
-      [v11 removeObject:v14];
+      [v11 removeObject:bundleIdentifier];
     }
 
-    v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v13 = [v11 allObjects];
-    [v12 setObject:v13 forKey:@"SBBundleIdsToMinimizeAfterRestoringDemoLayoutAttributes"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    allObjects = [v11 allObjects];
+    [standardUserDefaults setObject:allObjects forKey:@"SBBundleIdsToMinimizeAfterRestoringDemoLayoutAttributes"];
   }
 }
 
 - (id)_bundleIdsToMinimizeAfterRestore
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 objectForKey:@"SBBundleIdsToMinimizeAfterRestoringDemoLayoutAttributes"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"SBBundleIdsToMinimizeAfterRestoringDemoLayoutAttributes"];
   v5 = v4;
   if (v4)
   {
@@ -298,22 +298,22 @@ void __65__SBMenuBarDemoMenuProvider__storeDemoLayoutAttributes_forScene___block
 
 - (id)_demoDisplayItemLayoutAttributesByBundleId
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [(SBMenuBarDemoMenuProvider *)self _layoutAttributesForDisplayItemWithBundleIdsKey];
-  v5 = [v3 objectForKey:v4];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  _layoutAttributesForDisplayItemWithBundleIdsKey = [(SBMenuBarDemoMenuProvider *)self _layoutAttributesForDisplayItemWithBundleIdsKey];
+  v5 = [standardUserDefaults objectForKey:_layoutAttributesForDisplayItemWithBundleIdsKey];
   v6 = [v5 mutableCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    dictionary = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v9 = v8;
+  v9 = dictionary;
 
   v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
   v13[0] = MEMORY[0x277D85DD0];
@@ -341,23 +341,23 @@ void __71__SBMenuBarDemoMenuProvider__demoDisplayItemLayoutAttributesByBundleId_
   }
 }
 
-- (void)_updateBundleIdToLayoutAttributesDictionary:(id)a3
+- (void)_updateBundleIdToLayoutAttributesDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(SBMenuBarDemoMenuProvider *)self _demoDisplayItemLayoutAttributesByBundleId];
-  v4[2](v4, v5);
+  dictionaryCopy = dictionary;
+  _demoDisplayItemLayoutAttributesByBundleId = [(SBMenuBarDemoMenuProvider *)self _demoDisplayItemLayoutAttributesByBundleId];
+  dictionaryCopy[2](dictionaryCopy, _demoDisplayItemLayoutAttributesByBundleId);
 
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(_demoDisplayItemLayoutAttributesByBundleId, "count")}];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__SBMenuBarDemoMenuProvider__updateBundleIdToLayoutAttributesDictionary___block_invoke;
   v10[3] = &unk_2783BE840;
   v11 = v6;
   v7 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v10];
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v9 = [(SBMenuBarDemoMenuProvider *)self _layoutAttributesForDisplayItemWithBundleIdsKey];
-  [v8 setObject:v7 forKey:v9];
+  [_demoDisplayItemLayoutAttributesByBundleId enumerateKeysAndObjectsUsingBlock:v10];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  _layoutAttributesForDisplayItemWithBundleIdsKey = [(SBMenuBarDemoMenuProvider *)self _layoutAttributesForDisplayItemWithBundleIdsKey];
+  [standardUserDefaults setObject:v7 forKey:_layoutAttributesForDisplayItemWithBundleIdsKey];
 }
 
 void __73__SBMenuBarDemoMenuProvider__updateBundleIdToLayoutAttributesDictionary___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -371,15 +371,15 @@ void __73__SBMenuBarDemoMenuProvider__updateBundleIdToLayoutAttributesDictionary
 
 - (void)_restoreAllDemoState
 {
-  v3 = [(SBMenuBarDemoMenuProvider *)self _activeDisplayWindowScene];
+  _activeDisplayWindowScene = [(SBMenuBarDemoMenuProvider *)self _activeDisplayWindowScene];
   v4 = +[SBWorkspace mainWorkspace];
-  v5 = [v3 _fbsDisplayConfiguration];
+  _fbsDisplayConfiguration = [_activeDisplayWindowScene _fbsDisplayConfiguration];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__SBMenuBarDemoMenuProvider__restoreAllDemoState__block_invoke;
   v6[3] = &unk_2783A98F0;
   v6[4] = self;
-  [v4 requestTransitionWithOptions:0 displayConfiguration:v5 builder:v6];
+  [v4 requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration builder:v6];
 }
 
 void __49__SBMenuBarDemoMenuProvider__restoreAllDemoState__block_invoke(uint64_t a1, void *a2)
@@ -424,51 +424,51 @@ void __49__SBMenuBarDemoMenuProvider__restoreAllDemoState__block_invoke_4(uint64
   [*(a1 + 32) _restoreBundleStateForAppsWithBundleIds:v4];
 }
 
-- (void)_performAfterDelay:(double)a3 actions:(id)a4
+- (void)_performAfterDelay:(double)delay actions:(id)actions
 {
-  v5 = a4;
-  v6 = dispatch_time(0, (a3 * 1000000000.0));
+  actionsCopy = actions;
+  v6 = dispatch_time(0, (delay * 1000000000.0));
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__SBMenuBarDemoMenuProvider__performAfterDelay_actions___block_invoke;
   block[3] = &unk_2783A9348;
-  v9 = v5;
-  v7 = v5;
+  v9 = actionsCopy;
+  v7 = actionsCopy;
   dispatch_after(v6, MEMORY[0x277D85CD0], block);
 }
 
-- (void)_restoreBundleStateForAppsWithBundleIds:(id)a3
+- (void)_restoreBundleStateForAppsWithBundleIds:(id)ids
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  if ([v4 count])
+  idsCopy = ids;
+  firstObject = [idsCopy firstObject];
+  if ([idsCopy count])
   {
-    [v4 removeObjectAtIndex:0];
+    [idsCopy removeObjectAtIndex:0];
   }
 
-  if (v5)
+  if (firstObject)
   {
     v6 = +[SBApplicationController sharedInstance];
-    v7 = [v6 applicationWithBundleIdentifier:v5];
+    v7 = [v6 applicationWithBundleIdentifier:firstObject];
 
-    v8 = [(SBMenuBarDemoMenuProvider *)self _activeDisplayWindowScene];
+    _activeDisplayWindowScene = [(SBMenuBarDemoMenuProvider *)self _activeDisplayWindowScene];
     v9 = [[SBDeviceApplicationSceneEntity alloc] initWithApplicationForMainDisplay:v7];
-    v10 = [(SBMenuBarDemoMenuProvider *)self delegate];
+    delegate = [(SBMenuBarDemoMenuProvider *)self delegate];
     v11 = +[SBWorkspace mainWorkspace];
-    v12 = [v8 _fbsDisplayConfiguration];
+    _fbsDisplayConfiguration = [_activeDisplayWindowScene _fbsDisplayConfiguration];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __69__SBMenuBarDemoMenuProvider__restoreBundleStateForAppsWithBundleIds___block_invoke;
     v16[3] = &unk_2783BE890;
     v17 = v9;
-    v18 = self;
-    v19 = v10;
-    v20 = v8;
-    v21 = v4;
-    v13 = v8;
-    v14 = v10;
+    selfCopy = self;
+    v19 = delegate;
+    v20 = _activeDisplayWindowScene;
+    v21 = idsCopy;
+    v13 = _activeDisplayWindowScene;
+    v14 = delegate;
     v15 = v9;
-    [v11 requestTransitionWithOptions:0 displayConfiguration:v12 builder:v16];
+    [v11 requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration builder:v16];
   }
 }
 
@@ -645,32 +645,32 @@ uint64_t __69__SBMenuBarDemoMenuProvider__restoreBundleStateForAppsWithBundleIds
 
 - (id)_activeDisplayWindowScene
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 activeDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
 
-  return v3;
+  return activeDisplayWindowScene;
 }
 
-- (void)_requestNewWindowForBundleIdentifier:(id)a3
+- (void)_requestNewWindowForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBMenuBarDemoMenuProvider *)self _activeDisplayWindowScene];
-  v6 = [v5 _fbsDisplayConfiguration];
+  identifierCopy = identifier;
+  _activeDisplayWindowScene = [(SBMenuBarDemoMenuProvider *)self _activeDisplayWindowScene];
+  _fbsDisplayConfiguration = [_activeDisplayWindowScene _fbsDisplayConfiguration];
   v7 = +[SBApplicationController sharedInstance];
-  v8 = [v7 applicationWithBundleIdentifier:v4];
+  v8 = [v7 applicationWithBundleIdentifier:identifierCopy];
 
-  v9 = [v5 sceneManager];
-  v10 = [v5 _fbsDisplayIdentity];
-  v11 = [SBDeviceApplicationSceneEntity newEntityWithApplication:v8 sceneHandleProvider:v9 displayIdentity:v10];
+  sceneManager = [_activeDisplayWindowScene sceneManager];
+  _fbsDisplayIdentity = [_activeDisplayWindowScene _fbsDisplayIdentity];
+  v11 = [SBDeviceApplicationSceneEntity newEntityWithApplication:v8 sceneHandleProvider:sceneManager displayIdentity:_fbsDisplayIdentity];
   v12 = +[SBWorkspace mainWorkspace];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __66__SBMenuBarDemoMenuProvider__requestNewWindowForBundleIdentifier___block_invoke;
   v14[3] = &unk_2783AAA48;
   v15 = v11;
-  v16 = self;
+  selfCopy = self;
   v13 = v11;
-  [v12 requestTransitionWithOptions:0 displayConfiguration:v6 builder:v14];
+  [v12 requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration builder:v14];
 }
 
 void __66__SBMenuBarDemoMenuProvider__requestNewWindowForBundleIdentifier___block_invoke(uint64_t a1, void *a2)

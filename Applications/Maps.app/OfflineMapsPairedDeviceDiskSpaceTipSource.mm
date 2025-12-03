@@ -1,17 +1,17 @@
 @interface OfflineMapsPairedDeviceDiskSpaceTipSource
 + (id)_actionTitle;
 + (id)_icon;
-+ (id)_subtitleWithRequiredDiskSpace:(int64_t)a3;
++ (id)_subtitleWithRequiredDiskSpace:(int64_t)space;
 + (id)_title;
 - (GEOObserverHashTable)observers;
-- (OfflineMapsPairedDeviceDiskSpaceTipSource)initWithIsActive:(BOOL)a3;
+- (OfflineMapsPairedDeviceDiskSpaceTipSource)initWithIsActive:(BOOL)active;
 - (id)_activePairedDeviceID;
 - (void)_hideTip;
 - (void)_notifyObservers;
-- (void)_showTipWithRequiredDiskSpace:(int64_t)a3;
+- (void)_showTipWithRequiredDiskSpace:(int64_t)space;
 - (void)_updateTipShown;
 - (void)dealloc;
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation OfflineMapsPairedDeviceDiskSpaceTipSource
@@ -21,13 +21,13 @@
   observers = self->_observers;
   if (!observers)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v5 = [[GEOObserverHashTable alloc] initWithProtocol:&OBJC_PROTOCOL___HomeDataProvidingObserver queue:0];
     v6 = self->_observers;
     self->_observers = v5;
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
     observers = self->_observers;
   }
 
@@ -37,11 +37,11 @@
 - (id)_activePairedDeviceID
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getActivePairedDeviceExcludingAltAccount];
+  getActivePairedDeviceExcludingAltAccount = [v2 getActivePairedDeviceExcludingAltAccount];
 
-  v4 = [v3 pairingID];
+  pairingID = [getActivePairedDeviceExcludingAltAccount pairingID];
 
-  return v4;
+  return pairingID;
 }
 
 - (void)_updateTipShown
@@ -49,9 +49,9 @@
   v2 = +[NSUserDefaults standardUserDefaults];
   v24 = [v2 objectForKey:@"OfflineMapsPairedDeviceDiskSpaceLastCheckedUUIDKey"];
 
-  v3 = [(OfflineMapsPairedDeviceDiskSpaceTipSource *)self _activePairedDeviceID];
-  v4 = [v3 UUIDString];
-  v5 = [v24 isEqual:v4];
+  _activePairedDeviceID = [(OfflineMapsPairedDeviceDiskSpaceTipSource *)self _activePairedDeviceID];
+  uUIDString = [_activePairedDeviceID UUIDString];
+  v5 = [v24 isEqual:uUIDString];
 
   if (v5)
   {
@@ -66,20 +66,20 @@
   else
   {
     v6 = +[NSUserDefaults standardUserDefaults];
-    v7 = [v3 UUIDString];
-    [v6 setObject:v7 forKey:@"OfflineMapsPairedDeviceDiskSpaceLastCheckedUUIDKey"];
+    uUIDString2 = [_activePairedDeviceID UUIDString];
+    [v6 setObject:uUIDString2 forKey:@"OfflineMapsPairedDeviceDiskSpaceLastCheckedUUIDKey"];
 
-    if (v3)
+    if (_activePairedDeviceID)
     {
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
       v8 = +[MapsOfflineUIHelper sharedHelper];
-      v9 = [v8 subscriptionInfos];
+      subscriptionInfos = [v8 subscriptionInfos];
 
       v10 = 0;
-      v11 = [v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v11 = [subscriptionInfos countByEnumeratingWithState:&v28 objects:v33 count:16];
       if (v11)
       {
         v12 = *v29;
@@ -89,27 +89,27 @@
           {
             if (*v29 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(subscriptionInfos);
             }
 
             v14 = *(*(&v28 + 1) + 8 * i);
-            v15 = [v14 pairedDeviceState];
-            if (v15)
+            pairedDeviceState = [v14 pairedDeviceState];
+            if (pairedDeviceState)
             {
-              v16 = [v14 pairedDeviceState];
-              v17 = [v16 downloadState] == 0;
+              pairedDeviceState2 = [v14 pairedDeviceState];
+              v17 = [pairedDeviceState2 downloadState] == 0;
 
               if (!v17)
               {
-                v18 = [v14 state];
-                v19 = [v18 downloadedDataSize];
+                state = [v14 state];
+                downloadedDataSize = [state downloadedDataSize];
 
-                v10 += v19;
+                v10 += downloadedDataSize;
               }
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
+          v11 = [subscriptionInfos countByEnumeratingWithState:&v28 objects:v33 count:16];
         }
 
         while (v11);
@@ -133,21 +133,21 @@
   }
 }
 
-- (void)_showTipWithRequiredDiskSpace:(int64_t)a3
+- (void)_showTipWithRequiredDiskSpace:(int64_t)space
 {
   self->_showFeature = 1;
-  v5 = [objc_opt_class() openManageWatchStorageURL];
+  openManageWatchStorageURL = [objc_opt_class() openManageWatchStorageURL];
   objc_initWeak(&location, self);
   v6 = [FeatureDiscoveryModel alloc];
-  v7 = [objc_opt_class() _icon];
-  v8 = [objc_opt_class() _title];
-  v9 = [objc_opt_class() _subtitleWithRequiredDiskSpace:a3];
-  v10 = [objc_opt_class() _actionTitle];
+  _icon = [objc_opt_class() _icon];
+  _title = [objc_opt_class() _title];
+  v9 = [objc_opt_class() _subtitleWithRequiredDiskSpace:space];
+  _actionTitle = [objc_opt_class() _actionTitle];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100F77540;
   v17[3] = &unk_101661B18;
-  v11 = v5;
+  v11 = openManageWatchStorageURL;
   v18 = v11;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -155,7 +155,7 @@
   v15[3] = &unk_101661B98;
   objc_copyWeak(&v16, &location);
   LOBYTE(v14) = 0;
-  v12 = [(FeatureDiscoveryModel *)v6 initWithImage:v7 title:v8 subtitle:v9 actionTitle:v10 actionHandler:v17 bodyTapHandler:0 displayedHandler:0 dismissHandler:v15 disableAffordanceAfterAction:v14];
+  v12 = [(FeatureDiscoveryModel *)v6 initWithImage:_icon title:_title subtitle:v9 actionTitle:_actionTitle actionHandler:v17 bodyTapHandler:0 displayedHandler:0 dismissHandler:v15 disableAffordanceAfterAction:v14];
   model = self->_model;
   self->_model = v12;
 
@@ -184,12 +184,12 @@
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   if (GEOConfigGetBOOL())
   {
-    if (self->_active == v3)
+    if (self->_active == activeCopy)
     {
       return;
     }
@@ -198,14 +198,14 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v11[0] = 67109120;
-      v11[1] = v3;
+      v11[1] = activeCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Becoming active: %d", v11, 8u);
     }
 
-    self->_active = v3;
+    self->_active = activeCopy;
     v6 = +[MapsOfflineUIHelper sharedHelper];
     v7 = v6;
-    if (v3)
+    if (activeCopy)
     {
       [v6 addObserver:self];
 
@@ -249,9 +249,9 @@
   [(OfflineMapsPairedDeviceDiskSpaceTipSource *)&v4 dealloc];
 }
 
-- (OfflineMapsPairedDeviceDiskSpaceTipSource)initWithIsActive:(BOOL)a3
+- (OfflineMapsPairedDeviceDiskSpaceTipSource)initWithIsActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v8.receiver = self;
   v8.super_class = OfflineMapsPairedDeviceDiskSpaceTipSource;
   v4 = [(OfflineMapsPairedDeviceDiskSpaceTipSource *)&v8 init];
@@ -261,7 +261,7 @@
     queue = v4->_queue;
     v4->_queue = v5;
 
-    [(OfflineMapsPairedDeviceDiskSpaceTipSource *)v4 setActive:v3];
+    [(OfflineMapsPairedDeviceDiskSpaceTipSource *)v4 setActive:activeCopy];
   }
 
   return v4;
@@ -275,9 +275,9 @@
   return v3;
 }
 
-+ (id)_subtitleWithRequiredDiskSpace:(int64_t)a3
++ (id)_subtitleWithRequiredDiskSpace:(int64_t)space
 {
-  v3 = [NSByteCountFormatter stringFromByteCount:(llround(a3 * 0.000001) * 1000000.0) countStyle:2];
+  v3 = [NSByteCountFormatter stringFromByteCount:(llround(space * 0.000001) * 1000000.0) countStyle:2];
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"PAIRED_DEVICE_DISK_SPACE_TIP_SUBTITLE" value:@"localized string not found" table:@"Offline"];
   v6 = [NSString localizedStringWithFormat:v5, v3];

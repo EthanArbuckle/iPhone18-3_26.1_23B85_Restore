@@ -1,34 +1,34 @@
 @interface CarFocusableProgressBackgroundFillButton
-- (CarFocusableProgressBackgroundFillButton)initWithFrame:(CGRect)a3;
+- (CarFocusableProgressBackgroundFillButton)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
-- (void)focusDidChange:(BOOL)a3;
-- (void)setFilledBackgroundColor:(id)a3;
-- (void)setFilledBackgroundColorFocused:(id)a3;
-- (void)setFilledTintColor:(id)a3;
-- (void)setFilledTintColorFocused:(id)a3;
-- (void)setProgress:(double)a3;
-- (void)setProgressionHidden:(BOOL)a3;
-- (void)setTitle:(id)a3 forState:(unint64_t)a4;
-- (void)setTitleFont:(id)a3;
-- (void)unFilledBackgroundColor:(id)a3;
-- (void)unFilledTintColor:(id)a3;
+- (void)focusDidChange:(BOOL)change;
+- (void)setFilledBackgroundColor:(id)color;
+- (void)setFilledBackgroundColorFocused:(id)focused;
+- (void)setFilledTintColor:(id)color;
+- (void)setFilledTintColorFocused:(id)focused;
+- (void)setProgress:(double)progress;
+- (void)setProgressionHidden:(BOOL)hidden;
+- (void)setTitle:(id)title forState:(unint64_t)state;
+- (void)setTitleFont:(id)font;
+- (void)unFilledBackgroundColor:(id)color;
+- (void)unFilledTintColor:(id)color;
 @end
 
 @implementation CarFocusableProgressBackgroundFillButton
 
-- (void)focusDidChange:(BOOL)a3
+- (void)focusDidChange:(BOOL)change
 {
   v4.receiver = self;
   v4.super_class = CarFocusableProgressBackgroundFillButton;
-  [(CarFocusableButton *)&v4 focusDidChange:a3];
+  [(CarFocusableButton *)&v4 focusDidChange:change];
   [(MapsProgressBackgroundFillView *)self->_progressBackgroundFillView updateColorsWithFocus:[(CarFocusableProgressBackgroundFillButton *)self isFocused]];
 }
 
-- (void)setProgressionHidden:(BOOL)a3
+- (void)setProgressionHidden:(BOOL)hidden
 {
-  if (self->_progressionHidden != a3)
+  if (self->_progressionHidden != hidden)
   {
-    self->_progressionHidden = a3;
+    self->_progressionHidden = hidden;
     [(MapsProgressBackgroundFillView *)self->_progressBackgroundFillView setHidden:?];
     [(CarFocusableProgressBackgroundFillButton *)self setNeedsLayout];
 
@@ -36,79 +36,79 @@
   }
 }
 
-- (void)setFilledBackgroundColor:(id)a3
+- (void)setFilledBackgroundColor:(id)color
 {
-  objc_storeStrong(&self->_filledBackgroundColor, a3);
-  v5 = a3;
-  [(MapsProgressBackgroundFillView *)self->_progressBackgroundFillView setFilledBackgroundColor:v5];
+  objc_storeStrong(&self->_filledBackgroundColor, color);
+  colorCopy = color;
+  [(MapsProgressBackgroundFillView *)self->_progressBackgroundFillView setFilledBackgroundColor:colorCopy];
 }
 
-- (void)setFilledBackgroundColorFocused:(id)a3
+- (void)setFilledBackgroundColorFocused:(id)focused
 {
-  objc_storeStrong(&self->_filledBackgroundColorFocused, a3);
-  v5 = a3;
-  [(MapsProgressBackgroundFillView *)self->_progressBackgroundFillView setFilledBackgroundColorFocus:v5];
+  objc_storeStrong(&self->_filledBackgroundColorFocused, focused);
+  focusedCopy = focused;
+  [(MapsProgressBackgroundFillView *)self->_progressBackgroundFillView setFilledBackgroundColorFocus:focusedCopy];
 }
 
-- (void)setFilledTintColor:(id)a3
+- (void)setFilledTintColor:(id)color
 {
-  objc_storeStrong(&self->_filledTintColor, a3);
-  v5 = a3;
-  [(MapsProgressBackgroundFillView *)self->_progressBackgroundFillView setFilledLabelColor:v5];
+  objc_storeStrong(&self->_filledTintColor, color);
+  colorCopy = color;
+  [(MapsProgressBackgroundFillView *)self->_progressBackgroundFillView setFilledLabelColor:colorCopy];
 }
 
-- (void)setFilledTintColorFocused:(id)a3
+- (void)setFilledTintColorFocused:(id)focused
 {
-  objc_storeStrong(&self->_filledTintColorFocused, a3);
-  v5 = a3;
-  [(MapsProgressBackgroundFillView *)self->_progressBackgroundFillView setFilledLabelColorFocus:v5];
+  objc_storeStrong(&self->_filledTintColorFocused, focused);
+  focusedCopy = focused;
+  [(MapsProgressBackgroundFillView *)self->_progressBackgroundFillView setFilledLabelColorFocus:focusedCopy];
 }
 
-- (void)unFilledBackgroundColor:(id)a3
+- (void)unFilledBackgroundColor:(id)color
 {
-  objc_storeStrong(&self->_unFilledBackgroundColor, a3);
-  v5 = a3;
-  [(CarFocusableProgressBackgroundFillButton *)self setBackgroundColor:v5];
+  objc_storeStrong(&self->_unFilledBackgroundColor, color);
+  colorCopy = color;
+  [(CarFocusableProgressBackgroundFillButton *)self setBackgroundColor:colorCopy];
 }
 
-- (void)unFilledTintColor:(id)a3
+- (void)unFilledTintColor:(id)color
 {
-  objc_storeStrong(&self->_unFilledTintColor, a3);
-  v5 = a3;
-  v6 = [(CarFocusableProgressBackgroundFillButton *)self titleLabel];
-  [v6 setTextColor:v5];
+  objc_storeStrong(&self->_unFilledTintColor, color);
+  colorCopy = color;
+  titleLabel = [(CarFocusableProgressBackgroundFillButton *)self titleLabel];
+  [titleLabel setTextColor:colorCopy];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  if (self->_progress != a3)
+  if (self->_progress != progress)
   {
-    v3 = fmin(fmax(a3, 0.0), 1.0);
-    if (a3 < 0.0 || a3 > 1.0)
+    v3 = fmin(fmax(progress, 0.0), 1.0);
+    if (progress < 0.0 || progress > 1.0)
     {
-      a3 = v3;
+      progress = v3;
     }
 
-    self->_progress = a3;
+    self->_progress = progress;
   }
 }
 
-- (void)setTitle:(id)a3 forState:(unint64_t)a4
+- (void)setTitle:(id)title forState:(unint64_t)state
 {
   v7.receiver = self;
   v7.super_class = CarFocusableProgressBackgroundFillButton;
-  v6 = a3;
-  [(CarFocusableProgressBackgroundFillButton *)&v7 setTitle:v6 forState:a4];
-  [(MapsProgressBackgroundFillView *)self->_progressBackgroundFillView setTitle:v6, v7.receiver, v7.super_class];
+  titleCopy = title;
+  [(CarFocusableProgressBackgroundFillButton *)&v7 setTitle:titleCopy forState:state];
+  [(MapsProgressBackgroundFillView *)self->_progressBackgroundFillView setTitle:titleCopy, v7.receiver, v7.super_class];
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  v5 = a3;
-  v4 = [(CarFocusableProgressBackgroundFillButton *)self titleLabel];
-  [v4 setFont:v5];
+  fontCopy = font;
+  titleLabel = [(CarFocusableProgressBackgroundFillButton *)self titleLabel];
+  [titleLabel setFont:fontCopy];
 
-  [(MapsProgressBackgroundFillView *)self->_progressBackgroundFillView setTitleFont:v5];
+  [(MapsProgressBackgroundFillView *)self->_progressBackgroundFillView setTitleFont:fontCopy];
 }
 
 - (void)didMoveToWindow
@@ -118,40 +118,40 @@
   [(CarFocusableButton *)&v2 didMoveToWindow];
 }
 
-- (CarFocusableProgressBackgroundFillButton)initWithFrame:(CGRect)a3
+- (CarFocusableProgressBackgroundFillButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v24.receiver = self;
   v24.super_class = CarFocusableProgressBackgroundFillButton;
   v7 = [(CarCardRoundedButton *)&v24 initWithFrame:?];
   if (v7)
   {
-    v8 = [[MapsProgressBackgroundFillView alloc] initWithFrame:x, y, width, height];
+    height = [[MapsProgressBackgroundFillView alloc] initWithFrame:x, y, width, height];
     progressBackgroundFillView = v7->_progressBackgroundFillView;
-    v7->_progressBackgroundFillView = v8;
+    v7->_progressBackgroundFillView = height;
 
     [(MapsProgressBackgroundFillView *)v7->_progressBackgroundFillView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MapsProgressBackgroundFillView *)v7->_progressBackgroundFillView setUserInteractionEnabled:0];
     [(CarFocusableProgressBackgroundFillButton *)v7 addSubview:v7->_progressBackgroundFillView];
     [(CarFocusableProgressBackgroundFillButton *)v7 bringSubviewToFront:v7->_progressBackgroundFillView];
-    v23 = [(MapsProgressBackgroundFillView *)v7->_progressBackgroundFillView leadingAnchor];
-    v22 = [(CarFocusableProgressBackgroundFillButton *)v7 leadingAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    leadingAnchor = [(MapsProgressBackgroundFillView *)v7->_progressBackgroundFillView leadingAnchor];
+    leadingAnchor2 = [(CarFocusableProgressBackgroundFillButton *)v7 leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v25[0] = v21;
-    v20 = [(MapsProgressBackgroundFillView *)v7->_progressBackgroundFillView trailingAnchor];
-    v10 = [(CarFocusableProgressBackgroundFillButton *)v7 trailingAnchor];
-    v11 = [v20 constraintEqualToAnchor:v10];
+    trailingAnchor = [(MapsProgressBackgroundFillView *)v7->_progressBackgroundFillView trailingAnchor];
+    trailingAnchor2 = [(CarFocusableProgressBackgroundFillButton *)v7 trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v25[1] = v11;
-    v12 = [(MapsProgressBackgroundFillView *)v7->_progressBackgroundFillView topAnchor];
-    v13 = [(CarFocusableProgressBackgroundFillButton *)v7 topAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    topAnchor = [(MapsProgressBackgroundFillView *)v7->_progressBackgroundFillView topAnchor];
+    topAnchor2 = [(CarFocusableProgressBackgroundFillButton *)v7 topAnchor];
+    v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v25[2] = v14;
-    v15 = [(MapsProgressBackgroundFillView *)v7->_progressBackgroundFillView bottomAnchor];
-    v16 = [(CarFocusableProgressBackgroundFillButton *)v7 bottomAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    bottomAnchor = [(MapsProgressBackgroundFillView *)v7->_progressBackgroundFillView bottomAnchor];
+    bottomAnchor2 = [(CarFocusableProgressBackgroundFillButton *)v7 bottomAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v25[3] = v17;
     v18 = [NSArray arrayWithObjects:v25 count:4];
     [NSLayoutConstraint activateConstraints:v18];

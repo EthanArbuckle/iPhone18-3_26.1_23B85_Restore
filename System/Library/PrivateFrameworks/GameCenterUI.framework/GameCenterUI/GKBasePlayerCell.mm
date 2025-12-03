@@ -1,16 +1,16 @@
 @interface GKBasePlayerCell
 + (double)defaultRowHeight;
 + (id)itemHeightList;
-+ (id)itemHeightListForIdiom:(int64_t)a3;
++ (id)itemHeightListForIdiom:(int64_t)idiom;
 + (id)padMetrics;
 + (id)phoneMetrics;
 + (void)initialize;
 - (CGRect)alignmentRectForText;
-- (GKBasePlayerCell)initWithFrame:(CGRect)a3;
+- (GKBasePlayerCell)initWithFrame:(CGRect)frame;
 - (void)didUpdateModel;
 - (void)prepareForReuse;
-- (void)setMetricsOverrides:(id)a3;
-- (void)setRepresentedItem:(id)a3;
+- (void)setMetricsOverrides:(id)overrides;
+- (void)setRepresentedItem:(id)item;
 @end
 
 @implementation GKBasePlayerCell
@@ -23,14 +23,14 @@
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
   v4 = [v2 appearanceWhenContainedInInstancesOfClasses:v3];
 
-  v5 = [objc_opt_class() phoneMetrics];
-  [v4 setMetricsOverrides:v5];
+  phoneMetrics = [objc_opt_class() phoneMetrics];
+  [v4 setMetricsOverrides:phoneMetrics];
 }
 
 + (id)itemHeightList
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   if (*MEMORY[0x277D0C258])
   {
@@ -42,7 +42,7 @@
     v5 = 1;
   }
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v6 = v5;
   }
@@ -52,14 +52,14 @@
     v6 = 0;
   }
 
-  return [a1 itemHeightListForIdiom:v6];
+  return [self itemHeightListForIdiom:v6];
 }
 
-+ (id)itemHeightListForIdiom:(int64_t)a3
++ (id)itemHeightListForIdiom:(int64_t)idiom
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277D76918];
-  if (a3 == 1)
+  if (idiom == 1)
   {
     v11[0] = @"GKFixedHeightSentinel";
     v11[1] = v3;
@@ -102,10 +102,10 @@
 
 + (double)defaultRowHeight
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 != 1)
+  if (userInterfaceIdiom != 1)
   {
     return 65.0;
   }
@@ -126,8 +126,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UILabel *)self->_nameLabel superview];
-  [(GKBasePlayerCell *)self convertRect:v11 fromView:v4, v6, v8, v10];
+  superview = [(UILabel *)self->_nameLabel superview];
+  [(GKBasePlayerCell *)self convertRect:superview fromView:v4, v6, v8, v10];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -144,11 +144,11 @@
   return result;
 }
 
-- (GKBasePlayerCell)initWithFrame:(CGRect)a3
+- (GKBasePlayerCell)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = GKBasePlayerCell;
-  v3 = [(GKCollectionViewCell *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKCollectionViewCell *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [GKDashboardPlayerPhotoView alloc];
@@ -158,55 +158,55 @@
 
     [(GKDashboardPlayerPhotoView *)v3->_iconView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(GKDashboardPlayerPhotoView *)v3->_iconView setAvatarSize:0x10000];
-    v7 = [(UICollectionReusableView *)v3 _gkNewStandardTitleLabel];
+    _gkNewStandardTitleLabel = [(UICollectionReusableView *)v3 _gkNewStandardTitleLabel];
     nameLabel = v3->_nameLabel;
-    v3->_nameLabel = v7;
+    v3->_nameLabel = _gkNewStandardTitleLabel;
 
-    v9 = [(GKCollectionViewCell *)v3 staticContentView];
-    [v9 addSubview:v3->_nameLabel];
+    staticContentView = [(GKCollectionViewCell *)v3 staticContentView];
+    [staticContentView addSubview:v3->_nameLabel];
 
-    v10 = [(GKCollectionViewCell *)v3 staticContentView];
-    [v10 addSubview:v3->_iconView];
+    staticContentView2 = [(GKCollectionViewCell *)v3 staticContentView];
+    [staticContentView2 addSubview:v3->_iconView];
 
-    v11 = [MEMORY[0x277D75418] currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v12 == 1 && (*MEMORY[0x277D0C258] != 1 || (*MEMORY[0x277D0C8F0] & 1) != 0))
+    if (userInterfaceIdiom == 1 && (*MEMORY[0x277D0C258] != 1 || (*MEMORY[0x277D0C8F0] & 1) != 0))
     {
-      v13 = [objc_opt_class() padMetrics];
+      padMetrics = [objc_opt_class() padMetrics];
     }
 
     else
     {
-      v13 = [objc_opt_class() phoneMetrics];
+      padMetrics = [objc_opt_class() phoneMetrics];
     }
 
-    v14 = v13;
-    objc_storeStrong(&v3->_metricsOverrides, v13);
+    v14 = padMetrics;
+    objc_storeStrong(&v3->_metricsOverrides, padMetrics);
   }
 
   return v3;
 }
 
-- (void)setRepresentedItem:(id)a3
+- (void)setRepresentedItem:(id)item
 {
-  v4 = a3;
-  v5 = [(GKCollectionViewCell *)self representedItem];
-  if (v5 != v4)
+  itemCopy = item;
+  representedItem = [(GKCollectionViewCell *)self representedItem];
+  if (representedItem != itemCopy)
   {
-    v6 = [(GKBasePlayerCell *)self iconView];
-    [v6 setPlayer:v4];
+    iconView = [(GKBasePlayerCell *)self iconView];
+    [iconView setPlayer:itemCopy];
 
     v7.receiver = self;
     v7.super_class = GKBasePlayerCell;
-    [(GKCollectionViewCell *)&v7 setRepresentedItem:v4];
+    [(GKCollectionViewCell *)&v7 setRepresentedItem:itemCopy];
   }
 }
 
 - (void)didUpdateModel
 {
-  v4 = [(GKBasePlayerCell *)self player];
-  v3 = [v4 displayNameWithOptions:0];
+  player = [(GKBasePlayerCell *)self player];
+  v3 = [player displayNameWithOptions:0];
   [(UILabel *)self->_nameLabel setText:v3];
 }
 
@@ -218,14 +218,14 @@
   [(GKDashboardPlayerPhotoView *)self->_iconView setPlayer:0];
 }
 
-- (void)setMetricsOverrides:(id)a3
+- (void)setMetricsOverrides:(id)overrides
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_metricsOverrides != v5)
+  overridesCopy = overrides;
+  if (self->_metricsOverrides != overridesCopy)
   {
-    objc_storeStrong(&self->_metricsOverrides, a3);
-    v6 = [(GKBasePlayerCell *)self iconView];
+    objc_storeStrong(&self->_metricsOverrides, overrides);
+    iconView = [(GKBasePlayerCell *)self iconView];
     v7 = [(NSDictionary *)self->_metricsOverrides objectForKeyedSubscript:@"iconSize"];
     [v7 doubleValue];
     v9 = v8;
@@ -236,10 +236,10 @@
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v10 = [(GKCollectionViewCell *)self staticContentView];
-      v11 = [v10 constraints];
+      staticContentView = [(GKCollectionViewCell *)self staticContentView];
+      constraints = [staticContentView constraints];
 
-      v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v12 = [constraints countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v12)
       {
         v13 = v12;
@@ -251,16 +251,16 @@
           {
             if (*v21 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(constraints);
             }
 
             v16 = *(*(&v20 + 1) + 8 * v15);
-            v17 = [v16 firstItem];
-            if (v17 == v6 && ![v16 relation])
+            firstItem = [v16 firstItem];
+            if (firstItem == iconView && ![v16 relation])
             {
-              v18 = [v16 secondItem];
+              secondItem = [v16 secondItem];
 
-              if (!v18 && ([v16 firstAttribute] == 8 || objc_msgSend(v16, "firstAttribute") == 7))
+              if (!secondItem && ([v16 firstAttribute] == 8 || objc_msgSend(v16, "firstAttribute") == 7))
               {
                 [v16 setConstant:v9];
               }
@@ -274,7 +274,7 @@
           }
 
           while (v13 != v15);
-          v19 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v19 = [constraints countByEnumeratingWithState:&v20 objects:v24 count:16];
           v13 = v19;
         }
 

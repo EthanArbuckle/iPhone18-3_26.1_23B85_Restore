@@ -1,8 +1,8 @@
 @interface WRTimestampAndThread
 - (id)encodedDict;
-- (id)initWithEncodedDict:(uint64_t *)a3 error:;
-- (id)initWithPID:(void *)a3 threadID:(void *)a4 machContTimeNs:(void *)a5 date:;
-- (void)insertIntoSortedArray:(uint64_t)a1;
+- (id)initWithEncodedDict:(uint64_t *)dict error:;
+- (id)initWithPID:(void *)d threadID:(void *)iD machContTimeNs:(void *)ns date:;
+- (void)insertIntoSortedArray:(uint64_t)array;
 @end
 
 @implementation WRTimestampAndThread
@@ -34,43 +34,43 @@ uint64_t __46__WRTimestampAndThread_insertIntoSortedArray___block_invoke(uint64_
   return v7;
 }
 
-- (id)initWithPID:(void *)a3 threadID:(void *)a4 machContTimeNs:(void *)a5 date:
+- (id)initWithPID:(void *)d threadID:(void *)iD machContTimeNs:(void *)ns date:
 {
-  v10 = a5;
-  if (a1)
+  nsCopy = ns;
+  if (self)
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = WRTimestampAndThread;
     v11 = objc_msgSendSuper2(&v13, sel_init);
-    a1 = v11;
+    self = v11;
     if (v11)
     {
       *(v11 + 2) = a2;
-      v11[4] = a3;
-      v11[2] = a4;
-      objc_storeStrong(v11 + 3, a5);
+      v11[4] = d;
+      v11[2] = iD;
+      objc_storeStrong(v11 + 3, ns);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)encodedDict
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 date];
+    date = [self date];
 
     v3 = objc_alloc(MEMORY[0x277CBEAC0]);
-    v4 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(a1, "pid")}];
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(a1, "threadID")}];
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(a1, "machContTimeNs")}];
+    v4 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(self, "pid")}];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(self, "threadID")}];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(self, "machContTimeNs")}];
     v7 = v6;
-    if (v2)
+    if (date)
     {
       v8 = MEMORY[0x277CCABB0];
-      v9 = [a1 date];
-      [v9 timeIntervalSinceReferenceDate];
+      date2 = [self date];
+      [date2 timeIntervalSinceReferenceDate];
       v10 = [v8 numberWithDouble:?];
       v11 = [v3 initWithObjectsAndKeys:{v4, @"tat_pid", v5, @"tat_threadId", v7, @"tat_machContTimeNs", v10, @"tat_date", 0}];
     }
@@ -89,24 +89,24 @@ uint64_t __46__WRTimestampAndThread_insertIntoSortedArray___block_invoke(uint64_
   return v11;
 }
 
-- (id)initWithEncodedDict:(uint64_t *)a3 error:
+- (id)initWithEncodedDict:(uint64_t *)dict error:
 {
   v5 = a2;
-  if (!a1)
+  if (!self)
   {
-    v36 = 0;
+    selfCopy = 0;
     goto LABEL_21;
   }
 
   v40 = 0;
-  if (a3)
+  if (dict)
   {
-    *a3 = 0;
+    *dict = 0;
   }
 
   else
   {
-    a3 = &v40;
+    dict = &v40;
   }
 
   v6 = OUTLINED_FUNCTION_89();
@@ -114,27 +114,27 @@ uint64_t __46__WRTimestampAndThread_insertIntoSortedArray___block_invoke(uint64_
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 intValue];
+    intValue = [v9 intValue];
   }
 
   else
   {
-    v11 = -1;
+    intValue = -1;
   }
 
   v12 = OUTLINED_FUNCTION_89();
   v21 = DictGetNumber(v12, v13, v14);
   if (!v21)
   {
-    if (*a3)
+    if (*dict)
     {
       WRMakeError(7, @"WRTimestampAndThread: No threadID in dict", v15, v16, v17, v18, v19, v20, v39);
-      *a3 = v36 = 0;
+      *dict = selfCopy = 0;
     }
 
     else
     {
-      v36 = 0;
+      selfCopy = 0;
     }
 
     goto LABEL_20;
@@ -144,15 +144,15 @@ uint64_t __46__WRTimestampAndThread_insertIntoSortedArray___block_invoke(uint64_
   v31 = DictGetNumber(v22, v23, v24);
   if (!v31)
   {
-    if (*a3)
+    if (*dict)
     {
       WRMakeError(7, @"WRTimestampAndThread: No machContTimeNs in dict", v25, v26, v27, v28, v29, v30, v39);
-      *a3 = v36 = 0;
+      *dict = selfCopy = 0;
     }
 
     else
     {
-      v36 = 0;
+      selfCopy = 0;
     }
 
     goto LABEL_19;
@@ -162,33 +162,33 @@ uint64_t __46__WRTimestampAndThread_insertIntoSortedArray___block_invoke(uint64_
   v35 = DictGetNumber(v32, v33, v34);
   if (v35)
   {
-    a3 = objc_alloc(MEMORY[0x277CBEAA8]);
+    dict = objc_alloc(MEMORY[0x277CBEAA8]);
     [v35 doubleValue];
-    v36 = [a3 initWithTimeIntervalSinceReferenceDate:?];
+    selfCopy = [dict initWithTimeIntervalSinceReferenceDate:?];
     goto LABEL_23;
   }
 
-  v36 = 0;
-  if (!*a3)
+  selfCopy = 0;
+  if (!*dict)
   {
 LABEL_23:
     [v21 unsignedLongLongValue];
-    v38 = [OUTLINED_FUNCTION_67() unsignedLongLongValue];
-    a1 = [(WRTimestampAndThread *)a1 initWithPID:v11 threadID:a3 machContTimeNs:v38 date:v36];
+    unsignedLongLongValue = [OUTLINED_FUNCTION_67() unsignedLongLongValue];
+    self = [(WRTimestampAndThread *)self initWithPID:intValue threadID:dict machContTimeNs:unsignedLongLongValue date:selfCopy];
 
-    v36 = a1;
+    selfCopy = self;
   }
 
 LABEL_19:
 LABEL_20:
 
 LABEL_21:
-  return v36;
+  return selfCopy;
 }
 
-- (void)insertIntoSortedArray:(uint64_t)a1
+- (void)insertIntoSortedArray:(uint64_t)array
 {
-  if (a1)
+  if (array)
   {
     v17 = a2;
     v2 = [v17 count];

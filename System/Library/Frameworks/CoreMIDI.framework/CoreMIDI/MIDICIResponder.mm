@@ -1,23 +1,23 @@
 @interface MIDICIResponder
-- (BOOL)containsValidChannels:(id)a3;
+- (BOOL)containsValidChannels:(id)channels;
 - (MIDICIResponder)init;
 - (MIDICIResponder)initWithDeviceInfo:(MIDICIDeviceInfo *)deviceInfo profileDelegate:(id)delegate profileStates:(MIDICIProfileStateList *)profileList supportProperties:(BOOL)propertiesSupported;
 - (id)description;
-- (void)registerProfiles:(id)a3;
+- (void)registerProfiles:(id)profiles;
 @end
 
 @implementation MIDICIResponder
 
-- (void)registerProfiles:(id)a3
+- (void)registerProfiles:(id)profiles
 {
   v66 = *MEMORY[0x277D85DE8];
-  v41 = a3;
+  profilesCopy = profiles;
   v3 = objc_alloc_init(MEMORY[0x277CBEB28]);
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v41;
+  obj = profilesCopy;
   v4 = [obj countByEnumeratingWithState:&v55 objects:v65 count:16];
   if (v4)
   {
@@ -32,16 +32,16 @@
         }
 
         v6 = *(*(&v55 + 1) + 8 * i);
-        v7 = [v6 midiChannel];
-        if (v7 < 0x10 || v7 == 127)
+        midiChannel = [v6 midiChannel];
+        if (midiChannel < 0x10 || midiChannel == 127)
         {
-          v44.__r_.__value_.__s.__data_[0] = v7;
-          v8 = [v6 enabledProfiles];
-          v9 = [v8 count];
+          v44.__r_.__value_.__s.__data_[0] = midiChannel;
+          enabledProfiles = [v6 enabledProfiles];
+          v9 = [enabledProfiles count];
 
           v54 = v9;
-          v10 = [v6 disabledProfiles];
-          v11 = [v10 count];
+          disabledProfiles = [v6 disabledProfiles];
+          v11 = [disabledProfiles count];
 
           v53 = v11;
           [v3 appendBytes:&v44 length:1];
@@ -50,8 +50,8 @@
           v50 = 0u;
           v51 = 0u;
           v49 = 0u;
-          v12 = [v6 enabledProfiles];
-          v13 = [v12 countByEnumeratingWithState:&v49 objects:v64 count:16];
+          enabledProfiles2 = [v6 enabledProfiles];
+          v13 = [enabledProfiles2 countByEnumeratingWithState:&v49 objects:v64 count:16];
           if (v13)
           {
             v14 = *v50;
@@ -61,23 +61,23 @@
               {
                 if (*v50 != v14)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(enabledProfiles2);
                 }
 
                 v16 = *(*(&v49 + 1) + 8 * j);
                 BYTE4(v59) = 0;
                 LODWORD(v59) = 0;
-                v17 = [v16 profileID];
-                v18 = v17;
-                v19 = [v17 bytes];
-                v20 = *v19;
-                BYTE4(v59) = *(v19 + 4);
+                profileID = [v16 profileID];
+                v18 = profileID;
+                bytes = [profileID bytes];
+                v20 = *bytes;
+                BYTE4(v59) = *(bytes + 4);
                 LODWORD(v59) = v20;
 
                 [v3 appendBytes:&v59 length:5];
               }
 
-              v13 = [v12 countByEnumeratingWithState:&v49 objects:v64 count:16];
+              v13 = [enabledProfiles2 countByEnumeratingWithState:&v49 objects:v64 count:16];
             }
 
             while (v13);
@@ -88,8 +88,8 @@
           v48 = 0u;
           v45 = 0u;
           v46 = 0u;
-          v21 = [v6 disabledProfiles];
-          v22 = [v21 countByEnumeratingWithState:&v45 objects:v63 count:16];
+          disabledProfiles2 = [v6 disabledProfiles];
+          v22 = [disabledProfiles2 countByEnumeratingWithState:&v45 objects:v63 count:16];
           if (v22)
           {
             v23 = *v46;
@@ -99,23 +99,23 @@
               {
                 if (*v46 != v23)
                 {
-                  objc_enumerationMutation(v21);
+                  objc_enumerationMutation(disabledProfiles2);
                 }
 
                 v25 = *(*(&v45 + 1) + 8 * k);
                 BYTE4(v59) = 0;
                 LODWORD(v59) = 0;
-                v26 = [v25 profileID];
-                v27 = v26;
-                v28 = [v26 bytes];
-                v29 = *v28;
-                BYTE4(v59) = *(v28 + 4);
+                profileID2 = [v25 profileID];
+                v27 = profileID2;
+                bytes2 = [profileID2 bytes];
+                v29 = *bytes2;
+                BYTE4(v59) = *(bytes2 + 4);
                 LODWORD(v59) = v29;
 
                 [v3 appendBytes:&v59 length:5];
               }
 
-              v22 = [v21 countByEnumeratingWithState:&v45 objects:v63 count:16];
+              v22 = [disabledProfiles2 countByEnumeratingWithState:&v45 objects:v63 count:16];
             }
 
             while (v22);
@@ -135,7 +135,7 @@
   }
 
   v30 = v3;
-  v31 = [v3 bytes];
+  bytes3 = [v3 bytes];
   v32 = [v3 length];
   memset(&v44, 0, sizeof(v44));
   __s = 0;
@@ -157,7 +157,7 @@
         v34 = v32;
       }
 
-      fprintf(v33, "%08lX:  ", v31);
+      fprintf(v33, "%08lX:  ", bytes3);
       for (m = 0; m != 16; ++m)
       {
         if (m >= v34)
@@ -167,7 +167,7 @@
 
         else
         {
-          fprintf(v33, "%02X ", *(v31 + m));
+          fprintf(v33, "%02X ", *(bytes3 + m));
         }
       }
 
@@ -178,21 +178,21 @@
           v37 = 32;
         }
 
-        else if (*(v31 + n) - 32 >= 0x5F)
+        else if (*(bytes3 + n) - 32 >= 0x5F)
         {
           v37 = 46;
         }
 
         else
         {
-          v37 = *(v31 + n);
+          v37 = *(bytes3 + n);
         }
 
         fputc(v37, v33);
       }
 
       fputc(10, v33);
-      v31 += 16;
+      bytes3 += 16;
       v38 = v32 <= 16;
       v32 -= 16;
     }
@@ -231,15 +231,15 @@
   }
 }
 
-- (BOOL)containsValidChannels:(id)a3
+- (BOOL)containsValidChannels:(id)channels
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  channelsCopy = channels;
+  v4 = [channelsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = *v13;
@@ -249,12 +249,12 @@
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(channelsCopy);
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
-        v8 = [v7 midiChannel];
-        v10 = v8 < 0x10 || v8 == 127;
+        midiChannel = [v7 midiChannel];
+        v10 = midiChannel < 0x10 || midiChannel == 127;
 
         if (v10)
         {
@@ -263,7 +263,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [channelsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -282,8 +282,8 @@ LABEL_17:
 {
   v3 = MEMORY[0x277CCACA8];
   profileDelegate = self->_profileDelegate;
-  v5 = [(MIDICIResponder *)self initiators];
-  v6 = [v3 stringWithFormat:@"<MIDICIResponder(%p): delegate:%@ initiators:%@> ", self, profileDelegate, v5];
+  initiators = [(MIDICIResponder *)self initiators];
+  v6 = [v3 stringWithFormat:@"<MIDICIResponder(%p): delegate:%@ initiators:%@> ", self, profileDelegate, initiators];
 
   return v6;
 }
@@ -300,19 +300,19 @@ LABEL_17:
     v19.receiver = self;
     v19.super_class = MIDICIResponder;
     v16 = [(MIDICIResponder *)&v19 init];
-    v17 = v16;
+    selfCopy = v16;
     if (v16)
     {
       objc_storeStrong(&v16->_profileDelegate, delegate);
-      v17->_isStarted = 0;
-      v17->_propertiesSupported = v6;
-      objc_storeStrong(&v17->_deviceInfo, deviceInfo);
+      selfCopy->_isStarted = 0;
+      selfCopy->_propertiesSupported = v6;
+      objc_storeStrong(&selfCopy->_deviceInfo, deviceInfo);
     }
   }
 
   else
   {
-    v17 = self;
+    selfCopy = self;
   }
 
   return 0;

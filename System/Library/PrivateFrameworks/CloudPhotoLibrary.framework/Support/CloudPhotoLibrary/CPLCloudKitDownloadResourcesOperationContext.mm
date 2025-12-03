@@ -1,57 +1,57 @@
 @interface CPLCloudKitDownloadResourcesOperationContext
-- (CPLCloudKitDownloadResourcesOperationContext)initWithResourceType:(unint64_t)a3;
+- (CPLCloudKitDownloadResourcesOperationContext)initWithResourceType:(unint64_t)type;
 - (id)extendedStatusDescriptionStrings;
 - (id)operationDescription;
-- (void)addResource:(id)a3;
-- (void)recordCompletionForResource:(id)a3 withError:(id)a4;
-- (void)updateProgress:(double)a3 forResource:(id)a4;
+- (void)addResource:(id)resource;
+- (void)recordCompletionForResource:(id)resource withError:(id)error;
+- (void)updateProgress:(double)progress forResource:(id)resource;
 @end
 
 @implementation CPLCloudKitDownloadResourcesOperationContext
 
-- (CPLCloudKitDownloadResourcesOperationContext)initWithResourceType:(unint64_t)a3
+- (CPLCloudKitDownloadResourcesOperationContext)initWithResourceType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = CPLCloudKitDownloadResourcesOperationContext;
   result = [(CPLCloudKitDownloadResourcesOperationContext *)&v5 init];
   if (result)
   {
-    result->_resourceType = a3;
+    result->_resourceType = type;
   }
 
   return result;
 }
 
-- (void)addResource:(id)a3
+- (void)addResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   resourceToProgressMap = self->_resourceToProgressMap;
-  v8 = v4;
+  v8 = resourceCopy;
   if (!resourceToProgressMap)
   {
     v6 = [[NSMapTable alloc] initWithKeyOptions:0 valueOptions:0 capacity:6];
     v7 = self->_resourceToProgressMap;
     self->_resourceToProgressMap = v6;
 
-    v4 = v8;
+    resourceCopy = v8;
     resourceToProgressMap = self->_resourceToProgressMap;
   }
 
-  [(NSMapTable *)resourceToProgressMap setObject:&off_10028EC80 forKey:v4];
+  [(NSMapTable *)resourceToProgressMap setObject:&off_10028EC80 forKey:resourceCopy];
 }
 
-- (void)updateProgress:(double)a3 forResource:(id)a4
+- (void)updateProgress:(double)progress forResource:(id)resource
 {
-  v5 = (a3 * 100.0);
-  v6 = a4;
+  v5 = (progress * 100.0);
+  resourceCopy = resource;
   v7 = [NSNumber numberWithInteger:v5];
-  [(NSMapTable *)self->_resourceToProgressMap setObject:v7 forKey:v6];
+  [(NSMapTable *)self->_resourceToProgressMap setObject:v7 forKey:resourceCopy];
 }
 
-- (void)recordCompletionForResource:(id)a3 withError:(id)a4
+- (void)recordCompletionForResource:(id)resource withError:(id)error
 {
   resourceToProgressMap = self->_resourceToProgressMap;
-  if (a4)
+  if (error)
   {
     v6 = &off_10028EC98;
   }
@@ -61,7 +61,7 @@
     v6 = &off_10028ECB0;
   }
 
-  [(NSMapTable *)resourceToProgressMap setObject:v6 forKey:a3];
+  [(NSMapTable *)resourceToProgressMap setObject:v6 forKey:resource];
 }
 
 - (id)operationDescription
@@ -76,7 +76,7 @@
 {
   v41 = objc_alloc_init(NSMutableArray);
   v3 = 72;
-  v51 = self;
+  selfCopy = self;
   v4 = [(NSMapTable *)self->_resourceToProgressMap count];
   v5 = +[NSUserDefaults standardUserDefaults];
   v47 = [v5 BOOLForKey:@"CPLUseCompactCloudKitStatus"];
@@ -87,7 +87,7 @@
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v6 = v51->_resourceToProgressMap;
+    v6 = selfCopy->_resourceToProgressMap;
     v7 = [(NSMapTable *)v6 countByEnumeratingWithState:&v52 objects:v56 count:16];
     if (v7)
     {
@@ -110,15 +110,15 @@
           }
 
           v13 = *(*(&v52 + 1) + 8 * v12);
-          v14 = [*(&v51->super.super.isa + v3) objectForKey:v13];
-          v15 = [v14 integerValue];
-          if (v15 < 100)
+          v14 = [*(&selfCopy->super.super.isa + v3) objectForKey:v13];
+          integerValue = [v14 integerValue];
+          if (integerValue < 100)
           {
-            v16 = v15;
+            v16 = integerValue;
             v17 = v10;
             v18 = v3;
-            v19 = [v13 identity];
-            v20 = [v19 fileSize];
+            identity = [v13 identity];
+            fileSize = [identity fileSize];
             if ((v47 & 1) == 0)
             {
               v44 = v11;
@@ -134,19 +134,19 @@
                 v42 = v21;
                 v43 = v16 & ~(v16 >> 63);
                 v22 = [NSString alloc];
-                v23 = [v13 itemScopedIdentifier];
-                v24 = [v19 fileUTI];
-                v25 = [NSByteCountFormatter stringFromByteCount:v20 countStyle:3];
-                v26 = [v22 initWithFormat:@"\t%@ (%@, %@) [%ld%%]%@", v23, v24, v25, v43, v42];
+                itemScopedIdentifier = [v13 itemScopedIdentifier];
+                fileUTI = [identity fileUTI];
+                v25 = [NSByteCountFormatter stringFromByteCount:fileSize countStyle:3];
+                v26 = [v22 initWithFormat:@"\t%@ (%@, %@) [%ld%%]%@", itemScopedIdentifier, fileUTI, v25, v43, v42];
               }
 
               else
               {
                 v27 = [NSString alloc];
-                v23 = [v13 itemScopedIdentifier];
-                v24 = [v19 fileUTI];
-                v25 = [NSByteCountFormatter stringFromByteCount:v20 countStyle:3];
-                v26 = [v27 initWithFormat:@"\t%@ (%@, %@) [waiting]", v23, v24, v25, v39, v40];
+                itemScopedIdentifier = [v13 itemScopedIdentifier];
+                fileUTI = [identity fileUTI];
+                v25 = [NSByteCountFormatter stringFromByteCount:fileSize countStyle:3];
+                v26 = [v27 initWithFormat:@"\t%@ (%@, %@) [waiting]", itemScopedIdentifier, fileUTI, v25, v39, v40];
               }
 
               v28 = v26;
@@ -157,7 +157,7 @@
               v9 = v45;
             }
 
-            v11 += v20;
+            v11 += fileSize;
             ++v9;
 
             v3 = v18;
@@ -183,7 +183,7 @@
       if (v10)
       {
         v29 = [NSString alloc];
-        v30 = [CPLResource shortDescriptionForResourceType:v51->_resourceType];
+        v30 = [CPLResource shortDescriptionForResourceType:selfCopy->_resourceType];
         v31 = v11;
         v32 = v30;
         v33 = [NSByteCountFormatter stringFromByteCount:v31 countStyle:3];
@@ -207,7 +207,7 @@ LABEL_24:
     }
 
     v36 = [NSString alloc];
-    v32 = [CPLResource shortDescriptionForResourceType:v51->_resourceType];
+    v32 = [CPLResource shortDescriptionForResourceType:selfCopy->_resourceType];
     v33 = [NSByteCountFormatter stringFromByteCount:v35 countStyle:3];
     v34 = [v36 initWithFormat:@"\t\t%lu x %@ in batch (%@)", v9, v32, v33, v39];
     goto LABEL_24;

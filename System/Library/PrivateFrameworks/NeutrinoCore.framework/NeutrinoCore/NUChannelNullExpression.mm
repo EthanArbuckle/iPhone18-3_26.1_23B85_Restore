@@ -1,12 +1,12 @@
 @interface NUChannelNullExpression
 - (NUChannelNullExpression)init;
-- (NUChannelNullExpression)initWithExpressionType:(int64_t)a3 arguments:(id)a4;
-- (id)evaluateWithContext:(id)a3 error:(id *)a4;
+- (NUChannelNullExpression)initWithExpressionType:(int64_t)type arguments:(id)arguments;
+- (id)evaluateWithContext:(id)context error:(id *)error;
 @end
 
 @implementation NUChannelNullExpression
 
-- (id)evaluateWithContext:(id)a3 error:(id *)a4
+- (id)evaluateWithContext:(id)context error:(id *)error
 {
   v4 = objc_alloc_init(NUChannelNullData);
 
@@ -20,10 +20,10 @@
   return [(NUChannelExpression *)&v3 initWithExpressionType:0 arguments:MEMORY[0x1E695E0F0]];
 }
 
-- (NUChannelNullExpression)initWithExpressionType:(int64_t)a3 arguments:(id)a4
+- (NUChannelNullExpression)initWithExpressionType:(int64_t)type arguments:(id)arguments
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  argumentsCopy = arguments;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1367);
@@ -67,8 +67,8 @@ LABEL_8:
     {
       v15 = MEMORY[0x1E696AF00];
       v16 = v14;
-      v17 = [v15 callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v15 callStackSymbols];
+      v18 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v18;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -84,8 +84,8 @@ LABEL_8:
     v21 = MEMORY[0x1E696AF00];
     v22 = specific;
     v23 = v19;
-    v24 = [v21 callStackSymbols];
-    v25 = [v24 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v21 callStackSymbols];
+    v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v33 = specific;
     v34 = 2114;

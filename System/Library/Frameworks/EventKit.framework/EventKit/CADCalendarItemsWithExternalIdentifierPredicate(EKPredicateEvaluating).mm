@@ -12,13 +12,13 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [v5 uniqueID];
-    v7 = [a1 externalIdentifier];
-    v8 = [v6 isEqualToString:v7];
+    uniqueID = [v5 uniqueID];
+    externalIdentifier = [self externalIdentifier];
+    v8 = [uniqueID isEqualToString:externalIdentifier];
 
     if (v8)
     {
-      v11.receiver = a1;
+      v11.receiver = self;
       v11.super_class = &off_1F1B9FBD8;
       v9 = objc_msgSendSuper2(&v11, sel_ekPredicateEvaluateWithObject_, v5);
     }
@@ -64,8 +64,8 @@
         }
 
         v16 = *(*(&v49 + 1) + 8 * i);
-        v17 = [v16 objectID];
-        [v10 setObject:v16 forKeyedSubscript:v17];
+        objectID = [v16 objectID];
+        [v10 setObject:v16 forKeyedSubscript:objectID];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v49 objects:v54 count:16];
@@ -83,7 +83,7 @@
   v46 = v19;
   v20 = v10;
   v47 = v20;
-  v48 = a1;
+  selfCopy = self;
   v21 = [v18 predicateWithBlock:v45];
   [v40 filterUsingPredicate:v21];
 
@@ -109,21 +109,21 @@
 
         v27 = *(*(&v41 + 1) + 8 * j);
         v28 = [v22 objectForKeyedSubscript:{v27, v39}];
-        if ([a1 ekPredicateEvaluateWithObject:v28] && (objc_msgSend(v19, "containsObject:", v27) & 1) == 0)
+        if ([self ekPredicateEvaluateWithObject:v28] && (objc_msgSend(v19, "containsObject:", v27) & 1) == 0)
         {
           v29 = [EKEvent alloc];
           [v28 persistentObject];
           v30 = v24;
           v31 = v25;
-          v32 = a1;
+          selfCopy2 = self;
           v33 = v19;
           v35 = v34 = v11;
-          v36 = [v28 startDate];
-          v37 = [(EKEvent *)v29 initWithPersistentObject:v35 occurrenceDate:v36];
+          startDate = [v28 startDate];
+          v37 = [(EKEvent *)v29 initWithPersistentObject:v35 occurrenceDate:startDate];
 
           v11 = v34;
           v19 = v33;
-          a1 = v32;
+          self = selfCopy2;
           v25 = v31;
           v24 = v30;
           v22 = v39;

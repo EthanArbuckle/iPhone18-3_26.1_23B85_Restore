@@ -7,8 +7,8 @@
 
 - (void)proxCardFlowWillPresent
 {
-  v2 = [(BaseViewController *)self viewServiceHost];
-  [v2 setStatusBarHidden:1 withDuration:0.3];
+  viewServiceHost = [(BaseViewController *)self viewServiceHost];
+  [viewServiceHost setStatusBarHidden:1 withDuration:0.3];
 }
 
 - (void)proxCardFlowDidDismiss
@@ -27,17 +27,17 @@
 
   if (!self->_finished && !self->_cancelled)
   {
-    v6 = [(BaseViewController *)self viewServicePresenter];
+    viewServicePresenter = [(BaseViewController *)self viewServicePresenter];
     v7 = CPSErrorDomain;
     v11 = NSDebugDescriptionErrorKey;
     v12 = @"User dismissed prox card without authenticating.";
     v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
     v9 = [NSError errorWithDomain:v7 code:104 userInfo:v8];
-    [v6 deactivateWithError:v9];
+    [viewServicePresenter deactivateWithError:v9];
   }
 
-  v10 = [(BaseViewController *)self viewServiceHost];
-  [v10 invalidate];
+  viewServiceHost = [(BaseViewController *)self viewServiceHost];
+  [viewServiceHost invalidate];
 }
 
 @end

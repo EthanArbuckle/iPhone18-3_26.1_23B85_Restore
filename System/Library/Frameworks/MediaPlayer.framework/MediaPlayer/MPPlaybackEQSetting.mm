@@ -1,10 +1,10 @@
 @interface MPPlaybackEQSetting
-+ (MPPlaybackEQSetting)settingWithName:(id)a3;
-+ (MPPlaybackEQSetting)settingWithPreset:(int64_t)a3;
++ (MPPlaybackEQSetting)settingWithName:(id)name;
++ (MPPlaybackEQSetting)settingWithPreset:(int64_t)preset;
 + (NSArray)allSettings;
 - (NSString)localizedName;
 - (NSString)name;
-- (id)_initWithPreset:(int64_t)a3;
+- (id)_initWithPreset:(int64_t)preset;
 - (int)avPreset;
 @end
 
@@ -200,11 +200,11 @@ LABEL_27:
   return result;
 }
 
-- (id)_initWithPreset:(int64_t)a3
+- (id)_initWithPreset:(int64_t)preset
 {
-  if (a3 && (a3 - 122) < 0xFFFFFFFFFFFFFFEALL)
+  if (preset && (preset - 122) < 0xFFFFFFFFFFFFFFEALL)
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -214,32 +214,32 @@ LABEL_27:
     v5 = [(MPPlaybackEQSetting *)&v7 init];
     if (v5)
     {
-      v5->_preset = a3;
+      v5->_preset = preset;
     }
 
     self = v5;
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-+ (MPPlaybackEQSetting)settingWithPreset:(int64_t)a3
++ (MPPlaybackEQSetting)settingWithPreset:(int64_t)preset
 {
-  v3 = [[a1 alloc] _initWithPreset:a3];
+  v3 = [[self alloc] _initWithPreset:preset];
 
   return v3;
 }
 
-+ (MPPlaybackEQSetting)settingWithName:(id)a3
++ (MPPlaybackEQSetting)settingWithName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == @"Off" || (v6 = [(__CFString *)v4 isEqual:@"Off"], v5, (v6 & 1) != 0))
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy == @"Off" || (v6 = [(__CFString *)nameCopy isEqual:@"Off"], v5, (v6 & 1) != 0))
   {
     v7 = 0;
 LABEL_70:
-    v74 = [a1 settingWithPreset:v7];
+    v74 = [self settingWithPreset:v7];
     goto LABEL_71;
   }
 
@@ -406,51 +406,51 @@ LABEL_71:
 + (NSArray)allSettings
 {
   v28[23] = *MEMORY[0x1E69E9840];
-  v27 = [a1 settingWithPreset:0];
+  v27 = [self settingWithPreset:0];
   v28[0] = v27;
-  v26 = [a1 settingWithPreset:100];
+  v26 = [self settingWithPreset:100];
   v28[1] = v26;
-  v25 = [a1 settingWithPreset:101];
+  v25 = [self settingWithPreset:101];
   v28[2] = v25;
-  v24 = [a1 settingWithPreset:102];
+  v24 = [self settingWithPreset:102];
   v28[3] = v24;
-  v23 = [a1 settingWithPreset:103];
+  v23 = [self settingWithPreset:103];
   v28[4] = v23;
-  v22 = [a1 settingWithPreset:104];
+  v22 = [self settingWithPreset:104];
   v28[5] = v22;
-  v21 = [a1 settingWithPreset:105];
+  v21 = [self settingWithPreset:105];
   v28[6] = v21;
-  v20 = [a1 settingWithPreset:106];
+  v20 = [self settingWithPreset:106];
   v28[7] = v20;
-  v19 = [a1 settingWithPreset:107];
+  v19 = [self settingWithPreset:107];
   v28[8] = v19;
-  v18 = [a1 settingWithPreset:108];
+  v18 = [self settingWithPreset:108];
   v28[9] = v18;
-  v17 = [a1 settingWithPreset:109];
+  v17 = [self settingWithPreset:109];
   v28[10] = v17;
-  v16 = [a1 settingWithPreset:110];
+  v16 = [self settingWithPreset:110];
   v28[11] = v16;
-  v15 = [a1 settingWithPreset:111];
+  v15 = [self settingWithPreset:111];
   v28[12] = v15;
-  v3 = [a1 settingWithPreset:112];
+  v3 = [self settingWithPreset:112];
   v28[13] = v3;
-  v4 = [a1 settingWithPreset:113];
+  v4 = [self settingWithPreset:113];
   v28[14] = v4;
-  v5 = [a1 settingWithPreset:114];
+  v5 = [self settingWithPreset:114];
   v28[15] = v5;
-  v6 = [a1 settingWithPreset:115];
+  v6 = [self settingWithPreset:115];
   v28[16] = v6;
-  v7 = [a1 settingWithPreset:116];
+  v7 = [self settingWithPreset:116];
   v28[17] = v7;
-  v8 = [a1 settingWithPreset:117];
+  v8 = [self settingWithPreset:117];
   v28[18] = v8;
-  v9 = [a1 settingWithPreset:118];
+  v9 = [self settingWithPreset:118];
   v28[19] = v9;
-  v10 = [a1 settingWithPreset:119];
+  v10 = [self settingWithPreset:119];
   v28[20] = v10;
-  v11 = [a1 settingWithPreset:120];
+  v11 = [self settingWithPreset:120];
   v28[21] = v11;
-  v12 = [a1 settingWithPreset:121];
+  v12 = [self settingWithPreset:121];
   v28[22] = v12;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:23];
 

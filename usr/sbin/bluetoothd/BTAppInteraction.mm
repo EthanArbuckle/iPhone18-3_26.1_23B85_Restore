@@ -1,48 +1,48 @@
 @interface BTAppInteraction
-+ (id)RBSTaskStateToString:(unsigned __int8)a3;
++ (id)RBSTaskStateToString:(unsigned __int8)string;
 + (id)instance;
-+ (unsigned)translateRunningBoardProcessState:(id)a3 overrideForeground:(BOOL)a4;
-- (BOOL)isBackgroundingSupported:(id)a3 central:(BOOL)a4;
++ (unsigned)translateRunningBoardProcessState:(id)state overrideForeground:(BOOL)foreground;
+- (BOOL)isBackgroundingSupported:(id)supported central:(BOOL)central;
 - (BTAppInteraction)init;
-- (int)pidForIdentifier:(id)a3;
-- (unsigned)applicationStateForProcess:(id)a3;
-- (unsigned)translateApplicationState:(unsigned int)a3;
-- (void)_handleActivityContentUpdate:(id)a3;
-- (void)appLaunchCallback:(__CFUserNotification *)a3 flags:(unint64_t)a4;
-- (void)applicationStateChanged:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)assertionInvalidationCallback:(id)a3;
+- (int)pidForIdentifier:(id)identifier;
+- (unsigned)applicationStateForProcess:(id)process;
+- (unsigned)translateApplicationState:(unsigned int)state;
+- (void)_handleActivityContentUpdate:(id)update;
+- (void)appLaunchCallback:(__CFUserNotification *)callback flags:(unint64_t)flags;
+- (void)applicationStateChanged:(id)changed;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)assertionInvalidationCallback:(id)callback;
 - (void)assertionTimerFired;
-- (void)btControllerTapToRadar:(int)a3 reason:(id)a4 cid:(id)a5 cname:(id)a6 cvers:(id)a7;
-- (void)cancelAppLaunchAlert:(id)a3;
-- (void)cancelPairingAlert:(id)a3;
-- (void)createAssertionForBundleID:(id)a3 duration:(unint64_t)a4 isUrgent:(BOOL)a5 withPid:(int)a6;
+- (void)btControllerTapToRadar:(int)radar reason:(id)reason cid:(id)cid cname:(id)cname cvers:(id)cvers;
+- (void)cancelAppLaunchAlert:(id)alert;
+- (void)cancelPairingAlert:(id)alert;
+- (void)createAssertionForBundleID:(id)d duration:(unint64_t)duration isUrgent:(BOOL)urgent withPid:(int)pid;
 - (void)disableHIP;
-- (void)displayAirWaveLaunchNotification:(id *)a3 forProduct:(unsigned int)a4 reason:(unsigned __int8)a5 findMySerialNumber:(id)a6;
+- (void)displayAirWaveLaunchNotification:(id *)notification forProduct:(unsigned int)product reason:(unsigned __int8)reason findMySerialNumber:(id)number;
 - (void)invalidateAssertionTimer;
-- (void)launchApplication:(id)a3 restoringCentrals:(id)a4 peripherals:(id)a5;
-- (void)openBundle:(id)a3 options:(id)a4 attempt:(int)a5;
-- (void)openTapToRadarWithAccessoryLogs:(id)a3 reason:(int)a4 pid:(unint64_t)a5;
-- (void)pairingAlertCallback:(__CFUserNotification *)a3 flags:(unint64_t)a4;
-- (void)powerAlertCallback:(__CFUserNotification *)a3 flags:(unint64_t)a4;
+- (void)launchApplication:(id)application restoringCentrals:(id)centrals peripherals:(id)peripherals;
+- (void)openBundle:(id)bundle options:(id)options attempt:(int)attempt;
+- (void)openTapToRadarWithAccessoryLogs:(id)logs reason:(int)reason pid:(unint64_t)pid;
+- (void)pairingAlertCallback:(__CFUserNotification *)callback flags:(unint64_t)flags;
+- (void)powerAlertCallback:(__CFUserNotification *)callback flags:(unint64_t)flags;
 - (void)reconfigureRunningBoardProcessMonitor;
-- (void)registerApplication:(id)a3 pid:(int)a4 isExtension:(BOOL)a5;
-- (void)runningBoardApplicationStateChanged:(id)a3 ProcessState:(id)a4;
-- (void)runningBoardProcessTerminated:(id)a3 ExitContext:(id)a4;
-- (void)setCentralBackgroundingSupported:(id)a3;
-- (void)setPeripheralBackgroundingSupported:(id)a3;
-- (void)showAppLaunchAlert:(id)a3 device:(id)a4 type:(int)a5;
-- (void)showFileRadarNotification:(id)a3 reason:(int)a4 pid:(unint64_t)a5;
-- (void)showFoundAccessoryCrashAlert:(id)a3 productID:(unint64_t)a4 accessoryName:(id)a5 firmwareVersion:(id)a6;
-- (void)showFoundAccessoryLogAlert:(id)a3 isCrash:(BOOL)a4 pid:(unint64_t)a5 accessoryName:(id)a6;
-- (void)showPairingAlert:(id)a3 type:(int)a4 passkey:(unint64_t)a5;
-- (void)showPowerAlert:(id)a3 forDenylistMode:(BOOL)a4 validateBundle:(BOOL)a5;
+- (void)registerApplication:(id)application pid:(int)pid isExtension:(BOOL)extension;
+- (void)runningBoardApplicationStateChanged:(id)changed ProcessState:(id)state;
+- (void)runningBoardProcessTerminated:(id)terminated ExitContext:(id)context;
+- (void)setCentralBackgroundingSupported:(id)supported;
+- (void)setPeripheralBackgroundingSupported:(id)supported;
+- (void)showAppLaunchAlert:(id)alert device:(id)device type:(int)type;
+- (void)showFileRadarNotification:(id)notification reason:(int)reason pid:(unint64_t)pid;
+- (void)showFoundAccessoryCrashAlert:(id)alert productID:(unint64_t)d accessoryName:(id)name firmwareVersion:(id)version;
+- (void)showFoundAccessoryLogAlert:(id)alert isCrash:(BOOL)crash pid:(unint64_t)pid accessoryName:(id)name;
+- (void)showPairingAlert:(id)alert type:(int)type passkey:(unint64_t)passkey;
+- (void)showPowerAlert:(id)alert forDenylistMode:(BOOL)mode validateBundle:(BOOL)bundle;
 - (void)startAssertionTimer;
-- (void)takeAssertionForProcess:(id)a3 duration:(unint64_t)a4 isUrgent:(BOOL)a5;
-- (void)unregisterApplication:(id)a3;
-- (void)updateApplicationAliveStatus:(id)a3 isAlive:(BOOL)a4;
-- (void)updateApplicationState:(int)a3;
-- (void)urgentAssertionInvalidationCallback:(id)a3;
+- (void)takeAssertionForProcess:(id)process duration:(unint64_t)duration isUrgent:(BOOL)urgent;
+- (void)unregisterApplication:(id)application;
+- (void)updateApplicationAliveStatus:(id)status isAlive:(BOOL)alive;
+- (void)updateApplicationState:(int)state;
+- (void)urgentAssertionInvalidationCallback:(id)callback;
 @end
 
 @implementation BTAppInteraction
@@ -76,36 +76,36 @@
   dispatch_async(queue, block);
 }
 
-- (void)_handleActivityContentUpdate:(id)a3
+- (void)_handleActivityContentUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 descriptor];
-  v6 = [v5 platterTargetBundleIdentifier];
+  updateCopy = update;
+  descriptor = [updateCopy descriptor];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
 
-  v7 = [v4 descriptor];
-  v17 = [v7 activityIdentifier];
+  descriptor2 = [updateCopy descriptor];
+  activityIdentifier = [descriptor2 activityIdentifier];
 
-  v8 = [v4 state];
+  state = [updateCopy state];
   v9 = qword_100BCE8D8;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v4 descriptor];
-    v11 = [v10 isEphemeral];
-    v12 = [v4 descriptor];
-    v13 = [v12 isMomentary];
-    v14 = [v4 descriptor];
+    descriptor3 = [updateCopy descriptor];
+    isEphemeral = [descriptor3 isEphemeral];
+    descriptor4 = [updateCopy descriptor];
+    isMomentary = [descriptor4 isMomentary];
+    descriptor5 = [updateCopy descriptor];
     *buf = 138413570;
-    v22 = v6;
+    v22 = platterTargetBundleIdentifier;
     v23 = 2112;
-    v24 = v17;
+    v24 = activityIdentifier;
     v25 = 1024;
-    v26 = v8;
+    v26 = state;
     v27 = 1024;
-    v28 = v11;
+    v28 = isEphemeral;
     v29 = 1024;
-    v30 = v13;
+    v30 = isMomentary;
     v31 = 1024;
-    v32 = [v14 isImportant];
+    isImportant = [descriptor5 isImportant];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "LiveActivity %@ %@ new state:%d isEphemeral:%d isMomentary:%d isImportant:%d", buf, 0x2Eu);
   }
 
@@ -115,9 +115,9 @@
   block[2] = sub_1007DA030;
   block[3] = &unk_100AE25C8;
   block[4] = self;
-  v19 = v6;
-  v20 = v8;
-  v16 = v6;
+  v19 = platterTargetBundleIdentifier;
+  v20 = state;
+  v16 = platterTargetBundleIdentifier;
   dispatch_async(queue, block);
 }
 
@@ -227,39 +227,39 @@
   return v2;
 }
 
-- (void)registerApplication:(id)a3 pid:(int)a4 isExtension:(BOOL)a5
+- (void)registerApplication:(id)application pid:(int)pid isExtension:(BOOL)extension
 {
-  v8 = a3;
+  applicationCopy = application;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1007DA8E4;
   block[3] = &unk_100B0E1F0;
   block[4] = self;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = applicationCopy;
+  pidCopy = pid;
+  extensionCopy = extension;
+  v10 = applicationCopy;
   dispatch_async(queue, block);
 }
 
-- (void)unregisterApplication:(id)a3
+- (void)unregisterApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1007DAD2C;
   v7[3] = &unk_100AE0B60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = applicationCopy;
+  v6 = applicationCopy;
   dispatch_async(queue, v7);
 }
 
-- (int)pidForIdentifier:(id)a3
+- (int)pidForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -269,10 +269,10 @@
   block[1] = 3221225472;
   block[2] = sub_1007DB168;
   block[3] = &unk_100B01230;
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   LODWORD(queue) = *(v12 + 6);
 
@@ -280,15 +280,15 @@
   return queue;
 }
 
-- (void)updateApplicationAliveStatus:(id)a3 isAlive:(BOOL)a4
+- (void)updateApplicationAliveStatus:(id)status isAlive:(BOOL)alive
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_applicationMap objectForKey:v6];
+  aliveCopy = alive;
+  statusCopy = status;
+  v7 = [(NSMutableDictionary *)self->_applicationMap objectForKey:statusCopy];
   v8 = v7;
   if (v7)
   {
-    [v7 setIsAlive:v4];
+    [v7 setIsAlive:aliveCopy];
     if (os_log_type_enabled(qword_100BCE8D8, OS_LOG_TYPE_ERROR))
     {
       sub_10087A4C4();
@@ -301,57 +301,57 @@
   }
 }
 
-- (void)launchApplication:(id)a3 restoringCentrals:(id)a4 peripherals:(id)a5
+- (void)launchApplication:(id)application restoringCentrals:(id)centrals peripherals:(id)peripherals
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  applicationCopy = application;
+  centralsCopy = centrals;
+  peripheralsCopy = peripherals;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1007DB398;
   v15[3] = &unk_100AEE7D0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = applicationCopy;
+  v17 = centralsCopy;
+  v18 = peripheralsCopy;
+  v12 = peripheralsCopy;
+  v13 = centralsCopy;
+  v14 = applicationCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)openBundle:(id)a3 options:(id)a4 attempt:(int)a5
+- (void)openBundle:(id)bundle options:(id)options attempt:(int)attempt
 {
-  v8 = a3;
-  v9 = a4;
+  bundleCopy = bundle;
+  optionsCopy = options;
   v10 = qword_100BCE9E0;
   if (os_log_type_enabled(qword_100BCE9E0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v25 = v8;
+    v25 = bundleCopy;
     v26 = 2112;
-    v27 = v9;
+    v27 = optionsCopy;
     v28 = 1024;
-    v29 = a5;
+    attemptCopy = attempt;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Attempting To Launch Bundle: %{public}@ Options: %@ Attempt: %d", buf, 0x1Cu);
   }
 
   v11 = dispatch_time(0, 3000000000);
-  if (a5 < 3)
+  if (attempt < 3)
   {
     v14 = v11;
     v15 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
-    v16 = [FBSOpenApplicationOptions optionsWithDictionary:v9];
+    v16 = [FBSOpenApplicationOptions optionsWithDictionary:optionsCopy];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_1007DBA34;
     v17[3] = &unk_100B0E240;
     v20 = v14;
-    v18[0] = v8;
+    v18[0] = bundleCopy;
     v18[1] = self;
-    v19 = v9;
-    v21 = a5;
+    v19 = optionsCopy;
+    attemptCopy2 = attempt;
     [v15 openApplication:v18[0] withOptions:v16 completion:v17];
 
     v13 = v18;
@@ -369,42 +369,42 @@
     v22[1] = 3221225472;
     v22[2] = sub_1007DB9E0;
     v22[3] = &unk_100ADF820;
-    v23 = v8;
+    v23 = bundleCopy;
     sub_10000CA94(v12, v22);
     v13 = &v23;
   }
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1007DBD60;
   v7[3] = &unk_100AE0B60;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = uninstallCopy;
+  selfCopy = self;
+  v6 = uninstallCopy;
   dispatch_async(queue, v7);
 }
 
-- (unsigned)translateApplicationState:(unsigned int)a3
+- (unsigned)translateApplicationState:(unsigned int)state
 {
-  if (a3 - 1 >= 8)
+  if (state - 1 >= 8)
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = 0x1001010108010402uLL >> (8 * (a3 - 1));
+    v3 = 0x1001010108010402uLL >> (8 * (state - 1));
   }
 
   return v3 & 0x1F;
 }
 
-- (void)updateApplicationState:(int)a3
+- (void)updateApplicationState:(int)state
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -412,38 +412,38 @@
   v4[2] = sub_1007DC1B4;
   v4[3] = &unk_100ADF920;
   v4[4] = self;
-  v5 = a3;
+  stateCopy = state;
   dispatch_async(queue, v4);
 }
 
-- (void)runningBoardApplicationStateChanged:(id)a3 ProcessState:(id)a4
+- (void)runningBoardApplicationStateChanged:(id)changed ProcessState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  stateCopy = state;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1007DC4A0;
   block[3] = &unk_100AE2550;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = changedCopy;
+  v13 = stateCopy;
+  selfCopy = self;
+  v9 = stateCopy;
+  v10 = changedCopy;
   dispatch_async(queue, block);
 }
 
-- (void)runningBoardProcessTerminated:(id)a3 ExitContext:(id)a4
+- (void)runningBoardProcessTerminated:(id)terminated ExitContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  terminatedCopy = terminated;
+  contextCopy = context;
   v8 = qword_100BCE8D8;
   if (os_log_type_enabled(qword_100BCE8D8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v17 = v6;
+    v17 = terminatedCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = contextCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "runningBoardProcessTerminated process:%@ exitContext:%@", buf, 0x16u);
   }
 
@@ -452,64 +452,64 @@
   block[1] = 3221225472;
   block[2] = sub_1007DD36C;
   block[3] = &unk_100AE2550;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = terminatedCopy;
+  selfCopy = self;
+  v15 = contextCopy;
+  v10 = contextCopy;
+  v11 = terminatedCopy;
   dispatch_async(queue, block);
 }
 
-+ (id)RBSTaskStateToString:(unsigned __int8)a3
++ (id)RBSTaskStateToString:(unsigned __int8)string
 {
-  if (a3 > 4u)
+  if (string > 4u)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_100B0E678[a3];
+    return off_100B0E678[string];
   }
 }
 
-+ (unsigned)translateRunningBoardProcessState:(id)a3 overrideForeground:(BOOL)a4
++ (unsigned)translateRunningBoardProcessState:(id)state overrideForeground:(BOOL)foreground
 {
-  v5 = a3;
-  v6 = [v5 endowmentNamespaces];
-  v7 = [v6 containsObject:FBSSceneVisibilityEndowmentNamespace];
+  stateCopy = state;
+  endowmentNamespaces = [stateCopy endowmentNamespaces];
+  v7 = [endowmentNamespaces containsObject:FBSSceneVisibilityEndowmentNamespace];
 
-  if (![v5 taskState])
+  if (![stateCopy taskState])
   {
     goto LABEL_11;
   }
 
-  if ([v5 taskState] == 1)
+  if ([stateCopy taskState] == 1)
   {
     v8 = 2;
     goto LABEL_12;
   }
 
-  if ([v5 taskState] == 3)
+  if ([stateCopy taskState] == 3)
   {
     v8 = 4;
     goto LABEL_12;
   }
 
-  v9 = v7 | a4;
-  if (!(([v5 taskState] != 4) | v9 & 1))
+  v9 = v7 | foreground;
+  if (!(([stateCopy taskState] != 4) | v9 & 1))
   {
     v8 = 8;
     goto LABEL_12;
   }
 
-  if ((([v5 taskState] == 4) & v9) != 0)
+  if ((([stateCopy taskState] == 4) & v9) != 0)
   {
     v8 = 16;
     goto LABEL_12;
   }
 
-  if ([v5 taskState] == 2)
+  if ([stateCopy taskState] == 2)
   {
 LABEL_11:
     v8 = 32;
@@ -527,37 +527,37 @@ LABEL_12:
   return v8;
 }
 
-- (void)setCentralBackgroundingSupported:(id)a3
+- (void)setCentralBackgroundingSupported:(id)supported
 {
-  v4 = a3;
+  supportedCopy = supported;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1007DD988;
   v7[3] = &unk_100AE0B60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = supportedCopy;
+  v6 = supportedCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)setPeripheralBackgroundingSupported:(id)a3
+- (void)setPeripheralBackgroundingSupported:(id)supported
 {
-  v4 = a3;
+  supportedCopy = supported;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1007DDB14;
   v7[3] = &unk_100AE0B60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = supportedCopy;
+  v6 = supportedCopy;
   dispatch_sync(queue, v7);
 }
 
-- (unsigned)applicationStateForProcess:(id)a3
+- (unsigned)applicationStateForProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -568,9 +568,9 @@ LABEL_12:
   block[2] = sub_1007DDCD8;
   block[3] = &unk_100B0E350;
   block[4] = self;
-  v9 = v4;
+  v9 = processCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = processCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -578,23 +578,23 @@ LABEL_12:
   return queue;
 }
 
-- (void)applicationStateChanged:(id)a3
+- (void)applicationStateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1007DDF14;
   v7[3] = &unk_100AE0B60;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_async(queue, v7);
 }
 
-- (BOOL)isBackgroundingSupported:(id)a3 central:(BOOL)a4
+- (BOOL)isBackgroundingSupported:(id)supported central:(BOOL)central
 {
-  v6 = a3;
+  supportedCopy = supported;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -605,10 +605,10 @@ LABEL_12:
   v10[2] = sub_1007DEE64;
   v10[3] = &unk_100B0E378;
   v10[4] = self;
-  v11 = v6;
+  v11 = supportedCopy;
   v12 = &v14;
-  v13 = a4;
-  v8 = v6;
+  centralCopy = central;
+  v8 = supportedCopy;
   dispatch_sync(queue, v10);
   LOBYTE(self) = *(v15 + 24);
 
@@ -616,32 +616,32 @@ LABEL_12:
   return self;
 }
 
-- (void)takeAssertionForProcess:(id)a3 duration:(unint64_t)a4 isUrgent:(BOOL)a5
+- (void)takeAssertionForProcess:(id)process duration:(unint64_t)duration isUrgent:(BOOL)urgent
 {
-  v8 = a3;
+  processCopy = process;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1007DEFD4;
   v11[3] = &unk_100AE28A8;
   v11[4] = self;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = processCopy;
+  durationCopy = duration;
+  urgentCopy = urgent;
+  v10 = processCopy;
   dispatch_async(queue, v11);
 }
 
-- (void)createAssertionForBundleID:(id)a3 duration:(unint64_t)a4 isUrgent:(BOOL)a5 withPid:(int)a6
+- (void)createAssertionForBundleID:(id)d duration:(unint64_t)duration isUrgent:(BOOL)urgent withPid:(int)pid
 {
-  v6 = *&a6;
-  v7 = a5;
-  v10 = a3;
+  v6 = *&pid;
+  urgentCopy = urgent;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
-  v11 = [(NSMutableDictionary *)self->_applicationMap objectForKeyedSubscript:v10];
+  v11 = [(NSMutableDictionary *)self->_applicationMap objectForKeyedSubscript:dCopy];
   if (([v11 isExtension] & 1) == 0)
   {
-    if (v7)
+    if (urgentCopy)
     {
       v12 = qword_100BCE8D8;
       if (os_log_type_enabled(qword_100BCE8D8, OS_LOG_TYPE_INFO))
@@ -661,12 +661,12 @@ LABEL_12:
     v14 = sub_10000C798();
     if ((*(*v14 + 368))(v14))
     {
-      v15 = [[ProcessAssertion alloc] initWithPID:v6 flags:v13 reason:5 name:v10];
+      v15 = [[ProcessAssertion alloc] initWithPID:v6 flags:v13 reason:5 name:dCopy];
     }
 
     else
     {
-      v15 = [[ProcessAssertion alloc] initWithBundleIdentifier:v10 flags:v13 reason:5 name:v10];
+      v15 = [[ProcessAssertion alloc] initWithBundleIdentifier:dCopy flags:v13 reason:5 name:dCopy];
     }
 
     v16 = v15;
@@ -675,16 +675,16 @@ LABEL_12:
       v17 = qword_100BCE8D8;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
-        v18 = v10;
-        v19 = [v10 UTF8String];
+        v18 = dCopy;
+        uTF8String = [dCopy UTF8String];
         *buf = 136446210;
-        v31 = v19;
+        v31 = uTF8String;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Acquired process assertion for application %{public}s", buf, 0xCu);
       }
 
-      [(ProcessAssertion *)v16 setSecondsLeft:a4];
+      [(ProcessAssertion *)v16 setSecondsLeft:duration];
       objc_initWeak(buf, v16);
-      if (v7)
+      if (urgentCopy)
       {
         v28[0] = _NSConcreteStackBlock;
         v28[1] = 3221225472;
@@ -693,7 +693,7 @@ LABEL_12:
         v20 = &v29;
         objc_copyWeak(&v29, buf);
         [(ProcessAssertion *)v16 setInvalidationHandler:v28];
-        [(NSMutableDictionary *)self->_urgentAssertions setObject:v16 forKeyedSubscript:v10];
+        [(NSMutableDictionary *)self->_urgentAssertions setObject:v16 forKeyedSubscript:dCopy];
       }
 
       else
@@ -705,7 +705,7 @@ LABEL_12:
         v20 = &v27;
         objc_copyWeak(&v27, buf);
         [(ProcessAssertion *)v16 setInvalidationHandler:&v23];
-        [(NSMutableDictionary *)self->_processAssertions setObject:v16 forKeyedSubscript:v10, v23, v24, v25, v26];
+        [(NSMutableDictionary *)self->_processAssertions setObject:v16 forKeyedSubscript:dCopy, v23, v24, v25, v26];
       }
 
       objc_destroyWeak(v20);
@@ -722,8 +722,8 @@ LABEL_12:
       v21 = qword_100BCE8D8;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = v10;
-        sub_10087AA88([v10 UTF8String], buf);
+        v22 = dCopy;
+        sub_10087AA88([dCopy UTF8String], buf);
       }
 
       [(ProcessAssertion *)v16 invalidate];
@@ -731,31 +731,31 @@ LABEL_12:
   }
 }
 
-- (void)urgentAssertionInvalidationCallback:(id)a3
+- (void)urgentAssertionInvalidationCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1007DF8F8;
   v7[3] = &unk_100AE0B60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)assertionInvalidationCallback:(id)a3
+- (void)assertionInvalidationCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1007DFA60;
   v7[3] = &unk_100AE0B60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   dispatch_async(queue, v7);
 }
 
@@ -845,10 +845,10 @@ LABEL_12:
   }
 }
 
-- (void)showPowerAlert:(id)a3 forDenylistMode:(BOOL)a4 validateBundle:(BOOL)a5
+- (void)showPowerAlert:(id)alert forDenylistMode:(BOOL)mode validateBundle:(BOOL)bundle
 {
-  v8 = a3;
-  if (([v8 isEqualToString:@"com.apple.Preferences"] & 1) == 0)
+  alertCopy = alert;
+  if (([alertCopy isEqualToString:@"com.apple.Preferences"] & 1) == 0)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -856,14 +856,14 @@ LABEL_12:
     block[2] = sub_1007E02BC;
     block[3] = &unk_100AEF470;
     block[4] = self;
-    v11 = v8;
-    v12 = a5;
-    v13 = a4;
+    v11 = alertCopy;
+    bundleCopy = bundle;
+    modeCopy = mode;
     dispatch_async(queue, block);
   }
 }
 
-- (void)powerAlertCallback:(__CFUserNotification *)a3 flags:(unint64_t)a4
+- (void)powerAlertCallback:(__CFUserNotification *)callback flags:(unint64_t)flags
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -871,43 +871,43 @@ LABEL_12:
   v5[2] = sub_1007E0930;
   v5[3] = &unk_100AE1200;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = flags;
   dispatch_async(queue, v5);
 }
 
-- (void)showAppLaunchAlert:(id)a3 device:(id)a4 type:(int)a5
+- (void)showAppLaunchAlert:(id)alert device:(id)device type:(int)type
 {
-  v8 = a3;
-  v9 = a4;
+  alertCopy = alert;
+  deviceCopy = device;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1007E0BA8;
   v13[3] = &unk_100B0E218;
   v13[4] = self;
-  v14 = v8;
-  v16 = a5;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = alertCopy;
+  typeCopy = type;
+  v15 = deviceCopy;
+  v11 = deviceCopy;
+  v12 = alertCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)cancelAppLaunchAlert:(id)a3
+- (void)cancelAppLaunchAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1007E13D4;
   v7[3] = &unk_100AE0B60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = alertCopy;
+  v6 = alertCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)appLaunchCallback:(__CFUserNotification *)a3 flags:(unint64_t)a4
+- (void)appLaunchCallback:(__CFUserNotification *)callback flags:(unint64_t)flags
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -915,15 +915,15 @@ LABEL_12:
   block[2] = sub_1007E1568;
   block[3] = &unk_100AE0BC0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = callback;
+  block[6] = flags;
   dispatch_async(queue, block);
 }
 
-- (void)showPairingAlert:(id)a3 type:(int)a4 passkey:(unint64_t)a5
+- (void)showPairingAlert:(id)alert type:(int)type passkey:(unint64_t)passkey
 {
-  v8 = a3;
-  if (a4 == 5 && os_log_type_enabled(qword_100BCE8D8, OS_LOG_TYPE_FAULT))
+  alertCopy = alert;
+  if (type == 5 && os_log_type_enabled(qword_100BCE8D8, OS_LOG_TYPE_FAULT))
   {
     sub_10087AD54();
   }
@@ -933,7 +933,7 @@ LABEL_12:
   v13[2] = 0x3032000000;
   v13[3] = sub_100042544;
   v13[4] = sub_1000426CC;
-  v14 = v8;
+  v14 = alertCopy;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -941,28 +941,28 @@ LABEL_12:
   v11[3] = &unk_100B0E470;
   v11[4] = self;
   v11[5] = v13;
-  v12 = a4;
-  v11[6] = a5;
-  v10 = v8;
+  typeCopy = type;
+  v11[6] = passkey;
+  v10 = alertCopy;
   dispatch_async(queue, v11);
   _Block_object_dispose(v13, 8);
 }
 
-- (void)cancelPairingAlert:(id)a3
+- (void)cancelPairingAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1007E2C68;
   v7[3] = &unk_100AE0B60;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = alertCopy;
+  selfCopy = self;
+  v6 = alertCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)pairingAlertCallback:(__CFUserNotification *)a3 flags:(unint64_t)a4
+- (void)pairingAlertCallback:(__CFUserNotification *)callback flags:(unint64_t)flags
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -970,15 +970,15 @@ LABEL_12:
   block[2] = sub_1007E2F30;
   block[3] = &unk_100AE0BC0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = callback;
+  block[6] = flags;
   dispatch_async(queue, block);
 }
 
-- (void)displayAirWaveLaunchNotification:(id *)a3 forProduct:(unsigned int)a4 reason:(unsigned __int8)a5 findMySerialNumber:(id)a6
+- (void)displayAirWaveLaunchNotification:(id *)notification forProduct:(unsigned int)product reason:(unsigned __int8)reason findMySerialNumber:(id)number
 {
-  v6 = a5;
-  v9 = a6;
+  reasonCopy = reason;
+  numberCopy = number;
   v33 = 0;
   v10 = sub_10000C798();
   if ((*(*v10 + 456))(v10))
@@ -1059,7 +1059,7 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  if ((a4 & 0xFFFFE000) == 0x2000)
+  if ((product & 0xFFFFE000) == 0x2000)
   {
     if (self->_lastAirWaveNotificationDate)
     {
@@ -1082,20 +1082,20 @@ LABEL_16:
     if (os_log_type_enabled(qword_100BCE8D8, OS_LOG_TYPE_DEFAULT))
     {
       v23 = "Invalid";
-      if (v6 == 1)
+      if (reasonCopy == 1)
       {
         v23 = "Case Issue";
       }
 
       *buf = 67109634;
-      *&buf[4] = a4;
-      if (!v6)
+      *&buf[4] = product;
+      if (!reasonCopy)
       {
         v23 = "Unknown";
       }
 
       v35 = 1024;
-      v36 = v6;
+      v36 = reasonCopy;
       v37 = 2080;
       v38 = v23;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "displayAirWaveLaunchNotification: productID: 0x%04X, reason: %u (%s)", buf, 0x18u);
@@ -1107,9 +1107,9 @@ LABEL_16:
     block[2] = sub_1007E3968;
     block[3] = &unk_100B0E1F0;
     block[4] = self;
-    v29 = a4;
-    v30 = v6;
-    v28 = v9;
+    productCopy = product;
+    v30 = reasonCopy;
+    v28 = numberCopy;
     dispatch_async(loggingQueue, block);
     v25 = +[NSDate now];
     lastAirWaveNotificationDate = self->_lastAirWaveNotificationDate;
@@ -1126,11 +1126,11 @@ LABEL_16:
 LABEL_11:
 }
 
-- (void)showFoundAccessoryCrashAlert:(id)a3 productID:(unint64_t)a4 accessoryName:(id)a5 firmwareVersion:(id)a6
+- (void)showFoundAccessoryCrashAlert:(id)alert productID:(unint64_t)d accessoryName:(id)name firmwareVersion:(id)version
 {
-  v8 = *a3.var0;
-  v10 = a5;
-  v11 = a6;
+  v8 = *alert.var0;
+  nameCopy = name;
+  versionCopy = version;
   v37 = 0;
   if (self->_isPopupInQueue)
   {
@@ -1166,7 +1166,7 @@ LABEL_10:
     }
 
 LABEL_12:
-    if ((a4 - 8194) <= 0xE && ((1 << (a4 - 2)) & 0x409B) != 0 || (a4 & 0xFFFFFFFFFFFFE000) != 0x2000)
+    if ((d - 8194) <= 0xE && ((1 << (d - 2)) & 0x409B) != 0 || (d & 0xFFFFFFFFFFFFE000) != 0x2000)
     {
       if (os_log_type_enabled(qword_100BCE8D8, OS_LOG_TYPE_ERROR))
       {
@@ -1176,21 +1176,21 @@ LABEL_12:
 
     else
     {
-      v18 = [CBAccessoryLogging getProductNameFromProductID:a4];
+      v18 = [CBAccessoryLogging getProductNameFromProductID:d];
       v19 = [NSString stringWithFormat:@"%@ Crash Detected", v18];
       v20 = sub_100438B14(@"TITLE", v19);
 
-      if ([v11 length])
+      if ([versionCopy length])
       {
-        v21 = [NSString stringWithFormat:@" (FW %@)", v11];
+        versionCopy = [NSString stringWithFormat:@" (FW %@)", versionCopy];
       }
 
       else
       {
-        v21 = &stru_100B0F9E0;
+        versionCopy = &stru_100B0F9E0;
       }
 
-      v22 = [NSString stringWithFormat:@"Do you want to retrieve the crash log from %@%@, then open Tap-to-Radar to report the crash?  Audio quality may be poor during retrieval (~30 sec).", v10, v21];
+      v22 = [NSString stringWithFormat:@"Do you want to retrieve the crash log from %@%@, then open Tap-to-Radar to report the crash?  Audio quality may be poor during retrieval (~30 sec).", nameCopy, versionCopy];
       v23 = sub_100438B14(@"CONTENT", v22);
 
       loggingQueue = self->_loggingQueue;
@@ -1203,7 +1203,7 @@ LABEL_12:
       v29 = v23;
       v31 = v8;
       v32 = WORD2(v8);
-      v30 = v10;
+      v30 = nameCopy;
       v25 = v23;
       v26 = v20;
       dispatch_async(loggingQueue, block);
@@ -1230,13 +1230,13 @@ LABEL_8:
 LABEL_16:
 }
 
-- (void)showFoundAccessoryLogAlert:(id)a3 isCrash:(BOOL)a4 pid:(unint64_t)a5 accessoryName:(id)a6
+- (void)showFoundAccessoryLogAlert:(id)alert isCrash:(BOOL)crash pid:(unint64_t)pid accessoryName:(id)name
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
+  crashCopy = crash;
+  alertCopy = alert;
+  nameCopy = name;
   v37 = 0;
-  if ([v10 count])
+  if ([alertCopy count])
   {
     v12 = sub_10000E92C();
     sub_100007E30(buf, "AccessoryLogging");
@@ -1271,13 +1271,13 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v17 = [CBAccessoryLogging getProductNameFromProductID:a5];
-    if (v8)
+    v17 = [CBAccessoryLogging getProductNameFromProductID:pid];
+    if (crashCopy)
     {
       v18 = [NSString stringWithFormat:@"%@ Crash Detected", v17];
       v19 = sub_100438B14(@"TITLE", v18);
 
-      [NSString stringWithFormat:@"Do you want to use Tap-to-Radar to report the failure found on %@?", v11];
+      [NSString stringWithFormat:@"Do you want to use Tap-to-Radar to report the failure found on %@?", nameCopy];
     }
 
     else
@@ -1285,12 +1285,12 @@ LABEL_6:
       v21 = [NSString stringWithFormat:@"%@ Log Collection Done", v17];
       v19 = sub_100438B14(@"TITLE", v21);
 
-      [NSString stringWithFormat:@"Do you want to use Tap-to-Radar and attach the log from %@?", v11];
+      [NSString stringWithFormat:@"Do you want to use Tap-to-Radar and attach the log from %@?", nameCopy];
     }
     v20 = ;
     v22 = sub_100438B14(@"CONTENT", v20);
 
-    if (a5)
+    if (pid)
     {
       loggingQueue = self->_loggingQueue;
       block[0] = _NSConcreteStackBlock;
@@ -1299,10 +1299,10 @@ LABEL_6:
       block[3] = &unk_100B0E500;
       v27 = v19;
       v28 = v22;
-      v29 = self;
-      v32 = v8;
-      v30 = v10;
-      v31 = a5;
+      selfCopy = self;
+      v32 = crashCopy;
+      v30 = alertCopy;
+      pidCopy = pid;
       v24 = v22;
       v25 = v19;
       dispatch_async(loggingQueue, block);
@@ -1325,7 +1325,7 @@ LABEL_6:
 LABEL_20:
 }
 
-- (void)showFileRadarNotification:(id)a3 reason:(int)a4 pid:(unint64_t)a5
+- (void)showFileRadarNotification:(id)notification reason:(int)reason pid:(unint64_t)pid
 {
   v39 = 0;
   if (self->_isPopupInQueue)
@@ -1343,7 +1343,7 @@ LABEL_18:
     return;
   }
 
-  v9 = *a3.var0;
+  v9 = *notification.var0;
   v11 = sub_10000E92C();
   if (((*(*v11 + 8))(v11) & 1) == 0)
   {
@@ -1410,8 +1410,8 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  v16 = [CBAccessoryLogging getProductNameFromProductID:a5];
-  if (a4 == 5)
+  v16 = [CBAccessoryLogging getProductNameFromProductID:pid];
+  if (reason == 5)
   {
     v21 = [NSString stringWithFormat:@"%@ In-Ear Anomaly", v16];
     v18 = sub_100438B14(@"TITLE", v21);
@@ -1421,7 +1421,7 @@ LABEL_12:
     goto LABEL_25;
   }
 
-  if (a4 == 4)
+  if (reason == 4)
   {
     v17 = [NSString stringWithFormat:@"%@ Audio Stream Failure", v16];
     v18 = sub_100438B14(@"TITLE", v17);
@@ -1441,9 +1441,9 @@ LABEL_25:
     v34 = WORD2(v9);
     v29 = v22;
     v30 = v16;
-    v32 = a4;
+    reasonCopy = reason;
     v33 = v9;
-    v31 = a5;
+    pidCopy = pid;
     v24 = v16;
     v25 = v22;
     v26 = v18;
@@ -1458,17 +1458,17 @@ LABEL_25:
   }
 }
 
-- (void)openTapToRadarWithAccessoryLogs:(id)a3 reason:(int)a4 pid:(unint64_t)a5
+- (void)openTapToRadarWithAccessoryLogs:(id)logs reason:(int)reason pid:(unint64_t)pid
 {
-  v7 = a3;
+  logsCopy = logs;
   v8 = objc_opt_new();
   v9 = objc_opt_new();
   [v8 setScheme:@"tap-to-radar"];
   [v8 setHost:@"new"];
-  v48 = [CBAccessoryLogging getProductNameFromProductID:a5];
-  if ((a4 - 2) < 4)
+  v48 = [CBAccessoryLogging getProductNameFromProductID:pid];
+  if ((reason - 2) < 4)
   {
-    if ([v7 count])
+    if ([logsCopy count])
     {
       [NSURLQueryItem queryItemWithName:@"AutoDiagnostics" value:@"sysdiagnose-only"];
     }
@@ -1480,7 +1480,7 @@ LABEL_25:
     v10 = ;
     [v9 addObject:v10];
 
-    switch(a4)
+    switch(reason)
     {
       case 2:
         v13 = [NSURLQueryItem queryItemWithName:@"Title" value:@"Please enter your title here"];
@@ -1523,7 +1523,7 @@ LABEL_25:
     goto LABEL_15;
   }
 
-  if (a4 == 1)
+  if (reason == 1)
   {
     v11 = [NSURLQueryItem queryItemWithName:@"ExtensionIdentifiers" value:@"com.apple.DiagnosticExtensions.BluetoothHeadset"];
     [v9 addObject:v11];
@@ -1551,7 +1551,7 @@ LABEL_15:
 
     else
     {
-      if (a4 == 5)
+      if (reason == 5)
       {
         v29 = [NSString stringWithFormat:@"%lu", [CBAccessoryLogging getComponentIDFromRadarReason:5]];
         v30 = [NSURLQueryItem queryItemWithName:@"ComponentID" value:v29];
@@ -1566,29 +1566,29 @@ LABEL_15:
 
       else
       {
-        v34 = [NSString stringWithFormat:@"%lu", [CBAccessoryLogging getComponentIDFromProductID:a5]];
+        v34 = [NSString stringWithFormat:@"%lu", [CBAccessoryLogging getComponentIDFromProductID:pid]];
         v35 = [NSURLQueryItem queryItemWithName:@"ComponentID" value:v34];
         [v9 addObject:v35];
 
-        v36 = [CBAccessoryLogging getComponentNameFromProductID:a5];
+        v36 = [CBAccessoryLogging getComponentNameFromProductID:pid];
         v37 = [NSURLQueryItem queryItemWithName:@"ComponentName" value:v36];
         [v9 addObject:v37];
 
-        [CBAccessoryLogging getComponentVersionFromProductID:a5];
+        [CBAccessoryLogging getComponentVersionFromProductID:pid];
       }
       v28 = ;
       v33 = [NSURLQueryItem queryItemWithName:@"ComponentVersion" value:v28];
       [v9 addObject:v33];
     }
 
-    if ([v7 count])
+    if ([logsCopy count])
     {
       v38 = objc_opt_new();
       v51 = 0u;
       v52 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v39 = v7;
+      v39 = logsCopy;
       v40 = [v39 countByEnumeratingWithState:&v49 objects:v55 count:16];
       if (v40)
       {
@@ -1620,9 +1620,9 @@ LABEL_15:
     v44 = qword_100BCE8D8;
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
     {
-      v45 = [v8 string];
+      string = [v8 string];
       *buf = 138543362;
-      v54 = v45;
+      v54 = string;
       _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "openTapToRadarWithAccessoryLogs: Launch Tap-to-Radar, URL = %{public}@", buf, 0xCu);
     }
 
@@ -1641,26 +1641,26 @@ LABEL_15:
 LABEL_33:
 }
 
-- (void)btControllerTapToRadar:(int)a3 reason:(id)a4 cid:(id)a5 cname:(id)a6 cvers:(id)a7
+- (void)btControllerTapToRadar:(int)radar reason:(id)reason cid:(id)cid cname:(id)cname cvers:(id)cvers
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  reasonCopy = reason;
+  cidCopy = cid;
+  cnameCopy = cname;
+  cversCopy = cvers;
   loggingQueue = self->_loggingQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1007E5D04;
   block[3] = &unk_100B0E590;
-  v26 = a3;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = v15;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  radarCopy = radar;
+  v22 = reasonCopy;
+  v23 = cidCopy;
+  v24 = cnameCopy;
+  v25 = cversCopy;
+  v17 = cversCopy;
+  v18 = cnameCopy;
+  v19 = cidCopy;
+  v20 = reasonCopy;
   dispatch_async(loggingQueue, block);
 }
 

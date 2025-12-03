@@ -1,23 +1,23 @@
 @interface NUTestPatternSourceNode
-- ($0AC6E346AE4835514AAA8AC86D8F4844)pixelSizeWithSourceOptions:(id)a3;
-- (BOOL)supportsPipelineState:(id)a3 error:(id *)a4;
-- (NUTestPatternSourceNode)initWithSettings:(id)a3;
-- (NUTestPatternSourceNode)initWithSize:(id)a3 orientation:(int64_t)a4 scale:(id)a5;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateImageGeometryWithSourceOptions:(id)a3 error:(id *)a4;
-- (id)_evaluateImagePropertiesWithSourceOptions:(id)a3 error:(id *)a4;
-- (id)_evaluateImageWithSourceOptions:(id)a3 subsampleFactor:(int64_t *)a4 error:(id *)a5;
-- (id)preparedNodeWithSourceContainer:(id)a3 pipelineState:(id)a4 pipelineSettings:(id)a5 sourceSettings:(id)a6 error:(id *)a7;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)pixelSizeWithSourceOptions:(id)options;
+- (BOOL)supportsPipelineState:(id)state error:(id *)error;
+- (NUTestPatternSourceNode)initWithSettings:(id)settings;
+- (NUTestPatternSourceNode)initWithSize:(id)size orientation:(int64_t)orientation scale:(id)scale;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateImageGeometryWithSourceOptions:(id)options error:(id *)error;
+- (id)_evaluateImagePropertiesWithSourceOptions:(id)options error:(id *)error;
+- (id)_evaluateImageWithSourceOptions:(id)options subsampleFactor:(int64_t *)factor error:(id *)error;
+- (id)preparedNodeWithSourceContainer:(id)container pipelineState:(id)state pipelineSettings:(id)settings sourceSettings:(id)sourceSettings error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUTestPatternSourceNode
 
-- (BOOL)supportsPipelineState:(id)a3 error:(id *)a4
+- (BOOL)supportsPipelineState:(id)state error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!a4)
+  stateCopy = state;
+  if (!error)
   {
     v12 = NUAssertLogger_14097();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -38,8 +38,8 @@
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v19;
         v30 = 2114;
@@ -50,8 +50,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -60,8 +60,8 @@
     _NUAssertFailHandler("[NUTestPatternSourceNode supportsPipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Test.m", 237, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "error != NULL");
   }
 
-  v6 = v5;
-  if (([v5 auxiliaryImageType] - 2) > 9)
+  v6 = stateCopy;
+  if (([stateCopy auxiliaryImageType] - 2) > 9)
   {
     if ([v6 mediaComponentType] == 1)
     {
@@ -71,25 +71,25 @@
     else
     {
       [NUError mismatchError:@"expected an image mediaComponentType" object:v6];
-      *a4 = v9 = 0;
+      *error = v9 = 0;
     }
   }
 
   else
   {
-    v7 = [v6 auxiliaryImageType];
-    if (v7 > 0xB)
+    auxiliaryImageType = [v6 auxiliaryImageType];
+    if (auxiliaryImageType > 0xB)
     {
       v8 = @"Invalid";
     }
 
     else
     {
-      v8 = off_1E8109908[v7];
+      v8 = off_1E8109908[auxiliaryImageType];
     }
 
     v10 = v8;
-    *a4 = [NUError unsupportedError:@"Auxiliary image type is not supported" object:v10];
+    *error = [NUError unsupportedError:@"Auxiliary image type is not supported" object:v10];
 
     v9 = 0;
   }
@@ -97,11 +97,11 @@
   return v9;
 }
 
-- (id)_evaluateImageWithSourceOptions:(id)a3 subsampleFactor:(int64_t *)a4 error:(id *)a5
+- (id)_evaluateImageWithSourceOptions:(id)options subsampleFactor:(int64_t *)factor error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!a4)
+  optionsCopy = options;
+  if (!factor)
   {
     v12 = NUAssertLogger_14097();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -122,8 +122,8 @@
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v19;
         v30 = 2114;
@@ -134,8 +134,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -144,34 +144,34 @@
     _NUAssertFailHandler("[NUTestPatternSourceNode _evaluateImageWithSourceOptions:subsampleFactor:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Test.m", 215, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "subsampleFactor != NULL");
   }
 
-  v9 = v8;
-  *a4 = 1;
-  v10 = [(NUTestPatternSourceNode *)self _evaluateImage:a5];
+  v9 = optionsCopy;
+  *factor = 1;
+  v10 = [(NUTestPatternSourceNode *)self _evaluateImage:error];
 
   return v10;
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v4 = [(NURenderNode *)self outputImageGeometry:a3];
+  v4 = [(NURenderNode *)self outputImageGeometry:image];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 scaledSize];
+    scaledSize = [v4 scaledSize];
     v8 = v7;
     v9 = objc_alloc(MEMORY[0x1E695F658]);
     v10 = objc_alloc_init(NUTestPatternImage);
     v11 = *MEMORY[0x1E695F8A0];
-    v12 = [(NUColorSpace *)self->_colorSpace CGColorSpace];
+    cGColorSpace = [(NUColorSpace *)self->_colorSpace CGColorSpace];
     v18[0] = @"width";
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:scaledSize];
     v18[1] = @"height";
     v19[0] = v13;
     v14 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
     v19[1] = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:2];
-    v16 = [v9 initWithImageProvider:v10 size:v6 :v8 format:v11 colorSpace:v12 options:v15];
+    v16 = [v9 initWithImageProvider:v10 size:scaledSize :v8 format:v11 colorSpace:cGColorSpace options:v15];
   }
 
   else
@@ -182,15 +182,15 @@
   return v16;
 }
 
-- (id)_evaluateImagePropertiesWithSourceOptions:(id)a3 error:(id *)a4
+- (id)_evaluateImagePropertiesWithSourceOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  if ([(NUSourceNode *)self load:a4])
+  optionsCopy = options;
+  if ([(NUSourceNode *)self load:error])
   {
     v7 = objc_alloc_init(_NUImageProperties);
     [(_NUImageProperties *)v7 setMetadata:MEMORY[0x1E695E0F8]];
     [(_NUImageProperties *)v7 setColorSpace:self->_colorSpace];
-    v8 = [(NUTestPatternSourceNode *)self pixelSizeWithSourceOptions:v6];
+    v8 = [(NUTestPatternSourceNode *)self pixelSizeWithSourceOptions:optionsCopy];
     [(_NUImageProperties *)v7 setSize:v8, v9];
     [(_NUImageProperties *)v7 setOrientation:[(NUTestPatternSourceNode *)self sourceOrientation]];
     [(_NUImageProperties *)v7 setAlphaInfo:2];
@@ -209,7 +209,7 @@
   return v7;
 }
 
-- (id)_evaluateImageGeometryWithSourceOptions:(id)a3 error:(id *)a4
+- (id)_evaluateImageGeometryWithSourceOptions:(id)options error:(id *)error
 {
   v5 = [NUImageGeometry alloc];
   v8[0] = 0;
@@ -220,13 +220,13 @@
   return v6;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!a6)
+  inputsCopy = inputs;
+  settingsCopy = settings;
+  stateCopy = state;
+  if (!error)
   {
     v21 = NUAssertLogger_14097();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -247,8 +247,8 @@
         v28 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v38 = v28;
         v39 = 2114;
@@ -259,8 +259,8 @@
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v38 = v27;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -269,14 +269,14 @@
     _NUAssertFailHandler("[NUTestPatternSourceNode resolvedNodeWithCachedInputs:settings:pipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Test.m", 150, @"Invalid parameter not satisfying: %s", v33, v34, v35, v36, "error != nil");
   }
 
-  v13 = v12;
-  if ([(NUTestPatternSourceNode *)self supportsPipelineState:v12 error:a6])
+  v13 = stateCopy;
+  if ([(NUTestPatternSourceNode *)self supportsPipelineState:stateCopy error:error])
   {
     v14 = objc_alloc(objc_opt_class());
     p_size = &self->_size;
     orientation = self->_orientation;
-    v17 = [v13 scale];
-    v19 = [v14 initWithSize:p_size->width orientation:p_size->height scale:{orientation, v17, v18}];
+    scale = [v13 scale];
+    v19 = [v14 initWithSize:p_size->width orientation:p_size->height scale:{orientation, scale, v18}];
   }
 
   else
@@ -287,25 +287,25 @@
   return v19;
 }
 
-- (id)preparedNodeWithSourceContainer:(id)a3 pipelineState:(id)a4 pipelineSettings:(id)a5 sourceSettings:(id)a6 error:(id *)a7
+- (id)preparedNodeWithSourceContainer:(id)container pipelineState:(id)state pipelineSettings:(id)settings sourceSettings:(id)sourceSettings error:(id *)error
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = [v11 objectForKeyedSubscript:@"__addTags"];
-  v13 = [v12 BOOLValue];
+  stateCopy = state;
+  sourceSettingsCopy = sourceSettings;
+  v12 = [sourceSettingsCopy objectForKeyedSubscript:@"__addTags"];
+  bOOLValue = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue)
   {
-    v14 = [v10 currentGroup];
-    v15 = [v14 addTag:@"__SourceOrigin" forNode:self];
+    currentGroup = [stateCopy currentGroup];
+    v15 = [currentGroup addTag:@"__SourceOrigin" forNode:self];
   }
 
-  v16 = [(NUSourceNode *)self _addOrientationNode:self sourceSettings:v11 error:a7];
+  v16 = [(NUSourceNode *)self _addOrientationNode:self sourceSettings:sourceSettingsCopy error:error];
 
   return v16;
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)pixelSizeWithSourceOptions:(id)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)pixelSizeWithSourceOptions:(id)options
 {
   p_size = &self->_size;
   width = self->_size.width;
@@ -315,10 +315,10 @@
   return result;
 }
 
-- (NUTestPatternSourceNode)initWithSettings:(id)a3
+- (NUTestPatternSourceNode)initWithSettings:(id)settings
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  settingsCopy = settings;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_14118);
@@ -362,8 +362,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -379,8 +379,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;
@@ -396,10 +396,10 @@ LABEL_14:
   _NUAssertFailHandler("[NUTestPatternSourceNode initWithSettings:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Test.m", 120, @"Initializer not available: [%@ %@], use designated initializer instead.", v27, v28, v29, v30, v26);
 }
 
-- (NUTestPatternSourceNode)initWithSize:(id)a3 orientation:(int64_t)a4 scale:(id)a5
+- (NUTestPatternSourceNode)initWithSize:(id)size orientation:(int64_t)orientation scale:(id)scale
 {
   v82 = *MEMORY[0x1E69E9840];
-  if ((a4 - 1) >= 8)
+  if ((orientation - 1) >= 8)
   {
     v21 = NUAssertLogger_14097();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -420,8 +420,8 @@ LABEL_14:
         v42 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v43 = MEMORY[0x1E696AF00];
         v44 = v42;
-        v45 = [v43 callStackSymbols];
-        v46 = [v45 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v43 callStackSymbols];
+        v46 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v79 = v42;
         v80 = 2114;
@@ -432,8 +432,8 @@ LABEL_14:
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v79 = v27;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -442,7 +442,7 @@ LABEL_14:
     _NUAssertFailHandler("[NUTestPatternSourceNode initWithSize:orientation:scale:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Test.m", 104, @"Invalid parameter not satisfying: %s", v47, v48, v49, v50, "NUOrientationIsValid(orientation)");
   }
 
-  if (!a3.var0 || (var1 = a3.var1) == 0)
+  if (!size.var0 || (var1 = size.var1) == 0)
   {
     v28 = NUAssertLogger_14097();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -463,8 +463,8 @@ LABEL_14:
         v51 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v52 = MEMORY[0x1E696AF00];
         v53 = v51;
-        v54 = [v52 callStackSymbols];
-        v55 = [v54 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v52 callStackSymbols];
+        v55 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v79 = v51;
         v80 = 2114;
@@ -475,8 +475,8 @@ LABEL_14:
 
     else if (v32)
     {
-      v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v34 = [v33 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v34 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v79 = v34;
       _os_log_error_impl(&dword_1C0184000, v31, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -485,8 +485,8 @@ LABEL_14:
     _NUAssertFailHandler("[NUTestPatternSourceNode initWithSize:orientation:scale:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Test.m", 105, @"Invalid parameter not satisfying: %s", v56, v57, v58, v59, "!NUPixelSizeIsEmpty(size)");
   }
 
-  var0 = a5.var0;
-  if (a5.var0 < 1 || (v7 = a5.var1, a5.var1 <= 0))
+  var0 = scale.var0;
+  if (scale.var0 < 1 || (v7 = scale.var1, scale.var1 <= 0))
   {
     v35 = NUAssertLogger_14097();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -507,8 +507,8 @@ LABEL_14:
         v60 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v61 = MEMORY[0x1E696AF00];
         v62 = v60;
-        v63 = [v61 callStackSymbols];
-        v64 = [v63 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v61 callStackSymbols];
+        v64 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v79 = v60;
         v80 = 2114;
@@ -519,8 +519,8 @@ LABEL_14:
 
     else if (v39)
     {
-      v40 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v41 = [v40 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v41 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v79 = v41;
       _os_log_error_impl(&dword_1C0184000, v38, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -530,7 +530,7 @@ LABEL_14:
   }
 
   v76[0] = @"size";
-  v72 = a3.var0;
+  v72 = size.var0;
   v71 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   v75[0] = v71;
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:var1];
@@ -539,7 +539,7 @@ LABEL_14:
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:2];
   v77[0] = v11;
   v76[1] = @"orientation";
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
   v77[1] = v12;
   v76[2] = @"scale";
   [MEMORY[0x1E696AD98] numberWithInteger:var0];
@@ -556,7 +556,7 @@ LABEL_14:
 
   v17->_size.width = v72;
   v17->_size.height = v70;
-  v17->_orientation = a4;
+  v17->_orientation = orientation;
   v17->_scale.numerator = v69;
   v17->_scale.denominator = v7;
   v18 = +[NUColorSpace sRGBLinearColorSpace];

@@ -1,5 +1,5 @@
 @interface TSCH3DSharegroupDelayChecker
-- (TSCH3DSharegroupDelayChecker)initWithParent:(id)a3;
+- (TSCH3DSharegroupDelayChecker)initWithParent:(id)parent;
 - (void)p_cancelCheckCondition;
 - (void)p_checkCondition;
 - (void)p_scheduleCheckConditionOnMainThread;
@@ -7,16 +7,16 @@
 
 @implementation TSCH3DSharegroupDelayChecker
 
-- (TSCH3DSharegroupDelayChecker)initWithParent:(id)a3
+- (TSCH3DSharegroupDelayChecker)initWithParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   v8.receiver = self;
   v8.super_class = TSCH3DSharegroupDelayChecker;
   v5 = [(TSCH3DSharegroupDelayChecker *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_parent, v4);
+    objc_storeWeak(&v5->_parent, parentCopy);
   }
 
   return v6;

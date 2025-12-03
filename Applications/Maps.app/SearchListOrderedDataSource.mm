@@ -1,28 +1,28 @@
 @interface SearchListOrderedDataSource
-+ (int64_t)searchResultTypeWithGEOType:(int64_t)a3;
-- (SearchListOrderedDataSource)initWithObjects:(id)a3;
-- (SearchListOrderedDataSource)initWithObjects:(id)a3 searchSectionList:(id)a4;
-- (id)objectAtIndexPath:(id)a3;
-- (id)titleForHeaderInSection:(int64_t)a3;
-- (id)viewForHeaderInSection:(int64_t)a3 isFirstNonEmptySection:(BOOL)a4;
-- (int64_t)numberOfRowsInSection:(int64_t)a3;
++ (int64_t)searchResultTypeWithGEOType:(int64_t)type;
+- (SearchListOrderedDataSource)initWithObjects:(id)objects;
+- (SearchListOrderedDataSource)initWithObjects:(id)objects searchSectionList:(id)list;
+- (id)objectAtIndexPath:(id)path;
+- (id)titleForHeaderInSection:(int64_t)section;
+- (id)viewForHeaderInSection:(int64_t)section isFirstNonEmptySection:(BOOL)emptySection;
+- (int64_t)numberOfRowsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
-- (void)_createSectionsWithObjects:(id)a3 searchSectionList:(id)a4;
+- (void)_createSectionsWithObjects:(id)objects searchSectionList:(id)list;
 @end
 
 @implementation SearchListOrderedDataSource
 
-- (void)_createSectionsWithObjects:(id)a3 searchSectionList:(id)a4
+- (void)_createSectionsWithObjects:(id)objects searchSectionList:(id)list
 {
-  v6 = a3;
-  v46 = a4;
-  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
-  v8 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  objectsCopy = objects;
+  listCopy = list;
+  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(objectsCopy, "count")}];
+  v8 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(objectsCopy, "count")}];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  obj = v6;
+  obj = objectsCopy;
   v9 = [obj countByEnumeratingWithState:&v66 objects:v76 count:16];
   if (v9)
   {
@@ -38,8 +38,8 @@
         }
 
         v13 = *(*(&v66 + 1) + 8 * i);
-        v14 = [v13 mapItem];
-        v15 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v14 _muid]);
+        mapItem = [v13 mapItem];
+        v15 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [mapItem _muid]);
         [v8 setObject:v13 forKey:v15];
       }
 
@@ -50,11 +50,11 @@
   }
 
   v16 = [NSMutableArray alloc];
-  v17 = [v46 searchSections];
-  v53 = [v16 initWithCapacity:{objc_msgSend(v17, "count")}];
+  searchSections = [listCopy searchSections];
+  v53 = [v16 initWithCapacity:{objc_msgSend(searchSections, "count")}];
 
-  v18 = [v46 searchSections];
-  v19 = [v18 count];
+  searchSections2 = [listCopy searchSections];
+  v19 = [searchSections2 count];
 
   if (v19)
   {
@@ -62,8 +62,8 @@
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v50 = [v46 searchSections];
-    v54 = [v50 countByEnumeratingWithState:&v62 objects:v75 count:16];
+    searchSections3 = [listCopy searchSections];
+    v54 = [searchSections3 countByEnumeratingWithState:&v62 objects:v75 count:16];
     if (!v54)
     {
       goto LABEL_35;
@@ -71,7 +71,7 @@
 
     v52 = *v63;
     v47 = v7;
-    v48 = self;
+    selfCopy = self;
     while (1)
     {
       v20 = 0;
@@ -79,38 +79,38 @@
       {
         if (*v63 != v52)
         {
-          objc_enumerationMutation(v50);
+          objc_enumerationMutation(searchSections3);
         }
 
         v55 = v20;
         v21 = *(*(&v62 + 1) + 8 * v20);
         v22 = objc_alloc_init(NSMutableArray);
-        v23 = [v21 sectionType];
-        if (v23 == 2)
+        sectionType = [v21 sectionType];
+        if (sectionType == 2)
         {
           if (MapsFeature_IsEnabled_SearchAndDiscovery())
           {
-            v25 = v21;
-            v35 = [(SearchResult *)v25 sectionGuide];
-            v36 = [v35 placeCollections];
+            mapItemIds = v21;
+            sectionGuide = [(SearchResult *)mapItemIds sectionGuide];
+            placeCollections = [sectionGuide placeCollections];
             v56[0] = _NSConcreteStackBlock;
             v56[1] = 3221225472;
             v56[2] = sub_100F31344;
             v56[3] = &unk_10165D590;
             v57 = v22;
-            [v36 enumerateObjectsUsingBlock:v56];
+            [placeCollections enumerateObjectsUsingBlock:v56];
           }
 
           else
           {
-            v25 = [[SearchResult alloc] initWithSearchSection:v21];
-            [v22 insertObject:v25 atIndex:0];
+            mapItemIds = [[SearchResult alloc] initWithSearchSection:v21];
+            [v22 insertObject:mapItemIds atIndex:0];
           }
         }
 
         else
         {
-          if (v23 != 1)
+          if (sectionType != 1)
           {
             goto LABEL_33;
           }
@@ -119,10 +119,10 @@
           v61 = 0u;
           v58 = 0u;
           v59 = 0u;
-          v24 = [v21 sectionPlace];
-          v25 = [v24 mapItemIds];
+          sectionPlace = [v21 sectionPlace];
+          mapItemIds = [sectionPlace mapItemIds];
 
-          v26 = [(SearchResult *)v25 countByEnumeratingWithState:&v58 objects:v74 count:16];
+          v26 = [(SearchResult *)mapItemIds countByEnumeratingWithState:&v58 objects:v74 count:16];
           if (v26)
           {
             v27 = v26;
@@ -134,7 +134,7 @@
               {
                 if (*v59 != v28)
                 {
-                  objc_enumerationMutation(v25);
+                  objc_enumerationMutation(mapItemIds);
                 }
 
                 v30 = *(*(&v58 + 1) + 8 * j);
@@ -151,20 +151,20 @@
                   v33 = sub_100067540();
                   if (os_log_type_enabled(v33, 0x90u))
                   {
-                    v34 = [v30 muid];
+                    muid = [v30 muid];
                     *buf = 134217984;
-                    v71 = v34;
+                    v71 = muid;
                     _os_log_impl(&_mh_execute_header, v33, 0x90u, "SearchSectionList has a place section containing a place_id that does not exist among the list of map items in the maps_result. Identifier muid: %llu", buf, 0xCu);
                   }
                 }
               }
 
-              v27 = [(SearchResult *)v25 countByEnumeratingWithState:&v58 objects:v74 count:16];
+              v27 = [(SearchResult *)mapItemIds countByEnumeratingWithState:&v58 objects:v74 count:16];
             }
 
             while (v27);
             v7 = v47;
-            self = v48;
+            self = selfCopy;
             v21 = v49;
           }
         }
@@ -172,15 +172,15 @@
 LABEL_33:
         [v7 addObjectsFromArray:v22];
         v37 = [SearchResultSection alloc];
-        v38 = [v21 name];
-        v39 = -[SearchResultSection initWithTitle:type:searchResults:](v37, "initWithTitle:type:searchResults:", v38, [objc_opt_class() searchResultTypeWithGEOType:{objc_msgSend(v21, "sectionType")}], v22);
+        name = [v21 name];
+        v39 = -[SearchResultSection initWithTitle:type:searchResults:](v37, "initWithTitle:type:searchResults:", name, [objc_opt_class() searchResultTypeWithGEOType:{objc_msgSend(v21, "sectionType")}], v22);
 
         [v53 addObject:v39];
         v20 = v55 + 1;
       }
 
       while ((v55 + 1) != v54);
-      v54 = [v50 countByEnumeratingWithState:&v62 objects:v75 count:16];
+      v54 = [searchSections3 countByEnumeratingWithState:&v62 objects:v75 count:16];
       if (!v54)
       {
 LABEL_35:
@@ -210,21 +210,21 @@ LABEL_35:
   self->_sections = v44;
 }
 
-- (id)objectAtIndexPath:(id)a3
+- (id)objectAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  if (v5 >= [(NSArray *)self->_sections count])
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section >= [(NSArray *)self->_sections count])
   {
     v11 = 0;
   }
 
   else
   {
-    v6 = -[NSArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [v4 section]);
-    v7 = [v4 row];
-    v8 = [v6 searchResults];
-    v9 = [v8 count];
+    v6 = -[NSArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [pathCopy section]);
+    v7 = [pathCopy row];
+    searchResults = [v6 searchResults];
+    v9 = [searchResults count];
 
     if (v7 >= v9)
     {
@@ -233,26 +233,26 @@ LABEL_35:
 
     else
     {
-      v10 = [v6 searchResults];
-      v11 = [v10 objectAtIndexedSubscript:v7];
+      searchResults2 = [v6 searchResults];
+      v11 = [searchResults2 objectAtIndexedSubscript:v7];
     }
   }
 
   return v11;
 }
 
-- (id)viewForHeaderInSection:(int64_t)a3 isFirstNonEmptySection:(BOOL)a4
+- (id)viewForHeaderInSection:(int64_t)section isFirstNonEmptySection:(BOOL)emptySection
 {
-  v4 = a4;
-  v6 = [(SearchListOrderedDataSource *)self sections];
-  v7 = [v6 objectAtIndexedSubscript:a3];
+  emptySectionCopy = emptySection;
+  sections = [(SearchListOrderedDataSource *)self sections];
+  v7 = [sections objectAtIndexedSubscript:section];
 
   if ([v7 type] == 1)
   {
-    v8 = [v7 title];
-    if ([v8 length])
+    title = [v7 title];
+    if ([title length])
     {
-      v9 = [[ResultsSectionHeaderView alloc] initWithTitle:v8 isFirstNonEmptySection:v4 showHairline:MapsFeature_IsEnabled_SearchAndDiscovery() ^ 1];
+      v9 = [[ResultsSectionHeaderView alloc] initWithTitle:title isFirstNonEmptySection:emptySectionCopy showHairline:MapsFeature_IsEnabled_SearchAndDiscovery() ^ 1];
     }
 
     else
@@ -269,86 +269,86 @@ LABEL_35:
   return v9;
 }
 
-- (id)titleForHeaderInSection:(int64_t)a3
+- (id)titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(SearchListOrderedDataSource *)self sections];
-  v6 = [v5 count];
+  sections = [(SearchListOrderedDataSource *)self sections];
+  v6 = [sections count];
 
-  if (v6 >= a3)
+  if (v6 >= section)
   {
-    v8 = [(SearchListOrderedDataSource *)self sections];
-    v9 = [v8 objectAtIndexedSubscript:a3];
+    sections2 = [(SearchListOrderedDataSource *)self sections];
+    v9 = [sections2 objectAtIndexedSubscript:section];
 
     if ([v9 type] == 1)
     {
-      v7 = [v9 title];
+      title = [v9 title];
     }
 
     else
     {
-      v7 = 0;
+      title = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    title = 0;
   }
 
-  return v7;
+  return title;
 }
 
-- (int64_t)numberOfRowsInSection:(int64_t)a3
+- (int64_t)numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(SearchListOrderedDataSource *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(SearchListOrderedDataSource *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
 
-  v6 = [v5 searchResults];
-  v7 = [v6 count];
+  searchResults = [v5 searchResults];
+  v7 = [searchResults count];
 
   return v7;
 }
 
 - (int64_t)numberOfSections
 {
-  v2 = [(SearchListOrderedDataSource *)self sections];
-  v3 = [v2 count];
+  sections = [(SearchListOrderedDataSource *)self sections];
+  v3 = [sections count];
 
   return v3;
 }
 
-- (SearchListOrderedDataSource)initWithObjects:(id)a3 searchSectionList:(id)a4
+- (SearchListOrderedDataSource)initWithObjects:(id)objects searchSectionList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  listCopy = list;
   v10.receiver = self;
   v10.super_class = SearchListOrderedDataSource;
   v8 = [(SearchListOrderedDataSource *)&v10 init];
-  if (v8 && [v6 count])
+  if (v8 && [objectsCopy count])
   {
-    [(SearchListOrderedDataSource *)v8 _createSectionsWithObjects:v6 searchSectionList:v7];
+    [(SearchListOrderedDataSource *)v8 _createSectionsWithObjects:objectsCopy searchSectionList:listCopy];
   }
 
   return v8;
 }
 
-- (SearchListOrderedDataSource)initWithObjects:(id)a3
+- (SearchListOrderedDataSource)initWithObjects:(id)objects
 {
   v4.receiver = self;
   v4.super_class = SearchListOrderedDataSource;
   return [(SearchListOrderedDataSource *)&v4 init];
 }
 
-+ (int64_t)searchResultTypeWithGEOType:(int64_t)a3
++ (int64_t)searchResultTypeWithGEOType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return type == 1;
   }
 }
 

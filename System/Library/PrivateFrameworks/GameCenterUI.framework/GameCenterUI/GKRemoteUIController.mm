@@ -1,77 +1,77 @@
 @interface GKRemoteUIController
 + (id)remoteUIController;
 - (BOOL)isUserInteractionEnabled;
-- (Class)objectModel:(id)a3 customFooterClassForSection:(id)a4;
-- (Class)objectModel:(id)a3 customHeaderClassForSection:(id)a4;
-- (GKRemoteUIController)initWithObjectModel:(id)a3;
+- (Class)objectModel:(id)model customFooterClassForSection:(id)section;
+- (Class)objectModel:(id)model customHeaderClassForSection:(id)section;
+- (GKRemoteUIController)initWithObjectModel:(id)model;
 - (NSString)bagKey;
 - (NSURL)fallbackURL;
 - (UINavigationController)navigationController;
-- (id)addThemeInfoToAttributes:(id)a3;
-- (id)objectModel:(id)a3 tableFooterViewForAttributes:(id)a4 page:(id)a5;
-- (id)objectModel:(id)a3 tableHeaderViewForAttributes:(id)a4 page:(id)a5;
+- (id)addThemeInfoToAttributes:(id)attributes;
+- (id)objectModel:(id)model tableFooterViewForAttributes:(id)attributes page:(id)page;
+- (id)objectModel:(id)model tableHeaderViewForAttributes:(id)attributes page:(id)page;
 - (id)viewControllerForAlertPresentation;
 - (id)viewControllers;
 - (int)preferredLayoutStyle;
 - (int64_t)indexOfVisiblePage;
-- (void)configureFromBagKey:(id)a3 player:(id)a4 withCompletionHandler:(id)a5;
-- (void)didLoadURL:(id)a3 data:(id)a4 error:(id)a5;
-- (void)finishLoadingWithError:(id)a3;
+- (void)configureFromBagKey:(id)key player:(id)player withCompletionHandler:(id)handler;
+- (void)didLoadURL:(id)l data:(id)data error:(id)error;
+- (void)finishLoadingWithError:(id)error;
 - (void)fireCompletionHandler;
 - (void)indexOfVisiblePage;
-- (void)loadInitialRemoteUIForPlayer:(id)a3 handler:(id)a4;
-- (void)loadInitialRemoteUIWithHandler:(id)a3;
-- (void)loadURL:(id)a3 forPlayer:(id)a4 postBody:(id)a5;
-- (void)loadURL:(id)a3 forPlayer:(id)a4 postData:(id)a5;
-- (void)loadURL:(id)a3 postBody:(id)a4;
-- (void)loadURL:(id)a3 postData:(id)a4;
-- (void)loader:(id)a3 receivedObjectModel:(id)a4 actionSignal:(unint64_t)a5;
-- (void)objectModel:(id)a3 configureTableRow:(id)a4 page:(id)a5;
-- (void)objectModel:(id)a3 configureTableSection:(id)a4 page:(id)a5;
-- (void)objectModel:(id)a3 configureTableView:(id)a4 page:(id)a5;
-- (void)objectModel:(id)a3 elementDidChange:(id)a4;
-- (void)objectModel:(id)a3 pressedLink:(id)a4 httpMethod:(id)a5 completion:(id)a6;
-- (void)objectModelPressedBack:(id)a3;
-- (void)performAction:(unint64_t)a3 withObjectModel:(id)a4;
-- (void)popObjectModelAnimated:(BOOL)a3;
-- (void)presentInParentNavigationController:(id)a3 animated:(BOOL)a4;
-- (void)presentObjectModel:(id)a3 animated:(BOOL)a4;
-- (void)pushObjectModel:(id)a3 animated:(BOOL)a4;
-- (void)replaceObjectModelAtIndex:(unint64_t)a3 withObjectObjectModel:(id)a4;
-- (void)setAppleID:(id)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)takeValuesFromClientInfo:(id)a3 withCompletionHandler:(id)a4;
-- (void)updateAccountAndMarkComplete:(BOOL)a3 completionHandler:(id)a4;
-- (void)updatePostbackDictionary:(id)a3 withHandler:(id)a4;
+- (void)loadInitialRemoteUIForPlayer:(id)player handler:(id)handler;
+- (void)loadInitialRemoteUIWithHandler:(id)handler;
+- (void)loadURL:(id)l forPlayer:(id)player postBody:(id)body;
+- (void)loadURL:(id)l forPlayer:(id)player postData:(id)data;
+- (void)loadURL:(id)l postBody:(id)body;
+- (void)loadURL:(id)l postData:(id)data;
+- (void)loader:(id)loader receivedObjectModel:(id)model actionSignal:(unint64_t)signal;
+- (void)objectModel:(id)model configureTableRow:(id)row page:(id)page;
+- (void)objectModel:(id)model configureTableSection:(id)section page:(id)page;
+- (void)objectModel:(id)model configureTableView:(id)view page:(id)page;
+- (void)objectModel:(id)model elementDidChange:(id)change;
+- (void)objectModel:(id)model pressedLink:(id)link httpMethod:(id)method completion:(id)completion;
+- (void)objectModelPressedBack:(id)back;
+- (void)performAction:(unint64_t)action withObjectModel:(id)model;
+- (void)popObjectModelAnimated:(BOOL)animated;
+- (void)presentInParentNavigationController:(id)controller animated:(BOOL)animated;
+- (void)presentObjectModel:(id)model animated:(BOOL)animated;
+- (void)pushObjectModel:(id)model animated:(BOOL)animated;
+- (void)replaceObjectModelAtIndex:(unint64_t)index withObjectObjectModel:(id)model;
+- (void)setAppleID:(id)d;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)takeValuesFromClientInfo:(id)info withCompletionHandler:(id)handler;
+- (void)updateAccountAndMarkComplete:(BOOL)complete completionHandler:(id)handler;
+- (void)updatePostbackDictionary:(id)dictionary withHandler:(id)handler;
 @end
 
 @implementation GKRemoteUIController
 
 + (id)remoteUIController
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (GKRemoteUIController)initWithObjectModel:(id)a3
+- (GKRemoteUIController)initWithObjectModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v25.receiver = self;
   v25.super_class = GKRemoteUIController;
   v5 = [(GKRemoteUIController *)&v25 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277D0C138] localPlayer];
-    objc_storeStrong(&v5->_playerForRemoteUI, v6);
-    v7 = [v6 internal];
-    v8 = [v7 playerID];
+    localPlayer = [MEMORY[0x277D0C138] localPlayer];
+    objc_storeStrong(&v5->_playerForRemoteUI, localPlayer);
+    internal = [localPlayer internal];
+    playerID = [internal playerID];
     playerID = v5->_playerID;
-    v5->_playerID = v8;
+    v5->_playerID = playerID;
 
-    v10 = [v6 accountName];
+    accountName = [localPlayer accountName];
     appleID = v5->_appleID;
-    v5->_appleID = v10;
+    v5->_appleID = accountName;
 
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
     objectModels = v5->_objectModels;
@@ -109,16 +109,16 @@
       v18 = MEMORY[0x277CCACA8];
       v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Must have custom back button action"];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/RemoteUI/GKRemoteUIController.m"];
-      v21 = [v20 lastPathComponent];
-      v22 = [v18 stringWithFormat:@"%@ (useCustomBackButtonAction == YES)\n[%s (%s:%d)]", v19, "-[GKRemoteUIController initWithObjectModel:]", objc_msgSend(v21, "UTF8String"), 134];
+      lastPathComponent = [v20 lastPathComponent];
+      v22 = [v18 stringWithFormat:@"%@ (useCustomBackButtonAction == YES)\n[%s (%s:%d)]", v19, "-[GKRemoteUIController initWithObjectModel:]", objc_msgSend(lastPathComponent, "UTF8String"), 134];
 
       [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v22}];
     }
 
     [(RUILoader *)v5->_loader setDelegate:v5];
-    if (v4)
+    if (modelCopy)
     {
-      [(GKRemoteUIController *)v5 pushObjectModel:v4 animated:0];
+      [(GKRemoteUIController *)v5 pushObjectModel:modelCopy animated:0];
     }
 
     v23 = v5;
@@ -127,25 +127,25 @@
   return v5;
 }
 
-- (void)setAppleID:(id)a3
+- (void)setAppleID:(id)d
 {
-  v5 = a3;
-  if (self->_appleID != v5)
+  dCopy = d;
+  if (self->_appleID != dCopy)
   {
-    v13 = v5;
-    objc_storeStrong(&self->_appleID, a3);
+    v13 = dCopy;
+    objc_storeStrong(&self->_appleID, d);
     if (self->_appleID)
     {
-      v6 = [MEMORY[0x277D0C1D8] shared];
-      v7 = [v6 environment];
+      mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+      environment = [mEMORY[0x277D0C1D8] environment];
 
-      v8 = [MEMORY[0x277D0C1C0] sharedController];
-      v9 = [(GKLocalPlayer *)self->_playerForRemoteUI internal];
-      v10 = [v8 credentialForPlayer:v9 environment:v7];
+      mEMORY[0x277D0C1C0] = [MEMORY[0x277D0C1C0] sharedController];
+      internal = [(GKLocalPlayer *)self->_playerForRemoteUI internal];
+      v10 = [mEMORY[0x277D0C1C0] credentialForPlayer:internal environment:environment];
 
-      v11 = [v10 altDSID];
+      altDSID = [v10 altDSID];
       altDSID = self->_altDSID;
-      self->_altDSID = v11;
+      self->_altDSID = altDSID;
     }
 
     else
@@ -153,15 +153,15 @@
       [(GKRemoteUIController *)self setAltDSID:0];
     }
 
-    v5 = v13;
+    dCopy = v13;
   }
 }
 
-- (void)updateAccountAndMarkComplete:(BOOL)a3 completionHandler:(id)a4
+- (void)updateAccountAndMarkComplete:(BOOL)complete completionHandler:(id)handler
 {
-  v4 = a3;
+  completeCopy = complete;
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x277D0C2A0];
   v8 = *MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
@@ -173,55 +173,55 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v10 = v8;
-    v11 = [(GKRemoteUIController *)self authToken];
-    v12 = [(GKRemoteUIController *)self appleID];
-    v13 = [(GKRemoteUIController *)self playerID];
+    authToken = [(GKRemoteUIController *)self authToken];
+    appleID = [(GKRemoteUIController *)self appleID];
+    playerID = [(GKRemoteUIController *)self playerID];
     *buf = 138412802;
-    v28 = v11;
+    v28 = authToken;
     v29 = 2112;
-    v30 = v12;
+    v30 = appleID;
     v31 = 2112;
-    v32 = v13;
+    v32 = playerID;
     _os_log_impl(&dword_24DE53000, v10, OS_LOG_TYPE_INFO, "Updating account with authToken = “%@”, appleID = “%@”, playerID = “%@”", buf, 0x20u);
   }
 
-  v14 = [(GKRemoteUIController *)self authToken];
-  if (![v14 length])
+  authToken2 = [(GKRemoteUIController *)self authToken];
+  if (![authToken2 length])
   {
     goto LABEL_10;
   }
 
-  v15 = [(GKRemoteUIController *)self appleID];
-  if (![v15 length])
+  appleID2 = [(GKRemoteUIController *)self appleID];
+  if (![appleID2 length])
   {
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  v16 = [(GKRemoteUIController *)self playerID];
-  v17 = [v16 length];
+  playerID2 = [(GKRemoteUIController *)self playerID];
+  v17 = [playerID2 length];
 
   if (!v17)
   {
 LABEL_11:
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
     goto LABEL_12;
   }
 
-  v18 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-  v19 = [v18 accountServicePrivate];
-  v20 = [(GKRemoteUIController *)self appleID];
-  v21 = [(GKRemoteUIController *)self playerID];
-  v22 = [(GKRemoteUIController *)self authToken];
-  v23 = [(GKRemoteUIController *)self alias];
-  v24 = [(GKRemoteUIController *)self altDSID];
+  proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+  accountServicePrivate = [proxyForLocalPlayer accountServicePrivate];
+  appleID3 = [(GKRemoteUIController *)self appleID];
+  playerID3 = [(GKRemoteUIController *)self playerID];
+  authToken3 = [(GKRemoteUIController *)self authToken];
+  alias = [(GKRemoteUIController *)self alias];
+  altDSID = [(GKRemoteUIController *)self altDSID];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __71__GKRemoteUIController_updateAccountAndMarkComplete_completionHandler___block_invoke;
   v25[3] = &unk_27966C990;
-  v26 = v6;
-  [v19 accountCreated:v20 playerID:v21 authenticationToken:v22 alias:v23 altDSID:v24 finished:v4 handler:v25];
+  v26 = handlerCopy;
+  [accountServicePrivate accountCreated:appleID3 playerID:playerID3 authenticationToken:authToken3 alias:alias altDSID:altDSID finished:completeCopy handler:v25];
 
 LABEL_12:
 }
@@ -249,19 +249,19 @@ void __71__GKRemoteUIController_updateAccountAndMarkComplete_completionHandler__
 
 - (BOOL)isUserInteractionEnabled
 {
-  v2 = [(GKRemoteUIController *)self navigationController];
-  v3 = [v2 view];
-  v4 = [v3 isUserInteractionEnabled];
+  navigationController = [(GKRemoteUIController *)self navigationController];
+  view = [navigationController view];
+  isUserInteractionEnabled = [view isUserInteractionEnabled];
 
-  return v4;
+  return isUserInteractionEnabled;
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(GKRemoteUIController *)self navigationController];
-  v4 = [v5 view];
-  [v4 setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  navigationController = [(GKRemoteUIController *)self navigationController];
+  view = [navigationController view];
+  [view setUserInteractionEnabled:enabledCopy];
 }
 
 - (void)fireCompletionHandler
@@ -270,49 +270,49 @@ void __71__GKRemoteUIController_updateAccountAndMarkComplete_completionHandler__
   {
     [(GKRemoteUIController *)self setComplete:1];
     [(GKRemoteUIController *)self setUserInteractionEnabled:1];
-    v6 = self;
-    v3 = [(GKRemoteUIController *)v6 completionHandler];
+    selfCopy = self;
+    completionHandler = [(GKRemoteUIController *)selfCopy completionHandler];
 
-    if (v3)
+    if (completionHandler)
     {
-      v4 = [(GKRemoteUIController *)v6 completionHandler];
-      v5 = [(GKRemoteUIController *)v6 error];
-      (v4)[2](v4, v6, v5);
+      completionHandler2 = [(GKRemoteUIController *)selfCopy completionHandler];
+      error = [(GKRemoteUIController *)selfCopy error];
+      (completionHandler2)[2](completionHandler2, selfCopy, error);
     }
 
-    [MEMORY[0x277D75780] _setUseCustomBackButtonAction:{-[GKRemoteUIController previousUseCustomBackButtonActionValue](v6, "previousUseCustomBackButtonActionValue")}];
-    [(GKRemoteUIController *)v6 setCompletionHandler:0];
+    [MEMORY[0x277D75780] _setUseCustomBackButtonAction:{-[GKRemoteUIController previousUseCustomBackButtonActionValue](selfCopy, "previousUseCustomBackButtonActionValue")}];
+    [(GKRemoteUIController *)selfCopy setCompletionHandler:0];
   }
 }
 
-- (void)presentInParentNavigationController:(id)a3 animated:(BOOL)a4
+- (void)presentInParentNavigationController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v11 = a3;
-  v6 = [(GKRemoteUIController *)self navigationController];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  navigationController = [(GKRemoteUIController *)self navigationController];
 
-  if (v6)
+  if (navigationController)
   {
     [GKRemoteUIController presentInParentNavigationController:animated:];
   }
 
-  [(GKRemoteUIController *)self setNavigationController:v11];
-  v7 = [v11 viewControllers];
-  v8 = [v7 copy];
+  [(GKRemoteUIController *)self setNavigationController:controllerCopy];
+  viewControllers = [controllerCopy viewControllers];
+  v8 = [viewControllers copy];
   [(GKRemoteUIController *)self setStaticViewControllers:v8];
 
-  v9 = [(GKRemoteUIController *)self objectModels];
-  v10 = [v9 lastObject];
+  objectModels = [(GKRemoteUIController *)self objectModels];
+  lastObject = [objectModels lastObject];
 
-  if (v10)
+  if (lastObject)
   {
-    [v10 presentInParentViewController:v11 animated:v4];
+    [lastObject presentInParentViewController:controllerCopy animated:animatedCopy];
   }
 }
 
-- (id)addThemeInfoToAttributes:(id)a3
+- (id)addThemeInfoToAttributes:(id)attributes
 {
-  v4 = [a3 mutableCopy];
+  v4 = [attributes mutableCopy];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[GKRemoteUIController layoutStyle](self, "layoutStyle")}];
   [v4 setObject:v5 forKeyedSubscript:@"GKLayoutStyle"];
 
@@ -322,31 +322,31 @@ void __71__GKRemoteUIController_updateAccountAndMarkComplete_completionHandler__
   return v4;
 }
 
-- (void)configureFromBagKey:(id)a3 player:(id)a4 withCompletionHandler:(id)a5
+- (void)configureFromBagKey:(id)key player:(id)player withCompletionHandler:(id)handler
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  keyCopy = key;
+  playerCopy = player;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [GKRemoteUIController configureFromBagKey:player:withCompletionHandler:];
   }
 
-  v11 = [MEMORY[0x277D0C010] proxyForPlayer:v9];
-  v12 = [v11 utilityServicePrivate];
-  v19[0] = v8;
+  v11 = [MEMORY[0x277D0C010] proxyForPlayer:playerCopy];
+  utilityServicePrivate = [v11 utilityServicePrivate];
+  v19[0] = keyCopy;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __73__GKRemoteUIController_configureFromBagKey_player_withCompletionHandler___block_invoke;
   v16[3] = &unk_27966C9B8;
-  v17 = v8;
-  v18 = v10;
+  v17 = keyCopy;
+  v18 = handlerCopy;
   v16[4] = self;
-  v14 = v8;
-  v15 = v10;
-  [v12 getCredentialInfoAndStoreBagValuesForKeys:v13 handler:v16];
+  v14 = keyCopy;
+  v15 = handlerCopy;
+  [utilityServicePrivate getCredentialInfoAndStoreBagValuesForKeys:v13 handler:v16];
 }
 
 void __73__GKRemoteUIController_configureFromBagKey_player_withCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5, void *a6, uint64_t a7)
@@ -414,35 +414,35 @@ void __73__GKRemoteUIController_configureFromBagKey_player_withCompletionHandler
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)loadInitialRemoteUIWithHandler:(id)a3
+- (void)loadInitialRemoteUIWithHandler:(id)handler
 {
-  [(GKRemoteUIController *)self setLoadHandler:a3];
+  [(GKRemoteUIController *)self setLoadHandler:handler];
   [(GKRemoteUIController *)self setLoadingInitialUI:1];
-  v5 = [(GKRemoteUIController *)self postBodyForInitialLoad];
+  postBodyForInitialLoad = [(GKRemoteUIController *)self postBodyForInitialLoad];
   v4 = [(GKRemoteUIController *)self url];
-  [(GKRemoteUIController *)self loadURL:v4 postBody:v5];
+  [(GKRemoteUIController *)self loadURL:v4 postBody:postBodyForInitialLoad];
 }
 
-- (void)loadInitialRemoteUIForPlayer:(id)a3 handler:(id)a4
+- (void)loadInitialRemoteUIForPlayer:(id)player handler:(id)handler
 {
-  v6 = a3;
-  [(GKRemoteUIController *)self setLoadHandler:a4];
+  playerCopy = player;
+  [(GKRemoteUIController *)self setLoadHandler:handler];
   [(GKRemoteUIController *)self setLoadingInitialUI:1];
-  v8 = [(GKRemoteUIController *)self postBodyForInitialLoad];
+  postBodyForInitialLoad = [(GKRemoteUIController *)self postBodyForInitialLoad];
   v7 = [(GKRemoteUIController *)self url];
-  [(GKRemoteUIController *)self loadURL:v7 forPlayer:v6 postBody:v8];
+  [(GKRemoteUIController *)self loadURL:v7 forPlayer:playerCopy postBody:postBodyForInitialLoad];
 }
 
-- (void)finishLoadingWithError:(id)a3
+- (void)finishLoadingWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__GKRemoteUIController_finishLoadingWithError___block_invoke;
   v6[3] = &unk_279669E48;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -467,69 +467,69 @@ void __47__GKRemoteUIController_finishLoadingWithError___block_invoke(uint64_t a
   [*(a1 + 32) setLoadHandler:0];
 }
 
-- (void)loadURL:(id)a3 forPlayer:(id)a4 postBody:(id)a5
+- (void)loadURL:(id)l forPlayer:(id)player postBody:(id)body
 {
-  v9 = a3;
-  v8 = a4;
-  if (a5)
+  lCopy = l;
+  playerCopy = player;
+  if (body)
   {
-    a5 = [(GKRemoteUIController *)self postbackDataForDictionary:a5];
+    body = [(GKRemoteUIController *)self postbackDataForDictionary:body];
   }
 
-  [(GKRemoteUIController *)self loadURL:v9 forPlayer:v8 postData:a5];
+  [(GKRemoteUIController *)self loadURL:lCopy forPlayer:playerCopy postData:body];
 }
 
-- (void)loadURL:(id)a3 postBody:(id)a4
+- (void)loadURL:(id)l postBody:(id)body
 {
-  v6 = a3;
-  if (a4)
+  lCopy = l;
+  if (body)
   {
-    a4 = [(GKRemoteUIController *)self postbackDataForDictionary:a4];
+    body = [(GKRemoteUIController *)self postbackDataForDictionary:body];
   }
 
-  [(GKRemoteUIController *)self loadURL:v6 postData:a4];
+  [(GKRemoteUIController *)self loadURL:lCopy postData:body];
 }
 
-- (void)didLoadURL:(id)a3 data:(id)a4 error:(id)a5
+- (void)didLoadURL:(id)l data:(id)data error:(id)error
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  lCopy = l;
+  dataCopy = data;
+  errorCopy = error;
+  if (errorCopy)
   {
-    v11 = v10;
-    v12 = [v10 userInfo];
-    v13 = [v12 mutableCopy];
+    v11 = errorCopy;
+    userInfo = [errorCopy userInfo];
+    dictionary = [userInfo mutableCopy];
 
-    if (!v13)
+    if (!dictionary)
     {
-      v13 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
     v14 = *MEMORY[0x277CCA450];
-    v15 = [v13 objectForKeyedSubscript:*MEMORY[0x277CCA450]];
+    v15 = [dictionary objectForKeyedSubscript:*MEMORY[0x277CCA450]];
 
     if (!v15)
     {
       v16 = GKGameCenterUIFrameworkBundle();
       v17 = GKGetLocalizedStringFromTableInBundle();
-      [v13 setObject:v17 forKeyedSubscript:v14];
+      [dictionary setObject:v17 forKeyedSubscript:v14];
     }
 
     v18 = MEMORY[0x277CCA9B8];
-    v19 = [v11 domain];
-    v20 = [v18 errorWithDomain:v19 code:objc_msgSend(v11 userInfo:{"code"), v13}];
+    domain = [v11 domain];
+    v20 = [v18 errorWithDomain:domain code:objc_msgSend(v11 userInfo:{"code"), dictionary}];
 
     [(GKRemoteUIController *)self finishLoadingWithError:v20];
   }
 
   else
   {
-    if (v9)
+    if (dataCopy)
     {
-      v21 = [(GKRemoteUIController *)self loader];
-      [v21 loadXMLUIWithData:v9 baseURL:v8];
+      loader = [(GKRemoteUIController *)self loader];
+      [loader loadXMLUIWithData:dataCopy baseURL:lCopy];
 
       goto LABEL_10;
     }
@@ -548,79 +548,79 @@ void __47__GKRemoteUIController_finishLoadingWithError___block_invoke(uint64_t a
 LABEL_10:
 }
 
-- (void)loadURL:(id)a3 postData:(id)a4
+- (void)loadURL:(id)l postData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  lCopy = l;
+  dataCopy = data;
+  if (!lCopy)
   {
     [GKRemoteUIController loadURL:postData:];
   }
 
   [(GKRemoteUIController *)self setLoading:1];
-  if ([v6 isFileURL])
+  if ([lCopy isFileURL])
   {
     v14 = 0;
-    v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:v6 options:1 error:&v14];
+    v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:lCopy options:1 error:&v14];
     v9 = v14;
-    [(GKRemoteUIController *)self didLoadURL:v6 data:v8 error:v9];
+    [(GKRemoteUIController *)self didLoadURL:lCopy data:v8 error:v9];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-    v11 = [v10 utilityServicePrivate];
+    proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+    utilityServicePrivate = [proxyForLocalPlayer utilityServicePrivate];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __41__GKRemoteUIController_loadURL_postData___block_invoke;
     v12[3] = &unk_27966C9E0;
     v12[4] = self;
-    v13 = v6;
-    [v11 loadDataForURL:v13 postBody:v7 completionHandler:v12];
+    v13 = lCopy;
+    [utilityServicePrivate loadDataForURL:v13 postBody:dataCopy completionHandler:v12];
   }
 }
 
-- (void)loadURL:(id)a3 forPlayer:(id)a4 postData:(id)a5
+- (void)loadURL:(id)l forPlayer:(id)player postData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  lCopy = l;
+  playerCopy = player;
+  dataCopy = data;
+  if (!lCopy)
   {
     [GKRemoteUIController loadURL:forPlayer:postData:];
   }
 
   [(GKRemoteUIController *)self setLoading:1];
-  if ([v8 isFileURL])
+  if ([lCopy isFileURL])
   {
     v17 = 0;
-    v11 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:v8 options:1 error:&v17];
+    v11 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:lCopy options:1 error:&v17];
     v12 = v17;
-    [(GKRemoteUIController *)self didLoadURL:v8 data:v11 error:v12];
+    [(GKRemoteUIController *)self didLoadURL:lCopy data:v11 error:v12];
   }
 
   else
   {
-    v13 = [MEMORY[0x277D0C010] proxyForPlayer:v9];
-    v14 = [v13 utilityServicePrivate];
+    v13 = [MEMORY[0x277D0C010] proxyForPlayer:playerCopy];
+    utilityServicePrivate = [v13 utilityServicePrivate];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __51__GKRemoteUIController_loadURL_forPlayer_postData___block_invoke;
     v15[3] = &unk_27966C9E0;
     v15[4] = self;
-    v16 = v8;
-    [v14 loadDataForURL:v16 postBody:v10 completionHandler:v15];
+    v16 = lCopy;
+    [utilityServicePrivate loadDataForURL:v16 postBody:dataCopy completionHandler:v15];
   }
 }
 
 - (int)preferredLayoutStyle
 {
-  v2 = [MEMORY[0x277D0C048] isPreferences];
-  v3 = [MEMORY[0x277D0C048] isGameCenter];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  isPreferences = [MEMORY[0x277D0C048] isPreferences];
+  isGameCenter = [MEMORY[0x277D0C048] isGameCenter];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v2 & 1 | ((v3 & 1) == 0))
+  if (isPreferences & 1 | ((isGameCenter & 1) == 0))
   {
     v6 = 1;
   }
@@ -630,7 +630,7 @@ LABEL_10:
     v6 = 2;
   }
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return v6;
   }
@@ -643,47 +643,47 @@ LABEL_10:
 
 - (NSURL)fallbackURL
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"GKRemoteUIController.m" lineNumber:427 description:@"Subclasses MUST implement fallbackURL"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"GKRemoteUIController.m" lineNumber:427 description:@"Subclasses MUST implement fallbackURL"];
 
   return 0;
 }
 
 - (NSString)bagKey
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"GKRemoteUIController.m" lineNumber:433 description:@"Subclasses MUST implement bagKey"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"GKRemoteUIController.m" lineNumber:433 description:@"Subclasses MUST implement bagKey"];
 
   return 0;
 }
 
-- (void)updatePostbackDictionary:(id)a3 withHandler:(id)a4
+- (void)updatePostbackDictionary:(id)dictionary withHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 }
 
-- (void)takeValuesFromClientInfo:(id)a3 withCompletionHandler:(id)a4
+- (void)takeValuesFromClientInfo:(id)info withCompletionHandler:(id)handler
 {
-  v54 = a3;
-  v6 = a4;
-  if (!v6)
+  infoCopy = info;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [GKRemoteUIController takeValuesFromClientInfo:withCompletionHandler:];
   }
 
-  v51 = [MEMORY[0x277D0C1D8] shared];
-  v7 = [v54 objectForKeyedSubscript:@"firstName"];
-  v8 = [v54 objectForKeyedSubscript:@"lastName"];
-  v9 = [v54 objectForKeyedSubscript:@"appleID"];
-  v10 = [v54 objectForKeyedSubscript:@"altDSID"];
-  v11 = [v54 objectForKeyedSubscript:@"playerID"];
-  v12 = [v54 objectForKeyedSubscript:@"alias"];
-  v13 = [v54 objectForKeyedSubscript:@"authToken"];
-  v14 = [v54 objectForKeyedSubscript:@"shouldAllowNearbyMultiplayer"];
-  v47 = [v54 objectForKeyedSubscript:@"isAuthenticated"];
+  mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+  v7 = [infoCopy objectForKeyedSubscript:@"firstName"];
+  v8 = [infoCopy objectForKeyedSubscript:@"lastName"];
+  v9 = [infoCopy objectForKeyedSubscript:@"appleID"];
+  v10 = [infoCopy objectForKeyedSubscript:@"altDSID"];
+  v11 = [infoCopy objectForKeyedSubscript:@"playerID"];
+  v12 = [infoCopy objectForKeyedSubscript:@"alias"];
+  v13 = [infoCopy objectForKeyedSubscript:@"authToken"];
+  v14 = [infoCopy objectForKeyedSubscript:@"shouldAllowNearbyMultiplayer"];
+  v47 = [infoCopy objectForKeyedSubscript:@"isAuthenticated"];
   if ([v47 isEqualToString:@"false"])
   {
     [(GKRemoteUIController *)self setIsServerAuthenticated:0];
@@ -694,8 +694,8 @@ LABEL_10:
   v50 = v7;
   if (v7)
   {
-    v15 = [(GKRemoteUIController *)self firstName];
-    v16 = [v15 isEqualToString:v7];
+    firstName = [(GKRemoteUIController *)self firstName];
+    v16 = [firstName isEqualToString:v7];
 
     if ((v16 & 1) == 0)
     {
@@ -718,8 +718,8 @@ LABEL_10:
   }
 
 LABEL_11:
-  v17 = [(GKRemoteUIController *)self lastName];
-  v18 = [v17 isEqualToString:v8];
+  lastName = [(GKRemoteUIController *)self lastName];
+  v18 = [lastName isEqualToString:v8];
 
   if ((v18 & 1) == 0)
   {
@@ -730,8 +730,8 @@ LABEL_11:
 LABEL_13:
   if (v9)
   {
-    v19 = [(GKRemoteUIController *)self appleID];
-    v20 = [v19 isEqualToString:v9];
+    appleID = [(GKRemoteUIController *)self appleID];
+    v20 = [appleID isEqualToString:v9];
 
     if ((v20 & 1) == 0)
     {
@@ -742,8 +742,8 @@ LABEL_13:
 
   if (v53)
   {
-    v21 = [(GKRemoteUIController *)self altDSID];
-    v22 = [v21 isEqualToString:v53];
+    altDSID = [(GKRemoteUIController *)self altDSID];
+    v22 = [altDSID isEqualToString:v53];
 
     if ((v22 & 1) == 0)
     {
@@ -754,8 +754,8 @@ LABEL_13:
 
   if (v11)
   {
-    v23 = [(GKRemoteUIController *)self playerID];
-    v24 = [v23 isEqualToString:v11];
+    playerID = [(GKRemoteUIController *)self playerID];
+    v24 = [playerID isEqualToString:v11];
 
     if ((v24 & 1) == 0)
     {
@@ -766,8 +766,8 @@ LABEL_13:
 
   if (v12)
   {
-    v25 = [(GKRemoteUIController *)self alias];
-    v26 = [v25 isEqualToString:v12];
+    alias = [(GKRemoteUIController *)self alias];
+    v26 = [alias isEqualToString:v12];
 
     if ((v26 & 1) == 0)
     {
@@ -792,101 +792,101 @@ LABEL_13:
 
   if (v52)
   {
-    [v51 setShouldAllowNearbyMultiplayer:{objc_msgSend(v52, "BOOLValue")}];
-    v30 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-    v31 = [v30 utilityServicePrivate];
-    [v31 refreshPreferences];
+    [mEMORY[0x277D0C1D8] setShouldAllowNearbyMultiplayer:{objc_msgSend(v52, "BOOLValue")}];
+    proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+    utilityServicePrivate = [proxyForLocalPlayer utilityServicePrivate];
+    [utilityServicePrivate refreshPreferences];
   }
 
-  v32 = [v54 objectForKeyedSubscript:@"authOkUrl"];
+  v32 = [infoCopy objectForKeyedSubscript:@"authOkUrl"];
 
   if (v32)
   {
-    v33 = [MEMORY[0x277CBEB38] dictionary];
-    v34 = [v54 objectForKeyedSubscript:@"authTitle"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v34 = [infoCopy objectForKeyedSubscript:@"authTitle"];
 
     if (v34)
     {
-      v35 = [v54 objectForKeyedSubscript:@"authTitle"];
-      [v33 setObject:v35 forKeyedSubscript:@"authTitle"];
+      v35 = [infoCopy objectForKeyedSubscript:@"authTitle"];
+      [dictionary setObject:v35 forKeyedSubscript:@"authTitle"];
     }
 
-    v36 = [v54 objectForKeyedSubscript:@"authOkUrl"];
+    v36 = [infoCopy objectForKeyedSubscript:@"authOkUrl"];
 
     if (v36)
     {
-      v37 = [v54 objectForKeyedSubscript:@"authOkUrl"];
-      [v33 setObject:v37 forKeyedSubscript:@"authOkUrl"];
+      v37 = [infoCopy objectForKeyedSubscript:@"authOkUrl"];
+      [dictionary setObject:v37 forKeyedSubscript:@"authOkUrl"];
     }
 
-    v38 = [v54 objectForKeyedSubscript:@"cancelUrl"];
+    v38 = [infoCopy objectForKeyedSubscript:@"cancelUrl"];
 
     if (v38)
     {
-      v39 = [v54 objectForKeyedSubscript:@"cancelUrl"];
-      [v33 setObject:v39 forKeyedSubscript:@"cancelUrl"];
+      v39 = [infoCopy objectForKeyedSubscript:@"cancelUrl"];
+      [dictionary setObject:v39 forKeyedSubscript:@"cancelUrl"];
     }
 
-    v40 = [v54 objectForKeyedSubscript:@"authUsername"];
+    v40 = [infoCopy objectForKeyedSubscript:@"authUsername"];
 
     if (v40)
     {
-      v41 = [v54 objectForKeyedSubscript:@"authUsername"];
-      [v33 setObject:v41 forKeyedSubscript:@"authUsername"];
-      v42 = [(GKRemoteUIController *)self appleID];
+      v41 = [infoCopy objectForKeyedSubscript:@"authUsername"];
+      [dictionary setObject:v41 forKeyedSubscript:@"authUsername"];
+      appleID2 = [(GKRemoteUIController *)self appleID];
 
-      if (!v42)
+      if (!appleID2)
       {
         [(GKRemoteUIController *)self setAppleID:v41];
       }
     }
 
-    v43 = [v54 objectForKeyedSubscript:@"altDSID"];
+    v43 = [infoCopy objectForKeyedSubscript:@"altDSID"];
 
     if (v43)
     {
-      v44 = [v54 objectForKeyedSubscript:@"altDSID"];
-      [v33 setObject:v44 forKeyedSubscript:@"altDSID"];
+      v44 = [infoCopy objectForKeyedSubscript:@"altDSID"];
+      [dictionary setObject:v44 forKeyedSubscript:@"altDSID"];
     }
 
-    v45 = [v54 objectForKeyedSubscript:@"authErrorMessage"];
+    v45 = [infoCopy objectForKeyedSubscript:@"authErrorMessage"];
 
     if (v45)
     {
-      v46 = [v54 objectForKeyedSubscript:@"authErrorMessage"];
-      [v33 setObject:v46 forKeyedSubscript:@"authErrorMessage"];
+      v46 = [infoCopy objectForKeyedSubscript:@"authErrorMessage"];
+      [dictionary setObject:v46 forKeyedSubscript:@"authErrorMessage"];
     }
 
-    [(GKRemoteUIController *)self setAuthInfo:v33];
+    [(GKRemoteUIController *)self setAuthInfo:dictionary];
   }
 
   if ((v29 | v7) == 1)
   {
-    [(GKRemoteUIController *)self updateAccountAndMarkComplete:0 completionHandler:v6];
+    [(GKRemoteUIController *)self updateAccountAndMarkComplete:0 completionHandler:handlerCopy];
   }
 
   else
   {
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 }
 
 - (id)viewControllers
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(GKRemoteUIController *)self staticViewControllers];
-  if (v4)
+  array = [MEMORY[0x277CBEB18] array];
+  staticViewControllers = [(GKRemoteUIController *)self staticViewControllers];
+  if (staticViewControllers)
   {
-    [v3 addObjectsFromArray:v4];
+    [array addObjectsFromArray:staticViewControllers];
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(GKRemoteUIController *)self objectModels];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  objectModels = [(GKRemoteUIController *)self objectModels];
+  v6 = [objectModels countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -897,44 +897,44 @@ LABEL_13:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectModels);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) displayedPages];
-        [v3 addObjectsFromArray:v10];
+        displayedPages = [*(*(&v12 + 1) + 8 * i) displayedPages];
+        [array addObjectsFromArray:displayedPages];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [objectModels countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  return v3;
+  return array;
 }
 
 - (int64_t)indexOfVisiblePage
 {
-  v3 = [(GKRemoteUIController *)self navigationController];
+  navigationController = [(GKRemoteUIController *)self navigationController];
 
-  if (!v3)
+  if (!navigationController)
   {
     [GKRemoteUIController indexOfVisiblePage];
   }
 
-  v4 = [(GKRemoteUIController *)self objectModels];
-  v5 = [v4 lastObject];
+  objectModels = [(GKRemoteUIController *)self objectModels];
+  lastObject = [objectModels lastObject];
 
-  v6 = [(GKRemoteUIController *)self navigationController];
-  v7 = [v6 topViewController];
+  navigationController2 = [(GKRemoteUIController *)self navigationController];
+  topViewController = [navigationController2 topViewController];
 
-  v8 = [v5 displayedPages];
-  v9 = [v8 count];
+  displayedPages = [lastObject displayedPages];
+  v9 = [displayedPages count];
   while (v9-- >= 1)
   {
-    v11 = [v8 objectAtIndexedSubscript:v9];
+    v11 = [displayedPages objectAtIndexedSubscript:v9];
 
-    if (v7 == v11)
+    if (topViewController == v11)
     {
       goto LABEL_8;
     }
@@ -946,73 +946,73 @@ LABEL_8:
   return v9;
 }
 
-- (void)pushObjectModel:(id)a3 animated:(BOOL)a4
+- (void)pushObjectModel:(id)model animated:(BOOL)animated
 {
-  v4 = a4;
-  v14 = a3;
-  [v14 setDelegate:self];
-  v6 = [(GKRemoteUIController *)self objectModels];
-  v7 = [v6 firstObject];
-  v8 = [v7 defaultPages];
-  v9 = [v8 firstObject];
+  animatedCopy = animated;
+  modelCopy = model;
+  [modelCopy setDelegate:self];
+  objectModels = [(GKRemoteUIController *)self objectModels];
+  firstObject = [objectModels firstObject];
+  defaultPages = [firstObject defaultPages];
+  firstObject2 = [defaultPages firstObject];
 
   v10 = GKGameCenterUIFrameworkBundle();
   v11 = GKGetLocalizedStringFromTableInBundle();
-  [v9 setBackButtonTitle:v11];
+  [firstObject2 setBackButtonTitle:v11];
 
-  v12 = [(GKRemoteUIController *)self objectModels];
-  [v12 addObject:v14];
+  objectModels2 = [(GKRemoteUIController *)self objectModels];
+  [objectModels2 addObject:modelCopy];
 
-  v13 = [(GKRemoteUIController *)self navigationController];
-  if (v13)
+  navigationController = [(GKRemoteUIController *)self navigationController];
+  if (navigationController)
   {
-    [v14 presentInParentViewController:v13 animated:v4];
+    [modelCopy presentInParentViewController:navigationController animated:animatedCopy];
   }
 }
 
-- (void)popObjectModelAnimated:(BOOL)a3
+- (void)popObjectModelAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(GKRemoteUIController *)self navigationController];
+  animatedCopy = animated;
+  navigationController = [(GKRemoteUIController *)self navigationController];
 
-  if (!v5)
+  if (!navigationController)
   {
     [GKRemoteUIController popObjectModelAnimated:];
   }
 
-  v11 = [(GKRemoteUIController *)self objectModels];
-  v6 = [v11 lastObject];
-  v7 = [(GKRemoteUIController *)self navigationController];
-  v8 = [(GKRemoteUIController *)self indexOfVisiblePage];
-  if (v8 != 0x7FFFFFFFFFFFFFFFLL)
+  objectModels = [(GKRemoteUIController *)self objectModels];
+  lastObject = [objectModels lastObject];
+  navigationController2 = [(GKRemoteUIController *)self navigationController];
+  indexOfVisiblePage = [(GKRemoteUIController *)self indexOfVisiblePage];
+  if (indexOfVisiblePage != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v8)
+    if (indexOfVisiblePage)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = v3;
+      v9 = animatedCopy;
     }
 
-    v10 = [v7 popViewControllerAnimated:v9];
+    v10 = [navigationController2 popViewControllerAnimated:v9];
   }
 
-  [v6 setDelegate:0];
-  [v11 removeLastObject];
-  if (![v11 count])
+  [lastObject setDelegate:0];
+  [objectModels removeLastObject];
+  if (![objectModels count])
   {
     [(GKRemoteUIController *)self fireCompletionHandler];
   }
 }
 
-- (void)replaceObjectModelAtIndex:(unint64_t)a3 withObjectObjectModel:(id)a4
+- (void)replaceObjectModelAtIndex:(unint64_t)index withObjectObjectModel:(id)model
 {
-  v7 = a4;
-  v8 = [(GKRemoteUIController *)self navigationController];
+  modelCopy = model;
+  navigationController = [(GKRemoteUIController *)self navigationController];
 
-  if (!v8)
+  if (!navigationController)
   {
     [GKRemoteUIController replaceObjectModelAtIndex:withObjectObjectModel:];
   }
@@ -1021,11 +1021,11 @@ LABEL_8:
   v10[1] = 3221225472;
   v10[2] = __72__GKRemoteUIController_replaceObjectModelAtIndex_withObjectObjectModel___block_invoke;
   v10[3] = &unk_27966CA08;
-  v12 = a3;
+  indexCopy = index;
   v13 = a2;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = modelCopy;
+  v9 = modelCopy;
   [v9 presentWithBlock:v10];
 }
 
@@ -1046,45 +1046,45 @@ void __72__GKRemoteUIController_replaceObjectModelAtIndex_withObjectObjectModel_
   [v6 _gkSetViewControllers:v5 transition:*MEMORY[0x277CDA928]];
 }
 
-- (void)presentObjectModel:(id)a3 animated:(BOOL)a4
+- (void)presentObjectModel:(id)model animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(GKRemoteUIController *)self navigationController];
+  animatedCopy = animated;
+  modelCopy = model;
+  navigationController = [(GKRemoteUIController *)self navigationController];
 
-  if (!v7)
+  if (!navigationController)
   {
     [GKRemoteUIController presentObjectModel:animated:];
   }
 
-  v8 = [(GKRemoteUIController *)self presentedRemoteUIController];
+  presentedRemoteUIController = [(GKRemoteUIController *)self presentedRemoteUIController];
 
-  if (v8)
+  if (presentedRemoteUIController)
   {
     [GKRemoteUIController presentObjectModel:animated:];
   }
 
   v9 = objc_alloc_init(MEMORY[0x277D757A0]);
-  v10 = [MEMORY[0x277D75418] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v11 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [v9 setModalPresentationStyle:16];
   }
 
-  v12 = [(GKRemoteUIController *)self navigationController];
-  v13 = [[GKRemoteUIController alloc] initWithObjectModel:v6];
+  navigationController2 = [(GKRemoteUIController *)self navigationController];
+  v13 = [[GKRemoteUIController alloc] initWithObjectModel:modelCopy];
 
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __52__GKRemoteUIController_presentObjectModel_animated___block_invoke;
   v18 = &unk_27966A760;
-  v19 = v12;
-  v20 = self;
-  v14 = v12;
+  v19 = navigationController2;
+  selfCopy = self;
+  v14 = navigationController2;
   [(GKRemoteUIController *)v13 setCompletionHandler:&v15];
-  [(GKRemoteUIController *)v13 presentInParentNavigationController:v9 animated:v4, v15, v16, v17, v18];
+  [(GKRemoteUIController *)v13 presentInParentNavigationController:v9 animated:animatedCopy, v15, v16, v17, v18];
   [(GKRemoteUIController *)self setPresentedRemoteUIController:v13];
   [v14 presentViewController:v9 animated:1 completion:0];
 }
@@ -1103,74 +1103,74 @@ void __52__GKRemoteUIController_presentObjectModel_animated___block_invoke(uint6
   }
 }
 
-- (void)performAction:(unint64_t)a3 withObjectModel:(id)a4
+- (void)performAction:(unint64_t)action withObjectModel:(id)model
 {
-  v15 = a4;
-  v7 = [(GKRemoteUIController *)self objectModels];
-  if ([v7 count])
+  modelCopy = model;
+  objectModels = [(GKRemoteUIController *)self objectModels];
+  if ([objectModels count])
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = a3 - 3 >= 2;
+    v8 = action - 3 >= 2;
   }
 
   if (v8)
   {
-    v9 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v9 = 2;
+    actionCopy = 2;
   }
 
-  if (v9 <= 2)
+  if (actionCopy <= 2)
   {
-    if (v9 == 1)
+    if (actionCopy == 1)
     {
       [(GKRemoteUIController *)self fireCompletionHandler];
       goto LABEL_23;
     }
 
-    if (v9 == 2)
+    if (actionCopy == 2)
     {
-      [(GKRemoteUIController *)self pushObjectModel:v15 animated:1];
+      [(GKRemoteUIController *)self pushObjectModel:modelCopy animated:1];
       goto LABEL_23;
     }
 
     goto LABEL_22;
   }
 
-  if (v9 == 3)
+  if (actionCopy == 3)
   {
-    -[GKRemoteUIController replaceObjectModelAtIndex:withObjectObjectModel:](self, "replaceObjectModelAtIndex:withObjectObjectModel:", [v7 count] - 1, v15);
+    -[GKRemoteUIController replaceObjectModelAtIndex:withObjectObjectModel:](self, "replaceObjectModelAtIndex:withObjectObjectModel:", [objectModels count] - 1, modelCopy);
     goto LABEL_23;
   }
 
-  if (v9 != 4)
+  if (actionCopy != 4)
   {
-    if (v9 == 5)
+    if (actionCopy == 5)
     {
-      [(GKRemoteUIController *)self presentObjectModel:v15 animated:1];
+      [(GKRemoteUIController *)self presentObjectModel:modelCopy animated:1];
       goto LABEL_23;
     }
 
 LABEL_22:
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"GKRemoteUIController.m" lineNumber:709 description:{@"Unhandled action signal type: %d", v9}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GKRemoteUIController.m" lineNumber:709 description:{@"Unhandled action signal type: %d", actionCopy}];
 
     goto LABEL_23;
   }
 
-  v10 = [v15 defaultPages];
-  v11 = [v10 count];
+  defaultPages = [modelCopy defaultPages];
+  v11 = [defaultPages count];
 
   if (v11)
   {
-    v12 = [v7 count];
+    v12 = [objectModels count];
     if (v12 <= 1)
     {
       v14 = v12;
@@ -1178,27 +1178,27 @@ LABEL_22:
       v12 = v14;
     }
 
-    [(GKRemoteUIController *)self replaceObjectModelAtIndex:v12 - 2 withObjectObjectModel:v15];
+    [(GKRemoteUIController *)self replaceObjectModelAtIndex:v12 - 2 withObjectObjectModel:modelCopy];
   }
 
   [(GKRemoteUIController *)self popObjectModelAnimated:1];
 LABEL_23:
 }
 
-- (void)loader:(id)a3 receivedObjectModel:(id)a4 actionSignal:(unint64_t)a5
+- (void)loader:(id)loader receivedObjectModel:(id)model actionSignal:(unint64_t)signal
 {
-  v7 = a4;
-  [v7 setDelegate:self];
-  v8 = [v7 clientInfo];
+  modelCopy = model;
+  [modelCopy setDelegate:self];
+  clientInfo = [modelCopy clientInfo];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__GKRemoteUIController_loader_receivedObjectModel_actionSignal___block_invoke;
   v10[3] = &unk_27966A7D0;
-  v11 = v7;
-  v12 = a5;
+  v11 = modelCopy;
+  signalCopy = signal;
   v10[4] = self;
-  v9 = v7;
-  [(GKRemoteUIController *)self takeValuesFromClientInfo:v8 withCompletionHandler:v10];
+  v9 = modelCopy;
+  [(GKRemoteUIController *)self takeValuesFromClientInfo:clientInfo withCompletionHandler:v10];
 }
 
 void __64__GKRemoteUIController_loader_receivedObjectModel_actionSignal___block_invoke(uint64_t a1)
@@ -1322,27 +1322,27 @@ void __64__GKRemoteUIController_loader_receivedObjectModel_actionSignal___block_
 
 - (id)viewControllerForAlertPresentation
 {
-  v2 = [(GKRemoteUIController *)self navigationController];
-  v3 = [v2 topViewController];
+  navigationController = [(GKRemoteUIController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  return v3;
+  return topViewController;
 }
 
-- (void)objectModelPressedBack:(id)a3
+- (void)objectModelPressedBack:(id)back
 {
-  v4 = [(GKRemoteUIController *)self objectModels];
-  v5 = [v4 lastObject];
+  objectModels = [(GKRemoteUIController *)self objectModels];
+  lastObject = [objectModels lastObject];
 
-  if (([v5 goBack] & 1) == 0)
+  if (([lastObject goBack] & 1) == 0)
   {
     [(GKRemoteUIController *)self popObjectModelAnimated:1];
   }
 }
 
-- (void)objectModel:(id)a3 elementDidChange:(id)a4
+- (void)objectModel:(id)model elementDidChange:(id)change
 {
-  v5 = [a4 name];
-  v6 = [v5 isEqualToString:@"Dismiss"];
+  name = [change name];
+  v6 = [name isEqualToString:@"Dismiss"];
 
   if (v6)
   {
@@ -1351,37 +1351,37 @@ void __64__GKRemoteUIController_loader_receivedObjectModel_actionSignal___block_
   }
 }
 
-- (void)objectModel:(id)a3 pressedLink:(id)a4 httpMethod:(id)a5 completion:(id)a6
+- (void)objectModel:(id)model pressedLink:(id)link httpMethod:(id)method completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  modelCopy = model;
+  linkCopy = link;
+  completionCopy = completion;
+  methodCopy = method;
   [(GKRemoteUIController *)self setUserInteractionEnabled:0];
-  v14 = [v13 lowercaseString];
+  lowercaseString = [methodCopy lowercaseString];
 
-  LOBYTE(v13) = [v14 isEqualToString:@"post"];
-  if (v13)
+  LOBYTE(methodCopy) = [lowercaseString isEqualToString:@"post"];
+  if (methodCopy)
   {
-    v15 = [v10 postbackDictionary];
+    postbackDictionary = [modelCopy postbackDictionary];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __70__GKRemoteUIController_objectModel_pressedLink_httpMethod_completion___block_invoke;
     v18[3] = &unk_27966AB18;
     v18[4] = self;
-    v19 = v15;
-    v20 = v11;
-    v21 = v12;
-    v16 = v15;
+    v19 = postbackDictionary;
+    v20 = linkCopy;
+    v21 = completionCopy;
+    v16 = postbackDictionary;
     [(GKRemoteUIController *)self updatePostbackDictionary:v16 withHandler:v18];
   }
 
   else
   {
-    v17 = [(GKRemoteUIController *)self playerForRemoteUI];
-    [(GKRemoteUIController *)self loadURL:v11 forPlayer:v17 postBody:0];
+    playerForRemoteUI = [(GKRemoteUIController *)self playerForRemoteUI];
+    [(GKRemoteUIController *)self loadURL:linkCopy forPlayer:playerForRemoteUI postBody:0];
 
-    (*(v12 + 2))(v12, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
@@ -1396,58 +1396,58 @@ void __70__GKRemoteUIController_objectModel_pressedLink_httpMethod_completion___
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)objectModel:(id)a3 configureTableView:(id)a4 page:(id)a5
+- (void)objectModel:(id)model configureTableView:(id)view page:(id)page
 {
-  v11 = a5;
-  v7 = [a4 tableView];
-  [v7 _setTopPadding:0.0];
-  [v7 _setBottomPadding:0.0];
+  pageCopy = page;
+  tableView = [view tableView];
+  [tableView _setTopPadding:0.0];
+  [tableView _setBottomPadding:0.0];
   if ([(GKRemoteUIController *)self shouldApplyGameCenterTheme])
   {
-    [v7 setSectionFooterHeight:0.0];
-    v8 = [(GKRemoteUIController *)self layoutStyle];
+    [tableView setSectionFooterHeight:0.0];
+    layoutStyle = [(GKRemoteUIController *)self layoutStyle];
     v9 = 60.0;
-    if (v8 == 2)
+    if (layoutStyle == 2)
     {
       v9 = 72.0;
     }
 
-    [v7 setRowHeight:v9];
-    v10 = [(GKRemoteUIController *)self layoutStyle];
-    if (v10 <= 2)
+    [tableView setRowHeight:v9];
+    layoutStyle2 = [(GKRemoteUIController *)self layoutStyle];
+    if (layoutStyle2 <= 2)
     {
-      [v11 setCustomMargin:dbl_24E3679C0[v10]];
+      [pageCopy setCustomMargin:dbl_24E3679C0[layoutStyle2]];
     }
   }
 }
 
-- (void)objectModel:(id)a3 configureTableSection:(id)a4 page:(id)a5
+- (void)objectModel:(id)model configureTableSection:(id)section page:(id)page
 {
-  v9 = a4;
-  v6 = [v9 footerView];
+  sectionCopy = section;
+  footerView = [sectionCopy footerView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 setDelegate:self];
+    [footerView setDelegate:self];
   }
 
-  v7 = [v9 attributes];
-  v8 = [v7 objectForKeyedSubscript:@"drawTopSeparator"];
+  attributes = [sectionCopy attributes];
+  v8 = [attributes objectForKeyedSubscript:@"drawTopSeparator"];
 
   if (v8)
   {
-    [v9 setDrawTopSeparator:{objc_msgSend(v8, "BOOLValue")}];
+    [sectionCopy setDrawTopSeparator:{objc_msgSend(v8, "BOOLValue")}];
   }
 }
 
-- (void)objectModel:(id)a3 configureTableRow:(id)a4 page:(id)a5
+- (void)objectModel:(id)model configureTableRow:(id)row page:(id)page
 {
-  v53 = a4;
-  v6 = [(GKRemoteUIController *)self shouldApplyGameCenterTheme];
-  v7 = v53;
-  if (v6)
+  rowCopy = row;
+  shouldApplyGameCenterTheme = [(GKRemoteUIController *)self shouldApplyGameCenterTheme];
+  v7 = rowCopy;
+  if (shouldApplyGameCenterTheme)
   {
-    v8 = [v53 tableCell];
+    tableCell = [rowCopy tableCell];
     if ([(GKRemoteUIController *)self layoutStyle]== 2)
     {
       v9 = 134.0;
@@ -1459,39 +1459,39 @@ void __70__GKRemoteUIController_objectModel_pressedLink_httpMethod_completion___
       v9 = 88.0;
     }
 
-    [v8 setTextFieldOffset:v9];
-    v10 = [v53 attributes];
-    v11 = [v10 mutableCopy];
+    [tableCell setTextFieldOffset:v9];
+    attributes = [rowCopy attributes];
+    v11 = [attributes mutableCopy];
 
     [v11 removeObjectForKey:@"height"];
-    [v53 setAttributes:v11];
-    v12 = [MEMORY[0x277D75418] currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    [rowCopy setAttributes:v11];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v14 = 0x277D0C8C0;
-    if (v13 == 1 && *MEMORY[0x277D0C8F0] & 1 | ((*MEMORY[0x277D0C258] & 1) == 0))
+    if (userInterfaceIdiom == 1 && *MEMORY[0x277D0C8F0] & 1 | ((*MEMORY[0x277D0C258] & 1) == 0))
     {
       v14 = 0x277D0C8B8;
     }
 
     v15 = objc_alloc_init(*v14);
-    v16 = [MEMORY[0x277D0C8B0] textStyle];
-    v17 = [v8 editableTextField];
+    textStyle = [MEMORY[0x277D0C8B0] textStyle];
+    editableTextField = [tableCell editableTextField];
     v18 = [v11 objectForKeyedSubscript:@"editFieldStyle"];
-    v19 = [v16 styleWithName:v18 fallback:@"remoteUIEditField" layoutMode:{-[GKRemoteUIController layoutStyle](self, "layoutStyle")}];
+    v19 = [textStyle styleWithName:v18 fallback:@"remoteUIEditField" layoutMode:{-[GKRemoteUIController layoutStyle](self, "layoutStyle")}];
 
     v48 = v19;
-    if (v17)
+    if (editableTextField)
     {
       if (![(GKRemoteUIController *)self layoutStyle])
       {
-        [v53 setHeight:50.0];
+        [rowCopy setHeight:50.0];
       }
 
       if (v19)
       {
         v20 = [v19 replayOnBaseStyle:v15 systemContentSizeDidChange:0];
-        [v20 applyToEditField:v17];
+        [v20 applyToEditField:editableTextField];
       }
 
       v21 = @"remoteUIEditLabel";
@@ -1502,7 +1502,7 @@ void __70__GKRemoteUIController_objectModel_pressedLink_httpMethod_completion___
       v21 = @"remoteUILabel";
     }
 
-    v22 = [v8 textLabel];
+    textLabel = [tableCell textLabel];
     v23 = [v11 objectForKeyedSubscript:@"class"];
     v24 = [v23 isEqualToString:@"selectPage"];
 
@@ -1516,38 +1516,38 @@ void __70__GKRemoteUIController_objectModel_pressedLink_httpMethod_completion___
       v25 = v21;
     }
 
-    v26 = v22;
+    v26 = textLabel;
     v27 = [v11 objectForKeyedSubscript:@"labelStyle"];
-    v28 = [v16 styleWithName:v27 fallback:v25 layoutMode:{-[GKRemoteUIController layoutStyle](self, "layoutStyle")}];
+    v28 = [textStyle styleWithName:v27 fallback:v25 layoutMode:{-[GKRemoteUIController layoutStyle](self, "layoutStyle")}];
 
     v51 = v28;
     v52 = v26;
     if (v28)
     {
-      v29 = [v26 text];
+      text = [v26 text];
 
-      if (v29)
+      if (text)
       {
         v30 = [v51 replayOnBaseStyle:v15 systemContentSizeDidChange:0];
         v31 = objc_alloc(MEMORY[0x277CCA898]);
         [v26 text];
-        v49 = v17;
-        v32 = v16;
+        v49 = editableTextField;
+        v32 = textStyle;
         v33 = v15;
-        v35 = v34 = v8;
-        v36 = [v30 attributes];
-        v37 = [v31 initWithString:v35 attributes:v36];
+        v35 = v34 = tableCell;
+        attributes2 = [v30 attributes];
+        v37 = [v31 initWithString:v35 attributes:attributes2];
 
-        v8 = v34;
+        tableCell = v34;
         v15 = v33;
-        v16 = v32;
-        v17 = v49;
+        textStyle = v32;
+        editableTextField = v49;
         [v52 setAttributedText:v37];
       }
     }
 
-    v50 = v8;
-    v38 = [v8 detailTextLabel];
+    v50 = tableCell;
+    detailTextLabel = [tableCell detailTextLabel];
     if (v24)
     {
       v39 = @"remoteUISelectField";
@@ -1559,39 +1559,39 @@ void __70__GKRemoteUIController_objectModel_pressedLink_httpMethod_completion___
     }
 
     v40 = [v11 objectForKeyedSubscript:@"detailLabelStyle"];
-    v41 = [v16 styleWithName:v40 fallback:v39 layoutMode:{-[GKRemoteUIController layoutStyle](self, "layoutStyle")}];
+    v41 = [textStyle styleWithName:v40 fallback:v39 layoutMode:{-[GKRemoteUIController layoutStyle](self, "layoutStyle")}];
 
     if (v41)
     {
-      v42 = [v38 text];
+      text2 = [detailTextLabel text];
 
-      if (v42)
+      if (text2)
       {
         v43 = [v41 replayOnBaseStyle:v15 systemContentSizeDidChange:0];
         v44 = objc_alloc(MEMORY[0x277CCA898]);
-        v45 = [v38 text];
-        v46 = [v43 attributes];
-        v47 = [v44 initWithString:v45 attributes:v46];
+        text3 = [detailTextLabel text];
+        attributes3 = [v43 attributes];
+        v47 = [v44 initWithString:text3 attributes:attributes3];
 
-        [v38 setAttributedText:v47];
+        [detailTextLabel setAttributedText:v47];
       }
     }
 
-    v7 = v53;
+    v7 = rowCopy;
   }
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](shouldApplyGameCenterTheme, v7);
 }
 
-- (Class)objectModel:(id)a3 customHeaderClassForSection:(id)a4
+- (Class)objectModel:(id)model customHeaderClassForSection:(id)section
 {
-  v5 = a4;
-  v6 = [v5 attributes];
-  v7 = [v6 objectForKeyedSubscript:@"header"];
+  sectionCopy = section;
+  attributes = [sectionCopy attributes];
+  v7 = [attributes objectForKeyedSubscript:@"header"];
   if (v7)
   {
-    v8 = [(GKRemoteUIController *)self addThemeInfoToAttributes:v6];
-    [v5 setAttributes:v8];
+    v8 = [(GKRemoteUIController *)self addThemeInfoToAttributes:attributes];
+    [sectionCopy setAttributes:v8];
 
     v9 = objc_opt_class();
   }
@@ -1604,16 +1604,16 @@ void __70__GKRemoteUIController_objectModel_pressedLink_httpMethod_completion___
   return v9;
 }
 
-- (Class)objectModel:(id)a3 customFooterClassForSection:(id)a4
+- (Class)objectModel:(id)model customFooterClassForSection:(id)section
 {
-  v5 = a4;
-  v6 = [v5 attributes];
-  v7 = [v6 objectForKeyedSubscript:@"footer"];
-  v8 = [v6 objectForKeyedSubscript:@"button"];
+  sectionCopy = section;
+  attributes = [sectionCopy attributes];
+  v7 = [attributes objectForKeyedSubscript:@"footer"];
+  v8 = [attributes objectForKeyedSubscript:@"button"];
   if (v7 | v8)
   {
-    v9 = [(GKRemoteUIController *)self addThemeInfoToAttributes:v6];
-    [v5 setAttributes:v9];
+    v9 = [(GKRemoteUIController *)self addThemeInfoToAttributes:attributes];
+    [sectionCopy setAttributes:v9];
 
     v10 = objc_opt_class();
   }
@@ -1626,18 +1626,18 @@ void __70__GKRemoteUIController_objectModel_pressedLink_httpMethod_completion___
   return v10;
 }
 
-- (id)objectModel:(id)a3 tableHeaderViewForAttributes:(id)a4 page:(id)a5
+- (id)objectModel:(id)model tableHeaderViewForAttributes:(id)attributes page:(id)page
 {
-  v6 = [(GKRemoteUIController *)self addThemeInfoToAttributes:a4];
+  v6 = [(GKRemoteUIController *)self addThemeInfoToAttributes:attributes];
   v7 = [[GKRemoteUITableHeaderView alloc] initWithAttributes:v6];
   [(GKRemoteUITableHeaderView *)v7 setDelegate:self];
 
   return v7;
 }
 
-- (id)objectModel:(id)a3 tableFooterViewForAttributes:(id)a4 page:(id)a5
+- (id)objectModel:(id)model tableFooterViewForAttributes:(id)attributes page:(id)page
 {
-  v6 = [(GKRemoteUIController *)self addThemeInfoToAttributes:a4];
+  v6 = [(GKRemoteUIController *)self addThemeInfoToAttributes:attributes];
   v7 = [[GKRemoteUITableFooterView alloc] initWithAttributes:v6];
   [(GKRemoteUITableFooterView *)v7 setDelegate:self];
 
@@ -1702,7 +1702,7 @@ void __71__GKRemoteUIController_updateAccountAndMarkComplete_completionHandler__
 - (void)indexOfVisiblePage
 {
   OUTLINED_FUNCTION_0_8();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_1_5();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

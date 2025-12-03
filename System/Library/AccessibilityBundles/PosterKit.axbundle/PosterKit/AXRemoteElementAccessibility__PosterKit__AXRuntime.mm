@@ -1,18 +1,18 @@
 @interface AXRemoteElementAccessibility__PosterKit__AXRuntime
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityShouldHitTestRemoteElementProcess;
-- (BOOL)_axIsKindOfClass:(id)a3 fromArray:(id)a4;
+- (BOOL)_axIsKindOfClass:(id)class fromArray:(id)array;
 @end
 
 @implementation AXRemoteElementAccessibility__PosterKit__AXRuntime
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PREditingSceneViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PREditingSceneViewController"];
   if (NSClassFromString(&cfstr_Pruisambientpo.isa))
   {
-    [v3 validateClass:@"PRUISAmbientPosterViewController"];
+    [validationsCopy validateClass:@"PRUISAmbientPosterViewController"];
   }
 }
 
@@ -34,16 +34,16 @@
   return v4;
 }
 
-- (BOOL)_axIsKindOfClass:(id)a3 fromArray:(id)a4
+- (BOOL)_axIsKindOfClass:(id)class fromArray:(id)array
 {
   v16 = *MEMORY[0x29EDCA608];
-  v5 = a3;
+  classCopy = class;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  arrayCopy = array;
+  v7 = [arrayCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -53,7 +53,7 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
         if (objc_opt_isKindOfClass())
@@ -63,7 +63,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [arrayCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         continue;

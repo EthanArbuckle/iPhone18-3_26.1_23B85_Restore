@@ -1,91 +1,91 @@
 @interface MIAppReference
-+ (BOOL)validateAppReference:(id)a3 withError:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (MIAppReference)initWithCoder:(id)a3;
-- (MIAppReference)initWithReferenceUUID:(id)a3 identity:(id)a4 domain:(unint64_t)a5 uid:(unsigned int)a6;
++ (BOOL)validateAppReference:(id)reference withError:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (MIAppReference)initWithCoder:(id)coder;
+- (MIAppReference)initWithReferenceUUID:(id)d identity:(id)identity domain:(unint64_t)domain uid:(unsigned int)uid;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MIAppReference
 
-- (MIAppReference)initWithReferenceUUID:(id)a3 identity:(id)a4 domain:(unint64_t)a5 uid:(unsigned int)a6
+- (MIAppReference)initWithReferenceUUID:(id)d identity:(id)identity domain:(unint64_t)domain uid:(unsigned int)uid
 {
-  v11 = a3;
-  v12 = a4;
+  dCopy = d;
+  identityCopy = identity;
   v16.receiver = self;
   v16.super_class = MIAppReference;
   v13 = [(MIAppReference *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_referenceUUID, a3);
-    objc_storeStrong(&v14->_identity, a4);
-    v14->_domain = a5;
-    v14->_uid = a6;
+    objc_storeStrong(&v13->_referenceUUID, d);
+    objc_storeStrong(&v14->_identity, identity);
+    v14->_domain = domain;
+    v14->_uid = uid;
   }
 
   return v14;
 }
 
-- (MIAppReference)initWithCoder:(id)a3
+- (MIAppReference)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MIAppReference;
   v5 = [(MIAppReference *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referenceUUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referenceUUID"];
     referenceUUID = v5->_referenceUUID;
     v5->_referenceUUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
     identity = v5->_identity;
     v5->_identity = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
     v5->_domain = [v10 unsignedIntegerValue];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uid"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uid"];
     v5->_uid = [v11 unsignedIntValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MIAppReference *)self referenceUUID];
-  [v4 encodeObject:v5 forKey:@"referenceUUID"];
+  coderCopy = coder;
+  referenceUUID = [(MIAppReference *)self referenceUUID];
+  [coderCopy encodeObject:referenceUUID forKey:@"referenceUUID"];
 
-  v6 = [(MIAppReference *)self identity];
-  [v4 encodeObject:v6 forKey:@"identity"];
+  identity = [(MIAppReference *)self identity];
+  [coderCopy encodeObject:identity forKey:@"identity"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[MIAppReference domain](self, "domain")}];
-  [v4 encodeObject:v7 forKey:@"domain"];
+  [coderCopy encodeObject:v7 forKey:@"domain"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MIAppReference uid](self, "uid")}];
-  [v4 encodeObject:v8 forKey:@"uid"];
+  [coderCopy encodeObject:v8 forKey:@"uid"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(MIAppReference *)self referenceUUID];
-  v4 = [v3 hash];
-  v5 = [(MIAppReference *)self identity];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(MIAppReference *)self domain];
+  referenceUUID = [(MIAppReference *)self referenceUUID];
+  v4 = [referenceUUID hash];
+  identity = [(MIAppReference *)self identity];
+  v6 = [identity hash] ^ v4;
+  domain = [(MIAppReference *)self domain];
 
-  return v6 ^ v7;
+  return v6 ^ domain;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -95,27 +95,27 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIAppReference *)self referenceUUID];
-      v7 = [(MIAppReference *)v5 referenceUUID];
-      v8 = MICompareObjects(v6, v7);
+      v5 = equalCopy;
+      referenceUUID = [(MIAppReference *)self referenceUUID];
+      referenceUUID2 = [(MIAppReference *)v5 referenceUUID];
+      v8 = MICompareObjects(referenceUUID, referenceUUID2);
 
       if (!v8)
       {
         goto LABEL_9;
       }
 
-      v9 = [(MIAppReference *)self identity];
-      v10 = [(MIAppReference *)v5 identity];
-      v11 = MICompareObjects(v9, v10);
+      identity = [(MIAppReference *)self identity];
+      identity2 = [(MIAppReference *)v5 identity];
+      v11 = MICompareObjects(identity, identity2);
 
       if (!v11)
       {
         goto LABEL_9;
       }
 
-      v12 = [(MIAppReference *)self domain];
-      if (v12 == [(MIAppReference *)v5 domain])
+      domain = [(MIAppReference *)self domain];
+      if (domain == [(MIAppReference *)v5 domain])
       {
         v13 = [(MIAppReference *)self uid];
         v14 = v13 == [(MIAppReference *)v5 uid];
@@ -140,31 +140,31 @@ LABEL_9:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MIAppReference *)self referenceUUID];
-  v5 = [(MIAppReference *)self identity];
-  v6 = [v3 stringWithFormat:@"[uuid:%@ identity:%@ domain:%lu uid:%u]", v4, v5, -[MIAppReference domain](self, "domain"), -[MIAppReference uid](self, "uid")];
+  referenceUUID = [(MIAppReference *)self referenceUUID];
+  identity = [(MIAppReference *)self identity];
+  v6 = [v3 stringWithFormat:@"[uuid:%@ identity:%@ domain:%lu uid:%u]", referenceUUID, identity, -[MIAppReference domain](self, "domain"), -[MIAppReference uid](self, "uid")];
 
   return v6;
 }
 
-+ (BOOL)validateAppReference:(id)a3 withError:(id *)a4
++ (BOOL)validateAppReference:(id)reference withError:(id *)error
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  referenceCopy = reference;
+  v7 = referenceCopy;
+  if (!referenceCopy)
   {
     v12 = *MEMORY[0x1E69A8D00];
     v13 = @"app reference is nil";
     v14 = 112;
 LABEL_8:
     v11 = _CreateError("+[MIAppReference validateAppReference:withError:]", v14, v12, 25, 0, 0, v13, v6, v17);
-    LOBYTE(v8) = 0;
+    LOBYTE(identity) = 0;
     goto LABEL_9;
   }
 
-  v8 = [v5 identity];
+  identity = [referenceCopy identity];
 
-  if (!v8)
+  if (!identity)
   {
     v11 = _CreateError("+[MIAppReference validateAppReference:withError:]", 117, *MEMORY[0x1E69A8D00], 25, 0, 0, @"app reference has nil app identity", v9, v17);
     goto LABEL_9;
@@ -178,20 +178,20 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v8 = MEMORY[0x1E69A8D68];
-  v10 = [v7 identity];
+  identity = MEMORY[0x1E69A8D68];
+  identity2 = [v7 identity];
   v18 = 0;
-  LOBYTE(v8) = [v8 validateAppIdentity:v10 withError:&v18];
+  LOBYTE(identity) = [identity validateAppIdentity:identity2 withError:&v18];
   v11 = v18;
 
 LABEL_9:
-  if (a4 && (v8 & 1) == 0)
+  if (error && (identity & 1) == 0)
   {
     v15 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
-  return v8;
+  return identity;
 }
 
 @end

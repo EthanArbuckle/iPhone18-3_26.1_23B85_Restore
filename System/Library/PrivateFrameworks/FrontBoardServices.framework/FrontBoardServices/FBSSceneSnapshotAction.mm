@@ -1,27 +1,27 @@
 @interface FBSSceneSnapshotAction
 - (BOOL)_remainsActionable;
-- (BOOL)snapshotRequest:(id)a3 performWithContext:(id)a4;
-- (FBSSceneSnapshotAction)initWithRequests:(id)a3 expirationInterval:(double)a4 responseHandler:(id)a5;
-- (FBSSceneSnapshotAction)initWithXPCDictionary:(id)a3;
+- (BOOL)snapshotRequest:(id)request performWithContext:(id)context;
+- (FBSSceneSnapshotAction)initWithRequests:(id)requests expirationInterval:(double)interval responseHandler:(id)handler;
+- (FBSSceneSnapshotAction)initWithXPCDictionary:(id)dictionary;
 - (double)expirationInterval;
 - (void)_executeNextRequest;
 - (void)_finishAllRequests;
-- (void)encodeWithXPCDictionary:(id)a3;
-- (void)executeRequestsWithHandler:(id)a3 completionHandler:(id)a4 expirationHandler:(id)a5;
+- (void)encodeWithXPCDictionary:(id)dictionary;
+- (void)executeRequestsWithHandler:(id)handler completionHandler:(id)completionHandler expirationHandler:(id)expirationHandler;
 - (void)invalidate;
-- (void)setInvalidationHandler:(id)a3;
-- (void)setNullificationHandler:(id)a3;
+- (void)setInvalidationHandler:(id)handler;
+- (void)setNullificationHandler:(id)handler;
 @end
 
 @implementation FBSSceneSnapshotAction
 
-- (FBSSceneSnapshotAction)initWithRequests:(id)a3 expirationInterval:(double)a4 responseHandler:(id)a5
+- (FBSSceneSnapshotAction)initWithRequests:(id)requests expirationInterval:(double)interval responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  requestsCopy = requests;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v10 = v9;
+    v10 = handlerCopy;
     v11 = objc_alloc_init(off_1E76BCA00);
     [off_1E76BC978 responderWithHandler:v10];
     objc_claimAutoreleasedReturnValue();
@@ -31,23 +31,23 @@
   [FBSSceneSnapshotAction initWithRequests:a2 expirationInterval:self responseHandler:?];
 }
 
-- (void)executeRequestsWithHandler:(id)a3 completionHandler:(id)a4 expirationHandler:(id)a5
+- (void)executeRequestsWithHandler:(id)handler completionHandler:(id)completionHandler expirationHandler:(id)expirationHandler
 {
-  v8 = a5;
+  expirationHandlerCopy = expirationHandler;
   callOutQueue = self->super._callOutQueue;
-  v10 = a4;
-  v11 = a3;
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
   [(BSServiceQueue *)callOutQueue assertBarrierOnQueue];
-  [(FBSSceneSnapshotAction *)self setRequestHandler:v11];
+  [(FBSSceneSnapshotAction *)self setRequestHandler:handlerCopy];
 
-  [(FBSSceneSnapshotAction *)self setCompletionHandler:v10];
+  [(FBSSceneSnapshotAction *)self setCompletionHandler:completionHandlerCopy];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __89__FBSSceneSnapshotAction_executeRequestsWithHandler_completionHandler_expirationHandler___block_invoke;
   v16 = &unk_1E76BDA90;
-  v17 = self;
-  v18 = v8;
-  v12 = v8;
+  selfCopy = self;
+  v18 = expirationHandlerCopy;
+  v12 = expirationHandlerCopy;
   BSDispatchBlockCreateWithCurrentQualityOfService();
 }
 
@@ -75,17 +75,17 @@ uint64_t __89__FBSSceneSnapshotAction_executeRequestsWithHandler_completionHandl
 
 - (double)expirationInterval
 {
-  v2 = [(FBSSceneSnapshotAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(FBSSceneSnapshotAction *)self info];
+  v3 = [info objectForSetting:1];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"you can't use the invalidation handler on this class"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -97,7 +97,7 @@ uint64_t __89__FBSSceneSnapshotAction_executeRequestsWithHandler_completionHandl
     v12 = 2114;
     v13 = v9;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"FBSSceneSnapshotAction.m";
     v18 = 1024;
@@ -111,9 +111,9 @@ uint64_t __89__FBSSceneSnapshotAction_executeRequestsWithHandler_completionHandl
   _bs_set_crash_log_message();
 }
 
-- (void)setNullificationHandler:(id)a3
+- (void)setNullificationHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"you can't use the nullification handler on this class"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -125,7 +125,7 @@ uint64_t __89__FBSSceneSnapshotAction_executeRequestsWithHandler_completionHandl
     v12 = 2114;
     v13 = v9;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"FBSSceneSnapshotAction.m";
     v18 = 1024;
@@ -193,23 +193,23 @@ uint64_t __89__FBSSceneSnapshotAction_executeRequestsWithHandler_completionHandl
   [(BSServiceQueue *)self->super._callOutQueue assertBarrierOnQueue];
   if ([(FBSSceneSnapshotAction *)self _remainsActionable])
   {
-    v6 = [(NSMutableArray *)self->_requests firstObject];
-    if (v6)
+    firstObject = [(NSMutableArray *)self->_requests firstObject];
+    if (firstObject)
     {
       [(NSMutableArray *)self->_requests removeObjectAtIndex:0];
-      v3 = [(FBSScene *)self->super._scene identifier];
-      [v6 setSceneID:v3];
+      identifier = [(FBSScene *)self->super._scene identifier];
+      [firstObject setSceneID:identifier];
 
-      [v6 setDelegate:self];
+      [firstObject setDelegate:self];
       v4 = objc_autoreleasePoolPush();
       requestHandler = self->_requestHandler;
       if (requestHandler)
       {
-        requestHandler[2](requestHandler, v6);
+        requestHandler[2](requestHandler, firstObject);
       }
 
       objc_autoreleasePoolPop(v4);
-      [v6 setDelegate:0];
+      [firstObject setDelegate:0];
       [(FBSSceneSnapshotAction *)self _executeNextRequest];
     }
 
@@ -226,18 +226,18 @@ uint64_t __89__FBSSceneSnapshotAction_executeRequestsWithHandler_completionHandl
   }
 }
 
-- (BOOL)snapshotRequest:(id)a3 performWithContext:(id)a4
+- (BOOL)snapshotRequest:(id)request performWithContext:(id)context
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(FBSSceneSnapshotAction *)self _remainsActionable];
-  if (v9)
+  requestCopy = request;
+  contextCopy = context;
+  _remainsActionable = [(FBSSceneSnapshotAction *)self _remainsActionable];
+  if (_remainsActionable)
   {
     [(BSServiceQueue *)self->super._callOutQueue assertBarrierOnQueue];
-    v10 = self;
-    objc_sync_enter(v10);
-    if (v10->_outgoingRequestHandle)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_outgoingRequestHandle)
     {
       v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot have existing request handle"];
       v17 = MEMORY[0x1E69E9C10];
@@ -252,7 +252,7 @@ uint64_t __89__FBSSceneSnapshotAction_executeRequestsWithHandler_completionHandl
         v25 = 2114;
         v26 = v21;
         v27 = 2048;
-        v28 = v10;
+        v28 = selfCopy;
         v29 = 2114;
         v30 = @"FBSSceneSnapshotAction.m";
         v31 = 1024;
@@ -267,29 +267,29 @@ uint64_t __89__FBSSceneSnapshotAction_executeRequestsWithHandler_completionHandl
       _bs_set_crash_log_message();
     }
 
-    v11 = [[FBSSceneSnapshotRequestHandle alloc] initWithRequestType:1 context:v8];
-    outgoingRequestHandle = v10->_outgoingRequestHandle;
-    v10->_outgoingRequestHandle = v11;
+    v11 = [[FBSSceneSnapshotRequestHandle alloc] initWithRequestType:1 context:contextCopy];
+    outgoingRequestHandle = selfCopy->_outgoingRequestHandle;
+    selfCopy->_outgoingRequestHandle = v11;
 
-    objc_sync_exit(v10);
-    [(FBSSceneSnapshotRequestHandle *)v10->_outgoingRequestHandle performRequestForScene:v10->super._scene];
-    v13 = v10;
+    objc_sync_exit(selfCopy);
+    [(FBSSceneSnapshotRequestHandle *)selfCopy->_outgoingRequestHandle performRequestForScene:selfCopy->super._scene];
+    v13 = selfCopy;
     objc_sync_enter(v13);
-    v14 = v10->_outgoingRequestHandle;
-    v10->_outgoingRequestHandle = 0;
+    v14 = selfCopy->_outgoingRequestHandle;
+    selfCopy->_outgoingRequestHandle = 0;
 
     objc_sync_exit(v13);
   }
 
-  return v9;
+  return _remainsActionable;
 }
 
-- (FBSSceneSnapshotAction)initWithXPCDictionary:(id)a3
+- (FBSSceneSnapshotAction)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v6.receiver = self;
   v6.super_class = FBSSceneSnapshotAction;
-  if ([(FBSSceneSnapshotAction *)&v6 initWithXPCDictionary:v4])
+  if ([(FBSSceneSnapshotAction *)&v6 initWithXPCDictionary:dictionaryCopy])
   {
     BSDeserializeArrayOfBSXPCEncodableObjectsFromXPCDictionaryWithKey();
   }
@@ -297,11 +297,11 @@ uint64_t __89__FBSSceneSnapshotAction_executeRequestsWithHandler_completionHandl
   return 0;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   v3.receiver = self;
   v3.super_class = FBSSceneSnapshotAction;
-  [(FBSSceneSnapshotAction *)&v3 encodeWithXPCDictionary:a3];
+  [(FBSSceneSnapshotAction *)&v3 encodeWithXPCDictionary:dictionary];
   BSSerializeArrayOfBSXPCEncodableObjectsToXPCDictionaryWithKey();
 }
 

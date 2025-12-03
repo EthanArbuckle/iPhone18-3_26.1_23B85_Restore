@@ -1,34 +1,34 @@
 @interface WFContentAttributionSet
-+ (id)attributionSetByMergingAttributionSets:(id)a3;
-+ (id)attributionSetWithAccountBasedAppDescriptor:(id)a3 accountIdentifier:(id)a4 disclosureLevel:(unint64_t)a5 originalItemIdentifier:(id)a6;
-+ (id)attributionSetWithAppDescriptor:(id)a3 disclosureLevel:(unint64_t)a4 originalItemIdentifier:(id)a5;
-+ (id)attributionSetWithAttributions:(id)a3 shouldReduceAttributions:(BOOL)a4;
-+ (id)attributionSetWithOrigin:(id)a3 disclosureLevel:(unint64_t)a4;
-+ (id)attributionSetWithOrigin:(id)a3 disclosureLevel:(unint64_t)a4 disclosureWarnings:(id)a5 originalItemIdentifier:(id)a6;
-+ (id)attributionSetWithOrigin:(id)a3 disclosureLevel:(unint64_t)a4 originalItemIdentifier:(id)a5;
-+ (id)combiningAttributions:(id)a3 withAttributions:(id)a4;
-+ (id)compactAttributionsFrom:(id)a3 disclosureLevel:(unint64_t)a4;
-+ (id)objectWithWFSerializedRepresentation:(id)a3;
-+ (id)reducedAttributionsFrom:(id)a3;
++ (id)attributionSetByMergingAttributionSets:(id)sets;
++ (id)attributionSetWithAccountBasedAppDescriptor:(id)descriptor accountIdentifier:(id)identifier disclosureLevel:(unint64_t)level originalItemIdentifier:(id)itemIdentifier;
++ (id)attributionSetWithAppDescriptor:(id)descriptor disclosureLevel:(unint64_t)level originalItemIdentifier:(id)identifier;
++ (id)attributionSetWithAttributions:(id)attributions shouldReduceAttributions:(BOOL)reduceAttributions;
++ (id)attributionSetWithOrigin:(id)origin disclosureLevel:(unint64_t)level;
++ (id)attributionSetWithOrigin:(id)origin disclosureLevel:(unint64_t)level disclosureWarnings:(id)warnings originalItemIdentifier:(id)identifier;
++ (id)attributionSetWithOrigin:(id)origin disclosureLevel:(unint64_t)level originalItemIdentifier:(id)identifier;
++ (id)combiningAttributions:(id)attributions withAttributions:(id)withAttributions;
++ (id)compactAttributionsFrom:(id)from disclosureLevel:(unint64_t)level;
++ (id)objectWithWFSerializedRepresentation:(id)representation;
++ (id)reducedAttributionsFrom:(id)from;
 + (id)shortcutsAppAttributionSet;
-+ (id)shortcutsAppAttributionSetWithDisclosureLevel:(unint64_t)a3;
-- (BOOL)isAllowedToBeSentToDestinationWithManagedLevel:(unint64_t)a3;
-- (BOOL)isEligibleToShareWithResultManagedLevel:(unint64_t *)a3;
-- (BOOL)isEligibleToShareWithResultManagedLevel:(unint64_t *)a3 usingManagedConfigurationManager:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isMoreRestrictiveThan:(id)a3;
-- (BOOL)isSupersetOfAttributionSet:(id)a3;
++ (id)shortcutsAppAttributionSetWithDisclosureLevel:(unint64_t)level;
+- (BOOL)isAllowedToBeSentToDestinationWithManagedLevel:(unint64_t)level;
+- (BOOL)isEligibleToShareWithResultManagedLevel:(unint64_t *)level;
+- (BOOL)isEligibleToShareWithResultManagedLevel:(unint64_t *)level usingManagedConfigurationManager:(id)manager;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isMoreRestrictiveThan:(id)than;
+- (BOOL)isSupersetOfAttributionSet:(id)set;
 - (NSDictionary)wfSerializedRepresentationWithPrivateItemIdentifiers;
-- (WFContentAttributionSet)initWithAttribution:(id)a3;
-- (WFContentAttributionSet)initWithAttributions:(id)a3;
-- (WFContentAttributionSet)initWithCoder:(id)a3;
+- (WFContentAttributionSet)initWithAttribution:(id)attribution;
+- (WFContentAttributionSet)initWithAttributions:(id)attributions;
+- (WFContentAttributionSet)initWithCoder:(id)coder;
 - (id)allOrigins;
-- (id)attributionSetByFilteringNeighborsOfContentItem:(id)a3;
+- (id)attributionSetByFilteringNeighborsOfContentItem:(id)item;
 - (id)attributionSetByReplacingAccountWithAppOrigins;
 - (id)wfSerializedRepresentation;
 - (unint64_t)derivedDisclosureLevel;
 - (unint64_t)derivedManagedLevel;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFContentAttributionSet
@@ -37,8 +37,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"attributions";
-  v2 = [(WFContentAttributionSet *)self attributions];
-  v3 = [v2 if_map:&__block_literal_global_97];
+  attributions = [(WFContentAttributionSet *)self attributions];
+  v3 = [attributions if_map:&__block_literal_global_97];
   v7[0] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
@@ -49,26 +49,26 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"attributions";
-  v2 = [(WFContentAttributionSet *)self attributions];
-  v3 = [v2 if_map:&__block_literal_global_95];
+  attributions = [(WFContentAttributionSet *)self attributions];
+  v3 = [attributions if_map:&__block_literal_global_95];
   v7[0] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFContentAttributionSet *)self attributions];
-  [v4 encodeObject:v5 forKey:@"attributions"];
+  coderCopy = coder;
+  attributions = [(WFContentAttributionSet *)self attributions];
+  [coderCopy encodeObject:attributions forKey:@"attributions"];
 }
 
-- (WFContentAttributionSet)initWithCoder:(id)a3
+- (WFContentAttributionSet)initWithCoder:(id)coder
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v15 = objc_opt_class();
   v16 = objc_opt_class();
   v17 = objc_opt_class();
@@ -79,26 +79,26 @@
   v10 = +[WFDisclosureWarning allDisclosureWarningClasses];
   v11 = [v9 setByAddingObjectsFromSet:v10];
 
-  v12 = [v5 decodeObjectOfClasses:v11 forKey:@"attributions"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"attributions"];
 
   if (v12)
   {
     self = [(WFContentAttributionSet *)self initWithAttributions:v12];
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -108,11 +108,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WFContentAttributionSet *)self attributions];
-      v7 = [(WFContentAttributionSet *)v5 attributions];
+      v5 = equalCopy;
+      attributions = [(WFContentAttributionSet *)self attributions];
+      attributions2 = [(WFContentAttributionSet *)v5 attributions];
 
-      v8 = [v6 isEqualToArray:v7];
+      v8 = [attributions isEqualToArray:attributions2];
     }
 
     else
@@ -124,17 +124,17 @@
   return v8;
 }
 
-- (id)attributionSetByFilteringNeighborsOfContentItem:(id)a3
+- (id)attributionSetByFilteringNeighborsOfContentItem:(id)item
 {
-  v4 = a3;
-  v5 = [(WFContentAttributionSet *)self attributions];
+  itemCopy = item;
+  attributions = [(WFContentAttributionSet *)self attributions];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __75__WFContentAttributionSet_attributionSetByFilteringNeighborsOfContentItem___block_invoke;
   v10[3] = &unk_2783449C0;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 if_map:v10];
+  v11 = itemCopy;
+  v6 = itemCopy;
+  v7 = [attributions if_map:v10];
   v8 = [WFContentAttributionSet attributionSetWithAttributions:v7];
 
   return v8;
@@ -163,22 +163,22 @@ id __75__WFContentAttributionSet_attributionSetByFilteringNeighborsOfContentItem
 
 - (id)attributionSetByReplacingAccountWithAppOrigins
 {
-  v2 = [(WFContentAttributionSet *)self attributions];
-  v3 = [v2 if_map:&__block_literal_global_84];
+  attributions = [(WFContentAttributionSet *)self attributions];
+  v3 = [attributions if_map:&__block_literal_global_84];
   v4 = [WFContentAttributionSet attributionSetWithAttributions:v3 shouldReduceAttributions:0];
 
   return v4;
 }
 
-- (WFContentAttributionSet)initWithAttributions:(id)a3
+- (WFContentAttributionSet)initWithAttributions:(id)attributions
 {
-  v4 = a3;
+  attributionsCopy = attributions;
   v10.receiver = self;
   v10.super_class = WFContentAttributionSet;
   v5 = [(WFContentAttributionSet *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [attributionsCopy copy];
     attributions = v5->_attributions;
     v5->_attributions = v6;
 
@@ -188,17 +188,17 @@ id __75__WFContentAttributionSet_attributionSetByFilteringNeighborsOfContentItem
   return v5;
 }
 
-- (WFContentAttributionSet)initWithAttribution:(id)a3
+- (WFContentAttributionSet)initWithAttribution:(id)attribution
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  attributionCopy = attribution;
+  if (!attributionCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"WFContentAttributionSet.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"contentAttribution"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentAttributionSet.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"contentAttribution"}];
   }
 
-  v10[0] = v5;
+  v10[0] = attributionCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   v7 = [(WFContentAttributionSet *)self initWithAttributions:v6];
 
@@ -207,8 +207,8 @@ id __75__WFContentAttributionSet_attributionSetByFilteringNeighborsOfContentItem
 
 - (id)allOrigins
 {
-  v2 = [(WFContentAttributionSet *)self attributions];
-  v3 = [v2 if_compactMap:&__block_literal_global_56];
+  attributions = [(WFContentAttributionSet *)self attributions];
+  v3 = [attributions if_compactMap:&__block_literal_global_56];
 
   return v3;
 }
@@ -220,8 +220,8 @@ id __75__WFContentAttributionSet_attributionSetByFilteringNeighborsOfContentItem
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(WFContentAttributionSet *)self attributions];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  attributions = [(WFContentAttributionSet *)self attributions];
+  v3 = [attributions countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -233,14 +233,14 @@ id __75__WFContentAttributionSet_attributionSetByFilteringNeighborsOfContentItem
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(attributions);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) origin];
-        v5 |= [v8 managedLevel];
+        origin = [*(*(&v10 + 1) + 8 * i) origin];
+        v5 |= [origin managedLevel];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [attributions countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -261,8 +261,8 @@ id __75__WFContentAttributionSet_attributionSetByFilteringNeighborsOfContentItem
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(WFContentAttributionSet *)self attributions];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  attributions = [(WFContentAttributionSet *)self attributions];
+  v3 = [attributions countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -274,7 +274,7 @@ LABEL_3:
     {
       if (*v10 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(attributions);
       }
 
       if ([*(*(&v9 + 1) + 8 * v7) disclosureLevel] == 1)
@@ -284,7 +284,7 @@ LABEL_3:
 
       if (v4 == ++v7)
       {
-        v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v4 = [attributions countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -304,10 +304,10 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEligibleToShareWithResultManagedLevel:(unint64_t *)a3 usingManagedConfigurationManager:(id)a4
+- (BOOL)isEligibleToShareWithResultManagedLevel:(unint64_t *)level usingManagedConfigurationManager:(id)manager
 {
-  v6 = a4;
-  if ([v6 isOpenInRestrictionInEffect])
+  managerCopy = manager;
+  if ([managerCopy isOpenInRestrictionInEffect])
   {
     v16 = 0;
     v17 = &v16;
@@ -317,34 +317,34 @@ LABEL_9:
     v13 = &v12;
     v14 = 0x2020000000;
     v15 = 0;
-    v7 = [(WFContentAttributionSet *)self attributions];
+    attributions = [(WFContentAttributionSet *)self attributions];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __100__WFContentAttributionSet_isEligibleToShareWithResultManagedLevel_usingManagedConfigurationManager___block_invoke;
     v11[3] = &unk_278344910;
     v11[4] = &v12;
     v11[5] = &v16;
-    [v7 enumerateObjectsUsingBlock:v11];
+    [attributions enumerateObjectsUsingBlock:v11];
 
     if (v17[3])
     {
       if (*(v13 + 24))
       {
-        if ([v6 mayOpenFromUnmanagedToManaged] && (objc_msgSend(v6, "mayOpenFromManagedToUnmanaged") & 1) == 0)
+        if ([managerCopy mayOpenFromUnmanagedToManaged] && (objc_msgSend(managerCopy, "mayOpenFromManagedToUnmanaged") & 1) == 0)
         {
-          LOBYTE(v9) = 1;
+          LOBYTE(mayOpenFromManagedToUnmanaged) = 1;
           v8 = 2;
-          if (!a3)
+          if (!level)
           {
             goto LABEL_17;
           }
         }
 
-        else if ([v6 mayOpenFromUnmanagedToManaged])
+        else if ([managerCopy mayOpenFromUnmanagedToManaged])
         {
           v8 = 0;
-          LOBYTE(v9) = 0;
-          if (!a3)
+          LOBYTE(mayOpenFromManagedToUnmanaged) = 0;
+          if (!level)
           {
             goto LABEL_17;
           }
@@ -352,9 +352,9 @@ LABEL_9:
 
         else
         {
-          v9 = [v6 mayOpenFromManagedToUnmanaged];
-          v8 = v9;
-          if (!a3)
+          mayOpenFromManagedToUnmanaged = [managerCopy mayOpenFromManagedToUnmanaged];
+          v8 = mayOpenFromManagedToUnmanaged;
+          if (!level)
           {
             goto LABEL_17;
           }
@@ -375,8 +375,8 @@ LABEL_9:
       }
     }
 
-    LOBYTE(v9) = 1;
-    if (!a3)
+    LOBYTE(mayOpenFromManagedToUnmanaged) = 1;
+    if (!level)
     {
 LABEL_17:
       _Block_object_dispose(&v12, 8);
@@ -385,19 +385,19 @@ LABEL_17:
     }
 
 LABEL_16:
-    *a3 = v8;
+    *level = v8;
     goto LABEL_17;
   }
 
-  if (a3)
+  if (level)
   {
-    *a3 = 0;
+    *level = 0;
   }
 
-  LOBYTE(v9) = 1;
+  LOBYTE(mayOpenFromManagedToUnmanaged) = 1;
 LABEL_18:
 
-  return v9;
+  return mayOpenFromManagedToUnmanaged;
 }
 
 void __100__WFContentAttributionSet_isEligibleToShareWithResultManagedLevel_usingManagedConfigurationManager___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -439,29 +439,29 @@ LABEL_6:
   *a4 = v11 & 1;
 }
 
-- (BOOL)isEligibleToShareWithResultManagedLevel:(unint64_t *)a3
+- (BOOL)isEligibleToShareWithResultManagedLevel:(unint64_t *)level
 {
   v5 = +[WFManagedConfigurationProfile defaultProfile];
-  LOBYTE(a3) = [(WFContentAttributionSet *)self isEligibleToShareWithResultManagedLevel:a3 usingManagedConfigurationManager:v5];
+  LOBYTE(level) = [(WFContentAttributionSet *)self isEligibleToShareWithResultManagedLevel:level usingManagedConfigurationManager:v5];
 
-  return a3;
+  return level;
 }
 
-- (BOOL)isMoreRestrictiveThan:(id)a3
+- (BOOL)isMoreRestrictiveThan:(id)than
 {
-  v4 = a3;
-  v5 = [(WFContentAttributionSet *)self attributions];
-  v6 = [v5 if_map:&__block_literal_global_53];
+  thanCopy = than;
+  attributions = [(WFContentAttributionSet *)self attributions];
+  v6 = [attributions if_map:&__block_literal_global_53];
 
   v7 = MEMORY[0x277CBEAC0];
-  v8 = [(WFContentAttributionSet *)self attributions];
-  v9 = [v7 dictionaryWithObjects:v8 forKeys:v6];
+  attributions2 = [(WFContentAttributionSet *)self attributions];
+  v9 = [v7 dictionaryWithObjects:attributions2 forKeys:v6];
 
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 1;
-  v10 = [v4 attributions];
+  attributions3 = [thanCopy attributions];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __49__WFContentAttributionSet_isMoreRestrictiveThan___block_invoke_2;
@@ -469,12 +469,12 @@ LABEL_6:
   v11 = v9;
   v14 = v11;
   v15 = &v16;
-  [v10 enumerateObjectsUsingBlock:v13];
+  [attributions3 enumerateObjectsUsingBlock:v13];
 
-  LOBYTE(v10) = *(v17 + 24);
+  LOBYTE(attributions3) = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
 
-  return v10;
+  return attributions3;
 }
 
 void __49__WFContentAttributionSet_isMoreRestrictiveThan___block_invoke_2(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -510,21 +510,21 @@ void __49__WFContentAttributionSet_isMoreRestrictiveThan___block_invoke_2(uint64
   *a4 = *(*(*(a1 + 40) + 8) + 24) ^ 1;
 }
 
-- (BOOL)isSupersetOfAttributionSet:(id)a3
+- (BOOL)isSupersetOfAttributionSet:(id)set
 {
-  v4 = a3;
-  v5 = [(WFContentAttributionSet *)self attributions];
-  v6 = [v5 if_map:&__block_literal_global_91];
+  setCopy = set;
+  attributions = [(WFContentAttributionSet *)self attributions];
+  v6 = [attributions if_map:&__block_literal_global_91];
 
   v7 = MEMORY[0x277CBEAC0];
-  v8 = [(WFContentAttributionSet *)self attributions];
-  v9 = [v7 dictionaryWithObjects:v8 forKeys:v6];
+  attributions2 = [(WFContentAttributionSet *)self attributions];
+  v9 = [v7 dictionaryWithObjects:attributions2 forKeys:v6];
 
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 1;
-  v10 = [v4 attributions];
+  attributions3 = [setCopy attributions];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __54__WFContentAttributionSet_isSupersetOfAttributionSet___block_invoke_2;
@@ -532,12 +532,12 @@ void __49__WFContentAttributionSet_isMoreRestrictiveThan___block_invoke_2(uint64
   v11 = v9;
   v14 = v11;
   v15 = &v16;
-  [v10 enumerateObjectsUsingBlock:v13];
+  [attributions3 enumerateObjectsUsingBlock:v13];
 
-  LOBYTE(v10) = *(v17 + 24);
+  LOBYTE(attributions3) = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
 
-  return v10;
+  return attributions3;
 }
 
 void __54__WFContentAttributionSet_isSupersetOfAttributionSet___block_invoke_2(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -574,11 +574,11 @@ void __54__WFContentAttributionSet_isSupersetOfAttributionSet___block_invoke_2(u
   *a4 = *(*(*(a1 + 40) + 8) + 24) ^ 1;
 }
 
-- (BOOL)isAllowedToBeSentToDestinationWithManagedLevel:(unint64_t)a3
+- (BOOL)isAllowedToBeSentToDestinationWithManagedLevel:(unint64_t)level
 {
   v5 = +[WFManagedConfigurationProfile defaultProfile];
   v6 = v5;
-  if (a3)
+  if (level)
   {
     v7 = 1;
     if ([v5 isOpenInRestrictionInEffect])
@@ -587,15 +587,15 @@ void __54__WFContentAttributionSet_isSupersetOfAttributionSet___block_invoke_2(u
       v15 = &v14;
       v16 = 0x2020000000;
       v17 = 1;
-      v8 = [(WFContentAttributionSet *)self attributions];
+      attributions = [(WFContentAttributionSet *)self attributions];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __74__WFContentAttributionSet_isAllowedToBeSentToDestinationWithManagedLevel___block_invoke;
       v10[3] = &unk_2783448A0;
       v12 = &v14;
       v11 = v6;
-      v13 = a3;
-      [v8 enumerateObjectsUsingBlock:v10];
+      levelCopy = level;
+      [attributions enumerateObjectsUsingBlock:v10];
 
       v7 = *(v15 + 24);
       _Block_object_dispose(&v14, 8);
@@ -646,31 +646,31 @@ LABEL_10:
   *a4 = *(*(*(a1 + 40) + 8) + 24) ^ 1;
 }
 
-+ (id)objectWithWFSerializedRepresentation:(id)a3
++ (id)objectWithWFSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"attributions"];
+  representationCopy = representation;
+  v5 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"attributions"];
 
   v6 = [v5 if_compactMap:&__block_literal_global_100];
 
-  v7 = [a1 attributionSetWithAttributions:v6];
+  v7 = [self attributionSetWithAttributions:v6];
 
   return v7;
 }
 
-+ (id)reducedAttributionsFrom:(id)a3
++ (id)reducedAttributionsFrom:(id)from
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  fromCopy = from;
+  if ([fromCopy count])
   {
-    v5 = [MEMORY[0x277CBEB40] orderedSet];
-    v6 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = v4;
+    v7 = fromCopy;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
@@ -688,12 +688,12 @@ LABEL_10:
           v12 = *(*(&v18 + 1) + 8 * i);
           if ([v12 disclosureLevel] == 1)
           {
-            v13 = v6;
+            v13 = orderedSet2;
           }
 
           else
           {
-            v13 = v5;
+            v13 = orderedSet;
           }
 
           [v13 addObject:v12];
@@ -705,8 +705,8 @@ LABEL_10:
       while (v9);
     }
 
-    v14 = [a1 compactAttributionsFrom:v5 disclosureLevel:0];
-    v15 = [a1 compactAttributionsFrom:v6 disclosureLevel:1];
+    v14 = [self compactAttributionsFrom:orderedSet disclosureLevel:0];
+    v15 = [self compactAttributionsFrom:orderedSet2 disclosureLevel:1];
     v16 = [v14 arrayByAddingObjectsFromArray:v15];
   }
 
@@ -718,24 +718,24 @@ LABEL_10:
   return v16;
 }
 
-+ (id)compactAttributionsFrom:(id)a3 disclosureLevel:(unint64_t)a4
++ (id)compactAttributionsFrom:(id)from disclosureLevel:(unint64_t)level
 {
   v58 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if ([v7 count])
+  fromCopy = from;
+  if ([fromCopy count])
   {
-    v39 = a1;
+    selfCopy = self;
     v40 = a2;
-    v41 = a4;
+    levelCopy = level;
     v43 = objc_opt_new();
-    v8 = [MEMORY[0x277CBEB40] orderedSet];
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v42 = v7;
-    v10 = v7;
+    v42 = fromCopy;
+    v10 = fromCopy;
     v11 = [v10 countByEnumeratingWithState:&v52 objects:v57 count:16];
     if (v11)
     {
@@ -751,34 +751,34 @@ LABEL_10:
           }
 
           v15 = *(*(&v52 + 1) + 8 * i);
-          v16 = [v15 disclosureWarnings];
-          v17 = [v16 count];
+          disclosureWarnings = [v15 disclosureWarnings];
+          v17 = [disclosureWarnings count];
 
           if (v17)
           {
-            v18 = [v15 disclosureWarnings];
-            [v8 unionOrderedSet:v18];
+            disclosureWarnings2 = [v15 disclosureWarnings];
+            [orderedSet unionOrderedSet:disclosureWarnings2];
           }
 
-          v19 = [v15 privateItemIdentifiers];
+          privateItemIdentifiers = [v15 privateItemIdentifiers];
 
-          if (v19)
+          if (privateItemIdentifiers)
           {
-            v20 = [v15 origin];
-            v21 = [v9 objectForKey:v20];
+            origin = [v15 origin];
+            v21 = [dictionary objectForKey:origin];
 
-            v22 = [v15 privateItemIdentifiers];
-            v23 = v22;
+            privateItemIdentifiers2 = [v15 privateItemIdentifiers];
+            v23 = privateItemIdentifiers2;
             if (v21)
             {
-              [v21 unionOrderedSet:v22];
+              [v21 unionOrderedSet:privateItemIdentifiers2];
             }
 
             else
             {
-              v24 = [v22 mutableCopy];
-              v25 = [v15 origin];
-              [v9 setObject:v24 forKey:v25];
+              v24 = [privateItemIdentifiers2 mutableCopy];
+              origin2 = [v15 origin];
+              [dictionary setObject:v24 forKey:origin2];
             }
           }
 
@@ -815,13 +815,13 @@ LABEL_10:
               objc_enumerationMutation(v26);
             }
 
-            v31 = [*(*(&v48 + 1) + 8 * j) origin];
-            v32 = [v9 objectForKey:v31];
+            origin3 = [*(*(&v48 + 1) + 8 * j) origin];
+            v32 = [dictionary objectForKey:origin3];
 
             if (v32)
             {
-              v33 = [MEMORY[0x277CCA890] currentHandler];
-              [v33 handleFailureInMethod:v40 object:v39 file:@"WFContentAttributionSet.m" lineNumber:273 description:@"Attempting to compact attributions with mix of nonnull and nil privateItemIdentifiers is not supported"];
+              currentHandler = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler handleFailureInMethod:v40 object:selfCopy file:@"WFContentAttributionSet.m" lineNumber:273 description:@"Attempting to compact attributions with mix of nonnull and nil privateItemIdentifiers is not supported"];
             }
           }
 
@@ -836,16 +836,16 @@ LABEL_10:
     v44[1] = 3221225472;
     v44[2] = __67__WFContentAttributionSet_compactAttributionsFrom_disclosureLevel___block_invoke;
     v44[3] = &unk_278344978;
-    v47 = v41;
-    v45 = v8;
+    v47 = levelCopy;
+    v45 = orderedSet;
     v34 = v43;
     v46 = v34;
-    v35 = v8;
-    [v9 enumerateKeysAndObjectsUsingBlock:v44];
+    v35 = orderedSet;
+    [dictionary enumerateKeysAndObjectsUsingBlock:v44];
     v36 = v46;
     v37 = v34;
 
-    v7 = v42;
+    fromCopy = v42;
   }
 
   else
@@ -868,18 +868,18 @@ void __67__WFContentAttributionSet_compactAttributionsFrom_disclosureLevel___blo
   [*(a1 + 40) addObject:v10];
 }
 
-+ (id)combiningAttributions:(id)a3 withAttributions:(id)a4
++ (id)combiningAttributions:(id)attributions withAttributions:(id)withAttributions
 {
-  v5 = [a3 arrayByAddingObjectsFromArray:a4];
-  v6 = [a1 reducedAttributionsFrom:v5];
+  v5 = [attributions arrayByAddingObjectsFromArray:withAttributions];
+  v6 = [self reducedAttributionsFrom:v5];
 
   return v6;
 }
 
-+ (id)shortcutsAppAttributionSetWithDisclosureLevel:(unint64_t)a3
++ (id)shortcutsAppAttributionSetWithDisclosureLevel:(unint64_t)level
 {
-  v4 = [a1 alloc];
-  v5 = [WFContentAttribution shortcutsAppAttributionWithDisclosureLevel:a3];
+  v4 = [self alloc];
+  v5 = [WFContentAttribution shortcutsAppAttributionWithDisclosureLevel:level];
   v6 = [v4 initWithAttribution:v5];
 
   return v6;
@@ -887,97 +887,97 @@ void __67__WFContentAttributionSet_compactAttributionsFrom_disclosureLevel___blo
 
 + (id)shortcutsAppAttributionSet
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[WFContentAttribution shortcutsAppAttribution];
   v4 = [v2 initWithAttribution:v3];
 
   return v4;
 }
 
-+ (id)attributionSetWithAttributions:(id)a3 shouldReduceAttributions:(BOOL)a4
++ (id)attributionSetWithAttributions:(id)attributions shouldReduceAttributions:(BOOL)reduceAttributions
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  reduceAttributionsCopy = reduceAttributions;
+  attributionsCopy = attributions;
+  v7 = attributionsCopy;
+  if (reduceAttributionsCopy)
   {
-    v7 = [a1 reducedAttributionsFrom:v6];
+    v7 = [self reducedAttributionsFrom:attributionsCopy];
   }
 
-  v8 = [[a1 alloc] initWithAttributions:v7];
+  v8 = [[self alloc] initWithAttributions:v7];
 
   return v8;
 }
 
-+ (id)attributionSetByMergingAttributionSets:(id)a3
++ (id)attributionSetByMergingAttributionSets:(id)sets
 {
-  v4 = [a3 if_flatMap:&__block_literal_global_73];
-  v5 = [a1 reducedAttributionsFrom:v4];
+  v4 = [sets if_flatMap:&__block_literal_global_73];
+  v5 = [self reducedAttributionsFrom:v4];
 
-  v6 = [[a1 alloc] initWithAttributions:v5];
+  v6 = [[self alloc] initWithAttributions:v5];
 
   return v6;
 }
 
-+ (id)attributionSetWithAccountBasedAppDescriptor:(id)a3 accountIdentifier:(id)a4 disclosureLevel:(unint64_t)a5 originalItemIdentifier:(id)a6
++ (id)attributionSetWithAccountBasedAppDescriptor:(id)descriptor accountIdentifier:(id)identifier disclosureLevel:(unint64_t)level originalItemIdentifier:(id)itemIdentifier
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [a1 alloc];
-  v14 = [WFAccountContentLocation locationWithAccountIdentifier:v11 appDescriptor:v12];
+  itemIdentifierCopy = itemIdentifier;
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
+  v13 = [self alloc];
+  v14 = [WFAccountContentLocation locationWithAccountIdentifier:identifierCopy appDescriptor:descriptorCopy];
 
-  v15 = [WFContentAttribution attributionWithDisclosureLevel:a5 origin:v14 originalItemIdentifier:v10];
+  v15 = [WFContentAttribution attributionWithDisclosureLevel:level origin:v14 originalItemIdentifier:itemIdentifierCopy];
 
   v16 = [v13 initWithAttribution:v15];
 
   return v16;
 }
 
-+ (id)attributionSetWithAppDescriptor:(id)a3 disclosureLevel:(unint64_t)a4 originalItemIdentifier:(id)a5
++ (id)attributionSetWithAppDescriptor:(id)descriptor disclosureLevel:(unint64_t)level originalItemIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a1 alloc];
-  v11 = [WFAppContentLocation locationWithAppDescriptor:v9];
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
+  v10 = [self alloc];
+  v11 = [WFAppContentLocation locationWithAppDescriptor:descriptorCopy];
 
-  v12 = [WFContentAttribution attributionWithDisclosureLevel:a4 origin:v11 originalItemIdentifier:v8];
+  v12 = [WFContentAttribution attributionWithDisclosureLevel:level origin:v11 originalItemIdentifier:identifierCopy];
 
   v13 = [v10 initWithAttribution:v12];
 
   return v13;
 }
 
-+ (id)attributionSetWithOrigin:(id)a3 disclosureLevel:(unint64_t)a4 disclosureWarnings:(id)a5 originalItemIdentifier:(id)a6
++ (id)attributionSetWithOrigin:(id)origin disclosureLevel:(unint64_t)level disclosureWarnings:(id)warnings originalItemIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [a1 alloc];
-  v14 = [WFContentAttribution attributionWithDisclosureLevel:a4 origin:v12 disclosureWarnings:v11 originalItemIdentifier:v10];
+  identifierCopy = identifier;
+  warningsCopy = warnings;
+  originCopy = origin;
+  v13 = [self alloc];
+  v14 = [WFContentAttribution attributionWithDisclosureLevel:level origin:originCopy disclosureWarnings:warningsCopy originalItemIdentifier:identifierCopy];
 
   v15 = [v13 initWithAttribution:v14];
 
   return v15;
 }
 
-+ (id)attributionSetWithOrigin:(id)a3 disclosureLevel:(unint64_t)a4 originalItemIdentifier:(id)a5
++ (id)attributionSetWithOrigin:(id)origin disclosureLevel:(unint64_t)level originalItemIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a1 alloc];
-  v11 = [WFContentAttribution attributionWithDisclosureLevel:a4 origin:v9 originalItemIdentifier:v8];
+  identifierCopy = identifier;
+  originCopy = origin;
+  v10 = [self alloc];
+  v11 = [WFContentAttribution attributionWithDisclosureLevel:level origin:originCopy originalItemIdentifier:identifierCopy];
 
   v12 = [v10 initWithAttribution:v11];
 
   return v12;
 }
 
-+ (id)attributionSetWithOrigin:(id)a3 disclosureLevel:(unint64_t)a4
++ (id)attributionSetWithOrigin:(id)origin disclosureLevel:(unint64_t)level
 {
-  v6 = a3;
-  v7 = [a1 alloc];
-  v8 = [WFContentAttribution attributionWithDisclosureLevel:a4 origin:v6 originalItemIdentifier:0];
+  originCopy = origin;
+  v7 = [self alloc];
+  v8 = [WFContentAttribution attributionWithDisclosureLevel:level origin:originCopy originalItemIdentifier:0];
 
   v9 = [v7 initWithAttribution:v8];
 

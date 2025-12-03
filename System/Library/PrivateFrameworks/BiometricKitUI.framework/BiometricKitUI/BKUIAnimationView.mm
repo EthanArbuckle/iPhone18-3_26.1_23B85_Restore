@@ -8,16 +8,16 @@
 - (double)topOffsetPercentage
 {
   v2 = +[BKUIDevice sharedInstance];
-  v3 = [v2 isIdiomPad];
+  isIdiomPad = [v2 isIdiomPad];
 
-  if (v3)
+  if (isIdiomPad)
   {
     if ([BKUIUtils activeInterfaceOrientationForView:0]== 4 || [BKUIUtils activeInterfaceOrientationForView:0]== 3)
     {
       v4 = +[BKUIDevice sharedInstance];
-      v5 = [v4 isMini];
+      isMini = [v4 isMini];
 
-      if (v5)
+      if (isMini)
       {
         v6 = 0.806399985;
       }
@@ -28,23 +28,23 @@
       }
 
       v7 = +[BKUIDevice sharedInstance];
-      v8 = [v7 isPad6];
+      isPad6 = [v7 isPad6];
 
-      if (v8)
+      if (isPad6)
       {
         v6 = v6 + -0.026;
       }
 
       v9 = +[BKUIDevice sharedInstance];
-      v10 = [v9 isIPad2];
+      isIPad2 = [v9 isIPad2];
 
-      if (v10)
+      if (isIPad2)
       {
         v6 = v6 + 0.026;
       }
 
       v11 = +[BKUIDevice sharedInstance];
-      v12 = [v11 isiPad21];
+      isiPad21 = [v11 isiPad21];
 
       v13 = 0.01;
     }
@@ -52,9 +52,9 @@
     else
     {
       v21 = +[BKUIDevice sharedInstance];
-      v22 = [v21 isMini];
+      isMini2 = [v21 isMini];
 
-      if (v22)
+      if (isMini2)
       {
         v6 = 0.803499985;
       }
@@ -65,23 +65,23 @@
       }
 
       v23 = +[BKUIDevice sharedInstance];
-      v24 = [v23 isPad7];
+      isPad7 = [v23 isPad7];
 
-      if (v24)
+      if (isPad7)
       {
         v6 = v6 + 0.025;
       }
 
       v25 = +[BKUIDevice sharedInstance];
-      v26 = [v25 isIPad2];
+      isIPad22 = [v25 isIPad2];
 
-      if (v26)
+      if (isIPad22)
       {
         v6 = v6 + 0.051;
       }
 
       v27 = +[BKUIDevice sharedInstance];
-      v12 = [v27 isiPad21];
+      isiPad21 = [v27 isiPad21];
 
       v13 = 0.0324;
     }
@@ -90,9 +90,9 @@
   else
   {
     v14 = +[BKUIDevice sharedInstance];
-    v15 = [v14 isZoomEnabled];
+    isZoomEnabled = [v14 isZoomEnabled];
 
-    if (v15)
+    if (isZoomEnabled)
     {
       v6 = 0.598000009;
     }
@@ -110,21 +110,21 @@
     }
 
     v17 = +[BKUIDevice sharedInstance];
-    v18 = [v17 isN69];
+    isN69 = [v17 isN69];
 
-    if (v18)
+    if (isN69)
     {
       v6 = v6 + -0.0419999994;
     }
 
     v19 = +[BKUIDevice sharedInstance];
-    v12 = [v19 isD10];
+    isiPad21 = [v19 isD10];
 
     v13 = -0.0199999996;
   }
 
   result = v6 + v13;
-  if (!v12)
+  if (!isiPad21)
   {
     return v6;
   }
@@ -134,32 +134,32 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(BKUIAnimationView *)self layer];
-  [v3 setMasksToBounds:0];
+  layer = [(BKUIAnimationView *)self layer];
+  [layer setMasksToBounds:0];
 
-  v4 = [(BKUIAnimationView *)self layer];
-  v5 = [v4 sublayers];
-  v6 = [v5 firstObject];
+  layer2 = [(BKUIAnimationView *)self layer];
+  sublayers = [layer2 sublayers];
+  firstObject = [sublayers firstObject];
 
   [(BKUIAnimationView *)self bounds];
   v8 = v7 * 0.5;
   [(BKUIAnimationView *)self bounds];
-  [v6 setPosition:{v8, v9 * 0.5}];
+  [firstObject setPosition:{v8, v9 * 0.5}];
   v10 = +[BKUIDevice sharedInstance];
-  LODWORD(v4) = [v10 isIdiomPad];
+  LODWORD(layer2) = [v10 isIdiomPad];
 
-  if (!v4)
+  if (!layer2)
   {
     v11 = +[BKUIDevice sharedInstance];
-    v12 = [v11 isN69];
+    isN69 = [v11 isN69];
 
-    if (v12)
+    if (isN69)
     {
       v13 = 0.349999994;
-      if (v6)
+      if (firstObject)
       {
 LABEL_6:
-        [v6 contentsTransform];
+        [firstObject contentsTransform];
 LABEL_12:
         v16 = v13;
         v17 = v13;
@@ -170,9 +170,9 @@ LABEL_12:
     else
     {
       v14 = +[BKUIDevice sharedInstance];
-      v15 = [v14 isD10];
+      isD10 = [v14 isD10];
 
-      if (v15)
+      if (isD10)
       {
         v13 = 0.400000006;
       }
@@ -182,7 +182,7 @@ LABEL_12:
         v13 = 0.449999988;
       }
 
-      if (v6)
+      if (firstObject)
       {
         goto LABEL_6;
       }
@@ -192,9 +192,9 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (v6)
+  if (firstObject)
   {
-    [v6 contentsTransform];
+    [firstObject contentsTransform];
   }
 
   else
@@ -206,7 +206,7 @@ LABEL_12:
   v17 = 0.3;
 LABEL_15:
   CGAffineTransformScale(&v19, &v18, v16, v17);
-  [v6 setAffineTransform:&v19];
+  [firstObject setAffineTransform:&v19];
 }
 
 @end

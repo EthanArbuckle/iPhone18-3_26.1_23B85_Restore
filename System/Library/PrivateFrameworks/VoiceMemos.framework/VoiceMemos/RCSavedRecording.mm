@@ -1,7 +1,7 @@
 @interface RCSavedRecording
-+ (id)fetchLegacyRecordingsForMigrationWithContext:(id)a3;
-+ (id)legacyRecordingWithUniqueIDFetchRequest:(id)a3;
-+ (void)deleteOrphanedEntityRevisionsWithContext:(id)a3;
++ (id)fetchLegacyRecordingsForMigrationWithContext:(id)context;
++ (id)legacyRecordingWithUniqueIDFetchRequest:(id)request;
++ (void)deleteOrphanedEntityRevisionsWithContext:(id)context;
 - (BOOL)isContentBeingModified;
 - (NSString)customLabel;
 - (NSString)path;
@@ -13,10 +13,10 @@
 - (void)_validatePath;
 - (void)awakeFromFetch;
 - (void)awakeFromInsert;
-- (void)setCustomLabel:(id)a3;
-- (void)setDuration:(double)a3;
-- (void)setPath:(id)a3;
-- (void)setRecordingID:(int64_t)a3;
+- (void)setCustomLabel:(id)label;
+- (void)setDuration:(double)duration;
+- (void)setPath:(id)path;
+- (void)setRecordingID:(int64_t)d;
 - (void)willSave;
 @end
 
@@ -27,8 +27,8 @@
   v4.receiver = self;
   v4.super_class = RCSavedRecording;
   [(RCSavedRecording *)&v4 awakeFromInsert];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(RCSavedRecording *)self setDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(RCSavedRecording *)self setDate:date];
 }
 
 - (void)awakeFromFetch
@@ -41,8 +41,8 @@
 
 - (void)willSave
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"RCSavedRecording.m" lineNumber:53 description:@"no duration for recording when saving"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"RCSavedRecording.m" lineNumber:53 description:@"no duration for recording when saving"];
 }
 
 - (BOOL)isContentBeingModified
@@ -63,11 +63,11 @@
   [(RCSavedRecording *)self didAccessValueForKey:@"duration"];
   if (Seconds < 0.0 && ![(RCSavedRecording *)self isContentBeingModified])
   {
-    v6 = [(RCSavedRecording *)self avAsset];
-    v7 = v6;
-    if (v6)
+    avAsset = [(RCSavedRecording *)self avAsset];
+    v7 = avAsset;
+    if (avAsset)
     {
-      [v6 duration];
+      [avAsset duration];
     }
 
     else
@@ -92,10 +92,10 @@
   return result;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   [(RCSavedRecording *)self willChangeValueForKey:@"duration"];
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
   [(RCSavedRecording *)self setPrimitiveValue:v5 forKey:@"duration"];
 
   avAsset = self->_avAsset;
@@ -113,12 +113,12 @@
   return v3;
 }
 
-- (void)setCustomLabel:(id)a3
+- (void)setCustomLabel:(id)label
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
-  v6 = [v4 whitespaceCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  labelCopy = label;
+  whitespaceCharacterSet = [v4 whitespaceCharacterSet];
+  v7 = [labelCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if ([v7 length])
   {
@@ -132,16 +132,16 @@
 {
   [(RCSavedRecording *)self willAccessValueForKey:@"recordingID"];
   v3 = [(RCSavedRecording *)self primitiveValueForKey:@"recordingID"];
-  v4 = [v3 longLongValue];
+  longLongValue = [v3 longLongValue];
 
   [(RCSavedRecording *)self didAccessValueForKey:@"recordingID"];
-  return v4;
+  return longLongValue;
 }
 
-- (void)setRecordingID:(int64_t)a3
+- (void)setRecordingID:(int64_t)d
 {
   [(RCSavedRecording *)self willChangeValueForKey:@"recordingID"];
-  v5 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
   [(RCSavedRecording *)self setPrimitiveValue:v5 forKey:@"recordingID"];
 
   [(RCSavedRecording *)self didChangeValueForKey:@"recordingID"];
@@ -156,11 +156,11 @@
   return v3;
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   [(RCSavedRecording *)self willChangeValueForKey:@"path"];
-  [(RCSavedRecording *)self setPrimitiveValue:v4 forKey:@"path"];
+  [(RCSavedRecording *)self setPrimitiveValue:pathCopy forKey:@"path"];
 
   [(RCSavedRecording *)self _validatePath];
 
@@ -169,13 +169,13 @@
 
 - (NSURL)url
 {
-  v3 = [(RCSavedRecording *)self path];
+  path = [(RCSavedRecording *)self path];
 
-  if (v3)
+  if (path)
   {
     v4 = MEMORY[0x277CBEBC0];
-    v5 = [(RCSavedRecording *)self path];
-    v6 = [v4 fileURLWithPath:v5];
+    path2 = [(RCSavedRecording *)self path];
+    v6 = [v4 fileURLWithPath:path2];
   }
 
   else
@@ -188,20 +188,20 @@
 
 - (id)URIRepresentation
 {
-  v2 = [(RCSavedRecording *)self objectID];
-  v3 = [v2 URIRepresentation];
+  objectID = [(RCSavedRecording *)self objectID];
+  uRIRepresentation = [objectID URIRepresentation];
 
-  return v3;
+  return uRIRepresentation;
 }
 
 - (id)avAsset
 {
   if (!self->_avAsset)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v4 = [(RCSavedRecording *)self url];
-    v5 = [v4 path];
-    v6 = [v3 fileExistsAtPath:v5];
+    path = [v4 path];
+    v6 = [defaultManager fileExistsAtPath:path];
 
     if (v6)
     {
@@ -221,11 +221,11 @@
 - (void)_validatePath
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = [a1 path];
+  path = [self path];
   v7 = 136315650;
   v8 = "[RCSavedRecording _validatePath]";
   v9 = 2112;
-  v10 = v5;
+  v10 = path;
   v11 = 2112;
   v12 = a2;
   _os_log_error_impl(&dword_272442000, a3, OS_LOG_TYPE_ERROR, "%s -- WARNING: bogus path (%@) detected for recording %@", &v7, 0x20u);
@@ -233,26 +233,26 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)deleteOrphanedEntityRevisionsWithContext:(id)a3
++ (void)deleteOrphanedEntityRevisionsWithContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc_init(MEMORY[0x277CBE428]);
-  v5 = [MEMORY[0x277CBE408] entityForName:@"Recording" inManagedObjectContext:v3];
+  v5 = [MEMORY[0x277CBE408] entityForName:@"Recording" inManagedObjectContext:contextCopy];
   [v4 setEntity:v5];
 
   [v4 setPropertiesToFetch:&unk_2881AE2A8];
-  v6 = [v3 executeFetchRequest:v4 error:0];
+  v6 = [contextCopy executeFetchRequest:v4 error:0];
   v7 = [v6 valueForKey:@"recordingID"];
 
   v8 = objc_alloc_init(MEMORY[0x277CBE428]);
-  v9 = [MEMORY[0x277CBE408] entityForName:@"EntityRevision" inManagedObjectContext:v3];
+  v9 = [MEMORY[0x277CBE408] entityForName:@"EntityRevision" inManagedObjectContext:contextCopy];
   [v8 setEntity:v9];
 
   v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (recording_id IN %@)", v7];
   [v8 setPredicate:v10];
 
-  v11 = [v3 executeFetchRequest:v8 error:0];
+  v11 = [contextCopy executeFetchRequest:v8 error:0];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -272,7 +272,7 @@
           objc_enumerationMutation(v11);
         }
 
-        [v3 deleteObject:*(*(&v17 + 1) + 8 * v15++)];
+        [contextCopy deleteObject:*(*(&v17 + 1) + 8 * v15++)];
       }
 
       while (v13 != v15);
@@ -285,12 +285,12 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)fetchLegacyRecordingsForMigrationWithContext:(id)a3
++ (id)fetchLegacyRecordingsForMigrationWithContext:(id)context
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc_init(MEMORY[0x277CBE428]);
-  v5 = [MEMORY[0x277CBE408] entityForName:@"EntityRevision" inManagedObjectContext:v3];
+  v5 = [MEMORY[0x277CBE408] entityForName:@"EntityRevision" inManagedObjectContext:contextCopy];
   [v4 setEntity:v5];
 
   [v4 setPropertiesToFetch:&unk_2881AE2C0];
@@ -304,7 +304,7 @@
   v38 = 0u;
   v39 = 0u;
   v30 = v4;
-  v8 = [v3 executeFetchRequest:v4 error:0];
+  v8 = [contextCopy executeFetchRequest:v4 error:0];
   v9 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v9)
   {
@@ -332,12 +332,12 @@
   }
 
   v16 = objc_alloc_init(MEMORY[0x277CBE428]);
-  v17 = [MEMORY[0x277CBE408] entityForName:@"Recording" inManagedObjectContext:v3];
+  v17 = [MEMORY[0x277CBE408] entityForName:@"Recording" inManagedObjectContext:contextCopy];
   [v16 setEntity:v17];
 
   [v16 setPropertiesToFetch:&unk_2881AE2D8];
-  v31 = v3;
-  v18 = [v3 executeFetchRequest:v16 error:0];
+  v31 = contextCopy;
+  v18 = [contextCopy executeFetchRequest:v16 error:0];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -392,14 +392,14 @@ uint64_t __65__RCSavedRecording_fetchLegacyRecordingsForMigrationWithContext___b
   }
 }
 
-+ (id)legacyRecordingWithUniqueIDFetchRequest:(id)a3
++ (id)legacyRecordingWithUniqueIDFetchRequest:(id)request
 {
   v3 = MEMORY[0x277CBE428];
-  v4 = a3;
+  requestCopy = request;
   v5 = [v3 fetchRequestWithEntityName:@"Recording"];
-  v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"uniqueID", v4];
+  requestCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"uniqueID", requestCopy];
 
-  [v5 setPredicate:v6];
+  [v5 setPredicate:requestCopy];
 
   return v5;
 }

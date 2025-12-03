@@ -1,51 +1,51 @@
 @interface InCallBannerHostViewController
 - (BOOL)menuPresented;
-- (_TtC15ConversationKit30InCallBannerHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit30InCallBannerHostViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation InCallBannerHostViewController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   InCallBannerHostViewController.loadView()();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   InCallBannerHostViewController.viewDidLoad()();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  InCallBannerHostViewController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  InCallBannerHostViewController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
 - (BOOL)menuPresented
 {
-  v2 = self;
+  selfCopy = self;
   v3 = InCallBannerHostViewController.menuPresented.getter();
 
   return v3 & 1;
 }
 
-- (_TtC15ConversationKit30InCallBannerHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit30InCallBannerHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   InCallBannerHostViewController.init(nibName:bundle:)();
 }
 

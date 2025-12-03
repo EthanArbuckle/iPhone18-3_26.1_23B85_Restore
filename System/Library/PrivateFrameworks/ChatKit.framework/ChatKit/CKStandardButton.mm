@@ -22,8 +22,8 @@
   v4.receiver = self;
   v4.super_class = CKStandardButton;
   [(CKStandardButton *)&v4 tintColorDidChange];
-  v3 = [(CKStandardButton *)self tintColor];
-  [(CKStandardButton *)self setTitleColor:v3 forState:0];
+  tintColor = [(CKStandardButton *)self tintColor];
+  [(CKStandardButton *)self setTitleColor:tintColor forState:0];
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface PKTitleSubtitleTableViewSettingsRow
 + (id)cellReuseIdentifier;
-- (BOOL)isEqual:(id)a3;
-- (PKTitleSubtitleTableViewSettingsRow)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PKTitleSubtitleTableViewSettingsRow)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle;
 - (UIPopoverPresentationControllerSourceItem)sourceItem;
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4;
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path;
 - (unint64_t)hash;
 @end
 
 @implementation PKTitleSubtitleTableViewSettingsRow
 
-- (PKTitleSubtitleTableViewSettingsRow)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5
+- (PKTitleSubtitleTableViewSettingsRow)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v19.receiver = self;
   v19.super_class = PKTitleSubtitleTableViewSettingsRow;
   v11 = [(PKTitleSubtitleTableViewSettingsRow *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v14;
 
-    v16 = [v10 copy];
+    v16 = [subtitleCopy copy];
     value = v11->_value;
     v11->_value = v16;
   }
@@ -46,18 +46,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -113,41 +113,41 @@ LABEL_17:
   return NSStringFromClass(v2);
 }
 
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [objc_opt_class() cellReuseIdentifier];
-  v7 = [v5 dequeueReusableCellWithIdentifier:v6];
+  viewCopy = view;
+  cellReuseIdentifier = [objc_opt_class() cellReuseIdentifier];
+  v7 = [viewCopy dequeueReusableCellWithIdentifier:cellReuseIdentifier];
 
   if (!v7)
   {
-    v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:v6];
+    v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:cellReuseIdentifier];
   }
 
-  v8 = [v7 defaultContentConfiguration];
-  [v8 setText:self->_title];
-  [v8 setSecondaryText:self->_value];
-  v9 = [v8 textProperties];
+  defaultContentConfiguration = [v7 defaultContentConfiguration];
+  [defaultContentConfiguration setText:self->_title];
+  [defaultContentConfiguration setSecondaryText:self->_value];
+  textProperties = [defaultContentConfiguration textProperties];
   v10 = *MEMORY[0x1E69DDCF8];
   v11 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], 0, 2, 0);
-  [v9 setFont:v11];
+  [textProperties setFont:v11];
 
-  v12 = [MEMORY[0x1E69DC888] labelColor];
-  [v9 setColor:v12];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [textProperties setColor:labelColor];
 
-  v13 = [v8 secondaryTextProperties];
+  secondaryTextProperties = [defaultContentConfiguration secondaryTextProperties];
   v14 = PKFontForDefaultDesign(v10, 0);
-  [v13 setFont:v14];
+  [secondaryTextProperties setFont:v14];
 
-  v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v13 setColor:v15];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [secondaryTextProperties setColor:secondaryLabelColor];
 
-  [v7 setContentConfiguration:v8];
-  v16 = [v7 textLabel];
-  [v16 setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
+  [v7 setContentConfiguration:defaultContentConfiguration];
+  textLabel = [v7 textLabel];
+  [textLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
 
-  v17 = [v7 detailTextLabel];
-  [v17 setAccessibilityIdentifier:*MEMORY[0x1E69B96F8]];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setAccessibilityIdentifier:*MEMORY[0x1E69B96F8]];
 
   [v7 setAccessibilityIdentifier:self->_identifier];
   [(PKTitleSubtitleTableViewSettingsRow *)self setSourceItem:v7];

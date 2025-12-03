@@ -1,16 +1,16 @@
 @interface CKModernDetailsControllerFactory
-+ (id)detailsControllerWithConversation:(id)a3 delegate:(id)a4;
++ (id)detailsControllerWithConversation:(id)conversation delegate:(id)delegate;
 - (CKModernDetailsControllerFactory)init;
 @end
 
 @implementation CKModernDetailsControllerFactory
 
-+ (id)detailsControllerWithConversation:(id)a3 delegate:(id)a4
++ (id)detailsControllerWithConversation:(id)conversation delegate:(id)delegate
 {
   v5 = objc_allocWithZone(type metadata accessor for ModernDetailsController());
-  v6 = a3;
+  conversationCopy = conversation;
   swift_unknownObjectRetain();
-  v7 = sub_1908F2900(v6);
+  v7 = sub_1908F2900(conversationCopy);
 
   swift_unknownObjectRelease();
 

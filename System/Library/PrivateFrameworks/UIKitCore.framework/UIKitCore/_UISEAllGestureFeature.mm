@@ -1,13 +1,13 @@
 @interface _UISEAllGestureFeature
-- (_UISEAllGestureFeature)initWithSubfeatures:(id)a3;
+- (_UISEAllGestureFeature)initWithSubfeatures:(id)subfeatures;
 - (id)debugDictionary;
-- (void)_incorporateSample:(const _UISEGestureFeatureSample *)a3;
-- (void)featureDidChangeState:(id)a3;
+- (void)_incorporateSample:(const _UISEGestureFeatureSample *)sample;
+- (void)featureDidChangeState:(id)state;
 @end
 
 @implementation _UISEAllGestureFeature
 
-- (_UISEAllGestureFeature)initWithSubfeatures:(id)a3
+- (_UISEAllGestureFeature)initWithSubfeatures:(id)subfeatures
 {
   v20 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -16,13 +16,13 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_subfeatures, a3);
+    objc_storeStrong(&v4->_subfeatures, subfeatures);
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = a3;
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    subfeaturesCopy = subfeatures;
+    v7 = [subfeaturesCopy countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -34,20 +34,20 @@
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subfeaturesCopy);
           }
 
           [*(*(&v14 + 1) + 8 * v10++) setDelegate:{v5, v14}];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v8 = [subfeaturesCopy countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v8);
     }
 
-    v11 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexesInRange:{0, objc_msgSend(v6, "count")}];
+    v11 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexesInRange:{0, objc_msgSend(subfeaturesCopy, "count")}];
     unrecognizedIndexes = v5->_unrecognizedIndexes;
     v5->_unrecognizedIndexes = v11;
   }
@@ -55,14 +55,14 @@
   return v5;
 }
 
-- (void)featureDidChangeState:(id)a3
+- (void)featureDidChangeState:(id)state
 {
   if (![(_UISEGestureFeature *)self state])
   {
-    v5 = [a3 state];
-    if (v5 == 1)
+    state = [state state];
+    if (state == 1)
     {
-      v8 = [(NSArray *)self->_subfeatures indexOfObject:a3];
+      v8 = [(NSArray *)self->_subfeatures indexOfObject:state];
       if (v8 == 0x7FFFFFFFFFFFFFFFLL)
       {
         return;
@@ -74,22 +74,22 @@
         return;
       }
 
-      v6 = self;
+      selfCopy2 = self;
       v7 = 1;
     }
 
     else
     {
-      if (v5 != 2)
+      if (state != 2)
       {
         return;
       }
 
-      v6 = self;
+      selfCopy2 = self;
       v7 = 2;
     }
 
-    [(_UISEGestureFeature *)v6 _setState:v7];
+    [(_UISEGestureFeature *)selfCopy2 _setState:v7];
   }
 }
 
@@ -116,8 +116,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) debugDictionary];
-        [v3 addObject:v9];
+        debugDictionary = [*(*(&v14 + 1) + 8 * i) debugDictionary];
+        [v3 addObject:debugDictionary];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -128,19 +128,19 @@
 
   v13.receiver = self;
   v13.super_class = _UISEAllGestureFeature;
-  v10 = [(_UISEGestureFeature *)&v13 debugDictionary];
-  v11 = [v10 mutableCopy];
+  debugDictionary2 = [(_UISEGestureFeature *)&v13 debugDictionary];
+  v11 = [debugDictionary2 mutableCopy];
 
   [v11 setObject:v3 forKeyedSubscript:@"subfeatures"];
 
   return v11;
 }
 
-- (void)_incorporateSample:(const _UISEGestureFeatureSample *)a3
+- (void)_incorporateSample:(const _UISEGestureFeatureSample *)sample
 {
   v23 = *MEMORY[0x1E69E9840];
-  var0 = a3->var0;
-  if (a3->var0)
+  var0 = sample->var0;
+  if (sample->var0)
   {
     v6 = var0 == 2;
   }
@@ -177,7 +177,7 @@ LABEL_8:
           break;
         }
 
-        [v12 incorporateSample:a3];
+        [v12 incorporateSample:sample];
         if (v9 == ++v11)
         {
           v9 = [(NSArray *)v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -197,15 +197,15 @@ LABEL_8:
     v13 = 0x7FFFFFFFFFFFFFFFLL;
     do
     {
-      v14 = [(NSMutableIndexSet *)self->_unrecognizedIndexes firstIndex];
-      if (v14 == 0x7FFFFFFFFFFFFFFFLL || v14 == v13)
+      firstIndex = [(NSMutableIndexSet *)self->_unrecognizedIndexes firstIndex];
+      if (firstIndex == 0x7FFFFFFFFFFFFFFFLL || firstIndex == v13)
       {
         break;
       }
 
-      v16 = v14;
-      v17 = [(NSArray *)self->_subfeatures objectAtIndexedSubscript:v14];
-      [v17 incorporateSample:a3];
+      v16 = firstIndex;
+      v17 = [(NSArray *)self->_subfeatures objectAtIndexedSubscript:firstIndex];
+      [v17 incorporateSample:sample];
 
       v13 = v16;
     }

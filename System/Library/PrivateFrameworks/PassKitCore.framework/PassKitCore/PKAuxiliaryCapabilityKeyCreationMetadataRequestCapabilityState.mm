@@ -1,24 +1,24 @@
 @interface PKAuxiliaryCapabilityKeyCreationMetadataRequestCapabilityState
-- (PKAuxiliaryCapabilityKeyCreationMetadataRequestCapabilityState)initWithCapability:(id)a3 currentVersion:(id)a4 targetVersion:(id)a5;
+- (PKAuxiliaryCapabilityKeyCreationMetadataRequestCapabilityState)initWithCapability:(id)capability currentVersion:(id)version targetVersion:(id)targetVersion;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation PKAuxiliaryCapabilityKeyCreationMetadataRequestCapabilityState
 
-- (PKAuxiliaryCapabilityKeyCreationMetadataRequestCapabilityState)initWithCapability:(id)a3 currentVersion:(id)a4 targetVersion:(id)a5
+- (PKAuxiliaryCapabilityKeyCreationMetadataRequestCapabilityState)initWithCapability:(id)capability currentVersion:(id)version targetVersion:(id)targetVersion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  capabilityCopy = capability;
+  versionCopy = version;
+  targetVersionCopy = targetVersion;
   v15.receiver = self;
   v15.super_class = PKAuxiliaryCapabilityKeyCreationMetadataRequestCapabilityState;
   v12 = [(PKAuxiliaryCapabilityKeyCreationMetadataRequestCapabilityState *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_capability, a3);
-    objc_storeStrong(&v13->_currentVersion, a4);
-    objc_storeStrong(&v13->_targetVersion, a5);
+    objc_storeStrong(&v12->_capability, capability);
+    objc_storeStrong(&v13->_currentVersion, version);
+    objc_storeStrong(&v13->_targetVersion, targetVersion);
   }
 
   return v13;
@@ -27,8 +27,8 @@
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PKPassAuxiliaryRegistrationRequirement *)self->_capability identifier];
-  [v3 setObject:v4 forKeyedSubscript:@"capabilityIdentifier"];
+  identifier = [(PKPassAuxiliaryRegistrationRequirement *)self->_capability identifier];
+  [v3 setObject:identifier forKeyedSubscript:@"capabilityIdentifier"];
 
   [v3 setObject:self->_currentVersion forKeyedSubscript:@"currentVersion"];
   [v3 setObject:self->_targetVersion forKeyedSubscript:@"targetVersion"];

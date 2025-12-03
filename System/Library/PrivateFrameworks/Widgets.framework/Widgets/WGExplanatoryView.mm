@@ -1,34 +1,34 @@
 @interface WGExplanatoryView
-- (WGExplanatoryView)initWithGlyph:(id)a3 andExplanation:(id)a4;
-- (void)_configureExplanationLabelWithExplanation:(id)a3;
-- (void)_configureGlyphViewWithGlyph:(id)a3;
+- (WGExplanatoryView)initWithGlyph:(id)glyph andExplanation:(id)explanation;
+- (void)_configureExplanationLabelWithExplanation:(id)explanation;
+- (void)_configureGlyphViewWithGlyph:(id)glyph;
 - (void)_invalidateVisualStyling;
 - (void)_updateVisualStylingIfNecessary;
-- (void)addTarget:(id)a3 action:(SEL)a4;
+- (void)addTarget:(id)target action:(SEL)action;
 - (void)layoutSubviews;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation WGExplanatoryView
 
-- (WGExplanatoryView)initWithGlyph:(id)a3 andExplanation:(id)a4
+- (WGExplanatoryView)initWithGlyph:(id)glyph andExplanation:(id)explanation
 {
-  v6 = a3;
-  v7 = a4;
+  glyphCopy = glyph;
+  explanationCopy = explanation;
   v11.receiver = self;
   v11.super_class = WGExplanatoryView;
   v8 = [(WGExplanatoryView *)&v11 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v9 = v8;
   if (v8)
   {
-    if (v6)
+    if (glyphCopy)
     {
-      [(WGExplanatoryView *)v8 _configureGlyphViewWithGlyph:v6];
+      [(WGExplanatoryView *)v8 _configureGlyphViewWithGlyph:glyphCopy];
     }
 
-    if (v7)
+    if (explanationCopy)
     {
-      [(WGExplanatoryView *)v9 _configureExplanationLabelWithExplanation:v7];
+      [(WGExplanatoryView *)v9 _configureExplanationLabelWithExplanation:explanationCopy];
     }
   }
 
@@ -148,12 +148,12 @@
     v46 = v45;
     v48 = v47;
     v50 = v49;
-    v51 = [(WGExplanatoryView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(WGExplanatoryView *)self _shouldReverseLayoutDirection];
     v52 = v37;
     v53 = v39;
     v54 = v41;
     v55 = v43;
-    if (v51)
+    if (_shouldReverseLayoutDirection)
     {
       MaxX = CGRectGetMaxX(*&v52);
       v89.origin.x = rect;
@@ -179,12 +179,12 @@
     v60 = v59;
     v62 = v61;
     v64 = v63;
-    v65 = [(WGExplanatoryView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection2 = [(WGExplanatoryView *)self _shouldReverseLayoutDirection];
     v66 = v37;
     v67 = v39;
     v68 = v41;
     v69 = v43;
-    if (v65)
+    if (_shouldReverseLayoutDirection2)
     {
       v70 = CGRectGetMinX(*&v66);
     }
@@ -203,17 +203,17 @@
   }
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v4.receiver = self;
   v4.super_class = WGExplanatoryView;
-  [(WGExplanatoryView *)&v4 willMoveToSuperview:a3];
+  [(WGExplanatoryView *)&v4 willMoveToSuperview:superview];
   [(WGExplanatoryView *)self _invalidateVisualStyling];
 }
 
-- (void)addTarget:(id)a3 action:(SEL)a4
+- (void)addTarget:(id)target action:(SEL)action
 {
-  v7 = a3;
+  targetCopy = target;
   WeakRetained = objc_loadWeakRetained(&self->_tapGesture);
   if (!WeakRetained)
   {
@@ -222,17 +222,17 @@
     objc_storeWeak(&self->_tapGesture, WeakRetained);
   }
 
-  [WeakRetained addTarget:v7 action:a4];
+  [WeakRetained addTarget:targetCopy action:action];
 }
 
-- (void)_configureGlyphViewWithGlyph:(id)a3
+- (void)_configureGlyphViewWithGlyph:(id)glyph
 {
   if (!self->_glyphView)
   {
     v4 = MEMORY[0x277D755E8];
-    v5 = a3;
+    glyphCopy = glyph;
     v6 = [v4 alloc];
-    v7 = [v5 imageWithRenderingMode:2];
+    v7 = [glyphCopy imageWithRenderingMode:2];
 
     v8 = [v6 initWithImage:v7];
     glyphView = self->_glyphView;
@@ -244,12 +244,12 @@
   }
 }
 
-- (void)_configureExplanationLabelWithExplanation:(id)a3
+- (void)_configureExplanationLabelWithExplanation:(id)explanation
 {
   if (!self->_label)
   {
     v4 = MEMORY[0x277D756B8];
-    v5 = a3;
+    explanationCopy = explanation;
     v6 = objc_alloc_init(v4);
     label = self->_label;
     self->_label = v6;
@@ -259,7 +259,7 @@
     [(UILabel *)v8 setFont:v9];
 
     [(UILabel *)self->_label setNumberOfLines:0];
-    [(UILabel *)self->_label setText:v5];
+    [(UILabel *)self->_label setText:explanationCopy];
 
     v10 = self->_label;
 

@@ -1,54 +1,54 @@
 @interface SFTokenBucketWithDups
-- (BOOL)acquireTokenForIdentifier:(unint64_t)a3;
+- (BOOL)acquireTokenForIdentifier:(unint64_t)identifier;
 - (SFTokenBucketWithDups)init;
-- (SFTokenBucketWithDups)initWithBucket:(id)a3 dupHistoryLength:(unint64_t)a4;
+- (SFTokenBucketWithDups)initWithBucket:(id)bucket dupHistoryLength:(unint64_t)length;
 - (void)dealloc;
 @end
 
 @implementation SFTokenBucketWithDups
 
-- (SFTokenBucketWithDups)initWithBucket:(id)a3 dupHistoryLength:(unint64_t)a4
+- (SFTokenBucketWithDups)initWithBucket:(id)bucket dupHistoryLength:(unint64_t)length
 {
-  v7 = a3;
+  bucketCopy = bucket;
   v11.receiver = self;
   v11.super_class = SFTokenBucketWithDups;
   v8 = [(SFTokenBucketWithDups *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_bucket, a3);
-    v9->_maxDups = a4;
+    objc_storeStrong(&v8->_bucket, bucket);
+    v9->_maxDups = length;
     v9->_dups = CFArrayCreateMutable(0, 0, 0);
   }
 
   return v9;
 }
 
-- (BOOL)acquireTokenForIdentifier:(unint64_t)a3
+- (BOOL)acquireTokenForIdentifier:(unint64_t)identifier
 {
   dups = self->_dups;
   v8.length = CFArrayGetCount(dups);
   v8.location = 0;
-  if (CFArrayContainsValue(dups, v8, a3))
+  if (CFArrayContainsValue(dups, v8, identifier))
   {
 LABEL_6:
-    LOBYTE(v6) = 1;
-    return v6;
+    LOBYTE(acquireToken) = 1;
+    return acquireToken;
   }
 
-  v6 = [(SFTokenBucket *)self->_bucket acquireToken];
-  if (v6)
+  acquireToken = [(SFTokenBucket *)self->_bucket acquireToken];
+  if (acquireToken)
   {
     if (CFArrayGetCount(self->_dups) == self->_maxDups)
     {
       CFArrayRemoveValueAtIndex(self->_dups, 0);
     }
 
-    CFArrayAppendValue(self->_dups, a3);
+    CFArrayAppendValue(self->_dups, identifier);
     goto LABEL_6;
   }
 
-  return v6;
+  return acquireToken;
 }
 
 - (SFTokenBucketWithDups)init

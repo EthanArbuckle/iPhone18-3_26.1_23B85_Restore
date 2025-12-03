@@ -1,36 +1,36 @@
 @interface CalItemMetadata
-+ (BOOL)isRecognizedParameter:(id)a3 forProperty:(id)a4 inComponent:(id)a5;
-+ (BOOL)isRecognizedProperty:(id)a3 inComponent:(id)a4;
-+ (BOOL)shouldSkipSavingUnrecognizedParametersForProperty:(id)a3 inComponent:(id)a4;
++ (BOOL)isRecognizedParameter:(id)parameter forProperty:(id)property inComponent:(id)component;
++ (BOOL)isRecognizedProperty:(id)property inComponent:(id)component;
++ (BOOL)shouldSkipSavingUnrecognizedParametersForProperty:(id)property inComponent:(id)component;
 + (id)_whitelistedClassesForSecureCoding;
-+ (id)metadataWithData:(id)a3;
-+ (id)metadataWithICSComponent:(id)a3;
-- (CalItemMetadata)initWithCoder:(id)a3;
-- (CalItemMetadata)initWithICSComponent:(id)a3;
-- (id)dataRepresentationWithExistingMetaData:(id)a3;
-- (id)propertyValueForComparison:(id)a3 propertyKey:(id)a4;
-- (void)applyToComponent:(id)a3;
++ (id)metadataWithData:(id)data;
++ (id)metadataWithICSComponent:(id)component;
+- (CalItemMetadata)initWithCoder:(id)coder;
+- (CalItemMetadata)initWithICSComponent:(id)component;
+- (id)dataRepresentationWithExistingMetaData:(id)data;
+- (id)propertyValueForComparison:(id)comparison propertyKey:(id)key;
+- (void)applyToComponent:(id)component;
 @end
 
 @implementation CalItemMetadata
 
-+ (BOOL)isRecognizedProperty:(id)a3 inComponent:(id)a4
++ (BOOL)isRecognizedProperty:(id)property inComponent:(id)component
 {
-  v5 = a3;
-  v6 = a4;
+  propertyCopy = property;
+  componentCopy = component;
   if (isRecognizedProperty_inComponent__onceToken_0 != -1)
   {
     +[CalItemMetadata isRecognizedProperty:inComponent:];
   }
 
-  if ([v6 isEqualToString:@"VTODO"] && (objc_msgSend(isRecognizedProperty_inComponent__savedPropertiesForTodosOnly, "containsObject:", v5) & 1) != 0)
+  if ([componentCopy isEqualToString:@"VTODO"] && (objc_msgSend(isRecognizedProperty_inComponent__savedPropertiesForTodosOnly, "containsObject:", propertyCopy) & 1) != 0)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = [isRecognizedProperty_inComponent__sSavedProps containsObject:v5];
+    v7 = [isRecognizedProperty_inComponent__sSavedProps containsObject:propertyCopy];
   }
 
   return v7;
@@ -59,19 +59,19 @@ uint64_t __52__CalItemMetadata_isRecognizedProperty_inComponent___block_invoke()
   return MEMORY[0x1EEE66BB8](v7, v8);
 }
 
-+ (BOOL)isRecognizedParameter:(id)a3 forProperty:(id)a4 inComponent:(id)a5
++ (BOOL)isRecognizedParameter:(id)parameter forProperty:(id)property inComponent:(id)component
 {
   v6 = isRecognizedParameter_forProperty_inComponent__onceToken_0;
-  v7 = a4;
-  v8 = a3;
+  propertyCopy = property;
+  parameterCopy = parameter;
   if (v6 != -1)
   {
     +[CalItemMetadata isRecognizedParameter:forProperty:inComponent:];
   }
 
-  v9 = [isRecognizedParameter_forProperty_inComponent__recognizedParametersByPropertyName_0 objectForKeyedSubscript:v7];
+  v9 = [isRecognizedParameter_forProperty_inComponent__recognizedParametersByPropertyName_0 objectForKeyedSubscript:propertyCopy];
 
-  v10 = [v9 containsObject:v8];
+  v10 = [v9 containsObject:parameterCopy];
   return v10;
 }
 
@@ -116,16 +116,16 @@ void __65__CalItemMetadata_isRecognizedParameter_forProperty_inComponent___block
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)shouldSkipSavingUnrecognizedParametersForProperty:(id)a3 inComponent:(id)a4
++ (BOOL)shouldSkipSavingUnrecognizedParametersForProperty:(id)property inComponent:(id)component
 {
   v4 = shouldSkipSavingUnrecognizedParametersForProperty_inComponent__onceToken_0;
-  v5 = a3;
+  propertyCopy = property;
   if (v4 != -1)
   {
     +[CalItemMetadata shouldSkipSavingUnrecognizedParametersForProperty:inComponent:];
   }
 
-  v6 = [shouldSkipSavingUnrecognizedParametersForProperty_inComponent__propertiesToSkipSavingUnrecognizedParameters_0 containsObject:v5];
+  v6 = [shouldSkipSavingUnrecognizedParametersForProperty_inComponent__propertiesToSkipSavingUnrecognizedParameters_0 containsObject:propertyCopy];
 
   return v6;
 }
@@ -141,10 +141,10 @@ uint64_t __81__CalItemMetadata_shouldSkipSavingUnrecognizedParametersForProperty
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-- (CalItemMetadata)initWithICSComponent:(id)a3
+- (CalItemMetadata)initWithICSComponent:(id)component
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  componentCopy = component;
   v61.receiver = self;
   v61.super_class = CalItemMetadata;
   v5 = [(CalItemMetadata *)&v61 init];
@@ -157,34 +157,34 @@ uint64_t __81__CalItemMetadata_shouldSkipSavingUnrecognizedParametersForProperty
       _os_log_impl(&dword_1DEBB1000, v6, OS_LOG_TYPE_DEBUG, "Initializing calItem metadata", buf, 2u);
     }
 
-    v7 = [objc_opt_class() name];
-    v8 = v7;
-    if (v7)
+    name = [objc_opt_class() name];
+    v8 = name;
+    if (name)
     {
-      v9 = v7;
+      unrecognizedComponentName = name;
     }
 
     else
     {
-      v9 = [v4 unrecognizedComponentName];
+      unrecognizedComponentName = [componentCopy unrecognizedComponentName];
     }
 
-    v10 = v9;
+    v10 = unrecognizedComponentName;
 
     v48 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v38 = v4;
-    v11 = [v4 properties];
+    v38 = componentCopy;
+    properties = [componentCopy properties];
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v12 = [v11 countByEnumeratingWithState:&v57 objects:v66 count:16];
+    v12 = [properties countByEnumeratingWithState:&v57 objects:v66 count:16];
     if (v12)
     {
       v13 = v12;
       v14 = *v58;
       v39 = *v58;
-      v40 = v11;
+      v40 = properties;
       do
       {
         v15 = 0;
@@ -193,15 +193,15 @@ uint64_t __81__CalItemMetadata_shouldSkipSavingUnrecognizedParametersForProperty
         {
           if (*v58 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(properties);
           }
 
           v16 = *(*(&v57 + 1) + 8 * v15);
-          v17 = [v16 uppercaseString];
-          v18 = [v11 objectForKey:v16];
-          if ([objc_opt_class() isRecognizedProperty:v17 inComponent:v10])
+          uppercaseString = [v16 uppercaseString];
+          v18 = [properties objectForKey:v16];
+          if ([objc_opt_class() isRecognizedProperty:uppercaseString inComponent:v10])
           {
-            if (([objc_opt_class() shouldSkipSavingUnrecognizedParametersForProperty:v17 inComponent:v10] & 1) == 0)
+            if (([objc_opt_class() shouldSkipSavingUnrecognizedParametersForProperty:uppercaseString inComponent:v10] & 1) == 0)
             {
               v55 = 0u;
               v56 = 0u;
@@ -213,7 +213,7 @@ uint64_t __81__CalItemMetadata_shouldSkipSavingUnrecognizedParametersForProperty
               {
                 v20 = *v54;
                 v46 = v18;
-                v47 = v17;
+                v47 = uppercaseString;
                 v45 = v19;
                 v41 = *v54;
                 do
@@ -234,8 +234,8 @@ uint64_t __81__CalItemMetadata_shouldSkipSavingUnrecognizedParametersForProperty
                     v50 = 0u;
                     v51 = 0u;
                     v52 = 0u;
-                    v24 = [v23 allParameters];
-                    v25 = [v24 countByEnumeratingWithState:&v49 objects:v62 count:16];
+                    allParameters = [v23 allParameters];
+                    v25 = [allParameters countByEnumeratingWithState:&v49 objects:v62 count:16];
                     if (v25)
                     {
                       v26 = v25;
@@ -246,28 +246,28 @@ uint64_t __81__CalItemMetadata_shouldSkipSavingUnrecognizedParametersForProperty
                         {
                           if (*v50 != v27)
                           {
-                            objc_enumerationMutation(v24);
+                            objc_enumerationMutation(allParameters);
                           }
 
                           v29 = *(*(&v49 + 1) + 8 * i);
                           v30 = objc_opt_class();
-                          v31 = [v29 uppercaseString];
-                          LOBYTE(v30) = [v30 isRecognizedParameter:v31 forProperty:v16 inComponent:v10];
+                          uppercaseString2 = [v29 uppercaseString];
+                          LOBYTE(v30) = [v30 isRecognizedParameter:uppercaseString2 forProperty:v16 inComponent:v10];
 
                           if ((v30 & 1) == 0)
                           {
 
                             [(NSDictionary *)v48 setObject:v45 forKey:v16];
                             v14 = v39;
-                            v11 = v40;
+                            properties = v40;
                             v13 = v42;
                             v18 = v46;
-                            v17 = v47;
+                            uppercaseString = v47;
                             goto LABEL_34;
                           }
                         }
 
-                        v26 = [v24 countByEnumeratingWithState:&v49 objects:v62 count:16];
+                        v26 = [allParameters countByEnumeratingWithState:&v49 objects:v62 count:16];
                         if (v26)
                         {
                           continue;
@@ -279,11 +279,11 @@ uint64_t __81__CalItemMetadata_shouldSkipSavingUnrecognizedParametersForProperty
 
                     v21 = v44 + 1;
                     v14 = v39;
-                    v11 = v40;
+                    properties = v40;
                     v20 = v41;
                     v13 = v42;
                     v18 = v46;
-                    v17 = v47;
+                    uppercaseString = v47;
                     v19 = v45;
                   }
 
@@ -319,7 +319,7 @@ LABEL_34:
         }
 
         while (v15 != v13);
-        v13 = [v11 countByEnumeratingWithState:&v57 objects:v66 count:16];
+        v13 = [properties countByEnumeratingWithState:&v57 objects:v66 count:16];
       }
 
       while (v13);
@@ -328,59 +328,59 @@ LABEL_34:
     unrecognizedProperties = v5->_unrecognizedProperties;
     v5->_unrecognizedProperties = v48;
 
-    v4 = v38;
+    componentCopy = v38;
   }
 
   v36 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (id)propertyValueForComparison:(id)a3 propertyKey:(id)a4
+- (id)propertyValueForComparison:(id)comparison propertyKey:(id)key
 {
-  v4 = a3;
+  comparisonCopy = comparison;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 values];
+    values = [comparisonCopy values];
 
-    if ([v5 count] == 1)
+    if ([values count] == 1)
     {
-      [v5 objectAtIndexedSubscript:0];
+      [values objectAtIndexedSubscript:0];
     }
 
     else
     {
-      [v5 sortedArrayUsingSelector:sel_compare_];
+      [values sortedArrayUsingSelector:sel_compare_];
     }
-    v6 = ;
-    v4 = v5;
+    value = ;
+    comparisonCopy = values;
   }
 
   else
   {
-    v6 = [v4 value];
+    value = [comparisonCopy value];
   }
 
-  return v6;
+  return value;
 }
 
-- (void)applyToComponent:(id)a3
+- (void)applyToComponent:(id)component
 {
   v81 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_opt_class() name];
-  v5 = v4;
-  if (v4)
+  componentCopy = component;
+  name = [objc_opt_class() name];
+  v5 = name;
+  if (name)
   {
-    v6 = v4;
+    unrecognizedComponentName = name;
   }
 
   else
   {
-    v6 = [v3 unrecognizedComponentName];
+    unrecognizedComponentName = [componentCopy unrecognizedComponentName];
   }
 
-  v54 = v6;
+  v54 = unrecognizedComponentName;
 
   v71 = 0u;
   v72 = 0u;
@@ -393,7 +393,7 @@ LABEL_34:
     v43 = *v70;
     *&v7 = 138543362;
     v41 = v7;
-    v46 = v3;
+    v46 = componentCopy;
     do
     {
       v8 = 0;
@@ -408,15 +408,15 @@ LABEL_34:
 
         v45 = v8;
         v10 = *(*(&v69 + 1) + 8 * v8);
-        v55 = [v10 uppercaseString];
-        if (([objc_opt_class() isRecognizedProperty:v55 inComponent:v54] & 1) == 0)
+        uppercaseString = [v10 uppercaseString];
+        if (([objc_opt_class() isRecognizedProperty:uppercaseString inComponent:v54] & 1) == 0)
         {
-          v11 = [v3 propertiesForName:v10];
+          v11 = [componentCopy propertiesForName:v10];
 
           if (!v11)
           {
             v47 = [(NSDictionary *)self->_unrecognizedProperties objectForKey:v10];
-            [v3 setProperties:? forName:?];
+            [componentCopy setProperties:? forName:?];
             goto LABEL_53;
           }
 
@@ -429,7 +429,7 @@ LABEL_34:
           }
         }
 
-        v13 = [v3 propertiesForName:v10];
+        v13 = [componentCopy propertiesForName:v10];
         v65 = 0u;
         v66 = 0u;
         v67 = 0u;
@@ -514,14 +514,14 @@ LABEL_20:
 
                 v52 = v25;
                 [v25 addObject:v24];
-                v26 = [v15 allParameters];
+                allParameters = [v15 allParameters];
                 v48 = v24;
-                v27 = [v24 allParameters];
+                allParameters2 = [v24 allParameters];
                 v57 = 0u;
                 v58 = 0u;
                 v59 = 0u;
                 v60 = 0u;
-                v28 = [v27 countByEnumeratingWithState:&v57 objects:v77 count:16];
+                v28 = [allParameters2 countByEnumeratingWithState:&v57 objects:v77 count:16];
                 if (v28)
                 {
                   v29 = v28;
@@ -532,11 +532,11 @@ LABEL_20:
                     {
                       if (*v58 != v30)
                       {
-                        objc_enumerationMutation(v27);
+                        objc_enumerationMutation(allParameters2);
                       }
 
                       v32 = *(*(&v57 + 1) + 8 * j);
-                      v33 = [v26 objectForKey:v32];
+                      v33 = [allParameters objectForKey:v32];
                       if (v33)
                       {
                       }
@@ -544,8 +544,8 @@ LABEL_20:
                       else
                       {
                         v34 = objc_opt_class();
-                        v35 = [v32 uppercaseString];
-                        LOBYTE(v34) = [v34 isRecognizedParameter:v35 forProperty:v55 inComponent:v54];
+                        uppercaseString2 = [v32 uppercaseString];
+                        LOBYTE(v34) = [v34 isRecognizedParameter:uppercaseString2 forProperty:uppercaseString inComponent:v54];
 
                         if ((v34 & 1) == 0)
                         {
@@ -566,20 +566,20 @@ LABEL_20:
 
                           else
                           {
-                            v38 = [v27 objectForKey:v32];
+                            v38 = [allParameters2 objectForKey:v32];
                             [v15 setParameterValue:v38 forName:v32];
                           }
                         }
                       }
                     }
 
-                    v29 = [v27 countByEnumeratingWithState:&v57 objects:v77 count:16];
+                    v29 = [allParameters2 countByEnumeratingWithState:&v57 objects:v77 count:16];
                   }
 
                   while (v29);
                 }
 
-                v3 = v46;
+                componentCopy = v46;
                 v10 = v22;
                 i = v51;
                 v16 = v48;
@@ -645,19 +645,19 @@ void __53__CalItemMetadata__whitelistedClassesForSecureCoding__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)dataRepresentationWithExistingMetaData:(id)a3
+- (id)dataRepresentationWithExistingMetaData:(id)data
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  dataCopy = data;
+  if (!dataCopy)
   {
     goto LABEL_12;
   }
 
   v5 = MEMORY[0x1E696ACD0];
-  v6 = [objc_opt_class() _whitelistedClassesForSecureCoding];
+  _whitelistedClassesForSecureCoding = [objc_opt_class() _whitelistedClassesForSecureCoding];
   v22 = 0;
-  v7 = [v5 unarchivedObjectOfClasses:v6 fromData:v4 error:&v22];
+  v7 = [v5 unarchivedObjectOfClasses:_whitelistedClassesForSecureCoding fromData:dataCopy error:&v22];
   v8 = v22;
 
   if (v7)
@@ -740,19 +740,19 @@ LABEL_13:
   return v15;
 }
 
-+ (id)metadataWithICSComponent:(id)a3
++ (id)metadataWithICSComponent:(id)component
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithICSComponent:v4];
+  componentCopy = component;
+  v5 = [[self alloc] initWithICSComponent:componentCopy];
 
   return v5;
 }
 
-+ (id)metadataWithData:(id)a3
++ (id)metadataWithData:(id)data
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  dataCopy = data;
+  if (!dataCopy)
   {
 LABEL_12:
     v9 = 0;
@@ -760,9 +760,9 @@ LABEL_12:
   }
 
   v4 = MEMORY[0x1E696ACD0];
-  v5 = [objc_opt_class() _whitelistedClassesForSecureCoding];
+  _whitelistedClassesForSecureCoding = [objc_opt_class() _whitelistedClassesForSecureCoding];
   v16 = 0;
-  v6 = [v4 unarchivedObjectOfClasses:v5 fromData:v3 error:&v16];
+  v6 = [v4 unarchivedObjectOfClasses:_whitelistedClassesForSecureCoding fromData:dataCopy error:&v16];
   v7 = v16;
 
   if (!v6)
@@ -812,10 +812,10 @@ LABEL_15:
   return v9;
 }
 
-- (CalItemMetadata)initWithCoder:(id)a3
+- (CalItemMetadata)initWithCoder:(id)coder
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CalItemMetadata;
   v5 = [(CalItemMetadata *)&v19 init];
@@ -826,13 +826,13 @@ LABEL_15:
       [CalItemMetadata initWithCoder:];
     }
 
-    v6 = [v4 decodeObjectOfClasses:initWithCoder__xPropsClasses forKey:@"CalXProps"];
+    v6 = [coderCopy decodeObjectOfClasses:initWithCoder__xPropsClasses forKey:@"CalXProps"];
     unrecognizedProperties = v5->_unrecognizedProperties;
     v5->_unrecognizedProperties = v6;
 
-    if ([v4 containsValueForKey:@"CalClassification"])
+    if ([coderCopy containsValueForKey:@"CalClassification"])
     {
-      v8 = [v4 decodeIntForKey:@"CalClassification"];
+      v8 = [coderCopy decodeIntForKey:@"CalClassification"];
       v9 = objc_alloc(MEMORY[0x1E69E3CD0]);
       v10 = [MEMORY[0x1E69E3C70] numberWithLong:v8];
       v11 = [v9 initWithValue:v10 type:5005];

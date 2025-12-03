@@ -1,11 +1,11 @@
 @interface NILocalization
 + (id)_niFrameworkBundle;
-+ (id)_niLocalizedStringFromBundle:(id)a3 withKey:(id)a4;
-+ (id)_niLocalizedStringFromFrameworkBundleWithKey:(id)a3;
++ (id)_niLocalizedStringFromBundle:(id)bundle withKey:(id)key;
++ (id)_niLocalizedStringFromFrameworkBundleWithKey:(id)key;
 + (id)fallbackBundle;
-+ (id)fallbackBundleWithBundle:(id)a3;
++ (id)fallbackBundleWithBundle:(id)bundle;
 + (id)localizedBundle;
-+ (id)localizedBundleWithBundle:(id)a3;
++ (id)localizedBundleWithBundle:(id)bundle;
 @end
 
 @implementation NILocalization
@@ -31,21 +31,21 @@ void __36__NILocalization__niFrameworkBundle__block_invoke()
   _niFrameworkBundle_sFrameworkBundle = v1;
 }
 
-+ (id)_niLocalizedStringFromFrameworkBundleWithKey:(id)a3
++ (id)_niLocalizedStringFromFrameworkBundleWithKey:(id)key
 {
-  v3 = a3;
-  v4 = [objc_opt_class() localizedBundle];
-  v5 = [v4 localizedStringForKey:v3 value:0 table:0];
+  keyCopy = key;
+  localizedBundle = [objc_opt_class() localizedBundle];
+  v5 = [localizedBundle localizedStringForKey:keyCopy value:0 table:0];
 
   if (!v5)
   {
-    v6 = [objc_opt_class() fallbackBundle];
-    v5 = [v6 localizedStringForKey:v3 value:0 table:0];
+    fallbackBundle = [objc_opt_class() fallbackBundle];
+    v5 = [fallbackBundle localizedStringForKey:keyCopy value:0 table:0];
 
     if (!v5)
     {
-      v7 = [objc_opt_class() _niFrameworkBundle];
-      v5 = [v7 localizedStringForKey:v3 value:0 table:0];
+      _niFrameworkBundle = [objc_opt_class() _niFrameworkBundle];
+      v5 = [_niFrameworkBundle localizedStringForKey:keyCopy value:0 table:0];
     }
   }
 
@@ -55,8 +55,8 @@ void __36__NILocalization__niFrameworkBundle__block_invoke()
 + (id)fallbackBundle
 {
   v2 = objc_opt_class();
-  v3 = [objc_opt_class() _niFrameworkBundle];
-  v4 = [v2 fallbackBundleWithBundle:v3];
+  _niFrameworkBundle = [objc_opt_class() _niFrameworkBundle];
+  v4 = [v2 fallbackBundleWithBundle:_niFrameworkBundle];
 
   return v4;
 }
@@ -64,69 +64,69 @@ void __36__NILocalization__niFrameworkBundle__block_invoke()
 + (id)localizedBundle
 {
   v2 = objc_opt_class();
-  v3 = [objc_opt_class() _niFrameworkBundle];
-  v4 = [v2 localizedBundleWithBundle:v3];
+  _niFrameworkBundle = [objc_opt_class() _niFrameworkBundle];
+  v4 = [v2 localizedBundleWithBundle:_niFrameworkBundle];
 
   return v4;
 }
 
-+ (id)_niLocalizedStringFromBundle:(id)a3 withKey:(id)a4
++ (id)_niLocalizedStringFromBundle:(id)bundle withKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() localizedBundleWithBundle:v5];
-  v8 = [v7 localizedStringForKey:v6 value:0 table:0];
+  bundleCopy = bundle;
+  keyCopy = key;
+  v7 = [objc_opt_class() localizedBundleWithBundle:bundleCopy];
+  v8 = [v7 localizedStringForKey:keyCopy value:0 table:0];
 
   if (!v8)
   {
-    v9 = [objc_opt_class() fallbackBundleWithBundle:v5];
-    v8 = [v9 localizedStringForKey:v6 value:0 table:0];
+    v9 = [objc_opt_class() fallbackBundleWithBundle:bundleCopy];
+    v8 = [v9 localizedStringForKey:keyCopy value:0 table:0];
 
     if (!v8)
     {
-      v8 = [v5 localizedStringForKey:v6 value:0 table:0];
+      v8 = [bundleCopy localizedStringForKey:keyCopy value:0 table:0];
     }
   }
 
   return v8;
 }
 
-+ (id)fallbackBundleWithBundle:(id)a3
++ (id)fallbackBundleWithBundle:(id)bundle
 {
   v3 = MEMORY[0x1E695DF58];
-  v4 = a3;
-  v5 = [v3 preferredLanguages];
-  v6 = [v5 firstObject];
-  v7 = [v6 componentsSeparatedByString:@"-"];
-  v8 = [v7 firstObject];
+  bundleCopy = bundle;
+  preferredLanguages = [v3 preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
+  v7 = [firstObject componentsSeparatedByString:@"-"];
+  firstObject2 = [v7 firstObject];
 
-  v9 = [v4 pathForResource:@"Localizable" ofType:@"strings" inDirectory:0 forLocalization:v8];
+  v9 = [bundleCopy pathForResource:@"Localizable" ofType:@"strings" inDirectory:0 forLocalization:firstObject2];
 
   v10 = MEMORY[0x1E696AAE8];
-  v11 = [v9 stringByDeletingLastPathComponent];
-  v12 = [v10 bundleWithPath:v11];
+  stringByDeletingLastPathComponent = [v9 stringByDeletingLastPathComponent];
+  v12 = [v10 bundleWithPath:stringByDeletingLastPathComponent];
 
   return v12;
 }
 
-+ (id)localizedBundleWithBundle:(id)a3
++ (id)localizedBundleWithBundle:(id)bundle
 {
   v3 = MEMORY[0x1E695DF58];
-  v4 = a3;
-  v5 = [v3 preferredLanguages];
+  bundleCopy = bundle;
+  preferredLanguages = [v3 preferredLanguages];
   v6 = MEMORY[0x1E696AAE8];
-  v7 = [objc_opt_class() _niFrameworkBundle];
-  v8 = [v7 localizations];
-  v9 = [v6 preferredLocalizationsFromArray:v8 forPreferences:v5];
+  _niFrameworkBundle = [objc_opt_class() _niFrameworkBundle];
+  localizations = [_niFrameworkBundle localizations];
+  v9 = [v6 preferredLocalizationsFromArray:localizations forPreferences:preferredLanguages];
 
-  v10 = [v4 resourcePath];
+  resourcePath = [bundleCopy resourcePath];
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [v9 firstObject];
-  v13 = [v11 stringWithFormat:@"%@.lproj", v12];
+  firstObject = [v9 firstObject];
+  v13 = [v11 stringWithFormat:@"%@.lproj", firstObject];
 
   v14 = MEMORY[0x1E696AAE8];
-  v15 = [v10 stringByAppendingPathComponent:v13];
+  v15 = [resourcePath stringByAppendingPathComponent:v13];
   v16 = [v14 bundleWithPath:v15];
 
   return v16;

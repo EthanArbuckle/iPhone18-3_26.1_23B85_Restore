@@ -1,11 +1,11 @@
 @interface MFOutgoingMessage
-- (BOOL)messageData:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6;
-- (BOOL)messageDataHolder:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6;
+- (BOOL)messageData:(id *)data messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary;
+- (BOOL)messageDataHolder:(id *)holder messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary;
 - (id)messageData;
 - (id)messageDataHolder;
 - (id)mutableHeaders;
 - (void)dealloc;
-- (void)setMessageBody:(id)a3;
+- (void)setMessageBody:(id)body;
 @end
 
 @implementation MFOutgoingMessage
@@ -17,13 +17,13 @@
   [(MFMailMessage *)&v3 dealloc];
 }
 
-- (void)setMessageBody:(id)a3
+- (void)setMessageBody:(id)body
 {
   messageBody = self->_messageBody;
-  if (messageBody != a3)
+  if (messageBody != body)
   {
 
-    self->_messageBody = a3;
+    self->_messageBody = body;
   }
 }
 
@@ -36,56 +36,56 @@
   }
 
   v4 = v3;
-  v5 = [(MFMessageBody *)self->_messageBody rawData];
-  v6 = [MEMORY[0x277D24F70] dataWithCapacity:{objc_msgSend(v5, "length") + objc_msgSend(v4, "length")}];
+  rawData = [(MFMessageBody *)self->_messageBody rawData];
+  v6 = [MEMORY[0x277D24F70] dataWithCapacity:{objc_msgSend(rawData, "length") + objc_msgSend(v4, "length")}];
   [v6 appendData:v4];
-  if (v5)
+  if (rawData)
   {
-    [v6 appendData:v5];
+    [v6 appendData:rawData];
   }
 
   return v6;
 }
 
-- (BOOL)messageData:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6
+- (BOOL)messageData:(id *)data messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary
 {
-  if (a5)
+  if (complete)
   {
-    *a5 = 1;
+    *complete = 1;
   }
 
-  if (a3)
+  if (data)
   {
-    *a3 = 0;
+    *data = 0;
   }
 
-  if (a4)
+  if (size)
   {
-    *a4 = 0;
+    *size = 0;
   }
 
   v9 = [-[MFOutgoingMessage headers](self "headers")];
   if (v9)
   {
-    v10 = [(MFMessageBody *)self->_messageBody rawData];
+    rawData = [(MFMessageBody *)self->_messageBody rawData];
     v11 = [v9 length];
-    v12 = [v10 length] + v11;
-    if (a4)
+    v12 = [rawData length] + v11;
+    if (size)
     {
-      *a4 = v12;
+      *size = v12;
     }
 
-    if (a3)
+    if (data)
     {
       v13 = [MEMORY[0x277D24F70] dataWithCapacity:v12];
       [v13 appendData:v9];
-      if (v10)
+      if (rawData)
       {
-        [v13 appendData:v10];
+        [v13 appendData:rawData];
       }
 
       [v13 mf_makeImmutable];
-      *a3 = v13;
+      *data = v13;
     }
   }
 
@@ -101,55 +101,55 @@
   }
 
   v4 = v3;
-  v5 = [(MFMessageBody *)self->_messageBody rawData];
+  rawData = [(MFMessageBody *)self->_messageBody rawData];
   v6 = [MEMORY[0x277D24F08] dataHolderWithData:v4];
   v7 = v6;
-  if (v5)
+  if (rawData)
   {
-    [v6 addData:v5];
+    [v6 addData:rawData];
   }
 
   return v7;
 }
 
-- (BOOL)messageDataHolder:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6
+- (BOOL)messageDataHolder:(id *)holder messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary
 {
-  if (a5)
+  if (complete)
   {
-    *a5 = 1;
+    *complete = 1;
   }
 
-  if (a3)
+  if (holder)
   {
-    *a3 = 0;
+    *holder = 0;
   }
 
-  if (a4)
+  if (size)
   {
-    *a4 = 0;
+    *size = 0;
   }
 
   v9 = [-[MFOutgoingMessage headers](self "headers")];
   if (v9)
   {
-    v10 = [(MFMessageBody *)self->_messageBody rawData];
+    rawData = [(MFMessageBody *)self->_messageBody rawData];
     v11 = [v9 length];
-    v12 = [v10 length];
-    if (a4)
+    v12 = [rawData length];
+    if (size)
     {
-      *a4 = v12 + v11;
+      *size = v12 + v11;
     }
 
-    if (a3)
+    if (holder)
     {
       v13 = [MEMORY[0x277D24F08] dataHolderWithData:v9];
       v14 = v13;
-      if (v10)
+      if (rawData)
       {
-        [v13 addData:v10];
+        [v13 addData:rawData];
       }
 
-      *a3 = v14;
+      *holder = v14;
     }
   }
 

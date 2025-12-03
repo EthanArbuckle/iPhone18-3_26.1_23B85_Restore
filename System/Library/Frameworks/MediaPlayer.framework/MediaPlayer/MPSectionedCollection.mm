@@ -1,33 +1,33 @@
 @interface MPSectionedCollection
 - (MPSectionedCollection)init;
-- (MPSectionedCollection)initWithCoder:(id)a3;
+- (MPSectionedCollection)initWithCoder:(id)coder;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)_stateDumpObject;
 - (id)allElementsEnumerator;
 - (id)allItems;
 - (id)allSections;
-- (id)changeDetailsToSectionedCollection:(id)a3 applyingUIKitWorkarounds:(BOOL)a4 isEqualBlock:(id)a5 isUpdatedBlock:(id)a6;
+- (id)changeDetailsToSectionedCollection:(id)collection applyingUIKitWorkarounds:(BOOL)workarounds isEqualBlock:(id)block isUpdatedBlock:(id)updatedBlock;
 - (id)firstItem;
-- (id)identifiersForItemAtIndexPath:(id)a3;
-- (id)identifiersForSectionAtIndex:(int64_t)a3;
-- (id)indexPathForGlobalIndex:(int64_t)a3;
-- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)a3;
-- (id)itemAtIndexPath:(id)a3;
+- (id)identifiersForItemAtIndexPath:(id)path;
+- (id)identifiersForSectionAtIndex:(int64_t)index;
+- (id)indexPathForGlobalIndex:(int64_t)index;
+- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)set;
+- (id)itemAtIndexPath:(id)path;
 - (id)lastItem;
-- (id)lazyMapWithSections:(id)a3 items:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (int64_t)globalIndexForIndexPath:(id)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (id)lazyMapWithSections:(id)sections items:(id)items;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (int64_t)globalIndexForIndexPath:(id)path;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 - (int64_t)totalItemCount;
 - (void)_initializeAsEmptySectionedCollection;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateItemIdentifiersInSectionAtIndex:(int64_t)a3 usingBlock:(id)a4;
-- (void)enumerateItemIdentifiersUsingBlock:(id)a3;
-- (void)enumerateItemsInSectionAtIndex:(int64_t)a3 usingBlock:(id)a4;
-- (void)enumerateItemsUsingBlock:(id)a3;
-- (void)enumerateSectionIdentifiersUsingBlock:(id)a3;
-- (void)enumerateSectionsUsingBlock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateItemIdentifiersInSectionAtIndex:(int64_t)index usingBlock:(id)block;
+- (void)enumerateItemIdentifiersUsingBlock:(id)block;
+- (void)enumerateItemsInSectionAtIndex:(int64_t)index usingBlock:(id)block;
+- (void)enumerateItemsUsingBlock:(id)block;
+- (void)enumerateSectionIdentifiersUsingBlock:(id)block;
+- (void)enumerateSectionsUsingBlock:(id)block;
 @end
 
 @implementation MPSectionedCollection
@@ -95,13 +95,13 @@
 
 - (int64_t)totalItemCount
 {
-  v3 = [(MPSectionedCollection *)self numberOfSections];
-  if (v3 < 1)
+  numberOfSections = [(MPSectionedCollection *)self numberOfSections];
+  if (numberOfSections < 1)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = numberOfSections;
   v5 = 0;
   v6 = 0;
   do
@@ -116,11 +116,11 @@
 - (id)_stateDumpObject
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(MPSectionedCollection *)self numberOfSections];
+  numberOfSections = [(MPSectionedCollection *)self numberOfSections];
   v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[MPSectionedCollection numberOfSections](self, "numberOfSections")}];
-  if (v3 >= 1)
+  if (numberOfSections >= 1)
   {
-    for (i = 0; i != v3; ++i)
+    for (i = 0; i != numberOfSections; ++i)
     {
       v6 = [(MPSectionedCollection *)self numberOfItemsInSection:i];
       v7 = [(MPSectionedCollection *)self sectionAtIndex:i];
@@ -189,35 +189,35 @@
   return v6;
 }
 
-- (id)lazyMapWithSections:(id)a3 items:(id)a4
+- (id)lazyMapWithSections:(id)sections items:(id)items
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_MPLazyTransformSectionedCollectionDataSource alloc] initWithSectionedCollection:self sectionTransform:v7 itemTransform:v6];
+  itemsCopy = items;
+  sectionsCopy = sections;
+  v8 = [[_MPLazyTransformSectionedCollectionDataSource alloc] initWithSectionedCollection:self sectionTransform:sectionsCopy itemTransform:itemsCopy];
 
   v9 = [[MPLazySectionedCollection alloc] initWithDataSource:v8];
 
   return v9;
 }
 
-- (id)changeDetailsToSectionedCollection:(id)a3 applyingUIKitWorkarounds:(BOOL)a4 isEqualBlock:(id)a5 isUpdatedBlock:(id)a6
+- (id)changeDetailsToSectionedCollection:(id)collection applyingUIKitWorkarounds:(BOOL)workarounds isEqualBlock:(id)block isUpdatedBlock:(id)updatedBlock
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  collectionCopy = collection;
+  blockCopy = block;
+  updatedBlockCopy = updatedBlock;
   v13 = [MPChangeDetails alloc];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __113__MPSectionedCollection_changeDetailsToSectionedCollection_applyingUIKitWorkarounds_isEqualBlock_isUpdatedBlock___block_invoke;
   v21[3] = &unk_1E767D948;
   v21[4] = self;
-  v14 = v10;
+  v14 = collectionCopy;
   v22 = v14;
-  v15 = v11;
+  v15 = blockCopy;
   v23 = v15;
-  v16 = v12;
+  v16 = updatedBlockCopy;
   v24 = v16;
-  v25 = a4;
+  workaroundsCopy = workarounds;
   v17 = [(MPChangeDetails *)v13 initWithBlock:v21];
   if ([(MPChangeDetails *)v17 hasChanges])
   {
@@ -708,9 +708,9 @@ void __113__MPSectionedCollection_changeDetailsToSectionedCollection_applyingUIK
   }
 }
 
-- (id)indexPathForGlobalIndex:(int64_t)a3
+- (id)indexPathForGlobalIndex:(int64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = 0;
   }
@@ -721,10 +721,10 @@ void __113__MPSectionedCollection_changeDetailsToSectionedCollection_applyingUIK
     v23 = v5;
     v24 = v4;
     v25 = v3;
-    if (a3 < 0)
+    if (index < 0)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"MPSectionedCollection.m" lineNumber:254 description:@"globalIndex must be greater than or equal to 0"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPSectionedCollection.m" lineNumber:254 description:@"globalIndex must be greater than or equal to 0"];
     }
 
     v15 = [(MPSectionedCollection *)self numberOfSections:v8];
@@ -742,7 +742,7 @@ LABEL_11:
       while (1)
       {
         v19 = [(MPSectionedCollection *)self numberOfItemsInSection:v17];
-        if (v19 + v18 > a3)
+        if (v19 + v18 > index)
         {
           break;
         }
@@ -755,34 +755,34 @@ LABEL_11:
         }
       }
 
-      v11 = [MEMORY[0x1E696AC88] indexPathForItem:a3 - v18 inSection:v17];
+      v11 = [MEMORY[0x1E696AC88] indexPathForItem:index - v18 inSection:v17];
     }
   }
 
   return v11;
 }
 
-- (int64_t)globalIndexForIndexPath:(id)a3
+- (int64_t)globalIndexForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 item];
-  if (v5 < 0)
+  pathCopy = path;
+  section = [pathCopy section];
+  item = [pathCopy item];
+  if (section < 0)
   {
     v10 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v7 = v6;
+    v7 = item;
     v8 = 0;
     v9 = 0;
-    while (v5 != v8)
+    while (section != v8)
     {
       v9 += [(MPSectionedCollection *)self numberOfItemsInSection:v8++];
     }
 
-    if (v7 >= [(MPSectionedCollection *)self numberOfItemsInSection:v5])
+    if (v7 >= [(MPSectionedCollection *)self numberOfItemsInSection:section])
     {
       v10 = 0x7FFFFFFFFFFFFFFFLL;
     }
@@ -796,9 +796,9 @@ LABEL_11:
   return v10;
 }
 
-- (void)enumerateItemsUsingBlock:(id)a3
+- (void)enumerateItemsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
@@ -808,7 +808,7 @@ LABEL_11:
   v7[1] = 3221225472;
   v7[2] = __50__MPSectionedCollection_enumerateItemsUsingBlock___block_invoke;
   v7[3] = &unk_1E767D858;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
   v9 = v10;
   [(NSArray *)sectionedItems enumerateObjectsUsingBlock:v7];
@@ -850,11 +850,11 @@ void __50__MPSectionedCollection_enumerateItemsUsingBlock___block_invoke_2(void 
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)enumerateItemsInSectionAtIndex:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateItemsInSectionAtIndex:(int64_t)index usingBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  [(NSArray *)self->_sectionedItems objectAtIndex:a3];
+  blockCopy = block;
+  [(NSArray *)self->_sectionedItems objectAtIndex:index];
   v17 = 0;
   v13 = 0u;
   v14 = 0u;
@@ -875,7 +875,7 @@ LABEL_3:
         objc_enumerationMutation(v7);
       }
 
-      v6[2](v6, *(*(&v13 + 1) + 8 * v12), v10, &v17);
+      blockCopy[2](blockCopy, *(*(&v13 + 1) + 8 * v12), v10, &v17);
       if (v17)
       {
         break;
@@ -896,10 +896,10 @@ LABEL_3:
   }
 }
 
-- (void)enumerateSectionsUsingBlock:(id)a3
+- (void)enumerateSectionsUsingBlock:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v15 = 0;
   v11 = 0u;
   v12 = 0u;
@@ -921,7 +921,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      v4[2](v4, *(*(&v11 + 1) + 8 * v10), v8, &v15);
+      blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v10), v8, &v15);
       if (v15)
       {
         break;
@@ -942,21 +942,21 @@ LABEL_3:
   }
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 item];
+  pathCopy = path;
+  section = [pathCopy section];
+  item = [pathCopy item];
 
-  v7 = [(NSArray *)self->_sectionedItems objectAtIndex:v5];
-  v8 = [v7 objectAtIndex:v6];
+  v7 = [(NSArray *)self->_sectionedItems objectAtIndex:section];
+  v8 = [v7 objectAtIndex:item];
 
   return v8;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v3 = [(NSArray *)self->_sectionedItems objectAtIndex:a3];
+  v3 = [(NSArray *)self->_sectionedItems objectAtIndex:section];
   v4 = [v3 count];
 
   return v4;
@@ -971,21 +971,21 @@ LABEL_3:
 
 - (id)lastItem
 {
-  v2 = [(NSArray *)self->_sectionedItems lastObject];
-  v3 = [v2 lastObject];
+  lastObject = [(NSArray *)self->_sectionedItems lastObject];
+  v2LastObject = [lastObject lastObject];
 
-  return v3;
+  return v2LastObject;
 }
 
 - (id)firstItem
 {
-  v2 = [(NSArray *)self->_sectionedItems firstObject];
-  v3 = [v2 firstObject];
+  firstObject = [(NSArray *)self->_sectionedItems firstObject];
+  v2FirstObject = [firstObject firstObject];
 
-  return v3;
+  return v2FirstObject;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MPMutableSectionedCollection);
@@ -1043,15 +1043,15 @@ LABEL_3:
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(MPSectionedCollection *)self numberOfSections];
-  v8 = v7;
+  numberOfSections = [(MPSectionedCollection *)self numberOfSections];
+  v8 = numberOfSections;
   v9 = @"sections";
-  if (v7 == 1)
+  if (numberOfSections == 1)
   {
     v9 = @"section";
   }
 
-  [v6 appendFormat:@"; %lu %@", v7, v9];
+  [v6 appendFormat:@"; %lu %@", numberOfSections, v9];
   [v6 appendString:@"; ["];
   if (v8 >= 1)
   {
@@ -1090,15 +1090,15 @@ LABEL_3:
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(MPSectionedCollection *)self numberOfSections];
-  v8 = v7;
+  numberOfSections = [(MPSectionedCollection *)self numberOfSections];
+  v8 = numberOfSections;
   v9 = @"sections";
-  if (v7 == 1)
+  if (numberOfSections == 1)
   {
     v9 = @"section";
   }
 
-  [v6 appendFormat:@"; %lu %@", v7, v9];
+  [v6 appendFormat:@"; %lu %@", numberOfSections, v9];
   [v6 appendString:@": ["];
   if (v8 >= 1)
   {
@@ -1141,30 +1141,30 @@ LABEL_3:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sectionedItems = self->_sectionedItems;
-  v5 = a3;
-  [v5 encodeObject:sectionedItems forKey:@"sectionedItems"];
-  [v5 encodeObject:self->_sections forKey:@"sections"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sectionedItems forKey:@"sectionedItems"];
+  [coderCopy encodeObject:self->_sections forKey:@"sections"];
 }
 
-- (MPSectionedCollection)initWithCoder:(id)a3
+- (MPSectionedCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MPSectionedCollection;
   v5 = [(MPSectionedCollection *)&v13 init];
   if (v5)
   {
-    v6 = [v4 allowedClasses];
-    v7 = [v6 setByAddingObject:objc_opt_class()];
+    allowedClasses = [coderCopy allowedClasses];
+    v7 = [allowedClasses setByAddingObject:objc_opt_class()];
 
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"sectionedItems"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"sectionedItems"];
     sectionedItems = v5->_sectionedItems;
     v5->_sectionedItems = v8;
 
-    v10 = [v4 decodeObjectOfClasses:v7 forKey:@"sections"];
+    v10 = [coderCopy decodeObjectOfClasses:v7 forKey:@"sections"];
     sections = v5->_sections;
     v5->_sections = v10;
   }
@@ -1172,18 +1172,18 @@ LABEL_3:
   return v5;
 }
 
-- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)a3
+- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)set
 {
-  v4 = a3;
-  v5 = [(MPSectionedCollection *)self numberOfSections];
-  if (v5 < 1)
+  setCopy = set;
+  numberOfSections = [(MPSectionedCollection *)self numberOfSections];
+  if (numberOfSections < 1)
   {
     v13 = 0;
   }
 
   else
   {
-    v6 = v5;
+    v6 = numberOfSections;
     v7 = 0;
     do
     {
@@ -1201,7 +1201,7 @@ LABEL_3:
         {
           v11 = [MEMORY[0x1E696AC88] indexPathForItem:v10 - 1 inSection:v7];
           v12 = [(MPSectionedCollection *)self identifiersForItemAtIndexPath:v11];
-          if ([v12 intersectsSet:v4])
+          if ([v12 intersectsSet:setCopy])
           {
             v13 = v11;
           }
@@ -1231,9 +1231,9 @@ LABEL_3:
   return v13;
 }
 
-- (id)identifiersForSectionAtIndex:(int64_t)a3
+- (id)identifiersForSectionAtIndex:(int64_t)index
 {
-  v3 = [(MPSectionedCollection *)self sectionAtIndex:a3];
+  v3 = [(MPSectionedCollection *)self sectionAtIndex:index];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1260,9 +1260,9 @@ LABEL_3:
   return v5;
 }
 
-- (id)identifiersForItemAtIndexPath:(id)a3
+- (id)identifiersForItemAtIndexPath:(id)path
 {
-  v3 = [(MPSectionedCollection *)self itemAtIndexPath:a3];
+  v3 = [(MPSectionedCollection *)self itemAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1289,22 +1289,22 @@ LABEL_3:
   return v5;
 }
 
-- (void)enumerateItemIdentifiersInSectionAtIndex:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateItemIdentifiersInSectionAtIndex:(int64_t)index usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v12 = 0;
-  v7 = [(MPSectionedCollection *)self numberOfItemsInSection:a3];
+  v7 = [(MPSectionedCollection *)self numberOfItemsInSection:index];
   if (v7 >= 1)
   {
     v8 = v7;
     v9 = 1;
     do
     {
-      v10 = [MEMORY[0x1E696AC88] indexPathForItem:v9 - 1 inSection:a3];
+      v10 = [MEMORY[0x1E696AC88] indexPathForItem:v9 - 1 inSection:index];
       v11 = [(MPSectionedCollection *)self identifiersForItemAtIndexPath:v10];
       if (v11)
       {
-        v6[2](v6, v9 - 1, v11, &v12);
+        blockCopy[2](blockCopy, v9 - 1, v11, &v12);
       }
 
       if (v9 >= v8)
@@ -1319,19 +1319,19 @@ LABEL_3:
   }
 }
 
-- (void)enumerateSectionIdentifiersUsingBlock:(id)a3
+- (void)enumerateSectionIdentifiersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9 = 0;
-  v5 = [(MPSectionedCollection *)self numberOfSections];
-  if (v5 >= 1)
+  numberOfSections = [(MPSectionedCollection *)self numberOfSections];
+  if (numberOfSections >= 1)
   {
-    v6 = v5;
+    v6 = numberOfSections;
     v7 = 1;
     do
     {
       v8 = [(MPSectionedCollection *)self identifiersForSectionAtIndex:v7 - 1];
-      v4[2](v4, v7 - 1, v8, &v9);
+      blockCopy[2](blockCopy, v7 - 1, v8, &v9);
 
       if (v7 >= v6)
       {
@@ -1345,14 +1345,14 @@ LABEL_3:
   }
 }
 
-- (void)enumerateItemIdentifiersUsingBlock:(id)a3
+- (void)enumerateItemIdentifiersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v14 = 0;
-  v5 = [(MPSectionedCollection *)self numberOfSections];
-  if (v5 >= 1)
+  numberOfSections = [(MPSectionedCollection *)self numberOfSections];
+  if (numberOfSections >= 1)
   {
-    v6 = v5;
+    v6 = numberOfSections;
     v7 = 0;
     do
     {
@@ -1368,7 +1368,7 @@ LABEL_3:
           v13 = [(MPSectionedCollection *)self identifiersForItemAtIndexPath:v12];
           if (v13)
           {
-            v4[2](v4, v12, v13, &v14);
+            blockCopy[2](blockCopy, v12, v13, &v14);
           }
 
           v9 = v14;

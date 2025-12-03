@@ -6,11 +6,11 @@
 - (PFFairPlayKeyResponseData)keyResponseData;
 - (void)deregister;
 - (void)pauseAutomaticKeyRenewal;
-- (void)processKeyWith:(id)a3 completion:(id)a4;
+- (void)processKeyWith:(id)with completion:(id)completion;
 - (void)register;
 - (void)renewKey;
 - (void)resumeAutomaticKeyRenewal;
-- (void)stopAndInvalidateKeysWithCompletion:(id)a3;
+- (void)stopAndInvalidateKeysWithCompletion:(id)completion;
 @end
 
 @implementation FairPlayKeySessionMock
@@ -121,9 +121,9 @@
   }
 }
 
-- (void)processKeyWith:(id)a3 completion:(id)a4
+- (void)processKeyWith:(id)with completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_1D917820C();
   v8 = v7;
   v9 = swift_allocObject();
@@ -148,9 +148,9 @@
   }
 }
 
-- (void)stopAndInvalidateKeysWithCompletion:(id)a3
+- (void)stopAndInvalidateKeysWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *(self + 26);

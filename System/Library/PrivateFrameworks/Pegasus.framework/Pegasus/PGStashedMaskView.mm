@@ -1,24 +1,24 @@
 @interface PGStashedMaskView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_mainBodyBounds;
 - (CGRect)tabViewBounds;
 - (CGSize)minimumStashTabSize;
-- (PGStashedMaskView)initWithFrame:(CGRect)a3 minimumStashTabSize:(CGSize)a4;
+- (PGStashedMaskView)initWithFrame:(CGRect)frame minimumStashTabSize:(CGSize)size;
 - (UIView)tabShadowView;
 - (void)layoutSubviews;
-- (void)setMinimumStashTabSize:(CGSize)a3;
-- (void)setTabHidden:(BOOL)a3 left:(BOOL)a4;
+- (void)setMinimumStashTabSize:(CGSize)size;
+- (void)setTabHidden:(BOOL)hidden left:(BOOL)left;
 @end
 
 @implementation PGStashedMaskView
 
-- (PGStashedMaskView)initWithFrame:(CGRect)a3 minimumStashTabSize:(CGSize)a4
+- (PGStashedMaskView)initWithFrame:(CGRect)frame minimumStashTabSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v51.receiver = self;
   v51.super_class = PGStashedMaskView;
-  v6 = [(PGStashedMaskView *)&v51 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v6 = [(PGStashedMaskView *)&v51 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v7 = v6;
   if (v6)
   {
@@ -68,36 +68,36 @@
     [(UIView *)v7->_tabRightTopCornerDestOut setUserInteractionEnabled:0];
     [(UIView *)v7->_tabRightBottomCornerDestOut setUserInteractionEnabled:0];
     v29 = v7->_mainBody;
-    v30 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v29 setBackgroundColor:v30];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v29 setBackgroundColor:blackColor];
 
     v31 = v7->_tab;
-    v32 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v31 setBackgroundColor:v32];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v31 setBackgroundColor:blackColor2];
 
     v33 = v7->_tabTopCornerFill;
-    v34 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v33 setBackgroundColor:v34];
+    blackColor3 = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v33 setBackgroundColor:blackColor3];
 
     v35 = v7->_tabBottomCornerFill;
-    v36 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v35 setBackgroundColor:v36];
+    blackColor4 = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v35 setBackgroundColor:blackColor4];
 
     v37 = v7->_tabLeftTopCornerDestOut;
-    v38 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v37 setBackgroundColor:v38];
+    blackColor5 = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v37 setBackgroundColor:blackColor5];
 
     v39 = v7->_tabLeftBottomCornerDestOut;
-    v40 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v39 setBackgroundColor:v40];
+    blackColor6 = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v39 setBackgroundColor:blackColor6];
 
     v41 = v7->_tabRightTopCornerDestOut;
-    v42 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v41 setBackgroundColor:v42];
+    blackColor7 = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v41 setBackgroundColor:blackColor7];
 
     v43 = v7->_tabRightBottomCornerDestOut;
-    v44 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v43 setBackgroundColor:v44];
+    blackColor8 = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v43 setBackgroundColor:blackColor8];
 
     [(UIView *)v7->_mainBody _setContinuousCornerRadius:15.0];
     [(UIView *)v7->_tab _setContinuousCornerRadius:15.0];
@@ -105,18 +105,18 @@
     [(UIView *)v7->_tabLeftBottomCornerDestOut _setContinuousCornerRadius:3.0];
     [(UIView *)v7->_tabRightTopCornerDestOut _setContinuousCornerRadius:3.0];
     [(UIView *)v7->_tabRightBottomCornerDestOut _setContinuousCornerRadius:3.0];
-    v45 = [(UIView *)v7->_tabLeftTopCornerDestOut layer];
+    layer = [(UIView *)v7->_tabLeftTopCornerDestOut layer];
     v46 = *MEMORY[0x1E69798E8];
-    [v45 setCompositingFilter:*MEMORY[0x1E69798E8]];
+    [layer setCompositingFilter:*MEMORY[0x1E69798E8]];
 
-    v47 = [(UIView *)v7->_tabRightTopCornerDestOut layer];
-    [v47 setCompositingFilter:v46];
+    layer2 = [(UIView *)v7->_tabRightTopCornerDestOut layer];
+    [layer2 setCompositingFilter:v46];
 
-    v48 = [(UIView *)v7->_tabLeftBottomCornerDestOut layer];
-    [v48 setCompositingFilter:v46];
+    layer3 = [(UIView *)v7->_tabLeftBottomCornerDestOut layer];
+    [layer3 setCompositingFilter:v46];
 
-    v49 = [(UIView *)v7->_tabRightBottomCornerDestOut layer];
-    [v49 setCompositingFilter:v46];
+    layer4 = [(UIView *)v7->_tabRightBottomCornerDestOut layer];
+    [layer4 setCompositingFilter:v46];
 
     [(PGStashedMaskView *)v7 addSubview:v7->_mainBody];
     [(PGStashedMaskView *)v7 addSubview:v7->_tab];
@@ -134,12 +134,12 @@
   return v7;
 }
 
-- (void)setTabHidden:(BOOL)a3 left:(BOOL)a4
+- (void)setTabHidden:(BOOL)hidden left:(BOOL)left
 {
-  if (self->_tabHidden != a3 || self->_tabShownLeft != a4)
+  if (self->_tabHidden != hidden || self->_tabShownLeft != left)
   {
-    self->_tabHidden = a3;
-    self->_tabShownLeft = a4 & ~a3;
+    self->_tabHidden = hidden;
+    self->_tabShownLeft = left & ~hidden;
     [(PGStashedMaskView *)self bounds];
     v6 = 15.0;
     if (v7 >= 105.0)
@@ -170,7 +170,7 @@
     }
 
     [(PGStashedMaskView *)self _setContinuousCornerRadius:v6];
-    if (a3)
+    if (hidden)
     {
       tab = self->_tab;
       v28 = *(MEMORY[0x1E695EFD0] + 16);
@@ -239,13 +239,13 @@
   }
 }
 
-- (void)setMinimumStashTabSize:(CGSize)a3
+- (void)setMinimumStashTabSize:(CGSize)size
 {
-  width = a3.width;
-  if (self->_minimumStashTabSize.width != a3.width || self->_minimumStashTabSize.height != a3.height)
+  width = size.width;
+  if (self->_minimumStashTabSize.width != size.width || self->_minimumStashTabSize.height != size.height)
   {
-    self->_minimumStashTabSize = a3;
-    [(UIView *)self->_tabLeftTopCornerDestOut setBounds:0.0, 0.0, a3.width, a3.width];
+    self->_minimumStashTabSize = size;
+    [(UIView *)self->_tabLeftTopCornerDestOut setBounds:0.0, 0.0, size.width, size.width];
     [(UIView *)self->_tabRightTopCornerDestOut setBounds:0.0, 0.0, width, width];
     [(UIView *)self->_tabLeftBottomCornerDestOut setBounds:0.0, 0.0, width, width];
     tabRightBottomCornerDestOut = self->_tabRightBottomCornerDestOut;
@@ -302,18 +302,18 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   tab = self->_tab;
-  v8 = [(PGStashedMaskView *)self superview];
-  [(UIView *)tab convertPoint:v8 fromView:x, y];
+  superview = [(PGStashedMaskView *)self superview];
+  [(UIView *)tab convertPoint:superview fromView:x, y];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(UIView *)self->_tab layer];
-  LOBYTE(tab) = [v13 containsPoint:{v10, v12}];
+  layer = [(UIView *)self->_tab layer];
+  LOBYTE(tab) = [layer containsPoint:{v10, v12}];
 
   return tab;
 }

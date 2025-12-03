@@ -1,5 +1,5 @@
 @interface CLCertificatePinningHelper
-+ (int)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
++ (int)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 + (void)initialize;
 @end
 
@@ -42,17 +42,17 @@ id __40__CLCertificatePinningHelper_initialize__block_invoke()
   return result;
 }
 
-+ (int)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
++ (int)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v46 = *MEMORY[0x277D85DE8];
-  v7 = [objc_msgSend(a4 protectionSpace];
-  if (![v7 isEqualToString:*MEMORY[0x277CBAB00]])
+  protectionSpace = [objc_msgSend(challenge protectionSpace];
+  if (![protectionSpace isEqualToString:*MEMORY[0x277CBAB00]])
   {
     goto LABEL_18;
   }
 
-  v8 = [objc_msgSend(a4 "protectionSpace")];
-  v9 = [objc_msgSend(a4 "protectionSpace")];
+  v8 = [objc_msgSend(challenge "protectionSpace")];
+  v9 = [objc_msgSend(challenge "protectionSpace")];
   v10 = [sLeafOIDs objectForKeyedSubscript:v8];
   if (v10)
   {
@@ -76,7 +76,7 @@ id __40__CLCertificatePinningHelper_initialize__block_invoke()
       v40 = 2082;
       v41 = &unk_245B71571;
       v42 = 2081;
-      v43 = [v8 UTF8String];
+      uTF8String = [v8 UTF8String];
       _os_log_impl(&dword_245B6E000, v22, OS_LOG_TYPE_INFO, "{msg%{public}.0s:#Warning Empty pinning rule for host, host:%{private, location:escape_only}s}", buf, 0x1Cu);
       v17 = 3;
       goto LABEL_19;
@@ -135,9 +135,9 @@ LABEL_19:
         v40 = 2082;
         v41 = &unk_245B71571;
         v42 = 2049;
-        v43 = Code;
+        uTF8String = Code;
         v44 = 2113;
-        v45 = Domain;
+        uTF8String2 = Domain;
         _os_log_impl(&dword_245B6E000, v30, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:Can't SecTrustEvaluate returned the error, errorCode:%{private}ld, error:%{private, location:escape_only}@}", buf, 0x26u);
         if (onceToken_Utility_Default != -1)
         {
@@ -160,9 +160,9 @@ LABEL_50:
       v40 = 2082;
       v41 = &unk_245B71571;
       v42 = 2049;
-      v43 = v34;
+      uTF8String = v34;
       v44 = 2113;
-      v45 = v35;
+      uTF8String2 = v35;
       v27 = "Can't SecTrustEvaluate returned the error";
       v28 = "{msg%{public}.0s:Can't SecTrustEvaluate returned the error, errorCode:%{private}ld, error:%{private, location:escape_only}@}";
       v29 = v33;
@@ -183,9 +183,9 @@ LABEL_50:
         v40 = 2082;
         v41 = &unk_245B71571;
         v42 = 2082;
-        v43 = [v8 UTF8String];
+        uTF8String = [v8 UTF8String];
         v44 = 2082;
-        v45 = [v11 UTF8String];
+        uTF8String2 = [v11 UTF8String];
         _os_log_impl(&dword_245B6E000, v23, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:Unable to create a security policy, host:%{public, location:escape_only}s, leafOID:%{public, location:escape_only}s}", buf, 0x26u);
         if (onceToken_Utility_Default != -1)
         {
@@ -200,16 +200,16 @@ LABEL_50:
         goto LABEL_21;
       }
 
-      v25 = [v8 UTF8String];
-      v26 = [v11 UTF8String];
+      uTF8String3 = [v8 UTF8String];
+      uTF8String4 = [v11 UTF8String];
       *buf = 68289538;
       v39 = 0;
       v40 = 2082;
       v41 = &unk_245B71571;
       v42 = 2082;
-      v43 = v25;
+      uTF8String = uTF8String3;
       v44 = 2082;
-      v45 = v26;
+      uTF8String2 = uTF8String4;
       v27 = "Unable to create a security policy";
       v28 = "{msg%{public}.0s:Unable to create a security policy, host:%{public, location:escape_only}s, leafOID:%{public, location:escape_only}s}";
       v29 = v24;
@@ -233,7 +233,7 @@ LABEL_50:
     v40 = 2082;
     v41 = &unk_245B71571;
     v42 = 2081;
-    v43 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     _os_log_impl(&dword_245B6E000, v18, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#Warning No pinning rule for host, host:%{private, location:escape_only}s}", buf, 0x1Cu);
 LABEL_18:
     v17 = 0;
@@ -249,23 +249,23 @@ LABEL_21:
     v40 = 2082;
     v41 = &unk_245B71571;
     v42 = 2049;
-    v43 = v17;
+    uTF8String = v17;
     _os_log_impl(&dword_245B6E000, v19, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#VerifyHost result, result:%{private}lu}", buf, 0x1Cu);
   }
 
   if (v17 == 2)
   {
-    (*(a5 + 2))(a5, 2, 0);
+    (*(handler + 2))(handler, 2, 0);
   }
 
   else if (v17 == 1)
   {
-    (*(a5 + 2))(a5, 0, [MEMORY[0x277CBAB80] credentialForTrust:{objc_msgSend(objc_msgSend(a4, "protectionSpace"), "serverTrust")}]);
+    (*(handler + 2))(handler, 0, [MEMORY[0x277CBAB80] credentialForTrust:{objc_msgSend(objc_msgSend(challenge, "protectionSpace"), "serverTrust")}]);
   }
 
   else
   {
-    (*(a5 + 2))(a5, 1, 0);
+    (*(handler + 2))(handler, 1, 0);
   }
 
   v20 = *MEMORY[0x277D85DE8];

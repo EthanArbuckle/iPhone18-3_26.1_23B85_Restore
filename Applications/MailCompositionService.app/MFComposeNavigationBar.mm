@@ -1,6 +1,6 @@
 @interface MFComposeNavigationBar
 - (void)layoutSubviews;
-- (void)setDocked:(BOOL)a3 animated:(BOOL)a4;
+- (void)setDocked:(BOOL)docked animated:(BOOL)animated;
 @end
 
 @implementation MFComposeNavigationBar
@@ -20,29 +20,29 @@
     v3 = 1.0;
   }
 
-  v4 = [(MFComposeNavigationBar *)self topItem];
-  v5 = [v4 leftBarButtonItem];
-  v6 = [v5 view];
-  [v6 setAlpha:v3];
+  topItem = [(MFComposeNavigationBar *)self topItem];
+  leftBarButtonItem = [topItem leftBarButtonItem];
+  view = [leftBarButtonItem view];
+  [view setAlpha:v3];
 
-  v7 = [(MFComposeNavigationBar *)self topItem];
-  v8 = [v7 rightBarButtonItem];
-  v9 = [v8 view];
-  [v9 setAlpha:v3];
+  topItem2 = [(MFComposeNavigationBar *)self topItem];
+  rightBarButtonItem = [topItem2 rightBarButtonItem];
+  view2 = [rightBarButtonItem view];
+  [view2 setAlpha:v3];
 }
 
-- (void)setDocked:(BOOL)a3 animated:(BOOL)a4
+- (void)setDocked:(BOOL)docked animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000A69C;
   v7[3] = &unk_100018880;
   v7[4] = self;
-  v8 = a3;
+  dockedCopy = docked;
   v5 = objc_retainBlock(v7);
   v6 = v5;
-  if (v4)
+  if (animatedCopy)
   {
     [UIView animateWithDuration:v5 animations:0.2];
   }

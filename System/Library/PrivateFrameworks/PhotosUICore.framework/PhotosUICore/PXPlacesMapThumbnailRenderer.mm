@@ -2,11 +2,11 @@
 - (PXPlacesMapPipelineComponentProvider)pipelineComponentProvider;
 - (PXPlacesMapThumbnailLocationCurator)thumbnailLocationCurator;
 - (PXPlacesMapThumbnailRenderer)init;
-- (PXPlacesMapThumbnailRenderer)initWithTraitCollection:(id)a3 informationDelegate:(id)a4 popoverImageType:(int64_t)a5 popoverImageOptions:(unint64_t)a6 countLabelStyle:(int64_t)a7 thumbnailLocationCurator:(id)a8;
+- (PXPlacesMapThumbnailRenderer)initWithTraitCollection:(id)collection informationDelegate:(id)delegate popoverImageType:(int64_t)type popoverImageOptions:(unint64_t)options countLabelStyle:(int64_t)style thumbnailLocationCurator:(id)curator;
 - (UIEdgeInsets)minimumEdgeInsets;
-- (id)annotationForGeotaggables:(id)a3 initialCoordinate:(CLLocationCoordinate2D)a4;
-- (id)viewForAnnotation:(id)a3 andMapView:(id)a4;
-- (void)imageForGeotaggable:(id)a3 ofSize:(CGSize)a4 networkAccessAllowed:(BOOL)a5 andCompletion:(id)a6;
+- (id)annotationForGeotaggables:(id)geotaggables initialCoordinate:(CLLocationCoordinate2D)coordinate;
+- (id)viewForAnnotation:(id)annotation andMapView:(id)view;
+- (void)imageForGeotaggable:(id)geotaggable ofSize:(CGSize)size networkAccessAllowed:(BOOL)allowed andCompletion:(id)completion;
 @end
 
 @implementation PXPlacesMapThumbnailRenderer
@@ -25,68 +25,68 @@
   return WeakRetained;
 }
 
-- (void)imageForGeotaggable:(id)a3 ofSize:(CGSize)a4 networkAccessAllowed:(BOOL)a5 andCompletion:(id)a6
+- (void)imageForGeotaggable:(id)geotaggable ofSize:(CGSize)size networkAccessAllowed:(BOOL)allowed andCompletion:(id)completion
 {
-  v7 = a5;
-  height = a4.height;
-  width = a4.width;
-  v15 = a3;
-  v11 = a6;
-  v12 = [(PXPlacesMapThumbnailRenderer *)self informationDelegate];
+  allowedCopy = allowed;
+  height = size.height;
+  width = size.width;
+  geotaggableCopy = geotaggable;
+  completionCopy = completion;
+  informationDelegate = [(PXPlacesMapThumbnailRenderer *)self informationDelegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(PXPlacesMapThumbnailRenderer *)self informationDelegate];
-    [v14 imageForGeotaggable:v15 ofSize:v7 networkAccessAllowed:v11 andCompletion:{width, height}];
+    informationDelegate2 = [(PXPlacesMapThumbnailRenderer *)self informationDelegate];
+    [informationDelegate2 imageForGeotaggable:geotaggableCopy ofSize:allowedCopy networkAccessAllowed:completionCopy andCompletion:{width, height}];
   }
 }
 
-- (id)viewForAnnotation:(id)a3 andMapView:(id)a4
+- (id)viewForAnnotation:(id)annotation andMapView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  annotationCopy = annotation;
+  viewCopy = view;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v7 dequeueReusableAnnotationViewWithIdentifier:v9];
+  v10 = [viewCopy dequeueReusableAnnotationViewWithIdentifier:v9];
 
   if (v10)
   {
-    [(PXPlacesMapThumbnailAnnotationView *)v10 setAnnotation:v6];
+    [(PXPlacesMapThumbnailAnnotationView *)v10 setAnnotation:annotationCopy];
   }
 
   else
   {
-    v11 = [(PXPlacesMapThumbnailRenderer *)self pipelineComponentProvider];
-    v12 = [v11 imageCache];
+    pipelineComponentProvider = [(PXPlacesMapThumbnailRenderer *)self pipelineComponentProvider];
+    imageCache = [pipelineComponentProvider imageCache];
 
     v13 = [PXPlacesMapThumbnailAnnotationView alloc];
-    v14 = [(PXPlacesMapThumbnailRenderer *)self extendedTraitCollection];
-    v10 = [(PXPlacesMapThumbnailAnnotationView *)v13 initWithAnnotation:v6 reuseIdentifier:v9 extendedTraitCollection:v14 imageCache:v12 countLabelStyle:[(PXPlacesMapThumbnailRenderer *)self countLabelStyle]];
+    extendedTraitCollection = [(PXPlacesMapThumbnailRenderer *)self extendedTraitCollection];
+    v10 = [(PXPlacesMapThumbnailAnnotationView *)v13 initWithAnnotation:annotationCopy reuseIdentifier:v9 extendedTraitCollection:extendedTraitCollection imageCache:imageCache countLabelStyle:[(PXPlacesMapThumbnailRenderer *)self countLabelStyle]];
   }
 
-  v15 = [(PXPlacesMapThumbnailRenderer *)self thumbnailLocationCurator];
-  [(PXPlacesMapThumbnailAnnotationView *)v10 setThumbnailLocationCurator:v15];
+  thumbnailLocationCurator = [(PXPlacesMapThumbnailRenderer *)self thumbnailLocationCurator];
+  [(PXPlacesMapThumbnailAnnotationView *)v10 setThumbnailLocationCurator:thumbnailLocationCurator];
 
   return v10;
 }
 
-- (id)annotationForGeotaggables:(id)a3 initialCoordinate:(CLLocationCoordinate2D)a4
+- (id)annotationForGeotaggables:(id)geotaggables initialCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v7 = a3;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  geotaggablesCopy = geotaggables;
   v8 = objc_alloc_init(PXPlacesMapPointAnnotation);
   [(PXPlacesMapPointAnnotation *)v8 setCoordinate:latitude, longitude];
-  [(PXPlacesMapPointAnnotation *)v8 setGeotaggables:v7];
+  [(PXPlacesMapPointAnnotation *)v8 setGeotaggables:geotaggablesCopy];
 
-  v9 = [(PXPlacesMapThumbnailRenderer *)self pipelineComponentProvider];
-  v10 = [v9 renderer];
-  [(PXPlacesMapPointAnnotation *)v8 setRenderer:v10];
+  pipelineComponentProvider = [(PXPlacesMapThumbnailRenderer *)self pipelineComponentProvider];
+  renderer = [pipelineComponentProvider renderer];
+  [(PXPlacesMapPointAnnotation *)v8 setRenderer:renderer];
 
-  v11 = [(PXPlacesMapThumbnailRenderer *)self pipelineComponentProvider];
-  v12 = [v11 selectionHandler];
-  [(PXPlacesMapPointAnnotation *)v8 setSelectionHandler:v12];
+  pipelineComponentProvider2 = [(PXPlacesMapThumbnailRenderer *)self pipelineComponentProvider];
+  selectionHandler = [pipelineComponentProvider2 selectionHandler];
+  [(PXPlacesMapPointAnnotation *)v8 setSelectionHandler:selectionHandler];
 
   return v8;
 }
@@ -111,29 +111,29 @@
 
 - (PXPlacesMapThumbnailRenderer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPlacesMapThumbnailRenderer.m" lineNumber:58 description:{@"%s is not available as initializer", "-[PXPlacesMapThumbnailRenderer init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesMapThumbnailRenderer.m" lineNumber:58 description:{@"%s is not available as initializer", "-[PXPlacesMapThumbnailRenderer init]"}];
 
   abort();
 }
 
-- (PXPlacesMapThumbnailRenderer)initWithTraitCollection:(id)a3 informationDelegate:(id)a4 popoverImageType:(int64_t)a5 popoverImageOptions:(unint64_t)a6 countLabelStyle:(int64_t)a7 thumbnailLocationCurator:(id)a8
+- (PXPlacesMapThumbnailRenderer)initWithTraitCollection:(id)collection informationDelegate:(id)delegate popoverImageType:(int64_t)type popoverImageOptions:(unint64_t)options countLabelStyle:(int64_t)style thumbnailLocationCurator:(id)curator
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
+  collectionCopy = collection;
+  delegateCopy = delegate;
+  curatorCopy = curator;
   v21.receiver = self;
   v21.super_class = PXPlacesMapThumbnailRenderer;
   v18 = [(PXPlacesMapThumbnailRenderer *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_extendedTraitCollection, a3);
-    objc_storeStrong(&v19->_informationDelegate, a4);
-    v19->_popoverImageType = a5;
-    v19->_imageOptions = a6;
-    v19->_countLabelStyle = a7;
-    objc_storeWeak(&v19->_thumbnailLocationCurator, v17);
+    objc_storeStrong(&v18->_extendedTraitCollection, collection);
+    objc_storeStrong(&v19->_informationDelegate, delegate);
+    v19->_popoverImageType = type;
+    v19->_imageOptions = options;
+    v19->_countLabelStyle = style;
+    objc_storeWeak(&v19->_thumbnailLocationCurator, curatorCopy);
   }
 
   return v19;

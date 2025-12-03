@@ -1,103 +1,103 @@
 @interface EKUIEventNotificationRepresentation
-+ (BOOL)_invitationNotificationHasResourceChanges:(id)a3 changesString:(id *)a4;
++ (BOOL)_invitationNotificationHasResourceChanges:(id)changes changesString:(id *)string;
 + (id)_fromLocalizedString;
 + (id)_invitationUpdatedTitleLocalizedString;
 + (id)_whenLocalizedString;
 + (id)_whereLocalizedString;
-+ (id)defaultEventNotificationRepresentationWithTitle:(id)a3 message:(id)a4 notes:(id)a5;
-+ (id)invitationNotificationRepresentationWithNotification:(id)a3 event:(id)a4 date:(id)a5 endDate:(id)a6 timeZone:(id)a7;
-+ (id)previewForNotes:(id)a3;
-+ (id)resourceChangeNotificationWithNotification:(id)a3 message:(id)a4 date:(id)a5 endDate:(id)a6 timeZone:(id)a7;
-+ (id)responseNotificationWithTitle:(id)a3 message:(id)a4;
-+ (id)timeToLeaveNotificationRepresentationWithHypothesisMessage:(id)a3 event:(id)a4 date:(id)a5 displayTimeZone:(id)a6;
-+ (id)upcomingEventNotificationRepresentationWithEvent:(id)a3 date:(id)a4 displayTimeZone:(id)a5;
-- (EKUIEventNotificationRepresentation)initWithDictionary:(id)a3;
++ (id)defaultEventNotificationRepresentationWithTitle:(id)title message:(id)message notes:(id)notes;
++ (id)invitationNotificationRepresentationWithNotification:(id)notification event:(id)event date:(id)date endDate:(id)endDate timeZone:(id)zone;
++ (id)previewForNotes:(id)notes;
++ (id)resourceChangeNotificationWithNotification:(id)notification message:(id)message date:(id)date endDate:(id)endDate timeZone:(id)zone;
++ (id)responseNotificationWithTitle:(id)title message:(id)message;
++ (id)timeToLeaveNotificationRepresentationWithHypothesisMessage:(id)message event:(id)event date:(id)date displayTimeZone:(id)zone;
++ (id)upcomingEventNotificationRepresentationWithEvent:(id)event date:(id)date displayTimeZone:(id)zone;
+- (EKUIEventNotificationRepresentation)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 - (id)dictionaryRepresentationsOfSupplementaryItems;
-- (void)_setOwnerForContactDictionary:(id)a3;
-- (void)setOrganizerForContactDictionary:(id)a3;
-- (void)updateUpcomingEventNotificationWithHypothesisMessage:(id)a3;
+- (void)_setOwnerForContactDictionary:(id)dictionary;
+- (void)setOrganizerForContactDictionary:(id)dictionary;
+- (void)updateUpcomingEventNotificationWithHypothesisMessage:(id)message;
 @end
 
 @implementation EKUIEventNotificationRepresentation
 
-+ (id)defaultEventNotificationRepresentationWithTitle:(id)a3 message:(id)a4 notes:(id)a5
++ (id)defaultEventNotificationRepresentationWithTitle:(id)title message:(id)message notes:(id)notes
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = objc_alloc_init(a1);
+  notesCopy = notes;
+  messageCopy = message;
+  titleCopy = title;
+  v11 = objc_alloc_init(self);
   [v11 setType:0];
   v12 = EventKitUIBundle();
   v13 = [v12 localizedStringForKey:@"Unknown title" value:@"Title" table:0];
-  v14 = [EKUITextAndHeaderItem itemWithText:v10 andHeader:v13];
+  v14 = [EKUITextAndHeaderItem itemWithText:titleCopy andHeader:v13];
 
   [v11 setTitleItem:v14];
-  v15 = [EKUITextAndHeaderItem itemWithText:v9 andHeader:&stru_1F4EF6790];
+  v15 = [EKUITextAndHeaderItem itemWithText:messageCopy andHeader:&stru_1F4EF6790];
 
   [v11 setSubtitleItem:v15];
-  v16 = [objc_opt_class() previewForNotes:v8];
+  v16 = [objc_opt_class() previewForNotes:notesCopy];
 
   [v11 setNotes:v16];
 
   return v11;
 }
 
-+ (id)upcomingEventNotificationRepresentationWithEvent:(id)a3 date:(id)a4 displayTimeZone:(id)a5
++ (id)upcomingEventNotificationRepresentationWithEvent:(id)event date:(id)date displayTimeZone:(id)zone
 {
   v89 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v80 = a5;
-  v10 = objc_alloc_init(a1);
+  eventCopy = event;
+  dateCopy = date;
+  zoneCopy = zone;
+  v10 = objc_alloc_init(self);
   [v10 setType:1];
-  [v10 setAllDay:{objc_msgSend(v8, "isAllDay")}];
-  v79 = v9;
-  [v10 setDate:v9];
+  [v10 setAllDay:{objc_msgSend(eventCopy, "isAllDay")}];
+  v79 = dateCopy;
+  [v10 setDate:dateCopy];
   v11 = objc_opt_class();
-  v12 = [v8 notes];
-  v13 = [v11 previewForNotes:v12];
+  notes = [eventCopy notes];
+  v13 = [v11 previewForNotes:notes];
   [v10 setNotes:v13];
 
-  v14 = [v8 title];
+  title = [eventCopy title];
   v15 = EventKitUIBundle();
   v16 = [v15 localizedStringForKey:@"Title" value:&stru_1F4EF6790 table:0];
-  v17 = [EKUITextAndHeaderItem itemWithText:v14 andHeader:v16];
+  v17 = [EKUITextAndHeaderItem itemWithText:title andHeader:v16];
 
   v78 = v17;
   [v10 setTitleItem:v17];
   v18 = MEMORY[0x1E6993408];
-  v19 = [v8 location];
-  v20 = [v8 locationWithoutPrediction];
-  v21 = [v8 preferredLocation];
-  v22 = [v18 locationStringForLocation:v19 locationWithoutPrediction:v20 preferredLocation:v21 conferenceURL:0 conferenceURLIsBroadcast:0 options:96];
-  v23 = [v22 string];
+  location = [eventCopy location];
+  locationWithoutPrediction = [eventCopy locationWithoutPrediction];
+  preferredLocation = [eventCopy preferredLocation];
+  v22 = [v18 locationStringForLocation:location locationWithoutPrediction:locationWithoutPrediction preferredLocation:preferredLocation conferenceURL:0 conferenceURLIsBroadcast:0 options:96];
+  string = [v22 string];
 
-  if ([v23 length])
+  if ([string length])
   {
-    v24 = [objc_opt_class() _whereLocalizedString];
-    v25 = [EKUITextAndHeaderItem itemWithText:v23 andHeader:v24];
+    _whereLocalizedString = [objc_opt_class() _whereLocalizedString];
+    v25 = [EKUITextAndHeaderItem itemWithText:string andHeader:_whereLocalizedString];
 
     [v10 setSubtitleItem:v25];
   }
 
-  v77 = v23;
-  v26 = [MEMORY[0x1E695DF70] array];
+  v77 = string;
+  array = [MEMORY[0x1E695DF70] array];
   v27 = +[EKStringFactory sharedInstance];
-  v28 = [v8 startDate];
-  v29 = [v8 endDateUnadjustedForLegacyClients];
-  v30 = [v27 dateStringForEventInvitationWithStartDate:v28 endDate:v29 timeZone:v80 allDay:{objc_msgSend(v8, "isAllDay")}];
+  startDate = [eventCopy startDate];
+  endDateUnadjustedForLegacyClients = [eventCopy endDateUnadjustedForLegacyClients];
+  v30 = [v27 dateStringForEventInvitationWithStartDate:startDate endDate:endDateUnadjustedForLegacyClients timeZone:zoneCopy allDay:{objc_msgSend(eventCopy, "isAllDay")}];
 
-  v31 = v26;
-  v32 = [objc_opt_class() _whenLocalizedString];
+  v31 = array;
+  _whenLocalizedString = [objc_opt_class() _whenLocalizedString];
   v76 = v30;
-  v33 = [EKUITextAndHeaderItem itemWithText:v30 andHeader:v32];
-  [v26 addObject:v33];
+  v33 = [EKUITextAndHeaderItem itemWithText:v30 andHeader:_whenLocalizedString];
+  [array addObject:v33];
 
-  v34 = [v8 organizer];
-  v35 = v34;
-  if (v34 && ([v34 isCurrentUser] & 1) == 0)
+  organizer = [eventCopy organizer];
+  v35 = organizer;
+  if (organizer && ([organizer isCurrentUser] & 1) == 0)
   {
     CUIKDisplayStringForNotificationIdentity();
     v37 = v36 = v35;
@@ -110,15 +110,15 @@
     v35 = v36;
   }
 
-  v41 = [v8 attendees];
-  v42 = v41;
+  attendees = [eventCopy attendees];
+  v42 = attendees;
   v43 = v79;
-  if (v41 && [v41 count])
+  if (attendees && [attendees count])
   {
     v72 = v10;
-    v73 = v8;
+    v73 = eventCopy;
     v71 = v42;
-    v74 = [v8 sortEKParticipantsIgnoringNonHumans:v42];
+    v74 = [eventCopy sortEKParticipantsIgnoringNonHumans:v42];
     v44 = objc_opt_new();
     v45 = v35;
     v46 = objc_opt_new();
@@ -147,24 +147,24 @@
             }
 
             v52 = *(*(&v84 + 1) + 8 * i);
-            v53 = [v52 name];
-            v54 = v53;
-            if (v53)
+            name = [v52 name];
+            v54 = name;
+            if (name)
             {
-              v55 = v53;
+              resourceSpecifier = name;
             }
 
             else
             {
               v56 = [v52 URL];
-              v55 = [v56 resourceSpecifier];
+              resourceSpecifier = [v56 resourceSpecifier];
             }
 
-            v57 = [v52 participantStatus];
+            participantStatus = [v52 participantStatus];
             v58 = v44;
-            if (v57 == 3 || (v59 = [v52 participantStatus], v58 = v46, v59 == 4) || (v60 = objc_msgSend(v52, "participantStatus"), v58 = v81, !v60))
+            if (participantStatus == 3 || (v59 = [v52 participantStatus], v58 = v46, v59 == 4) || (v60 = objc_msgSend(v52, "participantStatus"), v58 = v81, !v60))
             {
-              [v58 addObject:v55];
+              [v58 addObject:resourceSpecifier];
             }
           }
 
@@ -196,7 +196,7 @@
     v61[2](v61, v46, v67);
 
     v10 = v72;
-    v8 = v73;
+    eventCopy = v73;
     v43 = v79;
     v35 = v75;
     v42 = v71;
@@ -245,19 +245,19 @@ void __109__EKUIEventNotificationRepresentation_upcomingEventNotificationReprese
 LABEL_6:
 }
 
-+ (id)invitationNotificationRepresentationWithNotification:(id)a3 event:(id)a4 date:(id)a5 endDate:(id)a6 timeZone:(id)a7
++ (id)invitationNotificationRepresentationWithNotification:(id)notification event:(id)event date:(id)date endDate:(id)endDate timeZone:(id)zone
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v62 = a6;
-  v60 = a7;
-  v15 = objc_alloc_init(a1);
-  v16 = v12;
+  notificationCopy = notification;
+  eventCopy = event;
+  dateCopy = date;
+  endDateCopy = endDate;
+  zoneCopy = zone;
+  v15 = objc_alloc_init(self);
+  v16 = notificationCopy;
   [v15 setType:2];
   v17 = objc_opt_new();
-  v18 = [v16 title];
-  [v17 setText:v18];
+  title = [v16 title];
+  [v17 setText:title];
 
   v19 = objc_opt_new();
   if ([v16 type] == 2)
@@ -278,12 +278,12 @@ LABEL_5:
     goto LABEL_10;
   }
 
-  v25 = [v16 type];
+  type = [v16 type];
   v26 = objc_opt_class();
-  if (v25 == 3)
+  if (type == 3)
   {
-    v27 = [v26 _invitationUpdatedTitleLocalizedString];
-    [v17 setHeader:v27];
+    _invitationUpdatedTitleLocalizedString = [v26 _invitationUpdatedTitleLocalizedString];
+    [v17 setHeader:_invitationUpdatedTitleLocalizedString];
 
     v24 = CUIKMessageStringForEventInvitationNotification();
     goto LABEL_5;
@@ -294,8 +294,8 @@ LABEL_5:
   v30 = v63;
   if (v29)
   {
-    v31 = [objc_opt_class() _invitationUpdatedTitleLocalizedString];
-    [v17 setHeader:v31];
+    _invitationUpdatedTitleLocalizedString2 = [objc_opt_class() _invitationUpdatedTitleLocalizedString];
+    [v17 setHeader:_invitationUpdatedTitleLocalizedString2];
 
     [v19 setText:v30];
   }
@@ -306,61 +306,61 @@ LABEL_5:
     v33 = [v32 localizedStringForKey:@"Invitation" value:&stru_1F4EF6790 table:0];
     [v17 setHeader:v33];
 
-    v34 = [objc_opt_class() _fromLocalizedString];
-    [v19 setHeader:v34];
+    _fromLocalizedString = [objc_opt_class() _fromLocalizedString];
+    [v19 setHeader:_fromLocalizedString];
 
     v35 = CUIKDisplayStringForNotificationIdentity();
     [v19 setText:v35];
   }
 
 LABEL_10:
-  [v15 setDate:v14];
-  if (([v13 isAllDay] & 1) == 0)
+  [v15 setDate:dateCopy];
+  if (([eventCopy isAllDay] & 1) == 0)
   {
-    v36 = [v13 endDateUnadjustedForLegacyClients];
+    endDateUnadjustedForLegacyClients = [eventCopy endDateUnadjustedForLegacyClients];
 
-    if (v36)
+    if (endDateUnadjustedForLegacyClients)
     {
-      [v15 setEndDate:v62];
-      v37 = [v13 potentialConflictOccurrenceDatesInTimePeriod:0];
+      [v15 setEndDate:endDateCopy];
+      v37 = [eventCopy potentialConflictOccurrenceDatesInTimePeriod:0];
       [v15 setPotentialConflictDates:v37];
 
-      v38 = [v13 calendar];
-      v39 = [v38 source];
-      v40 = [v39 sourceIdentifier];
-      [v15 setSourceIdentifier:v40];
+      calendar = [eventCopy calendar];
+      source = [calendar source];
+      sourceIdentifier = [source sourceIdentifier];
+      [v15 setSourceIdentifier:sourceIdentifier];
 
-      v41 = [v13 externalURL];
-      v42 = [v41 absoluteString];
-      [v15 setExternalURLString:v42];
+      externalURL = [eventCopy externalURL];
+      absoluteString = [externalURL absoluteString];
+      [v15 setExternalURLString:absoluteString];
     }
   }
 
-  v61 = v13;
+  v61 = eventCopy;
   [v15 setTitleItem:v17];
   [v15 setSubtitleItem:v19];
   v43 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
   v44 = objc_opt_new();
-  v45 = [objc_opt_class() _whenLocalizedString];
-  [v44 setHeader:v45];
+  _whenLocalizedString = [objc_opt_class() _whenLocalizedString];
+  [v44 setHeader:_whenLocalizedString];
 
   v46 = +[EKStringFactory sharedInstance];
-  v47 = v14;
-  v48 = [v46 dateStringForEventInvitationWithStartDate:v14 endDate:v62 timeZone:v60 allDay:{objc_msgSend(v16, "isAllDay")}];
+  v47 = dateCopy;
+  v48 = [v46 dateStringForEventInvitationWithStartDate:dateCopy endDate:endDateCopy timeZone:zoneCopy allDay:{objc_msgSend(v16, "isAllDay")}];
 
   [v44 setText:v48];
   [v43 addObject:v44];
-  v49 = [v16 location];
-  v50 = [v49 length];
+  location = [v16 location];
+  v50 = [location length];
 
   if (v50)
   {
     v51 = objc_opt_new();
-    v52 = [objc_opt_class() _whereLocalizedString];
-    [v51 setHeader:v52];
+    _whereLocalizedString = [objc_opt_class() _whereLocalizedString];
+    [v51 setHeader:_whereLocalizedString];
 
-    v53 = [v16 location];
-    [v51 setText:v53];
+    location2 = [v16 location];
+    [v51 setText:location2];
 
     [v43 addObject:v51];
   }
@@ -368,17 +368,17 @@ LABEL_10:
   v54 = [v43 copy];
   [v15 setSupplementaryItems:v54];
 
-  v55 = [v16 owner];
+  owner = [v16 owner];
 
-  if (v55)
+  if (owner)
   {
-    v56 = [v16 owner];
-    v57 = [v56 isCurrentUser];
+    owner2 = [v16 owner];
+    isCurrentUser = [owner2 isCurrentUser];
 
-    if ((v57 & 1) == 0)
+    if ((isCurrentUser & 1) == 0)
     {
-      v58 = [v16 owner];
-      [v15 _setOwnerForContactDictionary:v58];
+      owner3 = [v16 owner];
+      [v15 _setOwnerForContactDictionary:owner3];
     }
   }
 
@@ -417,13 +417,13 @@ LABEL_10:
   return v3;
 }
 
-+ (BOOL)_invitationNotificationHasResourceChanges:(id)a3 changesString:(id *)a4
++ (BOOL)_invitationNotificationHasResourceChanges:(id)changes changesString:(id *)string
 {
-  v5 = a3;
-  if ([v5 timeChanged] & 1) != 0 || (objc_msgSend(v5, "dateChanged"))
+  changesCopy = changes;
+  if ([changesCopy timeChanged] & 1) != 0 || (objc_msgSend(changesCopy, "dateChanged"))
   {
-    v6 = 1;
-    if (!a4)
+    locationChanged = 1;
+    if (!string)
     {
       goto LABEL_20;
     }
@@ -431,28 +431,28 @@ LABEL_10:
 
   else
   {
-    v6 = [v5 locationChanged];
-    if (!a4)
+    locationChanged = [changesCopy locationChanged];
+    if (!string)
     {
       goto LABEL_20;
     }
   }
 
-  if (!v6)
+  if (!locationChanged)
   {
     goto LABEL_20;
   }
 
   v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-  if (([v5 timeChanged] & 1) != 0 || objc_msgSend(v5, "dateChanged"))
+  if (([changesCopy timeChanged] & 1) != 0 || objc_msgSend(changesCopy, "dateChanged"))
   {
-    if ([v5 timeChanged])
+    if ([changesCopy timeChanged])
     {
       v8 = @"Time changed";
       goto LABEL_13;
     }
 
-    if ([v5 dateChanged])
+    if ([changesCopy dateChanged])
     {
       v8 = @"Date changed";
 LABEL_13:
@@ -466,9 +466,9 @@ LABEL_13:
     }
   }
 
-  if ([v5 locationChanged])
+  if ([changesCopy locationChanged])
   {
-    if ([v5 locationChanged])
+    if ([changesCopy locationChanged])
     {
       v11 = EventKitUIBundle();
       v12 = [v11 localizedStringForKey:@"Location changed" value:&stru_1F4EF6790 table:0];
@@ -480,78 +480,78 @@ LABEL_13:
     }
   }
 
-  *a4 = [v7 componentsJoinedByString:@"\n"];
+  *string = [v7 componentsJoinedByString:@"\n"];
 
 LABEL_20:
-  return v6;
+  return locationChanged;
 }
 
-+ (id)responseNotificationWithTitle:(id)a3 message:(id)a4
++ (id)responseNotificationWithTitle:(id)title message:(id)message
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
+  messageCopy = message;
+  titleCopy = title;
+  v8 = objc_alloc_init(self);
   [v8 setType:3];
   v9 = EventKitUIBundle();
   v10 = [v9 localizedStringForKey:@"Shared Calendar" value:&stru_1F4EF6790 table:0];
-  v11 = [EKUITextAndHeaderItem itemWithText:v7 andHeader:v10];
+  v11 = [EKUITextAndHeaderItem itemWithText:titleCopy andHeader:v10];
 
   [v8 setTitleItem:v11];
-  v12 = [EKUITextAndHeaderItem itemWithText:v6 andHeader:&stru_1F4EF6790];
+  v12 = [EKUITextAndHeaderItem itemWithText:messageCopy andHeader:&stru_1F4EF6790];
 
   [v8 setSubtitleItem:v12];
 
   return v8;
 }
 
-+ (id)resourceChangeNotificationWithNotification:(id)a3 message:(id)a4 date:(id)a5 endDate:(id)a6 timeZone:(id)a7
++ (id)resourceChangeNotificationWithNotification:(id)notification message:(id)message date:(id)date endDate:(id)endDate timeZone:(id)zone
 {
-  v12 = a3;
-  v35 = a5;
-  v13 = a6;
-  v36 = a7;
-  v14 = a4;
-  v15 = objc_alloc_init(a1);
+  notificationCopy = notification;
+  dateCopy = date;
+  endDateCopy = endDate;
+  zoneCopy = zone;
+  messageCopy = message;
+  v15 = objc_alloc_init(self);
   [v15 setType:4];
-  v16 = v12;
+  v16 = notificationCopy;
   v17 = objc_opt_new();
   v18 = EventKitUIBundle();
   v19 = [v18 localizedStringForKey:@"Shared Event" value:&stru_1F4EF6790 table:0];
   [v17 setHeader:v19];
 
-  v20 = [v16 title];
-  [v17 setText:v20];
+  title = [v16 title];
+  [v17 setText:title];
 
   [v15 setTitleItem:v17];
-  v21 = v35;
-  v22 = [EKUITextAndHeaderItem itemWithText:v14 andHeader:&stru_1F4EF6790];
+  v21 = dateCopy;
+  v22 = [EKUITextAndHeaderItem itemWithText:messageCopy andHeader:&stru_1F4EF6790];
 
   [v15 setSubtitleItem:v22];
   v23 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
   if ([v16 changeType] != 3)
   {
     v24 = objc_opt_new();
-    v25 = [objc_opt_class() _whenLocalizedString];
-    [v24 setHeader:v25];
+    _whenLocalizedString = [objc_opt_class() _whenLocalizedString];
+    [v24 setHeader:_whenLocalizedString];
 
     v26 = +[EKStringFactory sharedInstance];
-    v27 = [v26 dateStringForEventInvitationWithStartDate:v35 endDate:v13 timeZone:v36 allDay:{objc_msgSend(v16, "allDay")}];
+    v27 = [v26 dateStringForEventInvitationWithStartDate:dateCopy endDate:endDateCopy timeZone:zoneCopy allDay:{objc_msgSend(v16, "allDay")}];
     [v24 setText:v27];
 
     [v23 addObject:v24];
   }
 
-  v28 = [v16 location];
-  v29 = [v28 length];
+  location = [v16 location];
+  v29 = [location length];
 
   if (v29)
   {
     v30 = objc_opt_new();
-    v31 = [objc_opt_class() _whereLocalizedString];
-    [v30 setHeader:v31];
+    _whereLocalizedString = [objc_opt_class() _whereLocalizedString];
+    [v30 setHeader:_whereLocalizedString];
 
-    v32 = [v16 location];
-    [v30 setText:v32];
+    location2 = [v16 location];
+    [v30 setText:location2];
 
     [v23 addObject:v30];
   }
@@ -560,46 +560,46 @@ LABEL_20:
   [v15 setSupplementaryItems:v33];
 
   [v15 setDate:v21];
-  [v15 setEndDate:v13];
+  [v15 setEndDate:endDateCopy];
 
   return v15;
 }
 
-+ (id)timeToLeaveNotificationRepresentationWithHypothesisMessage:(id)a3 event:(id)a4 date:(id)a5 displayTimeZone:(id)a6
++ (id)timeToLeaveNotificationRepresentationWithHypothesisMessage:(id)message event:(id)event date:(id)date displayTimeZone:(id)zone
 {
-  v10 = a3;
-  v11 = [a1 upcomingEventNotificationRepresentationWithEvent:a4 date:a5 displayTimeZone:a6];
-  [v11 updateUpcomingEventNotificationWithHypothesisMessage:v10];
+  messageCopy = message;
+  v11 = [self upcomingEventNotificationRepresentationWithEvent:event date:date displayTimeZone:zone];
+  [v11 updateUpcomingEventNotificationWithHypothesisMessage:messageCopy];
 
   return v11;
 }
 
-- (void)updateUpcomingEventNotificationWithHypothesisMessage:(id)a3
+- (void)updateUpcomingEventNotificationWithHypothesisMessage:(id)message
 {
-  if (a3)
+  if (message)
   {
-    v4 = a3;
+    messageCopy = message;
     [(EKUIEventNotificationRepresentation *)self setType:5];
-    v8 = [EKUITextAndHeaderItem itemWithText:v4 andHeader:&stru_1F4EF6790];
+    v8 = [EKUITextAndHeaderItem itemWithText:messageCopy andHeader:&stru_1F4EF6790];
 
     [(EKUIEventNotificationRepresentation *)self setSubtitleItem:v8];
-    v5 = [(EKUIEventNotificationRepresentation *)self titleItem];
+    titleItem = [(EKUIEventNotificationRepresentation *)self titleItem];
     v6 = EventKitUIBundle();
     v7 = [v6 localizedStringForKey:@"Time to Leave Watch notification header" value:@"Time to Leave" table:0];
-    [v5 setHeader:v7];
+    [titleItem setHeader:v7];
   }
 }
 
-- (EKUIEventNotificationRepresentation)initWithDictionary:(id)a3
+- (EKUIEventNotificationRepresentation)initWithDictionary:(id)dictionary
 {
   v53 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v51.receiver = self;
   v51.super_class = EKUIEventNotificationRepresentation;
   v6 = [(EKUIEventNotificationRepresentation *)&v51 init];
   if (v6)
   {
-    v7 = [v5 objectForKeyedSubscript:@"type"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     if (!v7)
     {
       [(EKUIEventNotificationRepresentation *)v6 initWithDictionary:a2];
@@ -607,56 +607,56 @@ LABEL_20:
 
     v6->_type = [v7 integerValue];
     v8 = [EKUITextAndHeaderItem alloc];
-    v9 = [v5 objectForKeyedSubscript:@"title"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     v10 = [(EKUITextAndHeaderItem *)v8 initWithDictionary:v9];
     titleItem = v6->_titleItem;
     v6->_titleItem = v10;
 
     v12 = [EKUITextAndHeaderItem alloc];
-    v13 = [v5 objectForKeyedSubscript:@"subtitle"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"subtitle"];
     v14 = [(EKUITextAndHeaderItem *)v12 initWithDictionary:v13];
     subtitleItem = v6->_subtitleItem;
     v6->_subtitleItem = v14;
 
-    v16 = [v5 objectForKeyedSubscript:@"userActivity"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"userActivity"];
     userActivityUserInfo = v6->_userActivityUserInfo;
     v6->_userActivityUserInfo = v16;
 
-    v18 = [v5 objectForKeyedSubscript:@"date"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"date"];
     date = v6->_date;
     v6->_date = v18;
 
-    v20 = [v5 objectForKeyedSubscript:@"endDate"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"endDate"];
     endDate = v6->_endDate;
     v6->_endDate = v20;
 
-    v22 = [v5 objectForKeyedSubscript:@"allDay"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"allDay"];
     v6->_allDay = [v22 BOOLValue];
 
-    v23 = [v5 objectForKeyedSubscript:@"organizer"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"organizer"];
     organizerContactDictionary = v6->_organizerContactDictionary;
     v6->_organizerContactDictionary = v23;
 
-    v25 = [v5 objectForKeyedSubscript:@"sourceIdentifier"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"sourceIdentifier"];
     sourceIdentifier = v6->_sourceIdentifier;
     v6->_sourceIdentifier = v25;
 
-    v27 = [v5 objectForKeyedSubscript:@"externalURL"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"externalURL"];
     externalURLString = v6->_externalURLString;
     v6->_externalURLString = v27;
 
-    v29 = [v5 objectForKeyedSubscript:@"potentialConflictDates"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"potentialConflictDates"];
     potentialConflictDates = v6->_potentialConflictDates;
     v6->_potentialConflictDates = v29;
 
-    v31 = [v5 objectForKeyedSubscript:@"notes"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"notes"];
     notes = v6->_notes;
     v6->_notes = v31;
 
     supplementaryItems = v6->_supplementaryItems;
     v6->_supplementaryItems = 0;
 
-    v34 = [v5 objectForKeyedSubscript:@"supplementary"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"supplementary"];
     v35 = v34;
     if (v34)
     {
@@ -704,83 +704,83 @@ LABEL_20:
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_type];
-  [v3 setObject:v4 forKeyedSubscript:@"type"];
+  [dictionary setObject:v4 forKeyedSubscript:@"type"];
 
   titleItem = self->_titleItem;
   if (titleItem)
   {
-    v6 = [(EKUITextAndHeaderItem *)titleItem dictionaryRepresentation];
-    [v3 setObject:v6 forKeyedSubscript:@"title"];
+    dictionaryRepresentation = [(EKUITextAndHeaderItem *)titleItem dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"title"];
   }
 
   subtitleItem = self->_subtitleItem;
   if (subtitleItem)
   {
-    v8 = [(EKUITextAndHeaderItem *)subtitleItem dictionaryRepresentation];
-    [v3 setObject:v8 forKeyedSubscript:@"subtitle"];
+    dictionaryRepresentation2 = [(EKUITextAndHeaderItem *)subtitleItem dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"subtitle"];
   }
 
   if (self->_supplementaryItems)
   {
-    v9 = [(EKUIEventNotificationRepresentation *)self dictionaryRepresentationsOfSupplementaryItems];
-    [v3 setObject:v9 forKeyedSubscript:@"supplementary"];
+    dictionaryRepresentationsOfSupplementaryItems = [(EKUIEventNotificationRepresentation *)self dictionaryRepresentationsOfSupplementaryItems];
+    [dictionary setObject:dictionaryRepresentationsOfSupplementaryItems forKeyedSubscript:@"supplementary"];
   }
 
   userActivityUserInfo = self->_userActivityUserInfo;
   if (userActivityUserInfo)
   {
-    [v3 setObject:userActivityUserInfo forKeyedSubscript:@"userActivity"];
+    [dictionary setObject:userActivityUserInfo forKeyedSubscript:@"userActivity"];
   }
 
   date = self->_date;
   if (date)
   {
-    [v3 setObject:date forKeyedSubscript:@"date"];
+    [dictionary setObject:date forKeyedSubscript:@"date"];
   }
 
   endDate = self->_endDate;
   if (endDate)
   {
-    [v3 setObject:endDate forKeyedSubscript:@"endDate"];
+    [dictionary setObject:endDate forKeyedSubscript:@"endDate"];
   }
 
   organizerContactDictionary = self->_organizerContactDictionary;
   if (organizerContactDictionary)
   {
-    [v3 setObject:organizerContactDictionary forKeyedSubscript:@"organizer"];
+    [dictionary setObject:organizerContactDictionary forKeyedSubscript:@"organizer"];
   }
 
   sourceIdentifier = self->_sourceIdentifier;
   if (sourceIdentifier)
   {
-    [v3 setObject:sourceIdentifier forKeyedSubscript:@"sourceIdentifier"];
+    [dictionary setObject:sourceIdentifier forKeyedSubscript:@"sourceIdentifier"];
   }
 
   externalURLString = self->_externalURLString;
   if (externalURLString)
   {
-    [v3 setObject:externalURLString forKeyedSubscript:@"externalURL"];
+    [dictionary setObject:externalURLString forKeyedSubscript:@"externalURL"];
   }
 
   potentialConflictDates = self->_potentialConflictDates;
   if (potentialConflictDates)
   {
     v17 = [(NSArray *)potentialConflictDates copy];
-    [v3 setObject:v17 forKeyedSubscript:@"potentialConflictDates"];
+    [dictionary setObject:v17 forKeyedSubscript:@"potentialConflictDates"];
   }
 
   notes = self->_notes;
   if (notes)
   {
-    [v3 setObject:notes forKeyedSubscript:@"notes"];
+    [dictionary setObject:notes forKeyedSubscript:@"notes"];
   }
 
   v19 = [MEMORY[0x1E696AD98] numberWithBool:self->_allDay];
-  [v3 setObject:v19 forKeyedSubscript:@"allDay"];
+  [dictionary setObject:v19 forKeyedSubscript:@"allDay"];
 
-  v20 = [v3 copy];
+  v20 = [dictionary copy];
 
   return v20;
 }
@@ -811,8 +811,8 @@ LABEL_20:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -832,70 +832,70 @@ LABEL_20:
   return v11;
 }
 
-- (void)setOrganizerForContactDictionary:(id)a3
+- (void)setOrganizerForContactDictionary:(id)dictionary
 {
-  v12 = a3;
-  if (v12)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
-    v5 = [v12 name];
-    v6 = [v5 length];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    name = [dictionaryCopy name];
+    v6 = [name length];
 
     if (v6)
     {
-      v7 = [v12 name];
-      [v4 setObject:v7 forKeyedSubscript:@"displayName"];
+      name2 = [dictionaryCopy name];
+      [dictionary setObject:name2 forKeyedSubscript:@"displayName"];
     }
 
-    v8 = [v12 URL];
-    v9 = [v8 resourceSpecifier];
+    v8 = [dictionaryCopy URL];
+    resourceSpecifier = [v8 resourceSpecifier];
 
-    if ([v9 length])
+    if ([resourceSpecifier length])
     {
-      [v4 setObject:v9 forKeyedSubscript:@"rawAddress"];
+      [dictionary setObject:resourceSpecifier forKeyedSubscript:@"rawAddress"];
     }
   }
 
   else
   {
-    v4 = 0;
+    dictionary = 0;
   }
 
-  v10 = [v4 copy];
+  v10 = [dictionary copy];
   organizerContactDictionary = self->_organizerContactDictionary;
   self->_organizerContactDictionary = v10;
 }
 
-- (void)_setOwnerForContactDictionary:(id)a3
+- (void)_setOwnerForContactDictionary:(id)dictionary
 {
-  v12 = a3;
-  if (v12)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
-    v5 = [v12 name];
-    v6 = [v5 length];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    name = [dictionaryCopy name];
+    v6 = [name length];
 
     if (v6)
     {
-      v7 = [v12 name];
-      [v4 setObject:v7 forKeyedSubscript:@"displayName"];
+      name2 = [dictionaryCopy name];
+      [dictionary setObject:name2 forKeyedSubscript:@"displayName"];
     }
 
-    v8 = [v12 URL];
-    v9 = [v8 resourceSpecifier];
+    v8 = [dictionaryCopy URL];
+    resourceSpecifier = [v8 resourceSpecifier];
 
-    if ([v9 length])
+    if ([resourceSpecifier length])
     {
-      [v4 setObject:v9 forKeyedSubscript:@"rawAddress"];
+      [dictionary setObject:resourceSpecifier forKeyedSubscript:@"rawAddress"];
     }
   }
 
   else
   {
-    v4 = 0;
+    dictionary = 0;
   }
 
-  v10 = [v4 copy];
+  v10 = [dictionary copy];
   organizerContactDictionary = self->_organizerContactDictionary;
   self->_organizerContactDictionary = v10;
 }
@@ -910,17 +910,17 @@ LABEL_20:
   return v4;
 }
 
-+ (id)previewForNotes:(id)a3
++ (id)previewForNotes:(id)notes
 {
-  v3 = a3;
-  if ([v3 length] <= 0x1F4)
+  notesCopy = notes;
+  if ([notesCopy length] <= 0x1F4)
   {
-    v4 = v3;
+    v4 = notesCopy;
   }
 
   else
   {
-    v4 = [v3 substringToIndex:500];
+    v4 = [notesCopy substringToIndex:500];
   }
 
   v5 = v4;

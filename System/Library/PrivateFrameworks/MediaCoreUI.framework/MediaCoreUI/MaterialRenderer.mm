@@ -1,23 +1,23 @@
 @interface MaterialRenderer
 - (_TtC11MediaCoreUI16MaterialRenderer)init;
-- (void)drawInMTKView:(id)a3;
-- (void)mtkView:(id)a3 drawableSizeWillChange:(CGSize)a4;
+- (void)drawInMTKView:(id)view;
+- (void)mtkView:(id)view drawableSizeWillChange:(CGSize)change;
 @end
 
 @implementation MaterialRenderer
 
-- (void)mtkView:(id)a3 drawableSizeWillChange:(CGSize)a4
+- (void)mtkView:(id)view drawableSizeWillChange:(CGSize)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1C5AC8A20(v5);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1C5AC8A20(viewCopy);
 }
 
-- (void)drawInMTKView:(id)a3
+- (void)drawInMTKView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C5AC6424(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1C5AC6424(viewCopy);
 }
 
 - (_TtC11MediaCoreUI16MaterialRenderer)init

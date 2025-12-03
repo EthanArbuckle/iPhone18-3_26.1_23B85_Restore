@@ -1,113 +1,113 @@
 @interface SBPIPContainerViewController
-- (BOOL)handleStashingForTransitionContext:(id)a3;
+- (BOOL)handleStashingForTransitionContext:(id)context;
 - (BOOL)prefersIdleTimerDisabled;
 - (BOOL)requiresMedusaKeyboard;
 - (BOOL)shouldSuppressAssociatedElementsInSystemAperture;
 - (BOOL)toggleUserPreferredScale;
 - (CGRect)_contentViewFrameInDisplayReferenceSpace;
-- (CGRect)_frameInFixedCoordinateSpace:(CGRect)a3 transformedToInterfaceOrientation:(int64_t)a4;
+- (CGRect)_frameInFixedCoordinateSpace:(CGRect)space transformedToInterfaceOrientation:(int64_t)orientation;
 - (NSNumber)overrideResourcesUsageReductionTimeout;
-- (SBPIPContainerViewController)initWithCoder:(id)a3;
-- (SBPIPContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (SBPIPContainerViewController)initWithPIPController:(id)a3 interactionSettings:(id)a4 adapter:(id)a5;
+- (SBPIPContainerViewController)initWithCoder:(id)coder;
+- (SBPIPContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (SBPIPContainerViewController)initWithPIPController:(id)controller interactionSettings:(id)settings adapter:(id)adapter;
 - (SBPIPContainerViewController)tetheredContainerViewController;
 - (SBPIPContainerViewController)tetheringContainerViewController;
 - (SBPIPContainerViewControllerInteractionObserver)interactionObserver;
-- (UIEdgeInsets)_resolvedSafeAreaInsetsForWindowScene:(id)a3;
-- (UIEdgeInsets)_safeAreaInsetsForScene:(id)a3;
+- (UIEdgeInsets)_resolvedSafeAreaInsetsForWindowScene:(id)scene;
+- (UIEdgeInsets)_safeAreaInsetsForScene:(id)scene;
 - (UIEdgeInsets)effectiveEdgeInsets;
-- (UIEdgeInsets)effectiveEdgeInsetsForWindowScene:(id)a3;
+- (UIEdgeInsets)effectiveEdgeInsetsForWindowScene:(id)scene;
 - (UIEdgeInsets)stashedPadding;
 - (UIView)morphAnimatorTargetContainerView;
 - (UIView)morphAnimatorTargetView;
 - (id)_blackCurtainViewForStopAnimation;
-- (id)_blurSpringAnimationWithParameters:(id)a3 fromValue:(id)a4 toValue:(id)a5;
+- (id)_blurSpringAnimationWithParameters:(id)parameters fromValue:(id)value toValue:(id)toValue;
 - (id)hostedAppSceneHandle;
 - (id)maximumAvailableVerticalPadding;
 - (int)processIdentifier;
 - (int64_t)windowInterfaceOrientation;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)SB_accessibilityToggleStashed;
-- (void)_addBlurFilterToView:(id)a3;
-- (void)_handleMicroPiPRotationDisplayLink:(id)a3;
+- (void)_addBlurFilterToView:(id)view;
+- (void)_handleMicroPiPRotationDisplayLink:(id)link;
 - (void)_layoutWithNonOperationFrame;
-- (void)_notifyStashStateChanged:(BOOL)a3;
-- (void)_removeBlurFilterFromView:(id)a3;
+- (void)_notifyStashStateChanged:(BOOL)changed;
+- (void)_removeBlurFilterFromView:(id)view;
 - (void)_removeMicroPIPMirrorView;
-- (void)_requireInterfaceOrientation:(int64_t)a3;
-- (void)_setAdapter:(id)a3;
-- (void)_setStashTabHidden:(BOOL)a3 left:(BOOL)a4 completion:(id)a5;
+- (void)_requireInterfaceOrientation:(int64_t)orientation;
+- (void)_setAdapter:(id)adapter;
+- (void)_setStashTabHidden:(BOOL)hidden left:(BOOL)left completion:(id)completion;
 - (void)_updateContentPadding;
-- (void)_updateContentViewFrame:(CGRect)a3 reason:(id)a4 usingDisplayArrangementSpace:(BOOL)a5;
+- (void)_updateContentViewFrame:(CGRect)frame reason:(id)reason usingDisplayArrangementSpace:(BOOL)space;
 - (void)_updateDisplayLayoutElementReferenceFrame;
 - (void)acquireInterfaceOrientationLock;
 - (void)dealloc;
-- (void)forcePictureInPictureToFrame:(CGRect)a3;
-- (void)getRotationContentSettings:(id *)a3 forWindow:(id)a4;
-- (void)handleDestructionRequestForSceneHandle:(id)a3;
-- (void)interactionController:(id)a3 didSettleOnStashState:(BOOL)a4;
-- (void)interactionController:(id)a3 didUpdateStashProgress:(double)a4;
-- (void)interactionControllerDidBeginEdgeResizing:(id)a3;
-- (void)interactionControllerDidBeginInteraction:(id)a3 forGestureRecognizer:(id)a4;
-- (void)interactionControllerDidBeginSizeChange:(id)a3 behavior:(int)a4;
-- (void)interactionControllerDidEndAllInteractions:(id)a3 targetWindowScene:(id)a4;
-- (void)interactionControllerDidEndEdgeResizing:(id)a3;
-- (void)interactionControllerDidEndSizeChange:(id)a3;
-- (void)interactionControllerDidUpdateEdgeInsets:(id)a3;
-- (void)interactionControllerPanGestureDidEnd:(id)a3;
+- (void)forcePictureInPictureToFrame:(CGRect)frame;
+- (void)getRotationContentSettings:(id *)settings forWindow:(id)window;
+- (void)handleDestructionRequestForSceneHandle:(id)handle;
+- (void)interactionController:(id)controller didSettleOnStashState:(BOOL)state;
+- (void)interactionController:(id)controller didUpdateStashProgress:(double)progress;
+- (void)interactionControllerDidBeginEdgeResizing:(id)resizing;
+- (void)interactionControllerDidBeginInteraction:(id)interaction forGestureRecognizer:(id)recognizer;
+- (void)interactionControllerDidBeginSizeChange:(id)change behavior:(int)behavior;
+- (void)interactionControllerDidEndAllInteractions:(id)interactions targetWindowScene:(id)scene;
+- (void)interactionControllerDidEndEdgeResizing:(id)resizing;
+- (void)interactionControllerDidEndSizeChange:(id)change;
+- (void)interactionControllerDidUpdateEdgeInsets:(id)insets;
+- (void)interactionControllerPanGestureDidEnd:(id)end;
 - (void)invalidate;
-- (void)layoutForTetheringInteractionController:(id)a3 behavior:(int)a4;
+- (void)layoutForTetheringInteractionController:(id)controller behavior:(int)behavior;
 - (void)loadView;
 - (void)noteWindowSceneDidChange;
-- (void)performAfterInFlightAnimationsComplete:(id)a3;
+- (void)performAfterInFlightAnimationsComplete:(id)complete;
 - (void)relinquishInterfaceOrientationLock;
-- (void)rotationAnimationDidBeginToRotation:(int64_t)a3 contentViewFrame:(CGRect)a4;
-- (void)rotationAnimationDidCompleteToRotation:(int64_t)a3 contentViewFrame:(CGRect)a4;
-- (void)rotationAnimationWillBeginToRotation:(int64_t)a3 contentViewFrame:(CGRect)a4;
-- (void)rotationAnimationWillCompleteToRotation:(int64_t)a3 contentViewFrame:(CGRect)a4;
-- (void)setConnectedWindowScenes:(id)a3;
-- (void)setContentScale:(double)a3;
-- (void)setContentViewPadding:(UIEdgeInsets)a3;
-- (void)setDisplayLayoutElementActive:(BOOL)a3;
-- (void)setEffectiveEdgeInsets:(UIEdgeInsets)a3;
-- (void)setInteractionControllerEnabled:(BOOL)a3 stashed:(BOOL)a4 dataSource:(id)a5;
-- (void)setIsActivelyTethered:(BOOL)a3 mode:(int64_t)a4;
-- (void)setNeedsLayoutForInteractionController:(id)a3 traits:(unint64_t)a4 withReason:(unint64_t)a5 behavior:(int)a6 completion:(id)a7;
-- (void)setPrefersHiddenFromClonedDisplay:(BOOL)a3;
-- (void)setStashed:(BOOL)a3;
-- (void)setStashedPadding:(UIEdgeInsets)a3;
-- (void)setTetheredContainerViewController:(id)a3;
-- (void)startAnimationDidBeginWithInitialInterfaceOrientation:(int64_t)a3;
-- (void)startAnimationDidCompleteWithInitialInterfaceOrientation:(int64_t)a3;
-- (void)startAnimationWillBeginWithInitialInterfaceOrientation:(int64_t)a3 initialFrame:(CGRect)a4;
+- (void)rotationAnimationDidBeginToRotation:(int64_t)rotation contentViewFrame:(CGRect)frame;
+- (void)rotationAnimationDidCompleteToRotation:(int64_t)rotation contentViewFrame:(CGRect)frame;
+- (void)rotationAnimationWillBeginToRotation:(int64_t)rotation contentViewFrame:(CGRect)frame;
+- (void)rotationAnimationWillCompleteToRotation:(int64_t)rotation contentViewFrame:(CGRect)frame;
+- (void)setConnectedWindowScenes:(id)scenes;
+- (void)setContentScale:(double)scale;
+- (void)setContentViewPadding:(UIEdgeInsets)padding;
+- (void)setDisplayLayoutElementActive:(BOOL)active;
+- (void)setEffectiveEdgeInsets:(UIEdgeInsets)insets;
+- (void)setInteractionControllerEnabled:(BOOL)enabled stashed:(BOOL)stashed dataSource:(id)source;
+- (void)setIsActivelyTethered:(BOOL)tethered mode:(int64_t)mode;
+- (void)setNeedsLayoutForInteractionController:(id)controller traits:(unint64_t)traits withReason:(unint64_t)reason behavior:(int)behavior completion:(id)completion;
+- (void)setPrefersHiddenFromClonedDisplay:(BOOL)display;
+- (void)setStashed:(BOOL)stashed;
+- (void)setStashedPadding:(UIEdgeInsets)padding;
+- (void)setTetheredContainerViewController:(id)controller;
+- (void)startAnimationDidBeginWithInitialInterfaceOrientation:(int64_t)orientation;
+- (void)startAnimationDidCompleteWithInitialInterfaceOrientation:(int64_t)orientation;
+- (void)startAnimationWillBeginWithInitialInterfaceOrientation:(int64_t)orientation initialFrame:(CGRect)frame;
 - (void)startDisplayLink;
-- (void)startResourcesUsageReductionAfterTimeout:(double)a3;
-- (void)startShowingContentWithAnimationSettings:(id)a3 parameters:(id)a4 completion:(id)a5;
-- (void)stopAnimationDidBeginWithFinalInterfaceOrientation:(int64_t)a3 finalFrame:(CGRect)a4;
-- (void)stopAnimationDidCompleteWithFinalInterfaceOrientation:(int64_t)a3;
-- (void)stopAnimationWillBeginWithFinalInterfaceOrientation:(int64_t)a3 finalFrame:(CGRect)a4;
+- (void)startResourcesUsageReductionAfterTimeout:(double)timeout;
+- (void)startShowingContentWithAnimationSettings:(id)settings parameters:(id)parameters completion:(id)completion;
+- (void)stopAnimationDidBeginWithFinalInterfaceOrientation:(int64_t)orientation finalFrame:(CGRect)frame;
+- (void)stopAnimationDidCompleteWithFinalInterfaceOrientation:(int64_t)orientation;
+- (void)stopAnimationWillBeginWithFinalInterfaceOrientation:(int64_t)orientation finalFrame:(CGRect)frame;
 - (void)stopDisplayLink;
 - (void)stopResourcesUsageReduction;
-- (void)stopShowingContentWithAnimationSettings:(id)a3 parameters:(id)a4 completion:(id)a5;
+- (void)stopShowingContentWithAnimationSettings:(id)settings parameters:(id)parameters completion:(id)completion;
 - (void)transitionAnimationDidEnd;
 - (void)transitionAnimationWillBegin;
-- (void)updateDisplayLayoutElementWithBuilder:(id)a3;
-- (void)updatePreferredContentSize:(CGSize)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateDisplayLayoutElementWithBuilder:(id)builder;
+- (void)updatePreferredContentSize:(CGSize)size;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBPIPContainerViewController
 
-- (SBPIPContainerViewController)initWithPIPController:(id)a3 interactionSettings:(id)a4 adapter:(id)a5
+- (SBPIPContainerViewController)initWithPIPController:(id)controller interactionSettings:(id)settings adapter:(id)adapter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  settingsCopy = settings;
+  adapterCopy = adapter;
   v11 = SBLogPIP();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -120,30 +120,30 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_pipController, v8);
-    objc_storeStrong(&v13->_interactionSettings, a4);
+    objc_storeWeak(&v12->_pipController, controllerCopy);
+    objc_storeStrong(&v13->_interactionSettings, settings);
     v13->_requiredInterfaceOrientation = 0;
-    v14 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observerHashTable = v13->_observerHashTable;
-    v13->_observerHashTable = v14;
+    v13->_observerHashTable = weakObjectsHashTable;
 
     v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
     waitInteractionAnimationsCompletionBlocks = v13->_waitInteractionAnimationsCompletionBlocks;
     v13->_waitInteractionAnimationsCompletionBlocks = v16;
 
-    v18 = [(SBPIPInteractionSettings *)v13->_interactionSettings interactiveFluidBehavior];
+    interactiveFluidBehavior = [(SBPIPInteractionSettings *)v13->_interactionSettings interactiveFluidBehavior];
     interactiveAnimationSettings = v13->_interactiveAnimationSettings;
-    v13->_interactiveAnimationSettings = v18;
+    v13->_interactiveAnimationSettings = interactiveFluidBehavior;
 
-    v20 = [(SBPIPInteractionSettings *)v13->_interactionSettings stashTabFluidBehavior];
+    stashTabFluidBehavior = [(SBPIPInteractionSettings *)v13->_interactionSettings stashTabFluidBehavior];
     stashTabAnimationSettings = v13->_stashTabAnimationSettings;
-    v13->_stashTabAnimationSettings = v20;
+    v13->_stashTabAnimationSettings = stashTabFluidBehavior;
 
-    v22 = [(SBPIPInteractionSettings *)v13->_interactionSettings regionUpdateFluidBehavior];
+    regionUpdateFluidBehavior = [(SBPIPInteractionSettings *)v13->_interactionSettings regionUpdateFluidBehavior];
     regionUpdateAnimationSettings = v13->_regionUpdateAnimationSettings;
-    v13->_regionUpdateAnimationSettings = v22;
+    v13->_regionUpdateAnimationSettings = regionUpdateFluidBehavior;
 
-    [(SBPIPContainerViewController *)v13 _setAdapter:v10];
+    [(SBPIPContainerViewController *)v13 _setAdapter:adapterCopy];
     v24 = objc_alloc(MEMORY[0x277D66A50]);
     v25 = objc_opt_class();
     v26 = NSStringFromClass(v25);
@@ -158,13 +158,13 @@
   return v13;
 }
 
-- (SBPIPContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBPIPContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = _SBFLoggingMethodProem();
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v6 handleFailureInMethod:a2 object:self file:@"SBPIPContainerViewController.m" lineNumber:211 description:{@"%@ is not a valid initializer. You must call -[%@ initWithPictureInPictureViewController:].", v7, v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBPIPContainerViewController.m" lineNumber:211 description:{@"%@ is not a valid initializer. You must call -[%@ initWithPictureInPictureViewController:].", v7, v9}];
 
   return 0;
 }
@@ -172,7 +172,7 @@
 - (void)dealloc
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -180,17 +180,17 @@
 - (void)invalidate
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
-- (SBPIPContainerViewController)initWithCoder:(id)a3
+- (SBPIPContainerViewController)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 handleFailureInMethod:a2 object:self file:@"SBPIPContainerViewController.m" lineNumber:236 description:{@"%@ does not support unarchiving from a nib.", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBPIPContainerViewController.m" lineNumber:236 description:{@"%@ does not support unarchiving from a nib.", v7}];
 
   return 0;
 }
@@ -202,9 +202,9 @@
   [(SBPIPContainerViewControllerRootView *)v6 setClipsToBounds:1];
   [(SBPIPContainerViewControllerRootView *)v6 setOpaque:0];
   [(SBPIPContainerViewController *)self setView:v6];
-  v4 = [(UIViewController *)self->_contentViewController view];
+  view = [(UIViewController *)self->_contentViewController view];
   contentView = self->_contentView;
-  self->_contentView = v4;
+  self->_contentView = view;
 
   [(UIView *)self->_contentView setHidden:1];
   [(SBPIPContainerViewController *)self addChildViewController:self->_contentViewController];
@@ -221,25 +221,25 @@
   [(SBPIPContainerViewController *)self setDisplayLayoutElementActive:wantsDisplayLayoutElement];
 }
 
-- (void)startShowingContentWithAnimationSettings:(id)a3 parameters:(id)a4 completion:(id)a5
+- (void)startShowingContentWithAnimationSettings:(id)settings parameters:(id)parameters completion:(id)completion
 {
-  var2 = a4.var2;
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v10 = a3;
-  v11 = a5;
+  var2 = parameters.var2;
+  var1 = parameters.var1;
+  var0 = parameters.var0;
+  settingsCopy = settings;
+  completionCopy = completion;
   [(UIView *)self->_contentView setHidden:0];
   [(SBMicroPIPTetheringMirrorView *)self->_microPIPTetheringViewMirror setHidden:0];
   WeakRetained = objc_loadWeakRetained(&self->_pipController);
-  v13 = [(SBPIPContainerViewController *)self processIdentifier];
-  v14 = [(SBPIPContainerViewController *)self scenePersistenceIdentifier];
-  v15 = [WeakRetained pictureInPictureMorphAnimatorControllerForProcessIdentifier:v13 scenePersistenceIdentifier:v14];
+  processIdentifier = [(SBPIPContainerViewController *)self processIdentifier];
+  scenePersistenceIdentifier = [(SBPIPContainerViewController *)self scenePersistenceIdentifier];
+  v15 = [WeakRetained pictureInPictureMorphAnimatorControllerForProcessIdentifier:processIdentifier scenePersistenceIdentifier:scenePersistenceIdentifier];
 
-  if (!v10 || v15)
+  if (!settingsCopy || v15)
   {
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -247,18 +247,18 @@
   {
     [(SBPIPContainerViewController *)self _addBlurFilterToView:self->_contentView];
     v16 = [MEMORY[0x277CCABB0] numberWithDouble:var2];
-    v17 = [(SBPIPContainerViewController *)self _blurSpringAnimationWithParameters:v10 fromValue:v16 toValue:&unk_28336F470];
+    v17 = [(SBPIPContainerViewController *)self _blurSpringAnimationWithParameters:settingsCopy fromValue:v16 toValue:&unk_28336F470];
 
-    v18 = [(UIView *)self->_contentView layer];
-    [v18 addAnimation:v17 forKey:@"filters.gaussianBlur.inputRadius"];
+    layer = [(UIView *)self->_contentView layer];
+    [layer addAnimation:v17 forKey:@"filters.gaussianBlur.inputRadius"];
 
     [(UIView *)self->_contentView setAlpha:var1];
     contentView = self->_contentView;
     CGAffineTransformMakeScale(&v27, var0, var0);
     [(UIView *)contentView setTransform:&v27];
     v20 = MEMORY[0x277CF0D38];
-    v21 = [v10 BSAnimationSettings];
-    v22 = [v20 factoryWithSettings:v21];
+    bSAnimationSettings = [settingsCopy BSAnimationSettings];
+    v22 = [v20 factoryWithSettings:bSAnimationSettings];
 
     v23 = MEMORY[0x277CF0D38];
     v26[0] = MEMORY[0x277D85DD0];
@@ -271,7 +271,7 @@
     v24[2] = __95__SBPIPContainerViewController_startShowingContentWithAnimationSettings_parameters_completion___block_invoke_2;
     v24[3] = &unk_2783A9C98;
     v24[4] = self;
-    v25 = v11;
+    v25 = completionCopy;
     [v23 animateWithFactory:v22 actions:v26 completion:v24];
   }
 }
@@ -301,26 +301,26 @@ uint64_t __95__SBPIPContainerViewController_startShowingContentWithAnimationSett
   return result;
 }
 
-- (void)stopShowingContentWithAnimationSettings:(id)a3 parameters:(id)a4 completion:(id)a5
+- (void)stopShowingContentWithAnimationSettings:(id)settings parameters:(id)parameters completion:(id)completion
 {
-  var2 = a4.var2;
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v10 = a3;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  var2 = parameters.var2;
+  var1 = parameters.var1;
+  var0 = parameters.var0;
+  settingsCopy = settings;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (settingsCopy)
   {
     [(SBPIPContainerViewController *)self _addBlurFilterToView:self->_contentView];
     v13 = [MEMORY[0x277CCABB0] numberWithDouble:var2];
-    v14 = [(SBPIPContainerViewController *)self _blurSpringAnimationWithParameters:v10 fromValue:&unk_28336F470 toValue:v13];
+    v14 = [(SBPIPContainerViewController *)self _blurSpringAnimationWithParameters:settingsCopy fromValue:&unk_28336F470 toValue:v13];
 
-    v15 = [(UIView *)self->_contentView layer];
-    [v15 addAnimation:v14 forKey:@"filters.gaussianBlur.inputRadius"];
+    layer = [(UIView *)self->_contentView layer];
+    [layer addAnimation:v14 forKey:@"filters.gaussianBlur.inputRadius"];
 
     v16 = MEMORY[0x277CF0D38];
-    v17 = [v10 BSAnimationSettings];
-    v18 = [v16 factoryWithSettings:v17];
+    bSAnimationSettings = [settingsCopy BSAnimationSettings];
+    v18 = [v16 factoryWithSettings:bSAnimationSettings];
 
     v19 = MEMORY[0x277CF0D38];
     v22[0] = MEMORY[0x277D85DD0];
@@ -340,7 +340,7 @@ uint64_t __95__SBPIPContainerViewController_startShowingContentWithAnimationSett
     [v19 animateWithFactory:v18 actions:v22 completion:v20];
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
     [(UIView *)self->_contentView setHidden:1];
     v12[2](v12);
@@ -370,25 +370,25 @@ uint64_t __94__SBPIPContainerViewController_stopShowingContentWithAnimationSetti
   return result;
 }
 
-- (id)_blurSpringAnimationWithParameters:(id)a3 fromValue:(id)a4 toValue:(id)a5
+- (id)_blurSpringAnimationWithParameters:(id)parameters fromValue:(id)value toValue:(id)toValue
 {
   v7 = MEMORY[0x277CD9FA0];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  toValueCopy = toValue;
+  valueCopy = value;
+  parametersCopy = parameters;
   v11 = [v7 animationWithKeyPath:@"filters.gaussianBlur.inputRadius"];
   [v11 setBeginTime:CACurrentMediaTime()];
   [v11 setFillMode:*MEMORY[0x277CDA228]];
-  [v11 setFromValue:v9];
+  [v11 setFromValue:valueCopy];
 
-  [v11 setToValue:v8];
-  [v10 mass];
+  [v11 setToValue:toValueCopy];
+  [parametersCopy mass];
   [v11 setMass:?];
-  [v10 stiffness];
+  [parametersCopy stiffness];
   [v11 setStiffness:?];
-  [v10 damping];
+  [parametersCopy damping];
   [v11 setDamping:?];
-  [v10 duration];
+  [parametersCopy duration];
   v13 = v12;
 
   [v11 setDuration:v13];
@@ -396,12 +396,12 @@ uint64_t __94__SBPIPContainerViewController_stopShowingContentWithAnimationSetti
   return v11;
 }
 
-- (void)_addBlurFilterToView:(id)a3
+- (void)_addBlurFilterToView:(id)view
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CD9EA0];
   v4 = *MEMORY[0x277CDA328];
-  v5 = a3;
+  viewCopy = view;
   v6 = [v3 filterWithType:v4];
   [v6 setName:@"gaussianBlur"];
   [v6 setValue:@"default" forKey:@"inputQuality"];
@@ -410,63 +410,63 @@ uint64_t __94__SBPIPContainerViewController_stopShowingContentWithAnimationSetti
   v7 = MEMORY[0x277CBEC28];
   [v6 setValue:MEMORY[0x277CBEC28] forKey:@"inputNormalizeEdges"];
   [v6 setValue:v7 forKey:@"inputHardEdges"];
-  v8 = [v5 layer];
+  layer = [viewCopy layer];
 
   v10[0] = v6;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-  [v8 setFilters:v9];
+  [layer setFilters:v9];
 }
 
-- (void)_removeBlurFilterFromView:(id)a3
+- (void)_removeBlurFilterFromView:(id)view
 {
-  v3 = [a3 layer];
-  [v3 setFilters:0];
+  layer = [view layer];
+  [layer setFilters:0];
 }
 
-- (void)setInteractionControllerEnabled:(BOOL)a3 stashed:(BOOL)a4 dataSource:(id)a5
+- (void)setInteractionControllerEnabled:(BOOL)enabled stashed:(BOOL)stashed dataSource:(id)source
 {
-  v5 = a3;
+  enabledCopy = enabled;
   if (!self->_interactionController)
   {
-    v7 = a4;
-    v8 = a5;
+    stashedCopy = stashed;
+    sourceCopy = source;
     [(SBPIPContainerViewController *)self loadViewIfNeeded];
     v9 = [SBPIPInteractionController alloc];
     contentView = self->_contentView;
     [(UIViewController *)self->_contentViewController preferredContentSize];
-    v11 = [(SBPIPInteractionController *)v9 initWithInteractionTargetView:contentView preferredContentSize:self->_interactionSettings interactionSettings:v8 dataSource:self delegate:?];
+    v11 = [(SBPIPInteractionController *)v9 initWithInteractionTargetView:contentView preferredContentSize:self->_interactionSettings interactionSettings:sourceCopy dataSource:self delegate:?];
 
     interactionController = self->_interactionController;
     self->_interactionController = v11;
 
     [(SBPIPContainerViewController *)self _updateContentPadding];
-    [(SBPIPInteractionController *)self->_interactionController setStashed:v7];
+    [(SBPIPInteractionController *)self->_interactionController setStashed:stashedCopy];
     [(SBPIPInteractionController *)self->_interactionController initialFrame];
     [(SBPIPContainerViewController *)self _updateContentViewFrame:@"Setup Interaction Controller" reason:1 usingDisplayArrangementSpace:?];
   }
 
-  [(SBPIPContainerViewController *)self setInteractionsEnabled:v5, a4, a5];
+  [(SBPIPContainerViewController *)self setInteractionsEnabled:enabledCopy, stashed, source];
 }
 
-- (void)startAnimationWillBeginWithInitialInterfaceOrientation:(int64_t)a3 initialFrame:(CGRect)a4
+- (void)startAnimationWillBeginWithInitialInterfaceOrientation:(int64_t)orientation initialFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self->_contentView setHidden:0];
-  [(SBPIPContainerViewController *)self _frameInFixedCoordinateSpace:a3 transformedToInterfaceOrientation:x, y, width, height];
+  [(SBPIPContainerViewController *)self _frameInFixedCoordinateSpace:orientation transformedToInterfaceOrientation:x, y, width, height];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  [(SBPIPContainerViewController *)self _requireInterfaceOrientation:a3];
+  [(SBPIPContainerViewController *)self _requireInterfaceOrientation:orientation];
   [(SBPIPInteractionController *)self->_interactionController setEnabled:0];
 
   [(SBPIPContainerViewController *)self _updateContentViewFrame:@"Prepare Start Animation" reason:0 usingDisplayArrangementSpace:v11, v13, v15, v17];
 }
 
-- (void)startAnimationDidBeginWithInitialInterfaceOrientation:(int64_t)a3
+- (void)startAnimationDidBeginWithInitialInterfaceOrientation:(int64_t)orientation
 {
   [(SBPIPContainerViewController *)self _requireInterfaceOrientation:0];
   [(SBPIPInteractionController *)self->_interactionController initialFrame];
@@ -474,7 +474,7 @@ uint64_t __94__SBPIPContainerViewController_stopShowingContentWithAnimationSetti
   [(SBPIPContainerViewController *)self _updateContentViewFrame:@"Perform Start Animation" reason:1 usingDisplayArrangementSpace:?];
 }
 
-- (void)startAnimationDidCompleteWithInitialInterfaceOrientation:(int64_t)a3
+- (void)startAnimationDidCompleteWithInitialInterfaceOrientation:(int64_t)orientation
 {
   v16 = *MEMORY[0x277D85DE8];
   [(SBPIPInteractionController *)self->_interactionController setEnabled:1];
@@ -501,7 +501,7 @@ uint64_t __94__SBPIPContainerViewController_stopShowingContentWithAnimationSetti
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 containerViewController:self didFinishStartAnimationWithInitialInterfaceOrientation:{a3, v11}];
+          [v10 containerViewController:self didFinishStartAnimationWithInitialInterfaceOrientation:{orientation, v11}];
         }
 
         ++v9;
@@ -514,7 +514,7 @@ uint64_t __94__SBPIPContainerViewController_stopShowingContentWithAnimationSetti
     while (v7);
   }
 
-  if ([(SBPIPContainerViewController *)self windowInterfaceOrientation]!= a3)
+  if ([(SBPIPContainerViewController *)self windowInterfaceOrientation]!= orientation)
   {
     [(SBPIPContainerViewController *)self _updateContentPadding];
   }
@@ -527,10 +527,10 @@ uint64_t __94__SBPIPContainerViewController_stopShowingContentWithAnimationSetti
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(SBPIPContainerViewController *)self view];
-  v3 = [v2 subviews];
+  view = [(SBPIPContainerViewController *)self view];
+  subviews = [view subviews];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -540,7 +540,7 @@ uint64_t __94__SBPIPContainerViewController_stopShowingContentWithAnimationSetti
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -552,7 +552,7 @@ uint64_t __94__SBPIPContainerViewController_stopShowingContentWithAnimationSetti
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -567,43 +567,43 @@ LABEL_11:
   return v4;
 }
 
-- (void)stopAnimationWillBeginWithFinalInterfaceOrientation:(int64_t)a3 finalFrame:(CGRect)a4
+- (void)stopAnimationWillBeginWithFinalInterfaceOrientation:(int64_t)orientation finalFrame:(CGRect)frame
 {
-  [(SBPIPInteractionController *)self->_interactionController setEnabled:0, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(SBPIPInteractionController *)self->_interactionController setEnabled:0, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SBPIPContainerViewController *)self setStashed:0];
   [(SBPIPContainerViewController *)self _removeMicroPIPMirrorView];
-  v8 = [(SBPIPContainerViewController *)self _blackCurtainViewForStopAnimation];
-  if (!v8 || (v6 = [(SBPIPContainerViewController *)self windowInterfaceOrientation]== a3, v7 = v8, !v6))
+  _blackCurtainViewForStopAnimation = [(SBPIPContainerViewController *)self _blackCurtainViewForStopAnimation];
+  if (!_blackCurtainViewForStopAnimation || (v6 = [(SBPIPContainerViewController *)self windowInterfaceOrientation]== orientation, v7 = _blackCurtainViewForStopAnimation, !v6))
   {
-    [v8 setAlpha:0.0];
-    v7 = v8;
+    [_blackCurtainViewForStopAnimation setAlpha:0.0];
+    v7 = _blackCurtainViewForStopAnimation;
   }
 }
 
-- (void)stopAnimationDidBeginWithFinalInterfaceOrientation:(int64_t)a3 finalFrame:(CGRect)a4
+- (void)stopAnimationDidBeginWithFinalInterfaceOrientation:(int64_t)orientation finalFrame:(CGRect)frame
 {
-  [(SBPIPContainerViewController *)self _frameInFixedCoordinateSpace:a4.origin.x transformedToInterfaceOrientation:a4.origin.y, a4.size.width, a4.size.height];
+  [(SBPIPContainerViewController *)self _frameInFixedCoordinateSpace:frame.origin.x transformedToInterfaceOrientation:frame.origin.y, frame.size.width, frame.size.height];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [(SBPIPContainerViewController *)self _requireInterfaceOrientation:a3];
+  [(SBPIPContainerViewController *)self _requireInterfaceOrientation:orientation];
   [(SBPIPContainerViewController *)self _updateContentViewFrame:@"Perform Stop Animation" reason:0 usingDisplayArrangementSpace:v7, v9, v11, v13];
-  v14 = [(SBPIPContainerViewController *)self _blackCurtainViewForStopAnimation];
-  if (v14)
+  _blackCurtainViewForStopAnimation = [(SBPIPContainerViewController *)self _blackCurtainViewForStopAnimation];
+  if (_blackCurtainViewForStopAnimation)
   {
-    v16 = v14;
-    v15 = [(SBPIPContainerViewController *)self windowInterfaceOrientation]== a3;
-    v14 = v16;
+    v16 = _blackCurtainViewForStopAnimation;
+    v15 = [(SBPIPContainerViewController *)self windowInterfaceOrientation]== orientation;
+    _blackCurtainViewForStopAnimation = v16;
     if (v15)
     {
       [v16 setAlpha:0.0];
-      v14 = v16;
+      _blackCurtainViewForStopAnimation = v16;
     }
   }
 }
 
-- (void)stopAnimationDidCompleteWithFinalInterfaceOrientation:(int64_t)a3
+- (void)stopAnimationDidCompleteWithFinalInterfaceOrientation:(int64_t)orientation
 {
   interactionController = self->_interactionController;
   self->_interactionController = 0;
@@ -611,10 +611,10 @@ LABEL_11:
   [(SBPIPContainerViewController *)self _updateDisplayLayoutElementReferenceFrame];
 }
 
-- (void)performAfterInFlightAnimationsComplete:(id)a3
+- (void)performAfterInFlightAnimationsComplete:(id)complete
 {
-  v4 = a3;
-  v5 = v4;
+  completeCopy = complete;
+  v5 = completeCopy;
   if (self->_inFlightAnimationCounter)
   {
     waitInteractionAnimationsCompletionBlocks = self->_waitInteractionAnimationsCompletionBlocks;
@@ -622,14 +622,14 @@ LABEL_11:
     v8[1] = 3221225472;
     v8[2] = __71__SBPIPContainerViewController_performAfterInFlightAnimationsComplete___block_invoke;
     v8[3] = &unk_2783A9348;
-    v9 = v4;
+    v9 = completeCopy;
     v7 = MEMORY[0x223D6F7F0](v8);
     [(NSMutableArray *)waitInteractionAnimationsCompletionBlocks addObject:v7];
   }
 
   else
   {
-    v4[2](v4);
+    completeCopy[2](completeCopy);
   }
 }
 
@@ -644,9 +644,9 @@ LABEL_11:
   return interactionController != 0;
 }
 
-- (void)updatePreferredContentSize:(CGSize)a3
+- (void)updatePreferredContentSize:(CGSize)size
 {
-  [(SBPIPInteractionController *)self->_interactionController setPreferredContentSize:a3.width, a3.height];
+  [(SBPIPInteractionController *)self->_interactionController setPreferredContentSize:size.width, size.height];
   if (self->_activelyTethered)
   {
 
@@ -670,18 +670,18 @@ LABEL_11:
   if (self->_interactionController)
   {
     WeakRetained = objc_loadWeakRetained(&self->_pipController);
-    v4 = [WeakRetained isHandlingContextWindowSceneUpdate];
+    isHandlingContextWindowSceneUpdate = [WeakRetained isHandlingContextWindowSceneUpdate];
 
-    if ((v4 & 1) == 0)
+    if ((isHandlingContextWindowSceneUpdate & 1) == 0)
     {
-      v5 = [(SBPIPContainerViewController *)self windowInterfaceOrientation];
+      windowInterfaceOrientation = [(SBPIPContainerViewController *)self windowInterfaceOrientation];
       interactionController = self->_interactionController;
-      v7 = [(SBPIPContainerViewController *)self view];
-      [v7 bounds];
+      view = [(SBPIPContainerViewController *)self view];
+      [view bounds];
       v9 = v8;
       v11 = v10;
-      v12 = [(UIViewController *)self _sbWindowScene];
-      [(SBPIPInteractionController *)interactionController setContainerSize:v5 withOrientation:v12 scene:v9, v11];
+      _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+      [(SBPIPInteractionController *)interactionController setContainerSize:windowInterfaceOrientation withOrientation:_sbWindowScene scene:v9, v11];
 
       [(SBPIPContainerViewController *)self _updateContentPadding];
       if ((*(self + 1224) & 2) != 0)
@@ -694,11 +694,11 @@ LABEL_11:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SBPIPContainerViewController;
-  [(SBPIPContainerViewController *)&v5 viewDidAppear:a3];
+  [(SBPIPContainerViewController *)&v5 viewDidAppear:appear];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __46__SBPIPContainerViewController_viewDidAppear___block_invoke;
@@ -719,19 +719,19 @@ void __46__SBPIPContainerViewController_viewDidAppear___block_invoke(uint64_t a1
   [v5 setReferenceFrame:?];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBPIPContainerViewController;
-  [(SBPIPContainerViewController *)&v4 viewWillDisappear:a3];
+  [(SBPIPContainerViewController *)&v4 viewWillDisappear:disappear];
   [(SBPIPContainerViewController *)self setDisplayLayoutElementActive:0];
 }
 
-- (BOOL)handleStashingForTransitionContext:(id)a3
+- (BOOL)handleStashingForTransitionContext:(id)context
 {
   if (*(self + 1227))
   {
-    return [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self shouldHandleStashingForTransitionContext:a3];
+    return [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self shouldHandleStashingForTransitionContext:context];
   }
 
   else
@@ -742,21 +742,21 @@ void __46__SBPIPContainerViewController_viewDidAppear___block_invoke(uint64_t a1
 
 - (void)_updateContentPadding
 {
-  v3 = [(UIViewController *)self _sbWindowScene];
-  [(SBPIPContainerViewController *)self effectiveEdgeInsetsForWindowScene:v3];
+  _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+  [(SBPIPContainerViewController *)self effectiveEdgeInsetsForWindowScene:_sbWindowScene];
   [(SBPIPContainerViewController *)self setEffectiveEdgeInsets:?];
 }
 
-- (UIEdgeInsets)_safeAreaInsetsForScene:(id)a3
+- (UIEdgeInsets)_safeAreaInsetsForScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(SBPIPContainerViewController *)self view];
-  v6 = [v5 _sbWindowScene];
+  sceneCopy = scene;
+  view = [(SBPIPContainerViewController *)self view];
+  _sbWindowScene = [view _sbWindowScene];
 
-  if (v6 == v4)
+  if (_sbWindowScene == sceneCopy)
   {
-    v7 = [(SBPIPContainerViewController *)self view];
-    [v7 safeAreaInsets];
+    view2 = [(SBPIPContainerViewController *)self view];
+    [view2 safeAreaInsets];
     v10 = v17;
     v12 = v18;
     v14 = v19;
@@ -765,8 +765,8 @@ void __46__SBPIPContainerViewController_viewDidAppear___block_invoke(uint64_t a1
 
   else
   {
-    v7 = [v4 windows];
-    v8 = [v7 bs_firstObjectPassingTest:&__block_literal_global_205];
+    view2 = [sceneCopy windows];
+    v8 = [view2 bs_firstObjectPassingTest:&__block_literal_global_205];
     [v8 safeAreaInsets];
     v10 = v9;
     v12 = v11;
@@ -785,30 +785,30 @@ void __46__SBPIPContainerViewController_viewDidAppear___block_invoke(uint64_t a1
   return result;
 }
 
-- (UIEdgeInsets)_resolvedSafeAreaInsetsForWindowScene:(id)a3
+- (UIEdgeInsets)_resolvedSafeAreaInsetsForWindowScene:(id)scene
 {
-  v4 = a3;
-  v5 = [v4 screen];
-  [v5 _peripheryInsets];
+  sceneCopy = scene;
+  screen = [sceneCopy screen];
+  [screen _peripheryInsets];
   v7 = v6;
   v9 = v8;
 
-  [(SBPIPContainerViewController *)self _safeAreaInsetsForScene:v4];
+  [(SBPIPContainerViewController *)self _safeAreaInsetsForScene:sceneCopy];
   v11 = v10;
   v13 = v12;
-  v14 = [(SBPIPContainerViewController *)self view];
-  v15 = [v14 _sbWindowScene];
-  if (v15 == v4)
+  view = [(SBPIPContainerViewController *)self view];
+  _sbWindowScene = [view _sbWindowScene];
+  if (_sbWindowScene == sceneCopy)
   {
-    v16 = [(SBPIPContainerViewController *)self windowInterfaceOrientation];
+    windowInterfaceOrientation = [(SBPIPContainerViewController *)self windowInterfaceOrientation];
   }
 
   else
   {
-    v16 = [v4 interfaceOrientation];
+    windowInterfaceOrientation = [sceneCopy interfaceOrientation];
   }
 
-  v17 = v16;
+  v17 = windowInterfaceOrientation;
 
   v18 = __sb__runningInSpringBoard();
   v19 = v18;
@@ -823,8 +823,8 @@ void __46__SBPIPContainerViewController_viewDidAppear___block_invoke(uint64_t a1
 
   else
   {
-    v14 = [MEMORY[0x277D75418] currentDevice];
-    if ([v14 userInterfaceIdiom] == 1)
+    view = [MEMORY[0x277D75418] currentDevice];
+    if ([view userInterfaceIdiom] == 1)
     {
       goto LABEL_16;
     }
@@ -846,8 +846,8 @@ void __46__SBPIPContainerViewController_viewDidAppear___block_invoke(uint64_t a1
 
   else
   {
-    v22 = [MEMORY[0x277D75418] currentDevice];
-    if (![v22 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if (![currentDevice userInterfaceIdiom])
     {
       v21 = SBFEffectiveHomeButtonType() == 2;
 
@@ -916,52 +916,52 @@ LABEL_24:
   return result;
 }
 
-- (void)setEffectiveEdgeInsets:(UIEdgeInsets)a3
+- (void)setEffectiveEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_effectiveEdgeInsets.top, v3), vceqq_f64(*&self->_effectiveEdgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_effectiveEdgeInsets = a3;
+    self->_effectiveEdgeInsets = insets;
     [(SBPIPInteractionController *)self->_interactionController reloadInsets];
   }
 }
 
-- (UIEdgeInsets)effectiveEdgeInsetsForWindowScene:(id)a3
+- (UIEdgeInsets)effectiveEdgeInsetsForWindowScene:(id)scene
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  sceneCopy = scene;
   WeakRetained = objc_loadWeakRetained(&self->_pipController);
-  [WeakRetained pictureInPictureWindowMarginsOnWindowScene:v5];
+  [WeakRetained pictureInPictureWindowMarginsOnWindowScene:sceneCopy];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  [(SBPIPContainerViewController *)self _resolvedSafeAreaInsetsForWindowScene:v5];
-  v15 = [(UIViewController *)self _sbWindowScene];
-  if (v15 == v5)
+  [(SBPIPContainerViewController *)self _resolvedSafeAreaInsetsForWindowScene:sceneCopy];
+  _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+  if (_sbWindowScene == sceneCopy)
   {
-    v16 = [(SBPIPContainerViewController *)self windowInterfaceOrientation];
+    windowInterfaceOrientation = [(SBPIPContainerViewController *)self windowInterfaceOrientation];
   }
 
   else
   {
-    v16 = [v5 interfaceOrientation];
+    windowInterfaceOrientation = [sceneCopy interfaceOrientation];
   }
 
-  v17 = v16;
+  v17 = windowInterfaceOrientation;
 
-  v18 = [(SBPIPInteractionController *)self->_interactionController layoutSettings];
-  [v18 contentViewPadding];
+  layoutSettings = [(SBPIPInteractionController *)self->_interactionController layoutSettings];
+  [layoutSettings contentViewPadding];
 
   v19 = __sb__runningInSpringBoard();
   if (!v19)
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    if ([v3 userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
     {
       [MEMORY[0x277D75A78] heightForStyle:0 orientation:1];
     }
@@ -969,7 +969,7 @@ LABEL_24:
     goto LABEL_14;
   }
 
-  v18 = v19;
+  layoutSettings = v19;
   if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
   {
     [MEMORY[0x277D75A78] heightForStyle:0 orientation:1];
@@ -982,7 +982,7 @@ LABEL_24:
       [MEMORY[0x277D75A78] heightForStyle:0 orientation:1];
     }
 
-    if ((v18 & 1) == 0)
+    if ((layoutSettings & 1) == 0)
     {
 LABEL_14:
     }
@@ -1000,8 +1000,8 @@ LABEL_14:
 
   else
   {
-    v18 = [MEMORY[0x277D75418] currentDevice];
-    if ([v18 userInterfaceIdiom] == 1)
+    layoutSettings = [MEMORY[0x277D75418] currentDevice];
+    if ([layoutSettings userInterfaceIdiom] == 1)
     {
       goto LABEL_30;
     }
@@ -1031,8 +1031,8 @@ LABEL_26:
     goto LABEL_30;
   }
 
-  v22 = [MEMORY[0x277D75418] currentDevice];
-  if ([v22 userInterfaceIdiom])
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice2 userInterfaceIdiom])
   {
 
     goto LABEL_26;
@@ -1060,8 +1060,8 @@ LABEL_31:
     v51.bottom = v28;
     v51.right = v30;
     v32 = NSStringFromUIEdgeInsets(v51);
-    v33 = [(SBPIPContainerViewController *)self view];
-    [v33 safeAreaInsets];
+    view = [(SBPIPContainerViewController *)self view];
+    [view safeAreaInsets];
     v34 = NSStringFromUIEdgeInsets(v52);
     v53.top = v8;
     v53.left = v10;
@@ -1069,7 +1069,7 @@ LABEL_31:
     v53.right = v14;
     v35 = NSStringFromUIEdgeInsets(v53);
     *buf = 134219010;
-    v41 = self;
+    selfCopy = self;
     v42 = 2114;
     v43 = v32;
     v44 = 2114;
@@ -1100,94 +1100,94 @@ LABEL_31:
   [(SBPIPContainerViewController *)self _updateContentPadding];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v13.receiver = self;
   v13.super_class = SBPIPContainerViewController;
-  v7 = a4;
-  [(SBPIPContainerViewController *)&v13 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(SBPIPContainerViewController *)&v13 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__SBPIPContainerViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v12[3] = &unk_2783A9488;
   v12[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v12];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v12];
   v8 = SBFWindowForViewControllerTransition();
 
-  v9 = [v8 _toWindowOrientation];
+  _toWindowOrientation = [v8 _toWindowOrientation];
   interactionController = self->_interactionController;
-  v11 = [(UIViewController *)self _sbWindowScene];
-  [(SBPIPInteractionController *)interactionController setContainerSize:v9 withOrientation:v11 scene:width, height];
+  _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+  [(SBPIPInteractionController *)interactionController setContainerSize:_toWindowOrientation withOrientation:_sbWindowScene scene:width, height];
 }
 
-- (void)setNeedsLayoutForInteractionController:(id)a3 traits:(unint64_t)a4 withReason:(unint64_t)a5 behavior:(int)a6 completion:(id)a7
+- (void)setNeedsLayoutForInteractionController:(id)controller traits:(unint64_t)traits withReason:(unint64_t)reason behavior:(int)behavior completion:(id)completion
 {
   v67 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a7;
+  controllerCopy = controller;
+  completionCopy = completion;
   v14 = SBLogPIP();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134219008;
-    v58 = self;
+    selfCopy = self;
     v59 = 2048;
-    v60 = v12;
+    v60 = controllerCopy;
     v61 = 2048;
-    v62 = a4;
+    traitsCopy = traits;
     v63 = 2048;
-    v64 = a5;
+    reasonCopy = reason;
     v65 = 1024;
-    v66 = a6;
+    behaviorCopy = behavior;
     _os_log_debug_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEBUG, "[%p][Layout] setNeedsLayoutForInteractionController[%p] for traits:%lu reason:%lu behavior:%u.", buf, 0x30u);
   }
 
-  v15 = [v12 isEnabled];
-  if ((a5 & 0x8000) != 0 || v15)
+  isEnabled = [controllerCopy isEnabled];
+  if ((reason & 0x8000) != 0 || isEnabled)
   {
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __109__SBPIPContainerViewController_setNeedsLayoutForInteractionController_traits_withReason_behavior_completion___block_invoke;
     v51[3] = &unk_2783B8D18;
-    v54 = a4;
-    v55 = a5;
-    v52 = v12;
-    v53 = self;
-    v56 = a6;
+    traitsCopy2 = traits;
+    reasonCopy2 = reason;
+    v52 = controllerCopy;
+    selfCopy2 = self;
+    behaviorCopy2 = behavior;
     v16 = MEMORY[0x223D6F7F0](v51);
     v17 = +[SBBacklightController sharedInstance];
-    v18 = [v17 screenIsOn];
+    screenIsOn = [v17 screenIsOn];
 
     WeakRetained = objc_loadWeakRetained(&self->_pipController);
-    v20 = [(UIViewController *)self _sbWindowScene];
-    v21 = [WeakRetained isPictureInPictureWindowVisibleOnWindowScene:v20];
+    _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+    v21 = [WeakRetained isPictureInPictureWindowVisibleOnWindowScene:_sbWindowScene];
 
     v22 = 0;
-    if (v18 && v21)
+    if (screenIsOn && v21)
     {
       v22 = ![(UIView *)self->_contentView isHidden];
     }
 
-    if (!a6 || !((a5 >> 15) & 1 | v22 & 1))
+    if (!behavior || !((reason >> 15) & 1 | v22 & 1))
     {
       v16[2](v16);
-      if (v13)
+      if (completionCopy)
       {
-        v13[2](v13, 1, 0);
+        completionCopy[2](completionCopy, 1, 0);
       }
 
       goto LABEL_28;
     }
 
     v23 = &OBJC_IVAR___SBPIPContainerViewController__stashTabAnimationSettings;
-    if ((a5 & 0x800) == 0)
+    if ((reason & 0x800) == 0)
     {
       v23 = &OBJC_IVAR___SBPIPContainerViewController__interactiveAnimationSettings;
     }
 
-    v24 = a6 == 2 && (a5 & 0x5000) != 0;
-    if (((a6 == 2) & (a5 >> 13)) != 0)
+    v24 = behavior == 2 && (reason & 0x5000) != 0;
+    if (((behavior == 2) & (reason >> 13)) != 0)
     {
       v23 = &OBJC_IVAR___SBPIPContainerViewController__regionUpdateAnimationSettings;
     }
@@ -1255,16 +1255,16 @@ LABEL_27:
     v47 = v24;
     v44[4] = self;
     v46 = metricsUpdateGenCount;
-    v45 = v13;
-    [v43 _animateUsingSpringBehavior:metricsAnimationSettings tracking:a6 == 1 animations:v48 completion:v44];
+    v45 = completionCopy;
+    [v43 _animateUsingSpringBehavior:metricsAnimationSettings tracking:behavior == 1 animations:v48 completion:v44];
 
 LABEL_28:
     goto LABEL_29;
   }
 
-  if (v13)
+  if (completionCopy)
   {
-    v13[2](v13, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
 LABEL_29:
@@ -1374,22 +1374,22 @@ void __109__SBPIPContainerViewController_setNeedsLayoutForInteractionController_
   }
 }
 
-- (void)interactionControllerDidBeginSizeChange:(id)a3 behavior:(int)a4
+- (void)interactionControllerDidBeginSizeChange:(id)change behavior:(int)behavior
 {
-  v4 = *&a4;
-  v7 = a3;
+  v4 = *&behavior;
+  changeCopy = change;
   if ((*(self + 1226) & 2) != 0)
   {
     [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewControllerWillBeginSizeChange:self behavior:v4];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_tetheredContainerViewController);
-  [WeakRetained interactionControllerDidBeginSizeChange:v7 behavior:v4];
+  [WeakRetained interactionControllerDidBeginSizeChange:changeCopy behavior:v4];
 }
 
-- (void)interactionControllerDidEndSizeChange:(id)a3
+- (void)interactionControllerDidEndSizeChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   if ((*(self + 1226) & 4) != 0)
   {
     [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewControllerDidEndSizeChange:self];
@@ -1397,92 +1397,92 @@ void __109__SBPIPContainerViewController_setNeedsLayoutForInteractionController_
 
   [(SBPIPContainerViewController *)self _updateDisplayLayoutElementReferenceFrame];
   WeakRetained = objc_loadWeakRetained(&self->_tetheredContainerViewController);
-  [WeakRetained interactionControllerDidEndSizeChange:v5];
+  [WeakRetained interactionControllerDidEndSizeChange:changeCopy];
 }
 
-- (void)interactionController:(id)a3 didUpdateStashProgress:(double)a4
+- (void)interactionController:(id)controller didUpdateStashProgress:(double)progress
 {
-  v7 = a3;
+  controllerCopy = controller;
   if ((*(self + 1226) & 8) != 0)
   {
-    [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self didUpdateStashProgress:a4];
+    [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self didUpdateStashProgress:progress];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_tetheredContainerViewController);
-  [WeakRetained interactionController:v7 didUpdateStashProgress:a4];
+  [WeakRetained interactionController:controllerCopy didUpdateStashProgress:progress];
 }
 
-- (void)interactionController:(id)a3 didSettleOnStashState:(BOOL)a4
+- (void)interactionController:(id)controller didSettleOnStashState:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
-  [(SBPIPContainerViewController *)self _notifyStashStateChanged:v4];
+  stateCopy = state;
+  controllerCopy = controller;
+  [(SBPIPContainerViewController *)self _notifyStashStateChanged:stateCopy];
   if ((*(self + 1225) & 0x10) != 0)
   {
-    [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self didSettleOnStashState:v4];
+    [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self didSettleOnStashState:stateCopy];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_tetheredContainerViewController);
-  [WeakRetained interactionController:v6 didSettleOnStashState:v4];
+  [WeakRetained interactionController:controllerCopy didSettleOnStashState:stateCopy];
 }
 
-- (void)interactionControllerDidBeginInteraction:(id)a3 forGestureRecognizer:(id)a4
+- (void)interactionControllerDidBeginInteraction:(id)interaction forGestureRecognizer:(id)recognizer
 {
-  v9 = a3;
-  v6 = a4;
+  interactionCopy = interaction;
+  recognizerCopy = recognizer;
   if ((*(self + 1225) & 0x20) != 0)
   {
-    [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self willBeginInteractionWithGestureRecognizer:v6];
+    [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self willBeginInteractionWithGestureRecognizer:recognizerCopy];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_interactionObserver);
   [WeakRetained containerViewControllerDidBeginInteraction:self];
 
   v8 = objc_loadWeakRetained(&self->_tetheredContainerViewController);
-  [v8 interactionControllerDidBeginInteraction:v9 forGestureRecognizer:v6];
+  [v8 interactionControllerDidBeginInteraction:interactionCopy forGestureRecognizer:recognizerCopy];
 }
 
-- (void)interactionControllerDidEndAllInteractions:(id)a3 targetWindowScene:(id)a4
+- (void)interactionControllerDidEndAllInteractions:(id)interactions targetWindowScene:(id)scene
 {
-  v9 = a4;
-  v6 = a3;
+  sceneCopy = scene;
+  interactionsCopy = interactions;
   [(SBPIPContainerViewController *)self _updateDisplayLayoutElementReferenceFrame];
   if ((*(self + 1225) & 0x40) != 0)
   {
-    [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewControllerDidEndInteraction:self targetWindowScene:v9];
+    [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewControllerDidEndInteraction:self targetWindowScene:sceneCopy];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_interactionObserver);
-  [WeakRetained containerViewControllerDidEndInteraction:self targetWindowScene:v9];
+  [WeakRetained containerViewControllerDidEndInteraction:self targetWindowScene:sceneCopy];
 
   v8 = objc_loadWeakRetained(&self->_tetheredContainerViewController);
-  [v8 interactionControllerDidEndAllInteractions:v6 targetWindowScene:v9];
+  [v8 interactionControllerDidEndAllInteractions:interactionsCopy targetWindowScene:sceneCopy];
 
   [(SBPIPContainerViewController *)self _updateDisplayLayoutElementReferenceFrame];
   [(SBPIPContainerViewController *)self _updateContentPadding];
 }
 
-- (void)interactionControllerPanGestureDidEnd:(id)a3
+- (void)interactionControllerPanGestureDidEnd:(id)end
 {
-  v5 = a3;
+  endCopy = end;
   if (*(self + 1225) < 0)
   {
     [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewControllerPanGestureDidEnd:self];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_tetheredContainerViewController);
-  [WeakRetained interactionControllerPanGestureDidEnd:v5];
+  [WeakRetained interactionControllerPanGestureDidEnd:endCopy];
 }
 
-- (void)interactionControllerDidUpdateEdgeInsets:(id)a3
+- (void)interactionControllerDidUpdateEdgeInsets:(id)insets
 {
-  v4 = a3;
+  insetsCopy = insets;
   [(SBPIPContainerViewController *)self _updateDisplayLayoutElementReferenceFrame];
   WeakRetained = objc_loadWeakRetained(&self->_tetheredContainerViewController);
-  [WeakRetained interactionControllerDidUpdateEdgeInsets:v4];
+  [WeakRetained interactionControllerDidUpdateEdgeInsets:insetsCopy];
 }
 
-- (void)interactionControllerDidBeginEdgeResizing:(id)a3
+- (void)interactionControllerDidBeginEdgeResizing:(id)resizing
 {
   if ((*(self + 1227) & 4) != 0)
   {
@@ -1490,7 +1490,7 @@ void __109__SBPIPContainerViewController_setNeedsLayoutForInteractionController_
   }
 }
 
-- (void)interactionControllerDidEndEdgeResizing:(id)a3
+- (void)interactionControllerDidEndEdgeResizing:(id)resizing
 {
   if ((*(self + 1227) & 8) != 0)
   {
@@ -1498,33 +1498,33 @@ void __109__SBPIPContainerViewController_setNeedsLayoutForInteractionController_
   }
 }
 
-- (void)updateDisplayLayoutElementWithBuilder:(id)a3
+- (void)updateDisplayLayoutElementWithBuilder:(id)builder
 {
   if (self->_displayLayoutElementAssertion)
   {
-    v5 = a3;
-    v6 = [(UIViewController *)self _sbWindowScene];
-    if (!v6)
+    builderCopy = builder;
+    _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+    if (!_sbWindowScene)
     {
       [SBPIPContainerViewController updateDisplayLayoutElementWithBuilder:];
     }
 
-    v14 = [v6 displayLayoutPublisher];
-    if (!v14)
+    builderCopy2 = [_sbWindowScene displayLayoutPublisher];
+    if (!builderCopy2)
     {
-      [(SBPIPContainerViewController *)a2 updateDisplayLayoutElementWithBuilder:v6];
+      [(SBPIPContainerViewController *)a2 updateDisplayLayoutElementWithBuilder:_sbWindowScene];
     }
 
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v14 transitionAssertionWithReason:v8];
+    v9 = [builderCopy2 transitionAssertionWithReason:v8];
 
     [(BSInvalidatable *)self->_displayLayoutElementAssertion invalidate];
     displayLayoutElementAssertion = self->_displayLayoutElementAssertion;
     self->_displayLayoutElementAssertion = 0;
 
-    v5[2](v5, self->_displayLayoutElement);
-    v11 = [v14 addElement:self->_displayLayoutElement];
+    builderCopy[2](builderCopy, self->_displayLayoutElement);
+    v11 = [builderCopy2 addElement:self->_displayLayoutElement];
     v12 = self->_displayLayoutElementAssertion;
     self->_displayLayoutElementAssertion = v11;
 
@@ -1533,55 +1533,55 @@ void __109__SBPIPContainerViewController_setNeedsLayoutForInteractionController_
 
   else
   {
-    v13 = *(a3 + 2);
-    v14 = a3;
+    v13 = *(builder + 2);
+    builderCopy2 = builder;
     v13();
   }
 }
 
-- (void)setDisplayLayoutElementActive:(BOOL)a3
+- (void)setDisplayLayoutElementActive:(BOOL)active
 {
-  self->_wantsDisplayLayoutElement = a3;
+  self->_wantsDisplayLayoutElement = active;
   displayLayoutElementAssertion = self->_displayLayoutElementAssertion;
-  if (a3)
+  if (active)
   {
     if (displayLayoutElementAssertion)
     {
       return;
     }
 
-    v6 = [(UIViewController *)self _sbWindowScene];
-    if (!v6)
+    _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+    if (!_sbWindowScene)
     {
       return;
     }
 
-    v7 = v6;
-    v8 = [(UIViewController *)self _sbWindowScene];
-    v9 = [v8 delegate];
+    v7 = _sbWindowScene;
+    _sbWindowScene2 = [(UIViewController *)self _sbWindowScene];
+    delegate = [_sbWindowScene2 delegate];
 
-    if (!v9)
+    if (!delegate)
     {
       return;
     }
 
-    v10 = [(UIViewController *)self _sbWindowScene];
-    if (!v10)
+    _sbWindowScene3 = [(UIViewController *)self _sbWindowScene];
+    if (!_sbWindowScene3)
     {
       [SBPIPContainerViewController setDisplayLayoutElementActive:];
     }
 
-    v14 = [v10 displayLayoutPublisher];
-    if (!v14)
+    displayLayoutPublisher = [_sbWindowScene3 displayLayoutPublisher];
+    if (!displayLayoutPublisher)
     {
-      [(SBPIPContainerViewController *)a2 setDisplayLayoutElementActive:v10];
+      [(SBPIPContainerViewController *)a2 setDisplayLayoutElementActive:_sbWindowScene3];
     }
 
-    v11 = [v14 addElement:self->_displayLayoutElement];
+    v11 = [displayLayoutPublisher addElement:self->_displayLayoutElement];
     v12 = self->_displayLayoutElementAssertion;
     self->_displayLayoutElementAssertion = v11;
 
-    v13 = v14;
+    v13 = displayLayoutPublisher;
   }
 
   else
@@ -1597,17 +1597,17 @@ void __109__SBPIPContainerViewController_setNeedsLayoutForInteractionController_
   }
 }
 
-- (void)setIsActivelyTethered:(BOOL)a3 mode:(int64_t)a4
+- (void)setIsActivelyTethered:(BOOL)tethered mode:(int64_t)mode
 {
-  if (self->_activelyTethered == a3)
+  if (self->_activelyTethered == tethered)
   {
     return;
   }
 
-  v5 = a3;
-  self->_activelyTethered = a3;
+  tetheredCopy = tethered;
+  self->_activelyTethered = tethered;
   preTetheringLayoutSettings = self->_preTetheringLayoutSettings;
-  if (a3)
+  if (tethered)
   {
     if (preTetheringLayoutSettings)
     {
@@ -1616,9 +1616,9 @@ void __109__SBPIPContainerViewController_setNeedsLayoutForInteractionController_
 
     else
     {
-      v9 = [(SBPIPInteractionController *)self->_interactionController layoutSettings];
+      layoutSettings = [(SBPIPInteractionController *)self->_interactionController layoutSettings];
       v10 = self->_preTetheringLayoutSettings;
-      self->_preTetheringLayoutSettings = v9;
+      self->_preTetheringLayoutSettings = layoutSettings;
 
       [(SBPIPInteractionController *)self->_interactionController preferredNormalizedScale];
       self->_preTetheringNormalizedContentScale = v11;
@@ -1635,7 +1635,7 @@ void __109__SBPIPContainerViewController_setNeedsLayoutForInteractionController_
 
   if (self->_activelyTethered)
   {
-    if (a4 == 1)
+    if (mode == 1)
     {
       if (!self->_microPIPLayoutSettings)
       {
@@ -1666,8 +1666,8 @@ void __109__SBPIPContainerViewController_setNeedsLayoutForInteractionController_
         self->_microPIPTetheringViewMirror = v18;
 
         [(SBMicroPIPTetheringMirrorView *)self->_microPIPTetheringViewMirror setHidden:[(UIView *)self->_contentView isHidden]];
-        v20 = [(SBPIPContainerViewController *)self view];
-        [v20 addSubview:self->_microPIPTetheringViewMirror];
+        view = [(SBPIPContainerViewController *)self view];
+        [view addSubview:self->_microPIPTetheringViewMirror];
       }
 
       v26 = v16;
@@ -1682,28 +1682,28 @@ void __109__SBPIPContainerViewController_setNeedsLayoutForInteractionController_
   }
 
   v15 = 2;
-  if (!a4)
+  if (!mode)
   {
 LABEL_21:
     [(SBPIPInteractionController *)self->_interactionController setStashed:0];
-    if (!v5)
+    if (!tetheredCopy)
     {
       [(SBPIPInteractionController *)self->_interactionController setEnabled:1];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_tetheringContainerViewController);
     interactionController = self->_interactionController;
-    v23 = [WeakRetained interactionController];
-    [v23 currentNormalizedScale];
+    interactionController = [WeakRetained interactionController];
+    [interactionController currentNormalizedScale];
     [(SBPIPInteractionController *)interactionController setPreferredNormalizedScale:0 additionalReasons:2 animationBehavior:?];
 
     [(SBPIPInteractionController *)self->_interactionController setContentLayoutSettings:v26 animationBehavior:v15];
     v24 = self->_interactionController;
-    if (v5)
+    if (tetheredCopy)
     {
       [(SBPIPInteractionController *)v24 setEnabled:0];
-      v25 = [WeakRetained interactionController];
-      [v25 setTargetOverlayView:self->_microPIPTetheringViewMirror];
+      interactionController2 = [WeakRetained interactionController];
+      [interactionController2 setTargetOverlayView:self->_microPIPTetheringViewMirror];
     }
 
     else
@@ -1715,7 +1715,7 @@ LABEL_21:
   }
 
 LABEL_20:
-  if (v5)
+  if (tetheredCopy)
   {
     goto LABEL_21;
   }
@@ -1723,35 +1723,35 @@ LABEL_20:
 LABEL_27:
 }
 
-- (void)layoutForTetheringInteractionController:(id)a3 behavior:(int)a4
+- (void)layoutForTetheringInteractionController:(id)controller behavior:(int)behavior
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&behavior;
+  controllerCopy = controller;
   if (self->_activelyTethered)
   {
     if (self->_tetheredInMicroPIPMode)
     {
-      v7 = [(SBMicroPIPTetheringMirrorView *)self->_microPIPTetheringViewMirror contentPlaceholderView];
+      contentPlaceholderView = [(SBMicroPIPTetheringMirrorView *)self->_microPIPTetheringViewMirror contentPlaceholderView];
       interactionController = self->_interactionController;
-      [v6 currentNormalizedScale];
+      [controllerCopy currentNormalizedScale];
       [(SBPIPInteractionController *)interactionController setPreferredNormalizedScale:0 additionalReasons:v4 animationBehavior:?];
       [(SBPIPInteractionController *)self->_interactionController nonoperationalFrame];
-      [v7 setBounds:{0.0, 0.0}];
-      [v7 layoutIfNeeded];
+      [contentPlaceholderView setBounds:{0.0, 0.0}];
+      [contentPlaceholderView layoutIfNeeded];
       [(SBMicroPIPTetheringMirrorView *)self->_microPIPTetheringViewMirror layoutIfNeeded];
-      v9 = [(UIView *)self->_contentView superview];
-      v10 = [(SBPIPContainerViewController *)self view];
+      superview = [(UIView *)self->_contentView superview];
+      view = [(SBPIPContainerViewController *)self view];
 
-      if (v9 == v10)
+      if (superview == view)
       {
-        v12 = [v7 superview];
-        [v7 frame];
+        superview2 = [contentPlaceholderView superview];
+        [contentPlaceholderView frame];
         v14 = v13;
         v16 = v15;
         v18 = v17;
         v20 = v19;
-        v21 = [(SBPIPContainerViewController *)self view];
-        [v12 convertRect:v21 toView:{v14, v16, v18, v20}];
+        view2 = [(SBPIPContainerViewController *)self view];
+        [superview2 convertRect:view2 toView:{v14, v16, v18, v20}];
         v23 = v22;
         v25 = v24;
         v27 = v26;
@@ -1762,15 +1762,15 @@ LABEL_27:
         v31 = 3221225472;
         v32 = __81__SBPIPContainerViewController_layoutForTetheringInteractionController_behavior___block_invoke;
         v33 = &unk_2783A92D8;
-        v34 = self;
-        v35 = v7;
+        selfCopy = self;
+        v35 = contentPlaceholderView;
         [(SBPIPContainerViewController *)self performAfterInFlightAnimationsComplete:&v30];
       }
 
       else
       {
         contentView = self->_contentView;
-        [v7 bounds];
+        [contentPlaceholderView bounds];
         [(UIView *)contentView setFrame:?];
       }
     }
@@ -1814,17 +1814,17 @@ uint64_t __81__SBPIPContainerViewController_layoutForTetheringInteractionControl
   microPIPTetheringViewMirror = self->_microPIPTetheringViewMirror;
   if (microPIPTetheringViewMirror)
   {
-    v4 = [(SBMicroPIPTetheringMirrorView *)microPIPTetheringViewMirror contentPlaceholderView];
+    contentPlaceholderView = [(SBMicroPIPTetheringMirrorView *)microPIPTetheringViewMirror contentPlaceholderView];
     [(UIView *)self->_contentView center];
     v6 = v5;
     v8 = v7;
-    v9 = [(SBPIPContainerViewController *)self view];
-    [v4 convertPoint:v9 toView:{v6, v8}];
+    view = [(SBPIPContainerViewController *)self view];
+    [contentPlaceholderView convertPoint:view toView:{v6, v8}];
     v11 = v10;
     v13 = v12;
 
-    v14 = [(SBPIPContainerViewController *)self view];
-    [v14 addSubview:self->_contentView];
+    view2 = [(SBPIPContainerViewController *)self view];
+    [view2 addSubview:self->_contentView];
 
     [(UIView *)self->_contentView setCenter:v11, v13];
     [(UIView *)self->_contentView layoutIfNeeded];
@@ -1834,9 +1834,9 @@ uint64_t __81__SBPIPContainerViewController_layoutForTetheringInteractionControl
   }
 }
 
-- (void)setTetheredContainerViewController:(id)a3
+- (void)setTetheredContainerViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_tetheredContainerViewController);
 
   v5 = obj;
@@ -1848,13 +1848,13 @@ uint64_t __81__SBPIPContainerViewController_layoutForTetheringInteractionControl
   }
 }
 
-- (void)rotationAnimationWillBeginToRotation:(int64_t)a3 contentViewFrame:(CGRect)a4
+- (void)rotationAnimationWillBeginToRotation:(int64_t)rotation contentViewFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = [(SBPIPContainerViewController *)self currentCanonicalPosition];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  currentCanonicalPosition = [(SBPIPContainerViewController *)self currentCanonicalPosition];
   [(UIView *)self->_contentView bounds];
   v13 = v11;
   v14 = v12;
@@ -1862,18 +1862,18 @@ uint64_t __81__SBPIPContainerViewController_layoutForTetheringInteractionControl
   v16 = 0.5;
   if (!self->_activelyTethered)
   {
-    if (a3 != 1)
+    if (rotation != 1)
     {
-      if (a3)
+      if (rotation)
       {
         goto LABEL_23;
       }
 
-      if (v10 <= 1)
+      if (currentCanonicalPosition <= 1)
       {
-        if (v10)
+        if (currentCanonicalPosition)
         {
-          if (v10 != 1)
+          if (currentCanonicalPosition != 1)
           {
             goto LABEL_23;
           }
@@ -1884,9 +1884,9 @@ uint64_t __81__SBPIPContainerViewController_layoutForTetheringInteractionControl
         goto LABEL_17;
       }
 
-      if (v10 != 2)
+      if (currentCanonicalPosition != 2)
       {
-        if (v10 != 3)
+        if (currentCanonicalPosition != 3)
         {
           goto LABEL_23;
         }
@@ -1899,11 +1899,11 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    if (v10 > 1)
+    if (currentCanonicalPosition > 1)
     {
-      if (v10 != 2)
+      if (currentCanonicalPosition != 2)
       {
-        if (v10 != 3)
+        if (currentCanonicalPosition != 3)
         {
           goto LABEL_23;
         }
@@ -1918,7 +1918,7 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    if (!v10)
+    if (!currentCanonicalPosition)
     {
 LABEL_18:
       v18 = v12 * 0.5;
@@ -1927,7 +1927,7 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    if (v10 == 1)
+    if (currentCanonicalPosition == 1)
     {
 LABEL_19:
       v17 = v12 + v11 * -0.5;
@@ -1958,16 +1958,16 @@ LABEL_23:
   }
 }
 
-- (void)rotationAnimationDidBeginToRotation:(int64_t)a3 contentViewFrame:(CGRect)a4
+- (void)rotationAnimationDidBeginToRotation:(int64_t)rotation contentViewFrame:(CGRect)frame
 {
-  if ((a3 - 1) > 2)
+  if ((rotation - 1) > 2)
   {
     v5 = -1.57079633;
   }
 
   else
   {
-    v5 = dbl_21F8A70D8[a3 - 1];
+    v5 = dbl_21F8A70D8[rotation - 1];
   }
 
   if (self->_activelyTethered && BSFloatEqualToFloat())
@@ -1989,12 +1989,12 @@ LABEL_23:
   [(UIView *)contentView setTransform:&v9, *&v9.a, *&v9.c, *&v9.tx];
 }
 
-- (void)rotationAnimationWillCompleteToRotation:(int64_t)a3 contentViewFrame:(CGRect)a4
+- (void)rotationAnimationWillCompleteToRotation:(int64_t)rotation contentViewFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   contentView = self->_contentView;
   v11 = *(MEMORY[0x277CBF2C0] + 16);
   v15[0] = *MEMORY[0x277CBF2C0];
@@ -2012,18 +2012,18 @@ LABEL_23:
   v17.size.width = width;
   v17.size.height = height;
   [(UIView *)self->_contentView setCenter:MidX, CGRectGetMidY(v17)];
-  if (a3 <= 1)
+  if (rotation <= 1)
   {
     [(SBPIPInteractionController *)self->_interactionController preferredContentSize];
     [(SBPIPInteractionController *)self->_interactionController setPreferredContentSize:v14, v13];
   }
 }
 
-- (void)rotationAnimationDidCompleteToRotation:(int64_t)a3 contentViewFrame:(CGRect)a4
+- (void)rotationAnimationDidCompleteToRotation:(int64_t)rotation contentViewFrame:(CGRect)frame
 {
   if (self->_activelyTethered)
   {
-    [(SBPIPContainerViewController *)self _layoutWithNonOperationFrame:a3];
+    [(SBPIPContainerViewController *)self _layoutWithNonOperationFrame:rotation];
   }
 
   [(SBPIPContainerViewController *)self stopDisplayLink];
@@ -2037,8 +2037,8 @@ LABEL_23:
   [(SBPIPInteractionController *)self->_interactionController nonoperationalFrame];
   [(SBPIPContainerViewController *)self _updateContentViewFrame:@"Rotation end" reason:0 usingDisplayArrangementSpace:0.0, 0.0];
   WeakRetained = objc_loadWeakRetained(&self->_tetheringContainerViewController);
-  v3 = [WeakRetained interactionController];
-  [(SBPIPContainerViewController *)self layoutForTetheringInteractionController:v3 behavior:0];
+  interactionController = [WeakRetained interactionController];
+  [(SBPIPContainerViewController *)self layoutForTetheringInteractionController:interactionController behavior:0];
 }
 
 - (void)startDisplayLink
@@ -2048,20 +2048,20 @@ LABEL_23:
   self->_microPiPRotationDisplayLink = v3;
 
   v5 = self->_microPiPRotationDisplayLink;
-  v6 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [(CADisplayLink *)v5 addToRunLoop:v6 forMode:*MEMORY[0x277CBE738]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [(CADisplayLink *)v5 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 }
 
-- (void)_handleMicroPiPRotationDisplayLink:(id)a3
+- (void)_handleMicroPiPRotationDisplayLink:(id)link
 {
-  v4 = [(UIView *)self->_contentView layer];
-  v5 = [v4 presentationLayer];
-  [v5 frame];
+  layer = [(UIView *)self->_contentView layer];
+  presentationLayer = [layer presentationLayer];
+  [presentationLayer frame];
 
-  v6 = [(UIView *)self->_contentView superview];
-  [v6 bounds];
-  v7 = [(UIView *)self->_contentView superview];
-  [v7 bounds];
+  superview = [(UIView *)self->_contentView superview];
+  [superview bounds];
+  superview2 = [(UIView *)self->_contentView superview];
+  [superview2 bounds];
 
   UIRectGetCenter();
   contentView = self->_contentView;
@@ -2076,18 +2076,18 @@ LABEL_23:
   self->_microPiPRotationDisplayLink = 0;
 }
 
-- (void)_setStashTabHidden:(BOOL)a3 left:(BOOL)a4 completion:(id)a5
+- (void)_setStashTabHidden:(BOOL)hidden left:(BOOL)left completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  leftCopy = left;
+  hiddenCopy = hidden;
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   if ([(SBPIPInteractionController *)self->_interactionController isEnabled])
   {
     v9 = (*(self + 1226) & 0x10) != 0 ? [(SBPIPContainerViewControllerAdapter *)self->_adapter isStashTabHiddenForContainerViewController:self]: 1;
-    if (v9 != v6)
+    if (v9 != hiddenCopy)
     {
-      v16 = v5;
+      v16 = leftCopy;
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
@@ -2124,27 +2124,27 @@ LABEL_23:
         while (v12);
       }
 
-      v5 = v16;
+      leftCopy = v16;
     }
   }
 
   if (*(self + 1226))
   {
-    [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self wantsStashTabHidden:v6 left:v5 springSettings:self->_stashTabAnimationSettings completion:v8];
+    [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self wantsStashTabHidden:hiddenCopy left:leftCopy springSettings:self->_stashTabAnimationSettings completion:completionCopy];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)_setAdapter:(id)a3
+- (void)_setAdapter:(id)adapter
 {
-  v5 = a3;
-  if (self->_adapter != v5)
+  adapterCopy = adapter;
+  if (self->_adapter != adapterCopy)
   {
-    v32 = v5;
+    v32 = adapterCopy;
     *(self + 1224) = *(self + 1224) & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
@@ -2417,9 +2417,9 @@ LABEL_23:
     contentViewController = self->_contentViewController;
     self->_contentViewController = v30;
 
-    objc_storeStrong(&self->_adapter, a3);
+    objc_storeStrong(&self->_adapter, adapter);
     [(SBPIPContainerViewControllerAdapter *)self->_adapter setContainerViewController:self];
-    v5 = v32;
+    adapterCopy = v32;
   }
 }
 
@@ -2439,13 +2439,13 @@ LABEL_23:
 
 - (id)maximumAvailableVerticalPadding
 {
-  v3 = [(SBPIPContainerViewController *)self viewIfLoaded];
-  [v3 bounds];
+  viewIfLoaded = [(SBPIPContainerViewController *)self viewIfLoaded];
+  [viewIfLoaded bounds];
   v5 = v4;
 
-  v6 = [(SBPIPContainerViewController *)self contentViewController];
-  v7 = [v6 viewIfLoaded];
-  [v7 bounds];
+  contentViewController = [(SBPIPContainerViewController *)self contentViewController];
+  viewIfLoaded2 = [contentViewController viewIfLoaded];
+  [viewIfLoaded2 bounds];
   v9 = v8;
 
   if (v5 <= 0.0)
@@ -2454,8 +2454,8 @@ LABEL_23:
     goto LABEL_16;
   }
 
-  v10 = [(SBPIPInteractionController *)self->_interactionController layoutSettings];
-  [v10 contentViewPadding];
+  layoutSettings = [(SBPIPInteractionController *)self->_interactionController layoutSettings];
+  [layoutSettings contentViewPadding];
   v12 = v11;
 
   v13 = __sb__runningInSpringBoard();
@@ -2488,8 +2488,8 @@ LABEL_23:
 
   else
   {
-    v10 = [MEMORY[0x277D75418] currentDevice];
-    if ([v10 userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
+    layoutSettings = [MEMORY[0x277D75418] currentDevice];
+    if ([layoutSettings userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
     {
       [MEMORY[0x277D75A78] heightForStyle:0 orientation:1];
       v15 = v17;
@@ -2508,68 +2508,68 @@ LABEL_16:
   return v16;
 }
 
-- (void)setContentViewPadding:(UIEdgeInsets)a3
+- (void)setContentViewPadding:(UIEdgeInsets)padding
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = padding.top;
+  v3.f64[1] = padding.left;
+  v4.f64[0] = padding.bottom;
+  v4.f64[1] = padding.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_contentViewPadding.top), vceqq_f64(v4, *&self->_contentViewPadding.bottom)))) & 1) == 0)
   {
-    self->_contentViewPadding = a3;
+    self->_contentViewPadding = padding;
     [(SBPIPContainerViewController *)self _updateContentPadding];
   }
 }
 
-- (void)setStashedPadding:(UIEdgeInsets)a3
+- (void)setStashedPadding:(UIEdgeInsets)padding
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = padding.top;
+  v3.f64[1] = padding.left;
+  v4.f64[0] = padding.bottom;
+  v4.f64[1] = padding.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_stashedPadding.top), vceqq_f64(v4, *&self->_stashedPadding.bottom)))) & 1) == 0)
   {
-    self->_stashedPadding = a3;
+    self->_stashedPadding = padding;
     [(SBPIPInteractionController *)self->_interactionController reloadInsets];
   }
 }
 
-- (void)setStashed:(BOOL)a3
+- (void)setStashed:(BOOL)stashed
 {
   interactionController = self->_interactionController;
   if (interactionController)
   {
-    v5 = a3;
+    stashedCopy = stashed;
     if ((*(self + 1225) & 4) != 0)
     {
-      [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self willUpdateStashState:a3];
+      [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self willUpdateStashState:stashed];
       interactionController = self->_interactionController;
     }
 
-    [(SBPIPInteractionController *)interactionController setStashed:v5];
+    [(SBPIPInteractionController *)interactionController setStashed:stashedCopy];
 
-    [(SBPIPContainerViewController *)self _notifyStashStateChanged:v5];
+    [(SBPIPContainerViewController *)self _notifyStashStateChanged:stashedCopy];
   }
 }
 
-- (void)setConnectedWindowScenes:(id)a3
+- (void)setConnectedWindowScenes:(id)scenes
 {
-  v6 = a3;
+  scenesCopy = scenes;
   if ((BSEqualArrays() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [scenesCopy copy];
     connectedWindowScenes = self->_connectedWindowScenes;
     self->_connectedWindowScenes = v4;
   }
 }
 
-- (void)_notifyStashStateChanged:(BOOL)a3
+- (void)_notifyStashStateChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v16 = *MEMORY[0x277D85DE8];
   if ((*(self + 1225) & 8) != 0)
   {
-    [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self didUpdateStashState:a3 springSettings:self->_stashTabAnimationSettings];
+    [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self didUpdateStashState:changed springSettings:self->_stashTabAnimationSettings];
   }
 
   v13 = 0u;
@@ -2594,7 +2594,7 @@ LABEL_16:
         v10 = *(*(&v11 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v10 containerViewController:self userDidUpdateStashState:{v3, v11}];
+          [v10 containerViewController:self userDidUpdateStashState:{changedCopy, v11}];
         }
       }
 
@@ -2617,7 +2617,7 @@ LABEL_16:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "[%p][PIP Container] acquireInterfaceOrientationLock", buf, 0xCu);
     }
 
@@ -2640,7 +2640,7 @@ LABEL_16:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v4 = 134217984;
-      v5 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "[%p][PIP Container] relinquishInterfaceOrientationLock", &v4, 0xCu);
     }
 
@@ -2648,18 +2648,18 @@ LABEL_16:
   }
 }
 
-- (void)_requireInterfaceOrientation:(int64_t)a3
+- (void)_requireInterfaceOrientation:(int64_t)orientation
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (self->_requiredInterfaceOrientation != a3)
+  if (self->_requiredInterfaceOrientation != orientation)
   {
-    self->_requiredInterfaceOrientation = a3;
+    self->_requiredInterfaceOrientation = orientation;
     v4 = SBLogTraitsArbiter();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = SBFStringForBSInterfaceOrientation();
       v6 = 134218242;
-      v7 = self;
+      selfCopy = self;
       v8 = 2114;
       v9 = v5;
       _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "[%p][PIP Container] requireInterfaceOrientation:%{public}@", &v6, 0x16u);
@@ -2698,7 +2698,7 @@ LABEL_6:
   {
     v7 = MEMORY[0x223D6D2C0](v5);
     v9 = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
     v12 = v7;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[%p][PIP Container] current supported orientations: %{public}@", &v9, 0x16u);
@@ -2707,15 +2707,15 @@ LABEL_6:
   return v5;
 }
 
-- (void)getRotationContentSettings:(id *)a3 forWindow:(id)a4
+- (void)getRotationContentSettings:(id *)settings forWindow:(id)window
 {
-  if (a3)
+  if (settings)
   {
-    a3->var6 = 0;
+    settings->var6 = 0;
   }
 }
 
-- (void)startResourcesUsageReductionAfterTimeout:(double)a3
+- (void)startResourcesUsageReductionAfterTimeout:(double)timeout
 {
   objc_initWeak(&location, self);
   [(BSAbsoluteMachTimer *)self->_stashedStateReduceResourcesUsageTimer invalidate];
@@ -2731,7 +2731,7 @@ LABEL_6:
   v10[2] = __73__SBPIPContainerViewController_startResourcesUsageReductionAfterTimeout___block_invoke;
   v10[3] = &unk_2783A9918;
   objc_copyWeak(&v11, &location);
-  [(BSAbsoluteMachTimer *)v7 scheduleWithFireInterval:v8 leewayInterval:v10 queue:a3 handler:0.0];
+  [(BSAbsoluteMachTimer *)v7 scheduleWithFireInterval:v8 leewayInterval:v10 queue:timeout handler:0.0];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -2840,12 +2840,12 @@ void __73__SBPIPContainerViewController_startResourcesUsageReductionAfterTimeout
   }
 }
 
-- (void)forcePictureInPictureToFrame:(CGRect)a3
+- (void)forcePictureInPictureToFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SBPIPInteractionController *)self->_interactionController setEnabled:0];
 
   [(SBPIPContainerViewController *)self _updateContentViewFrame:@"Force PIP To Frame" reason:0 usingDisplayArrangementSpace:x, y, width, height];
@@ -2910,25 +2910,25 @@ void __73__SBPIPContainerViewController_startResourcesUsageReductionAfterTimeout
   }
 }
 
-- (void)handleDestructionRequestForSceneHandle:(id)a3
+- (void)handleDestructionRequestForSceneHandle:(id)handle
 {
   if ((*(self + 1224) & 0x20) != 0)
   {
-    [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self handleDestructionRequestForSceneHandle:a3];
+    [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self handleDestructionRequestForSceneHandle:handle];
   }
 }
 
-- (void)_updateContentViewFrame:(CGRect)a3 reason:(id)a4 usingDisplayArrangementSpace:(BOOL)a5
+- (void)_updateContentViewFrame:(CGRect)frame reason:(id)reason usingDisplayArrangementSpace:(BOOL)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  reasonCopy = reason;
   [(SBPIPInteractionController *)self->_interactionController layoutWithFrame:x reason:y source:width usingDisplayArrangementSpace:height];
   if ((*(self + 1225) & 2) != 0)
   {
-    [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self didUpdateContentViewFrame:v10 reason:x, y, width, height];
+    [(SBPIPContainerViewControllerAdapter *)self->_adapter containerViewController:self didUpdateContentViewFrame:reasonCopy reason:x, y, width, height];
   }
 }
 
@@ -2944,8 +2944,8 @@ void __73__SBPIPContainerViewController_startResourcesUsageReductionAfterTimeout
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(SBPIPContainerViewController *)self isStashed];
-  if (v19 != [(SBSDisplayLayoutElement *)self->_displayLayoutElement sb_isStashedPIP]|| (v21.origin.x = v4, v21.origin.y = v6, v21.size.width = v8, v21.size.height = v10, v22.origin.x = v12, v22.origin.y = v14, v22.size.width = v16, v22.size.height = v18, !CGRectEqualToRect(v21, v22)))
+  isStashed = [(SBPIPContainerViewController *)self isStashed];
+  if (isStashed != [(SBSDisplayLayoutElement *)self->_displayLayoutElement sb_isStashedPIP]|| (v21.origin.x = v4, v21.origin.y = v6, v21.size.width = v8, v21.size.height = v10, v22.origin.x = v12, v22.origin.y = v14, v22.size.width = v16, v22.size.height = v18, !CGRectEqualToRect(v21, v22)))
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -2988,11 +2988,11 @@ void __73__SBPIPContainerViewController__updateDisplayLayoutElementReferenceFram
 
 - (int64_t)windowInterfaceOrientation
 {
-  v2 = [(SBPIPContainerViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 interfaceOrientation];
+  view = [(SBPIPContainerViewController *)self view];
+  window = [view window];
+  interfaceOrientation = [window interfaceOrientation];
 
-  return v4;
+  return interfaceOrientation;
 }
 
 - (CGRect)_contentViewFrameInDisplayReferenceSpace
@@ -3003,15 +3003,15 @@ void __73__SBPIPContainerViewController__updateDisplayLayoutElementReferenceFram
   v6 = *(MEMORY[0x277CBF398] + 24);
   if ([(SBPIPContainerViewController *)self isViewLoaded])
   {
-    v7 = [(SBPIPContainerViewController *)self view];
-    v8 = [v7 window];
+    view = [(SBPIPContainerViewController *)self view];
+    window = [view window];
 
-    if (v8)
+    if (window)
     {
       contentView = self->_contentView;
       [(UIView *)contentView bounds];
       [(UIView *)contentView convertRect:0 toView:?];
-      [v8 _convertRectToSceneReferenceSpace:?];
+      [window _convertRectToSceneReferenceSpace:?];
       v3 = v10;
       v4 = v11;
       v5 = v12;
@@ -3030,16 +3030,16 @@ void __73__SBPIPContainerViewController__updateDisplayLayoutElementReferenceFram
   return result;
 }
 
-- (CGRect)_frameInFixedCoordinateSpace:(CGRect)a3 transformedToInterfaceOrientation:(int64_t)a4
+- (CGRect)_frameInFixedCoordinateSpace:(CGRect)space transformedToInterfaceOrientation:(int64_t)orientation
 {
-  v6 = [(SBPIPContainerViewController *)self view];
-  v7 = [v6 window];
+  view = [(SBPIPContainerViewController *)self view];
+  window = [view window];
 
-  v8 = [v7 screen];
-  v9 = [v8 fixedCoordinateSpace];
-  [v9 bounds];
+  screen = [window screen];
+  fixedCoordinateSpace = [screen fixedCoordinateSpace];
+  [fixedCoordinateSpace bounds];
 
-  if (!a4)
+  if (!orientation)
   {
     [(SBPIPContainerViewController *)self windowInterfaceOrientation];
   }
@@ -3061,16 +3061,16 @@ void __73__SBPIPContainerViewController__updateDisplayLayoutElementReferenceFram
   return result;
 }
 
-- (void)setContentScale:(double)a3
+- (void)setContentScale:(double)scale
 {
-  if (a3 < 0.0 || a3 > 1.0)
+  if (scale < 0.0 || scale > 1.0)
   {
-    [SBPIPContainerViewController setContentScale:a3];
+    [SBPIPContainerViewController setContentScale:scale];
   }
 
   interactionController = self->_interactionController;
 
-  [(SBPIPInteractionController *)interactionController setPreferredNormalizedScale:a3];
+  [(SBPIPInteractionController *)interactionController setPreferredNormalizedScale:scale];
 }
 
 - (BOOL)requiresMedusaKeyboard
@@ -3086,18 +3086,18 @@ void __73__SBPIPContainerViewController__updateDisplayLayoutElementReferenceFram
   }
 }
 
-- (void)setPrefersHiddenFromClonedDisplay:(BOOL)a3
+- (void)setPrefersHiddenFromClonedDisplay:(BOOL)display
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_prefersHiddenFromClonedDisplay != a3)
+  if (self->_prefersHiddenFromClonedDisplay != display)
   {
-    self->_prefersHiddenFromClonedDisplay = a3;
+    self->_prefersHiddenFromClonedDisplay = display;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observerHashTable allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observerHashTable allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -3109,7 +3109,7 @@ void __73__SBPIPContainerViewController__updateDisplayLayoutElementReferenceFram
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -3122,7 +3122,7 @@ void __73__SBPIPContainerViewController__updateDisplayLayoutElementReferenceFram
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -3134,15 +3134,15 @@ void __73__SBPIPContainerViewController__updateDisplayLayoutElementReferenceFram
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(SBPIPContainerViewControllerAdapter *)self->_adapter overrideResourcesUsageReductionTimeout];
+    overrideResourcesUsageReductionTimeout = [(SBPIPContainerViewControllerAdapter *)self->_adapter overrideResourcesUsageReductionTimeout];
   }
 
   else
   {
-    v3 = 0;
+    overrideResourcesUsageReductionTimeout = 0;
   }
 
-  return v3;
+  return overrideResourcesUsageReductionTimeout;
 }
 
 - (BOOL)shouldSuppressAssociatedElementsInSystemAperture

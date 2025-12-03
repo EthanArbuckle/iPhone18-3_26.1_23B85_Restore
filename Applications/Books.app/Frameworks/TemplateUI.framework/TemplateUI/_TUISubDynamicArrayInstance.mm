@@ -1,31 +1,31 @@
 @interface _TUISubDynamicArrayInstance
-- (unint64_t)countForGeneration:(id)a3;
-- (void)fetchDataForIndexes:(id)a3 generation:(id)a4 block:(id)a5;
-- (void)fetchDataForRange:(_NSRange)a3 generation:(id)a4 block:(id)a5;
+- (unint64_t)countForGeneration:(id)generation;
+- (void)fetchDataForIndexes:(id)indexes generation:(id)generation block:(id)block;
+- (void)fetchDataForRange:(_NSRange)range generation:(id)generation block:(id)block;
 @end
 
 @implementation _TUISubDynamicArrayInstance
 
-- (unint64_t)countForGeneration:(id)a3
+- (unint64_t)countForGeneration:(id)generation
 {
   v6.receiver = self;
   v6.super_class = _TUISubDynamicArrayInstance;
-  v4 = [(_TUIDynamicArrayInstance *)&v6 countForGeneration:a3];
+  v4 = [(_TUIDynamicArrayInstance *)&v6 countForGeneration:generation];
   return TUIIndexMapperComputeCount(v4, self->_start, self->_end);
 }
 
-- (void)fetchDataForRange:(_NSRange)a3 generation:(id)a4 block:(id)a5
+- (void)fetchDataForRange:(_NSRange)range generation:(id)generation block:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  generationCopy = generation;
+  blockCopy = block;
   start = self->_start;
   if (start < 0)
   {
     v14.receiver = self;
     v14.super_class = _TUISubDynamicArrayInstance;
-    start += [(_TUIDynamicArrayInstance *)&v14 countForGeneration:v9];
+    start += [(_TUIDynamicArrayInstance *)&v14 countForGeneration:generationCopy];
   }
 
   if (location == 0x7FFFFFFFFFFFFFFFLL)
@@ -40,27 +40,27 @@
 
   v13.receiver = self;
   v13.super_class = _TUISubDynamicArrayInstance;
-  [(_TUIDynamicArrayInstance *)&v13 fetchDataForRange:v12 generation:length block:v9, v10];
+  [(_TUIDynamicArrayInstance *)&v13 fetchDataForRange:v12 generation:length block:generationCopy, blockCopy];
 }
 
-- (void)fetchDataForIndexes:(id)a3 generation:(id)a4 block:(id)a5
+- (void)fetchDataForIndexes:(id)indexes generation:(id)generation block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  indexesCopy = indexes;
+  generationCopy = generation;
+  blockCopy = block;
   start = self->_start;
   if (start < 0)
   {
     v14.receiver = self;
     v14.super_class = _TUISubDynamicArrayInstance;
-    start += [(_TUIDynamicArrayInstance *)&v14 countForGeneration:v9];
+    start += [(_TUIDynamicArrayInstance *)&v14 countForGeneration:generationCopy];
   }
 
-  v12 = [v8 mutableCopy];
+  v12 = [indexesCopy mutableCopy];
   [v12 shiftIndexesStartingAtIndex:0 by:start];
   v13.receiver = self;
   v13.super_class = _TUISubDynamicArrayInstance;
-  [(_TUIDynamicArrayInstance *)&v13 fetchDataForIndexes:v12 generation:v9 block:v10];
+  [(_TUIDynamicArrayInstance *)&v13 fetchDataForIndexes:v12 generation:generationCopy block:blockCopy];
 }
 
 @end

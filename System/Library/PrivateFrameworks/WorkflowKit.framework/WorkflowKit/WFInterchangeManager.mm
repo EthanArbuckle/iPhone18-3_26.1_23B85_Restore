@@ -1,20 +1,20 @@
 @interface WFInterchangeManager
 + (WFInterchangeManager)sharedManager;
-- (BOOL)handleIncomingRequest:(id)a3;
-- (BOOL)handleOpenURL:(id)a3 fromSourceApplication:(id)a4 errorHandler:(id)a5 postNotification:(BOOL)a6;
+- (BOOL)handleIncomingRequest:(id)request;
+- (BOOL)handleOpenURL:(id)l fromSourceApplication:(id)application errorHandler:(id)handler postNotification:(BOOL)notification;
 - (WFInterchangeManager)init;
 - (WFInterchangeScheme)callbackScheme;
 - (id)popQueuedRequest;
-- (void)_performRequest:(id)a3;
-- (void)applicationContext:(id)a3 applicationStateDidChange:(int64_t)a4;
+- (void)_performRequest:(id)request;
+- (void)applicationContext:(id)context applicationStateDidChange:(int64_t)change;
 - (void)dealloc;
-- (void)handleOpenURLRequestNotification:(id)a3;
+- (void)handleOpenURLRequestNotification:(id)notification;
 - (void)performQueuedRequestIfApplicable;
-- (void)performRequest:(id)a3;
-- (void)queueRequest:(id)a3;
-- (void)registerHandler:(id)a3 forIncomingRequestsWithAction:(id)a4 legacyAction:(id)a5 scheme:(id)a6;
-- (void)registerHandler:(id)a3 forIncomingRequestsWithAction:(id)a4 scheme:(id)a5;
-- (void)removeHandlerForIncomingRequestsWithAction:(id)a3 scheme:(id)a4;
+- (void)performRequest:(id)request;
+- (void)queueRequest:(id)request;
+- (void)registerHandler:(id)handler forIncomingRequestsWithAction:(id)action legacyAction:(id)legacyAction scheme:(id)scheme;
+- (void)registerHandler:(id)handler forIncomingRequestsWithAction:(id)action scheme:(id)scheme;
+- (void)removeHandlerForIncomingRequestsWithAction:(id)action scheme:(id)scheme;
 @end
 
 @implementation WFInterchangeManager
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __37__WFInterchangeManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_60596 != -1)
   {
     dispatch_once(&sharedManager_onceToken_60596, block);
@@ -50,18 +50,18 @@ void __37__WFInterchangeManager_sharedManager__block_invoke(uint64_t a1)
   v2 = [(WFInterchangeManager *)&v17 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696ABB0] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
     notificationCenter = v2->_notificationCenter;
-    v2->_notificationCenter = v3;
+    v2->_notificationCenter = defaultCenter;
 
-    v5 = [MEMORY[0x1E6996CA8] sharedContext];
-    [v5 addApplicationStateObserver:v2 forEvent:1];
+    mEMORY[0x1E6996CA8] = [MEMORY[0x1E6996CA8] sharedContext];
+    [mEMORY[0x1E6996CA8] addApplicationStateObserver:v2 forEvent:1];
 
-    v6 = [MEMORY[0x1E6996CA8] sharedContext];
-    [v6 addApplicationStateObserver:v2 forEvent:0];
+    mEMORY[0x1E6996CA8]2 = [MEMORY[0x1E6996CA8] sharedContext];
+    [mEMORY[0x1E6996CA8]2 addApplicationStateObserver:v2 forEvent:0];
 
-    v7 = [MEMORY[0x1E6996CA8] sharedContext];
-    [v7 addApplicationStateObserver:v2 forEvent:3];
+    mEMORY[0x1E6996CA8]3 = [MEMORY[0x1E6996CA8] sharedContext];
+    [mEMORY[0x1E6996CA8]3 addApplicationStateObserver:v2 forEvent:3];
 
     v8 = objc_opt_new();
     queuedRequests = v2->_queuedRequests;
@@ -74,10 +74,10 @@ void __37__WFInterchangeManager_sharedManager__block_invoke(uint64_t a1)
     [(WFInterchangeManager *)v2 registerHandler:&__block_literal_global_60582 forIncomingRequestsWithAction:@"ic-success" scheme:0];
     [(WFInterchangeManager *)v2 registerHandler:&__block_literal_global_189_60583 forIncomingRequestsWithAction:@"ic-cancel" scheme:0];
     [(WFInterchangeManager *)v2 registerHandler:&__block_literal_global_191_60584 forIncomingRequestsWithAction:@"ic-error" scheme:0];
-    v12 = [(WFInterchangeManager *)v2 notificationCenter];
+    notificationCenter = [(WFInterchangeManager *)v2 notificationCenter];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    [v12 addObserver:v2 selector:sel_handleOpenURLRequestNotification_ name:@"WFInterchangeManagerHandleOpenURLNotification" object:v14];
+    [notificationCenter addObserver:v2 selector:sel_handleOpenURLRequestNotification_ name:@"WFInterchangeManagerHandleOpenURLNotification" object:v14];
 
     v15 = v2;
   }
@@ -87,30 +87,30 @@ void __37__WFInterchangeManager_sharedManager__block_invoke(uint64_t a1)
 
 - (void)performQueuedRequestIfApplicable
 {
-  v3 = [(WFInterchangeManager *)self popQueuedRequest];
-  v4 = v3;
-  if (v3)
+  popQueuedRequest = [(WFInterchangeManager *)self popQueuedRequest];
+  v4 = popQueuedRequest;
+  if (popQueuedRequest)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __56__WFInterchangeManager_performQueuedRequestIfApplicable__block_invoke;
     v5[3] = &unk_1E837F870;
     v5[4] = self;
-    v6 = v3;
+    v6 = popQueuedRequest;
     dispatch_async(MEMORY[0x1E69E96A0], v5);
   }
 }
 
 - (id)popQueuedRequest
 {
-  v3 = [(WFInterchangeManager *)self queueLock];
-  v4 = [(WFInterchangeManager *)self queuedRequests];
-  [v3 lock];
-  v5 = [v4 lastObject];
-  [v4 removeLastObject];
-  [v3 unlock];
+  queueLock = [(WFInterchangeManager *)self queueLock];
+  queuedRequests = [(WFInterchangeManager *)self queuedRequests];
+  [queueLock lock];
+  lastObject = [queuedRequests lastObject];
+  [queuedRequests removeLastObject];
+  [queueLock unlock];
 
-  return v5;
+  return lastObject;
 }
 
 - (WFInterchangeScheme)callbackScheme
@@ -119,9 +119,9 @@ void __37__WFInterchangeManager_sharedManager__block_invoke(uint64_t a1)
   if (!callbackScheme)
   {
     v4 = +[WFInterchangeAppRegistry sharedRegistry];
-    v5 = [v4 currentApp];
-    v6 = [v5 schemes];
-    v7 = [v6 objectMatchingKey:@"callbackScheme" BOOLValue:1];
+    currentApp = [v4 currentApp];
+    schemes = [currentApp schemes];
+    v7 = [schemes objectMatchingKey:@"callbackScheme" BOOLValue:1];
     v8 = self->_callbackScheme;
     self->_callbackScheme = v7;
 
@@ -131,33 +131,33 @@ void __37__WFInterchangeManager_sharedManager__block_invoke(uint64_t a1)
   return callbackScheme;
 }
 
-- (void)_performRequest:(id)a3
+- (void)_performRequest:(id)request
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = getWFInterchangeLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v64 = "[WFInterchangeManager _performRequest:]";
     v65 = 2112;
-    v66 = v4;
+    v66 = requestCopy;
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_INFO, "%s Performing incoming request: %@", buf, 0x16u);
   }
 
-  v6 = [MEMORY[0x1E6996CA8] sharedContext];
-  v7 = [v6 applicationBundleURLSchemes];
-  v8 = [v4 URL];
-  v9 = [v8 scheme];
-  v10 = [v9 lowercaseString];
-  if ([v7 containsObject:v10] && objc_msgSend(v4, "isCallbackRequest"))
+  mEMORY[0x1E6996CA8] = [MEMORY[0x1E6996CA8] sharedContext];
+  applicationBundleURLSchemes = [mEMORY[0x1E6996CA8] applicationBundleURLSchemes];
+  v8 = [requestCopy URL];
+  scheme = [v8 scheme];
+  lowercaseString = [scheme lowercaseString];
+  if ([applicationBundleURLSchemes containsObject:lowercaseString] && objc_msgSend(requestCopy, "isCallbackRequest"))
   {
-    v11 = [v4 successHandler];
+    successHandler = [requestCopy successHandler];
 
-    if (v11)
+    if (successHandler)
     {
-      [v4 setInternalCallbackRequest:1];
-      if ([(WFInterchangeManager *)self handleIncomingRequest:v4])
+      [requestCopy setInternalCallbackRequest:1];
+      if ([(WFInterchangeManager *)self handleIncomingRequest:requestCopy])
       {
         goto LABEL_16;
       }
@@ -168,15 +168,15 @@ void __37__WFInterchangeManager_sharedManager__block_invoke(uint64_t a1)
   {
   }
 
-  if (![v4 isCallbackRequest])
+  if (![requestCopy isCallbackRequest])
   {
 LABEL_15:
-    [(WFInterchangeManager *)self queueRequest:v4];
+    [(WFInterchangeManager *)self queueRequest:requestCopy];
     goto LABEL_16;
   }
 
-  v12 = [MEMORY[0x1E6996CA8] sharedContext];
-  v13 = [v12 provider];
+  mEMORY[0x1E6996CA8]2 = [MEMORY[0x1E6996CA8] sharedContext];
+  provider = [mEMORY[0x1E6996CA8]2 provider];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -184,133 +184,133 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v14 = [(WFInterchangeManager *)self callbackScheme];
+  callbackScheme = [(WFInterchangeManager *)self callbackScheme];
 
-  if (!v14)
+  if (!callbackScheme)
   {
     goto LABEL_15;
   }
 
-  v15 = [v4 scheme];
+  scheme2 = [requestCopy scheme];
   v16 = objc_opt_new();
-  v17 = [v4 sourceName];
-  v18 = v17;
-  if (v17)
+  sourceName = [requestCopy sourceName];
+  v18 = sourceName;
+  if (sourceName)
   {
-    v19 = v17;
+    localizedShortName = sourceName;
   }
 
   else
   {
-    v21 = [(WFInterchangeManager *)self callbackScheme];
-    v22 = [v21 app];
-    v19 = [v22 localizedShortName];
+    callbackScheme2 = [(WFInterchangeManager *)self callbackScheme];
+    v22 = [callbackScheme2 app];
+    localizedShortName = [v22 localizedShortName];
   }
 
-  v23 = [v15 callbackSourceNameKey];
-  v24 = v23;
-  if (v19 && v23)
+  callbackSourceNameKey = [scheme2 callbackSourceNameKey];
+  v24 = callbackSourceNameKey;
+  if (localizedShortName && callbackSourceNameKey)
   {
-    [v16 setObject:v19 forKey:v23];
+    [v16 setObject:localizedShortName forKey:callbackSourceNameKey];
   }
 
-  v25 = [v4 successHandler];
+  successHandler2 = [requestCopy successHandler];
 
-  if (v25)
+  if (successHandler2)
   {
-    v26 = [v15 callbackSuccessURLKey];
-    v27 = [v15 callbackCancelURLKey];
-    v57 = v27;
-    v58 = v26;
-    if (v26)
+    callbackSuccessURLKey = [scheme2 callbackSuccessURLKey];
+    callbackCancelURLKey = [scheme2 callbackCancelURLKey];
+    v57 = callbackCancelURLKey;
+    v58 = callbackSuccessURLKey;
+    if (callbackSuccessURLKey)
     {
-      v60 = v19;
+      v60 = localizedShortName;
       v28 = MEMORY[0x1E696AEC0];
-      v29 = [(WFInterchangeManager *)self callbackScheme];
-      v30 = [v29 scheme];
-      v31 = [v4 uniqueID];
-      v32 = [v31 UUIDString];
-      v33 = [v28 stringWithFormat:@"%@://%@/%@/%@", v30, @"x-callback-url", @"ic-success", v32];
+      callbackScheme3 = [(WFInterchangeManager *)self callbackScheme];
+      scheme3 = [callbackScheme3 scheme];
+      uniqueID = [requestCopy uniqueID];
+      uUIDString = [uniqueID UUIDString];
+      v33 = [v28 stringWithFormat:@"%@://%@/%@/%@", scheme3, @"x-callback-url", @"ic-success", uUIDString];
 
-      v34 = [v4 successURLQueryString];
-      v35 = v34;
-      if (v34)
+      successURLQueryString = [requestCopy successURLQueryString];
+      v35 = successURLQueryString;
+      if (successURLQueryString)
       {
-        v36 = [v33 stringByAppendingFormat:@"?%@", v34];
+        v36 = [v33 stringByAppendingFormat:@"?%@", successURLQueryString];
 
         v33 = v36;
       }
 
-      v26 = v58;
+      callbackSuccessURLKey = v58;
       [v16 setObject:v33 forKey:v58];
 
-      v19 = v60;
-      v27 = v57;
+      localizedShortName = v60;
+      callbackCancelURLKey = v57;
     }
 
-    if (v27)
+    if (callbackCancelURLKey)
     {
       v37 = MEMORY[0x1E696AEC0];
-      v38 = [(WFInterchangeManager *)self callbackScheme];
-      v39 = [v38 scheme];
-      [v4 uniqueID];
+      callbackScheme4 = [(WFInterchangeManager *)self callbackScheme];
+      scheme4 = [callbackScheme4 scheme];
+      [requestCopy uniqueID];
       v61 = v24;
       v40 = v16;
-      v42 = v41 = v19;
-      v43 = [v42 UUIDString];
-      v44 = [v37 stringWithFormat:@"%@://%@/%@/%@", v39, @"x-callback-url", @"ic-cancel", v43];
+      v42 = v41 = localizedShortName;
+      uUIDString2 = [v42 UUIDString];
+      v44 = [v37 stringWithFormat:@"%@://%@/%@/%@", scheme4, @"x-callback-url", @"ic-cancel", uUIDString2];
 
-      v19 = v41;
+      localizedShortName = v41;
       v16 = v40;
       v24 = v61;
 
-      v27 = v57;
+      callbackCancelURLKey = v57;
       [v16 setObject:v44 forKey:v57];
 
-      v26 = v58;
+      callbackSuccessURLKey = v58;
     }
   }
 
-  v45 = [v15 callbackErrorURLKey];
-  v46 = [v4 failureHandler];
+  callbackErrorURLKey = [scheme2 callbackErrorURLKey];
+  failureHandler = [requestCopy failureHandler];
 
-  if (v46 && v45)
+  if (failureHandler && callbackErrorURLKey)
   {
     v47 = MEMORY[0x1E696AEC0];
-    v48 = [(WFInterchangeManager *)self callbackScheme];
-    [v48 scheme];
+    callbackScheme5 = [(WFInterchangeManager *)self callbackScheme];
+    [callbackScheme5 scheme];
     v49 = v62 = v24;
-    [v4 uniqueID];
-    v59 = v15;
+    [requestCopy uniqueID];
+    v59 = scheme2;
     v50 = v16;
-    v52 = v51 = v19;
-    v53 = [v52 UUIDString];
-    v54 = [v47 stringWithFormat:@"%@://%@/%@/%@", v49, @"x-callback-url", @"ic-error", v53];
+    v52 = v51 = localizedShortName;
+    uUIDString3 = [v52 UUIDString];
+    v54 = [v47 stringWithFormat:@"%@://%@/%@/%@", v49, @"x-callback-url", @"ic-error", uUIDString3];
 
-    v19 = v51;
+    localizedShortName = v51;
     v16 = v50;
-    v15 = v59;
+    scheme2 = v59;
 
     v24 = v62;
-    [v16 setObject:v54 forKey:v45];
+    [v16 setObject:v54 forKey:callbackErrorURLKey];
   }
 
-  v55 = [v4 URL];
+  v55 = [requestCopy URL];
   v56 = [v55 URLByAddingValuesFromQueryDictionary:v16];
-  [v4 setGeneratedCallbackURL:v56];
+  [requestCopy setGeneratedCallbackURL:v56];
 
-  [(WFInterchangeManager *)self queueRequest:v4];
+  [(WFInterchangeManager *)self queueRequest:requestCopy];
 LABEL_16:
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performRequest:(id)a3
+- (void)performRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    [(WFInterchangeManager *)self _performRequest:v4];
+    [(WFInterchangeManager *)self _performRequest:requestCopy];
   }
 
   else
@@ -320,7 +320,7 @@ LABEL_16:
     v5[2] = __39__WFInterchangeManager_performRequest___block_invoke;
     v5[3] = &unk_1E837F870;
     v5[4] = self;
-    v6 = v4;
+    v6 = requestCopy;
     dispatch_sync(MEMORY[0x1E69E96A0], v5);
   }
 }
@@ -600,29 +600,29 @@ uint64_t __56__WFInterchangeManager_performQueuedRequestIfApplicable__block_invo
   return [v2 queueRequest:v3];
 }
 
-- (void)queueRequest:(id)a3
+- (void)queueRequest:(id)request
 {
-  v4 = a3;
-  v6 = [(WFInterchangeManager *)self queueLock];
-  [v6 lock];
-  v5 = [(WFInterchangeManager *)self queuedRequests];
-  [v5 addObject:v4];
+  requestCopy = request;
+  queueLock = [(WFInterchangeManager *)self queueLock];
+  [queueLock lock];
+  queuedRequests = [(WFInterchangeManager *)self queuedRequests];
+  [queuedRequests addObject:requestCopy];
 
-  [v6 unlock];
+  [queueLock unlock];
   [(WFInterchangeManager *)self performQueuedRequestIfApplicable];
 }
 
-- (void)applicationContext:(id)a3 applicationStateDidChange:(int64_t)a4
+- (void)applicationContext:(id)context applicationStateDidChange:(int64_t)change
 {
-  v6 = a3;
-  if (a4)
+  contextCopy = context;
+  if (change)
   {
-    if (a4 == 3)
+    if (change == 3)
     {
       self->_enteringForeground = 1;
     }
 
-    else if (a4 == 1)
+    else if (change == 1)
     {
       self->_resignedActiveWhileOpeningURL = 1;
     }
@@ -630,115 +630,115 @@ uint64_t __56__WFInterchangeManager_performQueuedRequestIfApplicable__block_invo
 
   else
   {
-    v26 = v6;
-    v7 = [MEMORY[0x1E69E0A90] currentDevice];
-    v8 = [v7 idiom];
+    v26 = contextCopy;
+    currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+    idiom = [currentDevice idiom];
 
-    if (v8 != 1)
+    if (idiom != 1)
     {
       goto LABEL_13;
     }
 
-    v9 = [MEMORY[0x1E6996CA8] sharedContext];
-    v10 = [v9 applicationOrNil];
+    mEMORY[0x1E6996CA8] = [MEMORY[0x1E6996CA8] sharedContext];
+    applicationOrNil = [mEMORY[0x1E6996CA8] applicationOrNil];
 
-    if (!v10)
+    if (!applicationOrNil)
     {
       goto LABEL_13;
     }
 
-    v11 = [v10 keyWindow];
-    [v11 frame];
+    keyWindow = [applicationOrNil keyWindow];
+    [keyWindow frame];
     v13 = v12;
     v15 = v14;
 
-    v16 = [MEMORY[0x1E69E0A90] currentDevice];
-    [v16 screenBounds];
+    currentDevice2 = [MEMORY[0x1E69E0A90] currentDevice];
+    [currentDevice2 screenBounds];
     v18 = v17;
     v20 = v19;
 
-    v6 = v26;
+    contextCopy = v26;
     v21 = v13 == v18 && v15 == v20;
     if (v21 || self->_enteringForeground)
     {
 LABEL_13:
       self->_enteringForeground = 0;
       v22 = +[WFInterchangeURLRequestRegistry sharedRegistry];
-      v23 = [v22 popActiveRequest];
+      popActiveRequest = [v22 popActiveRequest];
 
-      v24 = [v23 successHandler];
+      successHandler = [popActiveRequest successHandler];
 
-      if (v24)
+      if (successHandler)
       {
-        v25 = [v23 successHandler];
-        v25[2](v25, 0, 0);
+        successHandler2 = [popActiveRequest successHandler];
+        successHandler2[2](successHandler2, 0, 0);
       }
 
       [(WFInterchangeManager *)self performQueuedRequestIfApplicable];
 
-      v6 = v26;
+      contextCopy = v26;
     }
   }
 }
 
-- (void)removeHandlerForIncomingRequestsWithAction:(id)a3 scheme:(id)a4
+- (void)removeHandlerForIncomingRequestsWithAction:(id)action scheme:(id)scheme
 {
-  v5 = a4;
-  v6 = a3;
+  schemeCopy = scheme;
+  actionCopy = action;
   v7 = +[WFInterchangeURLRequestRegistry sharedRegistry];
-  [v7 removeHandlerForIncomingRequestsWithAction:v6 scheme:v5];
+  [v7 removeHandlerForIncomingRequestsWithAction:actionCopy scheme:schemeCopy];
 }
 
-- (void)registerHandler:(id)a3 forIncomingRequestsWithAction:(id)a4 legacyAction:(id)a5 scheme:(id)a6
+- (void)registerHandler:(id)handler forIncomingRequestsWithAction:(id)action legacyAction:(id)legacyAction scheme:(id)scheme
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  schemeCopy = scheme;
+  legacyActionCopy = legacyAction;
+  actionCopy = action;
+  handlerCopy = handler;
   v13 = +[WFInterchangeURLRequestRegistry sharedRegistry];
-  [v13 registerHandler:v12 forIncomingRequestsWithAction:v11 scheme:v9];
+  [v13 registerHandler:handlerCopy forIncomingRequestsWithAction:actionCopy scheme:schemeCopy];
 
   v14 = +[WFInterchangeURLRequestRegistry sharedRegistry];
-  [v14 registerHandler:v12 forIncomingRequestsWithAction:v10 scheme:v9];
+  [v14 registerHandler:handlerCopy forIncomingRequestsWithAction:legacyActionCopy scheme:schemeCopy];
 }
 
-- (void)registerHandler:(id)a3 forIncomingRequestsWithAction:(id)a4 scheme:(id)a5
+- (void)registerHandler:(id)handler forIncomingRequestsWithAction:(id)action scheme:(id)scheme
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  schemeCopy = scheme;
+  actionCopy = action;
+  handlerCopy = handler;
   v10 = +[WFInterchangeURLRequestRegistry sharedRegistry];
-  [v10 registerHandler:v9 forIncomingRequestsWithAction:v8 scheme:v7];
+  [v10 registerHandler:handlerCopy forIncomingRequestsWithAction:actionCopy scheme:schemeCopy];
 }
 
-- (BOOL)handleIncomingRequest:(id)a3
+- (BOOL)handleIncomingRequest:(id)request
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = getWFInterchangeLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v28 = "[WFInterchangeManager handleIncomingRequest:]";
     v29 = 2112;
-    v30 = v4;
+    v30 = requestCopy;
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_DEBUG, "%s Handling incoming request: %@", buf, 0x16u);
   }
 
-  v6 = [v4 URL];
+  v6 = [requestCopy URL];
   v7 = +[WFInterchangeURLRequestRegistry sharedRegistry];
-  v8 = [v4 action];
-  v9 = [v6 scheme];
-  v10 = [v7 handlerForIncomingRequestWithAction:v8 scheme:v9];
+  action = [requestCopy action];
+  scheme = [v6 scheme];
+  v10 = [v7 handlerForIncomingRequestWithAction:action scheme:scheme];
 
   if (v10)
   {
-    (v10)[2](v10, v4);
+    (v10)[2](v10, requestCopy);
   }
 
   else
   {
-    if (![v4 isCallbackRequest] || (-[WFInterchangeManager callbackScheme](self, "callbackScheme"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "matchesURL:", v6), v12, !v13))
+    if (![requestCopy isCallbackRequest] || (-[WFInterchangeManager callbackScheme](self, "callbackScheme"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "matchesURL:", v6), v12, !v13))
     {
       v11 = 0;
       goto LABEL_12;
@@ -748,18 +748,18 @@ LABEL_13:
     v25 = *MEMORY[0x1E696A578];
     v15 = MEMORY[0x1E696AEC0];
     v16 = WFLocalizedString(@"This app does not support the %@ action.");
-    v17 = [v4 action];
-    v18 = [v15 stringWithFormat:v16, v17];
+    action2 = [requestCopy action];
+    v18 = [v15 stringWithFormat:v16, action2];
     v26 = v18;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v20 = [v14 errorWithDomain:@"InterchangeErrorDomain" code:2 userInfo:v19];
 
-    v21 = [v4 failureHandler];
+    failureHandler = [requestCopy failureHandler];
 
-    if (v21)
+    if (failureHandler)
     {
-      v22 = [v4 failureHandler];
-      (v22)[2](v22, v20);
+      failureHandler2 = [requestCopy failureHandler];
+      (failureHandler2)[2](failureHandler2, v20);
     }
   }
 
@@ -770,44 +770,44 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)handleOpenURL:(id)a3 fromSourceApplication:(id)a4 errorHandler:(id)a5 postNotification:(BOOL)a6
+- (BOOL)handleOpenURL:(id)l fromSourceApplication:(id)application errorHandler:(id)handler postNotification:(BOOL)notification
 {
-  v33 = a6;
+  notificationCopy = notification;
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  applicationCopy = application;
+  handlerCopy = handler;
   v11 = getWFInterchangeLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v47 = "[WFInterchangeManager handleOpenURL:fromSourceApplication:errorHandler:postNotification:]";
     v48 = 2112;
-    v49 = v8;
+    v49 = lCopy;
     _os_log_impl(&dword_1CA256000, v11, OS_LOG_TYPE_INFO, "%s Handling opening URL: %@", buf, 0x16u);
   }
 
-  v12 = [WFInterchangeURLRequest requestWithURL:v8 fromSourceApplication:v9];
-  v13 = [v12 parameters];
+  v12 = [WFInterchangeURLRequest requestWithURL:lCopy fromSourceApplication:applicationCopy];
+  parameters = [v12 parameters];
   v14 = MEMORY[0x1E695DFF8];
-  v15 = [v13 objectForKey:@"x-error"];
+  v15 = [parameters objectForKey:@"x-error"];
   v16 = [v14 URLWithString:v15];
 
-  if (v10 | v16)
+  if (handlerCopy | v16)
   {
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __90__WFInterchangeManager_handleOpenURL_fromSourceApplication_errorHandler_postNotification___block_invoke;
     v40[3] = &unk_1E837CF40;
     v41 = v16;
-    v42 = self;
-    v43 = v10;
+    selfCopy = self;
+    v43 = handlerCopy;
     [v12 setFailureHandler:v40];
   }
 
-  v35 = v10;
-  v17 = [v13 objectForKey:@"x-cancel"];
-  v18 = [v13 objectForKey:@"x-success"];
+  v35 = handlerCopy;
+  v17 = [parameters objectForKey:@"x-cancel"];
+  v18 = [parameters objectForKey:@"x-success"];
   if (v17 | v18)
   {
     v37[0] = MEMORY[0x1E69E9820];
@@ -821,14 +821,14 @@ LABEL_12:
 
   v19 = [(WFInterchangeManager *)self handleIncomingRequest:v12];
   v20 = v19;
-  if (v33)
+  if (notificationCopy)
   {
     v32 = v19;
     v21 = MEMORY[0x1E695DF90];
     v44[0] = @"HandleURLNotificationURL";
-    v34 = v8;
-    [v8 absoluteString];
-    v23 = v22 = v9;
+    v34 = lCopy;
+    [lCopy absoluteString];
+    v23 = v22 = applicationCopy;
     v45[0] = v23;
     v44[1] = @"HandleURLNotificationProcessIdentifier";
     v24 = [MEMORY[0x1E696AD98] numberWithInt:getpid()];
@@ -841,13 +841,13 @@ LABEL_12:
       [v26 setObject:v22 forKeyedSubscript:@"HandleURLNotificationSourceApplication"];
     }
 
-    v27 = [(WFInterchangeManager *)self notificationCenter];
+    notificationCenter = [(WFInterchangeManager *)self notificationCenter];
     v28 = objc_opt_class();
     v29 = NSStringFromClass(v28);
-    [v27 postNotificationName:@"WFInterchangeManagerHandleOpenURLNotification" object:v29 userInfo:v26 deliverImmediately:1];
+    [notificationCenter postNotificationName:@"WFInterchangeManagerHandleOpenURLNotification" object:v29 userInfo:v26 deliverImmediately:1];
 
-    v9 = v22;
-    v8 = v34;
+    applicationCopy = v22;
+    lCopy = v34;
     v20 = v32;
   }
 
@@ -1024,11 +1024,11 @@ LABEL_19:
   v9();
 }
 
-- (void)handleOpenURLRequestNotification:(id)a3
+- (void)handleOpenURLRequestNotification:(id)notification
 {
-  v16 = a3;
-  v4 = [v16 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"HandleURLNotificationProcessIdentifier"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"HandleURLNotificationProcessIdentifier"];
 
   if (v5)
   {
@@ -1051,8 +1051,8 @@ LABEL_19:
 
   v7 = v6;
 
-  v8 = [v16 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"HandleURLNotificationURL"];
+  userInfo2 = [notificationCopy userInfo];
+  v9 = [userInfo2 objectForKeyedSubscript:@"HandleURLNotificationURL"];
 
   if (!v9)
   {
@@ -1075,11 +1075,11 @@ LABEL_18:
   v10 = [MEMORY[0x1E695DFF8] URLWithString:v9];
   if (v10)
   {
-    v11 = [v7 integerValue];
-    if (v11 != getpid())
+    integerValue = [v7 integerValue];
+    if (integerValue != getpid())
     {
-      v12 = [v16 userInfo];
-      v13 = [v12 objectForKeyedSubscript:@"HandleURLNotificationSourceApplication"];
+      userInfo3 = [notificationCopy userInfo];
+      v13 = [userInfo3 objectForKeyedSubscript:@"HandleURLNotificationSourceApplication"];
 
       if (v13)
       {
@@ -1112,14 +1112,14 @@ LABEL_19:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E6996CA8] sharedContext];
-  [v3 removeApplicationStateObserver:self forEvent:1];
+  mEMORY[0x1E6996CA8] = [MEMORY[0x1E6996CA8] sharedContext];
+  [mEMORY[0x1E6996CA8] removeApplicationStateObserver:self forEvent:1];
 
-  v4 = [MEMORY[0x1E6996CA8] sharedContext];
-  [v4 removeApplicationStateObserver:self forEvent:0];
+  mEMORY[0x1E6996CA8]2 = [MEMORY[0x1E6996CA8] sharedContext];
+  [mEMORY[0x1E6996CA8]2 removeApplicationStateObserver:self forEvent:0];
 
-  v5 = [MEMORY[0x1E6996CA8] sharedContext];
-  [v5 removeApplicationStateObserver:self forEvent:3];
+  mEMORY[0x1E6996CA8]3 = [MEMORY[0x1E6996CA8] sharedContext];
+  [mEMORY[0x1E6996CA8]3 removeApplicationStateObserver:self forEvent:3];
 
   v6.receiver = self;
   v6.super_class = WFInterchangeManager;

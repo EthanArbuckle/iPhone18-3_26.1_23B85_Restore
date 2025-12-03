@@ -1,18 +1,18 @@
 @interface RPNWNearbyInvitationEndpoint
-+ (BOOL)addEndpointMapping:(id)a3 endpointID:(id)a4 applicationService:(id)a5 discoverySessionID:(id)a6;
-+ (BOOL)removeEndpointMapping:(id)a3 discoverySessionID:(id)a4;
-+ (BOOL)updateEndpointMapping:(id)a3 discoverySessionID:(id)a4;
-+ (id)findEndpoint:(id)a3;
-+ (id)listEndpointsForDiscoverySession:(id)a3;
-+ (void)clearEndpointMappings:(id)a3;
++ (BOOL)addEndpointMapping:(id)mapping endpointID:(id)d applicationService:(id)service discoverySessionID:(id)iD;
++ (BOOL)removeEndpointMapping:(id)mapping discoverySessionID:(id)d;
++ (BOOL)updateEndpointMapping:(id)mapping discoverySessionID:(id)d;
++ (id)findEndpoint:(id)endpoint;
++ (id)listEndpointsForDiscoverySession:(id)session;
++ (void)clearEndpointMappings:(id)mappings;
 + (void)initialize;
-+ (void)listEndpoints:(id)a3;
-+ (void)removeDiscoverySessionFromAllEndpoints:(id)a3;
-+ (void)updateClientBrowseResult:(id)a3 browseResponse:(id)a4 agentUUID:(id)a5 applicationService:(id)a6 discoverySessionID:(id)a7;
-- (BOOL)removeDiscoverySession:(id)a3;
-- (BOOL)seenBySession:(id)a3;
++ (void)listEndpoints:(id)endpoints;
++ (void)removeDiscoverySessionFromAllEndpoints:(id)endpoints;
++ (void)updateClientBrowseResult:(id)result browseResponse:(id)response agentUUID:(id)d applicationService:(id)service discoverySessionID:(id)iD;
+- (BOOL)removeDiscoverySession:(id)session;
+- (BOOL)seenBySession:(id)session;
 - (RPNWNearbyInvitationEndpoint)init;
-- (RPNWNearbyInvitationEndpoint)initWithDevice:(id)a3 applicationService:(id)a4 endpointID:(id)a5 discoverySessionID:(id)a6;
+- (RPNWNearbyInvitationEndpoint)initWithDevice:(id)device applicationService:(id)service endpointID:(id)d discoverySessionID:(id)iD;
 - (id)description;
 - (void)dealloc;
 @end
@@ -23,7 +23,7 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
     v5 = qword_1001D61C0;
@@ -45,27 +45,27 @@
   return v3;
 }
 
-- (RPNWNearbyInvitationEndpoint)initWithDevice:(id)a3 applicationService:(id)a4 endpointID:(id)a5 discoverySessionID:(id)a6
+- (RPNWNearbyInvitationEndpoint)initWithDevice:(id)device applicationService:(id)service endpointID:(id)d discoverySessionID:(id)iD
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
   v19.receiver = self;
   v19.super_class = RPNWNearbyInvitationEndpoint;
   v14 = [(RPNWNearbyInvitationEndpoint *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    [(RPNWNearbyInvitationEndpoint *)v14 setDevice:v10];
-    [(RPNWNearbyInvitationEndpoint *)v15 setApplicationService:v11];
-    [(RPNWNearbyInvitationEndpoint *)v15 setEndpointUUID:v12];
+    [(RPNWNearbyInvitationEndpoint *)v14 setDevice:deviceCopy];
+    [(RPNWNearbyInvitationEndpoint *)v15 setApplicationService:serviceCopy];
+    [(RPNWNearbyInvitationEndpoint *)v15 setEndpointUUID:dCopy];
     v16 = objc_alloc_init(NSMutableArray);
     [(RPNWNearbyInvitationEndpoint *)v15 setSessions:v16];
 
-    if (v13)
+    if (iDCopy)
     {
-      [(RPNWNearbyInvitationEndpoint *)v15 addSession:v13];
+      [(RPNWNearbyInvitationEndpoint *)v15 addSession:iDCopy];
       [(RPNWNearbyInvitationEndpoint *)v15 setBrowseSession:1];
     }
 
@@ -91,9 +91,9 @@
   return v3;
 }
 
-- (BOOL)seenBySession:(id)a3
+- (BOOL)seenBySession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -112,7 +112,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) isEqual:{v4, v10}])
+        if ([*(*(&v10 + 1) + 8 * i) isEqual:{sessionCopy, v10}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -134,9 +134,9 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)removeDiscoverySession:(id)a3
+- (BOOL)removeDiscoverySession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -157,7 +157,7 @@ LABEL_11:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 isEqual:{v4, v13}])
+        if ([v10 isEqual:{sessionCopy, v13}])
         {
           [(NSMutableArray *)self->_sessions removeObject:v10];
 
@@ -183,9 +183,9 @@ LABEL_11:
   return v11;
 }
 
-+ (id)listEndpointsForDiscoverySession:(id)a3
++ (id)listEndpointsForDiscoverySession:(id)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v4 = objc_alloc_init(NSMutableString);
   v13 = 0u;
   v14 = 0u;
@@ -207,7 +207,7 @@ LABEL_11:
         }
 
         v10 = [qword_1001D61C0 objectForKeyedSubscript:*(*(&v13 + 1) + 8 * i)];
-        if ([v10 seenBySession:v3])
+        if ([v10 seenBySession:sessionCopy])
         {
           v11 = [v10 description];
           [v4 appendFormat:@"  %@\n", v11];
@@ -223,9 +223,9 @@ LABEL_11:
   return v4;
 }
 
-+ (void)removeDiscoverySessionFromAllEndpoints:(id)a3
++ (void)removeDiscoverySessionFromAllEndpoints:(id)endpoints
 {
-  v3 = a3;
+  endpointsCopy = endpoints;
   if (dword_1001D3BE0 <= 30 && (dword_1001D3BE0 != -1 || _LogCategory_Initialize()))
   {
     sub_100118CCC();
@@ -235,8 +235,8 @@ LABEL_11:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [qword_1001D61C0 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  allKeys = [qword_1001D61C0 allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -247,12 +247,12 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         v10 = [qword_1001D61C0 objectForKeyedSubscript:v9];
-        if ([v10 removeDiscoverySession:v3])
+        if ([v10 removeDiscoverySession:endpointsCopy])
         {
           v11 = qword_1001D61C0;
           v17 = v9;
@@ -261,31 +261,31 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v13 objects:v18 count:16];
     }
 
     while (v6);
   }
 }
 
-+ (BOOL)addEndpointMapping:(id)a3 endpointID:(id)a4 applicationService:(id)a5 discoverySessionID:(id)a6
++ (BOOL)addEndpointMapping:(id)mapping endpointID:(id)d applicationService:(id)service discoverySessionID:(id)iD
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  mappingCopy = mapping;
+  dCopy = d;
+  serviceCopy = service;
+  iDCopy = iD;
   if (dword_1001D3BE0 <= 30 && (dword_1001D3BE0 != -1 || _LogCategory_Initialize()))
   {
-    v32 = v9;
-    v33 = v12;
-    v30 = v11;
-    v31 = v10;
+    v32 = mappingCopy;
+    v33 = iDCopy;
+    v30 = serviceCopy;
+    v31 = dCopy;
     LogPrintF();
   }
 
-  v34 = v12;
-  v35 = v11;
-  v36 = v10;
+  v34 = iDCopy;
+  v35 = serviceCopy;
+  v36 = dCopy;
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
@@ -307,8 +307,8 @@ LABEL_11:
         }
 
         v19 = [v13[56] objectForKeyedSubscript:{*(*(&v37 + 1) + 8 * i), v30, v31, v32, v33}];
-        v20 = [v19 device];
-        if ([v20 isEqualToDevice:v9])
+        device = [v19 device];
+        if ([device isEqualToDevice:mappingCopy])
         {
           [v19 endpointUUID];
           v21 = v13;
@@ -361,7 +361,7 @@ LABEL_11:
   v25 = v35;
   v26 = v36;
   v27 = v34;
-  v14 = [[RPNWNearbyInvitationEndpoint alloc] initWithDevice:v9 applicationService:v35 endpointID:v36 discoverySessionID:v34];
+  v14 = [[RPNWNearbyInvitationEndpoint alloc] initWithDevice:mappingCopy applicationService:v35 endpointID:v36 discoverySessionID:v34];
   if (dword_1001D3BE0 <= 40 && (dword_1001D3BE0 != -1 || _LogCategory_Initialize()))
   {
     sub_100118D4C();
@@ -374,10 +374,10 @@ LABEL_28:
   return v28;
 }
 
-+ (BOOL)updateEndpointMapping:(id)a3 discoverySessionID:(id)a4
++ (BOOL)updateEndpointMapping:(id)mapping discoverySessionID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  mappingCopy = mapping;
+  dCopy = d;
   if (dword_1001D3BE0 <= 30 && (dword_1001D3BE0 != -1 || _LogCategory_Initialize()))
   {
     sub_100118D8C();
@@ -405,10 +405,10 @@ LABEL_28:
         }
 
         v12 = [qword_1001D61C0 objectForKeyedSubscript:*(*(&v18 + 1) + 8 * v11)];
-        v13 = [v12 device];
-        if ([v13 isEqualToDevice:v5])
+        device = [v12 device];
+        if ([device isEqualToDevice:mappingCopy])
         {
-          v14 = [v12 seenBySession:v6];
+          v14 = [v12 seenBySession:dCopy];
 
           if (v14)
           {
@@ -417,7 +417,7 @@ LABEL_28:
               sub_100118DCC();
             }
 
-            [v12 setDevice:v5];
+            [v12 setDevice:mappingCopy];
             v17 = 1;
           }
         }
@@ -445,18 +445,18 @@ LABEL_28:
   return v17 & 1;
 }
 
-+ (BOOL)removeEndpointMapping:(id)a3 discoverySessionID:(id)a4
++ (BOOL)removeEndpointMapping:(id)mapping discoverySessionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  mappingCopy = mapping;
+  dCopy = d;
   if (dword_1001D3BE0 <= 30 && (dword_1001D3BE0 != -1 || _LogCategory_Initialize()))
   {
-    v19 = a1;
-    v20 = v6;
+    selfCopy = self;
+    v20 = mappingCopy;
     LogPrintF();
   }
 
-  v21 = [NSMutableArray array:v19];
+  v21 = [NSMutableArray array:selfCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -480,14 +480,14 @@ LABEL_28:
 
         v13 = *(*(&v23 + 1) + 8 * v12);
         v14 = [qword_1001D61C0 objectForKeyedSubscript:v13];
-        v15 = [v14 device];
-        if ([v15 isEqualToDevice:v6])
+        device = [v14 device];
+        if ([device isEqualToDevice:mappingCopy])
         {
-          v16 = [v14 seenBySession:v7];
+          v16 = [v14 seenBySession:dCopy];
 
           if (v16)
           {
-            if ([v14 removeDiscoverySession:v7])
+            if ([v14 removeDiscoverySession:dCopy])
             {
               [v21 addObject:v13];
               v22 = 1;
@@ -524,9 +524,9 @@ LABEL_28:
   return v22 & 1;
 }
 
-+ (void)clearEndpointMappings:(id)a3
++ (void)clearEndpointMappings:(id)mappings
 {
-  v3 = a3;
+  mappingsCopy = mappings;
   v13 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
@@ -549,8 +549,8 @@ LABEL_28:
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [qword_1001D61C0 objectForKeyedSubscript:v9];
-        v11 = [v10 device];
-        v12 = [v11 isEqualToDevice:v3];
+        device = [v10 device];
+        v12 = [device isEqualToDevice:mappingsCopy];
 
         if (v12)
         {
@@ -567,15 +567,15 @@ LABEL_28:
   [qword_1001D61C0 removeObjectsForKeys:v13];
 }
 
-+ (void)updateClientBrowseResult:(id)a3 browseResponse:(id)a4 agentUUID:(id)a5 applicationService:(id)a6 discoverySessionID:(id)a7
++ (void)updateClientBrowseResult:(id)result browseResponse:(id)response agentUUID:(id)d applicationService:(id)service discoverySessionID:(id)iD
 {
-  v26 = a3;
-  v25 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = v12;
-  v15 = v13;
+  resultCopy = result;
+  responseCopy = response;
+  dCopy = d;
+  serviceCopy = service;
+  iDCopy = iD;
+  v14 = serviceCopy;
+  v15 = iDCopy;
   v28 = nw_array_create();
   v30 = 0u;
   v31 = 0u;
@@ -583,7 +583,7 @@ LABEL_28:
   v33 = 0u;
   obj = qword_1001D61C0;
   v16 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
-  v27 = v12;
+  v27 = serviceCopy;
   if (v16)
   {
     v17 = v16;
@@ -601,7 +601,7 @@ LABEL_28:
         v21 = [qword_1001D61C0 objectForKeyedSubscript:{*(*(&v30 + 1) + 8 * i), v23, v24}];
         if ([v21 seenBySession:v15])
         {
-          v22 = [RPNWNearbyInvitationPeer createNWEndpointForEndpoint:v21 agentID:v11 applicationService:v14];
+          v22 = [RPNWNearbyInvitationPeer createNWEndpointForEndpoint:v21 agentID:dCopy applicationService:v14];
           if (dword_1001D3BE0 <= 30 && (dword_1001D3BE0 != -1 || _LogCategory_Initialize()))
           {
             v23 = v18;
@@ -623,21 +623,21 @@ LABEL_28:
 
   if (dword_1001D3BE0 <= 30 && (dword_1001D3BE0 != -1 || _LogCategory_Initialize()))
   {
-    sub_100118E0C(v26);
+    sub_100118E0C(resultCopy);
   }
 
-  v25[2](v25, v28);
+  responseCopy[2](responseCopy, v28);
 }
 
-+ (id)findEndpoint:(id)a3
++ (id)findEndpoint:(id)endpoint
 {
-  v3 = a3;
+  endpointCopy = endpoint;
   if (dword_1001D3BE0 <= 30 && (dword_1001D3BE0 != -1 || _LogCategory_Initialize()))
   {
     sub_100118E9C();
   }
 
-  v4 = [qword_1001D61C0 objectForKeyedSubscript:v3];
+  v4 = [qword_1001D61C0 objectForKeyedSubscript:endpointCopy];
   if (v4)
   {
     if (dword_1001D3BE0 <= 30 && (dword_1001D3BE0 != -1 || _LogCategory_Initialize()))
@@ -651,10 +651,10 @@ LABEL_28:
   return v4;
 }
 
-+ (void)listEndpoints:(id)a3
++ (void)listEndpoints:(id)endpoints
 {
-  v3 = a3;
-  [v3 appendString:@"Discovered Endpoints\n"];
+  endpointsCopy = endpoints;
+  [endpointsCopy appendString:@"Discovered Endpoints\n"];
   v4 = &qword_1001D6000;
   if ([qword_1001D61C0 count])
   {
@@ -681,14 +681,14 @@ LABEL_28:
           v8 = v4;
           v9 = [v4[56] objectForKeyedSubscript:*(*(&v22 + 1) + 8 * v7)];
           v10 = [v9 description];
-          [v3 appendFormat:@"  %@\n", v10];
+          [endpointsCopy appendFormat:@"  %@\n", v10];
 
           v20 = 0u;
           v21 = 0u;
           v18 = 0u;
           v19 = 0u;
-          v11 = [v9 sessions];
-          v12 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
+          sessions = [v9 sessions];
+          v12 = [sessions countByEnumeratingWithState:&v18 objects:v26 count:16];
           if (v12)
           {
             v13 = v12;
@@ -700,15 +700,15 @@ LABEL_28:
               {
                 if (*v19 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(sessions);
                 }
 
-                [v3 appendFormat:@"  + Discovered by session '%@'\n", *(*(&v18 + 1) + 8 * v15)];
+                [endpointsCopy appendFormat:@"  + Discovered by session '%@'\n", *(*(&v18 + 1) + 8 * v15)];
                 v15 = v15 + 1;
               }
 
               while (v13 != v15);
-              v13 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
+              v13 = [sessions countByEnumeratingWithState:&v18 objects:v26 count:16];
             }
 
             while (v13);
@@ -728,7 +728,7 @@ LABEL_28:
 
   else
   {
-    [v3 appendString:@"  <empty>\n"];
+    [endpointsCopy appendString:@"  <empty>\n"];
   }
 }
 

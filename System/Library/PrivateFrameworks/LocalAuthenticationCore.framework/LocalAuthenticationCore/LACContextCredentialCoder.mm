@@ -1,19 +1,19 @@
 @interface LACContextCredentialCoder
-- (LACContextCredentialCoder)initWithExternalizedContextRef:(id)a3;
+- (LACContextCredentialCoder)initWithExternalizedContextRef:(id)ref;
 @end
 
 @implementation LACContextCredentialCoder
 
-- (LACContextCredentialCoder)initWithExternalizedContextRef:(id)a3
+- (LACContextCredentialCoder)initWithExternalizedContextRef:(id)ref
 {
-  v5 = a3;
+  refCopy = ref;
   v9.receiver = self;
   v9.super_class = LACContextCredentialCoder;
   v6 = [(LACContextCredentialCoder *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contextRef, a3);
+    objc_storeStrong(&v6->_contextRef, ref);
   }
 
   return v7;

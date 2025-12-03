@@ -18,20 +18,20 @@
     goto LABEL_13;
   }
 
-  v9 = [v2 serverSettings];
-  v10 = [v9 objectForKeyedSubscript:@"protocol"];
-  if (!v10)
+  serverSettings = [v2 serverSettings];
+  serverSettings2 = [serverSettings objectForKeyedSubscript:@"protocol"];
+  if (!serverSettings2)
   {
-    v10 = [v2 serverSettings];
-    v11 = [v10 objectForKeyedSubscript:@"host"];
-    if (!v11)
+    serverSettings2 = [v2 serverSettings];
+    serverSettings3 = [serverSettings2 objectForKeyedSubscript:@"host"];
+    if (!serverSettings3)
     {
-      v11 = [v2 serverSettings];
-      v12 = [v11 objectForKeyedSubscript:@"prefix"];
+      serverSettings3 = [v2 serverSettings];
+      v12 = [serverSettings3 objectForKeyedSubscript:@"prefix"];
       if (!v12)
       {
-        v23 = [v2 serverSettings];
-        v24 = [v23 objectForKeyedSubscript:@"path"];
+        serverSettings4 = [v2 serverSettings];
+        v24 = [serverSettings4 objectForKeyedSubscript:@"path"];
 
         if (!v24)
         {
@@ -49,17 +49,17 @@
 
 LABEL_8:
   v25 = v8;
-  v13 = [v2 serverSettings];
-  v6 = [v13 objectForKeyedSubscript:@"protocol"];
+  serverSettings5 = [v2 serverSettings];
+  v6 = [serverSettings5 objectForKeyedSubscript:@"protocol"];
 
-  v14 = [v2 serverSettings];
-  v4 = [v14 objectForKeyedSubscript:@"host"];
+  serverSettings6 = [v2 serverSettings];
+  v4 = [serverSettings6 objectForKeyedSubscript:@"host"];
 
-  v15 = [v2 serverSettings];
-  v16 = [v15 objectForKeyedSubscript:@"prefix"];
+  serverSettings7 = [v2 serverSettings];
+  v16 = [serverSettings7 objectForKeyedSubscript:@"prefix"];
 
-  v17 = [v2 serverSettings];
-  v3 = [v17 objectForKeyedSubscript:@"path"];
+  serverSettings8 = [v2 serverSettings];
+  v3 = [serverSettings8 objectForKeyedSubscript:@"path"];
 
   v18 = @"production";
   v5 = [v16 objectForKeyedSubscript:@"production"];

@@ -1,45 +1,45 @@
 @interface RWIProtocolCSSStyleAttribute
 - (NSString)name;
 - (RWIProtocolCSSStyle)style;
-- (RWIProtocolCSSStyleAttribute)initWithName:(id)a3 style:(id)a4;
-- (void)setName:(id)a3;
-- (void)setStyle:(id)a3;
+- (RWIProtocolCSSStyleAttribute)initWithName:(id)name style:(id)style;
+- (void)setName:(id)name;
+- (void)setStyle:(id)style;
 @end
 
 @implementation RWIProtocolCSSStyleAttribute
 
-- (RWIProtocolCSSStyleAttribute)initWithName:(id)a3 style:(id)a4
+- (RWIProtocolCSSStyleAttribute)initWithName:(id)name style:(id)style
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  styleCopy = style;
   v11.receiver = self;
   v11.super_class = RWIProtocolCSSStyleAttribute;
   v8 = [(RWIProtocolJSONObject *)&v11 init];
   if (v8)
   {
-    if (!v6)
+    if (!nameCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"name"}];
     }
 
-    if (!v7)
+    if (!styleCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"style"}];
     }
 
-    [(RWIProtocolCSSStyleAttribute *)v8 setName:v6];
-    [(RWIProtocolCSSStyleAttribute *)v8 setStyle:v7];
+    [(RWIProtocolCSSStyleAttribute *)v8 setName:nameCopy];
+    [(RWIProtocolCSSStyleAttribute *)v8 setStyle:styleCopy];
     v9 = v8;
   }
 
   return v8;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSStyleAttribute;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"name"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"name"];
 }
 
 - (NSString)name
@@ -51,11 +51,11 @@
   return v2;
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSStyleAttribute;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"style"];
+  [(RWIProtocolJSONObject *)&v3 setObject:style forKey:@"style"];
 }
 
 - (RWIProtocolCSSStyle)style

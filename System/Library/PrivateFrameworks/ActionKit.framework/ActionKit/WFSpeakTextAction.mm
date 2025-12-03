@@ -2,7 +2,7 @@
 - (id)voicePickerParameter;
 - (void)cancel;
 - (void)initializeParameters;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFSpeakTextAction
@@ -12,14 +12,14 @@
   v4.receiver = self;
   v4.super_class = WFSpeakTextAction;
   [(WFSpeakTextAction *)&v4 initializeParameters];
-  v3 = [(WFSpeakTextAction *)self voicePickerParameter];
-  [v3 setAction:self];
+  voicePickerParameter = [(WFSpeakTextAction *)self voicePickerParameter];
+  [voicePickerParameter setAction:self];
 }
 
 - (void)cancel
 {
-  v3 = [(WFSpeakTextAction *)self runningOperation];
-  [v3 cancel];
+  runningOperation = [(WFSpeakTextAction *)self runningOperation];
+  [runningOperation cancel];
 
   [(WFSpeakTextAction *)self setRunningOperation:0];
   v4.receiver = self;
@@ -27,14 +27,14 @@
   [(WFSpeakTextAction *)&v4 cancel];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __48__WFSpeakTextAction_runAsynchronouslyWithInput___block_invoke;
   v3[3] = &unk_278C225B0;
   v3[4] = self;
-  [a3 getStringRepresentation:v3];
+  [input getStringRepresentation:v3];
 }
 
 void __48__WFSpeakTextAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -327,8 +327,8 @@ void __48__WFSpeakTextAction_runAsynchronouslyWithInput___block_invoke_2_209(uin
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"WFSpeakTextAction.m" lineNumber:57 description:@"Parameter should be of type WFSpeakTextVoicePickerParameter"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSpeakTextAction.m" lineNumber:57 description:@"Parameter should be of type WFSpeakTextVoicePickerParameter"];
   }
 
   return v4;

@@ -1,10 +1,10 @@
 @interface CompoundSectionedDataSource
-- (void)snapshotDidChangeWithDataSourceID:(id)a3 snapshot:(id)a4 animated:(BOOL)a5;
+- (void)snapshotDidChangeWithDataSourceID:(id)d snapshot:(id)snapshot animated:(BOOL)animated;
 @end
 
 @implementation CompoundSectionedDataSource
 
-- (void)snapshotDidChangeWithDataSourceID:(id)a3 snapshot:(id)a4 animated:(BOOL)a5
+- (void)snapshotDidChangeWithDataSourceID:(id)d snapshot:(id)snapshot animated:(BOOL)animated
 {
   sub_1B9F117BC(0, &qword_1EDC5F8A0, MEMORY[0x1E69E6168], MEMORY[0x1E69DC168]);
   v8 = v7;
@@ -18,7 +18,7 @@
   v12 = *self->changeObservers;
   v13 = swift_allocObject();
   *(v13 + 16) = self;
-  *(v13 + 24) = a5;
+  *(v13 + 24) = animated;
   aBlock[4] = sub_1B9F8C0D8;
   aBlock[5] = v13;
   aBlock[0] = MEMORY[0x1E69E9820];

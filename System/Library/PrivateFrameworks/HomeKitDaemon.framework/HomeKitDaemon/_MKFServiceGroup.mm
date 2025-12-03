@@ -1,6 +1,6 @@
 @interface _MKFServiceGroup
 + (NSPredicate)homeRelation;
-+ (id)modelIDForParentRelationshipTo:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
 - (MKFServiceGroupDatabaseID)databaseID;
 - (NSArray)services;
 @end
@@ -19,9 +19,9 @@
   return v3;
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -36,9 +36,9 @@
 - (NSArray)services
 {
   v2 = [(_MKFServiceGroup *)self valueForKey:@"services_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (MKFServiceGroupDatabaseID)databaseID

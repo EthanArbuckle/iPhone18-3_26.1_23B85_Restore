@@ -5,12 +5,12 @@
 - (BOOL)issueSandboxExtension;
 - (BOOL)preflightClientAllowed;
 - (BOOL)transient;
-- (MCMCommandCreateOrLookupWithBundle)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandCreateOrLookupWithBundle)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (NSURL)bundleURL;
 - (NSURL)executableURL;
 - (const)sandboxToken;
-- (id)_containerIdentityWithError:(id *)a3;
-- (id)_tokenForContainerPath:(id)a3 containerIdentity:(id)a4 error:(id *)a5;
+- (id)_containerIdentityWithError:(id *)error;
+- (id)_tokenForContainerPath:(id)path containerIdentity:(id)identity error:(id *)error;
 - (void)dealloc;
 - (void)execute;
 @end
@@ -65,21 +65,21 @@
   return result;
 }
 
-- (id)_tokenForContainerPath:(id)a3 containerIdentity:(id)a4 error:(id *)a5
+- (id)_tokenForContainerPath:(id)path containerIdentity:(id)identity error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
+  identityCopy = identity;
+  pathCopy = path;
   v10 = [MCMSandboxExtension alloc];
-  v11 = [(MCMCommand *)self context];
-  v12 = [v11 clientIdentity];
-  v13 = [(MCMSandboxExtension *)v10 initWithClientIdentity:v12 containerPath:v9 containerIdentity:v8];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  v13 = [(MCMSandboxExtension *)v10 initWithClientIdentity:clientIdentity containerPath:pathCopy containerIdentity:identityCopy];
 
   if (v13)
   {
     [(MCMSandboxExtension *)v13 setUseLegacyExtensionPolicy:1];
     [(MCMSandboxExtension *)v13 setUseProxiedClientForTarget:1];
-    v14 = [(MCMSandboxExtension *)v13 tokenForPart:0 partDomain:0 error:a5];
+    v14 = [(MCMSandboxExtension *)v13 tokenForPart:0 partDomain:0 error:error];
   }
 
   else
@@ -92,7 +92,7 @@
   return v14;
 }
 
-- (id)_containerIdentityWithError:(id *)a3
+- (id)_containerIdentityWithError:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
   v51 = 1;
@@ -116,19 +116,19 @@
     v5 = -1;
   }
 
-  v11 = [(MCMCommandCreateOrLookupWithBundle *)self bundleURL];
-  v12 = [v11 path];
-  v13 = [v12 hasSuffix:@".appex"];
+  bundleURL = [(MCMCommandCreateOrLookupWithBundle *)self bundleURL];
+  path = [bundleURL path];
+  v13 = [path hasSuffix:@".appex"];
 
   if (v13)
   {
     v14 = container_log_handle_for_category();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v45 = [(MCMCommandCreateOrLookupWithBundle *)self bundleURL];
-      v46 = [v45 path];
+      bundleURL2 = [(MCMCommandCreateOrLookupWithBundle *)self bundleURL];
+      path2 = [bundleURL2 path];
       *buf = 138543362;
-      v53 = v46;
+      v53 = path2;
       _os_log_debug_impl(&dword_1DF2C3000, v14, OS_LOG_TYPE_DEBUG, "[%{public}@] is a plugin", buf, 0xCu);
     }
 
@@ -140,14 +140,14 @@
     v15 = 2;
   }
 
-  v16 = [(MCMCommand *)self context];
-  v17 = [v16 globalConfiguration];
-  v18 = [v17 staticConfig];
-  v8 = [v18 configForContainerClass:v15];
+  context = [(MCMCommand *)self context];
+  globalConfiguration = [context globalConfiguration];
+  staticConfig = [globalConfiguration staticConfig];
+  v8 = [staticConfig configForContainerClass:v15];
 
   v19 = [MCMCodeSignInfo alloc];
-  v20 = [(MCMCommandCreateOrLookupWithBundle *)self executableURL];
-  v7 = [(MCMCodeSignInfo *)v19 initWithURL:v20 error:&v51];
+  executableURL = [(MCMCommandCreateOrLookupWithBundle *)self executableURL];
+  v7 = [(MCMCodeSignInfo *)v19 initWithURL:executableURL error:&v51];
 
   if (!v7)
   {
@@ -156,12 +156,12 @@
     goto LABEL_30;
   }
 
-  v21 = [(MCMCodeSignInfo *)v7 platform];
-  v22 = [(MCMCodeSignInfo *)v7 entitlements];
-  v23 = v22;
-  if (v21 == 2)
+  platform = [(MCMCodeSignInfo *)v7 platform];
+  entitlements = [(MCMCodeSignInfo *)v7 entitlements];
+  v23 = entitlements;
+  if (platform == 2)
   {
-    v24 = [v22 objectForKeyedSubscript:@"com.apple.private.security.no-container"];
+    v24 = [entitlements objectForKeyedSubscript:@"com.apple.private.security.no-container"];
     objc_opt_class();
     v25 = v24;
     if (objc_opt_isKindOfClass())
@@ -193,7 +193,7 @@ LABEL_30:
 
   else
   {
-    v28 = [v22 objectForKeyedSubscript:@"com.apple.security.app-sandbox"];
+    v28 = [entitlements objectForKeyedSubscript:@"com.apple.security.app-sandbox"];
     objc_opt_class();
     v29 = v28;
     if (objc_opt_isKindOfClass())
@@ -212,24 +212,24 @@ LABEL_30:
     }
   }
 
-  v48 = a3;
+  errorCopy = error;
   v49 = v8;
   v47 = v5;
 
-  v30 = [(MCMCodeSignInfo *)v7 identifier];
-  v31 = [(MCMCommand *)self context];
-  v32 = [v31 clientIdentity];
-  v33 = [(MCMCommand *)self context];
-  v34 = [v33 userIdentityCache];
-  v35 = [(MCMCommand *)self warnings];
+  identifier = [(MCMCodeSignInfo *)v7 identifier];
+  context2 = [(MCMCommand *)self context];
+  clientIdentity = [context2 clientIdentity];
+  context3 = [(MCMCommand *)self context];
+  userIdentityCache = [context3 userIdentityCache];
+  warnings = [(MCMCommand *)self warnings];
   v50 = 0;
-  v10 = [MCMXPCMessageBase legacyUserIdentityForIdentifier:v30 targetUserIdentity:0 containerConfig:v49 clientIdentity:v32 userIdentityCache:v34 warnings:v35 error:&v50];
+  v10 = [MCMXPCMessageBase legacyUserIdentityForIdentifier:identifier targetUserIdentity:0 containerConfig:v49 clientIdentity:clientIdentity userIdentityCache:userIdentityCache warnings:warnings error:&v50];
   v6 = v50;
 
   if (!v10)
   {
     v9 = 0;
-    a3 = v48;
+    error = errorCopy;
     v8 = v49;
     if (v47 < 0)
     {
@@ -239,11 +239,11 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v36 = [(MCMCodeSignInfo *)v7 identifier];
-  v37 = [(MCMCodeSignInfo *)v7 platform];
-  v38 = [(MCMCommand *)self context];
-  v39 = [v38 userIdentityCache];
-  v9 = [MCMContainerIdentity containerIdentityWithUserIdentity:v10 identifier:v36 containerConfig:v49 platform:v37 userIdentityCache:v39 error:&v51];
+  identifier2 = [(MCMCodeSignInfo *)v7 identifier];
+  platform2 = [(MCMCodeSignInfo *)v7 platform];
+  context4 = [(MCMCommand *)self context];
+  userIdentityCache2 = [context4 userIdentityCache];
+  v9 = [MCMContainerIdentity containerIdentityWithUserIdentity:v10 identifier:identifier2 containerConfig:v49 platform:platform2 userIdentityCache:userIdentityCache2 error:&v51];
 
   v8 = v49;
   if (!v9)
@@ -254,7 +254,7 @@ LABEL_30:
     v6 = v41;
   }
 
-  a3 = v48;
+  error = errorCopy;
   if ((v47 & 0x8000000000000000) == 0)
   {
 LABEL_31:
@@ -262,10 +262,10 @@ LABEL_31:
   }
 
 LABEL_32:
-  if (a3 && !v9)
+  if (error && !v9)
   {
     v42 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   v43 = *MEMORY[0x1E69E9840];
@@ -284,34 +284,34 @@ LABEL_32:
   {
     v9 = 0;
     v20 = 0;
-    v13 = 0;
+    metadataMinimal = 0;
     goto LABEL_11;
   }
 
-  v6 = [(MCMCommandCreateOrLookupWithBundle *)self createIfNecessary];
-  v7 = [(MCMCommand *)self context];
-  v8 = [v7 clientIdentity];
-  v9 = [v8 isAllowedToPerformOperationType:v6 containerIdentity:v4 part:0 partDomain:0 access:0];
+  createIfNecessary = [(MCMCommandCreateOrLookupWithBundle *)self createIfNecessary];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  v9 = [clientIdentity isAllowedToPerformOperationType:createIfNecessary containerIdentity:v4 part:0 partDomain:0 access:0];
 
   if (!v9)
   {
     v12 = +[MCMError notEntitled];
 
     v20 = 0;
-    v13 = 0;
+    metadataMinimal = 0;
 LABEL_10:
     v5 = v12;
     goto LABEL_11;
   }
 
-  v10 = [(MCMCommand *)self context];
-  v11 = [v10 containerFactory];
+  context2 = [(MCMCommand *)self context];
+  containerFactory = [context2 containerFactory];
   v25 = v5;
-  v9 = [v11 containerForContainerIdentity:v4 createIfNecessary:-[MCMCommandCreateOrLookupWithBundle createIfNecessary](self error:{"createIfNecessary"), &v25}];
+  v9 = [containerFactory containerForContainerIdentity:v4 createIfNecessary:-[MCMCommandCreateOrLookupWithBundle createIfNecessary](self error:{"createIfNecessary"), &v25}];
   v12 = v25;
 
-  v13 = [v9 metadataMinimal];
-  if (!v13)
+  metadataMinimal = [v9 metadataMinimal];
+  if (!metadataMinimal)
   {
     v20 = 0;
     goto LABEL_10;
@@ -322,18 +322,18 @@ LABEL_10:
     goto LABEL_6;
   }
 
-  v14 = [(MCMCommand *)self context];
-  v15 = [v14 clientIdentity];
-  v16 = [v15 userIdentity];
-  v17 = [v16 isDataSeparated];
+  context3 = [(MCMCommand *)self context];
+  clientIdentity2 = [context3 clientIdentity];
+  userIdentity = [clientIdentity2 userIdentity];
+  isDataSeparated = [userIdentity isDataSeparated];
 
-  if (v17)
+  if (isDataSeparated)
   {
 LABEL_6:
-    v18 = [v13 containerPath];
-    v19 = [v13 containerIdentity];
+    containerPath = [metadataMinimal containerPath];
+    containerIdentity = [metadataMinimal containerIdentity];
     v24 = v12;
-    v20 = [(MCMCommandCreateOrLookupWithBundle *)self _tokenForContainerPath:v18 containerIdentity:v19 error:&v24];
+    v20 = [(MCMCommandCreateOrLookupWithBundle *)self _tokenForContainerPath:containerPath containerIdentity:containerIdentity error:&v24];
     v5 = v24;
   }
 
@@ -345,7 +345,7 @@ LABEL_6:
 
   if (v20 || !v5 || [v5 type] == 1 || objc_msgSend(v5, "type") == 72)
   {
-    v21 = [[MCMResultWithContainerBase alloc] initWithMetadata:v13 sandboxToken:v20 includePath:1 includeInfo:0 includeUserManagedAssetsRelPath:0 includeCreator:0];
+    v21 = [[MCMResultWithContainerBase alloc] initWithMetadata:metadataMinimal sandboxToken:v20 includePath:1 includeInfo:0 includeUserManagedAssetsRelPath:0 includeCreator:0];
     if (v21)
     {
       goto LABEL_12;
@@ -360,8 +360,8 @@ LABEL_6:
 LABEL_11:
   v21 = [(MCMResultBase *)[MCMResultWithContainerBase alloc] initWithError:v5];
 LABEL_12:
-  v22 = [(MCMCommand *)self resultPromise];
-  [v22 completeWithResult:v21];
+  resultPromise = [(MCMCommand *)self resultPromise];
+  [resultPromise completeWithResult:v21];
 
   objc_autoreleasePoolPop(v3);
   v23 = *MEMORY[0x1E69E9840];
@@ -390,32 +390,32 @@ LABEL_12:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (MCMCommandCreateOrLookupWithBundle)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandCreateOrLookupWithBundle)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  messageCopy = message;
   v17.receiver = self;
   v17.super_class = MCMCommandCreateOrLookupWithBundle;
-  v9 = [(MCMCommand *)&v17 initWithMessage:v8 context:a4 reply:a5];
+  v9 = [(MCMCommand *)&v17 initWithMessage:messageCopy context:context reply:reply];
   if (v9)
   {
-    v9->_createIfNecessary = [v8 createIfNecessary];
-    v9->_transient = [v8 transient];
-    v9->_issueSandboxExtension = [v8 issueSandboxExtension];
-    v10 = [v8 sandboxToken];
-    if (v10)
+    v9->_createIfNecessary = [messageCopy createIfNecessary];
+    v9->_transient = [messageCopy transient];
+    v9->_issueSandboxExtension = [messageCopy issueSandboxExtension];
+    sandboxToken = [messageCopy sandboxToken];
+    if (sandboxToken)
     {
-      v10 = strndup(v10, 0x800uLL);
+      sandboxToken = strndup(sandboxToken, 0x800uLL);
     }
 
-    v9->_sandboxToken = v10;
-    v11 = [v8 bundleURL];
+    v9->_sandboxToken = sandboxToken;
+    bundleURL = [messageCopy bundleURL];
     bundleURL = v9->_bundleURL;
-    v9->_bundleURL = v11;
+    v9->_bundleURL = bundleURL;
 
-    v13 = [v8 executableURL];
+    executableURL = [messageCopy executableURL];
     executableURL = v9->_executableURL;
-    v9->_executableURL = v13;
+    v9->_executableURL = executableURL;
   }
 
   v15 = *MEMORY[0x1E69E9840];

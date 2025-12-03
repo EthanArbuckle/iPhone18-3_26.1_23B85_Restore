@@ -1,16 +1,16 @@
 @interface GDViewQuery
 - (GDViewQuery)initWithAll;
-- (GDViewQuery)initWithCoder:(id)a3;
-- (GDViewQuery)initWithNames:(id)a3 includeDependencies:(BOOL)a4;
-- (GDViewQuery)initWithSchedule:(id)a3 includeDependencies:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (GDViewQuery)initWithCoder:(id)coder;
+- (GDViewQuery)initWithNames:(id)names includeDependencies:(BOOL)dependencies;
+- (GDViewQuery)initWithSchedule:(id)schedule includeDependencies:(BOOL)dependencies;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GDViewQuery
 
-- (GDViewQuery)initWithCoder:(id)a3
+- (GDViewQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = GDViewQuery;
   v5 = [(GDViewQuery *)&v21 init];
@@ -21,18 +21,18 @@
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
     v10 = NSStringFromSelector(sel_names);
-    v11 = [v4 decodeObjectOfClasses:v9 forKey:v10];
+    v11 = [coderCopy decodeObjectOfClasses:v9 forKey:v10];
 
     v12 = objc_opt_class();
     v13 = NSStringFromSelector(sel_schedule);
-    v14 = [v4 decodeObjectOfClass:v12 forKey:v13];
+    v14 = [coderCopy decodeObjectOfClass:v12 forKey:v13];
 
     v15 = NSStringFromSelector(sel_includeDependencies);
-    v16 = [v4 decodeBoolForKey:v15];
+    v16 = [coderCopy decodeBoolForKey:v15];
 
-    v17 = [v4 error];
+    error = [coderCopy error];
 
-    if (v17)
+    if (error)
     {
       v18 = 0;
     }
@@ -41,20 +41,20 @@
     {
       if (v11)
       {
-        v19 = [(GDViewQuery *)v6 initWithNames:v11 includeDependencies:v16];
+        initWithAll = [(GDViewQuery *)v6 initWithNames:v11 includeDependencies:v16];
       }
 
       else if (v14)
       {
-        v19 = [(GDViewQuery *)v6 initWithSchedule:v14 includeDependencies:v16];
+        initWithAll = [(GDViewQuery *)v6 initWithSchedule:v14 includeDependencies:v16];
       }
 
       else
       {
-        v19 = [(GDViewQuery *)v6 initWithAll];
+        initWithAll = [(GDViewQuery *)v6 initWithAll];
       }
 
-      v6 = v19;
+      v6 = initWithAll;
       v18 = v6;
     }
   }
@@ -67,20 +67,20 @@
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   names = self->_names;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_names);
-  [v5 encodeObject:names forKey:v6];
+  [coderCopy encodeObject:names forKey:v6];
 
   schedule = self->_schedule;
   v8 = NSStringFromSelector(sel_schedule);
-  [v5 encodeObject:schedule forKey:v8];
+  [coderCopy encodeObject:schedule forKey:v8];
 
   includeDependencies = self->_includeDependencies;
   v10 = NSStringFromSelector(sel_includeDependencies);
-  [v5 encodeBool:includeDependencies forKey:v10];
+  [coderCopy encodeBool:includeDependencies forKey:v10];
 }
 
 - (GDViewQuery)initWithAll
@@ -90,35 +90,35 @@
   return [(GDViewQuery *)&v3 init];
 }
 
-- (GDViewQuery)initWithSchedule:(id)a3 includeDependencies:(BOOL)a4
+- (GDViewQuery)initWithSchedule:(id)schedule includeDependencies:(BOOL)dependencies
 {
-  v7 = a3;
+  scheduleCopy = schedule;
   v11.receiver = self;
   v11.super_class = GDViewQuery;
   v8 = [(GDViewQuery *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_schedule, a3);
-    v9->_includeDependencies = a4;
+    objc_storeStrong(&v8->_schedule, schedule);
+    v9->_includeDependencies = dependencies;
   }
 
   return v9;
 }
 
-- (GDViewQuery)initWithNames:(id)a3 includeDependencies:(BOOL)a4
+- (GDViewQuery)initWithNames:(id)names includeDependencies:(BOOL)dependencies
 {
-  v6 = a3;
+  namesCopy = names;
   v11.receiver = self;
   v11.super_class = GDViewQuery;
   v7 = [(GDViewQuery *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [namesCopy copy];
     names = v7->_names;
     v7->_names = v8;
 
-    v7->_includeDependencies = a4;
+    v7->_includeDependencies = dependencies;
   }
 
   return v7;

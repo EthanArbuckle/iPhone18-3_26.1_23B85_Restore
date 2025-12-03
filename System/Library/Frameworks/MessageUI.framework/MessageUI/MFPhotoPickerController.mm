@@ -2,24 +2,24 @@
 + (id)log;
 - (BOOL)_isPresentingInASheet;
 - (CGSize)thumbnailSize;
-- (MFPhotoPickerController)initWithPhotoPickerProgressManager:(id)a3;
+- (MFPhotoPickerController)initWithPhotoPickerProgressManager:(id)manager;
 - (MFPhotoPickerControllerDelegate)pickerDelegate;
 - (NSSet)selectedAssetIdentifiers;
 - (PHCachingImageManager)imageManager;
 - (PHFetchResult)photosFetchResult;
-- (double)preferredHeightForTraitCollection:(id)a3;
-- (id)_visibleCellForIndexPath:(id)a3 collectionView:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)close:(id)a3;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)imagePickerControllerDidCancel:(id)a3;
+- (double)preferredHeightForTraitCollection:(id)collection;
+- (id)_visibleCellForIndexPath:(id)path collectionView:(id)view;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)close:(id)close;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)imagePickerControllerDidCancel:(id)cancel;
 - (void)loadView;
-- (void)setPickerDelegate:(id)a3;
-- (void)showSystemImagePicker:(id)a3;
+- (void)setPickerDelegate:(id)delegate;
+- (void)showSystemImagePicker:(id)picker;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -32,7 +32,7 @@
   block[1] = 3221225472;
   block[2] = __30__MFPhotoPickerController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_10 != -1)
   {
     dispatch_once(&log_onceToken_10, block);
@@ -51,9 +51,9 @@ void __30__MFPhotoPickerController_log__block_invoke(uint64_t a1)
   log_log_10 = v1;
 }
 
-- (MFPhotoPickerController)initWithPhotoPickerProgressManager:(id)a3
+- (MFPhotoPickerController)initWithPhotoPickerProgressManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v6 = objc_alloc_init(MEMORY[0x1E69DC840]);
   [v6 setMinimumLineSpacing:1.0];
   [v6 setMinimumInteritemSpacing:0.0];
@@ -67,7 +67,7 @@ void __30__MFPhotoPickerController_log__block_invoke(uint64_t a1)
     selectedAssetIdentifiers = v7->_selectedAssetIdentifiers;
     v7->_selectedAssetIdentifiers = v8;
 
-    objc_storeStrong(&v7->_progressManager, a3);
+    objc_storeStrong(&v7->_progressManager, manager);
   }
 
   return v7;
@@ -79,11 +79,11 @@ void __30__MFPhotoPickerController_log__block_invoke(uint64_t a1)
   if (!photosFetchResult)
   {
     v4 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:209 options:0];
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     v6 = objc_opt_new();
     [v6 setFetchLimit:96];
     [v6 setReverseSortOrder:1];
-    v7 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v5 options:v6];
+    v7 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:firstObject options:v6];
     v8 = self->_photosFetchResult;
     self->_photosFetchResult = v7;
 
@@ -115,9 +115,9 @@ void __30__MFPhotoPickerController_log__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setPickerDelegate:(id)a3
+- (void)setPickerDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_pickerDelegate);
 
   v5 = obj;
@@ -167,30 +167,30 @@ void __30__MFPhotoPickerController_log__block_invoke(uint64_t a1)
   v16.receiver = self;
   v16.super_class = MFPhotoPickerController;
   [(MFPhotoPickerController *)&v16 loadView];
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v4 = [(MFPhotoPickerController *)self collectionView];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  collectionView = [(MFPhotoPickerController *)self collectionView];
+  [collectionView setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(MFPhotoPickerController *)self collectionView];
-  [v5 setAllowsMultipleSelection:1];
+  collectionView2 = [(MFPhotoPickerController *)self collectionView];
+  [collectionView2 setAllowsMultipleSelection:1];
 
-  v6 = [(MFPhotoPickerController *)self collectionView];
-  [v6 setInsetsLayoutMarginsFromSafeArea:1];
+  collectionView3 = [(MFPhotoPickerController *)self collectionView];
+  [collectionView3 setInsetsLayoutMarginsFromSafeArea:1];
 
-  v7 = [(MFPhotoPickerController *)self collectionViewLayout];
-  v8 = [(MFPhotoPickerController *)self view];
-  [v8 bounds];
-  [v7 setHeaderReferenceSize:{v9, 44.0}];
+  collectionViewLayout = [(MFPhotoPickerController *)self collectionViewLayout];
+  view = [(MFPhotoPickerController *)self view];
+  [view bounds];
+  [collectionViewLayout setHeaderReferenceSize:{v9, 44.0}];
 
-  v10 = [(MFPhotoPickerController *)self collectionView];
+  collectionView4 = [(MFPhotoPickerController *)self collectionView];
   v11 = objc_opt_class();
   v12 = +[MFPhotoPickerCell reusableIdentifier];
-  [v10 registerClass:v11 forCellWithReuseIdentifier:v12];
+  [collectionView4 registerClass:v11 forCellWithReuseIdentifier:v12];
 
-  v13 = [(MFPhotoPickerController *)self collectionView];
+  collectionView5 = [(MFPhotoPickerController *)self collectionView];
   v14 = objc_opt_class();
   v15 = +[MFPhotoPickerSectionHeaderView reusableIdentifier];
-  [v13 registerClass:v14 forSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:v15];
+  [collectionView5 registerClass:v14 forSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:v15];
 
   self->_availableWidth = 0.0;
 }
@@ -204,23 +204,23 @@ void __30__MFPhotoPickerController_log__block_invoke(uint64_t a1)
   v4 = [(MFComposeActionCardTitleView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"PHOTO_PICKER_TITLE" value:&stru_1F3CF3758 table:@"Main"];
-  v7 = [(MFComposeActionCardTitleView *)v4 titleLabel];
-  [v7 setText:v6];
+  titleLabel = [(MFComposeActionCardTitleView *)v4 titleLabel];
+  [titleLabel setText:v6];
 
-  v8 = [(MFComposeActionCardTitleView *)v4 closeButton];
-  [v8 addTarget:self action:sel_close_ forEvents:64];
+  closeButton = [(MFComposeActionCardTitleView *)v4 closeButton];
+  [closeButton addTarget:self action:sel_close_ forEvents:64];
 
-  v9 = [(MFPhotoPickerController *)self navigationItem];
-  [v9 setTitleView:v4];
+  navigationItem = [(MFPhotoPickerController *)self navigationItem];
+  [navigationItem setTitleView:v4];
 
-  v10 = [(MFPhotoPickerController *)self navigationItem];
-  [v10 _setAutoScrollEdgeTransitionDistance:8.0];
+  navigationItem2 = [(MFPhotoPickerController *)self navigationItem];
+  [navigationItem2 _setAutoScrollEdgeTransitionDistance:8.0];
 
-  v11 = [(MFPhotoPickerController *)self navigationItem];
-  [v11 _setManualScrollEdgeAppearanceProgress:0.0];
+  navigationItem3 = [(MFPhotoPickerController *)self navigationItem];
+  [navigationItem3 _setManualScrollEdgeAppearanceProgress:0.0];
 
-  v12 = [(MFPhotoPickerController *)self navigationItem];
-  [v12 _setManualScrollEdgeAppearanceEnabled:1];
+  navigationItem4 = [(MFPhotoPickerController *)self navigationItem];
+  [navigationItem4 _setManualScrollEdgeAppearanceEnabled:1];
 }
 
 - (void)viewWillLayoutSubviews
@@ -228,11 +228,11 @@ void __30__MFPhotoPickerController_log__block_invoke(uint64_t a1)
   v19.receiver = self;
   v19.super_class = MFPhotoPickerController;
   [(MFPhotoPickerController *)&v19 viewWillLayoutSubviews];
-  v3 = [(MFPhotoPickerController *)self view];
-  [v3 bounds];
+  view = [(MFPhotoPickerController *)self view];
+  [view bounds];
   v5 = v4;
-  v6 = [(MFPhotoPickerController *)self view];
-  [v6 safeAreaInsets];
+  view2 = [(MFPhotoPickerController *)self view];
+  [view2 safeAreaInsets];
   v9 = v5 - (v7 + v8);
 
   [(MFPhotoPickerController *)self availableWidth];
@@ -244,37 +244,37 @@ void __30__MFPhotoPickerController_log__block_invoke(uint64_t a1)
     v12 = vcvtms_s32_f32(*&v11);
     [(MFPhotoPickerController *)self availableWidth];
     v14 = ((v13 - v12 + -1.0) / v12);
-    v15 = [(MFPhotoPickerController *)self collectionViewLayout];
-    [v15 setItemSize:{v14, v14}];
+    collectionViewLayout = [(MFPhotoPickerController *)self collectionViewLayout];
+    [collectionViewLayout setItemSize:{v14, v14}];
 
-    v16 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v16 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v18 = v17;
 
     [(MFPhotoPickerController *)self setThumbnailSize:v18 * v14, v18 * v14];
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(MFPhotoPickerController *)self photosFetchResult:a3];
+  v4 = [(MFPhotoPickerController *)self photosFetchResult:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = +[MFPhotoPickerCell reusableIdentifier];
-  v9 = [v6 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v7];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [(MFPhotoPickerController *)self photosFetchResult];
-  v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+  photosFetchResult = [(MFPhotoPickerController *)self photosFetchResult];
+  v11 = [photosFetchResult objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-  v12 = [v11 mf_localIdentifier];
-  [v9 setRepresentedAssetIdentifier:v12];
+  mf_localIdentifier = [v11 mf_localIdentifier];
+  [v9 setRepresentedAssetIdentifier:mf_localIdentifier];
   if (([v11 mediaSubtypes] & 8) != 0)
   {
     v13 = 2;
@@ -286,24 +286,24 @@ void __30__MFPhotoPickerController_log__block_invoke(uint64_t a1)
   }
 
   [v9 setMediaType:v13];
-  v14 = [(MFPhotoPickerController *)self selectedAssetIdentifiers];
-  v15 = [v14 containsObject:v12];
+  selectedAssetIdentifiers = [(MFPhotoPickerController *)self selectedAssetIdentifiers];
+  v15 = [selectedAssetIdentifiers containsObject:mf_localIdentifier];
 
   [v9 setSelected:v15];
   if (v15)
   {
-    v16 = [(MFPhotoPickerController *)self collectionView];
-    v17 = [v16 indexPathsForSelectedItems];
-    v18 = [v17 containsObject:v7];
+    collectionView = [(MFPhotoPickerController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+    v18 = [indexPathsForSelectedItems containsObject:pathCopy];
 
     if ((v18 & 1) == 0)
     {
-      v19 = [(MFPhotoPickerController *)self collectionView];
-      [v19 selectItemAtIndexPath:v7 animated:0 scrollPosition:0];
+      collectionView2 = [(MFPhotoPickerController *)self collectionView];
+      [collectionView2 selectItemAtIndexPath:pathCopy animated:0 scrollPosition:0];
     }
   }
 
-  v20 = [(MFPhotoPickerController *)self imageManager];
+  imageManager = [(MFPhotoPickerController *)self imageManager];
   [(MFPhotoPickerController *)self thumbnailSize];
   v22 = v21;
   v24 = v23;
@@ -311,14 +311,14 @@ void __30__MFPhotoPickerController_log__block_invoke(uint64_t a1)
   v34 = 3221225472;
   v35 = __65__MFPhotoPickerController_collectionView_cellForItemAtIndexPath___block_invoke;
   v36 = &unk_1E80705B8;
-  v25 = v12;
+  v25 = mf_localIdentifier;
   v37 = v25;
   v26 = v9;
   v38 = v26;
-  [v20 requestImageForAsset:v11 targetSize:1 contentMode:0 options:&v33 resultHandler:{v22, v24}];
+  [imageManager requestImageForAsset:v11 targetSize:1 contentMode:0 options:&v33 resultHandler:{v22, v24}];
 
   v27 = [(MFPhotoPickerController *)self progressManager:v33];
-  [v27 progressForIndexPath:v7];
+  [v27 progressForIndexPath:pathCopy];
   v29 = v28;
 
   if (v29 > 0.0)
@@ -345,32 +345,32 @@ void __65__MFPhotoPickerController_collectionView_cellForItemAtIndexPath___block
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v39 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v6 = a4;
-  v7 = [(MFPhotoPickerController *)self photosFetchResult];
-  v21 = [v7 objectAtIndexedSubscript:{objc_msgSend(v6, "item")}];
+  viewCopy = view;
+  pathCopy = path;
+  photosFetchResult = [(MFPhotoPickerController *)self photosFetchResult];
+  v21 = [photosFetchResult objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-  v20 = [(MFPhotoPickerController *)self _visibleCellForIndexPath:v6 collectionView:v22];
+  v20 = [(MFPhotoPickerController *)self _visibleCellForIndexPath:pathCopy collectionView:viewCopy];
   v8 = +[MFPhotoPickerController log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v21 mf_localIdentifier];
+    mf_localIdentifier = [v21 mf_localIdentifier];
     *buf = 138543362;
-    v36 = v9;
+    v36 = mf_localIdentifier;
     _os_log_impl(&dword_1BE819000, v8, OS_LOG_TYPE_DEFAULT, "Asset %{public}@ selected", buf, 0xCu);
   }
 
-  v19 = [(MFPhotoPickerController *)self pickerDelegate];
-  v10 = [(MFPhotoPickerController *)self progressManager];
+  pickerDelegate = [(MFPhotoPickerController *)self pickerDelegate];
+  progressManager = [(MFPhotoPickerController *)self progressManager];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __67__MFPhotoPickerController_collectionView_didSelectItemAtIndexPath___block_invoke;
   v30[3] = &unk_1E8070608;
-  v31 = v10;
-  v32 = v6;
+  v31 = progressManager;
+  v32 = pathCopy;
   v33 = v21;
   v34 = v20;
   v23[0] = MEMORY[0x1E69E9820];
@@ -381,20 +381,20 @@ void __65__MFPhotoPickerController_collectionView_cellForItemAtIndexPath___block
   v24 = v11;
   v12 = v32;
   v25 = v12;
-  v26 = self;
+  selfCopy = self;
   v13 = v33;
   v27 = v13;
   v14 = v34;
   v28 = v14;
-  v15 = v19;
+  v15 = pickerDelegate;
   v29 = v15;
   v16 = [MFMediaExporter exportAsset:v13 progressHandler:v30 completion:v23];
   v17 = +[MFPhotoPickerController log];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v13 mf_localIdentifier];
+    mf_localIdentifier2 = [v13 mf_localIdentifier];
     *buf = 138543618;
-    v36 = v18;
+    v36 = mf_localIdentifier2;
     v37 = 1026;
     v38 = v16;
     _os_log_impl(&dword_1BE819000, v17, OS_LOG_TYPE_DEFAULT, "Asset %{public}@, PHImageRequestID %{public}d", buf, 0x12u);
@@ -489,71 +489,71 @@ void __67__MFPhotoPickerController_collectionView_didSelectItemAtIndexPath___blo
   [v2 photoPicker:v3 didSelectAssetWithIdentifier:? mediaInfo:?];
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFPhotoPickerController *)self progressManager];
-  [v8 cancelEverythingAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  progressManager = [(MFPhotoPickerController *)self progressManager];
+  [progressManager cancelEverythingAtIndexPath:pathCopy];
 
-  v9 = [(MFPhotoPickerController *)self _visibleCellForIndexPath:v7 collectionView:v6];
+  v9 = [(MFPhotoPickerController *)self _visibleCellForIndexPath:pathCopy collectionView:viewCopy];
   [v9 resetProgress];
-  v10 = [(MFPhotoPickerController *)self photosFetchResult];
-  v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+  photosFetchResult = [(MFPhotoPickerController *)self photosFetchResult];
+  v11 = [photosFetchResult objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-  v12 = [v11 mf_localIdentifier];
-  [(MFPhotoPickerController *)self removeSelectedAssetIdentifier:v12];
+  mf_localIdentifier = [v11 mf_localIdentifier];
+  [(MFPhotoPickerController *)self removeSelectedAssetIdentifier:mf_localIdentifier];
 
   v13 = +[MFPhotoPickerController log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v11 mf_localIdentifier];
+    mf_localIdentifier2 = [v11 mf_localIdentifier];
     v17 = 138543362;
-    v18 = v14;
+    v18 = mf_localIdentifier2;
     _os_log_impl(&dword_1BE819000, v13, OS_LOG_TYPE_DEFAULT, "Asset %{public}@ de-selected", &v17, 0xCu);
   }
 
   if ((*&self->_flags & 4) != 0)
   {
-    v15 = [(MFPhotoPickerController *)self pickerDelegate];
-    v16 = [v11 mf_localIdentifier];
-    [v15 photoPicker:self didDeselectAssetWithIdentifier:v16];
+    pickerDelegate = [(MFPhotoPickerController *)self pickerDelegate];
+    mf_localIdentifier3 = [v11 mf_localIdentifier];
+    [pickerDelegate photoPicker:self didDeselectAssetWithIdentifier:mf_localIdentifier3];
   }
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
+  viewCopy = view;
+  pathCopy = path;
   v9 = +[MFPhotoPickerSectionHeaderView reusableIdentifier];
-  v10 = [v7 dequeueReusableSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:v9 forIndexPath:v8];
+  v10 = [viewCopy dequeueReusableSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:v9 forIndexPath:pathCopy];
 
   [v10 addAllPhotosTarget:self action:sel_showSystemImagePicker_];
 
   return v10;
 }
 
-- (void)imagePickerControllerDidCancel:(id)a3
+- (void)imagePickerControllerDidCancel:(id)cancel
 {
-  v4 = [(MFPhotoPickerController *)self systemImagePicker];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  systemImagePicker = [(MFPhotoPickerController *)self systemImagePicker];
+  [systemImagePicker dismissViewControllerAnimated:1 completion:0];
 
   if ((*&self->_flags & 2) != 0)
   {
-    v5 = [(MFPhotoPickerController *)self pickerDelegate];
-    [v5 photoPickerDidCancelSystemImagePicker:self];
+    pickerDelegate = [(MFPhotoPickerController *)self pickerDelegate];
+    [pickerDelegate photoPickerDidCancelSystemImagePicker:self];
   }
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(MFPhotoPickerController *)self systemImagePicker];
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  infoCopy = info;
+  systemImagePicker = [(MFPhotoPickerController *)self systemImagePicker];
+  [systemImagePicker dismissViewControllerAnimated:1 completion:0];
 
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69DE968]];
+  v7 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69DE968]];
   v8 = v7;
   if (v7)
   {
@@ -570,79 +570,79 @@ void __67__MFPhotoPickerController_collectionView_didSelectItemAtIndexPath___blo
     _os_log_impl(&dword_1BE819000, v10, OS_LOG_TYPE_DEFAULT, "System Image Picker, Asset %{public}@ selected", &v12, 0xCu);
   }
 
-  v11 = [(MFPhotoPickerController *)self pickerDelegate];
-  [v11 photoPicker:self didSelectAssetWithIdentifier:v8 mediaInfo:v5];
+  pickerDelegate = [(MFPhotoPickerController *)self pickerDelegate];
+  [pickerDelegate photoPicker:self didSelectAssetWithIdentifier:v8 mediaInfo:infoCopy];
 }
 
-- (void)close:(id)a3
+- (void)close:(id)close
 {
   if (*&self->_flags)
   {
-    v4 = [(MFPhotoPickerController *)self pickerDelegate];
-    [v4 photoPickerDidCancel:self];
+    pickerDelegate = [(MFPhotoPickerController *)self pickerDelegate];
+    [pickerDelegate photoPickerDidCancel:self];
   }
 }
 
-- (void)showSystemImagePicker:(id)a3
+- (void)showSystemImagePicker:(id)picker
 {
-  v15 = a3;
+  pickerCopy = picker;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v5 = [MEMORY[0x1E69DCAD0] mf_systemImagePickerWithSourceType:0];
     systemImagePicker = self->_systemImagePicker;
     self->_systemImagePicker = v5;
 
-    v7 = [(MFPhotoPickerController *)self pickerDelegate];
+    pickerDelegate = [(MFPhotoPickerController *)self pickerDelegate];
     [(UIImagePickerController *)self->_systemImagePicker setDelegate:self];
     if ((*&self->_flags & 8) == 0)
     {
       goto LABEL_9;
     }
 
-    v8 = [v7 presentingViewControllerForPhotoPicker:self];
-    v9 = [(MFPhotoPickerController *)self navigationController];
-    if (v9)
+    v8 = [pickerDelegate presentingViewControllerForPhotoPicker:self];
+    navigationController = [(MFPhotoPickerController *)self navigationController];
+    if (navigationController)
     {
-      v10 = [(MFPhotoPickerController *)self navigationController];
-      v11 = [v10 presentationController];
-      v12 = [v11 delegate];
+      navigationController2 = [(MFPhotoPickerController *)self navigationController];
+      presentationController = [navigationController2 presentationController];
+      delegate = [presentationController delegate];
     }
 
     else
     {
-      v10 = [(MFPhotoPickerController *)self presentationController];
-      v12 = [v10 delegate];
+      navigationController2 = [(MFPhotoPickerController *)self presentationController];
+      delegate = [navigationController2 delegate];
     }
 
-    v13 = [(UIImagePickerController *)self->_systemImagePicker presentationController];
-    [v13 setDelegate:v12];
+    presentationController2 = [(UIImagePickerController *)self->_systemImagePicker presentationController];
+    [presentationController2 setDelegate:delegate];
 
     if (v8)
     {
-      v14 = v8;
+      selfCopy = v8;
       [(MFPhotoPickerController *)self dismissViewControllerAnimated:1 completion:0];
     }
 
     else
     {
 LABEL_9:
-      v14 = self;
+      selfCopy = self;
     }
 
-    [(MFPhotoPickerController *)v14 presentViewController:self->_systemImagePicker animated:1 completion:0];
+    [(MFPhotoPickerController *)selfCopy presentViewController:self->_systemImagePicker animated:1 completion:0];
   }
 
   else
   {
-    [(MFPhotoPickerController *)self performSelectorOnMainThread:a2 withObject:v15 waitUntilDone:0];
+    [(MFPhotoPickerController *)self performSelectorOnMainThread:a2 withObject:pickerCopy waitUntilDone:0];
   }
 }
 
-- (double)preferredHeightForTraitCollection:(id)a3
+- (double)preferredHeightForTraitCollection:(id)collection
 {
-  v3 = [a3 verticalSizeClass];
+  verticalSizeClass = [collection verticalSizeClass];
   result = 300.0;
-  if (v3 == 1)
+  if (verticalSizeClass == 1)
   {
     return 160.0;
   }
@@ -652,25 +652,25 @@ LABEL_9:
 
 - (BOOL)_isPresentingInASheet
 {
-  v2 = [(MFPhotoPickerController *)self parentViewController];
-  v3 = [v2 presentationController];
+  parentViewController = [(MFPhotoPickerController *)self parentViewController];
+  presentationController = [parentViewController presentationController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (id)_visibleCellForIndexPath:(id)a3 collectionView:(id)a4
+- (id)_visibleCellForIndexPath:(id)path collectionView:(id)view
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  viewCopy = view;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 visibleCells];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  visibleCells = [viewCopy visibleCells];
+  v8 = [visibleCells countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = *v16;
@@ -680,22 +680,22 @@ LABEL_9:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(visibleCells);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v6 indexPathForCell:v11];
-        v13 = [v12 item];
-        LODWORD(v13) = v13 == [v5 item];
+        v12 = [viewCopy indexPathForCell:v11];
+        item = [v12 item];
+        LODWORD(item) = item == [pathCopy item];
 
-        if (v13)
+        if (item)
         {
           v8 = v11;
           goto LABEL_11;
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [visibleCells countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;

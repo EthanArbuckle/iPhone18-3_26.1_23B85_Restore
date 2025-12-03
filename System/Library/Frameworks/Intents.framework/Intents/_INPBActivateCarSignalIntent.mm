@@ -1,28 +1,28 @@
 @interface _INPBActivateCarSignalIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBActivateCarSignalIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBActivateCarSignalIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsSignals:(id)a3;
+- (int)StringAsSignals:(id)signals;
 - (unint64_t)hash;
-- (void)addSignals:(int)a3;
+- (void)addSignals:(int)signals;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBActivateCarSignalIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBActivateCarSignalIntent *)self carName];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"carName"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  carName = [(_INPBActivateCarSignalIntent *)self carName];
+  dictionaryRepresentation = [carName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"carName"];
 
-  v6 = [(_INPBActivateCarSignalIntent *)self intentMetadata];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBActivateCarSignalIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
   if (self->_signals.count)
   {
@@ -56,10 +56,10 @@
       while (v9 < [(_INPBActivateCarSignalIntent *)self signalsCount]);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"signals"];
+    [dictionary setObject:v8 forKeyedSubscript:@"signals"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -69,28 +69,28 @@
   return v4 ^ PBRepeatedInt32Hash();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBActivateCarSignalIntent *)self carName];
-  v6 = [v4 carName];
-  if ((v5 != 0) == (v6 == 0))
+  carName = [(_INPBActivateCarSignalIntent *)self carName];
+  carName2 = [equalCopy carName];
+  if ((carName != 0) == (carName2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBActivateCarSignalIntent *)self carName];
-  if (v7)
+  carName3 = [(_INPBActivateCarSignalIntent *)self carName];
+  if (carName3)
   {
-    v8 = v7;
-    v9 = [(_INPBActivateCarSignalIntent *)self carName];
-    v10 = [v4 carName];
-    v11 = [v9 isEqual:v10];
+    v8 = carName3;
+    carName4 = [(_INPBActivateCarSignalIntent *)self carName];
+    carName5 = [equalCopy carName];
+    v11 = [carName4 isEqual:carName5];
 
     if (!v11)
     {
@@ -102,12 +102,12 @@
   {
   }
 
-  v5 = [(_INPBActivateCarSignalIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) != (v6 == 0))
+  carName = [(_INPBActivateCarSignalIntent *)self intentMetadata];
+  carName2 = [equalCopy intentMetadata];
+  if ((carName != 0) != (carName2 == 0))
   {
-    v12 = [(_INPBActivateCarSignalIntent *)self intentMetadata];
-    if (!v12)
+    intentMetadata = [(_INPBActivateCarSignalIntent *)self intentMetadata];
+    if (!intentMetadata)
     {
 
 LABEL_15:
@@ -115,10 +115,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBActivateCarSignalIntent *)self intentMetadata];
-    v15 = [v4 intentMetadata];
-    v16 = [v14 isEqual:v15];
+    v13 = intentMetadata;
+    intentMetadata2 = [(_INPBActivateCarSignalIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v16 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (v16)
     {
@@ -138,41 +138,41 @@ LABEL_13:
   return IsEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBActivateCarSignalIntent allocWithZone:](_INPBActivateCarSignalIntent init];
-  v6 = [(_INPBDataString *)self->_carName copyWithZone:a3];
+  v6 = [(_INPBDataString *)self->_carName copyWithZone:zone];
   [(_INPBActivateCarSignalIntent *)v5 setCarName:v6];
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBActivateCarSignalIntent *)v5 setIntentMetadata:v7];
 
   PBRepeatedInt32Copy();
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBActivateCarSignalIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBActivateCarSignalIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBActivateCarSignalIntent)initWithCoder:(id)a3
+- (_INPBActivateCarSignalIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBActivateCarSignalIntent *)self initWithData:v6];
+    self = [(_INPBActivateCarSignalIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -183,27 +183,27 @@ LABEL_13:
   [(_INPBActivateCarSignalIntent *)&v3 dealloc];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
-  v4 = [(_INPBActivateCarSignalIntent *)self carName];
+  toCopy = to;
+  carName = [(_INPBActivateCarSignalIntent *)self carName];
 
-  if (v4)
+  if (carName)
   {
-    v5 = [(_INPBActivateCarSignalIntent *)self carName];
+    carName2 = [(_INPBActivateCarSignalIntent *)self carName];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBActivateCarSignalIntent *)self intentMetadata];
+  intentMetadata = [(_INPBActivateCarSignalIntent *)self intentMetadata];
 
-  if (v6)
+  if (intentMetadata)
   {
-    v7 = [(_INPBActivateCarSignalIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBActivateCarSignalIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
   p_signals = &self->_signals;
-  v9 = v12;
+  v9 = toCopy;
   if (p_signals->count)
   {
     v10 = 0;
@@ -211,7 +211,7 @@ LABEL_13:
     {
       v11 = p_signals->list[v10];
       PBDataWriterWriteInt32Field();
-      v9 = v12;
+      v9 = toCopy;
       ++v10;
     }
 
@@ -219,13 +219,13 @@ LABEL_13:
   }
 }
 
-- (int)StringAsSignals:(id)a3
+- (int)StringAsSignals:(id)signals
 {
-  v3 = a3;
+  signalsCopy = signals;
   v4 = 1;
-  if (([v3 isEqualToString:@"AUDIBLE"] & 1) == 0)
+  if (([signalsCopy isEqualToString:@"AUDIBLE"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"VISIBLE"])
+    if ([signalsCopy isEqualToString:@"VISIBLE"])
     {
       v4 = 2;
     }
@@ -239,9 +239,9 @@ LABEL_13:
   return v4;
 }
 
-- (void)addSignals:(int)a3
+- (void)addSignals:(int)signals
 {
-  if (a3 != 0x7FFFFFFF)
+  if (signals != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }

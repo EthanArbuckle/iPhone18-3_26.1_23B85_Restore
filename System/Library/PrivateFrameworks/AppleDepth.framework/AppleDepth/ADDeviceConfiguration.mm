@@ -1,18 +1,18 @@
 @interface ADDeviceConfiguration
-+ (BOOL)BOOLForKey:(id)a3;
-+ (BOOL)deviceList:(id)a3 containsDeviceName:(id)a4;
-+ (BOOL)hasLidarToColorIncreasedBaseline:(id)a3;
-+ (double)doubleForKey:(id)a3;
-+ (float)floatForKey:(id)a3;
++ (BOOL)BOOLForKey:(id)key;
++ (BOOL)deviceList:(id)list containsDeviceName:(id)name;
++ (BOOL)hasLidarToColorIncreasedBaseline:(id)baseline;
++ (double)doubleForKey:(id)key;
++ (float)floatForKey:(id)key;
 + (id)getDeviceName;
 + (id)getRealDeviceName;
-+ (id)listForKey:(id)a3;
-+ (id)numberForKey:(id)a3;
-+ (id)preferencesWithDefaultValues:(id)a3;
++ (id)listForKey:(id)key;
++ (id)numberForKey:(id)key;
++ (id)preferencesWithDefaultValues:(id)values;
 + (id)sharedConfiguration;
-+ (id)stringForKey:(id)a3;
-+ (int64_t)integerForKey:(id)a3;
-+ (unint64_t)getLidarType:(id)a3;
++ (id)stringForKey:(id)key;
++ (int64_t)integerForKey:(id)key;
++ (unint64_t)getLidarType:(id)type;
 + (void)registerVerbosityConfigurationUpdate;
 - (ADDeviceConfiguration)init;
 @end
@@ -55,7 +55,7 @@
     block[1] = 3221225472;
     block[2] = __44__ADDeviceConfiguration_sharedConfiguration__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (+[ADDeviceConfiguration sharedConfiguration]::onceToken != -1)
     {
       dispatch_once(&+[ADDeviceConfiguration sharedConfiguration]::onceToken, block);
@@ -70,24 +70,24 @@
 - (ADDeviceConfiguration)init
 {
   v15[4] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v5 = [v4 bundleIdentifier];
+  bundleIdentifier = [v4 bundleIdentifier];
 
-  [v5 UTF8String];
+  [bundleIdentifier UTF8String];
   if (os_variant_allows_internal_security_policies())
   {
     v6 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 2uLL, 1);
     v7 = [v6 objectAtIndex:0];
-    v8 = [v7 stringByAppendingPathComponent:v5];
+    v8 = [v7 stringByAppendingPathComponent:bundleIdentifier];
 
-    v3 = v8;
+    null = v8;
   }
 
   v14[0] = kADDeviceConfigurationKeyOverrideDeviceName;
-  v9 = [MEMORY[0x277CBEB68] null];
-  v15[0] = v9;
-  v15[1] = v3;
+  null2 = [MEMORY[0x277CBEB68] null];
+  v15[0] = null2;
+  v15[1] = null;
   v14[1] = kADDeviceConfigurationKeyModelConfigurationFolder;
   v14[2] = kADDeviceConfigurationKeyVerboseLogs;
   v14[3] = kADDeviceConfigurationKeyWriteCoverage;
@@ -102,84 +102,84 @@
   return v11;
 }
 
-+ (id)preferencesWithDefaultValues:(id)a3
++ (id)preferencesWithDefaultValues:(id)values
 {
-  v3 = a3;
+  valuesCopy = values;
   v4 = objc_alloc(MEMORY[0x277CED108]);
-  v5 = [v4 initWithDomain:kADDeviceConfigurationDomainName defaultValues:v3];
+  v5 = [v4 initWithDomain:kADDeviceConfigurationDomainName defaultValues:valuesCopy];
 
   return v5;
 }
 
-+ (id)listForKey:(id)a3
++ (id)listForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[ADDeviceConfiguration sharedConfiguration];
-  v5 = [v4 listForKey:v3];
+  v5 = [v4 listForKey:keyCopy];
 
   return v5;
 }
 
-+ (id)numberForKey:(id)a3
++ (id)numberForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[ADDeviceConfiguration sharedConfiguration];
-  v5 = [v4 numberForKey:v3];
+  v5 = [v4 numberForKey:keyCopy];
 
   return v5;
 }
 
-+ (id)stringForKey:(id)a3
++ (id)stringForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[ADDeviceConfiguration sharedConfiguration];
-  v5 = [v4 stringForKey:v3];
+  v5 = [v4 stringForKey:keyCopy];
 
   return v5;
 }
 
-+ (double)doubleForKey:(id)a3
++ (double)doubleForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[ADDeviceConfiguration sharedConfiguration];
-  [v4 doubleForKey:v3];
+  [v4 doubleForKey:keyCopy];
   v6 = v5;
 
   return v6;
 }
 
-+ (float)floatForKey:(id)a3
++ (float)floatForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[ADDeviceConfiguration sharedConfiguration];
-  [v4 floatForKey:v3];
+  [v4 floatForKey:keyCopy];
   v6 = v5;
 
   return v6;
 }
 
-+ (int64_t)integerForKey:(id)a3
++ (int64_t)integerForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[ADDeviceConfiguration sharedConfiguration];
-  v5 = [v4 integerForKey:v3];
+  v5 = [v4 integerForKey:keyCopy];
 
   return v5;
 }
 
-+ (BOOL)BOOLForKey:(id)a3
++ (BOOL)BOOLForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[ADDeviceConfiguration sharedConfiguration];
-  v5 = [v4 BOOLForKey:v3];
+  v5 = [v4 BOOLForKey:keyCopy];
 
   return v5;
 }
 
-+ (unint64_t)getLidarType:(id)a3
++ (unint64_t)getLidarType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 uppercaseString];
+  typeCopy = type;
+  uppercaseString = [typeCopy uppercaseString];
 
   if (!+[ADDeviceConfiguration getLidarType:]::supportedJasperDevices)
   {
@@ -193,22 +193,22 @@
     +[ADDeviceConfiguration getLidarType:]::supportedPeridotDevices = &unk_28524AB78;
   }
 
-  if ([ADDeviceConfiguration deviceList:v5 containsDeviceName:v4])
+  if ([ADDeviceConfiguration deviceList:v5 containsDeviceName:uppercaseString])
   {
     v6 = 2;
   }
 
   else
   {
-    v6 = +[ADDeviceConfiguration deviceList:containsDeviceName:](ADDeviceConfiguration, "deviceList:containsDeviceName:", +[ADDeviceConfiguration getLidarType:]::supportedJasperDevices, v4);
+    v6 = +[ADDeviceConfiguration deviceList:containsDeviceName:](ADDeviceConfiguration, "deviceList:containsDeviceName:", +[ADDeviceConfiguration getLidarType:]::supportedJasperDevices, uppercaseString);
   }
 
   return v6;
 }
 
-+ (BOOL)hasLidarToColorIncreasedBaseline:(id)a3
++ (BOOL)hasLidarToColorIncreasedBaseline:(id)baseline
 {
-  v3 = a3;
+  baselineCopy = baseline;
   v4 = +[ADDeviceConfiguration hasLidarToColorIncreasedBaseline:]::increasedBaselineDevices;
   if (!+[ADDeviceConfiguration hasLidarToColorIncreasedBaseline:]::increasedBaselineDevices)
   {
@@ -216,21 +216,21 @@
     +[ADDeviceConfiguration hasLidarToColorIncreasedBaseline:]::increasedBaselineDevices = &unk_28524AB48;
   }
 
-  v5 = [ADDeviceConfiguration deviceList:v4 containsDeviceName:v3];
+  v5 = [ADDeviceConfiguration deviceList:v4 containsDeviceName:baselineCopy];
 
   return v5;
 }
 
-+ (BOOL)deviceList:(id)a3 containsDeviceName:(id)a4
++ (BOOL)deviceList:(id)list containsDeviceName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  listCopy = list;
+  nameCopy = name;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v5;
+  v7 = listCopy;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -244,7 +244,7 @@
           objc_enumerationMutation(v7);
         }
 
-        if ([v6 hasPrefix:{*(*(&v12 + 1) + 8 * i), v12}])
+        if ([nameCopy hasPrefix:{*(*(&v12 + 1) + 8 * i), v12}])
         {
           LOBYTE(v8) = 1;
           goto LABEL_11;

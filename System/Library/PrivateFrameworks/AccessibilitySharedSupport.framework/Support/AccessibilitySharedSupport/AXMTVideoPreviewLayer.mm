@@ -1,25 +1,25 @@
 @interface AXMTVideoPreviewLayer
-+ (id)_layerForPointOfInterestAtPosition:(CGPoint)a3 previous:(BOOL)a4 bounds:(CGRect)a5;
-- (AXMTVideoPreviewLayer)initWithAVCaptureSession:(id)a3 captureDeviceResolution:(CGSize)a4;
++ (id)_layerForPointOfInterestAtPosition:(CGPoint)position previous:(BOOL)previous bounds:(CGRect)bounds;
+- (AXMTVideoPreviewLayer)initWithAVCaptureSession:(id)session captureDeviceResolution:(CGSize)resolution;
 - (AXMTVideoPreviewLayer)initWithSampleBufferLayer;
 - (CGRect)_videoPreviewBounds;
 - (CGSize)_captureDeviceResolution;
-- (void)_initWithResolution:(CGSize)a3;
-- (void)_render:(id)a3;
+- (void)_initWithResolution:(CGSize)resolution;
+- (void)_render:(id)_render;
 - (void)_updateLayerGeometry;
-- (void)drawSample:(opaqueCMSampleBuffer *)a3;
+- (void)drawSample:(opaqueCMSampleBuffer *)sample;
 - (void)layoutSublayers;
-- (void)renderFaceKitResult:(id)a3;
-- (void)renderPointOfInterest:(CGPoint)a3 trackingArea:(CGRect)a4;
+- (void)renderFaceKitResult:(id)result;
+- (void)renderPointOfInterest:(CGPoint)interest trackingArea:(CGRect)area;
 @end
 
 @implementation AXMTVideoPreviewLayer
 
-- (AXMTVideoPreviewLayer)initWithAVCaptureSession:(id)a3 captureDeviceResolution:(CGSize)a4
+- (AXMTVideoPreviewLayer)initWithAVCaptureSession:(id)session captureDeviceResolution:(CGSize)resolution
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = resolution.height;
+  width = resolution.width;
+  sessionCopy = session;
   v16.receiver = self;
   v16.super_class = AXMTVideoPreviewLayer;
   v8 = [(AXMTVideoPreviewLayer *)&v16 init];
@@ -27,7 +27,7 @@
   if (v8)
   {
     [(AXMTVideoPreviewLayer *)v8 _initWithResolution:width, height];
-    v10 = [[AVCaptureVideoPreviewLayer alloc] initWithSession:v7];
+    v10 = [[AVCaptureVideoPreviewLayer alloc] initWithSession:sessionCopy];
     videoPreviewLayer = v9->__videoPreviewLayer;
     v9->__videoPreviewLayer = v10;
 
@@ -66,9 +66,9 @@
   return v3;
 }
 
-- (void)_initWithResolution:(CGSize)a3
+- (void)_initWithResolution:(CGSize)resolution
 {
-  self->__captureDeviceResolution = a3;
+  self->__captureDeviceResolution = resolution;
   v4 = objc_opt_new();
   detectedFaceRectangleShapeLayer = self->__detectedFaceRectangleShapeLayer;
   self->__detectedFaceRectangleShapeLayer = v4;
@@ -164,46 +164,46 @@
   [(AXMTVideoPreviewLayer *)self setMasksToBounds:1];
 }
 
-- (void)drawSample:(opaqueCMSampleBuffer *)a3
+- (void)drawSample:(opaqueCMSampleBuffer *)sample
 {
-  SampleAttachmentsArray = CMSampleBufferGetSampleAttachmentsArray(a3, 1u);
+  SampleAttachmentsArray = CMSampleBufferGetSampleAttachmentsArray(sample, 1u);
   ValueAtIndex = CFArrayGetValueAtIndex(SampleAttachmentsArray, 0);
   CFDictionarySetValue(ValueAtIndex, kCMSampleAttachmentKey_DisplayImmediately, kCFBooleanTrue);
-  if (!CMSampleBufferIsValid(a3))
+  if (!CMSampleBufferIsValid(sample))
   {
     v7 = AXSSLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_10000BE34(a3, v7);
+      sub_10000BE34(sample, v7);
     }
   }
 
-  v8 = [(AXMTVideoPreviewLayer *)self _sampleBufferDisplayLayer];
-  [v8 enqueueSampleBuffer:a3];
+  _sampleBufferDisplayLayer = [(AXMTVideoPreviewLayer *)self _sampleBufferDisplayLayer];
+  [_sampleBufferDisplayLayer enqueueSampleBuffer:sample];
 }
 
-- (void)renderPointOfInterest:(CGPoint)a3 trackingArea:(CGRect)a4
+- (void)renderPointOfInterest:(CGPoint)interest trackingArea:(CGRect)area
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000AB28;
   v4[3] = &unk_100048C88;
   v4[4] = self;
-  v5 = a4;
-  v6 = a3;
+  areaCopy = area;
+  interestCopy = interest;
   [(AXMTVideoPreviewLayer *)self _render:v4];
 }
 
-- (void)renderFaceKitResult:(id)a3
+- (void)renderFaceKitResult:(id)result
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000AFE8;
   v4[3] = &unk_100048948;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(AXMTVideoPreviewLayer *)v5 _render:v4];
+  selfCopy = self;
+  resultCopy = result;
+  v3 = resultCopy;
+  [(AXMTVideoPreviewLayer *)selfCopy _render:v4];
 }
 
 - (void)layoutSublayers
@@ -214,27 +214,27 @@
   v4 = v3;
   [(AXMTVideoPreviewLayer *)self bounds];
   v6 = v5;
-  v7 = [(AXMTVideoPreviewLayer *)self _videoPreviewLayer];
-  [v7 setFrame:{0.0, 0.0, v4, v6}];
+  _videoPreviewLayer = [(AXMTVideoPreviewLayer *)self _videoPreviewLayer];
+  [_videoPreviewLayer setFrame:{0.0, 0.0, v4, v6}];
 
   [(AXMTVideoPreviewLayer *)self bounds];
   v9 = v8;
   [(AXMTVideoPreviewLayer *)self bounds];
   v11 = v10;
-  v12 = [(AXMTVideoPreviewLayer *)self _sampleBufferDisplayLayer];
-  [v12 setFrame:{0.0, 0.0, v9, v11}];
+  _sampleBufferDisplayLayer = [(AXMTVideoPreviewLayer *)self _sampleBufferDisplayLayer];
+  [_sampleBufferDisplayLayer setFrame:{0.0, 0.0, v9, v11}];
 }
 
-+ (id)_layerForPointOfInterestAtPosition:(CGPoint)a3 previous:(BOOL)a4 bounds:(CGRect)a5
++ (id)_layerForPointOfInterestAtPosition:(CGPoint)position previous:(BOOL)previous bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  v7 = a4;
-  y = a3.y;
-  x = a3.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  previousCopy = previous;
+  y = position.y;
+  x = position.x;
   v10 = objc_opt_new();
   v11 = v10;
-  if (v7)
+  if (previousCopy)
   {
     v12 = @"PreviousPointOfInterestLayer";
   }
@@ -260,7 +260,7 @@
   v15 = +[UIColor redColor];
   v16 = v15;
   v17 = 0.7;
-  if (v7)
+  if (previousCopy)
   {
     v17 = 0.2;
   }
@@ -273,14 +273,14 @@
   return v11;
 }
 
-- (void)_render:(id)a3
+- (void)_render:(id)_render
 {
-  v3 = a3;
-  if (v3)
+  _renderCopy = _render;
+  if (_renderCopy)
   {
     if (+[NSThread isMainThread])
     {
-      v3[2](v3);
+      _renderCopy[2](_renderCopy);
     }
 
     else
@@ -289,7 +289,7 @@
       block[1] = 3221225472;
       block[2] = sub_10000BA1C;
       block[3] = &unk_100048B80;
-      v5 = v3;
+      v5 = _renderCopy;
       dispatch_sync(&_dispatch_main_q, block);
     }
   }
@@ -298,8 +298,8 @@
 - (void)_updateLayerGeometry
 {
   [CATransaction setValue:&__kCFBooleanTrue forKey:kCATransactionDisableActions];
-  v3 = [(AXMTVideoPreviewLayer *)self _videoPreviewLayer];
-  [v3 rectForMetadataOutputRectOfInterest:{0.0, 0.0, 1.0, 1.0}];
+  _videoPreviewLayer = [(AXMTVideoPreviewLayer *)self _videoPreviewLayer];
+  [_videoPreviewLayer rectForMetadataOutputRectOfInterest:{0.0, 0.0, 1.0, 1.0}];
   v5 = v4;
   v7 = v6;
   v9 = v8;

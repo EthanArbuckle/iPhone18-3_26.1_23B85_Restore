@@ -1,20 +1,20 @@
 @interface TUICandidateLayoutAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TUICandidateLayoutAttributes)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TUICandidateLayoutAttributes
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = TUICandidateLayoutAttributes;
-  if (-[UICollectionViewLayoutAttributes isEqual:](&v12, sel_isEqual_, v4) && (v5 = -[TUICandidateLayoutAttributes candidateNumber](self, "candidateNumber"), v5 == [v4 candidateNumber]) && (-[TUICandidateLayoutAttributes contentAlpha](self, "contentAlpha"), v7 = v6, objc_msgSend(v4, "contentAlpha"), v7 == v8))
+  if (-[UICollectionViewLayoutAttributes isEqual:](&v12, sel_isEqual_, equalCopy) && (v5 = -[TUICandidateLayoutAttributes candidateNumber](self, "candidateNumber"), v5 == [equalCopy candidateNumber]) && (-[TUICandidateLayoutAttributes contentAlpha](self, "contentAlpha"), v7 = v6, objc_msgSend(equalCopy, "contentAlpha"), v7 == v8))
   {
     v11 = [(TUICandidateLayoutAttributes *)self row];
-    v9 = v11 == [v4 row];
+    v9 = v11 == [equalCopy row];
   }
 
   else
@@ -25,11 +25,11 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = TUICandidateLayoutAttributes;
-  result = [(UICollectionViewLayoutAttributes *)&v5 copyWithZone:a3];
+  result = [(UICollectionViewLayoutAttributes *)&v5 copyWithZone:zone];
   *(result + 44) = self->_candidateNumber;
   *(result + 45) = *&self->_contentAlpha;
   *(result + 46) = self->_row;

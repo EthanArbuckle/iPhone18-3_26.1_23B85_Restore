@@ -1,7 +1,7 @@
 @interface ATXAudioDisconnectedAnchor
 + (BOOL)isActive;
 + (BOOL)shouldProcessContextStoreNotification;
-+ (id)fetchAnchorOccurrencesBetweenStartDate:(id)a3 endDate:(id)a4;
++ (id)fetchAnchorOccurrencesBetweenStartDate:(id)date endDate:(id)endDate;
 + (id)invalidationPredicateForContextStoreRegistration;
 + (id)predicateForContextStoreRegistration;
 + (id)sampleEvent;
@@ -31,21 +31,21 @@ BOOL __41__ATXAudioDisconnectedAnchor_filterBlock__block_invoke(uint64_t a1, voi
   return v9;
 }
 
-+ (id)fetchAnchorOccurrencesBetweenStartDate:(id)a3 endDate:(id)a4
++ (id)fetchAnchorOccurrencesBetweenStartDate:(id)date endDate:(id)endDate
 {
   v5 = MEMORY[0x277CEBBF0];
-  v6 = a4;
-  v7 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v8 = objc_alloc_init(v5);
   v9 = objc_opt_new();
-  v10 = [objc_opt_class() filterBlock];
+  filterBlock = [objc_opt_class() filterBlock];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__ATXAudioDisconnectedAnchor_fetchAnchorOccurrencesBetweenStartDate_endDate___block_invoke;
   v13[3] = &unk_278599150;
   v11 = v9;
   v14 = v11;
-  [v8 enumerateConnectedEventsFromStartDate:v7 endDate:v6 filterBlock:v10 limit:1000000 ascending:1 block:v13];
+  [v8 enumerateConnectedEventsFromStartDate:dateCopy endDate:endDateCopy filterBlock:filterBlock limit:1000000 ascending:1 block:v13];
 
   return v11;
 }
@@ -64,10 +64,10 @@ void __77__ATXAudioDisconnectedAnchor_fetchAnchorOccurrencesBetweenStartDate_end
   v13[2] = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277CFE338] predicateForAudioOutputStatus:0];
   v3 = MEMORY[0x277CFE360];
-  v4 = [objc_opt_class() keyPathForContextStore];
-  v5 = [objc_opt_class() keyPathForContextStore];
-  v6 = [MEMORY[0x277CFE338] audioPortTypeKey];
-  v7 = [v3 predicateForKeyPath:v4 withFormat:@"SELF.%@.value.%K = %@", v5, v6, @"Headphones"];
+  keyPathForContextStore = [objc_opt_class() keyPathForContextStore];
+  keyPathForContextStore2 = [objc_opt_class() keyPathForContextStore];
+  audioPortTypeKey = [MEMORY[0x277CFE338] audioPortTypeKey];
+  v7 = [v3 predicateForKeyPath:keyPathForContextStore withFormat:@"SELF.%@.value.%K = %@", keyPathForContextStore2, audioPortTypeKey, @"Headphones"];
 
   v8 = MEMORY[0x277CFE360];
   v13[0] = v2;
@@ -85,10 +85,10 @@ void __77__ATXAudioDisconnectedAnchor_fetchAnchorOccurrencesBetweenStartDate_end
   v13[2] = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277CFE338] predicateForAudioOutputStatus:1];
   v3 = MEMORY[0x277CFE360];
-  v4 = [objc_opt_class() keyPathForContextStore];
-  v5 = [objc_opt_class() keyPathForContextStore];
-  v6 = [MEMORY[0x277CFE338] audioPortTypeKey];
-  v7 = [v3 predicateForKeyPath:v4 withFormat:@"SELF.%@.value.%K = %@", v5, v6, @"Headphones"];
+  keyPathForContextStore = [objc_opt_class() keyPathForContextStore];
+  keyPathForContextStore2 = [objc_opt_class() keyPathForContextStore];
+  audioPortTypeKey = [MEMORY[0x277CFE338] audioPortTypeKey];
+  v7 = [v3 predicateForKeyPath:keyPathForContextStore withFormat:@"SELF.%@.value.%K = %@", keyPathForContextStore2, audioPortTypeKey, @"Headphones"];
 
   v8 = MEMORY[0x277CFE360];
   v13[0] = v2;

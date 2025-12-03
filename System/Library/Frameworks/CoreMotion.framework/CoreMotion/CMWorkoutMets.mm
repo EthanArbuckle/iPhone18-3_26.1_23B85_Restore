@@ -2,7 +2,7 @@
 + (BOOL)isAvailable;
 - (CMWorkoutMets)init;
 - (void)dealloc;
-- (void)queryWorkoutMetsWithSessionId:(id)a3 handler:(id)a4;
+- (void)queryWorkoutMetsWithSessionId:(id)id handler:(id)handler;
 @end
 
 @implementation CMWorkoutMets
@@ -57,11 +57,11 @@
   return objc_msgSend_featureAvailability_(CMMotionUtils, v3, "kCLConnectionMessageNatalimetryAvailable");
 }
 
-- (void)queryWorkoutMetsWithSessionId:(id)a3 handler:(id)a4
+- (void)queryWorkoutMetsWithSessionId:(id)id handler:(id)handler
 {
-  if (!a4)
+  if (!handler)
   {
-    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, id);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMWorkoutMets.mm", 165, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
@@ -72,9 +72,9 @@
 
   if (qword_1ED71D640 == 3)
   {
-    v6 = objc_msgSend__internal(self, a2, a3);
+    v6 = objc_msgSend__internal(self, a2, id);
 
-    MEMORY[0x1EEE66B58](v6, sel__queryWorkoutMetsWithSessionId_handler_, a3);
+    MEMORY[0x1EEE66B58](v6, sel__queryWorkoutMetsWithSessionId_handler_, id);
   }
 }
 

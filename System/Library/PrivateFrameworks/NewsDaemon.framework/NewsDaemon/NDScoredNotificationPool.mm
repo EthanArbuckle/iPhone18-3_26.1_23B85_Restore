@@ -1,29 +1,29 @@
 @interface NDScoredNotificationPool
 - (NDScoredNotificationPool)init;
-- (void)enumerateItemsUsingBlock:(id)a3;
-- (void)refreshIfNeededWithCompletionHandler:(id)a3;
-- (void)refreshIfOlderThan:(NSDate *)a3 completionHandler:(id)a4;
+- (void)enumerateItemsUsingBlock:(id)block;
+- (void)refreshIfNeededWithCompletionHandler:(id)handler;
+- (void)refreshIfOlderThan:(NSDate *)than completionHandler:(id)handler;
 @end
 
 @implementation NDScoredNotificationPool
 
-- (void)enumerateItemsUsingBlock:(id)a3
+- (void)enumerateItemsUsingBlock:(id)block
 {
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(block);
   v4 = *(&self->super.isa + OBJC_IVAR___NDScoredNotificationPool_accessQueue);
-  v5 = self;
+  selfCopy = self;
   OS_dispatch_queue.sync<A>(execute:)();
 
   _Block_release(v6);
 }
 
-- (void)refreshIfNeededWithCompletionHandler:(id)a3
+- (void)refreshIfNeededWithCompletionHandler:(id)handler
 {
   v5 = sub_100015140(&unk_10007EB50, &qword_10005AB40);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -39,19 +39,19 @@
   v13[3] = 0;
   v13[4] = &unk_10005BD28;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_10004039C(0, 0, v8, &unk_10005BD30, v13);
 }
 
-- (void)refreshIfOlderThan:(NSDate *)a3 completionHandler:(id)a4
+- (void)refreshIfOlderThan:(NSDate *)than completionHandler:(id)handler
 {
   v7 = sub_100015140(&unk_10007EB50, &qword_10005AB40);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = than;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -66,8 +66,8 @@
   v15[3] = 0;
   v15[4] = &unk_10005A958;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  thanCopy = than;
+  selfCopy = self;
   sub_10004039C(0, 0, v10, &unk_10005A960, v15);
 }
 

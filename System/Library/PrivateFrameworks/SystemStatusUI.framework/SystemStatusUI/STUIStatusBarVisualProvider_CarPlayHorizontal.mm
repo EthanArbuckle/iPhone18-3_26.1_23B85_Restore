@@ -1,14 +1,14 @@
 @interface STUIStatusBarVisualProvider_CarPlayHorizontal
-+ (CGSize)intrinsicContentSizeForOrientation:(int64_t)a3;
-- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)a3;
-- (id)setupInContainerView:(id)a3;
-- (void)_updateDockGuideConstraintsForAvoidanceFrame:(CGRect)a3;
-- (void)avoidanceFrameUpdatedFromFrame:(CGRect)a3 withAnimationSettings:(id)a4 options:(unint64_t)a5;
++ (CGSize)intrinsicContentSizeForOrientation:(int64_t)orientation;
+- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)identifier;
+- (id)setupInContainerView:(id)view;
+- (void)_updateDockGuideConstraintsForAvoidanceFrame:(CGRect)frame;
+- (void)avoidanceFrameUpdatedFromFrame:(CGRect)frame withAnimationSettings:(id)settings options:(unint64_t)options;
 @end
 
 @implementation STUIStatusBarVisualProvider_CarPlayHorizontal
 
-+ (CGSize)intrinsicContentSizeForOrientation:(int64_t)a3
++ (CGSize)intrinsicContentSizeForOrientation:(int64_t)orientation
 {
   v3 = *MEMORY[0x277D77260];
   v4 = 45.0;
@@ -17,11 +17,11 @@
   return result;
 }
 
-- (id)setupInContainerView:(id)a3
+- (id)setupInContainerView:(id)view
 {
   v204[14] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  viewCopy = view;
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [[STUIStatusBarRegion alloc] initWithIdentifier:@"time"];
   v7 = objc_alloc_init(STUIStatusBarRegionAxesLayout);
   v8 = +[STUIStatusBarRegionAxisFillingLayout fillingLayout];
@@ -44,14 +44,14 @@
   v193 = v11;
   [(STUIStatusBarRegion *)v10 setLayout:v11];
   [(STUIStatusBarRegion *)v10 setActionInsets:-10.0, -10.0, -10.0, -10.0];
-  v14 = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+  pillRegionCoordinator = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
   v194 = v10;
-  [v14 setPillRegion:v10];
+  [pillRegionCoordinator setPillRegion:v10];
 
   v15 = [[STUIStatusBarRegion alloc] initWithIdentifier:@"pillContent"];
-  v16 = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
-  v17 = [v16 pillRegion];
-  [(STUIStatusBarRegion *)v15 setEnabilityRegion:v17];
+  pillRegionCoordinator2 = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+  pillRegion = [pillRegionCoordinator2 pillRegion];
+  [(STUIStatusBarRegion *)v15 setEnabilityRegion:pillRegion];
 
   v18 = objc_alloc_init(STUIStatusBarRegionAxesLayout);
   v19 = +[STUIStatusBarRegionAxisFillingLayout fillingLayout];
@@ -103,225 +103,225 @@
   v199 = v29;
   [(STUIStatusBarRegion *)v29 setActionInsets:-10.0, -10.0, -10.0, -10.0];
   v33 = objc_alloc_init(MEMORY[0x277D756D0]);
-  [v4 addLayoutGuide:v33];
-  v34 = [v33 widthAnchor];
-  v35 = [v34 constraintEqualToConstant:111.0];
+  [viewCopy addLayoutGuide:v33];
+  widthAnchor = [v33 widthAnchor];
+  v35 = [widthAnchor constraintEqualToConstant:111.0];
   [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self setDockGuideWidthConstraint:v35];
 
-  v36 = [v33 centerXAnchor];
-  v37 = [v4 centerXAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
+  centerXAnchor = [v33 centerXAnchor];
+  centerXAnchor2 = [viewCopy centerXAnchor];
+  v38 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self setDockGuideCenterXConstraint:v38];
 
-  v39 = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideWidthConstraint];
-  [v5 addObject:v39];
+  dockGuideWidthConstraint = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideWidthConstraint];
+  [array addObject:dockGuideWidthConstraint];
 
-  v40 = [v33 topAnchor];
-  v41 = [v4 topAnchor];
-  v42 = [v40 constraintEqualToAnchor:v41];
-  [v5 addObject:v42];
+  topAnchor = [v33 topAnchor];
+  topAnchor2 = [viewCopy topAnchor];
+  v42 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v42];
 
-  v43 = [v33 bottomAnchor];
-  v44 = [v4 bottomAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44];
-  [v5 addObject:v45];
+  bottomAnchor = [v33 bottomAnchor];
+  bottomAnchor2 = [viewCopy bottomAnchor];
+  v45 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v45];
 
-  v46 = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideCenterXConstraint];
-  v47 = v5;
-  [v5 addObject:v46];
+  dockGuideCenterXConstraint = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideCenterXConstraint];
+  v47 = array;
+  [array addObject:dockGuideCenterXConstraint];
 
-  v48 = [v33 leftAnchor];
-  v49 = [v4 leftAnchor];
-  v50 = [v48 constraintEqualToAnchor:v49 constant:0.0];
+  leftAnchor = [v33 leftAnchor];
+  leftAnchor2 = [viewCopy leftAnchor];
+  v50 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:0.0];
   [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self setDockGuideLeftConstraint:v50];
 
   v198 = v33;
-  v51 = [v33 rightAnchor];
-  v52 = [v4 leftAnchor];
-  v53 = [v51 constraintEqualToAnchor:v52 constant:0.0];
+  rightAnchor = [v33 rightAnchor];
+  leftAnchor3 = [viewCopy leftAnchor];
+  v53 = [rightAnchor constraintEqualToAnchor:leftAnchor3 constant:0.0];
   [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self setDockGuideRightConstraint:v53];
 
-  v54 = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar];
-  v55 = [v54 targetScreen];
-  LODWORD(v53) = [v55 _isRightHandDrive];
+  statusBar = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar];
+  targetScreen = [statusBar targetScreen];
+  LODWORD(v53) = [targetScreen _isRightHandDrive];
 
   v196 = v6;
-  v197 = v4;
+  v197 = viewCopy;
   if (v53)
   {
-    v56 = [(STUIStatusBarRegion *)v6 layoutItem];
-    v57 = [v56 leftAnchor];
-    v58 = [(STUIStatusBarRegion *)v199 layoutItem];
-    v59 = [v58 rightAnchor];
-    v60 = [v57 constraintEqualToAnchor:v59 constant:0.0];
+    layoutItem = [(STUIStatusBarRegion *)v6 layoutItem];
+    leftAnchor4 = [layoutItem leftAnchor];
+    layoutItem2 = [(STUIStatusBarRegion *)v199 layoutItem];
+    rightAnchor2 = [layoutItem2 rightAnchor];
+    v60 = [leftAnchor4 constraintEqualToAnchor:rightAnchor2 constant:0.0];
     [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self setDriverSideConstraint:v60];
 
-    v186 = [(STUIStatusBarRegion *)v6 layoutItem];
-    v61 = [v186 centerYAnchor];
-    v184 = [v4 safeAreaLayoutGuide];
-    [v184 centerYAnchor];
-    v183 = v185 = v61;
-    v182 = [v61 constraintEqualToAnchor:?];
+    layoutItem3 = [(STUIStatusBarRegion *)v6 layoutItem];
+    centerYAnchor = [layoutItem3 centerYAnchor];
+    safeAreaLayoutGuide = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide centerYAnchor];
+    v183 = v185 = centerYAnchor;
+    v182 = [centerYAnchor constraintEqualToAnchor:?];
     v204[0] = v182;
-    v181 = [(STUIStatusBarRegion *)v6 layoutItem];
-    v180 = [v181 heightAnchor];
-    v179 = [v180 constraintEqualToConstant:18.0];
+    layoutItem4 = [(STUIStatusBarRegion *)v6 layoutItem];
+    heightAnchor = [layoutItem4 heightAnchor];
+    v179 = [heightAnchor constraintEqualToConstant:18.0];
     v204[1] = v179;
-    v178 = [(STUIStatusBarRegion *)v6 layoutItem];
-    v177 = [v178 widthAnchor];
-    v176 = [v177 constraintEqualToConstant:39.0];
+    layoutItem5 = [(STUIStatusBarRegion *)v6 layoutItem];
+    widthAnchor2 = [layoutItem5 widthAnchor];
+    v176 = [widthAnchor2 constraintEqualToConstant:39.0];
     v204[2] = v176;
-    v175 = [(STUIStatusBarRegion *)v6 layoutItem];
-    v62 = [v175 rightAnchor];
-    v173 = [v4 safeAreaLayoutGuide];
-    [v173 rightAnchor];
-    v172 = v174 = v62;
-    v171 = [v62 constraintEqualToAnchor:-8.0 constant:?];
+    layoutItem6 = [(STUIStatusBarRegion *)v6 layoutItem];
+    rightAnchor3 = [layoutItem6 rightAnchor];
+    safeAreaLayoutGuide2 = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide2 rightAnchor];
+    v172 = v174 = rightAnchor3;
+    v171 = [rightAnchor3 constraintEqualToAnchor:-8.0 constant:?];
     v204[3] = v171;
-    v170 = [(STUIStatusBarRegion *)v201 layoutItem];
-    v63 = [v170 centerYAnchor];
-    v168 = [v4 safeAreaLayoutGuide];
-    [v168 centerYAnchor];
-    v167 = v169 = v63;
-    v166 = [v63 constraintEqualToAnchor:?];
+    layoutItem7 = [(STUIStatusBarRegion *)v201 layoutItem];
+    centerYAnchor2 = [layoutItem7 centerYAnchor];
+    safeAreaLayoutGuide3 = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide3 centerYAnchor];
+    v167 = v169 = centerYAnchor2;
+    v166 = [centerYAnchor2 constraintEqualToAnchor:?];
     v204[4] = v166;
-    v165 = [(STUIStatusBarRegion *)v201 layoutItem];
-    v64 = [v165 rightAnchor];
-    v163 = [(STUIStatusBarRegion *)v6 layoutItem];
-    [v163 leftAnchor];
-    v162 = v164 = v64;
-    v161 = [v64 constraintEqualToAnchor:-4.0 constant:?];
+    layoutItem8 = [(STUIStatusBarRegion *)v201 layoutItem];
+    rightAnchor4 = [layoutItem8 rightAnchor];
+    layoutItem9 = [(STUIStatusBarRegion *)v6 layoutItem];
+    [layoutItem9 leftAnchor];
+    v162 = v164 = rightAnchor4;
+    v161 = [rightAnchor4 constraintEqualToAnchor:-4.0 constant:?];
     v204[5] = v161;
-    v160 = [(STUIStatusBarRegion *)v200 layoutItem];
-    v159 = [v160 heightAnchor];
-    v158 = [v159 constraintEqualToConstant:45.0];
+    layoutItem10 = [(STUIStatusBarRegion *)v200 layoutItem];
+    heightAnchor2 = [layoutItem10 heightAnchor];
+    v158 = [heightAnchor2 constraintEqualToConstant:45.0];
     v204[6] = v158;
-    v157 = [(STUIStatusBarRegion *)v200 layoutItem];
-    v65 = [v157 leftAnchor];
-    v155 = [v4 safeAreaLayoutGuide];
-    [v155 leftAnchor];
-    v154 = v156 = v65;
-    v153 = [v65 constraintEqualToAnchor:10.0 constant:?];
-    v204[7] = v153;
-    v152 = [(STUIStatusBarRegion *)v200 layoutItem];
-    v66 = [v152 rightAnchor];
-    v150 = [v198 leftAnchor];
-    v151 = v66;
-    v149 = [v66 constraintLessThanOrEqualToAnchor:v150];
+    layoutItem11 = [(STUIStatusBarRegion *)v200 layoutItem];
+    leftAnchor5 = [layoutItem11 leftAnchor];
+    safeAreaLayoutGuide4 = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide4 leftAnchor];
+    v154 = v156 = leftAnchor5;
+    layoutItem19 = [leftAnchor5 constraintEqualToAnchor:10.0 constant:?];
+    v204[7] = layoutItem19;
+    layoutItem12 = [(STUIStatusBarRegion *)v200 layoutItem];
+    rightAnchor5 = [layoutItem12 rightAnchor];
+    leftAnchor6 = [v198 leftAnchor];
+    safeAreaLayoutGuide7 = rightAnchor5;
+    v149 = [rightAnchor5 constraintLessThanOrEqualToAnchor:leftAnchor6];
     v204[8] = v149;
-    v148 = [(STUIStatusBarRegion *)v200 layoutItem];
-    v67 = [v148 centerYAnchor];
-    v146 = [v4 safeAreaLayoutGuide];
-    [v146 centerYAnchor];
-    v145 = v147 = v67;
-    v144 = [v67 constraintEqualToAnchor:?];
+    layoutItem13 = [(STUIStatusBarRegion *)v200 layoutItem];
+    centerYAnchor3 = [layoutItem13 centerYAnchor];
+    safeAreaLayoutGuide5 = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide5 centerYAnchor];
+    v145 = v147 = centerYAnchor3;
+    v144 = [centerYAnchor3 constraintEqualToAnchor:?];
     v204[9] = v144;
-    v143 = [(STUIStatusBarRegion *)v199 layoutItem];
-    v68 = [v143 centerYAnchor];
-    v141 = [v4 safeAreaLayoutGuide];
-    [v141 centerYAnchor];
-    v140 = v142 = v68;
-    v139 = [v68 constraintEqualToAnchor:?];
-    v204[10] = v139;
-    v69 = [(STUIStatusBarRegion *)v199 layoutItem];
-    v70 = [v69 heightAnchor];
-    v71 = [v70 constraintEqualToConstant:45.0];
-    v204[11] = v71;
-    v72 = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self driverSideConstraint];
-    v204[12] = v72;
-    v73 = [(STUIStatusBarRegion *)v199 layoutItem];
-    v74 = [v73 leftAnchor];
-    v75 = [v198 rightAnchor];
-    v76 = [v74 constraintEqualToAnchor:v75];
+    layoutItem14 = [(STUIStatusBarRegion *)v199 layoutItem];
+    centerYAnchor4 = [layoutItem14 centerYAnchor];
+    safeAreaLayoutGuide6 = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide6 centerYAnchor];
+    v140 = layoutItem20 = centerYAnchor4;
+    layoutItem21 = [centerYAnchor4 constraintEqualToAnchor:?];
+    v204[10] = layoutItem21;
+    layoutItem15 = [(STUIStatusBarRegion *)v199 layoutItem];
+    heightAnchor3 = [layoutItem15 heightAnchor];
+    centerYAnchor8 = [heightAnchor3 constraintEqualToConstant:45.0];
+    v204[11] = centerYAnchor8;
+    driverSideConstraint = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self driverSideConstraint];
+    v204[12] = driverSideConstraint;
+    layoutItem16 = [(STUIStatusBarRegion *)v199 layoutItem];
+    leftAnchor7 = [layoutItem16 leftAnchor];
+    rightAnchor6 = [v198 rightAnchor];
+    v76 = [leftAnchor7 constraintEqualToAnchor:rightAnchor6];
     v204[13] = v76;
     v77 = v204;
   }
 
   else
   {
-    v78 = [(STUIStatusBarRegion *)v199 layoutItem];
-    v79 = [v78 leftAnchor];
-    v80 = [(STUIStatusBarRegion *)v6 layoutItem];
-    v81 = [v80 rightAnchor];
-    v82 = [v79 constraintEqualToAnchor:v81 constant:0.0];
+    layoutItem17 = [(STUIStatusBarRegion *)v199 layoutItem];
+    leftAnchor8 = [layoutItem17 leftAnchor];
+    layoutItem18 = [(STUIStatusBarRegion *)v6 layoutItem];
+    rightAnchor7 = [layoutItem18 rightAnchor];
+    v82 = [leftAnchor8 constraintEqualToAnchor:rightAnchor7 constant:0.0];
     [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self setDriverSideConstraint:v82];
 
-    v186 = [(STUIStatusBarRegion *)v6 layoutItem];
-    v83 = [v186 centerYAnchor];
-    v184 = [v4 safeAreaLayoutGuide];
-    [v184 centerYAnchor];
-    v183 = v185 = v83;
-    v182 = [v83 constraintEqualToAnchor:?];
+    layoutItem3 = [(STUIStatusBarRegion *)v6 layoutItem];
+    centerYAnchor5 = [layoutItem3 centerYAnchor];
+    safeAreaLayoutGuide = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide centerYAnchor];
+    v183 = v185 = centerYAnchor5;
+    v182 = [centerYAnchor5 constraintEqualToAnchor:?];
     v203[0] = v182;
-    v181 = [(STUIStatusBarRegion *)v6 layoutItem];
-    v180 = [v181 heightAnchor];
-    v179 = [v180 constraintEqualToConstant:18.0];
+    layoutItem4 = [(STUIStatusBarRegion *)v6 layoutItem];
+    heightAnchor = [layoutItem4 heightAnchor];
+    v179 = [heightAnchor constraintEqualToConstant:18.0];
     v203[1] = v179;
-    v178 = [(STUIStatusBarRegion *)v6 layoutItem];
-    v177 = [v178 widthAnchor];
-    v176 = [v177 constraintEqualToConstant:39.0];
+    layoutItem5 = [(STUIStatusBarRegion *)v6 layoutItem];
+    widthAnchor2 = [layoutItem5 widthAnchor];
+    v176 = [widthAnchor2 constraintEqualToConstant:39.0];
     v203[2] = v176;
-    v175 = [(STUIStatusBarRegion *)v6 layoutItem];
-    v84 = [v175 leftAnchor];
-    v173 = [v4 safeAreaLayoutGuide];
-    [v173 leftAnchor];
-    v172 = v174 = v84;
-    v171 = [v84 constraintEqualToAnchor:8.0 constant:?];
+    layoutItem6 = [(STUIStatusBarRegion *)v6 layoutItem];
+    leftAnchor9 = [layoutItem6 leftAnchor];
+    safeAreaLayoutGuide2 = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide2 leftAnchor];
+    v172 = v174 = leftAnchor9;
+    v171 = [leftAnchor9 constraintEqualToAnchor:8.0 constant:?];
     v203[3] = v171;
-    v170 = [(STUIStatusBarRegion *)v201 layoutItem];
-    v85 = [v170 centerYAnchor];
-    v168 = [v4 safeAreaLayoutGuide];
-    [v168 centerYAnchor];
-    v167 = v169 = v85;
-    v166 = [v85 constraintEqualToAnchor:?];
+    layoutItem7 = [(STUIStatusBarRegion *)v201 layoutItem];
+    centerYAnchor6 = [layoutItem7 centerYAnchor];
+    safeAreaLayoutGuide3 = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide3 centerYAnchor];
+    v167 = v169 = centerYAnchor6;
+    v166 = [centerYAnchor6 constraintEqualToAnchor:?];
     v203[4] = v166;
-    v165 = [(STUIStatusBarRegion *)v201 layoutItem];
-    v86 = [v165 leftAnchor];
-    v163 = [(STUIStatusBarRegion *)v6 layoutItem];
-    [v163 rightAnchor];
-    v162 = v164 = v86;
-    v161 = [v86 constraintEqualToAnchor:4.0 constant:?];
+    layoutItem8 = [(STUIStatusBarRegion *)v201 layoutItem];
+    leftAnchor10 = [layoutItem8 leftAnchor];
+    layoutItem9 = [(STUIStatusBarRegion *)v6 layoutItem];
+    [layoutItem9 rightAnchor];
+    v162 = v164 = leftAnchor10;
+    v161 = [leftAnchor10 constraintEqualToAnchor:4.0 constant:?];
     v203[5] = v161;
-    v160 = [(STUIStatusBarRegion *)v200 layoutItem];
-    v159 = [v160 heightAnchor];
-    v158 = [v159 constraintEqualToConstant:45.0];
+    layoutItem10 = [(STUIStatusBarRegion *)v200 layoutItem];
+    heightAnchor2 = [layoutItem10 heightAnchor];
+    v158 = [heightAnchor2 constraintEqualToConstant:45.0];
     v203[6] = v158;
-    v157 = [(STUIStatusBarRegion *)v200 layoutItem];
-    v87 = [v157 leftAnchor];
-    v155 = [v198 rightAnchor];
-    v156 = v87;
-    v154 = [v87 constraintGreaterThanOrEqualToAnchor:v155];
+    layoutItem11 = [(STUIStatusBarRegion *)v200 layoutItem];
+    leftAnchor11 = [layoutItem11 leftAnchor];
+    safeAreaLayoutGuide4 = [v198 rightAnchor];
+    v156 = leftAnchor11;
+    v154 = [leftAnchor11 constraintGreaterThanOrEqualToAnchor:safeAreaLayoutGuide4];
     v203[7] = v154;
-    v153 = [(STUIStatusBarRegion *)v200 layoutItem];
-    v88 = [v153 rightAnchor];
-    v151 = [v4 safeAreaLayoutGuide];
-    [v151 rightAnchor];
-    v150 = v152 = v88;
-    v149 = [v88 constraintEqualToAnchor:-10.0 constant:?];
+    layoutItem19 = [(STUIStatusBarRegion *)v200 layoutItem];
+    rightAnchor8 = [layoutItem19 rightAnchor];
+    safeAreaLayoutGuide7 = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide7 rightAnchor];
+    leftAnchor6 = layoutItem12 = rightAnchor8;
+    v149 = [rightAnchor8 constraintEqualToAnchor:-10.0 constant:?];
     v203[8] = v149;
-    v148 = [(STUIStatusBarRegion *)v200 layoutItem];
-    v89 = [v148 centerYAnchor];
-    v146 = [v4 safeAreaLayoutGuide];
-    [v146 centerYAnchor];
-    v145 = v147 = v89;
-    v144 = [v89 constraintEqualToAnchor:?];
+    layoutItem13 = [(STUIStatusBarRegion *)v200 layoutItem];
+    centerYAnchor7 = [layoutItem13 centerYAnchor];
+    safeAreaLayoutGuide5 = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide5 centerYAnchor];
+    v145 = v147 = centerYAnchor7;
+    v144 = [centerYAnchor7 constraintEqualToAnchor:?];
     v203[9] = v144;
-    v143 = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self driverSideConstraint];
-    v203[10] = v143;
-    v142 = [(STUIStatusBarRegion *)v199 layoutItem];
-    v141 = [v142 heightAnchor];
-    v140 = [v141 constraintEqualToConstant:45.0];
+    layoutItem14 = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self driverSideConstraint];
+    v203[10] = layoutItem14;
+    layoutItem20 = [(STUIStatusBarRegion *)v199 layoutItem];
+    safeAreaLayoutGuide6 = [layoutItem20 heightAnchor];
+    v140 = [safeAreaLayoutGuide6 constraintEqualToConstant:45.0];
     v203[11] = v140;
-    v139 = [(STUIStatusBarRegion *)v199 layoutItem];
-    v69 = [v139 centerYAnchor];
-    v70 = [v4 safeAreaLayoutGuide];
-    v71 = [v70 centerYAnchor];
-    v72 = [v69 constraintEqualToAnchor:v71];
-    v203[12] = v72;
-    v73 = [(STUIStatusBarRegion *)v199 layoutItem];
-    v74 = [v73 rightAnchor];
-    v75 = [v198 leftAnchor];
-    v76 = [v74 constraintEqualToAnchor:v75];
+    layoutItem21 = [(STUIStatusBarRegion *)v199 layoutItem];
+    layoutItem15 = [layoutItem21 centerYAnchor];
+    heightAnchor3 = [viewCopy safeAreaLayoutGuide];
+    centerYAnchor8 = [heightAnchor3 centerYAnchor];
+    driverSideConstraint = [layoutItem15 constraintEqualToAnchor:centerYAnchor8];
+    v203[12] = driverSideConstraint;
+    layoutItem16 = [(STUIStatusBarRegion *)v199 layoutItem];
+    leftAnchor7 = [layoutItem16 rightAnchor];
+    rightAnchor6 = [v198 leftAnchor];
+    v76 = [leftAnchor7 constraintEqualToAnchor:rightAnchor6];
     v203[13] = v76;
     v77 = v203;
   }
@@ -329,79 +329,79 @@
   v90 = [MEMORY[0x277CBEA60] arrayWithObjects:v77 count:14];
   [v47 addObjectsFromArray:v90];
 
-  v91 = [(STUIStatusBarRegion *)v194 layoutItem];
-  v92 = [v91 topAnchor];
-  v93 = [(STUIStatusBarRegion *)v196 layoutItem];
-  v94 = [v93 topAnchor];
-  v95 = [v92 constraintEqualToAnchor:v94];
+  layoutItem22 = [(STUIStatusBarRegion *)v194 layoutItem];
+  topAnchor3 = [layoutItem22 topAnchor];
+  layoutItem23 = [(STUIStatusBarRegion *)v196 layoutItem];
+  topAnchor4 = [layoutItem23 topAnchor];
+  v95 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v47 addObject:v95];
 
-  v96 = [(STUIStatusBarRegion *)v194 layoutItem];
-  v97 = [v96 bottomAnchor];
-  v98 = [(STUIStatusBarRegion *)v196 layoutItem];
-  v99 = [v98 bottomAnchor];
-  v100 = [v97 constraintEqualToAnchor:v99];
+  layoutItem24 = [(STUIStatusBarRegion *)v194 layoutItem];
+  bottomAnchor3 = [layoutItem24 bottomAnchor];
+  layoutItem25 = [(STUIStatusBarRegion *)v196 layoutItem];
+  bottomAnchor4 = [layoutItem25 bottomAnchor];
+  v100 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   [v47 addObject:v100];
 
-  v101 = [(STUIStatusBarRegion *)v194 layoutItem];
-  v102 = [v101 leadingAnchor];
-  v103 = [(STUIStatusBarRegion *)v196 layoutItem];
-  v104 = [v103 leadingAnchor];
-  v105 = [v102 constraintEqualToAnchor:v104];
+  layoutItem26 = [(STUIStatusBarRegion *)v194 layoutItem];
+  leadingAnchor = [layoutItem26 leadingAnchor];
+  layoutItem27 = [(STUIStatusBarRegion *)v196 layoutItem];
+  leadingAnchor2 = [layoutItem27 leadingAnchor];
+  v105 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v47 addObject:v105];
 
-  v106 = [(STUIStatusBarRegion *)v194 layoutItem];
-  v107 = [v106 trailingAnchor];
-  v108 = [(STUIStatusBarRegion *)v196 layoutItem];
-  v109 = [v108 trailingAnchor];
-  v110 = [v107 constraintEqualToAnchor:v109];
+  layoutItem28 = [(STUIStatusBarRegion *)v194 layoutItem];
+  trailingAnchor = [layoutItem28 trailingAnchor];
+  layoutItem29 = [(STUIStatusBarRegion *)v196 layoutItem];
+  trailingAnchor2 = [layoutItem29 trailingAnchor];
+  v110 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v47 addObject:v110];
 
-  v111 = [(STUIStatusBarRegion *)v192 layoutItem];
-  v112 = [v111 topAnchor];
-  v113 = [(STUIStatusBarRegion *)v194 layoutItem];
-  v114 = [v113 topAnchor];
-  v115 = [v112 constraintEqualToAnchor:v114];
+  layoutItem30 = [(STUIStatusBarRegion *)v192 layoutItem];
+  topAnchor5 = [layoutItem30 topAnchor];
+  layoutItem31 = [(STUIStatusBarRegion *)v194 layoutItem];
+  topAnchor6 = [layoutItem31 topAnchor];
+  v115 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   [v47 addObject:v115];
 
-  v116 = [(STUIStatusBarRegion *)v192 layoutItem];
-  v117 = [v116 bottomAnchor];
-  v118 = [(STUIStatusBarRegion *)v194 layoutItem];
-  v119 = [v118 bottomAnchor];
-  v120 = [v117 constraintEqualToAnchor:v119];
+  layoutItem32 = [(STUIStatusBarRegion *)v192 layoutItem];
+  bottomAnchor5 = [layoutItem32 bottomAnchor];
+  layoutItem33 = [(STUIStatusBarRegion *)v194 layoutItem];
+  bottomAnchor6 = [layoutItem33 bottomAnchor];
+  v120 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   [v47 addObject:v120];
 
-  v121 = [(STUIStatusBarRegion *)v192 layoutItem];
-  v122 = [v121 leadingAnchor];
-  v123 = [(STUIStatusBarRegion *)v194 layoutItem];
-  v124 = [v123 leadingAnchor];
-  v125 = [v122 constraintEqualToAnchor:v124];
+  layoutItem34 = [(STUIStatusBarRegion *)v192 layoutItem];
+  leadingAnchor3 = [layoutItem34 leadingAnchor];
+  layoutItem35 = [(STUIStatusBarRegion *)v194 layoutItem];
+  leadingAnchor4 = [layoutItem35 leadingAnchor];
+  v125 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v47 addObject:v125];
 
-  v126 = [(STUIStatusBarRegion *)v192 layoutItem];
-  v127 = [v126 trailingAnchor];
-  v128 = [(STUIStatusBarRegion *)v194 layoutItem];
-  v129 = [v128 trailingAnchor];
-  v130 = [v127 constraintEqualToAnchor:v129];
+  layoutItem36 = [(STUIStatusBarRegion *)v192 layoutItem];
+  trailingAnchor3 = [layoutItem36 trailingAnchor];
+  layoutItem37 = [(STUIStatusBarRegion *)v194 layoutItem];
+  trailingAnchor4 = [layoutItem37 trailingAnchor];
+  v130 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v47 addObject:v130];
 
-  v131 = [(STUIStatusBarRegion *)v196 layoutItem];
-  [v197 _ui_addSubLayoutItem:v131];
+  layoutItem38 = [(STUIStatusBarRegion *)v196 layoutItem];
+  [v197 _ui_addSubLayoutItem:layoutItem38];
 
-  v132 = [(STUIStatusBarRegion *)v201 layoutItem];
-  [v197 _ui_addSubLayoutItem:v132];
+  layoutItem39 = [(STUIStatusBarRegion *)v201 layoutItem];
+  [v197 _ui_addSubLayoutItem:layoutItem39];
 
-  v133 = [(STUIStatusBarRegion *)v200 layoutItem];
-  [v197 _ui_addSubLayoutItem:v133];
+  layoutItem40 = [(STUIStatusBarRegion *)v200 layoutItem];
+  [v197 _ui_addSubLayoutItem:layoutItem40];
 
-  v134 = [(STUIStatusBarRegion *)v199 layoutItem];
-  [v197 _ui_addSubLayoutItem:v134];
+  layoutItem41 = [(STUIStatusBarRegion *)v199 layoutItem];
+  [v197 _ui_addSubLayoutItem:layoutItem41];
 
-  v135 = [(STUIStatusBarRegion *)v194 layoutItem];
-  [v197 _ui_addSubLayoutItem:v135];
+  layoutItem42 = [(STUIStatusBarRegion *)v194 layoutItem];
+  [v197 _ui_addSubLayoutItem:layoutItem42];
 
-  v136 = [(STUIStatusBarRegion *)v192 layoutItem];
-  [v197 _ui_addSubLayoutItem:v136];
+  layoutItem43 = [(STUIStatusBarRegion *)v192 layoutItem];
+  [v197 _ui_addSubLayoutItem:layoutItem43];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v47];
   v202[0] = v192;
@@ -415,14 +415,14 @@
   return v137;
 }
 
-- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)a3
+- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)identifier
 {
   v103[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   orderedDisplayItemPlacements = self->_orderedDisplayItemPlacements;
   if (!orderedDisplayItemPlacements)
   {
-    v65 = v4;
+    v65 = identifierCopy;
     v6 = +[STUIStatusBarTimeItem shortTimeDisplayIdentifier];
     v7 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v6 priority:500];
 
@@ -443,8 +443,8 @@
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v102 count:1];
     v16 = [v14 excludingPlacements:v15];
 
-    v17 = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
-    [v17 setPillIconPlacement:v16];
+    pillRegionCoordinator = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+    [pillRegionCoordinator setPillIconPlacement:v16];
 
     v18 = +[(STUIStatusBarBackgroundActivityItem *)STUIStatusBarPillBackgroundActivityItem];
     v19 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v18 priority:574];
@@ -512,11 +512,11 @@
     v46 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v45 priority:150];
 
     v47 = v64;
-    v48 = [(STUIStatusBarVisualProvider_CarPlay *)v64 statusBar];
-    v49 = [v48 targetScreen];
-    v50 = [v49 _isRightHandDrive];
+    statusBar = [(STUIStatusBarVisualProvider_CarPlay *)v64 statusBar];
+    targetScreen = [statusBar targetScreen];
+    _isRightHandDrive = [targetScreen _isRightHandDrive];
 
-    if (v50)
+    if (_isRightHandDrive)
     {
       v95[0] = @"time";
       v94 = v80;
@@ -607,67 +607,67 @@
     v47->_orderedDisplayItemPlacements = v60;
 
     orderedDisplayItemPlacements = v47->_orderedDisplayItemPlacements;
-    v4 = v65;
+    identifierCopy = v65;
   }
 
-  v62 = [(NSDictionary *)orderedDisplayItemPlacements objectForKeyedSubscript:v4];
+  v62 = [(NSDictionary *)orderedDisplayItemPlacements objectForKeyedSubscript:identifierCopy];
 
   return v62;
 }
 
-- (void)avoidanceFrameUpdatedFromFrame:(CGRect)a3 withAnimationSettings:(id)a4 options:(unint64_t)a5
+- (void)avoidanceFrameUpdatedFromFrame:(CGRect)frame withAnimationSettings:(id)settings options:(unint64_t)options
 {
-  v6 = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar:a4];
+  v6 = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar:settings];
   [v6 avoidanceFrame];
   [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self _updateDockGuideConstraintsForAvoidanceFrame:?];
 }
 
-- (void)_updateDockGuideConstraintsForAvoidanceFrame:(CGRect)a3
+- (void)_updateDockGuideConstraintsForAvoidanceFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectEqualToRect(a3, *MEMORY[0x277CBF3A0]))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (CGRectEqualToRect(frame, *MEMORY[0x277CBF3A0]))
   {
-    v8 = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideLeftConstraint];
-    [v8 setActive:0];
+    dockGuideLeftConstraint = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideLeftConstraint];
+    [dockGuideLeftConstraint setActive:0];
 
-    v9 = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideRightConstraint];
-    [v9 setActive:0];
+    dockGuideRightConstraint = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideRightConstraint];
+    [dockGuideRightConstraint setActive:0];
 
-    v10 = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideWidthConstraint];
-    [v10 setActive:1];
+    dockGuideWidthConstraint = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideWidthConstraint];
+    [dockGuideWidthConstraint setActive:1];
 
     [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideCenterXConstraint];
   }
 
   else
   {
-    v11 = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideWidthConstraint];
-    [v11 setActive:0];
+    dockGuideWidthConstraint2 = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideWidthConstraint];
+    [dockGuideWidthConstraint2 setActive:0];
 
-    v12 = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideCenterXConstraint];
-    [v12 setActive:0];
+    dockGuideCenterXConstraint = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideCenterXConstraint];
+    [dockGuideCenterXConstraint setActive:0];
 
     v20.origin.x = x;
     v20.origin.y = y;
     v20.size.width = width;
     v20.size.height = height;
     MinX = CGRectGetMinX(v20);
-    v14 = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideLeftConstraint];
-    [v14 setConstant:MinX];
+    dockGuideLeftConstraint2 = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideLeftConstraint];
+    [dockGuideLeftConstraint2 setConstant:MinX];
 
-    v15 = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideLeftConstraint];
-    [v15 setActive:1];
+    dockGuideLeftConstraint3 = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideLeftConstraint];
+    [dockGuideLeftConstraint3 setActive:1];
 
     v21.origin.x = x;
     v21.origin.y = y;
     v21.size.width = width;
     v21.size.height = height;
     MaxX = CGRectGetMaxX(v21);
-    v17 = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideRightConstraint];
-    [v17 setConstant:MaxX];
+    dockGuideRightConstraint2 = [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideRightConstraint];
+    [dockGuideRightConstraint2 setConstant:MaxX];
 
     [(STUIStatusBarVisualProvider_CarPlayHorizontal *)self dockGuideRightConstraint];
   }

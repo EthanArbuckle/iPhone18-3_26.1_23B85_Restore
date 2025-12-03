@@ -1,14 +1,14 @@
 @interface MediaPlayerViewController.Coordinator
 - (_TtCV13AudioUIPluginP33_20A183E58FC9C8C577EBBC3EDCE2267625MediaPlayerViewController11Coordinator)init;
-- (void)nowPlayingViewController:(id)a3 didChangeSizeWithAnimations:(id)a4 completion:(id)a5;
+- (void)nowPlayingViewController:(id)controller didChangeSizeWithAnimations:(id)animations completion:(id)completion;
 @end
 
 @implementation MediaPlayerViewController.Coordinator
 
-- (void)nowPlayingViewController:(id)a3 didChangeSizeWithAnimations:(id)a4 completion:(id)a5
+- (void)nowPlayingViewController:(id)controller didChangeSizeWithAnimations:(id)animations completion:(id)completion
 {
-  v8 = _Block_copy(a4);
-  v9 = _Block_copy(a5);
+  v8 = _Block_copy(animations);
+  v9 = _Block_copy(completion);
   v10 = v9;
   if (v8)
   {
@@ -32,9 +32,9 @@ LABEL_3:
   }
 
 LABEL_5:
-  v12 = a3;
-  v13 = self;
-  sub_DBC4(v12, v8, v11, v10);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_DBC4(controllerCopy, v8, v11, v10);
   sub_F0C8(v10);
   sub_F0C8(v8);
 }

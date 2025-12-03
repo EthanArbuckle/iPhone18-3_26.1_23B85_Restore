@@ -1,33 +1,33 @@
 @interface AFUIServiceDelegate
 - (AFUIServiceDelegate)init;
-- (BOOL)_checkAndSendQueuedTextOperationsIfNecessary:(id)a3;
-- (BOOL)_shouldAutomaticallyDisplayPanelForDocumentTraits:(id)a3;
-- (BOOL)_shouldDisplayPanelForSession:(id)a3 documentTraits:(id)a4;
-- (id)_inputIdentifierForSession:(id)a3;
-- (id)_sessionForUUID:(id)a3;
-- (void)_displayPanelForSession:(id)a3 traits:(id)a4;
-- (void)_performBlockOnInternalQueueForUUID:(id)a3 block:(id)a4;
-- (void)_scheduleExpirationOfQueuedOperations:(id)a3;
-- (void)_sendOrQueueTextOperations:(id)a3 session:(id)a4 withInputIdentifier:(id)a5;
-- (void)_sendTextOperations:(id)a3 toSession:(id)a4 completionHandler:(id)a5;
-- (void)_tearDownPanelForSessionUUID:(id)a3;
-- (void)_tearDownPanelsExceptForSessionUUID:(id)a3;
-- (void)authenticationDidEndForSessionUUID:(id)a3 completion:(id)a4;
-- (void)authenticationWillBeginForSessionUUID:(id)a3 completion:(id)a4;
-- (void)contactsUIDidEndForSessionUUID:(id)a3 completion:(id)a4;
-- (void)contactsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4;
-- (void)creditCardsUIDidEndForSessionUUID:(id)a3 completion:(id)a4;
-- (void)creditCardsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4;
-- (void)inputSystemService:(id)a3 inputSession:(id)a4 documentStateDidChange:(id)a5;
-- (void)inputSystemService:(id)a3 inputSession:(id)a4 performInputOperation:(id)a5;
-- (void)inputSystemService:(id)a3 inputSessionDidBegin:(id)a4 options:(id)a5;
-- (void)inputSystemService:(id)a3 inputSessionDidDie:(id)a4;
-- (void)inputSystemService:(id)a3 inputSessionDidEnd:(id)a4 options:(id)a5;
-- (void)inputSystemService:(id)a3 inputSessionDidPause:(id)a4 withReason:(id)a5;
-- (void)inputSystemService:(id)a3 inputSessionDidUnpause:(id)a4 withReason:(id)a5;
-- (void)passwordsUIDidEndForSessionUUID:(id)a3 completion:(id)a4;
-- (void)passwordsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4;
-- (void)setIsMenuPresented:(BOOL)a3 forSessionUUID:(id)a4;
+- (BOOL)_checkAndSendQueuedTextOperationsIfNecessary:(id)necessary;
+- (BOOL)_shouldAutomaticallyDisplayPanelForDocumentTraits:(id)traits;
+- (BOOL)_shouldDisplayPanelForSession:(id)session documentTraits:(id)traits;
+- (id)_inputIdentifierForSession:(id)session;
+- (id)_sessionForUUID:(id)d;
+- (void)_displayPanelForSession:(id)session traits:(id)traits;
+- (void)_performBlockOnInternalQueueForUUID:(id)d block:(id)block;
+- (void)_scheduleExpirationOfQueuedOperations:(id)operations;
+- (void)_sendOrQueueTextOperations:(id)operations session:(id)session withInputIdentifier:(id)identifier;
+- (void)_sendTextOperations:(id)operations toSession:(id)session completionHandler:(id)handler;
+- (void)_tearDownPanelForSessionUUID:(id)d;
+- (void)_tearDownPanelsExceptForSessionUUID:(id)d;
+- (void)authenticationDidEndForSessionUUID:(id)d completion:(id)completion;
+- (void)authenticationWillBeginForSessionUUID:(id)d completion:(id)completion;
+- (void)contactsUIDidEndForSessionUUID:(id)d completion:(id)completion;
+- (void)contactsUIWillBeginForSessionUUID:(id)d completion:(id)completion;
+- (void)creditCardsUIDidEndForSessionUUID:(id)d completion:(id)completion;
+- (void)creditCardsUIWillBeginForSessionUUID:(id)d completion:(id)completion;
+- (void)inputSystemService:(id)service inputSession:(id)session documentStateDidChange:(id)change;
+- (void)inputSystemService:(id)service inputSession:(id)session performInputOperation:(id)operation;
+- (void)inputSystemService:(id)service inputSessionDidBegin:(id)begin options:(id)options;
+- (void)inputSystemService:(id)service inputSessionDidDie:(id)die;
+- (void)inputSystemService:(id)service inputSessionDidEnd:(id)end options:(id)options;
+- (void)inputSystemService:(id)service inputSessionDidPause:(id)pause withReason:(id)reason;
+- (void)inputSystemService:(id)service inputSessionDidUnpause:(id)unpause withReason:(id)reason;
+- (void)passwordsUIDidEndForSessionUUID:(id)d completion:(id)completion;
+- (void)passwordsUIWillBeginForSessionUUID:(id)d completion:(id)completion;
+- (void)setIsMenuPresented:(BOOL)presented forSessionUUID:(id)d;
 @end
 
 @implementation AFUIServiceDelegate
@@ -55,11 +55,11 @@
   return v2;
 }
 
-- (void)_tearDownPanelForSessionUUID:(id)a3
+- (void)_tearDownPanelForSessionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(NSLock *)self->_lock lock];
-  v5 = [(NSMutableDictionary *)self->_sessionPanels objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_sessionPanels objectForKey:dCopy];
   v6 = v5;
   if (v5)
   {
@@ -69,17 +69,17 @@
     block[3] = &unk_1E84247B0;
     v8 = v5;
     dispatch_async(MEMORY[0x1E69E96A0], block);
-    [(NSMutableDictionary *)self->_sessionPanels removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_sessionPanels removeObjectForKey:dCopy];
   }
 
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)_tearDownPanelsExceptForSessionUUID:(id)a3
+- (void)_tearDownPanelsExceptForSessionUUID:(id)d
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  dCopy = d;
+  array = [MEMORY[0x1E695DF70] array];
   [(NSLock *)self->_lock lock];
   v28 = 0u;
   v29 = 0u;
@@ -101,7 +101,7 @@
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        if (([v11 isEqual:v4] & 1) == 0)
+        if (([v11 isEqual:dCopy] & 1) == 0)
         {
           v12 = [(NSMutableDictionary *)self->_sessionPanels objectForKeyedSubscript:v11];
           block[0] = MEMORY[0x1E69E9820];
@@ -111,7 +111,7 @@
           v25 = v12;
           v13 = v12;
           dispatch_async(MEMORY[0x1E69E96A0], block);
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -125,7 +125,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v14 = v5;
+  v14 = array;
   v15 = [v14 countByEnumeratingWithState:&v20 objects:v30 count:16];
   if (v15)
   {
@@ -153,23 +153,23 @@
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_displayPanelForSession:(id)a3 traits:(id)a4
+- (void)_displayPanelForSession:(id)session traits:(id)traits
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  sessionCopy = session;
+  traitsCopy = traits;
+  if (!traitsCopy)
   {
-    v7 = [v6 documentTraits];
+    traitsCopy = [sessionCopy documentTraits];
   }
 
-  v8 = [(AFUIServiceDelegate *)self _shouldDisplayPanelForSession:v6 documentTraits:v7];
-  v9 = [v6 uuid];
+  v8 = [(AFUIServiceDelegate *)self _shouldDisplayPanelForSession:sessionCopy documentTraits:traitsCopy];
+  uuid = [sessionCopy uuid];
   if (v8)
   {
-    v10 = -[AFUIServiceDelegate _setupPanelForSessionUUID:documentPid:](self, "_setupPanelForSessionUUID:documentPid:", v9, [v7 processId]);
+    v10 = -[AFUIServiceDelegate _setupPanelForSessionUUID:documentPid:](self, "_setupPanelForSessionUUID:documentPid:", uuid, [traitsCopy processId]);
 
-    v11 = [(AFUIServiceDelegate *)self _inputIdentifierForSession:v6];
-    v12 = [v6 internalQueue];
+    v11 = [(AFUIServiceDelegate *)self _inputIdentifierForSession:sessionCopy];
+    internalQueue = [sessionCopy internalQueue];
     objc_initWeak(&location, self);
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -178,13 +178,13 @@
     v16[4] = self;
     v17 = v11;
     v18 = v10;
-    v19 = v7;
-    v20 = v6;
+    v19 = traitsCopy;
+    v20 = sessionCopy;
     v13 = v10;
     v14 = v11;
     objc_copyWeak(&v22, &location);
-    v21 = v12;
-    v15 = v12;
+    v21 = internalQueue;
+    v15 = internalQueue;
     dispatch_async(MEMORY[0x1E69E96A0], v16);
 
     objc_destroyWeak(&v22);
@@ -193,7 +193,7 @@
 
   else
   {
-    [(AFUIServiceDelegate *)self _tearDownPanelForSessionUUID:v9];
+    [(AFUIServiceDelegate *)self _tearDownPanelForSessionUUID:uuid];
   }
 }
 
@@ -246,20 +246,20 @@ void __54__AFUIServiceDelegate__displayPanelForSession_traits___block_invoke_3(u
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (BOOL)_shouldDisplayPanelForSession:(id)a3 documentTraits:(id)a4
+- (BOOL)_shouldDisplayPanelForSession:(id)session documentTraits:(id)traits
 {
-  v4 = a4;
-  if (([v4 _isExplicitAutoFillInvocation] & 1) == 0)
+  traitsCopy = traits;
+  if (([traitsCopy _isExplicitAutoFillInvocation] & 1) == 0)
   {
-    v6 = [v4 bundleId];
-    if (v6)
+    bundleId = [traitsCopy bundleId];
+    if (bundleId)
     {
       if (isAutoFillPanelAlwaysBlockedForBundleID_onceToken != -1)
       {
         [AFUIServiceDelegate _shouldDisplayPanelForSession:documentTraits:];
       }
 
-      if ([isAutoFillPanelAlwaysBlockedForBundleID_blockedBundleIDs containsObject:v6])
+      if ([isAutoFillPanelAlwaysBlockedForBundleID_blockedBundleIDs containsObject:bundleId])
       {
         v5 = 0;
 LABEL_13:
@@ -268,7 +268,7 @@ LABEL_13:
       }
 
       v7 = isAutoFillPanelAlwaysAllowedForBundleID_onceToken;
-      v8 = v6;
+      v8 = bundleId;
       if (v7 != -1)
       {
         [AFUIServiceDelegate _shouldDisplayPanelForSession:documentTraits:];
@@ -283,8 +283,8 @@ LABEL_13:
       }
     }
 
-    v10 = [MEMORY[0x1E69DC938] currentDevice];
-    [v10 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    [currentDevice userInterfaceIdiom];
 
     v5 = _os_feature_enabled_impl();
     goto LABEL_13;
@@ -296,13 +296,13 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)_shouldAutomaticallyDisplayPanelForDocumentTraits:(id)a3
+- (BOOL)_shouldAutomaticallyDisplayPanelForDocumentTraits:(id)traits
 {
-  v3 = a3;
-  if ([v3 autofillMode] && (objc_msgSend(v3, "_isExplicitAutoFillInvocation") & 1) == 0)
+  traitsCopy = traits;
+  if ([traitsCopy autofillMode] && (objc_msgSend(traitsCopy, "_isExplicitAutoFillInvocation") & 1) == 0)
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    [currentDevice userInterfaceIdiom];
 
     v4 = _os_feature_enabled_impl();
   }
@@ -315,9 +315,9 @@ LABEL_14:
   return v4;
 }
 
-- (void)_scheduleExpirationOfQueuedOperations:(id)a3
+- (void)_scheduleExpirationOfQueuedOperations:(id)operations
 {
-  v4 = a3;
+  operationsCopy = operations;
   objc_initWeak(&location, self);
   v5 = dispatch_time(0, 20000000000);
   v6 = dispatch_get_global_queue(17, 0);
@@ -326,8 +326,8 @@ LABEL_14:
   block[2] = __61__AFUIServiceDelegate__scheduleExpirationOfQueuedOperations___block_invoke;
   block[3] = &unk_1E8424BD8;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v7 = v4;
+  v9 = operationsCopy;
+  v7 = operationsCopy;
   dispatch_after(v5, v6, block);
 
   objc_destroyWeak(&v10);
@@ -360,53 +360,53 @@ void __61__AFUIServiceDelegate__scheduleExpirationOfQueuedOperations___block_inv
   }
 }
 
-- (void)_sendOrQueueTextOperations:(id)a3 session:(id)a4 withInputIdentifier:(id)a5
+- (void)_sendOrQueueTextOperations:(id)operations session:(id)session withInputIdentifier:(id)identifier
 {
-  v16 = a4;
+  sessionCopy = session;
   lock = self->_lock;
-  v8 = a3;
+  operationsCopy = operations;
   [(NSLock *)lock lock];
-  v9 = [(AFUIServiceDelegate *)self currentSessions];
-  v10 = [v9 containsObject:v16];
+  currentSessions = [(AFUIServiceDelegate *)self currentSessions];
+  v10 = [currentSessions containsObject:sessionCopy];
 
   [(NSLock *)self->_lock unlock];
-  v11 = [v16 documentTraits];
-  v12 = [v11 appId];
-  v13 = [v12 copy];
+  documentTraits = [sessionCopy documentTraits];
+  appId = [documentTraits appId];
+  v13 = [appId copy];
 
-  v14 = [v16 documentTraits];
-  v15 = [v14 processId];
+  documentTraits2 = [sessionCopy documentTraits];
+  processId = [documentTraits2 processId];
 
   if (v10)
   {
-    [(AFUIServiceDelegate *)self _sendTextOperations:v8 toSession:v16 completionHandler:0];
+    [(AFUIServiceDelegate *)self _sendTextOperations:operationsCopy toSession:sessionCopy completionHandler:0];
   }
 
   else
   {
-    [(AFUIServiceDelegate *)self _queueTextOperations:v8 forSecureAppID:v13 processID:v15 completionHandler:0];
+    [(AFUIServiceDelegate *)self _queueTextOperations:operationsCopy forSecureAppID:v13 processID:processId completionHandler:0];
   }
 }
 
-- (id)_inputIdentifierForSession:(id)a3
+- (id)_inputIdentifierForSession:(id)session
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 documentTraits], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  sessionCopy = session;
+  v4 = sessionCopy;
+  if (sessionCopy && ([sessionCopy documentTraits], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [v4 documentTraits];
-    v7 = [v6 contextID];
+    documentTraits = [v4 documentTraits];
+    contextID = [documentTraits contextID];
 
-    if (v7)
+    if (contextID)
     {
       v8 = MEMORY[0x1E696AD98];
-      v9 = [v4 documentTraits];
-      v10 = [v9 processId];
-      v11 = [v4 documentTraits];
-      v12 = [v11 contextID] ^ v10;
-      v13 = [v4 documentTraits];
-      v14 = [v13 bundleId];
-      v15 = [v8 numberWithUnsignedInteger:{objc_msgSend(v14, "hash") ^ v12}];
+      documentTraits2 = [v4 documentTraits];
+      processId = [documentTraits2 processId];
+      documentTraits3 = [v4 documentTraits];
+      v12 = [documentTraits3 contextID] ^ processId;
+      documentTraits4 = [v4 documentTraits];
+      bundleId = [documentTraits4 bundleId];
+      v15 = [v8 numberWithUnsignedInteger:{objc_msgSend(bundleId, "hash") ^ v12}];
     }
 
     else
@@ -418,11 +418,11 @@ void __61__AFUIServiceDelegate__scheduleExpirationOfQueuedOperations___block_inv
       }
 
       v19 = MEMORY[0x1E696AD98];
-      v20 = [v4 documentTraits];
-      v21 = [v20 processId];
-      v22 = [v4 documentTraits];
-      v23 = [v22 bundleId];
-      v15 = [v19 numberWithUnsignedInteger:{objc_msgSend(v23, "hash") ^ v21}];
+      documentTraits5 = [v4 documentTraits];
+      processId2 = [documentTraits5 processId];
+      documentTraits6 = [v4 documentTraits];
+      bundleId2 = [documentTraits6 bundleId];
+      v15 = [v19 numberWithUnsignedInteger:{objc_msgSend(bundleId2, "hash") ^ processId2}];
     }
   }
 
@@ -440,18 +440,18 @@ void __61__AFUIServiceDelegate__scheduleExpirationOfQueuedOperations___block_inv
   return v15;
 }
 
-- (BOOL)_checkAndSendQueuedTextOperationsIfNecessary:(id)a3
+- (BOOL)_checkAndSendQueuedTextOperationsIfNecessary:(id)necessary
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 documentTraits];
-  v6 = [v5 appId];
+  necessaryCopy = necessary;
+  documentTraits = [necessaryCopy documentTraits];
+  appId = [documentTraits appId];
 
-  v7 = [v4 documentTraits];
-  v8 = [v7 processId];
+  documentTraits2 = [necessaryCopy documentTraits];
+  processId = [documentTraits2 processId];
 
   v9 = 0;
-  if ([v6 length] && v8)
+  if ([appId length] && processId)
   {
     [(NSLock *)self->_lock lock];
     v29 = 0;
@@ -465,8 +465,8 @@ void __61__AFUIServiceDelegate__scheduleExpirationOfQueuedOperations___block_inv
     v25[1] = 3221225472;
     v25[2] = __68__AFUIServiceDelegate__checkAndSendQueuedTextOperationsIfNecessary___block_invoke;
     v25[3] = &unk_1E8424C00;
-    v11 = v6;
-    v28 = v8;
+    v11 = appId;
+    v28 = processId;
     v26 = v11;
     v27 = &v29;
     [(NSMutableDictionary *)queuedOperations enumerateKeysAndObjectsUsingBlock:v25];
@@ -486,29 +486,29 @@ void __61__AFUIServiceDelegate__scheduleExpirationOfQueuedOperations___block_inv
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       v19 = MEMORY[0x1E696AEC0];
-      v20 = [v12 textOperations];
-      v21 = [v4 uuid];
-      v22 = v21;
+      textOperations = [v12 textOperations];
+      uuid = [necessaryCopy uuid];
+      v22 = uuid;
       v23 = @"found";
-      if (!v20)
+      if (!textOperations)
       {
         v23 = @"not found";
       }
 
-      v24 = [v19 stringWithFormat:@"%s textOperations %@ for session uuid %@ (appId: %@)", "-[AFUIServiceDelegate _checkAndSendQueuedTextOperationsIfNecessary:]", v23, v21, v11];
+      v24 = [v19 stringWithFormat:@"%s textOperations %@ for session uuid %@ (appId: %@)", "-[AFUIServiceDelegate _checkAndSendQueuedTextOperationsIfNecessary:]", v23, uuid, v11];
       *buf = 138412290;
       v36 = v24;
       _os_log_debug_impl(&dword_1D2F0D000, v13, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
 
-    v14 = [v12 textOperations];
+    textOperations2 = [v12 textOperations];
 
-    v9 = v14 != 0;
-    if (v14)
+    v9 = textOperations2 != 0;
+    if (textOperations2)
     {
-      v15 = [v12 textOperations];
-      v16 = [v12 completionHandler];
-      [(AFUIServiceDelegate *)self _sendTextOperations:v15 toSession:v4 completionHandler:v16];
+      textOperations3 = [v12 textOperations];
+      completionHandler = [v12 completionHandler];
+      [(AFUIServiceDelegate *)self _sendTextOperations:textOperations3 toSession:necessaryCopy completionHandler:completionHandler];
     }
 
     _Block_object_dispose(&v29, 8);
@@ -546,12 +546,12 @@ void __68__AFUIServiceDelegate__checkAndSendQueuedTextOperationsIfNecessary___bl
   }
 }
 
-- (void)_sendTextOperations:(id)a3 toSession:(id)a4 completionHandler:(id)a5
+- (void)_sendTextOperations:(id)operations toSession:(id)session completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AFUIServiceDelegate *)self _inputIdentifierForSession:v9];
+  operationsCopy = operations;
+  sessionCopy = session;
+  handlerCopy = handler;
+  v11 = [(AFUIServiceDelegate *)self _inputIdentifierForSession:sessionCopy];
   v12 = v11;
   if (self->_trackedInputIdentifier)
   {
@@ -572,19 +572,19 @@ void __68__AFUIServiceDelegate__checkAndSendQueuedTextOperationsIfNecessary___bl
   v15 = AFUIServiceDelegateOSLogFacility();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    [AFUIServiceDelegate _sendTextOperations:v9 toSession:v15 completionHandler:?];
+    [AFUIServiceDelegate _sendTextOperations:sessionCopy toSession:v15 completionHandler:?];
   }
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__AFUIServiceDelegate__sendTextOperations_toSession_completionHandler___block_invoke;
   block[3] = &unk_1E84245D0;
-  v20 = v9;
-  v21 = v8;
-  v22 = v10;
-  v16 = v10;
-  v17 = v8;
-  v18 = v9;
+  v20 = sessionCopy;
+  v21 = operationsCopy;
+  v22 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = operationsCopy;
+  v18 = sessionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -667,157 +667,157 @@ uint64_t __80__AFUIServiceDelegate__sendAuthenticationStateOperation_sessionUUID
   return result;
 }
 
-- (void)authenticationWillBeginForSessionUUID:(id)a3 completion:(id)a4
+- (void)authenticationWillBeginForSessionUUID:(id)d completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v9 = AFUIServiceDelegateOSLogFacility();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     [AFUIServiceDelegate authenticationWillBeginForSessionUUID:a2 completion:?];
   }
 
-  [(AFUIServiceDelegate *)self setAuthenticatingForSessionId:v8];
+  [(AFUIServiceDelegate *)self setAuthenticatingForSessionId:dCopy];
   [(NSLock *)self->_lock lock];
-  v10 = [(AFUIServiceDelegate *)self _sessionForUUID:v8];
-  v11 = [v10 documentTraits];
-  [(AFUIServiceDelegate *)self setAuthenticatingForDocumentTraits:v11];
+  v10 = [(AFUIServiceDelegate *)self _sessionForUUID:dCopy];
+  documentTraits = [v10 documentTraits];
+  [(AFUIServiceDelegate *)self setAuthenticatingForDocumentTraits:documentTraits];
 
   [(NSLock *)self->_lock unlock];
-  [(AFUIServiceDelegate *)self _sendAuthenticationStateOperation:1 sessionUUID:v8 completion:v7];
+  [(AFUIServiceDelegate *)self _sendAuthenticationStateOperation:1 sessionUUID:dCopy completion:completionCopy];
 }
 
-- (void)authenticationDidEndForSessionUUID:(id)a3 completion:(id)a4
+- (void)authenticationDidEndForSessionUUID:(id)d completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v9 = AFUIServiceDelegateOSLogFacility();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     [AFUIServiceDelegate authenticationDidEndForSessionUUID:a2 completion:?];
   }
 
-  [(AFUIServiceDelegate *)self _sendAuthenticationStateOperation:0 sessionUUID:v8 completion:v7];
+  [(AFUIServiceDelegate *)self _sendAuthenticationStateOperation:0 sessionUUID:dCopy completion:completionCopy];
   [(AFUIServiceDelegate *)self setAuthenticatingForSessionId:0];
   [(AFUIServiceDelegate *)self setAuthenticatingForDocumentTraits:0];
 }
 
-- (void)contactsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4
+- (void)contactsUIWillBeginForSessionUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(AFUIServiceDelegate *)self setContactsUIShowingForSessionId:v7];
-  [(AFUIServiceDelegate *)self _setIsModalUIPresented:1 forSessionUUID:v7];
-  [(AFUIServiceDelegate *)self _performBlockOnInternalQueueForUUID:v7 block:v6];
+  completionCopy = completion;
+  dCopy = d;
+  [(AFUIServiceDelegate *)self setContactsUIShowingForSessionId:dCopy];
+  [(AFUIServiceDelegate *)self _setIsModalUIPresented:1 forSessionUUID:dCopy];
+  [(AFUIServiceDelegate *)self _performBlockOnInternalQueueForUUID:dCopy block:completionCopy];
 }
 
-- (void)contactsUIDidEndForSessionUUID:(id)a3 completion:(id)a4
+- (void)contactsUIDidEndForSessionUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   [(AFUIServiceDelegate *)self setContactsUIShowingForSessionId:0];
-  [(AFUIServiceDelegate *)self _setIsModalUIPresented:0 forSessionUUID:v7];
-  [(AFUIServiceDelegate *)self _performBlockOnInternalQueueForUUID:v7 block:v6];
+  [(AFUIServiceDelegate *)self _setIsModalUIPresented:0 forSessionUUID:dCopy];
+  [(AFUIServiceDelegate *)self _performBlockOnInternalQueueForUUID:dCopy block:completionCopy];
 }
 
-- (void)passwordsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4
+- (void)passwordsUIWillBeginForSessionUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(AFUIServiceDelegate *)self setPasswordsUIShowingForSessionId:v7];
-  [(AFUIServiceDelegate *)self _setIsModalUIPresented:1 forSessionUUID:v7];
-  [(AFUIServiceDelegate *)self _performBlockOnInternalQueueForUUID:v7 block:v6];
+  completionCopy = completion;
+  dCopy = d;
+  [(AFUIServiceDelegate *)self setPasswordsUIShowingForSessionId:dCopy];
+  [(AFUIServiceDelegate *)self _setIsModalUIPresented:1 forSessionUUID:dCopy];
+  [(AFUIServiceDelegate *)self _performBlockOnInternalQueueForUUID:dCopy block:completionCopy];
 }
 
-- (void)passwordsUIDidEndForSessionUUID:(id)a3 completion:(id)a4
+- (void)passwordsUIDidEndForSessionUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   [(AFUIServiceDelegate *)self setPasswordsUIShowingForSessionId:0];
-  [(AFUIServiceDelegate *)self _setIsModalUIPresented:0 forSessionUUID:v7];
-  [(AFUIServiceDelegate *)self _performBlockOnInternalQueueForUUID:v7 block:v6];
+  [(AFUIServiceDelegate *)self _setIsModalUIPresented:0 forSessionUUID:dCopy];
+  [(AFUIServiceDelegate *)self _performBlockOnInternalQueueForUUID:dCopy block:completionCopy];
 }
 
-- (void)creditCardsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4
+- (void)creditCardsUIWillBeginForSessionUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(AFUIServiceDelegate *)self setCreditCardsUIShowingForSessionId:v7];
-  [(AFUIServiceDelegate *)self _setIsModalUIPresented:1 forSessionUUID:v7];
-  [(AFUIServiceDelegate *)self _performBlockOnInternalQueueForUUID:v7 block:v6];
+  completionCopy = completion;
+  dCopy = d;
+  [(AFUIServiceDelegate *)self setCreditCardsUIShowingForSessionId:dCopy];
+  [(AFUIServiceDelegate *)self _setIsModalUIPresented:1 forSessionUUID:dCopy];
+  [(AFUIServiceDelegate *)self _performBlockOnInternalQueueForUUID:dCopy block:completionCopy];
 }
 
-- (void)creditCardsUIDidEndForSessionUUID:(id)a3 completion:(id)a4
+- (void)creditCardsUIDidEndForSessionUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   [(AFUIServiceDelegate *)self setCreditCardsUIShowingForSessionId:0];
-  [(AFUIServiceDelegate *)self _setIsModalUIPresented:0 forSessionUUID:v7];
-  [(AFUIServiceDelegate *)self _performBlockOnInternalQueueForUUID:v7 block:v6];
+  [(AFUIServiceDelegate *)self _setIsModalUIPresented:0 forSessionUUID:dCopy];
+  [(AFUIServiceDelegate *)self _performBlockOnInternalQueueForUUID:dCopy block:completionCopy];
 }
 
-- (void)_performBlockOnInternalQueueForUUID:(id)a3 block:(id)a4
+- (void)_performBlockOnInternalQueueForUUID:(id)d block:(id)block
 {
-  v6 = a4;
-  if (v6)
+  blockCopy2 = block;
+  if (blockCopy2)
   {
-    block = v6;
+    block = blockCopy2;
     lock = self->_lock;
-    v8 = a3;
+    dCopy = d;
     [(NSLock *)lock lock];
-    v9 = [(AFUIServiceDelegate *)self _sessionForUUID:v8];
+    v9 = [(AFUIServiceDelegate *)self _sessionForUUID:dCopy];
 
-    v10 = [v9 internalQueue];
+    internalQueue = [v9 internalQueue];
 
     [(NSLock *)self->_lock unlock];
-    if (v10)
+    if (internalQueue)
     {
-      dispatch_async(v10, block);
+      dispatch_async(internalQueue, block);
     }
 
-    v6 = block;
+    blockCopy2 = block;
   }
 }
 
-- (void)setIsMenuPresented:(BOOL)a3 forSessionUUID:(id)a4
+- (void)setIsMenuPresented:(BOOL)presented forSessionUUID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__AFUIServiceDelegate_setIsMenuPresented_forSessionUUID___block_invoke;
   v8[3] = &unk_1E8424580;
-  v10 = a3;
+  presentedCopy = presented;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = dCopy;
+  v7 = dCopy;
   [(AFUIServiceDelegate *)self _performBlockOnInternalQueueForUUID:v7 block:v8];
 }
 
-- (void)inputSystemService:(id)a3 inputSessionDidBegin:(id)a4 options:(id)a5
+- (void)inputSystemService:(id)service inputSessionDidBegin:(id)begin options:(id)options
 {
   v56 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  beginCopy = begin;
   [(NSLock *)self->_lock lock];
-  v8 = [(AFUIServiceDelegate *)self currentSessions];
-  [v8 addObject:v7];
+  currentSessions = [(AFUIServiceDelegate *)self currentSessions];
+  [currentSessions addObject:beginCopy];
 
   [(NSLock *)self->_lock unlock];
   v9 = AFUIServiceDelegateOSLogFacility();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v51 = MEMORY[0x1E696AEC0];
-    v52 = [v7 documentTraits];
-    v10 = [v52 bundleId];
-    v11 = [v7 uuid];
-    v12 = [v7 documentTraits];
-    v13 = [v12 appName];
-    [v7 documentTraits];
+    documentTraits = [beginCopy documentTraits];
+    bundleId = [documentTraits bundleId];
+    uuid = [beginCopy uuid];
+    documentTraits2 = [beginCopy documentTraits];
+    appName = [documentTraits2 appName];
+    [beginCopy documentTraits];
     v14 = v53 = a2;
-    v15 = [v14 processId];
-    v16 = [v7 documentTraits];
-    v50 = v15;
-    v17 = v10;
-    v18 = [v51 stringWithFormat:@"%s Session info. Bundle ID: %@ uuid: %@; appName: %@; processId: %d; contextID: %u", "-[AFUIServiceDelegate inputSystemService:inputSessionDidBegin:options:]", v10, v11, v13, v50, objc_msgSend(v16, "contextID")];;
+    processId = [v14 processId];
+    documentTraits3 = [beginCopy documentTraits];
+    v50 = processId;
+    v17 = bundleId;
+    v18 = [v51 stringWithFormat:@"%s Session info. Bundle ID: %@ uuid: %@; appName: %@; processId: %d; contextID: %u", "-[AFUIServiceDelegate inputSystemService:inputSessionDidBegin:options:]", bundleId, uuid, appName, v50, objc_msgSend(documentTraits3, "contextID")];;
     *buf = 138412290;
     v55 = v18;
     _os_log_impl(&dword_1D2F0D000, v9, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
@@ -827,18 +827,18 @@ uint64_t __80__AFUIServiceDelegate__sendAuthenticationStateOperation_sessionUUID
 
   if (self->_trackedInputIdentifier)
   {
-    v19 = [(AFUIServiceDelegate *)self _inputIdentifierForSession:v7];
+    v19 = [(AFUIServiceDelegate *)self _inputIdentifierForSession:beginCopy];
     if (v19)
     {
       v20 = v19;
       trackedInputIdentifier = self->_trackedInputIdentifier;
-      v22 = [(AFUIServiceDelegate *)self _inputIdentifierForSession:v7];
+      v22 = [(AFUIServiceDelegate *)self _inputIdentifierForSession:beginCopy];
       LODWORD(trackedInputIdentifier) = [(NSNumber *)trackedInputIdentifier isEqual:v22];
 
       if (trackedInputIdentifier)
       {
-        v23 = [v7 uuid];
-        [(AFUIServiceDelegate *)self _tearDownPanelsExceptForSessionUUID:v23];
+        uuid2 = [beginCopy uuid];
+        [(AFUIServiceDelegate *)self _tearDownPanelsExceptForSessionUUID:uuid2];
 
         v24 = self->_trackedInputIdentifier;
         self->_trackedInputIdentifier = 0;
@@ -846,31 +846,31 @@ uint64_t __80__AFUIServiceDelegate__sendAuthenticationStateOperation_sessionUUID
     }
   }
 
-  v25 = [v7 documentTraits];
-  v26 = [v25 bundleId];
-  if ([v26 isEqualToString:@"com.apple.CoreAuthUI"])
+  documentTraits4 = [beginCopy documentTraits];
+  bundleId2 = [documentTraits4 bundleId];
+  if ([bundleId2 isEqualToString:@"com.apple.CoreAuthUI"])
   {
     goto LABEL_10;
   }
 
-  v27 = [v7 documentTraits];
-  v28 = [v27 bundleId];
-  if ([v28 isEqualToString:@"com.apple.LocalAuthenticationUIService"])
+  documentTraits5 = [beginCopy documentTraits];
+  bundleId3 = [documentTraits5 bundleId];
+  if ([bundleId3 isEqualToString:@"com.apple.LocalAuthenticationUIService"])
   {
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  v31 = [v7 documentTraits];
-  v32 = [v31 bundleId];
-  v33 = [v32 isEqualToString:@"com.apple.ContactsUI.ContactsViewService"];
+  documentTraits6 = [beginCopy documentTraits];
+  bundleId4 = [documentTraits6 bundleId];
+  v33 = [bundleId4 isEqualToString:@"com.apple.ContactsUI.ContactsViewService"];
 
   if (v33)
   {
 LABEL_11:
-    v29 = AFUIServiceDelegateOSLogFacility();
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
+    documentTraits7 = AFUIServiceDelegateOSLogFacility();
+    if (os_log_type_enabled(documentTraits7, OS_LOG_TYPE_DEBUG))
     {
       [AFUIServiceDelegate inputSystemService:a2 inputSessionDidBegin:? options:?];
     }
@@ -878,14 +878,14 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v34 = [v7 uuid];
-  v35 = [(AFUIServiceDelegate *)self authenticatingForSessionId];
-  v36 = [v34 isEqual:v35];
+  uuid3 = [beginCopy uuid];
+  authenticatingForSessionId = [(AFUIServiceDelegate *)self authenticatingForSessionId];
+  v36 = [uuid3 isEqual:authenticatingForSessionId];
 
   if (v36)
   {
-    v29 = AFUIServiceDelegateOSLogFacility();
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
+    documentTraits7 = AFUIServiceDelegateOSLogFacility();
+    if (os_log_type_enabled(documentTraits7, OS_LOG_TYPE_DEBUG))
     {
       [AFUIServiceDelegate inputSystemService:inputSessionDidBegin:options:];
     }
@@ -893,14 +893,14 @@ LABEL_11:
 
   else
   {
-    v37 = [v7 uuid];
-    v38 = [(AFUIServiceDelegate *)self contactsUIShowingForSessionId];
-    v39 = [v37 isEqual:v38];
+    uuid4 = [beginCopy uuid];
+    contactsUIShowingForSessionId = [(AFUIServiceDelegate *)self contactsUIShowingForSessionId];
+    v39 = [uuid4 isEqual:contactsUIShowingForSessionId];
 
     if (v39)
     {
-      v29 = AFUIServiceDelegateOSLogFacility();
-      if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
+      documentTraits7 = AFUIServiceDelegateOSLogFacility();
+      if (os_log_type_enabled(documentTraits7, OS_LOG_TYPE_DEBUG))
       {
         [AFUIServiceDelegate inputSystemService:inputSessionDidBegin:options:];
       }
@@ -908,14 +908,14 @@ LABEL_11:
 
     else
     {
-      v40 = [v7 uuid];
-      v41 = [(AFUIServiceDelegate *)self passwordsUIShowingForSessionId];
-      v42 = [v40 isEqual:v41];
+      uuid5 = [beginCopy uuid];
+      passwordsUIShowingForSessionId = [(AFUIServiceDelegate *)self passwordsUIShowingForSessionId];
+      v42 = [uuid5 isEqual:passwordsUIShowingForSessionId];
 
       if (v42)
       {
-        v29 = AFUIServiceDelegateOSLogFacility();
-        if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
+        documentTraits7 = AFUIServiceDelegateOSLogFacility();
+        if (os_log_type_enabled(documentTraits7, OS_LOG_TYPE_DEBUG))
         {
           [AFUIServiceDelegate inputSystemService:inputSessionDidBegin:options:];
         }
@@ -923,12 +923,12 @@ LABEL_11:
 
       else
       {
-        v43 = [v7 uuid];
-        v44 = [(AFUIServiceDelegate *)self creditCardsUIShowingForSessionId];
-        v45 = [v43 isEqual:v44];
+        uuid6 = [beginCopy uuid];
+        creditCardsUIShowingForSessionId = [(AFUIServiceDelegate *)self creditCardsUIShowingForSessionId];
+        v45 = [uuid6 isEqual:creditCardsUIShowingForSessionId];
 
-        v29 = AFUIServiceDelegateOSLogFacility();
-        v46 = os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG);
+        documentTraits7 = AFUIServiceDelegateOSLogFacility();
+        v46 = os_log_type_enabled(documentTraits7, OS_LOG_TYPE_DEBUG);
         if (v45)
         {
           if (v46)
@@ -944,12 +944,12 @@ LABEL_11:
             [AFUIServiceDelegate inputSystemService:inputSessionDidBegin:options:];
           }
 
-          if (-[AFUIServiceDelegate _checkAndSendQueuedTextOperationsIfNecessary:](self, "_checkAndSendQueuedTextOperationsIfNecessary:", v7) || ([v7 documentTraits], v47 = objc_claimAutoreleasedReturnValue(), v48 = -[AFUIServiceDelegate _shouldAutomaticallyDisplayPanelForDocumentTraits:](self, "_shouldAutomaticallyDisplayPanelForDocumentTraits:", v47), v47, !v48))
+          if (-[AFUIServiceDelegate _checkAndSendQueuedTextOperationsIfNecessary:](self, "_checkAndSendQueuedTextOperationsIfNecessary:", beginCopy) || ([beginCopy documentTraits], v47 = objc_claimAutoreleasedReturnValue(), v48 = -[AFUIServiceDelegate _shouldAutomaticallyDisplayPanelForDocumentTraits:](self, "_shouldAutomaticallyDisplayPanelForDocumentTraits:", v47), v47, !v48))
           {
-            v29 = AFUIServiceDelegateOSLogFacility();
-            if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
+            documentTraits7 = AFUIServiceDelegateOSLogFacility();
+            if (os_log_type_enabled(documentTraits7, OS_LOG_TYPE_DEBUG))
             {
-              [AFUIServiceDelegate inputSystemService:a2 inputSessionDidBegin:v7 options:v29];
+              [AFUIServiceDelegate inputSystemService:a2 inputSessionDidBegin:beginCopy options:documentTraits7];
             }
           }
 
@@ -961,8 +961,8 @@ LABEL_11:
               [AFUIServiceDelegate inputSystemService:inputSessionDidBegin:options:];
             }
 
-            v29 = [v7 documentTraits];
-            [(AFUIServiceDelegate *)self _displayPanelForSession:v7 traits:v29];
+            documentTraits7 = [beginCopy documentTraits];
+            [(AFUIServiceDelegate *)self _displayPanelForSession:beginCopy traits:documentTraits7];
           }
         }
       }
@@ -974,39 +974,39 @@ LABEL_13:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)inputSystemService:(id)a3 inputSessionDidEnd:(id)a4 options:(id)a5
+- (void)inputSystemService:(id)service inputSessionDidEnd:(id)end options:(id)options
 {
-  v7 = a4;
+  endCopy = end;
   [(NSLock *)self->_lock lock];
-  v8 = [(AFUIServiceDelegate *)self currentSessions];
-  [v8 removeObject:v7];
+  currentSessions = [(AFUIServiceDelegate *)self currentSessions];
+  [currentSessions removeObject:endCopy];
 
   [(NSLock *)self->_lock unlock];
-  v9 = [v7 documentTraits];
-  v10 = [v9 bundleId];
-  if ([v10 isEqualToString:@"com.apple.CoreAuthUI"])
+  documentTraits = [endCopy documentTraits];
+  bundleId = [documentTraits bundleId];
+  if ([bundleId isEqualToString:@"com.apple.CoreAuthUI"])
   {
     goto LABEL_4;
   }
 
-  v11 = [v7 documentTraits];
-  v12 = [v11 bundleId];
-  if ([v12 isEqualToString:@"com.apple.LocalAuthenticationUIService"])
+  documentTraits2 = [endCopy documentTraits];
+  bundleId2 = [documentTraits2 bundleId];
+  if ([bundleId2 isEqualToString:@"com.apple.LocalAuthenticationUIService"])
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v14 = [v7 documentTraits];
-  v15 = [v14 bundleId];
-  v16 = [v15 isEqualToString:@"com.apple.ContactsUI.ContactsViewService"];
+  documentTraits3 = [endCopy documentTraits];
+  bundleId3 = [documentTraits3 bundleId];
+  v16 = [bundleId3 isEqualToString:@"com.apple.ContactsUI.ContactsViewService"];
 
   if (v16)
   {
 LABEL_5:
-    v13 = AFUIServiceDelegateOSLogFacility();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+    uuid5 = AFUIServiceDelegateOSLogFacility();
+    if (os_log_type_enabled(uuid5, OS_LOG_TYPE_DEBUG))
     {
       [AFUIServiceDelegate inputSystemService:a2 inputSessionDidEnd:? options:?];
     }
@@ -1014,14 +1014,14 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v17 = [v7 uuid];
-  v18 = [(AFUIServiceDelegate *)self authenticatingForSessionId];
-  v19 = [v17 isEqual:v18];
+  uuid = [endCopy uuid];
+  authenticatingForSessionId = [(AFUIServiceDelegate *)self authenticatingForSessionId];
+  v19 = [uuid isEqual:authenticatingForSessionId];
 
   if (v19)
   {
-    v13 = AFUIServiceDelegateOSLogFacility();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+    uuid5 = AFUIServiceDelegateOSLogFacility();
+    if (os_log_type_enabled(uuid5, OS_LOG_TYPE_DEBUG))
     {
       [AFUIServiceDelegate inputSystemService:inputSessionDidEnd:options:];
     }
@@ -1029,14 +1029,14 @@ LABEL_5:
 
   else
   {
-    v20 = [v7 uuid];
-    v21 = [(AFUIServiceDelegate *)self contactsUIShowingForSessionId];
-    v22 = [v20 isEqual:v21];
+    uuid2 = [endCopy uuid];
+    contactsUIShowingForSessionId = [(AFUIServiceDelegate *)self contactsUIShowingForSessionId];
+    v22 = [uuid2 isEqual:contactsUIShowingForSessionId];
 
     if (v22)
     {
-      v13 = AFUIServiceDelegateOSLogFacility();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+      uuid5 = AFUIServiceDelegateOSLogFacility();
+      if (os_log_type_enabled(uuid5, OS_LOG_TYPE_DEBUG))
       {
         [AFUIServiceDelegate inputSystemService:inputSessionDidEnd:options:];
       }
@@ -1044,14 +1044,14 @@ LABEL_5:
 
     else
     {
-      v23 = [v7 uuid];
-      v24 = [(AFUIServiceDelegate *)self passwordsUIShowingForSessionId];
-      v25 = [v23 isEqual:v24];
+      uuid3 = [endCopy uuid];
+      passwordsUIShowingForSessionId = [(AFUIServiceDelegate *)self passwordsUIShowingForSessionId];
+      v25 = [uuid3 isEqual:passwordsUIShowingForSessionId];
 
       if (v25)
       {
-        v13 = AFUIServiceDelegateOSLogFacility();
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+        uuid5 = AFUIServiceDelegateOSLogFacility();
+        if (os_log_type_enabled(uuid5, OS_LOG_TYPE_DEBUG))
         {
           [AFUIServiceDelegate inputSystemService:inputSessionDidEnd:options:];
         }
@@ -1059,12 +1059,12 @@ LABEL_5:
 
       else
       {
-        v26 = [v7 uuid];
-        v27 = [(AFUIServiceDelegate *)self creditCardsUIShowingForSessionId];
-        v28 = [v26 isEqual:v27];
+        uuid4 = [endCopy uuid];
+        creditCardsUIShowingForSessionId = [(AFUIServiceDelegate *)self creditCardsUIShowingForSessionId];
+        v28 = [uuid4 isEqual:creditCardsUIShowingForSessionId];
 
-        v13 = AFUIServiceDelegateOSLogFacility();
-        v29 = os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG);
+        uuid5 = AFUIServiceDelegateOSLogFacility();
+        v29 = os_log_type_enabled(uuid5, OS_LOG_TYPE_DEBUG);
         if (v28)
         {
           if (v29)
@@ -1080,8 +1080,8 @@ LABEL_5:
             [AFUIServiceDelegate inputSystemService:inputSessionDidEnd:options:];
           }
 
-          v13 = [v7 uuid];
-          [(AFUIServiceDelegate *)self _tearDownPanelForSessionUUID:v13];
+          uuid5 = [endCopy uuid];
+          [(AFUIServiceDelegate *)self _tearDownPanelForSessionUUID:uuid5];
         }
       }
     }
@@ -1090,12 +1090,12 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)inputSystemService:(id)a3 inputSessionDidDie:(id)a4
+- (void)inputSystemService:(id)service inputSessionDidDie:(id)die
 {
-  v5 = a4;
+  dieCopy = die;
   [(NSLock *)self->_lock lock];
-  v6 = [(AFUIServiceDelegate *)self currentSessions];
-  [v6 removeObject:v5];
+  currentSessions = [(AFUIServiceDelegate *)self currentSessions];
+  [currentSessions removeObject:dieCopy];
 
   [(NSLock *)self->_lock unlock];
   v7 = AFUIServiceDelegateOSLogFacility();
@@ -1104,34 +1104,34 @@ LABEL_7:
     [AFUIServiceDelegate inputSystemService:inputSessionDidDie:];
   }
 
-  v8 = [v5 uuid];
-  [(AFUIServiceDelegate *)self _tearDownPanelForSessionUUID:v8];
+  uuid = [dieCopy uuid];
+  [(AFUIServiceDelegate *)self _tearDownPanelForSessionUUID:uuid];
 }
 
-- (void)inputSystemService:(id)a3 inputSession:(id)a4 documentStateDidChange:(id)a5
+- (void)inputSystemService:(id)service inputSession:(id)session documentStateDidChange:(id)change
 {
-  v7 = a5;
+  changeCopy = change;
   sessionPanels = self->_sessionPanels;
-  v9 = [a4 uuid];
-  v10 = [(NSMutableDictionary *)sessionPanels objectForKey:v9];
+  uuid = [session uuid];
+  v10 = [(NSMutableDictionary *)sessionPanels objectForKey:uuid];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __78__AFUIServiceDelegate_inputSystemService_inputSession_documentStateDidChange___block_invoke;
   v13[3] = &unk_1E8424990;
   v14 = v10;
-  v15 = v7;
-  v11 = v7;
+  v15 = changeCopy;
+  v11 = changeCopy;
   v12 = v10;
   dispatch_async(MEMORY[0x1E69E96A0], v13);
 }
 
-- (void)inputSystemService:(id)a3 inputSessionDidPause:(id)a4 withReason:(id)a5
+- (void)inputSystemService:(id)service inputSessionDidPause:(id)pause withReason:(id)reason
 {
-  v6 = a4;
+  pauseCopy = pause;
   sessionPanels = self->_sessionPanels;
-  v8 = [v6 uuid];
-  v9 = [(NSMutableDictionary *)sessionPanels objectForKey:v8];
+  uuid = [pauseCopy uuid];
+  v9 = [(NSMutableDictionary *)sessionPanels objectForKey:uuid];
 
   v10 = AFUIServiceDelegateOSLogFacility();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1148,12 +1148,12 @@ LABEL_7:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)inputSystemService:(id)a3 inputSessionDidUnpause:(id)a4 withReason:(id)a5
+- (void)inputSystemService:(id)service inputSessionDidUnpause:(id)unpause withReason:(id)reason
 {
-  v6 = a4;
+  unpauseCopy = unpause;
   sessionPanels = self->_sessionPanels;
-  v8 = [v6 uuid];
-  v9 = [(NSMutableDictionary *)sessionPanels objectForKey:v8];
+  uuid = [unpauseCopy uuid];
+  v9 = [(NSMutableDictionary *)sessionPanels objectForKey:uuid];
 
   v10 = AFUIServiceDelegateOSLogFacility();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1170,14 +1170,14 @@ LABEL_7:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)inputSystemService:(id)a3 inputSession:(id)a4 performInputOperation:(id)a5
+- (void)inputSystemService:(id)service inputSession:(id)session performInputOperation:(id)operation
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 documentTraits];
-  v11 = [v10 bundleId];
+  sessionCopy = session;
+  operationCopy = operation;
+  documentTraits = [sessionCopy documentTraits];
+  bundleId = [documentTraits bundleId];
 
-  if (([v11 isEqualToString:@"com.apple.CoreAuthUI"] & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"com.apple.LocalAuthenticationUIService") & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"com.apple.ContactsUI.ContactsViewService"))
+  if (([bundleId isEqualToString:@"com.apple.CoreAuthUI"] & 1) != 0 || (objc_msgSend(bundleId, "isEqualToString:", @"com.apple.LocalAuthenticationUIService") & 1) != 0 || objc_msgSend(bundleId, "isEqualToString:", @"com.apple.ContactsUI.ContactsViewService"))
   {
     v12 = AFUIServiceDelegateOSLogFacility();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -1194,25 +1194,25 @@ LABEL_7:
     [AFUIServiceDelegate inputSystemService:inputSession:performInputOperation:];
   }
 
-  v14 = [v9 customInfoType];
-  v15 = [v14 isEqualToString:@"UIUserInteractionRemoteInputOperations"];
+  customInfoType = [operationCopy customInfoType];
+  v15 = [customInfoType isEqualToString:@"UIUserInteractionRemoteInputOperations"];
 
   if (!v15)
   {
     goto LABEL_7;
   }
 
-  if ([v9 actionSelector] == sel_dismissAutoFillPanel || objc_msgSend(v9, "actionSelector") == sel_dismissAutoFillMenu)
+  if ([operationCopy actionSelector] == sel_dismissAutoFillPanel || objc_msgSend(operationCopy, "actionSelector") == sel_dismissAutoFillMenu)
   {
     sessionPanels = self->_sessionPanels;
-    v18 = [v8 uuid];
-    v19 = [(NSMutableDictionary *)sessionPanels objectForKey:v18];
+    uuid = [sessionCopy uuid];
+    v19 = [(NSMutableDictionary *)sessionPanels objectForKey:uuid];
 
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __77__AFUIServiceDelegate_inputSystemService_inputSession_performInputOperation___block_invoke;
     v22[3] = &unk_1E8424990;
-    v23 = v9;
+    v23 = operationCopy;
     v24 = v19;
     v12 = v19;
     dispatch_async(MEMORY[0x1E69E96A0], v22);
@@ -1221,7 +1221,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v9 actionSelector] && objc_msgSend(v9, "actionSelector") == sel_handleAutoFillContactPopoverCommand)
+  if ([operationCopy actionSelector] && objc_msgSend(operationCopy, "actionSelector") == sel_handleAutoFillContactPopoverCommand)
   {
     v16 = 1;
 LABEL_32:
@@ -1229,7 +1229,7 @@ LABEL_32:
     goto LABEL_35;
   }
 
-  if ([v9 actionSelector] && objc_msgSend(v9, "actionSelector") == sel_handleAutoFillCreditCardPopoverCommand)
+  if ([operationCopy actionSelector] && objc_msgSend(operationCopy, "actionSelector") == sel_handleAutoFillCreditCardPopoverCommand)
   {
     v16 = 1;
 LABEL_34:
@@ -1237,36 +1237,36 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if ([v9 actionSelector] && objc_msgSend(v9, "actionSelector") == sel_handleAutoFillPasswordPopoverCommand)
+  if ([operationCopy actionSelector] && objc_msgSend(operationCopy, "actionSelector") == sel_handleAutoFillPasswordPopoverCommand)
   {
     v16 = 1;
     goto LABEL_30;
   }
 
-  if ([v9 actionSelector] && objc_msgSend(v9, "actionSelector") == sel_handleAutoFillContactDetected)
+  if ([operationCopy actionSelector] && objc_msgSend(operationCopy, "actionSelector") == sel_handleAutoFillContactDetected)
   {
     v16 = 0;
     goto LABEL_32;
   }
 
-  if ([v9 actionSelector] && objc_msgSend(v9, "actionSelector") == sel_handleAutoFillCreditCardDetected)
+  if ([operationCopy actionSelector] && objc_msgSend(operationCopy, "actionSelector") == sel_handleAutoFillCreditCardDetected)
   {
     v16 = 0;
     goto LABEL_34;
   }
 
-  if ([v9 actionSelector] && objc_msgSend(v9, "actionSelector") == sel_handleAutoFillPasswordDetected)
+  if ([operationCopy actionSelector] && objc_msgSend(operationCopy, "actionSelector") == sel_handleAutoFillPasswordDetected)
   {
     v16 = 0;
 LABEL_30:
     v20 = 1;
 LABEL_35:
-    v21 = [v8 documentTraits];
-    v12 = [v21 copy];
+    documentTraits2 = [sessionCopy documentTraits];
+    v12 = [documentTraits2 copy];
 
     [v12 setAutofillMode:v20];
     [v12 setExplicitAutoFillMode:v16];
-    [(AFUIServiceDelegate *)self _displayPanelForSession:v8 traits:v12];
+    [(AFUIServiceDelegate *)self _displayPanelForSession:sessionCopy traits:v12];
     goto LABEL_6;
   }
 
@@ -1290,16 +1290,16 @@ uint64_t __77__AFUIServiceDelegate_inputSystemService_inputSession_performInputO
   }
 }
 
-- (id)_sessionForUUID:(id)a3
+- (id)_sessionForUUID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(AFUIServiceDelegate *)self currentSessions];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  currentSessions = [(AFUIServiceDelegate *)self currentSessions];
+  v6 = [currentSessions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -1309,12 +1309,12 @@ uint64_t __77__AFUIServiceDelegate_inputSystemService_inputSession_performInputO
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(currentSessions);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 uuid];
-        v11 = [v10 isEqual:v4];
+        uuid = [v9 uuid];
+        v11 = [uuid isEqual:dCopy];
 
         if (v11)
         {
@@ -1323,7 +1323,7 @@ uint64_t __77__AFUIServiceDelegate_inputSystemService_inputSession_performInputO
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [currentSessions countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;

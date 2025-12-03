@@ -1,25 +1,25 @@
 @interface FRNewsActivityInteractionSerializer
-- (id)intentForActivityData:(id)a3;
+- (id)intentForActivityData:(id)data;
 @end
 
 @implementation FRNewsActivityInteractionSerializer
 
-- (id)intentForActivityData:(id)a3
+- (id)intentForActivityData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 activity];
-  if (v4 == 4)
+  dataCopy = data;
+  activity = [dataCopy activity];
+  if (activity == 4)
   {
     v5 = objc_opt_new();
   }
 
-  else if (v4 == 2)
+  else if (activity == 2)
   {
     v5 = objc_opt_new();
     v6 = [Tag alloc];
-    v7 = [v3 identifier];
-    v8 = [v3 object];
-    v9 = [(Tag *)v6 initWithIdentifier:v7 displayString:v8];
+    identifier = [dataCopy identifier];
+    object = [dataCopy object];
+    v9 = [(Tag *)v6 initWithIdentifier:identifier displayString:object];
     [v5 setTag:v9];
   }
 

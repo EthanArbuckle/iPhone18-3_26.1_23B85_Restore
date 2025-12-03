@@ -1,7 +1,7 @@
 @interface PLAssetComputeCacheFaceRebuildDescription
 - (BOOL)isHidden;
 - (BOOL)isManual;
-- (PLAssetComputeCacheFaceRebuildDescription)initWithPayloadAttributes:(id)a3;
+- (PLAssetComputeCacheFaceRebuildDescription)initWithPayloadAttributes:(id)attributes;
 - (double)bodyCenterX;
 - (double)bodyCenterY;
 - (double)bodyHeight;
@@ -19,41 +19,41 @@
 - (int)faceAlgorithmVersion
 {
   v2 = [(NSDictionary *)self->_payloadAttributes objectForKeyedSubscript:@"faceAlgorithmVersion"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (int)cloudNameSource
 {
   v2 = [(NSDictionary *)self->_payloadAttributes objectForKeyedSubscript:@"cloudNameSource"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (int)nameSource
 {
   v2 = [(NSDictionary *)self->_payloadAttributes objectForKeyedSubscript:@"nameSource"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (BOOL)isManual
 {
   v2 = [(NSDictionary *)self->_payloadAttributes objectForKeyedSubscript:@"manual"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isHidden
 {
   v2 = [(NSDictionary *)self->_payloadAttributes objectForKeyedSubscript:@"hidden"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (double)bodyHeight
@@ -119,16 +119,16 @@
   return v4;
 }
 
-- (PLAssetComputeCacheFaceRebuildDescription)initWithPayloadAttributes:(id)a3
+- (PLAssetComputeCacheFaceRebuildDescription)initWithPayloadAttributes:(id)attributes
 {
-  v5 = a3;
+  attributesCopy = attributes;
   v9.receiver = self;
   v9.super_class = PLAssetComputeCacheFaceRebuildDescription;
   v6 = [(PLAssetComputeCacheFaceRebuildDescription *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_payloadAttributes, a3);
+    objc_storeStrong(&v6->_payloadAttributes, attributes);
   }
 
   return v7;

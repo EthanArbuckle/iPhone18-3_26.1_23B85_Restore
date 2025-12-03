@@ -1,23 +1,23 @@
 @interface _CNFlatMapEnumerator
-- (_CNFlatMapEnumerator)initWithEnumerator:(id)a3 transform:(id)a4;
+- (_CNFlatMapEnumerator)initWithEnumerator:(id)enumerator transform:(id)transform;
 - (id)nextObject;
 - (void)refillBuffer;
 @end
 
 @implementation _CNFlatMapEnumerator
 
-- (_CNFlatMapEnumerator)initWithEnumerator:(id)a3 transform:(id)a4
+- (_CNFlatMapEnumerator)initWithEnumerator:(id)enumerator transform:(id)transform
 {
-  v7 = a3;
-  v8 = a4;
+  enumeratorCopy = enumerator;
+  transformCopy = transform;
   v15.receiver = self;
   v15.super_class = _CNFlatMapEnumerator;
   v9 = [(_CNFlatMapEnumerator *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_enumerator, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_enumerator, enumerator);
+    v11 = [transformCopy copy];
     transform = v10->_transform;
     v10->_transform = v11;
 
@@ -38,33 +38,33 @@
   {
     [(_CNFlatMapEnumerator *)self refillBuffer];
 LABEL_3:
-    v3 = [(_CNFlatMapEnumerator *)self nextBufferedObject];
-    if (v3)
+    nextBufferedObject = [(_CNFlatMapEnumerator *)self nextBufferedObject];
+    if (nextBufferedObject)
     {
       break;
     }
 
     if (!self->_buffer)
     {
-      v3 = 0;
+      nextBufferedObject = 0;
       break;
     }
   }
 
-  return v3;
+  return nextBufferedObject;
 }
 
 - (void)refillBuffer
 {
-  v3 = [(NSEnumerator *)self->_enumerator nextObject];
-  v5 = v3;
-  if (v3)
+  nextObject = [(NSEnumerator *)self->_enumerator nextObject];
+  v5 = nextObject;
+  if (nextObject)
   {
-    v3 = (*(self->_transform + 2))();
+    nextObject = (*(self->_transform + 2))();
   }
 
   buffer = self->_buffer;
-  self->_buffer = v3;
+  self->_buffer = nextObject;
 }
 
 @end

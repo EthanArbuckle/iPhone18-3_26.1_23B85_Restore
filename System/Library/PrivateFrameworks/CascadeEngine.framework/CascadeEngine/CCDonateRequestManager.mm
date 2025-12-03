@@ -1,16 +1,16 @@
 @interface CCDonateRequestManager
-- (BOOL)_isActiveRequestId:(unsigned int)a3;
+- (BOOL)_isActiveRequestId:(unsigned int)id;
 - (CCDonateRequestManager)init;
-- (CCDonateRequestManager)initWithWriteAccess:(id)a3;
-- (CCDonateRequestManager)initWithWriteAccess:(id)a3 changeNotifier:(id)a4 donationTimeout:(double)a5;
+- (CCDonateRequestManager)initWithWriteAccess:(id)access;
+- (CCDonateRequestManager)initWithWriteAccess:(id)access changeNotifier:(id)notifier donationTimeout:(double)timeout;
 - (id)_dequeue;
 - (void)_beginTransaction;
 - (void)_endTransaction;
-- (void)_enqueue:(id)a3;
+- (void)_enqueue:(id)_enqueue;
 - (void)_handleNextRequest;
-- (void)completeRequest:(id)a3;
+- (void)completeRequest:(id)request;
 - (void)resume;
-- (void)submitRequest:(id)a3;
+- (void)submitRequest:(id)request;
 - (void)suspend;
 @end
 
@@ -19,7 +19,7 @@
 - (void)_beginTransaction
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = HIDWORD(*a1);
+  v9 = HIDWORD(*self);
   OUTLINED_FUNCTION_0_2(&dword_1DA444000, a2, a3, "Acquired OS transaction: %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -34,11 +34,11 @@
     v23 = v3;
     if (!self->_suspended)
     {
-      v7 = [(CCDonateRequestManager *)self _dequeue];
+      _dequeue = [(CCDonateRequestManager *)self _dequeue];
       activeRequest = self->_activeRequest;
-      self->_activeRequest = v7;
+      self->_activeRequest = _dequeue;
 
-      v9 = v7;
+      v9 = _dequeue;
       v10 = v9;
       if (v9)
       {
@@ -90,20 +90,20 @@
 
     else
     {
-      v4 = [(CCDonateRequestQueueNode *)firstNode next];
+      next = [(CCDonateRequestQueueNode *)firstNode next];
       lastNode = self->_firstNode;
-      self->_firstNode = v4;
+      self->_firstNode = next;
     }
 
-    v6 = [(CCDonateRequestQueueNode *)firstNode request];
+    request = [(CCDonateRequestQueueNode *)firstNode request];
   }
 
   else
   {
-    v6 = 0;
+    request = 0;
   }
 
-  return v6;
+  return request;
 }
 
 uint64_t __44__CCDonateRequestManager__handleNextRequest__block_invoke(uint64_t a1)
@@ -126,7 +126,7 @@ uint64_t __44__CCDonateRequestManager__handleNextRequest__block_invoke(uint64_t 
 - (void)_endTransaction
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = HIDWORD(*(a1 + 16));
+  v9 = HIDWORD(*(self + 16));
   OUTLINED_FUNCTION_0_2(&dword_1DA444000, a2, a3, "Releasing OS transaction: %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -137,30 +137,30 @@ uint64_t __44__CCDonateRequestManager__handleNextRequest__block_invoke(uint64_t 
   objc_exception_throw(v2);
 }
 
-- (CCDonateRequestManager)initWithWriteAccess:(id)a3
+- (CCDonateRequestManager)initWithWriteAccess:(id)access
 {
   v4 = MEMORY[0x1E6993A60];
-  v5 = a3;
-  v6 = [v4 sharedInstance];
-  v7 = [(CCDonateRequestManager *)self initWithWriteAccess:v5 changeNotifier:v6 donationTimeout:1800.0];
+  accessCopy = access;
+  sharedInstance = [v4 sharedInstance];
+  v7 = [(CCDonateRequestManager *)self initWithWriteAccess:accessCopy changeNotifier:sharedInstance donationTimeout:1800.0];
 
   return v7;
 }
 
-- (CCDonateRequestManager)initWithWriteAccess:(id)a3 changeNotifier:(id)a4 donationTimeout:(double)a5
+- (CCDonateRequestManager)initWithWriteAccess:(id)access changeNotifier:(id)notifier donationTimeout:(double)timeout
 {
-  v9 = a3;
-  v10 = a4;
+  accessCopy = access;
+  notifierCopy = notifier;
   v23.receiver = self;
   v23.super_class = CCDonateRequestManager;
   v11 = [(CCDonateRequestManager *)&v23 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_writeAccess, a3);
-    objc_storeStrong(&v12->_changeNotifier, a4);
-    v12->_donationTimeout = a5 * 1.1;
-    v13 = [[CCDifferentialUpdaterFactory alloc] initWithWriteAccess:v12->_writeAccess changeNotifier:v12->_changeNotifier timeout:a5];
+    objc_storeStrong(&v11->_writeAccess, access);
+    objc_storeStrong(&v12->_changeNotifier, notifier);
+    v12->_donationTimeout = timeout * 1.1;
+    v13 = [[CCDifferentialUpdaterFactory alloc] initWithWriteAccess:v12->_writeAccess changeNotifier:v12->_changeNotifier timeout:timeout];
     updaterFactory = v12->_updaterFactory;
     v12->_updaterFactory = v13;
 
@@ -184,11 +184,11 @@ uint64_t __44__CCDonateRequestManager__handleNextRequest__block_invoke(uint64_t 
   return v12;
 }
 
-- (void)_enqueue:(id)a3
+- (void)_enqueue:(id)_enqueue
 {
-  v4 = a3;
+  _enqueueCopy = _enqueue;
   obj = objc_opt_new();
-  [(CCDonateRequestQueueNode *)obj setRequest:v4];
+  [(CCDonateRequestQueueNode *)obj setRequest:_enqueueCopy];
 
   if (self->_firstNode)
   {
@@ -210,17 +210,17 @@ uint64_t __44__CCDonateRequestManager__handleNextRequest__block_invoke(uint64_t 
   *p_lastNode = v8;
 }
 
-- (void)submitRequest:(id)a3
+- (void)submitRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   registryQueue = self->_registryQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__CCDonateRequestManager_submitRequest___block_invoke;
   v7[3] = &unk_1E85C2F40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(registryQueue, v7);
 }
 
@@ -233,11 +233,11 @@ uint64_t __40__CCDonateRequestManager_submitRequest___block_invoke(uint64_t a1)
   return [v2 _handleNextRequest];
 }
 
-- (void)completeRequest:(id)a3
+- (void)completeRequest:(id)request
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  requestCopy = request;
+  v5 = requestCopy;
+  if (requestCopy)
   {
     registryQueue = self->_registryQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -245,7 +245,7 @@ uint64_t __40__CCDonateRequestManager_submitRequest___block_invoke(uint64_t a1)
     v7[2] = __42__CCDonateRequestManager_completeRequest___block_invoke;
     v7[3] = &unk_1E85C2F40;
     v7[4] = self;
-    v8 = v4;
+    v8 = requestCopy;
     dispatch_async(registryQueue, v7);
   }
 }
@@ -286,12 +286,12 @@ void __42__CCDonateRequestManager_completeRequest___block_invoke(uint64_t a1)
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isActiveRequestId:(unsigned int)a3
+- (BOOL)_isActiveRequestId:(unsigned int)id
 {
   activeRequest = self->_activeRequest;
   if (activeRequest)
   {
-    LOBYTE(activeRequest) = [(CCDonateRequest *)activeRequest requestId]== a3;
+    LOBYTE(activeRequest) = [(CCDonateRequest *)activeRequest requestId]== id;
   }
 
   return activeRequest;

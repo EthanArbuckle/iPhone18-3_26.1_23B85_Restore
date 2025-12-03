@@ -1,16 +1,16 @@
 @interface _ICPredictionManager
-- (_ICPredictionManager)initWithPredictionSources:(id)a3;
-- (id)_quickTypePredictionWithTrigger:(id)a3 searchContext:(id)a4 timeoutInMilliseconds:(unint64_t)a5 error:(id *)a6;
+- (_ICPredictionManager)initWithPredictionSources:(id)sources;
+- (id)_quickTypePredictionWithTrigger:(id)trigger searchContext:(id)context timeoutInMilliseconds:(unint64_t)milliseconds error:(id *)error;
 - (id)searchForMeCardEmailAddresses;
 - (id)searchForMeCardRegions;
-- (id)searchWithTrigger:(id)a3 searchContext:(id)a4 timeoutInMilliseconds:(int)a5 error:(id *)a6;
+- (id)searchWithTrigger:(id)trigger searchContext:(id)context timeoutInMilliseconds:(int)milliseconds error:(id *)error;
 - (void)hibernate;
-- (void)propogateMetrics:(id)a3 data:(id)a4;
-- (void)provideFeedbackForString:(id)a3 type:(unsigned __int8)a4 style:(unsigned __int8)a5;
+- (void)propogateMetrics:(id)metrics data:(id)data;
+- (void)provideFeedbackForString:(id)string type:(unsigned __int8)type style:(unsigned __int8)style;
 - (void)reset;
 - (void)searchForMeCardEmailAddresses;
 - (void)searchForMeCardRegions;
-- (void)setLastUsedSource:(id)a3;
+- (void)setLastUsedSource:(id)source;
 - (void)warmUp;
 @end
 
@@ -18,8 +18,8 @@
 
 - (void)reset
 {
-  v2 = [(_ICPredictionManager *)self cache];
-  [v2 clear];
+  cache = [(_ICPredictionManager *)self cache];
+  [cache clear];
 }
 
 - (void)warmUp
@@ -175,9 +175,9 @@ LABEL_22:
   return v14;
 }
 
-- (_ICPredictionManager)initWithPredictionSources:(id)a3
+- (_ICPredictionManager)initWithPredictionSources:(id)sources
 {
-  v5 = a3;
+  sourcesCopy = sources;
   v17.receiver = self;
   v17.super_class = _ICPredictionManager;
   v6 = [(_ICPredictionManager *)&v17 init];
@@ -187,17 +187,17 @@ LABEL_22:
     cache = v6->_cache;
     v6->_cache = v7;
 
-    if (v5)
+    if (sourcesCopy)
     {
-      objc_storeStrong(&v6->_predictionSources, a3);
+      objc_storeStrong(&v6->_predictionSources, sources);
     }
 
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_attr_make_with_qos_class(v9, QOS_CLASS_UTILITY, 0);
 
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    v13 = [@"com.apple.inputcontext.predictionmanager." stringByAppendingString:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v13 = [@"com.apple.inputcontext.predictionmanager." stringByAppendingString:uUIDString];
 
     v14 = dispatch_queue_create([v13 UTF8String], v10);
     serialQueue = v6->_serialQueue;
@@ -207,35 +207,35 @@ LABEL_22:
   return v6;
 }
 
-- (id)searchWithTrigger:(id)a3 searchContext:(id)a4 timeoutInMilliseconds:(int)a5 error:(id *)a6
+- (id)searchWithTrigger:(id)trigger searchContext:(id)context timeoutInMilliseconds:(int)milliseconds error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  triggerCopy = trigger;
+  contextCopy = context;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __84___ICPredictionManager_searchWithTrigger_searchContext_timeoutInMilliseconds_error___block_invoke;
   v24[3] = &unk_2797ADA18;
   v24[4] = self;
-  v12 = v10;
+  v12 = triggerCopy;
   v25 = v12;
-  v13 = v11;
+  v13 = contextCopy;
   v26 = v13;
-  v27 = a5;
+  millisecondsCopy = milliseconds;
   v14 = MEMORY[0x259C27030](v24);
   if ([v12 triggerSourceType] == 3)
   {
     goto LABEL_4;
   }
 
-  v15 = [MEMORY[0x277CBEB68] null];
-  v16 = [v12 attributedString];
-  v17 = [v16 objectForKeyedSubscript:*MEMORY[0x277D22F30]];
-  v18 = [v15 isEqual:v17];
+  null = [MEMORY[0x277CBEB68] null];
+  attributedString = [v12 attributedString];
+  v17 = [attributedString objectForKeyedSubscript:*MEMORY[0x277D22F30]];
+  v18 = [null isEqual:v17];
 
   if (!v18)
   {
 LABEL_4:
-    v20 = (v14)[2](v14, a6);
+    v20 = (v14)[2](v14, error);
   }
 
   else
@@ -254,27 +254,27 @@ LABEL_4:
   return v20;
 }
 
-- (id)_quickTypePredictionWithTrigger:(id)a3 searchContext:(id)a4 timeoutInMilliseconds:(unint64_t)a5 error:(id *)a6
+- (id)_quickTypePredictionWithTrigger:(id)trigger searchContext:(id)context timeoutInMilliseconds:(unint64_t)milliseconds error:(id *)error
 {
   v66 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v34 = a4;
-  v9 = [v8 attributedString];
-  LOBYTE(a4) = v9 == 0;
+  triggerCopy = trigger;
+  contextCopy = context;
+  attributedString = [triggerCopy attributedString];
+  LOBYTE(context) = attributedString == 0;
 
   v10 = _ICProactiveQuickTypeOSLogFacility();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
-  if (a4)
+  if (context)
   {
     if (v11)
     {
-      [_ICPredictionManager _quickTypePredictionWithTrigger:v8 searchContext:v10 timeoutInMilliseconds:? error:?];
+      [_ICPredictionManager _quickTypePredictionWithTrigger:triggerCopy searchContext:v10 timeoutInMilliseconds:? error:?];
     }
   }
 
   else if (v11)
   {
-    [_ICPredictionManager _quickTypePredictionWithTrigger:v8 searchContext:v10 timeoutInMilliseconds:? error:?];
+    [_ICPredictionManager _quickTypePredictionWithTrigger:triggerCopy searchContext:v10 timeoutInMilliseconds:? error:?];
   }
 
   v57 = 0;
@@ -283,9 +283,9 @@ LABEL_4:
   v60 = __Block_byref_object_copy_;
   v61 = __Block_byref_object_dispose_;
   v62 = 0;
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   v51 = 0;
@@ -319,7 +319,7 @@ LABEL_10:
       }
 
       v17 = *(*(&v44 + 1) + 8 * v16);
-      if ([v17 doesSupportTriggerSourceType:{objc_msgSend(v8, "triggerSourceType", v30)}])
+      if ([v17 doesSupportTriggerSourceType:{objc_msgSend(triggerCopy, "triggerSourceType", v30)}])
       {
         v18 = dispatch_semaphore_create(0);
         objc_initWeak(&location, self);
@@ -332,8 +332,8 @@ LABEL_10:
         objc_copyWeak(&v42, &location);
         v19 = v18;
         v39 = v19;
-        [v17 predictedItemsWithProactiveTrigger:v8 searchContext:v34 limit:10 timeoutInMilliseconds:a5 handler:v38];
-        v20 = dispatch_time(0, (a5 / 1000.0 * 1.1 * 1000000000.0));
+        [v17 predictedItemsWithProactiveTrigger:triggerCopy searchContext:contextCopy limit:10 timeoutInMilliseconds:milliseconds handler:v38];
+        v20 = dispatch_time(0, (milliseconds / 1000.0 * 1.1 * 1000000000.0));
         if (dispatch_semaphore_wait(v19, v20))
         {
           v21 = _ICProactiveQuickTypeOSLogFacility();
@@ -348,8 +348,8 @@ LABEL_10:
 
         else if ([v58[5] count])
         {
-          v23 = [v17 name];
-          [(_ICPredictionManager *)self setLastUsedSource:v23];
+          name = [v17 name];
+          [(_ICPredictionManager *)self setLastUsedSource:name];
 
           v24 = _ICProactiveQuickTypeOSLogFacility();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -395,9 +395,9 @@ LABEL_10:
   {
 LABEL_26:
 
-    if (a6)
+    if (error)
     {
-      *a6 = v52[5];
+      *error = v52[5];
     }
 
     v12 = _ICProactiveQuickTypeOSLogFacility();
@@ -572,9 +572,9 @@ LABEL_22:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLastUsedSource:(id)a3
+- (void)setLastUsedSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   objc_initWeak(&location, self);
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -582,17 +582,17 @@ LABEL_22:
   block[2] = __42___ICPredictionManager_setLastUsedSource___block_invoke;
   block[3] = &unk_2797ADAB8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = sourceCopy;
+  v6 = sourceCopy;
   dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)provideFeedbackForString:(id)a3 type:(unsigned __int8)a4 style:(unsigned __int8)a5
+- (void)provideFeedbackForString:(id)string type:(unsigned __int8)type style:(unsigned __int8)style
 {
-  v8 = a3;
+  stringCopy = string;
   objc_initWeak(&location, self);
   serialQueue = self->_serialQueue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -600,20 +600,20 @@ LABEL_22:
   v11[2] = __60___ICPredictionManager_provideFeedbackForString_type_style___block_invoke;
   v11[3] = &unk_2797ADAE0;
   objc_copyWeak(&v13, &location);
-  v12 = v8;
-  v14 = a4;
-  v15 = a5;
-  v10 = v8;
+  v12 = stringCopy;
+  typeCopy = type;
+  styleCopy = style;
+  v10 = stringCopy;
   dispatch_async(serialQueue, v11);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (void)propogateMetrics:(id)a3 data:(id)a4
+- (void)propogateMetrics:(id)metrics data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  metricsCopy = metrics;
+  dataCopy = data;
   objc_initWeak(&location, self);
   serialQueue = self->_serialQueue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -621,10 +621,10 @@ LABEL_22:
   v11[2] = __46___ICPredictionManager_propogateMetrics_data___block_invoke;
   v11[3] = &unk_2797ADB08;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = metricsCopy;
+  v13 = dataCopy;
+  v9 = dataCopy;
+  v10 = metricsCopy;
   dispatch_async(serialQueue, v11);
 
   objc_destroyWeak(&v14);
@@ -671,16 +671,16 @@ LABEL_22:
 
 - (void)searchForMeCardRegions
 {
-  *a1 = 134217984;
-  *(a1 + 4) = a2;
-  OUTLINED_FUNCTION_2(&dword_254BD0000, a3, a3, "DEBUG:IC:PredictionsManager:searchForMeCardRegions received prediction source results, count = %lu", a1);
+  *self = 134217984;
+  *(self + 4) = a2;
+  OUTLINED_FUNCTION_2(&dword_254BD0000, a3, a3, "DEBUG:IC:PredictionsManager:searchForMeCardRegions received prediction source results, count = %lu", self);
 }
 
 - (void)searchForMeCardEmailAddresses
 {
-  *a1 = 134217984;
-  *(a1 + 4) = a2;
-  OUTLINED_FUNCTION_2(&dword_254BD0000, a3, a3, "DEBUG:IC:searchForMeCardEmailAddresses: received prediction source results, count = %lu", a1);
+  *self = 134217984;
+  *(self + 4) = a2;
+  OUTLINED_FUNCTION_2(&dword_254BD0000, a3, a3, "DEBUG:IC:searchForMeCardEmailAddresses: received prediction source results, count = %lu", self);
 }
 
 @end

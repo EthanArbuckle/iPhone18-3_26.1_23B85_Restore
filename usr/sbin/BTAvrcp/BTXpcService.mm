@@ -1,8 +1,8 @@
 @interface BTXpcService
 - (BTXpcService)init;
-- (BTXpcService)initWithName:(const char *)a3 sessionClass:(Class)a4;
-- (void)_handleConnection:(id)a3;
-- (void)_handleEvent:(id)a3;
+- (BTXpcService)initWithName:(const char *)name sessionClass:(Class)class;
+- (void)_handleConnection:(id)connection;
+- (void)_handleEvent:(id)event;
 @end
 
 @implementation BTXpcService
@@ -15,7 +15,7 @@
   return 0;
 }
 
-- (BTXpcService)initWithName:(const char *)a3 sessionClass:(Class)a4
+- (BTXpcService)initWithName:(const char *)name sessionClass:(Class)class
 {
   v17.receiver = self;
   v17.super_class = BTXpcService;
@@ -26,9 +26,9 @@
   }
 
   p_isa = &v6->super.isa;
-  v6->_name = a3;
-  objc_storeStrong(&v6->_sessionClass, a4);
-  mach_service = xpc_connection_create_mach_service(a3, &_dispatch_main_q, 1uLL);
+  v6->_name = name;
+  objc_storeStrong(&v6->_sessionClass, class);
+  mach_service = xpc_connection_create_mach_service(name, &_dispatch_main_q, 1uLL);
   v9 = p_isa[3];
   p_isa[3] = mach_service;
 
@@ -62,13 +62,13 @@
   return v11;
 }
 
-- (void)_handleEvent:(id)a3
+- (void)_handleEvent:(id)event
 {
-  v4 = a3;
-  type = xpc_get_type(v4);
+  eventCopy = event;
+  type = xpc_get_type(eventCopy);
   if (type == &_xpc_type_connection)
   {
-    [(BTXpcService *)self _handleConnection:v4];
+    [(BTXpcService *)self _handleConnection:eventCopy];
   }
 
   else
@@ -80,20 +80,20 @@
     {
       if (v8)
       {
-        sub_10000E484(v4, v7);
+        sub_10000E484(eventCopy, v7);
       }
     }
 
     else if (v8)
     {
-      sub_10000E40C(v4, v7);
+      sub_10000E40C(eventCopy, v7);
     }
   }
 }
 
-- (void)_handleConnection:(id)a3
+- (void)_handleConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   [(BTXpcService *)self name];
   v5 = xpc_connection_copy_entitlement_value();
   v6 = v5;
@@ -109,7 +109,7 @@
       sub_10000E4FC(v7);
     }
 
-    xpc_connection_cancel(v4);
+    xpc_connection_cancel(connectionCopy);
   }
 }
 

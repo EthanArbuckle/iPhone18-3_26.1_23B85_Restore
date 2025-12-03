@@ -9,8 +9,8 @@
 {
   v2 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
-  v4 = [a1 _loggableDescription];
-  v5 = [v2 stringWithFormat:@"<%@ %@>", v3, v4];
+  _loggableDescription = [self _loggableDescription];
+  v5 = [v2 stringWithFormat:@"<%@ %@>", v3, _loggableDescription];
 
   return v5;
 }
@@ -19,9 +19,9 @@
 {
   v2 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
-  v4 = [a1 _loggableDescription];
-  [a1 priority];
-  v6 = [v2 stringWithFormat:@"<%@ %@, priority=%.2f>", v3, v4, v5];
+  _loggableDescription = [self _loggableDescription];
+  [self priority];
+  v6 = [v2 stringWithFormat:@"<%@ %@, priority=%.2f>", v3, _loggableDescription, v5];
 
   return v6;
 }

@@ -1,75 +1,75 @@
 @interface MOEmbedding
-- (MOEmbedding)initWithEventBundle:(id)a3 forEmbeddingType:(unint64_t)a4;
-- (double)getActivityContextDistanceFrom:(id)a3 withWeights:(id)a4;
-- (double)getDistanceFrom:(id)a3 withWeights:(id)a4;
-- (double)getExtraContextDistanceFrom:(id)a3 withWeights:(id)a4;
-- (double)getLocationContextDistanceFrom:(id)a3 withWeights:(id)a4;
-- (double)getSocialContextDistanceFrom:(id)a3 withWeights:(id)a4;
-- (double)getStateOfMindContextDistanceFrom:(id)a3 withWeights:(id)a4;
-- (double)getTimeContextDistanceFrom:(id)a3 withWeights:(id)a4;
-- (id)dayOfWeekString:(unint64_t)a3;
+- (MOEmbedding)initWithEventBundle:(id)bundle forEmbeddingType:(unint64_t)type;
+- (double)getActivityContextDistanceFrom:(id)from withWeights:(id)weights;
+- (double)getDistanceFrom:(id)from withWeights:(id)weights;
+- (double)getExtraContextDistanceFrom:(id)from withWeights:(id)weights;
+- (double)getLocationContextDistanceFrom:(id)from withWeights:(id)weights;
+- (double)getSocialContextDistanceFrom:(id)from withWeights:(id)weights;
+- (double)getStateOfMindContextDistanceFrom:(id)from withWeights:(id)weights;
+- (double)getTimeContextDistanceFrom:(id)from withWeights:(id)weights;
+- (id)dayOfWeekString:(unint64_t)string;
 - (id)description;
-- (id)extractActivtyContextEmbedding:(id)a3;
-- (id)extractExtraContextEmbedding:(id)a3;
-- (id)extractLocationContextEmbedding:(id)a3;
-- (id)extractSocialContextEmbedding:(id)a3;
-- (id)extractStateOfMindContextEmbedding:(id)a3;
-- (id)extractTimeContextEmbedding:(id)a3;
+- (id)extractActivtyContextEmbedding:(id)embedding;
+- (id)extractExtraContextEmbedding:(id)embedding;
+- (id)extractLocationContextEmbedding:(id)embedding;
+- (id)extractSocialContextEmbedding:(id)embedding;
+- (id)extractStateOfMindContextEmbedding:(id)embedding;
+- (id)extractTimeContextEmbedding:(id)embedding;
 - (id)summaryDictionary;
-- (void)extractContextsFromPhotoTraits:(id)a3;
+- (void)extractContextsFromPhotoTraits:(id)traits;
 @end
 
 @implementation MOEmbedding
 
-- (MOEmbedding)initWithEventBundle:(id)a3 forEmbeddingType:(unint64_t)a4
+- (MOEmbedding)initWithEventBundle:(id)bundle forEmbeddingType:(unint64_t)type
 {
-  v7 = a3;
-  if (v7)
+  bundleCopy = bundle;
+  if (bundleCopy)
   {
     v30.receiver = self;
     v30.super_class = MOEmbedding;
     v8 = [(MOEmbedding *)&v30 init];
     if (v8)
     {
-      v9 = [v7 bundleIdentifier];
+      bundleIdentifier = [bundleCopy bundleIdentifier];
       bundleIdentifier = v8->_bundleIdentifier;
-      v8->_bundleIdentifier = v9;
+      v8->_bundleIdentifier = bundleIdentifier;
 
-      v11 = [v7 suggestionID];
+      suggestionID = [bundleCopy suggestionID];
       suggestionID = v8->_suggestionID;
-      v8->_suggestionID = v11;
+      v8->_suggestionID = suggestionID;
 
-      v8->_embeddingType = a4;
-      v13 = [(MOEmbedding *)v8 extractActivtyContextEmbedding:v7];
+      v8->_embeddingType = type;
+      v13 = [(MOEmbedding *)v8 extractActivtyContextEmbedding:bundleCopy];
       activityContextEmbedding = v8->_activityContextEmbedding;
       v8->_activityContextEmbedding = v13;
 
-      v15 = [(MOEmbedding *)v8 extractTimeContextEmbedding:v7];
+      v15 = [(MOEmbedding *)v8 extractTimeContextEmbedding:bundleCopy];
       timeContextEmbedding = v8->_timeContextEmbedding;
       v8->_timeContextEmbedding = v15;
 
-      v17 = [(MOEmbedding *)v8 extractLocationContextEmbedding:v7];
+      v17 = [(MOEmbedding *)v8 extractLocationContextEmbedding:bundleCopy];
       locationContextEmbedding = v8->_locationContextEmbedding;
       v8->_locationContextEmbedding = v17;
 
-      v19 = [(MOEmbedding *)v8 extractSocialContextEmbedding:v7];
+      v19 = [(MOEmbedding *)v8 extractSocialContextEmbedding:bundleCopy];
       socialContextEmbedding = v8->_socialContextEmbedding;
       v8->_socialContextEmbedding = v19;
 
-      v21 = [(MOEmbedding *)v8 extractStateOfMindContextEmbedding:v7];
+      v21 = [(MOEmbedding *)v8 extractStateOfMindContextEmbedding:bundleCopy];
       stateOfMindContextEmbedding = v8->_stateOfMindContextEmbedding;
       v8->_stateOfMindContextEmbedding = v21;
 
-      v23 = [(MOEmbedding *)v8 extractExtraContextEmbedding:v7];
+      v23 = [(MOEmbedding *)v8 extractExtraContextEmbedding:bundleCopy];
       extraContextEmbedding = v8->_extraContextEmbedding;
       v8->_extraContextEmbedding = v23;
 
-      v25 = [v7 photoTraits];
-      [(MOEmbedding *)v8 extractContextsFromPhotoTraits:v25];
+      photoTraits = [bundleCopy photoTraits];
+      [(MOEmbedding *)v8 extractContextsFromPhotoTraits:photoTraits];
     }
 
     self = v8;
-    v26 = self;
+    selfCopy = self;
   }
 
   else
@@ -83,39 +83,39 @@
     v28 = +[NSAssertionHandler currentHandler];
     [v28 handleFailureInMethod:a2 object:self file:@"MOEmbedding.m" lineNumber:31 description:@"Invalid parameter not satisfying: eventBundle"];
 
-    v26 = 0;
+    selfCopy = 0;
   }
 
-  return v26;
+  return selfCopy;
 }
 
-- (id)extractActivtyContextEmbedding:(id)a3
+- (id)extractActivtyContextEmbedding:(id)embedding
 {
-  v3 = a3;
+  embeddingCopy = embedding;
   v4 = objc_opt_new();
-  v5 = [v3 getSuperTypeString];
-  [v4 setObject:v5 forKeyedSubscript:@"topLevelActivityType"];
+  getSuperTypeString = [embeddingCopy getSuperTypeString];
+  [v4 setObject:getSuperTypeString forKeyedSubscript:@"topLevelActivityType"];
 
-  v6 = [v3 action];
-  v7 = [v6 actionName];
+  action = [embeddingCopy action];
+  actionName = [action actionName];
 
-  if (v7)
+  if (actionName)
   {
-    v8 = [v3 action];
-    v9 = [v8 actionName];
-    [v4 setObject:v9 forKeyedSubscript:@"secondLevelActivityType"];
+    action2 = [embeddingCopy action];
+    actionName2 = [action2 actionName];
+    [v4 setObject:actionName2 forKeyedSubscript:@"secondLevelActivityType"];
 
-    v10 = [v3 action];
-    v11 = [v10 actionName];
-    if ([v11 isEqualToString:@"Photos at Home"])
+    action3 = [embeddingCopy action];
+    actionName3 = [action3 actionName];
+    if ([actionName3 isEqualToString:@"Photos at Home"])
     {
     }
 
     else
     {
-      v12 = [v3 action];
-      v13 = [v12 actionName];
-      v14 = [v13 isEqualToString:@"Hosting at Home"];
+      action4 = [embeddingCopy action];
+      actionName4 = [action4 actionName];
+      v14 = [actionName4 isEqualToString:@"Hosting at Home"];
 
       if (!v14)
       {
@@ -131,18 +131,18 @@ LABEL_6:
   return v4;
 }
 
-- (id)extractTimeContextEmbedding:(id)a3
+- (id)extractTimeContextEmbedding:(id)embedding
 {
-  v4 = a3;
+  embeddingCopy = embedding;
   v5 = objc_opt_new();
-  v6 = [v4 localStartDate];
+  localStartDate = [embeddingCopy localStartDate];
   v7 = +[NSCalendar currentCalendar];
   v8 = v7;
   embeddingType = self->_embeddingType;
   if (embeddingType == 2)
   {
-    v32 = __sincos_stret([v7 component:4096 fromDate:v6] * 6.28318531 / 5.0);
-    v33 = __sincos_stret([v8 component:8 fromDate:v6] * 6.28318531 / 12.0);
+    v32 = __sincos_stret([v7 component:4096 fromDate:localStartDate] * 6.28318531 / 5.0);
+    v33 = __sincos_stret([v8 component:8 fromDate:localStartDate] * 6.28318531 / 12.0);
     v34 = [NSNumber numberWithDouble:v32.__cosval];
     [v5 setObject:v34 forKeyedSubscript:@"weekOfMonthCos"];
 
@@ -160,15 +160,15 @@ LABEL_6:
 
   else if (embeddingType == 1)
   {
-    [v4 duration];
+    [embeddingCopy duration];
     v11 = v10 / 86400.0;
-    v12 = [v8 components:96 fromDate:v6];
+    v12 = [v8 components:96 fromDate:localStartDate];
     v13 = __sincos_stret(([v12 minute] / 60.0 + objc_msgSend(v12, "hour")) * 6.28318531 / 24.0);
-    v14 = [v8 component:512 fromDate:v6];
+    v14 = [v8 component:512 fromDate:localStartDate];
     v15 = v14;
     v16 = __sincos_stret(v14 * 6.28318531 / 7.0);
     v18 = v14 == 1 || v14 == 7;
-    v19 = [v8 component:0x2000 fromDate:v6];
+    v19 = [v8 component:0x2000 fromDate:localStartDate];
     v20 = [NSNumber numberWithDouble:v11];
     [v5 setObject:v20 forKeyedSubscript:@"normalizedDuration"];
 
@@ -187,9 +187,9 @@ LABEL_6:
     v25 = [NSNumber numberWithBool:v18];
     [v5 setObject:v25 forKeyedSubscript:@"isWeekend"];
 
-    v26 = [v4 localStartDate];
-    v27 = [v4 localEndDate];
-    v28 = [NSNumber numberWithUnsignedInteger:[MOTime simpleTimetagFromStartDate:v26 endDate:v27]];
+    localStartDate2 = [embeddingCopy localStartDate];
+    localEndDate = [embeddingCopy localEndDate];
+    v28 = [NSNumber numberWithUnsignedInteger:[MOTime simpleTimetagFromStartDate:localStartDate2 endDate:localEndDate]];
     [v5 setObject:v28 forKeyedSubscript:@"timeTag"];
 
     v29 = [NSNumber numberWithDouble:v15];
@@ -215,102 +215,102 @@ LABEL_6:
   return v31;
 }
 
-- (id)extractLocationContextEmbedding:(id)a3
+- (id)extractLocationContextEmbedding:(id)embedding
 {
-  v3 = a3;
+  embeddingCopy = embedding;
   v4 = objc_opt_new();
-  v5 = [v3 place];
+  place = [embeddingCopy place];
 
-  if (v5)
+  if (place)
   {
-    v6 = [v3 place];
-    v7 = [v6 placeName];
-    v8 = [v7 length];
+    place2 = [embeddingCopy place];
+    placeName = [place2 placeName];
+    v8 = [placeName length];
 
     if (v8)
     {
-      v9 = [v3 place];
-      v10 = [v9 placeName];
-      [v4 setObject:v10 forKeyedSubscript:@"placeName"];
+      place3 = [embeddingCopy place];
+      placeName2 = [place3 placeName];
+      [v4 setObject:placeName2 forKeyedSubscript:@"placeName"];
     }
 
-    v11 = [v3 place];
-    v12 = [v11 enclosingArea];
-    v13 = [v12 length];
+    place4 = [embeddingCopy place];
+    enclosingArea = [place4 enclosingArea];
+    v13 = [enclosingArea length];
 
     if (v13)
     {
-      v14 = [v3 place];
-      v12 = [v14 enclosingArea];
-      [v4 setObject:v12 forKeyedSubscript:@"enclosingAreaName"];
+      place5 = [embeddingCopy place];
+      enclosingArea = [place5 enclosingArea];
+      [v4 setObject:enclosingArea forKeyedSubscript:@"enclosingAreaName"];
     }
 
-    v15 = [v3 place];
-    v16 = [v15 placeType];
-    if (v16 == 2 || ([v3 place], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "placeType") == 3))
+    place6 = [embeddingCopy place];
+    placeType = [place6 placeType];
+    if (placeType == 2 || ([embeddingCopy place], enclosingArea = objc_claimAutoreleasedReturnValue(), objc_msgSend(enclosingArea, "placeType") == 3))
     {
-      v17 = [v3 place];
-      [v17 placeNameConfidence];
+      place7 = [embeddingCopy place];
+      [place7 placeNameConfidence];
       if (v18 >= 0.9)
       {
-        v19 = [v3 place];
-        v20 = [v19 poiCategory];
-        v21 = [v20 length];
+        place8 = [embeddingCopy place];
+        poiCategory = [place8 poiCategory];
+        v21 = [poiCategory length];
 
-        if (v16 != 2)
+        if (placeType != 2)
         {
         }
 
         if (!v21)
         {
 LABEL_17:
-          v22 = [v3 place];
-          if ([v22 placeUserType])
+          place9 = [embeddingCopy place];
+          if ([place9 placeUserType])
           {
-            v23 = [v3 place];
-            v24 = [v23 placeUserType];
+            place10 = [embeddingCopy place];
+            placeUserType = [place10 placeUserType];
 
-            if (v24 == 100)
+            if (placeUserType == 100)
             {
               goto LABEL_21;
             }
 
-            v22 = [v3 place];
-            v25 = +[MOEventRoutine stringOfPlaceUserType:](MOEventRoutine, "stringOfPlaceUserType:", [v22 placeUserType]);
+            place9 = [embeddingCopy place];
+            v25 = +[MOEventRoutine stringOfPlaceUserType:](MOEventRoutine, "stringOfPlaceUserType:", [place9 placeUserType]);
             [v4 setObject:v25 forKeyedSubscript:@"combinedPlaceType"];
           }
 
 LABEL_21:
-          v26 = [v3 place];
-          v27 = [v26 location];
-          [v27 latitude];
+          place11 = [embeddingCopy place];
+          location = [place11 location];
+          [location latitude];
           if (v28 != 0.0)
           {
-            v29 = [v3 place];
-            v30 = [v29 location];
-            [v30 longitude];
+            place12 = [embeddingCopy place];
+            location2 = [place12 location];
+            [location2 longitude];
             v32 = v31;
 
             if (v32 == 0.0)
             {
 LABEL_25:
-              v37 = [v3 place];
-              [v37 familiarityIndexLOI];
+              place13 = [embeddingCopy place];
+              [place13 familiarityIndexLOI];
               v38 = [NSNumber numberWithDouble:?];
               [v4 setObject:v38 forKeyedSubscript:@"placeFamiliarityIndexLOI"];
 
               goto LABEL_26;
             }
 
-            v33 = [v3 place];
-            v34 = [v33 location];
-            [v34 latitude];
+            place14 = [embeddingCopy place];
+            location3 = [place14 location];
+            [location3 latitude];
             v35 = [NSNumber numberWithDouble:?];
             [v4 setObject:v35 forKeyedSubscript:@"placeLatitude"];
 
-            v26 = [v3 place];
-            v27 = [v26 location];
-            [v27 longitude];
+            place11 = [embeddingCopy place];
+            location = [place11 location];
+            [location longitude];
             v36 = [NSNumber numberWithDouble:?];
             [v4 setObject:v36 forKeyedSubscript:@"placeLongitude"];
           }
@@ -318,15 +318,15 @@ LABEL_25:
           goto LABEL_25;
         }
 
-        v15 = [v3 place];
-        v12 = [v15 poiCategory];
-        [v4 setObject:v12 forKeyedSubscript:@"combinedPlaceType"];
+        place6 = [embeddingCopy place];
+        enclosingArea = [place6 poiCategory];
+        [v4 setObject:enclosingArea forKeyedSubscript:@"combinedPlaceType"];
       }
 
       else
       {
 
-        if (v16 == 2)
+        if (placeType == 2)
         {
           goto LABEL_16;
         }
@@ -342,11 +342,11 @@ LABEL_26:
   return v4;
 }
 
-- (id)extractSocialContextEmbedding:(id)a3
+- (id)extractSocialContextEmbedding:(id)embedding
 {
-  v3 = a3;
-  v4 = [v3 persons];
-  v5 = [v4 count];
+  embeddingCopy = embedding;
+  persons = [embeddingCopy persons];
+  v5 = [persons count];
 
   if (v5)
   {
@@ -355,9 +355,9 @@ LABEL_26:
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v31 = v3;
-    v7 = [v3 persons];
-    v8 = [v7 countByEnumeratingWithState:&v37 objects:v45 count:16];
+    v31 = embeddingCopy;
+    persons2 = [embeddingCopy persons];
+    v8 = [persons2 countByEnumeratingWithState:&v37 objects:v45 count:16];
     if (v8)
     {
       v32 = v6;
@@ -373,13 +373,13 @@ LABEL_26:
         {
           if (*v38 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(persons2);
           }
 
           v12 = *(*(&v37 + 1) + 8 * i);
-          v13 = [v12 name];
+          name = [v12 name];
 
-          if (v13 && ([v12 isMePerson] & 1) == 0)
+          if (name && ([v12 isMePerson] & 1) == 0)
           {
             [v32 addObject:v12];
           }
@@ -388,9 +388,9 @@ LABEL_26:
           v15 = _mo_log_facility_get_os_log(&MOLogFacilityPatternEmbedding);
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
-            v16 = [v12 name];
+            name2 = [v12 name];
             *buf = 138478083;
-            v42 = v16;
+            v42 = name2;
             v43 = 2048;
             v44 = v14;
             _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Relationship Tag for person %{private}@:%lu", buf, 0x16u);
@@ -426,7 +426,7 @@ LABEL_26:
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v37 objects:v45 count:16];
+        v8 = [persons2 countByEnumeratingWithState:&v37 objects:v45 count:16];
       }
 
       while (v8);
@@ -475,50 +475,50 @@ LABEL_26:
       [MOEmbedding extractSocialContextEmbedding:];
     }
 
-    v3 = v31;
+    embeddingCopy = v31;
   }
 
   return v5;
 }
 
-- (id)extractStateOfMindContextEmbedding:(id)a3
+- (id)extractStateOfMindContextEmbedding:(id)embedding
 {
-  v3 = a3;
+  embeddingCopy = embedding;
   v4 = objc_opt_new();
-  v5 = [v3 metaDataForRank];
-  v6 = [v5 objectForKeyedSubscript:@"StateOfMindValence"];
+  metaDataForRank = [embeddingCopy metaDataForRank];
+  v6 = [metaDataForRank objectForKeyedSubscript:@"StateOfMindValence"];
 
   if (v6)
   {
-    v7 = [v3 metaDataForRank];
-    v8 = [v7 objectForKeyedSubscript:@"StateOfMindValence"];
+    metaDataForRank2 = [embeddingCopy metaDataForRank];
+    v8 = [metaDataForRank2 objectForKeyedSubscript:@"StateOfMindValence"];
     [v4 setObject:v8 forKeyedSubscript:kMOStateOfMindContextEmbeddingValenceValues];
   }
 
-  v9 = [v3 metaDataForRank];
-  v10 = [v9 objectForKeyedSubscript:@"StateOfMindLabels"];
+  metaDataForRank3 = [embeddingCopy metaDataForRank];
+  v10 = [metaDataForRank3 objectForKeyedSubscript:@"StateOfMindLabels"];
 
   if (v10)
   {
-    v11 = [v3 metaDataForRank];
-    v12 = [v11 objectForKeyedSubscript:@"StateOfMindLabels"];
+    metaDataForRank4 = [embeddingCopy metaDataForRank];
+    v12 = [metaDataForRank4 objectForKeyedSubscript:@"StateOfMindLabels"];
     [v4 setObject:v12 forKeyedSubscript:kMOStateOfMindContextEmbeddingLabels];
   }
 
-  v13 = [v3 metaDataForRank];
-  v14 = [v13 objectForKeyedSubscript:@"StateOfMindDomains"];
+  metaDataForRank5 = [embeddingCopy metaDataForRank];
+  v14 = [metaDataForRank5 objectForKeyedSubscript:@"StateOfMindDomains"];
 
   if (v14)
   {
-    v15 = [v3 metaDataForRank];
-    v16 = [v15 objectForKeyedSubscript:@"StateOfMindDomains"];
+    metaDataForRank6 = [embeddingCopy metaDataForRank];
+    v16 = [metaDataForRank6 objectForKeyedSubscript:@"StateOfMindDomains"];
     [v4 setObject:v16 forKeyedSubscript:kMOStateOfMindContextEmbeddingDomains];
   }
 
   v17 = _mo_log_facility_get_os_log(&MOLogFacilityPatternEmbedding);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    [MOEmbedding extractStateOfMindContextEmbedding:v3];
+    [MOEmbedding extractStateOfMindContextEmbedding:embeddingCopy];
   }
 
   v18 = _mo_log_facility_get_os_log(&MOLogFacilityPatternEmbedding);
@@ -530,22 +530,22 @@ LABEL_26:
   return v4;
 }
 
-- (id)extractExtraContextEmbedding:(id)a3
+- (id)extractExtraContextEmbedding:(id)embedding
 {
-  v3 = a3;
+  embeddingCopy = embedding;
   v4 = objc_opt_new();
-  v5 = [v3 rankingDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"bundleGoodnessScore"];
+  rankingDictionary = [embeddingCopy rankingDictionary];
+  v6 = [rankingDictionary objectForKeyedSubscript:@"bundleGoodnessScore"];
 
   if (v6)
   {
-    v7 = [v3 rankingDictionary];
-    v8 = [v7 objectForKeyedSubscript:@"bundleGoodnessScore"];
+    rankingDictionary2 = [embeddingCopy rankingDictionary];
+    v8 = [rankingDictionary2 objectForKeyedSubscript:@"bundleGoodnessScore"];
     [v4 setObject:v8 forKeyedSubscript:@"bundleGoodnessScore"];
   }
 
-  v9 = [v3 resources];
-  v10 = [v9 count];
+  resources = [embeddingCopy resources];
+  v10 = [resources count];
 
   if (v10)
   {
@@ -553,8 +553,8 @@ LABEL_26:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [v3 resources];
-    v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    resources2 = [embeddingCopy resources];
+    v12 = [resources2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
     {
       v13 = v12;
@@ -566,7 +566,7 @@ LABEL_26:
         {
           if (*v20 != v15)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(resources2);
           }
 
           if ([*(*(&v19 + 1) + 8 * i) type] == 2)
@@ -580,7 +580,7 @@ LABEL_26:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v13 = [resources2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v13);
@@ -603,25 +603,25 @@ LABEL_26:
   return v4;
 }
 
-- (void)extractContextsFromPhotoTraits:(id)a3
+- (void)extractContextsFromPhotoTraits:(id)traits
 {
-  v4 = a3;
+  traitsCopy = traits;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityPatternEmbedding);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [MOEmbedding extractContextsFromPhotoTraits:v4];
+    [MOEmbedding extractContextsFromPhotoTraits:traitsCopy];
   }
 
-  if ([v4 count])
+  if ([traitsCopy count])
   {
-    v6 = [MOMetaDataCurationUtility selectHolidayFromPhotoTraits:v4];
+    v6 = [MOMetaDataCurationUtility selectHolidayFromPhotoTraits:traitsCopy];
     if (v6)
     {
-      v7 = [(MOEmbedding *)self timeContextEmbedding];
-      v8 = [v7 mutableCopy];
+      timeContextEmbedding = [(MOEmbedding *)self timeContextEmbedding];
+      v8 = [timeContextEmbedding mutableCopy];
 
-      v9 = [v6 name];
-      [v8 setObject:v9 forKeyedSubscript:@"holiday"];
+      name = [v6 name];
+      [v8 setObject:name forKeyedSubscript:@"holiday"];
 
       [(MOEmbedding *)self setTimeContextEmbedding:v8];
       v10 = _mo_log_facility_get_os_log(&MOLogFacilityPatternEmbedding);
@@ -640,8 +640,8 @@ LABEL_26:
     v100 = 0u;
     v101 = 0u;
     v102 = 0u;
-    v93 = v4;
-    obj = v4;
+    v93 = traitsCopy;
+    obj = traitsCopy;
     v11 = [obj countByEnumeratingWithState:&v99 objects:v109 count:16];
     if (v11)
     {
@@ -657,8 +657,8 @@ LABEL_26:
           }
 
           v15 = *(*(&v99 + 1) + 8 * i);
-          v16 = [v15 name];
-          v17 = [v16 length];
+          name2 = [v15 name];
+          v17 = [name2 length];
 
           if (v17)
           {
@@ -668,116 +668,116 @@ LABEL_26:
               [(MOEmbedding *)v107 extractContextsFromPhotoTraits:v15, &v108, v18];
             }
 
-            v19 = [objc_opt_class() photoTraitRankedListForActivityTypes];
-            v20 = [v15 name];
-            v21 = [v20 lowercaseString];
-            v22 = [v19 containsObject:v21];
+            photoTraitRankedListForActivityTypes = [objc_opt_class() photoTraitRankedListForActivityTypes];
+            name3 = [v15 name];
+            lowercaseString = [name3 lowercaseString];
+            v22 = [photoTraitRankedListForActivityTypes containsObject:lowercaseString];
 
             if (v22)
             {
-              v23 = [objc_opt_class() photoTraitRankedListForActivityTypes];
-              v24 = [v15 name];
-              v25 = [v24 lowercaseString];
-              v26 = [v23 indexOfObject:v25];
+              photoTraitRankedListForActivityTypes2 = [objc_opt_class() photoTraitRankedListForActivityTypes];
+              name4 = [v15 name];
+              lowercaseString2 = [name4 lowercaseString];
+              v26 = [photoTraitRankedListForActivityTypes2 indexOfObject:lowercaseString2];
 
               v27 = [NSNumber numberWithUnsignedInteger:v26];
-              v28 = [v15 name];
-              v29 = [v28 lowercaseString];
-              [v97 setObject:v27 forKey:v29];
+              name5 = [v15 name];
+              lowercaseString3 = [name5 lowercaseString];
+              [v97 setObject:v27 forKey:lowercaseString3];
 
               v30 = _mo_log_facility_get_os_log(&MOLogFacilityPatternEmbedding);
               if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
               {
-                v67 = [v15 name];
+                name6 = [v15 name];
                 *buf = 138412546;
-                v104 = v67;
+                v104 = name6;
                 v105 = 2048;
                 v106 = v26;
                 _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "Photo trait was found from activity type list: traitName=%@, rankFromList=%lu", buf, 0x16u);
               }
             }
 
-            v31 = [objc_opt_class() photoTraitRankedListForPlaceTypes];
-            v32 = [v15 name];
-            v33 = [v32 lowercaseString];
-            v34 = [v31 containsObject:v33];
+            photoTraitRankedListForPlaceTypes = [objc_opt_class() photoTraitRankedListForPlaceTypes];
+            name7 = [v15 name];
+            lowercaseString4 = [name7 lowercaseString];
+            v34 = [photoTraitRankedListForPlaceTypes containsObject:lowercaseString4];
 
             if (v34)
             {
-              v35 = [objc_opt_class() photoTraitRankedListForPlaceTypes];
-              v36 = [v15 name];
-              v37 = [v36 lowercaseString];
-              v38 = [v35 indexOfObject:v37];
+              photoTraitRankedListForPlaceTypes2 = [objc_opt_class() photoTraitRankedListForPlaceTypes];
+              name8 = [v15 name];
+              lowercaseString5 = [name8 lowercaseString];
+              v38 = [photoTraitRankedListForPlaceTypes2 indexOfObject:lowercaseString5];
 
               v39 = [NSNumber numberWithUnsignedInteger:v38];
-              v40 = [v15 name];
-              v41 = [v40 lowercaseString];
-              [v95 setObject:v39 forKey:v41];
+              name9 = [v15 name];
+              lowercaseString6 = [name9 lowercaseString];
+              [v95 setObject:v39 forKey:lowercaseString6];
 
               v42 = _mo_log_facility_get_os_log(&MOLogFacilityPatternEmbedding);
               if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
               {
-                v68 = [v15 name];
+                name10 = [v15 name];
                 *buf = 138412546;
-                v104 = v68;
+                v104 = name10;
                 v105 = 2048;
                 v106 = v38;
                 _os_log_debug_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEBUG, "Photo trait was found from place type list:traitName=%@, rankFromList=%lu", buf, 0x16u);
               }
             }
 
-            v43 = [objc_opt_class() photoTraitRankedListForSocialEvents];
-            v44 = [v15 name];
-            v45 = [v44 lowercaseString];
-            v46 = [v43 containsObject:v45];
+            photoTraitRankedListForSocialEvents = [objc_opt_class() photoTraitRankedListForSocialEvents];
+            name11 = [v15 name];
+            lowercaseString7 = [name11 lowercaseString];
+            v46 = [photoTraitRankedListForSocialEvents containsObject:lowercaseString7];
 
             if (v46)
             {
-              v47 = [objc_opt_class() photoTraitRankedListForSocialEvents];
-              v48 = [v15 name];
-              v49 = [v48 lowercaseString];
-              v50 = [v47 indexOfObject:v49];
+              photoTraitRankedListForSocialEvents2 = [objc_opt_class() photoTraitRankedListForSocialEvents];
+              name12 = [v15 name];
+              lowercaseString8 = [name12 lowercaseString];
+              v50 = [photoTraitRankedListForSocialEvents2 indexOfObject:lowercaseString8];
 
               v51 = [NSNumber numberWithUnsignedInteger:v50];
-              v52 = [v15 name];
-              v53 = [v52 lowercaseString];
-              [v96 setObject:v51 forKey:v53];
+              name13 = [v15 name];
+              lowercaseString9 = [name13 lowercaseString];
+              [v96 setObject:v51 forKey:lowercaseString9];
 
               v54 = _mo_log_facility_get_os_log(&MOLogFacilityPatternEmbedding);
               if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
               {
-                v69 = [v15 name];
+                name14 = [v15 name];
                 *buf = 138412546;
-                v104 = v69;
+                v104 = name14;
                 v105 = 2048;
                 v106 = v50;
                 _os_log_debug_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEBUG, "Photo trait was found from social event list:traitName=%@, rankFromList=%lu", buf, 0x16u);
               }
             }
 
-            v55 = [objc_opt_class() photoTraitRankedListForOtherSubjects];
-            v56 = [v15 name];
-            v57 = [v56 lowercaseString];
-            v58 = [v55 containsObject:v57];
+            photoTraitRankedListForOtherSubjects = [objc_opt_class() photoTraitRankedListForOtherSubjects];
+            name15 = [v15 name];
+            lowercaseString10 = [name15 lowercaseString];
+            v58 = [photoTraitRankedListForOtherSubjects containsObject:lowercaseString10];
 
             if (v58)
             {
-              v59 = [objc_opt_class() photoTraitRankedListForOtherSubjects];
-              v60 = [v15 name];
-              v61 = [v60 lowercaseString];
-              v62 = [v59 indexOfObject:v61];
+              photoTraitRankedListForOtherSubjects2 = [objc_opt_class() photoTraitRankedListForOtherSubjects];
+              name16 = [v15 name];
+              lowercaseString11 = [name16 lowercaseString];
+              v62 = [photoTraitRankedListForOtherSubjects2 indexOfObject:lowercaseString11];
 
               v63 = [NSNumber numberWithUnsignedInteger:v62];
-              v64 = [v15 name];
-              v65 = [v64 lowercaseString];
-              [v94 setObject:v63 forKey:v65];
+              name17 = [v15 name];
+              lowercaseString12 = [name17 lowercaseString];
+              [v94 setObject:v63 forKey:lowercaseString12];
 
               v66 = _mo_log_facility_get_os_log(&MOLogFacilityPatternEmbedding);
               if (os_log_type_enabled(v66, OS_LOG_TYPE_DEBUG))
               {
-                v70 = [v15 name];
+                name18 = [v15 name];
                 *buf = 138412546;
-                v104 = v70;
+                v104 = name18;
                 v105 = 2048;
                 v106 = v62;
                 _os_log_debug_impl(&_mh_execute_header, v66, OS_LOG_TYPE_DEBUG, "Photo trait was found from other subject list:traitName=%@, rankFromList=%lu", buf, 0x16u);
@@ -802,8 +802,8 @@ LABEL_26:
         [MOEmbedding extractContextsFromPhotoTraits:];
       }
 
-      v74 = [(MOEmbedding *)self activityContextEmbedding];
-      v75 = [v74 mutableCopy];
+      activityContextEmbedding = [(MOEmbedding *)self activityContextEmbedding];
+      v75 = [activityContextEmbedding mutableCopy];
 
       v76 = [v72 objectAtIndex:0];
       [v75 setObject:v76 forKeyedSubscript:@"activityTypeFromPhotoTraits"];
@@ -820,8 +820,8 @@ LABEL_26:
         [MOEmbedding extractContextsFromPhotoTraits:];
       }
 
-      v79 = [(MOEmbedding *)self locationContextEmbedding];
-      v80 = [v79 mutableCopy];
+      locationContextEmbedding = [(MOEmbedding *)self locationContextEmbedding];
+      v80 = [locationContextEmbedding mutableCopy];
 
       v81 = [v77 objectAtIndex:0];
       [v95 setObject:v81 forKeyedSubscript:@"placeTypeFromPhotoTraits"];
@@ -838,8 +838,8 @@ LABEL_26:
         [MOEmbedding extractContextsFromPhotoTraits:];
       }
 
-      v84 = [(MOEmbedding *)self socialContextEmbedding];
-      v85 = [v84 mutableCopy];
+      socialContextEmbedding = [(MOEmbedding *)self socialContextEmbedding];
+      v85 = [socialContextEmbedding mutableCopy];
 
       v86 = [v82 objectAtIndex:0];
       [v85 setObject:v86 forKeyedSubscript:@"socialEventFromPhotoTraits"];
@@ -856,8 +856,8 @@ LABEL_26:
         [MOEmbedding extractContextsFromPhotoTraits:];
       }
 
-      v89 = [(MOEmbedding *)self extraContextEmbedding];
-      v90 = [v89 mutableCopy];
+      extraContextEmbedding = [(MOEmbedding *)self extraContextEmbedding];
+      v90 = [extraContextEmbedding mutableCopy];
 
       v91 = [v87 objectAtIndex:0];
       [v90 setObject:v91 forKeyedSubscript:@"otherSubjectFromPhotoTraits"];
@@ -865,31 +865,31 @@ LABEL_26:
       [(MOEmbedding *)self setExtraContextEmbedding:v90];
     }
 
-    v4 = v93;
+    traitsCopy = v93;
   }
 }
 
-- (double)getDistanceFrom:(id)a3 withWeights:(id)a4
+- (double)getDistanceFrom:(id)from withWeights:(id)weights
 {
-  v7 = a3;
-  v8 = a4;
+  fromCopy = from;
+  weightsCopy = weights;
   v9 = _mo_log_facility_get_os_log(&MOLogFacilityPatternEmbedding);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [MOEmbedding getDistanceFrom:v7 withWeights:?];
+    [MOEmbedding getDistanceFrom:fromCopy withWeights:?];
   }
 
-  v10 = [(MOEmbedding *)self bundleIdentifier];
-  v11 = [v7 bundleIdentifier];
-  if ([v10 isEqual:v11])
+  bundleIdentifier = [(MOEmbedding *)self bundleIdentifier];
+  bundleIdentifier2 = [fromCopy bundleIdentifier];
+  if ([bundleIdentifier isEqual:bundleIdentifier2])
   {
 
     goto LABEL_6;
   }
 
-  v12 = [(MOEmbedding *)self suggestionID];
-  v13 = [v7 suggestionID];
-  v14 = [v12 isEqual:v13];
+  suggestionID = [(MOEmbedding *)self suggestionID];
+  suggestionID2 = [fromCopy suggestionID];
+  v14 = [suggestionID isEqual:suggestionID2];
 
   if (v14)
   {
@@ -904,19 +904,19 @@ LABEL_6:
     goto LABEL_27;
   }
 
-  [(MOEmbedding *)self getActivityContextDistanceFrom:v7 withWeights:v8];
+  [(MOEmbedding *)self getActivityContextDistanceFrom:fromCopy withWeights:weightsCopy];
   v18 = v17;
-  [(MOEmbedding *)self getTimeContextDistanceFrom:v7 withWeights:v8];
+  [(MOEmbedding *)self getTimeContextDistanceFrom:fromCopy withWeights:weightsCopy];
   v20 = v19;
-  [(MOEmbedding *)self getLocationContextDistanceFrom:v7 withWeights:v8];
+  [(MOEmbedding *)self getLocationContextDistanceFrom:fromCopy withWeights:weightsCopy];
   v61 = v21;
-  [(MOEmbedding *)self getSocialContextDistanceFrom:v7 withWeights:v8];
+  [(MOEmbedding *)self getSocialContextDistanceFrom:fromCopy withWeights:weightsCopy];
   v60 = v22;
-  [(MOEmbedding *)self getStateOfMindContextDistanceFrom:v7 withWeights:v8];
+  [(MOEmbedding *)self getStateOfMindContextDistanceFrom:fromCopy withWeights:weightsCopy];
   v24 = v23;
-  [(MOEmbedding *)self getExtraContextDistanceFrom:v7 withWeights:v8];
+  [(MOEmbedding *)self getExtraContextDistanceFrom:fromCopy withWeights:weightsCopy];
   v26 = v25;
-  v27 = [v8 objectForKeyedSubscript:@"embeddingDistWeight_activityContext"];
+  v27 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_activityContext"];
   v62 = v20;
   v58 = v26;
   v59 = v24;
@@ -926,7 +926,7 @@ LABEL_6:
   }
 
   v28 = v27;
-  v29 = [v8 objectForKeyedSubscript:@"embeddingDistWeight_timeContext"];
+  v29 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_timeContext"];
   v30 = 0.166666672;
   if (!v29)
   {
@@ -940,7 +940,7 @@ LABEL_19:
   }
 
   v31 = v29;
-  v32 = [v8 objectForKeyedSubscript:@"embeddingDistWeight_locationContext"];
+  v32 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_locationContext"];
   if (!v32)
   {
 LABEL_18:
@@ -949,7 +949,7 @@ LABEL_18:
   }
 
   v33 = v32;
-  v34 = [v8 objectForKeyedSubscript:@"embeddingDistWeight_socialContext"];
+  v34 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_socialContext"];
   if (!v34)
   {
 LABEL_17:
@@ -958,7 +958,7 @@ LABEL_17:
   }
 
   v35 = v34;
-  v36 = [v8 objectForKeyedSubscript:?];
+  v36 = [weightsCopy objectForKeyedSubscript:?];
   if (!v36)
   {
 
@@ -966,31 +966,31 @@ LABEL_17:
   }
 
   v57 = v36;
-  v37 = [v8 objectForKeyedSubscript:?];
+  v37 = [weightsCopy objectForKeyedSubscript:?];
 
   if (v37)
   {
-    v38 = [v8 objectForKeyedSubscript:@"embeddingDistWeight_activityContext"];
+    v38 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_activityContext"];
     [v38 doubleValue];
     v30 = v39;
 
-    v40 = [v8 objectForKeyedSubscript:@"embeddingDistWeight_timeContext"];
+    v40 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_timeContext"];
     [v40 doubleValue];
     v42 = v41;
 
-    v43 = [v8 objectForKeyedSubscript:@"embeddingDistWeight_locationContext"];
+    v43 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_locationContext"];
     [v43 doubleValue];
     v45 = v44;
 
-    v46 = [v8 objectForKeyedSubscript:@"embeddingDistWeight_socialContext"];
+    v46 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_socialContext"];
     [v46 doubleValue];
     v48 = v47;
 
-    v49 = [v8 objectForKeyedSubscript:@"embeddingDistWeight_stateOfMindContext"];
+    v49 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_stateOfMindContext"];
     [v49 doubleValue];
     v51 = v50;
 
-    v28 = [v8 objectForKeyedSubscript:@"embeddingDistWeight_extraContext"];
+    v28 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_extraContext"];
     [v28 doubleValue];
     v53 = v52;
 LABEL_20:
@@ -1044,25 +1044,25 @@ LABEL_27:
   return v16;
 }
 
-- (double)getActivityContextDistanceFrom:(id)a3 withWeights:(id)a4
+- (double)getActivityContextDistanceFrom:(id)from withWeights:(id)weights
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MOEmbedding *)self activityContextEmbedding];
-  v9 = [v7 activityContextEmbedding];
+  weightsCopy = weights;
+  fromCopy = from;
+  activityContextEmbedding = [(MOEmbedding *)self activityContextEmbedding];
+  activityContextEmbedding2 = [fromCopy activityContextEmbedding];
 
-  v10 = [v8 objectForKeyedSubscript:@"topLevelActivityType"];
+  v10 = [activityContextEmbedding objectForKeyedSubscript:@"topLevelActivityType"];
   v11 = 1.0;
   v12 = 1.0;
   if (v10)
   {
     v13 = v10;
-    v14 = [v9 objectForKeyedSubscript:@"topLevelActivityType"];
+    v14 = [activityContextEmbedding2 objectForKeyedSubscript:@"topLevelActivityType"];
 
     if (v14)
     {
-      v15 = [v8 objectForKeyedSubscript:@"topLevelActivityType"];
-      v16 = [v9 objectForKeyedSubscript:@"topLevelActivityType"];
+      v15 = [activityContextEmbedding objectForKeyedSubscript:@"topLevelActivityType"];
+      v16 = [activityContextEmbedding2 objectForKeyedSubscript:@"topLevelActivityType"];
       if ([v15 isEqualToString:v16])
       {
         v12 = 0.0;
@@ -1075,16 +1075,16 @@ LABEL_27:
     }
   }
 
-  v17 = [v8 objectForKeyedSubscript:@"secondLevelActivityType"];
+  v17 = [activityContextEmbedding objectForKeyedSubscript:@"secondLevelActivityType"];
   if (v17)
   {
     v18 = v17;
-    v19 = [v9 objectForKeyedSubscript:@"secondLevelActivityType"];
+    v19 = [activityContextEmbedding2 objectForKeyedSubscript:@"secondLevelActivityType"];
 
     if (v19)
     {
-      v20 = [v8 objectForKeyedSubscript:@"secondLevelActivityType"];
-      v21 = [v9 objectForKeyedSubscript:@"secondLevelActivityType"];
+      v20 = [activityContextEmbedding objectForKeyedSubscript:@"secondLevelActivityType"];
+      v21 = [activityContextEmbedding2 objectForKeyedSubscript:@"secondLevelActivityType"];
       if ([v20 isEqualToString:v21])
       {
         v11 = 0.0;
@@ -1097,17 +1097,17 @@ LABEL_27:
     }
   }
 
-  v22 = [v8 objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
+  v22 = [activityContextEmbedding objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
   v23 = 1.0;
   if (v22)
   {
     v24 = v22;
-    v25 = [v9 objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
+    v25 = [activityContextEmbedding2 objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
 
     if (v25)
     {
-      v26 = [v8 objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
-      v27 = [v9 objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
+      v26 = [activityContextEmbedding objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
+      v27 = [activityContextEmbedding2 objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
       if ([v26 isEqualToString:v27])
       {
         v23 = 0.0;
@@ -1120,7 +1120,7 @@ LABEL_27:
     }
   }
 
-  v28 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_topLevelActivityType"];
+  v28 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_topLevelActivityType"];
   if (!v28)
   {
     v35 = 0.333333343;
@@ -1130,8 +1130,8 @@ LABEL_27:
   }
 
   v29 = v28;
-  v46 = self;
-  v30 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_secondLevelActivityType"];
+  selfCopy = self;
+  v30 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_secondLevelActivityType"];
   if (!v30)
   {
     v35 = 0.333333343;
@@ -1141,23 +1141,23 @@ LABEL_27:
   }
 
   v31 = v30;
-  v32 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_activityTypeFromPhotoTraits"];
+  v32 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_activityTypeFromPhotoTraits"];
 
   if (v32)
   {
-    v33 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_topLevelActivityType"];
+    v33 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_topLevelActivityType"];
     [v33 doubleValue];
     v35 = v34;
 
-    v36 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_secondLevelActivityType"];
+    v36 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_secondLevelActivityType"];
     [v36 doubleValue];
     v38 = v37;
 
-    v29 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_activityTypeFromPhotoTraits"];
+    v29 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_activityTypeFromPhotoTraits"];
     [v29 doubleValue];
     v40 = v39;
 LABEL_25:
-    self = v46;
+    self = selfCopy;
 
     goto LABEL_27;
   }
@@ -1165,7 +1165,7 @@ LABEL_25:
   v35 = 0.333333343;
   v38 = 0.333333343;
   v40 = 0.333333343;
-  self = v46;
+  self = selfCopy;
 LABEL_27:
   if (fabs(v35 + v38 + v40 + -1.0) >= 0.00001)
   {
@@ -1197,12 +1197,12 @@ LABEL_27:
   return v43;
 }
 
-- (double)getTimeContextDistanceFrom:(id)a3 withWeights:(id)a4
+- (double)getTimeContextDistanceFrom:(id)from withWeights:(id)weights
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(MOEmbedding *)self timeContextEmbedding];
-  v10 = [v8 timeContextEmbedding];
+  weightsCopy = weights;
+  fromCopy = from;
+  timeContextEmbedding = [(MOEmbedding *)self timeContextEmbedding];
+  timeContextEmbedding2 = [fromCopy timeContextEmbedding];
 
   embeddingType = self->_embeddingType;
   if (embeddingType == 2)
@@ -1220,23 +1220,23 @@ LABEL_27:
   v12 = 0.0;
   if (embeddingType == 1)
   {
-    v13 = [v10 objectForKeyedSubscript:@"normalizedDuration"];
+    v13 = [timeContextEmbedding2 objectForKeyedSubscript:@"normalizedDuration"];
     [v13 doubleValue];
     v105 = v14;
-    v15 = [v9 objectForKeyedSubscript:@"normalizedDuration"];
+    v15 = [timeContextEmbedding objectForKeyedSubscript:@"normalizedDuration"];
     [v15 doubleValue];
     v17 = v16;
 
-    v18 = [v9 objectForKeyedSubscript:@"timeOfDayCos"];
+    v18 = [timeContextEmbedding objectForKeyedSubscript:@"timeOfDayCos"];
     [v18 doubleValue];
     v20 = v19;
-    v21 = [v10 objectForKeyedSubscript:@"timeOfDayCos"];
+    v21 = [timeContextEmbedding2 objectForKeyedSubscript:@"timeOfDayCos"];
     [v21 doubleValue];
     v23 = v22;
-    v24 = [v9 objectForKeyedSubscript:@"timeOfDaySin"];
+    v24 = [timeContextEmbedding objectForKeyedSubscript:@"timeOfDaySin"];
     [v24 doubleValue];
     v26 = v25;
-    v27 = [v10 objectForKeyedSubscript:@"timeOfDaySin"];
+    v27 = [timeContextEmbedding2 objectForKeyedSubscript:@"timeOfDaySin"];
     [v27 doubleValue];
     v29 = v26 * v28 + v20 * v23;
 
@@ -1252,16 +1252,16 @@ LABEL_27:
     }
 
     v110 = acos(v31);
-    v32 = [v9 objectForKeyedSubscript:@"dayOfWeekCos"];
+    v32 = [timeContextEmbedding objectForKeyedSubscript:@"dayOfWeekCos"];
     [v32 doubleValue];
     v34 = v33;
-    v35 = [v10 objectForKeyedSubscript:@"dayOfWeekCos"];
+    v35 = [timeContextEmbedding2 objectForKeyedSubscript:@"dayOfWeekCos"];
     [v35 doubleValue];
     v37 = v36;
-    v38 = [v9 objectForKeyedSubscript:@"dayOfWeekSin"];
+    v38 = [timeContextEmbedding objectForKeyedSubscript:@"dayOfWeekSin"];
     [v38 doubleValue];
     v40 = v39;
-    v41 = [v10 objectForKeyedSubscript:@"dayOfWeekSin"];
+    v41 = [timeContextEmbedding2 objectForKeyedSubscript:@"dayOfWeekSin"];
     [v41 doubleValue];
     v43 = v40 * v42 + v34 * v37;
 
@@ -1275,20 +1275,20 @@ LABEL_27:
     }
 
     v44 = acos(v30);
-    v45 = [v9 objectForKeyedSubscript:@"isWeekend"];
+    v45 = [timeContextEmbedding objectForKeyedSubscript:@"isWeekend"];
     v46 = 1.0;
     v47 = 1.0;
     if (v45)
     {
       v48 = v45;
-      v49 = [v10 objectForKeyedSubscript:@"isWeekend"];
+      v49 = [timeContextEmbedding2 objectForKeyedSubscript:@"isWeekend"];
 
       if (v49)
       {
-        v50 = [v9 objectForKeyedSubscript:@"isWeekend"];
-        v51 = [v50 BOOLValue];
-        v52 = [v10 objectForKeyedSubscript:@"isWeekend"];
-        if (v51 != [v52 BOOLValue])
+        v50 = [timeContextEmbedding objectForKeyedSubscript:@"isWeekend"];
+        bOOLValue = [v50 BOOLValue];
+        v52 = [timeContextEmbedding2 objectForKeyedSubscript:@"isWeekend"];
+        if (bOOLValue != [v52 BOOLValue])
         {
           v47 = 1.0;
         }
@@ -1300,16 +1300,16 @@ LABEL_27:
       }
     }
 
-    v53 = [v9 objectForKeyedSubscript:@"holiday"];
+    v53 = [timeContextEmbedding objectForKeyedSubscript:@"holiday"];
     if (v53)
     {
       v54 = v53;
-      v55 = [v10 objectForKeyedSubscript:@"holiday"];
+      v55 = [timeContextEmbedding2 objectForKeyedSubscript:@"holiday"];
 
       if (v55)
       {
-        v56 = [v9 objectForKeyedSubscript:@"holiday"];
-        v57 = [v10 objectForKeyedSubscript:@"holiday"];
+        v56 = [timeContextEmbedding objectForKeyedSubscript:@"holiday"];
+        v57 = [timeContextEmbedding2 objectForKeyedSubscript:@"holiday"];
         if ([v56 isEqualToString:v57])
         {
           v46 = 0.0;
@@ -1322,18 +1322,18 @@ LABEL_27:
       }
     }
 
-    v58 = [v9 objectForKeyedSubscript:@"celebration"];
+    v58 = [timeContextEmbedding objectForKeyedSubscript:@"celebration"];
     v59 = 1.0;
     v109 = v46;
     if (v58)
     {
       v60 = v58;
-      v61 = [v10 objectForKeyedSubscript:@"celebration"];
+      v61 = [timeContextEmbedding2 objectForKeyedSubscript:@"celebration"];
 
       if (v61)
       {
-        v62 = [v9 objectForKeyedSubscript:@"celebration"];
-        v63 = [v10 objectForKeyedSubscript:@"celebration"];
+        v62 = [timeContextEmbedding objectForKeyedSubscript:@"celebration"];
+        v63 = [timeContextEmbedding2 objectForKeyedSubscript:@"celebration"];
         if ([v62 isEqualToString:v63])
         {
           v59 = 0.0;
@@ -1347,7 +1347,7 @@ LABEL_27:
     }
 
     v108 = v47;
-    v64 = [v7 objectForKeyedSubscript:@"embeddingDistWeight_normalizedDuration"];
+    v64 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_normalizedDuration"];
     v107 = v59;
     if (!v64)
     {
@@ -1406,27 +1406,27 @@ LABEL_49:
     }
 
     v65 = v64;
-    v66 = [v7 objectForKeyedSubscript:@"embeddingDistWeight_timeOfDay"];
+    v66 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_timeOfDay"];
     v67 = 0.166666667;
     v104 = v44;
     if (v66)
     {
       v68 = v66;
-      v69 = [v7 objectForKeyedSubscript:?];
+      v69 = [weightsCopy objectForKeyedSubscript:?];
       if (v69)
       {
         v70 = v69;
         v103 = a2;
-        v71 = [v7 objectForKeyedSubscript:?];
+        v71 = [weightsCopy objectForKeyedSubscript:?];
         if (v71)
         {
           v72 = v71;
-          v73 = [v7 objectForKeyedSubscript:?];
+          v73 = [weightsCopy objectForKeyedSubscript:?];
           if (v73)
           {
             v101 = v73;
-            [v7 objectForKeyedSubscript:?];
-            v74 = v102 = v7;
+            [weightsCopy objectForKeyedSubscript:?];
+            v74 = v102 = weightsCopy;
 
             if (!v74)
             {
@@ -1437,11 +1437,11 @@ LABEL_49:
               v88 = 0.166666667;
               v90 = 0.166666667;
               a2 = v103;
-              v7 = v102;
+              weightsCopy = v102;
               goto LABEL_43;
             }
 
-            v7 = v102;
+            weightsCopy = v102;
             v75 = [v102 objectForKeyedSubscript:@"embeddingDistWeight_normalizedDuration"];
             [v75 doubleValue];
             v67 = v76;
@@ -1498,26 +1498,26 @@ LABEL_50:
   return v12;
 }
 
-- (double)getLocationContextDistanceFrom:(id)a3 withWeights:(id)a4
+- (double)getLocationContextDistanceFrom:(id)from withWeights:(id)weights
 {
-  v6 = a4;
-  v7 = a3;
-  v74 = self;
-  v8 = [(MOEmbedding *)self locationContextEmbedding];
-  v9 = [v7 locationContextEmbedding];
+  weightsCopy = weights;
+  fromCopy = from;
+  selfCopy = self;
+  locationContextEmbedding = [(MOEmbedding *)self locationContextEmbedding];
+  locationContextEmbedding2 = [fromCopy locationContextEmbedding];
 
-  v10 = [v8 objectForKeyedSubscript:@"placeName"];
+  v10 = [locationContextEmbedding objectForKeyedSubscript:@"placeName"];
   v11 = 1.0;
   v12 = 1.0;
   if (v10)
   {
     v13 = v10;
-    v14 = [v9 objectForKeyedSubscript:@"placeName"];
+    v14 = [locationContextEmbedding2 objectForKeyedSubscript:@"placeName"];
 
     if (v14)
     {
-      v15 = [v8 objectForKeyedSubscript:@"placeName"];
-      v16 = [v9 objectForKeyedSubscript:@"placeName"];
+      v15 = [locationContextEmbedding objectForKeyedSubscript:@"placeName"];
+      v16 = [locationContextEmbedding2 objectForKeyedSubscript:@"placeName"];
       if ([v15 isEqualToString:v16])
       {
         v12 = 0.0;
@@ -1530,16 +1530,16 @@ LABEL_50:
     }
   }
 
-  v17 = [v8 objectForKeyedSubscript:@"combinedPlaceType"];
+  v17 = [locationContextEmbedding objectForKeyedSubscript:@"combinedPlaceType"];
   if (v17)
   {
     v18 = v17;
-    v19 = [v9 objectForKeyedSubscript:@"combinedPlaceType"];
+    v19 = [locationContextEmbedding2 objectForKeyedSubscript:@"combinedPlaceType"];
 
     if (v19)
     {
-      v20 = [v8 objectForKeyedSubscript:@"combinedPlaceType"];
-      v21 = [v9 objectForKeyedSubscript:@"combinedPlaceType"];
+      v20 = [locationContextEmbedding objectForKeyedSubscript:@"combinedPlaceType"];
+      v21 = [locationContextEmbedding2 objectForKeyedSubscript:@"combinedPlaceType"];
       if ([v20 isEqualToString:v21])
       {
         v11 = 0.0;
@@ -1552,18 +1552,18 @@ LABEL_50:
     }
   }
 
-  v22 = [v8 objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
+  v22 = [locationContextEmbedding objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
   v23 = 1.0;
   v24 = 1.0;
   if (v22)
   {
     v25 = v22;
-    v26 = [v9 objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
+    v26 = [locationContextEmbedding2 objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
 
     if (v26)
     {
-      v27 = [v8 objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
-      v28 = [v9 objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
+      v27 = [locationContextEmbedding objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
+      v28 = [locationContextEmbedding2 objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
       if ([v27 isEqualToString:v28])
       {
         v24 = 0.0;
@@ -1576,36 +1576,36 @@ LABEL_50:
     }
   }
 
-  v29 = [v8 objectForKeyedSubscript:@"placeLatitude"];
+  v29 = [locationContextEmbedding objectForKeyedSubscript:@"placeLatitude"];
   v75 = v12;
   if (v29)
   {
     v30 = v29;
-    v31 = [v8 objectForKeyedSubscript:@"placeLongitude"];
+    v31 = [locationContextEmbedding objectForKeyedSubscript:@"placeLongitude"];
     if (v31)
     {
       v32 = v31;
-      v33 = [v9 objectForKeyedSubscript:@"placeLatitude"];
+      v33 = [locationContextEmbedding2 objectForKeyedSubscript:@"placeLatitude"];
       if (v33)
       {
         v34 = v33;
-        v35 = [v9 objectForKeyedSubscript:@"placeLongitude"];
+        v35 = [locationContextEmbedding2 objectForKeyedSubscript:@"placeLongitude"];
 
         if (v35)
         {
-          v36 = [v8 objectForKeyedSubscript:@"placeLatitude"];
+          v36 = [locationContextEmbedding objectForKeyedSubscript:@"placeLatitude"];
           [v36 doubleValue];
           v38 = v37;
 
-          v39 = [v8 objectForKeyedSubscript:@"placeLongitude"];
+          v39 = [locationContextEmbedding objectForKeyedSubscript:@"placeLongitude"];
           [v39 doubleValue];
           v41 = v40;
 
-          v42 = [v9 objectForKeyedSubscript:@"placeLatitude"];
+          v42 = [locationContextEmbedding2 objectForKeyedSubscript:@"placeLatitude"];
           [v42 doubleValue];
           v44 = v43;
 
-          v45 = [v9 objectForKeyedSubscript:@"placeLongitude"];
+          v45 = [locationContextEmbedding2 objectForKeyedSubscript:@"placeLongitude"];
           [v45 doubleValue];
           v47 = v46;
 
@@ -1628,7 +1628,7 @@ LABEL_50:
   }
 
 LABEL_28:
-  v50 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_placeName"];
+  v50 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_placeName"];
   if (!v50)
   {
     v53 = 0.25;
@@ -1636,7 +1636,7 @@ LABEL_28:
   }
 
   v51 = v50;
-  v52 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_placeType"];
+  v52 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_placeType"];
   v53 = 0.25;
   if (!v52)
   {
@@ -1648,7 +1648,7 @@ LABEL_36:
   }
 
   v54 = v52;
-  v55 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_geoProximity"];
+  v55 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_geoProximity"];
   if (!v55)
   {
 
@@ -1656,7 +1656,7 @@ LABEL_36:
   }
 
   v56 = v55;
-  v57 = [v6 objectForKeyedSubscript:?];
+  v57 = [weightsCopy objectForKeyedSubscript:?];
 
   if (!v57)
   {
@@ -1667,19 +1667,19 @@ LABEL_34:
     goto LABEL_38;
   }
 
-  v58 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_placeName"];
+  v58 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_placeName"];
   [v58 doubleValue];
   v53 = v59;
 
-  v60 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_placeType"];
+  v60 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_placeType"];
   [v60 doubleValue];
   v62 = v61;
 
-  v63 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_geoProximity"];
+  v63 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_geoProximity"];
   [v63 doubleValue];
   v65 = v64;
 
-  v51 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_placeTypeFromPhotoTraits"];
+  v51 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_placeTypeFromPhotoTraits"];
   [v51 doubleValue];
   v67 = v66;
 LABEL_37:
@@ -1694,7 +1694,7 @@ LABEL_38:
     }
 
     v69 = +[NSAssertionHandler currentHandler];
-    [v69 handleFailureInMethod:a2 object:v74 file:@"MOEmbedding.m" lineNumber:552 description:{@"Sum of location context distance weight is not 1, sum=%.3f (in %s:%d)", v53 + v62 + v65 + v67, "-[MOEmbedding getLocationContextDistanceFrom:withWeights:]", 552}];
+    [v69 handleFailureInMethod:a2 object:selfCopy file:@"MOEmbedding.m" lineNumber:552 description:{@"Sum of location context distance weight is not 1, sum=%.3f (in %s:%d)", v53 + v62 + v65 + v67, "-[MOEmbedding getLocationContextDistanceFrom:withWeights:]", 552}];
   }
 
   v70 = v11 * v62 + v53 * v75 + v65 * v23 + v67 * v24;
@@ -1717,27 +1717,27 @@ LABEL_38:
   return v70;
 }
 
-- (double)getSocialContextDistanceFrom:(id)a3 withWeights:(id)a4
+- (double)getSocialContextDistanceFrom:(id)from withWeights:(id)weights
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(MOEmbedding *)self socialContextEmbedding];
-  v10 = [v8 socialContextEmbedding];
+  weightsCopy = weights;
+  fromCopy = from;
+  socialContextEmbedding = [(MOEmbedding *)self socialContextEmbedding];
+  socialContextEmbedding2 = [fromCopy socialContextEmbedding];
 
-  v11 = [v9 objectForKeyedSubscript:@"persons"];
+  v11 = [socialContextEmbedding objectForKeyedSubscript:@"persons"];
   v12 = 1.0;
   v13 = 1.0;
   if (v11)
   {
     v14 = v11;
-    v15 = [v10 objectForKeyedSubscript:@"persons"];
+    v15 = [socialContextEmbedding2 objectForKeyedSubscript:@"persons"];
 
     if (v15)
     {
-      v16 = [v10 objectForKeyedSubscript:@"persons"];
+      v16 = [socialContextEmbedding2 objectForKeyedSubscript:@"persons"];
       v17 = [v16 valueForKey:@"name"];
 
-      v18 = [v10 objectForKeyedSubscript:@"persons"];
+      v18 = [socialContextEmbedding2 objectForKeyedSubscript:@"persons"];
       v19 = [v18 valueForKey:@"name"];
 
       if ([v17 count] && objc_msgSend(v19, "count"))
@@ -1752,18 +1752,18 @@ LABEL_38:
     }
   }
 
-  v23 = [v9 objectForKeyedSubscript:@"withContact"];
+  v23 = [socialContextEmbedding objectForKeyedSubscript:@"withContact"];
   if (v23)
   {
     v24 = v23;
-    v25 = [v10 objectForKeyedSubscript:@"withContact"];
+    v25 = [socialContextEmbedding2 objectForKeyedSubscript:@"withContact"];
 
     if (v25)
     {
-      v26 = [v9 objectForKeyedSubscript:@"withContact"];
-      v27 = [v26 BOOLValue];
-      v28 = [v10 objectForKeyedSubscript:@"withContact"];
-      if (v27 != [v28 BOOLValue])
+      v26 = [socialContextEmbedding objectForKeyedSubscript:@"withContact"];
+      bOOLValue = [v26 BOOLValue];
+      v28 = [socialContextEmbedding2 objectForKeyedSubscript:@"withContact"];
+      if (bOOLValue != [v28 BOOLValue])
       {
         v12 = 1.0;
       }
@@ -1775,20 +1775,20 @@ LABEL_38:
     }
   }
 
-  v29 = [v9 objectForKeyedSubscript:@"withFamily"];
+  v29 = [socialContextEmbedding objectForKeyedSubscript:@"withFamily"];
   v30 = 1.0;
   v31 = 1.0;
   if (v29)
   {
     v32 = v29;
-    v33 = [v10 objectForKeyedSubscript:@"withFamily"];
+    v33 = [socialContextEmbedding2 objectForKeyedSubscript:@"withFamily"];
 
     if (v33)
     {
-      v34 = [v9 objectForKeyedSubscript:@"withFamily"];
-      v35 = [v34 BOOLValue];
-      v36 = [v10 objectForKeyedSubscript:@"withFamily"];
-      if (v35 != [v36 BOOLValue])
+      v34 = [socialContextEmbedding objectForKeyedSubscript:@"withFamily"];
+      bOOLValue2 = [v34 BOOLValue];
+      v36 = [socialContextEmbedding2 objectForKeyedSubscript:@"withFamily"];
+      if (bOOLValue2 != [v36 BOOLValue])
       {
         v31 = 1.0;
       }
@@ -1800,18 +1800,18 @@ LABEL_38:
     }
   }
 
-  v37 = [v9 objectForKeyedSubscript:@"withCoworker"];
+  v37 = [socialContextEmbedding objectForKeyedSubscript:@"withCoworker"];
   if (v37)
   {
     v38 = v37;
-    v39 = [v10 objectForKeyedSubscript:@"withCoworker"];
+    v39 = [socialContextEmbedding2 objectForKeyedSubscript:@"withCoworker"];
 
     if (v39)
     {
-      v40 = [v9 objectForKeyedSubscript:@"withCoworker"];
-      v41 = [v40 BOOLValue];
-      v42 = [v10 objectForKeyedSubscript:@"withCoworker"];
-      if (v41 != [v42 BOOLValue])
+      v40 = [socialContextEmbedding objectForKeyedSubscript:@"withCoworker"];
+      bOOLValue3 = [v40 BOOLValue];
+      v42 = [socialContextEmbedding2 objectForKeyedSubscript:@"withCoworker"];
+      if (bOOLValue3 != [v42 BOOLValue])
       {
         v30 = 1.0;
       }
@@ -1823,20 +1823,20 @@ LABEL_38:
     }
   }
 
-  v43 = [v9 objectForKeyedSubscript:@"withFriend"];
+  v43 = [socialContextEmbedding objectForKeyedSubscript:@"withFriend"];
   v44 = 1.0;
   v45 = 1.0;
   if (v43)
   {
     v46 = v43;
-    v47 = [v10 objectForKeyedSubscript:@"withFriend"];
+    v47 = [socialContextEmbedding2 objectForKeyedSubscript:@"withFriend"];
 
     if (v47)
     {
-      v48 = [v9 objectForKeyedSubscript:@"withFriend"];
-      v49 = [v48 BOOLValue];
-      v50 = [v10 objectForKeyedSubscript:@"withFriend"];
-      if (v49 != [v50 BOOLValue])
+      v48 = [socialContextEmbedding objectForKeyedSubscript:@"withFriend"];
+      bOOLValue4 = [v48 BOOLValue];
+      v50 = [socialContextEmbedding2 objectForKeyedSubscript:@"withFriend"];
+      if (bOOLValue4 != [v50 BOOLValue])
       {
         v45 = 1.0;
       }
@@ -1849,18 +1849,18 @@ LABEL_38:
   }
 
   v124 = v45;
-  v51 = [v9 objectForKeyedSubscript:@"withChild"];
+  v51 = [socialContextEmbedding objectForKeyedSubscript:@"withChild"];
   if (v51)
   {
     v52 = v51;
-    v53 = [v10 objectForKeyedSubscript:@"withChild"];
+    v53 = [socialContextEmbedding2 objectForKeyedSubscript:@"withChild"];
 
     if (v53)
     {
-      v54 = [v9 objectForKeyedSubscript:@"withChild"];
-      v55 = [v54 BOOLValue];
-      v56 = [v10 objectForKeyedSubscript:@"withChild"];
-      if (v55 != [v56 BOOLValue])
+      v54 = [socialContextEmbedding objectForKeyedSubscript:@"withChild"];
+      bOOLValue5 = [v54 BOOLValue];
+      v56 = [socialContextEmbedding2 objectForKeyedSubscript:@"withChild"];
+      if (bOOLValue5 != [v56 BOOLValue])
       {
         v44 = 1.0;
       }
@@ -1872,20 +1872,20 @@ LABEL_38:
     }
   }
 
-  v57 = [v9 objectForKeyedSubscript:@"withMyPet"];
+  v57 = [socialContextEmbedding objectForKeyedSubscript:@"withMyPet"];
   v58 = 1.0;
   v59 = 1.0;
   if (v57)
   {
     v60 = v57;
-    v61 = [v10 objectForKeyedSubscript:@"withMyPet"];
+    v61 = [socialContextEmbedding2 objectForKeyedSubscript:@"withMyPet"];
 
     if (v61)
     {
-      v62 = [v9 objectForKeyedSubscript:@"withMyPet"];
-      v63 = [v62 BOOLValue];
-      v64 = [v10 objectForKeyedSubscript:@"withMyPet"];
-      if (v63 != [v64 BOOLValue])
+      v62 = [socialContextEmbedding objectForKeyedSubscript:@"withMyPet"];
+      bOOLValue6 = [v62 BOOLValue];
+      v64 = [socialContextEmbedding2 objectForKeyedSubscript:@"withMyPet"];
+      if (bOOLValue6 != [v64 BOOLValue])
       {
         v59 = 1.0;
       }
@@ -1897,16 +1897,16 @@ LABEL_38:
     }
   }
 
-  v65 = [v9 objectForKeyedSubscript:@"socialEventFromPhotoTraits"];
+  v65 = [socialContextEmbedding objectForKeyedSubscript:@"socialEventFromPhotoTraits"];
   if (v65)
   {
     v66 = v65;
-    v67 = [v10 objectForKeyedSubscript:@"socialEventFromPhotoTraits"];
+    v67 = [socialContextEmbedding2 objectForKeyedSubscript:@"socialEventFromPhotoTraits"];
 
     if (v67)
     {
-      v68 = [v9 objectForKeyedSubscript:@"socialEventFromPhotoTraits"];
-      v69 = [v10 objectForKeyedSubscript:@"socialEventFromPhotoTraits"];
+      v68 = [socialContextEmbedding objectForKeyedSubscript:@"socialEventFromPhotoTraits"];
+      v69 = [socialContextEmbedding2 objectForKeyedSubscript:@"socialEventFromPhotoTraits"];
       if ([v68 isEqualToString:v69])
       {
         v58 = 0.0;
@@ -1919,7 +1919,7 @@ LABEL_38:
     }
   }
 
-  v70 = [v7 objectForKeyedSubscript:@"embeddingDistWeight_contactNames"];
+  v70 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_contactNames"];
   v126 = v30;
   v127 = v12;
   v128 = v31;
@@ -1941,7 +1941,7 @@ LABEL_38:
   }
 
   v71 = v70;
-  v72 = [v7 objectForKeyedSubscript:@"embeddingDistWeight_IsWithContact"];
+  v72 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_IsWithContact"];
   v119 = 0.125;
   if (!v72)
   {
@@ -1956,7 +1956,7 @@ LABEL_38:
   }
 
   v73 = v72;
-  v74 = [v7 objectForKeyedSubscript:@"embeddingDistWeight_isWithFamily"];
+  v74 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_isWithFamily"];
   if (!v74)
   {
 
@@ -1971,8 +1971,8 @@ LABEL_38:
   }
 
   v75 = v74;
-  v76 = [v7 objectForKeyedSubscript:?];
-  v77 = v7;
+  v76 = [weightsCopy objectForKeyedSubscript:?];
+  v77 = weightsCopy;
   if (!v76)
   {
 
@@ -2000,7 +2000,7 @@ LABEL_64:
     v96 = 0.125;
     v99 = 0.125;
     v102 = 0.125;
-    v7 = v118;
+    weightsCopy = v118;
     goto LABEL_65;
   }
 
@@ -2026,7 +2026,7 @@ LABEL_63:
 
   if (v120)
   {
-    v7 = v118;
+    weightsCopy = v118;
     v83 = [v118 objectForKeyedSubscript:@"embeddingDistWeight_contactNames"];
     [v83 doubleValue];
     v119 = v84;
@@ -2073,7 +2073,7 @@ LABEL_65:
   v96 = 0.125;
   v99 = 0.125;
   v102 = 0.125;
-  v7 = v118;
+  weightsCopy = v118;
 LABEL_66:
   v107 = v87;
   v108 = v105 + v104 + v87 + v90 + v106 + v96 + v99 + v102;
@@ -2128,34 +2128,34 @@ LABEL_66:
   return v113;
 }
 
-- (double)getStateOfMindContextDistanceFrom:(id)a3 withWeights:(id)a4
+- (double)getStateOfMindContextDistanceFrom:(id)from withWeights:(id)weights
 {
-  v6 = a4;
-  v7 = a3;
-  v61 = self;
-  v8 = [(MOEmbedding *)self stateOfMindContextEmbedding];
-  v9 = [v7 stateOfMindContextEmbedding];
+  weightsCopy = weights;
+  fromCopy = from;
+  selfCopy = self;
+  stateOfMindContextEmbedding = [(MOEmbedding *)self stateOfMindContextEmbedding];
+  stateOfMindContextEmbedding2 = [fromCopy stateOfMindContextEmbedding];
 
-  v10 = [v8 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingValenceValues];
+  v10 = [stateOfMindContextEmbedding objectForKeyedSubscript:kMOStateOfMindContextEmbeddingValenceValues];
   v11 = 1.0;
   v12 = 1.0;
   if (v10)
   {
     v13 = v10;
-    v14 = [v9 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingValenceValues];
+    v14 = [stateOfMindContextEmbedding2 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingValenceValues];
 
     if (v14)
     {
-      v15 = [v8 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingValenceValues];
-      v16 = [v9 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingValenceValues];
+      v15 = [stateOfMindContextEmbedding objectForKeyedSubscript:kMOStateOfMindContextEmbeddingValenceValues];
+      v16 = [stateOfMindContextEmbedding2 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingValenceValues];
       if ([v15 count] && objc_msgSend(v16, "count"))
       {
-        v17 = [v15 lastObject];
-        [v17 doubleValue];
+        lastObject = [v15 lastObject];
+        [lastObject doubleValue];
         v19 = v18;
 
-        v20 = [v16 lastObject];
-        [v20 doubleValue];
+        lastObject2 = [v16 lastObject];
+        [lastObject2 doubleValue];
         v22 = v21;
 
         v12 = vabdd_f64(v19, v22) * 0.5;
@@ -2163,16 +2163,16 @@ LABEL_66:
     }
   }
 
-  v23 = [v8 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingDomains];
+  v23 = [stateOfMindContextEmbedding objectForKeyedSubscript:kMOStateOfMindContextEmbeddingDomains];
   if (v23)
   {
     v24 = v23;
-    v25 = [v9 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingDomains];
+    v25 = [stateOfMindContextEmbedding2 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingDomains];
 
     if (v25)
     {
-      v26 = [v8 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingDomains];
-      v27 = [v9 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingDomains];
+      v26 = [stateOfMindContextEmbedding objectForKeyedSubscript:kMOStateOfMindContextEmbeddingDomains];
+      v27 = [stateOfMindContextEmbedding2 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingDomains];
       if ([v26 count] && objc_msgSend(v27, "count"))
       {
         v28 = [NSMutableSet setWithArray:v26];
@@ -2186,17 +2186,17 @@ LABEL_66:
     }
   }
 
-  v32 = [v8 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingLabels];
+  v32 = [stateOfMindContextEmbedding objectForKeyedSubscript:kMOStateOfMindContextEmbeddingLabels];
   v33 = 1.0;
   if (v32)
   {
     v34 = v32;
-    v35 = [v9 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingLabels];
+    v35 = [stateOfMindContextEmbedding2 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingLabels];
 
     if (v35)
     {
-      v36 = [v8 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingLabels];
-      v37 = [v9 objectForKeyedSubscript:@"persons"];
+      v36 = [stateOfMindContextEmbedding objectForKeyedSubscript:kMOStateOfMindContextEmbeddingLabels];
+      v37 = [stateOfMindContextEmbedding2 objectForKeyedSubscript:@"persons"];
       if ([v36 count] && objc_msgSend(v37, "count"))
       {
         v38 = [NSMutableSet setWithArray:v36];
@@ -2210,14 +2210,14 @@ LABEL_66:
     }
   }
 
-  v42 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_stateOfMindValence"];
+  v42 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_stateOfMindValence"];
   if (!v42)
   {
     goto LABEL_23;
   }
 
   v43 = v42;
-  v44 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_stateOfMindDomains"];
+  v44 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_stateOfMindDomains"];
   if (!v44)
   {
     v49 = 0.333333333;
@@ -2227,7 +2227,7 @@ LABEL_66:
   }
 
   v45 = v44;
-  v46 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_stateOfMindLabels"];
+  v46 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_stateOfMindLabels"];
 
   if (!v46)
   {
@@ -2238,15 +2238,15 @@ LABEL_23:
     goto LABEL_26;
   }
 
-  v47 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_stateOfMindValence"];
+  v47 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_stateOfMindValence"];
   [v47 doubleValue];
   v49 = v48;
 
-  v50 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_stateOfMindDomains"];
+  v50 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_stateOfMindDomains"];
   [v50 doubleValue];
   v52 = v51;
 
-  v43 = [v6 objectForKeyedSubscript:@"embeddingDistWeight_stateOfMindLabels"];
+  v43 = [weightsCopy objectForKeyedSubscript:@"embeddingDistWeight_stateOfMindLabels"];
   [v43 doubleValue];
   v54 = v53;
 LABEL_25:
@@ -2261,7 +2261,7 @@ LABEL_26:
     }
 
     v56 = +[NSAssertionHandler currentHandler];
-    [v56 handleFailureInMethod:a2 object:v61 file:@"MOEmbedding.m" lineNumber:695 description:{@"Sum of state of mind context distance weight is not 1, sum=%.3f (in %s:%d)", v49 + v52 + v54, "-[MOEmbedding getStateOfMindContextDistanceFrom:withWeights:]", 695}];
+    [v56 handleFailureInMethod:a2 object:selfCopy file:@"MOEmbedding.m" lineNumber:695 description:{@"Sum of state of mind context distance weight is not 1, sum=%.3f (in %s:%d)", v49 + v52 + v54, "-[MOEmbedding getStateOfMindContextDistanceFrom:withWeights:]", 695}];
   }
 
   v57 = v11 * v52 + v49 * v12 + v54 * v33;
@@ -2282,23 +2282,23 @@ LABEL_26:
   return v57;
 }
 
-- (double)getExtraContextDistanceFrom:(id)a3 withWeights:(id)a4
+- (double)getExtraContextDistanceFrom:(id)from withWeights:(id)weights
 {
-  v5 = a3;
-  v6 = [(MOEmbedding *)self extraContextEmbedding];
-  v7 = [v5 extraContextEmbedding];
+  fromCopy = from;
+  extraContextEmbedding = [(MOEmbedding *)self extraContextEmbedding];
+  extraContextEmbedding2 = [fromCopy extraContextEmbedding];
 
-  v8 = [v6 objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
+  v8 = [extraContextEmbedding objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
   v9 = 1.0;
   if (v8)
   {
     v10 = v8;
-    v11 = [v7 objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
+    v11 = [extraContextEmbedding2 objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
 
     if (v11)
     {
-      v12 = [v6 objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
-      v13 = [v7 objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
+      v12 = [extraContextEmbedding objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
+      v13 = [extraContextEmbedding2 objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
       if ([v12 isEqualToString:v13])
       {
         v9 = 0.0;
@@ -2316,16 +2316,16 @@ LABEL_26:
 
 - (id)description
 {
-  v3 = [(MOEmbedding *)self bundleIdentifier];
-  v4 = [(MOEmbedding *)self suggestionID];
-  v5 = [(MOEmbedding *)self embeddingType];
-  v6 = [(MOEmbedding *)self activityContextEmbedding];
-  v7 = [(MOEmbedding *)self timeContextEmbedding];
-  v8 = [(MOEmbedding *)self locationContextEmbedding];
-  v9 = [(MOEmbedding *)self socialContextEmbedding];
-  v10 = [(MOEmbedding *)self stateOfMindContextEmbedding];
-  v11 = [(MOEmbedding *)self extraContextEmbedding];
-  v12 = [NSString stringWithFormat:@"<MOEmbedding bundleID:%@, suggestionID:%@, embeddingType:%lu, activityContextEmbedding:%@, timeContextEmbedding:%@, locationContextEmbedding:%@, socialContextEmbedding:%@, stateOfMindContextEmbedding:%@, extraContextEmbedding:%@>", v3, v4, v5, v6, v7, v8, v9, v10, v11];
+  bundleIdentifier = [(MOEmbedding *)self bundleIdentifier];
+  suggestionID = [(MOEmbedding *)self suggestionID];
+  embeddingType = [(MOEmbedding *)self embeddingType];
+  activityContextEmbedding = [(MOEmbedding *)self activityContextEmbedding];
+  timeContextEmbedding = [(MOEmbedding *)self timeContextEmbedding];
+  locationContextEmbedding = [(MOEmbedding *)self locationContextEmbedding];
+  socialContextEmbedding = [(MOEmbedding *)self socialContextEmbedding];
+  stateOfMindContextEmbedding = [(MOEmbedding *)self stateOfMindContextEmbedding];
+  extraContextEmbedding = [(MOEmbedding *)self extraContextEmbedding];
+  v12 = [NSString stringWithFormat:@"<MOEmbedding bundleID:%@, suggestionID:%@, embeddingType:%lu, activityContextEmbedding:%@, timeContextEmbedding:%@, locationContextEmbedding:%@, socialContextEmbedding:%@, stateOfMindContextEmbedding:%@, extraContextEmbedding:%@>", bundleIdentifier, suggestionID, embeddingType, activityContextEmbedding, timeContextEmbedding, locationContextEmbedding, socialContextEmbedding, stateOfMindContextEmbedding, extraContextEmbedding];
 
   return v12;
 }
@@ -2333,252 +2333,252 @@ LABEL_26:
 - (id)summaryDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(MOEmbedding *)self bundleIdentifier];
-  [v3 setObject:v4 forKeyedSubscript:@"bundleID"];
+  bundleIdentifier = [(MOEmbedding *)self bundleIdentifier];
+  [v3 setObject:bundleIdentifier forKeyedSubscript:@"bundleID"];
 
-  v5 = [(MOEmbedding *)self suggestionID];
-  [v3 setObject:v5 forKeyedSubscript:@"suggestionID"];
+  suggestionID = [(MOEmbedding *)self suggestionID];
+  [v3 setObject:suggestionID forKeyedSubscript:@"suggestionID"];
 
-  v6 = [(MOEmbedding *)self activityContextEmbedding];
-  [v3 addEntriesFromDictionary:v6];
+  activityContextEmbedding = [(MOEmbedding *)self activityContextEmbedding];
+  [v3 addEntriesFromDictionary:activityContextEmbedding];
 
-  v7 = [(MOEmbedding *)self timeContextEmbedding];
-  v8 = [v7 objectForKeyedSubscript:@"normalizedDuration"];
+  timeContextEmbedding = [(MOEmbedding *)self timeContextEmbedding];
+  v8 = [timeContextEmbedding objectForKeyedSubscript:@"normalizedDuration"];
 
   if (v8)
   {
-    v9 = [(MOEmbedding *)self timeContextEmbedding];
-    v10 = [v9 objectForKeyedSubscript:@"normalizedDuration"];
+    timeContextEmbedding2 = [(MOEmbedding *)self timeContextEmbedding];
+    v10 = [timeContextEmbedding2 objectForKeyedSubscript:@"normalizedDuration"];
     [v3 setObject:v10 forKeyedSubscript:@"normalizedDuration"];
   }
 
-  v11 = [(MOEmbedding *)self timeContextEmbedding];
-  v12 = [v11 objectForKeyedSubscript:@"timeTag"];
+  timeContextEmbedding3 = [(MOEmbedding *)self timeContextEmbedding];
+  v12 = [timeContextEmbedding3 objectForKeyedSubscript:@"timeTag"];
 
   if (v12)
   {
-    v13 = [(MOEmbedding *)self timeContextEmbedding];
-    v14 = [v13 objectForKeyedSubscript:@"timeTag"];
+    timeContextEmbedding4 = [(MOEmbedding *)self timeContextEmbedding];
+    v14 = [timeContextEmbedding4 objectForKeyedSubscript:@"timeTag"];
     [v3 setObject:v14 forKeyedSubscript:@"timeTag"];
   }
 
-  v15 = [(MOEmbedding *)self timeContextEmbedding];
-  v16 = [v15 objectForKeyedSubscript:@"dayOfWeek"];
+  timeContextEmbedding5 = [(MOEmbedding *)self timeContextEmbedding];
+  v16 = [timeContextEmbedding5 objectForKeyedSubscript:@"dayOfWeek"];
 
   if (v16)
   {
-    v17 = [(MOEmbedding *)self timeContextEmbedding];
-    v18 = [v17 objectForKeyedSubscript:@"dayOfWeek"];
+    timeContextEmbedding6 = [(MOEmbedding *)self timeContextEmbedding];
+    v18 = [timeContextEmbedding6 objectForKeyedSubscript:@"dayOfWeek"];
     v19 = -[MOEmbedding dayOfWeekString:](self, "dayOfWeekString:", [v18 intValue]);
     [v3 setObject:v19 forKeyedSubscript:@"dayOfWeek"];
   }
 
-  v20 = [(MOEmbedding *)self timeContextEmbedding];
-  v21 = [v20 objectForKeyedSubscript:@"weekOfYear"];
+  timeContextEmbedding7 = [(MOEmbedding *)self timeContextEmbedding];
+  v21 = [timeContextEmbedding7 objectForKeyedSubscript:@"weekOfYear"];
 
   if (v21)
   {
-    v22 = [(MOEmbedding *)self timeContextEmbedding];
-    v23 = [v22 objectForKeyedSubscript:@"weekOfYear"];
+    timeContextEmbedding8 = [(MOEmbedding *)self timeContextEmbedding];
+    v23 = [timeContextEmbedding8 objectForKeyedSubscript:@"weekOfYear"];
     [v3 setObject:v23 forKeyedSubscript:@"weekOfYear"];
   }
 
-  v24 = [(MOEmbedding *)self timeContextEmbedding];
-  v25 = [v24 objectForKeyedSubscript:@"isWeekend"];
+  timeContextEmbedding9 = [(MOEmbedding *)self timeContextEmbedding];
+  v25 = [timeContextEmbedding9 objectForKeyedSubscript:@"isWeekend"];
 
   if (v25)
   {
-    v26 = [(MOEmbedding *)self timeContextEmbedding];
-    v27 = [v26 objectForKeyedSubscript:@"isWeekend"];
+    timeContextEmbedding10 = [(MOEmbedding *)self timeContextEmbedding];
+    v27 = [timeContextEmbedding10 objectForKeyedSubscript:@"isWeekend"];
     [v3 setObject:v27 forKeyedSubscript:@"isWeekend"];
   }
 
-  v28 = [(MOEmbedding *)self timeContextEmbedding];
-  v29 = [v28 objectForKeyedSubscript:@"holiday"];
+  timeContextEmbedding11 = [(MOEmbedding *)self timeContextEmbedding];
+  v29 = [timeContextEmbedding11 objectForKeyedSubscript:@"holiday"];
 
   if (v29)
   {
-    v30 = [(MOEmbedding *)self timeContextEmbedding];
-    v31 = [v30 objectForKeyedSubscript:@"holiday"];
+    timeContextEmbedding12 = [(MOEmbedding *)self timeContextEmbedding];
+    v31 = [timeContextEmbedding12 objectForKeyedSubscript:@"holiday"];
     [v3 setObject:v31 forKeyedSubscript:@"holiday"];
   }
 
-  v32 = [(MOEmbedding *)self timeContextEmbedding];
-  v33 = [v32 objectForKeyedSubscript:@"celebration"];
+  timeContextEmbedding13 = [(MOEmbedding *)self timeContextEmbedding];
+  v33 = [timeContextEmbedding13 objectForKeyedSubscript:@"celebration"];
 
   if (v33)
   {
-    v34 = [(MOEmbedding *)self timeContextEmbedding];
-    v35 = [v34 objectForKeyedSubscript:@"celebration"];
+    timeContextEmbedding14 = [(MOEmbedding *)self timeContextEmbedding];
+    v35 = [timeContextEmbedding14 objectForKeyedSubscript:@"celebration"];
     [v3 setObject:v35 forKeyedSubscript:@"celebration"];
   }
 
-  v36 = [(MOEmbedding *)self locationContextEmbedding];
-  v37 = [v36 objectForKeyedSubscript:@"placeName"];
+  locationContextEmbedding = [(MOEmbedding *)self locationContextEmbedding];
+  v37 = [locationContextEmbedding objectForKeyedSubscript:@"placeName"];
 
   if (v37)
   {
-    v38 = [(MOEmbedding *)self locationContextEmbedding];
-    v39 = [v38 objectForKeyedSubscript:@"placeName"];
+    locationContextEmbedding2 = [(MOEmbedding *)self locationContextEmbedding];
+    v39 = [locationContextEmbedding2 objectForKeyedSubscript:@"placeName"];
     [v3 setObject:v39 forKeyedSubscript:@"placeName"];
   }
 
-  v40 = [(MOEmbedding *)self locationContextEmbedding];
-  v41 = [v40 objectForKeyedSubscript:@"combinedPlaceType"];
+  locationContextEmbedding3 = [(MOEmbedding *)self locationContextEmbedding];
+  v41 = [locationContextEmbedding3 objectForKeyedSubscript:@"combinedPlaceType"];
 
   if (v41)
   {
-    v42 = [(MOEmbedding *)self locationContextEmbedding];
-    v43 = [v42 objectForKeyedSubscript:@"combinedPlaceType"];
+    locationContextEmbedding4 = [(MOEmbedding *)self locationContextEmbedding];
+    v43 = [locationContextEmbedding4 objectForKeyedSubscript:@"combinedPlaceType"];
     [v3 setObject:v43 forKeyedSubscript:@"combinedPlaceType"];
   }
 
-  v44 = [(MOEmbedding *)self locationContextEmbedding];
-  v45 = [v44 objectForKeyedSubscript:@"enclosingAreaName"];
+  locationContextEmbedding5 = [(MOEmbedding *)self locationContextEmbedding];
+  v45 = [locationContextEmbedding5 objectForKeyedSubscript:@"enclosingAreaName"];
 
   if (v45)
   {
-    v46 = [(MOEmbedding *)self locationContextEmbedding];
-    v47 = [v46 objectForKeyedSubscript:@"enclosingAreaName"];
+    locationContextEmbedding6 = [(MOEmbedding *)self locationContextEmbedding];
+    v47 = [locationContextEmbedding6 objectForKeyedSubscript:@"enclosingAreaName"];
     [v3 setObject:v47 forKeyedSubscript:@"enclosingAreaName"];
   }
 
-  v48 = [(MOEmbedding *)self locationContextEmbedding];
-  v49 = [v48 objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
+  locationContextEmbedding7 = [(MOEmbedding *)self locationContextEmbedding];
+  v49 = [locationContextEmbedding7 objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
 
   if (v49)
   {
-    v50 = [(MOEmbedding *)self locationContextEmbedding];
-    v51 = [v50 objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
+    locationContextEmbedding8 = [(MOEmbedding *)self locationContextEmbedding];
+    v51 = [locationContextEmbedding8 objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
     [v3 setObject:v51 forKeyedSubscript:@"placeTypeFromPhotoTraits"];
   }
 
-  v52 = [(MOEmbedding *)self locationContextEmbedding];
-  v53 = [v52 objectForKeyedSubscript:@"placeFamiliarityIndexLOI"];
+  locationContextEmbedding9 = [(MOEmbedding *)self locationContextEmbedding];
+  v53 = [locationContextEmbedding9 objectForKeyedSubscript:@"placeFamiliarityIndexLOI"];
 
   if (v53)
   {
-    v54 = [(MOEmbedding *)self locationContextEmbedding];
-    v55 = [v54 objectForKeyedSubscript:@"placeFamiliarityIndexLOI"];
+    locationContextEmbedding10 = [(MOEmbedding *)self locationContextEmbedding];
+    v55 = [locationContextEmbedding10 objectForKeyedSubscript:@"placeFamiliarityIndexLOI"];
     [v3 setObject:v55 forKeyedSubscript:@"placeFamiliarityIndexLOI"];
   }
 
-  v56 = [(MOEmbedding *)self socialContextEmbedding];
-  v57 = [v56 objectForKeyedSubscript:@"persons"];
+  socialContextEmbedding = [(MOEmbedding *)self socialContextEmbedding];
+  v57 = [socialContextEmbedding objectForKeyedSubscript:@"persons"];
 
   if (v57)
   {
-    v58 = [(MOEmbedding *)self socialContextEmbedding];
-    v59 = [v58 objectForKeyedSubscript:@"persons"];
+    socialContextEmbedding2 = [(MOEmbedding *)self socialContextEmbedding];
+    v59 = [socialContextEmbedding2 objectForKeyedSubscript:@"persons"];
     [v3 setObject:v59 forKeyedSubscript:@"persons"];
   }
 
-  v60 = [(MOEmbedding *)self socialContextEmbedding];
-  v61 = [v60 objectForKeyedSubscript:@"withFamily"];
+  socialContextEmbedding3 = [(MOEmbedding *)self socialContextEmbedding];
+  v61 = [socialContextEmbedding3 objectForKeyedSubscript:@"withFamily"];
 
   if (v61)
   {
-    v62 = [(MOEmbedding *)self socialContextEmbedding];
-    v63 = [v62 objectForKeyedSubscript:@"withFamily"];
+    socialContextEmbedding4 = [(MOEmbedding *)self socialContextEmbedding];
+    v63 = [socialContextEmbedding4 objectForKeyedSubscript:@"withFamily"];
     [v3 setObject:v63 forKeyedSubscript:@"withFamily"];
   }
 
-  v64 = [(MOEmbedding *)self socialContextEmbedding];
-  v65 = [v64 objectForKeyedSubscript:@"withCoworker"];
+  socialContextEmbedding5 = [(MOEmbedding *)self socialContextEmbedding];
+  v65 = [socialContextEmbedding5 objectForKeyedSubscript:@"withCoworker"];
 
   if (v65)
   {
-    v66 = [(MOEmbedding *)self socialContextEmbedding];
-    v67 = [v66 objectForKeyedSubscript:@"withCoworker"];
+    socialContextEmbedding6 = [(MOEmbedding *)self socialContextEmbedding];
+    v67 = [socialContextEmbedding6 objectForKeyedSubscript:@"withCoworker"];
     [v3 setObject:v67 forKeyedSubscript:@"withCoworker"];
   }
 
-  v68 = [(MOEmbedding *)self socialContextEmbedding];
-  v69 = [v68 objectForKeyedSubscript:@"withFriend"];
+  socialContextEmbedding7 = [(MOEmbedding *)self socialContextEmbedding];
+  v69 = [socialContextEmbedding7 objectForKeyedSubscript:@"withFriend"];
 
   if (v69)
   {
-    v70 = [(MOEmbedding *)self socialContextEmbedding];
-    v71 = [v70 objectForKeyedSubscript:@"withFriend"];
+    socialContextEmbedding8 = [(MOEmbedding *)self socialContextEmbedding];
+    v71 = [socialContextEmbedding8 objectForKeyedSubscript:@"withFriend"];
     [v3 setObject:v71 forKeyedSubscript:@"withFriend"];
   }
 
-  v72 = [(MOEmbedding *)self socialContextEmbedding];
-  v73 = [v72 objectForKeyedSubscript:@"withChild"];
+  socialContextEmbedding9 = [(MOEmbedding *)self socialContextEmbedding];
+  v73 = [socialContextEmbedding9 objectForKeyedSubscript:@"withChild"];
 
   if (v73)
   {
-    v74 = [(MOEmbedding *)self socialContextEmbedding];
-    v75 = [v74 objectForKeyedSubscript:@"withChild"];
+    socialContextEmbedding10 = [(MOEmbedding *)self socialContextEmbedding];
+    v75 = [socialContextEmbedding10 objectForKeyedSubscript:@"withChild"];
     [v3 setObject:v75 forKeyedSubscript:@"withChild"];
   }
 
-  v76 = [(MOEmbedding *)self socialContextEmbedding];
-  v77 = [v76 objectForKeyedSubscript:@"withMyPet"];
+  socialContextEmbedding11 = [(MOEmbedding *)self socialContextEmbedding];
+  v77 = [socialContextEmbedding11 objectForKeyedSubscript:@"withMyPet"];
 
   if (v77)
   {
-    v78 = [(MOEmbedding *)self socialContextEmbedding];
-    v79 = [v78 objectForKeyedSubscript:@"withMyPet"];
+    socialContextEmbedding12 = [(MOEmbedding *)self socialContextEmbedding];
+    v79 = [socialContextEmbedding12 objectForKeyedSubscript:@"withMyPet"];
     [v3 setObject:v79 forKeyedSubscript:@"withMyPet"];
   }
 
-  v80 = [(MOEmbedding *)self socialContextEmbedding];
-  v81 = [v80 objectForKeyedSubscript:@"socialEventFromPhotoTraits"];
+  socialContextEmbedding13 = [(MOEmbedding *)self socialContextEmbedding];
+  v81 = [socialContextEmbedding13 objectForKeyedSubscript:@"socialEventFromPhotoTraits"];
 
   if (v81)
   {
-    v82 = [(MOEmbedding *)self socialContextEmbedding];
-    v83 = [v82 objectForKeyedSubscript:@"socialEventFromPhotoTraits"];
+    socialContextEmbedding14 = [(MOEmbedding *)self socialContextEmbedding];
+    v83 = [socialContextEmbedding14 objectForKeyedSubscript:@"socialEventFromPhotoTraits"];
     [v3 setObject:v83 forKeyedSubscript:@"socialEventFromPhotoTraits"];
   }
 
-  v84 = [(MOEmbedding *)self stateOfMindContextEmbedding];
-  v85 = [v84 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingValenceValues];
+  stateOfMindContextEmbedding = [(MOEmbedding *)self stateOfMindContextEmbedding];
+  v85 = [stateOfMindContextEmbedding objectForKeyedSubscript:kMOStateOfMindContextEmbeddingValenceValues];
 
   if (v85)
   {
-    v86 = [(MOEmbedding *)self stateOfMindContextEmbedding];
-    v87 = [v86 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingValenceValues];
+    stateOfMindContextEmbedding2 = [(MOEmbedding *)self stateOfMindContextEmbedding];
+    v87 = [stateOfMindContextEmbedding2 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingValenceValues];
     [v3 setObject:v87 forKeyedSubscript:kMOStateOfMindContextEmbeddingValenceValues];
   }
 
-  v88 = [(MOEmbedding *)self stateOfMindContextEmbedding];
-  v89 = [v88 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingLabels];
+  stateOfMindContextEmbedding3 = [(MOEmbedding *)self stateOfMindContextEmbedding];
+  v89 = [stateOfMindContextEmbedding3 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingLabels];
 
   if (v89)
   {
-    v90 = [(MOEmbedding *)self stateOfMindContextEmbedding];
-    v91 = [v90 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingLabels];
+    stateOfMindContextEmbedding4 = [(MOEmbedding *)self stateOfMindContextEmbedding];
+    v91 = [stateOfMindContextEmbedding4 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingLabels];
     [v3 setObject:v91 forKeyedSubscript:kMOStateOfMindContextEmbeddingLabels];
   }
 
-  v92 = [(MOEmbedding *)self stateOfMindContextEmbedding];
-  v93 = [v92 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingDomains];
+  stateOfMindContextEmbedding5 = [(MOEmbedding *)self stateOfMindContextEmbedding];
+  v93 = [stateOfMindContextEmbedding5 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingDomains];
 
   if (v93)
   {
-    v94 = [(MOEmbedding *)self stateOfMindContextEmbedding];
-    v95 = [v94 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingDomains];
+    stateOfMindContextEmbedding6 = [(MOEmbedding *)self stateOfMindContextEmbedding];
+    v95 = [stateOfMindContextEmbedding6 objectForKeyedSubscript:kMOStateOfMindContextEmbeddingDomains];
     [v3 setObject:v95 forKeyedSubscript:kMOStateOfMindContextEmbeddingDomains];
   }
 
-  v96 = [(MOEmbedding *)self extraContextEmbedding];
-  [v3 addEntriesFromDictionary:v96];
+  extraContextEmbedding = [(MOEmbedding *)self extraContextEmbedding];
+  [v3 addEntriesFromDictionary:extraContextEmbedding];
 
   return v3;
 }
 
-- (id)dayOfWeekString:(unint64_t)a3
+- (id)dayOfWeekString:(unint64_t)string
 {
-  if (a3 - 1 > 6)
+  if (string - 1 > 6)
   {
     return @"undefined";
   }
 
   else
   {
-    return *(&off_10033D090 + a3 - 1);
+    return *(&off_10033D090 + string - 1);
   }
 }
 

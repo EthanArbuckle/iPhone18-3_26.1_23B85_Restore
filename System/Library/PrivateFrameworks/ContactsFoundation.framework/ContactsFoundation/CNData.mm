@@ -1,20 +1,20 @@
 @interface CNData
-+ (id)dataWithContentsOfFileURL:(id)a3;
-+ (id)dataWithContentsOfURL:(id)a3;
-+ (id)dataWithContentsOfURL:(id)a3 sessionFactory:(id)a4;
-+ (id)observableWithContentsOfURL:(id)a3;
-+ (id)observableWithContentsOfURL:(id)a3 sessionFactory:(id)a4;
-+ (id)writeData:(id)a3 toURL:(id)a4 options:(unint64_t)a5;
-+ (id)writeData:(id)a3 toURL:(id)a4 options:(unint64_t)a5 fileManager:(id)a6;
-+ (unint64_t)NSDataWritingOptionsFromCNDataWritingOptions:(unint64_t)a3;
-- (CNData)dataWithContentsOfURL:(id)a3;
++ (id)dataWithContentsOfFileURL:(id)l;
++ (id)dataWithContentsOfURL:(id)l;
++ (id)dataWithContentsOfURL:(id)l sessionFactory:(id)factory;
++ (id)observableWithContentsOfURL:(id)l;
++ (id)observableWithContentsOfURL:(id)l sessionFactory:(id)factory;
++ (id)writeData:(id)data toURL:(id)l options:(unint64_t)options;
++ (id)writeData:(id)data toURL:(id)l options:(unint64_t)options fileManager:(id)manager;
++ (unint64_t)NSDataWritingOptionsFromCNDataWritingOptions:(unint64_t)options;
+- (CNData)dataWithContentsOfURL:(id)l;
 - (CNData)init;
-- (CNData)initWithFileManager:(id)a3;
-- (CNData)initWithFileManager:(id)a3 urlSessionFactory:(id)a4;
-- (id)observableWithContentsOfURL:(id)a3;
-- (id)synchronousDataWithContentsOfURL:(id)a3;
-- (id)synchronousDataWithContentsOfURL:(id)a3 timeout:(double)a4;
-- (id)writeData:(id)a3 toURL:(id)a4 options:(unint64_t)a5;
+- (CNData)initWithFileManager:(id)manager;
+- (CNData)initWithFileManager:(id)manager urlSessionFactory:(id)factory;
+- (id)observableWithContentsOfURL:(id)l;
+- (id)synchronousDataWithContentsOfURL:(id)l;
+- (id)synchronousDataWithContentsOfURL:(id)l timeout:(double)timeout;
+- (id)writeData:(id)data toURL:(id)l options:(unint64_t)options;
 @end
 
 @implementation CNData
@@ -27,79 +27,79 @@
   return v4;
 }
 
-- (CNData)initWithFileManager:(id)a3
+- (CNData)initWithFileManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = +[CNURLSessionFactory defaultFactory];
-  v6 = [(CNData *)self initWithFileManager:v4 urlSessionFactory:v5];
+  v6 = [(CNData *)self initWithFileManager:managerCopy urlSessionFactory:v5];
 
   return v6;
 }
 
-- (CNData)initWithFileManager:(id)a3 urlSessionFactory:(id)a4
+- (CNData)initWithFileManager:(id)manager urlSessionFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  factoryCopy = factory;
   v13.receiver = self;
   v13.super_class = CNData;
   v9 = [(CNData *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_fileManager, a3);
-    objc_storeStrong(&v10->_sessionFactory, a4);
+    objc_storeStrong(&v9->_fileManager, manager);
+    objc_storeStrong(&v10->_sessionFactory, factory);
     v11 = v10;
   }
 
   return v10;
 }
 
-+ (id)dataWithContentsOfURL:(id)a3
++ (id)dataWithContentsOfURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[CNURLSessionFactory defaultFactory];
-  v6 = [a1 dataWithContentsOfURL:v4 sessionFactory:v5];
+  v6 = [self dataWithContentsOfURL:lCopy sessionFactory:v5];
 
   return v6;
 }
 
-+ (id)dataWithContentsOfFileURL:(id)a3
++ (id)dataWithContentsOfFileURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__CNData_dataWithContentsOfFileURL___block_invoke;
   v7[3] = &unk_1E6ED5990;
-  v8 = v3;
-  v4 = v3;
+  v8 = lCopy;
+  v4 = lCopy;
   v5 = [CNFuture futureWithBlock:v7];
 
   return v5;
 }
 
-+ (id)dataWithContentsOfURL:(id)a3 sessionFactory:(id)a4
++ (id)dataWithContentsOfURL:(id)l sessionFactory:(id)factory
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isFileURL])
+  lCopy = l;
+  factoryCopy = factory;
+  if ([lCopy isFileURL])
   {
-    v8 = [a1 dataWithContentsOfFileURL:v6];
+    v8 = [self dataWithContentsOfFileURL:lCopy];
   }
 
   else
   {
     v9 = objc_alloc_init(CNPromise);
-    v10 = [v7 defaultSessionConfiguration];
-    v11 = [v7 sessionWithConfiguration:v10 delegate:0 delegateQueue:0];
+    defaultSessionConfiguration = [factoryCopy defaultSessionConfiguration];
+    v11 = [factoryCopy sessionWithConfiguration:defaultSessionConfiguration delegate:0 delegateQueue:0];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __47__CNData_dataWithContentsOfURL_sessionFactory___block_invoke;
     v28[3] = &unk_1E6ED59B8;
     v29 = v9;
     v12 = v9;
-    v13 = [v11 dataTaskWithURL:v6 completionHandler:v28];
+    v13 = [v11 dataTaskWithURL:lCopy completionHandler:v28];
     [v13 resume];
-    v14 = [(CNPromise *)v12 future];
+    future = [(CNPromise *)v12 future];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __47__CNData_dataWithContentsOfURL_sessionFactory___block_invoke_2;
@@ -108,16 +108,16 @@
     v15 = v11;
     v27 = v15;
     v16 = v13;
-    [v14 addFailureBlock:v25];
+    [future addFailureBlock:v25];
 
-    v17 = [(CNPromise *)v12 future];
+    future2 = [(CNPromise *)v12 future];
     v20 = MEMORY[0x1E69E9820];
     v21 = 3221225472;
     v22 = __47__CNData_dataWithContentsOfURL_sessionFactory___block_invoke_3;
     v23 = &unk_1E6ED5A08;
     v24 = v15;
     v18 = v15;
-    [v17 addSuccessBlock:&v20];
+    [future2 addSuccessBlock:&v20];
 
     v8 = [(CNPromise *)v12 future:v20];
   }
@@ -189,45 +189,45 @@ uint64_t __47__CNData_dataWithContentsOfURL_sessionFactory___block_invoke_2(uint
   return [v3 invalidateAndCancel];
 }
 
-- (id)synchronousDataWithContentsOfURL:(id)a3
+- (id)synchronousDataWithContentsOfURL:(id)l
 {
-  v3 = [(CNData *)self dataWithContentsOfURL:a3];
+  v3 = [(CNData *)self dataWithContentsOfURL:l];
   v4 = [CNResult resultWithFuture:v3];
 
   return v4;
 }
 
-- (id)synchronousDataWithContentsOfURL:(id)a3 timeout:(double)a4
+- (id)synchronousDataWithContentsOfURL:(id)l timeout:(double)timeout
 {
-  v5 = [(CNData *)self dataWithContentsOfURL:a3];
-  v6 = [CNResult resultWithFuture:v5 timeout:a4];
+  v5 = [(CNData *)self dataWithContentsOfURL:l];
+  v6 = [CNResult resultWithFuture:v5 timeout:timeout];
 
   return v6;
 }
 
-- (CNData)dataWithContentsOfURL:(id)a3
+- (CNData)dataWithContentsOfURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_opt_class();
-  v6 = [(CNData *)self sessionFactory];
-  v7 = [v5 dataWithContentsOfURL:v4 sessionFactory:v6];
+  sessionFactory = [(CNData *)self sessionFactory];
+  v7 = [v5 dataWithContentsOfURL:lCopy sessionFactory:sessionFactory];
 
   return v7;
 }
 
-+ (id)observableWithContentsOfURL:(id)a3
++ (id)observableWithContentsOfURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[CNURLSessionFactory defaultFactory];
-  v6 = [a1 observableWithContentsOfURL:v4 sessionFactory:v5];
+  v6 = [self observableWithContentsOfURL:lCopy sessionFactory:v5];
 
   return v6;
 }
 
-+ (id)observableWithContentsOfURL:(id)a3 sessionFactory:(id)a4
++ (id)observableWithContentsOfURL:(id)l sessionFactory:(id)factory
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  factoryCopy = factory;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
@@ -238,10 +238,10 @@ uint64_t __47__CNData_dataWithContentsOfURL_sessionFactory___block_invoke_2(uint
   v13[1] = 3221225472;
   v13[2] = __53__CNData_observableWithContentsOfURL_sessionFactory___block_invoke;
   v13[3] = &unk_1E6ED5A58;
-  v7 = v6;
+  v7 = factoryCopy;
   v14 = v7;
   v16 = v17;
-  v8 = v5;
+  v8 = lCopy;
   v15 = v8;
   v9 = [CNObservable observableWithBlock:v13];
   v12[0] = MEMORY[0x1E69E9820];
@@ -307,58 +307,58 @@ uint64_t __53__CNData_observableWithContentsOfURL_sessionFactory___block_invoke_
   }
 }
 
-- (id)observableWithContentsOfURL:(id)a3
+- (id)observableWithContentsOfURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_opt_class();
-  v6 = [(CNData *)self sessionFactory];
-  v7 = [v5 observableWithContentsOfURL:v4 sessionFactory:v6];
+  sessionFactory = [(CNData *)self sessionFactory];
+  v7 = [v5 observableWithContentsOfURL:lCopy sessionFactory:sessionFactory];
 
   return v7;
 }
 
-+ (id)writeData:(id)a3 toURL:(id)a4 options:(unint64_t)a5
++ (id)writeData:(id)data toURL:(id)l options:(unint64_t)options
 {
-  v8 = a4;
-  v9 = a3;
+  lCopy = l;
+  dataCopy = data;
   v10 = objc_alloc_init(CNFileManager);
-  v11 = [a1 writeData:v9 toURL:v8 options:a5 fileManager:v10];
+  v11 = [self writeData:dataCopy toURL:lCopy options:options fileManager:v10];
 
   return v11;
 }
 
-+ (id)writeData:(id)a3 toURL:(id)a4 options:(unint64_t)a5 fileManager:(id)a6
++ (id)writeData:(id)data toURL:(id)l options:(unint64_t)options fileManager:(id)manager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = v12;
-  if (a5)
+  dataCopy = data;
+  lCopy = l;
+  managerCopy = manager;
+  v13 = managerCopy;
+  if (options)
   {
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __46__CNData_writeData_toURL_options_fileManager___block_invoke;
     v24[3] = &unk_1E6ED5AA8;
-    v25 = v12;
-    v26 = v11;
+    v25 = managerCopy;
+    v26 = lCopy;
     v14 = [CNFuture futureWithBlock:v24];
   }
 
   else
   {
-    v14 = [CNFuture futureWithResult:v11];
+    v14 = [CNFuture futureWithResult:lCopy];
   }
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __46__CNData_writeData_toURL_options_fileManager___block_invoke_2;
   v19[3] = &unk_1E6ED5AF8;
-  v22 = a1;
-  v23 = a5;
-  v20 = v10;
-  v21 = v11;
-  v15 = v11;
-  v16 = v10;
+  selfCopy = self;
+  optionsCopy = options;
+  v20 = dataCopy;
+  v21 = lCopy;
+  v15 = lCopy;
+  v16 = dataCopy;
   v17 = [v14 flatMap:v19];
 
   return v17;
@@ -414,7 +414,7 @@ id __46__CNData_writeData_toURL_options_fileManager___block_invoke_3(uint64_t a1
   return v3;
 }
 
-+ (unint64_t)NSDataWritingOptionsFromCNDataWritingOptions:(unint64_t)a3
++ (unint64_t)NSDataWritingOptionsFromCNDataWritingOptions:(unint64_t)options
 {
   v7 = 0;
   v8 = &v7;
@@ -425,7 +425,7 @@ id __46__CNData_writeData_toURL_options_fileManager___block_invoke_3(uint64_t a1
   v6[2] = __55__CNData_NSDataWritingOptionsFromCNDataWritingOptions___block_invoke;
   v6[3] = &unk_1E6ED5B20;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = options;
   v3 = _Block_copy(v6);
   v3[2](v3, 1024, 1);
   v3[2](v3, 2048, 2);
@@ -449,13 +449,13 @@ uint64_t __55__CNData_NSDataWritingOptionsFromCNDataWritingOptions___block_invok
   return result;
 }
 
-- (id)writeData:(id)a3 toURL:(id)a4 options:(unint64_t)a5
+- (id)writeData:(id)data toURL:(id)l options:(unint64_t)options
 {
-  v8 = a4;
-  v9 = a3;
+  lCopy = l;
+  dataCopy = data;
   v10 = objc_opt_class();
-  v11 = [(CNData *)self fileManager];
-  v12 = [v10 writeData:v9 toURL:v8 options:a5 fileManager:v11];
+  fileManager = [(CNData *)self fileManager];
+  v12 = [v10 writeData:dataCopy toURL:lCopy options:options fileManager:fileManager];
 
   return v12;
 }

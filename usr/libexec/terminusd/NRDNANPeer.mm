@@ -20,8 +20,8 @@
 
   peerInstanceID = self->_peerInstanceID;
   identifier = self->_identifier;
-  v7 = [(NWAddressEndpoint *)self->_peerEndpoint hostname];
-  v8 = [v3 initWithFormat:@"NRDNANPeer[%u, %s, id %u, %@]", identifier, v4, peerInstanceID, v7];
+  hostname = [(NWAddressEndpoint *)self->_peerEndpoint hostname];
+  v8 = [v3 initWithFormat:@"NRDNANPeer[%u, %s, id %u, %@]", identifier, v4, peerInstanceID, hostname];
 
   return v8;
 }

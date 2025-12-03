@@ -1,22 +1,22 @@
 @interface NSKeyValueFastMutableOrderedSet1
-- (id)_proxyInitWithContainer:(id)a3 getter:(id)a4;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)objectsAtIndexes:(id)a3;
+- (id)_proxyInitWithContainer:(id)container getter:(id)getter;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)objectsAtIndexes:(id)indexes;
 - (void)_proxyNonGCFinalize;
-- (void)getObjects:(id *)a3 range:(_NSRange)a4;
+- (void)getObjects:(id *)objects range:(_NSRange)range;
 @end
 
 @implementation NSKeyValueFastMutableOrderedSet1
 
-- (id)_proxyInitWithContainer:(id)a3 getter:(id)a4
+- (id)_proxyInitWithContainer:(id)container getter:(id)getter
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = NSKeyValueFastMutableOrderedSet1;
-  v5 = [(NSKeyValueFastMutableOrderedSet *)&v7 _proxyInitWithContainer:a3 getter:?];
+  v5 = [(NSKeyValueFastMutableOrderedSet *)&v7 _proxyInitWithContainer:container getter:?];
   if (v5)
   {
-    v5[4] = [a4 nonmutatingMethods];
+    v5[4] = [getter nonmutatingMethods];
   }
 
   return v5;
@@ -32,7 +32,7 @@
   self->_nonmutatingMethods = 0;
 }
 
-- (void)getObjects:(id *)a3 range:(_NSRange)a4
+- (void)getObjects:(id *)objects range:(_NSRange)range
 {
   v5 = *MEMORY[0x1E69E9840];
   if (self->_nonmutatingMethods->getObjectsRange)
@@ -45,11 +45,11 @@
   {
     v4.receiver = self;
     v4.super_class = NSKeyValueFastMutableOrderedSet1;
-    [(NSKeyValueFastMutableOrderedSet1 *)&v4 getObjects:a3 range:a4.location, a4.length];
+    [(NSKeyValueFastMutableOrderedSet1 *)&v4 getObjects:objects range:range.location, range.length];
   }
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   if (self->_nonmutatingMethods->objectAtIndex)
   {
@@ -59,7 +59,7 @@
 
   else
   {
-    v4 = [[NSIndexSet alloc] initWithIndex:a3];
+    v4 = [[NSIndexSet alloc] initWithIndex:index];
     method_invoke();
     v6 = v5;
 
@@ -69,7 +69,7 @@
   return result;
 }
 
-- (id)objectsAtIndexes:(id)a3
+- (id)objectsAtIndexes:(id)indexes
 {
   v5 = *MEMORY[0x1E69E9840];
   if (self->_nonmutatingMethods->objectsAtIndexes)
@@ -82,7 +82,7 @@
   {
     v4.receiver = self;
     v4.super_class = NSKeyValueFastMutableOrderedSet1;
-    return [(NSKeyValueFastMutableOrderedSet1 *)&v4 objectsAtIndexes:a3];
+    return [(NSKeyValueFastMutableOrderedSet1 *)&v4 objectsAtIndexes:indexes];
   }
 
   return result;

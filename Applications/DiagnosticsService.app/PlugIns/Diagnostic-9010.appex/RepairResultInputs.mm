@@ -1,14 +1,14 @@
 @interface RepairResultInputs
-- (BOOL)validateAndInitializeParameters:(id)a3;
+- (BOOL)validateAndInitializeParameters:(id)parameters;
 @end
 
 @implementation RepairResultInputs
 
-- (BOOL)validateAndInitializeParameters:(id)a3
+- (BOOL)validateAndInitializeParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v23 = 0;
-  v5 = [v4 NSNumberFromKey:@"testStatusCode" lowerBound:&off_100008890 upperBound:&off_1000088A8 defaultValue:&off_1000088C0 failed:&v23];
+  v5 = [parametersCopy NSNumberFromKey:@"testStatusCode" lowerBound:&off_100008890 upperBound:&off_1000088A8 defaultValue:&off_1000088C0 failed:&v23];
   testStatusCode = self->testStatusCode;
   self->testStatusCode = v5;
 
@@ -33,7 +33,7 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "testStatusCode : %@ validationFailed: %@", buf, 0x16u);
   }
 
-  v10 = [v4 NSNumberFromKey:@"testIdentifier" lowerBound:&off_100008890 upperBound:&off_1000088A8 defaultValue:&off_1000088D8 failed:&v23];
+  v10 = [parametersCopy NSNumberFromKey:@"testIdentifier" lowerBound:&off_100008890 upperBound:&off_1000088A8 defaultValue:&off_1000088D8 failed:&v23];
   testIdentifier = self->testIdentifier;
   self->testIdentifier = v10;
 
@@ -59,7 +59,7 @@
   }
 
   v15 = [NSSet setWithObject:objc_opt_class()];
-  v16 = [v4 NSArrayFromKey:@"removedPartSPC" types:v15 maxLength:256 defaultValue:0 failed:&v23];
+  v16 = [parametersCopy NSArrayFromKey:@"removedPartSPC" types:v15 maxLength:256 defaultValue:0 failed:&v23];
   removedPartSPC = self->removedPartSPC;
   self->removedPartSPC = v16;
 

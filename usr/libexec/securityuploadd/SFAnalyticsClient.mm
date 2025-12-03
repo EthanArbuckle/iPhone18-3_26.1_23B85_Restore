@@ -1,41 +1,41 @@
 @interface SFAnalyticsClient
 + (void)clearSFAnalyticsClientGlobalCache;
-- (SFAnalyticsClient)initWithStore:(id)a3 queue:(id)a4 name:(id)a5 requireDeviceAnalytics:(BOOL)a6 requireiCloudAnalytics:(BOOL)a7;
-- (void)withStore:(id)a3;
+- (SFAnalyticsClient)initWithStore:(id)store queue:(id)queue name:(id)name requireDeviceAnalytics:(BOOL)analytics requireiCloudAnalytics:(BOOL)cloudAnalytics;
+- (void)withStore:(id)store;
 @end
 
 @implementation SFAnalyticsClient
 
-- (void)withStore:(id)a3
+- (void)withStore:(id)store
 {
-  v4 = a3;
-  v5 = [(SFAnalyticsClient *)self queue];
+  storeCopy = store;
+  queue = [(SFAnalyticsClient *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100007C04;
   v7[3] = &unk_100020FC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = storeCopy;
+  v6 = storeCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (SFAnalyticsClient)initWithStore:(id)a3 queue:(id)a4 name:(id)a5 requireDeviceAnalytics:(BOOL)a6 requireiCloudAnalytics:(BOOL)a7
+- (SFAnalyticsClient)initWithStore:(id)store queue:(id)queue name:(id)name requireDeviceAnalytics:(BOOL)analytics requireiCloudAnalytics:(BOOL)cloudAnalytics
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  storeCopy = store;
+  queueCopy = queue;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = SFAnalyticsClient;
   v16 = [(SFAnalyticsClient *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_store, a3);
-    objc_storeStrong(&v17->_queue, a4);
-    objc_storeStrong(&v17->_name, a5);
-    v17->_requireDeviceAnalytics = a6;
-    v17->_requireiCloudAnalytics = a7;
+    objc_storeStrong(&v16->_store, store);
+    objc_storeStrong(&v17->_queue, queue);
+    objc_storeStrong(&v17->_name, name);
+    v17->_requireDeviceAnalytics = analytics;
+    v17->_requireiCloudAnalytics = cloudAnalytics;
   }
 
   return v17;

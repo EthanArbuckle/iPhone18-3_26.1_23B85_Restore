@@ -1,6 +1,6 @@
 @interface RCNoAnimateLayerHelper
 + (id)sharedNoAnimationHelper;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
+- (id)actionForLayer:(id)layer forKey:(id)key;
 @end
 
 @implementation RCNoAnimateLayerHelper
@@ -17,9 +17,9 @@
   return v3;
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  v4 = [NSNull null:a3];
+  v4 = [NSNull null:layer];
 
   return v4;
 }

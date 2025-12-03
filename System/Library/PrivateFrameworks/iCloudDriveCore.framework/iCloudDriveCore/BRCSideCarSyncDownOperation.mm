@@ -1,5 +1,5 @@
 @interface BRCSideCarSyncDownOperation
-- (BRCSideCarSyncDownOperation)initWithSession:(id)a3 changeToken:(id)a4 syncDownHandler:(id)a5;
+- (BRCSideCarSyncDownOperation)initWithSession:(id)session changeToken:(id)token syncDownHandler:(id)handler;
 - (id)createActivity;
 - (void)_createSyncDownOperation;
 - (void)_createZone;
@@ -8,21 +8,21 @@
 
 @implementation BRCSideCarSyncDownOperation
 
-- (BRCSideCarSyncDownOperation)initWithSession:(id)a3 changeToken:(id)a4 syncDownHandler:(id)a5
+- (BRCSideCarSyncDownOperation)initWithSession:(id)session changeToken:(id)token syncDownHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
-  v12 = [v11 syncContextProvider];
-  v13 = [v12 sideCarSyncContext];
+  tokenCopy = token;
+  handlerCopy = handler;
+  sessionCopy = session;
+  syncContextProvider = [sessionCopy syncContextProvider];
+  sideCarSyncContext = [syncContextProvider sideCarSyncContext];
   v16.receiver = self;
   v16.super_class = BRCSideCarSyncDownOperation;
-  v14 = [(_BRCOperation *)&v16 initWithName:@"side-car-sync" syncContext:v13 sessionContext:v11];
+  v14 = [(_BRCOperation *)&v16 initWithName:@"side-car-sync" syncContext:sideCarSyncContext sessionContext:sessionCopy];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_serverChangeToken, a4);
-    objc_storeStrong(&v14->_syncDownHandler, a5);
+    objc_storeStrong(&v14->_serverChangeToken, token);
+    objc_storeStrong(&v14->_syncDownHandler, handler);
   }
 
   return v14;
@@ -37,9 +37,9 @@
 
 - (void)_createZone
 {
-  v3 = [MEMORY[0x277CBC5F8] brc_sideCarZoneID];
+  brc_sideCarZoneID = [MEMORY[0x277CBC5F8] brc_sideCarZoneID];
   objc_initWeak(&location, self);
-  v4 = [[BRCCreateZoneAndSubscribeOperation alloc] initWithSessionContext:self->super._sessionContext zoneID:v3];
+  v4 = [[BRCCreateZoneAndSubscribeOperation alloc] initWithSessionContext:self->super._sessionContext zoneID:brc_sideCarZoneID];
   v5 = MEMORY[0x277D85DD0];
   v6 = 3221225472;
   v7 = __42__BRCSideCarSyncDownOperation__createZone__block_invoke;
@@ -72,7 +72,7 @@ void __42__BRCSideCarSyncDownOperation__createZone__block_invoke(uint64_t a1, vo
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_223E7A000, a2, OS_LOG_TYPE_DEBUG, "[DEBUG] This is a periodic sync%@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

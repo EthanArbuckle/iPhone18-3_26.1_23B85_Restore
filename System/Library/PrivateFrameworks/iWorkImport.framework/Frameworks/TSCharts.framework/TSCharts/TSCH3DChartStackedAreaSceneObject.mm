@@ -1,14 +1,14 @@
 @interface TSCH3DChartStackedAreaSceneObject
-- (void)sortElements:(id *)a3 pipeline:(id)a4;
+- (void)sortElements:(id *)elements pipeline:(id)pipeline;
 @end
 
 @implementation TSCH3DChartStackedAreaSceneObject
 
-- (void)sortElements:(id *)a3 pipeline:(id)a4
+- (void)sortElements:(id *)elements pipeline:(id)pipeline
 {
-  v5 = a4;
-  v154 = self;
-  v156 = v5;
+  pipelineCopy = pipeline;
+  selfCopy = self;
+  v156 = pipelineCopy;
   v11 = objc_msgSend_processor(v156, v6, v7, v8, v9);
   if (!v11)
   {
@@ -23,7 +23,7 @@
   v30 = objc_msgSend_scene(v156, v10, v12, v13, v14);
   v35 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v31, v32, v33, v34, v30);
 
-  v36 = *a3;
+  v36 = *elements;
   __src = 0;
   v166 = 0;
   v167 = 0;
@@ -168,7 +168,7 @@
   }
 
   v153 = v109;
-  *a3 = v109;
+  *elements = v109;
 
   if (__src)
   {

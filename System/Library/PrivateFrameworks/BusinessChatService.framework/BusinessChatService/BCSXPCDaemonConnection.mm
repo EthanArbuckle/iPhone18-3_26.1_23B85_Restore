@@ -1,7 +1,7 @@
 @interface BCSXPCDaemonConnection
 - (BCSXPCDaemonProtocol)remoteObjectProxy;
-- (id)initWithMachServiceName:(void *)a3 exportedClient:;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)initWithMachServiceName:(void *)name exportedClient:;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
 - (void)resume;
@@ -19,17 +19,17 @@
   [(BCSXPCDaemonConnection *)self resume];
 }
 
-- (id)initWithMachServiceName:(void *)a3 exportedClient:
+- (id)initWithMachServiceName:(void *)name exportedClient:
 {
   v21[4] = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  nameCopy = name;
+  if (self)
   {
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = BCSXPCDaemonConnection;
-    a1 = objc_msgSendSuper2(&v19, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v19, sel_init);
+    if (self)
     {
       v7 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_285465CF0];
       v8 = MEMORY[0x277CBEB98];
@@ -42,10 +42,10 @@
       [v7 setClasses:v10 forSelector:sel_fetchBusinessMetadataForEmails_forClientBundleID_requestId_completion_ argumentIndex:0 ofReply:1];
 
       v11 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:v5 options:0];
-      v12 = a1[1];
-      a1[1] = v11;
+      v12 = self[1];
+      self[1] = v11;
 
-      [a1[1] setRemoteObjectInterface:v7];
+      [self[1] setRemoteObjectInterface:v7];
       v13 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_285463D10];
       v14 = MEMORY[0x277CBEB98];
       v20[0] = objc_opt_class();
@@ -56,13 +56,13 @@
       v16 = [v14 setWithArray:v15];
       [v13 setClasses:v16 forSelector:sel_didFetchBusinessMetadataForEmailsForRequestId_error_reply_ argumentIndex:0 ofReply:0];
 
-      [a1[1] setExportedInterface:v13];
-      [a1[1] setExportedObject:v6];
+      [self[1] setExportedInterface:v13];
+      [self[1] setExportedObject:nameCopy];
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
 - (void)dealloc
@@ -80,14 +80,14 @@
   [(BCSXPCDaemonConnection *)&v5 dealloc];
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
   if (self)
   {
     self = self->_connection;
   }
 
-  return [(BCSXPCDaemonConnection *)self synchronousRemoteObjectProxyWithErrorHandler:a3];
+  return [(BCSXPCDaemonConnection *)self synchronousRemoteObjectProxyWithErrorHandler:handler];
 }
 
 - (BCSXPCDaemonProtocol)remoteObjectProxy

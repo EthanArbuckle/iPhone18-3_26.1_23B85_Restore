@@ -1,18 +1,18 @@
 @interface ATXActionSuggestionRequest
-- (ATXActionSuggestionRequest)initWithLimit:(unint64_t)a3 scope:(id)a4 spotlightRecentTopics:(id)a5;
+- (ATXActionSuggestionRequest)initWithLimit:(unint64_t)limit scope:(id)scope spotlightRecentTopics:(id)topics;
 @end
 
 @implementation ATXActionSuggestionRequest
 
-- (ATXActionSuggestionRequest)initWithLimit:(unint64_t)a3 scope:(id)a4 spotlightRecentTopics:(id)a5
+- (ATXActionSuggestionRequest)initWithLimit:(unint64_t)limit scope:(id)scope spotlightRecentTopics:(id)topics
 {
-  v8 = a5;
+  topicsCopy = topics;
   v12.receiver = self;
   v12.super_class = ATXActionSuggestionRequest;
-  v9 = [(ATXPredictionRequest *)&v12 initWithLimit:a3 scope:a4];
+  v9 = [(ATXPredictionRequest *)&v12 initWithLimit:limit scope:scope];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [topicsCopy copy];
     [(ATXActionSuggestionRequest *)v9 setSpotlightRecentTopics:v10];
   }
 

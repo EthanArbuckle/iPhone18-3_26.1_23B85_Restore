@@ -1,15 +1,15 @@
 @interface CAMCaptureMetadataUtilities
-+ (id)metadataFromPanoramaRequest:(id)a3;
-+ (id)metadataFromRequest:(id)a3;
-+ (id)preciseCaptureDateFromStillImageMetadata:(id)a3;
-+ (void)removeUnwantedKeysForPersistenceFromMetadata:(id)a3;
++ (id)metadataFromPanoramaRequest:(id)request;
++ (id)metadataFromRequest:(id)request;
++ (id)preciseCaptureDateFromStillImageMetadata:(id)metadata;
++ (void)removeUnwantedKeysForPersistenceFromMetadata:(id)metadata;
 @end
 
 @implementation CAMCaptureMetadataUtilities
 
-+ (id)preciseCaptureDateFromStillImageMetadata:(id)a3
++ (id)preciseCaptureDateFromStillImageMetadata:(id)metadata
 {
-  v3 = [a3 objectForKey:*MEMORY[0x1E696DE30]];
+  v3 = [metadata objectForKey:*MEMORY[0x1E696DE30]];
   v4 = [v3 objectForKey:*MEMORY[0x1E6990B58]];
   if (v4)
   {
@@ -32,20 +32,20 @@
   return v6;
 }
 
-+ (id)metadataFromRequest:(id)a3
++ (id)metadataFromRequest:(id)request
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = [v3 location];
-  v6 = [v3 heading];
-  if (v5)
+  location = [requestCopy location];
+  heading = [requestCopy heading];
+  if (location)
   {
-    v7 = +[CAMLocationController locationMetadataForLocation:heading:device:](CAMLocationController, "locationMetadataForLocation:heading:device:", v5, v6, [v3 captureDevice]);
+    v7 = +[CAMLocationController locationMetadataForLocation:heading:device:](CAMLocationController, "locationMetadataForLocation:heading:device:", location, heading, [requestCopy captureDevice]);
     [v4 setObject:v7 forKey:*MEMORY[0x1E696DBF0]];
   }
 
-  if ([v3 capturedFromPhotoBooth])
+  if ([requestCopy capturedFromPhotoBooth])
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v4 setObject:v8 forKey:*MEMORY[0x1E696DD90]];
@@ -55,36 +55,36 @@
   }
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if ([v3 conformsToProtocol:&unk_1F17598B0])
+  if ([requestCopy conformsToProtocol:&unk_1F17598B0])
   {
-    v11 = [v3 burstIdentifier];
-    if (v11)
+    burstIdentifier = [requestCopy burstIdentifier];
+    if (burstIdentifier)
     {
-      [v10 setObject:v11 forKeyedSubscript:*MEMORY[0x1E6990A50]];
+      [v10 setObject:burstIdentifier forKeyedSubscript:*MEMORY[0x1E6990A50]];
     }
   }
 
-  if (![v3 type])
+  if (![requestCopy type])
   {
-    v12 = v3;
+    v12 = requestCopy;
     v13 = +[CAMCaptureCapabilities capabilities];
     v14 = [v13 semanticStyleSupportForMode:objc_msgSend(v12 devicePosition:{"captureMode"), objc_msgSend(v12, "captureDevicePosition")}];
 
-    v15 = [v12 semanticStyle];
+    semanticStyle = [v12 semanticStyle];
 
-    if (v15)
+    if (semanticStyle)
     {
       if ((v14 & 2) != 0)
       {
-        v16 = [v12 semanticStyle];
+        semanticStyle2 = [v12 semanticStyle];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v18 = [v12 semanticStyle];
+          semanticStyle3 = [v12 semanticStyle];
           v23 = *MEMORY[0x1E6990B08];
-          v19 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v18, "makerPreset")}];
+          v19 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(semanticStyle3, "makerPreset")}];
           v24[0] = v19;
           v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
           [v10 setObject:v20 forKeyedSubscript:*MEMORY[0x1E6990B00]];
@@ -103,64 +103,64 @@
   return v21;
 }
 
-+ (void)removeUnwantedKeysForPersistenceFromMetadata:(id)a3
++ (void)removeUnwantedKeysForPersistenceFromMetadata:(id)metadata
 {
-  v8 = a3;
-  [v8 setObject:0 forKeyedSubscript:@"{Diagnostic}"];
-  [v8 setObject:0 forKeyedSubscript:@"AddDebugInfoToUserComments"];
-  [v8 setObject:0 forKeyedSubscript:@"{ApplePortrait}"];
+  metadataCopy = metadata;
+  [metadataCopy setObject:0 forKeyedSubscript:@"{Diagnostic}"];
+  [metadataCopy setObject:0 forKeyedSubscript:@"AddDebugInfoToUserComments"];
+  [metadataCopy setObject:0 forKeyedSubscript:@"{ApplePortrait}"];
   v3 = *MEMORY[0x1E6985F60];
-  v4 = [v8 objectForKey:*MEMORY[0x1E6985F60]];
+  v4 = [metadataCopy objectForKey:*MEMORY[0x1E6985F60]];
   v5 = *MEMORY[0x1E69912F8];
   v6 = [v4 objectForKey:*MEMORY[0x1E69912F8]];
   if (v6)
   {
     v7 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v4];
     [v7 removeObjectForKey:v5];
-    [v8 setObject:v7 forKey:v3];
+    [metadataCopy setObject:v7 forKey:v3];
   }
 }
 
-+ (id)metadataFromPanoramaRequest:(id)a3
++ (id)metadataFromPanoramaRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v4 setObject:v5 forKey:*MEMORY[0x1E696D9B0]];
-  +[CAMOrientationUtilities imageOrientationOfResult:withCaptureDevice:captureOrientation:](CAMOrientationUtilities, "imageOrientationOfResult:withCaptureDevice:captureOrientation:", 0, [v3 captureDevice], objc_msgSend(v3, "captureOrientation"));
+  +[CAMOrientationUtilities imageOrientationOfResult:withCaptureDevice:captureOrientation:](CAMOrientationUtilities, "imageOrientationOfResult:withCaptureDevice:captureOrientation:", 0, [requestCopy captureDevice], objc_msgSend(requestCopy, "captureOrientation"));
   v6 = [MEMORY[0x1E696AD98] numberWithInt:PLExifOrientationFromImageOrientation()];
   [v4 setObject:v6 forKey:*MEMORY[0x1E696DE78]];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v4 setObject:v7 forKey:*MEMORY[0x1E696DF28]];
-  v8 = [MEMORY[0x1E69DC938] currentDevice];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
   v9 = MGCopyAnswer();
   v10 = v9;
   if (v9)
   {
-    v11 = v9;
+    localizedModel = v9;
   }
 
   else
   {
-    v11 = [v8 localizedModel];
+    localizedModel = [currentDevice localizedModel];
   }
 
-  v12 = v11;
+  v12 = localizedModel;
 
   [v7 setObject:@"Apple" forKey:*MEMORY[0x1E696DF48]];
   [v7 setObject:v12 forKey:*MEMORY[0x1E696DF50]];
-  v13 = [v8 systemVersion];
-  [v7 setObject:v13 forKey:*MEMORY[0x1E696DF68]];
+  systemVersion = [currentDevice systemVersion];
+  [v7 setObject:systemVersion forKey:*MEMORY[0x1E696DF68]];
 
   if (metadataFromPanoramaRequest__onceToken != -1)
   {
     +[CAMCaptureMetadataUtilities metadataFromPanoramaRequest:];
   }
 
-  v23 = v8;
-  v14 = [MEMORY[0x1E695DF00] date];
-  v15 = [metadataFromPanoramaRequest__exifDateTimeFormatter stringFromDate:v14];
+  v23 = currentDevice;
+  date = [MEMORY[0x1E695DF00] date];
+  v15 = [metadataFromPanoramaRequest__exifDateTimeFormatter stringFromDate:date];
   v16 = v15;
   if (v15 && [v15 length])
   {
@@ -170,7 +170,7 @@
   }
 
   v17 = v12;
-  v18 = [metadataFromPanoramaRequest__exifSubsecTimeFormatter stringFromDate:v14];
+  v18 = [metadataFromPanoramaRequest__exifSubsecTimeFormatter stringFromDate:date];
   v19 = v18;
   if (v18 && [v18 length])
   {
@@ -178,7 +178,7 @@
     [v5 setObject:v19 forKey:*MEMORY[0x1E696DB20]];
   }
 
-  v20 = [CAMCaptureMetadataUtilities metadataFromRequest:v3];
+  v20 = [CAMCaptureMetadataUtilities metadataFromRequest:requestCopy];
   [v4 addEntriesFromDictionary:v20];
   v21 = [v4 copy];
 

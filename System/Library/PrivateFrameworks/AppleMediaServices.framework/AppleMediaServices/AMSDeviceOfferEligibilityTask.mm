@@ -1,44 +1,44 @@
 @interface AMSDeviceOfferEligibilityTask
-- (AMSDeviceOfferEligibilityTask)initWithBag:(id)a3 deviceGUID:(id)a4 masterSerialNumber:(id)a5 urlSession:(id)a6;
-- (id)_accountEligibilityEncoderWithBag:(id)a3 account:(id)a4 clientInfo:(id)a5;
-- (id)_accountEligibilityRequestParametersWithIdentifiers:(id)a3;
-- (id)_deviceEligibilityEncoderWithBag:(id)a3 clientInfo:(id)a4;
-- (id)_deviceEligibilityRequestParametersWithGroups:(id)a3;
+- (AMSDeviceOfferEligibilityTask)initWithBag:(id)bag deviceGUID:(id)d masterSerialNumber:(id)number urlSession:(id)session;
+- (id)_accountEligibilityEncoderWithBag:(id)bag account:(id)account clientInfo:(id)info;
+- (id)_accountEligibilityRequestParametersWithIdentifiers:(id)identifiers;
+- (id)_deviceEligibilityEncoderWithBag:(id)bag clientInfo:(id)info;
+- (id)_deviceEligibilityRequestParametersWithGroups:(id)groups;
 - (id)_eligibilityRequest;
-- (id)_offersDecodedFromResult:(id)a3;
-- (id)performAccountEligibility:(id)a3 forOffers:(id)a4 clientInfo:(id)a5;
-- (id)performAnonymousDeviceEligibility:(id)a3 clientInfo:(id)a4;
+- (id)_offersDecodedFromResult:(id)result;
+- (id)performAccountEligibility:(id)eligibility forOffers:(id)offers clientInfo:(id)info;
+- (id)performAnonymousDeviceEligibility:(id)eligibility clientInfo:(id)info;
 @end
 
 @implementation AMSDeviceOfferEligibilityTask
 
-- (AMSDeviceOfferEligibilityTask)initWithBag:(id)a3 deviceGUID:(id)a4 masterSerialNumber:(id)a5 urlSession:(id)a6
+- (AMSDeviceOfferEligibilityTask)initWithBag:(id)bag deviceGUID:(id)d masterSerialNumber:(id)number urlSession:(id)session
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  bagCopy = bag;
+  dCopy = d;
+  numberCopy = number;
+  sessionCopy = session;
   v18.receiver = self;
   v18.super_class = AMSDeviceOfferEligibilityTask;
   v15 = [(AMSDeviceOfferEligibilityTask *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_bag, a3);
-    objc_storeStrong(&v16->_deviceGUID, a4);
-    objc_storeStrong(&v16->_urlSession, a6);
-    objc_storeStrong(&v16->_masterSerialNumber, a5);
+    objc_storeStrong(&v15->_bag, bag);
+    objc_storeStrong(&v16->_deviceGUID, d);
+    objc_storeStrong(&v16->_urlSession, session);
+    objc_storeStrong(&v16->_masterSerialNumber, number);
   }
 
   return v16;
 }
 
-- (id)performAnonymousDeviceEligibility:(id)a3 clientInfo:(id)a4
+- (id)performAnonymousDeviceEligibility:(id)eligibility clientInfo:(id)info
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  eligibilityCopy = eligibility;
+  infoCopy = info;
+  if (eligibilityCopy && [eligibilityCopy count])
   {
     v8 = +[AMSLogConfig sharedConfig];
     if (!v8)
@@ -46,8 +46,8 @@
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
@@ -55,18 +55,18 @@
       v25 = v10;
       v26 = 2114;
       v27 = v11;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing anonymous device eligibility check.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing anonymous device eligibility check.", buf, 0x16u);
     }
 
-    v12 = [(AMSDeviceOfferEligibilityTask *)self _eligibilityRequest];
+    _eligibilityRequest = [(AMSDeviceOfferEligibilityTask *)self _eligibilityRequest];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __78__AMSDeviceOfferEligibilityTask_performAnonymousDeviceEligibility_clientInfo___block_invoke;
     v21[3] = &unk_1E73B6D68;
     v21[4] = self;
-    v22 = v7;
-    v23 = v6;
-    v13 = [v12 thenWithBlock:v21];
+    v22 = infoCopy;
+    v23 = eligibilityCopy;
+    v13 = [_eligibilityRequest thenWithBlock:v21];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __78__AMSDeviceOfferEligibilityTask_performAnonymousDeviceEligibility_clientInfo___block_invoke_2;
@@ -83,8 +83,8 @@
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v17 = objc_opt_class();
       v18 = AMSLogKey();
@@ -92,7 +92,7 @@
       v25 = v17;
       v26 = 2114;
       v27 = v18;
-      _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No registration groups for device eligibility check - preemptively returning", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No registration groups for device eligibility check - preemptively returning", buf, 0x16u);
     }
 
     v14 = [AMSPromise promiseWithResult:MEMORY[0x1E695E0F0]];
@@ -160,16 +160,16 @@ id __78__AMSDeviceOfferEligibilityTask_performAnonymousDeviceEligibility_clientI
   return v9;
 }
 
-- (id)_deviceEligibilityRequestParametersWithGroups:(id)a3
+- (id)_deviceEligibilityRequestParametersWithGroups:(id)groups
 {
-  v4 = [a3 ams_mapWithTransform:&__block_literal_global_41];
+  v4 = [groups ams_mapWithTransform:&__block_literal_global_41];
   v5 = objc_opt_new();
   [v5 setObject:v4 forKeyedSubscript:@"companionDevices"];
-  v6 = [(AMSDeviceOfferEligibilityTask *)self masterSerialNumber];
-  [v5 setObject:v6 forKeyedSubscript:@"serialNumber"];
+  masterSerialNumber = [(AMSDeviceOfferEligibilityTask *)self masterSerialNumber];
+  [v5 setObject:masterSerialNumber forKeyedSubscript:@"serialNumber"];
 
-  v7 = [(AMSDeviceOfferEligibilityTask *)self deviceGUID];
-  [v5 setObject:v7 forKeyedSubscript:@"guid"];
+  deviceGUID = [(AMSDeviceOfferEligibilityTask *)self deviceGUID];
+  [v5 setObject:deviceGUID forKeyedSubscript:@"guid"];
 
   v8 = [v5 copy];
 
@@ -209,11 +209,11 @@ id __79__AMSDeviceOfferEligibilityTask__deviceEligibilityRequestParametersWithGr
   return v8;
 }
 
-- (id)_deviceEligibilityEncoderWithBag:(id)a3 clientInfo:(id)a4
+- (id)_deviceEligibilityEncoderWithBag:(id)bag clientInfo:(id)info
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[AMSURLRequestEncoder alloc] initWithBag:v6];
+  infoCopy = info;
+  bagCopy = bag;
+  v7 = [[AMSURLRequestEncoder alloc] initWithBag:bagCopy];
 
   [(AMSURLRequestEncoder *)v7 setRequestEncoding:2];
   [(AMSURLRequestEncoder *)v7 setDialogOptions:1];
@@ -221,21 +221,21 @@ id __79__AMSDeviceOfferEligibilityTask__deviceEligibilityRequestParametersWithGr
   [(AMSURLRequestEncoder *)v7 setLogUUID:v8];
 
   [(AMSURLRequestEncoder *)v7 setEnableRemoteSecuritySigning:1];
-  if (v5)
+  if (infoCopy)
   {
-    [(AMSURLRequestEncoder *)v7 setClientInfo:v5];
+    [(AMSURLRequestEncoder *)v7 setClientInfo:infoCopy];
   }
 
   return v7;
 }
 
-- (id)performAccountEligibility:(id)a3 forOffers:(id)a4 clientInfo:(id)a5
+- (id)performAccountEligibility:(id)eligibility forOffers:(id)offers clientInfo:(id)info
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9 && [v9 count])
+  eligibilityCopy = eligibility;
+  offersCopy = offers;
+  infoCopy = info;
+  if (offersCopy && [offersCopy count])
   {
     v11 = +[AMSLogConfig sharedConfig];
     if (!v11)
@@ -243,8 +243,8 @@ id __79__AMSDeviceOfferEligibilityTask__deviceEligibilityRequestParametersWithGr
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v13 = objc_opt_class();
       v14 = AMSLogKey();
@@ -252,24 +252,24 @@ id __79__AMSDeviceOfferEligibilityTask__deviceEligibilityRequestParametersWithGr
       v33 = v13;
       v34 = 2114;
       v35 = v14;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing account eligibility check against device offers.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing account eligibility check against device offers.", buf, 0x16u);
     }
 
     v15 = MEMORY[0x1E695DFD8];
-    v16 = [v9 ams_mapWithTransformIgnoresNil:&__block_literal_global_32];
+    v16 = [offersCopy ams_mapWithTransformIgnoresNil:&__block_literal_global_32];
     v17 = [v15 setWithArray:v16];
 
-    v18 = [(AMSDeviceOfferEligibilityTask *)self _eligibilityRequest];
+    _eligibilityRequest = [(AMSDeviceOfferEligibilityTask *)self _eligibilityRequest];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __80__AMSDeviceOfferEligibilityTask_performAccountEligibility_forOffers_clientInfo___block_invoke_2;
     v28[3] = &unk_1E73B6DD0;
     v28[4] = self;
-    v29 = v8;
-    v30 = v10;
+    v29 = eligibilityCopy;
+    v30 = infoCopy;
     v31 = v17;
     v19 = v17;
-    v20 = [v18 thenWithBlock:v28];
+    v20 = [_eligibilityRequest thenWithBlock:v28];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __80__AMSDeviceOfferEligibilityTask_performAccountEligibility_forOffers_clientInfo___block_invoke_3;
@@ -286,8 +286,8 @@ id __79__AMSDeviceOfferEligibilityTask__deviceEligibilityRequestParametersWithGr
       v22 = +[AMSLogConfig sharedConfig];
     }
 
-    v23 = [v22 OSLogObject];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v22 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v24 = objc_opt_class();
       v25 = AMSLogKey();
@@ -295,7 +295,7 @@ id __79__AMSDeviceOfferEligibilityTask__deviceEligibilityRequestParametersWithGr
       v33 = v24;
       v34 = 2114;
       v35 = v25;
-      _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] There are no offers to verify eligibility for - skipping account eligibility verification.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] There are no offers to verify eligibility for - skipping account eligibility verification.", buf, 0x16u);
     }
 
     v21 = [AMSPromise promiseWithResult:MEMORY[0x1E695E0F0]];
@@ -363,21 +363,21 @@ id __80__AMSDeviceOfferEligibilityTask_performAccountEligibility_forOffers_clien
   return v9;
 }
 
-- (id)_accountEligibilityRequestParametersWithIdentifiers:(id)a3
+- (id)_accountEligibilityRequestParametersWithIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
     v5 = objc_opt_new();
-    v6 = [v4 allObjects];
-    [v5 setObject:v6 forKeyedSubscript:@"services"];
+    allObjects = [identifiersCopy allObjects];
+    [v5 setObject:allObjects forKeyedSubscript:@"services"];
 
-    v7 = [(AMSDeviceOfferEligibilityTask *)self masterSerialNumber];
-    [v5 setObject:v7 forKeyedSubscript:@"serialNumber"];
+    masterSerialNumber = [(AMSDeviceOfferEligibilityTask *)self masterSerialNumber];
+    [v5 setObject:masterSerialNumber forKeyedSubscript:@"serialNumber"];
 
-    v8 = [(AMSDeviceOfferEligibilityTask *)self deviceGUID];
-    [v5 setObject:v8 forKeyedSubscript:@"guid"];
+    deviceGUID = [(AMSDeviceOfferEligibilityTask *)self deviceGUID];
+    [v5 setObject:deviceGUID forKeyedSubscript:@"guid"];
 
     v9 = [v5 copy];
   }
@@ -390,8 +390,8 @@ id __80__AMSDeviceOfferEligibilityTask_performAccountEligibility_forOffers_clien
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v12 = objc_opt_class();
       v13 = AMSLogKey();
@@ -399,7 +399,7 @@ id __80__AMSDeviceOfferEligibilityTask_performAccountEligibility_forOffers_clien
       v16 = v12;
       v17 = 2114;
       v18 = v13;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No offer identifiers need account eligibility verification.", &v15, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No offer identifiers need account eligibility verification.", &v15, 0x16u);
     }
 
     v9 = 0;
@@ -408,22 +408,22 @@ id __80__AMSDeviceOfferEligibilityTask_performAccountEligibility_forOffers_clien
   return v9;
 }
 
-- (id)_accountEligibilityEncoderWithBag:(id)a3 account:(id)a4 clientInfo:(id)a5
+- (id)_accountEligibilityEncoderWithBag:(id)bag account:(id)account clientInfo:(id)info
 {
-  v8 = a4;
-  v9 = [(AMSDeviceOfferEligibilityTask *)self _deviceEligibilityEncoderWithBag:a3 clientInfo:a5];
-  [v9 setAccount:v8];
+  accountCopy = account;
+  v9 = [(AMSDeviceOfferEligibilityTask *)self _deviceEligibilityEncoderWithBag:bag clientInfo:info];
+  [v9 setAccount:accountCopy];
 
   return v9;
 }
 
-- (id)_offersDecodedFromResult:(id)a3
+- (id)_offersDecodedFromResult:(id)result
 {
-  v4 = [a3 object];
+  object = [result object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = object;
   }
 
   else
@@ -487,8 +487,8 @@ AMSDeviceOffer *__58__AMSDeviceOfferEligibilityTask__offersDecodedFromResult___b
   v2 = [(AMSDeviceOfferEligibilityTask *)self bag];
   v3 = [v2 URLForKey:@"deviceOffersAnonymousEligibilityURL"];
 
-  v4 = [v3 valuePromise];
-  v5 = [v4 thenWithBlock:&__block_literal_global_42_0];
+  valuePromise = [v3 valuePromise];
+  v5 = [valuePromise thenWithBlock:&__block_literal_global_42_0];
 
   return v5;
 }

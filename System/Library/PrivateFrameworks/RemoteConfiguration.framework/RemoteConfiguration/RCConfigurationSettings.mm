@@ -1,27 +1,27 @@
 @interface RCConfigurationSettings
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (BOOL)useBackgroundRefreshRate;
 - (NSString)JSONRepresentation;
 - (NSString)description;
 - (NSString)loggingKey;
 - (RCBackgroundFetchConfiguration)backgroundFetchConfiguration;
-- (RCConfigurationSettings)initWithRequestInfos:(id)a3 userID:(id)a4 storefrontID:(id)a5 bundleID:(id)a6 deviceInfo:(id)a7;
-- (RCConfigurationSettings)initWithRequestInfos:(id)a3 userID:(id)a4 storefrontID:(id)a5 bundleID:(id)a6 deviceInfo:(id)a7 debugOverrides:(id)a8;
-- (RCConfigurationSettings)initWithRequestInfos:(id)a3 userID:(id)a4 storefrontID:(id)a5 bundleID:(id)a6 deviceInfo:(id)a7 debugOverrides:(id)a8 useBackgroundRefreshRate:(BOOL)a9;
-- (RCConfigurationSettings)initWithRequestInfos:(id)a3 userID:(id)a4 storefrontID:(id)a5 bundleID:(id)a6 deviceInfo:(id)a7 debugOverrides:(id)a8 useBackgroundRefreshRate:(BOOL)a9 backgroundFetchConfiguration:(id)a10 requestMode:(unint64_t)a11 endpointConfig:(id)a12 endpointTimeoutDuration:(double)a13 fallbackTimeoutDuration:(double)a14;
-- (RCConfigurationSettings)initWithRequestInfos:(id)a3 userID:(id)a4 storefrontID:(id)a5 bundleID:(id)a6 deviceInfo:(id)a7 debugOverrides:(id)a8 useBackgroundRefreshRate:(BOOL)a9 backgroundFetchConfiguration:(id)a10 requestMode:(unint64_t)a11 endpointTimeoutDuration:(double)a12 fallbackTimeoutDuration:(double)a13;
-- (RCConfigurationSettings)initWithRequestInfos:(id)a3 userID:(id)a4 storefrontID:(id)a5 bundleID:(id)a6 deviceInfo:(id)a7 debugOverrides:(id)a8 useBackgroundRefreshRate:(BOOL)a9 requestMode:(unint64_t)a10;
-- (RCConfigurationSettings)initWithRequestInfos:(id)a3 userID:(id)a4 storefrontID:(id)a5 bundleID:(id)a6 deviceInfo:(id)a7 debugOverrides:(id)a8 useBackgroundRefreshRate:(BOOL)a9 requestMode:(unint64_t)a10 endpointTimeoutDuration:(double)a11;
-- (RCConfigurationSettings)initWithRequestInfos:(id)a3 userID:(id)a4 storefrontID:(id)a5 bundleID:(id)a6 deviceInfo:(id)a7 debugOverrides:(id)a8 useBackgroundRefreshRate:(BOOL)a9 requestMode:(unint64_t)a10 endpointTimeoutDuration:(double)a11 fallbackTimeoutDuration:(double)a12;
-- (RCConfigurationSettings)initWithRequestKey:(id)a3 responseKey:(id)a4 fallbackURL:(id)a5 userID:(id)a6 storefrontID:(id)a7 bundleID:(id)a8 deviceInfo:(id)a9 debugOverrides:(id)a10;
-- (RCConfigurationSettings)initWithRequestKey:(id)a3 responseKey:(id)a4 fallbackURL:(id)a5 userID:(id)a6 storefrontID:(id)a7 bundleID:(id)a8 deviceInfo:(id)a9 debugOverrides:(id)a10 requestMode:(unint64_t)a11;
-- (RCConfigurationSettings)initWithRequestKey:(id)a3 responseKey:(id)a4 fallbackURL:(id)a5 userID:(id)a6 storefrontID:(id)a7 bundleID:(id)a8 deviceInfo:(id)a9 debugOverrides:(id)a10 useBackgroundRefreshRate:(BOOL)a11;
-- (RCConfigurationSettings)initWithRequestKey:(id)a3 responseKey:(id)a4 fallbackURL:(id)a5 userID:(id)a6 storefrontID:(id)a7 bundleID:(id)a8 deviceInfo:(id)a9 debugOverrides:(id)a10 useBackgroundRefreshRate:(BOOL)a11 backgroundFetchConfiguration:(id)a12 requestMode:(unint64_t)a13 endpointConfig:(id)a14 endpointTimeoutDuration:(double)a15 fallbackTimeoutDuration:(double)a16;
-- (RCConfigurationSettings)initWithRequestKey:(id)a3 responseKey:(id)a4 fallbackURL:(id)a5 userID:(id)a6 storefrontID:(id)a7 bundleID:(id)a8 deviceInfo:(id)a9 debugOverrides:(id)a10 useBackgroundRefreshRate:(BOOL)a11 backgroundFetchConfiguration:(id)a12 requestMode:(unint64_t)a13 endpointTimeoutDuration:(double)a14 fallbackTimeoutDuration:(double)a15;
-- (RCConfigurationSettings)initWithRequestKey:(id)a3 responseKey:(id)a4 fallbackURL:(id)a5 userID:(id)a6 storefrontID:(id)a7 bundleID:(id)a8 deviceInfo:(id)a9 debugOverrides:(id)a10 useBackgroundRefreshRate:(BOOL)a11 requestMode:(unint64_t)a12 endpointTimeoutDuration:(double)a13;
-- (RCConfigurationSettings)initWithRequestKey:(id)a3 responseKey:(id)a4 userID:(id)a5 storefrontID:(id)a6 bundleID:(id)a7 deviceInfo:(id)a8;
-- (RCConfigurationSettings)initWithRequestKey:(id)a3 responseKey:(id)a4 userID:(id)a5 storefrontID:(id)a6 bundleID:(id)a7 deviceInfo:(id)a8 debugOverrides:(id)a9 backgroundFetchConfiguration:(id)a10;
+- (RCConfigurationSettings)initWithRequestInfos:(id)infos userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info;
+- (RCConfigurationSettings)initWithRequestInfos:(id)infos userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)overrides;
+- (RCConfigurationSettings)initWithRequestInfos:(id)infos userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)overrides useBackgroundRefreshRate:(BOOL)rate;
+- (RCConfigurationSettings)initWithRequestInfos:(id)infos userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)overrides useBackgroundRefreshRate:(BOOL)rate backgroundFetchConfiguration:(id)self0 requestMode:(unint64_t)self1 endpointConfig:(id)self2 endpointTimeoutDuration:(double)self3 fallbackTimeoutDuration:(double)self4;
+- (RCConfigurationSettings)initWithRequestInfos:(id)infos userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)overrides useBackgroundRefreshRate:(BOOL)rate backgroundFetchConfiguration:(id)self0 requestMode:(unint64_t)self1 endpointTimeoutDuration:(double)self2 fallbackTimeoutDuration:(double)self3;
+- (RCConfigurationSettings)initWithRequestInfos:(id)infos userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)overrides useBackgroundRefreshRate:(BOOL)rate requestMode:(unint64_t)self0;
+- (RCConfigurationSettings)initWithRequestInfos:(id)infos userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)overrides useBackgroundRefreshRate:(BOOL)rate requestMode:(unint64_t)self0 endpointTimeoutDuration:(double)self1;
+- (RCConfigurationSettings)initWithRequestInfos:(id)infos userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)overrides useBackgroundRefreshRate:(BOOL)rate requestMode:(unint64_t)self0 endpointTimeoutDuration:(double)self1 fallbackTimeoutDuration:(double)self2;
+- (RCConfigurationSettings)initWithRequestKey:(id)key responseKey:(id)responseKey fallbackURL:(id)l userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)self0;
+- (RCConfigurationSettings)initWithRequestKey:(id)key responseKey:(id)responseKey fallbackURL:(id)l userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)self0 requestMode:(unint64_t)self1;
+- (RCConfigurationSettings)initWithRequestKey:(id)key responseKey:(id)responseKey fallbackURL:(id)l userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)self0 useBackgroundRefreshRate:(BOOL)self1;
+- (RCConfigurationSettings)initWithRequestKey:(id)key responseKey:(id)responseKey fallbackURL:(id)l userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)self0 useBackgroundRefreshRate:(BOOL)self1 backgroundFetchConfiguration:(id)self2 requestMode:(unint64_t)self3 endpointConfig:(id)self4 endpointTimeoutDuration:(double)self5 fallbackTimeoutDuration:(double)self6;
+- (RCConfigurationSettings)initWithRequestKey:(id)key responseKey:(id)responseKey fallbackURL:(id)l userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)self0 useBackgroundRefreshRate:(BOOL)self1 backgroundFetchConfiguration:(id)self2 requestMode:(unint64_t)self3 endpointTimeoutDuration:(double)self4 fallbackTimeoutDuration:(double)self5;
+- (RCConfigurationSettings)initWithRequestKey:(id)key responseKey:(id)responseKey fallbackURL:(id)l userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)self0 useBackgroundRefreshRate:(BOOL)self1 requestMode:(unint64_t)self2 endpointTimeoutDuration:(double)self3;
+- (RCConfigurationSettings)initWithRequestKey:(id)key responseKey:(id)responseKey userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info;
+- (RCConfigurationSettings)initWithRequestKey:(id)key responseKey:(id)responseKey userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)overrides backgroundFetchConfiguration:(id)self0;
 - (RCDebugOverrides)debugOverrides;
 - (RCEndpointConfig)endpointConfig;
 - (double)endpointTimeoutDuration;
@@ -29,19 +29,19 @@
 - (id)applicationStateDescription;
 - (id)dictionaryRepresentation;
 - (id)fallbackURL;
-- (id)requestInfoForRequestCacheKey:(id)a3;
+- (id)requestInfoForRequestCacheKey:(id)key;
 - (unint64_t)applicationState;
 - (unint64_t)hash;
 - (unint64_t)requestMode;
-- (void)setApplicationState:(unint64_t)a3;
-- (void)setBackgroundFetchConfiguration:(id)a3;
-- (void)setDebugOverrides:(id)a3;
-- (void)setEndpointConfig:(id)a3;
-- (void)setEndpointTimeoutDuration:(double)a3;
-- (void)setFallbackTimeoutDuration:(double)a3;
-- (void)setLoggingKey:(id)a3;
-- (void)setRequestMode:(unint64_t)a3;
-- (void)setUseBackgroundRefreshRate:(BOOL)a3;
+- (void)setApplicationState:(unint64_t)state;
+- (void)setBackgroundFetchConfiguration:(id)configuration;
+- (void)setDebugOverrides:(id)overrides;
+- (void)setEndpointConfig:(id)config;
+- (void)setEndpointTimeoutDuration:(double)duration;
+- (void)setFallbackTimeoutDuration:(double)duration;
+- (void)setLoggingKey:(id)key;
+- (void)setRequestMode:(unint64_t)mode;
+- (void)setUseBackgroundRefreshRate:(BOOL)rate;
 @end
 
 @implementation RCConfigurationSettings
@@ -54,14 +54,14 @@
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(RCConfigurationSettings *)self accessLock];
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__RCConfigurationSettings_endpointConfig__block_invoke;
   v6[3] = &unk_27822F288;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performWithLockSync:v6];
+  [accessLock performWithLockSync:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -77,14 +77,14 @@
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(RCConfigurationSettings *)self accessLock];
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__RCConfigurationSettings_debugOverrides__block_invoke;
   v6[3] = &unk_27822F288;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performWithLockSync:v6];
+  [accessLock performWithLockSync:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -98,14 +98,14 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(RCConfigurationSettings *)self accessLock];
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__RCConfigurationSettings_requestMode__block_invoke;
   v6[3] = &unk_27822F288;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performWithLockSync:v6];
+  [accessLock performWithLockSync:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -114,46 +114,46 @@
 
 - (BOOL)useBackgroundRefreshRate
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(RCConfigurationSettings *)self accessLock];
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51__RCConfigurationSettings_useBackgroundRefreshRate__block_invoke;
   v5[3] = &unk_27822F288;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 performWithLockSync:v5];
+  [accessLock performWithLockSync:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (RCConfigurationSettings)initWithRequestKey:(id)a3 responseKey:(id)a4 userID:(id)a5 storefrontID:(id)a6 bundleID:(id)a7 deviceInfo:(id)a8
+- (RCConfigurationSettings)initWithRequestKey:(id)key responseKey:(id)responseKey userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  obj = a7;
-  v18 = a7;
-  v29 = a8;
-  v19 = a8;
-  if (!v14 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  keyCopy = key;
+  responseKeyCopy = responseKey;
+  dCopy = d;
+  iDCopy = iD;
+  obj = bundleID;
+  bundleIDCopy = bundleID;
+  infoCopy = info;
+  infoCopy2 = info;
+  if (!keyCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:userID:storefrontID:bundleID:deviceInfo:];
-    if (v15)
+    if (responseKeyCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v15)
+  else if (responseKeyCopy)
   {
     goto LABEL_6;
   }
@@ -164,16 +164,16 @@
   }
 
 LABEL_6:
-  if (!v16 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!dCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:userID:storefrontID:bundleID:deviceInfo:];
-    if (v17)
+    if (iDCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v17)
+  else if (iDCopy)
   {
     goto LABEL_11;
   }
@@ -184,16 +184,16 @@ LABEL_6:
   }
 
 LABEL_11:
-  if (!v18 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!bundleIDCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:userID:storefrontID:bundleID:deviceInfo:];
-    if (v19)
+    if (infoCopy2)
     {
       goto LABEL_16;
     }
   }
 
-  else if (v19)
+  else if (infoCopy2)
   {
     goto LABEL_16;
   }
@@ -204,7 +204,7 @@ LABEL_11:
   }
 
 LABEL_16:
-  v20 = [[RCRequestInfo alloc] initWithRequestKey:v14 responseKey:v15 fallbackURL:0];
+  v20 = [[RCRequestInfo alloc] initWithRequestKey:keyCopy responseKey:responseKeyCopy fallbackURL:0];
   v30.receiver = self;
   v30.super_class = RCConfigurationSettings;
   v21 = [(RCConfigurationSettings *)&v30 init];
@@ -215,10 +215,10 @@ LABEL_16:
     requestInfos = v21->_requestInfos;
     v21->_requestInfos = v22;
 
-    objc_storeStrong(&v21->_userID, a5);
-    objc_storeStrong(&v21->_storefrontID, a6);
+    objc_storeStrong(&v21->_userID, d);
+    objc_storeStrong(&v21->_storefrontID, iD);
     objc_storeStrong(&v21->_bundleID, obj);
-    objc_storeStrong(&v21->_deviceInfo, v29);
+    objc_storeStrong(&v21->_deviceInfo, infoCopy);
     v24 = objc_alloc_init(RCUnfairLock);
     accessLock = v21->_accessLock;
     v21->_accessLock = v24;
@@ -230,32 +230,32 @@ LABEL_16:
   return v21;
 }
 
-- (RCConfigurationSettings)initWithRequestInfos:(id)a3 userID:(id)a4 storefrontID:(id)a5 bundleID:(id)a6 deviceInfo:(id)a7
+- (RCConfigurationSettings)initWithRequestInfos:(id)infos userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info
 {
   v40 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  obj = a7;
-  v16 = a7;
-  v17 = v12;
-  if (!v12 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  infosCopy = infos;
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  obj = info;
+  infoCopy = info;
+  v17 = infosCopy;
+  if (!infosCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestInfos:userID:storefrontID:bundleID:deviceInfo:];
   }
 
-  v33 = v13;
-  if (!v13 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  v33 = dCopy;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestInfos:userID:storefrontID:bundleID:deviceInfo:];
-    if (v14)
+    if (iDCopy)
     {
       goto LABEL_9;
     }
   }
 
-  else if (v14)
+  else if (iDCopy)
   {
     goto LABEL_9;
   }
@@ -266,17 +266,17 @@ LABEL_16:
   }
 
 LABEL_9:
-  v18 = v12;
-  if (!v15 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  v18 = infosCopy;
+  if (!bundleIDCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestInfos:userID:storefrontID:bundleID:deviceInfo:];
-    if (v16)
+    if (infoCopy)
     {
       goto LABEL_14;
     }
   }
 
-  else if (v16)
+  else if (infoCopy)
   {
     goto LABEL_14;
   }
@@ -293,10 +293,10 @@ LABEL_14:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_requestInfos, a3);
-    objc_storeStrong(&v20->_userID, a4);
-    objc_storeStrong(&v20->_storefrontID, a5);
-    objc_storeStrong(&v20->_bundleID, a6);
+    objc_storeStrong(&v19->_requestInfos, infos);
+    objc_storeStrong(&v20->_userID, d);
+    objc_storeStrong(&v20->_storefrontID, iD);
+    objc_storeStrong(&v20->_bundleID, bundleID);
     objc_storeStrong(&v20->_deviceInfo, obj);
     v20->_internalRequestMode = 2;
     v21 = objc_alloc_init(RCUnfairLock);
@@ -322,9 +322,9 @@ LABEL_14:
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v34 + 1) + 8 * i) fallbackURL];
+          fallbackURL = [*(*(&v34 + 1) + 8 * i) fallbackURL];
 
-          if (v28)
+          if (fallbackURL)
           {
             v20->_internalRequestMode = 1;
             goto LABEL_25;
@@ -348,63 +348,63 @@ LABEL_25:
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = MEMORY[0x277D82BB8];
-    v7 = [(RCConfigurationSettings *)self requestInfos];
-    v8 = [v5 requestInfos];
-    if ([v6 rc_object:v7 isEqualToObject:v8])
+    requestInfos = [(RCConfigurationSettings *)self requestInfos];
+    requestInfos2 = [v5 requestInfos];
+    if ([v6 rc_object:requestInfos isEqualToObject:requestInfos2])
     {
-      v9 = [(RCConfigurationSettings *)self userID];
-      v10 = [v5 userID];
-      if ([v9 isEqualToString:v10])
+      userID = [(RCConfigurationSettings *)self userID];
+      userID2 = [v5 userID];
+      if ([userID isEqualToString:userID2])
       {
-        v11 = [(RCConfigurationSettings *)self storefrontID];
-        v12 = [v5 storefrontID];
-        if ([v11 isEqualToString:v12])
+        storefrontID = [(RCConfigurationSettings *)self storefrontID];
+        storefrontID2 = [v5 storefrontID];
+        if ([storefrontID isEqualToString:storefrontID2])
         {
-          v41 = v11;
-          v13 = [(RCConfigurationSettings *)self bundleID];
+          v41 = storefrontID;
+          bundleID = [(RCConfigurationSettings *)self bundleID];
           [v5 bundleID];
-          v40 = v42 = v13;
-          if ([v13 isEqualToString:?])
+          v40 = v42 = bundleID;
+          if ([bundleID isEqualToString:?])
           {
-            v14 = [(RCConfigurationSettings *)self deviceInfo];
-            v38 = [v5 deviceInfo];
-            v39 = v14;
-            if ([v14 isEqual:?])
+            deviceInfo = [(RCConfigurationSettings *)self deviceInfo];
+            deviceInfo2 = [v5 deviceInfo];
+            v39 = deviceInfo;
+            if ([deviceInfo isEqual:?])
             {
               v36 = MEMORY[0x277D82BB8];
-              v15 = [(RCConfigurationSettings *)self debugOverrides];
-              v16 = [v5 debugOverrides];
+              debugOverrides = [(RCConfigurationSettings *)self debugOverrides];
+              debugOverrides2 = [v5 debugOverrides];
               v17 = v36;
-              v35 = v16;
-              v37 = v15;
-              if ([v17 rc_object:v15 isEqualToObject:?] && (v18 = -[RCConfigurationSettings useBackgroundRefreshRate](self, "useBackgroundRefreshRate"), v18 == objc_msgSend(v5, "useBackgroundRefreshRate")))
+              v35 = debugOverrides2;
+              v37 = debugOverrides;
+              if ([v17 rc_object:debugOverrides isEqualToObject:?] && (v18 = -[RCConfigurationSettings useBackgroundRefreshRate](self, "useBackgroundRefreshRate"), v18 == objc_msgSend(v5, "useBackgroundRefreshRate")))
               {
                 v20 = MEMORY[0x277D82BB8];
-                v21 = [(RCConfigurationSettings *)self backgroundFetchConfiguration];
-                v33 = [v5 backgroundFetchConfiguration];
-                v34 = v21;
-                if ([v20 rc_object:v21 isEqualToObject:?] && (v22 = -[RCConfigurationSettings requestMode](self, "requestMode"), v22 == objc_msgSend(v5, "requestMode")))
+                backgroundFetchConfiguration = [(RCConfigurationSettings *)self backgroundFetchConfiguration];
+                backgroundFetchConfiguration2 = [v5 backgroundFetchConfiguration];
+                v34 = backgroundFetchConfiguration;
+                if ([v20 rc_object:backgroundFetchConfiguration isEqualToObject:?] && (v22 = -[RCConfigurationSettings requestMode](self, "requestMode"), v22 == objc_msgSend(v5, "requestMode")))
                 {
-                  v23 = [(RCConfigurationSettings *)self endpointConfig];
-                  v32 = [v5 endpointConfig];
-                  if ([v23 isEqual:?])
+                  endpointConfig = [(RCConfigurationSettings *)self endpointConfig];
+                  endpointConfig2 = [v5 endpointConfig];
+                  if ([endpointConfig isEqual:?])
                   {
                     [(RCConfigurationSettings *)self endpointTimeoutDuration];
                     v25 = v24;
                     [v5 endpointTimeoutDuration];
-                    v11 = v41;
+                    storefrontID = v41;
                     if (v25 == v26 && (-[RCConfigurationSettings fallbackTimeoutDuration](self, "fallbackTimeoutDuration"), v28 = v27, [v5 fallbackTimeoutDuration], v28 == v29))
                     {
-                      v30 = [(RCConfigurationSettings *)self applicationState];
-                      v19 = v30 == [v5 applicationState];
+                      applicationState = [(RCConfigurationSettings *)self applicationState];
+                      v19 = applicationState == [v5 applicationState];
                     }
 
                     else
@@ -416,35 +416,35 @@ LABEL_25:
                   else
                   {
                     v19 = 0;
-                    v11 = v41;
+                    storefrontID = v41;
                   }
                 }
 
                 else
                 {
                   v19 = 0;
-                  v11 = v41;
+                  storefrontID = v41;
                 }
               }
 
               else
               {
                 v19 = 0;
-                v11 = v41;
+                storefrontID = v41;
               }
             }
 
             else
             {
               v19 = 0;
-              v11 = v41;
+              storefrontID = v41;
             }
           }
 
           else
           {
             v19 = 0;
-            v11 = v41;
+            storefrontID = v41;
           }
         }
 
@@ -476,26 +476,26 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v31 = [(RCConfigurationSettings *)self requestInfos];
-  v3 = [v31 hash];
-  v30 = [(RCConfigurationSettings *)self userID];
-  v4 = [v30 hash] ^ v3;
-  v29 = [(RCConfigurationSettings *)self storefrontID];
-  v5 = [v29 hash];
-  v28 = [(RCConfigurationSettings *)self bundleID];
-  v6 = v4 ^ v5 ^ [v28 hash];
-  v27 = [(RCConfigurationSettings *)self deviceInfo];
-  v7 = [v27 hash];
-  v26 = [(RCConfigurationSettings *)self debugOverrides];
-  v8 = v7 ^ [v26 hash];
-  v9 = [(RCConfigurationSettings *)self backgroundFetchConfiguration];
-  v10 = v6 ^ v8 ^ [v9 hash];
+  requestInfos = [(RCConfigurationSettings *)self requestInfos];
+  v3 = [requestInfos hash];
+  userID = [(RCConfigurationSettings *)self userID];
+  v4 = [userID hash] ^ v3;
+  storefrontID = [(RCConfigurationSettings *)self storefrontID];
+  v5 = [storefrontID hash];
+  bundleID = [(RCConfigurationSettings *)self bundleID];
+  v6 = v4 ^ v5 ^ [bundleID hash];
+  deviceInfo = [(RCConfigurationSettings *)self deviceInfo];
+  v7 = [deviceInfo hash];
+  debugOverrides = [(RCConfigurationSettings *)self debugOverrides];
+  v8 = v7 ^ [debugOverrides hash];
+  backgroundFetchConfiguration = [(RCConfigurationSettings *)self backgroundFetchConfiguration];
+  v10 = v6 ^ v8 ^ [backgroundFetchConfiguration hash];
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[RCConfigurationSettings useBackgroundRefreshRate](self, "useBackgroundRefreshRate")}];
   v12 = v10 ^ [v11 hash];
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RCConfigurationSettings requestMode](self, "requestMode")}];
   v14 = [v13 hash];
-  v15 = [(RCConfigurationSettings *)self endpointConfig];
-  v25 = v12 ^ v14 ^ [v15 hash];
+  endpointConfig = [(RCConfigurationSettings *)self endpointConfig];
+  v25 = v12 ^ v14 ^ [endpointConfig hash];
   v16 = MEMORY[0x277CCABB0];
   [(RCConfigurationSettings *)self endpointTimeoutDuration];
   v17 = [v16 numberWithDouble:?];
@@ -514,16 +514,16 @@ LABEL_25:
 {
   v22 = MEMORY[0x277CCACA8];
   v21 = objc_opt_class();
-  v20 = [(RCConfigurationSettings *)self requestInfos];
-  v3 = [(RCConfigurationSettings *)self userID];
-  v4 = [(RCConfigurationSettings *)self storefrontID];
-  v5 = [(RCConfigurationSettings *)self bundleID];
-  v6 = [(RCConfigurationSettings *)self endpointConfig];
-  v19 = [(RCConfigurationSettings *)self deviceInfo];
-  v7 = [v19 description];
-  v8 = [(RCConfigurationSettings *)self debugOverrides];
-  v9 = [v8 description];
-  v10 = [v22 stringWithFormat:@"<%@: %p requestInfos: %@\n userID: %@\n storefrontID: %@\n bundleID: %@\n endpointConfig: %@\n deviceInfo: %@\n debugOverrides: %@\n useBackgroundRefreshRate: %d requestMode: %lu applicationState: %lu", v21, self, v20, v3, v4, v5, v6, v7, v9, -[RCConfigurationSettings useBackgroundRefreshRate](self, "useBackgroundRefreshRate"), -[RCConfigurationSettings requestMode](self, "requestMode"), -[RCConfigurationSettings applicationState](self, "applicationState")];;
+  requestInfos = [(RCConfigurationSettings *)self requestInfos];
+  userID = [(RCConfigurationSettings *)self userID];
+  storefrontID = [(RCConfigurationSettings *)self storefrontID];
+  bundleID = [(RCConfigurationSettings *)self bundleID];
+  endpointConfig = [(RCConfigurationSettings *)self endpointConfig];
+  deviceInfo = [(RCConfigurationSettings *)self deviceInfo];
+  v7 = [deviceInfo description];
+  debugOverrides = [(RCConfigurationSettings *)self debugOverrides];
+  v9 = [debugOverrides description];
+  v10 = [v22 stringWithFormat:@"<%@: %p requestInfos: %@\n userID: %@\n storefrontID: %@\n bundleID: %@\n endpointConfig: %@\n deviceInfo: %@\n debugOverrides: %@\n useBackgroundRefreshRate: %d requestMode: %lu applicationState: %lu", v21, self, requestInfos, userID, storefrontID, bundleID, endpointConfig, v7, v9, -[RCConfigurationSettings useBackgroundRefreshRate](self, "useBackgroundRefreshRate"), -[RCConfigurationSettings requestMode](self, "requestMode"), -[RCConfigurationSettings applicationState](self, "applicationState")];;
 
   [(RCConfigurationSettings *)self endpointTimeoutDuration];
   if (v11 != 1.79769313e308)
@@ -550,42 +550,42 @@ LABEL_25:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(RCConfigurationSettings *)self userID];
-  [v3 rc_safelySetObjectAllowingNil:v4 forKey:@"feldsparId"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  userID = [(RCConfigurationSettings *)self userID];
+  [dictionary rc_safelySetObjectAllowingNil:userID forKey:@"feldsparId"];
 
-  v5 = [(RCConfigurationSettings *)self storefrontID];
-  [v3 rc_safelySetObjectAllowingNil:v5 forKey:@"storefrontId"];
+  storefrontID = [(RCConfigurationSettings *)self storefrontID];
+  [dictionary rc_safelySetObjectAllowingNil:storefrontID forKey:@"storefrontId"];
 
-  v6 = [(RCConfigurationSettings *)self bundleID];
-  [v3 rc_safelySetObjectAllowingNil:v6 forKey:@"bundleId"];
+  bundleID = [(RCConfigurationSettings *)self bundleID];
+  [dictionary rc_safelySetObjectAllowingNil:bundleID forKey:@"bundleId"];
 
-  v7 = [(RCConfigurationSettings *)self deviceInfo];
-  v8 = [v7 dictionaryRepresentation];
-  [v3 rc_safelySetObjectAllowingNil:v8 forKey:@"deviceInfo"];
+  deviceInfo = [(RCConfigurationSettings *)self deviceInfo];
+  dictionaryRepresentation = [deviceInfo dictionaryRepresentation];
+  [dictionary rc_safelySetObjectAllowingNil:dictionaryRepresentation forKey:@"deviceInfo"];
 
-  v9 = [(RCConfigurationSettings *)self debugOverrides];
-  v10 = [v9 dictionaryRepresentation];
-  [v3 rc_safelySetObjectAllowingNil:v10 forKey:@"debugOverrides"];
+  debugOverrides = [(RCConfigurationSettings *)self debugOverrides];
+  dictionaryRepresentation2 = [debugOverrides dictionaryRepresentation];
+  [dictionary rc_safelySetObjectAllowingNil:dictionaryRepresentation2 forKey:@"debugOverrides"];
 
-  v11 = [(RCConfigurationSettings *)self applicationStateDescription];
-  [v3 rc_safelySetObjectAllowingNil:v11 forKey:@"applicationState"];
+  applicationStateDescription = [(RCConfigurationSettings *)self applicationStateDescription];
+  [dictionary rc_safelySetObjectAllowingNil:applicationStateDescription forKey:@"applicationState"];
 
-  v12 = [v3 copy];
+  v12 = [dictionary copy];
 
   return v12;
 }
 
 - (id)applicationStateDescription
 {
-  v2 = [(RCConfigurationSettings *)self applicationState];
+  applicationState = [(RCConfigurationSettings *)self applicationState];
   v3 = @"foreground";
-  if (v2 != 1)
+  if (applicationState != 1)
   {
     v3 = 0;
   }
 
-  if (v2 == 2)
+  if (applicationState == 2)
   {
     return @"background";
   }
@@ -599,8 +599,8 @@ LABEL_25:
 - (NSString)JSONRepresentation
 {
   v2 = MEMORY[0x277CCAAA0];
-  v3 = [(RCConfigurationSettings *)self dictionaryRepresentation];
-  v4 = [v2 dataWithJSONObject:v3 options:0 error:0];
+  dictionaryRepresentation = [(RCConfigurationSettings *)self dictionaryRepresentation];
+  v4 = [v2 dataWithJSONObject:dictionaryRepresentation options:0 error:0];
 
   v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v4 encoding:4];
 
@@ -609,20 +609,20 @@ LABEL_25:
 
 - (BOOL)isValid
 {
-  v3 = [(RCConfigurationSettings *)self requestInfos];
-  if (v3)
+  requestInfos = [(RCConfigurationSettings *)self requestInfos];
+  if (requestInfos)
   {
-    v4 = [(RCConfigurationSettings *)self userID];
-    if (v4)
+    userID = [(RCConfigurationSettings *)self userID];
+    if (userID)
     {
-      v5 = [(RCConfigurationSettings *)self storefrontID];
-      if (v5)
+      storefrontID = [(RCConfigurationSettings *)self storefrontID];
+      if (storefrontID)
       {
-        v6 = [(RCConfigurationSettings *)self bundleID];
-        if (v6)
+        bundleID = [(RCConfigurationSettings *)self bundleID];
+        if (bundleID)
         {
-          v7 = [(RCConfigurationSettings *)self deviceInfo];
-          v8 = v7 != 0;
+          deviceInfo = [(RCConfigurationSettings *)self deviceInfo];
+          v8 = deviceInfo != 0;
         }
 
         else
@@ -653,24 +653,24 @@ LABEL_25:
 
 - (id)fallbackURL
 {
-  v2 = [(RCConfigurationSettings *)self requestInfos];
-  v3 = [v2 firstObject];
-  v4 = [v3 fallbackURL];
+  requestInfos = [(RCConfigurationSettings *)self requestInfos];
+  firstObject = [requestInfos firstObject];
+  fallbackURL = [firstObject fallbackURL];
 
-  return v4;
+  return fallbackURL;
 }
 
-- (id)requestInfoForRequestCacheKey:(id)a3
+- (id)requestInfoForRequestCacheKey:(id)key
 {
-  v4 = a3;
-  v5 = [(RCConfigurationSettings *)self requestInfos];
+  keyCopy = key;
+  requestInfos = [(RCConfigurationSettings *)self requestInfos];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__RCConfigurationSettings_requestInfoForRequestCacheKey___block_invoke;
   v9[3] = &unk_278230098;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 rc_firstObjectPassingTest:v9];
+  v10 = keyCopy;
+  v6 = keyCopy;
+  v7 = [requestInfos rc_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -683,27 +683,27 @@ uint64_t __57__RCConfigurationSettings_requestInfoForRequestCacheKey___block_inv
   return v4;
 }
 
-- (RCConfigurationSettings)initWithRequestKey:(id)a3 responseKey:(id)a4 userID:(id)a5 storefrontID:(id)a6 bundleID:(id)a7 deviceInfo:(id)a8 debugOverrides:(id)a9 backgroundFetchConfiguration:(id)a10
+- (RCConfigurationSettings)initWithRequestKey:(id)key responseKey:(id)responseKey userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)overrides backgroundFetchConfiguration:(id)self0
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v32 = a9;
-  v31 = a10;
-  if (!v15 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  keyCopy = key;
+  responseKeyCopy = responseKey;
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  infoCopy = info;
+  overridesCopy = overrides;
+  configurationCopy = configuration;
+  if (!keyCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:userID:storefrontID:bundleID:deviceInfo:debugOverrides:backgroundFetchConfiguration:];
-    if (v16)
+    if (responseKeyCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v16)
+  else if (responseKeyCopy)
   {
     goto LABEL_6;
   }
@@ -714,16 +714,16 @@ uint64_t __57__RCConfigurationSettings_requestInfoForRequestCacheKey___block_inv
   }
 
 LABEL_6:
-  if (!v17 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!dCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:userID:storefrontID:bundleID:deviceInfo:debugOverrides:backgroundFetchConfiguration:];
-    if (v18)
+    if (iDCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v18)
+  else if (iDCopy)
   {
     goto LABEL_11;
   }
@@ -734,51 +734,51 @@ LABEL_6:
   }
 
 LABEL_11:
-  v21 = v18;
-  if (!v19 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  v21 = iDCopy;
+  if (!bundleIDCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:userID:storefrontID:bundleID:deviceInfo:debugOverrides:backgroundFetchConfiguration:];
   }
 
-  v22 = v17;
-  v23 = v20;
-  if (!v20 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  v22 = dCopy;
+  v23 = infoCopy;
+  if (!infoCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:userID:storefrontID:bundleID:deviceInfo:debugOverrides:backgroundFetchConfiguration:];
   }
 
-  v24 = [[RCRequestInfo alloc] initWithRequestKey:v15 responseKey:v16 fallbackURL:0];
+  v24 = [[RCRequestInfo alloc] initWithRequestKey:keyCopy responseKey:responseKeyCopy fallbackURL:0];
   v25 = [RCConfigurationSettings alloc];
   v34[0] = v24;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
   LOBYTE(v30) = 0;
-  v27 = [(RCConfigurationSettings *)v25 initWithRequestInfos:v26 userID:v22 storefrontID:v21 bundleID:v19 deviceInfo:v23 debugOverrides:v32 useBackgroundRefreshRate:1.79769313e308 backgroundFetchConfiguration:1.79769313e308 requestMode:v30 endpointTimeoutDuration:v31 fallbackTimeoutDuration:1];
+  v27 = [(RCConfigurationSettings *)v25 initWithRequestInfos:v26 userID:v22 storefrontID:v21 bundleID:bundleIDCopy deviceInfo:v23 debugOverrides:overridesCopy useBackgroundRefreshRate:1.79769313e308 backgroundFetchConfiguration:1.79769313e308 requestMode:v30 endpointTimeoutDuration:configurationCopy fallbackTimeoutDuration:1];
 
   v28 = *MEMORY[0x277D85DE8];
   return v27;
 }
 
-- (RCConfigurationSettings)initWithRequestKey:(id)a3 responseKey:(id)a4 fallbackURL:(id)a5 userID:(id)a6 storefrontID:(id)a7 bundleID:(id)a8 deviceInfo:(id)a9 debugOverrides:(id)a10
+- (RCConfigurationSettings)initWithRequestKey:(id)key responseKey:(id)responseKey fallbackURL:(id)l userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)self0
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v30 = a10;
-  if (!v15 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  keyCopy = key;
+  responseKeyCopy = responseKey;
+  lCopy = l;
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  infoCopy = info;
+  overridesCopy = overrides;
+  if (!keyCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:];
-    if (v16)
+    if (responseKeyCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v16)
+  else if (responseKeyCopy)
   {
     goto LABEL_6;
   }
@@ -789,16 +789,16 @@ LABEL_11:
   }
 
 LABEL_6:
-  if (!v18 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!dCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:];
-    if (v19)
+    if (iDCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v19)
+  else if (iDCopy)
   {
     goto LABEL_11;
   }
@@ -809,16 +809,16 @@ LABEL_6:
   }
 
 LABEL_11:
-  if (!v20 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!bundleIDCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:];
-    if (v21)
+    if (infoCopy)
     {
       goto LABEL_16;
     }
   }
 
-  else if (v21)
+  else if (infoCopy)
   {
     goto LABEL_16;
   }
@@ -829,39 +829,39 @@ LABEL_11:
   }
 
 LABEL_16:
-  v22 = [[RCRequestInfo alloc] initWithRequestKey:v15 responseKey:v16 fallbackURL:v17];
+  v22 = [[RCRequestInfo alloc] initWithRequestKey:keyCopy responseKey:responseKeyCopy fallbackURL:lCopy];
   v23 = [RCConfigurationSettings alloc];
   v32[0] = v22;
   [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
-  v24 = v29 = v17;
+  v24 = v29 = lCopy;
   LOBYTE(v28) = 0;
-  v25 = [(RCConfigurationSettings *)v23 initWithRequestInfos:v24 userID:v18 storefrontID:v19 bundleID:v20 deviceInfo:v21 debugOverrides:v30 useBackgroundRefreshRate:1.79769313e308 backgroundFetchConfiguration:1.79769313e308 requestMode:v28 endpointTimeoutDuration:0 fallbackTimeoutDuration:0];
+  v25 = [(RCConfigurationSettings *)v23 initWithRequestInfos:v24 userID:dCopy storefrontID:iDCopy bundleID:bundleIDCopy deviceInfo:infoCopy debugOverrides:overridesCopy useBackgroundRefreshRate:1.79769313e308 backgroundFetchConfiguration:1.79769313e308 requestMode:v28 endpointTimeoutDuration:0 fallbackTimeoutDuration:0];
 
   v26 = *MEMORY[0x277D85DE8];
   return v25;
 }
 
-- (RCConfigurationSettings)initWithRequestKey:(id)a3 responseKey:(id)a4 fallbackURL:(id)a5 userID:(id)a6 storefrontID:(id)a7 bundleID:(id)a8 deviceInfo:(id)a9 debugOverrides:(id)a10 requestMode:(unint64_t)a11
+- (RCConfigurationSettings)initWithRequestKey:(id)key responseKey:(id)responseKey fallbackURL:(id)l userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)self0 requestMode:(unint64_t)self1
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v32 = a10;
-  if (!v16 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  keyCopy = key;
+  responseKeyCopy = responseKey;
+  lCopy = l;
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  infoCopy = info;
+  overridesCopy = overrides;
+  if (!keyCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:requestMode:];
-    if (v17)
+    if (responseKeyCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v17)
+  else if (responseKeyCopy)
   {
     goto LABEL_6;
   }
@@ -872,16 +872,16 @@ LABEL_16:
   }
 
 LABEL_6:
-  if (!v19 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!dCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:requestMode:];
-    if (v20)
+    if (iDCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v20)
+  else if (iDCopy)
   {
     goto LABEL_11;
   }
@@ -892,50 +892,50 @@ LABEL_6:
   }
 
 LABEL_11:
-  if (!v21 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!bundleIDCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:requestMode:];
   }
 
-  if (!v22 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!infoCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:requestMode:];
   }
 
-  v23 = [[RCRequestInfo alloc] initWithRequestKey:v16 responseKey:v17 fallbackURL:v18];
+  v23 = [[RCRequestInfo alloc] initWithRequestKey:keyCopy responseKey:responseKeyCopy fallbackURL:lCopy];
   v24 = [RCConfigurationSettings alloc];
   v34[0] = v23;
   [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
-  v31 = v16;
-  v26 = v25 = v18;
+  v31 = keyCopy;
+  v26 = v25 = lCopy;
   LOBYTE(v30) = 0;
-  v27 = [(RCConfigurationSettings *)v24 initWithRequestInfos:v26 userID:v19 storefrontID:v20 bundleID:v21 deviceInfo:v22 debugOverrides:v32 useBackgroundRefreshRate:1.79769313e308 backgroundFetchConfiguration:1.79769313e308 requestMode:v30 endpointTimeoutDuration:0 fallbackTimeoutDuration:a11];
+  v27 = [(RCConfigurationSettings *)v24 initWithRequestInfos:v26 userID:dCopy storefrontID:iDCopy bundleID:bundleIDCopy deviceInfo:infoCopy debugOverrides:overridesCopy useBackgroundRefreshRate:1.79769313e308 backgroundFetchConfiguration:1.79769313e308 requestMode:v30 endpointTimeoutDuration:0 fallbackTimeoutDuration:mode];
 
   v28 = *MEMORY[0x277D85DE8];
   return v27;
 }
 
-- (RCConfigurationSettings)initWithRequestKey:(id)a3 responseKey:(id)a4 fallbackURL:(id)a5 userID:(id)a6 storefrontID:(id)a7 bundleID:(id)a8 deviceInfo:(id)a9 debugOverrides:(id)a10 useBackgroundRefreshRate:(BOOL)a11
+- (RCConfigurationSettings)initWithRequestKey:(id)key responseKey:(id)responseKey fallbackURL:(id)l userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)self0 useBackgroundRefreshRate:(BOOL)self1
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v32 = a10;
-  if (!v16 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  keyCopy = key;
+  responseKeyCopy = responseKey;
+  lCopy = l;
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  infoCopy = info;
+  overridesCopy = overrides;
+  if (!keyCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:];
-    if (v17)
+    if (responseKeyCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v17)
+  else if (responseKeyCopy)
   {
     goto LABEL_6;
   }
@@ -946,16 +946,16 @@ LABEL_11:
   }
 
 LABEL_6:
-  if (!v19 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!dCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:];
-    if (v20)
+    if (iDCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v20)
+  else if (iDCopy)
   {
     goto LABEL_11;
   }
@@ -966,50 +966,50 @@ LABEL_6:
   }
 
 LABEL_11:
-  if (!v21 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!bundleIDCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:];
   }
 
-  if (!v22 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!infoCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:];
   }
 
-  v23 = [[RCRequestInfo alloc] initWithRequestKey:v16 responseKey:v17 fallbackURL:v18];
+  v23 = [[RCRequestInfo alloc] initWithRequestKey:keyCopy responseKey:responseKeyCopy fallbackURL:lCopy];
   v24 = [RCConfigurationSettings alloc];
   v34[0] = v23;
   [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
-  v31 = v16;
-  v26 = v25 = v18;
-  LOBYTE(v30) = a11;
-  v27 = [(RCConfigurationSettings *)v24 initWithRequestInfos:v26 userID:v19 storefrontID:v20 bundleID:v21 deviceInfo:v22 debugOverrides:v32 useBackgroundRefreshRate:1.79769313e308 backgroundFetchConfiguration:1.79769313e308 requestMode:v30 endpointTimeoutDuration:0 fallbackTimeoutDuration:0];
+  v31 = keyCopy;
+  v26 = v25 = lCopy;
+  LOBYTE(v30) = rate;
+  v27 = [(RCConfigurationSettings *)v24 initWithRequestInfos:v26 userID:dCopy storefrontID:iDCopy bundleID:bundleIDCopy deviceInfo:infoCopy debugOverrides:overridesCopy useBackgroundRefreshRate:1.79769313e308 backgroundFetchConfiguration:1.79769313e308 requestMode:v30 endpointTimeoutDuration:0 fallbackTimeoutDuration:0];
 
   v28 = *MEMORY[0x277D85DE8];
   return v27;
 }
 
-- (RCConfigurationSettings)initWithRequestKey:(id)a3 responseKey:(id)a4 fallbackURL:(id)a5 userID:(id)a6 storefrontID:(id)a7 bundleID:(id)a8 deviceInfo:(id)a9 debugOverrides:(id)a10 useBackgroundRefreshRate:(BOOL)a11 requestMode:(unint64_t)a12 endpointTimeoutDuration:(double)a13
+- (RCConfigurationSettings)initWithRequestKey:(id)key responseKey:(id)responseKey fallbackURL:(id)l userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)self0 useBackgroundRefreshRate:(BOOL)self1 requestMode:(unint64_t)self2 endpointTimeoutDuration:(double)self3
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a8;
-  v25 = a9;
-  v36 = a10;
-  if (!v19 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  keyCopy = key;
+  responseKeyCopy = responseKey;
+  lCopy = l;
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  infoCopy = info;
+  overridesCopy = overrides;
+  if (!keyCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:requestMode:endpointTimeoutDuration:];
-    if (v20)
+    if (responseKeyCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v20)
+  else if (responseKeyCopy)
   {
     goto LABEL_6;
   }
@@ -1020,16 +1020,16 @@ LABEL_11:
   }
 
 LABEL_6:
-  if (!v22 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!dCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:requestMode:endpointTimeoutDuration:];
-    if (v23)
+    if (iDCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v23)
+  else if (iDCopy)
   {
     goto LABEL_11;
   }
@@ -1040,53 +1040,53 @@ LABEL_6:
   }
 
 LABEL_11:
-  if (!v24 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!bundleIDCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:requestMode:endpointTimeoutDuration:];
   }
 
-  v37 = v24;
-  v26 = v23;
-  if (!v25 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  v37 = bundleIDCopy;
+  v26 = iDCopy;
+  if (!infoCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:requestMode:endpointTimeoutDuration:];
   }
 
-  v27 = [[RCRequestInfo alloc] initWithRequestKey:v19 responseKey:v20 fallbackURL:v21];
-  v35 = v19;
+  v27 = [[RCRequestInfo alloc] initWithRequestKey:keyCopy responseKey:responseKeyCopy fallbackURL:lCopy];
+  v35 = keyCopy;
   v28 = [RCConfigurationSettings alloc];
   v39[0] = v27;
   [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
-  v30 = v29 = v21;
-  LOBYTE(v34) = a11;
-  v31 = [(RCConfigurationSettings *)v28 initWithRequestInfos:v30 userID:v22 storefrontID:v26 bundleID:v37 deviceInfo:v25 debugOverrides:v36 useBackgroundRefreshRate:a13 backgroundFetchConfiguration:1.79769313e308 requestMode:v34 endpointTimeoutDuration:0 fallbackTimeoutDuration:a12];
+  v30 = v29 = lCopy;
+  LOBYTE(v34) = rate;
+  v31 = [(RCConfigurationSettings *)v28 initWithRequestInfos:v30 userID:dCopy storefrontID:v26 bundleID:v37 deviceInfo:infoCopy debugOverrides:overridesCopy useBackgroundRefreshRate:duration backgroundFetchConfiguration:1.79769313e308 requestMode:v34 endpointTimeoutDuration:0 fallbackTimeoutDuration:mode];
 
   v32 = *MEMORY[0x277D85DE8];
   return v31;
 }
 
-- (RCConfigurationSettings)initWithRequestKey:(id)a3 responseKey:(id)a4 fallbackURL:(id)a5 userID:(id)a6 storefrontID:(id)a7 bundleID:(id)a8 deviceInfo:(id)a9 debugOverrides:(id)a10 useBackgroundRefreshRate:(BOOL)a11 backgroundFetchConfiguration:(id)a12 requestMode:(unint64_t)a13 endpointTimeoutDuration:(double)a14 fallbackTimeoutDuration:(double)a15
+- (RCConfigurationSettings)initWithRequestKey:(id)key responseKey:(id)responseKey fallbackURL:(id)l userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)self0 useBackgroundRefreshRate:(BOOL)self1 backgroundFetchConfiguration:(id)self2 requestMode:(unint64_t)self3 endpointTimeoutDuration:(double)self4 fallbackTimeoutDuration:(double)self5
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v21 = a3;
-  v22 = a4;
-  v36 = a5;
-  v23 = a6;
-  v24 = a7;
-  v25 = a8;
-  v26 = a9;
-  v35 = a10;
-  v34 = a12;
-  if (!v21 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  keyCopy = key;
+  responseKeyCopy = responseKey;
+  lCopy = l;
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  infoCopy = info;
+  overridesCopy = overrides;
+  configurationCopy = configuration;
+  if (!keyCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:backgroundFetchConfiguration:requestMode:endpointTimeoutDuration:fallbackTimeoutDuration:];
-    if (v22)
+    if (responseKeyCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v22)
+  else if (responseKeyCopy)
   {
     goto LABEL_6;
   }
@@ -1097,16 +1097,16 @@ LABEL_11:
   }
 
 LABEL_6:
-  if (!v23 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!dCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:backgroundFetchConfiguration:requestMode:endpointTimeoutDuration:fallbackTimeoutDuration:];
-    if (v24)
+    if (iDCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v24)
+  else if (iDCopy)
   {
     goto LABEL_11;
   }
@@ -1117,50 +1117,50 @@ LABEL_6:
   }
 
 LABEL_11:
-  if (!v25 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!bundleIDCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:backgroundFetchConfiguration:requestMode:endpointTimeoutDuration:fallbackTimeoutDuration:];
   }
 
-  if (!v26 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!infoCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:backgroundFetchConfiguration:requestMode:endpointTimeoutDuration:fallbackTimeoutDuration:];
   }
 
-  v27 = [[RCRequestInfo alloc] initWithRequestKey:v21 responseKey:v22 fallbackURL:v36];
+  v27 = [[RCRequestInfo alloc] initWithRequestKey:keyCopy responseKey:responseKeyCopy fallbackURL:lCopy];
   v28 = [RCConfigurationSettings alloc];
   v38[0] = v27;
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
-  LOBYTE(v33) = a11;
-  v30 = [(RCConfigurationSettings *)v28 initWithRequestInfos:v29 userID:v23 storefrontID:v24 bundleID:v25 deviceInfo:v26 debugOverrides:v35 useBackgroundRefreshRate:a14 backgroundFetchConfiguration:1.79769313e308 requestMode:v33 endpointConfig:v34 endpointTimeoutDuration:a13 fallbackTimeoutDuration:0];
+  LOBYTE(v33) = rate;
+  v30 = [(RCConfigurationSettings *)v28 initWithRequestInfos:v29 userID:dCopy storefrontID:iDCopy bundleID:bundleIDCopy deviceInfo:infoCopy debugOverrides:overridesCopy useBackgroundRefreshRate:duration backgroundFetchConfiguration:1.79769313e308 requestMode:v33 endpointConfig:configurationCopy endpointTimeoutDuration:mode fallbackTimeoutDuration:0];
 
   v31 = *MEMORY[0x277D85DE8];
   return v30;
 }
 
-- (RCConfigurationSettings)initWithRequestKey:(id)a3 responseKey:(id)a4 fallbackURL:(id)a5 userID:(id)a6 storefrontID:(id)a7 bundleID:(id)a8 deviceInfo:(id)a9 debugOverrides:(id)a10 useBackgroundRefreshRate:(BOOL)a11 backgroundFetchConfiguration:(id)a12 requestMode:(unint64_t)a13 endpointConfig:(id)a14 endpointTimeoutDuration:(double)a15 fallbackTimeoutDuration:(double)a16
+- (RCConfigurationSettings)initWithRequestKey:(id)key responseKey:(id)responseKey fallbackURL:(id)l userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)self0 useBackgroundRefreshRate:(BOOL)self1 backgroundFetchConfiguration:(id)self2 requestMode:(unint64_t)self3 endpointConfig:(id)self4 endpointTimeoutDuration:(double)self5 fallbackTimeoutDuration:(double)self6
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v23 = a3;
-  v24 = a4;
-  v40 = a5;
-  v25 = a6;
-  v26 = a7;
-  v27 = a8;
-  v28 = a9;
-  v38 = a10;
-  v37 = a12;
-  v36 = a14;
-  if (!v23 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  keyCopy = key;
+  responseKeyCopy = responseKey;
+  lCopy = l;
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  infoCopy = info;
+  overridesCopy = overrides;
+  configurationCopy = configuration;
+  configCopy = config;
+  if (!keyCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:backgroundFetchConfiguration:requestMode:endpointConfig:endpointTimeoutDuration:fallbackTimeoutDuration:];
-    if (v24)
+    if (responseKeyCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v24)
+  else if (responseKeyCopy)
   {
     goto LABEL_6;
   }
@@ -1171,16 +1171,16 @@ LABEL_11:
   }
 
 LABEL_6:
-  if (!v25 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!dCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:backgroundFetchConfiguration:requestMode:endpointConfig:endpointTimeoutDuration:fallbackTimeoutDuration:];
-    if (v26)
+    if (iDCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v26)
+  else if (iDCopy)
   {
     goto LABEL_11;
   }
@@ -1191,137 +1191,137 @@ LABEL_6:
   }
 
 LABEL_11:
-  if (!v27 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!bundleIDCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:backgroundFetchConfiguration:requestMode:endpointConfig:endpointTimeoutDuration:fallbackTimeoutDuration:];
   }
 
-  v39 = v26;
-  if (!v28 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  v39 = iDCopy;
+  if (!infoCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestKey:responseKey:fallbackURL:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:backgroundFetchConfiguration:requestMode:endpointConfig:endpointTimeoutDuration:fallbackTimeoutDuration:];
   }
 
-  v29 = [[RCRequestInfo alloc] initWithRequestKey:v23 responseKey:v24 fallbackURL:v40];
+  v29 = [[RCRequestInfo alloc] initWithRequestKey:keyCopy responseKey:responseKeyCopy fallbackURL:lCopy];
   v30 = [RCConfigurationSettings alloc];
   v42[0] = v29;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:1];
-  LOBYTE(v34) = a11;
-  v35 = [(RCConfigurationSettings *)v30 initWithRequestInfos:v31 userID:v25 storefrontID:v39 bundleID:v27 deviceInfo:v28 debugOverrides:v38 useBackgroundRefreshRate:a15 backgroundFetchConfiguration:a16 requestMode:v34 endpointConfig:v37 endpointTimeoutDuration:a13 fallbackTimeoutDuration:v36];
+  LOBYTE(v34) = rate;
+  v35 = [(RCConfigurationSettings *)v30 initWithRequestInfos:v31 userID:dCopy storefrontID:v39 bundleID:bundleIDCopy deviceInfo:infoCopy debugOverrides:overridesCopy useBackgroundRefreshRate:duration backgroundFetchConfiguration:timeoutDuration requestMode:v34 endpointConfig:configurationCopy endpointTimeoutDuration:mode fallbackTimeoutDuration:configCopy];
 
   v32 = *MEMORY[0x277D85DE8];
   return v35;
 }
 
-- (RCConfigurationSettings)initWithRequestInfos:(id)a3 userID:(id)a4 storefrontID:(id)a5 bundleID:(id)a6 deviceInfo:(id)a7 debugOverrides:(id)a8
+- (RCConfigurationSettings)initWithRequestInfos:(id)infos userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)overrides
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  overridesCopy = overrides;
+  infoCopy = info;
+  bundleIDCopy = bundleID;
+  iDCopy = iD;
+  dCopy = d;
+  infosCopy = infos;
   LOBYTE(v22) = 0;
-  v20 = [[RCConfigurationSettings alloc] initWithRequestInfos:v19 userID:v18 storefrontID:v17 bundleID:v16 deviceInfo:v15 debugOverrides:v14 useBackgroundRefreshRate:1.79769313e308 requestMode:1.79769313e308 endpointTimeoutDuration:v22 fallbackTimeoutDuration:0];
+  v20 = [[RCConfigurationSettings alloc] initWithRequestInfos:infosCopy userID:dCopy storefrontID:iDCopy bundleID:bundleIDCopy deviceInfo:infoCopy debugOverrides:overridesCopy useBackgroundRefreshRate:1.79769313e308 requestMode:1.79769313e308 endpointTimeoutDuration:v22 fallbackTimeoutDuration:0];
 
   return v20;
 }
 
-- (RCConfigurationSettings)initWithRequestInfos:(id)a3 userID:(id)a4 storefrontID:(id)a5 bundleID:(id)a6 deviceInfo:(id)a7 debugOverrides:(id)a8 useBackgroundRefreshRate:(BOOL)a9
+- (RCConfigurationSettings)initWithRequestInfos:(id)infos userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)overrides useBackgroundRefreshRate:(BOOL)rate
 {
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
-  LOBYTE(v23) = a9;
-  v21 = [[RCConfigurationSettings alloc] initWithRequestInfos:v20 userID:v19 storefrontID:v18 bundleID:v17 deviceInfo:v16 debugOverrides:v15 useBackgroundRefreshRate:1.79769313e308 requestMode:1.79769313e308 endpointTimeoutDuration:v23 fallbackTimeoutDuration:0];
+  overridesCopy = overrides;
+  infoCopy = info;
+  bundleIDCopy = bundleID;
+  iDCopy = iD;
+  dCopy = d;
+  infosCopy = infos;
+  LOBYTE(v23) = rate;
+  v21 = [[RCConfigurationSettings alloc] initWithRequestInfos:infosCopy userID:dCopy storefrontID:iDCopy bundleID:bundleIDCopy deviceInfo:infoCopy debugOverrides:overridesCopy useBackgroundRefreshRate:1.79769313e308 requestMode:1.79769313e308 endpointTimeoutDuration:v23 fallbackTimeoutDuration:0];
 
   return v21;
 }
 
-- (RCConfigurationSettings)initWithRequestInfos:(id)a3 userID:(id)a4 storefrontID:(id)a5 bundleID:(id)a6 deviceInfo:(id)a7 debugOverrides:(id)a8 useBackgroundRefreshRate:(BOOL)a9 requestMode:(unint64_t)a10
+- (RCConfigurationSettings)initWithRequestInfos:(id)infos userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)overrides useBackgroundRefreshRate:(BOOL)rate requestMode:(unint64_t)self0
 {
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  LOBYTE(v24) = a9;
-  v22 = [[RCConfigurationSettings alloc] initWithRequestInfos:v21 userID:v20 storefrontID:v19 bundleID:v18 deviceInfo:v17 debugOverrides:v16 useBackgroundRefreshRate:1.79769313e308 requestMode:1.79769313e308 endpointTimeoutDuration:v24 fallbackTimeoutDuration:a10];
+  overridesCopy = overrides;
+  infoCopy = info;
+  bundleIDCopy = bundleID;
+  iDCopy = iD;
+  dCopy = d;
+  infosCopy = infos;
+  LOBYTE(v24) = rate;
+  v22 = [[RCConfigurationSettings alloc] initWithRequestInfos:infosCopy userID:dCopy storefrontID:iDCopy bundleID:bundleIDCopy deviceInfo:infoCopy debugOverrides:overridesCopy useBackgroundRefreshRate:1.79769313e308 requestMode:1.79769313e308 endpointTimeoutDuration:v24 fallbackTimeoutDuration:mode];
 
   return v22;
 }
 
-- (RCConfigurationSettings)initWithRequestInfos:(id)a3 userID:(id)a4 storefrontID:(id)a5 bundleID:(id)a6 deviceInfo:(id)a7 debugOverrides:(id)a8 useBackgroundRefreshRate:(BOOL)a9 requestMode:(unint64_t)a10 endpointTimeoutDuration:(double)a11
+- (RCConfigurationSettings)initWithRequestInfos:(id)infos userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)overrides useBackgroundRefreshRate:(BOOL)rate requestMode:(unint64_t)self0 endpointTimeoutDuration:(double)self1
 {
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
-  LOBYTE(v26) = a9;
-  v24 = [[RCConfigurationSettings alloc] initWithRequestInfos:v23 userID:v22 storefrontID:v21 bundleID:v20 deviceInfo:v19 debugOverrides:v18 useBackgroundRefreshRate:a11 requestMode:1.79769313e308 endpointTimeoutDuration:v26 fallbackTimeoutDuration:a10];
+  overridesCopy = overrides;
+  infoCopy = info;
+  bundleIDCopy = bundleID;
+  iDCopy = iD;
+  dCopy = d;
+  infosCopy = infos;
+  LOBYTE(v26) = rate;
+  v24 = [[RCConfigurationSettings alloc] initWithRequestInfos:infosCopy userID:dCopy storefrontID:iDCopy bundleID:bundleIDCopy deviceInfo:infoCopy debugOverrides:overridesCopy useBackgroundRefreshRate:duration requestMode:1.79769313e308 endpointTimeoutDuration:v26 fallbackTimeoutDuration:mode];
 
   return v24;
 }
 
-- (RCConfigurationSettings)initWithRequestInfos:(id)a3 userID:(id)a4 storefrontID:(id)a5 bundleID:(id)a6 deviceInfo:(id)a7 debugOverrides:(id)a8 useBackgroundRefreshRate:(BOOL)a9 requestMode:(unint64_t)a10 endpointTimeoutDuration:(double)a11 fallbackTimeoutDuration:(double)a12
+- (RCConfigurationSettings)initWithRequestInfos:(id)infos userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)overrides useBackgroundRefreshRate:(BOOL)rate requestMode:(unint64_t)self0 endpointTimeoutDuration:(double)self1 fallbackTimeoutDuration:(double)self2
 {
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
-  LOBYTE(v28) = a9;
-  v26 = [[RCConfigurationSettings alloc] initWithRequestInfos:v25 userID:v24 storefrontID:v23 bundleID:v22 deviceInfo:v21 debugOverrides:v20 useBackgroundRefreshRate:a11 backgroundFetchConfiguration:a12 requestMode:v28 endpointTimeoutDuration:0 fallbackTimeoutDuration:a10];
+  overridesCopy = overrides;
+  infoCopy = info;
+  bundleIDCopy = bundleID;
+  iDCopy = iD;
+  dCopy = d;
+  infosCopy = infos;
+  LOBYTE(v28) = rate;
+  v26 = [[RCConfigurationSettings alloc] initWithRequestInfos:infosCopy userID:dCopy storefrontID:iDCopy bundleID:bundleIDCopy deviceInfo:infoCopy debugOverrides:overridesCopy useBackgroundRefreshRate:duration backgroundFetchConfiguration:timeoutDuration requestMode:v28 endpointTimeoutDuration:0 fallbackTimeoutDuration:mode];
 
   return v26;
 }
 
-- (RCConfigurationSettings)initWithRequestInfos:(id)a3 userID:(id)a4 storefrontID:(id)a5 bundleID:(id)a6 deviceInfo:(id)a7 debugOverrides:(id)a8 useBackgroundRefreshRate:(BOOL)a9 backgroundFetchConfiguration:(id)a10 requestMode:(unint64_t)a11 endpointTimeoutDuration:(double)a12 fallbackTimeoutDuration:(double)a13
+- (RCConfigurationSettings)initWithRequestInfos:(id)infos userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)overrides useBackgroundRefreshRate:(BOOL)rate backgroundFetchConfiguration:(id)self0 requestMode:(unint64_t)self1 endpointTimeoutDuration:(double)self2 fallbackTimeoutDuration:(double)self3
 {
-  v21 = a10;
-  v22 = a8;
-  v23 = a7;
-  v24 = a6;
-  v25 = a5;
-  v26 = a4;
-  v27 = a3;
-  LOBYTE(v30) = a9;
-  v28 = [[RCConfigurationSettings alloc] initWithRequestInfos:v27 userID:v26 storefrontID:v25 bundleID:v24 deviceInfo:v23 debugOverrides:v22 useBackgroundRefreshRate:a12 backgroundFetchConfiguration:a13 requestMode:v30 endpointConfig:v21 endpointTimeoutDuration:a11 fallbackTimeoutDuration:0];
+  configurationCopy = configuration;
+  overridesCopy = overrides;
+  infoCopy = info;
+  bundleIDCopy = bundleID;
+  iDCopy = iD;
+  dCopy = d;
+  infosCopy = infos;
+  LOBYTE(v30) = rate;
+  v28 = [[RCConfigurationSettings alloc] initWithRequestInfos:infosCopy userID:dCopy storefrontID:iDCopy bundleID:bundleIDCopy deviceInfo:infoCopy debugOverrides:overridesCopy useBackgroundRefreshRate:duration backgroundFetchConfiguration:timeoutDuration requestMode:v30 endpointConfig:configurationCopy endpointTimeoutDuration:mode fallbackTimeoutDuration:0];
 
   return v28;
 }
 
-- (RCConfigurationSettings)initWithRequestInfos:(id)a3 userID:(id)a4 storefrontID:(id)a5 bundleID:(id)a6 deviceInfo:(id)a7 debugOverrides:(id)a8 useBackgroundRefreshRate:(BOOL)a9 backgroundFetchConfiguration:(id)a10 requestMode:(unint64_t)a11 endpointConfig:(id)a12 endpointTimeoutDuration:(double)a13 fallbackTimeoutDuration:(double)a14
+- (RCConfigurationSettings)initWithRequestInfos:(id)infos userID:(id)d storefrontID:(id)iD bundleID:(id)bundleID deviceInfo:(id)info debugOverrides:(id)overrides useBackgroundRefreshRate:(BOOL)rate backgroundFetchConfiguration:(id)self0 requestMode:(unint64_t)self1 endpointConfig:(id)self2 endpointTimeoutDuration:(double)self3 fallbackTimeoutDuration:(double)self4
 {
-  v22 = a3;
-  v34 = a4;
-  v23 = a4;
-  v35 = a5;
-  v24 = a5;
-  v36 = a6;
-  v25 = a6;
-  v37 = a7;
-  v26 = a7;
-  v27 = a8;
-  v39 = a10;
-  v38 = a12;
-  if (!v22 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  infosCopy = infos;
+  dCopy = d;
+  dCopy2 = d;
+  iDCopy = iD;
+  iDCopy2 = iD;
+  bundleIDCopy = bundleID;
+  bundleIDCopy2 = bundleID;
+  infoCopy = info;
+  infoCopy2 = info;
+  overridesCopy = overrides;
+  configurationCopy = configuration;
+  configCopy = config;
+  if (!infosCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestInfos:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:backgroundFetchConfiguration:requestMode:endpointConfig:endpointTimeoutDuration:fallbackTimeoutDuration:];
-    if (v23)
+    if (dCopy2)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v23)
+  else if (dCopy2)
   {
     goto LABEL_6;
   }
@@ -1332,16 +1332,16 @@ LABEL_11:
   }
 
 LABEL_6:
-  if (!v24 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!iDCopy2 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestInfos:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:backgroundFetchConfiguration:requestMode:endpointConfig:endpointTimeoutDuration:fallbackTimeoutDuration:];
-    if (v25)
+    if (bundleIDCopy2)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v25)
+  else if (bundleIDCopy2)
   {
     goto LABEL_11;
   }
@@ -1352,7 +1352,7 @@ LABEL_6:
   }
 
 LABEL_11:
-  if (!v26 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!infoCopy2 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationSettings initWithRequestInfos:userID:storefrontID:bundleID:deviceInfo:debugOverrides:useBackgroundRefreshRate:backgroundFetchConfiguration:requestMode:endpointConfig:endpointTimeoutDuration:fallbackTimeoutDuration:];
   }
@@ -1363,18 +1363,18 @@ LABEL_11:
   v29 = v28;
   if (v28)
   {
-    objc_storeStrong(&v28->_requestInfos, a3);
-    objc_storeStrong(&v29->_userID, v34);
-    objc_storeStrong(&v29->_storefrontID, v35);
-    objc_storeStrong(&v29->_bundleID, v36);
-    objc_storeStrong(&v29->_deviceInfo, v37);
-    objc_storeStrong(&v29->_internalDebugOverrides, a8);
-    v29->_internalUseBackgroundRefreshRate = a9;
-    objc_storeStrong(&v29->_internalBackgroundFetchConfiguration, a10);
-    v29->_internalRequestMode = a11;
-    objc_storeStrong(&v29->_internalEndpointConfig, a12);
-    v29->_internalEndpointTimeoutDuration = a13;
-    v29->_internalFallbackTimeoutDuration = a14;
+    objc_storeStrong(&v28->_requestInfos, infos);
+    objc_storeStrong(&v29->_userID, dCopy);
+    objc_storeStrong(&v29->_storefrontID, iDCopy);
+    objc_storeStrong(&v29->_bundleID, bundleIDCopy);
+    objc_storeStrong(&v29->_deviceInfo, infoCopy);
+    objc_storeStrong(&v29->_internalDebugOverrides, overrides);
+    v29->_internalUseBackgroundRefreshRate = rate;
+    objc_storeStrong(&v29->_internalBackgroundFetchConfiguration, configuration);
+    v29->_internalRequestMode = mode;
+    objc_storeStrong(&v29->_internalEndpointConfig, config);
+    v29->_internalEndpointTimeoutDuration = duration;
+    v29->_internalFallbackTimeoutDuration = timeoutDuration;
     v30 = objc_alloc_init(RCUnfairLock);
     accessLock = v29->_accessLock;
     v29->_accessLock = v30;
@@ -1383,32 +1383,32 @@ LABEL_11:
   return v29;
 }
 
-- (void)setDebugOverrides:(id)a3
+- (void)setDebugOverrides:(id)overrides
 {
-  v4 = a3;
-  v5 = [(RCConfigurationSettings *)self accessLock];
+  overridesCopy = overrides;
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__RCConfigurationSettings_setDebugOverrides___block_invoke;
   v7[3] = &unk_27822F130;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWithLockSync:v7];
+  v8 = overridesCopy;
+  v6 = overridesCopy;
+  [accessLock performWithLockSync:v7];
 }
 
-- (void)setLoggingKey:(id)a3
+- (void)setLoggingKey:(id)key
 {
-  v4 = a3;
-  v5 = [(RCConfigurationSettings *)self accessLock];
+  keyCopy = key;
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__RCConfigurationSettings_setLoggingKey___block_invoke;
   v7[3] = &unk_27822F130;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWithLockSync:v7];
+  v8 = keyCopy;
+  v6 = keyCopy;
+  [accessLock performWithLockSync:v7];
 }
 
 - (NSString)loggingKey
@@ -1419,14 +1419,14 @@ LABEL_11:
   v14 = __Block_byref_object_copy__6;
   v15 = __Block_byref_object_dispose__6;
   v16 = 0;
-  v3 = [(RCConfigurationSettings *)self accessLock];
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __37__RCConfigurationSettings_loggingKey__block_invoke;
   v10[3] = &unk_27822F288;
   v10[4] = self;
   v10[5] = &v11;
-  [v3 performWithLockSync:v10];
+  [accessLock performWithLockSync:v10];
 
   v4 = v12[5];
   if (v4)
@@ -1438,8 +1438,8 @@ LABEL_11:
   {
     v6 = MEMORY[0x277CCACA8];
     v7 = objc_opt_class();
-    v8 = [(RCConfigurationSettings *)self requestInfos];
-    v5 = [v6 stringWithFormat:@"<%@: %p requestInfos: %@>", v7, self, v8];;
+    requestInfos = [(RCConfigurationSettings *)self requestInfos];
+    v5 = [v6 stringWithFormat:@"<%@: %p requestInfos: %@>", v7, self, requestInfos];;
   }
 
   _Block_object_dispose(&v11, 8);
@@ -1447,18 +1447,18 @@ LABEL_11:
   return v5;
 }
 
-- (void)setBackgroundFetchConfiguration:(id)a3
+- (void)setBackgroundFetchConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(RCConfigurationSettings *)self accessLock];
+  configurationCopy = configuration;
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__RCConfigurationSettings_setBackgroundFetchConfiguration___block_invoke;
   v7[3] = &unk_27822F130;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWithLockSync:v7];
+  v8 = configurationCopy;
+  v6 = configurationCopy;
+  [accessLock performWithLockSync:v7];
 }
 
 - (RCBackgroundFetchConfiguration)backgroundFetchConfiguration
@@ -1469,14 +1469,14 @@ LABEL_11:
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(RCConfigurationSettings *)self accessLock];
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__RCConfigurationSettings_backgroundFetchConfiguration__block_invoke;
   v6[3] = &unk_27822F288;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performWithLockSync:v6];
+  [accessLock performWithLockSync:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1484,54 +1484,54 @@ LABEL_11:
   return v4;
 }
 
-- (void)setUseBackgroundRefreshRate:(BOOL)a3
+- (void)setUseBackgroundRefreshRate:(BOOL)rate
 {
-  v5 = [(RCConfigurationSettings *)self accessLock];
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__RCConfigurationSettings_setUseBackgroundRefreshRate___block_invoke;
   v6[3] = &unk_27822FE90;
   v6[4] = self;
-  v7 = a3;
-  [v5 performWithLockSync:v6];
+  rateCopy = rate;
+  [accessLock performWithLockSync:v6];
 }
 
-- (void)setRequestMode:(unint64_t)a3
+- (void)setRequestMode:(unint64_t)mode
 {
-  v5 = [(RCConfigurationSettings *)self accessLock];
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__RCConfigurationSettings_setRequestMode___block_invoke;
   v6[3] = &unk_27822F238;
   v6[4] = self;
-  v6[5] = a3;
-  [v5 performWithLockSync:v6];
+  v6[5] = mode;
+  [accessLock performWithLockSync:v6];
 }
 
-- (void)setEndpointConfig:(id)a3
+- (void)setEndpointConfig:(id)config
 {
-  v4 = a3;
-  v5 = [(RCConfigurationSettings *)self accessLock];
+  configCopy = config;
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__RCConfigurationSettings_setEndpointConfig___block_invoke;
   v7[3] = &unk_27822F130;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWithLockSync:v7];
+  v8 = configCopy;
+  v6 = configCopy;
+  [accessLock performWithLockSync:v7];
 }
 
-- (void)setEndpointTimeoutDuration:(double)a3
+- (void)setEndpointTimeoutDuration:(double)duration
 {
-  v5 = [(RCConfigurationSettings *)self accessLock];
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__RCConfigurationSettings_setEndpointTimeoutDuration___block_invoke;
   v6[3] = &unk_27822F238;
   v6[4] = self;
-  *&v6[5] = a3;
-  [v5 performWithLockSync:v6];
+  *&v6[5] = duration;
+  [accessLock performWithLockSync:v6];
 }
 
 double __54__RCConfigurationSettings_setEndpointTimeoutDuration___block_invoke(uint64_t a1)
@@ -1547,14 +1547,14 @@ double __54__RCConfigurationSettings_setEndpointTimeoutDuration___block_invoke(u
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(RCConfigurationSettings *)self accessLock];
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__RCConfigurationSettings_endpointTimeoutDuration__block_invoke;
   v6[3] = &unk_27822F288;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performWithLockSync:v6];
+  [accessLock performWithLockSync:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -1568,16 +1568,16 @@ double __50__RCConfigurationSettings_endpointTimeoutDuration__block_invoke(uint6
   return result;
 }
 
-- (void)setFallbackTimeoutDuration:(double)a3
+- (void)setFallbackTimeoutDuration:(double)duration
 {
-  v5 = [(RCConfigurationSettings *)self accessLock];
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__RCConfigurationSettings_setFallbackTimeoutDuration___block_invoke;
   v6[3] = &unk_27822F238;
   v6[4] = self;
-  *&v6[5] = a3;
-  [v5 performWithLockSync:v6];
+  *&v6[5] = duration;
+  [accessLock performWithLockSync:v6];
 }
 
 double __54__RCConfigurationSettings_setFallbackTimeoutDuration___block_invoke(uint64_t a1)
@@ -1593,14 +1593,14 @@ double __54__RCConfigurationSettings_setFallbackTimeoutDuration___block_invoke(u
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(RCConfigurationSettings *)self accessLock];
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__RCConfigurationSettings_fallbackTimeoutDuration__block_invoke;
   v6[3] = &unk_27822F288;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performWithLockSync:v6];
+  [accessLock performWithLockSync:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -1614,16 +1614,16 @@ double __50__RCConfigurationSettings_fallbackTimeoutDuration__block_invoke(uint6
   return result;
 }
 
-- (void)setApplicationState:(unint64_t)a3
+- (void)setApplicationState:(unint64_t)state
 {
-  v5 = [(RCConfigurationSettings *)self accessLock];
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__RCConfigurationSettings_setApplicationState___block_invoke;
   v6[3] = &unk_27822F238;
   v6[4] = self;
-  v6[5] = a3;
-  [v5 performWithLockSync:v6];
+  v6[5] = state;
+  [accessLock performWithLockSync:v6];
 }
 
 - (unint64_t)applicationState
@@ -1632,14 +1632,14 @@ double __50__RCConfigurationSettings_fallbackTimeoutDuration__block_invoke(uint6
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(RCConfigurationSettings *)self accessLock];
+  accessLock = [(RCConfigurationSettings *)self accessLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__RCConfigurationSettings_applicationState__block_invoke;
   v6[3] = &unk_27822F288;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performWithLockSync:v6];
+  [accessLock performWithLockSync:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);

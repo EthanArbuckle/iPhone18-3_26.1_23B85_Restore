@@ -1,6 +1,6 @@
 @interface OspreyConnectionPool
 - (OspreyConnectionPool)init;
-- (id)connectionForConfiguration:(id)a3;
+- (id)connectionForConfiguration:(id)configuration;
 @end
 
 @implementation OspreyConnectionPool
@@ -17,18 +17,18 @@
     poolQueue = v2->_poolQueue;
     v2->_poolQueue = v4;
 
-    v6 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     connectionMap = v2->_connectionMap;
-    v2->_connectionMap = v6;
+    v2->_connectionMap = strongToWeakObjectsMapTable;
   }
 
   return v2;
 }
 
-- (id)connectionForConfiguration:(id)a3
+- (id)connectionForConfiguration:(id)configuration
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   OspreyLoggingInit();
   v5 = OspreyLogContextChannel;
   if (os_log_type_enabled(OspreyLogContextChannel, OS_LOG_TYPE_INFO))
@@ -39,9 +39,9 @@
   }
 
   v6 = [[OspreyRPCPromise alloc] initWithFulfillmentQueue:self->_poolQueue];
-  v7 = [v4 urlSessionConfiguration];
+  urlSessionConfiguration = [configurationCopy urlSessionConfiguration];
 
-  if (!v7)
+  if (!urlSessionConfiguration)
   {
     OspreyLoggingInit();
     v8 = OspreyLogContextChannel;
@@ -50,24 +50,24 @@
       [OspreyConnectionPool connectionForConfiguration:v8];
     }
 
-    v9 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-    [v4 setUrlSessionConfiguration:v9];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    [configurationCopy setUrlSessionConfiguration:defaultSessionConfiguration];
   }
 
-  v10 = [v4 urlSessionConfiguration];
-  v11 = [v10 TLSMinimumSupportedProtocolVersion];
+  urlSessionConfiguration2 = [configurationCopy urlSessionConfiguration];
+  tLSMinimumSupportedProtocolVersion = [urlSessionConfiguration2 TLSMinimumSupportedProtocolVersion];
 
-  if (v11 <= 0x302)
+  if (tLSMinimumSupportedProtocolVersion <= 0x302)
   {
-    v12 = [v4 urlSessionConfiguration];
-    [v12 setTLSMinimumSupportedProtocolVersion:771];
+    urlSessionConfiguration3 = [configurationCopy urlSessionConfiguration];
+    [urlSessionConfiguration3 setTLSMinimumSupportedProtocolVersion:771];
   }
 
   OspreyLoggingInit();
   v13 = OspreyLogContextChannel;
   if (os_log_type_enabled(OspreyLogContextChannel, OS_LOG_TYPE_DEBUG))
   {
-    [(OspreyConnectionPool *)v13 connectionForConfiguration:v4];
+    [(OspreyConnectionPool *)v13 connectionForConfiguration:configurationCopy];
   }
 
   poolQueue = self->_poolQueue;
@@ -76,10 +76,10 @@
   block[2] = __51__OspreyConnectionPool_connectionForConfiguration___block_invoke;
   block[3] = &unk_2799F1D08;
   block[4] = self;
-  v21 = v4;
+  v21 = configurationCopy;
   v15 = v6;
   v22 = v15;
-  v16 = v4;
+  v16 = configurationCopy;
   dispatch_async(poolQueue, block);
   v17 = v22;
   v18 = v15;

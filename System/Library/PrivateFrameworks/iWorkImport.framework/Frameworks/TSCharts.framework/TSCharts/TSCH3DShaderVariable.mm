@@ -1,52 +1,52 @@
 @interface TSCH3DShaderVariable
-+ (TSCH3DShaderVariable)variableWithName:(id)a3 type:(id)a4 precision:(id)a5 arraySize:(unint64_t)a6 shaderType:(TSCH3DShaderType)a7 isSpecial:(BOOL)a8 generic:(id)a9;
++ (TSCH3DShaderVariable)variableWithName:(id)name type:(id)type precision:(id)precision arraySize:(unint64_t)size shaderType:(TSCH3DShaderType)shaderType isSpecial:(BOOL)special generic:(id)generic;
 - (BOOL)isTexture;
 - (NSString)commonShaderType;
 - (TSCH3DShaderType)initialLinkType;
-- (TSCH3DShaderVariable)initWithName:(id)a3 type:(id)a4 precision:(id)a5 arraySize:(unint64_t)a6 shaderType:(TSCH3DShaderType)a7 isSpecial:(BOOL)a8 generic:(id)a9;
+- (TSCH3DShaderVariable)initWithName:(id)name type:(id)type precision:(id)precision arraySize:(unint64_t)size shaderType:(TSCH3DShaderType)shaderType isSpecial:(BOOL)special generic:(id)generic;
 - (id)description;
-- (id)variableAtIndex:(unint64_t)a3;
+- (id)variableAtIndex:(unint64_t)index;
 - (unint64_t)componentCount;
 @end
 
 @implementation TSCH3DShaderVariable
 
-+ (TSCH3DShaderVariable)variableWithName:(id)a3 type:(id)a4 precision:(id)a5 arraySize:(unint64_t)a6 shaderType:(TSCH3DShaderType)a7 isSpecial:(BOOL)a8 generic:(id)a9
++ (TSCH3DShaderVariable)variableWithName:(id)name type:(id)type precision:(id)precision arraySize:(unint64_t)size shaderType:(TSCH3DShaderType)shaderType isSpecial:(BOOL)special generic:(id)generic
 {
-  v9 = a8;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a9;
-  v19 = [a1 alloc];
-  isSpecial_generic = objc_msgSend_initWithName_type_precision_arraySize_shaderType_isSpecial_generic_(v19, v20, v21, v22, v23, v15, v16, v17, a6, a7._value, v9, v18);
+  specialCopy = special;
+  nameCopy = name;
+  typeCopy = type;
+  precisionCopy = precision;
+  genericCopy = generic;
+  v19 = [self alloc];
+  isSpecial_generic = objc_msgSend_initWithName_type_precision_arraySize_shaderType_isSpecial_generic_(v19, v20, v21, v22, v23, nameCopy, typeCopy, precisionCopy, size, shaderType._value, specialCopy, genericCopy);
 
   return isSpecial_generic;
 }
 
-- (TSCH3DShaderVariable)initWithName:(id)a3 type:(id)a4 precision:(id)a5 arraySize:(unint64_t)a6 shaderType:(TSCH3DShaderType)a7 isSpecial:(BOOL)a8 generic:(id)a9
+- (TSCH3DShaderVariable)initWithName:(id)name type:(id)type precision:(id)precision arraySize:(unint64_t)size shaderType:(TSCH3DShaderType)shaderType isSpecial:(BOOL)special generic:(id)generic
 {
-  v38 = a3;
-  v37 = a4;
-  v16 = a5;
-  v17 = a9;
+  nameCopy = name;
+  typeCopy = type;
+  precisionCopy = precision;
+  genericCopy = generic;
   v39.receiver = self;
   v39.super_class = TSCH3DShaderVariable;
   v18 = [(TSCH3DShaderVariable *)&v39 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_name, a3);
-    objc_storeStrong(&v19->_type, a4);
-    objc_storeStrong(&v19->_precision, a5);
-    v19->_arraySize = a6;
-    v19->_shaderType = a7;
-    v19->_isSpecial = a8;
-    objc_storeStrong(&v19->_genericName, a9);
+    objc_storeStrong(&v18->_name, name);
+    objc_storeStrong(&v19->_type, type);
+    objc_storeStrong(&v19->_precision, precision);
+    v19->_arraySize = size;
+    v19->_shaderType = shaderType;
+    v19->_isSpecial = special;
+    objc_storeStrong(&v19->_genericName, generic);
     v19->_componentCount = 0x7FFFFFFFFFFFFFFFLL;
     if (v19->_arraySize)
     {
-      v25 = objc_msgSend_array(MEMORY[0x277CBEB18], v20, v21, v22, v23, v37, v38);
+      v25 = objc_msgSend_array(MEMORY[0x277CBEB18], v20, v21, v22, v23, typeCopy, nameCopy);
       if (v19->_arraySize)
       {
         v29 = 0;
@@ -192,21 +192,21 @@ LABEL_7:
   }
 }
 
-- (id)variableAtIndex:(unint64_t)a3
+- (id)variableAtIndex:(unint64_t)index
 {
   if (!objc_msgSend_arraySize(self, a2, v3, v4, v5))
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v9, v10, v11, "[TSCH3DShaderVariable variableAtIndex:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DShaderVariable.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v19, v20, v21, v22, v13, v18, 158, 0, "cannot get element on non-array variable %@ index %lu", self, a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v19, v20, v21, v22, v13, v18, 158, 0, "cannot get element on non-array variable %@ index %lu", self, index);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
   elements = self->_elements;
 
-  return objc_msgSend_objectAtIndexedSubscript_(elements, v8, v9, v10, v11, a3);
+  return objc_msgSend_objectAtIndexedSubscript_(elements, v8, v9, v10, v11, index);
 }
 
 @end

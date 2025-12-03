@@ -1,25 +1,25 @@
 @interface MSDFindMyHub
 + (id)sharedInstance;
-- (BOOL)askFindMyHubForHubInfo:(id *)a3;
+- (BOOL)askFindMyHubForHubInfo:(id *)info;
 - (BOOL)compareSavedHubHostNameWithNewHostName;
 - (BOOL)compareSavedHubHostsWithNewHosts;
-- (BOOL)discoverAndEnrollWithHub:(id *)a3;
-- (BOOL)enrollAndSetup:(id *)a3;
-- (BOOL)verifyDeviceEligibility:(BOOL *)a3 error:(id *)a4;
+- (BOOL)discoverAndEnrollWithHub:(id *)hub;
+- (BOOL)enrollAndSetup:(id *)setup;
+- (BOOL)verifyDeviceEligibility:(BOOL *)eligibility error:(id *)error;
 - (id)prepareBundleInfoDictionary;
 - (id)prepareHubOfflineDurationString;
 - (int64_t)getDefaultRetryDelay;
 - (unint64_t)queryFindMyHubAndDetermineLogicSyncResult;
 - (void)cancelOfflineModeEnrollmentRetry;
-- (void)cellularPlanDidChange:(id)a3;
-- (void)checkInWithCompletion:(id)a3;
+- (void)cellularPlanDidChange:(id)change;
+- (void)checkInWithCompletion:(id)completion;
 - (void)handleEnrollmentRetryUponFirstLaunch;
-- (void)handleRetryTimerFireForEnrollment:(id)a3;
-- (void)markAsNotDemoWithCompletion:(id)a3;
-- (void)retryEnrollmentWithHub:(BOOL)a3;
-- (void)scheduleRetryTimerForEnrollmentAtDate:(id)a3 isFirstLaunch:(BOOL)a4;
-- (void)searchStoreWithOptions:(id)a3 completion:(id)a4;
-- (void)setAutoEnrollmentInfo:(double)a3 withStoreId:(id)a4 withHelpMenuRowSelection:(id)a5;
+- (void)handleRetryTimerFireForEnrollment:(id)enrollment;
+- (void)markAsNotDemoWithCompletion:(id)completion;
+- (void)retryEnrollmentWithHub:(BOOL)hub;
+- (void)scheduleRetryTimerForEnrollmentAtDate:(id)date isFirstLaunch:(BOOL)launch;
+- (void)searchStoreWithOptions:(id)options completion:(id)completion;
+- (void)setAutoEnrollmentInfo:(double)info withStoreId:(id)id withHelpMenuRowSelection:(id)selection;
 - (void)setupOfflineModeEnrollmentRetry;
 - (void)tryScheduleDefaultEnrollmentRetry;
 @end
@@ -40,21 +40,21 @@
 
 - (void)handleEnrollmentRetryUponFirstLaunch
 {
-  v3 = [(MSDFindMyHub *)self device];
-  v4 = [v3 typeOfDemoDevice];
+  device = [(MSDFindMyHub *)self device];
+  typeOfDemoDevice = [device typeOfDemoDevice];
 
   v24 = 0;
-  v5 = [(MSDFindMyHub *)self device];
-  v6 = [v5 isDemoEligible];
+  device2 = [(MSDFindMyHub *)self device];
+  isDemoEligible = [device2 isDemoEligible];
 
-  v7 = [(MSDFindMyHub *)self device];
-  v8 = [v7 getDemoEnrollmentFlag];
-  v9 = [v8 isEqualToString:@"enrollmentSuccess"];
+  device3 = [(MSDFindMyHub *)self device];
+  getDemoEnrollmentFlag = [device3 getDemoEnrollmentFlag];
+  v9 = [getDemoEnrollmentFlag isEqualToString:@"enrollmentSuccess"];
 
   v10 = +[MSDDemoUpdateController sharedInstance];
   [v10 getDemoUpdateInProgress:&v24 + 1 operationAllowed:&v24];
 
-  if ((v6 & 1) == 0)
+  if ((isDemoEligible & 1) == 0)
   {
     v11 = sub_100063A54();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -69,7 +69,7 @@ LABEL_8:
     return;
   }
 
-  if (v4 == 3)
+  if (typeOfDemoDevice == 3)
   {
     v11 = sub_100063A54();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -110,7 +110,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (v4 != 5)
+  if (typeOfDemoDevice != 5)
   {
     v21 = sub_100063A54();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -127,10 +127,10 @@ LABEL_26:
     return;
   }
 
-  v13 = [(MSDFindMyHub *)self device];
-  v14 = [v13 findMyHubRetryAtTime];
+  device4 = [(MSDFindMyHub *)self device];
+  findMyHubRetryAtTime = [device4 findMyHubRetryAtTime];
 
-  if (v14 <= 0)
+  if (findMyHubRetryAtTime <= 0)
   {
     v21 = sub_100063A54();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -143,7 +143,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v15 = [NSDate dateWithTimeIntervalSinceReferenceDate:v14];
+  v15 = [NSDate dateWithTimeIntervalSinceReferenceDate:findMyHubRetryAtTime];
   v16 = +[NSDate date];
   [v15 timeIntervalSinceDate:v16];
   v18 = v17;
@@ -173,27 +173,27 @@ LABEL_26:
   }
 }
 
-- (void)setAutoEnrollmentInfo:(double)a3 withStoreId:(id)a4 withHelpMenuRowSelection:(id)a5
+- (void)setAutoEnrollmentInfo:(double)info withStoreId:(id)id withHelpMenuRowSelection:(id)selection
 {
-  v8 = a4;
-  v9 = a5;
-  self->_autoEnrollmentTimeStamp = a3;
+  idCopy = id;
+  selectionCopy = selection;
+  self->_autoEnrollmentTimeStamp = info;
   autoEnrollmentStoreId = self->_autoEnrollmentStoreId;
-  self->_autoEnrollmentStoreId = v8;
-  v12 = v8;
+  self->_autoEnrollmentStoreId = idCopy;
+  v12 = idCopy;
 
   helpMenuUserTapped = self->_helpMenuUserTapped;
-  self->_helpMenuUserTapped = v9;
+  self->_helpMenuUserTapped = selectionCopy;
 }
 
-- (BOOL)discoverAndEnrollWithHub:(id *)a3
+- (BOOL)discoverAndEnrollWithHub:(id *)hub
 {
-  v5 = [(MSDFindMyHub *)self device];
-  v6 = [v5 typeOfDemoDevice];
+  device = [(MSDFindMyHub *)self device];
+  typeOfDemoDevice = [device typeOfDemoDevice];
 
   v7 = +[NSMutableDictionary dictionary];
   [(MSDFindMyHub *)self setIsLogicSync:0];
-  if (v6 == 5)
+  if (typeOfDemoDevice == 5)
   {
     v8 = [NSDate dateWithTimeIntervalSince1970:self->_autoEnrollmentTimeStamp];
     [v7 setObject:v8 forKey:@"AutoEnrollmentTimeStamp"];
@@ -211,12 +211,12 @@ LABEL_26:
     }
 
     v11 = +[MSDLanguageAndRegionManager sharedInstance];
-    v12 = [v11 getCurrentDeviceLanguage];
-    [v7 setObject:v12 forKey:@"AutoEnrollmentLanguageCodeInfo"];
+    getCurrentDeviceLanguage = [v11 getCurrentDeviceLanguage];
+    [v7 setObject:getCurrentDeviceLanguage forKey:@"AutoEnrollmentLanguageCodeInfo"];
 
     v13 = +[MSDLanguageAndRegionManager sharedInstance];
-    v14 = [v13 getCurrentDeviceRegion];
-    [v7 setObject:v14 forKey:@"AutoEnrollmentCountryCodeInfo"];
+    getCurrentDeviceRegion = [v13 getCurrentDeviceRegion];
+    [v7 setObject:getCurrentDeviceRegion forKey:@"AutoEnrollmentCountryCodeInfo"];
 
     storesSearched = self->_storesSearched;
     if (storesSearched)
@@ -225,20 +225,20 @@ LABEL_26:
     }
 
     v16 = +[MSDCellularHelper sharedInstance];
-    v17 = [v16 getCellularSimInfo];
+    getCellularSimInfo = [v16 getCellularSimInfo];
 
-    if (!v17)
+    if (!getCellularSimInfo)
     {
-      v17 = objc_opt_new();
+      getCellularSimInfo = objc_opt_new();
     }
 
-    [v7 setObject:v17 forKey:@"AutoEnrollmentNetworkInfo"];
+    [v7 setObject:getCellularSimInfo forKey:@"AutoEnrollmentNetworkInfo"];
     v18 = +[MSDWiFiHelper sharedInstance];
-    v19 = [v18 getCurrentWiFiSsid];
+    getCurrentWiFiSsid = [v18 getCurrentWiFiSsid];
 
-    if (v19)
+    if (getCurrentWiFiSsid)
     {
-      v20 = v19;
+      v20 = getCurrentWiFiSsid;
     }
 
     else
@@ -283,26 +283,26 @@ LABEL_26:
   if (!v26)
   {
 LABEL_26:
-    if (a3)
+    if (hub)
     {
       v34 = v23;
-      *a3 = v23;
+      *hub = v23;
     }
 
-    v35 = [(MSDFindMyHub *)self device];
-    v36 = [v35 isOfflineMode];
+    device2 = [(MSDFindMyHub *)self device];
+    isOfflineMode = [device2 isOfflineMode];
 
-    if (v36)
+    if (isOfflineMode)
     {
-      v37 = [(MSDFindMyHub *)self device];
-      v38 = [v37 cachedBundleInstallAttempted];
+      device3 = [(MSDFindMyHub *)self device];
+      cachedBundleInstallAttempted = [device3 cachedBundleInstallAttempted];
 
-      if (v38)
+      if (cachedBundleInstallAttempted)
       {
-        v39 = [(MSDFindMyHub *)self device];
-        v40 = [v39 dcotaOfflineModeDevice];
+        device4 = [(MSDFindMyHub *)self device];
+        dcotaOfflineModeDevice = [device4 dcotaOfflineModeDevice];
 
-        if (v40)
+        if (dcotaOfflineModeDevice)
         {
           [(MSDFindMyHub *)self setupOfflineModeEnrollmentRetry];
         }
@@ -317,12 +317,12 @@ LABEL_26:
           _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "Installing cached bundle from enrollment failure", buf, 2u);
         }
 
-        v42 = [(MSDFindMyHub *)self device];
-        [v42 kickOffCachedBundleInstall];
+        device5 = [(MSDFindMyHub *)self device];
+        [device5 kickOffCachedBundleInstall];
       }
     }
 
-    if (v6 != 5)
+    if (typeOfDemoDevice != 5)
     {
       v27 = 0;
       goto LABEL_23;
@@ -336,13 +336,13 @@ LABEL_26:
 
     v27 = 0;
 LABEL_20:
-    v31 = [v23 localizedDescription];
-    [v7 setObject:v31 forKey:@"ErrorMessage"];
+    localizedDescription = [v23 localizedDescription];
+    [v7 setObject:localizedDescription forKey:@"ErrorMessage"];
 
     goto LABEL_21;
   }
 
-  if (v6 != 5)
+  if (typeOfDemoDevice != 5)
   {
     v27 = 1;
     goto LABEL_23;
@@ -355,9 +355,9 @@ LABEL_20:
   v29 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v23 code]);
   [v7 setObject:v29 forKey:@"ErrorCode"];
 
-  v30 = [v23 localizedDescription];
+  localizedDescription2 = [v23 localizedDescription];
 
-  if (v30)
+  if (localizedDescription2)
   {
     goto LABEL_20;
   }
@@ -370,9 +370,9 @@ LABEL_23:
   return v27;
 }
 
-- (void)checkInWithCompletion:(id)a3
+- (void)checkInWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -381,40 +381,40 @@ LABEL_23:
   }
 
   v6 = objc_alloc_init(MSDCheckInRequest);
-  v7 = [(MSDFindMyHub *)self device];
-  v8 = [v7 OSVersion];
-  [(MSDCheckInRequest *)v6 setOsVersion:v8];
+  device = [(MSDFindMyHub *)self device];
+  oSVersion = [device OSVersion];
+  [(MSDCheckInRequest *)v6 setOsVersion:oSVersion];
 
-  v9 = [(MSDFindMyHub *)self device];
-  v10 = [v9 serialNumber];
-  [(MSDCheckInRequest *)v6 setSerialNumber:v10];
+  device2 = [(MSDFindMyHub *)self device];
+  serialNumber = [device2 serialNumber];
+  [(MSDCheckInRequest *)v6 setSerialNumber:serialNumber];
 
   v11 = +[MSDLanguageAndRegionManager sharedInstance];
-  v12 = [v11 getCurrentDeviceLanguage];
-  [(MSDCheckInRequest *)v6 setLanguage:v12];
+  getCurrentDeviceLanguage = [v11 getCurrentDeviceLanguage];
+  [(MSDCheckInRequest *)v6 setLanguage:getCurrentDeviceLanguage];
 
   v13 = +[MSDLanguageAndRegionManager sharedInstance];
-  v14 = [v13 getCurrentDeviceRegion];
-  [(MSDCheckInRequest *)v6 setCountryCode:v14];
+  getCurrentDeviceRegion = [v13 getCurrentDeviceRegion];
+  [(MSDCheckInRequest *)v6 setCountryCode:getCurrentDeviceRegion];
 
-  v15 = [(MSDFindMyHub *)self device];
-  -[MSDCheckInRequest setHasFactoryContent:](v6, "setHasFactoryContent:", [v15 typeOfDemoDevice] == 5);
+  device3 = [(MSDFindMyHub *)self device];
+  -[MSDCheckInRequest setHasFactoryContent:](v6, "setHasFactoryContent:", [device3 typeOfDemoDevice] == 5);
 
   if (os_variant_has_internal_content())
   {
     v16 = +[MSDTestPreferences sharedInstance];
-    v17 = [v16 demoUnitServerURL];
+    demoUnitServerURL = [v16 demoUnitServerURL];
 
-    if (v17)
+    if (demoUnitServerURL)
     {
-      v18 = [v17 host];
-      [(MSDCommandServerRequest *)v6 setServer:v18];
+      host = [demoUnitServerURL host];
+      [(MSDCommandServerRequest *)v6 setServer:host];
 
-      v19 = [v17 port];
-      v20 = [v19 stringValue];
-      [(MSDCommandServerRequest *)v6 setPort:v20];
+      port = [demoUnitServerURL port];
+      stringValue = [port stringValue];
+      [(MSDCommandServerRequest *)v6 setPort:stringValue];
 
-      [(MSDDemoUnitServerRequest *)v6 setUrlOverride:v17];
+      [(MSDDemoUnitServerRequest *)v6 setUrlOverride:demoUnitServerURL];
     }
   }
 
@@ -422,36 +422,36 @@ LABEL_23:
   v23[1] = 3221225472;
   v23[2] = sub_100057448;
   v23[3] = &unk_10016AF38;
-  v24 = v4;
-  v21 = v4;
+  v24 = completionCopy;
+  v21 = completionCopy;
   [(MSDServerRequest *)v6 setCompletion:v23];
   v22 = +[MSDServerRequestHandler sharedInstance];
   [v22 handleRequestAsync:v6];
 }
 
-- (void)markAsNotDemoWithCompletion:(id)a3
+- (void)markAsNotDemoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MSDNotDemoRequest);
-  v6 = [(MSDFindMyHub *)self device];
-  v7 = [v6 serialNumber];
-  [(MSDNotDemoRequest *)v5 setSerialNumber:v7];
+  device = [(MSDFindMyHub *)self device];
+  serialNumber = [device serialNumber];
+  [(MSDNotDemoRequest *)v5 setSerialNumber:serialNumber];
 
   if (os_variant_has_internal_content())
   {
     v8 = +[MSDTestPreferences sharedInstance];
-    v9 = [v8 demoUnitServerURL];
+    demoUnitServerURL = [v8 demoUnitServerURL];
 
-    if (v9)
+    if (demoUnitServerURL)
     {
-      v10 = [v9 host];
-      [(MSDCommandServerRequest *)v5 setServer:v10];
+      host = [demoUnitServerURL host];
+      [(MSDCommandServerRequest *)v5 setServer:host];
 
-      v11 = [v9 port];
-      v12 = [v11 stringValue];
-      [(MSDCommandServerRequest *)v5 setPort:v12];
+      port = [demoUnitServerURL port];
+      stringValue = [port stringValue];
+      [(MSDCommandServerRequest *)v5 setPort:stringValue];
 
-      [(MSDDemoUnitServerRequest *)v5 setUrlOverride:v9];
+      [(MSDDemoUnitServerRequest *)v5 setUrlOverride:demoUnitServerURL];
     }
   }
 
@@ -459,58 +459,58 @@ LABEL_23:
   v15[1] = 3221225472;
   v15[2] = sub_100057740;
   v15[3] = &unk_10016AF38;
-  v16 = v4;
-  v13 = v4;
+  v16 = completionCopy;
+  v13 = completionCopy;
   [(MSDServerRequest *)v5 setCompletion:v15];
   v14 = +[MSDServerRequestHandler sharedInstance];
   [v14 handleRequestAsync:v5];
 }
 
-- (void)searchStoreWithOptions:(id)a3 completion:(id)a4
+- (void)searchStoreWithOptions:(id)options completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  optionsCopy = options;
   v8 = objc_alloc_init(MSDStoreSearchRequest);
-  v9 = [v7 objectForKey:@"Longitude"];
+  v9 = [optionsCopy objectForKey:@"Longitude"];
   [(MSDStoreSearchRequest *)v8 setLongitude:v9];
 
-  v10 = [v7 objectForKey:@"Latitude"];
+  v10 = [optionsCopy objectForKey:@"Latitude"];
   [(MSDStoreSearchRequest *)v8 setLatitude:v10];
 
-  v11 = [v7 objectForKey:@"Text"];
+  v11 = [optionsCopy objectForKey:@"Text"];
   [(MSDStoreSearchRequest *)v8 setText:v11];
 
-  v12 = [v7 objectForKey:@"MaxResults"];
+  v12 = [optionsCopy objectForKey:@"MaxResults"];
 
   [(MSDStoreSearchRequest *)v8 setMaxStoreResults:v12];
-  v13 = [(MSDStoreSearchRequest *)v8 text];
-  v14 = [v13 length];
+  text = [(MSDStoreSearchRequest *)v8 text];
+  v14 = [text length];
 
   if (v14)
   {
-    v15 = [(MSDFindMyHub *)self storesSearched];
-    v16 = [(MSDStoreSearchRequest *)v8 text];
-    [v15 appendString:v16];
+    storesSearched = [(MSDFindMyHub *)self storesSearched];
+    text2 = [(MSDStoreSearchRequest *)v8 text];
+    [storesSearched appendString:text2];
 
-    v17 = [(MSDFindMyHub *)self storesSearched];
-    [v17 appendString:{@", "}];
+    storesSearched2 = [(MSDFindMyHub *)self storesSearched];
+    [storesSearched2 appendString:{@", "}];
   }
 
   if (os_variant_has_internal_content())
   {
     v18 = +[MSDTestPreferences sharedInstance];
-    v19 = [v18 demoUnitServerURL];
+    demoUnitServerURL = [v18 demoUnitServerURL];
 
-    if (v19)
+    if (demoUnitServerURL)
     {
-      v20 = [v19 host];
-      [(MSDCommandServerRequest *)v8 setServer:v20];
+      host = [demoUnitServerURL host];
+      [(MSDCommandServerRequest *)v8 setServer:host];
 
-      v21 = [v19 port];
-      v22 = [v21 stringValue];
-      [(MSDCommandServerRequest *)v8 setPort:v22];
+      port = [demoUnitServerURL port];
+      stringValue = [port stringValue];
+      [(MSDCommandServerRequest *)v8 setPort:stringValue];
 
-      [(MSDDemoUnitServerRequest *)v8 setUrlOverride:v19];
+      [(MSDDemoUnitServerRequest *)v8 setUrlOverride:demoUnitServerURL];
     }
   }
 
@@ -518,8 +518,8 @@ LABEL_23:
   v25[1] = 3221225472;
   v25[2] = sub_100057A50;
   v25[3] = &unk_10016AF38;
-  v26 = v6;
-  v23 = v6;
+  v26 = completionCopy;
+  v23 = completionCopy;
   [(MSDServerRequest *)v8 setCompletion:v25];
   v24 = +[MSDServerRequestHandler sharedInstance];
   [v24 handleRequestAsync:v8];
@@ -527,10 +527,10 @@ LABEL_23:
 
 - (void)setupOfflineModeEnrollmentRetry
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = +[MSDCellularHelper sharedInstance];
-  v4 = [v3 hasObserver:v2];
+  v4 = [v3 hasObserver:selfCopy];
 
   if ((v4 & 1) == 0)
   {
@@ -542,10 +542,10 @@ LABEL_23:
     }
 
     v6 = +[MSDCellularHelper sharedInstance];
-    [v6 addObserver:v2];
+    [v6 addObserver:selfCopy];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (int64_t)getDefaultRetryDelay
@@ -556,9 +556,9 @@ LABEL_23:
   }
 
   v2 = +[MSDTestPreferences sharedInstance];
-  v3 = [v2 findMyHubRetryDelay];
+  findMyHubRetryDelay = [v2 findMyHubRetryDelay];
 
-  if (v3 < 1)
+  if (findMyHubRetryDelay < 1)
   {
     return 3600;
   }
@@ -567,14 +567,14 @@ LABEL_23:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = v3;
+    v7 = findMyHubRetryDelay;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Overriding FMH retry delay to: %ld", &v6, 0xCu);
   }
 
-  return v3;
+  return findMyHubRetryDelay;
 }
 
-- (BOOL)verifyDeviceEligibility:(BOOL *)a3 error:(id *)a4
+- (BOOL)verifyDeviceEligibility:(BOOL *)eligibility error:(id *)error
 {
   v27 = 0;
   v28 = &v27;
@@ -600,11 +600,11 @@ LABEL_23:
 
   if (v8)
   {
-    *a3 = [v8 BOOLValue];
+    *eligibility = [v8 BOOLValue];
     v10 = sub_100063A54();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = *a3;
+      v11 = *eligibility;
       *buf = 67109120;
       LODWORD(v34) = v11;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "DU CheckIn completed, eligibility is %d", buf, 8u);
@@ -619,7 +619,7 @@ LABEL_23:
     v20[3] = &unk_10016AF60;
     v20[4] = &v27;
     v20[5] = &v21;
-    v20[6] = a3;
+    v20[6] = eligibility;
     [(MSDFindMyHub *)self checkInWithCompletion:v20];
     v12 = sub_100063A54();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -632,7 +632,7 @@ LABEL_23:
     v13 = sub_100063A54();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = *a3;
+      v14 = *eligibility;
       *buf = 67109120;
       LODWORD(v34) = v14;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "CheckIn to completed; eligibility is %{BOOL}d", buf, 8u);
@@ -656,9 +656,9 @@ LABEL_23:
   }
 
   v17 = v28;
-  if (a4)
+  if (error)
   {
-    *a4 = v28[5];
+    *error = v28[5];
     v17 = v28;
   }
 
@@ -670,54 +670,54 @@ LABEL_23:
   return v18;
 }
 
-- (BOOL)askFindMyHubForHubInfo:(id *)a3
+- (BOOL)askFindMyHubForHubInfo:(id *)info
 {
   v5 = objc_alloc_init(MSDFMHRequest);
   [(MSDFMHRequest *)v5 setLogicSync:[(MSDFindMyHub *)self isLogicSync]];
-  v6 = [(MSDFindMyHub *)self prepareBundleInfoDictionary];
-  [(MSDFMHRequest *)v5 setBundleInfo:v6];
+  prepareBundleInfoDictionary = [(MSDFindMyHub *)self prepareBundleInfoDictionary];
+  [(MSDFMHRequest *)v5 setBundleInfo:prepareBundleInfoDictionary];
 
-  v7 = [(MSDFindMyHub *)self prepareHubOfflineDurationString];
-  [(MSDFMHRequest *)v5 setOfflineDuration:v7];
+  prepareHubOfflineDurationString = [(MSDFindMyHub *)self prepareHubOfflineDurationString];
+  [(MSDFMHRequest *)v5 setOfflineDuration:prepareHubOfflineDurationString];
 
   v8 = +[MSDLanguageAndRegionManager sharedInstance];
-  v9 = [v8 getCurrentDeviceLanguage];
-  [(MSDFMHRequest *)v5 setLanguage:v9];
+  getCurrentDeviceLanguage = [v8 getCurrentDeviceLanguage];
+  [(MSDFMHRequest *)v5 setLanguage:getCurrentDeviceLanguage];
 
   v10 = +[MSDLanguageAndRegionManager sharedInstance];
-  v11 = [v10 getCurrentDeviceRegion];
-  [(MSDFMHRequest *)v5 setCountryCode:v11];
+  getCurrentDeviceRegion = [v10 getCurrentDeviceRegion];
+  [(MSDFMHRequest *)v5 setCountryCode:getCurrentDeviceRegion];
 
   if (![(MSDFindMyHub *)self isLogicSync])
   {
-    v12 = [(MSDFindMyHub *)self device];
-    v13 = [v12 preferredStoreID];
-    [(MSDFMHRequest *)v5 setStoreId:v13];
+    device = [(MSDFindMyHub *)self device];
+    preferredStoreID = [device preferredStoreID];
+    [(MSDFMHRequest *)v5 setStoreId:preferredStoreID];
   }
 
   if (os_variant_has_internal_content())
   {
     v14 = +[MSDTestPreferences sharedInstance];
-    v15 = [v14 demoUnitServerURL];
+    demoUnitServerURL = [v14 demoUnitServerURL];
 
-    if (v15)
+    if (demoUnitServerURL)
     {
-      v16 = [v15 host];
-      [(MSDCommandServerRequest *)v5 setServer:v16];
+      host = [demoUnitServerURL host];
+      [(MSDCommandServerRequest *)v5 setServer:host];
 
-      v17 = [v15 port];
-      v18 = [v17 stringValue];
-      [(MSDCommandServerRequest *)v5 setPort:v18];
+      port = [demoUnitServerURL port];
+      stringValue = [port stringValue];
+      [(MSDCommandServerRequest *)v5 setPort:stringValue];
 
-      [(MSDDemoUnitServerRequest *)v5 setUrlOverride:v15];
+      [(MSDDemoUnitServerRequest *)v5 setUrlOverride:demoUnitServerURL];
     }
   }
 
   v19 = +[MSDServerRequestHandler sharedInstance];
   v20 = [v19 handleRequestSync:v5];
 
-  v21 = [v20 error];
-  if (v21 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  error = [v20 error];
+  if (error || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v39 = sub_100063A54();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -725,63 +725,63 @@ LABEL_23:
       sub_1000D4C84();
     }
 
-    v22 = 0;
+    retryAfter = 0;
     goto LABEL_25;
   }
 
-  v22 = [v20 retryAfter];
-  v23 = [v20 fmhDict];
+  retryAfter = [v20 retryAfter];
+  fmhDict = [v20 fmhDict];
   v24 = sub_100063A54();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v54 = v23;
+    v54 = fmhDict;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "FindMyHub returned: %{public}@", buf, 0xCu);
   }
 
-  if (!v23)
+  if (!fmhDict)
   {
-    if (v22 && [v22 integerValue] >= 1)
+    if (retryAfter && [retryAfter integerValue] >= 1)
     {
       v45 = sub_100063A54();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v54 = v22;
+        v54 = retryAfter;
         _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "FindMyHub asked for retry in %{public}@ seconds.", buf, 0xCu);
       }
 
-      v46 = +[NSDate dateWithTimeIntervalSinceNow:](NSDate, "dateWithTimeIntervalSinceNow:", [v22 integerValue]);
+      v46 = +[NSDate dateWithTimeIntervalSinceNow:](NSDate, "dateWithTimeIntervalSinceNow:", [retryAfter integerValue]);
       if (![(MSDFindMyHub *)self isLogicSync])
       {
         [(MSDFindMyHub *)self scheduleRetryTimerForEnrollmentAtDate:v46 isFirstLaunch:0];
       }
 
-      v47 = [(MSDFindMyHub *)self device];
+      device2 = [(MSDFindMyHub *)self device];
       [v46 timeIntervalSinceReferenceDate];
-      [v47 saveFindMyHubRetryAtTime:v48];
+      [device2 saveFindMyHubRetryAtTime:v48];
 
-      if ([v22 integerValue] >= 31536000)
+      if ([retryAfter integerValue] >= 31536000)
       {
         v49 = sub_100063A54();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
         {
-          v50 = [v22 integerValue];
+          integerValue = [retryAfter integerValue];
           *buf = 134218240;
           v54 = 31536000;
           v55 = 2048;
-          v56 = v50;
+          v56 = integerValue;
           _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "FindMyHub retry value %lu is greater than or equal to threshold %lu, returning unrecoverable error", buf, 0x16u);
         }
 
-        v21 = 0;
+        error = 0;
       }
 
       else
       {
         v52 = 0;
         sub_1000C1390(&v52, 3727740936, @"Server requested retry at a later time.");
-        v21 = v52;
+        error = v52;
       }
 
       goto LABEL_26;
@@ -796,17 +796,17 @@ LABEL_26:
       sub_1000D4E3C();
     }
 
-    v23 = 0;
+    fmhDict = 0;
     v35 = 0;
     v26 = 0;
     v28 = 0;
     goto LABEL_29;
   }
 
-  v25 = [(MSDFindMyHub *)self device];
-  [v25 saveFindMyHubRetryAtTime:0];
+  device3 = [(MSDFindMyHub *)self device];
+  [device3 saveFindMyHubRetryAtTime:0];
 
-  v26 = [v23 objectForKeyedSubscript:@"URL"];
+  v26 = [fmhDict objectForKeyedSubscript:@"URL"];
   if (!v26 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v40 = sub_100063A54();
@@ -834,21 +834,21 @@ LABEL_26:
     goto LABEL_45;
   }
 
-  v30 = [v28 host];
-  [(MSDFindMyHub *)self setHubHostName:v30];
+  host2 = [v28 host];
+  [(MSDFindMyHub *)self setHubHostName:host2];
 
-  v31 = [(MSDFindMyHub *)self hubHostName];
-  v32 = [NSArray arrayWithObject:v31];
+  hubHostName = [(MSDFindMyHub *)self hubHostName];
+  v32 = [NSArray arrayWithObject:hubHostName];
   [(MSDFindMyHub *)self setServerList:v32];
 
-  v33 = [v28 port];
-  v34 = [v33 stringValue];
-  [(MSDFindMyHub *)self setHubPort:v34];
+  port2 = [v28 port];
+  stringValue2 = [port2 stringValue];
+  [(MSDFindMyHub *)self setHubPort:stringValue2];
 
-  v35 = [v23 objectForKeyedSubscript:@"device_info"];
-  v36 = [(MSDFindMyHub *)self hubHostName];
+  v35 = [fmhDict objectForKeyedSubscript:@"device_info"];
+  hubHostName2 = [(MSDFindMyHub *)self hubHostName];
 
-  if (!v36)
+  if (!hubHostName2)
   {
     v40 = sub_100063A54();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -857,29 +857,29 @@ LABEL_26:
     }
 
 LABEL_45:
-    v21 = 0;
+    error = 0;
 LABEL_29:
 
-    if (a3)
+    if (info)
     {
-      v51 = v21;
+      v51 = error;
       sub_1000C1424(&v51, 3727744512, @"Cannot enroll the device with DemoUnit.");
       v41 = v51;
 
       v42 = v41;
-      *a3 = v41;
-      v21 = v41;
+      *info = v41;
+      error = v41;
     }
 
     v43 = +[MSDAnalyticsEventHandler sharedInstance];
-    [v43 sendFMHFailureEvent:v21];
+    [v43 sendFMHFailureEvent:error];
     v38 = 0;
     goto LABEL_32;
   }
 
-  v37 = [(MSDFindMyHub *)self hubPort];
+  hubPort = [(MSDFindMyHub *)self hubPort];
 
-  if (!v37)
+  if (!hubPort)
   {
     [(MSDFindMyHub *)self setHubPort:@"443"];
   }
@@ -891,7 +891,7 @@ LABEL_29:
     {
       v43 = +[MSDNPIMaskValues sharedInstance];
       [v43 saveDeviceInfo:v35];
-      v21 = 0;
+      error = 0;
       v38 = 1;
 LABEL_32:
 
@@ -899,7 +899,7 @@ LABEL_32:
     }
   }
 
-  v21 = 0;
+  error = 0;
   v38 = 1;
 LABEL_33:
 
@@ -911,10 +911,10 @@ LABEL_33:
   v3 = objc_alloc_init(NSDictionary);
   if (![(MSDFindMyHub *)self isLogicSync])
   {
-    v4 = [(MSDFindMyHub *)self device];
-    v5 = [v4 typeOfDemoDevice];
+    device = [(MSDFindMyHub *)self device];
+    typeOfDemoDevice = [device typeOfDemoDevice];
 
-    if (v5 == 5)
+    if (typeOfDemoDevice == 5)
     {
       v6 = +[MSDHelperAgent sharedInstance];
       v7 = [v6 readPlistFile:@"/private/var/demo_backup/Metadata/Content.plist"];
@@ -960,14 +960,14 @@ LABEL_33:
 {
   if ([(MSDFindMyHub *)self isLogicSync])
   {
-    v3 = [(MSDFindMyHub *)self device];
-    v4 = [v3 hubLastOnlineTime];
+    device = [(MSDFindMyHub *)self device];
+    hubLastOnlineTime = [device hubLastOnlineTime];
 
     v5 = +[NSDate date];
     [v5 timeIntervalSinceReferenceDate];
     v7 = v6;
 
-    if (v4 < 1 || (v8 = v7 - v4, v7 <= v4))
+    if (hubLastOnlineTime < 1 || (v8 = v7 - hubLastOnlineTime, v7 <= hubLastOnlineTime))
     {
       v9 = sub_100063A54();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -999,48 +999,48 @@ LABEL_33:
   return v12;
 }
 
-- (void)scheduleRetryTimerForEnrollmentAtDate:(id)a3 isFirstLaunch:(BOOL)a4
+- (void)scheduleRetryTimerForEnrollmentAtDate:(id)date isFirstLaunch:(BOOL)launch
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100058D50;
   block[3] = &unk_10016AF88;
-  v9 = a4;
-  v7 = a3;
-  v8 = self;
-  v5 = v7;
+  launchCopy = launch;
+  dateCopy = date;
+  selfCopy = self;
+  v5 = dateCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)handleRetryTimerFireForEnrollment:(id)a3
+- (void)handleRetryTimerFireForEnrollment:(id)enrollment
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"isFirstLaunch"];
-  v6 = [v5 BOOLValue];
+  userInfo = [enrollment userInfo];
+  v5 = [userInfo objectForKey:@"isFirstLaunch"];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = +[MSDWorkQueueSet sharedInstance];
-  v8 = [v7 demoUpdateQueue];
+  demoUpdateQueue = [v7 demoUpdateQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100059044;
   v9[3] = &unk_10016AFB0;
   v9[4] = self;
-  v10 = v6;
-  dispatch_async(v8, v9);
+  v10 = bOOLValue;
+  dispatch_async(demoUpdateQueue, v9);
 }
 
-- (void)retryEnrollmentWithHub:(BOOL)a3
+- (void)retryEnrollmentWithHub:(BOOL)hub
 {
-  v3 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MSDFindMyHub *)v4 device];
-  v6 = [v5 isOfflineMode];
+  hubCopy = hub;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  device = [(MSDFindMyHub *)selfCopy device];
+  isOfflineMode = [device isOfflineMode];
 
-  v7 = [(MSDFindMyHub *)v4 device];
-  v8 = [v7 getDemoEnrollmentFlag];
+  device2 = [(MSDFindMyHub *)selfCopy device];
+  getDemoEnrollmentFlag = [device2 getDemoEnrollmentFlag];
 
-  if ([v8 isEqualToString:@"enrollmentSuccess"])
+  if ([getDemoEnrollmentFlag isEqualToString:@"enrollmentSuccess"])
   {
     v9 = sub_100063A54();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1052,49 +1052,49 @@ LABEL_33:
 
   else
   {
-    if ((v6 & 1) == 0)
+    if ((isOfflineMode & 1) == 0)
     {
       v10 = +[MSDUIHelper sharedInstance];
       [v10 startFullScreenUIWith:@"IN_PROGRESS" allowCancel:0];
     }
 
-    if (v3)
+    if (hubCopy)
     {
-      v11 = [(MSDFindMyHub *)v4 device];
-      [v11 configureNetworkInterface];
+      device3 = [(MSDFindMyHub *)selfCopy device];
+      [device3 configureNetworkInterface];
 
-      v12 = [(MSDFindMyHub *)v4 device];
-      [v12 waitForNetworkReachability];
+      device4 = [(MSDFindMyHub *)selfCopy device];
+      [device4 waitForNetworkReachability];
     }
 
     v13 = sub_100063A54();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(MSDFindMyHub *)v4 device];
-      v15 = [v14 getDemoEnrollmentFlag];
+      device5 = [(MSDFindMyHub *)selfCopy device];
+      getDemoEnrollmentFlag2 = [device5 getDemoEnrollmentFlag];
       *buf = 136315394;
       v23 = "[MSDFindMyHub retryEnrollmentWithHub:]";
       v24 = 2114;
-      v25 = v15;
+      v25 = getDemoEnrollmentFlag2;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s: requesting discoverAndEnrollWithHub, currentEnrollFlag:%{public}@", buf, 0x16u);
     }
 
     v21 = 0;
-    v16 = [(MSDFindMyHub *)v4 discoverAndEnrollWithHub:&v21];
+    v16 = [(MSDFindMyHub *)selfCopy discoverAndEnrollWithHub:&v21];
     v9 = v21;
     if (v16)
     {
-      [(MSDFindMyHub *)v4 cancelOfflineModeEnrollmentRetry];
-      v17 = [(MSDFindMyHub *)v4 device];
-      [v17 setDemoEnrollmentFlag:@"enrollmentSuccess"];
+      [(MSDFindMyHub *)selfCopy cancelOfflineModeEnrollmentRetry];
+      device6 = [(MSDFindMyHub *)selfCopy device];
+      [device6 setDemoEnrollmentFlag:@"enrollmentSuccess"];
     }
 
     else
     {
-      v18 = [(MSDFindMyHub *)v4 device];
-      [v18 setDemoEnrollmentFlag:@"enrollmentFailed"];
+      device7 = [(MSDFindMyHub *)selfCopy device];
+      [device7 setDemoEnrollmentFlag:@"enrollmentFailed"];
 
-      if ((v6 & 1) == 0)
+      if ((isOfflineMode & 1) == 0)
       {
         v19 = +[MSDUIHelper sharedInstance];
         [v19 stopFullScreenUI:v9];
@@ -1110,32 +1110,32 @@ LABEL_33:
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)enrollAndSetup:(id *)a3
+- (BOOL)enrollAndSetup:(id *)setup
 {
-  v5 = [(MSDFindMyHub *)self hubHostName];
-  if (v5 && (v6 = v5, [(MSDFindMyHub *)self hubPort], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  hubHostName = [(MSDFindMyHub *)self hubHostName];
+  if (hubHostName && (v6 = hubHostName, [(MSDFindMyHub *)self hubPort], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
     v8 = +[MSDDemoUpdateController sharedInstance];
-    v9 = [(MSDFindMyHub *)self device];
-    [v9 configureNetworkInterface];
+    device = [(MSDFindMyHub *)self device];
+    [device configureNetworkInterface];
 
-    v10 = [(MSDFindMyHub *)self device];
-    [v10 waitForNetworkReachability];
+    device2 = [(MSDFindMyHub *)self device];
+    [device2 waitForNetworkReachability];
 
-    v11 = [(MSDFindMyHub *)self hubHostName];
-    v12 = [(MSDFindMyHub *)self hubPort];
+    hubHostName2 = [(MSDFindMyHub *)self hubHostName];
+    hubPort = [(MSDFindMyHub *)self hubPort];
     v24 = 0;
-    v13 = [v8 enrollForDeviceName:0 pairingCredential:0 hubHostName:v11 hubPort:v12 error:&v24];
+    v13 = [v8 enrollForDeviceName:0 pairingCredential:0 hubHostName:hubHostName2 hubPort:hubPort error:&v24];
     v14 = v24;
 
     if (v13)
     {
-      v15 = [(MSDFindMyHub *)self device];
-      v16 = [(MSDFindMyHub *)self serverList];
-      [v15 saveHubHostNameList:v16];
+      device3 = [(MSDFindMyHub *)self device];
+      serverList = [(MSDFindMyHub *)self serverList];
+      [device3 saveHubHostNameList:serverList];
 
       v17 = 1;
       goto LABEL_14;
@@ -1174,11 +1174,11 @@ LABEL_33:
   v20 = +[MSDAnalyticsEventHandler sharedInstance];
   [v20 sendEnrollmentFailureEvent:v14];
 
-  if (a3)
+  if (setup)
   {
     v21 = v14;
     v17 = 0;
-    *a3 = v14;
+    *setup = v14;
   }
 
   else
@@ -1193,25 +1193,25 @@ LABEL_14:
 
 - (BOOL)compareSavedHubHostNameWithNewHostName
 {
-  v3 = [(MSDFindMyHub *)self device];
-  v4 = [v3 hubHostNameList];
+  device = [(MSDFindMyHub *)self device];
+  hubHostNameList = [device hubHostNameList];
 
-  v5 = [(MSDFindMyHub *)self device];
-  v6 = [v5 hubHostName];
-  v7 = [v6 lowercaseString];
+  device2 = [(MSDFindMyHub *)self device];
+  hubHostName = [device2 hubHostName];
+  lowercaseString = [hubHostName lowercaseString];
 
-  if ([v7 hasSuffix:@"."])
+  if ([lowercaseString hasSuffix:@"."])
   {
-    v8 = [v7 substringToIndex:{objc_msgSend(v7, "length") - 1}];
+    v8 = [lowercaseString substringToIndex:{objc_msgSend(lowercaseString, "length") - 1}];
 
-    v7 = v8;
+    lowercaseString = v8;
   }
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v4;
+  v9 = hubHostNameList;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -1226,15 +1226,15 @@ LABEL_14:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v19 + 1) + 8 * i) lowercaseString];
-        if ([v14 hasSuffix:@"."])
+        lowercaseString2 = [*(*(&v19 + 1) + 8 * i) lowercaseString];
+        if ([lowercaseString2 hasSuffix:@"."])
         {
-          v15 = [v14 substringToIndex:{objc_msgSend(v14, "length") - 1}];
+          v15 = [lowercaseString2 substringToIndex:{objc_msgSend(lowercaseString2, "length") - 1}];
 
-          v14 = v15;
+          lowercaseString2 = v15;
         }
 
-        v16 = [v14 isEqualToString:v7];
+        v16 = [lowercaseString2 isEqualToString:lowercaseString];
 
         if (v16)
         {
@@ -1267,10 +1267,10 @@ LABEL_15:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = [(MSDFindMyHub *)self device];
-  v6 = [v5 hubHostNameList];
+  device = [(MSDFindMyHub *)self device];
+  hubHostNameList = [device hubHostNameList];
 
-  v7 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  v7 = [hubHostNameList countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1281,7 +1281,7 @@ LABEL_15:
       {
         if (*v31 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(hubHostNameList);
         }
 
         v11 = *(*(&v30 + 1) + 8 * i);
@@ -1296,11 +1296,11 @@ LABEL_15:
         }
 
         v13 = v12;
-        v14 = [v12 lowercaseString];
-        [v3 addObject:v14];
+        lowercaseString = [v12 lowercaseString];
+        [v3 addObject:lowercaseString];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v8 = [hubHostNameList countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v8);
@@ -1310,8 +1310,8 @@ LABEL_15:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v15 = [(MSDFindMyHub *)self serverList];
-  v16 = [v15 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  serverList = [(MSDFindMyHub *)self serverList];
+  v16 = [serverList countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v16)
   {
     v17 = v16;
@@ -1322,7 +1322,7 @@ LABEL_15:
       {
         if (*v27 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(serverList);
         }
 
         v20 = *(*(&v26 + 1) + 8 * j);
@@ -1337,11 +1337,11 @@ LABEL_15:
         }
 
         v22 = v21;
-        v23 = [v21 lowercaseString];
-        [v4 addObject:v23];
+        lowercaseString2 = [v21 lowercaseString];
+        [v4 addObject:lowercaseString2];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v17 = [serverList countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v17);
@@ -1353,10 +1353,10 @@ LABEL_15:
 
 - (void)tryScheduleDefaultEnrollmentRetry
 {
-  v3 = [(MSDFindMyHub *)self device];
-  v4 = [v3 dcotaOfflineModeDevice];
+  device = [(MSDFindMyHub *)self device];
+  dcotaOfflineModeDevice = [device dcotaOfflineModeDevice];
 
-  if (v4)
+  if (dcotaOfflineModeDevice)
   {
 
     [(MSDFindMyHub *)self setupOfflineModeEnrollmentRetry];
@@ -1375,32 +1375,32 @@ LABEL_15:
 
   else
   {
-    v6 = [(MSDFindMyHub *)self getDefaultRetryDelay];
+    getDefaultRetryDelay = [(MSDFindMyHub *)self getDefaultRetryDelay];
     v7 = sub_100063A54();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 136315394;
       v13 = "[MSDFindMyHub tryScheduleDefaultEnrollmentRetry]";
       v14 = 2048;
-      v15 = v6;
+      v15 = getDefaultRetryDelay;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: retrying enrollment in %ld seconds", &v12, 0x16u);
     }
 
-    v8 = [NSDate dateWithTimeIntervalSinceNow:v6];
+    v8 = [NSDate dateWithTimeIntervalSinceNow:getDefaultRetryDelay];
     [(MSDFindMyHub *)self scheduleRetryTimerForEnrollmentAtDate:v8 isFirstLaunch:0];
-    v9 = [(MSDFindMyHub *)self device];
+    device2 = [(MSDFindMyHub *)self device];
     v10 = +[NSDate date];
     [v10 timeIntervalSinceReferenceDate];
-    [v9 saveFindMyHubRetryAtTime:v11];
+    [device2 saveFindMyHubRetryAtTime:v11];
   }
 }
 
 - (void)cancelOfflineModeEnrollmentRetry
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = +[MSDCellularHelper sharedInstance];
-  v4 = [v3 hasObserver:v2];
+  v4 = [v3 hasObserver:selfCopy];
 
   if (v4)
   {
@@ -1412,10 +1412,10 @@ LABEL_15:
     }
 
     v6 = +[MSDCellularHelper sharedInstance];
-    [v6 removeObserver:v2];
+    [v6 removeObserver:selfCopy];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (unint64_t)queryFindMyHubAndDetermineLogicSyncResult
@@ -1460,19 +1460,19 @@ LABEL_15:
   return v4;
 }
 
-- (void)cellularPlanDidChange:(id)a3
+- (void)cellularPlanDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(MSDFindMyHub *)self device];
-  v6 = [v5 dcotaOfflineModeDevice];
+  changeCopy = change;
+  device = [(MSDFindMyHub *)self device];
+  dcotaOfflineModeDevice = [device dcotaOfflineModeDevice];
 
-  if (v6)
+  if (dcotaOfflineModeDevice)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = v4;
+    v7 = changeCopy;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {

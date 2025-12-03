@@ -1,18 +1,18 @@
 @interface BLItemContentRating
-+ (id)stringForRatingSystem:(int64_t)a3;
-+ (int64_t)ratingSystemFromString:(id)a3;
++ (id)stringForRatingSystem:(int64_t)system;
++ (int64_t)ratingSystemFromString:(id)string;
 - (BLItemContentRating)init;
-- (BLItemContentRating)initWithDictionary:(id)a3;
+- (BLItemContentRating)initWithDictionary:(id)dictionary;
 - (NSDictionary)contentRatingDictionary;
 - (NSString)ratingDescription;
 - (NSString)ratingLabel;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)rank;
 - (int64_t)ratingSystem;
-- (void)_setValue:(id)a3 forProperty:(id)a4;
-- (void)_setValueCopy:(id)a3 forProperty:(id)a4;
-- (void)setRank:(int64_t)a3;
-- (void)setRatingSystem:(int64_t)a3;
+- (void)_setValue:(id)value forProperty:(id)property;
+- (void)_setValueCopy:(id)copy forProperty:(id)property;
+- (void)setRank:(int64_t)rank;
+- (void)setRatingSystem:(int64_t)system;
 @end
 
 @implementation BLItemContentRating
@@ -32,15 +32,15 @@
   return v2;
 }
 
-- (BLItemContentRating)initWithDictionary:(id)a3
+- (BLItemContentRating)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = BLItemContentRating;
   v5 = [(BLItemContentRating *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dictionaryCopy mutableCopy];
     dictionary = v5->_dictionary;
     v5->_dictionary = v6;
   }
@@ -48,10 +48,10 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSMutableDictionary *)self->_dictionary mutableCopyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSMutableDictionary *)self->_dictionary mutableCopyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -63,15 +63,15 @@
   v2 = [(NSMutableDictionary *)self->_dictionary objectForKey:@"rank"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v3 = 0;
+    intValue = 0;
   }
 
-  return v3;
+  return intValue;
 }
 
 - (NSString)ratingDescription
@@ -129,23 +129,23 @@
   return v3;
 }
 
-- (void)setRank:(int64_t)a3
+- (void)setRank:(int64_t)rank
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:rank];
   [(BLItemContentRating *)self _setValue:v4 forProperty:@"rank"];
 }
 
-- (void)setRatingSystem:(int64_t)a3
+- (void)setRatingSystem:(int64_t)system
 {
-  v4 = [objc_opt_class() stringForRatingSystem:a3];
+  v4 = [objc_opt_class() stringForRatingSystem:system];
   [(BLItemContentRating *)self _setValue:v4 forProperty:@"system"];
 }
 
-+ (int64_t)ratingSystemFromString:(id)a3
++ (int64_t)ratingSystemFromString:(id)string
 {
   v4 = &qword_278D16D80;
   v5 = 96;
-  while ([*(v4 - 1) caseInsensitiveCompare:a3])
+  while ([*(v4 - 1) caseInsensitiveCompare:string])
   {
     v4 += 2;
     if (!--v5)
@@ -157,11 +157,11 @@
   return *v4;
 }
 
-+ (id)stringForRatingSystem:(int64_t)a3
++ (id)stringForRatingSystem:(int64_t)system
 {
   v3 = &qword_278D16D80;
   v4 = 96;
-  while (*v3 != a3)
+  while (*v3 != system)
   {
     v3 += 2;
     if (!--v4)
@@ -184,24 +184,24 @@ LABEL_6:
   return v2;
 }
 
-- (void)_setValueCopy:(id)a3 forProperty:(id)a4
+- (void)_setValueCopy:(id)copy forProperty:(id)property
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  [(BLItemContentRating *)self _setValue:v7 forProperty:v6];
+  propertyCopy = property;
+  v7 = [copy copy];
+  [(BLItemContentRating *)self _setValue:v7 forProperty:propertyCopy];
 }
 
-- (void)_setValue:(id)a3 forProperty:(id)a4
+- (void)_setValue:(id)value forProperty:(id)property
 {
   dictionary = self->_dictionary;
-  if (a3)
+  if (value)
   {
-    [(NSMutableDictionary *)dictionary setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)dictionary setObject:value forKey:property];
   }
 
   else
   {
-    [(NSMutableDictionary *)dictionary removeObjectForKey:a4];
+    [(NSMutableDictionary *)dictionary removeObjectForKey:property];
   }
 }
 

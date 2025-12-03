@@ -1,7 +1,7 @@
 @interface PXPlacesLocationAuthorizationMonitor
 + (PXPlacesLocationAuthorizationMonitor)sharedInstance;
 - (PXPlacesLocationAuthorizationMonitor)init;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation PXPlacesLocationAuthorizationMonitor
@@ -26,10 +26,10 @@
   return v3;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  v5 = self;
+  authorizationCopy = authorization;
+  selfCopy = self;
   _s12PhotosUICore34PlacesLocationAuthorizationMonitorC024locationManagerDidChangeE0yySo010CLLocationH0CF_0();
 }
 

@@ -1,23 +1,23 @@
 @interface PencilHandwritingEducationElementData
-+ (id)elementDataForType:(int64_t)a3 languageID:(id)a4;
-+ (id)prefixForElementType:(int64_t)a3;
++ (id)elementDataForType:(int64_t)type languageID:(id)d;
++ (id)prefixForElementType:(int64_t)type;
 @end
 
 @implementation PencilHandwritingEducationElementData
 
-+ (id)elementDataForType:(int64_t)a3 languageID:(id)a4
++ (id)elementDataForType:(int64_t)type languageID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v7 = objc_alloc_init(PencilHandwritingEducationElementData);
-  v8 = [a1 prefixForElementType:a3];
+  v8 = [self prefixForElementType:type];
   if (v8)
   {
     v9 = v8;
     v10 = [v8 stringByAppendingString:@"_"];
 
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    [(PencilHandwritingEducationElementData *)v7 setLanguageID:v6];
-    if (a3)
+    [(PencilHandwritingEducationElementData *)v7 setLanguageID:dCopy];
+    if (type)
     {
       v12 = objc_alloc(MEMORY[0x277CCA898]);
       v13 = [v10 stringByAppendingString:@"TITLE"];
@@ -51,22 +51,22 @@
     }
 
     v26 = [v10 stringByAppendingString:@"TEXT_CONTENT"];
-    v27 = PKLocalizedStringForLanguageInBundle(v26, v6, v11, @"PencilSettings");
+    v27 = PKLocalizedStringForLanguageInBundle(v26, dCopy, v11, @"PencilSettings");
     [(PencilHandwritingEducationElementData *)v7 setTextContent:v27];
 
     v28 = [v10 stringByAppendingString:@"PLACEHOLDER_TEXT_CONTENT"];
-    v29 = PKLocalizedStringForLanguageInBundle(v28, v6, v11, @"PencilSettings");
+    v29 = PKLocalizedStringForLanguageInBundle(v28, dCopy, v11, @"PencilSettings");
     [(PencilHandwritingEducationElementData *)v7 setPlaceholderTextContent:v29];
 
-    [(PencilHandwritingEducationElementData *)v7 setType:a3];
+    [(PencilHandwritingEducationElementData *)v7 setType:type];
   }
 
   return v7;
 }
 
-+ (id)prefixForElementType:(int64_t)a3
++ (id)prefixForElementType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
     return 0;
   }

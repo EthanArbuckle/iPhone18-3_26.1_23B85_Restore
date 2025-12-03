@@ -1,10 +1,10 @@
 @interface _NUChannelPort
-- (BOOL)assign:(id)a3 error:(id *)a4;
-- (BOOL)bindData:(id)a3 error:(id *)a4;
-- (BOOL)clearExpression:(id *)a3;
+- (BOOL)assign:(id)assign error:(id *)error;
+- (BOOL)bindData:(id)data error:(id *)error;
+- (BOOL)clearExpression:(id *)expression;
 - (BOOL)hasConnectedSuperport;
 - (BOOL)hasSuperConnections;
-- (BOOL)resetData:(id *)a3;
+- (BOOL)resetData:(id *)data;
 - (NSArray)connectedInputPorts;
 - (NSArray)subports;
 - (NSString)address;
@@ -14,43 +14,43 @@
 - (NSString)fullName;
 - (NUChannelFormat)effectiveFormat;
 - (_NUChannelPort)elementSubport;
-- (_NUChannelPort)initWithChannel:(id)a3;
+- (_NUChannelPort)initWithChannel:(id)channel;
 - (_NUChannelPort)rootPort;
 - (id)_fullName;
-- (id)_subportMatching:(id)a3;
-- (id)evaluateInputWithContext:(id)a3 error:(id *)a4;
-- (id)evaluateOutputWithContext:(id)a3 error:(id *)a4;
-- (id)subportForKey:(id)a3;
-- (id)subportMatching:(id)a3;
+- (id)_subportMatching:(id)matching;
+- (id)evaluateInputWithContext:(id)context error:(id *)error;
+- (id)evaluateOutputWithContext:(id)context error:(id *)error;
+- (id)subportForKey:(id)key;
+- (id)subportMatching:(id)matching;
 - (unint64_t)inputConnectionCount;
 - (unint64_t)outputConnectionCount;
-- (void)_addOutputPort:(id)a3;
+- (void)_addOutputPort:(id)port;
 - (void)_populateAllSubports;
-- (void)_removeOutputPort:(id)a3;
-- (void)connectToPort:(id)a3;
+- (void)_removeOutputPort:(id)port;
+- (void)connectToPort:(id)port;
 - (void)deleteAllConnections;
 - (void)disconnect;
 - (void)disconnectAll;
-- (void)specializeWithInputFormat:(id)a3;
-- (void)specializeWithOutputFormat:(id)a3;
+- (void)specializeWithInputFormat:(id)format;
+- (void)specializeWithOutputFormat:(id)format;
 @end
 
 @implementation _NUChannelPort
 
-- (id)evaluateOutputWithContext:(id)a3 error:(id *)a4
+- (id)evaluateOutputWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [(_NUChannelPort *)self superport];
+  contextCopy = context;
+  superport = [(_NUChannelPort *)self superport];
 
-  if (v7)
+  if (superport)
   {
-    v8 = [(_NUChannelPort *)self channel];
-    v9 = [v8 type];
+    channel = [(_NUChannelPort *)self channel];
+    type = [channel type];
 
-    if (v9 == 5)
+    if (type == 5)
     {
-      v10 = [(_NUChannelPort *)self fullName];
-      v11 = [v6 dataForChannel:v10];
+      fullName = [(_NUChannelPort *)self fullName];
+      v11 = [contextCopy dataForChannel:fullName];
 
       if (v11)
       {
@@ -59,22 +59,22 @@
 
       else
       {
-        *a4 = [NUError missingError:@"Missing element data" object:self];
+        *error = [NUError missingError:@"Missing element data" object:self];
       }
     }
 
     else
     {
-      v16 = [(_NUChannelPort *)self superport];
+      superport2 = [(_NUChannelPort *)self superport];
       v24 = 0;
-      v17 = [v16 evaluateOutputWithContext:v6 error:&v24];
+      v17 = [superport2 evaluateOutputWithContext:contextCopy error:&v24];
       v18 = v24;
 
       if (v17)
       {
-        v19 = [(_NUChannelPort *)self channel];
+        channel2 = [(_NUChannelPort *)self channel];
         v23 = 0;
-        v11 = [v17 subdataForChannel:v19 error:&v23];
+        v11 = [v17 subdataForChannel:channel2 error:&v23];
         v20 = v23;
 
         if (v11)
@@ -84,14 +84,14 @@
 
         else
         {
-          *a4 = [NUError errorWithCode:1 reason:@"Failed to evaluate subdata" object:self underlyingError:v20];
+          *error = [NUError errorWithCode:1 reason:@"Failed to evaluate subdata" object:self underlyingError:v20];
         }
       }
 
       else
       {
         [NUError errorWithCode:1 reason:@"Failed to evaluate parent port" object:self underlyingError:v18];
-        *a4 = v11 = 0;
+        *error = v11 = 0;
         v20 = v18;
       }
     }
@@ -99,9 +99,9 @@
 
   else
   {
-    v13 = [(_NUChannelPort *)self pipeline];
+    pipeline = [(_NUChannelPort *)self pipeline];
     v25 = 0;
-    v11 = [v13 evaluatePort:self context:v6 error:&v25];
+    v11 = [pipeline evaluatePort:self context:contextCopy error:&v25];
     v14 = v25;
 
     if (v11)
@@ -111,21 +111,21 @@
 
     else
     {
-      *a4 = [NUError errorWithCode:1 reason:@"Failed to evaluate port" object:self underlyingError:v14];
+      *error = [NUError errorWithCode:1 reason:@"Failed to evaluate port" object:self underlyingError:v14];
     }
   }
 
   return v11;
 }
 
-- (id)evaluateInputWithContext:(id)a3 error:(id *)a4
+- (id)evaluateInputWithContext:(id)context error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   if ([(_NUChannelPort *)self isConnected])
   {
-    v7 = [(_NUChannelPort *)self inputPort];
-    v8 = [v7 evaluateOutputWithContext:v6 error:a4];
+    inputPort = [(_NUChannelPort *)self inputPort];
+    v8 = [inputPort evaluateOutputWithContext:contextCopy error:error];
 LABEL_3:
     v9 = v8;
 
@@ -149,12 +149,12 @@ LABEL_3:
       goto LABEL_26;
     }
 
-    v7 = [(_NUChannelPort *)self expression];
-    v8 = [v7 evaluateWithContext:v6 error:a4];
+    inputPort = [(_NUChannelPort *)self expression];
+    v8 = [inputPort evaluateWithContext:contextCopy error:error];
     goto LABEL_3;
   }
 
-  v29 = a4;
+  errorCopy = error;
   v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSHashTable count](self->_subports, "count")}];
   v33 = 0u;
   v34 = 0u;
@@ -181,28 +181,28 @@ LABEL_3:
 
         v18 = *(*(&v33 + 1) + 8 * v16);
         v32 = 0;
-        v19 = v6;
-        v20 = [v18 evaluateInputWithContext:v6 error:{&v32, v29}];
+        v19 = contextCopy;
+        v20 = [v18 evaluateInputWithContext:contextCopy error:{&v32, errorCopy}];
         v14 = v32;
 
         if (!v20)
         {
-          v23 = [v18 channel];
-          *v29 = [NUError errorWithCode:1 reason:@"Failed to evaluate subport" object:v23 underlyingError:v14];
+          channel = [v18 channel];
+          *errorCopy = [NUError errorWithCode:1 reason:@"Failed to evaluate subport" object:channel underlyingError:v14];
 
           v9 = 0;
           v24 = obj;
-          v6 = v19;
+          contextCopy = v19;
           goto LABEL_25;
         }
 
-        v21 = [v18 channel];
-        v22 = [v21 name];
-        [v10 setObject:v20 forKeyedSubscript:v22];
+        channel2 = [v18 channel];
+        name = [channel2 name];
+        [v10 setObject:v20 forKeyedSubscript:name];
 
         ++v16;
         v17 = v14;
-        v6 = v19;
+        contextCopy = v19;
       }
 
       while (v13 != v16);
@@ -224,9 +224,9 @@ LABEL_3:
 
   v25 = v14;
 
-  v26 = [(_NUChannelPort *)self effectiveFormat];
+  effectiveFormat = [(_NUChannelPort *)self effectiveFormat];
   v31 = 0;
-  v9 = [NUChannelData aggregateDataWithFormat:v26 components:v10 error:&v31];
+  v9 = [NUChannelData aggregateDataWithFormat:effectiveFormat components:v10 error:&v31];
   v14 = v31;
 
   if (v9)
@@ -239,7 +239,7 @@ LABEL_3:
   {
     v27 = [NUError errorWithCode:1 reason:@"Failed to aggregate subport data" object:v10 underlyingError:v14];
     v24 = 0;
-    *v29 = v27;
+    *errorCopy = v27;
   }
 
 LABEL_25:
@@ -249,10 +249,10 @@ LABEL_26:
   return v9;
 }
 
-- (BOOL)clearExpression:(id *)a3
+- (BOOL)clearExpression:(id *)expression
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!expression)
   {
     v6 = NUAssertLogger_5769();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -273,8 +273,8 @@ LABEL_26:
         v13 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v14 = MEMORY[0x1E696AF00];
         v15 = v13;
-        v16 = [v14 callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v14 callStackSymbols];
+        v17 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v23 = v13;
         v24 = 2114;
@@ -285,8 +285,8 @@ LABEL_26:
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v23 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -303,17 +303,17 @@ LABEL_26:
 
   else
   {
-    *a3 = [NUError invalidError:@"Port has no expression" object:self];
+    *expression = [NUError invalidError:@"Port has no expression" object:self];
   }
 
   return expression != 0;
 }
 
-- (BOOL)assign:(id)a3 error:(id *)a4
+- (BOOL)assign:(id)assign error:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  assignCopy = assign;
+  if (!assignCopy)
   {
     v13 = NUAssertLogger_5769();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -334,8 +334,8 @@ LABEL_26:
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v27;
         v47 = 2114;
@@ -346,8 +346,8 @@ LABEL_26:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v46 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -356,7 +356,7 @@ LABEL_26:
     _NUAssertFailHandler("[_NUChannelPort assign:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 827, @"Invalid parameter not satisfying: %s", v32, v33, v34, v35, "expression != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v20 = NUAssertLogger_5769();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -377,8 +377,8 @@ LABEL_26:
         v36 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v37 callStackSymbols];
+        v40 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v36;
         v47 = 2114;
@@ -389,8 +389,8 @@ LABEL_26:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v46 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -399,28 +399,28 @@ LABEL_26:
     _NUAssertFailHandler("[_NUChannelPort assign:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 828, @"Invalid parameter not satisfying: %s", v41, v42, v43, v44, "error != NULL");
   }
 
-  v8 = v7;
-  v9 = [(_NUChannelPort *)self channel];
-  v10 = [v9 format];
-  v11 = [v8 isCompatibleWithExpressionType:{objc_msgSend(v10, "expressionType")}];
+  v8 = assignCopy;
+  channel = [(_NUChannelPort *)self channel];
+  format = [channel format];
+  v11 = [v8 isCompatibleWithExpressionType:{objc_msgSend(format, "expressionType")}];
 
   if (v11)
   {
-    objc_storeStrong(&self->_expression, a3);
+    objc_storeStrong(&self->_expression, assign);
   }
 
   else
   {
-    *a4 = [NUError invalidError:@"Incompatible expression" object:v8];
+    *error = [NUError invalidError:@"Incompatible expression" object:v8];
   }
 
   return v11;
 }
 
-- (BOOL)resetData:(id *)a3
+- (BOOL)resetData:(id *)data
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!data)
   {
     v6 = NUAssertLogger_5769();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -441,8 +441,8 @@ LABEL_26:
         v13 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v14 = MEMORY[0x1E696AF00];
         v15 = v13;
-        v16 = [v14 callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v14 callStackSymbols];
+        v17 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v23 = v13;
         v24 = 2114;
@@ -453,8 +453,8 @@ LABEL_26:
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v23 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -471,17 +471,17 @@ LABEL_26:
 
   else
   {
-    *a3 = [NUError invalidError:@"Port has no data" object:self];
+    *data = [NUError invalidError:@"Port has no data" object:self];
   }
 
   return data != 0;
 }
 
-- (BOOL)bindData:(id)a3 error:(id *)a4
+- (BOOL)bindData:(id)data error:(id *)error
 {
   v60 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v22 = NUAssertLogger_5769();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -502,8 +502,8 @@ LABEL_26:
         v36 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v37 callStackSymbols];
+        v40 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v57 = v36;
         v58 = 2114;
@@ -514,8 +514,8 @@ LABEL_26:
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v57 = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -524,7 +524,7 @@ LABEL_26:
     _NUAssertFailHandler("[_NUChannelPort bindData:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 792, @"Invalid parameter not satisfying: %s", v41, v42, v43, v44, "data != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v29 = NUAssertLogger_5769();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -545,8 +545,8 @@ LABEL_26:
         v45 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v46 = MEMORY[0x1E696AF00];
         v47 = v45;
-        v48 = [v46 callStackSymbols];
-        v49 = [v48 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v46 callStackSymbols];
+        v49 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v57 = v45;
         v58 = 2114;
@@ -557,8 +557,8 @@ LABEL_26:
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v57 = v35;
       _os_log_error_impl(&dword_1C0184000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -567,37 +567,37 @@ LABEL_26:
     _NUAssertFailHandler("[_NUChannelPort bindData:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 793, @"Invalid parameter not satisfying: %s", v50, v51, v52, v53, "error != NULL");
   }
 
-  v8 = v7;
-  v9 = [(_NUChannelPort *)self channel];
-  v10 = [v9 format];
-  v11 = [v8 format];
-  v12 = [v10 isCompatibleWithChannelFormat:v11];
+  v8 = dataCopy;
+  channel = [(_NUChannelPort *)self channel];
+  format = [channel format];
+  format2 = [v8 format];
+  v12 = [format isCompatibleWithChannelFormat:format2];
 
   if (v12)
   {
-    objc_storeStrong(&self->_data, a3);
-    v13 = [(_NUChannelPort *)self channel];
-    v14 = [v13 format];
-    v15 = [v14 isGeneric];
+    objc_storeStrong(&self->_data, data);
+    channel2 = [(_NUChannelPort *)self channel];
+    format3 = [channel2 format];
+    isGeneric = [format3 isGeneric];
 
-    if (v15)
+    if (isGeneric)
     {
-      v16 = [v8 format];
-      [(_NUChannelPort *)self specializeWithInputFormat:v16];
+      format4 = [v8 format];
+      [(_NUChannelPort *)self specializeWithInputFormat:format4];
     }
   }
 
   else
   {
     v54[0] = @"format";
-    v17 = [v8 format];
+    format5 = [v8 format];
     v54[1] = @"expected";
-    v55[0] = v17;
-    v18 = [(_NUChannelPort *)self channel];
-    v19 = [v18 format];
-    v55[1] = v19;
+    v55[0] = format5;
+    channel3 = [(_NUChannelPort *)self channel];
+    format6 = [channel3 format];
+    v55[1] = format6;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:v54 count:2];
-    *a4 = [NUError invalidError:@"Incompatible data" object:v20];
+    *error = [NUError invalidError:@"Incompatible data" object:v20];
   }
 
   return v12;
@@ -606,10 +606,10 @@ LABEL_26:
 - (NSString)compactDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_NUChannelPort *)self pipeline];
-  v5 = [v4 alias];
-  v6 = [(_NUChannelPort *)self address];
-  v7 = [v3 stringWithFormat:@"%@:%@", v5, v6];
+  pipeline = [(_NUChannelPort *)self pipeline];
+  alias = [pipeline alias];
+  address = [(_NUChannelPort *)self address];
+  v7 = [v3 stringWithFormat:@"%@:%@", alias, address];
 
   return v7;
 }
@@ -617,60 +617,60 @@ LABEL_26:
 - (NSString)address
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = self;
-  v5 = [(_NUChannelPort *)v4 superport];
+  selfCopy = self;
+  superport = [(_NUChannelPort *)selfCopy superport];
 
-  if (v5)
+  if (superport)
   {
     do
     {
-      v6 = [(_NUChannelPort *)v4 superport];
-      v7 = [v6 subports];
-      v8 = [v7 indexOfObjectIdenticalTo:v4];
+      superport2 = [(_NUChannelPort *)selfCopy superport];
+      subports = [superport2 subports];
+      v8 = [subports indexOfObjectIdenticalTo:selfCopy];
 
       v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
       [v3 insertObject:v9 atIndex:0];
 
-      v10 = [(_NUChannelPort *)v4 superport];
+      superport3 = [(_NUChannelPort *)selfCopy superport];
 
-      v11 = [(_NUChannelPort *)v10 superport];
+      v10Superport = [(_NUChannelPort *)superport3 superport];
 
-      v4 = v10;
+      selfCopy = superport3;
     }
 
-    while (v11);
+    while (v10Superport);
   }
 
   else
   {
-    v10 = v4;
+    superport3 = selfCopy;
   }
 
-  v12 = [(_NUChannelPort *)v10 pipeline];
-  v13 = [(_NUChannelPort *)v10 channel];
-  v14 = [v12 outputPortForChannel:v13];
+  pipeline = [(_NUChannelPort *)superport3 pipeline];
+  channel = [(_NUChannelPort *)superport3 channel];
+  v14 = [pipeline outputPortForChannel:channel];
 
-  v15 = [(_NUChannelPort *)v10 pipeline];
-  v16 = v15;
-  if (v14 == v10)
+  pipeline2 = [(_NUChannelPort *)superport3 pipeline];
+  pipeline3 = pipeline2;
+  if (v14 == superport3)
   {
-    [v15 outputChannels];
+    [pipeline2 outputChannels];
   }
 
   else
   {
-    [v15 inputChannels];
+    [pipeline2 inputChannels];
   }
-  v17 = ;
-  v18 = [(_NUChannelPort *)v10 channel];
-  v19 = [v17 indexOfObject:v18];
+  inputChannels = ;
+  channel2 = [(_NUChannelPort *)superport3 channel];
+  v19 = [inputChannels indexOfObject:channel2];
 
-  if (v14 == v10)
+  if (v14 == superport3)
   {
 
-    v16 = [(_NUChannelPort *)v10 pipeline];
-    v17 = [v16 inputChannels];
-    v20 = [v17 count];
+    pipeline3 = [(_NUChannelPort *)superport3 pipeline];
+    inputChannels = [pipeline3 inputChannels];
+    v20 = [inputChannels count];
   }
 
   else
@@ -690,12 +690,12 @@ LABEL_26:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_NUChannelPort *)self pipeline];
-  v6 = [v5 name];
-  v7 = [(_NUChannelPort *)self fullName];
-  v8 = [(_NUChannelPort *)self effectiveFormat];
-  v9 = [(_NUChannelPort *)self data];
-  v10 = [v3 stringWithFormat:@"<%@:%p pipeline:'%@' name:'%@' format:'%@' data:%@>", v4, self, v6, v7, v8, v9];
+  pipeline = [(_NUChannelPort *)self pipeline];
+  name = [pipeline name];
+  fullName = [(_NUChannelPort *)self fullName];
+  effectiveFormat = [(_NUChannelPort *)self effectiveFormat];
+  data = [(_NUChannelPort *)self data];
+  v10 = [v3 stringWithFormat:@"<%@:%p pipeline:'%@' name:'%@' format:'%@' data:%@>", v4, self, name, fullName, effectiveFormat, data];
 
   return v10;
 }
@@ -703,44 +703,44 @@ LABEL_26:
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_NUChannelPort *)self pipeline];
-  v5 = [v4 name];
-  v6 = [(_NUChannelPort *)self fullName];
-  v7 = [v3 stringWithFormat:@"%@:%@", v5, v6];
+  pipeline = [(_NUChannelPort *)self pipeline];
+  name = [pipeline name];
+  fullName = [(_NUChannelPort *)self fullName];
+  v7 = [v3 stringWithFormat:@"%@:%@", name, fullName];
 
   return v7;
 }
 
 - (id)_fullName
 {
-  v3 = [(_NUChannelPort *)self superport];
+  superport = [(_NUChannelPort *)self superport];
 
-  if (v3)
+  if (superport)
   {
-    v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = self;
+    channel2 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    selfCopy = self;
     do
     {
-      v6 = [(_NUChannelPort *)v5 channel];
-      v7 = [v6 name];
-      [v4 insertObject:v7 atIndex:0];
+      channel = [(_NUChannelPort *)selfCopy channel];
+      name = [channel name];
+      [channel2 insertObject:name atIndex:0];
 
-      v8 = [(_NUChannelPort *)v5 superport];
+      superport2 = [(_NUChannelPort *)selfCopy superport];
 
-      v5 = v8;
+      selfCopy = superport2;
     }
 
-    while (v8);
-    v9 = [v4 componentsJoinedByString:@"."];
+    while (superport2);
+    name2 = [channel2 componentsJoinedByString:@"."];
   }
 
   else
   {
-    v4 = [(_NUChannelPort *)self channel];
-    v9 = [v4 name];
+    channel2 = [(_NUChannelPort *)self channel];
+    name2 = [channel2 name];
   }
 
-  v10 = v9;
+  v10 = name2;
 
   return v10;
 }
@@ -750,9 +750,9 @@ LABEL_26:
   fullName = self->_fullName;
   if (!fullName)
   {
-    v4 = [(_NUChannelPort *)self _fullName];
+    _fullName = [(_NUChannelPort *)self _fullName];
     v5 = self->_fullName;
-    self->_fullName = v4;
+    self->_fullName = _fullName;
 
     fullName = self->_fullName;
   }
@@ -760,11 +760,11 @@ LABEL_26:
   return fullName;
 }
 
-- (void)specializeWithInputFormat:(id)a3
+- (void)specializeWithInputFormat:(id)format
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  formatCopy = format;
+  if (!formatCopy)
   {
     v24 = NUAssertLogger_5769();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -785,8 +785,8 @@ LABEL_26:
         v31 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v34 = [v32 callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v32 callStackSymbols];
+        v35 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v51 = v31;
         v52 = 2114;
@@ -797,8 +797,8 @@ LABEL_26:
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v51 = v30;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -807,21 +807,21 @@ LABEL_26:
     _NUAssertFailHandler("[_NUChannelPort specializeWithInputFormat:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 708, @"Invalid parameter not satisfying: %s", v36, v37, v38, v39, "inputFormat != nil");
   }
 
-  v5 = v4;
-  v6 = [(_NUChannelPort *)self channel];
-  v7 = [v6 format];
-  v8 = [v5 canSpecializeFormat:v7];
+  v5 = formatCopy;
+  channel = [(_NUChannelPort *)self channel];
+  format = [channel format];
+  v8 = [v5 canSpecializeFormat:format];
 
   if (v8)
   {
-    v9 = [(_NUChannelPort *)self channel];
-    v10 = [v9 format];
-    v11 = [v10 specializedWithFormat:v5];
+    channel2 = [(_NUChannelPort *)self channel];
+    format2 = [channel2 format];
+    v11 = [format2 specializedWithFormat:v5];
 
-    v12 = [(_NUChannelPort *)self specializedInputFormat];
-    LOBYTE(v10) = [v12 isEqualToChannelFormat:v11];
+    specializedInputFormat = [(_NUChannelPort *)self specializedInputFormat];
+    LOBYTE(format2) = [specializedInputFormat isEqualToChannelFormat:v11];
 
-    if ((v10 & 1) == 0)
+    if ((format2 & 1) == 0)
     {
       [(_NUChannelPort *)self setSpecializedInputFormat:v11];
       if ([(_NUChannelPort *)self hasConnections])
@@ -830,8 +830,8 @@ LABEL_26:
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v13 = self->_outputPorts;
-        v14 = [(NSHashTable *)v13 countByEnumeratingWithState:&v44 objects:v49 count:16];
+        superport2 = self->_outputPorts;
+        v14 = [(NSHashTable *)superport2 countByEnumeratingWithState:&v44 objects:v49 count:16];
         if (v14)
         {
           v15 = v14;
@@ -842,13 +842,13 @@ LABEL_26:
             {
               if (*v45 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(superport2);
               }
 
               [*(*(&v44 + 1) + 8 * i) specializeWithInputFormat:v11];
             }
 
-            v15 = [(NSHashTable *)v13 countByEnumeratingWithState:&v44 objects:v49 count:16];
+            v15 = [(NSHashTable *)superport2 countByEnumeratingWithState:&v44 objects:v49 count:16];
           }
 
           while (v15);
@@ -861,8 +861,8 @@ LABEL_26:
         v43 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v13 = self->_subports;
-        v18 = [(NSHashTable *)v13 countByEnumeratingWithState:&v40 objects:v48 count:16];
+        superport2 = self->_subports;
+        v18 = [(NSHashTable *)superport2 countByEnumeratingWithState:&v40 objects:v48 count:16];
         if (v18)
         {
           v19 = v18;
@@ -873,13 +873,13 @@ LABEL_26:
             {
               if (*v41 != v20)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(superport2);
               }
 
               [*(*(&v40 + 1) + 8 * j) specializeWithInputFormat:v11];
             }
 
-            v19 = [(NSHashTable *)v13 countByEnumeratingWithState:&v40 objects:v48 count:16];
+            v19 = [(NSHashTable *)superport2 countByEnumeratingWithState:&v40 objects:v48 count:16];
           }
 
           while (v19);
@@ -888,18 +888,18 @@ LABEL_26:
 
       else
       {
-        v22 = [(_NUChannelPort *)self superport];
+        superport = [(_NUChannelPort *)self superport];
 
-        if (!v22)
+        if (!superport)
         {
-          v23 = [(_NUChannelPort *)self pipeline];
-          [v23 propagateSpecializedInputFormat:v11 fromPort:self];
+          pipeline = [(_NUChannelPort *)self pipeline];
+          [pipeline propagateSpecializedInputFormat:v11 fromPort:self];
 
           goto LABEL_25;
         }
 
-        v13 = [(_NUChannelPort *)self superport];
-        [(NSHashTable *)v13 specializeWithInputFormat:v11];
+        superport2 = [(_NUChannelPort *)self superport];
+        [(NSHashTable *)superport2 specializeWithInputFormat:v11];
       }
     }
 
@@ -907,11 +907,11 @@ LABEL_25:
   }
 }
 
-- (void)specializeWithOutputFormat:(id)a3
+- (void)specializeWithOutputFormat:(id)format
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  formatCopy = format;
+  if (!formatCopy)
   {
     v32 = NUAssertLogger_5769();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -932,8 +932,8 @@ LABEL_25:
         v39 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v40 = MEMORY[0x1E696AF00];
         v41 = v39;
-        v42 = [v40 callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v40 callStackSymbols];
+        v43 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v59 = v39;
         v60 = 2114;
@@ -944,8 +944,8 @@ LABEL_25:
 
     else if (v36)
     {
-      v37 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v38 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v59 = v38;
       _os_log_error_impl(&dword_1C0184000, v35, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -954,16 +954,16 @@ LABEL_25:
     _NUAssertFailHandler("[_NUChannelPort specializeWithOutputFormat:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 671, @"Invalid parameter not satisfying: %s", v44, v45, v46, v47, "outputFormat != nil");
   }
 
-  v5 = v4;
-  v6 = [(_NUChannelPort *)self channel];
-  v7 = [v6 format];
-  v8 = [v5 canSpecializeFormat:v7];
+  v5 = formatCopy;
+  channel = [(_NUChannelPort *)self channel];
+  format = [channel format];
+  v8 = [v5 canSpecializeFormat:format];
 
   if (v8)
   {
-    v9 = [(_NUChannelPort *)self channel];
-    v10 = [v9 format];
-    v11 = [v10 specializedWithFormat:v5];
+    channel2 = [(_NUChannelPort *)self channel];
+    format2 = [channel2 format];
+    v11 = [format2 specializedWithFormat:v5];
 
     v54 = 0u;
     v55 = 0u;
@@ -985,22 +985,22 @@ LABEL_25:
           }
 
           v17 = *(*(&v52 + 1) + 8 * i);
-          v18 = [v17 specializedOutputFormat];
-          v19 = v18;
-          if (v18)
+          specializedOutputFormat = [v17 specializedOutputFormat];
+          v19 = specializedOutputFormat;
+          if (specializedOutputFormat)
           {
-            v20 = v18;
+            format3 = specializedOutputFormat;
           }
 
           else
           {
-            v21 = [v17 channel];
-            v20 = [v21 format];
+            channel3 = [v17 channel];
+            format3 = [channel3 format];
           }
 
-          if ([v20 canSpecializeFormat:v11])
+          if ([format3 canSpecializeFormat:v11])
           {
-            v22 = [v11 specializedWithFormat:v20];
+            v22 = [v11 specializedWithFormat:format3];
 
             v11 = v22;
           }
@@ -1012,13 +1012,13 @@ LABEL_25:
       while (v14);
     }
 
-    v23 = [(_NUChannelPort *)self specializedOutputFormat];
-    v24 = [v23 isEqualToChannelFormat:v11];
+    specializedOutputFormat2 = [(_NUChannelPort *)self specializedOutputFormat];
+    v24 = [specializedOutputFormat2 isEqualToChannelFormat:v11];
 
     if ((v24 & 1) == 0)
     {
       [(_NUChannelPort *)self setSpecializedOutputFormat:v11];
-      v25 = [(_NUChannelPort *)self effectiveFormat];
+      effectiveFormat = [(_NUChannelPort *)self effectiveFormat];
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
@@ -1038,7 +1038,7 @@ LABEL_25:
               objc_enumerationMutation(v26);
             }
 
-            [*(*(&v48 + 1) + 8 * j) specializeWithInputFormat:v25];
+            [*(*(&v48 + 1) + 8 * j) specializeWithInputFormat:effectiveFormat];
           }
 
           v28 = [(NSHashTable *)v26 countByEnumeratingWithState:&v48 objects:v56 count:16];
@@ -1049,14 +1049,14 @@ LABEL_25:
 
       if ([(_NUChannelPort *)self isConnected])
       {
-        v31 = [(_NUChannelPort *)self inputPort];
-        [v31 specializeWithOutputFormat:v11];
+        inputPort = [(_NUChannelPort *)self inputPort];
+        [inputPort specializeWithOutputFormat:v11];
       }
 
       else
       {
-        v31 = [(_NUChannelPort *)self pipeline];
-        [v31 propagateSpecializedOutputFormat:v11 fromPort:self];
+        inputPort = [(_NUChannelPort *)self pipeline];
+        [inputPort propagateSpecializedOutputFormat:v11 fromPort:self];
       }
     }
   }
@@ -1064,72 +1064,72 @@ LABEL_25:
 
 - (NUChannelFormat)effectiveFormat
 {
-  v3 = [(_NUChannelPort *)self specializedInputFormat];
+  specializedInputFormat = [(_NUChannelPort *)self specializedInputFormat];
 
-  if (v3)
+  if (specializedInputFormat)
   {
-    v4 = [(_NUChannelPort *)self specializedInputFormat];
+    specializedInputFormat2 = [(_NUChannelPort *)self specializedInputFormat];
 LABEL_5:
-    v6 = v4;
+    format = specializedInputFormat2;
     goto LABEL_6;
   }
 
-  v5 = [(_NUChannelPort *)self specializedOutputFormat];
+  specializedOutputFormat = [(_NUChannelPort *)self specializedOutputFormat];
 
-  if (v5)
+  if (specializedOutputFormat)
   {
-    v4 = [(_NUChannelPort *)self specializedOutputFormat];
+    specializedInputFormat2 = [(_NUChannelPort *)self specializedOutputFormat];
     goto LABEL_5;
   }
 
-  v8 = [(_NUChannelPort *)self channel];
-  v6 = [v8 format];
+  channel = [(_NUChannelPort *)self channel];
+  format = [channel format];
 
 LABEL_6:
 
-  return v6;
+  return format;
 }
 
 - (_NUChannelPort)rootPort
 {
-  v2 = self;
-  v3 = [(_NUChannelPort *)v2 superport];
+  selfCopy = self;
+  superport = [(_NUChannelPort *)selfCopy superport];
 
-  if (v3)
+  if (superport)
   {
     do
     {
-      v4 = [(_NUChannelPort *)v2 superport];
+      superport2 = [(_NUChannelPort *)selfCopy superport];
 
-      v5 = [(_NUChannelPort *)v4 superport];
+      v4Superport = [(_NUChannelPort *)superport2 superport];
 
-      v2 = v4;
+      selfCopy = superport2;
     }
 
-    while (v5);
+    while (v4Superport);
   }
 
   else
   {
-    v4 = v2;
+    superport2 = selfCopy;
   }
 
-  return v4;
+  return superport2;
 }
 
 - (NSArray)subports
 {
-  v2 = [(NSHashTable *)self->_subports allObjects];
-  v3 = [v2 sortedArrayUsingComparator:&__block_literal_global_231_6020];
+  allObjects = [(NSHashTable *)self->_subports allObjects];
+  v3 = [allObjects sortedArrayUsingComparator:&__block_literal_global_231_6020];
 
   return v3;
 }
 
-- (id)subportForKey:(id)a3
+- (id)subportForKey:(id)key
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v9 = NUAssertLogger_5769();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1150,8 +1150,8 @@ LABEL_6:
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v16;
         v27 = 2114;
@@ -1162,8 +1162,8 @@ LABEL_6:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1172,35 +1172,35 @@ LABEL_6:
     _NUAssertFailHandler("[_NUChannelPort subportForKey:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 633, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "key != nil");
   }
 
-  v5 = v4;
-  v6 = [NUChannelMatching name:v4];
+  v5 = keyCopy;
+  v6 = [NUChannelMatching name:keyCopy];
   v7 = [(_NUChannelPort *)self subportMatching:v6];
 
   return v7;
 }
 
-- (id)_subportMatching:(id)a3
+- (id)_subportMatching:(id)matching
 {
-  v4 = a3;
-  if (v4)
+  matchingCopy = matching;
+  if (matchingCopy)
   {
     if (!self->_subports)
     {
       [(_NUChannelPort *)self _populateAllSubports];
     }
 
-    v9 = v4;
+    v9 = matchingCopy;
     v5 = PFFind();
-    v6 = [v9 subsequentMatching];
-    v7 = [v5 _subportMatching:v6];
+    subsequentMatching = [v9 subsequentMatching];
+    selfCopy = [v5 _subportMatching:subsequentMatching];
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (_NUChannelPort)elementSubport
@@ -1213,15 +1213,15 @@ LABEL_6:
   v3 = PFFind();
   if (!v3)
   {
-    v4 = [(_NUChannelPort *)self channel];
-    v5 = [v4 elementSubchannel];
+    channel = [(_NUChannelPort *)self channel];
+    elementSubchannel = [channel elementSubchannel];
 
-    if (v5)
+    if (elementSubchannel)
     {
-      v3 = [[_NUChannelPort alloc] initWithChannel:v5];
+      v3 = [[_NUChannelPort alloc] initWithChannel:elementSubchannel];
       [(_NUChannelPort *)v3 setSuperport:self];
-      v6 = [(_NUChannelPort *)self pipeline];
-      [(_NUChannelPort *)v3 setPipeline:v6];
+      pipeline = [(_NUChannelPort *)self pipeline];
+      [(_NUChannelPort *)v3 setPipeline:pipeline];
 
       [(NSHashTable *)self->_subports addObject:v3];
     }
@@ -1246,8 +1246,8 @@ LABEL_6:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NUChannel *)self->_channel subchannels];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subchannels = [(NUChannel *)self->_channel subchannels];
+  v6 = [subchannels countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1259,31 +1259,31 @@ LABEL_6:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subchannels);
         }
 
         v10 = [[_NUChannelPort alloc] initWithChannel:*(*(&v12 + 1) + 8 * v9)];
         [(_NUChannelPort *)v10 setSuperport:self];
-        v11 = [(_NUChannelPort *)self pipeline];
-        [(_NUChannelPort *)v10 setPipeline:v11];
+        pipeline = [(_NUChannelPort *)self pipeline];
+        [(_NUChannelPort *)v10 setPipeline:pipeline];
 
         [(NSHashTable *)self->_subports addObject:v10];
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [subchannels countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)subportMatching:(id)a3
+- (id)subportMatching:(id)matching
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  matchingCopy = matching;
+  if (!matchingCopy)
   {
     v8 = NUAssertLogger_5769();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1304,8 +1304,8 @@ LABEL_6:
         v15 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v16 = MEMORY[0x1E696AF00];
         v17 = v15;
-        v18 = [v16 callStackSymbols];
-        v19 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v16 callStackSymbols];
+        v19 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v25 = v15;
         v26 = 2114;
@@ -1316,8 +1316,8 @@ LABEL_6:
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v25 = v14;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1326,17 +1326,17 @@ LABEL_6:
     _NUAssertFailHandler("[_NUChannelPort subportMatching:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 570, @"Invalid parameter not satisfying: %s", v20, v21, v22, v23, "matching != nil");
   }
 
-  v5 = v4;
-  v6 = [(_NUChannelPort *)self _subportMatching:v4];
+  v5 = matchingCopy;
+  v6 = [(_NUChannelPort *)self _subportMatching:matchingCopy];
 
   return v6;
 }
 
-- (void)_removeOutputPort:(id)a3
+- (void)_removeOutputPort:(id)port
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  portCopy = port;
+  if (!portCopy)
   {
     v5 = NUAssertLogger_5769();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1357,8 +1357,8 @@ LABEL_6:
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v39 = v19;
         v40 = 2114;
@@ -1369,8 +1369,8 @@ LABEL_6:
 
     else if (v9)
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v39 = v11;
       _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1379,8 +1379,8 @@ LABEL_6:
     _NUAssertFailHandler("[_NUChannelPort _removeOutputPort:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 564, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "port != nil");
   }
 
-  v37 = v4;
-  if (![(NSHashTable *)self->_outputPorts containsObject:v4])
+  v37 = portCopy;
+  if (![(NSHashTable *)self->_outputPorts containsObject:portCopy])
   {
     v12 = NUAssertLogger_5769();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1401,8 +1401,8 @@ LABEL_6:
         v28 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v29 callStackSymbols];
+        v32 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v39 = v28;
         v40 = 2114;
@@ -1413,8 +1413,8 @@ LABEL_6:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v39 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1426,11 +1426,11 @@ LABEL_6:
   [(NSHashTable *)self->_outputPorts removeObject:v37];
 }
 
-- (void)_addOutputPort:(id)a3
+- (void)_addOutputPort:(id)port
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  portCopy = port;
+  if (!portCopy)
   {
     v9 = NUAssertLogger_5769();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1451,8 +1451,8 @@ LABEL_6:
         v23 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v43 = v23;
         v44 = 2114;
@@ -1463,8 +1463,8 @@ LABEL_6:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v43 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1473,7 +1473,7 @@ LABEL_6:
     _NUAssertFailHandler("[_NUChannelPort _addOutputPort:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 554, @"Invalid parameter not satisfying: %s", v28, v29, v30, v31, "port != nil");
   }
 
-  v5 = v4;
+  v5 = portCopy;
   outputPorts = self->_outputPorts;
   v41 = v5;
   if (!outputPorts)
@@ -1507,8 +1507,8 @@ LABEL_6:
         v32 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v33 = MEMORY[0x1E696AF00];
         v34 = v32;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v33 callStackSymbols];
+        v36 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v43 = v32;
         v44 = 2114;
@@ -1519,8 +1519,8 @@ LABEL_6:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v43 = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1534,61 +1534,61 @@ LABEL_6:
 
 - (BOOL)hasSuperConnections
 {
-  v2 = [(_NUChannelPort *)self superport];
-  v3 = v2;
-  if (v2)
+  superport = [(_NUChannelPort *)self superport];
+  v3 = superport;
+  if (superport)
   {
-    if ([v2 hasConnections])
+    if ([superport hasConnections])
     {
-      v4 = 1;
+      hasSuperConnections = 1;
     }
 
     else
     {
-      v4 = [v3 hasSuperConnections];
+      hasSuperConnections = [v3 hasSuperConnections];
     }
   }
 
   else
   {
-    v4 = 0;
+    hasSuperConnections = 0;
   }
 
-  return v4;
+  return hasSuperConnections;
 }
 
 - (BOOL)hasConnectedSuperport
 {
-  v2 = [(_NUChannelPort *)self superport];
-  v3 = v2;
-  if (v2)
+  superport = [(_NUChannelPort *)self superport];
+  v3 = superport;
+  if (superport)
   {
-    if ([v2 isConnected])
+    if ([superport isConnected])
     {
-      v4 = 1;
+      hasConnectedSuperport = 1;
     }
 
     else
     {
-      v4 = [v3 hasConnectedSuperport];
+      hasConnectedSuperport = [v3 hasConnectedSuperport];
     }
   }
 
   else
   {
-    v4 = 0;
+    hasConnectedSuperport = 0;
   }
 
-  return v4;
+  return hasConnectedSuperport;
 }
 
 - (NSArray)connectedInputPorts
 {
-  v2 = [(NSHashTable *)self->_outputPorts allObjects];
-  v3 = v2;
-  if (v2)
+  allObjects = [(NSHashTable *)self->_outputPorts allObjects];
+  v3 = allObjects;
+  if (allObjects)
   {
-    v4 = v2;
+    v4 = allObjects;
   }
 
   else
@@ -1606,8 +1606,8 @@ LABEL_6:
   v15 = *MEMORY[0x1E69E9840];
   for (i = self->_outputPorts; [(NSHashTable *)i count]; i = self->_outputPorts)
   {
-    v4 = [(NSHashTable *)self->_outputPorts anyObject];
-    [v4 disconnect];
+    anyObject = [(NSHashTable *)self->_outputPorts anyObject];
+    [anyObject disconnect];
   }
 
   v12 = 0u;
@@ -1705,8 +1705,8 @@ LABEL_6:
         v12 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v13 = MEMORY[0x1E696AF00];
         v14 = v12;
-        v15 = [v13 callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v13 callStackSymbols];
+        v16 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v21 = 138543618;
         *&v21[4] = v12;
         v22 = 2114;
@@ -1717,8 +1717,8 @@ LABEL_6:
 
     else if (v9)
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v21 = 138543362;
       *&v21[4] = v11;
       _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v21, 0xCu);
@@ -1732,11 +1732,11 @@ LABEL_6:
   self->_inputPort = 0;
 }
 
-- (void)connectToPort:(id)a3
+- (void)connectToPort:(id)port
 {
   v51 = *MEMORY[0x1E69E9840];
-  v46 = a3;
-  if (!v46)
+  portCopy = port;
+  if (!portCopy)
   {
     v13 = NUAssertLogger_5769();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1757,8 +1757,8 @@ LABEL_6:
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = v27;
         v49 = 2114;
@@ -1769,8 +1769,8 @@ LABEL_6:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v48 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1800,8 +1800,8 @@ LABEL_6:
         v36 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v37 callStackSymbols];
+        v40 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = v36;
         v49 = 2114;
@@ -1812,8 +1812,8 @@ LABEL_6:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v48 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1822,26 +1822,26 @@ LABEL_6:
     _NUAssertFailHandler("[_NUChannelPort connectToPort:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 468, @"Already connected", v41, v42, v43, v44, v45);
   }
 
-  objc_storeStrong(&self->_inputPort, a3);
+  objc_storeStrong(&self->_inputPort, port);
   [(_NUChannelPort *)self->_inputPort _addOutputPort:self];
-  v5 = [v46 channel];
-  v6 = [v5 format];
-  v7 = [v6 isGeneric];
+  channel = [portCopy channel];
+  format = [channel format];
+  isGeneric = [format isGeneric];
 
-  if (v7)
+  if (isGeneric)
   {
-    v8 = [(_NUChannelPort *)self effectiveFormat];
-    [v46 specializeWithOutputFormat:v8];
+    effectiveFormat = [(_NUChannelPort *)self effectiveFormat];
+    [portCopy specializeWithOutputFormat:effectiveFormat];
   }
 
-  v9 = [(_NUChannelPort *)self channel];
-  v10 = [v9 format];
-  v11 = [v10 isGeneric];
+  channel2 = [(_NUChannelPort *)self channel];
+  format2 = [channel2 format];
+  isGeneric2 = [format2 isGeneric];
 
-  if (v11)
+  if (isGeneric2)
   {
-    v12 = [v46 effectiveFormat];
-    [(_NUChannelPort *)self specializeWithInputFormat:v12];
+    effectiveFormat2 = [portCopy effectiveFormat];
+    [(_NUChannelPort *)self specializeWithInputFormat:effectiveFormat2];
   }
 }
 
@@ -1885,7 +1885,7 @@ LABEL_6:
 - (unint64_t)inputConnectionCount
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(_NUChannelPort *)self isConnected];
+  isConnected = [(_NUChannelPort *)self isConnected];
   if ([(_NUChannelPort *)self hasConnectedSubport])
   {
     v12 = 0u;
@@ -1908,7 +1908,7 @@ LABEL_6:
             objc_enumerationMutation(v4);
           }
 
-          v3 += [*(*(&v10 + 1) + 8 * v8++) inputConnectionCount];
+          isConnected += [*(*(&v10 + 1) + 8 * v8++) inputConnectionCount];
         }
 
         while (v6 != v8);
@@ -1919,14 +1919,14 @@ LABEL_6:
     }
   }
 
-  return v3;
+  return isConnected;
 }
 
-- (_NUChannelPort)initWithChannel:(id)a3
+- (_NUChannelPort)initWithChannel:(id)channel
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  channelCopy = channel;
+  if (!channelCopy)
   {
     v9 = NUAssertLogger_5769();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1947,8 +1947,8 @@ LABEL_6:
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v16;
         v28 = 2114;
@@ -1959,8 +1959,8 @@ LABEL_6:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1969,7 +1969,7 @@ LABEL_6:
     _NUAssertFailHandler("[_NUChannelPort initWithChannel:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 438, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "channel != nil");
   }
 
-  v5 = v4;
+  v5 = channelCopy;
   v25.receiver = self;
   v25.super_class = _NUChannelPort;
   v6 = [(_NUChannelPort *)&v25 init];

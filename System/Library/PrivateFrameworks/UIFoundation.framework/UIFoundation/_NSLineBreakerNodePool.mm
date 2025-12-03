@@ -1,7 +1,7 @@
 @interface _NSLineBreakerNodePool
 - (_WLNode)allocNode;
-- (_WLNode)retainNode:(_WLNode *)a3;
-- (void)releaseNode:(_WLNode *)a3;
+- (_WLNode)retainNode:(_WLNode *)node;
+- (void)releaseNode:(_WLNode *)node;
 @end
 
 @implementation _NSLineBreakerNodePool
@@ -33,50 +33,50 @@
   return result;
 }
 
-- (_WLNode)retainNode:(_WLNode *)a3
+- (_WLNode)retainNode:(_WLNode *)node
 {
-  if (a3)
+  if (node)
   {
-    if (a3->var4)
+    if (node->var4)
     {
       [_NSLineBreakerNodePool retainNode:];
     }
 
-    ++a3->var1;
+    ++node->var1;
   }
 
-  return a3;
+  return node;
 }
 
-- (void)releaseNode:(_WLNode *)a3
+- (void)releaseNode:(_WLNode *)node
 {
-  if (a3)
+  if (node)
   {
-    while (a3->var1 == 1)
+    while (node->var1 == 1)
     {
-      if (a3->var4)
+      if (node->var4)
       {
         [_NSLineBreakerNodePool releaseNode:];
       }
 
-      var0 = a3->var0;
-      a3->var4 = 1;
-      a3->var0 = self->_freeList;
-      a3->var1 = 0;
-      self->_freeList = a3;
-      a3 = var0;
+      var0 = node->var0;
+      node->var4 = 1;
+      node->var0 = self->_freeList;
+      node->var1 = 0;
+      self->_freeList = node;
+      node = var0;
       if (!var0)
       {
         return;
       }
     }
 
-    if (a3->var4)
+    if (node->var4)
     {
       [_NSLineBreakerNodePool releaseNode:];
     }
 
-    --a3->var1;
+    --node->var1;
   }
 }
 

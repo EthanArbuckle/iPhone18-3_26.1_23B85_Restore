@@ -1,66 +1,66 @@
 @interface NCMutableNotificationAction
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setBehaviorParameters:(id)a3;
-- (void)setIconImageBundlePath:(id)a3;
-- (void)setIconImageName:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setLaunchBundleID:(id)a3;
-- (void)setLaunchURL:(id)a3;
-- (void)setTitle:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setBehaviorParameters:(id)parameters;
+- (void)setIconImageBundlePath:(id)path;
+- (void)setIconImageName:(id)name;
+- (void)setIdentifier:(id)identifier;
+- (void)setLaunchBundleID:(id)d;
+- (void)setLaunchURL:(id)l;
+- (void)setTitle:(id)title;
 @end
 
 @implementation NCMutableNotificationAction
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  self->super._identifier = [a3 copy];
+  self->super._identifier = [identifier copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  self->super._title = [a3 copy];
+  self->super._title = [title copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setIconImageName:(id)a3
+- (void)setIconImageName:(id)name
 {
-  self->super._iconImageName = [a3 copy];
+  self->super._iconImageName = [name copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setIconImageBundlePath:(id)a3
+- (void)setIconImageBundlePath:(id)path
 {
-  self->super._iconImageBundlePath = [a3 copy];
+  self->super._iconImageBundlePath = [path copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setLaunchURL:(id)a3
+- (void)setLaunchURL:(id)l
 {
-  self->super._launchURL = [a3 copy];
+  self->super._launchURL = [l copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setLaunchBundleID:(id)a3
+- (void)setLaunchBundleID:(id)d
 {
-  self->super._launchBundleID = [a3 copy];
+  self->super._launchBundleID = [d copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setBehaviorParameters:(id)a3
+- (void)setBehaviorParameters:(id)parameters
 {
-  self->super._behaviorParameters = [a3 copy];
+  self->super._behaviorParameters = [parameters copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [NCNotificationAction alloc];
 

@@ -1,9 +1,9 @@
 @interface BSXPCServiceConnectionProxy
-+ (uint64_t)concreteArgumentsForArguments:(uint64_t)a1;
-+ (uint64_t)decodeArguments:(uint64_t)a3 outArgs:(void *)a4 fromMessage:(void *)a5 forConnection:;
-+ (uint64_t)encodeArguments:(uint64_t)a1 inArgs:(void *)a2 toMessage:(uint64_t)a3 forConnection:(void *)a4;
-+ (void)invokeMethod:(uint64_t)a3 onTarget:(void *)a4 withMessage:(void *)a5 forConnection:(uint64_t)a6 completion:;
-+ (void)proxyForConnection:(void *)a3 handshake:(void *)a4 withProtocol:(int)a5 activationGeneration:(void *)a6 activeXPCConnection:(void *)a7 xpcConnectionTargetQueue:(void *)a8 replyQueue:(void *)a9 target:(void *)a10 attributes:(void *)a11 assertionProvider:;
++ (uint64_t)concreteArgumentsForArguments:(uint64_t)arguments;
++ (uint64_t)decodeArguments:(uint64_t)arguments outArgs:(void *)args fromMessage:(void *)message forConnection:;
++ (uint64_t)encodeArguments:(uint64_t)arguments inArgs:(void *)args toMessage:(uint64_t)message forConnection:(void *)connection;
++ (void)invokeMethod:(uint64_t)method onTarget:(void *)target withMessage:(void *)message forConnection:(uint64_t)connection completion:;
++ (void)proxyForConnection:(void *)connection handshake:(void *)handshake withProtocol:(int)protocol activationGeneration:(void *)generation activeXPCConnection:(void *)cConnection xpcConnectionTargetQueue:(void *)queue replyQueue:(void *)replyQueue target:(void *)self0 attributes:(void *)self1 assertionProvider:;
 - (void)_decrementInFlightMessageCounter;
 - (void)dealloc;
 @end
@@ -36,7 +36,7 @@
       v14 = 2114;
       v15 = NSStringFromClass(v10);
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"BSXPCServiceConnectionProxy.m";
       v20 = 1024;
@@ -58,7 +58,7 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)proxyForConnection:(void *)a3 handshake:(void *)a4 withProtocol:(int)a5 activationGeneration:(void *)a6 activeXPCConnection:(void *)a7 xpcConnectionTargetQueue:(void *)a8 replyQueue:(void *)a9 target:(void *)a10 attributes:(void *)a11 assertionProvider:
++ (void)proxyForConnection:(void *)connection handshake:(void *)handshake withProtocol:(int)protocol activationGeneration:(void *)generation activeXPCConnection:(void *)cConnection xpcConnectionTargetQueue:(void *)queue replyQueue:(void *)replyQueue target:(void *)self0 attributes:(void *)self1 assertionProvider:
 {
   v67 = *MEMORY[0x1E69E9840];
   v18 = objc_opt_self();
@@ -75,7 +75,7 @@
       v57 = 2114;
       v58 = NSStringFromClass(v35);
       v59 = 2048;
-      v60 = v18;
+      targetCopy = v18;
       v61 = 2114;
       v62 = @"BSXPCServiceConnectionProxy.m";
       v63 = 1024;
@@ -103,7 +103,7 @@
       v57 = 2114;
       v58 = NSStringFromClass(v38);
       v59 = 2048;
-      v60 = v18;
+      targetCopy = v18;
       v61 = 2114;
       v62 = @"BSXPCServiceConnectionProxy.m";
       v63 = 1024;
@@ -120,7 +120,7 @@
   }
 
   NSClassFromString(&cfstr_Bsobjcprotocol.isa);
-  if (!a4)
+  if (!handshake)
   {
     v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_bs_assert_object != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -132,7 +132,7 @@
       v57 = 2114;
       v58 = NSStringFromClass(v41);
       v59 = 2048;
-      v60 = v18;
+      targetCopy = v18;
       v61 = 2114;
       v62 = @"BSXPCServiceConnectionProxy.m";
       v63 = 1024;
@@ -160,7 +160,7 @@
       v57 = 2114;
       v58 = NSStringFromClass(v44);
       v59 = 2048;
-      v60 = v18;
+      targetCopy = v18;
       v61 = 2114;
       v62 = @"BSXPCServiceConnectionProxy.m";
       v63 = 1024;
@@ -176,7 +176,7 @@
     JUMPOUT(0x19A83364CLL);
   }
 
-  if (![objc_msgSend(a4 "methods")])
+  if (![objc_msgSend(handshake "methods")])
   {
     v45 = [MEMORY[0x1E696AEC0] stringWithFormat:@"remoteProtocol has no methods"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -188,7 +188,7 @@
       v57 = 2114;
       v58 = NSStringFromClass(v47);
       v59 = 2048;
-      v60 = v18;
+      targetCopy = v18;
       v61 = 2114;
       v62 = @"BSXPCServiceConnectionProxy.m";
       v63 = 1024;
@@ -204,7 +204,7 @@
     JUMPOUT(0x19A83371CLL);
   }
 
-  if (!a8)
+  if (!queue)
   {
     v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"replyQueue"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -216,7 +216,7 @@
       v57 = 2114;
       v58 = NSStringFromClass(v50);
       v59 = 2048;
-      v60 = v18;
+      targetCopy = v18;
       v61 = 2114;
       v62 = @"BSXPCServiceConnectionProxy.m";
       v63 = 1024;
@@ -232,7 +232,7 @@
     JUMPOUT(0x19A8337F8);
   }
 
-  if (a3 && ![a10 count])
+  if (connection && ![target count])
   {
     v51 = [MEMORY[0x1E696AEC0] stringWithFormat:@"handshake is only supported if there are launching attributes"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -244,7 +244,7 @@
       v57 = 2114;
       v58 = NSStringFromClass(v53);
       v59 = 2048;
-      v60 = v18;
+      targetCopy = v18;
       v61 = 2114;
       v62 = @"BSXPCServiceConnectionProxy.m";
       v63 = 1024;
@@ -260,15 +260,15 @@
     JUMPOUT(0x19A8338C8);
   }
 
-  v19 = a5;
-  v54 = a6;
-  v20 = [a4 name];
-  v21 = [a10 count];
+  protocolCopy = protocol;
+  generationCopy = generation;
+  name = [handshake name];
+  v21 = [target count];
   v22 = BSServiceXPCLog();
   v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
   if (v21)
   {
-    v24 = a7;
+    cConnectionCopy2 = cConnection;
     if (v23)
     {
       v25 = a2[24];
@@ -280,9 +280,9 @@
       *buf = 138543874;
       v56 = v25;
       v57 = 2114;
-      v58 = v20;
+      v58 = name;
       v59 = 2114;
-      v60 = a10;
+      targetCopy = target;
       v26 = "%{public}@ Remote proxy: <%{public}@> with %{public}@";
       v27 = v22;
       v28 = 32;
@@ -293,7 +293,7 @@ LABEL_18:
 
   else
   {
-    v24 = a7;
+    cConnectionCopy2 = cConnection;
     if (v23)
     {
       v29 = a2[24];
@@ -305,7 +305,7 @@ LABEL_18:
       *buf = 138543618;
       v56 = v29;
       v57 = 2114;
-      v58 = v20;
+      v58 = name;
       v26 = "%{public}@ Remote proxy: <%{public}@>";
       v27 = v22;
       v28 = 22;
@@ -313,19 +313,19 @@ LABEL_18:
     }
   }
 
-  [MEMORY[0x1E696AEC0] stringWithFormat:@"BSXPCServiceConnectionProxy<%@>", v20];
+  [MEMORY[0x1E696AEC0] stringWithFormat:@"BSXPCServiceConnectionProxy<%@>", name];
   objc_opt_class();
   v30 = objc_alloc_init(BSObjCClassCreate());
   v30[1] = a2;
-  v30[2] = a3;
-  v30[3] = a4;
-  *(v30 + 24) = v19;
-  v30[4] = v54;
-  v30[5] = v24;
-  v30[6] = a8;
-  v30[7] = [a9 copy];
-  v30[8] = [a10 copy];
-  v30[9] = [a11 copy];
+  v30[2] = connection;
+  v30[3] = handshake;
+  *(v30 + 24) = protocolCopy;
+  v30[4] = generationCopy;
+  v30[5] = cConnectionCopy2;
+  v30[6] = queue;
+  v30[7] = [replyQueue copy];
+  v30[8] = [target copy];
+  v30[9] = [attributes copy];
   *(v30 + 22) = 0;
   result = v30;
   v32 = *MEMORY[0x1E69E9840];
@@ -462,7 +462,7 @@ void __186__BSXPCServiceConnectionProxy_proxyForConnection_handshake_withProtoco
   v20 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)invokeMethod:(uint64_t)a3 onTarget:(void *)a4 withMessage:(void *)a5 forConnection:(uint64_t)a6 completion:
++ (void)invokeMethod:(uint64_t)method onTarget:(void *)target withMessage:(void *)message forConnection:(uint64_t)connection completion:
 {
   v104 = *MEMORY[0x1E69E9840];
   v80 = objc_opt_self();
@@ -523,7 +523,7 @@ void __186__BSXPCServiceConnectionProxy_proxyForConnection_handshake_withProtoco
     JUMPOUT(0x19A834900);
   }
 
-  if (!a3)
+  if (!method)
   {
     v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"target"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -552,7 +552,7 @@ void __186__BSXPCServiceConnectionProxy_proxyForConnection_handshake_withProtoco
   }
 
   NSClassFromString(&cfstr_Bsxpcserviceco_2.isa);
-  if (!a4)
+  if (!target)
   {
     v49 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_bs_assert_object != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -609,7 +609,7 @@ void __186__BSXPCServiceConnectionProxy_proxyForConnection_handshake_withProtoco
   }
 
   NSClassFromString(&cfstr_Bsxpcserviceco.isa);
-  if (!a5)
+  if (!message)
   {
     v55 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_bs_assert_object != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -668,7 +668,7 @@ void __186__BSXPCServiceConnectionProxy_proxyForConnection_handshake_withProtoco
   v11 = BSServiceXPCLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v29 = a5[24];
+    v29 = message[24];
     if (v29)
     {
       v30 = *(v29 + 8);
@@ -693,19 +693,19 @@ void __186__BSXPCServiceConnectionProxy_proxyForConnection_handshake_withProtoco
   v91 = 0u;
   v89 = 0u;
   memset(v88, 0, sizeof(v88));
-  +[BSXPCServiceConnectionProxy decodeArguments:outArgs:fromMessage:forConnection:](BSXPCServiceConnectionProxy, [a2 arguments], v88, a4, a5);
-  v12 = [a4 createReply];
+  +[BSXPCServiceConnectionProxy decodeArguments:outArgs:fromMessage:forConnection:](BSXPCServiceConnectionProxy, [a2 arguments], v88, target, message);
+  createReply = [target createReply];
   v85 = 0;
   v13 = [objc_msgSend(a2 "returnValue")];
   v16 = objc_opt_class();
   if (class_getInstanceMethod(v16, [a2 selector]))
   {
-    v17 = [a2 lastArgument];
-    if (([v17 isBlock] & 1) != 0 || objc_msgSend(v17, "isPointer"))
+    lastArgument = [a2 lastArgument];
+    if (([lastArgument isBlock] & 1) != 0 || objc_msgSend(lastArgument, "isPointer"))
     {
-      v18 = [v17 argumentIndex];
-      v19 = v18;
-      if (v18 >= 0xA)
+      argumentIndex = [lastArgument argumentIndex];
+      v19 = argumentIndex;
+      if (argumentIndex >= 0xA)
       {
         v69 = [MEMORY[0x1E696AEC0] stringWithFormat:@"reply parameter argument is out of bounds"];
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -734,7 +734,7 @@ void __186__BSXPCServiceConnectionProxy_proxyForConnection_handshake_withProtoco
         JUMPOUT(0x19A83500CLL);
       }
 
-      if (v88[v18])
+      if (v88[argumentIndex])
       {
         v73 = [MEMORY[0x1E696AEC0] stringWithFormat:@"reply parameter argument slot is not empty"];
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -763,23 +763,23 @@ void __186__BSXPCServiceConnectionProxy_proxyForConnection_handshake_withProtoco
         JUMPOUT(0x19A8350E4);
       }
 
-      if ([v17 isBlock])
+      if ([lastArgument isBlock])
       {
-        v20 = [v17 blockArguments];
+        blockArguments = [lastArgument blockArguments];
         v21 = v84;
         v84[0] = MEMORY[0x1E69E9820];
         v84[1] = 3221225472;
         v84[2] = __90__BSXPCServiceConnectionProxy_invokeMethod_onTarget_withMessage_forConnection_completion___block_invoke;
         v84[3] = &unk_1E75201A8;
-        v84[4] = v12;
-        v84[5] = v20;
-        v84[6] = a5;
+        v84[4] = createReply;
+        v84[5] = blockArguments;
+        v84[6] = message;
         v84[7] = a2;
         v84[10] = sel_invokeMethod_onTarget_withMessage_forConnection_completion_;
         v84[8] = v80;
-        v84[9] = a6;
-        v12 = 0;
-        a6 = 0;
+        v84[9] = connection;
+        createReply = 0;
+        connection = 0;
       }
 
       else
@@ -966,7 +966,7 @@ LABEL_104:
             v14 = 0;
 LABEL_105:
             v22 = 0;
-            if (!v12)
+            if (!createReply)
             {
               goto LABEL_123;
             }
@@ -1137,28 +1137,28 @@ LABEL_100:
   {
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
-    v26 = [a2 name];
+    name = [a2 name];
     *buf = 138412546;
     v93 = v25;
     v94 = 2112;
-    v95 = v26;
+    v95 = name;
     _os_log_error_impl(&dword_19A821000, v23, OS_LOG_TYPE_ERROR, "[BSXPCServiceConnectionProxy] Error: No method found on object %@ for @selector(%@)", buf, 0x16u);
   }
 
   v14 = 0;
   v15 = 0;
-  if (v12)
+  if (createReply)
   {
 LABEL_106:
     if (v13 == 66)
     {
-      [v12 encodeBool:v14 forKey:@"BSXPCReturnValue"];
+      [createReply encodeBool:v14 forKey:@"BSXPCReturnValue"];
     }
 
     else if (v13 == 64)
     {
-      v34 = [a2 returnValue];
-      v35 = [v34 objectClass];
+      returnValue = [a2 returnValue];
+      objectClass = [returnValue objectClass];
       if (v15)
       {
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1171,21 +1171,21 @@ LABEL_106:
           v83[5] = a2;
           v83[7] = v80;
           v83[8] = sel_invokeMethod_onTarget_withMessage_forConnection_completion_;
-          v83[6] = v35;
+          v83[6] = objectClass;
           __90__BSXPCServiceConnectionProxy_invokeMethod_onTarget_withMessage_forConnection_completion___block_invoke_81(v83);
         }
 
-        [v12 encodeObject:v15 forKey:@"BSXPCReturnValue"];
+        [createReply encodeObject:v15 forKey:@"BSXPCReturnValue"];
       }
 
-      else if ([v34 isObjectNonnull])
+      else if ([returnValue isObjectNonnull])
       {
         v82[0] = MEMORY[0x1E69E9820];
         v82[1] = 3221225472;
         v82[2] = __90__BSXPCServiceConnectionProxy_invokeMethod_onTarget_withMessage_forConnection_completion___block_invoke_85;
         v82[3] = &unk_1E7520180;
         v82[4] = a2;
-        v82[5] = v35;
+        v82[5] = objectClass;
         v82[6] = v80;
         v82[7] = sel_invokeMethod_onTarget_withMessage_forConnection_completion_;
         __90__BSXPCServiceConnectionProxy_invokeMethod_onTarget_withMessage_forConnection_completion___block_invoke_85(v82);
@@ -1228,23 +1228,23 @@ LABEL_106:
 
     if (v38)
     {
-      [v12 encodeObject:v38 forKey:@"BSXPCReturnError"];
+      [createReply encodeObject:v38 forKey:@"BSXPCReturnError"];
     }
 
-    [v12 send];
-    [v12 invalidate];
+    [createReply send];
+    [createReply invalidate];
   }
 
 LABEL_123:
-  if (a6)
+  if (connection)
   {
-    (*(a6 + 16))(a6);
+    (*(connection + 16))(connection);
   }
 
   v39 = *MEMORY[0x1E69E9840];
 }
 
-+ (uint64_t)decodeArguments:(uint64_t)a3 outArgs:(void *)a4 fromMessage:(void *)a5 forConnection:
++ (uint64_t)decodeArguments:(uint64_t)arguments outArgs:(void *)args fromMessage:(void *)message forConnection:
 {
   v56 = *MEMORY[0x1E69E9840];
   v9 = objc_opt_self();
@@ -1280,18 +1280,18 @@ LABEL_123:
   v39 = v9;
   v41 = a2;
   v10 = [BSXPCServiceConnectionProxy concreteArgumentsForArguments:a2];
-  v11 = [v10 lastObject];
-  v12 = [v11 objectClass];
+  lastObject = [v10 lastObject];
+  objectClass = [lastObject objectClass];
   v13 = objc_opt_class();
-  v14 = [a4 containsValueForKey:@"BSXPCReturnError"];
-  v43 = a5;
+  v14 = [args containsValueForKey:@"BSXPCReturnError"];
+  messageCopy = message;
   v42 = v13;
-  if ((v14 & 1) == 0 && v12 == v13)
+  if ((v14 & 1) == 0 && objectClass == v13)
   {
-    v14 = [a4 containsValueForKey:{__KeyForIndex_block_invoke(objc_msgSend(v11, "argumentIndex"))}];
+    v14 = [args containsValueForKey:{__KeyForIndex_block_invoke(objc_msgSend(lastObject, "argumentIndex"))}];
   }
 
-  v40 = v11;
+  v40 = lastObject;
   if ([v10 count])
   {
     v15 = 0;
@@ -1327,72 +1327,72 @@ LABEL_123:
         JUMPOUT(0x19A835A14);
       }
 
-      v18 = [v17 type];
-      if (v18 > 0x50)
+      type = [v17 type];
+      if (type > 0x50)
       {
-        if (v18 == 81)
+        if (type == 81)
         {
-          v20 = [a4 decodeUInt64ForKey:__KeyForIndex_block_invoke(v15)];
+          v20 = [args decodeUInt64ForKey:__KeyForIndex_block_invoke(v15)];
           goto LABEL_19;
         }
 
-        if (v18 == 113)
+        if (type == 113)
         {
-          v20 = [a4 decodeInt64ForKey:__KeyForIndex_block_invoke(v15)];
+          v20 = [args decodeInt64ForKey:__KeyForIndex_block_invoke(v15)];
 LABEL_19:
-          *(a3 + 8 * v15) = v20;
+          *(arguments + 8 * v15) = v20;
           goto LABEL_20;
         }
       }
 
       else
       {
-        if (v18 == 35)
+        if (type == 35)
         {
-          v21 = [a4 decodeStringForKey:__KeyForIndex_block_invoke(v15)];
+          v21 = [args decodeStringForKey:__KeyForIndex_block_invoke(v15)];
           v20 = NSClassFromString(v21);
           goto LABEL_19;
         }
 
-        if (v18 == 64)
+        if (type == 64)
         {
           if ([v17 isXPCObject])
           {
-            v19 = [a4 _implicitDecodeXPCObjectForKey:__KeyForIndex_block_invoke(v15)];
+            v19 = [args _implicitDecodeXPCObjectForKey:__KeyForIndex_block_invoke(v15)];
           }
 
           else
           {
-            v22 = [v17 objectClass];
-            if ([v22 isSubclassOfClass:objc_opt_class()])
+            objectClass2 = [v17 objectClass];
+            if ([objectClass2 isSubclassOfClass:objc_opt_class()])
             {
-              v19 = v43;
+              v19 = messageCopy;
             }
 
             else
             {
-              v23 = [v17 objectContainedClasses];
-              if ([v23 count])
+              objectContainedClasses = [v17 objectContainedClasses];
+              if ([objectContainedClasses count])
               {
-                if ([v22 isSubclassOfClass:objc_opt_class()])
+                if ([objectClass2 isSubclassOfClass:objc_opt_class()])
                 {
-                  v19 = [a4 decodeDictionaryOfClass:objc_msgSend(v23 forKey:{"objectAtIndex:", 1), __KeyForIndex_block_invoke(v15)}];
+                  v19 = [args decodeDictionaryOfClass:objc_msgSend(objectContainedClasses forKey:{"objectAtIndex:", 1), __KeyForIndex_block_invoke(v15)}];
                 }
 
                 else
                 {
-                  v19 = [a4 decodeCollectionOfClass:v22 containingClass:objc_msgSend(v23 forKey:{"firstObject"), __KeyForIndex_block_invoke(v15)}];
+                  v19 = [args decodeCollectionOfClass:objectClass2 containingClass:objc_msgSend(objectContainedClasses forKey:{"firstObject"), __KeyForIndex_block_invoke(v15)}];
                 }
               }
 
               else
               {
-                v19 = [a4 decodeObjectOfClass:v22 forKey:__KeyForIndex_block_invoke(v15)];
+                v19 = [args decodeObjectOfClass:objectClass2 forKey:__KeyForIndex_block_invoke(v15)];
               }
             }
           }
 
-          *(a3 + 8 * v15) = v19;
+          *(arguments + 8 * v15) = v19;
           if (v19)
           {
             v24 = 1;
@@ -1420,13 +1420,13 @@ LABEL_20:
     while (v15 < [v10 count]);
   }
 
-  result = [a4 containsValueForKey:@"BSXPCReturnError"];
+  result = [args containsValueForKey:@"BSXPCReturnError"];
   if (result)
   {
-    result = [a4 decodeObjectOfClass:objc_opt_class() forKey:@"BSXPCReturnError"];
+    result = [args decodeObjectOfClass:objc_opt_class() forKey:@"BSXPCReturnError"];
     if (result)
     {
-      if (v12 == v42)
+      if (objectClass == v42)
       {
         v26 = result;
         v27 = [objc_msgSend(v41 "lastObject")];
@@ -1459,7 +1459,7 @@ LABEL_20:
         }
 
         result = [v40 argumentIndex];
-        *(a3 + 8 * result) = v26;
+        *(arguments + 8 * result) = v26;
       }
     }
   }
@@ -1529,11 +1529,11 @@ uint64_t __90__BSXPCServiceConnectionProxy_invokeMethod_onTarget_withMessage_for
   return result;
 }
 
-+ (uint64_t)encodeArguments:(uint64_t)a1 inArgs:(void *)a2 toMessage:(uint64_t)a3 forConnection:(void *)a4
++ (uint64_t)encodeArguments:(uint64_t)arguments inArgs:(void *)args toMessage:(uint64_t)message forConnection:(void *)connection
 {
   v36 = *MEMORY[0x1E69E9840];
   v7 = objc_opt_self();
-  if ([a2 count] > 0xA)
+  if ([args count] > 0xA)
   {
     v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"[arguments count] <= 10"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1561,52 +1561,52 @@ uint64_t __90__BSXPCServiceConnectionProxy_invokeMethod_onTarget_withMessage_for
     JUMPOUT(0x19A836268);
   }
 
-  if ([a2 count])
+  if ([args count])
   {
     v8 = 0;
     v9 = *MEMORY[0x1E695D940];
     do
     {
-      v10 = [a2 objectAtIndex:v8];
-      v11 = [v10 type];
-      if (v11 > 0x50)
+      v10 = [args objectAtIndex:v8];
+      type = [v10 type];
+      if (type > 0x50)
       {
-        if (v11 == 81)
+        if (type == 81)
         {
-          [a4 encodeUInt64:*(a3 + 8 * v8) forKey:__KeyForIndex_block_invoke(v8)];
+          [connection encodeUInt64:*(message + 8 * v8) forKey:__KeyForIndex_block_invoke(v8)];
           goto LABEL_19;
         }
 
-        if (v11 != 113)
+        if (type != 113)
         {
 LABEL_15:
           [MEMORY[0x1E695DF30] raise:v9 format:{@"Unsupported ObjectiveC type: %c", objc_msgSend(v10, "type")}];
           goto LABEL_19;
         }
 
-        [a4 encodeInt64:*(a3 + 8 * v8) forKey:__KeyForIndex_block_invoke(v8)];
+        [connection encodeInt64:*(message + 8 * v8) forKey:__KeyForIndex_block_invoke(v8)];
       }
 
       else
       {
-        if (v11 == 35)
+        if (type == 35)
         {
-          v15 = *(a3 + 8 * v8);
+          v15 = *(message + 8 * v8);
           if (v15)
           {
             v16 = NSStringFromClass(v15);
-            [a4 encodeObject:v16 forKey:__KeyForIndex_block_invoke(v8)];
+            [connection encodeObject:v16 forKey:__KeyForIndex_block_invoke(v8)];
           }
 
           goto LABEL_19;
         }
 
-        if (v11 != 64)
+        if (type != 64)
         {
           goto LABEL_15;
         }
 
-        v12 = *(a3 + 8 * v8);
+        v12 = *(message + 8 * v8);
         if (!v12)
         {
           if ([v10 isObjectNonnull])
@@ -1617,14 +1617,14 @@ LABEL_15:
           goto LABEL_19;
         }
 
-        v13 = [v10 objectClass];
+        objectClass = [v10 objectClass];
         v14 = @"local";
-        if (([(objc_class *)v13 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+        if (([(objc_class *)objectClass isSubclassOfClass:objc_opt_class()]& 1) == 0)
         {
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             v17 = MEMORY[0x1E695DF30];
-            v18 = NSStringFromClass(v13);
+            v18 = NSStringFromClass(objectClass);
             [v17 raise:v9 format:{@"Expected %@, but received %@", v18, NSStringFromClass(-[__CFString classForCoder](v12, "classForCoder"))}];
             goto LABEL_19;
           }
@@ -1632,17 +1632,17 @@ LABEL_15:
           v14 = v12;
         }
 
-        [a4 encodeObject:v14 forKey:__KeyForIndex_block_invoke(v8)];
+        [connection encodeObject:v14 forKey:__KeyForIndex_block_invoke(v8)];
       }
 
 LABEL_19:
       ++v8;
     }
 
-    while (v8 < [a2 count]);
+    while (v8 < [args count]);
   }
 
-  result = [a4 _finishCoding];
+  result = [connection _finishCoding];
   v20 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -1835,13 +1835,13 @@ void __90__BSXPCServiceConnectionProxy_invokeMethod_onTarget_withMessage_forConn
 - (void)_decrementInFlightMessageCounter
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 88));
-    v2 = *(a1 + 92);
+    os_unfair_lock_lock((self + 88));
+    v2 = *(self + 92);
     if (!v2)
     {
-      v5 = *(a1 + 8);
+      v5 = *(self + 8);
       if (v5 && (v6 = *(v5 + 192)) != 0)
       {
         v7 = *(v6 + 8);
@@ -1852,7 +1852,7 @@ void __90__BSXPCServiceConnectionProxy_invokeMethod_onTarget_withMessage_forConn
         v7 = 0;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ <%@:%p> unbalanced message tracking detected", v7, objc_opt_class(), a1];
+      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ <%@:%p> unbalanced message tracking detected", v7, objc_opt_class(), self];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v9 = NSStringFromSelector(sel__decrementInFlightMessageCounter);
@@ -1862,7 +1862,7 @@ void __90__BSXPCServiceConnectionProxy_invokeMethod_onTarget_withMessage_forConn
         v14 = 2114;
         v15 = NSStringFromClass(v10);
         v16 = 2048;
-        v17 = a1;
+        selfCopy = self;
         v18 = 2114;
         v19 = @"BSXPCServiceConnectionProxy.m";
         v20 = 1024;
@@ -1879,17 +1879,17 @@ void __90__BSXPCServiceConnectionProxy_invokeMethod_onTarget_withMessage_forConn
     }
 
     v3 = v2 - 1;
-    *(a1 + 92) = v3;
+    *(self + 92) = v3;
     if (!v3)
     {
-      [*(a1 + 80) invalidate];
+      [*(self + 80) invalidate];
 
-      *(a1 + 80) = 0;
+      *(self + 80) = 0;
     }
 
     v4 = *MEMORY[0x1E69E9840];
 
-    os_unfair_lock_unlock((a1 + 88));
+    os_unfair_lock_unlock((self + 88));
   }
 
   else
@@ -1898,13 +1898,13 @@ void __90__BSXPCServiceConnectionProxy_invokeMethod_onTarget_withMessage_forConn
   }
 }
 
-+ (uint64_t)concreteArgumentsForArguments:(uint64_t)a1
++ (uint64_t)concreteArgumentsForArguments:(uint64_t)arguments
 {
   objc_opt_self();
-  v3 = [a2 lastObject];
-  v4 = [v3 isPointer];
-  v5 = [v3 isBlock];
-  if (!v3 || ((v4 | v5) & 1) == 0)
+  lastObject = [a2 lastObject];
+  isPointer = [lastObject isPointer];
+  isBlock = [lastObject isBlock];
+  if (!lastObject || ((isPointer | isBlock) & 1) == 0)
   {
     return a2;
   }

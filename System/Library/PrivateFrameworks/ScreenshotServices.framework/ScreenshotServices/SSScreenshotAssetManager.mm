@@ -1,13 +1,13 @@
 @interface SSScreenshotAssetManager
 + (id)sharedAssetManager;
-- (void)imageWithPreviouslyRegisteredIdentifier:(id)a3 withAccessBlock:(id)a4;
-- (void)recordEditsToPersistable:(id)a3 inTransition:(BOOL)a4 withCompletionBlock:(id)a5;
-- (void)recordEditsToPersistableForPDF:(id)a3 withCompletionBlock:(id)a4;
-- (void)recordPersistableToTemporaryLocation:(id)a3 withCompletionBlock:(id)a4;
-- (void)registerImageForPersistable:(id)a3 options:(id)a4 withRegistrationBlock:(id)a5;
-- (void)removePersistable:(id)a3 deleteOptions:(unint64_t)a4 withCompletionBlock:(id)a5;
+- (void)imageWithPreviouslyRegisteredIdentifier:(id)identifier withAccessBlock:(id)block;
+- (void)recordEditsToPersistable:(id)persistable inTransition:(BOOL)transition withCompletionBlock:(id)block;
+- (void)recordEditsToPersistableForPDF:(id)f withCompletionBlock:(id)block;
+- (void)recordPersistableToTemporaryLocation:(id)location withCompletionBlock:(id)block;
+- (void)registerImageForPersistable:(id)persistable options:(id)options withRegistrationBlock:(id)block;
+- (void)removePersistable:(id)persistable deleteOptions:(unint64_t)options withCompletionBlock:(id)block;
 - (void)resetBackend;
-- (void)saveImageDataToTemporaryLocation:(id)a3 persistable:(id)a4 completionHandler:(id)a5;
+- (void)saveImageDataToTemporaryLocation:(id)location persistable:(id)persistable completionHandler:(id)handler;
 @end
 
 @implementation SSScreenshotAssetManager
@@ -35,19 +35,19 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)registerImageForPersistable:(id)a3 options:(id)a4 withRegistrationBlock:(id)a5
+- (void)registerImageForPersistable:(id)persistable options:(id)options withRegistrationBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SSScreenshotAssetManager *)self backend];
+  blockCopy = block;
+  optionsCopy = options;
+  persistableCopy = persistable;
+  backend = [(SSScreenshotAssetManager *)self backend];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __86__SSScreenshotAssetManager_registerImageForPersistable_options_withRegistrationBlock___block_invoke;
   v13[3] = &unk_1E8590918;
-  v14 = v8;
-  v12 = v8;
-  [v11 registerEntryWithImage:v10 options:v9 identifierHandler:v13];
+  v14 = blockCopy;
+  v12 = blockCopy;
+  [backend registerEntryWithImage:persistableCopy options:optionsCopy identifierHandler:v13];
 }
 
 uint64_t __86__SSScreenshotAssetManager_registerImageForPersistable_options_withRegistrationBlock___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -61,18 +61,18 @@ uint64_t __86__SSScreenshotAssetManager_registerImageForPersistable_options_with
   return result;
 }
 
-- (void)imageWithPreviouslyRegisteredIdentifier:(id)a3 withAccessBlock:(id)a4
+- (void)imageWithPreviouslyRegisteredIdentifier:(id)identifier withAccessBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SSScreenshotAssetManager *)self backend];
+  blockCopy = block;
+  identifierCopy = identifier;
+  backend = [(SSScreenshotAssetManager *)self backend];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__SSScreenshotAssetManager_imageWithPreviouslyRegisteredIdentifier_withAccessBlock___block_invoke;
   v10[3] = &unk_1E8590940;
-  v11 = v6;
-  v9 = v6;
-  [v8 imageForPreviouslyRegisteredIdentifier:v7 imageHandler:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [backend imageForPreviouslyRegisteredIdentifier:identifierCopy imageHandler:v10];
 }
 
 uint64_t __84__SSScreenshotAssetManager_imageWithPreviouslyRegisteredIdentifier_withAccessBlock___block_invoke(uint64_t a1)
@@ -86,21 +86,21 @@ uint64_t __84__SSScreenshotAssetManager_imageWithPreviouslyRegisteredIdentifier_
   return result;
 }
 
-- (void)recordEditsToPersistable:(id)a3 inTransition:(BOOL)a4 withCompletionBlock:(id)a5
+- (void)recordEditsToPersistable:(id)persistable inTransition:(BOOL)transition withCompletionBlock:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  transitionCopy = transition;
+  persistableCopy = persistable;
+  blockCopy = block;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __86__SSScreenshotAssetManager_recordEditsToPersistable_inTransition_withCompletionBlock___block_invoke;
   v12[3] = &unk_1E8590990;
-  v13 = v8;
-  v14 = self;
-  v15 = v9;
-  v10 = v9;
-  v11 = v8;
-  [v11 requestImageInTransition:v6 withBlock:v12];
+  v13 = persistableCopy;
+  selfCopy = self;
+  v15 = blockCopy;
+  v10 = blockCopy;
+  v11 = persistableCopy;
+  [v11 requestImageInTransition:transitionCopy withBlock:v12];
 }
 
 void __86__SSScreenshotAssetManager_recordEditsToPersistable_inTransition_withCompletionBlock___block_invoke(id *a1, void *a2)
@@ -140,19 +140,19 @@ uint64_t __86__SSScreenshotAssetManager_recordEditsToPersistable_inTransition_wi
   return result;
 }
 
-- (void)recordPersistableToTemporaryLocation:(id)a3 withCompletionBlock:(id)a4
+- (void)recordPersistableToTemporaryLocation:(id)location withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __85__SSScreenshotAssetManager_recordPersistableToTemporaryLocation_withCompletionBlock___block_invoke;
   v10[3] = &unk_1E8590990;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = locationCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = locationCopy;
   [v9 requestImageInTransition:0 withBlock:v10];
 }
 
@@ -182,60 +182,60 @@ uint64_t __85__SSScreenshotAssetManager_recordPersistableToTemporaryLocation_wit
   return result;
 }
 
-- (void)saveImageDataToTemporaryLocation:(id)a3 persistable:(id)a4 completionHandler:(id)a5
+- (void)saveImageDataToTemporaryLocation:(id)location persistable:(id)persistable completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SSScreenshotAssetManager *)self backend];
-  v12 = [v9 filename];
-  v13 = [v9 imageDescription];
+  handlerCopy = handler;
+  persistableCopy = persistable;
+  locationCopy = location;
+  backend = [(SSScreenshotAssetManager *)self backend];
+  filename = [persistableCopy filename];
+  imageDescription = [persistableCopy imageDescription];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __91__SSScreenshotAssetManager_saveImageDataToTemporaryLocation_persistable_completionHandler___block_invoke;
   v15[3] = &unk_1E85909B8;
-  v16 = v8;
-  v14 = v8;
-  [v11 saveImageDataToTemporaryLocation:v10 withName:v12 imageDescription:v13 completionHandler:v15];
+  v16 = handlerCopy;
+  v14 = handlerCopy;
+  [backend saveImageDataToTemporaryLocation:locationCopy withName:filename imageDescription:imageDescription completionHandler:v15];
 }
 
-- (void)removePersistable:(id)a3 deleteOptions:(unint64_t)a4 withCompletionBlock:(id)a5
+- (void)removePersistable:(id)persistable deleteOptions:(unint64_t)options withCompletionBlock:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (a4 - 1 <= 1)
+  persistableCopy = persistable;
+  blockCopy = block;
+  if (options - 1 <= 1)
   {
-    [v8 removePDF];
+    [persistableCopy removePDF];
   }
 
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if ((options & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
-    if (v9)
+    if (blockCopy)
     {
       v10 = os_log_create("com.apple.screenshotservices", "ScreenshotManager");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v16 = a4;
+        optionsCopy = options;
         _os_log_impl(&dword_1D9E04000, v10, OS_LOG_TYPE_DEFAULT, "remove persistable calling completion block for unhandled delete options: %ld", buf, 0xCu);
       }
 
-      v9[2](v9);
+      blockCopy[2](blockCopy);
     }
   }
 
   else
   {
-    v11 = [(SSScreenshotAssetManager *)self backend];
-    v12 = [v8 identifier];
+    backend = [(SSScreenshotAssetManager *)self backend];
+    identifier = [persistableCopy identifier];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __80__SSScreenshotAssetManager_removePersistable_deleteOptions_withCompletionBlock___block_invoke;
     v13[3] = &unk_1E8590968;
-    v14 = v9;
-    [v11 removeEntryWithIdentifier:v12 completionHandler:v13];
+    v14 = blockCopy;
+    [backend removeEntryWithIdentifier:identifier completionHandler:v13];
   }
 }
 
@@ -250,16 +250,16 @@ uint64_t __80__SSScreenshotAssetManager_removePersistable_deleteOptions_withComp
   return result;
 }
 
-- (void)recordEditsToPersistableForPDF:(id)a3 withCompletionBlock:(id)a4
+- (void)recordEditsToPersistableForPDF:(id)f withCompletionBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __79__SSScreenshotAssetManager_recordEditsToPersistableForPDF_withCompletionBlock___block_invoke;
   v7[3] = &unk_1E8590228;
-  v8 = v5;
-  v6 = v5;
-  [a3 savePDFWithBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [f savePDFWithBlock:v7];
 }
 
 uint64_t __79__SSScreenshotAssetManager_recordEditsToPersistableForPDF_withCompletionBlock___block_invoke(uint64_t a1)

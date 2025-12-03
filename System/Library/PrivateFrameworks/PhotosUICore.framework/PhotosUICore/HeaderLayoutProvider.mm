@@ -1,25 +1,25 @@
 @interface HeaderLayoutProvider
 - (_TtC12PhotosUICoreP33_5DC3BAD9D894674C1E26919FC61C1C2C20HeaderLayoutProvider)init;
-- (id)createGlobalHeaderLayoutForPhotosViewModel:(id)a3 dataSource:(id)a4 spec:(id)a5;
-- (void)configureGlobalHeaderLayout:(id)a3 dataSource:(id)a4 spec:(id)a5;
+- (id)createGlobalHeaderLayoutForPhotosViewModel:(id)model dataSource:(id)source spec:(id)spec;
+- (void)configureGlobalHeaderLayout:(id)layout dataSource:(id)source spec:(id)spec;
 @end
 
 @implementation HeaderLayoutProvider
 
-- (id)createGlobalHeaderLayoutForPhotosViewModel:(id)a3 dataSource:(id)a4 spec:(id)a5
+- (id)createGlobalHeaderLayoutForPhotosViewModel:(id)model dataSource:(id)source spec:(id)spec
 {
   v5 = [objc_allocWithZone(type metadata accessor for TopInsetSpacerLayout()) init];
 
   return v5;
 }
 
-- (void)configureGlobalHeaderLayout:(id)a3 dataSource:(id)a4 spec:(id)a5
+- (void)configureGlobalHeaderLayout:(id)layout dataSource:(id)source spec:(id)spec
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1A4A09DDC(v8, v10);
+  layoutCopy = layout;
+  sourceCopy = source;
+  specCopy = spec;
+  selfCopy = self;
+  sub_1A4A09DDC(layoutCopy, specCopy);
 }
 
 - (_TtC12PhotosUICoreP33_5DC3BAD9D894674C1E26919FC61C1C2C20HeaderLayoutProvider)init

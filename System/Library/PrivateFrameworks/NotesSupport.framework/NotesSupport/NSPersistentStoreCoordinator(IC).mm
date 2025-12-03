@@ -34,13 +34,13 @@ LABEL_11:
   }
 
   v6 = [MEMORY[0x1E695DFF8] URLWithString:v5];
-  v7 = [a1 ic_managedObjectIDForURIRepresentation:v6];
+  v7 = [self ic_managedObjectIDForURIRepresentation:v6];
   if (!v7)
   {
     v8 = os_log_create("com.apple.notes", "CoreData");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [(NSPersistentStoreCoordinator(IC) *)v5 ic_managedObjectIDForURIString:a1, v8];
+      [(NSPersistentStoreCoordinator(IC) *)v5 ic_managedObjectIDForURIString:self, v8];
     }
   }
 
@@ -55,7 +55,7 @@ LABEL_12:
   v5 = v4;
   if (v4 && ([v4 scheme], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", @"x-coredata"), v6, v7))
   {
-    v8 = [a1 managedObjectIDForURIRepresentation:v5];
+    v8 = [self managedObjectIDForURIRepresentation:v5];
   }
 
   else

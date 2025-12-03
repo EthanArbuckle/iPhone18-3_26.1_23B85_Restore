@@ -1,21 +1,21 @@
 @interface AWDWiFiNWActivityInterfaceStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRole:(id)a3;
+- (int)StringAsRole:(id)role;
 - (int)role;
 - (unint64_t)hash;
-- (void)addBytes:(id)a3;
-- (void)addNpeers:(id)a3;
-- (void)addPackets:(id)a3;
-- (void)addPeer:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addBytes:(id)bytes;
+- (void)addNpeers:(id)npeers;
+- (void)addPackets:(id)packets;
+- (void)addPeer:(id)peer;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDps:(BOOL)a3;
-- (void)setHasRole:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDps:(BOOL)dps;
+- (void)setHasRole:(BOOL)role;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiNWActivityInterfaceStats
@@ -46,9 +46,9 @@
   }
 }
 
-- (void)setHasRole:(BOOL)a3
+- (void)setHasRole:(BOOL)role
 {
-  if (a3)
+  if (role)
   {
     v3 = 4;
   }
@@ -61,19 +61,19 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsRole:(id)a3
+- (int)StringAsRole:(id)role
 {
-  if ([a3 isEqualToString:@"INFRA"])
+  if ([role isEqualToString:@"INFRA"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"LEGACYAWDL"])
+  if ([role isEqualToString:@"LEGACYAWDL"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"LLWAWDL"])
+  if ([role isEqualToString:@"LLWAWDL"])
   {
     return 2;
   }
@@ -81,7 +81,7 @@
   return 0;
 }
 
-- (void)addPackets:(id)a3
+- (void)addPackets:(id)packets
 {
   packets = self->_packets;
   if (!packets)
@@ -90,10 +90,10 @@
     self->_packets = packets;
   }
 
-  [(NSMutableArray *)packets addObject:a3];
+  [(NSMutableArray *)packets addObject:packets];
 }
 
-- (void)addBytes:(id)a3
+- (void)addBytes:(id)bytes
 {
   bytes = self->_bytes;
   if (!bytes)
@@ -102,10 +102,10 @@
     self->_bytes = bytes;
   }
 
-  [(NSMutableArray *)bytes addObject:a3];
+  [(NSMutableArray *)bytes addObject:bytes];
 }
 
-- (void)addPeer:(id)a3
+- (void)addPeer:(id)peer
 {
   peers = self->_peers;
   if (!peers)
@@ -114,10 +114,10 @@
     self->_peers = peers;
   }
 
-  [(NSMutableArray *)peers addObject:a3];
+  [(NSMutableArray *)peers addObject:peer];
 }
 
-- (void)addNpeers:(id)a3
+- (void)addNpeers:(id)npeers
 {
   npeers = self->_npeers;
   if (!npeers)
@@ -126,12 +126,12 @@
     self->_npeers = npeers;
   }
 
-  [(NSMutableArray *)npeers addObject:a3];
+  [(NSMutableArray *)npeers addObject:npeers];
 }
 
-- (void)setHasDps:(BOOL)a3
+- (void)setHasDps:(BOOL)dps
 {
-  if (a3)
+  if (dps)
   {
     v3 = 2;
   }
@@ -154,7 +154,7 @@
 - (id)dictionaryRepresentation
 {
   v55 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     role = self->_role;
@@ -168,7 +168,7 @@
       v5 = off_29EE332B0[role];
     }
 
-    [v3 setObject:v5 forKey:@"role"];
+    [dictionary setObject:v5 forKey:@"role"];
   }
 
   if ([(NSMutableArray *)self->_packets count])
@@ -202,7 +202,7 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"packets"];
+    [dictionary setObject:v6 forKey:@"packets"];
   }
 
   if ([(NSMutableArray *)self->_bytes count])
@@ -236,7 +236,7 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKey:@"bytes"];
+    [dictionary setObject:v12 forKey:@"bytes"];
   }
 
   if ([(NSMutableArray *)self->_peers count])
@@ -270,7 +270,7 @@
       while (v21);
     }
 
-    [v3 setObject:v18 forKey:@"peer"];
+    [dictionary setObject:v18 forKey:@"peer"];
   }
 
   if ([(NSMutableArray *)self->_npeers count])
@@ -304,38 +304,38 @@
       while (v27);
     }
 
-    [v3 setObject:v24 forKey:@"npeers"];
+    [dictionary setObject:v24 forKey:@"npeers"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dps), @"dps"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dps), @"dps"}];
     has = self->_has;
   }
 
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_consecutivedps), @"consecutivedps"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_consecutivedps), @"consecutivedps"}];
   }
 
   assoc = self->_assoc;
   if (assoc)
   {
-    [v3 setObject:-[AWDWiFiNWActivityAssoc dictionaryRepresentation](assoc forKey:{"dictionaryRepresentation"), @"assoc"}];
+    [dictionary setObject:-[AWDWiFiNWActivityAssoc dictionaryRepresentation](assoc forKey:{"dictionaryRepresentation"), @"assoc"}];
   }
 
   awdlMode = self->_awdlMode;
   if (awdlMode)
   {
-    [v3 setObject:-[AWDWiFiNWActivityStateBin dictionaryRepresentation](awdlMode forKey:{"dictionaryRepresentation"), @"awdlMode"}];
+    [dictionary setObject:-[AWDWiFiNWActivityStateBin dictionaryRepresentation](awdlMode forKey:{"dictionaryRepresentation"), @"awdlMode"}];
   }
 
   v33 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v53 = *MEMORY[0x29EDCA608];
   if ((*&self->_has & 4) != 0)
@@ -487,66 +487,66 @@
   v32 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 4) != 0)
   {
-    *(a3 + 16) = self->_role;
-    *(a3 + 68) |= 4u;
+    *(to + 16) = self->_role;
+    *(to + 68) |= 4u;
   }
 
   if ([(AWDWiFiNWActivityInterfaceStats *)self packetsCount])
   {
-    [a3 clearPackets];
-    v5 = [(AWDWiFiNWActivityInterfaceStats *)self packetsCount];
-    if (v5)
+    [to clearPackets];
+    packetsCount = [(AWDWiFiNWActivityInterfaceStats *)self packetsCount];
+    if (packetsCount)
     {
-      v6 = v5;
+      v6 = packetsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addPackets:{-[AWDWiFiNWActivityInterfaceStats packetsAtIndex:](self, "packetsAtIndex:", i)}];
+        [to addPackets:{-[AWDWiFiNWActivityInterfaceStats packetsAtIndex:](self, "packetsAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDWiFiNWActivityInterfaceStats *)self bytesCount])
   {
-    [a3 clearBytes];
-    v8 = [(AWDWiFiNWActivityInterfaceStats *)self bytesCount];
-    if (v8)
+    [to clearBytes];
+    bytesCount = [(AWDWiFiNWActivityInterfaceStats *)self bytesCount];
+    if (bytesCount)
     {
-      v9 = v8;
+      v9 = bytesCount;
       for (j = 0; j != v9; ++j)
       {
-        [a3 addBytes:{-[AWDWiFiNWActivityInterfaceStats bytesAtIndex:](self, "bytesAtIndex:", j)}];
+        [to addBytes:{-[AWDWiFiNWActivityInterfaceStats bytesAtIndex:](self, "bytesAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDWiFiNWActivityInterfaceStats *)self peersCount])
   {
-    [a3 clearPeers];
-    v11 = [(AWDWiFiNWActivityInterfaceStats *)self peersCount];
-    if (v11)
+    [to clearPeers];
+    peersCount = [(AWDWiFiNWActivityInterfaceStats *)self peersCount];
+    if (peersCount)
     {
-      v12 = v11;
+      v12 = peersCount;
       for (k = 0; k != v12; ++k)
       {
-        [a3 addPeer:{-[AWDWiFiNWActivityInterfaceStats peerAtIndex:](self, "peerAtIndex:", k)}];
+        [to addPeer:{-[AWDWiFiNWActivityInterfaceStats peerAtIndex:](self, "peerAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDWiFiNWActivityInterfaceStats *)self npeersCount])
   {
-    [a3 clearNpeers];
-    v14 = [(AWDWiFiNWActivityInterfaceStats *)self npeersCount];
-    if (v14)
+    [to clearNpeers];
+    npeersCount = [(AWDWiFiNWActivityInterfaceStats *)self npeersCount];
+    if (npeersCount)
     {
-      v15 = v14;
+      v15 = npeersCount;
       for (m = 0; m != v15; ++m)
       {
-        [a3 addNpeers:{-[AWDWiFiNWActivityInterfaceStats npeersAtIndex:](self, "npeersAtIndex:", m)}];
+        [to addNpeers:{-[AWDWiFiNWActivityInterfaceStats npeersAtIndex:](self, "npeersAtIndex:", m)}];
       }
     }
   }
@@ -554,33 +554,33 @@
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 9) = self->_dps;
-    *(a3 + 68) |= 2u;
+    *(to + 9) = self->_dps;
+    *(to + 68) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(a3 + 8) = self->_consecutivedps;
-    *(a3 + 68) |= 1u;
+    *(to + 8) = self->_consecutivedps;
+    *(to + 68) |= 1u;
   }
 
   if (self->_assoc)
   {
-    [a3 setAssoc:?];
+    [to setAssoc:?];
   }
 
   if (self->_awdlMode)
   {
 
-    [a3 setAwdlMode:?];
+    [to setAwdlMode:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v54 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -607,7 +607,7 @@
           objc_enumerationMutation(packets);
         }
 
-        v12 = [*(*(&v46 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v46 + 1) + 8 * i) copyWithZone:zone];
         [v6 addPackets:v12];
       }
 
@@ -636,7 +636,7 @@
           objc_enumerationMutation(bytes);
         }
 
-        v18 = [*(*(&v42 + 1) + 8 * j) copyWithZone:a3];
+        v18 = [*(*(&v42 + 1) + 8 * j) copyWithZone:zone];
         [v6 addBytes:v18];
       }
 
@@ -665,7 +665,7 @@
           objc_enumerationMutation(peers);
         }
 
-        v24 = [*(*(&v38 + 1) + 8 * k) copyWithZone:a3];
+        v24 = [*(*(&v38 + 1) + 8 * k) copyWithZone:zone];
         [v6 addPeer:v24];
       }
 
@@ -694,7 +694,7 @@
           objc_enumerationMutation(npeers);
         }
 
-        v30 = [*(*(&v34 + 1) + 8 * m) copyWithZone:a3];
+        v30 = [*(*(&v34 + 1) + 8 * m) copyWithZone:zone];
         [v6 addNpeers:v30];
       }
 
@@ -718,27 +718,27 @@
     *(v6 + 68) |= 1u;
   }
 
-  *(v6 + 8) = [(AWDWiFiNWActivityAssoc *)self->_assoc copyWithZone:a3];
-  *(v6 + 16) = [(AWDWiFiNWActivityStateBin *)self->_awdlMode copyWithZone:a3];
+  *(v6 + 8) = [(AWDWiFiNWActivityAssoc *)self->_assoc copyWithZone:zone];
+  *(v6 + 16) = [(AWDWiFiNWActivityStateBin *)self->_awdlMode copyWithZone:zone];
   v32 = *MEMORY[0x29EDCA608];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 68);
+    v6 = *(equal + 68);
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 68) & 4) == 0 || self->_role != *(a3 + 16))
+      if ((*(equal + 68) & 4) == 0 || self->_role != *(equal + 16))
       {
         goto LABEL_29;
       }
     }
 
-    else if ((*(a3 + 68) & 4) != 0)
+    else if ((*(equal + 68) & 4) != 0)
     {
 LABEL_29:
       LOBYTE(v5) = 0;
@@ -746,49 +746,49 @@ LABEL_29:
     }
 
     packets = self->_packets;
-    if (!(packets | *(a3 + 6)) || (v5 = [(NSMutableArray *)packets isEqual:?]) != 0)
+    if (!(packets | *(equal + 6)) || (v5 = [(NSMutableArray *)packets isEqual:?]) != 0)
     {
       bytes = self->_bytes;
-      if (!(bytes | *(a3 + 3)) || (v5 = [(NSMutableArray *)bytes isEqual:?]) != 0)
+      if (!(bytes | *(equal + 3)) || (v5 = [(NSMutableArray *)bytes isEqual:?]) != 0)
       {
         peers = self->_peers;
-        if (!(peers | *(a3 + 7)) || (v5 = [(NSMutableArray *)peers isEqual:?]) != 0)
+        if (!(peers | *(equal + 7)) || (v5 = [(NSMutableArray *)peers isEqual:?]) != 0)
         {
           npeers = self->_npeers;
-          if (!(npeers | *(a3 + 5)) || (v5 = [(NSMutableArray *)npeers isEqual:?]) != 0)
+          if (!(npeers | *(equal + 5)) || (v5 = [(NSMutableArray *)npeers isEqual:?]) != 0)
           {
-            v11 = *(a3 + 68);
+            v11 = *(equal + 68);
             if ((*&self->_has & 2) != 0)
             {
-              if ((*(a3 + 68) & 2) == 0 || self->_dps != *(a3 + 9))
+              if ((*(equal + 68) & 2) == 0 || self->_dps != *(equal + 9))
               {
                 goto LABEL_29;
               }
             }
 
-            else if ((*(a3 + 68) & 2) != 0)
+            else if ((*(equal + 68) & 2) != 0)
             {
               goto LABEL_29;
             }
 
             if (*&self->_has)
             {
-              if ((*(a3 + 68) & 1) == 0 || self->_consecutivedps != *(a3 + 8))
+              if ((*(equal + 68) & 1) == 0 || self->_consecutivedps != *(equal + 8))
               {
                 goto LABEL_29;
               }
             }
 
-            else if (*(a3 + 68))
+            else if (*(equal + 68))
             {
               goto LABEL_29;
             }
 
             assoc = self->_assoc;
-            if (!(assoc | *(a3 + 1)) || (v5 = [(AWDWiFiNWActivityAssoc *)assoc isEqual:?]) != 0)
+            if (!(assoc | *(equal + 1)) || (v5 = [(AWDWiFiNWActivityAssoc *)assoc isEqual:?]) != 0)
             {
               awdlMode = self->_awdlMode;
-              if (awdlMode | *(a3 + 2))
+              if (awdlMode | *(equal + 2))
               {
 
                 LOBYTE(v5) = [(AWDWiFiNWActivityStateBin *)awdlMode isEqual:?];
@@ -851,12 +851,12 @@ LABEL_9:
   return v10 ^ v11 ^ [(AWDWiFiNWActivityStateBin *)self->_awdlMode hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v51 = *MEMORY[0x29EDCA608];
-  if ((*(a3 + 68) & 4) != 0)
+  if ((*(from + 68) & 4) != 0)
   {
-    self->_role = *(a3 + 16);
+    self->_role = *(from + 16);
     *&self->_has |= 4u;
   }
 
@@ -864,7 +864,7 @@ LABEL_9:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v5 = *(a3 + 6);
+  v5 = *(from + 6);
   v6 = [v5 countByEnumeratingWithState:&v43 objects:v50 count:16];
   if (v6)
   {
@@ -892,7 +892,7 @@ LABEL_9:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v10 = *(a3 + 3);
+  v10 = *(from + 3);
   v11 = [v10 countByEnumeratingWithState:&v39 objects:v49 count:16];
   if (v11)
   {
@@ -920,7 +920,7 @@ LABEL_9:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v15 = *(a3 + 7);
+  v15 = *(from + 7);
   v16 = [v15 countByEnumeratingWithState:&v35 objects:v48 count:16];
   if (v16)
   {
@@ -948,7 +948,7 @@ LABEL_9:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v20 = *(a3 + 5);
+  v20 = *(from + 5);
   v21 = [v20 countByEnumeratingWithState:&v31 objects:v47 count:16];
   if (v21)
   {
@@ -972,22 +972,22 @@ LABEL_9:
     while (v22);
   }
 
-  v25 = *(a3 + 68);
+  v25 = *(from + 68);
   if ((v25 & 2) != 0)
   {
-    self->_dps = *(a3 + 9);
+    self->_dps = *(from + 9);
     *&self->_has |= 2u;
-    v25 = *(a3 + 68);
+    v25 = *(from + 68);
   }
 
   if (v25)
   {
-    self->_consecutivedps = *(a3 + 8);
+    self->_consecutivedps = *(from + 8);
     *&self->_has |= 1u;
   }
 
   assoc = self->_assoc;
-  v27 = *(a3 + 1);
+  v27 = *(from + 1);
   if (assoc)
   {
     if (v27)
@@ -1002,7 +1002,7 @@ LABEL_9:
   }
 
   awdlMode = self->_awdlMode;
-  v29 = *(a3 + 2);
+  v29 = *(from + 2);
   if (awdlMode)
   {
     if (v29)

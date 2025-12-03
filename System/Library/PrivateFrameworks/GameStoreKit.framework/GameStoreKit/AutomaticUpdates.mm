@@ -1,10 +1,10 @@
 @interface AutomaticUpdates
-- (void)applicationWillEnterForegroundWithNotification:(id)a3;
+- (void)applicationWillEnterForegroundWithNotification:(id)notification;
 @end
 
 @implementation AutomaticUpdates
 
-- (void)applicationWillEnterForegroundWithNotification:(id)a3
+- (void)applicationWillEnterForegroundWithNotification:(id)notification
 {
   v3 = sub_24F91EB58();
   v4 = *(v3 - 8);

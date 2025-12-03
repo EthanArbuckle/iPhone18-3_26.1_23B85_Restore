@@ -1,9 +1,9 @@
 @interface ConfigurationIntentResponse
 - (ConfigurationIntentResponse)init;
-- (ConfigurationIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (ConfigurationIntentResponse)initWithPropertiesByName:(id)a3;
+- (ConfigurationIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
+- (ConfigurationIntentResponse)initWithPropertiesByName:(id)name;
 - (int64_t)code;
-- (void)setCode:(int64_t)a3;
+- (void)setCode:(int64_t)code;
 @end
 
 @implementation ConfigurationIntentResponse
@@ -15,22 +15,22 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setCode:(int64_t)a3
+- (void)setCode:(int64_t)code
 {
   v5 = OBJC_IVAR___ConfigurationIntentResponse_code;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = code;
 }
 
-- (ConfigurationIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (ConfigurationIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
-  v6 = a4;
+  activityCopy = activity;
   v7 = [(ConfigurationIntentResponse *)self init];
   v8 = OBJC_IVAR___ConfigurationIntentResponse_code;
   swift_beginAccess();
-  *(&v7->super.super.isa + v8) = a3;
+  *(&v7->super.super.isa + v8) = code;
   v9 = v7;
-  [(ConfigurationIntentResponse *)v9 setUserActivity:v6];
+  [(ConfigurationIntentResponse *)v9 setUserActivity:activityCopy];
 
   return v9;
 }
@@ -43,9 +43,9 @@
   return [(ConfigurationIntentResponse *)&v3 init];
 }
 
-- (ConfigurationIntentResponse)initWithPropertiesByName:(id)a3
+- (ConfigurationIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_23030F658();
   }

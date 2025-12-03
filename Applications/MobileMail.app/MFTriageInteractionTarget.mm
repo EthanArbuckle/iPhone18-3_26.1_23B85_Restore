@@ -1,19 +1,19 @@
 @interface MFTriageInteractionTarget
-- (MFTriageInteractionTarget)initWithMessageListItem:(id)a3 primaryMessage:(id)a4 selectedMessageContent:(id)a5 primaryMessageContentRequest:(id)a6 targetPreference:(int64_t)a7 preferQuickCompositionalActions:(BOOL)a8;
+- (MFTriageInteractionTarget)initWithMessageListItem:(id)item primaryMessage:(id)message selectedMessageContent:(id)content primaryMessageContentRequest:(id)request targetPreference:(int64_t)preference preferQuickCompositionalActions:(BOOL)actions;
 - (NSArray)targetedMessages;
 @end
 
 @implementation MFTriageInteractionTarget
 
-- (MFTriageInteractionTarget)initWithMessageListItem:(id)a3 primaryMessage:(id)a4 selectedMessageContent:(id)a5 primaryMessageContentRequest:(id)a6 targetPreference:(int64_t)a7 preferQuickCompositionalActions:(BOOL)a8
+- (MFTriageInteractionTarget)initWithMessageListItem:(id)item primaryMessage:(id)message selectedMessageContent:(id)content primaryMessageContentRequest:(id)request targetPreference:(int64_t)preference preferQuickCompositionalActions:(BOOL)actions
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  if (v15)
+  itemCopy = item;
+  messageCopy = message;
+  contentCopy = content;
+  requestCopy = request;
+  if (itemCopy)
   {
-    if (v16)
+    if (messageCopy)
     {
       goto LABEL_3;
     }
@@ -24,7 +24,7 @@
     v24 = +[NSAssertionHandler currentHandler];
     [v24 handleFailureInMethod:a2 object:self file:@"MFTriageInteractionTarget.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"messageListItem"}];
 
-    if (v16)
+    if (messageCopy)
     {
       goto LABEL_3;
     }
@@ -40,15 +40,15 @@ LABEL_3:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_messageListItem, a3);
-    objc_storeStrong(&v20->_primaryMessage, a4);
-    v21 = [v17 copy];
+    objc_storeStrong(&v19->_messageListItem, item);
+    objc_storeStrong(&v20->_primaryMessage, message);
+    v21 = [contentCopy copy];
     selectedMessageContent = v20->_selectedMessageContent;
     v20->_selectedMessageContent = v21;
 
-    objc_storeStrong(&v20->_primaryMessageContentRequest, a6);
-    v20->_targetPreference = a7;
-    v20->_preferQuickCompositionalActions = a8;
+    objc_storeStrong(&v20->_primaryMessageContentRequest, request);
+    v20->_targetPreference = preference;
+    v20->_preferQuickCompositionalActions = actions;
   }
 
   return v20;
@@ -58,25 +58,25 @@ LABEL_3:
 {
   if ([(MFTriageInteractionTarget *)self targetPreference]== 1)
   {
-    v3 = [(MFTriageInteractionTarget *)self messageListItem];
-    v11 = v3;
+    messageListItem = [(MFTriageInteractionTarget *)self messageListItem];
+    v11 = messageListItem;
     v4 = [NSArray arrayWithObjects:&v11 count:1];
 LABEL_5:
     v6 = v4;
     goto LABEL_6;
   }
 
-  v5 = [(MFTriageInteractionTarget *)self primaryMessage];
-  v3 = v5;
-  if (v5)
+  primaryMessage = [(MFTriageInteractionTarget *)self primaryMessage];
+  messageListItem = primaryMessage;
+  if (primaryMessage)
   {
-    v10 = v5;
+    v10 = primaryMessage;
     v4 = [NSArray arrayWithObjects:&v10 count:1];
     goto LABEL_5;
   }
 
-  v8 = [(MFTriageInteractionTarget *)self messageListItem];
-  v9 = v8;
+  messageListItem2 = [(MFTriageInteractionTarget *)self messageListItem];
+  v9 = messageListItem2;
   v6 = [NSArray arrayWithObjects:&v9 count:1];
 
 LABEL_6:

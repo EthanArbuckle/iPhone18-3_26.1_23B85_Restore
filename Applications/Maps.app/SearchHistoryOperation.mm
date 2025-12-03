@@ -1,14 +1,14 @@
 @interface SearchHistoryOperation
-- (BOOL)_removeCompletionItemForStringKey:(id)a3 query:(id)a4 fromCompletions:(id)a5;
+- (BOOL)_removeCompletionItemForStringKey:(id)key query:(id)query fromCompletions:(id)completions;
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
-- (SearchHistoryOperation)initWithSearchQuery:(id)a3 searchMode:(unsigned int)a4 history:(id)a5 context:(id)a6;
+- (SearchHistoryOperation)initWithSearchQuery:(id)query searchMode:(unsigned int)mode history:(id)history context:(id)context;
 - (SearchHistoryOperationDelegate)delegate;
-- (id)_historyResultsForSearchQuery:(id)a3 searchMode:(unsigned int)a4;
-- (id)shortAddressForMapItem:(id)a3;
+- (id)_historyResultsForSearchQuery:(id)query searchMode:(unsigned int)mode;
+- (id)shortAddressForMapItem:(id)item;
 - (void)main;
-- (void)setExecuting:(BOOL)a3;
-- (void)setFinished:(BOOL)a3;
+- (void)setExecuting:(BOOL)executing;
+- (void)setFinished:(BOOL)finished;
 @end
 
 @implementation SearchHistoryOperation
@@ -20,21 +20,21 @@
   return WeakRetained;
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
   [(SearchHistoryOperation *)self willChangeValueForKey:@"isExecuting"];
   os_unfair_lock_lock(&self->_stateLock);
-  self->_isExecuting = a3;
+  self->_isExecuting = executing;
   os_unfair_lock_unlock(&self->_stateLock);
 
   [(SearchHistoryOperation *)self didChangeValueForKey:@"isExecuting"];
 }
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
   [(SearchHistoryOperation *)self willChangeValueForKey:@"isFinished"];
   os_unfair_lock_lock(&self->_stateLock);
-  self->_isFinished = a3;
+  self->_isFinished = finished;
   os_unfair_lock_unlock(&self->_stateLock);
 
   [(SearchHistoryOperation *)self didChangeValueForKey:@"isFinished"];
@@ -56,12 +56,12 @@
   return isFinished;
 }
 
-- (id)_historyResultsForSearchQuery:(id)a3 searchMode:(unsigned int)a4
+- (id)_historyResultsForSearchQuery:(id)query searchMode:(unsigned int)mode
 {
-  v5 = a3;
-  if ([v5 length] && (objc_msgSend(v5, "isEqualToString:", @" ") & 1) == 0)
+  queryCopy = query;
+  if ([queryCopy length] && (objc_msgSend(queryCopy, "isEqualToString:", @" ") & 1) == 0)
   {
-    v21 = v5;
+    v21 = queryCopy;
     v20 = +[NSMutableArray array];
     v7 = objc_alloc_init(NSMutableDictionary);
     v31 = 0u;
@@ -84,7 +84,7 @@
           }
 
           v12 = *(*(&v31 + 1) + 8 * i);
-          v5 = v21;
+          queryCopy = v21;
           if (([(SearchHistoryOperation *)self isCancelled]& 1) != 0)
           {
 
@@ -93,7 +93,7 @@
             goto LABEL_14;
           }
 
-          v13 = [v12 historyEntry];
+          historyEntry = [v12 historyEntry];
           v27[0] = _NSConcreteStackBlock;
           v27[1] = 3221225472;
           v27[2] = sub_100C460A4;
@@ -101,7 +101,7 @@
           v27[4] = v12;
           v14 = v21;
           v28 = v14;
-          v29 = self;
+          selfCopy = self;
           v15 = v20;
           v30 = v15;
           v22[0] = _NSConcreteStackBlock;
@@ -113,7 +113,7 @@
           v24 = v7;
           v25 = v12;
           v26 = v15;
-          [v13 ifSearch:v27 ifRoute:0 ifPlaceDisplay:v22 ifTransitLineItem:&stru_10164E860];
+          [historyEntry ifSearch:v27 ifRoute:0 ifPlaceDisplay:v22 ifTransitLineItem:&stru_10164E860];
         }
 
         v9 = [(NSArray *)obj countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -126,13 +126,13 @@
       }
     }
 
-    v16 = [v7 allValues];
+    allValues = [v7 allValues];
     v17 = v20;
-    [v20 addObjectsFromArray:v16];
+    [v20 addObjectsFromArray:allValues];
 
     [v20 sortUsingFunction:sub_100C46730 context:0];
     v6 = [v20 copy];
-    v5 = v21;
+    queryCopy = v21;
 LABEL_14:
   }
 
@@ -144,31 +144,31 @@ LABEL_14:
   return v6;
 }
 
-- (id)shortAddressForMapItem:(id)a3
+- (id)shortAddressForMapItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 _addressFormattedAsName];
-  if (![v4 length])
+  itemCopy = item;
+  _addressFormattedAsName = [itemCopy _addressFormattedAsName];
+  if (![_addressFormattedAsName length])
   {
-    v5 = [v3 _addressFormattedAsShortenedAddress];
+    _addressFormattedAsShortenedAddress = [itemCopy _addressFormattedAsShortenedAddress];
 
-    v4 = v5;
+    _addressFormattedAsName = _addressFormattedAsShortenedAddress;
   }
 
-  return v4;
+  return _addressFormattedAsName;
 }
 
-- (BOOL)_removeCompletionItemForStringKey:(id)a3 query:(id)a4 fromCompletions:(id)a5
+- (BOOL)_removeCompletionItemForStringKey:(id)key query:(id)query fromCompletions:(id)completions
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 _web_hasCaseInsensitivePrefix:a4];
+  keyCopy = key;
+  completionsCopy = completions;
+  v9 = [keyCopy _web_hasCaseInsensitivePrefix:query];
   if (v9)
   {
-    v10 = [v7 lowercaseString];
-    v11 = [v10 stringByRemovingPunctuation];
+    lowercaseString = [keyCopy lowercaseString];
+    stringByRemovingPunctuation = [lowercaseString stringByRemovingPunctuation];
 
-    [v8 removeObjectForKey:v11];
+    [completionsCopy removeObjectForKey:stringByRemovingPunctuation];
   }
 
   return v9;
@@ -182,7 +182,7 @@ LABEL_14:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "SearchHistoryOperation: %@ - is cancelled before starting", &v11, 0xCu);
     }
 
@@ -220,7 +220,7 @@ LABEL_14:
     {
       v8 = [v6 count];
       v11 = 134217984;
-      v12 = v8;
+      selfCopy = v8;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "SearchHistoryOperation - collected %lu results", &v11, 0xCu);
     }
 
@@ -233,22 +233,22 @@ LABEL_14:
   }
 }
 
-- (SearchHistoryOperation)initWithSearchQuery:(id)a3 searchMode:(unsigned int)a4 history:(id)a5 context:(id)a6
+- (SearchHistoryOperation)initWithSearchQuery:(id)query searchMode:(unsigned int)mode history:(id)history context:(id)context
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  queryCopy = query;
+  historyCopy = history;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = SearchHistoryOperation;
   v14 = [(SearchHistoryOperation *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_searchQuery, a3);
-    v15->_searchMode = a4;
+    objc_storeStrong(&v14->_searchQuery, query);
+    v15->_searchMode = mode;
     v15->_stateLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v15->_history, a5);
-    objc_storeStrong(&v15->_context, a6);
+    objc_storeStrong(&v15->_history, history);
+    objc_storeStrong(&v15->_context, context);
   }
 
   return v15;

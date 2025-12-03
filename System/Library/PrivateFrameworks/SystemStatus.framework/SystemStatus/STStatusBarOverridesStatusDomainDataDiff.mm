@@ -1,36 +1,36 @@
 @interface STStatusBarOverridesStatusDomainDataDiff
-+ (id)diffFromData:(id)a3 toData:(id)a4;
++ (id)diffFromData:(id)data toData:(id)toData;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isOrthogonalToDiff:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isOrthogonalToDiff:(id)diff;
 - (STStatusBarOverridesStatusDomainDataDiff)init;
-- (STStatusBarOverridesStatusDomainDataDiff)initWithChanges:(id)a3 suppressedBackgroundActivityIdentifierListDataDiff:(id)a4;
-- (STStatusBarOverridesStatusDomainDataDiff)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)dataByApplyingToData:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffByApplyingDiff:(id)a3;
+- (STStatusBarOverridesStatusDomainDataDiff)initWithChanges:(id)changes suppressedBackgroundActivityIdentifierListDataDiff:(id)diff;
+- (STStatusBarOverridesStatusDomainDataDiff)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)dataByApplyingToData:(id)data;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffByApplyingDiff:(id)diff;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)applyToMutableData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyToMutableData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STStatusBarOverridesStatusDomainDataDiff
 
-+ (id)diffFromData:(id)a3 toData:(id)a4
++ (id)diffFromData:(id)data toData:(id)toData
 {
   v67 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v54 = a4;
+  dataCopy = data;
+  toDataCopy = toData;
   v55 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v53 = v5;
-  v6 = [v5 customOverrides];
-  v7 = v6;
-  if (v6)
+  v53 = dataCopy;
+  customOverrides = [dataCopy customOverrides];
+  v7 = customOverrides;
+  if (customOverrides)
   {
-    v8 = v6;
+    v8 = customOverrides;
   }
 
   else
@@ -40,11 +40,11 @@
 
   v56 = v8;
 
-  v9 = [v54 customOverrides];
-  v10 = v9;
-  if (v9)
+  customOverrides2 = [toDataCopy customOverrides];
+  v10 = customOverrides2;
+  if (customOverrides2)
   {
-    v11 = v9;
+    v11 = customOverrides2;
   }
 
   else
@@ -54,7 +54,7 @@
 
   v12 = v11;
 
-  v52 = [v54 editedKeys];
+  editedKeys = [toDataCopy editedKeys];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
@@ -82,40 +82,40 @@
         v22 = v20;
         if (v21 == v22 || ([v21 isEqual:v22] & 1) != 0)
         {
-          v23 = 0;
+          null2 = 0;
         }
 
         else
         {
           if (v22)
           {
-            v24 = v22;
+            null = v22;
           }
 
           else
           {
-            v24 = [MEMORY[0x1E695DFB0] null];
+            null = [MEMORY[0x1E695DFB0] null];
           }
 
-          v23 = v24;
+          null2 = null;
         }
 
-        if (!v23)
+        if (!null2)
         {
-          if (![v52 containsObject:v18])
+          if (![editedKeys containsObject:v18])
           {
             goto LABEL_23;
           }
 
           if (v22)
           {
-            v23 = v22;
+            null2 = v22;
           }
 
           else
           {
-            v23 = [MEMORY[0x1E695DFB0] null];
-            if (!v23)
+            null2 = [MEMORY[0x1E695DFB0] null];
+            if (!null2)
             {
               goto LABEL_23;
             }
@@ -131,7 +131,7 @@
 
         v27 = [_MergedGlobals_13 indexOfObject:v26];
 
-        [v55 setObject:v23 forSetting:v27];
+        [v55 setObject:null2 forSetting:v27];
 LABEL_23:
 
         ++v17;
@@ -145,22 +145,22 @@ LABEL_23:
     while (v28);
   }
 
-  v29 = [v53 suppressedBackgroundActivityIdentifierListData];
-  v30 = [v54 suppressedBackgroundActivityIdentifierListData];
-  v31 = [STListDataDiff diffFromListData:v29 toListData:v30];
+  suppressedBackgroundActivityIdentifierListData = [v53 suppressedBackgroundActivityIdentifierListData];
+  suppressedBackgroundActivityIdentifierListData2 = [toDataCopy suppressedBackgroundActivityIdentifierListData];
+  v31 = [STListDataDiff diffFromListData:suppressedBackgroundActivityIdentifierListData toListData:suppressedBackgroundActivityIdentifierListData2];
 
-  v32 = [v54 editedIdentifiers];
-  if ([v32 count])
+  editedIdentifiers = [toDataCopy editedIdentifiers];
+  if ([editedIdentifiers count])
   {
     v51 = v31;
     v33 = objc_alloc_init(STMutableListData);
     v49 = objc_alloc_init(STMutableListData);
-    v50 = v32;
+    v50 = editedIdentifiers;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v34 = v32;
+    v34 = editedIdentifiers;
     v35 = [v34 countByEnumeratingWithState:&v57 objects:v65 count:16];
     if (v35)
     {
@@ -176,11 +176,11 @@ LABEL_23:
           }
 
           v39 = *(*(&v57 + 1) + 8 * i);
-          v40 = [v53 suppressedBackgroundActivityIdentifiers];
-          v41 = [v40 containsObject:v39];
+          suppressedBackgroundActivityIdentifiers = [v53 suppressedBackgroundActivityIdentifiers];
+          v41 = [suppressedBackgroundActivityIdentifiers containsObject:v39];
 
-          v42 = [v54 suppressedBackgroundActivityIdentifiers];
-          v43 = [v42 containsObject:v39];
+          suppressedBackgroundActivityIdentifiers2 = [toDataCopy suppressedBackgroundActivityIdentifiers];
+          v43 = [suppressedBackgroundActivityIdentifiers2 containsObject:v39];
 
           if ((v41 & 1) == 0 && (v43 & 1) == 0)
           {
@@ -206,7 +206,7 @@ LABEL_23:
       v31 = v51;
     }
 
-    v32 = v50;
+    editedIdentifiers = v50;
   }
 
   v46 = [[STStatusBarOverridesStatusDomainDataDiff alloc] initWithChanges:v55 suppressedBackgroundActivityIdentifierListDataDiff:v31];
@@ -225,20 +225,20 @@ LABEL_23:
   return v5;
 }
 
-- (STStatusBarOverridesStatusDomainDataDiff)initWithChanges:(id)a3 suppressedBackgroundActivityIdentifierListDataDiff:(id)a4
+- (STStatusBarOverridesStatusDomainDataDiff)initWithChanges:(id)changes suppressedBackgroundActivityIdentifierListDataDiff:(id)diff
 {
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  diffCopy = diff;
   v14.receiver = self;
   v14.super_class = STStatusBarOverridesStatusDomainDataDiff;
   v8 = [(STStatusBarOverridesStatusDomainDataDiff *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [changesCopy copy];
     changes = v8->_changes;
     v8->_changes = v9;
 
-    v11 = [v7 copy];
+    v11 = [diffCopy copy];
     suppressedBackgroundActivityIdentifierListDataDiff = v8->_suppressedBackgroundActivityIdentifierListDataDiff;
     v8->_suppressedBackgroundActivityIdentifierListDataDiff = v11;
   }
@@ -246,17 +246,17 @@ LABEL_23:
   return v8;
 }
 
-- (id)dataByApplyingToData:(id)a3
+- (id)dataByApplyingToData:(id)data
 {
-  v4 = [a3 mutableCopy];
+  v4 = [data mutableCopy];
   [(STStatusBarOverridesStatusDomainDataDiff *)self applyToMutableData:v4];
 
   return v4;
 }
 
-- (void)applyToMutableData:(id)a3
+- (void)applyToMutableData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (self)
   {
     changes = self->_changes;
@@ -274,7 +274,7 @@ LABEL_23:
     v10[1] = 3221225472;
     v10[2] = __63__STStatusBarOverridesStatusDomainDataDiff_applyToMutableData___block_invoke;
     v10[3] = &unk_1E85DDCB0;
-    v11 = v4;
+    v11 = dataCopy;
     [(BSSettings *)v6 enumerateObjectsWithBlock:v10];
   }
 
@@ -289,8 +289,8 @@ LABEL_23:
   }
 
   v8 = suppressedBackgroundActivityIdentifierListDataDiff;
-  v9 = [v4 suppressedBackgroundActivityIdentifierListData];
-  [(STListDataDiff *)v8 applyToMutableListData:v9];
+  suppressedBackgroundActivityIdentifierListData = [dataCopy suppressedBackgroundActivityIdentifierListData];
+  [(STListDataDiff *)v8 applyToMutableListData:suppressedBackgroundActivityIdentifierListData];
 }
 
 void __63__STStatusBarOverridesStatusDomainDataDiff_applyToMutableData___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -343,24 +343,24 @@ void __63__STStatusBarOverridesStatusDomainDataDiff_applyToMutableData___block_i
       suppressedBackgroundActivityIdentifierListDataDiff = 0;
     }
 
-    v6 = [(STListDataDiff *)suppressedBackgroundActivityIdentifierListDataDiff isEmpty];
+    isEmpty = [(STListDataDiff *)suppressedBackgroundActivityIdentifierListDataDiff isEmpty];
   }
 
   else
   {
-    v6 = 0;
+    isEmpty = 0;
   }
 
-  return v6;
+  return isEmpty;
 }
 
-- (id)diffByApplyingDiff:(id)a3
+- (id)diffByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = diffCopy;
     if (self)
     {
       changes = self->_changes;
@@ -419,27 +419,27 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)isOrthogonalToDiff:(id)a3
+- (BOOL)isOrthogonalToDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   if ([(STStatusBarOverridesStatusDomainDataDiff *)self isEmpty])
   {
-    v5 = 1;
+    isEmpty = 1;
   }
 
   else
   {
-    v5 = [v4 isEmpty];
+    isEmpty = [diffCopy isEmpty];
   }
 
-  return v5;
+  return isEmpty;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = v4;
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  v6 = equalCopy;
   if (self)
   {
     changes = self->_changes;
@@ -504,17 +504,17 @@ id __52__STStatusBarOverridesStatusDomainDataDiff_isEqual___block_invoke_2(uint6
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = v3;
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = builder;
   if (self)
   {
-    v5 = [v3 appendObject:self->_changes];
+    v5 = [builder appendObject:self->_changes];
     suppressedBackgroundActivityIdentifierListDataDiff = self->_suppressedBackgroundActivityIdentifierListDataDiff;
   }
 
   else
   {
-    v10 = [v3 appendObject:0];
+    v10 = [builder appendObject:0];
     suppressedBackgroundActivityIdentifierListDataDiff = 0;
   }
 
@@ -524,28 +524,28 @@ id __52__STStatusBarOverridesStatusDomainDataDiff_isEqual___block_invoke_2(uint6
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
-    [a3 encodeObject:self->_changes forKey:@"changes"];
+    [coder encodeObject:self->_changes forKey:@"changes"];
     suppressedBackgroundActivityIdentifierListDataDiff = self->_suppressedBackgroundActivityIdentifierListDataDiff;
   }
 
   else
   {
-    [a3 encodeObject:0 forKey:@"changes"];
+    [coder encodeObject:0 forKey:@"changes"];
     suppressedBackgroundActivityIdentifierListDataDiff = 0;
   }
 
-  [a3 encodeObject:suppressedBackgroundActivityIdentifierListDataDiff forKey:@"suppressedBackgroundActivityIdentifierListDataDiff"];
+  [coder encodeObject:suppressedBackgroundActivityIdentifierListDataDiff forKey:@"suppressedBackgroundActivityIdentifierListDataDiff"];
 }
 
-- (STStatusBarOverridesStatusDomainDataDiff)initWithCoder:(id)a3
+- (STStatusBarOverridesStatusDomainDataDiff)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"changes"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suppressedBackgroundActivityIdentifierListDataDiff"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"changes"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suppressedBackgroundActivityIdentifierListDataDiff"];
 
   v7 = [(STStatusBarOverridesStatusDomainDataDiff *)self initWithChanges:v5 suppressedBackgroundActivityIdentifierListDataDiff:v6];
   return v7;
@@ -553,59 +553,59 @@ id __52__STStatusBarOverridesStatusDomainDataDiff_isEqual___block_invoke_2(uint6
 
 - (id)succinctDescription
 {
-  v2 = [(STStatusBarOverridesStatusDomainDataDiff *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STStatusBarOverridesStatusDomainDataDiff *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusBarOverridesStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STStatusBarOverridesStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusBarOverridesStatusDomainDataDiff *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STStatusBarOverridesStatusDomainDataDiff *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
 
-    v7 = *(a1 + 8);
+    v7 = *(self + 8);
     if (([v7 isEmpty] & 1) == 0)
     {
-      v8 = [v6 activeMultilinePrefix];
+      activeMultilinePrefix = [succinctDescriptionBuilder activeMultilinePrefix];
       v11 = MEMORY[0x1E69E9820];
       v12 = 3221225472;
       v13 = __92__STStatusBarOverridesStatusDomainDataDiff__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
       v14 = &unk_1E85DDD00;
       v15 = v7;
-      v16 = v6;
-      [v16 appendBodySectionWithName:0 multilinePrefix:v8 block:&v11];
+      v16 = succinctDescriptionBuilder;
+      [v16 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:&v11];
     }
 
-    v9 = [v6 appendObject:*(a1 + 16) withName:@"suppressedBackgroundActivityIdentifiers" skipIfNil:{1, v11, v12, v13, v14}];
+    v9 = [succinctDescriptionBuilder appendObject:*(self + 16) withName:@"suppressedBackgroundActivityIdentifiers" skipIfNil:{1, v11, v12, v13, v14}];
   }
 
   else
   {
-    v6 = 0;
+    succinctDescriptionBuilder = 0;
   }
 
-  return v6;
+  return succinctDescriptionBuilder;
 }
 
 void __92__STStatusBarOverridesStatusDomainDataDiff__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke(uint64_t a1)

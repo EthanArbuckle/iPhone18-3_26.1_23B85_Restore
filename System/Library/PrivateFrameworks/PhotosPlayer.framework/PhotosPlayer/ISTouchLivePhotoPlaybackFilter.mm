@@ -3,7 +3,7 @@
 - (void)_handleDisplayLink;
 - (void)didPerformChanges;
 - (void)reset;
-- (void)setTouchActive:(BOOL)a3;
+- (void)setTouchActive:(BOOL)active;
 @end
 
 @implementation ISTouchLivePhotoPlaybackFilter
@@ -20,8 +20,8 @@
 
 - (void)_handleDisplayLink
 {
-  v3 = [(ISTouchLivePhotoPlaybackFilter *)self _playbackStartDate];
-  [v3 timeIntervalSinceNow];
+  _playbackStartDate = [(ISTouchLivePhotoPlaybackFilter *)self _playbackStartDate];
+  [_playbackStartDate timeIntervalSinceNow];
   v5 = v4;
 
   v6[1] = 3221225472;
@@ -38,9 +38,9 @@
   v6.receiver = self;
   v6.super_class = ISTouchLivePhotoPlaybackFilter;
   [(ISObservable *)&v6 didPerformChanges];
-  v3 = [(ISTouchLivePhotoPlaybackFilter *)self isTouchActive];
+  isTouchActive = [(ISTouchLivePhotoPlaybackFilter *)self isTouchActive];
   [(ISLivePhotoPlaybackFilter *)self hintProgress];
-  if (v3)
+  if (isTouchActive)
   {
     if (v4 >= 1.0)
     {
@@ -77,12 +77,12 @@
   [(ISLivePhotoPlaybackFilter *)self setState:v5];
 }
 
-- (void)setTouchActive:(BOOL)a3
+- (void)setTouchActive:(BOOL)active
 {
-  if (self->_touchActive != a3)
+  if (self->_touchActive != active)
   {
-    self->_touchActive = a3;
-    if (a3)
+    self->_touchActive = active;
+    if (active)
     {
       v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.1];
       [(ISTouchLivePhotoPlaybackFilter *)self _setPlaybackStartDate:v4];
@@ -104,8 +104,8 @@
 
     else
     {
-      v7 = [(ISTouchLivePhotoPlaybackFilter *)self _displayLink];
-      [v7 stop];
+      _displayLink = [(ISTouchLivePhotoPlaybackFilter *)self _displayLink];
+      [_displayLink stop];
 
       [(ISTouchLivePhotoPlaybackFilter *)self _setDisplayLink:0];
     }
@@ -120,9 +120,9 @@ void __49__ISTouchLivePhotoPlaybackFilter_setTouchActive___block_invoke(uint64_t
 
 - (int64_t)_nextPlaybackRequestID
 {
-  v3 = [(ISTouchLivePhotoPlaybackFilter *)self _playbackRequestID];
-  [(ISTouchLivePhotoPlaybackFilter *)self _setPlaybackReaquestID:v3 + 1];
-  return v3 + 1;
+  _playbackRequestID = [(ISTouchLivePhotoPlaybackFilter *)self _playbackRequestID];
+  [(ISTouchLivePhotoPlaybackFilter *)self _setPlaybackReaquestID:_playbackRequestID + 1];
+  return _playbackRequestID + 1;
 }
 
 @end

@@ -6,7 +6,7 @@
 
 - (WFInsetTextSelectionRect)wf_selectionRectByInsetting:()WFInsetting
 {
-  v5 = [[WFInsetTextSelectionRect alloc] initWithSelectionRect:a1 insets:a2, a3, a4, a5];
+  v5 = [[WFInsetTextSelectionRect alloc] initWithSelectionRect:self insets:a2, a3, a4, a5];
 
   return v5;
 }

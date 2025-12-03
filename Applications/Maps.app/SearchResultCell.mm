@@ -1,13 +1,13 @@
 @interface SearchResultCell
-+ (id)cellWithSearchResult:(id)a3 order:(int64_t)a4 mapType:(unint64_t)a5;
-- (CGPoint)transformedPoint:(CGAffineTransform *)a3;
++ (id)cellWithSearchResult:(id)result order:(int64_t)order mapType:(unint64_t)type;
+- (CGPoint)transformedPoint:(CGAffineTransform *)point;
 - (CGRect)frame;
-- (SearchResultCell)initWithSearchResult:(id)a3 order:(int64_t)a4 mapType:(unint64_t)a5;
+- (SearchResultCell)initWithSearchResult:(id)result order:(int64_t)order mapType:(unint64_t)type;
 - (double)_textLayoutHeight;
 - (id)snapshotBlock;
-- (void)_drawPinInRect:(CGRect)a3 zoomLevel:(double)a4;
+- (void)_drawPinInRect:(CGRect)rect zoomLevel:(double)level;
 - (void)dealloc;
-- (void)drawInRect:(CGRect)a3;
+- (void)drawInRect:(CGRect)rect;
 - (void)releaseSnapshotCreator;
 @end
 
@@ -26,13 +26,13 @@
   return result;
 }
 
-- (CGPoint)transformedPoint:(CGAffineTransform *)a3
+- (CGPoint)transformedPoint:(CGAffineTransform *)point
 {
-  v4 = [(SearchResultCell *)self searchResult];
-  [v4 coordinate];
+  searchResult = [(SearchResultCell *)self searchResult];
+  [searchResult coordinate];
   v5 = MKMapPointForCoordinate(v8);
 
-  v6 = vmlaq_n_f64(vmlaq_n_f64(*&a3->tx, *&a3->a, v5.x), *&a3->c, v5.y);
+  v6 = vmlaq_n_f64(vmlaq_n_f64(*&point->tx, *&point->a, v5.x), *&point->c, v5.y);
   v7 = v6.f64[1];
   result.x = v6.f64[0];
   result.y = v7;
@@ -68,23 +68,23 @@
   return v2;
 }
 
-- (void)drawInRect:(CGRect)a3
+- (void)drawInRect:(CGRect)rect
 {
-  v4 = [(SearchResultCell *)self snapshotImage:a3.origin.x];
+  v4 = [(SearchResultCell *)self snapshotImage:rect.origin.x];
 
   if (v4)
   {
     v5 = CGRectGetMinX(self->_frame) + 35.0;
-    v6 = [(SearchResultCell *)self snapshotImage];
-    [v6 size];
+    snapshotImage = [(SearchResultCell *)self snapshotImage];
+    [snapshotImage size];
     v8 = v7;
     v10 = v9;
 
     MinY = CGRectGetMinY(self->_frame);
     v12 = v8 * 0.5;
     v13 = v10 * 0.5;
-    v14 = [(SearchResultCell *)self snapshotImage];
-    [v14 drawInRect:{v5, MinY, v12, v13}];
+    snapshotImage2 = [(SearchResultCell *)self snapshotImage];
+    [snapshotImage2 drawInRect:{v5, MinY, v12, v13}];
 
     [(SearchResultCell *)self _drawPinInRect:v5 zoomLevel:MinY, v12, v13, 16.0];
     v15 = +[UIColor lightGrayColor];
@@ -113,43 +113,43 @@
   v25 = v24;
   [v48 capHeight];
   v27 = v26 - v25 + v23;
-  v28 = [(SearchResult *)self->_searchResult mapItem];
-  v29 = [v28 name];
-  [v29 _maps_sizeWithFont:v48 constrainedToSize:{v18, Height}];
+  mapItem = [(SearchResult *)self->_searchResult mapItem];
+  name = [mapItem name];
+  [name _maps_sizeWithFont:v48 constrainedToSize:{v18, Height}];
   v31 = v30;
   v33 = v32;
 
-  v34 = [v28 name];
-  [v34 _maps_drawInRect:v48 withFont:{v17, v27, v31, v33}];
+  name2 = [mapItem name];
+  [name2 _maps_drawInRect:v48 withFont:{v17, v27, v31, v33}];
 
   v35 = [UIColor colorWithWhite:0.289999992 alpha:1.0];
   [v35 set];
 
   v36 = v33 + v27;
-  v37 = [v28 _addressFormattedAsMultilineAddress];
-  [v37 _maps_sizeWithFont:v48 constrainedToSize:{v18, Height}];
+  _addressFormattedAsMultilineAddress = [mapItem _addressFormattedAsMultilineAddress];
+  [_addressFormattedAsMultilineAddress _maps_sizeWithFont:v48 constrainedToSize:{v18, Height}];
   v39 = v38;
   v41 = v40;
 
-  v42 = [v28 _addressFormattedAsMultilineAddress];
-  [v42 _maps_drawInRect:v48 withFont:{v17, v36, v39, v41}];
+  _addressFormattedAsMultilineAddress2 = [mapItem _addressFormattedAsMultilineAddress];
+  [_addressFormattedAsMultilineAddress2 _maps_drawInRect:v48 withFont:{v17, v36, v39, v41}];
 
-  v43 = [v28 phoneNumber];
-  if ([v43 length])
+  phoneNumber = [mapItem phoneNumber];
+  if ([phoneNumber length])
   {
-    v44 = [CNPhoneNumber phoneNumberWithStringValue:v43];
-    v45 = [v44 stringValue];
+    v44 = [CNPhoneNumber phoneNumberWithStringValue:phoneNumber];
+    stringValue = [v44 stringValue];
 
-    if ([v45 length])
+    if ([stringValue length])
     {
-      [v45 _maps_sizeWithFont:v48 constrainedToSize:{v18, Height}];
-      [v45 _maps_drawInRect:v48 withFont:{v17, v41 + v36, v46, v47}];
+      [stringValue _maps_sizeWithFont:v48 constrainedToSize:{v18, Height}];
+      [stringValue _maps_drawInRect:v48 withFont:{v17, v41 + v36, v46, v47}];
     }
   }
 
   else
   {
-    v45 = v43;
+    stringValue = phoneNumber;
   }
 }
 
@@ -158,23 +158,23 @@
   MinX = CGRectGetMinX(self->_frame);
   v4 = -135.0 - MinX + CGRectGetMaxX(self->_frame);
   Height = CGRectGetHeight(self->_frame);
-  v6 = [(SearchResult *)self->_searchResult mapItem];
-  v7 = [v6 name];
+  mapItem = [(SearchResult *)self->_searchResult mapItem];
+  name = [mapItem name];
   v8 = [UIFont systemFontOfSize:13.5];
-  [v7 _maps_sizeWithFont:v8 constrainedToSize:{v4, Height}];
+  [name _maps_sizeWithFont:v8 constrainedToSize:{v4, Height}];
   v10 = v9;
 
-  v11 = [v6 _addressFormattedAsMultilineAddress];
+  _addressFormattedAsMultilineAddress = [mapItem _addressFormattedAsMultilineAddress];
   v12 = [UIFont systemFontOfSize:13.5];
-  [v11 _maps_sizeWithFont:v12 constrainedToSize:{v4, Height}];
+  [_addressFormattedAsMultilineAddress _maps_sizeWithFont:v12 constrainedToSize:{v4, Height}];
   v14 = v13;
 
   v15 = v14 + v10;
-  v16 = [v6 phoneNumber];
-  if ([v16 length])
+  phoneNumber = [mapItem phoneNumber];
+  if ([phoneNumber length])
   {
     v17 = [UIFont systemFontOfSize:13.5];
-    [v16 _maps_sizeWithFont:v17 constrainedToSize:{v4, Height}];
+    [phoneNumber _maps_sizeWithFont:v17 constrainedToSize:{v4, Height}];
     v19 = v18;
 
     v15 = v19 + v15;
@@ -183,20 +183,20 @@
   return v15;
 }
 
-- (void)_drawPinInRect:(CGRect)a3 zoomLevel:(double)a4
+- (void)_drawPinInRect:(CGRect)rect zoomLevel:(double)level
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   searchResult = self->_searchResult;
   MKZoomScaleForZoomLevelF();
   [(SearchResult *)searchResult _offsetCoordinate:?];
   MKTilePointForCoordinate();
   v33 = v10;
   v34 = v11;
-  v12 = [(SearchResultCell *)self snapshotImage];
-  [v12 size];
+  snapshotImage = [(SearchResultCell *)self snapshotImage];
+  [snapshotImage size];
   v14 = v13;
   v32 = v15;
 
@@ -239,17 +239,17 @@
   [v26 _maps_drawAtPoint:v30 withFont:{v23 + v29 * -0.5, v24 + -44.0}];
 }
 
-- (SearchResultCell)initWithSearchResult:(id)a3 order:(int64_t)a4 mapType:(unint64_t)a5
+- (SearchResultCell)initWithSearchResult:(id)result order:(int64_t)order mapType:(unint64_t)type
 {
-  v8 = a3;
+  resultCopy = result;
   v16.receiver = self;
   v16.super_class = SearchResultCell;
   v9 = [(SearchResultCell *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    [(SearchResultCell *)v9 setSearchResult:v8];
-    v10->_order = a4;
+    [(SearchResultCell *)v9 setSearchResult:resultCopy];
+    v10->_order = order;
     v11 = [[UIColor alloc] initWithRed:0.254901961 green:0.435294118 blue:0.658823529 alpha:1.0];
     blueTextColor = v10->_blueTextColor;
     v10->_blueTextColor = v11;
@@ -258,16 +258,16 @@
     calloutTextColor = v10->_calloutTextColor;
     v10->_calloutTextColor = v13;
 
-    v10->_mapType = a5;
+    v10->_mapType = type;
   }
 
   return v10;
 }
 
-+ (id)cellWithSearchResult:(id)a3 order:(int64_t)a4 mapType:(unint64_t)a5
++ (id)cellWithSearchResult:(id)result order:(int64_t)order mapType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = [[a1 alloc] initWithSearchResult:v8 order:a4 mapType:a5];
+  resultCopy = result;
+  v9 = [[self alloc] initWithSearchResult:resultCopy order:order mapType:type];
 
   return v9;
 }

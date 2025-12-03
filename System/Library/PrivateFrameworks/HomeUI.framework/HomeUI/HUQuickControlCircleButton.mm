@@ -1,47 +1,47 @@
 @interface HUQuickControlCircleButton
-- (HUQuickControlCircleButton)initWithFrame:(CGRect)a3;
+- (HUQuickControlCircleButton)initWithFrame:(CGRect)frame;
 - (double)fontSize;
 - (void)_adjustTitleColor;
 - (void)_controlStateChanged;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFontSize:(double)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelectedColor:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFontSize:(double)size;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelectedColor:(id)color;
 @end
 
 @implementation HUQuickControlCircleButton
 
-- (HUQuickControlCircleButton)initWithFrame:(CGRect)a3
+- (HUQuickControlCircleButton)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = HUQuickControlCircleButton;
-  v3 = [(HUQuickControlCircleButton *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUQuickControlCircleButton *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(HUQuickControlCircleButton *)v3 layer];
-    [v5 setAllowsGroupOpacity:0];
+    layer = [(HUQuickControlCircleButton *)v3 layer];
+    [layer setAllowsGroupOpacity:0];
 
     [(HUQuickControlCircleButton *)v4 setFontSize:21.0];
-    v6 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(HUQuickControlCircleButton *)v4 setTitleColor:v6 forState:0];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(HUQuickControlCircleButton *)v4 setTitleColor:systemWhiteColor forState:0];
 
-    v7 = [(HUQuickControlCircleButton *)v4 titleLabel];
-    [v7 setAdjustsFontSizeToFitWidth:1];
+    titleLabel = [(HUQuickControlCircleButton *)v4 titleLabel];
+    [titleLabel setAdjustsFontSizeToFitWidth:1];
 
     v8 = [[HUQuickControlBackgroundEffectView alloc] initWithEffectType:1];
     [(HUQuickControlCircleButton *)v4 setBackgroundView:v8];
 
-    v9 = [(HUQuickControlCircleButton *)v4 backgroundView];
-    [v9 setUserInteractionEnabled:0];
+    backgroundView = [(HUQuickControlCircleButton *)v4 backgroundView];
+    [backgroundView setUserInteractionEnabled:0];
 
-    v10 = [(HUQuickControlCircleButton *)v4 backgroundView];
-    [(HUQuickControlCircleButton *)v4 insertSubview:v10 atIndex:0];
+    backgroundView2 = [(HUQuickControlCircleButton *)v4 backgroundView];
+    [(HUQuickControlCircleButton *)v4 insertSubview:backgroundView2 atIndex:0];
 
-    v11 = [(HUQuickControlCircleButton *)v4 backgroundView];
-    v12 = [v11 tintColor];
-    [(HUQuickControlCircleButton *)v4 setStandardBackgroundColor:v12];
+    backgroundView3 = [(HUQuickControlCircleButton *)v4 backgroundView];
+    tintColor = [backgroundView3 tintColor];
+    [(HUQuickControlCircleButton *)v4 setStandardBackgroundColor:tintColor];
   }
 
   return v4;
@@ -49,44 +49,44 @@
 
 - (double)fontSize
 {
-  v2 = [(HUQuickControlCircleButton *)self titleLabel];
-  v3 = [v2 font];
-  [v3 pointSize];
+  titleLabel = [(HUQuickControlCircleButton *)self titleLabel];
+  font = [titleLabel font];
+  [font pointSize];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setFontSize:(double)a3
+- (void)setFontSize:(double)size
 {
-  v5 = [MEMORY[0x277D74300] systemFontOfSize:a3 weight:*MEMORY[0x277D74420]];
-  v4 = [(HUQuickControlCircleButton *)self titleLabel];
-  [v4 setFont:v5];
+  v5 = [MEMORY[0x277D74300] systemFontOfSize:size weight:*MEMORY[0x277D74420]];
+  titleLabel = [(HUQuickControlCircleButton *)self titleLabel];
+  [titleLabel setFont:v5];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = HUQuickControlCircleButton;
-  [(HUQuickControlCircleButton *)&v4 setEnabled:a3];
+  [(HUQuickControlCircleButton *)&v4 setEnabled:enabled];
   [(HUQuickControlCircleButton *)self _controlStateChanged];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = HUQuickControlCircleButton;
-  [(HUQuickControlCircleButton *)&v4 setHighlighted:a3];
+  [(HUQuickControlCircleButton *)&v4 setHighlighted:highlighted];
   [(HUQuickControlCircleButton *)self _controlStateChanged];
 }
 
-- (void)setSelectedColor:(id)a3
+- (void)setSelectedColor:(id)color
 {
-  v7 = a3;
-  objc_storeStrong(&self->_selectedColor, a3);
-  if (v7)
+  colorCopy = color;
+  objc_storeStrong(&self->_selectedColor, color);
+  if (colorCopy)
   {
-    v5 = v7;
+    v5 = colorCopy;
   }
 
   else
@@ -95,33 +95,33 @@
   }
 
   [(HUQuickControlCircleButton *)self setBackgroundColor:v5];
-  v6 = [(HUQuickControlCircleButton *)self backgroundView];
-  [v6 setHidden:v7 != 0];
+  backgroundView = [(HUQuickControlCircleButton *)self backgroundView];
+  [backgroundView setHidden:colorCopy != 0];
 
   [(HUQuickControlCircleButton *)self _adjustTitleColor];
 }
 
 - (void)_adjustTitleColor
 {
-  v3 = [MEMORY[0x277D75348] systemWhiteColor];
-  v4 = [(HUQuickControlCircleButton *)self selectedColor];
-  [v3 _luminanceDifferenceFromColor:v4];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  selectedColor = [(HUQuickControlCircleButton *)self selectedColor];
+  [systemWhiteColor _luminanceDifferenceFromColor:selectedColor];
   v6 = v5;
 
-  v7 = [(HUQuickControlCircleButton *)self selectedColor];
+  selectedColor2 = [(HUQuickControlCircleButton *)self selectedColor];
 
-  if (v7 && v6 < 0.1)
+  if (selectedColor2 && v6 < 0.1)
   {
-    v8 = [MEMORY[0x277D75348] systemBlackColor];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] systemWhiteColor];
+    systemBlackColor = [MEMORY[0x277D75348] systemWhiteColor];
   }
 
-  v9 = v8;
-  [(HUQuickControlCircleButton *)self setTitleColor:v8 forState:0];
+  v9 = systemBlackColor;
+  [(HUQuickControlCircleButton *)self setTitleColor:systemBlackColor forState:0];
 }
 
 - (void)_controlStateChanged
@@ -180,19 +180,19 @@ void __50__HUQuickControlCircleButton__controlStateChanged__block_invoke(uint64_
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(HUQuickControlCircleButton *)self backgroundView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  backgroundView = [(HUQuickControlCircleButton *)self backgroundView];
+  [backgroundView setFrame:{v4, v6, v8, v10}];
 
   [(HUQuickControlCircleButton *)self bounds];
   v13 = v12 * 0.5;
-  v14 = [(HUQuickControlCircleButton *)self backgroundView];
-  v15 = [v14 layer];
-  [v15 setCornerRadius:v13];
+  backgroundView2 = [(HUQuickControlCircleButton *)self backgroundView];
+  layer = [backgroundView2 layer];
+  [layer setCornerRadius:v13];
 
   [(HUQuickControlCircleButton *)self bounds];
   v17 = v16 * 0.5;
-  v18 = [(HUQuickControlCircleButton *)self layer];
-  [v18 setCornerRadius:v17];
+  layer2 = [(HUQuickControlCircleButton *)self layer];
+  [layer2 setCornerRadius:v17];
 }
 
 @end

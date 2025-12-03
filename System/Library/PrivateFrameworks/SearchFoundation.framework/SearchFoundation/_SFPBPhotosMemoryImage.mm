@@ -1,37 +1,37 @@
 @interface _SFPBPhotosMemoryImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBPhotosMemoryImage)initWithDictionary:(id)a3;
-- (_SFPBPhotosMemoryImage)initWithFacade:(id)a3;
-- (_SFPBPhotosMemoryImage)initWithJSON:(id)a3;
+- (_SFPBPhotosMemoryImage)initWithDictionary:(id)dictionary;
+- (_SFPBPhotosMemoryImage)initWithFacade:(id)facade;
+- (_SFPBPhotosMemoryImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setApplicationBundleIdentifier:(id)a3;
-- (void)setMemoryIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setApplicationBundleIdentifier:(id)identifier;
+- (void)setMemoryIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBPhotosMemoryImage
 
-- (_SFPBPhotosMemoryImage)initWithFacade:(id)a3
+- (_SFPBPhotosMemoryImage)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBPhotosMemoryImage *)self init];
   if (v5)
   {
-    v6 = [v4 memoryIdentifier];
+    memoryIdentifier = [facadeCopy memoryIdentifier];
 
-    if (v6)
+    if (memoryIdentifier)
     {
-      v7 = [v4 memoryIdentifier];
-      [(_SFPBPhotosMemoryImage *)v5 setMemoryIdentifier:v7];
+      memoryIdentifier2 = [facadeCopy memoryIdentifier];
+      [(_SFPBPhotosMemoryImage *)v5 setMemoryIdentifier:memoryIdentifier2];
     }
 
-    v8 = [v4 applicationBundleIdentifier];
+    applicationBundleIdentifier = [facadeCopy applicationBundleIdentifier];
 
-    if (v8)
+    if (applicationBundleIdentifier)
     {
-      v9 = [v4 applicationBundleIdentifier];
-      [(_SFPBPhotosMemoryImage *)v5 setApplicationBundleIdentifier:v9];
+      applicationBundleIdentifier2 = [facadeCopy applicationBundleIdentifier];
+      [(_SFPBPhotosMemoryImage *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier2];
     }
 
     v10 = v5;
@@ -40,15 +40,15 @@
   return v5;
 }
 
-- (_SFPBPhotosMemoryImage)initWithDictionary:(id)a3
+- (_SFPBPhotosMemoryImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBPhotosMemoryImage;
   v5 = [(_SFPBPhotosMemoryImage *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"memoryIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"memoryIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       [(_SFPBPhotosMemoryImage *)v5 setMemoryIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"applicationBundleIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"applicationBundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,30 +70,30 @@
   return v5;
 }
 
-- (_SFPBPhotosMemoryImage)initWithJSON:(id)a3
+- (_SFPBPhotosMemoryImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBPhotosMemoryImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBPhotosMemoryImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBPhotosMemoryImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -106,46 +106,46 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_applicationBundleIdentifier)
   {
-    v4 = [(_SFPBPhotosMemoryImage *)self applicationBundleIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
+    applicationBundleIdentifier = [(_SFPBPhotosMemoryImage *)self applicationBundleIdentifier];
+    v5 = [applicationBundleIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
   }
 
   if (self->_memoryIdentifier)
   {
-    v6 = [(_SFPBPhotosMemoryImage *)self memoryIdentifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"memoryIdentifier"];
+    memoryIdentifier = [(_SFPBPhotosMemoryImage *)self memoryIdentifier];
+    v7 = [memoryIdentifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"memoryIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBPhotosMemoryImage *)self memoryIdentifier];
-  v6 = [v4 memoryIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  memoryIdentifier = [(_SFPBPhotosMemoryImage *)self memoryIdentifier];
+  memoryIdentifier2 = [equalCopy memoryIdentifier];
+  if ((memoryIdentifier != 0) == (memoryIdentifier2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBPhotosMemoryImage *)self memoryIdentifier];
-  if (v7)
+  memoryIdentifier3 = [(_SFPBPhotosMemoryImage *)self memoryIdentifier];
+  if (memoryIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_SFPBPhotosMemoryImage *)self memoryIdentifier];
-    v10 = [v4 memoryIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = memoryIdentifier3;
+    memoryIdentifier4 = [(_SFPBPhotosMemoryImage *)self memoryIdentifier];
+    memoryIdentifier5 = [equalCopy memoryIdentifier];
+    v11 = [memoryIdentifier4 isEqual:memoryIdentifier5];
 
     if (!v11)
     {
@@ -157,12 +157,12 @@
   {
   }
 
-  v5 = [(_SFPBPhotosMemoryImage *)self applicationBundleIdentifier];
-  v6 = [v4 applicationBundleIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  memoryIdentifier = [(_SFPBPhotosMemoryImage *)self applicationBundleIdentifier];
+  memoryIdentifier2 = [equalCopy applicationBundleIdentifier];
+  if ((memoryIdentifier != 0) != (memoryIdentifier2 == 0))
   {
-    v12 = [(_SFPBPhotosMemoryImage *)self applicationBundleIdentifier];
-    if (!v12)
+    applicationBundleIdentifier = [(_SFPBPhotosMemoryImage *)self applicationBundleIdentifier];
+    if (!applicationBundleIdentifier)
     {
 
 LABEL_15:
@@ -170,10 +170,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBPhotosMemoryImage *)self applicationBundleIdentifier];
-    v15 = [v4 applicationBundleIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = applicationBundleIdentifier;
+    applicationBundleIdentifier2 = [(_SFPBPhotosMemoryImage *)self applicationBundleIdentifier];
+    applicationBundleIdentifier3 = [equalCopy applicationBundleIdentifier];
+    v16 = [applicationBundleIdentifier2 isEqual:applicationBundleIdentifier3];
 
     if (v16)
     {
@@ -193,34 +193,34 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBPhotosMemoryImage *)self memoryIdentifier];
-  if (v4)
+  toCopy = to;
+  memoryIdentifier = [(_SFPBPhotosMemoryImage *)self memoryIdentifier];
+  if (memoryIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBPhotosMemoryImage *)self applicationBundleIdentifier];
-  if (v5)
+  applicationBundleIdentifier = [(_SFPBPhotosMemoryImage *)self applicationBundleIdentifier];
+  if (applicationBundleIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setApplicationBundleIdentifier:(id)a3
+- (void)setApplicationBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   applicationBundleIdentifier = self->_applicationBundleIdentifier;
   self->_applicationBundleIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setMemoryIdentifier:(id)a3
+- (void)setMemoryIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   memoryIdentifier = self->_memoryIdentifier;
   self->_memoryIdentifier = v4;
 

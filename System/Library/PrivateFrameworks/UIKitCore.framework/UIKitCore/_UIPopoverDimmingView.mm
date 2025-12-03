@@ -1,13 +1,13 @@
 @interface _UIPopoverDimmingView
 - (BOOL)_delegateAllowsInteraction;
-- (BOOL)passthroughScrollInteraction:(id)a3 shouldInteractAtLocation:(CGPoint)a4 withEvent:(id)a5;
-- (BOOL)passthroughScrollInteractionDidRecognize:(id)a3 atLocation:(CGPoint)a4;
+- (BOOL)passthroughScrollInteraction:(id)interaction shouldInteractAtLocation:(CGPoint)location withEvent:(id)event;
+- (BOOL)passthroughScrollInteractionDidRecognize:(id)recognize atLocation:(CGPoint)location;
 - (UIView)transitionContainerView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_sendDelegateDimmingViewWasTapped;
 - (void)_updatePassthroughInteraction;
 - (void)didMoveToWindow;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UIPopoverDimmingView
@@ -19,9 +19,9 @@
   [(UIView *)&v7 didMoveToWindow];
   if (dyld_program_sdk_at_least())
   {
-    v3 = [(UIView *)self window];
+    window = [(UIView *)self window];
 
-    if (v3)
+    if (window)
     {
       passthroughScrollInteraction = self->_passthroughScrollInteraction;
       if (!passthroughScrollInteraction)
@@ -43,17 +43,17 @@
 - (void)_updatePassthroughInteraction
 {
   [(_UIPassthroughScrollInteraction *)self->_passthroughScrollInteraction setEatsTouches:[(_UIPopoverDimmingView *)self passThroughDismissalTaps]^ 1];
-  v3 = [(_UIPopoverDimmingView *)self passThroughDismissalTaps];
+  passThroughDismissalTaps = [(_UIPopoverDimmingView *)self passThroughDismissalTaps];
   passthroughScrollInteraction = self->_passthroughScrollInteraction;
 
-  [(_UIPassthroughScrollInteraction *)passthroughScrollInteraction setRecognizeOnPrimaryButtonDown:v3];
+  [(_UIPassthroughScrollInteraction *)passthroughScrollInteraction setRecognizeOnPrimaryButtonDown:passThroughDismissalTaps];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v4.receiver = self;
   v4.super_class = _UIPopoverDimmingView;
-  [(UIDimmingView *)&v4 willMoveToWindow:a3];
+  [(UIDimmingView *)&v4 willMoveToWindow:window];
   if (dyld_program_sdk_at_least())
   {
     if (self->_passthroughScrollInteraction)
@@ -65,7 +65,7 @@
 
 - (BOOL)_delegateAllowsInteraction
 {
-  v3 = [(UIDimmingView *)self delegate];
+  delegate = [(UIDimmingView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -73,28 +73,28 @@
     return 1;
   }
 
-  v5 = [(UIDimmingView *)self delegate];
-  v6 = [v5 popoverDimmingViewShouldAllowInteraction:self];
+  delegate2 = [(UIDimmingView *)self delegate];
+  v6 = [delegate2 popoverDimmingViewShouldAllowInteraction:self];
 
   return v6;
 }
 
 - (void)_sendDelegateDimmingViewWasTapped
 {
-  v3 = [(UIDimmingView *)self delegate];
-  [v3 popoverDimmingViewDidReceiveDismissalInteraction:self atLocation:{1.79769313e308, 1.79769313e308}];
+  delegate = [(UIDimmingView *)self delegate];
+  [delegate popoverDimmingViewDidReceiveDismissalInteraction:self atLocation:{1.79769313e308, 1.79769313e308}];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   self->_lastHitTestWasPassedThrough = 0;
   v11.receiver = self;
   v11.super_class = _UIPopoverDimmingView;
-  v8 = [(UIDimmingView *)&v11 hitTest:v7 withEvent:x, y];
-  if ((dyld_program_sdk_at_least() & 1) != 0 && v8 == self && ![(UIDimmingView *)self ignoresTouches]&& [_UIPassthroughScrollInteraction _shouldEventBePassedThrough:v7]&& [(_UIPopoverDimmingView *)self _delegateAllowsInteraction])
+  v8 = [(UIDimmingView *)&v11 hitTest:eventCopy withEvent:x, y];
+  if ((dyld_program_sdk_at_least() & 1) != 0 && v8 == self && ![(UIDimmingView *)self ignoresTouches]&& [_UIPassthroughScrollInteraction _shouldEventBePassedThrough:eventCopy]&& [(_UIPopoverDimmingView *)self _delegateAllowsInteraction])
   {
     v9 = 0;
     self->_lastHitTestWasPassedThrough = 1;
@@ -108,37 +108,37 @@
   return v9;
 }
 
-- (BOOL)passthroughScrollInteraction:(id)a3 shouldInteractAtLocation:(CGPoint)a4 withEvent:(id)a5
+- (BOOL)passthroughScrollInteraction:(id)interaction shouldInteractAtLocation:(CGPoint)location withEvent:(id)event
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   self->_lastHitTestWasPassedThrough = 0;
-  v9 = a5;
-  v10 = [a3 view];
-  v11 = [(UIView *)self window];
-  [v10 convertPoint:v11 toView:{x, y}];
+  eventCopy = event;
+  view = [interaction view];
+  window = [(UIView *)self window];
+  [view convertPoint:window toView:{x, y}];
   v13 = v12;
   v15 = v14;
 
-  v16 = [(UIView *)self window];
-  v17 = [v16 hitTest:v9 withEvent:{v13, v15}];
+  window2 = [(UIView *)self window];
+  v17 = [window2 hitTest:eventCopy withEvent:{v13, v15}];
 
-  v18 = [(UIView *)self traitCollection];
-  v19 = [v18 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v20 = v19 == 6 && !v17 || self->_lastHitTestWasPassedThrough;
+  v20 = userInterfaceIdiom == 6 && !v17 || self->_lastHitTestWasPassedThrough;
   return v20;
 }
 
-- (BOOL)passthroughScrollInteractionDidRecognize:(id)a3 atLocation:(CGPoint)a4
+- (BOOL)passthroughScrollInteractionDidRecognize:(id)recognize atLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = self;
-  v7 = [(UIDimmingView *)self delegate];
-  LOBYTE(v6) = [v7 popoverDimmingViewDidReceiveDismissalInteraction:v6 atLocation:{x, y}];
+  y = location.y;
+  x = location.x;
+  selfCopy = self;
+  delegate = [(UIDimmingView *)self delegate];
+  LOBYTE(selfCopy) = [delegate popoverDimmingViewDidReceiveDismissalInteraction:selfCopy atLocation:{x, y}];
 
-  return v6;
+  return selfCopy;
 }
 
 - (UIView)transitionContainerView

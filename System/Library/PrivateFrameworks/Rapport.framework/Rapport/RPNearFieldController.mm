@@ -1,6 +1,6 @@
 @interface RPNearFieldController
 - (NSString)currentApplicationLabel;
-- (RPNearFieldController)initWithDispatchQueue:(id)a3 delegate:(id)a4;
+- (RPNearFieldController)initWithDispatchQueue:(id)queue delegate:(id)delegate;
 - (RPNearFieldControllerDelegate)delegate;
 - (id)_exportedInterface;
 - (id)_remoteObjectInterface;
@@ -10,23 +10,23 @@
 - (void)_interrupted;
 - (void)_invalidated;
 - (void)_startPolling;
-- (void)didBeginTransaction:(id)a3;
-- (void)didInterruptTransaction:(id)a3 withError:(id)a4;
-- (void)didUpdateTransaction:(id)a3;
+- (void)didBeginTransaction:(id)transaction;
+- (void)didInterruptTransaction:(id)transaction withError:(id)error;
+- (void)didUpdateTransaction:(id)transaction;
 - (void)invalidate;
-- (void)invalidateTransaction:(id)a3;
-- (void)invalidateTransaction:(id)a3 context:(id)a4;
-- (void)startPolling:(int64_t)a3 context:(id)a4;
-- (void)startPolling:(int64_t)a3 forApplicationLabel:(id)a4;
+- (void)invalidateTransaction:(id)transaction;
+- (void)invalidateTransaction:(id)transaction context:(id)context;
+- (void)startPolling:(int64_t)polling context:(id)context;
+- (void)startPolling:(int64_t)polling forApplicationLabel:(id)label;
 - (void)stop;
 @end
 
 @implementation RPNearFieldController
 
-- (RPNearFieldController)initWithDispatchQueue:(id)a3 delegate:(id)a4
+- (RPNearFieldController)initWithDispatchQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = RPNearFieldController;
   v9 = [(RPNearFieldController *)&v11 init];
@@ -37,8 +37,8 @@
       [RPNearFieldController initWithDispatchQueue:delegate:];
     }
 
-    objc_storeStrong(&v9->_dispatchQueue, a3);
-    objc_storeWeak(&v9->_delegate, v8);
+    objc_storeStrong(&v9->_dispatchQueue, queue);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
   }
 
   return v9;
@@ -46,10 +46,10 @@
 
 - (NSString)currentApplicationLabel
 {
-  v2 = [(RPNearFieldController *)self currentContext];
-  v3 = [v2 applicationLabel];
+  currentContext = [(RPNearFieldController *)self currentContext];
+  applicationLabel = [currentContext applicationLabel];
 
-  return v3;
+  return applicationLabel;
 }
 
 - (void)_ensureXPCStarted
@@ -61,12 +61,12 @@
     xpcConnection = self->_xpcConnection;
     self->_xpcConnection = v3;
 
-    v5 = [(RPNearFieldController *)self _exportedInterface];
-    [(NSXPCConnection *)self->_xpcConnection setExportedInterface:v5];
+    _exportedInterface = [(RPNearFieldController *)self _exportedInterface];
+    [(NSXPCConnection *)self->_xpcConnection setExportedInterface:_exportedInterface];
 
     [(NSXPCConnection *)self->_xpcConnection setExportedObject:self];
-    v6 = [(RPNearFieldController *)self _remoteObjectInterface];
-    [(NSXPCConnection *)self->_xpcConnection setRemoteObjectInterface:v6];
+    _remoteObjectInterface = [(RPNearFieldController *)self _remoteObjectInterface];
+    [(NSXPCConnection *)self->_xpcConnection setRemoteObjectInterface:_remoteObjectInterface];
 
     [(NSXPCConnection *)self->_xpcConnection _setQueue:self->_dispatchQueue];
     v8[0] = MEMORY[0x1E69E9820];
@@ -117,8 +117,8 @@
     [RPNearFieldController _interrupted];
   }
 
-  v3 = [(RPNearFieldController *)self currentTransaction];
-  if (v3)
+  currentTransaction = [(RPNearFieldController *)self currentTransaction];
+  if (currentTransaction)
   {
     [(RPNearFieldController *)self setCurrentTransaction:0];
     v4 = MEMORY[0x1E696ABC0];
@@ -127,8 +127,8 @@
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     v6 = [v4 errorWithDomain:@"RPNearFieldControllerErrorDomain" code:0 userInfo:v5];
 
-    v7 = [(RPNearFieldController *)self delegate];
-    [v7 nearFieldController:self didInterruptTransaction:v3 error:v6];
+    delegate = [(RPNearFieldController *)self delegate];
+    [delegate nearFieldController:self didInterruptTransaction:currentTransaction error:v6];
   }
 
   if (self->_didStart)
@@ -228,49 +228,49 @@ void __54__RPNearFieldController__synchronousRemoteObjectProxy__block_invoke(uin
   [v3 nearFieldController:*(a1 + 32) didInvalidateWithError:v4];
 }
 
-- (void)startPolling:(int64_t)a3 forApplicationLabel:(id)a4
+- (void)startPolling:(int64_t)polling forApplicationLabel:(id)label
 {
   dispatchQueue = self->_dispatchQueue;
-  v7 = a4;
+  labelCopy = label;
   dispatch_assert_queue_V2(dispatchQueue);
-  v8 = [[RPNearFieldContext alloc] initWitApplicationLabel:v7];
+  v8 = [[RPNearFieldContext alloc] initWitApplicationLabel:labelCopy];
 
-  [(RPNearFieldController *)self startPolling:a3 context:v8];
+  [(RPNearFieldController *)self startPolling:polling context:v8];
 }
 
-- (void)startPolling:(int64_t)a3 context:(id)a4
+- (void)startPolling:(int64_t)polling context:(id)context
 {
-  v10 = a4;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if ([(RPNearFieldController *)self currentPreferredPollingType]!= a3)
+  if ([(RPNearFieldController *)self currentPreferredPollingType]!= polling)
   {
     goto LABEL_8;
   }
 
-  v6 = [(RPNearFieldController *)self currentContext];
-  v7 = v10;
+  currentContext = [(RPNearFieldController *)self currentContext];
+  v7 = contextCopy;
   v8 = v7;
-  if (v6 == v7)
+  if (currentContext == v7)
   {
 
     goto LABEL_9;
   }
 
-  if ((v7 == 0) == (v6 != 0))
+  if ((v7 == 0) == (currentContext != 0))
   {
 
     goto LABEL_8;
   }
 
-  v9 = [v6 isEqual:v7];
+  v9 = [currentContext isEqual:v7];
 
   if ((v9 & 1) == 0)
   {
 LABEL_8:
     self->_didStart = 1;
     *&self->_invalidateCalled = 0;
-    [(RPNearFieldController *)self setCurrentContext:v10];
-    [(RPNearFieldController *)self setCurrentPreferredPollingType:a3];
+    [(RPNearFieldController *)self setCurrentContext:contextCopy];
+    [(RPNearFieldController *)self setCurrentPreferredPollingType:polling];
     [(RPNearFieldController *)self _ensureXPCStarted];
     [(RPNearFieldController *)self _startPolling];
   }
@@ -280,8 +280,8 @@ LABEL_9:
 
 - (void)_startPolling
 {
-  v2 = [a1 currentApplicationLabel];
-  [a1 currentPreferredPollingType];
+  currentApplicationLabel = [self currentApplicationLabel];
+  [self currentPreferredPollingType];
   LogPrintF();
 }
 
@@ -292,8 +292,8 @@ LABEL_9:
   if (self->_didStart)
   {
     self->_didStart = 0;
-    v3 = [(RPNearFieldController *)self _remoteObjectProxy];
-    [v3 stop];
+    _remoteObjectProxy = [(RPNearFieldController *)self _remoteObjectProxy];
+    [_remoteObjectProxy stop];
 
     [(RPNearFieldController *)self setCurrentTransaction:0];
     [(RPNearFieldController *)self setCurrentContext:0];
@@ -302,68 +302,68 @@ LABEL_9:
   }
 }
 
-- (void)invalidateTransaction:(id)a3
+- (void)invalidateTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(RPNearFieldController *)self currentContext];
-  [(RPNearFieldController *)self invalidateTransaction:v4 context:v5];
+  transactionCopy = transaction;
+  currentContext = [(RPNearFieldController *)self currentContext];
+  [(RPNearFieldController *)self invalidateTransaction:transactionCopy context:currentContext];
 }
 
-- (void)invalidateTransaction:(id)a3 context:(id)a4
+- (void)invalidateTransaction:(id)transaction context:(id)context
 {
   dispatchQueue = self->_dispatchQueue;
-  v7 = a4;
-  v8 = a3;
+  contextCopy = context;
+  transactionCopy = transaction;
   dispatch_assert_queue_V2(dispatchQueue);
-  v10 = [(RPNearFieldController *)self _remoteObjectProxy];
-  v9 = [v8 identifier];
+  _remoteObjectProxy = [(RPNearFieldController *)self _remoteObjectProxy];
+  identifier = [transactionCopy identifier];
 
-  [v10 invalidateTransactionWithIdentifier:v9 context:v7];
+  [_remoteObjectProxy invalidateTransactionWithIdentifier:identifier context:contextCopy];
 }
 
-- (void)didBeginTransaction:(id)a3
+- (void)didBeginTransaction:(id)transaction
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  transactionCopy = transaction;
   dispatch_assert_queue_V2(dispatchQueue);
-  [(RPNearFieldController *)self setCurrentTransaction:v5];
-  v6 = [(RPNearFieldController *)self delegate];
-  [v6 nearFieldController:self didBeginTransaction:v5];
+  [(RPNearFieldController *)self setCurrentTransaction:transactionCopy];
+  delegate = [(RPNearFieldController *)self delegate];
+  [delegate nearFieldController:self didBeginTransaction:transactionCopy];
 }
 
-- (void)didUpdateTransaction:(id)a3
+- (void)didUpdateTransaction:(id)transaction
 {
-  v12 = a3;
+  transactionCopy = transaction;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v5 = [v12 identifier];
-  v6 = [(RPNearFieldController *)self currentTransaction];
-  v7 = [v6 identifier];
-  v8 = [v5 isEqual:v7];
+  identifier = [transactionCopy identifier];
+  currentTransaction = [(RPNearFieldController *)self currentTransaction];
+  identifier2 = [currentTransaction identifier];
+  v8 = [identifier isEqual:identifier2];
 
   if (v8)
   {
-    v9 = [(RPNearFieldController *)self delegate];
-    if ([v12 state] == 1)
+    delegate = [(RPNearFieldController *)self delegate];
+    if ([transactionCopy state] == 1)
     {
       [(RPNearFieldController *)self setCurrentTransaction:0];
-      v10 = [v12 error];
-      [v9 nearFieldController:self didInterruptTransaction:v12 error:v10];
+      error = [transactionCopy error];
+      [delegate nearFieldController:self didInterruptTransaction:transactionCopy error:error];
 LABEL_11:
 
       goto LABEL_12;
     }
 
-    if ([v12 state] == 2)
+    if ([transactionCopy state] == 2)
     {
-      v11 = [v12 tapEvent];
+      tapEvent = [transactionCopy tapEvent];
 
-      if (!v11)
+      if (!tapEvent)
       {
-        [(RPNearFieldController *)a2 didUpdateTransaction:v12];
+        [(RPNearFieldController *)a2 didUpdateTransaction:transactionCopy];
       }
 
-      v10 = [v12 tapEvent];
-      [v9 nearFieldController:self transaction:v12 didReceiveTapEvent:v10];
+      error = [transactionCopy tapEvent];
+      [delegate nearFieldController:self transaction:transactionCopy didReceiveTapEvent:error];
       goto LABEL_11;
     }
 
@@ -374,7 +374,7 @@ LABEL_12:
 
   if (gLogCategory_RPNearFieldController <= 90 && (gLogCategory_RPNearFieldController != -1 || _LogCategory_Initialize()))
   {
-    v9 = [(RPNearFieldController *)self currentTransaction];
+    delegate = [(RPNearFieldController *)self currentTransaction];
     LogPrintF();
     goto LABEL_12;
   }
@@ -382,21 +382,21 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)didInterruptTransaction:(id)a3 withError:(id)a4
+- (void)didInterruptTransaction:(id)transaction withError:(id)error
 {
-  v12 = a3;
-  v6 = a4;
+  transactionCopy = transaction;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v7 = [v12 identifier];
-  v8 = [(RPNearFieldController *)self currentTransaction];
-  v9 = [v8 identifier];
-  v10 = [v7 isEqual:v9];
+  identifier = [transactionCopy identifier];
+  currentTransaction = [(RPNearFieldController *)self currentTransaction];
+  identifier2 = [currentTransaction identifier];
+  v10 = [identifier isEqual:identifier2];
 
   if (v10)
   {
     [(RPNearFieldController *)self setCurrentTransaction:0];
-    v11 = [(RPNearFieldController *)self delegate];
-    [v11 nearFieldController:self didInterruptTransaction:v12 error:v6];
+    delegate = [(RPNearFieldController *)self delegate];
+    [delegate nearFieldController:self didInterruptTransaction:transactionCopy error:errorCopy];
 LABEL_6:
 
     goto LABEL_7;
@@ -404,7 +404,7 @@ LABEL_6:
 
   if (gLogCategory_RPNearFieldController <= 90 && (gLogCategory_RPNearFieldController != -1 || _LogCategory_Initialize()))
   {
-    v11 = [(RPNearFieldController *)self currentTransaction];
+    delegate = [(RPNearFieldController *)self currentTransaction];
     LogPrintF();
     goto LABEL_6;
   }

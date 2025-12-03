@@ -1,28 +1,28 @@
 @interface MHSchemaMHUnintendedResponseSuppressionEnded
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHUnintendedResponseSuppressionEnded)initWithDictionary:(id)a3;
-- (MHSchemaMHUnintendedResponseSuppressionEnded)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHUnintendedResponseSuppressionEnded)initWithDictionary:(id)dictionary;
+- (MHSchemaMHUnintendedResponseSuppressionEnded)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasSpeakerIDThreshold:(BOOL)a3;
-- (void)setHasSpeakerIdScoreThreshold:(BOOL)a3;
-- (void)setHasThreshold:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasSpeakerIDThreshold:(BOOL)threshold;
+- (void)setHasSpeakerIdScoreThreshold:(BOOL)threshold;
+- (void)setHasThreshold:(BOOL)threshold;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHUnintendedResponseSuppressionEnded
 
-- (MHSchemaMHUnintendedResponseSuppressionEnded)initWithDictionary:(id)a3
+- (MHSchemaMHUnintendedResponseSuppressionEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = MHSchemaMHUnintendedResponseSuppressionEnded;
   v5 = [(MHSchemaMHUnintendedResponseSuppressionEnded *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"modelVersion"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(MHSchemaMHUnintendedResponseSuppressionEnded *)v5 setModelVersion:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"score"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"score"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(MHSchemaMHUnintendedResponseSuppressionEnded *)v5 setScore:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"threshold"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"threshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(MHSchemaMHUnintendedResponseSuppressionEnded *)v5 setThreshold:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"mitigationAssetVersion"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"mitigationAssetVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,7 +54,7 @@
       [(MHSchemaMHUnintendedResponseSuppressionEnded *)v5 setMitigationAssetVersion:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"speakerIDThreshold"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"speakerIDThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@
       [(MHSchemaMHUnintendedResponseSuppressionEnded *)v5 setSpeakerIDThreshold:?];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"speakerIdScoreThreshold"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"speakerIdScoreThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,30 +76,30 @@
   return v5;
 }
 
-- (MHSchemaMHUnintendedResponseSuppressionEnded)initWithJSON:(id)a3
+- (MHSchemaMHUnintendedResponseSuppressionEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -112,19 +112,19 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_mitigationAssetVersion)
   {
-    v4 = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self mitigationAssetVersion];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"mitigationAssetVersion"];
+    mitigationAssetVersion = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self mitigationAssetVersion];
+    v5 = [mitigationAssetVersion copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"mitigationAssetVersion"];
   }
 
   if (self->_modelVersion)
   {
-    v6 = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self modelVersion];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"modelVersion"];
+    modelVersion = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self modelVersion];
+    v7 = [modelVersion copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"modelVersion"];
   }
 
   has = self->_has;
@@ -133,7 +133,7 @@
     v12 = MEMORY[0x1E696AD98];
     [(MHSchemaMHUnintendedResponseSuppressionEnded *)self score];
     v13 = [v12 numberWithFloat:?];
-    [v3 setObject:v13 forKeyedSubscript:@"score"];
+    [dictionary setObject:v13 forKeyedSubscript:@"score"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -156,7 +156,7 @@ LABEL_7:
   v14 = MEMORY[0x1E696AD98];
   [(MHSchemaMHUnintendedResponseSuppressionEnded *)self speakerIDThreshold];
   v15 = [v14 numberWithFloat:?];
-  [v3 setObject:v15 forKeyedSubscript:@"speakerIDThreshold"];
+  [dictionary setObject:v15 forKeyedSubscript:@"speakerIDThreshold"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -174,7 +174,7 @@ LABEL_15:
   v16 = MEMORY[0x1E696AD98];
   [(MHSchemaMHUnintendedResponseSuppressionEnded *)self speakerIdScoreThreshold];
   v17 = [v16 numberWithFloat:?];
-  [v3 setObject:v17 forKeyedSubscript:@"speakerIdScoreThreshold"];
+  [dictionary setObject:v17 forKeyedSubscript:@"speakerIdScoreThreshold"];
 
   if ((*&self->_has & 2) != 0)
   {
@@ -182,13 +182,13 @@ LABEL_9:
     v9 = MEMORY[0x1E696AD98];
     [(MHSchemaMHUnintendedResponseSuppressionEnded *)self threshold];
     v10 = [v9 numberWithFloat:?];
-    [v3 setObject:v10 forKeyedSubscript:@"threshold"];
+    [dictionary setObject:v10 forKeyedSubscript:@"threshold"];
   }
 
 LABEL_10:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -352,28 +352,28 @@ LABEL_10:
   return v6 ^ v3 ^ v11 ^ v16 ^ v19 ^ v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self modelVersion];
-  v6 = [v4 modelVersion];
-  if ((v5 != 0) == (v6 == 0))
+  modelVersion = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self modelVersion];
+  modelVersion2 = [equalCopy modelVersion];
+  if ((modelVersion != 0) == (modelVersion2 == 0))
   {
     goto LABEL_18;
   }
 
-  v7 = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self modelVersion];
-  if (v7)
+  modelVersion3 = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self modelVersion];
+  if (modelVersion3)
   {
-    v8 = v7;
-    v9 = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self modelVersion];
-    v10 = [v4 modelVersion];
-    v11 = [v9 isEqual:v10];
+    v8 = modelVersion3;
+    modelVersion4 = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self modelVersion];
+    modelVersion5 = [equalCopy modelVersion];
+    v11 = [modelVersion4 isEqual:modelVersion5];
 
     if (!v11)
     {
@@ -386,7 +386,7 @@ LABEL_10:
   }
 
   has = self->_has;
-  v13 = v4[40];
+  v13 = equalCopy[40];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_19;
@@ -395,14 +395,14 @@ LABEL_10:
   if (*&has)
   {
     score = self->_score;
-    [v4 score];
+    [equalCopy score];
     if (score != v15)
     {
       goto LABEL_19;
     }
 
     has = self->_has;
-    v13 = v4[40];
+    v13 = equalCopy[40];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -414,29 +414,29 @@ LABEL_10:
   if (v16)
   {
     threshold = self->_threshold;
-    [v4 threshold];
+    [equalCopy threshold];
     if (threshold != v18)
     {
       goto LABEL_19;
     }
   }
 
-  v5 = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self mitigationAssetVersion];
-  v6 = [v4 mitigationAssetVersion];
-  if ((v5 != 0) == (v6 == 0))
+  modelVersion = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self mitigationAssetVersion];
+  modelVersion2 = [equalCopy mitigationAssetVersion];
+  if ((modelVersion != 0) == (modelVersion2 == 0))
   {
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v19 = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self mitigationAssetVersion];
-  if (v19)
+  mitigationAssetVersion = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self mitigationAssetVersion];
+  if (mitigationAssetVersion)
   {
-    v20 = v19;
-    v21 = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self mitigationAssetVersion];
-    v22 = [v4 mitigationAssetVersion];
-    v23 = [v21 isEqual:v22];
+    v20 = mitigationAssetVersion;
+    mitigationAssetVersion2 = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self mitigationAssetVersion];
+    mitigationAssetVersion3 = [equalCopy mitigationAssetVersion];
+    v23 = [mitigationAssetVersion2 isEqual:mitigationAssetVersion3];
 
     if (!v23)
     {
@@ -450,26 +450,26 @@ LABEL_18:
 
   v26 = self->_has;
   v27 = (*&v26 >> 2) & 1;
-  v28 = v4[40];
+  v28 = equalCopy[40];
   if (v27 == ((v28 >> 2) & 1))
   {
     if (v27)
     {
       speakerIDThreshold = self->_speakerIDThreshold;
-      [v4 speakerIDThreshold];
+      [equalCopy speakerIDThreshold];
       if (speakerIDThreshold != v30)
       {
         goto LABEL_19;
       }
 
       v26 = self->_has;
-      v28 = v4[40];
+      v28 = equalCopy[40];
     }
 
     v31 = (*&v26 >> 3) & 1;
     if (v31 == ((v28 >> 3) & 1))
     {
-      if (!v31 || (speakerIdScoreThreshold = self->_speakerIdScoreThreshold, [v4 speakerIdScoreThreshold], speakerIdScoreThreshold == v33))
+      if (!v31 || (speakerIdScoreThreshold = self->_speakerIdScoreThreshold, [equalCopy speakerIdScoreThreshold], speakerIdScoreThreshold == v33))
       {
         v24 = 1;
         goto LABEL_20;
@@ -484,12 +484,12 @@ LABEL_20:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self modelVersion];
+  toCopy = to;
+  modelVersion = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self modelVersion];
 
-  if (v4)
+  if (modelVersion)
   {
     PBDataWriterWriteStringField();
   }
@@ -506,32 +506,32 @@ LABEL_20:
     PBDataWriterWriteFloatField();
   }
 
-  v6 = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self mitigationAssetVersion];
+  mitigationAssetVersion = [(MHSchemaMHUnintendedResponseSuppressionEnded *)self mitigationAssetVersion];
 
-  if (v6)
+  if (mitigationAssetVersion)
   {
     PBDataWriterWriteStringField();
   }
 
   v7 = self->_has;
-  v8 = v9;
+  v8 = toCopy;
   if ((v7 & 4) != 0)
   {
     PBDataWriterWriteFloatField();
-    v8 = v9;
+    v8 = toCopy;
     v7 = self->_has;
   }
 
   if ((v7 & 8) != 0)
   {
     PBDataWriterWriteFloatField();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 
-- (void)setHasSpeakerIdScoreThreshold:(BOOL)a3
+- (void)setHasSpeakerIdScoreThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 8;
   }
@@ -544,9 +544,9 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSpeakerIDThreshold:(BOOL)a3
+- (void)setHasSpeakerIDThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 4;
   }
@@ -559,9 +559,9 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasThreshold:(BOOL)a3
+- (void)setHasThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 2;
   }

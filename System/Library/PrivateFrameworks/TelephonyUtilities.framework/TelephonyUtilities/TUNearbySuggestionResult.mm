@@ -1,25 +1,25 @@
 @interface TUNearbySuggestionResult
-- (TUNearbySuggestionResult)initWithCoder:(id)a3;
-- (TUNearbySuggestionResult)initWithSuggestion:(id)a3 selectedActivity:(id)a4 type:(int64_t)a5;
+- (TUNearbySuggestionResult)initWithCoder:(id)coder;
+- (TUNearbySuggestionResult)initWithSuggestion:(id)suggestion selectedActivity:(id)activity type:(int64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUNearbySuggestionResult
 
-- (TUNearbySuggestionResult)initWithSuggestion:(id)a3 selectedActivity:(id)a4 type:(int64_t)a5
+- (TUNearbySuggestionResult)initWithSuggestion:(id)suggestion selectedActivity:(id)activity type:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  suggestionCopy = suggestion;
+  activityCopy = activity;
   v14.receiver = self;
   v14.super_class = TUNearbySuggestionResult;
   v11 = [(TUNearbySuggestionResult *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_suggestion, a3);
-    objc_storeStrong(&v12->_selectedActivity, a4);
-    v12->_type = a5;
+    objc_storeStrong(&v11->_suggestion, suggestion);
+    objc_storeStrong(&v12->_selectedActivity, activity);
+    v12->_type = type;
   }
 
   return v12;
@@ -52,38 +52,38 @@
   return v9;
 }
 
-- (TUNearbySuggestionResult)initWithCoder:(id)a3
+- (TUNearbySuggestionResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_suggestion);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_selectedActivity);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = NSStringFromSelector(sel_type);
-  v12 = [v4 decodeIntegerForKey:v11];
+  v12 = [coderCopy decodeIntegerForKey:v11];
 
   v13 = [(TUNearbySuggestionResult *)self initWithSuggestion:v7 selectedActivity:v10 type:v12];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   suggestion = self->_suggestion;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_suggestion);
-  [v5 encodeObject:suggestion forKey:v6];
+  [coderCopy encodeObject:suggestion forKey:v6];
 
   selectedActivity = self->_selectedActivity;
   v8 = NSStringFromSelector(sel_selectedActivity);
-  [v5 encodeObject:selectedActivity forKey:v8];
+  [coderCopy encodeObject:selectedActivity forKey:v8];
 
   type = self->_type;
   v10 = NSStringFromSelector(sel_type);
-  [v5 encodeInteger:type forKey:v10];
+  [coderCopy encodeInteger:type forKey:v10];
 }
 
 @end

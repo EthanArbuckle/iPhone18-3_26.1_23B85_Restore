@@ -2,30 +2,30 @@
 - (BOOL)hasCompletedInitialOrMigrationSync;
 - (BOOL)hasCompletedInitialSync;
 - (BOOL)hasCompletedSync;
-- (BOOL)isEqual:(id)a3;
-- (PSYDeviceSyncStateEntry)initWithCoder:(id)a3;
-- (PSYDeviceSyncStateEntry)initWithPairingID:(id)a3 syncState:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PSYDeviceSyncStateEntry)initWithCoder:(id)coder;
+- (PSYDeviceSyncStateEntry)initWithPairingID:(id)d syncState:(unint64_t)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSYDeviceSyncStateEntry
 
-- (PSYDeviceSyncStateEntry)initWithPairingID:(id)a3 syncState:(unint64_t)a4
+- (PSYDeviceSyncStateEntry)initWithPairingID:(id)d syncState:(unint64_t)state
 {
-  v7 = a3;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = PSYDeviceSyncStateEntry;
   v8 = [(PSYDeviceSyncStateEntry *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_pairingID, a3);
-    v9->_initialSyncState = a4;
+    objc_storeStrong(&v8->_pairingID, d);
+    v9->_initialSyncState = state;
     v10 = +[PSYRegistrySingleton registry];
-    v11 = [v10 deviceForPairingID:v7];
+    v11 = [v10 deviceForPairingID:dCopy];
 
     if (!v11)
     {
@@ -35,7 +35,7 @@
     }
 
     v9->_syncSwitchIndex = [v10 lastSyncSwitchIndex];
-    v9->_migrationIndex = [v10 migrationCountForPairingID:v7];
+    v9->_migrationIndex = [v10 migrationCountForPairingID:dCopy];
   }
 
   v12 = v9;
@@ -73,9 +73,9 @@ LABEL_6:
   v3 = +[PSYRegistrySingleton registry];
   v4 = [v3 deviceForPairingID:self->_pairingID];
   v5 = [v4 valueForProperty:*MEMORY[0x277D37BD0]];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  v7 = self->_initialSyncState == 3 && self->_migrationIndex == v6;
+  v7 = self->_initialSyncState == 3 && self->_migrationIndex == integerValue;
   v8 = psy_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -97,7 +97,7 @@ LABEL_6:
       v18 = 1024;
       v19 = migrationIndex;
       v20 = 1024;
-      v21 = v6;
+      v21 = integerValue;
       v22 = 2112;
       v23 = v13;
       _os_log_impl(&dword_25DF25000, v10, OS_LOG_TYPE_DEFAULT, "NRPDR initial sync state %@;           migration index: %d;           nr migration index: %d           hasCompletedInitialOrMigrationSync %@;", &v16, 0x22u);
@@ -120,13 +120,13 @@ LABEL_6:
     v6 = psy_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(NSUUID *)self->_pairingID UUIDString];
-      v8 = [v3 switchIndex];
+      uUIDString = [(NSUUID *)self->_pairingID UUIDString];
+      switchIndex = [v3 switchIndex];
       syncSwitchIndex = self->_syncSwitchIndex;
       v14 = 138412802;
-      v15 = v7;
+      v15 = uUIDString;
       v16 = 2048;
-      v17 = v8;
+      v17 = switchIndex;
       v18 = 2048;
       v19 = syncSwitchIndex;
       _os_log_impl(&dword_25DF25000, v6, OS_LOG_TYPE_DEFAULT, "NRPDR %@ syncSwitchIndex: %ld prefs switchIndex: %ld", &v14, 0x20u);
@@ -148,31 +148,31 @@ LABEL_6:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pairingID = self->_pairingID;
-  v5 = a3;
-  [v5 encodeObject:pairingID forKey:@"pairingID"];
-  [v5 encodeInteger:self->_initialSyncState forKey:@"syncState"];
-  [v5 encodeInt32:self->_syncSwitchIndex forKey:@"syncSwitchIndex"];
-  [v5 encodeInt32:self->_migrationIndex forKey:@"migrationIndex"];
+  coderCopy = coder;
+  [coderCopy encodeObject:pairingID forKey:@"pairingID"];
+  [coderCopy encodeInteger:self->_initialSyncState forKey:@"syncState"];
+  [coderCopy encodeInt32:self->_syncSwitchIndex forKey:@"syncSwitchIndex"];
+  [coderCopy encodeInt32:self->_migrationIndex forKey:@"migrationIndex"];
 }
 
-- (PSYDeviceSyncStateEntry)initWithCoder:(id)a3
+- (PSYDeviceSyncStateEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PSYDeviceSyncStateEntry;
   v5 = [(PSYDeviceSyncStateEntry *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pairingID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pairingID"];
     pairingID = v5->_pairingID;
     v5->_pairingID = v6;
 
-    v5->_initialSyncState = [v4 decodeIntegerForKey:@"syncState"];
-    v5->_syncSwitchIndex = [v4 decodeInt32ForKey:@"syncSwitchIndex"];
-    v5->_migrationIndex = [v4 decodeInt32ForKey:@"migrationIndex"];
+    v5->_initialSyncState = [coderCopy decodeIntegerForKey:@"syncState"];
+    v5->_syncSwitchIndex = [coderCopy decodeInt32ForKey:@"syncSwitchIndex"];
+    v5->_migrationIndex = [coderCopy decodeInt32ForKey:@"migrationIndex"];
   }
 
   return v5;
@@ -183,40 +183,40 @@ LABEL_6:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NSUUID *)self->_pairingID UUIDString];
+  uUIDString = [(NSUUID *)self->_pairingID UUIDString];
   v7 = NSStringFromPSYDeviceSyncState(self->_initialSyncState);
   syncSwitchIndex = self->_syncSwitchIndex;
   migrationIndex = self->_migrationIndex;
-  v10 = [(PSYDeviceSyncStateEntry *)self hasCompletedSync];
+  hasCompletedSync = [(PSYDeviceSyncStateEntry *)self hasCompletedSync];
   v11 = @"Not Completed";
-  if (v10)
+  if (hasCompletedSync)
   {
     v11 = @"Completed";
   }
 
-  v12 = [v3 stringWithFormat:@"<%@ %p pairingID=%@ initialSyncState=%@ syncSwitchIndex=%lu migrationIndex=%lu syncState=%@>", v5, self, v6, v7, syncSwitchIndex, migrationIndex, v11];;
+  v12 = [v3 stringWithFormat:@"<%@ %p pairingID=%@ initialSyncState=%@ syncSwitchIndex=%lu migrationIndex=%lu syncState=%@>", v5, self, uUIDString, v7, syncSwitchIndex, migrationIndex, v11];;
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v6 = 1;
     goto LABEL_13;
   }
 
-  if (v4)
+  if (equalCopy)
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(NSUUID *)self->_pairingID isEqual:v5->_pairingID]&& self->_initialSyncState == v5->_initialSyncState && self->_syncSwitchIndex == v5->_syncSwitchIndex && self->_migrationIndex == v5->_migrationIndex;
   }
 
@@ -239,9 +239,9 @@ LABEL_13:
   return self->_migrationIndex - v5 + 32 * v5 + 923521;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong((v4 + 16), self->_pairingID);
   *(v4 + 24) = self->_initialSyncState;
   *(v4 + 8) = self->_syncSwitchIndex;

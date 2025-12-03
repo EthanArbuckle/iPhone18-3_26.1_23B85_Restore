@@ -1,7 +1,7 @@
 @interface OFCLGeocoderOperation
-+ (id)operationWithLocation:(id)a3;
-+ (id)operationWithLocation:(id)a3 accuracy:(double)a4;
-- (OFCLGeocoderOperation)initWithLocation:(id)a3 accuracy:(double)a4;
++ (id)operationWithLocation:(id)location;
++ (id)operationWithLocation:(id)location accuracy:(double)accuracy;
+- (OFCLGeocoderOperation)initWithLocation:(id)location accuracy:(double)accuracy;
 - (unint64_t)launchOperation;
 - (void)cancelOperation;
 - (void)cleanupOperation;
@@ -11,7 +11,7 @@
 
 @implementation OFCLGeocoderOperation
 
-- (OFCLGeocoderOperation)initWithLocation:(id)a3 accuracy:(double)a4
+- (OFCLGeocoderOperation)initWithLocation:(id)location accuracy:(double)accuracy
 {
   v8.receiver = self;
   v8.super_class = OFCLGeocoderOperation;
@@ -19,8 +19,8 @@
   if (v6)
   {
     v6->_geocoder = objc_alloc_init(MEMORY[0x277CBFBE8]);
-    v6->_location = a3;
-    v6->_accuracy = a4;
+    v6->_location = location;
+    v6->_accuracy = accuracy;
     v6->_placemarks = 0;
   }
 
@@ -162,17 +162,17 @@ uint64_t __40__OFCLGeocoderOperation_launchOperation__block_invoke(uint64_t a1, 
   }
 }
 
-+ (id)operationWithLocation:(id)a3
++ (id)operationWithLocation:(id)location
 {
   v4 = [OFCLGeocoderOperation alloc];
-  v5 = [(OFCLGeocoderOperation *)v4 initWithLocation:a3 accuracy:*MEMORY[0x277CE4208]];
+  v5 = [(OFCLGeocoderOperation *)v4 initWithLocation:location accuracy:*MEMORY[0x277CE4208]];
 
   return v5;
 }
 
-+ (id)operationWithLocation:(id)a3 accuracy:(double)a4
++ (id)operationWithLocation:(id)location accuracy:(double)accuracy
 {
-  v4 = [[OFCLGeocoderOperation alloc] initWithLocation:a3 accuracy:a4];
+  v4 = [[OFCLGeocoderOperation alloc] initWithLocation:location accuracy:accuracy];
 
   return v4;
 }

@@ -1,30 +1,30 @@
 @interface HDLogicalSourceOrderSyncEntity
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
-+ (id)_sourceOrderSyncPredicateForSession:(uint64_t)a1;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (id)syncEntityDependenciesForSyncProtocolVersion:(int)a3;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
++ (id)_sourceOrderSyncPredicateForSession:(uint64_t)session;
++ (id)decodeSyncObjectWithData:(id)data;
++ (id)syncEntityDependenciesForSyncProtocolVersion:(int)version;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDLogicalSourceOrderSyncEntity
 
-+ (id)_sourceOrderSyncPredicateForSession:(uint64_t)a1
++ (id)_sourceOrderSyncPredicateForSession:(uint64_t)session
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 syncStore];
-  v4 = [v3 protocolVersion];
+  syncStore = [v2 syncStore];
+  protocolVersion = [syncStore protocolVersion];
 
-  if (v4 > 5)
+  if (protocolVersion > 5)
   {
     v7 = 0;
   }
 
   else
   {
-    v5 = [v2 excludedSyncStores];
-    v6 = [v5 hk_map:&__block_literal_global_415];
+    excludedSyncStores = [v2 excludedSyncStores];
+    v6 = [excludedSyncStores hk_map:&__block_literal_global_415];
 
     v7 = [MEMORY[0x277D10B28] doesNotContainPredicateWithProperty:@"sources.provenance" values:v6];
   }
@@ -40,18 +40,18 @@ uint64_t __70__HDLogicalSourceOrderSyncEntity__sourceOrderSyncPredicateForSessio
   return [v2 numberWithLongLong:v3];
 }
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  end = a4.end;
-  start = a4.start;
+  end = range.end;
+  start = range.start;
   v72[5] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  sessionCopy = session;
+  profileCopy = profile;
+  handlerCopy = handler;
   v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v38 = a1;
-  v17 = [v12 maxEncodedBytesPerCodableChangeForSyncEntityClass:a1];
+  selfCopy = self;
+  v17 = [sessionCopy maxEncodedBytesPerCodableChangeForSyncEntityClass:self];
   v18 = v17;
   v71[0] = 0;
   v71[1] = v71;
@@ -75,10 +75,10 @@ uint64_t __70__HDLogicalSourceOrderSyncEntity__sourceOrderSyncPredicateForSessio
   v64 = &v63;
   v65 = 0x2020000000;
   v66 = 0;
-  v37 = [v13 database];
+  database = [profileCopy database];
   v36 = v16;
   v20 = end;
-  v35 = v14;
+  v35 = handlerCopy;
   v72[0] = @"data_type";
   v72[1] = @"user_preferred";
   v72[2] = @"sources.uuid";
@@ -89,7 +89,7 @@ uint64_t __70__HDLogicalSourceOrderSyncEntity__sourceOrderSyncPredicateForSessio
   v60 = &v59;
   v61 = 0x2020000000;
   v62 = -1;
-  v22 = [v13 database];
+  database2 = [profileCopy database];
   v23 = v19 >> 6;
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
@@ -97,13 +97,13 @@ uint64_t __70__HDLogicalSourceOrderSyncEntity__sourceOrderSyncPredicateForSessio
   v44[3] = &unk_27862D8D0;
   v34 = v21;
   v45 = v34;
-  v55 = v38;
+  v55 = selfCopy;
   v56 = start;
   v57 = v20;
-  v39 = v12;
+  v39 = sessionCopy;
   v46 = v39;
   v51 = &v59;
-  v24 = v37;
+  v24 = database;
   v47 = v24;
   v52 = v71;
   v58 = v23;
@@ -111,11 +111,11 @@ uint64_t __70__HDLogicalSourceOrderSyncEntity__sourceOrderSyncPredicateForSessio
   v54 = &v63;
   v25 = v15;
   v48 = v25;
-  v26 = v13;
+  v26 = profileCopy;
   v49 = v26;
   v27 = v36;
   v50 = v27;
-  v28 = [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:v22 error:a7 block:v44];
+  v28 = [(HDHealthEntity *)HDSourceEntity performReadTransactionWithHealthDatabase:database2 error:error block:v44];
 
   if (v28)
   {
@@ -142,7 +142,7 @@ uint64_t __70__HDLogicalSourceOrderSyncEntity__sourceOrderSyncPredicateForSessio
       }
     }
 
-    LOBYTE(v28) = [v35 sendCodableChange:v30 resultAnchor:v31[3] sequence:0 done:1 error:a7];
+    LOBYTE(v28) = [v35 sendCodableChange:v30 resultAnchor:v31[3] sequence:0 done:1 error:error];
   }
 
   _Block_object_dispose(&v59, 8);
@@ -274,35 +274,35 @@ void __109__HDLogicalSourceOrderSyncEntity_generateSyncObjectsForSession_syncAnc
   [*(a1 + 40) addObject:v7];
 }
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [(HDLogicalSourceOrderSyncEntity *)a1 _sourceOrderSyncPredicateForSession:v11];
-  v13 = [v10 database];
+  profileCopy = profile;
+  sessionCopy = session;
+  v12 = [(HDLogicalSourceOrderSyncEntity *)self _sourceOrderSyncPredicateForSession:sessionCopy];
+  database = [profileCopy database];
 
-  v14 = [(HDHealthEntity *)HDLogicalSourceOrderEntity nextSyncAnchorWithStartAnchor:a4 predicate:v12 session:v11 healthDatabase:v13 error:a6];
+  v14 = [(HDHealthEntity *)HDLogicalSourceOrderEntity nextSyncAnchorWithStartAnchor:anchor predicate:v12 session:sessionCopy healthDatabase:database error:error];
   return v14;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[HDCodableObjectTypeSourceOrder alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[HDCodableObjectTypeSourceOrder alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
-  v9 = a3;
-  v10 = [a6 sourceOrderManager];
-  LODWORD(a7) = [v10 createSourceOrdersWithCodables:v9 error:a7];
+  objectsCopy = objects;
+  sourceOrderManager = [profile sourceOrderManager];
+  LODWORD(error) = [sourceOrderManager createSourceOrdersWithCodables:objectsCopy error:error];
 
-  return a7 ^ 1;
+  return error ^ 1;
 }
 
-+ (id)syncEntityDependenciesForSyncProtocolVersion:(int)a3
++ (id)syncEntityDependenciesForSyncProtocolVersion:(int)version
 {
   v3 = MEMORY[0x277CBEB98];
   v4 = objc_opt_class();

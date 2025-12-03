@@ -1,22 +1,22 @@
 @interface ICASTipLearnMoreData
-- (ICASTipLearnMoreData)initWithLearnMoreTipName:(id)a3 tipFeature:(id)a4;
+- (ICASTipLearnMoreData)initWithLearnMoreTipName:(id)name tipFeature:(id)feature;
 - (id)toDict;
 @end
 
 @implementation ICASTipLearnMoreData
 
-- (ICASTipLearnMoreData)initWithLearnMoreTipName:(id)a3 tipFeature:(id)a4
+- (ICASTipLearnMoreData)initWithLearnMoreTipName:(id)name tipFeature:(id)feature
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  featureCopy = feature;
   v12.receiver = self;
   v12.super_class = ICASTipLearnMoreData;
   v9 = [(ICASTipLearnMoreData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_learnMoreTipName, a3);
-    objc_storeStrong(&v10->_tipFeature, a4);
+    objc_storeStrong(&v9->_learnMoreTipName, name);
+    objc_storeStrong(&v10->_tipFeature, feature);
   }
 
   return v10;
@@ -26,33 +26,33 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"learnMoreTipName";
-  v3 = [(ICASTipLearnMoreData *)self learnMoreTipName];
-  if (v3)
+  learnMoreTipName = [(ICASTipLearnMoreData *)self learnMoreTipName];
+  if (learnMoreTipName)
   {
-    v4 = [(ICASTipLearnMoreData *)self learnMoreTipName];
+    learnMoreTipName2 = [(ICASTipLearnMoreData *)self learnMoreTipName];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    learnMoreTipName2 = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = learnMoreTipName2;
   v12[1] = @"tipFeature";
-  v13[0] = v4;
-  v6 = [(ICASTipLearnMoreData *)self tipFeature];
-  if (v6)
+  v13[0] = learnMoreTipName2;
+  tipFeature = [(ICASTipLearnMoreData *)self tipFeature];
+  if (tipFeature)
   {
-    v7 = [(ICASTipLearnMoreData *)self tipFeature];
+    tipFeature2 = [(ICASTipLearnMoreData *)self tipFeature];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    tipFeature2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = tipFeature2;
+  v13[1] = tipFeature2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

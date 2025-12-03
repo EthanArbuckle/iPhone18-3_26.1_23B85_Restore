@@ -1,41 +1,41 @@
 @interface MTSDevicePairingFabric
-+ (id)UUIDFromIdentifier:(id)a3 ecosystem:(id)a4;
++ (id)UUIDFromIdentifier:(id)identifier ecosystem:(id)ecosystem;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (MTSDevicePairingFabric)initWithCoder:(id)a3;
-- (MTSDevicePairingFabric)initWithIdentifier:(id)a3 index:(id)a4 displayName:(id)a5 ecosystem:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (MTSDevicePairingFabric)initWithCoder:(id)coder;
+- (MTSDevicePairingFabric)initWithIdentifier:(id)identifier index:(id)index displayName:(id)name ecosystem:(id)ecosystem;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTSDevicePairingFabric
 
 - (NSArray)attributeDescriptions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(MTSDevicePairingFabric *)self identifier];
-  v6 = [v4 initWithName:@"Identifier" value:v5];
-  [v3 addObject:v6];
+  identifier = [(MTSDevicePairingFabric *)self identifier];
+  v6 = [v4 initWithName:@"Identifier" value:identifier];
+  [array addObject:v6];
 
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v8 = [(MTSDevicePairingFabric *)self index];
-  v9 = [v7 initWithName:@"Index" value:v8];
-  [v3 addObject:v9];
+  index = [(MTSDevicePairingFabric *)self index];
+  v9 = [v7 initWithName:@"Index" value:index];
+  [array addObject:v9];
 
   v10 = objc_alloc(MEMORY[0x277D0F778]);
-  v11 = [(MTSDevicePairingFabric *)self displayName];
-  v12 = [v10 initWithName:@"Display Name" value:v11];
-  [v3 addObject:v12];
+  displayName = [(MTSDevicePairingFabric *)self displayName];
+  v12 = [v10 initWithName:@"Display Name" value:displayName];
+  [array addObject:v12];
 
   v13 = objc_alloc(MEMORY[0x277D0F778]);
-  v14 = [(MTSDevicePairingFabric *)self ecosystem];
-  v15 = [v13 initWithName:@"Ecosystem" value:v14];
-  [v3 addObject:v15];
+  ecosystem = [(MTSDevicePairingFabric *)self ecosystem];
+  v15 = [v13 initWithName:@"Ecosystem" value:ecosystem];
+  [array addObject:v15];
 
-  v16 = [v3 copy];
+  v16 = [array copy];
 
   return v16;
 }
@@ -47,14 +47,14 @@
   return [v2 shortDescription];
 }
 
-- (MTSDevicePairingFabric)initWithCoder:(id)a3
+- (MTSDevicePairingFabric)initWithCoder:(id)coder
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPF.ck.identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPF.ck.index"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPF.ck.displayName"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPF.ck.ecosystem"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPF.ck.identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPF.ck.index"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPF.ck.displayName"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPF.ck.ecosystem"];
   v9 = v8;
   if (v5)
   {
@@ -69,7 +69,7 @@
   if (v10 || v7 == 0 || v8 == 0)
   {
     v13 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -93,45 +93,45 @@
 
   else
   {
-    v16 = [(MTSDevicePairingFabric *)self initWithIdentifier:v5 index:v6 displayName:v7 ecosystem:v8];
-    v17 = v16;
+    selfCopy = [(MTSDevicePairingFabric *)self initWithIdentifier:v5 index:v6 displayName:v7 ecosystem:v8];
+    v17 = selfCopy;
   }
 
   v18 = *MEMORY[0x277D85DE8];
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MTSDevicePairingFabric *)self identifier];
-  [v4 encodeObject:v5 forKey:@"MTSDPF.ck.identifier"];
+  coderCopy = coder;
+  identifier = [(MTSDevicePairingFabric *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"MTSDPF.ck.identifier"];
 
-  v6 = [(MTSDevicePairingFabric *)self index];
-  [v4 encodeObject:v6 forKey:@"MTSDPF.ck.index"];
+  index = [(MTSDevicePairingFabric *)self index];
+  [coderCopy encodeObject:index forKey:@"MTSDPF.ck.index"];
 
-  v7 = [(MTSDevicePairingFabric *)self displayName];
-  [v4 encodeObject:v7 forKey:@"MTSDPF.ck.displayName"];
+  displayName = [(MTSDevicePairingFabric *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"MTSDPF.ck.displayName"];
 
-  v8 = [(MTSDevicePairingFabric *)self ecosystem];
-  [v4 encodeObject:v8 forKey:@"MTSDPF.ck.ecosystem"];
+  ecosystem = [(MTSDevicePairingFabric *)self ecosystem];
+  [coderCopy encodeObject:ecosystem forKey:@"MTSDPF.ck.ecosystem"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(MTSDevicePairingFabric *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(MTSDevicePairingFabric *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -142,21 +142,21 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(MTSDevicePairingFabric *)self identifier];
-    v8 = [v6 identifier];
-    if ([v7 isEqualToNumber:v8])
+    identifier = [(MTSDevicePairingFabric *)self identifier];
+    identifier2 = [v6 identifier];
+    if ([identifier isEqualToNumber:identifier2])
     {
-      v9 = [(MTSDevicePairingFabric *)self index];
-      v10 = [v6 index];
-      if ([v9 isEqualToNumber:v10])
+      index = [(MTSDevicePairingFabric *)self index];
+      index2 = [v6 index];
+      if ([index isEqualToNumber:index2])
       {
-        v11 = [(MTSDevicePairingFabric *)self displayName];
-        v12 = [v6 displayName];
-        if ([v11 isEqualToString:v12])
+        displayName = [(MTSDevicePairingFabric *)self displayName];
+        displayName2 = [v6 displayName];
+        if ([displayName isEqualToString:displayName2])
         {
-          v16 = [(MTSDevicePairingFabric *)self ecosystem];
-          v13 = [v6 ecosystem];
-          v14 = [v16 isEqual:v13];
+          ecosystem = [(MTSDevicePairingFabric *)self ecosystem];
+          ecosystem2 = [v6 ecosystem];
+          v14 = [ecosystem isEqual:ecosystem2];
         }
 
         else
@@ -185,34 +185,34 @@
   return v14;
 }
 
-- (MTSDevicePairingFabric)initWithIdentifier:(id)a3 index:(id)a4 displayName:(id)a5 ecosystem:(id)a6
+- (MTSDevicePairingFabric)initWithIdentifier:(id)identifier index:(id)index displayName:(id)name ecosystem:(id)ecosystem
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  identifierCopy = identifier;
+  indexCopy = index;
+  nameCopy = name;
+  ecosystemCopy = ecosystem;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v11)
+  if (!indexCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v12)
+  if (!nameCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v14 = v13;
-  if (!v13)
+  v14 = ecosystemCopy;
+  if (!ecosystemCopy)
   {
 LABEL_11:
     v27 = _HMFPreconditionFailure();
@@ -224,15 +224,15 @@ LABEL_11:
   v15 = [(MTSDevicePairingFabric *)&v29 init];
   if (v15)
   {
-    v16 = [v10 copy];
+    v16 = [identifierCopy copy];
     identifier = v15->_identifier;
     v15->_identifier = v16;
 
-    v18 = [v11 copy];
+    v18 = [indexCopy copy];
     index = v15->_index;
     v15->_index = v18;
 
-    v20 = [v12 copy];
+    v20 = [nameCopy copy];
     displayName = v15->_displayName;
     v15->_displayName = v20;
 
@@ -240,7 +240,7 @@ LABEL_11:
     ecosystem = v15->_ecosystem;
     v15->_ecosystem = v22;
 
-    v24 = [MTSDevicePairingFabric UUIDFromIdentifier:v10 ecosystem:v14];
+    v24 = [MTSDevicePairingFabric UUIDFromIdentifier:identifierCopy ecosystem:v14];
     uuid = v15->_uuid;
     v15->_uuid = v24;
   }
@@ -255,15 +255,15 @@ LABEL_11:
   return NSStringFromClass(v2);
 }
 
-+ (id)UUIDFromIdentifier:(id)a3 ecosystem:(id)a4
++ (id)UUIDFromIdentifier:(id)identifier ecosystem:(id)ecosystem
 {
-  v5 = a4;
-  v11 = [a3 integerValue];
-  v6 = [MEMORY[0x277CBEA90] dataWithBytes:&v11 length:8];
+  ecosystemCopy = ecosystem;
+  integerValue = [identifier integerValue];
+  v6 = [MEMORY[0x277CBEA90] dataWithBytes:&integerValue length:8];
   v7 = MEMORY[0x277CCAD78];
-  v8 = [v5 uuid];
+  uuid = [ecosystemCopy uuid];
 
-  v9 = [v7 hmf_UUIDWithNamespace:v8 data:v6];
+  v9 = [v7 hmf_UUIDWithNamespace:uuid data:v6];
 
   return v9;
 }

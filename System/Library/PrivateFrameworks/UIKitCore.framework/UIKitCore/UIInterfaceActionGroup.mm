@@ -1,43 +1,43 @@
 @interface UIInterfaceActionGroup
-+ (BOOL)changedProperties:(id)a3 containsAny:(id)a4;
-+ (id)actionGroupWithActions:(id)a3;
-+ (id)actionGroupWithActionsBySection:(id)a3;
++ (BOOL)changedProperties:(id)properties containsAny:(id)any;
++ (id)actionGroupWithActions:(id)actions;
++ (id)actionGroupWithActionsBySection:(id)section;
 - (CGSize)leadingImageLayoutSize;
 - (CGSize)trailingImageLayoutSize;
 - (NSString)description;
-- (UIInterfaceActionGroup)initWithTitle:(id)a3 actionsBySection:(id)a4;
+- (UIInterfaceActionGroup)initWithTitle:(id)title actionsBySection:(id)section;
 - (id)_deepCopyOfActionsBySection;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_addActionGroupDisplayPropertyObserver:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_addActionGroupDisplayPropertyObserver:(id)observer;
 - (void)_beginObservingActions;
 - (void)_endObservingActions;
-- (void)_notifyObserversDidChangeActionProperty:(id)a3;
+- (void)_notifyObserversDidChangeActionProperty:(id)property;
 - (void)_notifyObserversVisualStyleDidChange;
-- (void)_performWithActionObservingDisabled:(id)a3;
+- (void)_performWithActionObservingDisabled:(id)disabled;
 - (void)_reloadImageLayoutSizesUsingExistingActionImages;
-- (void)_removeActionGroupDisplayPropertyObserver:(id)a3;
-- (void)_setVisualStyle:(id)a3;
+- (void)_removeActionGroupDisplayPropertyObserver:(id)observer;
+- (void)_setVisualStyle:(id)style;
 - (void)_updateActionImageLayoutSizes;
-- (void)interfaceAction:(id)a3 reloadDisplayedContentActionProperties:(id)a4;
-- (void)setLeadingImageLayoutSize:(CGSize)a3;
-- (void)setPreferredAction:(id)a3;
-- (void)setTrailingImageLayoutSize:(CGSize)a3;
+- (void)interfaceAction:(id)action reloadDisplayedContentActionProperties:(id)properties;
+- (void)setLeadingImageLayoutSize:(CGSize)size;
+- (void)setPreferredAction:(id)action;
+- (void)setTrailingImageLayoutSize:(CGSize)size;
 @end
 
 @implementation UIInterfaceActionGroup
 
-+ (BOOL)changedProperties:(id)a3 containsAny:(id)a4
++ (BOOL)changedProperties:(id)properties containsAny:(id)any
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  propertiesCopy = properties;
+  anyCopy = any;
+  if ([propertiesCopy count])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = v6;
+    v7 = anyCopy;
     v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
@@ -51,7 +51,7 @@
             objc_enumerationMutation(v7);
           }
 
-          if ([v5 containsObject:{*(*(&v12 + 1) + 8 * i), v12}])
+          if ([propertiesCopy containsObject:{*(*(&v12 + 1) + 8 * i), v12}])
           {
             LOBYTE(v8) = 1;
             goto LABEL_12;
@@ -79,12 +79,12 @@ LABEL_12:
   return v8;
 }
 
-+ (id)actionGroupWithActions:(id)a3
++ (id)actionGroupWithActions:(id)actions
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [[UIInterfaceActionSection alloc] initWithActions:v4];
+  actionsCopy = actions;
+  v5 = [self alloc];
+  v6 = [[UIInterfaceActionSection alloc] initWithActions:actionsCopy];
 
   v10[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
@@ -93,33 +93,33 @@ LABEL_12:
   return v8;
 }
 
-+ (id)actionGroupWithActionsBySection:(id)a3
++ (id)actionGroupWithActionsBySection:(id)section
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithTitle:&stru_1EFB14550 actionsBySection:v4];
+  sectionCopy = section;
+  v5 = [[self alloc] initWithTitle:&stru_1EFB14550 actionsBySection:sectionCopy];
 
   return v5;
 }
 
-- (UIInterfaceActionGroup)initWithTitle:(id)a3 actionsBySection:(id)a4
+- (UIInterfaceActionGroup)initWithTitle:(id)title actionsBySection:(id)section
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  sectionCopy = section;
   v17.receiver = self;
   v17.super_class = UIInterfaceActionGroup;
   v9 = [(UIInterfaceActionGroup *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_title, a3);
-    v11 = [UIInterfaceActionSection actionsFromSections:v8];
+    objc_storeStrong(&v9->_title, title);
+    v11 = [UIInterfaceActionSection actionsFromSections:sectionCopy];
     actions = v10->_actions;
     v10->_actions = v11;
 
-    objc_storeStrong(&v10->_actionsBySection, a4);
-    v13 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    objc_storeStrong(&v10->_actionsBySection, section);
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     weakDisplayPropertyObservers = v10->_weakDisplayPropertyObservers;
-    v10->_weakDisplayPropertyObservers = v13;
+    v10->_weakDisplayPropertyObservers = weakObjectsPointerArray;
 
     v15 = *MEMORY[0x1E695F060];
     v10->_leadingImageLayoutSize = *MEMORY[0x1E695F060];
@@ -133,11 +133,11 @@ LABEL_12:
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(NSString *)self->_title length])
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@'", self->_title];
-    [v3 addObject:v4];
+    [array addObject:v4];
   }
 
   v5 = MEMORY[0x1E696AEC0];
@@ -151,25 +151,25 @@ LABEL_12:
     actions = @"()";
   }
 
-  v7 = [v5 stringWithFormat:@"actions = %@", actions];
-  [v3 addObject:v7];
+  actions = [v5 stringWithFormat:@"actions = %@", actions];
+  [array addObject:actions];
 
   v8 = MEMORY[0x1E696AEC0];
   v13.receiver = self;
   v13.super_class = UIInterfaceActionGroup;
   v9 = [(UIInterfaceActionGroup *)&v13 description];
-  v10 = [v3 componentsJoinedByString:{@", "}];
+  v10 = [array componentsJoinedByString:{@", "}];
   v11 = [v8 stringWithFormat:@"%@ %@", v9, v10];
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(UIInterfaceActionGroup *)self title];
-  v6 = [(UIInterfaceActionGroup *)self _deepCopyOfActionsBySection];
-  v7 = [v4 initWithTitle:v5 actionsBySection:v6];
+  title = [(UIInterfaceActionGroup *)self title];
+  _deepCopyOfActionsBySection = [(UIInterfaceActionGroup *)self _deepCopyOfActionsBySection];
+  v7 = [v4 initWithTitle:title actionsBySection:_deepCopyOfActionsBySection];
 
   *(v7 + 56) = self->_leadingImageLayoutSize;
   *(v7 + 72) = self->_trailingImageLayoutSize;
@@ -177,30 +177,30 @@ LABEL_12:
   return v7;
 }
 
-- (void)setLeadingImageLayoutSize:(CGSize)a3
+- (void)setLeadingImageLayoutSize:(CGSize)size
 {
-  if (self->_leadingImageLayoutSize.width != a3.width || self->_leadingImageLayoutSize.height != a3.height)
+  if (self->_leadingImageLayoutSize.width != size.width || self->_leadingImageLayoutSize.height != size.height)
   {
-    self->_leadingImageLayoutSize = a3;
+    self->_leadingImageLayoutSize = size;
     [(UIInterfaceActionGroup *)self _updateActionImageLayoutSizes];
   }
 }
 
-- (void)setTrailingImageLayoutSize:(CGSize)a3
+- (void)setTrailingImageLayoutSize:(CGSize)size
 {
-  if (self->_trailingImageLayoutSize.width != a3.width || self->_trailingImageLayoutSize.height != a3.height)
+  if (self->_trailingImageLayoutSize.width != size.width || self->_trailingImageLayoutSize.height != size.height)
   {
-    self->_trailingImageLayoutSize = a3;
+    self->_trailingImageLayoutSize = size;
     [(UIInterfaceActionGroup *)self _updateActionImageLayoutSizes];
   }
 }
 
-- (void)setPreferredAction:(id)a3
+- (void)setPreferredAction:(id)action
 {
-  v5 = a3;
-  if (([(UIInterfaceAction *)self->_preferredAction isEqual:v5]& 1) == 0)
+  actionCopy = action;
+  if (([(UIInterfaceAction *)self->_preferredAction isEqual:actionCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_preferredAction, a3);
+    objc_storeStrong(&self->_preferredAction, action);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __45__UIInterfaceActionGroup_setPreferredAction___block_invoke;
@@ -230,13 +230,13 @@ void __45__UIInterfaceActionGroup_setPreferredAction___block_invoke_2(uint64_t a
   [v3 _setIsPreferred:{objc_msgSend(v3, "isEqual:", v2)}];
 }
 
-- (void)_setVisualStyle:(id)a3
+- (void)_setVisualStyle:(id)style
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (![(UIInterfaceActionVisualStyle *)self->_visualStyle isEqual:v5])
+  styleCopy = style;
+  if (![(UIInterfaceActionVisualStyle *)self->_visualStyle isEqual:styleCopy])
   {
-    objc_storeStrong(&self->_visualStyle, a3);
+    objc_storeStrong(&self->_visualStyle, style);
     [(UIInterfaceActionGroup *)self _notifyObserversVisualStyleDidChange];
   }
 
@@ -260,7 +260,7 @@ void __45__UIInterfaceActionGroup_setPreferredAction___block_invoke_2(uint64_t a
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) _setVisualStyle:{v5, v11}];
+        [*(*(&v11 + 1) + 8 * v10++) _setVisualStyle:{styleCopy, v11}];
       }
 
       while (v8 != v10);
@@ -271,21 +271,21 @@ void __45__UIInterfaceActionGroup_setPreferredAction___block_invoke_2(uint64_t a
   }
 }
 
-- (void)_addActionGroupDisplayPropertyObserver:(id)a3
+- (void)_addActionGroupDisplayPropertyObserver:(id)observer
 {
   weakDisplayPropertyObservers = self->_weakDisplayPropertyObservers;
-  v5 = a3;
+  observerCopy = observer;
   [(NSPointerArray *)weakDisplayPropertyObservers compact];
-  [(NSPointerArray *)self->_weakDisplayPropertyObservers addPointer:v5];
+  [(NSPointerArray *)self->_weakDisplayPropertyObservers addPointer:observerCopy];
 }
 
-- (void)_removeActionGroupDisplayPropertyObserver:(id)a3
+- (void)_removeActionGroupDisplayPropertyObserver:(id)observer
 {
   weakDisplayPropertyObservers = self->_weakDisplayPropertyObservers;
-  v5 = a3;
+  observerCopy = observer;
   [(NSPointerArray *)weakDisplayPropertyObservers compact];
-  v6 = [(NSPointerArray *)self->_weakDisplayPropertyObservers allObjects];
-  v7 = [v6 indexOfObject:v5];
+  allObjects = [(NSPointerArray *)self->_weakDisplayPropertyObservers allObjects];
+  v7 = [allObjects indexOfObject:observerCopy];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -295,20 +295,20 @@ void __45__UIInterfaceActionGroup_setPreferredAction___block_invoke_2(uint64_t a
   }
 }
 
-- (void)interfaceAction:(id)a3 reloadDisplayedContentActionProperties:(id)a4
+- (void)interfaceAction:(id)action reloadDisplayedContentActionProperties:(id)properties
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  propertiesCopy = properties;
   v13[0] = 0x1EFB16390;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  v9 = [UIInterfaceAction changedProperties:v7 containsAny:v8];
+  v9 = [UIInterfaceAction changedProperties:propertiesCopy containsAny:v8];
 
   if (v9)
   {
-    if ([v6 _isPreferred])
+    if ([actionCopy _isPreferred])
     {
-      [(UIInterfaceActionGroup *)self setPreferredAction:v6];
+      [(UIInterfaceActionGroup *)self setPreferredAction:actionCopy];
     }
   }
 
@@ -317,7 +317,7 @@ void __45__UIInterfaceActionGroup_setPreferredAction___block_invoke_2(uint64_t a
     v12[0] = 0x1EFB16430;
     v12[1] = 0x1EFB16470;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
-    v11 = [UIInterfaceAction changedProperties:v7 containsAny:v10];
+    v11 = [UIInterfaceAction changedProperties:propertiesCopy containsAny:v10];
 
     if (v11)
     {
@@ -507,12 +507,12 @@ void __74__UIInterfaceActionGroup__reloadImageLayoutSizesUsingExistingActionImag
   }
 }
 
-- (void)_notifyObserversDidChangeActionProperty:(id)a3
+- (void)_notifyObserversDidChangeActionProperty:(id)property
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  propertyCopy = property;
   [(NSPointerArray *)self->_weakDisplayPropertyObservers compact];
-  v5 = [MEMORY[0x1E695DEC8] arrayWithObject:v4];
+  v5 = [MEMORY[0x1E695DEC8] arrayWithObject:propertyCopy];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -544,11 +544,11 @@ void __74__UIInterfaceActionGroup__reloadImageLayoutSizesUsingExistingActionImag
   }
 }
 
-- (void)_performWithActionObservingDisabled:(id)a3
+- (void)_performWithActionObservingDisabled:(id)disabled
 {
-  v4 = a3;
+  disabledCopy = disabled;
   [(UIInterfaceActionGroup *)self _endObservingActions];
-  v4[2](v4);
+  disabledCopy[2](disabledCopy);
 
   [(UIInterfaceActionGroup *)self _beginObservingActions];
 }

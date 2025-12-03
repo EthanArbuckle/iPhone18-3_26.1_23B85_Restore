@@ -1,70 +1,70 @@
 @interface DKReport
-+ (id)reportWithComponents:(id)a3;
++ (id)reportWithComponents:(id)components;
 - (BOOL)isEmpty;
-- (DKReport)initWithCoder:(id)a3;
-- (DKReport)initWithComponents:(id)a3;
+- (DKReport)initWithCoder:(id)coder;
+- (DKReport)initWithComponents:(id)components;
 - (id)arrayForJSON;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)reportByMergingReport:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeWithReport:(id)a3;
+- (id)reportByMergingReport:(id)report;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeWithReport:(id)report;
 @end
 
 @implementation DKReport
 
-+ (id)reportWithComponents:(id)a3
++ (id)reportWithComponents:(id)components
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithComponents:v4];
+  componentsCopy = components;
+  v5 = [[self alloc] initWithComponents:componentsCopy];
 
   return v5;
 }
 
-- (DKReport)initWithComponents:(id)a3
+- (DKReport)initWithComponents:(id)components
 {
-  v5 = a3;
+  componentsCopy = components;
   v9.receiver = self;
   v9.super_class = DKReport;
   v6 = [(DKReport *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_components, a3);
+    objc_storeStrong(&v6->_components, components);
   }
 
   return v7;
 }
 
-- (id)reportByMergingReport:(id)a3
+- (id)reportByMergingReport:(id)report
 {
-  v4 = self;
-  if (a3)
+  selfCopy = self;
+  if (report)
   {
-    v5 = a3;
-    v6 = [(DKReport *)v4 components];
-    v7 = [v6 mutableCopy];
+    reportCopy = report;
+    components = [(DKReport *)selfCopy components];
+    v7 = [components mutableCopy];
 
-    v8 = [v5 components];
+    components2 = [reportCopy components];
 
-    [v7 addObjectsFromArray:v8];
+    [v7 addObjectsFromArray:components2];
     v9 = [DKReport reportWithComponents:v7];
 
-    v4 = v9;
+    selfCopy = v9;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)mergeWithReport:(id)a3
+- (void)mergeWithReport:(id)report
 {
-  if (a3)
+  if (report)
   {
-    v4 = a3;
-    v8 = [(DKReport *)self components];
-    v5 = [v4 components];
+    reportCopy = report;
+    components = [(DKReport *)self components];
+    components2 = [reportCopy components];
 
-    v6 = [v8 arrayByAddingObjectsFromArray:v5];
+    v6 = [components arrayByAddingObjectsFromArray:components2];
     components = self->_components;
     self->_components = v6;
   }
@@ -74,15 +74,15 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(DKReport *)self components];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  components = [(DKReport *)self components];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(components, "count")}];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(DKReport *)self components];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  components2 = [(DKReport *)self components];
+  v7 = [components2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -93,14 +93,14 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(components2);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) dictionaryForJSON];
-        [v5 addObject:v11];
+        dictionaryForJSON = [*(*(&v14 + 1) + 8 * i) dictionaryForJSON];
+        [v5 addObject:dictionaryForJSON];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [components2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -113,15 +113,15 @@
 
 - (BOOL)isEmpty
 {
-  v2 = [(DKReport *)self components];
-  v3 = [v2 count] == 0;
+  components = [(DKReport *)self components];
+  v3 = [components count] == 0;
 
   return v3;
 }
 
-- (DKReport)initWithCoder:(id)a3
+- (DKReport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = DKReport;
   v5 = [(DKReport *)&v12 init];
@@ -130,7 +130,7 @@
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"components"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"components"];
     components = v5->_components;
     v5->_components = v9;
   }
@@ -138,17 +138,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DKReport *)self components];
-  [v4 encodeObject:v5 forKey:@"components"];
+  coderCopy = coder;
+  components = [(DKReport *)self components];
+  [coderCopy encodeObject:components forKey:@"components"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSArray *)self->_components copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSArray *)self->_components copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 

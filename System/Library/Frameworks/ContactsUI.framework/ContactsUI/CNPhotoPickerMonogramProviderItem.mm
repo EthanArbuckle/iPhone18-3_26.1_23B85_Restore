@@ -1,30 +1,30 @@
 @interface CNPhotoPickerMonogramProviderItem
 - (BOOL)allowsEditing;
 - (BOOL)allowsVariants;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isGrayMonogramItem;
-- (CNPhotoPickerMonogramProviderItem)initWithImageData:(id)a3 thumbnailImageData:(id)a4 fullscreenImageData:(id)a5 cropRect:(CGRect)a6 renderingScope:(id)a7 avatarRenderer:(id)a8 isVariantOptionItem:(BOOL)a9;
+- (CNPhotoPickerMonogramProviderItem)initWithImageData:(id)data thumbnailImageData:(id)imageData fullscreenImageData:(id)fullscreenImageData cropRect:(CGRect)rect renderingScope:(id)scope avatarRenderer:(id)renderer isVariantOptionItem:(BOOL)item;
 - (NSString)monogramText;
 - (UIColor)backgroundColor;
 - (id)contactImageForMetadataStore;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createColorVariantItems;
 - (id)createColorVariantItemsExcludingSelf;
-- (id)createVariantsItemsWithVariantsManager:(id)a3;
+- (id)createVariantsItemsWithVariantsManager:(id)manager;
 - (id)generateMonogramData;
 - (id)generateMonogramImage;
 - (id)generateThumbnailImageDataIfNeeded;
 - (id)imageData;
 - (id)localizedVariantsTitle;
-- (id)monogramVariantItemForColor:(id)a3;
+- (id)monogramVariantItemForColor:(id)color;
 - (id)thumbnailImageData;
-- (id)updatedProviderItemWithText:(id)a3;
+- (id)updatedProviderItemWithText:(id)text;
 - (id)variantIdentifier;
 - (unint64_t)hash;
 - (void)renderMonogramData;
-- (void)setVisualIdentity:(id)a3;
-- (void)updateVisualIdentity:(id)a3;
-- (void)updateWithMonogramData:(id)a3;
+- (void)setVisualIdentity:(id)identity;
+- (void)updateVisualIdentity:(id)identity;
+- (void)updateWithMonogramData:(id)data;
 @end
 
 @implementation CNPhotoPickerMonogramProviderItem
@@ -68,9 +68,9 @@ uint64_t __41__CNPhotoPickerMonogramProviderItem_hash__block_invoke_2(uint64_t a
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v6 = objc_opt_class();
   v16[0] = MEMORY[0x1E69E9820];
@@ -78,7 +78,7 @@ uint64_t __41__CNPhotoPickerMonogramProviderItem_hash__block_invoke_2(uint64_t a
   v16[2] = __45__CNPhotoPickerMonogramProviderItem_isEqual___block_invoke;
   v16[3] = &unk_1E74E7460;
   v16[4] = self;
-  v17 = v4;
+  v17 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __45__CNPhotoPickerMonogramProviderItem_isEqual___block_invoke_2;
@@ -169,15 +169,15 @@ LABEL_8:
   return v12;
 }
 
-- (id)updatedProviderItemWithText:(id)a3
+- (id)updatedProviderItemWithText:(id)text
 {
-  v4 = a3;
-  v5 = [(CNPhotoPickerMonogramProviderItem *)self visualIdentity];
-  [v5 setAbbreviatedName:v4];
+  textCopy = text;
+  visualIdentity = [(CNPhotoPickerMonogramProviderItem *)self visualIdentity];
+  [visualIdentity setAbbreviatedName:textCopy];
 
-  v6 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
-  v7 = [v6 color];
-  v8 = [(CNPhotoPickerMonogramProviderItem *)self monogramVariantItemForColor:v7];
+  renderingScope = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
+  color = [renderingScope color];
+  v8 = [(CNPhotoPickerMonogramProviderItem *)self monogramVariantItemForColor:color];
 
   return v8;
 }
@@ -185,37 +185,37 @@ LABEL_8:
 - (id)contactImageForMetadataStore
 {
   v3 = objc_alloc(MEMORY[0x1E695CD88]);
-  v4 = [(CNPhotoPickerMonogramProviderItem *)self imageData];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [v3 initWithImageData:v4 cropRect:v5 lastUsedDate:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+  imageData = [(CNPhotoPickerMonogramProviderItem *)self imageData];
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [v3 initWithImageData:imageData cropRect:date lastUsedDate:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
 
   [v6 setSource:1];
-  v7 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
-  v8 = [v7 color];
+  renderingScope = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
+  color = [renderingScope color];
 
-  if (v8)
+  if (color)
   {
-    v9 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
-    v10 = [v9 color];
-    v11 = [v10 colorName];
-    [v6 setVariant:v11];
+    renderingScope2 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
+    color2 = [renderingScope2 color];
+    colorName = [color2 colorName];
+    [v6 setVariant:colorName];
   }
 
-  v12 = [(CNPhotoPickerMonogramProviderItem *)self monogramText];
-  [v6 setDisplayString:v12];
+  monogramText = [(CNPhotoPickerMonogramProviderItem *)self monogramText];
+  [v6 setDisplayString:monogramText];
 
   return v6;
 }
 
 - (id)createColorVariantItemsExcludingSelf
 {
-  v3 = [(CNPhotoPickerMonogramProviderItem *)self createColorVariantItems];
+  createColorVariantItems = [(CNPhotoPickerMonogramProviderItem *)self createColorVariantItems];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __73__CNPhotoPickerMonogramProviderItem_createColorVariantItemsExcludingSelf__block_invoke;
   v6[3] = &unk_1E74E66D0;
   v6[4] = self;
-  v4 = [v3 _cn_filter:v6];
+  v4 = [createColorVariantItems _cn_filter:v6];
 
   return v4;
 }
@@ -233,13 +233,13 @@ uint64_t __73__CNPhotoPickerMonogramProviderItem_createColorVariantItemsExcludin
 
 - (id)createColorVariantItems
 {
-  v3 = [MEMORY[0x1E69BDC50] availableColors];
+  availableColors = [MEMORY[0x1E69BDC50] availableColors];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__CNPhotoPickerMonogramProviderItem_createColorVariantItems__block_invoke;
   v7[3] = &unk_1E74E5D78;
   v7[4] = self;
-  v4 = [v3 _cn_map:v7];
+  v4 = [availableColors _cn_map:v7];
   v5 = [v4 _cn_filter:&__block_literal_global_55132];
 
   return v5;
@@ -253,7 +253,7 @@ BOOL __60__CNPhotoPickerMonogramProviderItem_createColorVariantItems__block_invo
   return v3;
 }
 
-- (id)createVariantsItemsWithVariantsManager:(id)a3
+- (id)createVariantsItemsWithVariantsManager:(id)manager
 {
   v9[1] = *MEMORY[0x1E69E9840];
   if ([(CNPhotoPickerMonogramProviderItem *)self allowsVariants])
@@ -261,8 +261,8 @@ BOOL __60__CNPhotoPickerMonogramProviderItem_createColorVariantItems__block_invo
     v4 = [(CNPhotoPickerMonogramProviderItem *)self monogramVariantItemForColor:0];
     v9[0] = v4;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-    v6 = [(CNPhotoPickerMonogramProviderItem *)self createColorVariantItems];
-    v7 = [v5 arrayByAddingObjectsFromArray:v6];
+    createColorVariantItems = [(CNPhotoPickerMonogramProviderItem *)self createColorVariantItems];
+    v7 = [v5 arrayByAddingObjectsFromArray:createColorVariantItems];
   }
 
   else
@@ -273,73 +273,73 @@ BOOL __60__CNPhotoPickerMonogramProviderItem_createColorVariantItems__block_invo
   return v7;
 }
 
-- (id)monogramVariantItemForColor:(id)a3
+- (id)monogramVariantItemForColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
-  [v5 pointSize];
+  colorCopy = color;
+  renderingScope = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
+  [renderingScope pointSize];
   v7 = v6;
   v9 = v8;
-  v10 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
-  [v10 scale];
+  renderingScope2 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
+  [renderingScope2 scale];
   v12 = v11;
-  v13 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
-  v14 = [v13 rightToLeft];
-  v15 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
-  v16 = +[CNAvatarImageRenderingScope scopeWithPointSize:scale:rightToLeft:style:color:](CNAvatarImageRenderingScope, "scopeWithPointSize:scale:rightToLeft:style:color:", v14, [v15 avatarViewStyle], v4, v7, v9, v12);
+  renderingScope3 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
+  rightToLeft = [renderingScope3 rightToLeft];
+  renderingScope4 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
+  v16 = +[CNAvatarImageRenderingScope scopeWithPointSize:scale:rightToLeft:style:color:](CNAvatarImageRenderingScope, "scopeWithPointSize:scale:rightToLeft:style:color:", rightToLeft, [renderingScope4 avatarViewStyle], colorCopy, v7, v9, v12);
 
   v17 = [CNPhotoPickerMonogramProviderItem alloc];
-  v18 = [(CNPhotoPickerMonogramProviderItem *)self avatarRenderer];
-  v19 = [(CNPhotoPickerMonogramProviderItem *)v17 initWithImageData:0 thumbnailImageData:0 fullscreenImageData:0 cropRect:v16 renderingScope:v18 avatarRenderer:1 isVariantOptionItem:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  avatarRenderer = [(CNPhotoPickerMonogramProviderItem *)self avatarRenderer];
+  v19 = [(CNPhotoPickerMonogramProviderItem *)v17 initWithImageData:0 thumbnailImageData:0 fullscreenImageData:0 cropRect:v16 renderingScope:avatarRenderer avatarRenderer:1 isVariantOptionItem:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
-  v20 = [(CNPhotoPickerProviderItem *)self delegate];
-  [(CNPhotoPickerProviderItem *)v19 setDelegate:v20];
+  delegate = [(CNPhotoPickerProviderItem *)self delegate];
+  [(CNPhotoPickerProviderItem *)v19 setDelegate:delegate];
 
-  v21 = [(CNPhotoPickerMonogramProviderItem *)self visualIdentity];
-  v22 = [v21 mutableCopy];
+  visualIdentity = [(CNPhotoPickerMonogramProviderItem *)self visualIdentity];
+  v22 = [visualIdentity mutableCopy];
   [(CNPhotoPickerMonogramProviderItem *)v19 setVisualIdentity:v22];
 
   return v19;
 }
 
-- (void)updateVisualIdentity:(id)a3
+- (void)updateVisualIdentity:(id)identity
 {
-  v10 = a3;
-  [v10 clearImage];
-  v4 = [(CNPhotoPickerMonogramProviderItem *)self monogramData];
-  [v10 setImageData:v4];
+  identityCopy = identity;
+  [identityCopy clearImage];
+  monogramData = [(CNPhotoPickerMonogramProviderItem *)self monogramData];
+  [identityCopy setImageData:monogramData];
 
-  v5 = [(CNPhotoPickerMonogramProviderItem *)self monogramData];
-  v6 = [v5 _cn_md5Hash];
-  [v10 setImageHash:v6];
+  monogramData2 = [(CNPhotoPickerMonogramProviderItem *)self monogramData];
+  _cn_md5Hash = [monogramData2 _cn_md5Hash];
+  [identityCopy setImageHash:_cn_md5Hash];
 
-  v7 = [(CNPhotoPickerMonogramProviderItem *)self thumbnailImageData];
-  [v10 setThumbnailImageData:v7];
+  thumbnailImageData = [(CNPhotoPickerMonogramProviderItem *)self thumbnailImageData];
+  [identityCopy setThumbnailImageData:thumbnailImageData];
 
-  v8 = [(CNPhotoPickerMonogramProviderItem *)self visualIdentity];
-  v9 = [v8 abbreviatedName];
-  [v10 setAbbreviatedName:v9];
+  visualIdentity = [(CNPhotoPickerMonogramProviderItem *)self visualIdentity];
+  abbreviatedName = [visualIdentity abbreviatedName];
+  [identityCopy setAbbreviatedName:abbreviatedName];
 
-  [v10 updateImageType:2];
-  [v10 setMemojiMetadata:0];
+  [identityCopy updateImageType:2];
+  [identityCopy setMemojiMetadata:0];
 }
 
-- (void)updateWithMonogramData:(id)a3
+- (void)updateWithMonogramData:(id)data
 {
-  [(CNPhotoPickerMonogramProviderItem *)self setMonogramData:a3];
+  [(CNPhotoPickerMonogramProviderItem *)self setMonogramData:data];
   [(CNPhotoPickerProviderItem *)self clearThumbnailImage];
-  v4 = [(CNPhotoPickerProviderItem *)self delegate];
-  [v4 providerItemDidUpdate:self];
+  delegate = [(CNPhotoPickerProviderItem *)self delegate];
+  [delegate providerItemDidUpdate:self];
 }
 
 - (NSString)monogramText
 {
   if (((*(*MEMORY[0x1E6996570] + 16))() & 1) == 0)
   {
-    v3 = [(CNPhotoPickerMonogramProviderItem *)self visualIdentity];
-    v4 = [v3 abbreviatedName];
+    visualIdentity = [(CNPhotoPickerMonogramProviderItem *)self visualIdentity];
+    abbreviatedName = [visualIdentity abbreviatedName];
     monogramText = self->_monogramText;
-    self->_monogramText = v4;
+    self->_monogramText = abbreviatedName;
   }
 
   v6 = self->_monogramText;
@@ -349,22 +349,22 @@ BOOL __60__CNPhotoPickerMonogramProviderItem_createColorVariantItems__block_invo
 
 - (void)renderMonogramData
 {
-  v3 = [(CNPhotoPickerMonogramProviderItem *)self generateMonogramData];
-  [(CNPhotoPickerMonogramProviderItem *)self updateWithMonogramData:v3];
+  generateMonogramData = [(CNPhotoPickerMonogramProviderItem *)self generateMonogramData];
+  [(CNPhotoPickerMonogramProviderItem *)self updateWithMonogramData:generateMonogramData];
 }
 
 - (id)generateMonogramData
 {
-  v2 = [(CNPhotoPickerMonogramProviderItem *)self generateMonogramImage];
-  v3 = UIImagePNGRepresentation(v2);
+  generateMonogramImage = [(CNPhotoPickerMonogramProviderItem *)self generateMonogramImage];
+  v3 = UIImagePNGRepresentation(generateMonogramImage);
 
   return v3;
 }
 
 - (id)generateMonogramImage
 {
-  v3 = [(CNPhotoPickerMonogramProviderItem *)self isVariantOptionItem];
-  if (v3)
+  isVariantOptionItem = [(CNPhotoPickerMonogramProviderItem *)self isVariantOptionItem];
+  if (isVariantOptionItem)
   {
     v4 = 4;
   }
@@ -375,33 +375,33 @@ BOOL __60__CNPhotoPickerMonogramProviderItem_createColorVariantItems__block_invo
   }
 
   v5 = *MEMORY[0x1E6996568];
-  v6 = [(CNPhotoPickerMonogramProviderItem *)self monogramText];
-  if ((*(v5 + 16))(v5, v6))
+  monogramText = [(CNPhotoPickerMonogramProviderItem *)self monogramText];
+  if ((*(v5 + 16))(v5, monogramText))
   {
-    v7 = [(CNPhotoPickerMonogramProviderItem *)self visualIdentity];
-    v8 = [v7 abbreviatedName];
+    visualIdentity = [(CNPhotoPickerMonogramProviderItem *)self visualIdentity];
+    abbreviatedName = [visualIdentity abbreviatedName];
   }
 
   else
   {
-    v8 = [(CNPhotoPickerMonogramProviderItem *)self monogramText];
+    abbreviatedName = [(CNPhotoPickerMonogramProviderItem *)self monogramText];
   }
 
-  if (v3 && (*(v5 + 16))(v5, v8))
+  if (isVariantOptionItem && (*(v5 + 16))(v5, abbreviatedName))
   {
-    v9 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
-    v10 = [v9 color];
-    v11 = [v10 color];
-    v12 = [CNPhotoPickerVariantsManager monogramColorGradientBackground:v11];
+    renderingScope = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
+    color = [renderingScope color];
+    v10Color = [color color];
+    v12 = [CNPhotoPickerVariantsManager monogramColorGradientBackground:v10Color];
   }
 
   else
   {
-    v9 = [(CNPhotoPickerMonogramProviderItem *)self avatarRenderer];
-    v10 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
-    v11 = [v10 color];
-    v13 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
-    v12 = [v9 renderMonogramForString:v8 color:v11 scope:v13 prohibitedSources:v4];
+    renderingScope = [(CNPhotoPickerMonogramProviderItem *)self avatarRenderer];
+    color = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
+    v10Color = [color color];
+    renderingScope2 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
+    v12 = [renderingScope renderMonogramForString:abbreviatedName color:v10Color scope:renderingScope2 prohibitedSources:v4];
   }
 
   return v12;
@@ -409,8 +409,8 @@ BOOL __60__CNPhotoPickerMonogramProviderItem_createColorVariantItems__block_invo
 
 - (id)generateThumbnailImageDataIfNeeded
 {
-  v3 = [(CNPhotoPickerMonogramProviderItem *)self monogramData];
-  if (v3)
+  monogramData = [(CNPhotoPickerMonogramProviderItem *)self monogramData];
+  if (monogramData)
   {
   }
 
@@ -424,47 +424,47 @@ BOOL __60__CNPhotoPickerMonogramProviderItem_createColorVariantItems__block_invo
 
 - (id)thumbnailImageData
 {
-  v3 = [(CNPhotoPickerMonogramProviderItem *)self monogramData];
-  if (v3 && (v4 = v3, v5 = [(CNPhotoPickerMonogramProviderItem *)self isContactImage], v4, !v5))
+  monogramData = [(CNPhotoPickerMonogramProviderItem *)self monogramData];
+  if (monogramData && (v4 = monogramData, v5 = [(CNPhotoPickerMonogramProviderItem *)self isContactImage], v4, !v5))
   {
-    v6 = [(CNPhotoPickerMonogramProviderItem *)self monogramData];
+    monogramData2 = [(CNPhotoPickerMonogramProviderItem *)self monogramData];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CNPhotoPickerMonogramProviderItem;
-    v6 = [(CNPhotoPickerProviderItem *)&v8 thumbnailImageData];
+    monogramData2 = [(CNPhotoPickerProviderItem *)&v8 thumbnailImageData];
   }
 
-  return v6;
+  return monogramData2;
 }
 
 - (id)imageData
 {
-  v3 = [(CNPhotoPickerMonogramProviderItem *)self monogramData];
-  if (v3 && (v4 = v3, v5 = [(CNPhotoPickerMonogramProviderItem *)self isContactImage], v4, !v5))
+  monogramData = [(CNPhotoPickerMonogramProviderItem *)self monogramData];
+  if (monogramData && (v4 = monogramData, v5 = [(CNPhotoPickerMonogramProviderItem *)self isContactImage], v4, !v5))
   {
-    v6 = [(CNPhotoPickerMonogramProviderItem *)self monogramData];
+    monogramData2 = [(CNPhotoPickerMonogramProviderItem *)self monogramData];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CNPhotoPickerMonogramProviderItem;
-    v6 = [(CNPhotoPickerProviderItem *)&v8 imageData];
+    monogramData2 = [(CNPhotoPickerProviderItem *)&v8 imageData];
   }
 
-  return v6;
+  return monogramData2;
 }
 
 - (id)variantIdentifier
 {
-  v2 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
-  v3 = [v2 color];
-  v4 = [v3 colorName];
+  renderingScope = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
+  color = [renderingScope color];
+  colorName = [color colorName];
 
-  return v4;
+  return colorName;
 }
 
 - (id)localizedVariantsTitle
@@ -477,9 +477,9 @@ BOOL __60__CNPhotoPickerMonogramProviderItem_createColorVariantItems__block_invo
 
 - (BOOL)isGrayMonogramItem
 {
-  v2 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
-  v3 = [v2 color];
-  v4 = v3 == 0;
+  renderingScope = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
+  color = [renderingScope color];
+  v4 = color == 0;
 
   return v4;
 }
@@ -499,87 +499,87 @@ BOOL __60__CNPhotoPickerMonogramProviderItem_createColorVariantItems__block_invo
 - (UIColor)backgroundColor
 {
   v3 = objc_alloc(MEMORY[0x1E69BDC50]);
-  v4 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
-  v5 = [v4 color];
-  v6 = [v5 colorName];
-  v7 = [v3 initWithColorName:v6];
-  v8 = [v7 color];
+  renderingScope = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
+  color = [renderingScope color];
+  colorName = [color colorName];
+  v7 = [v3 initWithColorName:colorName];
+  color2 = [v7 color];
 
-  if (!v8)
+  if (!color2)
   {
-    v8 = [MEMORY[0x1E69BDC50] defaultGradientStartColor];
+    color2 = [MEMORY[0x1E69BDC50] defaultGradientStartColor];
   }
 
-  return v8;
+  return color2;
 }
 
 - (BOOL)allowsVariants
 {
   v3 = [(CNPhotoPickerMonogramProviderItem *)self monogramVariantItemForColor:0];
-  v4 = [v3 monogramData];
-  if (v4)
+  monogramData = [v3 monogramData];
+  if (monogramData)
   {
-    v5 = 1;
+    isVariantOptionItem = 1;
   }
 
   else
   {
-    v5 = [(CNPhotoPickerMonogramProviderItem *)self isVariantOptionItem];
+    isVariantOptionItem = [(CNPhotoPickerMonogramProviderItem *)self isVariantOptionItem];
   }
 
-  return v5;
+  return isVariantOptionItem;
 }
 
-- (void)setVisualIdentity:(id)a3
+- (void)setVisualIdentity:(id)identity
 {
-  objc_storeStrong(&self->_visualIdentity, a3);
+  objc_storeStrong(&self->_visualIdentity, identity);
 
   [(CNPhotoPickerMonogramProviderItem *)self renderMonogramData];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = CNPhotoPickerMonogramProviderItem;
-  v4 = [(CNPhotoPickerProviderItem *)&v10 copyWithZone:a3];
-  v5 = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
-  [v4 setRenderingScope:v5];
+  v4 = [(CNPhotoPickerProviderItem *)&v10 copyWithZone:zone];
+  renderingScope = [(CNPhotoPickerMonogramProviderItem *)self renderingScope];
+  [v4 setRenderingScope:renderingScope];
 
-  v6 = [(CNPhotoPickerMonogramProviderItem *)self avatarRenderer];
-  [v4 setAvatarRenderer:v6];
+  avatarRenderer = [(CNPhotoPickerMonogramProviderItem *)self avatarRenderer];
+  [v4 setAvatarRenderer:avatarRenderer];
 
-  v7 = [(CNPhotoPickerMonogramProviderItem *)self visualIdentity];
-  [v4 setVisualIdentity:v7];
+  visualIdentity = [(CNPhotoPickerMonogramProviderItem *)self visualIdentity];
+  [v4 setVisualIdentity:visualIdentity];
 
-  v8 = [(CNPhotoPickerMonogramProviderItem *)self monogramData];
-  [v4 setMonogramData:v8];
+  monogramData = [(CNPhotoPickerMonogramProviderItem *)self monogramData];
+  [v4 setMonogramData:monogramData];
 
   [v4 setIsVariantOptionItem:{-[CNPhotoPickerMonogramProviderItem isVariantOptionItem](self, "isVariantOptionItem")}];
   return v4;
 }
 
-- (CNPhotoPickerMonogramProviderItem)initWithImageData:(id)a3 thumbnailImageData:(id)a4 fullscreenImageData:(id)a5 cropRect:(CGRect)a6 renderingScope:(id)a7 avatarRenderer:(id)a8 isVariantOptionItem:(BOOL)a9
+- (CNPhotoPickerMonogramProviderItem)initWithImageData:(id)data thumbnailImageData:(id)imageData fullscreenImageData:(id)fullscreenImageData cropRect:(CGRect)rect renderingScope:(id)scope avatarRenderer:(id)renderer isVariantOptionItem:(BOOL)item
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v17 = a7;
-  v18 = a8;
-  v19 = [(CNPhotoPickerMonogramProviderItem *)self imageData];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  scopeCopy = scope;
+  rendererCopy = renderer;
+  imageData = [(CNPhotoPickerMonogramProviderItem *)self imageData];
   v23.receiver = self;
   v23.super_class = CNPhotoPickerMonogramProviderItem;
-  v20 = [(CNPhotoPickerProviderItem *)&v23 initWithImageData:v19 thumbnailImageData:0 fullscreenImageData:0 cropRect:x, y, width, height];
+  height = [(CNPhotoPickerProviderItem *)&v23 initWithImageData:imageData thumbnailImageData:0 fullscreenImageData:0 cropRect:x, y, width, height];
 
-  if (v20)
+  if (height)
   {
-    objc_storeStrong(&v20->_renderingScope, a7);
-    objc_storeStrong(&v20->_avatarRenderer, a8);
-    v20->_isVariantOptionItem = a9;
-    v21 = v20;
+    objc_storeStrong(&height->_renderingScope, scope);
+    objc_storeStrong(&height->_avatarRenderer, renderer);
+    height->_isVariantOptionItem = item;
+    v21 = height;
   }
 
-  return v20;
+  return height;
 }
 
 @end

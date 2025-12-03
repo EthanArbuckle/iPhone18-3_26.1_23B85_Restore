@@ -121,7 +121,7 @@
   v16 = [CIVector vectorWithX:v15.__cosval Y:v15.__sinval Z:-v15.__sinval W:?];
   v17 = [CIVector vectorWithX:v4 Y:(1.0 / (v4 * v6)) Z:v10 W:v14];
   v18 = 1.0 / v12;
-  v19 = [(CIStarShineGenerator *)self _kernel];
+  _kernel = [(CIStarShineGenerator *)self _kernel];
   v20 = *MEMORY[0x1E695F040];
   v21 = *(MEMORY[0x1E695F040] + 8);
   v22 = *(MEMORY[0x1E695F040] + 16);
@@ -131,7 +131,7 @@
   inputColor = self->inputColor;
   v28[3] = v25;
   v28[4] = inputColor;
-  return [v19 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v28, 5), v20, v21, v22, v23}];
+  return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v28, 5), v20, v21, v22, v23}];
 }
 
 @end

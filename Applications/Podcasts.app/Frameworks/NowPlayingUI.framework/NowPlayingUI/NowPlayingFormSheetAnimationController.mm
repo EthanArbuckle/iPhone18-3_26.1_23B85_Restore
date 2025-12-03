@@ -1,26 +1,26 @@
 @interface NowPlayingFormSheetAnimationController
 - (_TtC12NowPlayingUI38NowPlayingFormSheetAnimationController)init;
-- (id)interruptibleAnimatorForTransition:(id)a3;
-- (void)animationEnded:(BOOL)a3;
+- (id)interruptibleAnimatorForTransition:(id)transition;
+- (void)animationEnded:(BOOL)ended;
 @end
 
 @implementation NowPlayingFormSheetAnimationController
 
-- (id)interruptibleAnimatorForTransition:(id)a3
+- (id)interruptibleAnimatorForTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_78C30(a3);
+  selfCopy = self;
+  v6 = sub_78C30(transition);
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-- (void)animationEnded:(BOOL)a3
+- (void)animationEnded:(BOOL)ended
 {
-  v3 = a3;
-  v4 = self;
-  sub_79990(v3);
+  endedCopy = ended;
+  selfCopy = self;
+  sub_79990(endedCopy);
 }
 
 - (_TtC12NowPlayingUI38NowPlayingFormSheetAnimationController)init

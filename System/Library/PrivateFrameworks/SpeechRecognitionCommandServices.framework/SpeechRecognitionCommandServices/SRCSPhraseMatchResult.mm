@@ -1,24 +1,24 @@
 @interface SRCSPhraseMatchResult
-- (SRCSPhraseMatchResult)initWithMarkerRange:(id)a3 matchedString:(id)a4 userInfo:(id)a5;
+- (SRCSPhraseMatchResult)initWithMarkerRange:(id)range matchedString:(id)string userInfo:(id)info;
 - (id)description;
 @end
 
 @implementation SRCSPhraseMatchResult
 
-- (SRCSPhraseMatchResult)initWithMarkerRange:(id)a3 matchedString:(id)a4 userInfo:(id)a5
+- (SRCSPhraseMatchResult)initWithMarkerRange:(id)range matchedString:(id)string userInfo:(id)info
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  rangeCopy = range;
+  stringCopy = string;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = SRCSPhraseMatchResult;
   v12 = [(SRCSPhraseMatchResult *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_markerRange, a3);
-    objc_storeStrong(&v13->_matchedString, a4);
-    objc_storeStrong(&v13->_userInfo, a5);
+    objc_storeStrong(&v12->_markerRange, range);
+    objc_storeStrong(&v13->_matchedString, string);
+    objc_storeStrong(&v13->_userInfo, info);
   }
 
   return v13;
@@ -29,9 +29,9 @@
   v3 = MEMORY[0x277CCACA8];
   userInfo = self->_userInfo;
   matchedString = self->_matchedString;
-  v6 = [(SRCSTextMarkerRangeProtocol *)self->_markerRange nsRange];
+  nsRange = [(SRCSTextMarkerRangeProtocol *)self->_markerRange nsRange];
   [(SRCSTextMarkerRangeProtocol *)self->_markerRange nsRange];
-  return [v3 stringWithFormat:@"%@: %@ (%ld, %ld)", userInfo, matchedString, v6, v7];
+  return [v3 stringWithFormat:@"%@: %@ (%ld, %ld)", userInfo, matchedString, nsRange, v7];
 }
 
 @end

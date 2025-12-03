@@ -1,31 +1,31 @@
 @interface EKCalendarItemLocationInlineEditItem
-- (BOOL)editItemViewControllerSave:(id)a3;
-- (BOOL)editor:(id)a3 canSelectSubitem:(unint64_t)a4;
+- (BOOL)editItemViewControllerSave:(id)save;
+- (BOOL)editor:(id)editor canSelectSubitem:(unint64_t)subitem;
 - (BOOL)isSaveable;
-- (BOOL)isSubitemAtIndexSaveable:(unint64_t)a3;
-- (CGRect)_scribbleInteraction:(id)a3 frameForElement:(id)a4;
+- (BOOL)isSubitemAtIndexSaveable:(unint64_t)saveable;
+- (CGRect)_scribbleInteraction:(id)interaction frameForElement:(id)element;
 - (EKCalendarItemLocationInlineEditItem)init;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4;
-- (id)cellForSubitemAtIndex:(unint64_t)a3 inEditor:(id)a4;
-- (id)detailViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width;
+- (id)cellForSubitemAtIndex:(unint64_t)index inEditor:(id)editor;
+- (id)detailViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index;
 - (id)searchStringForEventAutocomplete;
-- (unint64_t)_supportedSearchTypesForSubitemAtIndex:(unint64_t)a3;
+- (unint64_t)_supportedSearchTypesForSubitemAtIndex:(unint64_t)index;
 - (unint64_t)numberOfSubitems;
-- (void)_clearButtonTapped:(id)a3;
-- (void)_clearLocationAtIndex:(unint64_t)a3;
-- (void)_scribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4;
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6;
-- (void)_scribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4;
-- (void)_setEditor:(id)a3 andUpdateScribbleInteractionOnCell:(id)a4 addScribbleInteraction:(BOOL)a5;
-- (void)_updateClearButtonAndMakeVisible:(id)a3 index:(unint64_t)a4;
-- (void)_updateMapLocationCell:(id)a3 index:(unint64_t)a4 location:(id)a5;
-- (void)_updateVirtualConferenceCell:(id)a3 index:(unint64_t)a4 virtualConference:(id)a5;
+- (void)_clearButtonTapped:(id)tapped;
+- (void)_clearLocationAtIndex:(unint64_t)index;
+- (void)_scribbleInteraction:(id)interaction didFinishWritingInElement:(id)element;
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion;
+- (void)_scribbleInteraction:(id)interaction willBeginWritingInElement:(id)element;
+- (void)_setEditor:(id)editor andUpdateScribbleInteractionOnCell:(id)cell addScribbleInteraction:(BOOL)interaction;
+- (void)_updateClearButtonAndMakeVisible:(id)visible index:(unint64_t)index;
+- (void)_updateMapLocationCell:(id)cell index:(unint64_t)index location:(id)location;
+- (void)_updateVirtualConferenceCell:(id)cell index:(unint64_t)index virtualConference:(id)conference;
 - (void)dealloc;
-- (void)didTapAddSuggestedLocationCell:(id)a3 disambiguatedLocation:(id)a4;
-- (void)didTapDismissSuggestedLocationCell:(id)a3;
-- (void)editItemPendingVideoConferenceCompleted:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)didTapAddSuggestedLocationCell:(id)cell disambiguatedLocation:(id)location;
+- (void)didTapDismissSuggestedLocationCell:(id)cell;
+- (void)editItemPendingVideoConferenceCompleted:(id)completed;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation EKCalendarItemLocationInlineEditItem
@@ -53,30 +53,30 @@
   [(EKCalendarItemLocationInlineEditItem *)&v3 dealloc];
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width
 {
   if (EKUIUsesLargeTextLayout(0))
   {
     return *MEMORY[0x1E69DE3D0];
   }
 
-  v6 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
-  v7 = [v6 count];
+  rowModels = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
+  v7 = [rowModels count];
 
-  if (v7 > a3)
+  if (v7 > index)
   {
-    v8 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
-    v9 = [v8 objectAtIndex:a3];
+    rowModels2 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
+    v9 = [rowModels2 objectAtIndex:index];
 
-    v10 = [v9 cell];
+    cell = [v9 cell];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v12 = [v9 cell];
-      v13 = [v12 bannerView];
-      [v13 intrinsicContentSize];
+      cell2 = [v9 cell];
+      bannerView = [cell2 bannerView];
+      [bannerView intrinsicContentSize];
       v15 = v14;
 
       return v15;
@@ -96,9 +96,9 @@
 
 - (unint64_t)numberOfSubitems
 {
-  v3 = [(EKUILocationEditItemModel *)self->_viewModel displaysPlaceholder];
-  v4 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
-  v5 = [v4 count] + v3;
+  displaysPlaceholder = [(EKUILocationEditItemModel *)self->_viewModel displaysPlaceholder];
+  rowModels = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
+  v5 = [rowModels count] + displaysPlaceholder;
 
   return v5;
 }
@@ -119,44 +119,44 @@
   return 1;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3 inEditor:(id)a4
+- (id)cellForSubitemAtIndex:(unint64_t)index inEditor:(id)editor
 {
-  v6 = a4;
-  v7 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
-  v8 = [v7 count];
+  editorCopy = editor;
+  rowModels = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
+  v8 = [rowModels count];
 
-  if (v8 <= a3)
+  if (v8 <= index)
   {
     p_super = [[EKUITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
-    v17 = [(EKUILocationEditItemModel *)self->_viewModel placeholderCellText];
-    v18 = [(EKUITableViewCell *)p_super textLabel];
-    [v18 setText:v17];
+    placeholderCellText = [(EKUILocationEditItemModel *)self->_viewModel placeholderCellText];
+    textLabel = [(EKUITableViewCell *)p_super textLabel];
+    [textLabel setText:placeholderCellText];
 
     v19 = objc_opt_new();
-    v20 = [v19 _placeholderColor];
-    v21 = [(EKUITableViewCell *)p_super textLabel];
-    [v21 setTextColor:v20];
+    _placeholderColor = [v19 _placeholderColor];
+    textLabel2 = [(EKUITableViewCell *)p_super textLabel];
+    [textLabel2 setTextColor:_placeholderColor];
 
-    [(EKCalendarItemLocationInlineEditItem *)self _setEditor:v6 andUpdateScribbleInteractionOnCell:p_super addScribbleInteraction:1];
+    [(EKCalendarItemLocationInlineEditItem *)self _setEditor:editorCopy andUpdateScribbleInteractionOnCell:p_super addScribbleInteraction:1];
     goto LABEL_42;
   }
 
-  v9 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
-  v10 = [v9 objectAtIndex:a3];
+  rowModels2 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
+  v10 = [rowModels2 objectAtIndex:index];
 
-  v11 = [v10 locationType];
+  locationType = [v10 locationType];
   p_super = 0;
-  if (v11 > 1)
+  if (locationType > 1)
   {
-    if (v11 != 2)
+    if (locationType != 2)
     {
-      if (v11 == 3)
+      if (locationType == 3)
       {
-        v22 = [v10 cell];
+        cell = [v10 cell];
 
-        if (v22)
+        if (cell)
         {
-          v23 = [v10 cell];
+          cell2 = [v10 cell];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -165,18 +165,18 @@
             [EKCalendarItemLocationInlineEditItem cellForSubitemAtIndex:inEditor:];
           }
 
-          v25 = [v10 cell];
+          cell3 = [v10 cell];
         }
 
         else
         {
-          v25 = [[EKEventDetailSuggestedLocationCell alloc] initWithInlineStyle:1];
+          cell3 = [[EKEventDetailSuggestedLocationCell alloc] initWithInlineStyle:1];
         }
 
-        p_super = v25;
-        [(EKEventDetailSuggestedLocationCell *)v25 setDelegate:self];
-        v41 = [(EKEventEditItem *)self event];
-        [(EKUITableViewCell *)p_super setEvent:v41];
+        p_super = cell3;
+        [(EKEventDetailSuggestedLocationCell *)cell3 setDelegate:self];
+        event = [(EKEventEditItem *)self event];
+        [(EKUITableViewCell *)p_super setEvent:event];
 
         goto LABEL_40;
       }
@@ -184,15 +184,15 @@
       goto LABEL_41;
     }
 
-    v32 = [v10 conference];
+    conference = [v10 conference];
 
-    if (v32)
+    if (conference)
     {
-      v33 = [v10 cell];
+      cell4 = [v10 cell];
 
-      if (v33)
+      if (cell4)
       {
-        v34 = [v10 cell];
+        cell5 = [v10 cell];
         objc_opt_class();
         v35 = objc_opt_isKindOfClass();
 
@@ -201,28 +201,28 @@
           [EKCalendarItemLocationInlineEditItem cellForSubitemAtIndex:inEditor:];
         }
 
-        v36 = [v10 cell];
+        cell6 = [v10 cell];
       }
 
       else
       {
-        v36 = [[EKUIClearButtonCell alloc] initWithStyle:3 reuseIdentifier:0];
+        cell6 = [[EKUIClearButtonCell alloc] initWithStyle:3 reuseIdentifier:0];
       }
 
-      p_super = &v36->super;
-      v42 = [v10 conference];
-      [(EKCalendarItemLocationInlineEditItem *)self _updateVirtualConferenceCell:p_super index:a3 virtualConference:v42];
+      p_super = &cell6->super;
+      conference2 = [v10 conference];
+      [(EKCalendarItemLocationInlineEditItem *)self _updateVirtualConferenceCell:p_super index:index virtualConference:conference2];
     }
 
     else
     {
       p_super = [[EKUIPendingVideoConferenceCell alloc] initWithStyle:0 reuseIdentifier:0];
-      v42 = [(EKUITableViewCell *)p_super clearButton];
-      [(EKCalendarItemLocationInlineEditItem *)self _updateClearButtonAndMakeVisible:v42 index:a3];
+      conference2 = [(EKUITableViewCell *)p_super clearButton];
+      [(EKCalendarItemLocationInlineEditItem *)self _updateClearButtonAndMakeVisible:conference2 index:index];
     }
 
-    v43 = [v10 conference];
-    -[EKCalendarItemLocationInlineEditItem _setEditor:andUpdateScribbleInteractionOnCell:addScribbleInteraction:](self, "_setEditor:andUpdateScribbleInteractionOnCell:addScribbleInteraction:", v6, p_super, [v43 isWritable]);
+    conference3 = [v10 conference];
+    -[EKCalendarItemLocationInlineEditItem _setEditor:andUpdateScribbleInteractionOnCell:addScribbleInteraction:](self, "_setEditor:andUpdateScribbleInteractionOnCell:addScribbleInteraction:", editorCopy, p_super, [conference3 isWritable]);
 LABEL_39:
 
 LABEL_40:
@@ -230,63 +230,63 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  if (!v11)
+  if (!locationType)
   {
     viewModel = self->_viewModel;
-    v27 = [(EKEventEditItem *)self event];
-    v28 = [(EKUILocationEditItemModel *)viewModel shouldDisplayRowModelWithConferenceCell:v10 event:v27];
+    event2 = [(EKEventEditItem *)self event];
+    v28 = [(EKUILocationEditItemModel *)viewModel shouldDisplayRowModelWithConferenceCell:v10 event:event2];
 
-    v29 = [v10 cell];
-    v30 = v29;
+    cell7 = [v10 cell];
+    v30 = cell7;
     if (v28)
     {
 
       if (v30)
       {
-        v31 = [v10 cell];
+        cell8 = [v10 cell];
       }
 
       else
       {
-        v31 = [[EKUILocationEditItemCell alloc] initWithStyle:0 reuseIdentifier:0];
+        cell8 = [[EKUILocationEditItemCell alloc] initWithStyle:0 reuseIdentifier:0];
       }
 
-      p_super = v31;
+      p_super = cell8;
       v44 = self->_viewModel;
-      v45 = [(EKEventEditItem *)self event];
-      [(EKUILocationEditItemModel *)v44 refreshConferenceRoomCell:p_super event:v45];
+      event3 = [(EKEventEditItem *)self event];
+      [(EKUILocationEditItemModel *)v44 refreshConferenceRoomCell:p_super event:event3];
 
-      v43 = [(EKUITableViewCell *)p_super clearButton];
-      [(EKCalendarItemLocationInlineEditItem *)self _updateClearButtonAndMakeVisible:v43 index:a3];
+      conference3 = [(EKUITableViewCell *)p_super clearButton];
+      [(EKCalendarItemLocationInlineEditItem *)self _updateClearButtonAndMakeVisible:conference3 index:index];
     }
 
     else
     {
-      if (v29 && ([v10 cell], v37 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v38 = objc_opt_isKindOfClass(), v37, v30, (v38 & 1) != 0))
+      if (cell7 && ([v10 cell], v37 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v38 = objc_opt_isKindOfClass(), v37, v30, (v38 & 1) != 0))
       {
-        v39 = [v10 cell];
+        cell9 = [v10 cell];
       }
 
       else
       {
-        v39 = [[EKUIClearButtonCell alloc] initWithStyle:3 reuseIdentifier:0];
+        cell9 = [[EKUIClearButtonCell alloc] initWithStyle:3 reuseIdentifier:0];
       }
 
-      p_super = &v39->super;
-      v43 = [v10 location];
-      [(EKCalendarItemLocationInlineEditItem *)self _updateMapLocationCell:p_super index:a3 location:v43];
+      p_super = &cell9->super;
+      conference3 = [v10 location];
+      [(EKCalendarItemLocationInlineEditItem *)self _updateMapLocationCell:p_super index:index location:conference3];
     }
 
     goto LABEL_39;
   }
 
-  if (v11 == 1)
+  if (locationType == 1)
   {
-    v13 = [v10 cell];
+    cell10 = [v10 cell];
 
-    if (v13)
+    if (cell10)
     {
-      v14 = [v10 cell];
+      cell11 = [v10 cell];
       objc_opt_class();
       v15 = objc_opt_isKindOfClass();
 
@@ -295,19 +295,19 @@ LABEL_40:
         [EKCalendarItemLocationInlineEditItem cellForSubitemAtIndex:inEditor:];
       }
 
-      v16 = [v10 cell];
+      cell12 = [v10 cell];
     }
 
     else
     {
-      v16 = [[EKUIClearButtonCell alloc] initWithStyle:3 reuseIdentifier:0];
+      cell12 = [[EKUIClearButtonCell alloc] initWithStyle:3 reuseIdentifier:0];
     }
 
-    p_super = &v16->super;
-    v40 = [v10 location];
-    [(EKCalendarItemLocationInlineEditItem *)self _updateMapLocationCell:p_super index:a3 location:v40];
+    p_super = &cell12->super;
+    location = [v10 location];
+    [(EKCalendarItemLocationInlineEditItem *)self _updateMapLocationCell:p_super index:index location:location];
 
-    [(EKCalendarItemLocationInlineEditItem *)self _setEditor:v6 andUpdateScribbleInteractionOnCell:p_super addScribbleInteraction:1];
+    [(EKCalendarItemLocationInlineEditItem *)self _setEditor:editorCopy andUpdateScribbleInteractionOnCell:p_super addScribbleInteraction:1];
     goto LABEL_40;
   }
 
@@ -315,107 +315,107 @@ LABEL_41:
 
 LABEL_42:
   [(EKUITableViewCell *)p_super setAccessibilityIdentifier:@"location-video-call-field"];
-  [(EKUITableViewCell *)p_super setTag:a3];
+  [(EKUITableViewCell *)p_super setTag:index];
 
   return p_super;
 }
 
-- (void)_updateMapLocationCell:(id)a3 index:(unint64_t)a4 location:(id)a5
+- (void)_updateMapLocationCell:(id)cell index:(unint64_t)index location:(id)location
 {
-  v22 = a5;
-  v8 = a3;
-  v9 = [v8 defaultContentConfiguration];
-  if (![v22 isStructured])
+  locationCopy = location;
+  cellCopy = cell;
+  defaultContentConfiguration = [cellCopy defaultContentConfiguration];
+  if (![locationCopy isStructured])
   {
-    v13 = [v22 title];
-    v14 = _StringWithLineEndingsRemoved(v13);
-    [v9 setText:v14];
+    title = [locationCopy title];
+    v14 = _StringWithLineEndingsRemoved(title);
+    [defaultContentConfiguration setText:v14];
 
     goto LABEL_8;
   }
 
-  v10 = [v22 contactLabel];
+  contactLabel = [locationCopy contactLabel];
 
-  if (v10)
+  if (contactLabel)
   {
-    v11 = [v22 contactLabel];
+    contactLabel2 = [locationCopy contactLabel];
   }
 
   else
   {
-    v12 = [v22 title];
-    if (v12)
+    title2 = [locationCopy title];
+    if (title2)
     {
       goto LABEL_7;
     }
 
-    v11 = [v22 address];
+    contactLabel2 = [locationCopy address];
   }
 
-  v12 = v11;
+  title2 = contactLabel2;
 LABEL_7:
-  [v9 setText:v12];
+  [defaultContentConfiguration setText:title2];
 
-  v15 = [v22 address];
-  v16 = _StringWithLineEndingsRemoved(v15);
+  address = [locationCopy address];
+  v16 = _StringWithLineEndingsRemoved(address);
 
-  v13 = [v16 _stringByReplacingCharactersInSet:CFCharacterSetGetPredefined(kCFCharacterSetNewline) withCharacter:32];
+  title = [v16 _stringByReplacingCharactersInSet:CFCharacterSetGetPredefined(kCFCharacterSetNewline) withCharacter:32];
 
-  [v9 setSecondaryText:v13];
+  [defaultContentConfiguration setSecondaryText:title];
 LABEL_8:
 
-  v17 = [MEMORY[0x1E69DC888] labelColor];
-  v18 = [v9 textProperties];
-  [v18 setColor:v17];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  textProperties = [defaultContentConfiguration textProperties];
+  [textProperties setColor:labelColor];
 
-  v19 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v20 = [v9 secondaryTextProperties];
-  [v20 setColor:v19];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  secondaryTextProperties = [defaultContentConfiguration secondaryTextProperties];
+  [secondaryTextProperties setColor:secondaryLabelColor];
 
-  [v8 setTitleSubtitleContentConfiguration:v9];
-  v21 = [v8 clearButton];
+  [cellCopy setTitleSubtitleContentConfiguration:defaultContentConfiguration];
+  clearButton = [cellCopy clearButton];
 
-  [(EKCalendarItemLocationInlineEditItem *)self _updateClearButtonAndMakeVisible:v21 index:a4];
+  [(EKCalendarItemLocationInlineEditItem *)self _updateClearButtonAndMakeVisible:clearButton index:index];
 }
 
-- (void)_updateClearButtonAndMakeVisible:(id)a3 index:(unint64_t)a4
+- (void)_updateClearButtonAndMakeVisible:(id)visible index:(unint64_t)index
 {
-  v6 = a3;
-  [v6 setTag:a4];
-  [v6 addTarget:self action:sel__clearButtonTapped_ forControlEvents:64];
-  [v6 setHidden:0];
+  visibleCopy = visible;
+  [visibleCopy setTag:index];
+  [visibleCopy addTarget:self action:sel__clearButtonTapped_ forControlEvents:64];
+  [visibleCopy setHidden:0];
 }
 
-- (void)_updateVirtualConferenceCell:(id)a3 index:(unint64_t)a4 virtualConference:(id)a5
+- (void)_updateVirtualConferenceCell:(id)cell index:(unint64_t)index virtualConference:(id)conference
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v9 && ![v9 isWritable])
+  cellCopy = cell;
+  conferenceCopy = conference;
+  v10 = conferenceCopy;
+  if (conferenceCopy && ![conferenceCopy isWritable])
   {
-    v11 = [v8 clearButton];
-    [v11 setHidden:1];
+    clearButton = [cellCopy clearButton];
+    [clearButton setHidden:1];
   }
 
   else
   {
-    v11 = [v8 clearButton];
-    [(EKCalendarItemLocationInlineEditItem *)self _updateClearButtonAndMakeVisible:v11 index:a4];
+    clearButton = [cellCopy clearButton];
+    [(EKCalendarItemLocationInlineEditItem *)self _updateClearButtonAndMakeVisible:clearButton index:index];
   }
 
   v12 = MEMORY[0x1E69933C0];
-  v13 = [v10 joinMethods];
-  v14 = [v13 firstObject];
+  joinMethods = [v10 joinMethods];
+  firstObject = [joinMethods firstObject];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __93__EKCalendarItemLocationInlineEditItem__updateVirtualConferenceCell_index_virtualConference___block_invoke;
   v17[3] = &unk_1E84428C8;
-  v18 = v8;
+  v18 = cellCopy;
   v19 = v10;
-  v20 = self;
+  selfCopy = self;
   v15 = v10;
-  v16 = v8;
-  [v12 displayDetailsForJoinMethod:v14 completionHandler:v17];
+  v16 = cellCopy;
+  [v12 displayDetailsForJoinMethod:firstObject completionHandler:v17];
 }
 
 void __93__EKCalendarItemLocationInlineEditItem__updateVirtualConferenceCell_index_virtualConference___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -481,26 +481,26 @@ void __93__EKCalendarItemLocationInlineEditItem__updateVirtualConferenceCell_ind
   [*(a1 + 56) notifyRequiresHeightChange];
 }
 
-- (void)_setEditor:(id)a3 andUpdateScribbleInteractionOnCell:(id)a4 addScribbleInteraction:(BOOL)a5
+- (void)_setEditor:(id)editor andUpdateScribbleInteractionOnCell:(id)cell addScribbleInteraction:(BOOL)interaction
 {
-  v5 = a5;
+  interactionCopy = interaction;
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (a3)
+  cellCopy = cell;
+  if (editor)
   {
-    objc_storeWeak(&self->_editor, a3);
-    v9 = [v8 interactions];
+    objc_storeWeak(&self->_editor, editor);
+    interactions = [cellCopy interactions];
     v10 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_60];
-    v11 = [v9 filteredArrayUsingPredicate:v10];
+    v11 = [interactions filteredArrayUsingPredicate:v10];
 
-    if (v5)
+    if (interactionCopy)
     {
       if (![v11 count])
       {
         v12 = objc_alloc_init(getPKScribbleInteractionClass());
         [v12 setDelegate:self];
         [v12 setElementSource:self];
-        [v8 addInteraction:v12];
+        [cellCopy addInteraction:v12];
       }
     }
 
@@ -526,7 +526,7 @@ void __93__EKCalendarItemLocationInlineEditItem__updateVirtualConferenceCell_ind
               objc_enumerationMutation(v13);
             }
 
-            [v8 removeInteraction:{*(*(&v18 + 1) + 8 * v17++), v18}];
+            [cellCopy removeInteraction:{*(*(&v18 + 1) + 8 * v17++), v18}];
           }
 
           while (v15 != v17);
@@ -549,117 +549,117 @@ uint64_t __109__EKCalendarItemLocationInlineEditItem__setEditor_andUpdateScribbl
   return isKindOfClass & 1;
 }
 
-- (BOOL)editor:(id)a3 canSelectSubitem:(unint64_t)a4
+- (BOOL)editor:(id)editor canSelectSubitem:(unint64_t)subitem
 {
-  v6 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
-  v7 = [v6 count];
+  rowModels = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
+  v7 = [rowModels count];
 
-  if (v7 <= a4)
+  if (v7 <= subitem)
   {
     return 1;
   }
 
-  v8 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
-  v9 = [v8 objectAtIndex:a4];
+  rowModels2 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
+  v9 = [rowModels2 objectAtIndex:subitem];
 
   v10 = [v9 locationType] != 0;
   return v10;
 }
 
-- (id)detailViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4
+- (id)detailViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v32[1] = *MEMORY[0x1E69E9840];
   v10 = [(EKCalendarItemLocationInlineEditItem *)self _supportedSearchTypesForSubitemAtIndex:?];
-  v11 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
-  v12 = [v11 count];
+  rowModels = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
+  v12 = [rowModels count];
 
-  if (v12 <= a4)
+  if (v12 <= index)
   {
     v14 = 0;
   }
 
   else
   {
-    v13 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
-    v14 = [v13 objectAtIndex:a4];
+    rowModels2 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
+    v14 = [rowModels2 objectAtIndex:index];
   }
 
   v15 = [EKLocationEditItemViewController alloc];
-  v16 = [(EKCalendarItemEditItem *)self calendarItem];
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
   WeakRetained = objc_loadWeakRetained(&self->super.super._store);
-  v18 = [(EKLocationEditItemViewController *)v15 initWithFrame:v16 calendarItem:WeakRetained eventStore:x, y, width, height];
+  height = [(EKLocationEditItemViewController *)v15 initWithFrame:calendarItem calendarItem:WeakRetained eventStore:x, y, width, height];
 
-  [(EKEditItemViewController *)v18 setEditDelegate:self];
-  [(EKEditItemViewController *)v18 setModal:1];
-  [(EKEditItemViewController *)v18 setShowsDoneButton:0];
-  [(EKLocationEditItemViewController *)v18 setSupportedSearchTypes:v10];
-  v19 = [(EKUILocationEditItemModel *)self->_viewModel mapLocationRowModel];
-  [(EKLocationEditItemViewController *)v18 setLocationViewModel:v19];
+  [(EKEditItemViewController *)height setEditDelegate:self];
+  [(EKEditItemViewController *)height setModal:1];
+  [(EKEditItemViewController *)height setShowsDoneButton:0];
+  [(EKLocationEditItemViewController *)height setSupportedSearchTypes:v10];
+  mapLocationRowModel = [(EKUILocationEditItemModel *)self->_viewModel mapLocationRowModel];
+  [(EKLocationEditItemViewController *)height setLocationViewModel:mapLocationRowModel];
 
-  v20 = [(EKUILocationEditItemModel *)self->_viewModel virtualConferenceRowModel];
-  [(EKLocationEditItemViewController *)v18 setConferenceViewModel:v20];
+  virtualConferenceRowModel = [(EKUILocationEditItemModel *)self->_viewModel virtualConferenceRowModel];
+  [(EKLocationEditItemViewController *)height setConferenceViewModel:virtualConferenceRowModel];
 
   if (v14)
   {
-    v21 = [(EKUILocationEditItemModel *)self->_viewModel virtualConferenceRowModel];
-    [(EKLocationEditItemViewController *)v18 setConferenceTextFieldSelected:v14 == v21];
+    virtualConferenceRowModel2 = [(EKUILocationEditItemModel *)self->_viewModel virtualConferenceRowModel];
+    [(EKLocationEditItemViewController *)height setConferenceTextFieldSelected:v14 == virtualConferenceRowModel2];
   }
 
   else
   {
-    [(EKLocationEditItemViewController *)v18 setConferenceTextFieldSelected:0];
+    [(EKLocationEditItemViewController *)height setConferenceTextFieldSelected:0];
   }
 
-  v22 = [(EKUILocationEditItemModel *)self->_viewModel virtualConferenceRowModel];
-  if (v22)
+  virtualConferenceRowModel3 = [(EKUILocationEditItemModel *)self->_viewModel virtualConferenceRowModel];
+  if (virtualConferenceRowModel3)
   {
-    v23 = [(EKUILocationEditItemModel *)self->_viewModel virtualConferenceRowModel];
-    v24 = [v23 conference];
-    -[EKLocationEditItemViewController setDisableConferenceTextField:](v18, "setDisableConferenceTextField:", [v24 isWritable] ^ 1);
+    virtualConferenceRowModel4 = [(EKUILocationEditItemModel *)self->_viewModel virtualConferenceRowModel];
+    conference = [virtualConferenceRowModel4 conference];
+    -[EKLocationEditItemViewController setDisableConferenceTextField:](height, "setDisableConferenceTextField:", [conference isWritable] ^ 1);
   }
 
   else
   {
-    [(EKLocationEditItemViewController *)v18 setDisableConferenceTextField:0];
+    [(EKLocationEditItemViewController *)height setDisableConferenceTextField:0];
   }
 
-  objc_storeStrong(&self->_currentLocationEditController, v18);
-  v25 = v18;
+  objc_storeStrong(&self->_currentLocationEditController, height);
+  v25 = height;
   v26 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v25 action:sel_cancel];
   v27 = objc_alloc(MEMORY[0x1E69DC720]);
   v32[0] = v26;
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
   v29 = [v27 initWithBarButtonItems:v28 representativeItem:0];
 
-  v30 = [(EKLocationEditItemViewController *)v25 navigationItem];
-  [v30 _dci_setFixedTrailingGroup:v29];
+  navigationItem = [(EKLocationEditItemViewController *)v25 navigationItem];
+  [navigationItem _dci_setFixedTrailingGroup:v29];
 
   return v25;
 }
 
-- (unint64_t)_supportedSearchTypesForSubitemAtIndex:(unint64_t)a3
+- (unint64_t)_supportedSearchTypesForSubitemAtIndex:(unint64_t)index
 {
-  v5 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
-  v6 = [v5 count];
+  rowModels = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
+  v6 = [rowModels count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     return 2047;
   }
 
-  v7 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
-  v8 = [v7 objectAtIndex:a3];
+  rowModels2 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
+  v8 = [rowModels2 objectAtIndex:index];
 
   if ([v8 locationType] == 2)
   {
-    v9 = [v8 conference];
-    v10 = [v9 isWritable];
+    conference = [v8 conference];
+    isWritable = [conference isWritable];
 
-    if (v10)
+    if (isWritable)
     {
       v11 = 1536;
     }
@@ -678,22 +678,22 @@ uint64_t __109__EKCalendarItemLocationInlineEditItem__setEditor_andUpdateScribbl
   return v11;
 }
 
-- (void)_clearButtonTapped:(id)a3
+- (void)_clearButtonTapped:(id)tapped
 {
-  v4 = [a3 tag];
+  v4 = [tapped tag];
 
   [(EKCalendarItemLocationInlineEditItem *)self _clearLocationAtIndex:v4];
 }
 
-- (void)_clearLocationAtIndex:(unint64_t)a3
+- (void)_clearLocationAtIndex:(unint64_t)index
 {
-  v5 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
-  v6 = [v5 count];
+  rowModels = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
+  v6 = [rowModels count];
 
-  if (v6 > a3)
+  if (v6 > index)
   {
-    v7 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
-    v11 = [v7 objectAtIndex:a3];
+    rowModels2 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
+    v11 = [rowModels2 objectAtIndex:index];
 
     if ([v11 locationType] == 2)
     {
@@ -702,30 +702,30 @@ uint64_t __109__EKCalendarItemLocationInlineEditItem__setEditor_andUpdateScribbl
     }
 
     viewModel = self->_viewModel;
-    v10 = [(EKEventEditItem *)self event];
-    [(EKUILocationEditItemModel *)viewModel removeRowModelAtIndex:a3 event:v10];
+    event = [(EKEventEditItem *)self event];
+    [(EKUILocationEditItemModel *)viewModel removeRowModelAtIndex:index event:event];
 
-    [(EKCalendarItemEditItem *)self notifySubitemDidSave:a3];
+    [(EKCalendarItemEditItem *)self notifySubitemDidSave:index];
   }
 }
 
-- (BOOL)isSubitemAtIndexSaveable:(unint64_t)a3
+- (BOOL)isSubitemAtIndexSaveable:(unint64_t)saveable
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [(EKCalendarItemEditItem *)self calendarItem];
-  v6 = [v5 location];
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+  location = [calendarItem location];
 
-  v7 = [(EKCalendarItemLocationInlineEditItem *)self cellForSubitemAtIndex:a3];
+  v7 = [(EKCalendarItemLocationInlineEditItem *)self cellForSubitemAtIndex:saveable];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 configuration];
-    v9 = [v8 text];
+    configuration = [v7 configuration];
+    text = [configuration text];
 
-    v10 = [v9 isEqualToString:v6];
-    if (v9)
+    v10 = [text isEqualToString:location];
+    if (text)
     {
-      v11 = v6 == 0;
+      v11 = location == 0;
     }
 
     else
@@ -749,26 +749,26 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v14 = [v7 textLabel];
+  textLabel = [v7 textLabel];
 
-  if (v14)
+  if (textLabel)
   {
-    v15 = [v7 editableTextField];
-    if (v15)
+    editableTextField = [v7 editableTextField];
+    if (editableTextField)
     {
-      v9 = v15;
-      v16 = [v15 text];
-      if ([v16 isEqualToString:v6])
+      text = editableTextField;
+      text2 = [editableTextField text];
+      if ([text2 isEqualToString:location])
       {
         v13 = 0;
       }
 
       else
       {
-        v18 = [v9 text];
-        if (v18)
+        v9Text = [text text];
+        if (v9Text)
         {
-          v19 = v6 == 0;
+          v19 = location == 0;
         }
 
         else
@@ -797,14 +797,14 @@ LABEL_27:
   return v13;
 }
 
-- (BOOL)editItemViewControllerSave:(id)a3
+- (BOOL)editItemViewControllerSave:(id)save
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  saveCopy = save;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = saveCopy;
     if (![v5 needsSave])
     {
 LABEL_33:
@@ -812,47 +812,47 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    v6 = [v5 locationViewModel];
-    v7 = [v5 selectedConferenceRoom];
-    v8 = [v5 selectedLocation];
+    locationViewModel = [v5 locationViewModel];
+    selectedConferenceRoom = [v5 selectedConferenceRoom];
+    selectedLocation = [v5 selectedLocation];
     if ([v5 locationViewModelRemoved])
     {
       v9 = kEKUILogEventEditorHandle;
       if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v33 = v6;
+        v33 = locationViewModel;
         _os_log_impl(&dword_1D3400000, v9, OS_LOG_TYPE_DEBUG, "Removing row view model from view model: [%@]", buf, 0xCu);
       }
 
       viewModel = self->_viewModel;
-      v11 = [(EKEventEditItem *)self event];
-      [(EKUILocationEditItemModel *)viewModel removeRowModel:v6 event:v11];
+      event = [(EKEventEditItem *)self event];
+      [(EKUILocationEditItemModel *)viewModel removeRowModel:locationViewModel event:event];
     }
 
     else
     {
-      if (v7 || !v8)
+      if (selectedConferenceRoom || !selectedLocation)
       {
-        if (v7 && !v8)
+        if (selectedConferenceRoom && !selectedLocation)
         {
           v27 = kEKUILogEventEditorHandle;
           if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v33 = v7;
+            v33 = selectedConferenceRoom;
             _os_log_impl(&dword_1D3400000, v27, OS_LOG_TYPE_DEBUG, "Updating event with selected conference room: [%@]", buf, 0xCu);
           }
 
-          [(EKUILocationEditItemModel *)self->_viewModel updateRowModel:v6 withConferenceRoom:v7 editItem:self];
+          [(EKUILocationEditItemModel *)self->_viewModel updateRowModel:locationViewModel withConferenceRoom:selectedConferenceRoom editItem:self];
         }
 
 LABEL_13:
-        v14 = [v5 conferenceViewModel];
-        v15 = [v5 selectedVirtualConference];
-        v16 = [v5 pendingVirtualConference];
+        conferenceViewModel = [v5 conferenceViewModel];
+        selectedVirtualConference = [v5 selectedVirtualConference];
+        pendingVirtualConference = [v5 pendingVirtualConference];
         WeakRetained = objc_loadWeakRetained(&self->_editor);
-        [WeakRetained setPendingVideoConference:v16];
+        [WeakRetained setPendingVideoConference:pendingVirtualConference];
 
         v18 = objc_loadWeakRetained(&self->_editor);
         LODWORD(WeakRetained) = [v18 pendingVideoConference];
@@ -863,14 +863,14 @@ LABEL_13:
           if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v33 = v15;
+            v33 = selectedVirtualConference;
             _os_log_impl(&dword_1D3400000, v19, OS_LOG_TYPE_DEBUG, "Updating event with pending virtual conference: [%@]", buf, 0xCu);
           }
 
           v20 = self->_viewModel;
-          v21 = [(EKEventEditItem *)self event];
+          event2 = [(EKEventEditItem *)self event];
           v22 = v20;
-          v23 = v14;
+          v23 = conferenceViewModel;
           v24 = 0;
         }
 
@@ -882,17 +882,17 @@ LABEL_13:
             if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
-              v33 = v14;
+              v33 = conferenceViewModel;
               _os_log_impl(&dword_1D3400000, v25, OS_LOG_TYPE_DEBUG, "Removing row view model from view model: [%@]", buf, 0xCu);
             }
 
             v26 = self->_viewModel;
-            v21 = [(EKEventEditItem *)self event];
-            [(EKUILocationEditItemModel *)v26 removeRowModel:v14 event:v21];
+            event2 = [(EKEventEditItem *)self event];
+            [(EKUILocationEditItemModel *)v26 removeRowModel:conferenceViewModel event:event2];
             goto LABEL_31;
           }
 
-          if (!v15)
+          if (!selectedVirtualConference)
           {
 LABEL_32:
 
@@ -903,18 +903,18 @@ LABEL_32:
           if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v33 = v15;
+            v33 = selectedVirtualConference;
             _os_log_impl(&dword_1D3400000, v28, OS_LOG_TYPE_DEBUG, "Updating event with selected virtual conference: [%@]", buf, 0xCu);
           }
 
           v29 = self->_viewModel;
-          v21 = [(EKEventEditItem *)self event];
+          event2 = [(EKEventEditItem *)self event];
           v22 = v29;
-          v23 = v14;
-          v24 = v15;
+          v23 = conferenceViewModel;
+          v24 = selectedVirtualConference;
         }
 
-        [(EKUILocationEditItemModel *)v22 updateRowModel:v23 withVirtualConference:v24 event:v21];
+        [(EKUILocationEditItemModel *)v22 updateRowModel:v23 withVirtualConference:v24 event:event2];
 LABEL_31:
 
         goto LABEL_32;
@@ -924,13 +924,13 @@ LABEL_31:
       if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v33 = v8;
+        v33 = selectedLocation;
         _os_log_impl(&dword_1D3400000, v12, OS_LOG_TYPE_DEBUG, "Updating event with selected structured location: [%@]", buf, 0xCu);
       }
 
       v13 = self->_viewModel;
-      v11 = [(EKEventEditItem *)self event];
-      [(EKUILocationEditItemModel *)v13 updateRowModel:v6 withMapLocation:v8 event:v11];
+      event = [(EKEventEditItem *)self event];
+      [(EKUILocationEditItemModel *)v13 updateRowModel:locationViewModel withMapLocation:selectedLocation event:event];
     }
 
     goto LABEL_13;
@@ -943,10 +943,10 @@ LABEL_34:
   return 1;
 }
 
-- (void)editItemPendingVideoConferenceCompleted:(id)a3
+- (void)editItemPendingVideoConferenceCompleted:(id)completed
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completedCopy = completed;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -956,26 +956,26 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v5 = [(EKUILocationEditItemModel *)self->_viewModel virtualConferenceRowModel];
-  v6 = v4;
-  v7 = [v6 selectedVirtualConference];
+  virtualConferenceRowModel = [(EKUILocationEditItemModel *)self->_viewModel virtualConferenceRowModel];
+  v6 = completedCopy;
+  selectedVirtualConference = [v6 selectedVirtualConference];
   WeakRetained = objc_loadWeakRetained(&self->_editor);
-  v9 = [WeakRetained pendingVideoConference];
+  pendingVideoConference = [WeakRetained pendingVideoConference];
 
-  if (v9)
+  if (pendingVideoConference)
   {
     v10 = objc_loadWeakRetained(&self->_editor);
     [v10 setPendingVideoConference:0];
 
-    v11 = [v6 pendingVirtualConferenceError];
+    pendingVirtualConferenceError = [v6 pendingVirtualConferenceError];
 
-    if (v11)
+    if (pendingVirtualConferenceError)
     {
       v12 = EventKitUIBundle();
       v13 = [v12 localizedStringForKey:@"Unable to Add Video Call Link" value:&stru_1F4EF6790 table:0];
 
       EventKitUIBundle();
-      v14 = v33 = v5;
+      v14 = v33 = virtualConferenceRowModel;
       v15 = [v14 localizedStringForKey:@"The request timed out. Try adding the video call link again." value:&stru_1F4EF6790 table:0];
 
       v16 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v13 message:v15 preferredStyle:1];
@@ -986,38 +986,38 @@ LABEL_20:
       [v18 presentViewController:v16 animated:1 completion:0];
 
       viewModel = self->_viewModel;
-      v20 = [(EKEventEditItem *)self event];
+      event = [(EKEventEditItem *)self event];
       v21 = viewModel;
-      v5 = v33;
-      [(EKUILocationEditItemModel *)v21 removeRowModel:v33 event:v20];
+      virtualConferenceRowModel = v33;
+      [(EKUILocationEditItemModel *)v21 removeRowModel:v33 event:event];
     }
 
     else
     {
-      if (v7)
+      if (selectedVirtualConference)
       {
         v29 = kEKUILogEventEditorHandle;
         if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v39 = v7;
+          v39 = selectedVirtualConference;
           _os_log_impl(&dword_1D3400000, v29, OS_LOG_TYPE_DEBUG, "Updating event with selected virtual conference: [%@]", buf, 0xCu);
         }
 
         v30 = self->_viewModel;
-        v31 = [(EKEventEditItem *)self event];
-        [(EKUILocationEditItemModel *)v30 updateRowModel:v5 withVirtualConference:v7 event:v31];
+        event2 = [(EKEventEditItem *)self event];
+        [(EKUILocationEditItemModel *)v30 updateRowModel:virtualConferenceRowModel withVirtualConference:selectedVirtualConference event:event2];
       }
 
       else
       {
         v32 = self->_viewModel;
-        v31 = [(EKEventEditItem *)self event];
-        [(EKUILocationEditItemModel *)v32 removeRowModel:v5 event:v31];
+        event2 = [(EKEventEditItem *)self event];
+        [(EKUILocationEditItemModel *)v32 removeRowModel:virtualConferenceRowModel event:event2];
       }
     }
 
-    [(EKLocationEditItemViewController *)self->_currentLocationEditController pendingVideoConferenceUpdated:v7];
+    [(EKLocationEditItemViewController *)self->_currentLocationEditController pendingVideoConferenceUpdated:selectedVirtualConference];
 
     goto LABEL_20;
   }
@@ -1026,8 +1026,8 @@ LABEL_20:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v22 = [v7 joinMethods];
-  v23 = [v22 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  joinMethods = [selectedVirtualConference joinMethods];
+  v23 = [joinMethods countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v23)
   {
     v24 = v23;
@@ -1038,7 +1038,7 @@ LABEL_20:
       {
         if (*v35 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(joinMethods);
         }
 
         v27 = MEMORY[0x1E69669E0];
@@ -1046,7 +1046,7 @@ LABEL_20:
         [v27 invalidateConferenceURL:v28];
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v34 objects:v40 count:16];
+      v24 = [joinMethods countByEnumeratingWithState:&v34 objects:v40 count:16];
     }
 
     while (v24);
@@ -1055,10 +1055,10 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)didTapAddSuggestedLocationCell:(id)a3 disambiguatedLocation:(id)a4
+- (void)didTapAddSuggestedLocationCell:(id)cell disambiguatedLocation:(id)location
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  locationCopy = location;
   WeakRetained = objc_loadWeakRetained(&self->super.super._calendarItem);
   if ([WeakRetained isNew])
   {
@@ -1081,22 +1081,22 @@ LABEL_21:
 
   v9 = MEMORY[0x1E6966B10];
   v10 = objc_loadWeakRetained(&self->super.super._calendarItem);
-  v11 = [v10 preferredLocation];
-  v12 = [v11 predictedLOI];
-  [v9 userInteractionWithPredictedLocationOfInterest:v12 interaction:v7];
+  preferredLocation = [v10 preferredLocation];
+  predictedLOI = [preferredLocation predictedLOI];
+  [v9 userInteractionWithPredictedLocationOfInterest:predictedLOI interaction:v7];
 
-  v13 = [(EKUILocationEditItemModel *)self->_viewModel indexOfPredictedLocation];
-  if (v13 != 0x7FFFFFFFFFFFFFFFLL)
+  indexOfPredictedLocation = [(EKUILocationEditItemModel *)self->_viewModel indexOfPredictedLocation];
+  if (indexOfPredictedLocation != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v35 = v13;
-    v36 = v5;
-    v14 = [MEMORY[0x1E695DF70] array];
+    v35 = indexOfPredictedLocation;
+    v36 = locationCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v15 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
-    v16 = [v15 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    rowModels = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
+    v16 = [rowModels countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v16)
     {
       v17 = v16;
@@ -1107,15 +1107,15 @@ LABEL_21:
         {
           if (*v38 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(rowModels);
           }
 
-          v20 = [*(*(&v37 + 1) + 8 * i) location];
-          v21 = [v20 title];
-          v22 = v21;
-          if (v21)
+          location = [*(*(&v37 + 1) + 8 * i) location];
+          title = [location title];
+          v22 = title;
+          if (title)
           {
-            v23 = v21;
+            v23 = title;
           }
 
           else
@@ -1123,47 +1123,47 @@ LABEL_21:
             v23 = &stru_1F4EF6790;
           }
 
-          [v14 addObject:v23];
+          [array addObject:v23];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        v17 = [rowModels countByEnumeratingWithState:&v37 objects:v41 count:16];
       }
 
       while (v17);
     }
 
-    v5 = v36;
-    v24 = [v36 title];
-    [v14 addObject:v24];
+    locationCopy = v36;
+    title2 = [v36 title];
+    [array addObject:title2];
 
-    v25 = [v36 title];
-    v26 = [MEMORY[0x1E6966A08] _locationStringForLocations:v14];
+    title3 = [v36 title];
+    v26 = [MEMORY[0x1E6966A08] _locationStringForLocations:array];
     [v36 setTitle:v26];
 
-    v27 = [(EKEventEditItem *)self event];
-    [v27 confirmPredictedLocation:v36];
+    event = [(EKEventEditItem *)self event];
+    [event confirmPredictedLocation:v36];
 
-    [v36 setTitle:v25];
-    v28 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
-    v29 = [v28 objectAtIndex:v35];
+    [v36 setTitle:title3];
+    rowModels2 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
+    v29 = [rowModels2 objectAtIndex:v35];
 
     viewModel = self->_viewModel;
-    v31 = [(EKEventEditItem *)self event];
-    [(EKUILocationEditItemModel *)viewModel updateRowModel:v29 withMapLocation:v36 event:v31];
+    event2 = [(EKEventEditItem *)self event];
+    [(EKUILocationEditItemModel *)viewModel updateRowModel:v29 withMapLocation:v36 event:event2];
 
-    v32 = [(EKCalendarItemEditItem *)self delegate];
+    delegate = [(EKCalendarItemEditItem *)self delegate];
     v33 = [MEMORY[0x1E696AC90] indexSetWithIndex:{-[EKCalendarItemLocationInlineEditItem numberOfSubitems](self, "numberOfSubitems")}];
     v34 = [MEMORY[0x1E696AC90] indexSetWithIndex:v35];
-    [v32 editItem:self wantsRowInsertions:0 rowDeletions:v33 rowReloads:v34];
+    [delegate editItem:self wantsRowInsertions:0 rowDeletions:v33 rowReloads:v34];
 
     [(EKCalendarItemEditItem *)self notifySubitemDidSave:v35];
   }
 }
 
-- (void)didTapDismissSuggestedLocationCell:(id)a3
+- (void)didTapDismissSuggestedLocationCell:(id)cell
 {
-  v4 = [(EKEventEditItem *)self event];
-  [v4 rejectPredictedLocation];
+  event = [(EKEventEditItem *)self event];
+  [event rejectPredictedLocation];
 
   WeakRetained = objc_loadWeakRetained(&self->super.super._calendarItem);
   if ([WeakRetained isNew])
@@ -1187,36 +1187,36 @@ LABEL_21:
 
   v8 = MEMORY[0x1E6966B10];
   v9 = objc_loadWeakRetained(&self->super.super._calendarItem);
-  v10 = [v9 preferredLocation];
-  v11 = [v10 predictedLOI];
-  [v8 userInteractionWithPredictedLocationOfInterest:v11 interaction:v6];
+  preferredLocation = [v9 preferredLocation];
+  predictedLOI = [preferredLocation predictedLOI];
+  [v8 userInteractionWithPredictedLocationOfInterest:predictedLOI interaction:v6];
 
-  v12 = [(EKUILocationEditItemModel *)self->_viewModel indexOfPredictedLocation];
-  if (v12 != 0x7FFFFFFFFFFFFFFFLL)
+  indexOfPredictedLocation = [(EKUILocationEditItemModel *)self->_viewModel indexOfPredictedLocation];
+  if (indexOfPredictedLocation != 0x7FFFFFFFFFFFFFFFLL)
   {
 
-    [(EKCalendarItemLocationInlineEditItem *)self _clearLocationAtIndex:v12];
+    [(EKCalendarItemLocationInlineEditItem *)self _clearLocationAtIndex:indexOfPredictedLocation];
   }
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 addObserver:self selector:sel_textFieldDidChange_ name:*MEMORY[0x1E69DE5C0] object:v5];
+  editingCopy = editing;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter addObserver:self selector:sel_textFieldDidChange_ name:*MEMORY[0x1E69DE5C0] object:editingCopy];
 
-  [(EKCalendarItemEditItem *)self setSelectedResponder:v5];
+  [(EKCalendarItemEditItem *)self setSelectedResponder:editingCopy];
 
   [(EKCalendarItemEditItem *)self notifyDidStartEditing];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x1E69DE5C0] object:v5];
+  editingCopy = editing;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE5C0] object:editingCopy];
 
   [(EKCalendarItemEditItem *)self notifyDidEndEditing];
 
@@ -1226,24 +1226,24 @@ LABEL_21:
 - (id)searchStringForEventAutocomplete
 {
   v2 = [(EKCalendarItemLocationInlineEditItem *)self cellForSubitemAtIndex:0];
-  v3 = [v2 textLabel];
-  v4 = [v3 text];
+  textLabel = [v2 textLabel];
+  text = [textLabel text];
 
-  return v4;
+  return text;
 }
 
-- (void)_scribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4
+- (void)_scribbleInteraction:(id)interaction willBeginWritingInElement:(id)element
 {
-  v9 = [a3 view];
+  view = [interaction view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v9;
-    v5 = [v4 clearButton];
-    [v5 setHidden:1];
+    v4 = view;
+    clearButton = [v4 clearButton];
+    [clearButton setHidden:1];
 
-    v6 = [v4 defaultContentConfiguration];
-    [v4 setTitleSubtitleContentConfiguration:v6];
+    defaultContentConfiguration = [v4 defaultContentConfiguration];
+    [v4 setTitleSubtitleContentConfiguration:defaultContentConfiguration];
   }
 
   else
@@ -1251,41 +1251,41 @@ LABEL_21:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v9 textLabel];
-      [v7 setText:0];
+      textLabel = [view textLabel];
+      [textLabel setText:0];
 
-      v8 = [v9 detailTextLabel];
-      [v8 setText:0];
+      detailTextLabel = [view detailTextLabel];
+      [detailTextLabel setText:0];
 
-      [v9 setAccessoryView:0];
+      [view setAccessoryView:0];
     }
   }
 }
 
-- (void)_scribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4
+- (void)_scribbleInteraction:(id)interaction didFinishWritingInElement:(id)element
 {
-  v12 = [a3 view];
+  view = [interaction view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v12 tag];
-    v6 = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
-    v7 = [v6 count];
+    v5 = [view tag];
+    rowModels = [(EKUILocationEditItemModel *)self->_viewModel rowModels];
+    v7 = [rowModels count];
 
     viewModel = self->_viewModel;
     if (v5 >= v7)
     {
-      v10 = [(EKUILocationEditItemModel *)viewModel placeholderCellText];
-      v11 = [v12 textLabel];
-      [v11 setText:v10];
+      placeholderCellText = [(EKUILocationEditItemModel *)viewModel placeholderCellText];
+      textLabel = [view textLabel];
+      [textLabel setText:placeholderCellText];
     }
 
     else
     {
-      v9 = [(EKUILocationEditItemModel *)viewModel rowModels];
-      v10 = [v9 objectAtIndex:v5];
+      rowModels2 = [(EKUILocationEditItemModel *)viewModel rowModels];
+      placeholderCellText = [rowModels2 objectAtIndex:v5];
 
-      if ([v10 locationType] == 1 || !objc_msgSend(v10, "locationType"))
+      if ([placeholderCellText locationType] == 1 || !objc_msgSend(placeholderCellText, "locationType"))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1293,13 +1293,13 @@ LABEL_21:
           [EKCalendarItemLocationInlineEditItem _scribbleInteraction:didFinishWritingInElement:];
         }
 
-        v11 = [v10 location];
-        [(EKCalendarItemLocationInlineEditItem *)self _updateMapLocationCell:v12 index:v5 location:v11];
+        textLabel = [placeholderCellText location];
+        [(EKCalendarItemLocationInlineEditItem *)self _updateMapLocationCell:view index:v5 location:textLabel];
       }
 
       else
       {
-        if ([v10 locationType] != 2)
+        if ([placeholderCellText locationType] != 2)
         {
 LABEL_14:
 
@@ -1312,8 +1312,8 @@ LABEL_14:
           [EKCalendarItemLocationInlineEditItem _scribbleInteraction:didFinishWritingInElement:];
         }
 
-        v11 = [v10 conference];
-        [(EKCalendarItemLocationInlineEditItem *)self _updateVirtualConferenceCell:v12 index:v5 virtualConference:v11];
+        textLabel = [placeholderCellText conference];
+        [(EKCalendarItemLocationInlineEditItem *)self _updateVirtualConferenceCell:view index:v5 virtualConference:textLabel];
       }
     }
 
@@ -1323,10 +1323,10 @@ LABEL_14:
 LABEL_15:
 }
 
-- (CGRect)_scribbleInteraction:(id)a3 frameForElement:(id)a4
+- (CGRect)_scribbleInteraction:(id)interaction frameForElement:(id)element
 {
-  v4 = [a3 view];
-  [v4 bounds];
+  view = [interaction view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1343,20 +1343,20 @@ LABEL_15:
   return result;
 }
 
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion
 {
-  v8 = a3;
-  v9 = a6;
+  interactionCopy = interaction;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_editor);
 
   if (WeakRetained)
   {
-    v11 = [v8 view];
-    v12 = [v11 tag];
+    view = [interactionCopy view];
+    v12 = [view tag];
 
     v13 = objc_loadWeakRetained(&self->_editor);
-    v14 = [v13 view];
-    [v14 frame];
+    view2 = [v13 view];
+    [view2 frame];
     v15 = [(EKCalendarItemLocationInlineEditItem *)self detailViewControllerWithFrame:v12 forSubitemAtIndex:?];
 
     objc_opt_class();
@@ -1368,7 +1368,7 @@ LABEL_15:
       v20[1] = 3221225472;
       v20[2] = __121__EKCalendarItemLocationInlineEditItem__scribbleInteraction_focusElement_initialFocusSelectionReferencePoint_completion___block_invoke;
       v20[3] = &unk_1E8442910;
-      v21 = v9;
+      v21 = completionCopy;
       [v16 setViewAppearedBlock:v20];
     }
 
@@ -1385,7 +1385,7 @@ LABEL_15:
       _os_log_impl(&dword_1D3400000, v18, OS_LOG_TYPE_ERROR, "_Editor was nil, so couldn't call callback in focusElement.", v19, 2u);
     }
 
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

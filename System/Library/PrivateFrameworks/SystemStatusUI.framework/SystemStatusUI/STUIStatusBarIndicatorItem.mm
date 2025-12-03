@@ -1,9 +1,9 @@
 @interface STUIStatusBarIndicatorItem
-- (BOOL)shouldUpdateIndicatorForIdentifier:(id)a3;
+- (BOOL)shouldUpdateIndicatorForIdentifier:(id)identifier;
 - (STUIStatusBarImageView)imageView;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (id)dependentEntryKeys;
-- (id)imageForUpdate:(id)a3;
+- (id)imageForUpdate:(id)update;
 - (void)_create_imageView;
 @end
 
@@ -16,10 +16,10 @@
   imageView = self->_imageView;
   self->_imageView = v4;
 
-  v6 = [(STUIStatusBarIndicatorItem *)self fontStyle];
+  fontStyle = [(STUIStatusBarIndicatorItem *)self fontStyle];
   v7 = self->_imageView;
 
-  [(STUIStatusBarImageView *)v7 setFontStyle:v6];
+  [(STUIStatusBarImageView *)v7 setFontStyle:fontStyle];
 }
 
 - (STUIStatusBarImageView)imageView
@@ -37,17 +37,17 @@
 - (id)dependentEntryKeys
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(STUIStatusBarIndicatorItem *)self indicatorEntryKey];
-  v4 = [v2 setWithObject:v3];
+  indicatorEntryKey = [(STUIStatusBarIndicatorItem *)self indicatorEntryKey];
+  v4 = [v2 setWithObject:indicatorEntryKey];
 
   return v4;
 }
 
-- (id)imageForUpdate:(id)a3
+- (id)imageForUpdate:(id)update
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(STUIStatusBarIndicatorItem *)self systemImageNameForUpdate:v4];
+  updateCopy = update;
+  v5 = [(STUIStatusBarIndicatorItem *)self systemImageNameForUpdate:updateCopy];
   if (v5)
   {
     v6 = v5;
@@ -63,7 +63,7 @@
       }
     }
 
-    if ([(STUIStatusBarIndicatorItem *)self useMultiColorSystemImageForUpdate:v4])
+    if ([(STUIStatusBarIndicatorItem *)self useMultiColorSystemImageForUpdate:updateCopy])
     {
       v9 = [v7 imageWithRenderingMode:1];
 
@@ -73,12 +73,12 @@
 
   else
   {
-    v6 = [(STUIStatusBarIndicatorItem *)self imageNameForUpdate:v4];
+    v6 = [(STUIStatusBarIndicatorItem *)self imageNameForUpdate:updateCopy];
     if (v6)
     {
       v10 = +[STUIStatusBarImageProvider sharedProvider];
-      v11 = [v4 styleAttributes];
-      v12 = [v10 imageNamed:v6 styleAttributes:v11];
+      styleAttributes = [updateCopy styleAttributes];
+      v12 = [v10 imageNamed:v6 styleAttributes:styleAttributes];
 
       if ([(STUIStatusBarIndicatorItem *)self isTemplateImage])
       {
@@ -103,54 +103,54 @@
 
   if ([(STUIStatusBarIndicatorItem *)self flipsForRightToLeftLayoutDirection])
   {
-    v15 = [v7 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [v7 imageFlippedForRightToLeftLayoutDirection];
 
-    v7 = v15;
+    v7 = imageFlippedForRightToLeftLayoutDirection;
   }
 
   return v7;
 }
 
-- (BOOL)shouldUpdateIndicatorForIdentifier:(id)a3
+- (BOOL)shouldUpdateIndicatorForIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [objc_opt_class() defaultDisplayIdentifier];
+  identifierCopy = identifier;
+  defaultDisplayIdentifier = [objc_opt_class() defaultDisplayIdentifier];
 
-  return v4 == v3;
+  return defaultDisplayIdentifier == identifierCopy;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v22.receiver = self;
   v22.super_class = STUIStatusBarIndicatorItem;
-  v8 = [(STUIStatusBarItem *)&v22 applyUpdate:v6 toDisplayItem:v7];
-  v9 = [v7 identifier];
-  if ([(STUIStatusBarIndicatorItem *)self shouldUpdateIndicatorForIdentifier:v9])
+  v8 = [(STUIStatusBarItem *)&v22 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  identifier = [itemCopy identifier];
+  if ([(STUIStatusBarIndicatorItem *)self shouldUpdateIndicatorForIdentifier:identifier])
   {
-    v10 = [v7 isEnabled];
+    isEnabled = [itemCopy isEnabled];
 
-    if (!v10)
+    if (!isEnabled)
     {
       goto LABEL_15;
     }
 
     v11 = [objc_opt_class() instanceMethodForSelector:sel_imageForUpdate_];
     v12 = [STUIStatusBarIndicatorItem instanceMethodForSelector:sel_imageForUpdate_];
-    v13 = [v6 styleAttributes];
-    v9 = [v13 imageNamePrefixes];
+    styleAttributes = [updateCopy styleAttributes];
+    identifier = [styleAttributes imageNamePrefixes];
 
-    if (([v6 dataChanged] & 1) != 0 || v11 != v12 && (objc_msgSend(v6, "styleAttributesChanged") & 1) != 0 || (BSEqualObjects() & 1) == 0)
+    if (([updateCopy dataChanged] & 1) != 0 || v11 != v12 && (objc_msgSend(updateCopy, "styleAttributesChanged") & 1) != 0 || (BSEqualObjects() & 1) == 0)
     {
-      [(STUIStatusBarIndicatorItem *)self setCurrentImageNamePrefixes:v9];
-      v14 = [(STUIStatusBarIndicatorItem *)self imageForUpdate:v6];
+      [(STUIStatusBarIndicatorItem *)self setCurrentImageNamePrefixes:identifier];
+      v14 = [(STUIStatusBarIndicatorItem *)self imageForUpdate:updateCopy];
       if (v14)
       {
-        v15 = [v7 identifier];
-        v16 = [(STUIStatusBarIndicatorItem *)self imageViewForIdentifier:v15];
+        identifier2 = [itemCopy identifier];
+        v16 = [(STUIStatusBarIndicatorItem *)self imageViewForIdentifier:identifier2];
 
-        if ([(STUIStatusBarIndicatorItem *)self crossfadeForUpdate:v6])
+        if ([(STUIStatusBarIndicatorItem *)self crossfadeForUpdate:updateCopy])
         {
           v19[0] = MEMORY[0x277D85DD0];
           v19[1] = 3221225472;
@@ -171,7 +171,7 @@
 
       else
       {
-        [v7 setEnabled:0];
+        [itemCopy setEnabled:0];
       }
     }
   }

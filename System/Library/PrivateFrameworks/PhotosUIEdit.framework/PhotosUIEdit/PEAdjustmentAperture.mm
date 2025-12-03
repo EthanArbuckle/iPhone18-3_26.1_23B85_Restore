@@ -1,18 +1,18 @@
 @interface PEAdjustmentAperture
-+ (id)_error:(int64_t)a3 asset:(id)a4 description:(id)a5;
-- (PEAdjustmentAperture)initWithModifier:(id)a3;
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7;
++ (id)_error:(int64_t)_error asset:(id)asset description:(id)description;
+- (PEAdjustmentAperture)initWithModifier:(id)modifier;
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler;
 @end
 
 @implementation PEAdjustmentAperture
 
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  controllerCopy = controller;
+  calculatorCopy = calculator;
+  assetCopy = asset;
+  delegateCopy = delegate;
+  handlerCopy = handler;
   if (PECanRenderPortrait_onceToken != -1)
   {
     dispatch_once(&PECanRenderPortrait_onceToken, &__block_literal_global_210);
@@ -20,45 +20,45 @@
 
   if (PECanRenderPortrait_canRenderPortrait)
   {
-    v17 = [v13 portraitValuesWithAccuracy:0];
+    v17 = [calculatorCopy portraitValuesWithAccuracy:0];
     v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277D3AA40]];
     if (!v18)
     {
-      v27 = [PEAdjustmentAperture _error:2 asset:v14 description:@"Asset is missing depth data"];
-      v16[2](v16, 0, v27);
+      v27 = [PEAdjustmentAperture _error:2 asset:assetCopy description:@"Asset is missing depth data"];
+      handlerCopy[2](handlerCopy, 0, v27);
 
 LABEL_17:
       goto LABEL_18;
     }
 
-    v36 = self;
+    selfCopy = self;
     v19 = [v17 objectForKeyedSubscript:*MEMORY[0x277D3AA28]];
     [v19 floatValue];
     v21 = v20;
 
     v38 = [v17 objectForKeyedSubscript:*MEMORY[0x277D3AA30]];
-    v22 = [v12 depthAdjustmentController];
-    v23 = [v22 depthInfo];
-    v37 = v22;
+    depthAdjustmentController = [controllerCopy depthAdjustmentController];
+    depthInfo = [depthAdjustmentController depthInfo];
+    v37 = depthAdjustmentController;
     v35 = v18;
-    if (v23)
+    if (depthInfo)
     {
-      v24 = v23;
-      v25 = [v22 depthInfo];
-      v26 = [v25 objectForKeyedSubscript:@"focusRect"];
+      v24 = depthInfo;
+      depthInfo2 = [depthAdjustmentController depthInfo];
+      v26 = [depthInfo2 objectForKeyedSubscript:@"focusRect"];
       if (v26)
       {
 
         goto LABEL_12;
       }
 
-      v22 = v37;
+      depthAdjustmentController = v37;
     }
 
-    v28 = [v12 adjustmentConstants];
-    v29 = [v28 PIDepthAdjustmentKey];
+    adjustmentConstants = [controllerCopy adjustmentConstants];
+    pIDepthAdjustmentKey = [adjustmentConstants PIDepthAdjustmentKey];
     v30 = v18;
-    v31 = v29;
+    v31 = pIDepthAdjustmentKey;
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __123__PEAdjustmentAperture_applyToCompositionController_valuesCalculator_asset_livePortraitBehaviorDelegate_completionHandler___block_invoke;
@@ -67,8 +67,8 @@ LABEL_17:
     v45 = v21;
     v42 = v38;
     v43 = v17;
-    v44 = v22;
-    [v12 modifyAdjustmentWithKey:v31 modificationBlock:v40];
+    v44 = depthAdjustmentController;
+    [controllerCopy modifyAdjustmentWithKey:v31 modificationBlock:v40];
 
 LABEL_12:
     v32 = *MEMORY[0x277D3AA20];
@@ -76,29 +76,29 @@ LABEL_12:
     v39[1] = 3221225472;
     v39[2] = __123__PEAdjustmentAperture_applyToCompositionController_valuesCalculator_asset_livePortraitBehaviorDelegate_completionHandler___block_invoke_2;
     v39[3] = &unk_279A30968;
-    v39[4] = v36;
-    [v12 modifyAdjustmentWithKey:v32 modificationBlock:v39];
-    if ([v12 mediaType] == 3 || objc_msgSend(v12, "mediaType") == 1)
+    v39[4] = selfCopy;
+    [controllerCopy modifyAdjustmentWithKey:v32 modificationBlock:v39];
+    if ([controllerCopy mediaType] == 3 || objc_msgSend(controllerCopy, "mediaType") == 1)
     {
-      v33 = [v14 isPhotoIris];
+      isPhotoIris = [assetCopy isPhotoIris];
     }
 
     else
     {
-      v33 = 0;
+      isPhotoIris = 0;
     }
 
     v18 = v35;
-    v34 = [[PELivePortraitBehaviorController alloc] initWithAsset:v14 delegate:v15 hasDepth:1 hasLive:v33];
-    [(PELivePortraitBehaviorController *)v34 applySideEffectsForAction:0 compositionController:v12];
-    [(PELivePortraitBehaviorController *)v34 applySideEffectsForAction:2 compositionController:v12];
-    v16[2](v16, 1, 0);
+    v34 = [[PELivePortraitBehaviorController alloc] initWithAsset:assetCopy delegate:delegateCopy hasDepth:1 hasLive:isPhotoIris];
+    [(PELivePortraitBehaviorController *)v34 applySideEffectsForAction:0 compositionController:controllerCopy];
+    [(PELivePortraitBehaviorController *)v34 applySideEffectsForAction:2 compositionController:controllerCopy];
+    handlerCopy[2](handlerCopy, 1, 0);
 
     goto LABEL_17;
   }
 
-  v17 = [PEAdjustmentAperture _error:1 asset:v14 description:@"Rendering depth is not supported on this device"];
-  v16[2](v16, 0, v17);
+  v17 = [PEAdjustmentAperture _error:1 asset:assetCopy description:@"Rendering depth is not supported on this device"];
+  handlerCopy[2](handlerCopy, 0, v17);
 LABEL_18:
 }
 
@@ -143,15 +143,15 @@ void __123__PEAdjustmentAperture_applyToCompositionController_valuesCalculator_a
   [v8 setAperture:v7];
 }
 
-- (PEAdjustmentAperture)initWithModifier:(id)a3
+- (PEAdjustmentAperture)initWithModifier:(id)modifier
 {
-  v4 = a3;
+  modifierCopy = modifier;
   v9.receiver = self;
   v9.super_class = PEAdjustmentAperture;
   v5 = [(PEAdjustmentAperture *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(modifierCopy);
     modifier = v5->_modifier;
     v5->_modifier = v6;
   }
@@ -159,19 +159,19 @@ void __123__PEAdjustmentAperture_applyToCompositionController_valuesCalculator_a
   return v5;
 }
 
-+ (id)_error:(int64_t)a3 asset:(id)a4 description:(id)a5
++ (id)_error:(int64_t)_error asset:(id)asset description:(id)description
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277CCA9B8];
   v14[0] = *MEMORY[0x277CCA068];
   v14[1] = @"PEAdjustmentApertureMediaTypeErrorKey";
-  v15[0] = a5;
+  v15[0] = description;
   v8 = MEMORY[0x277CCABB0];
-  v9 = a5;
-  v10 = [v8 numberWithInteger:{objc_msgSend(a4, "mediaType")}];
+  descriptionCopy = description;
+  v10 = [v8 numberWithInteger:{objc_msgSend(asset, "mediaType")}];
   v15[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
-  v12 = [v7 errorWithDomain:@"PEAdjustmentApertureErrorDomain" code:a3 userInfo:v11];
+  v12 = [v7 errorWithDomain:@"PEAdjustmentApertureErrorDomain" code:_error userInfo:v11];
 
   return v12;
 }

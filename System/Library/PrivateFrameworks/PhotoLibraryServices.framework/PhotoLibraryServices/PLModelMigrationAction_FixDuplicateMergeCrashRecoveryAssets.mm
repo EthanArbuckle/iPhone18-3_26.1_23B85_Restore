@@ -1,23 +1,23 @@
 @interface PLModelMigrationAction_FixDuplicateMergeCrashRecoveryAssets
-- (BOOL)_isLibraryRepairRequiredWithManagedObjectContext:(id)a3;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
-- (void)_processForRepairWithAsset:(id)a3 repairCount:(int64_t *)a4;
-- (void)_repairAsset:(id)a3;
+- (BOOL)_isLibraryRepairRequiredWithManagedObjectContext:(id)context;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
+- (void)_processForRepairWithAsset:(id)asset repairCount:(int64_t *)count;
+- (void)_repairAsset:(id)asset;
 @end
 
 @implementation PLModelMigrationAction_FixDuplicateMergeCrashRecoveryAssets
 
-- (void)_repairAsset:(id)a3
+- (void)_repairAsset:(id)asset
 {
   v91 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 duplicateAlbum];
+  assetCopy = asset;
+  duplicateAlbum = [assetCopy duplicateAlbum];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v6 = [v5 assets];
-  v7 = [v6 countByEnumeratingWithState:&v48 objects:v90 count:16];
+  assets = [duplicateAlbum assets];
+  v7 = [assets countByEnumeratingWithState:&v48 objects:v90 count:16];
   if (!v7)
   {
     goto LABEL_34;
@@ -31,25 +31,25 @@
     {
       if (*v49 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(assets);
       }
 
       v11 = *(*(&v48 + 1) + 8 * i);
-      if (([v11 isEqual:v4] & 1) == 0)
+      if (([v11 isEqual:assetCopy] & 1) == 0)
       {
-        v12 = [v11 master];
+        master = [v11 master];
 
-        if (v12)
+        if (master)
         {
           if ([v11 cloudLocalState] == 1)
           {
-            v45 = self;
+            selfCopy = self;
             v13 = [[PLDuplicateAsset alloc] initWithAsset:v11];
-            v14 = [[PLDuplicateAsset alloc] initWithAsset:v4];
-            v15 = [v4 photoLibrary];
-            v16 = v15;
+            v14 = [[PLDuplicateAsset alloc] initWithAsset:assetCopy];
+            photoLibrary = [assetCopy photoLibrary];
+            v16 = photoLibrary;
             v46 = v13;
-            if (v13 && v14 && v15)
+            if (v13 && v14 && photoLibrary)
             {
               v17 = [PLDuplicateMerge alloc];
               v89 = v13;
@@ -68,9 +68,9 @@
 
                 if (v22)
                 {
-                  v23 = [(PLModelMigrationActionBackground *)v45 logger];
+                  logger = [(PLModelMigrationActionBackground *)selfCopy logger];
 
-                  if (v23)
+                  if (logger)
                   {
                     v87 = 0u;
                     v88 = 0u;
@@ -105,16 +105,16 @@
                     memset(buf, 0, sizeof(buf));
                     v24 = PLMigrationGetLog();
                     os_log_type_enabled(v24, OS_LOG_TYPE_ERROR);
-                    v25 = [v4 uuid];
-                    v26 = [v11 uuid];
+                    uuid = [assetCopy uuid];
+                    uuid2 = [v11 uuid];
                     v52 = 138543618;
-                    v53 = v25;
+                    v53 = uuid;
                     v54 = 2114;
-                    *v55 = v26;
+                    *v55 = uuid2;
                     LODWORD(v41) = 22;
                     v27 = _os_log_send_and_compose_impl();
 
-                    v28 = [(PLModelMigrationActionBackground *)v45 logger:&v52];
+                    v28 = [(PLModelMigrationActionBackground *)selfCopy logger:&v52];
                     [v28 logWithMessage:v27 fromCodeLocation:"PLModelMigrationActionBackground.m" type:{806, 16}];
 
                     if (v27 != buf)
@@ -128,12 +128,12 @@
                     v38 = PLMigrationGetLog();
                     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
                     {
-                      v39 = [v4 uuid];
-                      v40 = [v11 uuid];
+                      uuid3 = [assetCopy uuid];
+                      uuid4 = [v11 uuid];
                       *buf = 138543618;
-                      *&buf[4] = v39;
+                      *&buf[4] = uuid3;
                       *&buf[12] = 2114;
-                      *&buf[14] = v40;
+                      *&buf[14] = uuid4;
                       _os_log_impl(&dword_19BF1F000, v38, OS_LOG_TYPE_ERROR, "Failed to repair merge asset %{public}@ using source %{public}@", buf, 0x16u);
                     }
                   }
@@ -151,9 +151,9 @@
 
               if (v30)
               {
-                v31 = [(PLModelMigrationActionBackground *)v45 logger];
+                logger2 = [(PLModelMigrationActionBackground *)selfCopy logger];
 
-                if (v31)
+                if (logger2)
                 {
                   v44 = v16;
                   v87 = 0u;
@@ -189,9 +189,9 @@
                   memset(buf, 0, sizeof(buf));
                   v32 = PLMigrationGetLog();
                   os_log_type_enabled(v32, OS_LOG_TYPE_ERROR);
-                  v33 = [v4 uuid];
+                  uuid5 = [assetCopy uuid];
                   v52 = 138544130;
-                  v53 = v33;
+                  v53 = uuid5;
                   v54 = 1024;
                   *v55 = v46 != 0;
                   *&v55[4] = 1024;
@@ -201,7 +201,7 @@
                   LODWORD(v41) = 30;
                   v34 = _os_log_send_and_compose_impl();
 
-                  v35 = [(PLModelMigrationActionBackground *)v45 logger:&v52];
+                  v35 = [(PLModelMigrationActionBackground *)selfCopy logger:&v52];
                   [v35 logWithMessage:v34 fromCodeLocation:"PLModelMigrationActionBackground.m" type:{809, 16}];
 
                   if (v34 != buf)
@@ -217,9 +217,9 @@
                 v36 = PLMigrationGetLog();
                 if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
                 {
-                  v37 = [v4 uuid];
+                  uuid6 = [assetCopy uuid];
                   *buf = 138544130;
-                  *&buf[4] = v37;
+                  *&buf[4] = uuid6;
                   *&buf[12] = 1024;
                   *&buf[14] = v46 != 0;
                   *&buf[18] = 1024;
@@ -241,7 +241,7 @@ LABEL_33:
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v48 objects:v90 count:16];
+    v8 = [assets countByEnumeratingWithState:&v48 objects:v90 count:16];
     if (v8)
     {
       continue;
@@ -253,16 +253,16 @@ LABEL_33:
 LABEL_34:
 }
 
-- (void)_processForRepairWithAsset:(id)a3 repairCount:(int64_t *)a4
+- (void)_processForRepairWithAsset:(id)asset repairCount:(int64_t *)count
 {
   v63 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 masterResourceForCPLType:1];
-  v8 = [v7 cplFileURL];
+  assetCopy = asset;
+  v7 = [assetCopy masterResourceForCPLType:1];
+  cplFileURL = [v7 cplFileURL];
   v25 = 0;
-  v9 = [v8 checkResourceIsReachableAndReturnError:&v25];
+  v9 = [cplFileURL checkResourceIsReachableAndReturnError:&v25];
   v10 = v25;
-  if (!v8)
+  if (!cplFileURL)
   {
     goto LABEL_4;
   }
@@ -279,9 +279,9 @@ LABEL_34:
 
     if (v12)
     {
-      v13 = [(PLModelMigrationActionBackground *)self logger];
+      logger = [(PLModelMigrationActionBackground *)self logger];
 
-      if (v13)
+      if (logger)
       {
         v61 = 0u;
         v62 = 0u;
@@ -318,11 +318,11 @@ LABEL_34:
         os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
         v15 = objc_opt_class();
         v16 = NSStringFromClass(v15);
-        v17 = [v6 uuid];
+        uuid = [assetCopy uuid];
         v26 = 138543874;
         v27 = v16;
         v28 = 2114;
-        v29 = v17;
+        v29 = uuid;
         v30 = 2112;
         v31 = v10;
         LODWORD(v24) = 32;
@@ -344,11 +344,11 @@ LABEL_34:
         {
           v21 = objc_opt_class();
           v22 = NSStringFromClass(v21);
-          v23 = [v6 uuid];
+          uuid2 = [assetCopy uuid];
           *buf = 138543874;
           *&buf[4] = v22;
           *&buf[12] = 2114;
-          *&buf[14] = v23;
+          *&buf[14] = uuid2;
           *&buf[22] = 2112;
           *&buf[24] = v10;
           _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "Resource check failed in %{public}@ for %{public}@. Error: %@", buf, 0x20u);
@@ -360,27 +360,27 @@ LABEL_34:
   else
   {
 LABEL_4:
-    [(PLModelMigrationAction_FixDuplicateMergeCrashRecoveryAssets *)self _repairAsset:v6];
-    if (a4)
+    [(PLModelMigrationAction_FixDuplicateMergeCrashRecoveryAssets *)self _repairAsset:assetCopy];
+    if (count)
     {
-      ++*a4;
+      ++*count;
     }
   }
 
 LABEL_6:
 }
 
-- (BOOL)_isLibraryRepairRequiredWithManagedObjectContext:(id)a3
+- (BOOL)_isLibraryRepairRequiredWithManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PLModelMigrationActionBackground *)self pathManager];
-  v6 = [v5 libraryURL];
-  v7 = PLIsCloudPhotoLibraryEnabledForPhotoLibraryURL(v6);
+  contextCopy = context;
+  pathManager = [(PLModelMigrationActionBackground *)self pathManager];
+  libraryURL = [pathManager libraryURL];
+  v7 = PLIsCloudPhotoLibraryEnabledForPhotoLibraryURL(libraryURL);
 
   if (v7)
   {
     objc_opt_class();
-    v8 = v4;
+    v8 = contextCopy;
     if (objc_opt_isKindOfClass())
     {
       v9 = v8;
@@ -393,10 +393,10 @@ LABEL_6:
 
     v10 = v9;
 
-    v11 = [v10 pl_libraryBundle];
-    v12 = [v11 indicatorFileCoordinator];
+    pl_libraryBundle = [v10 pl_libraryBundle];
+    indicatorFileCoordinator = [pl_libraryBundle indicatorFileCoordinator];
 
-    v13 = [v12 isDisableICloudPhotos] ^ 1;
+    v13 = [indicatorFileCoordinator isDisableICloudPhotos] ^ 1;
   }
 
   else
@@ -407,13 +407,13 @@ LABEL_6:
   return v13;
 }
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v129 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  if ([(PLModelMigrationAction_FixDuplicateMergeCrashRecoveryAssets *)self _isLibraryRepairRequiredWithManagedObjectContext:v5])
+  if ([(PLModelMigrationAction_FixDuplicateMergeCrashRecoveryAssets *)self _isLibraryRepairRequiredWithManagedObjectContext:contextCopy])
   {
     v8 = MEMORY[0x1E695D5E0];
     v9 = +[PLManagedAsset entityName];
@@ -447,7 +447,7 @@ LABEL_6:
     v83 = 0x2020000000;
     v84 = 1;
     obj = 0;
-    v18 = [v5 executeFetchRequest:v10 error:&obj];
+    v18 = [contextCopy executeFetchRequest:v10 error:&obj];
     objc_storeStrong(&v95, obj);
     if (!v18)
     {
@@ -457,8 +457,8 @@ LABEL_6:
 
       if (v39)
       {
-        v40 = [(PLModelMigrationActionBackground *)self logger];
-        v41 = v40 == 0;
+        logger = [(PLModelMigrationActionBackground *)self logger];
+        v41 = logger == 0;
 
         if (v41)
         {
@@ -549,7 +549,7 @@ LABEL_6:
     v79 = &v91;
     v20 = v19;
     v76 = v20;
-    v21 = [v5 enumerateWithIncrementalSaveUsingObjects:v18 withBlock:v75];
+    v21 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v18 withBlock:v75];
     if (v21 && (v22 = (*(&v91 + 1) + 40), !*(*(&v91 + 1) + 40)))
     {
       v82[3] = 3;
@@ -562,8 +562,8 @@ LABEL_6:
         goto LABEL_35;
       }
 
-      v52 = [(PLModelMigrationActionBackground *)self logger];
-      v53 = v52 == 0;
+      logger2 = [(PLModelMigrationActionBackground *)self logger];
+      v53 = logger2 == 0;
 
       if (!v53)
       {
@@ -626,10 +626,10 @@ LABEL_36:
         [(PLModelMigrationActionBackground *)self finalizeProgress];
         v69 = v82[3];
         v70 = *(*(&v91 + 1) + 40);
-        if (v69 != 1 && a4)
+        if (v69 != 1 && error)
         {
           v70 = v70;
-          *a4 = v70;
+          *error = v70;
         }
 
         v49 = v82[3];
@@ -663,8 +663,8 @@ LABEL_36:
         goto LABEL_35;
       }
 
-      v25 = [(PLModelMigrationActionBackground *)self logger];
-      v26 = v25 == 0;
+      logger3 = [(PLModelMigrationActionBackground *)self logger];
+      v26 = logger3 == 0;
 
       if (!v26)
       {
@@ -739,9 +739,9 @@ LABEL_25:
 
   if (v33)
   {
-    v34 = [(PLModelMigrationActionBackground *)self logger];
+    logger4 = [(PLModelMigrationActionBackground *)self logger];
 
-    if (v34)
+    if (logger4)
     {
       v127 = 0u;
       v128 = 0u;

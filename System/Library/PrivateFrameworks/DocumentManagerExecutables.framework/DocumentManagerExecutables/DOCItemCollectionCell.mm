@@ -1,21 +1,21 @@
 @interface DOCItemCollectionCell
 - (BOOL)accessibilityIsRenaming;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (NSString)description;
-- (_TtC26DocumentManagerExecutables21DOCItemCollectionCell)initWithFrame:(CGRect)a3;
+- (_TtC26DocumentManagerExecutables21DOCItemCollectionCell)initWithFrame:(CGRect)frame;
 - (_TtC26DocumentManagerExecutables28DOCItemCollectionCellContent)cellContent;
 - (id)accessibilityCellManager;
 - (id)accessibilityTitleLabel;
 - (id)accessibilityTitleString;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)didMoveToSuperview;
-- (void)dragStateDidChange:(int64_t)a3;
+- (void)dragStateDidChange:(int64_t)change;
 - (void)prepareForReuse;
-- (void)renameGesture:(id)a3;
-- (void)setCellContent:(id)a3;
+- (void)renameGesture:(id)gesture;
+- (void)setCellContent:(id)content;
 @end
 
 @implementation DOCItemCollectionCell
@@ -27,16 +27,16 @@
   return *(&self->super.super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setCellContent:(id)a3
+- (void)setCellContent:(id)content
 {
-  v6 = a3;
-  v5 = self;
-  specialized DOCItemCollectionCell.cellContent.setter(a3);
+  contentCopy = content;
+  selfCopy = self;
+  specialized DOCItemCollectionCell.cellContent.setter(content);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCItemCollectionCell.description.getter();
   v5 = v4;
 
@@ -47,47 +47,47 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   DOCItemCollectionCell.prepareForReuse()();
 }
 
-- (_TtC26DocumentManagerExecutables21DOCItemCollectionCell)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables21DOCItemCollectionCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v8 = (*(ObjectType + 616))(0, x, y, width, height);
   swift_deallocPartialClassInstance();
   return v8;
 }
 
-- (void)dragStateDidChange:(int64_t)a3
+- (void)dragStateDidChange:(int64_t)change
 {
-  v4 = self;
-  DOCItemCollectionCell.dragStateDidChange(_:)(a3);
+  selfCopy = self;
+  DOCItemCollectionCell.dragStateDidChange(_:)(change);
 }
 
-- (void)renameGesture:(id)a3
+- (void)renameGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  DOCItemCollectionCell.renameGesture(_:)(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  DOCItemCollectionCell.renameGesture(_:)(gestureCopy);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for NSObject);
   v7 = MEMORY[0x277D85000];
   v8 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.super.super.isa) + 0x1E0);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
   v12 = v8();
-  LOBYTE(a4) = static NSObject.== infix(_:_:)();
+  LOBYTE(touch) = static NSObject.== infix(_:_:)();
 
-  if ((a4 & 1) != 0 && (v13 = [v10 locationInView_], v15 = v14, v17 = v16, (*((*v7 & v11->super.super.super.super.super.super.super.isa) + 0x2D0))(&v20, v13), (v21 & 1) == 0))
+  if ((touch & 1) != 0 && (v13 = [touchCopy locationInView_], v15 = v14, v17 = v16, (*((*v7 & selfCopy->super.super.super.super.super.super.super.isa) + 0x2D0))(&v20, v13), (v21 & 1) == 0))
   {
     v22.x = v15;
     v22.y = v17;
@@ -102,31 +102,31 @@
   return v18;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = DOCItemCollectionCell.gestureRecognizerShouldBegin(_:)(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = DOCItemCollectionCell.gestureRecognizerShouldBegin(_:)(beginCopy);
 
   return self & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for NSObject);
   v7 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.super.super.isa) + 0x1E0);
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
   v11 = v7();
-  LOBYTE(a3) = static NSObject.== infix(_:_:)();
+  LOBYTE(recognizer) = static NSObject.== infix(_:_:)();
 
-  if (a3)
+  if (recognizer)
   {
     type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for UIPanGestureRecognizer);
-    v12 = [v9 isKindOfClass_];
+    isKindOfClass_ = [gestureRecognizerCopy isKindOfClass_];
 
-    if (v12)
+    if (isKindOfClass_)
     {
       return 1;
     }
@@ -139,12 +139,12 @@
   return 0;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for NSObject);
   v6 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.super.super.isa) + 0x1E0);
-  v7 = a3;
-  v8 = self;
+  recognizerCopy = recognizer;
+  selfCopy = self;
   v9 = v6();
   LOBYTE(self) = static NSObject.== infix(_:_:)();
 
@@ -158,14 +158,14 @@
   [(DOCItemCollectionCell *)&v2 didMoveToSuperview];
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4, v6);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   DOCItemCollectionCell.updateConfiguration(using:)();
 
   (*(v5 + 8))(v8, v4);
@@ -174,7 +174,7 @@
 - (id)accessibilityTitleLabel
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.super.super.isa) + 0x108);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4;
@@ -182,7 +182,7 @@
 
 - (id)accessibilityTitleString
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCItemCollectionCell.accessibilityTitleString()();
 
   return v3;
@@ -191,7 +191,7 @@
 - (id)accessibilityCellManager
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.super.super.isa) + 0x208);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4;
@@ -200,7 +200,7 @@
 - (BOOL)accessibilityIsRenaming
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.super.super.isa) + 0x3A8);
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = v2();
 
   return v2 & 1;

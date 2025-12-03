@@ -1,36 +1,36 @@
 @interface TSWPDateTimeSmartField
-+ (id)dateStringFromTime:(double)a3 withFormat:(id)a4 localeIdentifier:(id)a5 dateStyle:(int64_t)a6 timeStyle:(int64_t)a7;
-+ (id)newDateFormatWithLocaleIdentifier:(id)a3 dateStyle:(int64_t)a4 timeStyle:(int64_t)a5;
-- (TSWPDateTimeSmartField)initWithLocaleIdentifier:(id)a3 dateStyle:(int64_t)a4 timeStyle:(int64_t)a5 format:(id)a6 date:(id)a7 updatePlan:(int)a8 context:(id)a9;
-- (id)copyWithContext:(id)a3;
-- (id)copyWithNewDate:(id)a3;
-- (id)copyWithNewDateStyle:(int64_t)a3 timeStyle:(int64_t)a4 date:(id)a5;
++ (id)dateStringFromTime:(double)time withFormat:(id)format localeIdentifier:(id)identifier dateStyle:(int64_t)style timeStyle:(int64_t)timeStyle;
++ (id)newDateFormatWithLocaleIdentifier:(id)identifier dateStyle:(int64_t)style timeStyle:(int64_t)timeStyle;
+- (TSWPDateTimeSmartField)initWithLocaleIdentifier:(id)identifier dateStyle:(int64_t)style timeStyle:(int64_t)timeStyle format:(id)format date:(id)date updatePlan:(int)plan context:(id)context;
+- (id)copyWithContext:(id)context;
+- (id)copyWithNewDate:(id)date;
+- (id)copyWithNewDateStyle:(int64_t)style timeStyle:(int64_t)timeStyle date:(id)date;
 - (id)generateInlineText;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)p_setFormat:(id)a3 localeIdentifier:(id)a4 dateStyle:(int64_t)a5 timeStyle:(int64_t)a6 autoLocale:(BOOL)a7;
-- (void)resetLocaleTo:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setCustomFormat:(int)a3;
-- (void)setDate:(id)a3;
-- (void)setDateStyle:(int64_t)a3;
-- (void)setFormat:(id)a3;
-- (void)setFormat:(id)a3 localeIdentifier:(id)a4 dateStyle:(int64_t)a5 timeStyle:(int64_t)a6;
-- (void)setIncrementsDateByYear:(BOOL)a3;
-- (void)setLocaleIdentifier:(id)a3;
-- (void)setNeedsUpdate:(BOOL)a3;
-- (void)setTimeStyle:(int64_t)a3;
-- (void)setUpdatePlan:(int)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)p_setFormat:(id)format localeIdentifier:(id)identifier dateStyle:(int64_t)style timeStyle:(int64_t)timeStyle autoLocale:(BOOL)locale;
+- (void)resetLocaleTo:(id)to;
+- (void)saveToArchiver:(id)archiver;
+- (void)setCustomFormat:(int)format;
+- (void)setDate:(id)date;
+- (void)setDateStyle:(int64_t)style;
+- (void)setFormat:(id)format;
+- (void)setFormat:(id)format localeIdentifier:(id)identifier dateStyle:(int64_t)style timeStyle:(int64_t)timeStyle;
+- (void)setIncrementsDateByYear:(BOOL)year;
+- (void)setLocaleIdentifier:(id)identifier;
+- (void)setNeedsUpdate:(BOOL)update;
+- (void)setTimeStyle:(int64_t)style;
+- (void)setUpdatePlan:(int)plan;
 @end
 
 @implementation TSWPDateTimeSmartField
 
-+ (id)newDateFormatWithLocaleIdentifier:(id)a3 dateStyle:(int64_t)a4 timeStyle:(int64_t)a5
++ (id)newDateFormatWithLocaleIdentifier:(id)identifier dateStyle:(int64_t)style timeStyle:(int64_t)timeStyle
 {
-  v7 = a3;
-  if (v7)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v8 = objc_alloc(MEMORY[0x277D81228]);
-    v10 = objc_msgSend_localeWithLocaleIdentifier_(MEMORY[0x277CBEAF8], v9, v7);
+    v10 = objc_msgSend_localeWithLocaleIdentifier_(MEMORY[0x277CBEAF8], v9, identifierCopy);
     v12 = objc_msgSend_initWithLocale_(v8, v11, v10);
   }
 
@@ -62,14 +62,14 @@
   return v19;
 }
 
-+ (id)dateStringFromTime:(double)a3 withFormat:(id)a4 localeIdentifier:(id)a5 dateStyle:(int64_t)a6 timeStyle:(int64_t)a7
++ (id)dateStringFromTime:(double)time withFormat:(id)format localeIdentifier:(id)identifier dateStyle:(int64_t)style timeStyle:(int64_t)timeStyle
 {
-  v9 = a4;
-  v12 = a5;
-  if (v12)
+  formatCopy = format;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v13 = objc_alloc(MEMORY[0x277D81228]);
-    v15 = objc_msgSend_localeWithLocaleIdentifier_(MEMORY[0x277CBEAF8], v14, v12);
+    v15 = objc_msgSend_localeWithLocaleIdentifier_(MEMORY[0x277CBEAF8], v14, identifierCopy);
     v17 = objc_msgSend_initWithLocale_(v13, v16, v15);
   }
 
@@ -85,12 +85,12 @@
     goto LABEL_10;
   }
 
-  if (v9)
+  if (formatCopy)
   {
-    CFDateFormatterSetFormat(UsingHarmonizedSymbols, v9);
+    CFDateFormatterSetFormat(UsingHarmonizedSymbols, formatCopy);
   }
 
-  StringWithAbsoluteTime = CFDateFormatterCreateStringWithAbsoluteTime(0, v20, a3);
+  StringWithAbsoluteTime = CFDateFormatterCreateStringWithAbsoluteTime(0, v20, time);
   CFRelease(v20);
   if (StringWithAbsoluteTime)
   {
@@ -120,126 +120,126 @@ LABEL_10:
   return StringWithAbsoluteTime;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v4 = a3;
-  if (self->_date != v4)
+  dateCopy = date;
+  if (self->_date != dateCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = dateCopy;
+    objc_msgSend_willModify(self, dateCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_date, v8);
-    v4 = v8;
+    dateCopy = v8;
   }
 }
 
-- (void)setFormat:(id)a3
+- (void)setFormat:(id)format
 {
-  v4 = a3;
-  if (self->_format != v4)
+  formatCopy = format;
+  if (self->_format != formatCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = formatCopy;
+    objc_msgSend_willModify(self, formatCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_format, v8);
-    v4 = v8;
+    formatCopy = v8;
   }
 }
 
-- (void)setLocaleIdentifier:(id)a3
+- (void)setLocaleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (self->_localeID != v4)
+  identifierCopy = identifier;
+  if (self->_localeID != identifierCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = identifierCopy;
+    objc_msgSend_willModify(self, identifierCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_localeID, v8);
-    v4 = v8;
+    identifierCopy = v8;
   }
 }
 
-- (void)setDateStyle:(int64_t)a3
+- (void)setDateStyle:(int64_t)style
 {
-  if (self->_dateStyle != a3)
+  if (self->_dateStyle != style)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_dateStyle = a3;
+    objc_msgSend_willModify(self, a2, style);
+    self->_dateStyle = style;
   }
 }
 
-- (void)setTimeStyle:(int64_t)a3
+- (void)setTimeStyle:(int64_t)style
 {
-  if (self->_timeStyle != a3)
+  if (self->_timeStyle != style)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_timeStyle = a3;
+    objc_msgSend_willModify(self, a2, style);
+    self->_timeStyle = style;
   }
 }
 
-- (void)setUpdatePlan:(int)a3
+- (void)setUpdatePlan:(int)plan
 {
-  if (self->_updatePlan != a3)
+  if (self->_updatePlan != plan)
   {
-    objc_msgSend_willModify(self, a2, *&a3);
-    self->_updatePlan = a3;
+    objc_msgSend_willModify(self, a2, *&plan);
+    self->_updatePlan = plan;
   }
 }
 
-- (void)setIncrementsDateByYear:(BOOL)a3
+- (void)setIncrementsDateByYear:(BOOL)year
 {
-  if (self->_incrementsDateByYear != a3)
+  if (self->_incrementsDateByYear != year)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_incrementsDateByYear = a3;
+    objc_msgSend_willModify(self, a2, year);
+    self->_incrementsDateByYear = year;
   }
 }
 
-- (void)setNeedsUpdate:(BOOL)a3
+- (void)setNeedsUpdate:(BOOL)update
 {
-  if (self->_needsUpdate != a3)
+  if (self->_needsUpdate != update)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_needsUpdate = a3;
+    objc_msgSend_willModify(self, a2, update);
+    self->_needsUpdate = update;
   }
 }
 
-- (void)setCustomFormat:(int)a3
+- (void)setCustomFormat:(int)format
 {
-  if (self->_customFormat != a3)
+  if (self->_customFormat != format)
   {
-    objc_msgSend_willModify(self, a2, *&a3);
-    self->_customFormat = a3;
+    objc_msgSend_willModify(self, a2, *&format);
+    self->_customFormat = format;
   }
 }
 
-- (TSWPDateTimeSmartField)initWithLocaleIdentifier:(id)a3 dateStyle:(int64_t)a4 timeStyle:(int64_t)a5 format:(id)a6 date:(id)a7 updatePlan:(int)a8 context:(id)a9
+- (TSWPDateTimeSmartField)initWithLocaleIdentifier:(id)identifier dateStyle:(int64_t)style timeStyle:(int64_t)timeStyle format:(id)format date:(id)date updatePlan:(int)plan context:(id)context
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
+  identifierCopy = identifier;
+  formatCopy = format;
+  dateCopy = date;
+  contextCopy = context;
   v43.receiver = self;
   v43.super_class = TSWPDateTimeSmartField;
-  v19 = [(TSWPSmartField *)&v43 initWithContext:v18];
+  v19 = [(TSWPSmartField *)&v43 initWithContext:contextCopy];
   v22 = v19;
   if (v19)
   {
-    v19->_updatePlan = a8;
-    if (!v15 && *MEMORY[0x277D81500] != -1)
+    v19->_updatePlan = plan;
+    if (!identifierCopy && *MEMORY[0x277D81500] != -1)
     {
       sub_276F4F6FC();
     }
 
-    v23 = objc_msgSend_documentRoot(v18, v20, v21);
+    v23 = objc_msgSend_documentRoot(contextCopy, v20, v21);
     v26 = objc_msgSend_documentLocale(v23, v24, v25);
     v29 = objc_msgSend_localeIdentifier(v26, v27, v28);
 
-    v32 = v15;
-    if (v15 || (v32 = v29) != 0)
+    v32 = identifierCopy;
+    if (identifierCopy || (v32 = v29) != 0)
     {
       v34 = v32;
     }
@@ -250,10 +250,10 @@ LABEL_10:
       v34 = objc_msgSend_localeIdentifier(v40, v41, v42);
     }
 
-    objc_msgSend_setFormat_localeIdentifier_dateStyle_timeStyle_(v22, v33, v16, v34, a4, a5);
-    if (v17)
+    objc_msgSend_setFormat_localeIdentifier_dateStyle_timeStyle_(v22, v33, formatCopy, v34, style, timeStyle);
+    if (dateCopy)
     {
-      v37 = objc_msgSend_copy(v17, v35, v36);
+      v37 = objc_msgSend_copy(dateCopy, v35, v36);
     }
 
     else
@@ -268,9 +268,9 @@ LABEL_10:
   return v22;
 }
 
-- (id)copyWithNewDate:(id)a3
+- (id)copyWithNewDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [TSWPDateTimeSmartField alloc];
   v8 = objc_msgSend_localeIdentifier(self, v6, v7);
   v11 = objc_msgSend_dateStyle(self, v9, v10);
@@ -278,7 +278,7 @@ LABEL_10:
   v17 = objc_msgSend_format(self, v15, v16);
   updated = objc_msgSend_updatePlan(self, v18, v19);
   v23 = objc_msgSend_context(self, v21, v22);
-  v25 = objc_msgSend_initWithLocaleIdentifier_dateStyle_timeStyle_format_date_updatePlan_context_(v5, v24, v8, v11, v14, v17, v4, updated, v23);
+  v25 = objc_msgSend_initWithLocaleIdentifier_dateStyle_timeStyle_format_date_updatePlan_context_(v5, v24, v8, v11, v14, v17, dateCopy, updated, v23);
 
   v28 = objc_msgSend_customFormat(self, v26, v27);
   objc_msgSend_setCustomFormat_(v25, v29, v28);
@@ -286,9 +286,9 @@ LABEL_10:
   return v25;
 }
 
-- (id)copyWithNewDateStyle:(int64_t)a3 timeStyle:(int64_t)a4 date:(id)a5
+- (id)copyWithNewDateStyle:(int64_t)style timeStyle:(int64_t)timeStyle date:(id)date
 {
-  v8 = a5;
+  dateCopy = date;
   v13 = objc_msgSend_localeIdentifier(self, v9, v10);
   if (!v13)
   {
@@ -302,20 +302,20 @@ LABEL_10:
   }
 
   v17 = objc_opt_class();
-  v19 = objc_msgSend_newDateFormatWithLocaleIdentifier_dateStyle_timeStyle_(v17, v18, v13, a3, a4);
+  v19 = objc_msgSend_newDateFormatWithLocaleIdentifier_dateStyle_timeStyle_(v17, v18, v13, style, timeStyle);
   v20 = [TSWPDateTimeSmartField alloc];
   updated = objc_msgSend_updatePlan(self, v21, v22);
   v26 = objc_msgSend_context(self, v24, v25);
-  v28 = objc_msgSend_initWithLocaleIdentifier_dateStyle_timeStyle_format_date_updatePlan_context_(v20, v27, v13, a3, a4, v19, v8, updated, v26);
+  v28 = objc_msgSend_initWithLocaleIdentifier_dateStyle_timeStyle_format_date_updatePlan_context_(v20, v27, v13, style, timeStyle, v19, dateCopy, updated, v26);
 
   return v28;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812DC408[150]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812DC408[150]);
 
   if (*(v6 + 40))
   {
@@ -329,7 +329,7 @@ LABEL_10:
 
   v52.receiver = self;
   v52.super_class = TSWPDateTimeSmartField;
-  [(TSWPSmartField *)&v52 loadFromArchive:v7 unarchiver:v4];
+  [(TSWPSmartField *)&v52 loadFromArchive:v7 unarchiver:unarchiverCopy];
   self->_updatePlan = *(v6 + 64);
   self->_needsUpdate = *(v6 + 68);
   self->_incrementsDateByYear = *(v6 + 69);
@@ -453,14 +453,14 @@ LABEL_30:
   v51[2] = sub_276DF2EFC;
   v51[3] = &unk_27A6F46E8;
   v51[4] = self;
-  objc_msgSend_addFinalizeHandler_(v4, v46, v51);
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v46, v51);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_276DF3C4C, off_2812DC408[150]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_276DF3C4C, off_2812DC408[150]);
 
   *(v6 + 16) |= 4u;
   v7 = *(v6 + 40);
@@ -478,7 +478,7 @@ LABEL_30:
 
   v51.receiver = self;
   v51.super_class = TSWPDateTimeSmartField;
-  [(TSWPSmartField *)&v51 saveToArchive:v7 archiver:v4];
+  [(TSWPSmartField *)&v51 saveToArchive:v7 archiver:archiverCopy];
   format = self->_format;
   if (format || (v12 = MEMORY[0x277D81150], objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSWPDateTimeSmartField saveToArchiver:]"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPDateTimeSmartField.mm"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v16, v13, v15, 248, 0, "Unexpected nil _format"), v15, v13, objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18), (format = self->_format) != 0))
   {
@@ -562,11 +562,11 @@ LABEL_30:
   }
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = TSWPDateTimeSmartField;
-  v4 = [(TSWPSmartField *)&v6 copyWithContext:a3];
+  v4 = [(TSWPSmartField *)&v6 copyWithContext:context];
   objc_storeStrong(v4 + 11, self->_format);
   objc_storeStrong(v4 + 12, self->_localeID);
   v4[13] = self->_dateStyle;
@@ -617,29 +617,29 @@ LABEL_30:
   return v23;
 }
 
-- (void)resetLocaleTo:(id)a3
+- (void)resetLocaleTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   v6 = objc_msgSend_autoupdatingCurrentLocale(MEMORY[0x277CBEAF8], v4, v5);
-  isEqual = objc_msgSend_isEqual_(v13, v7, v6);
+  isEqual = objc_msgSend_isEqual_(toCopy, v7, v6);
 
-  v11 = objc_msgSend_localeIdentifier(v13, v9, v10);
+  v11 = objc_msgSend_localeIdentifier(toCopy, v9, v10);
   objc_msgSend_p_setFormat_localeIdentifier_dateStyle_timeStyle_autoLocale_(self, v12, 0, v11, self->_dateStyle, self->_timeStyle, isEqual);
 }
 
-- (void)setFormat:(id)a3 localeIdentifier:(id)a4 dateStyle:(int64_t)a5 timeStyle:(int64_t)a6
+- (void)setFormat:(id)format localeIdentifier:(id)identifier dateStyle:(int64_t)style timeStyle:(int64_t)timeStyle
 {
   self->_customFormat = 0;
   self->_incrementsDateByYear = 0;
-  objc_msgSend_p_setFormat_localeIdentifier_dateStyle_timeStyle_autoLocale_(self, a2, a3, a4, a5, a6, 0);
+  objc_msgSend_p_setFormat_localeIdentifier_dateStyle_timeStyle_autoLocale_(self, a2, format, identifier, style, timeStyle, 0);
 }
 
-- (void)p_setFormat:(id)a3 localeIdentifier:(id)a4 dateStyle:(int64_t)a5 timeStyle:(int64_t)a6 autoLocale:(BOOL)a7
+- (void)p_setFormat:(id)format localeIdentifier:(id)identifier dateStyle:(int64_t)style timeStyle:(int64_t)timeStyle autoLocale:(BOOL)locale
 {
-  v7 = a7;
-  v45 = a3;
-  v13 = a4;
-  if (!(a6 | a5))
+  localeCopy = locale;
+  formatCopy = format;
+  identifierCopy = identifier;
+  if (!(timeStyle | style))
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSWPDateTimeSmartField p_setFormat:localeIdentifier:dateStyle:timeStyle:autoLocale:]");
@@ -647,22 +647,22 @@ LABEL_30:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v18, v15, v17, 354, 0, "One of the date or time styles must be something other than kCFDateFormatterNoStyle");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20);
-    a5 = 3;
+    style = 3;
   }
 
-  objc_msgSend_setDateStyle_(self, v12, a5);
-  objc_msgSend_setTimeStyle_(self, v21, a6);
-  if (v7)
+  objc_msgSend_setDateStyle_(self, v12, style);
+  objc_msgSend_setTimeStyle_(self, v21, timeStyle);
+  if (localeCopy)
   {
     v24 = objc_opt_class();
     v26 = objc_msgSend_newDateFormatWithLocaleIdentifier_dateStyle_timeStyle_(v24, v25, 0, self->_dateStyle, self->_timeStyle);
 
-    v45 = v26;
+    formatCopy = v26;
   }
 
-  if (v13)
+  if (identifierCopy)
   {
-    objc_msgSend_setLocaleIdentifier_(self, v22, v13);
+    objc_msgSend_setLocaleIdentifier_(self, v22, identifierCopy);
   }
 
   v27 = objc_msgSend_localeIdentifier(self, v22, v23);
@@ -679,8 +679,8 @@ LABEL_30:
     objc_msgSend_setLocaleIdentifier_(self, v34, v33);
   }
 
-  v35 = v45;
-  if (v45 || (v36 = objc_opt_class(), (v35 = objc_msgSend_newDateFormatWithLocaleIdentifier_dateStyle_timeStyle_(v36, v37, self->_localeID, self->_dateStyle, self->_timeStyle)) != 0))
+  v35 = formatCopy;
+  if (formatCopy || (v36 = objc_opt_class(), (v35 = objc_msgSend_newDateFormatWithLocaleIdentifier_dateStyle_timeStyle_(v36, v37, self->_localeID, self->_dateStyle, self->_timeStyle)) != 0))
   {
     v46 = v35;
     objc_msgSend_setFormat_(self, v28, v35);

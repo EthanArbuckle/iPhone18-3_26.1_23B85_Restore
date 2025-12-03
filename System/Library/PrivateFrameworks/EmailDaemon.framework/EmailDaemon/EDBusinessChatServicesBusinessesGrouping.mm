@@ -1,9 +1,9 @@
 @interface EDBusinessChatServicesBusinessesGrouping
 + (OS_os_log)log;
-- (EDBusinessChatServicesBusinessesGrouping)initWithBusinessPersistence:(id)a3;
+- (EDBusinessChatServicesBusinessesGrouping)initWithBusinessPersistence:(id)persistence;
 - (id)businessConnectGroupingQueue;
-- (void)_fetchBusinessMetadataForAddresses:(id)a3 progressHandler:(id)a4;
-- (void)startBusinessConnectGroupingWithCancelationToken:(id)a3 progressHandler:(id)a4 completion:(id)a5;
+- (void)_fetchBusinessMetadataForAddresses:(id)addresses progressHandler:(id)handler;
+- (void)startBusinessConnectGroupingWithCancelationToken:(id)token progressHandler:(id)handler completion:(id)completion;
 @end
 
 @implementation EDBusinessChatServicesBusinessesGrouping
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __47__EDBusinessChatServicesBusinessesGrouping_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_15 != -1)
   {
     dispatch_once(&log_onceToken_15, block);
@@ -33,16 +33,16 @@ void __47__EDBusinessChatServicesBusinessesGrouping_log__block_invoke(uint64_t a
   log_log_15 = v1;
 }
 
-- (EDBusinessChatServicesBusinessesGrouping)initWithBusinessPersistence:(id)a3
+- (EDBusinessChatServicesBusinessesGrouping)initWithBusinessPersistence:(id)persistence
 {
-  v5 = a3;
+  persistenceCopy = persistence;
   v9.receiver = self;
   v9.super_class = EDBusinessChatServicesBusinessesGrouping;
   v6 = [(EDBusinessChatServicesBusinessesGrouping *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_businessPersistence, a3);
+    objc_storeStrong(&v6->_businessPersistence, persistence);
     v7->_addressesChecked = 0;
     v7->_addressesToCheck = 0;
   }
@@ -71,24 +71,24 @@ void __72__EDBusinessChatServicesBusinessesGrouping_businessConnectGroupingQueue
   businessConnectGroupingQueue_queue = v1;
 }
 
-- (void)startBusinessConnectGroupingWithCancelationToken:(id)a3 progressHandler:(id)a4 completion:(id)a5
+- (void)startBusinessConnectGroupingWithCancelationToken:(id)token progressHandler:(id)handler completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(EDBusinessChatServicesBusinessesGrouping *)self businessConnectGroupingQueue];
+  tokenCopy = token;
+  handlerCopy = handler;
+  completionCopy = completion;
+  businessConnectGroupingQueue = [(EDBusinessChatServicesBusinessesGrouping *)self businessConnectGroupingQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __120__EDBusinessChatServicesBusinessesGrouping_startBusinessConnectGroupingWithCancelationToken_progressHandler_completion___block_invoke;
   v15[3] = &unk_1E8250C58;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
-  dispatch_async(v11, v15);
+  v16 = tokenCopy;
+  v17 = completionCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = tokenCopy;
+  v14 = completionCopy;
+  dispatch_async(businessConnectGroupingQueue, v15);
 }
 
 void __120__EDBusinessChatServicesBusinessesGrouping_startBusinessConnectGroupingWithCancelationToken_progressHandler_completion___block_invoke(id *a1)
@@ -274,26 +274,26 @@ uint64_t __120__EDBusinessChatServicesBusinessesGrouping_startBusinessConnectGro
   return result;
 }
 
-- (void)_fetchBusinessMetadataForAddresses:(id)a3 progressHandler:(id)a4
+- (void)_fetchBusinessMetadataForAddresses:(id)addresses progressHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDBusinessChatServicesBusinessesGrouping *)self businessConnectGroupingQueue];
-  dispatch_assert_queue_V2(v8);
+  addressesCopy = addresses;
+  handlerCopy = handler;
+  businessConnectGroupingQueue = [(EDBusinessChatServicesBusinessesGrouping *)self businessConnectGroupingQueue];
+  dispatch_assert_queue_V2(businessConnectGroupingQueue);
 
   v9 = dispatch_semaphore_create(0);
-  v10 = [v6 copy];
+  v10 = [addressesCopy copy];
   v11 = +[EDBusinessChatServicesBusinessesGrouping log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 allValues];
+    allValues = [v10 allValues];
     *buf = 138543362;
-    v30 = v12;
+    v30 = allValues;
     _os_log_impl(&dword_1C61EF000, v11, OS_LOG_TYPE_DEFAULT, "Fetching Business Connect metadata for addresses: %{public}@", buf, 0xCu);
   }
 
-  v13 = [(EDBusinessChatServicesBusinessesGrouping *)self businessPersistence];
+  businessPersistence = [(EDBusinessChatServicesBusinessesGrouping *)self businessPersistence];
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __95__EDBusinessChatServicesBusinessesGrouping__fetchBusinessMetadataForAddresses_progressHandler___block_invoke;
@@ -302,10 +302,10 @@ uint64_t __120__EDBusinessChatServicesBusinessesGrouping_startBusinessConnectGro
   v25 = v14;
   v15 = v9;
   v26 = v15;
-  v27 = self;
-  v16 = v7;
+  selfCopy = self;
+  v16 = handlerCopy;
   v28 = v16;
-  [v13 fetchBusinessMetadataForAddresses:v14 completionHandler:&v21];
+  [businessPersistence fetchBusinessMetadataForAddresses:v14 completionHandler:&v21];
 
   v17 = dispatch_time(0, 5000000000);
   if (dispatch_semaphore_wait(v15, v17))
@@ -313,8 +313,8 @@ uint64_t __120__EDBusinessChatServicesBusinessesGrouping_startBusinessConnectGro
     v18 = [EDBusinessChatServicesBusinessesGrouping log:v21];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v14 allValues];
-      [(EDBusinessChatServicesBusinessesGrouping *)v19 _fetchBusinessMetadataForAddresses:buf progressHandler:v18];
+      allValues2 = [v14 allValues];
+      [(EDBusinessChatServicesBusinessesGrouping *)allValues2 _fetchBusinessMetadataForAddresses:buf progressHandler:v18];
     }
   }
 

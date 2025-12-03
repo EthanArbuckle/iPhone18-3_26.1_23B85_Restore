@@ -1,49 +1,49 @@
 @interface SidecarStream
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 - ($DCF20CAD073027CB89FDEFA7A9A33809)nwClientID;
 - (SidecarSession)session;
-- (SidecarStream)initWithCoder:(id)a3;
-- (SidecarStream)initWithIdentifier:(id)a3 rapportStream:(id)a4;
+- (SidecarStream)initWithCoder:(id)coder;
+- (SidecarStream)initWithIdentifier:(id)identifier rapportStream:(id)stream;
 - (id)description;
 - (id)handler;
 - (int64_t)fileDescriptor;
 - (int64_t)transport;
 - (int64_t)type;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)sendOPACK:(id)a3 completion:(id)a4;
-- (void)setHandler:(id)a3;
-- (void)setStatus:(unint64_t)a3;
+- (void)sendOPACK:(id)k completion:(id)completion;
+- (void)setHandler:(id)handler;
+- (void)setStatus:(unint64_t)status;
 @end
 
 @implementation SidecarStream
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [MEMORY[0x277CBEB98] setWithObjects:{@"status", 0}];
-  if ([v5 containsObject:v4])
+  if ([v5 containsObject:keyCopy])
   {
     v6 = 0;
   }
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___SidecarStream;
-    v6 = objc_msgSendSuper2(&v8, sel_automaticallyNotifiesObserversForKey_, v4);
+    v6 = objc_msgSendSuper2(&v8, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *MEMORY[0x277CCA2A0];
-  v9 = a3;
-  validateXPCCoder(self, v9, v4);
+  coderCopy = coder;
+  validateXPCCoder(self, coderCopy, v4);
   v5 = atomic_load(&self->_activated);
   if (v5)
   {
@@ -53,27 +53,27 @@
     [v6 raise:v4 format:{@"cannot encode activated %@", v8}];
   }
 
-  encodeObject(v9, @"id", self->_identifier);
-  encodeObject(v9, @"rp", self->_rapportStream);
+  encodeObject(coderCopy, @"id", self->_identifier);
+  encodeObject(coderCopy, @"rp", self->_rapportStream);
 }
 
-- (SidecarStream)initWithCoder:(id)a3
+- (SidecarStream)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = SidecarStream;
   v5 = [(SidecarStream *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    validateXPCCoder(v5, v4, *MEMORY[0x277CCA2A8]);
+    validateXPCCoder(v5, coderCopy, *MEMORY[0x277CCA2A8]);
     v7 = objc_opt_class();
-    v8 = decodeObject(v4, @"id", v7);
+    v8 = decodeObject(coderCopy, @"id", v7);
     identifier = v6->_identifier;
     v6->_identifier = v8;
 
     v10 = NSClassFromString(&cfstr_Rpstreamsessio.isa);
-    v11 = decodeObject(v4, @"rp", v10);
+    v11 = decodeObject(coderCopy, @"rp", v10);
     rapportStream = v6->_rapportStream;
     v6->_rapportStream = v11;
   }
@@ -81,11 +81,11 @@
   return v6;
 }
 
-- (void)sendOPACK:(id)a3 completion:(id)a4
+- (void)sendOPACK:(id)k completion:(id)completion
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  kCopy = k;
+  completionCopy = completion;
   if (self->_rapportStream)
   {
     v8 = atomic_load(&self->_activated);
@@ -98,37 +98,37 @@
     }
 
     v19 = 0;
-    v12 = SidecarOPACKEncode(v6, &v19);
+    v12 = SidecarOPACKEncode(kCopy, &v19);
     v13 = v19;
     if (v13)
     {
-      v7[2](v7, v13);
+      completionCopy[2](completionCopy, v13);
     }
 
     else
     {
       rapportStream = self->_rapportStream;
-      v16 = [(SidecarStream *)self identifier];
+      identifier = [(SidecarStream *)self identifier];
       v20 = &unk_2877BFCF8;
       v21[0] = v12;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-      [(RPStreamSession *)rapportStream sendEventID:v16 event:v17 options:0 completion:v7];
+      [(RPStreamSession *)rapportStream sendEventID:identifier event:v17 options:0 completion:completionCopy];
     }
   }
 
   else
   {
     v14 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"SidecarErrorDomain" code:-102 userInfo:0];
-    v7[2](v7, v14);
+    completionCopy[2](completionCopy, v14);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setHandler:(id)a3
+- (void)setHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  handlerCopy = handler;
+  v5 = [handlerCopy copy];
   handler = self->_handler;
   self->_handler = v5;
 
@@ -136,9 +136,9 @@
   v9[1] = 3221225472;
   v9[2] = __28__SidecarStream_setHandler___block_invoke;
   v9[3] = &unk_279BC3740;
-  v10 = v4;
+  v10 = handlerCopy;
   rapportStream = self->_rapportStream;
-  v8 = v4;
+  v8 = handlerCopy;
   [(RPStreamSession *)rapportStream setReceivedEventHandler:v9];
 }
 
@@ -232,9 +232,9 @@ void __27__SidecarStream_invalidate__block_invoke(uint64_t a1)
   [v3 relaySession:v2 closeStream:*(a1 + 40)];
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if (atomic_exchange(&self->_activated, 1u))
   {
     v6 = MEMORY[0x277CBEAD8];
@@ -248,10 +248,10 @@ void __27__SidecarStream_invalidate__block_invoke(uint64_t a1)
   v11[1] = 3221225472;
   v11[2] = __40__SidecarStream_activateWithCompletion___block_invoke;
   v11[3] = &unk_279BC36F0;
-  v12 = v5;
+  v12 = completionCopy;
   v13 = a2;
   v11[4] = self;
-  v10 = v5;
+  v10 = completionCopy;
   [(RPStreamSession *)rapportStream activateWithCompletion:v11];
 }
 
@@ -268,8 +268,8 @@ void __40__SidecarStream_activateWithCompletion___block_invoke(void *a1, void *a
 {
   v5 = 0;
   v6 = 0;
-  v2 = [(RPStreamSession *)self->_rapportStream nwClientID];
-  [v2 getUUIDBytes:&v5];
+  nwClientID = [(RPStreamSession *)self->_rapportStream nwClientID];
+  [nwClientID getUUIDBytes:&v5];
 
   v3 = v5;
   v4 = v6;
@@ -330,34 +330,34 @@ void __40__SidecarStream_activateWithCompletion___block_invoke(void *a1, void *a
 
 - (int64_t)transport
 {
-  v2 = [(SidecarStream *)self session];
-  v3 = v2;
-  if (v2)
+  session = [(SidecarStream *)self session];
+  v3 = session;
+  if (session)
   {
-    v4 = [v2 transport];
+    transport = [session transport];
   }
 
   else
   {
-    v4 = 0;
+    transport = 0;
   }
 
-  return v4;
+  return transport;
 }
 
-- (void)setStatus:(unint64_t)a3
+- (void)setStatus:(unint64_t)status
 {
-  if ([(SidecarStream *)self status]!= a3)
+  if ([(SidecarStream *)self status]!= status)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[2] = __27__SidecarStream_setStatus___block_invoke;
     v6[3] = &unk_279BC36C8;
     v6[4] = self;
-    v6[5] = a3;
-    v5 = self;
-    [(SidecarStream *)v5 willChangeValueForKey:@"status", v6[0], 3221225472];
+    v6[5] = status;
+    selfCopy = self;
+    [(SidecarStream *)selfCopy willChangeValueForKey:@"status", v6[0], 3221225472];
     __27__SidecarStream_setStatus___block_invoke(v6);
-    [(SidecarStream *)v5 didChangeValueForKey:@"status"];
+    [(SidecarStream *)selfCopy didChangeValueForKey:@"status"];
   }
 }
 
@@ -400,11 +400,11 @@ void __40__SidecarStream_activateWithCompletion___block_invoke(void *a1, void *a
   [(SidecarStream *)&v3 dealloc];
 }
 
-- (SidecarStream)initWithIdentifier:(id)a3 rapportStream:(id)a4
+- (SidecarStream)initWithIdentifier:(id)identifier rapportStream:(id)stream
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  streamCopy = stream;
+  if (!identifierCopy)
   {
     v14 = MEMORY[0x277CCACA8];
     v15 = NSStringFromSelector(a2);
@@ -414,15 +414,15 @@ void __40__SidecarStream_activateWithCompletion___block_invoke(void *a1, void *a
     objc_exception_throw(v17);
   }
 
-  v10 = v9;
+  v10 = streamCopy;
   v18.receiver = self;
   v18.super_class = SidecarStream;
   v11 = [(SidecarStream *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    objc_storeStrong(&v12->_rapportStream, a4);
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v12->_rapportStream, stream);
   }
 
   return v12;

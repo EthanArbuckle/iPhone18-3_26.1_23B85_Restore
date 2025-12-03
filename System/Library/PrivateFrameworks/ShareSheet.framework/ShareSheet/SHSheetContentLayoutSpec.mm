@@ -1,27 +1,27 @@
 @interface SHSheetContentLayoutSpec
 - (BOOL)isAccessibilityContentSize;
-- (BOOL)shouldUseNarrowLayoutForHeroActionsWithContainerWidth:(double)a3;
+- (BOOL)shouldUseNarrowLayoutForHeroActionsWithContainerWidth:(double)width;
 - (CGSize)portraitWindowSize;
 - (NSDirectionalEdgeInsets)linkViewHeaderInsets;
 - (NSDirectionalEdgeInsets)topContentSectionHeaderInsets;
-- (SHSheetContentLayoutSpec)initWithTraitCollection:(id)a3 tintColor:(id)a4 deviceClass:(unint64_t)a5 portraitWindowSize:(CGSize)a6;
+- (SHSheetContentLayoutSpec)initWithTraitCollection:(id)collection tintColor:(id)color deviceClass:(unint64_t)class portraitWindowSize:(CGSize)size;
 - (UIColor)editTintColor;
 - (UIImageSymbolConfiguration)activityImageSymbolConfiguration;
 - (UIImageSymbolConfiguration)horizontalActivityImageSymbolConfiguration;
-- (double)horizontalCellWidthForContentWidth:(double)a3 sizeOffset:(double)a4;
+- (double)horizontalCellWidthForContentWidth:(double)width sizeOffset:(double)offset;
 - (id)_accessibilityImageSymbolConfiguration;
-- (id)actionsLayoutSectionConfigurationWithEnvironment:(id)a3;
-- (int64_t)numberOfHorizontalItemsPerGroupForContentWidth:(double)a3;
+- (id)actionsLayoutSectionConfigurationWithEnvironment:(id)environment;
+- (int64_t)numberOfHorizontalItemsPerGroupForContentWidth:(double)width;
 @end
 
 @implementation SHSheetContentLayoutSpec
 
-- (SHSheetContentLayoutSpec)initWithTraitCollection:(id)a3 tintColor:(id)a4 deviceClass:(unint64_t)a5 portraitWindowSize:(CGSize)a6
+- (SHSheetContentLayoutSpec)initWithTraitCollection:(id)collection tintColor:(id)color deviceClass:(unint64_t)class portraitWindowSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v12 = a3;
-  v13 = a4;
+  height = size.height;
+  width = size.width;
+  collectionCopy = collection;
+  colorCopy = color;
   v33.receiver = self;
   v33.super_class = SHSheetContentLayoutSpec;
   v14 = [(SHSheetContentLayoutSpec *)&v33 init];
@@ -31,14 +31,14 @@
     goto LABEL_33;
   }
 
-  objc_storeStrong(&v14->_traitCollection, a3);
-  v15->_deviceClass = a5;
-  objc_storeStrong(&v15->_tintColor, a4);
+  objc_storeStrong(&v14->_traitCollection, collection);
+  v15->_deviceClass = class;
+  objc_storeStrong(&v15->_tintColor, color);
   v15->_portraitWindowSize.width = width;
   v15->_portraitWindowSize.height = height;
   v15->_estimatedHeaderHeight = 10.0;
-  v16 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v16 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v15->_estimatedFooterHeight = 1.0 / v17;
 
   v15->_customViewVerticalInset = 12.0;
@@ -47,17 +47,17 @@
   *&v15->_estimatedActionFooterHeight = xmmword_18B433C50;
   v15->_horizontalCellWidth = 78.0;
   *&v15->_horizontalSectionBottomInset = xmmword_18B433C60;
-  v18 = [MEMORY[0x1E69DC888] separatorColor];
+  separatorColor = [MEMORY[0x1E69DC888] separatorColor];
   footerBackgroundColor = v15->_footerBackgroundColor;
-  v15->_footerBackgroundColor = v18;
+  v15->_footerBackgroundColor = separatorColor;
 
-  if (a5 <= 5)
+  if (class <= 5)
   {
-    if (a5 <= 3)
+    if (class <= 3)
     {
-      if (a5 != 1)
+      if (class != 1)
       {
-        if (a5 == 3)
+        if (class == 3)
         {
           *&v15->_customViewSectionHeight = xmmword_18B433C70;
         }
@@ -69,7 +69,7 @@
       goto LABEL_20;
     }
 
-    if (a5 == 4)
+    if (class == 4)
     {
       v15->_customViewSectionHeight = 320.0;
       v15->_peopleIconWidth = 64.0;
@@ -85,9 +85,9 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (a5 <= 7)
+  if (class <= 7)
   {
-    if (a5 != 6)
+    if (class != 6)
     {
       v21 = 0x406BE00000000000;
 LABEL_19:
@@ -101,7 +101,7 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  switch(a5)
+  switch(class)
   {
     case 8uLL:
       v21 = 0x4071800000000000;
@@ -140,8 +140,8 @@ LABEL_27:
     *&v15->_linkViewHeaderInsets.top = _Q0;
     *&v15->_linkViewHeaderInsets.bottom = _Q0;
     v15->_horizontalCellWidth = 82.0;
-    v27 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v27 userInterfaceIdiom] == 1)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom] == 1)
     {
       width = _ShareSheetPopoverSize();
     }
@@ -171,18 +171,18 @@ LABEL_33:
 
 - (BOOL)isAccessibilityContentSize
 {
-  v2 = [(SHSheetContentLayoutSpec *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  traitCollection = [(SHSheetContentLayoutSpec *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
 
 - (UIColor)editTintColor
 {
-  v3 = [(SHSheetContentLayoutSpec *)self tintColor];
+  tintColor = [(SHSheetContentLayoutSpec *)self tintColor];
 
-  if (v3)
+  if (tintColor)
   {
     [(SHSheetContentLayoutSpec *)self tintColor];
   }
@@ -196,13 +196,13 @@ LABEL_33:
   return v4;
 }
 
-- (double)horizontalCellWidthForContentWidth:(double)a3 sizeOffset:(double)a4
+- (double)horizontalCellWidthForContentWidth:(double)width sizeOffset:(double)offset
 {
   [(SHSheetContentLayoutSpec *)self horizontalCellWidth];
   v8 = v7;
-  v9 = [(SHSheetContentLayoutSpec *)self isAccessibilityContentSize];
-  result = -(a4 - a3 * 0.666666667);
-  if (!v9)
+  isAccessibilityContentSize = [(SHSheetContentLayoutSpec *)self isAccessibilityContentSize];
+  result = -(offset - width * 0.666666667);
+  if (!isAccessibilityContentSize)
   {
     return v8;
   }
@@ -210,7 +210,7 @@ LABEL_33:
   return result;
 }
 
-- (int64_t)numberOfHorizontalItemsPerGroupForContentWidth:(double)a3
+- (int64_t)numberOfHorizontalItemsPerGroupForContentWidth:(double)width
 {
   v5 = _ShareSheetPlatformPrefersPopover();
   if ([(SHSheetContentLayoutSpec *)self isAccessibilityContentSize])
@@ -218,17 +218,17 @@ LABEL_33:
     return 1;
   }
 
-  if (a3 == 540.0 && v5)
+  if (width == 540.0 && v5)
   {
     return 6;
   }
 
-  if (a3 <= 320.0)
+  if (width <= 320.0)
   {
     return 3;
   }
 
-  if (a3 >= 568.0)
+  if (width >= 568.0)
   {
     return 6;
   }
@@ -285,12 +285,12 @@ LABEL_33:
   return v9;
 }
 
-- (id)actionsLayoutSectionConfigurationWithEnvironment:(id)a3
+- (id)actionsLayoutSectionConfigurationWithEnvironment:(id)environment
 {
   v3 = MEMORY[0x1E69DC938];
-  v4 = a3;
-  v5 = [v3 currentDevice];
-  if ([v5 userInterfaceIdiom])
+  environmentCopy = environment;
+  currentDevice = [v3 currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
     if (_ShareSheetPlatformPrefersPopover())
     {
@@ -308,7 +308,7 @@ LABEL_33:
     v6 = 2;
   }
 
-  v7 = [objc_alloc(MEMORY[0x1E69DD3F8]) initWithAppearanceStyle:v6 layoutEnvironment:v4];
+  v7 = [objc_alloc(MEMORY[0x1E69DD3F8]) initWithAppearanceStyle:v6 layoutEnvironment:environmentCopy];
   if ((_ShareSheetSolariumEnabled() & 1) == 0)
   {
     [v7 setSeparatorInset:{0.0, 0.0, 0.0, 0.0}];
@@ -319,13 +319,13 @@ LABEL_33:
   return v7;
 }
 
-- (BOOL)shouldUseNarrowLayoutForHeroActionsWithContainerWidth:(double)a3
+- (BOOL)shouldUseNarrowLayoutForHeroActionsWithContainerWidth:(double)width
 {
-  v4 = [(SHSheetContentLayoutSpec *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  v6 = UIContentSizeCategoryCompareToCategory(v5, *MEMORY[0x1E69DDC58]);
+  traitCollection = [(SHSheetContentLayoutSpec *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v6 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC58]);
 
-  return a3 <= 320.0 || v6 != NSOrderedAscending;
+  return width <= 320.0 || v6 != NSOrderedAscending;
 }
 
 - (CGSize)portraitWindowSize

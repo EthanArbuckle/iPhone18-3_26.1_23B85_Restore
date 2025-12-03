@@ -1,18 +1,18 @@
 @interface PIDepthEffectNode
-- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)a3;
-- (PIDepthEffectNode)initWithInput:(id)a3 blurMap:(id)a4 settings:(id)a5;
-- (PIDepthEffectNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)data;
+- (PIDepthEffectNode)initWithInput:(id)input blurMap:(id)map settings:(id)settings;
+- (PIDepthEffectNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation PIDepthEffectNode
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v91 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  cacheCopy = cache;
+  stateCopy = state;
+  if (!error)
   {
     v61 = NUAssertLogger_16450();
     if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
@@ -34,8 +34,8 @@
         v69 = dispatch_get_specific(*v63);
         v70 = MEMORY[0x1E696AF00];
         v71 = v69;
-        v72 = [v70 callStackSymbols];
-        v73 = [v72 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v70 callStackSymbols];
+        v73 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v88 = v69;
         v89 = 2114;
@@ -46,8 +46,8 @@
 
     else if (v66)
     {
-      v67 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v68 = [v67 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v68 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v88 = v68;
       _os_log_error_impl(&dword_1C7694000, v65, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -56,35 +56,35 @@
     _NUAssertFailHandler();
   }
 
-  v10 = v9;
-  if ([v9 evaluationMode] != 1)
+  v10 = stateCopy;
+  if ([stateCopy evaluationMode] != 1)
   {
     [MEMORY[0x1E69B3A48] unsupportedError:@"Depth Effect only applies to images" object:0];
-    *a5 = v15 = 0;
+    *error = v15 = 0;
     goto LABEL_40;
   }
 
-  v11 = [(PIPortraitNode *)self input];
-  v12 = [v11 imageProperties:a5];
+  input = [(PIPortraitNode *)self input];
+  v12 = [input imageProperties:error];
 
   if (v12)
   {
-    v13 = [v12 flexRangeProperties];
-    if (v13)
+    flexRangeProperties = [v12 flexRangeProperties];
+    if (flexRangeProperties)
     {
       v14 = 1;
     }
 
     else
     {
-      v16 = [v12 meteorPlusGainMapVersion];
-      v14 = [v16 major] > 1;
+      meteorPlusGainMapVersion = [v12 meteorPlusGainMapVersion];
+      v14 = [meteorPlusGainMapVersion major] > 1;
     }
 
     if ([v10 auxiliaryImageType] == 1 || objc_msgSend(v10, "auxiliaryImageType") == 7 && v14)
     {
-      v17 = [(PIPortraitNode *)self input];
-      v18 = [v17 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+      input2 = [(PIPortraitNode *)self input];
+      v18 = [input2 nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
 
       if (!v18)
       {
@@ -97,19 +97,19 @@ LABEL_38:
       v80 = v14;
       v19 = [v10 copy];
       [v19 setAuxiliaryImageType:1];
-      v20 = [(PIPortraitNode *)self blurMap];
+      blurMap = [(PIPortraitNode *)self blurMap];
       v86 = 0;
-      v21 = [v20 nodeByReplayingAgainstCache:v8 pipelineState:v19 error:&v86];
+      v21 = [blurMap nodeByReplayingAgainstCache:cacheCopy pipelineState:v19 error:&v86];
       v22 = v86;
 
       if (!v21)
       {
         v31 = MEMORY[0x1E69B3A48];
-        v32 = [(PIPortraitNode *)self blurMap];
+        blurMap2 = [(PIPortraitNode *)self blurMap];
         v33 = v31;
-        v34 = v32;
-        [v33 errorWithCode:1 reason:@"Failed to evaluate blur map" object:v32 underlyingError:v22];
-        *a5 = v15 = 0;
+        v34 = blurMap2;
+        [v33 errorWithCode:1 reason:@"Failed to evaluate blur map" object:blurMap2 underlyingError:v22];
+        *error = v15 = 0;
 LABEL_37:
 
         goto LABEL_38;
@@ -126,17 +126,17 @@ LABEL_37:
         [v23 size];
         v24 = NUScaleToFillSizeInSize();
         [v19 setScale:{v24, v25}];
-        v26 = [(PIPortraitNode *)self input];
+        input3 = [(PIPortraitNode *)self input];
         v85 = 0;
-        v27 = [v26 nodeByReplayingAgainstCache:v8 pipelineState:v19 error:&v85];
+        v27 = [input3 nodeByReplayingAgainstCache:cacheCopy pipelineState:v19 error:&v85];
         v28 = v85;
 
         if (!v27)
         {
           v56 = MEMORY[0x1E69B3A48];
-          v57 = [(PIPortraitNode *)self input];
-          [v56 errorWithCode:1 reason:@"Failed to evaluate gain map" object:v57 underlyingError:v28];
-          *a5 = v15 = 0;
+          input4 = [(PIPortraitNode *)self input];
+          [v56 errorWithCode:1 reason:@"Failed to evaluate gain map" object:input4 underlyingError:v28];
+          *error = v15 = 0;
           v58 = v23;
           v22 = v28;
           v34 = v58;
@@ -171,23 +171,23 @@ LABEL_36:
         [v36 size];
         v37 = NUScaleToFillSizeInSize();
         [v81 setScale:{v37, v38}];
-        v39 = [(PIPortraitNode *)self input];
+        input5 = [(PIPortraitNode *)self input];
         v84 = 0;
-        v36 = [v39 nodeByReplayingAgainstCache:v8 pipelineState:v81 error:&v84];
+        v36 = [input5 nodeByReplayingAgainstCache:cacheCopy pipelineState:v81 error:&v84];
         v40 = v84;
 
         if (!v36)
         {
           v59 = MEMORY[0x1E69B3A48];
-          v55 = [(PIPortraitNode *)self input];
-          [v59 errorWithCode:1 reason:@"Failed to evaluate portrait effect matte" object:v55 underlyingError:v40];
-          *a5 = v15 = 0;
+          input6 = [(PIPortraitNode *)self input];
+          [v59 errorWithCode:1 reason:@"Failed to evaluate portrait effect matte" object:input6 underlyingError:v40];
+          *error = v15 = 0;
           v22 = v40;
 LABEL_35:
 
           v21 = v82;
           v34 = v77;
-          v57 = v78;
+          input4 = v78;
           goto LABEL_36;
         }
 
@@ -202,64 +202,64 @@ LABEL_35:
 
       v75 = v36;
       [v35 setObject:v36 forKeyedSubscript:@"inputMatte"];
-      v41 = [MEMORY[0x1E695DF90] dictionary];
-      v42 = [(NURenderNode *)self settings];
-      v43 = [v42 objectForKeyedSubscript:@"depthInfo"];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      settings = [(NURenderNode *)self settings];
+      v43 = [settings objectForKeyedSubscript:@"depthInfo"];
 
       v79 = v43;
       v44 = [v43 objectForKeyedSubscript:@"lumaNoiseScale"];
-      [v41 setObject:v44 forKeyedSubscript:@"inputLumaNoiseScale"];
+      [dictionary setObject:v44 forKeyedSubscript:@"inputLumaNoiseScale"];
 
       v45 = MEMORY[0x1E696AD98];
       [v10 scale];
       NUScaleToDouble();
       v46 = [v45 numberWithDouble:?];
-      [v41 setObject:v46 forKeyedSubscript:@"inputScale"];
+      [dictionary setObject:v46 forKeyedSubscript:@"inputScale"];
 
       v74 = [v12 auxiliaryImagePropertiesForType:2];
-      [v41 setObject:objc_msgSend(v74 forKeyedSubscript:{"auxiliaryDataInfoMetadata"), @"inputDepthMetadata"}];
+      [dictionary setObject:objc_msgSend(v74 forKeyedSubscript:{"auxiliaryDataInfoMetadata"), @"inputDepthMetadata"}];
       v47 = [v12 auxiliaryImagePropertiesForType:7];
-      [v41 setObject:objc_msgSend(v47 forKeyedSubscript:{"auxiliaryDataInfoMetadata"), @"inputGainMapMetadata"}];
-      v48 = [v47 auxiliaryImageTypeCGIdentifier];
-      LODWORD(v43) = [v48 isEqualToString:*MEMORY[0x1E696D280]];
+      [dictionary setObject:objc_msgSend(v47 forKeyedSubscript:{"auxiliaryDataInfoMetadata"), @"inputGainMapMetadata"}];
+      auxiliaryImageTypeCGIdentifier = [v47 auxiliaryImageTypeCGIdentifier];
+      LODWORD(v43) = [auxiliaryImageTypeCGIdentifier isEqualToString:*MEMORY[0x1E696D280]];
 
       if (v43)
       {
-        [v41 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"inputGainMapIsLinear"];
-        [v41 setObject:objc_msgSend(v47 forKeyedSubscript:{"compatibilityMetadata"), @"inputGainMapMetadata"}];
+        [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"inputGainMapIsLinear"];
+        [dictionary setObject:objc_msgSend(v47 forKeyedSubscript:{"compatibilityMetadata"), @"inputGainMapMetadata"}];
       }
 
       v49 = [v79 objectForKeyedSubscript:@"shape"];
-      [v41 setObject:v49 forKeyedSubscript:@"inputShape"];
+      [dictionary setObject:v49 forKeyedSubscript:@"inputShape"];
 
-      v50 = [(NURenderNode *)self settings];
-      v51 = [v50 objectForKeyedSubscript:@"aperture"];
-      [v41 setObject:v51 forKeyedSubscript:@"inputAperture"];
+      settings2 = [(NURenderNode *)self settings];
+      v51 = [settings2 objectForKeyedSubscript:@"aperture"];
+      [dictionary setObject:v51 forKeyedSubscript:@"inputAperture"];
 
-      v52 = [(NURenderNode *)self settings];
-      v53 = [v52 objectForKeyedSubscript:@"portraitEffect"];
+      settings3 = [(NURenderNode *)self settings];
+      v53 = [settings3 objectForKeyedSubscript:@"portraitEffect"];
 
       if (v53 && ([objc_opt_class() isPortraitStageEffect:v53] & 1) != 0 || objc_msgSend(v10, "auxiliaryImageType") == 7)
       {
-        [v41 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"inputBestHairQuality"];
+        [dictionary setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"inputBestHairQuality"];
       }
 
       if (v80)
       {
-        [v41 setObject:&unk_1F471EDA8 forKeyedSubscript:@"__gainMapMode"];
+        [dictionary setObject:&unk_1F471EDA8 forKeyedSubscript:@"__gainMapMode"];
       }
 
-      v54 = [objc_alloc(MEMORY[0x1E69B3A70]) initWithFilterName:@"PIDepthEffectFilter" settings:v41 inputs:v35];
-      v15 = [v54 resolvedNodeWithCachedInputs:v35 cache:v8 pipelineState:v10 error:a5];
+      v54 = [objc_alloc(MEMORY[0x1E69B3A70]) initWithFilterName:@"PIDepthEffectFilter" settings:dictionary inputs:v35];
+      v15 = [v54 resolvedNodeWithCachedInputs:v35 cache:cacheCopy pipelineState:v10 error:error];
 
-      v55 = v75;
+      input6 = v75;
       v18 = v76;
       v22 = v83;
       goto LABEL_35;
     }
 
-    v30 = [(PIPortraitNode *)self input];
-    v15 = [v30 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+    input7 = [(PIPortraitNode *)self input];
+    v15 = [input7 nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
   }
 
   else
@@ -274,12 +274,12 @@ LABEL_40:
   return v15;
 }
 
-- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)a3
+- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)data
 {
   v5.receiver = self;
   v5.super_class = PIDepthEffectNode;
   result = [(PIPortraitNode *)&v5 canPropagateOriginalAuxiliaryData:?];
-  if (a3 == 7)
+  if (data == 7)
   {
     return 0;
   }
@@ -287,13 +287,13 @@ LABEL_40:
   return result;
 }
 
-- (PIDepthEffectNode)initWithInput:(id)a3 blurMap:(id)a4 settings:(id)a5
+- (PIDepthEffectNode)initWithInput:(id)input blurMap:(id)map settings:(id)settings
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  inputCopy = input;
+  mapCopy = map;
+  settingsCopy = settings;
+  if (!inputCopy)
   {
     v15 = NUAssertLogger_16450();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -304,7 +304,7 @@ LABEL_40:
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v17 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v19 = NUAssertLogger_16450();
     v20 = os_log_type_enabled(v19, OS_LOG_TYPE_ERROR);
@@ -312,11 +312,11 @@ LABEL_40:
     {
       if (v20)
       {
-        v28 = dispatch_get_specific(*v17);
+        v28 = dispatch_get_specific(*callStackSymbols);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v17 = [v29 callStackSymbols];
-        v31 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v41 = v28;
         v42 = 2114;
@@ -327,10 +327,10 @@ LABEL_40:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v41 = v17;
+      v41 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -338,7 +338,7 @@ LABEL_40:
     goto LABEL_17;
   }
 
-  if (!v9)
+  if (!mapCopy)
   {
     v22 = NUAssertLogger_16450();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -349,7 +349,7 @@ LABEL_40:
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v17 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v24 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v19 = NUAssertLogger_16450();
     v25 = os_log_type_enabled(v19, OS_LOG_TYPE_ERROR);
@@ -357,8 +357,8 @@ LABEL_40:
     {
       if (v25)
       {
-        v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v27 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v41 = v27;
         _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -370,11 +370,11 @@ LABEL_40:
 LABEL_17:
     if (v25)
     {
-      v32 = dispatch_get_specific(*v17);
+      v32 = dispatch_get_specific(*callStackSymbols);
       v33 = MEMORY[0x1E696AF00];
       v34 = v32;
-      v35 = [v33 callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v33 callStackSymbols];
+      v36 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v41 = v32;
       v42 = 2114;
@@ -387,11 +387,11 @@ LABEL_19:
     _NUAssertFailHandler();
   }
 
-  v11 = v10;
+  v11 = settingsCopy;
   v38[0] = @"inputImage";
   v38[1] = @"inputBlurMap";
-  v39[0] = v8;
-  v39[1] = v9;
+  v39[0] = inputCopy;
+  v39[1] = mapCopy;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:2];
   v37.receiver = self;
   v37.super_class = PIDepthEffectNode;
@@ -400,11 +400,11 @@ LABEL_19:
   return v13;
 }
 
-- (PIDepthEffectNode)initWithSettings:(id)a3 inputs:(id)a4
+- (PIDepthEffectNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   v8 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -443,8 +443,8 @@ LABEL_11:
           v25 = MEMORY[0x1E696AF00];
           v26 = specific;
           v27 = v23;
-          v28 = [v25 callStackSymbols];
-          v29 = [v28 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v25 callStackSymbols];
+          v29 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v32 = specific;
           v33 = 2114;
@@ -471,8 +471,8 @@ LABEL_11:
     {
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v19 callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v22;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

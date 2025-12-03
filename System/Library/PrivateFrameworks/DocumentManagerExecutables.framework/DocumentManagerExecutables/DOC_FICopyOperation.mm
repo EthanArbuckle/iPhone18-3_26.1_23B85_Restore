@@ -11,7 +11,7 @@
 - (void)schedule
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.isa) + 0xC8);
-  v5 = self;
+  selfCopy = self;
   v3 = v2();
   if (v3)
   {
@@ -32,7 +32,7 @@
     v3 = *((*MEMORY[0x277D85000] & self->super.isa) + 0x240);
   }
 
-  v4 = self;
+  selfCopy = self;
   v5 = v3();
   v7 = v6;
 
@@ -51,7 +51,7 @@
 
 - (id)operationForRedoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOC_FICopyOperation.operationForRedoing()();
 
   return v3;
@@ -59,7 +59,7 @@
 
 - (id)operationForUndoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOC_FICopyOperation.operationForUndoing()();
 
   return v3;

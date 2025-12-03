@@ -8,10 +8,10 @@
 - (id)ak_SHA256Data
 {
   v10 = *MEMORY[0x1E69E9840];
-  v7 = a1;
+  selfCopy = self;
   v6[1] = a2;
-  v2 = a1;
-  if (CC_SHA256([a1 bytes], objc_msgSend(v7, "length"), md))
+  selfCopy2 = self;
+  if (CC_SHA256([self bytes], objc_msgSend(selfCopy, "length"), md))
   {
     v6[0] = [MEMORY[0x1E695DEF0] dataWithBytes:md length:32];
     v8 = MEMORY[0x1E69E5928](v6[0]);
@@ -32,7 +32,7 @@
 + (id)ak_dataWithBase64UrlEncodedString:()AuthKit
 {
   v11 = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -49,12 +49,12 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v6 = [v8 aaf_toBase64DecodedData];
+  aaf_toBase64DecodedData = [v8 aaf_toBase64DecodedData];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 
-  return v6;
+  return aaf_toBase64DecodedData;
 }
 
 @end

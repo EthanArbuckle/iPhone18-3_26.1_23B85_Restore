@@ -1,15 +1,15 @@
 @interface ICQMLProtocolParser
-+ (BOOL)shouldCallMlDaemonForFetchOfferStub:(id)a3;
-+ (BOOL)shouldCallMlDaemonForPushNotification:(id)a3;
-+ (id)parseMaxDelaySecsFromFetchOffersResponse:(id)a3;
-+ (id)parseMaxDelaySecsFromPushNotification:(id)a3;
++ (BOOL)shouldCallMlDaemonForFetchOfferStub:(id)stub;
++ (BOOL)shouldCallMlDaemonForPushNotification:(id)notification;
++ (id)parseMaxDelaySecsFromFetchOffersResponse:(id)response;
++ (id)parseMaxDelaySecsFromPushNotification:(id)notification;
 @end
 
 @implementation ICQMLProtocolParser
 
-+ (BOOL)shouldCallMlDaemonForPushNotification:(id)a3
++ (BOOL)shouldCallMlDaemonForPushNotification:(id)notification
 {
-  v3 = [a3 objectForKey:@"callSubD"];
+  v3 = [notification objectForKey:@"callSubD"];
   if (v3)
   {
     objc_opt_class();
@@ -20,9 +20,9 @@
       v6 = objc_opt_class();
       if (v6 == objc_opt_class())
       {
-        v8 = [v4 BOOLValue];
+        bOOLValue = [v4 BOOLValue];
 
-        if (v8)
+        if (bOOLValue)
         {
           v9 = _ICQGetLogSystem();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -60,12 +60,12 @@ LABEL_14:
   return v7;
 }
 
-+ (BOOL)shouldCallMlDaemonForFetchOfferStub:(id)a3
++ (BOOL)shouldCallMlDaemonForFetchOfferStub:(id)stub
 {
-  v4 = [a3 objectForKey:@"subdContext"];
+  v4 = [stub objectForKey:@"subdContext"];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [a1 shouldCallMlDaemonForPushNotification:v4];
+    v5 = [self shouldCallMlDaemonForPushNotification:v4];
   }
 
   else
@@ -76,9 +76,9 @@ LABEL_14:
   return v5;
 }
 
-+ (id)parseMaxDelaySecsFromPushNotification:(id)a3
++ (id)parseMaxDelaySecsFromPushNotification:(id)notification
 {
-  v3 = [a3 objectForKey:@"maxDelayInSecs"];
+  v3 = [notification objectForKey:@"maxDelayInSecs"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v4 = v3;
@@ -92,12 +92,12 @@ LABEL_14:
   return v4;
 }
 
-+ (id)parseMaxDelaySecsFromFetchOffersResponse:(id)a3
++ (id)parseMaxDelaySecsFromFetchOffersResponse:(id)response
 {
-  v4 = [a3 objectForKey:@"subdContext"];
+  v4 = [response objectForKey:@"subdContext"];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [a1 parseMaxDelaySecsFromPushNotification:v4];
+    v5 = [self parseMaxDelaySecsFromPushNotification:v4];
   }
 
   else

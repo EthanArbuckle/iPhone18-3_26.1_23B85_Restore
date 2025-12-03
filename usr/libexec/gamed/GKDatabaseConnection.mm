@@ -1,29 +1,29 @@
 @interface GKDatabaseConnection
-+ (GKDatabaseConnection)connectionWithDatabasePath:(id)a3;
-- (GKDatabaseConnection)initWithDatabasePath:(id)a3;
-- (int)getStatement:(sqlite3_stmt *)a3 forSQL:(id)a4;
++ (GKDatabaseConnection)connectionWithDatabasePath:(id)path;
+- (GKDatabaseConnection)initWithDatabasePath:(id)path;
+- (int)getStatement:(sqlite3_stmt *)statement forSQL:(id)l;
 - (void)checkAndOpenDatabase;
 - (void)close;
 - (void)dealloc;
 - (void)open;
-- (void)performAsync:(id)a3;
-- (void)performAsyncTransaction:(id)a3 handler:(id)a4;
-- (void)performSync:(id)a3;
+- (void)performAsync:(id)async;
+- (void)performAsyncTransaction:(id)transaction handler:(id)handler;
+- (void)performSync:(id)sync;
 @end
 
 @implementation GKDatabaseConnection
 
-+ (GKDatabaseConnection)connectionWithDatabasePath:(id)a3
++ (GKDatabaseConnection)connectionWithDatabasePath:(id)path
 {
-  v3 = a3;
-  v4 = [[GKDatabaseConnection alloc] initWithDatabasePath:v3];
+  pathCopy = path;
+  v4 = [[GKDatabaseConnection alloc] initWithDatabasePath:pathCopy];
 
   return v4;
 }
 
-- (GKDatabaseConnection)initWithDatabasePath:(id)a3
+- (GKDatabaseConnection)initWithDatabasePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = GKDatabaseConnection;
   v5 = [(GKDatabaseConnection *)&v11 init];
@@ -34,7 +34,7 @@
     v5->_databaseQueue = v6;
 
     v5->_stmtCache = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, 0);
-    [(GKDatabaseConnection *)v5 setPath:v4];
+    [(GKDatabaseConnection *)v5 setPath:pathCopy];
     [(GKDatabaseConnection *)v5 open];
     if (!v5->_database)
     {
@@ -97,10 +97,10 @@
   [(GKDatabaseConnection *)&v4 dealloc];
 }
 
-- (int)getStatement:(sqlite3_stmt *)a3 forSQL:(id)a4
+- (int)getStatement:(sqlite3_stmt *)statement forSQL:(id)l
 {
-  v6 = a4;
-  Value = CFDictionaryGetValue(self->_stmtCache, v6);
+  lCopy = l;
+  Value = CFDictionaryGetValue(self->_stmtCache, lCopy);
   ppStmt = Value;
   if (Value)
   {
@@ -117,7 +117,7 @@ LABEL_2:
 
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        sub_10028E3A8(v6, v9, v8);
+        sub_10028E3A8(lCopy, v9, v8);
       }
 
       ppStmt = 0;
@@ -126,10 +126,10 @@ LABEL_2:
     goto LABEL_13;
   }
 
-  v11 = sqlite3_prepare_v2(self->_database, [v6 UTF8String], objc_msgSend(v6, "lengthOfBytesUsingEncoding:", 4), &ppStmt, 0);
+  v11 = sqlite3_prepare_v2(self->_database, [lCopy UTF8String], objc_msgSend(lCopy, "lengthOfBytesUsingEncoding:", 4), &ppStmt, 0);
   if (!v11)
   {
-    CFDictionarySetValue(self->_stmtCache, v6, ppStmt);
+    CFDictionarySetValue(self->_stmtCache, lCopy, ppStmt);
     Value = ppStmt;
     goto LABEL_2;
   }
@@ -144,11 +144,11 @@ LABEL_2:
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    sub_10028E2F4(v6, v12, v8);
+    sub_10028E2F4(lCopy, v12, v8);
   }
 
 LABEL_13:
-  *a3 = ppStmt;
+  *statement = ppStmt;
 
   return v8;
 }
@@ -308,9 +308,9 @@ LABEL_13:
   }
 }
 
-- (void)performSync:(id)a3
+- (void)performSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   if (!self->_database)
   {
     v5 = os_log_GKGeneral;
@@ -339,14 +339,14 @@ LABEL_13:
   v10[2] = sub_1001199A4;
   v10[3] = &unk_100360EB0;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = syncCopy;
+  v8 = syncCopy;
   dispatch_sync(databaseQueue, v10);
 }
 
-- (void)performAsync:(id)a3
+- (void)performAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   if (!self->_database)
   {
     v5 = os_log_GKGeneral;
@@ -375,15 +375,15 @@ LABEL_13:
   v10[2] = sub_100119AE0;
   v10[3] = &unk_100360EB0;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = asyncCopy;
+  v8 = asyncCopy;
   dispatch_async(databaseQueue, v10);
 }
 
-- (void)performAsyncTransaction:(id)a3 handler:(id)a4
+- (void)performAsyncTransaction:(id)transaction handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  handlerCopy = handler;
   if (self->_database)
   {
     goto LABEL_7;
@@ -411,15 +411,15 @@ LABEL_7:
     block[2] = sub_100119C54;
     block[3] = &unk_1003673F8;
     block[4] = self;
-    v13 = v6;
-    v14 = v7;
+    v13 = transactionCopy;
+    v14 = handlerCopy;
     dispatch_async(databaseQueue, block);
   }
 
   else
   {
     v11 = [NSError userErrorForServerCode:1 reason:@"Database not available at this time"];
-    (*(v7 + 2))(v7, v11);
+    (*(handlerCopy + 2))(handlerCopy, v11);
   }
 }
 

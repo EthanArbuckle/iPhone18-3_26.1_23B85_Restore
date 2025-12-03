@@ -1,22 +1,22 @@
 @interface PKFPANCardCanSaveResult
 + (id)empty;
-- (PKFPANCardCanSaveResult)initWithCoder:(id)a3;
-- (PKFPANCardCanSaveResult)initWithSavableFields:(unint64_t)a3 updatableFields:(unint64_t)a4;
+- (PKFPANCardCanSaveResult)initWithCoder:(id)coder;
+- (PKFPANCardCanSaveResult)initWithSavableFields:(unint64_t)fields updatableFields:(unint64_t)updatableFields;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFPANCardCanSaveResult
 
-- (PKFPANCardCanSaveResult)initWithSavableFields:(unint64_t)a3 updatableFields:(unint64_t)a4
+- (PKFPANCardCanSaveResult)initWithSavableFields:(unint64_t)fields updatableFields:(unint64_t)updatableFields
 {
   v7.receiver = self;
   v7.super_class = PKFPANCardCanSaveResult;
   result = [(PKFPANCardCanSaveResult *)&v7 init];
   if (result)
   {
-    result->_savableFields = a3;
-    result->_updatableFields = a4;
+    result->_savableFields = fields;
+    result->_updatableFields = updatableFields;
   }
 
   return result;
@@ -29,21 +29,21 @@
   return [(PKFPANCardCanSaveResult *)v2 initWithSavableFields:0 updatableFields:0];
 }
 
-- (PKFPANCardCanSaveResult)initWithCoder:(id)a3
+- (PKFPANCardCanSaveResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKFPANCardCanSaveResult;
   v5 = [(PKFPANCardCanSaveResult *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"savableFields"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"savableFields"];
     v5->_savableFields = PKAutoFillCardCredentialRequestedFieldsFromString(v6);
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"updatableFields"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"updatableFields"];
     v5->_updatableFields = PKAutoFillCardCredentialRequestedFieldsFromString(v7);
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"matchedCard"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matchedCard"];
     matchedCard = v5->_matchedCard;
     v5->_matchedCard = v8;
   }
@@ -51,17 +51,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   savableFields = self->_savableFields;
-  v7 = a3;
+  coderCopy = coder;
   v5 = PKAutoFillCardCredentialRequestedFieldsToString(savableFields);
-  [v7 encodeObject:v5 forKey:@"savableFields"];
+  [coderCopy encodeObject:v5 forKey:@"savableFields"];
 
   v6 = PKAutoFillCardCredentialRequestedFieldsToString(self->_updatableFields);
-  [v7 encodeObject:v6 forKey:@"updatableFields"];
+  [coderCopy encodeObject:v6 forKey:@"updatableFields"];
 
-  [v7 encodeObject:self->_matchedCard forKey:@"matchedCard"];
+  [coderCopy encodeObject:self->_matchedCard forKey:@"matchedCard"];
 }
 
 - (id)description

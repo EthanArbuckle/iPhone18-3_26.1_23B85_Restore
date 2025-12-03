@@ -1,6 +1,6 @@
 @interface NTNoContentModuleDescriptorsOperation
 - (BOOL)validateOperation;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)validateOperation;
 @end
 
@@ -8,21 +8,21 @@
 
 - (BOOL)validateOperation
 {
-  v2 = [(NTTodayModuleDescriptorsOperation *)self descriptorsCompletion];
+  descriptorsCompletion = [(NTTodayModuleDescriptorsOperation *)self descriptorsCompletion];
 
-  if (!v2 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!descriptorsCompletion && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNoContentModuleDescriptorsOperation validateOperation];
   }
 
-  return v2 != 0;
+  return descriptorsCompletion != 0;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(NTTodayModuleDescriptorsOperation *)self descriptorsCompletion];
-  (*(v5 + 2))(v5, MEMORY[0x277CBEBF8], 0, v4);
+  errorCopy = error;
+  descriptorsCompletion = [(NTTodayModuleDescriptorsOperation *)self descriptorsCompletion];
+  (*(descriptorsCompletion + 2))(descriptorsCompletion, MEMORY[0x277CBEBF8], 0, errorCopy);
 }
 
 - (void)validateOperation

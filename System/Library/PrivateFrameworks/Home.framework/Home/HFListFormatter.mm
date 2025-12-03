@@ -1,12 +1,12 @@
 @interface HFListFormatter
 - (NSLocale)locale;
-- (id)_formatAndListWithElements:(id)a3;
-- (id)_formatOrListWithElements:(id)a3;
-- (id)_formatSentenceListWithElements:(id)a3;
-- (id)stringForObjectValue:(id)a3;
+- (id)_formatAndListWithElements:(id)elements;
+- (id)_formatOrListWithElements:(id)elements;
+- (id)_formatSentenceListWithElements:(id)elements;
+- (id)stringForObjectValue:(id)value;
 - (void)_invaildateFormatter;
 - (void)dealloc;
-- (void)setLocale:(id)a3;
+- (void)setLocale:(id)locale;
 @end
 
 @implementation HFListFormatter
@@ -35,39 +35,39 @@
   locale = self->_locale;
   if (locale)
   {
-    v3 = locale;
+    currentLocale = locale;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   }
 
-  return v3;
+  return currentLocale;
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  v5 = a3;
-  if (self->_locale != v5)
+  localeCopy = locale;
+  if (self->_locale != localeCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_locale, a3);
+    v6 = localeCopy;
+    objc_storeStrong(&self->_locale, locale);
     [(HFListFormatter *)self _invaildateFormatter];
-    v5 = v6;
+    localeCopy = v6;
   }
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  valueCopy = value;
+  if (!valueCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v7 = 0;
     goto LABEL_12;
   }
 
-  v5 = v4;
+  v5 = valueCopy;
   if ([(HFListFormatter *)self listStyle]== 1)
   {
     v6 = [(HFListFormatter *)self _formatOrListWithElements:v5];
@@ -97,11 +97,11 @@ LABEL_12:
   return v7;
 }
 
-- (id)_formatSentenceListWithElements:(id)a3
+- (id)_formatSentenceListWithElements:(id)elements
 {
-  v3 = a3;
+  elementsCopy = elements;
   v4 = objc_opt_new();
-  v5 = [v3 count];
+  v5 = [elementsCopy count];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__HFListFormatter__formatSentenceListWithElements___block_invoke;
@@ -109,7 +109,7 @@ LABEL_12:
   v6 = v4;
   v9 = v6;
   v10 = v5;
-  [v3 enumerateObjectsUsingBlock:v8];
+  [elementsCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -133,11 +133,11 @@ void __51__HFListFormatter__formatSentenceListWithElements___block_invoke(uint64
   [v5 appendFormat:@"%@", v8];
 }
 
-- (id)_formatOrListWithElements:(id)a3
+- (id)_formatOrListWithElements:(id)elements
 {
-  v3 = a3;
+  elementsCopy = elements;
   v4 = objc_opt_new();
-  v5 = [v3 count];
+  v5 = [elementsCopy count];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__HFListFormatter__formatOrListWithElements___block_invoke;
@@ -145,7 +145,7 @@ void __51__HFListFormatter__formatSentenceListWithElements___block_invoke(uint64
   v6 = v4;
   v9 = v6;
   v10 = v5;
-  [v3 enumerateObjectsUsingBlock:v8];
+  [elementsCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -182,28 +182,28 @@ void __45__HFListFormatter__formatOrListWithElements___block_invoke(uint64_t a1,
   [v8 appendFormat:@"%@", v9];
 }
 
-- (id)_formatAndListWithElements:(id)a3
+- (id)_formatAndListWithElements:(id)elements
 {
   v35[500] = *MEMORY[0x277D85DE8];
-  v33 = a3;
+  elementsCopy = elements;
   v34 = 0;
   if ([(HFListFormatter *)self formatter])
   {
     goto LABEL_3;
   }
 
-  v4 = [(HFListFormatter *)self locale];
-  v5 = [v4 localeIdentifier];
-  [v5 getCString:v35 maxLength:100 encoding:4];
+  locale = [(HFListFormatter *)self locale];
+  localeIdentifier = [locale localeIdentifier];
+  [localeIdentifier getCString:v35 maxLength:100 encoding:4];
 
   [(HFListFormatter *)self setFormatter:ulistfmt_open()];
   v6 = 0;
   if ([(HFListFormatter *)self formatter])
   {
 LABEL_3:
-    v31 = self;
-    v7 = v33;
-    v8 = [v33 count];
+    selfCopy = self;
+    v7 = elementsCopy;
+    v8 = [elementsCopy count];
     v9 = v8;
     if (v8 >= 0x64)
     {
@@ -215,7 +215,7 @@ LABEL_3:
       v10 = v8;
     }
 
-    v11 = [v33 count];
+    v11 = [elementsCopy count];
     v32 = &v29;
     MEMORY[0x28223BE20](v11);
     v14 = (&v29 - v13);
@@ -239,7 +239,7 @@ LABEL_3:
       v19 = 0;
       while (1)
       {
-        v20 = [v33 objectAtIndexedSubscript:v19];
+        v20 = [elementsCopy objectAtIndexedSubscript:v19];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -284,7 +284,7 @@ LABEL_3:
     else
     {
 LABEL_16:
-      [(HFListFormatter *)v31 formatter];
+      [(HFListFormatter *)selfCopy formatter];
       v24 = ulistfmt_format();
       if (v30)
       {

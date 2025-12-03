@@ -1,8 +1,8 @@
 @interface MFMessageURLConnectionDelegate
 - (MFMessageURLConnectionDelegate)init;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 - (void)dealloc;
 @end
 
@@ -28,40 +28,40 @@
   return v2;
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  self->_response = a5;
-  v7 = *(a6 + 2);
+  self->_response = response;
+  v7 = *(handler + 2);
 
-  v7(a6, 1);
+  v7(handler, 1);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
   responseBody = self->_responseBody;
   if (responseBody)
   {
 
-    [(NSMutableData *)responseBody appendData:a5, a4];
+    [(NSMutableData *)responseBody appendData:data, task];
   }
 
   else
   {
-    self->_responseBody = [a5 mutableCopy];
+    self->_responseBody = [data mutableCopy];
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   promise = self->_promise;
-  if (a5)
+  if (error)
   {
-    [(EFPromise *)promise finishWithError:a5, a4];
+    [(EFPromise *)promise finishWithError:error, task];
   }
 
   else
   {
-    [(EFPromise *)promise finishWithResult:self->_responseBody, a4];
+    [(EFPromise *)promise finishWithResult:self->_responseBody, task];
   }
 }
 

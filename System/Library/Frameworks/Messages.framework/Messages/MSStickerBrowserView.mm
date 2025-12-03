@@ -2,24 +2,24 @@
 - (CGPoint)contentOffset;
 - (CGPoint)restoredContentOffset;
 - (CGSize)browserSizeToRestoreFrom;
-- (MSStickerBrowserView)initWithCoder:(id)a3;
+- (MSStickerBrowserView)initWithCoder:(id)coder;
 - (MSStickerBrowserView)initWithFrame:(CGRect)frame;
 - (MSStickerBrowserView)initWithFrame:(CGRect)frame stickerSize:(MSStickerSize)stickerSize;
 - (MSStickerBrowserViewDisplayDelegate)displayDelegate;
 - (NSDictionary)stateRestorationInfo;
 - (UIEdgeInsets)contentInset;
-- (id)_stickerAtIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)_stickerAtIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)dataSource;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_reloadStickersAtIndexes:(id)a3;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_reloadStickersAtIndexes:(id)indexes;
 - (void)_startAnimating;
 - (void)_stopAnimating;
 - (void)_updateCollectionViewSpecIfNeeded;
 - (void)animateNextCell;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)configureStickerView;
 - (void)dealloc;
 - (void)didMoveToWindow;
@@ -27,12 +27,12 @@
 - (void)layoutSubviews;
 - (void)prepareForSnapshotting;
 - (void)reloadData;
-- (void)restoreFromState:(id)a3;
+- (void)restoreFromState:(id)state;
 - (void)setContentInset:(UIEdgeInsets)contentInset;
 - (void)setContentOffset:(CGPoint)contentOffset;
 - (void)setContentOffset:(CGPoint)contentOffset animated:(BOOL)animated;
 - (void)setDataSource:(id)dataSource;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation MSStickerBrowserView
@@ -52,11 +52,11 @@
   return v4;
 }
 
-- (MSStickerBrowserView)initWithCoder:(id)a3
+- (MSStickerBrowserView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MSStickerBrowserView;
-  v3 = [(MSStickerBrowserView *)&v6 initWithCoder:a3];
+  v3 = [(MSStickerBrowserView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -84,8 +84,8 @@
 
 - (void)dealloc
 {
-  v3 = [(MSStickerBrowserView *)self animationTimer];
-  [v3 invalidate];
+  animationTimer = [(MSStickerBrowserView *)self animationTimer];
+  [animationTimer invalidate];
 
   v4.receiver = self;
   v4.super_class = MSStickerBrowserView;
@@ -108,8 +108,8 @@
 
 - (CGPoint)contentOffset
 {
-  v2 = [(MSStickerBrowserView *)self collectionView];
-  [v2 contentOffset];
+  collectionView = [(MSStickerBrowserView *)self collectionView];
+  [collectionView contentOffset];
   v4 = v3;
   v6 = v5;
 
@@ -124,14 +124,14 @@
 {
   y = contentOffset.y;
   x = contentOffset.x;
-  v5 = [(MSStickerBrowserView *)self collectionView];
-  [v5 setContentOffset:{x, y}];
+  collectionView = [(MSStickerBrowserView *)self collectionView];
+  [collectionView setContentOffset:{x, y}];
 }
 
 - (UIEdgeInsets)contentInset
 {
-  v2 = [(MSStickerBrowserView *)self collectionView];
-  [v2 contentInset];
+  collectionView = [(MSStickerBrowserView *)self collectionView];
+  [collectionView contentInset];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -154,8 +154,8 @@
   bottom = contentInset.bottom;
   left = contentInset.left;
   top = contentInset.top;
-  v7 = [(MSStickerBrowserView *)self collectionView];
-  [v7 setContentInset:{top, left, bottom, right}];
+  collectionView = [(MSStickerBrowserView *)self collectionView];
+  [collectionView setContentInset:{top, left, bottom, right}];
 }
 
 - (void)setContentOffset:(CGPoint)contentOffset animated:(BOOL)animated
@@ -163,8 +163,8 @@
   v4 = animated;
   y = contentOffset.y;
   x = contentOffset.x;
-  v7 = [(MSStickerBrowserView *)self collectionView];
-  [v7 setContentOffset:v4 animated:{x, y}];
+  collectionView = [(MSStickerBrowserView *)self collectionView];
+  [collectionView setContentOffset:v4 animated:{x, y}];
 }
 
 - (void)configureStickerView
@@ -195,14 +195,14 @@
   [v4 setPrefetchDataSource:self];
   [v4 setAlwaysBounceVertical:1];
   [v4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"_kMSStickerCollectionViewCellReuseIdentifier"];
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
   [(MSStickerBrowserView *)self setCollectionView:v4];
   [(MSStickerBrowserView *)self addSubview:v4];
   [(MSStickerBrowserView *)self _updateCollectionViewSpecIfNeeded];
-  v7 = [MEMORY[0x1E695DF70] array];
-  [(MSStickerBrowserView *)self setCellsToAnimate:v7];
+  array = [MEMORY[0x1E695DF70] array];
+  [(MSStickerBrowserView *)self setCellsToAnimate:array];
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [(MSStickerBrowserView *)self setStickerCache:v8];
@@ -216,40 +216,40 @@
 
 - (void)animateNextCell
 {
-  v3 = [(MSStickerBrowserView *)self cellsToAnimate];
-  v4 = [v3 count];
+  cellsToAnimate = [(MSStickerBrowserView *)self cellsToAnimate];
+  v4 = [cellsToAnimate count];
 
   if (v4)
   {
-    v5 = [(MSStickerBrowserView *)self currentlyAnimatingIndex];
-    v6 = v5 + 1;
-    v7 = [(MSStickerBrowserView *)self cellsToAnimate];
-    v8 = [v7 count];
+    currentlyAnimatingIndex = [(MSStickerBrowserView *)self currentlyAnimatingIndex];
+    v6 = currentlyAnimatingIndex + 1;
+    cellsToAnimate2 = [(MSStickerBrowserView *)self cellsToAnimate];
+    v8 = [cellsToAnimate2 count];
 
-    if (v5 + 1 < v8)
+    if (currentlyAnimatingIndex + 1 < v8)
     {
-      v9 = [(MSStickerBrowserView *)self cellsToAnimate];
-      v10 = [v9 objectAtIndex:v6];
+      cellsToAnimate3 = [(MSStickerBrowserView *)self cellsToAnimate];
+      v10 = [cellsToAnimate3 objectAtIndex:v6];
 
-      v11 = [v10 stickerView];
-      v12 = [v11 isPeeled];
+      stickerView = [v10 stickerView];
+      isPeeled = [stickerView isPeeled];
 
-      if (v12)
+      if (isPeeled)
       {
-        v6 = v5 + 2;
+        v6 = currentlyAnimatingIndex + 2;
       }
     }
 
-    v13 = [(MSStickerBrowserView *)self cellsToAnimate];
-    v14 = [v13 count];
+    cellsToAnimate4 = [(MSStickerBrowserView *)self cellsToAnimate];
+    v14 = [cellsToAnimate4 count];
 
     if (v6 >= v14)
     {
       v6 = 0;
     }
 
-    v15 = [(MSStickerBrowserView *)self cellsToAnimate];
-    v16 = [v15 count];
+    cellsToAnimate5 = [(MSStickerBrowserView *)self cellsToAnimate];
+    v16 = [cellsToAnimate5 count];
 
     if (v16)
     {
@@ -257,13 +257,13 @@
       v18 = *MEMORY[0x1E695DA28];
       do
       {
-        v19 = [(MSStickerBrowserView *)self cellsToAnimate];
-        v20 = [v19 objectAtIndex:v17];
+        cellsToAnimate6 = [(MSStickerBrowserView *)self cellsToAnimate];
+        v20 = [cellsToAnimate6 objectAtIndex:v17];
 
         if (v6 == v17)
         {
-          v21 = [v20 stickerView];
-          [v21 animationDuration];
+          stickerView2 = [v20 stickerView];
+          [stickerView2 animationDuration];
           v23 = v22;
 
           v24 = v23 + v23;
@@ -273,8 +273,8 @@
           }
 
           v25 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:self target:sel_animateNextCell selector:0 userInfo:0 repeats:v24];
-          v26 = [MEMORY[0x1E695DFD0] currentRunLoop];
-          [v26 addTimer:v25 forMode:v18];
+          currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+          [currentRunLoop addTimer:v25 forMode:v18];
 
           [(MSStickerBrowserView *)self setAnimationTimer:v25];
         }
@@ -282,8 +282,8 @@
         [v20 setAnimating:v6 == v17];
 
         ++v17;
-        v27 = [(MSStickerBrowserView *)self cellsToAnimate];
-        v28 = [v27 count];
+        cellsToAnimate7 = [(MSStickerBrowserView *)self cellsToAnimate];
+        v28 = [cellsToAnimate7 count];
       }
 
       while (v17 < v28);
@@ -294,8 +294,8 @@
 
   else
   {
-    v29 = [(MSStickerBrowserView *)self animationTimer];
-    [v29 invalidate];
+    animationTimer = [(MSStickerBrowserView *)self animationTimer];
+    [animationTimer invalidate];
 
     [(MSStickerBrowserView *)self setAnimationTimer:0];
   }
@@ -314,14 +314,14 @@
   }
 
   [(MSStickerBrowserView *)self _updateCollectionViewSpecIfNeeded];
-  v6 = [(MSStickerBrowserView *)self stickerCache];
-  [v6 removeAllObjects];
+  stickerCache = [(MSStickerBrowserView *)self stickerCache];
+  [stickerCache removeAllObjects];
 }
 
-- (void)_reloadStickersAtIndexes:(id)a3
+- (void)_reloadStickersAtIndexes:(id)indexes
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  indexesCopy = indexes;
   v6 = objc_alloc_init(v4);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -329,13 +329,13 @@
   v10[3] = &unk_1E83A2F20;
   v11 = v6;
   v7 = v6;
-  [v5 enumerateIndexesUsingBlock:v10];
+  [indexesCopy enumerateIndexesUsingBlock:v10];
 
-  v8 = [(MSStickerBrowserView *)self stickerCache];
-  [v8 removeObjectsForKeys:v7];
+  stickerCache = [(MSStickerBrowserView *)self stickerCache];
+  [stickerCache removeObjectsForKeys:v7];
 
-  v9 = [(MSStickerBrowserView *)self collectionView];
-  [v9 reloadItemsAtIndexPaths:v7];
+  collectionView = [(MSStickerBrowserView *)self collectionView];
+  [collectionView reloadItemsAtIndexPaths:v7];
 }
 
 void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t a1, uint64_t a2)
@@ -345,16 +345,16 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
   [v2 addObject:v3];
 }
 
-- (id)_stickerAtIndexPath:(id)a3
+- (id)_stickerAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_dataSource);
-    v8 = [v7 stickerBrowserView:self stickerAtIndex:{objc_msgSend(v4, "item")}];
+    v8 = [v7 stickerBrowserView:self stickerAtIndex:{objc_msgSend(pathCopy, "item")}];
   }
 
   else
@@ -370,9 +370,9 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
   v11.receiver = self;
   v11.super_class = MSStickerBrowserView;
   [(MSStickerBrowserView *)&v11 layoutSubviews];
-  v3 = [(MSStickerBrowserView *)self collectionView];
+  collectionView = [(MSStickerBrowserView *)self collectionView];
   [(MSStickerBrowserView *)self bounds];
-  [v3 setFrame:?];
+  [collectionView setFrame:?];
 
   [(MSStickerBrowserView *)self _updateCollectionViewSpecIfNeeded];
   if ([(MSStickerBrowserView *)self isRestoringContentOffset])
@@ -383,9 +383,9 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
     [(MSStickerBrowserView *)self bounds];
     if (v5 == v9 && v7 == v8)
     {
-      v10 = [(MSStickerBrowserView *)self collectionView];
+      collectionView2 = [(MSStickerBrowserView *)self collectionView];
       [(MSStickerBrowserView *)self restoredContentOffset];
-      [v10 setContentOffset:?];
+      [collectionView2 setContentOffset:?];
     }
 
     [(MSStickerBrowserView *)self setIsRestoringContentOffset:0];
@@ -397,9 +397,9 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
   v5.receiver = self;
   v5.super_class = MSStickerBrowserView;
   [(MSStickerBrowserView *)&v5 didMoveToWindow];
-  v3 = [(MSStickerBrowserView *)self window];
+  window = [(MSStickerBrowserView *)self window];
 
-  if (v3)
+  if (window)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -410,7 +410,7 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v6 = objc_opt_respondsToSelector();
@@ -426,9 +426,9 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
   return v8;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v4 = [a3 dequeueReusableCellWithReuseIdentifier:@"_kMSStickerCollectionViewCellReuseIdentifier" forIndexPath:a4];
+  v4 = [view dequeueReusableCellWithReuseIdentifier:@"_kMSStickerCollectionViewCellReuseIdentifier" forIndexPath:path];
   objc_opt_class();
   v5 = v4;
   if (objc_opt_isKindOfClass())
@@ -446,19 +446,19 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
   return v6;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v14 = a4;
-  v7 = a5;
-  v8 = [(MSStickerBrowserView *)self stickerCache];
-  v9 = [v8 objectForKey:v7];
+  cellCopy = cell;
+  pathCopy = path;
+  stickerCache = [(MSStickerBrowserView *)self stickerCache];
+  v9 = [stickerCache objectForKey:pathCopy];
 
   if (!v9)
   {
-    v9 = [(MSStickerBrowserView *)self _stickerAtIndexPath:v7];
+    v9 = [(MSStickerBrowserView *)self _stickerAtIndexPath:pathCopy];
   }
 
-  [v14 setSticker:v9];
+  [cellCopy setSticker:v9];
   WeakRetained = objc_loadWeakRetained(&self->_displayDelegate);
 
   if (WeakRetained)
@@ -466,34 +466,34 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
     v11 = objc_loadWeakRetained(&self->_displayDelegate);
     v12 = [v11 stickerBrowserView:self shouldDrawBorderAroundSticker:v9];
 
-    [v14 showCellBorder:v12];
+    [cellCopy showCellBorder:v12];
   }
 
   if ([(MSStickerBrowserView *)self isAnimating])
   {
-    v13 = [v14 stickerView];
-    [v13 setAnimating:1];
+    stickerView = [cellCopy stickerView];
+    [stickerView setAnimating:1];
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v5 = [a4 stickerView];
-  [v5 setAnimating:0];
+  stickerView = [cell stickerView];
+  [stickerView setAnimating:0];
 }
 
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(MSStickerBrowserView *)self stickerCacheQueue];
-  [v6 setSuspended:0];
+  pathsCopy = paths;
+  stickerCacheQueue = [(MSStickerBrowserView *)self stickerCacheQueue];
+  [stickerCacheQueue setSuspended:0];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v5;
+  obj = pathsCopy;
   v7 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
@@ -524,14 +524,14 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
         v22 = v12;
         v14 = v12;
         v15 = _Block_copy(v21);
-        v16 = [(MSStickerBrowserView *)self stickerCache];
-        [v16 setObject:v14 forKey:v10];
+        stickerCache = [(MSStickerBrowserView *)self stickerCache];
+        [stickerCache setObject:v14 forKey:v10];
 
-        v17 = [(MSStickerBrowserView *)self stickerCacheQueue];
-        [v17 addOperationWithBlock:v13];
+        stickerCacheQueue2 = [(MSStickerBrowserView *)self stickerCacheQueue];
+        [stickerCacheQueue2 addOperationWithBlock:v13];
 
-        v18 = [(MSStickerBrowserView *)self stickerCacheQueue];
-        [v18 addOperationWithBlock:v15];
+        stickerCacheQueue3 = [(MSStickerBrowserView *)self stickerCacheQueue];
+        [stickerCacheQueue3 addOperationWithBlock:v15];
       }
 
       v8 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -543,27 +543,27 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
 
 - (void)_updateCollectionViewSpecIfNeeded
 {
-  v3 = [(MSStickerBrowserView *)self window];
-  v4 = [v3 windowScene];
-  v5 = [v4 interfaceOrientation];
+  window = [(MSStickerBrowserView *)self window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  v6 = [(MSStickerBrowserView *)self layoutSpec];
-  if (!v6 || (v7 = v6, -[MSStickerBrowserView layoutSpec](self, "layoutSpec"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 interfaceOrientation], v8, v7, v9 != v5))
+  layoutSpec = [(MSStickerBrowserView *)self layoutSpec];
+  if (!layoutSpec || (v7 = layoutSpec, -[MSStickerBrowserView layoutSpec](self, "layoutSpec"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 interfaceOrientation], v8, v7, v9 != interfaceOrientation))
   {
     [(MSStickerBrowserView *)self setLayoutSpec:0];
-    v10 = [MSStickerBrowserViewLayoutSpec specWithSizeClass:[(MSStickerBrowserView *)self stickerSize] interfaceOrientation:v5];
+    v10 = [MSStickerBrowserViewLayoutSpec specWithSizeClass:[(MSStickerBrowserView *)self stickerSize] interfaceOrientation:interfaceOrientation];
     [(MSStickerBrowserView *)self setLayoutSpec:v10];
 
-    v11 = [(MSStickerBrowserView *)self flowLayout];
-    v12 = [(MSStickerBrowserView *)self layoutSpec];
-    [v12 minimumInteritemSpacing];
-    [v11 setMinimumInteritemSpacing:?];
-    [v12 itemSize];
-    [v11 setItemSize:?];
-    [v12 minimumLineSpacing];
-    [v11 setMinimumLineSpacing:?];
-    [v12 sectionInset];
-    [v11 setSectionInset:?];
+    flowLayout = [(MSStickerBrowserView *)self flowLayout];
+    layoutSpec2 = [(MSStickerBrowserView *)self layoutSpec];
+    [layoutSpec2 minimumInteritemSpacing];
+    [flowLayout setMinimumInteritemSpacing:?];
+    [layoutSpec2 itemSize];
+    [flowLayout setItemSize:?];
+    [layoutSpec2 minimumLineSpacing];
+    [flowLayout setMinimumLineSpacing:?];
+    [layoutSpec2 sectionInset];
+    [flowLayout setSectionInset:?];
   }
 
   collectionView = self->_collectionView;
@@ -574,17 +574,17 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
 - (void)prepareForSnapshotting
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(MSStickerBrowserView *)self collectionView];
-  [v3 setShowsVerticalScrollIndicator:0];
+  collectionView = [(MSStickerBrowserView *)self collectionView];
+  [collectionView setShowsVerticalScrollIndicator:0];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(MSStickerBrowserView *)self collectionView];
-  v5 = [v4 visibleCells];
+  collectionView2 = [(MSStickerBrowserView *)self collectionView];
+  visibleCells = [collectionView2 visibleCells];
 
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -596,44 +596,44 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visibleCells);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) stickerView];
-        [v10 prepareForSnapshotting];
+        stickerView = [*(*(&v11 + 1) + 8 * v9) stickerView];
+        [stickerView prepareForSnapshotting];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = MSStickerBrowserView;
   [(MSStickerBrowserView *)&v6 setUserInteractionEnabled:?];
-  v5 = [(MSStickerBrowserView *)self collectionView];
-  [v5 setUserInteractionEnabled:v3];
-  [v5 setScrollEnabled:v3];
-  if (!v3)
+  collectionView = [(MSStickerBrowserView *)self collectionView];
+  [collectionView setUserInteractionEnabled:enabledCopy];
+  [collectionView setScrollEnabled:enabledCopy];
+  if (!enabledCopy)
   {
-    [v5 contentOffset];
-    [v5 setContentOffset:0 animated:?];
+    [collectionView contentOffset];
+    [collectionView setContentOffset:0 animated:?];
   }
 }
 
 - (NSDictionary)stateRestorationInfo
 {
   v19[4] = *MEMORY[0x1E69E9840];
-  v3 = [(MSStickerBrowserView *)self collectionView];
-  [v3 contentOffset];
+  collectionView = [(MSStickerBrowserView *)self collectionView];
+  [collectionView contentOffset];
   v5 = v4;
   v7 = v6;
 
@@ -658,20 +658,20 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
   return v16;
 }
 
-- (void)restoreFromState:(id)a3
+- (void)restoreFromState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"x-offset"];
+  stateCopy = state;
+  v5 = [stateCopy objectForKeyedSubscript:@"x-offset"];
   [v5 floatValue];
   v7 = v6;
-  v8 = [v4 objectForKeyedSubscript:@"y-offset"];
+  v8 = [stateCopy objectForKeyedSubscript:@"y-offset"];
   [v8 floatValue];
   [(MSStickerBrowserView *)self setRestoredContentOffset:v7, v9];
 
-  v10 = [v4 objectForKeyedSubscript:@"x-size"];
+  v10 = [stateCopy objectForKeyedSubscript:@"x-size"];
   [v10 floatValue];
   v12 = v11;
-  v13 = [v4 objectForKeyedSubscript:@"y-size"];
+  v13 = [stateCopy objectForKeyedSubscript:@"y-size"];
 
   [v13 floatValue];
   [(MSStickerBrowserView *)self setBrowserSizeToRestoreFrom:v12, v14];
@@ -681,8 +681,8 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
 
 - (void)invalidateFlowLayout
 {
-  v2 = [(MSStickerBrowserView *)self flowLayout];
-  [v2 invalidateLayout];
+  flowLayout = [(MSStickerBrowserView *)self flowLayout];
+  [flowLayout invalidateLayout];
 }
 
 - (void)_startAnimating
@@ -693,10 +693,10 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(MSStickerBrowserView *)self collectionView];
-  v4 = [v3 visibleCells];
+  collectionView = [(MSStickerBrowserView *)self collectionView];
+  visibleCells = [collectionView visibleCells];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -708,14 +708,14 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleCells);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) setAnimating:1];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -730,10 +730,10 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(MSStickerBrowserView *)self collectionView];
-  v4 = [v3 visibleCells];
+  collectionView = [(MSStickerBrowserView *)self collectionView];
+  visibleCells = [collectionView visibleCells];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -745,14 +745,14 @@ void __49__MSStickerBrowserView__reloadStickersAtIndexes___block_invoke(uint64_t
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleCells);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) setAnimating:0];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);

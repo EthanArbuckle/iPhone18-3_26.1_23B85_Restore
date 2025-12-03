@@ -1,13 +1,13 @@
 @interface MOEventSerializationSessionHelper
-- (MOEventSerializationSessionHelper)initWithRandomization:(BOOL)a3;
-- (id)serializeEvent:(id)a3;
-- (id)serializeEventBundle:(id)a3;
-- (void)_savePropertyToDictionary:(id)a3 withKey:(id)a4 andValue:(id)a5;
+- (MOEventSerializationSessionHelper)initWithRandomization:(BOOL)randomization;
+- (id)serializeEvent:(id)event;
+- (id)serializeEventBundle:(id)bundle;
+- (void)_savePropertyToDictionary:(id)dictionary withKey:(id)key andValue:(id)value;
 @end
 
 @implementation MOEventSerializationSessionHelper
 
-- (MOEventSerializationSessionHelper)initWithRandomization:(BOOL)a3
+- (MOEventSerializationSessionHelper)initWithRandomization:(BOOL)randomization
 {
   v10.receiver = self;
   v10.super_class = MOEventSerializationSessionHelper;
@@ -22,121 +22,121 @@
     randomMapping = v4->_randomMapping;
     v4->_randomMapping = v7;
 
-    v4->_shouldAvoidRandomization = !a3;
+    v4->_shouldAvoidRandomization = !randomization;
   }
 
   return v4;
 }
 
-- (id)serializeEvent:(id)a3
+- (id)serializeEvent:(id)event
 {
-  v4 = a3;
-  if (v4)
+  eventCopy = event;
+  if (eventCopy)
   {
     v5 = objc_opt_new();
-    v6 = [v4 eventIdentifier];
-    v7 = [v6 UUIDString];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventID" andValue:v7];
+    eventIdentifier = [eventCopy eventIdentifier];
+    uUIDString = [eventIdentifier UUIDString];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventID" andValue:uUIDString];
 
-    v8 = [v4 startDate];
-    [v8 timeIntervalSinceReferenceDate];
+    startDate = [eventCopy startDate];
+    [startDate timeIntervalSinceReferenceDate];
     v9 = [NSNumber numberWithDouble:?];
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventStartDate" andValue:v9];
 
-    v10 = [v4 endDate];
-    [v10 timeIntervalSinceReferenceDate];
+    endDate = [eventCopy endDate];
+    [endDate timeIntervalSinceReferenceDate];
     v11 = [NSNumber numberWithDouble:?];
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventEndDate" andValue:v11];
 
-    v12 = [v4 creationDate];
-    [v12 timeIntervalSinceReferenceDate];
+    creationDate = [eventCopy creationDate];
+    [creationDate timeIntervalSinceReferenceDate];
     v13 = [NSNumber numberWithDouble:?];
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventCreationDate" andValue:v13];
 
-    v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 provider]);
+    v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [eventCopy provider]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventProvider" andValue:v14];
 
-    v15 = [v4 workoutType];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventWorkoutType" andValue:v15];
+    workoutType = [eventCopy workoutType];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventWorkoutType" andValue:workoutType];
 
-    v16 = [v4 workoutTotalDistance];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventWorkoutTotalDistance" andValue:v16];
+    workoutTotalDistance = [eventCopy workoutTotalDistance];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventWorkoutTotalDistance" andValue:workoutTotalDistance];
 
-    v17 = [v4 workoutTotalEnergyBurned];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventWorkoutTotalEnergyBurned" andValue:v17];
+    workoutTotalEnergyBurned = [eventCopy workoutTotalEnergyBurned];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventWorkoutTotalEnergyBurned" andValue:workoutTotalEnergyBurned];
 
-    v18 = [v4 workoutDuration];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventWorkoutDuration" andValue:v18];
+    workoutDuration = [eventCopy workoutDuration];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventWorkoutDuration" andValue:workoutDuration];
 
-    v19 = [v4 motionStepCount];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventMotionStepCount" andValue:v19];
+    motionStepCount = [eventCopy motionStepCount];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventMotionStepCount" andValue:motionStepCount];
 
-    v20 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isFitnessPlusSession]);
+    v20 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [eventCopy isFitnessPlusSession]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventIsFitnessPlusSession" andValue:v20];
 
-    v21 = [v4 placeName];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPlaceName" andValue:v21];
+    placeName = [eventCopy placeName];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPlaceName" andValue:placeName];
 
-    v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 placeType]);
+    v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [eventCopy placeType]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPlaceType" andValue:v22];
 
-    v23 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 placeUserType]);
+    v23 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [eventCopy placeUserType]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPlaceUserType" andValue:v23];
 
-    v24 = [v4 poiCategory];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPOICategory" andValue:v24];
+    poiCategory = [eventCopy poiCategory];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPOICategory" andValue:poiCategory];
 
-    v25 = [v4 categoryMuid];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventCategoryMuid" andValue:v25];
+    categoryMuid = [eventCopy categoryMuid];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventCategoryMuid" andValue:categoryMuid];
 
-    v26 = [v4 location];
+    location = [eventCopy location];
 
-    if (v26)
+    if (location)
     {
-      v27 = [v4 location];
-      [v27 latitude];
+      location2 = [eventCopy location];
+      [location2 latitude];
       v28 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventLocationLatitude" andValue:v28];
 
-      v29 = [v4 location];
-      [v29 longitude];
+      location3 = [eventCopy location];
+      [location3 longitude];
       v30 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventLocationLongitude" andValue:v30];
     }
 
-    v31 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 placeDiscovery]);
+    v31 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [eventCopy placeDiscovery]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPlaceDiscovery" andValue:v31];
 
-    v32 = [v4 mediaTitle];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventMediaTitle" andValue:v32];
+    mediaTitle = [eventCopy mediaTitle];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventMediaTitle" andValue:mediaTitle];
 
-    v33 = [v4 mediaArtist];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventMediaArtist" andValue:v33];
+    mediaArtist = [eventCopy mediaArtist];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventMediaArtist" andValue:mediaArtist];
 
-    v34 = [v4 mediaSumTimePlayed];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventMediaSumTimePlayed" andValue:v34];
+    mediaSumTimePlayed = [eventCopy mediaSumTimePlayed];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventMediaSumTimePlayed" andValue:mediaSumTimePlayed];
 
-    v35 = [v4 mediaRepetitions];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventMediaRepititions" andValue:v35];
+    mediaRepetitions = [eventCopy mediaRepetitions];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventMediaRepititions" andValue:mediaRepetitions];
 
-    v36 = [v4 mediaEvent];
-    v37 = [v36 mediaFirstPartyTimePlayedRatio];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventMediaFirstPartyTimePlayedRatio" andValue:v37];
+    mediaEvent = [eventCopy mediaEvent];
+    mediaFirstPartyTimePlayedRatio = [mediaEvent mediaFirstPartyTimePlayedRatio];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventMediaFirstPartyTimePlayedRatio" andValue:mediaFirstPartyTimePlayedRatio];
 
-    v38 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 category]);
+    v38 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [eventCopy category]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventCategory" andValue:v38];
 
-    v39 = [v4 pCount];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"peopleCount" andValue:v39];
+    pCount = [eventCopy pCount];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"peopleCount" andValue:pCount];
 
-    v40 = [v4 densityScore];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"peopleDensity" andValue:v40];
+    densityScore = [eventCopy densityScore];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"peopleDensity" andValue:densityScore];
 
-    v41 = [v4 densityScanDuration];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"peopleDensityScanDuration" andValue:v41];
+    densityScanDuration = [eventCopy densityScanDuration];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"peopleDensityScanDuration" andValue:densityScanDuration];
 
     v42 = objc_opt_new();
-    v43 = [v4 mediaPlaySessions];
+    mediaPlaySessions = [eventCopy mediaPlaySessions];
     v143[0] = _NSConcreteStackBlock;
     v143[1] = 3221225472;
     v143[2] = __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke;
@@ -144,15 +144,15 @@
     v143[4] = self;
     v44 = v42;
     v144 = v44;
-    [v43 enumerateObjectsUsingBlock:v143];
+    [mediaPlaySessions enumerateObjectsUsingBlock:v143];
 
     v133 = v44;
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventMediaPlaySessions" andValue:v44];
-    if ([v4 category] == 20)
+    if ([eventCopy category] == 20)
     {
       v45 = objc_opt_new();
-      v46 = [v4 screenTimeEvent];
-      v47 = [v46 appCategoryUsages];
+      screenTimeEvent = [eventCopy screenTimeEvent];
+      appCategoryUsages = [screenTimeEvent appCategoryUsages];
       v141[0] = _NSConcreteStackBlock;
       v141[1] = 3221225472;
       v141[2] = __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke_2;
@@ -160,28 +160,28 @@
       v141[4] = self;
       v142 = v45;
       v48 = v45;
-      [v47 enumerateObjectsUsingBlock:v141];
+      [appCategoryUsages enumerateObjectsUsingBlock:v141];
 
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventCategoryUsage" andValue:v48];
-      v49 = [v4 screenTimeEvent];
-      v50 = [v49 longestActivity];
-      v51 = [v50 startDate];
-      [v51 timeIntervalSinceReferenceDate];
+      screenTimeEvent2 = [eventCopy screenTimeEvent];
+      longestActivity = [screenTimeEvent2 longestActivity];
+      startDate2 = [longestActivity startDate];
+      [startDate2 timeIntervalSinceReferenceDate];
       v52 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventLongestScreenTimeStartDate" andValue:v52];
 
-      v53 = [v4 screenTimeEvent];
-      v54 = [v53 longestActivity];
-      v55 = [v54 endDate];
-      [v55 timeIntervalSinceReferenceDate];
+      screenTimeEvent3 = [eventCopy screenTimeEvent];
+      longestActivity2 = [screenTimeEvent3 longestActivity];
+      endDate2 = [longestActivity2 endDate];
+      [endDate2 timeIntervalSinceReferenceDate];
       v56 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventLongestScreenTimeEndDate" andValue:v56];
     }
 
     v57 = objc_opt_new();
     v58 = objc_opt_new();
-    v59 = [v4 extendedAttributes];
-    v60 = [v59 photoMomentPersons];
+    extendedAttributes = [eventCopy extendedAttributes];
+    photoMomentPersons = [extendedAttributes photoMomentPersons];
     v139[0] = _NSConcreteStackBlock;
     v139[1] = 3221225472;
     v139[2] = __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke_3;
@@ -189,7 +189,7 @@
     v139[4] = self;
     v61 = v58;
     v140 = v61;
-    [v60 enumerateObjectsUsingBlock:v139];
+    [photoMomentPersons enumerateObjectsUsingBlock:v139];
 
     if ([v61 count])
     {
@@ -197,55 +197,55 @@
     }
 
     v132 = v61;
-    v62 = [v4 extendedAttributes];
-    v63 = [v62 photoMomentLocalIdentifier];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v57 withKey:@"localIdentifier" andValue:v63];
+    extendedAttributes2 = [eventCopy extendedAttributes];
+    photoMomentLocalIdentifier = [extendedAttributes2 photoMomentLocalIdentifier];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v57 withKey:@"localIdentifier" andValue:photoMomentLocalIdentifier];
 
-    v64 = [v4 extendedAttributes];
-    v65 = [v64 photoMomentInferences];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v57 withKey:@"inferences" andValue:v65];
+    extendedAttributes3 = [eventCopy extendedAttributes];
+    photoMomentInferences = [extendedAttributes3 photoMomentInferences];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v57 withKey:@"inferences" andValue:photoMomentInferences];
 
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventExtendedAttributes" andValue:v57];
-    v66 = [v4 interactionContactScore];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventContactScore" andValue:v66];
+    interactionContactScore = [eventCopy interactionContactScore];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventContactScore" andValue:interactionContactScore];
 
-    v67 = [v4 interactionScoredContact];
-    [v67 score];
+    interactionScoredContact = [eventCopy interactionScoredContact];
+    [interactionScoredContact score];
     v68 = [NSNumber numberWithDouble:?];
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventScoredContactScore" andValue:v68];
 
-    v69 = [v4 interactionScoredContact];
-    v70 = [v69 contact];
-    v71 = [v70 givenName];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventContactGivenName" andValue:v71];
+    interactionScoredContact2 = [eventCopy interactionScoredContact];
+    contact = [interactionScoredContact2 contact];
+    givenName = [contact givenName];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventContactGivenName" andValue:givenName];
 
-    v72 = [v4 interactionScoredContact];
-    v73 = [v72 contact];
-    v74 = [v73 familyName];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventContactFamilyName" andValue:v74];
+    interactionScoredContact3 = [eventCopy interactionScoredContact];
+    contact2 = [interactionScoredContact3 contact];
+    familyName = [contact2 familyName];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventContactFamilyName" andValue:familyName];
 
-    v75 = [v4 interactionScoredContact];
-    v76 = [v75 contact];
-    v77 = [v76 localizedFullName];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventLocalizedFullName" andValue:v77];
+    interactionScoredContact4 = [eventCopy interactionScoredContact];
+    contact3 = [interactionScoredContact4 contact];
+    localizedFullName = [contact3 localizedFullName];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventLocalizedFullName" andValue:localizedFullName];
 
     v78 = objc_opt_new();
-    v79 = [v4 interactionContacts];
+    interactionContacts = [eventCopy interactionContacts];
     v136[0] = _NSConcreteStackBlock;
     v136[1] = 3221225472;
     v136[2] = __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke_4;
     v136[3] = &unk_1003387C0;
     v136[4] = self;
-    v80 = v4;
+    v80 = eventCopy;
     v137 = v80;
     v81 = v78;
     v138 = v81;
-    [v79 enumerateObjectsUsingBlock:v136];
+    [interactionContacts enumerateObjectsUsingBlock:v136];
 
     v131 = v81;
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventInteractionContacts" andValue:v81];
     v82 = objc_opt_new();
-    v83 = [v80 interactions];
+    interactions = [v80 interactions];
     v134[0] = _NSConcreteStackBlock;
     v134[1] = 3221225472;
     v134[2] = __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke_5;
@@ -253,19 +253,19 @@
     v134[4] = self;
     v84 = v82;
     v135 = v84;
-    [v83 enumerateObjectsUsingBlock:v134];
+    [interactions enumerateObjectsUsingBlock:v134];
 
     v130 = v84;
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventInteractions" andValue:v84];
-    v85 = [v80 itemURL];
-    v86 = [v85 absoluteString];
+    itemURL = [v80 itemURL];
+    absoluteString = [itemURL absoluteString];
 
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventItemURL" andValue:v86];
-    if (!self->_shouldAvoidRandomization && v86)
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventItemURL" andValue:absoluteString];
+    if (!self->_shouldAvoidRandomization && absoluteString)
     {
-      if ([v86 hasPrefix:@"https://apple.news"])
+      if ([absoluteString hasPrefix:@"https://apple.news"])
       {
-        v87 = [v86 componentsSeparatedByString:@"https://apple.news"];
+        v87 = [absoluteString componentsSeparatedByString:@"https://apple.news"];
         v88 = [v5 objectForKeyedSubscript:@"eventItemURL"];
         if (v88 && [v87 count] == 2)
         {
@@ -274,9 +274,9 @@
         }
       }
 
-      if ([v86 hasPrefix:@"https://music.apple.com"])
+      if ([absoluteString hasPrefix:@"https://music.apple.com"])
       {
-        v90 = [v86 componentsSeparatedByString:@"https://music.apple.com"];
+        v90 = [absoluteString componentsSeparatedByString:@"https://music.apple.com"];
         v91 = [v5 objectForKeyedSubscript:@"eventItemURL"];
         if (v91 && [v90 count] == 2)
         {
@@ -285,9 +285,9 @@
         }
       }
 
-      if ([v86 hasPrefix:@"https://podcasts.apple.com"])
+      if ([absoluteString hasPrefix:@"https://podcasts.apple.com"])
       {
-        v93 = [v86 componentsSeparatedByString:@"https://podcasts.apple.com"];
+        v93 = [absoluteString componentsSeparatedByString:@"https://podcasts.apple.com"];
         v94 = [v5 objectForKeyedSubscript:@"eventItemURL"];
         if (v94 && [v93 count] == 2)
         {
@@ -296,9 +296,9 @@
         }
       }
 
-      if ([v86 hasPrefix:@"https://tv.apple.com"])
+      if ([absoluteString hasPrefix:@"https://tv.apple.com"])
       {
-        v96 = [v86 componentsSeparatedByString:@"https://tv.apple.com"];
+        v96 = [absoluteString componentsSeparatedByString:@"https://tv.apple.com"];
         v97 = [v5 objectForKeyedSubscript:@"eventItemURL"];
         if (v97 && [v96 count] == 2)
         {
@@ -314,38 +314,38 @@
     v100 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v80 itemIsPinned]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventItemIsPinned" andValue:v100];
 
-    v101 = [v80 itemAttributionsCount];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventItemAttributionsCount" andValue:v101];
+    itemAttributionsCount = [v80 itemAttributionsCount];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventItemAttributionsCount" andValue:itemAttributionsCount];
 
-    v102 = [v80 appBundle];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventAppBundle" andValue:v102];
+    appBundle = [v80 appBundle];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventAppBundle" andValue:appBundle];
 
     v103 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v80 fromFirstParty]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventFromFirstParty" andValue:v103];
 
-    v104 = [v80 patterns];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPatterns" andValue:v104];
+    patterns = [v80 patterns];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPatterns" andValue:patterns];
 
-    v105 = [v80 photoMemoryTitle];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPhotoMemoryTitle" andValue:v105];
+    photoMemoryTitle = [v80 photoMemoryTitle];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPhotoMemoryTitle" andValue:photoMemoryTitle];
 
     v106 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v80 photoMemoryCategory]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPhotoMemoryCategory" andValue:v106];
 
-    v107 = [v80 photoEvent];
-    v108 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v107 photoMemorySubCategory]);
+    photoEvent = [v80 photoEvent];
+    v108 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [photoEvent photoMemorySubCategory]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPhotoMemorySubCategory" andValue:v108];
 
-    v109 = [v80 photoMemoryTitle];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPhotoMemoryTitle" andValue:v109];
+    photoMemoryTitle2 = [v80 photoMemoryTitle];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPhotoMemoryTitle" andValue:photoMemoryTitle2];
 
-    v110 = [v80 photoEvent];
-    [v110 photoMemoryRelevanceScore];
+    photoEvent2 = [v80 photoEvent];
+    [photoEvent2 photoMemoryRelevanceScore];
     v111 = [NSNumber numberWithDouble:?];
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPhotoMemoryRelevanceScore" andValue:v111];
 
-    v112 = [v80 photoEvent];
-    v113 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v112 photoMemoryIsFavorite]);
+    photoEvent3 = [v80 photoEvent];
+    v113 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [photoEvent3 photoMemoryIsFavorite]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPhotoMemoryIsFavorite" andValue:v113];
 
     v114 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v80 timeAtHomeSubType]);
@@ -375,21 +375,21 @@
     v121 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v80 placeSource]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventPlaceSource" andValue:v121];
 
-    v122 = [v80 routineEvent];
+    routineEvent = [v80 routineEvent];
 
-    if (v122)
+    if (routineEvent)
     {
-      v123 = [v80 routineEvent];
-      v124 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v123 isPreOnboardedVisit]);
+      routineEvent2 = [v80 routineEvent];
+      v124 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [routineEvent2 isPreOnboardedVisit]);
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventRoutineIsPreOnboardedVisit" andValue:v124];
 
-      v125 = [v80 routineEvent];
-      v126 = [v125 poiCategory];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventRoutineEventPOICategory" andValue:v126];
+      routineEvent3 = [v80 routineEvent];
+      poiCategory2 = [routineEvent3 poiCategory];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventRoutineEventPOICategory" andValue:poiCategory2];
 
-      v127 = [v80 routineEvent];
-      v128 = [v127 categoryMuid];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventRoutineEventCategoryMuid" andValue:v128];
+      routineEvent4 = [v80 routineEvent];
+      categoryMuid2 = [routineEvent4 categoryMuid];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"eventRoutineEventCategoryMuid" andValue:categoryMuid2];
     }
   }
 
@@ -591,76 +591,76 @@ void __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke_5(uin
   }
 }
 
-- (id)serializeEventBundle:(id)a3
+- (id)serializeEventBundle:(id)bundle
 {
-  v4 = a3;
-  if (v4)
+  bundleCopy = bundle;
+  if (bundleCopy)
   {
     v5 = objc_opt_new();
-    [v4 buildResources];
-    v6 = [v4 bundleIdentifier];
-    v7 = [v6 UUIDString];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"bundleID" andValue:v7];
+    [bundleCopy buildResources];
+    bundleIdentifier = [bundleCopy bundleIdentifier];
+    uUIDString = [bundleIdentifier UUIDString];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"bundleID" andValue:uUIDString];
 
-    v8 = [v4 suggestionID];
-    v9 = [v8 UUIDString];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"SuggestionID" andValue:v9];
+    suggestionID = [bundleCopy suggestionID];
+    uUIDString2 = [suggestionID UUIDString];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"SuggestionID" andValue:uUIDString2];
 
-    v10 = [v4 startDate];
-    [v10 timeIntervalSinceReferenceDate];
+    startDate = [bundleCopy startDate];
+    [startDate timeIntervalSinceReferenceDate];
     v11 = [NSNumber numberWithDouble:?];
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"bundleStartDate" andValue:v11];
 
-    v12 = [v4 endDate];
-    [v12 timeIntervalSinceReferenceDate];
+    endDate = [bundleCopy endDate];
+    [endDate timeIntervalSinceReferenceDate];
     v13 = [NSNumber numberWithDouble:?];
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"bundleEndDate" andValue:v13];
 
-    v14 = [v4 creationDate];
-    [v14 timeIntervalSinceReferenceDate];
+    creationDate = [bundleCopy creationDate];
+    [creationDate timeIntervalSinceReferenceDate];
     v15 = [NSNumber numberWithDouble:?];
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"bundleCreationDate" andValue:v15];
 
-    v16 = [v4 firstCreationDate];
-    [v16 timeIntervalSinceReferenceDate];
+    firstCreationDate = [bundleCopy firstCreationDate];
+    [firstCreationDate timeIntervalSinceReferenceDate];
     v17 = [NSNumber numberWithDouble:?];
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"bundleFirstCreationDate" andValue:v17];
 
-    v18 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 filtered]);
+    v18 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy filtered]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"bundleFiltered" andValue:v18];
 
-    v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 bundleSubType]);
+    v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy bundleSubType]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"bundleSubType" andValue:v19];
 
-    v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 bundleSuperType]);
+    v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy bundleSuperType]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"bundleSuperType" andValue:v20];
 
     v21 = objc_opt_new();
-    v22 = [v4 events];
+    events = [bundleCopy events];
     v285[0] = _NSConcreteStackBlock;
     v285[1] = 3221225472;
     v285[2] = __58__MOEventSerializationSessionHelper_serializeEventBundle___block_invoke;
     v285[3] = &unk_100338810;
     v23 = v21;
     v286 = v23;
-    [v22 enumerateObjectsUsingBlock:v285];
+    [events enumerateObjectsUsingBlock:v285];
 
     v258 = v23;
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"bundleEvents" andValue:v23];
-    v24 = [v4 subBundleIDs];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"subBundleIDs" andValue:v24];
+    subBundleIDs = [bundleCopy subBundleIDs];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"subBundleIDs" andValue:subBundleIDs];
 
-    v25 = [v4 subSuggestionIDs];
+    subSuggestionIDs = [bundleCopy subSuggestionIDs];
     v261 = v5;
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"subSuggestionIDs" andValue:v25];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v5 withKey:@"subSuggestionIDs" andValue:subSuggestionIDs];
 
     v267 = objc_opt_new();
     v281 = 0u;
     v282 = 0u;
     v283 = 0u;
     v284 = 0u;
-    v26 = [v4 metaData];
-    v27 = [v26 countByEnumeratingWithState:&v281 objects:v288 count:16];
+    metaData = [bundleCopy metaData];
+    v27 = [metaData countByEnumeratingWithState:&v281 objects:v288 count:16];
     if (v27)
     {
       v28 = v27;
@@ -671,23 +671,23 @@ void __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke_5(uin
         {
           if (*v282 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(metaData);
           }
 
           v31 = *(*(&v281 + 1) + 8 * i);
           objc_opt_class();
-          v32 = v31;
+          stringValue = v31;
           if (objc_opt_isKindOfClass())
           {
-            v32 = [v31 stringValue];
+            stringValue = [v31 stringValue];
           }
 
-          v33 = [v4 metaData];
-          v34 = [v33 objectForKey:v31];
-          [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v267 withKey:v32 andValue:v34];
+          metaData2 = [bundleCopy metaData];
+          v34 = [metaData2 objectForKey:v31];
+          [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v267 withKey:stringValue andValue:v34];
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v281 objects:v288 count:16];
+        v28 = [metaData countByEnumeratingWithState:&v281 objects:v288 count:16];
       }
 
       while (v28);
@@ -696,72 +696,72 @@ void __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke_5(uin
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleMetadata" andValue:v267];
     if (self->_shouldAvoidRandomization)
     {
-      v35 = [v4 labels];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleLabels" andValue:v35];
+      labels = [bundleCopy labels];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleLabels" andValue:labels];
 
-      v36 = [v4 promptLanguages];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundlePromptLanguages" andValue:v36];
+      promptLanguages = [bundleCopy promptLanguages];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundlePromptLanguages" andValue:promptLanguages];
 
-      v37 = [v4 promptLanguage];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundlePromptLanguage" andValue:v37];
+      promptLanguage = [bundleCopy promptLanguage];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundlePromptLanguage" andValue:promptLanguage];
     }
 
-    v38 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 interfaceType]);
+    v38 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy interfaceType]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleInterfaceType" andValue:v38];
 
-    v39 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 summarizationGranularity]);
+    v39 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy summarizationGranularity]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleSummarizationGranularity" andValue:v39];
 
-    v40 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isAggregatedAndSuppressed]);
+    v40 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy isAggregatedAndSuppressed]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleIsAggregatedAndSuppressed" andValue:v40];
 
     v41 = objc_opt_new();
-    v42 = [v4 action];
+    action = [bundleCopy action];
 
     v260 = v41;
-    if (v42)
+    if (action)
     {
-      v43 = [v4 action];
-      v44 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v43 actionType]);
+      action2 = [bundleCopy action];
+      v44 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [action2 actionType]);
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v41 withKey:@"bundleActionType" andValue:v44];
 
-      v45 = [v4 action];
-      v46 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v45 actionSubtype]);
+      action3 = [bundleCopy action];
+      v46 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [action3 actionSubtype]);
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v41 withKey:@"bundleActionSubType" andValue:v46];
 
-      v47 = [v4 action];
-      [v47 actionNameConfidence];
+      action4 = [bundleCopy action];
+      [action4 actionNameConfidence];
       v48 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v41 withKey:@"bundleActionNameConfidence" andValue:v48];
 
       v49 = objc_opt_new();
-      v50 = [v4 action];
-      v51 = [v50 actionMetaData];
-      [v51 objectForKeyedSubscript:@"MediaActionMetaDataMediaType"];
+      action5 = [bundleCopy action];
+      actionMetaData = [action5 actionMetaData];
+      [actionMetaData objectForKeyedSubscript:@"MediaActionMetaDataMediaType"];
       v53 = v52 = v41;
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v49 withKey:@"MediaActionMetaDataMediaType" andValue:v53];
 
-      v54 = [v4 action];
-      v55 = [v54 actionMetaData];
-      v56 = [v55 objectForKeyedSubscript:@"MediaActionMetaDataMediaInfoType"];
+      action6 = [bundleCopy action];
+      actionMetaData2 = [action6 actionMetaData];
+      v56 = [actionMetaData2 objectForKeyedSubscript:@"MediaActionMetaDataMediaInfoType"];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v49 withKey:@"MediaActionMetaDataMediaInfoType" andValue:v56];
 
-      v57 = [v4 action];
-      v58 = [v57 actionMetaData];
-      v59 = [v58 objectForKeyedSubscript:@"MediaActionMetaDataAppName"];
+      action7 = [bundleCopy action];
+      actionMetaData3 = [action7 actionMetaData];
+      v59 = [actionMetaData3 objectForKeyedSubscript:@"MediaActionMetaDataAppName"];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v49 withKey:@"MediaActionMetaDataAppName" andValue:v59];
 
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v52 withKey:@"bundleActionMetadata" andValue:v49];
-      if ([v4 interfaceType] == 10 && !self->_shouldAvoidRandomization)
+      if ([bundleCopy interfaceType] == 10 && !self->_shouldAvoidRandomization)
       {
         [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v260 withKey:@"bundleActionName" andValue:@"PhotoMemory"];
       }
 
       else
       {
-        v60 = [v4 action];
-        v61 = [v60 actionName];
-        [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v260 withKey:@"bundleActionName" andValue:v61];
+        action8 = [bundleCopy action];
+        actionName = [action8 actionName];
+        [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v260 withKey:@"bundleActionName" andValue:actionName];
       }
 
       v41 = v260;
@@ -769,42 +769,42 @@ void __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke_5(uin
 
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleAction" andValue:v41];
     v63 = objc_opt_new();
-    v64 = [v4 concurrentMediaAction];
+    concurrentMediaAction = [bundleCopy concurrentMediaAction];
 
     v262 = v63;
-    if (v64)
+    if (concurrentMediaAction)
     {
-      v65 = [v4 concurrentMediaAction];
-      v66 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v65 actionType]);
+      concurrentMediaAction2 = [bundleCopy concurrentMediaAction];
+      v66 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [concurrentMediaAction2 actionType]);
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v262 withKey:@"bundleActionType" andValue:v66];
 
-      v67 = [v4 concurrentMediaAction];
-      v68 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v67 actionSubtype]);
+      concurrentMediaAction3 = [bundleCopy concurrentMediaAction];
+      v68 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [concurrentMediaAction3 actionSubtype]);
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v262 withKey:@"bundleActionSubType" andValue:v68];
 
-      v69 = [v4 concurrentMediaAction];
-      v70 = [v69 actionName];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v262 withKey:@"bundleActionName" andValue:v70];
+      concurrentMediaAction4 = [bundleCopy concurrentMediaAction];
+      actionName2 = [concurrentMediaAction4 actionName];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v262 withKey:@"bundleActionName" andValue:actionName2];
 
-      v71 = [v4 concurrentMediaAction];
-      [v71 actionNameConfidence];
+      concurrentMediaAction5 = [bundleCopy concurrentMediaAction];
+      [concurrentMediaAction5 actionNameConfidence];
       v72 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v262 withKey:@"bundleActionNameConfidence" andValue:v72];
 
       v73 = objc_opt_new();
-      v74 = [v4 concurrentMediaAction];
-      v75 = [v74 actionMetaData];
-      v76 = [v75 objectForKeyedSubscript:@"MediaActionMetaDataMediaType"];
+      concurrentMediaAction6 = [bundleCopy concurrentMediaAction];
+      actionMetaData4 = [concurrentMediaAction6 actionMetaData];
+      v76 = [actionMetaData4 objectForKeyedSubscript:@"MediaActionMetaDataMediaType"];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v73 withKey:@"MediaActionMetaDataMediaType" andValue:v76];
 
-      v77 = [v4 concurrentMediaAction];
-      v78 = [v77 actionMetaData];
-      v79 = [v78 objectForKeyedSubscript:@"MediaActionMetaDataMediaInfoType"];
+      concurrentMediaAction7 = [bundleCopy concurrentMediaAction];
+      actionMetaData5 = [concurrentMediaAction7 actionMetaData];
+      v79 = [actionMetaData5 objectForKeyedSubscript:@"MediaActionMetaDataMediaInfoType"];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v73 withKey:@"MediaActionMetaDataMediaInfoType" andValue:v79];
 
-      v80 = [v4 concurrentMediaAction];
-      v81 = [v80 actionMetaData];
-      v82 = [v81 objectForKeyedSubscript:@"MediaActionMetaDataAppName"];
+      concurrentMediaAction8 = [bundleCopy concurrentMediaAction];
+      actionMetaData6 = [concurrentMediaAction8 actionMetaData];
+      v82 = [actionMetaData6 objectForKeyedSubscript:@"MediaActionMetaDataAppName"];
       v63 = v262;
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v73 withKey:@"MediaActionMetaDataAppName" andValue:v82];
 
@@ -814,7 +814,7 @@ void __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke_5(uin
     v62 = v261;
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleConcurrentMediaAction" andValue:v63];
     v83 = objc_opt_new();
-    v84 = [v4 actions];
+    actions = [bundleCopy actions];
     v279[0] = _NSConcreteStackBlock;
     v279[1] = 3221225472;
     v279[2] = __58__MOEventSerializationSessionHelper_serializeEventBundle___block_invoke_2;
@@ -822,12 +822,12 @@ void __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke_5(uin
     v279[4] = self;
     v85 = v83;
     v280 = v85;
-    [v84 enumerateObjectsUsingBlock:v279];
+    [actions enumerateObjectsUsingBlock:v279];
 
     v257 = v85;
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleBackgroundAction" andValue:v85];
     v86 = objc_opt_new();
-    v87 = [v4 persons];
+    persons = [bundleCopy persons];
     v277[0] = _NSConcreteStackBlock;
     v277[1] = 3221225472;
     v277[2] = __58__MOEventSerializationSessionHelper_serializeEventBundle___block_invoke_3;
@@ -835,95 +835,95 @@ void __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke_5(uin
     v277[4] = self;
     v88 = v86;
     v278 = v88;
-    [v87 enumerateObjectsUsingBlock:v277];
+    [persons enumerateObjectsUsingBlock:v277];
 
     v256 = v88;
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundlePersons" andValue:v88];
     v89 = objc_opt_new();
-    v90 = [v4 place];
+    place = [bundleCopy place];
 
-    if (v90)
+    if (place)
     {
-      v91 = [v4 place];
-      v92 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v91 placeUserType]);
+      place2 = [bundleCopy place];
+      v92 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [place2 placeUserType]);
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundlePlaceUserType" andValue:v92];
 
-      v93 = [v4 place];
-      v94 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v93 placeType]);
+      place3 = [bundleCopy place];
+      v94 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [place3 placeType]);
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundlePlaceType" andValue:v94];
 
-      v95 = [v4 place];
-      v96 = [v95 placeName];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundlePlaceName" andValue:v96];
+      place4 = [bundleCopy place];
+      placeName = [place4 placeName];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundlePlaceName" andValue:placeName];
 
-      v97 = [v4 place];
-      v98 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v97 proposition]);
+      place5 = [bundleCopy place];
+      v98 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [place5 proposition]);
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundlePlaceProposition" andValue:v98];
 
-      v99 = [v4 place];
-      [v99 placeNameConfidence];
+      place6 = [bundleCopy place];
+      [place6 placeNameConfidence];
       v100 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundlePlaceNameConfidence" andValue:v100];
 
-      v101 = [v4 place];
-      v102 = [v101 location];
-      [v102 latitude];
+      place7 = [bundleCopy place];
+      location = [place7 location];
+      [location latitude];
       v103 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundleLocationLatitude" andValue:v103];
 
-      v104 = [v4 place];
-      v105 = [v104 location];
-      [v105 longitude];
+      place8 = [bundleCopy place];
+      location2 = [place8 location];
+      [location2 longitude];
       v106 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundleLocationLongitude" andValue:v106];
 
-      v107 = [v4 place];
-      v108 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v107 locationMode]);
+      place9 = [bundleCopy place];
+      v108 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [place9 locationMode]);
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundleLocationMode" andValue:v108];
 
-      v109 = [v4 place];
-      v110 = [v109 poiCategory];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundlePoiCategory" andValue:v110];
+      place10 = [bundleCopy place];
+      poiCategory = [place10 poiCategory];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundlePoiCategory" andValue:poiCategory];
 
-      v111 = [v4 place];
-      v112 = [v111 categoryMuid];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundleCategoryMuid" andValue:v112];
+      place11 = [bundleCopy place];
+      categoryMuid = [place11 categoryMuid];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundleCategoryMuid" andValue:categoryMuid];
 
-      v113 = [v4 place];
-      [v113 distanceToHomeInMiles];
+      place12 = [bundleCopy place];
+      [place12 distanceToHomeInMiles];
       v114 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundleDistanceToHomeInMiles" andValue:v114];
 
-      v115 = [v4 place];
-      [v115 familiarityIndexLOI];
+      place13 = [bundleCopy place];
+      [place13 familiarityIndexLOI];
       v116 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"familiarityIndexLOI" andValue:v116];
 
-      v117 = [v4 place];
-      v118 = [v117 enclosingArea];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundleEnclosingArea" andValue:v118];
+      place14 = [bundleCopy place];
+      enclosingArea = [place14 enclosingArea];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundleEnclosingArea" andValue:enclosingArea];
 
-      v119 = [v4 place];
-      v120 = [v119 startDate];
-      [v120 timeIntervalSinceReferenceDate];
+      place15 = [bundleCopy place];
+      startDate2 = [place15 startDate];
+      [startDate2 timeIntervalSinceReferenceDate];
       v121 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundleStartDate" andValue:v121];
 
-      v122 = [v4 place];
-      v123 = [v122 endDate];
-      [v123 timeIntervalSinceReferenceDate];
+      place16 = [bundleCopy place];
+      endDate2 = [place16 endDate];
+      [endDate2 timeIntervalSinceReferenceDate];
       v124 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundleEndDate" andValue:v124];
 
-      v125 = [v4 place];
-      [v125 priorityScore];
+      place17 = [bundleCopy place];
+      [place17 priorityScore];
       v126 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v89 withKey:@"bundlePlacePriorityScore" andValue:v126];
     }
 
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundlePlace" andValue:v89];
     v127 = objc_opt_new();
-    v128 = [v4 places];
+    places = [bundleCopy places];
     v274[0] = _NSConcreteStackBlock;
     v274[1] = 3221225472;
     v274[2] = __58__MOEventSerializationSessionHelper_serializeEventBundle___block_invoke_4;
@@ -933,53 +933,53 @@ void __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke_5(uin
     v275 = v255;
     v129 = v127;
     v276 = v129;
-    [v128 enumerateObjectsUsingBlock:v274];
+    [places enumerateObjectsUsingBlock:v274];
 
     v254 = v129;
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundlePlaces" andValue:v129];
     v130 = objc_opt_new();
-    v131 = [v4 time];
+    time = [bundleCopy time];
 
     v259 = v130;
-    if (v131)
+    if (time)
     {
-      v132 = [v4 time];
-      v133 = [v132 identifier];
-      v134 = [v133 UUIDString];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v259 withKey:@"timeIdentifier" andValue:v134];
+      time2 = [bundleCopy time];
+      identifier = [time2 identifier];
+      uUIDString3 = [identifier UUIDString];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v259 withKey:@"timeIdentifier" andValue:uUIDString3];
 
       v130 = v259;
-      v135 = [v4 time];
-      [v135 timestamp];
+      time3 = [bundleCopy time];
+      [time3 timestamp];
       v136 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v259 withKey:@"bundleTimestamp" andValue:v136];
 
-      v137 = [v4 time];
-      v138 = [v137 timeString];
+      time4 = [bundleCopy time];
+      timeString = [time4 timeString];
 
-      if (v138)
+      if (timeString)
       {
-        v139 = [v4 time];
-        v140 = [v139 timeString];
-        [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v259 withKey:@"bundleTimestring" andValue:v140];
+        time5 = [bundleCopy time];
+        timeString2 = [time5 timeString];
+        [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v259 withKey:@"bundleTimestring" andValue:timeString2];
       }
 
-      v141 = [v4 time];
-      v142 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v141 timeTag]);
+      time6 = [bundleCopy time];
+      v142 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [time6 timeTag]);
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v259 withKey:@"bundleTimetag" andValue:v142];
 
-      v143 = [v4 time];
-      v144 = [v143 timeZone];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v259 withKey:@"bundleTimezone" andValue:v144];
+      time7 = [bundleCopy time];
+      timeZone = [time7 timeZone];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v259 withKey:@"bundleTimezone" andValue:timeZone];
 
-      v145 = [v4 time];
-      v146 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v145 dateReferenceTag]);
+      time8 = [bundleCopy time];
+      v146 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [time8 dateReferenceTag]);
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v259 withKey:@"dateReferenceTag" andValue:v146];
     }
 
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleTime" andValue:v130];
     v147 = objc_opt_new();
-    v148 = [v4 resources];
+    resources = [bundleCopy resources];
     v272[0] = _NSConcreteStackBlock;
     v272[1] = 3221225472;
     v272[2] = __58__MOEventSerializationSessionHelper_serializeEventBundle___block_invoke_5;
@@ -987,54 +987,54 @@ void __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke_5(uin
     v272[4] = self;
     v149 = v147;
     v273 = v149;
-    [v148 enumerateObjectsUsingBlock:v272];
+    [resources enumerateObjectsUsingBlock:v272];
 
     v253 = v149;
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleResources" andValue:v149];
-    v150 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 photoSource]);
+    v150 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy photoSource]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundlePhotoSource" andValue:v150];
 
-    v151 = [v4 visitEventsRejectedByWatchLocation];
-    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleVisitEventsRejectedByWatchLocation" andValue:v151];
+    visitEventsRejectedByWatchLocation = [bundleCopy visitEventsRejectedByWatchLocation];
+    [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleVisitEventsRejectedByWatchLocation" andValue:visitEventsRejectedByWatchLocation];
 
-    v152 = [v4 suggestionEngagementEvents];
+    suggestionEngagementEvents = [bundleCopy suggestionEngagementEvents];
 
-    if (v152)
+    if (suggestionEngagementEvents)
     {
-      v153 = [v4 suggestionEngagementEvents];
-      v154 = [v153 allObjects];
+      suggestionEngagementEvents2 = [bundleCopy suggestionEngagementEvents];
+      allObjects = [suggestionEngagementEvents2 allObjects];
 
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleSuggestionEngagementEvents" andValue:v154];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleSuggestionEngagementEvents" andValue:allObjects];
     }
 
-    [v4 suggestionEngagementViewCount];
-    v155 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 suggestionEngagementViewCount]);
+    [bundleCopy suggestionEngagementViewCount];
+    v155 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy suggestionEngagementViewCount]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleSuggestionEngagementViewCount" andValue:v155];
 
-    v156 = [v4 appEntryEngagementEvents];
+    appEntryEngagementEvents = [bundleCopy appEntryEngagementEvents];
 
-    if (v156)
+    if (appEntryEngagementEvents)
     {
-      v157 = [v4 appEntryEngagementEvents];
-      v158 = [v157 allObjects];
+      appEntryEngagementEvents2 = [bundleCopy appEntryEngagementEvents];
+      allObjects2 = [appEntryEngagementEvents2 allObjects];
 
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleAppEntryEngagementEvents" andValue:v158];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleAppEntryEngagementEvents" andValue:allObjects2];
     }
 
-    v159 = [v4 rankingDictionary];
+    rankingDictionary = [bundleCopy rankingDictionary];
 
-    if (v159)
+    if (rankingDictionary)
     {
-      v160 = [v4 rankingDictionary];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleRanking" andValue:v160];
+      rankingDictionary2 = [bundleCopy rankingDictionary];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleRanking" andValue:rankingDictionary2];
     }
 
-    v161 = [v4 metaDataForRank];
+    metaDataForRank = [bundleCopy metaDataForRank];
 
-    if (v161)
+    if (metaDataForRank)
     {
-      v162 = [v4 metaDataForRank];
-      v163 = [v162 mutableCopy];
+      metaDataForRank2 = [bundleCopy metaDataForRank];
+      v163 = [metaDataForRank2 mutableCopy];
 
       if (!self->_shouldAvoidRandomization)
       {
@@ -1050,164 +1050,164 @@ void __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke_5(uin
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleMetaDataForRanking" andValue:v163];
     }
 
-    v164 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 timeAtHomeSubType]);
+    v164 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy timeAtHomeSubType]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleTimeAtHomeSubtype" andValue:v164];
 
-    v165 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 includedInSummaryBundleOnly]);
+    v165 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy includedInSummaryBundleOnly]);
     [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"bundleIncludedInSummaryBundleOnly" andValue:v165];
 
     v263 = objc_opt_new();
-    v166 = [v4 clusterMetadata];
+    clusterMetadata = [bundleCopy clusterMetadata];
 
-    if (v166)
+    if (clusterMetadata)
     {
-      v167 = [v4 clusterMetadata];
-      v168 = [v167 identifier];
-      v169 = [v168 UUIDString];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"outlierMetadataidentifier" andValue:v169];
+      clusterMetadata2 = [bundleCopy clusterMetadata];
+      identifier2 = [clusterMetadata2 identifier];
+      uUIDString4 = [identifier2 UUIDString];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"outlierMetadataidentifier" andValue:uUIDString4];
 
-      v170 = [v4 clusterMetadata];
-      v171 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v170 isFiltered]);
+      clusterMetadata3 = [bundleCopy clusterMetadata];
+      v171 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [clusterMetadata3 isFiltered]);
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"isFiltered" andValue:v171];
 
-      v172 = [v4 clusterMetadata];
-      v173 = [v172 phenotype];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"phenotype" andValue:v173];
+      clusterMetadata4 = [bundleCopy clusterMetadata];
+      phenotype = [clusterMetadata4 phenotype];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"phenotype" andValue:phenotype];
 
-      v174 = [v4 clusterMetadata];
-      v175 = [v174 topLevelActivityHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"topLevelActivityHistogram" andValue:v175];
+      clusterMetadata5 = [bundleCopy clusterMetadata];
+      topLevelActivityHistogram = [clusterMetadata5 topLevelActivityHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"topLevelActivityHistogram" andValue:topLevelActivityHistogram];
 
-      v176 = [v4 clusterMetadata];
-      v177 = [v176 secondLevelActivityHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"secondLevelActivityHistogram" andValue:v177];
+      clusterMetadata6 = [bundleCopy clusterMetadata];
+      secondLevelActivityHistogram = [clusterMetadata6 secondLevelActivityHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"secondLevelActivityHistogram" andValue:secondLevelActivityHistogram];
 
-      v178 = [v4 clusterMetadata];
-      v179 = [v178 activityTypeFromPhotoTraitsHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"activityTypeFromPhotoTraitsHistogram" andValue:v179];
+      clusterMetadata7 = [bundleCopy clusterMetadata];
+      activityTypeFromPhotoTraitsHistogram = [clusterMetadata7 activityTypeFromPhotoTraitsHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"activityTypeFromPhotoTraitsHistogram" andValue:activityTypeFromPhotoTraitsHistogram];
 
-      v180 = [v4 clusterMetadata];
-      v181 = [v180 timeTagHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"timeTagHistogram" andValue:v181];
+      clusterMetadata8 = [bundleCopy clusterMetadata];
+      timeTagHistogram = [clusterMetadata8 timeTagHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"timeTagHistogram" andValue:timeTagHistogram];
 
-      v182 = [v4 clusterMetadata];
-      v183 = [v182 dayOfWeekHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"dayOfWeekHistogram" andValue:v183];
+      clusterMetadata9 = [bundleCopy clusterMetadata];
+      dayOfWeekHistogram = [clusterMetadata9 dayOfWeekHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"dayOfWeekHistogram" andValue:dayOfWeekHistogram];
 
-      v184 = [v4 clusterMetadata];
-      v185 = [v184 weekOfYearHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"weekOfYearHistogram" andValue:v185];
+      clusterMetadata10 = [bundleCopy clusterMetadata];
+      weekOfYearHistogram = [clusterMetadata10 weekOfYearHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"weekOfYearHistogram" andValue:weekOfYearHistogram];
 
-      v186 = [v4 clusterMetadata];
-      v187 = [v186 holidayHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"holidayHistogram" andValue:v187];
+      clusterMetadata11 = [bundleCopy clusterMetadata];
+      holidayHistogram = [clusterMetadata11 holidayHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"holidayHistogram" andValue:holidayHistogram];
 
-      v188 = [v4 clusterMetadata];
-      v189 = [v188 celebrationHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"celebrationHistogram" andValue:v189];
+      clusterMetadata12 = [bundleCopy clusterMetadata];
+      celebrationHistogram = [clusterMetadata12 celebrationHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"celebrationHistogram" andValue:celebrationHistogram];
 
-      v190 = [v4 clusterMetadata];
-      v191 = [v190 placeNameHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"placeNameHistogram" andValue:v191];
+      clusterMetadata13 = [bundleCopy clusterMetadata];
+      placeNameHistogram = [clusterMetadata13 placeNameHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"placeNameHistogram" andValue:placeNameHistogram];
 
-      v192 = [v4 clusterMetadata];
-      v193 = [v192 combinedPlaceTypeHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"combinedPlaceTypeHistogram" andValue:v193];
+      clusterMetadata14 = [bundleCopy clusterMetadata];
+      combinedPlaceTypeHistogram = [clusterMetadata14 combinedPlaceTypeHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"combinedPlaceTypeHistogram" andValue:combinedPlaceTypeHistogram];
 
-      v194 = [v4 clusterMetadata];
-      v195 = [v194 enclosingPlaceNameHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"enclosingPlaceNameHistogram" andValue:v195];
+      clusterMetadata15 = [bundleCopy clusterMetadata];
+      enclosingPlaceNameHistogram = [clusterMetadata15 enclosingPlaceNameHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"enclosingPlaceNameHistogram" andValue:enclosingPlaceNameHistogram];
 
-      v196 = [v4 clusterMetadata];
-      v197 = [v196 placeTypeFromPhotoTraitsHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"placeTypeFromPhotoTraitsHistogram" andValue:v197];
+      clusterMetadata16 = [bundleCopy clusterMetadata];
+      placeTypeFromPhotoTraitsHistogram = [clusterMetadata16 placeTypeFromPhotoTraitsHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"placeTypeFromPhotoTraitsHistogram" andValue:placeTypeFromPhotoTraitsHistogram];
 
-      v198 = [v4 clusterMetadata];
-      v199 = [v198 contactNamesHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"contactNamesHistogram" andValue:v199];
+      clusterMetadata17 = [bundleCopy clusterMetadata];
+      contactNamesHistogram = [clusterMetadata17 contactNamesHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"contactNamesHistogram" andValue:contactNamesHistogram];
 
-      v200 = [v4 clusterMetadata];
-      v201 = [v200 personRelationshipHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"personRelationshipHistogram" andValue:v201];
+      clusterMetadata18 = [bundleCopy clusterMetadata];
+      personRelationshipHistogram = [clusterMetadata18 personRelationshipHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"personRelationshipHistogram" andValue:personRelationshipHistogram];
 
-      v202 = [v4 clusterMetadata];
-      v203 = [v202 socialEventFromPhotoTraitsHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"socialEventFromPhotoTraitsHistogram" andValue:v203];
+      clusterMetadata19 = [bundleCopy clusterMetadata];
+      socialEventFromPhotoTraitsHistogram = [clusterMetadata19 socialEventFromPhotoTraitsHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"socialEventFromPhotoTraitsHistogram" andValue:socialEventFromPhotoTraitsHistogram];
 
-      v204 = [v4 clusterMetadata];
-      v205 = [v204 otherSubjectFromPhotoTraitsHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"otherSubjectFromPhotoTraitsHistogram" andValue:v205];
+      clusterMetadata20 = [bundleCopy clusterMetadata];
+      otherSubjectFromPhotoTraitsHistogram = [clusterMetadata20 otherSubjectFromPhotoTraitsHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"otherSubjectFromPhotoTraitsHistogram" andValue:otherSubjectFromPhotoTraitsHistogram];
 
-      v206 = [v4 clusterMetadata];
-      v207 = [v206 stateOfMindValenceHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"stateOfMindValenceHistogram" andValue:v207];
+      clusterMetadata21 = [bundleCopy clusterMetadata];
+      stateOfMindValenceHistogram = [clusterMetadata21 stateOfMindValenceHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"stateOfMindValenceHistogram" andValue:stateOfMindValenceHistogram];
 
-      v208 = [v4 clusterMetadata];
-      v209 = [v208 subBundleGoodnessScores];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"subBundleGoodnessScores" andValue:v209];
+      clusterMetadata22 = [bundleCopy clusterMetadata];
+      subBundleGoodnessScores = [clusterMetadata22 subBundleGoodnessScores];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"subBundleGoodnessScores" andValue:subBundleGoodnessScores];
 
-      v210 = [v4 clusterMetadata];
-      v211 = [v210 subSuggestionIDsBeforePruning];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"subSuggestionIDsBeforePruning" andValue:v211];
+      clusterMetadata23 = [bundleCopy clusterMetadata];
+      subSuggestionIDsBeforePruning = [clusterMetadata23 subSuggestionIDsBeforePruning];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"subSuggestionIDsBeforePruning" andValue:subSuggestionIDsBeforePruning];
 
-      v212 = [v4 clusterMetadata];
-      v213 = [v212 phenotypePersonUUIDs];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"phenotypePersonUUIDs" andValue:v213];
+      clusterMetadata24 = [bundleCopy clusterMetadata];
+      phenotypePersonUUIDs = [clusterMetadata24 phenotypePersonUUIDs];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"phenotypePersonUUIDs" andValue:phenotypePersonUUIDs];
 
-      v214 = [v4 clusterMetadata];
-      v215 = [v214 timeContextFromPhotoTraitsHistogram];
-      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"timeContextFromPhotoTraitsHistogram" andValue:v215];
+      clusterMetadata25 = [bundleCopy clusterMetadata];
+      timeContextFromPhotoTraitsHistogram = [clusterMetadata25 timeContextFromPhotoTraitsHistogram];
+      [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v263 withKey:@"timeContextFromPhotoTraitsHistogram" andValue:timeContextFromPhotoTraitsHistogram];
 
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"clusterMetadata" andValue:v263];
     }
 
     v216 = objc_opt_new();
-    v217 = [v4 outlierMetadata];
+    outlierMetadata = [bundleCopy outlierMetadata];
 
-    if (v217)
+    if (outlierMetadata)
     {
-      v218 = [v4 outlierMetadata];
-      v219 = [v218 identifier];
-      [v219 UUIDString];
+      outlierMetadata2 = [bundleCopy outlierMetadata];
+      identifier3 = [outlierMetadata2 identifier];
+      [identifier3 UUIDString];
       v221 = v220 = v216;
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v220 withKey:@"outlierMetadataidentifier" andValue:v221];
 
-      v222 = [v4 outlierMetadata];
-      v223 = [v222 updatedDate];
-      [v223 timeIntervalSinceReferenceDate];
+      outlierMetadata3 = [bundleCopy outlierMetadata];
+      updatedDate = [outlierMetadata3 updatedDate];
+      [updatedDate timeIntervalSinceReferenceDate];
       v224 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v220 withKey:@"updatedDate" andValue:v224];
 
       v216 = v220;
-      v225 = [v4 outlierMetadata];
-      v226 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v225 isSignificant]);
+      outlierMetadata4 = [bundleCopy outlierMetadata];
+      v226 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [outlierMetadata4 isSignificant]);
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v220 withKey:@"isSignificant" andValue:v226];
 
-      v227 = [v4 outlierMetadata];
-      [v227 outlierScore];
+      outlierMetadata5 = [bundleCopy outlierMetadata];
+      [outlierMetadata5 outlierScore];
       v228 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v220 withKey:@"outlierScore" andValue:v228];
 
-      v229 = [v4 outlierMetadata];
-      [v229 outlierScoreThreshold];
+      outlierMetadata6 = [bundleCopy outlierMetadata];
+      [outlierMetadata6 outlierScoreThreshold];
       v230 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v220 withKey:@"outlierScoreThreshold" andValue:v230];
 
-      v231 = [v4 outlierMetadata];
-      [v231 bundleGoodnessScore];
+      outlierMetadata7 = [bundleCopy outlierMetadata];
+      [outlierMetadata7 bundleGoodnessScore];
       v232 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v220 withKey:@"bundleGoodnessScore" andValue:v232];
 
-      v233 = [v4 outlierMetadata];
-      [v233 bundleGoodnessScoreThreshold];
+      outlierMetadata8 = [bundleCopy outlierMetadata];
+      [outlierMetadata8 bundleGoodnessScoreThreshold];
       v234 = [NSNumber numberWithDouble:?];
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v220 withKey:@"bundleGoodnessScoreThreshold" andValue:v234];
 
       [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v261 withKey:@"outlierMetadata" andValue:v220];
     }
 
-    v235 = [v4 photoTraits];
-    v236 = [v235 count];
+    photoTraits = [bundleCopy photoTraits];
+    v236 = [photoTraits count];
 
     if (v236)
     {
@@ -1217,8 +1217,8 @@ void __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke_5(uin
       v269 = 0u;
       v270 = 0u;
       v271 = 0u;
-      v252 = v4;
-      obj = [v4 photoTraits];
+      v252 = bundleCopy;
+      obj = [bundleCopy photoTraits];
       v237 = [obj countByEnumeratingWithState:&v268 objects:v287 count:16];
       if (v237)
       {
@@ -1235,27 +1235,27 @@ void __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke_5(uin
 
             v240 = *(*(&v268 + 1) + 8 * j);
             v241 = objc_opt_new();
-            v242 = [v240 identifier];
-            v243 = [v242 UUIDString];
-            [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v241 withKey:@"identifier" andValue:v243];
+            identifier4 = [v240 identifier];
+            uUIDString5 = [identifier4 UUIDString];
+            [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v241 withKey:@"identifier" andValue:uUIDString5];
 
-            v244 = [v240 name];
-            [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v241 withKey:@"name" andValue:v244];
+            name = [v240 name];
+            [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v241 withKey:@"name" andValue:name];
 
-            v245 = [v240 labelType];
-            [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v241 withKey:@"labelType" andValue:v245];
+            labelType = [v240 labelType];
+            [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v241 withKey:@"labelType" andValue:labelType];
 
-            v246 = [v240 holidayIdentifier];
-            [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v241 withKey:@"holidayIdentifier" andValue:v246];
+            holidayIdentifier = [v240 holidayIdentifier];
+            [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v241 withKey:@"holidayIdentifier" andValue:holidayIdentifier];
 
-            v247 = [v240 meaningIdentifier];
-            [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v241 withKey:@"meaningIdentifier" andValue:v247];
+            meaningIdentifier = [v240 meaningIdentifier];
+            [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v241 withKey:@"meaningIdentifier" andValue:meaningIdentifier];
 
-            v248 = [v240 relevantAssetUUIDs];
-            [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v241 withKey:@"relevantAssetUUIDs" andValue:v248];
+            relevantAssetUUIDs = [v240 relevantAssetUUIDs];
+            [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v241 withKey:@"relevantAssetUUIDs" andValue:relevantAssetUUIDs];
 
-            v249 = [v240 associatedPersonLocalIdentifiers];
-            [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v241 withKey:@"associatedPersonLocalIdentifiers" andValue:v249];
+            associatedPersonLocalIdentifiers = [v240 associatedPersonLocalIdentifiers];
+            [(MOEventSerializationSessionHelper *)self _savePropertyToDictionary:v241 withKey:@"associatedPersonLocalIdentifiers" andValue:associatedPersonLocalIdentifiers];
 
             if ([v241 count])
             {
@@ -1276,7 +1276,7 @@ void __52__MOEventSerializationSessionHelper_serializeEvent___block_invoke_5(uin
       }
 
       v216 = v251;
-      v4 = v252;
+      bundleCopy = v252;
     }
   }
 
@@ -1590,22 +1590,22 @@ void __58__MOEventSerializationSessionHelper_serializeEventBundle___block_invoke
   }
 }
 
-- (void)_savePropertyToDictionary:(id)a3 withKey:(id)a4 andValue:(id)a5
+- (void)_savePropertyToDictionary:(id)dictionary withKey:(id)key andValue:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9 && v10)
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  valueCopy = value;
+  v11 = valueCopy;
+  if (keyCopy && valueCopy)
   {
     if (self->_shouldAvoidRandomization || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
 LABEL_5:
-      [v8 setObject:v11 forKey:{v9, v19}];
+      [dictionaryCopy setObject:v11 forKey:{keyCopy, v19}];
       goto LABEL_6;
     }
 
-    if (![(NSSet *)self->_randomizedKeys containsObject:v9])
+    if (![(NSSet *)self->_randomizedKeys containsObject:keyCopy])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1630,7 +1630,7 @@ LABEL_5:
                 objc_enumerationMutation(v12);
               }
 
-              if ([v9 containsString:{*(*(&v19 + 1) + 8 * v16), v19}])
+              if ([keyCopy containsString:{*(*(&v19 + 1) + 8 * v16), v19}])
               {
 
                 goto LABEL_19;
@@ -1655,16 +1655,16 @@ LABEL_5:
     }
 
 LABEL_19:
-    v17 = [(NSMutableDictionary *)self->_randomMapping objectForKey:v11];
-    if (!v17)
+    uUIDString = [(NSMutableDictionary *)self->_randomMapping objectForKey:v11];
+    if (!uUIDString)
     {
       v18 = +[NSUUID UUID];
-      v17 = [v18 UUIDString];
+      uUIDString = [v18 UUIDString];
 
-      [(NSMutableDictionary *)self->_randomMapping setObject:v17 forKey:v11];
+      [(NSMutableDictionary *)self->_randomMapping setObject:uUIDString forKey:v11];
     }
 
-    [v8 setObject:v17 forKey:v9];
+    [dictionaryCopy setObject:uUIDString forKey:keyCopy];
   }
 
 LABEL_6:

@@ -1,12 +1,12 @@
 @interface SPProtoCacheSyncData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SPProtoCacheSyncData
@@ -17,43 +17,43 @@
   v8.receiver = self;
   v8.super_class = SPProtoCacheSyncData;
   v4 = [(SPProtoCacheSyncData *)&v8 description];
-  v5 = [(SPProtoCacheSyncData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SPProtoCacheSyncData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   cacheIdentifier = self->_cacheIdentifier;
   if (cacheIdentifier)
   {
-    [v3 setObject:cacheIdentifier forKey:@"cacheIdentifier"];
+    [dictionary setObject:cacheIdentifier forKey:@"cacheIdentifier"];
   }
 
   permanentCache = self->_permanentCache;
   if (permanentCache)
   {
-    v7 = [(SPProtoCacheAssets *)permanentCache dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"permanentCache"];
+    dictionaryRepresentation = [(SPProtoCacheAssets *)permanentCache dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"permanentCache"];
   }
 
   transientCache = self->_transientCache;
   if (transientCache)
   {
-    v9 = [(SPProtoCacheAssets *)transientCache dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"transientCache"];
+    dictionaryRepresentation2 = [(SPProtoCacheAssets *)transientCache dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"transientCache"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   cacheIdentifier = self->_cacheIdentifier;
-  v7 = a3;
+  toCopy = to;
   PBDataWriterWriteStringField();
   permanentCache = self->_permanentCache;
   PBDataWriterWriteSubmessage();
@@ -61,40 +61,40 @@
   PBDataWriterWriteSubmessage();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   cacheIdentifier = self->_cacheIdentifier;
-  v5 = a3;
-  [v5 setCacheIdentifier:cacheIdentifier];
-  [v5 setPermanentCache:self->_permanentCache];
-  [v5 setTransientCache:self->_transientCache];
+  toCopy = to;
+  [toCopy setCacheIdentifier:cacheIdentifier];
+  [toCopy setPermanentCache:self->_permanentCache];
+  [toCopy setTransientCache:self->_transientCache];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_cacheIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_cacheIdentifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(SPProtoCacheAssets *)self->_permanentCache copyWithZone:a3];
+  v8 = [(SPProtoCacheAssets *)self->_permanentCache copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(SPProtoCacheAssets *)self->_transientCache copyWithZone:a3];
+  v10 = [(SPProtoCacheAssets *)self->_transientCache copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((cacheIdentifier = self->_cacheIdentifier, !(cacheIdentifier | v4[1])) || -[NSString isEqual:](cacheIdentifier, "isEqual:")) && ((permanentCache = self->_permanentCache, !(permanentCache | v4[2])) || -[SPProtoCacheAssets isEqual:](permanentCache, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((cacheIdentifier = self->_cacheIdentifier, !(cacheIdentifier | equalCopy[1])) || -[NSString isEqual:](cacheIdentifier, "isEqual:")) && ((permanentCache = self->_permanentCache, !(permanentCache | equalCopy[2])) || -[SPProtoCacheAssets isEqual:](permanentCache, "isEqual:")))
   {
     transientCache = self->_transientCache;
-    if (transientCache | v4[3])
+    if (transientCache | equalCopy[3])
     {
       v8 = [(SPProtoCacheAssets *)transientCache isEqual:?];
     }
@@ -120,18 +120,18 @@
   return v4 ^ [(SPProtoCacheAssets *)self->_transientCache hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v9 = fromCopy;
+  if (fromCopy[1])
   {
     [(SPProtoCacheSyncData *)self setCacheIdentifier:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
   permanentCache = self->_permanentCache;
-  v6 = v4[2];
+  v6 = fromCopy[2];
   if (permanentCache)
   {
     if (!v6)
@@ -152,10 +152,10 @@
     [(SPProtoCacheSyncData *)self setPermanentCache:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_9:
   transientCache = self->_transientCache;
-  v8 = v4[3];
+  v8 = fromCopy[3];
   if (transientCache)
   {
     if (v8)

@@ -1,18 +1,18 @@
 @interface WeatherStackViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
 @end
 
 @implementation WeatherStackViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WeatherStackViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"WeatherStackViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"WeatherStackViewController" hasInstanceVariable:@"_weatherConditionsViewController" withType:"WeatherConditionsViewController"];
-  [v3 validateClass:@"WeatherStackViewController" hasInstanceVariable:@"_airQualityConditionsViewController" withType:"AirQualityConditionsViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WeatherStackViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"WeatherStackViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"WeatherStackViewController" hasInstanceVariable:@"_weatherConditionsViewController" withType:"WeatherConditionsViewController"];
+  [validationsCopy validateClass:@"WeatherStackViewController" hasInstanceVariable:@"_airQualityConditionsViewController" withType:"AirQualityConditionsViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,21 +1,21 @@
 @interface AVOutputDeviceGroup
 + (void)initialize;
-- (AVOutputDeviceGroup)initWithOutputDeviceGroupImpl:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AVOutputDeviceGroup)initWithOutputDeviceGroupImpl:(id)impl;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (void)addOutputDevice:(id)a3 withOptions:(id)a4 completionHandler:(id)a5;
+- (void)addOutputDevice:(id)device withOptions:(id)options completionHandler:(id)handler;
 - (void)dealloc;
-- (void)outputDeviceGroupImpl:(id)a3 didChangeOutputDevicesWithInitiator:(id)a4;
-- (void)outputDeviceGroupImplDidChangeVolume:(id)a3;
-- (void)outputDeviceGroupImplDidChangeVolumeControlType:(id)a3;
-- (void)removeOutputDevice:(id)a3 withOptions:(id)a4 completionHandler:(id)a5;
+- (void)outputDeviceGroupImpl:(id)impl didChangeOutputDevicesWithInitiator:(id)initiator;
+- (void)outputDeviceGroupImplDidChangeVolume:(id)volume;
+- (void)outputDeviceGroupImplDidChangeVolumeControlType:(id)type;
+- (void)removeOutputDevice:(id)device withOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation AVOutputDeviceGroup
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -31,7 +31,7 @@
   [(AVOutputDeviceGroup *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -39,10 +39,10 @@
     return 0;
   }
 
-  v5 = [(AVOutputDeviceGroup *)self impl];
-  v6 = [a3 impl];
+  impl = [(AVOutputDeviceGroup *)self impl];
+  impl2 = [equal impl];
 
-  return [v5 isEqual:v6];
+  return [impl isEqual:impl2];
 }
 
 - (id)description
@@ -52,13 +52,13 @@
   return [v3 stringWithFormat:@"<%@: %p>", NSStringFromClass(v4), self];
 }
 
-- (void)outputDeviceGroupImpl:(id)a3 didChangeOutputDevicesWithInitiator:(id)a4
+- (void)outputDeviceGroupImpl:(id)impl didChangeOutputDevicesWithInitiator:(id)initiator
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (initiator)
   {
     v10 = @"AVOutputDeviceGroupMembershipChangeInitiator";
-    v11[0] = a4;
+    v11[0] = initiator;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   }
 
@@ -78,12 +78,12 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addOutputDevice:(id)a3 withOptions:(id)a4 completionHandler:(id)a5
+- (void)addOutputDevice:(id)device withOptions:(id)options completionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  [a4 objectForKeyedSubscript:@"AVOutputDeviceGroupAddOutputDeviceOptionAuthorizationToken"];
-  [a4 objectForKeyedSubscript:@"AVOutputDeviceGroupAddOutputDeviceOptionCancelIfAuthRequiredKey"];
-  [a4 objectForKeyedSubscript:@"AVOutputDeviceGroupAddOutputDeviceOptionInitiator"];
+  [options objectForKeyedSubscript:@"AVOutputDeviceGroupAddOutputDeviceOptionAuthorizationToken"];
+  [options objectForKeyedSubscript:@"AVOutputDeviceGroupAddOutputDeviceOptionCancelIfAuthRequiredKey"];
+  [options objectForKeyedSubscript:@"AVOutputDeviceGroupAddOutputDeviceOptionInitiator"];
   if (dword_1EB46D608)
   {
     v16 = 0;
@@ -98,8 +98,8 @@
   v14[1] = 3221225472;
   v14[2] = __69__AVOutputDeviceGroup_addOutputDevice_withOptions_completionHandler___block_invoke;
   v14[3] = &unk_1E794F678;
-  v14[4] = a5;
-  [(AVOutputDeviceGroupImpl *)impl addOutputDevice:a3 withOptions:a4 completionHandler:v14, v12, v13];
+  v14[4] = handler;
+  [(AVOutputDeviceGroupImpl *)impl addOutputDevice:device withOptions:options completionHandler:v14, v12, v13];
   v11 = *MEMORY[0x1E69E9840];
 }
 
@@ -123,7 +123,7 @@ uint64_t __69__AVOutputDeviceGroup_addOutputDevice_withOptions_completionHandler
   return result;
 }
 
-- (void)removeOutputDevice:(id)a3 withOptions:(id)a4 completionHandler:(id)a5
+- (void)removeOutputDevice:(id)device withOptions:(id)options completionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
   if (dword_1EB46D608)
@@ -140,8 +140,8 @@ uint64_t __69__AVOutputDeviceGroup_addOutputDevice_withOptions_completionHandler
   v14[1] = 3221225472;
   v14[2] = __72__AVOutputDeviceGroup_removeOutputDevice_withOptions_completionHandler___block_invoke;
   v14[3] = &unk_1E794F678;
-  v14[4] = a5;
-  [(AVOutputDeviceGroupImpl *)impl removeOutputDevice:a3 withOptions:a4 completionhandler:v14, v12, v13];
+  v14[4] = handler;
+  [(AVOutputDeviceGroupImpl *)impl removeOutputDevice:device withOptions:options completionhandler:v14, v12, v13];
   v11 = *MEMORY[0x1E69E9840];
 }
 
@@ -165,7 +165,7 @@ uint64_t __72__AVOutputDeviceGroup_removeOutputDevice_withOptions_completionHand
   return result;
 }
 
-- (void)outputDeviceGroupImplDidChangeVolume:(id)a3
+- (void)outputDeviceGroupImplDidChangeVolume:(id)volume
 {
   v8 = *MEMORY[0x1E69E9840];
   if (dword_1EB46D608)
@@ -179,7 +179,7 @@ uint64_t __72__AVOutputDeviceGroup_removeOutputDevice_withOptions_completionHand
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)outputDeviceGroupImplDidChangeVolumeControlType:(id)a3
+- (void)outputDeviceGroupImplDidChangeVolumeControlType:(id)type
 {
   v8 = *MEMORY[0x1E69E9840];
   if (dword_1EB46D608)
@@ -193,12 +193,12 @@ uint64_t __72__AVOutputDeviceGroup_removeOutputDevice_withOptions_completionHand
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (AVOutputDeviceGroup)initWithOutputDeviceGroupImpl:(id)a3
+- (AVOutputDeviceGroup)initWithOutputDeviceGroupImpl:(id)impl
 {
   v8.receiver = self;
   v8.super_class = AVOutputDeviceGroup;
   v4 = [(AVOutputDeviceGroup *)&v8 init];
-  if (v4 && (v5 = a3, (v4->_impl = v5) != 0))
+  if (v4 && (v5 = impl, (v4->_impl = v5) != 0))
   {
     [v5 setParentOutputDeviceGroup:v4];
     v6 = v4;

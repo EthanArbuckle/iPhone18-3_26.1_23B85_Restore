@@ -1,20 +1,20 @@
 @interface WatchSyncedPreferences
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)writtenDefaults;
-- (WatchSyncedPreferences)initWithCopy:(id)a3;
-- (WatchSyncedPreferences)initWithDefaults:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WatchSyncedPreferences)initWithCopy:(id)copy;
+- (WatchSyncedPreferences)initWithDefaults:(id)defaults;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)_forEachKeyAndValueWithBlock:(id)a3;
+- (void)_forEachKeyAndValueWithBlock:(id)block;
 - (void)synchronize;
 @end
 
 @implementation WatchSyncedPreferences
 
-- (WatchSyncedPreferences)initWithDefaults:(id)a3
+- (WatchSyncedPreferences)initWithDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v10.receiver = self;
   v10.super_class = WatchSyncedPreferences;
   v6 = [(WatchSyncedPreferences *)&v10 init];
@@ -24,16 +24,16 @@
     manager = v6->_manager;
     v6->_manager = v7;
 
-    objc_storeStrong(&v6->_defaults, a3);
+    objc_storeStrong(&v6->_defaults, defaults);
     [(WatchSyncedPreferences *)v6 loadValuesFromDefaults];
   }
 
   return v6;
 }
 
-- (WatchSyncedPreferences)initWithCopy:(id)a3
+- (WatchSyncedPreferences)initWithCopy:(id)copy
 {
-  v4 = a3;
+  copyCopy = copy;
   v9.receiver = self;
   v9.super_class = WatchSyncedPreferences;
   v5 = [(WatchSyncedPreferences *)&v9 init];
@@ -43,7 +43,7 @@
     manager = v5->_manager;
     v5->_manager = v6;
 
-    objc_storeStrong(&v5->_defaults, v4[2]);
+    objc_storeStrong(&v5->_defaults, copyCopy[2]);
   }
 
   return v5;
@@ -51,27 +51,27 @@
 
 - (NSArray)writtenDefaults
 {
-  v2 = [(WatchSyncedPreferences *)self defaults];
-  v5 = v2;
+  defaults = [(WatchSyncedPreferences *)self defaults];
+  v5 = defaults;
   v3 = [NSArray arrayWithObjects:&v5 count:1];
 
   return v3;
 }
 
-- (void)_forEachKeyAndValueWithBlock:(id)a3
+- (void)_forEachKeyAndValueWithBlock:(id)block
 {
-  v13 = a3;
-  v4 = [(WatchSyncedPreferences *)self _keys];
-  v5 = [(WatchSyncedPreferences *)self _values];
-  v6 = [v4 count];
-  if (v6 >= [v5 count])
+  blockCopy = block;
+  _keys = [(WatchSyncedPreferences *)self _keys];
+  _values = [(WatchSyncedPreferences *)self _values];
+  v6 = [_keys count];
+  if (v6 >= [_values count])
   {
-    v7 = v5;
+    v7 = _values;
   }
 
   else
   {
-    v7 = v4;
+    v7 = _keys;
   }
 
   if ([v7 count])
@@ -79,20 +79,20 @@
     v8 = 0;
     do
     {
-      v9 = [v4 objectAtIndexedSubscript:v8];
-      v10 = [v5 objectAtIndexedSubscript:v8];
-      v13[2](v13, v9, v10, v8);
+      v9 = [_keys objectAtIndexedSubscript:v8];
+      v10 = [_values objectAtIndexedSubscript:v8];
+      blockCopy[2](blockCopy, v9, v10, v8);
 
       ++v8;
-      v11 = [v4 count];
-      if (v11 >= [v5 count])
+      v11 = [_keys count];
+      if (v11 >= [_values count])
       {
-        v12 = v5;
+        v12 = _values;
       }
 
       else
       {
-        v12 = v4;
+        v12 = _keys;
       }
     }
 
@@ -100,10 +100,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -113,16 +113,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WatchSyncedPreferences *)v5 _keys];
-      v7 = [(WatchSyncedPreferences *)v5 _values];
-      v8 = [(WatchSyncedPreferences *)self _keys];
-      v9 = [v8 count];
-      if (v9 == [v6 count])
+      v5 = equalCopy;
+      _keys = [(WatchSyncedPreferences *)v5 _keys];
+      _values = [(WatchSyncedPreferences *)v5 _values];
+      _keys2 = [(WatchSyncedPreferences *)self _keys];
+      v9 = [_keys2 count];
+      if (v9 == [_keys count])
       {
-        v10 = [(WatchSyncedPreferences *)self _values];
-        v11 = [v10 count];
-        v12 = [v7 count];
+        _values2 = [(WatchSyncedPreferences *)self _values];
+        v11 = [_values2 count];
+        v12 = [_values count];
 
         if (v11 == v12)
         {
@@ -135,8 +135,8 @@
           v15[2] = sub_100038770;
           v15[3] = &unk_100086460;
           v18 = &v19;
-          v16 = v6;
-          v17 = v7;
+          v16 = _keys;
+          v17 = _values;
           [(WatchSyncedPreferences *)self _forEachKeyAndValueWithBlock:v15];
           v13 = *(v20 + 24);
 
@@ -165,10 +165,10 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v3 = [(WatchSyncedPreferences *)self _keys];
-  v4 = [v3 hash];
-  v5 = [(WatchSyncedPreferences *)self _values];
-  v6 = [v5 hash];
+  _keys = [(WatchSyncedPreferences *)self _keys];
+  v4 = [_keys hash];
+  _values = [(WatchSyncedPreferences *)self _values];
+  v6 = [_values hash];
 
   return v6 ^ v4;
 }
@@ -191,14 +191,14 @@ LABEL_11:
 
 - (void)synchronize
 {
-  v3 = [(WatchSyncedPreferences *)self writtenDefaults];
+  writtenDefaults = [(WatchSyncedPreferences *)self writtenDefaults];
   v4 = sub_10005329C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v3;
+    v14 = writtenDefaults;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Saving %@ to %{public}@", buf, 0x16u);
   }
 
@@ -206,16 +206,16 @@ LABEL_11:
   v9[1] = 3221225472;
   v9[2] = sub_100038BBC;
   v9[3] = &unk_100086488;
-  v10 = v3;
-  v5 = v3;
+  v10 = writtenDefaults;
+  v5 = writtenDefaults;
   [(WatchSyncedPreferences *)self _forEachKeyAndValueWithBlock:v9];
   manager = self->_manager;
-  v7 = [(WatchSyncedPreferences *)self _keys];
-  v8 = [NSSet setWithArray:v7];
+  _keys = [(WatchSyncedPreferences *)self _keys];
+  v8 = [NSSet setWithArray:_keys];
   [(NPSManager *)manager synchronizeUserDefaultsDomain:@"com.apple.Maps" keys:v8 container:@"com.apple.Maps"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 

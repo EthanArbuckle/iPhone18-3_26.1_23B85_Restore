@@ -2,32 +2,32 @@
 - (AVTAdaptativeLayoutView)view;
 - (AVTAvatarDisplayingControllerDelegate)delegate;
 - (AVTPresenterDelegate)presenterDelegate;
-- (AVTSingleAvatarController)initWithDataSource:(id)a3 environment:(id)a4;
+- (AVTSingleAvatarController)initWithDataSource:(id)source environment:(id)environment;
 - (id)liveView;
-- (void)displayAvatarForRecord:(id)a3 animated:(BOOL)a4;
+- (void)displayAvatarForRecord:(id)record animated:(BOOL)animated;
 - (void)loadView;
-- (void)prepareViewWithLayout:(id)a3;
-- (void)stopUsingAVTViewSessionSynchronously:(BOOL)a3 completionHandler:(id)a4;
+- (void)prepareViewWithLayout:(id)layout;
+- (void)stopUsingAVTViewSessionSynchronously:(BOOL)synchronously completionHandler:(id)handler;
 - (void)transitionLiveViewToFront;
 - (void)transitionStaticViewToFront;
 - (void)transitionToOtherDisplayedRecord;
-- (void)transitionToShowingDisplayedRecordWithCompletionHandler:(id)a3;
+- (void)transitionToShowingDisplayedRecordWithCompletionHandler:(id)handler;
 - (void)updateImageViewWithAVTViewSnapshot;
 - (void)updateImageViewWithDisplayedRecord;
-- (void)useAVTViewFromSession:(id)a3 withLayout:(id)a4;
+- (void)useAVTViewFromSession:(id)session withLayout:(id)layout;
 @end
 
 @implementation AVTSingleAvatarController
 
-- (AVTSingleAvatarController)initWithDataSource:(id)a3 environment:(id)a4
+- (AVTSingleAvatarController)initWithDataSource:(id)source environment:(id)environment
 {
-  v5 = a4;
+  environmentCopy = environment;
   v14.receiver = self;
   v14.super_class = AVTSingleAvatarController;
   v6 = [(AVTSingleAvatarController *)&v14 init];
   if (v6)
   {
-    v7 = [[_AVTAvatarRecordImageProvider alloc] initWithEnvironment:v5];
+    v7 = [[_AVTAvatarRecordImageProvider alloc] initWithEnvironment:environmentCopy];
     thumbnailRenderer = v6->_thumbnailRenderer;
     v6->_thumbnailRenderer = v7;
 
@@ -35,9 +35,9 @@
     renderingScope = v6->_renderingScope;
     v6->_renderingScope = v9;
 
-    v11 = [v5 logger];
+    logger = [environmentCopy logger];
     logger = v6->_logger;
-    v6->_logger = v11;
+    v6->_logger = logger;
   }
 
   return v6;
@@ -62,67 +62,67 @@
   [(AVTSingleAvatarController *)self setTransitioningContainer:v3];
 
   v4 = [AVTAdaptativeLayoutView alloc];
-  v5 = [(AVTSingleAvatarController *)self transitioningContainer];
-  [v5 frame];
+  transitioningContainer = [(AVTSingleAvatarController *)self transitioningContainer];
+  [transitioningContainer frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(AVTSingleAvatarController *)self transitioningContainer];
-  v15 = [(AVTAdaptativeLayoutView *)v4 initWithFrame:v14 contentView:v7, v9, v11, v13];
+  transitioningContainer2 = [(AVTSingleAvatarController *)self transitioningContainer];
+  v15 = [(AVTAdaptativeLayoutView *)v4 initWithFrame:transitioningContainer2 contentView:v7, v9, v11, v13];
 
   [(AVTSingleAvatarController *)self setView:v15];
 }
 
-- (void)prepareViewWithLayout:(id)a3
+- (void)prepareViewWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   if (![(AVTSingleAvatarController *)self isViewLoaded])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Hey, you haven't even loaded my view first"}];
   }
 
-  v5 = [(AVTSingleAvatarController *)self view];
-  [v5 setLayout:v4];
+  view = [(AVTSingleAvatarController *)self view];
+  [view setLayout:layoutCopy];
 }
 
-- (void)useAVTViewFromSession:(id)a3 withLayout:(id)a4
+- (void)useAVTViewFromSession:(id)session withLayout:(id)layout
 {
-  v6 = a4;
-  v7 = a3;
+  layoutCopy = layout;
+  sessionCopy = session;
   if (![(AVTSingleAvatarController *)self isViewLoaded])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Hey, you haven't even loaded my view first"}];
   }
 
-  v8 = [(AVTSingleAvatarController *)self displayedRecord];
+  displayedRecord = [(AVTSingleAvatarController *)self displayedRecord];
 
-  if (!v8)
+  if (!displayedRecord)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Can't show an avatar if you don't give me one"];
   }
 
-  v9 = [(AVTSingleAvatarController *)self logger];
-  v10 = [v7 avtView];
-  v11 = [v10 description];
-  [v9 logSingleModeControllerStartUsingLiveView:v11];
+  logger = [(AVTSingleAvatarController *)self logger];
+  avtView = [sessionCopy avtView];
+  v11 = [avtView description];
+  [logger logSingleModeControllerStartUsingLiveView:v11];
 
-  [(AVTSingleAvatarController *)self setAvtViewSession:v7];
-  [v7 aspectRatio];
+  [(AVTSingleAvatarController *)self setAvtViewSession:sessionCopy];
+  [sessionCopy aspectRatio];
   v13 = v12;
   v15 = v14;
-  v16 = [(AVTSingleAvatarController *)self transitioningContainer];
-  [v16 setAspectRatio:{v13, v15}];
+  transitioningContainer = [(AVTSingleAvatarController *)self transitioningContainer];
+  [transitioningContainer setAspectRatio:{v13, v15}];
 
-  v17 = [(AVTSingleAvatarController *)self view];
-  [v17 setLayout:v6];
+  view = [(AVTSingleAvatarController *)self view];
+  [view setLayout:layoutCopy];
 
-  v18 = [(AVTSingleAvatarController *)self transitioningContainer];
-  v19 = [v7 avtViewContainer];
+  transitioningContainer2 = [(AVTSingleAvatarController *)self transitioningContainer];
+  avtViewContainer = [sessionCopy avtViewContainer];
 
-  [v18 setLiveView:v19];
-  v20 = [(AVTSingleAvatarController *)self delegate];
-  [v20 willBeginFocus:self];
+  [transitioningContainer2 setLiveView:avtViewContainer];
+  delegate = [(AVTSingleAvatarController *)self delegate];
+  [delegate willBeginFocus:self];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -138,46 +138,46 @@ void __62__AVTSingleAvatarController_useAVTViewFromSession_withLayout___block_in
   [v2 didBeginFocus:*(a1 + 32)];
 }
 
-- (void)stopUsingAVTViewSessionSynchronously:(BOOL)a3 completionHandler:(id)a4
+- (void)stopUsingAVTViewSessionSynchronously:(BOOL)synchronously completionHandler:(id)handler
 {
-  v13 = a4;
-  v5 = [(AVTSingleAvatarController *)self logger];
-  v6 = [(AVTSingleAvatarController *)self liveView];
-  v7 = [v6 description];
-  [v5 logSingleModeControllerStopUsingLiveView:v7];
+  handlerCopy = handler;
+  logger = [(AVTSingleAvatarController *)self logger];
+  liveView = [(AVTSingleAvatarController *)self liveView];
+  v7 = [liveView description];
+  [logger logSingleModeControllerStopUsingLiveView:v7];
 
-  v8 = [(AVTSingleAvatarController *)self delegate];
-  [v8 willEndFocus:self];
+  delegate = [(AVTSingleAvatarController *)self delegate];
+  [delegate willEndFocus:self];
 
-  v9 = [(AVTSingleAvatarController *)self delegate];
-  [v9 didEndFocus:self];
+  delegate2 = [(AVTSingleAvatarController *)self delegate];
+  [delegate2 didEndFocus:self];
 
-  v10 = [(AVTSingleAvatarController *)self currentTransition];
-  [v10 cancel];
+  currentTransition = [(AVTSingleAvatarController *)self currentTransition];
+  [currentTransition cancel];
 
   [(AVTSingleAvatarController *)self setCurrentTransition:0];
   [(AVTSingleAvatarController *)self updateImageViewWithAVTViewSnapshot];
-  v11 = [(AVTSingleAvatarController *)self transitioningContainer];
-  [v11 setLiveView:0];
+  transitioningContainer = [(AVTSingleAvatarController *)self transitioningContainer];
+  [transitioningContainer setLiveView:0];
 
   [(AVTSingleAvatarController *)self setAvtViewSession:0];
-  v12 = v13;
-  if (v13)
+  v12 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v13 + 2))(v13, 1);
-    v12 = v13;
+    (*(handlerCopy + 2))(handlerCopy, 1);
+    v12 = handlerCopy;
   }
 }
 
-- (void)displayAvatarForRecord:(id)a3 animated:(BOOL)a4
+- (void)displayAvatarForRecord:(id)record animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [(AVTSingleAvatarController *)self setDisplayedRecord:v6];
-  v7 = [(AVTSingleAvatarController *)self avtViewSession];
-  v8 = [v7 isActive];
+  animatedCopy = animated;
+  recordCopy = record;
+  [(AVTSingleAvatarController *)self setDisplayedRecord:recordCopy];
+  avtViewSession = [(AVTSingleAvatarController *)self avtViewSession];
+  isActive = [avtViewSession isActive];
 
-  if (v8)
+  if (isActive)
   {
     [(AVTSingleAvatarController *)self transitionToOtherDisplayedRecord];
   }
@@ -187,7 +187,7 @@ void __62__AVTSingleAvatarController_useAVTViewFromSession_withLayout___block_in
   v12[0] = MEMORY[0x1E69E9820];
   v12[2] = __61__AVTSingleAvatarController_displayAvatarForRecord_animated___block_invoke;
   v12[3] = &unk_1E7F3AD60;
-  if (v4)
+  if (animatedCopy)
   {
     v10 = 0.3;
   }
@@ -198,8 +198,8 @@ void __62__AVTSingleAvatarController_useAVTViewFromSession_withLayout___block_in
   }
 
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
+  v13 = recordCopy;
+  v11 = recordCopy;
   [v9 animateWithDuration:v12 animations:v10];
 }
 
@@ -211,31 +211,31 @@ void __61__AVTSingleAvatarController_displayAvatarForRecord_animated___block_inv
 
 - (void)updateImageViewWithDisplayedRecord
 {
-  v3 = [(AVTSingleAvatarController *)self displayedRecord];
+  displayedRecord = [(AVTSingleAvatarController *)self displayedRecord];
 
-  if (v3)
+  if (displayedRecord)
   {
-    v4 = [(AVTSingleAvatarController *)self displayedRecord];
-    v5 = [(AVTSingleAvatarController *)self thumbnailRenderer];
-    v6 = [(AVTSingleAvatarController *)self displayedRecord];
-    v7 = [(AVTSingleAvatarController *)self renderingScope];
-    v8 = [v5 providerForRecord:v6 scope:v7];
+    displayedRecord2 = [(AVTSingleAvatarController *)self displayedRecord];
+    thumbnailRenderer = [(AVTSingleAvatarController *)self thumbnailRenderer];
+    displayedRecord3 = [(AVTSingleAvatarController *)self displayedRecord];
+    renderingScope = [(AVTSingleAvatarController *)self renderingScope];
+    v8 = [thumbnailRenderer providerForRecord:displayedRecord3 scope:renderingScope];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __63__AVTSingleAvatarController_updateImageViewWithDisplayedRecord__block_invoke;
     v13[3] = &unk_1E7F3BF90;
     v13[4] = self;
-    v14 = v4;
+    v14 = displayedRecord2;
     v9 = v8[2];
-    v10 = v4;
+    v10 = displayedRecord2;
     v11 = v9(v8, v13, 1);
   }
 
   else
   {
-    v12 = [(AVTSingleAvatarController *)self transitioningContainer];
-    [v12 setStaticImage:0];
+    transitioningContainer = [(AVTSingleAvatarController *)self transitioningContainer];
+    [transitioningContainer setStaticImage:0];
   }
 }
 
@@ -254,54 +254,54 @@ void __63__AVTSingleAvatarController_updateImageViewWithDisplayedRecord__block_i
 
 - (void)updateImageViewWithAVTViewSnapshot
 {
-  v3 = [(AVTSingleAvatarController *)self transitioningContainer];
-  v4 = [v3 staticView];
-  v5 = [v4 window];
+  transitioningContainer = [(AVTSingleAvatarController *)self transitioningContainer];
+  staticView = [transitioningContainer staticView];
+  window = [staticView window];
 
-  if (v5)
+  if (window)
   {
     v6 = MEMORY[0x1E698E2D8];
-    v7 = [(AVTSingleAvatarController *)self avtViewSession];
-    v8 = [v7 avtView];
-    v9 = [(AVTSingleAvatarController *)self transitioningContainer];
-    v10 = [v9 staticView];
-    v11 = [(AVTSingleAvatarController *)self logger];
-    v14 = [v6 snapshotAVTView:v8 matchingViewSize:v10 highQuality:1 logger:v11];
+    avtViewSession = [(AVTSingleAvatarController *)self avtViewSession];
+    avtView = [avtViewSession avtView];
+    transitioningContainer2 = [(AVTSingleAvatarController *)self transitioningContainer];
+    staticView2 = [transitioningContainer2 staticView];
+    logger = [(AVTSingleAvatarController *)self logger];
+    logger2 = [v6 snapshotAVTView:avtView matchingViewSize:staticView2 highQuality:1 logger:logger];
 
-    v12 = [(AVTSingleAvatarController *)self transitioningContainer];
-    [v12 setStaticImage:v14];
+    transitioningContainer3 = [(AVTSingleAvatarController *)self transitioningContainer];
+    [transitioningContainer3 setStaticImage:logger2];
 
-    v13 = [(AVTSingleAvatarController *)self transitioningContainer];
-    [v13 transitionStaticViewToFront];
+    transitioningContainer4 = [(AVTSingleAvatarController *)self transitioningContainer];
+    [transitioningContainer4 transitionStaticViewToFront];
   }
 
   else
   {
-    v14 = [(AVTSingleAvatarController *)self logger];
-    [v14 logSingleModeCantSnapshotForLackOfWindow];
+    logger2 = [(AVTSingleAvatarController *)self logger];
+    [logger2 logSingleModeCantSnapshotForLackOfWindow];
   }
 }
 
 - (void)transitionToOtherDisplayedRecord
 {
-  v3 = [(AVTSingleAvatarController *)self avtViewSession];
-  v4 = [v3 isActive];
+  avtViewSession = [(AVTSingleAvatarController *)self avtViewSession];
+  isActive = [avtViewSession isActive];
 
-  if ((v4 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Can't transition to other record without an AVTView"];
   }
 
   [(AVTSingleAvatarController *)self updateImageViewWithAVTViewSnapshot];
-  v5 = [(AVTSingleAvatarController *)self avtViewSession];
-  v6 = [v5 avtViewUpdater];
-  v7 = [(AVTSingleAvatarController *)self displayedRecord];
+  avtViewSession2 = [(AVTSingleAvatarController *)self avtViewSession];
+  avtViewUpdater = [avtViewSession2 avtViewUpdater];
+  displayedRecord = [(AVTSingleAvatarController *)self displayedRecord];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __61__AVTSingleAvatarController_transitionToOtherDisplayedRecord__block_invoke;
   v8[3] = &unk_1E7F3AA80;
   v8[4] = self;
-  [v6 setAvatarRecord:v7 completionHandler:v8];
+  [avtViewUpdater setAvatarRecord:displayedRecord completionHandler:v8];
 }
 
 void __61__AVTSingleAvatarController_transitionToOtherDisplayedRecord__block_invoke(uint64_t a1, int a2)
@@ -349,40 +349,40 @@ void __61__AVTSingleAvatarController_transitionToOtherDisplayedRecord__block_inv
   }
 }
 
-- (void)transitionToShowingDisplayedRecordWithCompletionHandler:(id)a3
+- (void)transitionToShowingDisplayedRecordWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(AVTSingleAvatarController *)self isViewLoaded])
   {
-    v5 = [(AVTSingleAvatarController *)self avtViewSession];
-    if (([v5 isActive] & 1) == 0)
+    avtViewSession = [(AVTSingleAvatarController *)self avtViewSession];
+    if (([avtViewSession isActive] & 1) == 0)
     {
 LABEL_9:
 
       goto LABEL_10;
     }
 
-    v6 = [(AVTSingleAvatarController *)self displayedRecord];
+    displayedRecord = [(AVTSingleAvatarController *)self displayedRecord];
 
-    if (v6)
+    if (displayedRecord)
     {
-      v7 = [(AVTSingleAvatarController *)self avtViewSession];
-      v5 = [v7 avtViewUpdater];
+      avtViewSession2 = [(AVTSingleAvatarController *)self avtViewSession];
+      avtViewSession = [avtViewSession2 avtViewUpdater];
 
-      v8 = [v5 avatarRecord];
-      v9 = [(AVTSingleAvatarController *)self displayedRecord];
-      v10 = [v8 isEqual:v9];
+      avatarRecord = [avtViewSession avatarRecord];
+      displayedRecord2 = [(AVTSingleAvatarController *)self displayedRecord];
+      v10 = [avatarRecord isEqual:displayedRecord2];
 
       if (v10)
       {
         v11 = [AVTAvatarToLiveTransition alloc];
-        v12 = [(AVTSingleAvatarController *)self logger];
-        v13 = [(AVTAvatarToLiveTransition *)v11 initWithModel:self animated:0 setupHandler:0 completionHandler:&__block_literal_global_33 logger:v12];
+        logger = [(AVTSingleAvatarController *)self logger];
+        v13 = [(AVTAvatarToLiveTransition *)v11 initWithModel:self animated:0 setupHandler:0 completionHandler:&__block_literal_global_33 logger:logger];
 
         [(AVTTransition *)v13 start];
-        if (v4)
+        if (handlerCopy)
         {
-          v4[2](v4, 1);
+          handlerCopy[2](handlerCopy, 1);
         }
       }
 
@@ -403,7 +403,7 @@ LABEL_9:
         v20[4] = self;
         v17 = MEMORY[0x1E69E9820];
         v19 = &v21;
-        v18 = v4;
+        v18 = handlerCopy;
         v15 = [(AVTSingleAvatarController *)self logger:v17];
         v16 = [(AVTAvatarToLiveTransition *)v14 initWithModel:self animated:1 setupHandler:v20 completionHandler:&v17 logger:v15];
 
@@ -466,22 +466,22 @@ uint64_t __85__AVTSingleAvatarController_transitionToShowingDisplayedRecordWithC
 
 - (void)transitionStaticViewToFront
 {
-  v2 = [(AVTSingleAvatarController *)self transitioningContainer];
-  [v2 transitionStaticViewToFront];
+  transitioningContainer = [(AVTSingleAvatarController *)self transitioningContainer];
+  [transitioningContainer transitionStaticViewToFront];
 }
 
 - (void)transitionLiveViewToFront
 {
-  v2 = [(AVTSingleAvatarController *)self transitioningContainer];
-  [v2 transitionLiveViewToFront];
+  transitioningContainer = [(AVTSingleAvatarController *)self transitioningContainer];
+  [transitioningContainer transitionLiveViewToFront];
 }
 
 - (id)liveView
 {
-  v2 = [(AVTSingleAvatarController *)self avtViewSession];
-  v3 = [v2 avtView];
+  avtViewSession = [(AVTSingleAvatarController *)self avtViewSession];
+  avtView = [avtViewSession avtView];
 
-  return v3;
+  return avtView;
 }
 
 - (AVTAvatarDisplayingControllerDelegate)delegate

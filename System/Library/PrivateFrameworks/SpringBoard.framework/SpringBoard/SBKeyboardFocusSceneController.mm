@@ -1,41 +1,41 @@
 @interface SBKeyboardFocusSceneController
-- (BOOL)_removeSceneFromRecentsAndUpdateKeyboardFocusTargetIfNeeded:(id)a3 reason:(id)a4;
-- (BOOL)_updateKeyboardFocusTargetFromPreviouslyFocusedSceneIdentity:(id)a3 pid:(int)a4;
-- (BOOL)controlsScene:(id)a3;
-- (BOOL)shouldAllowInteractionTrackingKeyboardFocusUpdateForWindow:(id)a3;
-- (BOOL)shouldPreventFocusForSceneWithIdentityToken:(id)a3;
+- (BOOL)_removeSceneFromRecentsAndUpdateKeyboardFocusTargetIfNeeded:(id)needed reason:(id)reason;
+- (BOOL)_updateKeyboardFocusTargetFromPreviouslyFocusedSceneIdentity:(id)identity pid:(int)pid;
+- (BOOL)controlsScene:(id)scene;
+- (BOOL)shouldAllowInteractionTrackingKeyboardFocusUpdateForWindow:(id)window;
+- (BOOL)shouldPreventFocusForSceneWithIdentityToken:(id)token;
 - (BOOL)supportsFlexibleWindowing;
 - (FBScene)systemUISceneRequestingFocus;
 - (NSSet)springBoardFocusLockReasons;
 - (NSString)debugDescription;
-- (SBKeyboardFocusSceneController)initWithWindowScene:(id)a3 dependencies:(id)a4;
-- (SBKeyboardFocusSceneController)initWithWindowScene:(id)a3 policyEnforcer:(id)a4 pipelineFactory:(id)a5 dependencies:(id)a6;
+- (SBKeyboardFocusSceneController)initWithWindowScene:(id)scene dependencies:(id)dependencies;
+- (SBKeyboardFocusSceneController)initWithWindowScene:(id)scene policyEnforcer:(id)enforcer pipelineFactory:(id)factory dependencies:(id)dependencies;
 - (SBKeyboardFocusSceneControllerDelegate)delegate;
 - (SBWindowScene)sbWindowScene;
-- (id)_focusLockSpringBoardWindow:(id)a3 forReason:(id)a4;
-- (id)_topmostZOrderedSceneExcluding:(id)a3;
-- (id)_updatePolicyForReason:(id)a3;
+- (id)_focusLockSpringBoardWindow:(id)window forReason:(id)reason;
+- (id)_topmostZOrderedSceneExcluding:(id)excluding;
+- (id)_updatePolicyForReason:(id)reason;
 - (id)accessibilityKeyboardFocusOverrideTarget;
-- (id)bufferEventsForReason:(id)a3 generation:(unint64_t)a4;
-- (id)focusLockSpringBoardWindow:(id)a3 forReason:(id)a4;
-- (id)generateUpdatedPreferencesForCoalitionMember:(id)a3 reason:(id)a4;
-- (id)keyboardFocusRedirectionForTarget:(id)a3;
+- (id)bufferEventsForReason:(id)reason generation:(unint64_t)generation;
+- (id)focusLockSpringBoardWindow:(id)window forReason:(id)reason;
+- (id)generateUpdatedPreferencesForCoalitionMember:(id)member reason:(id)reason;
+- (id)keyboardFocusRedirectionForTarget:(id)target;
 - (id)mostRecentKeyboardArbiterSuggestedTarget;
 - (id)newPipeline;
-- (id)redirectSpringBoardLockFocusForReason:(id)a3 toProcessidentifier:(int)a4 toSceneIdentityToken:(id)a5;
-- (id)sceneForFocusTarget:(id)a3;
-- (void)_bootDidComplete:(id)a3;
-- (void)_requestPolicyReevaluationForReason:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)coalitionMemberFocusDidChange:(id)a3;
+- (id)redirectSpringBoardLockFocusForReason:(id)reason toProcessidentifier:(int)processidentifier toSceneIdentityToken:(id)token;
+- (id)sceneForFocusTarget:(id)target;
+- (void)_bootDidComplete:(id)complete;
+- (void)_requestPolicyReevaluationForReason:(id)reason;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)coalitionMemberFocusDidChange:(id)change;
 - (void)displayDidBecomeActive;
 - (void)invalidate;
-- (void)keyboardArbiterSuggestedFocusTarget:(id)a3;
-- (void)sceneManager:(id)a3 didAddExternalForegroundApplicationSceneHandle:(id)a4;
-- (void)sceneManager:(id)a3 didRemoveExternalForegroundApplicationSceneHandle:(id)a4;
-- (void)sceneManager:(id)a3 willRemoveExternalForegroundApplicationSceneHandle:(id)a4 withReason:(int64_t)a5;
-- (void)setCoalition:(id)a3;
-- (void)transientOverlayScenePresenter:(id)a3 didDismissViewController:(id)a4 wasTopmostPresentation:(BOOL)a5;
+- (void)keyboardArbiterSuggestedFocusTarget:(id)target;
+- (void)sceneManager:(id)manager didAddExternalForegroundApplicationSceneHandle:(id)handle;
+- (void)sceneManager:(id)manager didRemoveExternalForegroundApplicationSceneHandle:(id)handle;
+- (void)sceneManager:(id)manager willRemoveExternalForegroundApplicationSceneHandle:(id)handle withReason:(int64_t)reason;
+- (void)setCoalition:(id)coalition;
+- (void)transientOverlayScenePresenter:(id)presenter didDismissViewController:(id)controller wasTopmostPresentation:(BOOL)presentation;
 @end
 
 @implementation SBKeyboardFocusSceneController
@@ -43,17 +43,17 @@
 - (id)accessibilityKeyboardFocusOverrideTarget
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained accessibilityOverrideTarget];
+  accessibilityOverrideTarget = [WeakRetained accessibilityOverrideTarget];
 
-  return v3;
+  return accessibilityOverrideTarget;
 }
 
 - (id)mostRecentKeyboardArbiterSuggestedTarget
 {
   recentlyUsedScenes = self->_recentlyUsedScenes;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained sceneIdentityTokensWithShouldPreventFocus];
-  v5 = [(_SBRecentlyUsedSceneIdentityCache *)recentlyUsedScenes mostRecentFocusTargetForAnyProcessExcludingSceneIdentityTokens:v4];
+  sceneIdentityTokensWithShouldPreventFocus = [WeakRetained sceneIdentityTokensWithShouldPreventFocus];
+  v5 = [(_SBRecentlyUsedSceneIdentityCache *)recentlyUsedScenes mostRecentFocusTargetForAnyProcessExcludingSceneIdentityTokens:sceneIdentityTokensWithShouldPreventFocus];
 
   return v5;
 }
@@ -61,9 +61,9 @@
 - (FBScene)systemUISceneRequestingFocus
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained systemUISceneRequestingFocus];
+  systemUISceneRequestingFocus = [WeakRetained systemUISceneRequestingFocus];
 
-  return v3;
+  return systemUISceneRequestingFocus;
 }
 
 - (NSSet)springBoardFocusLockReasons
@@ -73,7 +73,7 @@
   v17 = 3221225472;
   v18 = __61__SBKeyboardFocusSceneController_springBoardFocusLockReasons__block_invoke;
   v19 = &unk_2783C0860;
-  v20 = self;
+  selfCopy = self;
   v4 = v3;
   v21 = v4;
   v5 = MEMORY[0x223D6F7F0](&v16);
@@ -105,8 +105,8 @@
   previousDependencyReasonsSpringShouldHaveFocus = self->_previousDependencyReasonsSpringShouldHaveFocus;
   self->_previousDependencyReasonsSpringShouldHaveFocus = v10;
 
-  v12 = [(BSCompoundAssertion *)self->_springBoardFocusLockAssertions context];
-  v13 = [v12 bs_map:&__block_literal_global_126];
+  context = [(BSCompoundAssertion *)self->_springBoardFocusLockAssertions context];
+  v13 = [context bs_map:&__block_literal_global_126];
 
   [(NSSet *)v4 unionSet:v13];
   v14 = v4;
@@ -164,30 +164,30 @@ void __61__SBKeyboardFocusSceneController_springBoardFocusLockReasons__block_inv
   [*(a1 + 40) addObject:v6];
 }
 
-- (SBKeyboardFocusSceneController)initWithWindowScene:(id)a3 dependencies:(id)a4
+- (SBKeyboardFocusSceneController)initWithWindowScene:(id)scene dependencies:(id)dependencies
 {
   v29[2] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCACA8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 _FBSScene];
-  v10 = [v9 identifier];
-  v11 = [v6 stringWithFormat:@"Scene-%@", v10];
+  dependenciesCopy = dependencies;
+  sceneCopy = scene;
+  _FBSScene = [sceneCopy _FBSScene];
+  identifier = [_FBSScene identifier];
+  v11 = [v6 stringWithFormat:@"Scene-%@", identifier];
 
   v12 = MEMORY[0x277CCACA8];
-  v13 = [v8 _FBSScene];
-  v14 = [v13 identifier];
-  v15 = [v12 stringWithFormat:@"SBSystemKeyCommandPolicyEnforcer-Scene-%@", v14];
+  _FBSScene2 = [sceneCopy _FBSScene];
+  identifier2 = [_FBSScene2 identifier];
+  v15 = [v12 stringWithFormat:@"SBSystemKeyCommandPolicyEnforcer-Scene-%@", identifier2];
 
   v16 = [SBKeyboardFocusScenePolicyEnforcer alloc];
-  v17 = [v7 deliveryManager];
-  v18 = [v7 eventDeferringSystemShellBehaviorDelegate];
-  v19 = [(SBKeyboardFocusScenePolicyEnforcer *)v16 initWithDeliveryManager:v17 debugName:v11 systemShellDelegate:v18];
+  deliveryManager = [dependenciesCopy deliveryManager];
+  eventDeferringSystemShellBehaviorDelegate = [dependenciesCopy eventDeferringSystemShellBehaviorDelegate];
+  v19 = [(SBKeyboardFocusScenePolicyEnforcer *)v16 initWithDeliveryManager:deliveryManager debugName:v11 systemShellDelegate:eventDeferringSystemShellBehaviorDelegate];
 
   v20 = [SBSystemKeyCommandScenePolicyEnforcer alloc];
-  v21 = [v7 sceneProvider];
-  v22 = [v7 deliveryManager];
-  v23 = [(SBSystemKeyCommandScenePolicyEnforcer *)v20 initWithSceneProvider:v21 debugName:v15 deliveryManager:v22];
+  sceneProvider = [dependenciesCopy sceneProvider];
+  deliveryManager2 = [dependenciesCopy deliveryManager];
+  v23 = [(SBSystemKeyCommandScenePolicyEnforcer *)v20 initWithSceneProvider:sceneProvider debugName:v15 deliveryManager:deliveryManager2];
 
   v24 = [SBKeyboardFocusPolicyEnforcerPipeline alloc];
   v29[0] = v19;
@@ -195,26 +195,26 @@ void __61__SBKeyboardFocusSceneController_springBoardFocusLockReasons__block_inv
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
   v26 = [(SBKeyboardFocusPolicyEnforcerPipeline *)v24 initWithEnforcers:v25];
 
-  v27 = [(SBKeyboardFocusSceneController *)self initWithWindowScene:v8 policyEnforcer:v26 pipelineFactory:0 dependencies:v7];
+  v27 = [(SBKeyboardFocusSceneController *)self initWithWindowScene:sceneCopy policyEnforcer:v26 pipelineFactory:0 dependencies:dependenciesCopy];
   return v27;
 }
 
-- (SBKeyboardFocusSceneController)initWithWindowScene:(id)a3 policyEnforcer:(id)a4 pipelineFactory:(id)a5 dependencies:(id)a6
+- (SBKeyboardFocusSceneController)initWithWindowScene:(id)scene policyEnforcer:(id)enforcer pipelineFactory:(id)factory dependencies:(id)dependencies
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sceneCopy = scene;
+  enforcerCopy = enforcer;
+  factoryCopy = factory;
+  dependenciesCopy = dependencies;
   v54.receiver = self;
   v54.super_class = SBKeyboardFocusSceneController;
   v14 = [(SBKeyboardFocusSceneController *)&v54 init];
   v15 = v14;
   if (v14)
   {
-    v51 = v11;
-    if (v12)
+    v51 = enforcerCopy;
+    if (factoryCopy)
     {
-      v16 = v12;
+      v16 = factoryCopy;
     }
 
     else
@@ -224,73 +224,73 @@ void __61__SBKeyboardFocusSceneController_springBoardFocusLockReasons__block_inv
 
     v17 = v16;
 
-    objc_storeWeak(&v15->_sbWindowScene, v10);
-    v18 = [v10 _FBSScene];
-    v19 = [v18 identityToken];
-    v20 = [SBKeyboardFocusTarget targetForSceneIdentityToken:v19 pid:getpid()];
+    objc_storeWeak(&v15->_sbWindowScene, sceneCopy);
+    _FBSScene = [sceneCopy _FBSScene];
+    identityToken = [_FBSScene identityToken];
+    v20 = [SBKeyboardFocusTarget targetForSceneIdentityToken:identityToken pid:getpid()];
     sbWindowSceneFocusTarget = v15->_sbWindowSceneFocusTarget;
     v15->_sbWindowSceneFocusTarget = v20;
 
-    objc_storeStrong(&v15->_dependencies, a6);
-    objc_storeStrong(&v15->_policyEnforcer, a4);
-    v22 = [v10 _FBSScene];
-    v23 = [v22 identifier];
+    objc_storeStrong(&v15->_dependencies, dependencies);
+    objc_storeStrong(&v15->_policyEnforcer, enforcer);
+    _FBSScene2 = [sceneCopy _FBSScene];
+    identifier = [_FBSScene2 identifier];
     debugName = v15->_debugName;
-    v15->_debugName = v23;
+    v15->_debugName = identifier;
 
     v25 = objc_alloc_init(_SBRecentlyUsedSceneIdentityCache);
     recentlyUsedScenes = v15->_recentlyUsedScenes;
     v15->_recentlyUsedScenes = v25;
 
-    v27 = [(SBKeyboardFocusSceneController *)v17 newPipeline];
+    newPipeline = [(SBKeyboardFocusSceneController *)v17 newPipeline];
     pipeline = v15->_pipeline;
-    v15->_pipeline = v27;
+    v15->_pipeline = newPipeline;
 
-    v15->_coalitionAffinity = [v10 keyboardFocusCoalitionAffinity];
+    v15->_coalitionAffinity = [sceneCopy keyboardFocusCoalitionAffinity];
     v29 = objc_alloc_init(MEMORY[0x277CF0730]);
-    v30 = [MEMORY[0x277CF0628] keyboardFocusEnvironment];
-    [v29 setEnvironment:v30];
+    keyboardFocusEnvironment = [MEMORY[0x277CF0628] keyboardFocusEnvironment];
+    [v29 setEnvironment:keyboardFocusEnvironment];
 
-    v31 = [v10 _FBSScene];
-    v32 = [v31 settings];
-    v33 = [v32 sb_displayConfigurationForSceneManagers];
-    v34 = [v33 isExternal];
+    _FBSScene3 = [sceneCopy _FBSScene];
+    settings = [_FBSScene3 settings];
+    sb_displayConfigurationForSceneManagers = [settings sb_displayConfigurationForSceneManagers];
+    isExternal = [sb_displayConfigurationForSceneManagers isExternal];
     v35 = MEMORY[0x277CF0698];
-    if (v34)
+    if (isExternal)
     {
-      v36 = [v33 hardwareIdentifier];
-      v37 = [v35 displayWithHardwareIdentifier:v36];
+      hardwareIdentifier = [sb_displayConfigurationForSceneManagers hardwareIdentifier];
+      builtinDisplay = [v35 displayWithHardwareIdentifier:hardwareIdentifier];
     }
 
     else
     {
-      v37 = [MEMORY[0x277CF0698] builtinDisplay];
+      builtinDisplay = [MEMORY[0x277CF0698] builtinDisplay];
     }
 
-    [v29 setDisplay:v37];
-    v38 = [(SBKeyboardFocusTarget *)v15->_sbWindowSceneFocusTarget sceneIdentityToken];
-    v39 = [v38 stringRepresentation];
+    [v29 setDisplay:builtinDisplay];
+    sceneIdentityToken = [(SBKeyboardFocusTarget *)v15->_sbWindowSceneFocusTarget sceneIdentityToken];
+    stringRepresentation = [sceneIdentityToken stringRepresentation];
 
-    v40 = [MEMORY[0x277CF0650] tokenForString:v39];
+    v40 = [MEMORY[0x277CF0650] tokenForString:stringRepresentation];
     [v29 setToken:v40];
 
     v41 = [v29 copy];
     bufferingPredicate = v15->_bufferingPredicate;
     v15->_bufferingPredicate = v41;
 
-    v43 = [v10 sceneManager];
-    [v43 addObserver:v15];
+    sceneManager = [sceneCopy sceneManager];
+    [sceneManager addObserver:v15];
 
     if (SBWorkspaceIsSystemBootComplete())
     {
-      v44 = [v10 transientOverlayPresenter];
-      [v44 addObserver:v15];
+      transientOverlayPresenter = [sceneCopy transientOverlayPresenter];
+      [transientOverlayPresenter addObserver:v15];
     }
 
     else
     {
-      v44 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v44 addObserver:v15 selector:sel__bootDidComplete_ name:@"SBBootCompleteNotification" object:0];
+      transientOverlayPresenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [transientOverlayPresenter addObserver:v15 selector:sel__bootDidComplete_ name:@"SBBootCompleteNotification" object:0];
     }
 
     v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"SpringBoard - KeyboardFocus - SceneController - %@", v15->_debugName];
@@ -304,8 +304,8 @@ void __61__SBKeyboardFocusSceneController_springBoardFocusLockReasons__block_inv
     objc_destroyWeak(&v52);
     objc_destroyWeak(&location);
 
-    v12 = v17;
-    v11 = v51;
+    factoryCopy = v17;
+    enforcerCopy = v51;
   }
 
   v49 = v15;
@@ -321,14 +321,14 @@ id __98__SBKeyboardFocusSceneController_initWithWindowScene_policyEnforcer_pipel
   return v2;
 }
 
-- (BOOL)controlsScene:(id)a3
+- (BOOL)controlsScene:(id)scene
 {
-  if (!a3)
+  if (!scene)
   {
     return 0;
   }
 
-  v4 = a3;
+  sceneCopy = scene;
   WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
   v6 = BSEqualObjects();
 
@@ -338,28 +338,28 @@ id __98__SBKeyboardFocusSceneController_initWithWindowScene_policyEnforcer_pipel
 - (BOOL)supportsFlexibleWindowing
 {
   WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
-  v3 = [WeakRetained switcherController];
-  v4 = [v3 windowManagementContext];
-  v5 = [v4 isChamoisOrFlexibleWindowing];
+  switcherController = [WeakRetained switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  return v5;
+  return isChamoisOrFlexibleWindowing;
 }
 
-- (void)setCoalition:(id)a3
+- (void)setCoalition:(id)coalition
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  coalitionCopy = coalition;
   if (self->_coalitionMember)
   {
     v6 = SBLogKeyboardFocus();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       debugName = self->_debugName;
-      v8 = [(SBKeyboardFocusCoalitionMember *)self->_coalitionMember uniqueIdentifier];
+      uniqueIdentifier = [(SBKeyboardFocusCoalitionMember *)self->_coalitionMember uniqueIdentifier];
       v17 = 138543618;
       v18 = debugName;
       v19 = 2114;
-      v20 = v8;
+      v20 = uniqueIdentifier;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] invalidating current participant: %{public}@", &v17, 0x16u);
     }
 
@@ -368,9 +368,9 @@ id __98__SBKeyboardFocusSceneController_initWithWindowScene_policyEnforcer_pipel
     self->_coalitionMember = 0;
   }
 
-  objc_storeStrong(&self->_coalition, a3);
+  objc_storeStrong(&self->_coalition, coalition);
   WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
-  v11 = [v5 acquireMemberForWindowScene:WeakRetained delegate:self];
+  v11 = [coalitionCopy acquireMemberForWindowScene:WeakRetained delegate:self];
   v12 = self->_coalitionMember;
   self->_coalitionMember = v11;
 
@@ -378,34 +378,34 @@ id __98__SBKeyboardFocusSceneController_initWithWindowScene_policyEnforcer_pipel
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = self->_debugName;
-    v15 = [v5 debugName];
-    v16 = [(SBKeyboardFocusCoalitionMember *)self->_coalitionMember uniqueIdentifier];
+    debugName = [coalitionCopy debugName];
+    uniqueIdentifier2 = [(SBKeyboardFocusCoalitionMember *)self->_coalitionMember uniqueIdentifier];
     v17 = 138543874;
     v18 = v14;
     v19 = 2114;
-    v20 = v15;
+    v20 = debugName;
     v21 = 2114;
-    v22 = v16;
+    v22 = uniqueIdentifier2;
     _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] participating in coalition %{public}@ - participant: %{public}@", &v17, 0x20u);
   }
 }
 
-- (id)redirectSpringBoardLockFocusForReason:(id)a3 toProcessidentifier:(int)a4 toSceneIdentityToken:(id)a5
+- (id)redirectSpringBoardLockFocusForReason:(id)reason toProcessidentifier:(int)processidentifier toSceneIdentityToken:(id)token
 {
-  v6 = *&a4;
+  v6 = *&processidentifier;
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  reasonCopy = reason;
+  tokenCopy = token;
+  if (tokenCopy)
   {
     v10 = objc_alloc_init(SBKeyboardFocusRedirection);
-    [(SBKeyboardFocusRedirection *)v10 setReason:v8];
+    [(SBKeyboardFocusRedirection *)v10 setReason:reasonCopy];
     [(SBKeyboardFocusRedirection *)v10 setFromProcessIdentifier:[(SBKeyboardFocusTarget *)self->_sbWindowSceneFocusTarget pid]];
-    v11 = [(SBKeyboardFocusTarget *)self->_sbWindowSceneFocusTarget sceneIdentityToken];
-    [(SBKeyboardFocusRedirection *)v10 setFromToken:v11];
+    sceneIdentityToken = [(SBKeyboardFocusTarget *)self->_sbWindowSceneFocusTarget sceneIdentityToken];
+    [(SBKeyboardFocusRedirection *)v10 setFromToken:sceneIdentityToken];
 
     [(SBKeyboardFocusRedirection *)v10 setToProcessIdentifier:v6];
-    [(SBKeyboardFocusRedirection *)v10 setToToken:v9];
+    [(SBKeyboardFocusRedirection *)v10 setToToken:tokenCopy];
     if (!self->_springBoardFocusRedirections)
     {
       objc_initWeak(location, self);
@@ -437,11 +437,11 @@ id __98__SBKeyboardFocusSceneController_initWithWindowScene_policyEnforcer_pipel
       v26 = 1024;
       *v27 = v6;
       *&v27[4] = 2114;
-      *&v27[6] = v8;
+      *&v27[6] = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] redirectSpringBoardLockFocusForReason: deferring focus to pid %d for reason: %{public}@ ", location, 0x1Cu);
     }
 
-    v20 = [(BSCompoundAssertion *)self->_springBoardFocusRedirections acquireForReason:v8 withContext:v10];
+    v20 = [(BSCompoundAssertion *)self->_springBoardFocusRedirections acquireForReason:reasonCopy withContext:v10];
   }
 
   else
@@ -453,7 +453,7 @@ id __98__SBKeyboardFocusSceneController_initWithWindowScene_policyEnforcer_pipel
       *location = 138543874;
       *&location[4] = v21;
       v26 = 2114;
-      *v27 = v8;
+      *v27 = reasonCopy;
       *&v27[8] = 1024;
       *&v27[10] = v6;
       _os_log_impl(&dword_21ED4E000, &v10->super, OS_LOG_TYPE_DEFAULT, "[%{public}@] error: redirectSpringBoardLockFocusForReason %{public}@ request with pid %d and no token; PID-only rules are not valid", location, 0x1Cu);
@@ -472,22 +472,22 @@ void __113__SBKeyboardFocusSceneController_redirectSpringBoardLockFocusForReason
   [WeakRetained _requestPolicyReevaluationForReason:v1];
 }
 
-- (id)focusLockSpringBoardWindow:(id)a3 forReason:(id)a4
+- (id)focusLockSpringBoardWindow:(id)window forReason:(id)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  windowCopy = window;
+  reasonCopy = reason;
+  if (windowCopy)
   {
-    v9 = [v7 _sbWindowScene];
+    _sbWindowScene = [windowCopy _sbWindowScene];
     WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
 
-    if (v9 != WeakRetained)
+    if (_sbWindowScene != WeakRetained)
     {
       [SBKeyboardFocusSceneController focusLockSpringBoardWindow:a2 forReason:self];
     }
 
-    v11 = [(SBKeyboardFocusSceneController *)self _focusLockSpringBoardWindow:v7 forReason:v8];
+    v11 = [(SBKeyboardFocusSceneController *)self _focusLockSpringBoardWindow:windowCopy forReason:reasonCopy];
   }
 
   else
@@ -499,7 +499,7 @@ void __113__SBKeyboardFocusSceneController_redirectSpringBoardLockFocusForReason
       v15 = 138543618;
       v16 = debugName;
       v17 = 2114;
-      v18 = v8;
+      v18 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] error: focusLockSpringBoardWindow for reason %{public}@ with nil window", &v15, 0x16u);
     }
 
@@ -509,18 +509,18 @@ void __113__SBKeyboardFocusSceneController_redirectSpringBoardLockFocusForReason
   return v11;
 }
 
-- (BOOL)shouldAllowInteractionTrackingKeyboardFocusUpdateForWindow:(id)a3
+- (BOOL)shouldAllowInteractionTrackingKeyboardFocusUpdateForWindow:(id)window
 {
-  v4 = a3;
-  if (v4)
+  windowCopy = window;
+  if (windowCopy)
   {
-    v5 = [(BSCompoundAssertion *)self->_springBoardFocusLockAssertions context];
+    context = [(BSCompoundAssertion *)self->_springBoardFocusLockAssertions context];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __93__SBKeyboardFocusSceneController_shouldAllowInteractionTrackingKeyboardFocusUpdateForWindow___block_invoke;
     v8[3] = &unk_2783C07C8;
-    v9 = v4;
-    v6 = [v5 bs_containsObjectPassingTest:v8];
+    v9 = windowCopy;
+    v6 = [context bs_containsObjectPassingTest:v8];
   }
 
   else
@@ -531,13 +531,13 @@ void __113__SBKeyboardFocusSceneController_redirectSpringBoardLockFocusForReason
   return v6;
 }
 
-- (void)keyboardArbiterSuggestedFocusTarget:(id)a3
+- (void)keyboardArbiterSuggestedFocusTarget:(id)target
 {
-  v9 = a3;
-  if (![(SBKeyboardFocusTarget *)v9 isEqual:self->_sbWindowSceneFocusTarget])
+  targetCopy = target;
+  if (![(SBKeyboardFocusTarget *)targetCopy isEqual:self->_sbWindowSceneFocusTarget])
   {
-    v6 = v9;
-    if (!v9)
+    v6 = targetCopy;
+    if (!targetCopy)
     {
       goto LABEL_6;
     }
@@ -545,31 +545,31 @@ void __113__SBKeyboardFocusSceneController_redirectSpringBoardLockFocusForReason
     goto LABEL_5;
   }
 
-  v4 = [(BSCompoundAssertion *)self->_springBoardFocusLockAssertions context];
-  v5 = [v4 bs_containsObjectPassingTest:&__block_literal_global_365];
+  context = [(BSCompoundAssertion *)self->_springBoardFocusLockAssertions context];
+  v5 = [context bs_containsObjectPassingTest:&__block_literal_global_365];
 
-  v6 = v9;
+  v6 = targetCopy;
   if ((v5 & 1) == 0)
   {
 LABEL_5:
-    v7 = v9;
+    v7 = targetCopy;
     lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks = self->_lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks;
-    self->_lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks = v9;
+    self->_lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks = targetCopy;
 
-    v6 = v9;
+    v6 = targetCopy;
   }
 
 LABEL_6:
 }
 
-- (id)bufferEventsForReason:(id)a3 generation:(unint64_t)a4
+- (id)bufferEventsForReason:(id)reason generation:(unint64_t)generation
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  reasonCopy = reason;
   v8 = MEMORY[0x277CCACA8];
   objc_opt_class();
   v9 = objc_opt_class();
-  if (!v7)
+  if (!reasonCopy)
   {
     v20 = NSStringFromClass(v9);
     v21 = [v8 stringWithFormat:@"Value for '%@' was unexpectedly nil. Expected %@.", @"reason", v20];
@@ -587,11 +587,11 @@ LABEL_6:
 
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [(SBKeyboardFocusSceneController *)v7 bufferEventsForReason:a2 generation:self];
+    [(SBKeyboardFocusSceneController *)reasonCopy bufferEventsForReason:a2 generation:self];
   }
 
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"BufferingRequest (%ld) - %@", a4, v7];
+  reasonCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"BufferingRequest (%ld) - %@", generation, reasonCopy];
   v11 = SBLogKeyboardFocus();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -599,14 +599,14 @@ LABEL_6:
     *buf = 138543874;
     v27 = debugName;
     v28 = 2114;
-    v29 = v7;
+    v29 = reasonCopy;
     v30 = 2048;
-    v31 = a4;
+    generationCopy = generation;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_INFO, "[%{public}@] bufferEventsForReason: %{public}@ <%lu>- begin", buf, 0x20u);
   }
 
-  v13 = [MEMORY[0x277CF0668] sharedInstance];
-  v14 = [v13 bufferEventsMatchingPredicate:self->_bufferingPredicate withReason:v7];
+  mEMORY[0x277CF0668] = [MEMORY[0x277CF0668] sharedInstance];
+  v14 = [mEMORY[0x277CF0668] bufferEventsMatchingPredicate:self->_bufferingPredicate withReason:reasonCopy];
 
   v15 = objc_alloc(MEMORY[0x277CF0CE8]);
   v22[0] = MEMORY[0x277D85DD0];
@@ -614,12 +614,12 @@ LABEL_6:
   v22[2] = __67__SBKeyboardFocusSceneController_bufferEventsForReason_generation___block_invoke;
   v22[3] = &unk_2783C0810;
   v22[4] = self;
-  v23 = v7;
+  v23 = reasonCopy;
   v24 = v14;
-  v25 = a4;
+  generationCopy2 = generation;
   v16 = v14;
-  v17 = v7;
-  v18 = [v15 initWithIdentifier:v10 forReason:v17 invalidationBlock:v22];
+  v17 = reasonCopy;
+  v18 = [v15 initWithIdentifier:reasonCopy forReason:v17 invalidationBlock:v22];
 
   return v18;
 }
@@ -652,36 +652,36 @@ void __72__SBKeyboardFocusSceneController__focusLockSpringBoardWindow_forReason_
   [v1 setNeedsArbitrationForReason:v2];
 }
 
-- (void)_requestPolicyReevaluationForReason:(id)a3
+- (void)_requestPolicyReevaluationForReason:(id)reason
 {
-  v5 = a3;
+  reasonCopy = reason;
   coalitionMember = self->_coalitionMember;
   if (!coalitionMember)
   {
     [SBKeyboardFocusSceneController _requestPolicyReevaluationForReason:a2];
   }
 
-  v7 = v5;
-  [(SBKeyboardFocusCoalitionMember *)coalitionMember requestArbitration:v5];
+  v7 = reasonCopy;
+  [(SBKeyboardFocusCoalitionMember *)coalitionMember requestArbitration:reasonCopy];
 }
 
-- (id)_updatePolicyForReason:(id)a3
+- (id)_updatePolicyForReason:(id)reason
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v5 = objc_alloc_init(SBMutableKeyboardFocusPolicy);
   lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks = self->_lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks;
   if (lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks)
   {
-    v7 = [(SBKeyboardFocusTarget *)lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks sceneIdentityToken];
-    v8 = [(SBKeyboardFocusSceneController *)self shouldPreventFocusForSceneWithIdentityToken:v7];
+    sceneIdentityToken = [(SBKeyboardFocusTarget *)lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks sceneIdentityToken];
+    v8 = [(SBKeyboardFocusSceneController *)self shouldPreventFocusForSceneWithIdentityToken:sceneIdentityToken];
 
     v9 = self->_lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks;
     if (v8)
     {
-      v10 = [(SBKeyboardFocusTarget *)self->_lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks sceneIdentityToken];
-      [(SBKeyboardFocusSceneController *)self _updateKeyboardFocusTargetFromPreviouslyFocusedSceneIdentity:v10 pid:[(SBKeyboardFocusTarget *)self->_lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks pid]];
+      sceneIdentityToken2 = [(SBKeyboardFocusTarget *)self->_lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks sceneIdentityToken];
+      [(SBKeyboardFocusSceneController *)self _updateKeyboardFocusTargetFromPreviouslyFocusedSceneIdentity:sceneIdentityToken2 pid:[(SBKeyboardFocusTarget *)self->_lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks pid]];
 
       v9 = self->_lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks;
     }
@@ -711,7 +711,7 @@ void __72__SBKeyboardFocusSceneController__focusLockSpringBoardWindow_forReason_
     *buf = 138543874;
     v23 = debugName;
     v24 = 2114;
-    v25 = v4;
+    v25 = reasonCopy;
     v26 = 2114;
     v27 = v18;
     _os_log_debug_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEBUG, "[%{public}@] - generating new policy for reason: %{public}@ - last non-SB keyboard arbiter suggestion: %{public}@]", buf, 0x20u);
@@ -722,15 +722,15 @@ void __72__SBKeyboardFocusSceneController__focusLockSpringBoardWindow_forReason_
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     v19 = self->_debugName;
-    v20 = [(SBKeyboardFocusPolicy *)v5 auditHistory];
+    auditHistory = [(SBKeyboardFocusPolicy *)v5 auditHistory];
     *buf = 138544130;
     v23 = v19;
     v24 = 2114;
-    v25 = v4;
+    v25 = reasonCopy;
     v26 = 2114;
     v27 = v5;
     v28 = 2114;
-    v29 = v20;
+    v29 = auditHistory;
     _os_log_debug_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEBUG, "[%{public}@] - generated policy for reason: %{public}@ - %{public}@ : %{public}@]", buf, 0x2Au);
   }
 
@@ -748,42 +748,42 @@ void __57__SBKeyboardFocusSceneController__updatePolicyForReason___block_invoke(
   [v4 setZStackResolver:v5];
 }
 
-- (void)_bootDidComplete:(id)a3
+- (void)_bootDidComplete:(id)complete
 {
-  v4 = [(SBKeyboardFocusSceneController *)self sbWindowScene];
-  v5 = [v4 transientOverlayPresenter];
-  [v5 addObserver:self];
+  sbWindowScene = [(SBKeyboardFocusSceneController *)self sbWindowScene];
+  transientOverlayPresenter = [sbWindowScene transientOverlayPresenter];
+  [transientOverlayPresenter addObserver:self];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self name:@"SBBootCompleteNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBBootCompleteNotification" object:0];
 }
 
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x277CF0C08];
-  v4 = [MEMORY[0x277CF0C10] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x277CF0C10] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __60__SBKeyboardFocusSceneController_appendDescriptionToStream___block_invoke;
   v10[3] = &unk_2783A92D8;
-  v5 = v4;
+  v5 = streamCopy;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   [v5 appendProem:self block:v10];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__SBKeyboardFocusSceneController_appendDescriptionToStream___block_invoke_2;
   v7[3] = &unk_2783A92D8;
   v8 = v5;
-  v9 = self;
+  selfCopy2 = self;
   v6 = v5;
   [v6 appendBodySectionWithName:0 block:v7];
 }
@@ -824,21 +824,21 @@ void __60__SBKeyboardFocusSceneController_appendDescriptionToStream___block_invo
   [(BSInvalidatable *)stateCaptureAssertion invalidate];
 }
 
-- (void)sceneManager:(id)a3 didAddExternalForegroundApplicationSceneHandle:(id)a4
+- (void)sceneManager:(id)manager didAddExternalForegroundApplicationSceneHandle:(id)handle
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  handleCopy = handle;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v6 = [v5 scene];
+  scene = [handleCopy scene];
 
-  v7 = [v6 identityToken];
-  v8 = [v6 clientHandle];
-  v9 = [v8 processHandle];
-  v10 = [v9 pid];
+  identityToken = [scene identityToken];
+  clientHandle = [scene clientHandle];
+  processHandle = [clientHandle processHandle];
+  v10 = [processHandle pid];
 
   if (v10 >= 1)
   {
-    [(_SBRecentlyUsedSceneIdentityCache *)self->_recentlyUsedScenes addSceneIdentityToken:v7 forPID:v10];
+    [(_SBRecentlyUsedSceneIdentityCache *)self->_recentlyUsedScenes addSceneIdentityToken:identityToken forPID:v10];
     v11 = SBLogKeyboardFocus();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -849,7 +849,7 @@ void __60__SBKeyboardFocusSceneController_appendDescriptionToStream___block_invo
       v16 = 1024;
       v17 = v10;
       v18 = 2114;
-      v19 = v7;
+      v19 = identityToken;
       v20 = 2114;
       v21 = recentlyUsedScenes;
       _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] didAddExternalForegroundApplicationSceneHandle pid:%d scene:%{public}@ now:%{public}@", &v14, 0x26u);
@@ -857,29 +857,29 @@ void __60__SBKeyboardFocusSceneController_appendDescriptionToStream___block_invo
   }
 }
 
-- (void)sceneManager:(id)a3 willRemoveExternalForegroundApplicationSceneHandle:(id)a4 withReason:(int64_t)a5
+- (void)sceneManager:(id)manager willRemoveExternalForegroundApplicationSceneHandle:(id)handle withReason:(int64_t)reason
 {
-  v6 = a4;
+  handleCopy = handle;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v7 = [v6 scene];
+  scene = [handleCopy scene];
 
-  LODWORD(v6) = [(SBKeyboardFocusSceneController *)self _removeSceneFromRecentsAndUpdateKeyboardFocusTargetIfNeeded:v7 reason:@"willRemoveExternalForegroundApplicationSceneHandle"];
-  if (v6)
+  LODWORD(handleCopy) = [(SBKeyboardFocusSceneController *)self _removeSceneFromRecentsAndUpdateKeyboardFocusTargetIfNeeded:scene reason:@"willRemoveExternalForegroundApplicationSceneHandle"];
+  if (handleCopy)
   {
     v8 = +[SBKeyboardFocusArbitrationReason removedKeyboardArbiterSceneWillRemove];
     [(SBKeyboardFocusSceneController *)self _requestPolicyReevaluationForReason:v8];
   }
 }
 
-- (void)sceneManager:(id)a3 didRemoveExternalForegroundApplicationSceneHandle:(id)a4
+- (void)sceneManager:(id)manager didRemoveExternalForegroundApplicationSceneHandle:(id)handle
 {
-  v9 = a4;
+  handleCopy = handle;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [v9 scene];
-  if ([v5 isValid])
+  scene = [handleCopy scene];
+  if ([scene isValid])
   {
-    v6 = [v9 scene];
-    v7 = [(SBKeyboardFocusSceneController *)self _removeSceneFromRecentsAndUpdateKeyboardFocusTargetIfNeeded:v6 reason:@"didRemoveExternalForegroundApplicationSceneHandle"];
+    scene2 = [handleCopy scene];
+    v7 = [(SBKeyboardFocusSceneController *)self _removeSceneFromRecentsAndUpdateKeyboardFocusTargetIfNeeded:scene2 reason:@"didRemoveExternalForegroundApplicationSceneHandle"];
 
     if (v7)
     {
@@ -889,16 +889,16 @@ void __60__SBKeyboardFocusSceneController_appendDescriptionToStream___block_invo
   }
 }
 
-- (BOOL)_removeSceneFromRecentsAndUpdateKeyboardFocusTargetIfNeeded:(id)a3 reason:(id)a4
+- (BOOL)_removeSceneFromRecentsAndUpdateKeyboardFocusTargetIfNeeded:(id)needed reason:(id)reason
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 identityToken];
-  v9 = [v7 clientHandle];
+  reasonCopy = reason;
+  neededCopy = needed;
+  identityToken = [neededCopy identityToken];
+  clientHandle = [neededCopy clientHandle];
 
-  v10 = [v9 processHandle];
-  v11 = [v10 pid];
+  processHandle = [clientHandle processHandle];
+  v11 = [processHandle pid];
 
   v12 = SBLogKeyboardFocus();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -907,48 +907,48 @@ void __60__SBKeyboardFocusSceneController_appendDescriptionToStream___block_invo
     v16 = 138544130;
     v17 = debugName;
     v18 = 2114;
-    v19 = v8;
+    v19 = identityToken;
     v20 = 1024;
     v21 = v11;
     v22 = 2114;
-    v23 = v6;
+    v23 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] removing scene: %{public}@ pid: %d for reason: %{public}@", &v16, 0x26u);
   }
 
-  [(_SBRecentlyUsedSceneIdentityCache *)self->_recentlyUsedScenes removeSceneIdentityToken:v8 forPID:v11];
-  v14 = [(SBKeyboardFocusSceneController *)self _updateKeyboardFocusTargetFromPreviouslyFocusedSceneIdentity:v8 pid:v11];
+  [(_SBRecentlyUsedSceneIdentityCache *)self->_recentlyUsedScenes removeSceneIdentityToken:identityToken forPID:v11];
+  v14 = [(SBKeyboardFocusSceneController *)self _updateKeyboardFocusTargetFromPreviouslyFocusedSceneIdentity:identityToken pid:v11];
 
   return v14;
 }
 
-- (id)_topmostZOrderedSceneExcluding:(id)a3
+- (id)_topmostZOrderedSceneExcluding:(id)excluding
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  excludingCopy = excluding;
   WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
-  v6 = [WeakRetained switcherController];
-  v7 = [v6 windowManagementContext];
-  v8 = [v7 isChamoisOrFlexibleWindowing];
+  switcherController = [WeakRetained switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  if (v8)
+  if (isChamoisOrFlexibleWindowing)
   {
-    v9 = [v6 displayItemLayoutAttributesProvider];
-    v10 = [v6 appLayoutPreviouslyOnStage];
-    v11 = [v6 interfaceOrientation];
-    if ((v11 - 1) < 2)
+    displayItemLayoutAttributesProvider = [switcherController displayItemLayoutAttributesProvider];
+    appLayoutPreviouslyOnStage = [switcherController appLayoutPreviouslyOnStage];
+    interfaceOrientation = [switcherController interfaceOrientation];
+    if ((interfaceOrientation - 1) < 2)
     {
       v12 = 1;
     }
 
     else
     {
-      v12 = 2 * ((v11 - 3) < 2);
+      v12 = 2 * ((interfaceOrientation - 3) < 2);
     }
 
-    v13 = [v9 lastInteractedDisplayItemsInAppLayout:v10 orientation:v12];
+    v13 = [displayItemLayoutAttributesProvider lastInteractedDisplayItemsInAppLayout:appLayoutPreviouslyOnStage orientation:v12];
 
-    v14 = [WeakRetained sceneManager];
-    v15 = [v14 externalApplicationSceneHandles];
+    sceneManager = [WeakRetained sceneManager];
+    externalApplicationSceneHandles = [sceneManager externalApplicationSceneHandles];
 
     v45 = 0u;
     v46 = 0u;
@@ -959,10 +959,10 @@ void __60__SBKeyboardFocusSceneController_appendDescriptionToStream___block_invo
     if (v33)
     {
       v17 = *v44;
-      v37 = v6;
+      v37 = switcherController;
       v38 = WeakRetained;
       v35 = v16;
-      v36 = v15;
+      v36 = externalApplicationSceneHandles;
       v32 = *v44;
       do
       {
@@ -975,12 +975,12 @@ void __60__SBKeyboardFocusSceneController_appendDescriptionToStream___block_invo
           }
 
           v34 = v18;
-          v19 = [*(*(&v43 + 1) + 8 * v18) uniqueIdentifier];
+          uniqueIdentifier = [*(*(&v43 + 1) + 8 * v18) uniqueIdentifier];
           v39 = 0u;
           v40 = 0u;
           v41 = 0u;
           v42 = 0u;
-          v20 = v15;
+          v20 = externalApplicationSceneHandles;
           v21 = [v20 countByEnumeratingWithState:&v39 objects:v47 count:16];
           if (v21)
           {
@@ -996,28 +996,28 @@ void __60__SBKeyboardFocusSceneController_appendDescriptionToStream___block_invo
                 }
 
                 v25 = *(*(&v39 + 1) + 8 * i);
-                v26 = [v25 sceneIdentifier];
-                v27 = [v19 isEqual:v26];
+                sceneIdentifier = [v25 sceneIdentifier];
+                v27 = [uniqueIdentifier isEqual:sceneIdentifier];
 
                 if (v27)
                 {
-                  v28 = [v25 scene];
-                  v29 = [v28 identityToken];
-                  if (([v29 isEqual:v4] & 1) != 0 || objc_msgSend(v28, "contentState") != 2)
+                  scene = [v25 scene];
+                  identityToken = [scene identityToken];
+                  if (([identityToken isEqual:excludingCopy] & 1) != 0 || objc_msgSend(scene, "contentState") != 2)
                   {
                   }
 
                   else
                   {
-                    v30 = [SBKeyboardFocusTarget targetForFBScene:v28];
+                    v30 = [SBKeyboardFocusTarget targetForFBScene:scene];
 
                     if (v30)
                     {
 
-                      v6 = v37;
+                      switcherController = v37;
                       WeakRetained = v38;
                       v16 = v35;
-                      v15 = v36;
+                      externalApplicationSceneHandles = v36;
                       goto LABEL_28;
                     }
                   }
@@ -1031,10 +1031,10 @@ void __60__SBKeyboardFocusSceneController_appendDescriptionToStream___block_invo
           }
 
           v18 = v34 + 1;
-          v6 = v37;
+          switcherController = v37;
           WeakRetained = v38;
           v16 = v35;
-          v15 = v36;
+          externalApplicationSceneHandles = v36;
           v17 = v32;
         }
 
@@ -1062,42 +1062,42 @@ LABEL_28:
   return v30;
 }
 
-- (BOOL)_updateKeyboardFocusTargetFromPreviouslyFocusedSceneIdentity:(id)a3 pid:(int)a4
+- (BOOL)_updateKeyboardFocusTargetFromPreviouslyFocusedSceneIdentity:(id)identity pid:(int)pid
 {
-  v4 = *&a4;
+  v4 = *&pid;
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SBKeyboardFocusTarget *)self->_lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks sceneIdentityToken];
-  if (v7)
+  identityCopy = identity;
+  sceneIdentityToken = [(SBKeyboardFocusTarget *)self->_lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks sceneIdentityToken];
+  if (sceneIdentityToken)
   {
-    v8 = v7;
-    v9 = [(SBKeyboardFocusTarget *)self->_lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks sceneIdentityToken];
+    v8 = sceneIdentityToken;
+    sceneIdentityToken2 = [(SBKeyboardFocusTarget *)self->_lastKeyboardArbiterSuggestedFocusTargetExcludingFocusLocks sceneIdentityToken];
     v10 = BSEqualObjects();
 
     if (v10)
     {
-      v11 = [(SBKeyboardFocusSceneController *)self _topmostZOrderedSceneExcluding:v6];
+      v11 = [(SBKeyboardFocusSceneController *)self _topmostZOrderedSceneExcluding:identityCopy];
       if (v11)
       {
         v12 = v11;
-        v13 = SBLogKeyboardFocus();
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+        sceneIdentityTokensWithShouldPreventFocus = SBLogKeyboardFocus();
+        if (os_log_type_enabled(sceneIdentityTokensWithShouldPreventFocus, OS_LOG_TYPE_DEFAULT))
         {
           debugName = self->_debugName;
           v27 = 138543618;
           v28 = debugName;
           v29 = 2114;
           v30 = v12;
-          _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] setting keyboard arbiter suggested scene to z-order topmost scene %{public}@ ", &v27, 0x16u);
+          _os_log_impl(&dword_21ED4E000, sceneIdentityTokensWithShouldPreventFocus, OS_LOG_TYPE_DEFAULT, "[%{public}@] setting keyboard arbiter suggested scene to z-order topmost scene %{public}@ ", &v27, 0x16u);
         }
 
         goto LABEL_18;
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v13 = [WeakRetained sceneIdentityTokensWithShouldPreventFocus];
+      sceneIdentityTokensWithShouldPreventFocus = [WeakRetained sceneIdentityTokensWithShouldPreventFocus];
 
-      v17 = [(_SBRecentlyUsedSceneIdentityCache *)self->_recentlyUsedScenes mostRecentFocusTargetForPID:v4 excludingSceneIdentityTokens:v13];
+      v17 = [(_SBRecentlyUsedSceneIdentityCache *)self->_recentlyUsedScenes mostRecentFocusTargetForPID:v4 excludingSceneIdentityTokens:sceneIdentityTokensWithShouldPreventFocus];
       if (v17)
       {
         v12 = v17;
@@ -1105,11 +1105,11 @@ LABEL_28:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           v19 = self->_debugName;
-          v20 = [(SBKeyboardFocusTarget *)v12 sceneIdentityToken];
+          sceneIdentityToken3 = [(SBKeyboardFocusTarget *)v12 sceneIdentityToken];
           v27 = 138543874;
           v28 = v19;
           v29 = 2114;
-          v30 = v20;
+          v30 = sceneIdentityToken3;
           v31 = 1024;
           v32 = [(SBKeyboardFocusTarget *)v12 pid];
           v21 = "[%{public}@] setting keyboard arbiter suggested scene to %{public}@ in same pid %d";
@@ -1120,7 +1120,7 @@ LABEL_13:
 
       else
       {
-        v12 = [(_SBRecentlyUsedSceneIdentityCache *)self->_recentlyUsedScenes mostRecentFocusTargetForAnyProcessExcludingSceneIdentityTokens:v13];
+        v12 = [(_SBRecentlyUsedSceneIdentityCache *)self->_recentlyUsedScenes mostRecentFocusTargetForAnyProcessExcludingSceneIdentityTokens:sceneIdentityTokensWithShouldPreventFocus];
         v18 = SBLogKeyboardFocus();
         v22 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
         if (!v12)
@@ -1140,11 +1140,11 @@ LABEL_13:
         if (v22)
         {
           v23 = self->_debugName;
-          v20 = [(SBKeyboardFocusTarget *)v12 sceneIdentityToken];
+          sceneIdentityToken3 = [(SBKeyboardFocusTarget *)v12 sceneIdentityToken];
           v27 = 138543874;
           v28 = v23;
           v29 = 2114;
-          v30 = v20;
+          v30 = sceneIdentityToken3;
           v31 = 1024;
           v32 = [(SBKeyboardFocusTarget *)v12 pid];
           v21 = "[%{public}@] setting keyboard arbiter suggested scene to %{public}@ in MRU pid %d";
@@ -1169,15 +1169,15 @@ LABEL_19:
   return v15;
 }
 
-- (void)transientOverlayScenePresenter:(id)a3 didDismissViewController:(id)a4 wasTopmostPresentation:(BOOL)a5
+- (void)transientOverlayScenePresenter:(id)presenter didDismissViewController:(id)controller wasTopmostPresentation:(BOOL)presentation
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = [a4 hostedSceneIdentityTokens];
+  hostedSceneIdentityTokens = [controller hostedSceneIdentityTokens];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [hostedSceneIdentityTokens countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1189,13 +1189,13 @@ LABEL_19:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(hostedSceneIdentityTokens);
         }
 
         v9 = v9 || [(SBKeyboardFocusSceneController *)self _updateKeyboardFocusTargetFromPreviouslyFocusedSceneIdentity:*(*(&v13 + 1) + 8 * i) pid:0];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [hostedSceneIdentityTokens countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -1240,54 +1240,54 @@ LABEL_19:
   return v11;
 }
 
-- (BOOL)shouldPreventFocusForSceneWithIdentityToken:(id)a3
+- (BOOL)shouldPreventFocusForSceneWithIdentityToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained shouldPreventFocusForSceneWithIdentityToken:v4];
+  v6 = [WeakRetained shouldPreventFocusForSceneWithIdentityToken:tokenCopy];
 
   return v6;
 }
 
-- (id)sceneForFocusTarget:(id)a3
+- (id)sceneForFocusTarget:(id)target
 {
   dependencies = self->_dependencies;
-  v4 = a3;
-  v5 = [(_SBKeyboardFocusSceneControllerDependencyProviding *)dependencies sceneProvider];
-  v6 = [v4 sceneIdentityToken];
+  targetCopy = target;
+  sceneProvider = [(_SBKeyboardFocusSceneControllerDependencyProviding *)dependencies sceneProvider];
+  sceneIdentityToken = [targetCopy sceneIdentityToken];
 
-  v7 = [v5 sceneForIdentityToken:v6];
+  v7 = [sceneProvider sceneForIdentityToken:sceneIdentityToken];
 
   return v7;
 }
 
-- (id)keyboardFocusRedirectionForTarget:(id)a3
+- (id)keyboardFocusRedirectionForTarget:(id)target
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 isEqual:self->_sbWindowSceneFocusTarget])
+  targetCopy = target;
+  v5 = targetCopy;
+  if (targetCopy && [targetCopy isEqual:self->_sbWindowSceneFocusTarget])
   {
     WeakRetained = [(BSCompoundAssertion *)self->_springBoardFocusRedirections orderedContext];
-    v7 = [WeakRetained lastObject];
+    lastObject = [WeakRetained lastObject];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v7 = [WeakRetained appFocusRedirectionForProposedTarget:v5];
+    lastObject = [WeakRetained appFocusRedirectionForProposedTarget:v5];
   }
 
-  v8 = v7;
+  v8 = lastObject;
 
   return v8;
 }
 
-- (void)coalitionMemberFocusDidChange:(id)a3
+- (void)coalitionMemberFocusDidChange:(id)change
 {
   v14 = *MEMORY[0x277D85DE8];
-  if ([a3 hasFocus])
+  if ([change hasFocus])
   {
-    v4 = [(SBKeyboardFocusCoalition *)self->_coalition enforcedPolicy];
+    enforcedPolicy = [(SBKeyboardFocusCoalition *)self->_coalition enforcedPolicy];
     v5 = BSEqualObjects();
     v6 = SBLogKeyboardFocus();
     v7 = v6;
@@ -1307,11 +1307,11 @@ LABEL_19:
         v10 = 138543618;
         v11 = debugName;
         v12 = 2114;
-        v13 = v4;
+        v13 = enforcedPolicy;
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] coalition says I have focus; enforcing policy: %{public}@", &v10, 0x16u);
       }
 
-      objc_storeStrong(&self->_enforcedPolicy, v4);
+      objc_storeStrong(&self->_enforcedPolicy, enforcedPolicy);
       [(SBKeyboardFocusPolicyEnforcer *)self->_policyEnforcer enforce:self->_enforcedPolicy];
     }
   }
@@ -1324,15 +1324,15 @@ LABEL_19:
   }
 }
 
-- (id)generateUpdatedPreferencesForCoalitionMember:(id)a3 reason:(id)a4
+- (id)generateUpdatedPreferencesForCoalitionMember:(id)member reason:(id)reason
 {
-  v5 = [(SBKeyboardFocusSceneController *)self _updatePolicyForReason:a4];
+  v5 = [(SBKeyboardFocusSceneController *)self _updatePolicyForReason:reason];
   preferredPolicy = self->_preferredPolicy;
   self->_preferredPolicy = v5;
 
   v7 = self->_preferredPolicy;
-  v8 = [(SBKeyboardFocusSceneController *)self springBoardFocusLockReasons];
-  v9 = [SBKeyboardFocusCoalitionMemberPreferences preferencesWithPolicy:v7 lockReasons:v8];
+  springBoardFocusLockReasons = [(SBKeyboardFocusSceneController *)self springBoardFocusLockReasons];
+  v9 = [SBKeyboardFocusCoalitionMemberPreferences preferencesWithPolicy:v7 lockReasons:springBoardFocusLockReasons];
 
   return v9;
 }
@@ -1374,11 +1374,11 @@ BOOL __70__SBKeyboardFocusSceneController_keyboardArbiterSuggestedFocusTarget___
   return v2 != 0;
 }
 
-- (id)_focusLockSpringBoardWindow:(id)a3 forReason:(id)a4
+- (id)_focusLockSpringBoardWindow:(id)window forReason:(id)reason
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  windowCopy = window;
+  reasonCopy = reason;
   if (!self->_springBoardFocusLockAssertions)
   {
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-springBoardFocusLockAssertions", self->_debugName];
@@ -1397,25 +1397,25 @@ BOOL __70__SBKeyboardFocusSceneController_keyboardArbiterSuggestedFocusTarget___
   }
 
   v13 = objc_alloc_init(_SBKeyboardFocusAssertionContext);
-  [(SBKeyboardClientSettingObserverContext *)v13 setScene:v7];
-  [(SBKeyboardClientSettingObserverContext *)v13 setOldClientSettings:v6];
+  [(SBKeyboardClientSettingObserverContext *)v13 setScene:reasonCopy];
+  [(SBKeyboardClientSettingObserverContext *)v13 setOldClientSettings:windowCopy];
   v14 = SBLogKeyboardFocus();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     debugName = self->_debugName;
-    v16 = [v6 _debugName];
+    _debugName = [windowCopy _debugName];
     *buf = 138543874;
     v23 = debugName;
     v24 = 2114;
-    v25 = v16;
+    v25 = _debugName;
     v26 = 2114;
-    v27 = v7;
+    v27 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] focusLockSpringBoardWindow: %{public}@ for reason: %{public}@", buf, 0x20u);
   }
 
   v17 = self->_springBoardFocusLockAssertions;
-  v18 = [v7 name];
-  v19 = [(BSCompoundAssertion *)v17 acquireForReason:v18 withContext:v13];
+  name = [reasonCopy name];
+  v19 = [(BSCompoundAssertion *)v17 acquireForReason:name withContext:v13];
 
   return v19;
 }

@@ -1,58 +1,58 @@
 @interface DDSTrialManager
-- (DDSTrialManager)initWithWorkQueue:(id)a3;
-- (DDSTrialManager)initWithWorkQueue:(id)a3 dataSource:(id)a4;
+- (DDSTrialManager)initWithWorkQueue:(id)queue;
+- (DDSTrialManager)initWithWorkQueue:(id)queue dataSource:(id)source;
 - (DDSTrialManagerDelegate)delegate;
-- (void)fetchTrialAssetForQuery:(id)a3 callback:(id)a4;
-- (void)setUpTrialForQuery:(id)a3;
-- (void)trialClient:(id)a3 didReceiveAsset:(id)a4;
-- (void)trialClientDidStop:(id)a3;
+- (void)fetchTrialAssetForQuery:(id)query callback:(id)callback;
+- (void)setUpTrialForQuery:(id)query;
+- (void)trialClient:(id)client didReceiveAsset:(id)asset;
+- (void)trialClientDidStop:(id)stop;
 @end
 
 @implementation DDSTrialManager
 
-- (DDSTrialManager)initWithWorkQueue:(id)a3 dataSource:(id)a4
+- (DDSTrialManager)initWithWorkQueue:(id)queue dataSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = DDSTrialManager;
   v9 = [(DDSTrialManager *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_workQueue, a3);
-    objc_storeStrong(&v10->_dataSource, a4);
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v9->_workQueue, queue);
+    objc_storeStrong(&v10->_dataSource, source);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     trialClientByQuery = v10->_trialClientByQuery;
-    v10->_trialClientByQuery = v11;
+    v10->_trialClientByQuery = dictionary;
   }
 
   return v10;
 }
 
-- (DDSTrialManager)initWithWorkQueue:(id)a3
+- (DDSTrialManager)initWithWorkQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = objc_alloc_init(DDSTrialManagerDataSource);
-  v6 = [(DDSTrialManager *)self initWithWorkQueue:v4 dataSource:v5];
+  v6 = [(DDSTrialManager *)self initWithWorkQueue:queueCopy dataSource:v5];
 
   return v6;
 }
 
-- (void)setUpTrialForQuery:(id)a3
+- (void)setUpTrialForQuery:(id)query
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(DDSTrialManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  queryCopy = query;
+  workQueue = [(DDSTrialManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(DDSTrialManager *)self dataSource];
-  v7 = [v6 isEnabled];
+  dataSource = [(DDSTrialManager *)self dataSource];
+  isEnabled = [dataSource isEnabled];
 
-  if (v7)
+  if (isEnabled)
   {
-    v8 = [(DDSTrialManager *)self trialClientByQuery];
-    v9 = [v8 objectForKey:v4];
+    trialClientByQuery = [(DDSTrialManager *)self trialClientByQuery];
+    v9 = [trialClientByQuery objectForKey:queryCopy];
 
     if (!v9)
     {
@@ -60,28 +60,28 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138412290;
-        v16 = v4;
+        v16 = queryCopy;
         _os_log_impl(&dword_1DF7C6000, v10, OS_LOG_TYPE_DEFAULT, "Setting up trial for query: %@", &v15, 0xCu);
       }
 
-      v11 = [(DDSTrialManager *)self dataSource];
-      v12 = [(DDSTrialManager *)self workQueue];
-      v9 = [v11 createTrialClientWithWorkQueue:v12 query:v4];
+      dataSource2 = [(DDSTrialManager *)self dataSource];
+      workQueue2 = [(DDSTrialManager *)self workQueue];
+      v9 = [dataSource2 createTrialClientWithWorkQueue:workQueue2 query:queryCopy];
 
       if (v9)
       {
         [v9 setDelegate:self];
         [v9 start];
-        v13 = [(DDSTrialManager *)self trialClientByQuery];
-        [v13 setObject:v9 forKeyedSubscript:v4];
+        trialClientByQuery2 = [(DDSTrialManager *)self trialClientByQuery];
+        [trialClientByQuery2 setObject:v9 forKeyedSubscript:queryCopy];
       }
 
       else
       {
-        v13 = DefaultLog();
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        trialClientByQuery2 = DefaultLog();
+        if (os_log_type_enabled(trialClientByQuery2, OS_LOG_TYPE_ERROR))
         {
-          [(DDSTrialManager *)v4 setUpTrialForQuery:v13];
+          [(DDSTrialManager *)queryCopy setUpTrialForQuery:trialClientByQuery2];
         }
 
         v9 = 0;
@@ -92,54 +92,54 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchTrialAssetForQuery:(id)a3 callback:(id)a4
+- (void)fetchTrialAssetForQuery:(id)query callback:(id)callback
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(DDSTrialManager *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  queryCopy = query;
+  callbackCopy = callback;
+  workQueue = [(DDSTrialManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v8 = [(DDSTrialManager *)self dataSource];
-  v9 = [v8 isEnabled];
+  dataSource = [(DDSTrialManager *)self dataSource];
+  isEnabled = [dataSource isEnabled];
 
-  if (v9)
+  if (isEnabled)
   {
-    v10 = [(DDSTrialManager *)self trialClientByQuery];
-    v11 = [v10 objectForKey:v13];
+    trialClientByQuery = [(DDSTrialManager *)self trialClientByQuery];
+    v11 = [trialClientByQuery objectForKey:queryCopy];
 
     if (v11)
     {
-      [v11 fetchAssetWithCallback:v6];
+      [v11 fetchAssetWithCallback:callbackCopy];
     }
 
     else
     {
       v12 = DDSTrialErrorWithCode(6);
-      v6[2](v6, 0, v12);
+      callbackCopy[2](callbackCopy, 0, v12);
     }
   }
 
   else
   {
     v11 = DDSTrialErrorWithCode(0);
-    v6[2](v6, 0, v11);
+    callbackCopy[2](callbackCopy, 0, v11);
   }
 }
 
-- (void)trialClient:(id)a3 didReceiveAsset:(id)a4
+- (void)trialClient:(id)client didReceiveAsset:(id)asset
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DDSTrialManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  clientCopy = client;
+  assetCopy = asset;
+  workQueue = [(DDSTrialManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [(DDSTrialManager *)self trialClientByQuery];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  trialClientByQuery = [(DDSTrialManager *)self trialClientByQuery];
+  v10 = [trialClientByQuery countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -150,21 +150,21 @@ LABEL_3:
     {
       if (*v21 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(trialClientByQuery);
       }
 
       v14 = *(*(&v20 + 1) + 8 * v13);
-      v15 = [(DDSTrialManager *)self trialClientByQuery];
-      v16 = [v15 objectForKey:v14];
+      trialClientByQuery2 = [(DDSTrialManager *)self trialClientByQuery];
+      v16 = [trialClientByQuery2 objectForKey:v14];
 
-      if (v16 == v6)
+      if (v16 == clientCopy)
       {
         break;
       }
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v11 = [trialClientByQuery countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v11)
         {
           goto LABEL_3;
@@ -181,8 +181,8 @@ LABEL_3:
       goto LABEL_12;
     }
 
-    v18 = [(DDSTrialManager *)self delegate];
-    [v18 trialDidReceiveAsset:v7 forQuery:v17];
+    delegate = [(DDSTrialManager *)self delegate];
+    [delegate trialDidReceiveAsset:assetCopy forQuery:v17];
   }
 
   else
@@ -193,26 +193,26 @@ LABEL_12:
     v17 = DefaultLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      [(DDSTrialManager *)v7 trialClient:v6 didReceiveAsset:v17];
+      [(DDSTrialManager *)assetCopy trialClient:clientCopy didReceiveAsset:v17];
     }
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)trialClientDidStop:(id)a3
+- (void)trialClientDidStop:(id)stop
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(DDSTrialManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  stopCopy = stop;
+  workQueue = [(DDSTrialManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(DDSTrialManager *)self trialClientByQuery];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  trialClientByQuery = [(DDSTrialManager *)self trialClientByQuery];
+  v7 = [trialClientByQuery countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -223,21 +223,21 @@ LABEL_3:
     {
       if (*v18 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(trialClientByQuery);
       }
 
       v11 = *(*(&v17 + 1) + 8 * v10);
-      v12 = [(DDSTrialManager *)self trialClientByQuery];
-      v13 = [v12 objectForKey:v11];
+      trialClientByQuery2 = [(DDSTrialManager *)self trialClientByQuery];
+      v13 = [trialClientByQuery2 objectForKey:v11];
 
-      if (v13 == v4)
+      if (v13 == stopCopy)
       {
         break;
       }
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [trialClientByQuery countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -254,8 +254,8 @@ LABEL_3:
       goto LABEL_12;
     }
 
-    v15 = [(DDSTrialManager *)self delegate];
-    [v15 trialDidStopForQuery:v14];
+    delegate = [(DDSTrialManager *)self delegate];
+    [delegate trialDidStopForQuery:v14];
   }
 
   else
@@ -266,7 +266,7 @@ LABEL_12:
     v14 = DefaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [(DDSTrialManager *)v4 trialClientDidStop:v14];
+      [(DDSTrialManager *)stopCopy trialClientDidStop:v14];
     }
   }
 

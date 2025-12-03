@@ -1,6 +1,6 @@
 @interface SRFrameStore
 + (void)initialize;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)dealloc;
 @end
 
@@ -8,7 +8,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100071B50 = os_log_create("com.apple.SensorKit", "FrameStore");
   }
@@ -87,18 +87,18 @@ LABEL_9:
   [(SRFrameStore *)&v15 dealloc];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   frames = self->_frames;
   if (frames)
   {
     v10 = 0;
-    var0 = (frames->_start + a3->var0);
-    while (var0 < frames->_currentPosition && v10 < a5)
+    var0 = (frames->_start + state->var0);
+    while (var0 < frames->_currentPosition && v10 < count)
     {
       if (sub_1000428C8(self, var0))
       {
-        a4[v10++] = var0;
+        objects[v10++] = var0;
       }
 
       var0 = (var0 + var0[4] + 20);
@@ -115,13 +115,13 @@ LABEL_9:
   else
   {
     v10 = 0;
-    var0 = a3->var0;
+    var0 = state->var0;
   }
 
 LABEL_12:
-  a3->var0 = var0 - frames;
-  a3->var1 = a4;
-  a3->var2 = self;
+  state->var0 = var0 - frames;
+  state->var1 = objects;
+  state->var2 = self;
   return v10;
 }
 

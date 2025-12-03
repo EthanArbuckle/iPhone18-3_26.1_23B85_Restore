@@ -1,27 +1,27 @@
 @interface PKPeerPaymentRequestToken
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentRequestToken)initWithCoder:(id)a3;
-- (PKPeerPaymentRequestToken)initWithRequestToken:(id)a3;
-- (PKPeerPaymentRequestToken)initWithRequestToken:(id)a3 deviceScoreIdentifier:(id)a4 expiryDate:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentRequestToken)initWithCoder:(id)coder;
+- (PKPeerPaymentRequestToken)initWithRequestToken:(id)token;
+- (PKPeerPaymentRequestToken)initWithRequestToken:(id)token deviceScoreIdentifier:(id)identifier expiryDate:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentRequestToken
 
-- (PKPeerPaymentRequestToken)initWithRequestToken:(id)a3
+- (PKPeerPaymentRequestToken)initWithRequestToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     v9.receiver = self;
     v9.super_class = PKPeerPaymentRequestToken;
     v5 = [(PKPeerPaymentRequestToken *)&v9 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [tokenCopy copy];
       requestToken = v5->_requestToken;
       v5->_requestToken = v6;
     }
@@ -36,18 +36,18 @@
   return v5;
 }
 
-- (PKPeerPaymentRequestToken)initWithRequestToken:(id)a3 deviceScoreIdentifier:(id)a4 expiryDate:(id)a5
+- (PKPeerPaymentRequestToken)initWithRequestToken:(id)token deviceScoreIdentifier:(id)identifier expiryDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  tokenCopy = token;
+  identifierCopy = identifier;
+  dateCopy = date;
+  if (!tokenCopy)
   {
     v14 = 0;
     goto LABEL_8;
   }
 
-  v11 = v8;
+  v11 = tokenCopy;
   if (v11 == @"PKPeerPaymentInformalRequestToken" || (v12 = v11, v13 = [(__CFString *)v11 isEqualToString:@"PKPeerPaymentInformalRequestToken"], v12, v13))
   {
     v14 = +[PKPeerPaymentInformalRequestToken token];
@@ -59,11 +59,11 @@ LABEL_8:
   v14 = [(PKPeerPaymentRequestToken *)self initWithRequestToken:v12];
   if (v14)
   {
-    v15 = [v9 copy];
+    v15 = [identifierCopy copy];
     deviceScoreIdentifier = v14->_deviceScoreIdentifier;
     v14->_deviceScoreIdentifier = v15;
 
-    v17 = [v10 copy];
+    v17 = [dateCopy copy];
     self = v14->_expiryDate;
     v14->_expiryDate = v17;
     goto LABEL_8;
@@ -74,20 +74,20 @@ LABEL_9:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(NSString *)self->_requestToken copyWithZone:a3];
+    v6 = [(NSString *)self->_requestToken copyWithZone:zone];
     v7 = v5[1];
     v5[1] = v6;
 
-    v8 = [(NSUUID *)self->_deviceScoreIdentifier copyWithZone:a3];
+    v8 = [(NSUUID *)self->_deviceScoreIdentifier copyWithZone:zone];
     v9 = v5[2];
     v5[2] = v8;
 
-    v10 = [(NSDate *)self->_expiryDate copyWithZone:a3];
+    v10 = [(NSDate *)self->_expiryDate copyWithZone:zone];
     v11 = v5[3];
     v5[3] = v10;
   }
@@ -95,23 +95,23 @@ LABEL_9:
   return v5;
 }
 
-- (PKPeerPaymentRequestToken)initWithCoder:(id)a3
+- (PKPeerPaymentRequestToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKPeerPaymentRequestToken;
   v5 = [(PKPeerPaymentRequestToken *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestToken"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestToken"];
     requestToken = v5->_requestToken;
     v5->_requestToken = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceScoreIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceScoreIdentifier"];
     deviceScoreIdentifier = v5->_deviceScoreIdentifier;
     v5->_deviceScoreIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expiryDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expiryDate"];
     expiryDate = v5->_expiryDate;
     v5->_expiryDate = v10;
   }
@@ -119,19 +119,19 @@ LABEL_9:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   requestToken = self->_requestToken;
-  v5 = a3;
-  [v5 encodeObject:requestToken forKey:@"requestToken"];
-  [v5 encodeObject:self->_deviceScoreIdentifier forKey:@"deviceScoreIdentifier"];
-  [v5 encodeObject:self->_expiryDate forKey:@"expiryDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:requestToken forKey:@"requestToken"];
+  [coderCopy encodeObject:self->_deviceScoreIdentifier forKey:@"deviceScoreIdentifier"];
+  [coderCopy encodeObject:self->_expiryDate forKey:@"expiryDate"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -141,7 +141,7 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       requestToken = self->_requestToken;
       v7 = v5->_requestToken;
       if (requestToken && v7)
@@ -218,11 +218,11 @@ LABEL_19:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_requestToken)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_deviceScoreIdentifier)

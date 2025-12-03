@@ -1,7 +1,7 @@
 @interface CPLPhotosDaemonConnection
 - (CPLPhotosDaemonConnection)init;
-- (id)managementServiceWithError:(id *)a3;
-- (id)proxyWithErrorHandler:(id)a3;
+- (id)managementServiceWithError:(id *)error;
+- (id)proxyWithErrorHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -30,9 +30,9 @@
     connection = v2->_connection;
     v2->_connection = v3;
 
-    v10 = [(NSXPCConnection *)v2->_connection _queue];
+    _queue = [(NSXPCConnection *)v2->_connection _queue];
     queue = v2->_queue;
-    v2->_queue = v10;
+    v2->_queue = _queue;
 
     [(NSXPCConnection *)v2->_connection resume];
   }
@@ -48,21 +48,21 @@
   [(CPLPhotosDaemonConnection *)&v3 dealloc];
 }
 
-- (id)proxyWithErrorHandler:(id)a3
+- (id)proxyWithErrorHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   connection = self->_connection;
   if (!connection)
   {
     sub_10001D830(a2, self);
   }
 
-  v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v5];
+  v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v7;
 }
 
-- (id)managementServiceWithError:(id *)a3
+- (id)managementServiceWithError:(id *)error
 {
   v34 = 0;
   v35 = &v34;
@@ -114,9 +114,9 @@
   }
 
   v10 = v29[5];
-  if (a3 && !v10)
+  if (error && !v10)
   {
-    *a3 = v35[5];
+    *error = v35[5];
     v10 = v29[5];
   }
 

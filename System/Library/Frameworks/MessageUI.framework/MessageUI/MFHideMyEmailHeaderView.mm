@@ -1,70 +1,70 @@
 @interface MFHideMyEmailHeaderView
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4;
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MFHideMyEmailHeaderView)initWithFrame:(CGRect)a3 address:(id)a4;
-- (void)copy:(id)a3;
-- (void)didTriggerEditGesture:(id)a3;
-- (void)infoButtonPressed:(id)a3;
-- (void)setBounds:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MFHideMyEmailHeaderView)initWithFrame:(CGRect)frame address:(id)address;
+- (void)copy:(id)copy;
+- (void)didTriggerEditGesture:(id)gesture;
+- (void)infoButtonPressed:(id)pressed;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation MFHideMyEmailHeaderView
 
-- (MFHideMyEmailHeaderView)initWithFrame:(CGRect)a3 address:(id)a4
+- (MFHideMyEmailHeaderView)initWithFrame:(CGRect)frame address:(id)address
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  addressCopy = address;
   v38.receiver = self;
   v38.super_class = MFHideMyEmailHeaderView;
-  v10 = [(MFHideMyEmailHeaderView *)&v38 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(MFHideMyEmailHeaderView *)&v38 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(MFHideMyEmailHeaderView *)v10 setAddress:v9];
+    [(MFHideMyEmailHeaderView *)height setAddress:addressCopy];
     [(MFHideMyEmailHeaderView *)v11 setAxis:0];
     [(MFHideMyEmailHeaderView *)v11 setAlignment:3];
     [(MFHideMyEmailHeaderView *)v11 setDistribution:0];
     [(MFHideMyEmailHeaderView *)v11 setSpacing:8.0];
     [(MFHideMyEmailHeaderView *)v11 setLayoutMarginsRelativeArrangement:1];
     [(MFHideMyEmailHeaderView *)v11 setDirectionalLayoutMargins:0.0, 0.0, 0.0, 16.0];
-    v12 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
-    [v12 setTextToSecondaryTextVerticalPadding:4.0];
-    v13 = [MEMORY[0x1E696AAE8] mainBundle];
-    v14 = [v13 localizedStringForKey:@"HIDE_MY_EMAIL_TITLE" value:&stru_1F3CF3758 table:@"Main"];
-    [v12 setText:v14];
+    subtitleCellConfiguration = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+    [subtitleCellConfiguration setTextToSecondaryTextVerticalPadding:4.0];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    v14 = [mainBundle localizedStringForKey:@"HIDE_MY_EMAIL_TITLE" value:&stru_1F3CF3758 table:@"Main"];
+    [subtitleCellConfiguration setText:v14];
 
     v15 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
-    v16 = [v12 textProperties];
-    [v16 setFont:v15];
+    textProperties = [subtitleCellConfiguration textProperties];
+    [textProperties setFont:v15];
 
-    v17 = [v12 textProperties];
-    [v17 setNumberOfLines:0];
+    textProperties2 = [subtitleCellConfiguration textProperties];
+    [textProperties2 setNumberOfLines:0];
 
-    v18 = [v12 textProperties];
-    [v18 setAdjustsFontForContentSizeCategory:1];
+    textProperties3 = [subtitleCellConfiguration textProperties];
+    [textProperties3 setAdjustsFontForContentSizeCategory:1];
 
-    [v12 setSecondaryText:v9];
+    [subtitleCellConfiguration setSecondaryText:addressCopy];
     v19 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-    v20 = [v12 secondaryTextProperties];
-    [v20 setFont:v19];
+    secondaryTextProperties = [subtitleCellConfiguration secondaryTextProperties];
+    [secondaryTextProperties setFont:v19];
 
-    v21 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v22 = [v12 secondaryTextProperties];
-    [v22 setColor:v21];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    secondaryTextProperties2 = [subtitleCellConfiguration secondaryTextProperties];
+    [secondaryTextProperties2 setColor:systemBlueColor];
 
-    v23 = [v12 secondaryTextProperties];
-    [v23 setNumberOfLines:0];
+    secondaryTextProperties3 = [subtitleCellConfiguration secondaryTextProperties];
+    [secondaryTextProperties3 setNumberOfLines:0];
 
-    v24 = [v12 secondaryTextProperties];
-    [v24 setAdjustsFontForContentSizeCategory:1];
+    secondaryTextProperties4 = [subtitleCellConfiguration secondaryTextProperties];
+    [secondaryTextProperties4 setAdjustsFontForContentSizeCategory:1];
 
-    [v12 directionalLayoutMargins];
-    [v12 setDirectionalLayoutMargins:?];
-    v25 = [objc_alloc(MEMORY[0x1E69DCC30]) initWithConfiguration:v12];
+    [subtitleCellConfiguration directionalLayoutMargins];
+    [subtitleCellConfiguration setDirectionalLayoutMargins:?];
+    v25 = [objc_alloc(MEMORY[0x1E69DCC30]) initWithConfiguration:subtitleCellConfiguration];
     contentView = v11->_contentView;
     v11->_contentView = v25;
 
@@ -78,16 +78,16 @@
 
     [(UIButton *)v11->_infoButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MFHideMyEmailHeaderView *)v11 addArrangedSubview:v11->_infoButton];
-    v31 = [(UIButton *)v11->_infoButton widthAnchor];
-    v32 = [(UIButton *)v11->_infoButton heightAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32 constant:1.0];
+    widthAnchor = [(UIButton *)v11->_infoButton widthAnchor];
+    heightAnchor = [(UIButton *)v11->_infoButton heightAnchor];
+    v33 = [widthAnchor constraintEqualToAnchor:heightAnchor constant:1.0];
     [v33 setActive:1];
 
     v34 = [objc_alloc(MEMORY[0x1E69DC9E0]) initWithDelegate:v11];
     [(MFHideMyEmailHeaderView *)v11 setEditInteraction:v34];
 
-    v35 = [(MFHideMyEmailHeaderView *)v11 editInteraction];
-    [(MFHideMyEmailHeaderView *)v11 addInteraction:v35];
+    editInteraction = [(MFHideMyEmailHeaderView *)v11 editInteraction];
+    [(MFHideMyEmailHeaderView *)v11 addInteraction:editInteraction];
 
     v36 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v11 action:sel_didTriggerEditGesture_];
     [v36 setAllowedTouchTypes:&unk_1F3D16790];
@@ -97,10 +97,10 @@
   return v11;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UIListContentView *)self->_contentView frame:a3.width];
+  width = fits.width;
+  [(UIListContentView *)self->_contentView frame:fits.width];
   v5 = v4 + 14.0;
   v6 = width;
   result.height = v5;
@@ -118,12 +118,12 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(MFHideMyEmailHeaderView *)self bounds];
   if (width != v8)
   {
@@ -135,32 +135,32 @@
   [(MFHideMyEmailHeaderView *)&v9 setBounds:x, y, width, height];
 }
 
-- (void)infoButtonPressed:(id)a3
+- (void)infoButtonPressed:(id)pressed
 {
-  v4 = [MEMORY[0x1E6963608] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v3 = +[MFPreferencesURL hideMyEmailURL];
-  [v4 openSensitiveURL:v3 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v3 withOptions:0];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v5 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  v4 = [(MFHideMyEmailHeaderView *)self address];
-  [v5 setString:v4];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  address = [(MFHideMyEmailHeaderView *)self address];
+  [generalPasteboard setString:address];
 }
 
-- (void)didTriggerEditGesture:(id)a3
+- (void)didTriggerEditGesture:(id)gesture
 {
-  [a3 locationInView:self];
+  [gesture locationInView:self];
   v5 = [MEMORY[0x1E69DC9D8] configurationWithIdentifier:0 sourcePoint:?];
-  v4 = [(MFHideMyEmailHeaderView *)self editInteraction];
-  [v4 presentEditMenuWithConfiguration:v5];
+  editInteraction = [(MFHideMyEmailHeaderView *)self editInteraction];
+  [editInteraction presentEditMenuWithConfiguration:v5];
 }
 
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration
 {
-  v4 = [a3 view];
-  [v4 frame];
+  view = [interaction view];
+  [view frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;

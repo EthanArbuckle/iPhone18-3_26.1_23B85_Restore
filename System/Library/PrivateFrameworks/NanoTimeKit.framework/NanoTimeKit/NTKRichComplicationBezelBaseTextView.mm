@@ -1,13 +1,13 @@
 @interface NTKRichComplicationBezelBaseTextView
 - (NTKRichComplicationBezelBaseTextView)init;
-- (id)_createLabelViewWithFont:(id)a3;
+- (id)_createLabelViewWithFont:(id)font;
 - (id)_labelFont;
 - (void)_layoutLabel;
-- (void)_setEditingTransitionFraction:(double)a3 direction:(int64_t)a4 position:(int64_t)a5 type:(int64_t)a6;
-- (void)_setWhistlerAnalogEditingTransitonFraction:(double)a3 direction:(int64_t)a4 position:(int64_t)a5;
-- (void)_transitToHighlightState:(BOOL)a3 fraction:(double)a4;
+- (void)_setEditingTransitionFraction:(double)fraction direction:(int64_t)direction position:(int64_t)position type:(int64_t)type;
+- (void)_setWhistlerAnalogEditingTransitonFraction:(double)fraction direction:(int64_t)direction position:(int64_t)position;
+- (void)_transitToHighlightState:(BOOL)state fraction:(double)fraction;
 - (void)layoutSubviews;
-- (void)setForegroundColor:(id)a3;
+- (void)setForegroundColor:(id)color;
 @end
 
 @implementation NTKRichComplicationBezelBaseTextView
@@ -21,8 +21,8 @@
   if (v2)
   {
     v2->_labelScale = 1.0;
-    v4 = [(NTKRichComplicationBezelBaseTextView *)v2 _labelFont];
-    v5 = [(NTKRichComplicationBezelBaseTextView *)v3 _createLabelViewWithFont:v4];
+    _labelFont = [(NTKRichComplicationBezelBaseTextView *)v2 _labelFont];
+    v5 = [(NTKRichComplicationBezelBaseTextView *)v3 _createLabelViewWithFont:_labelFont];
     label = v3->_label;
     v3->_label = v5;
 
@@ -34,22 +34,22 @@
 
 - (id)_labelFont
 {
-  v2 = [(CDRichComplicationView *)self device];
-  v3 = ___LayoutConstants_block_invoke_46(v2, v2);
+  device = [(CDRichComplicationView *)self device];
+  v3 = ___LayoutConstants_block_invoke_46(device, device);
 
   v4 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:v3 design:*MEMORY[0x277D74420]];
-  v5 = [v4 CLKFontWithAlternativePunctuation];
+  cLKFontWithAlternativePunctuation = [v4 CLKFontWithAlternativePunctuation];
 
-  return v5;
+  return cLKFontWithAlternativePunctuation;
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationBezelBaseTextView;
-  v4 = a3;
-  [(CDRichComplicationView *)&v5 setForegroundColor:v4];
-  [(CLKUIColoringView *)self->_label setColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(CDRichComplicationView *)&v5 setForegroundColor:colorCopy];
+  [(CLKUIColoringView *)self->_label setColor:colorCopy, v5.receiver, v5.super_class];
 }
 
 - (void)layoutSubviews
@@ -58,8 +58,8 @@
   v13.super_class = NTKRichComplicationBezelBaseTextView;
   [(NTKRichComplicationBezelBaseTextView *)&v13 layoutSubviews];
   [(NTKRichComplicationBezelBaseTextView *)self _layoutLabel];
-  v3 = [(CDRichComplicationView *)self device];
-  ___LayoutConstants_block_invoke_46(v3, v3);
+  device = [(CDRichComplicationView *)self device];
+  ___LayoutConstants_block_invoke_46(device, device);
   v5 = v4;
 
   [(CLKUIColoringView *)self->_label frame];
@@ -70,20 +70,20 @@
 
   v14 = CGRectInset(*&v6, -3.0, -3.0);
   [(NTKRichComplicationBezelView *)self _updateHitTestShape:1 frame:v14.origin.x, v14.origin.y, v14.size.width, v14.size.height];
-  v10 = [(NTKRichComplicationBezelView *)self delegate];
+  delegate = [(NTKRichComplicationBezelView *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(NTKRichComplicationBezelView *)self delegate];
-    [v12 didUpdateBezelTextForRichComplicationBezelView:self];
+    delegate2 = [(NTKRichComplicationBezelView *)self delegate];
+    [delegate2 didUpdateBezelTextForRichComplicationBezelView:self];
   }
 }
 
 - (void)_layoutLabel
 {
-  v3 = [(CDRichComplicationView *)self device];
-  ___LayoutConstants_block_invoke_46(v3, v3);
+  device = [(CDRichComplicationView *)self device];
+  ___LayoutConstants_block_invoke_46(device, device);
   v5 = v4;
 
   [(NTKRichComplicationBezelBaseTextView *)self bounds];
@@ -99,8 +99,8 @@
   v11 = v10;
   v13 = v12;
   v14 = (v7 - v10) * 0.5;
-  v15 = [(NTKRichComplicationBezelBaseTextView *)self _labelFont];
-  [v15 ascender];
+  _labelFont = [(NTKRichComplicationBezelBaseTextView *)self _labelFont];
+  [_labelFont ascender];
   *&v16 = v5 - v16;
   v17 = ceilf(*&v16);
 
@@ -124,18 +124,18 @@
   [(CLKUIColoringView *)v19 setTransform:&v21];
 }
 
-- (void)_setWhistlerAnalogEditingTransitonFraction:(double)a3 direction:(int64_t)a4 position:(int64_t)a5
+- (void)_setWhistlerAnalogEditingTransitonFraction:(double)fraction direction:(int64_t)direction position:(int64_t)position
 {
-  if (a5 <= 1)
+  if (position <= 1)
   {
     CLKCompressFraction();
   }
 
-  v7 = [(CDRichComplicationView *)self device:a4];
+  v7 = [(CDRichComplicationView *)self device:direction];
   ___LayoutConstants_block_invoke_46(v7, v7);
 
   CLKInterpolateBetweenFloatsClipped();
-  if (a5 == 1)
+  if (position == 1)
   {
     v8 = -v8;
   }
@@ -145,15 +145,15 @@
   [(NTKRichComplicationBezelBaseTextView *)self setNeedsLayout];
 }
 
-- (void)_setEditingTransitionFraction:(double)a3 direction:(int64_t)a4 position:(int64_t)a5 type:(int64_t)a6
+- (void)_setEditingTransitionFraction:(double)fraction direction:(int64_t)direction position:(int64_t)position type:(int64_t)type
 {
-  if (!a6)
+  if (!type)
   {
-    [(NTKRichComplicationBezelBaseTextView *)self _setWhistlerAnalogEditingTransitonFraction:a4 direction:a5 position:a3];
+    [(NTKRichComplicationBezelBaseTextView *)self _setWhistlerAnalogEditingTransitonFraction:direction direction:position position:fraction];
   }
 }
 
-- (void)_transitToHighlightState:(BOOL)a3 fraction:(double)a4
+- (void)_transitToHighlightState:(BOOL)state fraction:(double)fraction
 {
   CLKInterpolateBetweenFloatsClipped();
   self->_labelScale = v5;
@@ -161,7 +161,7 @@
   [(NTKRichComplicationBezelBaseTextView *)self _layoutLabel];
 }
 
-- (id)_createLabelViewWithFont:(id)a3
+- (id)_createLabelViewWithFont:(id)font
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

@@ -1,12 +1,12 @@
 @interface MPLayerSerializer
 - (id)description;
 - (void)dealloc;
-- (void)insertEffectContainers:(id)a3 atIndex:(int64_t)a4;
-- (void)moveEffectContainersFromIndices:(id)a3 toIndex:(int64_t)a4;
-- (void)removeEffectContainersAtIndices:(id)a3;
-- (void)setAudioPlaylist:(id)a3;
-- (void)setIntroTransition:(id)a3;
-- (void)setLayerSerializer:(id)a3;
+- (void)insertEffectContainers:(id)containers atIndex:(int64_t)index;
+- (void)moveEffectContainersFromIndices:(id)indices toIndex:(int64_t)index;
+- (void)removeEffectContainersAtIndices:(id)indices;
+- (void)setAudioPlaylist:(id)playlist;
+- (void)setIntroTransition:(id)transition;
+- (void)setLayerSerializer:(id)serializer;
 @end
 
 @implementation MPLayerSerializer
@@ -51,21 +51,21 @@
   [(MPLayer *)&v5 dealloc];
 }
 
-- (void)setIntroTransition:(id)a3
+- (void)setIntroTransition:(id)transition
 {
-  if (a3)
+  if (transition)
   {
-    v5 = [(MPLayer *)self parentDocument];
-    if ([objc_msgSend(v5 documentAttributeForKey:{kMPDocumentEnforceSafeTiming), "BOOLValue"}])
+    parentDocument = [(MPLayer *)self parentDocument];
+    if ([objc_msgSend(parentDocument documentAttributeForKey:{kMPDocumentEnforceSafeTiming), "BOOLValue"}])
     {
       if ([-[MPLayer effectContainers](self "effectContainers")])
       {
         [objc_msgSend(-[MPLayer effectContainers](self "effectContainers")];
         v7 = v6;
-        [a3 duration];
+        [transition duration];
         if (v8 > v7)
         {
-          [a3 setDuration:v7];
+          [transition setDuration:v7];
         }
       }
     }
@@ -83,12 +83,12 @@
     }
   }
 
-  if (a3)
+  if (transition)
   {
-    v11 = a3;
-    self->_introTransition = v11;
+    transitionCopy = transition;
+    self->_introTransition = transitionCopy;
 
-    [(MPTransition *)v11 setParent:self];
+    [(MPTransition *)transitionCopy setParent:self];
   }
 
   else
@@ -105,7 +105,7 @@
   }
 }
 
-- (void)insertEffectContainers:(id)a3 atIndex:(int64_t)a4
+- (void)insertEffectContainers:(id)containers atIndex:(int64_t)index
 {
   v7 = objc_autoreleasePoolPush();
   if ([(MPLayer *)self parentDocument])
@@ -113,14 +113,14 @@
     [objc_msgSend(-[MPLayer parentDocument](self "parentDocument")];
   }
 
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
-    a4 = [(NSMutableArray *)self->super._effectContainers count];
+    index = [(NSMutableArray *)self->super._effectContainers count];
   }
 
-  v8 = [[NSIndexSet alloc] initWithIndexesInRange:{a4, objc_msgSend(a3, "count")}];
+  v8 = [[NSIndexSet alloc] initWithIndexesInRange:{index, objc_msgSend(containers, "count")}];
   [(MPLayerSerializer *)self willChange:2 valuesAtIndexes:v8 forKey:@"effectContainers"];
-  [(MPLayer *)self reconnectTransitionForEffectContainerAtIndex:a4];
+  [(MPLayer *)self reconnectTransitionForEffectContainerAtIndex:index];
   if (!self->super._effectContainers)
   {
     self->super._effectContainers = objc_alloc_init(NSMutableArray);
@@ -128,14 +128,14 @@
 
   v9 = 80;
   [(NSLock *)[(MPLayerInternal *)self->super._internal containerLock] lock];
-  [(NSMutableArray *)self->super._effectContainers insertObjects:a3 atIndexes:v8];
+  [(NSMutableArray *)self->super._effectContainers insertObjects:containers atIndexes:v8];
   if (-[MPLayer parent](self, "parent") && ![-[MPLayer parent](self "parent")])
   {
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v19 = [a3 countByEnumeratingWithState:&v41 objects:v50 count:16];
+    v19 = [containers countByEnumeratingWithState:&v41 objects:v50 count:16];
     if (v19)
     {
       v20 = v19;
@@ -146,13 +146,13 @@
         {
           if (*v42 != v21)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(containers);
           }
 
           [*(*(&v41 + 1) + 8 * i) setParentLayer:self];
         }
 
-        v20 = [a3 countByEnumeratingWithState:&v41 objects:v50 count:16];
+        v20 = [containers countByEnumeratingWithState:&v41 objects:v50 count:16];
       }
 
       while (v20);
@@ -167,7 +167,7 @@
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v12 = [a3 countByEnumeratingWithState:&v45 objects:v51 count:16];
+    v12 = [containers countByEnumeratingWithState:&v45 objects:v51 count:16];
     if (v12)
     {
       v13 = v12;
@@ -178,7 +178,7 @@
         {
           if (*v46 != v14)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(containers);
           }
 
           v16 = *(*(&v45 + 1) + 8 * j);
@@ -192,7 +192,7 @@
           }
         }
 
-        v13 = [a3 countByEnumeratingWithState:&v45 objects:v51 count:16];
+        v13 = [containers countByEnumeratingWithState:&v45 objects:v51 count:16];
       }
 
       while (v13);
@@ -206,7 +206,7 @@
     v33 = 80;
     v35 = v7;
     v23 = objc_alloc_init(NSMutableArray);
-    v24 = [a3 count];
+    v24 = [containers count];
     if (v24 >= 1)
     {
       v25 = v24;
@@ -219,13 +219,13 @@
       while (v25);
     }
 
-    v26 = [(MCContainerSerializer *)self->_layerSerializer insertPlugsForContainers:v23 atIndex:a4, v33, v35];
+    v26 = [(MCContainerSerializer *)self->_layerSerializer insertPlugsForContainers:v23 atIndex:index, v33, v35];
     [(MCContainerSerializer *)self->_layerSerializer orderedPlugs];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v27 = [a3 countByEnumeratingWithState:&v37 objects:v49 count:16];
+    v27 = [containers countByEnumeratingWithState:&v37 objects:v49 count:16];
     if (v27)
     {
       v28 = v27;
@@ -237,7 +237,7 @@
         {
           if (*v38 != v30)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(containers);
           }
 
           v32 = *(*(&v37 + 1) + 8 * k);
@@ -245,7 +245,7 @@
           [v32 setContainerPlug:{objc_msgSend(v26, "objectAtIndex:", v29++)}];
         }
 
-        v28 = [a3 countByEnumeratingWithState:&v37 objects:v49 count:16];
+        v28 = [containers countByEnumeratingWithState:&v37 objects:v49 count:16];
       }
 
       while (v28);
@@ -265,7 +265,7 @@
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)removeEffectContainersAtIndices:(id)a3
+- (void)removeEffectContainersAtIndices:(id)indices
 {
   if ([(NSMutableArray *)self->super._effectContainers count])
   {
@@ -275,11 +275,11 @@
       [objc_msgSend(-[MPLayer parentDocument](self "parentDocument")];
     }
 
-    [(MPLayerSerializer *)self willChange:3 valuesAtIndexes:a3 forKey:@"effectContainers"];
+    [(MPLayerSerializer *)self willChange:3 valuesAtIndexes:indices forKey:@"effectContainers"];
     layerSerializer = self->_layerSerializer;
     if (layerSerializer)
     {
-      [(MCContainerSerializer *)layerSerializer removePlugsAtIndices:a3];
+      [(MCContainerSerializer *)layerSerializer removePlugsAtIndices:indices];
     }
 
     [(NSLock *)[(MPLayerInternal *)self->super._internal containerLock] lock];
@@ -296,10 +296,10 @@
       v9 = 1;
     }
 
-    v10 = [a3 lastIndex];
-    if (v10 != 0x7FFFFFFFFFFFFFFFLL)
+    lastIndex = [indices lastIndex];
+    if (lastIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v10; i != 0x7FFFFFFFFFFFFFFFLL; i = [a3 indexLessThanIndex:i])
+      for (i = lastIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [indices indexLessThanIndex:i])
       {
         v12 = [(NSMutableArray *)self->super._effectContainers objectAtIndex:i];
         if (v9)
@@ -320,7 +320,7 @@
       }
     }
 
-    [(NSMutableArray *)self->super._effectContainers removeObjectsAtIndexes:a3];
+    [(NSMutableArray *)self->super._effectContainers removeObjectsAtIndexes:indices];
     [(NSLock *)[(MPLayerInternal *)self->super._internal containerLock] unlock];
     if (v9)
     {
@@ -333,7 +333,7 @@
       [(MPLayer *)self setDuration:v15];
     }
 
-    [(MPLayerSerializer *)self didChange:3 valuesAtIndexes:a3 forKey:@"effectContainers"];
+    [(MPLayerSerializer *)self didChange:3 valuesAtIndexes:indices forKey:@"effectContainers"];
     if ([(MPLayer *)self parentDocument])
     {
       [objc_msgSend(-[MPLayer parentDocument](self "parentDocument")];
@@ -343,33 +343,33 @@
   }
 }
 
-- (void)moveEffectContainersFromIndices:(id)a3 toIndex:(int64_t)a4
+- (void)moveEffectContainersFromIndices:(id)indices toIndex:(int64_t)index
 {
   layerSerializer = self->_layerSerializer;
   if (layerSerializer)
   {
-    [(MCContainerSerializer *)layerSerializer movePlugsAtIndices:a3 toIndex:a4];
+    [(MCContainerSerializer *)layerSerializer movePlugsAtIndices:indices toIndex:index];
   }
 
-  v8 = [a3 firstIndex];
-  if (v8 != 0x7FFFFFFFFFFFFFFFLL)
+  firstIndex = [indices firstIndex];
+  if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (i = v8; i != 0x7FFFFFFFFFFFFFFFLL; i = [a3 indexGreaterThanIndex:i])
+    for (i = firstIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [indices indexGreaterThanIndex:i])
     {
       [(MPLayer *)self reconnectTransitionForEffectContainerAtIndex:i];
     }
   }
 
-  v10 = [(NSMutableArray *)self->super._effectContainers objectsAtIndexes:a3];
+  v10 = [(NSMutableArray *)self->super._effectContainers objectsAtIndexes:indices];
   [(NSLock *)[(MPLayerInternal *)self->super._internal containerLock] lock];
-  [(NSMutableArray *)self->super._effectContainers removeObjectsAtIndexes:a3];
-  -[NSMutableArray insertObjects:atIndexes:](self->super._effectContainers, "insertObjects:atIndexes:", v10, +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", a4, [v10 count]));
+  [(NSMutableArray *)self->super._effectContainers removeObjectsAtIndexes:indices];
+  -[NSMutableArray insertObjects:atIndexes:](self->super._effectContainers, "insertObjects:atIndexes:", v10, +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", index, [v10 count]));
   [(NSLock *)[(MPLayerInternal *)self->super._internal containerLock] unlock];
 
   [(MPLayer *)self resetStartTimes];
 }
 
-- (void)setAudioPlaylist:(id)a3
+- (void)setAudioPlaylist:(id)playlist
 {
   audioPlaylist = self->super._audioPlaylist;
   if (audioPlaylist)
@@ -381,27 +381,27 @@
     self->super._audioPlaylist = 0;
   }
 
-  if (a3)
+  if (playlist)
   {
-    v6 = a3;
-    self->super._audioPlaylist = v6;
-    [(MPAudioPlaylist *)v6 setParentObject:self];
+    playlistCopy = playlist;
+    self->super._audioPlaylist = playlistCopy;
+    [(MPAudioPlaylist *)playlistCopy setParentObject:self];
     if (self->_layerSerializer)
     {
       [(MPAudioPlaylist *)self->super._audioPlaylist setMontage:self->super._montage];
       v7 = self->super._audioPlaylist;
-      v8 = [(MCContainer *)self->_layerSerializer audioPlaylistCreateIfNeeded];
+      audioPlaylistCreateIfNeeded = [(MCContainer *)self->_layerSerializer audioPlaylistCreateIfNeeded];
 
-      [(MPAudioPlaylist *)v7 setAudioPlaylist:v8];
+      [(MPAudioPlaylist *)v7 setAudioPlaylist:audioPlaylistCreateIfNeeded];
     }
   }
 }
 
-- (void)setLayerSerializer:(id)a3
+- (void)setLayerSerializer:(id)serializer
 {
-  v5 = a3;
-  self->_layerSerializer = v5;
-  if (v5)
+  serializerCopy = serializer;
+  self->_layerSerializer = serializerCopy;
+  if (serializerCopy)
   {
     v6 = objc_alloc_init(NSMutableArray);
     if ([(NSMutableArray *)self->super._effectContainers count])

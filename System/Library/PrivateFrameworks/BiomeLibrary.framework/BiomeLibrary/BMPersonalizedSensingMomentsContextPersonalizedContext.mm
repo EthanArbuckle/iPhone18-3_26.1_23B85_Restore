@@ -1,39 +1,39 @@
 @interface BMPersonalizedSensingMomentsContextPersonalizedContext
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMPersonalizedSensingMomentsContextPersonalizedContext)initWithFetchDetails:(id)a3 fetchOptions:(id)a4 contexts:(id)a5;
-- (BMPersonalizedSensingMomentsContextPersonalizedContext)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMPersonalizedSensingMomentsContextPersonalizedContext)initWithFetchDetails:(id)details fetchOptions:(id)options contexts:(id)contexts;
+- (BMPersonalizedSensingMomentsContextPersonalizedContext)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_contextsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPersonalizedSensingMomentsContextPersonalizedContext
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self fetchDetails];
-    v7 = [v5 fetchDetails];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    fetchDetails = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self fetchDetails];
+    fetchDetails2 = [v5 fetchDetails];
+    v8 = fetchDetails2;
+    if (fetchDetails == fetchDetails2)
     {
     }
 
     else
     {
-      v9 = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self fetchDetails];
-      v10 = [v5 fetchDetails];
-      v11 = [v9 isEqual:v10];
+      fetchDetails3 = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self fetchDetails];
+      fetchDetails4 = [v5 fetchDetails];
+      v11 = [fetchDetails3 isEqual:fetchDetails4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self fetchOptions];
-    v14 = [v5 fetchOptions];
-    v15 = v14;
-    if (v13 == v14)
+    fetchOptions = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self fetchOptions];
+    fetchOptions2 = [v5 fetchOptions];
+    v15 = fetchOptions2;
+    if (fetchOptions == fetchOptions2)
     {
     }
 
     else
     {
-      v16 = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self fetchOptions];
-      v17 = [v5 fetchOptions];
-      v18 = [v16 isEqual:v17];
+      fetchOptions3 = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self fetchOptions];
+      fetchOptions4 = [v5 fetchOptions];
+      v18 = [fetchOptions3 isEqual:fetchOptions4];
 
       if (!v18)
       {
@@ -64,18 +64,18 @@ LABEL_15:
       }
     }
 
-    v19 = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self contexts];
-    v20 = [v5 contexts];
-    if (v19 == v20)
+    contexts = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self contexts];
+    contexts2 = [v5 contexts];
+    if (contexts == contexts2)
     {
       v12 = 1;
     }
 
     else
     {
-      v21 = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self contexts];
-      v22 = [v5 contexts];
-      v12 = [v21 isEqual:v22];
+      contexts3 = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self contexts];
+      contexts4 = [v5 contexts];
+      v12 = [contexts3 isEqual:contexts4];
     }
 
     goto LABEL_15;
@@ -90,48 +90,48 @@ LABEL_16:
 - (id)jsonDictionary
 {
   v15[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self fetchDetails];
-  v4 = [v3 jsonDictionary];
+  fetchDetails = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self fetchDetails];
+  jsonDictionary = [fetchDetails jsonDictionary];
 
-  v5 = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self fetchOptions];
-  v6 = [v5 jsonDictionary];
+  fetchOptions = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self fetchOptions];
+  jsonDictionary2 = [fetchOptions jsonDictionary];
 
-  v7 = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self _contextsJSONArray];
+  _contextsJSONArray = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self _contextsJSONArray];
   v14[0] = @"fetchDetails";
-  v8 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v8;
+  v15[0] = null;
   v14[1] = @"fetchOptions";
-  v9 = v6;
-  if (!v6)
+  null2 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v9;
+  v15[1] = null2;
   v14[2] = @"contexts";
-  v10 = v7;
-  if (!v7)
+  null3 = _contextsJSONArray;
+  if (!_contextsJSONArray)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v10;
+  v15[2] = null3;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:3];
-  if (v7)
+  if (_contextsJSONArray)
   {
-    if (v6)
+    if (jsonDictionary2)
     {
       goto LABEL_9;
     }
 
 LABEL_14:
 
-    if (v4)
+    if (jsonDictionary)
     {
       goto LABEL_10;
     }
@@ -139,13 +139,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v6)
+  if (!jsonDictionary2)
   {
     goto LABEL_14;
   }
 
 LABEL_9:
-  if (v4)
+  if (jsonDictionary)
   {
     goto LABEL_10;
   }
@@ -166,8 +166,8 @@ LABEL_10:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self contexts];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  contexts = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self contexts];
+  v5 = [contexts countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -178,14 +178,14 @@ LABEL_10:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(contexts);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [contexts countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -196,31 +196,31 @@ LABEL_10:
   return v3;
 }
 
-- (BMPersonalizedSensingMomentsContextPersonalizedContext)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMPersonalizedSensingMomentsContextPersonalizedContext)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v74[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"fetchDetails"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"fetchDetails"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v29 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v30 = a4;
+        errorCopy = error;
         v31 = *MEMORY[0x1E698F240];
         v73 = *MEMORY[0x1E696A578];
         v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"fetchDetails"];
         v74[0] = v8;
         v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v74 forKeys:&v73 count:1];
-        v27 = 0;
-        *v30 = [v29 initWithDomain:v31 code:2 userInfo:v9];
+        selfCopy3 = 0;
+        *errorCopy = [v29 initWithDomain:v31 code:2 userInfo:v9];
         goto LABEL_50;
       }
 
-      v27 = 0;
+      selfCopy3 = 0;
       goto LABEL_51;
     }
 
@@ -230,14 +230,14 @@ LABEL_10:
     v14 = v63;
     if (v14)
     {
-      if (a4)
+      if (error)
       {
         v14 = v14;
-        *a4 = v14;
+        *error = v14;
       }
 
 LABEL_37:
-      v27 = 0;
+      selfCopy3 = 0;
       goto LABEL_50;
     }
   }
@@ -247,7 +247,7 @@ LABEL_37:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"fetchOptions"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"fetchOptions"];
   if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v10 = 0;
@@ -257,17 +257,17 @@ LABEL_37:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v32 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v50 = a4;
+      errorCopy2 = error;
       v33 = *MEMORY[0x1E698F240];
       v71 = *MEMORY[0x1E696A578];
       v72 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"fetchOptions"];
       v10 = v72;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
-      v27 = 0;
-      *v50 = [v32 initWithDomain:v33 code:2 userInfo:v11];
+      selfCopy3 = 0;
+      *errorCopy2 = [v32 initWithDomain:v33 code:2 userInfo:v11];
       goto LABEL_49;
     }
 
@@ -280,19 +280,19 @@ LABEL_37:
   v28 = v62;
   if (v28)
   {
-    if (a4)
+    if (error)
     {
       v28 = v28;
-      *a4 = v28;
+      *error = v28;
     }
 
     goto LABEL_54;
   }
 
 LABEL_7:
-  v11 = [v6 objectForKeyedSubscript:@"contexts"];
-  v12 = [MEMORY[0x1E695DFB0] null];
-  v13 = [v11 isEqual:v12];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"contexts"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v13 = [v11 isEqual:null];
 
   v56 = v7;
   if (!v13)
@@ -300,14 +300,14 @@ LABEL_7:
     if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v53 = v10;
-      v54 = self;
-      v49 = a4;
+      selfCopy2 = self;
+      errorCopy4 = error;
       v51 = v8;
-      v52 = v6;
+      v52 = dictionaryCopy;
       goto LABEL_17;
     }
 
-    if (a4)
+    if (error)
     {
       v55 = objc_alloc(MEMORY[0x1E696ABC0]);
       v44 = *MEMORY[0x1E698F240];
@@ -316,24 +316,24 @@ LABEL_7:
       v70 = v15;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:&v70 forKeys:&v69 count:1];
       v45 = v10;
-      v47 = v46 = a4;
+      v47 = v46 = error;
       *v46 = [v55 initWithDomain:v44 code:2 userInfo:v47];
       v10 = v45;
 
-      v27 = 0;
+      selfCopy3 = 0;
       goto LABEL_48;
     }
 
 LABEL_54:
-    v27 = 0;
+    selfCopy3 = 0;
     goto LABEL_49;
   }
 
   v53 = v10;
-  v54 = self;
-  v49 = a4;
+  selfCopy2 = self;
+  errorCopy4 = error;
   v51 = v8;
-  v52 = v6;
+  v52 = dictionaryCopy;
 
   v11 = 0;
 LABEL_17:
@@ -368,9 +368,9 @@ LABEL_17:
       if (objc_opt_isKindOfClass())
       {
         v8 = v51;
-        v6 = v52;
-        v34 = v49;
-        if (v49)
+        dictionaryCopy = v52;
+        v34 = errorCopy4;
+        if (errorCopy4)
         {
           v35 = objc_alloc(MEMORY[0x1E696ABC0]);
           v36 = *MEMORY[0x1E698F240];
@@ -388,9 +388,9 @@ LABEL_46:
 
 LABEL_47:
 
-        v27 = 0;
+        selfCopy3 = 0;
         v10 = v53;
-        self = v54;
+        self = selfCopy2;
         v9 = v48;
         goto LABEL_48;
       }
@@ -399,9 +399,9 @@ LABEL_47:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v8 = v51;
-        v6 = v52;
-        v34 = v49;
-        if (v49)
+        dictionaryCopy = v52;
+        v34 = errorCopy4;
+        if (errorCopy4)
         {
           v35 = objc_alloc(MEMORY[0x1E696ABC0]);
           v36 = *MEMORY[0x1E698F240];
@@ -425,14 +425,14 @@ LABEL_47:
       if (v26)
       {
         v40 = v26;
-        if (v49)
+        if (errorCopy4)
         {
           v41 = v26;
-          *v49 = v40;
+          *errorCopy4 = v40;
         }
 
         v8 = v51;
-        v6 = v52;
+        dictionaryCopy = v52;
         goto LABEL_46;
       }
 
@@ -455,9 +455,9 @@ LABEL_27:
 
   v10 = v53;
   v8 = v51;
-  self = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)v54 initWithFetchDetails:v51 fetchOptions:v53 contexts:v15];
-  v27 = self;
-  v6 = v52;
+  self = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)selfCopy2 initWithFetchDetails:v51 fetchOptions:v53 contexts:v15];
+  selfCopy3 = self;
+  dictionaryCopy = v52;
 LABEL_48:
 
   v7 = v56;
@@ -467,27 +467,27 @@ LABEL_50:
 LABEL_51:
 
   v42 = *MEMORY[0x1E69E9840];
-  return v27;
+  return selfCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_fetchDetails)
   {
     v16 = 0;
     PBDataWriterPlaceMark();
-    [(BMPersonalizedSensingMomentsContextContextFetchDetails *)self->_fetchDetails writeTo:v4];
+    [(BMPersonalizedSensingMomentsContextContextFetchDetails *)self->_fetchDetails writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -495,7 +495,7 @@ LABEL_51:
   {
     v16 = 0;
     PBDataWriterPlaceMark();
-    [(BMPersonalizedSensingMomentsContextMomentsContextFetchOptions *)self->_fetchOptions writeTo:v4];
+    [(BMPersonalizedSensingMomentsContextMomentsContextFetchOptions *)self->_fetchOptions writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -522,7 +522,7 @@ LABEL_51:
         v10 = *(*(&v12 + 1) + 8 * v9);
         v16 = 0;
         PBDataWriterPlaceMark();
-        [v10 writeTo:{v4, v12}];
+        [v10 writeTo:{toCopy, v12}];
         PBDataWriterRecallMark();
         ++v9;
       }
@@ -537,9 +537,9 @@ LABEL_51:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v28.receiver = self;
   v28.super_class = BMPersonalizedSensingMomentsContextPersonalizedContext;
   v5 = [(BMEventBase *)&v28 init];
@@ -549,12 +549,12 @@ LABEL_51:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -565,18 +565,18 @@ LABEL_51:
       while (1)
       {
         LOBYTE(v29) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v29 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v29 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v29 & 0x7F) << v8;
@@ -593,9 +593,9 @@ LABEL_51:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -605,7 +605,7 @@ LABEL_16:
       {
         v29 = 0;
         v30 = 0;
-        if (!PBReaderPlaceMark() || (v20 = [[BMPersonalizedSensingMomentsContextMomentsContext alloc] initByReadFrom:v4]) == 0)
+        if (!PBReaderPlaceMark() || (v20 = [[BMPersonalizedSensingMomentsContextMomentsContext alloc] initByReadFrom:fromCopy]) == 0)
         {
 LABEL_35:
 
@@ -628,7 +628,7 @@ LABEL_35:
             goto LABEL_35;
           }
 
-          v17 = [[BMPersonalizedSensingMomentsContextMomentsContextFetchOptions alloc] initByReadFrom:v4];
+          v17 = [[BMPersonalizedSensingMomentsContextMomentsContextFetchOptions alloc] initByReadFrom:fromCopy];
           if (!v17)
           {
             goto LABEL_35;
@@ -647,7 +647,7 @@ LABEL_35:
             goto LABEL_35;
           }
 
-          v17 = [[BMPersonalizedSensingMomentsContextContextFetchDetails alloc] initByReadFrom:v4];
+          v17 = [[BMPersonalizedSensingMomentsContextContextFetchDetails alloc] initByReadFrom:fromCopy];
           if (!v17)
           {
             goto LABEL_35;
@@ -669,18 +669,18 @@ LABEL_27:
       }
 
 LABEL_32:
-      v22 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v22 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v23 = [v6 copy];
   contexts = v5->_contexts;
   v5->_contexts = v23;
 
-  v25 = [v4 hasError];
-  if (v25)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_36:
     v26 = 0;
@@ -698,28 +698,28 @@ LABEL_34:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self fetchDetails];
-  v5 = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self fetchOptions];
-  v6 = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self contexts];
-  v7 = [v3 initWithFormat:@"BMPersonalizedSensingMomentsContextPersonalizedContext with fetchDetails: %@, fetchOptions: %@, contexts: %@", v4, v5, v6];
+  fetchDetails = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self fetchDetails];
+  fetchOptions = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self fetchOptions];
+  contexts = [(BMPersonalizedSensingMomentsContextPersonalizedContext *)self contexts];
+  v7 = [v3 initWithFormat:@"BMPersonalizedSensingMomentsContextPersonalizedContext with fetchDetails: %@, fetchOptions: %@, contexts: %@", fetchDetails, fetchOptions, contexts];
 
   return v7;
 }
 
-- (BMPersonalizedSensingMomentsContextPersonalizedContext)initWithFetchDetails:(id)a3 fetchOptions:(id)a4 contexts:(id)a5
+- (BMPersonalizedSensingMomentsContextPersonalizedContext)initWithFetchDetails:(id)details fetchOptions:(id)options contexts:(id)contexts
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  detailsCopy = details;
+  optionsCopy = options;
+  contextsCopy = contexts;
   v14.receiver = self;
   v14.super_class = BMPersonalizedSensingMomentsContextPersonalizedContext;
   v12 = [(BMEventBase *)&v14 init];
   if (v12)
   {
     v12->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v12->_fetchDetails, a3);
-    objc_storeStrong(&v12->_fetchOptions, a4);
-    objc_storeStrong(&v12->_contexts, a5);
+    objc_storeStrong(&v12->_fetchDetails, details);
+    objc_storeStrong(&v12->_fetchOptions, options);
+    objc_storeStrong(&v12->_contexts, contexts);
   }
 
   return v12;
@@ -785,9 +785,9 @@ id __65__BMPersonalizedSensingMomentsContextPersonalizedContext_columns__block_i
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -795,8 +795,8 @@ id __65__BMPersonalizedSensingMomentsContextPersonalizedContext_columns__block_i
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMPersonalizedSensingMomentsContextPersonalizedContext alloc] initByReadFrom:v7];
     v4 = v8;

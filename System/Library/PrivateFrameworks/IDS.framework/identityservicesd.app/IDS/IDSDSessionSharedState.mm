@@ -1,12 +1,12 @@
 @interface IDSDSessionSharedState
-- (BOOL)destinationIsDefaultPairedDevice:(id)a3;
-- (BOOL)destinationIsGuestDevice:(id)a3;
+- (BOOL)destinationIsDefaultPairedDevice:(id)device;
+- (BOOL)destinationIsGuestDevice:(id)device;
 - (BOOL)supportsReinitiate;
 - (IDSDSession)delegate;
-- (IDSDSessionSharedState)initWithDictionary:(id)a3 serviceName:(id)a4 isInitiator:(BOOL)a5 uniqueID:(id)a6 accountID:(id)a7 destinations:(id)a8;
+- (IDSDSessionSharedState)initWithDictionary:(id)dictionary serviceName:(id)name isInitiator:(BOOL)initiator uniqueID:(id)d accountID:(id)iD destinations:(id)destinations;
 - (NSString)pushTopic;
-- (id)getQuickRelayAllocateOptions:(id)a3;
-- (id)publicIdentityFromData:(id)a3;
+- (id)getQuickRelayAllocateOptions:(id)options;
+- (id)publicIdentityFromData:(id)data;
 - (void)_clearConnectionTimer;
 - (void)_clearEndSessionTimeoutTimer;
 - (void)_clearInvitationTimer;
@@ -29,13 +29,13 @@
 
 @implementation IDSDSessionSharedState
 
-- (IDSDSessionSharedState)initWithDictionary:(id)a3 serviceName:(id)a4 isInitiator:(BOOL)a5 uniqueID:(id)a6 accountID:(id)a7 destinations:(id)a8
+- (IDSDSessionSharedState)initWithDictionary:(id)dictionary serviceName:(id)name isInitiator:(BOOL)initiator uniqueID:(id)d accountID:(id)iD destinations:(id)destinations
 {
-  v14 = a3;
-  v114 = a4;
-  v120 = a6;
-  v119 = a7;
-  v118 = a8;
+  dictionaryCopy = dictionary;
+  nameCopy = name;
+  dCopy = d;
+  iDCopy = iD;
+  destinationsCopy = destinations;
   v131.receiver = self;
   v131.super_class = IDSDSessionSharedState;
   v15 = [(IDSDSessionSharedState *)&v131 init];
@@ -47,11 +47,11 @@ LABEL_85:
     goto LABEL_86;
   }
 
-  objc_storeStrong(&v15->_serviceName, a4);
-  v16->_isInitiator = a5;
-  if ([v120 length])
+  objc_storeStrong(&v15->_serviceName, name);
+  v16->_isInitiator = initiator;
+  if ([dCopy length])
   {
-    v17 = v120;
+    v17 = dCopy;
   }
 
   else
@@ -66,13 +66,13 @@ LABEL_85:
   participantID = v16->_participantID;
   v16->_participantID = v19;
 
-  objc_storeStrong(&v16->_accountID, a7);
-  objc_storeStrong(&v16->_destinations, a8);
+  objc_storeStrong(&v16->_accountID, iD);
+  objc_storeStrong(&v16->_destinations, destinations);
   v21 = IDSSessionPeerProtocolVersionKey;
-  v22 = [v14 objectForKey:IDSSessionPeerProtocolVersionKey];
+  v22 = [dictionaryCopy objectForKey:IDSSessionPeerProtocolVersionKey];
   if (v22)
   {
-    [v14 objectForKey:v21];
+    [dictionaryCopy objectForKey:v21];
   }
 
   else
@@ -82,34 +82,34 @@ LABEL_85:
   v23 = ;
   v16->_peerProtocolVersion = [v23 unsignedIntValue];
 
-  v24 = [v14 objectForKey:IDSSessionWaitForPreConnectionDataKey];
+  v24 = [dictionaryCopy objectForKey:IDSSessionWaitForPreConnectionDataKey];
   v16->_enableSKE = [v24 BOOLValue];
 
-  v25 = [v14 objectForKey:IDSSessionDisableEncryptionKey];
+  v25 = [dictionaryCopy objectForKey:IDSSessionDisableEncryptionKey];
   v16->_disableEncryption = [v25 BOOLValue];
 
-  v26 = [v14 objectForKey:IDSSessionForceInternetInvitationKey];
+  v26 = [dictionaryCopy objectForKey:IDSSessionForceInternetInvitationKey];
   v16->_forceInternetInvitation = [v26 BOOLValue];
 
-  v27 = [v14 objectForKey:IDSSessionSingleChannelDirectModeKey];
+  v27 = [dictionaryCopy objectForKey:IDSSessionSingleChannelDirectModeKey];
   v16->_enableSingleChannelDirectMode = [v27 BOOLValue];
 
-  v28 = [v14 objectForKey:IDSSessionUseSecureQRControlMessageKey];
+  v28 = [dictionaryCopy objectForKey:IDSSessionUseSecureQRControlMessageKey];
   v16->_useSecureQRControlMessage = [v28 BOOLValue];
 
   v111 = IDSSessionIsRealTimeKey;
-  v29 = [v14 objectForKey:?];
+  v29 = [dictionaryCopy objectForKey:?];
   v16->_useBTDatagramPipe = [v29 BOOLValue];
 
-  v30 = [v14 objectForKey:IDSSessionInvitationIsRetryKey];
+  v30 = [dictionaryCopy objectForKey:IDSSessionInvitationIsRetryKey];
   v16->_invitationRetryCount = [v30 BOOLValue];
 
   v16->_lastPacketTime = 0.0;
-  v31 = [v14 objectForKey:IDSGroupSessionMessagesGroupIDKey];
+  v31 = [dictionaryCopy objectForKey:IDSGroupSessionMessagesGroupIDKey];
   groupID = v16->_groupID;
   v16->_groupID = v31;
 
-  v116 = [v14 objectForKey:IDSSessionClientUUIDKey];
+  v116 = [dictionaryCopy objectForKey:IDSSessionClientUUIDKey];
   if (v116)
   {
     v33 = [[NSUUID alloc] initWithUUIDString:v116];
@@ -119,14 +119,14 @@ LABEL_85:
 
   v16->_useQRDirectly = IMGetDomainBoolForKey();
   v35 = +[IDSDAccountController sharedInstance];
-  v121 = [v35 accountWithUniqueID:v119];
+  v121 = [v35 accountWithUniqueID:iDCopy];
 
-  v117 = [v121 service];
+  service = [v121 service];
   v129 = 0u;
   v130 = 0u;
   v127 = 0u;
   v128 = 0u;
-  v36 = v118;
+  v36 = destinationsCopy;
   v37 = [v36 countByEnumeratingWithState:&v127 objects:v143 count:16];
   if (v37)
   {
@@ -141,22 +141,22 @@ LABEL_85:
         }
 
         v40 = *(*(&v127 + 1) + 8 * i);
-        v41 = [v40 prefixedURI];
-        v42 = [v41 hasSuffix:@"inbox.appleid.apple.com"];
+        prefixedURI = [v40 prefixedURI];
+        v42 = [prefixedURI hasSuffix:@"inbox.appleid.apple.com"];
 
         if (v42)
         {
           v43 = OSLogHandleForTransportCategory();
           if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
           {
-            v44 = [(IDSDSessionSharedState *)v16 uniqueID];
-            v45 = [(IDSDSessionSharedState *)v16 destinations];
+            uniqueID = [(IDSDSessionSharedState *)v16 uniqueID];
+            destinations = [(IDSDSessionSharedState *)v16 destinations];
             *buf = 138412802;
             v134 = v40;
             v135 = 2114;
-            v136 = v44;
+            v136 = uniqueID;
             v137 = 2112;
-            v138 = v45;
+            v138 = destinations;
             _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "At least one destination is mako {destinationURI: %@, uniqueID: %{public}@, destinations: %@}", buf, 0x20u);
           }
 
@@ -164,9 +164,9 @@ LABEL_85:
           {
             if (_IDSShouldLogTransport())
             {
-              v46 = [(IDSDSessionSharedState *)v16 uniqueID];
+              uniqueID2 = [(IDSDSessionSharedState *)v16 uniqueID];
               [(IDSDSessionSharedState *)v16 destinations];
-              v110 = v109 = v46;
+              v110 = v109 = uniqueID2;
               v107 = v40;
               _IDSLogTransport();
 
@@ -197,19 +197,19 @@ LABEL_85:
 
 LABEL_25:
 
-  v48 = [v121 primaryRegistration];
-  v49 = [v48 dsHandle];
-  v112 = [v49 _stripFZIDPrefix];
+  primaryRegistration = [v121 primaryRegistration];
+  dsHandle = [primaryRegistration dsHandle];
+  _stripFZIDPrefix = [dsHandle _stripFZIDPrefix];
 
-  v50 = [v121 service];
-  [v50 shouldRegisterUsingDSHandle];
+  service2 = [v121 service];
+  [service2 shouldRegisterUsingDSHandle];
 
-  v51 = [v121 service];
-  v52 = [v51 identifier];
+  service3 = [v121 service];
+  identifier = [service3 identifier];
   _IDSPrefersPhoneNumbersForServiceIdentifier();
 
-  v113 = [v14 objectForKey:IDSSessionToIDKey];
-  v53 = [v14 objectForKey:IDSGroupSessionMessagesCallerIDKey];
+  v113 = [dictionaryCopy objectForKey:IDSSessionToIDKey];
+  v53 = [dictionaryCopy objectForKey:IDSGroupSessionMessagesCallerIDKey];
   v115 = v53;
   if (v53)
   {
@@ -228,19 +228,19 @@ LABEL_25:
       [v121 displayName];
     }
     v55 = ;
-    v56 = [v121 unprefixedURIStringsFromRegistration];
-    v57 = [v121 pseudonyms];
+    unprefixedURIStringsFromRegistration = [v121 unprefixedURIStringsFromRegistration];
+    pseudonyms = [v121 pseudonyms];
     v54 = _IDSCopyCallerIDWithSelfMessagingHint();
   }
 
-  v58 = [v117 identifier];
-  v59 = [IDSURI URIWithUnprefixedURI:v54 withServiceLoggingHint:v58];
+  identifier2 = [service identifier];
+  v59 = [IDSURI URIWithUnprefixedURI:v54 withServiceLoggingHint:identifier2];
   fromURI = v16->_fromURI;
   v16->_fromURI = v59;
 
-  v61 = [v121 unprefixedURIStringsFromRegistration];
-  v62 = [(IDSURI *)v16->_fromURI unprefixedURI];
-  v63 = [v61 containsObject:v62];
+  unprefixedURIStringsFromRegistration2 = [v121 unprefixedURIStringsFromRegistration];
+  unprefixedURI = [(IDSURI *)v16->_fromURI unprefixedURI];
+  v63 = [unprefixedURIStringsFromRegistration2 containsObject:unprefixedURI];
 
   v64 = +[IDSFoundationLog IDSDSession];
   v65 = v64;
@@ -251,7 +251,7 @@ LABEL_25:
       v66 = v16->_uniqueID;
       v67 = v16->_fromURI;
       accountID = v16->_accountID;
-      v69 = [v121 unprefixedURIStringsFromRegistration];
+      unprefixedURIStringsFromRegistration3 = [v121 unprefixedURIStringsFromRegistration];
       *buf = 138413314;
       v134 = v66;
       v135 = 2112;
@@ -261,7 +261,7 @@ LABEL_25:
       v139 = 2112;
       v140 = accountID;
       v141 = 2112;
-      v142 = v69;
+      v142 = unprefixedURIStringsFromRegistration3;
       _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_DEFAULT, "Resolved IDSDSession fromID { sessionID: %@, fromID: %@, clientSpecifiedFromID: %@, accountID: %@, accountAliasStrings: %@ }", buf, 0x34u);
     }
   }
@@ -271,7 +271,7 @@ LABEL_25:
     v103 = v16->_uniqueID;
     v104 = v16->_fromURI;
     v105 = v16->_accountID;
-    v106 = [v121 unprefixedURIStringsFromRegistration];
+    unprefixedURIStringsFromRegistration4 = [v121 unprefixedURIStringsFromRegistration];
     *buf = 138413314;
     v134 = v103;
     v135 = 2112;
@@ -281,22 +281,22 @@ LABEL_25:
     v139 = 2112;
     v140 = v105;
     v141 = 2112;
-    v142 = v106;
+    v142 = unprefixedURIStringsFromRegistration4;
     _os_log_error_impl(&_mh_execute_header, v65, OS_LOG_TYPE_ERROR, "Resolved IDSDSession fromID is not a valid selected alias on the account! This may cause messaging failures. { sessionID: %@, fromID: %@, clientSpecifiedFromID: %@, accountID: %@, accountAliasStrings: %@ }", buf, 0x34u);
   }
 
-  v70 = [v117 identifier];
-  if ([v70 isEqualToIgnoringCase:@"com.apple.private.alloy.phonecontinuity"])
+  identifier3 = [service identifier];
+  if ([identifier3 isEqualToIgnoringCase:@"com.apple.private.alloy.phonecontinuity"])
   {
     v71 = +[IMLockdownManager sharedInstance];
-    v72 = [v71 isInternalInstall];
+    isInternalInstall = [v71 isInternalInstall];
 
-    if (v72 && IMGetDomainBoolForKey())
+    if (isInternalInstall && IMGetDomainBoolForKey())
     {
       v16->_enableQuickRelay = 1;
     }
 
-    v73 = [v14 objectForKey:v111];
+    v73 = [dictionaryCopy objectForKey:v111];
     v74 = v73 == 0;
 
     if (v74)
@@ -308,11 +308,11 @@ LABEL_25:
     v82 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT))
     {
-      v83 = [(IDSDSessionSharedState *)v16 uniqueID];
+      uniqueID3 = [(IDSDSessionSharedState *)v16 uniqueID];
       *buf = 138412546;
-      v134 = v70;
+      v134 = identifier3;
       v135 = 2112;
-      v136 = v83;
+      v136 = uniqueID3;
       _os_log_impl(&_mh_execute_header, v82, OS_LOG_TYPE_DEFAULT, "QuickRelay is disabled for service: %@, session: %@.", buf, 0x16u);
     }
 
@@ -321,13 +321,13 @@ LABEL_25:
       if (_IDSShouldLogTransport())
       {
         [(IDSDSessionSharedState *)v16 uniqueID];
-        v109 = v108 = v70;
+        v109 = v108 = identifier3;
         _IDSLogTransport();
 
         if (_IDSShouldLog())
         {
-          [(IDSDSessionSharedState *)v16 uniqueID:v70];
-          v109 = v108 = v70;
+          [(IDSDSessionSharedState *)v16 uniqueID:identifier3];
+          v109 = v108 = identifier3;
           _IDSLogV();
         }
       }
@@ -340,42 +340,42 @@ LABEL_25:
   {
     v16->_enableQuickRelay = 1;
     v16->_connectionTimeout = 30.0;
-    v75 = [v14 objectForKey:IDSGroupSessionStartedAsUPlusOneKey];
-    v76 = [v75 BOOLValue];
+    v75 = [dictionaryCopy objectForKey:IDSGroupSessionStartedAsUPlusOneKey];
+    bOOLValue = [v75 BOOLValue];
 
     v77 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
     {
-      v78 = [(IDSDSessionSharedState *)v16 uniqueID];
-      v79 = v78;
+      uniqueID4 = [(IDSDSessionSharedState *)v16 uniqueID];
+      v79 = uniqueID4;
       v80 = &stru_100C06028;
       *buf = 138412802;
-      v134 = v70;
+      v134 = identifier3;
       v135 = 2112;
-      if (v76)
+      if (bOOLValue)
       {
         v80 = @" (U+1)";
       }
 
       v136 = v80;
       v137 = 2112;
-      v138 = v78;
+      v138 = uniqueID4;
       _os_log_impl(&_mh_execute_header, v77, OS_LOG_TYPE_DEFAULT, "QuickRelay is enabled for service: %@%@, session: %@.", buf, 0x20u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
     {
-      v81 = v76 ? @" (U+1)" : &stru_100C06028;
+      v81 = bOOLValue ? @" (U+1)" : &stru_100C06028;
       [(IDSDSessionSharedState *)v16 uniqueID];
       v110 = v109 = v81;
-      v108 = v70;
+      v108 = identifier3;
       _IDSLogTransport();
 
       if (_IDSShouldLog())
       {
-        [(IDSDSessionSharedState *)v16 uniqueID:v70];
+        [(IDSDSessionSharedState *)v16 uniqueID:identifier3];
         v110 = v109 = v81;
-        v108 = v70;
+        v108 = identifier3;
         _IDSLogV();
       }
     }
@@ -392,7 +392,7 @@ LABEL_25:
   {
 LABEL_78:
 
-    v92 = [v14 objectForKey:IDSSessionDestinationLightWeightStatusesKey];
+    v92 = [dictionaryCopy objectForKey:IDSSessionDestinationLightWeightStatusesKey];
     destinationsLightweightStatus = v16->_destinationsLightweightStatus;
     v16->_destinationsLightweightStatus = v92;
 
@@ -409,7 +409,7 @@ LABEL_78:
       }
     }
 
-    v97 = [v14 objectForKey:{IDSSessionUnauthenticatedPublicKey, v108}];
+    v97 = [dictionaryCopy objectForKey:{IDSSessionUnauthenticatedPublicKey, v108}];
     if (v97)
     {
       v98 = [(IDSDSessionSharedState *)v16 publicIdentityFromData:v97];
@@ -557,11 +557,11 @@ LABEL_86:
       v5 = 3;
     }
 
-    v6 = [(IDSDSessionSharedState *)self delegate];
-    [v6 sendCancelInvitationMessage];
+    delegate = [(IDSDSessionSharedState *)self delegate];
+    [delegate sendCancelInvitationMessage];
 
-    v7 = [(IDSDSessionSharedState *)self delegate];
-    [v7 endSessionWithReason:v5];
+    delegate2 = [(IDSDSessionSharedState *)self delegate];
+    [delegate2 endSessionWithReason:v5];
   }
 }
 
@@ -627,8 +627,8 @@ LABEL_86:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Session connection timed out after %f seconds", &v7, 0xCu);
     }
 
-    v6 = [(IDSDSessionSharedState *)self delegate];
-    [v6 endSessionWithReason:6];
+    delegate = [(IDSDSessionSharedState *)self delegate];
+    [delegate endSessionWithReason:6];
   }
 }
 
@@ -702,8 +702,8 @@ LABEL_86:
       v6 = 12;
     }
 
-    v7 = [(IDSDSessionSharedState *)self delegate];
-    [v7 endSessionWithReason:v6];
+    delegate = [(IDSDSessionSharedState *)self delegate];
+    [delegate endSessionWithReason:v6];
   }
 }
 
@@ -757,8 +757,8 @@ LABEL_86:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Session lost all links and failed to reconnect for %f seconds", &v7, 0xCu);
     }
 
-    v6 = [(IDSDSessionSharedState *)self delegate];
-    [v6 endSessionWithReason:54];
+    delegate = [(IDSDSessionSharedState *)self delegate];
+    [delegate endSessionWithReason:54];
   }
 }
 
@@ -772,19 +772,19 @@ LABEL_86:
   return [(IDSDSessionSharedState *)self useQRDirectly];
 }
 
-- (id)getQuickRelayAllocateOptions:(id)a3
+- (id)getQuickRelayAllocateOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   v6 = +[IDSDAccountController sharedInstance];
-  v7 = [(IDSDSessionSharedState *)self accountID];
-  v8 = [v6 accountWithUniqueID:v7];
-  v9 = [v8 service];
-  v10 = [v9 pushTopic];
+  accountID = [(IDSDSessionSharedState *)self accountID];
+  v8 = [v6 accountWithUniqueID:accountID];
+  service = [v8 service];
+  pushTopic = [service pushTopic];
 
-  if (v10)
+  if (pushTopic)
   {
-    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_AppID, v10);
+    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_AppID, pushTopic);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -792,7 +792,7 @@ LABEL_86:
     sub_10092D080();
   }
 
-  v11 = v4;
+  v11 = optionsCopy;
   if (v11)
   {
     CFDictionarySetValue(Mutable, kIDSQRAllocateKey_AllocateType, v11);
@@ -840,31 +840,31 @@ LABEL_86:
   return Mutable;
 }
 
-- (BOOL)destinationIsGuestDevice:(id)a3
+- (BOOL)destinationIsGuestDevice:(id)device
 {
-  v3 = [a3 prefixedURI];
-  v4 = [v3 hasPrefix:@"guest-device:"];
+  prefixedURI = [device prefixedURI];
+  v4 = [prefixedURI hasPrefix:@"guest-device:"];
 
   return v4;
 }
 
-- (BOOL)destinationIsDefaultPairedDevice:(id)a3
+- (BOOL)destinationIsDefaultPairedDevice:(id)device
 {
-  v4 = [a3 prefixedURI];
-  v5 = [(IDSDSessionSharedState *)self accountID];
-  v6 = [(IDSDSessionSharedState *)self serviceName];
-  v7 = [IDSDAccountController isDefaultPairedDeviceFromID:v4 accountUniqueID:v5 serviceName:v6];
+  prefixedURI = [device prefixedURI];
+  accountID = [(IDSDSessionSharedState *)self accountID];
+  serviceName = [(IDSDSessionSharedState *)self serviceName];
+  v7 = [IDSDAccountController isDefaultPairedDeviceFromID:prefixedURI accountUniqueID:accountID serviceName:serviceName];
 
   return v7;
 }
 
-- (id)publicIdentityFromData:(id)a3
+- (id)publicIdentityFromData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v10 = 0;
-    v4 = [IDSMPPublicLegacyIdentity identityWithData:v3 error:&v10];
+    v4 = [IDSMPPublicLegacyIdentity identityWithData:dataCopy error:&v10];
     v5 = v10;
     if (v4)
     {
@@ -879,7 +879,7 @@ LABEL_86:
         *buf = 138543619;
         v12 = v5;
         v13 = 2113;
-        v14 = v3;
+        v14 = dataCopy;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Failed to create unauthenticated public identity from data {error: %{public}@, data: %{private}@}", buf, 0x16u);
       }
 
@@ -917,12 +917,12 @@ LABEL_86:
 - (NSString)pushTopic
 {
   v3 = +[IDSDAccountController sharedInstance];
-  v4 = [(IDSDSessionSharedState *)self accountID];
-  v5 = [v3 accountWithUniqueID:v4];
-  v6 = [v5 service];
-  v7 = [v6 pushTopic];
+  accountID = [(IDSDSessionSharedState *)self accountID];
+  v5 = [v3 accountWithUniqueID:accountID];
+  service = [v5 service];
+  pushTopic = [service pushTopic];
 
-  return v7;
+  return pushTopic;
 }
 
 - (IDSDSession)delegate

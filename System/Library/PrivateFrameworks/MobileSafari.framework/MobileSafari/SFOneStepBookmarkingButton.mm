@@ -1,13 +1,13 @@
 @interface SFOneStepBookmarkingButton
-- (SFOneStepBookmarkingButton)initWithCoder:(id)a3;
+- (SFOneStepBookmarkingButton)initWithCoder:(id)coder;
 - (SFTooltip)tooltip;
 - (id)didChangeShowingContextMenu;
-- (void)setDidChangeShowingContextMenu:(id)a3;
+- (void)setDidChangeShowingContextMenu:(id)menu;
 @end
 
 @implementation SFOneStepBookmarkingButton
 
-- (SFOneStepBookmarkingButton)initWithCoder:(id)a3
+- (SFOneStepBookmarkingButton)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR___SFOneStepBookmarkingButton_didChangeShowingContextMenu);
   *v3 = CGRectMake;
@@ -33,9 +33,9 @@
   return v3;
 }
 
-- (void)setDidChangeShowingContextMenu:(id)a3
+- (void)setDidChangeShowingContextMenu:(id)menu
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(menu);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR___SFOneStepBookmarkingButton_didChangeShowingContextMenu);
@@ -55,9 +55,9 @@
   v6 = objc_allocWithZone(SFTooltip);
   v7 = sub_18BC20B98();
 
-  v8 = [v6 initWithText_];
+  initWithText_ = [v6 initWithText_];
 
-  return v8;
+  return initWithText_;
 }
 
 @end

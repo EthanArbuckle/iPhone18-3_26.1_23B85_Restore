@@ -1,8 +1,8 @@
 @interface _BlastDoorLPSharingMetadataWrapper
-- (_BlastDoorLPSharingMetadataWrapper)initWithCoder:(id)a3;
+- (_BlastDoorLPSharingMetadataWrapper)initWithCoder:(id)coder;
 - (id)dataRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMetadata:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMetadata:(id)metadata;
 @end
 
 @implementation _BlastDoorLPSharingMetadataWrapper
@@ -11,26 +11,26 @@
 {
   v3 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
   [v3 encodeObject:self forKey:*MEMORY[0x277CCA308]];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
-- (_BlastDoorLPSharingMetadataWrapper)initWithCoder:(id)a3
+- (_BlastDoorLPSharingMetadataWrapper)initWithCoder:(id)coder
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _BlastDoorLPSharingMetadataWrapper;
   v5 = [(_BlastDoorLPSharingMetadataWrapper *)&v11 init];
   if (v5)
   {
-    v6 = [v4 _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
+    v6 = [coderCopy _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
     metadata = v5->_metadata;
     v5->_metadata = v6;
 
-    v5->_hasFetchedSubresources = [v4 decodeBoolForKey:@"hasFetchedSubresources"];
-    v5->_hasCompletedFetch = [v4 decodeBoolForKey:@"hasCompletedFetch"];
+    v5->_hasFetchedSubresources = [coderCopy decodeBoolForKey:@"hasFetchedSubresources"];
+    v5->_hasCompletedFetch = [coderCopy decodeBoolForKey:@"hasCompletedFetch"];
     v8 = v5;
   }
 
@@ -38,19 +38,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   metadata = self->_metadata;
-  v5 = a3;
-  [v5 encodeObject:metadata forKey:@"metadata"];
-  [v5 encodeBool:self->_hasFetchedSubresources forKey:@"hasFetchedSubresources"];
-  [v5 encodeBool:self->_hasCompletedFetch forKey:@"hasCompletedFetch"];
+  coderCopy = coder;
+  [coderCopy encodeObject:metadata forKey:@"metadata"];
+  [coderCopy encodeBool:self->_hasFetchedSubresources forKey:@"hasFetchedSubresources"];
+  [coderCopy encodeBool:self->_hasCompletedFetch forKey:@"hasCompletedFetch"];
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  objc_storeStrong(&self->_metadata, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_metadata, metadata);
+  metadataCopy = metadata;
   metadata = self->_metadata;
   objc_opt_class();
   LOBYTE(metadata) = objc_opt_isKindOfClass();

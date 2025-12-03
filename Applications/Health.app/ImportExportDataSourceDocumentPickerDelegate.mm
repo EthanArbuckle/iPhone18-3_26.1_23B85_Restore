@@ -1,16 +1,16 @@
 @interface ImportExportDataSourceDocumentPickerDelegate
 - (_TtC6HealthP33_9FDE690F091037398242CA42A360B38544ImportExportDataSourceDocumentPickerDelegate)init;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
 @end
 
 @implementation ImportExportDataSourceDocumentPickerDelegate
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   type metadata accessor for URL();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  pickerCopy = picker;
+  selfCopy = self;
   sub_1000265D4(v6);
 }
 

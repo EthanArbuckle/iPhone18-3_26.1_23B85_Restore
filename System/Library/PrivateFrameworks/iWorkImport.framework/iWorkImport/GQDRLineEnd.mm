@@ -1,6 +1,6 @@
 @interface GQDRLineEnd
 - (CGPoint)endPoint;
-- (int)readAttributesFromReader:(_xmlTextReader *)a3;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader;
 - (void)dealloc;
 @end
 
@@ -22,10 +22,10 @@
   return result;
 }
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3
+- (int)readAttributesFromReader:(_xmlTextReader *)reader
 {
-  self->mIsFilled = sub_42340(a3, qword_A35E8, "filled", 0);
-  sub_4290C(a3, qword_A35E8, "scale");
+  self->mIsFilled = sub_42340(reader, qword_A35E8, "filled", 0);
+  sub_4290C(reader, qword_A35E8, "scale");
   self->mScale = v5;
   return 1;
 }

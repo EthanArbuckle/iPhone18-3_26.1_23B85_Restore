@@ -1,5 +1,5 @@
 @interface UIAlertControllerVisualStyleAlertAlternativeTV
-- (UIEdgeInsets)contentInsetsForContainerView:(id)a3;
+- (UIEdgeInsets)contentInsetsForContainerView:(id)view;
 - (double)marginAboveMessageLabelFirstBaseline;
 - (double)marginAboveTitleLabelFirstBaseline;
 @end
@@ -8,8 +8,8 @@
 
 - (double)marginAboveTitleLabelFirstBaseline
 {
-  v2 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v2);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   result = 58.0;
   if (IsAccessibilityCategory)
@@ -22,10 +22,10 @@
 
 - (double)marginAboveMessageLabelFirstBaseline
 {
-  v3 = [(UIAlertControllerVisualStyle *)self descriptor];
-  v4 = [v3 hasTitle];
+  descriptor = [(UIAlertControllerVisualStyle *)self descriptor];
+  hasTitle = [descriptor hasTitle];
 
-  if (v4)
+  if (hasTitle)
   {
     return 44.0;
   }
@@ -34,7 +34,7 @@
   return result;
 }
 
-- (UIEdgeInsets)contentInsetsForContainerView:(id)a3
+- (UIEdgeInsets)contentInsetsForContainerView:(id)view
 {
   v3 = 24.0;
   v4 = 24.0;

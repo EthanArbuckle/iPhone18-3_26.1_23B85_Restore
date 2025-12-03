@@ -1,13 +1,13 @@
 @interface DTKPCPU
-+ (id)cpuNamed:(id)a3 fromSerializedData:(id)a4 error:(id *)a5;
-+ (id)localCPU:(id *)a3;
++ (id)cpuNamed:(id)named fromSerializedData:(id)data error:(id *)error;
++ (id)localCPU:(id *)u;
 + (void)initialize;
-- (DTKPCPU)initWithName:(id)a3 database:(kpep_db *)a4;
-- (id)_fixupAlias:(id)a3;
+- (DTKPCPU)initWithName:(id)name database:(kpep_db *)database;
+- (id)_fixupAlias:(id)alias;
 - (id)allAliasAndNameStrings;
 - (id)description;
-- (id)eventFromName:(id)a3;
-- (id)eventFromNameOrAlias:(id)a3;
+- (id)eventFromName:(id)name;
+- (id)eventFromNameOrAlias:(id)alias;
 - (id)mnemonicToAliasMapping;
 - (void)dealloc;
 @end
@@ -16,7 +16,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     DTKPSetupLogging();
     v2 = objc_opt_new();
@@ -29,12 +29,12 @@
   }
 }
 
-+ (id)localCPU:(id *)a3
++ (id)localCPU:(id *)u
 {
   v4 = *MEMORY[0x277D85F48];
   if (CSTaskIsTranslated())
   {
-    DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPCPU", a3, 4294966596, @"CPU Counters are not supported when running under Rosetta.");
+    DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPCPU", u, 4294966596, @"CPU Counters are not supported when running under Rosetta.");
     v5 = 0;
     goto LABEL_14;
   }
@@ -70,12 +70,12 @@ LABEL_12:
       }
 
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error getting CPU database name local machine (%d).", v8];
-      DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPCPU", a3, 4294966596, v9);
+      DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPCPU", u, 4294966596, v9);
       goto LABEL_11;
     }
 
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error creating CPU database for local machine (%d).", v7];
-    DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPCPU", a3, 4294966596, v9);
+    DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPCPU", u, 4294966596, v9);
 LABEL_11:
 
     goto LABEL_12;
@@ -89,29 +89,29 @@ LABEL_14:
   return v5;
 }
 
-+ (id)cpuNamed:(id)a3 fromSerializedData:(id)a4 error:(id *)a5
++ (id)cpuNamed:(id)named fromSerializedData:(id)data error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  namedCopy = named;
+  dataCopy = data;
   dispatch_semaphore_wait(qword_27EE84380, 0xFFFFFFFFFFFFFFFFLL);
-  v9 = [qword_27EE84378 objectForKeyedSubscript:v7];
+  v9 = [qword_27EE84378 objectForKeyedSubscript:namedCopy];
   if (!v9)
   {
-    [v8 bytes];
-    [v8 length];
+    [dataCopy bytes];
+    [dataCopy length];
     v10 = kpep_db_deserialize();
     if (v10)
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error creating CPU database from serialized data for '%@' (%d).", v7, v10];
-      DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPCPU", a5, 4294966596, v11);
+      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error creating CPU database from serialized data for '%@' (%d).", namedCopy, v10];
+      DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPCPU", error, 4294966596, v11);
 
       v9 = 0;
     }
 
     else
     {
-      v9 = [[DTKPCPU alloc] initWithName:v7 database:0];
-      [qword_27EE84378 setObject:v9 forKeyedSubscript:v7];
+      v9 = [[DTKPCPU alloc] initWithName:namedCopy database:0];
+      [qword_27EE84378 setObject:v9 forKeyedSubscript:namedCopy];
     }
   }
 
@@ -138,10 +138,10 @@ LABEL_14:
   return v5;
 }
 
-- (DTKPCPU)initWithName:(id)a3 database:(kpep_db *)a4
+- (DTKPCPU)initWithName:(id)name database:(kpep_db *)database
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nameCopy = name;
   v24.receiver = self;
   v24.super_class = DTKPCPU;
   v7 = [(DTKPCPU *)&v24 init];
@@ -150,24 +150,24 @@ LABEL_14:
     v8 = sDTKPLogClient;
     if (os_log_type_enabled(sDTKPLogClient, OS_LOG_TYPE_INFO))
     {
-      v9 = v6;
+      v9 = nameCopy;
       v10 = v8;
-      v11 = [v6 UTF8String];
+      uTF8String = [nameCopy UTF8String];
       buf[0] = 136315138;
-      *&buf[1] = v11;
+      *&buf[1] = uTF8String;
       _os_log_impl(&dword_247F67000, v10, OS_LOG_TYPE_INFO, "DTKPCPU: Loading KPEP database for %s", buf, 0xCu);
     }
 
-    if (!a4)
+    if (!database)
     {
       sub_24802F7F8();
     }
 
-    v12 = [v6 copy];
+    v12 = [nameCopy copy];
     lookupName = v7->_lookupName;
     v7->_lookupName = v12;
 
-    v7->_kpepDB = a4;
+    v7->_kpepDB = database;
     v14 = objc_opt_new();
     events = v7->_events;
     v7->_events = v14;
@@ -214,9 +214,9 @@ LABEL_14:
   [(DTKPCPU *)&v3 dealloc];
 }
 
-- (id)eventFromName:(id)a3
+- (id)eventFromName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -228,7 +228,7 @@ LABEL_14:
   v9[1] = 3221225472;
   v9[2] = sub_247FC9688;
   v9[3] = &unk_278EF33C8;
-  v6 = v4;
+  v6 = nameCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableArray *)events enumerateObjectsUsingBlock:v9];
@@ -239,9 +239,9 @@ LABEL_14:
   return v7;
 }
 
-- (id)_fixupAlias:(id)a3
+- (id)_fixupAlias:(id)alias
 {
-  if ([a3 isEqualToString:@"CORE_ACTIVE_CYCLE"])
+  if ([alias isEqualToString:@"CORE_ACTIVE_CYCLE"])
   {
     return @"Cycles";
   }
@@ -252,9 +252,9 @@ LABEL_14:
   }
 }
 
-- (id)eventFromNameOrAlias:(id)a3
+- (id)eventFromNameOrAlias:(id)alias
 {
-  v4 = a3;
+  aliasCopy = alias;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -266,7 +266,7 @@ LABEL_14:
   v12 = 3221225472;
   v13 = sub_247FC98C8;
   v14 = &unk_278EF33C8;
-  v6 = v4;
+  v6 = aliasCopy;
   v15 = v6;
   v16 = &v17;
   [(NSMutableArray *)events enumerateObjectsUsingBlock:&v11];
@@ -339,17 +339,17 @@ LABEL_5:
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 alias];
-        if (v10)
+        alias = [v9 alias];
+        if (alias)
         {
-          v11 = v10;
-          v12 = [v9 name];
+          v11 = alias;
+          name = [v9 name];
 
-          if (v12)
+          if (name)
           {
-            v13 = [v9 alias];
-            v14 = [v9 name];
-            [v3 setObject:v13 forKeyedSubscript:v14];
+            alias2 = [v9 alias];
+            name2 = [v9 name];
+            [v3 setObject:alias2 forKeyedSubscript:name2];
           }
         }
       }

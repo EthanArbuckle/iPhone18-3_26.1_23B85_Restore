@@ -1,24 +1,24 @@
 @interface UIAutocorrectTextView
-- (BOOL)pointInside:(CGPoint)a3 forEvent:(__GSEvent *)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside forEvent:(__GSEvent *)event;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_calculateRectForExpandedHitRegion;
-- (UIAutocorrectTextView)initWithFrame:(CGRect)a3 string:(id)a4 type:(int)a5 edgeType:(int)a6;
-- (void)drawRect:(CGRect)a3;
-- (void)setEdgeType:(int)a3;
+- (UIAutocorrectTextView)initWithFrame:(CGRect)frame string:(id)string type:(int)type edgeType:(int)edgeType;
+- (void)drawRect:(CGRect)rect;
+- (void)setEdgeType:(int)type;
 @end
 
 @implementation UIAutocorrectTextView
 
-- (UIAutocorrectTextView)initWithFrame:(CGRect)a3 string:(id)a4 type:(int)a5 edgeType:(int)a6
+- (UIAutocorrectTextView)initWithFrame:(CGRect)frame string:(id)string type:(int)type edgeType:(int)edgeType
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
-  if (v13)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  stringCopy = string;
+  if (stringCopy)
   {
-    if (a6)
+    if (edgeType)
     {
       inlinePromptTextFont();
     }
@@ -35,7 +35,7 @@
     v14 = 0;
   }
 
-  if (a5 == 2)
+  if (type == 2)
   {
     v25.origin.x = x;
     v25.origin.y = y;
@@ -50,31 +50,31 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  [v13 _legacy_sizeWithFont:v14 forWidth:2 lineBreakMode:3.40282347e38];
+  [stringCopy _legacy_sizeWithFont:v14 forWidth:2 lineBreakMode:3.40282347e38];
   v27.size.width = ceil(v18);
   v27.origin.x = x;
   v27.origin.y = y;
   v27.size.height = height;
   v26 = CGRectInset(v27, -3.0, 0.0);
-  if (a5 < 2)
+  if (type < 2)
   {
     v17 = 4.0;
     goto LABEL_16;
   }
 
-  if (a5 == 3)
+  if (type == 3)
   {
     v17 = -1.0;
     goto LABEL_16;
   }
 
-  if (a5 == 4)
+  if (type == 4)
   {
     v26.size.height = v26.size.height + -1.0;
   }
 
 LABEL_17:
-  if ((a6 - 1) < 2)
+  if ((edgeType - 1) < 2)
   {
     v16 = v16 + v26.size.height * 0.68;
   }
@@ -86,12 +86,12 @@ LABEL_17:
   v20 = v19;
   if (v19)
   {
-    v19->m_edgeType = a6;
-    v21 = [v13 copy];
+    v19->m_edgeType = edgeType;
+    v21 = [stringCopy copy];
     m_string = v20->m_string;
     v20->m_string = v21;
 
-    v20->m_type = a5;
+    v20->m_type = type;
     objc_storeStrong(&v20->m_textFont, v14);
     [(UIView *)v20 setOpaque:0];
     [(UIView *)v20 setUserInteractionEnabled:0];
@@ -100,21 +100,21 @@ LABEL_17:
   return v20;
 }
 
-- (void)setEdgeType:(int)a3
+- (void)setEdgeType:(int)type
 {
-  if (self->m_edgeType != a3)
+  if (self->m_edgeType != type)
   {
     [(UIView *)self frame];
-    self->m_edgeType = a3;
+    self->m_edgeType = type;
     [(UIView *)self setFrame:?];
 
     [(UIView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(UIView *)self bounds:a3.origin.x];
+  [(UIView *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -175,8 +175,8 @@ LABEL_17:
     v17 = v71;
     if (v12 && !self->m_animating)
     {
-      v18 = [objc_opt_self() mainScreen];
-      [v18 scale];
+      mainScreen = [objc_opt_self() mainScreen];
+      [mainScreen scale];
       v20 = v19;
 
       v21 = 0.5;
@@ -348,8 +348,8 @@ LABEL_38:
   if (self->m_type == 1)
   {
     v53 = v11 * 0.5;
-    v54 = [objc_opt_self() mainScreen];
-    [v54 scale];
+    mainScreen2 = [objc_opt_self() mainScreen];
+    [mainScreen2 scale];
     v56 = v55;
 
     v57 = AutoCorrectCancelImage();
@@ -423,9 +423,9 @@ LABEL_61:
   return CGRectUnion(*&v15, *&v8);
 }
 
-- (BOOL)pointInside:(CGPoint)a3 forEvent:(__GSEvent *)a4
+- (BOOL)pointInside:(CGPoint)inside forEvent:(__GSEvent *)event
 {
-  [(UIAutocorrectTextView *)self _calculateRectForExpandedHitRegion:a3.x];
+  [(UIAutocorrectTextView *)self _calculateRectForExpandedHitRegion:inside.x];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -442,10 +442,10 @@ LABEL_61:
   return CGRectContainsPoint(*&v19, *&v16);
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(UIAutocorrectTextView *)self _calculateRectForExpandedHitRegion];
   v10 = x;
   v11 = y;

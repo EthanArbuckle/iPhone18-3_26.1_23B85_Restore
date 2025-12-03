@@ -1,8 +1,8 @@
 @interface FCInterestToken
-+ (FCInterestToken)interestTokenWithCallbackQueue:(id)a3 removeInterestBlock:(id)a4;
-+ (FCInterestToken)interestTokenWithRemoveInterestBlock:(id)a3;
++ (FCInterestToken)interestTokenWithCallbackQueue:(id)queue removeInterestBlock:(id)block;
++ (FCInterestToken)interestTokenWithRemoveInterestBlock:(id)block;
 - (FCInterestToken)init;
-- (FCInterestToken)initWithCallbackQueue:(id)a3 removeInterestBlock:(id)a4;
+- (FCInterestToken)initWithCallbackQueue:(id)queue removeInterestBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -42,12 +42,12 @@
   objc_exception_throw(v6);
 }
 
-- (FCInterestToken)initWithCallbackQueue:(id)a3 removeInterestBlock:(id)a4
+- (FCInterestToken)initWithCallbackQueue:(id)queue removeInterestBlock:(id)block
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  queueCopy = queue;
+  blockCopy = block;
+  if (!blockCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "removeInterestBlock != nil"];
     *buf = 136315906;
@@ -66,14 +66,14 @@
   v8 = [(FCInterestToken *)&v19 init];
   if (v8)
   {
-    if (v6)
+    if (queueCopy)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __61__FCInterestToken_initWithCallbackQueue_removeInterestBlock___block_invoke;
       aBlock[3] = &unk_1E7C37BC0;
-      v17 = v6;
-      v18 = v7;
+      v17 = queueCopy;
+      v18 = blockCopy;
       v9 = _Block_copy(aBlock);
       removeInterestBlock = v8->_removeInterestBlock;
       v8->_removeInterestBlock = v9;
@@ -83,7 +83,7 @@
 
     else
     {
-      v12 = _Block_copy(v7);
+      v12 = _Block_copy(blockCopy);
       v11 = v8->_removeInterestBlock;
       v8->_removeInterestBlock = v12;
     }
@@ -93,19 +93,19 @@
   return v8;
 }
 
-+ (FCInterestToken)interestTokenWithCallbackQueue:(id)a3 removeInterestBlock:(id)a4
++ (FCInterestToken)interestTokenWithCallbackQueue:(id)queue removeInterestBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithCallbackQueue:v6 removeInterestBlock:v5];
+  blockCopy = block;
+  queueCopy = queue;
+  v7 = [objc_alloc(objc_opt_class()) initWithCallbackQueue:queueCopy removeInterestBlock:blockCopy];
 
   return v7;
 }
 
-+ (FCInterestToken)interestTokenWithRemoveInterestBlock:(id)a3
++ (FCInterestToken)interestTokenWithRemoveInterestBlock:(id)block
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithCallbackQueue:0 removeInterestBlock:v3];
+  blockCopy = block;
+  v4 = [objc_alloc(objc_opt_class()) initWithCallbackQueue:0 removeInterestBlock:blockCopy];
 
   return v4;
 }

@@ -1,10 +1,10 @@
 @interface _UISearchBarFieldEditor
-- (BOOL)layoutManager:(id)a3 shouldSetLineFragmentRect:(CGRect *)a4 lineFragmentUsedRect:(CGRect *)a5 baselineOffset:(double *)a6 inTextContainer:(id)a7 forGlyphRange:(_NSRange)a8;
-- (id)selectionRectsForRange:(id)a3;
+- (BOOL)layoutManager:(id)manager shouldSetLineFragmentRect:(CGRect *)rect lineFragmentUsedRect:(CGRect *)usedRect baselineOffset:(double *)offset inTextContainer:(id)container forGlyphRange:(_NSRange)range;
+- (id)selectionRectsForRange:(id)range;
 - (void)_updateTokenViews;
 - (void)activateEditor;
-- (void)deactivateEditorDiscardingEdits:(BOOL)a3;
-- (void)layoutManager:(id)a3 didCompleteLayoutForTextContainer:(id)a4 atEnd:(BOOL)a5;
+- (void)deactivateEditorDiscardingEdits:(BOOL)edits;
+- (void)layoutManager:(id)manager didCompleteLayoutForTextContainer:(id)container atEnd:(BOOL)end;
 - (void)layoutSubviews;
 @end
 
@@ -12,12 +12,12 @@
 
 - (void)_updateTokenViews
 {
-  v2 = [(UIFieldEditor *)self textField];
-  v3 = [v2 _textCanvasView];
+  textField = [(UIFieldEditor *)self textField];
+  _textCanvasView = [textField _textCanvasView];
 
   if (objc_opt_respondsToSelector())
   {
-    [v3 _updateTokenViews];
+    [_textCanvasView _updateTokenViews];
   }
 }
 
@@ -49,64 +49,64 @@
   v4.receiver = self;
   v4.super_class = _UISearchBarFieldEditor;
   [(UIFieldEditor *)&v4 activateEditor];
-  v3 = [(UIFieldEditor *)self textField];
-  [v3 _updateAtomViewSelection:1];
+  textField = [(UIFieldEditor *)self textField];
+  [textField _updateAtomViewSelection:1];
 }
 
-- (void)deactivateEditorDiscardingEdits:(BOOL)a3
+- (void)deactivateEditorDiscardingEdits:(BOOL)edits
 {
-  v3 = a3;
-  v5 = [(UIFieldEditor *)self textField];
-  [v5 _updateAtomViewSelection:0];
+  editsCopy = edits;
+  textField = [(UIFieldEditor *)self textField];
+  [textField _updateAtomViewSelection:0];
 
   v6.receiver = self;
   v6.super_class = _UISearchBarFieldEditor;
-  [(UIFieldEditor *)&v6 deactivateEditorDiscardingEdits:v3];
+  [(UIFieldEditor *)&v6 deactivateEditorDiscardingEdits:editsCopy];
 }
 
-- (BOOL)layoutManager:(id)a3 shouldSetLineFragmentRect:(CGRect *)a4 lineFragmentUsedRect:(CGRect *)a5 baselineOffset:(double *)a6 inTextContainer:(id)a7 forGlyphRange:(_NSRange)a8
+- (BOOL)layoutManager:(id)manager shouldSetLineFragmentRect:(CGRect *)rect lineFragmentUsedRect:(CGRect *)usedRect baselineOffset:(double *)offset inTextContainer:(id)container forGlyphRange:(_NSRange)range
 {
-  v11 = [(UIFieldEditor *)self _textStorage:a3];
-  v12 = [v11 font];
+  v11 = [(UIFieldEditor *)self _textStorage:manager];
+  font = [v11 font];
 
-  [v12 ascender];
-  *a6 = v13;
-  [v12 lineHeight];
-  a5->size.height = v14;
-  a4->size.height = v14;
+  [font ascender];
+  *offset = v13;
+  [font lineHeight];
+  usedRect->size.height = v14;
+  rect->size.height = v14;
 
   return 1;
 }
 
-- (void)layoutManager:(id)a3 didCompleteLayoutForTextContainer:(id)a4 atEnd:(BOOL)a5
+- (void)layoutManager:(id)manager didCompleteLayoutForTextContainer:(id)container atEnd:(BOOL)end
 {
-  v5 = a5;
-  v9 = a3;
-  v8 = a4;
-  if (v5 && (*&self->_flags & 1) == 0)
+  endCopy = end;
+  managerCopy = manager;
+  containerCopy = container;
+  if (endCopy && (*&self->_flags & 1) == 0)
   {
     [(UIScrollView *)self setNeedsLayout];
   }
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  rangeCopy = range;
+  array = [MEMORY[0x1E695DF70] array];
   v6 = objc_opt_new();
-  v7 = [(UIFieldEditor *)self textStorage];
+  textStorage = [(UIFieldEditor *)self textStorage];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __50___UISearchBarFieldEditor_selectionRectsForRange___block_invoke;
   v14[3] = &unk_1E70F83A8;
   v14[4] = self;
-  v15 = v4;
+  v15 = rangeCopy;
   v16 = v6;
-  v8 = v5;
+  v8 = array;
   v17 = v8;
   v9 = v6;
-  v10 = v4;
-  [v7 coordinateReading:v14];
+  v10 = rangeCopy;
+  [textStorage coordinateReading:v14];
 
   v11 = v17;
   v12 = v8;

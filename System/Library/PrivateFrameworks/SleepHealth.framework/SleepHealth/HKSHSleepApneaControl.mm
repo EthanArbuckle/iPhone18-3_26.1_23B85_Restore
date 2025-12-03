@@ -1,26 +1,26 @@
 @interface HKSHSleepApneaControl
-- (BOOL)forceBreathingDisturbanceAnalysisWithError:(id *)a3;
-- (BOOL)overrideTimeIntervalAndResetActivityWithTimeInterval:(double)a3 error:(id *)a4;
-- (HKSHSleepApneaControl)initWithHealthStore:(id)a3;
+- (BOOL)forceBreathingDisturbanceAnalysisWithError:(id *)error;
+- (BOOL)overrideTimeIntervalAndResetActivityWithTimeInterval:(double)interval error:(id *)error;
+- (HKSHSleepApneaControl)initWithHealthStore:(id)store;
 - (id)getDateIntervalOfLastAnalysis;
-- (id)getSamplesFromLastAnalysisWithError:(id *)a3;
+- (id)getSamplesFromLastAnalysisWithError:(id *)error;
 @end
 
 @implementation HKSHSleepApneaControl
 
-- (HKSHSleepApneaControl)initWithHealthStore:(id)a3
+- (HKSHSleepApneaControl)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = HKSHSleepApneaControl;
   v6 = [(HKSHSleepApneaControl *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v8 = objc_alloc(MEMORY[0x277CCDAA0]);
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    v10 = [v8 initWithHealthStore:v5 taskIdentifier:@"HKSHSleepApneaControlServer" exportedObject:v7 taskUUID:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v10 = [v8 initWithHealthStore:storeCopy taskIdentifier:@"HKSHSleepApneaControlServer" exportedObject:v7 taskUUID:uUID];
     proxyProvider = v7->_proxyProvider;
     v7->_proxyProvider = v10;
 
@@ -32,7 +32,7 @@
   return v7;
 }
 
-- (BOOL)forceBreathingDisturbanceAnalysisWithError:(id *)a3
+- (BOOL)forceBreathingDisturbanceAnalysisWithError:(id *)error
 {
   v11 = 0;
   v12 = &v11;
@@ -51,10 +51,10 @@
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -69,7 +69,7 @@
   return v8;
 }
 
-- (BOOL)overrideTimeIntervalAndResetActivityWithTimeInterval:(double)a3 error:(id *)a4
+- (BOOL)overrideTimeIntervalAndResetActivityWithTimeInterval:(double)interval error:(id *)error
 {
   v13 = 0;
   v14 = &v13;
@@ -83,7 +83,7 @@
   v12[1] = 3221225472;
   v12[2] = __84__HKSHSleepApneaControl_overrideTimeIntervalAndResetActivityWithTimeInterval_error___block_invoke;
   v12[3] = &__block_descriptor_40_e39_v16__0___HKSHSleepApneaControlServer__8l;
-  *&v12[4] = a3;
+  *&v12[4] = interval;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __84__HKSHSleepApneaControl_overrideTimeIntervalAndResetActivityWithTimeInterval_error___block_invoke_2;
@@ -93,10 +93,10 @@
   v7 = v6;
   if (v6)
   {
-    if (a4)
+    if (error)
     {
       v8 = v6;
-      *a4 = v7;
+      *error = v7;
     }
 
     else
@@ -111,7 +111,7 @@
   return v9;
 }
 
-- (id)getSamplesFromLastAnalysisWithError:(id *)a3
+- (id)getSamplesFromLastAnalysisWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -142,10 +142,10 @@
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -261,14 +261,14 @@ LABEL_21:
 
   if (v10)
   {
-    v36 = [v10 earliestDateOfAnyOnboardingCompletion];
-    v20 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    earliestDateOfAnyOnboardingCompletion = [v10 earliestDateOfAnyOnboardingCompletion];
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
     v21 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [v21 setDay:{30 * objc_msgSend(v4, "integerValue") - 30}];
-    v35 = v20;
-    v22 = [v20 dateByAddingComponents:v21 toDate:v36 options:0];
+    v35 = hk_gregorianCalendar;
+    v22 = [hk_gregorianCalendar dateByAddingComponents:v21 toDate:earliestDateOfAnyOnboardingCompletion options:0];
     [v21 setDay:{30 * objc_msgSend(v4, "integerValue")}];
-    v23 = [v20 dateByAddingComponents:v21 toDate:v36 options:0];
+    v23 = [hk_gregorianCalendar dateByAddingComponents:v21 toDate:earliestDateOfAnyOnboardingCompletion options:0];
     v7 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v22 endDate:v23];
 
     goto LABEL_12;

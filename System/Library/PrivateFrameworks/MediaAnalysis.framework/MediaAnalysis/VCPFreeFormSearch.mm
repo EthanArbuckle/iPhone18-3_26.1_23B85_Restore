@@ -4,8 +4,8 @@
 + (float)getMinSimilarity;
 + (float)getMinSimilarityHighRecall;
 - (VCPFreeFormSearch)init;
-- (id)searchForQuery:(id)a3 matchingScoreOnly:(BOOL)a4 topK:(int)a5;
-- (int)loadEmbeddings:(id)a3;
+- (id)searchForQuery:(id)query matchingScoreOnly:(BOOL)only topK:(int)k;
+- (int)loadEmbeddings:(id)embeddings;
 - (void)dealloc;
 - (void)reset;
 @end
@@ -89,21 +89,21 @@
   v2 = [(VCPFreeFormSearch *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     fileNames = v2->_fileNames;
-    v2->_fileNames = v3;
+    v2->_fileNames = array;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     timeRanges = v2->_timeRanges;
-    v2->_timeRanges = v5;
+    v2->_timeRanges = array2;
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     embeddings = v2->_embeddings;
-    v2->_embeddings = v7;
+    v2->_embeddings = array3;
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     fileIndices = v2->_fileIndices;
-    v2->_fileIndices = v9;
+    v2->_fileIndices = array4;
 
     v11 = +[MADTextEmbeddingThreshold createForEmbeddingVersion:](MADTextEmbeddingThreshold, "createForEmbeddingVersion:", +[VCPVideoTransformerBackbone embeddingVersion]);
     textEmbeddingThreshold = v2->_textEmbeddingThreshold;
@@ -115,18 +115,18 @@
   return v2;
 }
 
-- (int)loadEmbeddings:(id)a3
+- (int)loadEmbeddings:(id)embeddings
 {
   v65 = *MEMORY[0x1E69E9840];
-  v50 = a3;
+  embeddingsCopy = embeddings;
   [(VCPFreeFormSearch *)self reset];
-  if (v50 && [v50 count])
+  if (embeddingsCopy && [embeddingsCopy count])
   {
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    obj = [v50 allKeys];
+    obj = [embeddingsCopy allKeys];
     v45 = [obj countByEnumeratingWithState:&v58 objects:v63 count:16];
     if (v45)
     {
@@ -150,7 +150,7 @@
           v54 = 0u;
           v55 = 0u;
           v48 = v5;
-          v51 = [v50 objectForKeyedSubscript:v5];
+          v51 = [embeddingsCopy objectForKeyedSubscript:v5];
           v6 = [v51 countByEnumeratingWithState:&v54 objects:v62 count:16];
           if (v6)
           {
@@ -188,13 +188,13 @@ LABEL_26:
                   if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                   {
                     v19 = +[VCPVideoTransformerBackbone embeddingVersion];
-                    v20 = [v13 intValue];
+                    intValue = [v13 intValue];
                     LODWORD(range.start.value) = v44;
                     *(&range.start.value + 4) = v48;
                     LOWORD(range.start.flags) = 1024;
                     *(&range.start.flags + 2) = v19;
                     WORD1(range.start.epoch) = 1024;
-                    HIDWORD(range.start.epoch) = v20;
+                    HIDWORD(range.start.epoch) = intValue;
                     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] Video embedding version mismatch skip. Expect %d, Got %d", &range, 0x18u);
                   }
 
@@ -368,19 +368,19 @@ LABEL_56:
   [(VCPFreeFormSearch *)&v5 dealloc];
 }
 
-- (id)searchForQuery:(id)a3 matchingScoreOnly:(BOOL)a4 topK:(int)a5
+- (id)searchForQuery:(id)query matchingScoreOnly:(BOOL)only topK:(int)k
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = self;
-  if (self->_embeddingDim == [v16 length] >> 2)
+  queryCopy = query;
+  selfCopy = self;
+  if (self->_embeddingDim == [queryCopy length] >> 2)
   {
     v19 = 1065353216;
     v20[0] = 0;
     v18 = 0;
     if (self->_textEmbeddingThreshold)
     {
-      v6 = MediaAnalysisConvertFloat32ToFloat16(v16);
+      v6 = MediaAnalysisConvertFloat32ToFloat16(queryCopy);
       v7 = objc_alloc(MEMORY[0x1E69AE300]);
       v8 = +[VCPVideoTransformerBackbone embeddingVersion];
       v22[0] = &unk_1F49BE4B8;
@@ -389,7 +389,7 @@ LABEL_56:
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
       v11 = [v7 initWithVersion:v8 data:v6 type:1 shape:v10];
 
-      v12 = [(MADTextEmbeddingThreshold *)v17->_textEmbeddingThreshold processEmbedding:v11 bias:v20 scale:&v19 threshold:&v18];
+      v12 = [(MADTextEmbeddingThreshold *)selfCopy->_textEmbeddingThreshold processEmbedding:v11 bias:v20 scale:&v19 threshold:&v18];
       if (v12)
       {
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -411,7 +411,7 @@ LABEL_56:
 
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v13 = [v16 length];
+    v13 = [queryCopy length];
     embeddingDim = self->_embeddingDim;
     *buf = 67109376;
     *&buf[4] = v13 >> 2;

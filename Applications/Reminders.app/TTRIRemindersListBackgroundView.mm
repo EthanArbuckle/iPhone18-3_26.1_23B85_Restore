@@ -1,20 +1,20 @@
 @interface TTRIRemindersListBackgroundView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGRect)_scribbleInteraction:(id)a3 frameForElement:(id)a4;
-- (void)_scribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4;
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6;
-- (void)_scribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5;
-- (void)_scribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4;
-- (void)tapGestureAction:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGRect)_scribbleInteraction:(id)interaction frameForElement:(id)element;
+- (void)_scribbleInteraction:(id)interaction didFinishWritingInElement:(id)element;
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion;
+- (void)_scribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion;
+- (void)_scribbleInteraction:(id)interaction willBeginWritingInElement:(id)element;
+- (void)tapGestureAction:(id)action;
 @end
 
 @implementation TTRIRemindersListBackgroundView
 
-- (void)tapGestureAction:(id)a3
+- (void)tapGestureAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -27,7 +27,7 @@
   else
   {
     memset(v9, 0, sizeof(v9));
-    v5 = self;
+    selfCopy2 = self;
     if (UIAccessibilityIsVoiceOverRunning())
     {
 LABEL_7:
@@ -51,25 +51,25 @@ LABEL_8:
   sub_10000B070(v9);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10056CFF0(v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_10056CFF0(touchCopy);
 
   return v9 & 1;
 }
 
-- (void)_scribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5
+- (void)_scribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(completion);
   sub_100058000(&qword_10076B780);
   v7 = swift_allocObject();
   *(v7 + 16) = xmmword_10062D420;
   v8 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9Reminders31TTRIRemindersListBackgroundView_scribbleElementIdentifier);
   *(v7 + 32) = v8;
-  v9 = self;
+  selfCopy = self;
   v10 = v8;
   v11 = NSNotFound.getter();
   sub_100058000(&qword_10078D780);
@@ -80,11 +80,11 @@ LABEL_8:
   _Block_release(v6);
 }
 
-- (CGRect)_scribbleInteraction:(id)a3 frameForElement:(id)a4
+- (CGRect)_scribbleInteraction:(id)interaction frameForElement:(id)element
 {
-  v5 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v7 = sub_10056D130();
   v9 = v8;
   v11 = v10;
@@ -102,21 +102,21 @@ LABEL_8:
   return result;
 }
 
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(completion);
   _Block_copy(v9);
-  v10 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v11 = self;
-  sub_10056D21C(a4, v11, v9);
+  selfCopy = self;
+  sub_10056D21C(element, selfCopy, v9);
   _Block_release(v9);
   _Block_release(v9);
 
   swift_unknownObjectRelease();
 }
 
-- (void)_scribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4
+- (void)_scribbleInteraction:(id)interaction willBeginWritingInElement:(id)element
 {
   v5 = self + OBJC_IVAR____TtC9Reminders31TTRIRemindersListBackgroundView_delegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -124,13 +124,13 @@ LABEL_8:
     v6 = *(v5 + 1);
     swift_getObjectType();
     v7 = *(v6 + 24);
-    v8 = self;
+    selfCopy = self;
     v7();
     swift_unknownObjectRelease();
   }
 }
 
-- (void)_scribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4
+- (void)_scribbleInteraction:(id)interaction didFinishWritingInElement:(id)element
 {
   v5 = self + OBJC_IVAR____TtC9Reminders31TTRIRemindersListBackgroundView_delegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -138,7 +138,7 @@ LABEL_8:
     v6 = *(v5 + 1);
     swift_getObjectType();
     v7 = *(v6 + 32);
-    v8 = self;
+    selfCopy = self;
     v7();
     swift_unknownObjectRelease();
   }

@@ -14,7 +14,7 @@
 {
   *&v2.byte0 = 0;
   *&v2.byte8 = 0;
-  [a1 getUUIDBytes:&v2];
+  [self getUUIDBytes:&v2];
   return CFUUIDCreateFromUUIDBytes(*MEMORY[0x1E695E480], v2);
 }
 
@@ -23,7 +23,7 @@
   v4[2] = *MEMORY[0x1E69E9840];
   v4[0] = 0;
   v4[1] = 0;
-  [a1 getUUIDBytes:v4];
+  [self getUUIDBytes:v4];
   v1 = [MEMORY[0x1E695DEF0] dataWithBytes:v4 length:16];
   v2 = *MEMORY[0x1E69E9840];
 
@@ -32,8 +32,8 @@
 
 - (id)MSVBase64UUIDString
 {
-  v1 = [a1 msv_UUIDData];
-  v2 = [v1 base64EncodedStringWithOptions:0];
+  msv_UUIDData = [self msv_UUIDData];
+  v2 = [msv_UUIDData base64EncodedStringWithOptions:0];
   v3 = [v2 substringToIndex:22];
 
   return v3;
@@ -49,16 +49,16 @@
   v8 = [v6 initWithBase64EncodedString:v7 options:0];
   if ([v8 length] == 16)
   {
-    a1 = [a1 initWithUUIDBytes:{objc_msgSend(v8, "bytes")}];
-    v9 = a1;
+    self = [self initWithUUIDBytes:{objc_msgSend(v8, "bytes")}];
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 + (id)msv_uuidWithCFUUID:()MSVBase64
@@ -74,7 +74,7 @@
   v4 = a3;
   if ([v4 length] == 16)
   {
-    v5 = [[a1 alloc] initWithUUIDBytes:{objc_msgSend(v4, "bytes")}];
+    v5 = [[self alloc] initWithUUIDBytes:{objc_msgSend(v4, "bytes")}];
   }
 
   else

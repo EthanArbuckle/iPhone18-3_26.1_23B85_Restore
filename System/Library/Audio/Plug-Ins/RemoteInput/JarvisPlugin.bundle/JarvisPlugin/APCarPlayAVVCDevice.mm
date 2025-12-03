@@ -1,23 +1,23 @@
 @interface APCarPlayAVVCDevice
-- (APCarPlayAVVCDevice)initWithXPCClient:(OpaqueFigXPCRemoteClient *)a3;
+- (APCarPlayAVVCDevice)initWithXPCClient:(OpaqueFigXPCRemoteClient *)client;
 - (id)pickDefaultFormat;
 - (int)readAndSendPacketToAVVC;
-- (int)readCompressedBuffer:(id *)a3 numOutputSamples:(unsigned int *)a4;
-- (int)readPCMBuffer:(id *)a3 numOutputSamples:(unsigned int *)a4;
+- (int)readCompressedBuffer:(id *)buffer numOutputSamples:(unsigned int *)samples;
+- (int)readPCMBuffer:(id *)buffer numOutputSamples:(unsigned int *)samples;
 - (int)readSupportedFormats;
-- (void)actionCompleted:(id)a3 WithResult:(int)a4;
+- (void)actionCompleted:(id)completed WithResult:(int)result;
 - (void)dealloc;
-- (void)handleNotification:(__CFString *)a3 fromCenter:(__CFNotificationCenter *)a4 fromObject:(const void *)a5 withUserInfo:(__CFDictionary *)a6;
-- (void)insertStreamStartTimestamp:(id)a3 returnOptions:(const __CFDictionary *)a4;
+- (void)handleNotification:(__CFString *)notification fromCenter:(__CFNotificationCenter *)center fromObject:(const void *)object withUserInfo:(__CFDictionary *)info;
+- (void)insertStreamStartTimestamp:(id)timestamp returnOptions:(const __CFDictionary *)options;
 - (void)sendAllAvailableAudioDataToAVVC;
-- (void)startRecordingWithSettings:(id)a3 withCompletionBlock:(id)a4;
-- (void)stopRecordingWithCompletionBlock:(id)a3;
-- (void)stopRecordingWithOptionalForcedError:(int)a3;
+- (void)startRecordingWithSettings:(id)settings withCompletionBlock:(id)block;
+- (void)stopRecordingWithCompletionBlock:(id)block;
+- (void)stopRecordingWithOptionalForcedError:(int)error;
 @end
 
 @implementation APCarPlayAVVCDevice
 
-- (APCarPlayAVVCDevice)initWithXPCClient:(OpaqueFigXPCRemoteClient *)a3
+- (APCarPlayAVVCDevice)initWithXPCClient:(OpaqueFigXPCRemoteClient *)client
 {
   v22.receiver = self;
   v22.super_class = APCarPlayAVVCDevice;
@@ -29,13 +29,13 @@
     return v5;
   }
 
-  if (!a3)
+  if (!client)
   {
     v4->_remote.client = 0;
     goto LABEL_24;
   }
 
-  v6 = CFRetain(a3);
+  v6 = CFRetain(client);
   v5->_remote.client = v6;
   if (!v6)
   {
@@ -90,10 +90,10 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v16 = [(APCarPlayAVVCDevice *)v5 readSupportedFormats];
-  if (v16)
+  readSupportedFormats = [(APCarPlayAVVCDevice *)v5 readSupportedFormats];
+  if (readSupportedFormats)
   {
-    v20 = v16;
+    v20 = readSupportedFormats;
     sub_388C();
 LABEL_18:
     if (v20 != -6720)
@@ -213,10 +213,10 @@ LABEL_19:
   [(APCarPlayAVVCDevice *)&v13 dealloc];
 }
 
-- (void)insertStreamStartTimestamp:(id)a3 returnOptions:(const __CFDictionary *)a4
+- (void)insertStreamStartTimestamp:(id)timestamp returnOptions:(const __CFDictionary *)options
 {
   v6 = mach_absolute_time();
-  *a4 = 0;
+  *options = 0;
   Mutable = CFDictionaryCreateMutable(kCFAllocatorDefault, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   if (Mutable)
   {
@@ -262,7 +262,7 @@ LABEL_24:
 LABEL_25:
         self->_dataProcessing.streamStartTimestamp = v10;
         CFDictionarySetInt64();
-        *a4 = v8;
+        *options = v8;
         return;
       }
     }
@@ -295,20 +295,20 @@ LABEL_25:
   sub_3B68();
 }
 
-- (void)startRecordingWithSettings:(id)a3 withCompletionBlock:(id)a4
+- (void)startRecordingWithSettings:(id)settings withCompletionBlock:(id)block
 {
   queue = self->_dataProcessing.queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_2124;
   block[3] = &unk_8440;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = settings;
+  block[6] = block;
   block[4] = self;
   dispatch_sync(queue, block);
 }
 
-- (void)stopRecordingWithCompletionBlock:(id)a3
+- (void)stopRecordingWithCompletionBlock:(id)block
 {
   queue = self->_dataProcessing.queue;
   v5[0] = _NSConcreteStackBlock;
@@ -316,7 +316,7 @@ LABEL_25:
   v5[2] = sub_28F8;
   v5[3] = &unk_8490;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = block;
   dispatch_sync(queue, v5);
   [(APCarPlayAVVCDevice *)self stopRecordingWithOptionalForcedError:0];
 }
@@ -435,7 +435,7 @@ LABEL_15:
   return result;
 }
 
-- (int)readCompressedBuffer:(id *)a3 numOutputSamples:(unsigned int *)a4
+- (int)readCompressedBuffer:(id *)buffer numOutputSamples:(unsigned int *)samples
 {
   v19 = 1440;
   v18 = 0;
@@ -455,7 +455,7 @@ LABEL_15:
   v8 = v7;
   xpcAudioSink = self->_remote.xpcAudioSink;
   v10 = *([v7 audioBufferList] + 2);
-  v11 = [v8 packetDescriptions];
+  packetDescriptions = [v8 packetDescriptions];
   v12 = *(CMBaseObjectGetVTable() + 16);
   if (*v12 < 2uLL)
   {
@@ -471,7 +471,7 @@ LABEL_15:
   }
 
   v14 = v12[7];
-  v15 = v13(xpcAudioSink, 0, v10, 1440, v11, 1, &v19, &v18);
+  v15 = v13(xpcAudioSink, 0, v10, 1440, packetDescriptions, 1, &v19, &v18);
   v16 = v15;
   if (v15 == -6765)
   {
@@ -489,12 +489,12 @@ LABEL_12:
 
   [v8 setByteLength:v19];
   [v8 setPacketCount:v18];
-  *a4 = *([(AVAudioFormat *)self->format streamDescription]+ 5);
-  *a3 = v8;
+  *samples = *([(AVAudioFormat *)self->format streamDescription]+ 5);
+  *buffer = v8;
   return v16;
 }
 
-- (int)readPCMBuffer:(id *)a3 numOutputSamples:(unsigned int *)a4
+- (int)readPCMBuffer:(id *)buffer numOutputSamples:(unsigned int *)samples
 {
   v19 = 1440;
   v18 = 0;
@@ -512,7 +512,7 @@ LABEL_12:
   }
 
   v8 = v7;
-  v9 = [v7 frameCapacity];
+  frameCapacity = [v7 frameCapacity];
   xpcAudioSink = self->_remote.xpcAudioSink;
   v11 = *([v8 audioBufferList] + 2);
   v12 = *(CMBaseObjectGetVTable() + 16);
@@ -530,7 +530,7 @@ LABEL_12:
   }
 
   v14 = v12[7];
-  v15 = v13(xpcAudioSink, 0, v11, 1440, 0, v9, &v19, &v18);
+  v15 = v13(xpcAudioSink, 0, v11, 1440, 0, frameCapacity, &v19, &v18);
   v16 = v15;
   if (v15 == -6765)
   {
@@ -547,20 +547,20 @@ LABEL_12:
   }
 
   [v8 setFrameLength:v18];
-  *a3 = v8;
-  *a4 = v18;
+  *buffer = v8;
+  *samples = v18;
   return v16;
 }
 
-- (void)handleNotification:(__CFString *)a3 fromCenter:(__CFNotificationCenter *)a4 fromObject:(const void *)a5 withUserInfo:(__CFDictionary *)a6
+- (void)handleNotification:(__CFString *)notification fromCenter:(__CFNotificationCenter *)center fromObject:(const void *)object withUserInfo:(__CFDictionary *)info
 {
-  if (CFEqual(a3, kAPCarPlayAVVCNotification_StateIncompatibleWithAuxIn))
+  if (CFEqual(notification, kAPCarPlayAVVCNotification_StateIncompatibleWithAuxIn))
   {
 
     [(APCarPlayAVVCDevice *)self stopRecordingWithOptionalForcedError:1919115630];
   }
 
-  else if (CFEqual(a3, @"avvcDevice_ConnectionLost"))
+  else if (CFEqual(notification, @"avvcDevice_ConnectionLost"))
   {
     if (dword_CAE0 <= 50 && (dword_CAE0 != -1 || _LogCategory_Initialize()))
     {
@@ -575,7 +575,7 @@ LABEL_12:
   }
 }
 
-- (void)stopRecordingWithOptionalForcedError:(int)a3
+- (void)stopRecordingWithOptionalForcedError:(int)error
 {
   queue = self->_dataProcessing.queue;
   if (queue)
@@ -585,12 +585,12 @@ LABEL_12:
     v5[2] = sub_2668;
     v5[3] = &unk_8468;
     v5[4] = self;
-    v6 = a3;
+    errorCopy = error;
     dispatch_sync(queue, v5);
   }
 }
 
-- (void)actionCompleted:(id)a3 WithResult:(int)a4
+- (void)actionCompleted:(id)completed WithResult:(int)result
 {
   if (self->_dataProcessing.avvcCompletionBlock)
   {
@@ -599,9 +599,9 @@ LABEL_12:
       sub_18FC();
     }
 
-    if (a4)
+    if (result)
     {
-      v6 = [[NSError alloc] initWithDomain:NSOSStatusErrorDomain code:a4 userInfo:0];
+      v6 = [[NSError alloc] initWithDomain:NSOSStatusErrorDomain code:result userInfo:0];
     }
 
     else

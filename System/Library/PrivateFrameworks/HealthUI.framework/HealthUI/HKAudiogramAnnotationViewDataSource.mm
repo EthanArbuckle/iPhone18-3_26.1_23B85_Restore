@@ -1,16 +1,16 @@
 @interface HKAudiogramAnnotationViewDataSource
 - (HKAudiogramAnnotationViewDataSource)init;
-- (HKAudiogramAnnotationViewDataSource)initWithApplicationItems:(id)a3;
-- (id)dateViewWithOrientation:(int64_t)a3;
-- (id)leftMarginViewWithOrientation:(int64_t)a3;
-- (id)valueViewForColumnAtIndex:(int64_t)a3 orientation:(int64_t)a4;
-- (int64_t)numberOfValuesForAnnotationView:(id)a3;
-- (void)updateWithPointSelectionContexts:(id)a3 date:(id)a4 isAverage:(BOOL)a5;
+- (HKAudiogramAnnotationViewDataSource)initWithApplicationItems:(id)items;
+- (id)dateViewWithOrientation:(int64_t)orientation;
+- (id)leftMarginViewWithOrientation:(int64_t)orientation;
+- (id)valueViewForColumnAtIndex:(int64_t)index orientation:(int64_t)orientation;
+- (int64_t)numberOfValuesForAnnotationView:(id)view;
+- (void)updateWithPointSelectionContexts:(id)contexts date:(id)date isAverage:(BOOL)average;
 @end
 
 @implementation HKAudiogramAnnotationViewDataSource
 
-- (HKAudiogramAnnotationViewDataSource)initWithApplicationItems:(id)a3
+- (HKAudiogramAnnotationViewDataSource)initWithApplicationItems:(id)items
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -20,13 +20,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
-  v5 = sub_1C3C77C68(v4);
+  itemsCopy = items;
+  v5 = sub_1C3C77C68(itemsCopy);
 
   return v5;
 }
 
-- (void)updateWithPointSelectionContexts:(id)a3 date:(id)a4 isAverage:(BOOL)a5
+- (void)updateWithPointSelectionContexts:(id)contexts date:(id)date isAverage:(BOOL)average
 {
   v7 = sub_1C3D1E1E4();
   v8 = *(v7 - 8);
@@ -44,22 +44,22 @@
   v11 = sub_1C3D202B4();
   sub_1C3D1E1A4();
   v12 = *(&self->super.isa + OBJC_IVAR___HKAudiogramAnnotationViewDataSource_applicationItems);
-  v13 = self;
-  v14 = [v12 dateCache];
-  sub_1C3CD78E4(v10, v14, 1);
+  selfCopy = self;
+  dateCache = [v12 dateCache];
+  sub_1C3CD78E4(v10, dateCache, 1);
   v16 = v15;
 
-  v17 = *(&v13->super.isa + OBJC_IVAR___HKAudiogramAnnotationViewDataSource_currentDateView);
-  *(&v13->super.isa + OBJC_IVAR___HKAudiogramAnnotationViewDataSource_currentDateView) = v16;
+  v17 = *(&selfCopy->super.isa + OBJC_IVAR___HKAudiogramAnnotationViewDataSource_currentDateView);
+  *(&selfCopy->super.isa + OBJC_IVAR___HKAudiogramAnnotationViewDataSource_currentDateView) = v16;
 
-  sub_1C3C77708(v11, a5);
+  sub_1C3C77708(v11, average);
   v19 = v18;
 
   (*(v8 + 8))(v10, v7);
-  *(&v13->super.isa + OBJC_IVAR___HKAudiogramAnnotationViewDataSource_keyValuePairs) = v19;
+  *(&selfCopy->super.isa + OBJC_IVAR___HKAudiogramAnnotationViewDataSource_keyValuePairs) = v19;
 }
 
-- (id)dateViewWithOrientation:(int64_t)a3
+- (id)dateViewWithOrientation:(int64_t)orientation
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -74,7 +74,7 @@
   return v4;
 }
 
-- (id)leftMarginViewWithOrientation:(int64_t)a3
+- (id)leftMarginViewWithOrientation:(int64_t)orientation
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -87,7 +87,7 @@
   return 0;
 }
 
-- (int64_t)numberOfValuesForAnnotationView:(id)a3
+- (int64_t)numberOfValuesForAnnotationView:(id)view
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -111,7 +111,7 @@
   return v5;
 }
 
-- (id)valueViewForColumnAtIndex:(int64_t)a3 orientation:(int64_t)a4
+- (id)valueViewForColumnAtIndex:(int64_t)index orientation:(int64_t)orientation
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -125,32 +125,32 @@
   v8 = *(&self->super.isa + OBJC_IVAR___HKAudiogramAnnotationViewDataSource_keyValuePairs);
   if ((v8 & 0xC000000000000001) != 0)
   {
-    v14 = self;
+    selfCopy = self;
 
-    v15 = MEMORY[0x1C692FEB0](a3, v8);
+    v15 = MEMORY[0x1C692FEB0](index, v8);
 
     v11 = v15;
     goto LABEL_7;
   }
 
-  if (a3 < 0)
+  if (index < 0)
   {
     __break(1u);
     goto LABEL_12;
   }
 
-  if (*((v8 & 0xFFFFFFFFFFFFFF8) + 0x10) <= a3)
+  if (*((v8 & 0xFFFFFFFFFFFFFF8) + 0x10) <= index)
   {
 LABEL_12:
     __break(1u);
     return result;
   }
 
-  v9 = *(v8 + 8 * a3 + 32);
-  v10 = self;
+  v9 = *(v8 + 8 * index + 32);
+  selfCopy2 = self;
   v11 = v9;
 LABEL_7:
-  v12 = a4 == 0;
+  v12 = orientation == 0;
   v13 = v11;
   [v11 setOrientation_];
 

@@ -1,24 +1,24 @@
 @interface DMCPayloadUserInputField
-- (DMCPayloadUserInputField)initWithFieldDictionary:(id)a3;
+- (DMCPayloadUserInputField)initWithFieldDictionary:(id)dictionary;
 - (id)description;
 - (id)responseDictionary;
 - (int)flags;
 - (int)type;
 - (int64_t)keyboardType;
-- (void)setUserResponse:(id)a3;
+- (void)setUserResponse:(id)response;
 @end
 
 @implementation DMCPayloadUserInputField
 
-- (DMCPayloadUserInputField)initWithFieldDictionary:(id)a3
+- (DMCPayloadUserInputField)initWithFieldDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = DMCPayloadUserInputField;
   v5 = [(DMCPayloadUserInputField *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dictionaryCopy mutableCopy];
     fieldDictionary = v5->_fieldDictionary;
     v5->_fieldDictionary = v6;
   }
@@ -26,9 +26,9 @@
   return v5;
 }
 
-- (void)setUserResponse:(id)a3
+- (void)setUserResponse:(id)response
 {
-  self->_response = [a3 copy];
+  self->_response = [response copy];
 
   MEMORY[0x2821F96F8]();
 }
@@ -47,24 +47,24 @@
 - (int)type
 {
   v2 = [(NSMutableDictionary *)self->_fieldDictionary objectForKey:*MEMORY[0x277D26378]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (int)flags
 {
   v2 = [(NSMutableDictionary *)self->_fieldDictionary objectForKey:*MEMORY[0x277D26388]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (id)responseDictionary
 {
   v3 = MEMORY[0x277CBEAC0];
-  v4 = [(DMCPayloadUserInputField *)self _uuid];
-  v5 = [v3 dictionaryWithObjectsAndKeys:{v4, *MEMORY[0x277D263C0], self->_response, *MEMORY[0x277D263A8], 0}];
+  _uuid = [(DMCPayloadUserInputField *)self _uuid];
+  v5 = [v3 dictionaryWithObjectsAndKeys:{_uuid, *MEMORY[0x277D263C0], self->_response, *MEMORY[0x277D263A8], 0}];
 
   return v5;
 }

@@ -6,12 +6,12 @@
 
 - (void)tk_removeFromContainer
 {
-  v15 = [a1 firstItem];
-  v2 = [a1 secondItem];
+  firstItem = [self firstItem];
+  secondItem = [self secondItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v15;
+    v3 = firstItem;
   }
 
   else
@@ -23,7 +23,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v2;
+    v5 = secondItem;
   }
 
   else
@@ -68,24 +68,24 @@
   {
     while (1)
     {
-      v12 = [v11 constraints];
-      v13 = [v12 containsObject:a1];
+      constraints = [v11 constraints];
+      v13 = [constraints containsObject:self];
 
       if (v13)
       {
         break;
       }
 
-      v14 = [v11 superview];
+      superview = [v11 superview];
 
-      v11 = v14;
-      if (!v14)
+      v11 = superview;
+      if (!superview)
       {
         goto LABEL_21;
       }
     }
 
-    [v11 removeConstraint:a1];
+    [v11 removeConstraint:self];
   }
 
 LABEL_21:

@@ -1,11 +1,11 @@
 @interface VNFaceScreenGaze
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)screenGazeRawOutputInCentimeters;
-- (VNFaceScreenGaze)initWithCoder:(id)a3;
+- (VNFaceScreenGaze)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithScreenGaze:(void *)a3 originatingRequestSpecifier:;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithScreenGaze:(void *)gaze originatingRequestSpecifier:;
 @end
 
 @implementation VNFaceScreenGaze
@@ -32,13 +32,13 @@
   return result;
 }
 
-- (VNFaceScreenGaze)initWithCoder:(id)a3
+- (VNFaceScreenGaze)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 vn_decodePointForKey:@"gaze"];
+  coderCopy = coder;
+  [coderCopy vn_decodePointForKey:@"gaze"];
   v6 = v5;
   v8 = v7;
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"oreq"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"oreq"];
   if (!v9)
   {
     v17 = 0;
@@ -47,8 +47,8 @@
     v11 = v10;
     if (!v9)
     {
-      [v4 failWithError:v10];
-      v14 = 0;
+      [coderCopy failWithError:v10];
+      selfCopy = 0;
       goto LABEL_5;
     }
   }
@@ -59,44 +59,44 @@
   v16[0] = __PAIR64__(v13, v12);
   self = [(VNFaceScreenGaze *)self initWithScreenGaze:v16 originatingRequestSpecifier:v9];
   v11 = v9;
-  v14 = self;
+  selfCopy = self;
 LABEL_5:
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)initWithScreenGaze:(void *)a3 originatingRequestSpecifier:
+- (void)initWithScreenGaze:(void *)gaze originatingRequestSpecifier:
 {
-  v6 = a3;
-  if (a1)
+  gazeCopy = gaze;
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = VNFaceScreenGaze;
     v7 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v7;
+    self = v7;
     if (v7)
     {
       *(v7 + 1) = vcvtq_f64_f32(*a2);
       *(v7 + 8) = a2[1].i32[1];
       *(v7 + 9) = a2[1].i32[0];
-      objc_storeStrong(v7 + 1, a3);
+      objc_storeStrong(v7 + 1, gaze);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 vn_encodePoint:@"gaze" forKey:{self->_screenGaze.x, self->_screenGaze.y}];
-  [v4 encodeObject:self->_originatingRequestSpecifier forKey:@"oreq"];
+  coderCopy = coder;
+  [coderCopy vn_encodePoint:@"gaze" forKey:{self->_screenGaze.x, self->_screenGaze.y}];
+  [coderCopy encodeObject:self->_originatingRequestSpecifier forKey:@"oreq"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -105,9 +105,9 @@ LABEL_5:
   {
     v16.receiver = self;
     v16.super_class = VNFaceScreenGaze;
-    if ([(VNFaceScreenGaze *)&v16 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(VNFaceScreenGaze *)&v16 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(VNFaceScreenGaze *)self screenGazeRawOutputInCentimeters];
       v7 = v6;
       v9 = v8;
@@ -115,9 +115,9 @@ LABEL_5:
       v11 = 0;
       if (v7 == v12 && v9 == v10)
       {
-        v13 = [(VNFaceScreenGaze *)self originatingRequestSpecifier];
-        v14 = [(VNFaceScreenGaze *)v5 originatingRequestSpecifier];
-        v11 = [v13 isEqual:v14];
+        originatingRequestSpecifier = [(VNFaceScreenGaze *)self originatingRequestSpecifier];
+        originatingRequestSpecifier2 = [(VNFaceScreenGaze *)v5 originatingRequestSpecifier];
+        v11 = [originatingRequestSpecifier isEqual:originatingRequestSpecifier2];
       }
     }
 

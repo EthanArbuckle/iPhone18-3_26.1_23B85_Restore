@@ -1,15 +1,15 @@
 @interface CKDPRecordReference
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)typeAsString:(int)a3;
-- (int)StringAsType:(id)a3;
+- (id)typeAsString:(int)string;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRecordReference
@@ -27,35 +27,35 @@
   }
 }
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  if ((a3 - 1) >= 3)
+  if ((string - 1) >= 3)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_1E70BF108[a3 - 1];
+    v4 = off_1E70BF108[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"owning"))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"owning"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"weak"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v5, @"weak"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"validating"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"validating"))
   {
     v6 = 3;
   }
@@ -109,46 +109,46 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_recordIdentifier)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_type;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_type;
+    *(toCopy + 20) |= 1u;
   }
 
   recordIdentifier = self->_recordIdentifier;
   if (recordIdentifier)
   {
-    v7 = v4;
-    objc_msgSend_setRecordIdentifier_(v4, v5, recordIdentifier);
-    v4 = v7;
+    v7 = toCopy;
+    objc_msgSend_setRecordIdentifier_(toCopy, v5, recordIdentifier);
+    toCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   if (*&self->_has)
@@ -157,32 +157,32 @@
     *(v10 + 20) |= 1u;
   }
 
-  v13 = objc_msgSend_copyWithZone_(self->_recordIdentifier, v11, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_recordIdentifier, v11, zone);
   v14 = v12[1];
   v12[1] = v13;
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_9;
   }
 
-  v8 = *(v4 + 20);
+  v8 = *(equalCopy + 20);
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_type != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_type != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     isEqual = 0;
@@ -190,7 +190,7 @@ LABEL_9:
   }
 
   recordIdentifier = self->_recordIdentifier;
-  v10 = v4[1];
+  v10 = equalCopy[1];
   if (recordIdentifier | v10)
   {
     isEqual = objc_msgSend_isEqual_(recordIdentifier, v7, v10);
@@ -221,13 +221,13 @@ LABEL_10:
   return objc_msgSend_hash(self->_recordIdentifier, a2, v2) ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[5])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[5])
   {
-    self->_type = v4[4];
+    self->_type = fromCopy[4];
     *&self->_has |= 1u;
   }
 

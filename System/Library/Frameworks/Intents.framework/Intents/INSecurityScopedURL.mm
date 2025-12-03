@@ -1,6 +1,6 @@
 @interface INSecurityScopedURL
 - (BOOL)startAccessingSecurityScopedResource;
-- (INSecurityScopedURL)initWithURL:(id)a3;
+- (INSecurityScopedURL)initWithURL:(id)l;
 - (void)stopAccessingSecurityScopedResource;
 @end
 
@@ -27,9 +27,9 @@
   if (!accessCount)
   {
     v4 = [(INSecurityScopedURL *)self url];
-    v5 = [v4 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource = [v4 startAccessingSecurityScopedResource];
 
-    if (!v5)
+    if (!startAccessingSecurityScopedResource)
     {
       v6 = 0;
       goto LABEL_5;
@@ -45,16 +45,16 @@ LABEL_5:
   return v6;
 }
 
-- (INSecurityScopedURL)initWithURL:(id)a3
+- (INSecurityScopedURL)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = INSecurityScopedURL;
   v6 = [(INSecurityScopedURL *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v7->_lock._os_unfair_lock_opaque = 0;
     v8 = v7;
   }

@@ -1,26 +1,26 @@
 @interface MCFontPayloadHandler
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (id)_errorFontAlreadyInstalled;
 - (id)_errorFontCollection;
 - (id)_errorFontInvalid;
-- (id)_errorFontUnknownWithUnderlyingError:(id)a3;
+- (id)_errorFontUnknownWithUnderlyingError:(id)error;
 - (void)remove;
 @end
 
 @implementation MCFontPayloadHandler
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v9 = a3;
-  v81 = a4;
-  v80 = a5;
-  v10 = [(MCNewPayloadHandler *)self payload];
+  installerCopy = installer;
+  optionsCopy = options;
+  clientCopy = client;
+  payload = [(MCNewPayloadHandler *)self payload];
   cf = 0;
-  v11 = [v10 fontData];
+  fontData = [payload fontData];
 
-  if (!v11)
+  if (!fontData)
   {
-    v18 = [(MCFontPayloadHandler *)self _errorFontInvalid];
+    _errorFontInvalid = [(MCFontPayloadHandler *)self _errorFontInvalid];
     v20 = 0;
     v15 = 0;
     v21 = 0;
@@ -32,22 +32,22 @@ LABEL_20:
       CFRelease(cf);
     }
 
-    if (v18)
+    if (_errorFontInvalid)
     {
       v27 = _MCLogObjects[0];
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
       {
         v28 = v27;
-        v29 = [v18 MCVerboseDescription];
+        mCVerboseDescription = [_errorFontInvalid MCVerboseDescription];
         *buf = 138543362;
-        *v95 = v29;
+        *v95 = mCVerboseDescription;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Cannot install font. Error: %{public}@", buf, 0xCu);
       }
 
       LOBYTE(v24) = 0;
-      if (a6)
+      if (error)
       {
-        *a6 = [v18 MCCopyAsPrimaryError];
+        *error = [_errorFontInvalid MCCopyAsPrimaryError];
       }
     }
 
@@ -72,13 +72,13 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "Writing font to temporary URL %{public}@", buf, 0xCu);
   }
 
-  v17 = [v10 fontData];
+  fontData2 = [payload fontData];
   v88 = 0;
-  [v17 writeToURL:v15 options:268435457 error:&v88];
-  v18 = v88;
+  [fontData2 writeToURL:v15 options:268435457 error:&v88];
+  _errorFontInvalid = v88;
 
-  v78 = v9;
-  if (v18)
+  v78 = installerCopy;
+  if (_errorFontInvalid)
   {
     goto LABEL_5;
   }
@@ -86,15 +86,15 @@ LABEL_20:
   FontDescriptorsFromURL = MCCTFontManagerCreateFontDescriptorsFromURL();
   if (![FontDescriptorsFromURL count])
   {
-    v23 = [(MCFontPayloadHandler *)self _errorFontInvalid];
+    _errorFontInvalid2 = [(MCFontPayloadHandler *)self _errorFontInvalid];
     goto LABEL_11;
   }
 
   if ([FontDescriptorsFromURL count] >= 2)
   {
-    v23 = [(MCFontPayloadHandler *)self _errorFontCollection];
+    _errorFontInvalid2 = [(MCFontPayloadHandler *)self _errorFontCollection];
 LABEL_11:
-    v18 = v23;
+    _errorFontInvalid = _errorFontInvalid2;
     goto LABEL_12;
   }
 
@@ -108,7 +108,7 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "Could not specify font as data provider.", buf, 2u);
     }
 
-    v18 = [(MCFontPayloadHandler *)self _errorFontInvalid];
+    _errorFontInvalid = [(MCFontPayloadHandler *)self _errorFontInvalid];
 LABEL_5:
     FontDescriptorsFromURL = 0;
 LABEL_12:
@@ -134,7 +134,7 @@ LABEL_13:
       CFRelease(v24);
     }
 
-    v9 = v78;
+    installerCopy = v78;
     goto LABEL_20;
   }
 
@@ -149,7 +149,7 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "Could not create font for introspection.", buf, 2u);
     }
 
-    v18 = [(MCFontPayloadHandler *)self _errorFontInvalid];
+    _errorFontInvalid = [(MCFontPayloadHandler *)self _errorFontInvalid];
     FontDescriptorsFromURL = 0;
     v22 = 0;
     v21 = 0;
@@ -174,7 +174,7 @@ LABEL_13:
     }
   }
 
-  [v10 setName:v20];
+  [payload setName:v20];
 LABEL_41:
   v36 = GSFontCopyPersistentPostscriptURL();
   if (!v36)
@@ -186,7 +186,7 @@ LABEL_41:
       _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_ERROR, "Could not create persistent URL for font.", buf, 2u);
     }
 
-    v18 = [(MCFontPayloadHandler *)self _errorFontInvalid];
+    _errorFontInvalid = [(MCFontPayloadHandler *)self _errorFontInvalid];
     FontDescriptorsFromURL = 0;
     v22 = 0;
     v21 = 0;
@@ -194,13 +194,13 @@ LABEL_41:
   }
 
   v21 = v36;
-  [v10 setPersistentURL:v36];
+  [payload setPersistentURL:v36];
   v37 = +[MCDependencyManager sharedManager];
   v70 = kMCDMFontURLToProfileIdentifierKey;
   v22 = [v37 parentsInDomain:?];
 
-  v38 = [v21 absoluteString];
-  v39 = [v22 containsObject:v38];
+  absoluteString = [v21 absoluteString];
+  v39 = [v22 containsObject:absoluteString];
 
   v40 = _MCLogObjects[0];
   if (v39)
@@ -212,13 +212,13 @@ LABEL_41:
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "The font “%{public}@” has already been installed. Not installing again.", buf, 0xCu);
     }
 
-    v18 = 0;
+    _errorFontInvalid = 0;
 LABEL_46:
     v74 = +[MCDependencyManager sharedManager];
-    v41 = [v21 absoluteString];
-    v71 = [v10 profile];
-    v42 = [v71 identifier];
-    [v74 addDependent:v41 ofParent:v42 inDomain:kMCDMProfileIdentifierToFontURLKey reciprocalDomain:v70];
+    absoluteString2 = [v21 absoluteString];
+    profile = [payload profile];
+    identifier = [profile identifier];
+    [v74 addDependent:absoluteString2 ofParent:identifier inDomain:kMCDMProfileIdentifierToFontURLKey reciprocalDomain:v70];
 
     v43 = v74;
 LABEL_57:
@@ -237,9 +237,9 @@ LABEL_57:
   }
 
   v45 = +[NSFileManager defaultManager];
-  v46 = [v21 path];
+  path = [v21 path];
   v66 = v45;
-  LODWORD(v45) = [v45 fileExistsAtPath:v46];
+  LODWORD(v45) = [v45 fileExistsAtPath:path];
 
   if (v45)
   {
@@ -249,9 +249,9 @@ LABEL_57:
   v47 = +[NSFileManager defaultManager];
   v87 = 0;
   [v47 copyItemAtURL:v15 toURL:v21 error:&v87];
-  v18 = v87;
+  _errorFontInvalid = v87;
 
-  if (v18)
+  if (_errorFontInvalid)
   {
     goto LABEL_56;
   }
@@ -260,12 +260,12 @@ LABEL_57:
   v92 = NSFileProtectionKey;
   v93 = NSFileProtectionNone;
   v72 = [NSDictionary dictionaryWithObjects:&v93 forKeys:&v92 count:1];
-  v48 = [v21 path];
+  path2 = [v21 path];
   v86 = 0;
-  [v75 setAttributes:v72 ofItemAtPath:v48 error:&v86];
-  v18 = v86;
+  [v75 setAttributes:v72 ofItemAtPath:path2 error:&v86];
+  _errorFontInvalid = v86;
 
-  if (v18)
+  if (_errorFontInvalid)
   {
 LABEL_56:
     v43 = v66;
@@ -277,7 +277,7 @@ LABEL_56:
   GSFontRegisterPersistentURLs();
   if (!cf)
   {
-    v18 = 0;
+    _errorFontInvalid = 0;
     goto LABEL_85;
   }
 
@@ -295,7 +295,7 @@ LABEL_56:
   v83 = 0u;
   obj = cf;
   v65 = [obj countByEnumeratingWithState:&v82 objects:v90 count:16];
-  v18 = 0;
+  _errorFontInvalid = 0;
   if (!v65)
   {
 LABEL_82:
@@ -327,9 +327,9 @@ LABEL_63:
     v73 = v51;
     v67 = *(*(&v82 + 1) + 8 * v51);
     v52 = [v67 objectForKeyedSubscript:{@"result", v61}];
-    v76 = [v52 intValue];
+    intValue = [v52 intValue];
 
-    if (!v76 || v76 == 105)
+    if (!intValue || intValue == 105)
     {
       v55 = _MCLogObjects[0];
       v69 = 1;
@@ -345,7 +345,7 @@ LABEL_63:
 
     else
     {
-      if (v76 == 305)
+      if (intValue == 305)
       {
         v77 = [v67 objectForKeyedSubscript:@"error"];
         v59 = _MCLogObjects[0];
@@ -356,9 +356,9 @@ LABEL_63:
           _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_ERROR, "Failed to install font with 305 'Font Already Installed' error: %{public}@", buf, 0xCu);
         }
 
-        v60 = [(MCFontPayloadHandler *)self _errorFontAlreadyInstalled];
+        _errorFontAlreadyInstalled = [(MCFontPayloadHandler *)self _errorFontAlreadyInstalled];
 
-        v18 = v60;
+        _errorFontInvalid = _errorFontAlreadyInstalled;
         goto LABEL_56;
       }
 
@@ -367,7 +367,7 @@ LABEL_63:
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
       {
         *buf = v61;
-        *v95 = v76;
+        *v95 = intValue;
         *&v95[4] = 2114;
         *&v95[6] = v68;
         _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_ERROR, "Failed to install font with %{public}d error: %{public}@", buf, 0x12u);
@@ -377,10 +377,10 @@ LABEL_63:
 
       v69 = 0;
       v54 = 1;
-      v18 = v63;
+      _errorFontInvalid = v63;
     }
 
-    if (v76 != 105 && v76 != 0)
+    if (intValue != 105 && intValue != 0)
     {
       break;
     }
@@ -411,7 +411,7 @@ LABEL_63:
     goto LABEL_13;
   }
 
-  v9 = v78;
+  installerCopy = v78;
 LABEL_28:
 
   return v24 & 1;
@@ -419,13 +419,13 @@ LABEL_28:
 
 - (void)remove
 {
-  v7 = [(MCNewPayloadHandler *)self payload];
+  payload = [(MCNewPayloadHandler *)self payload];
   v2 = +[MCDependencyManager sharedManager];
-  v3 = [v7 persistentURL];
-  v4 = [v3 absoluteString];
-  v5 = [v7 profile];
-  v6 = [v5 identifier];
-  [v2 removeDependent:v4 fromParent:v6 inDomain:kMCDMProfileIdentifierToFontURLKey reciprocalDomain:kMCDMFontURLToProfileIdentifierKey];
+  persistentURL = [payload persistentURL];
+  absoluteString = [persistentURL absoluteString];
+  profile = [payload profile];
+  identifier = [profile identifier];
+  [v2 removeDependent:absoluteString fromParent:identifier inDomain:kMCDMProfileIdentifierToFontURLKey reciprocalDomain:kMCDMFontURLToProfileIdentifierKey];
 }
 
 - (id)_errorFontInvalid
@@ -455,12 +455,12 @@ LABEL_28:
   return v4;
 }
 
-- (id)_errorFontUnknownWithUnderlyingError:(id)a3
+- (id)_errorFontUnknownWithUnderlyingError:(id)error
 {
   v3 = MCFontErrorDomain;
-  v4 = a3;
+  errorCopy = error;
   v5 = MCErrorArray();
-  v6 = [NSError MCErrorWithDomain:v3 code:35001 descriptionArray:v5 underlyingError:v4 errorType:MCErrorTypeFatal, 0];
+  v6 = [NSError MCErrorWithDomain:v3 code:35001 descriptionArray:v5 underlyingError:errorCopy errorType:MCErrorTypeFatal, 0];
 
   return v6;
 }

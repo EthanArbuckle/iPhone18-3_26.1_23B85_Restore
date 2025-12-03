@@ -5,11 +5,11 @@
 - (_UISearchBarContainerSublayoutDelegate)delegate;
 - (double)naturalContainerHeight;
 - (double)scopeControlHeight;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)applyLayout;
-- (void)setHasScopeBar:(BOOL)a3;
-- (void)setNumberOfScopeTitles:(unint64_t)a3;
+- (void)setHasScopeBar:(BOOL)bar;
+- (void)setNumberOfScopeTitles:(unint64_t)titles;
 - (void)updateLayout;
 @end
 
@@ -19,9 +19,9 @@
 {
   if ([(_UISearchBarLayoutBase *)self isHostedByNavigationBar])
   {
-    v3 = [(_UISearchBarLayoutBase *)self barMetrics];
-    v4 = [(_UISearchBarScopeContainerLayout *)self hostedScopeBarHeightForBarMetrics];
-    v5 = v4[2](v4, v3);
+    barMetrics = [(_UISearchBarLayoutBase *)self barMetrics];
+    hostedScopeBarHeightForBarMetrics = [(_UISearchBarScopeContainerLayout *)self hostedScopeBarHeightForBarMetrics];
+    v5 = hostedScopeBarHeightForBarMetrics[2](hostedScopeBarHeightForBarMetrics, barMetrics);
 
     return v5;
   }
@@ -35,20 +35,20 @@
   }
 }
 
-- (void)setNumberOfScopeTitles:(unint64_t)a3
+- (void)setNumberOfScopeTitles:(unint64_t)titles
 {
-  if (self->_numberOfScopeTitles != a3)
+  if (self->_numberOfScopeTitles != titles)
   {
-    self->_numberOfScopeTitles = a3;
+    self->_numberOfScopeTitles = titles;
     [(_UISearchBarLayoutBase *)self invalidateLayout];
   }
 }
 
-- (void)setHasScopeBar:(BOOL)a3
+- (void)setHasScopeBar:(BOOL)bar
 {
-  if (self->_hasScopeBar != a3)
+  if (self->_hasScopeBar != bar)
   {
-    self->_hasScopeBar = a3;
+    self->_hasScopeBar = bar;
     [(_UISearchBarLayoutBase *)self invalidateLayout];
   }
 }
@@ -75,12 +75,12 @@
   v8 = v7;
   if ([(_UISearchBarLayoutBase *)self isHostedByNavigationBar])
   {
-    v9 = [(_UISearchBarLayoutBase *)self barMetrics];
-    v10 = [(_UISearchBarScopeContainerLayout *)self hostedScopeBarTopInsetForBarMetrics];
-    v11 = v10;
-    if (v10)
+    barMetrics = [(_UISearchBarLayoutBase *)self barMetrics];
+    hostedScopeBarTopInsetForBarMetrics = [(_UISearchBarScopeContainerLayout *)self hostedScopeBarTopInsetForBarMetrics];
+    v11 = hostedScopeBarTopInsetForBarMetrics;
+    if (hostedScopeBarTopInsetForBarMetrics)
     {
-      v12 = (*(v10 + 16))(v10, v9);
+      v12 = (*(hostedScopeBarTopInsetForBarMetrics + 16))(hostedScopeBarTopInsetForBarMetrics, barMetrics);
     }
 
     else
@@ -141,19 +141,19 @@
 
 - (double)scopeControlHeight
 {
-  v3 = [(_UISearchBarLayoutBase *)self barMetrics];
-  v4 = [(_UISearchBarLayoutBase *)self isHostedByNavigationBar];
-  v6 = (v3 == 1 || v3 == 102) && v4;
+  barMetrics = [(_UISearchBarLayoutBase *)self barMetrics];
+  isHostedByNavigationBar = [(_UISearchBarLayoutBase *)self isHostedByNavigationBar];
+  v6 = (barMetrics == 1 || barMetrics == 102) && isHostedByNavigationBar;
 
   [UISegmentedControl defaultHeightForStyle:7 size:v6];
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = _UISearchBarScopeContainerLayout;
-  v4 = [(_UISearchBarLayoutBase *)&v13 copyWithZone:a3];
+  v4 = [(_UISearchBarLayoutBase *)&v13 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -188,7 +188,7 @@
   [(_UISearchBarLayoutBase *)self layoutSize];
   v5 = v4;
   v7 = v6;
-  v8 = [(_UISearchBarLayoutBase *)self isLayoutRTL];
+  isLayoutRTL = [(_UISearchBarLayoutBase *)self isLayoutRTL];
   [(_UISearchBarScopeContainerLayout *)self containerSpecificInsets];
   v10 = v9;
   v12 = v11;
@@ -238,7 +238,7 @@
     v30 = v27;
     v31 = v18;
     v32 = v28;
-    if (v8)
+    if (isLayoutRTL)
     {
       MinX = CGRectGetMinX(*&v27);
       v46.origin.x = v23;
@@ -300,9 +300,9 @@ LABEL_14:
   [(_UISearchBarScopeContainerLayout *)self scopeBarLayoutFrame];
   [(UIView *)self->_scopeBar setFrame:?];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained isHostingNavBarTransitionActive];
+  isHostingNavBarTransitionActive = [WeakRetained isHostingNavBarTransitionActive];
 
-  if ((v4 & 1) == 0)
+  if ((isHostingNavBarTransitionActive & 1) == 0)
   {
     [(_UISearchBarScopeContainerLayout *)self scopeBarOpacity];
     scopeBar = self->_scopeBar;

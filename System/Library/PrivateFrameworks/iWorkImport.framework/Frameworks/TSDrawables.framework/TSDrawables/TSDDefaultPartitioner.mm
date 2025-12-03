@@ -1,47 +1,47 @@
 @interface TSDDefaultPartitioner
-- (BOOL)didHint:(id)a3 syncWithNextHint:(id)a4 horizontally:(BOOL)a5;
+- (BOOL)didHint:(id)hint syncWithNextHint:(id)nextHint horizontally:(BOOL)horizontally;
 - (CGRect)totalPartitionFrame;
-- (TSDDefaultPartitioner)initWithInfo:(id)a3;
+- (TSDDefaultPartitioner)initWithInfo:(id)info;
 - (TSDLayout)i_layout;
 - (id)documentRoot;
-- (id)hintForLayout:(id)a3;
-- (id)i_repForCanvas:(id)a3;
-- (id)layoutForHint:(id)a3 parentLayout:(id)a4;
-- (id)nextHintForSize:(CGSize)a3 parentLayout:(id)a4 previousHint:(id)a5 horizontally:(BOOL)a6 outFinished:(BOOL *)a7;
-- (id)nextLayoutForSize:(CGSize)a3 parentLayout:(id)a4 previousHint:(id)a5 horizontally:(BOOL)a6 outFinished:(BOOL *)a7;
-- (id)p_childRepForRep:(id)a3 toNotifyForInfo:(id)a4;
-- (id)p_firstHintForSize:(CGSize)a3;
-- (id)p_layoutsForInfo:(id)a3;
-- (id)p_nextHintForSize:(CGSize)a3 previousHint:(id)a4 horizontally:(BOOL)a5;
-- (id)p_repsForInfo:(id)a3;
-- (unint64_t)p_edgesForHintBounds:(CGRect)a3;
+- (id)hintForLayout:(id)layout;
+- (id)i_repForCanvas:(id)canvas;
+- (id)layoutForHint:(id)hint parentLayout:(id)layout;
+- (id)nextHintForSize:(CGSize)size parentLayout:(id)layout previousHint:(id)hint horizontally:(BOOL)horizontally outFinished:(BOOL *)finished;
+- (id)nextLayoutForSize:(CGSize)size parentLayout:(id)layout previousHint:(id)hint horizontally:(BOOL)horizontally outFinished:(BOOL *)finished;
+- (id)p_childRepForRep:(id)rep toNotifyForInfo:(id)info;
+- (id)p_firstHintForSize:(CGSize)size;
+- (id)p_layoutsForInfo:(id)info;
+- (id)p_nextHintForSize:(CGSize)size previousHint:(id)hint horizontally:(BOOL)horizontally;
+- (id)p_repsForInfo:(id)info;
+- (unint64_t)p_edgesForHintBounds:(CGRect)bounds;
 - (void)dealloc;
-- (void)i_forceLayoutForChangedCanvasPrintingSettingsOfCanvas:(id)a3;
-- (void)i_layoutRegistered:(id)a3;
-- (void)i_layoutUnregistered:(id)a3;
-- (void)i_registerPartialRep:(id)a3;
-- (void)i_unregisterPartialRep:(id)a3;
+- (void)i_forceLayoutForChangedCanvasPrintingSettingsOfCanvas:(id)canvas;
+- (void)i_layoutRegistered:(id)registered;
+- (void)i_layoutUnregistered:(id)unregistered;
+- (void)i_registerPartialRep:(id)rep;
+- (void)i_unregisterPartialRep:(id)rep;
 - (void)p_generateLayouts;
 - (void)p_generateLayoutsIfNeeded;
 - (void)p_teardownLayouts;
-- (void)preprocessChanges:(id)a3 forChangeSource:(id)a4;
-- (void)processChanges:(id)a3 forChangeSource:(id)a4;
+- (void)preprocessChanges:(id)changes forChangeSource:(id)source;
+- (void)processChanges:(id)changes forChangeSource:(id)source;
 - (void)reset;
 @end
 
 @implementation TSDDefaultPartitioner
 
-- (TSDDefaultPartitioner)initWithInfo:(id)a3
+- (TSDDefaultPartitioner)initWithInfo:(id)info
 {
-  v5 = a3;
-  v8 = objc_msgSend_documentRoot(v5, v6, v7);
+  infoCopy = info;
+  v8 = objc_msgSend_documentRoot(infoCopy, v6, v7);
   v19.receiver = self;
   v19.super_class = TSDDefaultPartitioner;
   v9 = [(TSDLayoutChangeObserver *)&v19 initWithDocumentRoot:v8 layoutController:0];
 
   if (v9)
   {
-    objc_storeStrong(&v9->_info, a3);
+    objc_storeStrong(&v9->_info, info);
     objc_msgSend_p_generateLayouts(v9, v10, v11);
     v12 = objc_alloc_init(MEMORY[0x277D812B8]);
     mainRepsByCanvas = v9->_mainRepsByCanvas;
@@ -67,9 +67,9 @@
   [(TSDDefaultPartitioner *)&v4 dealloc];
 }
 
-- (id)hintForLayout:(id)a3
+- (id)hintForLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -93,11 +93,11 @@
   return v21;
 }
 
-- (BOOL)didHint:(id)a3 syncWithNextHint:(id)a4 horizontally:(BOOL)a5
+- (BOOL)didHint:(id)hint syncWithNextHint:(id)nextHint horizontally:(BOOL)horizontally
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
+  horizontallyCopy = horizontally;
+  nextHintCopy = nextHint;
+  hintCopy = hint;
   objc_opt_class();
   v9 = TSUDynamicCast();
 
@@ -135,7 +135,7 @@
     v34 = v20;
     v35 = v22;
     v36 = v24;
-    if (v5)
+    if (horizontallyCopy)
     {
       MaxX = CGRectGetMaxX(*&v33);
       v40.origin.x = v26;
@@ -161,9 +161,9 @@
   return v14;
 }
 
-- (id)layoutForHint:(id)a3 parentLayout:(id)a4
+- (id)layoutForHint:(id)hint parentLayout:(id)layout
 {
-  v5 = a3;
+  hintCopy = hint;
   objc_opt_class();
   v6 = TSUDynamicCast();
 
@@ -192,13 +192,13 @@
   return isLayoutRTL;
 }
 
-- (id)nextHintForSize:(CGSize)a3 parentLayout:(id)a4 previousHint:(id)a5 horizontally:(BOOL)a6 outFinished:(BOOL *)a7
+- (id)nextHintForSize:(CGSize)size parentLayout:(id)layout previousHint:(id)hint horizontally:(BOOL)horizontally outFinished:(BOOL *)finished
 {
-  v8 = a6;
-  height = a3.height;
-  width = a3.width;
+  horizontallyCopy = horizontally;
+  height = size.height;
+  width = size.width;
   v43 = *MEMORY[0x277D85DE8];
-  v12 = a5;
+  hintCopy = hint;
   objc_msgSend_nonInteractiveLayoutIfNeeded(self->_canvas, v13, v14);
   v40 = 0u;
   v41 = 0u;
@@ -231,9 +231,9 @@
     while (v28);
   }
 
-  if (v12)
+  if (hintCopy)
   {
-    objc_msgSend_p_nextHintForSize_previousHint_horizontally_(self, v31, v12, v8, width, height);
+    objc_msgSend_p_nextHintForSize_previousHint_horizontally_(self, v31, hintCopy, horizontallyCopy, width, height);
   }
 
   else
@@ -242,11 +242,11 @@
   }
   v33 = ;
   v35 = v33;
-  if (a7)
+  if (finished)
   {
     if (v33)
     {
-      isLastPartitionHorizontally = objc_msgSend_isLastPartitionHorizontally_(v33, v34, v8);
+      isLastPartitionHorizontally = objc_msgSend_isLastPartitionHorizontally_(v33, v34, horizontallyCopy);
     }
 
     else
@@ -254,20 +254,20 @@
       isLastPartitionHorizontally = 1;
     }
 
-    *a7 = isLastPartitionHorizontally;
+    *finished = isLastPartitionHorizontally;
   }
 
   return v35;
 }
 
-- (id)nextLayoutForSize:(CGSize)a3 parentLayout:(id)a4 previousHint:(id)a5 horizontally:(BOOL)a6 outFinished:(BOOL *)a7
+- (id)nextLayoutForSize:(CGSize)size parentLayout:(id)layout previousHint:(id)hint horizontally:(BOOL)horizontally outFinished:(BOOL *)finished
 {
-  v8 = a6;
-  height = a3.height;
-  width = a3.width;
-  v13 = a4;
-  v15 = objc_msgSend_nextHintForSize_parentLayout_previousHint_horizontally_outFinished_(self, v14, v13, a5, v8, a7, width, height);
-  v17 = objc_msgSend_layoutForHint_parentLayout_(self, v16, v15, v13);
+  horizontallyCopy = horizontally;
+  height = size.height;
+  width = size.width;
+  layoutCopy = layout;
+  v15 = objc_msgSend_nextHintForSize_parentLayout_previousHint_horizontally_outFinished_(self, v14, layoutCopy, hint, horizontallyCopy, finished, width, height);
+  v17 = objc_msgSend_layoutForHint_parentLayout_(self, v16, v15, layoutCopy);
 
   return v17;
 }
@@ -346,17 +346,17 @@
   return v8;
 }
 
-- (id)i_repForCanvas:(id)a3
+- (id)i_repForCanvas:(id)canvas
 {
-  v4 = a3;
-  objc_msgSend_i_forceLayoutForChangedCanvasPrintingSettingsOfCanvas_(self, v5, v4);
-  v9 = objc_msgSend_objectForKey_(self->_mainRepsByCanvas, v6, v4);
+  canvasCopy = canvas;
+  objc_msgSend_i_forceLayoutForChangedCanvasPrintingSettingsOfCanvas_(self, v5, canvasCopy);
+  v9 = objc_msgSend_objectForKey_(self->_mainRepsByCanvas, v6, canvasCopy);
   if (!v9)
   {
     v10 = objc_msgSend_i_layout(self, v7, v8);
     v13 = objc_alloc(objc_msgSend_repClassOverride(v10, v11, v12));
-    v9 = objc_msgSend_initWithLayout_canvas_(v13, v14, v10, v4);
-    objc_msgSend_setObject_forUncopiedKey_(self->_mainRepsByCanvas, v15, v9, v4);
+    v9 = objc_msgSend_initWithLayout_canvas_(v13, v14, v10, canvasCopy);
+    objc_msgSend_setObject_forUncopiedKey_(self->_mainRepsByCanvas, v15, v9, canvasCopy);
   }
 
   objc_msgSend_updateChildrenFromLayout(v9, v7, v8);
@@ -365,10 +365,10 @@
   return v9;
 }
 
-- (void)i_registerPartialRep:(id)a3
+- (void)i_registerPartialRep:(id)rep
 {
-  v4 = a3;
-  v15 = objc_msgSend_canvas(v4, v5, v6);
+  repCopy = rep;
+  v15 = objc_msgSend_canvas(repCopy, v5, v6);
   v9 = objc_msgSend_objectForKey_(self->_partialRepsByCanvas, v7, v15);
   if (!v9)
   {
@@ -376,29 +376,29 @@
     objc_msgSend_setObject_forUncopiedKey_(self->_partialRepsByCanvas, v10, v9, v15);
   }
 
-  objc_msgSend_addObject_(v9, v8, v4);
-  v13 = objc_msgSend_canvas(v4, v11, v12);
+  objc_msgSend_addObject_(v9, v8, repCopy);
+  v13 = objc_msgSend_canvas(repCopy, v11, v12);
 
   objc_msgSend_i_forceLayoutForChangedCanvasPrintingSettingsOfCanvas_(self, v14, v13);
 }
 
-- (void)i_unregisterPartialRep:(id)a3
+- (void)i_unregisterPartialRep:(id)rep
 {
-  v34 = a3;
-  v6 = objc_msgSend_canvas(v34, v4, v5);
+  repCopy = rep;
+  v6 = objc_msgSend_canvas(repCopy, v4, v5);
   v8 = objc_msgSend_objectForKey_(self->_partialRepsByCanvas, v7, v6);
-  if ((objc_msgSend_containsObject_(v8, v9, v34) & 1) == 0)
+  if ((objc_msgSend_containsObject_(v8, v9, repCopy) & 1) == 0)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSDDefaultPartitioner i_unregisterPartialRep:]");
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDDefaultPartitioner.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v15, v12, v14, 327, 0, "Unregistering unregistered rep %@", v34);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v15, v12, v14, 327, 0, "Unregistering unregistered rep %@", repCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17);
   }
 
-  objc_msgSend_removeObject_(v8, v10, v34);
-  v20 = objc_msgSend_canvas(v34, v18, v19);
+  objc_msgSend_removeObject_(v8, v10, repCopy);
+  v20 = objc_msgSend_canvas(repCopy, v18, v19);
   objc_msgSend_i_forceLayoutForChangedCanvasPrintingSettingsOfCanvas_(self, v21, v20);
 
   if (!objc_msgSend_count(v8, v22, v23))
@@ -415,13 +415,13 @@
   }
 }
 
-- (void)i_forceLayoutForChangedCanvasPrintingSettingsOfCanvas:(id)a3
+- (void)i_forceLayoutForChangedCanvasPrintingSettingsOfCanvas:(id)canvas
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  canvasCopy = canvas;
   objc_msgSend_p_generateLayoutsIfNeeded(self, v5, v6);
   v7 = [TSDDefaultPartitionerPrintingSettings alloc];
-  v10 = objc_msgSend_initWithCanvas_(v7, v8, v4);
+  v10 = objc_msgSend_initWithCanvas_(v7, v8, canvasCopy);
   lastPrintingSettings = self->_lastPrintingSettings;
   if (!lastPrintingSettings || (objc_msgSend_isEqual_(lastPrintingSettings, v9, v10) & 1) == 0)
   {
@@ -566,7 +566,7 @@
   self->_canvas = 0;
 }
 
-- (id)p_firstHintForSize:(CGSize)a3
+- (id)p_firstHintForSize:(CGSize)size
 {
   objc_msgSend_totalPartitionFrame(self, a2, v3);
   TSURectWithSize();
@@ -581,12 +581,12 @@
   return v18;
 }
 
-- (id)p_nextHintForSize:(CGSize)a3 previousHint:(id)a4 horizontally:(BOOL)a5
+- (id)p_nextHintForSize:(CGSize)size previousHint:(id)hint horizontally:(BOOL)horizontally
 {
-  v5 = a5;
-  height = a3.height;
-  width = a3.width;
-  v9 = a4;
+  horizontallyCopy = horizontally;
+  height = size.height;
+  width = size.width;
+  hintCopy = hint;
   objc_opt_class();
   v10 = TSUDynamicCast();
 
@@ -605,7 +605,7 @@
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  if (objc_msgSend_isLastPartitionHorizontally_(v10, v28, v5))
+  if (objc_msgSend_isLastPartitionHorizontally_(v10, v28, horizontallyCopy))
   {
     v31 = 0;
   }
@@ -623,7 +623,7 @@
     v41 = v23;
     v42 = v25;
     v43 = v27;
-    if (v5)
+    if (horizontallyCopy)
     {
       v44 = CGRectGetWidth(*&v40);
       v59.origin.x = v33;
@@ -681,14 +681,14 @@
   return v31;
 }
 
-- (unint64_t)p_edgesForHintBounds:(CGRect)a3
+- (unint64_t)p_edgesForHintBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v34 = a3.origin.y;
-  v7 = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v34 = bounds.origin.y;
+  v7 = bounds.origin.x;
   objc_msgSend_totalPartitionFrame(self, a2, v3);
   TSURectWithSize();
   v9 = v8;
@@ -767,22 +767,22 @@
   }
 }
 
-- (id)p_layoutsForInfo:(id)a3
+- (id)p_layoutsForInfo:(id)info
 {
   canvas = self->_canvas;
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_layoutController(canvas, v5, v6);
-  v9 = objc_msgSend_layoutsForInfo_(v7, v8, v4);
+  v9 = objc_msgSend_layoutsForInfo_(v7, v8, infoCopy);
 
   return v9;
 }
 
-- (id)p_repsForInfo:(id)a3
+- (id)p_repsForInfo:(id)info
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_set(MEMORY[0x277CBEB58], v5, v6);
-  v9 = objc_msgSend_p_layoutsForInfo_(self, v8, v4);
+  v9 = objc_msgSend_p_layoutsForInfo_(self, v8, infoCopy);
   v11 = v9;
   if (v9)
   {
@@ -821,16 +821,16 @@
   return v7;
 }
 
-- (id)p_childRepForRep:(id)a3 toNotifyForInfo:(id)a4
+- (id)p_childRepForRep:(id)rep toNotifyForInfo:(id)info
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_info(v6, v8, v9);
+  repCopy = rep;
+  infoCopy = info;
+  v10 = objc_msgSend_info(repCopy, v8, v9);
 
-  if (v10 == v7)
+  if (v10 == infoCopy)
   {
-    v21 = v6;
+    v21 = repCopy;
   }
 
   else
@@ -839,7 +839,7 @@
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v13 = objc_msgSend_childReps(v6, v11, v12, 0);
+    v13 = objc_msgSend_childReps(repCopy, v11, v12, 0);
     v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v23, v27, 16);
     if (v15)
     {
@@ -854,7 +854,7 @@
             objc_enumerationMutation(v13);
           }
 
-          v20 = objc_msgSend_p_childRepForRep_toNotifyForInfo_(self, v16, *(*(&v23 + 1) + 8 * i), v7);
+          v20 = objc_msgSend_p_childRepForRep_toNotifyForInfo_(self, v16, *(*(&v23 + 1) + 8 * i), infoCopy);
           if (v20)
           {
             v21 = v20;
@@ -879,23 +879,23 @@ LABEL_12:
   return v21;
 }
 
-- (void)i_layoutRegistered:(id)a3
+- (void)i_layoutRegistered:(id)registered
 {
-  v4 = a3;
+  registeredCopy = registered;
   v14 = objc_msgSend_documentRoot(self, v5, v6);
   v9 = objc_msgSend_changeNotifier(v14, v7, v8);
-  v12 = objc_msgSend_info(v4, v10, v11);
+  v12 = objc_msgSend_info(registeredCopy, v10, v11);
 
   objc_msgSend_addObserver_forChangeSource_(v9, v13, self, v12);
 }
 
-- (void)i_layoutUnregistered:(id)a3
+- (void)i_layoutUnregistered:(id)unregistered
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  unregisteredCopy = unregistered;
   v7 = objc_msgSend_documentRoot(self, v5, v6);
   v10 = objc_msgSend_changeNotifier(v7, v8, v9);
-  v13 = objc_msgSend_info(v4, v11, v12);
+  v13 = objc_msgSend_info(unregisteredCopy, v11, v12);
   objc_msgSend_removeObserver_forChangeSource_(v10, v14, self, v13);
 
   v17 = objc_msgSend_set(MEMORY[0x277CBEB58], v15, v16);
@@ -921,7 +921,7 @@ LABEL_12:
         v28 = *(*(&v51 + 1) + 8 * i);
         v29 = objc_msgSend_layout(v28, v23, v24);
 
-        if (v29 == v4)
+        if (v29 == unregisteredCopy)
         {
           objc_msgSend_addObject_(v17, v23, v28);
         }
@@ -933,7 +933,7 @@ LABEL_12:
     while (v25);
   }
 
-  v46 = v4;
+  v46 = unregisteredCopy;
 
   v49 = 0u;
   v50 = 0u;
@@ -969,21 +969,21 @@ LABEL_12:
   }
 }
 
-- (void)preprocessChanges:(id)a3 forChangeSource:(id)a4
+- (void)preprocessChanges:(id)changes forChangeSource:(id)source
 {
-  v9 = a3;
+  changesCopy = changes;
   v6 = TSUProtocolCast();
   if (v6)
   {
     v7 = objc_msgSend_p_layoutsForInfo_(self, v5, v6, &unk_2885A16B8);
-    objc_msgSend_makeObjectsPerformSelector_withObject_(v7, v8, sel_processChanges_, v9);
+    objc_msgSend_makeObjectsPerformSelector_withObject_(v7, v8, sel_processChanges_, changesCopy);
   }
 }
 
-- (void)processChanges:(id)a3 forChangeSource:(id)a4
+- (void)processChanges:(id)changes forChangeSource:(id)source
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  changesCopy = changes;
   v8 = TSUProtocolCast();
   if (v8)
   {
@@ -1007,7 +1007,7 @@ LABEL_12:
           }
 
           v16 = objc_msgSend_p_childRepForRep_toNotifyForInfo_(self, v12, *(*(&v18 + 1) + 8 * i), v8);
-          objc_msgSend_performSelector_withObject_(v16, v17, sel_processChanges_, v5);
+          objc_msgSend_performSelector_withObject_(v16, v17, sel_processChanges_, changesCopy);
         }
 
         v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v12, &v18, v22, 16);

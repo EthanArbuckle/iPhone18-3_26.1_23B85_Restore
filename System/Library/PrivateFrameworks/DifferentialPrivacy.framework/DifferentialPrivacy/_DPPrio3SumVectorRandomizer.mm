@@ -1,24 +1,24 @@
 @interface _DPPrio3SumVectorRandomizer
-+ (id)randomizerWithEpsilon:(double)a3 parameters:(id)a4;
-- (BOOL)addNoiseToData:(id)a3 budgetAuditor:(id)a4 error:(id *)a5;
-- (_DPPrio3SumVectorRandomizer)initWithEpsilon:(double)a3 parameters:(id)a4;
-- (id)randomizeBitValue:(id)a3 budgetAuditor:(id)a4 metadata:(id)a5 error:(id *)a6;
-- (id)randomizeBitValues:(id)a3 metadata:(id)a4 forKey:(id)a5;
-- (id)randomizeBitVectors:(id)a3 metadata:(id)a4 forKey:(id)a5;
-- (id)randomizeVector:(id)a3 budgetAuditor:(id)a4 error:(id *)a5;
-- (id)recordWithShardResult:(id)a3 metadata:(id)a4 key:(id)a5;
-- (id)shardWithBudgetAuditor:(id)a3 data:(id)a4 error:(id *)a5;
++ (id)randomizerWithEpsilon:(double)epsilon parameters:(id)parameters;
+- (BOOL)addNoiseToData:(id)data budgetAuditor:(id)auditor error:(id *)error;
+- (_DPPrio3SumVectorRandomizer)initWithEpsilon:(double)epsilon parameters:(id)parameters;
+- (id)randomizeBitValue:(id)value budgetAuditor:(id)auditor metadata:(id)metadata error:(id *)error;
+- (id)randomizeBitValues:(id)values metadata:(id)metadata forKey:(id)key;
+- (id)randomizeBitVectors:(id)vectors metadata:(id)metadata forKey:(id)key;
+- (id)randomizeVector:(id)vector budgetAuditor:(id)auditor error:(id *)error;
+- (id)recordWithShardResult:(id)result metadata:(id)metadata key:(id)key;
+- (id)shardWithBudgetAuditor:(id)auditor data:(id)data error:(id *)error;
 @end
 
 @implementation _DPPrio3SumVectorRandomizer
 
-- (_DPPrio3SumVectorRandomizer)initWithEpsilon:(double)a3 parameters:(id)a4
+- (_DPPrio3SumVectorRandomizer)initWithEpsilon:(double)epsilon parameters:(id)parameters
 {
-  v7 = a4;
-  v8 = v7;
-  if (a3 >= 0.0 && a3 <= 16.0)
+  parametersCopy = parameters;
+  v8 = parametersCopy;
+  if (epsilon >= 0.0 && epsilon <= 16.0)
   {
-    v10 = [v7 objectForKeyedSubscript:@"Prio3SumVectorBitWidth"];
+    v10 = [parametersCopy objectForKeyedSubscript:@"Prio3SumVectorBitWidth"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || [v10 integerValue]!= 1)
     {
@@ -28,7 +28,7 @@
         [_DPPrio3SumVectorRandomizer initWithEpsilon:parameters:];
       }
 
-      v18 = 0;
+      selfCopy = 0;
       goto LABEL_27;
     }
 
@@ -46,15 +46,15 @@
         v22 = v21;
         if (v21)
         {
-          v21->_defaultLocalEpsilon = a3;
-          objc_storeStrong(&v21->_plistParameters, a4);
+          v21->_defaultLocalEpsilon = epsilon;
+          objc_storeStrong(&v21->_plistParameters, parameters);
           v23 = [[_DPPrio3SumVectorParameter alloc] initWithBitWidth:[v10 integerValue] numOfAggregators:2 numOfProofs:[v19 integerValue] vdafType:[v20 unsignedIntValue]];
           parameters = v22->_parameters;
           v22->_parameters = v23;
         }
 
         self = v22;
-        v18 = self;
+        selfCopy = self;
         goto LABEL_26;
       }
 
@@ -74,7 +74,7 @@
       }
     }
 
-    v18 = 0;
+    selfCopy = 0;
 LABEL_26:
 
 LABEL_27:
@@ -87,24 +87,24 @@ LABEL_27:
     [(_DPPrio3SumVectorRandomizer *)v10 initWithEpsilon:v11 parameters:v12, v13, v14, v15, v16, v17];
   }
 
-  v18 = 0;
+  selfCopy = 0;
 LABEL_28:
 
-  return v18;
+  return selfCopy;
 }
 
-+ (id)randomizerWithEpsilon:(double)a3 parameters:(id)a4
++ (id)randomizerWithEpsilon:(double)epsilon parameters:(id)parameters
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithEpsilon:v6 parameters:a3];
+  parametersCopy = parameters;
+  v7 = [[self alloc] initWithEpsilon:parametersCopy parameters:epsilon];
 
   return v7;
 }
 
-- (BOOL)addNoiseToData:(id)a3 budgetAuditor:(id)a4 error:(id *)a5
+- (BOOL)addNoiseToData:(id)data budgetAuditor:(id)auditor error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  auditorCopy = auditor;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -114,66 +114,66 @@ LABEL_28:
       [_DPPrio3SumVectorRandomizer addNoiseToData:v9 budgetAuditor:? error:?];
     }
 
-    LOBYTE(a5) = 1;
+    LOBYTE(error) = 1;
   }
 
   else
   {
-    v10 = [v8 getSymmetricRAPPORLocalEpsilonWithError:a5];
+    v10 = [auditorCopy getSymmetricRAPPORLocalEpsilonWithError:error];
     v11 = v10;
     if (v10)
     {
       [v10 doubleValue];
       v13 = [_DPBiasedCoin coinWithBias:(1.0 / (exp(v12) + 1.0))];
-      v14 = [v7 mutableBytes];
-      if ([v7 length])
+      mutableBytes = [dataCopy mutableBytes];
+      if ([dataCopy length])
       {
         v15 = 0;
-        while (*(v14 + v15) < 2u)
+        while (*(mutableBytes + v15) < 2u)
         {
           if ([v13 flip])
           {
-            *(v14 + v15) = *(v14 + v15) == 0;
+            *(mutableBytes + v15) = *(mutableBytes + v15) == 0;
           }
 
-          if (++v15 >= [v7 length])
+          if (++v15 >= [dataCopy length])
           {
             goto LABEL_12;
           }
         }
 
-        if (a5)
+        if (error)
         {
-          v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid value (%d) at position %zu", *(v14 + v15), v15];
-          *a5 = _DPVDAFError(3, v16);
+          v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid value (%d) at position %zu", *(mutableBytes + v15), v15];
+          *error = _DPVDAFError(3, v16);
 
-          LOBYTE(a5) = 0;
+          LOBYTE(error) = 0;
         }
       }
 
       else
       {
 LABEL_12:
-        LOBYTE(a5) = 1;
+        LOBYTE(error) = 1;
       }
     }
 
     else
     {
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
-  return a5;
+  return error;
 }
 
-- (id)shardWithBudgetAuditor:(id)a3 data:(id)a4 error:(id *)a5
+- (id)shardWithBudgetAuditor:(id)auditor data:(id)data error:(id *)error
 {
-  v8 = a4;
-  if ([(_DPPrio3SumVectorRandomizer *)self addNoiseToData:v8 budgetAuditor:a3 error:a5])
+  dataCopy = data;
+  if ([(_DPPrio3SumVectorRandomizer *)self addNoiseToData:dataCopy budgetAuditor:auditor error:error])
   {
-    v9 = [(_DPPrio3SumVectorRandomizer *)self parameters];
-    v10 = [_DPPrio3SumVectorShim shard:v8 parameter:v9 error:a5];
+    parameters = [(_DPPrio3SumVectorRandomizer *)self parameters];
+    v10 = [_DPPrio3SumVectorShim shard:dataCopy parameter:parameters error:error];
   }
 
   else
@@ -184,52 +184,52 @@ LABEL_12:
   return v10;
 }
 
-- (id)randomizeBitValue:(id)a3 budgetAuditor:(id)a4 metadata:(id)a5 error:(id *)a6
+- (id)randomizeBitValue:(id)value budgetAuditor:(id)auditor metadata:(id)metadata error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [_DPRandomizerUtils dimensionFromMetadata:a5];
+  valueCopy = value;
+  auditorCopy = auditor;
+  v12 = [_DPRandomizerUtils dimensionFromMetadata:metadata];
   v13 = v12;
   if (!v12)
   {
-    if (a6)
+    if (error)
     {
       _DPVDAFError(1, @"Fail to fetch dimension");
-      *a6 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_14;
     }
 
     goto LABEL_13;
   }
 
-  v14 = [v12 unsignedLongValue];
-  if (v14 <= 0x186A0)
+  unsignedLongValue = [v12 unsignedLongValue];
+  if (unsignedLongValue <= 0x186A0)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && v14 > [v10 unsignedLongValue])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && unsignedLongValue > [valueCopy unsignedLongValue])
     {
-      v18 = [MEMORY[0x277CBEB28] dataWithLength:v14];
-      v19 = [v18 mutableBytes];
-      *(v19 + [v10 unsignedLongValue]) = 1;
-      v17 = [(_DPPrio3SumVectorRandomizer *)self shardWithBudgetAuditor:v11 data:v18 error:a6];
+      v18 = [MEMORY[0x277CBEB28] dataWithLength:unsignedLongValue];
+      mutableBytes = [v18 mutableBytes];
+      *(mutableBytes + [valueCopy unsignedLongValue]) = 1;
+      v17 = [(_DPPrio3SumVectorRandomizer *)self shardWithBudgetAuditor:auditorCopy data:v18 error:error];
 
       goto LABEL_14;
     }
 
-    if (a6)
+    if (error)
     {
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"bitValue=(%@) >= dimension=(%@)", v10, v13];
+      100000 = [MEMORY[0x277CCACA8] stringWithFormat:@"bitValue=(%@) >= dimension=(%@)", valueCopy, v13];
       v16 = 2;
       goto LABEL_12;
     }
   }
 
-  else if (a6)
+  else if (error)
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"dimension=(%lu) should be less than or equal to %zu", v14, 100000];
+    100000 = [MEMORY[0x277CCACA8] stringWithFormat:@"dimension=(%lu) should be less than or equal to %zu", unsignedLongValue, 100000];
     v16 = 4;
 LABEL_12:
-    *a6 = _DPVDAFError(v16, v15);
+    *error = _DPVDAFError(v16, 100000);
   }
 
 LABEL_13:
@@ -239,28 +239,28 @@ LABEL_14:
   return v17;
 }
 
-- (id)randomizeVector:(id)a3 budgetAuditor:(id)a4 error:(id *)a5
+- (id)randomizeVector:(id)vector budgetAuditor:(id)auditor error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  vectorCopy = vector;
+  auditorCopy = auditor;
+  if (!vectorCopy)
   {
-    if (a5)
+    if (error)
     {
       _DPVDAFError(4, @"vector must not be nil");
-      *a5 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_9;
     }
 
     goto LABEL_7;
   }
 
-  if ([v8 length] > 0x186A0)
+  if ([vectorCopy length] > 0x186A0)
   {
-    if (a5)
+    if (error)
     {
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"dimension=(%lu) should be less than or equal to %zu", objc_msgSend(v8, "length"), 100000];
-      *a5 = _DPVDAFError(4, v10);
+      100000 = [MEMORY[0x277CCACA8] stringWithFormat:@"dimension=(%lu) should be less than or equal to %zu", objc_msgSend(vectorCopy, "length"), 100000];
+      *error = _DPVDAFError(4, 100000);
     }
 
 LABEL_7:
@@ -268,67 +268,67 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v12 = [MEMORY[0x277CBEB28] dataWithData:v8];
-  v11 = [(_DPPrio3SumVectorRandomizer *)self shardWithBudgetAuditor:v9 data:v12 error:a5];
+  v12 = [MEMORY[0x277CBEB28] dataWithData:vectorCopy];
+  v11 = [(_DPPrio3SumVectorRandomizer *)self shardWithBudgetAuditor:auditorCopy data:v12 error:error];
 
 LABEL_9:
 
   return v11;
 }
 
-- (id)recordWithShardResult:(id)a3 metadata:(id)a4 key:(id)a5
+- (id)recordWithShardResult:(id)result metadata:(id)metadata key:(id)key
 {
   v33[3] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CBEAA8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  keyCopy = key;
+  metadataCopy = metadata;
+  resultCopy = result;
   v12 = [v8 dateWithTimeIntervalSinceNow:0.0];
   [v12 timeIntervalSinceReferenceDate];
   v14 = v13;
 
-  v15 = [v10 mutableCopy];
+  v15 = [metadataCopy mutableCopy];
   v32[0] = @"Prio3SumVectorChunkLength";
-  v16 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v11, "chunkLength")}];
+  v16 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(resultCopy, "chunkLength")}];
   v33[0] = v16;
   v32[1] = @"Nonce";
-  v17 = [v11 nonce];
-  v33[1] = v17;
+  nonce = [resultCopy nonce];
+  v33[1] = nonce;
   v32[2] = @"PublicShare";
-  v18 = [v11 publicShare];
-  v33[2] = v18;
+  publicShare = [resultCopy publicShare];
+  v33[2] = publicShare;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:3];
   [v15 setObject:v19 forKeyedSubscript:@"VDAF"];
 
   v20 = [_DPKeyProperties privatizationAlgorithmStringFor:16];
   [v15 setObject:v20 forKeyedSubscript:@"PrivatizationAlgorithmCache"];
 
-  v21 = [(_DPPrio3SumVectorRandomizer *)self plistParameters];
-  v22 = [v21 copy];
+  plistParameters = [(_DPPrio3SumVectorRandomizer *)self plistParameters];
+  v22 = [plistParameters copy];
   [v15 setObject:v22 forKeyedSubscript:@"PrivatizationAlgorithmParametersCache"];
 
   v23 = [_DPPrioRecord alloc];
-  v24 = [v11 inputShares];
-  v25 = [v24 objectAtIndexedSubscript:0];
-  v26 = [v11 inputShares];
-  v27 = [v26 objectAtIndexedSubscript:1];
-  v28 = [v11 dimension];
+  inputShares = [resultCopy inputShares];
+  v25 = [inputShares objectAtIndexedSubscript:0];
+  inputShares2 = [resultCopy inputShares];
+  v27 = [inputShares2 objectAtIndexedSubscript:1];
+  dimension = [resultCopy dimension];
 
-  v29 = [(_DPPrioRecord *)v23 initWithKey:v9 share1:v25 share2:v27 dimension:v28 metadata:v15 creationDate:0 submitted:v14 objectId:0];
+  v29 = [(_DPPrioRecord *)v23 initWithKey:keyCopy share1:v25 share2:v27 dimension:dimension metadata:v15 creationDate:0 submitted:v14 objectId:0];
   v30 = *MEMORY[0x277D85DE8];
 
   return v29;
 }
 
-- (id)randomizeBitValues:(id)a3 metadata:(id)a4 forKey:(id)a5
+- (id)randomizeBitValues:(id)values metadata:(id)metadata forKey:(id)key
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v32 = a5;
-  v10 = [(_DPPrio3SumVectorRandomizer *)self plistParameters];
+  valuesCopy = values;
+  metadataCopy = metadata;
+  keyCopy = key;
+  plistParameters = [(_DPPrio3SumVectorRandomizer *)self plistParameters];
   v41 = 0;
-  v11 = [_DPBudgetAuditor budgetAuditorFromMetadata:v9 plistParameters:v10 error:&v41];
+  v11 = [_DPBudgetAuditor budgetAuditorFromMetadata:metadataCopy plistParameters:plistParameters error:&v41];
   v12 = v41;
 
   if (v11)
@@ -339,18 +339,18 @@ LABEL_9:
 
     if (v13)
     {
-      v30 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+      v30 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(valuesCopy, "count")}];
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      obj = v8;
+      obj = valuesCopy;
       v15 = [obj countByEnumeratingWithState:&v36 objects:v46 count:16];
       if (v15)
       {
         v16 = v15;
-        v28 = v9;
-        v29 = v8;
+        v28 = metadataCopy;
+        v29 = valuesCopy;
         v33 = *v37;
         v34 = v11;
         do
@@ -380,7 +380,7 @@ LABEL_9:
 
             if (v22)
             {
-              v23 = [(_DPPrio3SumVectorRandomizer *)self recordWithShardResult:v22 metadata:v13 key:v32];
+              v23 = [(_DPPrio3SumVectorRandomizer *)self recordWithShardResult:v22 metadata:v13 key:keyCopy];
               if (v23)
               {
                 [v30 addObject:v23];
@@ -420,8 +420,8 @@ LABEL_9:
         }
 
         while (v16);
-        v9 = v28;
-        v8 = v29;
+        metadataCopy = v28;
+        valuesCopy = v29;
         v11 = v34;
       }
     }
@@ -456,15 +456,15 @@ LABEL_9:
   return v30;
 }
 
-- (id)randomizeBitVectors:(id)a3 metadata:(id)a4 forKey:(id)a5
+- (id)randomizeBitVectors:(id)vectors metadata:(id)metadata forKey:(id)key
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v30 = a5;
-  v10 = [(_DPPrio3SumVectorRandomizer *)self plistParameters];
+  vectorsCopy = vectors;
+  metadataCopy = metadata;
+  keyCopy = key;
+  plistParameters = [(_DPPrio3SumVectorRandomizer *)self plistParameters];
   v38 = 0;
-  v11 = [_DPBudgetAuditor budgetAuditorFromMetadata:v9 plistParameters:v10 error:&v38];
+  v11 = [_DPBudgetAuditor budgetAuditorFromMetadata:metadataCopy plistParameters:plistParameters error:&v38];
   v12 = v38;
 
   if (v11)
@@ -481,13 +481,13 @@ LABEL_9:
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
-      obj = v8;
+      obj = vectorsCopy;
       v15 = [obj countByEnumeratingWithState:&v33 objects:v43 count:16];
       if (v15)
       {
         v16 = v15;
-        v26 = v9;
-        v27 = v8;
+        v26 = metadataCopy;
+        v27 = vectorsCopy;
         v17 = *v34;
         do
         {
@@ -507,7 +507,7 @@ LABEL_9:
 
             if (v22)
             {
-              v23 = [(_DPPrio3SumVectorRandomizer *)self recordWithShardResult:v22 metadata:v31 key:v30];
+              v23 = [(_DPPrio3SumVectorRandomizer *)self recordWithShardResult:v22 metadata:v31 key:keyCopy];
               if (v23)
               {
                 [v28 addObject:v23];
@@ -534,8 +534,8 @@ LABEL_9:
         }
 
         while (v16);
-        v9 = v26;
-        v8 = v27;
+        metadataCopy = v26;
+        vectorsCopy = v27;
       }
     }
 

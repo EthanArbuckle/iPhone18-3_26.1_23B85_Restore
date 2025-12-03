@@ -1,42 +1,42 @@
 @interface PPTopicAllowlist
-+ (id)_keyFor:(uint64_t)a1 of:(void *)a2;
++ (id)_keyFor:(uint64_t)for of:(void *)of;
 + (id)sharedInstance;
-- (BOOL)_topicIsAllowedForClientProcess:(void *)a3 topic:;
-- (BOOL)shouldBypassAllowlist:(id)a3;
-- (PPTopicAllowlist)initWithTrialWrapper:(id)a3;
-- (id)filterTopicDictionary:(id)a3 clientProcess:(id)a4;
-- (id)indicesOfAllowedTopicsInRecordArray:(id)a3 clientProcess:(id)a4;
-- (id)indicesOfAllowedTopicsInScoredTopicArray:(id)a3 clientProcess:(id)a4;
+- (BOOL)_topicIsAllowedForClientProcess:(void *)process topic:;
+- (BOOL)shouldBypassAllowlist:(id)allowlist;
+- (PPTopicAllowlist)initWithTrialWrapper:(id)wrapper;
+- (id)filterTopicDictionary:(id)dictionary clientProcess:(id)process;
+- (id)indicesOfAllowedTopicsInRecordArray:(id)array clientProcess:(id)process;
+- (id)indicesOfAllowedTopicsInScoredTopicArray:(id)array clientProcess:(id)process;
 - (void)_loadAssetData;
 - (void)dealloc;
 @end
 
 @implementation PPTopicAllowlist
 
-- (id)filterTopicDictionary:(id)a3 clientProcess:(id)a4
+- (id)filterTopicDictionary:(id)dictionary clientProcess:(id)process
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  processCopy = process;
   allowlistTrie = self->_allowlistTrie;
-  v9 = [PPTopicAllowlist _keyFor:v7 of:?];
+  v9 = [PPTopicAllowlist _keyFor:processCopy of:?];
   LODWORD(allowlistTrie) = [(_PASCFBurstTrie *)allowlistTrie payloadForString:v9];
 
   if (allowlistTrie)
   {
-    v10 = v6;
+    v10 = dictionaryCopy;
   }
 
   else
   {
-    v11 = [v6 allKeys];
+    allKeys = [dictionaryCopy allKeys];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __56__PPTopicAllowlist_filterTopicDictionary_clientProcess___block_invoke;
     v26[3] = &unk_2789717F8;
     v26[4] = self;
-    v27 = v7;
-    v12 = [v11 _pas_filteredArrayWithTest:v26];
+    v27 = processCopy;
+    v12 = [allKeys _pas_filteredArrayWithTest:v26];
 
     v10 = objc_opt_new();
     v22 = 0u;
@@ -59,7 +59,7 @@
           }
 
           v18 = *(*(&v22 + 1) + 8 * i);
-          v19 = [v6 objectForKeyedSubscript:{v18, v22}];
+          v19 = [dictionaryCopy objectForKeyedSubscript:{v18, v22}];
           [v10 setObject:v19 forKeyedSubscript:v18];
         }
 
@@ -75,12 +75,12 @@
   return v10;
 }
 
-+ (id)_keyFor:(uint64_t)a1 of:(void *)a2
++ (id)_keyFor:(uint64_t)for of:(void *)of
 {
-  v2 = a2;
+  ofCopy = of;
   v3 = @"/ShouldBypassTopicAllowlist/";
   objc_opt_self();
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/%@", v2, @"/ShouldBypassTopicAllowlist/"];
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/%@", ofCopy, @"/ShouldBypassTopicAllowlist/"];
 
   return v4;
 }
@@ -100,34 +100,34 @@ BOOL __56__PPTopicAllowlist_filterTopicDictionary_clientProcess___block_invoke(u
   return v9;
 }
 
-- (BOOL)_topicIsAllowedForClientProcess:(void *)a3 topic:
+- (BOOL)_topicIsAllowedForClientProcess:(void *)process topic:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v4 = *(a1 + 8);
+  v4 = *(self + 8);
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
+  processCopy = process;
   v7 = a2;
-  v8 = [[v5 alloc] initWithFormat:@"%@/%@", v7, v6];
+  processCopy = [[v5 alloc] initWithFormat:@"%@/%@", v7, processCopy];
 
-  v9 = [v4 payloadForString:v8] != 0;
+  v9 = [v4 payloadForString:processCopy] != 0;
   return v9;
 }
 
-- (id)indicesOfAllowedTopicsInScoredTopicArray:(id)a3 clientProcess:(id)a4
+- (id)indicesOfAllowedTopicsInScoredTopicArray:(id)array clientProcess:(id)process
 {
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  processCopy = process;
   allowlistTrie = self->_allowlistTrie;
-  v9 = [PPTopicAllowlist _keyFor:v7 of:?];
+  v9 = [PPTopicAllowlist _keyFor:processCopy of:?];
   LODWORD(allowlistTrie) = [(_PASCFBurstTrie *)allowlistTrie payloadForString:v9];
 
   if (allowlistTrie)
   {
-    v10 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexesInRange:{0, objc_msgSend(v6, "count")}];
+    v10 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexesInRange:{0, objc_msgSend(arrayCopy, "count")}];
   }
 
   else
@@ -137,8 +137,8 @@ BOOL __56__PPTopicAllowlist_filterTopicDictionary_clientProcess___block_invoke(u
     v12[2] = __75__PPTopicAllowlist_indicesOfAllowedTopicsInScoredTopicArray_clientProcess___block_invoke;
     v12[3] = &unk_2789717D0;
     v12[4] = self;
-    v13 = v7;
-    v10 = [v6 indexesOfObjectsPassingTest:v12];
+    v13 = processCopy;
+    v10 = [arrayCopy indexesOfObjectsPassingTest:v12];
   }
 
   return v10;
@@ -155,17 +155,17 @@ BOOL __75__PPTopicAllowlist_indicesOfAllowedTopicsInScoredTopicArray_clientProce
   return v6;
 }
 
-- (id)indicesOfAllowedTopicsInRecordArray:(id)a3 clientProcess:(id)a4
+- (id)indicesOfAllowedTopicsInRecordArray:(id)array clientProcess:(id)process
 {
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  processCopy = process;
   allowlistTrie = self->_allowlistTrie;
-  v9 = [PPTopicAllowlist _keyFor:v7 of:?];
+  v9 = [PPTopicAllowlist _keyFor:processCopy of:?];
   LODWORD(allowlistTrie) = [(_PASCFBurstTrie *)allowlistTrie payloadForString:v9];
 
   if (allowlistTrie)
   {
-    v10 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexesInRange:{0, objc_msgSend(v6, "count")}];
+    v10 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexesInRange:{0, objc_msgSend(arrayCopy, "count")}];
   }
 
   else
@@ -175,8 +175,8 @@ BOOL __75__PPTopicAllowlist_indicesOfAllowedTopicsInScoredTopicArray_clientProce
     v12[2] = __70__PPTopicAllowlist_indicesOfAllowedTopicsInRecordArray_clientProcess___block_invoke;
     v12[3] = &unk_2789717A8;
     v12[4] = self;
-    v13 = v7;
-    v10 = [v6 indexesOfObjectsPassingTest:v12];
+    v13 = processCopy;
+    v10 = [arrayCopy indexesOfObjectsPassingTest:v12];
   }
 
   return v10;
@@ -193,10 +193,10 @@ BOOL __70__PPTopicAllowlist_indicesOfAllowedTopicsInRecordArray_clientProcess___
   return v6;
 }
 
-- (BOOL)shouldBypassAllowlist:(id)a3
+- (BOOL)shouldBypassAllowlist:(id)allowlist
 {
   allowlistTrie = self->_allowlistTrie;
-  v4 = [PPTopicAllowlist _keyFor:a3 of:?];
+  v4 = [PPTopicAllowlist _keyFor:allowlist of:?];
   LODWORD(allowlistTrie) = [(_PASCFBurstTrie *)allowlistTrie payloadForString:v4];
 
   return allowlistTrie != 0;
@@ -210,16 +210,16 @@ BOOL __70__PPTopicAllowlist_indicesOfAllowedTopicsInRecordArray_clientProcess___
   [(PPTopicAllowlist *)&v3 dealloc];
 }
 
-- (PPTopicAllowlist)initWithTrialWrapper:(id)a3
+- (PPTopicAllowlist)initWithTrialWrapper:(id)wrapper
 {
-  v5 = a3;
+  wrapperCopy = wrapper;
   v15.receiver = self;
   v15.super_class = PPTopicAllowlist;
   v6 = [(PPTopicAllowlist *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_trialWrapper, a3);
+    objc_storeStrong(&v6->_trialWrapper, wrapper);
     [(PPTopicAllowlist *)v7 _loadAssetData];
     objc_initWeak(&location, v7);
     trialWrapper = v7->_trialWrapper;
@@ -242,7 +242,7 @@ BOOL __70__PPTopicAllowlist_indicesOfAllowedTopicsInRecordArray_clientProcess___
 - (void)_loadAssetData
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [*(a1 + 16) filepathForFactor:@"topicAllowlist.trie" namespaceName:@"PERSONALIZATION_PORTRAIT_TOPICS"];
+  v2 = [*(self + 16) filepathForFactor:@"topicAllowlist.trie" namespaceName:@"PERSONALIZATION_PORTRAIT_TOPICS"];
   v3 = pp_topics_log_handle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
@@ -269,10 +269,10 @@ LABEL_8:
   }
 
   v4 = [objc_alloc(MEMORY[0x277D42558]) initWithPath:v2];
-  v5 = *(a1 + 8);
-  *(a1 + 8) = v4;
+  v5 = *(self + 8);
+  *(self + 8) = v4;
 
-  if (!*(a1 + 8))
+  if (!*(self + 8))
   {
     v6 = pp_default_log_handle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))

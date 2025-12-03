@@ -1,13 +1,13 @@
 @interface AudioAccessoryDeviceInfo
-- (AudioAccessoryDeviceInfo)initWithXPCObject:(id)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
+- (AudioAccessoryDeviceInfo)initWithXPCObject:(id)object error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
 @end
 
 @implementation AudioAccessoryDeviceInfo
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  v53 = a3;
+  levelCopy = level;
   identifier = self->_identifier;
   NSAppendPrintF_safe();
   v4 = 0;
@@ -340,7 +340,7 @@
     v5 = v47;
   }
 
-  if (v53 < 0x15u)
+  if (levelCopy < 0x15u)
   {
     NSAppendPrintF_safe();
     v48 = v5;
@@ -353,29 +353,29 @@
   return v5;
 }
 
-- (AudioAccessoryDeviceInfo)initWithXPCObject:(id)a3 error:(id *)a4
+- (AudioAccessoryDeviceInfo)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v46.receiver = self;
   v46.super_class = AudioAccessoryDeviceInfo;
   v7 = [(AudioAccessoryDeviceInfo *)&v46 init];
 
   if (!v7)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_118;
     }
 
 LABEL_117:
     NSErrorF();
-    *a4 = v44 = 0;
+    *error = v44 = 0;
     goto LABEL_113;
   }
 
-  if (xpc_get_type(v6) != &_xpc_type_dictionary)
+  if (xpc_get_type(objectCopy) != &_xpc_type_dictionary)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_118;
     }

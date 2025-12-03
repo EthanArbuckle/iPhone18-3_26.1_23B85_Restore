@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneCodecsPerfieldPerFieldDocValuesFormat_FieldsReader
 - (id)description;
-- (id)getBinaryWithOrgApacheLuceneIndexFieldInfo:(id)a3;
-- (id)getDocsWithFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3;
+- (id)getBinaryWithOrgApacheLuceneIndexFieldInfo:(id)info;
+- (id)getDocsWithFieldWithOrgApacheLuceneIndexFieldInfo:(id)info;
 - (id)getMergeInstance;
-- (id)getNumericWithOrgApacheLuceneIndexFieldInfo:(id)a3;
-- (id)getSortedNumericWithOrgApacheLuceneIndexFieldInfo:(id)a3;
-- (id)getSortedSetWithOrgApacheLuceneIndexFieldInfo:(id)a3;
-- (id)getSortedWithOrgApacheLuceneIndexFieldInfo:(id)a3;
+- (id)getNumericWithOrgApacheLuceneIndexFieldInfo:(id)info;
+- (id)getSortedNumericWithOrgApacheLuceneIndexFieldInfo:(id)info;
+- (id)getSortedSetWithOrgApacheLuceneIndexFieldInfo:(id)info;
+- (id)getSortedWithOrgApacheLuceneIndexFieldInfo:(id)info;
 - (int64_t)ramBytesUsed;
 - (void)checkIntegrity;
 - (void)close;
@@ -15,109 +15,109 @@
 
 @implementation OrgApacheLuceneCodecsPerfieldPerFieldDocValuesFormat_FieldsReader
 
-- (id)getNumericWithOrgApacheLuceneIndexFieldInfo:(id)a3
+- (id)getNumericWithOrgApacheLuceneIndexFieldInfo:(id)info
 {
   fields = self->fields_;
-  if (!fields || !a3)
+  if (!fields || !info)
   {
     JreThrowNullPointerException();
   }
 
-  result = [(JavaUtilMap *)fields getWithId:*(a3 + 1)];
+  result = [(JavaUtilMap *)fields getWithId:*(info + 1)];
   if (result)
   {
 
-    return [result getNumericWithOrgApacheLuceneIndexFieldInfo:a3];
+    return [result getNumericWithOrgApacheLuceneIndexFieldInfo:info];
   }
 
   return result;
 }
 
-- (id)getBinaryWithOrgApacheLuceneIndexFieldInfo:(id)a3
+- (id)getBinaryWithOrgApacheLuceneIndexFieldInfo:(id)info
 {
   fields = self->fields_;
-  if (!fields || !a3)
+  if (!fields || !info)
   {
     JreThrowNullPointerException();
   }
 
-  result = [(JavaUtilMap *)fields getWithId:*(a3 + 1)];
+  result = [(JavaUtilMap *)fields getWithId:*(info + 1)];
   if (result)
   {
 
-    return [result getBinaryWithOrgApacheLuceneIndexFieldInfo:a3];
+    return [result getBinaryWithOrgApacheLuceneIndexFieldInfo:info];
   }
 
   return result;
 }
 
-- (id)getSortedWithOrgApacheLuceneIndexFieldInfo:(id)a3
+- (id)getSortedWithOrgApacheLuceneIndexFieldInfo:(id)info
 {
   fields = self->fields_;
-  if (!fields || !a3)
+  if (!fields || !info)
   {
     JreThrowNullPointerException();
   }
 
-  result = [(JavaUtilMap *)fields getWithId:*(a3 + 1)];
+  result = [(JavaUtilMap *)fields getWithId:*(info + 1)];
   if (result)
   {
 
-    return [result getSortedWithOrgApacheLuceneIndexFieldInfo:a3];
+    return [result getSortedWithOrgApacheLuceneIndexFieldInfo:info];
   }
 
   return result;
 }
 
-- (id)getSortedNumericWithOrgApacheLuceneIndexFieldInfo:(id)a3
+- (id)getSortedNumericWithOrgApacheLuceneIndexFieldInfo:(id)info
 {
   fields = self->fields_;
-  if (!fields || !a3)
+  if (!fields || !info)
   {
     JreThrowNullPointerException();
   }
 
-  result = [(JavaUtilMap *)fields getWithId:*(a3 + 1)];
+  result = [(JavaUtilMap *)fields getWithId:*(info + 1)];
   if (result)
   {
 
-    return [result getSortedNumericWithOrgApacheLuceneIndexFieldInfo:a3];
+    return [result getSortedNumericWithOrgApacheLuceneIndexFieldInfo:info];
   }
 
   return result;
 }
 
-- (id)getSortedSetWithOrgApacheLuceneIndexFieldInfo:(id)a3
+- (id)getSortedSetWithOrgApacheLuceneIndexFieldInfo:(id)info
 {
   fields = self->fields_;
-  if (!fields || !a3)
+  if (!fields || !info)
   {
     JreThrowNullPointerException();
   }
 
-  result = [(JavaUtilMap *)fields getWithId:*(a3 + 1)];
+  result = [(JavaUtilMap *)fields getWithId:*(info + 1)];
   if (result)
   {
 
-    return [result getSortedSetWithOrgApacheLuceneIndexFieldInfo:a3];
+    return [result getSortedSetWithOrgApacheLuceneIndexFieldInfo:info];
   }
 
   return result;
 }
 
-- (id)getDocsWithFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3
+- (id)getDocsWithFieldWithOrgApacheLuceneIndexFieldInfo:(id)info
 {
   fields = self->fields_;
-  if (!fields || !a3)
+  if (!fields || !info)
   {
     JreThrowNullPointerException();
   }
 
-  result = [(JavaUtilMap *)fields getWithId:*(a3 + 1)];
+  result = [(JavaUtilMap *)fields getWithId:*(info + 1)];
   if (result)
   {
 
-    return [result getDocsWithFieldWithOrgApacheLuceneIndexFieldInfo:a3];
+    return [result getDocsWithFieldWithOrgApacheLuceneIndexFieldInfo:info];
   }
 
   return result;
@@ -131,9 +131,9 @@
     JreThrowNullPointerException();
   }
 
-  v3 = [(JavaUtilMap *)formats values];
+  values = [(JavaUtilMap *)formats values];
 
-  OrgApacheLuceneUtilIOUtils_closeWithJavaLangIterable_(v3);
+  OrgApacheLuceneUtilIOUtils_closeWithJavaLangIterable_(values);
 }
 
 - (int64_t)ramBytesUsed
@@ -174,20 +174,20 @@ LABEL_14:
         goto LABEL_14;
       }
 
-      v11 = [*(*(&v15 + 1) + 8 * i) getKey];
-      if (!v11)
+      getKey = [*(*(&v15 + 1) + 8 * i) getKey];
+      if (!getKey)
       {
         goto LABEL_14;
       }
 
-      v12 = [v11 length];
-      v13 = [v10 getValue];
-      if (!v13)
+      v12 = [getKey length];
+      getValue = [v10 getValue];
+      if (!getValue)
       {
         goto LABEL_14;
       }
 
-      v7 += [v13 ramBytesUsed] + (2 * v12);
+      v7 += [getValue ramBytesUsed] + (2 * v12);
     }
 
     v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];

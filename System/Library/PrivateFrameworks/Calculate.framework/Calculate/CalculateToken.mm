@@ -1,11 +1,11 @@
 @interface CalculateToken
-+ (id)tokenWithType:(unint64_t)a3 range:(_NSRange)a4 text:(id)a5 ranks:(id)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)tokenWithType:(unint64_t)type range:(_NSRange)range text:(id)text ranks:(id)ranks;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMaybeX;
 - (BOOL)isPotentialVariable;
 - (BOOL)isXVariable;
 - (BOOL)needsWhitespaceAfter;
-- (CalculateToken)initWithType:(unint64_t)a3 range:(_NSRange)a4 text:(id)a5 ranks:(id)a6;
+- (CalculateToken)initWithType:(unint64_t)type range:(_NSRange)range text:(id)text ranks:(id)ranks;
 - (NSString)normalizedText;
 - (_NSRange)range;
 @end
@@ -132,13 +132,13 @@ LABEL_10:
   return [(NSString *)text isEqualToString:@"X"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (v5 = -[CalculateToken range](self, "range"), v5 == [v4 range]) && (-[CalculateToken range](self, "range"), v7 = v6, objc_msgSend(v4, "range"), v7 == v8))
+  equalCopy = equal;
+  if (equalCopy && (v5 = -[CalculateToken range](self, "range"), v5 == [equalCopy range]) && (-[CalculateToken range](self, "range"), v7 = v6, objc_msgSend(equalCopy, "range"), v7 == v8))
   {
-    v9 = [(CalculateToken *)self tokenType];
-    v10 = v9 == [v4 tokenType];
+    tokenType = [(CalculateToken *)self tokenType];
+    v10 = tokenType == [equalCopy tokenType];
   }
 
   else
@@ -149,23 +149,23 @@ LABEL_10:
   return v10;
 }
 
-- (CalculateToken)initWithType:(unint64_t)a3 range:(_NSRange)a4 text:(id)a5 ranks:(id)a6
+- (CalculateToken)initWithType:(unint64_t)type range:(_NSRange)range text:(id)text ranks:(id)ranks
 {
-  length = a4.length;
-  location = a4.location;
-  v12 = a5;
-  v13 = a6;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  ranksCopy = ranks;
   v17.receiver = self;
   v17.super_class = CalculateToken;
   v14 = [(CalculateToken *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_tokenType = a3;
+    v14->_tokenType = type;
     v14->_range.location = location;
     v14->_range.length = length;
-    objc_storeStrong(&v14->_text, a5);
-    objc_storeStrong(&v15->_ranks, a6);
+    objc_storeStrong(&v14->_text, text);
+    objc_storeStrong(&v15->_ranks, ranks);
   }
 
   return v15;
@@ -182,15 +182,15 @@ LABEL_10:
   return normalizedText;
 }
 
-+ (id)tokenWithType:(unint64_t)a3 range:(_NSRange)a4 text:(id)a5 ranks:(id)a6
++ (id)tokenWithType:(unint64_t)type range:(_NSRange)range text:(id)text ranks:(id)ranks
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a6;
-  v11 = a5;
-  v12 = [[CalculateToken alloc] initWithType:a3 range:location text:length ranks:v11, v10];
+  length = range.length;
+  location = range.location;
+  ranksCopy = ranks;
+  textCopy = text;
+  ranksCopy = [[CalculateToken alloc] initWithType:type range:location text:length ranks:textCopy, ranksCopy];
 
-  return v12;
+  return ranksCopy;
 }
 
 @end

@@ -1,41 +1,41 @@
 @interface CLPInstSchemaCLPNLv4SampleEvaluationStarted
-- (BOOL)isEqual:(id)a3;
-- (CLPInstSchemaCLPNLv4SampleEvaluationStarted)initWithDictionary:(id)a3;
-- (CLPInstSchemaCLPNLv4SampleEvaluationStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLPInstSchemaCLPNLv4SampleEvaluationStarted)initWithDictionary:(id)dictionary;
+- (CLPInstSchemaCLPNLv4SampleEvaluationStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasBatchChunkId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasBatchChunkId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CLPInstSchemaCLPNLv4SampleEvaluationStarted
 
-- (CLPInstSchemaCLPNLv4SampleEvaluationStarted)initWithDictionary:(id)a3
+- (CLPInstSchemaCLPNLv4SampleEvaluationStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = CLPInstSchemaCLPNLv4SampleEvaluationStarted;
   v5 = [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"batchNumChunks"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"batchNumChunks"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CLPInstSchemaCLPNLv4SampleEvaluationStarted setBatchNumChunks:](v5, "setBatchNumChunks:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"batchChunkId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"batchChunkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CLPInstSchemaCLPNLv4SampleEvaluationStarted setBatchChunkId:](v5, "setBatchChunkId:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"syntheticRequestId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"syntheticRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (CLPInstSchemaCLPNLv4SampleEvaluationStarted)initWithJSON:(id)a3
+- (CLPInstSchemaCLPNLv4SampleEvaluationStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,12 +85,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CLPInstSchemaCLPNLv4SampleEvaluationStarted batchChunkId](self, "batchChunkId")}];
-    [v3 setObject:v5 forKeyedSubscript:@"batchChunkId"];
+    [dictionary setObject:v5 forKeyedSubscript:@"batchChunkId"];
 
     has = self->_has;
   }
@@ -98,28 +98,28 @@
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CLPInstSchemaCLPNLv4SampleEvaluationStarted batchNumChunks](self, "batchNumChunks")}];
-    [v3 setObject:v6 forKeyedSubscript:@"batchNumChunks"];
+    [dictionary setObject:v6 forKeyedSubscript:@"batchNumChunks"];
   }
 
   if (self->_syntheticRequestId)
   {
-    v7 = [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)self syntheticRequestId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    syntheticRequestId = [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)self syntheticRequestId];
+    dictionaryRepresentation = [syntheticRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"syntheticRequestId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"syntheticRequestId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"syntheticRequestId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"syntheticRequestId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -148,16 +148,16 @@ LABEL_3:
   return v7 ^ v6 ^ [(SISchemaUUID *)self->_syntheticRequestId hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -166,27 +166,27 @@ LABEL_3:
   if (*&has)
   {
     batchNumChunks = self->_batchNumChunks;
-    if (batchNumChunks != [v4 batchNumChunks])
+    if (batchNumChunks != [equalCopy batchNumChunks])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (batchChunkId = self->_batchChunkId, batchChunkId == [v4 batchChunkId]))
+    if (!v8 || (batchChunkId = self->_batchChunkId, batchChunkId == [equalCopy batchChunkId]))
     {
-      v10 = [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)self syntheticRequestId];
-      v11 = [v4 syntheticRequestId];
-      v12 = v11;
-      if ((v10 != 0) != (v11 == 0))
+      syntheticRequestId = [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)self syntheticRequestId];
+      syntheticRequestId2 = [equalCopy syntheticRequestId];
+      v12 = syntheticRequestId2;
+      if ((syntheticRequestId != 0) != (syntheticRequestId2 == 0))
       {
-        v13 = [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)self syntheticRequestId];
-        if (!v13)
+        syntheticRequestId3 = [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)self syntheticRequestId];
+        if (!syntheticRequestId3)
         {
 
 LABEL_17:
@@ -194,10 +194,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v14 = v13;
-        v15 = [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)self syntheticRequestId];
-        v16 = [v4 syntheticRequestId];
-        v17 = [v15 isEqual:v16];
+        v14 = syntheticRequestId3;
+        syntheticRequestId4 = [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)self syntheticRequestId];
+        syntheticRequestId5 = [equalCopy syntheticRequestId];
+        v17 = [syntheticRequestId4 isEqual:syntheticRequestId5];
 
         if (v17)
         {
@@ -218,9 +218,9 @@ LABEL_15:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -233,21 +233,21 @@ LABEL_15:
     PBDataWriterWriteUint32Field();
   }
 
-  v5 = [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)self syntheticRequestId];
+  syntheticRequestId = [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)self syntheticRequestId];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (syntheticRequestId)
   {
-    v7 = [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)self syntheticRequestId];
+    syntheticRequestId2 = [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)self syntheticRequestId];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasBatchChunkId:(BOOL)a3
+- (void)setHasBatchChunkId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -260,17 +260,17 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = CLPInstSchemaCLPNLv4SampleEvaluationStarted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)self syntheticRequestId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(CLPInstSchemaCLPNLv4SampleEvaluationStarted *)self deleteSyntheticRequestId];
   }

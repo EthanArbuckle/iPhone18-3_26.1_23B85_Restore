@@ -1,6 +1,6 @@
 @interface MTRMediaPlaybackClusterTrackStruct
 - (MTRMediaPlaybackClusterTrackStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRMediaPlaybackClusterTrackStruct);
   v5 = [(MTRMediaPlaybackClusterTrackStruct *)self id];
   [(MTRMediaPlaybackClusterTrackStruct *)v4 setId:v5];
 
-  v6 = [(MTRMediaPlaybackClusterTrackStruct *)self trackAttributes];
-  [(MTRMediaPlaybackClusterTrackStruct *)v4 setTrackAttributes:v6];
+  trackAttributes = [(MTRMediaPlaybackClusterTrackStruct *)self trackAttributes];
+  [(MTRMediaPlaybackClusterTrackStruct *)v4 setTrackAttributes:trackAttributes];
 
   return v4;
 }

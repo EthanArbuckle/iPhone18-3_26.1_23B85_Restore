@@ -1,7 +1,7 @@
 @interface _HKLocationShifter
-+ (BOOL)isShiftRequiredForLocations:(id)a3;
++ (BOOL)isShiftRequiredForLocations:(id)locations;
 - (_HKLocationShifter)init;
-- (void)shiftLocations:(id)a3 withCompletion:(id)a4;
+- (void)shiftLocations:(id)locations withCompletion:(id)completion;
 @end
 
 @implementation _HKLocationShifter
@@ -22,15 +22,15 @@
   return v3;
 }
 
-+ (BOOL)isShiftRequiredForLocations:(id)a3
++ (BOOL)isShiftRequiredForLocations:(id)locations
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  locationsCopy = locations;
+  v4 = [locationsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = *v15;
@@ -40,7 +40,7 @@
       {
         if (*v15 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(locationsCopy);
         }
 
         v7 = *(*(&v14 + 1) + 8 * i);
@@ -57,7 +57,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v4 = [locationsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v4)
       {
         continue;
@@ -73,19 +73,19 @@ LABEL_11:
   return v4;
 }
 
-- (void)shiftLocations:(id)a3 withCompletion:(id)a4
+- (void)shiftLocations:(id)locations withCompletion:(id)completion
 {
-  v6 = a3;
-  v21 = a4;
-  v7 = [MEMORY[0x1E695DF70] arrayWithArray:v6];
+  locationsCopy = locations;
+  completionCopy = completion;
+  v7 = [MEMORY[0x1E695DF70] arrayWithArray:locationsCopy];
   v22 = objc_alloc_init(getGEOLocationShifterClass());
   v8 = dispatch_group_create();
-  if ([v6 count])
+  if ([locationsCopy count])
   {
     v9 = 0;
     do
     {
-      v10 = [v6 objectAtIndexedSubscript:v9];
+      v10 = [locationsCopy objectAtIndexedSubscript:v9];
       [v10 coordinate];
       v12 = v11;
       [v10 coordinate];
@@ -116,7 +116,7 @@ LABEL_11:
       ++v9;
     }
 
-    while (v9 < [v6 count]);
+    while (v9 < [locationsCopy count]);
   }
 
   queue = self->_queue;
@@ -125,10 +125,10 @@ LABEL_11:
   block[2] = __52___HKLocationShifter_shiftLocations_withCompletion___block_invoke_14;
   block[3] = &unk_1E73766C8;
   v24 = v7;
-  v25 = v6;
-  v26 = v21;
-  v18 = v21;
-  v19 = v6;
+  v25 = locationsCopy;
+  v26 = completionCopy;
+  v18 = completionCopy;
+  v19 = locationsCopy;
   v20 = v7;
   dispatch_group_notify(v8, queue, block);
 }

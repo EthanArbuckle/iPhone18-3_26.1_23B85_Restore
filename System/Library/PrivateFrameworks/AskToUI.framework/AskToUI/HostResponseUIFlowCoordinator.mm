@@ -1,8 +1,8 @@
 @interface HostResponseUIFlowCoordinator
 - (_TtC7AskToUI29HostResponseUIFlowCoordinator)init;
-- (void)didSelectAnswerChoice:(id)a3;
+- (void)didSelectAnswerChoice:(id)choice;
 - (void)dismiss;
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4;
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error;
 @end
 
 @implementation HostResponseUIFlowCoordinator
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error
 {
   sub_2411ABDA8();
   sub_2411ABD98();
@@ -32,13 +32,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = self;
-  v9 = a4;
-  sub_2411A579C(a4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  errorCopy = error;
+  sub_2411A579C(error);
 }
 
-- (void)didSelectAnswerChoice:(id)a3
+- (void)didSelectAnswerChoice:(id)choice
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E533D40, &qword_2411ACDE0);
   v6 = *(*(v5 - 8) + 64);
@@ -47,10 +47,10 @@
   v9 = sub_2411ABDD8();
   (*(*(v9 - 8) + 56))(v8, 1, 1, v9);
   sub_2411ABDA8();
-  v10 = a3;
-  v11 = self;
-  v12 = v10;
-  v13 = v11;
+  choiceCopy = choice;
+  selfCopy = self;
+  v12 = choiceCopy;
+  v13 = selfCopy;
   v14 = sub_2411ABD98();
   v15 = swift_allocObject();
   v16 = MEMORY[0x277D85700];
@@ -63,7 +63,7 @@
 
 - (void)dismiss
 {
-  v2 = self;
+  selfCopy = self;
   HostResponseUIFlowCoordinator.dismiss()();
 }
 

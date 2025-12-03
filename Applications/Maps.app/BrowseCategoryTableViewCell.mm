@@ -1,11 +1,11 @@
 @interface BrowseCategoryTableViewCell
 + (NSString)identifier;
 - (NSString)uniqueIdentifier;
-- (_TtC4Maps27BrowseCategoryTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC4Maps27BrowseCategoryTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
-- (void)setThumbnailImage:(id)a3;
-- (void)setUniqueIdentifier:(id)a3;
-- (void)updateContents:(id)a3 uniqueID:(id)a4;
+- (void)setThumbnailImage:(id)image;
+- (void)setUniqueIdentifier:(id)identifier;
+- (void)updateContents:(id)contents uniqueID:(id)d;
 @end
 
 @implementation BrowseCategoryTableViewCell
@@ -18,7 +18,7 @@
   return v2;
 }
 
-- (void)setUniqueIdentifier:(id)a3
+- (void)setUniqueIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC4Maps27BrowseCategoryTableViewCell_uniqueIdentifier);
@@ -36,11 +36,11 @@
   return v2;
 }
 
-- (_TtC4Maps27BrowseCategoryTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC4Maps27BrowseCategoryTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -49,7 +49,7 @@
     v6 = 0;
   }
 
-  return sub_100122968(a3, a4, v6);
+  return sub_100122968(style, identifier, v6);
 }
 
 - (void)prepareForReuse
@@ -66,26 +66,26 @@
   [v5 setImage:0];
 }
 
-- (void)updateContents:(id)a3 uniqueID:(id)a4
+- (void)updateContents:(id)contents uniqueID:(id)d
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  contentsCopy = contents;
+  selfCopy = self;
   v11 = sub_10012286C();
-  [v11 setText:v9];
+  [v11 setText:contentsCopy];
 
-  v12 = (v10 + OBJC_IVAR____TtC4Maps27BrowseCategoryTableViewCell_uniqueIdentifier);
+  v12 = (selfCopy + OBJC_IVAR____TtC4Maps27BrowseCategoryTableViewCell_uniqueIdentifier);
   *v12 = v6;
   v12[1] = v8;
 }
 
-- (void)setThumbnailImage:(id)a3
+- (void)setThumbnailImage:(id)image
 {
-  v4 = a3;
-  v6 = self;
+  imageCopy = image;
+  selfCopy = self;
   v5 = sub_10012279C();
-  [v5 setImage:v4];
+  [v5 setImage:imageCopy];
 }
 
 @end

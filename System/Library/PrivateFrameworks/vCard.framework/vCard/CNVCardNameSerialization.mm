@@ -1,78 +1,78 @@
 @interface CNVCardNameSerialization
-+ (id)compositeNameForPersonWithComponents:(id)a3;
-+ (id)compositeNameWithComponents:(id)a3;
++ (id)compositeNameForPersonWithComponents:(id)components;
++ (id)compositeNameWithComponents:(id)components;
 @end
 
 @implementation CNVCardNameSerialization
 
-+ (id)compositeNameWithComponents:(id)a3
++ (id)compositeNameWithComponents:(id)components
 {
-  v4 = a3;
-  if ([v4 isCompany])
+  componentsCopy = components;
+  if ([componentsCopy isCompany])
   {
-    [a1 compositeNameForCompanyWithComponents:v4];
+    [self compositeNameForCompanyWithComponents:componentsCopy];
   }
 
   else
   {
-    [a1 compositeNameForPersonWithComponents:v4];
+    [self compositeNameForPersonWithComponents:componentsCopy];
   }
   v5 = ;
 
   return v5;
 }
 
-+ (id)compositeNameForPersonWithComponents:(id)a3
++ (id)compositeNameForPersonWithComponents:(id)components
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  componentsCopy = components;
+  array = [MEMORY[0x277CBEB18] array];
   v5 = *MEMORY[0x277CFBD30];
-  v6 = [v3 title];
-  v7 = (*(v5 + 16))(v5, v6);
+  title = [componentsCopy title];
+  v7 = (*(v5 + 16))(v5, title);
 
   if ((v7 & 1) == 0)
   {
-    v8 = [v3 title];
-    [v4 addObject:v8];
+    title2 = [componentsCopy title];
+    [array addObject:title2];
   }
 
-  v9 = [v3 firstName];
-  v10 = (*(v5 + 16))(v5, v9);
+  firstName = [componentsCopy firstName];
+  v10 = (*(v5 + 16))(v5, firstName);
 
   if ((v10 & 1) == 0)
   {
-    v11 = [v3 firstName];
-    [v4 addObject:v11];
+    firstName2 = [componentsCopy firstName];
+    [array addObject:firstName2];
   }
 
-  v12 = [v3 middleName];
-  v13 = (*(v5 + 16))(v5, v12);
+  middleName = [componentsCopy middleName];
+  v13 = (*(v5 + 16))(v5, middleName);
 
   if ((v13 & 1) == 0)
   {
-    v14 = [v3 middleName];
-    [v4 addObject:v14];
+    middleName2 = [componentsCopy middleName];
+    [array addObject:middleName2];
   }
 
-  v15 = [v3 lastName];
-  v16 = (*(v5 + 16))(v5, v15);
+  lastName = [componentsCopy lastName];
+  v16 = (*(v5 + 16))(v5, lastName);
 
   if ((v16 & 1) == 0)
   {
-    v17 = [v3 lastName];
-    [v4 addObject:v17];
+    lastName2 = [componentsCopy lastName];
+    [array addObject:lastName2];
   }
 
-  v18 = [v3 suffix];
-  v19 = (*(v5 + 16))(v5, v18);
+  suffix = [componentsCopy suffix];
+  v19 = (*(v5 + 16))(v5, suffix);
 
   if ((v19 & 1) == 0)
   {
-    v20 = [v3 suffix];
-    [v4 addObject:v20];
+    suffix2 = [componentsCopy suffix];
+    [array addObject:suffix2];
   }
 
-  v21 = [v4 componentsJoinedByString:@" "];
+  v21 = [array componentsJoinedByString:@" "];
 
   return v21;
 }

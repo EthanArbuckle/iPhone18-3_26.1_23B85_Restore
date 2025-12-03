@@ -1,12 +1,12 @@
 @interface CKSyncEnginePendingRecordZoneChange
-- (BOOL)isEqual:(id)a3;
-- (CKSyncEnginePendingRecordZoneChange)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CKSyncEnginePendingRecordZoneChange)initWithCoder:(id)coder;
 - (CKSyncEnginePendingRecordZoneChange)initWithRecordID:(CKRecordID *)recordID type:(CKSyncEnginePendingRecordZoneChangeType)type;
 - (id)CKDescriptionClassName;
 - (id)oppositeTypeChange;
 - (unint64_t)hash;
-- (void)CKDescribePropertiesUsing:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)CKDescribePropertiesUsing:(id)using;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKSyncEnginePendingRecordZoneChange
@@ -51,17 +51,17 @@
   }
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v8 = objc_msgSend_recordID(self, v5, v6);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v7, @"recordID", v8, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v7, @"recordID", v8, 0);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v18 = 1;
   }
@@ -71,7 +71,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_recordID(self, v6, v7);
       v11 = objc_msgSend_recordID(v5, v9, v10);
       if (objc_msgSend_isEqual_(v8, v12, v11))
@@ -105,25 +105,25 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
+  coderCopy = coder;
   v6 = objc_msgSend_recordID(self, v4, v5);
-  objc_msgSend_encodeObject_forKey_(v12, v7, v6, @"recordID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, v6, @"recordID");
 
   v10 = objc_msgSend_type(self, v8, v9);
-  objc_msgSend_encodeInteger_forKey_(v12, v11, v10, @"type");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v11, v10, @"type");
 }
 
-- (CKSyncEnginePendingRecordZoneChange)initWithCoder:(id)a3
+- (CKSyncEnginePendingRecordZoneChange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v7 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"recordID");
+  v7 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"recordID");
   recordID = self->_recordID;
   self->_recordID = v7;
 
-  v10 = objc_msgSend_decodeIntegerForKey_(v4, v9, @"type");
+  v10 = objc_msgSend_decodeIntegerForKey_(coderCopy, v9, @"type");
   self->_type = v10;
   v12 = self->_recordID;
 

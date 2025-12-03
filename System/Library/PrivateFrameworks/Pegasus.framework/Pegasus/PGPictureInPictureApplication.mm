@@ -1,18 +1,18 @@
 @interface PGPictureInPictureApplication
-+ (id)pictureInPictureApplicationWithProcessIdentifier:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPGPictureInPictureApplication:(id)a3;
++ (id)pictureInPictureApplicationWithProcessIdentifier:(int)identifier;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPGPictureInPictureApplication:(id)application;
 - (PGPictureInPictureApplication)init;
-- (PGPictureInPictureApplication)initWithProcessIdentifier:(int)a3;
+- (PGPictureInPictureApplication)initWithProcessIdentifier:(int)identifier;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation PGPictureInPictureApplication
 
-+ (id)pictureInPictureApplicationWithProcessIdentifier:(int)a3
++ (id)pictureInPictureApplicationWithProcessIdentifier:(int)identifier
 {
-  v3 = *&a3;
+  v3 = *&identifier;
   v18 = *MEMORY[0x1E69E9840];
   if (pictureInPictureApplicationWithProcessIdentifier__onceToken != -1)
   {
@@ -69,7 +69,7 @@ LABEL_5:
 LABEL_11:
   }
 
-  v11 = [[a1 alloc] initWithProcessIdentifier:v3];
+  v11 = [[self alloc] initWithProcessIdentifier:v3];
   [pictureInPictureApplicationWithProcessIdentifier____pictureInPictureApplications addObject:v11];
 LABEL_14:
 
@@ -83,9 +83,9 @@ uint64_t __82__PGPictureInPictureApplication_pictureInPictureApplicationWithProc
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (PGPictureInPictureApplication)initWithProcessIdentifier:(int)a3
+- (PGPictureInPictureApplication)initWithProcessIdentifier:(int)identifier
 {
-  v3 = *&a3;
+  v3 = *&identifier;
   v5 = PGLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -131,15 +131,15 @@ uint64_t __82__PGPictureInPictureApplication_pictureInPictureApplicationWithProc
   [(PGPictureInPictureApplication *)&v4 dealloc];
 }
 
-- (BOOL)isEqualToPGPictureInPictureApplication:(id)a3
+- (BOOL)isEqualToPGPictureInPictureApplication:(id)application
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  v6 = [(PGPictureInPictureApplication *)self bundleIdentifier];
-  if ([v5 isEqualToString:v6])
+  applicationCopy = application;
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  bundleIdentifier2 = [(PGPictureInPictureApplication *)self bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:bundleIdentifier2])
   {
-    v7 = [v4 processIdentifier];
-    v8 = v7 == [(PGPictureInPictureApplication *)self processIdentifier];
+    processIdentifier = [applicationCopy processIdentifier];
+    v8 = processIdentifier == [(PGPictureInPictureApplication *)self processIdentifier];
   }
 
   else
@@ -150,10 +150,10 @@ uint64_t __82__PGPictureInPictureApplication_pictureInPictureApplicationWithProc
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -161,7 +161,7 @@ uint64_t __82__PGPictureInPictureApplication_pictureInPictureApplicationWithProc
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PGPictureInPictureApplication *)self isEqualToPGPictureInPictureApplication:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PGPictureInPictureApplication *)self isEqualToPGPictureInPictureApplication:equalCopy];
   }
 
   return v5;
@@ -169,8 +169,8 @@ uint64_t __82__PGPictureInPictureApplication_pictureInPictureApplicationWithProc
 
 - (unint64_t)hash
 {
-  v2 = [(PGPictureInPictureApplication *)self bundleIdentifier];
-  v3 = [v2 hash];
+  bundleIdentifier = [(PGPictureInPictureApplication *)self bundleIdentifier];
+  v3 = [bundleIdentifier hash];
 
   return v3;
 }

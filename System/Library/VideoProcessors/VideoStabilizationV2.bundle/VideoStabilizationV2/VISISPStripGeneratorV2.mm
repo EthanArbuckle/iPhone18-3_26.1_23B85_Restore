@@ -4,10 +4,10 @@
 - (__n128)inputSize;
 - (__n128)outputSize;
 - (int)_configureISPStripTileCount;
-- (int)_generateMultipleStripsWithTransforms:(VISISPStripGeneratorV2 *)self transforms3x3:(SEL)a2 validBufferRect:(float *)(a3;
-- (int)_generateSingleStripWithTransforms:(VISISPStripGeneratorV2 *)self transforms3x3:(SEL)a2 validBufferRect:(float *)(a3;
-- (int)_limitMultipleStripsTransforms:(CGRect)a3 transforms3x3:(float *)(a4;
-- (int)generateStripsWithTransforms:(VISISPStripGeneratorV2 *)self transforms3x3:(SEL)a2 validBufferRect:(float *)(a3;
+- (int)_generateMultipleStripsWithTransforms:(VISISPStripGeneratorV2 *)self transforms3x3:(SEL)transforms3x3 validBufferRect:(float *)(a3;
+- (int)_generateSingleStripWithTransforms:(VISISPStripGeneratorV2 *)self transforms3x3:(SEL)transforms3x3 validBufferRect:(float *)(a3;
+- (int)_limitMultipleStripsTransforms:(CGRect)transforms transforms3x3:(float *)(a4;
+- (int)generateStripsWithTransforms:(VISISPStripGeneratorV2 *)self transforms3x3:(SEL)transforms3x3 validBufferRect:(float *)(a3;
 - (int)setup;
 - (void)dealloc;
 @end
@@ -22,7 +22,7 @@
   [(VISISPStripGeneratorV2 *)&v3 dealloc];
 }
 
-- (int)generateStripsWithTransforms:(VISISPStripGeneratorV2 *)self transforms3x3:(SEL)a2 validBufferRect:(float *)(a3
+- (int)generateStripsWithTransforms:(VISISPStripGeneratorV2 *)self transforms3x3:(SEL)transforms3x3 validBufferRect:(float *)(a3
 {
   if (self->_type == 1)
   {
@@ -99,7 +99,7 @@ LABEL_13:
   }
 }
 
-- (int)_limitMultipleStripsTransforms:(CGRect)a3 transforms3x3:(float *)(a4
+- (int)_limitMultipleStripsTransforms:(CGRect)transforms transforms3x3:(float *)(a4
 {
   ispStripParams = self->_ispStripParams;
   var0 = ispStripParams->var0;
@@ -108,8 +108,8 @@ LABEL_13:
     v7 = 0;
     result = 0;
     p_var0 = &ispStripParams->var3[0].var0;
-    y = a3.origin.y;
-    v11 = a3.origin.y + a3.size.height + -1.0;
+    y = transforms.origin.y;
+    v11 = transforms.origin.y + transforms.size.height + -1.0;
     v12 = &(*a4)[4];
     v13 = 21.0;
     while (1)
@@ -276,8 +276,8 @@ LABEL_36:
 
 - (__n128)inputSize
 {
-  LOWORD(v1) = *(a1 + 56);
-  WORD2(v1) = *(a1 + 58);
+  LOWORD(v1) = *(self + 56);
+  WORD2(v1) = *(self + 58);
   result.n128_u32[0] = v1;
   result.n128_u16[2] = WORD2(v1);
   return result;
@@ -285,8 +285,8 @@ LABEL_36:
 
 - (__n128)outputSize
 {
-  LOWORD(v1) = *(a1 + 60);
-  WORD2(v1) = *(a1 + 62);
+  LOWORD(v1) = *(self + 60);
+  WORD2(v1) = *(self + 62);
   result.n128_u32[0] = v1;
   result.n128_u16[2] = WORD2(v1);
   return result;
@@ -294,8 +294,8 @@ LABEL_36:
 
 - (__n128)gridSize
 {
-  LOWORD(v1) = *(a1 + 64);
-  WORD2(v1) = *(a1 + 66);
+  LOWORD(v1) = *(self + 64);
+  WORD2(v1) = *(self + 66);
   result.n128_u32[0] = v1;
   result.n128_u16[2] = WORD2(v1);
   return result;
@@ -429,7 +429,7 @@ LABEL_36:
   return FigSignalErrorAtGM();
 }
 
-- (int)_generateSingleStripWithTransforms:(VISISPStripGeneratorV2 *)self transforms3x3:(SEL)a2 validBufferRect:(float *)(a3
+- (int)_generateSingleStripWithTransforms:(VISISPStripGeneratorV2 *)self transforms3x3:(SEL)transforms3x3 validBufferRect:(float *)(a3
 {
   ispStripParams = self->_ispStripParams;
   if (!ispStripParams || ispStripParams->var0 != 1)
@@ -457,7 +457,7 @@ LABEL_36:
   return 0;
 }
 
-- (int)_generateMultipleStripsWithTransforms:(VISISPStripGeneratorV2 *)self transforms3x3:(SEL)a2 validBufferRect:(float *)(a3
+- (int)_generateMultipleStripsWithTransforms:(VISISPStripGeneratorV2 *)self transforms3x3:(SEL)transforms3x3 validBufferRect:(float *)(a3
 {
   v5 = 0;
   if (a3)

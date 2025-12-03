@@ -7,12 +7,12 @@
 
 - (double)searchUIHorizontallyScrollingSectionModel_widthDimensionMultiplier
 {
-  v2 = [a1 thumbnail];
-  [v2 size];
+  thumbnail = [self thumbnail];
+  [thumbnail size];
   v3 = 1.0;
   if (v4 <= 150.0)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &off_1F5681548;
     objc_msgSendSuper2(&v7, sel_searchUIHorizontallyScrollingSectionModel_widthDimensionMultiplier);
     v3 = v5;
@@ -23,9 +23,9 @@
 
 - (double)searchUIHorizontallyScrollingSectionModel_additionalSectionInsets
 {
-  v0 = [MEMORY[0x1E69D9240] isMacOS];
+  isMacOS = [MEMORY[0x1E69D9240] isMacOS];
   result = 4.0;
-  if (v0)
+  if (isMacOS)
   {
     return 2.0;
   }

@@ -1,8 +1,8 @@
 @interface AudioComponentMainRegConnection
-- (AudioComponentMainRegConnection)initWithRegistrar:(void *)a3 connection:(id)a4;
+- (AudioComponentMainRegConnection)initWithRegistrar:(void *)registrar connection:(id)connection;
 - (id).cxx_construct;
-- (void)canRegisterComponent:(id)a3 reply:(id)a4;
-- (void)getComponentList:(id)a3 linkedSDKRequiresEntitlement:(BOOL)a4 includeExtensions:(BOOL)a5 forceWaitForExtensions:(BOOL)a6 reply:(id)a7;
+- (void)canRegisterComponent:(id)component reply:(id)reply;
+- (void)getComponentList:(id)list linkedSDKRequiresEntitlement:(BOOL)entitlement includeExtensions:(BOOL)extensions forceWaitForExtensions:(BOOL)forExtensions reply:(id)reply;
 @end
 
 @implementation AudioComponentMainRegConnection
@@ -15,13 +15,13 @@
   return self;
 }
 
-- (void)canRegisterComponent:(id)a3 reply:(id)a4
+- (void)canRegisterComponent:(id)component reply:(id)reply
 {
   v57 = *MEMORY[0x1E69E9840];
-  v37 = a4;
+  replyCopy = reply;
   memset(&v42, 0, sizeof(v42));
   v41 = 0;
-  dictionaryToComponentDescription(a3, &v42, &v41);
+  dictionaryToComponentDescription(component, &v42, &v41);
   CAFormatter::CAFormatter(&v40, &v42);
   {
     *v54.val = @"sandboxing-required";
@@ -67,9 +67,9 @@ LABEL_10:
   if ([v36 count])
   {
     v9 = [v8 valueForKey:@"sandboxing-required"];
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
 
-    if (!v10)
+    if (!bOOLValue)
     {
       goto LABEL_22;
     }
@@ -228,7 +228,7 @@ LABEL_22:
 
     v29 = 0;
 LABEL_57:
-    v37[2](v37, v29);
+    replyCopy[2](replyCopy, v29);
     goto LABEL_58;
   }
 
@@ -249,7 +249,7 @@ LABEL_57:
     _os_log_impl(&dword_18F5DF000, v13, OS_LOG_TYPE_DEBUG, "%25s:%-5d canRegisterComponent %s: YES, requiring no entitlements", buf, 0x1Cu);
   }
 
-  v37[2](v37, 1);
+  replyCopy[2](replyCopy, 1);
 LABEL_58:
 
   if (v40)
@@ -260,15 +260,15 @@ LABEL_58:
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getComponentList:(id)a3 linkedSDKRequiresEntitlement:(BOOL)a4 includeExtensions:(BOOL)a5 forceWaitForExtensions:(BOOL)a6 reply:(id)a7
+- (void)getComponentList:(id)list linkedSDKRequiresEntitlement:(BOOL)entitlement includeExtensions:(BOOL)extensions forceWaitForExtensions:(BOOL)forExtensions reply:(id)reply
 {
-  v8 = a6;
-  v9 = a5;
+  forExtensionsCopy = forExtensions;
+  extensionsCopy = extensions;
   v40 = *MEMORY[0x1E69E9840];
-  self->mConnInfo.mLinkedSDKRequiresEntitlement = a4;
+  self->mConnInfo.mLinkedSDKRequiresEntitlement = entitlement;
   mImpl = self->mImpl;
-  v12 = a3;
-  v13 = a7;
+  listCopy = list;
+  replyCopy = reply;
   if (!gAudioComponentLogCategory)
   {
     operator new();
@@ -282,9 +282,9 @@ LABEL_58:
     *&v30[12] = 1024;
     *&v30[14] = 332;
     *&v30[18] = 1024;
-    *&v30[20] = v9;
+    *&v30[20] = extensionsCopy;
     LOWORD(v31) = 1024;
-    *(&v31 + 2) = v8;
+    *(&v31 + 2) = forExtensionsCopy;
     _os_log_impl(&dword_18F5DF000, v14, OS_LOG_TYPE_DEFAULT, "%25s:%-5d getComponentList includeExtensions: %d waitForExtensions: %d", v30, 0x1Eu);
   }
 
@@ -306,7 +306,7 @@ LABEL_58:
     self->mConnInfo.mExtUsePermission = mExtUsePermission;
   }
 
-  if (!v9)
+  if (!extensionsCopy)
   {
     goto LABEL_25;
   }
@@ -361,7 +361,7 @@ LABEL_25:
       v28 = 0;
     }
 
-    AudioComponentRegistrarImpl::replyWithComponentList(mImpl, v28 & 1, v12, v17, v13);
+    AudioComponentRegistrarImpl::replyWithComponentList(mImpl, v28 & 1, listCopy, v17, replyCopy);
     goto LABEL_29;
   }
 
@@ -383,9 +383,9 @@ LABEL_20:
   v31 = &unk_1E72C2B40;
   v35 = mImpl;
   v36 = mExtUsePermission == 1;
-  v32 = v12;
+  v32 = listCopy;
   v33 = v17;
-  v34 = v13;
+  v34 = replyCopy;
   v25 = v30;
   if (!*(mImpl + 32))
   {
@@ -406,17 +406,17 @@ LABEL_29:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (AudioComponentMainRegConnection)initWithRegistrar:(void *)a3 connection:(id)a4
+- (AudioComponentMainRegConnection)initWithRegistrar:(void *)registrar connection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = AudioComponentMainRegConnection;
   v7 = [(AudioComponentMainRegConnection *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->mImpl = a3;
-    objc_storeWeak(&v7->mConnInfo.mConnection, v6);
+    v7->mImpl = registrar;
+    objc_storeWeak(&v7->mConnInfo.mConnection, connectionCopy);
   }
 
   return v8;

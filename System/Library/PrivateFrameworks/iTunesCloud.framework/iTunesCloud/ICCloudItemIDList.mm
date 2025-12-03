@@ -1,20 +1,20 @@
 @interface ICCloudItemIDList
 - (ICCloudItemIDList)init;
-- (ICCloudItemIDList)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addCloudItemID:(unint64_t)a3 idType:(int64_t)a4;
-- (void)addGlobalPlaylistID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateCloudItemIDsUsingBlock:(id)a3;
-- (void)insertCloudItemID:(unint64_t)a3 idType:(int64_t)a4 atIndex:(unint64_t)a5;
+- (ICCloudItemIDList)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addCloudItemID:(unint64_t)d idType:(int64_t)type;
+- (void)addGlobalPlaylistID:(id)d;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateCloudItemIDsUsingBlock:(id)block;
+- (void)insertCloudItemID:(unint64_t)d idType:(int64_t)type atIndex:(unint64_t)index;
 @end
 
 @implementation ICCloudItemIDList
 
-- (void)enumerateCloudItemIDsUsingBlock:(id)a3
+- (void)enumerateCloudItemIDsUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v12 = 0;
     v5 = [(NSMutableArray *)self->_itemIDs count];
@@ -26,9 +26,9 @@
       {
         v8 = [(NSMutableArray *)self->_itemIDs objectAtIndex:v6];
         v9 = [(NSMutableArray *)self->_idTypes objectAtIndex:v6];
-        v10 = [v9 integerValue];
+        integerValue = [v9 integerValue];
 
-        v4[2](v4, v8, v10, v6, &v12);
+        blockCopy[2](blockCopy, v8, integerValue, v6, &v12);
         LOBYTE(v9) = v12;
 
         if (v9)
@@ -42,46 +42,46 @@
   }
 }
 
-- (void)insertCloudItemID:(unint64_t)a3 idType:(int64_t)a4 atIndex:(unint64_t)a5
+- (void)insertCloudItemID:(unint64_t)d idType:(int64_t)type atIndex:(unint64_t)index
 {
   itemIDs = self->_itemIDs;
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
-  [(NSMutableArray *)itemIDs insertObject:v9 atIndex:a5];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
+  [(NSMutableArray *)itemIDs insertObject:v9 atIndex:index];
 
   idTypes = self->_idTypes;
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [(NSMutableArray *)idTypes insertObject:v11 atIndex:a5];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  [(NSMutableArray *)idTypes insertObject:v11 atIndex:index];
 }
 
-- (void)addGlobalPlaylistID:(id)a3
+- (void)addGlobalPlaylistID:(id)d
 {
-  [(NSMutableArray *)self->_itemIDs addObject:a3];
+  [(NSMutableArray *)self->_itemIDs addObject:d];
   idTypes = self->_idTypes;
 
   [(NSMutableArray *)idTypes addObject:&unk_1F2C92188];
 }
 
-- (void)addCloudItemID:(unint64_t)a3 idType:(int64_t)a4
+- (void)addCloudItemID:(unint64_t)d idType:(int64_t)type
 {
   itemIDs = self->_itemIDs;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
   [(NSMutableArray *)itemIDs addObject:v7];
 
   idTypes = self->_idTypes;
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [(NSMutableArray *)idTypes addObject:v9];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(NSMutableArray *)self->_itemIDs copyWithZone:a3];
+    v6 = [(NSMutableArray *)self->_itemIDs copyWithZone:zone];
     v7 = v5[1];
     v5[1] = v6;
 
-    v8 = [(NSMutableArray *)self->_idTypes copyWithZone:a3];
+    v8 = [(NSMutableArray *)self->_idTypes copyWithZone:zone];
     v9 = v5[2];
     v5[2] = v8;
   }
@@ -89,17 +89,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   itemIDs = self->_itemIDs;
-  v5 = a3;
-  [v5 encodeObject:itemIDs forKey:@"ICCloudItemIDListItemIDs"];
-  [v5 encodeObject:self->_idTypes forKey:@"ICCloudItemIDListIDTypes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:itemIDs forKey:@"ICCloudItemIDListItemIDs"];
+  [coderCopy encodeObject:self->_idTypes forKey:@"ICCloudItemIDListIDTypes"];
 }
 
-- (ICCloudItemIDList)initWithCoder:(id)a3
+- (ICCloudItemIDList)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = ICCloudItemIDList;
   v5 = [(ICCloudItemIDList *)&v18 init];
@@ -109,14 +109,14 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"ICCloudItemIDListItemIDs"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"ICCloudItemIDListItemIDs"];
     itemIDs = v5->_itemIDs;
     v5->_itemIDs = v10;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"ICCloudItemIDListIDTypes"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"ICCloudItemIDListIDTypes"];
     idTypes = v5->_idTypes;
     v5->_idTypes = v15;
   }

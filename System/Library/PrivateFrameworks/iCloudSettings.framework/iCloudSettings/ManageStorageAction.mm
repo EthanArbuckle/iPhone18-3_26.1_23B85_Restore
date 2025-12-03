@@ -1,12 +1,12 @@
 @interface ManageStorageAction
 - (_TtC14iCloudSettings19ManageStorageAction)init;
 - (_TtC14iCloudSettings6Action)homeAction;
-- (void)setActionURL:(id)a3;
+- (void)setActionURL:(id)l;
 @end
 
 @implementation ManageStorageAction
 
-- (void)setActionURL:(id)a3
+- (void)setActionURL:(id)l
 {
   v4 = sub_2759BA298();
   v5 = (self + OBJC_IVAR____TtC14iCloudSettings19ManageStorageAction_actionURL);
@@ -17,7 +17,7 @@
 
 - (_TtC14iCloudSettings6Action)homeAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2758A1CD0();
 
   return v3;

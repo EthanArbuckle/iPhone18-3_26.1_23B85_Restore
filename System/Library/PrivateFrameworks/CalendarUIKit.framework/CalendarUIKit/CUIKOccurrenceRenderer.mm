@@ -1,27 +1,27 @@
 @interface CUIKOccurrenceRenderer
-+ (id)reminderBackgroundColor:(BOOL)a3 style:(int64_t)a4 miniPreview:(BOOL)a5 completed:(BOOL)a6 darkenForAllDayArea:(BOOL)a7;
-+ (id)reminderStrokeColor:(BOOL)a3 stack:(BOOL)a4 style:(int64_t)a5;
-+ (id)renderColorBlockImageWithSize:(CGSize)a3 colorBarColor:(CGColor *)a4 backgroundColor:(CGColor *)a5 stripeColor:(CGColor *)a6 stripedImageAlpha:(double)a7;
-+ (id)renderReminderBackgroundSelected:(BOOL)a3 stackDepth:(int)a4 userInterfaceStyle:(int64_t)a5 miniPreview:(BOOL)a6 completed:(BOOL)a7;
-+ (id)renderStrings:(id)a3 withSize:(CGSize)a4 font:(id)a5 edgeInsets:(UIEdgeInsets)a6 leadingIcon:(id)a7 trailingIcons:(id)a8 shouldAutoHideLeadingIcon:(BOOL)a9;
-+ (id)renderingBlockForStrings:(id)a3 withSize:(CGSize)a4 font:(id)a5 edgeInsets:(UIEdgeInsets)a6 leadingIcon:(id)a7 trailingIcons:(id)a8 outImageSize:(CGSize *)a9 shouldAutoHideLeadingIcon:(BOOL)a10;
-+ (void)drawReminderInContext:(CGContext *)a3 rect:(CGRect)a4 fillColor:(id)a5 strokeColor:(id)a6 coveringReminderRect:(CGRect)a7 allDay:(BOOL)a8;
-+ (void)renderReminderInPreparedContext:(CGContext *)a3 bounds:(CGRect)a4 selected:(BOOL)a5 stackDepth:(int)a6 userInterfaceStyle:(int64_t)a7 miniPreview:(BOOL)a8 allDay:(BOOL)a9 completed:(BOOL)a10;
++ (id)reminderBackgroundColor:(BOOL)color style:(int64_t)style miniPreview:(BOOL)preview completed:(BOOL)completed darkenForAllDayArea:(BOOL)area;
++ (id)reminderStrokeColor:(BOOL)color stack:(BOOL)stack style:(int64_t)style;
++ (id)renderColorBlockImageWithSize:(CGSize)size colorBarColor:(CGColor *)color backgroundColor:(CGColor *)backgroundColor stripeColor:(CGColor *)stripeColor stripedImageAlpha:(double)alpha;
++ (id)renderReminderBackgroundSelected:(BOOL)selected stackDepth:(int)depth userInterfaceStyle:(int64_t)style miniPreview:(BOOL)preview completed:(BOOL)completed;
++ (id)renderStrings:(id)strings withSize:(CGSize)size font:(id)font edgeInsets:(UIEdgeInsets)insets leadingIcon:(id)icon trailingIcons:(id)icons shouldAutoHideLeadingIcon:(BOOL)leadingIcon;
++ (id)renderingBlockForStrings:(id)strings withSize:(CGSize)size font:(id)font edgeInsets:(UIEdgeInsets)insets leadingIcon:(id)icon trailingIcons:(id)icons outImageSize:(CGSize *)imageSize shouldAutoHideLeadingIcon:(BOOL)self0;
++ (void)drawReminderInContext:(CGContext *)context rect:(CGRect)rect fillColor:(id)color strokeColor:(id)strokeColor coveringReminderRect:(CGRect)reminderRect allDay:(BOOL)day;
++ (void)renderReminderInPreparedContext:(CGContext *)context bounds:(CGRect)bounds selected:(BOOL)selected stackDepth:(int)depth userInterfaceStyle:(int64_t)style miniPreview:(BOOL)preview allDay:(BOOL)day completed:(BOOL)self0;
 @end
 
 @implementation CUIKOccurrenceRenderer
 
-+ (id)renderColorBlockImageWithSize:(CGSize)a3 colorBarColor:(CGColor *)a4 backgroundColor:(CGColor *)a5 stripeColor:(CGColor *)a6 stripedImageAlpha:(double)a7
++ (id)renderColorBlockImageWithSize:(CGSize)size colorBarColor:(CGColor *)color backgroundColor:(CGColor *)backgroundColor stripeColor:(CGColor *)stripeColor stripedImageAlpha:(double)alpha
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12 = +[CUIKInterface shared];
-  v13 = [v12 interfaceIsLeftToRight];
+  interfaceIsLeftToRight = [v12 interfaceIsLeftToRight];
 
   v14 = 0.0;
   v15 = 0.0;
   v16 = 0.0;
-  if (a4)
+  if (color)
   {
     +[CUIKORImageUtils colorBarThickness];
     v16 = v17;
@@ -50,7 +50,7 @@
   v22 = v15 + v14 + v16;
   v23 = v16 * 0.5;
   v24 = CUIKCeilToScreenScale(v16 * 0.5) + v21;
-  if (a6)
+  if (stripeColor)
   {
     v25 = CUIKCeilToScreenScale(v23);
     v26 = v25 + v25 + v21 * 2.0 + 9.0;
@@ -75,7 +75,7 @@
     }
 
     v29 = v21;
-    if (a4)
+    if (color)
     {
       v30 = v28;
       if (height >= v26)
@@ -91,7 +91,7 @@
       v30 = v28;
     }
 
-    if (v13)
+    if (interfaceIsLeftToRight)
     {
       width = v22 + 9.0;
       v31 = v22;
@@ -100,7 +100,7 @@
     else
     {
       v31 = 0.0;
-      if (a4)
+      if (color)
       {
         if (width >= v22 + 9.0)
         {
@@ -121,7 +121,7 @@
 
   else
   {
-    if (v13)
+    if (interfaceIsLeftToRight)
     {
       v31 = v22;
     }
@@ -131,7 +131,7 @@
       v31 = 0.0;
     }
 
-    if (v13)
+    if (interfaceIsLeftToRight)
     {
       v22 = 0.0;
     }
@@ -149,22 +149,22 @@ LABEL_32:
   v37[1] = 3221225472;
   v37[2] = __116__CUIKOccurrenceRenderer_renderColorBlockImageWithSize_colorBarColor_backgroundColor_stripeColor_stripedImageAlpha___block_invoke;
   v37[3] = &__block_descriptor_137_e20_v16__0__CGContext__8l;
-  v37[4] = a6;
-  v37[5] = a5;
-  *&v37[6] = a7;
+  v37[4] = stripeColor;
+  v37[5] = backgroundColor;
+  *&v37[6] = alpha;
   v37[7] = 0;
   v37[8] = 0;
   *&v37[9] = width;
   *&v37[10] = v27;
-  v37[11] = a4;
+  v37[11] = color;
   *&v37[12] = v16;
   *&v37[13] = v15;
-  v38 = v13;
+  v38 = interfaceIsLeftToRight;
   *&v37[14] = width;
   *&v37[15] = v29;
   *&v37[16] = v27;
   v33 = [MEMORY[0x1E69DCAB8] cuik_drawImageWithSize:v37 drawBlock:width];
-  v34 = [MEMORY[0x1E69DCAB8] cuik_resizableImageFromOriginalImage:v33 withCapInsets:a6 == 0 resizingMode:{v30, v31, v28, v22}];
+  v34 = [MEMORY[0x1E69DCAB8] cuik_resizableImageFromOriginalImage:v33 withCapInsets:stripeColor == 0 resizingMode:{v30, v31, v28, v22}];
 
   return v34;
 }
@@ -210,16 +210,16 @@ void __116__CUIKOccurrenceRenderer_renderColorBlockImageWithSize_colorBarColor_b
   }
 }
 
-+ (id)renderReminderBackgroundSelected:(BOOL)a3 stackDepth:(int)a4 userInterfaceStyle:(int64_t)a5 miniPreview:(BOOL)a6 completed:(BOOL)a7
++ (id)renderReminderBackgroundSelected:(BOOL)selected stackDepth:(int)depth userInterfaceStyle:(int64_t)style miniPreview:(BOOL)preview completed:(BOOL)completed
 {
-  v18 = (a4 - 1);
+  v18 = (depth - 1);
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __111__CUIKOccurrenceRenderer_renderReminderBackgroundSelected_stackDepth_userInterfaceStyle_miniPreview_completed___block_invoke;
   v19[3] = &__block_descriptor_87_e20_v16__0__CGContext__8l;
   v19[5] = 0;
   v19[6] = 0;
-  v19[4] = a1;
+  v19[4] = self;
   __asm
   {
     FMOV            V1.2D, #2.0
@@ -228,11 +228,11 @@ void __116__CUIKOccurrenceRenderer_renderColorBlockImageWithSize_colorBarColor_b
   }
 
   v20 = vrndpq_f64(vmlaq_f64(_Q2, _Q0, vmlaq_n_f64(_Q1, xmmword_1CAD58140, v18)));
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v24 = a6;
-  v25 = a7;
+  selectedCopy = selected;
+  depthCopy = depth;
+  styleCopy = style;
+  previewCopy = preview;
+  completedCopy = completed;
   v14 = [MEMORY[0x1E69DCAB8] cuik_drawImageWithSize:v19 drawBlock:*&v20];
   v15 = ceil((v18 * 0.375 + 1.0) * 4.0);
   v16 = [MEMORY[0x1E69DCAB8] cuik_resizableImageFromOriginalImage:v14 withCapInsets:1 resizingMode:{4.0, v15, ceil((v18 * 0.5 + 1.0) * 4.0), v15}];
@@ -240,20 +240,20 @@ void __116__CUIKOccurrenceRenderer_renderColorBlockImageWithSize_colorBarColor_b
   return v16;
 }
 
-+ (void)renderReminderInPreparedContext:(CGContext *)a3 bounds:(CGRect)a4 selected:(BOOL)a5 stackDepth:(int)a6 userInterfaceStyle:(int64_t)a7 miniPreview:(BOOL)a8 allDay:(BOOL)a9 completed:(BOOL)a10
++ (void)renderReminderInPreparedContext:(CGContext *)context bounds:(CGRect)bounds selected:(BOOL)selected stackDepth:(int)depth userInterfaceStyle:(int64_t)style miniPreview:(BOOL)preview allDay:(BOOL)day completed:(BOOL)self0
 {
-  v10 = a9;
-  v13 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v27 = [a1 reminderBackgroundColor:a5 style:a7 miniPreview:a8 completed:a10];
-  v20 = a6 - 1;
-  v21 = height + (a6 - 1) * -2.0;
-  v22 = [a1 reminderStrokeColor:v13 stack:a6 > 1 style:a7];
-  [a1 drawReminderInContext:a3 rect:v27 fillColor:v22 strokeColor:v10 coveringReminderRect:x allDay:{y, width, v21, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
-  if (a6 >= 2)
+  dayCopy = day;
+  selectedCopy = selected;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v27 = [self reminderBackgroundColor:selected style:style miniPreview:preview completed:completed];
+  v20 = depth - 1;
+  v21 = height + (depth - 1) * -2.0;
+  v22 = [self reminderStrokeColor:selectedCopy stack:depth > 1 style:style];
+  [self drawReminderInContext:context rect:v27 fillColor:v22 strokeColor:dayCopy coveringReminderRect:x allDay:{y, width, v21, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
+  if (depth >= 2)
   {
     do
     {
@@ -266,7 +266,7 @@ void __116__CUIKOccurrenceRenderer_renderColorBlockImageWithSize_colorBarColor_b
       v24 = v30.size.width;
       v25 = v30.size.height;
       v26 = v30.origin.y + 2.0;
-      [a1 drawReminderInContext:a3 rect:v27 fillColor:v22 strokeColor:v10 coveringReminderRect:v30.origin.x allDay:v30.origin.y + 2.0];
+      [self drawReminderInContext:context rect:v27 fillColor:v22 strokeColor:dayCopy coveringReminderRect:v30.origin.x allDay:v30.origin.y + 2.0];
       v21 = v25;
       width = v24;
       y = v26;
@@ -278,18 +278,18 @@ void __116__CUIKOccurrenceRenderer_renderColorBlockImageWithSize_colorBarColor_b
   }
 }
 
-+ (void)drawReminderInContext:(CGContext *)a3 rect:(CGRect)a4 fillColor:(id)a5 strokeColor:(id)a6 coveringReminderRect:(CGRect)a7 allDay:(BOOL)a8
++ (void)drawReminderInContext:(CGContext *)context rect:(CGRect)rect fillColor:(id)color strokeColor:(id)strokeColor coveringReminderRect:(CGRect)reminderRect allDay:(BOOL)day
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v14 = a4.size.height;
-  v15 = a4.size.width;
-  v16 = a4.origin.y;
-  v17 = a4.origin.x;
-  v31 = a5;
-  v19 = a6;
+  height = reminderRect.size.height;
+  width = reminderRect.size.width;
+  y = reminderRect.origin.y;
+  x = reminderRect.origin.x;
+  v14 = rect.size.height;
+  v15 = rect.size.width;
+  v16 = rect.origin.y;
+  v17 = rect.origin.x;
+  colorCopy = color;
+  strokeColorCopy = strokeColor;
   v35.origin.x = x;
   v35.origin.y = y;
   v35.size.width = width;
@@ -303,7 +303,7 @@ void __116__CUIKOccurrenceRenderer_renderColorBlockImageWithSize_colorBarColor_b
   v22 = 0;
   if (!IsNull)
   {
-    CGContextBeginPath(a3);
+    CGContextBeginPath(context);
     v37.origin.x = x;
     v37.origin.y = y;
     v37.size.width = width;
@@ -314,11 +314,11 @@ void __116__CUIKOccurrenceRenderer_renderColorBlockImageWithSize_colorBarColor_b
     v25 = v38.size.width;
     v26 = v38.size.height;
     v22 = CGPathCreateWithRoundedRect(v38, 3.75, 3.75, 0);
-    CGContextAddPath(a3, v22);
-    CGContextAddPath(a3, v21);
-    CGContextClosePath(a3);
-    CGContextEOClip(a3);
-    CGContextBeginPath(a3);
+    CGContextAddPath(context, v22);
+    CGContextAddPath(context, v21);
+    CGContextClosePath(context);
+    CGContextEOClip(context);
+    CGContextBeginPath(context);
     v39.origin.x = v23;
     v39.origin.y = v24;
     v39.size.width = v25;
@@ -327,18 +327,18 @@ void __116__CUIKOccurrenceRenderer_renderColorBlockImageWithSize_colorBarColor_b
     v40.size.height = v14 - (v40.origin.y - v16);
     v40.origin.x = v17;
     v40.size.width = v15;
-    CGContextAddRect(a3, v40);
-    CGContextClosePath(a3);
-    CGContextClip(a3);
+    CGContextAddRect(context, v40);
+    CGContextClosePath(context);
+    CGContextClip(context);
   }
 
-  CGContextSetFillColorWithColor(a3, [v31 CGColor]);
-  CGContextBeginPath(a3);
-  CGContextAddPath(a3, v21);
-  CGContextClosePath(a3);
-  CGContextFillPath(a3);
+  CGContextSetFillColorWithColor(context, [colorCopy CGColor]);
+  CGContextBeginPath(context);
+  CGContextAddPath(context, v21);
+  CGContextClosePath(context);
+  CGContextFillPath(context);
   CGPathRelease(v21);
-  if (v19 && !a8)
+  if (strokeColorCopy && !day)
   {
     v41.origin.x = v17;
     v41.origin.y = v16;
@@ -346,12 +346,12 @@ void __116__CUIKOccurrenceRenderer_renderColorBlockImageWithSize_colorBarColor_b
     v41.size.height = v14;
     v42 = CGRectInset(v41, 0.5, 0.5);
     v27 = CGPathCreateWithRoundedRect(v42, v14 + -0.25, v14 + -0.25, 0);
-    CGContextBeginPath(a3);
-    CGContextAddPath(a3, v27);
-    CGContextClosePath(a3);
-    CGContextSetStrokeColorWithColor(a3, [v19 CGColor]);
-    CGContextSetLineWidth(a3, 0.5);
-    CGContextStrokePath(a3);
+    CGContextBeginPath(context);
+    CGContextAddPath(context, v27);
+    CGContextClosePath(context);
+    CGContextSetStrokeColorWithColor(context, [strokeColorCopy CGColor]);
+    CGContextSetLineWidth(context, 0.5);
+    CGContextStrokePath(context);
     CGPathRelease(v27);
   }
 
@@ -362,16 +362,16 @@ void __116__CUIKOccurrenceRenderer_renderColorBlockImageWithSize_colorBarColor_b
     v30 = *(MEMORY[0x1E695F060] + 8);
     v33.width = *MEMORY[0x1E695F060];
     v33.height = v30;
-    CGContextSetShadow(a3, v33, v28);
-    CGContextSetFillColorWithColor(a3, [v31 CGColor]);
-    CGContextBeginPath(a3);
-    CGContextAddPath(a3, v22);
-    CGContextClosePath(a3);
-    CGContextFillPath(a3);
+    CGContextSetShadow(context, v33, v28);
+    CGContextSetFillColorWithColor(context, [colorCopy CGColor]);
+    CGContextBeginPath(context);
+    CGContextAddPath(context, v22);
+    CGContextClosePath(context);
+    CGContextFillPath(context);
     v34.width = v29;
     v34.height = v30;
-    CGContextSetShadowWithColor(a3, v34, 0.0, 0);
-    CGContextResetClip(a3);
+    CGContextSetShadowWithColor(context, v34, 0.0, 0);
+    CGContextResetClip(context);
   }
 
   if (v22)
@@ -380,30 +380,30 @@ void __116__CUIKOccurrenceRenderer_renderColorBlockImageWithSize_colorBarColor_b
   }
 }
 
-+ (id)reminderBackgroundColor:(BOOL)a3 style:(int64_t)a4 miniPreview:(BOOL)a5 completed:(BOOL)a6 darkenForAllDayArea:(BOOL)a7
++ (id)reminderBackgroundColor:(BOOL)color style:(int64_t)style miniPreview:(BOOL)preview completed:(BOOL)completed darkenForAllDayArea:(BOOL)area
 {
-  if (a3)
+  if (color)
   {
-    v7 = [MEMORY[0x1E69DC888] systemGray2Color];
+    systemGray2Color = [MEMORY[0x1E69DC888] systemGray2Color];
 LABEL_5:
-    v8 = v7;
+    v8 = systemGray2Color;
     goto LABEL_6;
   }
 
-  if (a5)
+  if (preview)
   {
-    v7 = [MEMORY[0x1E69DC888] cuik_systemBackgroundColor];
+    systemGray2Color = [MEMORY[0x1E69DC888] cuik_systemBackgroundColor];
     goto LABEL_5;
   }
 
-  v10 = a6;
-  if (a4 == 2 || !a7)
+  completedCopy = completed;
+  if (style == 2 || !area)
   {
-    v12 = [MEMORY[0x1E69DC888] whiteColor];
-    v13 = CUIKAdjustedColorForColor(v12, a4);
-    v8 = CUIKBackgroundColorForCalendarColorWithOpaqueForStyle(v13, 0, a4, 0);
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v13 = CUIKAdjustedColorForColor(whiteColor, style);
+    v8 = CUIKBackgroundColorForCalendarColorWithOpaqueForStyle(v13, 0, style, 0);
 
-    if (!v10)
+    if (!completedCopy)
     {
       goto LABEL_6;
     }
@@ -412,7 +412,7 @@ LABEL_5:
   }
 
   v8 = [MEMORY[0x1E69DC888] colorWithWhite:0.85 alpha:0.56];
-  if (v10)
+  if (completedCopy)
   {
 LABEL_14:
     v14 = [v8 cuik_colorWithAlphaScaled:0.35];
@@ -425,13 +425,13 @@ LABEL_6:
   return v8;
 }
 
-+ (id)reminderStrokeColor:(BOOL)a3 stack:(BOOL)a4 style:(int64_t)a5
++ (id)reminderStrokeColor:(BOOL)color stack:(BOOL)stack style:(int64_t)style
 {
-  if (a3)
+  if (color)
   {
-    if (a4)
+    if (stack)
     {
-      if (a5 == 2)
+      if (style == 2)
       {
         v5 = 0.407843137;
         v6 = 0.423529412;
@@ -443,28 +443,28 @@ LABEL_6:
         v6 = 0.611764706;
       }
 
-      v7 = [MEMORY[0x1E69DC888] colorWithRed:v5 green:v5 blue:v6 alpha:1.0];
+      systemFillColor = [MEMORY[0x1E69DC888] colorWithRed:v5 green:v5 blue:v6 alpha:1.0];
     }
 
     else
     {
-      v7 = 0;
+      systemFillColor = 0;
     }
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DC888] systemFillColor];
+    systemFillColor = [MEMORY[0x1E69DC888] systemFillColor];
   }
 
-  return v7;
+  return systemFillColor;
 }
 
-+ (id)renderStrings:(id)a3 withSize:(CGSize)a4 font:(id)a5 edgeInsets:(UIEdgeInsets)a6 leadingIcon:(id)a7 trailingIcons:(id)a8 shouldAutoHideLeadingIcon:(BOOL)a9
++ (id)renderStrings:(id)strings withSize:(CGSize)size font:(id)font edgeInsets:(UIEdgeInsets)insets leadingIcon:(id)icon trailingIcons:(id)icons shouldAutoHideLeadingIcon:(BOOL)leadingIcon
 {
   v18 = 0.0;
   v19 = 0.0;
-  v9 = [a1 renderingBlockForStrings:a3 withSize:a5 font:a7 edgeInsets:a8 leadingIcon:&v18 trailingIcons:a9 outImageSize:a4.width shouldAutoHideLeadingIcon:{a4.height, a6.top, a6.left, a6.bottom, a6.right}];
+  v9 = [self renderingBlockForStrings:strings withSize:font font:icon edgeInsets:icons leadingIcon:&v18 trailingIcons:leadingIcon outImageSize:size.width shouldAutoHideLeadingIcon:{size.height, insets.top, insets.left, insets.bottom, insets.right}];
   v10 = MEMORY[0x1E69DCAB8];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -479,39 +479,39 @@ LABEL_6:
   return v14;
 }
 
-+ (id)renderingBlockForStrings:(id)a3 withSize:(CGSize)a4 font:(id)a5 edgeInsets:(UIEdgeInsets)a6 leadingIcon:(id)a7 trailingIcons:(id)a8 outImageSize:(CGSize *)a9 shouldAutoHideLeadingIcon:(BOOL)a10
++ (id)renderingBlockForStrings:(id)strings withSize:(CGSize)size font:(id)font edgeInsets:(UIEdgeInsets)insets leadingIcon:(id)icon trailingIcons:(id)icons outImageSize:(CGSize *)imageSize shouldAutoHideLeadingIcon:(BOOL)self0
 {
-  v10 = a10;
-  bottom = a6.bottom;
-  top = a6.top;
-  height = a4.height;
-  width = a4.width;
+  leadingIconCopy = leadingIcon;
+  bottom = insets.bottom;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
   v81 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v20 = a5;
-  v21 = a7;
-  v22 = a8;
+  stringsCopy = strings;
+  fontCopy = font;
+  iconCopy = icon;
+  iconsCopy = icons;
   v23 = +[CUIKInterface shared];
-  v24 = [v23 layoutDirectionOrOverride];
+  layoutDirectionOrOverride = [v23 layoutDirectionOrOverride];
 
   v25 = 0.0;
   v26 = 0.0;
-  if (v21)
+  if (iconCopy)
   {
-    [v21 size];
+    [iconCopy size];
     v26 = v27;
   }
 
-  if ([v22 count])
+  if ([iconsCopy count])
   {
-    v61 = v10;
-    v62 = v24;
-    v28 = v20;
+    v61 = leadingIconCopy;
+    v62 = layoutDirectionOrOverride;
+    v28 = fontCopy;
     v78 = 0u;
     v79 = 0u;
     v77 = 0u;
     v76 = 0u;
-    v29 = v22;
+    v29 = iconsCopy;
     v30 = [v29 countByEnumeratingWithState:&v76 objects:v80 count:16];
     if (v30)
     {
@@ -538,13 +538,13 @@ LABEL_6:
       while (v31);
     }
 
-    v20 = v28;
-    v24 = v62;
-    v10 = v61;
+    fontCopy = v28;
+    layoutDirectionOrOverride = v62;
+    leadingIconCopy = v61;
   }
 
   v37 = width - (v26 + v25);
-  if (v10)
+  if (leadingIconCopy)
   {
     +[CUIKORImageUtils hideIconBreakpoint];
     if (v37 < v38)
@@ -565,8 +565,8 @@ LABEL_6:
     v40 = 0.0;
   }
 
-  v41 = [v19 combinedString];
-  [v41 boundingRectWithSize:33 options:0 context:{width - v40, height}];
+  combinedString = [stringsCopy combinedString];
+  [combinedString boundingRectWithSize:33 options:0 context:{width - v40, height}];
   v43 = v42;
   v45 = v44;
   v47 = v46;
@@ -589,10 +589,10 @@ LABEL_6:
   v85.size.width = v51;
   v85.size.height = v50;
   MaxY = CGRectGetMaxY(v85);
-  if (a9)
+  if (imageSize)
   {
-    a9->width = MaxX;
-    a9->height = MaxY;
+    imageSize->width = MaxX;
+    imageSize->height = MaxY;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -603,17 +603,17 @@ LABEL_6:
   v70 = v52;
   v71 = v51;
   v72 = v50;
-  v65 = v22;
-  v66 = v20;
-  v75 = v24 == 1;
+  v65 = iconsCopy;
+  v66 = fontCopy;
+  v75 = layoutDirectionOrOverride == 1;
   v73 = v40;
   v74 = v63;
-  v67 = v21;
-  v68 = v19;
-  v55 = v19;
-  v56 = v21;
-  v57 = v20;
-  v58 = v22;
+  v67 = iconCopy;
+  v68 = stringsCopy;
+  v55 = stringsCopy;
+  v56 = iconCopy;
+  v57 = fontCopy;
+  v58 = iconsCopy;
   v59 = _Block_copy(aBlock);
 
   return v59;

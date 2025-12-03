@@ -40,22 +40,22 @@
 
 + (id)br_badFilenameAlternativeName
 {
-  v0 = [MEMORY[0x1E696AFB0] UUID];
-  v1 = [v0 UUIDString];
-  v2 = [@"tmp-bad-filename-" stringByAppendingString:v1];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v2 = [@"tmp-bad-filename-" stringByAppendingString:uUIDString];
 
   return v2;
 }
 
 - (BOOL)br_isPackageRoot
 {
-  v2 = offsetOfPackageRootFilenameInPath(a1, 0);
+  v2 = offsetOfPackageRootFilenameInPath(self, 0);
   if (v2 < 0)
   {
     return 0;
   }
 
-  v3 = ([a1 fileSystemRepresentation] + v2);
+  v3 = ([self fileSystemRepresentation] + v2);
   do
   {
     v5 = *v3++;
@@ -68,12 +68,12 @@
 
 - (id)br_pathExtension
 {
-  if (![a1 length])
+  if (![self length])
   {
     goto LABEL_5;
   }
 
-  v2 = extensionInFilename([a1 fileSystemRepresentation]);
+  v2 = extensionInFilename([self fileSystemRepresentation]);
   v3 = v2;
   if (!v2)
   {
@@ -84,8 +84,8 @@
   if (v4)
   {
     v5 = v4;
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v3 = [v6 stringWithFileSystemRepresentation:v3 length:v5];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v3 = [defaultManager stringWithFileSystemRepresentation:v3 length:v5];
   }
 
   else
@@ -101,37 +101,37 @@ LABEL_6:
 
 - (id)brc_stringByDeletingPathExtension
 {
-  v2 = [a1 br_pathSafeFileSystemRepresentation];
-  if (!v2)
+  br_pathSafeFileSystemRepresentation = [self br_pathSafeFileSystemRepresentation];
+  if (!br_pathSafeFileSystemRepresentation)
   {
-    v2 = [a1 UTF8String];
+    br_pathSafeFileSystemRepresentation = [self UTF8String];
   }
 
-  v3 = extensionInFilename(v2);
+  v3 = extensionInFilename(br_pathSafeFileSystemRepresentation);
   if (v3)
   {
     v4 = v3;
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v5 stringWithFileSystemRepresentation:v2 length:&v4[~v2]];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    selfCopy = [defaultManager stringWithFileSystemRepresentation:br_pathSafeFileSystemRepresentation length:&v4[~br_pathSafeFileSystemRepresentation]];
   }
 
   else
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)br_displayFilenameWithExtensionHidden:()BRPathAdditions
 {
-  v4 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = selfCopy;
   if (a3)
   {
-    v6 = [v4 brc_stringByDeletingPathExtension];
+    brc_stringByDeletingPathExtension = [selfCopy brc_stringByDeletingPathExtension];
 
-    v5 = v6;
+    v5 = brc_stringByDeletingPathExtension;
   }
 
   v7 = [v5 stringByReplacingOccurrencesOfString:@":" withString:@"/"];
@@ -145,9 +145,9 @@ LABEL_6:
   v54[3] = *MEMORY[0x1E69E9840];
   if (a3)
   {
-    v6 = a1;
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6];
+    selfCopy = self;
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:selfCopy];
     v9 = *MEMORY[0x1E695DB50];
     v54[0] = *MEMORY[0x1E695DB78];
     v54[1] = v9;
@@ -159,10 +159,10 @@ LABEL_6:
     v45[1] = 3221225472;
     v45[2] = __fileSystemSizeForDirectoryAtPath_block_invoke;
     v45[3] = &unk_1E7A154A0;
-    v32 = v6;
-    v33 = v7;
+    v32 = selfCopy;
+    v33 = defaultManager;
     v46 = v32;
-    v12 = [v7 enumeratorAtURL:v8 includingPropertiesForKeys:v11 options:0 errorHandler:v45];
+    v12 = [defaultManager enumeratorAtURL:v8 includingPropertiesForKeys:v11 options:0 errorHandler:v45];
 
     v43 = 0u;
     v44 = 0u;
@@ -236,17 +236,17 @@ LABEL_6:
     }
 
     v4 = a4;
-    v29 = v37;
+    fileSize = v37;
   }
 
   else
   {
-    v27 = [MEMORY[0x1E696AC08] defaultManager];
-    v28 = [v27 attributesOfItemAtPath:a1 error:0];
-    v29 = [v28 fileSize];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    v28 = [defaultManager2 attributesOfItemAtPath:self error:0];
+    fileSize = [v28 fileSize];
   }
 
-  result = v29 > v4;
+  result = fileSize > v4;
   v31 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -256,7 +256,7 @@ LABEL_6:
   v31 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [a1 lastPathComponent];
+  lastPathComponent = [self lastPathComponent];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -277,9 +277,9 @@ LABEL_6:
         }
 
         v14 = 1;
-        if (![v8 compare:*(*(&v25 + 1) + 8 * i) options:1])
+        if (![lastPathComponent compare:*(*(&v25 + 1) + 8 * i) options:1])
         {
-          v15 = v9;
+          br_pathExtension = v9;
           goto LABEL_23;
         }
       }
@@ -294,8 +294,8 @@ LABEL_6:
     }
   }
 
-  v15 = [v8 br_pathExtension];
-  if (v15)
+  br_pathExtension = [lastPathComponent br_pathExtension];
+  if (br_pathExtension)
   {
     v23 = 0u;
     v24 = 0u;
@@ -315,7 +315,7 @@ LABEL_6:
             objc_enumerationMutation(v16);
           }
 
-          if (![v15 compare:*(*(&v21 + 1) + 8 * j) options:{1, v21}])
+          if (![br_pathExtension compare:*(*(&v21 + 1) + 8 * j) options:{1, v21}])
           {
             v14 = 1;
             goto LABEL_21;
@@ -350,13 +350,13 @@ LABEL_23:
 {
   v32 = *MEMORY[0x1E69E9840];
   v7 = objc_autoreleasePoolPush();
-  if (![a1 length])
+  if (![self length])
   {
     v10 = 0;
     goto LABEL_67;
   }
 
-  v8 = [a1 _br_pathSafeFileSystemRepresentationWithDefaultValue:a1];
+  v8 = [self _br_pathSafeFileSystemRepresentationWithDefaultValue:self];
   v9 = v31;
   if (__strlcpy_chk() > 0x3FF)
   {
@@ -522,13 +522,13 @@ LABEL_67:
 
 - (BOOL)br_isInPackage
 {
-  v2 = offsetOfPackageRootFilenameInPath(a1, 0);
+  v2 = offsetOfPackageRootFilenameInPath(self, 0);
   if (v2 < 0)
   {
     return 0;
   }
 
-  v3 = ([a1 fileSystemRepresentation] + v2);
+  v3 = ([self fileSystemRepresentation] + v2);
   do
   {
     v5 = *v3++;
@@ -542,7 +542,7 @@ LABEL_67:
 - (id)br_pathOfPackageRoot
 {
   v3 = 0;
-  offsetOfPackageRootFilenameInPath(a1, &v3);
+  offsetOfPackageRootFilenameInPath(self, &v3);
   v1 = v3;
 
   return v1;
@@ -550,7 +550,7 @@ LABEL_67:
 
 - (id)br_pathRelativeToPackageRoot
 {
-  v2 = offsetOfPackageRootFilenameInPath(a1, 0);
+  v2 = offsetOfPackageRootFilenameInPath(self, 0);
   if (v2 < 0)
   {
     v5 = 0;
@@ -559,8 +559,8 @@ LABEL_67:
   else
   {
     v3 = v2;
-    v4 = [a1 fileSystemRepresentation];
-    v5 = [MEMORY[0x1E696AEC0] br_pathWithFileSystemRepresentation:v4 + v3];
+    fileSystemRepresentation = [self fileSystemRepresentation];
+    v5 = [MEMORY[0x1E696AEC0] br_pathWithFileSystemRepresentation:fileSystemRepresentation + v3];
   }
 
   return v5;
@@ -568,52 +568,52 @@ LABEL_67:
 
 - (id)removingROSPPrefix
 {
-  if ([a1 hasPrefix:@"/System/Volumes/Data"])
+  if ([self hasPrefix:@"/System/Volumes/Data"])
   {
-    v2 = [a1 substringFromIndex:{objc_msgSend(@"/System/Volumes/Data", "length")}];
+    selfCopy = [self substringFromIndex:{objc_msgSend(@"/System/Volumes/Data", "length")}];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (__CFString)br_pathRelativeToPath:()BRPathAdditions
 {
-  v4 = [a3 removingROSPPrefix];
-  v5 = [a1 removingROSPPrefix];
-  if ([v5 length])
+  removingROSPPrefix = [a3 removingROSPPrefix];
+  removingROSPPrefix2 = [self removingROSPPrefix];
+  if ([removingROSPPrefix2 length])
   {
-    if (![v4 length])
+    if (![removingROSPPrefix length])
     {
-      v9 = v5;
+      v9 = removingROSPPrefix2;
 LABEL_12:
       v8 = v9;
       goto LABEL_14;
     }
 
-    if ([v4 hasSuffix:@"/"])
+    if ([removingROSPPrefix hasSuffix:@"/"])
     {
-      v6 = [v4 substringToIndex:{objc_msgSend(v4, "length") - 1}];
+      v6 = [removingROSPPrefix substringToIndex:{objc_msgSend(removingROSPPrefix, "length") - 1}];
 
-      v4 = v6;
+      removingROSPPrefix = v6;
     }
 
-    if (![v4 length] || objc_msgSend(v5, "hasPrefix:", v4))
+    if (![removingROSPPrefix length] || objc_msgSend(removingROSPPrefix2, "hasPrefix:", removingROSPPrefix))
     {
-      v7 = [v5 length];
-      if (v7 == [v4 length])
+      v7 = [removingROSPPrefix2 length];
+      if (v7 == [removingROSPPrefix length])
       {
         v8 = &stru_1F23D4ED0;
         goto LABEL_14;
       }
 
-      if ([v5 characterAtIndex:{objc_msgSend(v4, "length")}] == 47)
+      if ([removingROSPPrefix2 characterAtIndex:{objc_msgSend(removingROSPPrefix, "length")}] == 47)
       {
-        v9 = [v5 substringFromIndex:{objc_msgSend(v4, "length") + 1}];
+        v9 = [removingROSPPrefix2 substringFromIndex:{objc_msgSend(removingROSPPrefix, "length") + 1}];
         goto LABEL_12;
       }
     }
@@ -627,10 +627,10 @@ LABEL_14:
 
 - (uint64_t)br_isAbsolutePath
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
-    return [a1 characterAtIndex:0] == 47;
+    return [self characterAtIndex:0] == 47;
   }
 
   return result;
@@ -638,20 +638,20 @@ LABEL_14:
 
 - (const)br_fileSystemRepresentation
 {
-  if (![a1 length])
+  if (![self length])
   {
     return ".";
   }
 
-  v2 = a1;
+  selfCopy = self;
 
-  return [v2 fileSystemRepresentation];
+  return [selfCopy fileSystemRepresentation];
 }
 
 - (uint64_t)br_filenameSafeFileSystemRepresentation
 {
-  v2 = [MEMORY[0x1E696AEC0] br_badFilenameAlternativeName];
-  v3 = [a1 _br_pathSafeFileSystemRepresentationWithDefaultValue:v2];
+  br_badFilenameAlternativeName = [MEMORY[0x1E696AEC0] br_badFilenameAlternativeName];
+  v3 = [self _br_pathSafeFileSystemRepresentationWithDefaultValue:br_badFilenameAlternativeName];
 
   return v3;
 }
@@ -659,19 +659,19 @@ LABEL_14:
 - (uint64_t)_br_pathSafeFileSystemRepresentationWithDefaultValue:()BRPathAdditions
 {
   v4 = a3;
-  v5 = [a1 br_pathSafeFileSystemRepresentation];
-  if (!v5)
+  br_pathSafeFileSystemRepresentation = [self br_pathSafeFileSystemRepresentation];
+  if (!br_pathSafeFileSystemRepresentation)
   {
-    v5 = [v4 UTF8String];
+    br_pathSafeFileSystemRepresentation = [v4 UTF8String];
   }
 
-  return v5;
+  return br_pathSafeFileSystemRepresentation;
 }
 
 - (uint64_t)br_pathSafeFileSystemRepresentation
 {
   v3 = *MEMORY[0x1E69E9840];
-  result = [a1 fileSystemRepresentation];
+  result = [self fileSystemRepresentation];
   v2 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -679,23 +679,23 @@ LABEL_14:
 - (id)br_realpathKeepingLastSymlink
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (![a1 length])
+  if (![self length])
   {
     goto LABEL_10;
   }
 
   memset(v15, 0, 512);
-  v2 = [a1 _br_pathSafeFileSystemRepresentationWithDefaultValue:a1];
+  v2 = [self _br_pathSafeFileSystemRepresentationWithDefaultValue:self];
   v13 = xmmword_1AE33DFB8;
   v14 = 0;
   if (getattrlist(v2, &v13, v15, 0x40CuLL, 0x21u) < 0)
   {
     if (*__error() == 2)
     {
-      v5 = [a1 stringByDeletingLastPathComponent];
-      v6 = [v5 br_realpath];
-      v7 = [a1 lastPathComponent];
-      v8 = [v6 stringByAppendingPathComponent:v7];
+      stringByDeletingLastPathComponent = [self stringByDeletingLastPathComponent];
+      br_realpath = [stringByDeletingLastPathComponent br_realpath];
+      lastPathComponent = [self lastPathComponent];
+      v8 = [br_realpath stringByAppendingPathComponent:lastPathComponent];
 
       goto LABEL_12;
     }
@@ -714,13 +714,13 @@ LABEL_14:
   if (!strcmp(v2, v15 + SDWORD1(v15[0]) + 4))
   {
 LABEL_10:
-    v4 = a1;
+    selfCopy = self;
     goto LABEL_11;
   }
 
-  v4 = [MEMORY[0x1E696AEC0] br_pathWithFileSystemRepresentation:v15 + v3 + 4];
+  selfCopy = [MEMORY[0x1E696AEC0] br_pathWithFileSystemRepresentation:v15 + v3 + 4];
 LABEL_11:
-  v8 = v4;
+  v8 = selfCopy;
 LABEL_12:
   v11 = *MEMORY[0x1E69E9840];
 
@@ -768,9 +768,9 @@ LABEL_3:
 
 + (id)br_emptyFilenameAlternativeName
 {
-  v0 = [MEMORY[0x1E696AFB0] UUID];
-  v1 = [v0 UUIDString];
-  v2 = [@".com-apple-bird-noname-" stringByAppendingString:v1];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v2 = [@".com-apple-bird-noname-" stringByAppendingString:uUIDString];
 
   return v2;
 }
@@ -872,9 +872,9 @@ LABEL_19:
     +[NSString(BRPathAdditions) br_representableHFSFileNameWithBase:suffix:extension:makeDotFile:];
   }
 
-  v26 = [MEMORY[0x1E696AFB0] UUID];
-  v27 = [v26 UUIDString];
-  v22 = v23 + snprintf(&v37 + v23, 254 - v22, "com-apple-bird-recovered-%s", [v27 UTF8String]);
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v22 = v23 + snprintf(&v37 + v23, 254 - v22, "com-apple-bird-recovered-%s", [uUIDString UTF8String]);
 
   if (v15)
   {
@@ -900,15 +900,15 @@ LABEL_26:
 
   if (!v22 || v30)
   {
-    v31 = [MEMORY[0x1E696AEC0] br_emptyFilenameAlternativeName];
+    br_emptyFilenameAlternativeName = [MEMORY[0x1E696AEC0] br_emptyFilenameAlternativeName];
   }
 
   else
   {
-    v31 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:&v37 length:v22 encoding:4];
+    br_emptyFilenameAlternativeName = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:&v37 length:v22 encoding:4];
   }
 
-  v32 = v31;
+  v32 = br_emptyFilenameAlternativeName;
 
   v33 = *MEMORY[0x1E69E9840];
 
@@ -921,51 +921,51 @@ LABEL_26:
   v9 = a4;
   v10 = [v8 length];
   v11 = [v9 length];
-  if ((a5 & 1) != 0 || v10 || v11 || [a1 lengthOfBytesUsingEncoding:4] >= 0x100)
+  if ((a5 & 1) != 0 || v10 || v11 || [self lengthOfBytesUsingEncoding:4] >= 0x100)
   {
-    v12 = [a1 br_pathExtension];
-    v13 = [a1 brc_stringByDeletingPathExtension];
+    br_pathExtension = [self br_pathExtension];
+    brc_stringByDeletingPathExtension = [self brc_stringByDeletingPathExtension];
     if (v9)
     {
-      if (v12)
+      if (br_pathExtension)
       {
-        v14 = [v12 stringByAppendingPathExtension:v9];
+        v14 = [br_pathExtension stringByAppendingPathExtension:v9];
 
-        v12 = v14;
+        br_pathExtension = v14;
       }
 
       else
       {
-        v12 = v9;
+        br_pathExtension = v9;
       }
     }
 
-    v15 = [MEMORY[0x1E696AEC0] br_representableHFSFileNameWithBase:v13 suffix:v8 extension:v12 makeDotFile:a5];
+    selfCopy = [MEMORY[0x1E696AEC0] br_representableHFSFileNameWithBase:brc_stringByDeletingPathExtension suffix:v8 extension:br_pathExtension makeDotFile:a5];
   }
 
   else
   {
-    v15 = a1;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)br_representableHFSFileNameWithNumber:()BRPathAdditions addedExtension:makeDotFile:
 {
   v8 = a4;
-  v9 = [a3 stringValue];
-  v10 = [a1 brc_representableHFSFileNameWithSuffix:v9 addedExtension:v8 makeDotFile:a5];
+  stringValue = [a3 stringValue];
+  v10 = [self brc_representableHFSFileNameWithSuffix:stringValue addedExtension:v8 makeDotFile:a5];
 
   return v10;
 }
 
 - (id)br_sideFaultPath
 {
-  v2 = [a1 stringByDeletingLastPathComponent];
-  v3 = [a1 lastPathComponent];
-  v4 = [v3 br_sideFaultName];
-  v5 = [v2 stringByAppendingPathComponent:v4];
+  stringByDeletingLastPathComponent = [self stringByDeletingLastPathComponent];
+  lastPathComponent = [self lastPathComponent];
+  br_sideFaultName = [lastPathComponent br_sideFaultName];
+  v5 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:br_sideFaultName];
 
   return v5;
 }
@@ -973,17 +973,17 @@ LABEL_26:
 - (id)_br_nameWithAddedExtension:()BRPathAdditions makeDotFile:
 {
   v6 = a3;
-  v7 = [a1 lengthOfBytesUsingEncoding:4];
+  v7 = [self lengthOfBytesUsingEncoding:4];
   if (v7 + a4 + [v6 length] < 0x100)
   {
-    v12 = [a1 brc_representableHFSFileNameWithSuffix:0 addedExtension:v6 makeDotFile:a4];
+    v12 = [self brc_representableHFSFileNameWithSuffix:0 addedExtension:v6 makeDotFile:a4];
   }
 
   else
   {
     v15 = 0;
     v16 = 0;
-    v8 = [a1 br_stringByDeletingPathBounceNo:&v16 andPathExtension:&v15];
+    v8 = [self br_stringByDeletingPathBounceNo:&v16 andPathExtension:&v15];
     v9 = v15;
     if (v9)
     {
@@ -1020,17 +1020,17 @@ LABEL_26:
       +[NSString(BRPathAdditions) br_pathForDirectory:];
     }
 
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [v4 URLsForDirectory:a3 inDomains:1];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v5 = [defaultManager URLsForDirectory:a3 inDomains:1];
 
     if ([v5 count] != 1)
     {
       +[NSString(BRPathAdditions) br_pathForDirectory:];
     }
 
-    v6 = [v5 firstObject];
-    v7 = [v6 path];
-    v8 = [v7 br_realpath];
+    firstObject = [v5 firstObject];
+    path = [firstObject path];
+    br_realpath = [path br_realpath];
   }
 
   else
@@ -1057,31 +1057,31 @@ LABEL_26:
       v9 = 0;
     }
 
-    v8 = [@"/var/mobile" stringByAppendingPathComponent:v9];
+    br_realpath = [@"/var/mobile" stringByAppendingPathComponent:v9];
   }
 
-  return v8;
+  return br_realpath;
 }
 
 - (id)br_pathRelativeToDirectory:()BRPathAdditions
 {
   v2 = [MEMORY[0x1E696AEC0] br_pathForDirectory:?];
-  v3 = [v2 stringByAppendingPathComponent:a1];
+  v3 = [v2 stringByAppendingPathComponent:self];
 
   return v3;
 }
 
 + (id)br_currentPersonaIDWithIsDataSeparated:()BRPathAdditions
 {
-  v4 = [MEMORY[0x1E69DF068] sharedManager];
-  v5 = [v4 currentPersona];
-  v6 = [v4 br_currentPersonaID];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  br_currentPersonaID = [mEMORY[0x1E69DF068] br_currentPersonaID];
   if (a3)
   {
-    *a3 = [v5 isDataSeparatedPersona];
+    *a3 = [currentPersona isDataSeparatedPersona];
   }
 
-  return v6;
+  return br_currentPersonaID;
 }
 
 + (id)br_personaGroupDirForFPFS:()BRPathAdditions
@@ -1092,18 +1092,18 @@ LABEL_26:
     goto LABEL_3;
   }
 
-  v4 = [[BRDaemonConnection alloc] initUsingUserLocalDaemonTokenService];
-  v5 = [v4 newSyncTokenProxy];
+  initUsingUserLocalDaemonTokenService = [[BRDaemonConnection alloc] initUsingUserLocalDaemonTokenService];
+  newSyncTokenProxy = [initUsingUserLocalDaemonTokenService newSyncTokenProxy];
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = __55__NSString_BRPathAdditions__br_personaGroupDirForFPFS___block_invoke;
   v23 = &unk_1E7A14CF8;
-  v24 = v5;
-  v6 = v5;
+  v24 = newSyncTokenProxy;
+  v6 = newSyncTokenProxy;
   [v6 fetchGroupContainerPathForCurrentPersonaForFPFS:a3 withReply:&v20];
-  v7 = [v6 result];
+  result = [v6 result];
 
-  if (!v7)
+  if (!result)
   {
 LABEL_3:
     if (a3)
@@ -1121,9 +1121,9 @@ LABEL_3:
     if (v9)
     {
       v10 = v9;
-      v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
+      result = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
       free(v10);
-      if (v7)
+      if (result)
       {
         goto LABEL_15;
       }
@@ -1143,8 +1143,8 @@ LABEL_3:
       }
     }
 
-    v13 = [MEMORY[0x1E69DF068] sharedManager];
-    v14 = [v13 currentPersona];
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
     v15 = brc_bread_crumbs("+[NSString(BRPathAdditions) br_personaGroupDirForFPFS:]", 937);
     v16 = brc_default_log(0, 0);
@@ -1153,35 +1153,35 @@ LABEL_3:
       +[NSString(BRPathAdditions) br_personaGroupDirForFPFS:];
     }
 
-    v7 = 0;
+    result = 0;
   }
 
 LABEL_15:
   v17 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return result;
 }
 
 + (id)br_corruptedDBInfoPath
 {
-  v0 = [MEMORY[0x1E696AEC0] br_currentSupportDir];
-  v1 = [v0 stringByAppendingPathComponent:@"corrupted_db_info"];
+  br_currentSupportDir = [MEMORY[0x1E696AEC0] br_currentSupportDir];
+  v1 = [br_currentSupportDir stringByAppendingPathComponent:@"corrupted_db_info"];
 
   return v1;
 }
 
 + (id)br_reimportDomainErrorInfoPath
 {
-  v0 = [MEMORY[0x1E696AEC0] br_currentSupportDir];
-  v1 = [v0 stringByAppendingPathComponent:@"reimport_domain_error_info"];
+  br_currentSupportDir = [MEMORY[0x1E696AEC0] br_currentSupportDir];
+  v1 = [br_currentSupportDir stringByAppendingPathComponent:@"reimport_domain_error_info"];
 
   return v1;
 }
 
 + (id)br_accountSessionOpenErrorInfoPath
 {
-  v0 = [MEMORY[0x1E696AEC0] br_currentSupportDir];
-  v1 = [v0 stringByAppendingPathComponent:@"account_session_open_error_info"];
+  br_currentSupportDir = [MEMORY[0x1E696AEC0] br_currentSupportDir];
+  v1 = [br_currentSupportDir stringByAppendingPathComponent:@"account_session_open_error_info"];
 
   return v1;
 }
@@ -1200,7 +1200,7 @@ LABEL_15:
   v14 = *MEMORY[0x1E69E9840];
   v6 = *__error();
   v8 = 136315650;
-  v9 = a1;
+  selfCopy = self;
   v10 = 1024;
   v11 = v6;
   v12 = 2112;

@@ -1,7 +1,7 @@
 @interface PKApplyExplanationViewController
-- (PKApplyExplanationViewController)initWithController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 applyPage:(id)a6;
+- (PKApplyExplanationViewController)initWithController:(id)controller setupDelegate:(id)delegate context:(int64_t)context applyPage:(id)page;
 - (PKPaymentSetupViewControllerDelegate)setupDelegate;
-- (void)_analyticsReportButtonTap:(id)a3;
+- (void)_analyticsReportButtonTap:(id)tap;
 - (void)_auxiliary;
 - (void)_bodyButtonAction;
 - (void)_cancel;
@@ -9,36 +9,36 @@
 - (void)_done;
 - (void)_featureApplicationUpdated;
 - (void)_learnMore;
-- (void)_linkAction:(id)a3;
-- (void)_performActionForBlock:(id)a3;
-- (void)_performDoneAction:(BOOL)a3;
+- (void)_linkAction:(id)action;
+- (void)_performActionForBlock:(id)block;
+- (void)_performDoneAction:(BOOL)action;
 - (void)_performLearnMoreAction;
 - (void)_presentInvitationContactSupport;
-- (void)_presentTermsWithIdentifier:(id)a3;
+- (void)_presentTermsWithIdentifier:(id)identifier;
 - (void)handleNextStep;
-- (void)handleNextViewController:(id)a3 displayableError:(id)a4;
-- (void)showNavigationBarSpinner:(BOOL)a3;
+- (void)handleNextViewController:(id)controller displayableError:(id)error;
+- (void)showNavigationBarSpinner:(BOOL)spinner;
 - (void)terminateSetupFlow;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKApplyExplanationViewController
 
-- (PKApplyExplanationViewController)initWithController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 applyPage:(id)a6
+- (PKApplyExplanationViewController)initWithController:(id)controller setupDelegate:(id)delegate context:(int64_t)context applyPage:(id)page
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  pageCopy = page;
   v36.receiver = self;
   v36.super_class = PKApplyExplanationViewController;
-  v14 = [(PKDynamicProvisioningPageViewController *)&v36 initWithPage:v13 context:a5];
+  v14 = [(PKDynamicProvisioningPageViewController *)&v36 initWithPage:pageCopy context:context];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_setupDelegate, v12);
-    objc_storeStrong(&v15->_controller, a3);
+    objc_storeWeak(&v14->_setupDelegate, delegateCopy);
+    objc_storeStrong(&v15->_controller, controller);
     objc_initWeak(&location, v15);
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
@@ -171,64 +171,64 @@ void __87__PKApplyExplanationViewController_initWithController_setupDelegate_con
   v17.receiver = self;
   v17.super_class = PKApplyExplanationViewController;
   [(PKDynamicProvisioningPageViewController *)&v17 viewDidLoad];
-  v3 = [(PKApplyExplanationViewController *)self currentPage];
-  v4 = [v3 identifier];
+  currentPage = [(PKApplyExplanationViewController *)self currentPage];
+  identifier = [currentPage identifier];
 
-  if (v4)
+  if (identifier)
   {
     v5 = MEMORY[0x1E695DFD8];
-    v6 = v4;
+    v6 = identifier;
     v7 = [[v5 alloc] initWithObjects:{@"newParticipantInvitationAcceptance", @"participantToParticipantInvitationAcceptance", @"participantToCoOwnerInvitationAcceptance", @"newCoOwnerInvitationAcceptance", @"ownerToCoOwnerInvitationAcceptance", 0}];
     v8 = [v7 containsObject:v6];
 
     if (v8)
     {
-      v9 = [(PKExplanationViewController *)self explanationView];
-      [v9 setShowPrivacyView:1];
+      explanationView = [(PKExplanationViewController *)self explanationView];
+      [explanationView setShowPrivacyView:1];
       v10 = [MEMORY[0x1E69B7D50] pk_privacyLinkForContext:4];
       [(PKExplanationViewController *)self setPrivacyLinkController:v10];
 
-      v11 = [(PKApplyExplanationViewController *)self navigationItem];
-      [v11 setHidesBackButton:0];
+      navigationItem = [(PKApplyExplanationViewController *)self navigationItem];
+      [navigationItem setHidesBackButton:0];
     }
   }
 
-  v12 = [(PKApplyExplanationViewController *)self controller];
-  v13 = [v12 applicationType];
-  if ((v13 - 2) < 2)
+  controller = [(PKApplyExplanationViewController *)self controller];
+  applicationType = [controller applicationType];
+  if ((applicationType - 2) < 2)
   {
-    v14 = [(PKExplanationViewController *)self explanationView];
-    v15 = [v14 image];
-    if (!v15)
+    explanationView2 = [(PKExplanationViewController *)self explanationView];
+    image = [explanationView2 image];
+    if (!image)
     {
-      v16 = PKFeatureApplicationHeaderImageWithImage([v12 featureIdentifier], 0);
-      [v14 setImage:v16];
+      v16 = PKFeatureApplicationHeaderImageWithImage([controller featureIdentifier], 0);
+      [explanationView2 setImage:v16];
     }
 
-    [v14 setTopMargin:30.0];
+    [explanationView2 setTopMargin:30.0];
 
     goto LABEL_8;
   }
 
-  if (v13 == 4 && [v12 updateUserInfoSubType] == 4)
+  if (applicationType == 4 && [controller updateUserInfoSubType] == 4)
   {
-    v14 = [(PKExplanationViewController *)self explanationView];
-    [v14 setImageStyle:1];
+    explanationView2 = [(PKExplanationViewController *)self explanationView];
+    [explanationView2 setImageStyle:1];
 LABEL_8:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = PKApplyExplanationViewController;
-  [(PKApplyExplanationViewController *)&v13 viewDidAppear:a3];
-  v4 = [(PKApplyExplanationViewController *)self controller];
-  [v4 applyFlowDidAppear];
+  [(PKApplyExplanationViewController *)&v13 viewDidAppear:appear];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  [controller applyFlowDidAppear];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel__featureApplicationUpdated name:@"PKApplyControllerUpdatedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__featureApplicationUpdated name:@"PKApplyControllerUpdatedNotification" object:0];
 
   v6 = objc_alloc(MEMORY[0x1E695DF90]);
   v14 = *MEMORY[0x1E69BA680];
@@ -236,23 +236,23 @@ LABEL_8:
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v8 = [v6 initWithDictionary:v7];
 
-  v9 = [(PKApplyExplanationViewController *)self analyticsAdditionalValues];
-  [v8 addEntriesFromDictionary:v9];
+  analyticsAdditionalValues = [(PKApplyExplanationViewController *)self analyticsAdditionalValues];
+  [v8 addEntriesFromDictionary:analyticsAdditionalValues];
 
   controller = self->_controller;
-  v11 = [(PKApplyExplanationViewController *)self currentPage];
-  v12 = [(PKApplyExplanationViewController *)self analyticsPageTag];
-  [(PKApplyController *)controller reportAnalyticsDictionaryForPage:v11 pageTag:v12 additionalValues:v8];
+  currentPage = [(PKApplyExplanationViewController *)self currentPage];
+  analyticsPageTag = [(PKApplyExplanationViewController *)self analyticsPageTag];
+  [(PKApplyController *)controller reportAnalyticsDictionaryForPage:currentPage pageTag:analyticsPageTag additionalValues:v8];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = PKApplyExplanationViewController;
-  [(PKApplyExplanationViewController *)&v12 viewDidDisappear:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"PKApplyControllerUpdatedNotification" object:0];
+  [(PKApplyExplanationViewController *)&v12 viewDidDisappear:disappear];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"PKApplyControllerUpdatedNotification" object:0];
 
   v5 = objc_alloc(MEMORY[0x1E695DF90]);
   v13 = *MEMORY[0x1E69BA680];
@@ -260,13 +260,13 @@ LABEL_8:
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   v7 = [v5 initWithDictionary:v6];
 
-  v8 = [(PKApplyExplanationViewController *)self analyticsAdditionalValues];
-  [v7 addEntriesFromDictionary:v8];
+  analyticsAdditionalValues = [(PKApplyExplanationViewController *)self analyticsAdditionalValues];
+  [v7 addEntriesFromDictionary:analyticsAdditionalValues];
 
   controller = self->_controller;
-  v10 = [(PKApplyExplanationViewController *)self currentPage];
-  v11 = [(PKApplyExplanationViewController *)self analyticsPageTag];
-  [(PKApplyController *)controller reportAnalyticsDictionaryForPage:v10 pageTag:v11 additionalValues:v7];
+  currentPage = [(PKApplyExplanationViewController *)self currentPage];
+  analyticsPageTag = [(PKApplyExplanationViewController *)self analyticsPageTag];
+  [(PKApplyController *)controller reportAnalyticsDictionaryForPage:currentPage pageTag:analyticsPageTag additionalValues:v7];
 }
 
 - (void)_continue
@@ -281,9 +281,9 @@ LABEL_8:
 {
   [(PKApplyExplanationViewController *)self _analyticsReportButtonTap:*MEMORY[0x1E69BA378]];
   v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{@"ownerToParticipantImportantInfo", @"coOwnerToParticipantImportantInfo", @"coOwnerToCoOwnerImportantInfo", @"mergeCombinedLimitFailure", @"invitationUnavailable", @"invitationIneligible", 0}];
-  v3 = [(PKApplyExplanationViewController *)self currentPage];
-  v4 = [v3 identifier];
-  v5 = [v6 containsObject:v4];
+  currentPage = [(PKApplyExplanationViewController *)self currentPage];
+  identifier = [currentPage identifier];
+  v5 = [v6 containsObject:identifier];
 
   if (v5)
   {
@@ -317,22 +317,22 @@ LABEL_8:
   [(PKApplyExplanationViewController *)self _performDoneAction:0];
 }
 
-- (void)_linkAction:(id)a3
+- (void)_linkAction:(id)action
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 linkURL];
-  v6 = [v4 termsIdentifier];
-  v7 = [(PKApplyExplanationViewController *)self controller];
-  v8 = [v7 account];
+  actionCopy = action;
+  linkURL = [actionCopy linkURL];
+  termsIdentifier = [actionCopy termsIdentifier];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  account = [controller account];
 
-  if (v6)
+  if (termsIdentifier)
   {
-    if (v8)
+    if (account)
     {
       v9 = [PKAccountTermsAndConditionsController alloc];
-      v10 = [MEMORY[0x1E69B8EF8] sharedService];
-      v11 = [(PKAccountTermsAndConditionsController *)v9 initWithAccount:v8 webService:v10 context:[(PKExplanationViewController *)self context] termsIdentifier:v6];
+      mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+      v11 = [(PKAccountTermsAndConditionsController *)v9 initWithAccount:account webService:mEMORY[0x1E69B8EF8] context:[(PKExplanationViewController *)self context] termsIdentifier:termsIdentifier];
       termsController = self->_termsController;
       self->_termsController = v11;
 
@@ -354,25 +354,25 @@ LABEL_8:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(location[0]) = 138412290;
-        *(location + 4) = v6;
+        *(location + 4) = termsIdentifier;
         _os_log_impl(&dword_1BD026000, v15, OS_LOG_TYPE_DEFAULT, "Error: there is no account on PKApplyController in order to open termsIdentifier %@", location, 0xCu);
       }
     }
   }
 
-  else if (v5)
+  else if (linkURL)
   {
     if (PKIsURLHttpScheme())
     {
-      v14 = [objc_alloc(MEMORY[0x1E697A838]) initWithURL:v5];
+      v14 = [objc_alloc(MEMORY[0x1E697A838]) initWithURL:linkURL];
       [v14 setModalPresentationStyle:2];
       [(PKApplyExplanationViewController *)self presentViewController:v14 animated:1 completion:0];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E6963608] defaultWorkspace];
-      [v16 openSensitiveURL:v5 withOptions:0];
+      defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+      [defaultWorkspace openSensitiveURL:linkURL withOptions:0];
     }
   }
 }
@@ -398,35 +398,35 @@ void __48__PKApplyExplanationViewController__linkAction___block_invoke(uint64_t 
   }
 }
 
-- (void)_analyticsReportButtonTap:(id)a3
+- (void)_analyticsReportButtonTap:(id)tap
 {
   v16[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  tapCopy = tap;
   v6 = [v4 alloc];
   v7 = *MEMORY[0x1E69BA6F0];
   v8 = *MEMORY[0x1E69BA440];
   v15[0] = *MEMORY[0x1E69BA680];
   v15[1] = v8;
   v16[0] = v7;
-  v16[1] = v5;
+  v16[1] = tapCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
   v10 = [v6 initWithDictionary:v9];
 
-  v11 = [(PKApplyExplanationViewController *)self analyticsAdditionalValues];
-  [v10 addEntriesFromDictionary:v11];
+  analyticsAdditionalValues = [(PKApplyExplanationViewController *)self analyticsAdditionalValues];
+  [v10 addEntriesFromDictionary:analyticsAdditionalValues];
 
   controller = self->_controller;
-  v13 = [(PKApplyExplanationViewController *)self currentPage];
-  v14 = [(PKApplyExplanationViewController *)self analyticsPageTag];
-  [(PKApplyController *)controller reportAnalyticsDictionaryForPage:v13 pageTag:v14 additionalValues:v10];
+  currentPage = [(PKApplyExplanationViewController *)self currentPage];
+  analyticsPageTag = [(PKApplyExplanationViewController *)self analyticsPageTag];
+  [(PKApplyController *)controller reportAnalyticsDictionaryForPage:currentPage pageTag:analyticsPageTag additionalValues:v10];
 }
 
-- (void)_performActionForBlock:(id)a3
+- (void)_performActionForBlock:(id)block
 {
-  v4 = a3;
-  v7 = v4;
-  if (!v4 || (v5 = v4[2](), v6 = v7, v5))
+  blockCopy = block;
+  v7 = blockCopy;
+  if (!blockCopy || (v5 = blockCopy[2](), v6 = v7, v5))
   {
     [(PKApplyExplanationViewController *)self handleNextStep];
     v6 = v7;
@@ -444,12 +444,12 @@ void __48__PKApplyExplanationViewController__linkAction___block_invoke(uint64_t 
   }
 }
 
-- (void)_performDoneAction:(BOOL)a3
+- (void)_performDoneAction:(BOOL)action
 {
-  v3 = a3;
+  actionCopy = action;
   v5 = _Block_copy(self->_doneAction);
   v8 = v5;
-  if (!v5 || (v6 = v5[2](v5, v3), v7 = v8, v6))
+  if (!v5 || (v6 = v5[2](v5, actionCopy), v7 = v8, v6))
   {
     [(PKApplyExplanationViewController *)self handleNextStep];
     v7 = v8;
@@ -483,34 +483,34 @@ void __50__PKApplyExplanationViewController_handleNextStep__block_invoke(uint64_
   }
 }
 
-- (void)handleNextViewController:(id)a3 displayableError:(id)a4
+- (void)handleNextViewController:(id)controller displayableError:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  controllerCopy = controller;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (controllerCopy)
   {
-    v9 = [(PKApplyExplanationViewController *)self navigationController];
+    navigationController = [(PKApplyExplanationViewController *)self navigationController];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __78__PKApplyExplanationViewController_handleNextViewController_displayableError___block_invoke;
     v21[3] = &unk_1E8011D28;
     v21[4] = self;
-    [v9 pk_presentPaymentSetupViewController:v6 animated:1 completion:v21];
+    [navigationController pk_presentPaymentSetupViewController:controllerCopy animated:1 completion:v21];
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  if (v7)
+  if (errorCopy)
   {
-    v10 = [v7 underlyingErrors];
-    v9 = [v10 firstObject];
+    underlyingErrors = [errorCopy underlyingErrors];
+    navigationController = [underlyingErrors firstObject];
 
-    v11 = [v9 domain];
+    domain = [navigationController domain];
     v12 = *MEMORY[0x1E69BB758];
-    v13 = v11;
+    v13 = domain;
     v14 = v13;
     if (v13 == v12)
     {
@@ -533,9 +533,9 @@ LABEL_14:
       }
     }
 
-    v16 = [v9 code];
+    code = [navigationController code];
 
-    if (v16 == 1)
+    if (code == 1)
     {
       [(PKApplyExplanationViewController *)self showNavigationBarSpinner:0];
       goto LABEL_21;
@@ -545,13 +545,13 @@ LABEL_15:
     v17 = PKAlertForDisplayableErrorWithHandlers(v8, 0, 0, 0);
     if (v17)
     {
-      v18 = [(PKApplyExplanationViewController *)self navigationController];
+      navigationController2 = [(PKApplyExplanationViewController *)self navigationController];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __78__PKApplyExplanationViewController_handleNextViewController_displayableError___block_invoke_2;
       v20[3] = &unk_1E8010970;
       v20[4] = self;
-      [v18 presentViewController:v17 animated:1 completion:v20];
+      [navigationController2 presentViewController:v17 animated:1 completion:v20];
     }
 
     else
@@ -607,27 +607,27 @@ uint64_t __78__PKApplyExplanationViewController_handleNextViewController_display
 
   else
   {
-    v6 = [(PKApplyExplanationViewController *)self presentingViewController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKApplyExplanationViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)showNavigationBarSpinner:(BOOL)a3
+- (void)showNavigationBarSpinner:(BOOL)spinner
 {
-  v3 = a3;
+  spinnerCopy = spinner;
   v13 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PKApplyExplanationViewController;
   [(PKExplanationViewController *)&v8 showNavigationBarSpinner:?];
-  self->_isLoading = v3;
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v5 _setIdleTimerDisabled:v3 forReason:@"Submitting Application information"];
+  self->_isLoading = spinnerCopy;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] _setIdleTimerDisabled:spinnerCopy forReason:@"Submitting Application information"];
 
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"enabled";
-    if (v3)
+    if (spinnerCopy)
     {
       v7 = @"disabled";
     }
@@ -669,13 +669,13 @@ uint64_t __78__PKApplyExplanationViewController_handleNextViewController_display
       _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "%@ Application update received presenting next step", buf, 0xCu);
     }
 
-    v10 = [(PKApplyExplanationViewController *)self controller];
+    controller = [(PKApplyExplanationViewController *)self controller];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __62__PKApplyExplanationViewController__featureApplicationUpdated__block_invoke;
     v12[3] = &unk_1E8010970;
     v12[4] = self;
-    v11 = [v10 applicationUpdatedAlertControllerWithHandler:v12];
+    v11 = [controller applicationUpdatedAlertControllerWithHandler:v12];
 
     [(PKApplyExplanationViewController *)self presentViewController:v11 animated:1 completion:0];
   }
@@ -683,68 +683,68 @@ uint64_t __78__PKApplyExplanationViewController_handleNextViewController_display
 
 - (void)_bodyButtonAction
 {
-  v3 = [(PKDynamicProvisioningPageViewController *)self page];
-  v17 = [v3 learnMore];
+  page = [(PKDynamicProvisioningPageViewController *)self page];
+  learnMore = [page learnMore];
 
-  v4 = [v17 buttonURL];
-  v5 = [v17 termsIdentifier];
-  v6 = v5;
-  if (v4)
+  buttonURL = [learnMore buttonURL];
+  termsIdentifier = [learnMore termsIdentifier];
+  v6 = termsIdentifier;
+  if (buttonURL)
   {
-    v7 = [MEMORY[0x1E6963608] defaultWorkspace];
-    [v7 openURL:v4 configuration:0 completionHandler:0];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+    [defaultWorkspace openURL:buttonURL configuration:0 completionHandler:0];
   }
 
-  else if (v5)
+  else if (termsIdentifier)
   {
-    [(PKApplyExplanationViewController *)self _presentTermsWithIdentifier:v5];
+    [(PKApplyExplanationViewController *)self _presentTermsWithIdentifier:termsIdentifier];
   }
 
   else
   {
     v8 = [[PKPaymentMoreInformationViewController alloc] initWithContext:[(PKExplanationViewController *)self context]];
-    v9 = [v17 title];
-    [(PKPaymentMoreInformationViewController *)v8 setDetailTitle:v9];
+    title = [learnMore title];
+    [(PKPaymentMoreInformationViewController *)v8 setDetailTitle:title];
 
-    v10 = [v17 subtitle];
-    [(PKPaymentMoreInformationViewController *)v8 setDetailSubtitle:v10];
+    subtitle = [learnMore subtitle];
+    [(PKPaymentMoreInformationViewController *)v8 setDetailSubtitle:subtitle];
 
-    v11 = [v17 body];
-    [(PKPaymentMoreInformationViewController *)v8 setDetailBody:v11];
+    body = [learnMore body];
+    [(PKPaymentMoreInformationViewController *)v8 setDetailBody:body];
 
-    v12 = [v17 businessChatIntentName];
-    [(PKPaymentMoreInformationViewController *)v8 setBusinessChatIntentName:v12];
+    businessChatIntentName = [learnMore businessChatIntentName];
+    [(PKPaymentMoreInformationViewController *)v8 setBusinessChatIntentName:businessChatIntentName];
 
-    v13 = [v17 businessChatButtonTitle];
-    [(PKPaymentMoreInformationViewController *)v8 setBusinessChatButtonTitle:v13];
+    businessChatButtonTitle = [learnMore businessChatButtonTitle];
+    [(PKPaymentMoreInformationViewController *)v8 setBusinessChatButtonTitle:businessChatButtonTitle];
 
-    v14 = [(PKApplyController *)self->_controller featureApplication];
-    v15 = [v14 businessChatIdentifier];
-    [(PKPaymentMoreInformationViewController *)v8 setBusinessChatIdentifier:v15];
+    featureApplication = [(PKApplyController *)self->_controller featureApplication];
+    businessChatIdentifier = [featureApplication businessChatIdentifier];
+    [(PKPaymentMoreInformationViewController *)v8 setBusinessChatIdentifier:businessChatIdentifier];
 
-    v16 = [(PKApplyExplanationViewController *)self navigationController];
-    [v16 pushViewController:v8 animated:1];
+    navigationController = [(PKApplyExplanationViewController *)self navigationController];
+    [navigationController pushViewController:v8 animated:1];
   }
 }
 
-- (void)_presentTermsWithIdentifier:(id)a3
+- (void)_presentTermsWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(PKApplyExplanationViewController *)self showNavigationBarSpinner:1];
   v5 = [PKApplyTermsAndConditionsViewController alloc];
-  v6 = [(PKApplyExplanationViewController *)self controller];
-  v7 = [(PKApplyExplanationViewController *)self setupDelegate];
-  v8 = [(PKApplyTermsAndConditionsViewController *)v5 initWithController:v6 setupDelegate:v7 context:[(PKExplanationViewController *)self context] termsIdentifier:v4];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  setupDelegate = [(PKApplyExplanationViewController *)self setupDelegate];
+  v8 = [(PKApplyTermsAndConditionsViewController *)v5 initWithController:controller setupDelegate:setupDelegate context:[(PKExplanationViewController *)self context] termsIdentifier:identifierCopy];
 
   [(PKApplyTermsAndConditionsViewController *)v8 setPreflightPDFTerms:1];
   objc_initWeak(&location, self);
-  v9 = [(PKApplyExplanationViewController *)self navigationController];
+  navigationController = [(PKApplyExplanationViewController *)self navigationController];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__PKApplyExplanationViewController__presentTermsWithIdentifier___block_invoke;
   v10[3] = &unk_1E8011180;
   objc_copyWeak(&v11, &location);
-  [v9 pk_presentPaymentSetupViewController:v8 animated:1 completion:v10];
+  [navigationController pk_presentPaymentSetupViewController:v8 animated:1 completion:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -765,11 +765,11 @@ void __64__PKApplyExplanationViewController__presentTermsWithIdentifier___block_
 {
   if (+[PKBusinessChatController deviceSupportsBusinessChat])
   {
-    v3 = [(PKApplyExplanationViewController *)self controller];
-    v4 = [v3 featureApplication];
-    v5 = [v4 businessChatIdentifier];
+    controller = [(PKApplyExplanationViewController *)self controller];
+    featureApplication = [controller featureApplication];
+    businessChatIdentifier = [featureApplication businessChatIdentifier];
 
-    if (v5)
+    if (businessChatIdentifier)
     {
       if (!self->_businessChatController)
       {
@@ -789,7 +789,7 @@ void __64__PKApplyExplanationViewController__presentTermsWithIdentifier___block_
       v26[1] = 3221225472;
       v26[2] = __68__PKApplyExplanationViewController__presentInvitationContactSupport__block_invoke;
       v26[3] = &unk_1E8016750;
-      v9 = v3;
+      v9 = controller;
       v27 = v9;
       v28 = v29;
       [v8 addOperation:v26];
@@ -808,18 +808,18 @@ void __64__PKApplyExplanationViewController__presentTermsWithIdentifier___block_
       v23 = v24;
       [v8 addOperation:v21];
       objc_initWeak(&location, self);
-      v11 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __68__PKApplyExplanationViewController__presentInvitationContactSupport__block_invoke_5;
       v13[3] = &unk_1E8020428;
-      v14 = v5;
+      v14 = businessChatIdentifier;
       v17 = v29;
       v18 = v24;
       v15 = v10;
-      v16 = self;
+      selfCopy = self;
       objc_copyWeak(&v19, &location);
-      v12 = [v8 evaluateWithInput:v11 completion:v13];
+      v12 = [v8 evaluateWithInput:null completion:v13];
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(&location);

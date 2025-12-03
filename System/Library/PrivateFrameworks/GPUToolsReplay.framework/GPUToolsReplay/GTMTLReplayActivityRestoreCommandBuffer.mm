@@ -1,16 +1,16 @@
 @interface GTMTLReplayActivityRestoreCommandBuffer
-- (GTMTLReplayActivityRestoreCommandBuffer)initWithIndex:(unsigned int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (GTMTLReplayActivityRestoreCommandBuffer)initWithIndex:(unsigned int)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)jsonObject;
-- (void)outputToLog:(id)a3;
+- (void)outputToLog:(id)log;
 @end
 
 @implementation GTMTLReplayActivityRestoreCommandBuffer
 
-- (void)outputToLog:(id)a3
+- (void)outputToLog:(id)log
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (os_log_type_enabled(a3, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     activityType = self->super._activityType;
     functionIndex = self->_functionIndex;
@@ -18,7 +18,7 @@
     v9 = activityType;
     v10 = 1024;
     v11 = functionIndex;
-    _os_log_impl(&dword_24D764000, a3, OS_LOG_TYPE_INFO, "%{public}@:\t%u", &v8, 0x12u);
+    _os_log_impl(&dword_24D764000, log, OS_LOG_TYPE_INFO, "%{public}@:\t%u", &v8, 0x12u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -45,11 +45,11 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = GTMTLReplayActivityRestoreCommandBuffer;
-  result = [(GTMTLReplayActivity *)&v5 copyWithZone:a3];
+  result = [(GTMTLReplayActivity *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 10) = self->_functionIndex;
@@ -58,14 +58,14 @@
   return result;
 }
 
-- (GTMTLReplayActivityRestoreCommandBuffer)initWithIndex:(unsigned int)a3
+- (GTMTLReplayActivityRestoreCommandBuffer)initWithIndex:(unsigned int)index
 {
   v5.receiver = self;
   v5.super_class = GTMTLReplayActivityRestoreCommandBuffer;
   result = [(GTMTLReplayActivity *)&v5 initWithType:@"restoreCommandBuffer"];
   if (result)
   {
-    result->_functionIndex = a3;
+    result->_functionIndex = index;
   }
 
   return result;

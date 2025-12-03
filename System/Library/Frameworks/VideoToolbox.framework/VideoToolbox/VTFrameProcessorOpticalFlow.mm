@@ -1,5 +1,5 @@
 @interface VTFrameProcessorOpticalFlow
-- (VTFrameProcessorOpticalFlow)initWithForwardFlow:(__CVBuffer *)a3 backwardFlow:(__CVBuffer *)a4;
+- (VTFrameProcessorOpticalFlow)initWithForwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow;
 - (id)veFrameOpticalFlow;
 - (void)dealloc;
 @end
@@ -38,12 +38,12 @@
   [(VTFrameProcessorOpticalFlow *)&v5 dealloc];
 }
 
-- (VTFrameProcessorOpticalFlow)initWithForwardFlow:(__CVBuffer *)a3 backwardFlow:(__CVBuffer *)a4
+- (VTFrameProcessorOpticalFlow)initWithForwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow
 {
   result = 0;
-  if (a3)
+  if (flow)
   {
-    if (a4)
+    if (backwardFlow)
     {
       loadVEFrameworkOnce();
       v11.receiver = self;
@@ -52,15 +52,15 @@
       if (result)
       {
         v8 = result;
-        IOSurface = CVPixelBufferGetIOSurface(a3);
-        v10 = CVPixelBufferGetIOSurface(a4);
+        IOSurface = CVPixelBufferGetIOSurface(flow);
+        v10 = CVPixelBufferGetIOSurface(backwardFlow);
         result = 0;
         if (IOSurface)
         {
           if (v10)
           {
-            v8->_forwardFlow = CFRetain(a3);
-            v8->_backwardFlow = CFRetain(a4);
+            v8->_forwardFlow = CFRetain(flow);
+            v8->_backwardFlow = CFRetain(backwardFlow);
             return v8;
           }
         }

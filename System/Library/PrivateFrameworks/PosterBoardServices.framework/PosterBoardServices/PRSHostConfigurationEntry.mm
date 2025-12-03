@@ -1,49 +1,49 @@
 @interface PRSHostConfigurationEntry
-+ (id)entryWithExtensionID:(id)a3 descriptorID:(id)a4;
-+ (id)entryWithExtensionID:(id)a3 descriptorID:(id)a4 posterUUID:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)entryWithExtensionID:(id)d descriptorID:(id)iD;
++ (id)entryWithExtensionID:(id)d descriptorID:(id)iD posterUUID:(id)uID;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PRSHostConfigurationEntry)initWithBSXPCCoder:(id)a3;
-- (PRSHostConfigurationEntry)initWithCoder:(id)a3;
-- (PRSHostConfigurationEntry)initWithExtensionID:(id)a3 descriptorID:(id)a4 posterUUID:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PRSHostConfigurationEntry)initWithBSXPCCoder:(id)coder;
+- (PRSHostConfigurationEntry)initWithCoder:(id)coder;
+- (PRSHostConfigurationEntry)initWithExtensionID:(id)d descriptorID:(id)iD posterUUID:(id)uID;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRSHostConfigurationEntry
 
-+ (id)entryWithExtensionID:(id)a3 descriptorID:(id)a4
++ (id)entryWithExtensionID:(id)d descriptorID:(id)iD
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithExtensionID:v6 descriptorID:v5];
+  iDCopy = iD;
+  dCopy = d;
+  v7 = [objc_alloc(objc_opt_class()) initWithExtensionID:dCopy descriptorID:iDCopy];
 
   return v7;
 }
 
-+ (id)entryWithExtensionID:(id)a3 descriptorID:(id)a4 posterUUID:(id)a5
++ (id)entryWithExtensionID:(id)d descriptorID:(id)iD posterUUID:(id)uID
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_alloc(objc_opt_class()) initWithExtensionID:v9 descriptorID:v8 posterUUID:v7];
+  uIDCopy = uID;
+  iDCopy = iD;
+  dCopy = d;
+  v10 = [objc_alloc(objc_opt_class()) initWithExtensionID:dCopy descriptorID:iDCopy posterUUID:uIDCopy];
 
   return v10;
 }
 
-- (PRSHostConfigurationEntry)initWithExtensionID:(id)a3 descriptorID:(id)a4 posterUUID:(id)a5
+- (PRSHostConfigurationEntry)initWithExtensionID:(id)d descriptorID:(id)iD posterUUID:(id)uID
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (![v9 length])
+  dCopy = d;
+  iDCopy = iD;
+  uIDCopy = uID;
+  if (![dCopy length])
   {
     [PRSHostConfigurationEntry initWithExtensionID:a2 descriptorID:self posterUUID:?];
   }
 
-  if (![v10 length])
+  if (![iDCopy length])
   {
     [PRSHostConfigurationEntry initWithExtensionID:a2 descriptorID:self posterUUID:?];
   }
@@ -54,9 +54,9 @@
   v13 = v12;
   if (v12)
   {
-    [(PRSHostConfigurationEntry *)v12 setExtensionID:v9];
-    [(PRSHostConfigurationEntry *)v13 setDescriptorID:v10];
-    [(PRSHostConfigurationEntry *)v13 setPosterUUID:v11];
+    [(PRSHostConfigurationEntry *)v12 setExtensionID:dCopy];
+    [(PRSHostConfigurationEntry *)v13 setDescriptorID:iDCopy];
+    [(PRSHostConfigurationEntry *)v13 setPosterUUID:uIDCopy];
   }
 
   return v13;
@@ -68,15 +68,15 @@
   [v3 appendString:self->_extensionID withName:@"extensionID"];
   [v3 appendString:self->_descriptorID withName:@"descriptorID"];
   v4 = [v3 appendObject:self->_posterUUID withName:@"posterUUID" skipIfNil:1];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -84,7 +84,7 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -108,15 +108,15 @@
     if (v9)
     {
       extensionID = self->_extensionID;
-      v11 = [(PRSHostConfigurationEntry *)v9 extensionID];
-      if ([(NSString *)extensionID isEqualToString:v11])
+      extensionID = [(PRSHostConfigurationEntry *)v9 extensionID];
+      if ([(NSString *)extensionID isEqualToString:extensionID])
       {
         descriptorID = self->_descriptorID;
-        v13 = [(PRSHostConfigurationEntry *)v9 descriptorID];
-        if ([(NSString *)descriptorID isEqualToString:v13])
+        descriptorID = [(PRSHostConfigurationEntry *)v9 descriptorID];
+        if ([(NSString *)descriptorID isEqualToString:descriptorID])
         {
           posterUUID = self->_posterUUID;
-          v15 = [(PRSHostConfigurationEntry *)v9 posterUUID];
+          posterUUID = [(PRSHostConfigurationEntry *)v9 posterUUID];
           v8 = BSEqualObjects();
         }
 
@@ -143,16 +143,16 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendString:self->_extensionID];
-  v5 = [v3 appendString:self->_descriptorID];
-  v6 = [v3 appendObject:self->_posterUUID];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendString:self->_extensionID];
+  v5 = [builder appendString:self->_descriptorID];
+  v6 = [builder appendObject:self->_posterUUID];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   extensionID = self->_extensionID;
@@ -162,29 +162,29 @@
   return [v4 initWithExtensionID:extensionID descriptorID:descriptorID posterUUID:posterUUID];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_extensionID forKey:@"_extensionID"];
-  [v5 encodeObject:self->_descriptorID forKey:@"_descriptorID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_extensionID forKey:@"_extensionID"];
+  [coderCopy encodeObject:self->_descriptorID forKey:@"_descriptorID"];
   posterUUID = self->_posterUUID;
   if (posterUUID)
   {
-    [v5 encodeObject:posterUUID forKey:@"_posterUUID"];
+    [coderCopy encodeObject:posterUUID forKey:@"_posterUUID"];
   }
 }
 
-- (PRSHostConfigurationEntry)initWithCoder:(id)a3
+- (PRSHostConfigurationEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PRSHostConfigurationEntry;
   v5 = [(PRSHostConfigurationEntry *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_extensionID"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_descriptorID"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_posterUUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_extensionID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_descriptorID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_posterUUID"];
     if (v6)
     {
       v9 = v7 == 0;
@@ -206,29 +206,29 @@
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_extensionID forKey:@"_extensionID"];
-  [v5 encodeObject:self->_descriptorID forKey:@"_descriptorID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_extensionID forKey:@"_extensionID"];
+  [coderCopy encodeObject:self->_descriptorID forKey:@"_descriptorID"];
   posterUUID = self->_posterUUID;
   if (posterUUID)
   {
-    [v5 encodeObject:posterUUID forKey:@"_posterUUID"];
+    [coderCopy encodeObject:posterUUID forKey:@"_posterUUID"];
   }
 }
 
-- (PRSHostConfigurationEntry)initWithBSXPCCoder:(id)a3
+- (PRSHostConfigurationEntry)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PRSHostConfigurationEntry;
   v5 = [(PRSHostConfigurationEntry *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeStringForKey:@"_extensionID"];
-    v7 = [v4 decodeStringForKey:@"_descriptorID"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_posterUUID"];
+    v6 = [coderCopy decodeStringForKey:@"_extensionID"];
+    v7 = [coderCopy decodeStringForKey:@"_descriptorID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_posterUUID"];
     if (v6 && v7)
     {
       [(PRSHostConfigurationEntry *)v5 setExtensionID:v6];

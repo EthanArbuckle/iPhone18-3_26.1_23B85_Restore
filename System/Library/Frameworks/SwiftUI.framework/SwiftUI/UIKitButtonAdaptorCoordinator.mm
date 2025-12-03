@@ -1,12 +1,12 @@
 @interface UIKitButtonAdaptorCoordinator
 - (_TtC7SwiftUI29UIKitButtonAdaptorCoordinator)init;
-- (void)menuActionTriggered:(id)a3;
-- (void)primaryActionTriggered:(id)a3;
+- (void)menuActionTriggered:(id)triggered;
+- (void)primaryActionTriggered:(id)triggered;
 @end
 
 @implementation UIKitButtonAdaptorCoordinator
 
-- (void)primaryActionTriggered:(id)a3
+- (void)primaryActionTriggered:(id)triggered
 {
   v3 = *(&self->super.super.isa + OBJC_IVAR____TtC7SwiftUI29UIKitButtonAdaptorCoordinator_action);
   if (v3)
@@ -20,15 +20,15 @@
   }
 }
 
-- (void)menuActionTriggered:(id)a3
+- (void)menuActionTriggered:(id)triggered
 {
-  v4 = a3;
-  v8 = self;
+  triggeredCopy = triggered;
+  selfCopy = self;
   UIKitButtonAdaptorCoordinator.makeMenu()(v5);
   v7 = v6;
-  [(UIButton *)v4 setMenu:v6];
+  [(UIButton *)triggeredCopy setMenu:v6];
 
-  UIKitButtonAdaptorCoordinator.setupNotifications(_:)(v4);
+  UIKitButtonAdaptorCoordinator.setupNotifications(_:)(triggeredCopy);
 }
 
 - (_TtC7SwiftUI29UIKitButtonAdaptorCoordinator)init

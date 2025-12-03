@@ -1,35 +1,35 @@
 @interface SIRINLUINTERNALRewriteToken
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEndIndex:(BOOL)a3;
-- (void)setHasRemoveSpaceAfter:(BOOL)a3;
-- (void)setHasStartIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEndIndex:(BOOL)index;
+- (void)setHasRemoveSpaceAfter:(BOOL)after;
+- (void)setHasStartIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALRewriteToken
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 5))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(SIRINLUINTERNALRewriteToken *)self setValue:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 4) != 0)
   {
-    self->_startIndex = *(v4 + 8);
+    self->_startIndex = *(fromCopy + 8);
     *&self->_has |= 4u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -42,30 +42,30 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 52) & 2) == 0)
+  else if ((*(fromCopy + 52) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_endIndex = *(v4 + 4);
+  self->_endIndex = *(fromCopy + 4);
   *&self->_has |= 2u;
-  if (*(v4 + 52))
+  if (*(fromCopy + 52))
   {
 LABEL_6:
-    self->_asrConfidence = *(v4 + 1);
+    self->_asrConfidence = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_7:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(SIRINLUINTERNALRewriteToken *)self setPhoneSequence:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 52) & 8) != 0)
+  if ((*(fromCopy + 52) & 8) != 0)
   {
-    self->_removeSpaceAfter = *(v4 + 48);
+    self->_removeSpaceAfter = *(fromCopy + 48);
     *&self->_has |= 8u;
   }
 }
@@ -147,16 +147,16 @@ LABEL_11:
   return v6 ^ v3 ^ v7 ^ v11 ^ v12 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   value = self->_value;
-  if (value | *(v4 + 5))
+  if (value | *(equalCopy + 5))
   {
     if (![(NSString *)value isEqual:?])
     {
@@ -165,48 +165,48 @@ LABEL_11:
   }
 
   has = self->_has;
-  v7 = *(v4 + 52);
+  v7 = *(equalCopy + 52);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_startIndex != *(v4 + 8))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_startIndex != *(equalCopy + 8))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_24;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_endIndex != *(v4 + 4))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_endIndex != *(equalCopy + 4))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_24;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_asrConfidence != *(v4 + 1))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_asrConfidence != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_24;
   }
 
   phoneSequence = self->_phoneSequence;
-  if (phoneSequence | *(v4 + 3))
+  if (phoneSequence | *(equalCopy + 3))
   {
     if (![(NSString *)phoneSequence isEqual:?])
     {
@@ -214,7 +214,7 @@ LABEL_11:
     }
 
     has = self->_has;
-    v7 = *(v4 + 52);
+    v7 = *(equalCopy + 52);
   }
 
   v9 = (v7 & 8) == 0;
@@ -224,13 +224,13 @@ LABEL_11:
     {
       if (self->_removeSpaceAfter)
       {
-        if ((*(v4 + 48) & 1) == 0)
+        if ((*(equalCopy + 48) & 1) == 0)
         {
           goto LABEL_24;
         }
       }
 
-      else if (*(v4 + 48))
+      else if (*(equalCopy + 48))
       {
         goto LABEL_24;
       }
@@ -248,10 +248,10 @@ LABEL_25:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_value copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_value copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -288,7 +288,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v9 = [(NSString *)self->_phoneSequence copyWithZone:a3];
+  v9 = [(NSString *)self->_phoneSequence copyWithZone:zone];
   v10 = *(v5 + 24);
   *(v5 + 24) = v9;
 
@@ -301,21 +301,21 @@ LABEL_5:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_value)
   {
-    [v4 setValue:?];
-    v4 = v6;
+    [toCopy setValue:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 8) = self->_startIndex;
-    *(v4 + 52) |= 4u;
+    *(toCopy + 8) = self->_startIndex;
+    *(toCopy + 52) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -334,37 +334,37 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 4) = self->_endIndex;
-  *(v4 + 52) |= 2u;
+  *(toCopy + 4) = self->_endIndex;
+  *(toCopy + 52) |= 2u;
   if (*&self->_has)
   {
 LABEL_6:
-    *(v4 + 1) = *&self->_asrConfidence;
-    *(v4 + 52) |= 1u;
+    *(toCopy + 1) = *&self->_asrConfidence;
+    *(toCopy + 52) |= 1u;
   }
 
 LABEL_7:
   if (self->_phoneSequence)
   {
     [v6 setPhoneSequence:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 48) = self->_removeSpaceAfter;
-    *(v4 + 52) |= 8u;
+    *(toCopy + 48) = self->_removeSpaceAfter;
+    *(toCopy + 52) |= 8u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_value)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -372,7 +372,7 @@ LABEL_7:
   {
     startIndex = self->_startIndex;
     PBDataWriterWriteUint32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -393,38 +393,38 @@ LABEL_5:
 
   endIndex = self->_endIndex;
   PBDataWriterWriteUint32Field();
-  v4 = v10;
+  toCopy = v10;
   if (*&self->_has)
   {
 LABEL_6:
     asrConfidence = self->_asrConfidence;
     PBDataWriterWriteDoubleField();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_7:
   if (self->_phoneSequence)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 8) != 0)
   {
     removeSpaceAfter = self->_removeSpaceAfter;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   value = self->_value;
   if (value)
   {
-    [v3 setObject:value forKey:@"value"];
+    [dictionary setObject:value forKey:@"value"];
   }
 
   has = self->_has;
@@ -483,15 +483,15 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALRewriteToken;
   v4 = [(SIRINLUINTERNALRewriteToken *)&v8 description];
-  v5 = [(SIRINLUINTERNALRewriteToken *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALRewriteToken *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasRemoveSpaceAfter:(BOOL)a3
+- (void)setHasRemoveSpaceAfter:(BOOL)after
 {
-  if (a3)
+  if (after)
   {
     v3 = 8;
   }
@@ -504,9 +504,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasEndIndex:(BOOL)a3
+- (void)setHasEndIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }
@@ -519,9 +519,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasStartIndex:(BOOL)a3
+- (void)setHasStartIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 4;
   }

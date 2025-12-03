@@ -1,24 +1,24 @@
 @interface MADVideoSession
 + (BOOL)enabledQRCodeDetection;
-+ (BOOL)isValidRegionOfInterest:(CGRect)a3 frameWidth:(int)a4 frameHeight:(int)a5;
++ (BOOL)isValidRegionOfInterest:(CGRect)interest frameWidth:(int)width frameHeight:(int)height;
 + (id)allowedRequestTTRNotificationClasses;
 + (id)allowedResultClasses;
 + (id)session;
-+ (void)configureServerInterface:(id)a3;
-- (BOOL)_removeLocalRequest:(id)a3;
-- (BOOL)addRequest:(id)a3 error:(id *)a4;
++ (void)configureServerInterface:(id)interface;
+- (BOOL)_removeLocalRequest:(id)request;
+- (BOOL)addRequest:(id)request error:(id *)error;
 - (BOOL)hasOnlyOneSafetyRquest;
-- (BOOL)processPixelBuffer:(__CVBuffer *)a3 frameProperties:(id)a4 resultHandler:(id)a5;
-- (BOOL)processPixelBuffer:(__CVBuffer *)a3 timestamp:(id *)a4 orientation:(unsigned int)a5 resultHandler:(id)a6;
-- (BOOL)removeRequest:(id)a3;
+- (BOOL)processPixelBuffer:(__CVBuffer *)buffer frameProperties:(id)properties resultHandler:(id)handler;
+- (BOOL)processPixelBuffer:(__CVBuffer *)buffer timestamp:(id *)timestamp orientation:(unsigned int)orientation resultHandler:(id)handler;
+- (BOOL)removeRequest:(id)request;
 - (MADVideoSession)init;
 - (id)connection;
 - (id)initInternal;
-- (int)preprocessPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 regionOfInterest:(CGRect)a5 output:(__CVBuffer *)a6 isProcessed:(BOOL *)a7;
+- (int)preprocessPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation regionOfInterest:(CGRect)interest output:(__CVBuffer *)output isProcessed:(BOOL *)processed;
 - (void)_addBackRequestsAfterReconnection;
 - (void)dealloc;
 - (void)removeAllRequests;
-- (void)requestTTRNotificationWithVideoFrames:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (void)requestTTRNotificationWithVideoFrames:(id)frames options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation MADVideoSession
@@ -30,15 +30,15 @@
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (id)allowedResultClasses
@@ -65,35 +65,35 @@
   return v4;
 }
 
-+ (void)configureServerInterface:(id)a3
++ (void)configureServerInterface:(id)interface
 {
-  v5 = a3;
-  v3 = [objc_opt_class() allowedResultClasses];
-  [v5 setClasses:v3 forSelector:sel_processFrameWithIOSurface_frameProperties_reply_ argumentIndex:0 ofReply:1];
+  interfaceCopy = interface;
+  allowedResultClasses = [objc_opt_class() allowedResultClasses];
+  [interfaceCopy setClasses:allowedResultClasses forSelector:sel_processFrameWithIOSurface_frameProperties_reply_ argumentIndex:0 ofReply:1];
 
-  v4 = [objc_opt_class() allowedRequestTTRNotificationClasses];
-  [v5 setClasses:v4 forSelector:sel_requestTTRNotificationWithVideoFrames_options_reply_ argumentIndex:0 ofReply:0];
+  allowedRequestTTRNotificationClasses = [objc_opt_class() allowedRequestTTRNotificationClasses];
+  [interfaceCopy setClasses:allowedRequestTTRNotificationClasses forSelector:sel_requestTTRNotificationWithVideoFrames_options_reply_ argumentIndex:0 ofReply:0];
 }
 
-+ (BOOL)isValidRegionOfInterest:(CGRect)a3 frameWidth:(int)a4 frameHeight:(int)a5
++ (BOOL)isValidRegionOfInterest:(CGRect)interest frameWidth:(int)width frameHeight:(int)height
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v20.size.width = a4;
-  v20.size.height = a5;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  v20.size.width = width;
+  v20.size.height = height;
   v20.origin.x = 0.0;
   v20.origin.y = 0.0;
-  v19 = CGRectIntersection(a3, v20);
+  v19 = CGRectIntersection(interest, v20);
   v9 = v19.origin.x;
   v10 = v19.origin.y;
   v11 = v19.size.width;
   v12 = v19.size.height;
   v13 = x;
   v14 = y;
-  v15 = width;
-  v16 = height;
+  widthCopy = width;
+  heightCopy = height;
 
   return CGRectEqualToRect(*&v13, *&v9);
 }
@@ -139,7 +139,7 @@
 {
   if ([objc_opt_class() enabledVideoSessionXPC])
   {
-    v3 = [[a1 alloc] initInternal];
+    initInternal = [[self alloc] initInternal];
   }
 
   else
@@ -149,10 +149,10 @@
       +[MADVideoSession session];
     }
 
-    v3 = 0;
+    initInternal = 0;
   }
 
-  return v3;
+  return initInternal;
 }
 
 - (void)dealloc
@@ -334,12 +334,12 @@ void __29__MADVideoSession_connection__block_invoke_202(uint64_t a1)
 
         if ((v25[3] & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v9 = [v6 requestID];
+          requestID = [v6 requestID];
           v10 = v19[5];
           *buf = 138412802;
           v40 = v13;
           v41 = 2112;
-          v42 = v9;
+          v42 = requestID;
           v43 = 2112;
           v44 = v10;
           _os_log_error_impl(&dword_1C972C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@ Failed adding request with requestID: %@, error: %@", buf, 0x20u);
@@ -393,18 +393,18 @@ void __52__MADVideoSession__addBackRequestsAfterReconnection__block_invoke_207(u
   }
 }
 
-- (BOOL)addRequest:(id)a3 error:(id *)a4
+- (BOOL)addRequest:(id)request error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  requestCopy = request;
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@][addRequest]", objc_opt_class()];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 requestID];
+    requestID = [requestCopy requestID];
     *buf = 138412546;
     *&buf[4] = v7;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = requestID;
     _os_log_impl(&dword_1C972C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "%@ Start adding request, requestID: %@ ...", buf, 0x16u);
   }
 
@@ -418,7 +418,7 @@ void __52__MADVideoSession__addBackRequestsAfterReconnection__block_invoke_207(u
   v33 = __Block_byref_object_copy_;
   v34 = __Block_byref_object_dispose_;
   v35 = 0;
-  v9 = [(MADVideoSession *)self connection];
+  connection = [(MADVideoSession *)self connection];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __36__MADVideoSession_addRequest_error___block_invoke;
@@ -426,14 +426,14 @@ void __52__MADVideoSession__addBackRequestsAfterReconnection__block_invoke_207(u
   v10 = v7;
   v22 = v10;
   v23 = buf;
-  v11 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v21];
+  v11 = [connection synchronousRemoteObjectProxyWithErrorHandler:v21];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __36__MADVideoSession_addRequest_error___block_invoke_212;
   v20[3] = &unk_1E8342F28;
   v20[4] = &v24;
   v20[5] = buf;
-  [v11 addRequest:v6 reply:v20];
+  [v11 addRequest:requestCopy reply:v20];
 
   if (*(v25 + 24) == 1)
   {
@@ -443,31 +443,31 @@ void __52__MADVideoSession__addBackRequestsAfterReconnection__block_invoke_207(u
     block[2] = __36__MADVideoSession_addRequest_error___block_invoke_2;
     block[3] = &unk_1E8342F50;
     block[4] = self;
-    v13 = v6;
+    v13 = requestCopy;
     v19 = v13;
     dispatch_sync(requestsManagementQueue, block);
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
-      v14 = [v13 requestID];
+      requestID2 = [v13 requestID];
       *v28 = 138412546;
       v29 = v10;
       v30 = 2112;
-      v31 = v14;
+      v31 = requestID2;
       _os_log_impl(&dword_1C972C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "%@ Finish adding request, requestID: %@ ...", v28, 0x16u);
     }
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [*(*&buf[8] + 40) copy];
+      *error = [*(*&buf[8] + 40) copy];
     }
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v15 = [v6 requestID];
-      [(MADVideoSession *)v10 addRequest:v15 error:&buf[8], v28];
+      requestID3 = [requestCopy requestID];
+      [(MADVideoSession *)v10 addRequest:requestID3 error:&buf[8], v28];
     }
   }
 
@@ -504,9 +504,9 @@ void __36__MADVideoSession_addRequest_error___block_invoke_212(uint64_t a1, char
   }
 }
 
-- (BOOL)_removeLocalRequest:(id)a3
+- (BOOL)_removeLocalRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -517,9 +517,9 @@ void __36__MADVideoSession_addRequest_error___block_invoke_212(uint64_t a1, char
   block[2] = __39__MADVideoSession__removeLocalRequest___block_invoke;
   block[3] = &unk_1E8342F78;
   block[4] = self;
-  v9 = v4;
+  v9 = requestCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = requestCopy;
   dispatch_sync(requestsManagementQueue, block);
   LOBYTE(requestsManagementQueue) = *(v12 + 24);
 
@@ -555,17 +555,17 @@ unint64_t __39__MADVideoSession__removeLocalRequest___block_invoke(void *a1)
   return result;
 }
 
-- (BOOL)removeRequest:(id)a3
+- (BOOL)removeRequest:(id)request
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@][removeRequest]", objc_opt_class()];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
     *&buf[4] = v5;
     *&buf[12] = 2112;
-    *&buf[14] = v4;
+    *&buf[14] = requestCopy;
     _os_log_impl(&dword_1C972C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "%@ Start removing request, requestID: %@ ...", buf, 0x16u);
   }
 
@@ -579,7 +579,7 @@ unint64_t __39__MADVideoSession__removeLocalRequest___block_invoke(void *a1)
   v32 = __Block_byref_object_copy_;
   v33 = __Block_byref_object_dispose_;
   v34 = 0;
-  v6 = [(MADVideoSession *)self connection];
+  connection = [(MADVideoSession *)self connection];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __33__MADVideoSession_removeRequest___block_invoke;
@@ -587,23 +587,23 @@ unint64_t __39__MADVideoSession__removeLocalRequest___block_invoke(void *a1)
   v7 = v5;
   v19 = v7;
   v20 = buf;
-  v8 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v18];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v18];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __33__MADVideoSession_removeRequest___block_invoke_216;
   v17[3] = &unk_1E8342F28;
   v17[4] = &v21;
   v17[5] = buf;
-  [v8 removeRequest:v4 reply:v17];
+  [v8 removeRequest:requestCopy reply:v17];
 
-  if (*(v22 + 24) == 1 && (v9 = [(MADVideoSession *)self _removeLocalRequest:v4], (*(v22 + 24) = v9) != 0))
+  if (*(v22 + 24) == 1 && (v9 = [(MADVideoSession *)self _removeLocalRequest:requestCopy], (*(v22 + 24) = v9) != 0))
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *v27 = 138412546;
       v28 = v7;
       v29 = 2112;
-      v30 = v4;
+      v30 = requestCopy;
       _os_log_impl(&dword_1C972C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "%@ Finish removing request, requestID: %@ ...", v27, 0x16u);
     }
   }
@@ -614,8 +614,8 @@ unint64_t __39__MADVideoSession__removeLocalRequest___block_invoke(void *a1)
     {
       v10 = MEMORY[0x1E696ABC0];
       v25 = *MEMORY[0x1E696A578];
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Failed the removing local request, requestID: %@", v7, v4];
-      v26 = v11;
+      requestCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Failed the removing local request, requestID: %@", v7, requestCopy];
+      v26 = requestCopy;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
       v13 = [v10 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v12];
       v14 = *(*&buf[8] + 40);
@@ -727,13 +727,13 @@ void __41__MADVideoSession_hasOnlyOneSafetyRquest__block_invoke(uint64_t a1)
   }
 }
 
-- (int)preprocessPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 regionOfInterest:(CGRect)a5 output:(__CVBuffer *)a6 isProcessed:(BOOL *)a7
+- (int)preprocessPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation regionOfInterest:(CGRect)interest output:(__CVBuffer *)output isProcessed:(BOOL *)processed
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = *&a4;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  v13 = *&orientation;
   if ([(MADVideoSession *)self hasOnlyOneSafetyRquest])
   {
     if ([objc_opt_class() enabledQRCodeDetection])
@@ -742,7 +742,7 @@ void __41__MADVideoSession_hasOnlyOneSafetyRquest__block_invoke(uint64_t a1)
       if (pool || (v17 = objc_alloc_init(MADVideoSessionPixelBufferPool), v18 = self->_pool, self->_pool = v17, v18, (pool = self->_pool) != 0))
       {
 
-        return [(MADVideoSessionPixelBufferPool *)pool copyPixelBuffer:a3 toPixelBuffer:a6];
+        return [(MADVideoSessionPixelBufferPool *)pool copyPixelBuffer:buffer toPixelBuffer:output];
       }
 
       else
@@ -758,52 +758,52 @@ void __41__MADVideoSession_hasOnlyOneSafetyRquest__block_invoke(uint64_t a1)
 
     else
     {
-      if (a7)
+      if (processed)
       {
-        *a7 = 1;
+        *processed = 1;
       }
 
       pixelBufferProcessor = self->_pixelBufferProcessor;
 
-      return [(MADPixelBufferProcesser *)pixelBufferProcessor processPixelBuffer:a3 orientation:v13 regionOfInterest:299 scaledWidth:299 scaledHeight:1111970369 pixelFormat:a6 output:x, y, width, height];
+      return [(MADPixelBufferProcesser *)pixelBufferProcessor processPixelBuffer:buffer orientation:v13 regionOfInterest:299 scaledWidth:299 scaledHeight:1111970369 pixelFormat:output output:x, y, width, height];
     }
   }
 
   else
   {
-    v20 = CFRetain(a3);
+    v20 = CFRetain(buffer);
     result = 0;
-    *a6 = v20;
+    *output = v20;
   }
 
   return result;
 }
 
-- (BOOL)processPixelBuffer:(__CVBuffer *)a3 timestamp:(id *)a4 orientation:(unsigned int)a5 resultHandler:(id)a6
+- (BOOL)processPixelBuffer:(__CVBuffer *)buffer timestamp:(id *)timestamp orientation:(unsigned int)orientation resultHandler:(id)handler
 {
-  v6 = *&a5;
-  v10 = a6;
+  v6 = *&orientation;
+  handlerCopy = handler;
   v11 = objc_alloc_init(MADVideoSessionFrameProperties);
   [(MADVideoSessionFrameProperties *)v11 setOrientation:v6];
-  v13 = *a4;
+  v13 = *timestamp;
   [(MADVideoSessionFrameProperties *)v11 setTimestamp:&v13];
-  LOBYTE(a3) = [(MADVideoSession *)self processPixelBuffer:a3 frameProperties:v11 resultHandler:v10];
+  LOBYTE(buffer) = [(MADVideoSession *)self processPixelBuffer:buffer frameProperties:v11 resultHandler:handlerCopy];
 
-  return a3;
+  return buffer;
 }
 
-- (BOOL)processPixelBuffer:(__CVBuffer *)a3 frameProperties:(id)a4 resultHandler:(id)a5
+- (BOOL)processPixelBuffer:(__CVBuffer *)buffer frameProperties:(id)properties resultHandler:(id)handler
 {
   v80 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  propertiesCopy = properties;
+  handlerCopy = handler;
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@][processPixelBuffer:]", objc_opt_class()];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v38 = [v8 orientation];
-    if (v8)
+    orientation = [propertiesCopy orientation];
+    if (propertiesCopy)
     {
-      [v8 timestamp];
+      [propertiesCopy timestamp];
     }
 
     else
@@ -812,17 +812,17 @@ void __41__MADVideoSession_hasOnlyOneSafetyRquest__block_invoke(uint64_t a1)
     }
 
     Seconds = CMTimeGetSeconds(&buf);
-    [v8 regionOfInterest];
+    [propertiesCopy regionOfInterest];
     v41 = v40;
-    [v8 regionOfInterest];
+    [propertiesCopy regionOfInterest];
     v43 = v42;
-    [v8 regionOfInterest];
+    [propertiesCopy regionOfInterest];
     v45 = v44;
-    [v8 regionOfInterest];
+    [propertiesCopy regionOfInterest];
     *v75 = 138413826;
     *&v75[4] = v10;
     *&v75[12] = 1024;
-    *&v75[14] = v38;
+    *&v75[14] = orientation;
     *&v75[18] = 2048;
     *&v75[20] = Seconds;
     *&v75[28] = 2048;
@@ -837,13 +837,13 @@ void __41__MADVideoSession_hasOnlyOneSafetyRquest__block_invoke(uint64_t a1)
   }
 
   v11 = objc_opt_class();
-  [v8 regionOfInterest];
+  [propertiesCopy regionOfInterest];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  Width = CVPixelBufferGetWidth(a3);
-  if ([v11 isValidRegionOfInterest:Width frameWidth:CVPixelBufferGetHeight(a3) frameHeight:{v13, v15, v17, v19}])
+  Width = CVPixelBufferGetWidth(buffer);
+  if ([v11 isValidRegionOfInterest:Width frameWidth:CVPixelBufferGetHeight(buffer) frameHeight:{v13, v15, v17, v19}])
   {
     v69 = 0;
     *v75 = 0;
@@ -853,8 +853,8 @@ void __41__MADVideoSession_hasOnlyOneSafetyRquest__block_invoke(uint64_t a1)
     *&v75[32] = __Block_byref_object_dispose__232;
     v76 = &unk_1C977A0C7;
     *v77 = 0;
-    v21 = [v8 orientation];
-    [v8 regionOfInterest];
+    orientation2 = [propertiesCopy orientation];
+    [propertiesCopy regionOfInterest];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -867,7 +867,7 @@ void __41__MADVideoSession_hasOnlyOneSafetyRquest__block_invoke(uint64_t a1)
       *v31 = 0;
     }
 
-    if ([(MADVideoSession *)self preprocessPixelBuffer:a3 orientation:v21 regionOfInterest:v31 output:&v69 isProcessed:v23, v25, v27, v29])
+    if ([(MADVideoSession *)self preprocessPixelBuffer:buffer orientation:orientation2 regionOfInterest:v31 output:&v69 isProcessed:v23, v25, v27, v29])
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -880,9 +880,9 @@ void __41__MADVideoSession_hasOnlyOneSafetyRquest__block_invoke(uint64_t a1)
     else
     {
       v33 = objc_alloc_init(MADVideoSessionFrameProperties);
-      if (v8)
+      if (propertiesCopy)
       {
-        [v8 timestamp];
+        [propertiesCopy timestamp];
       }
 
       else
@@ -894,8 +894,8 @@ void __41__MADVideoSession_hasOnlyOneSafetyRquest__block_invoke(uint64_t a1)
       [(MADVideoSessionFrameProperties *)v33 setTimestamp:&buf];
       if ((v69 & 1) == 0)
       {
-        -[MADVideoSessionFrameProperties setOrientation:](v33, "setOrientation:", [v8 orientation]);
-        [v8 regionOfInterest];
+        -[MADVideoSessionFrameProperties setOrientation:](v33, "setOrientation:", [propertiesCopy orientation]);
+        [propertiesCopy regionOfInterest];
         [(MADVideoSessionFrameProperties *)v33 setRegionOfInterest:?];
       }
 
@@ -928,15 +928,15 @@ void __41__MADVideoSession_hasOnlyOneSafetyRquest__block_invoke(uint64_t a1)
           }
 
           v47 = CMTimeGetSeconds(&buf);
-          v48 = [(MADVideoSessionFrameProperties *)v33 orientation];
+          orientation3 = [(MADVideoSessionFrameProperties *)v33 orientation];
           *v70 = 134218240;
           v71 = v47;
           v72 = 1024;
-          v73 = v48;
+          v73 = orientation3;
           _os_signpost_emit_with_name_impl(&dword_1C972C000, v37, OS_SIGNPOST_INTERVAL_BEGIN, spid, "MADVideoSession_processPixelBuffer", "processPixelBuffer timestamp: %.2f, orientation %d", v70, 0x12u);
         }
 
-        v49 = [(MADVideoSession *)self connection];
+        connection = [(MADVideoSession *)self connection];
         v63[0] = MEMORY[0x1E69E9820];
         v63[1] = 3221225472;
         v63[2] = __68__MADVideoSession_processPixelBuffer_frameProperties_resultHandler___block_invoke;
@@ -944,12 +944,12 @@ void __41__MADVideoSession_hasOnlyOneSafetyRquest__block_invoke(uint64_t a1)
         v67 = v75;
         v50 = v10;
         v64 = v50;
-        v51 = v9;
+        v51 = handlerCopy;
         v66 = v51;
         v52 = v33;
         v65 = v52;
-        v55 = v49;
-        v53 = [v49 remoteObjectProxyWithErrorHandler:v63];
+        v55 = connection;
+        v53 = [connection remoteObjectProxyWithErrorHandler:v63];
         v57[0] = MEMORY[0x1E69E9820];
         v57[1] = 3221225472;
         v57[2] = __68__MADVideoSession_processPixelBuffer_frameProperties_resultHandler___block_invoke_234;
@@ -1067,19 +1067,19 @@ void __68__MADVideoSession_processPixelBuffer_frameProperties_resultHandler___bl
   (*(v18 + 16))(v18, v7, &v19);
 }
 
-- (void)requestTTRNotificationWithVideoFrames:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)requestTTRNotificationWithVideoFrames:(id)frames options:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v23 = a5;
-  v10 = [MEMORY[0x1E695DF00] date];
+  framesCopy = frames;
+  optionsCopy = options;
+  handlerCopy = handler;
+  date = [MEMORY[0x1E695DF00] date];
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@][requestTTRNotification:]", objc_opt_class()];
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x3032000000;
   v34[3] = __Block_byref_object_copy_;
   v34[4] = __Block_byref_object_dispose_;
-  v12 = v8;
+  v12 = framesCopy;
   v35 = v12;
   v13 = MADSignpostLog();
   v14 = os_signpost_id_generate(v13);
@@ -1092,7 +1092,7 @@ void __68__MADVideoSession_processPixelBuffer_frameProperties_resultHandler___bl
     _os_signpost_emit_with_name_impl(&dword_1C972C000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "MADVideoSession_requestTTRNotification", &unk_1C977645E, buf, 2u);
   }
 
-  v17 = [(MADVideoSession *)self connection];
+  connection = [(MADVideoSession *)self connection];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __95__MADVideoSession_UserSafety__requestTTRNotificationWithVideoFrames_options_completionHandler___block_invoke;
@@ -1100,9 +1100,9 @@ void __68__MADVideoSession_processPixelBuffer_frameProperties_resultHandler___bl
   v32 = v34;
   v18 = v11;
   v30 = v18;
-  v19 = v23;
+  v19 = handlerCopy;
   v31 = v19;
-  v20 = [v17 remoteObjectProxyWithErrorHandler:v29];
+  v20 = [connection remoteObjectProxyWithErrorHandler:v29];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __95__MADVideoSession_UserSafety__requestTTRNotificationWithVideoFrames_options_completionHandler___block_invoke_280;
@@ -1113,7 +1113,7 @@ void __68__MADVideoSession_processPixelBuffer_frameProperties_resultHandler___bl
   v25 = v21;
   v22 = v19;
   v26 = v22;
-  [v20 requestTTRNotificationWithVideoFrames:v12 options:v9 reply:v24];
+  [v20 requestTTRNotificationWithVideoFrames:v12 options:optionsCopy reply:v24];
 
   _Block_object_dispose(v34, 8);
 }

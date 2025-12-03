@@ -1,16 +1,16 @@
 @interface ControlIconDragPreview
 - (SBIcon)icon;
-- (_TtC15ControlCenterUI22ControlIconDragPreview)initWithFrame:(CGRect)a3;
+- (_TtC15ControlCenterUI22ControlIconDragPreview)initWithFrame:(CGRect)frame;
 - (id)cleanUpHandler;
-- (id)delayCleanUpForReason:(id)a3;
-- (void)draggingSourceDroppedWithOperation:(unint64_t)a3;
+- (id)delayCleanUpForReason:(id)reason;
+- (void)draggingSourceDroppedWithOperation:(unint64_t)operation;
 - (void)dropDestinationAnimationCompleted;
 - (void)layoutSubviews;
-- (void)setCleanUpHandler:(id)a3;
-- (void)setDragState:(unint64_t)a3;
-- (void)setIconViewCustomIconImageViewController:(id)a3;
-- (void)setIconViewDelegate:(id)a3;
-- (void)setIconViewListLayoutProvider:(id)a3;
+- (void)setCleanUpHandler:(id)handler;
+- (void)setDragState:(unint64_t)state;
+- (void)setIconViewCustomIconImageViewController:(id)controller;
+- (void)setIconViewDelegate:(id)delegate;
+- (void)setIconViewListLayoutProvider:(id)provider;
 @end
 
 @implementation ControlIconDragPreview
@@ -37,9 +37,9 @@
   return v3;
 }
 
-- (void)setCleanUpHandler:(id)a3
+- (void)setCleanUpHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -57,24 +57,24 @@
   v8 = *(self + OBJC_IVAR____TtC15ControlCenterUI22ControlIconDragPreview_cleanUpHandler);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_21E9FFAF0(v8);
 }
 
-- (void)setDragState:(unint64_t)a3
+- (void)setDragState:(unint64_t)state
 {
-  v4 = self;
-  sub_21EA4B0D8(a3);
+  selfCopy = self;
+  sub_21EA4B0D8(state);
 }
 
 - (SBIcon)icon
 {
-  v2 = [*(self + OBJC_IVAR____TtC15ControlCenterUI22ControlIconDragPreview_iconView) icon];
+  icon = [*(self + OBJC_IVAR____TtC15ControlCenterUI22ControlIconDragPreview_iconView) icon];
 
-  return v2;
+  return icon;
 }
 
-- (void)setIconViewListLayoutProvider:(id)a3
+- (void)setIconViewListLayoutProvider:(id)provider
 {
   v3 = *(self + OBJC_IVAR____TtC15ControlCenterUI22ControlIconDragPreview_iconView);
   if (v3)
@@ -83,14 +83,14 @@
   }
 }
 
-- (void)setIconViewCustomIconImageViewController:(id)a3
+- (void)setIconViewCustomIconImageViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_21EA4B434(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_21EA4B434(controller);
 }
 
-- (void)setIconViewDelegate:(id)a3
+- (void)setIconViewDelegate:(id)delegate
 {
   swift_unknownObjectWeakAssign();
   v5 = *(self + OBJC_IVAR____TtC15ControlCenterUI22ControlIconDragPreview_iconView);
@@ -98,32 +98,32 @@
   [v5 setDelegate_];
 }
 
-- (void)draggingSourceDroppedWithOperation:(unint64_t)a3
+- (void)draggingSourceDroppedWithOperation:(unint64_t)operation
 {
-  v6 = self;
+  selfCopy = self;
   v3 = sub_21EA4B98C();
   v4 = [v3 count];
 
   if (v4)
   {
-    v5 = v6;
-    *(v6 + OBJC_IVAR____TtC15ControlCenterUI22ControlIconDragPreview_isDelayingCleanup) = 1;
+    v5 = selfCopy;
+    *(selfCopy + OBJC_IVAR____TtC15ControlCenterUI22ControlIconDragPreview_isDelayingCleanup) = 1;
   }
 
   else
   {
     sub_21EA4BCE4();
-    v5 = v6;
+    v5 = selfCopy;
   }
 }
 
 - (void)dropDestinationAnimationCompleted
 {
-  v2 = self;
+  selfCopy = self;
   sub_21EA4B674();
 }
 
-- (id)delayCleanUpForReason:(id)a3
+- (id)delayCleanUpForReason:(id)reason
 {
   v4 = sub_21EAA8E00();
   v6 = v5;
@@ -136,7 +136,7 @@
   v9[1] = v6;
   v14.receiver = v8;
   v14.super_class = v7;
-  v10 = self;
+  selfCopy = self;
 
   v11 = [(ControlIconDragPreview *)&v14 init];
   v12 = sub_21EA4B98C();
@@ -147,11 +147,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21EA4B808();
 }
 
-- (_TtC15ControlCenterUI22ControlIconDragPreview)initWithFrame:(CGRect)a3
+- (_TtC15ControlCenterUI22ControlIconDragPreview)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

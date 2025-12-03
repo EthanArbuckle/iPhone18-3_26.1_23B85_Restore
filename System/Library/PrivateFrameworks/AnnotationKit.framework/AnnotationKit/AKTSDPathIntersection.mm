@@ -1,16 +1,16 @@
 @interface AKTSDPathIntersection
-- (AKTSDPathIntersection)initWithSegment:(int64_t)a3 atT:(double)a4 onSegmentB:(int64_t)a5 atT:(double)a6 atPoint:(CGPoint)a7;
+- (AKTSDPathIntersection)initWithSegment:(int64_t)segment atT:(double)t onSegmentB:(int64_t)b atT:(double)atT atPoint:(CGPoint)point;
 - (CGPoint)point;
-- (int64_t)compareSegmentAndT:(id)a3;
-- (int64_t)compareT:(id)a3;
+- (int64_t)compareSegmentAndT:(id)t;
+- (int64_t)compareT:(id)t;
 @end
 
 @implementation AKTSDPathIntersection
 
-- (AKTSDPathIntersection)initWithSegment:(int64_t)a3 atT:(double)a4 onSegmentB:(int64_t)a5 atT:(double)a6 atPoint:(CGPoint)a7
+- (AKTSDPathIntersection)initWithSegment:(int64_t)segment atT:(double)t onSegmentB:(int64_t)b atT:(double)atT atPoint:(CGPoint)point
 {
-  y = a7.y;
-  x = a7.x;
+  y = point.y;
+  x = point.x;
   v14.receiver = self;
   v14.super_class = AKTSDPathIntersection;
   result = [(AKTSDPathIntersection *)&v14 init];
@@ -18,25 +18,25 @@
   {
     result->mPoint.x = x;
     result->mPoint.y = y;
-    result->mSegment = a3;
-    result->mSegmentB = a5;
-    result->mT = a4;
-    result->mTB = a6;
+    result->mSegment = segment;
+    result->mSegmentB = b;
+    result->mT = t;
+    result->mTB = atT;
   }
 
   return result;
 }
 
-- (int64_t)compareSegmentAndT:(id)a3
+- (int64_t)compareSegmentAndT:(id)t
 {
-  v4 = a3;
-  v5 = [(AKTSDPathIntersection *)self segment];
-  v6 = [v4 segment];
-  if (v5 >= v6)
+  tCopy = t;
+  segment = [(AKTSDPathIntersection *)self segment];
+  segment2 = [tCopy segment];
+  if (segment >= segment2)
   {
-    if (v5 <= v6)
+    if (segment <= segment2)
     {
-      v7 = [(AKTSDPathIntersection *)self compareT:v4];
+      v7 = [(AKTSDPathIntersection *)self compareT:tCopy];
     }
 
     else
@@ -53,12 +53,12 @@
   return v7;
 }
 
-- (int64_t)compareT:(id)a3
+- (int64_t)compareT:(id)t
 {
-  v4 = a3;
+  tCopy = t;
   [(AKTSDPathIntersection *)self t];
   v6 = v5;
-  [v4 t];
+  [tCopy t];
   v8 = v7;
 
   if (v6 < v8)

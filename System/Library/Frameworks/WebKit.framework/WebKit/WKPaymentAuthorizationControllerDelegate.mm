@@ -1,22 +1,22 @@
 @interface WKPaymentAuthorizationControllerDelegate
-- (WKPaymentAuthorizationControllerDelegate)initWithRequest:(id)a3 presenter:(void *)a4;
-- (void)_getPaymentServicesMerchantURL:(id)a3;
+- (WKPaymentAuthorizationControllerDelegate)initWithRequest:(id)request presenter:(void *)presenter;
+- (void)_getPaymentServicesMerchantURL:(id)l;
 @end
 
 @implementation WKPaymentAuthorizationControllerDelegate
 
-- (WKPaymentAuthorizationControllerDelegate)initWithRequest:(id)a3 presenter:(void *)a4
+- (WKPaymentAuthorizationControllerDelegate)initWithRequest:(id)request presenter:(void *)presenter
 {
   v10.receiver = self;
   v10.super_class = WKPaymentAuthorizationControllerDelegate;
-  v5 = [(WKPaymentAuthorizationDelegate *)&v10 _initWithRequest:a3 presenter:?];
+  v5 = [(WKPaymentAuthorizationDelegate *)&v10 _initWithRequest:request presenter:?];
   if (v5)
   {
-    v6 = *(a4 + 3);
+    v6 = *(presenter + 3);
     if (v6 && (v7 = *(v6 + 8)) != 0)
     {
       (**v7)(v7);
-      v8 = (*(*v7 + 88))(v7, a4);
+      v8 = (*(*v7 + 88))(v7, presenter);
       objc_storeWeak(&v5->_presentingWindow, v8);
       (*(*v7 + 8))(v7);
     }
@@ -30,7 +30,7 @@
   return v5;
 }
 
-- (void)_getPaymentServicesMerchantURL:(id)a3
+- (void)_getPaymentServicesMerchantURL:(id)l
 {
   v5 = MEMORY[0x1E69E2410];
   (*MEMORY[0x1E69E2410])(self, a2);
@@ -42,9 +42,9 @@
   }
 
   v8 = (*v7)();
-  v9 = [(PKPaymentRequest *)self->super._request.m_ptr APIType];
+  aPIType = [(PKPaymentRequest *)self->super._request.m_ptr APIType];
 
-  [v8 paymentServicesMerchantURLForAPIType:v9 completion:a3];
+  [v8 paymentServicesMerchantURLForAPIType:aPIType completion:l];
 }
 
 @end

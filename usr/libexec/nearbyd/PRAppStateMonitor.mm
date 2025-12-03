@@ -6,20 +6,20 @@
 - (NSArray)printableState;
 - (NSString)launchdJobLabel;
 - (NSString)monitoredProcessName;
-- (PRAppStateMonitor)initWithPID:(int)a3;
+- (PRAppStateMonitor)initWithPID:(int)d;
 - (int)currentAppState;
-- (void)_handleActivityContentUpdate:(id)a3;
-- (void)_process:(id)a3 didTerminate:(id)a4;
-- (void)_process:(id)a3 didUpdateState:(id)a4;
-- (void)addObserver:(id)a3;
+- (void)_handleActivityContentUpdate:(id)update;
+- (void)_process:(id)_process didTerminate:(id)terminate;
+- (void)_process:(id)_process didUpdateState:(id)state;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation PRAppStateMonitor
 
-- (PRAppStateMonitor)initWithPID:(int)a3
+- (PRAppStateMonitor)initWithPID:(int)d
 {
   v52.receiver = self;
   v52.super_class = PRAppStateMonitor;
@@ -37,7 +37,7 @@
     v4->_launchdJobLabelInternal = 0;
 
     v4->_lock._os_unfair_lock_opaque = 0;
-    v4->_monitoredPID = a3;
+    v4->_monitoredPID = d;
     objc_initWeak(&location, v4);
     v9 = [RBSProcessIdentifier identifierWithPid:v4->_monitoredPID];
     v50 = 0;
@@ -55,25 +55,25 @@
       }
     }
 
-    v14 = [(RBSProcessHandle *)v4->_processHandle name];
+    name = [(RBSProcessHandle *)v4->_processHandle name];
     v15 = v4->_processNameInternal;
-    v4->_processNameInternal = v14;
+    v4->_processNameInternal = name;
 
-    v16 = [(RBSProcessHandle *)v4->_processHandle daemonJobLabel];
+    daemonJobLabel = [(RBSProcessHandle *)v4->_processHandle daemonJobLabel];
     v17 = v4->_launchdJobLabelInternal;
-    v4->_launchdJobLabelInternal = v16;
+    v4->_launchdJobLabelInternal = daemonJobLabel;
 
     v4->_isDaemonInternal = [(RBSProcessHandle *)v4->_processHandle isDaemon];
     v4->_isRunningBoardAppInternal = [(RBSProcessHandle *)v4->_processHandle isApplication];
     v4->_isXPCServiceInternal = [(RBSProcessHandle *)v4->_processHandle isXPCService];
-    v18 = [(RBSProcessHandle *)v4->_processHandle bundle];
-    v19 = [v18 bundleInfoValueForKey:@"UIBackgroundModes"];
+    bundle = [(RBSProcessHandle *)v4->_processHandle bundle];
+    v19 = [bundle bundleInfoValueForKey:@"UIBackgroundModes"];
     v4->_isUIBackgroundModeEnabledInternal = [v19 containsObject:@"nearby-interaction"];
 
-    v20 = [(RBSProcessHandle *)v4->_processHandle bundle];
-    v21 = [v20 identifier];
+    bundle2 = [(RBSProcessHandle *)v4->_processHandle bundle];
+    identifier = [bundle2 identifier];
     bundleIdentifierInternal = v4->_bundleIdentifierInternal;
-    v4->_bundleIdentifierInternal = v21;
+    v4->_bundleIdentifierInternal = identifier;
 
     v23 = objc_opt_new();
     liveActivities_AllActive = v4->_liveActivities_AllActive;
@@ -157,20 +157,20 @@
   [(PRAppStateMonitor *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_observers addObject:v4];
+  [(NSMutableSet *)self->_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_observers removeObject:v4];
+  [(NSMutableSet *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -281,9 +281,9 @@
   runningBoardState = self->_runningBoardState;
   if (runningBoardState)
   {
-    v10 = [(RBSProcessState *)runningBoardState isRunning];
+    isRunning = [(RBSProcessState *)runningBoardState isRunning];
     v11 = @"No";
-    if (v10)
+    if (isRunning)
     {
       v11 = @"Yes";
     }
@@ -298,18 +298,18 @@
   v13 = self->_runningBoardState;
   if (v13)
   {
-    v14 = [(RBSProcessState *)v13 taskState];
+    taskState = [(RBSProcessState *)v13 taskState];
   }
 
   else
   {
-    v14 = 0;
+    taskState = 0;
   }
 
   v15 = [NSString stringWithFormat:@"[%d: %@]", self->_monitoredPID, self->_processNameInternal];
   [v3 addObject:v15];
 
-  v16 = [NSString stringWithFormat:@"    Type: %@. State: running %@ [%d], app %@ [age: %.2f s]. Observers: %d", v6, v12, v14, v8, sub_100005288() - self->_timeOfLatestCombinedAppState, [(NSMutableSet *)self->_observers count]];
+  v16 = [NSString stringWithFormat:@"    Type: %@. State: running %@ [%d], app %@ [age: %.2f s]. Observers: %d", v6, v12, taskState, v8, sub_100005288() - self->_timeOfLatestCombinedAppState, [(NSMutableSet *)self->_observers count]];
   [v3 addObject:v16];
 
   v17 = [NSString stringWithFormat:@"    Live activities: all %d, while FG %d. Considered: %d", [(NSMutableSet *)self->_liveActivities_AllActive count], [(NSMutableSet *)self->_liveActivities_ActiveWhileAppFG count], sub_100208CEC()];
@@ -328,25 +328,25 @@
   return v3;
 }
 
-- (void)_process:(id)a3 didUpdateState:(id)a4
+- (void)_process:(id)_process didUpdateState:(id)state
 {
-  v31 = a3;
-  v32 = a4;
+  _processCopy = _process;
+  stateCopy = state;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v31 name];
+    name = [_processCopy name];
     *buf = 138478339;
-    *v44 = v31;
+    *v44 = _processCopy;
     *&v44[8] = 2113;
-    *&v44[10] = v6;
+    *&v44[10] = name;
     *&v44[18] = 2113;
-    *&v44[20] = v32;
+    *&v44[20] = stateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[PRAppStateMonitor] _process: %{private}@, name: %{private}@, didUpdateState: %{private}@", buf, 0x20u);
   }
 
-  v34 = [v31 pid];
-  v7 = self;
+  v34 = [_processCopy pid];
+  selfCopy2 = self;
   if (v34 != self->_monitoredPID)
   {
     sub_1004ABBF8(&self->_monitoredPID, v34);
@@ -355,31 +355,31 @@
   os_unfair_lock_lock(&self->_lock);
   if (!self->_processNameInternal)
   {
-    v8 = [v31 name];
+    name2 = [_processCopy name];
     processNameInternal = self->_processNameInternal;
-    self->_processNameInternal = v8;
+    self->_processNameInternal = name2;
 
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v10 = [v32 state];
-  runningBoardState = v7->_runningBoardState;
-  v7->_runningBoardState = v10;
+  state = [stateCopy state];
+  runningBoardState = selfCopy2->_runningBoardState;
+  selfCopy2->_runningBoardState = state;
 
   combinedAppState = self->_combinedAppState;
-  v13 = [v32 state];
-  v14 = sub_100209234(v13);
+  state2 = [stateCopy state];
+  v14 = sub_100209234(state2);
 
   if (v14 == 2)
   {
-    v15 = self;
+    selfCopy4 = self;
     [(NSMutableSet *)self->_liveActivities_ActiveWhileAppFG unionSet:self->_liveActivities_AllActive];
     v14 = 2;
   }
 
   else
   {
-    v15 = self;
+    selfCopy4 = self;
     if (v14 == 4)
     {
       if (sub_100208CEC() && self->_isUIBackgroundModeEnabledInternal)
@@ -404,14 +404,14 @@
 
   if (v14 == combinedAppState)
   {
-    os_unfair_lock_unlock(&v15->_lock);
+    os_unfair_lock_unlock(&selfCopy4->_lock);
   }
 
   else
   {
-    v15->_combinedAppState = v14;
-    v15->_timeOfLatestCombinedAppState = sub_100005288();
-    v16 = [NSString stringWithFormat:@"Live activities: all %d, while FG %d. ", [(NSMutableSet *)v15->_liveActivities_AllActive count], [(NSMutableSet *)v15->_liveActivities_ActiveWhileAppFG count]];
+    selfCopy4->_combinedAppState = v14;
+    selfCopy4->_timeOfLatestCombinedAppState = sub_100005288();
+    v16 = [NSString stringWithFormat:@"Live activities: all %d, while FG %d. ", [(NSMutableSet *)selfCopy4->_liveActivities_AllActive count], [(NSMutableSet *)selfCopy4->_liveActivities_ActiveWhileAppFG count]];
     v17 = qword_1009F9820;
     v30 = v16;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -429,7 +429,7 @@
       v19 = *(&off_10099E738 + v14 - 1);
       v20 = sub_100208CEC();
       v21 = &stru_1009B1428;
-      v22 = v15->_runningBoardState;
+      v22 = selfCopy4->_runningBoardState;
       if (v20)
       {
         v21 = v16;
@@ -468,7 +468,7 @@
           }
 
           v28 = *(*(&v38 + 1) + 8 * i);
-          v29 = [v28 updatesQueue];
+          updatesQueue = [v28 updatesQueue];
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_1002092C8;
@@ -476,7 +476,7 @@
           block[4] = v28;
           v36 = v34;
           v37 = v14;
-          dispatch_async(v29, block);
+          dispatch_async(updatesQueue, block);
         }
 
         v23 = v24;
@@ -490,21 +490,21 @@
   }
 }
 
-- (void)_process:(id)a3 didTerminate:(id)a4
+- (void)_process:(id)_process didTerminate:(id)terminate
 {
-  v14 = a3;
-  v15 = a4;
-  v5 = [v14 pid];
+  _processCopy = _process;
+  terminateCopy = terminate;
+  v5 = [_processCopy pid];
   v6 = qword_1009F9820;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v14 name];
+    name = [_processCopy name];
     *buf = 138478339;
-    v25 = v14;
+    v25 = _processCopy;
     v26 = 2113;
-    v27 = v7;
+    v27 = name;
     v28 = 2113;
-    v29 = v15;
+    v29 = terminateCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[PRAppStateMonitor] _process: %{private}@, name: %{private}@, didTerminate: %{private}@", buf, 0x20u);
   }
 
@@ -528,14 +528,14 @@
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 updatesQueue];
+        updatesQueue = [v12 updatesQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_100209568;
         block[3] = &unk_10099E718;
         block[4] = v12;
         v18 = v5;
-        dispatch_async(v13, block);
+        dispatch_async(updatesQueue, block);
       }
 
       v9 = [(NSMutableSet *)v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -548,37 +548,37 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_handleActivityContentUpdate:(id)a3
+- (void)_handleActivityContentUpdate:(id)update
 {
-  v33 = a3;
-  v4 = [v33 descriptor];
-  v5 = [v4 platterTargetBundleIdentifier];
+  updateCopy = update;
+  descriptor = [updateCopy descriptor];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
 
-  v6 = [v33 descriptor];
-  v7 = [v6 activityIdentifier];
+  descriptor2 = [updateCopy descriptor];
+  activityIdentifier = [descriptor2 activityIdentifier];
 
-  v8 = [v33 state];
+  state = [updateCopy state];
   bundleIdentifierInternal = self->_bundleIdentifierInternal;
-  if (bundleIdentifierInternal && [(NSString *)bundleIdentifierInternal isEqualToString:v5])
+  if (bundleIdentifierInternal && [(NSString *)bundleIdentifierInternal isEqualToString:platterTargetBundleIdentifier])
   {
     os_unfair_lock_lock(&self->_lock);
     v10 = [(NSMutableSet *)self->_liveActivities_AllActive count];
     v11 = [(NSMutableSet *)self->_liveActivities_ActiveWhileAppFG count];
-    if (v8)
+    if (state)
     {
-      if (v8 <= 2)
+      if (state <= 2)
       {
-        [(NSMutableSet *)self->_liveActivities_AllActive removeObject:v7];
-        [(NSMutableSet *)self->_liveActivities_ActiveWhileAppFG removeObject:v7];
+        [(NSMutableSet *)self->_liveActivities_AllActive removeObject:activityIdentifier];
+        [(NSMutableSet *)self->_liveActivities_ActiveWhileAppFG removeObject:activityIdentifier];
       }
     }
 
     else
     {
-      [(NSMutableSet *)self->_liveActivities_AllActive addObject:v7];
+      [(NSMutableSet *)self->_liveActivities_AllActive addObject:activityIdentifier];
       if (self->_combinedAppState == 2)
       {
-        [(NSMutableSet *)self->_liveActivities_ActiveWhileAppFG addObject:v7];
+        [(NSMutableSet *)self->_liveActivities_ActiveWhileAppFG addObject:activityIdentifier];
       }
     }
 
@@ -588,11 +588,11 @@
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413826;
-      v44 = v5;
+      v44 = platterTargetBundleIdentifier;
       v45 = 2112;
-      v46 = v7;
+      v46 = activityIdentifier;
       v47 = 1024;
-      *v48 = v8;
+      *v48 = state;
       *&v48[4] = 1024;
       *&v48[6] = v10;
       LOWORD(v49) = 1024;
@@ -609,7 +609,7 @@
     {
       self->_combinedAppState = v16;
       self->_timeOfLatestCombinedAppState = sub_100005288();
-      v32 = v7;
+      v32 = activityIdentifier;
       v18 = [NSString stringWithFormat:@"Live activities: all %d, while FG %d. ", [(NSMutableSet *)self->_liveActivities_AllActive count], [(NSMutableSet *)self->_liveActivities_ActiveWhileAppFG count]];
       v19 = qword_1009F9820;
       v31 = v18;
@@ -625,7 +625,7 @@
         }
 
         *buf = 138413314;
-        v44 = v5;
+        v44 = platterTargetBundleIdentifier;
         v45 = 2112;
         v46 = v20;
         v47 = 2112;
@@ -658,7 +658,7 @@
             }
 
             v29 = *(*(&v38 + 1) + 8 * i);
-            v30 = [v29 updatesQueue];
+            updatesQueue = [v29 updatesQueue];
             block[0] = _NSConcreteStackBlock;
             block[1] = 3221225472;
             block[2] = sub_100209A80;
@@ -666,7 +666,7 @@
             block[4] = v29;
             v36 = monitoredPID;
             v37 = v17;
-            dispatch_async(v30, block);
+            dispatch_async(updatesQueue, block);
           }
 
           v25 = obj;
@@ -677,7 +677,7 @@
       }
 
       os_unfair_lock_unlock(&self->_lock);
-      v7 = v32;
+      activityIdentifier = v32;
     }
 
     else

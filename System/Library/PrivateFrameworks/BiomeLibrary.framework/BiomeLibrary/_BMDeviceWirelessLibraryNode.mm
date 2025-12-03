@@ -47,7 +47,7 @@
 + (id)storeConfigurationForWakeOnWiFiStatus;
 + (id)storeConfigurationForWiFi;
 + (id)storeConfigurationForWiFiAvailabilityStatus;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)syncPolicyForBluetooth;
 + (id)syncPolicyForCellularAvailabilityStatus;
 + (id)validKeyPaths;
@@ -58,7 +58,7 @@
 + (id)WiFi
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForWiFi];
+  configurationForWiFi = [self configurationForWiFi];
   v3 = +[BMDeviceWiFi columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -70,7 +70,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Wireless.WiFi" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.WiFi" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.WiFi" schema:v9 configuration:configurationForWiFi];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -79,13 +79,13 @@
 
 + (id)configurationForWiFi
 {
-  v3 = [a1 storeConfigurationForWiFi];
-  v4 = [a1 syncPolicyForWiFi];
+  storeConfigurationForWiFi = [self storeConfigurationForWiFi];
+  syncPolicyForWiFi = [self syncPolicyForWiFi];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"DF033FBC-B5CF-4E16-86FA-C1B30FAB122E"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.WiFi" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.WiFi" eventClass:objc_opt_class() storeConfig:storeConfigurationForWiFi syncPolicy:syncPolicyForWiFi legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -101,7 +101,7 @@
 + (id)AirplaneMode
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAirplaneMode];
+  configurationForAirplaneMode = [self configurationForAirplaneMode];
   v3 = +[BMDeviceAirplaneMode columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -113,7 +113,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Wireless.AirplaneMode" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.AirplaneMode" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.AirplaneMode" schema:v9 configuration:configurationForAirplaneMode];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -122,13 +122,13 @@
 
 + (id)configurationForAirplaneMode
 {
-  v3 = [a1 storeConfigurationForAirplaneMode];
-  v4 = [a1 syncPolicyForAirplaneMode];
+  storeConfigurationForAirplaneMode = [self storeConfigurationForAirplaneMode];
+  syncPolicyForAirplaneMode = [self syncPolicyForAirplaneMode];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"40DB4DA1-A0B0-4198-BB81-8EF341CCAB8F"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.AirplaneMode" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.AirplaneMode" eventClass:objc_opt_class() storeConfig:storeConfigurationForAirplaneMode syncPolicy:syncPolicyForAirplaneMode legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -144,7 +144,7 @@
 + (id)APSDInterfaceStatus
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAPSDInterfaceStatus];
+  configurationForAPSDInterfaceStatus = [self configurationForAPSDInterfaceStatus];
   v3 = +[BMDeviceAPSDInterfaceStatus columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -156,7 +156,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Wireless.APSDInterfaceStatus" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.APSDInterfaceStatus" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.APSDInterfaceStatus" schema:v9 configuration:configurationForAPSDInterfaceStatus];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -165,13 +165,13 @@
 
 + (id)configurationForAPSDInterfaceStatus
 {
-  v3 = [a1 storeConfigurationForAPSDInterfaceStatus];
-  v4 = [a1 syncPolicyForAPSDInterfaceStatus];
+  storeConfigurationForAPSDInterfaceStatus = [self storeConfigurationForAPSDInterfaceStatus];
+  syncPolicyForAPSDInterfaceStatus = [self syncPolicyForAPSDInterfaceStatus];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"044C3C96-6418-4E5E-8B4C-4B0994CFADA8"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.APSDInterfaceStatus" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.APSDInterfaceStatus" eventClass:objc_opt_class() storeConfig:storeConfigurationForAPSDInterfaceStatus syncPolicy:syncPolicyForAPSDInterfaceStatus legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -187,7 +187,7 @@
 + (id)Bluetooth
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForBluetooth];
+  configurationForBluetooth = [self configurationForBluetooth];
   v3 = +[BMDeviceBluetooth columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -199,7 +199,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Wireless.Bluetooth" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.Bluetooth" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.Bluetooth" schema:v9 configuration:configurationForBluetooth];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -208,13 +208,13 @@
 
 + (id)configurationForBluetooth
 {
-  v3 = [a1 storeConfigurationForBluetooth];
-  v4 = [a1 syncPolicyForBluetooth];
+  storeConfigurationForBluetooth = [self storeConfigurationForBluetooth];
+  syncPolicyForBluetooth = [self syncPolicyForBluetooth];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"7920E574-B675-4313-B1FB-4792805B3B25"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.Bluetooth" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.Bluetooth" eventClass:objc_opt_class() storeConfig:storeConfigurationForBluetooth syncPolicy:syncPolicyForBluetooth legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -274,7 +274,7 @@
 + (id)BluetoothGATTSession
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForBluetoothGATTSession];
+  configurationForBluetoothGATTSession = [self configurationForBluetoothGATTSession];
   v3 = +[BMDeviceBluetoothGATTSession columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -286,7 +286,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Wireless.BluetoothGATTSession" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.BluetoothGATTSession" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.BluetoothGATTSession" schema:v9 configuration:configurationForBluetoothGATTSession];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -295,13 +295,13 @@
 
 + (id)configurationForBluetoothGATTSession
 {
-  v3 = [a1 storeConfigurationForBluetoothGATTSession];
-  v4 = [a1 syncPolicyForBluetoothGATTSession];
+  storeConfigurationForBluetoothGATTSession = [self storeConfigurationForBluetoothGATTSession];
+  syncPolicyForBluetoothGATTSession = [self syncPolicyForBluetoothGATTSession];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"02882AFB-F125-4DAE-8ED2-9AE1B2743D7D"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.BluetoothGATTSession" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.BluetoothGATTSession" eventClass:objc_opt_class() storeConfig:storeConfigurationForBluetoothGATTSession syncPolicy:syncPolicyForBluetoothGATTSession legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -317,7 +317,7 @@
 + (id)BluetoothNearbyDevice
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForBluetoothNearbyDevice];
+  configurationForBluetoothNearbyDevice = [self configurationForBluetoothNearbyDevice];
   v3 = +[BMDeviceBluetoothNearbyDevice columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -329,7 +329,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Wireless.BluetoothNearbyDevice" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.BluetoothNearbyDevice" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.BluetoothNearbyDevice" schema:v9 configuration:configurationForBluetoothNearbyDevice];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -338,13 +338,13 @@
 
 + (id)configurationForBluetoothNearbyDevice
 {
-  v3 = [a1 storeConfigurationForBluetoothNearbyDevice];
-  v4 = [a1 syncPolicyForBluetoothNearbyDevice];
+  storeConfigurationForBluetoothNearbyDevice = [self storeConfigurationForBluetoothNearbyDevice];
+  syncPolicyForBluetoothNearbyDevice = [self syncPolicyForBluetoothNearbyDevice];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"EEE3223A-C8CC-47D7-8FA0-271FD75D954F"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.BluetoothNearbyDevice" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.BluetoothNearbyDevice" eventClass:objc_opt_class() storeConfig:storeConfigurationForBluetoothNearbyDevice syncPolicy:syncPolicyForBluetoothNearbyDevice legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -360,7 +360,7 @@
 + (id)BluetoothPowerEnabled
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForBluetoothPowerEnabled];
+  configurationForBluetoothPowerEnabled = [self configurationForBluetoothPowerEnabled];
   v3 = +[BMDeviceBluetoothPowerEnabled columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -372,7 +372,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Wireless.BluetoothPowerEnabled" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.BluetoothPowerEnabled" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.BluetoothPowerEnabled" schema:v9 configuration:configurationForBluetoothPowerEnabled];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -381,13 +381,13 @@
 
 + (id)configurationForBluetoothPowerEnabled
 {
-  v3 = [a1 storeConfigurationForBluetoothPowerEnabled];
-  v4 = [a1 syncPolicyForBluetoothPowerEnabled];
+  storeConfigurationForBluetoothPowerEnabled = [self storeConfigurationForBluetoothPowerEnabled];
+  syncPolicyForBluetoothPowerEnabled = [self syncPolicyForBluetoothPowerEnabled];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"F73FFD7F-1B3C-435C-AE64-86D5314E790D"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.BluetoothPowerEnabled" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.BluetoothPowerEnabled" eventClass:objc_opt_class() storeConfig:storeConfigurationForBluetoothPowerEnabled syncPolicy:syncPolicyForBluetoothPowerEnabled legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -403,7 +403,7 @@
 + (id)BluetoothUseCase
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForBluetoothUseCase];
+  configurationForBluetoothUseCase = [self configurationForBluetoothUseCase];
   v3 = +[BMDeviceBluetoothUseCase columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -415,7 +415,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Wireless.BluetoothUseCase" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.BluetoothUseCase" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.BluetoothUseCase" schema:v9 configuration:configurationForBluetoothUseCase];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -424,13 +424,13 @@
 
 + (id)configurationForBluetoothUseCase
 {
-  v3 = [a1 storeConfigurationForBluetoothUseCase];
-  v4 = [a1 syncPolicyForBluetoothUseCase];
+  storeConfigurationForBluetoothUseCase = [self storeConfigurationForBluetoothUseCase];
+  syncPolicyForBluetoothUseCase = [self syncPolicyForBluetoothUseCase];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"01E60FD6-8451-446F-9F59-665749651E38"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.BluetoothUseCase" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.BluetoothUseCase" eventClass:objc_opt_class() storeConfig:storeConfigurationForBluetoothUseCase syncPolicy:syncPolicyForBluetoothUseCase legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -446,7 +446,7 @@
 + (id)CellularAvailabilityStatus
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForCellularAvailabilityStatus];
+  configurationForCellularAvailabilityStatus = [self configurationForCellularAvailabilityStatus];
   v3 = +[BMDeviceCellularAvailabilityStatus columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -458,7 +458,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Wireless.CellularAvailabilityStatus" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.CellularAvailabilityStatus" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.CellularAvailabilityStatus" schema:v9 configuration:configurationForCellularAvailabilityStatus];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -467,13 +467,13 @@
 
 + (id)configurationForCellularAvailabilityStatus
 {
-  v3 = [a1 storeConfigurationForCellularAvailabilityStatus];
-  v4 = [a1 syncPolicyForCellularAvailabilityStatus];
+  storeConfigurationForCellularAvailabilityStatus = [self storeConfigurationForCellularAvailabilityStatus];
+  syncPolicyForCellularAvailabilityStatus = [self syncPolicyForCellularAvailabilityStatus];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"BC47690A-50B7-420A-A8C4-5DF634E008C9"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.CellularAvailabilityStatus" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.CellularAvailabilityStatus" eventClass:objc_opt_class() storeConfig:storeConfigurationForCellularAvailabilityStatus syncPolicy:syncPolicyForCellularAvailabilityStatus legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -514,7 +514,7 @@
 + (id)CellularDataEnabled
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForCellularDataEnabled];
+  configurationForCellularDataEnabled = [self configurationForCellularDataEnabled];
   v3 = +[BMDeviceCellularDataEnabled columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -526,7 +526,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Wireless.CellularDataEnabled" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.CellularDataEnabled" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.CellularDataEnabled" schema:v9 configuration:configurationForCellularDataEnabled];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -535,13 +535,13 @@
 
 + (id)configurationForCellularDataEnabled
 {
-  v3 = [a1 storeConfigurationForCellularDataEnabled];
-  v4 = [a1 syncPolicyForCellularDataEnabled];
+  storeConfigurationForCellularDataEnabled = [self storeConfigurationForCellularDataEnabled];
+  syncPolicyForCellularDataEnabled = [self syncPolicyForCellularDataEnabled];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"B08AFAE4-D1DF-4623-85A3-99FE76307B84"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.CellularDataEnabled" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.CellularDataEnabled" eventClass:objc_opt_class() storeConfig:storeConfigurationForCellularDataEnabled syncPolicy:syncPolicyForCellularDataEnabled legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -557,7 +557,7 @@
 + (id)CellularQualityStatus
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForCellularQualityStatus];
+  configurationForCellularQualityStatus = [self configurationForCellularQualityStatus];
   v3 = +[BMDeviceCellularQualityStatus columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -569,7 +569,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Wireless.CellularQualityStatus" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.CellularQualityStatus" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.CellularQualityStatus" schema:v9 configuration:configurationForCellularQualityStatus];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -578,13 +578,13 @@
 
 + (id)configurationForCellularQualityStatus
 {
-  v3 = [a1 storeConfigurationForCellularQualityStatus];
-  v4 = [a1 syncPolicyForCellularQualityStatus];
+  storeConfigurationForCellularQualityStatus = [self storeConfigurationForCellularQualityStatus];
+  syncPolicyForCellularQualityStatus = [self syncPolicyForCellularQualityStatus];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"179E578E-A444-43C3-BF36-BB54BF1904CC"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.CellularQualityStatus" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.CellularQualityStatus" eventClass:objc_opt_class() storeConfig:storeConfigurationForCellularQualityStatus syncPolicy:syncPolicyForCellularQualityStatus legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -600,7 +600,7 @@
 + (id)ConnectivityContext
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForConnectivityContext];
+  configurationForConnectivityContext = [self configurationForConnectivityContext];
   v3 = +[BMDeviceConnectivityContext columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -612,7 +612,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Wireless.ConnectivityContext" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.ConnectivityContext" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.ConnectivityContext" schema:v9 configuration:configurationForConnectivityContext];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -621,13 +621,13 @@
 
 + (id)configurationForConnectivityContext
 {
-  v3 = [a1 storeConfigurationForConnectivityContext];
-  v4 = [a1 syncPolicyForConnectivityContext];
+  storeConfigurationForConnectivityContext = [self storeConfigurationForConnectivityContext];
+  syncPolicyForConnectivityContext = [self syncPolicyForConnectivityContext];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"3352CC72-5879-4250-9A42-3D63D350FB09"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.ConnectivityContext" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.ConnectivityContext" eventClass:objc_opt_class() storeConfig:storeConfigurationForConnectivityContext syncPolicy:syncPolicyForConnectivityContext legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -643,7 +643,7 @@
 + (id)DefaultPairedNearby
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForDefaultPairedNearby];
+  configurationForDefaultPairedNearby = [self configurationForDefaultPairedNearby];
   v3 = +[BMDeviceDefaultPairedNearby columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -655,7 +655,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Wireless.DefaultPairedNearby" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.DefaultPairedNearby" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.DefaultPairedNearby" schema:v9 configuration:configurationForDefaultPairedNearby];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -664,13 +664,13 @@
 
 + (id)configurationForDefaultPairedNearby
 {
-  v3 = [a1 storeConfigurationForDefaultPairedNearby];
-  v4 = [a1 syncPolicyForDefaultPairedNearby];
+  storeConfigurationForDefaultPairedNearby = [self storeConfigurationForDefaultPairedNearby];
+  syncPolicyForDefaultPairedNearby = [self syncPolicyForDefaultPairedNearby];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"24D3E99E-ABBC-4DFD-997C-AA636A42E9F2"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.DefaultPairedNearby" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.DefaultPairedNearby" eventClass:objc_opt_class() storeConfig:storeConfigurationForDefaultPairedNearby syncPolicy:syncPolicyForDefaultPairedNearby legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -686,7 +686,7 @@
 + (id)NFCTag
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForNFCTag];
+  configurationForNFCTag = [self configurationForNFCTag];
   v3 = +[BMDeviceNFCTag columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -698,7 +698,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Wireless.NFCTag" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.NFCTag" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.NFCTag" schema:v9 configuration:configurationForNFCTag];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -707,13 +707,13 @@
 
 + (id)configurationForNFCTag
 {
-  v3 = [a1 storeConfigurationForNFCTag];
-  v4 = [a1 syncPolicyForNFCTag];
+  storeConfigurationForNFCTag = [self storeConfigurationForNFCTag];
+  syncPolicyForNFCTag = [self syncPolicyForNFCTag];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"55DEDFF2-E05F-44E5-AD33-578E3CABFDF8"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.NFCTag" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.NFCTag" eventClass:objc_opt_class() storeConfig:storeConfigurationForNFCTag syncPolicy:syncPolicyForNFCTag legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -729,7 +729,7 @@
 + (id)WakeOnWiFiStatus
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForWakeOnWiFiStatus];
+  configurationForWakeOnWiFiStatus = [self configurationForWakeOnWiFiStatus];
   v3 = +[BMDeviceWakeOnWiFiStatus columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -741,7 +741,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Wireless.WakeOnWiFiStatus" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.WakeOnWiFiStatus" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.WakeOnWiFiStatus" schema:v9 configuration:configurationForWakeOnWiFiStatus];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -750,13 +750,13 @@
 
 + (id)configurationForWakeOnWiFiStatus
 {
-  v3 = [a1 storeConfigurationForWakeOnWiFiStatus];
-  v4 = [a1 syncPolicyForWakeOnWiFiStatus];
+  storeConfigurationForWakeOnWiFiStatus = [self storeConfigurationForWakeOnWiFiStatus];
+  syncPolicyForWakeOnWiFiStatus = [self syncPolicyForWakeOnWiFiStatus];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"645BAE4A-C775-4F39-87B1-658E45F43C55"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.WakeOnWiFiStatus" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.WakeOnWiFiStatus" eventClass:objc_opt_class() storeConfig:storeConfigurationForWakeOnWiFiStatus syncPolicy:syncPolicyForWakeOnWiFiStatus legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -772,7 +772,7 @@
 + (id)WiFiAvailabilityStatus
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForWiFiAvailabilityStatus];
+  configurationForWiFiAvailabilityStatus = [self configurationForWiFiAvailabilityStatus];
   v3 = +[BMDeviceWiFiAvailabilityStatus columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -784,7 +784,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Wireless.WiFiAvailabilityStatus" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.WiFiAvailabilityStatus" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Wireless.WiFiAvailabilityStatus" schema:v9 configuration:configurationForWiFiAvailabilityStatus];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -793,13 +793,13 @@
 
 + (id)configurationForWiFiAvailabilityStatus
 {
-  v3 = [a1 storeConfigurationForWiFiAvailabilityStatus];
-  v4 = [a1 syncPolicyForWiFiAvailabilityStatus];
+  storeConfigurationForWiFiAvailabilityStatus = [self storeConfigurationForWiFiAvailabilityStatus];
+  syncPolicyForWiFiAvailabilityStatus = [self syncPolicyForWiFiAvailabilityStatus];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"D24A8A28-B844-4450-8044-42DBA85D9FEF"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.WiFiAvailabilityStatus" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Wireless.WiFiAvailabilityStatus" eventClass:objc_opt_class() storeConfig:storeConfigurationForWiFiAvailabilityStatus syncPolicy:syncPolicyForWiFiAvailabilityStatus legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -812,104 +812,104 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"AirplaneMode"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"AirplaneMode"])
   {
-    v5 = [a1 AirplaneMode];
+    airplaneMode = [self AirplaneMode];
 LABEL_33:
-    v6 = v5;
+    v6 = airplaneMode;
     goto LABEL_34;
   }
 
-  if ([v4 isEqualToString:@"APSDInterfaceStatus"])
+  if ([nameCopy isEqualToString:@"APSDInterfaceStatus"])
   {
-    v5 = [a1 APSDInterfaceStatus];
+    airplaneMode = [self APSDInterfaceStatus];
     goto LABEL_33;
   }
 
-  if ([v4 isEqualToString:@"Bluetooth"])
+  if ([nameCopy isEqualToString:@"Bluetooth"])
   {
-    v5 = [a1 Bluetooth];
+    airplaneMode = [self Bluetooth];
     goto LABEL_33;
   }
 
-  if ([v4 isEqualToString:@"BluetoothGATTSession"])
+  if ([nameCopy isEqualToString:@"BluetoothGATTSession"])
   {
-    v5 = [a1 BluetoothGATTSession];
+    airplaneMode = [self BluetoothGATTSession];
     goto LABEL_33;
   }
 
-  if ([v4 isEqualToString:@"BluetoothNearbyDevice"])
+  if ([nameCopy isEqualToString:@"BluetoothNearbyDevice"])
   {
-    v5 = [a1 BluetoothNearbyDevice];
+    airplaneMode = [self BluetoothNearbyDevice];
     goto LABEL_33;
   }
 
-  if ([v4 isEqualToString:@"BluetoothPowerEnabled"])
+  if ([nameCopy isEqualToString:@"BluetoothPowerEnabled"])
   {
-    v5 = [a1 BluetoothPowerEnabled];
+    airplaneMode = [self BluetoothPowerEnabled];
     goto LABEL_33;
   }
 
-  if ([v4 isEqualToString:@"BluetoothUseCase"])
+  if ([nameCopy isEqualToString:@"BluetoothUseCase"])
   {
-    v5 = [a1 BluetoothUseCase];
+    airplaneMode = [self BluetoothUseCase];
     goto LABEL_33;
   }
 
-  if ([v4 isEqualToString:@"CellularAvailabilityStatus"])
+  if ([nameCopy isEqualToString:@"CellularAvailabilityStatus"])
   {
-    v5 = [a1 CellularAvailabilityStatus];
+    airplaneMode = [self CellularAvailabilityStatus];
     goto LABEL_33;
   }
 
-  if ([v4 isEqualToString:@"CellularDataEnabled"])
+  if ([nameCopy isEqualToString:@"CellularDataEnabled"])
   {
-    v5 = [a1 CellularDataEnabled];
+    airplaneMode = [self CellularDataEnabled];
     goto LABEL_33;
   }
 
-  if ([v4 isEqualToString:@"CellularQualityStatus"])
+  if ([nameCopy isEqualToString:@"CellularQualityStatus"])
   {
-    v5 = [a1 CellularQualityStatus];
+    airplaneMode = [self CellularQualityStatus];
     goto LABEL_33;
   }
 
-  if ([v4 isEqualToString:@"ConnectivityContext"])
+  if ([nameCopy isEqualToString:@"ConnectivityContext"])
   {
-    v5 = [a1 ConnectivityContext];
+    airplaneMode = [self ConnectivityContext];
     goto LABEL_33;
   }
 
-  if ([v4 isEqualToString:@"DefaultPairedNearby"])
+  if ([nameCopy isEqualToString:@"DefaultPairedNearby"])
   {
-    v5 = [a1 DefaultPairedNearby];
+    airplaneMode = [self DefaultPairedNearby];
     goto LABEL_33;
   }
 
-  if ([v4 isEqualToString:@"NFCTag"])
+  if ([nameCopy isEqualToString:@"NFCTag"])
   {
-    v5 = [a1 NFCTag];
+    airplaneMode = [self NFCTag];
     goto LABEL_33;
   }
 
-  if ([v4 isEqualToString:@"WakeOnWiFiStatus"])
+  if ([nameCopy isEqualToString:@"WakeOnWiFiStatus"])
   {
-    v5 = [a1 WakeOnWiFiStatus];
+    airplaneMode = [self WakeOnWiFiStatus];
     goto LABEL_33;
   }
 
-  if ([v4 isEqualToString:@"WiFi"])
+  if ([nameCopy isEqualToString:@"WiFi"])
   {
-    v5 = [a1 WiFi];
+    airplaneMode = [self WiFi];
     goto LABEL_33;
   }
 
-  if ([v4 isEqualToString:@"WiFiAvailabilityStatus"])
+  if ([nameCopy isEqualToString:@"WiFiAvailabilityStatus"])
   {
-    v5 = [a1 WiFiAvailabilityStatus];
+    airplaneMode = [self WiFiAvailabilityStatus];
     goto LABEL_33;
   }
 

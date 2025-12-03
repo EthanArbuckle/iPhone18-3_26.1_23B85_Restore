@@ -3,7 +3,7 @@
 - (NSUUID)messageTargetUUID;
 - (_TtC19HomeKitDaemonLegacy38HomeManagerXPCClientConnectionsManager)init;
 - (void)configure;
-- (void)handleActiveAssertionUpdateStateMessage:(id)a3;
+- (void)handleActiveAssertionUpdateStateMessage:(id)message;
 @end
 
 @implementation HomeManagerXPCClientConnectionsManager
@@ -24,23 +24,23 @@
 
 - (void)configure
 {
-  v2 = self;
+  selfCopy = self;
   sub_253200C54();
 }
 
 - (BOOL)hasActiveConnections
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_253200EC0();
 
   return v3;
 }
 
-- (void)handleActiveAssertionUpdateStateMessage:(id)a3
+- (void)handleActiveAssertionUpdateStateMessage:(id)message
 {
-  v4 = a3;
-  v5 = self;
-  sub_2532020D0(v4);
+  messageCopy = message;
+  selfCopy = self;
+  sub_2532020D0(messageCopy);
 }
 
 - (_TtC19HomeKitDaemonLegacy38HomeManagerXPCClientConnectionsManager)init

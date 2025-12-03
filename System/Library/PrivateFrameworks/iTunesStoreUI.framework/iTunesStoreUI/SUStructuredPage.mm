@@ -1,15 +1,15 @@
 @interface SUStructuredPage
-+ (int64_t)pageTypeForStorePageDictionary:(id)a3;
-+ (int64_t)pageTypeForStorePageString:(id)a3;
-- (BOOL)loadFromDictionary:(id)a3;
-- (id)_copyItemFromDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)_displayStyleForString:(id)a3;
-- (void)_parseItemsFromDictionary:(id)a3;
-- (void)_parseProtocolFromDictionary:(id)a3;
-- (void)_parseTemplateParametersFromDictionary:(id)a3;
++ (int64_t)pageTypeForStorePageDictionary:(id)dictionary;
++ (int64_t)pageTypeForStorePageString:(id)string;
+- (BOOL)loadFromDictionary:(id)dictionary;
+- (id)_copyItemFromDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)_displayStyleForString:(id)string;
+- (void)_parseItemsFromDictionary:(id)dictionary;
+- (void)_parseProtocolFromDictionary:(id)dictionary;
+- (void)_parseTemplateParametersFromDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)setItem:(id)a3;
+- (void)setItem:(id)item;
 @end
 
 @implementation SUStructuredPage
@@ -21,26 +21,26 @@
   [(SUStructuredPage *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_artworkShouldFitWidth;
   *(v5 + 16) = self->_artworkWidth;
   *(v5 + 24) = self->_didShowDialog;
   *(v5 + 32) = self->_displayStyle;
   *(v5 + 40) = self->_item;
-  *(v5 + 48) = [(SUItemList *)self->_itemList copyWithZone:a3];
-  *(v5 + 56) = [(SUStorePageProtocol *)self->_protocol copyWithZone:a3];
-  *(v5 + 64) = [(SUPageSectionGroup *)self->_sectionsGroup copyWithZone:a3];
-  *(v5 + 80) = [(NSString *)self->_title copyWithZone:a3];
+  *(v5 + 48) = [(SUItemList *)self->_itemList copyWithZone:zone];
+  *(v5 + 56) = [(SUStorePageProtocol *)self->_protocol copyWithZone:zone];
+  *(v5 + 64) = [(SUPageSectionGroup *)self->_sectionsGroup copyWithZone:zone];
+  *(v5 + 80) = [(NSString *)self->_title copyWithZone:zone];
   *(v5 + 88) = self->_type;
   *(v5 + 96) = self->_wantsIndexBar;
   return v5;
 }
 
-+ (int64_t)pageTypeForStorePageDictionary:(id)a3
++ (int64_t)pageTypeForStorePageDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKey:@"page-type"];
+  v4 = [dictionary objectForKey:@"page-type"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -58,52 +58,52 @@
     }
   }
 
-  return [a1 pageTypeForStorePageString:v4];
+  return [self pageTypeForStorePageString:v4];
 }
 
-+ (int64_t)pageTypeForStorePageString:(id)a3
++ (int64_t)pageTypeForStorePageString:(id)string
 {
-  if ([a3 isEqualToString:@"album"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"tracks") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"mix") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"podcast") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"course"))
+  if ([string isEqualToString:@"album"] & 1) != 0 || (objc_msgSend(string, "isEqualToString:", @"tracks") & 1) != 0 || (objc_msgSend(string, "isEqualToString:", @"mix") & 1) != 0 || (objc_msgSend(string, "isEqualToString:", @"podcast") & 1) != 0 || (objc_msgSend(string, "isEqualToString:", @"course"))
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"software"])
+  if ([string isEqualToString:@"software"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"split-view"])
+  if ([string isEqualToString:@"split-view"])
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:@"search"])
+  if ([string isEqualToString:@"search"])
   {
     return 7;
   }
 
-  if ([a3 isEqualToString:@"software-update"])
+  if ([string isEqualToString:@"software-update"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"reviews"])
+  if ([string isEqualToString:@"reviews"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"eula"])
+  if ([string isEqualToString:@"eula"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"software-updates"])
+  if ([string isEqualToString:@"software-updates"])
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"downloads"])
+  if ([string isEqualToString:@"downloads"])
   {
     return 9;
   }
@@ -111,13 +111,13 @@
   return 0;
 }
 
-- (BOOL)loadFromDictionary:(id)a3
+- (BOOL)loadFromDictionary:(id)dictionary
 {
   [(SUStructuredPage *)self _parseItemsFromDictionary:?];
-  -[SUStructuredPage setType:](self, "setType:", [objc_opt_class() pageTypeForStorePageDictionary:a3]);
-  [(SUStructuredPage *)self _parseTemplateParametersFromDictionary:a3];
-  [(SUStructuredPage *)self _parseProtocolFromDictionary:a3];
-  v5 = [a3 objectForKey:@"tabs"];
+  -[SUStructuredPage setType:](self, "setType:", [objc_opt_class() pageTypeForStorePageDictionary:dictionary]);
+  [(SUStructuredPage *)self _parseTemplateParametersFromDictionary:dictionary];
+  [(SUStructuredPage *)self _parseProtocolFromDictionary:dictionary];
+  v5 = [dictionary objectForKey:@"tabs"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -133,7 +133,7 @@
     [(SUStructuredPage *)self setSectionsGroup:0];
   }
 
-  v7 = [a3 objectForKey:@"title"];
+  v7 = [dictionary objectForKey:@"title"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -149,20 +149,20 @@
   return 1;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
   v16 = *MEMORY[0x1E69E9840];
   item = self->_item;
-  if (item != a3)
+  if (item != item)
   {
 
-    self->_item = a3;
-    v6 = [(SUItemList *)[(SUStructuredPage *)self itemList] copyItems];
+    self->_item = item;
+    copyItems = [(SUItemList *)[(SUStructuredPage *)self itemList] copyItems];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v7 = [copyItems countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -174,14 +174,14 @@
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(copyItems);
           }
 
           [*(*(&v11 + 1) + 8 * v10++) setContainerItem:self->_item];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [copyItems countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -189,25 +189,25 @@
   }
 }
 
-- (id)_copyItemFromDictionary:(id)a3
+- (id)_copyItemFromDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKey:@"item-metadata"];
+  v4 = [dictionary objectForKey:@"item-metadata"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v4 = [a3 objectForKey:@"album-metadata"];
+    v4 = [dictionary objectForKey:@"album-metadata"];
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v4 = [a3 objectForKey:@"software-metadata"];
+    v4 = [dictionary objectForKey:@"software-metadata"];
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v4 = [a3 objectForKey:@"wemix-metadata"];
+    v4 = [dictionary objectForKey:@"wemix-metadata"];
   }
 
   objc_opt_class();
@@ -221,7 +221,7 @@
   return [v5 newItemWithItemDictionary:v4];
 }
 
-- (int64_t)_displayStyleForString:(id)a3
+- (int64_t)_displayStyleForString:(id)string
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -229,12 +229,12 @@
     return 0;
   }
 
-  if ([a3 isEqualToString:@"grouped"])
+  if ([string isEqualToString:@"grouped"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"plain"])
+  if ([string isEqualToString:@"plain"])
   {
     return 2;
   }
@@ -242,15 +242,15 @@
   return 0;
 }
 
-- (void)_parseItemsFromDictionary:(id)a3
+- (void)_parseItemsFromDictionary:(id)dictionary
 {
-  v5 = [a3 objectForKey:@"items"];
+  v5 = [dictionary objectForKey:@"items"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = objc_alloc_init(SUItemList);
     [(SUItemList *)v6 setItemsFromPropertyList:v5];
-    -[SUItemList setHintText:](v6, "setHintText:", [a3 objectForKey:@"hint-text"]);
+    -[SUItemList setHintText:](v6, "setHintText:", [dictionary objectForKey:@"hint-text"]);
     [(SUStructuredPage *)self setItemList:v6];
   }
 
@@ -259,23 +259,23 @@
     [(SUStructuredPage *)self setItemList:0];
   }
 
-  v7 = [(SUStructuredPage *)self _copyItemFromDictionary:a3];
+  v7 = [(SUStructuredPage *)self _copyItemFromDictionary:dictionary];
   [(SUStructuredPage *)self setItem:v7];
 }
 
-- (void)_parseProtocolFromDictionary:(id)a3
+- (void)_parseProtocolFromDictionary:(id)dictionary
 {
   v5 = objc_alloc_init(SUStorePageProtocol);
-  [(SUStorePageProtocol *)v5 setValuesFromStorePageDictionary:a3];
+  [(SUStorePageProtocol *)v5 setValuesFromStorePageDictionary:dictionary];
   [(SUStructuredPage *)self setProtocol:v5];
 
-  v6 = [objc_alloc(MEMORY[0x1E69D48B8]) initWithResponseDictionary:a3];
+  v6 = [objc_alloc(MEMORY[0x1E69D48B8]) initWithResponseDictionary:dictionary];
   self->_didShowDialog = [objc_msgSend(v6 actionsWithActionType:{*MEMORY[0x1E69D4D38]), "count"}] != 0;
 }
 
-- (void)_parseTemplateParametersFromDictionary:(id)a3
+- (void)_parseTemplateParametersFromDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKey:@"page-type"];
+  v4 = [dictionary objectForKey:@"page-type"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -295,27 +295,27 @@
     v7 = [v6 objectForKey:@"hide-sign-in-button"];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
     }
 
     else
     {
-      v8 = 0;
+      bOOLValue = 0;
     }
 
-    self->_shouldHideSignInButton = v8;
+    self->_shouldHideSignInButton = bOOLValue;
     v9 = [v6 objectForKey:@"wants-index-bar"];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v9 BOOLValue];
+      bOOLValue2 = [v9 BOOLValue];
     }
 
     else
     {
-      v10 = 0;
+      bOOLValue2 = 0;
     }
 
-    self->_wantsIndexBar = v10;
+    self->_wantsIndexBar = bOOLValue2;
     v11 = [v6 objectForKey:@"artwork-display-style"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -333,15 +333,15 @@
       v16 = [v11 objectForKey:@"fit-width"];
       if (objc_opt_respondsToSelector())
       {
-        v17 = [v16 BOOLValue];
+        bOOLValue3 = [v16 BOOLValue];
       }
 
       else
       {
-        v17 = 0;
+        bOOLValue3 = 0;
       }
 
-      self->_artworkShouldFitWidth = v17;
+      self->_artworkShouldFitWidth = bOOLValue3;
     }
 
     else

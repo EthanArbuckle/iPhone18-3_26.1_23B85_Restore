@@ -1,65 +1,65 @@
 @interface DAAccountChangeInfo
-+ (id)_stringForChangeType:(unint64_t)a3;
-- (DAAccountChangeInfo)initWithChangeType:(unint64_t)a3 accountIdentifier:(id)a4 accountTypeIdentifier:(id)a5 oldAccountProperties:(id)a6 username:(id)a7 password:(id)a8 oldUsername:(id)a9 oldPassword:(id)a10 modifiedDataClasses:(id)a11 clientName:(id)a12;
-- (DAAccountChangeInfo)initWithCoder:(id)a3;
++ (id)_stringForChangeType:(unint64_t)type;
+- (DAAccountChangeInfo)initWithChangeType:(unint64_t)type accountIdentifier:(id)identifier accountTypeIdentifier:(id)typeIdentifier oldAccountProperties:(id)properties username:(id)username password:(id)password oldUsername:(id)oldUsername oldPassword:(id)self0 modifiedDataClasses:(id)self1 clientName:(id)self2;
+- (DAAccountChangeInfo)initWithCoder:(id)coder;
 - (id)description;
 - (id)redactedDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DAAccountChangeInfo
 
-- (DAAccountChangeInfo)initWithChangeType:(unint64_t)a3 accountIdentifier:(id)a4 accountTypeIdentifier:(id)a5 oldAccountProperties:(id)a6 username:(id)a7 password:(id)a8 oldUsername:(id)a9 oldPassword:(id)a10 modifiedDataClasses:(id)a11 clientName:(id)a12
+- (DAAccountChangeInfo)initWithChangeType:(unint64_t)type accountIdentifier:(id)identifier accountTypeIdentifier:(id)typeIdentifier oldAccountProperties:(id)properties username:(id)username password:(id)password oldUsername:(id)oldUsername oldPassword:(id)self0 modifiedDataClasses:(id)self1 clientName:(id)self2
 {
-  v47 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  propertiesCopy = properties;
+  usernameCopy = username;
+  passwordCopy = password;
+  oldUsernameCopy = oldUsername;
+  oldPasswordCopy = oldPassword;
+  classesCopy = classes;
+  nameCopy = name;
   v48.receiver = self;
   v48.super_class = DAAccountChangeInfo;
   v26 = [(DAAccountChangeInfo *)&v48 init];
   v27 = v26;
   if (v26)
   {
-    v26->_changeType = a3;
-    v28 = [v47 copy];
+    v26->_changeType = type;
+    v28 = [identifierCopy copy];
     accountIdentifier = v27->_accountIdentifier;
     v27->_accountIdentifier = v28;
 
-    v30 = [v18 copy];
+    v30 = [typeIdentifierCopy copy];
     accountTypeIdentifier = v27->_accountTypeIdentifier;
     v27->_accountTypeIdentifier = v30;
 
-    v32 = [v19 copy];
+    v32 = [propertiesCopy copy];
     oldAccountProperties = v27->_oldAccountProperties;
     v27->_oldAccountProperties = v32;
 
-    v34 = [v20 copy];
+    v34 = [usernameCopy copy];
     username = v27->_username;
     v27->_username = v34;
 
-    v36 = [v21 copy];
+    v36 = [passwordCopy copy];
     password = v27->_password;
     v27->_password = v36;
 
-    v38 = [v22 copy];
+    v38 = [oldUsernameCopy copy];
     oldUsername = v27->_oldUsername;
     v27->_oldUsername = v38;
 
-    v40 = [v23 copy];
+    v40 = [oldPasswordCopy copy];
     oldPassword = v27->_oldPassword;
     v27->_oldPassword = v40;
 
-    v42 = [v24 copy];
+    v42 = [classesCopy copy];
     modifiedDataClasses = v27->_modifiedDataClasses;
     v27->_modifiedDataClasses = v42;
 
-    v44 = [v25 copy];
+    v44 = [nameCopy copy];
     clientName = v27->_clientName;
     v27->_clientName = v44;
   }
@@ -67,11 +67,11 @@
   return v27;
 }
 
-- (DAAccountChangeInfo)initWithCoder:(id)a3
+- (DAAccountChangeInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntForKey:@"ChangeType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AccountIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntForKey:@"ChangeType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AccountIdentifier"];
   if (!v6)
   {
     v7 = DALoggingwithCategory(0);
@@ -84,7 +84,7 @@
     goto LABEL_11;
   }
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AccountTypeIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AccountTypeIdentifier"];
   if (!v7)
   {
     v17 = DALoggingwithCategory(0);
@@ -105,13 +105,13 @@ LABEL_11:
     [DAAccountChangeInfo initWithCoder:];
   }
 
-  v20 = [v4 decodeObjectOfClasses:initWithCoder__oldAccountPropertiesWhitelist forKey:@"OldAccountProperties"];
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Username"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Password"];
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OldUsername"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OldPassword"];
-  v10 = [v4 decodeObjectOfClasses:initWithCoder__modifiedDataClassesWhitelist forKey:@"ModifiedDataClasses"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ClientName"];
+  v20 = [coderCopy decodeObjectOfClasses:initWithCoder__oldAccountPropertiesWhitelist forKey:@"OldAccountProperties"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Username"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Password"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OldUsername"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OldPassword"];
+  v10 = [coderCopy decodeObjectOfClasses:initWithCoder__modifiedDataClassesWhitelist forKey:@"ModifiedDataClasses"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ClientName"];
   v12 = v6;
   v13 = v6;
   v14 = v8;
@@ -151,73 +151,73 @@ void __37__DAAccountChangeInfo_initWithCoder___block_invoke()
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v21 = a3;
-  [v21 encodeInt:-[DAAccountChangeInfo changeType](self forKey:{"changeType"), @"ChangeType"}];
-  v4 = [(DAAccountChangeInfo *)self accountIdentifier];
-  [v21 encodeObject:v4 forKey:@"AccountIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[DAAccountChangeInfo changeType](self forKey:{"changeType"), @"ChangeType"}];
+  accountIdentifier = [(DAAccountChangeInfo *)self accountIdentifier];
+  [coderCopy encodeObject:accountIdentifier forKey:@"AccountIdentifier"];
 
-  v5 = [(DAAccountChangeInfo *)self accountTypeIdentifier];
-  [v21 encodeObject:v5 forKey:@"AccountTypeIdentifier"];
+  accountTypeIdentifier = [(DAAccountChangeInfo *)self accountTypeIdentifier];
+  [coderCopy encodeObject:accountTypeIdentifier forKey:@"AccountTypeIdentifier"];
 
-  v6 = [(DAAccountChangeInfo *)self oldAccountProperties];
+  oldAccountProperties = [(DAAccountChangeInfo *)self oldAccountProperties];
 
-  if (v6)
+  if (oldAccountProperties)
   {
-    v7 = [(DAAccountChangeInfo *)self oldAccountProperties];
-    [v21 encodeObject:v7 forKey:@"OldAccountProperties"];
+    oldAccountProperties2 = [(DAAccountChangeInfo *)self oldAccountProperties];
+    [coderCopy encodeObject:oldAccountProperties2 forKey:@"OldAccountProperties"];
   }
 
-  v8 = [(DAAccountChangeInfo *)self username];
+  username = [(DAAccountChangeInfo *)self username];
 
-  if (v8)
+  if (username)
   {
-    v9 = [(DAAccountChangeInfo *)self username];
-    [v21 encodeObject:v9 forKey:@"Username"];
+    username2 = [(DAAccountChangeInfo *)self username];
+    [coderCopy encodeObject:username2 forKey:@"Username"];
   }
 
-  v10 = [(DAAccountChangeInfo *)self password];
+  password = [(DAAccountChangeInfo *)self password];
 
-  if (v10)
+  if (password)
   {
-    v11 = [(DAAccountChangeInfo *)self password];
-    [v21 encodeObject:v11 forKey:@"Password"];
+    password2 = [(DAAccountChangeInfo *)self password];
+    [coderCopy encodeObject:password2 forKey:@"Password"];
   }
 
-  v12 = [(DAAccountChangeInfo *)self oldUsername];
+  oldUsername = [(DAAccountChangeInfo *)self oldUsername];
 
-  if (v12)
+  if (oldUsername)
   {
-    v13 = [(DAAccountChangeInfo *)self oldUsername];
-    [v21 encodeObject:v13 forKey:@"OldUsername"];
+    oldUsername2 = [(DAAccountChangeInfo *)self oldUsername];
+    [coderCopy encodeObject:oldUsername2 forKey:@"OldUsername"];
   }
 
-  v14 = [(DAAccountChangeInfo *)self oldPassword];
+  oldPassword = [(DAAccountChangeInfo *)self oldPassword];
 
-  if (v14)
+  if (oldPassword)
   {
-    v15 = [(DAAccountChangeInfo *)self oldPassword];
-    [v21 encodeObject:v15 forKey:@"OldPassword"];
+    oldPassword2 = [(DAAccountChangeInfo *)self oldPassword];
+    [coderCopy encodeObject:oldPassword2 forKey:@"OldPassword"];
   }
 
-  v16 = [(DAAccountChangeInfo *)self modifiedDataClasses];
+  modifiedDataClasses = [(DAAccountChangeInfo *)self modifiedDataClasses];
 
-  if (v16)
+  if (modifiedDataClasses)
   {
-    v17 = [(DAAccountChangeInfo *)self modifiedDataClasses];
-    [v21 encodeObject:v17 forKey:@"ModifiedDataClasses"];
+    modifiedDataClasses2 = [(DAAccountChangeInfo *)self modifiedDataClasses];
+    [coderCopy encodeObject:modifiedDataClasses2 forKey:@"ModifiedDataClasses"];
   }
 
-  v18 = [(DAAccountChangeInfo *)self clientName];
+  clientName = [(DAAccountChangeInfo *)self clientName];
 
-  v19 = v21;
-  if (v18)
+  v19 = coderCopy;
+  if (clientName)
   {
-    v20 = [(DAAccountChangeInfo *)self clientName];
-    [v21 encodeObject:v20 forKey:@"ClientName"];
+    clientName2 = [(DAAccountChangeInfo *)self clientName];
+    [coderCopy encodeObject:clientName2 forKey:@"ClientName"];
 
-    v19 = v21;
+    v19 = coderCopy;
   }
 }
 
@@ -225,16 +225,16 @@ void __37__DAAccountChangeInfo_initWithCoder___block_invoke()
 {
   v19 = MEMORY[0x277CCACA8];
   v3 = [objc_opt_class() _stringForChangeType:{-[DAAccountChangeInfo changeType](self, "changeType")}];
-  v22 = [(DAAccountChangeInfo *)self accountIdentifier];
-  v21 = [(DAAccountChangeInfo *)self accountTypeIdentifier];
-  v4 = [(DAAccountChangeInfo *)self oldAccountProperties];
+  accountIdentifier = [(DAAccountChangeInfo *)self accountIdentifier];
+  accountTypeIdentifier = [(DAAccountChangeInfo *)self accountTypeIdentifier];
+  oldAccountProperties = [(DAAccountChangeInfo *)self oldAccountProperties];
   v20 = v3;
-  if (v4)
+  if (oldAccountProperties)
   {
     v5 = MEMORY[0x277CCACA8];
-    v18 = [(DAAccountChangeInfo *)self oldAccountProperties];
-    v17 = [v18 allKeys];
-    v6 = [v5 stringWithFormat:@"<keys = %@>", v17];
+    oldAccountProperties2 = [(DAAccountChangeInfo *)self oldAccountProperties];
+    allKeys = [oldAccountProperties2 allKeys];
+    v6 = [v5 stringWithFormat:@"<keys = %@>", allKeys];
   }
 
   else
@@ -242,10 +242,10 @@ void __37__DAAccountChangeInfo_initWithCoder___block_invoke()
     v6 = @"nil";
   }
 
-  v7 = [(DAAccountChangeInfo *)self username];
-  v8 = [(DAAccountChangeInfo *)self password];
+  username = [(DAAccountChangeInfo *)self username];
+  password = [(DAAccountChangeInfo *)self password];
   v9 = @"<redacted>";
-  if (v8)
+  if (password)
   {
     v10 = @"<redacted>";
   }
@@ -255,18 +255,18 @@ void __37__DAAccountChangeInfo_initWithCoder___block_invoke()
     v10 = @"nil";
   }
 
-  v11 = [(DAAccountChangeInfo *)self oldUsername];
-  v12 = [(DAAccountChangeInfo *)self oldPassword];
-  if (!v12)
+  oldUsername = [(DAAccountChangeInfo *)self oldUsername];
+  oldPassword = [(DAAccountChangeInfo *)self oldPassword];
+  if (!oldPassword)
   {
     v9 = @"nil";
   }
 
-  v13 = [(DAAccountChangeInfo *)self modifiedDataClasses];
-  v14 = [(DAAccountChangeInfo *)self clientName];
-  v15 = [v19 stringWithFormat:@"<DAAccountChangeInfo: changeType = %@, accountIdentifier = %@, accountTypeIdentifier = %@, oldAccountProperties = %@, username = %@, password = %@, oldUsername = %@, oldPassword = %@, modifiedDataClasses = %@, clientName = %@>", v20, v22, v21, v6, v7, v10, v11, v9, v13, v14];
+  modifiedDataClasses = [(DAAccountChangeInfo *)self modifiedDataClasses];
+  clientName = [(DAAccountChangeInfo *)self clientName];
+  v15 = [v19 stringWithFormat:@"<DAAccountChangeInfo: changeType = %@, accountIdentifier = %@, accountTypeIdentifier = %@, oldAccountProperties = %@, username = %@, password = %@, oldUsername = %@, oldPassword = %@, modifiedDataClasses = %@, clientName = %@>", v20, accountIdentifier, accountTypeIdentifier, v6, username, v10, oldUsername, v9, modifiedDataClasses, clientName];
 
-  if (v4)
+  if (oldAccountProperties)
   {
   }
 
@@ -277,17 +277,17 @@ void __37__DAAccountChangeInfo_initWithCoder___block_invoke()
 {
   v20 = MEMORY[0x277CCACA8];
   v3 = [objc_opt_class() _stringForChangeType:{-[DAAccountChangeInfo changeType](self, "changeType")}];
-  v4 = [(DAAccountChangeInfo *)self accountIdentifier];
-  v5 = [(DAAccountChangeInfo *)self accountTypeIdentifier];
-  v21 = [(DAAccountChangeInfo *)self oldAccountProperties];
-  v23 = v4;
+  accountIdentifier = [(DAAccountChangeInfo *)self accountIdentifier];
+  accountTypeIdentifier = [(DAAccountChangeInfo *)self accountTypeIdentifier];
+  oldAccountProperties = [(DAAccountChangeInfo *)self oldAccountProperties];
+  v23 = accountIdentifier;
   v24 = v3;
-  v22 = v5;
-  if (v21)
+  v22 = accountTypeIdentifier;
+  if (oldAccountProperties)
   {
     v6 = MEMORY[0x277CCACA8];
-    v19 = [(DAAccountChangeInfo *)self oldAccountProperties];
-    v25 = [v6 stringWithFormat:@"<%d values>", objc_msgSend(v19, "count")];
+    oldAccountProperties2 = [(DAAccountChangeInfo *)self oldAccountProperties];
+    v25 = [v6 stringWithFormat:@"<%d values>", objc_msgSend(oldAccountProperties2, "count")];
   }
 
   else
@@ -295,9 +295,9 @@ void __37__DAAccountChangeInfo_initWithCoder___block_invoke()
     v25 = @"nil";
   }
 
-  v7 = [(DAAccountChangeInfo *)self username];
+  username = [(DAAccountChangeInfo *)self username];
   v8 = @"<redacted>";
-  if (v7)
+  if (username)
   {
     v9 = @"<redacted>";
   }
@@ -307,8 +307,8 @@ void __37__DAAccountChangeInfo_initWithCoder___block_invoke()
     v9 = @"nil";
   }
 
-  v10 = [(DAAccountChangeInfo *)self password];
-  if (v10)
+  password = [(DAAccountChangeInfo *)self password];
+  if (password)
   {
     v11 = @"<redacted>";
   }
@@ -318,8 +318,8 @@ void __37__DAAccountChangeInfo_initWithCoder___block_invoke()
     v11 = @"nil";
   }
 
-  v12 = [(DAAccountChangeInfo *)self oldUsername];
-  if (v12)
+  oldUsername = [(DAAccountChangeInfo *)self oldUsername];
+  if (oldUsername)
   {
     v13 = @"<redacted>";
   }
@@ -329,33 +329,33 @@ void __37__DAAccountChangeInfo_initWithCoder___block_invoke()
     v13 = @"nil";
   }
 
-  v14 = [(DAAccountChangeInfo *)self oldPassword];
-  if (!v14)
+  oldPassword = [(DAAccountChangeInfo *)self oldPassword];
+  if (!oldPassword)
   {
     v8 = @"nil";
   }
 
-  v15 = [(DAAccountChangeInfo *)self modifiedDataClasses];
-  v16 = [(DAAccountChangeInfo *)self clientName];
-  v17 = [v20 stringWithFormat:@"<DAAccountChangeInfo: changeType = %@, accountIdentifier = %@, accountTypeIdentifier = %@, oldAccountProperties = %@, username = %@, password = %@, oldUsername = %@, oldPassword = %@, modifiedDataClasses = %@, clientName = %@>", v24, v23, v22, v25, v9, v11, v13, v8, v15, v16];
+  modifiedDataClasses = [(DAAccountChangeInfo *)self modifiedDataClasses];
+  clientName = [(DAAccountChangeInfo *)self clientName];
+  v17 = [v20 stringWithFormat:@"<DAAccountChangeInfo: changeType = %@, accountIdentifier = %@, accountTypeIdentifier = %@, oldAccountProperties = %@, username = %@, password = %@, oldUsername = %@, oldPassword = %@, modifiedDataClasses = %@, clientName = %@>", v24, v23, v22, v25, v9, v11, v13, v8, modifiedDataClasses, clientName];
 
-  if (v21)
+  if (oldAccountProperties)
   {
   }
 
   return v17;
 }
 
-+ (id)_stringForChangeType:(unint64_t)a3
++ (id)_stringForChangeType:(unint64_t)type
 {
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     return @"Add";
   }
 
   else
   {
-    return *(&off_278520C50 + a3 - 1);
+    return *(&off_278520C50 + type - 1);
   }
 }
 

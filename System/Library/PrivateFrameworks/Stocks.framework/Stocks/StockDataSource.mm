@@ -1,16 +1,16 @@
 @interface StockDataSource
 - (NSString)localizedSourceDescription;
-- (StockDataSource)initWithDictionary:(id)a3;
+- (StockDataSource)initWithDictionary:(id)dictionary;
 - (id)archiveDictionary;
 - (id)description;
 @end
 
 @implementation StockDataSource
 
-- (StockDataSource)initWithDictionary:(id)a3
+- (StockDataSource)initWithDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = StockDataSource;
   v5 = [(StockDataSource *)&v16 init];
@@ -19,32 +19,32 @@
     goto LABEL_11;
   }
 
-  v6 = [v4 objectForKey:@"id"];
+  v6 = [dictionaryCopy objectForKey:@"id"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     -[StockDataSource setIdentifier:](v5, "setIdentifier:", [v6 integerValue]);
   }
 
-  v7 = [v4 objectForKey:@"name"];
+  v7 = [dictionaryCopy objectForKey:@"name"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(StockDataSource *)v5 setName:v7];
   }
 
-  v8 = [v4 objectForKey:@"text"];
+  v8 = [dictionaryCopy objectForKey:@"text"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(StockDataSource *)v5 setSourceDescription:v8];
   }
 
-  v9 = [(StockDataSource *)v5 name];
-  if ([v9 length])
+  name = [(StockDataSource *)v5 name];
+  if ([name length])
   {
-    v10 = [(StockDataSource *)v5 sourceDescription];
-    v11 = [v10 length];
+    sourceDescription = [(StockDataSource *)v5 sourceDescription];
+    v11 = [sourceDescription length];
 
     if (v11)
     {
@@ -62,9 +62,9 @@ LABEL_11:
   v13 = StocksLogForCategory(0);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(StockDataSource *)v5 identifier];
+    identifier = [(StockDataSource *)v5 identifier];
     *buf = 134217984;
-    v18 = v14;
+    v18 = identifier;
     _os_log_impl(&dword_26BAAD000, v13, OS_LOG_TYPE_DEFAULT, "Ignoring data source ID %llu with empty name or description", buf, 0xCu);
   }
 
@@ -84,21 +84,21 @@ LABEL_16:
     v3 = &unk_287C810C0;
   }
 
-  v4 = [(StockDataSource *)self name];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  name = [(StockDataSource *)self name];
+  v5 = [v3 objectForKeyedSubscript:name];
 
   if (v5)
   {
     v6 = [StocksBundles getBundle:1];
-    v7 = [v6 localizedStringForKey:v5 value:&stru_287C73C90 table:@"Localizable"];
+    sourceDescription = [v6 localizedStringForKey:v5 value:&stru_287C73C90 table:@"Localizable"];
   }
 
   else
   {
-    v7 = [(StockDataSource *)self sourceDescription];
+    sourceDescription = [(StockDataSource *)self sourceDescription];
   }
 
-  return v7;
+  return sourceDescription;
 }
 
 - (id)archiveDictionary
@@ -108,11 +108,11 @@ LABEL_16:
   v3 = [MEMORY[0x277CCABB0] numberWithInteger:{-[StockDataSource identifier](self, "identifier")}];
   v9[0] = v3;
   v8[1] = @"name";
-  v4 = [(StockDataSource *)self name];
-  v9[1] = v4;
+  name = [(StockDataSource *)self name];
+  v9[1] = name;
   v8[2] = @"text";
-  v5 = [(StockDataSource *)self sourceDescription];
-  v9[2] = v5;
+  sourceDescription = [(StockDataSource *)self sourceDescription];
+  v9[2] = sourceDescription;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:3];
 
   return v6;
@@ -121,10 +121,10 @@ LABEL_16:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(StockDataSource *)self identifier];
-  v5 = [(StockDataSource *)self name];
-  v6 = [(StockDataSource *)self sourceDescription];
-  v7 = [v3 stringWithFormat:@"<StockDataSource: %p, %i, %@, %@>", self, v4, v5, v6];
+  identifier = [(StockDataSource *)self identifier];
+  name = [(StockDataSource *)self name];
+  sourceDescription = [(StockDataSource *)self sourceDescription];
+  v7 = [v3 stringWithFormat:@"<StockDataSource: %p, %i, %@, %@>", self, identifier, name, sourceDescription];
 
   return v7;
 }

@@ -1,24 +1,24 @@
 @interface WFContentCollectionPreviewViewController
 - (BOOL)contentAllowsScrolling;
 - (BOOL)shouldHideSashView;
-- (CGRect)previewController:(id)a3 frameForPreviewItem:(id)a4 inSourceView:(id *)a5;
+- (CGRect)previewController:(id)controller frameForPreviewItem:(id)item inSourceView:(id *)view;
 - (WFCompactHighlightedView)highlightView;
 - (WFContentCollectionPreviewViewControllerDelegate)delegate;
-- (double)contentHeightForWidth:(double)a3;
-- (double)targetHeightForAnimatingPreviewViewController:(id)a3 toProposedHeight:(double)a4;
+- (double)contentHeightForWidth:(double)width;
+- (double)targetHeightForAnimatingPreviewViewController:(id)controller toProposedHeight:(double)height;
 - (id)displayConfiguration;
 - (id)sourceViewForQuickLook;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
-- (void)configureTableCell:(id)a3;
-- (void)handleTapGesture:(id)a3;
+- (id)visualStylingProviderForCategory:(int64_t)category;
+- (void)configureTableCell:(id)cell;
+- (void)handleTapGesture:(id)gesture;
 - (void)loadSingleItemPreview;
 - (void)loadView;
-- (void)prepareContentCollection:(id)a3 withCompletionHandler:(id)a4;
-- (void)presentFullScreenPreviewWithIndex:(int64_t)a3;
-- (void)previewControllerWillDismiss:(id)a3;
-- (void)previewViewControllerDidInvalidateSize:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)prepareContentCollection:(id)collection withCompletionHandler:(id)handler;
+- (void)presentFullScreenPreviewWithIndex:(int64_t)index;
+- (void)previewControllerWillDismiss:(id)dismiss;
+- (void)previewViewControllerDidInvalidateSize:(id)size;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation WFContentCollectionPreviewViewController
@@ -37,11 +37,11 @@
   return WeakRetained;
 }
 
-- (CGRect)previewController:(id)a3 frameForPreviewItem:(id)a4 inSourceView:(id *)a5
+- (CGRect)previewController:(id)controller frameForPreviewItem:(id)item inSourceView:(id *)view
 {
-  v6 = [(WFContentCollectionPreviewViewController *)self sourceViewForQuickLook:a3];
+  v6 = [(WFContentCollectionPreviewViewController *)self sourceViewForQuickLook:controller];
   v7 = v6;
-  *a5 = v7;
+  *view = v7;
   [v7 bounds];
   v9 = v8;
   v11 = v10;
@@ -61,49 +61,49 @@
 
 - (id)sourceViewForQuickLook
 {
-  v3 = [(WFContentCollectionPreviewViewController *)self previewViewController];
-  if ([v3 contentAllowsScrolling])
+  previewViewController = [(WFContentCollectionPreviewViewController *)self previewViewController];
+  if ([previewViewController contentAllowsScrolling])
   {
-    v4 = [(WFContentCollectionPreviewViewController *)self view];
+    view = [(WFContentCollectionPreviewViewController *)self view];
   }
 
   else
   {
-    v5 = [(WFContentCollectionPreviewViewController *)self previewViewController];
-    v4 = [v5 sourceViewForQuickLook];
+    previewViewController2 = [(WFContentCollectionPreviewViewController *)self previewViewController];
+    view = [previewViewController2 sourceViewForQuickLook];
   }
 
-  return v4;
+  return view;
 }
 
-- (void)previewControllerWillDismiss:(id)a3
+- (void)previewControllerWillDismiss:(id)dismiss
 {
-  v4 = [(WFContentCollectionPreviewViewController *)self delegate];
-  [v4 askContainerForHomeGestureUpdate];
+  delegate = [(WFContentCollectionPreviewViewController *)self delegate];
+  [delegate askContainerForHomeGestureUpdate];
 
-  v5 = [(WFContentCollectionPreviewViewController *)self containerViewController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  containerViewController = [(WFContentCollectionPreviewViewController *)self containerViewController];
+  [containerViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  -[WFContentCollectionPreviewViewController presentFullScreenPreviewWithIndex:](self, "presentFullScreenPreviewWithIndex:", [v5 row]);
-  v6 = [(WFContentCollectionPreviewViewController *)self tableView];
-  [v6 deselectRowAtIndexPath:v5 animated:1];
+  pathCopy = path;
+  -[WFContentCollectionPreviewViewController presentFullScreenPreviewWithIndex:](self, "presentFullScreenPreviewWithIndex:", [pathCopy row]);
+  tableView = [(WFContentCollectionPreviewViewController *)self tableView];
+  [tableView deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)configureTableCell:(id)a3
+- (void)configureTableCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(WFContentCollectionPreviewViewController *)self delegate];
-  [v5 configureCell:v4];
+  cellCopy = cell;
+  delegate = [(WFContentCollectionPreviewViewController *)self delegate];
+  [delegate configureCell:cellCopy];
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
-  v4 = [(WFContentCollectionPreviewViewController *)self delegate];
-  v5 = [v4 visualStylingProviderForCategory:a3];
+  delegate = [(WFContentCollectionPreviewViewController *)self delegate];
+  v5 = [delegate visualStylingProviderForCategory:category];
 
   return v5;
 }
@@ -116,16 +116,16 @@
   return v2;
 }
 
-- (void)previewViewControllerDidInvalidateSize:(id)a3
+- (void)previewViewControllerDidInvalidateSize:(id)size
 {
-  v3 = [(WFContentCollectionPreviewViewController *)self delegate];
-  [v3 invalidateContentSize];
+  delegate = [(WFContentCollectionPreviewViewController *)self delegate];
+  [delegate invalidateContentSize];
 }
 
-- (double)targetHeightForAnimatingPreviewViewController:(id)a3 toProposedHeight:(double)a4
+- (double)targetHeightForAnimatingPreviewViewController:(id)controller toProposedHeight:(double)height
 {
-  v5 = [(WFContentCollectionPreviewViewController *)self delegate];
-  [v5 targetHeightForAnimatingToProposedHeight:a4];
+  delegate = [(WFContentCollectionPreviewViewController *)self delegate];
+  [delegate targetHeightForAnimatingToProposedHeight:height];
   v7 = v6;
 
   return v7;
@@ -133,64 +133,64 @@
 
 - (BOOL)contentAllowsScrolling
 {
-  v3 = [(WFContentCollectionPreviewViewController *)self dataSource];
-  v4 = [v3 numberOfItems];
+  dataSource = [(WFContentCollectionPreviewViewController *)self dataSource];
+  numberOfItems = [dataSource numberOfItems];
 
-  if (v4 > 1)
+  if (numberOfItems > 1)
   {
     return 1;
   }
 
-  v6 = [(WFContentCollectionPreviewViewController *)self previewViewController];
-  v7 = [v6 contentAllowsScrolling];
+  previewViewController = [(WFContentCollectionPreviewViewController *)self previewViewController];
+  contentAllowsScrolling = [previewViewController contentAllowsScrolling];
 
-  return v7;
+  return contentAllowsScrolling;
 }
 
 - (BOOL)shouldHideSashView
 {
-  v3 = [(WFContentCollectionPreviewViewController *)self dataSource];
-  v4 = [v3 numberOfItems];
+  dataSource = [(WFContentCollectionPreviewViewController *)self dataSource];
+  numberOfItems = [dataSource numberOfItems];
 
-  if (v4 > 1)
+  if (numberOfItems > 1)
   {
     return 1;
   }
 
   if ([MEMORY[0x277CBEBD0] universalPreviewsEnabled])
   {
-    v6 = [(WFContentCollectionPreviewViewController *)self previewViewController];
-    v7 = [v6 contentItem];
-    v8 = [v7 conformsToContentItemPreviewProviding];
+    previewViewController = [(WFContentCollectionPreviewViewController *)self previewViewController];
+    contentItem = [previewViewController contentItem];
+    conformsToContentItemPreviewProviding = [contentItem conformsToContentItemPreviewProviding];
 
-    if (v8)
+    if (conformsToContentItemPreviewProviding)
     {
       return 1;
     }
   }
 
-  v9 = [(WFContentCollectionPreviewViewController *)self previewViewController];
-  v10 = [v9 containsImageOrMediaThumbnail];
+  previewViewController2 = [(WFContentCollectionPreviewViewController *)self previewViewController];
+  containsImageOrMediaThumbnail = [previewViewController2 containsImageOrMediaThumbnail];
 
-  return v10;
+  return containsImageOrMediaThumbnail;
 }
 
-- (void)presentFullScreenPreviewWithIndex:(int64_t)a3
+- (void)presentFullScreenPreviewWithIndex:(int64_t)index
 {
-  v5 = [(WFContentCollectionPreviewViewController *)self dataSource];
+  dataSource = [(WFContentCollectionPreviewViewController *)self dataSource];
 
-  if (v5)
+  if (dataSource)
   {
-    v6 = [(WFContentCollectionPreviewViewController *)self previewViewController];
-    if (!v6 || (v7 = v6, -[WFContentCollectionPreviewViewController previewViewController](self, "previewViewController"), v8 = objc_claimAutoreleasedReturnValue(), [v8 contentItem], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "shouldPresentFullScreenPreview"), v9, v8, v7, v10))
+    previewViewController = [(WFContentCollectionPreviewViewController *)self previewViewController];
+    if (!previewViewController || (v7 = previewViewController, -[WFContentCollectionPreviewViewController previewViewController](self, "previewViewController"), v8 = objc_claimAutoreleasedReturnValue(), [v8 contentItem], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "shouldPresentFullScreenPreview"), v9, v8, v7, v10))
     {
       v11 = objc_alloc_init(MEMORY[0x277D75D28]);
       [v11 setModalPresentationStyle:5];
       objc_storeStrong(&self->_containerViewController, v11);
-      v12 = [(WFContentCollectionPreviewViewController *)self dataSource];
-      v13 = [objc_alloc(MEMORY[0x277D7BDE0]) initWithInitialIndex:a3];
+      dataSource2 = [(WFContentCollectionPreviewViewController *)self dataSource];
+      v13 = [objc_alloc(MEMORY[0x277D7BDE0]) initWithInitialIndex:index];
       [v13 setDelegate:self];
-      [v13 setDataSource:v12];
+      [v13 setDataSource:dataSource2];
       [v13 setModalPresentationStyle:5];
       [v13 setOverrideParentApplicationDisplayIdentifier:*MEMORY[0x277D7A338]];
       v25 = 0;
@@ -201,14 +201,14 @@
       v22 = &v21;
       v23 = 0x2020000000;
       v24 = 0;
-      v14 = [v12 items];
+      items = [dataSource2 items];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __78__WFContentCollectionPreviewViewController_presentFullScreenPreviewWithIndex___block_invoke;
       v20[3] = &unk_279EE8BE0;
       v20[4] = &v25;
       v20[5] = &v21;
-      [v14 enumerateObjectsUsingBlock:v20];
+      [items enumerateObjectsUsingBlock:v20];
 
       [v13 setIsContentManaged:v22[3] > v26[3]];
       v17[0] = MEMORY[0x277D85DD0];
@@ -269,21 +269,21 @@ uint64_t __78__WFContentCollectionPreviewViewController_presentFullScreenPreview
   return [v3 presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)handleTapGesture:(id)a3
+- (void)handleTapGesture:(id)gesture
 {
-  if ([a3 state] == 3)
+  if ([gesture state] == 3)
   {
 
     [(WFContentCollectionPreviewViewController *)self presentFullScreenPreviewWithIndex:0];
   }
 }
 
-- (double)contentHeightForWidth:(double)a3
+- (double)contentHeightForWidth:(double)width
 {
-  v5 = [(WFContentCollectionPreviewViewController *)self dataSource];
-  v6 = [v5 numberOfItems];
+  dataSource = [(WFContentCollectionPreviewViewController *)self dataSource];
+  numberOfItems = [dataSource numberOfItems];
 
-  if (v6 < 2)
+  if (numberOfItems < 2)
   {
     [(WFContentCollectionPreviewViewController *)self previewViewController];
   }
@@ -293,16 +293,16 @@ uint64_t __78__WFContentCollectionPreviewViewController_presentFullScreenPreview
     [(WFContentCollectionPreviewViewController *)self tableView];
   }
   v7 = ;
-  [v7 contentHeightForWidth:a3];
+  [v7 contentHeightForWidth:width];
   v9 = v8;
 
   return v9;
 }
 
-- (void)prepareContentCollection:(id)a3 withCompletionHandler:(id)a4
+- (void)prepareContentCollection:(id)collection withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  handlerCopy = handler;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
@@ -319,9 +319,9 @@ uint64_t __78__WFContentCollectionPreviewViewController_presentFullScreenPreview
   objc_copyWeak(&v19, &location);
   v17 = v23;
   v18 = v21;
-  v8 = v7;
+  v8 = handlerCopy;
   v16 = v8;
-  [v6 generatePreviewControllerDataSource:v15];
+  [collectionCopy generatePreviewControllerDataSource:v15];
   v9 = dispatch_time(0, 1000000000);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -456,8 +456,8 @@ void __91__WFContentCollectionPreviewViewController_prepareContentCollection_wit
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 requiredVisualStyleCategories];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  requiredVisualStyleCategories = [v3 requiredVisualStyleCategories];
+  v5 = [requiredVisualStyleCategories countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -469,19 +469,19 @@ void __91__WFContentCollectionPreviewViewController_prepareContentCollection_wit
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(requiredVisualStyleCategories);
         }
 
-        v9 = [*(*(&v16 + 1) + 8 * v8) integerValue];
-        v10 = [(WFContentCollectionPreviewViewController *)self delegate];
-        v11 = [v10 visualStylingProviderForCategory:v9];
+        integerValue = [*(*(&v16 + 1) + 8 * v8) integerValue];
+        delegate = [(WFContentCollectionPreviewViewController *)self delegate];
+        v11 = [delegate visualStylingProviderForCategory:integerValue];
 
-        [v3 setVisualStylingProvider:v11 forCategory:v9];
+        [v3 setVisualStylingProvider:v11 forCategory:integerValue];
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [requiredVisualStyleCategories countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -491,25 +491,25 @@ void __91__WFContentCollectionPreviewViewController_prepareContentCollection_wit
   [v12 setDelegate:self];
   [(WFContentCollectionPreviewViewController *)self addChildViewController:v12];
   [(WFContentCollectionPreviewViewController *)self setPreviewViewController:v12];
-  v13 = [v12 view];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:v13];
-  v14 = [v13 wf_addConstraintsToFillSuperview:v3];
+  view = [v12 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  [v3 addSubview:view];
+  v14 = [view wf_addConstraintsToFillSuperview:v3];
   [v12 didMoveToParentViewController:self];
   v15 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_handleTapGesture_];
   [v3 addGestureRecognizer:v15];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = WFContentCollectionPreviewViewController;
-  [(WFContentCollectionPreviewViewController *)&v6 viewDidAppear:a3];
-  v4 = [(WFContentCollectionPreviewViewController *)self installThumbnailHandler];
-  v5 = v4;
-  if (v4)
+  [(WFContentCollectionPreviewViewController *)&v6 viewDidAppear:appear];
+  installThumbnailHandler = [(WFContentCollectionPreviewViewController *)self installThumbnailHandler];
+  v5 = installThumbnailHandler;
+  if (installThumbnailHandler)
   {
-    (*(v4 + 16))(v4);
+    (*(installThumbnailHandler + 16))(installThumbnailHandler);
     [(WFContentCollectionPreviewViewController *)self setInstallThumbnailHandler:0];
   }
 }
@@ -519,10 +519,10 @@ void __91__WFContentCollectionPreviewViewController_prepareContentCollection_wit
   v11.receiver = self;
   v11.super_class = WFContentCollectionPreviewViewController;
   [(WFContentCollectionPreviewViewController *)&v11 loadView];
-  v3 = [(WFContentCollectionPreviewViewController *)self dataSource];
-  v4 = [v3 numberOfItems];
+  dataSource = [(WFContentCollectionPreviewViewController *)self dataSource];
+  numberOfItems = [dataSource numberOfItems];
 
-  if (v4 < 2)
+  if (numberOfItems < 2)
   {
     [(WFContentCollectionPreviewViewController *)self loadSingleItemPreview];
   }
@@ -530,17 +530,17 @@ void __91__WFContentCollectionPreviewViewController_prepareContentCollection_wit
   else
   {
     v5 = [WFContentCollectionTableView alloc];
-    v6 = [(WFContentCollectionPreviewViewController *)self dataSource];
-    v7 = [(WFContentCollectionTableView *)v5 initWithContentCollection:v6];
+    dataSource2 = [(WFContentCollectionPreviewViewController *)self dataSource];
+    v7 = [(WFContentCollectionTableView *)v5 initWithContentCollection:dataSource2];
 
     [(WFContentCollectionTableView *)v7 setDelegate:self];
     [(WFContentCollectionTableView *)v7 setControllerDelegate:self];
     objc_storeStrong(&self->_tableView, v7);
-    v8 = [(WFContentCollectionPreviewViewController *)self view];
-    [v8 addSubview:v7];
+    view = [(WFContentCollectionPreviewViewController *)self view];
+    [view addSubview:v7];
 
-    v9 = [(WFContentCollectionPreviewViewController *)self view];
-    v10 = [(UIView *)v7 wf_addConstraintsToFillSuperview:v9];
+    view2 = [(WFContentCollectionPreviewViewController *)self view];
+    v10 = [(UIView *)v7 wf_addConstraintsToFillSuperview:view2];
   }
 }
 

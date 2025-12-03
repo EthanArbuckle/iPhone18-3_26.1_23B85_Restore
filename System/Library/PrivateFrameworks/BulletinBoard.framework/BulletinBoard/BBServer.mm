@@ -2,48 +2,48 @@
 + (id)_persistentSettingsStore;
 + (id)savedChronologicalSectionOrder;
 + (id)savedSectionInfo;
-+ (void)removeSavedChronologicalSectionInfo:(id)a3;
-- (BBServer)initWithQueue:(id)a3;
-- (BBServer)initWithQueue:(id)a3 dataProviderManager:(id)a4 syncService:(id)a5 dismissalSyncCache:(id)a6 observerListener:(id)a7 conduitListener:(id)a8 settingsListener:(id)a9;
-- (BOOL)_didNotificationCenterSettingsChangeWithSectionInfo:(id)a3 replacingSectionInfo:(id)a4;
++ (void)removeSavedChronologicalSectionInfo:(id)info;
+- (BBServer)initWithQueue:(id)queue;
+- (BBServer)initWithQueue:(id)queue dataProviderManager:(id)manager syncService:(id)service dismissalSyncCache:(id)cache observerListener:(id)listener conduitListener:(id)conduitListener settingsListener:(id)settingsListener;
+- (BOOL)_didNotificationCenterSettingsChangeWithSectionInfo:(id)info replacingSectionInfo:(id)sectionInfo;
 - (BOOL)_hasPairedVehiclesForCarPlay;
 - (BOOL)_isAnnounceSupportedForCarPlay;
 - (BOOL)_isAnnounceSupportedForHeadphones;
-- (BOOL)_verifyBulletinRequest:(id)a3 forDataProvider:(id)a4;
+- (BOOL)_verifyBulletinRequest:(id)request forDataProvider:(id)provider;
 - (BOOL)isGreyMatterEligble;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)_allBulletinsForSectionID:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)_allBulletinsForSectionID:(id)d;
 - (id)_allSectionInfoIDs;
-- (id)_applicableSectionInfosForBulletin:(id)a3 inSection:(id)a4;
-- (id)_bulletinDefaultExpirationDateFromDate:(id)a3;
-- (id)_bulletinIDsInSortedArray:(id)a3 withDateForKey:(id)a4 beforeCutoff:(id)a5;
-- (id)_bulletinRequestsForIDs:(id)a3;
-- (id)_bulletinsForIDs:(id)a3;
-- (id)_bulletinsForSectionID:(id)a3 inFeeds:(unint64_t)a4;
-- (id)_clearedInfoForSectionID:(id)a3;
-- (id)_enabledSectionIDsForDataProvider:(id)a3;
-- (id)_encodedScheduledDeliveryTimesForDeliveryTimes:(id)a3;
+- (id)_applicableSectionInfosForBulletin:(id)bulletin inSection:(id)section;
+- (id)_bulletinDefaultExpirationDateFromDate:(id)date;
+- (id)_bulletinIDsInSortedArray:(id)array withDateForKey:(id)key beforeCutoff:(id)cutoff;
+- (id)_bulletinRequestsForIDs:(id)ds;
+- (id)_bulletinsForIDs:(id)ds;
+- (id)_bulletinsForSectionID:(id)d inFeeds:(unint64_t)feeds;
+- (id)_clearedInfoForSectionID:(id)d;
+- (id)_enabledSectionIDsForDataProvider:(id)provider;
+- (id)_encodedScheduledDeliveryTimesForDeliveryTimes:(id)times;
 - (id)_globalScheduledDeliveryTimes;
-- (id)_mapForFeed:(unint64_t)a3;
-- (id)_newDateCompontentsByInvertingInterestingPartsOfComponents:(id)a3;
-- (id)_newValidatedDefaultExpirationComponentsFromComponents:(id)a3;
+- (id)_mapForFeed:(unint64_t)feed;
+- (id)_newDateCompontentsByInvertingInterestingPartsOfComponents:(id)components;
+- (id)_newValidatedDefaultExpirationComponentsFromComponents:(id)components;
 - (id)_nextExpireBulletinsDate;
 - (id)_observerGateways;
-- (id)_observerGatewaysForFeeds:(unint64_t)a3;
+- (id)_observerGatewaysForFeeds:(unint64_t)feeds;
 - (id)_observersForNoticesFeed;
-- (id)_openApplicationOptionsForResponse:(id)a3;
-- (id)_scheduledDeliveryTimesForEncodedDeliveryTimes:(id)a3;
+- (id)_openApplicationOptionsForResponse:(id)response;
+- (id)_scheduledDeliveryTimesForEncodedDeliveryTimes:(id)times;
 - (id)_sectionInfoStore;
 - (id)_sinceDate;
-- (id)allBulletinIDsForSectionID:(id)a3;
-- (id)bulletinIDsForSectionID:(id)a3 inFeed:(unint64_t)a4;
-- (id)bulletinsForPublisherMatchIDs:(id)a3 sectionID:(id)a4;
-- (id)bulletinsRequestsForBulletinIDs:(id)a3;
-- (id)dataProviderForSectionID:(id)a3;
-- (id)dpManager:(id)a3 sectionInfoForSectionID:(id)a4;
+- (id)allBulletinIDsForSectionID:(id)d;
+- (id)bulletinIDsForSectionID:(id)d inFeed:(unint64_t)feed;
+- (id)bulletinsForPublisherMatchIDs:(id)ds sectionID:(id)d;
+- (id)bulletinsRequestsForBulletinIDs:(id)ds;
+- (id)dataProviderForSectionID:(id)d;
+- (id)dpManager:(id)manager sectionInfoForSectionID:(id)d;
 - (id)savedSectionInfo;
-- (id)sectionIDsForUniversalSectionID:(id)a3;
-- (id)universalSectionIDForSectionID:(id)a3;
+- (id)sectionIDsForUniversalSectionID:(id)d;
+- (id)universalSectionIDForSectionID:(id)d;
 - (int64_t)_defaultGlobalContentPreviewSetting;
 - (int64_t)_defaultGlobalHighlightsSetting;
 - (int64_t)_defaultGlobalSummarizationSetting;
@@ -67,178 +67,178 @@
 - (int64_t)_globalScheduledDeliverySetting;
 - (int64_t)_globalScheduledDeliveryShowNextSummarySetting;
 - (int64_t)_globalSummarizationSetting;
-- (unint64_t)_feedsForBulletin:(id)a3 destinations:(unint64_t)a4;
-- (unint64_t)_indexForNewDate:(id)a3 inBulletinIDArray:(id)a4 sortedAscendingByDateForKey:(id)a5;
-- (unint64_t)effectivePushSettingsForSectionInfo:(id)a3;
-- (void)_addActiveSectionID:(id)a3;
-- (void)_addBulletin:(id)a3;
-- (void)_addObserver:(id)a3;
-- (void)_addSettingsGatewayConnection:(id)a3;
+- (unint64_t)_feedsForBulletin:(id)bulletin destinations:(unint64_t)destinations;
+- (unint64_t)_indexForNewDate:(id)date inBulletinIDArray:(id)array sortedAscendingByDateForKey:(id)key;
+- (unint64_t)effectivePushSettingsForSectionInfo:(id)info;
+- (void)_addActiveSectionID:(id)d;
+- (void)_addBulletin:(id)bulletin;
+- (void)_addObserver:(id)observer;
+- (void)_addSettingsGatewayConnection:(id)connection;
 - (void)_addStateCaptureHandlers;
-- (void)_addSuspendedConnection:(id)a3;
-- (void)_assignIDToBulletinRequest:(id)a3;
-- (void)_assignIDToBulletinRequest:(id)a3 checkAgainstBulletins:(id)a4;
+- (void)_addSuspendedConnection:(id)connection;
+- (void)_assignIDToBulletinRequest:(id)request;
+- (void)_assignIDToBulletinRequest:(id)request checkAgainstBulletins:(id)bulletins;
 - (void)_biometricResourceStateChanged;
-- (void)_clearBulletinIDIfPossible:(id)a3 rescheduleExpirationTimer:(BOOL)a4;
-- (void)_clearBulletinsFromDate:(id)a3 toDate:(id)a4 forSection:(id)a5;
+- (void)_clearBulletinIDIfPossible:(id)possible rescheduleExpirationTimer:(BOOL)timer;
+- (void)_clearBulletinsFromDate:(id)date toDate:(id)toDate forSection:(id)section;
 - (void)_clearExpirationTimer;
-- (void)_clearSection:(id)a3;
-- (void)_dataProviderDidClearInfo:(id)a3 forSection:(id)a4;
-- (void)_didReceiveResponseForBulletin:(id)a3;
-- (void)_enqueueBulletinUpdate:(id)a3;
+- (void)_clearSection:(id)section;
+- (void)_dataProviderDidClearInfo:(id)info forSection:(id)section;
+- (void)_didReceiveResponseForBulletin:(id)bulletin;
+- (void)_enqueueBulletinUpdate:(id)update;
 - (void)_ensureDataDirectoryExists;
 - (void)_expireBulletins;
 - (void)_expireBulletinsAndRescheduleTimerIfNecessary;
-- (void)_expireBulletinsDueToSystemEvent:(unint64_t)a3;
+- (void)_expireBulletinsDueToSystemEvent:(unint64_t)event;
 - (void)_fetchAllVehiclesForCarPlay;
 - (void)_handleSignificantTimeChange;
 - (void)_loadClearedSections;
 - (void)_loadDataProvidersAndSettings;
 - (void)_loadSavedSectionInfo;
 - (void)_loadSystemCapabilities;
-- (void)_logObserversBeforeAndAfterUpdateBlock:(id)a3;
+- (void)_logObserversBeforeAndAfterUpdateBlock:(id)block;
 - (void)_migrateGlobalAnnounceSettingIfNeeded;
 - (void)_migrateLoadedData;
-- (void)_modifyBulletin:(id)a3;
+- (void)_modifyBulletin:(id)bulletin;
 - (void)_observeManagedProfileChanges;
-- (void)_pairedVehiclesForCarPlayDidChange:(id)a3;
-- (void)_performPendingBulletinUpdatesForBulletinID:(id)a3;
-- (void)_publishBiomeSignalEventForGlobalNotificationListDisplayStyleSettingChangeToSetting:(int64_t)a3;
-- (void)_publishBulletinRequest:(id)a3 forSectionID:(id)a4 forDestinations:(unint64_t)a5;
+- (void)_pairedVehiclesForCarPlayDidChange:(id)change;
+- (void)_performPendingBulletinUpdatesForBulletinID:(id)d;
+- (void)_publishBiomeSignalEventForGlobalNotificationListDisplayStyleSettingChangeToSetting:(int64_t)setting;
+- (void)_publishBulletinRequest:(id)request forSectionID:(id)d forDestinations:(unint64_t)destinations;
 - (void)_publishBulletinsForAllDataProviders;
 - (void)_queue_managedUserNotificationsSetttingsDidChange;
-- (void)_reloadReloadSectionInfoForSectionID:(id)a3;
-- (void)_reloadSectionParametersForSectionID:(id)a3;
-- (void)_removeObserver:(id)a3;
-- (void)_removeSection:(id)a3;
-- (void)_removeSettingsGatewayConnection:(id)a3;
-- (void)_removeSuspendedConnection:(id)a3;
-- (void)_resumeAllSuspendedConnectionsWithCompletionHandler:(id)a3;
+- (void)_reloadReloadSectionInfoForSectionID:(id)d;
+- (void)_reloadSectionParametersForSectionID:(id)d;
+- (void)_removeObserver:(id)observer;
+- (void)_removeSection:(id)section;
+- (void)_removeSettingsGatewayConnection:(id)connection;
+- (void)_removeSuspendedConnection:(id)connection;
+- (void)_resumeAllSuspendedConnectionsWithCompletionHandler:(id)handler;
 - (void)_saveGlobalAnnounceSettingEnabledEvent;
-- (void)_saveUpdatedSectionInfo:(id)a3 forSectionID:(id)a4;
-- (void)_scheduleExpirationForBulletin:(id)a3;
-- (void)_scheduleTimerForDate:(id)a3;
-- (void)_sendAddBulletin:(id)a3 toFeeds:(unint64_t)a4;
-- (void)_sendBulletinUpdate:(id)a3;
-- (void)_sendBulletinsLoadedForSectionID:(id)a3;
-- (void)_sendModifyBulletin:(id)a3 toFeeds:(unint64_t)a4;
-- (void)_sendObserver:(id)a3 noticesBulletinsForSectionID:(id)a4;
-- (void)_sendRemoveSection:(id)a3;
-- (void)_sendUpdateSectionInfo:(id)a3;
-- (void)_setClearedInfo:(id)a3 forSectionID:(id)a4;
-- (void)_setDefaultExpirationComponents:(id)a3;
-- (void)_setGlobalAnnounceCarPlaySetting:(int64_t)a3;
-- (void)_setGlobalAnnounceHeadphonesSetting:(int64_t)a3;
-- (void)_setGlobalAnnounceSetting:(int64_t)a3;
-- (void)_setGlobalContentPreviewsSetting:(int64_t)a3;
-- (void)_setGlobalHighlightsSetting:(int64_t)a3;
-- (void)_setGlobalNotificationListDisplayStyleSetting:(int64_t)a3;
-- (void)_setGlobalScheduledDeliverySetting:(int64_t)a3;
-- (void)_setGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)a3;
-- (void)_setGlobalScheduledDeliveryTimes:(id)a3;
-- (void)_setGlobalSummarizationSetting:(int64_t)a3;
-- (void)_setPrimitiveSectionInfo:(id)a3 forSectionID:(id)a4;
-- (void)_setSectionInfo:(id)a3 forSectionID:(id)a4;
-- (void)_setSectionInfoNoteSettingsChanged:(id)a3 forSectionID:(id)a4;
-- (void)_siriPreferencesDidChange:(id)a3;
-- (void)_storeObserver:(id)a3 forFeed:(unint64_t)a4;
+- (void)_saveUpdatedSectionInfo:(id)info forSectionID:(id)d;
+- (void)_scheduleExpirationForBulletin:(id)bulletin;
+- (void)_scheduleTimerForDate:(id)date;
+- (void)_sendAddBulletin:(id)bulletin toFeeds:(unint64_t)feeds;
+- (void)_sendBulletinUpdate:(id)update;
+- (void)_sendBulletinsLoadedForSectionID:(id)d;
+- (void)_sendModifyBulletin:(id)bulletin toFeeds:(unint64_t)feeds;
+- (void)_sendObserver:(id)observer noticesBulletinsForSectionID:(id)d;
+- (void)_sendRemoveSection:(id)section;
+- (void)_sendUpdateSectionInfo:(id)info;
+- (void)_setClearedInfo:(id)info forSectionID:(id)d;
+- (void)_setDefaultExpirationComponents:(id)components;
+- (void)_setGlobalAnnounceCarPlaySetting:(int64_t)setting;
+- (void)_setGlobalAnnounceHeadphonesSetting:(int64_t)setting;
+- (void)_setGlobalAnnounceSetting:(int64_t)setting;
+- (void)_setGlobalContentPreviewsSetting:(int64_t)setting;
+- (void)_setGlobalHighlightsSetting:(int64_t)setting;
+- (void)_setGlobalNotificationListDisplayStyleSetting:(int64_t)setting;
+- (void)_setGlobalScheduledDeliverySetting:(int64_t)setting;
+- (void)_setGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)setting;
+- (void)_setGlobalScheduledDeliveryTimes:(id)times;
+- (void)_setGlobalSummarizationSetting:(int64_t)setting;
+- (void)_setPrimitiveSectionInfo:(id)info forSectionID:(id)d;
+- (void)_setSectionInfo:(id)info forSectionID:(id)d;
+- (void)_setSectionInfoNoteSettingsChanged:(id)changed forSectionID:(id)d;
+- (void)_siriPreferencesDidChange:(id)change;
+- (void)_storeObserver:(id)observer forFeed:(unint64_t)feed;
 - (void)_unobserveManagedProfileChanges;
-- (void)_updateAllBulletinsForDataProvider:(id)a3;
+- (void)_updateAllBulletinsForDataProvider:(id)provider;
 - (void)_updateAllSectionInfos;
 - (void)_updateAnnounceControlCenterModuleAvailability;
 - (void)_updateAnnounceSettings;
-- (void)_updateBulletinsInFeed:(unint64_t)a3 forDataProvider:(id)a4 enabledSectionIDs:(id)a5;
-- (void)_updateBulletinsInFeed:(unint64_t)a3 forDataProviderIfSectionIsEnabled:(id)a4;
-- (void)_updateBulletinsInFeed:(unint64_t)a3 ifSectionIsEnabled:(id)a4;
-- (void)_updateClearedInfoForSectionID:(id)a3 handler:(id)a4;
-- (void)_updateDataProviderForSectionInfo:(id)a3 sectionID:(id)a4;
+- (void)_updateBulletinsInFeed:(unint64_t)feed forDataProvider:(id)provider enabledSectionIDs:(id)ds;
+- (void)_updateBulletinsInFeed:(unint64_t)feed forDataProviderIfSectionIsEnabled:(id)enabled;
+- (void)_updateBulletinsInFeed:(unint64_t)feed ifSectionIsEnabled:(id)enabled;
+- (void)_updateClearedInfoForSectionID:(id)d handler:(id)handler;
+- (void)_updateDataProviderForSectionInfo:(id)info sectionID:(id)d;
 - (void)_updateGlobalSettings;
-- (void)_updateInterruptionLevelForBulletin:(id)a3;
-- (void)_updateSectionInfoForSectionID:(id)a3 handler:(id)a4;
-- (void)_updateSectionParametersForDataProvider:(id)a3;
-- (void)_updateShowsMessagePreviewForBulletin:(id)a3;
+- (void)_updateInterruptionLevelForBulletin:(id)bulletin;
+- (void)_updateSectionInfoForSectionID:(id)d handler:(id)handler;
+- (void)_updateSectionParametersForDataProvider:(id)provider;
+- (void)_updateShowsMessagePreviewForBulletin:(id)bulletin;
 - (void)_updateSiriPreferences;
-- (void)_validateExpirationDateForBulletinRequest:(id)a3;
+- (void)_validateExpirationDateForBulletinRequest:(id)request;
 - (void)_writeClearedSections;
 - (void)_writeSectionInfo;
-- (void)clearBulletinIDIfPossible:(id)a3 rescheduleExpirationTimer:(BOOL)a4;
+- (void)clearBulletinIDIfPossible:(id)possible rescheduleExpirationTimer:(BOOL)timer;
 - (void)dealloc;
-- (void)deliverResponse:(id)a3 withCompletion:(id)a4;
-- (void)didChangeEffectiveAuthorizationStatusForSectionID:(id)a3;
-- (void)didChangeMuteAssertionForSectionID:(id)a3;
-- (void)dpManager:(id)a3 addDataProvider:(id)a4 withSectionInfo:(id)a5;
-- (void)dpManager:(id)a3 addParentSectionFactory:(id)a4;
-- (void)dpManager:(id)a3 removeDataProviderSectionID:(id)a4;
-- (void)eligibleAnnouncementRequestTypesChanged:(unint64_t)a3 onPlatform:(int64_t)a4;
-- (void)getActiveSectionIDsWithHandler:(id)a3;
-- (void)getBulletinsForPublisherMatchIDs:(id)a3 sectionID:(id)a4 withHandler:(id)a5;
-- (void)getBulletinsWithHandler:(id)a3;
-- (void)getEffectiveGlobalAnnounceCarPlaySettingWithHandler:(id)a3;
-- (void)getEffectiveGlobalAnnounceHeadphonesSettingWithHandler:(id)a3;
-- (void)getEffectiveGlobalAnnounceSettingWithHandler:(id)a3;
-- (void)getEffectiveGlobalContentPreviewsSettingWithHandler:(id)a3;
-- (void)getEffectiveGlobalHighlightsSettingWithHandler:(id)a3;
-- (void)getEffectiveGlobalNotificationListDisplayStyleSettingWithHandler:(id)a3;
-- (void)getEffectiveGlobalScheduledDeliverySettingWithHandler:(id)a3;
-- (void)getEffectiveGlobalScheduledDeliveryShowNextSummarySettingWithHandler:(id)a3;
-- (void)getEffectiveGlobalScheduledDeliveryTimesWithHandler:(id)a3;
-- (void)getEffectiveGlobalSummarizationSettingWithHandler:(id)a3;
-- (void)getEffectiveSectionInfoForSectionID:(id)a3 withHandler:(id)a4;
-- (void)getEffectiveSectionInfoForSectionIDs:(id)a3 withHandler:(id)a4;
-- (void)getEffectiveSectionInfoWithHandler:(id)a3;
-- (void)getPublisherMatchIDsOfBulletinsPublishedAfterDate:(id)a3 withHandler:(id)a4;
-- (void)getSectionIDsWithHandler:(id)a3;
-- (void)getSectionInfoForActiveSectionsWithHandler:(id)a3;
-- (void)getSectionInfoForSectionID:(id)a3 withHandler:(id)a4;
-- (void)getSectionInfoForSectionIDs:(id)a3 withHandler:(id)a4;
-- (void)getSectionInfoWithHandler:(id)a3;
-- (void)getSectionParametersForSectionID:(id)a3 withHandler:(id)a4;
-- (void)getUniversalSectionIDForSectionID:(id)a3 withHandler:(id)a4;
-- (void)handleDismissalDictionaries:(id)a3 dismissalIDs:(id)a4 inSection:(id)a5 forFeeds:(unint64_t)a6;
+- (void)deliverResponse:(id)response withCompletion:(id)completion;
+- (void)didChangeEffectiveAuthorizationStatusForSectionID:(id)d;
+- (void)didChangeMuteAssertionForSectionID:(id)d;
+- (void)dpManager:(id)manager addDataProvider:(id)provider withSectionInfo:(id)info;
+- (void)dpManager:(id)manager addParentSectionFactory:(id)factory;
+- (void)dpManager:(id)manager removeDataProviderSectionID:(id)d;
+- (void)eligibleAnnouncementRequestTypesChanged:(unint64_t)changed onPlatform:(int64_t)platform;
+- (void)getActiveSectionIDsWithHandler:(id)handler;
+- (void)getBulletinsForPublisherMatchIDs:(id)ds sectionID:(id)d withHandler:(id)handler;
+- (void)getBulletinsWithHandler:(id)handler;
+- (void)getEffectiveGlobalAnnounceCarPlaySettingWithHandler:(id)handler;
+- (void)getEffectiveGlobalAnnounceHeadphonesSettingWithHandler:(id)handler;
+- (void)getEffectiveGlobalAnnounceSettingWithHandler:(id)handler;
+- (void)getEffectiveGlobalContentPreviewsSettingWithHandler:(id)handler;
+- (void)getEffectiveGlobalHighlightsSettingWithHandler:(id)handler;
+- (void)getEffectiveGlobalNotificationListDisplayStyleSettingWithHandler:(id)handler;
+- (void)getEffectiveGlobalScheduledDeliverySettingWithHandler:(id)handler;
+- (void)getEffectiveGlobalScheduledDeliveryShowNextSummarySettingWithHandler:(id)handler;
+- (void)getEffectiveGlobalScheduledDeliveryTimesWithHandler:(id)handler;
+- (void)getEffectiveGlobalSummarizationSettingWithHandler:(id)handler;
+- (void)getEffectiveSectionInfoForSectionID:(id)d withHandler:(id)handler;
+- (void)getEffectiveSectionInfoForSectionIDs:(id)ds withHandler:(id)handler;
+- (void)getEffectiveSectionInfoWithHandler:(id)handler;
+- (void)getPublisherMatchIDsOfBulletinsPublishedAfterDate:(id)date withHandler:(id)handler;
+- (void)getSectionIDsWithHandler:(id)handler;
+- (void)getSectionInfoForActiveSectionsWithHandler:(id)handler;
+- (void)getSectionInfoForSectionID:(id)d withHandler:(id)handler;
+- (void)getSectionInfoForSectionIDs:(id)ds withHandler:(id)handler;
+- (void)getSectionInfoWithHandler:(id)handler;
+- (void)getSectionParametersForSectionID:(id)d withHandler:(id)handler;
+- (void)getUniversalSectionIDForSectionID:(id)d withHandler:(id)handler;
+- (void)handleDismissalDictionaries:(id)dictionaries dismissalIDs:(id)ds inSection:(id)section forFeeds:(unint64_t)feeds;
 - (void)isGreyMatterEligble;
 - (void)loadDataProvidersAndSettings;
-- (void)noteChangeOfState:(unint64_t)a3 newValue:(BOOL)a4;
-- (void)noteOccurrenceOfEvent:(unint64_t)a3;
-- (void)observer:(id)a3 clearBulletinIDs:(id)a4 inSection:(id)a5;
-- (void)observer:(id)a3 clearBulletinsFromDate:(id)a4 toDate:(id)a5 inSections:(id)a6;
-- (void)observer:(id)a3 clearSection:(id)a4;
-- (void)observer:(id)a3 finishedWithBulletinID:(id)a4 transactionID:(unint64_t)a5;
-- (void)observer:(id)a3 getSectionInfoForActiveSectionsWithHandler:(id)a4;
-- (void)observer:(id)a3 getSectionInfoForSectionIDs:(id)a4 withHandler:(id)a5;
-- (void)observer:(id)a3 getSectionInfoWithHandler:(id)a4;
-- (void)observer:(id)a3 handleResponse:(id)a4 withCompletion:(id)a5;
-- (void)observer:(id)a3 removeBulletins:(id)a4 inSection:(id)a5 fromFeeds:(unint64_t)a6;
-- (void)observer:(id)a3 requestNoticesBulletinsForSectionID:(id)a4;
-- (void)observer:(id)a3 setObserverFeed:(unint64_t)a4 asLightsAndSirensGateway:(id)a5 priority:(unint64_t)a6;
-- (void)observer:(id)a3 setObserverFeed:(unint64_t)a4 attachToLightsAndSirensGateway:(id)a5;
-- (void)ping:(id)a3;
-- (void)protectionStateChangedForBundleIdentifiers:(id)a3;
-- (void)publishBulletin:(id)a3 destinations:(unint64_t)a4;
-- (void)publishBulletinRequest:(id)a3 destinations:(unint64_t)a4;
+- (void)noteChangeOfState:(unint64_t)state newValue:(BOOL)value;
+- (void)noteOccurrenceOfEvent:(unint64_t)event;
+- (void)observer:(id)observer clearBulletinIDs:(id)ds inSection:(id)section;
+- (void)observer:(id)observer clearBulletinsFromDate:(id)date toDate:(id)toDate inSections:(id)sections;
+- (void)observer:(id)observer clearSection:(id)section;
+- (void)observer:(id)observer finishedWithBulletinID:(id)d transactionID:(unint64_t)iD;
+- (void)observer:(id)observer getSectionInfoForActiveSectionsWithHandler:(id)handler;
+- (void)observer:(id)observer getSectionInfoForSectionIDs:(id)ds withHandler:(id)handler;
+- (void)observer:(id)observer getSectionInfoWithHandler:(id)handler;
+- (void)observer:(id)observer handleResponse:(id)response withCompletion:(id)completion;
+- (void)observer:(id)observer removeBulletins:(id)bulletins inSection:(id)section fromFeeds:(unint64_t)feeds;
+- (void)observer:(id)observer requestNoticesBulletinsForSectionID:(id)d;
+- (void)observer:(id)observer setObserverFeed:(unint64_t)feed asLightsAndSirensGateway:(id)gateway priority:(unint64_t)priority;
+- (void)observer:(id)observer setObserverFeed:(unint64_t)feed attachToLightsAndSirensGateway:(id)gateway;
+- (void)ping:(id)ping;
+- (void)protectionStateChangedForBundleIdentifiers:(id)identifiers;
+- (void)publishBulletin:(id)bulletin destinations:(unint64_t)destinations;
+- (void)publishBulletinRequest:(id)request destinations:(unint64_t)destinations;
 - (void)refreshAnnounceSettings;
 - (void)refreshGlobalSettings;
 - (void)refreshSectionInfo;
-- (void)refreshSectionInfoForID:(id)a3;
-- (void)removeBulletinID:(id)a3 fromSection:(id)a4 inFeed:(unint64_t)a5;
-- (void)requestNoticesBulletinsForAllSections:(id)a3;
-- (void)sendMessageToDataProviderSectionID:(id)a3 name:(id)a4 userInfo:(id)a5;
-- (void)setEffectiveGlobalAnnounceCarPlaySetting:(int64_t)a3 withHandler:(id)a4;
-- (void)setEffectiveGlobalAnnounceHeadphonesSetting:(int64_t)a3 withHandler:(id)a4;
-- (void)setEffectiveGlobalAnnounceSetting:(int64_t)a3 withHandler:(id)a4;
-- (void)setEffectiveGlobalContentPreviewsSetting:(int64_t)a3 withHandler:(id)a4;
-- (void)setEffectiveGlobalHighlightsSetting:(int64_t)a3 withHandler:(id)a4;
-- (void)setEffectiveGlobalNotificationListDisplayStyleSetting:(int64_t)a3 withHandler:(id)a4;
-- (void)setEffectiveGlobalScheduledDeliverySetting:(int64_t)a3 withHandler:(id)a4;
-- (void)setEffectiveGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)a3 withHandler:(id)a4;
-- (void)setEffectiveGlobalScheduledDeliveryTimes:(id)a3 withHandler:(id)a4;
-- (void)setEffectiveGlobalSummarizationSetting:(int64_t)a3 withHandler:(id)a4;
-- (void)setSectionInfo:(id)a3 forSectionID:(id)a4 withHandler:(id)a5;
-- (void)syncService:(id)a3 receivedDismissalDictionaries:(id)a4 dismissalIDs:(id)a5 inSection:(id)a6 universalSectionID:(id)a7 forFeeds:(unint64_t)a8;
-- (void)updateSection:(id)a3 inFeed:(unint64_t)a4 withBulletinRequests:(id)a5;
-- (void)weeAppWithBundleID:(id)a3 getHiddenFromUser:(id)a4;
-- (void)weeAppWithBundleID:(id)a3 setHiddenFromUser:(BOOL)a4;
-- (void)withdrawBulletinID:(id)a3 shouldSync:(BOOL)a4;
-- (void)withdrawBulletinRequestsWithRecordID:(id)a3 forSectionID:(id)a4;
+- (void)refreshSectionInfoForID:(id)d;
+- (void)removeBulletinID:(id)d fromSection:(id)section inFeed:(unint64_t)feed;
+- (void)requestNoticesBulletinsForAllSections:(id)sections;
+- (void)sendMessageToDataProviderSectionID:(id)d name:(id)name userInfo:(id)info;
+- (void)setEffectiveGlobalAnnounceCarPlaySetting:(int64_t)setting withHandler:(id)handler;
+- (void)setEffectiveGlobalAnnounceHeadphonesSetting:(int64_t)setting withHandler:(id)handler;
+- (void)setEffectiveGlobalAnnounceSetting:(int64_t)setting withHandler:(id)handler;
+- (void)setEffectiveGlobalContentPreviewsSetting:(int64_t)setting withHandler:(id)handler;
+- (void)setEffectiveGlobalHighlightsSetting:(int64_t)setting withHandler:(id)handler;
+- (void)setEffectiveGlobalNotificationListDisplayStyleSetting:(int64_t)setting withHandler:(id)handler;
+- (void)setEffectiveGlobalScheduledDeliverySetting:(int64_t)setting withHandler:(id)handler;
+- (void)setEffectiveGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)setting withHandler:(id)handler;
+- (void)setEffectiveGlobalScheduledDeliveryTimes:(id)times withHandler:(id)handler;
+- (void)setEffectiveGlobalSummarizationSetting:(int64_t)setting withHandler:(id)handler;
+- (void)setSectionInfo:(id)info forSectionID:(id)d withHandler:(id)handler;
+- (void)syncService:(id)service receivedDismissalDictionaries:(id)dictionaries dismissalIDs:(id)ds inSection:(id)section universalSectionID:(id)d forFeeds:(unint64_t)feeds;
+- (void)updateSection:(id)section inFeed:(unint64_t)feed withBulletinRequests:(id)requests;
+- (void)weeAppWithBundleID:(id)d getHiddenFromUser:(id)user;
+- (void)weeAppWithBundleID:(id)d setHiddenFromUser:(BOOL)user;
+- (void)withdrawBulletinID:(id)d shouldSync:(BOOL)sync;
+- (void)withdrawBulletinRequestsWithRecordID:(id)d forSectionID:(id)iD;
 @end
 
 @implementation BBServer
@@ -263,9 +263,9 @@
 {
   dispatch_assert_queue_V2(self->_queue);
   v2 = +[BBBulletinBoardDefaults standardDefaults];
-  v3 = [v2 globalContentPreviewSetting];
+  globalContentPreviewSetting = [v2 globalContentPreviewSetting];
 
-  return v3;
+  return globalContentPreviewSetting;
 }
 
 - (int64_t)_defaultGlobalContentPreviewSetting
@@ -307,17 +307,17 @@
 - (BOOL)_isAnnounceSupportedForHeadphones
 {
   v2 = +[BBBulletinBoardDefaults standardDefaults];
-  v3 = [v2 isAnnounceSupportedForHeadphones];
+  isAnnounceSupportedForHeadphones = [v2 isAnnounceSupportedForHeadphones];
 
-  return v3;
+  return isAnnounceSupportedForHeadphones;
 }
 
 - (BOOL)_isAnnounceSupportedForCarPlay
 {
   v2 = +[BBBulletinBoardDefaults standardDefaults];
-  v3 = [v2 isAnnounceSupportedForCarPlay];
+  isAnnounceSupportedForCarPlay = [v2 isAnnounceSupportedForCarPlay];
 
-  return v3;
+  return isAnnounceSupportedForCarPlay;
 }
 
 - (int64_t)_effectiveGlobalHighlightsSetting
@@ -359,17 +359,17 @@
 {
   dispatch_assert_queue_V2(self->_queue);
   v2 = +[BBBulletinBoardDefaults standardDefaults];
-  v3 = [v2 globalSummarizationSetting];
+  globalSummarizationSetting = [v2 globalSummarizationSetting];
 
-  return v3;
+  return globalSummarizationSetting;
 }
 
 - (BOOL)_hasPairedVehiclesForCarPlay
 {
   v2 = +[BBBulletinBoardDefaults standardDefaults];
-  v3 = [v2 hasPairedVehiclesForCarPlay];
+  hasPairedVehiclesForCarPlay = [v2 hasPairedVehiclesForCarPlay];
 
-  return v3;
+  return hasPairedVehiclesForCarPlay;
 }
 
 - (int64_t)_effectiveGlobalScheduledDeliverySetting
@@ -386,9 +386,9 @@
 {
   dispatch_assert_queue_V2(self->_queue);
   v2 = +[BBBulletinBoardDefaults standardDefaults];
-  v3 = [v2 globalScheduledDeliverySetting];
+  globalScheduledDeliverySetting = [v2 globalScheduledDeliverySetting];
 
-  return v3;
+  return globalScheduledDeliverySetting;
 }
 
 - (int64_t)_effectiveGlobalSummarizationSetting
@@ -430,9 +430,9 @@
 {
   dispatch_assert_queue_V2(self->_queue);
   v2 = +[BBBulletinBoardDefaults standardDefaults];
-  v3 = [v2 globalHighlightsSetting];
+  globalHighlightsSetting = [v2 globalHighlightsSetting];
 
-  return v3;
+  return globalHighlightsSetting;
 }
 
 - (void)_expireBulletinsAndRescheduleTimerIfNecessary
@@ -440,24 +440,24 @@
   v17 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   [(BBServer *)self _expireBulletins];
-  v3 = [(BBServer *)self _nextExpireBulletinsDate];
+  _nextExpireBulletinsDate = [(BBServer *)self _nextExpireBulletinsDate];
   v4 = BBLogExpiration;
   if (os_log_type_enabled(BBLogExpiration, OS_LOG_TYPE_DEFAULT))
   {
     nextScheduledExpirationTimerFireDate = self->_nextScheduledExpirationTimerFireDate;
     v13 = 138543618;
-    v14 = v3;
+    v14 = _nextExpireBulletinsDate;
     v15 = 2114;
     v16 = nextScheduledExpirationTimerFireDate;
     _os_log_impl(&dword_241EFF000, v4, OS_LOG_TYPE_DEFAULT, "Next expire bulletins date = %{public}@; current fire date = %{public}@", &v13, 0x16u);
   }
 
-  if (v3)
+  if (_nextExpireBulletinsDate)
   {
-    if (![(NSDate *)v3 isEqualToDate:self->_nextScheduledExpirationTimerFireDate])
+    if (![(NSDate *)_nextExpireBulletinsDate isEqualToDate:self->_nextScheduledExpirationTimerFireDate])
     {
       [(BBServer *)self _clearExpirationTimer];
-      [(BBServer *)self _scheduleTimerForDate:v3];
+      [(BBServer *)self _scheduleTimerForDate:_nextExpireBulletinsDate];
       goto LABEL_11;
     }
 
@@ -500,8 +500,8 @@ LABEL_11:
   dispatch_assert_queue_V2(self->_queue);
   if ([(NSMutableArray *)self->_expiringBulletinIDs count])
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    v4 = [v3 dateByAddingTimeInterval:20.0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v4 = [date dateByAddingTimeInterval:20.0];
 
     v20 = v4;
     v19 = [(BBServer *)self _bulletinIDsInSortedArray:self->_expiringBulletinIDs withDateForKey:@"expirationDate" beforeCutoff:v4];
@@ -529,23 +529,23 @@ LABEL_11:
           if (os_log_type_enabled(BBLogExpiration, OS_LOG_TYPE_DEFAULT))
           {
             v11 = v10;
-            v12 = [v9 sectionID];
-            v13 = [v9 bulletinID];
-            v14 = [v9 expirationDate];
+            sectionID = [v9 sectionID];
+            bulletinID = [v9 bulletinID];
+            expirationDate = [v9 expirationDate];
             *buf = 138543874;
-            v27 = v12;
+            v27 = sectionID;
             v28 = 2114;
-            v29 = v13;
+            v29 = bulletinID;
             v30 = 2114;
-            v31 = v14;
+            v31 = expirationDate;
             _os_log_impl(&dword_241EFF000, v11, OS_LOG_TYPE_DEFAULT, "Expiring bulletin in section <%{public}@>: bulletinID = <%{public}@>, expiration date = <%{public}@>", buf, 0x20u);
           }
 
-          v15 = [v9 responseForExpireAction];
-          [(BBServer *)self deliverResponse:v15 withCompletion:0];
+          responseForExpireAction = [v9 responseForExpireAction];
+          [(BBServer *)self deliverResponse:responseForExpireAction withCompletion:0];
           expiringBulletinIDs = self->_expiringBulletinIDs;
-          v17 = [v9 bulletinID];
-          [(NSMutableArray *)expiringBulletinIDs removeObject:v17];
+          bulletinID2 = [v9 bulletinID];
+          [(NSMutableArray *)expiringBulletinIDs removeObject:bulletinID2];
 
           [(BBServer *)self _removeBulletin:v9 rescheduleTimerIfAffected:0 shouldSync:0];
         }
@@ -569,15 +569,15 @@ LABEL_11:
     v4 = [(NSMutableArray *)self->_expiringBulletinIDs objectAtIndex:0];
     v5 = [(NSMutableDictionary *)bulletinsByID objectForKey:v4];
 
-    v6 = [v5 expirationDate];
+    expirationDate = [v5 expirationDate];
   }
 
   else
   {
-    v6 = 0;
+    expirationDate = 0;
   }
 
-  return v6;
+  return expirationDate;
 }
 
 - (void)_clearExpirationTimer
@@ -599,15 +599,15 @@ LABEL_11:
 {
   dispatch_assert_queue_V2(self->_queue);
   v3 = +[BBBulletinBoardDefaults standardDefaults];
-  v4 = [v3 globalAnnounceSetting];
+  globalAnnounceSetting = [v3 globalAnnounceSetting];
 
-  if (v4 == -1)
+  if (globalAnnounceSetting == -1)
   {
     [(BBServer *)self _setGlobalAnnounceSetting:0];
     return 0;
   }
 
-  return v4;
+  return globalAnnounceSetting;
 }
 
 - (int64_t)_effectiveGlobalAnnounceHeadphonesSetting
@@ -657,23 +657,23 @@ LABEL_11:
 {
   dispatch_assert_queue_V2(self->_queue);
   v3 = +[BBBulletinBoardDefaults standardDefaults];
-  v4 = [v3 globalAnnounceCarPlaySetting];
+  globalAnnounceCarPlaySetting = [v3 globalAnnounceCarPlaySetting];
 
-  if (v4 == -1)
+  if (globalAnnounceCarPlaySetting == -1)
   {
     [(BBServer *)self _setGlobalAnnounceCarPlaySetting:0];
     return 0;
   }
 
-  return v4;
+  return globalAnnounceCarPlaySetting;
 }
 
 - (id)_globalScheduledDeliveryTimes
 {
   dispatch_assert_queue_V2(self->_queue);
   v3 = +[BBBulletinBoardDefaults standardDefaults];
-  v4 = [v3 globalScheduledDeliveryTimes];
-  v5 = [(BBServer *)self _scheduledDeliveryTimesForEncodedDeliveryTimes:v4];
+  globalScheduledDeliveryTimes = [v3 globalScheduledDeliveryTimes];
+  v5 = [(BBServer *)self _scheduledDeliveryTimesForEncodedDeliveryTimes:globalScheduledDeliveryTimes];
 
   return v5;
 }
@@ -682,9 +682,9 @@ LABEL_11:
 {
   dispatch_assert_queue_V2(self->_queue);
   v2 = +[BBBulletinBoardDefaults standardDefaults];
-  v3 = [v2 globalScheduledDeliveryShowNextSummarySetting];
+  globalScheduledDeliveryShowNextSummarySetting = [v2 globalScheduledDeliveryShowNextSummarySetting];
 
-  return v3;
+  return globalScheduledDeliveryShowNextSummarySetting;
 }
 
 - (int64_t)_effectiveGlobalScheduledDeliveryShowNextSummarySetting
@@ -711,50 +711,50 @@ LABEL_11:
 {
   dispatch_assert_queue_V2(self->_queue);
   v2 = +[BBBulletinBoardDefaults standardDefaults];
-  v3 = [v2 globalNotificationListDisplayStyleSetting];
+  globalNotificationListDisplayStyleSetting = [v2 globalNotificationListDisplayStyleSetting];
 
-  return v3;
+  return globalNotificationListDisplayStyleSetting;
 }
 
-- (BBServer)initWithQueue:(id)a3
+- (BBServer)initWithQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [[BBDataProviderManager alloc] initWithDelegate:self queue:v4];
-  v6 = [[BBSyncService alloc] initWithDelegate:self queue:v4];
+  queueCopy = queue;
+  v5 = [[BBDataProviderManager alloc] initWithDelegate:self queue:queueCopy];
+  v6 = [[BBSyncService alloc] initWithDelegate:self queue:queueCopy];
   v7 = objc_alloc_init(BBDismissalSyncCache);
   v8 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:@"com.apple.bulletinboard.observerconnection"];
   v9 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:@"com.apple.bulletinboard.serverconduitconnection"];
   v10 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:@"com.apple.bulletinboard.settingsconnection"];
-  v11 = [(BBServer *)self initWithQueue:v4 dataProviderManager:v5 syncService:v6 dismissalSyncCache:v7 observerListener:v8 conduitListener:v9 settingsListener:v10];
+  v11 = [(BBServer *)self initWithQueue:queueCopy dataProviderManager:v5 syncService:v6 dismissalSyncCache:v7 observerListener:v8 conduitListener:v9 settingsListener:v10];
 
   return v11;
 }
 
-- (BBServer)initWithQueue:(id)a3 dataProviderManager:(id)a4 syncService:(id)a5 dismissalSyncCache:(id)a6 observerListener:(id)a7 conduitListener:(id)a8 settingsListener:(id)a9
+- (BBServer)initWithQueue:(id)queue dataProviderManager:(id)manager syncService:(id)service dismissalSyncCache:(id)cache observerListener:(id)listener conduitListener:(id)conduitListener settingsListener:(id)settingsListener
 {
-  v16 = a3;
-  v74 = a4;
-  v73 = a5;
-  v72 = a6;
-  v71 = a7;
-  v70 = a8;
-  v17 = a9;
+  queueCopy = queue;
+  managerCopy = manager;
+  serviceCopy = service;
+  cacheCopy = cache;
+  listenerCopy = listener;
+  conduitListenerCopy = conduitListener;
+  settingsListenerCopy = settingsListener;
   v75.receiver = self;
   v75.super_class = BBServer;
   v18 = [(BBServer *)&v75 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_queue, a3);
-    objc_storeStrong(&v19->_dataProviderManager, a4);
-    objc_storeStrong(&v19->_syncService, a5);
+    objc_storeStrong(&v18->_queue, queue);
+    objc_storeStrong(&v19->_dataProviderManager, manager);
+    objc_storeStrong(&v19->_syncService, service);
     [(BBSyncServiceInterface *)v19->_syncService setDelegate:v19];
-    objc_storeStrong(&v19->_dismissalSyncCache, a6);
-    objc_storeStrong(&v19->_observerListener, a7);
+    objc_storeStrong(&v19->_dismissalSyncCache, cache);
+    objc_storeStrong(&v19->_observerListener, listener);
     [(NSXPCListener *)v19->_observerListener setDelegate:v19];
-    objc_storeStrong(&v19->_conduitListener, a8);
+    objc_storeStrong(&v19->_conduitListener, conduitListener);
     [(NSXPCListener *)v19->_conduitListener setDelegate:v19];
-    objc_storeStrong(&v19->_settingsListener, a9);
+    objc_storeStrong(&v19->_settingsListener, settingsListener);
     [(NSXPCListener *)v19->_settingsListener setDelegate:v19];
     v20 = [[BBAppProtectionMonitor alloc] initWithDelegate:v19];
     appProtectionMonitor = v19->_appProtectionMonitor;
@@ -788,13 +788,13 @@ LABEL_11:
     settingsGatewayConnections = v19->_settingsGatewayConnections;
     v19->_settingsGatewayConnections = v34;
 
-    v36 = [objc_opt_class() _persistentSettingsStore];
+    _persistentSettingsStore = [objc_opt_class() _persistentSettingsStore];
     persistentStore = v19->_persistentStore;
-    v19->_persistentStore = v36;
+    v19->_persistentStore = _persistentSettingsStore;
 
-    v38 = [(BBServer *)v19 _sectionInfoStore];
+    _sectionInfoStore = [(BBServer *)v19 _sectionInfoStore];
     sectionInfoStore = v19->_sectionInfoStore;
-    v19->_sectionInfoStore = v38;
+    v19->_sectionInfoStore = _sectionInfoStore;
 
     v40 = [MEMORY[0x277CBEB58] set];
     activeSectionIDs = v19->_activeSectionIDs;
@@ -854,24 +854,24 @@ LABEL_11:
     [(NSXPCListener *)v19->_observerListener resume];
     [(NSXPCListener *)v19->_conduitListener resume];
     [(NSXPCListener *)v19->_settingsListener resume];
-    v62 = [[BBSectionAuthorizationManager alloc] initWithQueue:v16];
+    v62 = [[BBSectionAuthorizationManager alloc] initWithQueue:queueCopy];
     sectionAuthorizationManager = v19->_sectionAuthorizationManager;
     v19->_sectionAuthorizationManager = v62;
 
     [(BBSectionAuthorizationManager *)v19->_sectionAuthorizationManager setDelegate:v19];
-    v64 = [[BBMuteExpirationManager alloc] initWithQueue:v16];
+    v64 = [[BBMuteExpirationManager alloc] initWithQueue:queueCopy];
     muteManager = v19->_muteManager;
     v19->_muteManager = v64;
 
     [(BBMuteExpirationManager *)v19->_muteManager setDelegate:v19];
-    v66 = [[BBBiometricResource alloc] initWithQueue:v16];
+    v66 = [[BBBiometricResource alloc] initWithQueue:queueCopy];
     biometricResource = v19->_biometricResource;
     v19->_biometricResource = v66;
 
     if ([(BBBiometricResource *)v19->_biometricResource hasPearlCapability])
     {
-      v68 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v68 addObserver:v19 selector:sel__biometricResourceStateChanged name:@"BBBiometricResourceStateChanged" object:v19->_biometricResource];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v19 selector:sel__biometricResourceStateChanged name:@"BBBiometricResourceStateChanged" object:v19->_biometricResource];
     }
 
     [(BBServer *)v19 _addStateCaptureHandlers];
@@ -895,18 +895,18 @@ LABEL_11:
   [(BBServer *)&v4 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_observerListener == v6)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
+  if (self->_observerListener == listenerCopy)
   {
-    v15 = [v7 valueForEntitlement:@"com.apple.bulletinboard.observer"];
-    v16 = [v15 BOOLValue];
+    v15 = [connectionCopy valueForEntitlement:@"com.apple.bulletinboard.observer"];
+    bOOLValue = [v15 BOOLValue];
 
-    if (v16)
+    if (bOOLValue)
     {
       v17 = +[BBObserverServerProxy xpcInterface];
       [v8 setExportedInterface:v17];
@@ -920,7 +920,7 @@ LABEL_11:
       if (os_log_type_enabled(BBLogConnection, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v58 = self;
+        selfCopy = self;
         _os_log_impl(&dword_241EFF000, v20, OS_LOG_TYPE_DEFAULT, "BBServer: Connection (%{public}@) to BBObserver client established", buf, 0xCu);
       }
 
@@ -973,12 +973,12 @@ LABEL_11:
     }
   }
 
-  else if (self->_conduitListener == v6)
+  else if (self->_conduitListener == listenerCopy)
   {
-    v21 = [v7 valueForEntitlement:@"com.apple.bulletinboard.serverconduit"];
-    v22 = [v21 BOOLValue];
+    v21 = [connectionCopy valueForEntitlement:@"com.apple.bulletinboard.serverconduit"];
+    bOOLValue2 = [v21 BOOLValue];
 
-    if (v22)
+    if (bOOLValue2)
     {
       v23 = +[BBServerConduit serverInterface];
       [v8 setExportedInterface:v23];
@@ -1030,32 +1030,32 @@ LABEL_33:
     }
   }
 
-  else if (self->_settingsListener == v6)
+  else if (self->_settingsListener == listenerCopy)
   {
-    v9 = [v7 valueForEntitlement:@"com.apple.bulletinboard.settings"];
-    v10 = [v9 BOOLValue];
+    v9 = [connectionCopy valueForEntitlement:@"com.apple.bulletinboard.settings"];
+    bOOLValue3 = [v9 BOOLValue];
 
-    if (v10)
+    if (bOOLValue3)
     {
       v11 = [MEMORY[0x277CF0B98] tokenFromNSXPCConnection:v8];
-      v12 = [v11 bundleID];
-      v13 = v12;
-      if (v12)
+      bundleID = [v11 bundleID];
+      v13 = bundleID;
+      if (bundleID)
       {
-        v14 = v12;
+        stringValue = bundleID;
       }
 
       else
       {
         v26 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v11, "pid")}];
-        v14 = [v26 stringValue];
+        stringValue = [v26 stringValue];
       }
 
       v27 = BBLogConnection;
       if (os_log_type_enabled(BBLogConnection, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v58 = v14;
+        selfCopy = stringValue;
         _os_log_impl(&dword_241EFF000, v27, OS_LOG_TYPE_DEFAULT, "BBServer: Incoming connection for settingsListener from %@", buf, 0xCu);
       }
 
@@ -1272,31 +1272,31 @@ void __47__BBServer_listener_shouldAcceptNewConnection___block_invoke_89(uint64_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addSettingsGatewayConnection:(id)a3
+- (void)_addSettingsGatewayConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__BBServer__addSettingsGatewayConnection___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_removeSettingsGatewayConnection:(id)a3
+- (void)_removeSettingsGatewayConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__BBServer__removeSettingsGatewayConnection___block_invoke;
   v7[3] = &unk_278D2A628;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = connectionCopy;
+  selfCopy = self;
+  v6 = connectionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1357,23 +1357,23 @@ void __36__BBServer__persistentSettingsStore__block_invoke()
   return sectionInfoStore;
 }
 
-- (void)publishBulletin:(id)a3 destinations:(unint64_t)a4
+- (void)publishBulletin:(id)bulletin destinations:(unint64_t)destinations
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  bulletinCopy = bulletin;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [v6 sectionID];
-  v8 = [v6 bulletinID];
-  v9 = [(BBServer *)self _feedsForBulletin:v6 destinations:a4];
-  BBPowerLogBulletinBoardPublishEvent(v7, v9);
+  sectionID = [bulletinCopy sectionID];
+  bulletinID = [bulletinCopy bulletinID];
+  v9 = [(BBServer *)self _feedsForBulletin:bulletinCopy destinations:destinations];
+  BBPowerLogBulletinBoardPublishEvent(sectionID, v9);
   v10 = BBLogGeneral;
   if (os_log_type_enabled(BBLogGeneral, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [v6 bulletinID];
+    bulletinID2 = [bulletinCopy bulletinID];
     v13 = BBObserverFeedStrings(v9);
     v23 = 138543874;
-    v24 = v12;
+    v24 = bulletinID2;
     v25 = 2048;
     v26 = v9;
     v27 = 2114;
@@ -1381,7 +1381,7 @@ void __36__BBServer__persistentSettingsStore__block_invoke()
     _os_log_impl(&dword_241EFF000, v11, OS_LOG_TYPE_DEFAULT, "BBServer: Publish bulletin %{public}@ to feeds %ld: %{public}@", &v23, 0x20u);
   }
 
-  v14 = [(BBDismissalSyncCache *)self->_dismissalSyncCache findBulletinMatch:v6];
+  v14 = [(BBDismissalSyncCache *)self->_dismissalSyncCache findBulletinMatch:bulletinCopy];
   v15 = v14;
   if (v14)
   {
@@ -1390,35 +1390,35 @@ void __36__BBServer__persistentSettingsStore__block_invoke()
     ADClientAddValueForScalarKey();
   }
 
-  v16 = [(NSMutableDictionary *)self->_bulletinsByID objectForKey:v8];
+  v16 = [(NSMutableDictionary *)self->_bulletinsByID objectForKey:bulletinID];
   if (v16)
   {
-    [(BBServer *)self _modifyBulletin:v6];
-    [(BBServer *)self _sendAddBulletin:v6 toFeeds:v9];
-    [(BBServer *)self _sendModifyBulletin:v6 toFeeds:~v9];
+    [(BBServer *)self _modifyBulletin:bulletinCopy];
+    [(BBServer *)self _sendAddBulletin:bulletinCopy toFeeds:v9];
+    [(BBServer *)self _sendModifyBulletin:bulletinCopy toFeeds:~v9];
     if ((v9 & 1) == 0)
     {
       goto LABEL_14;
     }
 
 LABEL_10:
-    v17 = [(NSMutableDictionary *)self->_noticeBulletinIDsBySectionID objectForKey:v7];
+    v17 = [(NSMutableDictionary *)self->_noticeBulletinIDsBySectionID objectForKey:sectionID];
 
     if (!v17)
     {
       noticeBulletinIDsBySectionID = self->_noticeBulletinIDsBySectionID;
       v19 = [MEMORY[0x277CBEB58] set];
-      [(NSMutableDictionary *)noticeBulletinIDsBySectionID setObject:v19 forKey:v7];
+      [(NSMutableDictionary *)noticeBulletinIDsBySectionID setObject:v19 forKey:sectionID];
     }
 
-    v20 = [(NSMutableDictionary *)self->_noticeBulletinIDsBySectionID objectForKey:v7];
-    [v20 addObject:v8];
+    v20 = [(NSMutableDictionary *)self->_noticeBulletinIDsBySectionID objectForKey:sectionID];
+    [v20 addObject:bulletinID];
 
     v21 = BBLogSectionUpdates;
     if (os_log_type_enabled(BBLogSectionUpdates, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138412290;
-      v24 = v8;
+      v24 = bulletinID;
       _os_log_impl(&dword_241EFF000, v21, OS_LOG_TYPE_DEFAULT, "Sent bulletin to 'notices' feed: %@", &v23, 0xCu);
     }
 
@@ -1427,32 +1427,32 @@ LABEL_10:
 
   if (!v9)
   {
-    [(BBServer *)self noteFinishedWithBulletinID:v8];
+    [(BBServer *)self noteFinishedWithBulletinID:bulletinID];
     goto LABEL_15;
   }
 
-  [(BBServer *)self _addBulletin:v6];
-  [(BBServer *)self _sendAddBulletin:v6 toFeeds:v9];
+  [(BBServer *)self _addBulletin:bulletinCopy];
+  [(BBServer *)self _sendAddBulletin:bulletinCopy toFeeds:v9];
   if (v9)
   {
     goto LABEL_10;
   }
 
 LABEL_14:
-  [(BBServer *)self _scheduleExpirationForBulletin:v6];
+  [(BBServer *)self _scheduleExpirationForBulletin:bulletinCopy];
 LABEL_15:
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)withdrawBulletinID:(id)a3 shouldSync:(BOOL)a4
+- (void)withdrawBulletinID:(id)d shouldSync:(BOOL)sync
 {
-  v4 = a4;
+  syncCopy = sync;
   v16 = *MEMORY[0x277D85DE8];
   queue = self->_queue;
-  v7 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(queue);
-  v8 = [(NSMutableDictionary *)self->_bulletinsByID objectForKey:v7];
+  v8 = [(NSMutableDictionary *)self->_bulletinsByID objectForKey:dCopy];
 
   if (v8)
   {
@@ -1460,13 +1460,13 @@ LABEL_15:
     if (os_log_type_enabled(BBLogGeneral, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [v8 bulletinID];
+      bulletinID = [v8 bulletinID];
       v14 = 138543362;
-      v15 = v11;
+      v15 = bulletinID;
       _os_log_impl(&dword_241EFF000, v10, OS_LOG_TYPE_DEFAULT, "BBServer: Withdraw bulletin: %{public}@", &v14, 0xCu);
     }
 
-    if (v4)
+    if (syncCopy)
     {
       v12 = [v8 usesExternalSync] ^ 1;
     }
@@ -1482,11 +1482,11 @@ LABEL_15:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_mapForFeed:(unint64_t)a3
+- (id)_mapForFeed:(unint64_t)feed
 {
-  v3 = a3;
+  feedCopy = feed;
   dispatch_assert_queue_V2(self->_queue);
-  if (v3)
+  if (feedCopy)
   {
     v5 = self->_noticeBulletinIDsBySectionID;
   }
@@ -1499,29 +1499,29 @@ LABEL_15:
   return v5;
 }
 
-- (void)removeBulletinID:(id)a3 fromSection:(id)a4 inFeed:(unint64_t)a5
+- (void)removeBulletinID:(id)d fromSection:(id)section inFeed:(unint64_t)feed
 {
-  v13 = a3;
-  v8 = a4;
+  dCopy = d;
+  sectionCopy = section;
   dispatch_assert_queue_V2(self->_queue);
-  v9 = [(BBServer *)self _mapForFeed:a5];
+  v9 = [(BBServer *)self _mapForFeed:feed];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 objectForKey:v8];
-    [v11 removeObject:v13];
+    v11 = [v9 objectForKey:sectionCopy];
+    [v11 removeObject:dCopy];
   }
 
-  v12 = [(NSMutableDictionary *)self->_bulletinsByID objectForKey:v13];
-  [(BBServer *)self _sendRemoveBulletin:v12 toFeeds:a5 shouldSync:0];
+  v12 = [(NSMutableDictionary *)self->_bulletinsByID objectForKey:dCopy];
+  [(BBServer *)self _sendRemoveBulletin:v12 toFeeds:feed shouldSync:0];
 }
 
-- (id)bulletinIDsForSectionID:(id)a3 inFeed:(unint64_t)a4
+- (id)bulletinIDsForSectionID:(id)d inFeed:(unint64_t)feed
 {
-  v6 = a3;
-  v7 = [(BBServer *)self _mapForFeed:a4];
+  dCopy = d;
+  v7 = [(BBServer *)self _mapForFeed:feed];
   v8 = v7;
-  if (!v7 || (v9 = MEMORY[0x277CBEB98], [v7 objectForKey:v6], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "setWithSet:", v10), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
+  if (!v7 || (v9 = MEMORY[0x277CBEB98], [v7 objectForKey:dCopy], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "setWithSet:", v10), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
   {
     v11 = [MEMORY[0x277CBEB98] set];
   }
@@ -1529,54 +1529,54 @@ LABEL_15:
   return v11;
 }
 
-- (id)allBulletinIDsForSectionID:(id)a3
+- (id)allBulletinIDsForSectionID:(id)d
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(NSMutableDictionary *)self->_bulletinIDsBySectionID objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_bulletinIDsBySectionID objectForKey:d];
   v5 = [v3 setWithSet:v4];
 
   return v5;
 }
 
-- (void)_addSuspendedConnection:(id)a3
+- (void)_addSuspendedConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__BBServer__addSuspendedConnection___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_removeSuspendedConnection:(id)a3
+- (void)_removeSuspendedConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__BBServer__removeSuspendedConnection___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_resumeAllSuspendedConnectionsWithCompletionHandler:(id)a3
+- (void)_resumeAllSuspendedConnectionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__BBServer__resumeAllSuspendedConnectionsWithCompletionHandler___block_invoke;
   v7[3] = &unk_278D2AC38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1624,25 +1624,25 @@ uint64_t __64__BBServer__resumeAllSuspendedConnectionsWithCompletionHandler___bl
   return result;
 }
 
-- (void)_addObserver:(id)a3
+- (void)_addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __25__BBServer__addObserver___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -1650,7 +1650,7 @@ uint64_t __64__BBServer__resumeAllSuspendedConnectionsWithCompletionHandler___bl
     v7[2] = __28__BBServer__removeObserver___block_invoke;
     v7[3] = &unk_278D2A628;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -1724,13 +1724,13 @@ void __28__BBServer__removeObserver___block_invoke(uint64_t a1)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendUpdateSectionInfo:(id)a3
+- (void)_sendUpdateSectionInfo:(id)info
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_queue);
   v5 = [(BBMaskedSet *)self->_observerFeedSet objectAtIndex:9];
-  v6 = [(BBSectionInfoStoreInterface *)self->_sectionInfoStore effectiveSectionInfoForSectionInfo:v4];
+  v6 = [(BBSectionInfoStoreInterface *)self->_sectionInfoStore effectiveSectionInfoForSectionInfo:infoCopy];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -1767,8 +1767,8 @@ void __28__BBServer__removeObserver___block_invoke(uint64_t a1)
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v24 = v4;
-  obj = [v4 dataProviderIDs];
+  v24 = infoCopy;
+  obj = [infoCopy dataProviderIDs];
   v12 = [obj countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v12)
   {
@@ -1839,10 +1839,10 @@ void __28__BBServer__removeObserver___block_invoke(uint64_t a1)
   return [(BBMaskedSet *)observerFeedSet objectAtIndex:0];
 }
 
-- (void)_sendRemoveSection:(id)a3
+- (void)_sendRemoveSection:(id)section
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sectionCopy = section;
   v5 = [(BBMaskedSet *)self->_observerFeedSet objectAtIndex:9];
   v11 = 0u;
   v12 = 0u;
@@ -1863,7 +1863,7 @@ void __28__BBServer__removeObserver___block_invoke(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) removeSection:v4];
+        [*(*(&v11 + 1) + 8 * v9++) removeSection:sectionCopy];
       }
 
       while (v7 != v9);
@@ -1876,7 +1876,7 @@ void __28__BBServer__removeObserver___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_observerGatewaysForFeeds:(unint64_t)a3
+- (id)_observerGatewaysForFeeds:(unint64_t)feeds
 {
   v19 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
@@ -1901,7 +1901,7 @@ void __28__BBServer__removeObserver___block_invoke(uint64_t a1)
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if (([v11 feed] & a3) != 0)
+        if (([v11 feed] & feeds) != 0)
         {
           [v5 addObject:v11];
         }
@@ -1950,10 +1950,10 @@ uint64_t __29__BBServer__observerGateways__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_sendAddBulletin:(id)a3 toFeeds:(unint64_t)a4
+- (void)_sendAddBulletin:(id)bulletin toFeeds:(unint64_t)feeds
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  bulletinCopy = bulletin;
   dispatch_assert_queue_V2(self->_queue);
   v7 = &BBLogGateway;
   v8 = BBLogGateway;
@@ -1966,10 +1966,10 @@ uint64_t __29__BBServer__observerGateways__block_invoke(uint64_t a1)
     _os_log_impl(&dword_241EFF000, v10, OS_LOG_TYPE_DEFAULT, "%lu gateways found.", buf, 0xCu);
   }
 
-  v11 = [(BBServer *)self _observerGatewaysForFeeds:a4];
+  v11 = [(BBServer *)self _observerGatewaysForFeeds:feeds];
   if ([v11 count] > 1)
   {
-    if (a4 == 1)
+    if (feeds == 1)
     {
       v17 = BBLogGateway;
       if (os_log_type_enabled(BBLogGateway, OS_LOG_TYPE_DEFAULT))
@@ -2004,7 +2004,7 @@ uint64_t __29__BBServer__observerGateways__block_invoke(uint64_t a1)
             {
               v24 = v23;
               [v22 name];
-              v25 = v6;
+              v25 = bulletinCopy;
               v26 = v13;
               v28 = v27 = v7;
               *buf = 138412290;
@@ -2013,10 +2013,10 @@ uint64_t __29__BBServer__observerGateways__block_invoke(uint64_t a1)
 
               v7 = v27;
               v13 = v26;
-              v6 = v25;
+              bulletinCopy = v25;
             }
 
-            [v22 sendObserversAddBulletin:v6 playLightsAndSirens:1 forFeeds:1];
+            [v22 sendObserversAddBulletin:bulletinCopy playLightsAndSirens:1 forFeeds:1];
           }
 
           v19 = [(BBObserverGatewayEnumerator *)v13 countByEnumeratingWithState:&v40 objects:v44 count:16];
@@ -2030,12 +2030,12 @@ uint64_t __29__BBServer__observerGateways__block_invoke(uint64_t a1)
     else
     {
       v13 = objc_alloc_init(BBObserverGatewayEnumerator);
-      [(BBObserverGatewayEnumerator *)v13 setBulletin:v6];
-      [(BBObserverGatewayEnumerator *)v13 setFeeds:a4];
+      [(BBObserverGatewayEnumerator *)v13 setBulletin:bulletinCopy];
+      [(BBObserverGatewayEnumerator *)v13 setFeeds:feeds];
       [(BBObserverGatewayEnumerator *)v13 setGateways:self->_observerGateways];
       [(BBObserverGatewayEnumerator *)v13 setGatewayTimeout:BBGetObserverGatewayTimeout()];
-      v29 = [v6 bulletinID];
-      [(NSMutableDictionary *)self->_observerGatewayEnumerators setObject:v13 forKey:v29];
+      bulletinID = [bulletinCopy bulletinID];
+      [(NSMutableDictionary *)self->_observerGatewayEnumerators setObject:v13 forKey:bulletinID];
       v30 = BBLogGateway;
       if (os_log_type_enabled(BBLogGateway, OS_LOG_TYPE_DEFAULT))
       {
@@ -2052,18 +2052,18 @@ uint64_t __29__BBServer__observerGateways__block_invoke(uint64_t a1)
       v38[2] = __37__BBServer__sendAddBulletin_toFeeds___block_invoke;
       v38[3] = &unk_278D2A628;
       v38[4] = self;
-      v39 = v29;
-      v34 = v29;
+      v39 = bulletinID;
+      v34 = bulletinID;
       [(BBObserverGatewayEnumerator *)v13 enumerateWithCompletion:v38];
     }
   }
 
   else
   {
-    v12 = [v11 anyObject];
-    if (v12 || ([(NSMutableDictionary *)self->_observerGatewaysByName objectForKeyedSubscript:@"BBObserverGatewayLocalName"], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+    anyObject = [v11 anyObject];
+    if (anyObject || ([(NSMutableDictionary *)self->_observerGatewaysByName objectForKeyedSubscript:@"BBObserverGatewayLocalName"], (anyObject = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v13 = v12;
+      v13 = anyObject;
     }
 
     else
@@ -2082,13 +2082,13 @@ uint64_t __29__BBServer__observerGateways__block_invoke(uint64_t a1)
     if (os_log_type_enabled(BBLogGateway, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [(BBObserverGatewayEnumerator *)v13 name];
+      name = [(BBObserverGatewayEnumerator *)v13 name];
       *buf = 138412290;
-      v46 = v16;
+      v46 = name;
       _os_log_impl(&dword_241EFF000, v15, OS_LOG_TYPE_DEFAULT, "Sending to observers of gateway: %@", buf, 0xCu);
     }
 
-    [(BBObserverGatewayEnumerator *)v13 sendObserversAddBulletin:v6 playLightsAndSirens:1 forFeeds:a4];
+    [(BBObserverGatewayEnumerator *)v13 sendObserversAddBulletin:bulletinCopy playLightsAndSirens:1 forFeeds:feeds];
   }
 
   v35 = *MEMORY[0x277D85DE8];
@@ -2112,28 +2112,28 @@ void __37__BBServer__sendAddBulletin_toFeeds___block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enqueueBulletinUpdate:(id)a3
+- (void)_enqueueBulletinUpdate:(id)update
 {
-  v7 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [v7 bulletin];
-  v5 = [v4 bulletinID];
-  v6 = [(NSMutableDictionary *)self->_pendingUpdatesByBulletinID objectForKey:v5];
+  bulletin = [updateCopy bulletin];
+  bulletinID = [bulletin bulletinID];
+  v6 = [(NSMutableDictionary *)self->_pendingUpdatesByBulletinID objectForKey:bulletinID];
   if (!v6)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [(NSMutableDictionary *)self->_pendingUpdatesByBulletinID setObject:v6 forKey:v5];
+    [(NSMutableDictionary *)self->_pendingUpdatesByBulletinID setObject:v6 forKey:bulletinID];
   }
 
-  [v6 addObject:v7];
+  [v6 addObject:updateCopy];
 }
 
-- (void)_performPendingBulletinUpdatesForBulletinID:(id)a3
+- (void)_performPendingBulletinUpdatesForBulletinID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSMutableDictionary *)self->_pendingUpdatesByBulletinID objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_pendingUpdatesByBulletinID objectForKey:dCopy];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -2163,19 +2163,19 @@ void __37__BBServer__sendAddBulletin_toFeeds___block_invoke(uint64_t a1)
     while (v7);
   }
 
-  [(NSMutableDictionary *)self->_pendingUpdatesByBulletinID removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_pendingUpdatesByBulletinID removeObjectForKey:dCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendBulletinUpdate:(id)a3
+- (void)_sendBulletinUpdate:(id)update
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 bulletin];
-  v33 = [v4 feeds];
-  v34 = self;
+  bulletin = [updateCopy bulletin];
+  feeds = [updateCopy feeds];
+  selfCopy = self;
   [(BBMaskedSet *)self->_observerFeedSet objectsForMask:?];
   v38 = 0u;
   v39 = 0u;
@@ -2199,62 +2199,62 @@ void __37__BBServer__sendAddBulletin_toFeeds___block_invoke(uint64_t a1)
       }
 
       v8 = *(*(&v38 + 1) + 8 * i);
-      v9 = [v5 bulletinID];
-      v10 = [v8 currentTransactionForBulletinID:v9];
+      bulletinID = [bulletin bulletinID];
+      v10 = [v8 currentTransactionForBulletinID:bulletinID];
 
       if (v10)
       {
-        v11 = [v10 incrementTransactionID];
+        incrementTransactionID = [v10 incrementTransactionID];
         v12 = BBLogBulletinLife;
         if (os_log_type_enabled(BBLogBulletinLife, OS_LOG_TYPE_DEFAULT))
         {
           v13 = v12;
-          [v4 typeDescription];
-          v15 = v14 = v4;
-          v16 = [v5 bulletinID];
+          [updateCopy typeDescription];
+          v15 = v14 = updateCopy;
+          bulletinID2 = [bulletin bulletinID];
           *buf = 138544130;
           v43 = v8;
           v44 = 2114;
           v45 = v15;
           v46 = 2048;
-          v47 = v11;
+          v47 = incrementTransactionID;
           v48 = 2114;
-          v49 = v16;
+          v49 = bulletinID2;
           _os_log_impl(&dword_241EFF000, v13, OS_LOG_TYPE_DEFAULT, "_sendBulletinUpdate: observer: %{public}@ typeDescription: %{public}@ transactionID %ld, bulletin %{public}@", buf, 0x2Au);
 
-          v4 = v14;
+          updateCopy = v14;
           v6 = v35;
         }
 
-        v17 = v4;
-        v18 = v11;
+        v17 = updateCopy;
+        v18 = incrementTransactionID;
 LABEL_16:
         v21 = [BBBulletinUpdateTransaction transactionWithBulletinUpdate:v17 transactionID:v18];
         [v8 updateBulletin:v21 withHandler:0];
         goto LABEL_17;
       }
 
-      v19 = [v8 observerOptions];
+      observerOptions = [v8 observerOptions];
       v20 = BBLogBulletinLife;
-      if (v19)
+      if (observerOptions)
       {
         if (os_log_type_enabled(BBLogBulletinLife, OS_LOG_TYPE_DEFAULT))
         {
           v24 = v20;
-          v25 = [v4 typeDescription];
-          v26 = [v5 bulletinID];
+          typeDescription = [updateCopy typeDescription];
+          bulletinID3 = [bulletin bulletinID];
           *buf = 138544130;
           v43 = v8;
           v44 = 2114;
-          v45 = v25;
+          v45 = typeDescription;
           v46 = 2048;
           v47 = 99;
           v48 = 2114;
-          v49 = v26;
+          v49 = bulletinID3;
           _os_log_impl(&dword_241EFF000, v24, OS_LOG_TYPE_DEFAULT, "_sendBulletinUpdate: observer: %{public}@ BBObserverOptionsObserveAll typeDescription: %{public}@ transactionID %ld %{public}@", buf, 0x2Au);
         }
 
-        v17 = v4;
+        v17 = updateCopy;
         v18 = 99;
         goto LABEL_16;
       }
@@ -2265,14 +2265,14 @@ LABEL_16:
       }
 
       v21 = v20;
-      v22 = [v4 typeDescription];
-      v23 = [v5 bulletinID];
+      typeDescription2 = [updateCopy typeDescription];
+      bulletinID4 = [bulletin bulletinID];
       *buf = 138543874;
       v43 = v8;
       v44 = 2114;
-      v45 = v22;
+      v45 = typeDescription2;
       v46 = 2114;
-      v47 = v23;
+      v47 = bulletinID4;
       _os_log_error_impl(&dword_241EFF000, v21, OS_LOG_TYPE_ERROR, "_sendBulletinUpdate: FAILED to send to observer: %{public}@ typeDescription: %{public}@ %{public}@", buf, 0x20u);
 
 LABEL_17:
@@ -2287,7 +2287,7 @@ LABEL_20:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v27 = v4;
+    v27 = updateCopy;
   }
 
   else
@@ -2297,15 +2297,15 @@ LABEL_20:
 
   if ([v27 shouldSync])
   {
-    v28 = [v5 sectionID];
-    v29 = [(BBDismissalSyncCache *)v34->_dismissalSyncCache findBulletinMatch:v5];
+    sectionID = [bulletin sectionID];
+    v29 = [(BBDismissalSyncCache *)selfCopy->_dismissalSyncCache findBulletinMatch:bulletin];
     v30 = v29;
     if (!v29 || [v29 feeds] && objc_msgSend(v30, "feeds") != 65023)
     {
-      v31 = [(BBDataProviderManager *)v34->_dataProviderManager dataProviderForSectionID:v28];
+      v31 = [(BBDataProviderManager *)selfCopy->_dataProviderManager dataProviderForSectionID:sectionID];
       if ([v31 syncsBulletinDismissal])
       {
-        [(BBSyncServiceInterface *)v34->_syncService enqueueSyncedRemovalForBulletin:v5 feeds:v33];
+        [(BBSyncServiceInterface *)selfCopy->_syncService enqueueSyncedRemovalForBulletin:bulletin feeds:feeds];
       }
     }
   }
@@ -2313,16 +2313,16 @@ LABEL_20:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendModifyBulletin:(id)a3 toFeeds:(unint64_t)a4
+- (void)_sendModifyBulletin:(id)bulletin toFeeds:(unint64_t)feeds
 {
   queue = self->_queue;
-  v7 = a3;
+  bulletinCopy = bulletin;
   dispatch_assert_queue_V2(queue);
-  v11 = [BBBulletinModifyUpdate updateWithBulletin:v7 feeds:a4];
+  v11 = [BBBulletinModifyUpdate updateWithBulletin:bulletinCopy feeds:feeds];
   observerGatewayEnumerators = self->_observerGatewayEnumerators;
-  v9 = [v7 bulletinID];
+  bulletinID = [bulletinCopy bulletinID];
 
-  v10 = [(NSMutableDictionary *)observerGatewayEnumerators objectForKey:v9];
+  v10 = [(NSMutableDictionary *)observerGatewayEnumerators objectForKey:bulletinID];
 
   if (v10)
   {
@@ -2335,72 +2335,72 @@ LABEL_20:
   }
 }
 
-- (void)_addBulletin:(id)a3
+- (void)_addBulletin:(id)bulletin
 {
   queue = self->_queue;
-  v5 = a3;
+  bulletinCopy = bulletin;
   dispatch_assert_queue_V2(queue);
-  v11 = [v5 bulletinID];
-  [(NSMutableDictionary *)self->_bulletinsByID setObject:v5 forKey:?];
-  v6 = [v5 sectionID];
+  bulletinID = [bulletinCopy bulletinID];
+  [(NSMutableDictionary *)self->_bulletinsByID setObject:bulletinCopy forKey:?];
+  sectionID = [bulletinCopy sectionID];
 
-  v7 = [(NSMutableDictionary *)self->_bulletinIDsBySectionID objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_bulletinIDsBySectionID objectForKey:sectionID];
 
   if (!v7)
   {
     bulletinIDsBySectionID = self->_bulletinIDsBySectionID;
     v9 = [MEMORY[0x277CBEB58] set];
-    [(NSMutableDictionary *)bulletinIDsBySectionID setObject:v9 forKey:v6];
+    [(NSMutableDictionary *)bulletinIDsBySectionID setObject:v9 forKey:sectionID];
   }
 
-  v10 = [(NSMutableDictionary *)self->_bulletinIDsBySectionID objectForKey:v6];
-  [v10 addObject:v11];
+  v10 = [(NSMutableDictionary *)self->_bulletinIDsBySectionID objectForKey:sectionID];
+  [v10 addObject:bulletinID];
 }
 
-- (void)_modifyBulletin:(id)a3
+- (void)_modifyBulletin:(id)bulletin
 {
   queue = self->_queue;
-  v5 = a3;
+  bulletinCopy = bulletin;
   dispatch_assert_queue_V2(queue);
   bulletinsByID = self->_bulletinsByID;
-  v7 = [v5 bulletinID];
-  [(NSMutableDictionary *)bulletinsByID setObject:v5 forKey:v7];
+  bulletinID = [bulletinCopy bulletinID];
+  [(NSMutableDictionary *)bulletinsByID setObject:bulletinCopy forKey:bulletinID];
 }
 
-- (void)_dataProviderDidClearInfo:(id)a3 forSection:(id)a4
+- (void)_dataProviderDidClearInfo:(id)info forSection:(id)section
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BBServer *)self dataProviderForSectionID:v6];
-  [(BBServer *)self _setClearedInfo:v7 forSectionID:v6];
+  sectionCopy = section;
+  infoCopy = info;
+  v8 = [(BBServer *)self dataProviderForSectionID:sectionCopy];
+  [(BBServer *)self _setClearedInfo:infoCopy forSectionID:sectionCopy];
 
   [(BBServer *)self _updateAllBulletinsForDataProvider:v8];
 }
 
-- (void)clearBulletinIDIfPossible:(id)a3 rescheduleExpirationTimer:(BOOL)a4
+- (void)clearBulletinIDIfPossible:(id)possible rescheduleExpirationTimer:(BOOL)timer
 {
-  v6 = a3;
+  possibleCopy = possible;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__BBServer_clearBulletinIDIfPossible_rescheduleExpirationTimer___block_invoke;
   block[3] = &unk_278D2AA18;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = possibleCopy;
+  timerCopy = timer;
+  v8 = possibleCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_clearBulletinsFromDate:(id)a3 toDate:(id)a4 forSection:(id)a5
+- (void)_clearBulletinsFromDate:(id)date toDate:(id)toDate forSection:(id)section
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  toDateCopy = toDate;
+  sectionCopy = section;
   dispatch_assert_queue_V2(self->_queue);
-  v30 = v10;
-  [(NSMutableDictionary *)self->_bulletinIDsBySectionID objectForKey:v10];
+  v30 = sectionCopy;
+  [(NSMutableDictionary *)self->_bulletinIDsBySectionID objectForKey:sectionCopy];
   v31 = v29 = self;
   v11 = [(BBServer *)self _bulletinsForIDs:?];
   v12 = [MEMORY[0x277CBEB58] set];
@@ -2424,21 +2424,21 @@ LABEL_20:
         }
 
         v18 = *(*(&v36 + 1) + 8 * i);
-        v19 = [v18 recencyDate];
-        v20 = v19;
-        if (v19)
+        recencyDate = [v18 recencyDate];
+        v20 = recencyDate;
+        if (recencyDate)
         {
-          v21 = v19;
+          date = recencyDate;
         }
 
         else
         {
-          v21 = [v18 date];
+          date = [v18 date];
         }
 
-        v22 = v21;
+        v22 = date;
 
-        if ([v22 compare:v8] != -1 && objc_msgSend(v22, "compare:", v9) == -1)
+        if ([v22 compare:dateCopy] != -1 && objc_msgSend(v22, "compare:", toDateCopy) == -1)
         {
           [v12 addObject:v18];
         }
@@ -2463,7 +2463,7 @@ LABEL_20:
     v34[4] = v29;
     v35 = v30;
     v26 = v30;
-    [v23 clearedInfoForClearingBulletinsFromDate:v8 toDate:v9 lastClearedInfo:v24 completion:v34];
+    [v23 clearedInfoForClearingBulletinsFromDate:dateCopy toDate:toDateCopy lastClearedInfo:v24 completion:v34];
   }
 
   else
@@ -2482,15 +2482,15 @@ LABEL_20:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_clearSection:(id)a3
+- (void)_clearSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSMutableDictionary *)self->_bulletinIDsBySectionID objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_bulletinIDsBySectionID objectForKey:sectionCopy];
   v6 = [(BBServer *)self _bulletinsForIDs:v5];
-  [(BBServer *)self _removeBulletins:v6 forSectionID:v4 shouldSync:1];
-  v7 = [(BBServer *)self dataProviderForSectionID:v4];
-  v8 = [(BBServer *)self _clearedInfoForSectionID:v4];
+  [(BBServer *)self _removeBulletins:v6 forSectionID:sectionCopy shouldSync:1];
+  v7 = [(BBServer *)self dataProviderForSectionID:sectionCopy];
+  v8 = [(BBServer *)self _clearedInfoForSectionID:sectionCopy];
   if ([v7 canClearAllBulletins])
   {
     v14[0] = MEMORY[0x277D85DD0];
@@ -2499,8 +2499,8 @@ LABEL_20:
     v14[3] = &unk_278D2AC88;
     v9 = &v15;
     v14[4] = self;
-    v15 = v4;
-    v10 = v4;
+    v15 = sectionCopy;
+    v10 = sectionCopy;
     [v7 clearedInfoForClearingAllBulletinsWithLastClearedInfo:v8 completion:v14];
   }
 
@@ -2512,22 +2512,22 @@ LABEL_20:
     v12[3] = &unk_278D2AC88;
     v9 = &v13;
     v12[4] = self;
-    v13 = v4;
-    v11 = v4;
+    v13 = sectionCopy;
+    v11 = sectionCopy;
     [v7 clearedInfoForBulletins:v6 lastClearedInfo:v8 completion:v12];
   }
 }
 
-- (void)_removeSection:(id)a3
+- (void)_removeSection:(id)section
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sectionCopy = section;
   dispatch_assert_queue_V2(self->_queue);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(BBServer *)self _allBulletinsForSectionID:v4, 0];
+  v5 = [(BBServer *)self _allBulletinsForSectionID:sectionCopy, 0];
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -2553,28 +2553,28 @@ LABEL_20:
     while (v7);
   }
 
-  [(BBSectionInfoStoreInterface *)self->_sectionInfoStore removeSectionWithID:v4];
-  [(NSMutableSet *)self->_activeSectionIDs removeObject:v4];
-  [(BBMuteExpirationManager *)self->_muteManager stopWatchingExpirationsForSectionID:v4];
-  [(BBServer *)self _sendRemoveSection:v4];
+  [(BBSectionInfoStoreInterface *)self->_sectionInfoStore removeSectionWithID:sectionCopy];
+  [(NSMutableSet *)self->_activeSectionIDs removeObject:sectionCopy];
+  [(BBMuteExpirationManager *)self->_muteManager stopWatchingExpirationsForSectionID:sectionCopy];
+  [(BBServer *)self _sendRemoveSection:sectionCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_applicableSectionInfosForBulletin:(id)a3 inSection:(id)a4
+- (id)_applicableSectionInfosForBulletin:(id)bulletin inSection:(id)section
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v20 = v5;
-  v8 = [v5 subsectionIDs];
+  bulletinCopy = bulletin;
+  sectionCopy = section;
+  array = [MEMORY[0x277CBEB18] array];
+  v20 = bulletinCopy;
+  subsectionIDs = [bulletinCopy subsectionIDs];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [v6 subsections];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  subsections = [sectionCopy subsections];
+  v10 = [subsections countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2585,42 +2585,42 @@ LABEL_20:
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subsections);
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v14 subsectionID];
-        v16 = [v8 containsObject:v15];
+        subsectionID = [v14 subsectionID];
+        v16 = [subsectionIDs containsObject:subsectionID];
 
         if (v16)
         {
-          [v7 addObject:v14];
+          [array addObject:v14];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v11 = [subsections countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v11);
   }
 
-  v17 = [v7 count];
-  if (v6 && !v17)
+  v17 = [array count];
+  if (sectionCopy && !v17)
   {
-    [v7 addObject:v6];
+    [array addObject:sectionCopy];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return array;
 }
 
-- (unint64_t)_feedsForBulletin:(id)a3 destinations:(unint64_t)a4
+- (unint64_t)_feedsForBulletin:(id)bulletin destinations:(unint64_t)destinations
 {
   v201 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 sectionID];
-  v8 = [(BBServer *)self _sectionInfoForSectionID:v7 effective:1];
+  bulletinCopy = bulletin;
+  sectionID = [bulletinCopy sectionID];
+  v8 = [(BBServer *)self _sectionInfoForSectionID:sectionID effective:1];
   if (!v8)
   {
     if (os_log_type_enabled(BBLogGeneral, OS_LOG_TYPE_ERROR))
@@ -2632,9 +2632,9 @@ LABEL_20:
     goto LABEL_263;
   }
 
-  v9 = [(BBServer *)self _applicableSectionInfosForBulletin:v6 inSection:v8];
-  v10 = [v6 subsectionIDs];
-  if ([v10 count] && objc_msgSend(v9, "count") == 1)
+  v9 = [(BBServer *)self _applicableSectionInfosForBulletin:bulletinCopy inSection:v8];
+  subsectionIDs = [bulletinCopy subsectionIDs];
+  if ([subsectionIDs count] && objc_msgSend(v9, "count") == 1)
   {
     v11 = [v9 containsObject:v8];
 
@@ -2654,13 +2654,13 @@ LABEL_20:
   {
   }
 
-  v141 = v7;
-  v135 = self;
-  v13 = [v6 interruptionLevel];
-  v14 = v13;
-  v15 = (a4 >> 1) & 1;
-  v143 = a4;
-  if ((a4 & 2) != 0 && v13 != 3)
+  v141 = sectionID;
+  selfCopy = self;
+  interruptionLevel = [bulletinCopy interruptionLevel];
+  v14 = interruptionLevel;
+  v15 = (destinations >> 1) & 1;
+  destinationsCopy = destinations;
+  if ((destinations & 2) != 0 && interruptionLevel != 3)
   {
     v188 = 0u;
     v189 = 0u;
@@ -2732,8 +2732,8 @@ LABEL_19:
         v27 = *(*(&v182 + 1) + 8 * i);
         if (v24)
         {
-          v28 = [v24 subsectionPriority];
-          if (v28 >= [v27 subsectionPriority])
+          subsectionPriority = [v24 subsectionPriority];
+          if (subsectionPriority >= [v27 subsectionPriority])
           {
             continue;
           }
@@ -2755,15 +2755,15 @@ LABEL_19:
     v24 = 0;
   }
 
-  if ([v6 interruptionLevel] <= 1)
+  if ([bulletinCopy interruptionLevel] <= 1)
   {
-    v30 = [v6 threadID];
-    v31 = [v24 isBulletinMutedForThreadIdentifier:v30];
+    threadID = [bulletinCopy threadID];
+    v31 = [v24 isBulletinMutedForThreadIdentifier:threadID];
 
     if (v31)
     {
       v12 = v15;
-      v7 = v141;
+      sectionID = v141;
       goto LABEL_261;
     }
   }
@@ -2806,20 +2806,20 @@ LABEL_41:
       }
     }
 
-    v41 = [v38 criticalAlertSetting] == 2 && objc_msgSend(v6, "interruptionLevel") == 3;
-    v42 = [v38 timeSensitiveSetting] == 2 && objc_msgSend(v6, "interruptionLevel") == 2;
+    v41 = [v38 criticalAlertSetting] == 2 && objc_msgSend(bulletinCopy, "interruptionLevel") == 3;
+    v42 = [v38 timeSensitiveSetting] == 2 && objc_msgSend(bulletinCopy, "interruptionLevel") == 2;
     if ([v38 directMessagesSetting] == 2)
     {
-      v43 = [v6 contentType];
-      if ([v43 isEqualToString:@"BBBulletinContentTypeMessagingDirect"])
+      contentType = [bulletinCopy contentType];
+      if ([contentType isEqualToString:@"BBBulletinContentTypeMessagingDirect"])
       {
         v44 = 1;
       }
 
       else
       {
-        v45 = [v6 contentType];
-        v44 = [v45 isEqualToString:@"BBBulletinContentTypeMessagingGroup"];
+        contentType2 = [bulletinCopy contentType];
+        v44 = [contentType2 isEqualToString:@"BBBulletinContentTypeMessagingGroup"];
       }
     }
 
@@ -2831,7 +2831,7 @@ LABEL_41:
     if (v41 || v42)
     {
       v34 = v15;
-      v40 = v143;
+      v40 = destinationsCopy;
       v39 = 0;
     }
 
@@ -2844,10 +2844,10 @@ LABEL_41:
         goto LABEL_48;
       }
 
-      v40 = v143;
+      v40 = destinationsCopy;
       if (v144 != 3)
       {
-        v34 = v15 & 0xFFFFFFFFFFFFDFFFLL | (((v143 >> 2) & 1) << 13);
+        v34 = v15 & 0xFFFFFFFFFFFFDFFFLL | (((destinationsCopy >> 2) & 1) << 13);
         v39 = 1;
       }
     }
@@ -2858,12 +2858,12 @@ LABEL_41:
 LABEL_47:
     v39 = 0;
 LABEL_48:
-    v40 = v143;
+    v40 = destinationsCopy;
   }
 
-  v145 = [v6 interruptionLevel];
+  interruptionLevel2 = [bulletinCopy interruptionLevel];
   v142 = v39;
-  if ((v39 & 1) == 0 && (v40 & 8) != 0 && v145)
+  if ((v39 & 1) == 0 && (v40 & 8) != 0 && interruptionLevel2)
   {
     v176 = 0u;
     v177 = 0u;
@@ -2884,13 +2884,13 @@ LABEL_48:
             objc_enumerationMutation(v46);
           }
 
-          v51 = [*(*(&v174 + 1) + 8 * j) alertType];
-          if (v51 == 1)
+          alertType = [*(*(&v174 + 1) + 8 * j) alertType];
+          if (alertType == 1)
           {
             v34 |= 2uLL;
           }
 
-          else if (v51 == 2)
+          else if (alertType == 2)
           {
             v34 |= 4uLL;
             goto LABEL_79;
@@ -2945,8 +2945,8 @@ LABEL_79:
         v59 = *(*(&v170 + 1) + 8 * k);
         if (v24)
         {
-          v60 = [v24 subsectionPriority];
-          if (v60 >= [v59 subsectionPriority])
+          subsectionPriority2 = [v24 subsectionPriority];
+          if (subsectionPriority2 >= [v59 subsectionPriority])
           {
             continue;
           }
@@ -2973,8 +2973,8 @@ LABEL_79:
     }
 
 LABEL_99:
-    v63 = v143;
-    v12 |= (v143 << 6) & 0x8000 | (8 * ((v143 >> 2) & 1)) & 0xFFFFFFFFFFFFFF9FLL | (32 * ((v12 >> 1) & 3));
+    v63 = destinationsCopy;
+    v12 |= (destinationsCopy << 6) & 0x8000 | (8 * ((destinationsCopy >> 2) & 1)) & 0xFFFFFFFFFFFFFF9FLL | (32 * ((v12 >> 1) & 3));
     goto LABEL_100;
   }
 
@@ -2986,15 +2986,15 @@ LABEL_99:
   }
 
 LABEL_97:
-  v63 = v143;
+  v63 = destinationsCopy;
 LABEL_100:
-  if ((v12 & 0x806E) != 0 && [v6 turnsOnDisplay] && v145 && !v62)
+  if ((v12 & 0x806E) != 0 && [bulletinCopy turnsOnDisplay] && interruptionLevel2 && !v62)
   {
     v12 |= 0x800uLL;
   }
 
-  v64 = [v6 sound];
-  if ((v63 & 0x4D) == 0 || v64 == 0 || v145 == 0)
+  sound = [bulletinCopy sound];
+  if ((v63 & 0x4D) == 0 || sound == 0 || interruptionLevel2 == 0)
   {
     v67 = 1;
   }
@@ -3005,25 +3005,25 @@ LABEL_100:
   }
 
   v138 = v8;
-  v139 = v64;
+  v139 = sound;
   if (v67)
   {
     goto LABEL_143;
   }
 
-  v68 = [v64 alertConfiguration];
-  if (BBToneLibraryHasSettingsForAlertType([v68 type]) && (objc_msgSend(v8, "usesManagedSettings") & 1) == 0)
+  alertConfiguration = [sound alertConfiguration];
+  if (BBToneLibraryHasSettingsForAlertType([alertConfiguration type]) && (objc_msgSend(v8, "usesManagedSettings") & 1) == 0)
   {
     v69 = v12;
-    v75 = [MEMORY[0x277D71F78] sharedToneManager];
-    if ([v75 bb_isToneEnabledForAlertConfiguration:v68])
+    mEMORY[0x277D71F78] = [MEMORY[0x277D71F78] sharedToneManager];
+    if ([mEMORY[0x277D71F78] bb_isToneEnabledForAlertConfiguration:alertConfiguration])
     {
     }
 
     else
     {
-      v76 = [MEMORY[0x277D71F88] sharedVibrationManager];
-      v77 = [v76 bb_isVibrationEnabledForAlertConfiguration:v68];
+      mEMORY[0x277D71F88] = [MEMORY[0x277D71F88] sharedVibrationManager];
+      v77 = [mEMORY[0x277D71F88] bb_isVibrationEnabledForAlertConfiguration:alertConfiguration];
 
       if (!v77)
       {
@@ -3136,9 +3136,9 @@ LABEL_139:
   v12 = v69;
 LABEL_142:
 
-  v63 = v143;
+  v63 = destinationsCopy;
 LABEL_143:
-  if ((v63 & 0x40) == 0 || v145 == 0)
+  if ((v63 & 0x40) == 0 || interruptionLevel2 == 0)
   {
     v84 = 1;
   }
@@ -3227,7 +3227,7 @@ LABEL_161:
   }
 
   v134 = v85;
-  if ((v92 & 1) == 0 && v145)
+  if ((v92 & 1) == 0 && interruptionLevel2)
   {
     v156 = 0u;
     v157 = 0u;
@@ -3274,7 +3274,7 @@ LABEL_184:
   }
 
   v136 = v12;
-  v98 = [v6 priorityNotificationStatus];
+  priorityNotificationStatus = [bulletinCopy priorityNotificationStatus];
   v150 = 0u;
   v151 = 0u;
   v152 = 0u;
@@ -3300,45 +3300,45 @@ LABEL_184:
       }
 
       v105 = *(*(&v150 + 1) + 8 * ii);
-      v106 = [v105 announceSetting];
+      announceSetting = [v105 announceSetting];
       if (v102)
       {
         v102 = 1;
         continue;
       }
 
-      if (v106 == 2)
+      if (announceSetting == 2)
       {
-        v107 = [v6 contentType];
-        if ([v6 isMessagingNotification] & 1) != 0 || (objc_msgSend(v6, "isCallNotification"))
+        contentType3 = [bulletinCopy contentType];
+        if ([bulletinCopy isMessagingNotification] & 1) != 0 || (objc_msgSend(bulletinCopy, "isCallNotification"))
         {
           v108 = 1;
         }
 
         else
         {
-          v108 = [v107 isEqualToString:@"BBBulletinContentTypeIntercom"];
+          v108 = [contentType3 isEqualToString:@"BBBulletinContentTypeIntercom"];
         }
 
-        v102 = ([v6 interruptionLevel] > 1) | v108;
+        v102 = ([bulletinCopy interruptionLevel] > 1) | v108;
       }
 
       else
       {
-        if (v106 == 3)
+        if (announceSetting == 3)
         {
-          v102 = [v6 interruptionLevel] != 0;
+          v102 = [bulletinCopy interruptionLevel] != 0;
           continue;
         }
 
-        if (v98 != 1)
+        if (priorityNotificationStatus != 1)
         {
           v102 = 0;
           continue;
         }
 
-        v107 = [v105 sectionInfoSettings];
-        v102 = [v107 announcePriorityNotificationsSetting] == 2;
+        contentType3 = [v105 sectionInfoSettings];
+        v102 = [contentType3 announcePriorityNotificationsSetting] == 2;
       }
     }
 
@@ -3349,8 +3349,8 @@ LABEL_184:
 LABEL_209:
 
   v109 = v136;
-  v110 = v142 | (v145 == 0) | ([(BBServer *)v135 _effectiveGlobalAnnounceHeadphonesSetting]!= 2) | ~v102;
-  if (v145)
+  v110 = v142 | (interruptionLevel2 == 0) | ([(BBServer *)selfCopy _effectiveGlobalAnnounceHeadphonesSetting]!= 2) | ~v102;
+  if (interruptionLevel2)
   {
     v111 = v134 & v102 ^ 1;
   }
@@ -3365,20 +3365,20 @@ LABEL_209:
     v109 = v136 | 0x100;
   }
 
-  v112 = [(BBServer *)v135 _effectiveGlobalAnnounceCarPlaySetting];
-  if (((v142 | v111) & 1) == 0 && ([v6 isMessagingNotification] & ((v112 & 0xFFFFFFFFFFFFFFFELL) == 2)) != 0)
+  _effectiveGlobalAnnounceCarPlaySetting = [(BBServer *)selfCopy _effectiveGlobalAnnounceCarPlaySetting];
+  if (((v142 | v111) & 1) == 0 && ([bulletinCopy isMessagingNotification] & ((_effectiveGlobalAnnounceCarPlaySetting & 0xFFFFFFFFFFFFFFFELL) == 2)) != 0)
   {
     v109 |= 0x1000uLL;
   }
 
-  v113 = [(BBServer *)v135 _effectiveGlobalAnnounceHearingAidsSetting];
-  v114 = [(BBServer *)v135 _effectiveGlobalAnnounceBuiltInSpeakerSetting];
+  _effectiveGlobalAnnounceHearingAidsSetting = [(BBServer *)selfCopy _effectiveGlobalAnnounceHearingAidsSetting];
+  _effectiveGlobalAnnounceBuiltInSpeakerSetting = [(BBServer *)selfCopy _effectiveGlobalAnnounceBuiltInSpeakerSetting];
   v8 = v138;
-  v63 = v143;
-  if ((v102 & 1) != 0 && (v114 != 2 ? (v115 = v113 == 2) : (v115 = 1), v115))
+  v63 = destinationsCopy;
+  if ((v102 & 1) != 0 && (_effectiveGlobalAnnounceBuiltInSpeakerSetting != 2 ? (v115 = _effectiveGlobalAnnounceHearingAidsSetting == 2) : (v115 = 1), v115))
   {
     v12 = v109;
-    if (v145 && !v142)
+    if (interruptionLevel2 && !v142)
     {
       v12 = v109 | 0x100;
     }
@@ -3420,9 +3420,9 @@ LABEL_228:
           }
 
           v123 = *(*(&v146 + 1) + 8 * jj);
-          v124 = [v123 alertType];
-          v125 = [v123 carPlaySetting];
-          v128 = ([v123 announceSetting] & 0xFFFFFFFFFFFFFFFELL) == 2 || v125 == 2 || v124 != 0;
+          alertType2 = [v123 alertType];
+          carPlaySetting = [v123 carPlaySetting];
+          v128 = ([v123 announceSetting] & 0xFFFFFFFFFFFFFFFELL) == 2 || carPlaySetting == 2 || alertType2 != 0;
           v120 |= v128;
         }
 
@@ -3437,8 +3437,8 @@ LABEL_228:
       v120 = 0;
     }
 
-    v129 = [v24 lockScreenSetting];
-    v131 = v144 == 3 || v129 == 2;
+    lockScreenSetting = [v24 lockScreenSetting];
+    v131 = v144 == 3 || lockScreenSetting == 2;
     v12 = v137;
     v8 = v138;
     if ((v131 | v120))
@@ -3446,13 +3446,13 @@ LABEL_228:
       v12 = v137 | 0x400;
     }
 
-    v7 = v141;
+    sectionID = v141;
     v116 = v139;
   }
 
   else
   {
-    v7 = v141;
+    sectionID = v141;
   }
 
 LABEL_261:
@@ -3464,17 +3464,17 @@ LABEL_263:
   return v12;
 }
 
-- (id)_bulletinsForIDs:(id)a3
+- (id)_bulletinsForIDs:(id)ds
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -3507,9 +3507,9 @@ LABEL_263:
   return v5;
 }
 
-- (id)_allBulletinsForSectionID:(id)a3
+- (id)_allBulletinsForSectionID:(id)d
 {
-  v4 = [(BBServer *)self allBulletinIDsForSectionID:a3];
+  v4 = [(BBServer *)self allBulletinIDsForSectionID:d];
   v5 = [(BBServer *)self _bulletinsForIDs:v4];
 
   return v5;
@@ -3523,11 +3523,11 @@ LABEL_263:
   return [(BBSectionInfoStoreInterface *)sectionInfoStore allUnsortedSectionInfoIDs];
 }
 
-- (void)_clearBulletinIDIfPossible:(id)a3 rescheduleExpirationTimer:(BOOL)a4
+- (void)_clearBulletinIDIfPossible:(id)possible rescheduleExpirationTimer:(BOOL)timer
 {
-  v4 = a4;
+  timerCopy = timer;
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  possibleCopy = possible;
   dispatch_assert_queue_V2(self->_queue);
   v32 = 0u;
   v33 = 0u;
@@ -3549,7 +3549,7 @@ LABEL_263:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v30 + 1) + 8 * v11) currentTransactionForBulletinID:{v6, v30}];
+        v12 = [*(*(&v30 + 1) + 8 * v11) currentTransactionForBulletinID:{possibleCopy, v30}];
 
         if (v12)
         {
@@ -3574,7 +3574,7 @@ LABEL_263:
   v13 = 0;
 LABEL_11:
 
-  v14 = [(NSMutableDictionary *)self->_observerGatewayEnumerators objectForKey:v6];
+  v14 = [(NSMutableDictionary *)self->_observerGatewayEnumerators objectForKey:possibleCopy];
   if (v14)
   {
     v15 = BBLogGateway;
@@ -3589,10 +3589,10 @@ LABEL_11:
     }
   }
 
-  v19 = [(NSMutableDictionary *)self->_bulletinsByID objectForKey:v6, v30];
-  v20 = [v19 sectionID];
-  v21 = [(BBServer *)self noticesBulletinIDsForSectionID:v20];
-  v22 = [v21 containsObject:v6];
+  v19 = [(NSMutableDictionary *)self->_bulletinsByID objectForKey:possibleCopy, v30];
+  sectionID = [v19 sectionID];
+  v21 = [(BBServer *)self noticesBulletinIDsForSectionID:sectionID];
+  v22 = [v21 containsObject:possibleCopy];
 
   if (v14)
   {
@@ -3627,7 +3627,7 @@ LABEL_11:
       }
 
       *buf = 138412546;
-      v35 = v6;
+      v35 = possibleCopy;
       v36 = 2114;
       v37 = v28;
       _os_log_impl(&dword_241EFF000, v24, OS_LOG_TYPE_DEFAULT, "BBServer not purging bulletin %@ because still in use by %{public}@", buf, 0x16u);
@@ -3643,50 +3643,50 @@ LABEL_11:
       _os_log_impl(&dword_241EFF000, v24, OS_LOG_TYPE_DEFAULT, "BBServer purging bulletin: %{public}@", buf, 0xCu);
     }
 
-    v26 = [(NSMutableDictionary *)self->_bulletinIDsBySectionID objectForKey:v20];
-    [v26 removeObject:v6];
+    v26 = [(NSMutableDictionary *)self->_bulletinIDsBySectionID objectForKey:sectionID];
+    [v26 removeObject:possibleCopy];
 
-    v27 = [(NSMutableDictionary *)self->_noticeBulletinIDsBySectionID objectForKey:v20];
-    [v27 removeObject:v6];
+    v27 = [(NSMutableDictionary *)self->_noticeBulletinIDsBySectionID objectForKey:sectionID];
+    [v27 removeObject:possibleCopy];
 
-    if ([(NSMutableArray *)self->_expiringBulletinIDs containsObject:v6])
+    if ([(NSMutableArray *)self->_expiringBulletinIDs containsObject:possibleCopy])
     {
-      [(NSMutableArray *)self->_expiringBulletinIDs removeObject:v6];
-      if (v4)
+      [(NSMutableArray *)self->_expiringBulletinIDs removeObject:possibleCopy];
+      if (timerCopy)
       {
         [(BBServer *)self _expireBulletinsAndRescheduleTimerIfNecessary];
       }
     }
 
-    if ([(NSMutableArray *)self->_eventBasedExpiringBulletinIDs containsObject:v6])
+    if ([(NSMutableArray *)self->_eventBasedExpiringBulletinIDs containsObject:possibleCopy])
     {
-      [(NSMutableArray *)self->_eventBasedExpiringBulletinIDs removeObject:v6];
+      [(NSMutableArray *)self->_eventBasedExpiringBulletinIDs removeObject:possibleCopy];
     }
 
-    [(BBServer *)self noteFinishedWithBulletinID:v6];
-    [(NSMutableDictionary *)self->_bulletinsByID removeObjectForKey:v6];
+    [(BBServer *)self noteFinishedWithBulletinID:possibleCopy];
+    [(NSMutableDictionary *)self->_bulletinsByID removeObjectForKey:possibleCopy];
   }
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_didNotificationCenterSettingsChangeWithSectionInfo:(id)a3 replacingSectionInfo:(id)a4
+- (BOOL)_didNotificationCenterSettingsChangeWithSectionInfo:(id)info replacingSectionInfo:(id)sectionInfo
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 subsectionID];
+  infoCopy = info;
+  sectionInfoCopy = sectionInfo;
+  subsectionID = [infoCopy subsectionID];
 
-  if (v7)
+  if (subsectionID)
   {
-    v8 = [v5 subsectionID];
-    v9 = [v6 _subsectionForID:v8];
+    subsectionID2 = [infoCopy subsectionID];
+    subsections = [sectionInfoCopy _subsectionForID:subsectionID2];
 
-    v10 = [v5 notificationCenterSetting];
-    if (v10 == [v9 notificationCenterSetting])
+    notificationCenterSetting = [infoCopy notificationCenterSetting];
+    if (notificationCenterSetting == [subsections notificationCenterSetting])
     {
-      v11 = [v5 contentPreviewSetting];
-      if (v11 == [v9 contentPreviewSetting])
+      contentPreviewSetting = [infoCopy contentPreviewSetting];
+      if (contentPreviewSetting == [subsections contentPreviewSetting])
       {
         LOBYTE(v12) = 0;
         goto LABEL_17;
@@ -3698,8 +3698,8 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v13 = [v5 notificationCenterSetting];
-  if (v13 != [v6 notificationCenterSetting] || (v14 = objc_msgSend(v5, "contentPreviewSetting"), v14 != objc_msgSend(v6, "contentPreviewSetting")))
+  notificationCenterSetting2 = [infoCopy notificationCenterSetting];
+  if (notificationCenterSetting2 != [sectionInfoCopy notificationCenterSetting] || (v14 = objc_msgSend(infoCopy, "contentPreviewSetting"), v14 != objc_msgSend(sectionInfoCopy, "contentPreviewSetting")))
   {
     LOBYTE(v12) = 1;
     goto LABEL_19;
@@ -3709,8 +3709,8 @@ LABEL_16:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [v5 subsections];
-  v12 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  subsections = [infoCopy subsections];
+  v12 = [subsections countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
   {
     v15 = *v25;
@@ -3720,24 +3720,24 @@ LABEL_9:
     {
       if (*v25 != v15)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(subsections);
       }
 
       v17 = *(*(&v24 + 1) + 8 * v16);
-      v18 = [v17 subsectionID];
-      v19 = [v6 _subsectionForID:v18];
+      subsectionID3 = [v17 subsectionID];
+      v19 = [sectionInfoCopy _subsectionForID:subsectionID3];
 
-      v20 = [v17 notificationCenterSetting];
-      v21 = [v19 notificationCenterSetting];
+      notificationCenterSetting3 = [v17 notificationCenterSetting];
+      notificationCenterSetting4 = [v19 notificationCenterSetting];
 
-      if (v20 != v21)
+      if (notificationCenterSetting3 != notificationCenterSetting4)
       {
         goto LABEL_16;
       }
 
       if (v12 == ++v16)
       {
-        v12 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v12 = [subsections countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v12)
         {
           goto LABEL_9;
@@ -3755,41 +3755,41 @@ LABEL_19:
   return v12;
 }
 
-- (void)_setSectionInfoNoteSettingsChanged:(id)a3 forSectionID:(id)a4
+- (void)_setSectionInfoNoteSettingsChanged:(id)changed forSectionID:(id)d
 {
-  v11 = a4;
+  dCopy = d;
   queue = self->_queue;
-  v7 = a3;
+  changedCopy = changed;
   dispatch_assert_queue_V2(queue);
-  [(BBServer *)self _setSectionInfo:v7 forSectionID:v11];
-  v8 = [v7 sectionType];
+  [(BBServer *)self _setSectionInfo:changedCopy forSectionID:dCopy];
+  sectionType = [changedCopy sectionType];
 
-  if (v8 != 1)
+  if (sectionType != 1)
   {
-    v9 = [(BBServer *)self _sectionInfoForSectionID:v11];
+    v9 = [(BBServer *)self _sectionInfoForSectionID:dCopy];
     v10 = [v9 copy];
 
-    [(BBDataProviderManager *)self->_dataProviderManager noteSettingsChanged:v10 forSectionID:v11];
+    [(BBDataProviderManager *)self->_dataProviderManager noteSettingsChanged:v10 forSectionID:dCopy];
   }
 }
 
-- (void)_setPrimitiveSectionInfo:(id)a3 forSectionID:(id)a4
+- (void)_setPrimitiveSectionInfo:(id)info forSectionID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BBSectionInfoStoreInterface *)self->_sectionInfoStore sectionInfoForSectionID:v7 effective:0];
+  infoCopy = info;
+  dCopy = d;
+  v8 = [(BBSectionInfoStoreInterface *)self->_sectionInfoStore sectionInfoForSectionID:dCopy effective:0];
   sectionInfoStore = self->_sectionInfoStore;
-  if (v6)
+  if (infoCopy)
   {
-    [(BBSectionInfoStoreInterface *)sectionInfoStore setSectionInfo:v6 forSectionID:v7];
+    [(BBSectionInfoStoreInterface *)sectionInfoStore setSectionInfo:infoCopy forSectionID:dCopy];
     if (!v8)
     {
       goto LABEL_6;
     }
 
 LABEL_5:
-    if ([v6 isEqual:v8])
+    if ([infoCopy isEqual:v8])
     {
       goto LABEL_9;
     }
@@ -3797,7 +3797,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [(BBSectionInfoStoreInterface *)sectionInfoStore removeSectionWithID:v7];
+  [(BBSectionInfoStoreInterface *)sectionInfoStore removeSectionWithID:dCopy];
   if (v8)
   {
     goto LABEL_5;
@@ -3808,44 +3808,44 @@ LABEL_6:
   if (os_log_type_enabled(BBLogSettings, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v7;
+    v15 = dCopy;
     _os_log_impl(&dword_241EFF000, v10, OS_LOG_TYPE_DEFAULT, "Persisting changes for %@", &v14, 0xCu);
   }
 
   persistentStore = self->_persistentStore;
-  v12 = [(BBSectionInfoStoreInterface *)self->_sectionInfoStore sectionInfoByID];
-  [(BBPersistentStoreInterface *)persistentStore writeSectionInfo:v12];
+  sectionInfoByID = [(BBSectionInfoStoreInterface *)self->_sectionInfoStore sectionInfoByID];
+  [(BBPersistentStoreInterface *)persistentStore writeSectionInfo:sectionInfoByID];
 
 LABEL_9:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setSectionInfo:(id)a3 forSectionID:(id)a4
+- (void)_setSectionInfo:(id)info forSectionID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(BBServer *)self _sectionInfoForSectionID:v7];
+  v8 = [(BBServer *)self _sectionInfoForSectionID:dCopy];
   v9 = [v8 copy];
 
-  [v6 queryAndUseManagedSettings];
-  if ([v6 isEqual:v9])
+  [infoCopy queryAndUseManagedSettings];
+  if ([infoCopy isEqual:v9])
   {
-    v10 = v6;
+    v10 = infoCopy;
   }
 
   else
   {
-    v10 = [(BBSectionAuthorizationManager *)self->_sectionAuthorizationManager handleChangeForSectionInfo:v6 replacingSectionInfo:v9];
+    v10 = [(BBSectionAuthorizationManager *)self->_sectionAuthorizationManager handleChangeForSectionInfo:infoCopy replacingSectionInfo:v9];
 
     [(BBMuteExpirationManager *)self->_muteManager cleanAndWatchExpirationsForSectionInfo:v10];
     v11 = [(BBSectionInfoStoreInterface *)self->_sectionInfoStore effectiveSectionInfoForSectionInfo:v10];
     v12 = [(BBSectionInfoStoreInterface *)self->_sectionInfoStore effectiveSectionInfoForSectionInfo:v9];
     v13 = [(BBServer *)self _didNotificationCenterSettingsChangeWithSectionInfo:v11 replacingSectionInfo:v12];
-    v14 = [v10 subsectionID];
+    subsectionID = [v10 subsectionID];
 
-    if (v14)
+    if (subsectionID)
     {
       [v9 _replaceSubsection:v10];
       v15 = v9;
@@ -3857,7 +3857,7 @@ LABEL_9:
     if (os_log_type_enabled(BBLogSettings, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138543874;
-      v19 = v7;
+      v19 = dCopy;
       v20 = 2114;
       v21 = v9;
       v22 = 2114;
@@ -3865,24 +3865,24 @@ LABEL_9:
       _os_log_impl(&dword_241EFF000, v16, OS_LOG_TYPE_DEFAULT, "Saving updated section info for: %{public}@\n\tOld = %{public}@\n\tNew = %{public}@", &v18, 0x20u);
     }
 
-    [(BBServer *)self _setPrimitiveSectionInfo:v10 forSectionID:v7];
+    [(BBServer *)self _setPrimitiveSectionInfo:v10 forSectionID:dCopy];
     [(BBServer *)self _sendUpdateSectionInfo:v10];
     if (v13)
     {
-      [(BBServer *)self _updateDataProviderForSectionInfo:v10 sectionID:v7];
+      [(BBServer *)self _updateDataProviderForSectionInfo:v10 sectionID:dCopy];
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateDataProviderForSectionInfo:(id)a3 sectionID:(id)a4
+- (void)_updateDataProviderForSectionInfo:(id)info sectionID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(BBServer *)self dataProviderForSectionID:v7];
+  v8 = [(BBServer *)self dataProviderForSectionID:dCopy];
   if (v8)
   {
     v9 = v8;
@@ -3895,8 +3895,8 @@ LABEL_9:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [v6 dataProviderIDs];
-    v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    dataProviderIDs = [infoCopy dataProviderIDs];
+    v11 = [dataProviderIDs countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -3910,7 +3910,7 @@ LABEL_9:
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(dataProviderIDs);
           }
 
           v9 = [(BBServer *)self dataProviderForSectionID:*(*(&v18 + 1) + 8 * v14)];
@@ -3927,7 +3927,7 @@ LABEL_9:
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v12 = [dataProviderIDs countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v12);
@@ -4217,13 +4217,13 @@ id __36__BBServer__addStateCaptureHandlers__block_invoke_3(uint64_t a1)
   [(BBServer *)self _expireBulletinsAndRescheduleTimerIfNecessary];
 }
 
-- (void)_scheduleTimerForDate:(id)a3
+- (void)_scheduleTimerForDate:(id)date
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_queue);
   [(BBServer *)self _clearExpirationTimer];
-  [v4 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   v6 = v5;
   if (v5 < 20.0)
   {
@@ -4232,14 +4232,14 @@ id __36__BBServer__addStateCaptureHandlers__block_invoke_3(uint64_t a1)
       [BBServer _scheduleTimerForDate:];
     }
 
-    v7 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v6 = 60.0;
-    v8 = [v7 dateByAddingTimeInterval:60.0];
+    v8 = [date dateByAddingTimeInterval:60.0];
 
-    v4 = v8;
+    dateCopy = v8;
   }
 
-  objc_storeStrong(&self->_nextScheduledExpirationTimerFireDate, v4);
+  objc_storeStrong(&self->_nextScheduledExpirationTimerFireDate, dateCopy);
   v9 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, self->_queue);
   expirationTimer = self->_expirationTimer;
   self->_expirationTimer = v9;
@@ -4265,18 +4265,18 @@ id __36__BBServer__addStateCaptureHandlers__block_invoke_3(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_bulletinIDsInSortedArray:(id)a3 withDateForKey:(id)a4 beforeCutoff:(id)a5
+- (id)_bulletinIDsInSortedArray:(id)array withDateForKey:(id)key beforeCutoff:(id)cutoff
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v22 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v8, "count")}];
+  arrayCopy = array;
+  keyCopy = key;
+  cutoffCopy = cutoff;
+  v10 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v8;
+  obj = arrayCopy;
   v11 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
@@ -4293,10 +4293,10 @@ id __36__BBServer__addStateCaptureHandlers__block_invoke_3(uint64_t a1)
 
         v15 = *(*(&v23 + 1) + 8 * i);
         v16 = [(NSMutableDictionary *)self->_bulletinsByID objectForKey:v15];
-        v17 = [v16 valueForKey:v22];
-        v18 = [v17 laterDate:v9];
+        v17 = [v16 valueForKey:keyCopy];
+        v18 = [v17 laterDate:cutoffCopy];
 
-        if (v18 != v9)
+        if (v18 != cutoffCopy)
         {
 
           goto LABEL_11;
@@ -4322,13 +4322,13 @@ LABEL_11:
   return v10;
 }
 
-- (unint64_t)_indexForNewDate:(id)a3 inBulletinIDArray:(id)a4 sortedAscendingByDateForKey:(id)a5
+- (unint64_t)_indexForNewDate:(id)date inBulletinIDArray:(id)array sortedAscendingByDateForKey:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  arrayCopy = array;
+  keyCopy = key;
   dispatch_assert_queue_V2(self->_queue);
-  v11 = [v9 count];
+  v11 = [arrayCopy count];
   if (v11)
   {
     v12 = v11;
@@ -4336,13 +4336,13 @@ LABEL_11:
     while (1)
     {
       bulletinsByID = self->_bulletinsByID;
-      v15 = [v9 objectAtIndex:v13];
+      v15 = [arrayCopy objectAtIndex:v13];
       v16 = [(NSMutableDictionary *)bulletinsByID objectForKey:v15];
 
-      v17 = [v16 valueForKey:v10];
-      v18 = [v17 earlierDate:v8];
+      v17 = [v16 valueForKey:keyCopy];
+      v18 = [v17 earlierDate:dateCopy];
 
-      if (v18 == v8)
+      if (v18 == dateCopy)
       {
         break;
       }
@@ -4363,14 +4363,14 @@ LABEL_11:
   return v13;
 }
 
-- (void)_expireBulletinsDueToSystemEvent:(unint64_t)a3
+- (void)_expireBulletinsDueToSystemEvent:(unint64_t)event
 {
   v35 = *MEMORY[0x277D85DE8];
   v5 = BBLogExpiration;
   if (os_log_type_enabled(BBLogExpiration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v29 = a3;
+    eventCopy = event;
     _os_log_impl(&dword_241EFF000, v5, OS_LOG_TYPE_DEFAULT, "Received system event %ld; checking for expiration", buf, 0xCu);
   }
 
@@ -4399,28 +4399,28 @@ LABEL_11:
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
-        if (([v14 expirationEvents] & a3) != 0)
+        if (([v14 expirationEvents] & event) != 0)
         {
           v15 = BBLogExpiration;
           if (os_log_type_enabled(BBLogExpiration, OS_LOG_TYPE_DEFAULT))
           {
             v16 = v15;
-            v17 = [v14 sectionID];
-            v18 = [v14 bulletinID];
+            sectionID = [v14 sectionID];
+            bulletinID = [v14 bulletinID];
             *buf = v23;
-            v29 = v17;
+            eventCopy = sectionID;
             v30 = 2114;
-            v31 = v18;
+            v31 = bulletinID;
             v32 = 2048;
-            v33 = a3;
+            eventCopy2 = event;
             _os_log_impl(&dword_241EFF000, v16, OS_LOG_TYPE_DEFAULT, "Expiring bulletin in section <%{public}@>: bulletinID = <%{public}@>, event %ld", buf, 0x20u);
           }
 
-          v19 = [v14 responseForExpireAction];
-          [(BBServer *)self deliverResponse:v19 withCompletion:0];
+          responseForExpireAction = [v14 responseForExpireAction];
+          [(BBServer *)self deliverResponse:responseForExpireAction withCompletion:0];
           eventBasedExpiringBulletinIDs = self->_eventBasedExpiringBulletinIDs;
-          v21 = [v14 bulletinID];
-          [(NSMutableArray *)eventBasedExpiringBulletinIDs removeObject:v21];
+          bulletinID2 = [v14 bulletinID];
+          [(NSMutableArray *)eventBasedExpiringBulletinIDs removeObject:bulletinID2];
 
           [(BBServer *)self _removeBulletin:v14 rescheduleTimerIfAffected:0 shouldSync:0];
         }
@@ -4435,31 +4435,31 @@ LABEL_11:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_newValidatedDefaultExpirationComponentsFromComponents:(id)a3
+- (id)_newValidatedDefaultExpirationComponentsFromComponents:(id)components
 {
-  v3 = a3;
-  if (v3)
+  componentsCopy = components;
+  if (componentsCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    if ([v3 hour] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([componentsCopy hour] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v5 = [v3 hour];
-      if (v5 >= 0)
+      hour = [componentsCopy hour];
+      if (hour >= 0)
       {
-        v6 = v5;
+        v6 = hour;
       }
 
       else
       {
-        v6 = -v5;
+        v6 = -hour;
       }
 
       [v4 setHour:v6];
     }
 
-    if ([v3 day] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([componentsCopy day] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = [v3 day];
+      v7 = [componentsCopy day];
       if (v7 >= 0)
       {
         v8 = v7;
@@ -4482,20 +4482,20 @@ LABEL_11:
   return v4;
 }
 
-- (id)_newDateCompontentsByInvertingInterestingPartsOfComponents:(id)a3
+- (id)_newDateCompontentsByInvertingInterestingPartsOfComponents:(id)components
 {
-  v3 = a3;
-  if (v3)
+  componentsCopy = components;
+  if (componentsCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    if ([v3 hour] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([componentsCopy hour] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v4 setHour:{-objc_msgSend(v3, "hour")}];
+      [v4 setHour:{-objc_msgSend(componentsCopy, "hour")}];
     }
 
-    if ([v3 day] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([componentsCopy day] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v4 setDay:{-objc_msgSend(v3, "day")}];
+      [v4 setDay:{-objc_msgSend(componentsCopy, "day")}];
     }
   }
 
@@ -4507,14 +4507,14 @@ LABEL_11:
   return v4;
 }
 
-- (void)_setDefaultExpirationComponents:(id)a3
+- (void)_setDefaultExpirationComponents:(id)components
 {
-  v10 = a3;
+  componentsCopy = components;
   dispatch_assert_queue_V2(self->_queue);
-  v4 = v10;
-  if (self->_defaultExpirationComponents != v10)
+  v4 = componentsCopy;
+  if (self->_defaultExpirationComponents != componentsCopy)
   {
-    v5 = [(BBServer *)self _newValidatedDefaultExpirationComponentsFromComponents:v10];
+    v5 = [(BBServer *)self _newValidatedDefaultExpirationComponentsFromComponents:componentsCopy];
     defaultExpirationComponents = self->_defaultExpirationComponents;
     self->_defaultExpirationComponents = v5;
     v7 = v5;
@@ -4523,18 +4523,18 @@ LABEL_11:
     expirationReferenceComponents = self->_expirationReferenceComponents;
     self->_expirationReferenceComponents = v8;
 
-    v4 = v10;
+    v4 = componentsCopy;
   }
 }
 
-- (id)_bulletinDefaultExpirationDateFromDate:(id)a3
+- (id)_bulletinDefaultExpirationDateFromDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_defaultExpirationComponents)
   {
-    v5 = [MEMORY[0x277CBEA80] currentCalendar];
-    v6 = [v5 dateByAddingComponents:self->_defaultExpirationComponents toDate:v4 options:0];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v6 = [currentCalendar dateByAddingComponents:self->_defaultExpirationComponents toDate:dateCopy options:0];
   }
 
   else
@@ -4545,52 +4545,52 @@ LABEL_11:
   return v6;
 }
 
-- (void)_validateExpirationDateForBulletinRequest:(id)a3
+- (void)_validateExpirationDateForBulletinRequest:(id)request
 {
-  v9 = a3;
+  requestCopy = request;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_defaultExpirationComponents)
   {
-    v4 = [v9 recencyDate];
-    if (v4 || ([v9 date], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    recencyDate = [requestCopy recencyDate];
+    if (recencyDate || ([requestCopy date], (recencyDate = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v5 = v4;
-      v6 = [v9 expirationDate];
+      v5 = recencyDate;
+      expirationDate = [requestCopy expirationDate];
       v7 = [(BBServer *)self _bulletinDefaultExpirationDateFromDate:v5];
       v8 = v7;
-      if (!v6)
+      if (!expirationDate)
       {
-        v6 = v7;
+        expirationDate = v7;
       }
 
-      [v9 setExpirationDate:v6];
+      [requestCopy setExpirationDate:expirationDate];
     }
   }
 }
 
-- (void)_scheduleExpirationForBulletin:(id)a3
+- (void)_scheduleExpirationForBulletin:(id)bulletin
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bulletinCopy = bulletin;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 expirationDate];
-  v6 = [v4 bulletinID];
-  v7 = [v4 expirationEvents];
+  expirationDate = [bulletinCopy expirationDate];
+  bulletinID = [bulletinCopy bulletinID];
+  expirationEvents = [bulletinCopy expirationEvents];
   expiringBulletinIDs = self->_expiringBulletinIDs;
-  if (v5)
+  if (expirationDate)
   {
-    [(NSMutableArray *)expiringBulletinIDs removeObject:v6];
-    v9 = [(BBServer *)self _indexForNewDate:v5 inBulletinIDArray:self->_expiringBulletinIDs sortedAscendingByDateForKey:@"expirationDate"];
-    [(NSMutableArray *)self->_expiringBulletinIDs insertObject:v6 atIndex:v9];
+    [(NSMutableArray *)expiringBulletinIDs removeObject:bulletinID];
+    v9 = [(BBServer *)self _indexForNewDate:expirationDate inBulletinIDArray:self->_expiringBulletinIDs sortedAscendingByDateForKey:@"expirationDate"];
+    [(NSMutableArray *)self->_expiringBulletinIDs insertObject:bulletinID atIndex:v9];
     v10 = BBLogExpiration;
     if (os_log_type_enabled(BBLogExpiration, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [v4 bulletinID];
+      bulletinID2 = [bulletinCopy bulletinID];
       v17 = 138543874;
-      v18 = v12;
+      v18 = bulletinID2;
       v19 = 2114;
-      v20 = v5;
+      v20 = expirationDate;
       v21 = 2048;
       v22 = v9;
       _os_log_impl(&dword_241EFF000, v11, OS_LOG_TYPE_DEFAULT, "Bulletin with bulletinID <%{public}@>, expiration date <%{public}@> inserted in expiring bulletins array at index %ld", &v17, 0x20u);
@@ -4599,46 +4599,46 @@ LABEL_11:
 
   else
   {
-    if (![(NSMutableArray *)expiringBulletinIDs containsObject:v6])
+    if (![(NSMutableArray *)expiringBulletinIDs containsObject:bulletinID])
     {
       goto LABEL_7;
     }
 
-    [(NSMutableArray *)self->_expiringBulletinIDs removeObject:v6];
+    [(NSMutableArray *)self->_expiringBulletinIDs removeObject:bulletinID];
   }
 
   [(BBServer *)self _expireBulletinsAndRescheduleTimerIfNecessary];
 LABEL_7:
-  if (v7)
+  if (expirationEvents)
   {
     v13 = BBLogExpiration;
     if (os_log_type_enabled(BBLogExpiration, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [v4 bulletinID];
+      bulletinID3 = [bulletinCopy bulletinID];
       v17 = 138543618;
-      v18 = v15;
+      v18 = bulletinID3;
       v19 = 2048;
-      v20 = v7;
+      v20 = expirationEvents;
       _os_log_impl(&dword_241EFF000, v14, OS_LOG_TYPE_DEFAULT, "Bulletin with bulletinID <%{public}@>, expiration event <%ld> inserted in event-based expiring bulletins array", &v17, 0x16u);
     }
 
-    [(NSMutableArray *)self->_eventBasedExpiringBulletinIDs addObject:v6];
+    [(NSMutableArray *)self->_eventBasedExpiringBulletinIDs addObject:bulletinID];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ping:(id)a3
+- (void)ping:(id)ping
 {
-  v4 = a3;
+  pingCopy = ping;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __17__BBServer_ping___block_invoke;
   block[3] = &unk_278D2A9C8;
-  v8 = v4;
-  v6 = v4;
+  v8 = pingCopy;
+  v6 = pingCopy;
   dispatch_async(queue, block);
 }
 
@@ -4653,20 +4653,20 @@ uint64_t __17__BBServer_ping___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)getSectionParametersForSectionID:(id)a3 withHandler:(id)a4
+- (void)getSectionParametersForSectionID:(id)d withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__BBServer_getSectionParametersForSectionID_withHandler___block_invoke;
   block[3] = &unk_278D2ACD8;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = dCopy;
+  v9 = dCopy;
+  v10 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -4692,18 +4692,18 @@ void __57__BBServer_getSectionParametersForSectionID_withHandler___block_invoke(
   }
 }
 
-- (void)_storeObserver:(id)a3 forFeed:(unint64_t)a4
+- (void)_storeObserver:(id)observer forFeed:(unint64_t)feed
 {
   queue = self->_queue;
-  v7 = a3;
+  observerCopy = observer;
   dispatch_assert_queue_V2(queue);
-  [(BBMaskedSet *)self->_observerFeedSet removeObject:v7];
-  [(BBMaskedSet *)self->_observerFeedSet addObject:v7 withMask:a4];
+  [(BBMaskedSet *)self->_observerFeedSet removeObject:observerCopy];
+  [(BBMaskedSet *)self->_observerFeedSet addObject:observerCopy withMask:feed];
 }
 
-- (void)_logObserversBeforeAndAfterUpdateBlock:(id)a3
+- (void)_logObserversBeforeAndAfterUpdateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (os_log_type_enabled(BBLogGateway, OS_LOG_TYPE_DEBUG))
   {
     [BBServer _logObserversBeforeAndAfterUpdateBlock:?];
@@ -4719,7 +4719,7 @@ void __57__BBServer_getSectionParametersForSectionID_withHandler___block_invoke(
     [BBServer _logObserversBeforeAndAfterUpdateBlock:?];
   }
 
-  v4[2](v4);
+  blockCopy[2](blockCopy);
   if (os_log_type_enabled(BBLogGateway, OS_LOG_TYPE_DEBUG))
   {
     [BBServer _logObserversBeforeAndAfterUpdateBlock:?];
@@ -4736,21 +4736,21 @@ void __57__BBServer_getSectionParametersForSectionID_withHandler___block_invoke(
   }
 }
 
-- (void)observer:(id)a3 setObserverFeed:(unint64_t)a4 attachToLightsAndSirensGateway:(id)a5
+- (void)observer:(id)observer setObserverFeed:(unint64_t)feed attachToLightsAndSirensGateway:(id)gateway
 {
-  v8 = a3;
-  v9 = a5;
+  observerCopy = observer;
+  gatewayCopy = gateway;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __68__BBServer_observer_setObserverFeed_attachToLightsAndSirensGateway___block_invoke;
   v13[3] = &unk_278D2AD00;
-  v14 = v8;
-  v15 = v9;
-  v16 = self;
-  v17 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = observerCopy;
+  v15 = gatewayCopy;
+  selfCopy = self;
+  feedCopy = feed;
+  v11 = gatewayCopy;
+  v12 = observerCopy;
   dispatch_async(queue, v13);
 }
 
@@ -4826,22 +4826,22 @@ void __68__BBServer_observer_setObserverFeed_attachToLightsAndSirensGateway___bl
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observer:(id)a3 setObserverFeed:(unint64_t)a4 asLightsAndSirensGateway:(id)a5 priority:(unint64_t)a6
+- (void)observer:(id)observer setObserverFeed:(unint64_t)feed asLightsAndSirensGateway:(id)gateway priority:(unint64_t)priority
 {
-  v10 = a3;
-  v11 = a5;
+  observerCopy = observer;
+  gatewayCopy = gateway;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__BBServer_observer_setObserverFeed_asLightsAndSirensGateway_priority___block_invoke;
   block[3] = &unk_278D2AD28;
-  v16 = v10;
-  v17 = v11;
-  v19 = a4;
-  v20 = a6;
-  v18 = self;
-  v13 = v11;
-  v14 = v10;
+  v16 = observerCopy;
+  v17 = gatewayCopy;
+  feedCopy = feed;
+  priorityCopy = priority;
+  selfCopy = self;
+  v13 = gatewayCopy;
+  v14 = observerCopy;
   dispatch_async(queue, block);
 }
 
@@ -4933,34 +4933,34 @@ void __71__BBServer_observer_setObserverFeed_asLightsAndSirensGateway_priority__
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_openApplicationOptionsForResponse:(id)a3
+- (id)_openApplicationOptionsForResponse:(id)response
 {
   v3 = MEMORY[0x277CBEB38];
   v4 = *MEMORY[0x277D0AC58];
   v5 = *MEMORY[0x277D0AC70];
-  v6 = a3;
+  responseCopy = response;
   v7 = [v3 dictionaryWithObjectsAndKeys:{v4, MEMORY[0x277CBEC38], v5, 0}];
-  v8 = [v6 originID];
+  originID = [responseCopy originID];
 
-  if (v8)
+  if (originID)
   {
-    [v7 setObject:v8 forKey:*MEMORY[0x277D0AC28]];
+    [v7 setObject:originID forKey:*MEMORY[0x277D0AC28]];
   }
 
   return v7;
 }
 
-- (void)_didReceiveResponseForBulletin:(id)a3
+- (void)_didReceiveResponseForBulletin:(id)bulletin
 {
-  v4 = a3;
+  bulletinCopy = bulletin;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__BBServer__didReceiveResponseForBulletin___block_invoke;
   v7[3] = &unk_278D2A628;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = bulletinCopy;
+  selfCopy = self;
+  v6 = bulletinCopy;
   dispatch_async(queue, v7);
 }
 
@@ -5006,10 +5006,10 @@ void __43__BBServer__didReceiveResponseForBulletin___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendBulletinsLoadedForSectionID:(id)a3
+- (void)_sendBulletinsLoadedForSectionID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
   v13 = 0u;
   v14 = 0u;
@@ -5031,7 +5031,7 @@ void __43__BBServer__didReceiveResponseForBulletin___block_invoke(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) noteBulletinsLoadedForSectionID:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) noteBulletinsLoadedForSectionID:{dCopy, v11}];
       }
 
       while (v7 != v9);
@@ -5044,20 +5044,20 @@ void __43__BBServer__didReceiveResponseForBulletin___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observer:(id)a3 handleResponse:(id)a4 withCompletion:(id)a5
+- (void)observer:(id)observer handleResponse:(id)response withCompletion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__BBServer_observer_handleResponse_withCompletion___block_invoke;
   block[3] = &unk_278D2A9A0;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = responseCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = responseCopy;
   dispatch_async(queue, block);
 }
 
@@ -5290,21 +5290,21 @@ uint64_t __51__BBServer_observer_handleResponse_withCompletion___block_invoke_2_
   return result;
 }
 
-- (void)observer:(id)a3 finishedWithBulletinID:(id)a4 transactionID:(unint64_t)a5
+- (void)observer:(id)observer finishedWithBulletinID:(id)d transactionID:(unint64_t)iD
 {
-  v8 = a3;
-  v9 = a4;
+  observerCopy = observer;
+  dCopy = d;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __58__BBServer_observer_finishedWithBulletinID_transactionID___block_invoke;
   v13[3] = &unk_278D2AD00;
-  v14 = v8;
-  v15 = v9;
-  v16 = self;
-  v17 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = observerCopy;
+  v15 = dCopy;
+  selfCopy = self;
+  iDCopy = iD;
+  v11 = dCopy;
+  v12 = observerCopy;
   dispatch_async(queue, v13);
 }
 
@@ -5368,17 +5368,17 @@ void __58__BBServer_observer_finishedWithBulletinID_transactionID___block_invoke
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observer:(id)a3 clearSection:(id)a4
+- (void)observer:(id)observer clearSection:(id)section
 {
-  v5 = a4;
+  sectionCopy = section;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __34__BBServer_observer_clearSection___block_invoke;
   v8[3] = &unk_278D2A628;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = sectionCopy;
+  selfCopy = self;
+  v7 = sectionCopy;
   dispatch_async(queue, v8);
 }
 
@@ -5404,23 +5404,23 @@ uint64_t __34__BBServer_observer_clearSection___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)observer:(id)a3 clearBulletinsFromDate:(id)a4 toDate:(id)a5 inSections:(id)a6
+- (void)observer:(id)observer clearBulletinsFromDate:(id)date toDate:(id)toDate inSections:(id)sections
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  dateCopy = date;
+  toDateCopy = toDate;
+  sectionsCopy = sections;
   queue = self->_queue;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __62__BBServer_observer_clearBulletinsFromDate_toDate_inSections___block_invoke;
   v16[3] = &unk_278D2AE40;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v20 = self;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v17 = dateCopy;
+  v18 = toDateCopy;
+  v19 = sectionsCopy;
+  selfCopy = self;
+  v13 = sectionsCopy;
+  v14 = toDateCopy;
+  v15 = dateCopy;
   dispatch_async(queue, v16);
 }
 
@@ -5481,20 +5481,20 @@ void __62__BBServer_observer_clearBulletinsFromDate_toDate_inSections___block_in
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observer:(id)a3 clearBulletinIDs:(id)a4 inSection:(id)a5
+- (void)observer:(id)observer clearBulletinIDs:(id)ds inSection:(id)section
 {
-  v7 = a4;
-  v8 = a5;
+  dsCopy = ds;
+  sectionCopy = section;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__BBServer_observer_clearBulletinIDs_inSection___block_invoke;
   block[3] = &unk_278D2AB58;
-  v13 = v8;
-  v14 = v7;
-  v15 = self;
-  v10 = v7;
-  v11 = v8;
+  v13 = sectionCopy;
+  v14 = dsCopy;
+  selfCopy = self;
+  v10 = dsCopy;
+  v11 = sectionCopy;
   dispatch_async(queue, block);
 }
 
@@ -5518,32 +5518,32 @@ uint64_t __48__BBServer_observer_clearBulletinIDs_inSection___block_invoke(uint6
   return result;
 }
 
-- (void)observer:(id)a3 removeBulletins:(id)a4 inSection:(id)a5 fromFeeds:(unint64_t)a6
+- (void)observer:(id)observer removeBulletins:(id)bulletins inSection:(id)section fromFeeds:(unint64_t)feeds
 {
-  v8 = a4;
+  bulletinsCopy = bulletins;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__BBServer_observer_removeBulletins_inSection_fromFeeds___block_invoke;
   block[3] = &unk_278D2A9F0;
   block[4] = self;
-  v12 = v8;
-  v13 = a6;
-  v10 = v8;
+  v12 = bulletinsCopy;
+  feedsCopy = feeds;
+  v10 = bulletinsCopy;
   dispatch_async(queue, block);
 }
 
-- (void)observer:(id)a3 getSectionInfoWithHandler:(id)a4
+- (void)observer:(id)observer getSectionInfoWithHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__BBServer_observer_getSectionInfoWithHandler___block_invoke;
   v8[3] = &unk_278D2A900;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, v8);
 }
 
@@ -5557,17 +5557,17 @@ void __47__BBServer_observer_getSectionInfoWithHandler___block_invoke(uint64_t a
   }
 }
 
-- (void)observer:(id)a3 getSectionInfoForActiveSectionsWithHandler:(id)a4
+- (void)observer:(id)observer getSectionInfoForActiveSectionsWithHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__BBServer_observer_getSectionInfoForActiveSectionsWithHandler___block_invoke;
   v8[3] = &unk_278D2A900;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, v8);
 }
 
@@ -5581,20 +5581,20 @@ void __64__BBServer_observer_getSectionInfoForActiveSectionsWithHandler___block_
   }
 }
 
-- (void)observer:(id)a3 getSectionInfoForSectionIDs:(id)a4 withHandler:(id)a5
+- (void)observer:(id)observer getSectionInfoForSectionIDs:(id)ds withHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  dsCopy = ds;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__BBServer_observer_getSectionInfoForSectionIDs_withHandler___block_invoke;
   block[3] = &unk_278D2ACD8;
-  v13 = v7;
-  v14 = v8;
+  v13 = dsCopy;
+  v14 = handlerCopy;
   block[4] = self;
-  v10 = v7;
-  v11 = v8;
+  v10 = dsCopy;
+  v11 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -5608,34 +5608,34 @@ void __61__BBServer_observer_getSectionInfoForSectionIDs_withHandler___block_inv
   }
 }
 
-- (void)observer:(id)a3 requestNoticesBulletinsForSectionID:(id)a4
+- (void)observer:(id)observer requestNoticesBulletinsForSectionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__BBServer_observer_requestNoticesBulletinsForSectionID___block_invoke;
   block[3] = &unk_278D2AB58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observerCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = observerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)requestNoticesBulletinsForAllSections:(id)a3
+- (void)requestNoticesBulletinsForAllSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__BBServer_requestNoticesBulletinsForAllSections___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sectionsCopy;
+  v6 = sectionsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -5661,13 +5661,13 @@ void __50__BBServer_requestNoticesBulletinsForAllSections___block_invoke_2(uint6
   [v2 _sendObserver:v3 noticesBulletinsForSectionID:v4];
 }
 
-- (void)_sendObserver:(id)a3 noticesBulletinsForSectionID:(id)a4
+- (void)_sendObserver:(id)observer noticesBulletinsForSectionID:(id)d
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4)
+  observerCopy = observer;
+  if (d)
   {
-    v7 = [(BBServer *)self noticesBulletinIDsForSectionID:a4];
+    v7 = [(BBServer *)self noticesBulletinIDsForSectionID:d];
     v8 = [MEMORY[0x277CBEB58] set];
     v28 = 0u;
     v29 = 0u;
@@ -5691,7 +5691,7 @@ void __50__BBServer_requestNoticesBulletinsForAllSections___block_invoke_2(uint6
           v13 = *(*(&v28 + 1) + 8 * i);
           v14 = [(NSMutableDictionary *)self->_bulletinsByID objectForKey:v13];
           v15 = [BBBulletinAddUpdate updateWithBulletin:v14 feeds:1 shouldPlayLightsAndSirens:1];
-          v16 = +[BBBulletinUpdateTransaction transactionWithBulletinUpdate:transactionID:](BBBulletinUpdateTransaction, "transactionWithBulletinUpdate:transactionID:", v15, [v6 incrementedTransactionIDForBulletinID:v13]);
+          v16 = +[BBBulletinUpdateTransaction transactionWithBulletinUpdate:transactionID:](BBBulletinUpdateTransaction, "transactionWithBulletinUpdate:transactionID:", v15, [observerCopy incrementedTransactionIDForBulletinID:v13]);
           [v8 addObject:v16];
         }
 
@@ -5720,7 +5720,7 @@ void __50__BBServer_requestNoticesBulletinsForAllSections___block_invoke_2(uint6
             objc_enumerationMutation(v17);
           }
 
-          [v6 updateBulletin:*(*(&v24 + 1) + 8 * j) withHandler:0];
+          [observerCopy updateBulletin:*(*(&v24 + 1) + 8 * j) withHandler:0];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -5733,9 +5733,9 @@ void __50__BBServer_requestNoticesBulletinsForAllSections___block_invoke_2(uint6
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getEffectiveSectionInfoWithHandler:(id)a3
+- (void)getEffectiveSectionInfoWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -5757,9 +5757,9 @@ void __50__BBServer_requestNoticesBulletinsForAllSections___block_invoke_2(uint6
   v7[4] = self;
   v7[5] = &v9;
   dispatch_sync(queue, v7);
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, v10[5], 0);
+    handlerCopy[2](handlerCopy, v10[5], 0);
   }
 
   _Block_object_dispose(&v9, 8);
@@ -5786,9 +5786,9 @@ void __47__BBServer_getEffectiveSectionInfoWithHandler___block_invoke(uint64_t a
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getSectionInfoWithHandler:(id)a3
+- (void)getSectionInfoWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -5810,9 +5810,9 @@ void __47__BBServer_getEffectiveSectionInfoWithHandler___block_invoke(uint64_t a
   v7[4] = self;
   v7[5] = &v9;
   dispatch_sync(queue, v7);
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, v10[5], 0);
+    handlerCopy[2](handlerCopy, v10[5], 0);
   }
 
   _Block_object_dispose(&v9, 8);
@@ -5839,9 +5839,9 @@ void __38__BBServer_getSectionInfoWithHandler___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getSectionInfoForActiveSectionsWithHandler:(id)a3
+- (void)getSectionInfoForActiveSectionsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -5856,9 +5856,9 @@ void __38__BBServer_getSectionInfoWithHandler___block_invoke(uint64_t a1)
   v6[4] = self;
   v6[5] = &v7;
   dispatch_sync(queue, v6);
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, v8[5], 0);
+    handlerCopy[2](handlerCopy, v8[5], 0);
   }
 
   _Block_object_dispose(&v7, 8);
@@ -5874,10 +5874,10 @@ uint64_t __55__BBServer_getSectionInfoForActiveSectionsWithHandler___block_invok
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)getActiveSectionIDsWithHandler:(id)a3
+- (void)getActiveSectionIDsWithHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = BBLogConnection;
   if (os_log_type_enabled(BBLogConnection, OS_LOG_TYPE_DEFAULT))
   {
@@ -5899,7 +5899,7 @@ uint64_t __55__BBServer_getSectionInfoForActiveSectionsWithHandler___block_invok
   v10[4] = self;
   v10[5] = buf;
   dispatch_sync(queue, v10);
-  if (v4)
+  if (handlerCopy)
   {
     v7 = BBLogGeneral;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -5910,7 +5910,7 @@ uint64_t __55__BBServer_getSectionInfoForActiveSectionsWithHandler___block_invok
       _os_log_impl(&dword_241EFF000, v7, OS_LOG_TYPE_DEFAULT, "BBServer: XPC request handler for activeSectionIDs count: %lu", v17, 0xCu);
     }
 
-    (*(v4 + 2))(v4, *(v12 + 5), 0);
+    (*(handlerCopy + 2))(handlerCopy, *(v12 + 5), 0);
   }
 
   _Block_object_dispose(buf, 8);
@@ -5918,10 +5918,10 @@ uint64_t __55__BBServer_getSectionInfoForActiveSectionsWithHandler___block_invok
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getSectionInfoForSectionID:(id)a3 withHandler:(id)a4
+- (void)getSectionInfoForSectionID:(id)d withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -5935,12 +5935,12 @@ uint64_t __55__BBServer_getSectionInfoForActiveSectionsWithHandler___block_invok
   block[3] = &unk_278D2A8D8;
   v12 = &v13;
   block[4] = self;
-  v9 = v6;
+  v9 = dCopy;
   v11 = v9;
   dispatch_sync(queue, block);
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v14[5]);
+    handlerCopy[2](handlerCopy, v14[5]);
   }
 
   _Block_object_dispose(&v13, 8);
@@ -5956,10 +5956,10 @@ uint64_t __51__BBServer_getSectionInfoForSectionID_withHandler___block_invoke(ui
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)getEffectiveSectionInfoForSectionID:(id)a3 withHandler:(id)a4
+- (void)getEffectiveSectionInfoForSectionID:(id)d withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -5973,12 +5973,12 @@ uint64_t __51__BBServer_getSectionInfoForSectionID_withHandler___block_invoke(ui
   block[3] = &unk_278D2A8D8;
   v12 = &v13;
   block[4] = self;
-  v9 = v6;
+  v9 = dCopy;
   v11 = v9;
   dispatch_sync(queue, block);
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v14[5]);
+    handlerCopy[2](handlerCopy, v14[5]);
   }
 
   _Block_object_dispose(&v13, 8);
@@ -5994,10 +5994,10 @@ uint64_t __60__BBServer_getEffectiveSectionInfoForSectionID_withHandler___block_
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)getSectionInfoForSectionIDs:(id)a3 withHandler:(id)a4
+- (void)getSectionInfoForSectionIDs:(id)ds withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -6011,12 +6011,12 @@ uint64_t __60__BBServer_getEffectiveSectionInfoForSectionID_withHandler___block_
   block[3] = &unk_278D2A8D8;
   v12 = &v13;
   block[4] = self;
-  v9 = v6;
+  v9 = dsCopy;
   v11 = v9;
   dispatch_sync(queue, block);
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v14[5]);
+    handlerCopy[2](handlerCopy, v14[5]);
   }
 
   _Block_object_dispose(&v13, 8);
@@ -6032,10 +6032,10 @@ uint64_t __52__BBServer_getSectionInfoForSectionIDs_withHandler___block_invoke(u
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)getEffectiveSectionInfoForSectionIDs:(id)a3 withHandler:(id)a4
+- (void)getEffectiveSectionInfoForSectionIDs:(id)ds withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -6047,11 +6047,11 @@ uint64_t __52__BBServer_getSectionInfoForSectionIDs_withHandler___block_invoke(u
   v11[1] = 3221225472;
   v11[2] = __61__BBServer_getEffectiveSectionInfoForSectionIDs_withHandler___block_invoke;
   v11[3] = &unk_278D2AE90;
-  v9 = v7;
+  v9 = handlerCopy;
   v13 = v9;
   v14 = &v15;
   v11[4] = self;
-  v10 = v6;
+  v10 = dsCopy;
   v12 = v10;
   dispatch_sync(queue, v11);
   if (v9)
@@ -6078,9 +6078,9 @@ uint64_t __61__BBServer_getEffectiveSectionInfoForSectionIDs_withHandler___block
   return result;
 }
 
-- (void)getSectionIDsWithHandler:(id)a3
+- (void)getSectionIDsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -6102,9 +6102,9 @@ uint64_t __61__BBServer_getEffectiveSectionInfoForSectionIDs_withHandler___block
   v7[4] = self;
   v7[5] = &v9;
   dispatch_sync(queue, v7);
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, v10[5], 0);
+    handlerCopy[2](handlerCopy, v10[5], 0);
   }
 
   _Block_object_dispose(&v9, 8);
@@ -6157,8 +6157,8 @@ void __37__BBServer_getSectionIDsWithHandler___block_invoke(uint64_t a1)
         v8 = *(*(&v13 + 1) + 8 * v7);
         v9 = objc_autoreleasePoolPush();
         [(BBServer *)self _sendUpdateSectionInfo:v8];
-        v10 = [v8 sectionID];
-        v11 = [(BBServer *)self dataProviderForSectionID:v10];
+        sectionID = [v8 sectionID];
+        v11 = [(BBServer *)self dataProviderForSectionID:sectionID];
         [(BBServer *)self _updateAllBulletinsForDataProviderIfSectionIsEnabled:v11];
 
         objc_autoreleasePoolPop(v9);
@@ -6180,13 +6180,13 @@ void __37__BBServer_getSectionIDsWithHandler___block_invoke(uint64_t a1)
   v22 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   v16 = [BBGlobalSettings alloc];
-  v3 = [(BBServer *)self _effectiveGlobalContentPreviewsSetting];
-  v4 = [(BBServer *)self _effectiveGlobalAnnounceSetting];
-  v5 = [(BBServer *)self _effectiveGlobalAnnounceHeadphonesSetting];
-  v6 = [(BBServer *)self _effectiveGlobalAnnounceCarPlaySetting];
-  v7 = [(BBServer *)self _effectiveGlobalScheduledDeliverySetting];
-  v8 = [(BBServer *)self _effectiveGlobalScheduledDeliveryTimes];
-  v9 = [(BBGlobalSettings *)v16 initWithContentPreviewSetting:v3 announceSetting:v4 announceHeadphonesSetting:v5 announceCarPlaySetting:v6 scheduledDeliverySetting:v7 scheduledDeliveryTimes:v8 scheduledDeliveryShowNextSummarySetting:[(BBServer *)self _effectiveGlobalScheduledDeliveryShowNextSummarySetting] notificationListDisplayStyleSetting:[(BBServer *)self _effectiveGlobalNotificationListDisplayStyleSetting] summarizationSetting:[(BBServer *)self _effectiveGlobalSummarizationSetting] highlightsSettings:[(BBServer *)self _effectiveGlobalHighlightsSetting]];
+  _effectiveGlobalContentPreviewsSetting = [(BBServer *)self _effectiveGlobalContentPreviewsSetting];
+  _effectiveGlobalAnnounceSetting = [(BBServer *)self _effectiveGlobalAnnounceSetting];
+  _effectiveGlobalAnnounceHeadphonesSetting = [(BBServer *)self _effectiveGlobalAnnounceHeadphonesSetting];
+  _effectiveGlobalAnnounceCarPlaySetting = [(BBServer *)self _effectiveGlobalAnnounceCarPlaySetting];
+  _effectiveGlobalScheduledDeliverySetting = [(BBServer *)self _effectiveGlobalScheduledDeliverySetting];
+  _effectiveGlobalScheduledDeliveryTimes = [(BBServer *)self _effectiveGlobalScheduledDeliveryTimes];
+  v9 = [(BBGlobalSettings *)v16 initWithContentPreviewSetting:_effectiveGlobalContentPreviewsSetting announceSetting:_effectiveGlobalAnnounceSetting announceHeadphonesSetting:_effectiveGlobalAnnounceHeadphonesSetting announceCarPlaySetting:_effectiveGlobalAnnounceCarPlaySetting scheduledDeliverySetting:_effectiveGlobalScheduledDeliverySetting scheduledDeliveryTimes:_effectiveGlobalScheduledDeliveryTimes scheduledDeliveryShowNextSummarySetting:[(BBServer *)self _effectiveGlobalScheduledDeliveryShowNextSummarySetting] notificationListDisplayStyleSetting:[(BBServer *)self _effectiveGlobalNotificationListDisplayStyleSetting] summarizationSetting:[(BBServer *)self _effectiveGlobalSummarizationSetting] highlightsSettings:[(BBServer *)self _effectiveGlobalHighlightsSetting]];
 
   v10 = [(BBMaskedSet *)self->_observerFeedSet objectAtIndex:9];
   v17 = 0u;
@@ -6232,22 +6232,22 @@ void __37__BBServer_getSectionIDsWithHandler___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setGlobalSummarizationSetting:(int64_t)a3
+- (void)_setGlobalSummarizationSetting:(int64_t)setting
 {
   dispatch_assert_queue_V2(self->_queue);
   v5 = +[BBBulletinBoardDefaults standardDefaults];
-  [v5 setGlobalSummarizationSetting:a3];
+  [v5 setGlobalSummarizationSetting:setting];
 
   [(BBServer *)self _updateGlobalSettings];
 
   [(BBServer *)self _updateAllSectionInfos];
 }
 
-- (void)_setGlobalHighlightsSetting:(int64_t)a3
+- (void)_setGlobalHighlightsSetting:(int64_t)setting
 {
   dispatch_assert_queue_V2(self->_queue);
   v5 = +[BBBulletinBoardDefaults standardDefaults];
-  [v5 setGlobalHighlightsSetting:a3];
+  [v5 setGlobalHighlightsSetting:setting];
 
   [(BBServer *)self _updateGlobalSettings];
 }
@@ -6278,24 +6278,24 @@ void __37__BBServer_getSectionIDsWithHandler___block_invoke(uint64_t a1)
   return 0;
 }
 
-- (void)_setGlobalContentPreviewsSetting:(int64_t)a3
+- (void)_setGlobalContentPreviewsSetting:(int64_t)setting
 {
   dispatch_assert_queue_V2(self->_queue);
   v4 = +[BBBulletinBoardDefaults standardDefaults];
-  [v4 setGlobalContentPreviewSetting:a3];
+  [v4 setGlobalContentPreviewSetting:setting];
 }
 
-- (void)getEffectiveGlobalContentPreviewsSettingWithHandler:(id)a3
+- (void)getEffectiveGlobalContentPreviewsSettingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__BBServer_getEffectiveGlobalContentPreviewsSettingWithHandler___block_invoke;
   v7[3] = &unk_278D2A900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -6313,18 +6313,18 @@ uint64_t __64__BBServer_getEffectiveGlobalContentPreviewsSettingWithHandler___bl
   return result;
 }
 
-- (void)setEffectiveGlobalContentPreviewsSetting:(int64_t)a3 withHandler:(id)a4
+- (void)setEffectiveGlobalContentPreviewsSetting:(int64_t)setting withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__BBServer_setEffectiveGlobalContentPreviewsSetting_withHandler___block_invoke;
   block[3] = &unk_278D2AEB8;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  settingCopy = setting;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -6366,16 +6366,16 @@ uint64_t __65__BBServer_setEffectiveGlobalContentPreviewsSetting_withHandler___b
   return result;
 }
 
-- (void)eligibleAnnouncementRequestTypesChanged:(unint64_t)a3 onPlatform:(int64_t)a4
+- (void)eligibleAnnouncementRequestTypesChanged:(unint64_t)changed onPlatform:(int64_t)platform
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__BBServer_eligibleAnnouncementRequestTypesChanged_onPlatform___block_invoke;
   block[3] = &unk_278D2AEE0;
-  v6 = a3 & 1;
+  v6 = changed & 1;
   block[4] = self;
-  block[5] = a4;
+  block[5] = platform;
   dispatch_async(queue, block);
 }
 
@@ -6416,7 +6416,7 @@ uint64_t __63__BBServer_eligibleAnnouncementRequestTypesChanged_onPlatform___blo
   return result;
 }
 
-- (void)_siriPreferencesDidChange:(id)a3
+- (void)_siriPreferencesDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -6431,18 +6431,18 @@ uint64_t __63__BBServer_eligibleAnnouncementRequestTypesChanged_onPlatform___blo
 {
   v31 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  v4 = [v3 assistantIsEnabled];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  assistantIsEnabled = [mEMORY[0x277CEF368] assistantIsEnabled];
 
   siriEnabled = self->_siriEnabled;
-  v6 = siriEnabled != v4;
-  if (siriEnabled != v4)
+  v6 = siriEnabled != assistantIsEnabled;
+  if (siriEnabled != assistantIsEnabled)
   {
-    self->_siriEnabled = v4;
+    self->_siriEnabled = assistantIsEnabled;
   }
 
-  v7 = [MEMORY[0x277CEF368] sharedPreferences];
-  v8 = [v7 disableAssistantWhilePasscodeLocked] ^ 1;
+  mEMORY[0x277CEF368]2 = [MEMORY[0x277CEF368] sharedPreferences];
+  v8 = [mEMORY[0x277CEF368]2 disableAssistantWhilePasscodeLocked] ^ 1;
 
   if (self->_siriAllowedWhenLocked != v8)
   {
@@ -6450,28 +6450,28 @@ uint64_t __63__BBServer_eligibleAnnouncementRequestTypesChanged_onPlatform___blo
     v6 = 1;
   }
 
-  v9 = [MEMORY[0x277CEF368] sharedPreferences];
-  v10 = [v9 announceNotificationsOnHearingAidsEnabled];
+  mEMORY[0x277CEF368]3 = [MEMORY[0x277CEF368] sharedPreferences];
+  announceNotificationsOnHearingAidsEnabled = [mEMORY[0x277CEF368]3 announceNotificationsOnHearingAidsEnabled];
 
-  if (self->_announceOnHearingAidsEnabled != v10)
+  if (self->_announceOnHearingAidsEnabled != announceNotificationsOnHearingAidsEnabled)
   {
-    self->_announceOnHearingAidsEnabled = v10;
+    self->_announceOnHearingAidsEnabled = announceNotificationsOnHearingAidsEnabled;
     v6 = 1;
   }
 
-  v11 = [MEMORY[0x277CEF368] sharedPreferences];
-  v12 = [v11 announceNotificationsOnHearingAidsSupported];
+  mEMORY[0x277CEF368]4 = [MEMORY[0x277CEF368] sharedPreferences];
+  announceNotificationsOnHearingAidsSupported = [mEMORY[0x277CEF368]4 announceNotificationsOnHearingAidsSupported];
 
-  if (self->_announceOnHearingAidsSupported != v12)
+  if (self->_announceOnHearingAidsSupported != announceNotificationsOnHearingAidsSupported)
   {
-    self->_announceOnHearingAidsSupported = v12;
+    self->_announceOnHearingAidsSupported = announceNotificationsOnHearingAidsSupported;
     v6 = 1;
   }
 
-  v13 = [MEMORY[0x277CEF368] sharedPreferences];
-  v14 = [v13 announceNotificationsOnBuiltInSpeakerEnabled];
+  mEMORY[0x277CEF368]5 = [MEMORY[0x277CEF368] sharedPreferences];
+  announceNotificationsOnBuiltInSpeakerEnabled = [mEMORY[0x277CEF368]5 announceNotificationsOnBuiltInSpeakerEnabled];
 
-  if (self->_announceOnBuiltInSpeakerEnabled == v14)
+  if (self->_announceOnBuiltInSpeakerEnabled == announceNotificationsOnBuiltInSpeakerEnabled)
   {
     if (!v6)
     {
@@ -6481,7 +6481,7 @@ uint64_t __63__BBServer_eligibleAnnouncementRequestTypesChanged_onPlatform___blo
 
   else
   {
-    self->_announceOnBuiltInSpeakerEnabled = v14;
+    self->_announceOnBuiltInSpeakerEnabled = announceNotificationsOnBuiltInSpeakerEnabled;
   }
 
   v15 = BBLogSettings;
@@ -6510,7 +6510,7 @@ LABEL_16:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_pairedVehiclesForCarPlayDidChange:(id)a3
+- (void)_pairedVehiclesForCarPlayDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -6625,7 +6625,7 @@ void __39__BBServer__fetchAllVehiclesForCarPlay__block_invoke(uint64_t a1, void 
 
   v6 = v5;
   _Block_object_dispose(&v25, 8);
-  v7 = [v5 type];
+  type = [v5 type];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2050000000;
@@ -6644,8 +6644,8 @@ void __39__BBServer__fetchAllVehiclesForCarPlay__block_invoke(uint64_t a1, void 
 
   v9 = v8;
   _Block_object_dispose(&v25, 8);
-  v10 = [v8 identifierWithString:@"com.apple.siri.spoken-notifications.enabled" type:v7];
-  v11 = [MEMORY[0x277CBEAA8] date];
+  v10 = [v8 identifierWithString:@"com.apple.siri.spoken-notifications.enabled" type:type];
+  date = [MEMORY[0x277CBEAA8] date];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2050000000;
@@ -6664,7 +6664,7 @@ void __39__BBServer__fetchAllVehiclesForCarPlay__block_invoke(uint64_t a1, void 
 
   v13 = v12;
   _Block_object_dispose(&v25, 8);
-  v14 = [v12 eventWithStream:v4 startDate:v11 endDate:v11 value:v10 confidence:0 metadata:1.0];
+  v14 = [v12 eventWithStream:v4 startDate:date endDate:date value:v10 confidence:0 metadata:1.0];
   if (v14)
   {
     v25 = 0;
@@ -6685,10 +6685,10 @@ void __39__BBServer__fetchAllVehiclesForCarPlay__block_invoke(uint64_t a1, void 
 
     v16 = v15;
     _Block_object_dispose(&v25, 8);
-    v17 = [v15 knowledgeStore];
+    knowledgeStore = [v15 knowledgeStore];
     v29[0] = v14;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
-    [v17 saveObjects:v18 responseQueue:0 withCompletion:&__block_literal_global_253];
+    [knowledgeStore saveObjects:v18 responseQueue:0 withCompletion:&__block_literal_global_253];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -6759,21 +6759,21 @@ void __50__BBServer__saveGlobalAnnounceSettingEnabledEvent__block_invoke(uint64_
   [(BBServer *)self _updateAnnounceControlCenterModuleAvailability];
 }
 
-- (void)_setGlobalAnnounceSetting:(int64_t)a3
+- (void)_setGlobalAnnounceSetting:(int64_t)setting
 {
   dispatch_assert_queue_V2(self->_queue);
   v5 = +[BBBulletinBoardDefaults standardDefaults];
-  v6 = [v5 globalAnnounceSetting];
+  globalAnnounceSetting = [v5 globalAnnounceSetting];
 
-  if (a3 != -1 && v6 != a3)
+  if (setting != -1 && globalAnnounceSetting != setting)
   {
     v7 = +[BBBulletinBoardDefaults standardDefaults];
-    [v7 setGlobalAnnounceSetting:a3];
+    [v7 setGlobalAnnounceSetting:setting];
 
     [(BBServer *)self _updateGlobalSettings];
     [(BBServer *)self _updateAllSectionInfos];
     [(BBServer *)self _updateAnnounceControlCenterModuleAvailability];
-    if (a3 == 2)
+    if (setting == 2)
     {
 
       [(BBServer *)self _saveGlobalAnnounceSettingEnabledEvent];
@@ -6781,17 +6781,17 @@ void __50__BBServer__saveGlobalAnnounceSettingEnabledEvent__block_invoke(uint64_
   }
 }
 
-- (void)getEffectiveGlobalAnnounceSettingWithHandler:(id)a3
+- (void)getEffectiveGlobalAnnounceSettingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__BBServer_getEffectiveGlobalAnnounceSettingWithHandler___block_invoke;
   v7[3] = &unk_278D2A900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -6819,18 +6819,18 @@ uint64_t __57__BBServer_getEffectiveGlobalAnnounceSettingWithHandler___block_inv
   return result;
 }
 
-- (void)setEffectiveGlobalAnnounceSetting:(int64_t)a3 withHandler:(id)a4
+- (void)setEffectiveGlobalAnnounceSetting:(int64_t)setting withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__BBServer_setEffectiveGlobalAnnounceSetting_withHandler___block_invoke;
   block[3] = &unk_278D2AEB8;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  settingCopy = setting;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -6863,27 +6863,27 @@ uint64_t __58__BBServer_setEffectiveGlobalAnnounceSetting_withHandler___block_in
 {
   dispatch_assert_queue_V2(self->_queue);
   v3 = +[BBBulletinBoardDefaults standardDefaults];
-  v4 = [v3 globalAnnounceHeadphonesSetting];
+  globalAnnounceHeadphonesSetting = [v3 globalAnnounceHeadphonesSetting];
 
-  if (v4 == -1)
+  if (globalAnnounceHeadphonesSetting == -1)
   {
     [(BBServer *)self _setGlobalAnnounceHeadphonesSetting:0];
     return 0;
   }
 
-  return v4;
+  return globalAnnounceHeadphonesSetting;
 }
 
-- (void)_setGlobalAnnounceHeadphonesSetting:(int64_t)a3
+- (void)_setGlobalAnnounceHeadphonesSetting:(int64_t)setting
 {
   dispatch_assert_queue_V2(self->_queue);
   v5 = +[BBBulletinBoardDefaults standardDefaults];
-  v6 = [v5 globalAnnounceHeadphonesSetting];
+  globalAnnounceHeadphonesSetting = [v5 globalAnnounceHeadphonesSetting];
 
-  if (a3 != -1 && v6 != a3)
+  if (setting != -1 && globalAnnounceHeadphonesSetting != setting)
   {
     v7 = +[BBBulletinBoardDefaults standardDefaults];
-    [v7 setGlobalAnnounceHeadphonesSetting:a3];
+    [v7 setGlobalAnnounceHeadphonesSetting:setting];
 
     [(BBServer *)self _updateGlobalSettings];
   }
@@ -6921,17 +6921,17 @@ uint64_t __58__BBServer_setEffectiveGlobalAnnounceSetting_withHandler___block_in
   return 1;
 }
 
-- (void)getEffectiveGlobalAnnounceHeadphonesSettingWithHandler:(id)a3
+- (void)getEffectiveGlobalAnnounceHeadphonesSettingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__BBServer_getEffectiveGlobalAnnounceHeadphonesSettingWithHandler___block_invoke;
   v7[3] = &unk_278D2A900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -6959,18 +6959,18 @@ uint64_t __67__BBServer_getEffectiveGlobalAnnounceHeadphonesSettingWithHandler__
   return result;
 }
 
-- (void)setEffectiveGlobalAnnounceHeadphonesSetting:(int64_t)a3 withHandler:(id)a4
+- (void)setEffectiveGlobalAnnounceHeadphonesSetting:(int64_t)setting withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__BBServer_setEffectiveGlobalAnnounceHeadphonesSetting_withHandler___block_invoke;
   block[3] = &unk_278D2AEB8;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  settingCopy = setting;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -6999,32 +6999,32 @@ uint64_t __68__BBServer_setEffectiveGlobalAnnounceHeadphonesSetting_withHandler_
   return result;
 }
 
-- (void)_setGlobalAnnounceCarPlaySetting:(int64_t)a3
+- (void)_setGlobalAnnounceCarPlaySetting:(int64_t)setting
 {
   dispatch_assert_queue_V2(self->_queue);
   v5 = +[BBBulletinBoardDefaults standardDefaults];
-  v6 = [v5 globalAnnounceCarPlaySetting];
+  globalAnnounceCarPlaySetting = [v5 globalAnnounceCarPlaySetting];
 
-  if (a3 != -1 && v6 != a3)
+  if (setting != -1 && globalAnnounceCarPlaySetting != setting)
   {
     v7 = +[BBBulletinBoardDefaults standardDefaults];
-    [v7 setGlobalAnnounceCarPlaySetting:a3];
+    [v7 setGlobalAnnounceCarPlaySetting:setting];
 
     [(BBServer *)self _updateGlobalSettings];
   }
 }
 
-- (void)getEffectiveGlobalAnnounceCarPlaySettingWithHandler:(id)a3
+- (void)getEffectiveGlobalAnnounceCarPlaySettingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__BBServer_getEffectiveGlobalAnnounceCarPlaySettingWithHandler___block_invoke;
   v7[3] = &unk_278D2A900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -7052,18 +7052,18 @@ uint64_t __64__BBServer_getEffectiveGlobalAnnounceCarPlaySettingWithHandler___bl
   return result;
 }
 
-- (void)setEffectiveGlobalAnnounceCarPlaySetting:(int64_t)a3 withHandler:(id)a4
+- (void)setEffectiveGlobalAnnounceCarPlaySetting:(int64_t)setting withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__BBServer_setEffectiveGlobalAnnounceCarPlaySetting_withHandler___block_invoke;
   block[3] = &unk_278D2AEB8;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  settingCopy = setting;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -7092,29 +7092,29 @@ uint64_t __65__BBServer_setEffectiveGlobalAnnounceCarPlaySetting_withHandler___b
   return result;
 }
 
-- (void)_setGlobalScheduledDeliverySetting:(int64_t)a3
+- (void)_setGlobalScheduledDeliverySetting:(int64_t)setting
 {
   dispatch_assert_queue_V2(self->_queue);
-  if ([(BBServer *)self _globalScheduledDeliverySetting]!= a3)
+  if ([(BBServer *)self _globalScheduledDeliverySetting]!= setting)
   {
     v5 = +[BBBulletinBoardDefaults standardDefaults];
-    [v5 setGlobalScheduledDeliverySetting:a3];
+    [v5 setGlobalScheduledDeliverySetting:setting];
 
     [(BBServer *)self _updateGlobalSettings];
   }
 }
 
-- (void)getEffectiveGlobalScheduledDeliverySettingWithHandler:(id)a3
+- (void)getEffectiveGlobalScheduledDeliverySettingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__BBServer_getEffectiveGlobalScheduledDeliverySettingWithHandler___block_invoke;
   v7[3] = &unk_278D2A900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -7142,18 +7142,18 @@ uint64_t __66__BBServer_getEffectiveGlobalScheduledDeliverySettingWithHandler___
   return result;
 }
 
-- (void)setEffectiveGlobalScheduledDeliverySetting:(int64_t)a3 withHandler:(id)a4
+- (void)setEffectiveGlobalScheduledDeliverySetting:(int64_t)setting withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__BBServer_setEffectiveGlobalScheduledDeliverySetting_withHandler___block_invoke;
   block[3] = &unk_278D2AEB8;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  settingCopy = setting;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -7182,11 +7182,11 @@ uint64_t __67__BBServer_setEffectiveGlobalScheduledDeliverySetting_withHandler__
   return result;
 }
 
-- (id)_scheduledDeliveryTimesForEncodedDeliveryTimes:(id)a3
+- (id)_scheduledDeliveryTimesForEncodedDeliveryTimes:(id)times
 {
-  v3 = a3;
+  timesCopy = times;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [v3 count];
+  v5 = [timesCopy count];
   if (v5)
   {
     v6 = v5;
@@ -7198,10 +7198,10 @@ uint64_t __67__BBServer_setEffectiveGlobalScheduledDeliverySetting_withHandler__
       }
 
       v8 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-      v9 = [v3 objectAtIndex:i];
+      v9 = [timesCopy objectAtIndex:i];
       [v8 setHour:{objc_msgSend(v9, "integerValue")}];
 
-      v10 = [v3 objectAtIndex:i + 1];
+      v10 = [timesCopy objectAtIndex:i + 1];
       [v8 setMinute:{objc_msgSend(v10, "integerValue")}];
 
       [v4 addObject:v8];
@@ -7211,16 +7211,16 @@ uint64_t __67__BBServer_setEffectiveGlobalScheduledDeliverySetting_withHandler__
   return v4;
 }
 
-- (id)_encodedScheduledDeliveryTimesForDeliveryTimes:(id)a3
+- (id)_encodedScheduledDeliveryTimesForDeliveryTimes:(id)times
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  timesCopy = times;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = timesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -7254,35 +7254,35 @@ uint64_t __67__BBServer_setEffectiveGlobalScheduledDeliverySetting_withHandler__
   return v4;
 }
 
-- (void)_setGlobalScheduledDeliveryTimes:(id)a3
+- (void)_setGlobalScheduledDeliveryTimes:(id)times
 {
-  v8 = a3;
+  timesCopy = times;
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [(BBServer *)self _globalScheduledDeliveryTimes];
+  _globalScheduledDeliveryTimes = [(BBServer *)self _globalScheduledDeliveryTimes];
 
-  v5 = v8;
-  if (v4 != v8)
+  v5 = timesCopy;
+  if (_globalScheduledDeliveryTimes != timesCopy)
   {
-    v6 = [(BBServer *)self _encodedScheduledDeliveryTimesForDeliveryTimes:v8];
+    v6 = [(BBServer *)self _encodedScheduledDeliveryTimesForDeliveryTimes:timesCopy];
     v7 = +[BBBulletinBoardDefaults standardDefaults];
     [v7 setGlobalScheduledDeliveryTimes:v6];
 
     [(BBServer *)self _updateGlobalSettings];
-    v5 = v8;
+    v5 = timesCopy;
   }
 }
 
-- (void)getEffectiveGlobalScheduledDeliveryTimesWithHandler:(id)a3
+- (void)getEffectiveGlobalScheduledDeliveryTimesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__BBServer_getEffectiveGlobalScheduledDeliveryTimesWithHandler___block_invoke;
   v7[3] = &unk_278D2A900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -7306,20 +7306,20 @@ void __64__BBServer_getEffectiveGlobalScheduledDeliveryTimesWithHandler___block_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setEffectiveGlobalScheduledDeliveryTimes:(id)a3 withHandler:(id)a4
+- (void)setEffectiveGlobalScheduledDeliveryTimes:(id)times withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  timesCopy = times;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__BBServer_setEffectiveGlobalScheduledDeliveryTimes_withHandler___block_invoke;
   block[3] = &unk_278D2A9A0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = timesCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = timesCopy;
   dispatch_async(queue, block);
 }
 
@@ -7346,29 +7346,29 @@ uint64_t __65__BBServer_setEffectiveGlobalScheduledDeliveryTimes_withHandler___b
   return result;
 }
 
-- (void)_setGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)a3
+- (void)_setGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)setting
 {
   dispatch_assert_queue_V2(self->_queue);
-  if ([(BBServer *)self _globalScheduledDeliveryShowNextSummarySetting]!= a3)
+  if ([(BBServer *)self _globalScheduledDeliveryShowNextSummarySetting]!= setting)
   {
     v5 = +[BBBulletinBoardDefaults standardDefaults];
-    [v5 setGlobalScheduledDeliveryShowNextSummarySetting:a3];
+    [v5 setGlobalScheduledDeliveryShowNextSummarySetting:setting];
 
     [(BBServer *)self _updateGlobalSettings];
   }
 }
 
-- (void)getEffectiveGlobalScheduledDeliveryShowNextSummarySettingWithHandler:(id)a3
+- (void)getEffectiveGlobalScheduledDeliveryShowNextSummarySettingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__BBServer_getEffectiveGlobalScheduledDeliveryShowNextSummarySettingWithHandler___block_invoke;
   v7[3] = &unk_278D2A900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -7396,18 +7396,18 @@ uint64_t __81__BBServer_getEffectiveGlobalScheduledDeliveryShowNextSummarySettin
   return result;
 }
 
-- (void)setEffectiveGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)a3 withHandler:(id)a4
+- (void)setEffectiveGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)setting withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__BBServer_setEffectiveGlobalScheduledDeliveryShowNextSummarySetting_withHandler___block_invoke;
   block[3] = &unk_278D2AEB8;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  settingCopy = setting;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -7436,31 +7436,31 @@ uint64_t __82__BBServer_setEffectiveGlobalScheduledDeliveryShowNextSummarySettin
   return result;
 }
 
-- (void)_setGlobalNotificationListDisplayStyleSetting:(int64_t)a3
+- (void)_setGlobalNotificationListDisplayStyleSetting:(int64_t)setting
 {
   dispatch_assert_queue_V2(self->_queue);
-  if ([(BBServer *)self _globalNotificationListDisplayStyleSetting]!= a3)
+  if ([(BBServer *)self _globalNotificationListDisplayStyleSetting]!= setting)
   {
     v5 = +[BBBulletinBoardDefaults standardDefaults];
-    [v5 setGlobalNotificationListDisplayStyleSetting:a3];
+    [v5 setGlobalNotificationListDisplayStyleSetting:setting];
 
     [(BBServer *)self _updateGlobalSettings];
 
-    [(BBServer *)self _publishBiomeSignalEventForGlobalNotificationListDisplayStyleSettingChangeToSetting:a3];
+    [(BBServer *)self _publishBiomeSignalEventForGlobalNotificationListDisplayStyleSettingChangeToSetting:setting];
   }
 }
 
-- (void)getEffectiveGlobalNotificationListDisplayStyleSettingWithHandler:(id)a3
+- (void)getEffectiveGlobalNotificationListDisplayStyleSettingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__BBServer_getEffectiveGlobalNotificationListDisplayStyleSettingWithHandler___block_invoke;
   v7[3] = &unk_278D2A900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -7488,18 +7488,18 @@ uint64_t __77__BBServer_getEffectiveGlobalNotificationListDisplayStyleSettingWit
   return result;
 }
 
-- (void)setEffectiveGlobalNotificationListDisplayStyleSetting:(int64_t)a3 withHandler:(id)a4
+- (void)setEffectiveGlobalNotificationListDisplayStyleSetting:(int64_t)setting withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__BBServer_setEffectiveGlobalNotificationListDisplayStyleSetting_withHandler___block_invoke;
   block[3] = &unk_278D2AEB8;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  settingCopy = setting;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -7528,17 +7528,17 @@ uint64_t __78__BBServer_setEffectiveGlobalNotificationListDisplayStyleSetting_wi
   return result;
 }
 
-- (void)getEffectiveGlobalSummarizationSettingWithHandler:(id)a3
+- (void)getEffectiveGlobalSummarizationSettingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__BBServer_getEffectiveGlobalSummarizationSettingWithHandler___block_invoke;
   v7[3] = &unk_278D2A900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -7566,18 +7566,18 @@ uint64_t __62__BBServer_getEffectiveGlobalSummarizationSettingWithHandler___bloc
   return result;
 }
 
-- (void)setEffectiveGlobalSummarizationSetting:(int64_t)a3 withHandler:(id)a4
+- (void)setEffectiveGlobalSummarizationSetting:(int64_t)setting withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__BBServer_setEffectiveGlobalSummarizationSetting_withHandler___block_invoke;
   block[3] = &unk_278D2AEB8;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  settingCopy = setting;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -7606,17 +7606,17 @@ uint64_t __63__BBServer_setEffectiveGlobalSummarizationSetting_withHandler___blo
   return result;
 }
 
-- (void)getEffectiveGlobalHighlightsSettingWithHandler:(id)a3
+- (void)getEffectiveGlobalHighlightsSettingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__BBServer_getEffectiveGlobalHighlightsSettingWithHandler___block_invoke;
   v7[3] = &unk_278D2A900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -7644,18 +7644,18 @@ uint64_t __59__BBServer_getEffectiveGlobalHighlightsSettingWithHandler___block_i
   return result;
 }
 
-- (void)setEffectiveGlobalHighlightsSetting:(int64_t)a3 withHandler:(id)a4
+- (void)setEffectiveGlobalHighlightsSetting:(int64_t)setting withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__BBServer_setEffectiveGlobalHighlightsSetting_withHandler___block_invoke;
   block[3] = &unk_278D2AEB8;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  settingCopy = setting;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -7684,56 +7684,56 @@ uint64_t __60__BBServer_setEffectiveGlobalHighlightsSetting_withHandler___block_
   return result;
 }
 
-- (void)_publishBiomeSignalEventForGlobalNotificationListDisplayStyleSettingChangeToSetting:(int64_t)a3
+- (void)_publishBiomeSignalEventForGlobalNotificationListDisplayStyleSettingChangeToSetting:(int64_t)setting
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CF1B58] discoverabilitySignal];
-  v5 = [v4 source];
+  discoverabilitySignal = [MEMORY[0x277CF1B58] discoverabilitySignal];
+  source = [discoverabilitySignal source];
   v6 = objc_alloc(MEMORY[0x277CF1938]);
   v11 = @"notificationListDisplayStyleSetting";
-  v7 = BBStringFromBBNotificationListDisplayStyleSetting(a3);
+  v7 = BBStringFromBBNotificationListDisplayStyleSetting(setting);
   v12[0] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v9 = [v6 initWithIdentifier:@"com.apple.SpringBoard.notificationListDisplayStyleSetting.changed" bundleID:@"com.apple.SpringBoard" context:@"NotificationListDisplayStyleSetting" userInfo:v8];
 
-  [v5 sendEvent:v9];
+  [source sendEvent:v9];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)universalSectionIDForSectionID:(id)a3
+- (id)universalSectionIDForSectionID:(id)d
 {
   queue = self->_queue;
-  v5 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(queue);
-  v6 = [(BBDataProviderManager *)self->_dataProviderManager universalSectionIDForSectionID:v5];
+  v6 = [(BBDataProviderManager *)self->_dataProviderManager universalSectionIDForSectionID:dCopy];
 
   return v6;
 }
 
-- (id)sectionIDsForUniversalSectionID:(id)a3
+- (id)sectionIDsForUniversalSectionID:(id)d
 {
   queue = self->_queue;
-  v5 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(queue);
-  v6 = [(BBDataProviderManager *)self->_dataProviderManager localSectionIdentifiersFromDismissalSectionIdentifer:v5];
+  v6 = [(BBDataProviderManager *)self->_dataProviderManager localSectionIdentifiersFromDismissalSectionIdentifer:dCopy];
 
   return v6;
 }
 
-- (void)getUniversalSectionIDForSectionID:(id)a3 withHandler:(id)a4
+- (void)getUniversalSectionIDForSectionID:(id)d withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__BBServer_getUniversalSectionIDForSectionID_withHandler___block_invoke;
   block[3] = &unk_278D2ACD8;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = dCopy;
+  v9 = dCopy;
+  v10 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -7758,17 +7758,17 @@ void __58__BBServer_getUniversalSectionIDForSectionID_withHandler___block_invoke
   }
 }
 
-- (id)bulletinsRequestsForBulletinIDs:(id)a3
+- (id)bulletinsRequestsForBulletinIDs:(id)ds
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -7801,23 +7801,23 @@ void __58__BBServer_getUniversalSectionIDForSectionID_withHandler___block_invoke
   return v5;
 }
 
-- (id)bulletinsForPublisherMatchIDs:(id)a3 sectionID:(id)a4
+- (id)bulletinsForPublisherMatchIDs:(id)ds sectionID:(id)d
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dsCopy = ds;
+  dCopy = d;
+  if (dCopy)
   {
-    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
-    v22 = v7;
-    v21 = [(BBServer *)self allBulletinIDsForSectionID:v7];
+    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(dsCopy, "count")}];
+    v22 = dCopy;
+    v21 = [(BBServer *)self allBulletinIDsForSectionID:dCopy];
     v26 = [(BBServer *)self bulletinsRequestsForBulletinIDs:?];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v23 = v6;
-    obj = v6;
+    v23 = dsCopy;
+    obj = dsCopy;
     v27 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v27)
     {
@@ -7852,8 +7852,8 @@ void __58__BBServer_getUniversalSectionIDForSectionID_withHandler___block_invoke
                 }
 
                 v16 = *(*(&v28 + 1) + 8 * j);
-                v17 = [v16 publisherMatchID];
-                v18 = [v10 isEqualToString:v17];
+                publisherMatchID = [v16 publisherMatchID];
+                v18 = [v10 isEqualToString:publisherMatchID];
 
                 if (v18)
                 {
@@ -7874,8 +7874,8 @@ void __58__BBServer_getUniversalSectionIDForSectionID_withHandler___block_invoke
       while (v27);
     }
 
-    v7 = v22;
-    v6 = v23;
+    dCopy = v22;
+    dsCopy = v23;
   }
 
   else
@@ -7888,17 +7888,17 @@ void __58__BBServer_getUniversalSectionIDForSectionID_withHandler___block_invoke
   return v8;
 }
 
-- (void)getBulletinsWithHandler:(id)a3
+- (void)getBulletinsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__BBServer_getBulletinsWithHandler___block_invoke;
   v7[3] = &unk_278D2A900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -7911,20 +7911,20 @@ void __36__BBServer_getBulletinsWithHandler___block_invoke(uint64_t a1)
   }
 }
 
-- (void)getPublisherMatchIDsOfBulletinsPublishedAfterDate:(id)a3 withHandler:(id)a4
+- (void)getPublisherMatchIDsOfBulletinsPublishedAfterDate:(id)date withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__BBServer_getPublisherMatchIDsOfBulletinsPublishedAfterDate_withHandler___block_invoke;
   block[3] = &unk_278D2ACD8;
-  v12 = v6;
-  v13 = v7;
+  v12 = dateCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dateCopy;
+  v10 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -7987,23 +7987,23 @@ void __74__BBServer_getPublisherMatchIDsOfBulletinsPublishedAfterDate_withHandle
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getBulletinsForPublisherMatchIDs:(id)a3 sectionID:(id)a4 withHandler:(id)a5
+- (void)getBulletinsForPublisherMatchIDs:(id)ds sectionID:(id)d withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  dCopy = d;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __67__BBServer_getBulletinsForPublisherMatchIDs_sectionID_withHandler___block_invoke;
   v15[3] = &unk_278D2AF50;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = dsCopy;
+  v17 = dCopy;
+  v18 = handlerCopy;
+  v12 = dCopy;
+  v13 = dsCopy;
+  v14 = handlerCopy;
   dispatch_async(queue, v15);
 }
 
@@ -8016,32 +8016,32 @@ void __67__BBServer_getBulletinsForPublisherMatchIDs_sectionID_withHandler___blo
   }
 }
 
-- (unint64_t)effectivePushSettingsForSectionInfo:(id)a3
+- (unint64_t)effectivePushSettingsForSectionInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 alertType] != 0;
-  v5 = [v3 pushSettings];
+  infoCopy = info;
+  v4 = [infoCopy alertType] != 0;
+  pushSettings = [infoCopy pushSettings];
 
-  return v5 & 0xFFFFFFFFFFFFFFDFLL | (32 * v4);
+  return pushSettings & 0xFFFFFFFFFFFFFFDFLL | (32 * v4);
 }
 
-- (void)setSectionInfo:(id)a3 forSectionID:(id)a4 withHandler:(id)a5
+- (void)setSectionInfo:(id)info forSectionID:(id)d withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  dCopy = d;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __52__BBServer_setSectionInfo_forSectionID_withHandler___block_invoke;
   v15[3] = &unk_278D2A950;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = infoCopy;
+  v17 = dCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = dCopy;
+  v14 = infoCopy;
   dispatch_async(queue, v15);
 }
 
@@ -8122,17 +8122,17 @@ uint64_t __52__BBServer_setSectionInfo_forSectionID_withHandler___block_invoke(u
   dispatch_async(queue, block);
 }
 
-- (void)refreshSectionInfoForID:(id)a3
+- (void)refreshSectionInfoForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__BBServer_refreshSectionInfoForID___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
@@ -8240,23 +8240,23 @@ void __36__BBServer_refreshSectionInfoForID___block_invoke(uint64_t a1)
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMessageToDataProviderSectionID:(id)a3 name:(id)a4 userInfo:(id)a5
+- (void)sendMessageToDataProviderSectionID:(id)d name:(id)name userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  nameCopy = name;
+  infoCopy = info;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __61__BBServer_sendMessageToDataProviderSectionID_name_userInfo___block_invoke;
   v15[3] = &unk_278D2AE40;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = nameCopy;
+  v18 = infoCopy;
+  v12 = infoCopy;
+  v13 = nameCopy;
+  v14 = dCopy;
   dispatch_async(queue, v15);
 }
 
@@ -8276,18 +8276,18 @@ void __61__BBServer_sendMessageToDataProviderSectionID_name_userInfo___block_inv
   }
 }
 
-- (void)weeAppWithBundleID:(id)a3 setHiddenFromUser:(BOOL)a4
+- (void)weeAppWithBundleID:(id)d setHiddenFromUser:(BOOL)user
 {
-  v6 = a3;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__BBServer_weeAppWithBundleID_setHiddenFromUser___block_invoke;
   block[3] = &unk_278D2AA18;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = dCopy;
+  userCopy = user;
+  v8 = dCopy;
   dispatch_async(queue, block);
 }
 
@@ -8333,20 +8333,20 @@ void __49__BBServer_weeAppWithBundleID_setHiddenFromUser___block_invoke(uint64_t
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)weeAppWithBundleID:(id)a3 getHiddenFromUser:(id)a4
+- (void)weeAppWithBundleID:(id)d getHiddenFromUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  userCopy = user;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__BBServer_weeAppWithBundleID_getHiddenFromUser___block_invoke;
   block[3] = &unk_278D2A9A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = userCopy;
+  v9 = userCopy;
+  v10 = dCopy;
   dispatch_async(queue, block);
 }
 
@@ -8380,12 +8380,12 @@ void __49__BBServer_weeAppWithBundleID_getHiddenFromUser___block_invoke(uint64_t
 {
   v27 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(BBServer *)self _sectionIDsToMigrate];
+  _sectionIDsToMigrate = [(BBServer *)self _sectionIDsToMigrate];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = [v3 allKeys];
+  obj = [_sectionIDsToMigrate allKeys];
   v4 = [obj countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v4)
   {
@@ -8403,7 +8403,7 @@ void __49__BBServer_weeAppWithBundleID_getHiddenFromUser___block_invoke(uint64_t
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v3 objectForKey:{v9, v16}];
+        v10 = [_sectionIDsToMigrate objectForKey:{v9, v16}];
         v11 = [(BBServer *)self _clearedInfoForSectionID:v9];
         if (v11)
         {
@@ -8463,19 +8463,19 @@ void __49__BBServer_weeAppWithBundleID_getHiddenFromUser___block_invoke(uint64_t
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = +[BBBulletinBoardDefaults standardDefaults];
-  v4 = [v3 globalAnnounceSetting];
+  globalAnnounceSetting = [v3 globalAnnounceSetting];
 
   v5 = +[BBBulletinBoardDefaults standardDefaults];
-  v6 = [v5 globalSpokenNotificationSetting_deprecated];
+  globalSpokenNotificationSetting_deprecated = [v5 globalSpokenNotificationSetting_deprecated];
 
-  if (v4)
+  if (globalAnnounceSetting)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = v6 - 1 > 0xFFFFFFFFFFFFFFFDLL;
+    v7 = globalSpokenNotificationSetting_deprecated - 1 > 0xFFFFFFFFFFFFFFFDLL;
   }
 
   if (!v7)
@@ -8484,11 +8484,11 @@ void __49__BBServer_weeAppWithBundleID_getHiddenFromUser___block_invoke(uint64_t
     if (os_log_type_enabled(BBLogMigration, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134217984;
-      v11 = v6;
+      v11 = globalSpokenNotificationSetting_deprecated;
       _os_log_impl(&dword_241EFF000, v8, OS_LOG_TYPE_DEFAULT, "Migrating announce setting to previously persisted setting with value = %ld", &v10, 0xCu);
     }
 
-    [(BBServer *)self _setGlobalAnnounceSetting:BBAnnounceSettingForSpokenNotificationSetting(v6)];
+    [(BBServer *)self _setGlobalAnnounceSetting:BBAnnounceSettingForSpokenNotificationSetting(globalSpokenNotificationSetting_deprecated)];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -8501,12 +8501,12 @@ void __49__BBServer_weeAppWithBundleID_getHiddenFromUser___block_invoke(uint64_t
   announcementCapabilityManagerForHeadphones = self->_announcementCapabilityManagerForHeadphones;
   self->_announcementCapabilityManagerForHeadphones = v3;
 
-  v5 = [(BBServer *)self _isAnnounceSupportedForHeadphones];
+  _isAnnounceSupportedForHeadphones = [(BBServer *)self _isAnnounceSupportedForHeadphones];
   v6 = BBLogSettings;
   if (os_log_type_enabled(BBLogSettings, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v32 = v5;
+    v32 = _isAnnounceSupportedForHeadphones;
     _os_log_impl(&dword_241EFF000, v6, OS_LOG_TYPE_DEFAULT, "Cached value of eligible setup for announce for headphones: %{BOOL}d", buf, 8u);
   }
 
@@ -8521,12 +8521,12 @@ void __49__BBServer_weeAppWithBundleID_getHiddenFromUser___block_invoke(uint64_t
   announcementCapabilityManagerForCarPlay = self->_announcementCapabilityManagerForCarPlay;
   self->_announcementCapabilityManagerForCarPlay = v8;
 
-  v10 = [(BBServer *)self _isAnnounceSupportedForCarPlay];
+  _isAnnounceSupportedForCarPlay = [(BBServer *)self _isAnnounceSupportedForCarPlay];
   v11 = BBLogSettings;
   if (os_log_type_enabled(BBLogSettings, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v32 = v10;
+    v32 = _isAnnounceSupportedForCarPlay;
     _os_log_impl(&dword_241EFF000, v11, OS_LOG_TYPE_DEFAULT, "Cached value of eligible setup for announce for CarPlay: %{BOOL}d", buf, 8u);
   }
 
@@ -8537,33 +8537,33 @@ void __49__BBServer_weeAppWithBundleID_getHiddenFromUser___block_invoke(uint64_t
   v29[3] = &unk_278D2AF78;
   v29[4] = self;
   [(AFSiriAnnouncementRequestCapabilityManager *)v12 fetchEligibleAnnouncementRequestTypesWithCompletion:v29];
-  v13 = [(BBServer *)self _hasPairedVehiclesForCarPlay];
+  _hasPairedVehiclesForCarPlay = [(BBServer *)self _hasPairedVehiclesForCarPlay];
   v14 = BBLogSettings;
   if (os_log_type_enabled(BBLogSettings, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v32 = v13;
+    v32 = _hasPairedVehiclesForCarPlay;
     _os_log_impl(&dword_241EFF000, v14, OS_LOG_TYPE_DEFAULT, "Cached value of vehicles for CarPlay: %{BOOL}d", buf, 8u);
   }
 
   [(BBServer *)self _fetchAllVehiclesForCarPlay];
-  v15 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v15 addObserver:self selector:sel__pairedVehiclesForCarPlayDidChange_ name:@"CRPairedVehiclesDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__pairedVehiclesForCarPlayDidChange_ name:@"CRPairedVehiclesDidChangeNotification" object:0];
 
-  v16 = [MEMORY[0x277CEF368] sharedPreferences];
-  self->_siriEnabled = [v16 assistantIsEnabled];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  self->_siriEnabled = [mEMORY[0x277CEF368] assistantIsEnabled];
 
-  v17 = [MEMORY[0x277CEF368] sharedPreferences];
-  self->_siriAllowedWhenLocked = [v17 disableAssistantWhilePasscodeLocked] ^ 1;
+  mEMORY[0x277CEF368]2 = [MEMORY[0x277CEF368] sharedPreferences];
+  self->_siriAllowedWhenLocked = [mEMORY[0x277CEF368]2 disableAssistantWhilePasscodeLocked] ^ 1;
 
-  v18 = [MEMORY[0x277CEF368] sharedPreferences];
-  self->_announceOnHearingAidsEnabled = [v18 announceNotificationsOnHearingAidsEnabled];
+  mEMORY[0x277CEF368]3 = [MEMORY[0x277CEF368] sharedPreferences];
+  self->_announceOnHearingAidsEnabled = [mEMORY[0x277CEF368]3 announceNotificationsOnHearingAidsEnabled];
 
-  v19 = [MEMORY[0x277CEF368] sharedPreferences];
-  self->_announceOnHearingAidsSupported = [v19 announceNotificationsOnHearingAidsSupported];
+  mEMORY[0x277CEF368]4 = [MEMORY[0x277CEF368] sharedPreferences];
+  self->_announceOnHearingAidsSupported = [mEMORY[0x277CEF368]4 announceNotificationsOnHearingAidsSupported];
 
-  v20 = [MEMORY[0x277CEF368] sharedPreferences];
-  self->_announceOnBuiltInSpeakerEnabled = [v20 announceNotificationsOnBuiltInSpeakerEnabled];
+  mEMORY[0x277CEF368]5 = [MEMORY[0x277CEF368] sharedPreferences];
+  self->_announceOnBuiltInSpeakerEnabled = [mEMORY[0x277CEF368]5 announceNotificationsOnBuiltInSpeakerEnabled];
 
   v21 = BBLogSettings;
   if (os_log_type_enabled(BBLogSettings, OS_LOG_TYPE_DEFAULT))
@@ -8586,8 +8586,8 @@ void __49__BBServer_weeAppWithBundleID_getHiddenFromUser___block_invoke(uint64_t
     _os_log_impl(&dword_241EFF000, v21, OS_LOG_TYPE_DEFAULT, "Siri preferences did load [ Siri enabled: %{BOOL}d, Siri allowed when locked: %{BOOL}d Announce On Hearing Aids Enabled: %{BOOL}d, Announce on Hearing Aids Supported: %{BOOL}d, Announce on Built-In Speaker: %{BOOL}d]", buf, 0x20u);
   }
 
-  v27 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v27 addObserver:self selector:sel__siriPreferencesDidChange_ name:*MEMORY[0x277CEF060] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__siriPreferencesDidChange_ name:*MEMORY[0x277CEF060] object:0];
 
   [(AFSiriAnnouncementRequestCapabilityManager *)self->_announcementCapabilityManagerForHeadphones addObserver:self];
   [(AFSiriAnnouncementRequestCapabilityManager *)self->_announcementCapabilityManagerForCarPlay addObserver:self];
@@ -8703,39 +8703,39 @@ void __48__BBServer__publishBulletinsForAllDataProviders__block_invoke(uint64_t 
   [*(a1 + 32) _updateAllBulletinsForDataProviderIfSectionIsEnabled:v4];
 }
 
-- (BOOL)_verifyBulletinRequest:(id)a3 forDataProvider:(id)a4
+- (BOOL)_verifyBulletinRequest:(id)request forDataProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  providerCopy = provider;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  v7 = [v6 sectionIdentifier];
-  [v5 setSectionID:v7];
+  sectionIdentifier = [providerCopy sectionIdentifier];
+  [requestCopy setSectionID:sectionIdentifier];
 
-  v8 = [v6 sectionBundlePath];
-  [v5 setSectionBundlePath:v8];
+  sectionBundlePath = [providerCopy sectionBundlePath];
+  [requestCopy setSectionBundlePath:sectionBundlePath];
 
-  v9 = [v6 universalSectionIdentifier];
-  [v5 setUniversalSectionID:v9];
+  universalSectionIdentifier = [providerCopy universalSectionIdentifier];
+  [requestCopy setUniversalSectionID:universalSectionIdentifier];
 
-  v10 = [v6 parentSectionIdentifier];
-  [v5 setParentSectionID:v10];
+  parentSectionIdentifier = [providerCopy parentSectionIdentifier];
+  [requestCopy setParentSectionID:parentSectionIdentifier];
 
-  [v5 setBulletinID:0];
-  v11 = [v5 sectionID];
-  if (!v11)
+  [requestCopy setBulletinID:0];
+  sectionID = [requestCopy sectionID];
+  if (!sectionID)
   {
     goto LABEL_11;
   }
 
-  v12 = v11;
-  v13 = [v5 publisherMatchID];
+  v12 = sectionID;
+  publisherMatchID = [requestCopy publisherMatchID];
 
-  if (v13)
+  if (publisherMatchID)
   {
     v14 = 1;
   }
@@ -8754,27 +8754,27 @@ LABEL_11:
   return v14;
 }
 
-- (id)_enabledSectionIDsForDataProvider:(id)a3
+- (id)_enabledSectionIDsForDataProvider:(id)provider
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  providerCopy = provider;
   v5 = [MEMORY[0x277CBEB58] set];
-  if (v4)
+  if (providerCopy)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 sectionIdentifier];
-    v8 = [(BBServer *)self _sectionInfoForSectionID:v7 effective:1];
+    sectionIdentifier = [providerCopy sectionIdentifier];
+    v8 = [(BBServer *)self _sectionInfoForSectionID:sectionIdentifier effective:1];
     if ([v8 notificationCenterSetting] == 2 || objc_msgSend(v8, "lockScreenSetting") == 2)
     {
-      [v5 addObject:v7];
+      [v5 addObject:sectionIdentifier];
     }
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [v8 subsections];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    subsections = [v8 subsections];
+    v10 = [subsections countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -8785,18 +8785,18 @@ LABEL_11:
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(subsections);
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
           if ([v14 notificationCenterSetting] == 2 || objc_msgSend(v8, "lockScreenSetting") == 2)
           {
-            v15 = [v14 subsectionID];
-            [v5 addObject:v15];
+            subsectionID = [v14 subsectionID];
+            [v5 addObject:subsectionID];
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [subsections countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v11);
@@ -8810,19 +8810,19 @@ LABEL_11:
   return v5;
 }
 
-- (void)_updateBulletinsInFeed:(unint64_t)a3 ifSectionIsEnabled:(id)a4
+- (void)_updateBulletinsInFeed:(unint64_t)feed ifSectionIsEnabled:(id)enabled
 {
-  v6 = [(BBServer *)self dataProviderForSectionID:a4];
-  [(BBServer *)self _updateBulletinsInFeed:a3 forDataProviderIfSectionIsEnabled:v6];
+  v6 = [(BBServer *)self dataProviderForSectionID:enabled];
+  [(BBServer *)self _updateBulletinsInFeed:feed forDataProviderIfSectionIsEnabled:v6];
 }
 
-- (void)_updateBulletinsInFeed:(unint64_t)a3 forDataProviderIfSectionIsEnabled:(id)a4
+- (void)_updateBulletinsInFeed:(unint64_t)feed forDataProviderIfSectionIsEnabled:(id)enabled
 {
-  v7 = a4;
+  enabledCopy = enabled;
   v6 = [(BBServer *)self _enabledSectionIDsForDataProvider:?];
   if ([v6 count])
   {
-    [(BBServer *)self _updateBulletinsInFeed:a3 forDataProvider:v7 enabledSectionIDs:v6];
+    [(BBServer *)self _updateBulletinsInFeed:feed forDataProvider:enabledCopy enabledSectionIDs:v6];
   }
 }
 
@@ -8831,10 +8831,10 @@ LABEL_11:
   dispatch_assert_queue_V2(self->_queue);
   if (self->_expirationReferenceComponents)
   {
-    v3 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     expirationReferenceComponents = self->_expirationReferenceComponents;
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [v3 dateByAddingComponents:expirationReferenceComponents toDate:v5 options:0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v6 = [currentCalendar dateByAddingComponents:expirationReferenceComponents toDate:date options:0];
   }
 
   else
@@ -8845,55 +8845,55 @@ LABEL_11:
   return v6;
 }
 
-- (void)_updateBulletinsInFeed:(unint64_t)a3 forDataProvider:(id)a4 enabledSectionIDs:(id)a5
+- (void)_updateBulletinsInFeed:(unint64_t)feed forDataProvider:(id)provider enabledSectionIDs:(id)ds
 {
   v31 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  dsCopy = ds;
   dispatch_assert_queue_V2(self->_queue);
   v26 = 0;
-  if (!BBPublisherDestinationForObserverFeed(a3, &v26))
+  if (!BBPublisherDestinationForObserverFeed(feed, &v26))
   {
     [BBServer _updateBulletinsInFeed:a2 forDataProvider:self enabledSectionIDs:?];
   }
 
-  v11 = [v9 sectionIdentifier];
+  sectionIdentifier = [providerCopy sectionIdentifier];
   v12 = BBLogGeneral;
-  if (v11)
+  if (sectionIdentifier)
   {
     if (os_log_type_enabled(BBLogGeneral, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [v9 sectionIdentifier];
+      sectionIdentifier2 = [providerCopy sectionIdentifier];
       *buf = 138543618;
-      v28 = v14;
+      v28 = sectionIdentifier2;
       v29 = 2048;
-      v30 = a3;
+      feedCopy = feed;
       _os_log_impl(&dword_241EFF000, v13, OS_LOG_TYPE_DEFAULT, "BBServer: Update bulletins in section %{public}@ for feed %ld", buf, 0x16u);
     }
 
     v15 = v26;
-    v16 = [(BBServer *)self _sinceDate];
-    v17 = [BBBulletinRequestParameters requestParametersForDestination:v15 withSinceDate:v16 maximumCount:500 enabledSectionIDs:v10];
+    _sinceDate = [(BBServer *)self _sinceDate];
+    v17 = [BBBulletinRequestParameters requestParametersForDestination:v15 withSinceDate:_sinceDate maximumCount:500 enabledSectionIDs:dsCopy];
 
-    if (![v10 count])
+    if (![dsCopy count])
     {
       v18 = BBLogGeneral;
       if (os_log_type_enabled(BBLogGeneral, OS_LOG_TYPE_ERROR))
       {
-        [BBServer _updateBulletinsInFeed:v18 forDataProvider:self enabledSectionIDs:v11];
+        [BBServer _updateBulletinsInFeed:v18 forDataProvider:self enabledSectionIDs:sectionIdentifier];
       }
     }
 
-    v19 = [(BBServer *)self _clearedInfoForSectionID:v11];
+    v19 = [(BBServer *)self _clearedInfoForSectionID:sectionIdentifier];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __69__BBServer__updateBulletinsInFeed_forDataProvider_enabledSectionIDs___block_invoke;
     v21[3] = &unk_278D2AFF0;
-    v25 = a3;
-    v22 = v9;
-    v23 = self;
-    v24 = v11;
+    feedCopy2 = feed;
+    v22 = providerCopy;
+    selfCopy = self;
+    v24 = sectionIdentifier;
     [v22 bulletinsWithRequestParameters:v17 lastCleared:v19 completion:v21];
   }
 
@@ -8981,17 +8981,17 @@ void __69__BBServer__updateBulletinsInFeed_forDataProvider_enabledSectionIDs___b
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateAllBulletinsForDataProvider:(id)a3
+- (void)_updateAllBulletinsForDataProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(BBServer *)self _enabledSectionIDsForDataProvider:v4];
-  [(BBServer *)self _updateBulletinsInFeed:1 forDataProvider:v4 enabledSectionIDs:v5];
+  providerCopy = provider;
+  v5 = [(BBServer *)self _enabledSectionIDsForDataProvider:providerCopy];
+  [(BBServer *)self _updateBulletinsInFeed:1 forDataProvider:providerCopy enabledSectionIDs:v5];
 }
 
-- (void)_reloadSectionParametersForSectionID:(id)a3
+- (void)_reloadSectionParametersForSectionID:(id)d
 {
   queue = self->_queue;
-  v5 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(queue);
   dataProviderManager = self->_dataProviderManager;
   v7[0] = MEMORY[0x277D85DD0];
@@ -8999,16 +8999,16 @@ void __69__BBServer__updateBulletinsInFeed_forDataProvider_enabledSectionIDs___b
   v7[2] = __49__BBServer__reloadSectionParametersForSectionID___block_invoke;
   v7[3] = &unk_278D2AFA0;
   v7[4] = self;
-  [(BBDataProviderManager *)dataProviderManager reloadIdentityForSectionID:v5 withCompletion:v7];
+  [(BBDataProviderManager *)dataProviderManager reloadIdentityForSectionID:dCopy withCompletion:v7];
 }
 
-- (void)_updateSectionParametersForDataProvider:(id)a3
+- (void)_updateSectionParametersForDataProvider:(id)provider
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 sectionIdentifier];
-  v6 = [v4 sectionParameters];
-  if (v6)
+  providerCopy = provider;
+  sectionIdentifier = [providerCopy sectionIdentifier];
+  sectionParameters = [providerCopy sectionParameters];
+  if (sectionParameters)
   {
     v15 = 0u;
     v16 = 0u;
@@ -9030,7 +9030,7 @@ void __69__BBServer__updateBulletinsInFeed_forDataProvider_enabledSectionIDs___b
             objc_enumerationMutation(v7);
           }
 
-          [*(*(&v13 + 1) + 8 * v11++) updateSectionParameters:v6 forSectionID:{v5, v13}];
+          [*(*(&v13 + 1) + 8 * v11++) updateSectionParameters:sectionParameters forSectionID:{sectionIdentifier, v13}];
         }
 
         while (v9 != v11);
@@ -9044,9 +9044,9 @@ void __69__BBServer__updateBulletinsInFeed_forDataProvider_enabledSectionIDs___b
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reloadReloadSectionInfoForSectionID:(id)a3
+- (void)_reloadReloadSectionInfoForSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
   dataProviderManager = self->_dataProviderManager;
   v7[0] = MEMORY[0x277D85DD0];
@@ -9054,8 +9054,8 @@ void __69__BBServer__updateBulletinsInFeed_forDataProvider_enabledSectionIDs___b
   v7[2] = __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke;
   v7[3] = &unk_278D2AE68;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   [(BBDataProviderManager *)dataProviderManager reloadIdentityForSectionID:v6 withCompletion:v7];
 }
 
@@ -9073,16 +9073,16 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
   [*(a1 + 32) _updateAllBulletinsForDataProviderIfSectionIsEnabled:v5];
 }
 
-- (void)_publishBulletinRequest:(id)a3 forSectionID:(id)a4 forDestinations:(unint64_t)a5
+- (void)_publishBulletinRequest:(id)request forSectionID:(id)d forDestinations:(unint64_t)destinations
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(BBServer *)self dataProviderForSectionID:v9];
+  requestCopy = request;
+  dCopy = d;
+  v10 = [(BBServer *)self dataProviderForSectionID:dCopy];
   if (v10)
   {
-    if ([(BBServer *)self _verifyBulletinRequest:v8 forDataProvider:v10])
+    if ([(BBServer *)self _verifyBulletinRequest:requestCopy forDataProvider:v10])
     {
-      [(BBServer *)self publishBulletinRequest:v8 destinations:a5];
+      [(BBServer *)self publishBulletinRequest:requestCopy destinations:destinations];
     }
   }
 
@@ -9092,51 +9092,51 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
   }
 }
 
-- (id)_clearedInfoForSectionID:(id)a3
+- (id)_clearedInfoForSectionID:(id)d
 {
   queue = self->_queue;
-  v5 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(queue);
-  v6 = [(BBSectionInfoStoreInterface *)self->_sectionInfoStore clearedInfoForSectionID:v5];
+  v6 = [(BBSectionInfoStoreInterface *)self->_sectionInfoStore clearedInfoForSectionID:dCopy];
 
   return v6;
 }
 
-- (void)_setClearedInfo:(id)a3 forSectionID:(id)a4
+- (void)_setClearedInfo:(id)info forSectionID:(id)d
 {
   queue = self->_queue;
-  v7 = a4;
-  v8 = a3;
+  dCopy = d;
+  infoCopy = info;
   dispatch_assert_queue_V2(queue);
-  [(BBSectionInfoStoreInterface *)self->_sectionInfoStore setClearedInfo:v8 forSectionID:v7];
+  [(BBSectionInfoStoreInterface *)self->_sectionInfoStore setClearedInfo:infoCopy forSectionID:dCopy];
 
   [(BBServer *)self _writeClearedSections];
 }
 
-- (void)_updateClearedInfoForSectionID:(id)a3 handler:(id)a4
+- (void)_updateClearedInfoForSectionID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BBServer *)self _clearedInfoForSectionID:v6];
-  v9 = [(BBServer *)self dataProviderForSectionID:v6];
+  dCopy = d;
+  handlerCopy = handler;
+  v8 = [(BBServer *)self _clearedInfoForSectionID:dCopy];
+  v9 = [(BBServer *)self dataProviderForSectionID:dCopy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __51__BBServer__updateClearedInfoForSectionID_handler___block_invoke;
   v11[3] = &unk_278D2AC88;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v9 updateClearedInfoWithClearedInfo:v8 handler:v7 completion:v11];
+  v12 = dCopy;
+  v10 = dCopy;
+  [v9 updateClearedInfoWithClearedInfo:v8 handler:handlerCopy completion:v11];
 }
 
-- (void)_saveUpdatedSectionInfo:(id)a3 forSectionID:(id)a4
+- (void)_saveUpdatedSectionInfo:(id)info forSectionID:(id)d
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  infoCopy = info;
+  dCopy = d;
+  if (infoCopy)
   {
-    [(BBServer *)self _setSectionInfo:v6 forSectionID:v7];
+    [(BBServer *)self _setSectionInfo:infoCopy forSectionID:dCopy];
   }
 
   else
@@ -9145,7 +9145,7 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
     if (os_log_type_enabled(BBLogSettings, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
-      v11 = v7;
+      v11 = dCopy;
       _os_log_impl(&dword_241EFF000, v8, OS_LOG_TYPE_DEFAULT, "Not updating section info for <%{public}@>", &v10, 0xCu);
     }
   }
@@ -9153,125 +9153,125 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateSectionInfoForSectionID:(id)a3 handler:(id)a4
+- (void)_updateSectionInfoForSectionID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BBServer *)self _sectionInfoForSectionID:v6 effective:0];
+  dCopy = d;
+  handlerCopy = handler;
+  v8 = [(BBServer *)self _sectionInfoForSectionID:dCopy effective:0];
   v9 = [v8 copy];
 
-  v10 = [(BBServer *)self dataProviderForSectionID:v6];
+  v10 = [(BBServer *)self dataProviderForSectionID:dCopy];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __51__BBServer__updateSectionInfoForSectionID_handler___block_invoke;
   v12[3] = &unk_278D2B018;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [v10 updateSectionInfoWithSectionInfo:v9 handler:v7 completion:v12];
+  v13 = dCopy;
+  v11 = dCopy;
+  [v10 updateSectionInfoWithSectionInfo:v9 handler:handlerCopy completion:v12];
 }
 
-- (id)dataProviderForSectionID:(id)a3
+- (id)dataProviderForSectionID:(id)d
 {
   queue = self->_queue;
-  v5 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(queue);
-  v6 = [(BBDataProviderManager *)self->_dataProviderManager dataProviderForSectionID:v5];
+  v6 = [(BBDataProviderManager *)self->_dataProviderManager dataProviderForSectionID:dCopy];
 
   return v6;
 }
 
-- (id)dpManager:(id)a3 sectionInfoForSectionID:(id)a4
+- (id)dpManager:(id)manager sectionInfoForSectionID:(id)d
 {
   queue = self->_queue;
-  v6 = a4;
+  dCopy = d;
   dispatch_assert_queue_V2(queue);
-  v7 = [(BBServer *)self _sectionInfoForSectionID:v6 effective:0];
+  v7 = [(BBServer *)self _sectionInfoForSectionID:dCopy effective:0];
 
   return v7;
 }
 
-- (void)dpManager:(id)a3 addDataProvider:(id)a4 withSectionInfo:(id)a5
+- (void)dpManager:(id)manager addDataProvider:(id)provider withSectionInfo:(id)info
 {
-  v11 = a4;
-  v7 = a5;
+  providerCopy = provider;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [v11 parentSectionIdentifier];
-  if (v8)
+  parentSectionIdentifier = [providerCopy parentSectionIdentifier];
+  if (parentSectionIdentifier)
   {
-    v9 = [(BBServer *)self _sectionInfoForSectionID:v8];
-    [v9 _associateDataProviderSectionInfo:v7];
+    v9 = [(BBServer *)self _sectionInfoForSectionID:parentSectionIdentifier];
+    [v9 _associateDataProviderSectionInfo:infoCopy];
   }
 
-  v10 = [v11 sectionIdentifier];
-  if (([v7 suppressFromSettings] & 1) == 0)
+  sectionIdentifier = [providerCopy sectionIdentifier];
+  if (([infoCopy suppressFromSettings] & 1) == 0)
   {
-    [v7 queryAndUseManagedSettingsForSectionID:v10];
+    [infoCopy queryAndUseManagedSettingsForSectionID:sectionIdentifier];
   }
 
-  if ([(BBMuteExpirationManager *)self->_muteManager cleanAndWatchExpirationsForSectionInfo:v7])
+  if ([(BBMuteExpirationManager *)self->_muteManager cleanAndWatchExpirationsForSectionInfo:infoCopy])
   {
     [(BBServer *)self _writeSectionInfo];
   }
 
-  [(BBServer *)self _setPrimitiveSectionInfo:v7 forSectionID:v10];
-  [(BBServer *)self _addActiveSectionID:v10];
+  [(BBServer *)self _setPrimitiveSectionInfo:infoCopy forSectionID:sectionIdentifier];
+  [(BBServer *)self _addActiveSectionID:sectionIdentifier];
   if ([(BBServer *)self isRunning])
   {
-    [(BBServer *)self _updateSectionParametersForDataProvider:v11];
-    [(BBServer *)self _sendUpdateSectionInfo:v7];
-    [(BBServer *)self _updateAllBulletinsForDataProviderIfSectionIsEnabled:v11];
+    [(BBServer *)self _updateSectionParametersForDataProvider:providerCopy];
+    [(BBServer *)self _sendUpdateSectionInfo:infoCopy];
+    [(BBServer *)self _updateAllBulletinsForDataProviderIfSectionIsEnabled:providerCopy];
   }
 }
 
-- (void)dpManager:(id)a3 addParentSectionFactory:(id)a4
+- (void)dpManager:(id)manager addParentSectionFactory:(id)factory
 {
-  v7 = a4;
+  factoryCopy = factory;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v7 sectionIdentifier];
-  if (v5)
+  sectionIdentifier = [factoryCopy sectionIdentifier];
+  if (sectionIdentifier)
   {
-    v6 = [v7 sectionInfo];
-    [v6 queryAndUseManagedSettingsForSectionID:v5];
-    if ([(BBMuteExpirationManager *)self->_muteManager cleanAndWatchExpirationsForSectionInfo:v6])
+    sectionInfo = [factoryCopy sectionInfo];
+    [sectionInfo queryAndUseManagedSettingsForSectionID:sectionIdentifier];
+    if ([(BBMuteExpirationManager *)self->_muteManager cleanAndWatchExpirationsForSectionInfo:sectionInfo])
     {
       [(BBServer *)self _writeSectionInfo];
     }
 
-    [(BBServer *)self _setPrimitiveSectionInfo:v6 forSectionID:v5];
-    [(BBServer *)self _addActiveSectionID:v5];
+    [(BBServer *)self _setPrimitiveSectionInfo:sectionInfo forSectionID:sectionIdentifier];
+    [(BBServer *)self _addActiveSectionID:sectionIdentifier];
     if ([(BBServer *)self isRunning])
     {
-      [(BBServer *)self _sendUpdateSectionInfo:v6];
+      [(BBServer *)self _sendUpdateSectionInfo:sectionInfo];
     }
   }
 }
 
-- (void)dpManager:(id)a3 removeDataProviderSectionID:(id)a4
+- (void)dpManager:(id)manager removeDataProviderSectionID:(id)d
 {
   queue = self->_queue;
-  v6 = a4;
+  dCopy = d;
   dispatch_assert_queue_V2(queue);
-  [(BBServer *)self _removeSection:v6];
+  [(BBServer *)self _removeSection:dCopy];
 }
 
-- (void)_addActiveSectionID:(id)a3
+- (void)_addActiveSectionID:(id)d
 {
-  if (a3)
+  if (d)
   {
     sectionInfoStore = self->_sectionInfoStore;
-    v5 = a3;
-    [(BBSectionInfoStoreInterface *)sectionInfoStore addActiveSectionID:v5];
-    [(NSMutableSet *)self->_activeSectionIDs addObject:v5];
+    dCopy = d;
+    [(BBSectionInfoStoreInterface *)sectionInfoStore addActiveSectionID:dCopy];
+    [(NSMutableSet *)self->_activeSectionIDs addObject:dCopy];
   }
 }
 
-- (id)_bulletinsForSectionID:(id)a3 inFeeds:(unint64_t)a4
+- (id)_bulletinsForSectionID:(id)d inFeeds:(unint64_t)feeds
 {
   v5 = MEMORY[0x277CBEB58];
-  v6 = a3;
+  dCopy = d;
   v7 = [v5 set];
-  v8 = [(BBServer *)self bulletinIDsForSectionID:v6 inFeed:1];
+  v8 = [(BBServer *)self bulletinIDsForSectionID:dCopy inFeed:1];
 
   v9 = [(BBServer *)self _bulletinsForIDs:v8];
   [v7 unionSet:v9];
@@ -9281,19 +9281,19 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
 
 - (void)_ensureDataDirectoryExists
 {
-  v3 = [objc_opt_class() _dataDirectoryPath];
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  if (([v2 fileExistsAtPath:v3] & 1) == 0)
+  _dataDirectoryPath = [objc_opt_class() _dataDirectoryPath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if (([defaultManager fileExistsAtPath:_dataDirectoryPath] & 1) == 0)
   {
-    [v2 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:0];
+    [defaultManager createDirectoryAtPath:_dataDirectoryPath withIntermediateDirectories:1 attributes:0 error:0];
   }
 }
 
 - (void)_loadClearedSections
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(BBServer *)self savedClearedSections];
-  v5 = [v3 mutableCopy];
+  savedClearedSections = [(BBServer *)self savedClearedSections];
+  v5 = [savedClearedSections mutableCopy];
 
   v4 = v5;
   if (!v5)
@@ -9308,14 +9308,14 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
 - (void)_writeClearedSections
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(BBSectionInfoStoreInterface *)self->_sectionInfoStore clearedSectionsByID];
-  [(BBServer *)self writeClearedSections:v3];
+  clearedSectionsByID = [(BBSectionInfoStoreInterface *)self->_sectionInfoStore clearedSectionsByID];
+  [(BBServer *)self writeClearedSections:clearedSectionsByID];
 }
 
 - (id)savedSectionInfo
 {
-  v2 = [(BBPersistentStoreInterface *)self->_persistentStore readSectionInfo];
-  v3 = [v2 mutableCopy];
+  readSectionInfo = [(BBPersistentStoreInterface *)self->_persistentStore readSectionInfo];
+  v3 = [readSectionInfo mutableCopy];
 
   return v3;
 }
@@ -9324,14 +9324,14 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
 {
   v16 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(BBServer *)self savedSectionInfo];
-  [(BBSectionInfoStoreInterface *)self->_sectionInfoStore setSectionInfoByID:v3];
+  savedSectionInfo = [(BBServer *)self savedSectionInfo];
+  [(BBSectionInfoStoreInterface *)self->_sectionInfoStore setSectionInfoByID:savedSectionInfo];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(BBServer *)self _allSectionInfoIDs];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _allSectionInfoIDs = [(BBServer *)self _allSectionInfoIDs];
+  v5 = [_allSectionInfoIDs countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -9343,7 +9343,7 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allSectionInfoIDs);
         }
 
         v9 = [(BBServer *)self _sectionInfoForSectionID:*(*(&v11 + 1) + 8 * v8)];
@@ -9353,7 +9353,7 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [_allSectionInfoIDs countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -9365,8 +9365,8 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
 - (void)_writeSectionInfo
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(BBSectionInfoStoreInterface *)self->_sectionInfoStore sectionInfoByID];
-  [(BBServer *)self writeSectionInfo:v3];
+  sectionInfoByID = [(BBSectionInfoStoreInterface *)self->_sectionInfoStore sectionInfoByID];
+  [(BBServer *)self writeSectionInfo:sectionInfoByID];
 }
 
 - (void)_observeManagedProfileChanges
@@ -9387,7 +9387,7 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
 
 - (void)_queue_managedUserNotificationsSetttingsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   v53 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   v3 = BBLogGeneral;
@@ -9402,7 +9402,7 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v5 = [(BBSectionInfoStoreInterface *)v2->_sectionInfoStore allSortedSectionInfo:0];
+  v5 = [(BBSectionInfoStoreInterface *)selfCopy->_sectionInfoStore allSortedSectionInfo:0];
   v6 = [v5 countByEnumeratingWithState:&v45 objects:v52 count:16];
   if (v6)
   {
@@ -9420,8 +9420,8 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
         v10 = *(*(&v45 + 1) + 8 * i);
         if ([v10 usesManagedSettings])
         {
-          v11 = [v10 sectionID];
-          [v4 addObject:v11];
+          sectionID = [v10 sectionID];
+          [v4 addObject:sectionID];
         }
       }
 
@@ -9436,10 +9436,10 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v13 = [MEMORY[0x277D262A0] sharedConnection];
-  v14 = [v13 restrictionEnforcedNotificationSettings];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  restrictionEnforcedNotificationSettings = [mEMORY[0x277D262A0] restrictionEnforcedNotificationSettings];
 
-  v15 = [v14 countByEnumeratingWithState:&v41 objects:v51 count:16];
+  v15 = [restrictionEnforcedNotificationSettings countByEnumeratingWithState:&v41 objects:v51 count:16];
   if (v15)
   {
     v16 = v15;
@@ -9451,7 +9451,7 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
       {
         if (*v42 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(restrictionEnforcedNotificationSettings);
         }
 
         v20 = [*(*(&v41 + 1) + 8 * j) objectForKey:v18];
@@ -9461,7 +9461,7 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v41 objects:v51 count:16];
+      v16 = [restrictionEnforcedNotificationSettings countByEnumeratingWithState:&v41 objects:v51 count:16];
     }
 
     while (v16);
@@ -9472,7 +9472,7 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
   [v21 unionSet:v4];
   [v21 unionSet:v12];
   v34 = v21;
-  v22 = [(BBSectionInfoStoreInterface *)v2->_sectionInfoStore sectionInfosByIDForSectionIDs:v21 effective:0];
+  v22 = [(BBSectionInfoStoreInterface *)selfCopy->_sectionInfoStore sectionInfosByIDForSectionIDs:v21 effective:0];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -9497,9 +9497,9 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
         v28 = [v22 objectForKey:v27];
         if (v28)
         {
-          if (([v12 containsObject:v27] & 1) != 0 || (objc_msgSend(v28, "sectionInfoSettings"), v29 = v2, v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "authorizationStatus"), v30, v2 = v29, v31))
+          if (([v12 containsObject:v27] & 1) != 0 || (objc_msgSend(v28, "sectionInfoSettings"), v29 = selfCopy, v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "authorizationStatus"), v30, selfCopy = v29, v31))
           {
-            [(BBServer *)v2 _setSectionInfoNoteSettingsChanged:v28 forSectionID:v27];
+            [(BBServer *)selfCopy _setSectionInfoNoteSettingsChanged:v28 forSectionID:v27];
           }
 
           else
@@ -9519,20 +9519,20 @@ void __49__BBServer__reloadReloadSectionInfoForSectionID___block_invoke(uint64_t
     while (v32);
   }
 
-  [(BBServer *)v2 _writeSectionInfo];
+  [(BBServer *)selfCopy _writeSectionInfo];
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)noteChangeOfState:(unint64_t)a3 newValue:(BOOL)a4
+- (void)noteChangeOfState:(unint64_t)state newValue:(BOOL)value
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__BBServer_noteChangeOfState_newValue___block_invoke;
   block[3] = &unk_278D2AEE0;
-  v6 = a4;
+  valueCopy = value;
   block[4] = self;
-  block[5] = a3;
+  block[5] = state;
   dispatch_async(queue, block);
 }
 
@@ -9554,7 +9554,7 @@ uint64_t __39__BBServer_noteChangeOfState_newValue___block_invoke(uint64_t resul
   return result;
 }
 
-- (void)noteOccurrenceOfEvent:(unint64_t)a3
+- (void)noteOccurrenceOfEvent:(unint64_t)event
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -9562,25 +9562,25 @@ uint64_t __39__BBServer_noteChangeOfState_newValue___block_invoke(uint64_t resul
   v4[2] = __34__BBServer_noteOccurrenceOfEvent___block_invoke;
   v4[3] = &unk_278D2A7C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = event;
   dispatch_async(queue, v4);
 }
 
-- (void)syncService:(id)a3 receivedDismissalDictionaries:(id)a4 dismissalIDs:(id)a5 inSection:(id)a6 universalSectionID:(id)a7 forFeeds:(unint64_t)a8
+- (void)syncService:(id)service receivedDismissalDictionaries:(id)dictionaries dismissalIDs:(id)ds inSection:(id)section universalSectionID:(id)d forFeeds:(unint64_t)feeds
 {
   v31 = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dictionariesCopy = dictionaries;
+  dsCopy = ds;
+  sectionCopy = section;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
   v17 = [MEMORY[0x277CBEB58] set];
-  [v17 bs_safeAddObject:v15];
-  if (v16)
+  [v17 bs_safeAddObject:sectionCopy];
+  if (dCopy)
   {
-    v18 = [(BBServer *)self sectionIDsForUniversalSectionID:v16];
-    v19 = [v18 allObjects];
-    [v17 addObjectsFromArray:v19];
+    v18 = [(BBServer *)self sectionIDsForUniversalSectionID:dCopy];
+    allObjects = [v18 allObjects];
+    [v17 addObjectsFromArray:allObjects];
   }
 
   v28 = 0u;
@@ -9603,7 +9603,7 @@ uint64_t __39__BBServer_noteChangeOfState_newValue___block_invoke(uint64_t resul
           objc_enumerationMutation(v20);
         }
 
-        [(BBServer *)self handleDismissalDictionaries:v13 dismissalIDs:v14 inSection:*(*(&v26 + 1) + 8 * v24++) forFeeds:a8, v26];
+        [(BBServer *)self handleDismissalDictionaries:dictionariesCopy dismissalIDs:dsCopy inSection:*(*(&v26 + 1) + 8 * v24++) forFeeds:feeds, v26];
       }
 
       while (v22 != v24);
@@ -9616,24 +9616,24 @@ uint64_t __39__BBServer_noteChangeOfState_newValue___block_invoke(uint64_t resul
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleDismissalDictionaries:(id)a3 dismissalIDs:(id)a4 inSection:(id)a5 forFeeds:(unint64_t)a6
+- (void)handleDismissalDictionaries:(id)dictionaries dismissalIDs:(id)ds inSection:(id)section forFeeds:(unint64_t)feeds
 {
   v64 = *MEMORY[0x277D85DE8];
-  v42 = a3;
-  v44 = a4;
-  v10 = a5;
+  dictionariesCopy = dictionaries;
+  dsCopy = ds;
+  sectionCopy = section;
   dispatch_assert_queue_V2(self->_queue);
-  v11 = [(BBServer *)self dataProviderForSectionID:v10];
+  v11 = [(BBServer *)self dataProviderForSectionID:sectionCopy];
   if (v11)
   {
-    v12 = [(NSMutableDictionary *)self->_bulletinIDsBySectionID objectForKey:v10];
+    v12 = [(NSMutableDictionary *)self->_bulletinIDsBySectionID objectForKey:sectionCopy];
     if (v12)
     {
       v36 = v11;
-      v37 = a6;
-      v38 = v10;
-      v47 = [MEMORY[0x277CBEB58] setWithArray:v44];
-      v13 = [MEMORY[0x277CBEB58] setWithArray:v42];
+      feedsCopy = feeds;
+      v38 = sectionCopy;
+      v47 = [MEMORY[0x277CBEB58] setWithArray:dsCopy];
+      v13 = [MEMORY[0x277CBEB58] setWithArray:dictionariesCopy];
       v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
       v57 = 0u;
       v58 = 0u;
@@ -9645,7 +9645,7 @@ uint64_t __39__BBServer_noteChangeOfState_newValue___block_invoke(uint64_t resul
       if (v45)
       {
         v43 = *v58;
-        v40 = self;
+        selfCopy = self;
         v41 = v13;
         do
         {
@@ -9662,7 +9662,7 @@ uint64_t __39__BBServer_noteChangeOfState_newValue___block_invoke(uint64_t resul
             v54 = 0u;
             v55 = 0u;
             v56 = 0u;
-            v17 = v44;
+            v17 = dsCopy;
             v18 = [v17 countByEnumeratingWithState:&v53 objects:v62 count:16];
             if (!v18)
             {
@@ -9672,7 +9672,7 @@ LABEL_20:
               v52 = 0u;
               v49 = 0u;
               v50 = 0u;
-              v27 = v42;
+              v27 = dictionariesCopy;
               v28 = [v27 countByEnumeratingWithState:&v49 objects:v61 count:16];
               if (v28)
               {
@@ -9719,8 +9719,8 @@ LABEL_20:
                 }
 
                 v24 = *(*(&v53 + 1) + 8 * k);
-                v25 = [v16 dismissalID];
-                v26 = [v25 isEqualToString:v24];
+                dismissalID = [v16 dismissalID];
+                v26 = [dismissalID isEqualToString:v24];
 
                 if (v26)
                 {
@@ -9735,7 +9735,7 @@ LABEL_20:
 
             while (v19);
 
-            self = v40;
+            self = selfCopy;
             v13 = v41;
             v14 = v20;
             i = v46;
@@ -9753,12 +9753,12 @@ LABEL_30:
         while (v45);
       }
 
-      v10 = v38;
-      [(BBDismissalSyncCache *)self->_dismissalSyncCache cacheDismissalDictionaries:v42 dismissalIDs:v44 inSection:v38 forFeeds:v37];
-      if (v37 != 65023 && v37)
+      sectionCopy = v38;
+      [(BBDismissalSyncCache *)self->_dismissalSyncCache cacheDismissalDictionaries:dictionariesCopy dismissalIDs:dsCopy inSection:v38 forFeeds:feedsCopy];
+      if (feedsCopy != 65023 && feedsCopy)
       {
         v33 = [(BBServer *)self _bulletinsForIDs:v14];
-        [(BBServer *)self _sendRemoveBulletins:v33 toFeeds:v37 shouldSync:0];
+        [(BBServer *)self _sendRemoveBulletins:v33 toFeeds:feedsCopy shouldSync:0];
       }
 
       else
@@ -9778,7 +9778,7 @@ LABEL_30:
 
     else
     {
-      [(BBDismissalSyncCache *)self->_dismissalSyncCache cacheDismissalDictionaries:v42 dismissalIDs:v44 inSection:v10 forFeeds:a6];
+      [(BBDismissalSyncCache *)self->_dismissalSyncCache cacheDismissalDictionaries:dictionariesCopy dismissalIDs:dsCopy inSection:sectionCopy forFeeds:feeds];
       ADClientAddValueForScalarKey();
       ADClientAddValueForScalarKey();
     }
@@ -9793,15 +9793,15 @@ LABEL_30:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didChangeEffectiveAuthorizationStatusForSectionID:(id)a3
+- (void)didChangeEffectiveAuthorizationStatusForSectionID:(id)d
 {
-  v4 = [(BBServer *)self _sectionInfoForSectionID:a3];
+  v4 = [(BBServer *)self _sectionInfoForSectionID:d];
   [(BBServer *)self _sendUpdateSectionInfo:v4];
 }
 
-- (void)didChangeMuteAssertionForSectionID:(id)a3
+- (void)didChangeMuteAssertionForSectionID:(id)d
 {
-  v4 = [(BBServer *)self _sectionInfoForSectionID:a3];
+  v4 = [(BBServer *)self _sectionInfoForSectionID:d];
   if (v4)
   {
     v5 = v4;
@@ -9817,43 +9817,43 @@ LABEL_30:
 
 + (id)savedChronologicalSectionOrder
 {
-  v2 = [a1 _persistentSettingsStore];
-  v3 = [v2 readSectionOrder];
-  v4 = [v3 objectForKey:@"BBSectionOrderChronologicalIDs"];
+  _persistentSettingsStore = [self _persistentSettingsStore];
+  readSectionOrder = [_persistentSettingsStore readSectionOrder];
+  v4 = [readSectionOrder objectForKey:@"BBSectionOrderChronologicalIDs"];
 
   return v4;
 }
 
 + (id)savedSectionInfo
 {
-  v2 = [a1 _persistentSettingsStore];
-  v3 = [v2 readSectionInfo];
-  v4 = [v3 mutableCopy];
+  _persistentSettingsStore = [self _persistentSettingsStore];
+  readSectionInfo = [_persistentSettingsStore readSectionInfo];
+  v4 = [readSectionInfo mutableCopy];
 
   return v4;
 }
 
-+ (void)removeSavedChronologicalSectionInfo:(id)a3
++ (void)removeSavedChronologicalSectionInfo:(id)info
 {
-  v5 = [a3 mutableCopy];
+  v5 = [info mutableCopy];
   if ([BBPersistentStoreMigrator removeSavedChronologicalSectionInfos:?])
   {
-    v4 = [a1 _persistentSettingsStore];
-    [v4 writeSectionInfo:v5];
+    _persistentSettingsStore = [self _persistentSettingsStore];
+    [_persistentSettingsStore writeSectionInfo:v5];
   }
 }
 
-- (void)protectionStateChangedForBundleIdentifiers:(id)a3
+- (void)protectionStateChangedForBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__BBServer_protectionStateChangedForBundleIdentifiers___block_invoke;
   v7[3] = &unk_278D2A628;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifiersCopy;
+  selfCopy = self;
+  v6 = identifiersCopy;
   dispatch_async(queue, v7);
 }
 
@@ -9923,47 +9923,47 @@ LABEL_12:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deliverResponse:(id)a3 withCompletion:(id)a4
+- (void)deliverResponse:(id)response withCompletion:(id)completion
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v13 bulletinID];
-  v8 = [(NSMutableDictionary *)self->_bulletinRequestsByID objectForKey:v7];
+  responseCopy = response;
+  completionCopy = completion;
+  bulletinID = [responseCopy bulletinID];
+  v8 = [(NSMutableDictionary *)self->_bulletinRequestsByID objectForKey:bulletinID];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 sectionID];
-    v11 = [(BBServer *)self dataProviderForSectionID:v10];
+    sectionID = [v8 sectionID];
+    v11 = [(BBServer *)self dataProviderForSectionID:sectionID];
 
     if (v11)
     {
-      [v11 deliverResponse:v13 forBulletinRequest:v9 withCompletion:v6];
+      [v11 deliverResponse:responseCopy forBulletinRequest:v9 withCompletion:completionCopy];
     }
 
     else
     {
-      v12 = [v9 sectionID];
-      NSLog(&cfstr_BbserverDelive_0.isa, v12);
+      sectionID2 = [v9 sectionID];
+      NSLog(&cfstr_BbserverDelive_0.isa, sectionID2);
     }
   }
 
   else
   {
-    NSLog(&cfstr_BbserverDelive.isa, v7);
+    NSLog(&cfstr_BbserverDelive.isa, bulletinID);
   }
 }
 
-- (void)_updateShowsMessagePreviewForBulletin:(id)a3
+- (void)_updateShowsMessagePreviewForBulletin:(id)bulletin
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bulletinCopy = bulletin;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v4 sectionID];
-  v6 = [(BBServer *)self _sectionInfoForSectionID:v5 effective:1];
-  v7 = [(BBServer *)self _applicableSectionInfosForBulletin:v4 inSection:v6];
+  sectionID = [bulletinCopy sectionID];
+  v6 = [(BBServer *)self _sectionInfoForSectionID:sectionID effective:1];
+  v7 = [(BBServer *)self _applicableSectionInfosForBulletin:bulletinCopy inSection:v6];
 
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
@@ -9983,8 +9983,8 @@ LABEL_12:
         v13 = *(*(&v18 + 1) + 8 * i);
         if (v10)
         {
-          v14 = [*(*(&v18 + 1) + 8 * i) subsectionPriority];
-          if (v14 <= [v10 subsectionPriority])
+          subsectionPriority = [*(*(&v18 + 1) + 8 * i) subsectionPriority];
+          if (subsectionPriority <= [v10 subsectionPriority])
           {
             continue;
           }
@@ -10008,33 +10008,33 @@ LABEL_12:
 
   if ([v10 contentPreviewSetting])
   {
-    v16 = [v10 contentPreviewSetting];
+    contentPreviewSetting = [v10 contentPreviewSetting];
   }
 
   else
   {
-    v16 = [(BBServer *)self _effectiveGlobalContentPreviewsSetting];
+    contentPreviewSetting = [(BBServer *)self _effectiveGlobalContentPreviewsSetting];
   }
 
-  [v4 setContentPreviewSetting:v16];
+  [bulletinCopy setContentPreviewSetting:contentPreviewSetting];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateInterruptionLevelForBulletin:(id)a3
+- (void)_updateInterruptionLevelForBulletin:(id)bulletin
 {
-  v8 = a3;
-  v4 = [v8 sectionID];
-  v5 = [(BBServer *)self _sectionInfoForSectionID:v4 effective:1];
+  bulletinCopy = bulletin;
+  sectionID = [bulletinCopy sectionID];
+  v5 = [(BBServer *)self _sectionInfoForSectionID:sectionID effective:1];
 
-  v6 = [v8 interruptionLevel];
-  if (v6 == 2)
+  interruptionLevel = [bulletinCopy interruptionLevel];
+  if (interruptionLevel == 2)
   {
     goto LABEL_5;
   }
 
-  v7 = v6;
-  if (v6 != 3)
+  v7 = interruptionLevel;
+  if (interruptionLevel != 3)
   {
     goto LABEL_8;
   }
@@ -10059,34 +10059,34 @@ LABEL_5:
   }
 
 LABEL_8:
-  [v8 setInterruptionLevel:v7];
+  [bulletinCopy setInterruptionLevel:v7];
 }
 
-- (void)publishBulletinRequest:(id)a3 destinations:(unint64_t)a4
+- (void)publishBulletinRequest:(id)request destinations:(unint64_t)destinations
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 bulletinID];
+  requestCopy = request;
+  bulletinID = [requestCopy bulletinID];
 
-  if (!v7)
+  if (!bulletinID)
   {
-    [(BBServer *)self _assignIDToBulletinRequest:v6];
+    [(BBServer *)self _assignIDToBulletinRequest:requestCopy];
   }
 
-  v8 = [v6 sectionID];
-  v9 = [v6 bulletinID];
-  [(BBServer *)self _updateShowsMessagePreviewForBulletin:v6];
-  [(BBServer *)self _updateInterruptionLevelForBulletin:v6];
-  v10 = [(NSMutableDictionary *)self->_bulletinRequestsByID objectForKey:v9];
-  v11 = [(BBServer *)self _appProtectionMonitor];
-  v12 = [v11 isApplicationHidden:v8];
+  sectionID = [requestCopy sectionID];
+  bulletinID2 = [requestCopy bulletinID];
+  [(BBServer *)self _updateShowsMessagePreviewForBulletin:requestCopy];
+  [(BBServer *)self _updateInterruptionLevelForBulletin:requestCopy];
+  v10 = [(NSMutableDictionary *)self->_bulletinRequestsByID objectForKey:bulletinID2];
+  _appProtectionMonitor = [(BBServer *)self _appProtectionMonitor];
+  v12 = [_appProtectionMonitor isApplicationHidden:sectionID];
 
   if ((v12 & 1) == 0)
   {
     if (!v10)
     {
-      v13 = a4 != 0;
-      if ((a4 & 0x4C) == 0)
+      v13 = destinations != 0;
+      if ((destinations & 0x4C) == 0)
       {
         goto LABEL_20;
       }
@@ -10094,13 +10094,13 @@ LABEL_8:
       goto LABEL_17;
     }
 
-    v30 = [v6 hasContentModificationsRelativeTo:v10];
-    if ((a4 & 2) != 0)
+    v30 = [requestCopy hasContentModificationsRelativeTo:v10];
+    if ((destinations & 2) != 0)
     {
-      v16 = [(BBServer *)self noticesBulletinIDsForSectionID:v8];
-      v29 = [v16 containsObject:v9] ^ 1;
+      v16 = [(BBServer *)self noticesBulletinIDsForSectionID:sectionID];
+      v29 = [v16 containsObject:bulletinID2] ^ 1;
 
-      if ((a4 & 0x40) != 0)
+      if ((destinations & 0x40) != 0)
       {
         goto LABEL_9;
       }
@@ -10109,11 +10109,11 @@ LABEL_8:
     else
     {
       LOBYTE(v29) = 0;
-      if ((a4 & 0x40) != 0)
+      if ((destinations & 0x40) != 0)
       {
 LABEL_9:
-        v14 = [(BBServer *)self carBulletinIDsForSectionID:v8];
-        v15 = [v14 containsObject:v9] ^ 1;
+        v14 = [(BBServer *)self carBulletinIDsForSectionID:sectionID];
+        v15 = [v14 containsObject:bulletinID2] ^ 1;
 
         goto LABEL_14;
       }
@@ -10122,30 +10122,30 @@ LABEL_9:
     LOBYTE(v15) = 0;
 LABEL_14:
     v17 = v30;
-    if ((a4 & 0x4C) != 0)
+    if ((destinations & 0x4C) != 0)
     {
       v17 = 1;
     }
 
-    v13 = (a4 == 1) | v29 | v15 | v17;
-    if ((a4 & 0x4C) == 0)
+    v13 = (destinations == 1) | v29 | v15 | v17;
+    if ((destinations & 0x4C) == 0)
     {
       goto LABEL_18;
     }
 
 LABEL_17:
-    v18 = [MEMORY[0x277CBEAA8] date];
-    [v6 setLastInterruptDate:v18];
+    date = [MEMORY[0x277CBEAA8] date];
+    [requestCopy setLastInterruptDate:date];
 
 LABEL_21:
-    v20 = [MEMORY[0x277CBEAA8] date];
-    [v6 setPublicationDate:v20];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [requestCopy setPublicationDate:date2];
 
     goto LABEL_22;
   }
 
   v13 = 0;
-  if ((a4 & 0x4C) != 0)
+  if ((destinations & 0x4C) != 0)
   {
     goto LABEL_17;
   }
@@ -10153,12 +10153,12 @@ LABEL_21:
 LABEL_18:
   if (v10)
   {
-    v19 = [v10 lastInterruptDate];
-    [v6 setLastInterruptDate:v19];
+    lastInterruptDate = [v10 lastInterruptDate];
+    [requestCopy setLastInterruptDate:lastInterruptDate];
   }
 
 LABEL_20:
-  if (a4)
+  if (destinations)
   {
     goto LABEL_21;
   }
@@ -10166,58 +10166,58 @@ LABEL_20:
 LABEL_22:
   if ((v13 & 1) != 0 || v10)
   {
-    v21 = [v6 copy];
-    [(NSMutableDictionary *)self->_bulletinRequestsByID setObject:v21 forKey:v9];
+    v21 = [requestCopy copy];
+    [(NSMutableDictionary *)self->_bulletinRequestsByID setObject:v21 forKey:bulletinID2];
   }
 
   if (v13)
   {
-    [(BBServer *)self _validateExpirationDateForBulletinRequest:v6];
+    [(BBServer *)self _validateExpirationDateForBulletinRequest:requestCopy];
     v22 = BBLogExpiration;
     if (os_log_type_enabled(BBLogExpiration, OS_LOG_TYPE_DEFAULT))
     {
       v23 = v22;
-      v24 = [v6 subsectionIDs];
-      v25 = [v6 bulletinID];
-      v26 = [v6 expirationDate];
+      subsectionIDs = [requestCopy subsectionIDs];
+      bulletinID3 = [requestCopy bulletinID];
+      expirationDate = [requestCopy expirationDate];
       *buf = 138544386;
-      v32 = v8;
+      v32 = sectionID;
       v33 = 2112;
-      v34 = v24;
+      v34 = subsectionIDs;
       v35 = 2114;
-      v36 = v25;
+      v36 = bulletinID3;
       v37 = 2114;
-      v38 = v26;
+      v38 = expirationDate;
       v39 = 2048;
-      v40 = [v6 expirationEvents];
+      expirationEvents = [requestCopy expirationEvents];
       _os_log_impl(&dword_241EFF000, v23, OS_LOG_TYPE_DEFAULT, "Publishing bulletin for section <%{public}@>: subsectionIDs: %{%@}@, bulletinID = <%{public}@>, expiration date = <%{public}@>, expiration events <%ld>", buf, 0x34u);
     }
 
-    v27 = [BBBulletin bulletinWithBulletin:v6];
-    [(BBServer *)self publishBulletin:v27 destinations:a4];
+    v27 = [BBBulletin bulletinWithBulletin:requestCopy];
+    [(BBServer *)self publishBulletin:v27 destinations:destinations];
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSection:(id)a3 inFeed:(unint64_t)a4 withBulletinRequests:(id)a5
+- (void)updateSection:(id)section inFeed:(unint64_t)feed withBulletinRequests:(id)requests
 {
   v69 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v48 = a5;
+  sectionCopy = section;
+  requestsCopy = requests;
   v7 = BBLogSectionUpdates;
   if (os_log_type_enabled(BBLogSectionUpdates, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
     *buf = 138543618;
-    v66 = v6;
+    v66 = sectionCopy;
     v67 = 2048;
-    v68 = [v48 count];
+    v68 = [requestsCopy count];
     _os_log_impl(&dword_241EFF000, v8, OS_LOG_TYPE_DEFAULT, "Updating section %{public}@ with %ld new bulletins", buf, 0x16u);
   }
 
-  v45 = v6;
-  v43 = [(BBServer *)self bulletinIDsForSectionID:v6 inFeed:a4];
+  v45 = sectionCopy;
+  v43 = [(BBServer *)self bulletinIDsForSectionID:sectionCopy inFeed:feed];
   v9 = [(BBServer *)self _bulletinRequestsForIDs:?];
   v10 = BBLogSectionUpdates;
   if (os_log_type_enabled(BBLogSectionUpdates, OS_LOG_TYPE_DEFAULT))
@@ -10249,12 +10249,12 @@ LABEL_22:
         }
 
         v16 = *(*(&v58 + 1) + 8 * i);
-        v17 = [v16 publisherMatchID];
+        publisherMatchID = [v16 publisherMatchID];
         v54 = 0u;
         v55 = 0u;
         v56 = 0u;
         v57 = 0u;
-        v18 = v48;
+        v18 = requestsCopy;
         v19 = [v18 countByEnumeratingWithState:&v54 objects:v63 count:16];
         if (v19)
         {
@@ -10269,8 +10269,8 @@ LABEL_22:
                 objc_enumerationMutation(v18);
               }
 
-              v23 = [*(*(&v54 + 1) + 8 * j) publisherMatchID];
-              v24 = [v17 isEqualToString:v23];
+              publisherMatchID2 = [*(*(&v54 + 1) + 8 * j) publisherMatchID];
+              v24 = [publisherMatchID isEqualToString:publisherMatchID2];
 
               if (v24)
               {
@@ -10294,7 +10294,7 @@ LABEL_22:
         if (os_log_type_enabled(BBLogSectionUpdates, OS_LOG_TYPE_DEFAULT))
         {
           v27 = v26;
-          v28 = [(BBServer *)self bulletinIDsForSectionID:v45 inFeed:a4];
+          v28 = [(BBServer *)self bulletinIDsForSectionID:v45 inFeed:feed];
           v29 = [v28 count];
           *buf = 138412546;
           v66 = v16;
@@ -10303,8 +10303,8 @@ LABEL_22:
           _os_log_impl(&dword_241EFF000, v27, OS_LOG_TYPE_DEFAULT, "Removing old bulletin: %@\n%ld bulletins remain", buf, 0x16u);
         }
 
-        v30 = [v16 bulletinID];
-        [(BBServer *)self removeBulletinID:v30 fromSection:v45 inFeed:(8 * (a4 & 1)) | a4];
+        bulletinID = [v16 bulletinID];
+        [(BBServer *)self removeBulletinID:bulletinID fromSection:v45 inFeed:(8 * (feed & 1)) | feed];
 
         objc_autoreleasePoolPop(v25);
 LABEL_22:
@@ -10319,10 +10319,10 @@ LABEL_22:
   v31 = [(BBServer *)self allBulletinIDsForSectionID:v45];
   v32 = [(BBServer *)self _bulletinRequestsForIDs:v31];
 
-  if (a4 == 1)
+  if (feed == 1)
   {
-    v33 = [v48 allObjects];
-    v34 = [v33 sortedArrayUsingComparator:&__block_literal_global_8];
+    allObjects = [requestsCopy allObjects];
+    v34 = [allObjects sortedArrayUsingComparator:&__block_literal_global_8];
 
     v52 = 0u;
     v53 = 0u;
@@ -10370,11 +10370,11 @@ uint64_t __67__BBServer_Publication__updateSection_inFeed_withBulletinRequests__
   return v7;
 }
 
-- (void)withdrawBulletinRequestsWithRecordID:(id)a3 forSectionID:(id)a4
+- (void)withdrawBulletinRequestsWithRecordID:(id)d forSectionID:(id)iD
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(BBServer *)self allBulletinIDsForSectionID:a4];
+  dCopy = d;
+  v7 = [(BBServer *)self allBulletinIDsForSectionID:iD];
   v8 = [(BBServer *)self _bulletinRequestsForIDs:v7];
 
   v21 = 0u;
@@ -10397,13 +10397,13 @@ uint64_t __67__BBServer_Publication__updateSection_inFeed_withBulletinRequests__
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [v14 recordID];
-        v16 = [v6 isEqualToString:v15];
+        recordID = [v14 recordID];
+        v16 = [dCopy isEqualToString:recordID];
 
         if (v16)
         {
-          v17 = [v14 bulletinID];
-          [(BBServer *)self withdrawBulletinID:v17 shouldSync:1];
+          bulletinID = [v14 bulletinID];
+          [(BBServer *)self withdrawBulletinID:bulletinID shouldSync:1];
         }
       }
 
@@ -10416,16 +10416,16 @@ uint64_t __67__BBServer_Publication__updateSection_inFeed_withBulletinRequests__
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_bulletinRequestsForIDs:(id)a3
+- (id)_bulletinRequestsForIDs:(id)ds
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v4, "count")}];
+  dsCopy = ds;
+  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -10458,30 +10458,30 @@ uint64_t __67__BBServer_Publication__updateSection_inFeed_withBulletinRequests__
   return v5;
 }
 
-- (void)_assignIDToBulletinRequest:(id)a3
+- (void)_assignIDToBulletinRequest:(id)request
 {
-  v4 = a3;
-  v7 = [v4 sectionID];
-  v5 = [(BBServer *)self allBulletinIDsForSectionID:v7];
+  requestCopy = request;
+  sectionID = [requestCopy sectionID];
+  v5 = [(BBServer *)self allBulletinIDsForSectionID:sectionID];
   v6 = [(BBServer *)self _bulletinRequestsForIDs:v5];
 
-  [(BBServer *)self _assignIDToBulletinRequest:v4 checkAgainstBulletins:v6];
+  [(BBServer *)self _assignIDToBulletinRequest:requestCopy checkAgainstBulletins:v6];
 }
 
-- (void)_assignIDToBulletinRequest:(id)a3 checkAgainstBulletins:(id)a4
+- (void)_assignIDToBulletinRequest:(id)request checkAgainstBulletins:(id)bulletins
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 publisherMatchID];
-  if (v8)
+  requestCopy = request;
+  bulletinsCopy = bulletins;
+  publisherMatchID = [requestCopy publisherMatchID];
+  if (publisherMatchID)
   {
-    v19 = self;
+    selfCopy = self;
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = v7;
+    v9 = bulletinsCopy;
     v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
@@ -10497,13 +10497,13 @@ uint64_t __67__BBServer_Publication__updateSection_inFeed_withBulletinRequests__
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [v14 publisherMatchID];
-          v16 = [v8 isEqualToString:v15];
+          publisherMatchID2 = [v14 publisherMatchID];
+          v16 = [publisherMatchID isEqualToString:publisherMatchID2];
 
           if (v16)
           {
-            v17 = [v14 bulletinID];
-            [v6 setBulletinID:v17];
+            bulletinID = [v14 bulletinID];
+            [requestCopy setBulletinID:bulletinID];
 
             goto LABEL_13;
           }
@@ -10519,12 +10519,12 @@ uint64_t __67__BBServer_Publication__updateSection_inFeed_withBulletinRequests__
       }
     }
 
-    self = v19;
+    self = selfCopy;
   }
 
-  [v6 generateNewBulletinID];
+  [requestCopy generateNewBulletinID];
   ++self->_globalCounter;
-  [v6 setCounter:?];
+  [requestCopy setCounter:?];
 LABEL_13:
 
   v18 = *MEMORY[0x277D85DE8];

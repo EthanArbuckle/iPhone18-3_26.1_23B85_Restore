@@ -1,15 +1,15 @@
 @interface SiriGKAlternateResultView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriGKAlternateResultView)initWithAlternateResult:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriGKAlternateResultView)initWithAlternateResult:(id)result;
 - (id)selectionResponseTitle;
 - (void)layoutSubviews;
 @end
 
 @implementation SiriGKAlternateResultView
 
-- (SiriGKAlternateResultView)initWithAlternateResult:(id)a3
+- (SiriGKAlternateResultView)initWithAlternateResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v17.receiver = self;
   v17.super_class = SiriGKAlternateResultView;
   v6 = [(SiriGKAlternateResultView *)&v17 init];
@@ -19,14 +19,14 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v6->_result, a3);
-  v8 = [v5 command];
-  [p_isa setCommand:v8];
+  objc_storeStrong(&v6->_result, result);
+  command = [resultCopy command];
+  [p_isa setCommand:command];
 
   [p_isa setEdgeInsets:{0.0, SiriUIPlatterStyle[32], 0.0, SiriUIPlatterStyle[34]}];
-  v9 = [v5 name];
+  name = [resultCopy name];
 
-  if (v9)
+  if (name)
   {
     v10 = +[SiriSharedUIContentLabel label];
     v11 = p_isa[7];
@@ -38,38 +38,38 @@
 
     [p_isa[7] setNumberOfLines:4];
     v14 = p_isa[7];
-    v15 = [v5 name];
-    [v14 setText:v15];
+    name2 = [resultCopy name];
+    [v14 setText:name2];
 
     [p_isa addSubview:p_isa[7]];
 LABEL_4:
-    v9 = p_isa;
+    name = p_isa;
   }
 
-  return v9;
+  return name;
 }
 
 - (id)selectionResponseTitle
 {
-  v3 = [(SiriGKView *)self command];
+  command = [(SiriGKView *)self command];
 
-  if (v3)
+  if (command)
   {
-    v4 = [(UILabel *)self->_titleLabel text];
+    text = [(UILabel *)self->_titleLabel text];
   }
 
   else
   {
-    v4 = 0;
+    text = 0;
   }
 
-  return v4;
+  return text;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(SiriGKView *)self edgeInsets];
   v8 = width - (v6 + v7);
   [(UILabel *)self->_titleLabel sizeThatFits:v8, height - (v9 + v10)];

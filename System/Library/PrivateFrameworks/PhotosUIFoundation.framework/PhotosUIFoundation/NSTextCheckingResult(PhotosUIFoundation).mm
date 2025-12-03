@@ -7,7 +7,7 @@
 - (id)px_matchAtIndex:()PhotosUIFoundation forString:
 {
   v6 = a4;
-  v7 = [a1 rangeAtIndex:a3];
+  v7 = [self rangeAtIndex:a3];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;

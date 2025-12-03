@@ -1,24 +1,24 @@
 @interface AVPictureInPicturePlatformAdapterAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (AVPictureInPicturePlatformAdapterAccessibility)init;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axPostPIPStoppedNotification;
-- (void)pictureInPictureViewControllerViewDidAppear:(id)a3;
-- (void)pictureInPictureViewControllerViewWillDisappear:(id)a3;
+- (void)pictureInPictureViewControllerViewDidAppear:(id)appear;
+- (void)pictureInPictureViewControllerViewWillDisappear:(id)disappear;
 - (void)startPictureInPicture;
 @end
 
 @implementation AVPictureInPicturePlatformAdapterAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVPictureInPicturePlatformAdapter" conformsToProtocol:@"AVPictureInPictureViewControllerDelegate"];
-  [v3 validateProtocol:@"AVPictureInPictureViewControllerDelegate" hasRequiredInstanceMethod:@"pictureInPictureViewControllerViewDidAppear:"];
-  [v3 validateProtocol:@"AVPictureInPictureViewControllerDelegate" hasRequiredInstanceMethod:@"pictureInPictureViewControllerViewWillDisappear:"];
-  [v3 validateClass:@"AVPictureInPicturePlatformAdapter" hasInstanceMethod:@"pictureInPictureViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVPictureInPicturePlatformAdapter" hasProperty:@"playerController" withType:"@"];
-  [v3 validateClass:@"AVPlayerController" hasInstanceMethod:@"metadata" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVPictureInPicturePlatformAdapter" conformsToProtocol:@"AVPictureInPictureViewControllerDelegate"];
+  [validationsCopy validateProtocol:@"AVPictureInPictureViewControllerDelegate" hasRequiredInstanceMethod:@"pictureInPictureViewControllerViewDidAppear:"];
+  [validationsCopy validateProtocol:@"AVPictureInPictureViewControllerDelegate" hasRequiredInstanceMethod:@"pictureInPictureViewControllerViewWillDisappear:"];
+  [validationsCopy validateClass:@"AVPictureInPicturePlatformAdapter" hasInstanceMethod:@"pictureInPictureViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVPictureInPicturePlatformAdapter" hasProperty:@"playerController" withType:"@"];
+  [validationsCopy validateClass:@"AVPlayerController" hasInstanceMethod:@"metadata" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -72,8 +72,8 @@ LABEL_9:
 
 - (void)_axPostPIPStoppedNotification
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 postNotificationName:AXPIPStoppedNotification object:self];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter postNotificationName:AXPIPStoppedNotification object:self];
 }
 
 - (AVPictureInPicturePlatformAdapterAccessibility)init
@@ -92,11 +92,11 @@ LABEL_9:
   [(AVPictureInPicturePlatformAdapterAccessibility *)&v2 startPictureInPicture];
 }
 
-- (void)pictureInPictureViewControllerViewDidAppear:(id)a3
+- (void)pictureInPictureViewControllerViewDidAppear:(id)appear
 {
   v8.receiver = self;
   v8.super_class = AVPictureInPicturePlatformAdapterAccessibility;
-  [(AVPictureInPicturePlatformAdapterAccessibility *)&v8 pictureInPictureViewControllerViewDidAppear:a3];
+  [(AVPictureInPicturePlatformAdapterAccessibility *)&v8 pictureInPictureViewControllerViewDidAppear:appear];
   [(AVPictureInPicturePlatformAdapterAccessibility *)self _accessibilityLoadAccessibilityInformation];
   v4 = [(AVPictureInPicturePlatformAdapterAccessibility *)self safeValueForKey:@"pictureInPictureViewController"];
   v5 = [v4 safeValueForKey:@"view"];
@@ -115,11 +115,11 @@ LABEL_9:
   UIAccessibilitySpeakAndDoNotBeInterrupted();
 }
 
-- (void)pictureInPictureViewControllerViewWillDisappear:(id)a3
+- (void)pictureInPictureViewControllerViewWillDisappear:(id)disappear
 {
   v4.receiver = self;
   v4.super_class = AVPictureInPicturePlatformAdapterAccessibility;
-  [(AVPictureInPicturePlatformAdapterAccessibility *)&v4 pictureInPictureViewControllerViewWillDisappear:a3];
+  [(AVPictureInPicturePlatformAdapterAccessibility *)&v4 pictureInPictureViewControllerViewWillDisappear:disappear];
   [(AVPictureInPicturePlatformAdapterAccessibility *)self _axPostPIPStoppedNotification];
 }
 

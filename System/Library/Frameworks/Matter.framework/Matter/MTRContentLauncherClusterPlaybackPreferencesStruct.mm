@@ -1,6 +1,6 @@
 @interface MTRContentLauncherClusterPlaybackPreferencesStruct
 - (MTRContentLauncherClusterPlaybackPreferencesStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -28,17 +28,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRContentLauncherClusterPlaybackPreferencesStruct);
-  v5 = [(MTRContentLauncherClusterPlaybackPreferencesStruct *)self playbackPosition];
-  [(MTRContentLauncherClusterPlaybackPreferencesStruct *)v4 setPlaybackPosition:v5];
+  playbackPosition = [(MTRContentLauncherClusterPlaybackPreferencesStruct *)self playbackPosition];
+  [(MTRContentLauncherClusterPlaybackPreferencesStruct *)v4 setPlaybackPosition:playbackPosition];
 
-  v6 = [(MTRContentLauncherClusterPlaybackPreferencesStruct *)self textTrack];
-  [(MTRContentLauncherClusterPlaybackPreferencesStruct *)v4 setTextTrack:v6];
+  textTrack = [(MTRContentLauncherClusterPlaybackPreferencesStruct *)self textTrack];
+  [(MTRContentLauncherClusterPlaybackPreferencesStruct *)v4 setTextTrack:textTrack];
 
-  v7 = [(MTRContentLauncherClusterPlaybackPreferencesStruct *)self audioTracks];
-  [(MTRContentLauncherClusterPlaybackPreferencesStruct *)v4 setAudioTracks:v7];
+  audioTracks = [(MTRContentLauncherClusterPlaybackPreferencesStruct *)self audioTracks];
+  [(MTRContentLauncherClusterPlaybackPreferencesStruct *)v4 setAudioTracks:audioTracks];
 
   return v4;
 }

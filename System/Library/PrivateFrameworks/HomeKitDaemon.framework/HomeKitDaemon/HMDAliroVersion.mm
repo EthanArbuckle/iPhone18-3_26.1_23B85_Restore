@@ -1,16 +1,16 @@
 @interface HMDAliroVersion
 - (HMDAliroVersion)init;
-- (HMDAliroVersion)initWithExpeditedTransactionSupportedVersions:(id)a3 bleUWBSupportedVersions:(id)a4 bleAdvertisingVersions:(id)a5;
+- (HMDAliroVersion)initWithExpeditedTransactionSupportedVersions:(id)versions bleUWBSupportedVersions:(id)supportedVersions bleAdvertisingVersions:(id)advertisingVersions;
 - (NSString)description;
 @end
 
 @implementation HMDAliroVersion
 
-- (HMDAliroVersion)initWithExpeditedTransactionSupportedVersions:(id)a3 bleUWBSupportedVersions:(id)a4 bleAdvertisingVersions:(id)a5
+- (HMDAliroVersion)initWithExpeditedTransactionSupportedVersions:(id)versions bleUWBSupportedVersions:(id)supportedVersions bleAdvertisingVersions:(id)advertisingVersions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  versionsCopy = versions;
+  supportedVersionsCopy = supportedVersions;
+  advertisingVersionsCopy = advertisingVersions;
   v11 = sub_22A4DB62C();
   v13 = v12;
 
@@ -43,7 +43,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   AliroVersion.description.getter();
 
   v3 = sub_22A4DD5AC();

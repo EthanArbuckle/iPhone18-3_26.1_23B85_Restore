@@ -1,53 +1,53 @@
 @interface SBIconListViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsListViewEmptyForDragAndDrop;
 - (BOOL)isAccessibilityElement;
 - (id)__axDragElements;
 - (id)_accessibilityAdditionalElements;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilityScannerGroupElements;
 - (id)accessibilityDropPointDescriptors;
 - (id)accessibilityLabel;
 - (id)automationElements;
-- (void)_updateEditingStateForIcons:(id)a3 animated:(BOOL)a4;
+- (void)_updateEditingStateForIcons:(id)icons animated:(BOOL)animated;
 @end
 
 @implementation SBIconListViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBDockIconListView"];
-  [v3 validateClass:@"SBIconListView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SBIconListView" hasInstanceVariable:@"_model" withType:"SBIconListModel"];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"layoutIconsNow" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"iconViewForIcon:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"isLayoutReversed" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"rowAtPoint:" withFullSignature:{"Q", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"columnAtPoint:" withFullSignature:{"Q", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"indexForCoordinate:forOrientation:" withFullSignature:{"Q", "{SBIconCoordinate=qq}", "q", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"iconImageSize" withFullSignature:{"{CGSize=dd}", 0}];
-  [v3 validateClass:@"SBIconListModel" hasInstanceMethod:@"iconAtIndex:" withFullSignature:{"@", "Q", 0}];
-  [v3 validateClass:@"SBIconListModel"];
-  [v3 validateClass:@"SBIconListModel" hasInstanceMethod:@"icons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIcon"];
-  [v3 validateClass:@"SBIcon" hasInstanceMethod:@"isPlaceholder" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"orientation" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"coordinateForIconAtIndex:" withFullSignature:{"{SBIconCoordinate=qq}", "Q", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"iconRowsForCurrentOrientation" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"SBIcon" hasInstanceMethod:@"gridSizeClass" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"iconGridSizeForClass:" withFullSignature:{"{SBHIconGridSize=SS}", "@", 0}];
-  [v3 validateClass:@"SBIconListModel" hasInstanceMethod:@"indexForIcon:" withFullSignature:{"Q", "@", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"displayedModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconListModel" hasInstanceMethod:@"gridCellInfoWithOptions:" withFullSignature:{"@", "Q", 0}];
-  [v3 validateClass:@"SBIconListGridCellInfo" hasInstanceMethod:@"enumerateEmptyGridCellIndexesUsingBlock:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"SBIconListModel" hasInstanceMethod:@"coordinateForGridCellIndex:gridCellInfoOptions:" withFullSignature:{"{SBIconCoordinate=qq}", "Q", "Q", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"rectForCellAtIconCoordinate:metrics:" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", "{SBIconCoordinate=qq}", "@", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"layoutMetrics" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"_updateEditingStateForIcons:animated:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"SBRootFolder"];
-  [v3 validateClass:@"SBIconListModel" hasInstanceMethod:@"folder" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBDockIconListView"];
+  [validationsCopy validateClass:@"SBIconListView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceVariable:@"_model" withType:"SBIconListModel"];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"layoutIconsNow" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"iconViewForIcon:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"isLayoutReversed" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"rowAtPoint:" withFullSignature:{"Q", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"columnAtPoint:" withFullSignature:{"Q", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"indexForCoordinate:forOrientation:" withFullSignature:{"Q", "{SBIconCoordinate=qq}", "q", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"iconImageSize" withFullSignature:{"{CGSize=dd}", 0}];
+  [validationsCopy validateClass:@"SBIconListModel" hasInstanceMethod:@"iconAtIndex:" withFullSignature:{"@", "Q", 0}];
+  [validationsCopy validateClass:@"SBIconListModel"];
+  [validationsCopy validateClass:@"SBIconListModel" hasInstanceMethod:@"icons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIcon"];
+  [validationsCopy validateClass:@"SBIcon" hasInstanceMethod:@"isPlaceholder" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"orientation" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"coordinateForIconAtIndex:" withFullSignature:{"{SBIconCoordinate=qq}", "Q", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"iconRowsForCurrentOrientation" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"SBIcon" hasInstanceMethod:@"gridSizeClass" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"iconGridSizeForClass:" withFullSignature:{"{SBHIconGridSize=SS}", "@", 0}];
+  [validationsCopy validateClass:@"SBIconListModel" hasInstanceMethod:@"indexForIcon:" withFullSignature:{"Q", "@", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"displayedModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconListModel" hasInstanceMethod:@"gridCellInfoWithOptions:" withFullSignature:{"@", "Q", 0}];
+  [validationsCopy validateClass:@"SBIconListGridCellInfo" hasInstanceMethod:@"enumerateEmptyGridCellIndexesUsingBlock:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"SBIconListModel" hasInstanceMethod:@"coordinateForGridCellIndex:gridCellInfoOptions:" withFullSignature:{"{SBIconCoordinate=qq}", "Q", "Q", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"rectForCellAtIconCoordinate:metrics:" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", "{SBIconCoordinate=qq}", "@", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"layoutMetrics" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"_updateEditingStateForIcons:animated:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"SBRootFolder"];
+  [validationsCopy validateClass:@"SBIconListModel" hasInstanceMethod:@"folder" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
 }
 
 - (id)automationElements
@@ -93,16 +93,16 @@
   v12 = [(SBIconListViewAccessibility *)self safeValueForKey:@"layoutIconsNow"];
   v15.receiver = self;
   v15.super_class = SBIconListViewAccessibility;
-  v13 = [(SBIconListViewAccessibility *)&v15 automationElements];
+  automationElements = [(SBIconListViewAccessibility *)&v15 automationElements];
 
-  return v13;
+  return automationElements;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   LOBYTE(v27) = 0;
   objc_opt_class();
   v8 = [(SBIconListViewAccessibility *)self safeValueForKey:@"_model"];
@@ -113,11 +113,11 @@
   objc_opt_class();
   v11 = __UIAccessibilityCastAsClass();
   v12 = v11;
-  if (![v11 pointInside:v7 withEvent:{x, y}] || (NSClassFromString(&cfstr_Sbiconlistview_1.isa), (objc_opt_isKindOfClass() & 1) != 0) || !objc_msgSend(v10, "count"))
+  if (![v11 pointInside:eventCopy withEvent:{x, y}] || (NSClassFromString(&cfstr_Sbiconlistview_1.isa), (objc_opt_isKindOfClass() & 1) != 0) || !objc_msgSend(v10, "count"))
   {
     v65.receiver = self;
     v65.super_class = SBIconListViewAccessibility;
-    v20 = [(SBIconListViewAccessibility *)&v65 _accessibilityHitTest:v7 withEvent:x, y];
+    v20 = [(SBIconListViewAccessibility *)&v65 _accessibilityHitTest:eventCopy withEvent:x, y];
     v27 = 0;
     v28 = &v27;
     v29 = 0x2020000000;
@@ -126,7 +126,7 @@
     v58 = 3221225472;
     v59 = __63__SBIconListViewAccessibility__accessibilityHitTest_withEvent___block_invoke;
     v60 = &unk_29F300440;
-    v61 = self;
+    selfCopy = self;
     v62 = &v27;
     v63 = x;
     v64 = y;
@@ -166,7 +166,7 @@
   v50 = 3221225472;
   v51 = __63__SBIconListViewAccessibility__accessibilityHitTest_withEvent___block_invoke_2;
   v52 = &unk_29F300440;
-  v53 = self;
+  selfCopy2 = self;
   v54 = &v27;
   v55 = x;
   v56 = y;
@@ -181,7 +181,7 @@
   v42 = 3221225472;
   v43 = __63__SBIconListViewAccessibility__accessibilityHitTest_withEvent___block_invoke_3;
   v44 = &unk_29F300440;
-  v45 = self;
+  selfCopy3 = self;
   v46 = &v27;
   v47 = x;
   v48 = y;
@@ -190,9 +190,9 @@
   _Block_object_dispose(&v27, 8);
   if ([(SBIconListViewAccessibility *)self safeBoolForKey:@"isLayoutReversed"])
   {
-    v15 = [(SBIconListViewAccessibility *)self window];
-    v16 = [v15 windowScene];
-    v17 = [v16 interfaceOrientation] - 3;
+    window = [(SBIconListViewAccessibility *)self window];
+    windowScene = [window windowScene];
+    v17 = [windowScene interfaceOrientation] - 3;
 
     if (v17 > 1)
     {
@@ -237,7 +237,7 @@ LABEL_17:
   v34 = 3221225472;
   v35 = __63__SBIconListViewAccessibility__accessibilityHitTest_withEvent___block_invoke_4;
   v36 = &unk_29F300440;
-  v37 = self;
+  selfCopy4 = self;
   v38 = &v27;
   v39 = v14;
   v40 = v13;
@@ -318,7 +318,7 @@ uint64_t __63__SBIconListViewAccessibility__accessibilityHitTest_withEvent___blo
 - (id)_accessibilityScannerGroupElements
 {
   v45[2] = *MEMORY[0x29EDCA608];
-  v20 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v21 = [(SBIconListViewAccessibility *)self safeValueForKey:@"_model"];
   LOBYTE(v33) = 0;
   objc_opt_class();
@@ -362,9 +362,9 @@ uint64_t __63__SBIconListViewAccessibility__accessibilityHitTest_withEvent___blo
       v40 = v5;
       v7 = [v22 ax_filteredArrayUsingBlock:{v38, v18}];
       v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_4];
-      v9 = [v8 firstObject];
+      firstObject = [v8 firstObject];
 
-      v10 = [v9 safeStringForKey:@"gridSizeClass"];
+      v10 = [firstObject safeStringForKey:@"gridSizeClass"];
       v33 = 0;
       v34 = &v33;
       v35 = 0x2810000000;
@@ -391,21 +391,21 @@ uint64_t __63__SBIconListViewAccessibility__accessibilityHitTest_withEvent___blo
       v28 = v5;
       v29 = v5 + v12 - 1;
       v13 = [v22 ax_filteredArrayUsingBlock:v26];
-      v14 = [MEMORY[0x29EDB8DE8] array];
+      array2 = [MEMORY[0x29EDB8DE8] array];
       v23[0] = MEMORY[0x29EDCA5F8];
       v23[1] = 3221225472;
       v23[2] = __65__SBIconListViewAccessibility__accessibilityScannerGroupElements__block_invoke_9;
       v23[3] = &unk_29F3005E8;
-      v24 = v14;
-      v25 = self;
-      v15 = v14;
+      v24 = array2;
+      selfCopy = self;
+      v15 = array2;
       [v13 enumerateObjectsUsingBlock:v23];
       v44[0] = @"GroupTraits";
       v44[1] = @"GroupElements";
       v45[0] = &unk_2A2318CF8;
       v45[1] = v15;
       v16 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v45 forKeys:v44 count:2];
-      [v20 axSafelyAddObject:v16];
+      [array axSafelyAddObject:v16];
 
       v5 += v12;
     }
@@ -413,7 +413,7 @@ uint64_t __63__SBIconListViewAccessibility__accessibilityHitTest_withEvent___blo
     while (v5 <= v4);
   }
 
-  return v20;
+  return array;
 }
 
 void __65__SBIconListViewAccessibility__accessibilityScannerGroupElements__block_invoke(uint64_t a1, void *a2)
@@ -547,21 +547,21 @@ uint64_t __65__SBIconListViewAccessibility__accessibilityScannerGroupElements__b
   return MEMORY[0x2A1C71028]();
 }
 
-- (void)_updateEditingStateForIcons:(id)a3 animated:(BOOL)a4
+- (void)_updateEditingStateForIcons:(id)icons animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = SBIconListViewAccessibility;
-  [(SBIconListViewAccessibility *)&v5 _updateEditingStateForIcons:a3 animated:a4];
+  [(SBIconListViewAccessibility *)&v5 _updateEditingStateForIcons:icons animated:animated];
   [(SBIconListViewAccessibility *)self _axSetDragElements:0];
 }
 
 - (id)__axDragElements
 {
-  v3 = [(SBIconListViewAccessibility *)self _axDragElements];
+  _axDragElements = [(SBIconListViewAccessibility *)self _axDragElements];
 
-  if (!v3)
+  if (!_axDragElements)
   {
-    v4 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     [(SBIconListViewAccessibility *)self safeValueForKey:@"displayedModel"];
     v15 = 0;
     v16 = &v15;
@@ -575,17 +575,17 @@ uint64_t __65__SBIconListViewAccessibility__accessibilityScannerGroupElements__b
     _Block_object_dispose(&v15, 8);
     v11 = MEMORY[0x29EDCA5F8];
     v12 = v5;
-    v13 = v4;
-    v6 = v4;
+    v13 = array;
+    v6 = array;
     v7 = v14;
     v8 = v5;
     AXPerformSafeBlock();
     [(SBIconListViewAccessibility *)self _axSetDragElements:v6, v11, 3221225472, __47__SBIconListViewAccessibility___axDragElements__block_invoke_2, &unk_29F300660, self];
   }
 
-  v9 = [(SBIconListViewAccessibility *)self _axDragElements];
+  _axDragElements2 = [(SBIconListViewAccessibility *)self _axDragElements];
 
-  return v9;
+  return _axDragElements2;
 }
 
 uint64_t __47__SBIconListViewAccessibility___axDragElements__block_invoke(uint64_t a1)
@@ -719,12 +719,12 @@ void __47__SBIconListViewAccessibility___axDragElements__block_invoke_5(uint64_t
   if ((objc_opt_isKindOfClass() & 1) != 0 && ([(SBIconListViewAccessibility *)self safeBoolForKey:@"isEditing"]& 1) != 0)
   {
     v4 = AXSBIconControllerSharedInstance();
-    v5 = [v4 _axDragManager];
-    v6 = [v5 _axIsIconDragging];
+    _axDragManager = [v4 _axDragManager];
+    _axIsIconDragging = [_axDragManager _axIsIconDragging];
 
-    if (v6)
+    if (_axIsIconDragging)
     {
-      v7 = [(SBIconListViewAccessibility *)self __axDragElements];
+      __axDragElements = [(SBIconListViewAccessibility *)self __axDragElements];
       goto LABEL_7;
     }
   }
@@ -733,38 +733,38 @@ void __47__SBIconListViewAccessibility___axDragElements__block_invoke_5(uint64_t
   {
   }
 
-  v7 = 0;
+  __axDragElements = 0;
 LABEL_7:
 
-  return v7;
+  return __axDragElements;
 }
 
 - (BOOL)isAccessibilityElement
 {
   v3 = AXSBIconControllerSharedInstance();
-  v4 = [v3 _axDragManager];
-  if ([v4 _axIsIconDragging])
+  _axDragManager = [v3 _axDragManager];
+  if ([_axDragManager _axIsIconDragging])
   {
-    v5 = [(SBIconListViewAccessibility *)self _accessibilityIsListViewEmptyForDragAndDrop];
+    _accessibilityIsListViewEmptyForDragAndDrop = [(SBIconListViewAccessibility *)self _accessibilityIsListViewEmptyForDragAndDrop];
   }
 
   else
   {
-    v5 = 0;
+    _accessibilityIsListViewEmptyForDragAndDrop = 0;
   }
 
-  return v5;
+  return _accessibilityIsListViewEmptyForDragAndDrop;
 }
 
 - (id)accessibilityLabel
 {
   v3 = AXSBIconControllerSharedInstance();
-  v4 = [v3 _axDragManager];
-  if ([v4 _axIsIconDragging])
+  _axDragManager = [v3 _axDragManager];
+  if ([_axDragManager _axIsIconDragging])
   {
-    v5 = [(SBIconListViewAccessibility *)self _accessibilityIsListViewEmptyForDragAndDrop];
+    _accessibilityIsListViewEmptyForDragAndDrop = [(SBIconListViewAccessibility *)self _accessibilityIsListViewEmptyForDragAndDrop];
 
-    if (v5)
+    if (_accessibilityIsListViewEmptyForDragAndDrop)
     {
       v6 = accessibilityLocalizedString(@"empty.page");
       goto LABEL_6;
@@ -785,20 +785,20 @@ LABEL_6:
 {
   v17[1] = *MEMORY[0x29EDCA608];
   v3 = AXSBIconControllerSharedInstance();
-  v4 = [v3 _axDragManager];
-  if ([v4 _axIsIconDragging])
+  _axDragManager = [v3 _axDragManager];
+  if ([_axDragManager _axIsIconDragging])
   {
-    v5 = [(SBIconListViewAccessibility *)self _accessibilityIsListViewEmptyForDragAndDrop];
+    _accessibilityIsListViewEmptyForDragAndDrop = [(SBIconListViewAccessibility *)self _accessibilityIsListViewEmptyForDragAndDrop];
 
-    if (v5)
+    if (_accessibilityIsListViewEmptyForDragAndDrop)
     {
       v6 = AXSBIconControllerSharedInstance();
-      v7 = [v6 _axDragManager];
-      v8 = [v7 _axGrabbedIconsLabel];
+      _axDragManager2 = [v6 _axDragManager];
+      _axGrabbedIconsLabel = [_axDragManager2 _axGrabbedIconsLabel];
 
       v9 = MEMORY[0x29EDBA0F8];
-      v10 = [(SBIconListViewAccessibility *)self _accessibilityEmptyListDropString];
-      v11 = [v9 stringWithFormat:v10, v8];
+      _accessibilityEmptyListDropString = [(SBIconListViewAccessibility *)self _accessibilityEmptyListDropString];
+      v11 = [v9 stringWithFormat:_accessibilityEmptyListDropString, _axGrabbedIconsLabel];
 
       objc_opt_class();
       v12 = __UIAccessibilityCastAsClass();

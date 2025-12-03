@@ -9,23 +9,23 @@
 
 - (id)issuerDisplayStringWithSignatureStatusGlyph
 {
-  if ([a1 isExpired])
+  if ([self isExpired])
   {
-    v2 = [a1 expiredAttributedString];
+    expiredAttributedString = [self expiredAttributedString];
   }
 
   else
   {
-    v3 = [a1 signatureStatus];
-    if (v3 == 3)
+    signatureStatus = [self signatureStatus];
+    if (signatureStatus == 3)
     {
       v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark.seal.fill"];
-      v5 = [MEMORY[0x1E69DC888] systemRedColor];
+      systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
     }
 
     else
     {
-      if (v3 == 2)
+      if (signatureStatus == 2)
       {
         v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark.seal.fill"];
         [MEMORY[0x1E69DC888] systemGreenColor];
@@ -36,38 +36,38 @@
         v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark.seal.fill"];
         [MEMORY[0x1E69DC888] secondaryLabelColor];
       }
-      v5 = ;
+      systemRedColor = ;
     }
 
-    v6 = v5;
-    v7 = [v4 imageWithTintColor:v5];
+    v6 = systemRedColor;
+    v7 = [v4 imageWithTintColor:systemRedColor];
 
-    v8 = [a1 recordIssuerDisplayName];
-    v2 = [v8 hk_attributedStringPrefixedWithImage:v7 spacing:2.0];
+    recordIssuerDisplayName = [self recordIssuerDisplayName];
+    expiredAttributedString = [recordIssuerDisplayName hk_attributedStringPrefixedWithImage:v7 spacing:2.0];
   }
 
-  return v2;
+  return expiredAttributedString;
 }
 
 - (id)signatureStatusDisplayString
 {
-  if ([a1 isExpired])
+  if ([self isExpired])
   {
-    v2 = [a1 expiredAttributedString];
+    expiredAttributedString = [self expiredAttributedString];
     goto LABEL_17;
   }
 
-  v3 = [a1 signatureStatus];
+  signatureStatus = [self signatureStatus];
   v4 = 0;
-  if (v3 <= 1)
+  if (signatureStatus <= 1)
   {
-    if (!v3)
+    if (!signatureStatus)
     {
       v5 = @"DETAIL_VIEW_SIGNATURE_STATUS_NOT_VERIFIED";
       goto LABEL_11;
     }
 
-    if (v3 == 1)
+    if (signatureStatus == 1)
     {
       v5 = @"DETAIL_VIEW_SIGNATURE_STATUS_NOT_VERIFIED_UNABLE_TO";
 LABEL_11:
@@ -76,22 +76,22 @@ LABEL_11:
     }
 
 LABEL_15:
-    v2 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v4];
+    expiredAttributedString = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v4];
     goto LABEL_16;
   }
 
-  if (v3 == 2)
+  if (signatureStatus == 2)
   {
     v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v4 = [v10 localizedStringForKey:@"DETAIL_VIEW_SIGNATURE_STATUS_VERIFIED" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
 
     v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark.seal.fill"];
-    v8 = [MEMORY[0x1E69DC888] systemGreenColor];
+    systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
   }
 
   else
   {
-    if (v3 != 3)
+    if (signatureStatus != 3)
     {
       goto LABEL_15;
     }
@@ -100,33 +100,33 @@ LABEL_15:
     v4 = [v6 localizedStringForKey:@"DETAIL_VIEW_SIGNATURE_STATUS_NOT_VERIFIED_INVALID" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
 
     v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark.seal.fill"];
-    v8 = [MEMORY[0x1E69DC888] systemRedColor];
+    systemGreenColor = [MEMORY[0x1E69DC888] systemRedColor];
   }
 
-  v11 = v8;
-  v12 = [v7 imageWithTintColor:v8];
+  v11 = systemGreenColor;
+  v12 = [v7 imageWithTintColor:systemGreenColor];
 
   if (!v12)
   {
     goto LABEL_15;
   }
 
-  v2 = [v4 hk_attributedStringPrefixedWithImage:v12 spacing:2.0];
+  expiredAttributedString = [v4 hk_attributedStringPrefixedWithImage:v12 spacing:2.0];
 
 LABEL_16:
 LABEL_17:
 
-  return v2;
+  return expiredAttributedString;
 }
 
 - (BOOL)isExpired
 {
-  v1 = [a1 expirationDate];
-  if (v1)
+  expirationDate = [self expirationDate];
+  if (expirationDate)
   {
     v2 = [MEMORY[0x1E695DF00] now];
-    v3 = [v1 earlierDate:v2];
-    v4 = v3 == v1;
+    v3 = [expirationDate earlierDate:v2];
+    v4 = v3 == expirationDate;
   }
 
   else
@@ -143,8 +143,8 @@ LABEL_17:
   v1 = [v0 localizedStringForKey:@"DETAIL_VIEW_SIGNATURE_STATUS_EXPIRED" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
 
   v2 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark.seal.fill"];
-  v3 = [MEMORY[0x1E69DC888] systemRedColor];
-  v4 = [v2 imageWithTintColor:v3];
+  systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+  v4 = [v2 imageWithTintColor:systemRedColor];
 
   v5 = [v1 hk_attributedStringPrefixedWithImage:v4 spacing:2.0];
 

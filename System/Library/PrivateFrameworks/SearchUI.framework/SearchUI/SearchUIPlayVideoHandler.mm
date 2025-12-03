@@ -1,16 +1,16 @@
 @interface SearchUIPlayVideoHandler
-- (id)createViewControllerForCommand:(id)a3 environment:(id)a4;
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5;
+- (id)createViewControllerForCommand:(id)command environment:(id)environment;
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment;
 @end
 
 @implementation SearchUIPlayVideoHandler
 
-- (id)createViewControllerForCommand:(id)a3 environment:(id)a4
+- (id)createViewControllerForCommand:(id)command environment:(id)environment
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = [SearchUIMediaPlayerViewController alloc];
   v6 = MEMORY[0x1E69CA320];
-  v7 = [v4 url];
+  v7 = [commandCopy url];
 
   v8 = [v6 punchoutWithURL:v7];
   v9 = [(SearchUIMediaPlayerViewController *)v5 initWithDestination:v8];
@@ -18,13 +18,13 @@
   return v9;
 }
 
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment
 {
-  v6 = a5;
-  v8 = [(SearchUICommandHandler *)self viewController];
-  v7 = [v6 sourceView];
+  environmentCopy = environment;
+  viewController = [(SearchUICommandHandler *)self viewController];
+  sourceView = [environmentCopy sourceView];
 
-  [v8 showFullScreenPresentationFromView:v7 completion:0];
+  [viewController showFullScreenPresentationFromView:sourceView completion:0];
 }
 
 @end

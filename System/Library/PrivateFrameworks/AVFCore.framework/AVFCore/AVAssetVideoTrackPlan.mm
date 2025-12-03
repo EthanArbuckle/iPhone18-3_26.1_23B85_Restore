@@ -1,19 +1,19 @@
 @interface AVAssetVideoTrackPlan
-- (AVAssetVideoTrackPlan)initWithVideoCodecType:(id)a3 encoderSpecification:(id)a4 mediaType:(id)a5 segmentConfigurations:(id)a6 assemblyTrackID:(int)a7;
-- (BOOL)isEqual:(id)a3;
+- (AVAssetVideoTrackPlan)initWithVideoCodecType:(id)type encoderSpecification:(id)specification mediaType:(id)mediaType segmentConfigurations:(id)configurations assemblyTrackID:(int)d;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation AVAssetVideoTrackPlan
 
-- (AVAssetVideoTrackPlan)initWithVideoCodecType:(id)a3 encoderSpecification:(id)a4 mediaType:(id)a5 segmentConfigurations:(id)a6 assemblyTrackID:(int)a7
+- (AVAssetVideoTrackPlan)initWithVideoCodecType:(id)type encoderSpecification:(id)specification mediaType:(id)mediaType segmentConfigurations:(id)configurations assemblyTrackID:(int)d
 {
-  if (@"vide" == a5 || @"auxv" == a5)
+  if (@"vide" == mediaType || @"auxv" == mediaType)
   {
     v12 = 0u;
     v13 = 0u;
-    [AVAssetPlanner segmentBoundaryGuidelinesForVideoCodecType:a3 videoEncoderSpecification:a4];
+    [AVAssetPlanner segmentBoundaryGuidelinesForVideoCodecType:type videoEncoderSpecification:specification];
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
     v10 = @"Specified codecType and encoderSpecifications do not support segmented encoding";
@@ -36,20 +36,20 @@
   [(AVAssetTrackPlan *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
   }
 
-  else if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v5 = -[AVAssetTrackPlan mediaType](self, "mediaType"), v5 == [a3 mediaType]) && (v6 = -[AVAssetTrackPlan assemblyTrackID](self, "assemblyTrackID"), v6 == objc_msgSend(a3, "assemblyTrackID")) && (v7 = -[AVAssetVideoTrackPlan requiresVideoCompression](self, "requiresVideoCompression"), v7 == objc_msgSend(a3, "requiresVideoCompression")))
+  else if (equal && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v5 = -[AVAssetTrackPlan mediaType](self, "mediaType"), v5 == [equal mediaType]) && (v6 = -[AVAssetTrackPlan assemblyTrackID](self, "assemblyTrackID"), v6 == objc_msgSend(equal, "assemblyTrackID")) && (v7 = -[AVAssetVideoTrackPlan requiresVideoCompression](self, "requiresVideoCompression"), v7 == objc_msgSend(equal, "requiresVideoCompression")))
   {
-    v8 = -[NSArray isEqual:](-[AVAssetTrackPlan segmentConfigurations](self, "segmentConfigurations"), "isEqual:", [a3 segmentConfigurations]);
+    v8 = -[NSArray isEqual:](-[AVAssetTrackPlan segmentConfigurations](self, "segmentConfigurations"), "isEqual:", [equal segmentConfigurations]);
     if (v8)
     {
       videoCodecType = self->_videoCodecType;
-      LOBYTE(v8) = videoCodecType == [a3 videoCodecType];
+      LOBYTE(v8) = videoCodecType == [equal videoCodecType];
     }
   }
 

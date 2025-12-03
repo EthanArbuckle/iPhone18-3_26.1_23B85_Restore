@@ -4,9 +4,9 @@
 + (BOOL)isDigitalHealthProcess;
 + (BOOL)isDigitalHealthSyncDisabled;
 + (BOOL)isKnowledgeDaemon;
-+ (BOOL)isRequestAllowed:(id *)a3;
++ (BOOL)isRequestAllowed:(id *)allowed;
 + (id)allowedStreams;
-+ (id)filterEvents:(id)a3;
++ (id)filterEvents:(id)events;
 + (id)knowledgeStoreDisabledError;
 + (void)logFault;
 @end
@@ -27,47 +27,47 @@
 
 + (BOOL)isCompletelyDisabled
 {
-  v3 = _os_feature_enabled_impl();
-  if (v3)
+  isKnowledgeDaemon = _os_feature_enabled_impl();
+  if (isKnowledgeDaemon)
   {
-    v3 = [a1 isKnowledgeDaemon];
-    if (v3)
+    isKnowledgeDaemon = [self isKnowledgeDaemon];
+    if (isKnowledgeDaemon)
     {
-      v3 = [a1 isDigitalHealthSyncDisabled];
-      if (v3)
+      isKnowledgeDaemon = [self isDigitalHealthSyncDisabled];
+      if (isKnowledgeDaemon)
       {
-        [a1 logFault];
-        LOBYTE(v3) = 1;
+        [self logFault];
+        LOBYTE(isKnowledgeDaemon) = 1;
       }
     }
   }
 
-  return v3;
+  return isKnowledgeDaemon;
 }
 
-+ (BOOL)isRequestAllowed:(id *)a3
++ (BOOL)isRequestAllowed:(id *)allowed
 {
   if (!_os_feature_enabled_impl())
   {
     return 1;
   }
 
-  if ([a1 isCompletelyDisabled])
+  if ([self isCompletelyDisabled])
   {
-    if (a3)
+    if (allowed)
     {
 LABEL_4:
-      v5 = [a1 knowledgeStoreDisabledError];
-      v6 = v5;
+      knowledgeStoreDisabledError = [self knowledgeStoreDisabledError];
+      v6 = knowledgeStoreDisabledError;
       result = 0;
-      *a3 = v5;
+      *allowed = knowledgeStoreDisabledError;
       return result;
     }
 
     return 0;
   }
 
-  if ([a1 isCoreDuetProcess] & 1) != 0 || (objc_msgSend(a1, "isDigitalHealthProcess"))
+  if ([self isCoreDuetProcess] & 1) != 0 || (objc_msgSend(self, "isDigitalHealthProcess"))
   {
     return 1;
   }
@@ -81,7 +81,7 @@ LABEL_4:
     }
   }
 
-  if (a3)
+  if (allowed)
   {
     goto LABEL_4;
   }
@@ -89,12 +89,12 @@ LABEL_4:
   return 0;
 }
 
-+ (id)filterEvents:(id)a3
++ (id)filterEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   if (_os_feature_enabled_impl())
   {
-    if ([a1 isCompletelyDisabled])
+    if ([self isCompletelyDisabled])
     {
       v5 = MEMORY[0x1E695E0F0];
     }
@@ -105,15 +105,15 @@ LABEL_4:
       v8[1] = 3221225472;
       v8[2] = __37___CDDecommissionUtils_filterEvents___block_invoke;
       v8[3] = &__block_descriptor_40_e21_B24__0___DKEvent_8_16l;
-      v8[4] = a1;
+      v8[4] = self;
       v6 = [MEMORY[0x1E696AE18] predicateWithBlock:v8];
-      v5 = [v4 filteredArrayUsingPredicate:v6];
+      v5 = [eventsCopy filteredArrayUsingPredicate:v6];
     }
   }
 
   else
   {
-    v5 = v4;
+    v5 = eventsCopy;
   }
 
   return v5;

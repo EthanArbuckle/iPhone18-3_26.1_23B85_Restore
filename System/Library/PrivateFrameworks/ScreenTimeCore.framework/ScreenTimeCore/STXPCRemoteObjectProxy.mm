@@ -1,24 +1,24 @@
 @interface STXPCRemoteObjectProxy
-+ (void)_proxyFromConnection:(id)a3 withRetryCount:(unint64_t)a4 proxyHandler:(id)a5;
-+ (void)_synchronousProxyFromConnection:(id)a3 withRetryCount:(unint64_t)a4 proxyHandler:(id)a5;
++ (void)_proxyFromConnection:(id)connection withRetryCount:(unint64_t)count proxyHandler:(id)handler;
++ (void)_synchronousProxyFromConnection:(id)connection withRetryCount:(unint64_t)count proxyHandler:(id)handler;
 @end
 
 @implementation STXPCRemoteObjectProxy
 
-+ (void)_proxyFromConnection:(id)a3 withRetryCount:(unint64_t)a4 proxyHandler:(id)a5
++ (void)_proxyFromConnection:(id)connection withRetryCount:(unint64_t)count proxyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  connectionCopy = connection;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __75__STXPCRemoteObjectProxy__proxyFromConnection_withRetryCount_proxyHandler___block_invoke;
   v13[3] = &unk_1E7CE81F8;
-  v16 = a4;
-  v17 = a1;
-  v14 = v8;
-  v15 = v9;
-  v10 = v9;
-  v11 = v8;
+  countCopy = count;
+  selfCopy = self;
+  v14 = connectionCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = connectionCopy;
   v12 = [v11 remoteObjectProxyWithErrorHandler:v13];
   v10[2](v10, v12, 0);
 }
@@ -57,20 +57,20 @@ LABEL_8:
 LABEL_9:
 }
 
-+ (void)_synchronousProxyFromConnection:(id)a3 withRetryCount:(unint64_t)a4 proxyHandler:(id)a5
++ (void)_synchronousProxyFromConnection:(id)connection withRetryCount:(unint64_t)count proxyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  connectionCopy = connection;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __86__STXPCRemoteObjectProxy__synchronousProxyFromConnection_withRetryCount_proxyHandler___block_invoke;
   v13[3] = &unk_1E7CE81F8;
-  v16 = a4;
-  v17 = a1;
-  v14 = v8;
-  v15 = v9;
-  v10 = v9;
-  v11 = v8;
+  countCopy = count;
+  selfCopy = self;
+  v14 = connectionCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = connectionCopy;
   v12 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v13];
   v10[2](v10, v12, 0);
 }

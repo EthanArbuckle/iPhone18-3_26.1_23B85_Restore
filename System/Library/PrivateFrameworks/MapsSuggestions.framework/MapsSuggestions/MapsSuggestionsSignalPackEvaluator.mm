@@ -1,5 +1,5 @@
 @interface MapsSuggestionsSignalPackEvaluator
-+ (id)evaluatorFromSignalPack:(id)a3;
++ (id)evaluatorFromSignalPack:(id)pack;
 - (BOOL)hasWeatherInfo;
 - (BOOL)hasWeatherPrecipitationInfo;
 - (BOOL)isBadWeather;
@@ -12,7 +12,7 @@
 - (BOOL)isLowChanceOfSnowing;
 - (BOOL)isMildWeather;
 - (BOOL)isWalkable;
-- (MapsSuggestionsSignalPackEvaluator)initWithSignalPack:(id)a3;
+- (MapsSuggestionsSignalPackEvaluator)initWithSignalPack:(id)pack;
 - (double)isTransitUserConfidence;
 - (double)isTransitUserHereConfidence;
 @end
@@ -255,11 +255,11 @@ LABEL_6:
   }
 }
 
-- (MapsSuggestionsSignalPackEvaluator)initWithSignalPack:(id)a3
+- (MapsSuggestionsSignalPackEvaluator)initWithSignalPack:(id)pack
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  packCopy = pack;
+  if (packCopy)
   {
     v11.receiver = self;
     v11.super_class = MapsSuggestionsSignalPackEvaluator;
@@ -267,11 +267,11 @@ LABEL_6:
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_signalPack, a3);
+      objc_storeStrong(&v6->_signalPack, pack);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -290,19 +290,19 @@ LABEL_6:
       _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires signal pack", buf, 0x26u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-+ (id)evaluatorFromSignalPack:(id)a3
++ (id)evaluatorFromSignalPack:(id)pack
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  packCopy = pack;
+  if (packCopy)
   {
-    v5 = [[a1 alloc] initWithSignalPack:v4];
+    v5 = [[self alloc] initWithSignalPack:packCopy];
   }
 
   else
@@ -505,13 +505,13 @@ LABEL_6:
 - (BOOL)isBadWeather
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(MapsSuggestionsSignalPackEvaluator *)self hasWeatherTemperatureInfo];
+  hasWeatherTemperatureInfo = [(MapsSuggestionsSignalPackEvaluator *)self hasWeatherTemperatureInfo];
   v4 = [(MapsSuggestionsSignalPack *)self->_signalPack hasType:8];
   v5 = [(MapsSuggestionsSignalPack *)self->_signalPack hasType:9];
   v6 = v5;
-  if (v3 || v4 || v5)
+  if (hasWeatherTemperatureInfo || v4 || v5)
   {
-    if (v3 && [(MapsSuggestionsSignalPackEvaluator *)self isColdWeather]|| v4 && [(MapsSuggestionsSignalPackEvaluator *)self isHighChanceOfRaining]|| v6 && [(MapsSuggestionsSignalPackEvaluator *)self isHighChanceOfSnowing])
+    if (hasWeatherTemperatureInfo && [(MapsSuggestionsSignalPackEvaluator *)self isColdWeather]|| v4 && [(MapsSuggestionsSignalPackEvaluator *)self isHighChanceOfRaining]|| v6 && [(MapsSuggestionsSignalPackEvaluator *)self isHighChanceOfSnowing])
     {
       return 1;
     }

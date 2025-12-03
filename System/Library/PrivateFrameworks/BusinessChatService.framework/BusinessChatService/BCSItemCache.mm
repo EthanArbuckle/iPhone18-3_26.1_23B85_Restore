@@ -1,13 +1,13 @@
 @interface BCSItemCache
 - (BCSItemCache)init;
-- (id)itemMatching:(id)a3;
+- (id)itemMatching:(id)matching;
 - (void)beginBatch;
-- (void)deleteExpiredItemsOfType:(int64_t)a3;
-- (void)deleteItemMatching:(id)a3;
-- (void)deleteItemsOfType:(int64_t)a3;
-- (void)deleteLinkItemsWithBundleID:(id)a3;
+- (void)deleteExpiredItemsOfType:(int64_t)type;
+- (void)deleteItemMatching:(id)matching;
+- (void)deleteItemsOfType:(int64_t)type;
+- (void)deleteLinkItemsWithBundleID:(id)d;
 - (void)endBatch;
-- (void)updateItem:(id)a3 withItemIdentifier:(id)a4;
+- (void)updateItem:(id)item withItemIdentifier:(id)identifier;
 @end
 
 @implementation BCSItemCache
@@ -47,14 +47,14 @@
   return v2;
 }
 
-- (id)itemMatching:(id)a3
+- (id)itemMatching:(id)matching
 {
-  v4 = a3;
-  v5 = [v4 type];
+  matchingCopy = matching;
+  type = [matchingCopy type];
   v6 = 0;
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       if (self)
       {
@@ -65,7 +65,7 @@
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_19;
       }
@@ -82,7 +82,7 @@ LABEL_22:
     goto LABEL_18;
   }
 
-  if (v5 == 3)
+  if (type == 3)
   {
     if (self)
     {
@@ -93,7 +93,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (v5 == 4)
+  if (type == 4)
   {
     if (self)
     {
@@ -104,7 +104,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (v5 != 5)
+  if (type != 5)
   {
     goto LABEL_19;
   }
@@ -118,20 +118,20 @@ LABEL_22:
 LABEL_17:
   v8 = *(&self->super.isa + v7);
 LABEL_18:
-  v6 = [v8 itemMatching:v4];
+  v6 = [v8 itemMatching:matchingCopy];
 LABEL_19:
 
   return v6;
 }
 
-- (void)updateItem:(id)a3 withItemIdentifier:(id)a4
+- (void)updateItem:(id)item withItemIdentifier:(id)identifier
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v6 type];
-  if (v7 <= 2)
+  itemCopy = item;
+  identifierCopy = identifier;
+  type = [identifierCopy type];
+  if (type <= 2)
   {
-    if (v7 == 1)
+    if (type == 1)
     {
       if (self)
       {
@@ -142,7 +142,7 @@ LABEL_19:
 
     else
     {
-      if (v7 != 2)
+      if (type != 2)
       {
         goto LABEL_19;
       }
@@ -156,11 +156,11 @@ LABEL_19:
 
 LABEL_22:
     v10 = 0;
-    v9 = v11;
+    v9 = itemCopy;
     goto LABEL_18;
   }
 
-  if (v7 == 3)
+  if (type == 3)
   {
     if (self)
     {
@@ -171,7 +171,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (v7 == 4)
+  if (type == 4)
   {
     if (self)
     {
@@ -182,7 +182,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (v7 != 5)
+  if (type != 5)
   {
     goto LABEL_19;
   }
@@ -194,20 +194,20 @@ LABEL_22:
 
   v8 = 40;
 LABEL_17:
-  v9 = v11;
+  v9 = itemCopy;
   v10 = *(&self->super.isa + v8);
 LABEL_18:
-  [v10 updateItem:v9 withItemIdentifier:v6];
+  [v10 updateItem:v9 withItemIdentifier:identifierCopy];
 LABEL_19:
 }
 
-- (void)deleteItemMatching:(id)a3
+- (void)deleteItemMatching:(id)matching
 {
-  v8 = a3;
-  v4 = [v8 type];
-  if (v4 <= 2)
+  matchingCopy = matching;
+  type = [matchingCopy type];
+  if (type <= 2)
   {
-    if (v4 == 1)
+    if (type == 1)
     {
       if (self)
       {
@@ -218,8 +218,8 @@ LABEL_19:
 
     else
     {
-      v5 = v8;
-      if (v4 != 2)
+      v5 = matchingCopy;
+      if (type != 2)
       {
         goto LABEL_19;
       }
@@ -236,7 +236,7 @@ LABEL_22:
     goto LABEL_18;
   }
 
-  if (v4 == 3)
+  if (type == 3)
   {
     if (self)
     {
@@ -247,8 +247,8 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v5 = v8;
-  if (v4 == 4)
+  v5 = matchingCopy;
+  if (type == 4)
   {
     if (self)
     {
@@ -259,7 +259,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (v4 != 5)
+  if (type != 5)
   {
     goto LABEL_19;
   }
@@ -273,18 +273,18 @@ LABEL_22:
 LABEL_17:
   v7 = *(&self->super.isa + v6);
 LABEL_18:
-  v4 = [v7 deleteItemMatching:v8];
-  v5 = v8;
+  type = [v7 deleteItemMatching:matchingCopy];
+  v5 = matchingCopy;
 LABEL_19:
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](type, v5);
 }
 
-- (void)deleteItemsOfType:(int64_t)a3
+- (void)deleteItemsOfType:(int64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
         if (self)
@@ -317,7 +317,7 @@ LABEL_19:
     goto LABEL_8;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     if (self)
     {
@@ -328,7 +328,7 @@ LABEL_19:
     goto LABEL_8;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     if (self)
     {
@@ -341,11 +341,11 @@ LABEL_8:
   }
 }
 
-- (void)deleteExpiredItemsOfType:(int64_t)a3
+- (void)deleteExpiredItemsOfType:(int64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
         if (self)
@@ -378,7 +378,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     if (self)
     {
@@ -389,7 +389,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     if (self)
     {
@@ -402,14 +402,14 @@ LABEL_8:
   }
 }
 
-- (void)deleteLinkItemsWithBundleID:(id)a3
+- (void)deleteLinkItemsWithBundleID:(id)d
 {
   if (self)
   {
     self = self->_linkItemStore;
   }
 
-  [(BCSItemCache *)self deleteLinkItemsWithBundleID:a3];
+  [(BCSItemCache *)self deleteLinkItemsWithBundleID:d];
 }
 
 - (void)beginBatch

@@ -1,8 +1,8 @@
 @interface AlarmContext
 - (_TtC18MobileTimerSupport12AlarmContext)init;
-- (_TtC18MobileTimerSupport12AlarmContext)initWithTitle:(id)a3 alarmId:(id)a4 hour:(unint64_t)a5 min:(unint64_t)a6 isSnoozed:(BOOL)a7 snoozeFireDate:(id)a8 isFiring:(BOOL)a9;
+- (_TtC18MobileTimerSupport12AlarmContext)initWithTitle:(id)title alarmId:(id)id hour:(unint64_t)hour min:(unint64_t)min isSnoozed:(BOOL)snoozed snoozeFireDate:(id)date isFiring:(BOOL)firing;
 - (int64_t)requestedStyle;
-- (void)setRequestedStyle:(int64_t)a3;
+- (void)setRequestedStyle:(int64_t)style;
 @end
 
 @implementation AlarmContext
@@ -14,16 +14,16 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setRequestedStyle:(int64_t)a3
+- (void)setRequestedStyle:(int64_t)style
 {
   v5 = OBJC_IVAR____TtC18MobileTimerSupport12AlarmContext_requestedStyle;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = style;
 }
 
-- (_TtC18MobileTimerSupport12AlarmContext)initWithTitle:(id)a3 alarmId:(id)a4 hour:(unint64_t)a5 min:(unint64_t)a6 isSnoozed:(BOOL)a7 snoozeFireDate:(id)a8 isFiring:(BOOL)a9
+- (_TtC18MobileTimerSupport12AlarmContext)initWithTitle:(id)title alarmId:(id)id hour:(unint64_t)hour min:(unint64_t)min isSnoozed:(BOOL)snoozed snoozeFireDate:(id)date isFiring:(BOOL)firing
 {
-  v26 = a7;
+  snoozedCopy = snoozed;
   v12 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DA02000, &qword_22D81F160);
   v13 = *(*(v12 - 8) + 64);
   MEMORY[0x28223BE20](v12 - 8);
@@ -32,7 +32,7 @@
   v18 = v17;
   v19 = sub_22D81B2C8();
   v21 = v20;
-  if (a8)
+  if (date)
   {
     sub_22D81A878();
     v22 = sub_22D81A8C8();
@@ -45,7 +45,7 @@
     (*(*(v23 - 8) + 56))(v15, 1, 1, v23);
   }
 
-  return AlarmContext.init(title:alarmId:hour:min:isSnoozed:snoozeFireDate:isFiring:)(v16, v18, v19, v21, a5, a6, v26, v15, a9);
+  return AlarmContext.init(title:alarmId:hour:min:isSnoozed:snoozeFireDate:isFiring:)(v16, v18, v19, v21, hour, min, snoozedCopy, v15, firing);
 }
 
 - (_TtC18MobileTimerSupport12AlarmContext)init

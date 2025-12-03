@@ -1,7 +1,7 @@
 @interface ASDTCondition
-+ (ASDTCondition)conditionWithName:(id)a3;
++ (ASDTCondition)conditionWithName:(id)name;
 - (ASDTCondition)init;
-- (BOOL)waitUntilTime:(ASDTTime *)a3;
+- (BOOL)waitUntilTime:(ASDTTime *)time;
 - (void)dealloc;
 @end
 
@@ -23,11 +23,11 @@
   return v3;
 }
 
-+ (ASDTCondition)conditionWithName:(id)a3
++ (ASDTCondition)conditionWithName:(id)name
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setName:v4];
+  nameCopy = name;
+  v5 = objc_alloc_init(self);
+  [v5 setName:nameCopy];
 
   return v5;
 }
@@ -41,16 +41,16 @@
   [(ASDTCondition *)&v3 dealloc];
 }
 
-- (BOOL)waitUntilTime:(ASDTTime *)a3
+- (BOOL)waitUntilTime:(ASDTTime *)time
 {
   ASDTTime::machAbsoluteTime(self, &v13);
-  v7 = v13 < a3->nsec;
-  if (v13 < a3->nsec)
+  v7 = v13 < time->nsec;
+  if (v13 < time->nsec)
   {
     do
     {
-      v10 = *&a3->nsec;
-      v11 = *&a3->hostFrac;
+      v10 = *&time->nsec;
+      v11 = *&time->hostFrac;
       ASDTTime::operator-=(&v10, &v13, v5, v6);
       v12.tv_sec = v10 / 1000000000;
       v12.tv_nsec = v10 % 1000000000;
@@ -63,10 +63,10 @@
       ASDTTime::machAbsoluteTime(v8, &v10);
       v13 = v10;
       v14 = v11;
-      v7 = v10 < a3->nsec;
+      v7 = v10 < time->nsec;
     }
 
-    while (v10 < a3->nsec);
+    while (v10 < time->nsec);
   }
 
   return v7;

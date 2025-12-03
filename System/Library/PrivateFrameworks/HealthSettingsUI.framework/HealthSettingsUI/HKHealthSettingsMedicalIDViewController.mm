@@ -1,21 +1,21 @@
 @interface HKHealthSettingsMedicalIDViewController
 - (BOOL)isEditEnabled;
 - (HKHealthSettingsMedicalIDViewController)init;
-- (HKHealthSettingsMedicalIDViewController)initWithHealthSettingsProfile:(id)a3;
+- (HKHealthSettingsMedicalIDViewController)initWithHealthSettingsProfile:(id)profile;
 - (HKHealthSettingsNavigationDonating)settingsNavigationDonatingDelegate;
 - (PSController)parentController;
 - (PSRootController)rootController;
-- (id)readPreferenceValue:(id)a3;
+- (id)readPreferenceValue:(id)value;
 - (void)_fetchMedicalIDData;
-- (void)_handleFetchedMedicalIDData:(id)a3;
+- (void)_handleFetchedMedicalIDData:(id)data;
 - (void)_updateChildViewController;
 - (void)dealloc;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)medicalIDViewControllerDidCancel:(id)a3;
-- (void)medicalIDViewControllerDidDelete:(id)a3;
-- (void)medicalIDViewControllerDidSave:(id)a3;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)showController:(id)a3;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)medicalIDViewControllerDidCancel:(id)cancel;
+- (void)medicalIDViewControllerDidDelete:(id)delete;
+- (void)medicalIDViewControllerDidSave:(id)save;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)showController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -31,19 +31,19 @@
   return v6;
 }
 
-- (HKHealthSettingsMedicalIDViewController)initWithHealthSettingsProfile:(id)a3
+- (HKHealthSettingsMedicalIDViewController)initWithHealthSettingsProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v13.receiver = self;
   v13.super_class = HKHealthSettingsMedicalIDViewController;
   v5 = [(HKHealthSettingsMedicalIDViewController *)&v13 init];
   healthSettingsProfile = v5->_healthSettingsProfile;
-  v5->_healthSettingsProfile = v4;
-  v7 = v4;
+  v5->_healthSettingsProfile = profileCopy;
+  v7 = profileCopy;
 
-  v8 = [(WDProfile *)v7 healthStore];
+  healthStore = [(WDProfile *)v7 healthStore];
   healthStore = v5->_healthStore;
-  v5->_healthStore = v8;
+  v5->_healthStore = healthStore;
 
   v10 = [objc_alloc(MEMORY[0x277CCD5E8]) initWithHealthStore:v5->_healthStore];
   medicalIDStore = v5->_medicalIDStore;
@@ -68,12 +68,12 @@
   v15.super_class = HKHealthSettingsMedicalIDViewController;
   [(HKHealthSettingsMedicalIDViewController *)&v15 viewDidLoad];
   v3 = objc_alloc(MEMORY[0x277D27FD0]);
-  v4 = [(HKHealthSettingsMedicalIDViewController *)self healthStore];
-  v5 = [(HKHealthSettingsMedicalIDViewController *)self _medicalIDData];
-  v6 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-  v7 = [v3 initWithHealthStore:v4 medicalIDData:v5 showDateUpdated:0 locale:v6];
-  v8 = [(HKHealthSettingsMedicalIDViewController *)self navigationItem];
-  [v8 setTitleView:v7];
+  healthStore = [(HKHealthSettingsMedicalIDViewController *)self healthStore];
+  _medicalIDData = [(HKHealthSettingsMedicalIDViewController *)self _medicalIDData];
+  autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+  v7 = [v3 initWithHealthStore:healthStore medicalIDData:_medicalIDData showDateUpdated:0 locale:autoupdatingCurrentLocale];
+  navigationItem = [(HKHealthSettingsMedicalIDViewController *)self navigationItem];
+  [navigationItem setTitleView:v7];
 
   [(HKHealthSettingsMedicalIDViewController *)self _updateChildViewController];
   objc_initWeak(&location, self);
@@ -104,9 +104,9 @@ void __54__HKHealthSettingsMedicalIDViewController_viewDidLoad__block_invoke(uin
 
 - (BOOL)isEditEnabled
 {
-  v2 = [(HKHealthSettingsMedicalIDViewController *)self healthStore];
-  v3 = [v2 profileIdentifier];
-  v4 = [v3 type] != 3;
+  healthStore = [(HKHealthSettingsMedicalIDViewController *)self healthStore];
+  profileIdentifier = [healthStore profileIdentifier];
+  v4 = [profileIdentifier type] != 3;
 
   return v4;
 }
@@ -146,9 +146,9 @@ void __62__HKHealthSettingsMedicalIDViewController__fetchMedicalIDData__block_in
   [WeakRetained _handleFetchedMedicalIDData:*(a1 + 32)];
 }
 
-- (void)_handleFetchedMedicalIDData:(id)a3
+- (void)_handleFetchedMedicalIDData:(id)data
 {
-  [(HKHealthSettingsMedicalIDViewController *)self set_medicalIDData:a3];
+  [(HKHealthSettingsMedicalIDViewController *)self set_medicalIDData:data];
   [(HKHealthSettingsMedicalIDViewController *)self set_medicalIDLoaded:1];
   if ([(HKHealthSettingsMedicalIDViewController *)self isViewLoaded])
   {
@@ -159,26 +159,26 @@ void __62__HKHealthSettingsMedicalIDViewController__fetchMedicalIDData__block_in
 
 - (void)_updateChildViewController
 {
-  v3 = [(HKHealthSettingsMedicalIDViewController *)self _currentChildViewController];
-  [v3 willMoveToParentViewController:0];
+  _currentChildViewController = [(HKHealthSettingsMedicalIDViewController *)self _currentChildViewController];
+  [_currentChildViewController willMoveToParentViewController:0];
 
-  v4 = [(HKHealthSettingsMedicalIDViewController *)self _currentChildViewController];
-  v5 = [v4 view];
-  [v5 removeFromSuperview];
+  _currentChildViewController2 = [(HKHealthSettingsMedicalIDViewController *)self _currentChildViewController];
+  view = [_currentChildViewController2 view];
+  [view removeFromSuperview];
 
-  v6 = [(HKHealthSettingsMedicalIDViewController *)self _currentChildViewController];
-  [v6 removeFromParentViewController];
+  _currentChildViewController3 = [(HKHealthSettingsMedicalIDViewController *)self _currentChildViewController];
+  [_currentChildViewController3 removeFromParentViewController];
 
-  v7 = [(HKHealthSettingsMedicalIDViewController *)self _medicalIDData];
-  if (v7 && (v8 = v7, -[HKHealthSettingsMedicalIDViewController _medicalIDData](self, "_medicalIDData"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEmpty], v9, v8, (v10 & 1) == 0))
+  _medicalIDData = [(HKHealthSettingsMedicalIDViewController *)self _medicalIDData];
+  if (_medicalIDData && (v8 = _medicalIDData, -[HKHealthSettingsMedicalIDViewController _medicalIDData](self, "_medicalIDData"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEmpty], v9, v8, (v10 & 1) == 0))
   {
-    v18 = [MEMORY[0x277D27FC8] standardConfiguration];
-    [v18 setIsDeletionAvailable:1];
-    [v18 setAccessPoint:7];
+    standardConfiguration = [MEMORY[0x277D27FC8] standardConfiguration];
+    [standardConfiguration setIsDeletionAvailable:1];
+    [standardConfiguration setAccessPoint:7];
     v19 = objc_alloc(MEMORY[0x277D27FD8]);
-    v20 = [(HKHealthSettingsMedicalIDViewController *)self healthStore];
-    v21 = [(HKHealthSettingsMedicalIDViewController *)self _medicalIDData];
-    v22 = [v19 initWithHealthStore:v20 medicalIDData:v21 displayConfiguration:v18];
+    healthStore = [(HKHealthSettingsMedicalIDViewController *)self healthStore];
+    _medicalIDData2 = [(HKHealthSettingsMedicalIDViewController *)self _medicalIDData];
+    v22 = [v19 initWithHealthStore:healthStore medicalIDData:_medicalIDData2 displayConfiguration:standardConfiguration];
 
     [(HKHealthSettingsMedicalIDViewController *)self set_currentChildViewController:v22];
   }
@@ -188,8 +188,8 @@ void __62__HKHealthSettingsMedicalIDViewController__fetchMedicalIDData__block_in
     if ([(HKHealthSettingsMedicalIDViewController *)self _medicalIDLoaded])
     {
       v11 = [HKHealthSettingsMedicalIDCallToActionTableViewController alloc];
-      v12 = [(HKHealthSettingsMedicalIDViewController *)self healthSettingsProfile];
-      v13 = [(HKHealthSettingsMedicalIDCallToActionTableViewController *)v11 initWithHealthSettingsProfile:v12];
+      healthSettingsProfile = [(HKHealthSettingsMedicalIDViewController *)self healthSettingsProfile];
+      v13 = [(HKHealthSettingsMedicalIDCallToActionTableViewController *)v11 initWithHealthSettingsProfile:healthSettingsProfile];
       [(HKHealthSettingsMedicalIDViewController *)self set_currentChildViewController:v13];
     }
 
@@ -198,40 +198,40 @@ void __62__HKHealthSettingsMedicalIDViewController__fetchMedicalIDData__block_in
       v14 = objc_alloc_init(MEMORY[0x277D75D28]);
       [(HKHealthSettingsMedicalIDViewController *)self set_currentChildViewController:v14];
 
-      v15 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-      v16 = [(HKHealthSettingsMedicalIDViewController *)self _currentChildViewController];
-      v17 = [v16 view];
-      [v17 setBackgroundColor:v15];
+      systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+      _currentChildViewController4 = [(HKHealthSettingsMedicalIDViewController *)self _currentChildViewController];
+      view2 = [_currentChildViewController4 view];
+      [view2 setBackgroundColor:systemGroupedBackgroundColor];
     }
 
-    v18 = [(HKHealthSettingsMedicalIDViewController *)self navigationItem];
-    [v18 setRightBarButtonItem:0];
+    standardConfiguration = [(HKHealthSettingsMedicalIDViewController *)self navigationItem];
+    [standardConfiguration setRightBarButtonItem:0];
   }
 
-  v23 = [(HKHealthSettingsMedicalIDViewController *)self _currentChildViewController];
-  [(HKHealthSettingsMedicalIDViewController *)self addChildViewController:v23];
+  _currentChildViewController5 = [(HKHealthSettingsMedicalIDViewController *)self _currentChildViewController];
+  [(HKHealthSettingsMedicalIDViewController *)self addChildViewController:_currentChildViewController5];
 
-  v24 = [(HKHealthSettingsMedicalIDViewController *)self view];
-  v25 = [(HKHealthSettingsMedicalIDViewController *)self _currentChildViewController];
-  v26 = [v25 view];
-  [v24 addSubview:v26];
+  view3 = [(HKHealthSettingsMedicalIDViewController *)self view];
+  _currentChildViewController6 = [(HKHealthSettingsMedicalIDViewController *)self _currentChildViewController];
+  view4 = [_currentChildViewController6 view];
+  [view3 addSubview:view4];
 
-  v27 = [(HKHealthSettingsMedicalIDViewController *)self _currentChildViewController];
-  v28 = [v27 view];
-  v29 = [(HKHealthSettingsMedicalIDViewController *)self view];
-  [v28 hk_alignConstraintsWithView:v29];
+  _currentChildViewController7 = [(HKHealthSettingsMedicalIDViewController *)self _currentChildViewController];
+  view5 = [_currentChildViewController7 view];
+  view6 = [(HKHealthSettingsMedicalIDViewController *)self view];
+  [view5 hk_alignConstraintsWithView:view6];
 
-  v30 = [(HKHealthSettingsMedicalIDViewController *)self _currentChildViewController];
-  [v30 didMoveToParentViewController:self];
+  _currentChildViewController8 = [(HKHealthSettingsMedicalIDViewController *)self _currentChildViewController];
+  [_currentChildViewController8 didMoveToParentViewController:self];
 }
 
-- (void)medicalIDViewControllerDidDelete:(id)a3
+- (void)medicalIDViewControllerDidDelete:(id)delete
 {
-  v5 = a3;
+  deleteCopy = delete;
   if ([(HKHealthSettingsMedicalIDViewController *)self isEditEnabled])
   {
-    v4 = [v5 navigationController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    navigationController = [deleteCopy navigationController];
+    [navigationController dismissViewControllerAnimated:1 completion:0];
 
     [(HKMedicalIDStore *)self->_medicalIDStore deleteMedicalIDDataWithCompletion:0];
     [(HKHealthSettingsMedicalIDViewController *)self set_medicalIDData:0];
@@ -239,48 +239,48 @@ void __62__HKHealthSettingsMedicalIDViewController__fetchMedicalIDData__block_in
   }
 }
 
-- (void)medicalIDViewControllerDidCancel:(id)a3
+- (void)medicalIDViewControllerDidCancel:(id)cancel
 {
-  v3 = [a3 navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [cancel navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)medicalIDViewControllerDidSave:(id)a3
+- (void)medicalIDViewControllerDidSave:(id)save
 {
-  v3 = [a3 navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [save navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
-  [WeakRetained handleURL:v7 withCompletion:v6];
+  [WeakRetained handleURL:lCopy withCompletion:completionCopy];
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  valueCopy = value;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
-  [WeakRetained setPreferenceValue:v7 specifier:v6];
+  [WeakRetained setPreferenceValue:valueCopy specifier:specifierCopy];
 }
 
-- (id)readPreferenceValue:(id)a3
+- (id)readPreferenceValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
-  v6 = [WeakRetained readPreferenceValue:v4];
+  v6 = [WeakRetained readPreferenceValue:valueCopy];
 
   return v6;
 }
 
-- (void)showController:(id)a3
+- (void)showController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
-  [WeakRetained showController:v4];
+  [WeakRetained showController:controllerCopy];
 }
 
 - (HKHealthSettingsNavigationDonating)settingsNavigationDonatingDelegate

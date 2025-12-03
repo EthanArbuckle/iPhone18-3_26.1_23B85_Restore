@@ -1,13 +1,13 @@
 @interface VUIContentRating
 + (id)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)ratingSystemString;
 - (NSString)stringRepresentation;
 - (VUIContentRating)init;
-- (VUIContentRating)initWithRatingSystem:(int64_t)a3 explicitContent:(BOOL)a4;
-- (VUIContentRating)initWithRatingSystem:(int64_t)a3 ratingLabel:(id)a4 rank:(unint64_t)a5 ratingDescription:(id)a6;
-- (VUIContentRating)initWithRatingSystemString:(id)a3 ratingLabel:(id)a4 rank:(unint64_t)a5 ratingDescription:(id)a6;
-- (VUIContentRating)initWithStringRepresentation:(id)a3;
+- (VUIContentRating)initWithRatingSystem:(int64_t)system explicitContent:(BOOL)content;
+- (VUIContentRating)initWithRatingSystem:(int64_t)system ratingLabel:(id)label rank:(unint64_t)rank ratingDescription:(id)description;
+- (VUIContentRating)initWithRatingSystemString:(id)string ratingLabel:(id)label rank:(unint64_t)rank ratingDescription:(id)description;
+- (VUIContentRating)initWithStringRepresentation:(id)representation;
 - (id)description;
 - (int64_t)ratingSystemKind;
 - (unint64_t)hash;
@@ -35,23 +35,23 @@
   return 0;
 }
 
-- (VUIContentRating)initWithRatingSystem:(int64_t)a3 ratingLabel:(id)a4 rank:(unint64_t)a5 ratingDescription:(id)a6
+- (VUIContentRating)initWithRatingSystem:(int64_t)system ratingLabel:(id)label rank:(unint64_t)rank ratingDescription:(id)description
 {
-  v10 = a4;
-  v11 = a6;
+  labelCopy = label;
+  descriptionCopy = description;
   v19.receiver = self;
   v19.super_class = VUIContentRating;
   v12 = [(VUIContentRating *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    v12->_ratingSystem = a3;
-    v14 = [v10 copy];
+    v12->_ratingSystem = system;
+    v14 = [labelCopy copy];
     ratingLabel = v13->_ratingLabel;
     v13->_ratingLabel = v14;
 
-    v13->_rank = a5;
-    v16 = [v11 copy];
+    v13->_rank = rank;
+    v16 = [descriptionCopy copy];
     ratingDescription = v13->_ratingDescription;
     v13->_ratingDescription = v16;
   }
@@ -59,18 +59,18 @@
   return v13;
 }
 
-- (VUIContentRating)initWithRatingSystemString:(id)a3 ratingLabel:(id)a4 rank:(unint64_t)a5 ratingDescription:(id)a6
+- (VUIContentRating)initWithRatingSystemString:(id)string ratingLabel:(id)label rank:(unint64_t)rank ratingDescription:(id)description
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [(VUIContentRating *)self initWithRatingSystem:[VUIContentRatingSystemUtilities ratingSystemForString:?]ratingDescription:v11, a5, v10];
+  descriptionCopy = description;
+  labelCopy = label;
+  descriptionCopy = [(VUIContentRating *)self initWithRatingSystem:[VUIContentRatingSystemUtilities ratingSystemForString:?]ratingDescription:labelCopy, rank, descriptionCopy];
 
-  return v12;
+  return descriptionCopy;
 }
 
-- (VUIContentRating)initWithRatingSystem:(int64_t)a3 explicitContent:(BOOL)a4
+- (VUIContentRating)initWithRatingSystem:(int64_t)system explicitContent:(BOOL)content
 {
-  if (a4)
+  if (content)
   {
     v4 = 200;
   }
@@ -80,15 +80,15 @@
     v4 = 0;
   }
 
-  return [(VUIContentRating *)self initWithRatingSystem:a3 ratingLabel:0 rank:v4 ratingDescription:0];
+  return [(VUIContentRating *)self initWithRatingSystem:system ratingLabel:0 rank:v4 ratingDescription:0];
 }
 
-- (VUIContentRating)initWithStringRepresentation:(id)a3
+- (VUIContentRating)initWithStringRepresentation:(id)representation
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
+  representationCopy = representation;
   v6 = [v4 characterSetWithCharactersInString:@"|"];
-  v7 = [v5 componentsSeparatedByCharactersInSet:v6];
+  v7 = [representationCopy componentsSeparatedByCharactersInSet:v6];
 
   v8 = [v7 count];
   if (v8)
@@ -96,7 +96,7 @@
     v9 = [v7 objectAtIndex:0];
     if (v8 == 1)
     {
-      v10 = 0;
+      integerValue = 0;
       v11 = 0;
       goto LABEL_9;
     }
@@ -104,12 +104,12 @@
     v11 = [v7 objectAtIndex:1];
     if (v8 < 3)
     {
-      v10 = 0;
+      integerValue = 0;
       goto LABEL_9;
     }
 
     v12 = [v7 objectAtIndex:2];
-    v10 = [v12 integerValue];
+    integerValue = [v12 integerValue];
 
     if (v8 == 3)
     {
@@ -123,29 +123,29 @@ LABEL_9:
 
   else
   {
-    v10 = 0;
+    integerValue = 0;
     v11 = 0;
     v9 = &stru_2880D3950;
   }
 
 LABEL_10:
-  v13 = [(VUIContentRating *)self initWithRatingSystemString:v9 ratingLabel:v11 rank:v10 ratingDescription:v8];
+  v13 = [(VUIContentRating *)self initWithRatingSystemString:v9 ratingLabel:v11 rank:integerValue ratingDescription:v8];
 
   return v13;
 }
 
 - (int64_t)ratingSystemKind
 {
-  v2 = [(VUIContentRating *)self ratingSystem];
+  ratingSystem = [(VUIContentRating *)self ratingSystem];
 
-  return [VUIContentRatingSystemUtilities ratingSystemKindForRatingSystem:v2];
+  return [VUIContentRatingSystemUtilities ratingSystemKindForRatingSystem:ratingSystem];
 }
 
 - (NSString)ratingSystemString
 {
-  v2 = [(VUIContentRating *)self ratingSystem];
+  ratingSystem = [(VUIContentRating *)self ratingSystem];
 
-  return [VUIContentRatingSystemUtilities stringForRatingSystem:v2];
+  return [VUIContentRatingSystemUtilities stringForRatingSystem:ratingSystem];
 }
 
 - (NSString)stringRepresentation
@@ -183,68 +183,68 @@ LABEL_10:
   v8.receiver = self;
   v8.super_class = VUIContentRating;
   v4 = [(VUIContentRating *)&v8 description];
-  v5 = [(VUIContentRating *)self stringRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ [%@]", v4, v5];
+  stringRepresentation = [(VUIContentRating *)self stringRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ [%@]", v4, stringRepresentation];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v19 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v6 = v5;
-        v7 = [(VUIContentRating *)self ratingSystem];
-        if (v7 != [(VUIContentRating *)v6 ratingSystem])
+        ratingSystem = [(VUIContentRating *)self ratingSystem];
+        if (ratingSystem != [(VUIContentRating *)v6 ratingSystem])
         {
           goto LABEL_10;
         }
 
-        v8 = [(VUIContentRating *)self rank];
-        if (v8 != [(VUIContentRating *)v6 rank])
+        rank = [(VUIContentRating *)self rank];
+        if (rank != [(VUIContentRating *)v6 rank])
         {
           goto LABEL_10;
         }
 
-        v9 = [(VUIContentRating *)self ratingLabel];
-        v10 = [(VUIContentRating *)v6 ratingLabel];
-        v11 = v10;
-        if (v9 == v10)
+        ratingLabel = [(VUIContentRating *)self ratingLabel];
+        ratingLabel2 = [(VUIContentRating *)v6 ratingLabel];
+        ratingDescription = ratingLabel2;
+        if (ratingLabel == ratingLabel2)
         {
         }
 
         else
         {
-          v12 = [(VUIContentRating *)self ratingLabel];
-          if (!v12)
+          ratingLabel3 = [(VUIContentRating *)self ratingLabel];
+          if (!ratingLabel3)
           {
             v19 = 0;
             goto LABEL_24;
           }
 
-          v13 = v12;
-          v14 = [(VUIContentRating *)v6 ratingLabel];
-          if (!v14)
+          ratingDescription2 = ratingLabel3;
+          ratingLabel4 = [(VUIContentRating *)v6 ratingLabel];
+          if (!ratingLabel4)
           {
             goto LABEL_18;
           }
 
-          v15 = v14;
-          v16 = [(VUIContentRating *)self ratingLabel];
-          v17 = [(VUIContentRating *)v6 ratingLabel];
-          v18 = [v16 isEqual:v17];
+          v15 = ratingLabel4;
+          ratingLabel5 = [(VUIContentRating *)self ratingLabel];
+          ratingLabel6 = [(VUIContentRating *)v6 ratingLabel];
+          v18 = [ratingLabel5 isEqual:ratingLabel6];
 
           if (!v18)
           {
@@ -256,19 +256,19 @@ LABEL_25:
           }
         }
 
-        v9 = [(VUIContentRating *)self ratingDescription];
-        v11 = [(VUIContentRating *)v6 ratingDescription];
-        if (v9 != v11)
+        ratingLabel = [(VUIContentRating *)self ratingDescription];
+        ratingDescription = [(VUIContentRating *)v6 ratingDescription];
+        if (ratingLabel != ratingDescription)
         {
-          v13 = [(VUIContentRating *)self ratingDescription];
-          if (v13)
+          ratingDescription2 = [(VUIContentRating *)self ratingDescription];
+          if (ratingDescription2)
           {
-            v20 = [(VUIContentRating *)v6 ratingDescription];
-            if (v20)
+            ratingDescription3 = [(VUIContentRating *)v6 ratingDescription];
+            if (ratingDescription3)
             {
-              v21 = [(VUIContentRating *)self ratingDescription];
-              v22 = [(VUIContentRating *)v6 ratingDescription];
-              v19 = [v21 isEqual:v22];
+              ratingDescription4 = [(VUIContentRating *)self ratingDescription];
+              ratingDescription5 = [(VUIContentRating *)v6 ratingDescription];
+              v19 = [ratingDescription4 isEqual:ratingDescription5];
             }
 
             else
@@ -303,13 +303,13 @@ LABEL_26:
 
 - (unint64_t)hash
 {
-  v3 = [(VUIContentRating *)self ratingSystem];
-  v4 = v3 ^ (2 * [(VUIContentRating *)self rank]);
-  v5 = [(VUIContentRating *)self ratingLabel];
-  v6 = [v5 hash];
+  ratingSystem = [(VUIContentRating *)self ratingSystem];
+  v4 = ratingSystem ^ (2 * [(VUIContentRating *)self rank]);
+  ratingLabel = [(VUIContentRating *)self ratingLabel];
+  v6 = [ratingLabel hash];
 
-  v7 = [(VUIContentRating *)self ratingDescription];
-  v8 = v6 ^ [v7 hash];
+  ratingDescription = [(VUIContentRating *)self ratingDescription];
+  v8 = v6 ^ [ratingDescription hash];
 
   return v4 ^ v8;
 }

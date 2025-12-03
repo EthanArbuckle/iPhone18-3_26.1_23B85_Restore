@@ -1,15 +1,15 @@
 @interface LoadingIndicatorAccessoryView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
 @end
 
 @implementation LoadingIndicatorAccessoryView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_24E0EFAE4(width);
   v7 = v6;
 
@@ -22,13 +22,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E0EFBC0();
 }
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E0EFD7C();
 }
 

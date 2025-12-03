@@ -1,25 +1,25 @@
 @interface IOUIANSceneDelegateLDCM
-- (void)emergencyDialerWasDismissed:(id)a3;
-- (void)emergencyDialerWasPresented:(id)a3;
+- (void)emergencyDialerWasDismissed:(id)dismissed;
+- (void)emergencyDialerWasPresented:(id)presented;
 - (void)playSound;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
 - (void)stopSound;
 @end
 
 @implementation IOUIANSceneDelegateLDCM
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v6 = a3;
+  sceneCopy = scene;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v21 = 138412290;
-    v22 = v6;
+    v22 = sceneCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Initializing LDCM critical UI scene... (scene: %@)", &v21, 0xCu);
   }
 
@@ -29,8 +29,8 @@
   v9 = [(IOANUIWindowSecure *)v7 initWithFrame:?];
   [(IOUIANSceneDelegateLDCM *)self setWindow:v9];
 
-  v10 = [(IOUIANSceneDelegateLDCM *)self window];
-  [v10 setWindowScene:v6];
+  window = [(IOUIANSceneDelegateLDCM *)self window];
+  [window setWindowScene:sceneCopy];
 
   v11 = objc_opt_new();
   [v11 setDelegate:self];
@@ -47,14 +47,14 @@
   v18 = [v17 localizedStringForKey:@"Disconnect charging cable to prevent damage to iPhone. Allow the connector to dry. This may take several hours." value:&stru_10000C608 table:0];
   [v11 setMessageText:v18];
 
-  v19 = [(IOUIANSceneDelegateLDCM *)self window];
-  [v19 setRootViewController:v11];
+  window2 = [(IOUIANSceneDelegateLDCM *)self window];
+  [window2 setRootViewController:v11];
 
-  v20 = [(IOUIANSceneDelegateLDCM *)self window];
-  [v20 makeKeyAndVisible];
+  window3 = [(IOUIANSceneDelegateLDCM *)self window];
+  [window3 makeKeyAndVisible];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
@@ -64,7 +64,7 @@
   [(IOUIANSceneDelegateLDCM *)self stopSound];
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
@@ -72,7 +72,7 @@
   }
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
@@ -80,7 +80,7 @@
   }
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
@@ -90,7 +90,7 @@
   [(IOUIANSceneDelegateLDCM *)self playSound];
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
@@ -100,24 +100,24 @@
   [(IOUIANSceneDelegateLDCM *)self stopSound];
 }
 
-- (void)emergencyDialerWasPresented:(id)a3
+- (void)emergencyDialerWasPresented:(id)presented
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = a3;
+    presentedCopy = presented;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Emergency dialer was presented! (viewController: %@)", &v5, 0xCu);
   }
 
   [(IOUIANSceneDelegateLDCM *)self stopSound];
 }
 
-- (void)emergencyDialerWasDismissed:(id)a3
+- (void)emergencyDialerWasDismissed:(id)dismissed
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = a3;
+    dismissedCopy = dismissed;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Emergency dialer was dismissed! (viewController: %@)", &v5, 0xCu);
   }
 

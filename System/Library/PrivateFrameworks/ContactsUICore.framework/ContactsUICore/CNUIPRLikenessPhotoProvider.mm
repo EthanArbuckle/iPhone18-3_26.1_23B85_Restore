@@ -1,25 +1,25 @@
 @interface CNUIPRLikenessPhotoProvider
-+ (CGImage)cgThumbnailFromData:(id)a3 maxSize:(CGSize)a4;
-- (CFTypeRef)renderCircularImageForSize:(uint64_t)a1 scale:;
-- (CFTypeRef)renderRoundedRectImageForSize:(uint64_t)a1 scale:;
-- (CGImage)_cnui_circularImageForSize:(CGSize)a3 scale:(double)a4;
++ (CGImage)cgThumbnailFromData:(id)data maxSize:(CGSize)size;
+- (CFTypeRef)renderCircularImageForSize:(uint64_t)size scale:;
+- (CFTypeRef)renderRoundedRectImageForSize:(uint64_t)size scale:;
+- (CGImage)_cnui_circularImageForSize:(CGSize)size scale:(double)scale;
 - (CGImage)_cnui_image;
-- (CGImage)_cnui_imageForSize:(CGSize)a3 scale:(double)a4;
-- (CGImage)_cnui_roundedRectImageForSize:(CGSize)a3 scale:(double)a4;
-- (CNUIPRLikenessPhotoProvider)initWithPhotoData:(id)a3 fingerprint:(id)a4;
-- (id)_cnui_likenessForSize:(CGSize)a3 scale:(double)a4;
+- (CGImage)_cnui_imageForSize:(CGSize)size scale:(double)scale;
+- (CGImage)_cnui_roundedRectImageForSize:(CGSize)size scale:(double)scale;
+- (CNUIPRLikenessPhotoProvider)initWithPhotoData:(id)data fingerprint:(id)fingerprint;
+- (id)_cnui_likenessForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation CNUIPRLikenessPhotoProvider
 
-+ (CGImage)cgThumbnailFromData:(id)a3 maxSize:(CGSize)a4
++ (CGImage)cgThumbnailFromData:(id)data maxSize:(CGSize)size
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __59__CNUIPRLikenessPhotoProvider_cgThumbnailFromData_maxSize___block_invoke;
   v5[3] = &__block_descriptor_48_e34___CGImage__16__0__CGImageSource__8l;
-  v6 = a4;
-  return _cgProcessSafeImageSourceFromData(a3, v5);
+  sizeCopy = size;
+  return _cgProcessSafeImageSourceFromData(data, v5);
 }
 
 CGImageRef __59__CNUIPRLikenessPhotoProvider_cgThumbnailFromData_maxSize___block_invoke(uint64_t a1, CGImageSource *a2)
@@ -44,23 +44,23 @@ CGImageRef __59__CNUIPRLikenessPhotoProvider_cgThumbnailFromData_maxSize___block
   return ThumbnailAtIndex;
 }
 
-- (CNUIPRLikenessPhotoProvider)initWithPhotoData:(id)a3 fingerprint:(id)a4
+- (CNUIPRLikenessPhotoProvider)initWithPhotoData:(id)data fingerprint:(id)fingerprint
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  fingerprintCopy = fingerprint;
   v15.receiver = self;
   v15.super_class = CNUIPRLikenessPhotoProvider;
   v8 = [(CNUIPRLikenessPhotoProvider *)&v15 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E6996660] atomicCache];
+    atomicCache = [MEMORY[0x1E6996660] atomicCache];
     cache = v8->_cache;
-    v8->_cache = v9;
+    v8->_cache = atomicCache;
 
-    v11 = _safeImageDataType(v6);
+    v11 = _safeImageDataType(dataCopy);
     if (v11)
     {
-      v12 = v6;
+      v12 = dataCopy;
     }
 
     else
@@ -70,26 +70,26 @@ CGImageRef __59__CNUIPRLikenessPhotoProvider_cgThumbnailFromData_maxSize___block
 
     objc_storeStrong(&v8->_originalPhotoData, v12);
 
-    objc_storeStrong(&v8->_likenessFingerprint, a4);
+    objc_storeStrong(&v8->_likenessFingerprint, fingerprint);
     v13 = v8;
   }
 
   return v8;
 }
 
-- (id)_cnui_likenessForSize:(CGSize)a3 scale:(double)a4
+- (id)_cnui_likenessForSize:(CGSize)size scale:(double)scale
 {
-  v4 = [(CNUIPRLikenessPhotoProvider *)self _cnui_circularImageForSize:a3.width scale:a3.height, a4];
+  scale = [(CNUIPRLikenessPhotoProvider *)self _cnui_circularImageForSize:size.width scale:size.height, scale];
   v5 = MEMORY[0x1E69BDC38];
 
-  return [v5 photoWithImage:v4];
+  return [v5 photoWithImage:scale];
 }
 
 - (CGImage)_cnui_image
 {
   v3 = objc_opt_class();
-  v4 = [(CNUIPRLikenessPhotoProvider *)self originalPhotoData];
-  v5 = [v3 cgImageFromData:v4];
+  originalPhotoData = [(CNUIPRLikenessPhotoProvider *)self originalPhotoData];
+  v5 = [v3 cgImageFromData:originalPhotoData];
 
   return v5;
 }
@@ -149,12 +149,12 @@ void __67__CNUIPRLikenessPhotoProvider_renderRoundedRectImageForSize_scale___blo
   }
 }
 
-- (CGImage)_cnui_imageForSize:(CGSize)a3 scale:(double)a4
+- (CGImage)_cnui_imageForSize:(CGSize)size scale:(double)scale
 {
-  v5 = a3.width * a4;
-  v6 = a3.height * a4;
+  v5 = size.width * scale;
+  v6 = size.height * scale;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = NSStringFromSize(a3);
+  v8 = NSStringFromSize(size);
   v9 = [v7 stringWithFormat:@"%@-Thumbnail", v8];
 
   if (self)
@@ -188,7 +188,7 @@ void __67__CNUIPRLikenessPhotoProvider_renderRoundedRectImageForSize_scale___blo
   return v12;
 }
 
-- (CGImage)_cnui_circularImageForSize:(CGSize)a3 scale:(double)a4
+- (CGImage)_cnui_circularImageForSize:(CGSize)size scale:(double)scale
 {
   OUTLINED_FUNCTION_2_1();
   v4 = MEMORY[0x1E696AEC0];
@@ -211,19 +211,19 @@ void __67__CNUIPRLikenessPhotoProvider_renderRoundedRectImageForSize_scale___blo
   return v9;
 }
 
-- (CFTypeRef)renderCircularImageForSize:(uint64_t)a1 scale:
+- (CFTypeRef)renderCircularImageForSize:(uint64_t)size scale:
 {
-  if (!a1)
+  if (!size)
   {
     return 0;
   }
 
   OUTLINED_FUNCTION_2_1();
   v2 = v1;
-  v3 = [v1 originalPhotoData];
+  originalPhotoData = [v1 originalPhotoData];
   objc_opt_class();
   OUTLINED_FUNCTION_0_7();
-  v4 = v3;
+  v4 = originalPhotoData;
   v5 = OUTLINED_FUNCTION_3_2();
   v9 = CNUICircularImageCreate(v6, v5, v7, v8);
   if (v9)
@@ -239,7 +239,7 @@ void __67__CNUIPRLikenessPhotoProvider_renderRoundedRectImageForSize_scale___blo
   return v10;
 }
 
-- (CGImage)_cnui_roundedRectImageForSize:(CGSize)a3 scale:(double)a4
+- (CGImage)_cnui_roundedRectImageForSize:(CGSize)size scale:(double)scale
 {
   OUTLINED_FUNCTION_2_1();
   v4 = MEMORY[0x1E696AEC0];
@@ -262,19 +262,19 @@ void __67__CNUIPRLikenessPhotoProvider_renderRoundedRectImageForSize_scale___blo
   return v9;
 }
 
-- (CFTypeRef)renderRoundedRectImageForSize:(uint64_t)a1 scale:
+- (CFTypeRef)renderRoundedRectImageForSize:(uint64_t)size scale:
 {
-  if (!a1)
+  if (!size)
   {
     return 0;
   }
 
   OUTLINED_FUNCTION_2_1();
   v2 = v1;
-  v3 = [v1 originalPhotoData];
+  originalPhotoData = [v1 originalPhotoData];
   objc_opt_class();
   OUTLINED_FUNCTION_0_7();
-  v4 = v3;
+  v4 = originalPhotoData;
   v5 = OUTLINED_FUNCTION_3_2();
   v9 = CNUIRoundedRectImageCreate(v6, v5, v7, v8);
   if (v9)

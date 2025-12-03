@@ -1,17 +1,17 @@
 @interface UIAccessibilityElementSuperCategory
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsFKARunningForFocusItem;
 - (BOOL)_accessibilitySetNativeFocus;
 - (BOOL)_accessibilitySupportsActivateAction;
 - (BOOL)_accessibilityViewHierarchyHasNativeFocus;
 - (BOOL)accessibilityActivate;
-- (BOOL)accessibilityZoomInAtPoint:(CGPoint)a3;
-- (BOOL)accessibilityZoomOutAtPoint:(CGPoint)a3;
+- (BOOL)accessibilityZoomInAtPoint:(CGPoint)point;
+- (BOOL)accessibilityZoomOutAtPoint:(CGPoint)point;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)accessibilityActivationPoint;
 - (CGRect)accessibilityFrame;
 - (UIAccessibilityElementSuperCategory)init;
-- (UIAccessibilityElementSuperCategory)initWithAccessibilityContainer:(id)a3;
+- (UIAccessibilityElementSuperCategory)initWithAccessibilityContainer:(id)container;
 - (float)_accessibilityActivationDelay;
 - (id)_accessibilityAutomaticIdentifier;
 - (id)accessibilityHint;
@@ -22,7 +22,7 @@
 - (id)description;
 - (id)focusGroupIdentifier;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilitySetValue:(id)a3;
+- (void)_accessibilitySetValue:(id)value;
 - (void)accessibilityDecrement;
 - (void)accessibilityElementDidBecomeFocused;
 - (void)accessibilityElementDidLoseFocus;
@@ -32,11 +32,11 @@
 
 @implementation UIAccessibilityElementSuperCategory
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIAccessibilityElement" hasInstanceMethod:@"initWithAccessibilityContainer:" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIAccessibilityElement" hasInstanceMethod:@"_destroyFocusLayer" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIAccessibilityElement" hasInstanceMethod:@"initWithAccessibilityContainer:" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIAccessibilityElement" hasInstanceMethod:@"_destroyFocusLayer" withFullSignature:{"v", 0}];
 }
 
 - (UIAccessibilityElementSuperCategory)init
@@ -48,7 +48,7 @@
   return 0;
 }
 
-- (UIAccessibilityElementSuperCategory)initWithAccessibilityContainer:(id)a3
+- (UIAccessibilityElementSuperCategory)initWithAccessibilityContainer:(id)container
 {
   v9.receiver = self;
   v9.super_class = UIAccessibilityElementSuperCategory;
@@ -59,10 +59,10 @@
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!container)
   {
-    v7 = [MEMORY[0x1E696AF00] callStackSymbols];
-    NSLog(&cfstr_ErrorUiaccessi.isa, v7);
+    callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+    NSLog(&cfstr_ErrorUiaccessi.isa, callStackSymbols);
 
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"ERROR: UIAccessibilityElement initialized with nil container"];
 LABEL_5:
@@ -83,38 +83,38 @@ LABEL_6:
   v5 = 3221225472;
   v6 = __46__UIAccessibilityElementSuperCategory_dealloc__block_invoke;
   v7 = &unk_1E78AB028;
-  v8 = self;
+  selfCopy = self;
   AXPerformSafeBlock();
   v3.receiver = self;
   v3.super_class = UIAccessibilityElementSuperCategory;
   [(UIAccessibilityElementSuperCategory *)&v3 dealloc];
 }
 
-- (void)_accessibilitySetValue:(id)a3
+- (void)_accessibilitySetValue:(id)value
 {
-  v4 = a3;
-  v5 = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
-  v6 = v5;
-  if (v5)
+  valueCopy = value;
+  accessibilityDelegate = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
+  v6 = accessibilityDelegate;
+  if (accessibilityDelegate)
   {
-    [v5 _accessibilitySetValue:v4];
+    [accessibilityDelegate _accessibilitySetValue:valueCopy];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIAccessibilityElementSuperCategory;
-    [&v7 _accessibilitySetValue:v4];
+    [&v7 _accessibilitySetValue:valueCopy];
   }
 }
 
 - (void)accessibilityElementDidBecomeFocused
 {
-  v3 = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
-  v4 = v3;
-  if (v3)
+  accessibilityDelegate = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
+  v4 = accessibilityDelegate;
+  if (accessibilityDelegate)
   {
-    [v3 accessibilityElementDidBecomeFocused];
+    [accessibilityDelegate accessibilityElementDidBecomeFocused];
   }
 
   else
@@ -127,11 +127,11 @@ LABEL_6:
 
 - (void)accessibilityElementDidLoseFocus
 {
-  v3 = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
-  v4 = v3;
-  if (v3)
+  accessibilityDelegate = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
+  v4 = accessibilityDelegate;
+  if (accessibilityDelegate)
   {
-    [v3 accessibilityElementDidLoseFocus];
+    [accessibilityDelegate accessibilityElementDidLoseFocus];
   }
 
   else
@@ -144,32 +144,32 @@ LABEL_6:
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
-  v4 = v3;
-  if (v3)
+  accessibilityDelegate = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
+  v4 = accessibilityDelegate;
+  if (accessibilityDelegate)
   {
-    v5 = [v3 accessibilityActivate];
+    accessibilityActivate = [accessibilityDelegate accessibilityActivate];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UIAccessibilityElementSuperCategory;
-    v5 = [(UIAccessibilityElementSuperCategory *)&v8 accessibilityActivate];
+    accessibilityActivate = [(UIAccessibilityElementSuperCategory *)&v8 accessibilityActivate];
   }
 
-  v6 = v5;
+  v6 = accessibilityActivate;
 
   return v6;
 }
 
 - (BOOL)_accessibilitySupportsActivateAction
 {
-  v3 = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
-  v4 = v3;
-  if (v3)
+  accessibilityDelegate = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
+  v4 = accessibilityDelegate;
+  if (accessibilityDelegate)
   {
-    v5 = [v3 _accessibilitySupportsActivateAction];
+    _accessibilitySupportsActivateAction = [accessibilityDelegate _accessibilitySupportsActivateAction];
   }
 
   else
@@ -184,24 +184,24 @@ LABEL_6:
     if (class_getInstanceMethod(v7, sel_accessibilityActivate) == _accessibilitySupportsActivateAction_BaseActivateAction)
     {
       v8 = [self _accessibilityGetBlockForAttribute:17];
-      v5 = v8 != 0;
+      _accessibilitySupportsActivateAction = v8 != 0;
     }
 
     else
     {
-      v5 = 1;
+      _accessibilitySupportsActivateAction = 1;
     }
   }
 
-  return v5;
+  return _accessibilitySupportsActivateAction;
 }
 
 - (float)_accessibilityActivationDelay
 {
-  v3 = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  accessibilityDelegate = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
+  if (accessibilityDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v3 _accessibilityActivationDelay:self];
+    [accessibilityDelegate _accessibilityActivationDelay:self];
   }
 
   else
@@ -218,17 +218,17 @@ LABEL_6:
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
-  if (v3)
+  accessibilityDelegate = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
+  if (accessibilityDelegate)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v3 accessibilityActivationPoint:self];
+      [accessibilityDelegate accessibilityActivationPoint:self];
     }
 
     else
     {
-      [v3 accessibilityActivationPoint];
+      [accessibilityDelegate accessibilityActivationPoint];
     }
   }
 
@@ -253,130 +253,130 @@ LABEL_6:
 {
   v6.receiver = self;
   v6.super_class = UIAccessibilityElementSuperCategory;
-  v3 = [(UIAccessibilityElementSuperCategory *)&v6 isAccessibilityElement];
-  v4 = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  isAccessibilityElement = [(UIAccessibilityElementSuperCategory *)&v6 isAccessibilityElement];
+  accessibilityDelegate = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
+  if (accessibilityDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [v4 isAccessibilityElement:self];
+    isAccessibilityElement = [accessibilityDelegate isAccessibilityElement:self];
   }
 
-  return v3;
+  return isAccessibilityElement;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
-  if (!v3)
+  accessibilityDelegate = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
+  if (!accessibilityDelegate)
   {
     goto LABEL_6;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v3 accessibilityLabel:self];
+    [accessibilityDelegate accessibilityLabel:self];
   }
 
   else
   {
-    [v3 accessibilityLabel];
+    [accessibilityDelegate accessibilityLabel];
   }
-  v4 = ;
-  if (!v4)
+  accessibilityLabel = ;
+  if (!accessibilityLabel)
   {
 LABEL_6:
     v6.receiver = self;
     v6.super_class = UIAccessibilityElementSuperCategory;
-    v4 = [(UIAccessibilityElementSuperCategory *)&v6 accessibilityLabel];
+    accessibilityLabel = [(UIAccessibilityElementSuperCategory *)&v6 accessibilityLabel];
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityHint
 {
-  v3 = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
-  if (!v3)
+  accessibilityDelegate = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
+  if (!accessibilityDelegate)
   {
     goto LABEL_6;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v3 accessibilityHint:self];
+    [accessibilityDelegate accessibilityHint:self];
   }
 
   else
   {
-    [v3 accessibilityHint];
+    [accessibilityDelegate accessibilityHint];
   }
-  v4 = ;
-  if (!v4)
+  accessibilityHint = ;
+  if (!accessibilityHint)
   {
 LABEL_6:
     v6.receiver = self;
     v6.super_class = UIAccessibilityElementSuperCategory;
-    v4 = [(UIAccessibilityElementSuperCategory *)&v6 accessibilityHint];
+    accessibilityHint = [(UIAccessibilityElementSuperCategory *)&v6 accessibilityHint];
   }
 
-  return v4;
+  return accessibilityHint;
 }
 
 - (id)accessibilityLanguage
 {
-  v3 = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
-  if (!v3)
+  accessibilityDelegate = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
+  if (!accessibilityDelegate)
   {
     goto LABEL_6;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v3 accessibilityLanguage:self];
+    [accessibilityDelegate accessibilityLanguage:self];
   }
 
   else
   {
-    [v3 accessibilityLanguage];
+    [accessibilityDelegate accessibilityLanguage];
   }
-  v4 = ;
-  if (!v4)
+  accessibilityLanguage = ;
+  if (!accessibilityLanguage)
   {
 LABEL_6:
     v6.receiver = self;
     v6.super_class = UIAccessibilityElementSuperCategory;
-    v4 = [(UIAccessibilityElementSuperCategory *)&v6 accessibilityLanguage];
+    accessibilityLanguage = [(UIAccessibilityElementSuperCategory *)&v6 accessibilityLanguage];
   }
 
-  return v4;
+  return accessibilityLanguage;
 }
 
 - (id)accessibilityPath
 {
-  v3 = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
-  if (!v3)
+  accessibilityDelegate = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
+  if (!accessibilityDelegate)
   {
     goto LABEL_6;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v3 accessibilityPath:self];
+    [accessibilityDelegate accessibilityPath:self];
   }
 
   else
   {
-    [v3 accessibilityPath];
+    [accessibilityDelegate accessibilityPath];
   }
-  v4 = ;
-  if (!v4)
+  accessibilityPath = ;
+  if (!accessibilityPath)
   {
 LABEL_6:
     v6.receiver = self;
     v6.super_class = UIAccessibilityElementSuperCategory;
-    v4 = [(UIAccessibilityElementSuperCategory *)&v6 accessibilityPath];
+    accessibilityPath = [(UIAccessibilityElementSuperCategory *)&v6 accessibilityPath];
   }
 
-  return v4;
+  return accessibilityPath;
 }
 
 - (CGRect)accessibilityFrame
@@ -400,14 +400,14 @@ LABEL_6:
   v80.size.height = v14;
   if (!CGRectEqualToRect(v74, v80))
   {
-    v15 = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
+    accessibilityContainer = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v17 = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
-      v18 = UIAccessibilityFrameForBounds(v17, v8, v10, v12, v14);
+      accessibilityContainer2 = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
+      v18 = UIAccessibilityFrameForBounds(accessibilityContainer2, v8, v10, v12, v14);
 LABEL_10:
       x = v18;
       y = v19;
@@ -421,17 +421,17 @@ LABEL_10:
   [(UIAccessibilityElementSuperCategory *)self accessibilityFrameInContainerSpace];
   if (CGRectIsNull(v75))
   {
-    v22 = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
-    if (v22)
+    accessibilityDelegate = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
+    if (accessibilityDelegate)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v22 accessibilityFrame:self];
+        [accessibilityDelegate accessibilityFrame:self];
       }
 
       else
       {
-        [v22 accessibilityFrame];
+        [accessibilityDelegate accessibilityFrame];
       }
 
       x = v23;
@@ -440,7 +440,7 @@ LABEL_10:
       height = v26;
     }
 
-    v72 = v22;
+    v72 = accessibilityDelegate;
     aSelector = 0;
     [(UIAccessibilityElementSuperCategory *)self delegateSpecificsForAttribute:2003 delegate:&v72 selector:&aSelector];
     v51 = v72;
@@ -464,26 +464,26 @@ LABEL_10:
     v30 = v29;
     v32 = v31;
     v34 = v33;
-    v35 = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
+    accessibilityContainer3 = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
     objc_opt_class();
     v36 = objc_opt_isKindOfClass();
 
     if (v36)
     {
-      v17 = [self _accessibilityWindow];
-      v37 = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
-      [v37 convertRect:0 toView:{v28, v30, v32, v34}];
+      accessibilityContainer2 = [self _accessibilityWindow];
+      accessibilityContainer4 = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
+      [accessibilityContainer4 convertRect:0 toView:{v28, v30, v32, v34}];
       v39 = v38;
       v41 = v40;
       v43 = v42;
       v45 = v44;
 
-      [v17 convertRect:0 toWindow:{v39, v41, v43, v45}];
+      [accessibilityContainer2 convertRect:0 toWindow:{v39, v41, v43, v45}];
       goto LABEL_10;
     }
 
-    v46 = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
-    [v46 accessibilityFrame];
+    accessibilityContainer5 = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
+    [accessibilityContainer5 accessibilityFrame];
     v48 = v47;
     v50 = v49;
 
@@ -540,55 +540,55 @@ LABEL_18:
 
 - (id)accessibilityValue
 {
-  v3 = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
-  if (!v3)
+  accessibilityDelegate = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
+  if (!accessibilityDelegate)
   {
     goto LABEL_6;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v3 accessibilityValue:self];
+    [accessibilityDelegate accessibilityValue:self];
   }
 
   else
   {
-    [v3 accessibilityValue];
+    [accessibilityDelegate accessibilityValue];
   }
-  v4 = ;
-  if (!v4)
+  accessibilityValue = ;
+  if (!accessibilityValue)
   {
 LABEL_6:
     v6.receiver = self;
     v6.super_class = UIAccessibilityElementSuperCategory;
-    v4 = [(UIAccessibilityElementSuperCategory *)&v6 accessibilityValue];
+    accessibilityValue = [(UIAccessibilityElementSuperCategory *)&v6 accessibilityValue];
   }
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v7.receiver = self;
   v7.super_class = UIAccessibilityElementSuperCategory;
-  v3 = [(UIAccessibilityElementSuperCategory *)&v7 accessibilityTraits];
-  v4 = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
-  if (v4)
+  accessibilityTraits = [(UIAccessibilityElementSuperCategory *)&v7 accessibilityTraits];
+  accessibilityDelegate = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
+  if (accessibilityDelegate)
   {
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 accessibilityTraits:self];
+      accessibilityTraits2 = [accessibilityDelegate accessibilityTraits:self];
     }
 
     else
     {
-      v5 = [v4 accessibilityTraits];
+      accessibilityTraits2 = [accessibilityDelegate accessibilityTraits];
     }
 
-    v3 |= v5;
+    accessibilityTraits |= accessibilityTraits2;
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (void)accessibilityIncrement
@@ -602,17 +602,17 @@ LABEL_6:
 
   else
   {
-    v5 = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
-    if (v5)
+    accessibilityDelegate = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
+    if (accessibilityDelegate)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v5 accessibilityIncrement:self];
+        [accessibilityDelegate accessibilityIncrement:self];
       }
 
       else
       {
-        [v5 accessibilityIncrement];
+        [accessibilityDelegate accessibilityIncrement];
       }
     }
 
@@ -636,17 +636,17 @@ LABEL_6:
 
   else
   {
-    v5 = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
-    if (v5)
+    accessibilityDelegate = [(UIAccessibilityElementSuperCategory *)self accessibilityDelegate];
+    if (accessibilityDelegate)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v5 accessibilityDecrement:self];
+        [accessibilityDelegate accessibilityDecrement:self];
       }
 
       else
       {
-        [v5 accessibilityDecrement];
+        [accessibilityDelegate accessibilityDecrement];
       }
     }
 
@@ -662,30 +662,30 @@ LABEL_6:
 - (id)description
 {
   v3 = [objc_opt_class() description];
-  v4 = [(UIAccessibilityElementSuperCategory *)self accessibilityLabel];
+  accessibilityLabel = [(UIAccessibilityElementSuperCategory *)self accessibilityLabel];
   [(UIAccessibilityElementSuperCategory *)self accessibilityFrame];
   v5 = NSStringFromCGRect(v9);
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ [%p] %@ %@", v3, self, v4, v5];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ [%p] %@ %@", v3, self, accessibilityLabel, v5];
 
   return v6;
 }
 
-- (BOOL)accessibilityZoomInAtPoint:(CGPoint)a3
+- (BOOL)accessibilityZoomInAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
-  v6 = [v5 accessibilityZoomInAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  accessibilityContainer = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
+  v6 = [accessibilityContainer accessibilityZoomInAtPoint:{x, y}];
 
   return v6;
 }
 
-- (BOOL)accessibilityZoomOutAtPoint:(CGPoint)a3
+- (BOOL)accessibilityZoomOutAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
-  v6 = [v5 accessibilityZoomOutAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  accessibilityContainer = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
+  v6 = [accessibilityContainer accessibilityZoomOutAtPoint:{x, y}];
 
   return v6;
 }
@@ -699,15 +699,15 @@ LABEL_6:
 
   else
   {
-    v4 = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
-    v5 = [v4 _accessibilityAutomaticIdentifier];
+    accessibilityContainer = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
+    _accessibilityAutomaticIdentifier = [accessibilityContainer _accessibilityAutomaticIdentifier];
 
-    v6 = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
-    v7 = [v6 indexOfAccessibilityElement:self];
+    accessibilityContainer2 = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
+    v7 = [accessibilityContainer2 indexOfAccessibilityElement:self];
 
     v8 = MEMORY[0x1E696AEC0];
     v9 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
-    v3 = [v8 stringWithFormat:@"%@:%@", v5, v9];
+    v3 = [v8 stringWithFormat:@"%@:%@", _accessibilityAutomaticIdentifier, v9];
   }
 
   return v3;
@@ -724,47 +724,47 @@ LABEL_6:
 
   else
   {
-    v4 = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
-    v5 = [v4 _accessibilitySetNativeFocus];
+    accessibilityContainer = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
+    _accessibilitySetNativeFocus = [accessibilityContainer _accessibilitySetNativeFocus];
 
-    return v5;
+    return _accessibilitySetNativeFocus;
   }
 }
 
 - (BOOL)_accessibilityViewHierarchyHasNativeFocus
 {
-  v2 = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
-  v3 = [v2 _accessibilityViewHierarchyHasNativeFocus];
+  accessibilityContainer = [(UIAccessibilityElementSuperCategory *)self accessibilityContainer];
+  _accessibilityViewHierarchyHasNativeFocus = [accessibilityContainer _accessibilityViewHierarchyHasNativeFocus];
 
-  return v3;
+  return _accessibilityViewHierarchyHasNativeFocus;
 }
 
 - (BOOL)_accessibilityIsFKARunningForFocusItem
 {
   v2 = [self _accessibilityAncestorIsKindOf:objc_opt_class()];
-  v3 = [v2 _accessibilityIsFKARunningForFocusItem];
+  _accessibilityIsFKARunningForFocusItem = [v2 _accessibilityIsFKARunningForFocusItem];
 
-  return v3;
+  return _accessibilityIsFKARunningForFocusItem;
 }
 
 - (id)focusGroupIdentifier
 {
-  v3 = [self _accessibilityParentView];
-  v4 = [v3 safeValueForKey:@"_containingScrollView"];
+  _accessibilityParentView = [self _accessibilityParentView];
+  v4 = [_accessibilityParentView safeValueForKey:@"_containingScrollView"];
 
   if (v4)
   {
     v7.receiver = self;
     v7.super_class = UIAccessibilityElementSuperCategory;
-    v5 = [&v7 focusGroupIdentifier];
+    focusGroupIdentifier = [&v7 focusGroupIdentifier];
   }
 
   else
   {
-    v5 = [self _accessibilityDefaultFocusGroupIdentifier];
+    focusGroupIdentifier = [self _accessibilityDefaultFocusGroupIdentifier];
   }
 
-  return v5;
+  return focusGroupIdentifier;
 }
 
 @end

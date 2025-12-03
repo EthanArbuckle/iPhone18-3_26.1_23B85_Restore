@@ -1,9 +1,9 @@
 @interface SCRCMathTableExpression
 - (BOOL)isMultiRowTable;
-- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)a3 treePosition:(id)a4 openOperator:(id)a5 openOperatorTreePosition:(id)a6 closeOperator:(id)a7 closeOperatorTreePosition:(id)a8;
-- (id)latexDescriptionInMathMode:(BOOL)a3;
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4;
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5;
+- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)radicals treePosition:(id)position openOperator:(id)operator openOperatorTreePosition:(id)treePosition closeOperator:(id)closeOperator closeOperatorTreePosition:(id)operatorTreePosition;
+- (id)latexDescriptionInMathMode:(BOOL)mode;
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed;
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position;
 - (unint64_t)_numberOfColumns;
 - (unint64_t)numberOfTables;
 @end
@@ -12,45 +12,45 @@
 
 - (BOOL)isMultiRowTable
 {
-  v2 = [(SCRCMathArrayExpression *)self children];
-  v3 = [v2 count] > 1;
+  children = [(SCRCMathArrayExpression *)self children];
+  v3 = [children count] > 1;
 
   return v3;
 }
 
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed
 {
-  v4 = a4;
+  allowedCopy = allowed;
   v7 = [(SCRCMathExpression *)self localizedStringForKey:@"math.table.formatter"];
   v11.receiver = self;
   v11.super_class = SCRCMathTableExpression;
-  v8 = [(SCRCMathArrayExpression *)&v11 speakableDescriptionWithSpeakingStyle:a3 arePausesAllowed:v4];
+  v8 = [(SCRCMathArrayExpression *)&v11 speakableDescriptionWithSpeakingStyle:style arePausesAllowed:allowedCopy];
   v9 = [MEMORY[0x277CCA898] scrcStringWithFormat:v7, v8];
 
   return v9;
 }
 
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position
 {
   v9.receiver = self;
   v9.super_class = SCRCMathTableExpression;
-  v6 = [(SCRCMathArrayExpression *)&v9 speakableSegmentsWithSpeakingStyle:a3 upToDepth:a4 treePosition:a5];
+  v6 = [(SCRCMathArrayExpression *)&v9 speakableSegmentsWithSpeakingStyle:style upToDepth:depth treePosition:position];
   v7 = [(SCRCMathExpression *)self speakableSegments:v6 withLocalizablePrefix:@"segment.table.prefix" localizableSuffix:@"segment.table.suffix"];
 
   return v7;
 }
 
-- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)a3 treePosition:(id)a4 openOperator:(id)a5 openOperatorTreePosition:(id)a6 closeOperator:(id)a7 closeOperatorTreePosition:(id)a8
+- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)radicals treePosition:(id)position openOperator:(id)operator openOperatorTreePosition:(id)treePosition closeOperator:(id)closeOperator closeOperatorTreePosition:(id)operatorTreePosition
 {
-  v14 = a4;
-  v15 = a5;
-  v32 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = [MEMORY[0x277CCAB48] scrcString];
-  v34 = self;
-  v19 = [(SCRCMathArrayExpression *)self children];
-  v20 = [v19 count];
+  positionCopy = position;
+  operatorCopy = operator;
+  treePositionCopy = treePosition;
+  closeOperatorCopy = closeOperator;
+  operatorTreePositionCopy = operatorTreePosition;
+  scrcString = [MEMORY[0x277CCAB48] scrcString];
+  selfCopy = self;
+  children = [(SCRCMathArrayExpression *)self children];
+  v20 = [children count];
 
   v33 = v20;
   if (v20)
@@ -58,35 +58,35 @@
     v21 = 0;
     do
     {
-      v22 = [(SCRCMathArrayExpression *)v34 children];
-      v23 = [v22 objectAtIndex:v21];
+      children2 = [(SCRCMathArrayExpression *)selfCopy children];
+      v23 = [children2 objectAtIndex:v21];
 
       if (v21)
       {
-        v24 = [MEMORY[0x277CCA898] scrcStringWithString:@"\n" treePosition:v14];
-        [v18 appendAttributedString:v24];
+        v24 = [MEMORY[0x277CCA898] scrcStringWithString:@"\n" treePosition:positionCopy];
+        [scrcString appendAttributedString:v24];
       }
 
-      if (v15)
+      if (operatorCopy)
       {
-        v25 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:@"big" treePosition:v32];
-        [v18 appendAttributedString:v25];
+        v25 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:@"big" treePosition:treePositionCopy];
+        [scrcString appendAttributedString:v25];
 
-        v26 = [v15 dollarCodeDescriptionWithNumberOfOuterRadicals:a3 treePosition:v32];
-        [v18 appendAttributedString:v26];
+        v26 = [operatorCopy dollarCodeDescriptionWithNumberOfOuterRadicals:radicals treePosition:treePositionCopy];
+        [scrcString appendAttributedString:v26];
       }
 
-      v27 = [v14 indexPathByAddingIndex:v21];
-      v28 = [v23 dollarCodeDescriptionWithNumberOfOuterRadicals:a3 treePosition:v27];
-      [v18 appendAttributedString:v28];
+      v27 = [positionCopy indexPathByAddingIndex:v21];
+      v28 = [v23 dollarCodeDescriptionWithNumberOfOuterRadicals:radicals treePosition:v27];
+      [scrcString appendAttributedString:v28];
 
-      if (v16)
+      if (closeOperatorCopy)
       {
-        v29 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:@"big" treePosition:v17];
-        [v18 appendAttributedString:v29];
+        v29 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:@"big" treePosition:operatorTreePositionCopy];
+        [scrcString appendAttributedString:v29];
 
-        v30 = [v16 dollarCodeDescriptionWithNumberOfOuterRadicals:a3 treePosition:v17];
-        [v18 appendAttributedString:v30];
+        v30 = [closeOperatorCopy dollarCodeDescriptionWithNumberOfOuterRadicals:radicals treePosition:operatorTreePositionCopy];
+        [scrcString appendAttributedString:v30];
       }
 
       ++v21;
@@ -95,7 +95,7 @@
     while (v33 != v21);
   }
 
-  return v18;
+  return scrcString;
 }
 
 - (unint64_t)_numberOfColumns
@@ -105,8 +105,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(SCRCMathArrayExpression *)self children];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  children = [(SCRCMathArrayExpression *)self children];
+  v3 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -118,11 +118,11 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(children);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) children];
-        v9 = [v8 count];
+        children2 = [*(*(&v11 + 1) + 8 * i) children];
+        v9 = [children2 count];
 
         if (v9 > v5)
         {
@@ -130,7 +130,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -157,13 +157,13 @@
   return result;
 }
 
-- (id)latexDescriptionInMathMode:(BOOL)a3
+- (id)latexDescriptionInMathMode:(BOOL)mode
 {
   v4 = [@"\\begin{tabular}{" mutableCopy];
-  v5 = [(SCRCMathTableExpression *)self _numberOfColumns];
-  if (v5)
+  _numberOfColumns = [(SCRCMathTableExpression *)self _numberOfColumns];
+  if (_numberOfColumns)
   {
-    v6 = v5;
+    v6 = _numberOfColumns;
     do
     {
       [v4 appendString:@"c"];

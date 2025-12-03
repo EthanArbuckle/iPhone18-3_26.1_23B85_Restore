@@ -1,7 +1,7 @@
 @interface MCMXPCMessageReplace
 - (MCMConcreteContainerIdentity)containerIdentityNew;
 - (MCMConcreteContainerIdentity)containerIdentityOld;
-- (MCMXPCMessageReplace)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5;
+- (MCMXPCMessageReplace)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error;
 - (unsigned)disposition;
 @end
 
@@ -28,32 +28,32 @@
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = MCMXPCMessageReplace;
-  v3 = [(MCMXPCMessageBase *)&v7 disposition];
-  if (v3 == 1)
+  disposition = [(MCMXPCMessageBase *)&v7 disposition];
+  if (disposition == 1)
   {
-    v4 = [(MCMXPCMessageReplace *)self containerIdentityNew];
-    v3 = [v4 disposition];
+    containerIdentityNew = [(MCMXPCMessageReplace *)self containerIdentityNew];
+    disposition = [containerIdentityNew disposition];
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return disposition;
 }
 
-- (MCMXPCMessageReplace)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5
+- (MCMXPCMessageReplace)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v40.receiver = self;
   v40.super_class = MCMXPCMessageReplace;
-  v10 = [(MCMXPCMessageBase *)&v40 initWithXPCObject:v8 context:v9 error:a5];
+  v10 = [(MCMXPCMessageBase *)&v40 initWithXPCObject:objectCopy context:contextCopy error:error];
   if (!v10)
   {
     goto LABEL_21;
   }
 
   v39 = 1;
-  v11 = xpc_dictionary_get_dictionary(v8, "OldContainer");
+  v11 = xpc_dictionary_get_dictionary(objectCopy, "OldContainer");
   if (v11)
   {
     v12 = container_xpc_decode_container_object();
@@ -78,10 +78,10 @@
 
     v13 = v12;
     v14 = [MCMConcreteContainerIdentityForLibsystem alloc];
-    v15 = [v9 clientIdentity];
-    v16 = [v15 userIdentity];
-    v17 = [v9 userIdentityCache];
-    v18 = [(MCMConcreteContainerIdentityForLibsystem *)v14 initWithLibsystemContainer:v13 defaultUserIdentity:v16 userIdentityCache:v17 error:&v39];
+    clientIdentity = [contextCopy clientIdentity];
+    userIdentity = [clientIdentity userIdentity];
+    userIdentityCache = [contextCopy userIdentityCache];
+    v18 = [(MCMConcreteContainerIdentityForLibsystem *)v14 initWithLibsystemContainer:v13 defaultUserIdentity:userIdentity userIdentityCache:userIdentityCache error:&v39];
     containerIdentityOld = v10->_containerIdentityOld;
     v10->_containerIdentityOld = v18;
   }
@@ -91,7 +91,7 @@
     v13 = 0;
   }
 
-  v20 = xpc_dictionary_get_dictionary(v8, "NewContainer");
+  v20 = xpc_dictionary_get_dictionary(objectCopy, "NewContainer");
   if (v20)
   {
     v21 = container_xpc_decode_container_object();
@@ -99,17 +99,17 @@
     {
       v22 = v21;
       v23 = [MCMConcreteContainerIdentityForLibsystem alloc];
-      v24 = [v9 clientIdentity];
-      [v24 userIdentity];
-      v25 = v38 = a5;
-      [v9 userIdentityCache];
+      clientIdentity2 = [contextCopy clientIdentity];
+      [clientIdentity2 userIdentity];
+      v25 = v38 = error;
+      [contextCopy userIdentityCache];
       v26 = v37 = v11;
       v27 = [(MCMConcreteContainerIdentityForLibsystem *)v23 initWithLibsystemContainer:v22 defaultUserIdentity:v25 userIdentityCache:v26 error:&v39];
       containerIdentityNew = v10->_containerIdentityNew;
       v10->_containerIdentityNew = v27;
 
       v11 = v37;
-      a5 = v38;
+      error = v38;
     }
 
     else
@@ -143,9 +143,9 @@ LABEL_16:
   MEMORY[0x1E12D3190](v22);
   if (v39 != 1)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v39;
+      *error = v39;
     }
 
     v10 = 0;

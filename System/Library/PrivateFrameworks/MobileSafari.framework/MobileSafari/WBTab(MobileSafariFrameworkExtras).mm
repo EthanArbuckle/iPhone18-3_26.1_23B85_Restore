@@ -7,7 +7,7 @@
 
 - (BOOL)hasLinkToCopy
 {
-  v1 = [a1 url];
+  v1 = [self url];
   v2 = v1 != 0;
 
   return v2;

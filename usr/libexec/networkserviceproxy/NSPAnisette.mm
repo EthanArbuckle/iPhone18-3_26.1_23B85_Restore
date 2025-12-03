@@ -1,24 +1,24 @@
 @interface NSPAnisette
-+ (void)sendRequestForTokens:(id)a3 tokenFetchURLSession:(id)a4 messageBody:(id)a5 completionHandler:(id)a6;
-+ (void)sendRequestForTokens:(id)a3 tokenFetchURLSession:(id)a4 tokenActivationQuery:(id)a5 completionHandler:(id)a6;
++ (void)sendRequestForTokens:(id)tokens tokenFetchURLSession:(id)session messageBody:(id)body completionHandler:(id)handler;
++ (void)sendRequestForTokens:(id)tokens tokenFetchURLSession:(id)session tokenActivationQuery:(id)query completionHandler:(id)handler;
 @end
 
 @implementation NSPAnisette
 
-+ (void)sendRequestForTokens:(id)a3 tokenFetchURLSession:(id)a4 tokenActivationQuery:(id)a5 completionHandler:(id)a6
++ (void)sendRequestForTokens:(id)tokens tokenFetchURLSession:(id)session tokenActivationQuery:(id)query completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v9)
+  tokensCopy = tokens;
+  sessionCopy = session;
+  queryCopy = query;
+  handlerCopy = handler;
+  if (!tokensCopy)
   {
     v18 = nplog_obj();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
 LABEL_10:
 
-      (*(v12 + 2))(v12, 2, 0, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 2, 0, 0, 0);
       goto LABEL_6;
     }
 
@@ -30,7 +30,7 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  if (!v11)
+  if (!queryCopy)
   {
     v18 = nplog_obj();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
@@ -44,17 +44,17 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [v9 ak_addClientInfoHeader];
-  [v9 ak_addDeviceUDIDHeader];
-  [v11 setAuthType:2];
-  v13 = [v11 data];
-  [v9 setHTTPBody:v13];
+  [tokensCopy ak_addClientInfoHeader];
+  [tokensCopy ak_addDeviceUDIDHeader];
+  [queryCopy setAuthType:2];
+  data = [queryCopy data];
+  [tokensCopy setHTTPBody:data];
 
   ++dword_1001298B8;
   v14 = nplog_obj();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v9 URL];
+    v15 = [tokensCopy URL];
     *buf = 138412290;
     v23 = v15;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Sending request for %@", buf, 0xCu);
@@ -65,26 +65,26 @@ LABEL_12:
   v20[1] = 3221225472;
   v20[2] = sub_1000AECD4;
   v20[3] = &unk_10010B140;
-  v21 = v12;
-  v17 = [v16 beginDataTaskWithRequest:v9 completionHandler:v20];
+  v21 = handlerCopy;
+  v17 = [v16 beginDataTaskWithRequest:tokensCopy completionHandler:v20];
 
 LABEL_6:
 }
 
-+ (void)sendRequestForTokens:(id)a3 tokenFetchURLSession:(id)a4 messageBody:(id)a5 completionHandler:(id)a6
++ (void)sendRequestForTokens:(id)tokens tokenFetchURLSession:(id)session messageBody:(id)body completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  tokensCopy = tokens;
+  sessionCopy = session;
+  bodyCopy = body;
+  handlerCopy = handler;
+  if (!tokensCopy)
   {
     v19 = nplog_obj();
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
 LABEL_10:
 
-      (*(v13 + 2))(v13, 2, 0, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 2, 0, 0, 0);
       goto LABEL_6;
     }
 
@@ -96,7 +96,7 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  if (!v12)
+  if (!bodyCopy)
   {
     v19 = nplog_obj();
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
@@ -110,17 +110,17 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v14 = [a1 description];
-  [v10 addValue:v14 forHTTPHeaderField:@"Client-Auth-Type"];
+  v14 = [self description];
+  [tokensCopy addValue:v14 forHTTPHeaderField:@"Client-Auth-Type"];
 
-  [v10 ak_addClientInfoHeader];
-  [v10 ak_addDeviceUDIDHeader];
-  [v10 setHTTPBody:v12];
+  [tokensCopy ak_addClientInfoHeader];
+  [tokensCopy ak_addDeviceUDIDHeader];
+  [tokensCopy setHTTPBody:bodyCopy];
   ++dword_1001298B8;
   v15 = nplog_obj();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v10 URL];
+    v16 = [tokensCopy URL];
     *buf = 138412290;
     v24 = v16;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Sending request for %@", buf, 0xCu);
@@ -131,8 +131,8 @@ LABEL_12:
   v21[1] = 3221225472;
   v21[2] = sub_1000AEF9C;
   v21[3] = &unk_10010B140;
-  v22 = v13;
-  v18 = [v17 beginDataTaskWithRequest:v10 completionHandler:v21];
+  v22 = handlerCopy;
+  v18 = [v17 beginDataTaskWithRequest:tokensCopy completionHandler:v21];
 
 LABEL_6:
 }

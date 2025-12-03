@@ -1,26 +1,26 @@
 @interface PLDateIntervalFormatter
 + (id)_currentLocalDate;
-+ (id)_dateFormatForDateFormatterType:(unint64_t)a3 displayYear:(BOOL)a4 displayLongMonth:(BOOL)a5;
-+ (id)stringFromStartDate:(id)a3 endDate:(id)a4 type:(unint64_t)a5 showLongMonthFormatIfNeeded:(BOOL)a6;
-- (BOOL)_yearIsNeededForDisplayingDate:(id)a3;
++ (id)_dateFormatForDateFormatterType:(unint64_t)type displayYear:(BOOL)year displayLongMonth:(BOOL)month;
++ (id)stringFromStartDate:(id)date endDate:(id)endDate type:(unint64_t)type showLongMonthFormatIfNeeded:(BOOL)needed;
+- (BOOL)_yearIsNeededForDisplayingDate:(id)date;
 - (NSCalendar)gmtCalendar;
 - (NSDateIntervalFormatter)dateIntervalFormatter;
 - (NSLocale)locale;
 - (PLDateIntervalFormatter)init;
-- (id)stringFromStartDate:(id)a3 endDate:(id)a4 type:(unint64_t)a5 showLongMonthFormatIfNeeded:(BOOL)a6;
-- (void)setLocale:(id)a3;
+- (id)stringFromStartDate:(id)date endDate:(id)endDate type:(unint64_t)type showLongMonthFormatIfNeeded:(BOOL)needed;
+- (void)setLocale:(id)locale;
 @end
 
 @implementation PLDateIntervalFormatter
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   p_locale = &self->_locale;
-  if (self->_locale != v5)
+  if (self->_locale != localeCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_locale, a3);
+    v7 = localeCopy;
+    objc_storeStrong(p_locale, locale);
     p_locale = [(NSDateIntervalFormatter *)self->_dateIntervalFormatter setLocale:v7];
   }
 
@@ -32,15 +32,15 @@
   locale = self->_locale;
   if (locale)
   {
-    v3 = locale;
+    currentLocale = locale;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
   }
 
-  return v3;
+  return currentLocale;
 }
 
 - (NSCalendar)gmtCalendar
@@ -70,8 +70,8 @@
     v5 = self->_dateIntervalFormatter;
     self->_dateIntervalFormatter = v4;
 
-    v6 = [(PLDateIntervalFormatter *)self locale];
-    [(NSDateIntervalFormatter *)self->_dateIntervalFormatter setLocale:v6];
+    locale = [(PLDateIntervalFormatter *)self locale];
+    [(NSDateIntervalFormatter *)self->_dateIntervalFormatter setLocale:locale];
 
     v7 = [MEMORY[0x1E695DFE8] timeZoneWithAbbreviation:@"GMT"];
     [(NSDateIntervalFormatter *)self->_dateIntervalFormatter setTimeZone:v7];
@@ -82,43 +82,43 @@
   return dateIntervalFormatter;
 }
 
-- (BOOL)_yearIsNeededForDisplayingDate:(id)a3
+- (BOOL)_yearIsNeededForDisplayingDate:(id)date
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _currentLocalDate];
-  v6 = [(PLDateIntervalFormatter *)self gmtCalendar];
-  v7 = [v6 compareDate:v5 toDate:v4 toUnitGranularity:4];
+  dateCopy = date;
+  _currentLocalDate = [objc_opt_class() _currentLocalDate];
+  gmtCalendar = [(PLDateIntervalFormatter *)self gmtCalendar];
+  v7 = [gmtCalendar compareDate:_currentLocalDate toDate:dateCopy toUnitGranularity:4];
 
   return v7 != 0;
 }
 
-- (id)stringFromStartDate:(id)a3 endDate:(id)a4 type:(unint64_t)a5 showLongMonthFormatIfNeeded:(BOOL)a6
+- (id)stringFromStartDate:(id)date endDate:(id)endDate type:(unint64_t)type showLongMonthFormatIfNeeded:(BOOL)needed
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
+  neededCopy = needed;
+  dateCopy = date;
+  endDateCopy = endDate;
+  v12 = endDateCopy;
   v13 = 0;
-  if (v10 && a5)
+  if (dateCopy && type)
   {
-    if (v11)
+    if (endDateCopy)
     {
-      v14 = v11;
+      v14 = endDateCopy;
     }
 
     else
     {
-      v14 = v10;
+      v14 = dateCopy;
     }
 
     v15 = v14;
     v16 = [(PLDateIntervalFormatter *)self alwaysShowYear]|| [(PLDateIntervalFormatter *)self _yearIsNeededForDisplayingDate:v15];
-    v17 = [objc_opt_class() _dateFormatForDateFormatterType:a5 displayYear:v16 displayLongMonth:v6];
-    v18 = [(PLDateIntervalFormatter *)self dateIntervalFormatter];
-    [v18 setDateTemplate:v17];
+    v17 = [objc_opt_class() _dateFormatForDateFormatterType:type displayYear:v16 displayLongMonth:neededCopy];
+    dateIntervalFormatter = [(PLDateIntervalFormatter *)self dateIntervalFormatter];
+    [dateIntervalFormatter setDateTemplate:v17];
 
-    v19 = [(PLDateIntervalFormatter *)self dateIntervalFormatter];
-    v13 = [v19 stringFromDate:v10 toDate:v15];
+    dateIntervalFormatter2 = [(PLDateIntervalFormatter *)self dateIntervalFormatter];
+    v13 = [dateIntervalFormatter2 stringFromDate:dateCopy toDate:v15];
   }
 
   return v13;
@@ -139,37 +139,37 @@
 
 + (id)_currentLocalDate
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [MEMORY[0x1E695DFE8] systemTimeZone];
-  v4 = [v3 secondsFromGMTForDate:v2];
+  date = [MEMORY[0x1E695DF00] date];
+  systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+  v4 = [systemTimeZone secondsFromGMTForDate:date];
 
   v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:v4];
 
   return v5;
 }
 
-+ (id)stringFromStartDate:(id)a3 endDate:(id)a4 type:(unint64_t)a5 showLongMonthFormatIfNeeded:(BOOL)a6
++ (id)stringFromStartDate:(id)date endDate:(id)endDate type:(unint64_t)type showLongMonthFormatIfNeeded:(BOOL)needed
 {
-  v6 = a6;
-  v9 = a4;
-  v10 = a3;
+  neededCopy = needed;
+  endDateCopy = endDate;
+  dateCopy = date;
   v11 = objc_alloc_init(PLDateIntervalFormatter);
-  v12 = [(PLDateIntervalFormatter *)v11 stringFromStartDate:v10 endDate:v9 type:a5 showLongMonthFormatIfNeeded:v6];
+  v12 = [(PLDateIntervalFormatter *)v11 stringFromStartDate:dateCopy endDate:endDateCopy type:type showLongMonthFormatIfNeeded:neededCopy];
 
   return v12;
 }
 
-+ (id)_dateFormatForDateFormatterType:(unint64_t)a3 displayYear:(BOOL)a4 displayLongMonth:(BOOL)a5
++ (id)_dateFormatForDateFormatterType:(unint64_t)type displayYear:(BOOL)year displayLongMonth:(BOOL)month
 {
-  v5 = a4;
+  yearCopy = year;
   v19 = *MEMORY[0x1E69E9840];
   v7 = 1;
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
       v11 = @"MMM";
-      if (a5)
+      if (month)
       {
         v11 = @"MMMM";
       }
@@ -179,7 +179,7 @@
 
     else
     {
-      if (a3 == 5)
+      if (type == 5)
       {
         v9 = MEMORY[0x1E696AD60];
         v10 = @"d";
@@ -187,7 +187,7 @@
 
       else
       {
-        if (a3 != 6)
+        if (type != 6)
         {
           goto LABEL_23;
         }
@@ -208,13 +208,13 @@
     goto LABEL_23;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 1uLL:
-      v8 = [MEMORY[0x1E696AD60] stringWithFormat:@"%@%@", a4, a5, @"MMM", @"d"];
+      string = [MEMORY[0x1E696AD60] stringWithFormat:@"%@%@", year, month, @"MMM", @"d"];
       goto LABEL_18;
     case 2uLL:
-      if (a5)
+      if (month)
       {
         v12 = @"MMMM";
       }
@@ -224,17 +224,17 @@
         v12 = @"MMM";
       }
 
-      v8 = [MEMORY[0x1E696AD60] stringWithString:v12];
+      string = [MEMORY[0x1E696AD60] stringWithString:v12];
 LABEL_18:
-      v13 = v8;
-      if (v8)
+      v13 = string;
+      if (string)
       {
         goto LABEL_26;
       }
 
       break;
     case 3uLL:
-      v8 = [MEMORY[0x1E696AD60] string];
+      string = [MEMORY[0x1E696AD60] string];
       goto LABEL_18;
   }
 
@@ -243,13 +243,13 @@ LABEL_23:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v18 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Couldn't find dateFormat for type %lu", buf, 0xCu);
   }
 
   v13 = 0;
 LABEL_26:
-  if (v7 && v5)
+  if (v7 && yearCopy)
   {
     [v13 appendString:@"y"];
   }

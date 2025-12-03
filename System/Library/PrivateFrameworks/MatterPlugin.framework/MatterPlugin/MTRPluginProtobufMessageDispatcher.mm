@@ -1,16 +1,16 @@
 @interface MTRPluginProtobufMessageDispatcher
-- (BOOL)deregisterForRequestMessageWithType:(id)a3 forSessionID:(id)a4;
-- (BOOL)handleNewSessionSetupForMessage:(id)a3 transport:(id)a4 errorBlock:(id)a5;
-- (BOOL)invokeMessageHandlersForMessage:(id)a3 transport:(id)a4 errorBlock:(id)a5;
-- (BOOL)registerForRequestMessageWithType:(id)a3 requestHandler:(SEL)a4 forSessionID:(id)a5;
+- (BOOL)deregisterForRequestMessageWithType:(id)type forSessionID:(id)d;
+- (BOOL)handleNewSessionSetupForMessage:(id)message transport:(id)transport errorBlock:(id)block;
+- (BOOL)invokeMessageHandlersForMessage:(id)message transport:(id)transport errorBlock:(id)block;
+- (BOOL)registerForRequestMessageWithType:(id)type requestHandler:(SEL)handler forSessionID:(id)d;
 - (MTRPluginProtobufMessageDispatcher)init;
-- (id)_findMessageReceiverMatchingDelegate:(id)a3;
-- (id)_findMessageReceiverMatchingSessionID:(id)a3;
+- (id)_findMessageReceiverMatchingDelegate:(id)delegate;
+- (id)_findMessageReceiverMatchingSessionID:(id)d;
 - (id)description;
-- (void)invokeMessageHandlersForReceiver:(id)a3 message:(id)a4 transport:(id)a5 errorBlock:(id)a6;
-- (void)removeDelegate:(id)a3;
-- (void)setDelegate:(id)a3 delegateQueue:(id)a4;
-- (void)setDelegate:(id)a3 delegateQueue:(id)a4 forSessionID:(id)a5;
+- (void)invokeMessageHandlersForReceiver:(id)receiver message:(id)message transport:(id)transport errorBlock:(id)block;
+- (void)removeDelegate:(id)delegate;
+- (void)setDelegate:(id)delegate delegateQueue:(id)queue;
+- (void)setDelegate:(id)delegate delegateQueue:(id)queue forSessionID:(id)d;
 @end
 
 @implementation MTRPluginProtobufMessageDispatcher
@@ -31,16 +31,16 @@
   return v3;
 }
 
-- (id)_findMessageReceiverMatchingDelegate:(id)a3
+- (id)_findMessageReceiverMatchingDelegate:(id)delegate
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTRPluginProtobufMessageDispatcher *)self controlChannelReceiver];
-  v6 = [v5 delegate];
+  delegateCopy = delegate;
+  controlChannelReceiver = [(MTRPluginProtobufMessageDispatcher *)self controlChannelReceiver];
+  delegate = [controlChannelReceiver delegate];
 
-  if (v6 == v4)
+  if (delegate == delegateCopy)
   {
-    v14 = [(MTRPluginProtobufMessageDispatcher *)self controlChannelReceiver];
+    controlChannelReceiver2 = [(MTRPluginProtobufMessageDispatcher *)self controlChannelReceiver];
   }
 
   else
@@ -49,8 +49,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [(MTRPluginProtobufMessageDispatcher *)self messageReceivers];
-    v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    messageReceivers = [(MTRPluginProtobufMessageDispatcher *)self messageReceivers];
+    v8 = [messageReceivers countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
       v9 = v8;
@@ -61,21 +61,21 @@
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(messageReceivers);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 delegate];
+          delegate2 = [v12 delegate];
 
-          if (v13 == v4)
+          if (delegate2 == delegateCopy)
           {
-            v14 = v12;
+            controlChannelReceiver2 = v12;
 
             goto LABEL_13;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [messageReceivers countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v9)
         {
           continue;
@@ -85,28 +85,28 @@
       }
     }
 
-    v14 = 0;
+    controlChannelReceiver2 = 0;
   }
 
 LABEL_13:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return controlChannelReceiver2;
 }
 
-- (id)_findMessageReceiverMatchingSessionID:(id)a3
+- (id)_findMessageReceiverMatchingSessionID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(MTRPluginProtobufMessageDispatcher *)self messageReceivers];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    messageReceivers = [(MTRPluginProtobufMessageDispatcher *)self messageReceivers];
+    v6 = [messageReceivers countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = *v15;
@@ -116,12 +116,12 @@ LABEL_13:
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(messageReceivers);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 sessionID];
-          v11 = [v10 isEqual:v4];
+          sessionID = [v9 sessionID];
+          v11 = [sessionID isEqual:dCopy];
 
           if (v11)
           {
@@ -130,7 +130,7 @@ LABEL_13:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [messageReceivers countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v6)
         {
           continue;
@@ -153,28 +153,28 @@ LABEL_12:
   return v6;
 }
 
-- (void)setDelegate:(id)a3 delegateQueue:(id)a4 forSessionID:(id)a5
+- (void)setDelegate:(id)delegate delegateQueue:(id)queue forSessionID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [(MTRPluginProtobufMessageDispatcher *)v11 _findMessageReceiverMatchingSessionID:v10];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v12 = [(MTRPluginProtobufMessageDispatcher *)selfCopy _findMessageReceiverMatchingSessionID:dCopy];
   if (!v12)
   {
-    v12 = [[MTRPluginProtobufMessageReceiver alloc] initWithDelegate:v8 delegateQueue:v9 sessionID:v10];
-    v13 = [(MTRPluginProtobufMessageDispatcher *)v11 messageReceivers];
-    [v13 addObject:v12];
+    v12 = [[MTRPluginProtobufMessageReceiver alloc] initWithDelegate:delegateCopy delegateQueue:queueCopy sessionID:dCopy];
+    messageReceivers = [(MTRPluginProtobufMessageDispatcher *)selfCopy messageReceivers];
+    [messageReceivers addObject:v12];
 
     v14 = matterPluginLog_default;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 0uLL;
-      if (v10)
+      if (dCopy)
       {
-        [v10 getUUIDBytes:&v16];
+        [dCopy getUUIDBytes:&v16];
       }
 
       else
@@ -184,9 +184,9 @@ LABEL_12:
 
       v17 = v16;
       *buf = 138413058;
-      v19 = v11;
+      v19 = selfCopy;
       v20 = 2112;
-      v21 = v8;
+      v21 = delegateCopy;
       v22 = 1040;
       v23 = 16;
       v24 = 2096;
@@ -195,64 +195,64 @@ LABEL_12:
     }
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDelegate:(id)a3 delegateQueue:(id)a4
+- (void)setDelegate:(id)delegate delegateQueue:(id)queue
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(MTRPluginProtobufMessageDispatcher *)v8 controlChannelReceiver];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  controlChannelReceiver = [(MTRPluginProtobufMessageDispatcher *)selfCopy controlChannelReceiver];
 
-  if (!v9)
+  if (!controlChannelReceiver)
   {
-    v10 = [[MTRPluginProtobufMessageReceiver alloc] initWithDelegate:v6 delegateQueue:v7 sessionID:0];
-    [(MTRPluginProtobufMessageDispatcher *)v8 setControlChannelReceiver:v10];
+    v10 = [[MTRPluginProtobufMessageReceiver alloc] initWithDelegate:delegateCopy delegateQueue:queueCopy sessionID:0];
+    [(MTRPluginProtobufMessageDispatcher *)selfCopy setControlChannelReceiver:v10];
 
     v11 = matterPluginLog_default;
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412546;
-      v14 = v8;
+      v14 = selfCopy;
       v15 = 2112;
-      v16 = v6;
+      v16 = delegateCopy;
       _os_log_impl(&dword_25830F000, v11, OS_LOG_TYPE_DEFAULT, "%@ Adding control channel receiver delegate %@", &v13, 0x16u);
     }
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MTRPluginProtobufMessageDispatcher *)v5 _findMessageReceiverMatchingDelegate:v4];
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(MTRPluginProtobufMessageDispatcher *)selfCopy _findMessageReceiverMatchingDelegate:delegateCopy];
   if (v6)
   {
-    v7 = [(MTRPluginProtobufMessageDispatcher *)v5 controlChannelReceiver];
-    if (v7 && (-[MTRPluginProtobufMessageDispatcher controlChannelReceiver](v5, "controlChannelReceiver"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v6 isEqual:v8], v8, v7, v9))
+    controlChannelReceiver = [(MTRPluginProtobufMessageDispatcher *)selfCopy controlChannelReceiver];
+    if (controlChannelReceiver && (-[MTRPluginProtobufMessageDispatcher controlChannelReceiver](selfCopy, "controlChannelReceiver"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v6 isEqual:v8], v8, controlChannelReceiver, v9))
     {
       v10 = matterPluginLog_default;
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v6 delegate];
+        delegate = [v6 delegate];
         *buf = 138412546;
-        v21 = v5;
+        v21 = selfCopy;
         v22 = 2112;
-        v23 = v11;
+        v23 = delegate;
         _os_log_impl(&dword_25830F000, v10, OS_LOG_TYPE_DEFAULT, "%@ Removing control channel delegate %@", buf, 0x16u);
       }
 
-      [(MTRPluginProtobufMessageDispatcher *)v5 setControlChannelReceiver:0];
+      [(MTRPluginProtobufMessageDispatcher *)selfCopy setControlChannelReceiver:0];
     }
 
     else
@@ -260,14 +260,14 @@ LABEL_12:
       v12 = matterPluginLog_default;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v6 delegate];
+        delegate2 = [v6 delegate];
         v18 = 0uLL;
-        v14 = [v6 sessionID];
+        sessionID = [v6 sessionID];
 
-        if (v14)
+        if (sessionID)
         {
-          v15 = [v6 sessionID];
-          [v15 getUUIDBytes:&v18];
+          sessionID2 = [v6 sessionID];
+          [sessionID2 getUUIDBytes:&v18];
         }
 
         else
@@ -277,9 +277,9 @@ LABEL_12:
 
         v19 = v18;
         *buf = 138413058;
-        v21 = v5;
+        v21 = selfCopy;
         v22 = 2112;
-        v23 = v13;
+        v23 = delegate2;
         v24 = 1040;
         v25 = 16;
         v26 = 2096;
@@ -287,37 +287,37 @@ LABEL_12:
         _os_log_impl(&dword_25830F000, v12, OS_LOG_TYPE_DEFAULT, "%@ Removing delegate %@ for session: %{uuid_t}.16P", buf, 0x26u);
       }
 
-      v16 = [(MTRPluginProtobufMessageDispatcher *)v5 messageReceivers];
-      [v16 removeObject:v6];
+      messageReceivers = [(MTRPluginProtobufMessageDispatcher *)selfCopy messageReceivers];
+      [messageReceivers removeObject:v6];
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)registerForRequestMessageWithType:(id)a3 requestHandler:(SEL)a4 forSessionID:(id)a5
+- (BOOL)registerForRequestMessageWithType:(id)type requestHandler:(SEL)handler forSessionID:(id)d
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = NSStringFromSelector(a4);
-  v12 = [(MTRPluginProtobufMessageDispatcher *)v10 _findMessageReceiverMatchingSessionID:v9];
+  typeCopy = type;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v11 = NSStringFromSelector(handler);
+  v12 = [(MTRPluginProtobufMessageDispatcher *)selfCopy _findMessageReceiverMatchingSessionID:dCopy];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 messageSelectors];
-    [v14 setObject:v11 forKeyedSubscript:v8];
+    messageSelectors = [v12 messageSelectors];
+    [messageSelectors setObject:v11 forKeyedSubscript:typeCopy];
 
     v15 = matterPluginLog_default;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       v19 = 0uLL;
-      if (v9)
+      if (dCopy)
       {
-        [v9 getUUIDBytes:&v19];
+        [dCopy getUUIDBytes:&v19];
       }
 
       else
@@ -327,11 +327,11 @@ LABEL_12:
 
       v18 = v19;
       *buf = 138413314;
-      v22 = v10;
+      v22 = selfCopy;
       v23 = 2112;
       v24 = v11;
       v25 = 2112;
-      v26 = v8;
+      v26 = typeCopy;
       v27 = 1040;
       v28 = 16;
       v29 = 2096;
@@ -346,9 +346,9 @@ LABEL_12:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v19 = 0uLL;
-      if (v9)
+      if (dCopy)
       {
-        [v9 getUUIDBytes:&v19];
+        [dCopy getUUIDBytes:&v19];
       }
 
       else
@@ -358,11 +358,11 @@ LABEL_12:
 
       v20 = v19;
       *buf = 138413314;
-      v22 = v10;
+      v22 = selfCopy;
       v23 = 2112;
       v24 = v11;
       v25 = 2112;
-      v26 = v8;
+      v26 = typeCopy;
       v27 = 1040;
       v28 = 16;
       v29 = 2096;
@@ -371,35 +371,35 @@ LABEL_12:
     }
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
   v16 = *MEMORY[0x277D85DE8];
   return v13 != 0;
 }
 
-- (BOOL)deregisterForRequestMessageWithType:(id)a3 forSessionID:(id)a4
+- (BOOL)deregisterForRequestMessageWithType:(id)type forSessionID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(MTRPluginProtobufMessageDispatcher *)v8 _findMessageReceiverMatchingSessionID:v7];
+  typeCopy = type;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(MTRPluginProtobufMessageDispatcher *)selfCopy _findMessageReceiverMatchingSessionID:dCopy];
   v10 = v9;
   if (v9)
   {
-    if (v6)
+    if (typeCopy)
     {
-      v11 = [v9 messageSelectors];
-      [v11 removeObjectForKey:v6];
+      messageSelectors = [v9 messageSelectors];
+      [messageSelectors removeObjectForKey:typeCopy];
     }
 
     v12 = matterPluginLog_default;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       v16 = 0uLL;
-      if (v7)
+      if (dCopy)
       {
-        [v7 getUUIDBytes:&v16];
+        [dCopy getUUIDBytes:&v16];
       }
 
       else
@@ -409,9 +409,9 @@ LABEL_12:
 
       v15 = v16;
       *buf = 138413058;
-      v19 = v8;
+      v19 = selfCopy;
       v20 = 2112;
-      v21 = v6;
+      v21 = typeCopy;
       v22 = 1040;
       v23 = 16;
       v24 = 2096;
@@ -426,9 +426,9 @@ LABEL_12:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v16 = 0uLL;
-      if (v7)
+      if (dCopy)
       {
-        [v7 getUUIDBytes:&v16];
+        [dCopy getUUIDBytes:&v16];
       }
 
       else
@@ -438,9 +438,9 @@ LABEL_12:
 
       v17 = v16;
       *buf = 138413058;
-      v19 = v8;
+      v19 = selfCopy;
       v20 = 2112;
-      v21 = v6;
+      v21 = typeCopy;
       v22 = 1040;
       v23 = 16;
       v24 = 2096;
@@ -449,56 +449,56 @@ LABEL_12:
     }
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v13 = *MEMORY[0x277D85DE8];
   return v10 != 0;
 }
 
-- (BOOL)handleNewSessionSetupForMessage:(id)a3 transport:(id)a4 errorBlock:(id)a5
+- (BOOL)handleNewSessionSetupForMessage:(id)message transport:(id)transport errorBlock:(id)block
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  transportCopy = transport;
+  blockCopy = block;
   v11 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
-    v29 = v8;
+    v29 = messageCopy;
     _os_log_impl(&dword_25830F000, v11, OS_LOG_TYPE_DEFAULT, "%@ Received message %@ with new session identifier", buf, 0x16u);
   }
 
-  v12 = [(MTRPluginProtobufMessageDispatcher *)self controlChannelReceiver];
-  v13 = [v12 delegate];
+  controlChannelReceiver = [(MTRPluginProtobufMessageDispatcher *)self controlChannelReceiver];
+  delegate = [controlChannelReceiver delegate];
 
   v14 = objc_opt_respondsToSelector();
   if (v14)
   {
-    v15 = [(MTRPluginProtobufMessageDispatcher *)self controlChannelReceiver];
-    v16 = [v15 delegateQueue];
+    controlChannelReceiver2 = [(MTRPluginProtobufMessageDispatcher *)self controlChannelReceiver];
+    delegateQueue = [controlChannelReceiver2 delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __91__MTRPluginProtobufMessageDispatcher_handleNewSessionSetupForMessage_transport_errorBlock___block_invoke;
     block[3] = &unk_279893C30;
-    v21 = v13;
-    v22 = v9;
-    v23 = v8;
-    v24 = self;
-    v25 = v10;
-    dispatch_async(v16, block);
+    v21 = delegate;
+    v22 = transportCopy;
+    v23 = messageCopy;
+    selfCopy2 = self;
+    v25 = blockCopy;
+    dispatch_async(delegateQueue, block);
   }
 
-  else if (v10)
+  else if (blockCopy)
   {
     v17 = matterPluginLog_default;
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_ERROR))
     {
-      [MTRPluginProtobufMessageDispatcher handleNewSessionSetupForMessage:v8 transport:v17 errorBlock:?];
+      [MTRPluginProtobufMessageDispatcher handleNewSessionSetupForMessage:messageCopy transport:v17 errorBlock:?];
     }
 
-    v10[2](v10);
+    blockCopy[2](blockCopy);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -552,22 +552,22 @@ void __91__MTRPluginProtobufMessageDispatcher_handleNewSessionSetupForMessage_tr
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invokeMessageHandlersForReceiver:(id)a3 message:(id)a4 transport:(id)a5 errorBlock:(id)a6
+- (void)invokeMessageHandlersForReceiver:(id)receiver message:(id)message transport:(id)transport errorBlock:(id)block
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10 && v11 && v12)
+  receiverCopy = receiver;
+  messageCopy = message;
+  transportCopy = transport;
+  blockCopy = block;
+  if (receiverCopy && messageCopy && transportCopy)
   {
-    v14 = [v10 messageSelectors];
-    v15 = [v11 messageType];
-    v16 = [v14 objectForKeyedSubscript:v15];
+    messageSelectors = [receiverCopy messageSelectors];
+    messageType = [messageCopy messageType];
+    v16 = [messageSelectors objectForKeyedSubscript:messageType];
 
     v17 = NSSelectorFromString(v16);
-    v18 = [v10 delegate];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v18 isSuspended])
+    delegate = [receiverCopy delegate];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate isSuspended])
     {
       v19 = matterPluginLog_default;
       if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_ERROR))
@@ -575,9 +575,9 @@ void __91__MTRPluginProtobufMessageDispatcher_handleNewSessionSetupForMessage_tr
         *buf = 138412802;
         *&buf[4] = self;
         *&buf[12] = 2112;
-        *&buf[14] = v11;
+        *&buf[14] = messageCopy;
         v43 = 2112;
-        *v44 = v18;
+        *v44 = delegate;
         v20 = "%@ Received message %@ but delegate %@ is suspended, sending error response to close remote session";
         goto LABEL_22;
       }
@@ -585,19 +585,19 @@ void __91__MTRPluginProtobufMessageDispatcher_handleNewSessionSetupForMessage_tr
       goto LABEL_17;
     }
 
-    if (v18 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v21 = matterPluginLog_default;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
         *buf = 0;
         *&buf[8] = 0;
-        v27 = [v11 sessionIdentifier];
+        sessionIdentifier = [messageCopy sessionIdentifier];
 
-        if (v27)
+        if (sessionIdentifier)
         {
-          v28 = [v11 sessionIdentifier];
-          [v28 getUUIDBytes:buf];
+          sessionIdentifier2 = [messageCopy sessionIdentifier];
+          [sessionIdentifier2 getUUIDBytes:buf];
         }
 
         else
@@ -609,26 +609,26 @@ void __91__MTRPluginProtobufMessageDispatcher_handleNewSessionSetupForMessage_tr
         *buf = 138413314;
         *&buf[4] = self;
         *&buf[12] = 2048;
-        *&buf[14] = v18;
+        *&buf[14] = delegate;
         v43 = 1040;
         *v44 = 16;
         *&v44[4] = 2096;
         *&v44[6] = &v41;
         v45 = 2112;
-        v46 = v11;
+        v46 = messageCopy;
         _os_log_debug_impl(&dword_25830F000, v21, OS_LOG_TYPE_DEBUG, "%@ Calling invokeHandler on delegate %p for session with identifier %{uuid_t}.16P for message: %@", buf, 0x30u);
       }
 
-      v22 = [v10 delegateQueue];
+      delegateQueue = [receiverCopy delegateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __100__MTRPluginProtobufMessageDispatcher_invokeMessageHandlersForReceiver_message_transport_errorBlock___block_invoke;
       block[3] = &unk_279893E18;
-      v37 = v18;
+      v37 = delegate;
       v40 = v17;
-      v38 = v12;
-      v39 = v11;
-      dispatch_async(v22, block);
+      v38 = transportCopy;
+      v39 = messageCopy;
+      dispatch_async(delegateQueue, block);
 
       v23 = v37;
     }
@@ -643,13 +643,13 @@ void __91__MTRPluginProtobufMessageDispatcher_handleNewSessionSetupForMessage_tr
           *buf = 138412802;
           *&buf[4] = self;
           *&buf[12] = 2112;
-          *&buf[14] = v18;
+          *&buf[14] = delegate;
           v43 = 2112;
-          *v44 = v11;
+          *v44 = messageCopy;
           v20 = "%@ Receiver delegate %@ has no handler for message: %@";
 LABEL_22:
           _os_log_error_impl(&dword_25830F000, v19, OS_LOG_TYPE_ERROR, v20, buf, 0x20u);
-          if (!v13)
+          if (!blockCopy)
           {
             goto LABEL_19;
           }
@@ -658,7 +658,7 @@ LABEL_22:
         }
 
 LABEL_17:
-        if (!v13)
+        if (!blockCopy)
         {
 LABEL_19:
 
@@ -666,34 +666,34 @@ LABEL_19:
         }
 
 LABEL_18:
-        v13[2](v13);
+        blockCopy[2](blockCopy);
         goto LABEL_19;
       }
 
-      v24 = [v10 delegateQueue];
+      delegateQueue2 = [receiverCopy delegateQueue];
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __100__MTRPluginProtobufMessageDispatcher_invokeMessageHandlersForReceiver_message_transport_errorBlock___block_invoke_2;
       v32[3] = &unk_279893D98;
       v32[4] = self;
-      v33 = v18;
-      v34 = v11;
-      v35 = v12;
-      dispatch_async(v24, v32);
+      v33 = delegate;
+      v34 = messageCopy;
+      v35 = transportCopy;
+      dispatch_async(delegateQueue2, v32);
 
       v23 = v33;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v25 = [v10 delegateQueue];
+      delegateQueue3 = [receiverCopy delegateQueue];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __100__MTRPluginProtobufMessageDispatcher_invokeMessageHandlersForReceiver_message_transport_errorBlock___block_invoke_60;
       v29[3] = &unk_279893AC8;
-      v30 = v18;
-      v31 = v12;
-      dispatch_async(v25, v29);
+      v30 = delegate;
+      v31 = transportCopy;
+      dispatch_async(delegateQueue3, v29);
     }
 
     goto LABEL_19;
@@ -742,28 +742,28 @@ void __100__MTRPluginProtobufMessageDispatcher_invokeMessageHandlersForReceiver_
   [v1 messageTransport:v2 updateTimeOfActivity:v3];
 }
 
-- (BOOL)invokeMessageHandlersForMessage:(id)a3 transport:(id)a4 errorBlock:(id)a5
+- (BOOL)invokeMessageHandlersForMessage:(id)message transport:(id)transport errorBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [v8 sessionIdentifier];
-  v13 = [(MTRPluginProtobufMessageDispatcher *)v11 _findMessageReceiverMatchingSessionID:v12];
+  messageCopy = message;
+  transportCopy = transport;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sessionIdentifier = [messageCopy sessionIdentifier];
+  v13 = [(MTRPluginProtobufMessageDispatcher *)selfCopy _findMessageReceiverMatchingSessionID:sessionIdentifier];
 
   if (v13)
   {
-    [(MTRPluginProtobufMessageDispatcher *)v11 invokeMessageHandlersForReceiver:v13 message:v8 transport:v9 errorBlock:v10];
+    [(MTRPluginProtobufMessageDispatcher *)selfCopy invokeMessageHandlersForReceiver:v13 message:messageCopy transport:transportCopy errorBlock:blockCopy];
     v14 = 0;
   }
 
   else
   {
-    v14 = [(MTRPluginProtobufMessageDispatcher *)v11 handleNewSessionSetupForMessage:v8 transport:v9 errorBlock:v10];
+    v14 = [(MTRPluginProtobufMessageDispatcher *)selfCopy handleNewSessionSetupForMessage:messageCopy transport:transportCopy errorBlock:blockCopy];
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
   return v14;
 }
 

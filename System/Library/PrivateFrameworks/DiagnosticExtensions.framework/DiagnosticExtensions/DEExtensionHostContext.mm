@@ -2,15 +2,15 @@
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
 - (BOOL)hasEntitlement;
-- (id)updatedParametersWithExtensionFileNameFromParameters:(id)a3;
-- (void)annotatedAttachmentsForParameters:(id)a3 withHandler:(id)a4;
-- (void)attachmentListWithHandler:(id)a3;
-- (void)attachmentsForParameters:(id)a3 withProgressHandler:(id)a4 withHandler:(id)a5;
-- (void)collectionDidUpdateWithProgress:(id)a3;
+- (id)updatedParametersWithExtensionFileNameFromParameters:(id)parameters;
+- (void)annotatedAttachmentsForParameters:(id)parameters withHandler:(id)handler;
+- (void)attachmentListWithHandler:(id)handler;
+- (void)attachmentsForParameters:(id)parameters withProgressHandler:(id)handler withHandler:(id)withHandler;
+- (void)collectionDidUpdateWithProgress:(id)progress;
 - (void)hasEntitlement;
-- (void)isExtensionEnhancedLoggingStateOnWithHandler:(id)a3;
-- (void)setupForParameters:(id)a3 withHandler:(id)a4;
-- (void)teardownForParameters:(id)a3 withHandler:(id)a4;
+- (void)isExtensionEnhancedLoggingStateOnWithHandler:(id)handler;
+- (void)setupForParameters:(id)parameters withHandler:(id)handler;
+- (void)teardownForParameters:(id)parameters withHandler:(id)handler;
 @end
 
 @implementation DEExtensionHostContext
@@ -68,11 +68,11 @@ uint64_t __57__DEExtensionHostContext__extensionAuxiliaryHostProtocol__block_inv
 
 - (BOOL)hasEntitlement
 {
-  v2 = [(DEExtensionHostContext *)self _auxiliaryConnection];
-  v3 = [v2 valueForEntitlement:@"com.apple.DiagnosticExtensions.extension"];
+  _auxiliaryConnection = [(DEExtensionHostContext *)self _auxiliaryConnection];
+  v3 = [_auxiliaryConnection valueForEntitlement:@"com.apple.DiagnosticExtensions.extension"];
 
-  v4 = [v3 BOOLValue];
-  if ((v4 & 1) == 0)
+  bOOLValue = [v3 BOOLValue];
+  if ((bOOLValue & 1) == 0)
   {
     v5 = +[DELogging fwHandle];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -81,31 +81,31 @@ uint64_t __57__DEExtensionHostContext__extensionAuxiliaryHostProtocol__block_inv
     }
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)attachmentListWithHandler:(id)a3
+- (void)attachmentListWithHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   if ([(DEExtensionHostContext *)self hasEntitlement])
   {
-    v4 = [(DEExtensionHostContext *)self _auxiliaryConnection];
-    v5 = [v4 remoteObjectProxyWithErrorHandler:&__block_literal_global_144];
+    _auxiliaryConnection = [(DEExtensionHostContext *)self _auxiliaryConnection];
+    v5 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_144];
 
     if (v5)
     {
-      [v5 attachmentListWithHandler:v6];
+      [v5 attachmentListWithHandler:handlerCopy];
     }
 
     else
     {
-      v6[2](v6, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   else
   {
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
@@ -119,14 +119,14 @@ void __52__DEExtensionHostContext_attachmentListWithHandler___block_invoke(uint6
   }
 }
 
-- (void)annotatedAttachmentsForParameters:(id)a3 withHandler:(id)a4
+- (void)annotatedAttachmentsForParameters:(id)parameters withHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   if ([(DEExtensionHostContext *)self hasEntitlement])
   {
-    v8 = [(DEExtensionHostContext *)self updatedParametersWithExtensionFileNameFromParameters:v6];
+    v8 = [(DEExtensionHostContext *)self updatedParametersWithExtensionFileNameFromParameters:parametersCopy];
     v9 = +[DELogging fwHandle];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -143,14 +143,14 @@ void __52__DEExtensionHostContext_attachmentListWithHandler___block_invoke(uint6
       _os_log_impl(&dword_248AB3000, v9, OS_LOG_TYPE_DEFAULT, "annotatedAttachmentsForParameters:withHandler: {%@:%@, %@:%@}", buf, 0x2Au);
     }
 
-    v12 = [(DEExtensionHostContext *)self _auxiliaryConnection];
+    _auxiliaryConnection = [(DEExtensionHostContext *)self _auxiliaryConnection];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __72__DEExtensionHostContext_annotatedAttachmentsForParameters_withHandler___block_invoke;
     v18[3] = &unk_278F63688;
-    v13 = v7;
+    v13 = handlerCopy;
     v19 = v13;
-    v14 = [v12 remoteObjectProxyWithErrorHandler:v18];
+    v14 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:v18];
 
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -162,7 +162,7 @@ void __52__DEExtensionHostContext_attachmentListWithHandler___block_invoke(uint6
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -180,15 +180,15 @@ void __72__DEExtensionHostContext_annotatedAttachmentsForParameters_withHandler_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)attachmentsForParameters:(id)a3 withProgressHandler:(id)a4 withHandler:(id)a5
+- (void)attachmentsForParameters:(id)parameters withProgressHandler:(id)handler withHandler:(id)withHandler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  parametersCopy = parameters;
+  handlerCopy = handler;
+  withHandlerCopy = withHandler;
   if ([(DEExtensionHostContext *)self hasEntitlement])
   {
-    v11 = [(DEExtensionHostContext *)self updatedParametersWithExtensionFileNameFromParameters:v8];
+    v11 = [(DEExtensionHostContext *)self updatedParametersWithExtensionFileNameFromParameters:parametersCopy];
     v12 = +[DELogging fwHandle];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -205,16 +205,16 @@ void __72__DEExtensionHostContext_annotatedAttachmentsForParameters_withHandler_
       _os_log_impl(&dword_248AB3000, v12, OS_LOG_TYPE_DEFAULT, "attachmentsForParameters:withProgressHandler: {%@:%@, %@:%@}", buf, 0x2Au);
     }
 
-    v15 = [(DEExtensionHostContext *)self _auxiliaryConnection];
+    _auxiliaryConnection = [(DEExtensionHostContext *)self _auxiliaryConnection];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __83__DEExtensionHostContext_attachmentsForParameters_withProgressHandler_withHandler___block_invoke;
     v22[3] = &unk_278F63688;
-    v16 = v10;
+    v16 = withHandlerCopy;
     v23 = v16;
-    v17 = [v15 remoteObjectProxyWithErrorHandler:v22];
+    v17 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:v22];
 
-    [(DEExtensionHostContext *)self setProgressHandler:v9];
+    [(DEExtensionHostContext *)self setProgressHandler:handlerCopy];
     objc_initWeak(buf, self);
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -230,7 +230,7 @@ void __72__DEExtensionHostContext_annotatedAttachmentsForParameters_withHandler_
 
   else
   {
-    (*(v10 + 2))(v10, 0);
+    (*(withHandlerCopy + 2))(withHandlerCopy, 0);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -257,18 +257,18 @@ void __83__DEExtensionHostContext_attachmentsForParameters_withProgressHandler_w
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setupForParameters:(id)a3 withHandler:(id)a4
+- (void)setupForParameters:(id)parameters withHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   if ([(DEExtensionHostContext *)self hasEntitlement])
   {
-    v7 = [(DEExtensionHostContext *)self _auxiliaryConnection];
-    v8 = [v7 remoteObjectProxyWithErrorHandler:&__block_literal_global_150];
+    _auxiliaryConnection = [(DEExtensionHostContext *)self _auxiliaryConnection];
+    v8 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_150];
 
     if (v8)
     {
-      [v8 setupWithParameters:v9 withHandler:v6];
+      [v8 setupWithParameters:parametersCopy withHandler:handlerCopy];
     }
   }
 }
@@ -283,18 +283,18 @@ void __57__DEExtensionHostContext_setupForParameters_withHandler___block_invoke(
   }
 }
 
-- (void)teardownForParameters:(id)a3 withHandler:(id)a4
+- (void)teardownForParameters:(id)parameters withHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   if ([(DEExtensionHostContext *)self hasEntitlement])
   {
-    v7 = [(DEExtensionHostContext *)self _auxiliaryConnection];
-    v8 = [v7 remoteObjectProxyWithErrorHandler:&__block_literal_global_152];
+    _auxiliaryConnection = [(DEExtensionHostContext *)self _auxiliaryConnection];
+    v8 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_152];
 
     if (v8)
     {
-      [v8 teardownWithParameters:v9 withHandler:v6];
+      [v8 teardownWithParameters:parametersCopy withHandler:handlerCopy];
     }
   }
 }
@@ -309,17 +309,17 @@ void __60__DEExtensionHostContext_teardownForParameters_withHandler___block_invo
   }
 }
 
-- (void)isExtensionEnhancedLoggingStateOnWithHandler:(id)a3
+- (void)isExtensionEnhancedLoggingStateOnWithHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   if ([(DEExtensionHostContext *)self hasEntitlement])
   {
-    v4 = [(DEExtensionHostContext *)self _auxiliaryConnection];
-    v5 = [v4 remoteObjectProxyWithErrorHandler:&__block_literal_global_154];
+    _auxiliaryConnection = [(DEExtensionHostContext *)self _auxiliaryConnection];
+    v5 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_154];
 
     if (v5)
     {
-      [v5 isExtensionEnhancedLoggingStateOnWithHandler:v6];
+      [v5 isExtensionEnhancedLoggingStateOnWithHandler:handlerCopy];
     }
   }
 }
@@ -334,24 +334,24 @@ void __71__DEExtensionHostContext_isExtensionEnhancedLoggingStateOnWithHandler__
   }
 }
 
-- (void)collectionDidUpdateWithProgress:(id)a3
+- (void)collectionDidUpdateWithProgress:(id)progress
 {
-  v6 = a3;
-  v4 = [(DEExtensionHostContext *)self progressHandler];
+  progressCopy = progress;
+  progressHandler = [(DEExtensionHostContext *)self progressHandler];
 
-  if (v4)
+  if (progressHandler)
   {
-    v5 = [(DEExtensionHostContext *)self progressHandler];
-    (v5)[2](v5, v6);
+    progressHandler2 = [(DEExtensionHostContext *)self progressHandler];
+    (progressHandler2)[2](progressHandler2, progressCopy);
   }
 }
 
-- (id)updatedParametersWithExtensionFileNameFromParameters:(id)a3
+- (id)updatedParametersWithExtensionFileNameFromParameters:(id)parameters
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  v5 = [v3 objectForKey:@"DEExtensionAttachmentsParamBundleIDKey"];
+  parametersCopy = parameters;
+  v4 = [parametersCopy mutableCopy];
+  v5 = [parametersCopy objectForKey:@"DEExtensionAttachmentsParamBundleIDKey"];
 
   if (v5)
   {
@@ -359,8 +359,8 @@ void __71__DEExtensionHostContext_isExtensionEnhancedLoggingStateOnWithHandler__
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v22 = v3;
-    v6 = [v3 objectForKeyedSubscript:@"DEExtensionAttachmentsParamBundleIDKey"];
+    v22 = parametersCopy;
+    v6 = [parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamBundleIDKey"];
     v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (!v7)
     {
@@ -380,12 +380,12 @@ void __71__DEExtensionHostContext_isExtensionEnhancedLoggingStateOnWithHandler__
 
         v11 = *(*(&v23 + 1) + 8 * i);
         v12 = SBSCopyExecutablePathForDisplayIdentifier();
-        v13 = [v12 lastPathComponent];
+        lastPathComponent = [v12 lastPathComponent];
         v14 = [v4 objectForKey:@"DEExtensionAttachmentsParamDisplayNameKey"];
 
         if (v14)
         {
-          if (v13)
+          if (lastPathComponent)
           {
             goto LABEL_9;
           }
@@ -396,20 +396,20 @@ void __71__DEExtensionHostContext_isExtensionEnhancedLoggingStateOnWithHandler__
           v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
           [v4 setObject:v16 forKeyedSubscript:@"DEExtensionAttachmentsParamDisplayNameKey"];
 
-          if (v13)
+          if (lastPathComponent)
           {
 LABEL_9:
-            v15 = [v4 objectForKeyedSubscript:@"DEExtensionAttachmentsParamDisplayNameKey"];
-            [v15 addObject:v13];
+            lastObject = [v4 objectForKeyedSubscript:@"DEExtensionAttachmentsParamDisplayNameKey"];
+            [lastObject addObject:lastPathComponent];
             goto LABEL_12;
           }
         }
 
         v17 = [v11 componentsSeparatedByString:@"."];
-        v15 = [v17 lastObject];
+        lastObject = [v17 lastObject];
 
         v18 = [v4 objectForKeyedSubscript:@"DEExtensionAttachmentsParamDisplayNameKey"];
-        [v18 addObject:v15];
+        [v18 addObject:lastObject];
 
 LABEL_12:
       }
@@ -419,7 +419,7 @@ LABEL_12:
       {
 LABEL_14:
 
-        v3 = v22;
+        parametersCopy = v22;
         break;
       }
     }

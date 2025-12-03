@@ -1,27 +1,27 @@
 @interface CKDPCSNotifier
 + (id)sharedNotifier;
-- (BOOL)checkAndClearTestOverrides:(id)a3;
+- (BOOL)checkAndClearTestOverrides:(id)overrides;
 - (BOOL)hasOutstandingServicesNeedingDBRReauthentication;
-- (BOOL)serviceNeedsDBRReauthentication:(id)a3;
+- (BOOL)serviceNeedsDBRReauthentication:(id)reauthentication;
 - (CKDPCSNotifier)init;
 - (NSSet)servicesNeedingDBRReauthentication;
-- (void)addContext:(id)a3 forManagerUUID:(id)a4;
-- (void)addMissingIdentityPublicKeys:(id)a3 forManagerUUID:(id)a4 withAccount:(id)a5;
-- (void)addServicesNeedingDBRReauthentication:(id)a3;
-- (void)addServicesWithMissingIdentities:(id)a3 forManagerUUID:(id)a4 withAccount:(id)a5;
-- (void)addTestOverrides:(id)a3;
-- (void)clearContextIfUnnecessaryForManagerUUID:(id)a3;
-- (void)clearServicesAndPublicKeysForManagerUUID:(id)a3;
+- (void)addContext:(id)context forManagerUUID:(id)d;
+- (void)addMissingIdentityPublicKeys:(id)keys forManagerUUID:(id)d withAccount:(id)account;
+- (void)addServicesNeedingDBRReauthentication:(id)reauthentication;
+- (void)addServicesWithMissingIdentities:(id)identities forManagerUUID:(id)d withAccount:(id)account;
+- (void)addTestOverrides:(id)overrides;
+- (void)clearContextIfUnnecessaryForManagerUUID:(id)d;
+- (void)clearServicesAndPublicKeysForManagerUUID:(id)d;
 - (void)clearServicesNeedingDBRReauthentication;
 - (void)dealloc;
-- (void)noteUserKeySyncWithCompletionHandler:(id)a3;
-- (void)registerIdentityChangeWatcher:(id)a3 service:(id)a4 account:(id)a5;
-- (void)registerUnscopedIdentityChangeWatcher:(id)a3;
-- (void)securityViewBecameReady:(id)a3;
+- (void)noteUserKeySyncWithCompletionHandler:(id)handler;
+- (void)registerIdentityChangeWatcher:(id)watcher service:(id)service account:(id)account;
+- (void)registerUnscopedIdentityChangeWatcher:(id)watcher;
+- (void)securityViewBecameReady:(id)ready;
 - (void)setupGuitarfishRepairNotificationHandling;
 - (void)setupIdentityUpdateNotificationHandling;
-- (void)unregisterIdentityChangeWatcher:(id)a3;
-- (void)unregisterUnscopedIdentityChangeWatcher:(id)a3;
+- (void)unregisterIdentityChangeWatcher:(id)watcher;
+- (void)unregisterUnscopedIdentityChangeWatcher:(id)watcher;
 @end
 
 @implementation CKDPCSNotifier
@@ -76,91 +76,91 @@
   return v4;
 }
 
-- (void)addTestOverrides:(id)a3
+- (void)addTestOverrides:(id)overrides
 {
-  v14 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_testOverrides(v4, v5, v6);
+  overridesCopy = overrides;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_testOverrides(selfCopy, v5, v6);
 
   if (!v7)
   {
     v10 = objc_opt_new();
-    objc_msgSend_setTestOverrides_(v4, v11, v10);
+    objc_msgSend_setTestOverrides_(selfCopy, v11, v10);
   }
 
-  v12 = objc_msgSend_testOverrides(v4, v8, v9);
-  objc_msgSend_addEntriesFromDictionary_(v12, v13, v14);
+  v12 = objc_msgSend_testOverrides(selfCopy, v8, v9);
+  objc_msgSend_addEntriesFromDictionary_(v12, v13, overridesCopy);
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)checkAndClearTestOverrides:(id)a3
+- (BOOL)checkAndClearTestOverrides:(id)overrides
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
+  overridesCopy = overrides;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if ((*MEMORY[0x277CBC810] & 1) == 0)
   {
     v22 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v7, v8);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v22, v23, a2, v6, @"CKDPCSNotifier.m", 106, @"Only suitable for testing: %s:%d", "/Library/Caches/com.apple.xbs/Sources/CloudKitTools/Sources/CloudKitDaemon/ProtectedCloudStorage/CKDPCSNotifier.m", 106);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v22, v23, a2, selfCopy, @"CKDPCSNotifier.m", 106, @"Only suitable for testing: %s:%d", "/Library/Caches/com.apple.xbs/Sources/CloudKitTools/Sources/CloudKitDaemon/ProtectedCloudStorage/CKDPCSNotifier.m", 106);
   }
 
-  v9 = objc_msgSend_testOverrides(v6, v7, v8);
+  v9 = objc_msgSend_testOverrides(selfCopy, v7, v8);
 
   if (!v9)
   {
     v12 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v10, v11);
-    objc_msgSend_setTestOverrides_(v6, v13, v12);
+    objc_msgSend_setTestOverrides_(selfCopy, v13, v12);
   }
 
-  v14 = objc_msgSend_testOverrides(v6, v10, v11);
-  v16 = objc_msgSend_objectForKeyedSubscript_(v14, v15, v5);
+  v14 = objc_msgSend_testOverrides(selfCopy, v10, v11);
+  v16 = objc_msgSend_objectForKeyedSubscript_(v14, v15, overridesCopy);
 
-  v19 = objc_msgSend_testOverrides(v6, v17, v18);
-  objc_msgSend_removeObjectForKey_(v19, v20, v5);
+  v19 = objc_msgSend_testOverrides(selfCopy, v17, v18);
+  objc_msgSend_removeObjectForKey_(v19, v20, overridesCopy);
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   return v16 != 0;
 }
 
-- (void)registerUnscopedIdentityChangeWatcher:(id)a3
+- (void)registerUnscopedIdentityChangeWatcher:(id)watcher
 {
-  v11 = a3;
+  watcherCopy = watcher;
   v6 = objc_msgSend_weakUnscopedIdentityChangeWatchers(self, v4, v5);
   objc_sync_enter(v6);
   v9 = objc_msgSend_weakUnscopedIdentityChangeWatchers(self, v7, v8);
-  objc_msgSend_addObject_(v9, v10, v11);
+  objc_msgSend_addObject_(v9, v10, watcherCopy);
 
   objc_sync_exit(v6);
 }
 
-- (void)unregisterUnscopedIdentityChangeWatcher:(id)a3
+- (void)unregisterUnscopedIdentityChangeWatcher:(id)watcher
 {
-  v11 = a3;
+  watcherCopy = watcher;
   v6 = objc_msgSend_weakUnscopedIdentityChangeWatchers(self, v4, v5);
   objc_sync_enter(v6);
   v9 = objc_msgSend_weakUnscopedIdentityChangeWatchers(self, v7, v8);
-  objc_msgSend_removeObject_(v9, v10, v11);
+  objc_msgSend_removeObject_(v9, v10, watcherCopy);
 
   objc_sync_exit(v6);
 }
 
-- (void)registerIdentityChangeWatcher:(id)a3 service:(id)a4 account:(id)a5
+- (void)registerIdentityChangeWatcher:(id)watcher service:(id)service account:(id)account
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v13 = objc_msgSend_token(v8, v11, v12);
+  watcherCopy = watcher;
+  serviceCopy = service;
+  accountCopy = account;
+  v13 = objc_msgSend_token(watcherCopy, v11, v12);
 
   if (v13)
   {
     v14 = [CKDCloudCoreIdentityContext alloc];
-    v16 = objc_msgSend_initWithWatcher_service_account_(v14, v15, v8, v9, v10);
+    v16 = objc_msgSend_initWithWatcher_service_account_(v14, v15, watcherCopy, serviceCopy, accountCopy);
     v19 = objc_msgSend_cloudCoreIdentityContextsMap(self, v17, v18);
     objc_sync_enter(v19);
     v22 = objc_msgSend_cloudCoreIdentityContextsMap(self, v20, v21);
-    v25 = objc_msgSend_token(v8, v23, v24);
+    v25 = objc_msgSend_token(watcherCopy, v23, v24);
     objc_msgSend_setObject_forKeyedSubscript_(v22, v26, v16, v25);
 
     objc_sync_exit(v19);
@@ -182,21 +182,21 @@
   }
 }
 
-- (void)unregisterIdentityChangeWatcher:(id)a3
+- (void)unregisterIdentityChangeWatcher:(id)watcher
 {
-  v14 = a3;
+  watcherCopy = watcher;
   v6 = objc_msgSend_cloudCoreIdentityContextsMap(self, v4, v5);
   objc_sync_enter(v6);
   v9 = objc_msgSend_cloudCoreIdentityContextsMap(self, v7, v8);
-  v12 = objc_msgSend_token(v14, v10, v11);
+  v12 = objc_msgSend_token(watcherCopy, v10, v11);
   objc_msgSend_removeObjectForKey_(v9, v13, v12);
 
   objc_sync_exit(v6);
 }
 
-- (void)noteUserKeySyncWithCompletionHandler:(id)a3
+- (void)noteUserKeySyncWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v7 = objc_msgSend_synchronizeQueue(self, v5, v6);
   block[0] = MEMORY[0x277D85DD0];
@@ -204,8 +204,8 @@
   block[2] = sub_2252B709C;
   block[3] = &unk_278547220;
   objc_copyWeak(&v11, &location);
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(v7, block);
 
   objc_destroyWeak(&v11);
@@ -261,17 +261,17 @@
   objc_destroyWeak(&location);
 }
 
-- (void)securityViewBecameReady:(id)a3
+- (void)securityViewBecameReady:(id)ready
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  readyCopy = ready;
   v4 = _os_activity_create(&dword_22506F000, "CKDPCSNotifier/SecurityViewBecameReady", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v23.opaque[0] = 0;
   v23.opaque[1] = 0;
   os_activity_scope_enter(v4, &v23);
   v5 = *MEMORY[0x277CBC908];
   v6 = CKNotificationKey();
-  v9 = objc_msgSend_userInfo(v3, v7, v8);
+  v9 = objc_msgSend_userInfo(readyCopy, v7, v8);
   v11 = objc_msgSend_objectForKey_(v9, v10, @"view");
 
   if (v11)
@@ -380,39 +380,39 @@
   [(CKDPCSNotifier *)&v20 dealloc];
 }
 
-- (void)addContext:(id)a3 forManagerUUID:(id)a4
+- (void)addContext:(id)context forManagerUUID:(id)d
 {
-  v14 = a3;
-  v6 = a4;
+  contextCopy = context;
+  dCopy = d;
   v9 = objc_msgSend_missingIdentitiesContextMap(self, v7, v8);
   objc_sync_enter(v9);
   v12 = objc_msgSend_missingIdentitiesContextMap(self, v10, v11);
-  objc_msgSend_setObject_forKey_(v12, v13, v14, v6);
+  objc_msgSend_setObject_forKey_(v12, v13, contextCopy, dCopy);
 
   objc_sync_exit(v9);
 }
 
-- (void)addServicesWithMissingIdentities:(id)a3 forManagerUUID:(id)a4 withAccount:(id)a5
+- (void)addServicesWithMissingIdentities:(id)identities forManagerUUID:(id)d withAccount:(id)account
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v33 = a5;
+  identitiesCopy = identities;
+  dCopy = d;
+  accountCopy = account;
   v12 = objc_msgSend_missingIdentitiesContextMap(self, v10, v11);
   objc_sync_enter(v12);
   v15 = objc_msgSend_missingIdentitiesContextMap(self, v13, v14);
-  v17 = objc_msgSend_objectForKey_(v15, v16, v9);
+  v17 = objc_msgSend_objectForKey_(v15, v16, dCopy);
 
   if (v17)
   {
-    if (objc_msgSend_count(v8, v18, v19))
+    if (objc_msgSend_count(identitiesCopy, v18, v19))
     {
-      objc_msgSend_setAccount_(v17, v20, v33);
+      objc_msgSend_setAccount_(v17, v20, accountCopy);
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v21 = v8;
+      v21 = identitiesCopy;
       v25 = objc_msgSend_countByEnumeratingWithState_objects_count_(v21, v22, &v34, v40, 16);
       if (v25)
       {
@@ -450,7 +450,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v39 = v9;
+      v39 = dCopy;
       _os_log_error_impl(&dword_22506F000, v31, OS_LOG_TYPE_ERROR, "No manager context found for manager UUID: %@", buf, 0xCu);
     }
   }
@@ -459,27 +459,27 @@
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addMissingIdentityPublicKeys:(id)a3 forManagerUUID:(id)a4 withAccount:(id)a5
+- (void)addMissingIdentityPublicKeys:(id)keys forManagerUUID:(id)d withAccount:(id)account
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v33 = a5;
+  keysCopy = keys;
+  dCopy = d;
+  accountCopy = account;
   v12 = objc_msgSend_missingIdentitiesContextMap(self, v10, v11);
   objc_sync_enter(v12);
   v15 = objc_msgSend_missingIdentitiesContextMap(self, v13, v14);
-  v17 = objc_msgSend_objectForKey_(v15, v16, v9);
+  v17 = objc_msgSend_objectForKey_(v15, v16, dCopy);
 
   if (v17)
   {
-    if (objc_msgSend_count(v8, v18, v19))
+    if (objc_msgSend_count(keysCopy, v18, v19))
     {
-      objc_msgSend_setAccount_(v17, v20, v33);
+      objc_msgSend_setAccount_(v17, v20, accountCopy);
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v21 = v8;
+      v21 = keysCopy;
       v25 = objc_msgSend_countByEnumeratingWithState_objects_count_(v21, v22, &v34, v40, 16);
       if (v25)
       {
@@ -517,7 +517,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v39 = v9;
+      v39 = dCopy;
       _os_log_error_impl(&dword_22506F000, v31, OS_LOG_TYPE_ERROR, "No manager context found for manager UUID: %@", buf, 0xCu);
     }
   }
@@ -526,13 +526,13 @@
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearContextIfUnnecessaryForManagerUUID:(id)a3
+- (void)clearContextIfUnnecessaryForManagerUUID:(id)d
 {
-  v26 = a3;
+  dCopy = d;
   v6 = objc_msgSend_missingIdentitiesContextMap(self, v4, v5);
   objc_sync_enter(v6);
   v9 = objc_msgSend_missingIdentitiesContextMap(self, v7, v8);
-  v11 = objc_msgSend_objectForKey_(v9, v10, v26);
+  v11 = objc_msgSend_objectForKey_(v9, v10, dCopy);
 
   v14 = objc_msgSend_copyOfServicesWithMissingIdentities(v11, v12, v13);
   if (objc_msgSend_count(v14, v15, v16))
@@ -546,21 +546,21 @@
   if (!v22)
   {
     v14 = objc_msgSend_missingIdentitiesContextMap(self, v23, v24);
-    objc_msgSend_removeObjectForKey_(v14, v25, v26);
+    objc_msgSend_removeObjectForKey_(v14, v25, dCopy);
 LABEL_2:
   }
 
   objc_sync_exit(v6);
 }
 
-- (void)clearServicesAndPublicKeysForManagerUUID:(id)a3
+- (void)clearServicesAndPublicKeysForManagerUUID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v7 = objc_msgSend_missingIdentitiesContextMap(self, v5, v6);
   objc_sync_enter(v7);
   v10 = objc_msgSend_missingIdentitiesContextMap(self, v8, v9);
-  v12 = objc_msgSend_objectForKey_(v10, v11, v4);
+  v12 = objc_msgSend_objectForKey_(v10, v11, dCopy);
 
   if (v12)
   {
@@ -582,7 +582,7 @@ LABEL_2:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       v25 = 138412290;
-      v26 = v4;
+      v26 = dCopy;
       _os_log_error_impl(&dword_22506F000, v23, OS_LOG_TYPE_ERROR, "No manager context found for manager UUID: %@", &v25, 0xCu);
     }
   }
@@ -603,13 +603,13 @@ LABEL_2:
   return v10;
 }
 
-- (BOOL)serviceNeedsDBRReauthentication:(id)a3
+- (BOOL)serviceNeedsDBRReauthentication:(id)reauthentication
 {
-  v4 = a3;
+  reauthenticationCopy = reauthentication;
   v7 = objc_msgSend_mutableServicesNeedingDBRReauthentication(self, v5, v6);
   objc_sync_enter(v7);
   v10 = objc_msgSend_mutableServicesNeedingDBRReauthentication(self, v8, v9);
-  LOBYTE(self) = objc_msgSend_containsObject_(v10, v11, v4);
+  LOBYTE(self) = objc_msgSend_containsObject_(v10, v11, reauthenticationCopy);
 
   objc_sync_exit(v7);
   return self;
@@ -626,10 +626,10 @@ LABEL_2:
   return v10;
 }
 
-- (void)addServicesNeedingDBRReauthentication:(id)a3
+- (void)addServicesNeedingDBRReauthentication:(id)reauthentication
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reauthenticationCopy = reauthentication;
   v7 = objc_msgSend_mutableServicesNeedingDBRReauthentication(self, v5, v6);
   objc_sync_enter(v7);
   if (*MEMORY[0x277CBC880] != -1)
@@ -641,12 +641,12 @@ LABEL_2:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = reauthenticationCopy;
     _os_log_debug_impl(&dword_22506F000, v8, OS_LOG_TYPE_DEBUG, "Adding services: %@ to services needing DBR re-authentication set.", &v16, 0xCu);
   }
 
   v11 = objc_msgSend_mutableServicesNeedingDBRReauthentication(self, v9, v10);
-  objc_msgSend_addObjectsFromArray_(v11, v12, v4);
+  objc_msgSend_addObjectsFromArray_(v11, v12, reauthenticationCopy);
 
   objc_msgSend_invalidateCachedAccountInfo(MEMORY[0x277CBC160], v13, v14);
   objc_sync_exit(v7);

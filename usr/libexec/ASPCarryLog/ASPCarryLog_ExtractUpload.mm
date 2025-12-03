@@ -1,5 +1,5 @@
 @interface ASPCarryLog_ExtractUpload
-- (ASPCarryLog_ExtractUpload)initWithNandDriver:(id)a3 UploadDriver:(id)a4 StateManager:(id)a5 workDirectory:(id)a6 internalBuild:(BOOL)a7;
+- (ASPCarryLog_ExtractUpload)initWithNandDriver:(id)driver UploadDriver:(id)uploadDriver StateManager:(id)manager workDirectory:(id)directory internalBuild:(BOOL)build;
 - (BOOL)_getDiskSpaceFlag;
 - (BOOL)_internalCheckNextSpdExtract;
 - (BOOL)_isIOLogFromHwLogger;
@@ -7,7 +7,7 @@
 - (BOOL)_isXpcActivityDeferred;
 - (BOOL)_tryDeferXpcActivity;
 - (id)_checkAndCompressFiles;
-- (id)_compressFilesForSpd:(BOOL)a3;
+- (id)_compressFilesForSpd:(BOOL)spd;
 - (id)_getNextSpdExtractTime;
 - (id)_getPendingUploadFile;
 - (id)_getUploadContentPath;
@@ -26,30 +26,30 @@
 - (void)_checkAndHandleExcessiveCompressionErrors;
 - (void)_cleanUpinProgressFiles;
 - (void)_forceDeferXpcActivity;
-- (void)_incrementCntForKey:(id)a3;
+- (void)_incrementCntForKey:(id)key;
 - (void)_internalSetNextSpdExtractionTime;
-- (void)_iologLba_updateNewValue:(unint64_t)a3;
+- (void)_iologLba_updateNewValue:(unint64_t)value;
 - (void)_jetSamStatsCollect_end;
 - (void)_jetSamStatsCollect_start;
 - (void)_removeConvertedIOLog;
 - (void)_removeExtractedFiles;
 - (void)_removePendingUploadFilePath;
-- (void)_saveLastUploadFilePath:(id)a3;
-- (void)_savePendingUploadFilePath:(id)a3;
+- (void)_saveLastUploadFilePath:(id)path;
+- (void)_savePendingUploadFilePath:(id)path;
 - (void)_tryExtractUploadSpd;
 - (void)_updateLastExtractTime;
-- (void)_updateUploadInfoWithContentPath:(id)a3 contentSize:(unint64_t)a4;
-- (void)tryExtractUpload:(id)a3;
+- (void)_updateUploadInfoWithContentPath:(id)path contentSize:(unint64_t)size;
+- (void)tryExtractUpload:(id)upload;
 @end
 
 @implementation ASPCarryLog_ExtractUpload
 
-- (ASPCarryLog_ExtractUpload)initWithNandDriver:(id)a3 UploadDriver:(id)a4 StateManager:(id)a5 workDirectory:(id)a6 internalBuild:(BOOL)a7
+- (ASPCarryLog_ExtractUpload)initWithNandDriver:(id)driver UploadDriver:(id)uploadDriver StateManager:(id)manager workDirectory:(id)directory internalBuild:(BOOL)build
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  driverCopy = driver;
+  uploadDriverCopy = uploadDriver;
+  managerCopy = manager;
+  directoryCopy = directory;
   v58.receiver = self;
   v58.super_class = ASPCarryLog_ExtractUpload;
   v17 = [(ASPCarryLog_ExtractUpload *)&v58 init];
@@ -59,10 +59,10 @@
     fileManager = v17->_fileManager;
     v17->_fileManager = v18;
 
-    objc_storeStrong(&v17->_nandDriver, a3);
-    objc_storeStrong(&v17->_uploadDriver, a4);
-    objc_storeStrong(&v17->_stateMgr, a5);
-    objc_storeStrong(&v17->_workDir, a6);
+    objc_storeStrong(&v17->_nandDriver, driver);
+    objc_storeStrong(&v17->_uploadDriver, uploadDriver);
+    objc_storeStrong(&v17->_stateMgr, manager);
+    objc_storeStrong(&v17->_workDir, directory);
     v20 = [(NSString *)v17->_workDir stringByAppendingPathComponent:@"iolog_spd.iolog"];
     spdFilePath = v17->_spdFilePath;
     v17->_spdFilePath = v20;
@@ -87,11 +87,11 @@
     convertedIologPath = v17->_convertedIologPath;
     v17->_convertedIologPath = v30;
 
-    v32 = [(ASPCarryLog_ExtractUpload *)v17 _getPendingUploadFile];
+    _getPendingUploadFile = [(ASPCarryLog_ExtractUpload *)v17 _getPendingUploadFile];
     pendingUploadFile = v17->_pendingUploadFile;
-    v17->_pendingUploadFile = v32;
+    v17->_pendingUploadFile = _getPendingUploadFile;
 
-    v17->_isInternalBuild = a7;
+    v17->_isInternalBuild = build;
     xpcActivityMgr = v17->_xpcActivityMgr;
     v17->_xpcActivityMgr = 0;
 
@@ -123,9 +123,9 @@
     uploadInfoKey = v17->_uploadInfoKey;
     v17->_uploadInfoKey = v44;
 
-    v46 = [(ASPCarryLog_ExtractUpload *)v17 stateMgr];
-    v47 = [(ASPCarryLog_ExtractUpload *)v17 uploadInfoKey];
-    v48 = [v46 getValueForKey:v47 expectedType:2];
+    stateMgr = [(ASPCarryLog_ExtractUpload *)v17 stateMgr];
+    uploadInfoKey = [(ASPCarryLog_ExtractUpload *)v17 uploadInfoKey];
+    v48 = [stateMgr getValueForKey:uploadInfoKey expectedType:2];
     uploadInfo = v17->_uploadInfo;
     v17->_uploadInfo = v48;
 
@@ -144,9 +144,9 @@
 
     v17->_isEnoughDiskSpace = v50;
     v17->_numB2BZipErrors = [(ASPCarryLog_ExtractUpload *)v17 _getNumB2BZipErrors];
-    v51 = [(ASPCarryLog_ExtractUpload *)v17 _getNextSpdExtractTime];
+    _getNextSpdExtractTime = [(ASPCarryLog_ExtractUpload *)v17 _getNextSpdExtractTime];
     nextSpdExtractTime = v17->_nextSpdExtractTime;
-    v17->_nextSpdExtractTime = v51;
+    v17->_nextSpdExtractTime = _getNextSpdExtractTime;
 
     if (v17->_uploadIdx < 0 || v17->_lastTotalUploadSize == -1)
     {
@@ -174,38 +174,38 @@ LABEL_9:
 - (unint64_t)_iologLba_current
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
-  v5 = [v4 nandStats_get_hoursAgo:0];
+  nandDriver = [(ASPCarryLog_ExtractUpload *)self nandDriver];
+  v5 = [nandDriver nandStats_get_hoursAgo:0];
 
   v6 = [v5 objectForKey:&off_1000BFF30];
-  v7 = [v6 unsignedLongLongValue];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
   objc_autoreleasePoolPop(v3);
-  return v7;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)_iologLba_prevSubmission
 {
-  v2 = [(ASPCarryLog_ExtractUpload *)self stateMgr];
-  v3 = [v2 getValueForKey:@"iolog_lbas" expectedType:1];
+  stateMgr = [(ASPCarryLog_ExtractUpload *)self stateMgr];
+  v3 = [stateMgr getValueForKey:@"iolog_lbas" expectedType:1];
 
   if (v3)
   {
-    v4 = [v3 unsignedLongLongValue];
+    unsignedLongLongValue = [v3 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (BOOL)_isLastExtractionTooLongAgo
 {
-  v2 = [(ASPCarryLog_ExtractUpload *)self stateMgr];
-  v3 = [v2 getValueForKey:@"last_extract_time" expectedType:0];
+  stateMgr = [(ASPCarryLog_ExtractUpload *)self stateMgr];
+  v3 = [stateMgr getValueForKey:@"last_extract_time" expectedType:0];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (StringToDateTime(v3), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
@@ -226,74 +226,74 @@ LABEL_9:
 
 - (void)_updateLastExtractTime
 {
-  v3 = [(ASPCarryLog_ExtractUpload *)self stateMgr];
+  stateMgr = [(ASPCarryLog_ExtractUpload *)self stateMgr];
   v2 = currentDateTimeStr();
-  [v3 setValue:v2 forKey:@"last_extract_time"];
+  [stateMgr setValue:v2 forKey:@"last_extract_time"];
 }
 
 - (unint64_t)_getlastTotalUploadSize
 {
-  v2 = [(ASPCarryLog_ExtractUpload *)self uploadInfo];
-  v3 = [v2 objectForKeyedSubscript:@"total_upload_size"];
+  uploadInfo = [(ASPCarryLog_ExtractUpload *)self uploadInfo];
+  v3 = [uploadInfo objectForKeyedSubscript:@"total_upload_size"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 unsignedLongLongValue];
+    unsignedLongLongValue = [v3 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = -1;
+    unsignedLongLongValue = -1;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (int)_getUploadIdx
 {
-  v2 = [(ASPCarryLog_ExtractUpload *)self uploadInfo];
-  v3 = [v2 objectForKeyedSubscript:@"fileidx"];
+  uploadInfo = [(ASPCarryLog_ExtractUpload *)self uploadInfo];
+  v3 = [uploadInfo objectForKeyedSubscript:@"fileidx"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = -1;
+    intValue = -1;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (BOOL)_getDiskSpaceFlag
 {
-  v2 = [(ASPCarryLog_ExtractUpload *)self uploadInfo];
-  v3 = [v2 objectForKeyedSubscript:@"enough_disk_space"];
+  uploadInfo = [(ASPCarryLog_ExtractUpload *)self uploadInfo];
+  v3 = [uploadInfo objectForKeyedSubscript:@"enough_disk_space"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)_getNextSpdExtractTime
 {
   if ([(ASPCarryLog_ExtractUpload *)self isInternalBuild])
   {
-    v3 = [(ASPCarryLog_ExtractUpload *)self uploadInfo];
-    v4 = [v3 objectForKeyedSubscript:@"next_spd_extraction_time"];
+    uploadInfo = [(ASPCarryLog_ExtractUpload *)self uploadInfo];
+    v4 = [uploadInfo objectForKeyedSubscript:@"next_spd_extraction_time"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -317,39 +317,39 @@ LABEL_9:
 
 - (int)_getNumB2BZipErrors
 {
-  v2 = [(ASPCarryLog_ExtractUpload *)self uploadInfo];
-  v3 = [v2 objectForKeyedSubscript:@"num_b2b_zip_errors"];
+  uploadInfo = [(ASPCarryLog_ExtractUpload *)self uploadInfo];
+  v3 = [uploadInfo objectForKeyedSubscript:@"num_b2b_zip_errors"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
-- (void)_iologLba_updateNewValue:(unint64_t)a3
+- (void)_iologLba_updateNewValue:(unint64_t)value
 {
-  v5 = [(ASPCarryLog_ExtractUpload *)self stateMgr];
-  v4 = [NSNumber numberWithUnsignedLongLong:a3];
-  [v5 setValue:v4 forKey:@"iolog_lbas"];
+  stateMgr = [(ASPCarryLog_ExtractUpload *)self stateMgr];
+  v4 = [NSNumber numberWithUnsignedLongLong:value];
+  [stateMgr setValue:v4 forKey:@"iolog_lbas"];
 }
 
 - (id)_getPendingUploadFile
 {
-  v3 = [(ASPCarryLog_ExtractUpload *)self stateMgr];
-  v4 = [v3 getValueForKey:@"extractupload_pendingfile" expectedType:0];
+  stateMgr = [(ASPCarryLog_ExtractUpload *)self stateMgr];
+  v4 = [stateMgr getValueForKey:@"extractupload_pendingfile" expectedType:0];
 
   if (v4)
   {
-    v5 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-    v6 = [v5 fileExistsAtPath:v4];
+    fileManager = [(ASPCarryLog_ExtractUpload *)self fileManager];
+    v6 = [fileManager fileExistsAtPath:v4];
 
     if ((v6 & 1) == 0)
     {
@@ -368,23 +368,23 @@ LABEL_9:
   [(ASPCarryLog_ExtractUpload *)self setNextSpdExtractTime:v3];
 }
 
-- (void)_updateUploadInfoWithContentPath:(id)a3 contentSize:(unint64_t)a4
+- (void)_updateUploadInfoWithContentPath:(id)path contentSize:(unint64_t)size
 {
-  v10 = a3;
-  if (v10)
+  pathCopy = path;
+  if (pathCopy)
   {
     [(ASPCarryLog_ExtractUpload *)self setUploadIdx:[(ASPCarryLog_ExtractUpload *)self uploadIdx]+ 1];
-    [(ASPCarryLog_ExtractUpload *)self setLastTotalUploadSize:[(ASPCarryLog_ExtractUpload *)self lastTotalUploadSize]+ a4];
-    [(ASPCarryLog_ExtractUpload *)self _saveLastUploadFilePath:v10];
+    [(ASPCarryLog_ExtractUpload *)self setLastTotalUploadSize:[(ASPCarryLog_ExtractUpload *)self lastTotalUploadSize]+ size];
+    [(ASPCarryLog_ExtractUpload *)self _saveLastUploadFilePath:pathCopy];
     [(ASPCarryLog_ExtractUpload *)self _setUploadInfoWithSpdState:0];
-    v6 = [(ASPCarryLog_ExtractUpload *)self endTimeStr];
+    endTimeStr = [(ASPCarryLog_ExtractUpload *)self endTimeStr];
 
-    if (v6)
+    if (endTimeStr)
     {
-      v7 = [(ASPCarryLog_ExtractUpload *)self stateMgr];
-      v8 = [(ASPCarryLog_ExtractUpload *)self taskingId];
-      v9 = [(ASPCarryLog_ExtractUpload *)self endTimeStr];
-      setTaskingInfoToLegacyUIDomain(v7, v8, v9, [(ASPCarryLog_ExtractUpload *)self lastTotalUploadSize], v10, [(ASPCarryLog_ExtractUpload *)self isInternalBuild]);
+      stateMgr = [(ASPCarryLog_ExtractUpload *)self stateMgr];
+      taskingId = [(ASPCarryLog_ExtractUpload *)self taskingId];
+      endTimeStr2 = [(ASPCarryLog_ExtractUpload *)self endTimeStr];
+      setTaskingInfoToLegacyUIDomain(stateMgr, taskingId, endTimeStr2, [(ASPCarryLog_ExtractUpload *)self lastTotalUploadSize], pathCopy, [(ASPCarryLog_ExtractUpload *)self isInternalBuild]);
     }
   }
 
@@ -394,31 +394,31 @@ LABEL_9:
   }
 }
 
-- (void)_savePendingUploadFilePath:(id)a3
+- (void)_savePendingUploadFilePath:(id)path
 {
-  v4 = a3;
-  v5 = [(ASPCarryLog_ExtractUpload *)self stateMgr];
-  [v5 setValue:v4 forKey:@"extractupload_pendingfile"];
+  pathCopy = path;
+  stateMgr = [(ASPCarryLog_ExtractUpload *)self stateMgr];
+  [stateMgr setValue:pathCopy forKey:@"extractupload_pendingfile"];
 }
 
-- (void)_saveLastUploadFilePath:(id)a3
+- (void)_saveLastUploadFilePath:(id)path
 {
-  v4 = a3;
-  v5 = [(ASPCarryLog_ExtractUpload *)self stateMgr];
-  [v5 setValue:v4 forKey:@"extractupload_lastupload"];
+  pathCopy = path;
+  stateMgr = [(ASPCarryLog_ExtractUpload *)self stateMgr];
+  [stateMgr setValue:pathCopy forKey:@"extractupload_lastupload"];
 }
 
 - (void)_removePendingUploadFilePath
 {
-  v2 = [(ASPCarryLog_ExtractUpload *)self stateMgr];
-  [v2 deleteKey:@"extractupload_pendingfile"];
+  stateMgr = [(ASPCarryLog_ExtractUpload *)self stateMgr];
+  [stateMgr deleteKey:@"extractupload_pendingfile"];
 }
 
 - (int)_tryCreateWorkDirectories
 {
-  v3 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-  v4 = [(ASPCarryLog_ExtractUpload *)self workDir];
-  v5 = [v3 fileExistsAtPath:v4];
+  fileManager = [(ASPCarryLog_ExtractUpload *)self fileManager];
+  workDir = [(ASPCarryLog_ExtractUpload *)self workDir];
+  v5 = [fileManager fileExistsAtPath:workDir];
 
   if (v5)
   {
@@ -427,10 +427,10 @@ LABEL_9:
 
   else
   {
-    v7 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-    v8 = [(ASPCarryLog_ExtractUpload *)self workDir];
+    fileManager2 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+    workDir2 = [(ASPCarryLog_ExtractUpload *)self workDir];
     v27 = 0;
-    v9 = [v7 createDirectoryAtPath:v8 withIntermediateDirectories:0 attributes:0 error:&v27];
+    v9 = [fileManager2 createDirectoryAtPath:workDir2 withIntermediateDirectories:0 attributes:0 error:&v27];
     v6 = v27;
 
     if ((v9 & 1) == 0)
@@ -444,25 +444,25 @@ LABEL_9:
     }
   }
 
-  v10 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+  fileManager3 = [(ASPCarryLog_ExtractUpload *)self fileManager];
   v30 = NSFilePosixPermissions;
   v31 = &off_1000BFF48;
   v11 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-  v12 = [(ASPCarryLog_ExtractUpload *)self workDir];
+  workDir3 = [(ASPCarryLog_ExtractUpload *)self workDir];
   v26 = v6;
-  [v10 setAttributes:v11 ofItemAtPath:v12 error:&v26];
+  [fileManager3 setAttributes:v11 ofItemAtPath:workDir3 error:&v26];
   v13 = v26;
 
-  v14 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-  v15 = [(ASPCarryLog_ExtractUpload *)self tarInProgressDir];
-  LOBYTE(v11) = [v14 fileExistsAtPath:v15];
+  fileManager4 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+  tarInProgressDir = [(ASPCarryLog_ExtractUpload *)self tarInProgressDir];
+  LOBYTE(v11) = [fileManager4 fileExistsAtPath:tarInProgressDir];
 
   if ((v11 & 1) == 0)
   {
-    v16 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-    v17 = [(ASPCarryLog_ExtractUpload *)self tarInProgressDir];
+    fileManager5 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+    tarInProgressDir2 = [(ASPCarryLog_ExtractUpload *)self tarInProgressDir];
     v25 = v13;
-    v18 = [v16 createDirectoryAtPath:v17 withIntermediateDirectories:0 attributes:0 error:&v25];
+    v18 = [fileManager5 createDirectoryAtPath:tarInProgressDir2 withIntermediateDirectories:0 attributes:0 error:&v25];
     v6 = v25;
 
     if (v18)
@@ -482,14 +482,14 @@ LABEL_12:
   }
 
 LABEL_7:
-  v19 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+  fileManager6 = [(ASPCarryLog_ExtractUpload *)self fileManager];
   v28 = NSFilePosixPermissions;
   v29 = &off_1000BFF48;
   v20 = 1;
   v21 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-  v22 = [(ASPCarryLog_ExtractUpload *)self tarInProgressDir];
+  tarInProgressDir3 = [(ASPCarryLog_ExtractUpload *)self tarInProgressDir];
   v24 = v13;
-  [v19 setAttributes:v21 ofItemAtPath:v22 error:&v24];
+  [fileManager6 setAttributes:v21 ofItemAtPath:tarInProgressDir3 error:&v24];
   v6 = v24;
 
 LABEL_13:
@@ -502,9 +502,9 @@ LABEL_13:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-  v4 = [(ASPCarryLog_ExtractUpload *)self tarInProgressDir];
-  v5 = [v3 contentsOfDirectoryAtPath:v4 error:0];
+  fileManager = [(ASPCarryLog_ExtractUpload *)self fileManager];
+  tarInProgressDir = [(ASPCarryLog_ExtractUpload *)self tarInProgressDir];
+  v5 = [fileManager contentsOfDirectoryAtPath:tarInProgressDir error:0];
 
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
@@ -522,10 +522,10 @@ LABEL_13:
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v11 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-        v12 = [(ASPCarryLog_ExtractUpload *)self tarInProgressDir];
-        v13 = [v12 stringByAppendingPathComponent:v10];
-        [v11 removeItemAtPath:v13 error:0];
+        fileManager2 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+        tarInProgressDir2 = [(ASPCarryLog_ExtractUpload *)self tarInProgressDir];
+        v13 = [tarInProgressDir2 stringByAppendingPathComponent:v10];
+        [fileManager2 removeItemAtPath:v13 error:0];
 
         v9 = v9 + 1;
       }
@@ -540,46 +540,46 @@ LABEL_13:
 
 - (int)_extractFiles
 {
-  v3 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-  v4 = [(ASPCarryLog_ExtractUpload *)self nandcounterPath];
-  v5 = [v3 fileExistsAtPath:v4];
+  fileManager = [(ASPCarryLog_ExtractUpload *)self fileManager];
+  nandcounterPath = [(ASPCarryLog_ExtractUpload *)self nandcounterPath];
+  v5 = [fileManager fileExistsAtPath:nandcounterPath];
 
   if (v5)
   {
-    v6 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-    v7 = [(ASPCarryLog_ExtractUpload *)self nandcounterPath];
-    [v6 removeItemAtPath:v7 error:0];
+    fileManager2 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+    nandcounterPath2 = [(ASPCarryLog_ExtractUpload *)self nandcounterPath];
+    [fileManager2 removeItemAtPath:nandcounterPath2 error:0];
   }
 
-  v8 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-  v9 = [(ASPCarryLog_ExtractUpload *)self nandstatsPath];
-  v10 = [v8 fileExistsAtPath:v9];
+  fileManager3 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+  nandstatsPath = [(ASPCarryLog_ExtractUpload *)self nandstatsPath];
+  v10 = [fileManager3 fileExistsAtPath:nandstatsPath];
 
   if (v10)
   {
-    v11 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-    v12 = [(ASPCarryLog_ExtractUpload *)self nandstatsPath];
-    [v11 removeItemAtPath:v12 error:0];
+    fileManager4 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+    nandstatsPath2 = [(ASPCarryLog_ExtractUpload *)self nandstatsPath];
+    [fileManager4 removeItemAtPath:nandstatsPath2 error:0];
   }
 
-  v13 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
-  v14 = [v13 iolog_disable];
+  nandDriver = [(ASPCarryLog_ExtractUpload *)self nandDriver];
+  iolog_disable = [nandDriver iolog_disable];
 
-  if (v14)
+  if (iolog_disable)
   {
     [(ASPCarryLog_ExtractUpload *)self setIsIOLogEnableNeeded:1];
     do
     {
-      v15 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
-      v16 = [(ASPCarryLog_ExtractUpload *)self iologPath];
-      v17 = [v15 iolog_export:v16 max_export_size:25165824];
+      nandDriver2 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
+      iologPath = [(ASPCarryLog_ExtractUpload *)self iologPath];
+      v17 = [nandDriver2 iolog_export:iologPath max_export_size:25165824];
     }
 
     while (v17 >> 23 >= 3 && ![(ASPCarryLog_ExtractUpload *)self _tryDeferXpcActivity]);
     if ([(ASPCarryLog_ExtractUpload *)self isIOLogEnableNeeded])
     {
-      v18 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
-      [v18 iolog_enable];
+      nandDriver3 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
+      [nandDriver3 iolog_enable];
     }
   }
 
@@ -593,9 +593,9 @@ LABEL_13:
     return 0;
   }
 
-  v20 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
-  v21 = [(ASPCarryLog_ExtractUpload *)self nandcounterPath];
-  v22 = [v20 nandCounters_save:v21];
+  nandDriver4 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
+  nandcounterPath3 = [(ASPCarryLog_ExtractUpload *)self nandcounterPath];
+  v22 = [nandDriver4 nandCounters_save:nandcounterPath3];
 
   if (!v22)
   {
@@ -614,9 +614,9 @@ LABEL_13:
     return 1;
   }
 
-  v23 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
-  v24 = [(ASPCarryLog_ExtractUpload *)self nandstatsPath];
-  v25 = [v23 nandStats_save:v24];
+  nandDriver5 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
+  nandstatsPath3 = [(ASPCarryLog_ExtractUpload *)self nandstatsPath];
+  v25 = [nandDriver5 nandStats_save:nandstatsPath3];
 
   if (v25)
   {
@@ -635,9 +635,9 @@ LABEL_13:
 
 - (int)_checkAndExtractFiles
 {
-  v3 = [(ASPCarryLog_ExtractUpload *)self _iologLba_current];
-  v4 = [(ASPCarryLog_ExtractUpload *)self _iologLba_prevSubmission];
-  if (v3 > v4 && (v3 - v4) >> 13 || (result = [(ASPCarryLog_ExtractUpload *)self _isLastExtractionTooLongAgo]) != 0)
+  _iologLba_current = [(ASPCarryLog_ExtractUpload *)self _iologLba_current];
+  _iologLba_prevSubmission = [(ASPCarryLog_ExtractUpload *)self _iologLba_prevSubmission];
+  if (_iologLba_current > _iologLba_prevSubmission && (_iologLba_current - _iologLba_prevSubmission) >> 13 || (result = [(ASPCarryLog_ExtractUpload *)self _isLastExtractionTooLongAgo]) != 0)
   {
     [(ASPCarryLog_ExtractUpload *)self _setStage:1];
     result = [(ASPCarryLog_ExtractUpload *)self _extractFiles];
@@ -650,7 +650,7 @@ LABEL_13:
 
       else
       {
-        [(ASPCarryLog_ExtractUpload *)self _iologLba_updateNewValue:v3];
+        [(ASPCarryLog_ExtractUpload *)self _iologLba_updateNewValue:_iologLba_current];
         [(ASPCarryLog_ExtractUpload *)self _updateLastExtractTime];
         return 1;
       }
@@ -662,48 +662,48 @@ LABEL_13:
 
 - (void)_removeExtractedFiles
 {
-  v3 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-  v4 = [(ASPCarryLog_ExtractUpload *)self iologPath];
-  v5 = [v3 fileExistsAtPath:v4];
+  fileManager = [(ASPCarryLog_ExtractUpload *)self fileManager];
+  iologPath = [(ASPCarryLog_ExtractUpload *)self iologPath];
+  v5 = [fileManager fileExistsAtPath:iologPath];
 
   if (v5)
   {
-    v6 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-    v7 = [(ASPCarryLog_ExtractUpload *)self iologPath];
-    [v6 removeItemAtPath:v7 error:0];
+    fileManager2 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+    iologPath2 = [(ASPCarryLog_ExtractUpload *)self iologPath];
+    [fileManager2 removeItemAtPath:iologPath2 error:0];
   }
 
-  v8 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-  v9 = [(ASPCarryLog_ExtractUpload *)self nandcounterPath];
-  v10 = [v8 fileExistsAtPath:v9];
+  fileManager3 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+  nandcounterPath = [(ASPCarryLog_ExtractUpload *)self nandcounterPath];
+  v10 = [fileManager3 fileExistsAtPath:nandcounterPath];
 
   if (v10)
   {
-    v11 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-    v12 = [(ASPCarryLog_ExtractUpload *)self nandcounterPath];
-    [v11 removeItemAtPath:v12 error:0];
+    fileManager4 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+    nandcounterPath2 = [(ASPCarryLog_ExtractUpload *)self nandcounterPath];
+    [fileManager4 removeItemAtPath:nandcounterPath2 error:0];
   }
 
-  v13 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-  v14 = [(ASPCarryLog_ExtractUpload *)self nandstatsPath];
-  v15 = [v13 fileExistsAtPath:v14];
+  fileManager5 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+  nandstatsPath = [(ASPCarryLog_ExtractUpload *)self nandstatsPath];
+  v15 = [fileManager5 fileExistsAtPath:nandstatsPath];
 
   if (v15)
   {
-    v16 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-    v17 = [(ASPCarryLog_ExtractUpload *)self nandstatsPath];
-    [v16 removeItemAtPath:v17 error:0];
+    fileManager6 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+    nandstatsPath2 = [(ASPCarryLog_ExtractUpload *)self nandstatsPath];
+    [fileManager6 removeItemAtPath:nandstatsPath2 error:0];
   }
 
-  v18 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-  v19 = [(ASPCarryLog_ExtractUpload *)self spdFilePath];
-  v20 = [v18 fileExistsAtPath:v19];
+  fileManager7 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+  spdFilePath = [(ASPCarryLog_ExtractUpload *)self spdFilePath];
+  v20 = [fileManager7 fileExistsAtPath:spdFilePath];
 
   if (v20)
   {
-    v21 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-    v22 = [(ASPCarryLog_ExtractUpload *)self spdFilePath];
-    [v21 removeItemAtPath:v22 error:0];
+    fileManager8 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+    spdFilePath2 = [(ASPCarryLog_ExtractUpload *)self spdFilePath];
+    [fileManager8 removeItemAtPath:spdFilePath2 error:0];
   }
 
   [(ASPCarryLog_ExtractUpload *)self _removeConvertedIOLog];
@@ -711,15 +711,15 @@ LABEL_13:
 
 - (void)_removeConvertedIOLog
 {
-  v3 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-  v4 = [(ASPCarryLog_ExtractUpload *)self convertedIologPath];
-  v5 = [v3 fileExistsAtPath:v4];
+  fileManager = [(ASPCarryLog_ExtractUpload *)self fileManager];
+  convertedIologPath = [(ASPCarryLog_ExtractUpload *)self convertedIologPath];
+  v5 = [fileManager fileExistsAtPath:convertedIologPath];
 
   if (v5)
   {
-    v7 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-    v6 = [(ASPCarryLog_ExtractUpload *)self convertedIologPath];
-    [v7 removeItemAtPath:v6 error:0];
+    fileManager2 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+    convertedIologPath2 = [(ASPCarryLog_ExtractUpload *)self convertedIologPath];
+    [fileManager2 removeItemAtPath:convertedIologPath2 error:0];
   }
 }
 
@@ -732,18 +732,18 @@ LABEL_13:
   }
 
   [(ASPCarryLog_ExtractUpload *)self _removeConvertedIOLog];
-  v4 = [(ASPCarryLog_ExtractUpload *)self _isIOLogFromHwLogger];
-  gIsIOLogFromHwLogger = v4;
-  if (!v4)
+  _isIOLogFromHwLogger = [(ASPCarryLog_ExtractUpload *)self _isIOLogFromHwLogger];
+  gIsIOLogFromHwLogger = _isIOLogFromHwLogger;
+  if (!_isIOLogFromHwLogger)
   {
     return 1;
   }
 
-  v5 = [(ASPCarryLog_ExtractUpload *)self iologPath];
-  v6 = fopen([v5 UTF8String], "r");
+  iologPath = [(ASPCarryLog_ExtractUpload *)self iologPath];
+  v6 = fopen([iologPath UTF8String], "r");
 
-  v7 = [(ASPCarryLog_ExtractUpload *)self convertedIologPath];
-  v8 = fopen([v7 UTF8String], "w");
+  convertedIologPath = [(ASPCarryLog_ExtractUpload *)self convertedIologPath];
+  v8 = fopen([convertedIologPath UTF8String], "w");
 
   if (v6 && v8)
   {
@@ -776,9 +776,9 @@ LABEL_10:
   return v3;
 }
 
-- (id)_compressFilesForSpd:(BOOL)a3
+- (id)_compressFilesForSpd:(BOOL)spd
 {
-  v3 = a3;
+  spdCopy = spd;
   if (gIsIOLogFromHwLogger)
   {
     [(ASPCarryLog_ExtractUpload *)self convertedIologPath];
@@ -789,35 +789,35 @@ LABEL_10:
     [(ASPCarryLog_ExtractUpload *)self iologPath];
   }
   v42 = ;
-  v43 = [(ASPCarryLog_ExtractUpload *)self spdFilePath];
-  v5 = [(ASPCarryLog_ExtractUpload *)self tarInProgressDir];
+  spdFilePath = [(ASPCarryLog_ExtractUpload *)self spdFilePath];
+  tarInProgressDir = [(ASPCarryLog_ExtractUpload *)self tarInProgressDir];
   v6 = currentDateTimeStr();
   v7 = v6;
-  if (v3)
+  if (spdCopy)
   {
-    v45 = [NSString stringWithFormat:@"%@/iologSpd_%@.tar", v5, v6];
+    v45 = [NSString stringWithFormat:@"%@/iologSpd_%@.tar", tarInProgressDir, v6];
 
-    v44 = [[NSMutableArray alloc] initWithObjects:{v43, 0}];
+    v44 = [[NSMutableArray alloc] initWithObjects:{spdFilePath, 0}];
   }
 
   else
   {
-    v45 = [NSString stringWithFormat:@"%@/iolog_%@_%d.tar", v5, v6, [(ASPCarryLog_ExtractUpload *)self uploadIdx]];
+    v45 = [NSString stringWithFormat:@"%@/iolog_%@_%d.tar", tarInProgressDir, v6, [(ASPCarryLog_ExtractUpload *)self uploadIdx]];
 
     v8 = [NSMutableArray alloc];
-    v9 = [(ASPCarryLog_ExtractUpload *)self nandcounterPath];
-    v44 = [v8 initWithObjects:{v42, v9, 0}];
+    nandcounterPath = [(ASPCarryLog_ExtractUpload *)self nandcounterPath];
+    v44 = [v8 initWithObjects:{v42, nandcounterPath, 0}];
 
     if ([(ASPCarryLog_ExtractUpload *)self isInternalBuild])
     {
-      v10 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-      v11 = [(ASPCarryLog_ExtractUpload *)self nandstatsPath];
-      v12 = [v10 fileExistsAtPath:v11];
+      fileManager = [(ASPCarryLog_ExtractUpload *)self fileManager];
+      nandstatsPath = [(ASPCarryLog_ExtractUpload *)self nandstatsPath];
+      v12 = [fileManager fileExistsAtPath:nandstatsPath];
 
       if (v12)
       {
-        v13 = [(ASPCarryLog_ExtractUpload *)self nandstatsPath];
-        [v44 addObject:v13];
+        nandstatsPath2 = [(ASPCarryLog_ExtractUpload *)self nandstatsPath];
+        [v44 addObject:nandstatsPath2];
       }
     }
   }
@@ -874,9 +874,9 @@ LABEL_51:
 
       archive_entry_new();
       archive_entry_copy_stat();
-      v19 = [v17 lastPathComponent];
-      v20 = v19;
-      [v19 UTF8String];
+      lastPathComponent = [v17 lastPathComponent];
+      v20 = lastPathComponent;
+      [lastPathComponent UTF8String];
       archive_entry_set_pathname();
 
       archive_entry_set_filetype();
@@ -962,8 +962,8 @@ LABEL_36:
   archive_write_free();
   if ((v28 & 1) == 0)
   {
-    v30 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-    v31 = [v30 fileExistsAtPath:v45];
+    fileManager2 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+    v31 = [fileManager2 fileExistsAtPath:v45];
 
     if (v31)
     {
@@ -1035,9 +1035,9 @@ LABEL_12:
 
 - (id)_prepareContentsToUpload
 {
-  v3 = [(ASPCarryLog_ExtractUpload *)self pendingUploadFile];
+  pendingUploadFile = [(ASPCarryLog_ExtractUpload *)self pendingUploadFile];
 
-  if (v3)
+  if (pendingUploadFile)
   {
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
@@ -1050,62 +1050,62 @@ LABEL_12:
   if (![(ASPCarryLog_ExtractUpload *)self _tryCreateWorkDirectories]|| [(ASPCarryLog_ExtractUpload *)self _getStage]<= 1 && ![(ASPCarryLog_ExtractUpload *)self _checkAndExtractFiles]|| [(ASPCarryLog_ExtractUpload *)self _getStage]<= 2 && ![(ASPCarryLog_ExtractUpload *)self _checkAndConvertIOLog])
   {
 LABEL_4:
-    v4 = 0;
+    _checkAndCompressFiles = 0;
     goto LABEL_5;
   }
 
-  v4 = [(ASPCarryLog_ExtractUpload *)self _checkAndCompressFiles];
+  _checkAndCompressFiles = [(ASPCarryLog_ExtractUpload *)self _checkAndCompressFiles];
 LABEL_5:
 
-  return v4;
+  return _checkAndCompressFiles;
 }
 
 - (id)_getUploadContentPath
 {
-  v3 = [(ASPCarryLog_ExtractUpload *)self pendingUploadFile];
+  pendingUploadFile = [(ASPCarryLog_ExtractUpload *)self pendingUploadFile];
 
-  if (v3)
+  if (pendingUploadFile)
   {
-    v4 = [(ASPCarryLog_ExtractUpload *)self pendingUploadFile];
-    v5 = 0;
+    pendingUploadFile2 = [(ASPCarryLog_ExtractUpload *)self pendingUploadFile];
+    _prepareContentsToUpload = 0;
     goto LABEL_9;
   }
 
-  v5 = [(ASPCarryLog_ExtractUpload *)self _prepareContentsToUpload];
-  if (![(ASPCarryLog_ExtractUpload *)self _isXpcActivityDeferred]&& v5)
+  _prepareContentsToUpload = [(ASPCarryLog_ExtractUpload *)self _prepareContentsToUpload];
+  if (![(ASPCarryLog_ExtractUpload *)self _isXpcActivityDeferred]&& _prepareContentsToUpload)
   {
-    v6 = [(ASPCarryLog_ExtractUpload *)self workDir];
-    v7 = [v5 lastPathComponent];
-    v4 = [v6 stringByAppendingPathComponent:v7];
+    workDir = [(ASPCarryLog_ExtractUpload *)self workDir];
+    lastPathComponent = [_prepareContentsToUpload lastPathComponent];
+    pendingUploadFile2 = [workDir stringByAppendingPathComponent:lastPathComponent];
 
-    [(ASPCarryLog_ExtractUpload *)self _savePendingUploadFilePath:v4];
-    v8 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-    [v8 moveItemAtPath:v5 toPath:v4 error:0];
+    [(ASPCarryLog_ExtractUpload *)self _savePendingUploadFilePath:pendingUploadFile2];
+    fileManager = [(ASPCarryLog_ExtractUpload *)self fileManager];
+    [fileManager moveItemAtPath:_prepareContentsToUpload toPath:pendingUploadFile2 error:0];
 
-    v9 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-    LODWORD(v7) = [v9 fileExistsAtPath:v4];
+    fileManager2 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+    LODWORD(lastPathComponent) = [fileManager2 fileExistsAtPath:pendingUploadFile2];
 
-    if (v7)
+    if (lastPathComponent)
     {
       [(ASPCarryLog_ExtractUpload *)self _removeExtractedFiles];
       goto LABEL_9;
     }
   }
 
-  v4 = 0;
+  pendingUploadFile2 = 0;
 LABEL_9:
 
-  return v4;
+  return pendingUploadFile2;
 }
 
-- (void)tryExtractUpload:(id)a3
+- (void)tryExtractUpload:(id)upload
 {
-  v4 = a3;
+  uploadCopy = upload;
   v5 = objc_autoreleasePoolPush();
   [(ASPCarryLog_ExtractUpload *)self _jetSamStatsCollect_start];
-  [(ASPCarryLog_ExtractUpload *)self setXpcActivityMgr:v4];
-  v6 = [(ASPCarryLog_ExtractUpload *)self taskingId];
-  if (v6 && (v7 = v6, [(ASPCarryLog_ExtractUpload *)self deviceId], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+  [(ASPCarryLog_ExtractUpload *)self setXpcActivityMgr:uploadCopy];
+  taskingId = [(ASPCarryLog_ExtractUpload *)self taskingId];
+  if (taskingId && (v7 = taskingId, [(ASPCarryLog_ExtractUpload *)self deviceId], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
   {
     if ([(ASPCarryLog_ExtractUpload *)self _isPendingSpdHandling])
     {
@@ -1124,49 +1124,49 @@ LABEL_9:
 
     else if ([(ASPCarryLog_ExtractUpload *)self isInternalBuild]|| [(ASPCarryLog_ExtractUpload *)self isEnoughDiskSpace])
     {
-      v13 = [(ASPCarryLog_ExtractUpload *)self lastTotalUploadSize];
-      if (v13 >= [(ASPCarryLog_ExtractUpload *)self uploadSizeLimit])
+      lastTotalUploadSize = [(ASPCarryLog_ExtractUpload *)self lastTotalUploadSize];
+      if (lastTotalUploadSize >= [(ASPCarryLog_ExtractUpload *)self uploadSizeLimit])
       {
         v25 = oslog;
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
           v26 = v25;
-          v27 = [(ASPCarryLog_ExtractUpload *)self lastTotalUploadSize];
-          v28 = [(ASPCarryLog_ExtractUpload *)self uploadSizeLimit];
-          v29 = [(ASPCarryLog_ExtractUpload *)self taskingId];
+          lastTotalUploadSize2 = [(ASPCarryLog_ExtractUpload *)self lastTotalUploadSize];
+          uploadSizeLimit = [(ASPCarryLog_ExtractUpload *)self uploadSizeLimit];
+          taskingId2 = [(ASPCarryLog_ExtractUpload *)self taskingId];
           v34 = 134218498;
-          v35 = v27;
+          uTF8String2 = lastTotalUploadSize2;
           v36 = 2048;
-          v37 = v28;
+          v37 = uploadSizeLimit;
           v38 = 2080;
-          v39 = [v29 UTF8String];
+          uTF8String = [taskingId2 UTF8String];
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Total upload size bytes %llu exceeding limit %llu, for tasking %s", &v34, 0x20u);
         }
       }
 
       else
       {
-        v14 = [(ASPCarryLog_ExtractUpload *)self _getUploadContentPath];
-        if (v14)
+        _getUploadContentPath = [(ASPCarryLog_ExtractUpload *)self _getUploadContentPath];
+        if (_getUploadContentPath)
         {
-          v15 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-          v16 = [v15 attributesOfItemAtPath:v14 error:0];
-          v17 = [v16 fileSize];
+          fileManager = [(ASPCarryLog_ExtractUpload *)self fileManager];
+          v16 = [fileManager attributesOfItemAtPath:_getUploadContentPath error:0];
+          fileSize = [v16 fileSize];
 
-          v18 = [(ASPCarryLog_ExtractUpload *)self uploadDriver];
-          v19 = [(ASPCarryLog_ExtractUpload *)self taskingId];
-          v20 = [(ASPCarryLog_ExtractUpload *)self deviceId];
-          v21 = [v18 uploadFile:v14 TaskingId:v19 DeviceId:v20 LogType:@"com.apple.nand.iolog"];
+          uploadDriver = [(ASPCarryLog_ExtractUpload *)self uploadDriver];
+          taskingId3 = [(ASPCarryLog_ExtractUpload *)self taskingId];
+          deviceId = [(ASPCarryLog_ExtractUpload *)self deviceId];
+          v21 = [uploadDriver uploadFile:_getUploadContentPath TaskingId:taskingId3 DeviceId:deviceId LogType:@"com.apple.nand.iolog"];
 
           v22 = oslog;
           if (v21)
           {
             if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
             {
-              v23 = v14;
+              v23 = _getUploadContentPath;
               v24 = v22;
               v34 = 136315138;
-              v35 = [v14 UTF8String];
+              uTF8String2 = [_getUploadContentPath UTF8String];
               _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Content %s passed to uploader.\n", &v34, 0xCu);
             }
           }
@@ -1177,12 +1177,12 @@ LABEL_9:
           }
 
           [(ASPCarryLog_ExtractUpload *)self _removePendingUploadFilePath];
-          [(ASPCarryLog_ExtractUpload *)self _updateUploadInfoWithContentPath:v14 contentSize:v17];
-          v32 = [(ASPCarryLog_ExtractUpload *)self lastTotalUploadSize];
-          if (v32 >= [(ASPCarryLog_ExtractUpload *)self uploadSizeLimit])
+          [(ASPCarryLog_ExtractUpload *)self _updateUploadInfoWithContentPath:_getUploadContentPath contentSize:fileSize];
+          lastTotalUploadSize3 = [(ASPCarryLog_ExtractUpload *)self lastTotalUploadSize];
+          if (lastTotalUploadSize3 >= [(ASPCarryLog_ExtractUpload *)self uploadSizeLimit])
           {
-            v33 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
-            [v33 iolog_disable];
+            nandDriver = [(ASPCarryLog_ExtractUpload *)self nandDriver];
+            [nandDriver iolog_disable];
           }
 
           else if ([(ASPCarryLog_ExtractUpload *)self _internalCheckNextSpdExtract])
@@ -1223,13 +1223,13 @@ LABEL_9:
   {
     [(ASPCarryLog_ExtractUpload *)self _cleanUpinProgressFiles];
     [(ASPCarryLog_ExtractUpload *)self _removeExtractedFiles];
-    v9 = [(ASPCarryLog_ExtractUpload *)self pendingUploadFile];
+    pendingUploadFile = [(ASPCarryLog_ExtractUpload *)self pendingUploadFile];
 
-    if (v9)
+    if (pendingUploadFile)
     {
-      v10 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-      v11 = [(ASPCarryLog_ExtractUpload *)self pendingUploadFile];
-      [v10 removeItemAtPath:v11 error:0];
+      fileManager2 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+      pendingUploadFile2 = [(ASPCarryLog_ExtractUpload *)self pendingUploadFile];
+      [fileManager2 removeItemAtPath:pendingUploadFile2 error:0];
     }
 
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
@@ -1244,29 +1244,29 @@ LABEL_9:
 
 - (void)_jetSamStatsCollect_start
 {
-  v3 = [(ASPCarryLog_ExtractUpload *)self stateMgr];
-  v4 = [v3 getValueForKey:@"extractupload_running" expectedType:0];
+  stateMgr = [(ASPCarryLog_ExtractUpload *)self stateMgr];
+  v4 = [stateMgr getValueForKey:@"extractupload_running" expectedType:0];
 
   if (v4)
   {
     [(ASPCarryLog_ExtractUpload *)self _incrementCntForKey:@"extractupload_jetsam_count"];
   }
 
-  v5 = [(ASPCarryLog_ExtractUpload *)self stateMgr];
-  [v5 setValue:@"YES" forKey:@"extractupload_running"];
+  stateMgr2 = [(ASPCarryLog_ExtractUpload *)self stateMgr];
+  [stateMgr2 setValue:@"YES" forKey:@"extractupload_running"];
 }
 
 - (void)_jetSamStatsCollect_end
 {
-  v2 = [(ASPCarryLog_ExtractUpload *)self stateMgr];
-  [v2 deleteKey:@"extractupload_running"];
+  stateMgr = [(ASPCarryLog_ExtractUpload *)self stateMgr];
+  [stateMgr deleteKey:@"extractupload_running"];
 }
 
-- (void)_incrementCntForKey:(id)a3
+- (void)_incrementCntForKey:(id)key
 {
-  v8 = a3;
-  v4 = [(ASPCarryLog_ExtractUpload *)self stateMgr];
-  v5 = [v4 getValueForKey:v8 expectedType:1];
+  keyCopy = key;
+  stateMgr = [(ASPCarryLog_ExtractUpload *)self stateMgr];
+  v5 = [stateMgr getValueForKey:keyCopy expectedType:1];
 
   if (v5)
   {
@@ -1278,33 +1278,33 @@ LABEL_9:
     v6 = &off_1000BFF60;
   }
 
-  v7 = [(ASPCarryLog_ExtractUpload *)self stateMgr];
-  [v7 setValue:v6 forKey:v8];
+  stateMgr2 = [(ASPCarryLog_ExtractUpload *)self stateMgr];
+  [stateMgr2 setValue:v6 forKey:keyCopy];
 }
 
 - (BOOL)_tryDeferXpcActivity
 {
-  v3 = [(ASPCarryLog_ExtractUpload *)self xpcActivityMgr];
+  xpcActivityMgr = [(ASPCarryLog_ExtractUpload *)self xpcActivityMgr];
 
-  if (v3)
+  if (xpcActivityMgr)
   {
-    v3 = [(ASPCarryLog_ExtractUpload *)self xpcActivityMgr];
-    v4 = [v3 isXpcActivityDeferred];
+    xpcActivityMgr = [(ASPCarryLog_ExtractUpload *)self xpcActivityMgr];
+    isXpcActivityDeferred = [xpcActivityMgr isXpcActivityDeferred];
 
-    v5 = [(ASPCarryLog_ExtractUpload *)self xpcActivityMgr];
-    LODWORD(v3) = [v5 tryDeferXpcActivity];
+    xpcActivityMgr2 = [(ASPCarryLog_ExtractUpload *)self xpcActivityMgr];
+    LODWORD(xpcActivityMgr) = [xpcActivityMgr2 tryDeferXpcActivity];
 
-    if ((v4 & 1) == 0)
+    if ((isXpcActivityDeferred & 1) == 0)
     {
-      if (v3)
+      if (xpcActivityMgr)
       {
         [(ASPCarryLog_ExtractUpload *)self _incrementCntForKey:@"extractupload_defer_count"];
         if ([(ASPCarryLog_ExtractUpload *)self isIOLogEnableNeeded])
         {
-          v6 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
-          v7 = [v6 iolog_enable];
+          nandDriver = [(ASPCarryLog_ExtractUpload *)self nandDriver];
+          iolog_enable = [nandDriver iolog_enable];
 
-          if (v7)
+          if (iolog_enable)
           {
             [(ASPCarryLog_ExtractUpload *)self setIsIOLogEnableNeeded:0];
           }
@@ -1313,39 +1313,39 @@ LABEL_9:
     }
   }
 
-  return v3;
+  return xpcActivityMgr;
 }
 
 - (BOOL)_isXpcActivityDeferred
 {
-  v3 = [(ASPCarryLog_ExtractUpload *)self xpcActivityMgr];
-  if (v3)
+  xpcActivityMgr = [(ASPCarryLog_ExtractUpload *)self xpcActivityMgr];
+  if (xpcActivityMgr)
   {
-    v4 = [(ASPCarryLog_ExtractUpload *)self xpcActivityMgr];
-    v5 = [v4 isXpcActivityDeferred];
+    xpcActivityMgr2 = [(ASPCarryLog_ExtractUpload *)self xpcActivityMgr];
+    isXpcActivityDeferred = [xpcActivityMgr2 isXpcActivityDeferred];
   }
 
   else
   {
-    v5 = 0;
+    isXpcActivityDeferred = 0;
   }
 
-  return v5;
+  return isXpcActivityDeferred;
 }
 
 - (BOOL)_isIOLogFromHwLogger
 {
-  v3 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-  v4 = [(ASPCarryLog_ExtractUpload *)self iologPath];
-  v5 = [v3 fileExistsAtPath:v4];
+  fileManager = [(ASPCarryLog_ExtractUpload *)self fileManager];
+  iologPath = [(ASPCarryLog_ExtractUpload *)self iologPath];
+  v5 = [fileManager fileExistsAtPath:iologPath];
 
   if (!v5)
   {
     return 0;
   }
 
-  v6 = [(ASPCarryLog_ExtractUpload *)self iologPath];
-  v7 = fopen([v6 UTF8String], "r");
+  iologPath2 = [(ASPCarryLog_ExtractUpload *)self iologPath];
+  v7 = fopen([iologPath2 UTF8String], "r");
 
   if (!v7)
   {
@@ -1359,22 +1359,22 @@ LABEL_9:
 
 - (void)_forceDeferXpcActivity
 {
-  v2 = [(ASPCarryLog_ExtractUpload *)self xpcActivityMgr];
-  [v2 forceDeferXpcActivity];
+  xpcActivityMgr = [(ASPCarryLog_ExtractUpload *)self xpcActivityMgr];
+  [xpcActivityMgr forceDeferXpcActivity];
 }
 
 - (int)_getSpdState
 {
-  v2 = [(ASPCarryLog_ExtractUpload *)self uploadInfo];
-  v3 = [v2 objectForKeyedSubscript:@"spd_state"];
+  uploadInfo = [(ASPCarryLog_ExtractUpload *)self uploadInfo];
+  v3 = [uploadInfo objectForKeyedSubscript:@"spd_state"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 unsignedIntValue];
-    if (v4 <= 2)
+    unsignedIntValue = [v3 unsignedIntValue];
+    if (unsignedIntValue <= 2)
     {
-      v5 = v4;
+      v5 = unsignedIntValue;
     }
 
     else
@@ -1398,16 +1398,16 @@ LABEL_9:
     return 0;
   }
 
-  v3 = [(ASPCarryLog_ExtractUpload *)self nextSpdExtractTime];
-  if (!v3)
+  nextSpdExtractTime = [(ASPCarryLog_ExtractUpload *)self nextSpdExtractTime];
+  if (!nextSpdExtractTime)
   {
     goto LABEL_4;
   }
 
-  v4 = v3;
+  v4 = nextSpdExtractTime;
   v5 = +[NSDate now];
-  v6 = [(ASPCarryLog_ExtractUpload *)self nextSpdExtractTime];
-  v7 = [v5 compare:v6];
+  nextSpdExtractTime2 = [(ASPCarryLog_ExtractUpload *)self nextSpdExtractTime];
+  v7 = [v5 compare:nextSpdExtractTime2];
 
   if (v7 != 1)
   {
@@ -1482,14 +1482,14 @@ LABEL_25:
     v6 = [(ASPCarryLog_ExtractUpload *)self _compressFilesForSpd:1];
     if (v6)
     {
-      v9 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-      v10 = [v9 attributesOfItemAtPath:v6 error:0];
+      fileManager = [(ASPCarryLog_ExtractUpload *)self fileManager];
+      v10 = [fileManager attributesOfItemAtPath:v6 error:0];
       -[ASPCarryLog_ExtractUpload setLastTotalUploadSize:](self, "setLastTotalUploadSize:", [v10 fileSize]);
 
-      v11 = [(ASPCarryLog_ExtractUpload *)self uploadDriver];
-      v12 = [(ASPCarryLog_ExtractUpload *)self taskingId];
-      v13 = [(ASPCarryLog_ExtractUpload *)self deviceId];
-      [v11 uploadFile:v6 TaskingId:v12 DeviceId:v13 LogType:@"com.apple.nand.iolog.spd"];
+      uploadDriver = [(ASPCarryLog_ExtractUpload *)self uploadDriver];
+      taskingId = [(ASPCarryLog_ExtractUpload *)self taskingId];
+      deviceId = [(ASPCarryLog_ExtractUpload *)self deviceId];
+      [uploadDriver uploadFile:v6 TaskingId:taskingId DeviceId:deviceId LogType:@"com.apple.nand.iolog.spd"];
 
       [(ASPCarryLog_ExtractUpload *)self _removeExtractedFiles];
       [(ASPCarryLog_ExtractUpload *)self setSpdState:0];
@@ -1518,8 +1518,8 @@ LABEL_25:
     [(ASPCarryLog_ExtractUpload *)self _setUploadInfoWithSpdState:0];
     if ([(ASPCarryLog_ExtractUpload *)self uploadIdx]<= 0)
     {
-      v8 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
-      [v8 iolog_enable];
+      nandDriver = [(ASPCarryLog_ExtractUpload *)self nandDriver];
+      [nandDriver iolog_enable];
     }
   }
 
@@ -1532,8 +1532,8 @@ LABEL_26:
   v25 = 0;
   __size = 0;
   v24 = 0;
-  v3 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
-  v4 = [v3 getSpdHdrWithSize:&__size gcIdle:&v27 totalLbaCnt:&v25 estSpdSize:&v24];
+  nandDriver = [(ASPCarryLog_ExtractUpload *)self nandDriver];
+  v4 = [nandDriver getSpdHdrWithSize:&__size gcIdle:&v27 totalLbaCnt:&v25 estSpdSize:&v24];
 
   if (v4 && __size && v25)
   {
@@ -1544,8 +1544,8 @@ LABEL_26:
       return 1;
     }
 
-    v5 = [(ASPCarryLog_ExtractUpload *)self spdFilePath];
-    v6 = fopen([v5 UTF8String], "w");
+    spdFilePath = [(ASPCarryLog_ExtractUpload *)self spdFilePath];
+    v6 = fopen([spdFilePath UTF8String], "w");
 
     if (v6)
     {
@@ -1558,8 +1558,8 @@ LABEL_26:
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Start extracting full SPD data", v23, 2u);
         }
 
-        v20 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
-        v21 = [v20 writeFullSpdToFileWithHdrBuf:v4 hdrSize:__size totalLbaCnt:v25 filePtr:v6 spdSizeLimit:209715200];
+        nandDriver2 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
+        v21 = [nandDriver2 writeFullSpdToFileWithHdrBuf:v4 hdrSize:__size totalLbaCnt:v25 filePtr:v6 spdSizeLimit:209715200];
 
         v22 = oslog;
         if (v21)
@@ -1603,8 +1603,8 @@ LABEL_26:
 
         v8 = 1;
         fwrite(v4, __size, 1uLL, v6);
-        v9 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
-        [v9 addSpdEstSizeExceedLimitToFile:v6 limit:209715200];
+        nandDriver3 = [(ASPCarryLog_ExtractUpload *)self nandDriver];
+        [nandDriver3 addSpdEstSizeExceedLimitToFile:v6 limit:209715200];
 
         v10 = 0;
         v11 = 2;
@@ -1646,9 +1646,9 @@ LABEL_18:
   v11 = 0;
   v8 = 0;
 LABEL_19:
-  v13 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-  v14 = [(ASPCarryLog_ExtractUpload *)self spdFilePath];
-  v15 = [v13 fileExistsAtPath:v14];
+  fileManager = [(ASPCarryLog_ExtractUpload *)self fileManager];
+  spdFilePath2 = [(ASPCarryLog_ExtractUpload *)self spdFilePath];
+  v15 = [fileManager fileExistsAtPath:spdFilePath2];
 
   if (!v15)
   {
@@ -1665,9 +1665,9 @@ LABEL_19:
     sub_100049154();
   }
 
-  v16 = [(ASPCarryLog_ExtractUpload *)self fileManager];
-  v17 = [(ASPCarryLog_ExtractUpload *)self spdFilePath];
-  [v16 removeItemAtPath:v17 error:0];
+  fileManager2 = [(ASPCarryLog_ExtractUpload *)self fileManager];
+  spdFilePath3 = [(ASPCarryLog_ExtractUpload *)self spdFilePath];
+  [fileManager2 removeItemAtPath:spdFilePath3 error:0];
 
 LABEL_23:
   if ((v8 & 1) == 0)

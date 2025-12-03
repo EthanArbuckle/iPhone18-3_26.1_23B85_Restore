@@ -1,22 +1,22 @@
 @interface PHCollectionShareChangeRequest
-+ (id)changeRequestForCollectionShare:(id)a3;
-+ (id)creationRequestForOwnedCollectionShareWithTitle:(id)a3 subtype:(int64_t)a4;
-+ (void)_expungeCollectionShares:(id)a3 ignorePhotosctlExpungeOverride:(BOOL)a4;
-+ (void)trashCollectionShares:(id)a3;
-+ (void)unsubscribeCollectionShares:(id)a3;
-+ (void)untrashCollectionShares:(id)a3;
-- (BOOL)allowMutationToManagedObject:(id)a3 propertyKey:(id)a4 error:(id *)a5;
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
++ (id)changeRequestForCollectionShare:(id)share;
++ (id)creationRequestForOwnedCollectionShareWithTitle:(id)title subtype:(int64_t)subtype;
++ (void)_expungeCollectionShares:(id)shares ignorePhotosctlExpungeOverride:(BOOL)override;
++ (void)trashCollectionShares:(id)shares;
++ (void)unsubscribeCollectionShares:(id)shares;
++ (void)untrashCollectionShares:(id)shares;
+- (BOOL)allowMutationToManagedObject:(id)object propertyKey:(id)key error:(id *)error;
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error;
 - (BOOL)customSortAscending;
 - (NSDate)creationDate;
 - (NSString)title;
 - (PHCollectionShare)originalCollectionShare;
-- (PHCollectionShareChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHCollectionShareChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
+- (PHCollectionShareChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHCollectionShareChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
 - (PHObjectPlaceholder)placeholderForCreatedCollectionShare;
-- (id)addParticipantWithEmailAddress:(id)a3;
-- (id)addParticipantWithPhoneNumber:(id)a3;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (id)addParticipantWithEmailAddress:(id)address;
+- (id)addParticipantWithPhoneNumber:(id)number;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)initForNewObject;
 - (id)trashedDate;
 - (signed)collectionShareKind;
@@ -26,22 +26,22 @@
 - (signed)publicURLState;
 - (unsigned)customSortKey;
 - (unsigned)status;
-- (void)addAssetsToCollectionShareByCopyingSourceAssets:(id)a3 creationOptionsMappedToSourceAssets:(id)a4 withBatchCommentText:(id)a5;
-- (void)addNewAssetsToCollectionShareWithAssetSource:(id)a3 withBatchCommentText:(id)a4 outNewAssetIdentifiers:(id *)a5;
-- (void)encodeToXPCDict:(id)a3;
+- (void)addAssetsToCollectionShareByCopyingSourceAssets:(id)assets creationOptionsMappedToSourceAssets:(id)sourceAssets withBatchCommentText:(id)text;
+- (void)addNewAssetsToCollectionShareWithAssetSource:(id)source withBatchCommentText:(id)text outNewAssetIdentifiers:(id *)identifiers;
+- (void)encodeToXPCDict:(id)dict;
 - (void)markAsViewed;
-- (void)setCollectionShareKind:(signed __int16)a3;
-- (void)setCreationDate:(id)a3;
-- (void)setCreationType:(signed __int16)a3;
-- (void)setCustomSortAscending:(BOOL)a3;
-- (void)setCustomSortKey:(unsigned int)a3;
-- (void)setNotificationState:(signed __int16)a3;
-- (void)setPublicPermission:(signed __int16)a3;
-- (void)setPublicURLState:(signed __int16)a3;
-- (void)setStatus:(unsigned __int16)a3;
-- (void)setTitle:(id)a3;
-- (void)setTrashedDate:(id)a3;
-- (void)stopSharingWithParticipants:(id)a3;
+- (void)setCollectionShareKind:(signed __int16)kind;
+- (void)setCreationDate:(id)date;
+- (void)setCreationType:(signed __int16)type;
+- (void)setCustomSortAscending:(BOOL)ascending;
+- (void)setCustomSortKey:(unsigned int)key;
+- (void)setNotificationState:(signed __int16)state;
+- (void)setPublicPermission:(signed __int16)permission;
+- (void)setPublicURLState:(signed __int16)state;
+- (void)setStatus:(unsigned __int16)status;
+- (void)setTitle:(id)title;
+- (void)setTrashedDate:(id)date;
+- (void)stopSharingWithParticipants:(id)participants;
 @end
 
 @implementation PHCollectionShareChangeRequest
@@ -53,36 +53,36 @@
   return WeakRetained;
 }
 
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PHChangeRequest *)self helper];
+  objectCopy = object;
+  libraryCopy = library;
+  helper = [(PHChangeRequest *)self helper];
   v43 = 0;
-  v11 = [v10 applyMutationsToManagedObject:v8 error:&v43];
+  v11 = [helper applyMutationsToManagedObject:objectCopy error:&v43];
   v12 = v43;
 
-  v13 = v8;
+  v13 = objectCopy;
   if (!v11)
   {
     goto LABEL_27;
   }
 
-  v14 = [(PHCollectionShareChangeRequest *)self title];
+  title = [(PHCollectionShareChangeRequest *)self title];
 
-  if (v14)
+  if (title)
   {
-    v15 = [(PHCollectionShareChangeRequest *)self title];
-    [v13 updateTitle:v15];
+    title2 = [(PHCollectionShareChangeRequest *)self title];
+    [v13 updateTitle:title2];
   }
 
   if ([(PHCollectionShareChangeRequest *)self publicPermission])
   {
-    v16 = [(PHCollectionShareChangeRequest *)self publicPermission];
-    if ((v16 - 1) < 3)
+    publicPermission = [(PHCollectionShareChangeRequest *)self publicPermission];
+    if ((publicPermission - 1) < 3)
     {
-      v17 = (v16 - 1) + 1;
+      v17 = (publicPermission - 1) + 1;
     }
 
     else
@@ -95,27 +95,27 @@
 
   if ([(PHCollectionShareChangeRequest *)self publicURLState])
   {
-    v18 = [(PHCollectionShareChangeRequest *)self publicURLState];
-    if (v18 == 1)
+    publicURLState = [(PHCollectionShareChangeRequest *)self publicURLState];
+    if (publicURLState == 1)
     {
       v19 = 1;
     }
 
     else
     {
-      v19 = 2 * (v18 == 2);
+      v19 = 2 * (publicURLState == 2);
     }
 
     [v13 updatePublicURLState:v19];
   }
 
-  v20 = [(PHCollectionShareChangeRequest *)self participantsUnsharedFromCollectionShare];
-  v21 = [v20 count];
+  participantsUnsharedFromCollectionShare = [(PHCollectionShareChangeRequest *)self participantsUnsharedFromCollectionShare];
+  v21 = [participantsUnsharedFromCollectionShare count];
 
   if (v21)
   {
-    v22 = [(PHCollectionShareChangeRequest *)self participantsUnsharedFromCollectionShare];
-    [v13 removeShareParticipantUUIDs:v22 photoLibrary:v9];
+    participantsUnsharedFromCollectionShare2 = [(PHCollectionShareChangeRequest *)self participantsUnsharedFromCollectionShare];
+    [v13 removeShareParticipantUUIDs:participantsUnsharedFromCollectionShare2 photoLibrary:libraryCopy];
   }
 
   if ((!self->_changedAssets || (assetsHelper = self->_assetsHelper, v42 = v12, v24 = -[PHShareAssetChangeRequestHelper applyMutationsToManagedObject:error:](assetsHelper, "applyMutationsToManagedObject:error:", v13, &v42), v25 = v42, v12, v12 = v25, v24)) && (v26 = v12, -[PHCollectionShareChangeRequest participantsHelper](self, "participantsHelper"), v27 = objc_claimAutoreleasedReturnValue(), v41 = v12, v28 = [v27 applyMutationsToManagedObject:v13 error:&v41], v12 = v41, v26, v27, v28))
@@ -154,11 +154,11 @@
   else
   {
 LABEL_27:
-    if (a5)
+    if (error)
     {
       v35 = v12;
       v34 = 0;
-      *a5 = v12;
+      *error = v12;
     }
 
     else
@@ -170,20 +170,20 @@ LABEL_27:
   return v34;
 }
 
-- (BOOL)allowMutationToManagedObject:(id)a3 propertyKey:(id)a4 error:(id *)a5
+- (BOOL)allowMutationToManagedObject:(id)object propertyKey:(id)key error:(id *)error
 {
   v24[9] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
-  v10 = [(PHChangeRequest *)self helper];
+  keyCopy = key;
+  objectCopy = object;
+  helper = [(PHChangeRequest *)self helper];
   v21 = 0;
-  v11 = [v10 allowMutationToManagedObject:v9 propertyKey:v8 error:&v21];
+  v11 = [helper allowMutationToManagedObject:objectCopy propertyKey:keyCopy error:&v21];
 
   v12 = v21;
   if (!v11)
   {
     v14 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -201,7 +201,7 @@ LABEL_27:
   v24[7] = @"customSortKey";
   v24[8] = @"customSortAscending";
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:9];
-  if (-[PHChangeRequest isNewRequest](self, "isNewRequest") || ([v13 containsObject:v8] & 1) != 0)
+  if (-[PHChangeRequest isNewRequest](self, "isNewRequest") || ([v13 containsObject:keyCopy] & 1) != 0)
   {
     v14 = 1;
   }
@@ -210,8 +210,8 @@ LABEL_27:
   {
     v15 = MEMORY[0x1E696ABC0];
     v22 = *MEMORY[0x1E696A578];
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid operation on key %@", v8];
-    v23 = v16;
+    keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid operation on key %@", keyCopy];
+    v23 = keyCopy;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v18 = [v15 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3300 userInfo:v17];
 
@@ -219,13 +219,13 @@ LABEL_27:
     v12 = v18;
   }
 
-  if (a5)
+  if (error)
   {
 LABEL_9:
     if (!v14)
     {
       v19 = v12;
-      *a5 = v12;
+      *error = v12;
     }
   }
 
@@ -234,21 +234,21 @@ LABEL_11:
   return v14;
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
   v6 = MEMORY[0x1E69BE358];
-  v7 = a3;
-  v8 = [(PHChangeRequest *)self uuid];
-  v9 = [(PHCollectionShareChangeRequest *)self creationDate];
-  v10 = [(PHCollectionShareChangeRequest *)self title];
-  v11 = [(PHCollectionShareChangeRequest *)self collectionShareKind];
-  v12 = [(PHChangeRequest *)self helper];
-  v13 = [v12 clientBundleIdentifier];
-  v14 = [v6 createOwnedShareWithUUID:v8 creationDate:v9 title:v10 kind:v11 clientBundleIdentifier:v13 unitTestMode:self->_runningAsUnitTest inPhotoLibrary:v7];
+  libraryCopy = library;
+  uuid = [(PHChangeRequest *)self uuid];
+  creationDate = [(PHCollectionShareChangeRequest *)self creationDate];
+  title = [(PHCollectionShareChangeRequest *)self title];
+  collectionShareKind = [(PHCollectionShareChangeRequest *)self collectionShareKind];
+  helper = [(PHChangeRequest *)self helper];
+  clientBundleIdentifier = [helper clientBundleIdentifier];
+  v14 = [v6 createOwnedShareWithUUID:uuid creationDate:creationDate title:title kind:collectionShareKind clientBundleIdentifier:clientBundleIdentifier unitTestMode:self->_runningAsUnitTest inPhotoLibrary:libraryCopy];
 
-  if (a4 && !v14)
+  if (error && !v14)
   {
-    *a4 = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:0];
   }
 
   return v14;
@@ -256,16 +256,16 @@ LABEL_11:
 
 - (void)markAsViewed
 {
-  v3 = [(PHChangeRequest *)self photoLibrary];
-  v4 = [v3 photoLibrary];
+  photoLibrary = [(PHChangeRequest *)self photoLibrary];
+  v3PhotoLibrary = [photoLibrary photoLibrary];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__PHCollectionShareChangeRequest_markAsViewed__block_invoke;
   v6[3] = &unk_1E75AAEB0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = v3PhotoLibrary;
+  v5 = v3PhotoLibrary;
   [v5 performBlockAndWait:v6];
 }
 
@@ -294,15 +294,15 @@ void __46__PHCollectionShareChangeRequest_markAsViewed__block_invoke(uint64_t a1
   }
 }
 
-- (void)stopSharingWithParticipants:(id)a3
+- (void)stopSharingWithParticipants:(id)participants
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  participantsCopy = participants;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [participantsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -313,17 +313,17 @@ void __46__PHCollectionShareChangeRequest_markAsViewed__block_invoke(uint64_t a1
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(participantsCopy);
         }
 
         participantsUnsharedFromCollectionShare = self->_participantsUnsharedFromCollectionShare;
-        v10 = [*(*(&v13 + 1) + 8 * i) uuid];
-        v11 = [(NSArray *)participantsUnsharedFromCollectionShare arrayByAddingObject:v10];
+        uuid = [*(*(&v13 + 1) + 8 * i) uuid];
+        v11 = [(NSArray *)participantsUnsharedFromCollectionShare arrayByAddingObject:uuid];
         v12 = self->_participantsUnsharedFromCollectionShare;
         self->_participantsUnsharedFromCollectionShare = v11;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [participantsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -335,29 +335,29 @@ void __46__PHCollectionShareChangeRequest_markAsViewed__block_invoke(uint64_t a1
   }
 }
 
-- (id)addParticipantWithPhoneNumber:(id)a3
+- (id)addParticipantWithPhoneNumber:(id)number
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHChangeRequest *)self photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  numberCopy = number;
+  photoLibrary = [(PHChangeRequest *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  if (v4)
+  if (numberCopy)
   {
-    v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"phoneNumber == %@", v4];
-    [v6 setPredicate:v7];
+    numberCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"phoneNumber == %@", numberCopy];
+    [librarySpecificFetchOptions setPredicate:numberCopy];
   }
 
-  v8 = [(PHCollectionShareChangeRequest *)self originalCollectionShare];
-  v9 = [PHShareParticipant fetchParticipantsInShare:v8 options:v6];
+  originalCollectionShare = [(PHCollectionShareChangeRequest *)self originalCollectionShare];
+  v9 = [PHShareParticipant fetchParticipantsInShare:originalCollectionShare options:librarySpecificFetchOptions];
 
-  v10 = [v9 firstObject];
-  if (!v10)
+  firstObject = [v9 firstObject];
+  if (!firstObject)
   {
-    if (v4)
+    if (numberCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_originalCollectionShare);
-      v12 = +[PHShareParticipantChangeRequest creationRequestForShareParticipantWithPhoneNumber:permission:](PHShareParticipantChangeRequest, "creationRequestForShareParticipantWithPhoneNumber:permission:", v4, [WeakRetained publicPermission]);
+      v12 = +[PHShareParticipantChangeRequest creationRequestForShareParticipantWithPhoneNumber:permission:](PHShareParticipantChangeRequest, "creationRequestForShareParticipantWithPhoneNumber:permission:", numberCopy, [WeakRetained publicPermission]);
     }
 
     else
@@ -365,54 +365,54 @@ void __46__PHCollectionShareChangeRequest_markAsViewed__block_invoke(uint64_t a1
       v12 = 0;
     }
 
-    v13 = [(PHCollectionShareChangeRequest *)self originalCollectionShare];
-    v14 = [v13 assetCollectionSubtype];
+    originalCollectionShare2 = [(PHCollectionShareChangeRequest *)self originalCollectionShare];
+    assetCollectionSubtype = [originalCollectionShare2 assetCollectionSubtype];
 
-    if (v14 == 102)
+    if (assetCollectionSubtype == 102)
     {
       [v12 setRole:2];
       [v12 setAcceptanceStatus:1];
       [v12 setParticipantKind:1];
-      v15 = [MEMORY[0x1E69BF320] UUIDString];
-      [v12 setParticipantID:v15];
+      uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+      [v12 setParticipantID:uUIDString];
     }
 
-    v10 = [v12 placeholderForCreatedShareParticipant];
-    if (v10)
+    firstObject = [v12 placeholderForCreatedShareParticipant];
+    if (firstObject)
     {
-      v16 = [(PHCollectionShareChangeRequest *)self participantsHelper];
-      v19[0] = v10;
+      participantsHelper = [(PHCollectionShareChangeRequest *)self participantsHelper];
+      v19[0] = firstObject;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-      [v16 addParticipants:v17 toChangeRequest:self];
+      [participantsHelper addParticipants:v17 toChangeRequest:self];
     }
   }
 
-  return v10;
+  return firstObject;
 }
 
-- (id)addParticipantWithEmailAddress:(id)a3
+- (id)addParticipantWithEmailAddress:(id)address
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHChangeRequest *)self photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  addressCopy = address;
+  photoLibrary = [(PHChangeRequest *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  if (v4)
+  if (addressCopy)
   {
-    v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"emailAddress == %@", v4];
-    [v6 setPredicate:v7];
+    addressCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"emailAddress == %@", addressCopy];
+    [librarySpecificFetchOptions setPredicate:addressCopy];
   }
 
-  v8 = [(PHCollectionShareChangeRequest *)self originalCollectionShare];
-  v9 = [PHShareParticipant fetchParticipantsInShare:v8 options:v6];
+  originalCollectionShare = [(PHCollectionShareChangeRequest *)self originalCollectionShare];
+  v9 = [PHShareParticipant fetchParticipantsInShare:originalCollectionShare options:librarySpecificFetchOptions];
 
-  v10 = [v9 firstObject];
-  if (!v10)
+  firstObject = [v9 firstObject];
+  if (!firstObject)
   {
-    if (v4)
+    if (addressCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_originalCollectionShare);
-      v12 = +[PHShareParticipantChangeRequest creationRequestForShareParticipantWithEmailAddress:permission:](PHShareParticipantChangeRequest, "creationRequestForShareParticipantWithEmailAddress:permission:", v4, [WeakRetained publicPermission]);
+      v12 = +[PHShareParticipantChangeRequest creationRequestForShareParticipantWithEmailAddress:permission:](PHShareParticipantChangeRequest, "creationRequestForShareParticipantWithEmailAddress:permission:", addressCopy, [WeakRetained publicPermission]);
     }
 
     else
@@ -420,347 +420,347 @@ void __46__PHCollectionShareChangeRequest_markAsViewed__block_invoke(uint64_t a1
       v12 = 0;
     }
 
-    v13 = [(PHCollectionShareChangeRequest *)self originalCollectionShare];
-    v14 = [v13 assetCollectionSubtype];
+    originalCollectionShare2 = [(PHCollectionShareChangeRequest *)self originalCollectionShare];
+    assetCollectionSubtype = [originalCollectionShare2 assetCollectionSubtype];
 
-    if (v14 == 102)
+    if (assetCollectionSubtype == 102)
     {
       [v12 setRole:2];
       [v12 setAcceptanceStatus:1];
       [v12 setParticipantKind:1];
-      v15 = [MEMORY[0x1E69BF320] UUIDString];
-      [v12 setParticipantID:v15];
+      uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+      [v12 setParticipantID:uUIDString];
     }
 
-    v10 = [v12 placeholderForCreatedShareParticipant];
-    if (v10)
+    firstObject = [v12 placeholderForCreatedShareParticipant];
+    if (firstObject)
     {
-      v16 = [(PHCollectionShareChangeRequest *)self participantsHelper];
-      v19[0] = v10;
+      participantsHelper = [(PHCollectionShareChangeRequest *)self participantsHelper];
+      v19[0] = firstObject;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-      [v16 addParticipants:v17 toChangeRequest:self];
+      [participantsHelper addParticipants:v17 toChangeRequest:self];
     }
   }
 
-  return v10;
+  return firstObject;
 }
 
-- (void)setCustomSortAscending:(BOOL)a3
+- (void)setCustomSortAscending:(BOOL)ascending
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  ascendingCopy = ascending;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"customSortAscending"];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:ascendingCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"customSortAscending"];
 }
 
 - (BOOL)customSortAscending
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"customSortAscending"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"customSortAscending"];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(helper) = [v5 BOOLValue];
+  return helper;
 }
 
-- (void)setCustomSortKey:(unsigned int)a3
+- (void)setCustomSortKey:(unsigned int)key
 {
-  v3 = *&a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  v3 = *&key;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"customSortKey"];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"customSortKey"];
 }
 
 - (unsigned)customSortKey
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"customSortKey"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"customSortKey"];
 
-  LODWORD(v3) = [v5 intValue];
-  return v3;
+  LODWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setCreationType:(signed __int16)a3
+- (void)setCreationType:(signed __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"creationType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"creationType"];
 }
 
 - (signed)creationType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"creationType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"creationType"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setCollectionShareKind:(signed __int16)a3
+- (void)setCollectionShareKind:(signed __int16)kind
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  kindCopy = kind;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"collectionShareKind"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:kindCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"collectionShareKind"];
 }
 
 - (signed)collectionShareKind
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"collectionShareKind"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"collectionShareKind"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setPublicURLState:(signed __int16)a3
+- (void)setPublicURLState:(signed __int16)state
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  stateCopy = state;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"publicURLState"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:stateCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"publicURLState"];
 }
 
 - (signed)publicURLState
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"publicURLState"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"publicURLState"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setNotificationState:(signed __int16)a3
+- (void)setNotificationState:(signed __int16)state
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  stateCopy = state;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"notificationState"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:stateCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"notificationState"];
 }
 
 - (signed)notificationState
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"notificationState"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"notificationState"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setPublicPermission:(signed __int16)a3
+- (void)setPublicPermission:(signed __int16)permission
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  permissionCopy = permission;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"publicPermission"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:permissionCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"publicPermission"];
 }
 
 - (signed)publicPermission
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"publicPermission"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"publicPermission"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setStatus:(unsigned __int16)a3
+- (void)setStatus:(unsigned __int16)status
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  statusCopy = status;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"status"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:statusCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"status"];
 }
 
 - (unsigned)status
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"status"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"status"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setTrashedDate:(id)a3
+- (void)setTrashedDate:(id)date
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  dateCopy = date;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (dateCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"trashedDate"];
+    [mutations setObject:dateCopy forKeyedSubscript:@"trashedDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"trashedDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"trashedDate"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"trashedDate"];
+    [mutations removeObjectForKey:@"trashedDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"trashedDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"trashedDate"];
   }
 }
 
 - (id)trashedDate
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"trashedDate"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"trashedDate"];
 
   return v5;
 }
 
-- (void)setCreationDate:(id)a3
+- (void)setCreationDate:(id)date
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  dateCopy = date;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (dateCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"creationDate"];
+    [mutations setObject:dateCopy forKeyedSubscript:@"creationDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"creationDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"creationDate"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"creationDate"];
+    [mutations removeObjectForKey:@"creationDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"creationDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"creationDate"];
   }
 }
 
 - (NSDate)creationDate
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"creationDate"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"creationDate"];
 
   return v5;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  titleCopy = title;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (titleCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"title"];
+    [mutations setObject:titleCopy forKeyedSubscript:@"title"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"title"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"title"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"title"];
+    [mutations removeObjectForKey:@"title"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"title"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"title"];
   }
 }
 
 - (NSString)title
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"title"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"title"];
 
   return v5;
 }
 
-- (void)addNewAssetsToCollectionShareWithAssetSource:(id)a3 withBatchCommentText:(id)a4 outNewAssetIdentifiers:(id *)a5
+- (void)addNewAssetsToCollectionShareWithAssetSource:(id)source withBatchCommentText:(id)text outNewAssetIdentifiers:(id *)identifiers
 {
   v65 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v53 = a4;
-  v54 = self;
-  v10 = [(PHCollectionShareChangeRequest *)self originalCollectionShare];
-  v11 = [v10 assetCollectionSubtype];
+  sourceCopy = source;
+  textCopy = text;
+  selfCopy = self;
+  originalCollectionShare = [(PHCollectionShareChangeRequest *)self originalCollectionShare];
+  assetCollectionSubtype = [originalCollectionShare assetCollectionSubtype];
 
-  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
-  if (v11 != 103)
+  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(sourceCopy, "count")}];
+  if (assetCollectionSubtype != 103)
   {
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v52 = v9;
-    v28 = v9;
+    v52 = sourceCopy;
+    v28 = sourceCopy;
     v29 = [v28 countByEnumeratingWithState:&v55 objects:v63 count:16];
     if (!v29)
     {
@@ -781,32 +781,32 @@ void __46__PHCollectionShareChangeRequest_markAsViewed__block_invoke(uint64_t a1
 
         v33 = *(*(&v55 + 1) + 8 * v32);
         v34 = objc_alloc_init(MEMORY[0x1E69BE820]);
-        v35 = [v33 fileURL];
+        fileURL = [v33 fileURL];
 
-        if (v35)
+        if (fileURL)
         {
-          v36 = [v33 fileURL];
-          [v34 setMediaURL:v36];
+          fileURL2 = [v33 fileURL];
+          [v34 setMediaURL:fileURL2];
           goto LABEL_30;
         }
 
-        v37 = [v33 data];
+        data = [v33 data];
 
-        if (v37)
+        if (data)
         {
-          v36 = [v33 data];
-          [v34 setMediaData:v36];
+          fileURL2 = [v33 data];
+          [v34 setMediaData:fileURL2];
 LABEL_30:
 
-          v38 = [v33 resourceType];
-          if (v38 == 1)
+          resourceType = [v33 resourceType];
+          if (resourceType == 1)
           {
             v39 = 2;
           }
 
           else
           {
-            v39 = v38 == 2;
+            v39 = resourceType == 2;
           }
 
           goto LABEL_33;
@@ -814,8 +814,8 @@ LABEL_30:
 
         if ([v33 sourceType] == 3)
         {
-          v40 = [v33 videoComplementBundle];
-          [v34 setVideoComplement:v40];
+          videoComplementBundle = [v33 videoComplementBundle];
+          [v34 setVideoComplement:videoComplementBundle];
 
           v39 = 3;
 LABEL_33:
@@ -835,29 +835,29 @@ LABEL_33:
 LABEL_39:
 
         v42 = MEMORY[0x1E69BE348];
-        v43 = [(PHCollectionShareChangeRequest *)self originalCollectionShare];
-        v44 = [v43 scopeIdentifier];
-        v45 = [(PHChangeRequest *)self helper];
-        v46 = [v45 clientBundleIdentifier];
-        v47 = v53;
-        v48 = [v42 cloudStreamShareJobToPublishMediaFromSources:v12 toCollectionShareScopeIdentifier:v44 withCommentText:v53 clientBundleIdentifier:v46 unitTestingMode:v54->_runningAsUnitTest];
+        originalCollectionShare2 = [(PHCollectionShareChangeRequest *)self originalCollectionShare];
+        scopeIdentifier = [originalCollectionShare2 scopeIdentifier];
+        helper = [(PHChangeRequest *)self helper];
+        clientBundleIdentifier = [helper clientBundleIdentifier];
+        v47 = textCopy;
+        v48 = [v42 cloudStreamShareJobToPublishMediaFromSources:v12 toCollectionShareScopeIdentifier:scopeIdentifier withCommentText:textCopy clientBundleIdentifier:clientBundleIdentifier unitTestingMode:selfCopy->_runningAsUnitTest];
 
-        [(NSMutableArray *)v54->_cloudStreamPublishJobs addObject:v48];
-        v49 = [(PHChangeRequest *)v54 helper];
-        [v49 didMutate];
+        [(NSMutableArray *)selfCopy->_cloudStreamPublishJobs addObject:v48];
+        helper2 = [(PHChangeRequest *)selfCopy helper];
+        [helper2 didMutate];
 
-        v9 = v52;
+        sourceCopy = v52;
         goto LABEL_41;
       }
     }
   }
 
-  v51 = a5;
+  identifiersCopy = identifiers;
   v61 = 0u;
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v13 = v9;
+  v13 = sourceCopy;
   v14 = [v13 countByEnumeratingWithState:&v59 objects:v64 count:16];
   if (v14)
   {
@@ -874,53 +874,53 @@ LABEL_39:
         }
 
         v18 = *(*(&v59 + 1) + 8 * v17);
-        v19 = [v18 sourceType];
-        if (v19 > 1)
+        sourceType = [v18 sourceType];
+        if (sourceType > 1)
         {
-          if (v19 == 2)
+          if (sourceType == 2)
           {
             v21 = +[PHAssetCreationRequest creationRequestForAsset];
-            v23 = [v18 resourceType];
-            v20 = [v18 data];
-            [v21 addResourceWithType:v23 data:v20 options:0];
+            resourceType2 = [v18 resourceType];
+            data2 = [v18 data];
+            [v21 addResourceWithType:resourceType2 data:data2 options:0];
           }
 
           else
           {
-            if (v19 != 3)
+            if (sourceType != 3)
             {
               goto LABEL_15;
             }
 
-            v20 = [v18 videoComplementBundle];
-            v21 = [PHAssetCreationRequest creationRequestForAssetFromVideoComplementBundle:v20];
+            data2 = [v18 videoComplementBundle];
+            v21 = [PHAssetCreationRequest creationRequestForAssetFromVideoComplementBundle:data2];
           }
 
           goto LABEL_14;
         }
 
-        if (v19 == 1)
+        if (sourceType == 1)
         {
           v21 = +[PHAssetCreationRequest creationRequestForAsset];
-          v22 = [v18 resourceType];
-          v20 = [v18 fileURL];
-          [v21 addResourceWithType:v22 fileURL:v20 options:0];
+          resourceType3 = [v18 resourceType];
+          data2 = [v18 fileURL];
+          [v21 addResourceWithType:resourceType3 fileURL:data2 options:0];
 LABEL_14:
 
-          v24 = [(PHCollectionShareChangeRequest *)v54 originalCollectionShare];
-          [v21 setShare:v24];
+          originalCollectionShare3 = [(PHCollectionShareChangeRequest *)selfCopy originalCollectionShare];
+          [v21 setShare:originalCollectionShare3];
 
-          v25 = [v21 placeholderForCreatedAsset];
-          v26 = [v25 localIdentifier];
-          [v12 addObject:v26];
+          placeholderForCreatedAsset = [v21 placeholderForCreatedAsset];
+          localIdentifier = [placeholderForCreatedAsset localIdentifier];
+          [v12 addObject:localIdentifier];
 
           goto LABEL_15;
         }
 
-        if (!v19)
+        if (!sourceType)
         {
-          v50 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v50 handleFailureInMethod:a2 object:v54 file:@"PHCollectionShareChangeRequest.m" lineNumber:242 description:@"Invalid source type: PHCollectionShareAssetSourceTypeUnknown"];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PHCollectionShareChangeRequest.m" lineNumber:242 description:@"Invalid source type: PHCollectionShareAssetSourceTypeUnknown"];
 
           goto LABEL_40;
         }
@@ -937,69 +937,69 @@ LABEL_15:
     while (v27);
   }
 
-  *v51 = [v12 copy];
+  *identifiersCopy = [v12 copy];
 LABEL_40:
-  v47 = v53;
+  v47 = textCopy;
 LABEL_41:
 }
 
-- (void)addAssetsToCollectionShareByCopyingSourceAssets:(id)a3 creationOptionsMappedToSourceAssets:(id)a4 withBatchCommentText:(id)a5
+- (void)addAssetsToCollectionShareByCopyingSourceAssets:(id)assets creationOptionsMappedToSourceAssets:(id)sourceAssets withBatchCommentText:(id)text
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PHCollectionShareChangeRequest *)self originalCollectionShare];
-  v11 = [v10 assetCollectionSubtype];
+  assetsCopy = assets;
+  sourceAssetsCopy = sourceAssets;
+  textCopy = text;
+  originalCollectionShare = [(PHCollectionShareChangeRequest *)self originalCollectionShare];
+  assetCollectionSubtype = [originalCollectionShare assetCollectionSubtype];
 
-  if (v11 == 103)
+  if (assetCollectionSubtype == 103)
   {
-    v12 = [(PHCollectionShareChangeRequest *)self assetsHelper];
-    [v12 addAssetsToCPLShare:v16 creationOptionsPerAsset:v8 withMomentSharePreview:0 outKeyAssetIdentifier:0 outContainsEPPAssets:0];
+    assetsHelper = [(PHCollectionShareChangeRequest *)self assetsHelper];
+    [assetsHelper addAssetsToCPLShare:assetsCopy creationOptionsPerAsset:sourceAssetsCopy withMomentSharePreview:0 outKeyAssetIdentifier:0 outContainsEPPAssets:0];
   }
 
   else
   {
-    v13 = [(PHCollectionShareChangeRequest *)self originalCollectionShare];
-    v14 = [v13 assetCollectionSubtype];
+    originalCollectionShare2 = [(PHCollectionShareChangeRequest *)self originalCollectionShare];
+    assetCollectionSubtype2 = [originalCollectionShare2 assetCollectionSubtype];
 
-    if (v14 != 102)
+    if (assetCollectionSubtype2 != 102)
     {
       goto LABEL_6;
     }
 
-    v12 = [(PHCollectionShareChangeRequest *)self assetsHelper];
-    [v12 addAssetsToSharedStreamShare:v16 creationOptionsPerAsset:v8 withBatchCommentText:v9];
+    assetsHelper = [(PHCollectionShareChangeRequest *)self assetsHelper];
+    [assetsHelper addAssetsToSharedStreamShare:assetsCopy creationOptionsPerAsset:sourceAssetsCopy withBatchCommentText:textCopy];
   }
 
 LABEL_6:
   self->_changedAssets = 1;
-  v15 = [(PHChangeRequest *)self helper];
-  [v15 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 }
 
 - (PHObjectPlaceholder)placeholderForCreatedCollectionShare
 {
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
+  helper = [(PHChangeRequest *)self helper];
+  v4 = [helper placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
 
   return v4;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 encodeToXPCDict:v4];
+  dictCopy = dict;
+  helper = [(PHChangeRequest *)self helper];
+  [helper encodeToXPCDict:dictCopy];
 
-  v6 = [(PHCollectionShareChangeRequest *)self assetsHelper];
-  [v6 encodeToXPCDict:v4];
+  assetsHelper = [(PHCollectionShareChangeRequest *)self assetsHelper];
+  [assetsHelper encodeToXPCDict:dictCopy];
 
-  v7 = [(PHCollectionShareChangeRequest *)self participantsHelper];
-  [v7 encodeToXPCDict:v4];
+  participantsHelper = [(PHCollectionShareChangeRequest *)self participantsHelper];
+  [participantsHelper encodeToXPCDict:dictCopy];
 
-  xpc_dictionary_set_BOOL(v4, "runningAsUnitTest", self->_runningAsUnitTest);
-  xpc_dictionary_set_BOOL(v4, "changedAssetsKey", self->_changedAssets);
+  xpc_dictionary_set_BOOL(dictCopy, "runningAsUnitTest", self->_runningAsUnitTest);
+  xpc_dictionary_set_BOOL(dictCopy, "changedAssetsKey", self->_changedAssets);
   PLXPCDictionarySetArray();
   v8 = xpc_array_create(0, 0);
   v16 = 0u;
@@ -1037,48 +1037,48 @@ LABEL_6:
     while (v11);
   }
 
-  xpc_dictionary_set_value(v4, "cloudStreamPublishJobs", v8);
+  xpc_dictionary_set_value(dictCopy, "cloudStreamPublishJobs", v8);
 }
 
-- (PHCollectionShareChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHCollectionShareChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v29.receiver = self;
   v29.super_class = PHCollectionShareChangeRequest;
   v11 = [(PHChangeRequest *)&v29 init];
   if (v11)
   {
-    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:v8 changeRequest:v11 request:v9 clientAuthorization:v10];
+    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:dictCopy changeRequest:v11 request:requestCopy clientAuthorization:authorizationCopy];
     helper = v11->super._helper;
     v11->super._helper = v12;
 
-    v14 = [[PHShareAssetChangeRequestHelper alloc] initWithXpcDict:v8 request:v9 changeRequest:v11];
+    v14 = [[PHShareAssetChangeRequestHelper alloc] initWithXpcDict:dictCopy request:requestCopy changeRequest:v11];
     assetsHelper = v11->_assetsHelper;
     v11->_assetsHelper = v14;
 
-    v16 = [(PHRelationshipChangeRequestHelper *)[PHShareParticipantRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"participants" xpcDict:v8 changeRequestHelper:v11->super._helper];
+    v16 = [(PHRelationshipChangeRequestHelper *)[PHShareParticipantRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"participants" xpcDict:dictCopy changeRequestHelper:v11->super._helper];
     participantsHelper = v11->_participantsHelper;
     v11->_participantsHelper = v16;
 
-    v11->_changedAssets = xpc_dictionary_get_BOOL(v8, "changedAssetsKey");
+    v11->_changedAssets = xpc_dictionary_get_BOOL(dictCopy, "changedAssetsKey");
     v18 = PLArrayFromXPCDictionary();
     participantsUnsharedFromCollectionShare = v11->_participantsUnsharedFromCollectionShare;
     v11->_participantsUnsharedFromCollectionShare = v18;
 
-    v11->_runningAsUnitTest = xpc_dictionary_get_BOOL(v8, "runningAsUnitTest");
+    v11->_runningAsUnitTest = xpc_dictionary_get_BOOL(dictCopy, "runningAsUnitTest");
     v20 = [MEMORY[0x1E695E0F0] mutableCopy];
     cloudStreamPublishJobs = v11->_cloudStreamPublishJobs;
     v11->_cloudStreamPublishJobs = v20;
 
-    v22 = xpc_dictionary_get_array(v8, "cloudStreamPublishJobs");
+    v22 = xpc_dictionary_get_array(dictCopy, "cloudStreamPublishJobs");
     for (i = 0; xpc_array_get_count(v22) > i; ++i)
     {
       v24 = xpc_array_get_value(v22, i);
       v25 = objc_alloc(MEMORY[0x1E69BE348]);
-      v26 = [v9 libraryServicesManager];
-      v27 = [v25 initFromXPCObject:v24 libraryServicesManager:v26];
+      libraryServicesManager = [requestCopy libraryServicesManager];
+      v27 = [v25 initFromXPCObject:v24 libraryServicesManager:libraryServicesManager];
 
       [(NSMutableArray *)v11->_cloudStreamPublishJobs addObject:v27];
     }
@@ -1086,23 +1086,23 @@ LABEL_6:
     if (v11->_runningAsUnitTest || [(NSMutableArray *)v11->_cloudStreamPublishJobs count]|| [(NSArray *)v11->_participantsUnsharedFromCollectionShare count])
     {
       [(PHChangeRequestHelper *)v11->super._helper setMutated:1];
-      [v9 recordUpdateRequest:v11];
+      [requestCopy recordUpdateRequest:v11];
     }
   }
 
   return v11;
 }
 
-- (PHCollectionShareChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHCollectionShareChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v20.receiver = self;
   v20.super_class = PHCollectionShareChangeRequest;
   v8 = [(PHChangeRequest *)&v20 init];
   if (v8)
   {
-    v9 = [[PHChangeRequestHelper alloc] initWithUUID:v6 objectID:v7 changeRequest:v8];
+    v9 = [[PHChangeRequestHelper alloc] initWithUUID:dCopy objectID:iDCopy changeRequest:v8];
     helper = v8->super._helper;
     v8->super._helper = v9;
 
@@ -1144,8 +1144,8 @@ LABEL_6:
     v2->_assetsHelper = v5;
 
     v7 = v2->_assetsHelper;
-    v8 = [(PHCollectionShareChangeRequest *)v2 placeholderForCreatedCollectionShare];
-    [(PHShareAssetChangeRequestHelper *)v7 setBackingShare:v8];
+    placeholderForCreatedCollectionShare = [(PHCollectionShareChangeRequest *)v2 placeholderForCreatedCollectionShare];
+    [(PHShareAssetChangeRequestHelper *)v7 setBackingShare:placeholderForCreatedCollectionShare];
 
     v9 = [(PHRelationshipChangeRequestHelper *)[PHShareParticipantRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"participants" changeRequestHelper:v2->super._helper];
     participantsHelper = v2->_participantsHelper;
@@ -1163,16 +1163,16 @@ LABEL_6:
   return v2;
 }
 
-+ (void)unsubscribeCollectionShares:(id)a3
++ (void)unsubscribeCollectionShares:(id)shares
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sharesCopy = shares;
   +[PHPhotoLibrary assertTransaction];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = v4;
+  v5 = sharesCopy;
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
   {
@@ -1239,16 +1239,16 @@ LABEL_6:
   }
 }
 
-+ (void)_expungeCollectionShares:(id)a3 ignorePhotosctlExpungeOverride:(BOOL)a4
++ (void)_expungeCollectionShares:(id)shares ignorePhotosctlExpungeOverride:(BOOL)override
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sharesCopy = shares;
   +[PHPhotoLibrary assertTransaction];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = v6;
+  v7 = sharesCopy;
   v8 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v8)
   {
@@ -1306,7 +1306,7 @@ LABEL_6:
 
         v18 = [(PHObjectDeleteRequest *)PHCollectionShareDeleteRequest deleteRequestForObject:*(*(&v26 + 1) + 8 * j)];
         [v18 setOperation:2];
-        if (PLIsInternalTool() && !a4)
+        if (PLIsInternalTool() && !override)
         {
           [v18 setPhotosctlExpungeOverride:1];
         }
@@ -1319,16 +1319,16 @@ LABEL_6:
   }
 }
 
-+ (void)untrashCollectionShares:(id)a3
++ (void)untrashCollectionShares:(id)shares
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sharesCopy = shares;
   +[PHPhotoLibrary assertTransaction];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = v4;
+  v5 = sharesCopy;
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
   {
@@ -1395,16 +1395,16 @@ LABEL_6:
   }
 }
 
-+ (void)trashCollectionShares:(id)a3
++ (void)trashCollectionShares:(id)shares
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sharesCopy = shares;
   +[PHPhotoLibrary assertTransaction];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = v4;
+  v5 = sharesCopy;
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
   {
@@ -1471,28 +1471,28 @@ LABEL_6:
   }
 }
 
-+ (id)creationRequestForOwnedCollectionShareWithTitle:(id)a3 subtype:(int64_t)a4
++ (id)creationRequestForOwnedCollectionShareWithTitle:(id)title subtype:(int64_t)subtype
 {
-  v7 = a3;
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) != 0x66)
+  titleCopy = title;
+  if ((subtype & 0xFFFFFFFFFFFFFFFELL) != 0x66)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PHCollectionShareChangeRequest.m" lineNumber:180 description:@"Creation subtype should be .CollectionShareKindCPL || CollectionShareKindSharedStream"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHCollectionShareChangeRequest.m" lineNumber:180 description:@"Creation subtype should be .CollectionShareKindCPL || CollectionShareKindSharedStream"];
   }
 
-  v8 = [[PHCollectionShareChangeRequest alloc] initForNewObject];
-  [v8 setTitle:v7];
-  v9 = [MEMORY[0x1E695DF00] date];
-  [v8 setCreationDate:v9];
+  initForNewObject = [[PHCollectionShareChangeRequest alloc] initForNewObject];
+  [initForNewObject setTitle:titleCopy];
+  date = [MEMORY[0x1E695DF00] date];
+  [initForNewObject setCreationDate:date];
 
-  if (a4 == 103)
+  if (subtype == 103)
   {
     v10 = 1;
   }
 
   else
   {
-    if (a4 != 102)
+    if (subtype != 102)
     {
       goto LABEL_8;
     }
@@ -1500,30 +1500,30 @@ LABEL_6:
     v10 = 2;
   }
 
-  [v8 setCollectionShareKind:v10];
+  [initForNewObject setCollectionShareKind:v10];
 LABEL_8:
 
-  return v8;
+  return initForNewObject;
 }
 
-+ (id)changeRequestForCollectionShare:(id)a3
++ (id)changeRequestForCollectionShare:(id)share
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  shareCopy = share;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = [PHCollectionShareChangeRequest alloc];
-    v5 = [v3 uuid];
-    v6 = [v3 objectID];
-    v7 = [(PHCollectionShareChangeRequest *)v4 initWithUUID:v5 objectID:v6];
+    uuid = [shareCopy uuid];
+    objectID = [shareCopy objectID];
+    v7 = [(PHCollectionShareChangeRequest *)v4 initWithUUID:uuid objectID:objectID];
 
-    [(PHCollectionShareChangeRequest *)v7 setOriginalCollectionShare:v3];
-    v8 = [(PHCollectionShareChangeRequest *)v7 assetsHelper];
-    [v8 setBackingShare:v3];
+    [(PHCollectionShareChangeRequest *)v7 setOriginalCollectionShare:shareCopy];
+    assetsHelper = [(PHCollectionShareChangeRequest *)v7 assetsHelper];
+    [assetsHelper setBackingShare:shareCopy];
 
-    v9 = [(PHCollectionShareChangeRequest *)v7 participantsHelper];
-    [v9 setOriginalShare:v3];
+    participantsHelper = [(PHCollectionShareChangeRequest *)v7 participantsHelper];
+    [participantsHelper setOriginalShare:shareCopy];
   }
 
   else
@@ -1532,7 +1532,7 @@ LABEL_8:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412290;
-      v13 = v3;
+      v13 = shareCopy;
       _os_log_impl(&dword_19C86F000, v10, OS_LOG_TYPE_ERROR, "Returning nil change request for collection share object: %@", &v12, 0xCu);
     }
 

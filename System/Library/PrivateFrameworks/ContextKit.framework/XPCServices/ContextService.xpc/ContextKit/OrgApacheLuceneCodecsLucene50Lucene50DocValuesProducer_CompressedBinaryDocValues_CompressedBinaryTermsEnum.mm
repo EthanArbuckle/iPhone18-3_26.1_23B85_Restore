@@ -1,10 +1,10 @@
 @interface OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_CompressedBinaryDocValues_CompressedBinaryTermsEnum
 - (id)next;
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3;
-- (int64_t)binarySearchBlockWithOrgApacheLuceneUtilBytesRef:(id)a3 withLong:(int64_t)a4 withLong:(int64_t)a5;
-- (int64_t)binarySearchIndexWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref;
+- (int64_t)binarySearchBlockWithOrgApacheLuceneUtilBytesRef:(id)ref withLong:(int64_t)long withLong:(int64_t)withLong;
+- (int64_t)binarySearchIndexWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (void)dealloc;
-- (void)seekExactWithLong:(int64_t)a3;
+- (void)seekExactWithLong:(int64_t)long;
 @end
 
 @implementation OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_CompressedBinaryDocValues_CompressedBinaryTermsEnum
@@ -32,7 +32,7 @@
   return self->term_;
 }
 
-- (int64_t)binarySearchIndexWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (int64_t)binarySearchIndexWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   numReverseIndexValues = self->this$0_->numReverseIndexValues_;
   v4 = numReverseIndexValues - 1;
@@ -51,7 +51,7 @@
       JreThrowNullPointerException();
     }
 
-    v13 = [(OrgApacheLuceneUtilBytesRef *)scratch compareToWithId:a3];
+    v13 = [(OrgApacheLuceneUtilBytesRef *)scratch compareToWithId:ref];
     if ((v13 & 0x80000000) != 0)
     {
       v7 = v11 + 1;
@@ -74,29 +74,29 @@
   return v11;
 }
 
-- (int64_t)binarySearchBlockWithOrgApacheLuceneUtilBytesRef:(id)a3 withLong:(int64_t)a4 withLong:(int64_t)a5
+- (int64_t)binarySearchBlockWithOrgApacheLuceneUtilBytesRef:(id)ref withLong:(int64_t)long withLong:(int64_t)withLong
 {
-  v5 = a5;
-  if (a4 > a5)
+  withLongCopy = withLong;
+  if (long > withLong)
   {
-    return a5;
+    return withLong;
   }
 
-  v7 = a4;
+  longCopy = long;
   do
   {
     input = self->input_;
-    if (!input || (addresses = self->this$0_->addresses_) == 0 || (v6 = (v7 + v5) >> 1, [(OrgApacheLuceneStoreIndexInput *)input seekWithLong:[(OrgApacheLuceneUtilPackedMonotonicBlockPackedReader *)addresses getWithLong:v6]], v12 = [(OrgApacheLuceneStoreDataInput *)self->input_ readVInt], (term = self->term_) == 0))
+    if (!input || (addresses = self->this$0_->addresses_) == 0 || (v6 = (longCopy + withLongCopy) >> 1, [(OrgApacheLuceneStoreIndexInput *)input seekWithLong:[(OrgApacheLuceneUtilPackedMonotonicBlockPackedReader *)addresses getWithLong:v6]], v12 = [(OrgApacheLuceneStoreDataInput *)self->input_ readVInt], (term = self->term_) == 0))
     {
       JreThrowNullPointerException();
     }
 
     term->length_ = v12;
     [(OrgApacheLuceneStoreIndexInput *)self->input_ readBytesWithByteArray:self->term_->bytes_ withInt:0 withInt:self->term_->length_];
-    v14 = [(OrgApacheLuceneUtilBytesRef *)self->term_ compareToWithId:a3];
+    v14 = [(OrgApacheLuceneUtilBytesRef *)self->term_ compareToWithId:ref];
     if ((v14 & 0x80000000) != 0)
     {
-      v7 = v6 + 1;
+      longCopy = v6 + 1;
     }
 
     else
@@ -106,17 +106,17 @@
         return v6;
       }
 
-      v5 = v6 - 1;
+      withLongCopy = v6 - 1;
     }
 
-    v6 = v5;
+    v6 = withLongCopy;
   }
 
-  while (v7 <= v5);
+  while (longCopy <= withLongCopy);
   return v6;
 }
 
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   v5 = [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_CompressedBinaryDocValues_CompressedBinaryTermsEnum *)self binarySearchIndexWithOrgApacheLuceneUtilBytesRef:?];
   if (v5 < 0)
@@ -127,7 +127,7 @@
   else
   {
     v6 = v5 << 6;
-    v7 = [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_CompressedBinaryDocValues_CompressedBinaryTermsEnum *)self binarySearchBlockWithOrgApacheLuceneUtilBytesRef:a3 withLong:v5 << 6 withLong:JavaLangMath_minWithLong_withLong_(self->this$0_->numIndexValues_ - 1, (v5 << 6) | 0x3F)];
+    v7 = [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_CompressedBinaryDocValues_CompressedBinaryTermsEnum *)self binarySearchBlockWithOrgApacheLuceneUtilBytesRef:ref withLong:v5 << 6 withLong:JavaLangMath_minWithLong_withLong_(self->this$0_->numIndexValues_ - 1, (v5 << 6) | 0x3F)];
     v8 = JavaLangMath_maxWithLong_withLong_(v6, v7);
   }
 
@@ -159,7 +159,7 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    v12 = [(OrgApacheLuceneUtilBytesRef *)term compareToWithId:a3];
+    v12 = [(OrgApacheLuceneUtilBytesRef *)term compareToWithId:ref];
     if (!v12)
     {
       break;
@@ -188,9 +188,9 @@ LABEL_16:
   return *v13;
 }
 
-- (void)seekExactWithLong:(int64_t)a3
+- (void)seekExactWithLong:(int64_t)long
 {
-  if (a3 >> 4 != self->currentOrd_ >> 4)
+  if (long >> 4 != self->currentOrd_ >> 4)
   {
     input = self->input_;
     if (!input)
@@ -208,8 +208,8 @@ LABEL_16:
     sub_1000EA7B4(self);
   }
 
-  self->currentOrd_ = a3;
-  v7 = a3 & 0xF;
+  self->currentOrd_ = long;
+  v7 = long & 0xF;
   if (v7)
   {
     v8 = self->input_;

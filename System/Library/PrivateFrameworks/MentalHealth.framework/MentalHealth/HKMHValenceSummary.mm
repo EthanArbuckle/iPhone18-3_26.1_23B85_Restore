@@ -1,45 +1,45 @@
 @interface HKMHValenceSummary
 - ($0AC6E346AE4835514AAA8AC86D8F4844)dayIndexRange;
-- (BOOL)isEqual:(id)a3;
-- (HKMHValenceSummary)initWithCoder:(id)a3;
-- (HKMHValenceSummary)initWithCountPleasant:(int64_t)a3 countNeutral:(int64_t)a4 countUnpleasant:(int64_t)a5 dayIndexRange:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HKMHValenceSummary)initWithCoder:(id)coder;
+- (HKMHValenceSummary)initWithCountPleasant:(int64_t)pleasant countNeutral:(int64_t)neutral countUnpleasant:(int64_t)unpleasant dayIndexRange:(id)range;
 - (id)description;
-- (void)_addValence:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_addValence:(int64_t)valence;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMHValenceSummary
 
-- (HKMHValenceSummary)initWithCountPleasant:(int64_t)a3 countNeutral:(int64_t)a4 countUnpleasant:(int64_t)a5 dayIndexRange:(id)a6
+- (HKMHValenceSummary)initWithCountPleasant:(int64_t)pleasant countNeutral:(int64_t)neutral countUnpleasant:(int64_t)unpleasant dayIndexRange:(id)range
 {
   v10.receiver = self;
   v10.super_class = HKMHValenceSummary;
-  result = [(HKMHValenceSummary *)&v10 init:a3];
+  result = [(HKMHValenceSummary *)&v10 init:pleasant];
   if (result)
   {
-    result->_countPleasant = a3;
-    result->_countNeutral = a4;
-    result->_countUnpleasant = a5;
+    result->_countPleasant = pleasant;
+    result->_countNeutral = neutral;
+    result->_countUnpleasant = unpleasant;
   }
 
   return result;
 }
 
-- (void)_addValence:(int64_t)a3
+- (void)_addValence:(int64_t)valence
 {
-  if ((a3 - 1) <= 6)
+  if ((valence - 1) <= 6)
   {
-    ++*(&self->super.isa + qword_258970260[a3 - 1]);
+    ++*(&self->super.isa + qword_258970260[valence - 1]);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v7 = self->_countPleasant == v5[1] && self->_countNeutral == v5[2] && self->_countUnpleasant == v5[3] && self->_dayIndexRange.start == v5[4] && self->_dayIndexRange.duration == v5[5];
   }
 
@@ -66,27 +66,27 @@
   return v11;
 }
 
-- (HKMHValenceSummary)initWithCoder:(id)a3
+- (HKMHValenceSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"CountPleasant"];
-  v6 = [v4 decodeIntegerForKey:@"CountUnpleasant"];
-  v7 = [v4 decodeIntegerForKey:@"CountNeutral"];
-  v8 = [v4 decodeIntegerForKey:@"DayIndexRangeStart"];
-  v9 = [v4 decodeIntegerForKey:@"DayIndexRangeDuration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"CountPleasant"];
+  v6 = [coderCopy decodeIntegerForKey:@"CountUnpleasant"];
+  v7 = [coderCopy decodeIntegerForKey:@"CountNeutral"];
+  v8 = [coderCopy decodeIntegerForKey:@"DayIndexRangeStart"];
+  v9 = [coderCopy decodeIntegerForKey:@"DayIndexRangeDuration"];
 
   return [(HKMHValenceSummary *)self initWithCountPleasant:v5 countNeutral:v7 countUnpleasant:v6 dayIndexRange:v8, v9];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   countPleasant = self->_countPleasant;
-  v5 = a3;
-  [v5 encodeInteger:countPleasant forKey:@"CountPleasant"];
-  [v5 encodeInteger:self->_countNeutral forKey:@"CountNeutral"];
-  [v5 encodeInteger:self->_countUnpleasant forKey:@"CountUnpleasant"];
-  [v5 encodeInteger:self->_dayIndexRange.start forKey:@"DayIndexRangeStart"];
-  [v5 encodeInteger:self->_dayIndexRange.duration forKey:@"DayIndexRangeDuration"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:countPleasant forKey:@"CountPleasant"];
+  [coderCopy encodeInteger:self->_countNeutral forKey:@"CountNeutral"];
+  [coderCopy encodeInteger:self->_countUnpleasant forKey:@"CountUnpleasant"];
+  [coderCopy encodeInteger:self->_dayIndexRange.start forKey:@"DayIndexRangeStart"];
+  [coderCopy encodeInteger:self->_dayIndexRange.duration forKey:@"DayIndexRangeDuration"];
 }
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)dayIndexRange

@@ -14,7 +14,7 @@
 
   v2 = stringByEncodingSlashes_allowedCharacterSet;
 
-  return [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  return [self stringByAddingPercentEncodingWithAllowedCharacters:v2];
 }
 
 - (__CFString)stringByDecodingSlashes

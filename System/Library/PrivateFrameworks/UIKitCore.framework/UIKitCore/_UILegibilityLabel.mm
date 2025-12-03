@@ -1,21 +1,21 @@
 @interface _UILegibilityLabel
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UILegibilityLabel)initWithSettings:(id)a3 strength:(double)a4 string:(id)a5 font:(id)a6 options:(int64_t)a7;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UILegibilityLabel)initWithSettings:(id)settings strength:(double)strength string:(id)string font:(id)font options:(int64_t)options;
 - (double)baselineOffset;
 - (void)dealloc;
-- (void)setFont:(id)a3;
-- (void)setString:(id)a3;
+- (void)setFont:(id)font;
+- (void)setString:(id)string;
 - (void)updateImage;
 @end
 
 @implementation _UILegibilityLabel
 
-- (_UILegibilityLabel)initWithSettings:(id)a3 strength:(double)a4 string:(id)a5 font:(id)a6 options:(int64_t)a7
+- (_UILegibilityLabel)initWithSettings:(id)settings strength:(double)strength string:(id)string font:(id)font options:(int64_t)options
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v19 = *off_1E70EC918;
-  v20[0] = a6;
-  [a5 sizeWithAttributes:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v20, &v19, 1)}];
+  v20[0] = font;
+  [string sizeWithAttributes:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v20, &v19, 1)}];
   v18.receiver = self;
   v18.super_class = _UILegibilityLabel;
   v15 = [(UIView *)&v18 initWithFrame:0.0, 0.0, v13, v14];
@@ -24,11 +24,11 @@
   {
     [(CALayer *)[(UIView *)v15 layer] setAllowsGroupBlending:0];
     [(CALayer *)[(UIView *)v16 layer] setAllowsGroupOpacity:0];
-    [(_UILegibilityView *)v16 setStrength:a4];
-    v16->_string = [a5 copy];
-    v16->_font = a6;
-    [(_UILegibilityView *)v16 setOptions:a7];
-    [(_UILegibilityView *)v16 updateForChangedSettings:a3];
+    [(_UILegibilityView *)v16 setStrength:strength];
+    v16->_string = [string copy];
+    v16->_font = font;
+    [(_UILegibilityView *)v16 setOptions:options];
+    [(_UILegibilityView *)v16 updateForChangedSettings:settings];
   }
 
   return v16;
@@ -44,46 +44,46 @@
   [(_UILegibilityView *)&v3 dealloc];
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  if (([a3 isEqualToString:self->_string] & 1) == 0)
+  if (([string isEqualToString:self->_string] & 1) == 0)
   {
 
-    self->_string = [a3 copy];
+    self->_string = [string copy];
     [(_UILegibilityView *)self setImage:0];
     [(_UILegibilityView *)self setShadowImage:0];
     [(_UILegibilityLabel *)self updateImage];
-    v5 = [(_UILegibilityView *)self settings];
-    v6 = [(_UILegibilityView *)self image];
-    v7 = [(_UILegibilityView *)self shadowImage];
+    settings = [(_UILegibilityView *)self settings];
+    image = [(_UILegibilityView *)self image];
+    shadowImage = [(_UILegibilityView *)self shadowImage];
 
-    [(_UILegibilityView *)self setSettings:v5 image:v6 shadowImage:v7];
+    [(_UILegibilityView *)self setSettings:settings image:image shadowImage:shadowImage];
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  if (([(UIFont *)[(_UILegibilityLabel *)self font] isEqual:a3]& 1) == 0)
+  if (([(UIFont *)[(_UILegibilityLabel *)self font] isEqual:font]& 1) == 0)
   {
 
-    self->_font = a3;
+    self->_font = font;
     [(UIView *)self sizeToFit];
     [(_UILegibilityView *)self setImage:0];
     [(_UILegibilityView *)self setShadowImage:0];
     [(_UILegibilityLabel *)self updateImage];
-    v5 = [(_UILegibilityView *)self settings];
-    v6 = [(_UILegibilityView *)self image];
-    v7 = [(_UILegibilityView *)self shadowImage];
+    settings = [(_UILegibilityView *)self settings];
+    image = [(_UILegibilityView *)self image];
+    shadowImage = [(_UILegibilityView *)self shadowImage];
 
-    [(_UILegibilityView *)self setSettings:v5 image:v6 shadowImage:v7];
+    [(_UILegibilityView *)self setSettings:settings image:image shadowImage:shadowImage];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = *off_1E70EC918;
-  v9[0] = [(_UILegibilityLabel *)self font:a3.width];
+  v9[0] = [(_UILegibilityLabel *)self font:fits.width];
   -[NSString sizeWithAttributes:](-[_UILegibilityLabel string](self, "string"), "sizeWithAttributes:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1]);
   *&v4 = v4;
   v5 = ceilf(*&v4);
@@ -112,22 +112,22 @@
   v19[2] = *MEMORY[0x1E69E9840];
   if ([(_UILegibilityView *)self settings]&& [(NSString *)[(_UILegibilityLabel *)self string] length]&& [(_UILegibilityLabel *)self font])
   {
-    v3 = [(_UILegibilityView *)self drawingColor];
+    drawingColor = [(_UILegibilityView *)self drawingColor];
     if ([(_UILegibilityView *)self usesColorFilters])
     {
-      v3 = +[UIColor whiteColor];
+      drawingColor = +[UIColor whiteColor];
     }
 
-    v4 = [(_UILegibilityLabel *)self font];
+    font = [(_UILegibilityLabel *)self font];
     v5 = *off_1E70EC920;
     v18[0] = *off_1E70EC918;
     v18[1] = v5;
-    v19[0] = v4;
-    v19[1] = v3;
+    v19[0] = font;
+    v19[1] = drawingColor;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:2];
     v7 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:-[_UILegibilityLabel string](self attributes:{"string"), v6}];
     [(UIView *)self bounds];
-    [UILabel _insetRect:v7 forAttributedString:v4 withDefaultFont:self inView:?];
+    [UILabel _insetRect:v7 forAttributedString:font withDefaultFont:self inView:?];
     v9 = v8;
     v11 = v10;
     v13 = v12;

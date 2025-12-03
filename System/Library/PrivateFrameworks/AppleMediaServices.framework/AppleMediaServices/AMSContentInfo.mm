@@ -1,54 +1,54 @@
 @interface AMSContentInfo
-- (AMSContentInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AMSContentInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSContentInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSContentInfo *)self cacheKey];
-  [v4 encodeObject:v5 forKey:@"cacheKey"];
+  coderCopy = coder;
+  cacheKey = [(AMSContentInfo *)self cacheKey];
+  [coderCopy encodeObject:cacheKey forKey:@"cacheKey"];
 
-  v6 = [(AMSContentInfo *)self created];
-  [v4 encodeObject:v6 forKey:@"created"];
+  created = [(AMSContentInfo *)self created];
+  [coderCopy encodeObject:created forKey:@"created"];
 
-  v7 = [(AMSContentInfo *)self expires];
-  [v4 encodeObject:v7 forKey:@"expires"];
+  expires = [(AMSContentInfo *)self expires];
+  [coderCopy encodeObject:expires forKey:@"expires"];
 
-  v8 = [(AMSContentInfo *)self path];
-  [v4 encodeObject:v8 forKey:@"path"];
+  path = [(AMSContentInfo *)self path];
+  [coderCopy encodeObject:path forKey:@"path"];
 
-  v9 = [(AMSContentInfo *)self version];
-  [v4 encodeObject:v9 forKey:@"version"];
+  version = [(AMSContentInfo *)self version];
+  [coderCopy encodeObject:version forKey:@"version"];
 }
 
-- (AMSContentInfo)initWithCoder:(id)a3
+- (AMSContentInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = AMSContentInfo;
   v5 = [(AMSContentInfo *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cacheKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cacheKey"];
     cacheKey = v5->_cacheKey;
     v5->_cacheKey = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"created"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"created"];
     created = v5->_created;
     v5->_created = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expires"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expires"];
     expires = v5->_expires;
     v5->_expires = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
     path = v5->_path;
     v5->_path = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
     version = v5->_version;
     v5->_version = v14;
   }

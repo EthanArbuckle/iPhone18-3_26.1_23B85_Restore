@@ -1,54 +1,54 @@
 @interface ASDClipSession
-- (ASDClipSession)initWithRequest:(id)a3 delegate:(id)a4;
-- (ASDClipSession)initWithRequest:(id)a3 delegate:(id)a4 usingBroker:(id)a5;
+- (ASDClipSession)initWithRequest:(id)request delegate:(id)delegate;
+- (ASDClipSession)initWithRequest:(id)request delegate:(id)delegate usingBroker:(id)broker;
 - (ASDClipSessionDelegate)delegate;
-- (void)_dispatchFailWithError:(uint64_t)a1;
-- (void)_dispatchHandler:(void *)a3 withError:;
-- (void)cancelInstallWithCompletionHandler:(id)a3;
+- (void)_dispatchFailWithError:(uint64_t)error;
+- (void)_dispatchHandler:(void *)handler withError:;
+- (void)cancelInstallWithCompletionHandler:(id)handler;
 - (void)channelNotifyDidComplete;
-- (void)channelNotifyDidFailWithError:(id)a3;
+- (void)channelNotifyDidFailWithError:(id)error;
 - (void)channelNotifyDidInstallPlaceholder;
-- (void)channelNotifyDidProgress:(double)a3;
-- (void)continueInstallWithCompletionHandler:(id)a3;
-- (void)installPlaceholderWithCompletionHandler:(id)a3;
-- (void)startDownloadWithCompletionHandler:(id)a3;
+- (void)channelNotifyDidProgress:(double)progress;
+- (void)continueInstallWithCompletionHandler:(id)handler;
+- (void)installPlaceholderWithCompletionHandler:(id)handler;
+- (void)startDownloadWithCompletionHandler:(id)handler;
 @end
 
 @implementation ASDClipSession
 
-- (ASDClipSession)initWithRequest:(id)a3 delegate:(id)a4
+- (ASDClipSession)initWithRequest:(id)request delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
+  delegateCopy = delegate;
+  requestCopy = request;
   v8 = +[ASDServiceBroker defaultBroker];
-  v9 = [(ASDClipSession *)self initWithRequest:v7 delegate:v6 usingBroker:v8];
+  v9 = [(ASDClipSession *)self initWithRequest:requestCopy delegate:delegateCopy usingBroker:v8];
 
   return v9;
 }
 
-- (ASDClipSession)initWithRequest:(id)a3 delegate:(id)a4 usingBroker:(id)a5
+- (ASDClipSession)initWithRequest:(id)request delegate:(id)delegate usingBroker:(id)broker
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  delegateCopy = delegate;
+  brokerCopy = broker;
   v26.receiver = self;
   v26.super_class = ASDClipSession;
   v12 = [(ASDClipSession *)&v26 init];
   if (v12)
   {
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [v9 uniqueID];
-    v15 = [v13 stringWithFormat:@"com.apple.AppStoreDaemon.ASDClipSession.%@", v14];
+    uniqueID = [requestCopy uniqueID];
+    v15 = [v13 stringWithFormat:@"com.apple.AppStoreDaemon.ASDClipSession.%@", uniqueID];
 
-    v16 = [v15 UTF8String];
+    uTF8String = [v15 UTF8String];
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v18 = dispatch_queue_create(v16, v17);
+    v18 = dispatch_queue_create(uTF8String, v17);
     dispatchQueue = v12->_dispatchQueue;
     v12->_dispatchQueue = v18;
 
-    objc_storeStrong(&v12->_broker, a5);
-    objc_storeWeak(&v12->_delegate, v10);
-    objc_storeStrong(&v12->_request, a3);
+    objc_storeStrong(&v12->_broker, broker);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    objc_storeStrong(&v12->_request, request);
     v20 = v12->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -92,18 +92,18 @@ void __55__ASDClipSession_initWithRequest_delegate_usingBroker___block_invoke(ui
   }
 }
 
-- (void)startDownloadWithCompletionHandler:(id)a3
+- (void)startDownloadWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __53__ASDClipSession_startDownloadWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E7CDBE48;
   v9[4] = self;
-  v10 = v4;
+  v10 = handlerCopy;
   v6 = dispatchQueue;
-  v7 = v4;
+  v7 = handlerCopy;
   v8 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v9);
   dispatch_async(v6, v8);
 }
@@ -141,11 +141,11 @@ void __53__ASDClipSession_startDownloadWithCompletionHandler___block_invoke(uint
   }
 }
 
-- (void)_dispatchHandler:(void *)a3 withError:
+- (void)_dispatchHandler:(void *)handler withError:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  handlerCopy = handler;
+  if (self)
   {
     v7 = dispatch_get_global_queue(21, 0);
     v8[0] = MEMORY[0x1E69E9820];
@@ -153,23 +153,23 @@ void __53__ASDClipSession_startDownloadWithCompletionHandler___block_invoke(uint
     v8[2] = __45__ASDClipSession__dispatchHandler_withError___block_invoke;
     v8[3] = &unk_1E7CDB890;
     v10 = v5;
-    v9 = v6;
+    v9 = handlerCopy;
     dispatch_async(v7, v8);
   }
 }
 
-- (void)cancelInstallWithCompletionHandler:(id)a3
+- (void)cancelInstallWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __53__ASDClipSession_cancelInstallWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E7CDBE48;
   v9[4] = self;
-  v10 = v4;
+  v10 = handlerCopy;
   v6 = dispatchQueue;
-  v7 = v4;
+  v7 = handlerCopy;
   v8 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v9);
   dispatch_async(v6, v8);
 }
@@ -207,18 +207,18 @@ void __53__ASDClipSession_cancelInstallWithCompletionHandler___block_invoke(uint
   }
 }
 
-- (void)continueInstallWithCompletionHandler:(id)a3
+- (void)continueInstallWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__ASDClipSession_continueInstallWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E7CDBE48;
   v9[4] = self;
-  v10 = v4;
+  v10 = handlerCopy;
   v6 = dispatchQueue;
-  v7 = v4;
+  v7 = handlerCopy;
   v8 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v9);
   dispatch_async(v6, v8);
 }
@@ -256,18 +256,18 @@ void __55__ASDClipSession_continueInstallWithCompletionHandler___block_invoke(ui
   }
 }
 
-- (void)installPlaceholderWithCompletionHandler:(id)a3
+- (void)installPlaceholderWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__ASDClipSession_installPlaceholderWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E7CDBE48;
   v9[4] = self;
-  v10 = v4;
+  v10 = handlerCopy;
   v6 = dispatchQueue;
-  v7 = v4;
+  v7 = handlerCopy;
   v8 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v9);
   dispatch_async(v6, v8);
 }
@@ -311,35 +311,35 @@ void __58__ASDClipSession_installPlaceholderWithCompletionHandler___block_invoke
   v3 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ASDClipRequest *)self->_request uniqueID];
+    uniqueID = [(ASDClipRequest *)self->_request uniqueID];
     v7 = 138543362;
-    v8 = v4;
+    v8 = uniqueID;
     _os_log_impl(&dword_1B8220000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Session completed successfully", &v7, 0xCu);
   }
 
-  v5 = [(ASDClipSession *)self delegate];
-  [v5 clipSessionDidCompleteSuccessfully:self];
+  delegate = [(ASDClipSession *)self delegate];
+  [delegate clipSessionDidCompleteSuccessfully:self];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)channelNotifyDidFailWithError:(id)a3
+- (void)channelNotifyDidFailWithError:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    v8 = [(ASDClipRequest *)self->_request uniqueID];
+    uniqueID = [(ASDClipRequest *)self->_request uniqueID];
     v9 = 138543618;
-    v10 = v8;
+    v10 = uniqueID;
     v11 = 2114;
-    v12 = v4;
+    v12 = errorCopy;
     _os_log_error_impl(&dword_1B8220000, v5, OS_LOG_TYPE_ERROR, "[%{public}@] Session failed with error: %{public}@", &v9, 0x16u);
   }
 
-  v6 = [(ASDClipSession *)self delegate];
-  [v6 clipSession:self didFailWithError:v4];
+  delegate = [(ASDClipSession *)self delegate];
+  [delegate clipSession:self didFailWithError:errorCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -350,51 +350,51 @@ void __58__ASDClipSession_installPlaceholderWithCompletionHandler___block_invoke
   v3 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ASDClipRequest *)self->_request uniqueID];
+    uniqueID = [(ASDClipRequest *)self->_request uniqueID];
     v9 = 138543362;
-    v10 = v4;
+    v10 = uniqueID;
     _os_log_impl(&dword_1B8220000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Session did install placeholder", &v9, 0xCu);
   }
 
-  v5 = [(ASDClipSession *)self delegate];
+  delegate = [(ASDClipSession *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ASDClipSession *)self delegate];
-    [v7 clipSessionDidInstallPlaceholder:self];
+    delegate2 = [(ASDClipSession *)self delegate];
+    [delegate2 clipSessionDidInstallPlaceholder:self];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)channelNotifyDidProgress:(double)a3
+- (void)channelNotifyDidProgress:(double)progress
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(ASDClipRequest *)self->_request uniqueID];
+    uniqueID = [(ASDClipRequest *)self->_request uniqueID];
     v9 = 138543618;
-    v10 = v6;
+    v10 = uniqueID;
     v11 = 2048;
-    v12 = a3;
+    progressCopy = progress;
     _os_log_impl(&dword_1B8220000, v5, OS_LOG_TYPE_INFO, "[%{public}@] Session received progress: %.2f", &v9, 0x16u);
   }
 
-  v7 = [(ASDClipSession *)self delegate];
-  [v7 clipSession:self didUpdateProgress:a3];
+  delegate = [(ASDClipSession *)self delegate];
+  [delegate clipSession:self didUpdateProgress:progress];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_dispatchFailWithError:(uint64_t)a1
+- (void)_dispatchFailWithError:(uint64_t)error
 {
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
+    dispatch_assert_queue_V2(*(error + 16));
+    WeakRetained = objc_loadWeakRetained((error + 32));
     if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v5 = dispatch_get_global_queue(21, 0);
@@ -403,7 +403,7 @@ void __58__ASDClipSession_installPlaceholderWithCompletionHandler___block_invoke
       block[2] = __41__ASDClipSession__dispatchFailWithError___block_invoke;
       block[3] = &unk_1E7CDBA20;
       v7 = WeakRetained;
-      v8 = a1;
+      errorCopy = error;
       v9 = v3;
       dispatch_async(v5, block);
     }

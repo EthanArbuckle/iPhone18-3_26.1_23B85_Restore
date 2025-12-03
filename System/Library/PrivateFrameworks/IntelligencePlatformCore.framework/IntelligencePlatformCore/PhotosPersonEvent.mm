@@ -1,18 +1,18 @@
 @interface PhotosPersonEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 - (id)serialize;
 @end
 
 @implementation PhotosPersonEvent
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = sub_1C4EF9A68();
   v8 = v7;
 
   swift_getObjCClassMetadata();
-  v9 = static PhotosPersonEvent.event(with:dataVersion:)(v6, v8, a4);
+  v9 = static PhotosPersonEvent.event(with:dataVersion:)(v6, v8, version);
   sub_1C4434000(v6, v8);
 
   return v9;
@@ -20,7 +20,7 @@
 
 - (id)serialize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PhotosPersonEvent.serialize()();
   v5 = v4;
 

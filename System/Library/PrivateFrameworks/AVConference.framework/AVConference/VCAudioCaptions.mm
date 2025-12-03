@@ -1,78 +1,78 @@
 @interface VCAudioCaptions
-+ (BOOL)captionsSupportedWithErrorCode:(int64_t *)a3;
-+ (BOOL)isTaskHintSupported:(unsigned __int8)a3 withReturnCode:(int64_t *)a4;
-+ (int64_t)speechRecognitionTaskHintFromCaptionsTaskHint:(unsigned __int8)a3;
++ (BOOL)captionsSupportedWithErrorCode:(int64_t *)code;
++ (BOOL)isTaskHintSupported:(unsigned __int8)supported withReturnCode:(int64_t *)code;
++ (int64_t)speechRecognitionTaskHintFromCaptionsTaskHint:(unsigned __int8)hint;
 - (BOOL)captionsDebugDumpEnabled;
-- (BOOL)createAudioConverterWithInputFormat:(const AudioStreamBasicDescription *)a3 outputFormat:(const AudioStreamBasicDescription *)a4 converter:(OpaqueAudioConverter *)a5;
+- (BOOL)createAudioConverterWithInputFormat:(const AudioStreamBasicDescription *)format outputFormat:(const AudioStreamBasicDescription *)outputFormat converter:(OpaqueAudioConverter *)converter;
 - (BOOL)enableV2SpeechAPI;
 - (BOOL)enabled;
-- (BOOL)handleStateLoadedError:(id *)a3;
-- (BOOL)idleStateToState:(int)a3 withReason:(unsigned __int8)a4 error:(id *)a5;
+- (BOOL)handleStateLoadedError:(id *)error;
+- (BOOL)idleStateToState:(int)state withReason:(unsigned __int8)reason error:(id *)error;
 - (BOOL)isExplicitLanguageFilterEnabled;
 - (BOOL)isFormatForNewLinesEnabled;
-- (BOOL)isTaskHintSetWithReturnCode:(int64_t *)a3;
-- (BOOL)loadedStateToState:(int)a3 withReason:(unsigned __int8)a4 error:(id *)a5;
-- (BOOL)reallocCopyBufferAllocatorWithFormat:(const AudioStreamBasicDescription *)a3;
-- (BOOL)runningStateToState:(int)a3 withReason:(unsigned __int8)a4 error:(id *)a5;
+- (BOOL)isTaskHintSetWithReturnCode:(int64_t *)code;
+- (BOOL)loadedStateToState:(int)state withReason:(unsigned __int8)reason error:(id *)error;
+- (BOOL)reallocCopyBufferAllocatorWithFormat:(const AudioStreamBasicDescription *)format;
+- (BOOL)runningStateToState:(int)state withReason:(unsigned __int8)reason error:(id *)error;
 - (BOOL)shouldEnableCaptions;
-- (BOOL)shouldSetLocale:(id)a3 withError:(id *)a4;
-- (BOOL)shouldSetTaskHint:(unsigned __int8)a3 withError:(id *)a4;
-- (BOOL)stoppingStateToState:(int)a3 withReason:(unsigned __int8)a4 error:(id *)a5;
-- (BOOL)transitionToState:(int)a3 withReason:(unsigned __int8)a4 error:(id *)a5;
-- (BOOL)updateAudioConverterForStreamDescription:(const AudioStreamBasicDescription *)a3;
+- (BOOL)shouldSetLocale:(id)locale withError:(id *)error;
+- (BOOL)shouldSetTaskHint:(unsigned __int8)hint withError:(id *)error;
+- (BOOL)stoppingStateToState:(int)state withReason:(unsigned __int8)reason error:(id *)error;
+- (BOOL)transitionToState:(int)state withReason:(unsigned __int8)reason error:(id *)error;
+- (BOOL)updateAudioConverterForStreamDescription:(const AudioStreamBasicDescription *)description;
 - (NSLocale)locale;
 - (NSLocale)sourceLocale;
-- (VCAudioCaptions)initWithDelegate:(id)a3 isLocal:(BOOL)a4 taskIdentifier:(id)a5 reportingAgent:(opaqueRTCReporting *)a6;
-- (id)newPCMSampleBufferWithSamples:(char *)a3 numSamples:(int)a4 pcmFormat:(id)a5;
-- (id)taskInfoForTask:(id)a3;
-- (opaqueCMSampleBuffer)convertSamples:(char *)a3 numSamples:(int)a4;
-- (opaqueCMSampleBuffer)createSampleBufferWithFormat:(const AudioStreamBasicDescription *)a3 samples:(char *)a4 numSamples:(int)a5;
+- (VCAudioCaptions)initWithDelegate:(id)delegate isLocal:(BOOL)local taskIdentifier:(id)identifier reportingAgent:(opaqueRTCReporting *)agent;
+- (id)newPCMSampleBufferWithSamples:(char *)samples numSamples:(int)numSamples pcmFormat:(id)format;
+- (id)taskInfoForTask:(id)task;
+- (opaqueCMSampleBuffer)convertSamples:(char *)samples numSamples:(int)numSamples;
+- (opaqueCMSampleBuffer)createSampleBufferWithFormat:(const AudioStreamBasicDescription *)format samples:(char *)samples numSamples:(int)numSamples;
 - (unsigned)callType;
 - (unsigned)taskHint;
 - (unsigned)translatorMode;
-- (void)applyOnIdleWithBlock:(id)a3;
-- (void)callCompletionHandler:(id)a3 withResult:(BOOL)a4;
+- (void)applyOnIdleWithBlock:(id)block;
+- (void)callCompletionHandler:(id)handler withResult:(BOOL)result;
 - (void)dealloc;
-- (void)dispatchedSetCallType:(unsigned __int8)a3;
-- (void)dispatchedSetExplicitLanguageFilterEnabled:(BOOL)a3;
-- (void)dispatchedSetFormatForNewLinesEnabled:(BOOL)a3;
-- (void)dispatchedSetLanguageDetectorEnabled:(BOOL)a3;
-- (void)dispatchedSetLanguageDetectorReportingFrequency:(id)a3;
-- (void)dispatchedSetLocale:(id)a3;
-- (void)dispatchedSetTaskHint:(unsigned __int8)a3;
-- (void)dumpCaptionsIfNeededForCaptionsTranscription:(id)a3;
-- (void)enableCaptions:(BOOL)a3;
-- (void)gatherRealtimeStats:(__CFDictionary *)a3;
+- (void)dispatchedSetCallType:(unsigned __int8)type;
+- (void)dispatchedSetExplicitLanguageFilterEnabled:(BOOL)enabled;
+- (void)dispatchedSetFormatForNewLinesEnabled:(BOOL)enabled;
+- (void)dispatchedSetLanguageDetectorEnabled:(BOOL)enabled;
+- (void)dispatchedSetLanguageDetectorReportingFrequency:(id)frequency;
+- (void)dispatchedSetLocale:(id)locale;
+- (void)dispatchedSetTaskHint:(unsigned __int8)hint;
+- (void)dumpCaptionsIfNeededForCaptionsTranscription:(id)transcription;
+- (void)enableCaptions:(BOOL)captions;
+- (void)gatherRealtimeStats:(__CFDictionary *)stats;
 - (void)loadSpeechAssets;
 - (void)prewarmCaptions;
-- (void)pushAudioSamples:(opaqueVCAudioBufferList *)a3;
+- (void)pushAudioSamples:(opaqueVCAudioBufferList *)samples;
 - (void)recordAudioSampleMetrics;
 - (void)reportSourceLocale;
-- (void)sendTranscriptionResult:(id)a3 taskInfo:(id)a4;
-- (void)setCallType:(unsigned __int8)a3;
-- (void)setEnableV2SpeechAPI:(BOOL)a3;
-- (void)setExplicitLanguageFilterEnabled:(BOOL)a3;
-- (void)setFormatForNewLinesEnabled:(BOOL)a3;
-- (void)setLanguageDetectorEnabled:(BOOL)a3;
-- (void)setLanguageDetectorReportingFrequency:(id)a3;
-- (void)setLocale:(id)a3;
-- (void)setSourceLocale:(id)a3;
-- (void)setTaskHint:(unsigned __int8)a3;
-- (void)setTranslatorMode:(unsigned __int8)a3;
+- (void)sendTranscriptionResult:(id)result taskInfo:(id)info;
+- (void)setCallType:(unsigned __int8)type;
+- (void)setEnableV2SpeechAPI:(BOOL)i;
+- (void)setExplicitLanguageFilterEnabled:(BOOL)enabled;
+- (void)setFormatForNewLinesEnabled:(BOOL)enabled;
+- (void)setLanguageDetectorEnabled:(BOOL)enabled;
+- (void)setLanguageDetectorReportingFrequency:(id)frequency;
+- (void)setLocale:(id)locale;
+- (void)setSourceLocale:(id)locale;
+- (void)setTaskHint:(unsigned __int8)hint;
+- (void)setTranslatorMode:(unsigned __int8)mode;
 - (void)shouldEnableCaptions;
-- (void)speechAnalyzer:(id)a3 didProduceLanguageHypothesis:(id)a4;
-- (void)speechAnalyzer:(id)a3 didStopLanguageDetectorWithError:(id)a4;
-- (void)start:(const AudioStreamBasicDescription *)a3 forToken:(int64_t)a4 withCompletionHandler:(id)a5;
-- (void)stopWithCompletionHandler:(id)a3;
+- (void)speechAnalyzer:(id)analyzer didProduceLanguageHypothesis:(id)hypothesis;
+- (void)speechAnalyzer:(id)analyzer didStopLanguageDetectorWithError:(id)error;
+- (void)start:(const AudioStreamBasicDescription *)start forToken:(int64_t)token withCompletionHandler:(id)handler;
+- (void)stopWithCompletionHandler:(id)handler;
 - (void)updateCaptionsUtteranceDuration;
-- (void)updateConfig:(id)a3;
+- (void)updateConfig:(id)config;
 @end
 
 @implementation VCAudioCaptions
 
-- (VCAudioCaptions)initWithDelegate:(id)a3 isLocal:(BOOL)a4 taskIdentifier:(id)a5 reportingAgent:(opaqueRTCReporting *)a6
+- (VCAudioCaptions)initWithDelegate:(id)delegate isLocal:(BOOL)local taskIdentifier:(id)identifier reportingAgent:(opaqueRTCReporting *)agent
 {
-  v8 = a4;
+  localCopy = local;
   v53 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ VCAudioCaptions-init");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -99,7 +99,7 @@
   v14 = v13;
   if (v13)
   {
-    if (!a3)
+    if (!delegate)
     {
       [VCAudioCaptions initWithDelegate:v13 isLocal:? taskIdentifier:? reportingAgent:?];
 LABEL_39:
@@ -156,7 +156,7 @@ LABEL_39:
     v13->_recognizerState = 0;
     v13->_copyBufferAllocator = 0;
     v13->_pcmCopyBufferAllocator = 0;
-    v13->_taskIdentifier = a5;
+    v13->_taskIdentifier = identifier;
     v14->_useSpeechAnalyzerV2API = VCFeatureFlagManager_UseAnalyzerSpeechAPI();
     v14->_enableSpeechDetector = VCFeatureFlagManager_EnableSpeechDetector();
     v14->_translatorMode = 0;
@@ -178,11 +178,11 @@ LABEL_39:
           *&buf[22] = 1024;
           *&buf[24] = 77;
           *&buf[28] = 1024;
-          *&buf[30] = v8;
+          *&buf[30] = localCopy;
           *&buf[34] = 2112;
-          *&buf[36] = a5;
+          *&buf[36] = identifier;
           *&buf[44] = 2048;
-          *&buf[46] = a6;
+          *&buf[46] = agent;
           v46 = 1024;
           *v47 = useSpeechAnalyzerV2API;
           *&v47[4] = 1024;
@@ -227,11 +227,11 @@ LABEL_16:
           *&buf[38] = 2048;
           *&buf[40] = v14;
           *&buf[48] = 1024;
-          *&buf[50] = v8;
+          *&buf[50] = localCopy;
           v46 = 2112;
-          *v47 = a5;
+          *v47 = identifier;
           *&v47[8] = 2048;
-          v48 = a6;
+          agentCopy = agent;
           v49 = 1024;
           v50 = v25;
           v51 = 1024;
@@ -245,16 +245,16 @@ LABEL_16:
     }
 
     v14->_audioConverter = 0;
-    objc_storeWeak(&v14->_delegate, a3);
-    v14->_isLocal = v8;
+    objc_storeWeak(&v14->_delegate, delegate);
+    v14->_isLocal = localCopy;
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(47);
     v28 = dispatch_queue_create_with_target_V2("com.apple.AVConference.VCAudioCaptions.captionsQueue", 0, CustomRootQueue);
     v14->_captionsQueue = v28;
     if (v28)
     {
-      if (a6)
+      if (agent)
       {
-        v29 = CFRetain(a6);
+        v29 = CFRetain(agent);
       }
 
       else
@@ -276,9 +276,9 @@ LABEL_16:
           v14->_captionTasks = v32;
           if (v32)
           {
-            v33 = [(VCAudioCaptions *)v14 captionsDebugDumpEnabled];
-            v14->_isCaptionsDebugDumpEnabled = v33;
-            if (v33)
+            captionsDebugDumpEnabled = [(VCAudioCaptions *)v14 captionsDebugDumpEnabled];
+            v14->_isCaptionsDebugDumpEnabled = captionsDebugDumpEnabled;
+            if (captionsDebugDumpEnabled)
             {
               v14->_logCaptionsDump = VRLogfileAlloc(0, [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"session_%@", objc_msgSend(objc_msgSend(MEMORY[0x1E696AFB0], "UUID"), "UUIDString")), "UTF8String"], "captions_transcriptions", ".txt", "com.apple.AVConference.VCAudioCaptions.captionsQueue", 9);
             }
@@ -388,7 +388,7 @@ void __74__VCAudioCaptions_initWithDelegate_isLocal_taskIdentifier_reportingAgen
   return v3;
 }
 
-- (void)setEnableV2SpeechAPI:(BOOL)a3
+- (void)setEnableV2SpeechAPI:(BOOL)i
 {
   v6 = *MEMORY[0x1E69E9840];
   captionsQueue = self->_captionsQueue;
@@ -397,7 +397,7 @@ void __74__VCAudioCaptions_initWithDelegate_isLocal_taskIdentifier_reportingAgen
   block[2] = __40__VCAudioCaptions_setEnableV2SpeechAPI___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  iCopy = i;
   dispatch_async(captionsQueue, block);
 }
 
@@ -541,9 +541,9 @@ LABEL_11:
         v27 = 1024;
         v28 = 150;
         v29 = 2112;
-        v30 = v3;
+        selfCopy2 = v3;
         v31 = 2048;
-        v32 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) VCAudioCaptions-dealloc: Tearing down captions";
         v7 = v10;
         v8 = 48;
@@ -627,7 +627,7 @@ LABEL_11:
       v27 = 1024;
       v28 = 197;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DB56E000, v20, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioCaptions-dealloc instance=%p", buf, 0x26u);
     }
   }
@@ -637,10 +637,10 @@ LABEL_11:
   [(VCObject *)&v21 dealloc];
 }
 
-- (void)gatherRealtimeStats:(__CFDictionary *)a3
+- (void)gatherRealtimeStats:(__CFDictionary *)stats
 {
   v54 = *MEMORY[0x1E69E9840];
-  if (a3 && self->_lastCaptionsEnabledTime != 0.0)
+  if (stats && self->_lastCaptionsEnabledTime != 0.0)
   {
     v5 = micro();
     self->_captionsEnabledDuration = v5 - self->_lastCaptionsEnabledTime;
@@ -649,20 +649,20 @@ LABEL_11:
     valuePtr = v31;
     v6 = *MEMORY[0x1E695E480];
     v7 = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberIntType, &valuePtr);
-    CFDictionaryAddValue(a3, @"ACFCR", v7);
+    CFDictionaryAddValue(stats, @"ACFCR", v7);
     CFRelease(v7);
     valuePtr = self->_captionTaskCount;
     v8 = CFNumberCreate(v6, kCFNumberIntType, &valuePtr);
-    CFDictionaryAddValue(a3, @"ACTC", v8);
+    CFDictionaryAddValue(stats, @"ACTC", v8);
     CFRelease(v8);
     v9 = llround(self->_captionsUtteranceDuration * 1000.0);
     valuePtr = v9;
     v10 = CFNumberCreate(v6, kCFNumberIntType, &valuePtr);
-    CFDictionaryAddValue(a3, @"ACUL", v10);
+    CFDictionaryAddValue(stats, @"ACUL", v10);
     CFRelease(v10);
     valuePtr = self->_isLocal;
     v11 = CFNumberCreate(v6, kCFNumberIntType, &valuePtr);
-    CFDictionaryAddValue(a3, @"ACTX", v11);
+    CFDictionaryAddValue(stats, @"ACTX", v11);
     CFRelease(v11);
     detectedLanguageCode = self->_detectedLanguageCode;
     if (detectedLanguageCode)
@@ -674,7 +674,7 @@ LABEL_11:
       }
 
       v14 = v13;
-      CFDictionaryAddValue(a3, @"ACLC", v13);
+      CFDictionaryAddValue(stats, @"ACLC", v13);
       CFRelease(v14);
     }
 
@@ -724,15 +724,15 @@ LABEL_11:
     {
       valuePtr = self->_currentUtteranceNumber;
       v22 = CFNumberCreate(v6, kCFNumberIntType, &valuePtr);
-      CFDictionaryAddValue(a3, @"ACUtteranceCount", v22);
+      CFDictionaryAddValue(stats, @"ACUtteranceCount", v22);
       CFRelease(v22);
       valuePtr = self->_translatedUtteranceNumber;
       v23 = CFNumberCreate(v6, kCFNumberIntType, &valuePtr);
-      CFDictionaryAddValue(a3, @"ACTranslatedUtteranceCount", v23);
+      CFDictionaryAddValue(stats, @"ACTranslatedUtteranceCount", v23);
       CFRelease(v23);
       valuePtr = self->_translatedLatencyAverage;
       v24 = CFNumberCreate(v6, kCFNumberIntType, &valuePtr);
-      CFDictionaryAddValue(a3, @"ACTranslatedLatencyAverage", v24);
+      CFDictionaryAddValue(stats, @"ACTranslatedLatencyAverage", v24);
       CFRelease(v24);
       if (VRTraceGetErrorLogLevelForModule() >= 6)
       {
@@ -762,15 +762,15 @@ LABEL_11:
   }
 }
 
-+ (int64_t)speechRecognitionTaskHintFromCaptionsTaskHint:(unsigned __int8)a3
++ (int64_t)speechRecognitionTaskHintFromCaptionsTaskHint:(unsigned __int8)hint
 {
   v3 = 1012;
-  if (a3 == 2)
+  if (hint == 2)
   {
     v3 = 1009;
   }
 
-  if (a3 == 1)
+  if (hint == 1)
   {
     return 1004;
   }
@@ -781,11 +781,11 @@ LABEL_11:
   }
 }
 
-- (BOOL)createAudioConverterWithInputFormat:(const AudioStreamBasicDescription *)a3 outputFormat:(const AudioStreamBasicDescription *)a4 converter:(OpaqueAudioConverter *)a5
+- (BOOL)createAudioConverterWithInputFormat:(const AudioStreamBasicDescription *)format outputFormat:(const AudioStreamBasicDescription *)outputFormat converter:(OpaqueAudioConverter *)converter
 {
   v94 = *MEMORY[0x1E69E9840];
-  *a5 = 0;
-  if (!memcmp(a4, a3, 0x28uLL))
+  *converter = 0;
+  if (!memcmp(outputFormat, format, 0x28uLL))
   {
     LOBYTE(v10) = 1;
     return v10;
@@ -858,13 +858,13 @@ LABEL_13:
       v20 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        mSampleRate = a3->mSampleRate;
-        mFormatID = a3->mFormatID;
-        mBytesPerPacket = a3->mBytesPerPacket;
-        mFramesPerPacket = a3->mFramesPerPacket;
-        mBytesPerFrame = a3->mBytesPerFrame;
-        mChannelsPerFrame = a3->mChannelsPerFrame;
-        mBitsPerChannel = a3->mBitsPerChannel;
+        mSampleRate = format->mSampleRate;
+        mFormatID = format->mFormatID;
+        mBytesPerPacket = format->mBytesPerPacket;
+        mFramesPerPacket = format->mFramesPerPacket;
+        mBytesPerFrame = format->mBytesPerFrame;
+        mChannelsPerFrame = format->mChannelsPerFrame;
+        mBitsPerChannel = format->mBitsPerChannel;
         *buf = 136317442;
         v75 = v19;
         v76 = 2080;
@@ -912,13 +912,13 @@ LABEL_24:
       v32 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v33 = a3->mSampleRate;
-        v34 = a3->mFormatID;
-        v35 = a3->mBytesPerPacket;
-        v36 = a3->mFramesPerPacket;
-        v37 = a3->mBytesPerFrame;
-        v38 = a3->mChannelsPerFrame;
-        v39 = a3->mBitsPerChannel;
+        v33 = format->mSampleRate;
+        v34 = format->mFormatID;
+        v35 = format->mBytesPerPacket;
+        v36 = format->mFramesPerPacket;
+        v37 = format->mBytesPerFrame;
+        v38 = format->mChannelsPerFrame;
+        v39 = format->mBitsPerChannel;
         *buf = 136317954;
         v75 = v31;
         v76 = 2080;
@@ -959,13 +959,13 @@ LABEL_24:
       v42 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v43 = a4->mSampleRate;
-        v44 = a4->mFormatID;
-        v45 = a4->mBytesPerPacket;
-        v46 = a4->mFramesPerPacket;
-        v47 = a4->mBytesPerFrame;
-        v48 = a4->mChannelsPerFrame;
-        v49 = a4->mBitsPerChannel;
+        v43 = outputFormat->mSampleRate;
+        v44 = outputFormat->mFormatID;
+        v45 = outputFormat->mBytesPerPacket;
+        v46 = outputFormat->mFramesPerPacket;
+        v47 = outputFormat->mBytesPerFrame;
+        v48 = outputFormat->mChannelsPerFrame;
+        v49 = outputFormat->mBitsPerChannel;
         *buf = 136317442;
         v75 = v41;
         v76 = 2080;
@@ -1013,13 +1013,13 @@ LABEL_35:
       v54 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v55 = a4->mSampleRate;
-        v56 = a4->mFormatID;
-        v57 = a4->mBytesPerPacket;
-        v58 = a4->mFramesPerPacket;
-        v59 = a4->mBytesPerFrame;
-        v60 = a4->mChannelsPerFrame;
-        v61 = a4->mBitsPerChannel;
+        v55 = outputFormat->mSampleRate;
+        v56 = outputFormat->mFormatID;
+        v57 = outputFormat->mBytesPerPacket;
+        v58 = outputFormat->mFramesPerPacket;
+        v59 = outputFormat->mBytesPerFrame;
+        v60 = outputFormat->mChannelsPerFrame;
+        v61 = outputFormat->mBitsPerChannel;
         *buf = 136317954;
         v75 = v53;
         v76 = 2080;
@@ -1052,7 +1052,7 @@ LABEL_35:
     }
   }
 
-  v62 = AudioConverterNew(a3, a4, a5);
+  v62 = AudioConverterNew(format, outputFormat, converter);
   if (v62)
   {
     v63 = v62;
@@ -1115,7 +1115,7 @@ LABEL_51:
   else
   {
     inPropertyData = 2;
-    v65 = AudioConverterSetProperty(*a5, 0x70726D6Du, 4u, &inPropertyData);
+    v65 = AudioConverterSetProperty(*converter, 0x70726D6Du, 4u, &inPropertyData);
     if (v65)
     {
       v66 = v65;
@@ -1167,13 +1167,13 @@ LABEL_51:
       }
     }
 
-    LOBYTE(v10) = *a5 != 0;
+    LOBYTE(v10) = *converter != 0;
   }
 
   return v10;
 }
 
-- (opaqueCMSampleBuffer)convertSamples:(char *)a3 numSamples:(int)a4
+- (opaqueCMSampleBuffer)convertSamples:(char *)samples numSamples:(int)numSamples
 {
   v56 = *MEMORY[0x1E69E9840];
   if (!self->_audioConverter)
@@ -1197,7 +1197,7 @@ LABEL_51:
     v8 = 0.0;
   }
 
-  v10 = v8 * a4;
+  v10 = v8 * numSamples;
   inputFormat = self->_inputFormat;
   if (inputFormat)
   {
@@ -1241,7 +1241,7 @@ LABEL_51:
   v52 = 1;
   *&outOutputData.mNumberBuffers = 0;
   v53 = 1;
-  v55 = a3;
+  samplesCopy = samples;
   v19 = self->_inputFormat;
   if (v19)
   {
@@ -1258,7 +1258,7 @@ LABEL_51:
     v35 = 0u;
   }
 
-  v54 = v20 * a4;
+  v54 = v20 * numSamples;
   outOutputData.mNumberBuffers = 1;
   outOutputData.mBuffers[0].mNumberChannels = 1;
   outOutputData.mBuffers[0].mDataByteSize = v16;
@@ -1320,7 +1320,7 @@ LABEL_51:
           *&buf[28] = 2112;
           *&buf[30] = v23;
           *&buf[38] = 2048;
-          v48 = self;
+          selfCopy = self;
           v49 = 1024;
           v50 = v22;
           _os_log_error_impl(&dword_1DB56E000, v25, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) AudioConverterFillComplexBuffer failed with %d", buf, 0x36u);
@@ -1331,15 +1331,15 @@ LABEL_51:
     bzero(v18, v16);
   }
 
-  v26 = [(ASBDWrapper *)self->_captionsFormat asbdPointer];
-  v9 = [(VCAudioCaptions *)self createSampleBufferWithFormat:v26 samples:v18 numSamples:ioOutputDataPacketSize];
+  asbdPointer = [(ASBDWrapper *)self->_captionsFormat asbdPointer];
+  v9 = [(VCAudioCaptions *)self createSampleBufferWithFormat:asbdPointer samples:v18 numSamples:ioOutputDataPacketSize];
 
   return v9;
 }
 
-- (BOOL)handleStateLoadedError:(id *)a3
+- (BOOL)handleStateLoadedError:(id *)error
 {
-  v4 = [(VCAudioCaptions *)self setUpCaptionsWithError:a3];
+  v4 = [(VCAudioCaptions *)self setUpCaptionsWithError:error];
   if (v4)
   {
     self->_recognizerState = 1;
@@ -1348,19 +1348,19 @@ LABEL_51:
   return v4;
 }
 
-- (BOOL)idleStateToState:(int)a3 withReason:(unsigned __int8)a4 error:(id *)a5
+- (BOOL)idleStateToState:(int)state withReason:(unsigned __int8)reason error:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if ((a3 - 1) >= 2)
+  if ((state - 1) >= 2)
   {
-    if (!a3)
+    if (!state)
     {
       return 1;
     }
 
-    if (a5)
+    if (error)
     {
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", a4, "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptions.m", 432];
+      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", reason, "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptions.m", 432];
       v10 = 3;
       v9 = 7;
       goto LABEL_10;
@@ -1370,12 +1370,12 @@ LABEL_51:
   else
   {
     v12[0] = 0;
-    if ([VCAudioCaptions captionsSupportedWithErrorCode:v12, a4])
+    if ([VCAudioCaptions captionsSupportedWithErrorCode:v12, reason])
     {
-      return [(VCAudioCaptions *)self handleStateLoadedError:a5];
+      return [(VCAudioCaptions *)self handleStateLoadedError:error];
     }
 
-    if (a5)
+    if (error)
     {
       v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptions.m", 423];
       v9 = v12[0];
@@ -1383,7 +1383,7 @@ LABEL_51:
 LABEL_10:
       v11 = [VCSessionErrorUtils VCSessionCaptionsErrorEvent:v10 errorPath:v8 returnCode:v9];
       result = 0;
-      *a5 = v11;
+      *error = v11;
       return result;
     }
   }
@@ -1391,12 +1391,12 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)loadedStateToState:(int)a3 withReason:(unsigned __int8)a4 error:(id *)a5
+- (BOOL)loadedStateToState:(int)state withReason:(unsigned __int8)reason error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a3 == 2)
+  if (state == 2)
   {
-    if ([(VCAudioCaptions *)self startCaptionsWithError:a5])
+    if ([(VCAudioCaptions *)self startCaptionsWithError:error])
     {
       streamToken = self->_streamToken;
       delegateQueue = self->_delegateQueue;
@@ -1404,7 +1404,7 @@ LABEL_10:
       block[1] = 3221225472;
       block[2] = __55__VCAudioCaptions_loadedStateToState_withReason_error___block_invoke;
       block[3] = &unk_1E85F4180;
-      v17 = a4;
+      reasonCopy = reason;
       block[4] = self;
       block[5] = streamToken;
       dispatch_async(delegateQueue, block);
@@ -1458,7 +1458,7 @@ LABEL_10:
         v24 = 2112;
         v25 = v12;
         v26 = 2048;
-        v27 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to setup speech captions processing for running", buf, 0x30u);
       }
     }
@@ -1466,20 +1466,20 @@ LABEL_10:
     goto LABEL_20;
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
-    if (!a3)
+    if (!state)
     {
       self->_recognizerState = 0;
-      [(VCAudioCaptions *)self finishCaptions:*&a3];
+      [(VCAudioCaptions *)self finishCaptions:*&state];
       goto LABEL_7;
     }
 
-    if (a5)
+    if (error)
     {
-      v11 = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 3, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", a4, "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptions.m", 469], 7);
+      v11 = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 3, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", reason, "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptions.m", 469], 7);
       LOBYTE(v10) = 0;
-      *a5 = v11;
+      *error = v11;
       return v10;
     }
 
@@ -1502,19 +1502,19 @@ uint64_t __55__VCAudioCaptions_loadedStateToState_withReason_error___block_invok
   return [v2 didStartCaptioningWithReason:v3 streamToken:v4];
 }
 
-- (BOOL)runningStateToState:(int)a3 withReason:(unsigned __int8)a4 error:(id *)a5
+- (BOOL)runningStateToState:(int)state withReason:(unsigned __int8)reason error:(id *)error
 {
-  if (a3 < 2)
+  if (state < 2)
   {
     goto LABEL_4;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     return 1;
   }
 
-  if (a3 == 3)
+  if (state == 3)
   {
 LABEL_4:
     self->_recognizerState = 3;
@@ -1526,18 +1526,18 @@ LABEL_4:
   return 0;
 }
 
-- (BOOL)stoppingStateToState:(int)a3 withReason:(unsigned __int8)a4 error:(id *)a5
+- (BOOL)stoppingStateToState:(int)state withReason:(unsigned __int8)reason error:(id *)error
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = 1;
-  if (a3 >= 2)
+  if (state >= 2)
   {
-    if (a3 != 3)
+    if (state != 3)
     {
       v5 = 0;
-      if (a5)
+      if (error)
       {
-        *a5 = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 3, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", a4, "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptions.m", 519], 7);
+        *error = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 3, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", reason, "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptions.m", 519], 7);
       }
     }
   }
@@ -1552,7 +1552,7 @@ LABEL_4:
     block[1] = 3221225472;
     block[2] = __57__VCAudioCaptions_stoppingStateToState_withReason_error___block_invoke;
     block[3] = &unk_1E85F4180;
-    v12 = a4;
+    reasonCopy = reason;
     block[4] = self;
     block[5] = streamToken;
     dispatch_async(delegateQueue, block);
@@ -1570,18 +1570,18 @@ uint64_t __57__VCAudioCaptions_stoppingStateToState_withReason_error___block_inv
   return [v2 didStopCaptioningWithReason:v3 streamToken:v4];
 }
 
-- (BOOL)transitionToState:(int)a3 withReason:(unsigned __int8)a4 error:(id *)a5
+- (BOOL)transitionToState:(int)state withReason:(unsigned __int8)reason error:(id *)error
 {
   v51[4] = *MEMORY[0x1E69E9840];
-  v39 = a3;
-  v38 = a4;
-  v37 = a5;
+  stateCopy = state;
+  reasonCopy = reason;
+  errorCopy = error;
   v36 = 1;
   v51[0] = sel_idleStateToState_withReason_error_;
   v51[1] = sel_loadedStateToState_withReason_error_;
   v51[2] = sel_runningStateToState_withReason_error_;
   v51[3] = sel_stoppingStateToState_withReason_error_;
-  if (self->_recognizerState == a3)
+  if (self->_recognizerState == state)
   {
     return v36;
   }
@@ -1608,7 +1608,7 @@ uint64_t __57__VCAudioCaptions_stoppingStateToState_withReason_error___block_inv
           v46 = 1024;
           *v47 = recognizerState;
           *&v47[4] = 1024;
-          *&v47[6] = v39;
+          *&v47[6] = stateCopy;
           v11 = v15;
           v12 = " [%s] %s:%d Captions State Transition: From=%d To=%d";
           v13 = 40;
@@ -1641,11 +1641,11 @@ uint64_t __57__VCAudioCaptions_stoppingStateToState_withReason_error___block_inv
           v46 = 2112;
           *v47 = v7;
           *&v47[8] = 2048;
-          v48 = self;
+          selfCopy3 = self;
           v49 = 1024;
           *v50 = v10;
           *&v50[4] = 1024;
-          *&v50[6] = v39;
+          *&v50[6] = stateCopy;
           v11 = v9;
           v12 = " [%s] %s:%d %@(%p) Captions State Transition: From=%d To=%d";
           v13 = 60;
@@ -1659,9 +1659,9 @@ LABEL_12:
     v18 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:v17];
     [v18 setTarget:self];
     [v18 setSelector:v51[self->_recognizerState]];
-    [v18 setArgument:&v39 atIndex:2];
-    [v18 setArgument:&v38 atIndex:3];
-    [v18 setArgument:&v37 atIndex:4];
+    [v18 setArgument:&stateCopy atIndex:2];
+    [v18 setArgument:&reasonCopy atIndex:3];
+    [v18 setArgument:&errorCopy atIndex:4];
     [v18 invoke];
     v36 = 0;
     [v18 getReturnValue:&v36];
@@ -1728,7 +1728,7 @@ LABEL_12:
       v46 = 2112;
       *v47 = v19;
       *&v47[8] = 2048;
-      v48 = self;
+      selfCopy3 = self;
       v49 = 1024;
       *v50 = v22;
       v23 = v21;
@@ -1738,13 +1738,13 @@ LABEL_12:
 
     _os_log_impl(&dword_1DB56E000, v23, OS_LOG_TYPE_DEFAULT, v24, buf, v25);
 LABEL_24:
-    if (self->_recognizerState == v39)
+    if (self->_recognizerState == stateCopy)
     {
       return v36;
     }
   }
 
-  if (v37 && *v37)
+  if (errorCopy && *errorCopy)
   {
     if (objc_opt_class() == self)
     {
@@ -1753,7 +1753,7 @@ LABEL_24:
         v30 = VRTraceErrorLogLevelToCSTR();
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
-          [VCAudioCaptions transitionToState:v30 withReason:&v37 error:?];
+          [VCAudioCaptions transitionToState:v30 withReason:&errorCopy error:?];
         }
       }
     }
@@ -1776,9 +1776,9 @@ LABEL_24:
         v32 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
-          if (*v37)
+          if (*errorCopy)
           {
-            v34 = [objc_msgSend(*v37 "description")];
+            v34 = [objc_msgSend(*errorCopy "description")];
           }
 
           else
@@ -1795,7 +1795,7 @@ LABEL_24:
           v46 = 2112;
           *v47 = v29;
           *&v47[8] = 2048;
-          v48 = self;
+          selfCopy3 = self;
           v49 = 2080;
           *v50 = v34;
           _os_log_error_impl(&dword_1DB56E000, v32, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed captions state transition. Error=%s", buf, 0x3Au);
@@ -1971,7 +1971,7 @@ LABEL_29:
   }
 }
 
-- (void)enableCaptions:(BOOL)a3
+- (void)enableCaptions:(BOOL)captions
 {
   v6 = *MEMORY[0x1E69E9840];
   captionsQueue = self->_captionsQueue;
@@ -1979,7 +1979,7 @@ LABEL_29:
   block[1] = 3221225472;
   block[2] = __34__VCAudioCaptions_enableCaptions___block_invoke;
   block[3] = &unk_1E85F37A0;
-  v5 = a3;
+  captionsCopy = captions;
   block[4] = self;
   dispatch_async(captionsQueue, block);
 }
@@ -2029,7 +2029,7 @@ uint64_t __34__VCAudioCaptions_enableCaptions___block_invoke_66(uint64_t a1)
       }
 
       taskHint = self->_taskHint;
-      v7 = [(NSLocale *)self->_locale localeIdentifier];
+      localeIdentifier = [(NSLocale *)self->_locale localeIdentifier];
       *buf = 136316162;
       v19 = v4;
       v20 = 2080;
@@ -2039,7 +2039,7 @@ uint64_t __34__VCAudioCaptions_enableCaptions___block_invoke_66(uint64_t a1)
       v24 = 1024;
       *v25 = taskHint;
       *&v25[4] = 2112;
-      *&v25[6] = v7;
+      *&v25[6] = localeIdentifier;
       v8 = " [%s] %s:%d Speech assets not found for taskHint=%d locale=%@";
       v9 = v5;
       v10 = 44;
@@ -2070,7 +2070,7 @@ uint64_t __34__VCAudioCaptions_enableCaptions___block_invoke_66(uint64_t a1)
       }
 
       v14 = self->_taskHint;
-      v15 = [(NSLocale *)self->_locale localeIdentifier];
+      localeIdentifier2 = [(NSLocale *)self->_locale localeIdentifier];
       *buf = 136316674;
       v19 = v12;
       v20 = 2080;
@@ -2084,7 +2084,7 @@ uint64_t __34__VCAudioCaptions_enableCaptions___block_invoke_66(uint64_t a1)
       v26 = 1024;
       v27 = v14;
       v28 = 2112;
-      v29 = v15;
+      v29 = localeIdentifier2;
       v8 = " [%s] %s:%d %@(%p) Speech assets not found for taskHint=%d locale=%@";
       v9 = v13;
       v10 = 64;
@@ -2110,12 +2110,12 @@ uint64_t __39__VCAudioCaptions_shouldEnableCaptions__block_invoke(uint64_t a1)
   return [v2 didEnableCaptions:v4 error:v3];
 }
 
-+ (BOOL)captionsSupportedWithErrorCode:(int64_t *)a3
++ (BOOL)captionsSupportedWithErrorCode:(int64_t *)code
 {
   v32 = *MEMORY[0x1E69E9840];
   if (!+[VCHardwareSettings isCaptionsSupported])
   {
-    if (objc_opt_class() == a1)
+    if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -2134,7 +2134,7 @@ uint64_t __39__VCAudioCaptions_shouldEnableCaptions__block_invoke(uint64_t a1)
     {
       if (objc_opt_respondsToSelector())
       {
-        v7 = [a1 performSelector:sel_logPrefix];
+        v7 = [self performSelector:sel_logPrefix];
       }
 
       else
@@ -2161,7 +2161,7 @@ uint64_t __39__VCAudioCaptions_shouldEnableCaptions__block_invoke(uint64_t a1)
         v28 = 2112;
         v29 = v7;
         v30 = 2048;
-        v31 = a1;
+        selfCopy3 = self;
         _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Captions is hardware restricted", &v22, 0x30u);
       }
     }
@@ -2169,7 +2169,7 @@ uint64_t __39__VCAudioCaptions_shouldEnableCaptions__block_invoke(uint64_t a1)
     LOBYTE(v6) = 0;
 LABEL_20:
     v5 = 8;
-    if (!a3)
+    if (!code)
     {
       return v6;
     }
@@ -2179,7 +2179,7 @@ LABEL_20:
 
   if (([+[VCSpeechFrameworkWrapper defaultSpeechFrameworkWrapper](VCSpeechFrameworkWrapper "defaultSpeechFrameworkWrapper")] & 1) == 0)
   {
-    if (objc_opt_class() == a1)
+    if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -2198,7 +2198,7 @@ LABEL_20:
     {
       if (objc_opt_respondsToSelector())
       {
-        v8 = [a1 performSelector:sel_logPrefix];
+        v8 = [self performSelector:sel_logPrefix];
       }
 
       else
@@ -2225,7 +2225,7 @@ LABEL_20:
         v28 = 2112;
         v29 = v8;
         v30 = 2048;
-        v31 = a1;
+        selfCopy3 = self;
         _os_log_error_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Speech framework not properly soft linked.", &v22, 0x30u);
       }
     }
@@ -2233,7 +2233,7 @@ LABEL_20:
     LOBYTE(v6) = 0;
 LABEL_33:
     v5 = 1;
-    if (!a3)
+    if (!code)
     {
       return v6;
     }
@@ -2245,21 +2245,21 @@ LABEL_33:
   {
     v5 = 0;
     LOBYTE(v6) = 1;
-    if (!a3)
+    if (!code)
     {
       return v6;
     }
 
 LABEL_34:
-    *a3 = v5;
+    *code = v5;
     return v6;
   }
 
-  if (objc_opt_class() != a1)
+  if (objc_opt_class() != self)
   {
     if (objc_opt_respondsToSelector())
     {
-      v11 = [a1 performSelector:sel_logPrefix];
+      v11 = [self performSelector:sel_logPrefix];
     }
 
     else
@@ -2289,7 +2289,7 @@ LABEL_34:
     v28 = 2112;
     v29 = v11;
     v30 = 2048;
-    v31 = a1;
+    selfCopy3 = self;
     v16 = " [%s] %s:%d %@(%p) Captions disabled via storebag or default";
     v17 = v20;
     v18 = 48;
@@ -2323,7 +2323,7 @@ LABEL_44:
   LOBYTE(v6) = 0;
 LABEL_45:
   v5 = 10;
-  if (a3)
+  if (code)
   {
     goto LABEL_34;
   }
@@ -2373,7 +2373,7 @@ LABEL_45:
   return v3;
 }
 
-- (void)applyOnIdleWithBlock:(id)a3
+- (void)applyOnIdleWithBlock:(id)block
 {
   v7[1] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_captionsQueue);
@@ -2389,16 +2389,16 @@ LABEL_45:
 
     else
     {
-      (*(a3 + 2))(a3);
+      (*(block + 2))(block);
       [(VCAudioCaptions *)self transitionToState:recognizerState withReason:2 error:v7];
     }
   }
 
   else
   {
-    v6 = *(a3 + 2);
+    v6 = *(block + 2);
 
-    v6(a3);
+    v6(block);
   }
 }
 
@@ -2413,7 +2413,7 @@ uint64_t __39__VCAudioCaptions_dispatchedSetLocale___block_invoke(uint64_t a1)
   return reportingGenericEvent();
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
   block[6] = *MEMORY[0x1E69E9840];
   captionsQueue = self->_captionsQueue;
@@ -2422,7 +2422,7 @@ uint64_t __39__VCAudioCaptions_dispatchedSetLocale___block_invoke(uint64_t a1)
   block[2] = __29__VCAudioCaptions_setLocale___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = locale;
   dispatch_async(captionsQueue, block);
 }
 
@@ -2456,20 +2456,20 @@ uint64_t __39__VCAudioCaptions_dispatchedSetLocale___block_invoke(uint64_t a1)
   sourceLocale = self->_sourceLocale;
   if (sourceLocale)
   {
-    v4 = [(NSLocale *)sourceLocale localeIdentifier];
+    localeIdentifier = [(NSLocale *)sourceLocale localeIdentifier];
   }
 
   else
   {
-    v4 = &stru_1F570E008;
+    localeIdentifier = &stru_1F570E008;
   }
 
-  v6[0] = v4;
+  v6[0] = localeIdentifier;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:&v5 count:1];
   reportingGenericEvent();
 }
 
-- (void)setSourceLocale:(id)a3
+- (void)setSourceLocale:(id)locale
 {
   block[6] = *MEMORY[0x1E69E9840];
   captionsQueue = self->_captionsQueue;
@@ -2478,7 +2478,7 @@ uint64_t __39__VCAudioCaptions_dispatchedSetLocale___block_invoke(uint64_t a1)
   block[2] = __35__VCAudioCaptions_setSourceLocale___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = locale;
   dispatch_async(captionsQueue, block);
 }
 
@@ -2740,7 +2740,7 @@ uint64_t __35__VCAudioCaptions_setSourceLocale___block_invoke_85(uint64_t a1)
   return v3;
 }
 
-- (void)setTaskHint:(unsigned __int8)a3
+- (void)setTaskHint:(unsigned __int8)hint
 {
   v6 = *MEMORY[0x1E69E9840];
   captionsQueue = self->_captionsQueue;
@@ -2749,7 +2749,7 @@ uint64_t __35__VCAudioCaptions_setSourceLocale___block_invoke_85(uint64_t a1)
   block[2] = __31__VCAudioCaptions_setTaskHint___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  hintCopy = hint;
   dispatch_async(captionsQueue, block);
 }
 
@@ -2783,7 +2783,7 @@ uint64_t __41__VCAudioCaptions_dispatchedSetTaskHint___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setExplicitLanguageFilterEnabled:(BOOL)a3
+- (void)setExplicitLanguageFilterEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   captionsQueue = self->_captionsQueue;
@@ -2792,7 +2792,7 @@ uint64_t __41__VCAudioCaptions_dispatchedSetTaskHint___block_invoke(uint64_t a1)
   block[2] = __52__VCAudioCaptions_setExplicitLanguageFilterEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(captionsQueue, block);
 }
 
@@ -2826,7 +2826,7 @@ uint64_t __62__VCAudioCaptions_dispatchedSetExplicitLanguageFilterEnabled___bloc
   return v3;
 }
 
-- (void)setFormatForNewLinesEnabled:(BOOL)a3
+- (void)setFormatForNewLinesEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   captionsQueue = self->_captionsQueue;
@@ -2835,7 +2835,7 @@ uint64_t __62__VCAudioCaptions_dispatchedSetExplicitLanguageFilterEnabled___bloc
   block[2] = __47__VCAudioCaptions_setFormatForNewLinesEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(captionsQueue, block);
 }
 
@@ -2859,7 +2859,7 @@ uint64_t __62__VCAudioCaptions_dispatchedSetExplicitLanguageFilterEnabled___bloc
   return v3;
 }
 
-- (void)setCallType:(unsigned __int8)a3
+- (void)setCallType:(unsigned __int8)type
 {
   v6 = *MEMORY[0x1E69E9840];
   captionsQueue = self->_captionsQueue;
@@ -2868,11 +2868,11 @@ uint64_t __62__VCAudioCaptions_dispatchedSetExplicitLanguageFilterEnabled___bloc
   block[2] = __31__VCAudioCaptions_setCallType___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  typeCopy = type;
   dispatch_async(captionsQueue, block);
 }
 
-- (void)updateConfig:(id)a3
+- (void)updateConfig:(id)config
 {
   block[6] = *MEMORY[0x1E69E9840];
   captionsQueue = self->_captionsQueue;
@@ -2881,7 +2881,7 @@ uint64_t __62__VCAudioCaptions_dispatchedSetExplicitLanguageFilterEnabled___bloc
   block[2] = __32__VCAudioCaptions_updateConfig___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = config;
   dispatch_async(captionsQueue, block);
 }
 
@@ -2893,11 +2893,11 @@ uint64_t __32__VCAudioCaptions_updateConfig___block_invoke_2(uint64_t a1)
   return [v2 didConfigureCaptionsWithError:v3];
 }
 
-- (BOOL)shouldSetLocale:(id)a3 withError:(id *)a4
+- (BOOL)shouldSetLocale:(id)locale withError:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_captionsQueue);
-  if (self->_locale && ([objc_msgSend(a3 "localeIdentifier")] & 1) == 0)
+  if (self->_locale && ([objc_msgSend(locale "localeIdentifier")] & 1) == 0)
   {
     if (objc_opt_class() == self)
     {
@@ -2913,7 +2913,7 @@ uint64_t __32__VCAudioCaptions_updateConfig___block_invoke_2(uint64_t a1)
         goto LABEL_14;
       }
 
-      v11 = [(NSLocale *)self->_locale localeIdentifier];
+      localeIdentifier = [(NSLocale *)self->_locale localeIdentifier];
       *buf = 136316162;
       *&buf[4] = v9;
       *&buf[12] = 2080;
@@ -2921,9 +2921,9 @@ uint64_t __32__VCAudioCaptions_updateConfig___block_invoke_2(uint64_t a1)
       *&buf[22] = 1024;
       LODWORD(v20) = 954;
       WORD2(v20) = 2112;
-      *(&v20 + 6) = v11;
+      *(&v20 + 6) = localeIdentifier;
       HIWORD(v20) = 2112;
-      v21 = [a3 localeIdentifier];
+      selfCopy = [locale localeIdentifier];
       v12 = " [%s] %s:%d Attempting to overwrite existing locale=%@ with locale=%@";
       v13 = v10;
       v14 = 48;
@@ -2944,19 +2944,19 @@ uint64_t __32__VCAudioCaptions_updateConfig___block_invoke_2(uint64_t a1)
       if (VRTraceGetErrorLogLevelForModule() < 3 || (v15 = VRTraceErrorLogLevelToCSTR(), v16 = *MEMORY[0x1E6986650], !os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR)))
       {
 LABEL_14:
-        if (a4)
+        if (error)
         {
 LABEL_15:
-          v17 = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 10, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptions.m", 958, *buf, *&buf[16], v20, v21, *v22, *&v22[16], v23], 15);
+          v17 = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 10, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptions.m", 958, *buf, *&buf[16], v20, selfCopy, *v22, *&v22[16], v23], 15);
           result = 0;
-          *a4 = v17;
+          *error = v17;
           return result;
         }
 
         return 0;
       }
 
-      v18 = [(NSLocale *)self->_locale localeIdentifier];
+      localeIdentifier2 = [(NSLocale *)self->_locale localeIdentifier];
       *buf = 136316674;
       *&buf[4] = v15;
       *&buf[12] = 2080;
@@ -2966,18 +2966,18 @@ LABEL_15:
       WORD2(v20) = 2112;
       *(&v20 + 6) = v8;
       HIWORD(v20) = 2048;
-      v21 = self;
+      selfCopy = self;
       *v22 = 2112;
-      *&v22[2] = v18;
+      *&v22[2] = localeIdentifier2;
       *&v22[10] = 2112;
-      *&v22[12] = [a3 localeIdentifier];
+      *&v22[12] = [locale localeIdentifier];
       v12 = " [%s] %s:%d %@(%p) Attempting to overwrite existing locale=%@ with locale=%@";
       v13 = v16;
       v14 = 68;
     }
 
     _os_log_error_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_ERROR, v12, buf, v14);
-    if (a4)
+    if (error)
     {
       goto LABEL_15;
     }
@@ -2988,7 +2988,7 @@ LABEL_15:
   return 1;
 }
 
-- (BOOL)isTaskHintSetWithReturnCode:(int64_t *)a3
+- (BOOL)isTaskHintSetWithReturnCode:(int64_t *)code
 {
   v29 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_captionsQueue);
@@ -3029,7 +3029,7 @@ LABEL_15:
       v23 = 2112;
       v24 = v6;
       v25 = 2048;
-      v26 = self;
+      selfCopy = self;
       v27 = 1024;
       v28 = taskHint;
       v10 = " [%s] %s:%d %@(%p) Attempting to overwrite taskHint=%d";
@@ -3063,22 +3063,22 @@ LABEL_12:
   }
 
 LABEL_13:
-  if (a3)
+  if (code)
   {
-    *a3 = 16 * (v5 < 2);
+    *code = 16 * (v5 < 2);
   }
 
   return v5 < 2;
 }
 
-+ (BOOL)isTaskHintSupported:(unsigned __int8)a3 withReturnCode:(int64_t *)a4
++ (BOOL)isTaskHintSupported:(unsigned __int8)supported withReturnCode:(int64_t *)code
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3 == 1)
+  if (supported == 1)
   {
 LABEL_4:
     v5 = 1;
-    if (!a4)
+    if (!code)
     {
       return v5;
     }
@@ -3086,13 +3086,13 @@ LABEL_4:
     goto LABEL_11;
   }
 
-  if (a3 == 2)
+  if (supported == 2)
   {
     if (([+[VCSpeechFrameworkWrapper defaultSpeechFrameworkWrapper](VCSpeechFrameworkWrapper "defaultSpeechFrameworkWrapper")] & 1) == 0)
     {
       [VCAudioCaptions isTaskHintSupported:? withReturnCode:?];
       v5 = v8;
-      if (!a4)
+      if (!code)
       {
         return v5;
       }
@@ -3117,7 +3117,7 @@ LABEL_4:
 
   v5 = 0;
 LABEL_10:
-  if (!a4)
+  if (!code)
   {
     return v5;
   }
@@ -3129,11 +3129,11 @@ LABEL_11:
     v6 = 0;
   }
 
-  *a4 = v6;
+  *code = v6;
   return v5;
 }
 
-- (void)setLanguageDetectorEnabled:(BOOL)a3
+- (void)setLanguageDetectorEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   captionsQueue = self->_captionsQueue;
@@ -3142,18 +3142,18 @@ LABEL_11:
   block[2] = __46__VCAudioCaptions_setLanguageDetectorEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(captionsQueue, block);
 }
 
-- (void)dispatchedSetLanguageDetectorEnabled:(BOOL)a3
+- (void)dispatchedSetLanguageDetectorEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v27 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_captionsQueue);
-  if (VCDefaults_GetBoolValueForKey(@"languageDetectorEnabled", v3) && self->_useSpeechAnalyzerV2API)
+  if (VCDefaults_GetBoolValueForKey(@"languageDetectorEnabled", enabledCopy) && self->_useSpeechAnalyzerV2API)
   {
-    self->_languageDetectorEnabled = [(VCAudioCaptions *)self enableLanguageDetector:v3];
+    self->_languageDetectorEnabled = [(VCAudioCaptions *)self enableLanguageDetector:enabledCopy];
   }
 
   if (objc_opt_class() == self)
@@ -3210,7 +3210,7 @@ LABEL_14:
         v21 = 2112;
         v22 = v5;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v25 = 1024;
         v26 = v14;
         v9 = " [%s] %s:%d %@(%p) _languageDetectorEnabled=%d";
@@ -3224,7 +3224,7 @@ LABEL_14:
   reportingGenericEvent();
 }
 
-- (void)setLanguageDetectorReportingFrequency:(id)a3
+- (void)setLanguageDetectorReportingFrequency:(id)frequency
 {
   block[6] = *MEMORY[0x1E69E9840];
   captionsQueue = self->_captionsQueue;
@@ -3233,25 +3233,25 @@ LABEL_14:
   block[2] = __57__VCAudioCaptions_setLanguageDetectorReportingFrequency___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = frequency;
   dispatch_async(captionsQueue, block);
 }
 
-- (void)dispatchedSetLanguageDetectorReportingFrequency:(id)a3
+- (void)dispatchedSetLanguageDetectorReportingFrequency:(id)frequency
 {
   dispatch_assert_queue_V2(self->_captionsQueue);
-  if (a3)
+  if (frequency)
   {
 
-    self->_languageDetectorReportingFrequency = a3;
+    self->_languageDetectorReportingFrequency = frequency;
   }
 }
 
-- (void)callCompletionHandler:(id)a3 withResult:(BOOL)a4
+- (void)callCompletionHandler:(id)handler withResult:(BOOL)result
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, a4);
+    (*(handler + 2))(handler, result);
   }
 }
 
@@ -3275,7 +3275,7 @@ LABEL_14:
   return v3;
 }
 
-- (void)setTranslatorMode:(unsigned __int8)a3
+- (void)setTranslatorMode:(unsigned __int8)mode
 {
   v6 = *MEMORY[0x1E69E9840];
   captionsQueue = self->_captionsQueue;
@@ -3283,7 +3283,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __37__VCAudioCaptions_setTranslatorMode___block_invoke;
   block[3] = &unk_1E85F37A0;
-  v5 = a3;
+  modeCopy = mode;
   block[4] = self;
   dispatch_async(captionsQueue, block);
 }
@@ -3453,7 +3453,7 @@ void __VCAudioCaptions_ConvertSamplesToPCM_block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)reallocCopyBufferAllocatorWithFormat:(const AudioStreamBasicDescription *)a3
+- (BOOL)reallocCopyBufferAllocatorWithFormat:(const AudioStreamBasicDescription *)format
 {
   v45 = *MEMORY[0x1E69E9840];
   _VCAudioCaptions_DestroyCopyBufferAllocator(self);
@@ -3531,8 +3531,8 @@ LABEL_18:
     return v18;
   }
 
-  LODWORD(v5) = a3->mBytesPerPacket;
-  v12 = (a3->mSampleRate * v5 * 20.0 / 1000.0);
+  LODWORD(v5) = format->mBytesPerPacket;
+  v12 = (format->mSampleRate * v5 * 20.0 / 1000.0);
   v13 = VCAudioBufferAllocatorCreate(*MEMORY[0x1E695E480], v12, 2u);
   self->_copyBufferAllocator = v13;
   v14 = objc_opt_class();
@@ -3552,8 +3552,8 @@ LABEL_18:
         goto LABEL_18;
       }
 
-      mSampleRate = a3->mSampleRate;
-      mBytesPerPacket = a3->mBytesPerPacket;
+      mSampleRate = format->mSampleRate;
+      mBytesPerPacket = format->mBytesPerPacket;
       v31 = 136316418;
       v32 = v20;
       v33 = 2080;
@@ -3595,8 +3595,8 @@ LABEL_18:
         goto LABEL_18;
       }
 
-      v26 = a3->mSampleRate;
-      v27 = a3->mBytesPerPacket;
+      v26 = format->mSampleRate;
+      v27 = format->mBytesPerPacket;
       v31 = 136316930;
       v32 = v24;
       v33 = 2080;
@@ -3676,20 +3676,20 @@ LABEL_18:
   return v18;
 }
 
-- (void)start:(const AudioStreamBasicDescription *)a3 forToken:(int64_t)a4 withCompletionHandler:(id)a5
+- (void)start:(const AudioStreamBasicDescription *)start forToken:(int64_t)token withCompletionHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
-  mSampleRate = a3->mSampleRate;
+  mSampleRate = start->mSampleRate;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__VCAudioCaptions_start_forToken_withCompletionHandler___block_invoke;
   block[3] = &unk_1E85F4E70;
-  block[5] = a5;
-  block[6] = a4;
+  block[5] = handler;
+  block[6] = token;
   block[4] = self;
   *&block[7] = mSampleRate;
-  v7 = *&a3->mBytesPerFrame;
-  v10 = *&a3->mFormatID;
+  v7 = *&start->mBytesPerFrame;
+  v10 = *&start->mFormatID;
   v11 = v7;
   v8 = dispatch_block_create(DISPATCH_BLOCK_DETACHED, block);
   dispatch_async(self->_captionsQueue, v8);
@@ -4027,7 +4027,7 @@ LABEL_60:
   return [v15 callCompletionHandler:v16 withResult:{v17, *v50, *&v50[16], *&v50[24], v51, *v52, *&v52[8], v53}];
 }
 
-- (void)stopWithCompletionHandler:(id)a3
+- (void)stopWithCompletionHandler:(id)handler
 {
   block[6] = *MEMORY[0x1E69E9840];
   captionsQueue = self->_captionsQueue;
@@ -4036,7 +4036,7 @@ LABEL_60:
   block[2] = __45__VCAudioCaptions_stopWithCompletionHandler___block_invoke;
   block[3] = &unk_1E85F4E98;
   block[4] = self;
-  block[5] = a3;
+  block[5] = handler;
   dispatch_async(captionsQueue, block);
 }
 
@@ -4182,7 +4182,7 @@ LABEL_19:
   return [v15 callCompletionHandler:v17 withResult:v16];
 }
 
-- (id)taskInfoForTask:(id)a3
+- (id)taskInfoForTask:(id)task
 {
   v37 = *MEMORY[0x1E69E9840];
   v33 = 0u;
@@ -4215,7 +4215,7 @@ LABEL_9:
       v24 = 1024;
       v25 = 1255;
       v26 = 2048;
-      v27 = a3;
+      taskCopy = task;
       v14 = " [%s] %s:%d We could not find the corresponding taskInfo for the task=%p";
       v15 = v13;
       v16 = 38;
@@ -4252,11 +4252,11 @@ LABEL_9:
       v24 = 1024;
       v25 = 1255;
       v26 = 2112;
-      v27 = v11;
+      taskCopy = v11;
       v28 = 2048;
-      v29 = self;
+      selfCopy = self;
       v30 = 2048;
-      v31 = a3;
+      taskCopy2 = task;
       v14 = " [%s] %s:%d %@(%p) We could not find the corresponding taskInfo for the task=%p";
       v15 = v18;
       v16 = 58;
@@ -4278,7 +4278,7 @@ LABEL_3:
     }
 
     v10 = *(*(&v33 + 1) + 8 * v9);
-    if ([v10 task] == a3)
+    if ([v10 task] == task)
     {
       return v10;
     }
@@ -4296,19 +4296,19 @@ LABEL_3:
   }
 }
 
-- (opaqueCMSampleBuffer)createSampleBufferWithFormat:(const AudioStreamBasicDescription *)a3 samples:(char *)a4 numSamples:(int)a5
+- (opaqueCMSampleBuffer)createSampleBufferWithFormat:(const AudioStreamBasicDescription *)format samples:(char *)samples numSamples:(int)numSamples
 {
   v44 = *MEMORY[0x1E69E9840];
   formatDescriptionOut = 0;
   sbuf = 0;
-  mBytesPerPacket = a3->mBytesPerPacket;
-  mSampleRate = a3->mSampleRate;
+  mBytesPerPacket = format->mBytesPerPacket;
+  mSampleRate = format->mSampleRate;
   self->_timescale = mSampleRate;
-  v9 = mBytesPerPacket * a5;
+  v9 = mBytesPerPacket * numSamples;
   currentTime = self->_currentTime;
   epoch = self->_epoch;
-  self->_currentTime = currentTime + a5;
-  if (a5 < 0)
+  self->_currentTime = currentTime + numSamples;
+  if (numSamples < 0)
   {
     ++self->_epoch;
   }
@@ -4317,9 +4317,9 @@ LABEL_3:
   bufferList.mNumberBuffers = 1;
   bufferList.mBuffers[0].mNumberChannels = 1;
   bufferList.mBuffers[0].mDataByteSize = v9;
-  bufferList.mBuffers[0].mData = a4;
+  bufferList.mBuffers[0].mData = samples;
   v12 = *MEMORY[0x1E695E480];
-  if (CMAudioFormatDescriptionCreate(*MEMORY[0x1E695E480], a3, 0, 0, 0, 0, 0, &formatDescriptionOut))
+  if (CMAudioFormatDescriptionCreate(*MEMORY[0x1E695E480], format, 0, 0, 0, 0, 0, &formatDescriptionOut))
   {
     [VCAudioCaptions createSampleBufferWithFormat:&presentationTimeStamp samples:? numSamples:?];
     return presentationTimeStamp.value;
@@ -4329,7 +4329,7 @@ LABEL_3:
   presentationTimeStamp.timescale = mSampleRate;
   presentationTimeStamp.flags = 1;
   presentationTimeStamp.epoch = epoch;
-  v13 = CMAudioSampleBufferCreateWithPacketDescriptions(v12, 0, 0, 0, 0, formatDescriptionOut, a5, &presentationTimeStamp, 0, &sbuf);
+  v13 = CMAudioSampleBufferCreateWithPacketDescriptions(v12, 0, 0, 0, 0, formatDescriptionOut, numSamples, &presentationTimeStamp, 0, &sbuf);
   CFRelease(formatDescriptionOut);
   if (v13)
   {
@@ -4393,7 +4393,7 @@ LABEL_3:
       v37 = 2112;
       v38 = v16;
       v39 = 2048;
-      v40 = self;
+      selfCopy2 = self;
       v41 = 1024;
       v42 = v13;
       v21 = " [%s] %s:%d %@(%p) Failed to create the CMSampleBuffer description for captions: %d";
@@ -4464,7 +4464,7 @@ LABEL_30:
         v37 = 2112;
         v38 = v18;
         v39 = 2048;
-        v40 = self;
+        selfCopy2 = self;
         v41 = 1024;
         v42 = v17;
         v26 = " [%s] %s:%d %@(%p) Failed to create the CMSampleBuffer for captions: %d";
@@ -4485,7 +4485,7 @@ LABEL_30:
   return result;
 }
 
-- (id)newPCMSampleBufferWithSamples:(char *)a3 numSamples:(int)a4 pcmFormat:(id)a5
+- (id)newPCMSampleBufferWithSamples:(char *)samples numSamples:(int)numSamples pcmFormat:(id)format
 {
   v66 = *MEMORY[0x1E69E9840];
   v62 = 0;
@@ -4504,7 +4504,7 @@ LABEL_30:
     v45 = 0u;
   }
 
-  v11 = (v10 * a4);
+  v11 = (v10 * numSamples);
   v12 = MEMORY[0x1E1288880](self->_pcmCopyBufferAllocator, v11, 3961529423, 0);
   v13 = v12;
   if (!v12)
@@ -4545,11 +4545,11 @@ LABEL_30:
       v51 = 1024;
       v52 = 1314;
       v53 = 1024;
-      *v54 = a4;
+      *v54 = numSamples;
       *&v54[4] = 1024;
       *&v54[6] = v20;
-      LOWORD(v55) = 1024;
-      *(&v55 + 2) = v11;
+      LOWORD(selfCopy2) = 1024;
+      *(&selfCopy2 + 2) = v11;
       v26 = " [%s] %s:%d Failed to allocate PCM buffer for captions: numSamples=%d,  bytesPerPacket=%d, totalCapacity=%d";
       v27 = v18;
       v28 = 46;
@@ -4603,9 +4603,9 @@ LABEL_30:
       v53 = 2112;
       *v54 = v16;
       *&v54[8] = 2048;
-      v55 = self;
+      selfCopy2 = self;
       v56 = 1024;
-      v57 = a4;
+      numSamplesCopy = numSamples;
       v58 = 1024;
       v59 = v25;
       v60 = 1024;
@@ -4619,7 +4619,7 @@ LABEL_30:
     return 0;
   }
 
-  memcpy(v12, a3, v11);
+  memcpy(v12, samples, v11);
   LODWORD(v62) = 1;
   v63 = 1;
   v64 = v11;
@@ -4635,13 +4635,13 @@ LABEL_30:
 
   v37 = pcmCopyBufferAllocator;
   self->_timescale = *[(AVAudioFormat *)self->_frameworkAudioFormat streamDescription:MEMORY[0x1E69E9820]];
-  self->_currentTime += a4;
-  if (a4 < 0)
+  self->_currentTime += numSamples;
+  if (numSamples < 0)
   {
     ++self->_epoch;
   }
 
-  v15 = [objc_alloc(MEMORY[0x1E6958440]) initWithPCMFormat:a5 bufferListNoCopy:&v62 deallocator:&v33];
+  v15 = [objc_alloc(MEMORY[0x1E6958440]) initWithPCMFormat:format bufferListNoCopy:&v62 deallocator:&v33];
   if (!v15)
   {
     CFAllocatorDeallocate(v35[3], v13);
@@ -4690,7 +4690,7 @@ LABEL_30:
           v53 = 2112;
           *v54 = v30;
           *&v54[8] = 2048;
-          v55 = self;
+          selfCopy2 = self;
           _os_log_error_impl(&dword_1DB56E000, v32, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to init PCM audio buffer.", buf, 0x30u);
         }
       }
@@ -4712,18 +4712,18 @@ void __70__VCAudioCaptions_newPCMSampleBufferWithSamples_numSamples_pcmFormat___
   }
 }
 
-- (BOOL)updateAudioConverterForStreamDescription:(const AudioStreamBasicDescription *)a3
+- (BOOL)updateAudioConverterForStreamDescription:(const AudioStreamBasicDescription *)description
 {
   v9 = *MEMORY[0x1E69E9840];
   inAudioConverter = 0;
-  if (a3)
+  if (description)
   {
-    if (![VCAudioCaptions shouldAllocateNewAllocator:self->_audioConverter streamDesc:a3 referenceStreamDesc:[(ASBDWrapper *)self->_captionsFormat asbdPointer]]&& !self->_inputFormatDidChange)
+    if (![VCAudioCaptions shouldAllocateNewAllocator:self->_audioConverter streamDesc:description referenceStreamDesc:[(ASBDWrapper *)self->_captionsFormat asbdPointer]]&& !self->_inputFormatDidChange)
     {
       return 1;
     }
 
-    if ([(VCAudioCaptions *)self createAudioConverterWithInputFormat:[(ASBDWrapper *)self->_inputFormat asbdPointer:inAudioConverter] outputFormat:a3 converter:&inAudioConverter])
+    if ([(VCAudioCaptions *)self createAudioConverterWithInputFormat:[(ASBDWrapper *)self->_inputFormat asbdPointer:inAudioConverter] outputFormat:description converter:&inAudioConverter])
     {
       self->_inputFormatDidChange = 0;
       audioConverter = self->_audioConverter;
@@ -4770,15 +4770,15 @@ void __70__VCAudioCaptions_newPCMSampleBufferWithSamples_numSamples_pcmFormat___
   return result;
 }
 
-- (void)pushAudioSamples:(opaqueVCAudioBufferList *)a3
+- (void)pushAudioSamples:(opaqueVCAudioBufferList *)samples
 {
   v43 = *MEMORY[0x1E69E9840];
   if (self->_isEnabled && self->_isStarted)
   {
-    SampleCount = VCAudioBufferList_GetSampleCount(a3);
-    AudioBufferList = VCAudioBufferList_GetAudioBufferList(a3);
-    HostTime = VCAudioBufferList_GetHostTime(a3);
-    SampleFormat = VCAudioBufferList_GetSampleFormat(a3);
+    SampleCount = VCAudioBufferList_GetSampleCount(samples);
+    AudioBufferList = VCAudioBufferList_GetAudioBufferList(samples);
+    HostTime = VCAudioBufferList_GetHostTime(samples);
+    SampleFormat = VCAudioBufferList_GetSampleFormat(samples);
     v24 = 0;
     v25 = &v24;
     v26 = 0x2020000000;
@@ -4832,8 +4832,8 @@ void __70__VCAudioCaptions_newPCMSampleBufferWithSamples_numSamples_pcmFormat___
       *v35 = SampleCount;
       *&v35[4] = 1024;
       *&v35[6] = v15;
-      LOWORD(v36) = 1024;
-      *(&v36 + 2) = v15 * SampleCount;
+      LOWORD(selfCopy) = 1024;
+      *(&selfCopy + 2) = v15 * SampleCount;
       v16 = " [%s] %s:%d Failed to allocate copy buffer for captions: %d %d %d";
       v17 = v14;
       v18 = 46;
@@ -4873,7 +4873,7 @@ void __70__VCAudioCaptions_newPCMSampleBufferWithSamples_numSamples_pcmFormat___
       v34 = 2112;
       *v35 = v12;
       *&v35[8] = 2048;
-      v36 = self;
+      selfCopy = self;
       v37 = 1024;
       v38 = SampleCount;
       v39 = 1024;
@@ -5077,15 +5077,15 @@ LABEL_30:
   ++self->_captioningRequestCount;
 }
 
-- (void)sendTranscriptionResult:(id)a3 taskInfo:(id)a4
+- (void)sendTranscriptionResult:(id)result taskInfo:(id)info
 {
   v30 = *MEMORY[0x1E69E9840];
   if ([(VCAudioCaptions *)self delegate])
   {
-    if (a4)
+    if (info)
     {
       v7 = objc_opt_class();
-      if (a3)
+      if (result)
       {
         if (v7 == self)
         {
@@ -5108,7 +5108,7 @@ LABEL_30:
           v22 = 1024;
           v23 = 1477;
           v24 = 2112;
-          v25 = a3;
+          resultCopy = result;
           v11 = " [%s] %s:%d transcription=%@";
           v12 = v10;
           v13 = 38;
@@ -5145,11 +5145,11 @@ LABEL_30:
           v22 = 1024;
           v23 = 1477;
           v24 = 2112;
-          v25 = v8;
+          resultCopy = v8;
           v26 = 2048;
-          v27 = self;
+          selfCopy = self;
           v28 = 2112;
-          v29 = a3;
+          resultCopy2 = result;
           v11 = " [%s] %s:%d %@(%p) transcription=%@";
           v12 = v15;
           v13 = 58;
@@ -5157,16 +5157,16 @@ LABEL_30:
 
         _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, v11, buf, v13);
 LABEL_15:
-        [(VCAudioCaptions *)self dumpCaptionsIfNeededForCaptionsTranscription:a3];
+        [(VCAudioCaptions *)self dumpCaptionsIfNeededForCaptionsTranscription:result];
         delegateQueue = self->_delegateQueue;
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = __52__VCAudioCaptions_sendTranscriptionResult_taskInfo___block_invoke;
         v17[3] = &unk_1E85F37F0;
         v17[4] = self;
-        v17[5] = a3;
+        v17[5] = result;
         dispatch_async(delegateQueue, v17);
-        [a4 setUpdateNumber:{objc_msgSend(a4, "updateNumber") + 1}];
+        [info setUpdateNumber:{objc_msgSend(info, "updateNumber") + 1}];
         return;
       }
 
@@ -5193,10 +5193,10 @@ uint64_t __52__VCAudioCaptions_sendTranscriptionResult_taskInfo___block_invoke(u
   return [v2 didUpdateCaptions:v3];
 }
 
-- (void)dumpCaptionsIfNeededForCaptionsTranscription:(id)a3
+- (void)dumpCaptionsIfNeededForCaptionsTranscription:(id)transcription
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (a3 && self->_logCaptionsDump)
+  if (transcription && self->_logCaptionsDump)
   {
     if (objc_opt_class() == self)
     {
@@ -5219,13 +5219,13 @@ uint64_t __52__VCAudioCaptions_sendTranscriptionResult_taskInfo___block_invoke(u
       v25 = 1024;
       v26 = 1491;
       v27 = 1024;
-      *v28 = [a3 isFinal];
+      *v28 = [transcription isFinal];
       *&v28[4] = 1024;
-      *&v28[6] = [a3 isLocal];
+      *&v28[6] = [transcription isLocal];
       *v29 = 2048;
-      *&v29[2] = [a3 streamToken];
+      *&v29[2] = [transcription streamToken];
       *v30 = 2080;
-      *&v30[2] = [objc_msgSend(a3 "formattedText")];
+      *&v30[2] = [objc_msgSend(transcription "formattedText")];
       v8 = " [%s] %s:%d isFinal=%d, isLocal=%d, streamToken=%ld, formattedText=%s";
       v9 = v7;
       v10 = 60;
@@ -5266,13 +5266,13 @@ uint64_t __52__VCAudioCaptions_sendTranscriptionResult_taskInfo___block_invoke(u
       *&v28[8] = 2048;
       *v29 = self;
       *&v29[8] = 1024;
-      *v30 = [a3 isFinal];
+      *v30 = [transcription isFinal];
       *&v30[4] = 1024;
-      *&v30[6] = [a3 isLocal];
+      *&v30[6] = [transcription isLocal];
       v31 = 2048;
-      v32 = [a3 streamToken];
+      streamToken = [transcription streamToken];
       v33 = 2080;
-      v34 = [objc_msgSend(a3 "formattedText")];
+      v34 = [objc_msgSend(transcription "formattedText")];
       v8 = " [%s] %s:%d %@(%p) isFinal=%d, isLocal=%d, streamToken=%ld, formattedText=%s";
       v9 = v12;
       v10 = 80;
@@ -5280,16 +5280,16 @@ uint64_t __52__VCAudioCaptions_sendTranscriptionResult_taskInfo___block_invoke(u
 
     _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, v8, buf, v10);
 LABEL_14:
-    if ([a3 isFinal])
+    if ([transcription isFinal])
     {
       logCaptionsDump = self->_logCaptionsDump;
-      v14 = [objc_msgSend(a3 "formattedText")];
+      v14 = [objc_msgSend(transcription "formattedText")];
       VRLogfilePrintWithTimestamp(logCaptionsDump, "%s \n", v15, v16, v17, v18, v19, v20, v14);
     }
   }
 }
 
-- (void)speechAnalyzer:(id)a3 didProduceLanguageHypothesis:(id)a4
+- (void)speechAnalyzer:(id)analyzer didProduceLanguageHypothesis:(id)hypothesis
 {
   block[6] = *MEMORY[0x1E69E9840];
   captionsQueue = self->_captionsQueue;
@@ -5298,7 +5298,7 @@ LABEL_14:
   block[2] = __63__VCAudioCaptions_speechAnalyzer_didProduceLanguageHypothesis___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a4;
+  block[5] = hypothesis;
   dispatch_async(captionsQueue, block);
 }
 
@@ -5331,7 +5331,7 @@ void __63__VCAudioCaptions_speechAnalyzer_didProduceLanguageHypothesis___block_i
   }
 }
 
-- (void)speechAnalyzer:(id)a3 didStopLanguageDetectorWithError:(id)a4
+- (void)speechAnalyzer:(id)analyzer didStopLanguageDetectorWithError:(id)error
 {
   block[6] = *MEMORY[0x1E69E9840];
   captionsQueue = self->_captionsQueue;
@@ -5340,7 +5340,7 @@ void __63__VCAudioCaptions_speechAnalyzer_didProduceLanguageHypothesis___block_i
   block[2] = __67__VCAudioCaptions_speechAnalyzer_didStopLanguageDetectorWithError___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a4;
+  block[5] = error;
   dispatch_async(captionsQueue, block);
 }
 
@@ -5571,15 +5571,15 @@ LABEL_36:
   dispatch_async(v24, v25);
 }
 
-- (void)dispatchedSetLocale:(id)a3
+- (void)dispatchedSetLocale:(id)locale
 {
   v35 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_captionsQueue);
   v18 = [VCDefaults copyStringValueForKey:@"forceAVCCaptionsLocale"];
-  v5 = [(NSLocale *)self->_locale localeIdentifier];
+  localeIdentifier = [(NSLocale *)self->_locale localeIdentifier];
   if (v18)
   {
-    if (![(NSString *)v5 isEqualToString:?])
+    if (![(NSString *)localeIdentifier isEqualToString:?])
     {
       v6 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:v18];
       v7 = v18;
@@ -5588,9 +5588,9 @@ LABEL_36:
     }
   }
 
-  else if (!-[NSString isEqualToString:](v5, "isEqualToString:", [a3 localeIdentifier]))
+  else if (!-[NSString isEqualToString:](localeIdentifier, "isEqualToString:", [locale localeIdentifier]))
   {
-    v8 = [a3 copy];
+    v8 = [locale copy];
     v7 = 0;
 LABEL_9:
 
@@ -5601,14 +5601,14 @@ LABEL_9:
         v9 = VRTraceErrorLogLevelToCSTR();
         if (OUTLINED_FUNCTION_30_1())
         {
-          v10 = v18;
+          localeIdentifier2 = v18;
           if (!v18)
           {
-            v10 = [a3 localeIdentifier];
+            localeIdentifier2 = [locale localeIdentifier];
           }
 
-          v19 = v10;
-          v11 = [(NSLocale *)self->_locale localeIdentifier];
+          v19 = localeIdentifier2;
+          localeIdentifier3 = [(NSLocale *)self->_locale localeIdentifier];
           recognizerState = self->_recognizerState;
           v21 = 136316674;
           v22 = v9;
@@ -5617,11 +5617,11 @@ LABEL_9:
           v25 = 1024;
           v26 = 731;
           v27 = 2048;
-          v28 = self;
+          selfCopy = self;
           v29 = 2112;
           v30 = v19;
           v31 = 2112;
-          v32 = v11;
+          v32 = localeIdentifier3;
           v33 = 1024;
           v34 = recognizerState;
           OUTLINED_FUNCTION_18_1();
@@ -5642,7 +5642,7 @@ LABEL_9:
   }
 }
 
-- (void)dispatchedSetTaskHint:(unsigned __int8)a3
+- (void)dispatchedSetTaskHint:(unsigned __int8)hint
 {
   OUTLINED_FUNCTION_34_0();
   v36 = *MEMORY[0x1E69E9840];
@@ -5729,7 +5729,7 @@ LABEL_13:
   }
 }
 
-- (void)dispatchedSetExplicitLanguageFilterEnabled:(BOOL)a3
+- (void)dispatchedSetExplicitLanguageFilterEnabled:(BOOL)enabled
 {
   OUTLINED_FUNCTION_34_0();
   dispatch_assert_queue_V2(*(v5 + 208));
@@ -5787,7 +5787,7 @@ LABEL_13:
   }
 }
 
-- (void)dispatchedSetFormatForNewLinesEnabled:(BOOL)a3
+- (void)dispatchedSetFormatForNewLinesEnabled:(BOOL)enabled
 {
   OUTLINED_FUNCTION_34_0();
   dispatch_assert_queue_V2(*(v5 + 208));
@@ -5845,7 +5845,7 @@ LABEL_13:
   }
 }
 
-- (void)dispatchedSetCallType:(unsigned __int8)a3
+- (void)dispatchedSetCallType:(unsigned __int8)type
 {
   OUTLINED_FUNCTION_34_0();
   v31 = *MEMORY[0x1E69E9840];
@@ -5976,16 +5976,16 @@ LABEL_9:
   dispatch_async(v5, v6);
 }
 
-- (BOOL)shouldSetTaskHint:(unsigned __int8)a3 withError:(id *)a4
+- (BOOL)shouldSetTaskHint:(unsigned __int8)hint withError:(id *)error
 {
-  v5 = a3;
+  hintCopy = hint;
   v10[1] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_captionsQueue);
   v10[0] = 0;
-  if (self->_taskHint != v5 && [(VCAudioCaptions *)self isTaskHintSetWithReturnCode:v10])
+  if (self->_taskHint != hintCopy && [(VCAudioCaptions *)self isTaskHintSetWithReturnCode:v10])
   {
     v7 = 0;
-    if (!a4)
+    if (!error)
     {
       return v7;
     }
@@ -5993,8 +5993,8 @@ LABEL_9:
 
   else
   {
-    v7 = [VCAudioCaptions isTaskHintSupported:v5 withReturnCode:v10];
-    if (!a4)
+    v7 = [VCAudioCaptions isTaskHintSupported:hintCopy withReturnCode:v10];
+    if (!error)
     {
       return v7;
     }
@@ -6002,8 +6002,8 @@ LABEL_9:
 
   if (v10[0])
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptions.m", 1021];
-    *a4 = [VCSessionErrorUtils VCSessionCaptionsErrorEvent:10 errorPath:v8 returnCode:v10[0]];
+    1021 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptions.m", 1021];
+    *error = [VCSessionErrorUtils VCSessionCaptionsErrorEvent:10 errorPath:1021 returnCode:v10[0]];
   }
 
   return v7;
@@ -6361,7 +6361,7 @@ LABEL_11:
 
 - (void)shouldEnableCaptions
 {
-  v5 = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 1, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptions.m", 639], *a1);
+  v5 = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 1, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptions.m", 639], *self);
   v6 = *(a2 + 216);
   *a3 = MEMORY[0x1E69E9820];
   a3[1] = 3221225472;

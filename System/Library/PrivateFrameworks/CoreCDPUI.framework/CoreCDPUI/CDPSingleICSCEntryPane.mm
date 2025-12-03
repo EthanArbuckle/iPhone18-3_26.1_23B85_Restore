@@ -1,19 +1,19 @@
 @interface CDPSingleICSCEntryPane
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation CDPSingleICSCEntryPane
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   headerView = self->super.super._headerView;
-  v5 = a3;
-  v6 = [(CDPPaneHeaderView *)headerView detailTextLabel];
-  [v6 setText:v5];
+  titleCopy = title;
+  detailTextLabel = [(CDPPaneHeaderView *)headerView detailTextLabel];
+  [detailTextLabel setText:titleCopy];
 
   v7 = CDPLocalizedString();
-  v8 = [(CDPPaneHeaderView *)self->super.super._headerView textLabel];
-  [v8 setText:v7];
+  textLabel = [(CDPPaneHeaderView *)self->super.super._headerView textLabel];
+  [textLabel setText:v7];
 
   [(CDPPaneHeaderView *)self->super.super._headerView makeAllTheTextFits];
   v9 = self->super.super._headerView;

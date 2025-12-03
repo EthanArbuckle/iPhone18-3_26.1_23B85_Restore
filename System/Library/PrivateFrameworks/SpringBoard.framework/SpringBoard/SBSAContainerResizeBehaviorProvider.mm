@@ -1,25 +1,25 @@
 @interface SBSAContainerResizeBehaviorProvider
-- (BOOL)_didContainerViewForActiveGestureCollapseWithFrame:(CGRect)a3 initialContainerViewFrame:(CGRect)a4 isPrimaryContainer:(BOOL)a5 activeInterfaceOrientation:(int64_t)a6;
-- (CGRect)_frameForAdjunctContainerViewDescription:(id)a3 resizedWithGestureDescription:(id)a4 initialContainerViewFrame:(CGRect)a5 context:(id)a6;
-- (CGRect)_frameForContainerViewDescription:(id)a3 resizedWithGestureDescription:(id)a4 initialContainerViewFrame:(CGRect)a5 context:(id)a6;
+- (BOOL)_didContainerViewForActiveGestureCollapseWithFrame:(CGRect)frame initialContainerViewFrame:(CGRect)viewFrame isPrimaryContainer:(BOOL)container activeInterfaceOrientation:(int64_t)orientation;
+- (CGRect)_frameForAdjunctContainerViewDescription:(id)description resizedWithGestureDescription:(id)gestureDescription initialContainerViewFrame:(CGRect)frame context:(id)context;
+- (CGRect)_frameForContainerViewDescription:(id)description resizedWithGestureDescription:(id)gestureDescription initialContainerViewFrame:(CGRect)frame context:(id)context;
 - (id)_contentResizeBehaviorSettings;
-- (id)_preferencesUpdatedWithCollapseOfElement:(void *)a3 activeFrame:(void *)a4 initialFrame:(void *)a5 minimumFrame:(double)a6 preferences:(double)a7 context:(double)a8;
-- (id)preferencesFromContext:(id)a3;
+- (id)_preferencesUpdatedWithCollapseOfElement:(void *)element activeFrame:(void *)frame initialFrame:(void *)initialFrame minimumFrame:(double)minimumFrame preferences:(double)preferences context:(double)context;
+- (id)preferencesFromContext:(id)context;
 @end
 
 @implementation SBSAContainerResizeBehaviorProvider
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v181 = *MEMORY[0x277D85DE8];
-  v129 = a3;
-  if (!v129)
+  contextCopy = context;
+  if (!contextCopy)
   {
     goto LABEL_9;
   }
 
   v3 = objc_opt_self();
-  v4 = v129;
+  v4 = contextCopy;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -48,9 +48,9 @@ LABEL_9:
   }
 
   v132 = v6;
-  v7 = [v6 preferences];
+  preferences = [v6 preferences];
   v8 = objc_opt_class();
-  v9 = v7;
+  v9 = preferences;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -71,8 +71,8 @@ LABEL_9:
 
   v140 = v10;
 
-  v11 = [v6 gestureDescriptions];
-  obj = [v11 bs_firstObjectPassingTest:&__block_literal_global_255];
+  gestureDescriptions = [v6 gestureDescriptions];
+  obj = [gestureDescriptions bs_firstObjectPassingTest:&__block_literal_global_255];
 
   if (obj)
   {
@@ -82,7 +82,7 @@ LABEL_9:
   activeGestureDescription = self->_activeGestureDescription;
   if (activeGestureDescription)
   {
-    v13 = [(SBSAGestureDescription *)activeGestureDescription gestureRecognizerState];
+    gestureRecognizerState = [(SBSAGestureDescription *)activeGestureDescription gestureRecognizerState];
     if (self->_resizeGestureResult)
     {
       v14 = [v6 copyByAddingFlags:2 debugRequestingProvider:self];
@@ -90,49 +90,49 @@ LABEL_9:
       v132 = v14;
     }
 
-    v15 = [(SBSAGestureDescription *)self->_activeGestureDescription associatedInterfaceElementIdentifier];
-    v16 = [v132 preferences];
-    v127 = [v16 containerViewDescriptions];
+    associatedInterfaceElementIdentifier = [(SBSAGestureDescription *)self->_activeGestureDescription associatedInterfaceElementIdentifier];
+    preferences2 = [v132 preferences];
+    containerViewDescriptions = [preferences2 containerViewDescriptions];
 
     v176[0] = MEMORY[0x277D85DD0];
     v176[1] = 3221225472;
     v176[2] = __62__SBSAContainerResizeBehaviorProvider_preferencesFromContext___block_invoke_2;
     v176[3] = &unk_2783B0210;
-    v126 = v15;
+    v126 = associatedInterfaceElementIdentifier;
     v177 = v126;
-    v17 = [v127 bs_firstObjectPassingTest:v176];
+    v17 = [containerViewDescriptions bs_firstObjectPassingTest:v176];
     if (!v17)
     {
       goto LABEL_93;
     }
 
     v175 = 0;
-    v142 = [v132 elementContexts];
-    v18 = SBSAElementContextAssociatedWithContainerViewDescription(v17, v142, &v175);
+    elementContexts = [v132 elementContexts];
+    v18 = SBSAElementContextAssociatedWithContainerViewDescription(v17, elementContexts, &v175);
     v141 = v18;
     v19 = v18;
     if (v18)
     {
-      v20 = [v18 interfaceOrientation];
+      interfaceOrientation = [v18 interfaceOrientation];
       v19 = v141;
     }
 
     else
     {
-      v20 = 1;
+      interfaceOrientation = 1;
     }
 
-    v21 = self;
-    v138 = (v175 == 0x7FFFFFFFFFFFFFFFLL || !v175) && (v20 - 5) < 0xFFFFFFFFFFFFFFFELL;
-    if (v13 <= 3)
+    selfCopy5 = self;
+    v138 = (v175 == 0x7FFFFFFFFFFFFFFFLL || !v175) && (interfaceOrientation - 5) < 0xFFFFFFFFFFFFFFFELL;
+    if (gestureRecognizerState <= 3)
     {
-      switch(v13)
+      switch(gestureRecognizerState)
       {
         case 1:
           v31 = v19 != 0;
-          if (v142)
+          if (elementContexts)
           {
-            v32 = v142;
+            v32 = elementContexts;
           }
 
           else
@@ -144,13 +144,13 @@ LABEL_9:
           p_initialFrameOfContainerViewForActiveGesture = &self->_initialFrameOfContainerViewForActiveGesture;
           if (v31)
           {
-            v34 = SBSAFrameForElementInCollection(v175, v142, v132);
+            v34 = SBSAFrameForElementInCollection(v175, elementContexts, v132);
             p_initialFrameOfContainerViewForActiveGesture->origin.x = v34;
             self->_initialFrameOfContainerViewForActiveGesture.origin.y = v35;
             self->_initialFrameOfContainerViewForActiveGesture.size.width = v36;
             self->_initialFrameOfContainerViewForActiveGesture.size.height = v37;
             v38 = _SBSAMinimumFrameForElementAtIndex(v175, v132, v34, v35, v36, v37);
-            v21 = self;
+            selfCopy5 = self;
             self->_minimumFrameOfContainerViewForActiveGesture.origin.x = v38;
             self->_minimumFrameOfContainerViewForActiveGesture.origin.y = v39;
             self->_minimumFrameOfContainerViewForActiveGesture.size.width = v40;
@@ -164,7 +164,7 @@ LABEL_9:
             self->_initialFrameOfContainerViewForActiveGesture.origin.y = v43;
             self->_initialFrameOfContainerViewForActiveGesture.size.width = v44;
             self->_initialFrameOfContainerViewForActiveGesture.size.height = v45;
-            v21 = self;
+            selfCopy5 = self;
             size = self->_initialFrameOfContainerViewForActiveGesture.size;
             self->_minimumFrameOfContainerViewForActiveGesture.origin = p_initialFrameOfContainerViewForActiveGesture->origin;
             self->_minimumFrameOfContainerViewForActiveGesture.size = size;
@@ -176,29 +176,29 @@ LABEL_9:
         case 3:
           v22 = [SBSAContainerResizeAction alloc];
           resizeGestureResult = self->_resizeGestureResult;
-          v24 = [(SBSAGestureDescription *)self->_activeGestureDescription associatedInterfaceElementIdentifier];
+          associatedInterfaceElementIdentifier2 = [(SBSAGestureDescription *)self->_activeGestureDescription associatedInterfaceElementIdentifier];
           v178 = @"containerResizeBehaviorProvider.resize";
           v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v178 count:1];
-          v26 = [(SBSAContainerResizeAction *)v22 initWithResult:resizeGestureResult associatedInterfaceElementIdentifier:v24 reasons:v25];
+          v26 = [(SBSAContainerResizeAction *)v22 initWithResult:resizeGestureResult associatedInterfaceElementIdentifier:associatedInterfaceElementIdentifier2 reasons:v25];
           v179 = v26;
           v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v179 count:1];
           v28 = [v140 copyByAddingActions:v27];
 
           v140 = v28;
-          v21 = self;
+          selfCopy5 = self;
 LABEL_34:
-          v21->_resizeGestureResult = 0;
-          v29 = v21->_activeGestureDescription;
-          v21->_activeGestureDescription = 0;
+          selfCopy5->_resizeGestureResult = 0;
+          v29 = selfCopy5->_activeGestureDescription;
+          selfCopy5->_activeGestureDescription = 0;
 
           elementContexts = self->_elementContexts;
           self->_elementContexts = 0;
 LABEL_86:
 
-          v21 = self;
+          selfCopy5 = self;
 LABEL_87:
-          v112 = v21->_elementContexts;
-          if (v112 && (SBSAAreElementLayoutsEqualToLayouts(v112, v142) & 1) == 0)
+          v112 = selfCopy5->_elementContexts;
+          if (v112 && (SBSAAreElementLayoutsEqualToLayouts(v112, elementContexts) & 1) == 0)
           {
             v113 = SBLogSystemAperturePreferencesStackGestures();
             if (os_log_type_enabled(v113, OS_LOG_TYPE_DEBUG))
@@ -219,15 +219,15 @@ LABEL_93:
           goto LABEL_87;
       }
 
-      v47 = v21->_activeGestureDescription;
-      x = v21->_initialFrameOfContainerViewForActiveGesture.origin.x;
-      y = v21->_initialFrameOfContainerViewForActiveGesture.origin.y;
-      width = v21->_initialFrameOfContainerViewForActiveGesture.size.width;
-      height = v21->_initialFrameOfContainerViewForActiveGesture.size.height;
-      p_x = &v21->_initialFrameOfContainerViewForActiveGesture.origin.x;
+      v47 = selfCopy5->_activeGestureDescription;
+      x = selfCopy5->_initialFrameOfContainerViewForActiveGesture.origin.x;
+      y = selfCopy5->_initialFrameOfContainerViewForActiveGesture.origin.y;
+      width = selfCopy5->_initialFrameOfContainerViewForActiveGesture.size.width;
+      height = selfCopy5->_initialFrameOfContainerViewForActiveGesture.size.height;
+      p_x = &selfCopy5->_initialFrameOfContainerViewForActiveGesture.origin.x;
       if (v138)
       {
-        [(SBSAContainerResizeBehaviorProvider *)v21 _frameForContainerViewDescription:v17 resizedWithGestureDescription:v47 initialContainerViewFrame:v132 context:x, y, width, height];
+        [(SBSAContainerResizeBehaviorProvider *)selfCopy5 _frameForContainerViewDescription:v17 resizedWithGestureDescription:v47 initialContainerViewFrame:v132 context:x, y, width, height];
         v53 = v52;
         v55 = v54;
         v57 = v56;
@@ -236,7 +236,7 @@ LABEL_93:
 
       else
       {
-        [(SBSAContainerResizeBehaviorProvider *)v21 _frameForAdjunctContainerViewDescription:v17 resizedWithGestureDescription:v47 initialContainerViewFrame:v132 context:x, y, width, height];
+        [(SBSAContainerResizeBehaviorProvider *)selfCopy5 _frameForAdjunctContainerViewDescription:v17 resizedWithGestureDescription:v47 initialContainerViewFrame:v132 context:x, y, width, height];
         v53 = v60;
         v55 = v61;
         v57 = v62;
@@ -330,7 +330,7 @@ LABEL_93:
       if (v84 > 10.0)
       {
 LABEL_56:
-        v86 = [(SBSAContainerResizeBehaviorProvider *)self _didContainerViewForActiveGestureCollapseWithFrame:v138 initialContainerViewFrame:v20 isPrimaryContainer:v79 activeInterfaceOrientation:v80, v81, v82, *p_x, p_x[1], p_x[2], p_x[3]];
+        v86 = [(SBSAContainerResizeBehaviorProvider *)self _didContainerViewForActiveGestureCollapseWithFrame:v138 initialContainerViewFrame:interfaceOrientation isPrimaryContainer:v79 activeInterfaceOrientation:v80, v81, v82, *p_x, p_x[1], p_x[2], p_x[3]];
         v87 = -1;
         if (!v86)
         {
@@ -351,7 +351,7 @@ LABEL_56:
       v173 = 0u;
       v170 = 0u;
       v171 = 0u;
-      v90 = v127;
+      v90 = containerViewDescriptions;
       v91 = [v90 countByEnumeratingWithState:&v170 objects:v180 count:16];
       if (v91)
       {
@@ -378,7 +378,7 @@ LABEL_56:
             if ((v95 & 1) == 0)
             {
               v160 = 0x7FFFFFFFFFFFFFFFLL;
-              v100 = SBSAElementContextAssociatedWithContainerViewDescription(v94, v142, &v160);
+              v100 = SBSAElementContextAssociatedWithContainerViewDescription(v94, elementContexts, &v160);
               v99 = v133;
               v98 = v134;
               v97 = v135;
@@ -387,12 +387,12 @@ LABEL_56:
               {
                 if (v138)
                 {
-                  v101 = SBSAAdjunctFrameForElementInCollection(v160, v142, v132, v79, v80, v81, v82);
+                  v101 = SBSAAdjunctFrameForElementInCollection(v160, elementContexts, v132, v79, v80, v81, v82);
                 }
 
                 else
                 {
-                  v101 = SBSAFrameForElementInCollection(v160, v142, v132);
+                  v101 = SBSAFrameForElementInCollection(v160, elementContexts, v132);
                 }
 
                 v96 = v101;
@@ -454,21 +454,21 @@ LABEL_56:
         while (v91);
       }
 
-      v108 = [v89 lastObject];
+      lastObject = [v89 lastObject];
       v160 = 0;
       v161 = &v160;
       v162 = 0x3032000000;
       v163 = __Block_byref_object_copy__92;
       v164 = __Block_byref_object_dispose__92;
-      v165 = [v140 indicatorContainerViewDescription];
+      indicatorContainerViewDescription = [v140 indicatorContainerViewDescription];
       v154 = 0;
       v155 = &v154;
       v156 = 0x3032000000;
       v157 = __Block_byref_object_copy__92;
       v158 = __Block_byref_object_dispose__92;
-      v159 = [v140 indicatorElementDescription];
-      v109 = self;
-      if (v108 && v161[5] && v155[5])
+      indicatorElementDescription = [v140 indicatorElementDescription];
+      selfCopy7 = self;
+      if (lastObject && v161[5] && v155[5])
       {
         v147[0] = MEMORY[0x277D85DD0];
         v147[1] = 3221225472;
@@ -479,12 +479,12 @@ LABEL_56:
         v110 = v140;
         v148 = v110;
         v151 = &v160;
-        v149 = v108;
+        v149 = lastObject;
         v150 = v132;
         v152 = &v154;
         v140 = [v110 copyWithBlock:v147];
 
-        v109 = self;
+        selfCopy7 = self;
       }
 
       v144[0] = MEMORY[0x277D85DD0];
@@ -492,7 +492,7 @@ LABEL_56:
       v144[2] = __62__SBSAContainerResizeBehaviorProvider_preferencesFromContext___block_invoke_4_52;
       v144[3] = &unk_2783AD750;
       v146 = a2;
-      v144[4] = v109;
+      v144[4] = selfCopy7;
       elementContexts = v89;
       v145 = elementContexts;
       v111 = [v140 copyWithBlock:v144];
@@ -504,7 +504,7 @@ LABEL_56:
       goto LABEL_86;
     }
 
-    if ((v13 - 4) >= 2)
+    if ((gestureRecognizerState - 4) >= 2)
     {
       goto LABEL_87;
     }
@@ -540,8 +540,8 @@ LABEL_94:
 
   v121 = v120;
 
-  v122 = [v121 actions];
-  v123 = [v122 bs_containsObjectPassingTest:&__block_literal_global_58_1];
+  actions = [v121 actions];
+  v123 = [actions bs_containsObjectPassingTest:&__block_literal_global_58_1];
 
   if (v123)
   {
@@ -1027,25 +1027,25 @@ uint64_t __62__SBSAContainerResizeBehaviorProvider_preferencesFromContext___bloc
 
 - (id)_contentResizeBehaviorSettings
 {
-  v2 = [objc_opt_class() settings];
-  v3 = [v2 contentInteractionBeginBehaviorSettings];
+  settings = [objc_opt_class() settings];
+  contentInteractionBeginBehaviorSettings = [settings contentInteractionBeginBehaviorSettings];
 
-  return v3;
+  return contentInteractionBeginBehaviorSettings;
 }
 
-- (CGRect)_frameForContainerViewDescription:(id)a3 resizedWithGestureDescription:(id)a4 initialContainerViewFrame:(CGRect)a5 context:(id)a6
+- (CGRect)_frameForContainerViewDescription:(id)description resizedWithGestureDescription:(id)gestureDescription initialContainerViewFrame:(CGRect)frame context:(id)context
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a6;
-  v12 = a4;
-  v13 = [objc_opt_class() settings];
-  [v12 initialLocation];
-  [v12 translation];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  contextCopy = context;
+  gestureDescriptionCopy = gestureDescription;
+  settings = [objc_opt_class() settings];
+  [gestureDescriptionCopy initialLocation];
+  [gestureDescriptionCopy translation];
 
-  [v11 systemContainerBounds];
+  [contextCopy systemContainerBounds];
   v34 = CGRectGetWidth(v35);
   v36.origin.x = x;
   v36.origin.y = y;
@@ -1067,7 +1067,7 @@ uint64_t __62__SBSAContainerResizeBehaviorProvider_preferencesFromContext___bloc
   v39.size.width = width;
   v39.size.height = height;
   CGRectGetMidY(v39);
-  [v11 inertContainerFrame];
+  [contextCopy inertContainerFrame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -1078,35 +1078,35 @@ uint64_t __62__SBSAContainerResizeBehaviorProvider_preferencesFromContext___bloc
   v40.size.width = v19;
   v40.size.height = v21;
   CGRectGetWidth(v40);
-  [v13 resizeGestureXRubberbanding];
+  [settings resizeGestureXRubberbanding];
   if (BSFloatGreaterThanOrEqualToFloat())
   {
-    [v13 resizeGestureMinEdgePadding];
+    [settings resizeGestureMinEdgePadding];
   }
 
   else
   {
-    [v13 resizeGestureSensorXSafetyMargin];
+    [settings resizeGestureSensorXSafetyMargin];
   }
 
   BSUIConstrainValueToIntervalWithRubberBand();
-  [v13 resizeGestureYRubberbandingStretch];
+  [settings resizeGestureYRubberbandingStretch];
   if (BSFloatGreaterThanOrEqualToFloat())
   {
-    [v13 resizeGestureYRubberbandingStretch];
+    [settings resizeGestureYRubberbandingStretch];
   }
 
   else
   {
-    [v13 resizeGestureYRubberbandingCompress];
+    [settings resizeGestureYRubberbandingCompress];
   }
 
-  [v13 resizeGestureYRangeBeginTracking];
-  [v13 resizeGestureYRangeEndTracking];
+  [settings resizeGestureYRangeBeginTracking];
+  [settings resizeGestureYRangeEndTracking];
   BSUIConstrainValueToIntervalWithRubberBand();
   if (BSFloatLessThanOrEqualToFloat())
   {
-    [v13 resizeGestureUpOffsetFactor];
+    [settings resizeGestureUpOffsetFactor];
   }
 
   SBRectWithSize();
@@ -1127,15 +1127,15 @@ uint64_t __62__SBSAContainerResizeBehaviorProvider_preferencesFromContext___bloc
   return result;
 }
 
-- (CGRect)_frameForAdjunctContainerViewDescription:(id)a3 resizedWithGestureDescription:(id)a4 initialContainerViewFrame:(CGRect)a5 context:(id)a6
+- (CGRect)_frameForAdjunctContainerViewDescription:(id)description resizedWithGestureDescription:(id)gestureDescription initialContainerViewFrame:(CGRect)frame context:(id)context
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4;
-  v11 = [objc_opt_class() settings];
-  [v10 translation];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  gestureDescriptionCopy = gestureDescription;
+  settings = [objc_opt_class() settings];
+  [gestureDescriptionCopy translation];
   v13 = v12;
 
   v28.origin.x = x;
@@ -1160,22 +1160,22 @@ uint64_t __62__SBSAContainerResizeBehaviorProvider_preferencesFromContext___bloc
   CGRectGetMidY(v31);
   if (BSFloatGreaterThanOrEqualToFloat())
   {
-    [v11 recombineGestureXScaleFactorStretch];
+    [settings recombineGestureXScaleFactorStretch];
   }
 
   else
   {
-    [v11 recombineGestureXScaleFactorCompress];
+    [settings recombineGestureXScaleFactorCompress];
   }
 
   if (BSFloatGreaterThanOrEqualToFloat())
   {
-    [v11 recombineGestureXRubberbandingStretch];
+    [settings recombineGestureXRubberbandingStretch];
   }
 
   else
   {
-    [v11 recombineGestureXRubberbandingCompress];
+    [settings recombineGestureXRubberbandingCompress];
   }
 
   v26 = 0u;
@@ -1185,12 +1185,12 @@ uint64_t __62__SBSAContainerResizeBehaviorProvider_preferencesFromContext___bloc
   BSUIConstrainValueToIntervalWithRubberBand();
   if (v13 <= 0.0)
   {
-    [v11 recombineGestureTranslateFactorCompress];
+    [settings recombineGestureTranslateFactorCompress];
   }
 
   else
   {
-    [v11 recombineGestureTranslateFactorStretch];
+    [settings recombineGestureTranslateFactorStretch];
   }
 
   SBRectWithSize();
@@ -1211,21 +1211,21 @@ uint64_t __62__SBSAContainerResizeBehaviorProvider_preferencesFromContext___bloc
   return result;
 }
 
-- (BOOL)_didContainerViewForActiveGestureCollapseWithFrame:(CGRect)a3 initialContainerViewFrame:(CGRect)a4 isPrimaryContainer:(BOOL)a5 activeInterfaceOrientation:(int64_t)a6
+- (BOOL)_didContainerViewForActiveGestureCollapseWithFrame:(CGRect)frame initialContainerViewFrame:(CGRect)viewFrame isPrimaryContainer:(BOOL)container activeInterfaceOrientation:(int64_t)orientation
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.origin.x;
-  if (a5)
+  height = viewFrame.size.height;
+  width = viewFrame.size.width;
+  y = viewFrame.origin.y;
+  x = viewFrame.origin.x;
+  v9 = frame.size.height;
+  v10 = frame.size.width;
+  v11 = frame.origin.y;
+  v12 = frame.origin.x;
+  if (container)
   {
-    v32 = a4.size.width;
-    rect = a3.size.height;
-    v13 = CGRectGetWidth(a3);
+    v32 = viewFrame.size.width;
+    rect = frame.size.height;
+    v13 = CGRectGetWidth(frame);
     v35.origin.x = x;
     v35.origin.y = y;
     v35.size.width = width;
@@ -1266,14 +1266,14 @@ uint64_t __62__SBSAContainerResizeBehaviorProvider_preferencesFromContext___bloc
 
   else
   {
-    v21 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
     v22 = v12;
     v23 = v11;
     v24 = v10;
     v25 = v9;
-    if (v21 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
-      if (a6 == 4)
+      if (orientation == 4)
       {
         MinX = CGRectGetMinX(*&v22);
         v38.origin.x = x;
@@ -1306,7 +1306,7 @@ uint64_t __62__SBSAContainerResizeBehaviorProvider_preferencesFromContext___bloc
       v39.size.width = width;
       v39.size.height = height;
       v31 = CGRectGetMinX(v39);
-      if (a6 == 4)
+      if (orientation == 4)
       {
         return v30 > v31;
       }
@@ -1319,30 +1319,30 @@ uint64_t __62__SBSAContainerResizeBehaviorProvider_preferencesFromContext___bloc
   }
 }
 
-- (id)_preferencesUpdatedWithCollapseOfElement:(void *)a3 activeFrame:(void *)a4 initialFrame:(void *)a5 minimumFrame:(double)a6 preferences:(double)a7 context:(double)a8
+- (id)_preferencesUpdatedWithCollapseOfElement:(void *)element activeFrame:(void *)frame initialFrame:(void *)initialFrame minimumFrame:(double)minimumFrame preferences:(double)preferences context:(double)context
 {
-  *&v41[16] = a8;
+  *&v41[16] = context;
   *&v41[24] = a9;
-  *v41 = a6;
-  *&v41[8] = a7;
-  v28 = a3;
-  v29 = a4;
-  v30 = a5;
-  if (([v28 interfaceOrientation] - 3) <= 1)
+  *v41 = minimumFrame;
+  *&v41[8] = preferences;
+  elementCopy = element;
+  frameCopy = frame;
+  initialFrameCopy = initialFrame;
+  if (([elementCopy interfaceOrientation] - 3) <= 1)
   {
     [SBSAContainerResizeBehaviorProvider _preferencesUpdatedWithCollapseOfElement:activeFrame:initialFrame:minimumFrame:preferences:context:];
-    if (!v28)
+    if (!elementCopy)
     {
       goto LABEL_7;
     }
   }
 
-  else if (!v28)
+  else if (!elementCopy)
   {
     goto LABEL_7;
   }
 
-  if (v29)
+  if (frameCopy)
   {
     v52.origin.x = a10;
     v52.origin.y = a11;
@@ -1370,14 +1370,14 @@ uint64_t __62__SBSAContainerResizeBehaviorProvider_preferencesFromContext___bloc
     v32 = v31;
     UIDistanceBetweenPoints();
     v34 = v33;
-    v35 = [v29 elementDescriptions];
+    elementDescriptions = [frameCopy elementDescriptions];
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __138__SBSAContainerResizeBehaviorProvider__preferencesUpdatedWithCollapseOfElement_activeFrame_initialFrame_minimumFrame_preferences_context___block_invoke;
     v49[3] = &unk_2783AD818;
-    v36 = v28;
+    v36 = elementCopy;
     v50 = v36;
-    v37 = [v35 bs_firstObjectPassingTest:v49];
+    v37 = [elementDescriptions bs_firstObjectPassingTest:v49];
     v38 = v37;
     if (v37)
     {
@@ -1386,21 +1386,21 @@ uint64_t __62__SBSAContainerResizeBehaviorProvider_preferencesFromContext___bloc
       v42[2] = __138__SBSAContainerResizeBehaviorProvider__preferencesUpdatedWithCollapseOfElement_activeFrame_initialFrame_minimumFrame_preferences_context___block_invoke_2;
       v42[3] = &unk_2783BC6E8;
       v47 = a2;
-      v42[4] = a1;
+      v42[4] = self;
       v43 = v37;
       v44 = v36;
-      v45 = v30;
+      v45 = initialFrameCopy;
       v48 = 1.0 - v32 / v34;
-      v46 = v35;
-      v39 = [v29 copyWithBlock:v42];
+      v46 = elementDescriptions;
+      v39 = [frameCopy copyWithBlock:v42];
 
-      v29 = v39;
+      frameCopy = v39;
     }
   }
 
 LABEL_7:
 
-  return v29;
+  return frameCopy;
 }
 
 uint64_t __138__SBSAContainerResizeBehaviorProvider__preferencesUpdatedWithCollapseOfElement_activeFrame_initialFrame_minimumFrame_preferences_context___block_invoke(uint64_t a1, void *a2)

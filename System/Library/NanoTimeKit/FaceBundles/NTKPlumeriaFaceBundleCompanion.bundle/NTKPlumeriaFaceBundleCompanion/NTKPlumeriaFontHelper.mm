@@ -1,8 +1,8 @@
 @interface NTKPlumeriaFontHelper
-+ (void)generateTransformFromRect:(id)a1 toRect:(SEL)a2 transformX:transformY:;
-- (BOOL)setFont:(id)a3 points:(float)a4;
++ (void)generateTransformFromRect:(id)rect toRect:(SEL)toRect transformX:transformY:;
+- (BOOL)setFont:(id)font points:(float)points;
 - (NTKPlumeriaFontHelper)init;
-- (void)generateTable:(id)a3;
+- (void)generateTable:(id)table;
 @end
 
 @implementation NTKPlumeriaFontHelper
@@ -14,10 +14,10 @@
   return [(NTKPlumeriaFontHelper *)&v3 init];
 }
 
-- (BOOL)setFont:(id)a3 points:(float)a4
+- (BOOL)setFont:(id)font points:(float)points
 {
-  v7 = a3;
-  if (v7 == @".SFRoundedNumeric-Semibold" && a4 == 10.0)
+  fontCopy = font;
+  if (fontCopy == @".SFRoundedNumeric-Semibold" && points == 10.0)
   {
     fontName = self->_fontName;
     self->_fontName = @".SFRoundedNumeric-Semibold";
@@ -28,18 +28,18 @@
 
   else
   {
-    objc_storeStrong(&self->_fontName, a3);
-    self->_points = a4;
+    objc_storeStrong(&self->_fontName, font);
+    self->_points = points;
     self->_capHeight = 0.0;
-    v9 = a4;
-    v10 = CTFontCreateWithNameAndOptions(v7, v9, 0, 0x400uLL);
+    pointsCopy = points;
+    v10 = CTFontCreateWithNameAndOptions(fontCopy, pointsCopy, 0, 0x400uLL);
     v11 = v10;
     if (!v10)
     {
-      v11 = [UIFont systemFontOfSize:v9];
-      v12 = [v11 fontName];
+      v11 = [UIFont systemFontOfSize:pointsCopy];
+      fontName = [v11 fontName];
       v13 = self->_fontName;
-      self->_fontName = v12;
+      self->_fontName = fontName;
     }
 
     [v11 capHeight];
@@ -49,9 +49,9 @@
     p_rightX = &self->_pairs[0].rightX;
     do
     {
-      v17 = [NSString stringWithFormat:@"%d%d", v14 / 0xAu, v14 % 0xAu];
+      0xAu = [NSString stringWithFormat:@"%d%d", v14 / 0xAu, v14 % 0xAu];
       v18 = [NSDictionary dictionaryWithObject:v11 forKey:NSFontAttributeName];
-      v19 = CTLineCreateWithAttributedString([[NSAttributedString alloc] initWithString:v17 attributes:v18]);
+      v19 = CTLineCreateWithAttributedString([[NSAttributedString alloc] initWithString:0xAu attributes:v18]);
       GlyphRuns = CTLineGetGlyphRuns(v19);
       ValueAtIndex = CFArrayGetValueAtIndex(GlyphRuns, 0);
       v36.location = 0;
@@ -91,7 +91,7 @@
   return 1;
 }
 
-+ (void)generateTransformFromRect:(id)a1 toRect:(SEL)a2 transformX:transformY:
++ (void)generateTransformFromRect:(id)rect toRect:(SEL)toRect transformX:transformY:
 {
   v7 = vextq_s8(v4, v4, 8uLL);
   v8 = vextq_s8(v5, v5, 8uLL).u64[0];
@@ -107,9 +107,9 @@
   *v3 = v10;
 }
 
-- (void)generateTable:(id)a3
+- (void)generateTable:(id)table
 {
-  v13 = a3;
+  tableCopy = table;
   v4 = objc_alloc_init(NSMutableString);
   [v4 appendString:@"// ---------- BEGIN GENERATED CODE ----------\n"];
   v5 = [NSString stringWithFormat:@"static NSString *_savedFontName = @%s\n", [(NSString *)self->_fontName cStringUsingEncoding:1]];;
@@ -137,8 +137,8 @@
       v10 = 44;
     }
 
-    v11 = [NSString stringWithFormat:@"    { %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f }%c // Index: %d, Pair: %c, %c\n", *&p_rightRect[-1].origin, *&p_rightRect[-1].size, *&p_rightRect->origin, *&p_rightRect->size.width, *&p_rightRect->size.height, *&p_rightRect[1].origin.x, *(&p_rightRect[1].origin.x + 1), *&p_rightRect[1].origin.y, *(&p_rightRect[1].origin.y + 1), v10, v8, (v8 / 0xAu) | 0x30, (v8 % 0xAu) | 0x30];
-    [v4 appendString:v11];
+    0x30 = [NSString stringWithFormat:@"    { %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f }%c // Index: %d, Pair: %c, %c\n", *&p_rightRect[-1].origin, *&p_rightRect[-1].size, *&p_rightRect->origin, *&p_rightRect->size.width, *&p_rightRect->size.height, *&p_rightRect[1].origin.x, *(&p_rightRect[1].origin.x + 1), *&p_rightRect[1].origin.y, *(&p_rightRect[1].origin.y + 1), v10, v8, (v8 / 0xAu) | 0x30, (v8 % 0xAu) | 0x30];
+    [v4 appendString:0x30];
 
     ++v8;
     p_rightRect = (p_rightRect + 80);
@@ -148,9 +148,9 @@
   [v4 appendString:@"};\n"];
   [v4 appendString:@"// ---------- END GENERATED CODE ----------\n"];
   v12 = +[NSFileManager defaultManager];
-  [v12 createFileAtPath:v13 contents:0 attributes:0];
+  [v12 createFileAtPath:tableCopy contents:0 attributes:0];
 
-  [v4 writeToFile:v13 atomically:1 encoding:4 error:0];
+  [v4 writeToFile:tableCopy atomically:1 encoding:4 error:0];
 }
 
 @end

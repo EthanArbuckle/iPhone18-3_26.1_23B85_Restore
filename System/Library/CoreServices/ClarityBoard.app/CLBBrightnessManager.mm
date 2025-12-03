@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (CLBBrightnessManager)init;
 - (void)releaseTransaction;
-- (void)setBrightness:(float)a3;
+- (void)setBrightness:(float)brightness;
 - (void)startTransactionIfNeeded;
 @end
 
@@ -34,7 +34,7 @@
   return v2;
 }
 
-- (void)setBrightness:(float)a3
+- (void)setBrightness:(float)brightness
 {
   v5 = qword_100331040;
   v6 = +[CLFLog commonLog];
@@ -44,22 +44,22 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134217984;
-      v10 = a3;
+      brightnessCopy = brightness;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Setting brightness %f", &v9, 0xCu);
     }
 
-    v8 = 1.0;
-    if (a3 <= 1.0)
+    brightnessCopy2 = 1.0;
+    if (brightness <= 1.0)
     {
-      v8 = a3;
+      brightnessCopy2 = brightness;
     }
 
-    if (v8 <= 0.1)
+    if (brightnessCopy2 <= 0.1)
     {
-      v8 = 0.1;
+      brightnessCopy2 = 0.1;
     }
 
-    self->_brightness = v8;
+    self->_brightness = brightnessCopy2;
     BKSDisplayBrightnessSet();
   }
 

@@ -1,30 +1,30 @@
 @interface SCATElementManagerViewController
 - (BOOL)isDisplayed;
 - (SCATElementManager)elementManager;
-- (SCATElementManagerViewController)initWithElementManager:(id)a3;
-- (void)didDismiss:(BOOL)a3;
-- (void)didPresentWithDisplayContext:(id)a3 animated:(BOOL)a4;
-- (void)didUpdateWithDisplayContext:(id)a3 animated:(BOOL)a4;
-- (void)dismiss:(BOOL)a3;
-- (void)presentWithDisplayContext:(id)a3 animated:(BOOL)a4;
-- (void)updateCustomFocusingViewStateForViewsWithElement:(id)a3;
+- (SCATElementManagerViewController)initWithElementManager:(id)manager;
+- (void)didDismiss:(BOOL)dismiss;
+- (void)didPresentWithDisplayContext:(id)context animated:(BOOL)animated;
+- (void)didUpdateWithDisplayContext:(id)context animated:(BOOL)animated;
+- (void)dismiss:(BOOL)dismiss;
+- (void)presentWithDisplayContext:(id)context animated:(BOOL)animated;
+- (void)updateCustomFocusingViewStateForViewsWithElement:(id)element;
 - (void)viewDidLoad;
-- (void)willDismiss:(BOOL)a3;
-- (void)willPresentWithDisplayContext:(id)a3 animated:(BOOL)a4;
+- (void)willDismiss:(BOOL)dismiss;
+- (void)willPresentWithDisplayContext:(id)context animated:(BOOL)animated;
 @end
 
 @implementation SCATElementManagerViewController
 
-- (SCATElementManagerViewController)initWithElementManager:(id)a3
+- (SCATElementManagerViewController)initWithElementManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v8.receiver = self;
   v8.super_class = SCATElementManagerViewController;
   v5 = [(SCATElementManagerViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(SCATElementManagerViewController *)v5 setElementManager:v4];
+    [(SCATElementManagerViewController *)v5 setElementManager:managerCopy];
   }
 
   return v6;
@@ -38,23 +38,23 @@
   [(SCATElementManagerViewController *)self updateCustomFocusingViewStateForViewsWithElement:0];
 }
 
-- (void)presentWithDisplayContext:(id)a3 animated:(BOOL)a4
+- (void)presentWithDisplayContext:(id)context animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  animatedCopy = animated;
+  contextCopy = context;
+  if (contextCopy)
   {
-    [(SCATElementManagerViewController *)self willPresentWithDisplayContext:v6 animated:v4];
-    v7 = [(SCATElementManagerViewController *)self view];
-    v8 = v7;
-    if (v4)
+    [(SCATElementManagerViewController *)self willPresentWithDisplayContext:contextCopy animated:animatedCopy];
+    view = [(SCATElementManagerViewController *)self view];
+    v8 = view;
+    if (animatedCopy)
     {
-      [v7 setAlpha:0.0];
+      [view setAlpha:0.0];
 
-      v9 = [(SCATElementManagerViewController *)self view];
-      [v6 addSubview:v9];
+      view2 = [(SCATElementManagerViewController *)self view];
+      [contextCopy addSubview:view2];
 
-      [(SCATElementManagerViewController *)self didAddSubviewToDisplayContext:v6];
+      [(SCATElementManagerViewController *)self didAddSubviewToDisplayContext:contextCopy];
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_1000F22C8;
@@ -65,26 +65,26 @@
       v10[2] = sub_1000F2310;
       v10[3] = &unk_1001D5030;
       v10[4] = self;
-      v11 = v6;
-      v12 = v4;
+      v11 = contextCopy;
+      v12 = animatedCopy;
       [UIView animateWithDuration:v13 animations:v10 completion:0.3];
     }
 
     else
     {
-      [v6 addSubview:v7];
+      [contextCopy addSubview:view];
 
-      [(SCATElementManagerViewController *)self didAddSubviewToDisplayContext:v6];
-      [(SCATElementManagerViewController *)self didPresentWithDisplayContext:v6 animated:0];
+      [(SCATElementManagerViewController *)self didAddSubviewToDisplayContext:contextCopy];
+      [(SCATElementManagerViewController *)self didPresentWithDisplayContext:contextCopy animated:0];
     }
   }
 }
 
-- (void)dismiss:(BOOL)a3
+- (void)dismiss:(BOOL)dismiss
 {
-  v3 = a3;
+  dismissCopy = dismiss;
   [(SCATElementManagerViewController *)self willDismiss:?];
-  if (v3)
+  if (dismissCopy)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -102,63 +102,63 @@
 
   else
   {
-    v5 = [(SCATElementManagerViewController *)self view];
-    [v5 removeFromSuperview];
+    view = [(SCATElementManagerViewController *)self view];
+    [view removeFromSuperview];
 
     [(SCATElementManagerViewController *)self didDismiss:0];
   }
 }
 
-- (void)willPresentWithDisplayContext:(id)a3 animated:(BOOL)a4
+- (void)willPresentWithDisplayContext:(id)context animated:(BOOL)animated
 {
-  v4 = [(SCATElementManagerViewController *)self elementManager:a3];
+  v4 = [(SCATElementManagerViewController *)self elementManager:context];
   [v4 visualProviderWillPresent];
 }
 
-- (void)didPresentWithDisplayContext:(id)a3 animated:(BOOL)a4
+- (void)didPresentWithDisplayContext:(id)context animated:(BOOL)animated
 {
-  v4 = [(SCATElementManagerViewController *)self elementManager:a3];
+  v4 = [(SCATElementManagerViewController *)self elementManager:context];
   [v4 visualProviderDidPresent];
 }
 
-- (void)didUpdateWithDisplayContext:(id)a3 animated:(BOOL)a4
+- (void)didUpdateWithDisplayContext:(id)context animated:(BOOL)animated
 {
-  v4 = [(SCATElementManagerViewController *)self elementManager:a3];
+  v4 = [(SCATElementManagerViewController *)self elementManager:context];
   [v4 visualProviderDidUpdate];
 }
 
-- (void)willDismiss:(BOOL)a3
+- (void)willDismiss:(BOOL)dismiss
 {
-  v3 = [(SCATElementManagerViewController *)self elementManager];
-  [v3 visualProviderWillDismiss];
+  elementManager = [(SCATElementManagerViewController *)self elementManager];
+  [elementManager visualProviderWillDismiss];
 }
 
-- (void)didDismiss:(BOOL)a3
+- (void)didDismiss:(BOOL)dismiss
 {
-  v3 = [(SCATElementManagerViewController *)self elementManager];
-  [v3 visualProviderDidDismiss];
+  elementManager = [(SCATElementManagerViewController *)self elementManager];
+  [elementManager visualProviderDidDismiss];
 }
 
-- (void)updateCustomFocusingViewStateForViewsWithElement:(id)a3
+- (void)updateCustomFocusingViewStateForViewsWithElement:(id)element
 {
-  v4 = a3;
-  if ([v4 isGroup])
+  elementCopy = element;
+  if ([elementCopy isGroup])
   {
-    v5 = v4;
+    parentGroup = elementCopy;
   }
 
   else
   {
-    v5 = [v4 parentGroup];
+    parentGroup = [elementCopy parentGroup];
   }
 
-  v6 = v5;
+  v6 = parentGroup;
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(SCATElementManagerViewController *)self viewsRequiringStateUpdate];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  viewsRequiringStateUpdate = [(SCATElementManagerViewController *)self viewsRequiringStateUpdate];
+  v8 = [viewsRequiringStateUpdate countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -169,11 +169,11 @@
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(viewsRequiringStateUpdate);
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        if (v12 == v4)
+        if (v12 == elementCopy)
         {
           v15 = 1;
           goto LABEL_17;
@@ -181,9 +181,9 @@
 
         if (([v6 containsObject:*(*(&v22 + 1) + 8 * i)] & 1) == 0)
         {
-          v13 = [v12 subviews];
-          v14 = [v13 firstObject];
-          if ([v6 containsObject:v14])
+          subviews = [v12 subviews];
+          firstObject = [subviews firstObject];
+          if ([v6 containsObject:firstObject])
           {
           }
 
@@ -192,16 +192,16 @@
             +[AXSettings sharedInstance];
             v16 = v10;
             v17 = v6;
-            v18 = v4;
-            v20 = v19 = v7;
-            v21 = [v20 assistiveTouchGroupElementsEnabled];
+            v18 = elementCopy;
+            v20 = v19 = viewsRequiringStateUpdate;
+            assistiveTouchGroupElementsEnabled = [v20 assistiveTouchGroupElementsEnabled];
 
-            v7 = v19;
-            v4 = v18;
+            viewsRequiringStateUpdate = v19;
+            elementCopy = v18;
             v6 = v17;
             v10 = v16;
 
-            if (v21)
+            if (assistiveTouchGroupElementsEnabled)
             {
               v15 = 0;
               goto LABEL_17;
@@ -214,7 +214,7 @@ LABEL_17:
         [v12 updateFocusState:v15];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [viewsRequiringStateUpdate countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v9);
@@ -223,9 +223,9 @@ LABEL_17:
 
 - (BOOL)isDisplayed
 {
-  v2 = [(SCATElementManagerViewController *)self view];
-  v3 = [v2 window];
-  v4 = v3 != 0;
+  view = [(SCATElementManagerViewController *)self view];
+  window = [view window];
+  v4 = window != 0;
 
   return v4;
 }

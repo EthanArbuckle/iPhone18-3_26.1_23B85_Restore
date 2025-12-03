@@ -1,10 +1,10 @@
 @interface BYDaemonConnectionManagerOverride
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BYDaemonConnectionManagerOverride)init;
 - (id)connections;
 - (void)dealloc;
-- (void)doWithConnections:(id)a3;
+- (void)doWithConnections:(id)connections;
 - (void)start;
 @end
 
@@ -64,16 +64,16 @@
   [(BYDaemonConnectionManagerOverride *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (!+[BuddyOverrideUtilities buildSupportsOverrides])
   {
     goto LABEL_4;
   }
 
-  if (self->_quickStartSetupTargetClientListenerOverride == v6)
+  if (self->_quickStartSetupTargetClientListenerOverride == listenerCopy)
   {
     v9 = _BYLoggingFacility();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -92,31 +92,31 @@
       quickStartSetupClientRef = self->_quickStartSetupClientRef;
     }
 
-    [(BYDaemonProximityTargetClientConnectionOverride *)quickStartSetupClientRef setSetupConnection:v7];
+    [(BYDaemonProximityTargetClientConnectionOverride *)quickStartSetupClientRef setSetupConnection:connectionCopy];
     v13 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BuddyDaemonProximityTargetClientProtocolOverride];
-    [v7 setRemoteObjectInterface:v13];
+    [connectionCopy setRemoteObjectInterface:v13];
 
     v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BYDaemonProximityTargetClientConnectionOverride];
-    [v7 setExportedInterface:v14];
+    [connectionCopy setExportedInterface:v14];
 
-    [v7 setExportedObject:self->_quickStartSetupClientRef];
+    [connectionCopy setExportedObject:self->_quickStartSetupClientRef];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_100004CCC;
     v29[3] = &unk_100020868;
     v29[4] = self;
-    [v7 setInvalidationHandler:v29];
+    [connectionCopy setInvalidationHandler:v29];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_100004CDC;
     v28[3] = &unk_100020868;
     v28[4] = self;
-    [v7 setInterruptionHandler:v28];
-    [v7 resume];
+    [connectionCopy setInterruptionHandler:v28];
+    [connectionCopy resume];
     goto LABEL_15;
   }
 
-  if (self->_quickStartSetupCTLListener == v6)
+  if (self->_quickStartSetupCTLListener == listenerCopy)
   {
     v15 = _BYLoggingFacility();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -133,26 +133,26 @@
     }
 
     v18 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BYDaemonProximitySetupCTLClientConnectionOverride];
-    [v7 setExportedInterface:v18];
+    [connectionCopy setExportedInterface:v18];
 
-    [v7 setExportedObject:self->_quickStartSetupClientRef];
+    [connectionCopy setExportedObject:self->_quickStartSetupClientRef];
     objc_initWeak(buf, self->_quickStartSetupClientRef);
-    objc_initWeak(&location, v7);
+    objc_initWeak(&location, connectionCopy);
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100004CEC;
     v23[3] = &unk_100020890;
     objc_copyWeak(&v24, buf);
     objc_copyWeak(&v25, &location);
-    [v7 setInterruptionHandler:v23];
+    [connectionCopy setInterruptionHandler:v23];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100004D60;
     v20[3] = &unk_100020890;
     objc_copyWeak(&v21, buf);
     objc_copyWeak(&v22, &location);
-    [v7 setInvalidationHandler:v20];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:v20];
+    [connectionCopy resume];
     objc_destroyWeak(&v22);
     objc_destroyWeak(&v21);
     objc_destroyWeak(&v25);
@@ -181,15 +181,15 @@ LABEL_16:
   return v3;
 }
 
-- (void)doWithConnections:(id)a3
+- (void)doWithConnections:(id)connections
 {
-  v4 = a3;
+  connectionsCopy = connections;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(BYDaemonConnectionManagerOverride *)self connections];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  connections = [(BYDaemonConnectionManagerOverride *)self connections];
+  v6 = [connections countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -201,15 +201,15 @@ LABEL_16:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connections);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9));
+        connectionsCopy[2](connectionsCopy, *(*(&v10 + 1) + 8 * v9));
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [connections countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

@@ -1,8 +1,8 @@
 @interface SISchemaClientEvent
-+ (Class)getEventTypeClassForTag:(int)a3;
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-+ (id)getTagForEventTypeClass:(Class)a3;
-- (BOOL)isEqual:(id)a3;
++ (Class)getEventTypeClassForTag:(int)tag;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
++ (id)getTagForEventTypeClass:(Class)class;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (SISchemaAnnounceCarPlayBannerTapped)announceCarPlayBannerTapped;
 - (SISchemaAnnounceCarPlayGlyphSettingToggled)announceCarPlayGlyphSettingToggled;
@@ -12,8 +12,8 @@
 - (SISchemaBluetoothCarPreferredAudioRouteChanged)preferredAudioRouteChanged;
 - (SISchemaCarPlayHeadUnitContext)carPlayHeadUnitContext;
 - (SISchemaCasinoRelationship)casinoRelationship;
-- (SISchemaClientEvent)initWithDictionary:(id)a3;
-- (SISchemaClientEvent)initWithJSON:(id)a3;
+- (SISchemaClientEvent)initWithDictionary:(id)dictionary;
+- (SISchemaClientEvent)initWithJSON:(id)n;
 - (SISchemaClientFlow)clientFlow;
 - (SISchemaConversationTrace)clientConversationTrace;
 - (SISchemaDeviceDynamicContext)deviceDynamicContext;
@@ -82,7 +82,7 @@
 - (SISchemaUUFRShown)uufrShown;
 - (SISchemaUUFRShownTier1)uufrShownTier1;
 - (SISchemaUserViewRegionInteraction)userViewRegionInteraction;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)getEventType;
@@ -165,83 +165,83 @@
 - (void)deleteUufrSelected;
 - (void)deleteUufrShown;
 - (void)deleteUufrShownTier1;
-- (void)setAnnounceCarPlayBannerTapped:(id)a3;
-- (void)setAnnounceCarPlayGlyphSettingToggled:(id)a3;
-- (void)setAudioFirstBufferRecorded:(id)a3;
-- (void)setAudioStopRecording:(id)a3;
-- (void)setAudioStopRecordingStarted:(id)a3;
-- (void)setCarPlayHeadUnitContext:(id)a3;
-- (void)setCasinoRelationship:(id)a3;
-- (void)setClientConversationTrace:(id)a3;
-- (void)setClientFlow:(id)a3;
-- (void)setDeviceDynamicContext:(id)a3;
-- (void)setDeviceFixedContext:(id)a3;
-- (void)setDeviceLockStateChanged:(id)a3;
-- (void)setDialogOutput:(id)a3;
-- (void)setDictationAlternativeSelected:(id)a3;
-- (void)setDictationAlternativesSelected:(id)a3;
-- (void)setDictationAlternativesViewed:(id)a3;
-- (void)setDictationContentEdited:(id)a3;
-- (void)setDictationContext:(id)a3;
-- (void)setDictationEndPointCancel:(id)a3;
-- (void)setDictationEndPointStop:(id)a3;
-- (void)setDictationTranscriptionMetadata:(id)a3;
-- (void)setEngagedAccessoryContext:(id)a3;
-- (void)setEventType:(id)a3;
-- (void)setHostPlatformViewAppearContext:(id)a3;
-- (void)setHostPlatformViewDisappearContext:(id)a3;
-- (void)setIntercomMessageRecorded:(id)a3;
-- (void)setInvocation:(id)a3;
-- (void)setKeyboardDismissed:(id)a3;
-- (void)setLocation:(id)a3;
-- (void)setPnrFatalError:(id)a3;
-- (void)setPnrSpeechRecognitionSourceContext:(id)a3;
-- (void)setPnrTextToSpeechRequestReceived:(id)a3;
-- (void)setPreferredAudioRouteChanged:(id)a3;
-- (void)setPunchOut:(id)a3;
-- (void)setSiriCue:(id)a3;
-- (void)setSpeechTranscription:(id)a3;
-- (void)setTextToSpeechBegin:(id)a3;
-- (void)setTextToSpeechEnd:(id)a3;
-- (void)setTranscriptShown:(id)a3;
-- (void)setTranscriptTapped:(id)a3;
-- (void)setTurnMTERequest:(id)a3;
-- (void)setTypingRequestTrace:(id)a3;
-- (void)setUeiDictationAlternativeTextPairsSelected:(id)a3;
-- (void)setUeiDictationContentEditedTier1:(id)a3;
-- (void)setUeiDictationEnablementPromptShown:(id)a3;
-- (void)setUeiDictationEuclidAlternativesEvent:(id)a3;
-- (void)setUeiDictationEuclidAlternativesEventTier1:(id)a3;
-- (void)setUeiDictationEuclidSpeechAlternativesSelected:(id)a3;
-- (void)setUeiDictationEuclidSpeechAlternativesSelectedTier1:(id)a3;
-- (void)setUeiDictationInputModeSwitchContext:(id)a3;
-- (void)setUeiDictationPartialResultUpdated:(id)a3;
-- (void)setUeiDictationToolTipDisplayContext:(id)a3;
-- (void)setUeiDictationTranscriptionTokenized:(id)a3;
-- (void)setUeiDictationVoiceCommandDisambiguationAction:(id)a3;
-- (void)setUeiDictationVoiceCommandExecuted:(id)a3;
-- (void)setUeiDictationVoiceCommandKeyboardAction:(id)a3;
-- (void)setUeiDictationVoiceCommandUndoTapAction:(id)a3;
-- (void)setUeiInvocationTier1:(id)a3;
-- (void)setUeiLaunchContext:(id)a3;
-- (void)setUeiRequestCategorization:(id)a3;
-- (void)setUeiSiriCarCommandContext:(id)a3;
-- (void)setUeiSiriWasUnavailable:(id)a3;
-- (void)setUeiUIRenderingContext:(id)a3;
-- (void)setUeiUUFRReady:(id)a3;
-- (void)setUeiUserBargeInDetected:(id)a3;
-- (void)setUeiUserSpeakingContext:(id)a3;
-- (void)setUeiVisionSnippetDismissed:(id)a3;
-- (void)setUiStateTransition:(id)a3;
-- (void)setUserViewRegionInteraction:(id)a3;
-- (void)setUufrCompletion:(id)a3;
-- (void)setUufrFatalError:(id)a3;
-- (void)setUufrPresented:(id)a3;
-- (void)setUufrSaid:(id)a3;
-- (void)setUufrSelected:(id)a3;
-- (void)setUufrShown:(id)a3;
-- (void)setUufrShownTier1:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAnnounceCarPlayBannerTapped:(id)tapped;
+- (void)setAnnounceCarPlayGlyphSettingToggled:(id)toggled;
+- (void)setAudioFirstBufferRecorded:(id)recorded;
+- (void)setAudioStopRecording:(id)recording;
+- (void)setAudioStopRecordingStarted:(id)started;
+- (void)setCarPlayHeadUnitContext:(id)context;
+- (void)setCasinoRelationship:(id)relationship;
+- (void)setClientConversationTrace:(id)trace;
+- (void)setClientFlow:(id)flow;
+- (void)setDeviceDynamicContext:(id)context;
+- (void)setDeviceFixedContext:(id)context;
+- (void)setDeviceLockStateChanged:(id)changed;
+- (void)setDialogOutput:(id)output;
+- (void)setDictationAlternativeSelected:(id)selected;
+- (void)setDictationAlternativesSelected:(id)selected;
+- (void)setDictationAlternativesViewed:(id)viewed;
+- (void)setDictationContentEdited:(id)edited;
+- (void)setDictationContext:(id)context;
+- (void)setDictationEndPointCancel:(id)cancel;
+- (void)setDictationEndPointStop:(id)stop;
+- (void)setDictationTranscriptionMetadata:(id)metadata;
+- (void)setEngagedAccessoryContext:(id)context;
+- (void)setEventType:(id)type;
+- (void)setHostPlatformViewAppearContext:(id)context;
+- (void)setHostPlatformViewDisappearContext:(id)context;
+- (void)setIntercomMessageRecorded:(id)recorded;
+- (void)setInvocation:(id)invocation;
+- (void)setKeyboardDismissed:(id)dismissed;
+- (void)setLocation:(id)location;
+- (void)setPnrFatalError:(id)error;
+- (void)setPnrSpeechRecognitionSourceContext:(id)context;
+- (void)setPnrTextToSpeechRequestReceived:(id)received;
+- (void)setPreferredAudioRouteChanged:(id)changed;
+- (void)setPunchOut:(id)out;
+- (void)setSiriCue:(id)cue;
+- (void)setSpeechTranscription:(id)transcription;
+- (void)setTextToSpeechBegin:(id)begin;
+- (void)setTextToSpeechEnd:(id)end;
+- (void)setTranscriptShown:(id)shown;
+- (void)setTranscriptTapped:(id)tapped;
+- (void)setTurnMTERequest:(id)request;
+- (void)setTypingRequestTrace:(id)trace;
+- (void)setUeiDictationAlternativeTextPairsSelected:(id)selected;
+- (void)setUeiDictationContentEditedTier1:(id)tier1;
+- (void)setUeiDictationEnablementPromptShown:(id)shown;
+- (void)setUeiDictationEuclidAlternativesEvent:(id)event;
+- (void)setUeiDictationEuclidAlternativesEventTier1:(id)tier1;
+- (void)setUeiDictationEuclidSpeechAlternativesSelected:(id)selected;
+- (void)setUeiDictationEuclidSpeechAlternativesSelectedTier1:(id)tier1;
+- (void)setUeiDictationInputModeSwitchContext:(id)context;
+- (void)setUeiDictationPartialResultUpdated:(id)updated;
+- (void)setUeiDictationToolTipDisplayContext:(id)context;
+- (void)setUeiDictationTranscriptionTokenized:(id)tokenized;
+- (void)setUeiDictationVoiceCommandDisambiguationAction:(id)action;
+- (void)setUeiDictationVoiceCommandExecuted:(id)executed;
+- (void)setUeiDictationVoiceCommandKeyboardAction:(id)action;
+- (void)setUeiDictationVoiceCommandUndoTapAction:(id)action;
+- (void)setUeiInvocationTier1:(id)tier1;
+- (void)setUeiLaunchContext:(id)context;
+- (void)setUeiRequestCategorization:(id)categorization;
+- (void)setUeiSiriCarCommandContext:(id)context;
+- (void)setUeiSiriWasUnavailable:(id)unavailable;
+- (void)setUeiUIRenderingContext:(id)context;
+- (void)setUeiUUFRReady:(id)ready;
+- (void)setUeiUserBargeInDetected:(id)detected;
+- (void)setUeiUserSpeakingContext:(id)context;
+- (void)setUeiVisionSnippetDismissed:(id)dismissed;
+- (void)setUiStateTransition:(id)transition;
+- (void)setUserViewRegionInteraction:(id)interaction;
+- (void)setUufrCompletion:(id)completion;
+- (void)setUufrFatalError:(id)error;
+- (void)setUufrPresented:(id)presented;
+- (void)setUufrSaid:(id)said;
+- (void)setUufrSelected:(id)selected;
+- (void)setUufrShown:(id)shown;
+- (void)setUufrShownTier1:(id)tier1;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaClientEvent
@@ -1088,15 +1088,15 @@
 
 - (id)qualifiedMessageName
 {
-  v2 = [(SISchemaClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 0x4C)
+  whichEvent_Type = [(SISchemaClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0x4C)
   {
     return @"com.apple.aiml.siri.uei.ClientEvent";
   }
 
   else
   {
-    return off_1E78E3A00[v2 - 101];
+    return off_1E78E3A00[whichEvent_Type - 101];
   }
 }
 
@@ -1624,13 +1624,13 @@ LABEL_76:
   return v3;
 }
 
-- (void)setEventType:(id)a3
+- (void)setEventType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SISchemaClientEvent *)self setAudioFirstBufferRecorded:v4];
+    [(SISchemaClientEvent *)self setAudioFirstBufferRecorded:typeCopy];
   }
 
   else
@@ -1638,7 +1638,7 @@ LABEL_76:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(SISchemaClientEvent *)self setAudioStopRecording:v4];
+      [(SISchemaClientEvent *)self setAudioStopRecording:typeCopy];
     }
 
     else
@@ -1646,7 +1646,7 @@ LABEL_76:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(SISchemaClientEvent *)self setClientConversationTrace:v4];
+        [(SISchemaClientEvent *)self setClientConversationTrace:typeCopy];
       }
 
       else
@@ -1654,7 +1654,7 @@ LABEL_76:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(SISchemaClientEvent *)self setDeviceDynamicContext:v4];
+          [(SISchemaClientEvent *)self setDeviceDynamicContext:typeCopy];
         }
 
         else
@@ -1662,7 +1662,7 @@ LABEL_76:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [(SISchemaClientEvent *)self setDeviceFixedContext:v4];
+            [(SISchemaClientEvent *)self setDeviceFixedContext:typeCopy];
           }
 
           else
@@ -1670,7 +1670,7 @@ LABEL_76:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [(SISchemaClientEvent *)self setDictationContext:v4];
+              [(SISchemaClientEvent *)self setDictationContext:typeCopy];
             }
 
             else
@@ -1678,7 +1678,7 @@ LABEL_76:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [(SISchemaClientEvent *)self setInvocation:v4];
+                [(SISchemaClientEvent *)self setInvocation:typeCopy];
               }
 
               else
@@ -1686,7 +1686,7 @@ LABEL_76:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  [(SISchemaClientEvent *)self setLocation:v4];
+                  [(SISchemaClientEvent *)self setLocation:typeCopy];
                 }
 
                 else
@@ -1694,7 +1694,7 @@ LABEL_76:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    [(SISchemaClientEvent *)self setPunchOut:v4];
+                    [(SISchemaClientEvent *)self setPunchOut:typeCopy];
                   }
 
                   else
@@ -1702,7 +1702,7 @@ LABEL_76:
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      [(SISchemaClientEvent *)self setSiriCue:v4];
+                      [(SISchemaClientEvent *)self setSiriCue:typeCopy];
                     }
 
                     else
@@ -1710,7 +1710,7 @@ LABEL_76:
                       objc_opt_class();
                       if (objc_opt_isKindOfClass())
                       {
-                        [(SISchemaClientEvent *)self setUufrPresented:v4];
+                        [(SISchemaClientEvent *)self setUufrPresented:typeCopy];
                       }
 
                       else
@@ -1718,7 +1718,7 @@ LABEL_76:
                         objc_opt_class();
                         if (objc_opt_isKindOfClass())
                         {
-                          [(SISchemaClientEvent *)self setSpeechTranscription:v4];
+                          [(SISchemaClientEvent *)self setSpeechTranscription:typeCopy];
                         }
 
                         else
@@ -1726,7 +1726,7 @@ LABEL_76:
                           objc_opt_class();
                           if (objc_opt_isKindOfClass())
                           {
-                            [(SISchemaClientEvent *)self setTextToSpeechBegin:v4];
+                            [(SISchemaClientEvent *)self setTextToSpeechBegin:typeCopy];
                           }
 
                           else
@@ -1734,7 +1734,7 @@ LABEL_76:
                             objc_opt_class();
                             if (objc_opt_isKindOfClass())
                             {
-                              [(SISchemaClientEvent *)self setTextToSpeechEnd:v4];
+                              [(SISchemaClientEvent *)self setTextToSpeechEnd:typeCopy];
                             }
 
                             else
@@ -1742,7 +1742,7 @@ LABEL_76:
                               objc_opt_class();
                               if (objc_opt_isKindOfClass())
                               {
-                                [(SISchemaClientEvent *)self setUiStateTransition:v4];
+                                [(SISchemaClientEvent *)self setUiStateTransition:typeCopy];
                               }
 
                               else
@@ -1750,7 +1750,7 @@ LABEL_76:
                                 objc_opt_class();
                                 if (objc_opt_isKindOfClass())
                                 {
-                                  [(SISchemaClientEvent *)self setClientFlow:v4];
+                                  [(SISchemaClientEvent *)self setClientFlow:typeCopy];
                                 }
 
                                 else
@@ -1758,7 +1758,7 @@ LABEL_76:
                                   objc_opt_class();
                                   if (objc_opt_isKindOfClass())
                                   {
-                                    [(SISchemaClientEvent *)self setDialogOutput:v4];
+                                    [(SISchemaClientEvent *)self setDialogOutput:typeCopy];
                                   }
 
                                   else
@@ -1766,7 +1766,7 @@ LABEL_76:
                                     objc_opt_class();
                                     if (objc_opt_isKindOfClass())
                                     {
-                                      [(SISchemaClientEvent *)self setDictationEndPointStop:v4];
+                                      [(SISchemaClientEvent *)self setDictationEndPointStop:typeCopy];
                                     }
 
                                     else
@@ -1774,7 +1774,7 @@ LABEL_76:
                                       objc_opt_class();
                                       if (objc_opt_isKindOfClass())
                                       {
-                                        [(SISchemaClientEvent *)self setDictationEndPointCancel:v4];
+                                        [(SISchemaClientEvent *)self setDictationEndPointCancel:typeCopy];
                                       }
 
                                       else
@@ -1782,7 +1782,7 @@ LABEL_76:
                                         objc_opt_class();
                                         if (objc_opt_isKindOfClass())
                                         {
-                                          [(SISchemaClientEvent *)self setDictationAlternativeSelected:v4];
+                                          [(SISchemaClientEvent *)self setDictationAlternativeSelected:typeCopy];
                                         }
 
                                         else
@@ -1790,7 +1790,7 @@ LABEL_76:
                                           objc_opt_class();
                                           if (objc_opt_isKindOfClass())
                                           {
-                                            [(SISchemaClientEvent *)self setDictationTranscriptionMetadata:v4];
+                                            [(SISchemaClientEvent *)self setDictationTranscriptionMetadata:typeCopy];
                                           }
 
                                           else
@@ -1798,7 +1798,7 @@ LABEL_76:
                                             objc_opt_class();
                                             if (objc_opt_isKindOfClass())
                                             {
-                                              [(SISchemaClientEvent *)self setCarPlayHeadUnitContext:v4];
+                                              [(SISchemaClientEvent *)self setCarPlayHeadUnitContext:typeCopy];
                                             }
 
                                             else
@@ -1806,7 +1806,7 @@ LABEL_76:
                                               objc_opt_class();
                                               if (objc_opt_isKindOfClass())
                                               {
-                                                [(SISchemaClientEvent *)self setUufrCompletion:v4];
+                                                [(SISchemaClientEvent *)self setUufrCompletion:typeCopy];
                                               }
 
                                               else
@@ -1814,7 +1814,7 @@ LABEL_76:
                                                 objc_opt_class();
                                                 if (objc_opt_isKindOfClass())
                                                 {
-                                                  [(SISchemaClientEvent *)self setUufrShown:v4];
+                                                  [(SISchemaClientEvent *)self setUufrShown:typeCopy];
                                                 }
 
                                                 else
@@ -1822,7 +1822,7 @@ LABEL_76:
                                                   objc_opt_class();
                                                   if (objc_opt_isKindOfClass())
                                                   {
-                                                    [(SISchemaClientEvent *)self setUufrSaid:v4];
+                                                    [(SISchemaClientEvent *)self setUufrSaid:typeCopy];
                                                   }
 
                                                   else
@@ -1830,7 +1830,7 @@ LABEL_76:
                                                     objc_opt_class();
                                                     if (objc_opt_isKindOfClass())
                                                     {
-                                                      [(SISchemaClientEvent *)self setUufrFatalError:v4];
+                                                      [(SISchemaClientEvent *)self setUufrFatalError:typeCopy];
                                                     }
 
                                                     else
@@ -1838,7 +1838,7 @@ LABEL_76:
                                                       objc_opt_class();
                                                       if (objc_opt_isKindOfClass())
                                                       {
-                                                        [(SISchemaClientEvent *)self setDictationAlternativesViewed:v4];
+                                                        [(SISchemaClientEvent *)self setDictationAlternativesViewed:typeCopy];
                                                       }
 
                                                       else
@@ -1846,7 +1846,7 @@ LABEL_76:
                                                         objc_opt_class();
                                                         if (objc_opt_isKindOfClass())
                                                         {
-                                                          [(SISchemaClientEvent *)self setIntercomMessageRecorded:v4];
+                                                          [(SISchemaClientEvent *)self setIntercomMessageRecorded:typeCopy];
                                                         }
 
                                                         else
@@ -1854,7 +1854,7 @@ LABEL_76:
                                                           objc_opt_class();
                                                           if (objc_opt_isKindOfClass())
                                                           {
-                                                            [(SISchemaClientEvent *)self setCasinoRelationship:v4];
+                                                            [(SISchemaClientEvent *)self setCasinoRelationship:typeCopy];
                                                           }
 
                                                           else
@@ -1862,7 +1862,7 @@ LABEL_76:
                                                             objc_opt_class();
                                                             if (objc_opt_isKindOfClass())
                                                             {
-                                                              [(SISchemaClientEvent *)self setUserViewRegionInteraction:v4];
+                                                              [(SISchemaClientEvent *)self setUserViewRegionInteraction:typeCopy];
                                                             }
 
                                                             else
@@ -1870,7 +1870,7 @@ LABEL_76:
                                                               objc_opt_class();
                                                               if (objc_opt_isKindOfClass())
                                                               {
-                                                                [(SISchemaClientEvent *)self setDeviceLockStateChanged:v4];
+                                                                [(SISchemaClientEvent *)self setDeviceLockStateChanged:typeCopy];
                                                               }
 
                                                               else
@@ -1878,7 +1878,7 @@ LABEL_76:
                                                                 objc_opt_class();
                                                                 if (objc_opt_isKindOfClass())
                                                                 {
-                                                                  [(SISchemaClientEvent *)self setUeiRequestCategorization:v4];
+                                                                  [(SISchemaClientEvent *)self setUeiRequestCategorization:typeCopy];
                                                                 }
 
                                                                 else
@@ -1886,7 +1886,7 @@ LABEL_76:
                                                                   objc_opt_class();
                                                                   if (objc_opt_isKindOfClass())
                                                                   {
-                                                                    [(SISchemaClientEvent *)self setAudioStopRecordingStarted:v4];
+                                                                    [(SISchemaClientEvent *)self setAudioStopRecordingStarted:typeCopy];
                                                                   }
 
                                                                   else
@@ -1894,7 +1894,7 @@ LABEL_76:
                                                                     objc_opt_class();
                                                                     if (objc_opt_isKindOfClass())
                                                                     {
-                                                                      [(SISchemaClientEvent *)self setUeiLaunchContext:v4];
+                                                                      [(SISchemaClientEvent *)self setUeiLaunchContext:typeCopy];
                                                                     }
 
                                                                     else
@@ -1902,7 +1902,7 @@ LABEL_76:
                                                                       objc_opt_class();
                                                                       if (objc_opt_isKindOfClass())
                                                                       {
-                                                                        [(SISchemaClientEvent *)self setUeiUserSpeakingContext:v4];
+                                                                        [(SISchemaClientEvent *)self setUeiUserSpeakingContext:typeCopy];
                                                                       }
 
                                                                       else
@@ -1910,7 +1910,7 @@ LABEL_76:
                                                                         objc_opt_class();
                                                                         if (objc_opt_isKindOfClass())
                                                                         {
-                                                                          [(SISchemaClientEvent *)self setUeiUUFRReady:v4];
+                                                                          [(SISchemaClientEvent *)self setUeiUUFRReady:typeCopy];
                                                                         }
 
                                                                         else
@@ -1918,7 +1918,7 @@ LABEL_76:
                                                                           objc_opt_class();
                                                                           if (objc_opt_isKindOfClass())
                                                                           {
-                                                                            [(SISchemaClientEvent *)self setUeiUIRenderingContext:v4];
+                                                                            [(SISchemaClientEvent *)self setUeiUIRenderingContext:typeCopy];
                                                                           }
 
                                                                           else
@@ -1926,7 +1926,7 @@ LABEL_76:
                                                                             objc_opt_class();
                                                                             if (objc_opt_isKindOfClass())
                                                                             {
-                                                                              [(SISchemaClientEvent *)self setPnrTextToSpeechRequestReceived:v4];
+                                                                              [(SISchemaClientEvent *)self setPnrTextToSpeechRequestReceived:typeCopy];
                                                                             }
 
                                                                             else
@@ -1934,7 +1934,7 @@ LABEL_76:
                                                                               objc_opt_class();
                                                                               if (objc_opt_isKindOfClass())
                                                                               {
-                                                                                [(SISchemaClientEvent *)self setPnrSpeechRecognitionSourceContext:v4];
+                                                                                [(SISchemaClientEvent *)self setPnrSpeechRecognitionSourceContext:typeCopy];
                                                                               }
 
                                                                               else
@@ -1942,7 +1942,7 @@ LABEL_76:
                                                                                 objc_opt_class();
                                                                                 if (objc_opt_isKindOfClass())
                                                                                 {
-                                                                                  [(SISchemaClientEvent *)self setPnrFatalError:v4];
+                                                                                  [(SISchemaClientEvent *)self setPnrFatalError:typeCopy];
                                                                                 }
 
                                                                                 else
@@ -1950,7 +1950,7 @@ LABEL_76:
                                                                                   objc_opt_class();
                                                                                   if (objc_opt_isKindOfClass())
                                                                                   {
-                                                                                    [(SISchemaClientEvent *)self setTurnMTERequest:v4];
+                                                                                    [(SISchemaClientEvent *)self setTurnMTERequest:typeCopy];
                                                                                   }
 
                                                                                   else
@@ -1958,7 +1958,7 @@ LABEL_76:
                                                                                     objc_opt_class();
                                                                                     if (objc_opt_isKindOfClass())
                                                                                     {
-                                                                                      [(SISchemaClientEvent *)self setKeyboardDismissed:v4];
+                                                                                      [(SISchemaClientEvent *)self setKeyboardDismissed:typeCopy];
                                                                                     }
 
                                                                                     else
@@ -1966,7 +1966,7 @@ LABEL_76:
                                                                                       objc_opt_class();
                                                                                       if (objc_opt_isKindOfClass())
                                                                                       {
-                                                                                        [(SISchemaClientEvent *)self setEngagedAccessoryContext:v4];
+                                                                                        [(SISchemaClientEvent *)self setEngagedAccessoryContext:typeCopy];
                                                                                       }
 
                                                                                       else
@@ -1974,7 +1974,7 @@ LABEL_76:
                                                                                         objc_opt_class();
                                                                                         if (objc_opt_isKindOfClass())
                                                                                         {
-                                                                                          [(SISchemaClientEvent *)self setAnnounceCarPlayBannerTapped:v4];
+                                                                                          [(SISchemaClientEvent *)self setAnnounceCarPlayBannerTapped:typeCopy];
                                                                                         }
 
                                                                                         else
@@ -1982,7 +1982,7 @@ LABEL_76:
                                                                                           objc_opt_class();
                                                                                           if (objc_opt_isKindOfClass())
                                                                                           {
-                                                                                            [(SISchemaClientEvent *)self setAnnounceCarPlayGlyphSettingToggled:v4];
+                                                                                            [(SISchemaClientEvent *)self setAnnounceCarPlayGlyphSettingToggled:typeCopy];
                                                                                           }
 
                                                                                           else
@@ -1990,7 +1990,7 @@ LABEL_76:
                                                                                             objc_opt_class();
                                                                                             if (objc_opt_isKindOfClass())
                                                                                             {
-                                                                                              [(SISchemaClientEvent *)self setDictationContentEdited:v4];
+                                                                                              [(SISchemaClientEvent *)self setDictationContentEdited:typeCopy];
                                                                                             }
 
                                                                                             else
@@ -1998,7 +1998,7 @@ LABEL_76:
                                                                                               objc_opt_class();
                                                                                               if (objc_opt_isKindOfClass())
                                                                                               {
-                                                                                                [(SISchemaClientEvent *)self setUufrShownTier1:v4];
+                                                                                                [(SISchemaClientEvent *)self setUufrShownTier1:typeCopy];
                                                                                               }
 
                                                                                               else
@@ -2006,7 +2006,7 @@ LABEL_76:
                                                                                                 objc_opt_class();
                                                                                                 if (objc_opt_isKindOfClass())
                                                                                                 {
-                                                                                                  [(SISchemaClientEvent *)self setUeiDictationPartialResultUpdated:v4];
+                                                                                                  [(SISchemaClientEvent *)self setUeiDictationPartialResultUpdated:typeCopy];
                                                                                                 }
 
                                                                                                 else
@@ -2014,7 +2014,7 @@ LABEL_76:
                                                                                                   objc_opt_class();
                                                                                                   if (objc_opt_isKindOfClass())
                                                                                                   {
-                                                                                                    [(SISchemaClientEvent *)self setUeiDictationVoiceCommandExecuted:v4];
+                                                                                                    [(SISchemaClientEvent *)self setUeiDictationVoiceCommandExecuted:typeCopy];
                                                                                                   }
 
                                                                                                   else
@@ -2022,7 +2022,7 @@ LABEL_76:
                                                                                                     objc_opt_class();
                                                                                                     if (objc_opt_isKindOfClass())
                                                                                                     {
-                                                                                                      [(SISchemaClientEvent *)self setUeiDictationInputModeSwitchContext:v4];
+                                                                                                      [(SISchemaClientEvent *)self setUeiDictationInputModeSwitchContext:typeCopy];
                                                                                                     }
 
                                                                                                     else
@@ -2030,7 +2030,7 @@ LABEL_76:
                                                                                                       objc_opt_class();
                                                                                                       if (objc_opt_isKindOfClass())
                                                                                                       {
-                                                                                                        [(SISchemaClientEvent *)self setUeiDictationToolTipDisplayContext:v4];
+                                                                                                        [(SISchemaClientEvent *)self setUeiDictationToolTipDisplayContext:typeCopy];
                                                                                                       }
 
                                                                                                       else
@@ -2038,7 +2038,7 @@ LABEL_76:
                                                                                                         objc_opt_class();
                                                                                                         if (objc_opt_isKindOfClass())
                                                                                                         {
-                                                                                                          [(SISchemaClientEvent *)self setHostPlatformViewAppearContext:v4];
+                                                                                                          [(SISchemaClientEvent *)self setHostPlatformViewAppearContext:typeCopy];
                                                                                                         }
 
                                                                                                         else
@@ -2046,7 +2046,7 @@ LABEL_76:
                                                                                                           objc_opt_class();
                                                                                                           if (objc_opt_isKindOfClass())
                                                                                                           {
-                                                                                                            [(SISchemaClientEvent *)self setHostPlatformViewDisappearContext:v4];
+                                                                                                            [(SISchemaClientEvent *)self setHostPlatformViewDisappearContext:typeCopy];
                                                                                                           }
 
                                                                                                           else
@@ -2054,7 +2054,7 @@ LABEL_76:
                                                                                                             objc_opt_class();
                                                                                                             if (objc_opt_isKindOfClass())
                                                                                                             {
-                                                                                                              [(SISchemaClientEvent *)self setUeiDictationTranscriptionTokenized:v4];
+                                                                                                              [(SISchemaClientEvent *)self setUeiDictationTranscriptionTokenized:typeCopy];
                                                                                                             }
 
                                                                                                             else
@@ -2062,7 +2062,7 @@ LABEL_76:
                                                                                                               objc_opt_class();
                                                                                                               if (objc_opt_isKindOfClass())
                                                                                                               {
-                                                                                                                [(SISchemaClientEvent *)self setDictationAlternativesSelected:v4];
+                                                                                                                [(SISchemaClientEvent *)self setDictationAlternativesSelected:typeCopy];
                                                                                                               }
 
                                                                                                               else
@@ -2070,7 +2070,7 @@ LABEL_76:
                                                                                                                 objc_opt_class();
                                                                                                                 if (objc_opt_isKindOfClass())
                                                                                                                 {
-                                                                                                                  [(SISchemaClientEvent *)self setUufrSelected:v4];
+                                                                                                                  [(SISchemaClientEvent *)self setUufrSelected:typeCopy];
                                                                                                                 }
 
                                                                                                                 else
@@ -2078,7 +2078,7 @@ LABEL_76:
                                                                                                                   objc_opt_class();
                                                                                                                   if (objc_opt_isKindOfClass())
                                                                                                                   {
-                                                                                                                    [(SISchemaClientEvent *)self setUeiDictationAlternativeTextPairsSelected:v4];
+                                                                                                                    [(SISchemaClientEvent *)self setUeiDictationAlternativeTextPairsSelected:typeCopy];
                                                                                                                   }
 
                                                                                                                   else
@@ -2086,7 +2086,7 @@ LABEL_76:
                                                                                                                     objc_opt_class();
                                                                                                                     if (objc_opt_isKindOfClass())
                                                                                                                     {
-                                                                                                                      [(SISchemaClientEvent *)self setUeiUserBargeInDetected:v4];
+                                                                                                                      [(SISchemaClientEvent *)self setUeiUserBargeInDetected:typeCopy];
                                                                                                                     }
 
                                                                                                                     else
@@ -2094,7 +2094,7 @@ LABEL_76:
                                                                                                                       objc_opt_class();
                                                                                                                       if (objc_opt_isKindOfClass())
                                                                                                                       {
-                                                                                                                        [(SISchemaClientEvent *)self setUeiDictationEnablementPromptShown:v4];
+                                                                                                                        [(SISchemaClientEvent *)self setUeiDictationEnablementPromptShown:typeCopy];
                                                                                                                       }
 
                                                                                                                       else
@@ -2102,7 +2102,7 @@ LABEL_76:
                                                                                                                         objc_opt_class();
                                                                                                                         if (objc_opt_isKindOfClass())
                                                                                                                         {
-                                                                                                                          [(SISchemaClientEvent *)self setUeiSiriCarCommandContext:v4];
+                                                                                                                          [(SISchemaClientEvent *)self setUeiSiriCarCommandContext:typeCopy];
                                                                                                                         }
 
                                                                                                                         else
@@ -2110,7 +2110,7 @@ LABEL_76:
                                                                                                                           objc_opt_class();
                                                                                                                           if (objc_opt_isKindOfClass())
                                                                                                                           {
-                                                                                                                            [(SISchemaClientEvent *)self setUeiVisionSnippetDismissed:v4];
+                                                                                                                            [(SISchemaClientEvent *)self setUeiVisionSnippetDismissed:typeCopy];
                                                                                                                           }
 
                                                                                                                           else
@@ -2118,7 +2118,7 @@ LABEL_76:
                                                                                                                             objc_opt_class();
                                                                                                                             if (objc_opt_isKindOfClass())
                                                                                                                             {
-                                                                                                                              [(SISchemaClientEvent *)self setUeiSiriWasUnavailable:v4];
+                                                                                                                              [(SISchemaClientEvent *)self setUeiSiriWasUnavailable:typeCopy];
                                                                                                                             }
 
                                                                                                                             else
@@ -2126,7 +2126,7 @@ LABEL_76:
                                                                                                                               objc_opt_class();
                                                                                                                               if (objc_opt_isKindOfClass())
                                                                                                                               {
-                                                                                                                                [(SISchemaClientEvent *)self setPreferredAudioRouteChanged:v4];
+                                                                                                                                [(SISchemaClientEvent *)self setPreferredAudioRouteChanged:typeCopy];
                                                                                                                               }
 
                                                                                                                               else
@@ -2134,7 +2134,7 @@ LABEL_76:
                                                                                                                                 objc_opt_class();
                                                                                                                                 if (objc_opt_isKindOfClass())
                                                                                                                                 {
-                                                                                                                                  [(SISchemaClientEvent *)self setUeiDictationContentEditedTier1:v4];
+                                                                                                                                  [(SISchemaClientEvent *)self setUeiDictationContentEditedTier1:typeCopy];
                                                                                                                                 }
 
                                                                                                                                 else
@@ -2142,7 +2142,7 @@ LABEL_76:
                                                                                                                                   objc_opt_class();
                                                                                                                                   if (objc_opt_isKindOfClass())
                                                                                                                                   {
-                                                                                                                                    [(SISchemaClientEvent *)self setUeiDictationVoiceCommandUndoTapAction:v4];
+                                                                                                                                    [(SISchemaClientEvent *)self setUeiDictationVoiceCommandUndoTapAction:typeCopy];
                                                                                                                                   }
 
                                                                                                                                   else
@@ -2150,7 +2150,7 @@ LABEL_76:
                                                                                                                                     objc_opt_class();
                                                                                                                                     if (objc_opt_isKindOfClass())
                                                                                                                                     {
-                                                                                                                                      [(SISchemaClientEvent *)self setUeiDictationVoiceCommandDisambiguationAction:v4];
+                                                                                                                                      [(SISchemaClientEvent *)self setUeiDictationVoiceCommandDisambiguationAction:typeCopy];
                                                                                                                                     }
 
                                                                                                                                     else
@@ -2158,7 +2158,7 @@ LABEL_76:
                                                                                                                                       objc_opt_class();
                                                                                                                                       if (objc_opt_isKindOfClass())
                                                                                                                                       {
-                                                                                                                                        [(SISchemaClientEvent *)self setUeiDictationVoiceCommandKeyboardAction:v4];
+                                                                                                                                        [(SISchemaClientEvent *)self setUeiDictationVoiceCommandKeyboardAction:typeCopy];
                                                                                                                                       }
 
                                                                                                                                       else
@@ -2166,7 +2166,7 @@ LABEL_76:
                                                                                                                                         objc_opt_class();
                                                                                                                                         if (objc_opt_isKindOfClass())
                                                                                                                                         {
-                                                                                                                                          [(SISchemaClientEvent *)self setUeiDictationEuclidAlternativesEvent:v4];
+                                                                                                                                          [(SISchemaClientEvent *)self setUeiDictationEuclidAlternativesEvent:typeCopy];
                                                                                                                                         }
 
                                                                                                                                         else
@@ -2174,7 +2174,7 @@ LABEL_76:
                                                                                                                                           objc_opt_class();
                                                                                                                                           if (objc_opt_isKindOfClass())
                                                                                                                                           {
-                                                                                                                                            [(SISchemaClientEvent *)self setUeiDictationEuclidAlternativesEventTier1:v4];
+                                                                                                                                            [(SISchemaClientEvent *)self setUeiDictationEuclidAlternativesEventTier1:typeCopy];
                                                                                                                                           }
 
                                                                                                                                           else
@@ -2182,7 +2182,7 @@ LABEL_76:
                                                                                                                                             objc_opt_class();
                                                                                                                                             if (objc_opt_isKindOfClass())
                                                                                                                                             {
-                                                                                                                                              [(SISchemaClientEvent *)self setUeiDictationEuclidSpeechAlternativesSelected:v4];
+                                                                                                                                              [(SISchemaClientEvent *)self setUeiDictationEuclidSpeechAlternativesSelected:typeCopy];
                                                                                                                                             }
 
                                                                                                                                             else
@@ -2190,7 +2190,7 @@ LABEL_76:
                                                                                                                                               objc_opt_class();
                                                                                                                                               if (objc_opt_isKindOfClass())
                                                                                                                                               {
-                                                                                                                                                [(SISchemaClientEvent *)self setUeiDictationEuclidSpeechAlternativesSelectedTier1:v4];
+                                                                                                                                                [(SISchemaClientEvent *)self setUeiDictationEuclidSpeechAlternativesSelectedTier1:typeCopy];
                                                                                                                                               }
 
                                                                                                                                               else
@@ -2198,7 +2198,7 @@ LABEL_76:
                                                                                                                                                 objc_opt_class();
                                                                                                                                                 if (objc_opt_isKindOfClass())
                                                                                                                                                 {
-                                                                                                                                                  [(SISchemaClientEvent *)self setTypingRequestTrace:v4];
+                                                                                                                                                  [(SISchemaClientEvent *)self setTypingRequestTrace:typeCopy];
                                                                                                                                                 }
 
                                                                                                                                                 else
@@ -2206,7 +2206,7 @@ LABEL_76:
                                                                                                                                                   objc_opt_class();
                                                                                                                                                   if (objc_opt_isKindOfClass())
                                                                                                                                                   {
-                                                                                                                                                    [(SISchemaClientEvent *)self setUeiInvocationTier1:v4];
+                                                                                                                                                    [(SISchemaClientEvent *)self setUeiInvocationTier1:typeCopy];
                                                                                                                                                   }
 
                                                                                                                                                   else
@@ -2214,7 +2214,7 @@ LABEL_76:
                                                                                                                                                     objc_opt_class();
                                                                                                                                                     if (objc_opt_isKindOfClass())
                                                                                                                                                     {
-                                                                                                                                                      [(SISchemaClientEvent *)self setTranscriptShown:v4];
+                                                                                                                                                      [(SISchemaClientEvent *)self setTranscriptShown:typeCopy];
                                                                                                                                                     }
 
                                                                                                                                                     else
@@ -2222,7 +2222,7 @@ LABEL_76:
                                                                                                                                                       objc_opt_class();
                                                                                                                                                       if (objc_opt_isKindOfClass())
                                                                                                                                                       {
-                                                                                                                                                        [(SISchemaClientEvent *)self setTranscriptTapped:v4];
+                                                                                                                                                        [(SISchemaClientEvent *)self setTranscriptTapped:typeCopy];
                                                                                                                                                       }
                                                                                                                                                     }
                                                                                                                                                   }
@@ -2300,16 +2300,16 @@ LABEL_76:
   }
 }
 
-- (SISchemaClientEvent)initWithDictionary:(id)a3
+- (SISchemaClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v232.receiver = self;
   v232.super_class = SISchemaClientEvent;
   v5 = [(SISchemaClientEvent *)&v232 init];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2317,7 +2317,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"transportMetadata"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"transportMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2325,7 +2325,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setTransportMetadata:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"audioFirstBufferRecorded"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"audioFirstBufferRecorded"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2333,7 +2333,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setAudioFirstBufferRecorded:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"audioStopRecording"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"audioStopRecording"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2341,7 +2341,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setAudioStopRecording:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"clientConversationTrace"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"clientConversationTrace"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2349,7 +2349,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setClientConversationTrace:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"deviceDynamicContext"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"deviceDynamicContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2357,7 +2357,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setDeviceDynamicContext:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"deviceFixedContext"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"deviceFixedContext"];
     objc_opt_class();
     v231 = v18;
     if (objc_opt_isKindOfClass())
@@ -2366,7 +2366,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setDeviceFixedContext:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"dictationContext"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"dictationContext"];
     objc_opt_class();
     v230 = v20;
     if (objc_opt_isKindOfClass())
@@ -2375,7 +2375,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setDictationContext:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"invocation"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"invocation"];
     objc_opt_class();
     v229 = v22;
     if (objc_opt_isKindOfClass())
@@ -2384,7 +2384,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setInvocation:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"location"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"location"];
     objc_opt_class();
     v228 = v24;
     if (objc_opt_isKindOfClass())
@@ -2393,7 +2393,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setLocation:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"punchOut"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"punchOut"];
     objc_opt_class();
     v227 = v26;
     if (objc_opt_isKindOfClass())
@@ -2402,7 +2402,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setPunchOut:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"siriCue"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"siriCue"];
     objc_opt_class();
     v226 = v28;
     if (objc_opt_isKindOfClass())
@@ -2411,7 +2411,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setSiriCue:v29];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"uufrPresented"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"uufrPresented"];
     objc_opt_class();
     v225 = v30;
     if (objc_opt_isKindOfClass())
@@ -2420,7 +2420,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUufrPresented:v31];
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"speechTranscription"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"speechTranscription"];
     objc_opt_class();
     v224 = v32;
     if (objc_opt_isKindOfClass())
@@ -2429,7 +2429,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setSpeechTranscription:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"textToSpeechBegin"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"textToSpeechBegin"];
     objc_opt_class();
     v223 = v34;
     if (objc_opt_isKindOfClass())
@@ -2438,7 +2438,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setTextToSpeechBegin:v35];
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"textToSpeechEnd"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"textToSpeechEnd"];
     objc_opt_class();
     v222 = v36;
     if (objc_opt_isKindOfClass())
@@ -2447,7 +2447,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setTextToSpeechEnd:v37];
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"uiStateTransition"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"uiStateTransition"];
     objc_opt_class();
     v221 = v38;
     if (objc_opt_isKindOfClass())
@@ -2456,7 +2456,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUiStateTransition:v39];
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"clientFlow"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"clientFlow"];
     objc_opt_class();
     v220 = v40;
     if (objc_opt_isKindOfClass())
@@ -2465,7 +2465,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setClientFlow:v41];
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"dialogOutput"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"dialogOutput"];
     objc_opt_class();
     v219 = v42;
     if (objc_opt_isKindOfClass())
@@ -2474,7 +2474,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setDialogOutput:v43];
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"dictationEndPointStop"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"dictationEndPointStop"];
     objc_opt_class();
     v218 = v44;
     if (objc_opt_isKindOfClass())
@@ -2483,7 +2483,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setDictationEndPointStop:v45];
     }
 
-    v46 = [v4 objectForKeyedSubscript:@"dictationEndPointCancel"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"dictationEndPointCancel"];
     objc_opt_class();
     v217 = v46;
     if (objc_opt_isKindOfClass())
@@ -2492,7 +2492,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setDictationEndPointCancel:v47];
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"dictationAlternativeSelected"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"dictationAlternativeSelected"];
     objc_opt_class();
     v216 = v48;
     if (objc_opt_isKindOfClass())
@@ -2501,7 +2501,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setDictationAlternativeSelected:v49];
     }
 
-    v50 = [v4 objectForKeyedSubscript:@"dictationTranscriptionMetadata"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"dictationTranscriptionMetadata"];
     objc_opt_class();
     v215 = v50;
     if (objc_opt_isKindOfClass())
@@ -2510,7 +2510,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setDictationTranscriptionMetadata:v51];
     }
 
-    v52 = [v4 objectForKeyedSubscript:@"carPlayHeadUnitContext"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"carPlayHeadUnitContext"];
     objc_opt_class();
     v214 = v52;
     if (objc_opt_isKindOfClass())
@@ -2519,7 +2519,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setCarPlayHeadUnitContext:v53];
     }
 
-    v54 = [v4 objectForKeyedSubscript:@"uufrCompletion"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"uufrCompletion"];
     objc_opt_class();
     v213 = v54;
     if (objc_opt_isKindOfClass())
@@ -2528,7 +2528,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUufrCompletion:v55];
     }
 
-    v56 = [v4 objectForKeyedSubscript:@"uufrShown"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"uufrShown"];
     objc_opt_class();
     v212 = v56;
     if (objc_opt_isKindOfClass())
@@ -2537,7 +2537,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUufrShown:v57];
     }
 
-    v58 = [v4 objectForKeyedSubscript:@"uufrSaid"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"uufrSaid"];
     objc_opt_class();
     v211 = v58;
     if (objc_opt_isKindOfClass())
@@ -2546,7 +2546,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUufrSaid:v59];
     }
 
-    v60 = [v4 objectForKeyedSubscript:@"uufrFatalError"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"uufrFatalError"];
     objc_opt_class();
     v210 = v60;
     if (objc_opt_isKindOfClass())
@@ -2555,7 +2555,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUufrFatalError:v61];
     }
 
-    v62 = [v4 objectForKeyedSubscript:@"dictationAlternativesViewed"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"dictationAlternativesViewed"];
     objc_opt_class();
     v209 = v62;
     if (objc_opt_isKindOfClass())
@@ -2564,7 +2564,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setDictationAlternativesViewed:v63];
     }
 
-    v64 = [v4 objectForKeyedSubscript:@"intercomMessageRecorded"];
+    v64 = [dictionaryCopy objectForKeyedSubscript:@"intercomMessageRecorded"];
     objc_opt_class();
     v208 = v64;
     if (objc_opt_isKindOfClass())
@@ -2573,7 +2573,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setIntercomMessageRecorded:v65];
     }
 
-    v66 = [v4 objectForKeyedSubscript:@"casinoRelationship"];
+    v66 = [dictionaryCopy objectForKeyedSubscript:@"casinoRelationship"];
     objc_opt_class();
     v207 = v66;
     if (objc_opt_isKindOfClass())
@@ -2582,7 +2582,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setCasinoRelationship:v67];
     }
 
-    v68 = [v4 objectForKeyedSubscript:@"userViewRegionInteraction"];
+    v68 = [dictionaryCopy objectForKeyedSubscript:@"userViewRegionInteraction"];
     objc_opt_class();
     v206 = v68;
     if (objc_opt_isKindOfClass())
@@ -2591,7 +2591,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUserViewRegionInteraction:v69];
     }
 
-    v70 = [v4 objectForKeyedSubscript:@"deviceLockStateChanged"];
+    v70 = [dictionaryCopy objectForKeyedSubscript:@"deviceLockStateChanged"];
     objc_opt_class();
     v205 = v70;
     if (objc_opt_isKindOfClass())
@@ -2600,7 +2600,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setDeviceLockStateChanged:v71];
     }
 
-    v72 = [v4 objectForKeyedSubscript:@"ueiRequestCategorization"];
+    v72 = [dictionaryCopy objectForKeyedSubscript:@"ueiRequestCategorization"];
     objc_opt_class();
     v204 = v72;
     if (objc_opt_isKindOfClass())
@@ -2609,7 +2609,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiRequestCategorization:v73];
     }
 
-    v74 = [v4 objectForKeyedSubscript:@"audioStopRecordingStarted"];
+    v74 = [dictionaryCopy objectForKeyedSubscript:@"audioStopRecordingStarted"];
     objc_opt_class();
     v203 = v74;
     if (objc_opt_isKindOfClass())
@@ -2618,7 +2618,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setAudioStopRecordingStarted:v75];
     }
 
-    v76 = [v4 objectForKeyedSubscript:@"ueiLaunchContext"];
+    v76 = [dictionaryCopy objectForKeyedSubscript:@"ueiLaunchContext"];
     objc_opt_class();
     v202 = v76;
     if (objc_opt_isKindOfClass())
@@ -2627,7 +2627,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiLaunchContext:v77];
     }
 
-    v78 = [v4 objectForKeyedSubscript:@"ueiUserSpeakingContext"];
+    v78 = [dictionaryCopy objectForKeyedSubscript:@"ueiUserSpeakingContext"];
     objc_opt_class();
     v201 = v78;
     if (objc_opt_isKindOfClass())
@@ -2636,7 +2636,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiUserSpeakingContext:v79];
     }
 
-    v80 = [v4 objectForKeyedSubscript:@"ueiUUFRReady"];
+    v80 = [dictionaryCopy objectForKeyedSubscript:@"ueiUUFRReady"];
     objc_opt_class();
     v200 = v80;
     if (objc_opt_isKindOfClass())
@@ -2645,7 +2645,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiUUFRReady:v81];
     }
 
-    v82 = [v4 objectForKeyedSubscript:@"ueiUIRenderingContext"];
+    v82 = [dictionaryCopy objectForKeyedSubscript:@"ueiUIRenderingContext"];
     objc_opt_class();
     v199 = v82;
     if (objc_opt_isKindOfClass())
@@ -2654,7 +2654,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiUIRenderingContext:v83];
     }
 
-    v84 = [v4 objectForKeyedSubscript:@"pnrTextToSpeechRequestReceived"];
+    v84 = [dictionaryCopy objectForKeyedSubscript:@"pnrTextToSpeechRequestReceived"];
     objc_opt_class();
     v198 = v84;
     if (objc_opt_isKindOfClass())
@@ -2663,7 +2663,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setPnrTextToSpeechRequestReceived:v85];
     }
 
-    v86 = [v4 objectForKeyedSubscript:@"pnrSpeechRecognitionSourceContext"];
+    v86 = [dictionaryCopy objectForKeyedSubscript:@"pnrSpeechRecognitionSourceContext"];
     objc_opt_class();
     v197 = v86;
     if (objc_opt_isKindOfClass())
@@ -2672,7 +2672,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setPnrSpeechRecognitionSourceContext:v87];
     }
 
-    v88 = [v4 objectForKeyedSubscript:@"pnrFatalError"];
+    v88 = [dictionaryCopy objectForKeyedSubscript:@"pnrFatalError"];
     objc_opt_class();
     v196 = v88;
     if (objc_opt_isKindOfClass())
@@ -2681,7 +2681,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setPnrFatalError:v89];
     }
 
-    v90 = [v4 objectForKeyedSubscript:@"turnMTERequest"];
+    v90 = [dictionaryCopy objectForKeyedSubscript:@"turnMTERequest"];
     objc_opt_class();
     v195 = v90;
     if (objc_opt_isKindOfClass())
@@ -2690,7 +2690,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setTurnMTERequest:v91];
     }
 
-    v92 = [v4 objectForKeyedSubscript:@"keyboardDismissed"];
+    v92 = [dictionaryCopy objectForKeyedSubscript:@"keyboardDismissed"];
     objc_opt_class();
     v194 = v92;
     if (objc_opt_isKindOfClass())
@@ -2699,7 +2699,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setKeyboardDismissed:v93];
     }
 
-    v94 = [v4 objectForKeyedSubscript:@"engagedAccessoryContext"];
+    v94 = [dictionaryCopy objectForKeyedSubscript:@"engagedAccessoryContext"];
     objc_opt_class();
     v193 = v94;
     if (objc_opt_isKindOfClass())
@@ -2708,7 +2708,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setEngagedAccessoryContext:v95];
     }
 
-    v96 = [v4 objectForKeyedSubscript:@"announceCarPlayBannerTapped"];
+    v96 = [dictionaryCopy objectForKeyedSubscript:@"announceCarPlayBannerTapped"];
     objc_opt_class();
     v192 = v96;
     if (objc_opt_isKindOfClass())
@@ -2717,7 +2717,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setAnnounceCarPlayBannerTapped:v97];
     }
 
-    v98 = [v4 objectForKeyedSubscript:@"announceCarPlayGlyphSettingToggled"];
+    v98 = [dictionaryCopy objectForKeyedSubscript:@"announceCarPlayGlyphSettingToggled"];
     objc_opt_class();
     v191 = v98;
     if (objc_opt_isKindOfClass())
@@ -2726,7 +2726,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setAnnounceCarPlayGlyphSettingToggled:v99];
     }
 
-    v100 = [v4 objectForKeyedSubscript:@"dictationContentEdited"];
+    v100 = [dictionaryCopy objectForKeyedSubscript:@"dictationContentEdited"];
     objc_opt_class();
     v190 = v100;
     if (objc_opt_isKindOfClass())
@@ -2735,7 +2735,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setDictationContentEdited:v101];
     }
 
-    v102 = [v4 objectForKeyedSubscript:@"uufrShownTier1"];
+    v102 = [dictionaryCopy objectForKeyedSubscript:@"uufrShownTier1"];
     objc_opt_class();
     v189 = v102;
     if (objc_opt_isKindOfClass())
@@ -2744,7 +2744,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUufrShownTier1:v103];
     }
 
-    v104 = [v4 objectForKeyedSubscript:@"ueiDictationPartialResultUpdated"];
+    v104 = [dictionaryCopy objectForKeyedSubscript:@"ueiDictationPartialResultUpdated"];
     objc_opt_class();
     v188 = v104;
     if (objc_opt_isKindOfClass())
@@ -2753,7 +2753,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiDictationPartialResultUpdated:v105];
     }
 
-    v106 = [v4 objectForKeyedSubscript:@"ueiDictationVoiceCommandExecuted"];
+    v106 = [dictionaryCopy objectForKeyedSubscript:@"ueiDictationVoiceCommandExecuted"];
     objc_opt_class();
     v187 = v106;
     if (objc_opt_isKindOfClass())
@@ -2762,7 +2762,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiDictationVoiceCommandExecuted:v107];
     }
 
-    v108 = [v4 objectForKeyedSubscript:@"ueiDictationInputModeSwitchContext"];
+    v108 = [dictionaryCopy objectForKeyedSubscript:@"ueiDictationInputModeSwitchContext"];
     objc_opt_class();
     v186 = v108;
     if (objc_opt_isKindOfClass())
@@ -2771,7 +2771,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiDictationInputModeSwitchContext:v109];
     }
 
-    v110 = [v4 objectForKeyedSubscript:@"ueiDictationToolTipDisplayContext"];
+    v110 = [dictionaryCopy objectForKeyedSubscript:@"ueiDictationToolTipDisplayContext"];
     objc_opt_class();
     v185 = v110;
     if (objc_opt_isKindOfClass())
@@ -2780,7 +2780,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiDictationToolTipDisplayContext:v111];
     }
 
-    v112 = [v4 objectForKeyedSubscript:@"hostPlatformViewAppearContext"];
+    v112 = [dictionaryCopy objectForKeyedSubscript:@"hostPlatformViewAppearContext"];
     objc_opt_class();
     v184 = v112;
     if (objc_opt_isKindOfClass())
@@ -2789,7 +2789,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setHostPlatformViewAppearContext:v113];
     }
 
-    v114 = [v4 objectForKeyedSubscript:@"hostPlatformViewDisappearContext"];
+    v114 = [dictionaryCopy objectForKeyedSubscript:@"hostPlatformViewDisappearContext"];
     objc_opt_class();
     v183 = v114;
     if (objc_opt_isKindOfClass())
@@ -2798,7 +2798,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setHostPlatformViewDisappearContext:v115];
     }
 
-    v116 = [v4 objectForKeyedSubscript:@"ueiDictationTranscriptionTokenized"];
+    v116 = [dictionaryCopy objectForKeyedSubscript:@"ueiDictationTranscriptionTokenized"];
     objc_opt_class();
     v182 = v116;
     if (objc_opt_isKindOfClass())
@@ -2807,7 +2807,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiDictationTranscriptionTokenized:v117];
     }
 
-    v118 = [v4 objectForKeyedSubscript:@"dictationAlternativesSelected"];
+    v118 = [dictionaryCopy objectForKeyedSubscript:@"dictationAlternativesSelected"];
     objc_opt_class();
     v181 = v118;
     if (objc_opt_isKindOfClass())
@@ -2816,7 +2816,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setDictationAlternativesSelected:v119];
     }
 
-    v120 = [v4 objectForKeyedSubscript:@"uufrSelected"];
+    v120 = [dictionaryCopy objectForKeyedSubscript:@"uufrSelected"];
     objc_opt_class();
     v180 = v120;
     if (objc_opt_isKindOfClass())
@@ -2825,7 +2825,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUufrSelected:v121];
     }
 
-    v122 = [v4 objectForKeyedSubscript:@"ueiDictationAlternativeTextPairsSelected"];
+    v122 = [dictionaryCopy objectForKeyedSubscript:@"ueiDictationAlternativeTextPairsSelected"];
     objc_opt_class();
     v179 = v122;
     if (objc_opt_isKindOfClass())
@@ -2834,7 +2834,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiDictationAlternativeTextPairsSelected:v123];
     }
 
-    v124 = [v4 objectForKeyedSubscript:@"ueiUserBargeInDetected"];
+    v124 = [dictionaryCopy objectForKeyedSubscript:@"ueiUserBargeInDetected"];
     objc_opt_class();
     v178 = v124;
     if (objc_opt_isKindOfClass())
@@ -2843,7 +2843,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiUserBargeInDetected:v125];
     }
 
-    v126 = [v4 objectForKeyedSubscript:@"ueiDictationEnablementPromptShown"];
+    v126 = [dictionaryCopy objectForKeyedSubscript:@"ueiDictationEnablementPromptShown"];
     objc_opt_class();
     v177 = v126;
     if (objc_opt_isKindOfClass())
@@ -2852,7 +2852,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiDictationEnablementPromptShown:v127];
     }
 
-    v128 = [v4 objectForKeyedSubscript:@"ueiSiriCarCommandContext"];
+    v128 = [dictionaryCopy objectForKeyedSubscript:@"ueiSiriCarCommandContext"];
     objc_opt_class();
     v176 = v128;
     if (objc_opt_isKindOfClass())
@@ -2861,7 +2861,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiSiriCarCommandContext:v129];
     }
 
-    v130 = [v4 objectForKeyedSubscript:@"ueiVisionSnippetDismissed"];
+    v130 = [dictionaryCopy objectForKeyedSubscript:@"ueiVisionSnippetDismissed"];
     objc_opt_class();
     v175 = v130;
     if (objc_opt_isKindOfClass())
@@ -2870,7 +2870,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiVisionSnippetDismissed:v131];
     }
 
-    v132 = [v4 objectForKeyedSubscript:@"ueiSiriWasUnavailable"];
+    v132 = [dictionaryCopy objectForKeyedSubscript:@"ueiSiriWasUnavailable"];
     objc_opt_class();
     v174 = v132;
     if (objc_opt_isKindOfClass())
@@ -2879,7 +2879,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiSiriWasUnavailable:v133];
     }
 
-    v134 = [v4 objectForKeyedSubscript:@"preferredAudioRouteChanged"];
+    v134 = [dictionaryCopy objectForKeyedSubscript:@"preferredAudioRouteChanged"];
     objc_opt_class();
     v173 = v134;
     if (objc_opt_isKindOfClass())
@@ -2888,7 +2888,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setPreferredAudioRouteChanged:v135];
     }
 
-    v136 = [v4 objectForKeyedSubscript:@"ueiDictationContentEditedTier1"];
+    v136 = [dictionaryCopy objectForKeyedSubscript:@"ueiDictationContentEditedTier1"];
     objc_opt_class();
     v172 = v136;
     if (objc_opt_isKindOfClass())
@@ -2897,7 +2897,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiDictationContentEditedTier1:v137];
     }
 
-    v138 = [v4 objectForKeyedSubscript:@"ueiDictationVoiceCommandUndoTapAction"];
+    v138 = [dictionaryCopy objectForKeyedSubscript:@"ueiDictationVoiceCommandUndoTapAction"];
     objc_opt_class();
     v171 = v138;
     if (objc_opt_isKindOfClass())
@@ -2906,7 +2906,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiDictationVoiceCommandUndoTapAction:v139];
     }
 
-    v140 = [v4 objectForKeyedSubscript:@"ueiDictationVoiceCommandDisambiguationAction"];
+    v140 = [dictionaryCopy objectForKeyedSubscript:@"ueiDictationVoiceCommandDisambiguationAction"];
     objc_opt_class();
     v170 = v140;
     if (objc_opt_isKindOfClass())
@@ -2915,7 +2915,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiDictationVoiceCommandDisambiguationAction:v141];
     }
 
-    v142 = [v4 objectForKeyedSubscript:@"ueiDictationVoiceCommandKeyboardAction"];
+    v142 = [dictionaryCopy objectForKeyedSubscript:@"ueiDictationVoiceCommandKeyboardAction"];
     objc_opt_class();
     v169 = v142;
     if (objc_opt_isKindOfClass())
@@ -2925,7 +2925,7 @@ LABEL_76:
     }
 
     v164 = v14;
-    v144 = [v4 objectForKeyedSubscript:@"ueiDictationEuclidAlternativesEvent"];
+    v144 = [dictionaryCopy objectForKeyedSubscript:@"ueiDictationEuclidAlternativesEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2935,7 +2935,7 @@ LABEL_76:
 
     v162 = v144;
     v163 = v16;
-    v146 = [v4 objectForKeyedSubscript:@"ueiDictationEuclidAlternativesEventTier1"];
+    v146 = [dictionaryCopy objectForKeyedSubscript:@"ueiDictationEuclidAlternativesEventTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2944,7 +2944,7 @@ LABEL_76:
     }
 
     v168 = v6;
-    v148 = [v4 objectForKeyedSubscript:@"ueiDictationEuclidSpeechAlternativesSelected"];
+    v148 = [dictionaryCopy objectForKeyedSubscript:@"ueiDictationEuclidSpeechAlternativesSelected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2953,7 +2953,7 @@ LABEL_76:
     }
 
     v167 = v8;
-    v150 = [v4 objectForKeyedSubscript:@"ueiDictationEuclidSpeechAlternativesSelectedTier1"];
+    v150 = [dictionaryCopy objectForKeyedSubscript:@"ueiDictationEuclidSpeechAlternativesSelectedTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2962,7 +2962,7 @@ LABEL_76:
     }
 
     v166 = v10;
-    v152 = [v4 objectForKeyedSubscript:@"typingRequestTrace"];
+    v152 = [dictionaryCopy objectForKeyedSubscript:@"typingRequestTrace"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2971,7 +2971,7 @@ LABEL_76:
     }
 
     v165 = v12;
-    v154 = [v4 objectForKeyedSubscript:@"ueiInvocationTier1"];
+    v154 = [dictionaryCopy objectForKeyedSubscript:@"ueiInvocationTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2979,7 +2979,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setUeiInvocationTier1:v155];
     }
 
-    v156 = [v4 objectForKeyedSubscript:@"transcriptShown"];
+    v156 = [dictionaryCopy objectForKeyedSubscript:@"transcriptShown"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2987,7 +2987,7 @@ LABEL_76:
       [(SISchemaClientEvent *)v5 setTranscriptShown:v157];
     }
 
-    v158 = [v4 objectForKeyedSubscript:@"transcriptTapped"];
+    v158 = [dictionaryCopy objectForKeyedSubscript:@"transcriptTapped"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -3001,30 +3001,30 @@ LABEL_76:
   return v5;
 }
 
-- (SISchemaClientEvent)initWithJSON:(id)a3
+- (SISchemaClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -3037,1243 +3037,1243 @@ LABEL_76:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_announceCarPlayBannerTapped)
   {
-    v4 = [(SISchemaClientEvent *)self announceCarPlayBannerTapped];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    announceCarPlayBannerTapped = [(SISchemaClientEvent *)self announceCarPlayBannerTapped];
+    dictionaryRepresentation = [announceCarPlayBannerTapped dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"announceCarPlayBannerTapped"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"announceCarPlayBannerTapped"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"announceCarPlayBannerTapped"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"announceCarPlayBannerTapped"];
     }
   }
 
   if (self->_announceCarPlayGlyphSettingToggled)
   {
-    v7 = [(SISchemaClientEvent *)self announceCarPlayGlyphSettingToggled];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    announceCarPlayGlyphSettingToggled = [(SISchemaClientEvent *)self announceCarPlayGlyphSettingToggled];
+    dictionaryRepresentation2 = [announceCarPlayGlyphSettingToggled dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"announceCarPlayGlyphSettingToggled"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"announceCarPlayGlyphSettingToggled"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"announceCarPlayGlyphSettingToggled"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"announceCarPlayGlyphSettingToggled"];
     }
   }
 
   if (self->_audioFirstBufferRecorded)
   {
-    v10 = [(SISchemaClientEvent *)self audioFirstBufferRecorded];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    audioFirstBufferRecorded = [(SISchemaClientEvent *)self audioFirstBufferRecorded];
+    dictionaryRepresentation3 = [audioFirstBufferRecorded dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"audioFirstBufferRecorded"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"audioFirstBufferRecorded"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"audioFirstBufferRecorded"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"audioFirstBufferRecorded"];
     }
   }
 
   if (self->_audioStopRecording)
   {
-    v13 = [(SISchemaClientEvent *)self audioStopRecording];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    audioStopRecording = [(SISchemaClientEvent *)self audioStopRecording];
+    dictionaryRepresentation4 = [audioStopRecording dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"audioStopRecording"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"audioStopRecording"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"audioStopRecording"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"audioStopRecording"];
     }
   }
 
   if (self->_audioStopRecordingStarted)
   {
-    v16 = [(SISchemaClientEvent *)self audioStopRecordingStarted];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    audioStopRecordingStarted = [(SISchemaClientEvent *)self audioStopRecordingStarted];
+    dictionaryRepresentation5 = [audioStopRecordingStarted dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"audioStopRecordingStarted"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"audioStopRecordingStarted"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"audioStopRecordingStarted"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"audioStopRecordingStarted"];
     }
   }
 
   if (self->_carPlayHeadUnitContext)
   {
-    v19 = [(SISchemaClientEvent *)self carPlayHeadUnitContext];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    carPlayHeadUnitContext = [(SISchemaClientEvent *)self carPlayHeadUnitContext];
+    dictionaryRepresentation6 = [carPlayHeadUnitContext dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"carPlayHeadUnitContext"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"carPlayHeadUnitContext"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"carPlayHeadUnitContext"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"carPlayHeadUnitContext"];
     }
   }
 
   if (self->_casinoRelationship)
   {
-    v22 = [(SISchemaClientEvent *)self casinoRelationship];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    casinoRelationship = [(SISchemaClientEvent *)self casinoRelationship];
+    dictionaryRepresentation7 = [casinoRelationship dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"casinoRelationship"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"casinoRelationship"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"casinoRelationship"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"casinoRelationship"];
     }
   }
 
   if (self->_clientConversationTrace)
   {
-    v25 = [(SISchemaClientEvent *)self clientConversationTrace];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    clientConversationTrace = [(SISchemaClientEvent *)self clientConversationTrace];
+    dictionaryRepresentation8 = [clientConversationTrace dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"clientConversationTrace"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"clientConversationTrace"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"clientConversationTrace"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"clientConversationTrace"];
     }
   }
 
   if (self->_clientFlow)
   {
-    v28 = [(SISchemaClientEvent *)self clientFlow];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    clientFlow = [(SISchemaClientEvent *)self clientFlow];
+    dictionaryRepresentation9 = [clientFlow dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"clientFlow"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"clientFlow"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"clientFlow"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"clientFlow"];
     }
   }
 
   if (self->_deviceDynamicContext)
   {
-    v31 = [(SISchemaClientEvent *)self deviceDynamicContext];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    deviceDynamicContext = [(SISchemaClientEvent *)self deviceDynamicContext];
+    dictionaryRepresentation10 = [deviceDynamicContext dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"deviceDynamicContext"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"deviceDynamicContext"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"deviceDynamicContext"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"deviceDynamicContext"];
     }
   }
 
   if (self->_deviceFixedContext)
   {
-    v34 = [(SISchemaClientEvent *)self deviceFixedContext];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    deviceFixedContext = [(SISchemaClientEvent *)self deviceFixedContext];
+    dictionaryRepresentation11 = [deviceFixedContext dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"deviceFixedContext"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"deviceFixedContext"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"deviceFixedContext"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"deviceFixedContext"];
     }
   }
 
   if (self->_deviceLockStateChanged)
   {
-    v37 = [(SISchemaClientEvent *)self deviceLockStateChanged];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    deviceLockStateChanged = [(SISchemaClientEvent *)self deviceLockStateChanged];
+    dictionaryRepresentation12 = [deviceLockStateChanged dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"deviceLockStateChanged"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"deviceLockStateChanged"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"deviceLockStateChanged"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"deviceLockStateChanged"];
     }
   }
 
   if (self->_dialogOutput)
   {
-    v40 = [(SISchemaClientEvent *)self dialogOutput];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    dialogOutput = [(SISchemaClientEvent *)self dialogOutput];
+    dictionaryRepresentation13 = [dialogOutput dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"dialogOutput"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"dialogOutput"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"dialogOutput"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"dialogOutput"];
     }
   }
 
   if (self->_dictationAlternativeSelected)
   {
-    v43 = [(SISchemaClientEvent *)self dictationAlternativeSelected];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    dictationAlternativeSelected = [(SISchemaClientEvent *)self dictationAlternativeSelected];
+    dictionaryRepresentation14 = [dictationAlternativeSelected dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"dictationAlternativeSelected"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"dictationAlternativeSelected"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"dictationAlternativeSelected"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"dictationAlternativeSelected"];
     }
   }
 
   if (self->_dictationAlternativesSelected)
   {
-    v46 = [(SISchemaClientEvent *)self dictationAlternativesSelected];
-    v47 = [v46 dictionaryRepresentation];
-    if (v47)
+    dictationAlternativesSelected = [(SISchemaClientEvent *)self dictationAlternativesSelected];
+    dictionaryRepresentation15 = [dictationAlternativesSelected dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v47 forKeyedSubscript:@"dictationAlternativesSelected"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"dictationAlternativesSelected"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"dictationAlternativesSelected"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"dictationAlternativesSelected"];
     }
   }
 
   if (self->_dictationAlternativesViewed)
   {
-    v49 = [(SISchemaClientEvent *)self dictationAlternativesViewed];
-    v50 = [v49 dictionaryRepresentation];
-    if (v50)
+    dictationAlternativesViewed = [(SISchemaClientEvent *)self dictationAlternativesViewed];
+    dictionaryRepresentation16 = [dictationAlternativesViewed dictionaryRepresentation];
+    if (dictionaryRepresentation16)
     {
-      [v3 setObject:v50 forKeyedSubscript:@"dictationAlternativesViewed"];
+      [dictionary setObject:dictionaryRepresentation16 forKeyedSubscript:@"dictationAlternativesViewed"];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v51 forKeyedSubscript:@"dictationAlternativesViewed"];
+      null16 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null16 forKeyedSubscript:@"dictationAlternativesViewed"];
     }
   }
 
   if (self->_dictationContentEdited)
   {
-    v52 = [(SISchemaClientEvent *)self dictationContentEdited];
-    v53 = [v52 dictionaryRepresentation];
-    if (v53)
+    dictationContentEdited = [(SISchemaClientEvent *)self dictationContentEdited];
+    dictionaryRepresentation17 = [dictationContentEdited dictionaryRepresentation];
+    if (dictionaryRepresentation17)
     {
-      [v3 setObject:v53 forKeyedSubscript:@"dictationContentEdited"];
+      [dictionary setObject:dictionaryRepresentation17 forKeyedSubscript:@"dictationContentEdited"];
     }
 
     else
     {
-      v54 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v54 forKeyedSubscript:@"dictationContentEdited"];
+      null17 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null17 forKeyedSubscript:@"dictationContentEdited"];
     }
   }
 
   if (self->_dictationContext)
   {
-    v55 = [(SISchemaClientEvent *)self dictationContext];
-    v56 = [v55 dictionaryRepresentation];
-    if (v56)
+    dictationContext = [(SISchemaClientEvent *)self dictationContext];
+    dictionaryRepresentation18 = [dictationContext dictionaryRepresentation];
+    if (dictionaryRepresentation18)
     {
-      [v3 setObject:v56 forKeyedSubscript:@"dictationContext"];
+      [dictionary setObject:dictionaryRepresentation18 forKeyedSubscript:@"dictationContext"];
     }
 
     else
     {
-      v57 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v57 forKeyedSubscript:@"dictationContext"];
+      null18 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null18 forKeyedSubscript:@"dictationContext"];
     }
   }
 
   if (self->_dictationEndPointCancel)
   {
-    v58 = [(SISchemaClientEvent *)self dictationEndPointCancel];
-    v59 = [v58 dictionaryRepresentation];
-    if (v59)
+    dictationEndPointCancel = [(SISchemaClientEvent *)self dictationEndPointCancel];
+    dictionaryRepresentation19 = [dictationEndPointCancel dictionaryRepresentation];
+    if (dictionaryRepresentation19)
     {
-      [v3 setObject:v59 forKeyedSubscript:@"dictationEndPointCancel"];
+      [dictionary setObject:dictionaryRepresentation19 forKeyedSubscript:@"dictationEndPointCancel"];
     }
 
     else
     {
-      v60 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v60 forKeyedSubscript:@"dictationEndPointCancel"];
+      null19 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null19 forKeyedSubscript:@"dictationEndPointCancel"];
     }
   }
 
   if (self->_dictationEndPointStop)
   {
-    v61 = [(SISchemaClientEvent *)self dictationEndPointStop];
-    v62 = [v61 dictionaryRepresentation];
-    if (v62)
+    dictationEndPointStop = [(SISchemaClientEvent *)self dictationEndPointStop];
+    dictionaryRepresentation20 = [dictationEndPointStop dictionaryRepresentation];
+    if (dictionaryRepresentation20)
     {
-      [v3 setObject:v62 forKeyedSubscript:@"dictationEndPointStop"];
+      [dictionary setObject:dictionaryRepresentation20 forKeyedSubscript:@"dictationEndPointStop"];
     }
 
     else
     {
-      v63 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v63 forKeyedSubscript:@"dictationEndPointStop"];
+      null20 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null20 forKeyedSubscript:@"dictationEndPointStop"];
     }
   }
 
   if (self->_dictationTranscriptionMetadata)
   {
-    v64 = [(SISchemaClientEvent *)self dictationTranscriptionMetadata];
-    v65 = [v64 dictionaryRepresentation];
-    if (v65)
+    dictationTranscriptionMetadata = [(SISchemaClientEvent *)self dictationTranscriptionMetadata];
+    dictionaryRepresentation21 = [dictationTranscriptionMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation21)
     {
-      [v3 setObject:v65 forKeyedSubscript:@"dictationTranscriptionMetadata"];
+      [dictionary setObject:dictionaryRepresentation21 forKeyedSubscript:@"dictationTranscriptionMetadata"];
     }
 
     else
     {
-      v66 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v66 forKeyedSubscript:@"dictationTranscriptionMetadata"];
+      null21 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null21 forKeyedSubscript:@"dictationTranscriptionMetadata"];
     }
   }
 
   if (self->_engagedAccessoryContext)
   {
-    v67 = [(SISchemaClientEvent *)self engagedAccessoryContext];
-    v68 = [v67 dictionaryRepresentation];
-    if (v68)
+    engagedAccessoryContext = [(SISchemaClientEvent *)self engagedAccessoryContext];
+    dictionaryRepresentation22 = [engagedAccessoryContext dictionaryRepresentation];
+    if (dictionaryRepresentation22)
     {
-      [v3 setObject:v68 forKeyedSubscript:@"engagedAccessoryContext"];
+      [dictionary setObject:dictionaryRepresentation22 forKeyedSubscript:@"engagedAccessoryContext"];
     }
 
     else
     {
-      v69 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v69 forKeyedSubscript:@"engagedAccessoryContext"];
+      null22 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null22 forKeyedSubscript:@"engagedAccessoryContext"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v70 = [(SISchemaClientEvent *)self eventMetadata];
-    v71 = [v70 dictionaryRepresentation];
-    if (v71)
+    eventMetadata = [(SISchemaClientEvent *)self eventMetadata];
+    dictionaryRepresentation23 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation23)
     {
-      [v3 setObject:v71 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation23 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v72 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v72 forKeyedSubscript:@"eventMetadata"];
+      null23 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null23 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_hostPlatformViewAppearContext)
   {
-    v73 = [(SISchemaClientEvent *)self hostPlatformViewAppearContext];
-    v74 = [v73 dictionaryRepresentation];
-    if (v74)
+    hostPlatformViewAppearContext = [(SISchemaClientEvent *)self hostPlatformViewAppearContext];
+    dictionaryRepresentation24 = [hostPlatformViewAppearContext dictionaryRepresentation];
+    if (dictionaryRepresentation24)
     {
-      [v3 setObject:v74 forKeyedSubscript:@"hostPlatformViewAppearContext"];
+      [dictionary setObject:dictionaryRepresentation24 forKeyedSubscript:@"hostPlatformViewAppearContext"];
     }
 
     else
     {
-      v75 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v75 forKeyedSubscript:@"hostPlatformViewAppearContext"];
+      null24 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null24 forKeyedSubscript:@"hostPlatformViewAppearContext"];
     }
   }
 
   if (self->_hostPlatformViewDisappearContext)
   {
-    v76 = [(SISchemaClientEvent *)self hostPlatformViewDisappearContext];
-    v77 = [v76 dictionaryRepresentation];
-    if (v77)
+    hostPlatformViewDisappearContext = [(SISchemaClientEvent *)self hostPlatformViewDisappearContext];
+    dictionaryRepresentation25 = [hostPlatformViewDisappearContext dictionaryRepresentation];
+    if (dictionaryRepresentation25)
     {
-      [v3 setObject:v77 forKeyedSubscript:@"hostPlatformViewDisappearContext"];
+      [dictionary setObject:dictionaryRepresentation25 forKeyedSubscript:@"hostPlatformViewDisappearContext"];
     }
 
     else
     {
-      v78 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v78 forKeyedSubscript:@"hostPlatformViewDisappearContext"];
+      null25 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null25 forKeyedSubscript:@"hostPlatformViewDisappearContext"];
     }
   }
 
   if (self->_intercomMessageRecorded)
   {
-    v79 = [(SISchemaClientEvent *)self intercomMessageRecorded];
-    v80 = [v79 dictionaryRepresentation];
-    if (v80)
+    intercomMessageRecorded = [(SISchemaClientEvent *)self intercomMessageRecorded];
+    dictionaryRepresentation26 = [intercomMessageRecorded dictionaryRepresentation];
+    if (dictionaryRepresentation26)
     {
-      [v3 setObject:v80 forKeyedSubscript:@"intercomMessageRecorded"];
+      [dictionary setObject:dictionaryRepresentation26 forKeyedSubscript:@"intercomMessageRecorded"];
     }
 
     else
     {
-      v81 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v81 forKeyedSubscript:@"intercomMessageRecorded"];
+      null26 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null26 forKeyedSubscript:@"intercomMessageRecorded"];
     }
   }
 
   if (self->_invocation)
   {
-    v82 = [(SISchemaClientEvent *)self invocation];
-    v83 = [v82 dictionaryRepresentation];
-    if (v83)
+    invocation = [(SISchemaClientEvent *)self invocation];
+    dictionaryRepresentation27 = [invocation dictionaryRepresentation];
+    if (dictionaryRepresentation27)
     {
-      [v3 setObject:v83 forKeyedSubscript:@"invocation"];
+      [dictionary setObject:dictionaryRepresentation27 forKeyedSubscript:@"invocation"];
     }
 
     else
     {
-      v84 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v84 forKeyedSubscript:@"invocation"];
+      null27 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null27 forKeyedSubscript:@"invocation"];
     }
   }
 
   if (self->_keyboardDismissed)
   {
-    v85 = [(SISchemaClientEvent *)self keyboardDismissed];
-    v86 = [v85 dictionaryRepresentation];
-    if (v86)
+    keyboardDismissed = [(SISchemaClientEvent *)self keyboardDismissed];
+    dictionaryRepresentation28 = [keyboardDismissed dictionaryRepresentation];
+    if (dictionaryRepresentation28)
     {
-      [v3 setObject:v86 forKeyedSubscript:@"keyboardDismissed"];
+      [dictionary setObject:dictionaryRepresentation28 forKeyedSubscript:@"keyboardDismissed"];
     }
 
     else
     {
-      v87 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v87 forKeyedSubscript:@"keyboardDismissed"];
+      null28 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null28 forKeyedSubscript:@"keyboardDismissed"];
     }
   }
 
   if (self->_location)
   {
-    v88 = [(SISchemaClientEvent *)self location];
-    v89 = [v88 dictionaryRepresentation];
-    if (v89)
+    location = [(SISchemaClientEvent *)self location];
+    dictionaryRepresentation29 = [location dictionaryRepresentation];
+    if (dictionaryRepresentation29)
     {
-      [v3 setObject:v89 forKeyedSubscript:@"location"];
+      [dictionary setObject:dictionaryRepresentation29 forKeyedSubscript:@"location"];
     }
 
     else
     {
-      v90 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v90 forKeyedSubscript:@"location"];
+      null29 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null29 forKeyedSubscript:@"location"];
     }
   }
 
   if (self->_pnrFatalError)
   {
-    v91 = [(SISchemaClientEvent *)self pnrFatalError];
-    v92 = [v91 dictionaryRepresentation];
-    if (v92)
+    pnrFatalError = [(SISchemaClientEvent *)self pnrFatalError];
+    dictionaryRepresentation30 = [pnrFatalError dictionaryRepresentation];
+    if (dictionaryRepresentation30)
     {
-      [v3 setObject:v92 forKeyedSubscript:@"pnrFatalError"];
+      [dictionary setObject:dictionaryRepresentation30 forKeyedSubscript:@"pnrFatalError"];
     }
 
     else
     {
-      v93 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v93 forKeyedSubscript:@"pnrFatalError"];
+      null30 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null30 forKeyedSubscript:@"pnrFatalError"];
     }
   }
 
   if (self->_pnrSpeechRecognitionSourceContext)
   {
-    v94 = [(SISchemaClientEvent *)self pnrSpeechRecognitionSourceContext];
-    v95 = [v94 dictionaryRepresentation];
-    if (v95)
+    pnrSpeechRecognitionSourceContext = [(SISchemaClientEvent *)self pnrSpeechRecognitionSourceContext];
+    dictionaryRepresentation31 = [pnrSpeechRecognitionSourceContext dictionaryRepresentation];
+    if (dictionaryRepresentation31)
     {
-      [v3 setObject:v95 forKeyedSubscript:@"pnrSpeechRecognitionSourceContext"];
+      [dictionary setObject:dictionaryRepresentation31 forKeyedSubscript:@"pnrSpeechRecognitionSourceContext"];
     }
 
     else
     {
-      v96 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v96 forKeyedSubscript:@"pnrSpeechRecognitionSourceContext"];
+      null31 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null31 forKeyedSubscript:@"pnrSpeechRecognitionSourceContext"];
     }
   }
 
   if (self->_pnrTextToSpeechRequestReceived)
   {
-    v97 = [(SISchemaClientEvent *)self pnrTextToSpeechRequestReceived];
-    v98 = [v97 dictionaryRepresentation];
-    if (v98)
+    pnrTextToSpeechRequestReceived = [(SISchemaClientEvent *)self pnrTextToSpeechRequestReceived];
+    dictionaryRepresentation32 = [pnrTextToSpeechRequestReceived dictionaryRepresentation];
+    if (dictionaryRepresentation32)
     {
-      [v3 setObject:v98 forKeyedSubscript:@"pnrTextToSpeechRequestReceived"];
+      [dictionary setObject:dictionaryRepresentation32 forKeyedSubscript:@"pnrTextToSpeechRequestReceived"];
     }
 
     else
     {
-      v99 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v99 forKeyedSubscript:@"pnrTextToSpeechRequestReceived"];
+      null32 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null32 forKeyedSubscript:@"pnrTextToSpeechRequestReceived"];
     }
   }
 
   if (self->_preferredAudioRouteChanged)
   {
-    v100 = [(SISchemaClientEvent *)self preferredAudioRouteChanged];
-    v101 = [v100 dictionaryRepresentation];
-    if (v101)
+    preferredAudioRouteChanged = [(SISchemaClientEvent *)self preferredAudioRouteChanged];
+    dictionaryRepresentation33 = [preferredAudioRouteChanged dictionaryRepresentation];
+    if (dictionaryRepresentation33)
     {
-      [v3 setObject:v101 forKeyedSubscript:@"preferredAudioRouteChanged"];
+      [dictionary setObject:dictionaryRepresentation33 forKeyedSubscript:@"preferredAudioRouteChanged"];
     }
 
     else
     {
-      v102 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v102 forKeyedSubscript:@"preferredAudioRouteChanged"];
+      null33 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null33 forKeyedSubscript:@"preferredAudioRouteChanged"];
     }
   }
 
   if (self->_punchOut)
   {
-    v103 = [(SISchemaClientEvent *)self punchOut];
-    v104 = [v103 dictionaryRepresentation];
-    if (v104)
+    punchOut = [(SISchemaClientEvent *)self punchOut];
+    dictionaryRepresentation34 = [punchOut dictionaryRepresentation];
+    if (dictionaryRepresentation34)
     {
-      [v3 setObject:v104 forKeyedSubscript:@"punchOut"];
+      [dictionary setObject:dictionaryRepresentation34 forKeyedSubscript:@"punchOut"];
     }
 
     else
     {
-      v105 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v105 forKeyedSubscript:@"punchOut"];
+      null34 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null34 forKeyedSubscript:@"punchOut"];
     }
   }
 
   if (self->_siriCue)
   {
-    v106 = [(SISchemaClientEvent *)self siriCue];
-    v107 = [v106 dictionaryRepresentation];
-    if (v107)
+    siriCue = [(SISchemaClientEvent *)self siriCue];
+    dictionaryRepresentation35 = [siriCue dictionaryRepresentation];
+    if (dictionaryRepresentation35)
     {
-      [v3 setObject:v107 forKeyedSubscript:@"siriCue"];
+      [dictionary setObject:dictionaryRepresentation35 forKeyedSubscript:@"siriCue"];
     }
 
     else
     {
-      v108 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v108 forKeyedSubscript:@"siriCue"];
+      null35 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null35 forKeyedSubscript:@"siriCue"];
     }
   }
 
   if (self->_speechTranscription)
   {
-    v109 = [(SISchemaClientEvent *)self speechTranscription];
-    v110 = [v109 dictionaryRepresentation];
-    if (v110)
+    speechTranscription = [(SISchemaClientEvent *)self speechTranscription];
+    dictionaryRepresentation36 = [speechTranscription dictionaryRepresentation];
+    if (dictionaryRepresentation36)
     {
-      [v3 setObject:v110 forKeyedSubscript:@"speechTranscription"];
+      [dictionary setObject:dictionaryRepresentation36 forKeyedSubscript:@"speechTranscription"];
     }
 
     else
     {
-      v111 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v111 forKeyedSubscript:@"speechTranscription"];
+      null36 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null36 forKeyedSubscript:@"speechTranscription"];
     }
   }
 
   if (self->_textToSpeechBegin)
   {
-    v112 = [(SISchemaClientEvent *)self textToSpeechBegin];
-    v113 = [v112 dictionaryRepresentation];
-    if (v113)
+    textToSpeechBegin = [(SISchemaClientEvent *)self textToSpeechBegin];
+    dictionaryRepresentation37 = [textToSpeechBegin dictionaryRepresentation];
+    if (dictionaryRepresentation37)
     {
-      [v3 setObject:v113 forKeyedSubscript:@"textToSpeechBegin"];
+      [dictionary setObject:dictionaryRepresentation37 forKeyedSubscript:@"textToSpeechBegin"];
     }
 
     else
     {
-      v114 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v114 forKeyedSubscript:@"textToSpeechBegin"];
+      null37 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null37 forKeyedSubscript:@"textToSpeechBegin"];
     }
   }
 
   if (self->_textToSpeechEnd)
   {
-    v115 = [(SISchemaClientEvent *)self textToSpeechEnd];
-    v116 = [v115 dictionaryRepresentation];
-    if (v116)
+    textToSpeechEnd = [(SISchemaClientEvent *)self textToSpeechEnd];
+    dictionaryRepresentation38 = [textToSpeechEnd dictionaryRepresentation];
+    if (dictionaryRepresentation38)
     {
-      [v3 setObject:v116 forKeyedSubscript:@"textToSpeechEnd"];
+      [dictionary setObject:dictionaryRepresentation38 forKeyedSubscript:@"textToSpeechEnd"];
     }
 
     else
     {
-      v117 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v117 forKeyedSubscript:@"textToSpeechEnd"];
+      null38 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null38 forKeyedSubscript:@"textToSpeechEnd"];
     }
   }
 
   if (self->_transcriptShown)
   {
-    v118 = [(SISchemaClientEvent *)self transcriptShown];
-    v119 = [v118 dictionaryRepresentation];
-    if (v119)
+    transcriptShown = [(SISchemaClientEvent *)self transcriptShown];
+    dictionaryRepresentation39 = [transcriptShown dictionaryRepresentation];
+    if (dictionaryRepresentation39)
     {
-      [v3 setObject:v119 forKeyedSubscript:@"transcriptShown"];
+      [dictionary setObject:dictionaryRepresentation39 forKeyedSubscript:@"transcriptShown"];
     }
 
     else
     {
-      v120 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v120 forKeyedSubscript:@"transcriptShown"];
+      null39 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null39 forKeyedSubscript:@"transcriptShown"];
     }
   }
 
   if (self->_transcriptTapped)
   {
-    v121 = [(SISchemaClientEvent *)self transcriptTapped];
-    v122 = [v121 dictionaryRepresentation];
-    if (v122)
+    transcriptTapped = [(SISchemaClientEvent *)self transcriptTapped];
+    dictionaryRepresentation40 = [transcriptTapped dictionaryRepresentation];
+    if (dictionaryRepresentation40)
     {
-      [v3 setObject:v122 forKeyedSubscript:@"transcriptTapped"];
+      [dictionary setObject:dictionaryRepresentation40 forKeyedSubscript:@"transcriptTapped"];
     }
 
     else
     {
-      v123 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v123 forKeyedSubscript:@"transcriptTapped"];
+      null40 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null40 forKeyedSubscript:@"transcriptTapped"];
     }
   }
 
   if (self->_transportMetadata)
   {
-    v124 = [(SISchemaClientEvent *)self transportMetadata];
-    v125 = [v124 dictionaryRepresentation];
-    if (v125)
+    transportMetadata = [(SISchemaClientEvent *)self transportMetadata];
+    dictionaryRepresentation41 = [transportMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation41)
     {
-      [v3 setObject:v125 forKeyedSubscript:@"transportMetadata"];
+      [dictionary setObject:dictionaryRepresentation41 forKeyedSubscript:@"transportMetadata"];
     }
 
     else
     {
-      v126 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v126 forKeyedSubscript:@"transportMetadata"];
+      null41 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null41 forKeyedSubscript:@"transportMetadata"];
     }
   }
 
   if (self->_turnMTERequest)
   {
-    v127 = [(SISchemaClientEvent *)self turnMTERequest];
-    v128 = [v127 dictionaryRepresentation];
-    if (v128)
+    turnMTERequest = [(SISchemaClientEvent *)self turnMTERequest];
+    dictionaryRepresentation42 = [turnMTERequest dictionaryRepresentation];
+    if (dictionaryRepresentation42)
     {
-      [v3 setObject:v128 forKeyedSubscript:@"turnMTERequest"];
+      [dictionary setObject:dictionaryRepresentation42 forKeyedSubscript:@"turnMTERequest"];
     }
 
     else
     {
-      v129 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v129 forKeyedSubscript:@"turnMTERequest"];
+      null42 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null42 forKeyedSubscript:@"turnMTERequest"];
     }
   }
 
   if (self->_typingRequestTrace)
   {
-    v130 = [(SISchemaClientEvent *)self typingRequestTrace];
-    v131 = [v130 dictionaryRepresentation];
-    if (v131)
+    typingRequestTrace = [(SISchemaClientEvent *)self typingRequestTrace];
+    dictionaryRepresentation43 = [typingRequestTrace dictionaryRepresentation];
+    if (dictionaryRepresentation43)
     {
-      [v3 setObject:v131 forKeyedSubscript:@"typingRequestTrace"];
+      [dictionary setObject:dictionaryRepresentation43 forKeyedSubscript:@"typingRequestTrace"];
     }
 
     else
     {
-      v132 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v132 forKeyedSubscript:@"typingRequestTrace"];
+      null43 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null43 forKeyedSubscript:@"typingRequestTrace"];
     }
   }
 
   if (self->_ueiDictationAlternativeTextPairsSelected)
   {
-    v133 = [(SISchemaClientEvent *)self ueiDictationAlternativeTextPairsSelected];
-    v134 = [v133 dictionaryRepresentation];
-    if (v134)
+    ueiDictationAlternativeTextPairsSelected = [(SISchemaClientEvent *)self ueiDictationAlternativeTextPairsSelected];
+    dictionaryRepresentation44 = [ueiDictationAlternativeTextPairsSelected dictionaryRepresentation];
+    if (dictionaryRepresentation44)
     {
-      [v3 setObject:v134 forKeyedSubscript:@"ueiDictationAlternativeTextPairsSelected"];
+      [dictionary setObject:dictionaryRepresentation44 forKeyedSubscript:@"ueiDictationAlternativeTextPairsSelected"];
     }
 
     else
     {
-      v135 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v135 forKeyedSubscript:@"ueiDictationAlternativeTextPairsSelected"];
+      null44 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null44 forKeyedSubscript:@"ueiDictationAlternativeTextPairsSelected"];
     }
   }
 
   if (self->_ueiDictationContentEditedTier1)
   {
-    v136 = [(SISchemaClientEvent *)self ueiDictationContentEditedTier1];
-    v137 = [v136 dictionaryRepresentation];
-    if (v137)
+    ueiDictationContentEditedTier1 = [(SISchemaClientEvent *)self ueiDictationContentEditedTier1];
+    dictionaryRepresentation45 = [ueiDictationContentEditedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation45)
     {
-      [v3 setObject:v137 forKeyedSubscript:@"ueiDictationContentEditedTier1"];
+      [dictionary setObject:dictionaryRepresentation45 forKeyedSubscript:@"ueiDictationContentEditedTier1"];
     }
 
     else
     {
-      v138 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v138 forKeyedSubscript:@"ueiDictationContentEditedTier1"];
+      null45 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null45 forKeyedSubscript:@"ueiDictationContentEditedTier1"];
     }
   }
 
   if (self->_ueiDictationEnablementPromptShown)
   {
-    v139 = [(SISchemaClientEvent *)self ueiDictationEnablementPromptShown];
-    v140 = [v139 dictionaryRepresentation];
-    if (v140)
+    ueiDictationEnablementPromptShown = [(SISchemaClientEvent *)self ueiDictationEnablementPromptShown];
+    dictionaryRepresentation46 = [ueiDictationEnablementPromptShown dictionaryRepresentation];
+    if (dictionaryRepresentation46)
     {
-      [v3 setObject:v140 forKeyedSubscript:@"ueiDictationEnablementPromptShown"];
+      [dictionary setObject:dictionaryRepresentation46 forKeyedSubscript:@"ueiDictationEnablementPromptShown"];
     }
 
     else
     {
-      v141 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v141 forKeyedSubscript:@"ueiDictationEnablementPromptShown"];
+      null46 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null46 forKeyedSubscript:@"ueiDictationEnablementPromptShown"];
     }
   }
 
   if (self->_ueiDictationEuclidAlternativesEvent)
   {
-    v142 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEvent];
-    v143 = [v142 dictionaryRepresentation];
-    if (v143)
+    ueiDictationEuclidAlternativesEvent = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEvent];
+    dictionaryRepresentation47 = [ueiDictationEuclidAlternativesEvent dictionaryRepresentation];
+    if (dictionaryRepresentation47)
     {
-      [v3 setObject:v143 forKeyedSubscript:@"ueiDictationEuclidAlternativesEvent"];
+      [dictionary setObject:dictionaryRepresentation47 forKeyedSubscript:@"ueiDictationEuclidAlternativesEvent"];
     }
 
     else
     {
-      v144 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v144 forKeyedSubscript:@"ueiDictationEuclidAlternativesEvent"];
+      null47 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null47 forKeyedSubscript:@"ueiDictationEuclidAlternativesEvent"];
     }
   }
 
   if (self->_ueiDictationEuclidAlternativesEventTier1)
   {
-    v145 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEventTier1];
-    v146 = [v145 dictionaryRepresentation];
-    if (v146)
+    ueiDictationEuclidAlternativesEventTier1 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEventTier1];
+    dictionaryRepresentation48 = [ueiDictationEuclidAlternativesEventTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation48)
     {
-      [v3 setObject:v146 forKeyedSubscript:@"ueiDictationEuclidAlternativesEventTier1"];
+      [dictionary setObject:dictionaryRepresentation48 forKeyedSubscript:@"ueiDictationEuclidAlternativesEventTier1"];
     }
 
     else
     {
-      v147 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v147 forKeyedSubscript:@"ueiDictationEuclidAlternativesEventTier1"];
+      null48 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null48 forKeyedSubscript:@"ueiDictationEuclidAlternativesEventTier1"];
     }
   }
 
   if (self->_ueiDictationEuclidSpeechAlternativesSelected)
   {
-    v148 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelected];
-    v149 = [v148 dictionaryRepresentation];
-    if (v149)
+    ueiDictationEuclidSpeechAlternativesSelected = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelected];
+    dictionaryRepresentation49 = [ueiDictationEuclidSpeechAlternativesSelected dictionaryRepresentation];
+    if (dictionaryRepresentation49)
     {
-      [v3 setObject:v149 forKeyedSubscript:@"ueiDictationEuclidSpeechAlternativesSelected"];
+      [dictionary setObject:dictionaryRepresentation49 forKeyedSubscript:@"ueiDictationEuclidSpeechAlternativesSelected"];
     }
 
     else
     {
-      v150 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v150 forKeyedSubscript:@"ueiDictationEuclidSpeechAlternativesSelected"];
+      null49 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null49 forKeyedSubscript:@"ueiDictationEuclidSpeechAlternativesSelected"];
     }
   }
 
   if (self->_ueiDictationEuclidSpeechAlternativesSelectedTier1)
   {
-    v151 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelectedTier1];
-    v152 = [v151 dictionaryRepresentation];
-    if (v152)
+    ueiDictationEuclidSpeechAlternativesSelectedTier1 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelectedTier1];
+    dictionaryRepresentation50 = [ueiDictationEuclidSpeechAlternativesSelectedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation50)
     {
-      [v3 setObject:v152 forKeyedSubscript:@"ueiDictationEuclidSpeechAlternativesSelectedTier1"];
+      [dictionary setObject:dictionaryRepresentation50 forKeyedSubscript:@"ueiDictationEuclidSpeechAlternativesSelectedTier1"];
     }
 
     else
     {
-      v153 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v153 forKeyedSubscript:@"ueiDictationEuclidSpeechAlternativesSelectedTier1"];
+      null50 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null50 forKeyedSubscript:@"ueiDictationEuclidSpeechAlternativesSelectedTier1"];
     }
   }
 
   if (self->_ueiDictationInputModeSwitchContext)
   {
-    v154 = [(SISchemaClientEvent *)self ueiDictationInputModeSwitchContext];
-    v155 = [v154 dictionaryRepresentation];
-    if (v155)
+    ueiDictationInputModeSwitchContext = [(SISchemaClientEvent *)self ueiDictationInputModeSwitchContext];
+    dictionaryRepresentation51 = [ueiDictationInputModeSwitchContext dictionaryRepresentation];
+    if (dictionaryRepresentation51)
     {
-      [v3 setObject:v155 forKeyedSubscript:@"ueiDictationInputModeSwitchContext"];
+      [dictionary setObject:dictionaryRepresentation51 forKeyedSubscript:@"ueiDictationInputModeSwitchContext"];
     }
 
     else
     {
-      v156 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v156 forKeyedSubscript:@"ueiDictationInputModeSwitchContext"];
+      null51 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null51 forKeyedSubscript:@"ueiDictationInputModeSwitchContext"];
     }
   }
 
   if (self->_ueiDictationPartialResultUpdated)
   {
-    v157 = [(SISchemaClientEvent *)self ueiDictationPartialResultUpdated];
-    v158 = [v157 dictionaryRepresentation];
-    if (v158)
+    ueiDictationPartialResultUpdated = [(SISchemaClientEvent *)self ueiDictationPartialResultUpdated];
+    dictionaryRepresentation52 = [ueiDictationPartialResultUpdated dictionaryRepresentation];
+    if (dictionaryRepresentation52)
     {
-      [v3 setObject:v158 forKeyedSubscript:@"ueiDictationPartialResultUpdated"];
+      [dictionary setObject:dictionaryRepresentation52 forKeyedSubscript:@"ueiDictationPartialResultUpdated"];
     }
 
     else
     {
-      v159 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v159 forKeyedSubscript:@"ueiDictationPartialResultUpdated"];
+      null52 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null52 forKeyedSubscript:@"ueiDictationPartialResultUpdated"];
     }
   }
 
   if (self->_ueiDictationToolTipDisplayContext)
   {
-    v160 = [(SISchemaClientEvent *)self ueiDictationToolTipDisplayContext];
-    v161 = [v160 dictionaryRepresentation];
-    if (v161)
+    ueiDictationToolTipDisplayContext = [(SISchemaClientEvent *)self ueiDictationToolTipDisplayContext];
+    dictionaryRepresentation53 = [ueiDictationToolTipDisplayContext dictionaryRepresentation];
+    if (dictionaryRepresentation53)
     {
-      [v3 setObject:v161 forKeyedSubscript:@"ueiDictationToolTipDisplayContext"];
+      [dictionary setObject:dictionaryRepresentation53 forKeyedSubscript:@"ueiDictationToolTipDisplayContext"];
     }
 
     else
     {
-      v162 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v162 forKeyedSubscript:@"ueiDictationToolTipDisplayContext"];
+      null53 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null53 forKeyedSubscript:@"ueiDictationToolTipDisplayContext"];
     }
   }
 
   if (self->_ueiDictationTranscriptionTokenized)
   {
-    v163 = [(SISchemaClientEvent *)self ueiDictationTranscriptionTokenized];
-    v164 = [v163 dictionaryRepresentation];
-    if (v164)
+    ueiDictationTranscriptionTokenized = [(SISchemaClientEvent *)self ueiDictationTranscriptionTokenized];
+    dictionaryRepresentation54 = [ueiDictationTranscriptionTokenized dictionaryRepresentation];
+    if (dictionaryRepresentation54)
     {
-      [v3 setObject:v164 forKeyedSubscript:@"ueiDictationTranscriptionTokenized"];
+      [dictionary setObject:dictionaryRepresentation54 forKeyedSubscript:@"ueiDictationTranscriptionTokenized"];
     }
 
     else
     {
-      v165 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v165 forKeyedSubscript:@"ueiDictationTranscriptionTokenized"];
+      null54 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null54 forKeyedSubscript:@"ueiDictationTranscriptionTokenized"];
     }
   }
 
   if (self->_ueiDictationVoiceCommandDisambiguationAction)
   {
-    v166 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandDisambiguationAction];
-    v167 = [v166 dictionaryRepresentation];
-    if (v167)
+    ueiDictationVoiceCommandDisambiguationAction = [(SISchemaClientEvent *)self ueiDictationVoiceCommandDisambiguationAction];
+    dictionaryRepresentation55 = [ueiDictationVoiceCommandDisambiguationAction dictionaryRepresentation];
+    if (dictionaryRepresentation55)
     {
-      [v3 setObject:v167 forKeyedSubscript:@"ueiDictationVoiceCommandDisambiguationAction"];
+      [dictionary setObject:dictionaryRepresentation55 forKeyedSubscript:@"ueiDictationVoiceCommandDisambiguationAction"];
     }
 
     else
     {
-      v168 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v168 forKeyedSubscript:@"ueiDictationVoiceCommandDisambiguationAction"];
+      null55 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null55 forKeyedSubscript:@"ueiDictationVoiceCommandDisambiguationAction"];
     }
   }
 
   if (self->_ueiDictationVoiceCommandExecuted)
   {
-    v169 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandExecuted];
-    v170 = [v169 dictionaryRepresentation];
-    if (v170)
+    ueiDictationVoiceCommandExecuted = [(SISchemaClientEvent *)self ueiDictationVoiceCommandExecuted];
+    dictionaryRepresentation56 = [ueiDictationVoiceCommandExecuted dictionaryRepresentation];
+    if (dictionaryRepresentation56)
     {
-      [v3 setObject:v170 forKeyedSubscript:@"ueiDictationVoiceCommandExecuted"];
+      [dictionary setObject:dictionaryRepresentation56 forKeyedSubscript:@"ueiDictationVoiceCommandExecuted"];
     }
 
     else
     {
-      v171 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v171 forKeyedSubscript:@"ueiDictationVoiceCommandExecuted"];
+      null56 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null56 forKeyedSubscript:@"ueiDictationVoiceCommandExecuted"];
     }
   }
 
   if (self->_ueiDictationVoiceCommandKeyboardAction)
   {
-    v172 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandKeyboardAction];
-    v173 = [v172 dictionaryRepresentation];
-    if (v173)
+    ueiDictationVoiceCommandKeyboardAction = [(SISchemaClientEvent *)self ueiDictationVoiceCommandKeyboardAction];
+    dictionaryRepresentation57 = [ueiDictationVoiceCommandKeyboardAction dictionaryRepresentation];
+    if (dictionaryRepresentation57)
     {
-      [v3 setObject:v173 forKeyedSubscript:@"ueiDictationVoiceCommandKeyboardAction"];
+      [dictionary setObject:dictionaryRepresentation57 forKeyedSubscript:@"ueiDictationVoiceCommandKeyboardAction"];
     }
 
     else
     {
-      v174 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v174 forKeyedSubscript:@"ueiDictationVoiceCommandKeyboardAction"];
+      null57 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null57 forKeyedSubscript:@"ueiDictationVoiceCommandKeyboardAction"];
     }
   }
 
   if (self->_ueiDictationVoiceCommandUndoTapAction)
   {
-    v175 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandUndoTapAction];
-    v176 = [v175 dictionaryRepresentation];
-    if (v176)
+    ueiDictationVoiceCommandUndoTapAction = [(SISchemaClientEvent *)self ueiDictationVoiceCommandUndoTapAction];
+    dictionaryRepresentation58 = [ueiDictationVoiceCommandUndoTapAction dictionaryRepresentation];
+    if (dictionaryRepresentation58)
     {
-      [v3 setObject:v176 forKeyedSubscript:@"ueiDictationVoiceCommandUndoTapAction"];
+      [dictionary setObject:dictionaryRepresentation58 forKeyedSubscript:@"ueiDictationVoiceCommandUndoTapAction"];
     }
 
     else
     {
-      v177 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v177 forKeyedSubscript:@"ueiDictationVoiceCommandUndoTapAction"];
+      null58 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null58 forKeyedSubscript:@"ueiDictationVoiceCommandUndoTapAction"];
     }
   }
 
   if (self->_ueiInvocationTier1)
   {
-    v178 = [(SISchemaClientEvent *)self ueiInvocationTier1];
-    v179 = [v178 dictionaryRepresentation];
-    if (v179)
+    ueiInvocationTier1 = [(SISchemaClientEvent *)self ueiInvocationTier1];
+    dictionaryRepresentation59 = [ueiInvocationTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation59)
     {
-      [v3 setObject:v179 forKeyedSubscript:@"ueiInvocationTier1"];
+      [dictionary setObject:dictionaryRepresentation59 forKeyedSubscript:@"ueiInvocationTier1"];
     }
 
     else
     {
-      v180 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v180 forKeyedSubscript:@"ueiInvocationTier1"];
+      null59 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null59 forKeyedSubscript:@"ueiInvocationTier1"];
     }
   }
 
   if (self->_ueiLaunchContext)
   {
-    v181 = [(SISchemaClientEvent *)self ueiLaunchContext];
-    v182 = [v181 dictionaryRepresentation];
-    if (v182)
+    ueiLaunchContext = [(SISchemaClientEvent *)self ueiLaunchContext];
+    dictionaryRepresentation60 = [ueiLaunchContext dictionaryRepresentation];
+    if (dictionaryRepresentation60)
     {
-      [v3 setObject:v182 forKeyedSubscript:@"ueiLaunchContext"];
+      [dictionary setObject:dictionaryRepresentation60 forKeyedSubscript:@"ueiLaunchContext"];
     }
 
     else
     {
-      v183 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v183 forKeyedSubscript:@"ueiLaunchContext"];
+      null60 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null60 forKeyedSubscript:@"ueiLaunchContext"];
     }
   }
 
   if (self->_ueiRequestCategorization)
   {
-    v184 = [(SISchemaClientEvent *)self ueiRequestCategorization];
-    v185 = [v184 dictionaryRepresentation];
-    if (v185)
+    ueiRequestCategorization = [(SISchemaClientEvent *)self ueiRequestCategorization];
+    dictionaryRepresentation61 = [ueiRequestCategorization dictionaryRepresentation];
+    if (dictionaryRepresentation61)
     {
-      [v3 setObject:v185 forKeyedSubscript:@"ueiRequestCategorization"];
+      [dictionary setObject:dictionaryRepresentation61 forKeyedSubscript:@"ueiRequestCategorization"];
     }
 
     else
     {
-      v186 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v186 forKeyedSubscript:@"ueiRequestCategorization"];
+      null61 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null61 forKeyedSubscript:@"ueiRequestCategorization"];
     }
   }
 
   if (self->_ueiSiriCarCommandContext)
   {
-    v187 = [(SISchemaClientEvent *)self ueiSiriCarCommandContext];
-    v188 = [v187 dictionaryRepresentation];
-    if (v188)
+    ueiSiriCarCommandContext = [(SISchemaClientEvent *)self ueiSiriCarCommandContext];
+    dictionaryRepresentation62 = [ueiSiriCarCommandContext dictionaryRepresentation];
+    if (dictionaryRepresentation62)
     {
-      [v3 setObject:v188 forKeyedSubscript:@"ueiSiriCarCommandContext"];
+      [dictionary setObject:dictionaryRepresentation62 forKeyedSubscript:@"ueiSiriCarCommandContext"];
     }
 
     else
     {
-      v189 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v189 forKeyedSubscript:@"ueiSiriCarCommandContext"];
+      null62 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null62 forKeyedSubscript:@"ueiSiriCarCommandContext"];
     }
   }
 
   if (self->_ueiSiriWasUnavailable)
   {
-    v190 = [(SISchemaClientEvent *)self ueiSiriWasUnavailable];
-    v191 = [v190 dictionaryRepresentation];
-    if (v191)
+    ueiSiriWasUnavailable = [(SISchemaClientEvent *)self ueiSiriWasUnavailable];
+    dictionaryRepresentation63 = [ueiSiriWasUnavailable dictionaryRepresentation];
+    if (dictionaryRepresentation63)
     {
-      [v3 setObject:v191 forKeyedSubscript:@"ueiSiriWasUnavailable"];
+      [dictionary setObject:dictionaryRepresentation63 forKeyedSubscript:@"ueiSiriWasUnavailable"];
     }
 
     else
     {
-      v192 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v192 forKeyedSubscript:@"ueiSiriWasUnavailable"];
+      null63 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null63 forKeyedSubscript:@"ueiSiriWasUnavailable"];
     }
   }
 
   if (self->_ueiUIRenderingContext)
   {
-    v193 = [(SISchemaClientEvent *)self ueiUIRenderingContext];
-    v194 = [v193 dictionaryRepresentation];
-    if (v194)
+    ueiUIRenderingContext = [(SISchemaClientEvent *)self ueiUIRenderingContext];
+    dictionaryRepresentation64 = [ueiUIRenderingContext dictionaryRepresentation];
+    if (dictionaryRepresentation64)
     {
-      [v3 setObject:v194 forKeyedSubscript:@"ueiUIRenderingContext"];
+      [dictionary setObject:dictionaryRepresentation64 forKeyedSubscript:@"ueiUIRenderingContext"];
     }
 
     else
     {
-      v195 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v195 forKeyedSubscript:@"ueiUIRenderingContext"];
+      null64 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null64 forKeyedSubscript:@"ueiUIRenderingContext"];
     }
   }
 
   if (self->_ueiUUFRReady)
   {
-    v196 = [(SISchemaClientEvent *)self ueiUUFRReady];
-    v197 = [v196 dictionaryRepresentation];
-    if (v197)
+    ueiUUFRReady = [(SISchemaClientEvent *)self ueiUUFRReady];
+    dictionaryRepresentation65 = [ueiUUFRReady dictionaryRepresentation];
+    if (dictionaryRepresentation65)
     {
-      [v3 setObject:v197 forKeyedSubscript:@"ueiUUFRReady"];
+      [dictionary setObject:dictionaryRepresentation65 forKeyedSubscript:@"ueiUUFRReady"];
     }
 
     else
     {
-      v198 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v198 forKeyedSubscript:@"ueiUUFRReady"];
+      null65 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null65 forKeyedSubscript:@"ueiUUFRReady"];
     }
   }
 
   if (self->_ueiUserBargeInDetected)
   {
-    v199 = [(SISchemaClientEvent *)self ueiUserBargeInDetected];
-    v200 = [v199 dictionaryRepresentation];
-    if (v200)
+    ueiUserBargeInDetected = [(SISchemaClientEvent *)self ueiUserBargeInDetected];
+    dictionaryRepresentation66 = [ueiUserBargeInDetected dictionaryRepresentation];
+    if (dictionaryRepresentation66)
     {
-      [v3 setObject:v200 forKeyedSubscript:@"ueiUserBargeInDetected"];
+      [dictionary setObject:dictionaryRepresentation66 forKeyedSubscript:@"ueiUserBargeInDetected"];
     }
 
     else
     {
-      v201 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v201 forKeyedSubscript:@"ueiUserBargeInDetected"];
+      null66 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null66 forKeyedSubscript:@"ueiUserBargeInDetected"];
     }
   }
 
   if (self->_ueiUserSpeakingContext)
   {
-    v202 = [(SISchemaClientEvent *)self ueiUserSpeakingContext];
-    v203 = [v202 dictionaryRepresentation];
-    if (v203)
+    ueiUserSpeakingContext = [(SISchemaClientEvent *)self ueiUserSpeakingContext];
+    dictionaryRepresentation67 = [ueiUserSpeakingContext dictionaryRepresentation];
+    if (dictionaryRepresentation67)
     {
-      [v3 setObject:v203 forKeyedSubscript:@"ueiUserSpeakingContext"];
+      [dictionary setObject:dictionaryRepresentation67 forKeyedSubscript:@"ueiUserSpeakingContext"];
     }
 
     else
     {
-      v204 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v204 forKeyedSubscript:@"ueiUserSpeakingContext"];
+      null67 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null67 forKeyedSubscript:@"ueiUserSpeakingContext"];
     }
   }
 
   if (self->_ueiVisionSnippetDismissed)
   {
-    v205 = [(SISchemaClientEvent *)self ueiVisionSnippetDismissed];
-    v206 = [v205 dictionaryRepresentation];
-    if (v206)
+    ueiVisionSnippetDismissed = [(SISchemaClientEvent *)self ueiVisionSnippetDismissed];
+    dictionaryRepresentation68 = [ueiVisionSnippetDismissed dictionaryRepresentation];
+    if (dictionaryRepresentation68)
     {
-      [v3 setObject:v206 forKeyedSubscript:@"ueiVisionSnippetDismissed"];
+      [dictionary setObject:dictionaryRepresentation68 forKeyedSubscript:@"ueiVisionSnippetDismissed"];
     }
 
     else
     {
-      v207 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v207 forKeyedSubscript:@"ueiVisionSnippetDismissed"];
+      null68 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null68 forKeyedSubscript:@"ueiVisionSnippetDismissed"];
     }
   }
 
   if (self->_uiStateTransition)
   {
-    v208 = [(SISchemaClientEvent *)self uiStateTransition];
-    v209 = [v208 dictionaryRepresentation];
-    if (v209)
+    uiStateTransition = [(SISchemaClientEvent *)self uiStateTransition];
+    dictionaryRepresentation69 = [uiStateTransition dictionaryRepresentation];
+    if (dictionaryRepresentation69)
     {
-      [v3 setObject:v209 forKeyedSubscript:@"uiStateTransition"];
+      [dictionary setObject:dictionaryRepresentation69 forKeyedSubscript:@"uiStateTransition"];
     }
 
     else
     {
-      v210 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v210 forKeyedSubscript:@"uiStateTransition"];
+      null69 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null69 forKeyedSubscript:@"uiStateTransition"];
     }
   }
 
   if (self->_userViewRegionInteraction)
   {
-    v211 = [(SISchemaClientEvent *)self userViewRegionInteraction];
-    v212 = [v211 dictionaryRepresentation];
-    if (v212)
+    userViewRegionInteraction = [(SISchemaClientEvent *)self userViewRegionInteraction];
+    dictionaryRepresentation70 = [userViewRegionInteraction dictionaryRepresentation];
+    if (dictionaryRepresentation70)
     {
-      [v3 setObject:v212 forKeyedSubscript:@"userViewRegionInteraction"];
+      [dictionary setObject:dictionaryRepresentation70 forKeyedSubscript:@"userViewRegionInteraction"];
     }
 
     else
     {
-      v213 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v213 forKeyedSubscript:@"userViewRegionInteraction"];
+      null70 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null70 forKeyedSubscript:@"userViewRegionInteraction"];
     }
   }
 
   if (self->_uufrCompletion)
   {
-    v214 = [(SISchemaClientEvent *)self uufrCompletion];
-    v215 = [v214 dictionaryRepresentation];
-    if (v215)
+    uufrCompletion = [(SISchemaClientEvent *)self uufrCompletion];
+    dictionaryRepresentation71 = [uufrCompletion dictionaryRepresentation];
+    if (dictionaryRepresentation71)
     {
-      [v3 setObject:v215 forKeyedSubscript:@"uufrCompletion"];
+      [dictionary setObject:dictionaryRepresentation71 forKeyedSubscript:@"uufrCompletion"];
     }
 
     else
     {
-      v216 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v216 forKeyedSubscript:@"uufrCompletion"];
+      null71 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null71 forKeyedSubscript:@"uufrCompletion"];
     }
   }
 
   if (self->_uufrFatalError)
   {
-    v217 = [(SISchemaClientEvent *)self uufrFatalError];
-    v218 = [v217 dictionaryRepresentation];
-    if (v218)
+    uufrFatalError = [(SISchemaClientEvent *)self uufrFatalError];
+    dictionaryRepresentation72 = [uufrFatalError dictionaryRepresentation];
+    if (dictionaryRepresentation72)
     {
-      [v3 setObject:v218 forKeyedSubscript:@"uufrFatalError"];
+      [dictionary setObject:dictionaryRepresentation72 forKeyedSubscript:@"uufrFatalError"];
     }
 
     else
     {
-      v219 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v219 forKeyedSubscript:@"uufrFatalError"];
+      null72 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null72 forKeyedSubscript:@"uufrFatalError"];
     }
   }
 
   if (self->_uufrPresented)
   {
-    v220 = [(SISchemaClientEvent *)self uufrPresented];
-    v221 = [v220 dictionaryRepresentation];
-    if (v221)
+    uufrPresented = [(SISchemaClientEvent *)self uufrPresented];
+    dictionaryRepresentation73 = [uufrPresented dictionaryRepresentation];
+    if (dictionaryRepresentation73)
     {
-      [v3 setObject:v221 forKeyedSubscript:@"uufrPresented"];
+      [dictionary setObject:dictionaryRepresentation73 forKeyedSubscript:@"uufrPresented"];
     }
 
     else
     {
-      v222 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v222 forKeyedSubscript:@"uufrPresented"];
+      null73 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null73 forKeyedSubscript:@"uufrPresented"];
     }
   }
 
   if (self->_uufrSaid)
   {
-    v223 = [(SISchemaClientEvent *)self uufrSaid];
-    v224 = [v223 dictionaryRepresentation];
-    if (v224)
+    uufrSaid = [(SISchemaClientEvent *)self uufrSaid];
+    dictionaryRepresentation74 = [uufrSaid dictionaryRepresentation];
+    if (dictionaryRepresentation74)
     {
-      [v3 setObject:v224 forKeyedSubscript:@"uufrSaid"];
+      [dictionary setObject:dictionaryRepresentation74 forKeyedSubscript:@"uufrSaid"];
     }
 
     else
     {
-      v225 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v225 forKeyedSubscript:@"uufrSaid"];
+      null74 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null74 forKeyedSubscript:@"uufrSaid"];
     }
   }
 
   if (self->_uufrSelected)
   {
-    v226 = [(SISchemaClientEvent *)self uufrSelected];
-    v227 = [v226 dictionaryRepresentation];
-    if (v227)
+    uufrSelected = [(SISchemaClientEvent *)self uufrSelected];
+    dictionaryRepresentation75 = [uufrSelected dictionaryRepresentation];
+    if (dictionaryRepresentation75)
     {
-      [v3 setObject:v227 forKeyedSubscript:@"uufrSelected"];
+      [dictionary setObject:dictionaryRepresentation75 forKeyedSubscript:@"uufrSelected"];
     }
 
     else
     {
-      v228 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v228 forKeyedSubscript:@"uufrSelected"];
+      null75 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null75 forKeyedSubscript:@"uufrSelected"];
     }
   }
 
   if (self->_uufrShown)
   {
-    v229 = [(SISchemaClientEvent *)self uufrShown];
-    v230 = [v229 dictionaryRepresentation];
-    if (v230)
+    uufrShown = [(SISchemaClientEvent *)self uufrShown];
+    dictionaryRepresentation76 = [uufrShown dictionaryRepresentation];
+    if (dictionaryRepresentation76)
     {
-      [v3 setObject:v230 forKeyedSubscript:@"uufrShown"];
+      [dictionary setObject:dictionaryRepresentation76 forKeyedSubscript:@"uufrShown"];
     }
 
     else
     {
-      v231 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v231 forKeyedSubscript:@"uufrShown"];
+      null76 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null76 forKeyedSubscript:@"uufrShown"];
     }
   }
 
   if (self->_uufrShownTier1)
   {
-    v232 = [(SISchemaClientEvent *)self uufrShownTier1];
-    v233 = [v232 dictionaryRepresentation];
-    if (v233)
+    uufrShownTier1 = [(SISchemaClientEvent *)self uufrShownTier1];
+    dictionaryRepresentation77 = [uufrShownTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation77)
     {
-      [v3 setObject:v233 forKeyedSubscript:@"uufrShownTier1"];
+      [dictionary setObject:dictionaryRepresentation77 forKeyedSubscript:@"uufrShownTier1"];
     }
 
     else
     {
-      v234 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v234 forKeyedSubscript:@"uufrShownTier1"];
+      null77 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null77 forKeyedSubscript:@"uufrShownTier1"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v235 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v235 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -4357,34 +4357,34 @@ LABEL_76:
   return v69 ^ v78 ^ [(SISchemaUEITranscriptTapped *)self->_transcriptTapped hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_388;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_388;
   }
 
-  v6 = [(SISchemaClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v8 = [(SISchemaClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(SISchemaClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(SISchemaClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(SISchemaClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -4396,20 +4396,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self transportMetadata];
-  v7 = [v4 transportMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self transportMetadata];
+  eventMetadata2 = [equalCopy transportMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v13 = [(SISchemaClientEvent *)self transportMetadata];
-  if (v13)
+  transportMetadata = [(SISchemaClientEvent *)self transportMetadata];
+  if (transportMetadata)
   {
-    v14 = v13;
-    v15 = [(SISchemaClientEvent *)self transportMetadata];
-    v16 = [v4 transportMetadata];
-    v17 = [v15 isEqual:v16];
+    v14 = transportMetadata;
+    transportMetadata2 = [(SISchemaClientEvent *)self transportMetadata];
+    transportMetadata3 = [equalCopy transportMetadata];
+    v17 = [transportMetadata2 isEqual:transportMetadata3];
 
     if (!v17)
     {
@@ -4421,20 +4421,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self audioFirstBufferRecorded];
-  v7 = [v4 audioFirstBufferRecorded];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self audioFirstBufferRecorded];
+  eventMetadata2 = [equalCopy audioFirstBufferRecorded];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v18 = [(SISchemaClientEvent *)self audioFirstBufferRecorded];
-  if (v18)
+  audioFirstBufferRecorded = [(SISchemaClientEvent *)self audioFirstBufferRecorded];
+  if (audioFirstBufferRecorded)
   {
-    v19 = v18;
-    v20 = [(SISchemaClientEvent *)self audioFirstBufferRecorded];
-    v21 = [v4 audioFirstBufferRecorded];
-    v22 = [v20 isEqual:v21];
+    v19 = audioFirstBufferRecorded;
+    audioFirstBufferRecorded2 = [(SISchemaClientEvent *)self audioFirstBufferRecorded];
+    audioFirstBufferRecorded3 = [equalCopy audioFirstBufferRecorded];
+    v22 = [audioFirstBufferRecorded2 isEqual:audioFirstBufferRecorded3];
 
     if (!v22)
     {
@@ -4446,20 +4446,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self audioStopRecording];
-  v7 = [v4 audioStopRecording];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self audioStopRecording];
+  eventMetadata2 = [equalCopy audioStopRecording];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v23 = [(SISchemaClientEvent *)self audioStopRecording];
-  if (v23)
+  audioStopRecording = [(SISchemaClientEvent *)self audioStopRecording];
+  if (audioStopRecording)
   {
-    v24 = v23;
-    v25 = [(SISchemaClientEvent *)self audioStopRecording];
-    v26 = [v4 audioStopRecording];
-    v27 = [v25 isEqual:v26];
+    v24 = audioStopRecording;
+    audioStopRecording2 = [(SISchemaClientEvent *)self audioStopRecording];
+    audioStopRecording3 = [equalCopy audioStopRecording];
+    v27 = [audioStopRecording2 isEqual:audioStopRecording3];
 
     if (!v27)
     {
@@ -4471,20 +4471,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self clientConversationTrace];
-  v7 = [v4 clientConversationTrace];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self clientConversationTrace];
+  eventMetadata2 = [equalCopy clientConversationTrace];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v28 = [(SISchemaClientEvent *)self clientConversationTrace];
-  if (v28)
+  clientConversationTrace = [(SISchemaClientEvent *)self clientConversationTrace];
+  if (clientConversationTrace)
   {
-    v29 = v28;
-    v30 = [(SISchemaClientEvent *)self clientConversationTrace];
-    v31 = [v4 clientConversationTrace];
-    v32 = [v30 isEqual:v31];
+    v29 = clientConversationTrace;
+    clientConversationTrace2 = [(SISchemaClientEvent *)self clientConversationTrace];
+    clientConversationTrace3 = [equalCopy clientConversationTrace];
+    v32 = [clientConversationTrace2 isEqual:clientConversationTrace3];
 
     if (!v32)
     {
@@ -4496,20 +4496,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self deviceDynamicContext];
-  v7 = [v4 deviceDynamicContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self deviceDynamicContext];
+  eventMetadata2 = [equalCopy deviceDynamicContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v33 = [(SISchemaClientEvent *)self deviceDynamicContext];
-  if (v33)
+  deviceDynamicContext = [(SISchemaClientEvent *)self deviceDynamicContext];
+  if (deviceDynamicContext)
   {
-    v34 = v33;
-    v35 = [(SISchemaClientEvent *)self deviceDynamicContext];
-    v36 = [v4 deviceDynamicContext];
-    v37 = [v35 isEqual:v36];
+    v34 = deviceDynamicContext;
+    deviceDynamicContext2 = [(SISchemaClientEvent *)self deviceDynamicContext];
+    deviceDynamicContext3 = [equalCopy deviceDynamicContext];
+    v37 = [deviceDynamicContext2 isEqual:deviceDynamicContext3];
 
     if (!v37)
     {
@@ -4521,20 +4521,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self deviceFixedContext];
-  v7 = [v4 deviceFixedContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self deviceFixedContext];
+  eventMetadata2 = [equalCopy deviceFixedContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v38 = [(SISchemaClientEvent *)self deviceFixedContext];
-  if (v38)
+  deviceFixedContext = [(SISchemaClientEvent *)self deviceFixedContext];
+  if (deviceFixedContext)
   {
-    v39 = v38;
-    v40 = [(SISchemaClientEvent *)self deviceFixedContext];
-    v41 = [v4 deviceFixedContext];
-    v42 = [v40 isEqual:v41];
+    v39 = deviceFixedContext;
+    deviceFixedContext2 = [(SISchemaClientEvent *)self deviceFixedContext];
+    deviceFixedContext3 = [equalCopy deviceFixedContext];
+    v42 = [deviceFixedContext2 isEqual:deviceFixedContext3];
 
     if (!v42)
     {
@@ -4546,20 +4546,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self dictationContext];
-  v7 = [v4 dictationContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self dictationContext];
+  eventMetadata2 = [equalCopy dictationContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v43 = [(SISchemaClientEvent *)self dictationContext];
-  if (v43)
+  dictationContext = [(SISchemaClientEvent *)self dictationContext];
+  if (dictationContext)
   {
-    v44 = v43;
-    v45 = [(SISchemaClientEvent *)self dictationContext];
-    v46 = [v4 dictationContext];
-    v47 = [v45 isEqual:v46];
+    v44 = dictationContext;
+    dictationContext2 = [(SISchemaClientEvent *)self dictationContext];
+    dictationContext3 = [equalCopy dictationContext];
+    v47 = [dictationContext2 isEqual:dictationContext3];
 
     if (!v47)
     {
@@ -4571,20 +4571,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self invocation];
-  v7 = [v4 invocation];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self invocation];
+  eventMetadata2 = [equalCopy invocation];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v48 = [(SISchemaClientEvent *)self invocation];
-  if (v48)
+  invocation = [(SISchemaClientEvent *)self invocation];
+  if (invocation)
   {
-    v49 = v48;
-    v50 = [(SISchemaClientEvent *)self invocation];
-    v51 = [v4 invocation];
-    v52 = [v50 isEqual:v51];
+    v49 = invocation;
+    invocation2 = [(SISchemaClientEvent *)self invocation];
+    invocation3 = [equalCopy invocation];
+    v52 = [invocation2 isEqual:invocation3];
 
     if (!v52)
     {
@@ -4596,20 +4596,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self location];
-  v7 = [v4 location];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self location];
+  eventMetadata2 = [equalCopy location];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v53 = [(SISchemaClientEvent *)self location];
-  if (v53)
+  location = [(SISchemaClientEvent *)self location];
+  if (location)
   {
-    v54 = v53;
-    v55 = [(SISchemaClientEvent *)self location];
-    v56 = [v4 location];
-    v57 = [v55 isEqual:v56];
+    v54 = location;
+    location2 = [(SISchemaClientEvent *)self location];
+    location3 = [equalCopy location];
+    v57 = [location2 isEqual:location3];
 
     if (!v57)
     {
@@ -4621,20 +4621,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self punchOut];
-  v7 = [v4 punchOut];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self punchOut];
+  eventMetadata2 = [equalCopy punchOut];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v58 = [(SISchemaClientEvent *)self punchOut];
-  if (v58)
+  punchOut = [(SISchemaClientEvent *)self punchOut];
+  if (punchOut)
   {
-    v59 = v58;
-    v60 = [(SISchemaClientEvent *)self punchOut];
-    v61 = [v4 punchOut];
-    v62 = [v60 isEqual:v61];
+    v59 = punchOut;
+    punchOut2 = [(SISchemaClientEvent *)self punchOut];
+    punchOut3 = [equalCopy punchOut];
+    v62 = [punchOut2 isEqual:punchOut3];
 
     if (!v62)
     {
@@ -4646,20 +4646,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self siriCue];
-  v7 = [v4 siriCue];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self siriCue];
+  eventMetadata2 = [equalCopy siriCue];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v63 = [(SISchemaClientEvent *)self siriCue];
-  if (v63)
+  siriCue = [(SISchemaClientEvent *)self siriCue];
+  if (siriCue)
   {
-    v64 = v63;
-    v65 = [(SISchemaClientEvent *)self siriCue];
-    v66 = [v4 siriCue];
-    v67 = [v65 isEqual:v66];
+    v64 = siriCue;
+    siriCue2 = [(SISchemaClientEvent *)self siriCue];
+    siriCue3 = [equalCopy siriCue];
+    v67 = [siriCue2 isEqual:siriCue3];
 
     if (!v67)
     {
@@ -4671,20 +4671,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self uufrPresented];
-  v7 = [v4 uufrPresented];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self uufrPresented];
+  eventMetadata2 = [equalCopy uufrPresented];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v68 = [(SISchemaClientEvent *)self uufrPresented];
-  if (v68)
+  uufrPresented = [(SISchemaClientEvent *)self uufrPresented];
+  if (uufrPresented)
   {
-    v69 = v68;
-    v70 = [(SISchemaClientEvent *)self uufrPresented];
-    v71 = [v4 uufrPresented];
-    v72 = [v70 isEqual:v71];
+    v69 = uufrPresented;
+    uufrPresented2 = [(SISchemaClientEvent *)self uufrPresented];
+    uufrPresented3 = [equalCopy uufrPresented];
+    v72 = [uufrPresented2 isEqual:uufrPresented3];
 
     if (!v72)
     {
@@ -4696,20 +4696,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self speechTranscription];
-  v7 = [v4 speechTranscription];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self speechTranscription];
+  eventMetadata2 = [equalCopy speechTranscription];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v73 = [(SISchemaClientEvent *)self speechTranscription];
-  if (v73)
+  speechTranscription = [(SISchemaClientEvent *)self speechTranscription];
+  if (speechTranscription)
   {
-    v74 = v73;
-    v75 = [(SISchemaClientEvent *)self speechTranscription];
-    v76 = [v4 speechTranscription];
-    v77 = [v75 isEqual:v76];
+    v74 = speechTranscription;
+    speechTranscription2 = [(SISchemaClientEvent *)self speechTranscription];
+    speechTranscription3 = [equalCopy speechTranscription];
+    v77 = [speechTranscription2 isEqual:speechTranscription3];
 
     if (!v77)
     {
@@ -4721,20 +4721,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self textToSpeechBegin];
-  v7 = [v4 textToSpeechBegin];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self textToSpeechBegin];
+  eventMetadata2 = [equalCopy textToSpeechBegin];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v78 = [(SISchemaClientEvent *)self textToSpeechBegin];
-  if (v78)
+  textToSpeechBegin = [(SISchemaClientEvent *)self textToSpeechBegin];
+  if (textToSpeechBegin)
   {
-    v79 = v78;
-    v80 = [(SISchemaClientEvent *)self textToSpeechBegin];
-    v81 = [v4 textToSpeechBegin];
-    v82 = [v80 isEqual:v81];
+    v79 = textToSpeechBegin;
+    textToSpeechBegin2 = [(SISchemaClientEvent *)self textToSpeechBegin];
+    textToSpeechBegin3 = [equalCopy textToSpeechBegin];
+    v82 = [textToSpeechBegin2 isEqual:textToSpeechBegin3];
 
     if (!v82)
     {
@@ -4746,20 +4746,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self textToSpeechEnd];
-  v7 = [v4 textToSpeechEnd];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self textToSpeechEnd];
+  eventMetadata2 = [equalCopy textToSpeechEnd];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v83 = [(SISchemaClientEvent *)self textToSpeechEnd];
-  if (v83)
+  textToSpeechEnd = [(SISchemaClientEvent *)self textToSpeechEnd];
+  if (textToSpeechEnd)
   {
-    v84 = v83;
-    v85 = [(SISchemaClientEvent *)self textToSpeechEnd];
-    v86 = [v4 textToSpeechEnd];
-    v87 = [v85 isEqual:v86];
+    v84 = textToSpeechEnd;
+    textToSpeechEnd2 = [(SISchemaClientEvent *)self textToSpeechEnd];
+    textToSpeechEnd3 = [equalCopy textToSpeechEnd];
+    v87 = [textToSpeechEnd2 isEqual:textToSpeechEnd3];
 
     if (!v87)
     {
@@ -4771,20 +4771,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self uiStateTransition];
-  v7 = [v4 uiStateTransition];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self uiStateTransition];
+  eventMetadata2 = [equalCopy uiStateTransition];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v88 = [(SISchemaClientEvent *)self uiStateTransition];
-  if (v88)
+  uiStateTransition = [(SISchemaClientEvent *)self uiStateTransition];
+  if (uiStateTransition)
   {
-    v89 = v88;
-    v90 = [(SISchemaClientEvent *)self uiStateTransition];
-    v91 = [v4 uiStateTransition];
-    v92 = [v90 isEqual:v91];
+    v89 = uiStateTransition;
+    uiStateTransition2 = [(SISchemaClientEvent *)self uiStateTransition];
+    uiStateTransition3 = [equalCopy uiStateTransition];
+    v92 = [uiStateTransition2 isEqual:uiStateTransition3];
 
     if (!v92)
     {
@@ -4796,20 +4796,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self clientFlow];
-  v7 = [v4 clientFlow];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self clientFlow];
+  eventMetadata2 = [equalCopy clientFlow];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v93 = [(SISchemaClientEvent *)self clientFlow];
-  if (v93)
+  clientFlow = [(SISchemaClientEvent *)self clientFlow];
+  if (clientFlow)
   {
-    v94 = v93;
-    v95 = [(SISchemaClientEvent *)self clientFlow];
-    v96 = [v4 clientFlow];
-    v97 = [v95 isEqual:v96];
+    v94 = clientFlow;
+    clientFlow2 = [(SISchemaClientEvent *)self clientFlow];
+    clientFlow3 = [equalCopy clientFlow];
+    v97 = [clientFlow2 isEqual:clientFlow3];
 
     if (!v97)
     {
@@ -4821,20 +4821,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self dialogOutput];
-  v7 = [v4 dialogOutput];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self dialogOutput];
+  eventMetadata2 = [equalCopy dialogOutput];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v98 = [(SISchemaClientEvent *)self dialogOutput];
-  if (v98)
+  dialogOutput = [(SISchemaClientEvent *)self dialogOutput];
+  if (dialogOutput)
   {
-    v99 = v98;
-    v100 = [(SISchemaClientEvent *)self dialogOutput];
-    v101 = [v4 dialogOutput];
-    v102 = [v100 isEqual:v101];
+    v99 = dialogOutput;
+    dialogOutput2 = [(SISchemaClientEvent *)self dialogOutput];
+    dialogOutput3 = [equalCopy dialogOutput];
+    v102 = [dialogOutput2 isEqual:dialogOutput3];
 
     if (!v102)
     {
@@ -4846,20 +4846,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self dictationEndPointStop];
-  v7 = [v4 dictationEndPointStop];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self dictationEndPointStop];
+  eventMetadata2 = [equalCopy dictationEndPointStop];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v103 = [(SISchemaClientEvent *)self dictationEndPointStop];
-  if (v103)
+  dictationEndPointStop = [(SISchemaClientEvent *)self dictationEndPointStop];
+  if (dictationEndPointStop)
   {
-    v104 = v103;
-    v105 = [(SISchemaClientEvent *)self dictationEndPointStop];
-    v106 = [v4 dictationEndPointStop];
-    v107 = [v105 isEqual:v106];
+    v104 = dictationEndPointStop;
+    dictationEndPointStop2 = [(SISchemaClientEvent *)self dictationEndPointStop];
+    dictationEndPointStop3 = [equalCopy dictationEndPointStop];
+    v107 = [dictationEndPointStop2 isEqual:dictationEndPointStop3];
 
     if (!v107)
     {
@@ -4871,20 +4871,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self dictationEndPointCancel];
-  v7 = [v4 dictationEndPointCancel];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self dictationEndPointCancel];
+  eventMetadata2 = [equalCopy dictationEndPointCancel];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v108 = [(SISchemaClientEvent *)self dictationEndPointCancel];
-  if (v108)
+  dictationEndPointCancel = [(SISchemaClientEvent *)self dictationEndPointCancel];
+  if (dictationEndPointCancel)
   {
-    v109 = v108;
-    v110 = [(SISchemaClientEvent *)self dictationEndPointCancel];
-    v111 = [v4 dictationEndPointCancel];
-    v112 = [v110 isEqual:v111];
+    v109 = dictationEndPointCancel;
+    dictationEndPointCancel2 = [(SISchemaClientEvent *)self dictationEndPointCancel];
+    dictationEndPointCancel3 = [equalCopy dictationEndPointCancel];
+    v112 = [dictationEndPointCancel2 isEqual:dictationEndPointCancel3];
 
     if (!v112)
     {
@@ -4896,20 +4896,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self dictationAlternativeSelected];
-  v7 = [v4 dictationAlternativeSelected];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self dictationAlternativeSelected];
+  eventMetadata2 = [equalCopy dictationAlternativeSelected];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v113 = [(SISchemaClientEvent *)self dictationAlternativeSelected];
-  if (v113)
+  dictationAlternativeSelected = [(SISchemaClientEvent *)self dictationAlternativeSelected];
+  if (dictationAlternativeSelected)
   {
-    v114 = v113;
-    v115 = [(SISchemaClientEvent *)self dictationAlternativeSelected];
-    v116 = [v4 dictationAlternativeSelected];
-    v117 = [v115 isEqual:v116];
+    v114 = dictationAlternativeSelected;
+    dictationAlternativeSelected2 = [(SISchemaClientEvent *)self dictationAlternativeSelected];
+    dictationAlternativeSelected3 = [equalCopy dictationAlternativeSelected];
+    v117 = [dictationAlternativeSelected2 isEqual:dictationAlternativeSelected3];
 
     if (!v117)
     {
@@ -4921,20 +4921,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self dictationTranscriptionMetadata];
-  v7 = [v4 dictationTranscriptionMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self dictationTranscriptionMetadata];
+  eventMetadata2 = [equalCopy dictationTranscriptionMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v118 = [(SISchemaClientEvent *)self dictationTranscriptionMetadata];
-  if (v118)
+  dictationTranscriptionMetadata = [(SISchemaClientEvent *)self dictationTranscriptionMetadata];
+  if (dictationTranscriptionMetadata)
   {
-    v119 = v118;
-    v120 = [(SISchemaClientEvent *)self dictationTranscriptionMetadata];
-    v121 = [v4 dictationTranscriptionMetadata];
-    v122 = [v120 isEqual:v121];
+    v119 = dictationTranscriptionMetadata;
+    dictationTranscriptionMetadata2 = [(SISchemaClientEvent *)self dictationTranscriptionMetadata];
+    dictationTranscriptionMetadata3 = [equalCopy dictationTranscriptionMetadata];
+    v122 = [dictationTranscriptionMetadata2 isEqual:dictationTranscriptionMetadata3];
 
     if (!v122)
     {
@@ -4946,20 +4946,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self carPlayHeadUnitContext];
-  v7 = [v4 carPlayHeadUnitContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self carPlayHeadUnitContext];
+  eventMetadata2 = [equalCopy carPlayHeadUnitContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v123 = [(SISchemaClientEvent *)self carPlayHeadUnitContext];
-  if (v123)
+  carPlayHeadUnitContext = [(SISchemaClientEvent *)self carPlayHeadUnitContext];
+  if (carPlayHeadUnitContext)
   {
-    v124 = v123;
-    v125 = [(SISchemaClientEvent *)self carPlayHeadUnitContext];
-    v126 = [v4 carPlayHeadUnitContext];
-    v127 = [v125 isEqual:v126];
+    v124 = carPlayHeadUnitContext;
+    carPlayHeadUnitContext2 = [(SISchemaClientEvent *)self carPlayHeadUnitContext];
+    carPlayHeadUnitContext3 = [equalCopy carPlayHeadUnitContext];
+    v127 = [carPlayHeadUnitContext2 isEqual:carPlayHeadUnitContext3];
 
     if (!v127)
     {
@@ -4971,20 +4971,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self uufrCompletion];
-  v7 = [v4 uufrCompletion];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self uufrCompletion];
+  eventMetadata2 = [equalCopy uufrCompletion];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v128 = [(SISchemaClientEvent *)self uufrCompletion];
-  if (v128)
+  uufrCompletion = [(SISchemaClientEvent *)self uufrCompletion];
+  if (uufrCompletion)
   {
-    v129 = v128;
-    v130 = [(SISchemaClientEvent *)self uufrCompletion];
-    v131 = [v4 uufrCompletion];
-    v132 = [v130 isEqual:v131];
+    v129 = uufrCompletion;
+    uufrCompletion2 = [(SISchemaClientEvent *)self uufrCompletion];
+    uufrCompletion3 = [equalCopy uufrCompletion];
+    v132 = [uufrCompletion2 isEqual:uufrCompletion3];
 
     if (!v132)
     {
@@ -4996,20 +4996,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self uufrShown];
-  v7 = [v4 uufrShown];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self uufrShown];
+  eventMetadata2 = [equalCopy uufrShown];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v133 = [(SISchemaClientEvent *)self uufrShown];
-  if (v133)
+  uufrShown = [(SISchemaClientEvent *)self uufrShown];
+  if (uufrShown)
   {
-    v134 = v133;
-    v135 = [(SISchemaClientEvent *)self uufrShown];
-    v136 = [v4 uufrShown];
-    v137 = [v135 isEqual:v136];
+    v134 = uufrShown;
+    uufrShown2 = [(SISchemaClientEvent *)self uufrShown];
+    uufrShown3 = [equalCopy uufrShown];
+    v137 = [uufrShown2 isEqual:uufrShown3];
 
     if (!v137)
     {
@@ -5021,20 +5021,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self uufrSaid];
-  v7 = [v4 uufrSaid];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self uufrSaid];
+  eventMetadata2 = [equalCopy uufrSaid];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v138 = [(SISchemaClientEvent *)self uufrSaid];
-  if (v138)
+  uufrSaid = [(SISchemaClientEvent *)self uufrSaid];
+  if (uufrSaid)
   {
-    v139 = v138;
-    v140 = [(SISchemaClientEvent *)self uufrSaid];
-    v141 = [v4 uufrSaid];
-    v142 = [v140 isEqual:v141];
+    v139 = uufrSaid;
+    uufrSaid2 = [(SISchemaClientEvent *)self uufrSaid];
+    uufrSaid3 = [equalCopy uufrSaid];
+    v142 = [uufrSaid2 isEqual:uufrSaid3];
 
     if (!v142)
     {
@@ -5046,20 +5046,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self uufrFatalError];
-  v7 = [v4 uufrFatalError];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self uufrFatalError];
+  eventMetadata2 = [equalCopy uufrFatalError];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v143 = [(SISchemaClientEvent *)self uufrFatalError];
-  if (v143)
+  uufrFatalError = [(SISchemaClientEvent *)self uufrFatalError];
+  if (uufrFatalError)
   {
-    v144 = v143;
-    v145 = [(SISchemaClientEvent *)self uufrFatalError];
-    v146 = [v4 uufrFatalError];
-    v147 = [v145 isEqual:v146];
+    v144 = uufrFatalError;
+    uufrFatalError2 = [(SISchemaClientEvent *)self uufrFatalError];
+    uufrFatalError3 = [equalCopy uufrFatalError];
+    v147 = [uufrFatalError2 isEqual:uufrFatalError3];
 
     if (!v147)
     {
@@ -5071,20 +5071,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self dictationAlternativesViewed];
-  v7 = [v4 dictationAlternativesViewed];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self dictationAlternativesViewed];
+  eventMetadata2 = [equalCopy dictationAlternativesViewed];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v148 = [(SISchemaClientEvent *)self dictationAlternativesViewed];
-  if (v148)
+  dictationAlternativesViewed = [(SISchemaClientEvent *)self dictationAlternativesViewed];
+  if (dictationAlternativesViewed)
   {
-    v149 = v148;
-    v150 = [(SISchemaClientEvent *)self dictationAlternativesViewed];
-    v151 = [v4 dictationAlternativesViewed];
-    v152 = [v150 isEqual:v151];
+    v149 = dictationAlternativesViewed;
+    dictationAlternativesViewed2 = [(SISchemaClientEvent *)self dictationAlternativesViewed];
+    dictationAlternativesViewed3 = [equalCopy dictationAlternativesViewed];
+    v152 = [dictationAlternativesViewed2 isEqual:dictationAlternativesViewed3];
 
     if (!v152)
     {
@@ -5096,20 +5096,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self intercomMessageRecorded];
-  v7 = [v4 intercomMessageRecorded];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self intercomMessageRecorded];
+  eventMetadata2 = [equalCopy intercomMessageRecorded];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v153 = [(SISchemaClientEvent *)self intercomMessageRecorded];
-  if (v153)
+  intercomMessageRecorded = [(SISchemaClientEvent *)self intercomMessageRecorded];
+  if (intercomMessageRecorded)
   {
-    v154 = v153;
-    v155 = [(SISchemaClientEvent *)self intercomMessageRecorded];
-    v156 = [v4 intercomMessageRecorded];
-    v157 = [v155 isEqual:v156];
+    v154 = intercomMessageRecorded;
+    intercomMessageRecorded2 = [(SISchemaClientEvent *)self intercomMessageRecorded];
+    intercomMessageRecorded3 = [equalCopy intercomMessageRecorded];
+    v157 = [intercomMessageRecorded2 isEqual:intercomMessageRecorded3];
 
     if (!v157)
     {
@@ -5121,20 +5121,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self casinoRelationship];
-  v7 = [v4 casinoRelationship];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self casinoRelationship];
+  eventMetadata2 = [equalCopy casinoRelationship];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v158 = [(SISchemaClientEvent *)self casinoRelationship];
-  if (v158)
+  casinoRelationship = [(SISchemaClientEvent *)self casinoRelationship];
+  if (casinoRelationship)
   {
-    v159 = v158;
-    v160 = [(SISchemaClientEvent *)self casinoRelationship];
-    v161 = [v4 casinoRelationship];
-    v162 = [v160 isEqual:v161];
+    v159 = casinoRelationship;
+    casinoRelationship2 = [(SISchemaClientEvent *)self casinoRelationship];
+    casinoRelationship3 = [equalCopy casinoRelationship];
+    v162 = [casinoRelationship2 isEqual:casinoRelationship3];
 
     if (!v162)
     {
@@ -5146,20 +5146,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self userViewRegionInteraction];
-  v7 = [v4 userViewRegionInteraction];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self userViewRegionInteraction];
+  eventMetadata2 = [equalCopy userViewRegionInteraction];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v163 = [(SISchemaClientEvent *)self userViewRegionInteraction];
-  if (v163)
+  userViewRegionInteraction = [(SISchemaClientEvent *)self userViewRegionInteraction];
+  if (userViewRegionInteraction)
   {
-    v164 = v163;
-    v165 = [(SISchemaClientEvent *)self userViewRegionInteraction];
-    v166 = [v4 userViewRegionInteraction];
-    v167 = [v165 isEqual:v166];
+    v164 = userViewRegionInteraction;
+    userViewRegionInteraction2 = [(SISchemaClientEvent *)self userViewRegionInteraction];
+    userViewRegionInteraction3 = [equalCopy userViewRegionInteraction];
+    v167 = [userViewRegionInteraction2 isEqual:userViewRegionInteraction3];
 
     if (!v167)
     {
@@ -5171,20 +5171,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self deviceLockStateChanged];
-  v7 = [v4 deviceLockStateChanged];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self deviceLockStateChanged];
+  eventMetadata2 = [equalCopy deviceLockStateChanged];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v168 = [(SISchemaClientEvent *)self deviceLockStateChanged];
-  if (v168)
+  deviceLockStateChanged = [(SISchemaClientEvent *)self deviceLockStateChanged];
+  if (deviceLockStateChanged)
   {
-    v169 = v168;
-    v170 = [(SISchemaClientEvent *)self deviceLockStateChanged];
-    v171 = [v4 deviceLockStateChanged];
-    v172 = [v170 isEqual:v171];
+    v169 = deviceLockStateChanged;
+    deviceLockStateChanged2 = [(SISchemaClientEvent *)self deviceLockStateChanged];
+    deviceLockStateChanged3 = [equalCopy deviceLockStateChanged];
+    v172 = [deviceLockStateChanged2 isEqual:deviceLockStateChanged3];
 
     if (!v172)
     {
@@ -5196,20 +5196,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiRequestCategorization];
-  v7 = [v4 ueiRequestCategorization];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiRequestCategorization];
+  eventMetadata2 = [equalCopy ueiRequestCategorization];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v173 = [(SISchemaClientEvent *)self ueiRequestCategorization];
-  if (v173)
+  ueiRequestCategorization = [(SISchemaClientEvent *)self ueiRequestCategorization];
+  if (ueiRequestCategorization)
   {
-    v174 = v173;
-    v175 = [(SISchemaClientEvent *)self ueiRequestCategorization];
-    v176 = [v4 ueiRequestCategorization];
-    v177 = [v175 isEqual:v176];
+    v174 = ueiRequestCategorization;
+    ueiRequestCategorization2 = [(SISchemaClientEvent *)self ueiRequestCategorization];
+    ueiRequestCategorization3 = [equalCopy ueiRequestCategorization];
+    v177 = [ueiRequestCategorization2 isEqual:ueiRequestCategorization3];
 
     if (!v177)
     {
@@ -5221,20 +5221,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self audioStopRecordingStarted];
-  v7 = [v4 audioStopRecordingStarted];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self audioStopRecordingStarted];
+  eventMetadata2 = [equalCopy audioStopRecordingStarted];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v178 = [(SISchemaClientEvent *)self audioStopRecordingStarted];
-  if (v178)
+  audioStopRecordingStarted = [(SISchemaClientEvent *)self audioStopRecordingStarted];
+  if (audioStopRecordingStarted)
   {
-    v179 = v178;
-    v180 = [(SISchemaClientEvent *)self audioStopRecordingStarted];
-    v181 = [v4 audioStopRecordingStarted];
-    v182 = [v180 isEqual:v181];
+    v179 = audioStopRecordingStarted;
+    audioStopRecordingStarted2 = [(SISchemaClientEvent *)self audioStopRecordingStarted];
+    audioStopRecordingStarted3 = [equalCopy audioStopRecordingStarted];
+    v182 = [audioStopRecordingStarted2 isEqual:audioStopRecordingStarted3];
 
     if (!v182)
     {
@@ -5246,20 +5246,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiLaunchContext];
-  v7 = [v4 ueiLaunchContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiLaunchContext];
+  eventMetadata2 = [equalCopy ueiLaunchContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v183 = [(SISchemaClientEvent *)self ueiLaunchContext];
-  if (v183)
+  ueiLaunchContext = [(SISchemaClientEvent *)self ueiLaunchContext];
+  if (ueiLaunchContext)
   {
-    v184 = v183;
-    v185 = [(SISchemaClientEvent *)self ueiLaunchContext];
-    v186 = [v4 ueiLaunchContext];
-    v187 = [v185 isEqual:v186];
+    v184 = ueiLaunchContext;
+    ueiLaunchContext2 = [(SISchemaClientEvent *)self ueiLaunchContext];
+    ueiLaunchContext3 = [equalCopy ueiLaunchContext];
+    v187 = [ueiLaunchContext2 isEqual:ueiLaunchContext3];
 
     if (!v187)
     {
@@ -5271,20 +5271,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiUserSpeakingContext];
-  v7 = [v4 ueiUserSpeakingContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiUserSpeakingContext];
+  eventMetadata2 = [equalCopy ueiUserSpeakingContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v188 = [(SISchemaClientEvent *)self ueiUserSpeakingContext];
-  if (v188)
+  ueiUserSpeakingContext = [(SISchemaClientEvent *)self ueiUserSpeakingContext];
+  if (ueiUserSpeakingContext)
   {
-    v189 = v188;
-    v190 = [(SISchemaClientEvent *)self ueiUserSpeakingContext];
-    v191 = [v4 ueiUserSpeakingContext];
-    v192 = [v190 isEqual:v191];
+    v189 = ueiUserSpeakingContext;
+    ueiUserSpeakingContext2 = [(SISchemaClientEvent *)self ueiUserSpeakingContext];
+    ueiUserSpeakingContext3 = [equalCopy ueiUserSpeakingContext];
+    v192 = [ueiUserSpeakingContext2 isEqual:ueiUserSpeakingContext3];
 
     if (!v192)
     {
@@ -5296,20 +5296,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiUUFRReady];
-  v7 = [v4 ueiUUFRReady];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiUUFRReady];
+  eventMetadata2 = [equalCopy ueiUUFRReady];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v193 = [(SISchemaClientEvent *)self ueiUUFRReady];
-  if (v193)
+  ueiUUFRReady = [(SISchemaClientEvent *)self ueiUUFRReady];
+  if (ueiUUFRReady)
   {
-    v194 = v193;
-    v195 = [(SISchemaClientEvent *)self ueiUUFRReady];
-    v196 = [v4 ueiUUFRReady];
-    v197 = [v195 isEqual:v196];
+    v194 = ueiUUFRReady;
+    ueiUUFRReady2 = [(SISchemaClientEvent *)self ueiUUFRReady];
+    ueiUUFRReady3 = [equalCopy ueiUUFRReady];
+    v197 = [ueiUUFRReady2 isEqual:ueiUUFRReady3];
 
     if (!v197)
     {
@@ -5321,20 +5321,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiUIRenderingContext];
-  v7 = [v4 ueiUIRenderingContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiUIRenderingContext];
+  eventMetadata2 = [equalCopy ueiUIRenderingContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v198 = [(SISchemaClientEvent *)self ueiUIRenderingContext];
-  if (v198)
+  ueiUIRenderingContext = [(SISchemaClientEvent *)self ueiUIRenderingContext];
+  if (ueiUIRenderingContext)
   {
-    v199 = v198;
-    v200 = [(SISchemaClientEvent *)self ueiUIRenderingContext];
-    v201 = [v4 ueiUIRenderingContext];
-    v202 = [v200 isEqual:v201];
+    v199 = ueiUIRenderingContext;
+    ueiUIRenderingContext2 = [(SISchemaClientEvent *)self ueiUIRenderingContext];
+    ueiUIRenderingContext3 = [equalCopy ueiUIRenderingContext];
+    v202 = [ueiUIRenderingContext2 isEqual:ueiUIRenderingContext3];
 
     if (!v202)
     {
@@ -5346,20 +5346,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self pnrTextToSpeechRequestReceived];
-  v7 = [v4 pnrTextToSpeechRequestReceived];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self pnrTextToSpeechRequestReceived];
+  eventMetadata2 = [equalCopy pnrTextToSpeechRequestReceived];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v203 = [(SISchemaClientEvent *)self pnrTextToSpeechRequestReceived];
-  if (v203)
+  pnrTextToSpeechRequestReceived = [(SISchemaClientEvent *)self pnrTextToSpeechRequestReceived];
+  if (pnrTextToSpeechRequestReceived)
   {
-    v204 = v203;
-    v205 = [(SISchemaClientEvent *)self pnrTextToSpeechRequestReceived];
-    v206 = [v4 pnrTextToSpeechRequestReceived];
-    v207 = [v205 isEqual:v206];
+    v204 = pnrTextToSpeechRequestReceived;
+    pnrTextToSpeechRequestReceived2 = [(SISchemaClientEvent *)self pnrTextToSpeechRequestReceived];
+    pnrTextToSpeechRequestReceived3 = [equalCopy pnrTextToSpeechRequestReceived];
+    v207 = [pnrTextToSpeechRequestReceived2 isEqual:pnrTextToSpeechRequestReceived3];
 
     if (!v207)
     {
@@ -5371,20 +5371,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self pnrSpeechRecognitionSourceContext];
-  v7 = [v4 pnrSpeechRecognitionSourceContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self pnrSpeechRecognitionSourceContext];
+  eventMetadata2 = [equalCopy pnrSpeechRecognitionSourceContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v208 = [(SISchemaClientEvent *)self pnrSpeechRecognitionSourceContext];
-  if (v208)
+  pnrSpeechRecognitionSourceContext = [(SISchemaClientEvent *)self pnrSpeechRecognitionSourceContext];
+  if (pnrSpeechRecognitionSourceContext)
   {
-    v209 = v208;
-    v210 = [(SISchemaClientEvent *)self pnrSpeechRecognitionSourceContext];
-    v211 = [v4 pnrSpeechRecognitionSourceContext];
-    v212 = [v210 isEqual:v211];
+    v209 = pnrSpeechRecognitionSourceContext;
+    pnrSpeechRecognitionSourceContext2 = [(SISchemaClientEvent *)self pnrSpeechRecognitionSourceContext];
+    pnrSpeechRecognitionSourceContext3 = [equalCopy pnrSpeechRecognitionSourceContext];
+    v212 = [pnrSpeechRecognitionSourceContext2 isEqual:pnrSpeechRecognitionSourceContext3];
 
     if (!v212)
     {
@@ -5396,20 +5396,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self pnrFatalError];
-  v7 = [v4 pnrFatalError];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self pnrFatalError];
+  eventMetadata2 = [equalCopy pnrFatalError];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v213 = [(SISchemaClientEvent *)self pnrFatalError];
-  if (v213)
+  pnrFatalError = [(SISchemaClientEvent *)self pnrFatalError];
+  if (pnrFatalError)
   {
-    v214 = v213;
-    v215 = [(SISchemaClientEvent *)self pnrFatalError];
-    v216 = [v4 pnrFatalError];
-    v217 = [v215 isEqual:v216];
+    v214 = pnrFatalError;
+    pnrFatalError2 = [(SISchemaClientEvent *)self pnrFatalError];
+    pnrFatalError3 = [equalCopy pnrFatalError];
+    v217 = [pnrFatalError2 isEqual:pnrFatalError3];
 
     if (!v217)
     {
@@ -5421,20 +5421,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self turnMTERequest];
-  v7 = [v4 turnMTERequest];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self turnMTERequest];
+  eventMetadata2 = [equalCopy turnMTERequest];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v218 = [(SISchemaClientEvent *)self turnMTERequest];
-  if (v218)
+  turnMTERequest = [(SISchemaClientEvent *)self turnMTERequest];
+  if (turnMTERequest)
   {
-    v219 = v218;
-    v220 = [(SISchemaClientEvent *)self turnMTERequest];
-    v221 = [v4 turnMTERequest];
-    v222 = [v220 isEqual:v221];
+    v219 = turnMTERequest;
+    turnMTERequest2 = [(SISchemaClientEvent *)self turnMTERequest];
+    turnMTERequest3 = [equalCopy turnMTERequest];
+    v222 = [turnMTERequest2 isEqual:turnMTERequest3];
 
     if (!v222)
     {
@@ -5446,20 +5446,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self keyboardDismissed];
-  v7 = [v4 keyboardDismissed];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self keyboardDismissed];
+  eventMetadata2 = [equalCopy keyboardDismissed];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v223 = [(SISchemaClientEvent *)self keyboardDismissed];
-  if (v223)
+  keyboardDismissed = [(SISchemaClientEvent *)self keyboardDismissed];
+  if (keyboardDismissed)
   {
-    v224 = v223;
-    v225 = [(SISchemaClientEvent *)self keyboardDismissed];
-    v226 = [v4 keyboardDismissed];
-    v227 = [v225 isEqual:v226];
+    v224 = keyboardDismissed;
+    keyboardDismissed2 = [(SISchemaClientEvent *)self keyboardDismissed];
+    keyboardDismissed3 = [equalCopy keyboardDismissed];
+    v227 = [keyboardDismissed2 isEqual:keyboardDismissed3];
 
     if (!v227)
     {
@@ -5471,20 +5471,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self engagedAccessoryContext];
-  v7 = [v4 engagedAccessoryContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self engagedAccessoryContext];
+  eventMetadata2 = [equalCopy engagedAccessoryContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v228 = [(SISchemaClientEvent *)self engagedAccessoryContext];
-  if (v228)
+  engagedAccessoryContext = [(SISchemaClientEvent *)self engagedAccessoryContext];
+  if (engagedAccessoryContext)
   {
-    v229 = v228;
-    v230 = [(SISchemaClientEvent *)self engagedAccessoryContext];
-    v231 = [v4 engagedAccessoryContext];
-    v232 = [v230 isEqual:v231];
+    v229 = engagedAccessoryContext;
+    engagedAccessoryContext2 = [(SISchemaClientEvent *)self engagedAccessoryContext];
+    engagedAccessoryContext3 = [equalCopy engagedAccessoryContext];
+    v232 = [engagedAccessoryContext2 isEqual:engagedAccessoryContext3];
 
     if (!v232)
     {
@@ -5496,20 +5496,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self announceCarPlayBannerTapped];
-  v7 = [v4 announceCarPlayBannerTapped];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self announceCarPlayBannerTapped];
+  eventMetadata2 = [equalCopy announceCarPlayBannerTapped];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v233 = [(SISchemaClientEvent *)self announceCarPlayBannerTapped];
-  if (v233)
+  announceCarPlayBannerTapped = [(SISchemaClientEvent *)self announceCarPlayBannerTapped];
+  if (announceCarPlayBannerTapped)
   {
-    v234 = v233;
-    v235 = [(SISchemaClientEvent *)self announceCarPlayBannerTapped];
-    v236 = [v4 announceCarPlayBannerTapped];
-    v237 = [v235 isEqual:v236];
+    v234 = announceCarPlayBannerTapped;
+    announceCarPlayBannerTapped2 = [(SISchemaClientEvent *)self announceCarPlayBannerTapped];
+    announceCarPlayBannerTapped3 = [equalCopy announceCarPlayBannerTapped];
+    v237 = [announceCarPlayBannerTapped2 isEqual:announceCarPlayBannerTapped3];
 
     if (!v237)
     {
@@ -5521,20 +5521,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self announceCarPlayGlyphSettingToggled];
-  v7 = [v4 announceCarPlayGlyphSettingToggled];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self announceCarPlayGlyphSettingToggled];
+  eventMetadata2 = [equalCopy announceCarPlayGlyphSettingToggled];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v238 = [(SISchemaClientEvent *)self announceCarPlayGlyphSettingToggled];
-  if (v238)
+  announceCarPlayGlyphSettingToggled = [(SISchemaClientEvent *)self announceCarPlayGlyphSettingToggled];
+  if (announceCarPlayGlyphSettingToggled)
   {
-    v239 = v238;
-    v240 = [(SISchemaClientEvent *)self announceCarPlayGlyphSettingToggled];
-    v241 = [v4 announceCarPlayGlyphSettingToggled];
-    v242 = [v240 isEqual:v241];
+    v239 = announceCarPlayGlyphSettingToggled;
+    announceCarPlayGlyphSettingToggled2 = [(SISchemaClientEvent *)self announceCarPlayGlyphSettingToggled];
+    announceCarPlayGlyphSettingToggled3 = [equalCopy announceCarPlayGlyphSettingToggled];
+    v242 = [announceCarPlayGlyphSettingToggled2 isEqual:announceCarPlayGlyphSettingToggled3];
 
     if (!v242)
     {
@@ -5546,20 +5546,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self dictationContentEdited];
-  v7 = [v4 dictationContentEdited];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self dictationContentEdited];
+  eventMetadata2 = [equalCopy dictationContentEdited];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v243 = [(SISchemaClientEvent *)self dictationContentEdited];
-  if (v243)
+  dictationContentEdited = [(SISchemaClientEvent *)self dictationContentEdited];
+  if (dictationContentEdited)
   {
-    v244 = v243;
-    v245 = [(SISchemaClientEvent *)self dictationContentEdited];
-    v246 = [v4 dictationContentEdited];
-    v247 = [v245 isEqual:v246];
+    v244 = dictationContentEdited;
+    dictationContentEdited2 = [(SISchemaClientEvent *)self dictationContentEdited];
+    dictationContentEdited3 = [equalCopy dictationContentEdited];
+    v247 = [dictationContentEdited2 isEqual:dictationContentEdited3];
 
     if (!v247)
     {
@@ -5571,20 +5571,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self uufrShownTier1];
-  v7 = [v4 uufrShownTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self uufrShownTier1];
+  eventMetadata2 = [equalCopy uufrShownTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v248 = [(SISchemaClientEvent *)self uufrShownTier1];
-  if (v248)
+  uufrShownTier1 = [(SISchemaClientEvent *)self uufrShownTier1];
+  if (uufrShownTier1)
   {
-    v249 = v248;
-    v250 = [(SISchemaClientEvent *)self uufrShownTier1];
-    v251 = [v4 uufrShownTier1];
-    v252 = [v250 isEqual:v251];
+    v249 = uufrShownTier1;
+    uufrShownTier12 = [(SISchemaClientEvent *)self uufrShownTier1];
+    uufrShownTier13 = [equalCopy uufrShownTier1];
+    v252 = [uufrShownTier12 isEqual:uufrShownTier13];
 
     if (!v252)
     {
@@ -5596,20 +5596,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiDictationPartialResultUpdated];
-  v7 = [v4 ueiDictationPartialResultUpdated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiDictationPartialResultUpdated];
+  eventMetadata2 = [equalCopy ueiDictationPartialResultUpdated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v253 = [(SISchemaClientEvent *)self ueiDictationPartialResultUpdated];
-  if (v253)
+  ueiDictationPartialResultUpdated = [(SISchemaClientEvent *)self ueiDictationPartialResultUpdated];
+  if (ueiDictationPartialResultUpdated)
   {
-    v254 = v253;
-    v255 = [(SISchemaClientEvent *)self ueiDictationPartialResultUpdated];
-    v256 = [v4 ueiDictationPartialResultUpdated];
-    v257 = [v255 isEqual:v256];
+    v254 = ueiDictationPartialResultUpdated;
+    ueiDictationPartialResultUpdated2 = [(SISchemaClientEvent *)self ueiDictationPartialResultUpdated];
+    ueiDictationPartialResultUpdated3 = [equalCopy ueiDictationPartialResultUpdated];
+    v257 = [ueiDictationPartialResultUpdated2 isEqual:ueiDictationPartialResultUpdated3];
 
     if (!v257)
     {
@@ -5621,20 +5621,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandExecuted];
-  v7 = [v4 ueiDictationVoiceCommandExecuted];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiDictationVoiceCommandExecuted];
+  eventMetadata2 = [equalCopy ueiDictationVoiceCommandExecuted];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v258 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandExecuted];
-  if (v258)
+  ueiDictationVoiceCommandExecuted = [(SISchemaClientEvent *)self ueiDictationVoiceCommandExecuted];
+  if (ueiDictationVoiceCommandExecuted)
   {
-    v259 = v258;
-    v260 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandExecuted];
-    v261 = [v4 ueiDictationVoiceCommandExecuted];
-    v262 = [v260 isEqual:v261];
+    v259 = ueiDictationVoiceCommandExecuted;
+    ueiDictationVoiceCommandExecuted2 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandExecuted];
+    ueiDictationVoiceCommandExecuted3 = [equalCopy ueiDictationVoiceCommandExecuted];
+    v262 = [ueiDictationVoiceCommandExecuted2 isEqual:ueiDictationVoiceCommandExecuted3];
 
     if (!v262)
     {
@@ -5646,20 +5646,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiDictationInputModeSwitchContext];
-  v7 = [v4 ueiDictationInputModeSwitchContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiDictationInputModeSwitchContext];
+  eventMetadata2 = [equalCopy ueiDictationInputModeSwitchContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v263 = [(SISchemaClientEvent *)self ueiDictationInputModeSwitchContext];
-  if (v263)
+  ueiDictationInputModeSwitchContext = [(SISchemaClientEvent *)self ueiDictationInputModeSwitchContext];
+  if (ueiDictationInputModeSwitchContext)
   {
-    v264 = v263;
-    v265 = [(SISchemaClientEvent *)self ueiDictationInputModeSwitchContext];
-    v266 = [v4 ueiDictationInputModeSwitchContext];
-    v267 = [v265 isEqual:v266];
+    v264 = ueiDictationInputModeSwitchContext;
+    ueiDictationInputModeSwitchContext2 = [(SISchemaClientEvent *)self ueiDictationInputModeSwitchContext];
+    ueiDictationInputModeSwitchContext3 = [equalCopy ueiDictationInputModeSwitchContext];
+    v267 = [ueiDictationInputModeSwitchContext2 isEqual:ueiDictationInputModeSwitchContext3];
 
     if (!v267)
     {
@@ -5671,20 +5671,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiDictationToolTipDisplayContext];
-  v7 = [v4 ueiDictationToolTipDisplayContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiDictationToolTipDisplayContext];
+  eventMetadata2 = [equalCopy ueiDictationToolTipDisplayContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v268 = [(SISchemaClientEvent *)self ueiDictationToolTipDisplayContext];
-  if (v268)
+  ueiDictationToolTipDisplayContext = [(SISchemaClientEvent *)self ueiDictationToolTipDisplayContext];
+  if (ueiDictationToolTipDisplayContext)
   {
-    v269 = v268;
-    v270 = [(SISchemaClientEvent *)self ueiDictationToolTipDisplayContext];
-    v271 = [v4 ueiDictationToolTipDisplayContext];
-    v272 = [v270 isEqual:v271];
+    v269 = ueiDictationToolTipDisplayContext;
+    ueiDictationToolTipDisplayContext2 = [(SISchemaClientEvent *)self ueiDictationToolTipDisplayContext];
+    ueiDictationToolTipDisplayContext3 = [equalCopy ueiDictationToolTipDisplayContext];
+    v272 = [ueiDictationToolTipDisplayContext2 isEqual:ueiDictationToolTipDisplayContext3];
 
     if (!v272)
     {
@@ -5696,20 +5696,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self hostPlatformViewAppearContext];
-  v7 = [v4 hostPlatformViewAppearContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self hostPlatformViewAppearContext];
+  eventMetadata2 = [equalCopy hostPlatformViewAppearContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v273 = [(SISchemaClientEvent *)self hostPlatformViewAppearContext];
-  if (v273)
+  hostPlatformViewAppearContext = [(SISchemaClientEvent *)self hostPlatformViewAppearContext];
+  if (hostPlatformViewAppearContext)
   {
-    v274 = v273;
-    v275 = [(SISchemaClientEvent *)self hostPlatformViewAppearContext];
-    v276 = [v4 hostPlatformViewAppearContext];
-    v277 = [v275 isEqual:v276];
+    v274 = hostPlatformViewAppearContext;
+    hostPlatformViewAppearContext2 = [(SISchemaClientEvent *)self hostPlatformViewAppearContext];
+    hostPlatformViewAppearContext3 = [equalCopy hostPlatformViewAppearContext];
+    v277 = [hostPlatformViewAppearContext2 isEqual:hostPlatformViewAppearContext3];
 
     if (!v277)
     {
@@ -5721,20 +5721,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self hostPlatformViewDisappearContext];
-  v7 = [v4 hostPlatformViewDisappearContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self hostPlatformViewDisappearContext];
+  eventMetadata2 = [equalCopy hostPlatformViewDisappearContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v278 = [(SISchemaClientEvent *)self hostPlatformViewDisappearContext];
-  if (v278)
+  hostPlatformViewDisappearContext = [(SISchemaClientEvent *)self hostPlatformViewDisappearContext];
+  if (hostPlatformViewDisappearContext)
   {
-    v279 = v278;
-    v280 = [(SISchemaClientEvent *)self hostPlatformViewDisappearContext];
-    v281 = [v4 hostPlatformViewDisappearContext];
-    v282 = [v280 isEqual:v281];
+    v279 = hostPlatformViewDisappearContext;
+    hostPlatformViewDisappearContext2 = [(SISchemaClientEvent *)self hostPlatformViewDisappearContext];
+    hostPlatformViewDisappearContext3 = [equalCopy hostPlatformViewDisappearContext];
+    v282 = [hostPlatformViewDisappearContext2 isEqual:hostPlatformViewDisappearContext3];
 
     if (!v282)
     {
@@ -5746,20 +5746,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiDictationTranscriptionTokenized];
-  v7 = [v4 ueiDictationTranscriptionTokenized];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiDictationTranscriptionTokenized];
+  eventMetadata2 = [equalCopy ueiDictationTranscriptionTokenized];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v283 = [(SISchemaClientEvent *)self ueiDictationTranscriptionTokenized];
-  if (v283)
+  ueiDictationTranscriptionTokenized = [(SISchemaClientEvent *)self ueiDictationTranscriptionTokenized];
+  if (ueiDictationTranscriptionTokenized)
   {
-    v284 = v283;
-    v285 = [(SISchemaClientEvent *)self ueiDictationTranscriptionTokenized];
-    v286 = [v4 ueiDictationTranscriptionTokenized];
-    v287 = [v285 isEqual:v286];
+    v284 = ueiDictationTranscriptionTokenized;
+    ueiDictationTranscriptionTokenized2 = [(SISchemaClientEvent *)self ueiDictationTranscriptionTokenized];
+    ueiDictationTranscriptionTokenized3 = [equalCopy ueiDictationTranscriptionTokenized];
+    v287 = [ueiDictationTranscriptionTokenized2 isEqual:ueiDictationTranscriptionTokenized3];
 
     if (!v287)
     {
@@ -5771,20 +5771,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self dictationAlternativesSelected];
-  v7 = [v4 dictationAlternativesSelected];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self dictationAlternativesSelected];
+  eventMetadata2 = [equalCopy dictationAlternativesSelected];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v288 = [(SISchemaClientEvent *)self dictationAlternativesSelected];
-  if (v288)
+  dictationAlternativesSelected = [(SISchemaClientEvent *)self dictationAlternativesSelected];
+  if (dictationAlternativesSelected)
   {
-    v289 = v288;
-    v290 = [(SISchemaClientEvent *)self dictationAlternativesSelected];
-    v291 = [v4 dictationAlternativesSelected];
-    v292 = [v290 isEqual:v291];
+    v289 = dictationAlternativesSelected;
+    dictationAlternativesSelected2 = [(SISchemaClientEvent *)self dictationAlternativesSelected];
+    dictationAlternativesSelected3 = [equalCopy dictationAlternativesSelected];
+    v292 = [dictationAlternativesSelected2 isEqual:dictationAlternativesSelected3];
 
     if (!v292)
     {
@@ -5796,20 +5796,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self uufrSelected];
-  v7 = [v4 uufrSelected];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self uufrSelected];
+  eventMetadata2 = [equalCopy uufrSelected];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v293 = [(SISchemaClientEvent *)self uufrSelected];
-  if (v293)
+  uufrSelected = [(SISchemaClientEvent *)self uufrSelected];
+  if (uufrSelected)
   {
-    v294 = v293;
-    v295 = [(SISchemaClientEvent *)self uufrSelected];
-    v296 = [v4 uufrSelected];
-    v297 = [v295 isEqual:v296];
+    v294 = uufrSelected;
+    uufrSelected2 = [(SISchemaClientEvent *)self uufrSelected];
+    uufrSelected3 = [equalCopy uufrSelected];
+    v297 = [uufrSelected2 isEqual:uufrSelected3];
 
     if (!v297)
     {
@@ -5821,20 +5821,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiDictationAlternativeTextPairsSelected];
-  v7 = [v4 ueiDictationAlternativeTextPairsSelected];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiDictationAlternativeTextPairsSelected];
+  eventMetadata2 = [equalCopy ueiDictationAlternativeTextPairsSelected];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v298 = [(SISchemaClientEvent *)self ueiDictationAlternativeTextPairsSelected];
-  if (v298)
+  ueiDictationAlternativeTextPairsSelected = [(SISchemaClientEvent *)self ueiDictationAlternativeTextPairsSelected];
+  if (ueiDictationAlternativeTextPairsSelected)
   {
-    v299 = v298;
-    v300 = [(SISchemaClientEvent *)self ueiDictationAlternativeTextPairsSelected];
-    v301 = [v4 ueiDictationAlternativeTextPairsSelected];
-    v302 = [v300 isEqual:v301];
+    v299 = ueiDictationAlternativeTextPairsSelected;
+    ueiDictationAlternativeTextPairsSelected2 = [(SISchemaClientEvent *)self ueiDictationAlternativeTextPairsSelected];
+    ueiDictationAlternativeTextPairsSelected3 = [equalCopy ueiDictationAlternativeTextPairsSelected];
+    v302 = [ueiDictationAlternativeTextPairsSelected2 isEqual:ueiDictationAlternativeTextPairsSelected3];
 
     if (!v302)
     {
@@ -5846,20 +5846,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiUserBargeInDetected];
-  v7 = [v4 ueiUserBargeInDetected];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiUserBargeInDetected];
+  eventMetadata2 = [equalCopy ueiUserBargeInDetected];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v303 = [(SISchemaClientEvent *)self ueiUserBargeInDetected];
-  if (v303)
+  ueiUserBargeInDetected = [(SISchemaClientEvent *)self ueiUserBargeInDetected];
+  if (ueiUserBargeInDetected)
   {
-    v304 = v303;
-    v305 = [(SISchemaClientEvent *)self ueiUserBargeInDetected];
-    v306 = [v4 ueiUserBargeInDetected];
-    v307 = [v305 isEqual:v306];
+    v304 = ueiUserBargeInDetected;
+    ueiUserBargeInDetected2 = [(SISchemaClientEvent *)self ueiUserBargeInDetected];
+    ueiUserBargeInDetected3 = [equalCopy ueiUserBargeInDetected];
+    v307 = [ueiUserBargeInDetected2 isEqual:ueiUserBargeInDetected3];
 
     if (!v307)
     {
@@ -5871,20 +5871,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiDictationEnablementPromptShown];
-  v7 = [v4 ueiDictationEnablementPromptShown];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiDictationEnablementPromptShown];
+  eventMetadata2 = [equalCopy ueiDictationEnablementPromptShown];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v308 = [(SISchemaClientEvent *)self ueiDictationEnablementPromptShown];
-  if (v308)
+  ueiDictationEnablementPromptShown = [(SISchemaClientEvent *)self ueiDictationEnablementPromptShown];
+  if (ueiDictationEnablementPromptShown)
   {
-    v309 = v308;
-    v310 = [(SISchemaClientEvent *)self ueiDictationEnablementPromptShown];
-    v311 = [v4 ueiDictationEnablementPromptShown];
-    v312 = [v310 isEqual:v311];
+    v309 = ueiDictationEnablementPromptShown;
+    ueiDictationEnablementPromptShown2 = [(SISchemaClientEvent *)self ueiDictationEnablementPromptShown];
+    ueiDictationEnablementPromptShown3 = [equalCopy ueiDictationEnablementPromptShown];
+    v312 = [ueiDictationEnablementPromptShown2 isEqual:ueiDictationEnablementPromptShown3];
 
     if (!v312)
     {
@@ -5896,20 +5896,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiSiriCarCommandContext];
-  v7 = [v4 ueiSiriCarCommandContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiSiriCarCommandContext];
+  eventMetadata2 = [equalCopy ueiSiriCarCommandContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v313 = [(SISchemaClientEvent *)self ueiSiriCarCommandContext];
-  if (v313)
+  ueiSiriCarCommandContext = [(SISchemaClientEvent *)self ueiSiriCarCommandContext];
+  if (ueiSiriCarCommandContext)
   {
-    v314 = v313;
-    v315 = [(SISchemaClientEvent *)self ueiSiriCarCommandContext];
-    v316 = [v4 ueiSiriCarCommandContext];
-    v317 = [v315 isEqual:v316];
+    v314 = ueiSiriCarCommandContext;
+    ueiSiriCarCommandContext2 = [(SISchemaClientEvent *)self ueiSiriCarCommandContext];
+    ueiSiriCarCommandContext3 = [equalCopy ueiSiriCarCommandContext];
+    v317 = [ueiSiriCarCommandContext2 isEqual:ueiSiriCarCommandContext3];
 
     if (!v317)
     {
@@ -5921,20 +5921,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiVisionSnippetDismissed];
-  v7 = [v4 ueiVisionSnippetDismissed];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiVisionSnippetDismissed];
+  eventMetadata2 = [equalCopy ueiVisionSnippetDismissed];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v318 = [(SISchemaClientEvent *)self ueiVisionSnippetDismissed];
-  if (v318)
+  ueiVisionSnippetDismissed = [(SISchemaClientEvent *)self ueiVisionSnippetDismissed];
+  if (ueiVisionSnippetDismissed)
   {
-    v319 = v318;
-    v320 = [(SISchemaClientEvent *)self ueiVisionSnippetDismissed];
-    v321 = [v4 ueiVisionSnippetDismissed];
-    v322 = [v320 isEqual:v321];
+    v319 = ueiVisionSnippetDismissed;
+    ueiVisionSnippetDismissed2 = [(SISchemaClientEvent *)self ueiVisionSnippetDismissed];
+    ueiVisionSnippetDismissed3 = [equalCopy ueiVisionSnippetDismissed];
+    v322 = [ueiVisionSnippetDismissed2 isEqual:ueiVisionSnippetDismissed3];
 
     if (!v322)
     {
@@ -5946,20 +5946,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiSiriWasUnavailable];
-  v7 = [v4 ueiSiriWasUnavailable];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiSiriWasUnavailable];
+  eventMetadata2 = [equalCopy ueiSiriWasUnavailable];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v323 = [(SISchemaClientEvent *)self ueiSiriWasUnavailable];
-  if (v323)
+  ueiSiriWasUnavailable = [(SISchemaClientEvent *)self ueiSiriWasUnavailable];
+  if (ueiSiriWasUnavailable)
   {
-    v324 = v323;
-    v325 = [(SISchemaClientEvent *)self ueiSiriWasUnavailable];
-    v326 = [v4 ueiSiriWasUnavailable];
-    v327 = [v325 isEqual:v326];
+    v324 = ueiSiriWasUnavailable;
+    ueiSiriWasUnavailable2 = [(SISchemaClientEvent *)self ueiSiriWasUnavailable];
+    ueiSiriWasUnavailable3 = [equalCopy ueiSiriWasUnavailable];
+    v327 = [ueiSiriWasUnavailable2 isEqual:ueiSiriWasUnavailable3];
 
     if (!v327)
     {
@@ -5971,20 +5971,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self preferredAudioRouteChanged];
-  v7 = [v4 preferredAudioRouteChanged];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self preferredAudioRouteChanged];
+  eventMetadata2 = [equalCopy preferredAudioRouteChanged];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v328 = [(SISchemaClientEvent *)self preferredAudioRouteChanged];
-  if (v328)
+  preferredAudioRouteChanged = [(SISchemaClientEvent *)self preferredAudioRouteChanged];
+  if (preferredAudioRouteChanged)
   {
-    v329 = v328;
-    v330 = [(SISchemaClientEvent *)self preferredAudioRouteChanged];
-    v331 = [v4 preferredAudioRouteChanged];
-    v332 = [v330 isEqual:v331];
+    v329 = preferredAudioRouteChanged;
+    preferredAudioRouteChanged2 = [(SISchemaClientEvent *)self preferredAudioRouteChanged];
+    preferredAudioRouteChanged3 = [equalCopy preferredAudioRouteChanged];
+    v332 = [preferredAudioRouteChanged2 isEqual:preferredAudioRouteChanged3];
 
     if (!v332)
     {
@@ -5996,20 +5996,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiDictationContentEditedTier1];
-  v7 = [v4 ueiDictationContentEditedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiDictationContentEditedTier1];
+  eventMetadata2 = [equalCopy ueiDictationContentEditedTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v333 = [(SISchemaClientEvent *)self ueiDictationContentEditedTier1];
-  if (v333)
+  ueiDictationContentEditedTier1 = [(SISchemaClientEvent *)self ueiDictationContentEditedTier1];
+  if (ueiDictationContentEditedTier1)
   {
-    v334 = v333;
-    v335 = [(SISchemaClientEvent *)self ueiDictationContentEditedTier1];
-    v336 = [v4 ueiDictationContentEditedTier1];
-    v337 = [v335 isEqual:v336];
+    v334 = ueiDictationContentEditedTier1;
+    ueiDictationContentEditedTier12 = [(SISchemaClientEvent *)self ueiDictationContentEditedTier1];
+    ueiDictationContentEditedTier13 = [equalCopy ueiDictationContentEditedTier1];
+    v337 = [ueiDictationContentEditedTier12 isEqual:ueiDictationContentEditedTier13];
 
     if (!v337)
     {
@@ -6021,20 +6021,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandUndoTapAction];
-  v7 = [v4 ueiDictationVoiceCommandUndoTapAction];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiDictationVoiceCommandUndoTapAction];
+  eventMetadata2 = [equalCopy ueiDictationVoiceCommandUndoTapAction];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v338 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandUndoTapAction];
-  if (v338)
+  ueiDictationVoiceCommandUndoTapAction = [(SISchemaClientEvent *)self ueiDictationVoiceCommandUndoTapAction];
+  if (ueiDictationVoiceCommandUndoTapAction)
   {
-    v339 = v338;
-    v340 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandUndoTapAction];
-    v341 = [v4 ueiDictationVoiceCommandUndoTapAction];
-    v342 = [v340 isEqual:v341];
+    v339 = ueiDictationVoiceCommandUndoTapAction;
+    ueiDictationVoiceCommandUndoTapAction2 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandUndoTapAction];
+    ueiDictationVoiceCommandUndoTapAction3 = [equalCopy ueiDictationVoiceCommandUndoTapAction];
+    v342 = [ueiDictationVoiceCommandUndoTapAction2 isEqual:ueiDictationVoiceCommandUndoTapAction3];
 
     if (!v342)
     {
@@ -6046,20 +6046,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandDisambiguationAction];
-  v7 = [v4 ueiDictationVoiceCommandDisambiguationAction];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiDictationVoiceCommandDisambiguationAction];
+  eventMetadata2 = [equalCopy ueiDictationVoiceCommandDisambiguationAction];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v343 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandDisambiguationAction];
-  if (v343)
+  ueiDictationVoiceCommandDisambiguationAction = [(SISchemaClientEvent *)self ueiDictationVoiceCommandDisambiguationAction];
+  if (ueiDictationVoiceCommandDisambiguationAction)
   {
-    v344 = v343;
-    v345 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandDisambiguationAction];
-    v346 = [v4 ueiDictationVoiceCommandDisambiguationAction];
-    v347 = [v345 isEqual:v346];
+    v344 = ueiDictationVoiceCommandDisambiguationAction;
+    ueiDictationVoiceCommandDisambiguationAction2 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandDisambiguationAction];
+    ueiDictationVoiceCommandDisambiguationAction3 = [equalCopy ueiDictationVoiceCommandDisambiguationAction];
+    v347 = [ueiDictationVoiceCommandDisambiguationAction2 isEqual:ueiDictationVoiceCommandDisambiguationAction3];
 
     if (!v347)
     {
@@ -6071,20 +6071,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandKeyboardAction];
-  v7 = [v4 ueiDictationVoiceCommandKeyboardAction];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiDictationVoiceCommandKeyboardAction];
+  eventMetadata2 = [equalCopy ueiDictationVoiceCommandKeyboardAction];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v348 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandKeyboardAction];
-  if (v348)
+  ueiDictationVoiceCommandKeyboardAction = [(SISchemaClientEvent *)self ueiDictationVoiceCommandKeyboardAction];
+  if (ueiDictationVoiceCommandKeyboardAction)
   {
-    v349 = v348;
-    v350 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandKeyboardAction];
-    v351 = [v4 ueiDictationVoiceCommandKeyboardAction];
-    v352 = [v350 isEqual:v351];
+    v349 = ueiDictationVoiceCommandKeyboardAction;
+    ueiDictationVoiceCommandKeyboardAction2 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandKeyboardAction];
+    ueiDictationVoiceCommandKeyboardAction3 = [equalCopy ueiDictationVoiceCommandKeyboardAction];
+    v352 = [ueiDictationVoiceCommandKeyboardAction2 isEqual:ueiDictationVoiceCommandKeyboardAction3];
 
     if (!v352)
     {
@@ -6096,20 +6096,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEvent];
-  v7 = [v4 ueiDictationEuclidAlternativesEvent];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEvent];
+  eventMetadata2 = [equalCopy ueiDictationEuclidAlternativesEvent];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v353 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEvent];
-  if (v353)
+  ueiDictationEuclidAlternativesEvent = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEvent];
+  if (ueiDictationEuclidAlternativesEvent)
   {
-    v354 = v353;
-    v355 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEvent];
-    v356 = [v4 ueiDictationEuclidAlternativesEvent];
-    v357 = [v355 isEqual:v356];
+    v354 = ueiDictationEuclidAlternativesEvent;
+    ueiDictationEuclidAlternativesEvent2 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEvent];
+    ueiDictationEuclidAlternativesEvent3 = [equalCopy ueiDictationEuclidAlternativesEvent];
+    v357 = [ueiDictationEuclidAlternativesEvent2 isEqual:ueiDictationEuclidAlternativesEvent3];
 
     if (!v357)
     {
@@ -6121,20 +6121,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEventTier1];
-  v7 = [v4 ueiDictationEuclidAlternativesEventTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEventTier1];
+  eventMetadata2 = [equalCopy ueiDictationEuclidAlternativesEventTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v358 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEventTier1];
-  if (v358)
+  ueiDictationEuclidAlternativesEventTier1 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEventTier1];
+  if (ueiDictationEuclidAlternativesEventTier1)
   {
-    v359 = v358;
-    v360 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEventTier1];
-    v361 = [v4 ueiDictationEuclidAlternativesEventTier1];
-    v362 = [v360 isEqual:v361];
+    v359 = ueiDictationEuclidAlternativesEventTier1;
+    ueiDictationEuclidAlternativesEventTier12 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEventTier1];
+    ueiDictationEuclidAlternativesEventTier13 = [equalCopy ueiDictationEuclidAlternativesEventTier1];
+    v362 = [ueiDictationEuclidAlternativesEventTier12 isEqual:ueiDictationEuclidAlternativesEventTier13];
 
     if (!v362)
     {
@@ -6146,20 +6146,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelected];
-  v7 = [v4 ueiDictationEuclidSpeechAlternativesSelected];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelected];
+  eventMetadata2 = [equalCopy ueiDictationEuclidSpeechAlternativesSelected];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v363 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelected];
-  if (v363)
+  ueiDictationEuclidSpeechAlternativesSelected = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelected];
+  if (ueiDictationEuclidSpeechAlternativesSelected)
   {
-    v364 = v363;
-    v365 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelected];
-    v366 = [v4 ueiDictationEuclidSpeechAlternativesSelected];
-    v367 = [v365 isEqual:v366];
+    v364 = ueiDictationEuclidSpeechAlternativesSelected;
+    ueiDictationEuclidSpeechAlternativesSelected2 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelected];
+    ueiDictationEuclidSpeechAlternativesSelected3 = [equalCopy ueiDictationEuclidSpeechAlternativesSelected];
+    v367 = [ueiDictationEuclidSpeechAlternativesSelected2 isEqual:ueiDictationEuclidSpeechAlternativesSelected3];
 
     if (!v367)
     {
@@ -6171,20 +6171,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelectedTier1];
-  v7 = [v4 ueiDictationEuclidSpeechAlternativesSelectedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelectedTier1];
+  eventMetadata2 = [equalCopy ueiDictationEuclidSpeechAlternativesSelectedTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v368 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelectedTier1];
-  if (v368)
+  ueiDictationEuclidSpeechAlternativesSelectedTier1 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelectedTier1];
+  if (ueiDictationEuclidSpeechAlternativesSelectedTier1)
   {
-    v369 = v368;
-    v370 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelectedTier1];
-    v371 = [v4 ueiDictationEuclidSpeechAlternativesSelectedTier1];
-    v372 = [v370 isEqual:v371];
+    v369 = ueiDictationEuclidSpeechAlternativesSelectedTier1;
+    ueiDictationEuclidSpeechAlternativesSelectedTier12 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelectedTier1];
+    ueiDictationEuclidSpeechAlternativesSelectedTier13 = [equalCopy ueiDictationEuclidSpeechAlternativesSelectedTier1];
+    v372 = [ueiDictationEuclidSpeechAlternativesSelectedTier12 isEqual:ueiDictationEuclidSpeechAlternativesSelectedTier13];
 
     if (!v372)
     {
@@ -6196,20 +6196,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self typingRequestTrace];
-  v7 = [v4 typingRequestTrace];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self typingRequestTrace];
+  eventMetadata2 = [equalCopy typingRequestTrace];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v373 = [(SISchemaClientEvent *)self typingRequestTrace];
-  if (v373)
+  typingRequestTrace = [(SISchemaClientEvent *)self typingRequestTrace];
+  if (typingRequestTrace)
   {
-    v374 = v373;
-    v375 = [(SISchemaClientEvent *)self typingRequestTrace];
-    v376 = [v4 typingRequestTrace];
-    v377 = [v375 isEqual:v376];
+    v374 = typingRequestTrace;
+    typingRequestTrace2 = [(SISchemaClientEvent *)self typingRequestTrace];
+    typingRequestTrace3 = [equalCopy typingRequestTrace];
+    v377 = [typingRequestTrace2 isEqual:typingRequestTrace3];
 
     if (!v377)
     {
@@ -6221,20 +6221,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self ueiInvocationTier1];
-  v7 = [v4 ueiInvocationTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self ueiInvocationTier1];
+  eventMetadata2 = [equalCopy ueiInvocationTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v378 = [(SISchemaClientEvent *)self ueiInvocationTier1];
-  if (v378)
+  ueiInvocationTier1 = [(SISchemaClientEvent *)self ueiInvocationTier1];
+  if (ueiInvocationTier1)
   {
-    v379 = v378;
-    v380 = [(SISchemaClientEvent *)self ueiInvocationTier1];
-    v381 = [v4 ueiInvocationTier1];
-    v382 = [v380 isEqual:v381];
+    v379 = ueiInvocationTier1;
+    ueiInvocationTier12 = [(SISchemaClientEvent *)self ueiInvocationTier1];
+    ueiInvocationTier13 = [equalCopy ueiInvocationTier1];
+    v382 = [ueiInvocationTier12 isEqual:ueiInvocationTier13];
 
     if (!v382)
     {
@@ -6246,20 +6246,20 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self transcriptShown];
-  v7 = [v4 transcriptShown];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self transcriptShown];
+  eventMetadata2 = [equalCopy transcriptShown];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_387;
   }
 
-  v383 = [(SISchemaClientEvent *)self transcriptShown];
-  if (v383)
+  transcriptShown = [(SISchemaClientEvent *)self transcriptShown];
+  if (transcriptShown)
   {
-    v384 = v383;
-    v385 = [(SISchemaClientEvent *)self transcriptShown];
-    v386 = [v4 transcriptShown];
-    v387 = [v385 isEqual:v386];
+    v384 = transcriptShown;
+    transcriptShown2 = [(SISchemaClientEvent *)self transcriptShown];
+    transcriptShown3 = [equalCopy transcriptShown];
+    v387 = [transcriptShown2 isEqual:transcriptShown3];
 
     if (!v387)
     {
@@ -6271,17 +6271,17 @@ LABEL_76:
   {
   }
 
-  v6 = [(SISchemaClientEvent *)self transcriptTapped];
-  v7 = [v4 transcriptTapped];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaClientEvent *)self transcriptTapped];
+  eventMetadata2 = [equalCopy transcriptTapped];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
 LABEL_387:
 
     goto LABEL_388;
   }
 
-  v388 = [(SISchemaClientEvent *)self transcriptTapped];
-  if (!v388)
+  transcriptTapped = [(SISchemaClientEvent *)self transcriptTapped];
+  if (!transcriptTapped)
   {
 
 LABEL_391:
@@ -6289,10 +6289,10 @@ LABEL_391:
     goto LABEL_389;
   }
 
-  v389 = v388;
-  v390 = [(SISchemaClientEvent *)self transcriptTapped];
-  v391 = [v4 transcriptTapped];
-  v392 = [v390 isEqual:v391];
+  v389 = transcriptTapped;
+  transcriptTapped2 = [(SISchemaClientEvent *)self transcriptTapped];
+  transcriptTapped3 = [equalCopy transcriptTapped];
+  v392 = [transcriptTapped2 isEqual:transcriptTapped3];
 
   if (v392)
   {
@@ -6306,626 +6306,626 @@ LABEL_389:
   return v393;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v159 = a3;
-  v4 = [(SISchemaClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(SISchemaClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(SISchemaClientEvent *)self eventMetadata];
+    eventMetadata2 = [(SISchemaClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SISchemaClientEvent *)self transportMetadata];
+  transportMetadata = [(SISchemaClientEvent *)self transportMetadata];
 
-  if (v6)
+  if (transportMetadata)
   {
-    v7 = [(SISchemaClientEvent *)self transportMetadata];
+    transportMetadata2 = [(SISchemaClientEvent *)self transportMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(SISchemaClientEvent *)self audioFirstBufferRecorded];
+  audioFirstBufferRecorded = [(SISchemaClientEvent *)self audioFirstBufferRecorded];
 
-  if (v8)
+  if (audioFirstBufferRecorded)
   {
-    v9 = [(SISchemaClientEvent *)self audioFirstBufferRecorded];
+    audioFirstBufferRecorded2 = [(SISchemaClientEvent *)self audioFirstBufferRecorded];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(SISchemaClientEvent *)self audioStopRecording];
+  audioStopRecording = [(SISchemaClientEvent *)self audioStopRecording];
 
-  if (v10)
+  if (audioStopRecording)
   {
-    v11 = [(SISchemaClientEvent *)self audioStopRecording];
+    audioStopRecording2 = [(SISchemaClientEvent *)self audioStopRecording];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(SISchemaClientEvent *)self clientConversationTrace];
+  clientConversationTrace = [(SISchemaClientEvent *)self clientConversationTrace];
 
-  if (v12)
+  if (clientConversationTrace)
   {
-    v13 = [(SISchemaClientEvent *)self clientConversationTrace];
+    clientConversationTrace2 = [(SISchemaClientEvent *)self clientConversationTrace];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(SISchemaClientEvent *)self deviceDynamicContext];
+  deviceDynamicContext = [(SISchemaClientEvent *)self deviceDynamicContext];
 
-  if (v14)
+  if (deviceDynamicContext)
   {
-    v15 = [(SISchemaClientEvent *)self deviceDynamicContext];
+    deviceDynamicContext2 = [(SISchemaClientEvent *)self deviceDynamicContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(SISchemaClientEvent *)self deviceFixedContext];
+  deviceFixedContext = [(SISchemaClientEvent *)self deviceFixedContext];
 
-  if (v16)
+  if (deviceFixedContext)
   {
-    v17 = [(SISchemaClientEvent *)self deviceFixedContext];
+    deviceFixedContext2 = [(SISchemaClientEvent *)self deviceFixedContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(SISchemaClientEvent *)self dictationContext];
+  dictationContext = [(SISchemaClientEvent *)self dictationContext];
 
-  if (v18)
+  if (dictationContext)
   {
-    v19 = [(SISchemaClientEvent *)self dictationContext];
+    dictationContext2 = [(SISchemaClientEvent *)self dictationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(SISchemaClientEvent *)self invocation];
+  invocation = [(SISchemaClientEvent *)self invocation];
 
-  if (v20)
+  if (invocation)
   {
-    v21 = [(SISchemaClientEvent *)self invocation];
+    invocation2 = [(SISchemaClientEvent *)self invocation];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(SISchemaClientEvent *)self location];
+  location = [(SISchemaClientEvent *)self location];
 
-  if (v22)
+  if (location)
   {
-    v23 = [(SISchemaClientEvent *)self location];
+    location2 = [(SISchemaClientEvent *)self location];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(SISchemaClientEvent *)self punchOut];
+  punchOut = [(SISchemaClientEvent *)self punchOut];
 
-  if (v24)
+  if (punchOut)
   {
-    v25 = [(SISchemaClientEvent *)self punchOut];
+    punchOut2 = [(SISchemaClientEvent *)self punchOut];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(SISchemaClientEvent *)self siriCue];
+  siriCue = [(SISchemaClientEvent *)self siriCue];
 
-  if (v26)
+  if (siriCue)
   {
-    v27 = [(SISchemaClientEvent *)self siriCue];
+    siriCue2 = [(SISchemaClientEvent *)self siriCue];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(SISchemaClientEvent *)self uufrPresented];
+  uufrPresented = [(SISchemaClientEvent *)self uufrPresented];
 
-  if (v28)
+  if (uufrPresented)
   {
-    v29 = [(SISchemaClientEvent *)self uufrPresented];
+    uufrPresented2 = [(SISchemaClientEvent *)self uufrPresented];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(SISchemaClientEvent *)self speechTranscription];
+  speechTranscription = [(SISchemaClientEvent *)self speechTranscription];
 
-  if (v30)
+  if (speechTranscription)
   {
-    v31 = [(SISchemaClientEvent *)self speechTranscription];
+    speechTranscription2 = [(SISchemaClientEvent *)self speechTranscription];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(SISchemaClientEvent *)self textToSpeechBegin];
+  textToSpeechBegin = [(SISchemaClientEvent *)self textToSpeechBegin];
 
-  if (v32)
+  if (textToSpeechBegin)
   {
-    v33 = [(SISchemaClientEvent *)self textToSpeechBegin];
+    textToSpeechBegin2 = [(SISchemaClientEvent *)self textToSpeechBegin];
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(SISchemaClientEvent *)self textToSpeechEnd];
+  textToSpeechEnd = [(SISchemaClientEvent *)self textToSpeechEnd];
 
-  if (v34)
+  if (textToSpeechEnd)
   {
-    v35 = [(SISchemaClientEvent *)self textToSpeechEnd];
+    textToSpeechEnd2 = [(SISchemaClientEvent *)self textToSpeechEnd];
     PBDataWriterWriteSubmessage();
   }
 
-  v36 = [(SISchemaClientEvent *)self uiStateTransition];
+  uiStateTransition = [(SISchemaClientEvent *)self uiStateTransition];
 
-  if (v36)
+  if (uiStateTransition)
   {
-    v37 = [(SISchemaClientEvent *)self uiStateTransition];
+    uiStateTransition2 = [(SISchemaClientEvent *)self uiStateTransition];
     PBDataWriterWriteSubmessage();
   }
 
-  v38 = [(SISchemaClientEvent *)self clientFlow];
+  clientFlow = [(SISchemaClientEvent *)self clientFlow];
 
-  if (v38)
+  if (clientFlow)
   {
-    v39 = [(SISchemaClientEvent *)self clientFlow];
+    clientFlow2 = [(SISchemaClientEvent *)self clientFlow];
     PBDataWriterWriteSubmessage();
   }
 
-  v40 = [(SISchemaClientEvent *)self dialogOutput];
+  dialogOutput = [(SISchemaClientEvent *)self dialogOutput];
 
-  if (v40)
+  if (dialogOutput)
   {
-    v41 = [(SISchemaClientEvent *)self dialogOutput];
+    dialogOutput2 = [(SISchemaClientEvent *)self dialogOutput];
     PBDataWriterWriteSubmessage();
   }
 
-  v42 = [(SISchemaClientEvent *)self dictationEndPointStop];
+  dictationEndPointStop = [(SISchemaClientEvent *)self dictationEndPointStop];
 
-  if (v42)
+  if (dictationEndPointStop)
   {
-    v43 = [(SISchemaClientEvent *)self dictationEndPointStop];
+    dictationEndPointStop2 = [(SISchemaClientEvent *)self dictationEndPointStop];
     PBDataWriterWriteSubmessage();
   }
 
-  v44 = [(SISchemaClientEvent *)self dictationEndPointCancel];
+  dictationEndPointCancel = [(SISchemaClientEvent *)self dictationEndPointCancel];
 
-  if (v44)
+  if (dictationEndPointCancel)
   {
-    v45 = [(SISchemaClientEvent *)self dictationEndPointCancel];
+    dictationEndPointCancel2 = [(SISchemaClientEvent *)self dictationEndPointCancel];
     PBDataWriterWriteSubmessage();
   }
 
-  v46 = [(SISchemaClientEvent *)self dictationAlternativeSelected];
+  dictationAlternativeSelected = [(SISchemaClientEvent *)self dictationAlternativeSelected];
 
-  if (v46)
+  if (dictationAlternativeSelected)
   {
-    v47 = [(SISchemaClientEvent *)self dictationAlternativeSelected];
+    dictationAlternativeSelected2 = [(SISchemaClientEvent *)self dictationAlternativeSelected];
     PBDataWriterWriteSubmessage();
   }
 
-  v48 = [(SISchemaClientEvent *)self dictationTranscriptionMetadata];
+  dictationTranscriptionMetadata = [(SISchemaClientEvent *)self dictationTranscriptionMetadata];
 
-  if (v48)
+  if (dictationTranscriptionMetadata)
   {
-    v49 = [(SISchemaClientEvent *)self dictationTranscriptionMetadata];
+    dictationTranscriptionMetadata2 = [(SISchemaClientEvent *)self dictationTranscriptionMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v50 = [(SISchemaClientEvent *)self carPlayHeadUnitContext];
+  carPlayHeadUnitContext = [(SISchemaClientEvent *)self carPlayHeadUnitContext];
 
-  if (v50)
+  if (carPlayHeadUnitContext)
   {
-    v51 = [(SISchemaClientEvent *)self carPlayHeadUnitContext];
+    carPlayHeadUnitContext2 = [(SISchemaClientEvent *)self carPlayHeadUnitContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v52 = [(SISchemaClientEvent *)self uufrCompletion];
+  uufrCompletion = [(SISchemaClientEvent *)self uufrCompletion];
 
-  if (v52)
+  if (uufrCompletion)
   {
-    v53 = [(SISchemaClientEvent *)self uufrCompletion];
+    uufrCompletion2 = [(SISchemaClientEvent *)self uufrCompletion];
     PBDataWriterWriteSubmessage();
   }
 
-  v54 = [(SISchemaClientEvent *)self uufrShown];
+  uufrShown = [(SISchemaClientEvent *)self uufrShown];
 
-  if (v54)
+  if (uufrShown)
   {
-    v55 = [(SISchemaClientEvent *)self uufrShown];
+    uufrShown2 = [(SISchemaClientEvent *)self uufrShown];
     PBDataWriterWriteSubmessage();
   }
 
-  v56 = [(SISchemaClientEvent *)self uufrSaid];
+  uufrSaid = [(SISchemaClientEvent *)self uufrSaid];
 
-  if (v56)
+  if (uufrSaid)
   {
-    v57 = [(SISchemaClientEvent *)self uufrSaid];
+    uufrSaid2 = [(SISchemaClientEvent *)self uufrSaid];
     PBDataWriterWriteSubmessage();
   }
 
-  v58 = [(SISchemaClientEvent *)self uufrFatalError];
+  uufrFatalError = [(SISchemaClientEvent *)self uufrFatalError];
 
-  if (v58)
+  if (uufrFatalError)
   {
-    v59 = [(SISchemaClientEvent *)self uufrFatalError];
+    uufrFatalError2 = [(SISchemaClientEvent *)self uufrFatalError];
     PBDataWriterWriteSubmessage();
   }
 
-  v60 = [(SISchemaClientEvent *)self dictationAlternativesViewed];
+  dictationAlternativesViewed = [(SISchemaClientEvent *)self dictationAlternativesViewed];
 
-  if (v60)
+  if (dictationAlternativesViewed)
   {
-    v61 = [(SISchemaClientEvent *)self dictationAlternativesViewed];
+    dictationAlternativesViewed2 = [(SISchemaClientEvent *)self dictationAlternativesViewed];
     PBDataWriterWriteSubmessage();
   }
 
-  v62 = [(SISchemaClientEvent *)self intercomMessageRecorded];
+  intercomMessageRecorded = [(SISchemaClientEvent *)self intercomMessageRecorded];
 
-  if (v62)
+  if (intercomMessageRecorded)
   {
-    v63 = [(SISchemaClientEvent *)self intercomMessageRecorded];
+    intercomMessageRecorded2 = [(SISchemaClientEvent *)self intercomMessageRecorded];
     PBDataWriterWriteSubmessage();
   }
 
-  v64 = [(SISchemaClientEvent *)self casinoRelationship];
+  casinoRelationship = [(SISchemaClientEvent *)self casinoRelationship];
 
-  if (v64)
+  if (casinoRelationship)
   {
-    v65 = [(SISchemaClientEvent *)self casinoRelationship];
+    casinoRelationship2 = [(SISchemaClientEvent *)self casinoRelationship];
     PBDataWriterWriteSubmessage();
   }
 
-  v66 = [(SISchemaClientEvent *)self userViewRegionInteraction];
+  userViewRegionInteraction = [(SISchemaClientEvent *)self userViewRegionInteraction];
 
-  if (v66)
+  if (userViewRegionInteraction)
   {
-    v67 = [(SISchemaClientEvent *)self userViewRegionInteraction];
+    userViewRegionInteraction2 = [(SISchemaClientEvent *)self userViewRegionInteraction];
     PBDataWriterWriteSubmessage();
   }
 
-  v68 = [(SISchemaClientEvent *)self deviceLockStateChanged];
+  deviceLockStateChanged = [(SISchemaClientEvent *)self deviceLockStateChanged];
 
-  if (v68)
+  if (deviceLockStateChanged)
   {
-    v69 = [(SISchemaClientEvent *)self deviceLockStateChanged];
+    deviceLockStateChanged2 = [(SISchemaClientEvent *)self deviceLockStateChanged];
     PBDataWriterWriteSubmessage();
   }
 
-  v70 = [(SISchemaClientEvent *)self ueiRequestCategorization];
+  ueiRequestCategorization = [(SISchemaClientEvent *)self ueiRequestCategorization];
 
-  if (v70)
+  if (ueiRequestCategorization)
   {
-    v71 = [(SISchemaClientEvent *)self ueiRequestCategorization];
+    ueiRequestCategorization2 = [(SISchemaClientEvent *)self ueiRequestCategorization];
     PBDataWriterWriteSubmessage();
   }
 
-  v72 = [(SISchemaClientEvent *)self audioStopRecordingStarted];
+  audioStopRecordingStarted = [(SISchemaClientEvent *)self audioStopRecordingStarted];
 
-  if (v72)
+  if (audioStopRecordingStarted)
   {
-    v73 = [(SISchemaClientEvent *)self audioStopRecordingStarted];
+    audioStopRecordingStarted2 = [(SISchemaClientEvent *)self audioStopRecordingStarted];
     PBDataWriterWriteSubmessage();
   }
 
-  v74 = [(SISchemaClientEvent *)self ueiLaunchContext];
+  ueiLaunchContext = [(SISchemaClientEvent *)self ueiLaunchContext];
 
-  if (v74)
+  if (ueiLaunchContext)
   {
-    v75 = [(SISchemaClientEvent *)self ueiLaunchContext];
+    ueiLaunchContext2 = [(SISchemaClientEvent *)self ueiLaunchContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v76 = [(SISchemaClientEvent *)self ueiUserSpeakingContext];
+  ueiUserSpeakingContext = [(SISchemaClientEvent *)self ueiUserSpeakingContext];
 
-  if (v76)
+  if (ueiUserSpeakingContext)
   {
-    v77 = [(SISchemaClientEvent *)self ueiUserSpeakingContext];
+    ueiUserSpeakingContext2 = [(SISchemaClientEvent *)self ueiUserSpeakingContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v78 = [(SISchemaClientEvent *)self ueiUUFRReady];
+  ueiUUFRReady = [(SISchemaClientEvent *)self ueiUUFRReady];
 
-  if (v78)
+  if (ueiUUFRReady)
   {
-    v79 = [(SISchemaClientEvent *)self ueiUUFRReady];
+    ueiUUFRReady2 = [(SISchemaClientEvent *)self ueiUUFRReady];
     PBDataWriterWriteSubmessage();
   }
 
-  v80 = [(SISchemaClientEvent *)self ueiUIRenderingContext];
+  ueiUIRenderingContext = [(SISchemaClientEvent *)self ueiUIRenderingContext];
 
-  if (v80)
+  if (ueiUIRenderingContext)
   {
-    v81 = [(SISchemaClientEvent *)self ueiUIRenderingContext];
+    ueiUIRenderingContext2 = [(SISchemaClientEvent *)self ueiUIRenderingContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v82 = [(SISchemaClientEvent *)self pnrTextToSpeechRequestReceived];
+  pnrTextToSpeechRequestReceived = [(SISchemaClientEvent *)self pnrTextToSpeechRequestReceived];
 
-  if (v82)
+  if (pnrTextToSpeechRequestReceived)
   {
-    v83 = [(SISchemaClientEvent *)self pnrTextToSpeechRequestReceived];
+    pnrTextToSpeechRequestReceived2 = [(SISchemaClientEvent *)self pnrTextToSpeechRequestReceived];
     PBDataWriterWriteSubmessage();
   }
 
-  v84 = [(SISchemaClientEvent *)self pnrSpeechRecognitionSourceContext];
+  pnrSpeechRecognitionSourceContext = [(SISchemaClientEvent *)self pnrSpeechRecognitionSourceContext];
 
-  if (v84)
+  if (pnrSpeechRecognitionSourceContext)
   {
-    v85 = [(SISchemaClientEvent *)self pnrSpeechRecognitionSourceContext];
+    pnrSpeechRecognitionSourceContext2 = [(SISchemaClientEvent *)self pnrSpeechRecognitionSourceContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v86 = [(SISchemaClientEvent *)self pnrFatalError];
+  pnrFatalError = [(SISchemaClientEvent *)self pnrFatalError];
 
-  if (v86)
+  if (pnrFatalError)
   {
-    v87 = [(SISchemaClientEvent *)self pnrFatalError];
+    pnrFatalError2 = [(SISchemaClientEvent *)self pnrFatalError];
     PBDataWriterWriteSubmessage();
   }
 
-  v88 = [(SISchemaClientEvent *)self turnMTERequest];
+  turnMTERequest = [(SISchemaClientEvent *)self turnMTERequest];
 
-  if (v88)
+  if (turnMTERequest)
   {
-    v89 = [(SISchemaClientEvent *)self turnMTERequest];
+    turnMTERequest2 = [(SISchemaClientEvent *)self turnMTERequest];
     PBDataWriterWriteSubmessage();
   }
 
-  v90 = [(SISchemaClientEvent *)self keyboardDismissed];
+  keyboardDismissed = [(SISchemaClientEvent *)self keyboardDismissed];
 
-  if (v90)
+  if (keyboardDismissed)
   {
-    v91 = [(SISchemaClientEvent *)self keyboardDismissed];
+    keyboardDismissed2 = [(SISchemaClientEvent *)self keyboardDismissed];
     PBDataWriterWriteSubmessage();
   }
 
-  v92 = [(SISchemaClientEvent *)self engagedAccessoryContext];
+  engagedAccessoryContext = [(SISchemaClientEvent *)self engagedAccessoryContext];
 
-  if (v92)
+  if (engagedAccessoryContext)
   {
-    v93 = [(SISchemaClientEvent *)self engagedAccessoryContext];
+    engagedAccessoryContext2 = [(SISchemaClientEvent *)self engagedAccessoryContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v94 = [(SISchemaClientEvent *)self announceCarPlayBannerTapped];
+  announceCarPlayBannerTapped = [(SISchemaClientEvent *)self announceCarPlayBannerTapped];
 
-  if (v94)
+  if (announceCarPlayBannerTapped)
   {
-    v95 = [(SISchemaClientEvent *)self announceCarPlayBannerTapped];
+    announceCarPlayBannerTapped2 = [(SISchemaClientEvent *)self announceCarPlayBannerTapped];
     PBDataWriterWriteSubmessage();
   }
 
-  v96 = [(SISchemaClientEvent *)self announceCarPlayGlyphSettingToggled];
+  announceCarPlayGlyphSettingToggled = [(SISchemaClientEvent *)self announceCarPlayGlyphSettingToggled];
 
-  if (v96)
+  if (announceCarPlayGlyphSettingToggled)
   {
-    v97 = [(SISchemaClientEvent *)self announceCarPlayGlyphSettingToggled];
+    announceCarPlayGlyphSettingToggled2 = [(SISchemaClientEvent *)self announceCarPlayGlyphSettingToggled];
     PBDataWriterWriteSubmessage();
   }
 
-  v98 = [(SISchemaClientEvent *)self dictationContentEdited];
+  dictationContentEdited = [(SISchemaClientEvent *)self dictationContentEdited];
 
-  if (v98)
+  if (dictationContentEdited)
   {
-    v99 = [(SISchemaClientEvent *)self dictationContentEdited];
+    dictationContentEdited2 = [(SISchemaClientEvent *)self dictationContentEdited];
     PBDataWriterWriteSubmessage();
   }
 
-  v100 = [(SISchemaClientEvent *)self uufrShownTier1];
+  uufrShownTier1 = [(SISchemaClientEvent *)self uufrShownTier1];
 
-  if (v100)
+  if (uufrShownTier1)
   {
-    v101 = [(SISchemaClientEvent *)self uufrShownTier1];
+    uufrShownTier12 = [(SISchemaClientEvent *)self uufrShownTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v102 = [(SISchemaClientEvent *)self ueiDictationPartialResultUpdated];
+  ueiDictationPartialResultUpdated = [(SISchemaClientEvent *)self ueiDictationPartialResultUpdated];
 
-  if (v102)
+  if (ueiDictationPartialResultUpdated)
   {
-    v103 = [(SISchemaClientEvent *)self ueiDictationPartialResultUpdated];
+    ueiDictationPartialResultUpdated2 = [(SISchemaClientEvent *)self ueiDictationPartialResultUpdated];
     PBDataWriterWriteSubmessage();
   }
 
-  v104 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandExecuted];
+  ueiDictationVoiceCommandExecuted = [(SISchemaClientEvent *)self ueiDictationVoiceCommandExecuted];
 
-  if (v104)
+  if (ueiDictationVoiceCommandExecuted)
   {
-    v105 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandExecuted];
+    ueiDictationVoiceCommandExecuted2 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandExecuted];
     PBDataWriterWriteSubmessage();
   }
 
-  v106 = [(SISchemaClientEvent *)self ueiDictationInputModeSwitchContext];
+  ueiDictationInputModeSwitchContext = [(SISchemaClientEvent *)self ueiDictationInputModeSwitchContext];
 
-  if (v106)
+  if (ueiDictationInputModeSwitchContext)
   {
-    v107 = [(SISchemaClientEvent *)self ueiDictationInputModeSwitchContext];
+    ueiDictationInputModeSwitchContext2 = [(SISchemaClientEvent *)self ueiDictationInputModeSwitchContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v108 = [(SISchemaClientEvent *)self ueiDictationToolTipDisplayContext];
+  ueiDictationToolTipDisplayContext = [(SISchemaClientEvent *)self ueiDictationToolTipDisplayContext];
 
-  if (v108)
+  if (ueiDictationToolTipDisplayContext)
   {
-    v109 = [(SISchemaClientEvent *)self ueiDictationToolTipDisplayContext];
+    ueiDictationToolTipDisplayContext2 = [(SISchemaClientEvent *)self ueiDictationToolTipDisplayContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v110 = [(SISchemaClientEvent *)self hostPlatformViewAppearContext];
+  hostPlatformViewAppearContext = [(SISchemaClientEvent *)self hostPlatformViewAppearContext];
 
-  if (v110)
+  if (hostPlatformViewAppearContext)
   {
-    v111 = [(SISchemaClientEvent *)self hostPlatformViewAppearContext];
+    hostPlatformViewAppearContext2 = [(SISchemaClientEvent *)self hostPlatformViewAppearContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v112 = [(SISchemaClientEvent *)self hostPlatformViewDisappearContext];
+  hostPlatformViewDisappearContext = [(SISchemaClientEvent *)self hostPlatformViewDisappearContext];
 
-  if (v112)
+  if (hostPlatformViewDisappearContext)
   {
-    v113 = [(SISchemaClientEvent *)self hostPlatformViewDisappearContext];
+    hostPlatformViewDisappearContext2 = [(SISchemaClientEvent *)self hostPlatformViewDisappearContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v114 = [(SISchemaClientEvent *)self ueiDictationTranscriptionTokenized];
+  ueiDictationTranscriptionTokenized = [(SISchemaClientEvent *)self ueiDictationTranscriptionTokenized];
 
-  if (v114)
+  if (ueiDictationTranscriptionTokenized)
   {
-    v115 = [(SISchemaClientEvent *)self ueiDictationTranscriptionTokenized];
+    ueiDictationTranscriptionTokenized2 = [(SISchemaClientEvent *)self ueiDictationTranscriptionTokenized];
     PBDataWriterWriteSubmessage();
   }
 
-  v116 = [(SISchemaClientEvent *)self dictationAlternativesSelected];
+  dictationAlternativesSelected = [(SISchemaClientEvent *)self dictationAlternativesSelected];
 
-  if (v116)
+  if (dictationAlternativesSelected)
   {
-    v117 = [(SISchemaClientEvent *)self dictationAlternativesSelected];
+    dictationAlternativesSelected2 = [(SISchemaClientEvent *)self dictationAlternativesSelected];
     PBDataWriterWriteSubmessage();
   }
 
-  v118 = [(SISchemaClientEvent *)self uufrSelected];
+  uufrSelected = [(SISchemaClientEvent *)self uufrSelected];
 
-  if (v118)
+  if (uufrSelected)
   {
-    v119 = [(SISchemaClientEvent *)self uufrSelected];
+    uufrSelected2 = [(SISchemaClientEvent *)self uufrSelected];
     PBDataWriterWriteSubmessage();
   }
 
-  v120 = [(SISchemaClientEvent *)self ueiDictationAlternativeTextPairsSelected];
+  ueiDictationAlternativeTextPairsSelected = [(SISchemaClientEvent *)self ueiDictationAlternativeTextPairsSelected];
 
-  if (v120)
+  if (ueiDictationAlternativeTextPairsSelected)
   {
-    v121 = [(SISchemaClientEvent *)self ueiDictationAlternativeTextPairsSelected];
+    ueiDictationAlternativeTextPairsSelected2 = [(SISchemaClientEvent *)self ueiDictationAlternativeTextPairsSelected];
     PBDataWriterWriteSubmessage();
   }
 
-  v122 = [(SISchemaClientEvent *)self ueiUserBargeInDetected];
+  ueiUserBargeInDetected = [(SISchemaClientEvent *)self ueiUserBargeInDetected];
 
-  if (v122)
+  if (ueiUserBargeInDetected)
   {
-    v123 = [(SISchemaClientEvent *)self ueiUserBargeInDetected];
+    ueiUserBargeInDetected2 = [(SISchemaClientEvent *)self ueiUserBargeInDetected];
     PBDataWriterWriteSubmessage();
   }
 
-  v124 = [(SISchemaClientEvent *)self ueiDictationEnablementPromptShown];
+  ueiDictationEnablementPromptShown = [(SISchemaClientEvent *)self ueiDictationEnablementPromptShown];
 
-  if (v124)
+  if (ueiDictationEnablementPromptShown)
   {
-    v125 = [(SISchemaClientEvent *)self ueiDictationEnablementPromptShown];
+    ueiDictationEnablementPromptShown2 = [(SISchemaClientEvent *)self ueiDictationEnablementPromptShown];
     PBDataWriterWriteSubmessage();
   }
 
-  v126 = [(SISchemaClientEvent *)self ueiSiriCarCommandContext];
+  ueiSiriCarCommandContext = [(SISchemaClientEvent *)self ueiSiriCarCommandContext];
 
-  if (v126)
+  if (ueiSiriCarCommandContext)
   {
-    v127 = [(SISchemaClientEvent *)self ueiSiriCarCommandContext];
+    ueiSiriCarCommandContext2 = [(SISchemaClientEvent *)self ueiSiriCarCommandContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v128 = [(SISchemaClientEvent *)self ueiVisionSnippetDismissed];
+  ueiVisionSnippetDismissed = [(SISchemaClientEvent *)self ueiVisionSnippetDismissed];
 
-  if (v128)
+  if (ueiVisionSnippetDismissed)
   {
-    v129 = [(SISchemaClientEvent *)self ueiVisionSnippetDismissed];
+    ueiVisionSnippetDismissed2 = [(SISchemaClientEvent *)self ueiVisionSnippetDismissed];
     PBDataWriterWriteSubmessage();
   }
 
-  v130 = [(SISchemaClientEvent *)self ueiSiriWasUnavailable];
+  ueiSiriWasUnavailable = [(SISchemaClientEvent *)self ueiSiriWasUnavailable];
 
-  if (v130)
+  if (ueiSiriWasUnavailable)
   {
-    v131 = [(SISchemaClientEvent *)self ueiSiriWasUnavailable];
+    ueiSiriWasUnavailable2 = [(SISchemaClientEvent *)self ueiSiriWasUnavailable];
     PBDataWriterWriteSubmessage();
   }
 
-  v132 = [(SISchemaClientEvent *)self preferredAudioRouteChanged];
+  preferredAudioRouteChanged = [(SISchemaClientEvent *)self preferredAudioRouteChanged];
 
-  if (v132)
+  if (preferredAudioRouteChanged)
   {
-    v133 = [(SISchemaClientEvent *)self preferredAudioRouteChanged];
+    preferredAudioRouteChanged2 = [(SISchemaClientEvent *)self preferredAudioRouteChanged];
     PBDataWriterWriteSubmessage();
   }
 
-  v134 = [(SISchemaClientEvent *)self ueiDictationContentEditedTier1];
+  ueiDictationContentEditedTier1 = [(SISchemaClientEvent *)self ueiDictationContentEditedTier1];
 
-  if (v134)
+  if (ueiDictationContentEditedTier1)
   {
-    v135 = [(SISchemaClientEvent *)self ueiDictationContentEditedTier1];
+    ueiDictationContentEditedTier12 = [(SISchemaClientEvent *)self ueiDictationContentEditedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v136 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandUndoTapAction];
+  ueiDictationVoiceCommandUndoTapAction = [(SISchemaClientEvent *)self ueiDictationVoiceCommandUndoTapAction];
 
-  if (v136)
+  if (ueiDictationVoiceCommandUndoTapAction)
   {
-    v137 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandUndoTapAction];
+    ueiDictationVoiceCommandUndoTapAction2 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandUndoTapAction];
     PBDataWriterWriteSubmessage();
   }
 
-  v138 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandDisambiguationAction];
+  ueiDictationVoiceCommandDisambiguationAction = [(SISchemaClientEvent *)self ueiDictationVoiceCommandDisambiguationAction];
 
-  if (v138)
+  if (ueiDictationVoiceCommandDisambiguationAction)
   {
-    v139 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandDisambiguationAction];
+    ueiDictationVoiceCommandDisambiguationAction2 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandDisambiguationAction];
     PBDataWriterWriteSubmessage();
   }
 
-  v140 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandKeyboardAction];
+  ueiDictationVoiceCommandKeyboardAction = [(SISchemaClientEvent *)self ueiDictationVoiceCommandKeyboardAction];
 
-  if (v140)
+  if (ueiDictationVoiceCommandKeyboardAction)
   {
-    v141 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandKeyboardAction];
+    ueiDictationVoiceCommandKeyboardAction2 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandKeyboardAction];
     PBDataWriterWriteSubmessage();
   }
 
-  v142 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEvent];
+  ueiDictationEuclidAlternativesEvent = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEvent];
 
-  if (v142)
+  if (ueiDictationEuclidAlternativesEvent)
   {
-    v143 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEvent];
+    ueiDictationEuclidAlternativesEvent2 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v144 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEventTier1];
+  ueiDictationEuclidAlternativesEventTier1 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEventTier1];
 
-  if (v144)
+  if (ueiDictationEuclidAlternativesEventTier1)
   {
-    v145 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEventTier1];
+    ueiDictationEuclidAlternativesEventTier12 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEventTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v146 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelected];
+  ueiDictationEuclidSpeechAlternativesSelected = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelected];
 
-  if (v146)
+  if (ueiDictationEuclidSpeechAlternativesSelected)
   {
-    v147 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelected];
+    ueiDictationEuclidSpeechAlternativesSelected2 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelected];
     PBDataWriterWriteSubmessage();
   }
 
-  v148 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelectedTier1];
+  ueiDictationEuclidSpeechAlternativesSelectedTier1 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelectedTier1];
 
-  if (v148)
+  if (ueiDictationEuclidSpeechAlternativesSelectedTier1)
   {
-    v149 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelectedTier1];
+    ueiDictationEuclidSpeechAlternativesSelectedTier12 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelectedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v150 = [(SISchemaClientEvent *)self typingRequestTrace];
+  typingRequestTrace = [(SISchemaClientEvent *)self typingRequestTrace];
 
-  if (v150)
+  if (typingRequestTrace)
   {
-    v151 = [(SISchemaClientEvent *)self typingRequestTrace];
+    typingRequestTrace2 = [(SISchemaClientEvent *)self typingRequestTrace];
     PBDataWriterWriteSubmessage();
   }
 
-  v152 = [(SISchemaClientEvent *)self ueiInvocationTier1];
+  ueiInvocationTier1 = [(SISchemaClientEvent *)self ueiInvocationTier1];
 
-  if (v152)
+  if (ueiInvocationTier1)
   {
-    v153 = [(SISchemaClientEvent *)self ueiInvocationTier1];
+    ueiInvocationTier12 = [(SISchemaClientEvent *)self ueiInvocationTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v154 = [(SISchemaClientEvent *)self transcriptShown];
+  transcriptShown = [(SISchemaClientEvent *)self transcriptShown];
 
-  if (v154)
+  if (transcriptShown)
   {
-    v155 = [(SISchemaClientEvent *)self transcriptShown];
+    transcriptShown2 = [(SISchemaClientEvent *)self transcriptShown];
     PBDataWriterWriteSubmessage();
   }
 
-  v156 = [(SISchemaClientEvent *)self transcriptTapped];
+  transcriptTapped = [(SISchemaClientEvent *)self transcriptTapped];
 
-  v157 = v159;
-  if (v156)
+  v157 = toCopy;
+  if (transcriptTapped)
   {
-    v158 = [(SISchemaClientEvent *)self transcriptTapped];
+    transcriptTapped2 = [(SISchemaClientEvent *)self transcriptTapped];
     PBDataWriterWriteSubmessage();
 
-    v157 = v159;
+    v157 = toCopy;
   }
 }
 
@@ -6939,9 +6939,9 @@ LABEL_389:
   }
 }
 
-- (void)setTranscriptTapped:(id)a3
+- (void)setTranscriptTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -7165,14 +7165,14 @@ LABEL_389:
   self->_transcriptShown = 0;
 
   v79 = 177;
-  if (!v4)
+  if (!tappedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   transcriptTapped = self->_transcriptTapped;
-  self->_transcriptTapped = v4;
+  self->_transcriptTapped = tappedCopy;
 }
 
 - (void)deleteTranscriptShown
@@ -7185,9 +7185,9 @@ LABEL_389:
   }
 }
 
-- (void)setTranscriptShown:(id)a3
+- (void)setTranscriptShown:(id)shown
 {
-  v4 = a3;
+  shownCopy = shown;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -7411,14 +7411,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 176;
-  if (!v4)
+  if (!shownCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   transcriptShown = self->_transcriptShown;
-  self->_transcriptShown = v4;
+  self->_transcriptShown = shownCopy;
 }
 
 - (void)deleteUeiInvocationTier1
@@ -7431,9 +7431,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiInvocationTier1:(id)a3
+- (void)setUeiInvocationTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -7657,14 +7657,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 175;
-  if (!v4)
+  if (!tier1Copy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiInvocationTier1 = self->_ueiInvocationTier1;
-  self->_ueiInvocationTier1 = v4;
+  self->_ueiInvocationTier1 = tier1Copy;
 }
 
 - (void)deleteTypingRequestTrace
@@ -7677,9 +7677,9 @@ LABEL_389:
   }
 }
 
-- (void)setTypingRequestTrace:(id)a3
+- (void)setTypingRequestTrace:(id)trace
 {
-  v4 = a3;
+  traceCopy = trace;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -7903,14 +7903,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 174;
-  if (!v4)
+  if (!traceCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   typingRequestTrace = self->_typingRequestTrace;
-  self->_typingRequestTrace = v4;
+  self->_typingRequestTrace = traceCopy;
 }
 
 - (void)deleteUeiDictationEuclidSpeechAlternativesSelectedTier1
@@ -7923,9 +7923,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiDictationEuclidSpeechAlternativesSelectedTier1:(id)a3
+- (void)setUeiDictationEuclidSpeechAlternativesSelectedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -8149,14 +8149,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 173;
-  if (!v4)
+  if (!tier1Copy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiDictationEuclidSpeechAlternativesSelectedTier1 = self->_ueiDictationEuclidSpeechAlternativesSelectedTier1;
-  self->_ueiDictationEuclidSpeechAlternativesSelectedTier1 = v4;
+  self->_ueiDictationEuclidSpeechAlternativesSelectedTier1 = tier1Copy;
 }
 
 - (void)deleteUeiDictationEuclidSpeechAlternativesSelected
@@ -8169,9 +8169,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiDictationEuclidSpeechAlternativesSelected:(id)a3
+- (void)setUeiDictationEuclidSpeechAlternativesSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -8395,14 +8395,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 172;
-  if (!v4)
+  if (!selectedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiDictationEuclidSpeechAlternativesSelected = self->_ueiDictationEuclidSpeechAlternativesSelected;
-  self->_ueiDictationEuclidSpeechAlternativesSelected = v4;
+  self->_ueiDictationEuclidSpeechAlternativesSelected = selectedCopy;
 }
 
 - (void)deleteUeiDictationEuclidAlternativesEventTier1
@@ -8415,9 +8415,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiDictationEuclidAlternativesEventTier1:(id)a3
+- (void)setUeiDictationEuclidAlternativesEventTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -8641,14 +8641,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 171;
-  if (!v4)
+  if (!tier1Copy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiDictationEuclidAlternativesEventTier1 = self->_ueiDictationEuclidAlternativesEventTier1;
-  self->_ueiDictationEuclidAlternativesEventTier1 = v4;
+  self->_ueiDictationEuclidAlternativesEventTier1 = tier1Copy;
 }
 
 - (void)deleteUeiDictationEuclidAlternativesEvent
@@ -8661,9 +8661,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiDictationEuclidAlternativesEvent:(id)a3
+- (void)setUeiDictationEuclidAlternativesEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -8887,14 +8887,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 170;
-  if (!v4)
+  if (!eventCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiDictationEuclidAlternativesEvent = self->_ueiDictationEuclidAlternativesEvent;
-  self->_ueiDictationEuclidAlternativesEvent = v4;
+  self->_ueiDictationEuclidAlternativesEvent = eventCopy;
 }
 
 - (void)deleteUeiDictationVoiceCommandKeyboardAction
@@ -8907,9 +8907,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiDictationVoiceCommandKeyboardAction:(id)a3
+- (void)setUeiDictationVoiceCommandKeyboardAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -9133,14 +9133,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 169;
-  if (!v4)
+  if (!actionCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiDictationVoiceCommandKeyboardAction = self->_ueiDictationVoiceCommandKeyboardAction;
-  self->_ueiDictationVoiceCommandKeyboardAction = v4;
+  self->_ueiDictationVoiceCommandKeyboardAction = actionCopy;
 }
 
 - (void)deleteUeiDictationVoiceCommandDisambiguationAction
@@ -9153,9 +9153,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiDictationVoiceCommandDisambiguationAction:(id)a3
+- (void)setUeiDictationVoiceCommandDisambiguationAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -9379,14 +9379,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 168;
-  if (!v4)
+  if (!actionCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiDictationVoiceCommandDisambiguationAction = self->_ueiDictationVoiceCommandDisambiguationAction;
-  self->_ueiDictationVoiceCommandDisambiguationAction = v4;
+  self->_ueiDictationVoiceCommandDisambiguationAction = actionCopy;
 }
 
 - (void)deleteUeiDictationVoiceCommandUndoTapAction
@@ -9399,9 +9399,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiDictationVoiceCommandUndoTapAction:(id)a3
+- (void)setUeiDictationVoiceCommandUndoTapAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -9625,14 +9625,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 167;
-  if (!v4)
+  if (!actionCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiDictationVoiceCommandUndoTapAction = self->_ueiDictationVoiceCommandUndoTapAction;
-  self->_ueiDictationVoiceCommandUndoTapAction = v4;
+  self->_ueiDictationVoiceCommandUndoTapAction = actionCopy;
 }
 
 - (void)deleteUeiDictationContentEditedTier1
@@ -9645,9 +9645,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiDictationContentEditedTier1:(id)a3
+- (void)setUeiDictationContentEditedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -9871,14 +9871,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 166;
-  if (!v4)
+  if (!tier1Copy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiDictationContentEditedTier1 = self->_ueiDictationContentEditedTier1;
-  self->_ueiDictationContentEditedTier1 = v4;
+  self->_ueiDictationContentEditedTier1 = tier1Copy;
 }
 
 - (void)deletePreferredAudioRouteChanged
@@ -9891,9 +9891,9 @@ LABEL_389:
   }
 }
 
-- (void)setPreferredAudioRouteChanged:(id)a3
+- (void)setPreferredAudioRouteChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -10117,14 +10117,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 165;
-  if (!v4)
+  if (!changedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   preferredAudioRouteChanged = self->_preferredAudioRouteChanged;
-  self->_preferredAudioRouteChanged = v4;
+  self->_preferredAudioRouteChanged = changedCopy;
 }
 
 - (void)deleteUeiSiriWasUnavailable
@@ -10137,9 +10137,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiSiriWasUnavailable:(id)a3
+- (void)setUeiSiriWasUnavailable:(id)unavailable
 {
-  v4 = a3;
+  unavailableCopy = unavailable;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -10363,14 +10363,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 164;
-  if (!v4)
+  if (!unavailableCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiSiriWasUnavailable = self->_ueiSiriWasUnavailable;
-  self->_ueiSiriWasUnavailable = v4;
+  self->_ueiSiriWasUnavailable = unavailableCopy;
 }
 
 - (void)deleteUeiVisionSnippetDismissed
@@ -10383,9 +10383,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiVisionSnippetDismissed:(id)a3
+- (void)setUeiVisionSnippetDismissed:(id)dismissed
 {
-  v4 = a3;
+  dismissedCopy = dismissed;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -10609,14 +10609,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 163;
-  if (!v4)
+  if (!dismissedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiVisionSnippetDismissed = self->_ueiVisionSnippetDismissed;
-  self->_ueiVisionSnippetDismissed = v4;
+  self->_ueiVisionSnippetDismissed = dismissedCopy;
 }
 
 - (void)deleteUeiSiriCarCommandContext
@@ -10629,9 +10629,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiSiriCarCommandContext:(id)a3
+- (void)setUeiSiriCarCommandContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -10855,14 +10855,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 162;
-  if (!v4)
+  if (!contextCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiSiriCarCommandContext = self->_ueiSiriCarCommandContext;
-  self->_ueiSiriCarCommandContext = v4;
+  self->_ueiSiriCarCommandContext = contextCopy;
 }
 
 - (void)deleteUeiDictationEnablementPromptShown
@@ -10875,9 +10875,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiDictationEnablementPromptShown:(id)a3
+- (void)setUeiDictationEnablementPromptShown:(id)shown
 {
-  v4 = a3;
+  shownCopy = shown;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -11101,14 +11101,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 161;
-  if (!v4)
+  if (!shownCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiDictationEnablementPromptShown = self->_ueiDictationEnablementPromptShown;
-  self->_ueiDictationEnablementPromptShown = v4;
+  self->_ueiDictationEnablementPromptShown = shownCopy;
 }
 
 - (void)deleteUeiUserBargeInDetected
@@ -11121,9 +11121,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiUserBargeInDetected:(id)a3
+- (void)setUeiUserBargeInDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -11347,14 +11347,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 160;
-  if (!v4)
+  if (!detectedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiUserBargeInDetected = self->_ueiUserBargeInDetected;
-  self->_ueiUserBargeInDetected = v4;
+  self->_ueiUserBargeInDetected = detectedCopy;
 }
 
 - (void)deleteUeiDictationAlternativeTextPairsSelected
@@ -11367,9 +11367,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiDictationAlternativeTextPairsSelected:(id)a3
+- (void)setUeiDictationAlternativeTextPairsSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -11593,14 +11593,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 159;
-  if (!v4)
+  if (!selectedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiDictationAlternativeTextPairsSelected = self->_ueiDictationAlternativeTextPairsSelected;
-  self->_ueiDictationAlternativeTextPairsSelected = v4;
+  self->_ueiDictationAlternativeTextPairsSelected = selectedCopy;
 }
 
 - (void)deleteUufrSelected
@@ -11613,9 +11613,9 @@ LABEL_389:
   }
 }
 
-- (void)setUufrSelected:(id)a3
+- (void)setUufrSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -11839,14 +11839,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 158;
-  if (!v4)
+  if (!selectedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   uufrSelected = self->_uufrSelected;
-  self->_uufrSelected = v4;
+  self->_uufrSelected = selectedCopy;
 }
 
 - (void)deleteDictationAlternativesSelected
@@ -11859,9 +11859,9 @@ LABEL_389:
   }
 }
 
-- (void)setDictationAlternativesSelected:(id)a3
+- (void)setDictationAlternativesSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -12085,14 +12085,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 157;
-  if (!v4)
+  if (!selectedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   dictationAlternativesSelected = self->_dictationAlternativesSelected;
-  self->_dictationAlternativesSelected = v4;
+  self->_dictationAlternativesSelected = selectedCopy;
 }
 
 - (void)deleteUeiDictationTranscriptionTokenized
@@ -12105,9 +12105,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiDictationTranscriptionTokenized:(id)a3
+- (void)setUeiDictationTranscriptionTokenized:(id)tokenized
 {
-  v4 = a3;
+  tokenizedCopy = tokenized;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -12331,14 +12331,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 156;
-  if (!v4)
+  if (!tokenizedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiDictationTranscriptionTokenized = self->_ueiDictationTranscriptionTokenized;
-  self->_ueiDictationTranscriptionTokenized = v4;
+  self->_ueiDictationTranscriptionTokenized = tokenizedCopy;
 }
 
 - (void)deleteHostPlatformViewDisappearContext
@@ -12351,9 +12351,9 @@ LABEL_389:
   }
 }
 
-- (void)setHostPlatformViewDisappearContext:(id)a3
+- (void)setHostPlatformViewDisappearContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -12577,14 +12577,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 155;
-  if (!v4)
+  if (!contextCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   hostPlatformViewDisappearContext = self->_hostPlatformViewDisappearContext;
-  self->_hostPlatformViewDisappearContext = v4;
+  self->_hostPlatformViewDisappearContext = contextCopy;
 }
 
 - (void)deleteHostPlatformViewAppearContext
@@ -12597,9 +12597,9 @@ LABEL_389:
   }
 }
 
-- (void)setHostPlatformViewAppearContext:(id)a3
+- (void)setHostPlatformViewAppearContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -12823,14 +12823,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 154;
-  if (!v4)
+  if (!contextCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   hostPlatformViewAppearContext = self->_hostPlatformViewAppearContext;
-  self->_hostPlatformViewAppearContext = v4;
+  self->_hostPlatformViewAppearContext = contextCopy;
 }
 
 - (void)deleteUeiDictationToolTipDisplayContext
@@ -12843,9 +12843,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiDictationToolTipDisplayContext:(id)a3
+- (void)setUeiDictationToolTipDisplayContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -13069,14 +13069,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 153;
-  if (!v4)
+  if (!contextCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiDictationToolTipDisplayContext = self->_ueiDictationToolTipDisplayContext;
-  self->_ueiDictationToolTipDisplayContext = v4;
+  self->_ueiDictationToolTipDisplayContext = contextCopy;
 }
 
 - (void)deleteUeiDictationInputModeSwitchContext
@@ -13089,9 +13089,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiDictationInputModeSwitchContext:(id)a3
+- (void)setUeiDictationInputModeSwitchContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -13315,14 +13315,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 152;
-  if (!v4)
+  if (!contextCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiDictationInputModeSwitchContext = self->_ueiDictationInputModeSwitchContext;
-  self->_ueiDictationInputModeSwitchContext = v4;
+  self->_ueiDictationInputModeSwitchContext = contextCopy;
 }
 
 - (void)deleteUeiDictationVoiceCommandExecuted
@@ -13335,9 +13335,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiDictationVoiceCommandExecuted:(id)a3
+- (void)setUeiDictationVoiceCommandExecuted:(id)executed
 {
-  v4 = a3;
+  executedCopy = executed;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -13561,14 +13561,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 151;
-  if (!v4)
+  if (!executedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiDictationVoiceCommandExecuted = self->_ueiDictationVoiceCommandExecuted;
-  self->_ueiDictationVoiceCommandExecuted = v4;
+  self->_ueiDictationVoiceCommandExecuted = executedCopy;
 }
 
 - (void)deleteUeiDictationPartialResultUpdated
@@ -13581,9 +13581,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiDictationPartialResultUpdated:(id)a3
+- (void)setUeiDictationPartialResultUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -13807,14 +13807,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 150;
-  if (!v4)
+  if (!updatedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiDictationPartialResultUpdated = self->_ueiDictationPartialResultUpdated;
-  self->_ueiDictationPartialResultUpdated = v4;
+  self->_ueiDictationPartialResultUpdated = updatedCopy;
 }
 
 - (void)deleteUufrShownTier1
@@ -13827,9 +13827,9 @@ LABEL_389:
   }
 }
 
-- (void)setUufrShownTier1:(id)a3
+- (void)setUufrShownTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -14053,14 +14053,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 148;
-  if (!v4)
+  if (!tier1Copy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   uufrShownTier1 = self->_uufrShownTier1;
-  self->_uufrShownTier1 = v4;
+  self->_uufrShownTier1 = tier1Copy;
 }
 
 - (void)deleteDictationContentEdited
@@ -14073,9 +14073,9 @@ LABEL_389:
   }
 }
 
-- (void)setDictationContentEdited:(id)a3
+- (void)setDictationContentEdited:(id)edited
 {
-  v4 = a3;
+  editedCopy = edited;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -14299,14 +14299,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 147;
-  if (!v4)
+  if (!editedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   dictationContentEdited = self->_dictationContentEdited;
-  self->_dictationContentEdited = v4;
+  self->_dictationContentEdited = editedCopy;
 }
 
 - (void)deleteAnnounceCarPlayGlyphSettingToggled
@@ -14319,9 +14319,9 @@ LABEL_389:
   }
 }
 
-- (void)setAnnounceCarPlayGlyphSettingToggled:(id)a3
+- (void)setAnnounceCarPlayGlyphSettingToggled:(id)toggled
 {
-  v4 = a3;
+  toggledCopy = toggled;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -14545,14 +14545,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 146;
-  if (!v4)
+  if (!toggledCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   announceCarPlayGlyphSettingToggled = self->_announceCarPlayGlyphSettingToggled;
-  self->_announceCarPlayGlyphSettingToggled = v4;
+  self->_announceCarPlayGlyphSettingToggled = toggledCopy;
 }
 
 - (void)deleteAnnounceCarPlayBannerTapped
@@ -14565,9 +14565,9 @@ LABEL_389:
   }
 }
 
-- (void)setAnnounceCarPlayBannerTapped:(id)a3
+- (void)setAnnounceCarPlayBannerTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -14791,14 +14791,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 145;
-  if (!v4)
+  if (!tappedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   announceCarPlayBannerTapped = self->_announceCarPlayBannerTapped;
-  self->_announceCarPlayBannerTapped = v4;
+  self->_announceCarPlayBannerTapped = tappedCopy;
 }
 
 - (void)deleteEngagedAccessoryContext
@@ -14811,9 +14811,9 @@ LABEL_389:
   }
 }
 
-- (void)setEngagedAccessoryContext:(id)a3
+- (void)setEngagedAccessoryContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -15037,14 +15037,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 144;
-  if (!v4)
+  if (!contextCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   engagedAccessoryContext = self->_engagedAccessoryContext;
-  self->_engagedAccessoryContext = v4;
+  self->_engagedAccessoryContext = contextCopy;
 }
 
 - (void)deleteKeyboardDismissed
@@ -15057,9 +15057,9 @@ LABEL_389:
   }
 }
 
-- (void)setKeyboardDismissed:(id)a3
+- (void)setKeyboardDismissed:(id)dismissed
 {
-  v4 = a3;
+  dismissedCopy = dismissed;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -15283,14 +15283,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 143;
-  if (!v4)
+  if (!dismissedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   keyboardDismissed = self->_keyboardDismissed;
-  self->_keyboardDismissed = v4;
+  self->_keyboardDismissed = dismissedCopy;
 }
 
 - (void)deleteTurnMTERequest
@@ -15303,9 +15303,9 @@ LABEL_389:
   }
 }
 
-- (void)setTurnMTERequest:(id)a3
+- (void)setTurnMTERequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -15529,14 +15529,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 142;
-  if (!v4)
+  if (!requestCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   turnMTERequest = self->_turnMTERequest;
-  self->_turnMTERequest = v4;
+  self->_turnMTERequest = requestCopy;
 }
 
 - (void)deletePnrFatalError
@@ -15549,9 +15549,9 @@ LABEL_389:
   }
 }
 
-- (void)setPnrFatalError:(id)a3
+- (void)setPnrFatalError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -15775,14 +15775,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 141;
-  if (!v4)
+  if (!errorCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   pnrFatalError = self->_pnrFatalError;
-  self->_pnrFatalError = v4;
+  self->_pnrFatalError = errorCopy;
 }
 
 - (void)deletePnrSpeechRecognitionSourceContext
@@ -15795,9 +15795,9 @@ LABEL_389:
   }
 }
 
-- (void)setPnrSpeechRecognitionSourceContext:(id)a3
+- (void)setPnrSpeechRecognitionSourceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -16021,14 +16021,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 140;
-  if (!v4)
+  if (!contextCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   pnrSpeechRecognitionSourceContext = self->_pnrSpeechRecognitionSourceContext;
-  self->_pnrSpeechRecognitionSourceContext = v4;
+  self->_pnrSpeechRecognitionSourceContext = contextCopy;
 }
 
 - (void)deletePnrTextToSpeechRequestReceived
@@ -16041,9 +16041,9 @@ LABEL_389:
   }
 }
 
-- (void)setPnrTextToSpeechRequestReceived:(id)a3
+- (void)setPnrTextToSpeechRequestReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -16267,14 +16267,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 139;
-  if (!v4)
+  if (!receivedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   pnrTextToSpeechRequestReceived = self->_pnrTextToSpeechRequestReceived;
-  self->_pnrTextToSpeechRequestReceived = v4;
+  self->_pnrTextToSpeechRequestReceived = receivedCopy;
 }
 
 - (void)deleteUeiUIRenderingContext
@@ -16287,9 +16287,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiUIRenderingContext:(id)a3
+- (void)setUeiUIRenderingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -16513,14 +16513,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 138;
-  if (!v4)
+  if (!contextCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiUIRenderingContext = self->_ueiUIRenderingContext;
-  self->_ueiUIRenderingContext = v4;
+  self->_ueiUIRenderingContext = contextCopy;
 }
 
 - (void)deleteUeiUUFRReady
@@ -16533,9 +16533,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiUUFRReady:(id)a3
+- (void)setUeiUUFRReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -16759,14 +16759,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 137;
-  if (!v4)
+  if (!readyCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiUUFRReady = self->_ueiUUFRReady;
-  self->_ueiUUFRReady = v4;
+  self->_ueiUUFRReady = readyCopy;
 }
 
 - (void)deleteUeiUserSpeakingContext
@@ -16779,9 +16779,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiUserSpeakingContext:(id)a3
+- (void)setUeiUserSpeakingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -17005,14 +17005,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 136;
-  if (!v4)
+  if (!contextCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiUserSpeakingContext = self->_ueiUserSpeakingContext;
-  self->_ueiUserSpeakingContext = v4;
+  self->_ueiUserSpeakingContext = contextCopy;
 }
 
 - (void)deleteUeiLaunchContext
@@ -17025,9 +17025,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiLaunchContext:(id)a3
+- (void)setUeiLaunchContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -17251,14 +17251,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 135;
-  if (!v4)
+  if (!contextCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiLaunchContext = self->_ueiLaunchContext;
-  self->_ueiLaunchContext = v4;
+  self->_ueiLaunchContext = contextCopy;
 }
 
 - (void)deleteAudioStopRecordingStarted
@@ -17271,9 +17271,9 @@ LABEL_389:
   }
 }
 
-- (void)setAudioStopRecordingStarted:(id)a3
+- (void)setAudioStopRecordingStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -17497,14 +17497,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 134;
-  if (!v4)
+  if (!startedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   audioStopRecordingStarted = self->_audioStopRecordingStarted;
-  self->_audioStopRecordingStarted = v4;
+  self->_audioStopRecordingStarted = startedCopy;
 }
 
 - (void)deleteUeiRequestCategorization
@@ -17517,9 +17517,9 @@ LABEL_389:
   }
 }
 
-- (void)setUeiRequestCategorization:(id)a3
+- (void)setUeiRequestCategorization:(id)categorization
 {
-  v4 = a3;
+  categorizationCopy = categorization;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -17743,14 +17743,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 133;
-  if (!v4)
+  if (!categorizationCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   ueiRequestCategorization = self->_ueiRequestCategorization;
-  self->_ueiRequestCategorization = v4;
+  self->_ueiRequestCategorization = categorizationCopy;
 }
 
 - (void)deleteDeviceLockStateChanged
@@ -17763,9 +17763,9 @@ LABEL_389:
   }
 }
 
-- (void)setDeviceLockStateChanged:(id)a3
+- (void)setDeviceLockStateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -17989,14 +17989,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 132;
-  if (!v4)
+  if (!changedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   deviceLockStateChanged = self->_deviceLockStateChanged;
-  self->_deviceLockStateChanged = v4;
+  self->_deviceLockStateChanged = changedCopy;
 }
 
 - (void)deleteUserViewRegionInteraction
@@ -18009,9 +18009,9 @@ LABEL_389:
   }
 }
 
-- (void)setUserViewRegionInteraction:(id)a3
+- (void)setUserViewRegionInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -18235,14 +18235,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 131;
-  if (!v4)
+  if (!interactionCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   userViewRegionInteraction = self->_userViewRegionInteraction;
-  self->_userViewRegionInteraction = v4;
+  self->_userViewRegionInteraction = interactionCopy;
 }
 
 - (void)deleteCasinoRelationship
@@ -18255,9 +18255,9 @@ LABEL_389:
   }
 }
 
-- (void)setCasinoRelationship:(id)a3
+- (void)setCasinoRelationship:(id)relationship
 {
-  v4 = a3;
+  relationshipCopy = relationship;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -18481,14 +18481,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 130;
-  if (!v4)
+  if (!relationshipCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   casinoRelationship = self->_casinoRelationship;
-  self->_casinoRelationship = v4;
+  self->_casinoRelationship = relationshipCopy;
 }
 
 - (void)deleteIntercomMessageRecorded
@@ -18501,9 +18501,9 @@ LABEL_389:
   }
 }
 
-- (void)setIntercomMessageRecorded:(id)a3
+- (void)setIntercomMessageRecorded:(id)recorded
 {
-  v4 = a3;
+  recordedCopy = recorded;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -18727,14 +18727,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 129;
-  if (!v4)
+  if (!recordedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   intercomMessageRecorded = self->_intercomMessageRecorded;
-  self->_intercomMessageRecorded = v4;
+  self->_intercomMessageRecorded = recordedCopy;
 }
 
 - (void)deleteDictationAlternativesViewed
@@ -18747,9 +18747,9 @@ LABEL_389:
   }
 }
 
-- (void)setDictationAlternativesViewed:(id)a3
+- (void)setDictationAlternativesViewed:(id)viewed
 {
-  v4 = a3;
+  viewedCopy = viewed;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -18972,9 +18972,9 @@ LABEL_389:
   transcriptTapped = self->_transcriptTapped;
   self->_transcriptTapped = 0;
 
-  self->_whichEvent_Type = (v4 != 0) << 7;
+  self->_whichEvent_Type = (viewedCopy != 0) << 7;
   dictationAlternativesViewed = self->_dictationAlternativesViewed;
-  self->_dictationAlternativesViewed = v4;
+  self->_dictationAlternativesViewed = viewedCopy;
 }
 
 - (void)deleteUufrFatalError
@@ -18987,9 +18987,9 @@ LABEL_389:
   }
 }
 
-- (void)setUufrFatalError:(id)a3
+- (void)setUufrFatalError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -19213,14 +19213,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 127;
-  if (!v4)
+  if (!errorCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   uufrFatalError = self->_uufrFatalError;
-  self->_uufrFatalError = v4;
+  self->_uufrFatalError = errorCopy;
 }
 
 - (void)deleteUufrSaid
@@ -19233,9 +19233,9 @@ LABEL_389:
   }
 }
 
-- (void)setUufrSaid:(id)a3
+- (void)setUufrSaid:(id)said
 {
-  v4 = a3;
+  saidCopy = said;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -19459,14 +19459,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 126;
-  if (!v4)
+  if (!saidCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   uufrSaid = self->_uufrSaid;
-  self->_uufrSaid = v4;
+  self->_uufrSaid = saidCopy;
 }
 
 - (void)deleteUufrShown
@@ -19479,9 +19479,9 @@ LABEL_389:
   }
 }
 
-- (void)setUufrShown:(id)a3
+- (void)setUufrShown:(id)shown
 {
-  v4 = a3;
+  shownCopy = shown;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -19705,14 +19705,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 125;
-  if (!v4)
+  if (!shownCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   uufrShown = self->_uufrShown;
-  self->_uufrShown = v4;
+  self->_uufrShown = shownCopy;
 }
 
 - (void)deleteUufrCompletion
@@ -19725,9 +19725,9 @@ LABEL_389:
   }
 }
 
-- (void)setUufrCompletion:(id)a3
+- (void)setUufrCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -19951,14 +19951,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 124;
-  if (!v4)
+  if (!completionCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   uufrCompletion = self->_uufrCompletion;
-  self->_uufrCompletion = v4;
+  self->_uufrCompletion = completionCopy;
 }
 
 - (void)deleteCarPlayHeadUnitContext
@@ -19971,9 +19971,9 @@ LABEL_389:
   }
 }
 
-- (void)setCarPlayHeadUnitContext:(id)a3
+- (void)setCarPlayHeadUnitContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -20197,14 +20197,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 123;
-  if (!v4)
+  if (!contextCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   carPlayHeadUnitContext = self->_carPlayHeadUnitContext;
-  self->_carPlayHeadUnitContext = v4;
+  self->_carPlayHeadUnitContext = contextCopy;
 }
 
 - (void)deleteDictationTranscriptionMetadata
@@ -20217,9 +20217,9 @@ LABEL_389:
   }
 }
 
-- (void)setDictationTranscriptionMetadata:(id)a3
+- (void)setDictationTranscriptionMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -20443,14 +20443,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 122;
-  if (!v4)
+  if (!metadataCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   dictationTranscriptionMetadata = self->_dictationTranscriptionMetadata;
-  self->_dictationTranscriptionMetadata = v4;
+  self->_dictationTranscriptionMetadata = metadataCopy;
 }
 
 - (void)deleteDictationAlternativeSelected
@@ -20463,9 +20463,9 @@ LABEL_389:
   }
 }
 
-- (void)setDictationAlternativeSelected:(id)a3
+- (void)setDictationAlternativeSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -20689,14 +20689,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 121;
-  if (!v4)
+  if (!selectedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   dictationAlternativeSelected = self->_dictationAlternativeSelected;
-  self->_dictationAlternativeSelected = v4;
+  self->_dictationAlternativeSelected = selectedCopy;
 }
 
 - (void)deleteDictationEndPointCancel
@@ -20709,9 +20709,9 @@ LABEL_389:
   }
 }
 
-- (void)setDictationEndPointCancel:(id)a3
+- (void)setDictationEndPointCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -20935,14 +20935,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 120;
-  if (!v4)
+  if (!cancelCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   dictationEndPointCancel = self->_dictationEndPointCancel;
-  self->_dictationEndPointCancel = v4;
+  self->_dictationEndPointCancel = cancelCopy;
 }
 
 - (void)deleteDictationEndPointStop
@@ -20955,9 +20955,9 @@ LABEL_389:
   }
 }
 
-- (void)setDictationEndPointStop:(id)a3
+- (void)setDictationEndPointStop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -21181,14 +21181,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 119;
-  if (!v4)
+  if (!stopCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   dictationEndPointStop = self->_dictationEndPointStop;
-  self->_dictationEndPointStop = v4;
+  self->_dictationEndPointStop = stopCopy;
 }
 
 - (void)deleteDialogOutput
@@ -21201,9 +21201,9 @@ LABEL_389:
   }
 }
 
-- (void)setDialogOutput:(id)a3
+- (void)setDialogOutput:(id)output
 {
-  v4 = a3;
+  outputCopy = output;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -21427,14 +21427,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 118;
-  if (!v4)
+  if (!outputCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   dialogOutput = self->_dialogOutput;
-  self->_dialogOutput = v4;
+  self->_dialogOutput = outputCopy;
 }
 
 - (void)deleteClientFlow
@@ -21447,9 +21447,9 @@ LABEL_389:
   }
 }
 
-- (void)setClientFlow:(id)a3
+- (void)setClientFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -21673,14 +21673,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 117;
-  if (!v4)
+  if (!flowCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   clientFlow = self->_clientFlow;
-  self->_clientFlow = v4;
+  self->_clientFlow = flowCopy;
 }
 
 - (void)deleteUiStateTransition
@@ -21693,9 +21693,9 @@ LABEL_389:
   }
 }
 
-- (void)setUiStateTransition:(id)a3
+- (void)setUiStateTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -21919,14 +21919,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 116;
-  if (!v4)
+  if (!transitionCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   uiStateTransition = self->_uiStateTransition;
-  self->_uiStateTransition = v4;
+  self->_uiStateTransition = transitionCopy;
 }
 
 - (void)deleteTextToSpeechEnd
@@ -21939,9 +21939,9 @@ LABEL_389:
   }
 }
 
-- (void)setTextToSpeechEnd:(id)a3
+- (void)setTextToSpeechEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -22165,14 +22165,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 115;
-  if (!v4)
+  if (!endCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   textToSpeechEnd = self->_textToSpeechEnd;
-  self->_textToSpeechEnd = v4;
+  self->_textToSpeechEnd = endCopy;
 }
 
 - (void)deleteTextToSpeechBegin
@@ -22185,9 +22185,9 @@ LABEL_389:
   }
 }
 
-- (void)setTextToSpeechBegin:(id)a3
+- (void)setTextToSpeechBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -22411,14 +22411,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 114;
-  if (!v4)
+  if (!beginCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   textToSpeechBegin = self->_textToSpeechBegin;
-  self->_textToSpeechBegin = v4;
+  self->_textToSpeechBegin = beginCopy;
 }
 
 - (void)deleteSpeechTranscription
@@ -22431,9 +22431,9 @@ LABEL_389:
   }
 }
 
-- (void)setSpeechTranscription:(id)a3
+- (void)setSpeechTranscription:(id)transcription
 {
-  v4 = a3;
+  transcriptionCopy = transcription;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -22657,14 +22657,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 113;
-  if (!v4)
+  if (!transcriptionCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   speechTranscription = self->_speechTranscription;
-  self->_speechTranscription = v4;
+  self->_speechTranscription = transcriptionCopy;
 }
 
 - (void)deleteUufrPresented
@@ -22677,9 +22677,9 @@ LABEL_389:
   }
 }
 
-- (void)setUufrPresented:(id)a3
+- (void)setUufrPresented:(id)presented
 {
-  v4 = a3;
+  presentedCopy = presented;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -22903,14 +22903,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 112;
-  if (!v4)
+  if (!presentedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   uufrPresented = self->_uufrPresented;
-  self->_uufrPresented = v4;
+  self->_uufrPresented = presentedCopy;
 }
 
 - (void)deleteSiriCue
@@ -22923,9 +22923,9 @@ LABEL_389:
   }
 }
 
-- (void)setSiriCue:(id)a3
+- (void)setSiriCue:(id)cue
 {
-  v4 = a3;
+  cueCopy = cue;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -23149,14 +23149,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 111;
-  if (!v4)
+  if (!cueCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   siriCue = self->_siriCue;
-  self->_siriCue = v4;
+  self->_siriCue = cueCopy;
 }
 
 - (void)deletePunchOut
@@ -23169,9 +23169,9 @@ LABEL_389:
   }
 }
 
-- (void)setPunchOut:(id)a3
+- (void)setPunchOut:(id)out
 {
-  v4 = a3;
+  outCopy = out;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -23395,14 +23395,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 109;
-  if (!v4)
+  if (!outCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   punchOut = self->_punchOut;
-  self->_punchOut = v4;
+  self->_punchOut = outCopy;
 }
 
 - (void)deleteLocation
@@ -23415,9 +23415,9 @@ LABEL_389:
   }
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -23641,14 +23641,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 108;
-  if (!v4)
+  if (!locationCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   location = self->_location;
-  self->_location = v4;
+  self->_location = locationCopy;
 }
 
 - (void)deleteInvocation
@@ -23661,9 +23661,9 @@ LABEL_389:
   }
 }
 
-- (void)setInvocation:(id)a3
+- (void)setInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -23887,14 +23887,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 107;
-  if (!v4)
+  if (!invocationCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   invocation = self->_invocation;
-  self->_invocation = v4;
+  self->_invocation = invocationCopy;
 }
 
 - (void)deleteDictationContext
@@ -23907,9 +23907,9 @@ LABEL_389:
   }
 }
 
-- (void)setDictationContext:(id)a3
+- (void)setDictationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -24133,14 +24133,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 106;
-  if (!v4)
+  if (!contextCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   dictationContext = self->_dictationContext;
-  self->_dictationContext = v4;
+  self->_dictationContext = contextCopy;
 }
 
 - (void)deleteDeviceFixedContext
@@ -24153,9 +24153,9 @@ LABEL_389:
   }
 }
 
-- (void)setDeviceFixedContext:(id)a3
+- (void)setDeviceFixedContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -24379,14 +24379,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 105;
-  if (!v4)
+  if (!contextCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   deviceFixedContext = self->_deviceFixedContext;
-  self->_deviceFixedContext = v4;
+  self->_deviceFixedContext = contextCopy;
 }
 
 - (void)deleteDeviceDynamicContext
@@ -24399,9 +24399,9 @@ LABEL_389:
   }
 }
 
-- (void)setDeviceDynamicContext:(id)a3
+- (void)setDeviceDynamicContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -24625,14 +24625,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 104;
-  if (!v4)
+  if (!contextCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   deviceDynamicContext = self->_deviceDynamicContext;
-  self->_deviceDynamicContext = v4;
+  self->_deviceDynamicContext = contextCopy;
 }
 
 - (void)deleteClientConversationTrace
@@ -24645,9 +24645,9 @@ LABEL_389:
   }
 }
 
-- (void)setClientConversationTrace:(id)a3
+- (void)setClientConversationTrace:(id)trace
 {
-  v4 = a3;
+  traceCopy = trace;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -24871,14 +24871,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 103;
-  if (!v4)
+  if (!traceCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   clientConversationTrace = self->_clientConversationTrace;
-  self->_clientConversationTrace = v4;
+  self->_clientConversationTrace = traceCopy;
 }
 
 - (void)deleteAudioStopRecording
@@ -24891,9 +24891,9 @@ LABEL_389:
   }
 }
 
-- (void)setAudioStopRecording:(id)a3
+- (void)setAudioStopRecording:(id)recording
 {
-  v4 = a3;
+  recordingCopy = recording;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
   self->_audioFirstBufferRecorded = 0;
 
@@ -25117,14 +25117,14 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 102;
-  if (!v4)
+  if (!recordingCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   audioStopRecording = self->_audioStopRecording;
-  self->_audioStopRecording = v4;
+  self->_audioStopRecording = recordingCopy;
 }
 
 - (void)deleteAudioFirstBufferRecorded
@@ -25137,9 +25137,9 @@ LABEL_389:
   }
 }
 
-- (void)setAudioFirstBufferRecorded:(id)a3
+- (void)setAudioFirstBufferRecorded:(id)recorded
 {
-  v4 = a3;
+  recordedCopy = recorded;
   audioStopRecording = self->_audioStopRecording;
   self->_audioStopRecording = 0;
 
@@ -25363,389 +25363,389 @@ LABEL_389:
   self->_transcriptTapped = 0;
 
   v79 = 101;
-  if (!v4)
+  if (!recordedCopy)
   {
     v79 = 0;
   }
 
   self->_whichEvent_Type = v79;
   audioFirstBufferRecorded = self->_audioFirstBufferRecorded;
-  self->_audioFirstBufferRecorded = v4;
+  self->_audioFirstBufferRecorded = recordedCopy;
 }
 
-+ (id)getTagForEventTypeClass:(Class)a3
++ (id)getTagForEventTypeClass:(Class)class
 {
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F703F0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70408;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70420;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70438;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70450;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70468;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70480;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70498;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F704B0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F704C8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F704E0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F704F8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70510;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70528;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70540;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70558;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70570;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70588;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F705A0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F705B8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F705D0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F705E8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70600;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70618;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70630;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70648;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70660;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70678;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70690;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F706A8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F706C0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F706D8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F706F0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70708;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70720;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70738;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70750;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70768;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70780;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70798;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F707B0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F707C8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F707E0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F707F8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70810;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70828;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70840;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70858;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70870;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70888;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F708A0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F708B8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F708D0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F708E8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70900;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70918;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70930;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70948;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70960;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70978;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70990;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F709A8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F709C0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F709D8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F709F0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70A08;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70A20;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70A38;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70A50;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70A68;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70A80;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70A98;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70AB0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70AC8;
   }
 
-  if ([(objc_class *)a3 isEqual:objc_opt_class()])
+  if ([(objc_class *)class isEqual:objc_opt_class()])
   {
     return &unk_1F1F70AE0;
   }
@@ -25753,10 +25753,10 @@ LABEL_389:
   return 0;
 }
 
-+ (Class)getEventTypeClassForTag:(int)a3
++ (Class)getEventTypeClassForTag:(int)tag
 {
   v4 = 0;
-  switch(a3)
+  switch(tag)
   {
     case 101:
     case 102:
@@ -25842,13 +25842,13 @@ LABEL_389:
   return v4;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v239.receiver = self;
   v239.super_class = SISchemaClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v239 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v239 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(SISchemaClientEvent *)self deleteUufrShownTier1];
     [(SISchemaClientEvent *)self deleteDictationAlternativesSelected];
@@ -25859,7 +25859,7 @@ LABEL_389:
     [(SISchemaClientEvent *)self deleteUeiInvocationTier1];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(SISchemaClientEvent *)self deleteUufrShownTier1];
     [(SISchemaClientEvent *)self deleteDictationAlternativesSelected];
@@ -25871,7 +25871,7 @@ LABEL_389:
     [(SISchemaClientEvent *)self deleteUeiInvocationTier1];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(SISchemaClientEvent *)self deleteUufrShownTier1];
     [(SISchemaClientEvent *)self deleteDictationAlternativesSelected];
@@ -25882,7 +25882,7 @@ LABEL_389:
     [(SISchemaClientEvent *)self deleteUeiInvocationTier1];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(SISchemaClientEvent *)self deleteUufrShownTier1];
     [(SISchemaClientEvent *)self deleteDictationAlternativesSelected];
@@ -25893,7 +25893,7 @@ LABEL_389:
     [(SISchemaClientEvent *)self deleteUeiInvocationTier1];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(SISchemaClientEvent *)self deleteUufrShownTier1];
     [(SISchemaClientEvent *)self deleteDictationAlternativesSelected];
@@ -25904,695 +25904,695 @@ LABEL_389:
     [(SISchemaClientEvent *)self deleteUeiInvocationTier1];
   }
 
-  v6 = [(SISchemaClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  eventMetadata = [(SISchemaClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(SISchemaClientEvent *)self transportMetadata];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  transportMetadata = [(SISchemaClientEvent *)self transportMetadata];
+  v10 = [transportMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SISchemaClientEvent *)self deleteTransportMetadata];
   }
 
-  v12 = [(SISchemaClientEvent *)self audioFirstBufferRecorded];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  audioFirstBufferRecorded = [(SISchemaClientEvent *)self audioFirstBufferRecorded];
+  v13 = [audioFirstBufferRecorded applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(SISchemaClientEvent *)self deleteAudioFirstBufferRecorded];
   }
 
-  v15 = [(SISchemaClientEvent *)self audioStopRecording];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  audioStopRecording = [(SISchemaClientEvent *)self audioStopRecording];
+  v16 = [audioStopRecording applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(SISchemaClientEvent *)self deleteAudioStopRecording];
   }
 
-  v18 = [(SISchemaClientEvent *)self clientConversationTrace];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  clientConversationTrace = [(SISchemaClientEvent *)self clientConversationTrace];
+  v19 = [clientConversationTrace applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(SISchemaClientEvent *)self deleteClientConversationTrace];
   }
 
-  v21 = [(SISchemaClientEvent *)self deviceDynamicContext];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  deviceDynamicContext = [(SISchemaClientEvent *)self deviceDynamicContext];
+  v22 = [deviceDynamicContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(SISchemaClientEvent *)self deleteDeviceDynamicContext];
   }
 
-  v24 = [(SISchemaClientEvent *)self deviceFixedContext];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  deviceFixedContext = [(SISchemaClientEvent *)self deviceFixedContext];
+  v25 = [deviceFixedContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(SISchemaClientEvent *)self deleteDeviceFixedContext];
   }
 
-  v27 = [(SISchemaClientEvent *)self dictationContext];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  dictationContext = [(SISchemaClientEvent *)self dictationContext];
+  v28 = [dictationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(SISchemaClientEvent *)self deleteDictationContext];
   }
 
-  v30 = [(SISchemaClientEvent *)self invocation];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  invocation = [(SISchemaClientEvent *)self invocation];
+  v31 = [invocation applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(SISchemaClientEvent *)self deleteInvocation];
   }
 
-  v33 = [(SISchemaClientEvent *)self location];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  location = [(SISchemaClientEvent *)self location];
+  v34 = [location applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(SISchemaClientEvent *)self deleteLocation];
   }
 
-  v36 = [(SISchemaClientEvent *)self punchOut];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  punchOut = [(SISchemaClientEvent *)self punchOut];
+  v37 = [punchOut applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(SISchemaClientEvent *)self deletePunchOut];
   }
 
-  v39 = [(SISchemaClientEvent *)self siriCue];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  siriCue = [(SISchemaClientEvent *)self siriCue];
+  v40 = [siriCue applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(SISchemaClientEvent *)self deleteSiriCue];
   }
 
-  v42 = [(SISchemaClientEvent *)self uufrPresented];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  uufrPresented = [(SISchemaClientEvent *)self uufrPresented];
+  v43 = [uufrPresented applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(SISchemaClientEvent *)self deleteUufrPresented];
   }
 
-  v45 = [(SISchemaClientEvent *)self speechTranscription];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  speechTranscription = [(SISchemaClientEvent *)self speechTranscription];
+  v46 = [speechTranscription applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(SISchemaClientEvent *)self deleteSpeechTranscription];
   }
 
-  v48 = [(SISchemaClientEvent *)self textToSpeechBegin];
-  v49 = [v48 applySensitiveConditionsPolicy:v4];
-  v50 = [v49 suppressMessage];
+  textToSpeechBegin = [(SISchemaClientEvent *)self textToSpeechBegin];
+  v49 = [textToSpeechBegin applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage15 = [v49 suppressMessage];
 
-  if (v50)
+  if (suppressMessage15)
   {
     [(SISchemaClientEvent *)self deleteTextToSpeechBegin];
   }
 
-  v51 = [(SISchemaClientEvent *)self textToSpeechEnd];
-  v52 = [v51 applySensitiveConditionsPolicy:v4];
-  v53 = [v52 suppressMessage];
+  textToSpeechEnd = [(SISchemaClientEvent *)self textToSpeechEnd];
+  v52 = [textToSpeechEnd applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage16 = [v52 suppressMessage];
 
-  if (v53)
+  if (suppressMessage16)
   {
     [(SISchemaClientEvent *)self deleteTextToSpeechEnd];
   }
 
-  v54 = [(SISchemaClientEvent *)self uiStateTransition];
-  v55 = [v54 applySensitiveConditionsPolicy:v4];
-  v56 = [v55 suppressMessage];
+  uiStateTransition = [(SISchemaClientEvent *)self uiStateTransition];
+  v55 = [uiStateTransition applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage17 = [v55 suppressMessage];
 
-  if (v56)
+  if (suppressMessage17)
   {
     [(SISchemaClientEvent *)self deleteUiStateTransition];
   }
 
-  v57 = [(SISchemaClientEvent *)self clientFlow];
-  v58 = [v57 applySensitiveConditionsPolicy:v4];
-  v59 = [v58 suppressMessage];
+  clientFlow = [(SISchemaClientEvent *)self clientFlow];
+  v58 = [clientFlow applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage18 = [v58 suppressMessage];
 
-  if (v59)
+  if (suppressMessage18)
   {
     [(SISchemaClientEvent *)self deleteClientFlow];
   }
 
-  v60 = [(SISchemaClientEvent *)self dialogOutput];
-  v61 = [v60 applySensitiveConditionsPolicy:v4];
-  v62 = [v61 suppressMessage];
+  dialogOutput = [(SISchemaClientEvent *)self dialogOutput];
+  v61 = [dialogOutput applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage19 = [v61 suppressMessage];
 
-  if (v62)
+  if (suppressMessage19)
   {
     [(SISchemaClientEvent *)self deleteDialogOutput];
   }
 
-  v63 = [(SISchemaClientEvent *)self dictationEndPointStop];
-  v64 = [v63 applySensitiveConditionsPolicy:v4];
-  v65 = [v64 suppressMessage];
+  dictationEndPointStop = [(SISchemaClientEvent *)self dictationEndPointStop];
+  v64 = [dictationEndPointStop applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage20 = [v64 suppressMessage];
 
-  if (v65)
+  if (suppressMessage20)
   {
     [(SISchemaClientEvent *)self deleteDictationEndPointStop];
   }
 
-  v66 = [(SISchemaClientEvent *)self dictationEndPointCancel];
-  v67 = [v66 applySensitiveConditionsPolicy:v4];
-  v68 = [v67 suppressMessage];
+  dictationEndPointCancel = [(SISchemaClientEvent *)self dictationEndPointCancel];
+  v67 = [dictationEndPointCancel applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage21 = [v67 suppressMessage];
 
-  if (v68)
+  if (suppressMessage21)
   {
     [(SISchemaClientEvent *)self deleteDictationEndPointCancel];
   }
 
-  v69 = [(SISchemaClientEvent *)self dictationAlternativeSelected];
-  v70 = [v69 applySensitiveConditionsPolicy:v4];
-  v71 = [v70 suppressMessage];
+  dictationAlternativeSelected = [(SISchemaClientEvent *)self dictationAlternativeSelected];
+  v70 = [dictationAlternativeSelected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage22 = [v70 suppressMessage];
 
-  if (v71)
+  if (suppressMessage22)
   {
     [(SISchemaClientEvent *)self deleteDictationAlternativeSelected];
   }
 
-  v72 = [(SISchemaClientEvent *)self dictationTranscriptionMetadata];
-  v73 = [v72 applySensitiveConditionsPolicy:v4];
-  v74 = [v73 suppressMessage];
+  dictationTranscriptionMetadata = [(SISchemaClientEvent *)self dictationTranscriptionMetadata];
+  v73 = [dictationTranscriptionMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage23 = [v73 suppressMessage];
 
-  if (v74)
+  if (suppressMessage23)
   {
     [(SISchemaClientEvent *)self deleteDictationTranscriptionMetadata];
   }
 
-  v75 = [(SISchemaClientEvent *)self carPlayHeadUnitContext];
-  v76 = [v75 applySensitiveConditionsPolicy:v4];
-  v77 = [v76 suppressMessage];
+  carPlayHeadUnitContext = [(SISchemaClientEvent *)self carPlayHeadUnitContext];
+  v76 = [carPlayHeadUnitContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage24 = [v76 suppressMessage];
 
-  if (v77)
+  if (suppressMessage24)
   {
     [(SISchemaClientEvent *)self deleteCarPlayHeadUnitContext];
   }
 
-  v78 = [(SISchemaClientEvent *)self uufrCompletion];
-  v79 = [v78 applySensitiveConditionsPolicy:v4];
-  v80 = [v79 suppressMessage];
+  uufrCompletion = [(SISchemaClientEvent *)self uufrCompletion];
+  v79 = [uufrCompletion applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage25 = [v79 suppressMessage];
 
-  if (v80)
+  if (suppressMessage25)
   {
     [(SISchemaClientEvent *)self deleteUufrCompletion];
   }
 
-  v81 = [(SISchemaClientEvent *)self uufrShown];
-  v82 = [v81 applySensitiveConditionsPolicy:v4];
-  v83 = [v82 suppressMessage];
+  uufrShown = [(SISchemaClientEvent *)self uufrShown];
+  v82 = [uufrShown applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage26 = [v82 suppressMessage];
 
-  if (v83)
+  if (suppressMessage26)
   {
     [(SISchemaClientEvent *)self deleteUufrShown];
   }
 
-  v84 = [(SISchemaClientEvent *)self uufrSaid];
-  v85 = [v84 applySensitiveConditionsPolicy:v4];
-  v86 = [v85 suppressMessage];
+  uufrSaid = [(SISchemaClientEvent *)self uufrSaid];
+  v85 = [uufrSaid applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage27 = [v85 suppressMessage];
 
-  if (v86)
+  if (suppressMessage27)
   {
     [(SISchemaClientEvent *)self deleteUufrSaid];
   }
 
-  v87 = [(SISchemaClientEvent *)self uufrFatalError];
-  v88 = [v87 applySensitiveConditionsPolicy:v4];
-  v89 = [v88 suppressMessage];
+  uufrFatalError = [(SISchemaClientEvent *)self uufrFatalError];
+  v88 = [uufrFatalError applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage28 = [v88 suppressMessage];
 
-  if (v89)
+  if (suppressMessage28)
   {
     [(SISchemaClientEvent *)self deleteUufrFatalError];
   }
 
-  v90 = [(SISchemaClientEvent *)self dictationAlternativesViewed];
-  v91 = [v90 applySensitiveConditionsPolicy:v4];
-  v92 = [v91 suppressMessage];
+  dictationAlternativesViewed = [(SISchemaClientEvent *)self dictationAlternativesViewed];
+  v91 = [dictationAlternativesViewed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage29 = [v91 suppressMessage];
 
-  if (v92)
+  if (suppressMessage29)
   {
     [(SISchemaClientEvent *)self deleteDictationAlternativesViewed];
   }
 
-  v93 = [(SISchemaClientEvent *)self intercomMessageRecorded];
-  v94 = [v93 applySensitiveConditionsPolicy:v4];
-  v95 = [v94 suppressMessage];
+  intercomMessageRecorded = [(SISchemaClientEvent *)self intercomMessageRecorded];
+  v94 = [intercomMessageRecorded applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage30 = [v94 suppressMessage];
 
-  if (v95)
+  if (suppressMessage30)
   {
     [(SISchemaClientEvent *)self deleteIntercomMessageRecorded];
   }
 
-  v96 = [(SISchemaClientEvent *)self casinoRelationship];
-  v97 = [v96 applySensitiveConditionsPolicy:v4];
-  v98 = [v97 suppressMessage];
+  casinoRelationship = [(SISchemaClientEvent *)self casinoRelationship];
+  v97 = [casinoRelationship applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage31 = [v97 suppressMessage];
 
-  if (v98)
+  if (suppressMessage31)
   {
     [(SISchemaClientEvent *)self deleteCasinoRelationship];
   }
 
-  v99 = [(SISchemaClientEvent *)self userViewRegionInteraction];
-  v100 = [v99 applySensitiveConditionsPolicy:v4];
-  v101 = [v100 suppressMessage];
+  userViewRegionInteraction = [(SISchemaClientEvent *)self userViewRegionInteraction];
+  v100 = [userViewRegionInteraction applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage32 = [v100 suppressMessage];
 
-  if (v101)
+  if (suppressMessage32)
   {
     [(SISchemaClientEvent *)self deleteUserViewRegionInteraction];
   }
 
-  v102 = [(SISchemaClientEvent *)self deviceLockStateChanged];
-  v103 = [v102 applySensitiveConditionsPolicy:v4];
-  v104 = [v103 suppressMessage];
+  deviceLockStateChanged = [(SISchemaClientEvent *)self deviceLockStateChanged];
+  v103 = [deviceLockStateChanged applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage33 = [v103 suppressMessage];
 
-  if (v104)
+  if (suppressMessage33)
   {
     [(SISchemaClientEvent *)self deleteDeviceLockStateChanged];
   }
 
-  v105 = [(SISchemaClientEvent *)self ueiRequestCategorization];
-  v106 = [v105 applySensitiveConditionsPolicy:v4];
-  v107 = [v106 suppressMessage];
+  ueiRequestCategorization = [(SISchemaClientEvent *)self ueiRequestCategorization];
+  v106 = [ueiRequestCategorization applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage34 = [v106 suppressMessage];
 
-  if (v107)
+  if (suppressMessage34)
   {
     [(SISchemaClientEvent *)self deleteUeiRequestCategorization];
   }
 
-  v108 = [(SISchemaClientEvent *)self audioStopRecordingStarted];
-  v109 = [v108 applySensitiveConditionsPolicy:v4];
-  v110 = [v109 suppressMessage];
+  audioStopRecordingStarted = [(SISchemaClientEvent *)self audioStopRecordingStarted];
+  v109 = [audioStopRecordingStarted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage35 = [v109 suppressMessage];
 
-  if (v110)
+  if (suppressMessage35)
   {
     [(SISchemaClientEvent *)self deleteAudioStopRecordingStarted];
   }
 
-  v111 = [(SISchemaClientEvent *)self ueiLaunchContext];
-  v112 = [v111 applySensitiveConditionsPolicy:v4];
-  v113 = [v112 suppressMessage];
+  ueiLaunchContext = [(SISchemaClientEvent *)self ueiLaunchContext];
+  v112 = [ueiLaunchContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage36 = [v112 suppressMessage];
 
-  if (v113)
+  if (suppressMessage36)
   {
     [(SISchemaClientEvent *)self deleteUeiLaunchContext];
   }
 
-  v114 = [(SISchemaClientEvent *)self ueiUserSpeakingContext];
-  v115 = [v114 applySensitiveConditionsPolicy:v4];
-  v116 = [v115 suppressMessage];
+  ueiUserSpeakingContext = [(SISchemaClientEvent *)self ueiUserSpeakingContext];
+  v115 = [ueiUserSpeakingContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage37 = [v115 suppressMessage];
 
-  if (v116)
+  if (suppressMessage37)
   {
     [(SISchemaClientEvent *)self deleteUeiUserSpeakingContext];
   }
 
-  v117 = [(SISchemaClientEvent *)self ueiUUFRReady];
-  v118 = [v117 applySensitiveConditionsPolicy:v4];
-  v119 = [v118 suppressMessage];
+  ueiUUFRReady = [(SISchemaClientEvent *)self ueiUUFRReady];
+  v118 = [ueiUUFRReady applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage38 = [v118 suppressMessage];
 
-  if (v119)
+  if (suppressMessage38)
   {
     [(SISchemaClientEvent *)self deleteUeiUUFRReady];
   }
 
-  v120 = [(SISchemaClientEvent *)self ueiUIRenderingContext];
-  v121 = [v120 applySensitiveConditionsPolicy:v4];
-  v122 = [v121 suppressMessage];
+  ueiUIRenderingContext = [(SISchemaClientEvent *)self ueiUIRenderingContext];
+  v121 = [ueiUIRenderingContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage39 = [v121 suppressMessage];
 
-  if (v122)
+  if (suppressMessage39)
   {
     [(SISchemaClientEvent *)self deleteUeiUIRenderingContext];
   }
 
-  v123 = [(SISchemaClientEvent *)self pnrTextToSpeechRequestReceived];
-  v124 = [v123 applySensitiveConditionsPolicy:v4];
-  v125 = [v124 suppressMessage];
+  pnrTextToSpeechRequestReceived = [(SISchemaClientEvent *)self pnrTextToSpeechRequestReceived];
+  v124 = [pnrTextToSpeechRequestReceived applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage40 = [v124 suppressMessage];
 
-  if (v125)
+  if (suppressMessage40)
   {
     [(SISchemaClientEvent *)self deletePnrTextToSpeechRequestReceived];
   }
 
-  v126 = [(SISchemaClientEvent *)self pnrSpeechRecognitionSourceContext];
-  v127 = [v126 applySensitiveConditionsPolicy:v4];
-  v128 = [v127 suppressMessage];
+  pnrSpeechRecognitionSourceContext = [(SISchemaClientEvent *)self pnrSpeechRecognitionSourceContext];
+  v127 = [pnrSpeechRecognitionSourceContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage41 = [v127 suppressMessage];
 
-  if (v128)
+  if (suppressMessage41)
   {
     [(SISchemaClientEvent *)self deletePnrSpeechRecognitionSourceContext];
   }
 
-  v129 = [(SISchemaClientEvent *)self pnrFatalError];
-  v130 = [v129 applySensitiveConditionsPolicy:v4];
-  v131 = [v130 suppressMessage];
+  pnrFatalError = [(SISchemaClientEvent *)self pnrFatalError];
+  v130 = [pnrFatalError applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage42 = [v130 suppressMessage];
 
-  if (v131)
+  if (suppressMessage42)
   {
     [(SISchemaClientEvent *)self deletePnrFatalError];
   }
 
-  v132 = [(SISchemaClientEvent *)self turnMTERequest];
-  v133 = [v132 applySensitiveConditionsPolicy:v4];
-  v134 = [v133 suppressMessage];
+  turnMTERequest = [(SISchemaClientEvent *)self turnMTERequest];
+  v133 = [turnMTERequest applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage43 = [v133 suppressMessage];
 
-  if (v134)
+  if (suppressMessage43)
   {
     [(SISchemaClientEvent *)self deleteTurnMTERequest];
   }
 
-  v135 = [(SISchemaClientEvent *)self keyboardDismissed];
-  v136 = [v135 applySensitiveConditionsPolicy:v4];
-  v137 = [v136 suppressMessage];
+  keyboardDismissed = [(SISchemaClientEvent *)self keyboardDismissed];
+  v136 = [keyboardDismissed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage44 = [v136 suppressMessage];
 
-  if (v137)
+  if (suppressMessage44)
   {
     [(SISchemaClientEvent *)self deleteKeyboardDismissed];
   }
 
-  v138 = [(SISchemaClientEvent *)self engagedAccessoryContext];
-  v139 = [v138 applySensitiveConditionsPolicy:v4];
-  v140 = [v139 suppressMessage];
+  engagedAccessoryContext = [(SISchemaClientEvent *)self engagedAccessoryContext];
+  v139 = [engagedAccessoryContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage45 = [v139 suppressMessage];
 
-  if (v140)
+  if (suppressMessage45)
   {
     [(SISchemaClientEvent *)self deleteEngagedAccessoryContext];
   }
 
-  v141 = [(SISchemaClientEvent *)self announceCarPlayBannerTapped];
-  v142 = [v141 applySensitiveConditionsPolicy:v4];
-  v143 = [v142 suppressMessage];
+  announceCarPlayBannerTapped = [(SISchemaClientEvent *)self announceCarPlayBannerTapped];
+  v142 = [announceCarPlayBannerTapped applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage46 = [v142 suppressMessage];
 
-  if (v143)
+  if (suppressMessage46)
   {
     [(SISchemaClientEvent *)self deleteAnnounceCarPlayBannerTapped];
   }
 
-  v144 = [(SISchemaClientEvent *)self announceCarPlayGlyphSettingToggled];
-  v145 = [v144 applySensitiveConditionsPolicy:v4];
-  v146 = [v145 suppressMessage];
+  announceCarPlayGlyphSettingToggled = [(SISchemaClientEvent *)self announceCarPlayGlyphSettingToggled];
+  v145 = [announceCarPlayGlyphSettingToggled applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage47 = [v145 suppressMessage];
 
-  if (v146)
+  if (suppressMessage47)
   {
     [(SISchemaClientEvent *)self deleteAnnounceCarPlayGlyphSettingToggled];
   }
 
-  v147 = [(SISchemaClientEvent *)self dictationContentEdited];
-  v148 = [v147 applySensitiveConditionsPolicy:v4];
-  v149 = [v148 suppressMessage];
+  dictationContentEdited = [(SISchemaClientEvent *)self dictationContentEdited];
+  v148 = [dictationContentEdited applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage48 = [v148 suppressMessage];
 
-  if (v149)
+  if (suppressMessage48)
   {
     [(SISchemaClientEvent *)self deleteDictationContentEdited];
   }
 
-  v150 = [(SISchemaClientEvent *)self uufrShownTier1];
-  v151 = [v150 applySensitiveConditionsPolicy:v4];
-  v152 = [v151 suppressMessage];
+  uufrShownTier1 = [(SISchemaClientEvent *)self uufrShownTier1];
+  v151 = [uufrShownTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage49 = [v151 suppressMessage];
 
-  if (v152)
+  if (suppressMessage49)
   {
     [(SISchemaClientEvent *)self deleteUufrShownTier1];
   }
 
-  v153 = [(SISchemaClientEvent *)self ueiDictationPartialResultUpdated];
-  v154 = [v153 applySensitiveConditionsPolicy:v4];
-  v155 = [v154 suppressMessage];
+  ueiDictationPartialResultUpdated = [(SISchemaClientEvent *)self ueiDictationPartialResultUpdated];
+  v154 = [ueiDictationPartialResultUpdated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage50 = [v154 suppressMessage];
 
-  if (v155)
+  if (suppressMessage50)
   {
     [(SISchemaClientEvent *)self deleteUeiDictationPartialResultUpdated];
   }
 
-  v156 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandExecuted];
-  v157 = [v156 applySensitiveConditionsPolicy:v4];
-  v158 = [v157 suppressMessage];
+  ueiDictationVoiceCommandExecuted = [(SISchemaClientEvent *)self ueiDictationVoiceCommandExecuted];
+  v157 = [ueiDictationVoiceCommandExecuted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage51 = [v157 suppressMessage];
 
-  if (v158)
+  if (suppressMessage51)
   {
     [(SISchemaClientEvent *)self deleteUeiDictationVoiceCommandExecuted];
   }
 
-  v159 = [(SISchemaClientEvent *)self ueiDictationInputModeSwitchContext];
-  v160 = [v159 applySensitiveConditionsPolicy:v4];
-  v161 = [v160 suppressMessage];
+  ueiDictationInputModeSwitchContext = [(SISchemaClientEvent *)self ueiDictationInputModeSwitchContext];
+  v160 = [ueiDictationInputModeSwitchContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage52 = [v160 suppressMessage];
 
-  if (v161)
+  if (suppressMessage52)
   {
     [(SISchemaClientEvent *)self deleteUeiDictationInputModeSwitchContext];
   }
 
-  v162 = [(SISchemaClientEvent *)self ueiDictationToolTipDisplayContext];
-  v163 = [v162 applySensitiveConditionsPolicy:v4];
-  v164 = [v163 suppressMessage];
+  ueiDictationToolTipDisplayContext = [(SISchemaClientEvent *)self ueiDictationToolTipDisplayContext];
+  v163 = [ueiDictationToolTipDisplayContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage53 = [v163 suppressMessage];
 
-  if (v164)
+  if (suppressMessage53)
   {
     [(SISchemaClientEvent *)self deleteUeiDictationToolTipDisplayContext];
   }
 
-  v165 = [(SISchemaClientEvent *)self hostPlatformViewAppearContext];
-  v166 = [v165 applySensitiveConditionsPolicy:v4];
-  v167 = [v166 suppressMessage];
+  hostPlatformViewAppearContext = [(SISchemaClientEvent *)self hostPlatformViewAppearContext];
+  v166 = [hostPlatformViewAppearContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage54 = [v166 suppressMessage];
 
-  if (v167)
+  if (suppressMessage54)
   {
     [(SISchemaClientEvent *)self deleteHostPlatformViewAppearContext];
   }
 
-  v168 = [(SISchemaClientEvent *)self hostPlatformViewDisappearContext];
-  v169 = [v168 applySensitiveConditionsPolicy:v4];
-  v170 = [v169 suppressMessage];
+  hostPlatformViewDisappearContext = [(SISchemaClientEvent *)self hostPlatformViewDisappearContext];
+  v169 = [hostPlatformViewDisappearContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage55 = [v169 suppressMessage];
 
-  if (v170)
+  if (suppressMessage55)
   {
     [(SISchemaClientEvent *)self deleteHostPlatformViewDisappearContext];
   }
 
-  v171 = [(SISchemaClientEvent *)self ueiDictationTranscriptionTokenized];
-  v172 = [v171 applySensitiveConditionsPolicy:v4];
-  v173 = [v172 suppressMessage];
+  ueiDictationTranscriptionTokenized = [(SISchemaClientEvent *)self ueiDictationTranscriptionTokenized];
+  v172 = [ueiDictationTranscriptionTokenized applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage56 = [v172 suppressMessage];
 
-  if (v173)
+  if (suppressMessage56)
   {
     [(SISchemaClientEvent *)self deleteUeiDictationTranscriptionTokenized];
   }
 
-  v174 = [(SISchemaClientEvent *)self dictationAlternativesSelected];
-  v175 = [v174 applySensitiveConditionsPolicy:v4];
-  v176 = [v175 suppressMessage];
+  dictationAlternativesSelected = [(SISchemaClientEvent *)self dictationAlternativesSelected];
+  v175 = [dictationAlternativesSelected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage57 = [v175 suppressMessage];
 
-  if (v176)
+  if (suppressMessage57)
   {
     [(SISchemaClientEvent *)self deleteDictationAlternativesSelected];
   }
 
-  v177 = [(SISchemaClientEvent *)self uufrSelected];
-  v178 = [v177 applySensitiveConditionsPolicy:v4];
-  v179 = [v178 suppressMessage];
+  uufrSelected = [(SISchemaClientEvent *)self uufrSelected];
+  v178 = [uufrSelected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage58 = [v178 suppressMessage];
 
-  if (v179)
+  if (suppressMessage58)
   {
     [(SISchemaClientEvent *)self deleteUufrSelected];
   }
 
-  v180 = [(SISchemaClientEvent *)self ueiDictationAlternativeTextPairsSelected];
-  v181 = [v180 applySensitiveConditionsPolicy:v4];
-  v182 = [v181 suppressMessage];
+  ueiDictationAlternativeTextPairsSelected = [(SISchemaClientEvent *)self ueiDictationAlternativeTextPairsSelected];
+  v181 = [ueiDictationAlternativeTextPairsSelected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage59 = [v181 suppressMessage];
 
-  if (v182)
+  if (suppressMessage59)
   {
     [(SISchemaClientEvent *)self deleteUeiDictationAlternativeTextPairsSelected];
   }
 
-  v183 = [(SISchemaClientEvent *)self ueiUserBargeInDetected];
-  v184 = [v183 applySensitiveConditionsPolicy:v4];
-  v185 = [v184 suppressMessage];
+  ueiUserBargeInDetected = [(SISchemaClientEvent *)self ueiUserBargeInDetected];
+  v184 = [ueiUserBargeInDetected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage60 = [v184 suppressMessage];
 
-  if (v185)
+  if (suppressMessage60)
   {
     [(SISchemaClientEvent *)self deleteUeiUserBargeInDetected];
   }
 
-  v186 = [(SISchemaClientEvent *)self ueiDictationEnablementPromptShown];
-  v187 = [v186 applySensitiveConditionsPolicy:v4];
-  v188 = [v187 suppressMessage];
+  ueiDictationEnablementPromptShown = [(SISchemaClientEvent *)self ueiDictationEnablementPromptShown];
+  v187 = [ueiDictationEnablementPromptShown applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage61 = [v187 suppressMessage];
 
-  if (v188)
+  if (suppressMessage61)
   {
     [(SISchemaClientEvent *)self deleteUeiDictationEnablementPromptShown];
   }
 
-  v189 = [(SISchemaClientEvent *)self ueiSiriCarCommandContext];
-  v190 = [v189 applySensitiveConditionsPolicy:v4];
-  v191 = [v190 suppressMessage];
+  ueiSiriCarCommandContext = [(SISchemaClientEvent *)self ueiSiriCarCommandContext];
+  v190 = [ueiSiriCarCommandContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage62 = [v190 suppressMessage];
 
-  if (v191)
+  if (suppressMessage62)
   {
     [(SISchemaClientEvent *)self deleteUeiSiriCarCommandContext];
   }
 
-  v192 = [(SISchemaClientEvent *)self ueiVisionSnippetDismissed];
-  v193 = [v192 applySensitiveConditionsPolicy:v4];
-  v194 = [v193 suppressMessage];
+  ueiVisionSnippetDismissed = [(SISchemaClientEvent *)self ueiVisionSnippetDismissed];
+  v193 = [ueiVisionSnippetDismissed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage63 = [v193 suppressMessage];
 
-  if (v194)
+  if (suppressMessage63)
   {
     [(SISchemaClientEvent *)self deleteUeiVisionSnippetDismissed];
   }
 
-  v195 = [(SISchemaClientEvent *)self ueiSiriWasUnavailable];
-  v196 = [v195 applySensitiveConditionsPolicy:v4];
-  v197 = [v196 suppressMessage];
+  ueiSiriWasUnavailable = [(SISchemaClientEvent *)self ueiSiriWasUnavailable];
+  v196 = [ueiSiriWasUnavailable applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage64 = [v196 suppressMessage];
 
-  if (v197)
+  if (suppressMessage64)
   {
     [(SISchemaClientEvent *)self deleteUeiSiriWasUnavailable];
   }
 
-  v198 = [(SISchemaClientEvent *)self preferredAudioRouteChanged];
-  v199 = [v198 applySensitiveConditionsPolicy:v4];
-  v200 = [v199 suppressMessage];
+  preferredAudioRouteChanged = [(SISchemaClientEvent *)self preferredAudioRouteChanged];
+  v199 = [preferredAudioRouteChanged applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage65 = [v199 suppressMessage];
 
-  if (v200)
+  if (suppressMessage65)
   {
     [(SISchemaClientEvent *)self deletePreferredAudioRouteChanged];
   }
 
-  v201 = [(SISchemaClientEvent *)self ueiDictationContentEditedTier1];
-  v202 = [v201 applySensitiveConditionsPolicy:v4];
-  v203 = [v202 suppressMessage];
+  ueiDictationContentEditedTier1 = [(SISchemaClientEvent *)self ueiDictationContentEditedTier1];
+  v202 = [ueiDictationContentEditedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage66 = [v202 suppressMessage];
 
-  if (v203)
+  if (suppressMessage66)
   {
     [(SISchemaClientEvent *)self deleteUeiDictationContentEditedTier1];
   }
 
-  v204 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandUndoTapAction];
-  v205 = [v204 applySensitiveConditionsPolicy:v4];
-  v206 = [v205 suppressMessage];
+  ueiDictationVoiceCommandUndoTapAction = [(SISchemaClientEvent *)self ueiDictationVoiceCommandUndoTapAction];
+  v205 = [ueiDictationVoiceCommandUndoTapAction applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage67 = [v205 suppressMessage];
 
-  if (v206)
+  if (suppressMessage67)
   {
     [(SISchemaClientEvent *)self deleteUeiDictationVoiceCommandUndoTapAction];
   }
 
-  v207 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandDisambiguationAction];
-  v208 = [v207 applySensitiveConditionsPolicy:v4];
-  v209 = [v208 suppressMessage];
+  ueiDictationVoiceCommandDisambiguationAction = [(SISchemaClientEvent *)self ueiDictationVoiceCommandDisambiguationAction];
+  v208 = [ueiDictationVoiceCommandDisambiguationAction applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage68 = [v208 suppressMessage];
 
-  if (v209)
+  if (suppressMessage68)
   {
     [(SISchemaClientEvent *)self deleteUeiDictationVoiceCommandDisambiguationAction];
   }
 
-  v210 = [(SISchemaClientEvent *)self ueiDictationVoiceCommandKeyboardAction];
-  v211 = [v210 applySensitiveConditionsPolicy:v4];
-  v212 = [v211 suppressMessage];
+  ueiDictationVoiceCommandKeyboardAction = [(SISchemaClientEvent *)self ueiDictationVoiceCommandKeyboardAction];
+  v211 = [ueiDictationVoiceCommandKeyboardAction applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage69 = [v211 suppressMessage];
 
-  if (v212)
+  if (suppressMessage69)
   {
     [(SISchemaClientEvent *)self deleteUeiDictationVoiceCommandKeyboardAction];
   }
 
-  v213 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEvent];
-  v214 = [v213 applySensitiveConditionsPolicy:v4];
-  v215 = [v214 suppressMessage];
+  ueiDictationEuclidAlternativesEvent = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEvent];
+  v214 = [ueiDictationEuclidAlternativesEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage70 = [v214 suppressMessage];
 
-  if (v215)
+  if (suppressMessage70)
   {
     [(SISchemaClientEvent *)self deleteUeiDictationEuclidAlternativesEvent];
   }
 
-  v216 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEventTier1];
-  v217 = [v216 applySensitiveConditionsPolicy:v4];
-  v218 = [v217 suppressMessage];
+  ueiDictationEuclidAlternativesEventTier1 = [(SISchemaClientEvent *)self ueiDictationEuclidAlternativesEventTier1];
+  v217 = [ueiDictationEuclidAlternativesEventTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage71 = [v217 suppressMessage];
 
-  if (v218)
+  if (suppressMessage71)
   {
     [(SISchemaClientEvent *)self deleteUeiDictationEuclidAlternativesEventTier1];
   }
 
-  v219 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelected];
-  v220 = [v219 applySensitiveConditionsPolicy:v4];
-  v221 = [v220 suppressMessage];
+  ueiDictationEuclidSpeechAlternativesSelected = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelected];
+  v220 = [ueiDictationEuclidSpeechAlternativesSelected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage72 = [v220 suppressMessage];
 
-  if (v221)
+  if (suppressMessage72)
   {
     [(SISchemaClientEvent *)self deleteUeiDictationEuclidSpeechAlternativesSelected];
   }
 
-  v222 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelectedTier1];
-  v223 = [v222 applySensitiveConditionsPolicy:v4];
-  v224 = [v223 suppressMessage];
+  ueiDictationEuclidSpeechAlternativesSelectedTier1 = [(SISchemaClientEvent *)self ueiDictationEuclidSpeechAlternativesSelectedTier1];
+  v223 = [ueiDictationEuclidSpeechAlternativesSelectedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage73 = [v223 suppressMessage];
 
-  if (v224)
+  if (suppressMessage73)
   {
     [(SISchemaClientEvent *)self deleteUeiDictationEuclidSpeechAlternativesSelectedTier1];
   }
 
-  v225 = [(SISchemaClientEvent *)self typingRequestTrace];
-  v226 = [v225 applySensitiveConditionsPolicy:v4];
-  v227 = [v226 suppressMessage];
+  typingRequestTrace = [(SISchemaClientEvent *)self typingRequestTrace];
+  v226 = [typingRequestTrace applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage74 = [v226 suppressMessage];
 
-  if (v227)
+  if (suppressMessage74)
   {
     [(SISchemaClientEvent *)self deleteTypingRequestTrace];
   }
 
-  v228 = [(SISchemaClientEvent *)self ueiInvocationTier1];
-  v229 = [v228 applySensitiveConditionsPolicy:v4];
-  v230 = [v229 suppressMessage];
+  ueiInvocationTier1 = [(SISchemaClientEvent *)self ueiInvocationTier1];
+  v229 = [ueiInvocationTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage75 = [v229 suppressMessage];
 
-  if (v230)
+  if (suppressMessage75)
   {
     [(SISchemaClientEvent *)self deleteUeiInvocationTier1];
   }
 
-  v231 = [(SISchemaClientEvent *)self transcriptShown];
-  v232 = [v231 applySensitiveConditionsPolicy:v4];
-  v233 = [v232 suppressMessage];
+  transcriptShown = [(SISchemaClientEvent *)self transcriptShown];
+  v232 = [transcriptShown applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage76 = [v232 suppressMessage];
 
-  if (v233)
+  if (suppressMessage76)
   {
     [(SISchemaClientEvent *)self deleteTranscriptShown];
   }
 
-  v234 = [(SISchemaClientEvent *)self transcriptTapped];
-  v235 = [v234 applySensitiveConditionsPolicy:v4];
-  v236 = [v235 suppressMessage];
+  transcriptTapped = [(SISchemaClientEvent *)self transcriptTapped];
+  v235 = [transcriptTapped applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage77 = [v235 suppressMessage];
 
-  if (v236)
+  if (suppressMessage77)
   {
     [(SISchemaClientEvent *)self deleteTranscriptTapped];
   }
@@ -26613,72 +26613,72 @@ LABEL_389:
 - (int)componentName
 {
   v3 = [SISchemaUUID alloc];
-  v4 = [(SISchemaClientEvent *)self eventMetadata];
-  v5 = [v4 turnID];
-  v6 = [(SISchemaUUID *)v3 initWithBytesAsData:v5];
+  eventMetadata = [(SISchemaClientEvent *)self eventMetadata];
+  turnID = [eventMetadata turnID];
+  v6 = [(SISchemaUUID *)v3 initWithBytesAsData:turnID];
 
   if (v6)
   {
-    v7 = [(SISchemaUUID *)v6 value];
-    if (v7)
+    value = [(SISchemaUUID *)v6 value];
+    if (value)
     {
-      v8 = [(SISchemaUUID *)v6 value];
-      v9 = [v8 length] != 0;
+      value2 = [(SISchemaUUID *)v6 value];
+      v9 = [value2 length] != 0;
 
-      LODWORD(v7) = 2 * v9;
+      LODWORD(value) = 2 * v9;
     }
   }
 
   else
   {
-    LODWORD(v7) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v7;
+  return value;
 }
 
 - (id)getComponentId
 {
   v3 = [SISchemaUUID alloc];
-  v4 = [(SISchemaClientEvent *)self eventMetadata];
-  v5 = [v4 turnID];
-  v6 = [(SISchemaUUID *)v3 initWithBytesAsData:v5];
+  eventMetadata = [(SISchemaClientEvent *)self eventMetadata];
+  turnID = [eventMetadata turnID];
+  v6 = [(SISchemaUUID *)v3 initWithBytesAsData:turnID];
 
   if (!v6)
   {
     goto LABEL_5;
   }
 
-  v7 = [(SISchemaUUID *)v6 value];
-  if (!v7)
+  value = [(SISchemaUUID *)v6 value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v8 = [(SISchemaUUID *)v6 value];
-  v9 = [v8 length];
+  value2 = [(SISchemaUUID *)v6 value];
+  v9 = [value2 length];
 
   if (v9)
   {
-    v7 = v6;
+    value = v6;
   }
 
   else
   {
 LABEL_5:
-    v7 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v7;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(SISchemaClientEvent *)self whichEvent_Type];
+  whichEvent_Type = [(SISchemaClientEvent *)self whichEvent_Type];
   v4 = 0;
-  v5 = v3 - 101;
+  v5 = whichEvent_Type - 101;
   v6 = &OBJC_IVAR___SISchemaClientEvent__audioFirstBufferRecorded;
   switch(v5)
   {
@@ -26915,16 +26915,16 @@ LABEL_76:
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 0x4C)
+  if (tag - 101 > 0x4C)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78E9240[a3 - 101];
+    return off_1E78E9240[tag - 101];
   }
 }
 

@@ -1,10 +1,10 @@
 @interface VoicemailAccountManagerData
 + (id)empty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)accounts;
 - (NSProgress)transcriptionProgress;
 - (NSString)description;
-- (_TtC13InCallService27VoicemailAccountManagerData)initWithAnyAccountSubscribed:(BOOL)a3 online:(BOOL)a4 isMessageWaiting:(BOOL)a5 storageUsage:(unint64_t)a6 transcriptionEnabled:(BOOL)a7 transcriptionProgress:(id)a8 accounts:(id)a9;
+- (_TtC13InCallService27VoicemailAccountManagerData)initWithAnyAccountSubscribed:(BOOL)subscribed online:(BOOL)online isMessageWaiting:(BOOL)waiting storageUsage:(unint64_t)usage transcriptionEnabled:(BOOL)enabled transcriptionProgress:(id)progress accounts:(id)accounts;
 @end
 
 @implementation VoicemailAccountManagerData
@@ -33,17 +33,17 @@
   return v2;
 }
 
-- (_TtC13InCallService27VoicemailAccountManagerData)initWithAnyAccountSubscribed:(BOOL)a3 online:(BOOL)a4 isMessageWaiting:(BOOL)a5 storageUsage:(unint64_t)a6 transcriptionEnabled:(BOOL)a7 transcriptionProgress:(id)a8 accounts:(id)a9
+- (_TtC13InCallService27VoicemailAccountManagerData)initWithAnyAccountSubscribed:(BOOL)subscribed online:(BOOL)online isMessageWaiting:(BOOL)waiting storageUsage:(unint64_t)usage transcriptionEnabled:(BOOL)enabled transcriptionProgress:(id)progress accounts:(id)accounts
 {
   type metadata accessor for VoicemailAccount();
   v15 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v16 = a8;
-  return sub_1002293C8(a3, a4, a5, a6, a7, a8, v15);
+  progressCopy = progress;
+  return sub_1002293C8(subscribed, online, waiting, usage, enabled, progress, v15);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_10022963C();
 
   v3 = String._bridgeToObjectiveC()();
@@ -51,11 +51,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -64,7 +64,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_10022A0D8(v8);

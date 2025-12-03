@@ -11,7 +11,7 @@
   if ([MEMORY[0x1E69789A8] authorizationStatusForAccessLevel:2] == 4)
   {
     v8 = [v7 copy];
-    [PHLimitedLibraryPicker presentLimitedLibraryPicker:&stru_1F4DA4820 waitForDismissal:0 viewController:v6 photoLibrary:a1 completionHandler:v8];
+    [PHLimitedLibraryPicker presentLimitedLibraryPicker:&stru_1F4DA4820 waitForDismissal:0 viewController:v6 photoLibrary:self completionHandler:v8];
   }
 
   else

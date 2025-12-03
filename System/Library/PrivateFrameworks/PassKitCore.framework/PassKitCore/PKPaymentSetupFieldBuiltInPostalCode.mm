@@ -1,14 +1,14 @@
 @interface PKPaymentSetupFieldBuiltInPostalCode
-- (PKPaymentSetupFieldBuiltInPostalCode)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInPostalCode)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInPostalCode
 
-- (PKPaymentSetupFieldBuiltInPostalCode)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInPostalCode)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = PKPaymentSetupFieldBuiltInPostalCode;
-  v4 = [(PKPaymentSetupFieldText *)&v8 initWithIdentifier:@"postalCode" type:a4];
+  v4 = [(PKPaymentSetupFieldText *)&v8 initWithIdentifier:@"postalCode" type:type];
   if (v4)
   {
     v5 = PKLocalizedPaymentString(&cfstr_PostalCode.isa, 0);
@@ -18,9 +18,9 @@
     [(PKPaymentSetupFieldText *)v4 setMaxLength:10];
     [(PKPaymentSetupField *)v4 setDisplayFormat:@"XXXXX-XXXX"];
     [(PKPaymentSetupFieldText *)v4 setNumeric:1];
-    v6 = [MEMORY[0x1E696AD48] decimalDigitCharacterSet];
-    [v6 addCharactersInString:@"-"];
-    [(PKPaymentSetupFieldText *)v4 setAllowedCharacters:v6];
+    decimalDigitCharacterSet = [MEMORY[0x1E696AD48] decimalDigitCharacterSet];
+    [decimalDigitCharacterSet addCharactersInString:@"-"];
+    [(PKPaymentSetupFieldText *)v4 setAllowedCharacters:decimalDigitCharacterSet];
     [(PKPaymentSetupFieldText *)v4 setKeepPaddingCharactersForSubmission:1];
   }
 

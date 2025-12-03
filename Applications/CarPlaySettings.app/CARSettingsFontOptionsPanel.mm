@@ -8,21 +8,21 @@
 {
   v10.receiver = self;
   v10.super_class = CARSettingsFontOptionsPanel;
-  v3 = [(CARSettingsOptionsPickerPanel *)&v10 specifierSections];
+  specifierSections = [(CARSettingsOptionsPickerPanel *)&v10 specifierSections];
   v9.receiver = self;
   v9.super_class = CARSettingsFontOptionsPanel;
-  v4 = [(CARSettingsOptionsPickerPanel *)&v9 specifierSections];
-  v5 = [v4 firstObject];
+  specifierSections2 = [(CARSettingsOptionsPickerPanel *)&v9 specifierSections];
+  firstObject = [specifierSections2 firstObject];
 
-  v6 = [v5 specifiers];
+  specifiers = [firstObject specifiers];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100021D8C;
   v8[3] = &unk_1000DB568;
   v8[4] = self;
-  [v6 enumerateObjectsUsingBlock:v8];
+  [specifiers enumerateObjectsUsingBlock:v8];
 
-  return v3;
+  return specifierSections;
 }
 
 @end

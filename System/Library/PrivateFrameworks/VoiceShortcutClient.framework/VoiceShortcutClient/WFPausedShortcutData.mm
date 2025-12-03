@@ -1,9 +1,9 @@
 @interface WFPausedShortcutData
-- (WFPausedShortcutData)initWithCoder:(id)a3;
-- (WFPausedShortcutData)initWithContext:(id)a3 descriptor:(id)a4;
+- (WFPausedShortcutData)initWithCoder:(id)coder;
+- (WFPausedShortcutData)initWithContext:(id)context descriptor:(id)descriptor;
 - (WFWorkflowRunDescriptor)descriptor;
 - (WFWorkflowRunningContext)context;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFPausedShortcutData
@@ -28,11 +28,11 @@
       v10 = getWFVoiceShortcutClientLogObject();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v11 = [v8 localizedDescription];
+        localizedDescription = [v8 localizedDescription];
         *buf = 136315394;
         v16 = "[WFPausedShortcutData descriptor]";
         v17 = 2112;
-        v18 = v11;
+        v18 = localizedDescription;
         _os_log_impl(&dword_1B1DE3000, v10, OS_LOG_TYPE_ERROR, "%s Unable to decode run descriptor: %@", buf, 0x16u);
       }
     }
@@ -65,11 +65,11 @@
       v10 = getWFVoiceShortcutClientLogObject();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v11 = [v8 localizedDescription];
+        localizedDescription = [v8 localizedDescription];
         *buf = 136315394;
         v16 = "[WFPausedShortcutData context]";
         v17 = 2112;
-        v18 = v11;
+        v18 = localizedDescription;
         _os_log_impl(&dword_1B1DE3000, v10, OS_LOG_TYPE_ERROR, "%s Unable to decode running context: %@", buf, 0x16u);
       }
     }
@@ -82,20 +82,20 @@
   return context;
 }
 
-- (WFPausedShortcutData)initWithContext:(id)a3 descriptor:(id)a4
+- (WFPausedShortcutData)initWithContext:(id)context descriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  descriptorCopy = descriptor;
   v15.receiver = self;
   v15.super_class = WFPausedShortcutData;
   v8 = [(WFPausedShortcutData *)&v15 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
+    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:contextCopy requiringSecureCoding:1 error:0];
     contextData = v8->_contextData;
     v8->_contextData = v9;
 
-    v11 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:0];
+    v11 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:descriptorCopy requiringSecureCoding:1 error:0];
     descriptorData = v8->_descriptorData;
     v8->_descriptorData = v11;
 
@@ -105,19 +105,19 @@
   return v8;
 }
 
-- (WFPausedShortcutData)initWithCoder:(id)a3
+- (WFPausedShortcutData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = WFPausedShortcutData;
   v5 = [(WFPausedShortcutData *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"contextData"];
+    v6 = [coderCopy decodeObjectForKey:@"contextData"];
     contextData = v5->_contextData;
     v5->_contextData = v6;
 
-    v8 = [v4 decodeObjectForKey:@"descriptorData"];
+    v8 = [coderCopy decodeObjectForKey:@"descriptorData"];
     descriptorData = v5->_descriptorData;
     v5->_descriptorData = v8;
 
@@ -127,14 +127,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFPausedShortcutData *)self contextData];
-  [v4 encodeObject:v5 forKey:@"contextData"];
+  coderCopy = coder;
+  contextData = [(WFPausedShortcutData *)self contextData];
+  [coderCopy encodeObject:contextData forKey:@"contextData"];
 
-  v6 = [(WFPausedShortcutData *)self descriptorData];
-  [v4 encodeObject:v6 forKey:@"descriptorData"];
+  descriptorData = [(WFPausedShortcutData *)self descriptorData];
+  [coderCopy encodeObject:descriptorData forKey:@"descriptorData"];
 }
 
 @end

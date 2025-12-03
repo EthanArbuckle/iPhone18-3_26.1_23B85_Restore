@@ -1,6 +1,6 @@
 @interface ASUIDeviceOTANameTableViewCell
-- (_TtC16AccessorySetupUI30ASUIDeviceOTANameTableViewCell)initWithCoder:(id)a3;
-- (_TtC16AccessorySetupUI30ASUIDeviceOTANameTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC16AccessorySetupUI30ASUIDeviceOTANameTableViewCell)initWithCoder:(id)coder;
+- (_TtC16AccessorySetupUI30ASUIDeviceOTANameTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)awakeFromNib;
 @end
 
@@ -13,9 +13,9 @@
   [(ASUIDeviceOTANameTableViewCell *)&v2 awakeFromNib];
 }
 
-- (_TtC16AccessorySetupUI30ASUIDeviceOTANameTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC16AccessorySetupUI30ASUIDeviceOTANameTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC16AccessorySetupUI30ASUIDeviceOTANameTableViewCell_deviceOTAName);
@@ -34,20 +34,20 @@
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for ASUIDeviceOTANameTableViewCell();
-  v9 = [(ASUIDeviceOTANameTableViewCell *)&v11 initWithStyle:a3 reuseIdentifier:v7];
+  v9 = [(ASUIDeviceOTANameTableViewCell *)&v11 initWithStyle:style reuseIdentifier:v7];
 
   return v9;
 }
 
-- (_TtC16AccessorySetupUI30ASUIDeviceOTANameTableViewCell)initWithCoder:(id)a3
+- (_TtC16AccessorySetupUI30ASUIDeviceOTANameTableViewCell)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC16AccessorySetupUI30ASUIDeviceOTANameTableViewCell_deviceOTAName);
   *v4 = 0;
   v4[1] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ASUIDeviceOTANameTableViewCell();
-  v5 = a3;
-  v6 = [(ASUIDeviceOTANameTableViewCell *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(ASUIDeviceOTANameTableViewCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

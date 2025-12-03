@@ -6,32 +6,32 @@
 
 - (void)processResponse
 {
-  v3 = [(WLKUTSNetworkRequestOperation *)self responseDictionary];
-  if (v3)
+  responseDictionary = [(WLKUTSNetworkRequestOperation *)self responseDictionary];
+  if (responseDictionary)
   {
-    v8 = v3;
-    v4 = [v3 wlk_numberForKey:@"expirationInSeconds"];
+    v8 = responseDictionary;
+    v4 = [responseDictionary wlk_numberForKey:@"expirationInSeconds"];
     if (v4)
     {
-      v5 = v4;
+      httpHeaderMaxAge = v4;
     }
 
     else
     {
-      v5 = [(WLKNetworkRequestOperation *)self httpHeaderMaxAge];
-      if (!v5)
+      httpHeaderMaxAge = [(WLKNetworkRequestOperation *)self httpHeaderMaxAge];
+      if (!httpHeaderMaxAge)
       {
         v6 = 0;
         goto LABEL_6;
       }
     }
 
-    v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:{objc_msgSend(v5, "unsignedIntegerValue")}];
+    v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:{objc_msgSend(httpHeaderMaxAge, "unsignedIntegerValue")}];
 LABEL_6:
     v7 = [[WLKChannelsResponse alloc] initWithDictionary:v8 expirationDate:v6 environmentHash:[(WLKUTSNetworkRequestOperation *)self environmentHash] filtered:[(WLKChannelsRequestOperation *)self filtered]];
     [(WLKChannelsRequestOperation *)self setChannelsResponse:v7];
 
-    v3 = v8;
+    responseDictionary = v8;
   }
 }
 

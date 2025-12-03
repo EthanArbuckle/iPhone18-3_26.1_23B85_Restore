@@ -1,5 +1,5 @@
 @interface AppKitPreferencesPrivacyController
-- (AppKitPreferencesPrivacyController)initWithBundleIdentifier:(id)a3;
+- (AppKitPreferencesPrivacyController)initWithBundleIdentifier:(id)identifier;
 - (UGCAppKitPreferencesPrivacyControllerDelegate)delegate;
 - (void)_dismissSplashScreen;
 - (void)present;
@@ -26,13 +26,13 @@
   v3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_dismissSplashScreen"];
   v4 = [OBBundle bundleWithIdentifier:self->_bundleIdentifier];
   v5 = [OBPrivacySplashController alloc];
-  v6 = [v4 privacyFlow];
-  v7 = [v5 initWithFlow:v6];
+  privacyFlow = [v4 privacyFlow];
+  v7 = [v5 initWithFlow:privacyFlow];
 
   [v7 setShowsLinkToUnifiedAbout:1];
   objc_storeStrong(&self->_obkSplashController, v7);
-  v8 = [(OBPrivacySplashController *)self->_obkSplashController navigationItem];
-  [v8 setRightBarButtonItem:v3];
+  navigationItem = [(OBPrivacySplashController *)self->_obkSplashController navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
   v9 = [[UINavigationController alloc] initWithRootViewController:self->_obkSplashController];
   navigationController = self->_navigationController;
@@ -40,8 +40,8 @@
 
   [(UINavigationController *)self->_navigationController setNavigationBarHidden:1];
   v11 = +[UIApplication sharedMapsDelegate];
-  v12 = [v11 loadAppKitBundle];
-  v13 = [v12 classNamed:@"MacSceneHostingPreferencesPresentationController"];
+  loadAppKitBundle = [v11 loadAppKitBundle];
+  v13 = [loadAppKitBundle classNamed:@"MacSceneHostingPreferencesPresentationController"];
 
   objc_initWeak(&location, self);
   v14 = [v13 alloc];
@@ -58,16 +58,16 @@
   objc_destroyWeak(&location);
 }
 
-- (AppKitPreferencesPrivacyController)initWithBundleIdentifier:(id)a3
+- (AppKitPreferencesPrivacyController)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = AppKitPreferencesPrivacyController;
   v6 = [(AppKitPreferencesPrivacyController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
+    objc_storeStrong(&v6->_bundleIdentifier, identifier);
   }
 
   return v7;

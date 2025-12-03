@@ -1,20 +1,20 @@
 @interface AMSUIWebEngagementAction
-- (AMSUIWebEngagementAction)initWithJSObject:(id)a3 context:(id)a4;
-- (id)_resultFromMessageResponse:(id)a3;
+- (AMSUIWebEngagementAction)initWithJSObject:(id)object context:(id)context;
+- (id)_resultFromMessageResponse:(id)response;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebEngagementAction
 
-- (AMSUIWebEngagementAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebEngagementAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v20.receiver = self;
   v20.super_class = AMSUIWebEngagementAction;
-  v7 = [(AMSUIWebAction *)&v20 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v20 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"event"];
+    v8 = [objectCopy objectForKeyedSubscript:@"event"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
     event = v7->_event;
     v7->_event = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"message"];
+    v11 = [objectCopy objectForKeyedSubscript:@"message"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,20 +82,20 @@
 {
   v28[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E698C8D8]);
-  v4 = [(AMSUIWebEngagementAction *)self messageServiceType];
-  if (v4)
+  messageServiceType = [(AMSUIWebEngagementAction *)self messageServiceType];
+  if (messageServiceType)
   {
-    v5 = [(AMSUIWebEngagementAction *)self messagePlacements];
-    v6 = [v5 count];
+    messagePlacements = [(AMSUIWebEngagementAction *)self messagePlacements];
+    v6 = [messagePlacements count];
 
     if (v6)
     {
       v7 = objc_alloc(MEMORY[0x1E698C8E0]);
-      v8 = [(AMSUIWebEngagementAction *)self messageServiceType];
+      messageServiceType2 = [(AMSUIWebEngagementAction *)self messageServiceType];
       v9 = MEMORY[0x1E695DFD8];
-      v10 = [(AMSUIWebEngagementAction *)self messagePlacements];
-      v11 = [v9 setWithArray:v10];
-      v12 = [v7 initWithServiceType:v8 placements:v11];
+      messagePlacements2 = [(AMSUIWebEngagementAction *)self messagePlacements];
+      v11 = [v9 setWithArray:messagePlacements2];
+      v12 = [v7 initWithServiceType:messageServiceType2 placements:v11];
 
       v13 = [v3 enqueueMessageEvent:v12];
       v27[0] = MEMORY[0x1E69E9820];
@@ -103,21 +103,21 @@
       v27[2] = __37__AMSUIWebEngagementAction_runAction__block_invoke;
       v27[3] = &unk_1E7F26028;
       v27[4] = self;
-      v4 = [v13 thenWithBlock:v27];
+      messageServiceType = [v13 thenWithBlock:v27];
     }
 
     else
     {
-      v4 = 0;
+      messageServiceType = 0;
     }
   }
 
-  v14 = [(AMSUIWebEngagementAction *)self event];
+  event = [(AMSUIWebEngagementAction *)self event];
 
-  if (v14)
+  if (event)
   {
-    v15 = [(AMSUIWebEngagementAction *)self event];
-    v16 = [v3 enqueueData:v15];
+    event2 = [(AMSUIWebEngagementAction *)self event];
+    v16 = [v3 enqueueData:event2];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __37__AMSUIWebEngagementAction_runAction__block_invoke_2;
@@ -132,8 +132,8 @@
   }
 
   v18 = MEMORY[0x1E698CAD0];
-  v19 = v4;
-  if (!v4)
+  v19 = messageServiceType;
+  if (!messageServiceType)
   {
     v19 = [MEMORY[0x1E698CAD0] promiseWithResult:MEMORY[0x1E695E0F8]];
   }
@@ -151,7 +151,7 @@
 
   if (v17)
   {
-    if (v4)
+    if (messageServiceType)
     {
       goto LABEL_14;
     }
@@ -160,7 +160,7 @@
   else
   {
 
-    if (v4)
+    if (messageServiceType)
     {
       goto LABEL_14;
     }
@@ -285,28 +285,28 @@ id __37__AMSUIWebEngagementAction_runAction__block_invoke_3(uint64_t a1, void *a
   return v10;
 }
 
-- (id)_resultFromMessageResponse:(id)a3
+- (id)_resultFromMessageResponse:(id)response
 {
-  if (a3)
+  if (response)
   {
     v4 = MEMORY[0x1E695DF90];
-    v5 = a3;
+    responseCopy = response;
     v6 = objc_alloc_init(v4);
-    v7 = [v5 fullScreenMessageRequest];
-    v8 = [v7 makeDialogRequest];
-    v9 = [v8 generateWebExport];
-    [v6 setObject:v9 forKeyedSubscript:@"dialogRequest"];
+    fullScreenMessageRequest = [responseCopy fullScreenMessageRequest];
+    makeDialogRequest = [fullScreenMessageRequest makeDialogRequest];
+    generateWebExport = [makeDialogRequest generateWebExport];
+    [v6 setObject:generateWebExport forKeyedSubscript:@"dialogRequest"];
 
-    v10 = [v5 engagementRequest];
-    v11 = [(AMSUIWebAction *)self context];
-    v12 = [v10 generateWebExportWithContext:v11];
+    engagementRequest = [responseCopy engagementRequest];
+    context = [(AMSUIWebAction *)self context];
+    v12 = [engagementRequest generateWebExportWithContext:context];
     [v6 setObject:v12 forKeyedSubscript:@"engagementRequest"];
 
-    v13 = [v5 serviceType];
-    [v6 setObject:v13 forKeyedSubscript:@"serviceType"];
+    serviceType = [responseCopy serviceType];
+    [v6 setObject:serviceType forKeyedSubscript:@"serviceType"];
 
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v15 = [v5 placements];
+    placements = [responseCopy placements];
 
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -314,7 +314,7 @@ id __37__AMSUIWebEngagementAction_runAction__block_invoke_3(uint64_t a1, void *a
     v18[3] = &unk_1E7F26098;
     v19 = v14;
     v16 = v14;
-    [v15 enumerateKeysAndObjectsUsingBlock:v18];
+    [placements enumerateKeysAndObjectsUsingBlock:v18];
 
     [v6 setObject:v16 forKeyedSubscript:@"placements"];
   }

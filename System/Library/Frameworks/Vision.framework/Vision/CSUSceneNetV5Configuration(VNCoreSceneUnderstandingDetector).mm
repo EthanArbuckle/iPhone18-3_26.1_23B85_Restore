@@ -7,9 +7,9 @@
 - (uint64_t)VNNewInstanceWithError:()VNCoreSceneUnderstandingDetector
 {
   v5 = objc_opt_class();
-  v6 = [a1 revision];
+  revision = [self revision];
 
-  return [v5 sceneNetV5ConfigurationForRevision:v6 error:a3];
+  return [v5 sceneNetV5ConfigurationForRevision:revision error:a3];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface MTLTextureViewDescriptor
-+ (id)textureViewDescriptorWithTexture:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)textureViewDescriptorWithTexture:(id)texture;
+- (BOOL)isEqual:(id)equal;
 - (MTLTextureViewDescriptor)init;
 - (_NSRange)levelRange;
 - (_NSRange)levels;
 - (_NSRange)sliceRange;
 - (_NSRange)slices;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 @end
 
 @implementation MTLTextureViewDescriptor
@@ -30,20 +30,20 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  return Class == object_getClass(a3) && memcmp(&self->_private, a3 + 8, 0x48uLL) == 0;
+  return Class == object_getClass(equal) && memcmp(&self->_private, equal + 8, 0x48uLL) == 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (result)
   {
     *(result + 8) = *&self->_private.pixelFormat;
@@ -59,10 +59,10 @@
   return result;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v12[18] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = MTLTextureViewDescriptor;
@@ -137,40 +137,40 @@
   return result;
 }
 
-+ (id)textureViewDescriptorWithTexture:(id)a3
++ (id)textureViewDescriptorWithTexture:(id)texture
 {
   v4 = objc_alloc_init(MTLTextureViewDescriptor);
-  if ([a3 textureType] == 5)
+  if ([texture textureType] == 5)
   {
-    -[MTLTextureViewDescriptor setPixelFormat:](v4, "setPixelFormat:", [a3 pixelFormat]);
-    -[MTLTextureViewDescriptor setTextureType:](v4, "setTextureType:", [a3 textureType]);
-    -[MTLTextureViewDescriptor setLevels:](v4, "setLevels:", 0, [a3 mipmapLevelCount]);
+    -[MTLTextureViewDescriptor setPixelFormat:](v4, "setPixelFormat:", [texture pixelFormat]);
+    -[MTLTextureViewDescriptor setTextureType:](v4, "setTextureType:", [texture textureType]);
+    -[MTLTextureViewDescriptor setLevels:](v4, "setLevels:", 0, [texture mipmapLevelCount]);
 LABEL_4:
-    v6 = 6 * [a3 arrayLength];
+    arrayLength = 6 * [texture arrayLength];
     goto LABEL_6;
   }
 
-  v5 = [a3 textureType];
-  -[MTLTextureViewDescriptor setPixelFormat:](v4, "setPixelFormat:", [a3 pixelFormat]);
-  -[MTLTextureViewDescriptor setTextureType:](v4, "setTextureType:", [a3 textureType]);
-  -[MTLTextureViewDescriptor setLevels:](v4, "setLevels:", 0, [a3 mipmapLevelCount]);
-  if (v5 == 6)
+  textureType = [texture textureType];
+  -[MTLTextureViewDescriptor setPixelFormat:](v4, "setPixelFormat:", [texture pixelFormat]);
+  -[MTLTextureViewDescriptor setTextureType:](v4, "setTextureType:", [texture textureType]);
+  -[MTLTextureViewDescriptor setLevels:](v4, "setLevels:", 0, [texture mipmapLevelCount]);
+  if (textureType == 6)
   {
     goto LABEL_4;
   }
 
-  v6 = [a3 arrayLength];
+  arrayLength = [texture arrayLength];
 LABEL_6:
-  [(MTLTextureViewDescriptor *)v4 setSlices:0, v6];
+  [(MTLTextureViewDescriptor *)v4 setSlices:0, arrayLength];
   v7 = objc_opt_respondsToSelector();
-  v8 = 0;
+  writeAccessPattern = 0;
   if (v7)
   {
-    v8 = [a3 writeAccessPattern];
+    writeAccessPattern = [texture writeAccessPattern];
   }
 
-  [(MTLTextureViewDescriptor *)v4 setWriteAccessPattern:v8];
-  -[MTLTextureViewDescriptor setSwizzle:](v4, "setSwizzle:", [a3 swizzle]);
+  [(MTLTextureViewDescriptor *)v4 setWriteAccessPattern:writeAccessPattern];
+  -[MTLTextureViewDescriptor setSwizzle:](v4, "setSwizzle:", [texture swizzle]);
   return v4;
 }
 

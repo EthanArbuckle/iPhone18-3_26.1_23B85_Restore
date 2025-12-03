@@ -1,6 +1,6 @@
 @interface VCPCNNFaceLandmarkDetectorMPS
 - (VCPCNNFaceLandmarkDetectorMPS)init;
-- (int)computeLandmarks:(float *)a3;
+- (int)computeLandmarks:(float *)landmarks;
 @end
 
 @implementation VCPCNNFaceLandmarkDetectorMPS
@@ -50,8 +50,8 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v10 = [(VCPCNNModel *)v9 getGPUContext];
-  v11 = [VCPCNNData cnnDataWithPlane:1 height:40 width:40 context:v10];
+  getGPUContext = [(VCPCNNModel *)v9 getGPUContext];
+  v11 = [VCPCNNData cnnDataWithPlane:1 height:40 width:40 context:getGPUContext];
   faceInput = v6->_faceInput;
   v6->_faceInput = v11;
 
@@ -132,10 +132,10 @@ LABEL_16:
 
       else
       {
-        v24 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-        v30 = [v24 resourceURL];
+        vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+        resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-        v29 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_lm.dat" relativeToURL:v30];
+        v29 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_lm.dat" relativeToURL:resourceURL];
         v25 = v6->_modelLandmarks;
         v26 = [(VCPCNNData *)v6->_faceInput size];
         LODWORD(v25) = [(VCPCNNModel *)v25 prepareNetworkFromURL:v29 withInputSize:v26];
@@ -164,7 +164,7 @@ LABEL_37:
   return v13;
 }
 
-- (int)computeLandmarks:(float *)a3
+- (int)computeLandmarks:(float *)landmarks
 {
   result = [(VCPCNNData *)self->_faceInput normalization];
   if (!result)
@@ -176,25 +176,25 @@ LABEL_37:
       v7 = 1;
       while (1)
       {
-        v8 = [(VCPCNNModel *)self->_modelLandmarks output];
-        v9 = [v8 size];
+        output = [(VCPCNNModel *)self->_modelLandmarks output];
+        v9 = [output size];
         v10 = [v9 count];
 
-        v11 = [(VCPCNNModel *)self->_modelLandmarks output];
-        v12 = v11;
+        output2 = [(VCPCNNModel *)self->_modelLandmarks output];
+        v12 = output2;
         if (v10 <= v6)
         {
           break;
         }
 
-        v13 = [v11 size];
+        v13 = [output2 size];
         v14 = [v13 objectAtIndexedSubscript:v6];
         v7 *= [v14 intValue];
 
         ++v6;
       }
 
-      memcpy(a3, [v11 data], 4 * v7);
+      memcpy(landmarks, [output2 data], 4 * v7);
 
       return 0;
     }

@@ -1,50 +1,50 @@
 @interface PXStoryMemoryAssetsActionFactory
-- (PXStoryMemoryAssetsActionFactory)initWithViewModel:(id)a3;
+- (PXStoryMemoryAssetsActionFactory)initWithViewModel:(id)model;
 - (id)assetsPickerPresenter;
-- (id)rearrangeMemoryAssetsActionWithAssetCollection:(id)a3 movedAssets:(id)a4 beforeAsset:(id)a5;
+- (id)rearrangeMemoryAssetsActionWithAssetCollection:(id)collection movedAssets:(id)assets beforeAsset:(id)asset;
 @end
 
 @implementation PXStoryMemoryAssetsActionFactory
 
 - (id)assetsPickerPresenter
 {
-  v2 = [(PXStoryMemoryAssetsActionFactory *)self viewModel];
-  v3 = [v2 actionPerformer];
+  viewModel = [(PXStoryMemoryAssetsActionFactory *)self viewModel];
+  actionPerformer = [viewModel actionPerformer];
 
-  return v3;
+  return actionPerformer;
 }
 
-- (id)rearrangeMemoryAssetsActionWithAssetCollection:(id)a3 movedAssets:(id)a4 beforeAsset:(id)a5
+- (id)rearrangeMemoryAssetsActionWithAssetCollection:(id)collection movedAssets:(id)assets beforeAsset:(id)asset
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(PXStoryMemoryAssetsActionFactory *)self viewModel];
-  v13 = [v12 mainModel];
+  assetCopy = asset;
+  assetsCopy = assets;
+  collectionCopy = collection;
+  viewModel = [(PXStoryMemoryAssetsActionFactory *)self viewModel];
+  mainModel = [viewModel mainModel];
 
-  v14 = [v13 currentAssetCollection];
+  currentAssetCollection = [mainModel currentAssetCollection];
 
-  if (v14 != v11)
+  if (currentAssetCollection != collectionCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryAssetsActionFactory.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"assetCollection == modelCollection"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMemoryAssetsActionFactory.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"assetCollection == modelCollection"}];
   }
 
-  v15 = [[PXStoryRearrangeMemoryAssetsAction alloc] initWithModel:v13 movedAssets:v10 beforeAsset:v9];
+  v15 = [[PXStoryRearrangeMemoryAssetsAction alloc] initWithModel:mainModel movedAssets:assetsCopy beforeAsset:assetCopy];
 
   return v15;
 }
 
-- (PXStoryMemoryAssetsActionFactory)initWithViewModel:(id)a3
+- (PXStoryMemoryAssetsActionFactory)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = PXStoryMemoryAssetsActionFactory;
   v6 = [(PXStoryMemoryAssetsActionFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
   }
 
   return v7;

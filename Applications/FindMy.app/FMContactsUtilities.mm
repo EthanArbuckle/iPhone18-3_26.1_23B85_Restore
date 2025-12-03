@@ -1,11 +1,11 @@
 @interface FMContactsUtilities
-+ (id)contactFor:(id)a3;
++ (id)contactFor:(id)for;
 - (_TtC6FindMy19FMContactsUtilities)init;
 @end
 
 @implementation FMContactsUtilities
 
-+ (id)contactFor:(id)a3
++ (id)contactFor:(id)for
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;

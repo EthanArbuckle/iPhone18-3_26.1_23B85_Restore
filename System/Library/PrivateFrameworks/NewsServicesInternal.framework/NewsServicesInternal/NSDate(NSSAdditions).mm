@@ -7,9 +7,9 @@
 
 + (id)_todayStringDateFormatterForThread
 {
-  v0 = [MEMORY[0x277CCACC8] currentThread];
-  v1 = [v0 threadDictionary];
-  v2 = [v1 objectForKey:@"kCurrentThreadTodayStringFormatterKey"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v2 = [threadDictionary objectForKey:@"kCurrentThreadTodayStringFormatterKey"];
 
   if (!v2)
   {
@@ -17,9 +17,9 @@
     [v2 setDoesRelativeDateFormatting:1];
     [v2 setTimeStyle:0];
     [v2 setDateStyle:4];
-    v3 = [MEMORY[0x277CCACC8] currentThread];
-    v4 = [v3 threadDictionary];
-    [v4 setObject:v2 forKey:@"kCurrentThreadTodayStringFormatterKey"];
+    currentThread2 = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary2 = [currentThread2 threadDictionary];
+    [threadDictionary2 setObject:v2 forKey:@"kCurrentThreadTodayStringFormatterKey"];
   }
 
   return v2;
@@ -28,7 +28,7 @@
 - (void)nss_gregorianDescriptionWithFlags:()NSSAdditions options:completion:
 {
   v56 = a5;
-  [a1 timeIntervalSinceNow];
+  [self timeIntervalSinceNow];
   v9 = v8;
   v10 = -v8;
   if (v9 < 0.0)
@@ -41,9 +41,9 @@
     v11 = v9;
   }
 
-  v12 = [MEMORY[0x277CCACC8] currentThread];
-  v13 = [v12 threadDictionary];
-  v14 = [v13 objectForKey:@"NSDateCurrentThreadNSDateComponentsFormatterKey"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v14 = [threadDictionary objectForKey:@"NSDateCurrentThreadNSDateComponentsFormatterKey"];
 
   if (!v14)
   {
@@ -52,9 +52,9 @@
     [v14 setAllowedUnits:124];
     [v14 setFormattingContext:2];
     [v14 setMaximumUnitCount:1];
-    v15 = [MEMORY[0x277CCACC8] currentThread];
-    v16 = [v15 threadDictionary];
-    [v16 setObject:v14 forKey:@"NSDateCurrentThreadNSDateComponentsFormatterKey"];
+    currentThread2 = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary2 = [currentThread2 threadDictionary];
+    [threadDictionary2 setObject:v14 forKey:@"NSDateCurrentThreadNSDateComponentsFormatterKey"];
   }
 
   if (v9 >= 0.0 || v11 < 60.0)
@@ -200,14 +200,14 @@ LABEL_12:
     v25 = floorf(v24);
     if ((a4 & 1) != 0 && v25 > 6.0)
     {
-      v26 = [MEMORY[0x277CBEA80] currentCalendar];
-      v27 = [v26 isDateInToday:a1];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      v27 = [currentCalendar isDateInToday:self];
 
       if (v27)
       {
-        v28 = [MEMORY[0x277CBEAA8] _todayStringDateFormatterForThread];
-        v29 = [MEMORY[0x277CBEAA8] date];
-        v30 = [v28 stringFromDate:v29];
+        _todayStringDateFormatterForThread = [MEMORY[0x277CBEAA8] _todayStringDateFormatterForThread];
+        date = [MEMORY[0x277CBEAA8] date];
+        v30 = [_todayStringDateFormatterForThread stringFromDate:date];
 
         v21 = v30;
         goto LABEL_12;

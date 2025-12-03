@@ -1,21 +1,21 @@
 @interface AFCoreAnalyticsLoggingService
 + (id)sharedLoggingService;
 - (id)_init;
-- (void)logToCoreAnalyticsCrossDeviceRequestEvent:(id)a3;
+- (void)logToCoreAnalyticsCrossDeviceRequestEvent:(id)event;
 @end
 
 @implementation AFCoreAnalyticsLoggingService
 
-- (void)logToCoreAnalyticsCrossDeviceRequestEvent:(id)a3
+- (void)logToCoreAnalyticsCrossDeviceRequestEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__AFCoreAnalyticsLoggingService_logToCoreAnalyticsCrossDeviceRequestEvent___block_invoke;
   block[3] = &unk_1E73497C8;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(queue, block);
 }
 

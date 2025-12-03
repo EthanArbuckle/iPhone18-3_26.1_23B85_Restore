@@ -4,7 +4,7 @@
 - (BOOL)usesAllowedSitesOnly;
 - (WBWebFilterSettings)init;
 - (WFUserSettings)userSettings;
-- (int64_t)webFilterStatusForURL:(id)a3;
+- (int64_t)webFilterStatusForURL:(id)l;
 - (void)dealloc;
 - (void)reloadSettings;
 @end
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __46__WBWebFilterSettings_sharedWebFilterSettings__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedWebFilterSettings_onceToken != -1)
   {
     dispatch_once(&sharedWebFilterSettings_onceToken, block);
@@ -52,11 +52,11 @@ uint64_t __46__WBWebFilterSettings_sharedWebFilterSettings__block_invoke(uint64_
 
 - (BOOL)isWebFilterEnabled
 {
-  v2 = [(WBWebFilterSettings *)self userSettings];
-  v3 = v2;
-  if (v2)
+  userSettings = [(WBWebFilterSettings *)self userSettings];
+  v3 = userSettings;
+  if (userSettings)
   {
-    v4 = [v2 restrictionType] != 0;
+    v4 = [userSettings restrictionType] != 0;
   }
 
   else
@@ -117,11 +117,11 @@ uint64_t __46__WBWebFilterSettings_sharedWebFilterSettings__block_invoke(uint64_
 
 - (BOOL)usesAllowedSitesOnly
 {
-  v2 = [(WBWebFilterSettings *)self userSettings];
-  v3 = v2;
-  if (v2)
+  userSettings = [(WBWebFilterSettings *)self userSettings];
+  v3 = userSettings;
+  if (userSettings)
   {
-    v4 = [v2 restrictionType] == 2;
+    v4 = [userSettings restrictionType] == 2;
   }
 
   else
@@ -148,9 +148,9 @@ uint64_t __46__WBWebFilterSettings_sharedWebFilterSettings__block_invoke(uint64_
   MEMORY[0x2821F96F8]();
 }
 
-- (int64_t)webFilterStatusForURL:(id)a3
+- (int64_t)webFilterStatusForURL:(id)l
 {
-  if ([(WFUserSettings *)self->_userSettings contentFilterListsAllowURL:a3])
+  if ([(WFUserSettings *)self->_userSettings contentFilterListsAllowURL:l])
   {
     return 1;
   }

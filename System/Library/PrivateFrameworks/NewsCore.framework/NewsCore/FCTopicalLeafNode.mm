@@ -1,26 +1,26 @@
 @interface FCTopicalLeafNode
-- (double)initWithNode:(double)a3 score:;
+- (double)initWithNode:(double)node score:;
 @end
 
 @implementation FCTopicalLeafNode
 
-- (double)initWithNode:(double)a3 score:
+- (double)initWithNode:(double)node score:
 {
   v6 = a2;
-  if (a1)
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = FCTopicalLeafNode;
     v7 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v7;
+    self = v7;
     if (v7)
     {
       objc_storeStrong(v7 + 1, a2);
-      a1[2] = a3;
+      self[2] = node;
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

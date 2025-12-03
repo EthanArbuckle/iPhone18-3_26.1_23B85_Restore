@@ -1,26 +1,26 @@
 @interface HMDRemoteEventRouterProtoConnectMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTopicAdditions:(id)a3;
-- (void)addTopicFilterAdditions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTopicAdditions:(id)additions;
+- (void)addTopicFilterAdditions:(id)additions;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMDRemoteEventRouterProtoConnectMessage
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4[12])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[12])
   {
-    self->_routerVersion = v4[4];
+    self->_routerVersion = fromCopy[4];
     *&self->_has |= 1u;
   }
 
@@ -131,24 +131,24 @@
   return v6 ^ [(NSMutableArray *)self->_topicAdditions hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_routerVersion != *(v4 + 4))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_routerVersion != *(equalCopy + 4))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -156,13 +156,13 @@ LABEL_15:
   }
 
   connectEvent = self->_connectEvent;
-  if (connectEvent | *(v4 + 1) && ![(HMEProtoEventInfo *)connectEvent isEqual:?])
+  if (connectEvent | *(equalCopy + 1) && ![(HMEProtoEventInfo *)connectEvent isEqual:?])
   {
     goto LABEL_15;
   }
 
   unregisterEvent = self->_unregisterEvent;
-  if (unregisterEvent | *(v4 + 5))
+  if (unregisterEvent | *(equalCopy + 5))
   {
     if (![(HMEProtoEventInfo *)unregisterEvent isEqual:?])
     {
@@ -171,7 +171,7 @@ LABEL_15:
   }
 
   topicFilterAdditions = self->_topicFilterAdditions;
-  if (topicFilterAdditions | *(v4 + 4))
+  if (topicFilterAdditions | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)topicFilterAdditions isEqual:?])
     {
@@ -180,7 +180,7 @@ LABEL_15:
   }
 
   topicAdditions = self->_topicAdditions;
-  if (topicAdditions | *(v4 + 3))
+  if (topicAdditions | *(equalCopy + 3))
   {
     v10 = [(NSMutableArray *)topicAdditions isEqual:?];
   }
@@ -195,10 +195,10 @@ LABEL_16:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -206,11 +206,11 @@ LABEL_16:
     *(v5 + 48) |= 1u;
   }
 
-  v7 = [(HMEProtoEventInfo *)self->_connectEvent copyWithZone:a3];
+  v7 = [(HMEProtoEventInfo *)self->_connectEvent copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
-  v9 = [(HMEProtoEventInfo *)self->_unregisterEvent copyWithZone:a3];
+  v9 = [(HMEProtoEventInfo *)self->_unregisterEvent copyWithZone:zone];
   v10 = v6[5];
   v6[5] = v9;
 
@@ -234,7 +234,7 @@ LABEL_16:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v29 + 1) + 8 * v15) copyWithZone:a3];
+        v16 = [*(*(&v29 + 1) + 8 * v15) copyWithZone:zone];
         [v6 addTopicFilterAdditions:v16];
 
         ++v15;
@@ -267,7 +267,7 @@ LABEL_16:
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v25 + 1) + 8 * v21) copyWithZone:{a3, v25}];
+        v22 = [*(*(&v25 + 1) + 8 * v21) copyWithZone:{zone, v25}];
         [v6 addTopicAdditions:v22];
 
         ++v21;
@@ -284,19 +284,19 @@ LABEL_16:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_routerVersion;
-    *(v4 + 48) |= 1u;
+    toCopy[4] = self->_routerVersion;
+    *(toCopy + 48) |= 1u;
   }
 
-  v13 = v4;
+  v13 = toCopy;
   if (self->_connectEvent)
   {
-    [v4 setConnectEvent:?];
+    [toCopy setConnectEvent:?];
   }
 
   if (self->_unregisterEvent)
@@ -307,10 +307,10 @@ LABEL_16:
   if ([(HMDRemoteEventRouterProtoConnectMessage *)self topicFilterAdditionsCount])
   {
     [v13 clearTopicFilterAdditions];
-    v5 = [(HMDRemoteEventRouterProtoConnectMessage *)self topicFilterAdditionsCount];
-    if (v5)
+    topicFilterAdditionsCount = [(HMDRemoteEventRouterProtoConnectMessage *)self topicFilterAdditionsCount];
+    if (topicFilterAdditionsCount)
     {
-      v6 = v5;
+      v6 = topicFilterAdditionsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(HMDRemoteEventRouterProtoConnectMessage *)self topicFilterAdditionsAtIndex:i];
@@ -322,10 +322,10 @@ LABEL_16:
   if ([(HMDRemoteEventRouterProtoConnectMessage *)self topicAdditionsCount])
   {
     [v13 clearTopicAdditions];
-    v9 = [(HMDRemoteEventRouterProtoConnectMessage *)self topicAdditionsCount];
-    if (v9)
+    topicAdditionsCount = [(HMDRemoteEventRouterProtoConnectMessage *)self topicAdditionsCount];
+    if (topicAdditionsCount)
     {
-      v10 = v9;
+      v10 = topicAdditionsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(HMDRemoteEventRouterProtoConnectMessage *)self topicAdditionsAtIndex:j];
@@ -335,10 +335,10 @@ LABEL_16:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     routerVersion = self->_routerVersion;
@@ -425,31 +425,31 @@ LABEL_16:
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_routerVersion];
-    [v3 setObject:v4 forKey:@"routerVersion"];
+    [dictionary setObject:v4 forKey:@"routerVersion"];
   }
 
   connectEvent = self->_connectEvent;
   if (connectEvent)
   {
-    v6 = [(HMEProtoEventInfo *)connectEvent dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"connectEvent"];
+    dictionaryRepresentation = [(HMEProtoEventInfo *)connectEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"connectEvent"];
   }
 
   unregisterEvent = self->_unregisterEvent;
   if (unregisterEvent)
   {
-    v8 = [(HMEProtoEventInfo *)unregisterEvent dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"unregisterEvent"];
+    dictionaryRepresentation2 = [(HMEProtoEventInfo *)unregisterEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"unregisterEvent"];
   }
 
   topicFilterAdditions = self->_topicFilterAdditions;
   if (topicFilterAdditions)
   {
-    [v3 setObject:topicFilterAdditions forKey:@"topicFilterAdditions"];
+    [dictionary setObject:topicFilterAdditions forKey:@"topicFilterAdditions"];
   }
 
   if ([(NSMutableArray *)self->_topicAdditions count])
@@ -474,8 +474,8 @@ LABEL_16:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation3 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation3];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -484,12 +484,12 @@ LABEL_16:
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"topicAdditions"];
+    [dictionary setObject:v10 forKey:@"topicAdditions"];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -498,46 +498,46 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = HMDRemoteEventRouterProtoConnectMessage;
   v4 = [(HMDRemoteEventRouterProtoConnectMessage *)&v8 description];
-  v5 = [(HMDRemoteEventRouterProtoConnectMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMDRemoteEventRouterProtoConnectMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addTopicAdditions:(id)a3
+- (void)addTopicAdditions:(id)additions
 {
-  v4 = a3;
+  additionsCopy = additions;
   topicAdditions = self->_topicAdditions;
-  v8 = v4;
+  v8 = additionsCopy;
   if (!topicAdditions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_topicAdditions;
     self->_topicAdditions = v6;
 
-    v4 = v8;
+    additionsCopy = v8;
     topicAdditions = self->_topicAdditions;
   }
 
-  [(NSMutableArray *)topicAdditions addObject:v4];
+  [(NSMutableArray *)topicAdditions addObject:additionsCopy];
 }
 
-- (void)addTopicFilterAdditions:(id)a3
+- (void)addTopicFilterAdditions:(id)additions
 {
-  v4 = a3;
+  additionsCopy = additions;
   topicFilterAdditions = self->_topicFilterAdditions;
-  v8 = v4;
+  v8 = additionsCopy;
   if (!topicFilterAdditions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_topicFilterAdditions;
     self->_topicFilterAdditions = v6;
 
-    v4 = v8;
+    additionsCopy = v8;
     topicFilterAdditions = self->_topicFilterAdditions;
   }
 
-  [(NSMutableArray *)topicFilterAdditions addObject:v4];
+  [(NSMutableArray *)topicFilterAdditions addObject:additionsCopy];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface PFLCCoverageValidator
-- (PFLCCoverageValidator)initWithMaskImage:(CGImage *)a3 orientation:(unsigned int)a4;
-- (double)coverageOfTimeLabel:(CGRect)a3;
+- (PFLCCoverageValidator)initWithMaskImage:(CGImage *)image orientation:(unsigned int)orientation;
+- (double)coverageOfTimeLabel:(CGRect)label;
 - (void)dealloc;
 @end
 
 @implementation PFLCCoverageValidator
 
-- (PFLCCoverageValidator)initWithMaskImage:(CGImage *)a3 orientation:(unsigned int)a4
+- (PFLCCoverageValidator)initWithMaskImage:(CGImage *)image orientation:(unsigned int)orientation
 {
   v55 = *MEMORY[0x277D85DE8];
   v51.receiver = self;
@@ -14,11 +14,11 @@
   v6 = [(PFLCCoverageValidator *)&v51 init];
   if (v6)
   {
-    Width = CGImageGetWidth(a3);
-    Height = CGImageGetHeight(a3);
+    Width = CGImageGetWidth(image);
+    Height = CGImageGetHeight(image);
     context = objc_autoreleasePoolPush();
     memset(&v50, 0, sizeof(v50));
-    makePresentationTransform(a4, Width, Height, &v50);
+    makePresentationTransform(orientation, Width, Height, &v50);
     buf = v50;
     v9 = rint(makePresentationSize(&buf, Width, Height) * 0.25);
     v11 = rint(v10 * 0.25);
@@ -41,13 +41,13 @@
     v15 = CGColorSpaceCreateWithName(*MEMORY[0x277CBF498]);
     v16 = v14;
     v17 = CGColorSpaceGetNumberOfComponents(v15) & 0x1FFFFFFFFFFFFFFFLL;
-    v18 = [v16 mutableBytes];
+    mutableBytes = [v16 mutableBytes];
 
-    v19 = CGBitmapContextCreate(v18, v9 + 1, v11 + 1, 8uLL, v17 * (v9 + 1), v15, 0);
+    v19 = CGBitmapContextCreate(mutableBytes, v9 + 1, v11 + 1, 8uLL, v17 * (v9 + 1), v15, 0);
     CGColorSpaceRelease(v15);
     memset(&buf, 0, sizeof(buf));
     v53 = v49;
-    uprightCTM(a3, &v53, &buf);
+    uprightCTM(image, &v53, &buf);
     transform = buf;
     memset(&v53, 0, sizeof(v53));
     CGAffineTransformInvert(&v53, &transform);
@@ -59,7 +59,7 @@
     v56.size.width = v9;
     v56.size.height = v11;
     v57 = CGRectApplyAffineTransform(v56, &transform);
-    CGContextDrawImage(v19, v57, a3);
+    CGContextDrawImage(v19, v57, image);
     CGContextRelease(v19);
     for (i = [v16 mutableBytes]; v13; --v13)
     {
@@ -77,7 +77,7 @@
     v24 = v16;
     v25 = v22 + 1;
     v26 = malloc_type_malloc(4 * (v22 + 1) * (v23 + 1), 0x100004052888210uLL);
-    v27 = [v24 bytes];
+    bytes = [v24 bytes];
     v28 = v22;
     if (v22 != -1)
     {
@@ -122,7 +122,7 @@
       if (v23)
       {
         v36 = &v26[4 * v25];
-        v37 = (v27 + v22 + 2);
+        v37 = (bytes + v22 + 2);
         v38 = 1;
         v39 = v26;
         v40 = v26;
@@ -179,13 +179,13 @@
   [(PFLCCoverageValidator *)&v4 dealloc];
 }
 
-- (double)coverageOfTimeLabel:(CGRect)a3
+- (double)coverageOfTimeLabel:(CGRect)label
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  IsEmpty = CGRectIsEmpty(a3);
+  height = label.size.height;
+  width = label.size.width;
+  y = label.origin.y;
+  x = label.origin.x;
+  IsEmpty = CGRectIsEmpty(label);
   result = 0.0;
   if (!IsEmpty)
   {

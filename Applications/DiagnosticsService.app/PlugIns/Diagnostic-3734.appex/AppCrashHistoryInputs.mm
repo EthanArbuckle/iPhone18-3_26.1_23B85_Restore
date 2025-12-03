@@ -1,39 +1,39 @@
 @interface AppCrashHistoryInputs
-- (BOOL)_applyCrashTypesParameter:(id)a3;
-- (BOOL)_applyWhitelistParameter:(id)a3;
-- (BOOL)validateAndInitializeParameters:(id)a3;
+- (BOOL)_applyCrashTypesParameter:(id)parameter;
+- (BOOL)_applyWhitelistParameter:(id)parameter;
+- (BOOL)validateAndInitializeParameters:(id)parameters;
 @end
 
 @implementation AppCrashHistoryInputs
 
-- (BOOL)validateAndInitializeParameters:(id)a3
+- (BOOL)validateAndInitializeParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [(AppCrashHistoryInputs *)self _applyCrashTypesParameter:v4];
+  parametersCopy = parameters;
+  v5 = [(AppCrashHistoryInputs *)self _applyCrashTypesParameter:parametersCopy];
   v6 = 1;
   if ((v5 & 1) == 0)
   {
-    v6 = [(AppCrashHistoryInputs *)self _applyWhitelistParameter:v4];
+    v6 = [(AppCrashHistoryInputs *)self _applyWhitelistParameter:parametersCopy];
   }
 
   v11 = v6;
-  v7 = [v4 dk_numberFromKey:@"minCrashesToConsider" lowerBound:&off_100004418 upperBound:&off_100004430 defaultValue:&off_100004418 failed:&v11];
+  v7 = [parametersCopy dk_numberFromKey:@"minCrashesToConsider" lowerBound:&off_100004418 upperBound:&off_100004430 defaultValue:&off_100004418 failed:&v11];
   -[AppCrashHistoryInputs setMinCrashesToConsider:](self, "setMinCrashesToConsider:", [v7 intValue]);
 
-  v8 = [v4 dk_numberFromKey:@"avgCrashesToConsider" lowerBound:&off_100004418 upperBound:&off_100004430 defaultValue:&off_100004418 failed:&v11];
+  v8 = [parametersCopy dk_numberFromKey:@"avgCrashesToConsider" lowerBound:&off_100004418 upperBound:&off_100004430 defaultValue:&off_100004418 failed:&v11];
   -[AppCrashHistoryInputs setAvgCrashesToConsider:](self, "setAvgCrashesToConsider:", [v8 intValue]);
 
   v9 = v11;
   return (v9 & 1) == 0;
 }
 
-- (BOOL)_applyCrashTypesParameter:(id)a3
+- (BOOL)_applyCrashTypesParameter:(id)parameter
 {
-  v4 = a3;
+  parameterCopy = parameter;
   v22 = 0;
   v5 = objc_opt_class();
   v6 = [NSSet setWithObjects:v5, objc_opt_class(), 0];
-  v7 = [v4 dk_arrayFromKey:@"crashTypes" types:v6 maxLength:10 defaultValue:&off_100004488 failed:&v22 validator:&stru_1000041C0];
+  v7 = [parameterCopy dk_arrayFromKey:@"crashTypes" types:v6 maxLength:10 defaultValue:&off_100004488 failed:&v22 validator:&stru_1000041C0];
 
   v8 = +[NSMutableArray array];
   v18 = 0u;
@@ -67,8 +67,8 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v15 = [v14 stringValue];
-            [v8 addObject:v15];
+            stringValue = [v14 stringValue];
+            [v8 addObject:stringValue];
           }
         }
       }
@@ -85,12 +85,12 @@
   return v16;
 }
 
-- (BOOL)_applyWhitelistParameter:(id)a3
+- (BOOL)_applyWhitelistParameter:(id)parameter
 {
   v9 = 0;
-  v4 = a3;
+  parameterCopy = parameter;
   v5 = [NSSet setWithObject:objc_opt_class()];
-  v6 = [v4 dk_arrayFromKey:@"whitelistedAppNames" types:v5 maxLength:10000 defaultValue:&__NSArray0__struct failed:&v9 validator:&stru_1000041E0];
+  v6 = [parameterCopy dk_arrayFromKey:@"whitelistedAppNames" types:v5 maxLength:10000 defaultValue:&__NSArray0__struct failed:&v9 validator:&stru_1000041E0];
 
   v7 = [NSSet setWithArray:v6];
   [(AppCrashHistoryInputs *)self setWhitelist:v7];

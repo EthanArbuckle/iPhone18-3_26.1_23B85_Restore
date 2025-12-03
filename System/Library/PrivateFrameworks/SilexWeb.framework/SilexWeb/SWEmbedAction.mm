@@ -1,31 +1,31 @@
 @interface SWEmbedAction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SWEmbedAction)initWithType:(unint64_t)a3 info:(id)a4;
+- (SWEmbedAction)initWithType:(unint64_t)type info:(id)info;
 @end
 
 @implementation SWEmbedAction
 
-- (SWEmbedAction)initWithType:(unint64_t)a3 info:(id)a4
+- (SWEmbedAction)initWithType:(unint64_t)type info:(id)info
 {
-  v7 = a4;
+  infoCopy = info;
   v11.receiver = self;
   v11.super_class = SWEmbedAction;
   v8 = [(SWEmbedAction *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_info, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_info, info);
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -35,8 +35,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SWEmbedAction *)self type];
-      v6 = v5 == [(SWEmbedAction *)v4 type];
+      type = [(SWEmbedAction *)self type];
+      v6 = type == [(SWEmbedAction *)equalCopy type];
     }
 
     else

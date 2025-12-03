@@ -13,21 +13,21 @@
   [v2 setMinimumFractionDigits:1];
   v31 = v2;
   [v2 setMaximumFractionDigits:2];
-  v3 = [a1 adjustment];
-  if (v3)
+  adjustment = [self adjustment];
+  if (adjustment)
   {
-    v4 = v3;
-    v5 = [a1 enabled];
+    v4 = adjustment;
+    enabled = [self enabled];
 
-    if (v5)
+    if (enabled)
     {
-      v6 = [a1 visualInputKeys];
-      v7 = [a1 analyticsKeysBlocklist];
+      visualInputKeys = [self visualInputKeys];
+      analyticsKeysBlocklist = [self analyticsKeysBlocklist];
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      obj = v6;
+      obj = visualInputKeys;
       v8 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
       if (!v8)
       {
@@ -36,7 +36,7 @@
 
       v9 = v8;
       v10 = *v37;
-      v33 = v7;
+      v33 = analyticsKeysBlocklist;
       while (1)
       {
         v11 = 0;
@@ -49,45 +49,45 @@
           }
 
           v12 = *(*(&v36 + 1) + 8 * v11);
-          if (([v7 containsObject:v12] & 1) == 0)
+          if (([analyticsKeysBlocklist containsObject:v12] & 1) == 0)
           {
-            v13 = a1;
-            v14 = [MEMORY[0x277D3A968] toneKey];
-            v40[0] = v14;
-            v15 = [MEMORY[0x277D3A968] colorKey];
-            v40[1] = v15;
-            v16 = [MEMORY[0x277D3A968] intensityKey];
-            v40[2] = v16;
+            selfCopy = self;
+            toneKey = [MEMORY[0x277D3A968] toneKey];
+            v40[0] = toneKey;
+            colorKey = [MEMORY[0x277D3A968] colorKey];
+            v40[1] = colorKey;
+            intensityKey = [MEMORY[0x277D3A968] intensityKey];
+            v40[2] = intensityKey;
             v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:3];
             v18 = [v17 containsObject:v12];
 
             if (v18)
             {
               v19 = MEMORY[0x277CCABB0];
-              a1 = v13;
-              v20 = [v13 valueForKey:v12];
-              v21 = v20;
+              self = selfCopy;
+              v20 = [selfCopy valueForKey:v12];
+              cast = v20;
               goto LABEL_15;
             }
 
-            v22 = [MEMORY[0x277D3A968] castKey];
-            v23 = [v12 isEqualToString:v22];
+            castKey = [MEMORY[0x277D3A968] castKey];
+            v23 = [v12 isEqualToString:castKey];
 
-            a1 = v13;
+            self = selfCopy;
             if (v23)
             {
-              v21 = [v13 cast];
-              [v32 setObject:v21 forKeyedSubscript:@"styles_cast"];
+              cast = [selfCopy cast];
+              [v32 setObject:cast forKeyedSubscript:@"styles_cast"];
             }
 
             else
             {
-              v21 = [v13 valueForKey:v12];
-              [v21 doubleValue];
+              cast = [selfCopy valueForKey:v12];
+              [cast doubleValue];
               if (v24 != 0.0)
               {
                 v19 = MEMORY[0x277CCABB0];
-                v20 = v21;
+                v20 = cast;
 LABEL_15:
                 [v20 doubleValue];
                 v25 = [v19 numberWithDouble:?];
@@ -97,7 +97,7 @@ LABEL_15:
               }
             }
 
-            v7 = v33;
+            analyticsKeysBlocklist = v33;
             v9 = v34;
           }
 
@@ -110,7 +110,7 @@ LABEL_15:
         {
 LABEL_19:
 
-          if ([a1 hasDefaultStyleParameters])
+          if ([self hasDefaultStyleParameters])
           {
             v28 = @"1";
           }
@@ -138,9 +138,9 @@ LABEL_24:
 - (id)analyticsKeysBlocklist
 {
   v0 = MEMORY[0x277CBEB98];
-  v1 = [MEMORY[0x277D3A968] useStyleEngineKey];
-  v2 = [MEMORY[0x277D3A968] statisticsKey];
-  v3 = [v0 setWithObjects:{v1, v2, 0}];
+  useStyleEngineKey = [MEMORY[0x277D3A968] useStyleEngineKey];
+  statisticsKey = [MEMORY[0x277D3A968] statisticsKey];
+  v3 = [v0 setWithObjects:{useStyleEngineKey, statisticsKey, 0}];
 
   return v3;
 }

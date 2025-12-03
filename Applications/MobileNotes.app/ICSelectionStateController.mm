@@ -1,53 +1,53 @@
 @interface ICSelectionStateController
-- (BOOL)objectSelectionHasChangedComparedToModel:(id)a3;
-- (BOOL)selectedContainerEqualTo:(id)a3;
+- (BOOL)objectSelectionHasChangedComparedToModel:(id)model;
+- (BOOL)selectedContainerEqualTo:(id)to;
 - (NSArray)mostRecentSelections;
 - (NSDictionary)currentFirstVisibleObjectIDURLForContainerObjectIDURL;
 - (_TtC11MobileNotes26ICSelectionStateController)init;
 - (_TtP11MobileNotes34ICSelectionStateControllerDelegate_)delegate;
-- (id)dataRepresentationWithEditorModel:(id)a3;
+- (id)dataRepresentationWithEditorModel:(id)model;
 - (int64_t)activityStreamViewMode;
-- (void)adoptCurrentModelWithArchive:(id)a3 systemPaperAccountAlert:(BOOL)a4 completion:(id)a5;
-- (void)adoptDeferredAnimated:(BOOL)a3 startEditing:(BOOL)a4;
-- (void)adoptInstantNoteModel:(id)a3 archive:(id)a4;
-- (void)adoptModel:(id)a3 withArchive:(id)a4 systemPaperAccountAlert:(BOOL)a5 completion:(id)a6;
+- (void)adoptCurrentModelWithArchive:(id)archive systemPaperAccountAlert:(BOOL)alert completion:(id)completion;
+- (void)adoptDeferredAnimated:(BOOL)animated startEditing:(BOOL)editing;
+- (void)adoptInstantNoteModel:(id)model archive:(id)archive;
+- (void)adoptModel:(id)model withArchive:(id)archive systemPaperAccountAlert:(BOOL)alert completion:(id)completion;
 - (void)clear;
 - (void)navigateBackwards;
 - (void)navigateForwards;
-- (void)navigationControllerDidTransitionWithNewContainerItemID:(id)a3 newTagSelection:(id)a4 forgetObjectSelection:(BOOL)a5;
-- (void)openURL:(id)a3 rootNoteBrowseViewController:(id)a4 currentNoteContainerViewMode:(int64_t)a5 completion:(id)a6;
-- (void)pushAttachmentSelectionWithObjectID:(id)a3 scrollState:(id)a4 startEditing:(BOOL)a5 showInkPicker:(BOOL)a6 dismissOverlayContent:(BOOL)a7 showLatestUpdatesIfAvailable:(BOOL)a8 animated:(BOOL)a9 ensurePresented:(BOOL)a10;
-- (void)pushAutoselectedObjectWithObjectID:(id)a3;
-- (void)pushContainerSelectionWithObjectID:(id)a3;
-- (void)pushContainerSelectionWithObjectID:(id)a3 forceApply:(BOOL)a4 noteBrowseViewController:(id)a5 usingRootViewController:(BOOL)a6 deferUntilDataLoaded:(BOOL)a7 dismissOverlayContent:(id)a8 animated:(BOOL)a9 ensurePresented:(BOOL)a10 ensureSelectedNote:(id)a11 keepEditorShowing:(id)a12 containerSelectionCompletionBlocks:(id)a13;
-- (void)pushContainerSelectionWithObjectID:(id)a3 noteBrowseViewController:(id)a4 usingRootViewController:(BOOL)a5 deferUntilDataLoaded:(BOOL)a6 dismissOverlayContent:(id)a7 animated:(BOOL)a8 ensurePresented:(BOOL)a9 ensureSelectedNote:(id)a10 keepEditorShowing:(id)a11 containerSelectionCompletionBlocks:(id)a12;
-- (void)pushInvitationWithObjectID:(id)a3 animated:(BOOL)a4;
-- (void)pushModel:(id)a3 navigating:(BOOL)a4;
-- (void)pushNoteSelectionWithObjectID:(id)a3;
-- (void)pushNoteSelectionWithObjectID:(id)a3 scrollState:(id)a4 startEditing:(BOOL)a5 showInkPicker:(BOOL)a6 dismissOverlayContent:(BOOL)a7 showLatestUpdatesIfAvailable:(BOOL)a8 animated:(BOOL)a9 ensurePresented:(BOOL)a10;
-- (void)pushObjectWithObjectID:(id)a3;
-- (void)pushSearchResult:(id)a3 animated:(BOOL)a4;
-- (void)pushTagSelection:(id)a3;
-- (void)setActivityStreamSelection:(id)a3;
-- (void)setActivityStreamViewMode:(int64_t)a3;
-- (void)setCurrentSelectedSearchResult:(id)a3;
+- (void)navigationControllerDidTransitionWithNewContainerItemID:(id)d newTagSelection:(id)selection forgetObjectSelection:(BOOL)objectSelection;
+- (void)openURL:(id)l rootNoteBrowseViewController:(id)controller currentNoteContainerViewMode:(int64_t)mode completion:(id)completion;
+- (void)pushAttachmentSelectionWithObjectID:(id)d scrollState:(id)state startEditing:(BOOL)editing showInkPicker:(BOOL)picker dismissOverlayContent:(BOOL)content showLatestUpdatesIfAvailable:(BOOL)available animated:(BOOL)animated ensurePresented:(BOOL)self0;
+- (void)pushAutoselectedObjectWithObjectID:(id)d;
+- (void)pushContainerSelectionWithObjectID:(id)d;
+- (void)pushContainerSelectionWithObjectID:(id)d forceApply:(BOOL)apply noteBrowseViewController:(id)controller usingRootViewController:(BOOL)viewController deferUntilDataLoaded:(BOOL)loaded dismissOverlayContent:(id)content animated:(BOOL)animated ensurePresented:(BOOL)self0 ensureSelectedNote:(id)self1 keepEditorShowing:(id)self2 containerSelectionCompletionBlocks:(id)self3;
+- (void)pushContainerSelectionWithObjectID:(id)d noteBrowseViewController:(id)controller usingRootViewController:(BOOL)viewController deferUntilDataLoaded:(BOOL)loaded dismissOverlayContent:(id)content animated:(BOOL)animated ensurePresented:(BOOL)presented ensureSelectedNote:(id)self0 keepEditorShowing:(id)self1 containerSelectionCompletionBlocks:(id)self2;
+- (void)pushInvitationWithObjectID:(id)d animated:(BOOL)animated;
+- (void)pushModel:(id)model navigating:(BOOL)navigating;
+- (void)pushNoteSelectionWithObjectID:(id)d;
+- (void)pushNoteSelectionWithObjectID:(id)d scrollState:(id)state startEditing:(BOOL)editing showInkPicker:(BOOL)picker dismissOverlayContent:(BOOL)content showLatestUpdatesIfAvailable:(BOOL)available animated:(BOOL)animated ensurePresented:(BOOL)self0;
+- (void)pushObjectWithObjectID:(id)d;
+- (void)pushSearchResult:(id)result animated:(BOOL)animated;
+- (void)pushTagSelection:(id)selection;
+- (void)setActivityStreamSelection:(id)selection;
+- (void)setActivityStreamViewMode:(int64_t)mode;
+- (void)setCurrentSelectedSearchResult:(id)result;
 - (void)setup;
-- (void)setupWithArchive:(id)a3;
+- (void)setupWithArchive:(id)archive;
 - (void)willDismissSearch;
 @end
 
 @implementation ICSelectionStateController
 
-- (void)setupWithArchive:(id)a3
+- (void)setupWithArchive:(id)archive
 {
-  v5 = a3;
-  v6 = self;
-  sub_10000D818(a3);
+  archiveCopy = archive;
+  selfCopy = self;
+  sub_10000D818(archive);
 }
 
-- (void)adoptCurrentModelWithArchive:(id)a3 systemPaperAccountAlert:(BOOL)a4 completion:(id)a5
+- (void)adoptCurrentModelWithArchive:(id)archive systemPaperAccountAlert:(BOOL)alert completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -60,16 +60,16 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = self;
-  sub_100017560(v10, a4, v8, v9);
+  archiveCopy = archive;
+  selfCopy = self;
+  sub_100017560(archiveCopy, alert, v8, v9);
   sub_10000C840(v8);
 }
 
 - (NSDictionary)currentFirstVisibleObjectIDURLForContainerObjectIDURL
 {
   v2 = *(self + OBJC_IVAR____TtC11MobileNotes26ICSelectionStateController_selectionStateAccessQueue);
-  v3 = self;
+  selfCopy = self;
   v4 = v2;
   sub_10015DA04(&unk_1006C42E0);
   OS_dispatch_queue.sync<A>(execute:)();
@@ -98,13 +98,13 @@
 
 - (void)setup
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000D818(0);
 }
 
-- (void)adoptModel:(id)a3 withArchive:(id)a4 systemPaperAccountAlert:(BOOL)a5 completion:(id)a6
+- (void)adoptModel:(id)model withArchive:(id)archive systemPaperAccountAlert:(BOOL)alert completion:(id)completion
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   if (v10)
   {
     v11 = swift_allocObject();
@@ -117,34 +117,34 @@
     v11 = 0;
   }
 
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_1003192FC(v12, v13, a5, v10, v11);
+  modelCopy = model;
+  archiveCopy = archive;
+  selfCopy = self;
+  sub_1003192FC(modelCopy, archiveCopy, alert, v10, v11);
   sub_10000C840(v10);
 }
 
-- (void)adoptDeferredAnimated:(BOOL)a3 startEditing:(BOOL)a4
+- (void)adoptDeferredAnimated:(BOOL)animated startEditing:(BOOL)editing
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = self;
-  sub_10031965C(v5, v4);
+  editingCopy = editing;
+  animatedCopy = animated;
+  selfCopy = self;
+  sub_10031965C(animatedCopy, editingCopy);
 }
 
-- (void)adoptInstantNoteModel:(id)a3 archive:(id)a4
+- (void)adoptInstantNoteModel:(id)model archive:(id)archive
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10031A18C(v6, v7);
+  modelCopy = model;
+  archiveCopy = archive;
+  selfCopy = self;
+  sub_10031A18C(modelCopy, archiveCopy);
 }
 
-- (id)dataRepresentationWithEditorModel:(id)a3
+- (id)dataRepresentationWithEditorModel:(id)model
 {
-  v4 = self;
-  v5 = a3;
-  v6 = sub_10031A40C(a3);
+  selfCopy = self;
+  modelCopy = model;
+  v6 = sub_10031A40C(model);
   v8 = v7;
 
   if (v8 >> 60 == 15)
@@ -164,132 +164,132 @@
 
 - (void)clear
 {
-  v2 = self;
+  selfCopy = self;
   sub_10031A8F0();
 }
 
-- (void)pushTagSelection:(id)a3
+- (void)pushTagSelection:(id)selection
 {
-  v5 = a3;
-  v6 = self;
-  sub_10031AC14(a3);
+  selectionCopy = selection;
+  selfCopy = self;
+  sub_10031AC14(selection);
 }
 
-- (void)pushContainerSelectionWithObjectID:(id)a3
+- (void)pushContainerSelectionWithObjectID:(id)d
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_10031C510(a3);
+  selfCopy = self;
+  sub_10031C510(d);
   swift_unknownObjectRelease();
 }
 
-- (void)pushContainerSelectionWithObjectID:(id)a3 noteBrowseViewController:(id)a4 usingRootViewController:(BOOL)a5 deferUntilDataLoaded:(BOOL)a6 dismissOverlayContent:(id)a7 animated:(BOOL)a8 ensurePresented:(BOOL)a9 ensureSelectedNote:(id)a10 keepEditorShowing:(id)a11 containerSelectionCompletionBlocks:(id)a12
+- (void)pushContainerSelectionWithObjectID:(id)d noteBrowseViewController:(id)controller usingRootViewController:(BOOL)viewController deferUntilDataLoaded:(BOOL)loaded dismissOverlayContent:(id)content animated:(BOOL)animated ensurePresented:(BOOL)presented ensureSelectedNote:(id)self0 keepEditorShowing:(id)self1 containerSelectionCompletionBlocks:(id)self2
 {
   swift_unknownObjectRetain();
-  v21 = a4;
-  v20 = a7;
-  v16 = a10;
-  v17 = a11;
-  v18 = a12;
-  v19 = self;
-  sub_10031CA00(a3, a4, a5, a6, a7, a8, a9, a10, a11, a12);
+  controllerCopy = controller;
+  contentCopy = content;
+  noteCopy = note;
+  showingCopy = showing;
+  blocksCopy = blocks;
+  selfCopy = self;
+  sub_10031CA00(d, controller, viewController, loaded, content, animated, presented, note, showing, blocks);
   swift_unknownObjectRelease();
 }
 
-- (void)pushContainerSelectionWithObjectID:(id)a3 forceApply:(BOOL)a4 noteBrowseViewController:(id)a5 usingRootViewController:(BOOL)a6 deferUntilDataLoaded:(BOOL)a7 dismissOverlayContent:(id)a8 animated:(BOOL)a9 ensurePresented:(BOOL)a10 ensureSelectedNote:(id)a11 keepEditorShowing:(id)a12 containerSelectionCompletionBlocks:(id)a13
+- (void)pushContainerSelectionWithObjectID:(id)d forceApply:(BOOL)apply noteBrowseViewController:(id)controller usingRootViewController:(BOOL)viewController deferUntilDataLoaded:(BOOL)loaded dismissOverlayContent:(id)content animated:(BOOL)animated ensurePresented:(BOOL)self0 ensureSelectedNote:(id)self1 keepEditorShowing:(id)self2 containerSelectionCompletionBlocks:(id)self3
 {
   swift_unknownObjectRetain();
-  v22 = a5;
-  v21 = a8;
-  v17 = a11;
-  v18 = a12;
-  v19 = a13;
-  v20 = self;
-  sub_10031D148(a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13);
+  controllerCopy = controller;
+  contentCopy = content;
+  noteCopy = note;
+  showingCopy = showing;
+  blocksCopy = blocks;
+  selfCopy = self;
+  sub_10031D148(d, apply, controller, viewController, loaded, content, animated, presented, note, showing, blocks);
   swift_unknownObjectRelease();
 }
 
-- (void)pushAutoselectedObjectWithObjectID:(id)a3
+- (void)pushAutoselectedObjectWithObjectID:(id)d
 {
-  v5 = a3;
-  v6 = self;
-  sub_10031DA8C(a3);
+  dCopy = d;
+  selfCopy = self;
+  sub_10031DA8C(d);
 }
 
-- (void)pushNoteSelectionWithObjectID:(id)a3
+- (void)pushNoteSelectionWithObjectID:(id)d
 {
-  v5 = a3;
-  v6 = self;
-  sub_100320070(a3);
+  dCopy = d;
+  selfCopy = self;
+  sub_100320070(d);
 }
 
-- (void)pushNoteSelectionWithObjectID:(id)a3 scrollState:(id)a4 startEditing:(BOOL)a5 showInkPicker:(BOOL)a6 dismissOverlayContent:(BOOL)a7 showLatestUpdatesIfAvailable:(BOOL)a8 animated:(BOOL)a9 ensurePresented:(BOOL)a10
+- (void)pushNoteSelectionWithObjectID:(id)d scrollState:(id)state startEditing:(BOOL)editing showInkPicker:(BOOL)picker dismissOverlayContent:(BOOL)content showLatestUpdatesIfAvailable:(BOOL)available animated:(BOOL)animated ensurePresented:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = self;
-  sub_10031E7EC(a3, a4, a5, a6, a7, a8, a9, a10);
+  dCopy = d;
+  stateCopy = state;
+  selfCopy = self;
+  sub_10031E7EC(d, state, editing, picker, content, available, animated, presented);
 }
 
-- (void)pushAttachmentSelectionWithObjectID:(id)a3 scrollState:(id)a4 startEditing:(BOOL)a5 showInkPicker:(BOOL)a6 dismissOverlayContent:(BOOL)a7 showLatestUpdatesIfAvailable:(BOOL)a8 animated:(BOOL)a9 ensurePresented:(BOOL)a10
+- (void)pushAttachmentSelectionWithObjectID:(id)d scrollState:(id)state startEditing:(BOOL)editing showInkPicker:(BOOL)picker dismissOverlayContent:(BOOL)content showLatestUpdatesIfAvailable:(BOOL)available animated:(BOOL)animated ensurePresented:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = self;
-  sub_10031F2AC(a3, a4, a5, a6, a7, a8, a9, a10);
+  dCopy = d;
+  stateCopy = state;
+  selfCopy = self;
+  sub_10031F2AC(d, state, editing, picker, content, available, animated, presented);
 }
 
-- (void)pushInvitationWithObjectID:(id)a3 animated:(BOOL)a4
+- (void)pushInvitationWithObjectID:(id)d animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = self;
-  sub_10031FA1C(a3, a4);
+  dCopy = d;
+  selfCopy = self;
+  sub_10031FA1C(d, animated);
 }
 
-- (void)pushObjectWithObjectID:(id)a3
+- (void)pushObjectWithObjectID:(id)d
 {
-  v5 = a3;
-  v6 = self;
-  sub_100322180(a3);
+  dCopy = d;
+  selfCopy = self;
+  sub_100322180(d);
 }
 
-- (void)navigationControllerDidTransitionWithNewContainerItemID:(id)a3 newTagSelection:(id)a4 forgetObjectSelection:(BOOL)a5
+- (void)navigationControllerDidTransitionWithNewContainerItemID:(id)d newTagSelection:(id)selection forgetObjectSelection:(BOOL)objectSelection
 {
   swift_unknownObjectRetain();
-  v9 = a4;
-  v10 = self;
-  sub_100322B58(a3, a4, a5);
+  selectionCopy = selection;
+  selfCopy = self;
+  sub_100322B58(d, selection, objectSelection);
   swift_unknownObjectRelease();
 }
 
-- (void)pushSearchResult:(id)a3 animated:(BOOL)a4
+- (void)pushSearchResult:(id)result animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  sub_100323584(v6, v4);
+  animatedCopy = animated;
+  resultCopy = result;
+  selfCopy = self;
+  sub_100323584(resultCopy, animatedCopy);
 }
 
-- (void)pushModel:(id)a3 navigating:(BOOL)a4
+- (void)pushModel:(id)model navigating:(BOOL)navigating
 {
-  v7 = a3;
-  v8 = self;
-  sub_100324D08(a3, a4);
+  modelCopy = model;
+  selfCopy = self;
+  sub_100324D08(model, navigating);
 }
 
 - (void)willDismissSearch
 {
-  v2 = self;
+  selfCopy = self;
   sub_100325104();
 }
 
-- (void)openURL:(id)a3 rootNoteBrowseViewController:(id)a4 currentNoteContainerViewMode:(int64_t)a5 completion:(id)a6
+- (void)openURL:(id)l rootNoteBrowseViewController:(id)controller currentNoteContainerViewMode:(int64_t)mode completion:(id)completion
 {
   v10 = sub_10015DA04(&qword_1006BCC20);
   __chkstk_darwin(v10 - 8);
   v12 = &v19 - v11;
-  v13 = _Block_copy(a6);
-  if (a3)
+  v13 = _Block_copy(completion);
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v14 = type metadata accessor for URL();
@@ -314,9 +314,9 @@
     v16 = 0;
   }
 
-  v17 = a4;
-  v18 = self;
-  sub_10032B47C(v12, a4, v13, v16);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_10032B47C(v12, controller, v13, v16);
   sub_10000C840(v13);
 
   sub_1000073B4(v12, &qword_1006BCC20);
@@ -324,62 +324,62 @@
 
 - (void)navigateBackwards
 {
-  v2 = self;
+  selfCopy = self;
   sub_10032612C();
 }
 
 - (void)navigateForwards
 {
-  v2 = self;
+  selfCopy = self;
   sub_10032666C();
 }
 
-- (void)setActivityStreamSelection:(id)a3
+- (void)setActivityStreamSelection:(id)selection
 {
-  v5 = a3;
-  v6 = self;
-  sub_100327724(a3);
+  selectionCopy = selection;
+  selfCopy = self;
+  sub_100327724(selection);
 }
 
 - (int64_t)activityStreamViewMode
 {
   v2 = *(self + OBJC_IVAR____TtC11MobileNotes26ICSelectionStateController_selectionStateAccessQueue);
-  v3 = self;
+  selfCopy = self;
   v4 = v2;
   OS_dispatch_queue.sync<A>(execute:)();
 
   return v6;
 }
 
-- (void)setActivityStreamViewMode:(int64_t)a3
+- (void)setActivityStreamViewMode:(int64_t)mode
 {
-  v4 = self;
-  sub_100327AB4(a3);
+  selfCopy = self;
+  sub_100327AB4(mode);
 }
 
-- (void)setCurrentSelectedSearchResult:(id)a3
+- (void)setCurrentSelectedSearchResult:(id)result
 {
-  v5 = a3;
-  v6 = self;
-  sub_100327DB4(a3);
+  resultCopy = result;
+  selfCopy = self;
+  sub_100327DB4(result);
 }
 
-- (BOOL)objectSelectionHasChangedComparedToModel:(id)a3
+- (BOOL)objectSelectionHasChangedComparedToModel:(id)model
 {
   v4 = *(self + OBJC_IVAR____TtC11MobileNotes26ICSelectionStateController_selectionStateAccessQueue);
-  v5 = a3;
-  v6 = self;
+  modelCopy = model;
+  selfCopy = self;
   v7 = v4;
   OS_dispatch_queue.sync<A>(execute:)();
 
   return v9;
 }
 
-- (BOOL)selectedContainerEqualTo:(id)a3
+- (BOOL)selectedContainerEqualTo:(id)to
 {
   v4 = *(self + OBJC_IVAR____TtC11MobileNotes26ICSelectionStateController_selectionStateAccessQueue);
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = v4;
   OS_dispatch_queue.sync<A>(execute:)();
 
@@ -389,7 +389,7 @@
 
 - (NSArray)mostRecentSelections
 {
-  v2 = self;
+  selfCopy = self;
   sub_100329550();
 
   type metadata accessor for ICSelectionStateModel(0);

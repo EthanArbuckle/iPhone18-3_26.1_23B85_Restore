@@ -1,10 +1,10 @@
 @interface AKLongPressGestureRecognizer
-- (void)_checkTouchesForStylus:(id)a3;
+- (void)_checkTouchesForStylus:(id)stylus;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation AKLongPressGestureRecognizer
@@ -17,47 +17,47 @@
   [(AKLongPressGestureRecognizer *)&v3 reset];
 }
 
-- (void)_checkTouchesForStylus:(id)a3
+- (void)_checkTouchesForStylus:(id)stylus
 {
-  v4 = [a3 anyObject];
-  -[AKLongPressGestureRecognizer setPenGestureDetected:](self, "setPenGestureDetected:", [v4 type] == 2);
+  anyObject = [stylus anyObject];
+  -[AKLongPressGestureRecognizer setPenGestureDetected:](self, "setPenGestureDetected:", [anyObject type] == 2);
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  [(AKLongPressGestureRecognizer *)self _checkTouchesForStylus:v7];
+  eventCopy = event;
+  beganCopy = began;
+  [(AKLongPressGestureRecognizer *)self _checkTouchesForStylus:beganCopy];
   v8.receiver = self;
   v8.super_class = AKLongPressGestureRecognizer;
-  [(AKLongPressGestureRecognizer *)&v8 touchesBegan:v7 withEvent:v6];
+  [(AKLongPressGestureRecognizer *)&v8 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  [(AKLongPressGestureRecognizer *)self _checkTouchesForStylus:v7];
+  eventCopy = event;
+  movedCopy = moved;
+  [(AKLongPressGestureRecognizer *)self _checkTouchesForStylus:movedCopy];
   v8.receiver = self;
   v8.super_class = AKLongPressGestureRecognizer;
-  [(AKLongPressGestureRecognizer *)&v8 touchesMoved:v7 withEvent:v6];
+  [(AKLongPressGestureRecognizer *)&v8 touchesMoved:movedCopy withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = AKLongPressGestureRecognizer;
-  [(AKLongPressGestureRecognizer *)&v4 touchesEnded:a3 withEvent:a4];
+  [(AKLongPressGestureRecognizer *)&v4 touchesEnded:ended withEvent:event];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  cancelledCopy = cancelled;
   [(AKLongPressGestureRecognizer *)self setPenGestureDetected:0];
   v8.receiver = self;
   v8.super_class = AKLongPressGestureRecognizer;
-  [(AKLongPressGestureRecognizer *)&v8 touchesCancelled:v7 withEvent:v6];
+  [(AKLongPressGestureRecognizer *)&v8 touchesCancelled:cancelledCopy withEvent:eventCopy];
 }
 
 @end

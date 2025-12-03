@@ -1,28 +1,28 @@
 @interface PLLibraryBookmarkManager
-+ (id)_securityScopedURLWithURL:(id)a3 sandboxExtension:(id)a4;
-+ (id)resolveSecurityScopedBookmark:(id)a3 isStale:(BOOL *)a4 error:(id *)a5;
++ (id)_securityScopedURLWithURL:(id)l sandboxExtension:(id)extension;
++ (id)resolveSecurityScopedBookmark:(id)bookmark isStale:(BOOL *)stale error:(id *)error;
 + (id)sharedBookmarkManager;
 - (PLLibraryBookmarkManager)init;
-- (id)URLFromClientLibraryURL:(id)a3 sandboxExtension:(id)a4 error:(id *)a5;
-- (id)_activeURLForClientLibraryURL:(id)a3;
+- (id)URLFromClientLibraryURL:(id)l sandboxExtension:(id)extension error:(id *)error;
+- (id)_activeURLForClientLibraryURL:(id)l;
 - (id)allKnownLibraryURLs;
-- (id)newSandboxExtensionDataForClient:(id *)a3 path:(id)a4 writable:(BOOL)a5;
-- (id)sandboxExtensionsByPathForClient:(id)a3 pathManager:(id)a4 libraryAccessRole:(int64_t)a5;
+- (id)newSandboxExtensionDataForClient:(id *)client path:(id)path writable:(BOOL)writable;
+- (id)sandboxExtensionsByPathForClient:(id)client pathManager:(id)manager libraryAccessRole:(int64_t)role;
 - (void)_importLithiumAccessRights;
 - (void)_loadFromDefaults;
-- (void)_removeActiveURLForPathKey:(id)a3;
-- (void)_removeSSBForPathKey:(id)a3;
+- (void)_removeActiveURLForPathKey:(id)key;
+- (void)_removeSSBForPathKey:(id)key;
 - (void)_saveToDefaults;
-- (void)_storeSecurityScopedURL:(id)a3 pathKey:(id)a4;
+- (void)_storeSecurityScopedURL:(id)l pathKey:(id)key;
 - (void)dealloc;
-- (void)removeSSBForLibraryURL:(id)a3;
+- (void)removeSSBForLibraryURL:(id)l;
 @end
 
 @implementation PLLibraryBookmarkManager
 
-- (void)_removeSSBForPathKey:(id)a3
+- (void)_removeSSBForPathKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     [(PLLibraryBookmarkManager *)self _removeActiveURLForPathKey:?];
 
@@ -30,13 +30,13 @@
   }
 }
 
-- (void)_removeActiveURLForPathKey:(id)a3
+- (void)_removeActiveURLForPathKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v6 = v4;
-    v5 = [(NSMutableDictionary *)self->_activeURLsByPathKey objectForKeyedSubscript:v4];
+    v6 = keyCopy;
+    v5 = [(NSMutableDictionary *)self->_activeURLsByPathKey objectForKeyedSubscript:keyCopy];
     if (v5)
     {
       [(NSMutableDictionary *)self->_activeURLsByPathKey removeObjectForKey:v6];
@@ -47,14 +47,14 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_storeSecurityScopedURL:(id)a3 pathKey:(id)a4
+- (void)_storeSecurityScopedURL:(id)l pathKey:(id)key
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = v12;
-  if (v12)
+  lCopy = l;
+  keyCopy = key;
+  v8 = lCopy;
+  if (lCopy)
   {
-    if (v7)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
@@ -62,39 +62,39 @@
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLLibraryBookmarkManager.m" lineNumber:496 description:{@"Invalid parameter not satisfying: %@", @"url"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryBookmarkManager.m" lineNumber:496 description:{@"Invalid parameter not satisfying: %@", @"url"}];
 
     v8 = 0;
-    if (v7)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"PLLibraryBookmarkManager.m" lineNumber:497 description:{@"Invalid parameter not satisfying: %@", @"pathKey"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLLibraryBookmarkManager.m" lineNumber:497 description:{@"Invalid parameter not satisfying: %@", @"pathKey"}];
 
-  v8 = v12;
+  v8 = lCopy;
 LABEL_3:
   if ([v8 startAccessingSecurityScopedResource])
   {
-    [(NSMutableDictionary *)self->_activeURLsByPathKey setObject:v12 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_activeURLsByPathKey setObject:lCopy forKeyedSubscript:keyCopy];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLLibraryBookmarkManager.m" lineNumber:501 description:{@"Invalid parameter not satisfying: %@", @"started"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLLibraryBookmarkManager.m" lineNumber:501 description:{@"Invalid parameter not satisfying: %@", @"started"}];
   }
 }
 
-- (id)newSandboxExtensionDataForClient:(id *)a3 path:(id)a4 writable:(BOOL)a5
+- (id)newSandboxExtensionDataForClient:(id *)client path:(id)path writable:(BOOL)writable
 {
-  v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:a4 isDirectory:1];
-  v7 = [v6 path];
-  [v7 fileSystemRepresentation];
-  v11 = *a3;
+  v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:path isDirectory:1];
+  path = [v6 path];
+  [path fileSystemRepresentation];
+  v11 = *client;
   v8 = sandbox_extension_issue_file_to_process();
   v9 = v8;
   if (v8)
@@ -105,10 +105,10 @@ LABEL_3:
   return v9;
 }
 
-- (id)_activeURLForClientLibraryURL:(id)a3
+- (id)_activeURLForClientLibraryURL:(id)l
 {
-  v4 = a3;
-  v5 = pathKeyForLibraryURL(v4);
+  lCopy = l;
+  v5 = pathKeyForLibraryURL(lCopy);
   if (!v5)
   {
     v6 = 0;
@@ -121,15 +121,15 @@ LABEL_3:
     goto LABEL_12;
   }
 
-  if (![PLSandboxHelper fileURLHasSecurityScope:v4])
+  if (![PLSandboxHelper fileURLHasSecurityScope:lCopy])
   {
-    v7 = [v4 path];
-    v8 = PLGetSandboxExtensionTokenWithFlags(v7, *MEMORY[0x1E69E9BB0], *MEMORY[0x1E69E9BF0], 0);
+    path = [lCopy path];
+    v8 = PLGetSandboxExtensionTokenWithFlags(path, *MEMORY[0x1E69E9BB0], *MEMORY[0x1E69E9BF0], 0);
     v9 = PLSandboxExtensionTokenAsData(v8);
 
     if (v9)
     {
-      v6 = [objc_opt_class() _securityScopedURLWithURL:v4 sandboxExtension:v9];
+      v6 = [objc_opt_class() _securityScopedURLWithURL:lCopy sandboxExtension:v9];
     }
 
     else
@@ -145,7 +145,7 @@ LABEL_3:
     goto LABEL_11;
   }
 
-  v6 = v4;
+  v6 = lCopy;
   if (v6)
   {
 LABEL_11:
@@ -162,8 +162,8 @@ LABEL_12:
   pl_dispatch_once(&PLIsReallyAssetsd_didCheckReadOnly, &__block_literal_global_129_3947);
   if ((PLIsReallyAssetsd_isAssetsd & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PLLibraryBookmarkManager.m" lineNumber:381 description:{@"Invalid parameter not satisfying: %@", @"PLIsReallyAssetsd()"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryBookmarkManager.m" lineNumber:381 description:{@"Invalid parameter not satisfying: %@", @"PLIsReallyAssetsd()"}];
   }
 }
 
@@ -172,8 +172,8 @@ LABEL_12:
   pl_dispatch_once(&PLIsReallyAssetsd_didCheckReadOnly, &__block_literal_global_129_3947);
   if ((PLIsReallyAssetsd_isAssetsd & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PLLibraryBookmarkManager.m" lineNumber:371 description:{@"Invalid parameter not satisfying: %@", @"PLIsReallyAssetsd()"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryBookmarkManager.m" lineNumber:371 description:{@"Invalid parameter not satisfying: %@", @"PLIsReallyAssetsd()"}];
   }
 }
 
@@ -182,8 +182,8 @@ LABEL_12:
   pl_dispatch_once(&PLIsReallyAssetsd_didCheckReadOnly, &__block_literal_global_129_3947);
   if ((PLIsReallyAssetsd_isAssetsd & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PLLibraryBookmarkManager.m" lineNumber:304 description:{@"Invalid parameter not satisfying: %@", @"PLIsReallyAssetsd()"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryBookmarkManager.m" lineNumber:304 description:{@"Invalid parameter not satisfying: %@", @"PLIsReallyAssetsd()"}];
   }
 }
 
@@ -194,16 +194,16 @@ LABEL_12:
   return v2;
 }
 
-- (void)removeSSBForLibraryURL:(id)a3
+- (void)removeSSBForLibraryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__PLLibraryBookmarkManager_removeSSBForLibraryURL___block_invoke;
   v6[3] = &unk_1E7932A28;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = lCopy;
+  selfCopy = self;
+  v5 = lCopy;
   PLSafeRunWithUnfairLock(&sLock, v6);
 }
 
@@ -213,28 +213,28 @@ void __51__PLLibraryBookmarkManager_removeSSBForLibraryURL___block_invoke(uint64
   [*(a1 + 40) _removeSSBForPathKey:v2];
 }
 
-- (id)sandboxExtensionsByPathForClient:(id)a3 pathManager:(id)a4 libraryAccessRole:(int64_t)a5
+- (id)sandboxExtensionsByPathForClient:(id)client pathManager:(id)manager libraryAccessRole:(int64_t)role
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  clientCopy = client;
+  managerCopy = manager;
+  v10 = managerCopy;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__3186;
   v25 = __Block_byref_object_dispose__3187;
   v26 = 0;
-  if (a5 == 2)
+  if (role == 2)
   {
-    v11 = [v9 clientOwnedDirectoryPathsForClientAccess:v8];
+    v11 = [managerCopy clientOwnedDirectoryPathsForClientAccess:clientCopy];
   }
 
-  else if (a5 == 1)
+  else if (role == 1)
   {
-    v11 = [v9 pathsForClientAccess:v8];
+    v11 = [managerCopy pathsForClientAccess:clientCopy];
   }
 
-  else if (a5)
+  else if (role)
   {
     v11 = 0;
   }
@@ -251,8 +251,8 @@ void __51__PLLibraryBookmarkManager_removeSSBForLibraryURL___block_invoke(uint64
   v20 = &v21;
   v12 = v11;
   v17 = v12;
-  v18 = self;
-  v13 = v8;
+  selfCopy = self;
+  v13 = clientCopy;
   v19 = v13;
   PLSafeRunWithUnfairLock(&sLock, v16);
   v14 = v22[5];
@@ -336,10 +336,10 @@ void __91__PLLibraryBookmarkManager_sandboxExtensionsByPathForClient_pathManager
   }
 }
 
-- (id)URLFromClientLibraryURL:(id)a3 sandboxExtension:(id)a4 error:(id *)a5
+- (id)URLFromClientLibraryURL:(id)l sandboxExtension:(id)extension error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  lCopy = l;
+  extensionCopy = extension;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -352,12 +352,12 @@ void __91__PLLibraryBookmarkManager_sandboxExtensionsByPathForClient_pathManager
   v15[3] = &unk_1E7930098;
   v18 = &v21;
   v15[4] = self;
-  v11 = v9;
+  v11 = lCopy;
   v16 = v11;
-  v12 = v10;
+  v12 = extensionCopy;
   v17 = v12;
   v19 = a2;
-  v20 = a5;
+  errorCopy = error;
   PLSafeRunWithUnfairLock(&sLock, v15);
   v13 = v22[5];
 
@@ -465,8 +465,8 @@ void __75__PLLibraryBookmarkManager_URLFromClientLibraryURL_sandboxExtension_err
 {
   if (sLibraryBookmarkManager)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLLibraryBookmarkManager.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"sLibraryBookmarkManager == nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryBookmarkManager.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"sLibraryBookmarkManager == nil"}];
   }
 
   v9.receiver = self;
@@ -484,16 +484,16 @@ void __75__PLLibraryBookmarkManager_URLFromClientLibraryURL_sandboxExtension_err
   return v3;
 }
 
-+ (id)_securityScopedURLWithURL:(id)a3 sandboxExtension:(id)a4
++ (id)_securityScopedURLWithURL:(id)l sandboxExtension:(id)extension
 {
-  if (a4)
+  if (extension)
   {
     v5 = MEMORY[0x1E695DFF8];
-    v6 = a4;
-    v7 = [a3 path];
-    v8 = [v5 fileURLWithPath:v7 isDirectory:1];
+    extensionCopy = extension;
+    path = [l path];
+    v8 = [v5 fileURLWithPath:path isDirectory:1];
 
-    MEMORY[0x1AC591C90](v8, v6);
+    MEMORY[0x1AC591C90](v8, extensionCopy);
   }
 
   else
@@ -504,21 +504,21 @@ void __75__PLLibraryBookmarkManager_URLFromClientLibraryURL_sandboxExtension_err
   return v8;
 }
 
-+ (id)resolveSecurityScopedBookmark:(id)a3 isStale:(BOOL *)a4 error:(id *)a5
++ (id)resolveSecurityScopedBookmark:(id)bookmark isStale:(BOOL *)stale error:(id *)error
 {
   v11 = 0;
   v10 = 0;
-  v7 = [MEMORY[0x1E695DFF8] URLByResolvingBookmarkData:a3 options:256 relativeToURL:0 bookmarkDataIsStale:&v11 error:&v10];
+  v7 = [MEMORY[0x1E695DFF8] URLByResolvingBookmarkData:bookmark options:256 relativeToURL:0 bookmarkDataIsStale:&v11 error:&v10];
   v8 = v10;
-  if (a5 && !v7)
+  if (error && !v7)
   {
     v8 = v8;
-    *a5 = v8;
+    *error = v8;
   }
 
-  if (a4)
+  if (stale)
   {
-    *a4 = v11;
+    *stale = v11;
   }
 
   return v7;
@@ -533,15 +533,15 @@ void __75__PLLibraryBookmarkManager_URLFromClientLibraryURL_sandboxExtension_err
     pl_dispatch_once(&PLIsReallyAssetsd_didCheckReadOnly, &__block_literal_global_129_3947);
     if ((PLIsReallyAssetsd_isAssetsd & 1) == 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:a1 file:@"PLLibraryBookmarkManager.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"PLIsReallyAssetsd()"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryBookmarkManager.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"PLIsReallyAssetsd()"}];
     }
 
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __49__PLLibraryBookmarkManager_sharedBookmarkManager__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (sharedBookmarkManager_onceToken != -1)
     {
       dispatch_once(&sharedBookmarkManager_onceToken, block);

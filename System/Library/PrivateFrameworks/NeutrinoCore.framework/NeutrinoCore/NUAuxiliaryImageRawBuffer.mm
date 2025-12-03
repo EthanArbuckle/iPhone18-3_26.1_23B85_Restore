@@ -1,11 +1,11 @@
 @interface NUAuxiliaryImageRawBuffer
 - (CGImage)cgImageRef;
-- (NUAuxiliaryImageRawBuffer)initWithPixelBuffer:(__CVBuffer *)a3 auxiliaryImageType:(int64_t)a4 identifier:(id)a5;
-- (id)auxiliaryImageByApplyingExifOrientation:(unsigned int)a3;
-- (id)auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:(__CVBuffer *)a3 error:(id *)a4;
-- (id)auxiliaryImageByUpdatingMetadata:(CGImageMetadata *)a3;
+- (NUAuxiliaryImageRawBuffer)initWithPixelBuffer:(__CVBuffer *)buffer auxiliaryImageType:(int64_t)type identifier:(id)identifier;
+- (id)auxiliaryImageByApplyingExifOrientation:(unsigned int)orientation;
+- (id)auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
+- (id)auxiliaryImageByUpdatingMetadata:(CGImageMetadata *)metadata;
 - (id)dictionaryRepresentation;
-- (id)dictionaryRepresentationForAuxiliaryDataType:(id *)a3;
+- (id)dictionaryRepresentationForAuxiliaryDataType:(id *)type;
 - (unsigned)pixelFormatType;
 - (void)dealloc;
 @end
@@ -14,44 +14,44 @@
 
 - (unsigned)pixelFormatType
 {
-  v2 = [(NUAuxiliaryImageRawBuffer *)self pixelBuffer];
+  pixelBuffer = [(NUAuxiliaryImageRawBuffer *)self pixelBuffer];
 
-  return CVPixelBufferGetPixelFormatType(v2);
+  return CVPixelBufferGetPixelFormatType(pixelBuffer);
 }
 
-- (id)dictionaryRepresentationForAuxiliaryDataType:(id *)a3
+- (id)dictionaryRepresentationForAuxiliaryDataType:(id *)type
 {
-  v5 = [(NUAuxiliaryImageRawBuffer *)self pixelFormatType];
+  pixelFormatType = [(NUAuxiliaryImageRawBuffer *)self pixelFormatType];
   Width = CVPixelBufferGetWidth([(NUAuxiliaryImageRawBuffer *)self pixelBuffer]);
   Height = CVPixelBufferGetHeight([(NUAuxiliaryImageRawBuffer *)self pixelBuffer]);
   BytesPerRow = CVPixelBufferGetBytesPerRow([(NUAuxiliaryImageRawBuffer *)self pixelBuffer]);
   v9 = 0;
-  if (v5 && Width && Height && BytesPerRow)
+  if (pixelFormatType && Width && Height && BytesPerRow)
   {
-    v10 = [(NUAuxiliaryImageRawBuffer *)self cgAuxIdentifier];
-    v11 = [v10 isEqualToString:*MEMORY[0x1E696D280]];
+    cgAuxIdentifier = [(NUAuxiliaryImageRawBuffer *)self cgAuxIdentifier];
+    v11 = [cgAuxIdentifier isEqualToString:*MEMORY[0x1E696D280]];
 
     if (v11)
     {
-      v12 = [(NUAuxiliaryImageRawBuffer *)self compatibilityMetadata];
+      compatibilityMetadata = [(NUAuxiliaryImageRawBuffer *)self compatibilityMetadata];
     }
 
     else
     {
-      v12 = 0;
+      compatibilityMetadata = 0;
     }
 
     v13 = MEMORY[0x1E69C0708];
-    v14 = [(NUAuxiliaryImageRawBuffer *)self pixelBuffer];
-    v15 = [(NUAuxiliaryImageRawBuffer *)self metadata];
-    v16 = [(NUAuxiliaryImageRawBuffer *)self colorSpace];
-    v9 = [v13 dictionaryRepresentationForAuxiliaryImagePixelBuffer:v14 metadata:v15 colorSpace:objc_msgSend(v16 compatibilityMetadata:{"CGColorSpace"), v12}];
+    pixelBuffer = [(NUAuxiliaryImageRawBuffer *)self pixelBuffer];
+    metadata = [(NUAuxiliaryImageRawBuffer *)self metadata];
+    colorSpace = [(NUAuxiliaryImageRawBuffer *)self colorSpace];
+    v9 = [v13 dictionaryRepresentationForAuxiliaryImagePixelBuffer:pixelBuffer metadata:metadata colorSpace:objc_msgSend(colorSpace compatibilityMetadata:{"CGColorSpace"), compatibilityMetadata}];
 
     if (v9)
     {
-      if (a3)
+      if (type)
       {
-        *a3 = [(NUAuxiliaryImageRawBuffer *)self cgAuxIdentifier];
+        *type = [(NUAuxiliaryImageRawBuffer *)self cgAuxIdentifier];
       }
 
       v17 = v9;
@@ -82,8 +82,8 @@
     v11 = CVPixelBufferRetain(self->_pixelBuffer);
     v12 = CGDataProviderCreateDirect(v11, DataSize, &imageOut);
     v13 = +[NUColorSpace linearGrayColorSpace];
-    v14 = [(NUAuxiliaryImageRawBuffer *)self cgAuxIdentifier];
-    if ([v14 isEqualToString:*MEMORY[0x1E696D270]])
+    cgAuxIdentifier = [(NUAuxiliaryImageRawBuffer *)self cgAuxIdentifier];
+    if ([cgAuxIdentifier isEqualToString:*MEMORY[0x1E696D270]])
     {
       v15 = +[NUGlobalSettings forceMeteorPlusLinear];
 
@@ -97,7 +97,7 @@ LABEL_13:
       }
 
       +[NUColorSpace genericGrayGamma2_2ColorSpace];
-      v13 = v14 = v13;
+      v13 = cgAuxIdentifier = v13;
     }
 
     goto LABEL_13;
@@ -125,45 +125,45 @@ LABEL_13:
   return *&imageOut.version;
 }
 
-- (id)auxiliaryImageByUpdatingMetadata:(CGImageMetadata *)a3
+- (id)auxiliaryImageByUpdatingMetadata:(CGImageMetadata *)metadata
 {
   v5 = [NUAuxiliaryImageRawBuffer alloc];
-  v6 = [(NUAuxiliaryImageRawBuffer *)self pixelBuffer];
-  v7 = [(NUAuxiliaryImageRawBuffer *)self auxiliaryImageType];
-  v8 = [(NUAuxiliaryImageRawBuffer *)self cgAuxIdentifier];
-  v9 = [(NUAuxiliaryImageRawBuffer *)v5 initWithPixelBuffer:v6 auxiliaryImageType:v7 identifier:v8];
+  pixelBuffer = [(NUAuxiliaryImageRawBuffer *)self pixelBuffer];
+  auxiliaryImageType = [(NUAuxiliaryImageRawBuffer *)self auxiliaryImageType];
+  cgAuxIdentifier = [(NUAuxiliaryImageRawBuffer *)self cgAuxIdentifier];
+  v9 = [(NUAuxiliaryImageRawBuffer *)v5 initWithPixelBuffer:pixelBuffer auxiliaryImageType:auxiliaryImageType identifier:cgAuxIdentifier];
 
-  [(NUAuxiliaryImageRawBuffer *)v9 setMetadata:a3];
-  v10 = [(NUAuxiliaryImageRawBuffer *)self colorSpace];
-  [(NUAuxiliaryImageRawBuffer *)v9 setColorSpace:v10];
+  [(NUAuxiliaryImageRawBuffer *)v9 setMetadata:metadata];
+  colorSpace = [(NUAuxiliaryImageRawBuffer *)self colorSpace];
+  [(NUAuxiliaryImageRawBuffer *)v9 setColorSpace:colorSpace];
 
   [(NUAuxiliaryImageRawBuffer *)v9 setCompatibilityMetadata:[(NUAuxiliaryImageRawBuffer *)self compatibilityMetadata]];
 
   return v9;
 }
 
-- (id)auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (id)auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
   v6 = [NUAuxiliaryImageRawBuffer alloc];
-  v7 = [(NUAuxiliaryImageRawBuffer *)self auxiliaryImageType];
-  v8 = [(NUAuxiliaryImageRawBuffer *)self cgAuxIdentifier];
-  v9 = [(NUAuxiliaryImageRawBuffer *)v6 initWithPixelBuffer:a3 auxiliaryImageType:v7 identifier:v8];
+  auxiliaryImageType = [(NUAuxiliaryImageRawBuffer *)self auxiliaryImageType];
+  cgAuxIdentifier = [(NUAuxiliaryImageRawBuffer *)self cgAuxIdentifier];
+  v9 = [(NUAuxiliaryImageRawBuffer *)v6 initWithPixelBuffer:buffer auxiliaryImageType:auxiliaryImageType identifier:cgAuxIdentifier];
 
   [(NUAuxiliaryImageRawBuffer *)v9 setMetadata:[(NUAuxiliaryImageRawBuffer *)self metadata]];
-  v10 = [(NUAuxiliaryImageRawBuffer *)self colorSpace];
-  [(NUAuxiliaryImageRawBuffer *)v9 setColorSpace:v10];
+  colorSpace = [(NUAuxiliaryImageRawBuffer *)self colorSpace];
+  [(NUAuxiliaryImageRawBuffer *)v9 setColorSpace:colorSpace];
 
   [(NUAuxiliaryImageRawBuffer *)v9 setCompatibilityMetadata:[(NUAuxiliaryImageRawBuffer *)self compatibilityMetadata]];
 
   return v9;
 }
 
-- (id)auxiliaryImageByApplyingExifOrientation:(unsigned int)a3
+- (id)auxiliaryImageByApplyingExifOrientation:(unsigned int)orientation
 {
   v43[1] = *MEMORY[0x1E69E9840];
   pixelRotationSessionOut = 0;
   pixelBufferOut = 0;
-  if (a3 - 9 <= 0xFFFFFFF7)
+  if (orientation - 9 <= 0xFFFFFFF7)
   {
     v36 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Unsupported EXIF orientation" userInfo:0];
     objc_exception_throw(v36);
@@ -173,7 +173,7 @@ LABEL_13:
   Height = CVPixelBufferGetHeight([(NUAuxiliaryImageRawBuffer *)self pixelBuffer]);
   PixelFormatType = CVPixelBufferGetPixelFormatType([(NUAuxiliaryImageRawBuffer *)self pixelBuffer]);
   v37 = 0;
-  v8 = NUOrientationToClockwiseRotationAndFlips(a3, &v37);
+  v8 = NUOrientationToClockwiseRotationAndFlips(orientation, &v37);
   v9 = v8;
   if (v8 == 270 || v8 == 90)
   {
@@ -233,7 +233,7 @@ LABEL_45:
 LABEL_37:
     CVPixelBufferRelease(pixelBufferOut);
 LABEL_38:
-    v29 = self;
+    selfCopy = self;
     goto LABEL_39;
   }
 
@@ -289,8 +289,8 @@ LABEL_26:
   }
 
   v24 = pixelRotationSessionOut;
-  v25 = [(NUAuxiliaryImageRawBuffer *)self pixelBuffer];
-  v26 = VTPixelRotationSessionRotateImage(v24, v25, pixelBufferOut);
+  pixelBuffer = [(NUAuxiliaryImageRawBuffer *)self pixelBuffer];
+  v26 = VTPixelRotationSessionRotateImage(v24, pixelBuffer, pixelBufferOut);
   if (v26)
   {
     v27 = v26;
@@ -314,15 +314,15 @@ LABEL_26:
 
   v31 = [NUAuxiliaryImageRawBuffer alloc];
   v32 = pixelBufferOut;
-  v33 = [(NUAuxiliaryImageRawBuffer *)self auxiliaryImageType];
-  v34 = [(NUAuxiliaryImageRawBuffer *)self cgAuxIdentifier];
-  v29 = [(NUAuxiliaryImageRawBuffer *)v31 initWithPixelBuffer:v32 auxiliaryImageType:v33 identifier:v34];
+  auxiliaryImageType = [(NUAuxiliaryImageRawBuffer *)self auxiliaryImageType];
+  cgAuxIdentifier = [(NUAuxiliaryImageRawBuffer *)self cgAuxIdentifier];
+  selfCopy = [(NUAuxiliaryImageRawBuffer *)v31 initWithPixelBuffer:v32 auxiliaryImageType:auxiliaryImageType identifier:cgAuxIdentifier];
 
-  [(NUAuxiliaryImageRawBuffer *)v29 setMetadata:[(NUAuxiliaryImageRawBuffer *)self metadata]];
-  v35 = [(NUAuxiliaryImageRawBuffer *)self colorSpace];
-  [(NUAuxiliaryImageRawBuffer *)v29 setColorSpace:v35];
+  [(NUAuxiliaryImageRawBuffer *)selfCopy setMetadata:[(NUAuxiliaryImageRawBuffer *)self metadata]];
+  colorSpace = [(NUAuxiliaryImageRawBuffer *)self colorSpace];
+  [(NUAuxiliaryImageRawBuffer *)selfCopy setColorSpace:colorSpace];
 
-  [(NUAuxiliaryImageRawBuffer *)v29 setCompatibilityMetadata:[(NUAuxiliaryImageRawBuffer *)self compatibilityMetadata]];
+  [(NUAuxiliaryImageRawBuffer *)selfCopy setCompatibilityMetadata:[(NUAuxiliaryImageRawBuffer *)self compatibilityMetadata]];
   CVPixelBufferRelease(pixelBufferOut);
   if (pixelRotationSessionOut)
   {
@@ -331,7 +331,7 @@ LABEL_26:
 
 LABEL_39:
 
-  return v29;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -344,11 +344,11 @@ LABEL_39:
   [(NUAuxiliaryImageRawBuffer *)&v3 dealloc];
 }
 
-- (NUAuxiliaryImageRawBuffer)initWithPixelBuffer:(__CVBuffer *)a3 auxiliaryImageType:(int64_t)a4 identifier:(id)a5
+- (NUAuxiliaryImageRawBuffer)initWithPixelBuffer:(__CVBuffer *)buffer auxiliaryImageType:(int64_t)type identifier:(id)identifier
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (!v8)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v15 = NUAssertLogger_16664();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -369,8 +369,8 @@ LABEL_39:
         v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v22;
         v34 = 2114;
@@ -381,8 +381,8 @@ LABEL_39:
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -391,12 +391,12 @@ LABEL_39:
     _NUAssertFailHandler("[NUAuxiliaryImageRawBuffer initWithPixelBuffer:auxiliaryImageType:identifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUAuxiliaryImage.m", 526, @"Invalid parameter not satisfying: %s", v27, v28, v29, v30, "cgIdentifier != nil");
   }
 
-  v9 = v8;
+  v9 = identifierCopy;
   v31.receiver = self;
   v31.super_class = NUAuxiliaryImageRawBuffer;
   v10 = [(NUAuxiliaryImageRawBuffer *)&v31 init];
-  v11 = CVPixelBufferRetain(a3);
-  v10->_auxiliaryImageType = a4;
+  v11 = CVPixelBufferRetain(buffer);
+  v10->_auxiliaryImageType = type;
   v10->_pixelBuffer = v11;
   v12 = [v9 copy];
   cgAuxIdentifier = v10->_cgAuxIdentifier;

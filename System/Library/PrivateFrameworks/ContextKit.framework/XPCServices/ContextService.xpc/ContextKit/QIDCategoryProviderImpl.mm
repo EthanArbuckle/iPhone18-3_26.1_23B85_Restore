@@ -1,28 +1,28 @@
 @interface QIDCategoryProviderImpl
-- (QIDCategoryProviderImpl)initWithTreasureMap:(id)a3;
-- (id)categoryIdsForQIDWithNSString:(id)a3;
+- (QIDCategoryProviderImpl)initWithTreasureMap:(id)map;
+- (id)categoryIdsForQIDWithNSString:(id)string;
 @end
 
 @implementation QIDCategoryProviderImpl
 
-- (QIDCategoryProviderImpl)initWithTreasureMap:(id)a3
+- (QIDCategoryProviderImpl)initWithTreasureMap:(id)map
 {
-  v5 = a3;
+  mapCopy = map;
   v9.receiver = self;
   v9.super_class = QIDCategoryProviderImpl;
   v6 = [(QIDCategoryProviderImpl *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tsm, a3);
+    objc_storeStrong(&v6->_tsm, map);
   }
 
   return v7;
 }
 
-- (id)categoryIdsForQIDWithNSString:(id)a3
+- (id)categoryIdsForQIDWithNSString:(id)string
 {
-  v3 = [(KeylessMap *)self->_tsm objectsForKey:a3];
+  v3 = [(KeylessMap *)self->_tsm objectsForKey:string];
   if (v3)
   {
     v4 = -[JavaUtilArrayList initWithInt:]([JavaUtilArrayList alloc], "initWithInt:", [v3 count]);

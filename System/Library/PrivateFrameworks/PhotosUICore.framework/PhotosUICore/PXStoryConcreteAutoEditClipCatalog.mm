@@ -1,26 +1,26 @@
 @interface PXStoryConcreteAutoEditClipCatalog
-- (PXStoryConcreteAutoEditClipCatalog)initWithCapacity:(int64_t)a3;
-- (id)clipForDisplayAsset:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (int64_t)indexOfClipForDisplayAsset:(id)a3;
-- (void)enumerateClipsUsingBlock:(id)a3;
+- (PXStoryConcreteAutoEditClipCatalog)initWithCapacity:(int64_t)capacity;
+- (id)clipForDisplayAsset:(id)asset;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (int64_t)indexOfClipForDisplayAsset:(id)asset;
+- (void)enumerateClipsUsingBlock:(id)block;
 @end
 
 @implementation PXStoryConcreteAutoEditClipCatalog
 
-- (int64_t)indexOfClipForDisplayAsset:(id)a3
+- (int64_t)indexOfClipForDisplayAsset:(id)asset
 {
   clipIndicesByAssetUUID = self->_clipIndicesByAssetUUID;
-  v4 = a3;
+  assetCopy = asset;
   if (objc_opt_respondsToSelector())
   {
-    [v4 alternateUUID];
+    [assetCopy alternateUUID];
   }
 
   else
   {
-    [v4 uuid];
+    [assetCopy uuid];
   }
   v5 = ;
 
@@ -28,42 +28,42 @@
 
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v7;
+  return integerValue;
 }
 
-- (void)enumerateClipsUsingBlock:(id)a3
+- (void)enumerateClipsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   orderedClips = self->_orderedClips;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__PXStoryConcreteAutoEditClipCatalog_enumerateClipsUsingBlock___block_invoke;
   v7[3] = &unk_1E7740EB0;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableArray *)orderedClips enumerateObjectsUsingBlock:v7];
 }
 
-- (id)clipForDisplayAsset:(id)a3
+- (id)clipForDisplayAsset:(id)asset
 {
   clipIndicesByAssetUUID = self->_clipIndicesByAssetUUID;
-  v5 = a3;
+  assetCopy = asset;
   if (objc_opt_respondsToSelector())
   {
-    [v5 alternateUUID];
+    [assetCopy alternateUUID];
   }
 
   else
   {
-    [v5 uuid];
+    [assetCopy uuid];
   }
   v6 = ;
 
@@ -82,40 +82,40 @@
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [PXStoryConcreteMutableAutoEditClipCatalog allocWithZone:?];
-  v6 = [(NSMutableArray *)self->_orderedClips mutableCopyWithZone:a3];
+  v6 = [(NSMutableArray *)self->_orderedClips mutableCopyWithZone:zone];
   orderedClips = v5->super._orderedClips;
   v5->super._orderedClips = v6;
 
-  v8 = [(NSMutableDictionary *)self->_clipIndicesByAssetUUID mutableCopyWithZone:a3];
+  v8 = [(NSMutableDictionary *)self->_clipIndicesByAssetUUID mutableCopyWithZone:zone];
   clipIndicesByAssetUUID = v5->super._clipIndicesByAssetUUID;
   v5->super._clipIndicesByAssetUUID = v8;
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [PXStoryConcreteAutoEditClipCatalog allocWithZone:?];
-  v6 = [(NSMutableArray *)self->_orderedClips copyWithZone:a3];
+  v6 = [(NSMutableArray *)self->_orderedClips copyWithZone:zone];
   orderedClips = v5->_orderedClips;
   v5->_orderedClips = v6;
 
-  v8 = [(NSMutableDictionary *)self->_clipIndicesByAssetUUID copyWithZone:a3];
+  v8 = [(NSMutableDictionary *)self->_clipIndicesByAssetUUID copyWithZone:zone];
   clipIndicesByAssetUUID = v5->_clipIndicesByAssetUUID;
   v5->_clipIndicesByAssetUUID = v8;
 
   return v5;
 }
 
-- (PXStoryConcreteAutoEditClipCatalog)initWithCapacity:(int64_t)a3
+- (PXStoryConcreteAutoEditClipCatalog)initWithCapacity:(int64_t)capacity
 {
-  if (a3 < 0)
+  if (capacity < 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteAutoEditClipCatalog.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"capacity >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteAutoEditClipCatalog.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"capacity >= 0"}];
   }
 
   v13.receiver = self;
@@ -123,11 +123,11 @@
   v5 = [(PXStoryConcreteAutoEditClipCatalog *)&v13 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
+    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:capacity];
     orderedClips = v5->_orderedClips;
     v5->_orderedClips = v6;
 
-    v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:a3];
+    v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:capacity];
     clipIndicesByAssetUUID = v5->_clipIndicesByAssetUUID;
     v5->_clipIndicesByAssetUUID = v8;
   }

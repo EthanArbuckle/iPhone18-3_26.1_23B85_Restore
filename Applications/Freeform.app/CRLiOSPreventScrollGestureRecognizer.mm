@@ -1,23 +1,23 @@
 @interface CRLiOSPreventScrollGestureRecognizer
-- (CRLiOSPreventScrollGestureRecognizer)initWithInteractiveCanvasController:(id)a3;
+- (CRLiOSPreventScrollGestureRecognizer)initWithInteractiveCanvasController:(id)controller;
 - (id)p_ICC;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation CRLiOSPreventScrollGestureRecognizer
 
-- (CRLiOSPreventScrollGestureRecognizer)initWithInteractiveCanvasController:(id)a3
+- (CRLiOSPreventScrollGestureRecognizer)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = CRLiOSPreventScrollGestureRecognizer;
   v5 = [(CRLiOSPreventScrollGestureRecognizer *)&v12 initWithTarget:0 action:0];
   if (v5)
   {
-    if (!v4)
+    if (!controllerCopy)
     {
       v6 = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -47,7 +47,7 @@
       [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:29 isFatal:0 description:"invalid nil value for '%{public}s'", "icc"];
     }
 
-    objc_storeWeak(&v5->_interactiveCanvasController, v4);
+    objc_storeWeak(&v5->_interactiveCanvasController, controllerCopy);
   }
 
   return v5;
@@ -66,32 +66,32 @@
   [(CRLiOSPreventScrollGestureRecognizer *)&v5 reset];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
+  beganCopy = began;
   v30.receiver = self;
   v30.super_class = CRLiOSPreventScrollGestureRecognizer;
-  [(CRLiOSPreventScrollGestureRecognizer *)&v30 touchesBegan:v6 withEvent:a4];
-  v7 = [(CRLiOSPreventScrollGestureRecognizer *)self p_ICC];
-  v8 = [v7 layerHost];
-  v9 = [v8 asUIKitHost];
+  [(CRLiOSPreventScrollGestureRecognizer *)&v30 touchesBegan:beganCopy withEvent:event];
+  p_ICC = [(CRLiOSPreventScrollGestureRecognizer *)self p_ICC];
+  layerHost = [p_ICC layerHost];
+  asUIKitHost = [layerHost asUIKitHost];
 
-  if (-[CRLiOSPreventScrollGestureRecognizer state](self, "state") || ![v7 currentlyScrolling])
+  if (-[CRLiOSPreventScrollGestureRecognizer state](self, "state") || ![p_ICC currentlyScrolling])
   {
-    v10 = [v7 canvasView];
-    v11 = [v10 enclosingScrollView];
-    v12 = [v11 panGestureRecognizer];
-    v13 = [v12 minimumNumberOfTouches];
+    canvasView = [p_ICC canvasView];
+    enclosingScrollView = [canvasView enclosingScrollView];
+    panGestureRecognizer = [enclosingScrollView panGestureRecognizer];
+    minimumNumberOfTouches = [panGestureRecognizer minimumNumberOfTouches];
 
-    if (v13 < 2)
+    if (minimumNumberOfTouches < 2)
     {
-      v24 = v7;
-      v25 = v6;
+      v24 = p_ICC;
+      v25 = beganCopy;
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v14 = v6;
+      v14 = beganCopy;
       v15 = [v14 countByEnumeratingWithState:&v26 objects:v31 count:16];
       if (!v15)
       {
@@ -115,25 +115,25 @@
             if (self->_touch)
             {
               objc_storeStrong(&self->_secondTouch, v19);
-              v20 = self;
+              selfCopy2 = self;
               v21 = 1;
 LABEL_18:
-              [(CRLiOSPreventScrollGestureRecognizer *)v20 setState:v21];
+              [(CRLiOSPreventScrollGestureRecognizer *)selfCopy2 setState:v21];
               continue;
             }
 
             objc_storeStrong(&self->_touch, v19);
             if ([(UITouch *)self->_touch tapCount]!= 1)
             {
-              v20 = self;
+              selfCopy2 = self;
               v21 = 5;
               goto LABEL_18;
             }
 
-            v22 = [v9 hitRepWithTouch:self->_touch];
-            v23 = [v22 repForDragging];
+            v22 = [asUIKitHost hitRepWithTouch:self->_touch];
+            repForDragging = [v22 repForDragging];
 
-            if (!v23)
+            if (!repForDragging)
             {
               [(CRLiOSPreventScrollGestureRecognizer *)self setState:5];
             }
@@ -145,8 +145,8 @@ LABEL_18:
         {
 LABEL_21:
 
-          v7 = v24;
-          v6 = v25;
+          p_ICC = v24;
+          beganCopy = v25;
           goto LABEL_22;
         }
       }
@@ -157,19 +157,19 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
+  endedCopy = ended;
   v9.receiver = self;
   v9.super_class = CRLiOSPreventScrollGestureRecognizer;
-  [(CRLiOSPreventScrollGestureRecognizer *)&v9 touchesEnded:v6 withEvent:a4];
-  if (self->_touch && [v6 containsObject:?])
+  [(CRLiOSPreventScrollGestureRecognizer *)&v9 touchesEnded:endedCopy withEvent:event];
+  if (self->_touch && [endedCopy containsObject:?])
   {
     touch = self->_touch;
     self->_touch = 0;
   }
 
-  if (self->_secondTouch && [v6 containsObject:?])
+  if (self->_secondTouch && [endedCopy containsObject:?])
   {
     secondTouch = self->_secondTouch;
     self->_secondTouch = 0;
@@ -181,19 +181,19 @@ LABEL_22:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
+  cancelledCopy = cancelled;
   v9.receiver = self;
   v9.super_class = CRLiOSPreventScrollGestureRecognizer;
-  [(CRLiOSPreventScrollGestureRecognizer *)&v9 touchesCancelled:v6 withEvent:a4];
-  if (self->_touch && [v6 containsObject:?])
+  [(CRLiOSPreventScrollGestureRecognizer *)&v9 touchesCancelled:cancelledCopy withEvent:event];
+  if (self->_touch && [cancelledCopy containsObject:?])
   {
     touch = self->_touch;
     self->_touch = 0;
   }
 
-  if (self->_secondTouch && [v6 containsObject:?])
+  if (self->_secondTouch && [cancelledCopy containsObject:?])
   {
     secondTouch = self->_secondTouch;
     self->_secondTouch = 0;

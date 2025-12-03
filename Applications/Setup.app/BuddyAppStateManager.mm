@@ -1,6 +1,6 @@
 @interface BuddyAppStateManager
 + (id)currentAppStates;
-+ (void)persist:(id)a3 to:(id)a4;
++ (void)persist:(id)persist to:(id)to;
 - (_TtC5Setup20BuddyAppStateManager)init;
 @end
 
@@ -14,14 +14,14 @@
   return v2.super.isa;
 }
 
-+ (void)persist:(id)a3 to:(id)a4
++ (void)persist:(id)persist to:(id)to
 {
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a4;
+  toCopy = to;
   isa = Dictionary._bridgeToObjectiveC()().super.isa;
 
   v6 = String._bridgeToObjectiveC()();
-  [v7 setObject:isa forKey:v6 persistImmediately:1];
+  [toCopy setObject:isa forKey:v6 persistImmediately:1];
 }
 
 - (_TtC5Setup20BuddyAppStateManager)init

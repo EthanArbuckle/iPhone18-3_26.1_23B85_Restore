@@ -1,46 +1,46 @@
 @interface ApplicationWorkspace
-+ (BOOL)keepSafeHarborDataForBundleID:(id)a3;
++ (BOOL)keepSafeHarborDataForBundleID:(id)d;
 + (id)defaultWorkspace;
 - (ApplicationWorkspace)init;
-- (BOOL)_hasThumbnailDownloadOperationForDownloadID:(int64_t)a3;
-- (BOOL)_isInstallingForDownloadIdentifier:(int64_t)a3;
-- (BOOL)isDownloadingOrInstallingForItemIdentifier:(id)a3;
-- (BOOL)isInstalledApp:(id)a3;
+- (BOOL)_hasThumbnailDownloadOperationForDownloadID:(int64_t)d;
+- (BOOL)_isInstallingForDownloadIdentifier:(int64_t)identifier;
+- (BOOL)isDownloadingOrInstallingForItemIdentifier:(id)identifier;
+- (BOOL)isInstalledApp:(id)app;
 - (BOOL)isMultiUser;
-- (BOOL)shouldModifyQuota:(id)a3;
-- (id)_copyCombinedApplicationProgress:(id)a3 forApplicationHandle:(id)a4;
-- (id)_thumbnailDownloadOperationForDownloadID:(int64_t)a3;
-- (id)sinfPathForBundleID:(id)a3;
-- (void)_addOperationAtBeginning:(id)a3;
-- (void)_addProgressOperation:(id)a3;
-- (void)_cancelPlaceholderThumbnailInstallForDownloadID:(int64_t)a3;
-- (void)_decrementPendingInstallsForDownloadIdentifier:(int64_t)a3;
+- (BOOL)shouldModifyQuota:(id)quota;
+- (id)_copyCombinedApplicationProgress:(id)progress forApplicationHandle:(id)handle;
+- (id)_thumbnailDownloadOperationForDownloadID:(int64_t)d;
+- (id)sinfPathForBundleID:(id)d;
+- (void)_addOperationAtBeginning:(id)beginning;
+- (void)_addProgressOperation:(id)operation;
+- (void)_cancelPlaceholderThumbnailInstallForDownloadID:(int64_t)d;
+- (void)_decrementPendingInstallsForDownloadIdentifier:(int64_t)identifier;
 - (void)_fireWaitBlocksForSyncTermination;
-- (void)_fireWaitBlocksIfNecessaryForDownloadWithIdentifier:(int64_t)a3;
-- (void)_incrementPendingInstallsForDownloadIdentifier:(int64_t)a3;
+- (void)_fireWaitBlocksIfNecessaryForDownloadWithIdentifier:(int64_t)identifier;
+- (void)_incrementPendingInstallsForDownloadIdentifier:(int64_t)identifier;
 - (void)_performNextOperation;
-- (void)_removeApplicationDownloadProgressForApplicationHandle:(id)a3;
-- (void)_removeOperationsForDownloadIdentifier:(int64_t)a3 operationClass:(Class)a4;
-- (void)_stopObservingODRProgress:(id)a3;
-- (void)_updatePlaceholderWithODRProgressForApplicationHandle:(id)a3;
-- (void)addPlaceholderThumbnailOperation:(id)a3;
-- (void)applyWorkspaceChanges:(id)a3;
-- (void)cancelPlaceholderInstallationForDownloadIdentifier:(int64_t)a3;
-- (void)endExternalInstallationForDownloadIdentifier:(int64_t)a3;
-- (void)finishInstallOfApplicationHandle:(id)a3;
-- (void)installPlaceholderForApplicationHandle:(id)a3;
-- (void)markFailedPlaceholderForApplicationHandle:(id)a3;
+- (void)_removeApplicationDownloadProgressForApplicationHandle:(id)handle;
+- (void)_removeOperationsForDownloadIdentifier:(int64_t)identifier operationClass:(Class)class;
+- (void)_stopObservingODRProgress:(id)progress;
+- (void)_updatePlaceholderWithODRProgressForApplicationHandle:(id)handle;
+- (void)addPlaceholderThumbnailOperation:(id)operation;
+- (void)applyWorkspaceChanges:(id)changes;
+- (void)cancelPlaceholderInstallationForDownloadIdentifier:(int64_t)identifier;
+- (void)endExternalInstallationForDownloadIdentifier:(int64_t)identifier;
+- (void)finishInstallOfApplicationHandle:(id)handle;
+- (void)installPlaceholderForApplicationHandle:(id)handle;
+- (void)markFailedPlaceholderForApplicationHandle:(id)handle;
 - (void)replayIncompleteOperations;
-- (void)resetProgressForApplicationHandle:(id)a3;
-- (void)restorePlaceholderForApplicationHandle:(id)a3;
+- (void)resetProgressForApplicationHandle:(id)handle;
+- (void)restorePlaceholderForApplicationHandle:(id)handle;
 - (void)resumeQuotas;
-- (void)setIconData:(id)a3 forApplicationHandle:(id)a4;
+- (void)setIconData:(id)data forApplicationHandle:(id)handle;
 - (void)suspendQuotas;
-- (void)uninstallPlaceholderForApplicationHandle:(id)a3;
-- (void)updatePlaceholderForApplicationHandle:(id)a3;
-- (void)updatePlaceholderWithApplicationProgress:(id)a3;
-- (void)waitForInstallOfDownloadIdentifier:(int64_t)a3 completionBlock:(id)a4;
-- (void)waitForSyncBubbleToTerminateWithCompletionBlock:(id)a3;
+- (void)uninstallPlaceholderForApplicationHandle:(id)handle;
+- (void)updatePlaceholderForApplicationHandle:(id)handle;
+- (void)updatePlaceholderWithApplicationProgress:(id)progress;
+- (void)waitForInstallOfDownloadIdentifier:(int64_t)identifier completionBlock:(id)block;
+- (void)waitForSyncBubbleToTerminateWithCompletionBlock:(id)block;
 - (void)willSwitchUser;
 @end
 
@@ -100,19 +100,19 @@
         v19 = +[SSLogConfig sharedConfig];
       }
 
-      v20 = [v19 shouldLog];
+      shouldLog = [v19 shouldLog];
       if ([v19 shouldLogToDisk])
       {
-        v21 = v20 | 2;
+        v21 = shouldLog | 2;
       }
 
       else
       {
-        v21 = v20;
+        v21 = shouldLog;
       }
 
-      v22 = [v19 OSLogObject];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
+      oSLogObject = [v19 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
       {
         v23 = v21;
       }
@@ -135,7 +135,7 @@ LABEL_15:
           return v2;
         }
 
-        v22 = [NSString stringWithCString:v24 encoding:4, v27, v26];
+        oSLogObject = [NSString stringWithCString:v24 encoding:4, v27, v26];
         free(v24);
         SSFileLog();
       }
@@ -153,7 +153,7 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = sub_10016D360;
   block[3] = &unk_100327170;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100383F58 != -1)
   {
     dispatch_once(&qword_100383F58, block);
@@ -164,14 +164,14 @@ LABEL_15:
   return v2;
 }
 
-- (void)applyWorkspaceChanges:(id)a3
+- (void)applyWorkspaceChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [changesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -182,46 +182,46 @@ LABEL_15:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(changesCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 changeType];
-        if (v10 <= 1)
+        changeType = [v9 changeType];
+        if (changeType <= 1)
         {
-          if (v10)
+          if (changeType)
           {
-            if (v10 != 1)
+            if (changeType != 1)
             {
               continue;
             }
 
-            v11 = [v9 applicationHandle];
-            [(ApplicationWorkspace *)self uninstallPlaceholderForApplicationHandle:v11];
+            applicationHandle = [v9 applicationHandle];
+            [(ApplicationWorkspace *)self uninstallPlaceholderForApplicationHandle:applicationHandle];
           }
 
           else
           {
-            v11 = [v9 applicationHandle];
-            [(ApplicationWorkspace *)self installPlaceholderForApplicationHandle:v11];
+            applicationHandle = [v9 applicationHandle];
+            [(ApplicationWorkspace *)self installPlaceholderForApplicationHandle:applicationHandle];
           }
         }
 
         else
         {
-          switch(v10)
+          switch(changeType)
           {
             case 2:
-              v11 = [v9 applicationHandle];
-              [(ApplicationWorkspace *)self finishInstallOfApplicationHandle:v11];
+              applicationHandle = [v9 applicationHandle];
+              [(ApplicationWorkspace *)self finishInstallOfApplicationHandle:applicationHandle];
               break;
             case 3:
-              v11 = [v9 applicationHandle];
-              [(ApplicationWorkspace *)self markFailedPlaceholderForApplicationHandle:v11];
+              applicationHandle = [v9 applicationHandle];
+              [(ApplicationWorkspace *)self markFailedPlaceholderForApplicationHandle:applicationHandle];
               break;
             case 5:
-              v11 = [v9 applicationHandle];
-              [(ApplicationWorkspace *)self updatePlaceholderForApplicationHandle:v11];
+              applicationHandle = [v9 applicationHandle];
+              [(ApplicationWorkspace *)self updatePlaceholderForApplicationHandle:applicationHandle];
               break;
             default:
               continue;
@@ -229,19 +229,19 @@ LABEL_15:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [changesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)addPlaceholderThumbnailOperation:(id)a3
+- (void)addPlaceholderThumbnailOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   [(NSLock *)self->_lock lock];
-  v5 = [v4 applicationHandle];
-  if (-[ApplicationWorkspace _hasThumbnailDownloadOperationForDownloadID:](self, "_hasThumbnailDownloadOperationForDownloadID:", [v5 downloadID]))
+  applicationHandle = [operationCopy applicationHandle];
+  if (-[ApplicationWorkspace _hasThumbnailDownloadOperationForDownloadID:](self, "_hasThumbnailDownloadOperationForDownloadID:", [applicationHandle downloadID]))
   {
     v6 = +[SSLogConfig sharedDaemonConfig];
     if (!v6)
@@ -249,19 +249,19 @@ LABEL_15:
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v8;
     }
@@ -277,32 +277,32 @@ LABEL_15:
     }
 
     LODWORD(v16) = 138412290;
-    *(&v16 + 4) = v5;
+    *(&v16 + 4) = applicationHandle;
     LODWORD(v15) = 12;
   }
 
   else
   {
-    [(ISOperationQueue *)self->_placeholderIconOperationQueue addOperation:v4];
+    [(ISOperationQueue *)self->_placeholderIconOperationQueue addOperation:operationCopy];
     v6 = +[SSLogConfig sharedDaemonConfig];
     if (!v6)
     {
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v11 = [v6 shouldLog];
+    shouldLog2 = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v12 = v11 | 2;
+      v12 = shouldLog2 | 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = shouldLog2;
     }
 
-    v9 = [v6 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
     }
@@ -318,7 +318,7 @@ LABEL_15:
     }
 
     LODWORD(v16) = 138412290;
-    *(&v16 + 4) = v5;
+    *(&v16 + 4) = applicationHandle;
     LODWORD(v15) = 12;
   }
 
@@ -326,7 +326,7 @@ LABEL_15:
 
   if (v14)
   {
-    v9 = [NSString stringWithCString:v14 encoding:4, &v16, v15, v16];
+    oSLogObject = [NSString stringWithCString:v14 encoding:4, &v16, v15, v16];
     free(v14);
     SSFileLog();
 LABEL_24:
@@ -335,12 +335,12 @@ LABEL_24:
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)cancelPlaceholderInstallationForDownloadIdentifier:(int64_t)a3
+- (void)cancelPlaceholderInstallationForDownloadIdentifier:(int64_t)identifier
 {
   [(NSLock *)self->_lock lock];
-  if ([(ApplicationWorkspace *)self _hasThumbnailDownloadOperationForDownloadID:a3])
+  if ([(ApplicationWorkspace *)self _hasThumbnailDownloadOperationForDownloadID:identifier])
   {
-    [(ApplicationWorkspace *)self _cancelPlaceholderThumbnailInstallForDownloadID:a3];
+    [(ApplicationWorkspace *)self _cancelPlaceholderThumbnailInstallForDownloadID:identifier];
   }
 
   lock = self->_lock;
@@ -348,7 +348,7 @@ LABEL_24:
   [(NSLock *)lock unlock];
 }
 
-- (void)endExternalInstallationForDownloadIdentifier:(int64_t)a3
+- (void)endExternalInstallationForDownloadIdentifier:(int64_t)identifier
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -356,19 +356,19 @@ LABEL_24:
   v4[2] = sub_10016D88C;
   v4[3] = &unk_100329108;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = identifier;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)finishInstallOfApplicationHandle:(id)a3
+- (void)finishInstallOfApplicationHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [[ApplicationWorkspaceFinishOperation alloc] initWithApplicationHandle:v4];
+  handleCopy = handle;
+  v5 = [[ApplicationWorkspaceFinishOperation alloc] initWithApplicationHandle:handleCopy];
   [(NSLock *)self->_lock lock];
-  v6 = [v4 downloadID];
-  [(ApplicationWorkspace *)self _removeApplicationDownloadProgressForApplicationHandle:v4];
+  downloadID = [handleCopy downloadID];
+  [(ApplicationWorkspace *)self _removeApplicationDownloadProgressForApplicationHandle:handleCopy];
 
-  [(ApplicationWorkspace *)self _removeOperationsForDownloadIdentifier:v6];
+  [(ApplicationWorkspace *)self _removeOperationsForDownloadIdentifier:downloadID];
   [(ApplicationWorkspace *)self _addOperationAtBeginning:v5];
   [(NSLock *)self->_lock unlock];
   dispatchQueue = self->_dispatchQueue;
@@ -380,9 +380,9 @@ LABEL_24:
   dispatch_async(dispatchQueue, block);
 }
 
-- (BOOL)isDownloadingOrInstallingForItemIdentifier:(id)a3
+- (BOOL)isDownloadingOrInstallingForItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v46 = 0;
   v47 = &v46;
   v48 = 0x2020000000;
@@ -393,29 +393,29 @@ LABEL_24:
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
-  v7 = [v5 shouldLogToDisk];
-  v8 = [v5 OSLogObject];
-  v9 = v8;
-  if (v7)
+  shouldLog = [v5 shouldLog];
+  shouldLogToDisk = [v5 shouldLogToDisk];
+  oSLogObject = [v5 OSLogObject];
+  v9 = oSLogObject;
+  if (shouldLogToDisk)
   {
-    v6 |= 2u;
+    shouldLog |= 2u;
   }
 
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
-    v10 = v6;
+    v10 = shouldLog;
   }
 
   else
   {
-    v10 = v6 & 2;
+    v10 = shouldLog & 2;
   }
 
   if (v10)
   {
     v51 = 138412290;
-    v52 = v4;
+    v52 = identifierCopy;
     LODWORD(v37) = 12;
     v36 = &v51;
     v11 = _os_log_send_and_compose_impl();
@@ -438,7 +438,7 @@ LABEL_12:
   v42[1] = 3221225472;
   v42[2] = sub_10016E108;
   v42[3] = &unk_10032A140;
-  v14 = v4;
+  v14 = identifierCopy;
   v43 = v14;
   v45 = &v46;
   v15 = v12;
@@ -480,23 +480,23 @@ LABEL_12:
           v20 = +[SSLogConfig sharedConfig];
         }
 
-        v21 = [v20 shouldLog];
-        v22 = [v20 shouldLogToDisk];
-        v23 = [v20 OSLogObject];
-        v24 = v23;
-        if (v22)
+        shouldLog2 = [v20 shouldLog];
+        shouldLogToDisk2 = [v20 shouldLogToDisk];
+        oSLogObject2 = [v20 OSLogObject];
+        v24 = oSLogObject2;
+        if (shouldLogToDisk2)
         {
-          v21 |= 2u;
+          shouldLog2 |= 2u;
         }
 
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
         {
-          v25 = v21;
+          v25 = shouldLog2;
         }
 
         else
         {
-          v25 = v21 & 2;
+          v25 = shouldLog2 & 2;
         }
 
         if (v25)
@@ -546,23 +546,23 @@ LABEL_36:
       v27 = +[SSLogConfig sharedConfig];
     }
 
-    v28 = [v27 shouldLog];
-    v29 = [v27 shouldLogToDisk];
-    v30 = [v27 OSLogObject];
-    v31 = v30;
-    if (v29)
+    shouldLog3 = [v27 shouldLog];
+    shouldLogToDisk3 = [v27 shouldLogToDisk];
+    oSLogObject3 = [v27 OSLogObject];
+    v31 = oSLogObject3;
+    if (shouldLogToDisk3)
     {
-      v28 |= 2u;
+      shouldLog3 |= 2u;
     }
 
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = v28;
+      v32 = shouldLog3;
     }
 
     else
     {
-      v32 = v28 & 2;
+      v32 = shouldLog3 & 2;
     }
 
     if (v32)
@@ -601,20 +601,20 @@ LABEL_47:
 - (BOOL)isMultiUser
 {
   v2 = +[UMUserManager sharedManager];
-  v3 = [v2 isMultiUser];
+  isMultiUser = [v2 isMultiUser];
 
-  return v3;
+  return isMultiUser;
 }
 
-- (void)installPlaceholderForApplicationHandle:(id)a3
+- (void)installPlaceholderForApplicationHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   if (!SSDebugShouldUseAppstored())
   {
-    v11 = [[ApplicationWorkspaceInstallPlaceholderOperation alloc] initWithApplicationHandle:v4 forceUpdate:0];
+    bundleID = [[ApplicationWorkspaceInstallPlaceholderOperation alloc] initWithApplicationHandle:handleCopy forceUpdate:0];
 
     [(NSLock *)self->_lock lock];
-    [(NSMutableArray *)self->_operations addObject:v11];
+    [(NSMutableArray *)self->_operations addObject:bundleID];
     [(NSLock *)self->_lock unlock];
     dispatchQueue = self->_dispatchQueue;
     block[0] = _NSConcreteStackBlock;
@@ -632,19 +632,19 @@ LABEL_47:
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v7 &= 2u;
   }
@@ -662,66 +662,66 @@ LABEL_47:
 
   if (v10)
   {
-    v8 = [NSString stringWithCString:v10 encoding:4, &v15, v13];
+    oSLogObject = [NSString stringWithCString:v10 encoding:4, &v15, v13];
     free(v10);
     SSFileLog();
 LABEL_12:
   }
 
-  v11 = [v4 bundleID];
+  bundleID = [handleCopy bundleID];
 
-  [ApplicationWorkspaceState completeNotificationForInstallingBundleIdentifier:v11];
+  [ApplicationWorkspaceState completeNotificationForInstallingBundleIdentifier:bundleID];
 LABEL_15:
 }
 
-- (BOOL)isInstalledApp:(id)a3
+- (BOOL)isInstalledApp:(id)app
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  appCopy = app;
+  v4 = appCopy;
+  if (appCopy && [appCopy length])
   {
     v5 = [LSApplicationProxy applicationProxyForIdentifier:v4];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 appState];
-      if ([v7 isInstalled])
+      appState = [v5 appState];
+      if ([appState isInstalled])
       {
 
 LABEL_8:
-        v11 = [v6 appState];
-        v8 = [v11 isValid];
+        appState2 = [v6 appState];
+        isValid = [appState2 isValid];
 
 LABEL_10:
         goto LABEL_11;
       }
 
-      v9 = [v6 appState];
-      v10 = [v9 isPlaceholder];
+      appState3 = [v6 appState];
+      isPlaceholder = [appState3 isPlaceholder];
 
-      if (v10)
+      if (isPlaceholder)
       {
         goto LABEL_8;
       }
     }
 
-    v8 = 0;
+    isValid = 0;
     goto LABEL_10;
   }
 
-  v8 = 0;
+  isValid = 0;
 LABEL_11:
 
-  return v8;
+  return isValid;
 }
 
-+ (BOOL)keepSafeHarborDataForBundleID:(id)a3
++ (BOOL)keepSafeHarborDataForBundleID:(id)d
 {
-  v3 = [LSApplicationProxy applicationProxyForIdentifier:a3];
-  v4 = [v3 bundleContainerURL];
-  v5 = [v4 path];
+  v3 = [LSApplicationProxy applicationProxyForIdentifier:d];
+  bundleContainerURL = [v3 bundleContainerURL];
+  path = [bundleContainerURL path];
 
-  v6 = [v5 stringByAppendingPathComponent:@"iTunesMetadata.plist"];
+  v6 = [path stringByAppendingPathComponent:@"iTunesMetadata.plist"];
   v7 = [NSMutableDictionary dictionaryWithContentsOfFile:v6];
   v8 = v7;
   if (v7)
@@ -729,31 +729,31 @@ LABEL_11:
     v9 = [v7 objectForKey:@"DeviceBasedVPP"];
     if (v9 && (objc_opt_class(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v10 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
     }
 
     else
     {
-      v10 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    bOOLValue = 0;
   }
 
-  return v10;
+  return bOOLValue;
 }
 
-- (void)markFailedPlaceholderForApplicationHandle:(id)a3
+- (void)markFailedPlaceholderForApplicationHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(ApplicationWorkspaceOperation *)[ApplicationWorkspaceFailedPlaceholderOperation alloc] initWithApplicationHandle:v4];
+  handleCopy = handle;
+  v5 = [(ApplicationWorkspaceOperation *)[ApplicationWorkspaceFailedPlaceholderOperation alloc] initWithApplicationHandle:handleCopy];
   [(NSLock *)self->_lock lock];
-  v6 = [v4 downloadID];
+  downloadID = [handleCopy downloadID];
 
-  [(ApplicationWorkspace *)self _removeOperationsForDownloadIdentifier:v6];
+  [(ApplicationWorkspace *)self _removeOperationsForDownloadIdentifier:downloadID];
   [(ApplicationWorkspace *)self _addOperationAtBeginning:v5];
   [(NSLock *)self->_lock unlock];
   dispatchQueue = self->_dispatchQueue;
@@ -775,19 +775,19 @@ LABEL_11:
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v7 &= 2u;
   }
@@ -807,7 +807,7 @@ LABEL_11:
 
   if (v10)
   {
-    v8 = [NSString stringWithCString:v10 encoding:4, &v17, v13];
+    oSLogObject = [NSString stringWithCString:v10 encoding:4, &v17, v13];
     free(v10);
     SSFileLog();
 LABEL_11:
@@ -819,15 +819,15 @@ LABEL_11:
   v14[2] = sub_10016ED08;
   v14[3] = &unk_1003294E0;
   v15 = v4;
-  v16 = self;
+  selfCopy = self;
   v12 = v4;
   [v11 modifyAsyncUsingTransactionBlock:v14];
 }
 
-- (void)resetProgressForApplicationHandle:(id)a3
+- (void)resetProgressForApplicationHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(ApplicationWorkspaceOperation *)[ApplicationWorkspaceClearProgressOperation alloc] initWithApplicationHandle:v4];
+  handleCopy = handle;
+  v5 = [(ApplicationWorkspaceOperation *)[ApplicationWorkspaceClearProgressOperation alloc] initWithApplicationHandle:handleCopy];
 
   [(NSLock *)self->_lock lock];
   [(NSMutableArray *)self->_operations addObject:v5];
@@ -841,10 +841,10 @@ LABEL_11:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)restorePlaceholderForApplicationHandle:(id)a3
+- (void)restorePlaceholderForApplicationHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [[ApplicationWorkspaceFinishOperation alloc] initWithApplicationHandle:v4 isPlaceholderRestore:1];
+  handleCopy = handle;
+  v5 = [[ApplicationWorkspaceFinishOperation alloc] initWithApplicationHandle:handleCopy isPlaceholderRestore:1];
 
   [(NSLock *)self->_lock lock];
   [(ApplicationWorkspace *)self _addOperationAtBeginning:v5];
@@ -866,19 +866,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v5 &= 2u;
   }
@@ -926,21 +926,21 @@ LABEL_11:
       v11 = +[SSLogConfig sharedConfig];
     }
 
-    v12 = [v11 shouldLog];
-    v13 = [v11 shouldLogToDisk];
-    v14 = [v11 OSLogObject];
-    v15 = v14;
-    if (v13)
+    shouldLog2 = [v11 shouldLog];
+    shouldLogToDisk = [v11 shouldLogToDisk];
+    oSLogObject2 = [v11 OSLogObject];
+    v15 = oSLogObject2;
+    if (shouldLogToDisk)
     {
-      v12 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
-      v12 &= 2u;
+      shouldLog2 &= 2u;
     }
 
-    if (!v12)
+    if (!shouldLog2)
     {
       goto LABEL_31;
     }
@@ -976,21 +976,21 @@ LABEL_31:
       v11 = +[SSLogConfig sharedConfig];
     }
 
-    v21 = [v11 shouldLog];
-    v22 = [v11 shouldLogToDisk];
-    v23 = [v11 OSLogObject];
-    v15 = v23;
-    if (v22)
+    shouldLog3 = [v11 shouldLog];
+    shouldLogToDisk2 = [v11 shouldLogToDisk];
+    oSLogObject3 = [v11 OSLogObject];
+    v15 = oSLogObject3;
+    if (shouldLogToDisk2)
     {
-      v21 |= 2u;
+      shouldLog3 |= 2u;
     }
 
-    if (!os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
     {
-      v21 &= 2u;
+      shouldLog3 &= 2u;
     }
 
-    if (!v21)
+    if (!shouldLog3)
     {
       goto LABEL_31;
     }
@@ -1011,11 +1011,11 @@ LABEL_31:
   _Block_object_dispose(&v33, 8);
 }
 
-- (void)setIconData:(id)a3 forApplicationHandle:(id)a4
+- (void)setIconData:(id)data forApplicationHandle:(id)handle
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ApplicationWorkspaceInstallPlaceholderOperation alloc] initWithApplicationHandle:v6 iconData:v7];
+  handleCopy = handle;
+  dataCopy = data;
+  v8 = [[ApplicationWorkspaceInstallPlaceholderOperation alloc] initWithApplicationHandle:handleCopy iconData:dataCopy];
 
   [(NSLock *)self->_lock lock];
   v9 = +[SSLogConfig sharedDaemonConfig];
@@ -1024,19 +1024,19 @@ LABEL_31:
     v9 = +[SSLogConfig sharedConfig];
   }
 
-  v10 = [v9 shouldLog];
+  shouldLog = [v9 shouldLog];
   if ([v9 shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog;
   }
 
-  v12 = [v9 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v11;
   }
@@ -1052,13 +1052,13 @@ LABEL_31:
   }
 
   v18 = 138412290;
-  v19 = v6;
+  v19 = handleCopy;
   LODWORD(v16) = 12;
   v14 = _os_log_send_and_compose_impl();
 
   if (v14)
   {
-    v12 = [NSString stringWithCString:v14 encoding:4, &v18, v16];
+    oSLogObject = [NSString stringWithCString:v14 encoding:4, &v18, v16];
     free(v14);
     SSFileLog();
 LABEL_12:
@@ -1075,9 +1075,9 @@ LABEL_12:
   dispatch_async(dispatchQueue, block);
 }
 
-- (BOOL)shouldModifyQuota:(id)a3
+- (BOOL)shouldModifyQuota:(id)quota
 {
-  v3 = a3;
+  quotaCopy = quota;
   if (SSDownloadKindIsSoftwareKind())
   {
     v4 = 0;
@@ -1090,7 +1090,7 @@ LABEL_12:
 
   else
   {
-    v4 = [v3 isEqualToString:SSDownloadKindDocument];
+    v4 = [quotaCopy isEqualToString:SSDownloadKindDocument];
   }
 
   return v4;
@@ -1104,19 +1104,19 @@ LABEL_12:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v5 &= 2u;
   }
@@ -1134,7 +1134,7 @@ LABEL_12:
 
   if (v8)
   {
-    v6 = [NSString stringWithCString:v8 encoding:4, &v12, v10];
+    oSLogObject = [NSString stringWithCString:v8 encoding:4, &v12, v10];
     free(v8);
     SSFileLog();
 LABEL_11:
@@ -1149,14 +1149,14 @@ LABEL_11:
   [v9 suspendQuotasWithCompletionHandler:v11];
 }
 
-- (void)uninstallPlaceholderForApplicationHandle:(id)a3
+- (void)uninstallPlaceholderForApplicationHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(ApplicationWorkspaceOperation *)[ApplicationWorkspaceUninstallOperation alloc] initWithApplicationHandle:v4];
+  handleCopy = handle;
+  v5 = [(ApplicationWorkspaceOperation *)[ApplicationWorkspaceUninstallOperation alloc] initWithApplicationHandle:handleCopy];
   [(NSLock *)self->_lock lock];
-  v6 = [v4 downloadID];
+  downloadID = [handleCopy downloadID];
 
-  [(ApplicationWorkspace *)self _removeOperationsForDownloadIdentifier:v6];
+  [(ApplicationWorkspace *)self _removeOperationsForDownloadIdentifier:downloadID];
   [(ApplicationWorkspace *)self _addOperationAtBeginning:v5];
   [(NSLock *)self->_lock unlock];
   dispatchQueue = self->_dispatchQueue;
@@ -1168,10 +1168,10 @@ LABEL_11:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)updatePlaceholderForApplicationHandle:(id)a3
+- (void)updatePlaceholderForApplicationHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [[ApplicationWorkspaceInstallPlaceholderOperation alloc] initWithApplicationHandle:v4 forceUpdate:1];
+  handleCopy = handle;
+  v5 = [[ApplicationWorkspaceInstallPlaceholderOperation alloc] initWithApplicationHandle:handleCopy forceUpdate:1];
 
   [(NSLock *)self->_lock lock];
   [(NSMutableArray *)self->_operations addObject:v5];
@@ -1185,10 +1185,10 @@ LABEL_11:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)updatePlaceholderWithApplicationProgress:(id)a3
+- (void)updatePlaceholderWithApplicationProgress:(id)progress
 {
-  v4 = a3;
-  v11 = [v4 applicationHandle];
+  progressCopy = progress;
+  applicationHandle = [progressCopy applicationHandle];
   [(NSLock *)self->_lock lock];
   appProgress = self->_appProgress;
   if (!appProgress)
@@ -1200,21 +1200,21 @@ LABEL_11:
     appProgress = self->_appProgress;
   }
 
-  v8 = [v4 copy];
-  [(NSMutableDictionary *)appProgress setObject:v8 forKey:v11];
+  v8 = [progressCopy copy];
+  [(NSMutableDictionary *)appProgress setObject:v8 forKey:applicationHandle];
 
   [(NSLock *)self->_lock unlock];
-  v9 = [(ApplicationWorkspace *)self _copyCombinedApplicationProgress:v4 forApplicationHandle:v11];
+  v9 = [(ApplicationWorkspace *)self _copyCombinedApplicationProgress:progressCopy forApplicationHandle:applicationHandle];
 
   v10 = [[ApplicationWorkspaceProgressOperation alloc] initWithApplicationDownloadProgress:v9];
   [(ApplicationWorkspace *)self _addProgressOperation:v10];
 }
 
-- (void)waitForInstallOfDownloadIdentifier:(int64_t)a3 completionBlock:(id)a4
+- (void)waitForInstallOfDownloadIdentifier:(int64_t)identifier completionBlock:(id)block
 {
-  v6 = [a4 copy];
+  v6 = [block copy];
   [(NSLock *)self->_lock lock];
-  if (![(ApplicationWorkspace *)self _isInstallingForDownloadIdentifier:a3])
+  if (![(ApplicationWorkspace *)self _isInstallingForDownloadIdentifier:identifier])
   {
     callbackQueue = self->_callbackQueue;
     block[0] = _NSConcreteStackBlock;
@@ -1233,19 +1233,19 @@ LABEL_11:
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  v10 = [v7 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v11 = v9;
   }
@@ -1261,21 +1261,21 @@ LABEL_11:
   }
 
   v27 = 134217984;
-  v28 = a3;
+  identifierCopy = identifier;
   LODWORD(v24) = 12;
   v23 = &v27;
   v12 = _os_log_send_and_compose_impl();
 
   if (v12)
   {
-    v10 = [NSString stringWithCString:v12 encoding:4, &v27, v24];
+    oSLogObject = [NSString stringWithCString:v12 encoding:4, &v27, v24];
     free(v12);
-    v23 = v10;
+    v23 = oSLogObject;
     SSFileLog();
 LABEL_13:
   }
 
-  v13 = [[NSNumber alloc] initWithLongLong:a3];
+  v13 = [[NSNumber alloc] initWithLongLong:identifier];
   waitBlocks = self->_waitBlocks;
   if (!waitBlocks)
   {
@@ -1307,9 +1307,9 @@ LABEL_21:
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)waitForSyncBubbleToTerminateWithCompletionBlock:(id)a3
+- (void)waitForSyncBubbleToTerminateWithCompletionBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   [(NSLock *)self->_lock lock];
   syncWaitBlocks = self->_syncWaitBlocks;
   if (!syncWaitBlocks)
@@ -1338,25 +1338,25 @@ LABEL_21:
   [(NSLock *)self->_lock unlock];
 }
 
-- (id)sinfPathForBundleID:(id)a3
+- (id)sinfPathForBundleID:(id)d
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  dCopy = d;
+  v4 = dCopy;
+  if (dCopy && [dCopy length])
   {
     v5 = [LSApplicationProxy applicationProxyForIdentifier:v4];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 bundleURL];
-      v8 = [v7 path];
+      bundleURL = [v5 bundleURL];
+      path = [bundleURL path];
 
-      v9 = [v6 bundleExecutable];
-      v10 = [v9 stringByAppendingPathExtension:@"sinf"];
+      bundleExecutable = [v6 bundleExecutable];
+      v10 = [bundleExecutable stringByAppendingPathExtension:@"sinf"];
 
-      if ([v8 length] && objc_msgSend(v10, "length"))
+      if ([path length] && objc_msgSend(v10, "length"))
       {
-        v11 = [[NSArray alloc] initWithObjects:{v8, @"SC_Info", v10, 0}];
+        v11 = [[NSArray alloc] initWithObjects:{path, @"SC_Info", v10, 0}];
         v12 = [NSString pathWithComponents:v11];
       }
 
@@ -1384,7 +1384,7 @@ LABEL_21:
 {
   [(NSLock *)self->_lock lock];
   v3 = [(NSCountedSet *)self->_pendingInstalls copy];
-  v48 = self;
+  selfCopy = self;
   [(NSLock *)self->_lock unlock];
   v4 = +[SSLogConfig sharedDaemonConfig];
   if (!v4)
@@ -1392,19 +1392,19 @@ LABEL_21:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v6 &= 2u;
   }
@@ -1423,9 +1423,9 @@ LABEL_21:
 
   if (v9)
   {
-    v7 = [NSString stringWithCString:v9 encoding:4, &v56, v44];
+    oSLogObject = [NSString stringWithCString:v9 encoding:4, &v56, v44];
     free(v9);
-    v42 = v7;
+    v42 = oSLogObject;
     SSFileLog();
 LABEL_11:
   }
@@ -1466,26 +1466,26 @@ LABEL_11:
         objc_enumerationMutation(obj);
       }
 
-      v17 = [*(*(&v51 + 1) + 8 * i) longLongValue];
+      longLongValue = [*(*(&v51 + 1) + 8 * i) longLongValue];
       v18 = +[SSLogConfig sharedDaemonConfig];
       if (!v18)
       {
         v18 = +[SSLogConfig sharedConfig];
       }
 
-      v19 = [v18 shouldLog];
+      shouldLog2 = [v18 shouldLog];
       if ([v18 shouldLogToDisk])
       {
-        v20 = v19 | 2;
+        v20 = shouldLog2 | 2;
       }
 
       else
       {
-        v20 = v19;
+        v20 = shouldLog2;
       }
 
-      v21 = [v18 OSLogObject];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+      oSLogObject2 = [v18 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
       {
         v22 = v20;
       }
@@ -1498,7 +1498,7 @@ LABEL_11:
       if (v22)
       {
         v56 = 134217984;
-        v57 = v17;
+        v57 = longLongValue;
         LODWORD(v44) = 12;
         v43 = &v56;
         v23 = _os_log_send_and_compose_impl();
@@ -1508,9 +1508,9 @@ LABEL_11:
           goto LABEL_30;
         }
 
-        v21 = [NSString stringWithCString:v23 encoding:4, &v56, v44];
+        oSLogObject2 = [NSString stringWithCString:v23 encoding:4, &v56, v44];
         free(v23);
-        v43 = v21;
+        v43 = oSLogObject2;
         SSFileLog();
       }
 
@@ -1522,7 +1522,7 @@ LABEL_30:
       v49[3] = &unk_100327110;
       v25 = v24;
       v50 = v25;
-      [(ApplicationWorkspace *)v48 waitForInstallOfDownloadIdentifier:v17 completionBlock:v49];
+      [(ApplicationWorkspace *)selfCopy waitForInstallOfDownloadIdentifier:longLongValue completionBlock:v49];
       v26 = dispatch_time(0, 60000000000);
       if (dispatch_semaphore_wait(v25, v26))
       {
@@ -1532,19 +1532,19 @@ LABEL_30:
           v27 = +[SSLogConfig sharedConfig];
         }
 
-        v28 = [v27 shouldLog];
+        shouldLog3 = [v27 shouldLog];
         if ([v27 shouldLogToDisk])
         {
-          v29 = v28 | 2;
+          v29 = shouldLog3 | 2;
         }
 
         else
         {
-          v29 = v28;
+          v29 = shouldLog3;
         }
 
-        v30 = [v27 OSLogObject];
-        if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+        oSLogObject3 = [v27 OSLogObject];
+        if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
         {
           v31 = v29;
         }
@@ -1569,19 +1569,19 @@ LABEL_30:
         }
 
         ++v47;
-        v32 = [v27 shouldLog];
+        shouldLog4 = [v27 shouldLog];
         if ([v27 shouldLogToDisk])
         {
-          v33 = v32 | 2;
+          v33 = shouldLog4 | 2;
         }
 
         else
         {
-          v33 = v32;
+          v33 = shouldLog4;
         }
 
-        v30 = [v27 OSLogObject];
-        if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
+        oSLogObject3 = [v27 OSLogObject];
+        if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
         {
           v34 = v33;
         }
@@ -1598,7 +1598,7 @@ LABEL_30:
       }
 
       v56 = 134217984;
-      v57 = v17;
+      v57 = longLongValue;
       LODWORD(v44) = 12;
       v42 = &v56;
       v35 = _os_log_send_and_compose_impl();
@@ -1608,9 +1608,9 @@ LABEL_30:
         goto LABEL_53;
       }
 
-      v30 = [NSString stringWithCString:v35 encoding:4, &v56, v44];
+      oSLogObject3 = [NSString stringWithCString:v35 encoding:4, &v56, v44];
       free(v35);
-      v42 = v30;
+      v42 = oSLogObject3;
       SSFileLog();
 LABEL_52:
 
@@ -1631,19 +1631,19 @@ LABEL_59:
     v36 = +[SSLogConfig sharedConfig];
   }
 
-  v37 = [v36 shouldLog];
+  shouldLog5 = [v36 shouldLog];
   if ([v36 shouldLogToDisk])
   {
-    v38 = v37 | 2;
+    v38 = shouldLog5 | 2;
   }
 
   else
   {
-    v38 = v37;
+    v38 = shouldLog5;
   }
 
-  v39 = [v36 OSLogObject];
-  if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
+  oSLogObject4 = [v36 OSLogObject];
+  if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_INFO))
   {
     v40 = v38;
   }
@@ -1662,7 +1662,7 @@ LABEL_59:
 
     if (v41)
     {
-      v39 = [NSString stringWithCString:v41 encoding:4, &v56, v44];
+      oSLogObject4 = [NSString stringWithCString:v41 encoding:4, &v56, v44];
       free(v41);
       SSFileLog();
       goto LABEL_70;
@@ -1677,9 +1677,9 @@ LABEL_70:
   [v10 end];
 }
 
-- (void)_addOperationAtBeginning:(id)a3
+- (void)_addOperationAtBeginning:(id)beginning
 {
-  v10 = a3;
+  beginningCopy = beginning;
   v4 = [(NSMutableArray *)self->_operations count];
   if (v4 < 1)
   {
@@ -1709,15 +1709,15 @@ LABEL_70:
     }
   }
 
-  [(NSMutableArray *)self->_operations insertObject:v10 atIndex:v6];
+  [(NSMutableArray *)self->_operations insertObject:beginningCopy atIndex:v6];
 }
 
-- (void)_addProgressOperation:(id)a3
+- (void)_addProgressOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   [(NSLock *)self->_lock lock];
-  v5 = [v4 applicationHandle];
-  v6 = [v5 downloadID];
+  applicationHandle = [operationCopy applicationHandle];
+  downloadID = [applicationHandle downloadID];
 
   v7 = [(NSMutableArray *)self->_operations count];
   if (v7 >= 1)
@@ -1729,10 +1729,10 @@ LABEL_70:
       v10 = objc_opt_class();
       if (v10 == objc_opt_class())
       {
-        v11 = [v9 applicationHandle];
-        v12 = [v11 downloadID];
+        applicationHandle2 = [v9 applicationHandle];
+        downloadID2 = [applicationHandle2 downloadID];
 
-        if (v12 == v6)
+        if (downloadID2 == downloadID)
         {
           break;
         }
@@ -1753,16 +1753,16 @@ LABEL_8:
   v17[1] = 3221225472;
   v17[2] = sub_10017200C;
   v17[3] = &unk_10032A1F8;
-  v17[4] = v6;
+  v17[4] = downloadID;
   v14 = [(NSMutableArray *)operations indexOfObjectWithOptions:2 passingTest:v17];
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(ApplicationWorkspace *)self _addOperationAtBeginning:v4];
+    [(ApplicationWorkspace *)self _addOperationAtBeginning:operationCopy];
   }
 
   else
   {
-    [(NSMutableArray *)self->_operations insertObject:v4 atIndex:v14 + 1];
+    [(NSMutableArray *)self->_operations insertObject:operationCopy atIndex:v14 + 1];
   }
 
   [(NSLock *)self->_lock unlock];
@@ -1775,9 +1775,9 @@ LABEL_8:
   dispatch_async(dispatchQueue, v16);
 }
 
-- (void)_cancelPlaceholderThumbnailInstallForDownloadID:(int64_t)a3
+- (void)_cancelPlaceholderThumbnailInstallForDownloadID:(int64_t)d
 {
-  v3 = [(ApplicationWorkspace *)self _thumbnailDownloadOperationForDownloadID:a3];
+  v3 = [(ApplicationWorkspace *)self _thumbnailDownloadOperationForDownloadID:d];
   v4 = v3;
   if (v3)
   {
@@ -1788,19 +1788,19 @@ LABEL_8:
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v7 &= 2u;
     }
@@ -1819,7 +1819,7 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v8 = [NSString stringWithCString:v9 encoding:4, &v11, v10];
+      oSLogObject = [NSString stringWithCString:v9 encoding:4, &v11, v10];
       free(v9);
       SSFileLog();
     }
@@ -1830,32 +1830,32 @@ LABEL_13:
 LABEL_14:
 }
 
-- (id)_copyCombinedApplicationProgress:(id)a3 forApplicationHandle:(id)a4
+- (id)_copyCombinedApplicationProgress:(id)progress forApplicationHandle:(id)handle
 {
-  v5 = a4;
-  v6 = a3;
+  handleCopy = handle;
+  progressCopy = progress;
   v7 = objc_alloc_init(ApplicationDownloadProgress);
-  [(ApplicationDownloadProgress *)v7 setApplicationHandle:v5];
+  [(ApplicationDownloadProgress *)v7 setApplicationHandle:handleCopy];
 
-  v8 = [v6 completedUnitCount];
-  v9 = [v6 totalUnitCount];
+  completedUnitCount = [progressCopy completedUnitCount];
+  totalUnitCount = [progressCopy totalUnitCount];
 
-  [(ApplicationDownloadProgress *)v7 setCompletedUnitCount:v8];
-  [(ApplicationDownloadProgress *)v7 setTotalUnitCount:v9];
+  [(ApplicationDownloadProgress *)v7 setCompletedUnitCount:completedUnitCount];
+  [(ApplicationDownloadProgress *)v7 setTotalUnitCount:totalUnitCount];
   return v7;
 }
 
-- (void)_fireWaitBlocksIfNecessaryForDownloadWithIdentifier:(int64_t)a3
+- (void)_fireWaitBlocksIfNecessaryForDownloadWithIdentifier:(int64_t)identifier
 {
   [(NSLock *)self->_lock lock];
-  if ([(ApplicationWorkspace *)self _isInstallingForDownloadIdentifier:a3])
+  if ([(ApplicationWorkspace *)self _isInstallingForDownloadIdentifier:identifier])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [[NSNumber alloc] initWithLongLong:a3];
+    v6 = [[NSNumber alloc] initWithLongLong:identifier];
     v7 = [(NSMutableDictionary *)self->_waitBlocks objectForKey:v6];
     v5 = [v7 copy];
 
@@ -1887,22 +1887,22 @@ LABEL_14:
   v6[2] = sub_10017254C;
   v6[3] = &unk_100327238;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
   dispatch_async(dispatchQueue, v6);
 }
 
-- (BOOL)_hasThumbnailDownloadOperationForDownloadID:(int64_t)a3
+- (BOOL)_hasThumbnailDownloadOperationForDownloadID:(int64_t)d
 {
-  v3 = [(ApplicationWorkspace *)self _thumbnailDownloadOperationForDownloadID:a3];
+  v3 = [(ApplicationWorkspace *)self _thumbnailDownloadOperationForDownloadID:d];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)_isInstallingForDownloadIdentifier:(int64_t)a3
+- (BOOL)_isInstallingForDownloadIdentifier:(int64_t)identifier
 {
-  v5 = [[NSNumber alloc] initWithLongLong:a3];
+  v5 = [[NSNumber alloc] initWithLongLong:identifier];
   if ([(NSCountedSet *)self->_pendingInstalls countForObject:v5])
   {
     v6 = 1;
@@ -1930,12 +1930,12 @@ LABEL_14:
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          v13 = [v12 applicationHandle];
-          if ([v13 downloadID] == a3)
+          applicationHandle = [v12 applicationHandle];
+          if ([applicationHandle downloadID] == identifier)
           {
-            v14 = [v12 blocksAppInstallation];
+            blocksAppInstallation = [v12 blocksAppInstallation];
 
-            if (v14)
+            if (blocksAppInstallation)
             {
               v6 = 1;
               goto LABEL_15;
@@ -1976,11 +1976,11 @@ LABEL_15:
       v18 = sub_100172A94;
       v19 = sub_100172AA4;
       v20 = 0;
-      v4 = [v3 applicationHandle];
-      v5 = [v4 downloadID];
+      applicationHandle = [v3 applicationHandle];
+      downloadID = [applicationHandle downloadID];
       if ([v3 blocksAppInstallation])
       {
-        [(ApplicationWorkspace *)self _incrementPendingInstallsForDownloadIdentifier:v5];
+        [(ApplicationWorkspace *)self _incrementPendingInstallsForDownloadIdentifier:downloadID];
       }
 
       v9 = _NSConcreteStackBlock;
@@ -2000,10 +2000,10 @@ LABEL_15:
 
       if ([v3 blocksAppInstallation])
       {
-        [(ApplicationWorkspace *)self _decrementPendingInstallsForDownloadIdentifier:v5];
+        [(ApplicationWorkspace *)self _decrementPendingInstallsForDownloadIdentifier:downloadID];
       }
 
-      [(ApplicationWorkspace *)self _fireWaitBlocksIfNecessaryForDownloadWithIdentifier:v5];
+      [(ApplicationWorkspace *)self _fireWaitBlocksIfNecessaryForDownloadWithIdentifier:downloadID];
 
       _Block_object_dispose(&v15, 8);
     }
@@ -2017,9 +2017,9 @@ LABEL_15:
   }
 }
 
-- (void)_removeApplicationDownloadProgressForApplicationHandle:(id)a3
+- (void)_removeApplicationDownloadProgressForApplicationHandle:(id)handle
 {
-  [(NSMutableDictionary *)self->_appProgress removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_appProgress removeObjectForKey:handle];
   if (![(NSMutableDictionary *)self->_appProgress count])
   {
     appProgress = self->_appProgress;
@@ -2027,7 +2027,7 @@ LABEL_15:
   }
 }
 
-- (void)_removeOperationsForDownloadIdentifier:(int64_t)a3 operationClass:(Class)a4
+- (void)_removeOperationsForDownloadIdentifier:(int64_t)identifier operationClass:(Class)class
 {
   v7 = [(NSMutableArray *)self->_operations count];
   if (v7 >= 1)
@@ -2036,10 +2036,10 @@ LABEL_15:
     do
     {
       v9 = [(NSMutableArray *)self->_operations objectAtIndex:v8 - 2];
-      v10 = [v9 applicationHandle];
-      v11 = [v10 downloadID];
+      applicationHandle = [v9 applicationHandle];
+      downloadID = [applicationHandle downloadID];
 
-      if (v11 == a3 && (!a4 || (objc_opt_isKindOfClass() & 1) != 0))
+      if (downloadID == identifier && (!class || (objc_opt_isKindOfClass() & 1) != 0))
       {
         [(NSMutableArray *)self->_operations removeObjectAtIndex:v8 - 2];
       }
@@ -2051,21 +2051,21 @@ LABEL_15:
   }
 }
 
-- (void)_stopObservingODRProgress:(id)a3
+- (void)_stopObservingODRProgress:(id)progress
 {
-  v4 = a3;
-  [v4 removeObserver:self forKeyPath:@"finished" context:0];
-  [v4 removeObserver:self forKeyPath:@"fractionCompleted" context:0];
+  progressCopy = progress;
+  [progressCopy removeObserver:self forKeyPath:@"finished" context:0];
+  [progressCopy removeObserver:self forKeyPath:@"fractionCompleted" context:0];
 }
 
-- (id)_thumbnailDownloadOperationForDownloadID:(int64_t)a3
+- (id)_thumbnailDownloadOperationForDownloadID:(int64_t)d
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(ISOperationQueue *)self->_placeholderIconOperationQueue operations];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  operations = [(ISOperationQueue *)self->_placeholderIconOperationQueue operations];
+  v5 = [operations countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2076,12 +2076,12 @@ LABEL_15:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(operations);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 applicationHandle];
-        if ([v10 downloadID] == a3)
+        applicationHandle = [v9 applicationHandle];
+        if ([applicationHandle downloadID] == d)
         {
           v11 = v9;
 
@@ -2089,7 +2089,7 @@ LABEL_15:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [operations countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -2105,23 +2105,23 @@ LABEL_11:
   return v11;
 }
 
-- (void)_updatePlaceholderWithODRProgressForApplicationHandle:(id)a3
+- (void)_updatePlaceholderWithODRProgressForApplicationHandle:(id)handle
 {
   lock = self->_lock;
-  v5 = a3;
+  handleCopy = handle;
   [(NSLock *)lock lock];
-  v8 = [(NSMutableDictionary *)self->_appProgress objectForKey:v5];
+  v8 = [(NSMutableDictionary *)self->_appProgress objectForKey:handleCopy];
   [(NSLock *)self->_lock unlock];
-  v6 = [(ApplicationWorkspace *)self _copyCombinedApplicationProgress:v8 forApplicationHandle:v5];
+  v6 = [(ApplicationWorkspace *)self _copyCombinedApplicationProgress:v8 forApplicationHandle:handleCopy];
 
   v7 = [[ApplicationWorkspaceProgressOperation alloc] initWithApplicationDownloadProgress:v6];
   [(ApplicationWorkspace *)self _addProgressOperation:v7];
 }
 
-- (void)_incrementPendingInstallsForDownloadIdentifier:(int64_t)a3
+- (void)_incrementPendingInstallsForDownloadIdentifier:(int64_t)identifier
 {
   [(NSLock *)self->_lock lock];
-  v5 = [NSNumber numberWithLongLong:a3];
+  v5 = [NSNumber numberWithLongLong:identifier];
   [(NSCountedSet *)self->_pendingInstalls addObject:v5];
 
   lock = self->_lock;
@@ -2129,10 +2129,10 @@ LABEL_11:
   [(NSLock *)lock unlock];
 }
 
-- (void)_decrementPendingInstallsForDownloadIdentifier:(int64_t)a3
+- (void)_decrementPendingInstallsForDownloadIdentifier:(int64_t)identifier
 {
   [(NSLock *)self->_lock lock];
-  v5 = [NSNumber numberWithLongLong:a3];
+  v5 = [NSNumber numberWithLongLong:identifier];
   if (![(NSCountedSet *)self->_pendingInstalls containsObject:v5])
   {
     v6 = +[SSLogConfig sharedDaemonConfig];
@@ -2141,19 +2141,19 @@ LABEL_11:
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 &= 2u;
     }
@@ -2163,7 +2163,7 @@ LABEL_11:
       *v13 = 138412546;
       *&v13[4] = objc_opt_class();
       *&v13[12] = 2048;
-      *&v13[14] = a3;
+      *&v13[14] = identifier;
       v10 = *&v13[4];
       LODWORD(v12) = 22;
       v11 = _os_log_send_and_compose_impl();
@@ -2175,7 +2175,7 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v9 = [NSString stringWithCString:v11 encoding:4, v13, v12, *v13, *&v13[16]];
+      oSLogObject = [NSString stringWithCString:v11 encoding:4, v13, v12, *v13, *&v13[16]];
       free(v11);
       SSFileLog();
     }

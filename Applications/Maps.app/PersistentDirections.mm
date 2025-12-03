@@ -1,32 +1,32 @@
 @interface PersistentDirections
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PersistentDirections
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v16 = a3;
-  if (v16[6])
+  fromCopy = from;
+  if (fromCopy[6])
   {
     [(PersistentDirections *)self setStartAddress:?];
   }
 
-  if (v16[3])
+  if (fromCopy[3])
   {
     [(PersistentDirections *)self setEndAddress:?];
   }
 
   userStartSearch = self->_userStartSearch;
-  v5 = v16[8];
+  v5 = fromCopy[8];
   if (userStartSearch)
   {
     if (v5)
@@ -41,7 +41,7 @@
   }
 
   userEndSearch = self->_userEndSearch;
-  v7 = v16[7];
+  v7 = fromCopy[7];
   if (userEndSearch)
   {
     if (v7)
@@ -56,7 +56,7 @@
   }
 
   addressStartSearch = self->_addressStartSearch;
-  v9 = v16[2];
+  v9 = fromCopy[2];
   if (addressStartSearch)
   {
     if (v9)
@@ -71,7 +71,7 @@
   }
 
   addressEndSearch = self->_addressEndSearch;
-  v11 = v16[1];
+  v11 = fromCopy[1];
   if (addressEndSearch)
   {
     if (v11)
@@ -86,7 +86,7 @@
   }
 
   routeStartSearch = self->_routeStartSearch;
-  v13 = v16[5];
+  v13 = fromCopy[5];
   if (routeStartSearch)
   {
     if (v13)
@@ -101,7 +101,7 @@
   }
 
   routeEndSearch = self->_routeEndSearch;
-  v15 = v16[4];
+  v15 = fromCopy[4];
   if (routeEndSearch)
   {
     if (v15)
@@ -128,13 +128,13 @@
   return v9 ^ [(SearchResult *)self->_routeEndSearch hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((startAddress = self->_startAddress, !(startAddress | v4[6])) || -[NSString isEqual:](startAddress, "isEqual:")) && ((endAddress = self->_endAddress, !(endAddress | v4[3])) || -[NSString isEqual:](endAddress, "isEqual:")) && ((userStartSearch = self->_userStartSearch, !(userStartSearch | v4[8])) || -[SearchResult isEqual:](userStartSearch, "isEqual:")) && ((userEndSearch = self->_userEndSearch, !(userEndSearch | v4[7])) || -[SearchResult isEqual:](userEndSearch, "isEqual:")) && ((addressStartSearch = self->_addressStartSearch, !(addressStartSearch | v4[2])) || -[SearchResult isEqual:](addressStartSearch, "isEqual:")) && ((addressEndSearch = self->_addressEndSearch, !(addressEndSearch | v4[1])) || -[SearchResult isEqual:](addressEndSearch, "isEqual:")) && ((routeStartSearch = self->_routeStartSearch, !(routeStartSearch | v4[5])) || -[SearchResult isEqual:](routeStartSearch, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((startAddress = self->_startAddress, !(startAddress | equalCopy[6])) || -[NSString isEqual:](startAddress, "isEqual:")) && ((endAddress = self->_endAddress, !(endAddress | equalCopy[3])) || -[NSString isEqual:](endAddress, "isEqual:")) && ((userStartSearch = self->_userStartSearch, !(userStartSearch | equalCopy[8])) || -[SearchResult isEqual:](userStartSearch, "isEqual:")) && ((userEndSearch = self->_userEndSearch, !(userEndSearch | equalCopy[7])) || -[SearchResult isEqual:](userEndSearch, "isEqual:")) && ((addressStartSearch = self->_addressStartSearch, !(addressStartSearch | equalCopy[2])) || -[SearchResult isEqual:](addressStartSearch, "isEqual:")) && ((addressEndSearch = self->_addressEndSearch, !(addressEndSearch | equalCopy[1])) || -[SearchResult isEqual:](addressEndSearch, "isEqual:")) && ((routeStartSearch = self->_routeStartSearch, !(routeStartSearch | equalCopy[5])) || -[SearchResult isEqual:](routeStartSearch, "isEqual:")))
   {
     routeEndSearch = self->_routeEndSearch;
-    if (routeEndSearch | v4[4])
+    if (routeEndSearch | equalCopy[4])
     {
       v13 = [(SearchResult *)routeEndSearch isEqual:?];
     }
@@ -153,160 +153,160 @@
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_startAddress copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_startAddress copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
-  v8 = [(NSString *)self->_endAddress copyWithZone:a3];
+  v8 = [(NSString *)self->_endAddress copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(SearchResult *)self->_userStartSearch copyWithZone:a3];
+  v10 = [(SearchResult *)self->_userStartSearch copyWithZone:zone];
   v11 = v5[8];
   v5[8] = v10;
 
-  v12 = [(SearchResult *)self->_userEndSearch copyWithZone:a3];
+  v12 = [(SearchResult *)self->_userEndSearch copyWithZone:zone];
   v13 = v5[7];
   v5[7] = v12;
 
-  v14 = [(SearchResult *)self->_addressStartSearch copyWithZone:a3];
+  v14 = [(SearchResult *)self->_addressStartSearch copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
-  v16 = [(SearchResult *)self->_addressEndSearch copyWithZone:a3];
+  v16 = [(SearchResult *)self->_addressEndSearch copyWithZone:zone];
   v17 = v5[1];
   v5[1] = v16;
 
-  v18 = [(SearchResult *)self->_routeStartSearch copyWithZone:a3];
+  v18 = [(SearchResult *)self->_routeStartSearch copyWithZone:zone];
   v19 = v5[5];
   v5[5] = v18;
 
-  v20 = [(SearchResult *)self->_routeEndSearch copyWithZone:a3];
+  v20 = [(SearchResult *)self->_routeEndSearch copyWithZone:zone];
   v21 = v5[4];
   v5[4] = v20;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_startAddress)
   {
-    [v4 setStartAddress:?];
-    v4 = v5;
+    [toCopy setStartAddress:?];
+    toCopy = v5;
   }
 
   if (self->_endAddress)
   {
     [v5 setEndAddress:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userStartSearch)
   {
     [v5 setUserStartSearch:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userEndSearch)
   {
     [v5 setUserEndSearch:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_addressStartSearch)
   {
     [v5 setAddressStartSearch:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_addressEndSearch)
   {
     [v5 setAddressEndSearch:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_routeStartSearch)
   {
     [v5 setRouteStartSearch:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_routeEndSearch)
   {
     [v5 setRouteEndSearch:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_startAddress)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_endAddress)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userStartSearch)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userEndSearch)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_addressStartSearch)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_addressEndSearch)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_routeStartSearch)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_routeEndSearch)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -315,18 +315,18 @@
       while (1)
       {
         LOBYTE(v21[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v21 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v21 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v21[0] & 0x7F) << v6;
@@ -343,11 +343,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -387,7 +387,7 @@ LABEL_37:
             objc_storeStrong(&self->PBCodable_opaque[v18], v17);
             v21[0] = 0;
             v21[1] = 0;
-            if (!PBReaderPlaceMark() || ![(SearchResult *)v17 readFrom:a3])
+            if (!PBReaderPlaceMark() || ![(SearchResult *)v17 readFrom:from])
             {
 
               return 0;
@@ -444,13 +444,13 @@ LABEL_33:
       }
 
 LABEL_41:
-      v19 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v19 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -472,43 +472,43 @@ LABEL_41:
   userStartSearch = self->_userStartSearch;
   if (userStartSearch)
   {
-    v8 = [(SearchResultRepr *)userStartSearch dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"UserStartSearch"];
+    dictionaryRepresentation = [(SearchResultRepr *)userStartSearch dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"UserStartSearch"];
   }
 
   userEndSearch = self->_userEndSearch;
   if (userEndSearch)
   {
-    v10 = [(SearchResultRepr *)userEndSearch dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"UserEndSearch"];
+    dictionaryRepresentation2 = [(SearchResultRepr *)userEndSearch dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"UserEndSearch"];
   }
 
   addressStartSearch = self->_addressStartSearch;
   if (addressStartSearch)
   {
-    v12 = [(SearchResultRepr *)addressStartSearch dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"AddressStartSearch"];
+    dictionaryRepresentation3 = [(SearchResultRepr *)addressStartSearch dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"AddressStartSearch"];
   }
 
   addressEndSearch = self->_addressEndSearch;
   if (addressEndSearch)
   {
-    v14 = [(SearchResultRepr *)addressEndSearch dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"AddressEndSearch"];
+    dictionaryRepresentation4 = [(SearchResultRepr *)addressEndSearch dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"AddressEndSearch"];
   }
 
   routeStartSearch = self->_routeStartSearch;
   if (routeStartSearch)
   {
-    v16 = [(SearchResultRepr *)routeStartSearch dictionaryRepresentation];
-    [v4 setObject:v16 forKey:@"RouteStartSearch"];
+    dictionaryRepresentation5 = [(SearchResultRepr *)routeStartSearch dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"RouteStartSearch"];
   }
 
   routeEndSearch = self->_routeEndSearch;
   if (routeEndSearch)
   {
-    v18 = [(SearchResultRepr *)routeEndSearch dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"RouteEndSearch"];
+    dictionaryRepresentation6 = [(SearchResultRepr *)routeEndSearch dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation6 forKey:@"RouteEndSearch"];
   }
 
   return v4;
@@ -519,8 +519,8 @@ LABEL_41:
   v7.receiver = self;
   v7.super_class = PersistentDirections;
   v3 = [(PersistentDirections *)&v7 description];
-  v4 = [(PersistentDirections *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PersistentDirections *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

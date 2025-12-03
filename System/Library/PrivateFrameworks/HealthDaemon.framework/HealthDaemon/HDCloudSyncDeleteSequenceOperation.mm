@@ -1,12 +1,12 @@
 @interface HDCloudSyncDeleteSequenceOperation
-- (HDCloudSyncDeleteSequenceOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncDeleteSequenceOperation)initWithConfiguration:(id)a3 targetsBySequence:(id)a4;
+- (HDCloudSyncDeleteSequenceOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncDeleteSequenceOperation)initWithConfiguration:(id)configuration targetsBySequence:(id)sequence;
 - (void)main;
 @end
 
 @implementation HDCloudSyncDeleteSequenceOperation
 
-- (HDCloudSyncDeleteSequenceOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncDeleteSequenceOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -16,16 +16,16 @@
   return 0;
 }
 
-- (HDCloudSyncDeleteSequenceOperation)initWithConfiguration:(id)a3 targetsBySequence:(id)a4
+- (HDCloudSyncDeleteSequenceOperation)initWithConfiguration:(id)configuration targetsBySequence:(id)sequence
 {
-  v7 = a4;
+  sequenceCopy = sequence;
   v11.receiver = self;
   v11.super_class = HDCloudSyncDeleteSequenceOperation;
-  v8 = [(HDCloudSyncOperation *)&v11 initWithConfiguration:a3 cloudState:0];
+  v8 = [(HDCloudSyncOperation *)&v11 initWithConfiguration:configuration cloudState:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_targetsBySequence, a4);
+    objc_storeStrong(&v8->_targetsBySequence, sequence);
   }
 
   return v9;
@@ -33,15 +33,15 @@
 
 - (void)main
 {
-  v3 = [(NSDictionary *)self->_targetsBySequence allKeys];
-  v4 = [v3 hk_map:&__block_literal_global_126];
+  allKeys = [(NSDictionary *)self->_targetsBySequence allKeys];
+  v4 = [allKeys hk_map:&__block_literal_global_126];
 
   v5 = [HDCloudSyncModifyRecordsOperation alloc];
-  v6 = [(HDCloudSyncOperation *)self configuration];
-  v7 = [(NSDictionary *)self->_targetsBySequence allValues];
-  v8 = [v7 firstObject];
-  v9 = [v8 container];
-  v10 = [(HDCloudSyncModifyRecordsOperation *)v5 initWithConfiguration:v6 container:v9 recordsToSave:0 recordIDsToDelete:v4];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  allValues = [(NSDictionary *)self->_targetsBySequence allValues];
+  firstObject = [allValues firstObject];
+  container = [firstObject container];
+  v10 = [(HDCloudSyncModifyRecordsOperation *)v5 initWithConfiguration:configuration container:container recordsToSave:0 recordIDsToDelete:v4];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -55,7 +55,7 @@
   v14 = 3221225472;
   v15 = __42__HDCloudSyncDeleteSequenceOperation_main__block_invoke_298;
   v16 = &unk_2786234A8;
-  v17 = self;
+  selfCopy = self;
   v18 = v11;
   v12 = v11;
   [(HDCloudSyncOperation *)v10 setOnSuccess:&v13];

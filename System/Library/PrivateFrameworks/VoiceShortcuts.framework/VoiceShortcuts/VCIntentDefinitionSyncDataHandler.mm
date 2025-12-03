@@ -1,21 +1,21 @@
 @interface VCIntentDefinitionSyncDataHandler
-- (BOOL)applyChanges:(id)a3 fromSyncService:(id)a4 error:(id *)a5;
-- (BOOL)deleteSyncedData:(id *)a3;
-- (BOOL)markChangesAsSynced:(id)a3 withSyncService:(id)a4 metadata:(id)a5 error:(id *)a6;
-- (VCIntentDefinitionSyncDataHandler)initWithEventHandler:(id)a3;
-- (id)unsyncedChangesForSyncService:(id)a3 metadata:(id *)a4 error:(id *)a5;
+- (BOOL)applyChanges:(id)changes fromSyncService:(id)service error:(id *)error;
+- (BOOL)deleteSyncedData:(id *)data;
+- (BOOL)markChangesAsSynced:(id)synced withSyncService:(id)service metadata:(id)metadata error:(id *)error;
+- (VCIntentDefinitionSyncDataHandler)initWithEventHandler:(id)handler;
+- (id)unsyncedChangesForSyncService:(id)service metadata:(id *)metadata error:(id *)error;
 - (void)dealloc;
-- (void)installedApplicationsDidChange:(id)a3;
+- (void)installedApplicationsDidChange:(id)change;
 @end
 
 @implementation VCIntentDefinitionSyncDataHandler
 
-- (BOOL)deleteSyncedData:(id *)a3
+- (BOOL)deleteSyncedData:(id *)data
 {
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v5 = WFSyncedDefinitionDirectoryURL();
   v11 = 0;
-  v6 = [v4 removeItemAtURL:v5 error:&v11];
+  v6 = [defaultManager removeItemAtURL:v5 error:&v11];
   v7 = v11;
 
   if (v6)
@@ -37,11 +37,11 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (a3)
+  if (data)
   {
     v8 = v7;
     v9 = 0;
-    *a3 = v7;
+    *data = v7;
   }
 
   else
@@ -54,16 +54,16 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)applyChanges:(id)a3 fromSyncService:(id)a4 error:(id *)a5
+- (BOOL)applyChanges:(id)changes fromSyncService:(id)service error:(id *)error
 {
   v77 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  changesCopy = changes;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v8 = v6;
+  v8 = changesCopy;
   v9 = [v8 countByEnumeratingWithState:&v63 objects:v76 count:16];
   if (!v9)
   {
@@ -77,8 +77,8 @@ LABEL_8:
   *&v10 = 136315394;
   v46 = v10;
   v48 = v8;
-  v49 = a5;
-  v52 = v7;
+  errorCopy = error;
+  v52 = defaultManager;
   v47 = *v64;
   do
   {
@@ -93,11 +93,11 @@ LABEL_8:
 
       v14 = *(*(&v63 + 1) + 8 * v13);
       v15 = WFSyncedDefinitionDirectoryURL();
-      v16 = [v14 objectIdentifier];
+      objectIdentifier = [v14 objectIdentifier];
       v17 = WFDefinitionDirectoryURLForBundleIdentifier();
 
       v62 = 0;
-      LOBYTE(v15) = [v7 removeItemAtURL:v17 error:&v62];
+      LOBYTE(v15) = [defaultManager removeItemAtURL:v17 error:&v62];
       v18 = v62;
       v19 = v18;
       if ((v15 & 1) == 0)
@@ -120,11 +120,11 @@ LABEL_8:
             _os_log_impl(&dword_23103C000, v20, OS_LOG_TYPE_ERROR, "%s Could not delete directory for change: %{public}@", buf, 0x16u);
           }
 
-          if (a5)
+          if (error)
           {
             v21 = v19;
             v55 = 0;
-            *a5 = v19;
+            *error = v19;
           }
 
           else
@@ -139,7 +139,7 @@ LABEL_8:
       if ([v14 changeType] == 1 || objc_msgSend(v14, "changeType") == 2)
       {
         v61 = 0;
-        v22 = [v7 createDirectoryAtURL:v17 withIntermediateDirectories:1 attributes:0 error:&v61];
+        v22 = [defaultManager createDirectoryAtURL:v17 withIntermediateDirectories:1 attributes:0 error:&v61];
         v23 = v61;
         if ((v22 & 1) != 0 || !v23)
         {
@@ -150,8 +150,8 @@ LABEL_8:
           v57 = 0u;
           v58 = 0u;
           v51 = v14;
-          v29 = [v14 files];
-          v30 = [v29 countByEnumeratingWithState:&v57 objects:v75 count:16];
+          files = [v14 files];
+          v30 = [files countByEnumeratingWithState:&v57 objects:v75 count:16];
           if (v30)
           {
             v31 = v30;
@@ -162,12 +162,12 @@ LABEL_8:
               {
                 if (*v58 != v32)
                 {
-                  objc_enumerationMutation(v29);
+                  objc_enumerationMutation(files);
                 }
 
                 v34 = *(*(&v57 + 1) + 8 * i);
-                v35 = [v34 filename];
-                v36 = [v17 URLByAppendingPathComponent:v35];
+                filename = [v34 filename];
+                v36 = [v17 URLByAppendingPathComponent:filename];
 
                 v56 = 0;
                 v37 = [v34 writeToFileURL:v36 overwriting:1 error:&v56];
@@ -178,11 +178,11 @@ LABEL_8:
                   v40 = getWFWatchSyncLogObject();
                   if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
                   {
-                    v41 = [v34 filename];
+                    filename2 = [v34 filename];
                     *buf = 136315906;
                     v68 = "[VCIntentDefinitionSyncDataHandler applyChanges:fromSyncService:error:]";
                     v69 = 2114;
-                    v70 = v41;
+                    v70 = filename2;
                     v71 = 2114;
                     v72 = v51;
                     v73 = 2114;
@@ -190,23 +190,23 @@ LABEL_8:
                     _os_log_impl(&dword_23103C000, v40, OS_LOG_TYPE_ERROR, "%s Could not write %{public}@ for %{public}@: %{public}@", buf, 0x2Au);
                   }
 
-                  a5 = v49;
+                  error = errorCopy;
                   v11 = v50;
                   v12 = v47;
-                  if (v49)
+                  if (errorCopy)
                   {
                     v42 = v39;
-                    *v49 = v39;
+                    *errorCopy = v39;
                   }
 
                   v55 = 0;
-                  v7 = v52;
+                  defaultManager = v52;
                   v8 = v48;
                   goto LABEL_36;
                 }
               }
 
-              v31 = [v29 countByEnumeratingWithState:&v57 objects:v75 count:16];
+              v31 = [files countByEnumeratingWithState:&v57 objects:v75 count:16];
               if (v31)
               {
                 continue;
@@ -216,8 +216,8 @@ LABEL_8:
             }
 
             v8 = v48;
-            a5 = v49;
-            v7 = v52;
+            error = errorCopy;
+            defaultManager = v52;
             v12 = v47;
             v11 = v50;
           }
@@ -245,11 +245,11 @@ LABEL_36:
             _os_log_impl(&dword_23103C000, v27, OS_LOG_TYPE_ERROR, "%s Could not create intent definition directory for %{public}@: %{public}@", buf, 0x20u);
           }
 
-          if (a5)
+          if (error)
           {
             v28 = v26;
             v55 = 0;
-            *a5 = v26;
+            *error = v26;
           }
 
           else
@@ -260,7 +260,7 @@ LABEL_36:
 
           v8 = v25;
           v12 = v24;
-          v7 = v52;
+          defaultManager = v52;
         }
       }
 
@@ -281,24 +281,24 @@ LABEL_46:
   return v55 & 1;
 }
 
-- (BOOL)markChangesAsSynced:(id)a3 withSyncService:(id)a4 metadata:(id)a5 error:(id *)a6
+- (BOOL)markChangesAsSynced:(id)synced withSyncService:(id)service metadata:(id)metadata error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  syncedCopy = synced;
+  metadataCopy = metadata;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __88__VCIntentDefinitionSyncDataHandler_markChangesAsSynced_withSyncService_metadata_error___block_invoke;
   aBlock[3] = &unk_2788FEDD0;
-  v18 = v10;
-  v19 = v11;
-  v20 = self;
-  v12 = v11;
-  v13 = v10;
-  v14 = a4;
+  v18 = syncedCopy;
+  v19 = metadataCopy;
+  selfCopy = self;
+  v12 = metadataCopy;
+  v13 = syncedCopy;
+  serviceCopy = service;
   v15 = _Block_copy(aBlock);
-  LOBYTE(a6) = VCAccessSyncServiceIntentDefinitionState(v14, v15, a6);
+  LOBYTE(error) = VCAccessSyncServiceIntentDefinitionState(serviceCopy, v15, error);
 
-  return a6;
+  return error;
 }
 
 uint64_t __88__VCIntentDefinitionSyncDataHandler_markChangesAsSynced_withSyncService_metadata_error___block_invoke(uint64_t a1, void *a2)
@@ -436,10 +436,10 @@ uint64_t __88__VCIntentDefinitionSyncDataHandler_markChangesAsSynced_withSyncSer
   return 1;
 }
 
-- (id)unsyncedChangesForSyncService:(id)a3 metadata:(id *)a4 error:(id *)a5
+- (id)unsyncedChangesForSyncService:(id)service metadata:(id *)metadata error:(id *)error
 {
-  v8 = a3;
-  v9 = [objc_opt_class() changeClass];
+  serviceCopy = service;
+  changeClass = [objc_opt_class() changeClass];
   v10 = objc_opt_new();
   v23 = 0;
   v24 = &v23;
@@ -451,19 +451,19 @@ uint64_t __88__VCIntentDefinitionSyncDataHandler_markChangesAsSynced_withSyncSer
   v16 = 3221225472;
   v17 = __82__VCIntentDefinitionSyncDataHandler_unsyncedChangesForSyncService_metadata_error___block_invoke;
   v18 = &unk_2788FEDA8;
-  v22 = v9;
+  v22 = changeClass;
   v11 = v10;
   v19 = v11;
-  v20 = self;
+  selfCopy = self;
   v21 = &v23;
   v12 = _Block_copy(&v15);
-  VCAccessSyncServiceIntentDefinitionState(v8, v12, a5);
-  *a4 = v24[5];
-  v13 = [v11 allObjects];
+  VCAccessSyncServiceIntentDefinitionState(serviceCopy, v12, error);
+  *metadata = v24[5];
+  allObjects = [v11 allObjects];
 
   _Block_object_dispose(&v23, 8);
 
-  return v13;
+  return allObjects;
 }
 
 uint64_t __82__VCIntentDefinitionSyncDataHandler_unsyncedChangesForSyncService_metadata_error___block_invoke(uint64_t a1, void *a2)
@@ -679,10 +679,10 @@ LABEL_40:
   return v11;
 }
 
-- (void)installedApplicationsDidChange:(id)a3
+- (void)installedApplicationsDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"isPlaceholder"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"isPlaceholder"];
 
   v9 = v5;
   if (v9)
@@ -706,8 +706,8 @@ LABEL_40:
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  if ((v8 & 1) == 0)
+  bOOLValue = [v7 BOOLValue];
+  if ((bOOLValue & 1) == 0)
   {
     [(VCSyncDataHandler *)self requestSync];
   }
@@ -715,27 +715,27 @@ LABEL_40:
 
 - (void)dealloc
 {
-  v3 = [(VCIntentDefinitionSyncDataHandler *)self eventHandler];
-  [v3 removeObserver:self name:@"ApplicationRegistered"];
+  eventHandler = [(VCIntentDefinitionSyncDataHandler *)self eventHandler];
+  [eventHandler removeObserver:self name:@"ApplicationRegistered"];
 
-  v4 = [(VCIntentDefinitionSyncDataHandler *)self eventHandler];
-  [v4 removeObserver:self name:@"ApplicationUnregistered"];
+  eventHandler2 = [(VCIntentDefinitionSyncDataHandler *)self eventHandler];
+  [eventHandler2 removeObserver:self name:@"ApplicationUnregistered"];
 
-  v5 = [(VCIntentDefinitionSyncDataHandler *)self eventHandler];
-  [v5 removeObserver:self name:@"ApplicationStateChanged"];
+  eventHandler3 = [(VCIntentDefinitionSyncDataHandler *)self eventHandler];
+  [eventHandler3 removeObserver:self name:@"ApplicationStateChanged"];
 
   v6.receiver = self;
   v6.super_class = VCIntentDefinitionSyncDataHandler;
   [(VCIntentDefinitionSyncDataHandler *)&v6 dealloc];
 }
 
-- (VCIntentDefinitionSyncDataHandler)initWithEventHandler:(id)a3
+- (VCIntentDefinitionSyncDataHandler)initWithEventHandler:(id)handler
 {
-  v6 = a3;
-  if (!v6)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"VCIntentDefinitionSyncDataHandler.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"eventHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCIntentDefinitionSyncDataHandler.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"eventHandler"}];
   }
 
   v15.receiver = self;
@@ -744,15 +744,15 @@ LABEL_40:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_eventHandler, a3);
-    v9 = [(VCIntentDefinitionSyncDataHandler *)v8 eventHandler];
-    [v9 addObserver:v8 selector:sel_installedApplicationsDidChange_ name:@"ApplicationRegistered"];
+    objc_storeStrong(&v7->_eventHandler, handler);
+    eventHandler = [(VCIntentDefinitionSyncDataHandler *)v8 eventHandler];
+    [eventHandler addObserver:v8 selector:sel_installedApplicationsDidChange_ name:@"ApplicationRegistered"];
 
-    v10 = [(VCIntentDefinitionSyncDataHandler *)v8 eventHandler];
-    [v10 addObserver:v8 selector:sel_installedApplicationsDidChange_ name:@"ApplicationUnregistered"];
+    eventHandler2 = [(VCIntentDefinitionSyncDataHandler *)v8 eventHandler];
+    [eventHandler2 addObserver:v8 selector:sel_installedApplicationsDidChange_ name:@"ApplicationUnregistered"];
 
-    v11 = [(VCIntentDefinitionSyncDataHandler *)v8 eventHandler];
-    [v11 addObserver:v8 selector:sel_installedApplicationsDidChange_ name:@"ApplicationStateChanged"];
+    eventHandler3 = [(VCIntentDefinitionSyncDataHandler *)v8 eventHandler];
+    [eventHandler3 addObserver:v8 selector:sel_installedApplicationsDidChange_ name:@"ApplicationStateChanged"];
 
     v12 = v8;
   }

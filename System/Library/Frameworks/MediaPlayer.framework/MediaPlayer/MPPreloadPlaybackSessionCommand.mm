@@ -1,27 +1,27 @@
 @interface MPPreloadPlaybackSessionCommand
 - (id)_mediaRemoteCommandInfoOptions;
-- (void)setSupportedSessionTypes:(id)a3;
+- (void)setSupportedSessionTypes:(id)types;
 @end
 
 @implementation MPPreloadPlaybackSessionCommand
 
 - (id)_mediaRemoteCommandInfoOptions
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_supportedSessionTypes count])
   {
-    [v3 setObject:self->_supportedSessionTypes forKeyedSubscript:*MEMORY[0x1E69B0D50]];
+    [dictionary setObject:self->_supportedSessionTypes forKeyedSubscript:*MEMORY[0x1E69B0D50]];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)setSupportedSessionTypes:(id)a3
+- (void)setSupportedSessionTypes:(id)types
 {
-  v6 = a3;
+  typesCopy = types;
   if (([(NSArray *)self->_supportedSessionTypes isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [typesCopy copy];
     supportedSessionTypes = self->_supportedSessionTypes;
     self->_supportedSessionTypes = v4;
 

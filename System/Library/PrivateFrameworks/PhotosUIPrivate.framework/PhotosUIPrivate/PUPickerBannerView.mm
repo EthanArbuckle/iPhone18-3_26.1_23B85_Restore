@@ -1,55 +1,55 @@
 @interface PUPickerBannerView
-- (CGRect)_frameReversedIfRightToLeft:(BOOL)a3 frame:(CGRect)a4 bounds:(CGRect)a5;
-- (PUPickerBannerView)initWithFrame:(CGRect)a3;
-- (void)_setAlignment:(int64_t)a3;
-- (void)_setAnimatingStackView:(BOOL)a3;
+- (CGRect)_frameReversedIfRightToLeft:(BOOL)left frame:(CGRect)frame bounds:(CGRect)bounds;
+- (PUPickerBannerView)initWithFrame:(CGRect)frame;
+- (void)_setAlignment:(int64_t)alignment;
+- (void)_setAnimatingStackView:(BOOL)view;
 - (void)_updateLabel;
 - (void)_updateStackView;
-- (void)animateImagesOntoView:(id)a3 inContainerView:(id)a4 completionHandler:(id)a5;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animateImagesOntoView:(id)view inContainerView:(id)containerView completionHandler:(id)handler;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)layoutSubviews;
-- (void)setImages:(id)a3;
-- (void)setLeftView:(id)a3 animated:(BOOL)a4;
-- (void)setRightView:(id)a3 animated:(BOOL)a4;
-- (void)setStyle:(unint64_t)a3;
-- (void)setTitle:(id)a3;
+- (void)setImages:(id)images;
+- (void)setLeftView:(id)view animated:(BOOL)animated;
+- (void)setRightView:(id)view animated:(BOOL)animated;
+- (void)setStyle:(unint64_t)style;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PUPickerBannerView
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = [(PUPickerBannerView *)self _animationCompletionHandler];
+  finishedCopy = finished;
+  _animationCompletionHandler = [(PUPickerBannerView *)self _animationCompletionHandler];
 
-  if (v6)
+  if (_animationCompletionHandler)
   {
-    v7 = [(PUPickerBannerView *)self _animationCompletionHandler];
-    v7[2](v7, v4);
+    _animationCompletionHandler2 = [(PUPickerBannerView *)self _animationCompletionHandler];
+    _animationCompletionHandler2[2](_animationCompletionHandler2, finishedCopy);
 
     [(PUPickerBannerView *)self _setAnimationCompletionHandler:0];
   }
 }
 
-- (void)animateImagesOntoView:(id)a3 inContainerView:(id)a4 completionHandler:(id)a5
+- (void)animateImagesOntoView:(id)view inContainerView:(id)containerView completionHandler:(id)handler
 {
   v86[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9)
+  viewCopy = view;
+  containerViewCopy = containerView;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (viewCopy && containerViewCopy)
   {
-    v12 = [(PUPickerBannerView *)self _stackView];
-    v13 = [v12 snapshotView];
-    [v12 bounds];
-    v68 = self;
-    [v12 convertRect:v9 toView:?];
-    v71 = v13;
-    [v13 setFrame:?];
-    [v9 addSubview:v13];
+    _stackView = [(PUPickerBannerView *)self _stackView];
+    snapshotView = [_stackView snapshotView];
+    [_stackView bounds];
+    selfCopy = self;
+    [_stackView convertRect:containerViewCopy toView:?];
+    v71 = snapshotView;
+    [snapshotView setFrame:?];
+    [containerViewCopy addSubview:snapshotView];
     [(PUPickerBannerView *)self _setAnimatingStackView:1];
-    v14 = v8;
+    v14 = viewCopy;
     UIAnimationDragCoefficient();
     v16 = v15 * 0.5;
     UIAnimationDragCoefficient();
@@ -58,12 +58,12 @@
     v75 = v19;
     v20 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB0]];
     v21 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED0]];
-    v72 = v12;
-    [v12 center];
+    v72 = _stackView;
+    [_stackView center];
     v23 = v22;
     v25 = v24;
-    v26 = [v12 superview];
-    [v9 convertPoint:v26 fromView:{v23, v25}];
+    superview = [_stackView superview];
+    [containerViewCopy convertPoint:superview fromView:{v23, v25}];
     v28 = v27;
     v30 = v29;
 
@@ -71,8 +71,8 @@
     [v14 center];
     v32 = v31;
     v34 = v33;
-    v35 = [v14 superview];
-    [v9 convertPoint:v35 fromView:{v32, v34}];
+    superview2 = [v14 superview];
+    [containerViewCopy convertPoint:superview2 fromView:{v32, v34}];
     v37 = v36;
     v39 = v38;
 
@@ -88,22 +88,22 @@
 
     v41 = v40 + -50.0;
     v42 = v28 + (v37 - v28) * 0.5;
-    [v9 bounds];
+    [containerViewCopy bounds];
     MidX = CGRectGetMidX(v87);
     if (vabdd_f64(v37, v28) < vabdd_f64(v37, MidX))
     {
       v42 = MidX;
     }
 
-    v44 = [MEMORY[0x1E69DC728] bezierPath];
-    [v44 moveToPoint:{v28, v30}];
-    v69 = v44;
-    [v44 addQuadCurveToPoint:v37 controlPoint:{v39, v42, v41}];
+    bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+    [bezierPath moveToPoint:{v28, v30}];
+    v69 = bezierPath;
+    [bezierPath addQuadCurveToPoint:v37 controlPoint:{v39, v42, v41}];
     v45 = [MEMORY[0x1E6979390] animationWithKeyPath:@"position"];
-    [v45 setPath:{objc_msgSend(v44, "CGPath")}];
+    [v45 setPath:{objc_msgSend(bezierPath, "CGPath")}];
     [v45 setKeyTimes:&unk_1F2B7D508];
     v86[0] = v19;
-    v73 = v9;
+    v73 = containerViewCopy;
     v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v86 count:1];
     [v45 setTimingFunctions:v46];
 
@@ -137,17 +137,17 @@
     [v52 setTimingFunctions:v53];
 
     [v52 setDuration:v16];
-    v54 = [MEMORY[0x1E6979308] animation];
-    [v54 setDuration:v16];
-    [v54 setRemovedOnCompletion:0];
-    [v54 setFillMode:*MEMORY[0x1E69797E8]];
+    animation = [MEMORY[0x1E6979308] animation];
+    [animation setDuration:v16];
+    [animation setRemovedOnCompletion:0];
+    [animation setFillMode:*MEMORY[0x1E69797E8]];
     v82[0] = v47;
     v82[1] = v48;
     v82[2] = v50;
     v82[3] = v52;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:4];
-    v55 = v74 = v8;
-    [v54 setAnimations:v55];
+    v55 = v74 = viewCopy;
+    [animation setAnimations:v55];
 
     v56 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform.scale"];
     [v56 setBeginTime:v16];
@@ -159,15 +159,15 @@
     v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:v81 count:2];
     [v56 setTimingFunctions:v57];
 
-    v58 = [MEMORY[0x1E6979308] animation];
-    [v58 setDuration:v16 + v18];
-    [v58 setRemovedOnCompletion:1];
-    [v58 setFillMode:*MEMORY[0x1E69797F0]];
+    animation2 = [MEMORY[0x1E6979308] animation];
+    [animation2 setDuration:v16 + v18];
+    [animation2 setRemovedOnCompletion:1];
+    [animation2 setFillMode:*MEMORY[0x1E69797F0]];
     v80 = v56;
     v59 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v80 count:1];
-    [v58 setAnimations:v59];
+    [animation2 setAnimations:v59];
 
-    [v58 setDelegate:v68];
+    [animation2 setDelegate:selfCopy];
     v60 = [PUInterfaceManager beginDisablingUserInteractionForReason:3];
     v76[0] = MEMORY[0x1E69E9820];
     v76[1] = 3221225472;
@@ -178,21 +178,21 @@
     v79 = v11;
     v61 = v60;
     v62 = v71;
-    [(PUPickerBannerView *)v68 _setAnimationCompletionHandler:v76];
-    v63 = [v62 layer];
-    [v63 addAnimation:v54 forKey:@"jumpAndLandAnimation"];
+    [(PUPickerBannerView *)selfCopy _setAnimationCompletionHandler:v76];
+    layer = [v62 layer];
+    [layer addAnimation:animation forKey:@"jumpAndLandAnimation"];
 
-    v64 = [v70 layer];
+    layer2 = [v70 layer];
 
-    [v64 addAnimation:v58 forKey:@"jumpAndLandAnimation"];
-    v9 = v73;
+    [layer2 addAnimation:animation2 forKey:@"jumpAndLandAnimation"];
+    containerViewCopy = v73;
 
-    v8 = v74;
+    viewCopy = v74;
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
-    (*(v10 + 2))(v10, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 }
 
@@ -213,77 +213,77 @@ uint64_t __78__PUPickerBannerView_animateImagesOntoView_inContainerView_completi
 
 - (void)_updateLabel
 {
-  v4 = [(PUPickerBannerView *)self title];
-  v3 = [(PUPickerBannerView *)self _label];
-  [v3 setText:v4];
+  title = [(PUPickerBannerView *)self title];
+  _label = [(PUPickerBannerView *)self _label];
+  [_label setText:title];
 
   [(PUPickerBannerView *)self setNeedsLayout];
 }
 
 - (void)_updateStackView
 {
-  v8 = [(PUPickerBannerView *)self images];
-  v3 = [(PUPickerBannerView *)self _stackView];
-  v4 = +[PUStackView maximumNumberOfVisibleItemsForStyle:](PUStackView, "maximumNumberOfVisibleItemsForStyle:", [v3 style]);
-  v5 = [v8 count];
+  images = [(PUPickerBannerView *)self images];
+  _stackView = [(PUPickerBannerView *)self _stackView];
+  v4 = +[PUStackView maximumNumberOfVisibleItemsForStyle:](PUStackView, "maximumNumberOfVisibleItemsForStyle:", [_stackView style]);
+  v5 = [images count];
   if (v4 >= v5)
   {
     v4 = v5;
   }
 
-  [v3 setNumberOfVisibleItems:v4];
+  [_stackView setNumberOfVisibleItems:v4];
   if (v4 >= 1)
   {
     for (i = 0; i != v4; ++i)
     {
-      v7 = [v8 objectAtIndex:i];
+      v7 = [images objectAtIndex:i];
       [v7 size];
-      [v3 setImageSize:i forItemAtIndex:?];
-      [v3 setImage:v7 forItemAtIndex:i];
+      [_stackView setImageSize:i forItemAtIndex:?];
+      [_stackView setImage:v7 forItemAtIndex:i];
     }
   }
 
   [(PUPickerBannerView *)self setNeedsLayout];
 }
 
-- (void)_setAlignment:(int64_t)a3
+- (void)_setAlignment:(int64_t)alignment
 {
-  if (self->__alignment != a3)
+  if (self->__alignment != alignment)
   {
-    self->__alignment = a3;
+    self->__alignment = alignment;
     [(PUPickerBannerView *)self setNeedsLayout];
   }
 }
 
-- (void)_setAnimatingStackView:(BOOL)a3
+- (void)_setAnimatingStackView:(BOOL)view
 {
-  if (self->__animatingStackView != a3)
+  if (self->__animatingStackView != view)
   {
-    self->__animatingStackView = a3;
+    self->__animatingStackView = view;
     [(PUPickerBannerView *)self setNeedsLayout];
   }
 }
 
-- (void)setRightView:(id)a3 animated:(BOOL)a4
+- (void)setRightView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   rightView = self->_rightView;
-  if (rightView != v7)
+  if (rightView != viewCopy)
   {
     v9 = rightView;
-    objc_storeStrong(&self->_rightView, a3);
+    objc_storeStrong(&self->_rightView, view);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __44__PUPickerBannerView_setRightView_animated___block_invoke;
     aBlock[3] = &unk_1E7B809F0;
     v10 = v9;
     v14 = v10;
-    v15 = self;
-    v16 = v7;
+    selfCopy = self;
+    v16 = viewCopy;
     v11 = _Block_copy(aBlock);
     v12 = v11;
-    if (v4)
+    if (animatedCopy)
     {
       [(PUPickerBannerView *)self layoutSubviews];
       [MEMORY[0x1E69DD250] transitionWithView:self duration:5242880 options:v12 animations:0 completion:0.3];
@@ -305,26 +305,26 @@ uint64_t __44__PUPickerBannerView_setRightView_animated___block_invoke(uint64_t 
   return [v2 addSubview:v3];
 }
 
-- (void)setLeftView:(id)a3 animated:(BOOL)a4
+- (void)setLeftView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   leftView = self->_leftView;
-  if (leftView != v7)
+  if (leftView != viewCopy)
   {
     v9 = leftView;
-    objc_storeStrong(&self->_leftView, a3);
+    objc_storeStrong(&self->_leftView, view);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __43__PUPickerBannerView_setLeftView_animated___block_invoke;
     aBlock[3] = &unk_1E7B809F0;
     v10 = v9;
     v14 = v10;
-    v15 = self;
-    v16 = v7;
+    selfCopy = self;
+    v16 = viewCopy;
     v11 = _Block_copy(aBlock);
     v12 = v11;
-    if (v4)
+    if (animatedCopy)
     {
       [(PUPickerBannerView *)self layoutSubviews];
       [MEMORY[0x1E69DD250] transitionWithView:self duration:5242880 options:v12 animations:0 completion:0.3];
@@ -346,11 +346,11 @@ uint64_t __43__PUPickerBannerView_setLeftView_animated___block_invoke(uint64_t a
   return [v2 addSubview:v3];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (self->_title != a3)
+  if (self->_title != title)
   {
-    v4 = [a3 copy];
+    v4 = [title copy];
     title = self->_title;
     self->_title = v4;
 
@@ -358,11 +358,11 @@ uint64_t __43__PUPickerBannerView_setLeftView_animated___block_invoke(uint64_t a
   }
 }
 
-- (void)setImages:(id)a3
+- (void)setImages:(id)images
 {
-  if (self->_images != a3)
+  if (self->_images != images)
   {
-    v4 = [a3 copy];
+    v4 = [images copy];
     images = self->_images;
     self->_images = v4;
 
@@ -370,24 +370,24 @@ uint64_t __43__PUPickerBannerView_setLeftView_animated___block_invoke(uint64_t a
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(PUPickerBannerView *)self _updateAlignment];
   }
 }
 
-- (CGRect)_frameReversedIfRightToLeft:(BOOL)a3 frame:(CGRect)a4 bounds:(CGRect)a5
+- (CGRect)_frameReversedIfRightToLeft:(BOOL)left frame:(CGRect)frame bounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (a3)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (left)
   {
-    MaxX = CGRectGetMaxX(a5);
+    MaxX = CGRectGetMaxX(bounds);
     v14.origin.x = x;
     v14.origin.y = y;
     v14.size.width = width;
@@ -408,17 +408,17 @@ uint64_t __43__PUPickerBannerView_setLeftView_animated___block_invoke(uint64_t a
 
 - (void)layoutSubviews
 {
-  v4 = [(PUPickerBannerView *)self _stackView];
-  v5 = [v4 numberOfVisibleItems];
-  v6 = [(PUPickerBannerView *)self _label];
-  [v4 frame];
+  _stackView = [(PUPickerBannerView *)self _stackView];
+  numberOfVisibleItems = [_stackView numberOfVisibleItems];
+  _label = [(PUPickerBannerView *)self _label];
+  [_stackView frame];
   v8 = v7;
   slice.origin.x = v7;
   slice.origin.y = v9;
   rect = v9;
   slice.size.width = v10;
   slice.size.height = v11;
-  [v6 frame];
+  [_label frame];
   v92 = v12;
   v93 = v13;
   remainder.origin.x = v12;
@@ -435,17 +435,17 @@ uint64_t __43__PUPickerBannerView_setLeftView_animated___block_invoke(uint64_t a
   v27 = v19 + v26;
   v29 = v21 - (v24 + v28);
   v31 = v23 - (v26 + v30);
-  v32 = [(PUPickerBannerView *)self leftView];
-  v33 = [(PUPickerBannerView *)self rightView];
-  [v32 center];
+  leftView = [(PUPickerBannerView *)self leftView];
+  rightView = [(PUPickerBannerView *)self rightView];
+  [leftView center];
   v35 = v34;
   v37 = v36;
-  [v33 center];
+  [rightView center];
   v97 = v38;
   v40 = v39;
-  if (v32)
+  if (leftView)
   {
-    [v32 frame];
+    [leftView frame];
     v41 = CGRectGetWidth(v100) + 14.0;
     v101.origin.x = v25;
     v101.origin.y = v27;
@@ -471,9 +471,9 @@ uint64_t __43__PUPickerBannerView_setLeftView_animated___block_invoke(uint64_t a
   }
 
   v95 = v37;
-  if (v33)
+  if (rightView)
   {
-    [v33 frame];
+    [rightView frame];
     v45 = CGRectGetWidth(v103) + 14.0;
     v104.origin.x = v25;
     v104.origin.y = v27;
@@ -504,15 +504,15 @@ uint64_t __43__PUPickerBannerView_setLeftView_animated___block_invoke(uint64_t a
   y = v107.origin.y;
   width = v107.size.width;
   height = v107.size.height;
-  v52 = [(PUPickerBannerView *)self _alignment];
-  v53 = v52;
-  if (v52 == 1)
+  _alignment = [(PUPickerBannerView *)self _alignment];
+  v53 = _alignment;
+  if (_alignment == 1)
   {
     v57 = x;
     v58 = y;
     v59 = width;
     v60 = height;
-    if (v5)
+    if (numberOfVisibleItems)
     {
       v61 = CGRectGetHeight(*&v57);
       slice.size.width = v61;
@@ -527,7 +527,7 @@ uint64_t __43__PUPickerBannerView_setLeftView_animated___block_invoke(uint64_t a
       v111.size.width = v61;
       v111.size.height = v61;
       v63 = v62 - CGRectGetWidth(v111);
-      [v6 sizeThatFits:{v63, 0.0}];
+      [_label sizeThatFits:{v63, 0.0}];
       if (v64 < v63)
       {
         v63 = v64;
@@ -572,7 +572,7 @@ uint64_t __43__PUPickerBannerView_setLeftView_animated___block_invoke(uint64_t a
     else
     {
       v69 = CGRectGetWidth(*&v57);
-      [v6 sizeThatFits:{v69, 0.0}];
+      [_label sizeThatFits:{v69, 0.0}];
       if (v70 < v69)
       {
         v69 = v70;
@@ -607,11 +607,11 @@ uint64_t __43__PUPickerBannerView_setLeftView_animated___block_invoke(uint64_t a
 
   else
   {
-    if (!v52)
+    if (!_alignment)
     {
       v55 = v95;
       v54 = v96;
-      if (v5)
+      if (numberOfVisibleItems)
       {
         v108.origin.x = x;
         v108.origin.y = y;
@@ -637,17 +637,17 @@ uint64_t __43__PUPickerBannerView_setLeftView_animated___block_invoke(uint64_t a
       goto LABEL_22;
     }
 
-    v68 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v68 handleFailureInMethod:a2 object:self file:@"PUPickerBannerView.m" lineNumber:125 description:@"Alignment not implemented."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerBannerView.m" lineNumber:125 description:@"Alignment not implemented."];
   }
 
   v55 = v95;
   v54 = v96;
 LABEL_22:
-  v71 = [(PUPickerBannerView *)self _animatingStackView];
-  if (v5)
+  _animatingStackView = [(PUPickerBannerView *)self _animatingStackView];
+  if (numberOfVisibleItems)
   {
-    v72 = v71;
+    v72 = _animatingStackView;
   }
 
   else
@@ -656,21 +656,21 @@ LABEL_22:
   }
 
   v73 = [MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:{-[PUPickerBannerView semanticContentAttribute](self, "semanticContentAttribute")}] == 1;
-  [v32 setCenter:{v54, v55}];
-  [v32 frame];
+  [leftView setCenter:{v54, v55}];
+  [leftView frame];
   [PUPickerBannerView _frameReversedIfRightToLeft:"_frameReversedIfRightToLeft:frame:bounds:" frame:v73 bounds:?];
-  [v32 setFrame:{PURoundRectToPixel(v74, v75, v76, v77)}];
-  [v33 setCenter:{v97, v40}];
-  [v33 frame];
+  [leftView setFrame:{PURoundRectToPixel(v74, v75, v76, v77)}];
+  [rightView setCenter:{v97, v40}];
+  [rightView frame];
   [PUPickerBannerView _frameReversedIfRightToLeft:"_frameReversedIfRightToLeft:frame:bounds:" frame:v73 bounds:?];
-  [v33 setFrame:{PURoundRectToPixel(v78, v79, v80, v81)}];
-  [v4 setHidden:v72];
+  [rightView setFrame:{PURoundRectToPixel(v78, v79, v80, v81)}];
+  [_stackView setHidden:v72];
   [(PUPickerBannerView *)self _frameReversedIfRightToLeft:v73 frame:slice.origin.x bounds:slice.origin.y, slice.size.width, slice.size.height, x, y, width, height];
   slice.origin.x = v82;
   slice.origin.y = v83;
   slice.size.width = v84;
   slice.size.height = v85;
-  [v4 setFrame:?];
+  [_stackView setFrame:?];
   if (v53)
   {
     v86 = v53;
@@ -681,20 +681,20 @@ LABEL_22:
     v86 = 4;
   }
 
-  [v6 setTextAlignment:v86];
+  [_label setTextAlignment:v86];
   [(PUPickerBannerView *)self _frameReversedIfRightToLeft:v73 frame:remainder.origin.x bounds:remainder.origin.y, remainder.size.width, remainder.size.height, x, y, width, height];
   remainder.origin.x = v87;
   remainder.origin.y = v88;
   remainder.size.width = v89;
   remainder.size.height = v90;
-  [v6 setFrame:?];
+  [_label setFrame:?];
 }
 
-- (PUPickerBannerView)initWithFrame:(CGRect)a3
+- (PUPickerBannerView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = PUPickerBannerView;
-  v3 = [(PUPickerBannerView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPickerBannerView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[PUInterfaceManager currentTheme];
@@ -710,8 +710,8 @@ LABEL_22:
     [v4 configureBannerLabel:v8];
     [(PUPickerBannerView *)v3 addSubview:v8];
     [(PUPickerBannerView *)v3 _setLabel:v8];
-    v9 = [v4 bannerBackgroundColor];
-    [(PUPickerBannerView *)v3 setBackgroundColor:v9];
+    bannerBackgroundColor = [v4 bannerBackgroundColor];
+    [(PUPickerBannerView *)v3 setBackgroundColor:bannerBackgroundColor];
   }
 
   return v3;

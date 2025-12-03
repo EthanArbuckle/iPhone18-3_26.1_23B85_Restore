@@ -1,5 +1,5 @@
 @interface AVAUPresetEvent
-- (AVAUPresetEvent)initWithAUPresetEvent:(AUPresetEvent *)a3;
+- (AVAUPresetEvent)initWithAUPresetEvent:(AUPresetEvent *)event;
 - (AVAUPresetEvent)initWithScope:(UInt32)scope element:(UInt32)element dictionary:(NSDictionary *)presetDictionary;
 - (void)dealloc;
 @end
@@ -19,7 +19,7 @@
   [(AVAUPresetEvent *)&v4 dealloc];
 }
 
-- (AVAUPresetEvent)initWithAUPresetEvent:(AUPresetEvent *)a3
+- (AVAUPresetEvent)initWithAUPresetEvent:(AUPresetEvent *)event
 {
   v8.receiver = self;
   v8.super_class = AVAUPresetEvent;
@@ -27,8 +27,8 @@
   v5 = v4;
   if (v4)
   {
-    *&v4->_event.scope = *&a3->scope;
-    preset = a3->preset;
+    *&v4->_event.scope = *&event->scope;
+    preset = event->preset;
     v5->_event.preset = preset;
     CFRetain(preset);
   }

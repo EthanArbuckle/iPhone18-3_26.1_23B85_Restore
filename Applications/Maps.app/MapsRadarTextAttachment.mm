@@ -1,26 +1,26 @@
 @interface MapsRadarTextAttachment
-+ (id)attachmentWithFileName:(id)a3 text:(id)a4;
-- (MapsRadarTextAttachment)initWithFileName:(id)a3 text:(id)a4;
++ (id)attachmentWithFileName:(id)name text:(id)text;
+- (MapsRadarTextAttachment)initWithFileName:(id)name text:(id)text;
 - (id)debugDescription;
 - (id)description;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
 - (void)writeToTemporaryFolder;
 @end
 
 @implementation MapsRadarTextAttachment
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
   v5.receiver = self;
   v5.super_class = MapsRadarTextAttachment;
-  v4 = a3;
-  [(MapsRadarAttachment *)&v5 _maps_buildDescriptionWithBlock:v4];
-  v4[2](v4, @"text", self->_text);
+  blockCopy = block;
+  [(MapsRadarAttachment *)&v5 _maps_buildDescriptionWithBlock:blockCopy];
+  blockCopy[2](blockCopy, @"text", self->_text);
 }
 
 - (id)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100C0D7D0;
@@ -28,8 +28,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(MapsRadarTextAttachment *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(MapsRadarTextAttachment *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -63,7 +63,7 @@ LABEL_9:
 
 - (id)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100C0DA20;
@@ -71,8 +71,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(MapsRadarTextAttachment *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(MapsRadarTextAttachment *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -109,10 +109,10 @@ LABEL_9:
   v11.receiver = self;
   v11.super_class = MapsRadarTextAttachment;
   [(MapsRadarAttachment *)&v11 writeToTemporaryFolder];
-  v3 = [(MapsRadarAttachment *)self temporaryFileURL];
-  v4 = [(MapsRadarTextAttachment *)self text];
+  temporaryFileURL = [(MapsRadarAttachment *)self temporaryFileURL];
+  text = [(MapsRadarTextAttachment *)self text];
   v10 = 0;
-  v5 = [v4 writeToURL:v3 atomically:1 encoding:4 error:&v10];
+  v5 = [text writeToURL:temporaryFileURL atomically:1 encoding:4 error:&v10];
   v6 = v10;
 
   if ((v5 & 1) == 0)
@@ -120,14 +120,14 @@ LABEL_9:
     v7 = sub_100C0DFBC();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(MapsRadarAttachment *)self fileName];
-      v9 = [(MapsRadarTextAttachment *)self text];
+      fileName = [(MapsRadarAttachment *)self fileName];
+      text2 = [(MapsRadarTextAttachment *)self text];
       *buf = 138413058;
-      v13 = v8;
+      v13 = fileName;
       v14 = 2112;
-      v15 = v9;
+      v15 = text2;
       v16 = 2112;
-      v17 = v3;
+      v17 = temporaryFileURL;
       v18 = 2112;
       v19 = v6;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to save file with name '%@' from text '%@' at path '%@': %@", buf, 0x2Au);
@@ -135,11 +135,11 @@ LABEL_9:
   }
 }
 
-- (MapsRadarTextAttachment)initWithFileName:(id)a3 text:(id)a4
+- (MapsRadarTextAttachment)initWithFileName:(id)name text:(id)text
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  nameCopy = name;
+  textCopy = text;
+  if (!textCopy)
   {
     v12 = sub_10006D178();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -170,10 +170,10 @@ LABEL_9:
 
   v15.receiver = self;
   v15.super_class = MapsRadarTextAttachment;
-  v8 = [(MapsRadarAttachment *)&v15 initWithFileName:v6];
+  v8 = [(MapsRadarAttachment *)&v15 initWithFileName:nameCopy];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [textCopy copy];
     text = v8->_text;
     v8->_text = v9;
   }
@@ -181,11 +181,11 @@ LABEL_9:
   return v8;
 }
 
-+ (id)attachmentWithFileName:(id)a3 text:(id)a4
++ (id)attachmentWithFileName:(id)name text:(id)text
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithFileName:v7 text:v6];
+  textCopy = text;
+  nameCopy = name;
+  v8 = [[self alloc] initWithFileName:nameCopy text:textCopy];
 
   return v8;
 }

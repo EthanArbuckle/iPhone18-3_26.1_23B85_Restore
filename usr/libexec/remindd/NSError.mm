@@ -6,44 +6,44 @@
 
 - (BOOL)rem_isDiskFullSQLError
 {
-  v3 = [(NSError *)self domain];
-  v4 = [v3 isEqualToString:NSSQLiteErrorDomain];
+  domain = [(NSError *)self domain];
+  v4 = [domain isEqualToString:NSSQLiteErrorDomain];
 
   if (!v4)
   {
-    v5 = [(NSError *)self domain];
-    if (![v5 isEqualToString:NSCocoaErrorDomain])
+    domain2 = [(NSError *)self domain];
+    if (![domain2 isEqualToString:NSCocoaErrorDomain])
     {
       v10 = 0;
       goto LABEL_10;
     }
 
-    v6 = [(NSError *)self userInfo];
-    v7 = [v6 objectForKeyedSubscript:NSSQLiteErrorDomain];
+    userInfo = [(NSError *)self userInfo];
+    v7 = [userInfo objectForKeyedSubscript:NSSQLiteErrorDomain];
 
     if (!v7)
     {
       return 0;
     }
 
-    v8 = [(NSError *)self userInfo];
-    v9 = [v8 objectForKeyedSubscript:NSSQLiteErrorDomain];
-    v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v9 integerValue]);
+    userInfo2 = [(NSError *)self userInfo];
+    v9 = [userInfo2 objectForKeyedSubscript:NSSQLiteErrorDomain];
+    domain2 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v9 integerValue]);
 
-    if (!v5)
+    if (!domain2)
     {
       return 0;
     }
 
 LABEL_7:
-    v10 = [&off_1009057E8 containsObject:v5];
+    v10 = [&off_1009057E8 containsObject:domain2];
 LABEL_10:
 
     return v10;
   }
 
-  v5 = [NSNumber numberWithInteger:[(NSError *)self code]];
-  if (v5)
+  domain2 = [NSNumber numberWithInteger:[(NSError *)self code]];
+  if (domain2)
   {
     goto LABEL_7;
   }

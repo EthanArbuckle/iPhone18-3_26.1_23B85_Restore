@@ -1,7 +1,7 @@
 @interface NEAppPushManager
 + (id)loadedManagers;
 + (void)loadAllFromPreferencesWithCompletionHandler:(void *)completionHandler;
-- (BOOL)establishSessionManagerConnectionWithConfigurationID:(void *)a1;
+- (BOOL)establishSessionManagerConnectionWithConfigurationID:(void *)d;
 - (BOOL)isEnabled;
 - (BOOL)matchEthernet;
 - (NEAppPushManager)init;
@@ -35,11 +35,11 @@
 - (void)setProviderBundleIdentifier:(NSString *)providerBundleIdentifier
 {
   v9 = providerBundleIdentifier;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v5, 32, 1);
+    Property = objc_getProperty(selfCopy, v5, 32, 1);
   }
 
   else
@@ -48,19 +48,19 @@
   }
 
   v7 = Property;
-  v8 = [v7 appPush];
-  [v8 setProviderBundleIdentifier:v9];
+  appPush = [v7 appPush];
+  [appPush setProviderBundleIdentifier:v9];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)providerBundleIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 32, 1);
+    Property = objc_getProperty(selfCopy, v3, 32, 1);
   }
 
   else
@@ -69,22 +69,22 @@
   }
 
   v5 = Property;
-  v6 = [v5 appPush];
-  v7 = [v6 providerBundleIdentifier];
+  appPush = [v5 appPush];
+  providerBundleIdentifier = [appPush providerBundleIdentifier];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return providerBundleIdentifier;
 }
 
 - (void)setLocalizedDescription:(NSString *)localizedDescription
 {
   v8 = localizedDescription;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v5, 32, 1);
+    Property = objc_getProperty(selfCopy, v5, 32, 1);
   }
 
   else
@@ -95,16 +95,16 @@
   v7 = Property;
   [v7 setName:v8];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)localizedDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 32, 1);
+    Property = objc_getProperty(selfCopy, v3, 32, 1);
   }
 
   else
@@ -113,21 +113,21 @@
   }
 
   v5 = Property;
-  v6 = [v5 name];
+  name = [v5 name];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v6;
+  return name;
 }
 
 - (void)setProviderConfiguration:(NSDictionary *)providerConfiguration
 {
   v9 = providerConfiguration;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v5, 32, 1);
+    Property = objc_getProperty(selfCopy, v5, 32, 1);
   }
 
   else
@@ -136,19 +136,19 @@
   }
 
   v7 = Property;
-  v8 = [v7 appPush];
-  [v8 setProviderConfiguration:v9];
+  appPush = [v7 appPush];
+  [appPush setProviderConfiguration:v9];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSDictionary)providerConfiguration
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 32, 1);
+    Property = objc_getProperty(selfCopy, v3, 32, 1);
   }
 
   else
@@ -157,21 +157,21 @@
   }
 
   v5 = Property;
-  v6 = [v5 appPush];
-  v7 = [v6 providerConfiguration];
+  appPush = [v5 appPush];
+  providerConfiguration = [appPush providerConfiguration];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return providerConfiguration;
 }
 
 - (BOOL)matchEthernet
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 32, 1);
+    Property = objc_getProperty(selfCopy, v3, 32, 1);
   }
 
   else
@@ -180,21 +180,21 @@
   }
 
   v5 = Property;
-  v6 = [v5 appPush];
-  v7 = [v6 matchEthernet];
+  appPush = [v5 appPush];
+  matchEthernet = [appPush matchEthernet];
 
-  objc_sync_exit(v2);
-  return v7;
+  objc_sync_exit(selfCopy);
+  return matchEthernet;
 }
 
 - (void)setMatchPrivateLTENetworks:(NSArray *)matchPrivateLTENetworks
 {
   v9 = matchPrivateLTENetworks;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v5, 32, 1);
+    Property = objc_getProperty(selfCopy, v5, 32, 1);
   }
 
   else
@@ -203,19 +203,19 @@
   }
 
   v7 = Property;
-  v8 = [v7 appPush];
-  [v8 setMatchPrivateLTENetworks:v9];
+  appPush = [v7 appPush];
+  [appPush setMatchPrivateLTENetworks:v9];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)matchPrivateLTENetworks
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 32, 1);
+    Property = objc_getProperty(selfCopy, v3, 32, 1);
   }
 
   else
@@ -224,22 +224,22 @@
   }
 
   v5 = Property;
-  v6 = [v5 appPush];
-  v7 = [v6 matchPrivateLTENetworks];
+  appPush = [v5 appPush];
+  matchPrivateLTENetworks = [appPush matchPrivateLTENetworks];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return matchPrivateLTENetworks;
 }
 
 - (void)setMatchSSIDs:(NSArray *)matchSSIDs
 {
   v9 = matchSSIDs;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v5, 32, 1);
+    Property = objc_getProperty(selfCopy, v5, 32, 1);
   }
 
   else
@@ -248,19 +248,19 @@
   }
 
   v7 = Property;
-  v8 = [v7 appPush];
-  [v8 setMatchSSIDs:v9];
+  appPush = [v7 appPush];
+  [appPush setMatchSSIDs:v9];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)matchSSIDs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 32, 1);
+    Property = objc_getProperty(selfCopy, v3, 32, 1);
   }
 
   else
@@ -269,21 +269,21 @@
   }
 
   v5 = Property;
-  v6 = [v5 appPush];
-  v7 = [v6 matchSSIDs];
+  appPush = [v5 appPush];
+  matchSSIDs = [appPush matchSSIDs];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return matchSSIDs;
 }
 
 - (BOOL)isEnabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 32, 1);
+    Property = objc_getProperty(selfCopy, v3, 32, 1);
   }
 
   else
@@ -292,11 +292,11 @@
   }
 
   v5 = Property;
-  v6 = [v5 appPush];
-  v7 = [v6 isEnabled];
+  appPush = [v5 appPush];
+  isEnabled = [appPush isEnabled];
 
-  objc_sync_exit(v2);
-  return v7;
+  objc_sync_exit(selfCopy);
+  return isEnabled;
 }
 
 - (void)saveToPreferencesWithCompletionHandler:(void *)completionHandler
@@ -305,40 +305,40 @@
   v4 = completionHandler;
   if (v4)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    if (!v5)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!selfCopy)
     {
       goto LABEL_7;
     }
 
-    v7 = objc_getProperty(v5, v6, 32, 1);
+    v7 = objc_getProperty(selfCopy, v6, 32, 1);
     if (!v7)
     {
       goto LABEL_7;
     }
 
     v9 = v7;
-    v10 = objc_getProperty(v5, v8, 32, 1);
-    v11 = [v10 appPush];
+    v10 = objc_getProperty(selfCopy, v8, 32, 1);
+    appPush = [v10 appPush];
 
-    if (v11)
+    if (appPush)
     {
       v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v14 = objc_getProperty(v5, v13, 32, 1);
+      v14 = objc_getProperty(selfCopy, v13, 32, 1);
       v15 = [v14 checkValidityAndCollectErrors:v12];
 
       if (v15)
       {
         v16 = +[NEConfigurationManager sharedManager];
-        v18 = objc_getProperty(v5, v17, 32, 1);
+        v18 = objc_getProperty(selfCopy, v17, 32, 1);
         v19 = MEMORY[0x1E69E96A0];
         v20 = MEMORY[0x1E69E96A0];
         v31[0] = MEMORY[0x1E69E9820];
         v31[1] = 3221225472;
         v31[2] = __59__NEAppPushManager_saveToPreferencesWithCompletionHandler___block_invoke_38;
         v31[3] = &unk_1E7F0B628;
-        v31[4] = v5;
+        v31[4] = selfCopy;
         v32 = v4;
         [v16 saveConfiguration:v18 withCompletionQueue:v19 handler:v31];
       }
@@ -371,7 +371,7 @@
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v42 = v5;
+          v42 = selfCopy;
           v43 = 2112;
           v44 = v28;
           _os_log_error_impl(&dword_1BA83C000, v29, OS_LOG_TYPE_ERROR, "%@ Failed to save the configuration: %@", buf, 0x16u);
@@ -400,14 +400,14 @@ LABEL_7:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v42 = v5;
+        v42 = selfCopy;
         v43 = 2112;
         v44 = v12;
         _os_log_error_impl(&dword_1BA83C000, v24, OS_LOG_TYPE_ERROR, "%@ Failed to save the configuration as configuration is nil, %@", buf, 0x16u);
       }
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -456,23 +456,23 @@ void __59__NEAppPushManager_saveToPreferencesWithCompletionHandler___block_invok
   v4 = completionHandler;
   if (v4)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    if (v5 && objc_getProperty(v5, v6, 32, 1))
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy && objc_getProperty(selfCopy, v6, 32, 1))
     {
-      v8 = objc_getProperty(v5, v7, 32, 1);
-      v9 = [v8 identifier];
-      v10 = [v9 copy];
+      v8 = objc_getProperty(selfCopy, v7, 32, 1);
+      identifier = [v8 identifier];
+      v10 = [identifier copy];
 
       v11 = +[NEConfigurationManager sharedManager];
-      v13 = objc_getProperty(v5, v12, 32, 1);
+      v13 = objc_getProperty(selfCopy, v12, 32, 1);
       v14 = MEMORY[0x1E69E96A0];
       v15 = MEMORY[0x1E69E96A0];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __63__NEAppPushManager_removeFromPreferencesWithCompletionHandler___block_invoke_2;
       v17[3] = &unk_1E7F0A1B0;
-      v17[4] = v5;
+      v17[4] = selfCopy;
       v16 = v10;
       v18 = v16;
       v19 = v4;
@@ -490,7 +490,7 @@ void __59__NEAppPushManager_saveToPreferencesWithCompletionHandler___block_invok
       v16 = v21;
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -557,28 +557,28 @@ void __63__NEAppPushManager_removeFromPreferencesWithCompletionHandler___block_i
 - (void)cancelSessionManagerConnection
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    objc_sync_enter(v1);
-    if (v1[5])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy[5])
     {
       ne_session_cancel();
-      v1[5] = 0;
+      selfCopy[5] = 0;
       v2 = ne_log_obj();
       if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
       {
-        v4 = objc_getProperty(v1, v3, 32, 1);
-        v5 = [v4 identifier];
+        v4 = objc_getProperty(selfCopy, v3, 32, 1);
+        identifier = [v4 identifier];
         v7 = 138412546;
-        v8 = v1;
+        v8 = selfCopy;
         v9 = 2112;
-        v10 = v5;
+        v10 = identifier;
         _os_log_impl(&dword_1BA83C000, v2, OS_LOG_TYPE_INFO, "%@ cancelled connection with nesessionmanager for configuration id: %@", &v7, 0x16u);
       }
     }
 
-    objc_sync_exit(v1);
+    objc_sync_exit(selfCopy);
   }
 
   v6 = *MEMORY[0x1E69E9840];
@@ -669,26 +669,6 @@ void __34__NEAppPushManager_loadedManagers__block_invoke_2(uint64_t a1, void *a2
   v11 = *MEMORY[0x1E69E9840];
 }
 
-{
-  v11 = *MEMORY[0x1E69E9840];
-  v3 = a2;
-  if (v3)
-  {
-    v4 = ne_log_obj();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
-    {
-      v6 = *(a1 + 32);
-      v7 = 138412546;
-      v8 = v6;
-      v9 = 2112;
-      v10 = v3;
-      _os_log_error_impl(&dword_1BA83C000, v4, OS_LOG_TYPE_ERROR, "%@ loadFromPreferencesWithCompletionHandler failed. error: %@", &v7, 0x16u);
-    }
-  }
-
-  v5 = *MEMORY[0x1E69E9840];
-}
-
 void __34__NEAppPushManager_loadedManagers__block_invoke_4(void *a1, void *a2, void *a3)
 {
   v24 = *MEMORY[0x1E69E9840];
@@ -766,14 +746,14 @@ LABEL_11:
       Property = 0;
     }
 
-    v8 = [Property identifier];
+    identifier = [Property identifier];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __61__NEAppPushManager_loadFromPreferencesWithCompletionHandler___block_invoke;
     v9[3] = &unk_1E7F0B5D8;
     v9[4] = self;
     v10 = v4;
-    [v6 loadConfigurationWithID:v8 withCompletionQueue:MEMORY[0x1E69E96A0] handler:v9];
+    [v6 loadConfigurationWithID:identifier withCompletionQueue:MEMORY[0x1E69E96A0] handler:v9];
   }
 }
 
@@ -901,27 +881,27 @@ LABEL_26:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)establishSessionManagerConnectionWithConfigurationID:(void *)a1
+- (BOOL)establishSessionManagerConnectionWithConfigurationID:(void *)d
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (d)
   {
-    v4 = a1;
-    objc_sync_enter(v4);
+    dCopy = d;
+    objc_sync_enter(dCopy);
     v18[0] = 0;
     v18[1] = 0;
-    [(NEAppPushManager *)v4 cancelSessionManagerConnection];
+    [(NEAppPushManager *)dCopy cancelSessionManagerConnection];
     [v3 getUUIDBytes:v18];
     v5 = ne_session_create();
-    v4[5] = v5;
+    dCopy[5] = v5;
     v6 = v5 != 0;
     if (v5)
     {
       v7 = MEMORY[0x1E69E96A0];
       ne_session_set_event_handler();
 
-      v8 = v4[5];
+      v8 = dCopy[5];
       v9 = v3;
       ne_session_get_info();
 
@@ -929,7 +909,7 @@ LABEL_26:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v15 = v4;
+        v15 = dCopy;
         v16 = 2112;
         v17 = v9;
         _os_log_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_INFO, "%@ established connection with nesm for configuration id: %@", buf, 0x16u);
@@ -942,14 +922,14 @@ LABEL_26:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v15 = v4;
+        v15 = dCopy;
         v16 = 2112;
         v17 = v3;
         _os_log_error_impl(&dword_1BA83C000, v11, OS_LOG_TYPE_ERROR, "%@: failed to create ne_session for configuration id: %@", buf, 0x16u);
       }
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(dCopy);
   }
 
   else
@@ -1127,18 +1107,18 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 infoDictionary];
-    v6 = [v5 objectForKey:*MEMORY[0x1E695E120]];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
+    v6 = [infoDictionary objectForKey:*MEMORY[0x1E695E120]];
 
-    v7 = [MEMORY[0x1E696AAE8] mainBundle];
-    v8 = [v7 bundleIdentifier];
+    mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle2 bundleIdentifier];
 
     if (!v6)
     {
-      v9 = [MEMORY[0x1E696AAE8] mainBundle];
-      v10 = [v9 infoDictionary];
-      v6 = [v10 objectForKey:*MEMORY[0x1E695E4F8]];
+      mainBundle3 = [MEMORY[0x1E696AAE8] mainBundle];
+      infoDictionary2 = [mainBundle3 infoDictionary];
+      v6 = [infoDictionary2 objectForKey:*MEMORY[0x1E695E4F8]];
     }
 
     v11 = [[NEConfiguration alloc] initWithName:v6 grade:1];
@@ -1150,7 +1130,7 @@ LABEL_7:
     [objc_getProperty(v2 v15];
     [objc_getProperty(v2 v16];
     v18 = [objc_getProperty(v2 v17];
-    [v18 setPluginType:v8];
+    [v18 setPluginType:bundleIdentifier];
 
     v2->_nesmConnection = 0;
     v2->_active = 0;
@@ -1172,7 +1152,7 @@ LABEL_11:
     v7[1] = 3221225472;
     v7[2] = __64__NEAppPushManager_loadAllFromPreferencesWithCompletionHandler___block_invoke;
     v7[3] = &unk_1E7F0B1E8;
-    v9 = a1;
+    selfCopy = self;
     v8 = v4;
     [v6 loadConfigurationsWithCompletionQueue:MEMORY[0x1E69E96A0] handler:v7];
   }

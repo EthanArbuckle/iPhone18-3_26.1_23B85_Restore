@@ -1,19 +1,19 @@
 @interface StorageDataURLsWrapper
-- (void)startObservingURLs:(id)a3 withUpdateHandler:(id)a4;
+- (void)startObservingURLs:(id)ls withUpdateHandler:(id)handler;
 @end
 
 @implementation StorageDataURLsWrapper
 
-- (void)startObservingURLs:(id)a3 withUpdateHandler:(id)a4
+- (void)startObservingURLs:(id)ls withUpdateHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  lsCopy = ls;
+  handlerCopy = handler;
   v7 = +[NSMutableDictionary dictionary];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v5;
+  v8 = lsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -29,7 +29,7 @@
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 path];
+        path = [v13 path];
         STMSizeOfFileTree();
 
         v15 = objc_alloc_init(SAURLSize);
@@ -46,7 +46,7 @@
   v16 = objc_alloc_init(SAURLSizerResults);
   [v16 setUrlInfo:v7];
   v17 = objc_alloc_init(NSError);
-  v6[2](v6, v16, v17);
+  handlerCopy[2](handlerCopy, v16, v17);
 }
 
 @end

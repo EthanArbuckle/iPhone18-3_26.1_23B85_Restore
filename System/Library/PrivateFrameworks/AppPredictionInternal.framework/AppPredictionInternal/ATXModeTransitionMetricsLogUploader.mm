@@ -1,15 +1,15 @@
 @interface ATXModeTransitionMetricsLogUploader
 - (ATXModeTransitionMetricsLogUploader)init;
-- (ATXModeTransitionMetricsLogUploader)initWithComputedModeStream:(id)a3 inferredModeStream:(id)a4;
-- (BOOL)_previousModeEndEvent:(id)a3 isContiguousWithModeStartEvent:(id)a4;
+- (ATXModeTransitionMetricsLogUploader)initWithComputedModeStream:(id)stream inferredModeStream:(id)modeStream;
+- (BOOL)_previousModeEndEvent:(id)event isContiguousWithModeStartEvent:(id)startEvent;
 - (id)_modeTransitionBookmark;
 - (id)_timeBasedMergedPublisher;
-- (id)matchingInferredModeEvent:(id)a3 inferredModeEvents:(id)a4;
-- (id)processInferredModeEvents:(id)a3 beforeTimestamp:(double)a4;
-- (void)_logModeTransitionMetricWithPreviousModeStart:(id)a3 previousModeEnd:(id)a4 currentModeStart:(id)a5 matchingPreviousInferredModeEvent:(id)a6 matchingCurrentInferredModeEvent:(id)a7;
-- (void)_logWithPreviousInferredModeEvent:(id)a3 currentInferredModeEvent:(id)a4 withDuration:(id)a5;
-- (void)_populateInferredModeFieldsOnTheModeTransitionMetric:(id)a3 withPreviousInferredModeEvent:(id)a4 currentInferredModeEvent:(id)a5 duration:(id)a6;
-- (void)uploadLogsToCoreAnalyticsWithXPCActivity:(id)a3;
+- (id)matchingInferredModeEvent:(id)event inferredModeEvents:(id)events;
+- (id)processInferredModeEvents:(id)events beforeTimestamp:(double)timestamp;
+- (void)_logModeTransitionMetricWithPreviousModeStart:(id)start previousModeEnd:(id)end currentModeStart:(id)modeStart matchingPreviousInferredModeEvent:(id)event matchingCurrentInferredModeEvent:(id)modeEvent;
+- (void)_logWithPreviousInferredModeEvent:(id)event currentInferredModeEvent:(id)modeEvent withDuration:(id)duration;
+- (void)_populateInferredModeFieldsOnTheModeTransitionMetric:(id)metric withPreviousInferredModeEvent:(id)event currentInferredModeEvent:(id)modeEvent duration:(id)duration;
+- (void)uploadLogsToCoreAnalyticsWithXPCActivity:(id)activity;
 @end
 
 @implementation ATXModeTransitionMetricsLogUploader
@@ -17,44 +17,44 @@
 - (ATXModeTransitionMetricsLogUploader)init
 {
   v3 = BiomeLibrary();
-  v4 = [v3 UserFocus];
-  v5 = [v4 ComputedMode];
+  userFocus = [v3 UserFocus];
+  computedMode = [userFocus ComputedMode];
   v6 = BiomeLibrary();
-  v7 = [v6 UserFocus];
-  v8 = [v7 InferredMode];
-  v9 = [(ATXModeTransitionMetricsLogUploader *)self initWithComputedModeStream:v5 inferredModeStream:v8];
+  userFocus2 = [v6 UserFocus];
+  inferredMode = [userFocus2 InferredMode];
+  v9 = [(ATXModeTransitionMetricsLogUploader *)self initWithComputedModeStream:computedMode inferredModeStream:inferredMode];
 
   return v9;
 }
 
-- (ATXModeTransitionMetricsLogUploader)initWithComputedModeStream:(id)a3 inferredModeStream:(id)a4
+- (ATXModeTransitionMetricsLogUploader)initWithComputedModeStream:(id)stream inferredModeStream:(id)modeStream
 {
-  v7 = a3;
-  v8 = a4;
+  streamCopy = stream;
+  modeStreamCopy = modeStream;
   v16.receiver = self;
   v16.super_class = ATXModeTransitionMetricsLogUploader;
   v9 = [(ATXModeTransitionMetricsLogUploader *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_computedModeStream, a3);
-    objc_storeStrong(&v10->_inferredModeStream, a4);
-    v11 = [MEMORY[0x277CEB440] sharedInstance];
+    objc_storeStrong(&v9->_computedModeStream, stream);
+    objc_storeStrong(&v10->_inferredModeStream, modeStream);
+    mEMORY[0x277CEB440] = [MEMORY[0x277CEB440] sharedInstance];
     client = v10->_client;
-    v10->_client = v11;
+    v10->_client = mEMORY[0x277CEB440];
 
-    v13 = [(ATXDNDModeConfigurationClient *)v10->_client getAllModeConfigurationsWithoutCache];
+    getAllModeConfigurationsWithoutCache = [(ATXDNDModeConfigurationClient *)v10->_client getAllModeConfigurationsWithoutCache];
     modeConfigurations = v10->_modeConfigurations;
-    v10->_modeConfigurations = v13;
+    v10->_modeConfigurations = getAllModeConfigurationsWithoutCache;
   }
 
   return v10;
 }
 
-- (void)uploadLogsToCoreAnalyticsWithXPCActivity:(id)a3
+- (void)uploadLogsToCoreAnalyticsWithXPCActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(ATXModeTransitionMetricsLogUploader *)self _timeBasedMergedPublisher];
+  activityCopy = activity;
+  _timeBasedMergedPublisher = [(ATXModeTransitionMetricsLogUploader *)self _timeBasedMergedPublisher];
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -73,13 +73,13 @@
   v24[3] = __Block_byref_object_copy__2;
   v24[4] = __Block_byref_object_dispose__2;
   v25 = 0;
-  v6 = [(ATXModeTransitionMetricsLogUploader *)self _modeTransitionBookmark];
-  v7 = [v6 bookmark];
+  _modeTransitionBookmark = [(ATXModeTransitionMetricsLogUploader *)self _modeTransitionBookmark];
+  bookmark = [_modeTransitionBookmark bookmark];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __80__ATXModeTransitionMetricsLogUploader_uploadLogsToCoreAnalyticsWithXPCActivity___block_invoke;
   v22[3] = &unk_278596E58;
-  v8 = v6;
+  v8 = _modeTransitionBookmark;
   v23 = v8;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -89,9 +89,9 @@
   v20 = v24;
   v17[4] = self;
   v21 = &v28;
-  v9 = v4;
+  v9 = activityCopy;
   v18 = v9;
-  v10 = [v5 drivableSinkWithBookmark:v7 completion:v22 shouldContinue:v17];
+  v10 = [_timeBasedMergedPublisher drivableSinkWithBookmark:bookmark completion:v22 shouldContinue:v17];
 
   v11 = v29[5];
   v12 = [MEMORY[0x277CBEAA8] now];
@@ -216,19 +216,19 @@ LABEL_22:
   return v29;
 }
 
-- (id)matchingInferredModeEvent:(id)a3 inferredModeEvents:(id)a4
+- (id)matchingInferredModeEvent:(id)event inferredModeEvents:(id)events
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 eventBody];
-  [v7 semanticType];
+  eventCopy = event;
+  eventsCopy = events;
+  eventBody = [eventCopy eventBody];
+  [eventBody semanticType];
   v8 = BMUserFocusInferredModeTypeFromBMUserFocusModeComputedSemanticType();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v6;
+  v9 = eventsCopy;
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
@@ -244,15 +244,15 @@ LABEL_22:
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 eventBody];
-        if ([v15 isStart])
+        eventBody2 = [v14 eventBody];
+        if ([eventBody2 isStart])
         {
-          if ([v15 modeType] == v8)
+          if ([eventBody2 modeType] == v8)
           {
-            [v5 timestamp];
+            [eventCopy timestamp];
             v17 = v16;
             [v14 timestamp];
-            if (v17 - v18 <= 1.0 && [v7 updateReason] == 3)
+            if (v17 - v18 <= 1.0 && [eventBody updateReason] == 3)
             {
               v19 = v14;
 
@@ -280,9 +280,9 @@ LABEL_14:
   return v19;
 }
 
-- (id)processInferredModeEvents:(id)a3 beforeTimestamp:(double)a4
+- (id)processInferredModeEvents:(id)events beforeTimestamp:(double)timestamp
 {
-  v6 = a3;
+  eventsCopy = events;
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x3032000000;
@@ -299,11 +299,11 @@ LABEL_14:
   v9[1] = 3221225472;
   v9[2] = __81__ATXModeTransitionMetricsLogUploader_processInferredModeEvents_beforeTimestamp___block_invoke;
   v9[3] = &unk_278596EA8;
-  *&v9[7] = a4;
+  *&v9[7] = timestamp;
   v9[5] = v12;
   v9[6] = v10;
   v9[4] = self;
-  v7 = [v6 _pas_filteredArrayWithTest:v9];
+  v7 = [eventsCopy _pas_filteredArrayWithTest:v9];
   _Block_object_dispose(v10, 8);
 
   _Block_object_dispose(v12, 8);
@@ -388,24 +388,24 @@ LABEL_17:
   return v7 >= v8;
 }
 
-- (void)_logWithPreviousInferredModeEvent:(id)a3 currentInferredModeEvent:(id)a4 withDuration:(id)a5
+- (void)_logWithPreviousInferredModeEvent:(id)event currentInferredModeEvent:(id)modeEvent withDuration:(id)duration
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  durationCopy = duration;
+  modeEventCopy = modeEvent;
+  eventCopy = event;
   v11 = objc_opt_new();
-  v12 = [v10 eventBody];
+  eventBody = [eventCopy eventBody];
 
-  v13 = [v9 eventBody];
+  eventBody2 = [modeEventCopy eventBody];
 
-  [(ATXModeTransitionMetricsLogUploader *)self _populateInferredModeFieldsOnTheModeTransitionMetric:v11 withPreviousInferredModeEvent:v12 currentInferredModeEvent:v13 duration:v8];
+  [(ATXModeTransitionMetricsLogUploader *)self _populateInferredModeFieldsOnTheModeTransitionMetric:v11 withPreviousInferredModeEvent:eventBody currentInferredModeEvent:eventBody2 duration:durationCopy];
   v14 = __atxlog_handle_modes();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v11 coreAnalyticsDictionary];
+    coreAnalyticsDictionary = [v11 coreAnalyticsDictionary];
     v17 = 138412290;
-    v18 = v15;
+    v18 = coreAnalyticsDictionary;
     _os_log_impl(&dword_2263AA000, v14, OS_LOG_TYPE_DEFAULT, "ATXModeTransitionMetricsLogUploader: Uploading inferred mode metric to CA: %@", &v17, 0xCu);
   }
 
@@ -413,35 +413,35 @@ LABEL_17:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_populateInferredModeFieldsOnTheModeTransitionMetric:(id)a3 withPreviousInferredModeEvent:(id)a4 currentInferredModeEvent:(id)a5 duration:(id)a6
+- (void)_populateInferredModeFieldsOnTheModeTransitionMetric:(id)metric withPreviousInferredModeEvent:(id)event currentInferredModeEvent:(id)modeEvent duration:(id)duration
 {
   v9 = MEMORY[0x277CCABB0];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  [v12 confidenceScore];
+  durationCopy = duration;
+  modeEventCopy = modeEvent;
+  eventCopy = event;
+  metricCopy = metric;
+  [eventCopy confidenceScore];
   v14 = [v9 numberWithDouble:?];
-  [v13 setInferredModeConfidenceScore:v14];
+  [metricCopy setInferredModeConfidenceScore:v14];
 
-  [v13 setInferredModeDuration:v10];
-  v15 = [v12 originAnchorType];
-  [v13 setInferredModeOriginAnchorType:v15];
+  [metricCopy setInferredModeDuration:durationCopy];
+  originAnchorType = [eventCopy originAnchorType];
+  [metricCopy setInferredModeOriginAnchorType:originAnchorType];
 
-  [v12 modeType];
+  [eventCopy modeType];
   v16 = BMUserFocusInferredModeTypeAsString();
-  [v13 setInferredModeType:v16];
+  [metricCopy setInferredModeType:v16];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v12, "uiLocation")}];
-  [v13 setInferredModeUILocation:v17];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(eventCopy, "uiLocation")}];
+  [metricCopy setInferredModeUILocation:v17];
 
-  [v12 origin];
+  [eventCopy origin];
   v18 = BMUserFocusInferredModeOriginAsString();
-  [v13 setPreviousModeOrigin:v18];
+  [metricCopy setPreviousModeOrigin:v18];
 
-  [v11 origin];
+  [modeEventCopy origin];
   v19 = BMUserFocusInferredModeOriginAsString();
-  [v13 setCurrentModeOrigin:v19];
+  [metricCopy setCurrentModeOrigin:v19];
 }
 
 - (id)_timeBasedMergedPublisher
@@ -469,54 +469,54 @@ uint64_t __64__ATXModeTransitionMetricsLogUploader__timeBasedMergedPublisher__bl
   return v11;
 }
 
-- (void)_logModeTransitionMetricWithPreviousModeStart:(id)a3 previousModeEnd:(id)a4 currentModeStart:(id)a5 matchingPreviousInferredModeEvent:(id)a6 matchingCurrentInferredModeEvent:(id)a7
+- (void)_logModeTransitionMetricWithPreviousModeStart:(id)start previousModeEnd:(id)end currentModeStart:(id)modeStart matchingPreviousInferredModeEvent:(id)event matchingCurrentInferredModeEvent:(id)modeEvent
 {
   v76 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v61 = a6;
-  v63 = a7;
-  v15 = [v13 eventBody];
-  v16 = [v14 eventBody];
-  v66 = [v15 modeSemanticTypeAsString];
-  [v13 timestamp];
+  startCopy = start;
+  endCopy = end;
+  modeStartCopy = modeStart;
+  eventCopy = event;
+  modeEventCopy = modeEvent;
+  eventBody = [endCopy eventBody];
+  eventBody2 = [modeStartCopy eventBody];
+  modeSemanticTypeAsString = [eventBody modeSemanticTypeAsString];
+  [endCopy timestamp];
   v18 = v17;
-  [v12 timestamp];
+  [startCopy timestamp];
   v20 = v18 - v19;
-  v21 = [v15 updateReason];
-  v65 = [v15 modeUpdateReasonAsString];
-  v22 = [v15 modeUpdateSourceAsString];
-  v23 = [v16 modeSemanticTypeAsString];
-  v24 = [v16 modeUpdateReasonAsString];
-  v64 = self;
-  v60 = v12;
-  v67 = v14;
-  v68 = v13;
-  v55 = [(ATXModeTransitionMetricsLogUploader *)self _previousModeEndEvent:v13 isContiguousWithModeStartEvent:v14];
+  updateReason = [eventBody updateReason];
+  modeUpdateReasonAsString = [eventBody modeUpdateReasonAsString];
+  modeUpdateSourceAsString = [eventBody modeUpdateSourceAsString];
+  modeSemanticTypeAsString2 = [eventBody2 modeSemanticTypeAsString];
+  modeUpdateReasonAsString2 = [eventBody2 modeUpdateReasonAsString];
+  selfCopy = self;
+  v60 = startCopy;
+  v67 = modeStartCopy;
+  v68 = endCopy;
+  v55 = [(ATXModeTransitionMetricsLogUploader *)self _previousModeEndEvent:endCopy isContiguousWithModeStartEvent:modeStartCopy];
   if (!v55)
   {
 
-    v23 = @"No Mode";
-    v24 = @"Fallback";
+    modeSemanticTypeAsString2 = @"No Mode";
+    modeUpdateReasonAsString2 = @"Fallback";
   }
 
-  v56 = v24;
-  v57 = v23;
-  v58 = v22;
-  v25 = [[ATXModeTransitionMetric alloc] initWithPreviousModeSemanticType:v66 previousModeDuration:v21 == 2 previousModeHadScheduledExit:v65 exitReason:v24 enterReason:0 transitionDeviceType:v22 transitionSource:v20 nextModeSemanticType:v23];
+  v56 = modeUpdateReasonAsString2;
+  v57 = modeSemanticTypeAsString2;
+  v58 = modeUpdateSourceAsString;
+  v25 = [[ATXModeTransitionMetric alloc] initWithPreviousModeSemanticType:modeSemanticTypeAsString previousModeDuration:updateReason == 2 previousModeHadScheduledExit:modeUpdateReasonAsString exitReason:modeUpdateReasonAsString2 enterReason:0 transitionDeviceType:modeUpdateSourceAsString transitionSource:v20 nextModeSemanticType:modeSemanticTypeAsString2];
   modeConfigurations = self->_modeConfigurations;
-  v62 = v16;
-  v27 = [v16 semanticModeIdentifier];
-  v28 = [(NSDictionary *)modeConfigurations objectForKeyedSubscript:v27];
+  v62 = eventBody2;
+  semanticModeIdentifier = [eventBody2 semanticModeIdentifier];
+  v28 = [(NSDictionary *)modeConfigurations objectForKeyedSubscript:semanticModeIdentifier];
 
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
   v59 = v28;
-  v29 = [v28 triggers];
-  v30 = [v29 countByEnumeratingWithState:&v69 objects:v75 count:16];
+  triggers = [v28 triggers];
+  v30 = [triggers countByEnumeratingWithState:&v69 objects:v75 count:16];
   if (v30)
   {
     v31 = v30;
@@ -527,7 +527,7 @@ uint64_t __64__ATXModeTransitionMetricsLogUploader__timeBasedMergedPublisher__bl
       {
         if (*v70 != v32)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(triggers);
         }
 
         v34 = *(*(&v69 + 1) + 8 * i);
@@ -565,35 +565,35 @@ uint64_t __64__ATXModeTransitionMetricsLogUploader__timeBasedMergedPublisher__bl
         }
       }
 
-      v31 = [v29 countByEnumeratingWithState:&v69 objects:v75 count:16];
+      v31 = [triggers countByEnumeratingWithState:&v69 objects:v75 count:16];
     }
 
     while (v31);
   }
 
-  v35 = v63;
-  v36 = v61;
-  [(ATXModeTransitionMetricsLogUploader *)v64 _populateInferredModeFieldsOnTheModeTransitionMetric:v25 withPreviousInferredModeEvent:v61 currentInferredModeEvent:v63 duration:0];
+  v35 = modeEventCopy;
+  v36 = eventCopy;
+  [(ATXModeTransitionMetricsLogUploader *)selfCopy _populateInferredModeFieldsOnTheModeTransitionMetric:v25 withPreviousInferredModeEvent:eventCopy currentInferredModeEvent:modeEventCopy duration:0];
   v37 = __atxlog_handle_modes();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
-    v38 = [(ATXModeTransitionMetric *)v25 coreAnalyticsDictionary];
+    coreAnalyticsDictionary = [(ATXModeTransitionMetric *)v25 coreAnalyticsDictionary];
     *buf = 138412290;
-    v74 = v38;
+    v74 = coreAnalyticsDictionary;
     _os_log_impl(&dword_2263AA000, v37, OS_LOG_TYPE_DEFAULT, "ATXModeTransitionMetricsLogUploader: Uploading mode transition metric to CA: %@", buf, 0xCu);
   }
 
   [(_ATXCoreAnalyticsMetric *)v25 logToCoreAnalytics];
-  v39 = v66;
+  v39 = modeSemanticTypeAsString;
   if (v55)
   {
     v40 = v25;
     v41 = v60;
-    v43 = v58;
+    modeUpdateSourceAsString2 = v58;
     v42 = v59;
-    v44 = v56;
+    modeUpdateReasonAsString4 = v56;
     v45 = v57;
-    v46 = v65;
+    modeUpdateReasonAsString3 = modeUpdateReasonAsString;
   }
 
   else
@@ -603,43 +603,43 @@ uint64_t __64__ATXModeTransitionMetricsLogUploader__timeBasedMergedPublisher__bl
     v48 = v47;
     [v68 timestamp];
     v50 = v48 - v49;
-    v46 = [v62 modeUpdateReasonAsString];
+    modeUpdateReasonAsString3 = [v62 modeUpdateReasonAsString];
 
-    v44 = [v62 modeUpdateReasonAsString];
+    modeUpdateReasonAsString4 = [v62 modeUpdateReasonAsString];
 
-    v43 = [v62 modeUpdateSourceAsString];
+    modeUpdateSourceAsString2 = [v62 modeUpdateSourceAsString];
 
-    v51 = [v62 modeSemanticTypeAsString];
+    modeSemanticTypeAsString3 = [v62 modeSemanticTypeAsString];
 
-    v40 = [[ATXModeTransitionMetric alloc] initWithPreviousModeSemanticType:@"No Mode" previousModeDuration:0 previousModeHadScheduledExit:v46 exitReason:v44 enterReason:0 transitionDeviceType:v43 transitionSource:v50 nextModeSemanticType:v51];
+    v40 = [[ATXModeTransitionMetric alloc] initWithPreviousModeSemanticType:@"No Mode" previousModeDuration:0 previousModeHadScheduledExit:modeUpdateReasonAsString3 exitReason:modeUpdateReasonAsString4 enterReason:0 transitionDeviceType:modeUpdateSourceAsString2 transitionSource:v50 nextModeSemanticType:modeSemanticTypeAsString3];
     v52 = __atxlog_handle_modes();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
     {
-      v53 = [(ATXModeTransitionMetric *)v40 coreAnalyticsDictionary];
+      coreAnalyticsDictionary2 = [(ATXModeTransitionMetric *)v40 coreAnalyticsDictionary];
       *buf = 138412290;
-      v74 = v53;
+      v74 = coreAnalyticsDictionary2;
       _os_log_impl(&dword_2263AA000, v52, OS_LOG_TYPE_DEFAULT, "ATXModeTransitionMetricsLogUploader: Uploading mode transition metric to CA: %@", buf, 0xCu);
 
-      v36 = v61;
+      v36 = eventCopy;
     }
 
     [(_ATXCoreAnalyticsMetric *)v40 logToCoreAnalytics];
-    v45 = v51;
+    v45 = modeSemanticTypeAsString3;
     v39 = @"No Mode";
     v41 = v60;
-    v35 = v63;
+    v35 = modeEventCopy;
     v42 = v59;
   }
 
   v54 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_previousModeEndEvent:(id)a3 isContiguousWithModeStartEvent:(id)a4
+- (BOOL)_previousModeEndEvent:(id)event isContiguousWithModeStartEvent:(id)startEvent
 {
-  v5 = a3;
-  [a4 timestamp];
+  eventCopy = event;
+  [startEvent timestamp];
   v7 = v6;
-  [v5 timestamp];
+  [eventCopy timestamp];
   v9 = v8;
 
   return v7 - v9 < 10.0;

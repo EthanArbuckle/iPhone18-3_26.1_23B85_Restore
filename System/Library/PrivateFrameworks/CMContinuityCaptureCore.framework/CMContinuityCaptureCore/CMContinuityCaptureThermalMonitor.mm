@@ -3,10 +3,10 @@
 + (void)invalidate;
 - (BOOL)invalidated;
 - (BOOL)setupNotification;
-- (CMContinuityCaptureThermalMonitor)initWithQueue:(id)a3;
-- (void)_thermalNotification:(unint64_t)a3;
+- (CMContinuityCaptureThermalMonitor)initWithQueue:(id)queue;
+- (void)_thermalNotification:(unint64_t)notification;
 - (void)invalidate;
-- (void)setInvalidated:(BOOL)a3;
+- (void)setInvalidated:(BOOL)invalidated;
 @end
 
 @implementation CMContinuityCaptureThermalMonitor
@@ -35,19 +35,19 @@ void __51__CMContinuityCaptureThermalMonitor_sharedInstance__block_invoke()
 
 - (BOOL)invalidated
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  invalidated = v2->_invalidated;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  invalidated = selfCopy->_invalidated;
+  objc_sync_exit(selfCopy);
 
   return invalidated;
 }
 
-- (void)setInvalidated:(BOOL)a3
+- (void)setInvalidated:(BOOL)invalidated
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_invalidated = a3;
+  obj->_invalidated = invalidated;
   objc_sync_exit(obj);
 }
 
@@ -139,22 +139,22 @@ void __54__CMContinuityCaptureThermalMonitor_setupNotification__block_invoke_3(u
   }
 }
 
-- (void)_thermalNotification:(unint64_t)a3
+- (void)_thermalNotification:(unint64_t)notification
 {
   dispatch_assert_queue_V2(self->_queue);
   v5 = 3;
-  v6 = a3 ^ 1;
-  if (a3 >= 2)
+  v6 = notification ^ 1;
+  if (notification >= 2)
   {
     v6 = 2;
   }
 
-  if (a3 <= 4)
+  if (notification <= 4)
   {
     v5 = v6;
   }
 
-  if (a3 <= 9)
+  if (notification <= 9)
   {
     v7 = v5;
   }
@@ -173,9 +173,9 @@ void __54__CMContinuityCaptureThermalMonitor_setupNotification__block_invoke_3(u
   }
 }
 
-- (CMContinuityCaptureThermalMonitor)initWithQueue:(id)a3
+- (CMContinuityCaptureThermalMonitor)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = CMContinuityCaptureThermalMonitor;
   v6 = [(CMContinuityCaptureThermalMonitor *)&v12 init];
@@ -187,7 +187,7 @@ LABEL_8:
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v6->_queue, a3);
+  objc_storeStrong(&v6->_queue, queue);
   v7->_registrationToken = -1;
   if (![(CMContinuityCaptureThermalMonitor *)v7 setupNotification])
   {

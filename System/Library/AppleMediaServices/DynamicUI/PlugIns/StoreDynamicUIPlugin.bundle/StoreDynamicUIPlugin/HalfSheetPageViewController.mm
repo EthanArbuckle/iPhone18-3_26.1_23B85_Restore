@@ -1,15 +1,15 @@
 @interface HalfSheetPageViewController
 - (UINavigationItem)navigationItem;
-- (_TtC20StoreDynamicUIPlugin27HalfSheetPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20StoreDynamicUIPlugin27HalfSheetPageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didReceiveMemoryWarning;
 - (void)loadView;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -17,7 +17,7 @@
 
 - (UINavigationItem)navigationItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_B18A4();
 
   return v3;
@@ -25,73 +25,73 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_B196C();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_B1A50();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_B20AC();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   sub_B2180();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_B2264();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_B2348(a3);
+  selfCopy = self;
+  sub_B2348(disappear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_B24E8();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_B2590();
 }
 
 - (void)didReceiveMemoryWarning
 {
-  v2 = self;
+  selfCopy = self;
   sub_B26E8();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_B27C4();
 }
 
-- (_TtC20StoreDynamicUIPlugin27HalfSheetPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20StoreDynamicUIPlugin27HalfSheetPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_13BB84();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_B31A0();
 }
 

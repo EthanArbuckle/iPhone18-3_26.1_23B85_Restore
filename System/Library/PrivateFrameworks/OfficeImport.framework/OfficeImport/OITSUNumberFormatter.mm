@@ -1,49 +1,49 @@
 @interface OITSUNumberFormatter
-+ (__CFNumberFormatter)createHarmonizedCFNumberFormatterWithLocale:(id)a3 style:(int64_t)a4;
-+ (id)currencyDecimalSeparatorForLocale:(id)a3;
-+ (id)currencyGroupingSeparatorForLocale:(id)a3;
-+ (id)currencySymbolForCurrencyCode:(id)a3 locale:(id)a4;
++ (__CFNumberFormatter)createHarmonizedCFNumberFormatterWithLocale:(id)locale style:(int64_t)style;
++ (id)currencyDecimalSeparatorForLocale:(id)locale;
++ (id)currencyGroupingSeparatorForLocale:(id)locale;
++ (id)currencySymbolForCurrencyCode:(id)code locale:(id)locale;
 + (id)currentLocaleCurrencyDecimalSeparator;
 + (id)currentLocaleDecimalSeparator;
-+ (id)decimalSeparatorForLocale:(id)a3;
-+ (id)defaultCurrencyCodeForLocale:(id)a3;
-+ (id)defaultFormatStringForValueType:(int)a3;
-+ (id)defaultFormatStringForValueType:(int)a3 negativeStyle:(int)a4;
-+ (id)displayNameForCurrencyCode:(id)a3;
-+ (id)formatString:(id)a3 transformedForNegativeStyle:(int)a4;
-+ (id)formatterForLocale:(id)a3;
-+ (id)groupingSeparatorForLocale:(id)a3;
-+ (id)percentSymbolForLocale:(id)a3;
-+ (id)stringBySubstitutingCharactersCFNumberFormatterDoesntUnderstand:(id)a3;
++ (id)decimalSeparatorForLocale:(id)locale;
++ (id)defaultCurrencyCodeForLocale:(id)locale;
++ (id)defaultFormatStringForValueType:(int)type;
++ (id)defaultFormatStringForValueType:(int)type negativeStyle:(int)style;
++ (id)displayNameForCurrencyCode:(id)code;
++ (id)formatString:(id)string transformedForNegativeStyle:(int)style;
++ (id)formatterForLocale:(id)locale;
++ (id)groupingSeparatorForLocale:(id)locale;
++ (id)percentSymbolForLocale:(id)locale;
++ (id)stringBySubstitutingCharactersCFNumberFormatterDoesntUnderstand:(id)understand;
 + (id)userVisibleCurrencyCodes;
-+ (int)positionOfMinusSignInNumberFormatSubpattern:(id)a3;
-+ (int)positionOfSymbol:(id)a3 inNumberFormatSubpattern:(id)a4;
-+ (unint64_t)groupingSizeForLocale:(id)a3;
-+ (unsigned)defaultDecimalPlacesForCurrencyCode:(id)a3;
-+ (void)formatString:(id)a3 replaceOccurencesOfUnescapedString:(id)a4 withString:(id)a5;
++ (int)positionOfMinusSignInNumberFormatSubpattern:(id)subpattern;
++ (int)positionOfSymbol:(id)symbol inNumberFormatSubpattern:(id)subpattern;
++ (unint64_t)groupingSizeForLocale:(id)locale;
++ (unsigned)defaultDecimalPlacesForCurrencyCode:(id)code;
++ (void)formatString:(id)string replaceOccurencesOfUnescapedString:(id)unescapedString withString:(id)withString;
 + (void)initialize;
-- (BOOL)currencyFromString:(id)a3 additionalCurrencyCode:(id)a4 value:(double *)a5 formatString:(id *)a6 currencyCode:(id *)a7;
-- (BOOL)decimalFromString:(id)a3 value:(double *)a4 formatString:(id *)a5;
-- (BOOL)fractionFromString:(id)a3 value:(double *)a4;
-- (BOOL)p_valueFromString:(id)a3 formatters:(id)a4 value:(double *)a5 formatString:(id *)a6;
-- (BOOL)percentageFromString:(id)a3 value:(double *)a4 formatString:(id *)a5;
-- (BOOL)scientificFromString:(id)a3 value:(double *)a4 formatString:(id *)a5;
-- (OITSUNumberFormatter)initWithLocale:(id)a3;
-- (__CFNumberFormatter)p_createHarmonizedCFNumberFormatterOfStyle:(int64_t)a3;
+- (BOOL)currencyFromString:(id)string additionalCurrencyCode:(id)code value:(double *)value formatString:(id *)formatString currencyCode:(id *)currencyCode;
+- (BOOL)decimalFromString:(id)string value:(double *)value formatString:(id *)formatString;
+- (BOOL)fractionFromString:(id)string value:(double *)value;
+- (BOOL)p_valueFromString:(id)string formatters:(id)formatters value:(double *)value formatString:(id *)formatString;
+- (BOOL)percentageFromString:(id)string value:(double *)value formatString:(id *)formatString;
+- (BOOL)scientificFromString:(id)string value:(double *)value formatString:(id *)formatString;
+- (OITSUNumberFormatter)initWithLocale:(id)locale;
+- (__CFNumberFormatter)p_createHarmonizedCFNumberFormatterOfStyle:(int64_t)style;
 - (id)currencyCode;
-- (id)currencySymbolForCurrencyCode:(id)a3;
-- (id)defaultFormatStringForValueType:(int)a3;
-- (id)defaultFormatStringForValueType:(int)a3 negativeStyle:(int)a4;
-- (id)halfWidthCurrencySymbolForCurrencyCode:(id)a3;
-- (id)p_createDictionaryOfCurrencyFormattersForCurrencies:(id)a3;
+- (id)currencySymbolForCurrencyCode:(id)code;
+- (id)defaultFormatStringForValueType:(int)type;
+- (id)defaultFormatStringForValueType:(int)type negativeStyle:(int)style;
+- (id)halfWidthCurrencySymbolForCurrencyCode:(id)code;
+- (id)p_createDictionaryOfCurrencyFormattersForCurrencies:(id)currencies;
 - (id)p_currencyFormatters;
 - (id)p_decimalFormatters;
-- (id)p_findCurrencySymbolInString:(id)a3 additionalCurrencyCode:(id)a4 successfullString:(id *)a5 currencyCode:(id *)a6;
+- (id)p_findCurrencySymbolInString:(id)string additionalCurrencyCode:(id)code successfullString:(id *)successfullString currencyCode:(id *)currencyCode;
 - (id)p_percentageFormatters;
 - (id)p_scientificFormatters;
 - (void)dealloc;
 - (void)p_loadHarmonizedNumberFormatterSymbols;
-- (void)p_numberPreferencesChanged:(id)a3;
+- (void)p_numberPreferencesChanged:(id)changed;
 @end
 
 @implementation OITSUNumberFormatter
@@ -61,29 +61,29 @@
   v7 = gLockTSUNumberOfTrailingZerosInMantissaWhenFormattedAsScientific;
   gLockTSUNumberOfTrailingZerosInMantissaWhenFormattedAsScientific = v6;
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___OITSUNumberFormatter;
   objc_msgSendSuper2(&v8, sel_initialize);
 }
 
-+ (id)stringBySubstitutingCharactersCFNumberFormatterDoesntUnderstand:(id)a3
++ (id)stringBySubstitutingCharactersCFNumberFormatterDoesntUnderstand:(id)understand
 {
-  v3 = a3;
+  understandCopy = understand;
   if (stringBySubstitutingCharactersCFNumberFormatterDoesntUnderstand__once != -1)
   {
     +[OITSUNumberFormatter stringBySubstitutingCharactersCFNumberFormatterDoesntUnderstand:];
   }
 
-  v4 = [v3 rangeOfCharacterFromSet:stringBySubstitutingCharactersCFNumberFormatterDoesntUnderstand__replacedCharacterSet];
+  v4 = [understandCopy rangeOfCharacterFromSet:stringBySubstitutingCharactersCFNumberFormatterDoesntUnderstand__replacedCharacterSet];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = v3;
+    v5 = understandCopy;
   }
 
   else
   {
     v6 = v4;
-    v7 = [v3 mutableCopy];
+    v7 = [understandCopy mutableCopy];
     v8 = [v7 length];
     v9 = v8 - v6;
     [v7 replaceOccurrencesOfString:@"−" withString:@"-" options:0 range:{v6, v8 - v6}];
@@ -104,10 +104,10 @@ void __88__OITSUNumberFormatter_stringBySubstitutingCharactersCFNumberFormatterD
   stringBySubstitutingCharactersCFNumberFormatterDoesntUnderstand__replacedCharacterSet = v0;
 }
 
-+ (int)positionOfSymbol:(id)a3 inNumberFormatSubpattern:(id)a4
++ (int)positionOfSymbol:(id)symbol inNumberFormatSubpattern:(id)subpattern
 {
-  v5 = a4;
-  v6 = [v5 rangeOfString:a3];
+  subpatternCopy = subpattern;
+  v6 = [subpatternCopy rangeOfString:symbol];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = 0;
@@ -116,40 +116,40 @@ void __88__OITSUNumberFormatter_stringBySubstitutingCharactersCFNumberFormatterD
   else
   {
     v8 = v6;
-    v9 = [v5 tsu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
-    v7 = v9 != 0x7FFFFFFFFFFFFFFFLL && v8 >= v9;
+    tsu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern = [subpatternCopy tsu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
+    v7 = tsu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern != 0x7FFFFFFFFFFFFFFFLL && v8 >= tsu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern;
   }
 
   return v7;
 }
 
-+ (int)positionOfMinusSignInNumberFormatSubpattern:(id)a3
++ (int)positionOfMinusSignInNumberFormatSubpattern:(id)subpattern
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
+  subpatternCopy = subpattern;
   v6 = [v4 stringWithFormat:@"-"];
-  LODWORD(a1) = [a1 positionOfSymbol:v6 inNumberFormatSubpattern:v5];
+  LODWORD(self) = [self positionOfSymbol:v6 inNumberFormatSubpattern:subpatternCopy];
 
-  return a1;
+  return self;
 }
 
-+ (id)formatString:(id)a3 transformedForNegativeStyle:(int)a4
++ (id)formatString:(id)string transformedForNegativeStyle:(int)style
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAB68] string];
-  v8 = v7;
-  if (!a4)
+  stringCopy = string;
+  string = [MEMORY[0x277CCAB68] string];
+  v8 = string;
+  if (!style)
   {
-    v14 = [v6 tsu_positiveSubpatternOfNumberFormatPattern];
-    [v8 appendString:v14];
+    tsu_positiveSubpatternOfNumberFormatPattern = [stringCopy tsu_positiveSubpatternOfNumberFormatPattern];
+    [v8 appendString:tsu_positiveSubpatternOfNumberFormatPattern];
 
     [v8 appendString:@";"];
-    v15 = [v6 tsu_positiveSubpatternOfNumberFormatPattern];
-    v16 = [v15 mutableCopy];
+    tsu_positiveSubpatternOfNumberFormatPattern2 = [stringCopy tsu_positiveSubpatternOfNumberFormatPattern];
+    v16 = [tsu_positiveSubpatternOfNumberFormatPattern2 mutableCopy];
 
-    [a1 formatString:v16 replaceOccurencesOfUnescapedString:@"-" withString:&stru_286EE1130];
-    v17 = [v6 tsu_negativeSubpatternOfNumberFormatPattern];
-    v18 = [OITSUNumberFormatter positionOfMinusSignInNumberFormatSubpattern:v17];
+    [self formatString:v16 replaceOccurencesOfUnescapedString:@"-" withString:&stru_286EE1130];
+    tsu_negativeSubpatternOfNumberFormatPattern = [stringCopy tsu_negativeSubpatternOfNumberFormatPattern];
+    v18 = [OITSUNumberFormatter positionOfMinusSignInNumberFormatSubpattern:tsu_negativeSubpatternOfNumberFormatPattern];
 
     if (v18)
     {
@@ -176,16 +176,16 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (a4 == 1)
+  if (style == 1)
   {
-    v9 = [v6 tsu_positiveSubpatternOfNumberFormatPattern];
-    [v8 appendString:v9];
+    tsu_positiveSubpatternOfNumberFormatPattern3 = [stringCopy tsu_positiveSubpatternOfNumberFormatPattern];
+    [v8 appendString:tsu_positiveSubpatternOfNumberFormatPattern3];
 
     [v8 appendString:@";"];
-    v10 = [v6 tsu_positiveSubpatternOfNumberFormatPattern];
-    v11 = [v10 mutableCopy];
+    tsu_positiveSubpatternOfNumberFormatPattern4 = [stringCopy tsu_positiveSubpatternOfNumberFormatPattern];
+    v11 = [tsu_positiveSubpatternOfNumberFormatPattern4 mutableCopy];
 
-    [a1 formatString:v11 replaceOccurencesOfUnescapedString:@"-" withString:&stru_286EE1130];
+    [self formatString:v11 replaceOccurencesOfUnescapedString:@"-" withString:&stru_286EE1130];
     v12 = v8;
     v13 = v11;
 LABEL_9:
@@ -194,16 +194,16 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if ((a4 & 0xFFFFFFFE) == 2)
+  if ((style & 0xFFFFFFFE) == 2)
   {
-    v21 = [v6 tsu_positiveSubpatternOfNumberFormatPattern];
-    [v8 appendString:v21];
+    tsu_positiveSubpatternOfNumberFormatPattern5 = [stringCopy tsu_positiveSubpatternOfNumberFormatPattern];
+    [v8 appendString:tsu_positiveSubpatternOfNumberFormatPattern5];
 
     [v8 appendString:@";"];
-    v22 = [v6 tsu_positiveSubpatternOfNumberFormatPattern];
-    v11 = [v22 mutableCopy];
+    tsu_positiveSubpatternOfNumberFormatPattern6 = [stringCopy tsu_positiveSubpatternOfNumberFormatPattern];
+    v11 = [tsu_positiveSubpatternOfNumberFormatPattern6 mutableCopy];
 
-    [a1 formatString:v11 replaceOccurencesOfUnescapedString:@"-" withString:&stru_286EE1130];
+    [self formatString:v11 replaceOccurencesOfUnescapedString:@"-" withString:&stru_286EE1130];
     objc_msgSend(v8, "appendString:", @"(");
     [v8 appendString:v11];
     v13 = @"");
@@ -211,84 +211,84 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  [v7 appendString:v6];
+  [string appendString:stringCopy];
 LABEL_14:
 
   return v8;
 }
 
-+ (void)formatString:(id)a3 replaceOccurencesOfUnescapedString:(id)a4 withString:(id)a5
++ (void)formatString:(id)string replaceOccurencesOfUnescapedString:(id)unescapedString withString:(id)withString
 {
-  v26 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v26 tsu_newRangesOfEscapedCharactersInNumberFormatPattern];
-  v10 = [v26 length];
-  if ([v9 count])
+  stringCopy = string;
+  unescapedStringCopy = unescapedString;
+  withStringCopy = withString;
+  tsu_newRangesOfEscapedCharactersInNumberFormatPattern = [stringCopy tsu_newRangesOfEscapedCharactersInNumberFormatPattern];
+  v10 = [stringCopy length];
+  if ([tsu_newRangesOfEscapedCharactersInNumberFormatPattern count])
   {
-    v11 = [v9 objectAtIndex:0];
-    [v26 replaceOccurrencesOfString:v7 withString:v8 options:0 range:{0, objc_msgSend(v11, "rangeValue")}];
+    v11 = [tsu_newRangesOfEscapedCharactersInNumberFormatPattern objectAtIndex:0];
+    [stringCopy replaceOccurrencesOfString:unescapedStringCopy withString:withStringCopy options:0 range:{0, objc_msgSend(v11, "rangeValue")}];
 
-    if ([v9 count] >= 2)
+    if ([tsu_newRangesOfEscapedCharactersInNumberFormatPattern count] >= 2)
     {
       v12 = 1;
       do
       {
-        v13 = [v26 length];
-        v14 = [v9 objectAtIndex:v12 - 1];
-        v15 = [v14 rangeValue];
+        v13 = [stringCopy length];
+        v14 = [tsu_newRangesOfEscapedCharactersInNumberFormatPattern objectAtIndex:v12 - 1];
+        rangeValue = [v14 rangeValue];
         v17 = v16;
 
-        v18 = [v9 objectAtIndex:v12];
-        v19 = [v18 rangeValue];
+        v18 = [tsu_newRangesOfEscapedCharactersInNumberFormatPattern objectAtIndex:v12];
+        rangeValue2 = [v18 rangeValue];
 
-        [v26 replaceOccurrencesOfString:v7 withString:v8 options:0 range:{v17 + v15 - v10 + v13, v19 - (v17 + v15)}];
+        [stringCopy replaceOccurrencesOfString:unescapedStringCopy withString:withStringCopy options:0 range:{v17 + rangeValue - v10 + v13, rangeValue2 - (v17 + rangeValue)}];
         ++v12;
       }
 
-      while (v12 < [v9 count]);
+      while (v12 < [tsu_newRangesOfEscapedCharactersInNumberFormatPattern count]);
     }
 
-    v20 = [v9 lastObject];
-    v21 = [v20 rangeValue];
+    lastObject = [tsu_newRangesOfEscapedCharactersInNumberFormatPattern lastObject];
+    rangeValue3 = [lastObject rangeValue];
     v23 = v22;
 
-    v24 = v21 + v23;
-    v25 = [v26 length] - (v21 + v23);
+    v24 = rangeValue3 + v23;
+    v25 = [stringCopy length] - (rangeValue3 + v23);
   }
 
   else
   {
-    v25 = [v26 length];
+    v25 = [stringCopy length];
     v24 = 0;
   }
 
-  [v26 replaceOccurrencesOfString:v7 withString:v8 options:0 range:{v24, v25}];
+  [stringCopy replaceOccurrencesOfString:unescapedStringCopy withString:withStringCopy options:0 range:{v24, v25}];
 }
 
-+ (id)displayNameForCurrencyCode:(id)a3
++ (id)displayNameForCurrencyCode:(id)code
 {
-  v4 = a3;
-  v5 = [a1 formatterForLocale:0];
-  v6 = [v5 displayNameForCurrencyCode:v4];
+  codeCopy = code;
+  v5 = [self formatterForLocale:0];
+  v6 = [v5 displayNameForCurrencyCode:codeCopy];
 
   return v6;
 }
 
-+ (id)currencySymbolForCurrencyCode:(id)a3 locale:(id)a4
++ (id)currencySymbolForCurrencyCode:(id)code locale:(id)locale
 {
-  v6 = a3;
-  v7 = [a1 formatterForLocale:a4];
-  v8 = [v7 currencySymbolForCurrencyCode:v6];
+  codeCopy = code;
+  v7 = [self formatterForLocale:locale];
+  v8 = [v7 currencySymbolForCurrencyCode:codeCopy];
 
   return v8;
 }
 
-+ (unsigned)defaultDecimalPlacesForCurrencyCode:(id)a3
++ (unsigned)defaultDecimalPlacesForCurrencyCode:(id)code
 {
   defaultFractionDigits = 0;
   v7 = 0.0;
-  if (CFNumberFormatterGetDecimalInfoForCurrencyCode(a3, &defaultFractionDigits, &v7))
+  if (CFNumberFormatterGetDecimalInfoForCurrencyCode(code, &defaultFractionDigits, &v7))
   {
     return defaultFractionDigits & ~(defaultFractionDigits >> 31);
   }
@@ -306,101 +306,101 @@ LABEL_14:
   return v3;
 }
 
-+ (id)defaultCurrencyCodeForLocale:(id)a3
++ (id)defaultCurrencyCodeForLocale:(id)locale
 {
-  v3 = [a1 formatterForLocale:a3];
-  v4 = [v3 currencyCode];
+  v3 = [self formatterForLocale:locale];
+  currencyCode = [v3 currencyCode];
 
-  return v4;
+  return currencyCode;
 }
 
 + (id)currentLocaleDecimalSeparator
 {
   v2 = +[OITSULocale currentLocale];
-  v3 = [v2 decimalSeparator];
+  decimalSeparator = [v2 decimalSeparator];
 
-  return v3;
+  return decimalSeparator;
 }
 
 + (id)currentLocaleCurrencyDecimalSeparator
 {
   v2 = +[OITSULocale currentLocale];
-  v3 = [v2 currencyDecimalSeparator];
+  currencyDecimalSeparator = [v2 currencyDecimalSeparator];
 
-  return v3;
+  return currencyDecimalSeparator;
 }
 
-+ (id)defaultFormatStringForValueType:(int)a3 negativeStyle:(int)a4
++ (id)defaultFormatStringForValueType:(int)type negativeStyle:(int)style
 {
-  v4 = *&a4;
-  v5 = *&a3;
-  v6 = [a1 formatterForLocale:0];
+  v4 = *&style;
+  v5 = *&type;
+  v6 = [self formatterForLocale:0];
   v7 = [v6 defaultFormatStringForValueType:v5 negativeStyle:v4];
 
   return v7;
 }
 
-+ (id)defaultFormatStringForValueType:(int)a3
++ (id)defaultFormatStringForValueType:(int)type
 {
-  v3 = *&a3;
-  v4 = [a1 formatterForLocale:0];
+  v3 = *&type;
+  v4 = [self formatterForLocale:0];
   v5 = [v4 defaultFormatStringForValueType:v3];
 
   return v5;
 }
 
-+ (id)decimalSeparatorForLocale:(id)a3
++ (id)decimalSeparatorForLocale:(id)locale
 {
-  v3 = [a1 formatterForLocale:a3];
-  v4 = [v3 decimalSeparator];
+  v3 = [self formatterForLocale:locale];
+  decimalSeparator = [v3 decimalSeparator];
 
-  return v4;
+  return decimalSeparator;
 }
 
-+ (id)groupingSeparatorForLocale:(id)a3
++ (id)groupingSeparatorForLocale:(id)locale
 {
-  v3 = [a1 formatterForLocale:a3];
-  v4 = [v3 groupingSeparator];
+  v3 = [self formatterForLocale:locale];
+  groupingSeparator = [v3 groupingSeparator];
 
-  return v4;
+  return groupingSeparator;
 }
 
-+ (id)currencyDecimalSeparatorForLocale:(id)a3
++ (id)currencyDecimalSeparatorForLocale:(id)locale
 {
-  v3 = [a1 formatterForLocale:a3];
-  v4 = [v3 currencyDecimalSeparator];
+  v3 = [self formatterForLocale:locale];
+  currencyDecimalSeparator = [v3 currencyDecimalSeparator];
 
-  return v4;
+  return currencyDecimalSeparator;
 }
 
-+ (id)currencyGroupingSeparatorForLocale:(id)a3
++ (id)currencyGroupingSeparatorForLocale:(id)locale
 {
-  v3 = [a1 formatterForLocale:a3];
-  v4 = [v3 currencyGroupingSeparator];
+  v3 = [self formatterForLocale:locale];
+  currencyGroupingSeparator = [v3 currencyGroupingSeparator];
 
-  return v4;
+  return currencyGroupingSeparator;
 }
 
-+ (id)percentSymbolForLocale:(id)a3
++ (id)percentSymbolForLocale:(id)locale
 {
-  v3 = [a1 formatterForLocale:a3];
-  v4 = [v3 percentSymbol];
+  v3 = [self formatterForLocale:locale];
+  percentSymbol = [v3 percentSymbol];
 
-  return v4;
+  return percentSymbol;
 }
 
-+ (unint64_t)groupingSizeForLocale:(id)a3
++ (unint64_t)groupingSizeForLocale:(id)locale
 {
-  v3 = [a1 formatterForLocale:a3];
-  v4 = [v3 groupingSize];
+  v3 = [self formatterForLocale:locale];
+  groupingSize = [v3 groupingSize];
 
-  return v4;
+  return groupingSize;
 }
 
 + (id)userVisibleCurrencyCodes
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"SFTDefaultsShowCompleteCurrencyList"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"SFTDefaultsShowCompleteCurrencyList"];
 
   if (v3)
   {
@@ -420,40 +420,40 @@ LABEL_14:
   return v4;
 }
 
-+ (__CFNumberFormatter)createHarmonizedCFNumberFormatterWithLocale:(id)a3 style:(int64_t)a4
++ (__CFNumberFormatter)createHarmonizedCFNumberFormatterWithLocale:(id)locale style:(int64_t)style
 {
-  v5 = [OITSUNumberFormatter formatterForLocale:a3];
-  v6 = [v5 p_createHarmonizedCFNumberFormatterOfStyle:a4];
+  v5 = [OITSUNumberFormatter formatterForLocale:locale];
+  v6 = [v5 p_createHarmonizedCFNumberFormatterOfStyle:style];
 
   return v6;
 }
 
-+ (id)formatterForLocale:(id)a3
++ (id)formatterForLocale:(id)locale
 {
-  v4 = a3;
-  if (v4)
+  localeCopy = locale;
+  if (localeCopy)
   {
-    v5 = [MEMORY[0x277CCACC8] currentThread];
-    v6 = [v5 threadDictionary];
-    v7 = TSUNumberFormatterThreadDictionaryKeyForLocale(v4);
-    v8 = [v6 objectForKey:v7];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary = [currentThread threadDictionary];
+    v7 = TSUNumberFormatterThreadDictionaryKeyForLocale(localeCopy);
+    v8 = [threadDictionary objectForKey:v7];
     if (!v8)
     {
-      v8 = [[a1 alloc] initWithLocale:v4];
-      [v6 setObject:v8 forKey:v7];
-      if ([OITSULocale localeIsAutoUpdating:v4])
+      v8 = [[self alloc] initWithLocale:localeCopy];
+      [threadDictionary setObject:v8 forKey:v7];
+      if ([OITSULocale localeIsAutoUpdating:localeCopy])
       {
         v18[0] = MEMORY[0x277D85DD0];
         v18[1] = 3221225472;
         v18[2] = __52__OITSUNumberFormatter_Private__formatterForLocale___block_invoke;
         v18[3] = &unk_2799C6208;
-        v9 = v5;
+        v9 = currentThread;
         v19 = v9;
         v10 = v8;
         v20 = v10;
         v11 = TSURegisterLocaleChangeObserver(v18);
-        [v6 setObject:v11 forKey:@"TSUNumberFormatterThreadDictionaryLocaleObserverKey"];
-        v12 = [MEMORY[0x277CCAB98] defaultCenter];
+        [threadDictionary setObject:v11 forKey:@"TSUNumberFormatterThreadDictionaryLocaleObserverKey"];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
         v13 = *MEMORY[0x277CCA6F8];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
@@ -461,18 +461,18 @@ LABEL_14:
         v16[3] = &unk_2799C6230;
         v8 = v10;
         v17 = v8;
-        v14 = [v12 addObserverForName:v13 object:v9 queue:0 usingBlock:v16];
+        v14 = [defaultCenter addObserverForName:v13 object:v9 queue:0 usingBlock:v16];
 
-        [v6 setObject:v14 forKey:@"TSUNumberFormatterThreadDictionaryExitObserverKey"];
+        [threadDictionary setObject:v14 forKey:@"TSUNumberFormatterThreadDictionaryExitObserverKey"];
       }
     }
   }
 
   else
   {
-    v5 = +[OITSULocale currentLocale];
-    v6 = [v5 locale];
-    v8 = [a1 formatterForLocale:v6];
+    currentThread = +[OITSULocale currentLocale];
+    threadDictionary = [currentThread locale];
+    v8 = [self formatterForLocale:threadDictionary];
   }
 
   return v8;
@@ -495,15 +495,15 @@ void __52__OITSUNumberFormatter_Private__formatterForLocale___block_invoke(uint6
   }
 }
 
-- (OITSUNumberFormatter)initWithLocale:(id)a3
+- (OITSUNumberFormatter)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v62.receiver = self;
   v62.super_class = OITSUNumberFormatter;
   v5 = [(OITSUNumberFormatter *)&v62 init];
   if (v5)
   {
-    if (!v4)
+    if (!localeCopy)
     {
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUNumberFormatter(Private) initWithLocale:]"];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUNumberFormatter.m"];
@@ -512,7 +512,7 @@ void __52__OITSUNumberFormatter_Private__formatterForLocale___block_invoke(uint6
       TSUCrash("TSUNumberFormatter cannot be initialized without a locale. Please check comments near this assertion or <rdar://problem/23557988> for details.", v9, v10, v11, v12, v13, v14, v15, v62.receiver);
     }
 
-    v6 = v4;
+    v6 = localeCopy;
     locale = v5->_locale;
     v5->_locale = v6;
 
@@ -626,7 +626,7 @@ void __52__OITSUNumberFormatter_Private__formatterForLocale___block_invoke(uint6
   [(OITSUNumberFormatter *)&v4 dealloc];
 }
 
-- (__CFNumberFormatter)p_createHarmonizedCFNumberFormatterOfStyle:(int64_t)a3
+- (__CFNumberFormatter)p_createHarmonizedCFNumberFormatterOfStyle:(int64_t)style
 {
   v5 = self->_locale;
   v6 = [OITSULocale localeIsAutoUpdating:v5];
@@ -637,7 +637,7 @@ void __52__OITSUNumberFormatter_Private__formatterForLocale___block_invoke(uint6
     v5 = v7;
   }
 
-  v8 = CFNumberFormatterCreate(0, v5, a3);
+  v8 = CFNumberFormatterCreate(0, v5, style);
   if (v8)
   {
     if (v6)
@@ -670,7 +670,7 @@ void __52__OITSUNumberFormatter_Private__formatterForLocale___block_invoke(uint6
     v15 = *MEMORY[0x277CBEF18];
     v16 = self->_harmonizedNumberFormatterSymbols;
     [MEMORY[0x277CCACA8] stringWithFormat:@"symbol-%@-decimal", v11];
-    v18 = v17 = a3;
+    v18 = v17 = style;
     v19 = [(OITSULocaleStructuredDictionary *)v16 objectForKey:v18 locale:v5];
     CFNumberFormatterSetProperty(v8, v15, v19);
 
@@ -686,7 +686,7 @@ void __52__OITSUNumberFormatter_Private__formatterForLocale___block_invoke(uint6
     v27 = [(OITSULocaleStructuredDictionary *)v25 objectForKey:v26 locale:v5];
     CFNumberFormatterSetProperty(v8, v24, v27);
 
-    a3 = v17;
+    style = v17;
     v28 = *MEMORY[0x277CBEF08];
     v29 = self->_harmonizedNumberFormatterSymbols;
     v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"symbol-%@-group", v11];
@@ -740,10 +740,10 @@ void __52__OITSUNumberFormatter_Private__formatterForLocale___block_invoke(uint6
   v61 = [MEMORY[0x277CCACA8] stringWithFormat:@"format-%@-decimalFormat", v11];
   v62 = [(OITSULocaleStructuredDictionary *)v60 objectForKey:v61 locale:v5];
 
-  if (v62 && a3 <= 4)
+  if (v62 && style <= 4)
   {
     v63 = self->_harmonizedNumberFormatterSymbols;
-    v64 = [MEMORY[0x277CCACA8] stringWithFormat:off_2799C62C0[a3], v11];
+    v64 = [MEMORY[0x277CCACA8] stringWithFormat:off_2799C62C0[style], v11];
     v65 = [(OITSULocaleStructuredDictionary *)v63 objectForKey:v64 locale:v5];
     CFNumberFormatterSetFormat(v8, v65);
   }
@@ -752,12 +752,12 @@ LABEL_13:
   return v8;
 }
 
-- (void)p_numberPreferencesChanged:(id)a3
+- (void)p_numberPreferencesChanged:(id)changed
 {
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  v11 = [v4 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v5 = [v11 objectForKey:@"TSUNumberFormatterThreadDictionaryKey"];
+  v5 = [threadDictionary objectForKey:@"TSUNumberFormatterThreadDictionaryKey"];
   if (v5 != self)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUNumberFormatter(Private) p_numberPreferencesChanged:]"];
@@ -767,42 +767,42 @@ LABEL_13:
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  [v11 removeObjectForKey:@"TSUNumberFormatterThreadDictionaryKey"];
-  v8 = [v11 objectForKey:@"TSUNumberFormatterThreadDictionaryLocaleObserverKey"];
+  [threadDictionary removeObjectForKey:@"TSUNumberFormatterThreadDictionaryKey"];
+  v8 = [threadDictionary objectForKey:@"TSUNumberFormatterThreadDictionaryLocaleObserverKey"];
   TSURemoveLocaleChangeObserver(v8);
 
-  [v11 removeObjectForKey:@"TSUNumberFormatterThreadDictionaryLocaleObserverKey"];
-  v9 = [v11 objectForKey:@"TSUNumberFormatterThreadDictionaryExitObserverKey"];
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 removeObserver:v9];
+  [threadDictionary removeObjectForKey:@"TSUNumberFormatterThreadDictionaryLocaleObserverKey"];
+  v9 = [threadDictionary objectForKey:@"TSUNumberFormatterThreadDictionaryExitObserverKey"];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:v9];
 
-  [v11 removeObjectForKey:@"TSUNumberFormatterThreadDictionaryExitObserverKey"];
+  [threadDictionary removeObjectForKey:@"TSUNumberFormatterThreadDictionaryExitObserverKey"];
 }
 
-- (BOOL)decimalFromString:(id)a3 value:(double *)a4 formatString:(id *)a5
+- (BOOL)decimalFromString:(id)string value:(double *)value formatString:(id *)formatString
 {
-  v8 = a3;
-  v9 = [(OITSUNumberFormatter *)self p_decimalFormatters];
-  LOBYTE(a5) = [(OITSUNumberFormatter *)self p_valueFromString:v8 formatters:v9 value:a4 formatString:a5];
+  stringCopy = string;
+  p_decimalFormatters = [(OITSUNumberFormatter *)self p_decimalFormatters];
+  LOBYTE(formatString) = [(OITSUNumberFormatter *)self p_valueFromString:stringCopy formatters:p_decimalFormatters value:value formatString:formatString];
 
-  return a5;
+  return formatString;
 }
 
-- (BOOL)currencyFromString:(id)a3 additionalCurrencyCode:(id)a4 value:(double *)a5 formatString:(id *)a6 currencyCode:(id *)a7
+- (BOOL)currencyFromString:(id)string additionalCurrencyCode:(id)code value:(double *)value formatString:(id *)formatString currencyCode:(id *)currencyCode
 {
-  v13 = a4;
+  codeCopy = code;
   v51 = 0;
   v52 = 0;
-  v14 = [(OITSUNumberFormatter *)self p_findCurrencySymbolInString:a3 additionalCurrencyCode:v13 successfullString:&v52 currencyCode:&v51];
+  v14 = [(OITSUNumberFormatter *)self p_findCurrencySymbolInString:string additionalCurrencyCode:codeCopy successfullString:&v52 currencyCode:&v51];
   v15 = v52;
   v16 = v51;
   v17 = v16;
   v18 = 0;
   if (v14 && v16)
   {
-    v50 = a5;
-    v49 = [(OITSUNumberFormatter *)self p_currencyFormatters];
-    v19 = [v49 objectForKeyedSubscript:v17];
+    valueCopy = value;
+    p_currencyFormatters = [(OITSUNumberFormatter *)self p_currencyFormatters];
+    v19 = [p_currencyFormatters objectForKeyedSubscript:v17];
     if (!v19)
     {
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUNumberFormatter(Private) currencyFromString:additionalCurrencyCode:value:formatString:currencyCode:]"];
@@ -812,19 +812,19 @@ LABEL_13:
       TSUCrash("No currency formatters found for currencyCode:%{public}@ locale:%{public}@", v22, v23, v24, v25, v26, v27, v28, v17);
     }
 
-    v29 = [(OITSUNumberFormatter *)self p_valueFromString:v15 formatters:v19 value:v50 formatString:a6];
+    v29 = [(OITSUNumberFormatter *)self p_valueFromString:v15 formatters:v19 value:valueCopy formatString:formatString];
     v18 = v29;
-    if (!v13 || v29)
+    if (!codeCopy || v29)
     {
       goto LABEL_15;
     }
 
     if (self->_additionalCurrencyCode)
     {
-      if ([v13 isEqualToString:?])
+      if ([codeCopy isEqualToString:?])
       {
 LABEL_12:
-        v35 = a6;
+        formatStringCopy = formatString;
         v36 = self->_additionalCurrencyCode;
 
         v37 = [(NSDictionary *)self->_additionalCurrencyCodeFormatters objectForKey:self->_additionalCurrencyCode];
@@ -838,7 +838,7 @@ LABEL_12:
           TSUCrash("No currency formatters found for additional currencyCode:%{public}@ locale:%{public}@", v40, v41, v42, v43, v44, v45, v46, self->_additionalCurrencyCode);
         }
 
-        v18 = [(OITSUNumberFormatter *)self p_valueFromString:v15 formatters:v37 value:v50 formatString:v35];
+        v18 = [(OITSUNumberFormatter *)self p_valueFromString:v15 formatters:v37 value:valueCopy formatString:formatStringCopy];
         v17 = v36;
         v19 = v37;
 LABEL_15:
@@ -859,7 +859,7 @@ LABEL_15:
     additionalCurrencyCodeFormatters = self->_additionalCurrencyCodeFormatters;
     self->_additionalCurrencyCodeFormatters = 0;
 
-    objc_storeStrong(&self->_additionalCurrencyCode, a4);
+    objc_storeStrong(&self->_additionalCurrencyCode, code);
     v32 = [MEMORY[0x277CBEA60] arrayWithObject:self->_additionalCurrencyCode];
     v33 = [(OITSUNumberFormatter *)self p_createDictionaryOfCurrencyFormattersForCurrencies:v32];
     v34 = self->_additionalCurrencyCodeFormatters;
@@ -869,7 +869,7 @@ LABEL_15:
   }
 
 LABEL_16:
-  if (a7)
+  if (currencyCode)
   {
     if (v18)
     {
@@ -881,38 +881,38 @@ LABEL_16:
       v47 = 0;
     }
 
-    *a7 = v47;
+    *currencyCode = v47;
   }
 
   return v18;
 }
 
-- (BOOL)percentageFromString:(id)a3 value:(double *)a4 formatString:(id *)a5
+- (BOOL)percentageFromString:(id)string value:(double *)value formatString:(id *)formatString
 {
-  v8 = a3;
-  v9 = [(OITSUNumberFormatter *)self p_percentageFormatters];
-  LOBYTE(a5) = [(OITSUNumberFormatter *)self p_valueFromString:v8 formatters:v9 value:a4 formatString:a5];
+  stringCopy = string;
+  p_percentageFormatters = [(OITSUNumberFormatter *)self p_percentageFormatters];
+  LOBYTE(formatString) = [(OITSUNumberFormatter *)self p_valueFromString:stringCopy formatters:p_percentageFormatters value:value formatString:formatString];
 
-  return a5;
+  return formatString;
 }
 
-- (BOOL)scientificFromString:(id)a3 value:(double *)a4 formatString:(id *)a5
+- (BOOL)scientificFromString:(id)string value:(double *)value formatString:(id *)formatString
 {
-  v8 = a3;
-  v9 = [(OITSUNumberFormatter *)self p_scientificFormatters];
-  LOBYTE(a5) = [(OITSUNumberFormatter *)self p_valueFromString:v8 formatters:v9 value:a4 formatString:a5];
+  stringCopy = string;
+  p_scientificFormatters = [(OITSUNumberFormatter *)self p_scientificFormatters];
+  LOBYTE(formatString) = [(OITSUNumberFormatter *)self p_valueFromString:stringCopy formatters:p_scientificFormatters value:value formatString:formatString];
 
-  return a5;
+  return formatString;
 }
 
-- (BOOL)fractionFromString:(id)a3 value:(double *)a4
+- (BOOL)fractionFromString:(id)string value:(double *)value
 {
-  v6 = a3;
-  v7 = [v6 rangeOfString:@"/"];
+  stringCopy = string;
+  v7 = [stringCopy rangeOfString:@"/"];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL || v8 == 0)
   {
     v12 = 0;
-    if (!a4)
+    if (!value)
     {
 LABEL_26:
       v10 = 0;
@@ -923,14 +923,14 @@ LABEL_26:
   else
   {
     v11 = v7;
-    v12 = [v6 substringWithRange:{0, v7}];
+    v12 = [stringCopy substringWithRange:{0, v7}];
     v13 = v11 + 1;
-    if (v13 < [v6 length])
+    if (v13 < [stringCopy length])
     {
-      v14 = [v6 substringWithRange:{v13, objc_msgSend(v6, "length") - v13}];
-      v15 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v16 = [v12 stringByTrimmingCharactersInSet:v15];
-      v17 = [v14 stringByTrimmingCharactersInSet:v15];
+      v14 = [stringCopy substringWithRange:{v13, objc_msgSend(stringCopy, "length") - v13}];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      v16 = [v12 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
+      v17 = [v14 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
       v18 = [v16 rangeOfString:@" "];
       if (v18 == 0x7FFFFFFFFFFFFFFFLL || v19 == 0)
       {
@@ -950,9 +950,9 @@ LABEL_26:
         if (v28 >= [v16 length])
         {
           v10 = 0;
-          if (a4)
+          if (value)
           {
-            *a4 = 0.0;
+            *value = 0.0;
           }
 
           goto LABEL_40;
@@ -960,9 +960,9 @@ LABEL_26:
 
         v34 = v17;
         v29 = [v16 substringWithRange:{v28, objc_msgSend(v16, "length") - v28}];
-        v21 = [v27 stringByTrimmingCharactersInSet:v15];
+        v21 = [v27 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
         v36 = v29;
-        v30 = [v29 stringByTrimmingCharactersInSet:v15];
+        v30 = [v29 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
         v38 = 0.0;
         v39 = 0.0;
         v37 = 0.0;
@@ -975,7 +975,7 @@ LABEL_26:
             v10 = 0;
             v25 = 0.0;
             v17 = v34;
-            if (!a4)
+            if (!value)
             {
               goto LABEL_39;
             }
@@ -990,7 +990,7 @@ LABEL_26:
 LABEL_37:
             v10 = 0;
             v25 = 0.0;
-            if (!a4)
+            if (!value)
             {
 LABEL_39:
 
@@ -999,7 +999,7 @@ LABEL_40:
             }
 
 LABEL_38:
-            *a4 = v25;
+            *value = v25;
             goto LABEL_39;
           }
 
@@ -1016,7 +1016,7 @@ LABEL_17:
             v24 = v22 + v23 / v38;
             if (__fpclassifyd(v24) != 2 && __fpclassifyd(v24) != 1)
             {
-              if (!a4)
+              if (!value)
               {
                 v10 = 1;
                 goto LABEL_39;
@@ -1044,28 +1044,28 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    if (!a4)
+    if (!value)
     {
       goto LABEL_26;
     }
   }
 
   v10 = 0;
-  *a4 = 0.0;
+  *value = 0.0;
 LABEL_41:
 
   return v10;
 }
 
-- (BOOL)p_valueFromString:(id)a3 formatters:(id)a4 value:(double *)a5 formatString:(id *)a6
+- (BOOL)p_valueFromString:(id)string formatters:(id)formatters value:(double *)value formatString:(id *)formatString
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v10)
+  stringCopy = string;
+  formattersCopy = formatters;
+  v11 = formattersCopy;
+  if (!formattersCopy)
   {
     v15 = 0;
-    if (!a6)
+    if (!formatString)
     {
       goto LABEL_14;
     }
@@ -1073,7 +1073,7 @@ LABEL_41:
     goto LABEL_12;
   }
 
-  v12 = [v10 count];
+  v12 = [formattersCopy count];
   v13 = objc_opt_class();
   objc_sync_enter(v13);
   if (v12)
@@ -1083,7 +1083,7 @@ LABEL_41:
     while (1)
     {
       v16 = [v11 objectAtIndex:v14];
-      if (TSUImprovedCFNumberFormatterGetValueFromString(v16, v9, a5))
+      if (TSUImprovedCFNumberFormatterGetValueFromString(v16, stringCopy, value))
       {
         break;
       }
@@ -1095,9 +1095,9 @@ LABEL_41:
       }
     }
 
-    if (a6)
+    if (formatString)
     {
-      *a6 = CFNumberFormatterGetFormat(v16);
+      *formatString = CFNumberFormatterGetFormat(v16);
     }
   }
 
@@ -1109,12 +1109,12 @@ LABEL_6:
 
   objc_sync_exit(v13);
 
-  if (a6)
+  if (formatString)
   {
 LABEL_12:
     if (!v15)
     {
-      *a6 = 0;
+      *formatString = 0;
     }
   }
 
@@ -1123,15 +1123,15 @@ LABEL_14:
   return v15;
 }
 
-- (id)p_findCurrencySymbolInString:(id)a3 additionalCurrencyCode:(id)a4 successfullString:(id *)a5 currencyCode:(id *)a6
+- (id)p_findCurrencySymbolInString:(id)string additionalCurrencyCode:(id)code successfullString:(id *)successfullString currencyCode:(id *)currencyCode
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 length];
+  stringCopy = string;
+  codeCopy = code;
+  v12 = [stringCopy length];
   if (v12)
   {
     v13 = v12;
-    v42 = a5;
+    successfullStringCopy = successfullString;
     obj = objc_opt_class();
     objc_sync_enter(obj);
     v14 = 8;
@@ -1142,32 +1142,32 @@ LABEL_14:
     }
 
     v50 = v14;
-    v15 = TSUCurrencyCodesForLocale(self->_locale, v11);
+    v15 = TSUCurrencyCodesForLocale(self->_locale, codeCopy);
     v16 = [v15 count];
-    v39 = v11;
+    v39 = codeCopy;
     if (v16)
     {
       v43 = v16;
-      v41 = a6;
+      currencyCodeCopy = currencyCode;
       v47 = 0;
       v48 = 0;
       v46 = 0;
       v17 = 0;
       v45 = v13 - v50;
-      v44 = self;
+      selfCopy = self;
       while (1)
       {
         v18 = v15;
         v19 = [v15 objectAtIndex:{v17, v39}];
         v20 = [(OITSUNumberFormatter *)self currencySymbolForCurrencyCode:v19];
         v21 = [v20 stringByReplacingOccurrencesOfString:@"\u200F" withString:&stru_286EE1130];
-        v22 = [v10 rangeOfString:v21 options:0 range:{0, v50}];
+        v22 = [stringCopy rangeOfString:v21 options:0 range:{0, v50}];
         v24 = v23;
         v26 = 0;
         v25 = 0x7FFFFFFFFFFFFFFFLL;
         if (v49 >= 1)
         {
-          v25 = [v10 rangeOfString:v21 options:0 range:{v45, v50}];
+          v25 = [stringCopy rangeOfString:v21 options:0 range:{v45, v50}];
         }
 
         if (v22 != 0x7FFFFFFFFFFFFFFFLL || v25 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1188,13 +1188,13 @@ LABEL_14:
         }
 
         v27 = [(OITSUNumberFormatter *)self halfWidthCurrencySymbolForCurrencyCode:v19];
-        v28 = [v10 rangeOfString:v27 options:0 range:{0, v50}];
+        v28 = [stringCopy rangeOfString:v27 options:0 range:{0, v50}];
         v30 = v29;
         v24 = 0;
         v31 = 0x7FFFFFFFFFFFFFFFLL;
         if (v49 >= 1)
         {
-          v31 = [v10 rangeOfString:v27 options:0 range:{v45, v50}];
+          v31 = [stringCopy rangeOfString:v27 options:0 range:{v45, v50}];
           v24 = v32;
         }
 
@@ -1205,21 +1205,21 @@ LABEL_14:
             v24 = v30;
             v31 = v28;
 LABEL_25:
-            v33 = [v10 stringByReplacingCharactersInRange:v31 withString:{v24, v21}];
+            v33 = [stringCopy stringByReplacingCharactersInRange:v31 withString:{v24, v21}];
 
 LABEL_26:
             v34 = v21;
 
-            if (v42)
+            if (successfullStringCopy)
             {
               v35 = v33;
-              *v42 = v33;
+              *successfullStringCopy = v33;
             }
 
-            if (v41)
+            if (currencyCodeCopy)
             {
               v36 = v19;
-              *v41 = v19;
+              *currencyCodeCopy = v19;
             }
 
             v47 = v34;
@@ -1236,7 +1236,7 @@ LABEL_26:
 
 LABEL_31:
         ++v17;
-        self = v44;
+        self = selfCopy;
         v15 = v18;
         if (v43 == v17)
         {
@@ -1244,7 +1244,7 @@ LABEL_31:
         }
       }
 
-      v33 = v10;
+      v33 = stringCopy;
       v27 = v46;
       goto LABEL_26;
     }
@@ -1254,7 +1254,7 @@ LABEL_31:
 LABEL_35:
 
     objc_sync_exit(obj);
-    v11 = v39;
+    codeCopy = v39;
     v37 = v47;
   }
 
@@ -1292,22 +1292,22 @@ LABEL_35:
   }
 }
 
-- (id)currencySymbolForCurrencyCode:(id)a3
+- (id)currencySymbolForCurrencyCode:(id)code
 {
-  v4 = a3;
-  if (!v4)
+  codeCopy = code;
+  if (!codeCopy)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUNumberFormatter(Private) currencySymbolForCurrencyCode:]"];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUNumberFormatter.m"];
     [OITSUAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:2075 isFatal:0 description:"can't get the currency symbol for a nil currency code. Using USD."];
 
     +[OITSUAssertionHandler logBacktraceThrottled];
-    v4 = @"USD";
+    codeCopy = @"USD";
   }
 
   v7 = self->_currencyCodeToSymbolMap;
   objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)self->_currencyCodeToSymbolMap objectForKey:v4];
+  v8 = [(NSMutableDictionary *)self->_currencyCodeToSymbolMap objectForKey:codeCopy];
   if (!v8)
   {
     if ([OITSULocale localeIsAutoUpdating:self->_locale])
@@ -1315,11 +1315,11 @@ LABEL_35:
       v9 = self->_locale;
       v10 = MEMORY[0x277CBEB38];
       v11 = MEMORY[0x277CBEAF8];
-      v12 = [(NSLocale *)v9 localeIdentifier];
-      v13 = [v11 componentsFromLocaleIdentifier:v12];
+      localeIdentifier = [(NSLocale *)v9 localeIdentifier];
+      v13 = [v11 componentsFromLocaleIdentifier:localeIdentifier];
       v14 = [v10 dictionaryWithDictionary:v13];
 
-      [v14 setObject:v4 forKey:*MEMORY[0x277CBE698]];
+      [v14 setObject:codeCopy forKey:*MEMORY[0x277CBE698]];
       v15 = [MEMORY[0x277CBEAF8] localeIdentifierFromComponents:v14];
       v16 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v15];
       v8 = [v16 objectForKey:*MEMORY[0x277CBE6A0]];
@@ -1333,14 +1333,14 @@ LABEL_35:
     else
     {
       [(OITSUNumberFormatter *)self p_loadHarmonizedNumberFormatterSymbols];
-      v8 = [(OITSULocaleStructuredDictionary *)self->_harmonizedNumberFormatterSymbols objectForKey:v4 locale:self->_locale];
+      v8 = [(OITSULocaleStructuredDictionary *)self->_harmonizedNumberFormatterSymbols objectForKey:codeCopy locale:self->_locale];
       if (!v8)
       {
         goto LABEL_9;
       }
     }
 
-    [(NSMutableDictionary *)self->_currencyCodeToSymbolMap setObject:v8 forKey:v4];
+    [(NSMutableDictionary *)self->_currencyCodeToSymbolMap setObject:v8 forKey:codeCopy];
   }
 
 LABEL_9:
@@ -1353,7 +1353,7 @@ LABEL_9:
 
   else
   {
-    v17 = v4;
+    v17 = codeCopy;
   }
 
   v18 = v17;
@@ -1361,18 +1361,18 @@ LABEL_9:
   return v17;
 }
 
-- (id)halfWidthCurrencySymbolForCurrencyCode:(id)a3
+- (id)halfWidthCurrencySymbolForCurrencyCode:(id)code
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_currencyCodeToHalfWidthSymbolMap objectForKey:v4];
+  codeCopy = code;
+  v5 = [(NSMutableDictionary *)self->_currencyCodeToHalfWidthSymbolMap objectForKey:codeCopy];
   if (!v5)
   {
-    v6 = [(OITSUNumberFormatter *)self currencySymbolForCurrencyCode:v4];
+    v6 = [(OITSUNumberFormatter *)self currencySymbolForCurrencyCode:codeCopy];
     v7 = [v6 mutableCopy];
     CFStringTransform(v7, 0, *MEMORY[0x277CBF0A8], 0);
     v5 = [(__CFString *)v7 copy];
 
-    [(NSMutableDictionary *)self->_currencyCodeToHalfWidthSymbolMap setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_currencyCodeToHalfWidthSymbolMap setObject:v5 forKey:codeCopy];
   }
 
   return v5;
@@ -1389,95 +1389,95 @@ LABEL_9:
   return v2;
 }
 
-- (id)defaultFormatStringForValueType:(int)a3 negativeStyle:(int)a4
+- (id)defaultFormatStringForValueType:(int)type negativeStyle:(int)style
 {
   v4 = 136;
-  if ((a3 - 1) < 3)
+  if ((type - 1) < 3)
   {
-    v4 = 8 * (a3 - 1) + 144;
+    v4 = 8 * (type - 1) + 144;
   }
 
-  if (a4 >= 4)
+  if (style >= 4)
   {
-    v5 = 4;
+    styleCopy = 4;
   }
 
   else
   {
-    v5 = a4;
+    styleCopy = style;
   }
 
-  v6 = [*(&self->super.isa + v4) objectAtIndex:v5];
+  v6 = [*(&self->super.isa + v4) objectAtIndex:styleCopy];
 
   return v6;
 }
 
-- (id)defaultFormatStringForValueType:(int)a3
+- (id)defaultFormatStringForValueType:(int)type
 {
   v3 = 80;
-  if ((a3 - 1) < 3)
+  if ((type - 1) < 3)
   {
-    v3 = 8 * (a3 - 1) + 56;
+    v3 = 8 * (type - 1) + 56;
   }
 
   return *(&self->super.isa + v3);
 }
 
-- (id)p_createDictionaryOfCurrencyFormattersForCurrencies:(id)a3
+- (id)p_createDictionaryOfCurrencyFormattersForCurrencies:(id)currencies
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  currenciesCopy = currencies;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = [(OITSUNumberFormatter *)self p_createHarmonizedCFNumberFormatterOfStyle:2];
   CFNumberFormatterSetProperty(v7, *MEMORY[0x277CBEF20], @"xyzzyqghbv&q");
   v8 = CFNumberFormatterGetFormat(v7);
-  v9 = [v8 tsu_positiveSubpatternOfNumberFormatPattern];
-  v10 = [v9 tsu_numberPortionOfNumberFormatSubpattern];
+  tsu_positiveSubpatternOfNumberFormatPattern = [v8 tsu_positiveSubpatternOfNumberFormatPattern];
+  tsu_numberPortionOfNumberFormatSubpattern = [tsu_positiveSubpatternOfNumberFormatPattern tsu_numberPortionOfNumberFormatSubpattern];
 
   CFRelease(v7);
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"¤%@", v10];
+  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"¤%@", tsu_numberPortionOfNumberFormatSubpattern];
   [v6 addObject:v11];
 
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"¤%@- ¤%@", v10, v10];;
+  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"¤%@- ¤%@", tsu_numberPortionOfNumberFormatSubpattern, tsu_numberPortionOfNumberFormatSubpattern];;
   [v6 addObject:v12];
 
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@¤", v10];
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@¤", tsu_numberPortionOfNumberFormatSubpattern];
   [v6 addObject:v13];
 
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@¤- %@¤", v10, v10];;
+  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@¤- %@¤", tsu_numberPortionOfNumberFormatSubpattern, tsu_numberPortionOfNumberFormatSubpattern];;
   [v6 addObject:v14];
 
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"¤%@¤-%@", v10, v10];;
+  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"¤%@¤-%@", tsu_numberPortionOfNumberFormatSubpattern, tsu_numberPortionOfNumberFormatSubpattern];;
   [v6 addObject:v15];
 
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"¤%@(¤%@)", v10, v10];;
+  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"¤%@(¤%@)", tsu_numberPortionOfNumberFormatSubpattern, tsu_numberPortionOfNumberFormatSubpattern];;
   [v6 addObject:v16];
 
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"¤%@¤(%@)", v10, v10];;
+  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"¤%@¤(%@)", tsu_numberPortionOfNumberFormatSubpattern, tsu_numberPortionOfNumberFormatSubpattern];;
   [v6 addObject:v17];
 
-  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@¤(%@¤)", v10, v10];;
+  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@¤(%@¤)", tsu_numberPortionOfNumberFormatSubpattern, tsu_numberPortionOfNumberFormatSubpattern];;
   [v6 addObject:v18];
 
-  v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@¤(%@)¤", v10, v10];;
+  v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@¤(%@)¤", tsu_numberPortionOfNumberFormatSubpattern, tsu_numberPortionOfNumberFormatSubpattern];;
   [v6 addObject:v19];
 
-  v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"¤%@¤%@-", v10, v10];;
+  v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"¤%@¤%@-", tsu_numberPortionOfNumberFormatSubpattern, tsu_numberPortionOfNumberFormatSubpattern];;
   [v6 addObject:v20];
 
-  v21 = [v4 count];
+  v21 = [currenciesCopy count];
   if (v21 >= 1)
   {
     v22 = v21;
     for (i = 0; i != v22; ++i)
     {
-      v24 = [v4 objectAtIndex:i];
+      v24 = [currenciesCopy objectAtIndex:i];
       v25 = p_newArrayOfCurrencyFormattersForCurrencyCode(self->_locale, v6, v24);
-      [v5 setObject:v25 forKey:v24];
+      [dictionary setObject:v25 forKey:v24];
     }
   }
 
-  return v5;
+  return dictionary;
 }
 
 - (id)p_decimalFormatters

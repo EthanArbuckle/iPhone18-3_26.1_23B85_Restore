@@ -1,21 +1,21 @@
 @interface PKHowToUseWalletModel
-- (BOOL)containsCardPassingTest:(id)a3;
-- (PKHowToUseWalletModel)initWithDictionary:(id)a3 bundle:(id)a4;
-- (PKHowToUseWalletModel)initWithMobileAssetBundle:(id)a3;
-- (id)cardsPassingTest:(id)a3;
+- (BOOL)containsCardPassingTest:(id)test;
+- (PKHowToUseWalletModel)initWithDictionary:(id)dictionary bundle:(id)bundle;
+- (PKHowToUseWalletModel)initWithMobileAssetBundle:(id)bundle;
+- (id)cardsPassingTest:(id)test;
 - (id)localizationBundle;
 @end
 
 @implementation PKHowToUseWalletModel
 
-- (PKHowToUseWalletModel)initWithMobileAssetBundle:(id)a3
+- (PKHowToUseWalletModel)initWithMobileAssetBundle:(id)bundle
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  bundleCopy = bundle;
+  v5 = bundleCopy;
+  if (bundleCopy)
   {
-    v6 = [v4 URLForResource:@"model" withExtension:@"json"];
+    v6 = [bundleCopy URLForResource:@"model" withExtension:@"json"];
     v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v6];
     if ([v7 length])
     {
@@ -42,7 +42,7 @@
     if ([v8 count])
     {
       self = [(PKHowToUseWalletModel *)self initWithDictionary:v8 bundle:v5];
-      v11 = self;
+      selfCopy = self;
     }
 
     else
@@ -54,7 +54,7 @@
         _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Empty dictionary found when serializing how to use model data", buf, 2u);
       }
 
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -67,17 +67,17 @@
       _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "No bundle when creating model found", buf, 2u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (PKHowToUseWalletModel)initWithDictionary:(id)a3 bundle:(id)a4
+- (PKHowToUseWalletModel)initWithDictionary:(id)dictionary bundle:(id)bundle
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
   v39.receiver = self;
   v39.super_class = PKHowToUseWalletModel;
   v8 = [(PKHowToUseWalletModel *)&v39 init];
@@ -88,24 +88,24 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  v9 = [v6 PKNumberForKey:@"version"];
+  v9 = [dictionaryCopy PKNumberForKey:@"version"];
   version = v8->_version;
   v8->_version = v9;
 
-  v11 = [v6 PKStringForKey:@"titleKey"];
+  v11 = [dictionaryCopy PKStringForKey:@"titleKey"];
   titleKey = v8->_titleKey;
   v8->_titleKey = v11;
 
-  v13 = [v6 PKStringForKey:@"localizationBundlePath"];
-  v14 = [v7 bundleURL];
+  v13 = [dictionaryCopy PKStringForKey:@"localizationBundlePath"];
+  bundleURL = [bundleCopy bundleURL];
   if ([v13 length])
   {
-    v15 = [v14 URLByAppendingPathComponent:v13];
+    v15 = [bundleURL URLByAppendingPathComponent:v13];
   }
 
   else
   {
-    v15 = v14;
+    v15 = bundleURL;
   }
 
   p_localizationBundleURL = &v8->_localizationBundleURL;
@@ -115,9 +115,9 @@ LABEL_15:
   v18 = v8->_version;
   if (v18 && *p_localizationBundleURL)
   {
-    v33 = v14;
+    v33 = bundleURL;
     v34 = v13;
-    v19 = [v6 PKArrayForKey:@"sections"];
+    v19 = [dictionaryCopy PKArrayForKey:@"sections"];
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v35 = 0u;
     v36 = 0u;
@@ -139,7 +139,7 @@ LABEL_15:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [[PKHowToUseWalletSection alloc] initWithDictionary:*(*(&v35 + 1) + 8 * v25) bundle:v7];
+          v26 = [[PKHowToUseWalletSection alloc] initWithDictionary:*(*(&v35 + 1) + 8 * v25) bundle:bundleCopy];
           [v20 safelyAddObject:v26];
 
           ++v25;
@@ -176,15 +176,15 @@ LABEL_19:
   return v29;
 }
 
-- (BOOL)containsCardPassingTest:(id)a3
+- (BOOL)containsCardPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49__PKHowToUseWalletModel_containsCardPassingTest___block_invoke;
   v9[3] = &unk_1E79CA4F0;
-  v10 = v4;
-  v5 = v4;
+  v10 = testCopy;
+  v5 = testCopy;
   v6 = [(PKHowToUseWalletModel *)self cardsPassingTest:v9];
   v7 = [v6 count] != 0;
 
@@ -202,10 +202,10 @@ uint64_t __49__PKHowToUseWalletModel_containsCardPassingTest___block_invoke(uint
   return result;
 }
 
-- (id)cardsPassingTest:(id)a3
+- (id)cardsPassingTest:(id)test
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  testCopy = test;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v20 = 0u;
   v21 = 0u;
@@ -234,7 +234,7 @@ LABEL_3:
       v13[1] = 3221225472;
       v13[2] = __42__PKHowToUseWalletModel_cardsPassingTest___block_invoke;
       v13[3] = &unk_1E79CDFC8;
-      v14 = v4;
+      v14 = testCopy;
       v15 = &v16;
       v11 = [v10 cardsPassingTest:v13];
       [v5 addObjectsFromArray:v11];

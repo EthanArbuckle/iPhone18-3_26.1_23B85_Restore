@@ -1,24 +1,24 @@
 @interface SYShowBacklinkIndicatorCommandSBImpl
 - (BOOL)isActive;
-- (SYShowBacklinkIndicatorCommandSBImpl)initWithDomainIdentifiers:(id)a3 linkIdentifiers:(id)a4;
+- (SYShowBacklinkIndicatorCommandSBImpl)initWithDomainIdentifiers:(id)identifiers linkIdentifiers:(id)linkIdentifiers;
 - (void)invalidate;
-- (void)runWithCompletion:(id)a3;
-- (void)systemNotesPresentationHandle:(id)a3 didChangePresentationMode:(int64_t)a4;
+- (void)runWithCompletion:(id)completion;
+- (void)systemNotesPresentationHandle:(id)handle didChangePresentationMode:(int64_t)mode;
 @end
 
 @implementation SYShowBacklinkIndicatorCommandSBImpl
 
-- (SYShowBacklinkIndicatorCommandSBImpl)initWithDomainIdentifiers:(id)a3 linkIdentifiers:(id)a4
+- (SYShowBacklinkIndicatorCommandSBImpl)initWithDomainIdentifiers:(id)identifiers linkIdentifiers:(id)linkIdentifiers
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  linkIdentifiersCopy = linkIdentifiers;
   v21.receiver = self;
   v21.super_class = SYShowBacklinkIndicatorCommandSBImpl;
   v8 = [(SYShowBacklinkIndicatorCommandSBImpl *)&v21 init];
-  if (v8 && [v7 count])
+  if (v8 && [linkIdentifiersCopy count])
   {
-    v9 = SYMakeEditNoteUserActivity(v6, v7);
+    v9 = SYMakeEditNoteUserActivity(identifiersCopy, linkIdentifiersCopy);
     v22 = 0;
     v23 = &v22;
     v24 = 0x2050000000;
@@ -41,7 +41,7 @@
     v13 = os_log_create("com.apple.synapse", "BacklinkMonitor");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v7 count];
+      v14 = [linkIdentifiersCopy count];
       *buf = 134218240;
       *&buf[4] = v8;
       *&buf[12] = 2048;
@@ -80,43 +80,43 @@
 
 - (BOOL)isActive
 {
-  v2 = [(SYShowBacklinkIndicatorCommandSBImpl *)self _handle];
-  v3 = v2 != 0;
+  _handle = [(SYShowBacklinkIndicatorCommandSBImpl *)self _handle];
+  v3 = _handle != 0;
 
   return v3;
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SYShowBacklinkIndicatorCommandSBImpl *)self _handle];
+  completionCopy = completion;
+  _handle = [(SYShowBacklinkIndicatorCommandSBImpl *)self _handle];
 
-  v6 = os_log_create("com.apple.synapse", "BacklinkMonitor");
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  _handle2 = os_log_create("com.apple.synapse", "BacklinkMonitor");
+  v7 = os_log_type_enabled(_handle2, OS_LOG_TYPE_DEFAULT);
+  if (_handle)
   {
     if (v7)
     {
       v9 = 134217984;
-      v10 = self;
-      _os_log_impl(&dword_225901000, v6, OS_LOG_TYPE_DEFAULT, "BackLinkIndicatorCommand %p: Sending notes presentation handle with link identifiers.", &v9, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_225901000, _handle2, OS_LOG_TYPE_DEFAULT, "BackLinkIndicatorCommand %p: Sending notes presentation handle with link identifiers.", &v9, 0xCu);
     }
 
-    v6 = [(SYShowBacklinkIndicatorCommandSBImpl *)self _handle];
-    [v6 activate];
+    _handle2 = [(SYShowBacklinkIndicatorCommandSBImpl *)self _handle];
+    [_handle2 activate];
   }
 
   else if (v7)
   {
     v9 = 134217984;
-    v10 = self;
-    _os_log_impl(&dword_225901000, v6, OS_LOG_TYPE_DEFAULT, "BackLinkIndicatorCommand %p: Not sending notes presentation request, no link identifiers.", &v9, 0xCu);
+    selfCopy2 = self;
+    _os_log_impl(&dword_225901000, _handle2, OS_LOG_TYPE_DEFAULT, "BackLinkIndicatorCommand %p: Not sending notes presentation request, no link identifiers.", &v9, 0xCu);
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -124,20 +124,20 @@
 
 - (void)invalidate
 {
-  v2 = [(SYShowBacklinkIndicatorCommandSBImpl *)self _handle];
-  [v2 invalidate];
+  _handle = [(SYShowBacklinkIndicatorCommandSBImpl *)self _handle];
+  [_handle invalidate];
 }
 
-- (void)systemNotesPresentationHandle:(id)a3 didChangePresentationMode:(int64_t)a4
+- (void)systemNotesPresentationHandle:(id)handle didChangePresentationMode:(int64_t)mode
 {
   v12 = *MEMORY[0x277D85DE8];
   v6 = os_log_create("com.apple.synapse", "BacklinkMonitor");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218240;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = a4;
+    modeCopy = mode;
     _os_log_impl(&dword_225901000, v6, OS_LOG_TYPE_DEFAULT, "BackLinkIndicatorCommand %p: Notes presentation request changed mode to %ld.", &v8, 0x16u);
   }
 

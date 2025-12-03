@@ -1,14 +1,14 @@
 @interface RCPEvent
-+ (RCPEvent)eventWithHIDEvent:(__IOHIDEvent *)a3;
-+ (RCPEvent)eventWithHIDEvent:(__IOHIDEvent *)a3 deliveryTimeStamp:(unint64_t)a4;
-+ (RCPEvent)eventWithHIDEvent:(__IOHIDEvent *)a3 deliveryTimeStamp:(unint64_t)a4 senderProperties:(id)a5 preActions:(id)a6;
++ (RCPEvent)eventWithHIDEvent:(__IOHIDEvent *)event;
++ (RCPEvent)eventWithHIDEvent:(__IOHIDEvent *)event deliveryTimeStamp:(unint64_t)stamp;
++ (RCPEvent)eventWithHIDEvent:(__IOHIDEvent *)event deliveryTimeStamp:(unint64_t)stamp senderProperties:(id)properties preActions:(id)actions;
 - (RCPEvent)init;
-- (RCPEvent)initWithCoder:(id)a3;
-- (RCPEvent)initWithDeliveryTimeStamp:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)eventAdjustedForDeliveryTimeInterval:(double)a3 eventEnvironment:(id)a4;
+- (RCPEvent)initWithCoder:(id)coder;
+- (RCPEvent)initWithDeliveryTimeStamp:(unint64_t)stamp;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)eventAdjustedForDeliveryTimeInterval:(double)interval eventEnvironment:(id)environment;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RCPEvent
@@ -26,14 +26,14 @@
   [(RCPEvent *)&v4 dealloc];
 }
 
-- (RCPEvent)initWithDeliveryTimeStamp:(unint64_t)a3
+- (RCPEvent)initWithDeliveryTimeStamp:(unint64_t)stamp
 {
   v5.receiver = self;
   v5.super_class = RCPEvent;
   result = [(RCPEvent *)&v5 init];
   if (result)
   {
-    result->_deliveryTimestamp = a3;
+    result->_deliveryTimestamp = stamp;
   }
 
   return result;
@@ -46,18 +46,18 @@
   return [(RCPEvent *)self initWithDeliveryTimeStamp:v3];
 }
 
-- (RCPEvent)initWithCoder:(id)a3
+- (RCPEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = RCPEvent;
   v5 = [(RCPEvent *)&v13 init];
   if (v5)
   {
-    v5->_deliveryTimestamp = [v4 decodeInt64ForKey:@"deliveryTimestamp"];
-    [v4 decodeObjectForKey:@"hidEventData"];
+    v5->_deliveryTimestamp = [coderCopy decodeInt64ForKey:@"deliveryTimestamp"];
+    [coderCopy decodeObjectForKey:@"hidEventData"];
     v5->_hidEvent = IOHIDEventCreateWithData();
-    v6 = [v4 decodeObjectForKey:@"preActions"];
+    v6 = [coderCopy decodeObjectForKey:@"preActions"];
     preActions = v5->_preActions;
     v5->_preActions = v6;
 
@@ -68,7 +68,7 @@
       v5->_preActions = 0;
     }
 
-    v9 = [v4 decodeObjectForKey:@"senderProperties"];
+    v9 = [coderCopy decodeObjectForKey:@"senderProperties"];
     senderProperties = v5->_senderProperties;
     v5->_senderProperties = v9;
 
@@ -83,26 +83,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeInt64:self->_deliveryTimestamp forKey:@"deliveryTimestamp"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:self->_deliveryTimestamp forKey:@"deliveryTimestamp"];
   Data = IOHIDEventCreateData();
-  [v7 encodeObject:CFAutorelease(Data) forKey:@"hidEventData"];
+  [coderCopy encodeObject:CFAutorelease(Data) forKey:@"hidEventData"];
   senderProperties = self->_senderProperties;
   if (senderProperties)
   {
-    [v7 encodeObject:senderProperties forKey:@"senderProperties"];
+    [coderCopy encodeObject:senderProperties forKey:@"senderProperties"];
   }
 
   preActions = self->_preActions;
   if (preActions)
   {
-    [v7 encodeObject:preActions forKey:@"preActions"];
+    [coderCopy encodeObject:preActions forKey:@"preActions"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = MEMORY[0x277CCAAC8];
   v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self];
@@ -111,51 +111,51 @@
   return v5;
 }
 
-+ (RCPEvent)eventWithHIDEvent:(__IOHIDEvent *)a3
++ (RCPEvent)eventWithHIDEvent:(__IOHIDEvent *)event
 {
   v4 = objc_opt_new();
-  CFRetain(a3);
-  v4[3] = a3;
+  CFRetain(event);
+  v4[3] = event;
 
   return v4;
 }
 
-+ (RCPEvent)eventWithHIDEvent:(__IOHIDEvent *)a3 deliveryTimeStamp:(unint64_t)a4
++ (RCPEvent)eventWithHIDEvent:(__IOHIDEvent *)event deliveryTimeStamp:(unint64_t)stamp
 {
-  v5 = [[a1 alloc] initWithDeliveryTimeStamp:a4];
-  CFRetain(a3);
-  v5[3] = a3;
+  v5 = [[self alloc] initWithDeliveryTimeStamp:stamp];
+  CFRetain(event);
+  v5[3] = event;
 
   return v5;
 }
 
-+ (RCPEvent)eventWithHIDEvent:(__IOHIDEvent *)a3 deliveryTimeStamp:(unint64_t)a4 senderProperties:(id)a5 preActions:(id)a6
++ (RCPEvent)eventWithHIDEvent:(__IOHIDEvent *)event deliveryTimeStamp:(unint64_t)stamp senderProperties:(id)properties preActions:(id)actions
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [[a1 alloc] initWithDeliveryTimeStamp:a4];
-  CFRetain(a3);
+  propertiesCopy = properties;
+  actionsCopy = actions;
+  v12 = [[self alloc] initWithDeliveryTimeStamp:stamp];
+  CFRetain(event);
   v13 = v12[2];
-  v12[2] = v10;
-  v12[3] = a3;
-  v14 = v10;
+  v12[2] = propertiesCopy;
+  v12[3] = event;
+  v14 = propertiesCopy;
 
   v15 = v12[4];
-  v12[4] = v11;
+  v12[4] = actionsCopy;
 
   return v12;
 }
 
-- (id)eventAdjustedForDeliveryTimeInterval:(double)a3 eventEnvironment:(id)a4
+- (id)eventAdjustedForDeliveryTimeInterval:(double)interval eventEnvironment:(id)environment
 {
-  v6 = a4;
+  environmentCopy = environment;
   v7 = [(RCPEvent *)self copy];
-  [v6 timeIntervalForMachAbsoluteTime:{-[RCPEvent deliveryTimestamp](self, "deliveryTimestamp")}];
-  v9 = a3 - v8;
-  [v7 setDeliveryTimestamp:{objc_msgSend(v6, "machAbsoluteTimeForTimeInterval:", a3)}];
+  [environmentCopy timeIntervalForMachAbsoluteTime:{-[RCPEvent deliveryTimestamp](self, "deliveryTimestamp")}];
+  v9 = interval - v8;
+  [v7 setDeliveryTimestamp:{objc_msgSend(environmentCopy, "machAbsoluteTimeForTimeInterval:", interval)}];
   [v7 hidEvent];
-  [v6 timeIntervalForMachAbsoluteTime:{-[RCPEvent timestamp](self, "timestamp")}];
-  [v6 machAbsoluteTimeForTimeInterval:v9 + v10];
+  [environmentCopy timeIntervalForMachAbsoluteTime:{-[RCPEvent timestamp](self, "timestamp")}];
+  [environmentCopy machAbsoluteTimeForTimeInterval:v9 + v10];
 
   IOHIDEventSetTimeStamp();
 

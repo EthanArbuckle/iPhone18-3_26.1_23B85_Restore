@@ -1,29 +1,29 @@
 @interface MapsProgressBarButton
-- (MapsProgressBarButton)initWithFrame:(CGRect)a3;
+- (MapsProgressBarButton)initWithFrame:(CGRect)frame;
 - (void)_customInit;
 - (void)_insertProgressBarViewIfNecessary;
 - (void)_updateProgressConstraints;
 - (void)didMoveToWindow;
-- (void)setProgressStyle:(int64_t)a3;
+- (void)setProgressStyle:(int64_t)style;
 @end
 
 @implementation MapsProgressBarButton
 
-- (void)setProgressStyle:(int64_t)a3
+- (void)setProgressStyle:(int64_t)style
 {
-  if (self->_progressStyle != a3)
+  if (self->_progressStyle != style)
   {
-    self->_progressStyle = a3;
+    self->_progressStyle = style;
     [(MapsProgressBarButton *)self _updateProgressConstraints];
   }
 }
 
 - (void)_updateProgressConstraints
 {
-  v3 = [(MapsProgressBarButton *)self progressStyle];
-  if (v3)
+  progressStyle = [(MapsProgressBarButton *)self progressStyle];
+  if (progressStyle)
   {
-    if (v3 != 1)
+    if (progressStyle != 1)
     {
       return;
     }
@@ -46,33 +46,33 @@
 
 - (void)_insertProgressBarViewIfNecessary
 {
-  v3 = [(MapsProgressBarView *)self->_progressBarView superview];
+  superview = [(MapsProgressBarView *)self->_progressBarView superview];
 
-  if (!v3)
+  if (!superview)
   {
     [(MapsProgressBarButton *)self addSubview:self->_progressBarView];
-    v4 = [(MapsProgressBarButton *)self titleLabel];
-    [(MapsProgressBarButton *)self bringSubviewToFront:v4];
+    titleLabel = [(MapsProgressBarButton *)self titleLabel];
+    [(MapsProgressBarButton *)self bringSubviewToFront:titleLabel];
 
-    v5 = [(MapsProgressBarView *)self->_progressBarView heightAnchor];
-    v6 = [v5 constraintEqualToConstant:0.0];
+    heightAnchor = [(MapsProgressBarView *)self->_progressBarView heightAnchor];
+    v6 = [heightAnchor constraintEqualToConstant:0.0];
     progressHeightConstraint = self->_progressHeightConstraint;
     self->_progressHeightConstraint = v6;
 
-    v8 = [(MapsProgressBarView *)self->_progressBarView bottomAnchor];
-    v9 = [(MapsProgressBarButton *)self bottomAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9 constant:0.0];
+    bottomAnchor = [(MapsProgressBarView *)self->_progressBarView bottomAnchor];
+    bottomAnchor2 = [(MapsProgressBarButton *)self bottomAnchor];
+    v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
     progressBottomConstraint = self->_progressBottomConstraint;
     self->_progressBottomConstraint = v10;
 
     [(MapsProgressBarButton *)self _updateProgressConstraints];
-    v12 = [(MapsProgressBarView *)self->_progressBarView leadingAnchor];
-    v13 = [(MapsProgressBarButton *)self leadingAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13 constant:22.0];
+    leadingAnchor = [(MapsProgressBarView *)self->_progressBarView leadingAnchor];
+    leadingAnchor2 = [(MapsProgressBarButton *)self leadingAnchor];
+    v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:22.0];
     v20[0] = v14;
-    v15 = [(MapsProgressBarView *)self->_progressBarView trailingAnchor];
-    v16 = [(MapsProgressBarButton *)self trailingAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16 constant:-22.0];
+    trailingAnchor = [(MapsProgressBarView *)self->_progressBarView trailingAnchor];
+    trailingAnchor2 = [(MapsProgressBarButton *)self trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-22.0];
     v18 = self->_progressBottomConstraint;
     v20[1] = v17;
     v20[2] = v18;
@@ -103,11 +103,11 @@
   [(MapsProgressBarView *)v5 setHidden:1];
 }
 
-- (MapsProgressBarButton)initWithFrame:(CGRect)a3
+- (MapsProgressBarButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MapsProgressBarButton;
-  v3 = [(MapsProgressBarButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MapsProgressBarButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

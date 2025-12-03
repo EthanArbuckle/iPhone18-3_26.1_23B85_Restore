@@ -1,48 +1,48 @@
 @interface SpeechController
-- (id)accessibilityReaderEnabled:(id)a3;
-- (id)highlightWord:(id)a3;
-- (id)quickSpeakEnabled:(id)a3;
-- (id)quickSpeakSpeakingRate:(id)a3;
-- (id)speakScreenEnabled:(id)a3;
-- (id)speakSelectionEnabled:(id)a3;
-- (id)speakThisEnabled:(id)a3;
+- (id)accessibilityReaderEnabled:(id)enabled;
+- (id)highlightWord:(id)word;
+- (id)quickSpeakEnabled:(id)enabled;
+- (id)quickSpeakSpeakingRate:(id)rate;
+- (id)speakScreenEnabled:(id)enabled;
+- (id)speakSelectionEnabled:(id)enabled;
+- (id)speakThisEnabled:(id)enabled;
 - (id)specifiers;
-- (id)speechControllerSummary:(id)a3;
-- (id)spokenContentDefaultLanguageSummary:(id)a3;
-- (id)spokenContentDetectLanguages:(id)a3;
+- (id)speechControllerSummary:(id)summary;
+- (id)spokenContentDefaultLanguageSummary:(id)summary;
+- (id)spokenContentDetectLanguages:(id)languages;
 - (void)_reloadQuickSpeakHighlightSpecifier;
 - (void)_reloadSpeakScreenEnabledSpecifier;
 - (void)_reloadSpeakSelectionEnabledSpecifier;
 - (void)loadView;
-- (void)setHighlightSettingsItemsHidden:(BOOL)a3;
-- (void)setQuickSpeakEnabled:(id)a3 specifier:(id)a4;
-- (void)setQuickSpeakSpeakingRate:(id)a3 specifier:(id)a4;
-- (void)setSpeakScreenSettingsItemsHidden:(BOOL)a3;
-- (void)setSpeakThisEnabled:(id)a3 specifier:(id)a4;
-- (void)setSpokenContentDetectLanguages:(id)a3 specifier:(id)a4;
+- (void)setHighlightSettingsItemsHidden:(BOOL)hidden;
+- (void)setQuickSpeakEnabled:(id)enabled specifier:(id)specifier;
+- (void)setQuickSpeakSpeakingRate:(id)rate specifier:(id)specifier;
+- (void)setSpeakScreenSettingsItemsHidden:(BOOL)hidden;
+- (void)setSpeakThisEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSpokenContentDetectLanguages:(id)languages specifier:(id)specifier;
 - (void)updateLayout;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willBecomeActive;
 @end
 
 @implementation SpeechController
 
-- (void)setHighlightSettingsItemsHidden:(BOOL)a3
+- (void)setHighlightSettingsItemsHidden:(BOOL)hidden
 {
-  if (self->_highlightSettingsItemsHidden != a3)
+  if (self->_highlightSettingsItemsHidden != hidden)
   {
-    self->_highlightSettingsItemsHidden = a3;
-    if (a3)
+    self->_highlightSettingsItemsHidden = hidden;
+    if (hidden)
     {
-      v8 = [(SpeechController *)self highlightSettingsItems];
+      highlightSettingsItems = [(SpeechController *)self highlightSettingsItems];
       [SpeechController removeContiguousSpecifiers:"removeContiguousSpecifiers:animated:" animated:?];
     }
 
     else
     {
       speakScreenSettingsItemsHidden = self->_speakScreenSettingsItemsHidden;
-      v6 = [(SpeechController *)self highlightSettingsItems];
-      v8 = v6;
+      highlightSettingsItems2 = [(SpeechController *)self highlightSettingsItems];
+      highlightSettingsItems = highlightSettingsItems2;
       if (speakScreenSettingsItemsHidden)
       {
         v7 = @"SpeakThisEnabled";
@@ -53,27 +53,27 @@
         v7 = @"SpeechControllerGroup";
       }
 
-      [(SpeechController *)self insertContiguousSpecifiers:v6 afterSpecifierID:v7 animated:1];
+      [(SpeechController *)self insertContiguousSpecifiers:highlightSettingsItems2 afterSpecifierID:v7 animated:1];
     }
   }
 }
 
-- (void)setSpeakScreenSettingsItemsHidden:(BOOL)a3
+- (void)setSpeakScreenSettingsItemsHidden:(BOOL)hidden
 {
-  if (self->_speakScreenSettingsItemsHidden != a3)
+  if (self->_speakScreenSettingsItemsHidden != hidden)
   {
-    v4 = a3;
-    self->_speakScreenSettingsItemsHidden = a3;
-    v6 = [(SpeechController *)self speakScreenSettingsItems];
-    v7 = v6;
-    if (v4)
+    hiddenCopy = hidden;
+    self->_speakScreenSettingsItemsHidden = hidden;
+    speakScreenSettingsItems = [(SpeechController *)self speakScreenSettingsItems];
+    v7 = speakScreenSettingsItems;
+    if (hiddenCopy)
     {
-      [(SpeechController *)self removeContiguousSpecifiers:v6 animated:1];
+      [(SpeechController *)self removeContiguousSpecifiers:speakScreenSettingsItems animated:1];
     }
 
     else
     {
-      [(SpeechController *)self insertContiguousSpecifiers:v6 afterSpecifierID:@"SpeakThisEnabled" animated:1];
+      [(SpeechController *)self insertContiguousSpecifiers:speakScreenSettingsItems afterSpecifierID:@"SpeakThisEnabled" animated:1];
     }
   }
 }
@@ -215,10 +215,10 @@ void __28__SpeechController_loadView__block_invoke_5(uint64_t a1)
     v9 = NSStringFromClass(v8);
     [v7 setProperty:v9 forKey:PSFooterCellClassGroupKey];
 
-    v68 = self;
+    selfCopy = self;
     v10 = [NSBundle bundleForClass:objc_opt_class()];
-    v11 = [v10 bundlePath];
-    [v7 setProperty:v11 forKey:@"bundlePath"];
+    bundlePath = [v10 bundlePath];
+    [v7 setProperty:bundlePath forKey:@"bundlePath"];
 
     v71 = v7;
     [v7 setProperty:@"Accessibility" forKey:@"table"];
@@ -285,12 +285,12 @@ void __28__SpeechController_loadView__block_invoke_5(uint64_t a1)
 
             v28 = *(*(&v90 + 1) + 8 * i);
             v95[0] = @"headerLabel";
-            v29 = [v28 itemTitle];
-            v96[0] = v29;
+            itemTitle = [v28 itemTitle];
+            v96[0] = itemTitle;
             v95[1] = @"contentLabel";
-            v30 = [v28 itemDescription];
+            itemDescription = [v28 itemDescription];
             v95[2] = v12;
-            v96[1] = v30;
+            v96[1] = itemDescription;
             v96[2] = v13;
             [NSDictionary dictionaryWithObjects:v96 forKeys:v95 count:3];
             v31 = v13;
@@ -350,17 +350,17 @@ void __28__SpeechController_loadView__block_invoke_5(uint64_t a1)
 
           v41 = *(*(&v86 + 1) + 8 * j);
           v42 = [v41 propertyForKey:@"hideWhenDisabled"];
-          v43 = [v42 BOOLValue];
+          bOOLValue = [v42 BOOLValue];
 
-          if (v43)
+          if (bOOLValue)
           {
             [v83 addObject:v41];
           }
 
           v44 = [v41 propertyForKey:@"requiresSpeakScreen"];
-          v45 = [v44 BOOLValue];
+          bOOLValue2 = [v44 BOOLValue];
 
-          if (v45)
+          if (bOOLValue2)
           {
             [v81 addObject:v41];
           }
@@ -406,9 +406,9 @@ void __28__SpeechController_loadView__block_invoke_5(uint64_t a1)
           }
 
           v56 = [v41 propertyForKey:@"needsReaderCapability"];
-          v57 = [v56 BOOLValue];
+          bOOLValue3 = [v56 BOOLValue];
 
-          if (v57)
+          if (bOOLValue3)
           {
             [v79 addObject:v41];
           }
@@ -426,9 +426,9 @@ void __28__SpeechController_loadView__block_invoke_5(uint64_t a1)
       v78 = 0;
     }
 
-    [(SpeechController *)v68 setHighlightSettingsItems:v83];
-    [(SpeechController *)v68 setSpeakScreenSettingsItems:v81];
-    [(SpeechController *)v68 setReaderItems:v79];
+    [(SpeechController *)selfCopy setHighlightSettingsItems:v83];
+    [(SpeechController *)selfCopy setSpeakScreenSettingsItems:v81];
+    [(SpeechController *)selfCopy setReaderItems:v79];
     if (_AXSQuickSpeakEnabled())
     {
       v58 = 0;
@@ -439,7 +439,7 @@ void __28__SpeechController_loadView__block_invoke_5(uint64_t a1)
       v58 = _AXSSpeakThisEnabled() == 0;
     }
 
-    v68->_highlightSettingsItemsHidden = v58;
+    selfCopy->_highlightSettingsItemsHidden = v58;
     if (_AXSSpeakThisEnabled())
     {
       v59 = _AXSMossdeepEnabled() != 0;
@@ -450,32 +450,32 @@ void __28__SpeechController_loadView__block_invoke_5(uint64_t a1)
       v59 = 1;
     }
 
-    v68->_speakScreenSettingsItemsHidden = v59;
-    v68->_readerItemsHidden = AXHasCapability() ^ 1;
-    if (v68->_highlightSettingsItemsHidden)
+    selfCopy->_speakScreenSettingsItemsHidden = v59;
+    selfCopy->_readerItemsHidden = AXHasCapability() ^ 1;
+    if (selfCopy->_highlightSettingsItemsHidden)
     {
-      v60 = [(SpeechController *)v68 highlightSettingsItems];
-      [obja removeObjectsInArray:v60];
+      highlightSettingsItems = [(SpeechController *)selfCopy highlightSettingsItems];
+      [obja removeObjectsInArray:highlightSettingsItems];
     }
 
-    if (v68->_speakScreenSettingsItemsHidden)
+    if (selfCopy->_speakScreenSettingsItemsHidden)
     {
-      v61 = [(SpeechController *)v68 speakScreenSettingsItems];
-      [obja removeObjectsInArray:v61];
+      speakScreenSettingsItems = [(SpeechController *)selfCopy speakScreenSettingsItems];
+      [obja removeObjectsInArray:speakScreenSettingsItems];
     }
 
-    if (v68->_readerItemsHidden)
+    if (selfCopy->_readerItemsHidden)
     {
-      v62 = [(SpeechController *)v68 readerItems];
-      [obja removeObjectsInArray:v62];
+      readerItems = [(SpeechController *)selfCopy readerItems];
+      [obja removeObjectsInArray:readerItems];
     }
 
-    [(SpeechController *)v68 filterBuddy:obja];
-    v63 = *&v68->AXUISettingsSetupCapableListController_opaque[v67];
-    *&v68->AXUISettingsSetupCapableListController_opaque[v67] = obja;
+    [(SpeechController *)selfCopy filterBuddy:obja];
+    v63 = *&selfCopy->AXUISettingsSetupCapableListController_opaque[v67];
+    *&selfCopy->AXUISettingsSetupCapableListController_opaque[v67] = obja;
     v64 = obja;
 
-    v3 = *&v68->AXUISettingsSetupCapableListController_opaque[v67];
+    v3 = *&selfCopy->AXUISettingsSetupCapableListController_opaque[v67];
   }
 
   return v3;
@@ -489,11 +489,11 @@ void __28__SpeechController_loadView__block_invoke_5(uint64_t a1)
   [(SpeechController *)self updateLayout];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SpeechController;
-  [(SpeechController *)&v4 viewWillAppear:a3];
+  [(SpeechController *)&v4 viewWillAppear:appear];
   [(SpeechController *)self updateLayout];
 }
 
@@ -523,14 +523,14 @@ void __28__SpeechController_loadView__block_invoke_5(uint64_t a1)
   [(SpeechController *)self setSpeakScreenSettingsItemsHidden:v4];
 }
 
-- (id)quickSpeakEnabled:(id)a3
+- (id)quickSpeakEnabled:(id)enabled
 {
   v3 = _AXSQuickSpeakEnabled() != 0;
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (id)speakSelectionEnabled:(id)a3
+- (id)speakSelectionEnabled:(id)enabled
 {
   if (_AXSQuickSpeakEnabled())
   {
@@ -545,12 +545,12 @@ void __28__SpeechController_loadView__block_invoke_5(uint64_t a1)
   return settingsLocString(v3, @"Accessibility");
 }
 
-- (id)accessibilityReaderEnabled:(id)a3
+- (id)accessibilityReaderEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 accessibilityReaderEnabled];
+  accessibilityReaderEnabled = [v3 accessibilityReaderEnabled];
 
-  if (v4)
+  if (accessibilityReaderEnabled)
   {
     v5 = @"ON";
   }
@@ -563,15 +563,15 @@ void __28__SpeechController_loadView__block_invoke_5(uint64_t a1)
   return settingsLocString(v5, @"Accessibility");
 }
 
-- (void)setQuickSpeakEnabled:(id)a3 specifier:(id)a4
+- (void)setQuickSpeakEnabled:(id)enabled specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [enabled BOOLValue];
   _AXSQuickSpeakSetEnabled();
 
   [(SpeechController *)self updateLayout];
 }
 
-- (id)highlightWord:(id)a3
+- (id)highlightWord:(id)word
 {
   if (_AXSQuickSpeakHighlightTextEnabled())
   {
@@ -586,7 +586,7 @@ void __28__SpeechController_loadView__block_invoke_5(uint64_t a1)
   return settingsLocString(v3, @"Accessibility");
 }
 
-- (id)quickSpeakSpeakingRate:(id)a3
+- (id)quickSpeakSpeakingRate:(id)rate
 {
   v3 = +[AXSettings sharedInstance];
   [v3 quickSpeakSpeakingRate];
@@ -595,9 +595,9 @@ void __28__SpeechController_loadView__block_invoke_5(uint64_t a1)
   return v4;
 }
 
-- (void)setQuickSpeakSpeakingRate:(id)a3 specifier:(id)a4
+- (void)setQuickSpeakSpeakingRate:(id)rate specifier:(id)specifier
 {
-  [a3 floatValue];
+  [rate floatValue];
   v5 = v4;
   v6 = +[AXSettings sharedInstance];
   LODWORD(v7) = v5;
@@ -619,9 +619,9 @@ void __28__SpeechController_loadView__block_invoke_5(uint64_t a1)
 
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v17 sharedInstance];
+      sharedInstance = [v17 sharedInstance];
       v15 = setQuickSpeakSpeakingRate_specifier__qsInstance;
-      setQuickSpeakSpeakingRate_specifier__qsInstance = v14;
+      setQuickSpeakSpeakingRate_specifier__qsInstance = sharedInstance;
     }
   }
 
@@ -631,8 +631,8 @@ void __28__SpeechController_loadView__block_invoke_5(uint64_t a1)
     {
       v8 = setQuickSpeakSpeakingRate_specifier__qsInstance;
       v9 = +[AXLanguageManager sharedInstance];
-      v10 = [v9 systemLanguageID];
-      [v8 speakStatusWithLanguage:v10 rate:0];
+      systemLanguageID = [v9 systemLanguageID];
+      [v8 speakStatusWithLanguage:systemLanguageID rate:0];
     }
   }
 
@@ -642,14 +642,14 @@ void __28__SpeechController_loadView__block_invoke_5(uint64_t a1)
   }
 }
 
-- (id)speakThisEnabled:(id)a3
+- (id)speakThisEnabled:(id)enabled
 {
   v3 = _AXSSpeakThisEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (id)speakScreenEnabled:(id)a3
+- (id)speakScreenEnabled:(id)enabled
 {
   if (_AXSSpeakThisEnabled())
   {
@@ -664,20 +664,20 @@ void __28__SpeechController_loadView__block_invoke_5(uint64_t a1)
   return settingsLocString(v3, @"Accessibility");
 }
 
-- (void)setSpeakThisEnabled:(id)a3 specifier:(id)a4
+- (void)setSpeakThisEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  [v5 BOOLValue];
+  enabledCopy = enabled;
+  [enabledCopy BOOLValue];
   _AXSSetSpeakThisEnabled();
   [(SpeechController *)self updateLayout];
-  LODWORD(self) = [v5 BOOLValue];
+  LODWORD(self) = [enabledCopy BOOLValue];
 
   if (self)
   {
     v6 = +[AXSettings sharedInstance];
-    v7 = [v6 showSpeechController];
+    showSpeechController = [v6 showSpeechController];
 
-    if (v7)
+    if (showSpeechController)
     {
       v8 = +[SpeakThisServices sharedInstance];
       [v8 showSpeechController:&__block_literal_global_27];
@@ -698,12 +698,12 @@ void __50__SpeechController_setSpeakThisEnabled_specifier___block_invoke(id a1, 
   }
 }
 
-- (id)speechControllerSummary:(id)a3
+- (id)speechControllerSummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 showSpeechController];
+  showSpeechController = [v3 showSpeechController];
 
-  if (v4)
+  if (showSpeechController)
   {
     v5 = @"ON";
   }
@@ -716,27 +716,27 @@ void __50__SpeechController_setSpeakThisEnabled_specifier___block_invoke(id a1, 
   return settingsLocString(v5, @"Accessibility");
 }
 
-- (id)spokenContentDefaultLanguageSummary:(id)a3
+- (id)spokenContentDefaultLanguageSummary:(id)summary
 {
   v3 = +[AXLanguageManager sharedInstance];
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 spokenContentDefaultFallbackLanguage];
+  spokenContentDefaultFallbackLanguage = [v4 spokenContentDefaultFallbackLanguage];
 
-  if (v5)
+  if (spokenContentDefaultFallbackLanguage)
   {
-    v6 = [v3 dialectForLanguageID:v5];
-    v7 = [v6 languageNameInCurrentLocale];
+    v6 = [v3 dialectForLanguageID:spokenContentDefaultFallbackLanguage];
+    languageNameInCurrentLocale = [v6 languageNameInCurrentLocale];
   }
 
   else
   {
-    v7 = 0;
+    languageNameInCurrentLocale = 0;
   }
 
-  return v7;
+  return languageNameInCurrentLocale;
 }
 
-- (id)spokenContentDetectLanguages:(id)a3
+- (id)spokenContentDetectLanguages:(id)languages
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 spokenContentShouldUseLanguageDetection]);
@@ -744,13 +744,13 @@ void __50__SpeechController_setSpeakThisEnabled_specifier___block_invoke(id a1, 
   return v4;
 }
 
-- (void)setSpokenContentDetectLanguages:(id)a3 specifier:(id)a4
+- (void)setSpokenContentDetectLanguages:(id)languages specifier:(id)specifier
 {
-  v4 = a3;
+  languagesCopy = languages;
   v6 = +[AXSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [languagesCopy BOOLValue];
 
-  [v6 setSpokenContentShouldUseLanguageDetection:v5];
+  [v6 setSpokenContentShouldUseLanguageDetection:bOOLValue];
 }
 
 void __50__SpeechController_setSpeakThisEnabled_specifier___block_invoke_cold_1(uint64_t a1, NSObject *a2)

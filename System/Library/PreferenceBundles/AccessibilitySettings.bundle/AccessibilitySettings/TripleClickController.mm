@@ -1,36 +1,36 @@
 @interface TripleClickController
-- (BOOL)_optionIsDisabled:(int)a3;
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
-- (TripleClickController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)_optionIsDisabled:(int)disabled;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
+- (TripleClickController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int)_optionFromSpecifierKey:(id)a3;
-- (void)_removeOptionWithKey:(id)a3 fromSpecifiers:(id)a4;
-- (void)_removeTripleClickOption:(int)a3 fromSpecifiers:(id)a4 options:(id)a5;
-- (void)_removeTripleClickOption:(int)a3 ifNecessaryFromSpecifiers:(id)a4 options:(id)a5;
-- (void)_removeUnsupportedOptionsFromSpecifiers:(id)a3;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int)_optionFromSpecifierKey:(id)key;
+- (void)_removeOptionWithKey:(id)key fromSpecifiers:(id)specifiers;
+- (void)_removeTripleClickOption:(int)option fromSpecifiers:(id)specifiers options:(id)options;
+- (void)_removeTripleClickOption:(int)option ifNecessaryFromSpecifiers:(id)specifiers options:(id)options;
+- (void)_removeUnsupportedOptionsFromSpecifiers:(id)specifiers;
 - (void)_reorderSpecifiers;
 - (void)_saveTripleClickOptions;
 - (void)_updateTripleClickOptions;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)tripleClickOptionsUpdated;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TripleClickController
 
-- (TripleClickController)initWithNibName:(id)a3 bundle:(id)a4
+- (TripleClickController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v21.receiver = self;
   v21.super_class = TripleClickController;
-  v8 = [(TripleClickController *)&v21 initWithNibName:v6 bundle:v7];
+  v8 = [(TripleClickController *)&v21 initWithNibName:nameCopy bundle:bundleCopy];
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 addObserver:v8 selector:"_handleScannerToggled:" name:kAXSAssistiveTouchScannerEnabledNotification object:0];
 
@@ -94,235 +94,235 @@ void __48__TripleClickController_initWithNibName_bundle___block_invoke_2(uint64_
   v8.receiver = self;
   v8.super_class = TripleClickController;
   [(TripleClickController *)&v8 viewDidLoad];
-  v3 = [(TripleClickController *)self table];
-  [v3 setAllowsSelectionDuringEditing:1];
+  table = [(TripleClickController *)self table];
+  [table setAllowsSelectionDuringEditing:1];
 
-  v4 = [(TripleClickController *)self table];
-  [v4 setEditing:1 animated:0];
+  table2 = [(TripleClickController *)self table];
+  [table2 setEditing:1 animated:0];
 
-  v5 = [(TripleClickController *)self table];
+  table3 = [(TripleClickController *)self table];
   v6 = objc_opt_class();
   v7 = +[TripleClickCell cellReuseIdentifier];
-  [v5 registerClass:v6 forCellReuseIdentifier:v7];
+  [table3 registerClass:v6 forCellReuseIdentifier:v7];
 }
 
-- (int)_optionFromSpecifierKey:(id)a3
+- (int)_optionFromSpecifierKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"voiceover"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"voiceover"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"whiteonblack"])
+  else if ([keyCopy isEqualToString:@"whiteonblack"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"classicinvert"])
+  else if ([keyCopy isEqualToString:@"classicinvert"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"reducetransparency"])
+  else if ([keyCopy isEqualToString:@"reducetransparency"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"reducemotion"])
+  else if ([keyCopy isEqualToString:@"reducemotion"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"backgroundsounds"])
+  else if ([keyCopy isEqualToString:@"backgroundsounds"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"leftright"])
+  else if ([keyCopy isEqualToString:@"leftright"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"increasecontrast"])
+  else if ([keyCopy isEqualToString:@"increasecontrast"])
   {
     v4 = 21;
   }
 
   else
   {
-    if ([v3 isEqualToString:@"grayscale"])
+    if ([keyCopy isEqualToString:@"grayscale"])
     {
       goto LABEL_18;
     }
 
-    if ([v3 isEqualToString:@"whitepoint"])
+    if ([keyCopy isEqualToString:@"whitepoint"])
     {
       v4 = 14;
       goto LABEL_21;
     }
 
-    if ([v3 isEqualToString:@"colorFilter"])
+    if ([keyCopy isEqualToString:@"colorFilter"])
     {
 LABEL_18:
       v4 = 10;
     }
 
-    else if ([v3 isEqualToString:@"ask"])
+    else if ([keyCopy isEqualToString:@"ask"])
     {
       v4 = 3;
     }
 
-    else if ([v3 isEqualToString:@"zoom"])
+    else if ([keyCopy isEqualToString:@"zoom"])
     {
       v4 = 4;
     }
 
-    else if ([v3 isEqualToString:@"hovertext"])
+    else if ([keyCopy isEqualToString:@"hovertext"])
     {
       v4 = 27;
     }
 
-    else if ([v3 isEqualToString:@"hovertexttyping"])
+    else if ([keyCopy isEqualToString:@"hovertexttyping"])
     {
       v4 = 40;
     }
 
-    else if ([v3 isEqualToString:@"assistivetouch"])
+    else if ([keyCopy isEqualToString:@"assistivetouch"])
     {
       v4 = 6;
     }
 
-    else if ([v3 isEqualToString:@"switchover"])
+    else if ([keyCopy isEqualToString:@"switchover"])
     {
       v4 = 9;
     }
 
-    else if ([v3 isEqualToString:@"guidedaccess"])
+    else if ([keyCopy isEqualToString:@"guidedaccess"])
     {
       v4 = 7;
     }
 
-    else if ([v3 isEqualToString:@"loccaptionpanel"])
+    else if ([keyCopy isEqualToString:@"loccaptionpanel"])
     {
       v4 = 13;
     }
 
-    else if ([v3 isEqualToString:@"lookingglass"])
+    else if ([keyCopy isEqualToString:@"lookingglass"])
     {
       v4 = 16;
     }
 
-    else if ([v3 isEqualToString:@"hearingaids"])
+    else if ([keyCopy isEqualToString:@"hearingaids"])
     {
       v4 = 8;
     }
 
-    else if ([v3 isEqualToString:@"touchaccommodations"])
+    else if ([keyCopy isEqualToString:@"touchaccommodations"])
     {
       v4 = 11;
     }
 
-    else if ([v3 isEqualToString:@"magnifier"])
+    else if ([keyCopy isEqualToString:@"magnifier"])
     {
       v4 = 12;
     }
 
-    else if ([v3 isEqualToString:@"detectionmode"])
+    else if ([keyCopy isEqualToString:@"detectionmode"])
     {
       v4 = 22;
     }
 
-    else if ([v3 isEqualToString:@"voicecontrol"])
+    else if ([keyCopy isEqualToString:@"voicecontrol"])
     {
       v4 = 17;
     }
 
     else
     {
-      if ([v3 isEqualToString:@"darkmode"])
+      if ([keyCopy isEqualToString:@"darkmode"])
       {
         goto LABEL_52;
       }
 
-      if ([v3 isEqualToString:@"fullkeyboardaccess"])
+      if ([keyCopy isEqualToString:@"fullkeyboardaccess"])
       {
         v4 = 18;
         goto LABEL_21;
       }
 
-      if ([v3 isEqualToString:@"twiceremotescreen"])
+      if ([keyCopy isEqualToString:@"twiceremotescreen"])
       {
         v4 = 28;
         goto LABEL_21;
       }
 
-      if ([v3 isEqualToString:@"livetranscription"])
+      if ([keyCopy isEqualToString:@"livetranscription"])
       {
         v4 = 29;
         goto LABEL_21;
       }
 
-      if ([v3 isEqualToString:@"clarityui"])
+      if ([keyCopy isEqualToString:@"clarityui"])
       {
         v4 = 30;
         goto LABEL_21;
       }
 
-      if ([v3 isEqualToString:@"eyetracking"])
+      if ([keyCopy isEqualToString:@"eyetracking"])
       {
         v4 = 42;
         goto LABEL_21;
       }
 
-      if ([v3 isEqualToString:@"nearbydevicecontrol"])
+      if ([keyCopy isEqualToString:@"nearbydevicecontrol"])
       {
         v4 = 31;
         goto LABEL_21;
       }
 
-      if ([v3 isEqualToString:@"pointercontrol"])
+      if ([keyCopy isEqualToString:@"pointercontrol"])
       {
 LABEL_52:
         v4 = 0;
       }
 
-      else if ([v3 isEqualToString:@"livespeech"])
+      else if ([keyCopy isEqualToString:@"livespeech"])
       {
         v4 = 33;
       }
 
-      else if ([v3 isEqualToString:@"speakscreen"])
+      else if ([keyCopy isEqualToString:@"speakscreen"])
       {
         v4 = 34;
       }
 
-      else if ([v3 isEqualToString:@"dimflashinglights"])
+      else if ([keyCopy isEqualToString:@"dimflashinglights"])
       {
         v4 = 35;
       }
 
-      else if ([v3 isEqualToString:@"motioncues"])
+      else if ([keyCopy isEqualToString:@"motioncues"])
       {
         v4 = 36;
       }
 
-      else if ([v3 isEqualToString:@"hapticmusic"])
+      else if ([keyCopy isEqualToString:@"hapticmusic"])
       {
         v4 = 38;
       }
 
-      else if ([v3 isEqualToString:@"conversationboost"])
+      else if ([keyCopy isEqualToString:@"conversationboost"])
       {
         v4 = 39;
       }
 
-      else if ([v3 isEqualToString:@"accessibilityreader"])
+      else if ([keyCopy isEqualToString:@"accessibilityreader"])
       {
         v4 = 44;
       }
 
-      else if ([v3 isEqualToString:@"namerecognition"])
+      else if ([keyCopy isEqualToString:@"namerecognition"])
       {
         v4 = 46;
       }
@@ -342,12 +342,12 @@ LABEL_21:
 - (void)_reorderSpecifiers
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 tripleClickOrderedOptions];
+  tripleClickOrderedOptions = [v3 tripleClickOrderedOptions];
 
   v5 = +[AXSubsystemAXSettings sharedInstance];
-  v6 = [v5 ignoreLogging];
+  ignoreLogging = [v5 ignoreLogging];
 
-  if ((v6 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v7 = +[AXSubsystemAXSettings identifier];
     v8 = AXLoggerForFacility();
@@ -372,9 +372,9 @@ LABEL_21:
   v17[1] = 3221225472;
   v17[2] = __43__TripleClickController__reorderSpecifiers__block_invoke;
   v17[3] = &unk_2560F0;
-  v18 = v4;
-  v19 = self;
-  v14 = v4;
+  v18 = tripleClickOrderedOptions;
+  selfCopy = self;
+  v14 = tripleClickOrderedOptions;
   v15 = [v13 sortedArrayUsingComparator:v17];
   v16 = *&self->AXUISettingsBaseListController_opaque[v12];
   *&self->AXUISettingsBaseListController_opaque[v12] = v15;
@@ -455,16 +455,16 @@ LABEL_12:
   return v17;
 }
 
-- (void)_removeUnsupportedOptionsFromSpecifiers:(id)a3
+- (void)_removeUnsupportedOptionsFromSpecifiers:(id)specifiers
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __65__TripleClickController__removeUnsupportedOptionsFromSpecifiers___block_invoke;
   v5[3] = &unk_256118;
   v5[4] = self;
-  v3 = a3;
-  v4 = [v3 indexesOfObjectsPassingTest:v5];
-  [v3 removeObjectsAtIndexes:v4];
+  specifiersCopy = specifiers;
+  v4 = [specifiersCopy indexesOfObjectsPassingTest:v5];
+  [specifiersCopy removeObjectsAtIndexes:v4];
 }
 
 BOOL __65__TripleClickController__removeUnsupportedOptionsFromSpecifiers___block_invoke(uint64_t a1, void *a2)
@@ -490,17 +490,17 @@ BOOL __65__TripleClickController__removeUnsupportedOptionsFromSpecifiers___block
   return v6;
 }
 
-- (void)_removeTripleClickOption:(int)a3 fromSpecifiers:(id)a4 options:(id)a5
+- (void)_removeTripleClickOption:(int)option fromSpecifiers:(id)specifiers options:(id)options
 {
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = __73__TripleClickController__removeTripleClickOption_fromSpecifiers_options___block_invoke;
   v10 = &unk_256140;
-  v11 = self;
-  LODWORD(v12) = a3;
-  v5 = a4;
-  v6 = [v5 indexesOfObjectsPassingTest:&v7];
-  [v5 removeObjectsAtIndexes:{v6, v7, v8, v9, v10, v11, v12}];
+  selfCopy = self;
+  LODWORD(v12) = option;
+  specifiersCopy = specifiers;
+  v6 = [specifiersCopy indexesOfObjectsPassingTest:&v7];
+  [specifiersCopy removeObjectsAtIndexes:{v6, v7, v8, v9, v10, selfCopy, v12}];
 }
 
 BOOL __73__TripleClickController__removeTripleClickOption_fromSpecifiers_options___block_invoke(uint64_t a1, void *a2)
@@ -526,28 +526,28 @@ BOOL __73__TripleClickController__removeTripleClickOption_fromSpecifiers_options
   return v6;
 }
 
-- (void)_removeTripleClickOption:(int)a3 ifNecessaryFromSpecifiers:(id)a4 options:(id)a5
+- (void)_removeTripleClickOption:(int)option ifNecessaryFromSpecifiers:(id)specifiers options:(id)options
 {
-  v6 = *&a3;
-  v9 = a4;
-  v8 = a5;
+  v6 = *&option;
+  specifiersCopy = specifiers;
+  optionsCopy = options;
   if (!_AXSTripleClickContainsOption())
   {
-    [(TripleClickController *)self _removeTripleClickOption:v6 fromSpecifiers:v9 options:v8];
+    [(TripleClickController *)self _removeTripleClickOption:v6 fromSpecifiers:specifiersCopy options:optionsCopy];
   }
 }
 
-- (void)_removeOptionWithKey:(id)a3 fromSpecifiers:(id)a4
+- (void)_removeOptionWithKey:(id)key fromSpecifiers:(id)specifiers
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __61__TripleClickController__removeOptionWithKey_fromSpecifiers___block_invoke;
   v8[3] = &unk_256168;
-  v9 = a3;
-  v5 = v9;
-  v6 = a4;
-  v7 = [v6 indexesOfObjectsPassingTest:v8];
-  [v6 removeObjectsAtIndexes:v7];
+  keyCopy = key;
+  v5 = keyCopy;
+  specifiersCopy = specifiers;
+  v7 = [specifiersCopy indexesOfObjectsPassingTest:v8];
+  [specifiersCopy removeObjectsAtIndexes:v7];
 }
 
 id __61__TripleClickController__removeOptionWithKey_fromSpecifiers___block_invoke(uint64_t a1, void *a2)
@@ -690,9 +690,9 @@ id __61__TripleClickController__removeOptionWithKey_fromSpecifiers___block_invok
 
     [(TripleClickController *)self _removeTripleClickOption:13 ifNecessaryFromSpecifiers:v6 options:v4];
     v33 = +[AXSettings sharedInstance];
-    v34 = [v33 touchAccommodationsAreConfigured];
+    touchAccommodationsAreConfigured = [v33 touchAccommodationsAreConfigured];
 
-    if ((v34 & 1) == 0)
+    if ((touchAccommodationsAreConfigured & 1) == 0)
     {
       [(TripleClickController *)self _removeTripleClickOption:11 ifNecessaryFromSpecifiers:v6 options:v4];
     }
@@ -703,9 +703,9 @@ id __61__TripleClickController__removeOptionWithKey_fromSpecifiers___block_invok
     }
 
     v37 = +[AXSettings sharedInstance];
-    v38 = [v37 voiceOverActivationWorkaround];
+    voiceOverActivationWorkaround = [v37 voiceOverActivationWorkaround];
 
-    if (v38 == &dword_0 + 3)
+    if (voiceOverActivationWorkaround == &dword_0 + 3)
     {
       [(TripleClickController *)self _removeTripleClickOption:1 fromSpecifiers:v6 options:v4];
     }
@@ -759,9 +759,9 @@ id __61__TripleClickController__removeOptionWithKey_fromSpecifiers___block_invok
     v70 = v4;
     [(TripleClickController *)self _removeOptionWithKey:@"TRIPLE_CLICK_POINTER_CONTROL" fromSpecifiers:v6];
     v41 = +[AXBackBoardServer server];
-    v42 = [v41 supportsAccessibilityDisplayFilters];
+    supportsAccessibilityDisplayFilters = [v41 supportsAccessibilityDisplayFilters];
 
-    if (v42)
+    if (supportsAccessibilityDisplayFilters)
     {
       v43 = @"TRIPLE_CLICK_GRAYSCALE";
     }
@@ -876,37 +876,37 @@ LABEL_63:
   return v3;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v10 = a4;
-  v7 = [(TripleClickController *)self specifierForIndexPath:a5];
+  cellCopy = cell;
+  v7 = [(TripleClickController *)self specifierForIndexPath:path];
   v8 = [v7 propertyForKey:@"tripleClickOption"];
   v9 = [(TripleClickController *)self _optionFromSpecifierKey:v8];
 
   if ([(TripleClickController *)self _optionIsDisabled:v9])
   {
     [v7 setProperty:&__kCFBooleanTrue forKey:@"AXCheckStateCannotChange"];
-    [v10 refreshCellContentsWithSpecifier:v7];
+    [cellCopy refreshCellContentsWithSpecifier:v7];
   }
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v6 = a4;
-  v7 = a5;
-  v8 = [v7 section];
-  v9 = v7;
-  if (v8 < [v6 section])
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  section = [indexPathCopy section];
+  v9 = indexPathCopy;
+  if (section < [pathCopy section])
   {
-    v9 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", 0, [v6 section]);
+    v9 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", 0, [pathCopy section]);
   }
 
   return v9;
 }
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
-  v4 = [(TripleClickController *)self specifierForIndexPath:a4];
+  v4 = [(TripleClickController *)self specifierForIndexPath:path];
   [v4 propertyForKey:@"tripleClickOption"];
 
   return 1;
@@ -920,7 +920,7 @@ LABEL_63:
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v39 = self;
+  selfCopy = self;
   obj = [(TripleClickController *)self specifiers];
   v4 = [obj countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v4)
@@ -938,7 +938,7 @@ LABEL_63:
 
         v8 = *(*(&v40 + 1) + 8 * i);
         v9 = [v8 propertyForKey:@"tripleClickOption"];
-        v10 = [(TripleClickController *)v39 _optionFromSpecifierKey:v9];
+        v10 = [(TripleClickController *)selfCopy _optionFromSpecifierKey:v9];
         v11 = AXLogCommon();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
@@ -955,9 +955,9 @@ LABEL_63:
         if (v10)
         {
           v13 = [v8 propertyForKey:@"AXChecked"];
-          v14 = [v13 BOOLValue];
+          bOOLValue = [v13 BOOLValue];
 
-          if (v14)
+          if (bOOLValue)
           {
             v15 = [NSNumber numberWithInt:v10];
             [(NSArray *)v37 addObject:v15];
@@ -966,9 +966,9 @@ LABEL_63:
           if (v10 == 11)
           {
             v16 = [v8 propertyForKey:@"AXChecked"];
-            v17 = [v16 BOOLValue];
+            bOOLValue2 = [v16 BOOLValue];
             v18 = +[AXSettings sharedInstance];
-            [v18 setTouchAccommodationsTripleClickConfirmed:v17];
+            [v18 setTouchAccommodationsTripleClickConfirmed:bOOLValue2];
           }
 
           v19 = [NSNumber numberWithInt:v10];
@@ -981,9 +981,9 @@ LABEL_63:
           [v3 addObject:v20];
 
           v21 = [v8 propertyForKey:@"AXChecked"];
-          v22 = [v21 BOOLValue];
+          bOOLValue3 = [v21 BOOLValue];
 
-          if (!v22)
+          if (!bOOLValue3)
           {
             goto LABEL_18;
           }
@@ -992,11 +992,11 @@ LABEL_63:
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
             v23 = [NSNumber numberWithUnsignedInt:0];
-            v24 = [v8 name];
+            name = [v8 name];
             *buf = 138412546;
             v45 = v23;
             v46 = 2112;
-            v47[0] = v24;
+            v47[0] = name;
             _os_log_error_impl(&dword_0, v19, OS_LOG_TYPE_ERROR, "Triple Click Options in wrong state option: %@, name: %@", buf, 0x16u);
           }
         }
@@ -1011,9 +1011,9 @@ LABEL_18:
   }
 
   v25 = +[AXSubsystemAXSettings sharedInstance];
-  v26 = [v25 ignoreLogging];
+  ignoreLogging = [v25 ignoreLogging];
 
-  if ((v26 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v27 = +[AXSubsystemAXSettings identifier];
     v28 = AXLoggerForFacility();
@@ -1037,30 +1037,30 @@ LABEL_18:
   v32 = [AXSettings sharedInstance:v35];
   [v32 setTripleClickOrderedOptions:v3];
 
-  tripleClickOptions = v39->_tripleClickOptions;
-  v39->_tripleClickOptions = v37;
+  tripleClickOptions = selfCopy->_tripleClickOptions;
+  selfCopy->_tripleClickOptions = v37;
   v34 = v37;
 
   _AXSSetTripleClickOptions();
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v7 = a5;
-  v8 = a4;
-  v12 = [(TripleClickController *)self specifierForIndexPath:v8];
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  v12 = [(TripleClickController *)self specifierForIndexPath:pathCopy];
   v9 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers] mutableCopy];
-  v10 = [(TripleClickController *)self indexForIndexPath:v8];
+  v10 = [(TripleClickController *)self indexForIndexPath:pathCopy];
 
   [v9 removeObjectAtIndex:v10];
-  v11 = [(TripleClickController *)self indexForIndexPath:v7];
+  v11 = [(TripleClickController *)self indexForIndexPath:indexPathCopy];
 
   [v9 insertObject:v12 atIndex:v11];
   [(TripleClickController *)self setSpecifiers:v9];
   [(TripleClickController *)self _saveTripleClickOptions];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table] setDelegate:self];
   v4.receiver = self;
@@ -1080,7 +1080,7 @@ LABEL_18:
   [(TripleClickController *)&v5 dealloc];
 }
 
-- (BOOL)_optionIsDisabled:(int)a3
+- (BOOL)_optionIsDisabled:(int)disabled
 {
   if (_AXSTripleClickIsComputedOption())
   {
@@ -1088,20 +1088,20 @@ LABEL_18:
   }
 
   result = 1;
-  if (a3 != 44 && a3 != 13)
+  if (disabled != 44 && disabled != 13)
   {
-    return a3 == 9 && _AXSAssistiveTouchScannerEnabled();
+    return disabled == 9 && _AXSAssistiveTouchScannerEnabled();
   }
 
   return result;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 cellForRowAtIndexPath:v6];
-  v8 = [v7 specifier];
-  v9 = [v8 propertyForKey:@"tripleClickOption"];
+  pathCopy = path;
+  v7 = [view cellForRowAtIndexPath:pathCopy];
+  specifier = [v7 specifier];
+  v9 = [specifier propertyForKey:@"tripleClickOption"];
 
   if ([(TripleClickController *)self _optionIsDisabled:[(TripleClickController *)self _optionFromSpecifierKey:v9]])
   {
@@ -1112,38 +1112,38 @@ LABEL_18:
   {
     objc_opt_class();
     objc_opt_isKindOfClass();
-    v10 = v6;
+    v10 = pathCopy;
   }
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v33.receiver = self;
   v33.super_class = TripleClickController;
-  v6 = a4;
-  v7 = a3;
-  [(TripleClickController *)&v33 tableView:v7 didSelectRowAtIndexPath:v6];
-  v8 = [v7 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  [(TripleClickController *)&v33 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 specifier];
-    v10 = [v9 propertyForKey:@"AXChecked"];
-    v11 = [v10 BOOLValue];
-    v12 = v11;
-    v13 = v11 ^ 1;
+    specifier = [v8 specifier];
+    v10 = [specifier propertyForKey:@"AXChecked"];
+    bOOLValue = [v10 BOOLValue];
+    v12 = bOOLValue;
+    v13 = bOOLValue ^ 1;
 
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = __59__TripleClickController_tableView_didSelectRowAtIndexPath___block_invoke;
     v29[3] = &unk_256190;
-    v14 = v9;
+    v14 = specifier;
     v32 = v13;
     v30 = v14;
-    v31 = self;
+    selfCopy = self;
     v15 = objc_retainBlock(v29);
     v16 = v15;
     if (v12)
@@ -1161,11 +1161,11 @@ LABEL_18:
       [(TripleClickController *)self accessibilityPerformTripleClickAddingBlockConfirmingSOSConflicts:&v24 cancellationBlock:0];
     }
 
-    v17 = [v8 specifier];
-    v18 = [v17 propertyForKey:@"coreAnalyticsEvent"];
+    specifier2 = [v8 specifier];
+    v18 = [specifier2 propertyForKey:@"coreAnalyticsEvent"];
 
-    v19 = [v8 specifier];
-    v20 = [v19 propertyForKey:@"tripleClickOption"];
+    specifier3 = [v8 specifier];
+    v20 = [specifier3 propertyForKey:@"tripleClickOption"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())

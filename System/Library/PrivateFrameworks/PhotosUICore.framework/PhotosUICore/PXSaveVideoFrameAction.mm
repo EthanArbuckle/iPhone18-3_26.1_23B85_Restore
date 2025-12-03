@@ -1,65 +1,65 @@
 @interface PXSaveVideoFrameAction
-+ (BOOL)canPerformOnAsset:(id)a3;
++ (BOOL)canPerformOnAsset:(id)asset;
 + (id)_fileExtension;
-+ (id)_stillFilenameForVideoAsset:(id)a3;
-+ (id)_stillRenderURLForVideoAsset:(id)a3 error:(id *)a4;
-- (PXSaveVideoFrameAction)initWithAsset:(id)a3 time:(id *)a4 assetImageGenerator:(id)a5;
-- (void)_handleAssetImageGenerator:(id)a3 completionHandler:(id)a4;
-- (void)_handleGeneratedImage:(CGImage *)a3 completionHandler:(id)a4;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
++ (id)_stillFilenameForVideoAsset:(id)asset;
++ (id)_stillRenderURLForVideoAsset:(id)asset error:(id *)error;
+- (PXSaveVideoFrameAction)initWithAsset:(id)asset time:(id *)time assetImageGenerator:(id)generator;
+- (void)_handleAssetImageGenerator:(id)generator completionHandler:(id)handler;
+- (void)_handleGeneratedImage:(CGImage *)image completionHandler:(id)handler;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXSaveVideoFrameAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXSaveVideoFrameAction *)self createdAsset];
-  if (v5)
+  undoCopy = undo;
+  createdAsset = [(PXSaveVideoFrameAction *)self createdAsset];
+  if (createdAsset)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69786A0]);
     [v6 setExpungeSource:4];
     v7 = MEMORY[0x1E6978648];
-    v10[0] = v5;
+    v10[0] = createdAsset;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    v9 = [v5 photoLibrary];
-    [v7 performBatchExpungeWithAssets:v8 deleteOptions:v6 photoLibrary:v9 completionHandler:v4];
+    photoLibrary = [createdAsset photoLibrary];
+    [v7 performBatchExpungeWithAssets:v8 deleteOptions:v6 photoLibrary:photoLibrary completionHandler:undoCopy];
 
     [(PXSaveVideoFrameAction *)self setCreatedAsset:0];
   }
 
   else
   {
-    v4[2](v4, 1, 0);
+    undoCopy[2](undoCopy, 1, 0);
   }
 }
 
-- (void)_handleGeneratedImage:(CGImage *)a3 completionHandler:(id)a4
+- (void)_handleGeneratedImage:(CGImage *)image completionHandler:(id)handler
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__PXSaveVideoFrameAction__handleGeneratedImage_completionHandler___block_invoke;
   aBlock[3] = &unk_1E7747648;
-  v7 = v6;
+  v7 = handlerCopy;
   v36 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [(PXSaveVideoFrameAction *)self asset];
+  asset = [(PXSaveVideoFrameAction *)self asset];
   v34 = 0;
-  v10 = [PXSaveVideoFrameAction _stillRenderURLForVideoAsset:v9 error:&v34];
+  v10 = [PXSaveVideoFrameAction _stillRenderURLForVideoAsset:asset error:&v34];
   v11 = v34;
   if (v10)
   {
     v12 = +[PXSaveVideoFrameAction _fileType];
-    v13 = [v12 identifier];
-    v14 = CGImageDestinationCreateWithURL(v10, v13, 1uLL, 0);
+    identifier = [v12 identifier];
+    v14 = CGImageDestinationCreateWithURL(v10, identifier, 1uLL, 0);
 
     if (v14)
     {
-      CGImageDestinationAddImage(v14, a3, 0);
+      CGImageDestinationAddImage(v14, image, 0);
       v15 = CGImageDestinationFinalize(v14);
       CFRelease(v14);
       if (v15)
@@ -70,12 +70,12 @@
         v32[3] = __Block_byref_object_copy__205182;
         v32[4] = __Block_byref_object_dispose__205183;
         v33 = 0;
-        v16 = [v9 photoLibrary];
+        photoLibrary = [asset photoLibrary];
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __66__PXSaveVideoFrameAction__handleGeneratedImage_completionHandler___block_invoke_208;
         v28[3] = &unk_1E7746448;
-        v29 = v9;
+        v29 = asset;
         v30 = v10;
         v31 = v32;
         v24[0] = MEMORY[0x1E69E9820];
@@ -85,7 +85,7 @@
         v26 = v8;
         v27 = v32;
         v24[4] = self;
-        v17 = v16;
+        v17 = photoLibrary;
         v25 = v17;
         [v17 performChanges:v28 completionHandler:v24];
 
@@ -179,27 +179,27 @@ uint64_t __66__PXSaveVideoFrameAction__handleGeneratedImage_completionHandler___
   }
 }
 
-- (void)_handleAssetImageGenerator:(id)a3 completionHandler:(id)a4
+- (void)_handleAssetImageGenerator:(id)generator completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__PXSaveVideoFrameAction__handleAssetImageGenerator_completionHandler___block_invoke;
   aBlock[3] = &unk_1E7747648;
-  v7 = v6;
+  v7 = handlerCopy;
   v19 = v7;
-  v8 = a3;
+  generatorCopy = generator;
   v9 = _Block_copy(aBlock);
   v10 = MEMORY[0x1E6960CC0];
   v16 = *MEMORY[0x1E6960CC0];
   v17 = *(MEMORY[0x1E6960CC0] + 16);
-  [v8 setRequestedTimeToleranceBefore:&v16];
+  [generatorCopy setRequestedTimeToleranceBefore:&v16];
   v16 = *v10;
   v17 = *(v10 + 2);
-  [v8 setRequestedTimeToleranceAfter:&v16];
-  [v8 setDynamicRangePolicy:*MEMORY[0x1E6987360]];
-  [v8 setAppliesPreferredTrackTransform:1];
-  [v8 setApertureMode:*MEMORY[0x1E6987350]];
+  [generatorCopy setRequestedTimeToleranceAfter:&v16];
+  [generatorCopy setDynamicRangePolicy:*MEMORY[0x1E6987360]];
+  [generatorCopy setAppliesPreferredTrackTransform:1];
+  [generatorCopy setApertureMode:*MEMORY[0x1E6987350]];
   [(PXSaveVideoFrameAction *)self time];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -210,7 +210,7 @@ uint64_t __66__PXSaveVideoFrameAction__handleGeneratedImage_completionHandler___
   v15 = v7;
   v11 = v7;
   v12 = v9;
-  [v8 generateCGImageAsynchronouslyForTime:&v16 completionHandler:v13];
+  [generatorCopy generateCGImageAsynchronouslyForTime:&v16 completionHandler:v13];
 }
 
 void __71__PXSaveVideoFrameAction__handleAssetImageGenerator_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -234,41 +234,41 @@ uint64_t __71__PXSaveVideoFrameAction__handleAssetImageGenerator_completionHandl
   }
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __40__PXSaveVideoFrameAction_performAction___block_invoke;
   aBlock[3] = &unk_1E7747648;
-  v5 = v4;
+  v5 = actionCopy;
   v20 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [(PXSaveVideoFrameAction *)self assetImageGenerator];
+  assetImageGenerator = [(PXSaveVideoFrameAction *)self assetImageGenerator];
 
-  if (v7)
+  if (assetImageGenerator)
   {
-    v8 = [(PXSaveVideoFrameAction *)self assetImageGenerator];
-    [(PXSaveVideoFrameAction *)self _handleAssetImageGenerator:v8 completionHandler:v5];
+    assetImageGenerator2 = [(PXSaveVideoFrameAction *)self assetImageGenerator];
+    [(PXSaveVideoFrameAction *)self _handleAssetImageGenerator:assetImageGenerator2 completionHandler:v5];
   }
 
   else
   {
-    v8 = objc_alloc_init(MEMORY[0x1E6978B18]);
-    [v8 setVersion:0];
-    [v8 setDeliveryMode:1];
-    [v8 setNetworkAccessAllowed:1];
-    v9 = [MEMORY[0x1E6978860] defaultManager];
-    v10 = [(PXSaveVideoFrameAction *)self asset];
+    assetImageGenerator2 = objc_alloc_init(MEMORY[0x1E6978B18]);
+    [assetImageGenerator2 setVersion:0];
+    [assetImageGenerator2 setDeliveryMode:1];
+    [assetImageGenerator2 setNetworkAccessAllowed:1];
+    defaultManager = [MEMORY[0x1E6978860] defaultManager];
+    asset = [(PXSaveVideoFrameAction *)self asset];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __40__PXSaveVideoFrameAction_performAction___block_invoke_3;
     v15 = &unk_1E77440F8;
-    v16 = self;
+    selfCopy = self;
     v17 = v6;
     v18 = v5;
-    v11 = [v9 requestAVAssetForVideo:v10 options:v8 resultHandler:&v12];
-    [(PXSaveVideoFrameAction *)self setImageRequestID:v11, v12, v13, v14, v15, v16];
+    v11 = [defaultManager requestAVAssetForVideo:asset options:assetImageGenerator2 resultHandler:&v12];
+    [(PXSaveVideoFrameAction *)self setImageRequestID:v11, v12, v13, v14, v15, selfCopy];
   }
 }
 
@@ -296,22 +296,22 @@ void __40__PXSaveVideoFrameAction_performAction___block_invoke_3(uint64_t a1, ui
   }
 }
 
-- (PXSaveVideoFrameAction)initWithAsset:(id)a3 time:(id *)a4 assetImageGenerator:(id)a5
+- (PXSaveVideoFrameAction)initWithAsset:(id)asset time:(id *)time assetImageGenerator:(id)generator
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 photoLibrary];
+  assetCopy = asset;
+  generatorCopy = generator;
+  photoLibrary = [assetCopy photoLibrary];
   v15.receiver = self;
   v15.super_class = PXSaveVideoFrameAction;
-  v12 = [(PXPhotosAction *)&v15 initWithPhotoLibrary:v11];
+  v12 = [(PXPhotosAction *)&v15 initWithPhotoLibrary:photoLibrary];
 
   if (v12)
   {
-    objc_storeStrong(v12 + 13, a3);
-    var3 = a4->var3;
-    *(v12 + 120) = *&a4->var0;
+    objc_storeStrong(v12 + 13, asset);
+    var3 = time->var3;
+    *(v12 + 120) = *&time->var0;
     *(v12 + 17) = var3;
-    objc_storeStrong(v12 + 14, a5);
+    objc_storeStrong(v12 + 14, generator);
   }
 
   return v12;
@@ -320,22 +320,22 @@ void __40__PXSaveVideoFrameAction_performAction___block_invoke_3(uint64_t a1, ui
 + (id)_fileExtension
 {
   v2 = +[PXSaveVideoFrameAction _fileType];
-  v3 = [v2 preferredFilenameExtension];
+  preferredFilenameExtension = [v2 preferredFilenameExtension];
 
-  return v3;
+  return preferredFilenameExtension;
 }
 
-+ (id)_stillRenderURLForVideoAsset:(id)a3 error:(id *)a4
++ (id)_stillRenderURLForVideoAsset:(id)asset error:(id *)error
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 temporaryDirectory];
-  v9 = [v6 URLForDirectory:99 inDomain:1 appropriateForURL:v8 create:1 error:a4];
+  assetCopy = asset;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager2 temporaryDirectory];
+  v9 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:temporaryDirectory create:1 error:error];
 
   if (v9)
   {
-    v10 = [PXSaveVideoFrameAction _stillFilenameForVideoAsset:v5];
+    v10 = [PXSaveVideoFrameAction _stillFilenameForVideoAsset:assetCopy];
     v11 = [v9 URLByAppendingPathComponent:v10 isDirectory:0];
   }
 
@@ -347,26 +347,26 @@ void __40__PXSaveVideoFrameAction_performAction___block_invoke_3(uint64_t a1, ui
   return v11;
 }
 
-+ (id)_stillFilenameForVideoAsset:(id)a3
++ (id)_stillFilenameForVideoAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 originalFilename];
-  v5 = v4;
-  if (v4)
+  assetCopy = asset;
+  originalFilename = [assetCopy originalFilename];
+  v5 = originalFilename;
+  if (originalFilename)
   {
-    v6 = v4;
+    filename = originalFilename;
   }
 
   else
   {
-    v6 = [v3 filename];
+    filename = [assetCopy filename];
   }
 
-  v7 = v6;
+  v7 = filename;
 
-  v8 = [v7 stringByDeletingPathExtension];
+  stringByDeletingPathExtension = [v7 stringByDeletingPathExtension];
 
-  v9 = [v8 stringByAppendingString:@"_still"];
+  v9 = [stringByDeletingPathExtension stringByAppendingString:@"_still"];
 
   v10 = +[PXSaveVideoFrameAction _fileExtension];
   v11 = [v9 stringByAppendingPathExtension:v10];
@@ -374,17 +374,17 @@ void __40__PXSaveVideoFrameAction_performAction___block_invoke_3(uint64_t a1, ui
   return v11;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3
++ (BOOL)canPerformOnAsset:(id)asset
 {
-  v3 = a3;
-  if ([v3 isTrashed] & 1) != 0 || (objc_msgSend(v3, "isRecoveredAsset") & 1) != 0 || objc_msgSend(v3, "px_isSyndicatedAsset") && (!objc_msgSend(v3, "px_isUnsavedSyndicatedAsset") || (objc_msgSend(v3, "px_isSyndicationPhotoLibraryAsset")) || !objc_msgSend(v3, "isVideo"))
+  assetCopy = asset;
+  if ([assetCopy isTrashed] & 1) != 0 || (objc_msgSend(assetCopy, "isRecoveredAsset") & 1) != 0 || objc_msgSend(assetCopy, "px_isSyndicatedAsset") && (!objc_msgSend(assetCopy, "px_isUnsavedSyndicatedAsset") || (objc_msgSend(assetCopy, "px_isSyndicationPhotoLibraryAsset")) || !objc_msgSend(assetCopy, "isVideo"))
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 needsSensitivityProtection] ^ 1;
+    v4 = [assetCopy needsSensitivityProtection] ^ 1;
   }
 
   return v4;

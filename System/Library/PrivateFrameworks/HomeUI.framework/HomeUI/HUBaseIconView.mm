@@ -2,9 +2,9 @@
 - (CGSize)intrinsicContentSize;
 - (HUBaseIconViewConfiguration)configuration;
 - (HUBaseIconViewDelegate)delegate;
-- (void)prepareForTransitionToTargetViewState:(int64_t)a3;
-- (void)setConfiguration:(id)a3;
-- (void)startTransitionToTargetViewState:(int64_t)a3;
+- (void)prepareForTransitionToTargetViewState:(int64_t)state;
+- (void)setConfiguration:(id)configuration;
+- (void)startTransitionToTargetViewState:(int64_t)state;
 - (void)updateConstraints;
 @end
 
@@ -12,17 +12,17 @@
 
 - (HUBaseIconViewConfiguration)configuration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BaseIconView.__configuration.getter();
 
   return v3;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = self;
-  BaseIconView.__configuration.setter(a3);
+  configurationCopy = configuration;
+  selfCopy = self;
+  BaseIconView.__configuration.setter(configuration);
 }
 
 - (HUBaseIconViewDelegate)delegate
@@ -35,7 +35,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_20D0782B0();
   v4 = v3;
   v6 = v5;
@@ -49,20 +49,20 @@
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_20D078E54();
 }
 
-- (void)startTransitionToTargetViewState:(int64_t)a3
+- (void)startTransitionToTargetViewState:(int64_t)state
 {
-  v4 = self;
-  BaseIconView.startTransition(targetAppearance:)(a3);
+  selfCopy = self;
+  BaseIconView.startTransition(targetAppearance:)(state);
 }
 
-- (void)prepareForTransitionToTargetViewState:(int64_t)a3
+- (void)prepareForTransitionToTargetViewState:(int64_t)state
 {
-  v4 = self;
-  BaseIconView.prepareForTransition(targetAppearance:)(a3);
+  selfCopy = self;
+  BaseIconView.prepareForTransition(targetAppearance:)(state);
 }
 
 @end

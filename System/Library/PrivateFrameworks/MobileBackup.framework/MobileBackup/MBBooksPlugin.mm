@@ -1,21 +1,21 @@
 @interface MBBooksPlugin
-- (id)startingBackupWithEngine:(id)a3;
-- (void)_populatePathsForEngine:(id)a3 domainName:(id)a4;
+- (id)startingBackupWithEngine:(id)engine;
+- (void)_populatePathsForEngine:(id)engine domainName:(id)name;
 @end
 
 @implementation MBBooksPlugin
 
-- (void)_populatePathsForEngine:(id)a3 domainName:(id)a4
+- (void)_populatePathsForEngine:(id)engine domainName:(id)name
 {
-  v5 = a4;
-  v6 = [a3 domainManager];
-  v7 = [v6 domainForName:v5];
+  nameCopy = name;
+  domainManager = [engine domainManager];
+  v7 = [domainManager domainForName:nameCopy];
 
   v8 = objc_opt_new();
   v9 = +[MCProfileConnection sharedConnection];
-  v10 = [v9 isEnterpriseBookBackupAllowed];
+  isEnterpriseBookBackupAllowed = [v9 isEnterpriseBookBackupAllowed];
 
-  if ((v10 & 1) == 0)
+  if ((isEnterpriseBookBackupAllowed & 1) == 0)
   {
     v11 = MBGetDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -29,25 +29,25 @@
     [v8 addObject:v12];
   }
 
-  v13 = [v7 relativePathsNotToBackup];
+  relativePathsNotToBackup = [v7 relativePathsNotToBackup];
 
-  if (v13)
+  if (relativePathsNotToBackup)
   {
-    v14 = [v7 relativePathsNotToBackup];
-    [v8 unionSet:v14];
+    relativePathsNotToBackup2 = [v7 relativePathsNotToBackup];
+    [v8 unionSet:relativePathsNotToBackup2];
   }
 
   [v7 setRelativePathsNotToBackup:v8];
 }
 
-- (id)startingBackupWithEngine:(id)a3
+- (id)startingBackupWithEngine:(id)engine
 {
-  v4 = a3;
-  if ([v4 backsUpPrimaryAccount])
+  engineCopy = engine;
+  if ([engineCopy backsUpPrimaryAccount])
   {
     if (!MBIsInternalInstall() || (+[MBBehaviorOptions sharedOptions](MBBehaviorOptions, "sharedOptions"), v5 = objc_claimAutoreleasedReturnValue(), [v5 domainsToBackUpRegex], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
     {
-      [(MBBooksPlugin *)self _populatePathsForEngine:v4 domainName:@"BooksDomain"];
+      [(MBBooksPlugin *)self _populatePathsForEngine:engineCopy domainName:@"BooksDomain"];
     }
   }
 

@@ -1,16 +1,16 @@
 @interface WLMessageParty
-+ (id)_guessIccForNumber:(id)a3;
-+ (id)_normalize:(id)a3;
-- (id)_initWithAddress:(id)a3 addCountryCode:(BOOL)a4 sqlController:(id)a5;
++ (id)_guessIccForNumber:(id)number;
++ (id)_normalize:(id)_normalize;
+- (id)_initWithAddress:(id)address addCountryCode:(BOOL)code sqlController:(id)controller;
 @end
 
 @implementation WLMessageParty
 
-- (id)_initWithAddress:(id)a3 addCountryCode:(BOOL)a4 sqlController:(id)a5
+- (id)_initWithAddress:(id)address addCountryCode:(BOOL)code sqlController:(id)controller
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  codeCopy = code;
+  addressCopy = address;
+  controllerCopy = controller;
   v80.receiver = self;
   v80.super_class = WLMessageParty;
   v10 = [(WLMessageParty *)&v80 init];
@@ -19,27 +19,27 @@
     goto LABEL_48;
   }
 
-  if ([(__CFString *)v8 isEqualToString:@"insert-address-token"])
+  if ([(__CFString *)addressCopy isEqualToString:@"insert-address-token"])
   {
     _WLLog();
 
-    v8 = &stru_2882CBB40;
+    addressCopy = &stru_2882CBB40;
   }
 
-  v11 = [(__CFString *)v8 length];
+  v11 = [(__CFString *)addressCopy length];
   v10->_isPhoneNumber = v11 != 0;
-  if (v11 && [(__CFString *)v8 length])
+  if (v11 && [(__CFString *)addressCopy length])
   {
     v12 = 0;
     while (1)
     {
-      v13 = [(__CFString *)v8 characterAtIndex:v12];
+      v13 = [(__CFString *)addressCopy characterAtIndex:v12];
       if ((v13 - 97) < 0x1A || (v13 - 64) <= 0x1A)
       {
         break;
       }
 
-      if (++v12 >= [(__CFString *)v8 length])
+      if (++v12 >= [(__CFString *)addressCopy length])
       {
         goto LABEL_13;
       }
@@ -52,13 +52,13 @@ LABEL_13:
   isPhoneNumber = v10->_isPhoneNumber;
   if (isPhoneNumber)
   {
-    v16 = [MEMORY[0x277CBEAF8] currentLocale];
-    v17 = [v16 countryCode];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    countryCode = [currentLocale countryCode];
 
-    if (![(__CFString *)v17 length])
+    if (![(__CFString *)countryCode length])
     {
 
-      v17 = @"US";
+      countryCode = @"US";
     }
 
     v18 = PNCopyBestGuessNormalizedNumberForCountry();
@@ -72,7 +72,7 @@ LABEL_13:
       v71 = v10->_address;
       _WLLog();
       free(v19);
-      v22 = [(NSString *)v10->_address length:v8];
+      v22 = [(NSString *)v10->_address length:addressCopy];
       v10->_isPhoneNumber = v22 != 0;
       if (v22)
       {
@@ -97,8 +97,8 @@ LABEL_13:
           v10->_isPhoneNumber = 0;
           v69 = v10->_address;
           _WLLog();
-          [WLMessageParty _normalize:v8, v69, v24, v76, v77, v25, v78, v26, v79, v73];
-          v8 = v46 = v8;
+          [WLMessageParty _normalize:addressCopy, v69, v24, v76, v77, v25, v78, v26, v79, v73];
+          addressCopy = v46 = addressCopy;
 LABEL_44:
 
           goto LABEL_45;
@@ -197,9 +197,9 @@ LABEL_44:
                 v58 = 0;
               }
 
-              if (!v58 && v6)
+              if (!v58 && codeCopy)
               {
-                v61 = [v9 messagePhoneNumberIccForCcAcNumber:v10->_ccAcNumber];
+                v61 = [controllerCopy messagePhoneNumberIccForCcAcNumber:v10->_ccAcNumber];
                 v62 = v10->_icc;
                 v10->_icc = v61;
 
@@ -241,8 +241,8 @@ LABEL_61:
 
         _WLLog();
         v10->_isPhoneNumber = 0;
-        [WLMessageParty _normalize:v8, v46, v8];
-        v8 = v50 = v8;
+        [WLMessageParty _normalize:addressCopy, v46, addressCopy];
+        addressCopy = v50 = addressCopy;
 LABEL_43:
 
         goto LABEL_44;
@@ -251,14 +251,14 @@ LABEL_43:
 
     else
     {
-      v67 = v8;
+      v67 = addressCopy;
       _WLLog();
       v10->_isPhoneNumber = 0;
     }
 
-    v45 = [WLMessageParty _normalize:v8, v67];
+    v45 = [WLMessageParty _normalize:addressCopy, v67];
 
-    v8 = v45;
+    addressCopy = v45;
 LABEL_45:
 
     isPhoneNumber = v10->_isPhoneNumber;
@@ -266,14 +266,14 @@ LABEL_45:
 
   if (!isPhoneNumber)
   {
-    objc_storeStrong(&v10->_address, v8);
+    objc_storeStrong(&v10->_address, addressCopy);
     v52 = v10->_icc;
     v10->_icc = 0;
 
     v53 = v10->_np;
     v10->_np = 0;
 
-    objc_storeStrong(&v10->_ccAcNumber, v8);
+    objc_storeStrong(&v10->_ccAcNumber, addressCopy);
   }
 
 LABEL_48:
@@ -281,9 +281,9 @@ LABEL_48:
   return v10;
 }
 
-+ (id)_guessIccForNumber:(id)a3
++ (id)_guessIccForNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   if (_guessIccForNumber__onceToken != -1)
   {
     +[WLMessageParty _guessIccForNumber:];
@@ -291,7 +291,7 @@ LABEL_48:
 
   if (_guessIccForNumber__icc)
   {
-    v4 = [_guessIccForNumber__icc stringByAppendingString:v3];
+    v4 = [_guessIccForNumber__icc stringByAppendingString:numberCopy];
     v12 = *MEMORY[0x277D007E8];
     v13 = *(MEMORY[0x277D007E8] + 16);
     v14 = *(MEMORY[0x277D007E8] + 32);
@@ -353,17 +353,17 @@ uint64_t __37__WLMessageParty__guessIccForNumber___block_invoke()
   return _WLLog();
 }
 
-+ (id)_normalize:(id)a3
++ (id)_normalize:(id)_normalize
 {
   v3 = _normalize__onceToken;
-  v4 = a3;
+  _normalizeCopy = _normalize;
   if (v3 != -1)
   {
     +[WLMessageParty _normalize:];
   }
 
-  v5 = [v4 hasPrefix:@"+"];
-  v6 = [v4 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:&stru_2882CBB40 options:1024 range:{0, objc_msgSend(v4, "length")}];
+  v5 = [_normalizeCopy hasPrefix:@"+"];
+  v6 = [_normalizeCopy stringByReplacingOccurrencesOfString:@"[^0-9]" withString:&stru_2882CBB40 options:1024 range:{0, objc_msgSend(_normalizeCopy, "length")}];
 
   if (v5)
   {

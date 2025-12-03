@@ -1,62 +1,62 @@
 @interface CNVCardInstantMessageParser
-+ (id)handleWithUsername:(id)a3 userIdentifier:(id)a4 service:(id)a5 bundleIdentifiers:(id)a6 teamIdentifier:(id)a7;
-+ (id)serviceForString:(id)a3;
-+ (id)valueWithService:(id)a3 existingHandles:(id)a4 parser:(id)a5;
++ (id)handleWithUsername:(id)username userIdentifier:(id)identifier service:(id)service bundleIdentifiers:(id)identifiers teamIdentifier:(id)teamIdentifier;
++ (id)serviceForString:(id)string;
++ (id)valueWithService:(id)service existingHandles:(id)handles parser:(id)parser;
 @end
 
 @implementation CNVCardInstantMessageParser
 
-+ (id)valueWithService:(id)a3 existingHandles:(id)a4 parser:(id)a5
++ (id)valueWithService:(id)service existingHandles:(id)handles parser:(id)parser
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v9 firstValueForParameterWithName:@"X-TEAMIDENTIFIER"];
-  v12 = [v9 firstParameterWithName:@"X-BUNDLEIDENTIFIERS"];
-  v13 = [v12 values];
+  serviceCopy = service;
+  parserCopy = parser;
+  handlesCopy = handles;
+  v11 = [parserCopy firstValueForParameterWithName:@"X-TEAMIDENTIFIER"];
+  v12 = [parserCopy firstParameterWithName:@"X-BUNDLEIDENTIFIERS"];
+  values = [v12 values];
 
-  v14 = [v9 firstValueForParameterWithName:@"X-USERID"];
-  v15 = [v9 parseStringValue];
-  [v9 advancePastSemicolon];
+  v14 = [parserCopy firstValueForParameterWithName:@"X-USERID"];
+  parseStringValue = [parserCopy parseStringValue];
+  [parserCopy advancePastSemicolon];
 
-  v16 = [v15 componentsSeparatedByString:@":"];
+  v16 = [parseStringValue componentsSeparatedByString:@":"];
   if ([v16 count] >= 2)
   {
     v17 = [v16 mutableCopy];
-    v30 = a1;
+    selfCopy = self;
     if ((*(*MEMORY[0x277CFBD30] + 16))())
     {
-      v18 = [v17 firstObject];
-      v19 = [CNVCardInstantMessageParser serviceForString:v18];
+      firstObject = [v17 firstObject];
+      v19 = [CNVCardInstantMessageParser serviceForString:firstObject];
 
-      v8 = v19;
+      serviceCopy = v19;
     }
 
-    [v17 removeObjectAtIndex:{0, v30}];
+    [v17 removeObjectAtIndex:{0, selfCopy}];
     v20 = [v17 componentsJoinedByString:@":"];
 
-    v21 = [v20 stringByRemovingPercentEncoding];
-    v22 = v21;
-    if (v21)
+    stringByRemovingPercentEncoding = [v20 stringByRemovingPercentEncoding];
+    v22 = stringByRemovingPercentEncoding;
+    if (stringByRemovingPercentEncoding)
     {
-      v23 = v21;
+      v23 = stringByRemovingPercentEncoding;
 
       v20 = v23;
     }
 
-    a1 = v31;
+    self = v31;
 
-    v15 = v20;
+    parseStringValue = v20;
   }
 
-  v24 = [a1 handleWithUsername:v15 userIdentifier:v14 service:v8 bundleIdentifiers:v13 teamIdentifier:v11];
+  v24 = [self handleWithUsername:parseStringValue userIdentifier:v14 service:serviceCopy bundleIdentifiers:values teamIdentifier:v11];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __71__CNVCardInstantMessageParser_valueWithService_existingHandles_parser___block_invoke;
   v32[3] = &unk_27A710D68;
   v33 = v24;
   v25 = v24;
-  v26 = [v10 _cn_any:v32];
+  v26 = [handlesCopy _cn_any:v32];
 
   if (v26)
   {
@@ -82,31 +82,31 @@ uint64_t __71__CNVCardInstantMessageParser_valueWithService_existingHandles_pars
   return v4;
 }
 
-+ (id)handleWithUsername:(id)a3 userIdentifier:(id)a4 service:(id)a5 bundleIdentifiers:(id)a6 teamIdentifier:(id)a7
++ (id)handleWithUsername:(id)username userIdentifier:(id)identifier service:(id)service bundleIdentifiers:(id)identifiers teamIdentifier:(id)teamIdentifier
 {
-  v11 = a3;
-  v12 = a6;
+  usernameCopy = username;
+  identifiersCopy = identifiers;
   v13 = MEMORY[0x277CBEB38];
-  v14 = a7;
-  v15 = a5;
-  v16 = a4;
-  v17 = [v13 dictionary];
-  if ([v12 count] == 1)
+  teamIdentifierCopy = teamIdentifier;
+  serviceCopy = service;
+  identifierCopy = identifier;
+  dictionary = [v13 dictionary];
+  if ([identifiersCopy count] == 1)
   {
-    v18 = [v12 firstObject];
-    v19 = [v18 componentsSeparatedByString:{@", "}];
+    firstObject = [identifiersCopy firstObject];
+    v19 = [firstObject componentsSeparatedByString:{@", "}];
 
-    v12 = v19;
+    identifiersCopy = v19;
   }
 
-  [v17 _cn_setNonNilObject:v11 forKey:@"username"];
-  [v17 _cn_setNonNilObject:v16 forKey:@"userIdentifier"];
+  [dictionary _cn_setNonNilObject:usernameCopy forKey:@"username"];
+  [dictionary _cn_setNonNilObject:identifierCopy forKey:@"userIdentifier"];
 
-  [v17 _cn_setNonNilObject:v14 forKey:@"teamIdentifier"];
-  [v17 _cn_setNonNilObject:v12 forKey:@"bundleIdentifiers"];
-  if (v15)
+  [dictionary _cn_setNonNilObject:teamIdentifierCopy forKey:@"teamIdentifier"];
+  [dictionary _cn_setNonNilObject:identifiersCopy forKey:@"bundleIdentifiers"];
+  if (serviceCopy)
   {
-    v20 = v15;
+    v20 = serviceCopy;
   }
 
   else
@@ -114,44 +114,44 @@ uint64_t __71__CNVCardInstantMessageParser_valueWithService_existingHandles_pars
     v20 = &stru_288651EC0;
   }
 
-  [v17 setObject:v20 forKey:@"service"];
+  [dictionary setObject:v20 forKey:@"service"];
 
-  return v17;
+  return dictionary;
 }
 
-+ (id)serviceForString:(id)a3
++ (id)serviceForString:(id)string
 {
-  v3 = a3;
-  v4 = [(__CFString *)v3 lowercaseString];
-  v5 = [(__CFString *)v3 length];
+  stringCopy = string;
+  lowercaseString = [(__CFString *)stringCopy lowercaseString];
+  v5 = [(__CFString *)stringCopy length];
   if (v5 > 5)
   {
     if (v5 > 7)
     {
       if (v5 == 8)
       {
-        if ([v4 isEqualToString:@"facebook"])
+        if ([lowercaseString isEqualToString:@"facebook"])
         {
           v7 = CNVCardInstantMessageServiceFacebook;
           goto LABEL_36;
         }
 
-        v10 = [v4 isEqualToString:@"gadugadu"];
+        v10 = [lowercaseString isEqualToString:@"gadugadu"];
         v11 = CNVCardInstantMessageServiceGaduGadu;
 LABEL_21:
         v6 = *v11;
         if (!v10)
         {
-          v6 = v3;
+          v6 = stringCopy;
         }
 
         goto LABEL_37;
       }
 
-      v6 = v3;
+      v6 = stringCopy;
       if (v5 == 10)
       {
-        v10 = [v4 isEqualToString:@"googletalk"];
+        v10 = [lowercaseString isEqualToString:@"googletalk"];
         v11 = CNVCardInstantMessageServiceGoogleTalk;
         goto LABEL_21;
       }
@@ -161,8 +161,8 @@ LABEL_21:
 
     if (v5 != 6)
     {
-      v8 = [v4 isEqualToString:@"x-apple"];
-      v6 = v3;
+      v8 = [lowercaseString isEqualToString:@"x-apple"];
+      v6 = stringCopy;
       if (v8)
       {
         v9 = 0;
@@ -174,7 +174,7 @@ LABEL_21:
 
     v12 = @"jabber";
 LABEL_20:
-    v10 = [v4 isEqualToString:v12];
+    v10 = [lowercaseString isEqualToString:v12];
     v11 = CNVCardInstantMessageServiceJabber;
     goto LABEL_21;
   }
@@ -183,19 +183,19 @@ LABEL_20:
   {
     if (v5 != 4)
     {
-      if ([v4 isEqualToString:@"gtalk"])
+      if ([lowercaseString isEqualToString:@"gtalk"])
       {
         v7 = CNVCardInstantMessageServiceGoogleTalk;
         goto LABEL_36;
       }
 
-      if ([v4 isEqualToString:@"skype"])
+      if ([lowercaseString isEqualToString:@"skype"])
       {
         v7 = CNVCardInstantMessageServiceSkype;
         goto LABEL_36;
       }
 
-      if ([v4 isEqualToString:@"yahoo"] || objc_msgSend(v4, "isEqualToString:", @"ymsgr"))
+      if ([lowercaseString isEqualToString:@"yahoo"] || objc_msgSend(lowercaseString, "isEqualToString:", @"ymsgr"))
       {
         v7 = CNVCardInstantMessageServiceYahoo;
         goto LABEL_36;
@@ -211,15 +211,15 @@ LABEL_20:
 
   if (v5 == 2)
   {
-    v10 = [v4 isEqualToString:@"qq"];
+    v10 = [lowercaseString isEqualToString:@"qq"];
     v11 = CNVCardInstantMessageServiceQQ;
     goto LABEL_21;
   }
 
-  v6 = v3;
+  v6 = stringCopy;
   if (v5 == 3)
   {
-    if ([v4 isEqualToString:@"aim"])
+    if ([lowercaseString isEqualToString:@"aim"])
     {
       v7 = CNVCardInstantMessageServiceAIM;
 LABEL_36:
@@ -227,7 +227,7 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    if ([v4 isEqualToString:@"icq"])
+    if ([lowercaseString isEqualToString:@"icq"])
     {
       v7 = CNVCardInstantMessageServiceICQ;
       goto LABEL_36;
@@ -235,7 +235,7 @@ LABEL_36:
 
     v13 = @"msn";
 LABEL_32:
-    v10 = [v4 isEqualToString:v13];
+    v10 = [lowercaseString isEqualToString:v13];
     v11 = CNVCardInstantMessageServiceMSN;
     goto LABEL_21;
   }

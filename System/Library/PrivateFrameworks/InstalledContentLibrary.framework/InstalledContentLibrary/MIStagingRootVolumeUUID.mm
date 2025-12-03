@@ -1,29 +1,29 @@
 @interface MIStagingRootVolumeUUID
-- (BOOL)isEqual:(id)a3;
-- (MIStagingRootVolumeUUID)initWithCoder:(id)a3;
-- (MIStagingRootVolumeUUID)initWithVolumeUUID:(id)a3 stagingSubsystem:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (MIStagingRootVolumeUUID)initWithCoder:(id)coder;
+- (MIStagingRootVolumeUUID)initWithVolumeUUID:(id)d stagingSubsystem:(unint64_t)subsystem;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)resolveRootWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)resolveRootWithError:(id *)error;
 - (unint64_t)hash;
-- (void)_runWithLock:(id)a3;
+- (void)_runWithLock:(id)lock;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MIStagingRootVolumeUUID
 
-- (MIStagingRootVolumeUUID)initWithVolumeUUID:(id)a3 stagingSubsystem:(unint64_t)a4
+- (MIStagingRootVolumeUUID)initWithVolumeUUID:(id)d stagingSubsystem:(unint64_t)subsystem
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = MIStagingRootVolumeUUID;
   v8 = [(MIStagingRootVolumeUUID *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_volumeUUID, a3);
-    v9->_stagingSubsystem = a4;
+    objc_storeStrong(&v8->_volumeUUID, d);
+    v9->_stagingSubsystem = subsystem;
     v9->_extensionHandle = -1;
     v9->_lock._os_unfair_lock_opaque = 0;
   }
@@ -31,19 +31,19 @@
   return v9;
 }
 
-- (MIStagingRootVolumeUUID)initWithCoder:(id)a3
+- (MIStagingRootVolumeUUID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MIStagingRootVolumeUUID;
   v5 = [(MIStagingRootVolumeUUID *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"volumeUUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"volumeUUID"];
     volumeUUID = v5->_volumeUUID;
     v5->_volumeUUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagingSubsystem"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagingSubsystem"];
     v5->_stagingSubsystem = [v8 unsignedLongLongValue];
   }
 
@@ -52,10 +52,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -65,15 +65,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIStagingRootVolumeUUID *)v5 volumeUUID];
-      v7 = [(MIStagingRootVolumeUUID *)self volumeUUID];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      volumeUUID = [(MIStagingRootVolumeUUID *)v5 volumeUUID];
+      volumeUUID2 = [(MIStagingRootVolumeUUID *)self volumeUUID];
+      if ([volumeUUID isEqual:volumeUUID2])
       {
-        v8 = [(MIStagingRootVolumeUUID *)v5 stagingSubsystem];
-        v9 = [(MIStagingRootVolumeUUID *)self stagingSubsystem];
+        stagingSubsystem = [(MIStagingRootVolumeUUID *)v5 stagingSubsystem];
+        stagingSubsystem2 = [(MIStagingRootVolumeUUID *)self stagingSubsystem];
 
-        if (v8 == v9)
+        if (stagingSubsystem == stagingSubsystem2)
         {
           v10 = 1;
 LABEL_10:
@@ -101,51 +101,51 @@ LABEL_11:
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MIStagingRootVolumeUUID *)self volumeUUID];
+  volumeUUID = [(MIStagingRootVolumeUUID *)self volumeUUID];
   v5 = MIStringForStagingSubsystem([(MIStagingRootVolumeUUID *)self stagingSubsystem]);
-  v6 = [v3 stringWithFormat:@"(%@|%@)", v4, v5];
+  v6 = [v3 stringWithFormat:@"(%@|%@)", volumeUUID, v5];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(MIStagingRootVolumeUUID *)self volumeUUID];
-  v6 = [v4 initWithVolumeUUID:v5 stagingSubsystem:{-[MIStagingRootVolumeUUID stagingSubsystem](self, "stagingSubsystem")}];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  volumeUUID = [(MIStagingRootVolumeUUID *)self volumeUUID];
+  v6 = [v4 initWithVolumeUUID:volumeUUID stagingSubsystem:{-[MIStagingRootVolumeUUID stagingSubsystem](self, "stagingSubsystem")}];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MIStagingRootVolumeUUID *)self volumeUUID];
-  [v4 encodeObject:v5 forKey:@"volumeUUID"];
+  coderCopy = coder;
+  volumeUUID = [(MIStagingRootVolumeUUID *)self volumeUUID];
+  [coderCopy encodeObject:volumeUUID forKey:@"volumeUUID"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[MIStagingRootVolumeUUID stagingSubsystem](self, "stagingSubsystem")}];
-  [v4 encodeObject:v6 forKey:@"stagingSubsystem"];
+  [coderCopy encodeObject:v6 forKey:@"stagingSubsystem"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(MIStagingRootVolumeUUID *)self volumeUUID];
-  v4 = [v3 hash];
-  v5 = [(MIStagingRootVolumeUUID *)self stagingSubsystem];
+  volumeUUID = [(MIStagingRootVolumeUUID *)self volumeUUID];
+  v4 = [volumeUUID hash];
+  stagingSubsystem = [(MIStagingRootVolumeUUID *)self stagingSubsystem];
 
-  return v5 ^ v4;
+  return stagingSubsystem ^ v4;
 }
 
-- (void)_runWithLock:(id)a3
+- (void)_runWithLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)resolveRootWithError:(id *)a3
+- (id)resolveRootWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -168,9 +168,9 @@ LABEL_11:
   v7[6] = &v14;
   [(MIStagingRootVolumeUUID *)self _runWithLock:v7];
   v4 = v15[5];
-  if (a3 && !v4)
+  if (error && !v4)
   {
-    *a3 = v9[5];
+    *error = v9[5];
     v4 = v15[5];
   }
 

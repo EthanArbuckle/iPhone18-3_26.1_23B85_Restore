@@ -1,19 +1,19 @@
 @interface SHCustomCatalog
-- (BOOL)addCustomCatalog:(id)a3 error:(id *)a4;
-- (BOOL)addCustomCatalogDataRepresentation:(id)a3 error:(id *)a4;
+- (BOOL)addCustomCatalog:(id)catalog error:(id *)error;
+- (BOOL)addCustomCatalogDataRepresentation:(id)representation error:(id *)error;
 - (BOOL)addCustomCatalogFromURL:(NSURL *)customCatalogURL error:(NSError *)error;
 - (BOOL)addReferenceSignature:(SHSignature *)signature representingMediaItems:(NSArray *)mediaItems error:(NSError *)error;
 - (BOOL)writeToURL:(NSURL *)destinationURL error:(NSError *)error;
 - (NSData)dataRepresentation;
 - (SHCustomCatalog)init;
-- (SHCustomCatalog)initWithConfiguration:(id)a3 dataRepresentation:(id)a4 error:(id *)a5;
-- (SHCustomCatalog)initWithConfiguration:(id)a3 error:(id *)a4;
-- (SHCustomCatalog)initWithDataRepresentation:(id)a3 error:(id *)a4;
+- (SHCustomCatalog)initWithConfiguration:(id)configuration dataRepresentation:(id)representation error:(id *)error;
+- (SHCustomCatalog)initWithConfiguration:(id)configuration error:(id *)error;
+- (SHCustomCatalog)initWithDataRepresentation:(id)representation error:(id *)error;
 - (id)_createMatcher;
-- (id)objectAtIndexedSubscript:(int64_t)a3;
+- (id)objectAtIndexedSubscript:(int64_t)subscript;
 - (int64_t)count;
-- (void)enumerateWithBlock:(id)a3;
-- (void)removeReferenceSignatureWithID:(id)a3;
+- (void)enumerateWithBlock:(id)block;
+- (void)removeReferenceSignatureWithID:(id)d;
 @end
 
 @implementation SHCustomCatalog
@@ -26,21 +26,21 @@
   return v4;
 }
 
-- (SHCustomCatalog)initWithDataRepresentation:(id)a3 error:(id *)a4
+- (SHCustomCatalog)initWithDataRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
+  representationCopy = representation;
   v7 = objc_opt_new();
-  v8 = [(SHCustomCatalog *)self initWithConfiguration:v7 dataRepresentation:v6 error:a4];
+  v8 = [(SHCustomCatalog *)self initWithConfiguration:v7 dataRepresentation:representationCopy error:error];
 
   return v8;
 }
 
-- (SHCustomCatalog)initWithConfiguration:(id)a3 dataRepresentation:(id)a4 error:(id *)a5
+- (SHCustomCatalog)initWithConfiguration:(id)configuration dataRepresentation:(id)representation error:(id *)error
 {
-  v8 = a4;
-  v9 = [(SHCustomCatalog *)self initWithConfiguration:a3 error:a5];
+  representationCopy = representation;
+  v9 = [(SHCustomCatalog *)self initWithConfiguration:configuration error:error];
   v10 = v9;
-  if (v9 && ![(SHCustomCatalog *)v9 addCustomCatalogDataRepresentation:v8 error:a5])
+  if (v9 && ![(SHCustomCatalog *)v9 addCustomCatalogDataRepresentation:representationCopy error:error])
   {
     v11 = 0;
   }
@@ -53,16 +53,16 @@
   return v11;
 }
 
-- (SHCustomCatalog)initWithConfiguration:(id)a3 error:(id *)a4
+- (SHCustomCatalog)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v7 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = SHCustomCatalog;
-  v8 = [(SHCatalog *)&v13 initWithConfiguration:v7 error:a4];
+  v8 = [(SHCatalog *)&v13 initWithConfiguration:configurationCopy error:error];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->__configuration, a3);
+    objc_storeStrong(&v8->__configuration, configuration);
     v10 = objc_alloc_init(SHJSONLCustomCatalogContainer);
     customCatalogContainer = v9->_customCatalogContainer;
     v9->_customCatalogContainer = v10;
@@ -74,30 +74,30 @@
 - (BOOL)addCustomCatalogFromURL:(NSURL *)customCatalogURL error:(NSError *)error
 {
   v6 = customCatalogURL;
-  v7 = [(SHCustomCatalog *)self customCatalogContainer];
-  v8 = [v7 loadFromURL:v6 error:error];
+  customCatalogContainer = [(SHCustomCatalog *)self customCatalogContainer];
+  v8 = [customCatalogContainer loadFromURL:v6 error:error];
 
   [SHError remapErrorToClientErrorPointer:error];
   return v8;
 }
 
-- (BOOL)addCustomCatalog:(id)a3 error:(id *)a4
+- (BOOL)addCustomCatalog:(id)catalog error:(id *)error
 {
-  v6 = [a3 dataRepresentation];
-  LOBYTE(a4) = [(SHCustomCatalog *)self addCustomCatalogDataRepresentation:v6 error:a4];
+  dataRepresentation = [catalog dataRepresentation];
+  LOBYTE(error) = [(SHCustomCatalog *)self addCustomCatalogDataRepresentation:dataRepresentation error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)addCustomCatalogDataRepresentation:(id)a3 error:(id *)a4
+- (BOOL)addCustomCatalogDataRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SHCustomCatalog *)self customCatalogContainer];
-  v8 = [v7 loadFromData:v6 error:a4];
+  representationCopy = representation;
+  customCatalogContainer = [(SHCustomCatalog *)self customCatalogContainer];
+  v8 = [customCatalogContainer loadFromData:representationCopy error:error];
 
   if ((v8 & 1) == 0)
   {
-    [SHError remapErrorToClientErrorPointer:a4];
+    [SHError remapErrorToClientErrorPointer:error];
   }
 
   return v8;
@@ -106,8 +106,8 @@
 - (BOOL)writeToURL:(NSURL *)destinationURL error:(NSError *)error
 {
   v6 = destinationURL;
-  v7 = [(SHCustomCatalog *)self customCatalogContainer];
-  v8 = [v7 writeToURL:v6 error:error];
+  customCatalogContainer = [(SHCustomCatalog *)self customCatalogContainer];
+  v8 = [customCatalogContainer writeToURL:v6 error:error];
 
   [SHError remapErrorToClientErrorPointer:error];
   return v8;
@@ -115,10 +115,10 @@
 
 - (NSData)dataRepresentation
 {
-  v2 = [(SHCustomCatalog *)self customCatalogContainer];
-  v3 = [v2 dataRepresentation];
+  customCatalogContainer = [(SHCustomCatalog *)self customCatalogContainer];
+  dataRepresentation = [customCatalogContainer dataRepresentation];
 
-  return v3;
+  return dataRepresentation;
 }
 
 - (BOOL)addReferenceSignature:(SHSignature *)signature representingMediaItems:(NSArray *)mediaItems error:(NSError *)error
@@ -131,14 +131,14 @@
   [(SHCatalog *)self minimumQuerySignatureDuration];
   if (v11 >= v12)
   {
-    v21 = [(SHCustomCatalog *)self customCatalogContainer];
+    customCatalogContainer = [(SHCustomCatalog *)self customCatalogContainer];
     v22 = [(SHSignature *)v8 _ID];
-    v23 = [v21 containsSignatureWithIdentifier:v22];
+    v23 = [customCatalogContainer containsSignatureWithIdentifier:v22];
 
     if (!v23)
     {
-      v28 = [(SHCustomCatalog *)self customCatalogContainer];
-      [v28 addSignature:v8 representingMediaItems:v9];
+      customCatalogContainer2 = [(SHCustomCatalog *)self customCatalogContainer];
+      [customCatalogContainer2 addSignature:v8 representingMediaItems:v9];
 
       v27 = 1;
       goto LABEL_7;
@@ -146,8 +146,8 @@
 
     v24 = MEMORY[0x277CCACA8];
     v25 = [(SHSignature *)v8 _ID];
-    v26 = [v25 UUIDString];
-    v17 = [v24 stringWithFormat:@"A signature with the ID %@ already exists in the catalog.", v26];
+    uUIDString = [v25 UUIDString];
+    v17 = [v24 stringWithFormat:@"A signature with the ID %@ already exists in the catalog.", uUIDString];
 
     v31 = *MEMORY[0x277CCA470];
     v32 = v17;
@@ -180,36 +180,36 @@ LABEL_7:
   return v27;
 }
 
-- (void)enumerateWithBlock:(id)a3
+- (void)enumerateWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v16 = 0;
-  v5 = [(SHCustomCatalog *)self customCatalogContainer];
-  v6 = [v5 referenceSignatures];
-  v7 = [v6 count];
+  customCatalogContainer = [(SHCustomCatalog *)self customCatalogContainer];
+  referenceSignatures = [customCatalogContainer referenceSignatures];
+  v7 = [referenceSignatures count];
 
   if (v7)
   {
     v8 = 0;
     do
     {
-      v9 = [(SHCustomCatalog *)self customCatalogContainer];
-      v10 = [v9 matchReferenceAtIndex:v8];
+      customCatalogContainer2 = [(SHCustomCatalog *)self customCatalogContainer];
+      v10 = [customCatalogContainer2 matchReferenceAtIndex:v8];
 
-      v11 = [v10 signature];
-      v12 = [v10 mediaItems];
-      v4[2](v4, v11, v12, &v16);
+      signature = [v10 signature];
+      mediaItems = [v10 mediaItems];
+      blockCopy[2](blockCopy, signature, mediaItems, &v16);
 
-      LODWORD(v11) = v16;
-      if (v11 == 1)
+      LODWORD(signature) = v16;
+      if (signature == 1)
       {
         break;
       }
 
       ++v8;
-      v13 = [(SHCustomCatalog *)self customCatalogContainer];
-      v14 = [v13 referenceSignatures];
-      v15 = [v14 count];
+      customCatalogContainer3 = [(SHCustomCatalog *)self customCatalogContainer];
+      referenceSignatures2 = [customCatalogContainer3 referenceSignatures];
+      v15 = [referenceSignatures2 count];
     }
 
     while (v15 > v8);
@@ -228,15 +228,15 @@ LABEL_7:
   v11[3] = &unk_2788F8028;
   v11[4] = &v12;
   [(SHCustomCatalog *)self enumerateWithBlock:v11];
-  v3 = [(SHCustomCatalog *)self _configuration];
-  v4 = [v3 supportsSignatureTracking];
+  _configuration = [(SHCustomCatalog *)self _configuration];
+  supportsSignatureTracking = [_configuration supportsSignatureTracking];
 
-  if (v4)
+  if (supportsSignatureTracking)
   {
     v5 = [SHCustomCatalogTrackerMatcher alloc];
-    v6 = [(SHCustomCatalog *)self _customCatalogConfiguration];
-    v7 = [(SHCustomCatalog *)self customCatalogContainer];
-    v8 = [(SHCustomCatalogTrackerMatcher *)v5 initWithCustomCatalogConfiguration:v6 container:v7];
+    _customCatalogConfiguration = [(SHCustomCatalog *)self _customCatalogConfiguration];
+    customCatalogContainer = [(SHCustomCatalog *)self customCatalogContainer];
+    v8 = [(SHCustomCatalogTrackerMatcher *)v5 initWithCustomCatalogConfiguration:_customCatalogConfiguration container:customCatalogContainer];
   }
 
   else
@@ -313,27 +313,27 @@ void __33__SHCustomCatalog__createMatcher__block_invoke(uint64_t a1, uint64_t a2
 
 - (int64_t)count
 {
-  v2 = [(SHCustomCatalog *)self customCatalogContainer];
-  v3 = [v2 count];
+  customCatalogContainer = [(SHCustomCatalog *)self customCatalogContainer];
+  v3 = [customCatalogContainer count];
 
   return v3;
 }
 
-- (id)objectAtIndexedSubscript:(int64_t)a3
+- (id)objectAtIndexedSubscript:(int64_t)subscript
 {
-  v4 = [(SHCustomCatalog *)self customCatalogContainer];
-  v5 = [v4 matchReferenceAtIndex:a3];
+  customCatalogContainer = [(SHCustomCatalog *)self customCatalogContainer];
+  v5 = [customCatalogContainer matchReferenceAtIndex:subscript];
 
   return v5;
 }
 
-- (void)removeReferenceSignatureWithID:(id)a3
+- (void)removeReferenceSignatureWithID:(id)d
 {
-  v4 = a3;
-  v6 = [(SHCustomCatalog *)self customCatalogContainer];
-  v5 = [v4 UUIDString];
+  dCopy = d;
+  customCatalogContainer = [(SHCustomCatalog *)self customCatalogContainer];
+  uUIDString = [dCopy UUIDString];
 
-  [v6 removeSignatureWithID:v5];
+  [customCatalogContainer removeSignatureWithID:uUIDString];
 }
 
 @end

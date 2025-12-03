@@ -1,36 +1,36 @@
 @interface CKMediaObjectBackedAssetAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation CKMediaObjectBackedAssetAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKMediaObjectBackedAsset" hasInstanceMethod:@"acknowledgmentChatItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMediaObjectBackedAsset" hasInstanceMethod:@"mediaType" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKMediaObjectBackedAsset" hasInstanceMethod:@"acknowledgmentChatItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMediaObjectBackedAsset" hasInstanceMethod:@"mediaType" withFullSignature:{"q", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(CKMediaObjectBackedAssetAccessibility *)self accessibilityUserDefinedLabel];
-  v4 = v3;
-  if (v3)
+  accessibilityUserDefinedLabel = [(CKMediaObjectBackedAssetAccessibility *)self accessibilityUserDefinedLabel];
+  v4 = accessibilityUserDefinedLabel;
+  if (accessibilityUserDefinedLabel)
   {
-    v5 = v3;
+    v5 = accessibilityUserDefinedLabel;
     goto LABEL_10;
   }
 
-  v6 = [(CKMediaObjectBackedAssetAccessibility *)self _accessibilityMediaType];
-  if (v6 == 1)
+  _accessibilityMediaType = [(CKMediaObjectBackedAssetAccessibility *)self _accessibilityMediaType];
+  if (_accessibilityMediaType == 1)
   {
     v7 = @"photo.attachment";
   }
 
   else
   {
-    if (v6 != 2)
+    if (_accessibilityMediaType != 2)
     {
       v8 = 0;
       goto LABEL_9;

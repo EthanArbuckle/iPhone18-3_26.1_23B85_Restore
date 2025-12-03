@@ -15,8 +15,8 @@
     v6 = *&self->bundleIdentifier[OBJC_IVAR___CCUIControlIntentPersistenceAssertion_bundleIdentifier];
     v7 = *(&self->super.isa + OBJC_IVAR___CCUIControlIntentPersistenceAssertion_dataSourceIdentifier);
     v8 = *&self->bundleIdentifier[OBJC_IVAR___CCUIControlIntentPersistenceAssertion_dataSourceIdentifier];
-    v9 = self;
-    sub_21EA61F80(v9, v5, v6, v7, v8);
+    selfCopy = self;
+    sub_21EA61F80(selfCopy, v5, v6, v7, v8);
   }
 }
 

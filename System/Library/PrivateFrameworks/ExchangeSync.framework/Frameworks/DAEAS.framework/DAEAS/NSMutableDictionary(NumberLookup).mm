@@ -10,7 +10,7 @@
   v6 = [MEMORY[0x277CCABB0] numberWithInt:a4];
   if (v6)
   {
-    [a1 setObject:v7 forKeyedSubscript:v6];
+    [self setObject:v7 forKeyedSubscript:v6];
   }
 }
 

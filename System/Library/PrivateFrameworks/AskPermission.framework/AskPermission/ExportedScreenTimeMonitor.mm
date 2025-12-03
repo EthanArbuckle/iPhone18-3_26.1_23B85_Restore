@@ -7,7 +7,7 @@
 
 - (void)appExceptionsDidUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_24106E964();
 }
 

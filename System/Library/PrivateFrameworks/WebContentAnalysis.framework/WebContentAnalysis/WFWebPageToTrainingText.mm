@@ -1,20 +1,20 @@
 @interface WFWebPageToTrainingText
-+ (id)signatureForCategory:(unint64_t)a3;
++ (id)signatureForCategory:(unint64_t)category;
 - (id)rawPlainText;
 - (void)dealloc;
-- (void)setCategorySignature:(id)a3;
+- (void)setCategorySignature:(id)signature;
 @end
 
 @implementation WFWebPageToTrainingText
 
-+ (id)signatureForCategory:(unint64_t)a3
++ (id)signatureForCategory:(unint64_t)category
 {
   result = 0;
-  if (a3 <= 4)
+  if (category <= 4)
   {
-    if (a3 > 2)
+    if (category > 2)
     {
-      if (a3 == 3)
+      if (category == 3)
       {
         return WFWebPageToTrainingText_Category3;
       }
@@ -25,20 +25,20 @@
       }
     }
 
-    else if (a3 == 1)
+    else if (category == 1)
     {
       return WFWebPageToTrainingText_Category1;
     }
 
-    else if (a3 == 2)
+    else if (category == 2)
     {
       return WFWebPageToTrainingText_Category2;
     }
   }
 
-  else if (a3 <= 6)
+  else if (category <= 6)
   {
-    if (a3 == 5)
+    if (category == 5)
     {
       return WFWebPageToTrainingText_Category5;
     }
@@ -51,7 +51,7 @@
 
   else
   {
-    switch(a3)
+    switch(category)
     {
       case 7uLL:
         return WFWebPageToTrainingText_Category7;
@@ -65,11 +65,11 @@
   return result;
 }
 
-- (void)setCategorySignature:(id)a3
+- (void)setCategorySignature:(id)signature
 {
-  v5 = a3;
+  signatureCopy = signature;
 
-  self->categorySignature = a3;
+  self->categorySignature = signature;
 }
 
 - (id)rawPlainText
@@ -77,10 +77,10 @@
   v3 = objc_opt_new();
   [v3 appendString:WFWebPageToTrainingText_Signature];
   [v3 appendString:@"\n"];
-  v4 = [(WFWebPageToTrainingText *)self categorySignature];
-  if (v4)
+  categorySignature = [(WFWebPageToTrainingText *)self categorySignature];
+  if (categorySignature)
   {
-    [v3 appendString:v4];
+    [v3 appendString:categorySignature];
   }
 
   [v3 appendString:@"\n"];

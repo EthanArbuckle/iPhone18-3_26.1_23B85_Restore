@@ -1,20 +1,20 @@
 @interface CLDaemonStatusAdapter
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (BOOL)syncgetBatterySaverMode;
-- (BOOL)syncgetRegisterPowerKeepAlive:(BOOL)a3 client:(unint64_t)a4 dbgMessage:(id)a5;
+- (BOOL)syncgetRegisterPowerKeepAlive:(BOOL)alive client:(unint64_t)client dbgMessage:(id)message;
 - (CLDaemonStatusAdapter)init;
 - (int)syncgetReachability;
 - (int)syncgetThermalLevel;
 - (void)adaptee;
 - (void)beginService;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
 - (void)endService;
-- (void)fetchIsAirplaneModeEnabledWithReply:(id)a3;
-- (void)fetchIsBatteryConnectedWithReply:(id)a3;
-- (void)fetchReachabilityWithReply:(id)a3;
-- (void)fetchWirelessModemClientCountWithReply:(id)a3;
+- (void)fetchIsAirplaneModeEnabledWithReply:(id)reply;
+- (void)fetchIsBatteryConnectedWithReply:(id)reply;
+- (void)fetchReachabilityWithReply:(id)reply;
+- (void)fetchWirelessModemClientCountWithReply:(id)reply;
 - (void)notifyMigrationPerformed;
 - (void)triggerMetricHeartbeatNotification;
 @end
@@ -38,12 +38,12 @@
   return [v2 reachability];
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -80,52 +80,52 @@
   v2();
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = [(CLDaemonStatusAdapter *)self adaptee];
-  v5 = *(a3 + 2);
+  adaptee = [(CLDaemonStatusAdapter *)self adaptee];
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, adaptee);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  (*(a3 + 2))(a3, [(CLDaemonStatusAdapter *)self adaptee]);
-  v5 = *(a4 + 2);
+  (*(async + 2))(async, [(CLDaemonStatusAdapter *)self adaptee]);
+  v5 = *(reply + 2);
 
-  v5(a4);
+  v5(reply);
 }
 
-- (void)fetchIsAirplaneModeEnabledWithReply:(id)a3
-{
-  v4 = [*(-[CLDaemonStatusAdapter adaptee](self "adaptee") + 14)];
-  v5 = *(a3 + 2);
-
-  v5(a3, v4);
-}
-
-- (void)fetchReachabilityWithReply:(id)a3
+- (void)fetchIsAirplaneModeEnabledWithReply:(id)reply
 {
   v4 = [*(-[CLDaemonStatusAdapter adaptee](self "adaptee") + 14)];
-  v5 = *(a3 + 2);
+  v5 = *(reply + 2);
 
-  v5(a3, v4);
+  v5(reply, v4);
 }
 
-- (void)fetchIsBatteryConnectedWithReply:(id)a3
+- (void)fetchReachabilityWithReply:(id)reply
+{
+  v4 = [*(-[CLDaemonStatusAdapter adaptee](self "adaptee") + 14)];
+  v5 = *(reply + 2);
+
+  v5(reply, v4);
+}
+
+- (void)fetchIsBatteryConnectedWithReply:(id)reply
 {
   v8 = 7;
   v4 = [(CLDaemonStatusAdapter *)self adaptee:0xBFF0000000000000];
   v5 = (*(*v4 + 128))(v4, &v8, &v6);
-  (*(a3 + 2))(a3, (v5 & BYTE1(v7)));
+  (*(reply + 2))(reply, (v5 & BYTE1(v7)));
 }
 
-- (void)fetchWirelessModemClientCountWithReply:(id)a3
+- (void)fetchWirelessModemClientCountWithReply:(id)reply
 {
   v7 = 12;
   LOBYTE(v6[0]) = 0;
-  v4 = [(CLDaemonStatusAdapter *)self adaptee];
-  if ((*(*v4 + 128))(v4, &v7, v6))
+  adaptee = [(CLDaemonStatusAdapter *)self adaptee];
+  if ((*(*adaptee + 128))(adaptee, &v7, v6))
   {
     v5 = v6[0];
   }
@@ -135,30 +135,30 @@
     v5 = 0;
   }
 
-  (*(a3 + 2))(a3, v5);
+  (*(reply + 2))(reply, v5);
 }
 
 - (void)notifyMigrationPerformed
 {
-  v2 = [(CLDaemonStatusAdapter *)self adaptee];
+  adaptee = [(CLDaemonStatusAdapter *)self adaptee];
 
-  sub_10061B82C(v2);
+  sub_10061B82C(adaptee);
 }
 
-- (BOOL)syncgetRegisterPowerKeepAlive:(BOOL)a3 client:(unint64_t)a4 dbgMessage:(id)a5
+- (BOOL)syncgetRegisterPowerKeepAlive:(BOOL)alive client:(unint64_t)client dbgMessage:(id)message
 {
-  v7 = a3;
-  v8 = [(CLDaemonStatusAdapter *)self adaptee];
-  v9 = [a5 UTF8String];
+  aliveCopy = alive;
+  adaptee = [(CLDaemonStatusAdapter *)self adaptee];
+  uTF8String = [message UTF8String];
 
-  return sub_1001B7568(v8, v7, a4, v9);
+  return sub_1001B7568(adaptee, aliveCopy, client, uTF8String);
 }
 
 - (void)triggerMetricHeartbeatNotification
 {
-  v2 = [(CLDaemonStatusAdapter *)self adaptee];
+  adaptee = [(CLDaemonStatusAdapter *)self adaptee];
 
-  sub_10061B988(v2);
+  sub_10061B988(adaptee);
 }
 
 - (int)syncgetThermalLevel

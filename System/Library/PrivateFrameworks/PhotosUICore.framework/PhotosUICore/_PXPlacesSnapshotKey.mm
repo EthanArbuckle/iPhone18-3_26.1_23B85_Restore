@@ -1,8 +1,8 @@
 @interface _PXPlacesSnapshotKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)_imageSize;
-- (_PXPlacesSnapshotKey)initWithImageSize:(CGSize)a3 userInterfaceStyle:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_PXPlacesSnapshotKey)initWithImageSize:(CGSize)size userInterfaceStyle:(int64_t)style;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _PXPlacesSnapshotKey
@@ -16,10 +16,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -29,7 +29,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(_PXPlacesSnapshotKey *)self _imageSize];
       [(_PXPlacesSnapshotKey *)v5 _imageSize];
       PXSizeApproximatelyEqualToSize();
@@ -41,21 +41,21 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_PXPlacesSnapshotKey alloc];
   [(_PXPlacesSnapshotKey *)self _imageSize];
   v6 = v5;
   v8 = v7;
-  v9 = [(_PXPlacesSnapshotKey *)self _userInterfaceStyle];
+  _userInterfaceStyle = [(_PXPlacesSnapshotKey *)self _userInterfaceStyle];
 
-  return [(_PXPlacesSnapshotKey *)v4 initWithImageSize:v9 userInterfaceStyle:v6, v8];
+  return [(_PXPlacesSnapshotKey *)v4 initWithImageSize:_userInterfaceStyle userInterfaceStyle:v6, v8];
 }
 
-- (_PXPlacesSnapshotKey)initWithImageSize:(CGSize)a3 userInterfaceStyle:(int64_t)a4
+- (_PXPlacesSnapshotKey)initWithImageSize:(CGSize)size userInterfaceStyle:(int64_t)style
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = _PXPlacesSnapshotKey;
   result = [(_PXPlacesSnapshotKey *)&v8 init];
@@ -63,7 +63,7 @@
   {
     result->__imageSize.width = width;
     result->__imageSize.height = height;
-    result->__userInterfaceStyle = a4;
+    result->__userInterfaceStyle = style;
   }
 
   return result;

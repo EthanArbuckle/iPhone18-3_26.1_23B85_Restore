@@ -4,18 +4,18 @@
 - (BOOL)isThrottling;
 - (BOOL)isThrottlingOrDisabled;
 - (NSSet)disableEventReasons;
-- (VIOSessionStateManager)initWithSession:(id)a3 configuration:(id)a4;
+- (VIOSessionStateManager)initWithSession:(id)session configuration:(id)configuration;
 - (double)remainingThrottleTime;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)disableSession;
-- (void)recordSessionDisableEvent:(int64_t)a3;
-- (void)recordStateEnteredThrottleEvent:(int64_t)a3;
-- (void)removeObserver:(id)a3;
-- (void)resetSessionDisableEvent:(int64_t)a3;
-- (void)resetStateEnteredThrottleEvent:(int64_t)a3;
+- (void)recordSessionDisableEvent:(int64_t)event;
+- (void)recordStateEnteredThrottleEvent:(int64_t)event;
+- (void)removeObserver:(id)observer;
+- (void)resetSessionDisableEvent:(int64_t)event;
+- (void)resetStateEnteredThrottleEvent:(int64_t)event;
 - (void)resumeSession;
-- (void)throttleSessionWithEventReason:(int64_t)a3;
+- (void)throttleSessionWithEventReason:(int64_t)reason;
 @end
 
 @implementation VIOSessionStateManager
@@ -40,7 +40,7 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v14 = 136316418;
-        v15 = "[VIOSessionStateManager resumeSession]";
+        selfCopy = "[VIOSessionStateManager resumeSession]";
         v16 = 2080;
         v17 = "VIOSessionStateManager.m";
         v18 = 1024;
@@ -61,7 +61,7 @@
         {
           v13 = +[NSThread callStackSymbols];
           v14 = 138412290;
-          v15 = v13;
+          selfCopy = v13;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%@", &v14, 0xCu);
         }
       }
@@ -72,18 +72,18 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v14 = 134349056;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Resuming VIO session", &v14, 0xCu);
   }
 
   [(VIOSessionStateManager *)self setSessionRestartTimer:0];
-  v7 = [(VIOSessionStateManager *)self session];
-  v8 = [(VIOSessionStateManager *)self configuration];
-  [v7 runWithConfiguration:v8];
+  session = [(VIOSessionStateManager *)self session];
+  configuration = [(VIOSessionStateManager *)self configuration];
+  [session runWithConfiguration:configuration];
 
-  v9 = [(VIOSessionStateManager *)self session];
-  v10 = [v9 technique];
-  [v10 setVioThrottled:0];
+  session2 = [(VIOSessionStateManager *)self session];
+  technique = [session2 technique];
+  [technique setVioThrottled:0];
 }
 
 - (void)disableSession
@@ -99,7 +99,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v13 = 136316418;
-        v14 = "[VIOSessionStateManager disableSession]";
+        selfCopy = "[VIOSessionStateManager disableSession]";
         v15 = 2080;
         v16 = "VIOSessionStateManager.m";
         v17 = 1024;
@@ -120,7 +120,7 @@
         {
           v12 = +[NSThread callStackSymbols];
           v13 = 138412290;
-          v14 = v12;
+          selfCopy = v12;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%@", &v13, 0xCu);
         }
       }
@@ -130,23 +130,23 @@
   v6 = sub_100C75F08();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(VIOSessionStateManager *)self disableEventReasons];
+    disableEventReasons = [(VIOSessionStateManager *)self disableEventReasons];
     v13 = 134349314;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v7;
+    v16 = disableEventReasons;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Disabling VIO session with event reasons: %@", &v13, 0x16u);
   }
 
-  v8 = [(VIOSessionStateManager *)self stateEnteredThrottleEventTimers];
-  [v8 removeAllObjects];
+  stateEnteredThrottleEventTimers = [(VIOSessionStateManager *)self stateEnteredThrottleEventTimers];
+  [stateEnteredThrottleEventTimers removeAllObjects];
 
   [(VIOSessionStateManager *)self setSessionRestartTimer:0];
-  v9 = [(VIOSessionStateManager *)self session];
-  [v9 pause];
+  session = [(VIOSessionStateManager *)self session];
+  [session pause];
 }
 
-- (void)throttleSessionWithEventReason:(int64_t)a3
+- (void)throttleSessionWithEventReason:(int64_t)reason
 {
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
@@ -159,7 +159,7 @@
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 136316418;
-        v25 = "[VIOSessionStateManager throttleSessionWithEventReason:]";
+        selfCopy2 = "[VIOSessionStateManager throttleSessionWithEventReason:]";
         v26 = 2080;
         v27 = "VIOSessionStateManager.m";
         v28 = 1024;
@@ -180,7 +180,7 @@
         {
           v21 = +[NSThread callStackSymbols];
           *buf = 138412290;
-          v25 = v21;
+          selfCopy2 = v21;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
@@ -191,28 +191,28 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = @"VIOSessionThrottleEventDeviceMotion";
-    if (!a3)
+    if (!reason)
     {
       v9 = @"VIOSessionThrottleEventARTrackingState";
     }
 
     *buf = 134349314;
-    v25 = self;
+    selfCopy2 = self;
     v26 = 2112;
     v27 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Pausing VIO session with event reason: %@", buf, 0x16u);
   }
 
-  [(VIOSessionStateManager *)self setThrottleEventReason:a3];
-  v10 = [(VIOSessionStateManager *)self stateEnteredThrottleEventTimers];
-  [v10 removeAllObjects];
+  [(VIOSessionStateManager *)self setThrottleEventReason:reason];
+  stateEnteredThrottleEventTimers = [(VIOSessionStateManager *)self stateEnteredThrottleEventTimers];
+  [stateEnteredThrottleEventTimers removeAllObjects];
 
-  v11 = [(VIOSessionStateManager *)self session];
-  v12 = [v11 technique];
-  [v12 setVioThrottled:1];
+  session = [(VIOSessionStateManager *)self session];
+  technique = [session technique];
+  [technique setVioThrottled:1];
 
-  v13 = [(VIOSessionStateManager *)self session];
-  [v13 pause];
+  session2 = [(VIOSessionStateManager *)self session];
+  [session2 pause];
 
   GEOConfigGetDouble();
   v15 = v14;
@@ -220,7 +220,7 @@
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     *buf = 134349312;
-    v25 = self;
+    selfCopy2 = self;
     v26 = 2048;
     v27 = *&v15;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}p] Starting retry timer with interval: %f", buf, 0x16u);
@@ -235,8 +235,8 @@
   v17 = [GCDTimer scheduledTimerWithTimeInterval:&_dispatch_main_q queue:v22 block:v15];
   [(VIOSessionStateManager *)self setSessionRestartTimer:v17];
 
-  v18 = [(VIOSessionStateManager *)self observers];
-  [v18 throttleDidBeginWithEvent:a3];
+  observers = [(VIOSessionStateManager *)self observers];
+  [observers throttleDidBeginWithEvent:reason];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(buf);
@@ -294,9 +294,9 @@
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -336,13 +336,13 @@
     }
   }
 
-  v8 = [(VIOSessionStateManager *)self observers];
-  [v8 unregisterObserver:v4];
+  observers = [(VIOSessionStateManager *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -382,8 +382,8 @@
     }
   }
 
-  v8 = [(VIOSessionStateManager *)self observers];
-  [v8 registerObserver:v4];
+  observers = [(VIOSessionStateManager *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
 - (NSSet)disableEventReasons
@@ -427,8 +427,8 @@
     }
   }
 
-  v6 = [(VIOSessionStateManager *)self activeDisableEvents];
-  v7 = [v6 copy];
+  activeDisableEvents = [(VIOSessionStateManager *)self activeDisableEvents];
+  v7 = [activeDisableEvents copy];
 
   return v7;
 }
@@ -474,8 +474,8 @@
     }
   }
 
-  v6 = [(VIOSessionStateManager *)self activeDisableEvents];
-  v7 = [v6 count] != 0;
+  activeDisableEvents = [(VIOSessionStateManager *)self activeDisableEvents];
+  v7 = [activeDisableEvents count] != 0;
 
   return v7;
 }
@@ -521,9 +521,9 @@
     }
   }
 
-  v6 = [(VIOSessionStateManager *)self sessionRestartTimer];
-  v7 = [v6 fireDate];
-  [v7 timeIntervalSinceNow];
+  sessionRestartTimer = [(VIOSessionStateManager *)self sessionRestartTimer];
+  fireDate = [sessionRestartTimer fireDate];
+  [fireDate timeIntervalSinceNow];
   v9 = v8;
 
   return v9;
@@ -570,13 +570,13 @@
     }
   }
 
-  v6 = [(VIOSessionStateManager *)self sessionRestartTimer];
-  v7 = v6 != 0;
+  sessionRestartTimer = [(VIOSessionStateManager *)self sessionRestartTimer];
+  v7 = sessionRestartTimer != 0;
 
   return v7;
 }
 
-- (void)resetSessionDisableEvent:(int64_t)a3
+- (void)resetSessionDisableEvent:(int64_t)event
 {
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
@@ -589,7 +589,7 @@
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         v25 = 136316418;
-        v26 = "[VIOSessionStateManager resetSessionDisableEvent:]";
+        selfCopy2 = "[VIOSessionStateManager resetSessionDisableEvent:]";
         v27 = 2080;
         v28 = "VIOSessionStateManager.m";
         v29 = 1024;
@@ -610,28 +610,28 @@
         {
           v24 = +[NSThread callStackSymbols];
           v25 = 138412290;
-          v26 = v24;
+          selfCopy2 = v24;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%@", &v25, 0xCu);
         }
       }
     }
   }
 
-  v8 = [(VIOSessionStateManager *)self activeDisableEvents];
-  v9 = [NSNumber numberWithInteger:a3];
-  v10 = [v8 containsObject:v9];
+  activeDisableEvents = [(VIOSessionStateManager *)self activeDisableEvents];
+  v9 = [NSNumber numberWithInteger:event];
+  v10 = [activeDisableEvents containsObject:v9];
 
   if (v10)
   {
-    v11 = [(VIOSessionStateManager *)self activeDisableEvents];
-    v12 = [v11 count];
+    activeDisableEvents2 = [(VIOSessionStateManager *)self activeDisableEvents];
+    v12 = [activeDisableEvents2 count];
 
-    v13 = [(VIOSessionStateManager *)self activeDisableEvents];
-    v14 = [NSNumber numberWithInteger:a3];
-    [v13 removeObject:v14];
+    activeDisableEvents3 = [(VIOSessionStateManager *)self activeDisableEvents];
+    v14 = [NSNumber numberWithInteger:event];
+    [activeDisableEvents3 removeObject:v14];
 
-    v15 = [(VIOSessionStateManager *)self activeDisableEvents];
-    v16 = [v15 count];
+    activeDisableEvents4 = [(VIOSessionStateManager *)self activeDisableEvents];
+    v16 = [activeDisableEvents4 count];
 
     v17 = sub_100C75F08();
     v18 = v17;
@@ -639,18 +639,18 @@
     {
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        if ((a3 - 1) > 9)
+        if ((event - 1) > 9)
         {
           v20 = @"VIOSessionDisableEventLowPowerMode";
         }
 
         else
         {
-          v20 = off_10164F638[a3 - 1];
+          v20 = off_10164F638[event - 1];
         }
 
         v25 = 134349314;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 2112;
         v28 = v20;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "[%{public}p] Resetting disable event of type %@", &v25, 0x16u);
@@ -661,18 +661,18 @@
     {
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
-        if ((a3 - 1) > 9)
+        if ((event - 1) > 9)
         {
           v19 = @"VIOSessionDisableEventLowPowerMode";
         }
 
         else
         {
-          v19 = off_10164F638[a3 - 1];
+          v19 = off_10164F638[event - 1];
         }
 
         v25 = 134349314;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 2112;
         v28 = v19;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "[%{public}p] Resetting the last disable event after type %@", &v25, 0x16u);
@@ -681,12 +681,12 @@
       [(VIOSessionStateManager *)self resumeSession];
     }
 
-    v21 = [(VIOSessionStateManager *)self observers];
-    [v21 disableEventReset:a3];
+    observers = [(VIOSessionStateManager *)self observers];
+    [observers disableEventReset:event];
   }
 }
 
-- (void)recordSessionDisableEvent:(int64_t)a3
+- (void)recordSessionDisableEvent:(int64_t)event
 {
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
@@ -727,9 +727,9 @@
     }
   }
 
-  v8 = [(VIOSessionStateManager *)self activeDisableEvents];
-  v9 = [NSNumber numberWithInteger:a3];
-  v10 = [v8 containsObject:v9];
+  activeDisableEvents = [(VIOSessionStateManager *)self activeDisableEvents];
+  v9 = [NSNumber numberWithInteger:event];
+  v10 = [activeDisableEvents containsObject:v9];
 
   v11 = sub_100C75F08();
   v12 = v11;
@@ -740,14 +740,14 @@
       goto LABEL_19;
     }
 
-    if ((a3 - 1) > 9)
+    if ((event - 1) > 9)
     {
       v13 = @"VIOSessionDisableEventLowPowerMode";
     }
 
     else
     {
-      v13 = off_10164F638[a3 - 1];
+      v13 = off_10164F638[event - 1];
     }
 
     *v26 = 134349314;
@@ -766,14 +766,14 @@
       goto LABEL_19;
     }
 
-    if ((a3 - 1) > 9)
+    if ((event - 1) > 9)
     {
       v14 = @"VIOSessionDisableEventLowPowerMode";
     }
 
     else
     {
-      v14 = off_10164F638[a3 - 1];
+      v14 = off_10164F638[event - 1];
     }
 
     *v26 = 134349314;
@@ -788,12 +788,12 @@
   _os_log_impl(&_mh_execute_header, v16, v17, v15, v26, 0x16u);
 LABEL_19:
 
-  v18 = [(VIOSessionStateManager *)self activeDisableEvents];
-  v19 = [v18 count];
+  activeDisableEvents2 = [(VIOSessionStateManager *)self activeDisableEvents];
+  v19 = [activeDisableEvents2 count];
 
-  v20 = [(VIOSessionStateManager *)self activeDisableEvents];
-  v21 = [NSNumber numberWithInteger:a3];
-  [v20 addObject:v21];
+  activeDisableEvents3 = [(VIOSessionStateManager *)self activeDisableEvents];
+  v21 = [NSNumber numberWithInteger:event];
+  [activeDisableEvents3 addObject:v21];
 
   if (!v19)
   {
@@ -801,10 +801,10 @@ LABEL_19:
   }
 
   v22 = [(VIOSessionStateManager *)self observers:*v26];
-  [v22 disableEventReceived:a3];
+  [v22 disableEventReceived:event];
 }
 
-- (void)resetStateEnteredThrottleEvent:(int64_t)a3
+- (void)resetStateEnteredThrottleEvent:(int64_t)event
 {
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
@@ -817,7 +817,7 @@ LABEL_19:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v18 = 136316418;
-        v19 = "[VIOSessionStateManager resetStateEnteredThrottleEvent:]";
+        selfCopy = "[VIOSessionStateManager resetStateEnteredThrottleEvent:]";
         v20 = 2080;
         v21 = "VIOSessionStateManager.m";
         v22 = 1024;
@@ -838,7 +838,7 @@ LABEL_19:
         {
           v17 = +[NSThread callStackSymbols];
           v18 = 138412290;
-          v19 = v17;
+          selfCopy = v17;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%@", &v18, 0xCu);
         }
       }
@@ -847,9 +847,9 @@ LABEL_19:
 
   if (![(VIOSessionStateManager *)self isThrottlingOrDisabled])
   {
-    v8 = [(VIOSessionStateManager *)self stateEnteredThrottleEventTimers];
-    v9 = [NSNumber numberWithInteger:a3];
-    v10 = [v8 objectForKey:v9];
+    stateEnteredThrottleEventTimers = [(VIOSessionStateManager *)self stateEnteredThrottleEventTimers];
+    v9 = [NSNumber numberWithInteger:event];
+    v10 = [stateEnteredThrottleEventTimers objectForKey:v9];
 
     if (v10)
     {
@@ -857,26 +857,26 @@ LABEL_19:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v12 = @"VIOSessionThrottleEventDeviceMotion";
-        if (!a3)
+        if (!event)
         {
           v12 = @"VIOSessionThrottleEventARTrackingState";
         }
 
         v18 = 134349314;
-        v19 = self;
+        selfCopy = self;
         v20 = 2112;
         v21 = v12;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}p] Resetting consecutive throttle event timeout timer for event of type %@", &v18, 0x16u);
       }
 
-      v13 = [(VIOSessionStateManager *)self stateEnteredThrottleEventTimers];
-      v14 = [NSNumber numberWithInteger:a3];
-      [v13 removeObjectForKey:v14];
+      stateEnteredThrottleEventTimers2 = [(VIOSessionStateManager *)self stateEnteredThrottleEventTimers];
+      v14 = [NSNumber numberWithInteger:event];
+      [stateEnteredThrottleEventTimers2 removeObjectForKey:v14];
     }
   }
 }
 
-- (void)recordStateEnteredThrottleEvent:(int64_t)a3
+- (void)recordStateEnteredThrottleEvent:(int64_t)event
 {
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
@@ -889,7 +889,7 @@ LABEL_19:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 136316418;
-        v27 = "[VIOSessionStateManager recordStateEnteredThrottleEvent:]";
+        selfCopy2 = "[VIOSessionStateManager recordStateEnteredThrottleEvent:]";
         v28 = 2080;
         v29 = "VIOSessionStateManager.m";
         v30 = 1024;
@@ -910,7 +910,7 @@ LABEL_19:
         {
           v23 = +[NSThread callStackSymbols];
           *buf = 138412290;
-          v27 = v23;
+          selfCopy2 = v23;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
@@ -919,9 +919,9 @@ LABEL_19:
 
   if (![(VIOSessionStateManager *)self isThrottlingOrDisabled])
   {
-    v8 = [(VIOSessionStateManager *)self stateEnteredThrottleEventTimers];
-    v9 = [NSNumber numberWithInteger:a3];
-    v10 = [v8 objectForKey:v9];
+    stateEnteredThrottleEventTimers = [(VIOSessionStateManager *)self stateEnteredThrottleEventTimers];
+    v9 = [NSNumber numberWithInteger:event];
+    v10 = [stateEnteredThrottleEventTimers objectForKey:v9];
     v11 = v10 == 0;
 
     v12 = sub_100C75F08();
@@ -931,13 +931,13 @@ LABEL_19:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v15 = @"VIOSessionThrottleEventDeviceMotion";
-        if (!a3)
+        if (!event)
         {
           v15 = @"VIOSessionThrottleEventARTrackingState";
         }
 
         *buf = 134349314;
-        v27 = self;
+        selfCopy2 = self;
         v28 = 2112;
         v29 = v15;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[%{public}p] Recording a new consecutive throttle event of type %@", buf, 0x16u);
@@ -951,13 +951,13 @@ LABEL_19:
       v24[2] = sub_100C78308;
       v24[3] = &unk_10164F5F8;
       objc_copyWeak(v25, buf);
-      v25[1] = a3;
+      v25[1] = event;
       v25[2] = v17;
       v18 = [GCDTimer scheduledTimerWithTimeInterval:&_dispatch_main_q queue:v24 block:*&v17];
 
-      v19 = [(VIOSessionStateManager *)self stateEnteredThrottleEventTimers];
-      v20 = [NSNumber numberWithInteger:a3];
-      [v19 setObject:v18 forKey:v20];
+      stateEnteredThrottleEventTimers2 = [(VIOSessionStateManager *)self stateEnteredThrottleEventTimers];
+      v20 = [NSNumber numberWithInteger:event];
+      [stateEnteredThrottleEventTimers2 setObject:v18 forKey:v20];
 
       objc_destroyWeak(v25);
       objc_destroyWeak(buf);
@@ -968,13 +968,13 @@ LABEL_19:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         v14 = @"VIOSessionThrottleEventDeviceMotion";
-        if (!a3)
+        if (!event)
         {
           v14 = @"VIOSessionThrottleEventARTrackingState";
         }
 
         *buf = 134349314;
-        v27 = self;
+        selfCopy2 = self;
         v28 = 2112;
         v29 = v14;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "[%{public}p] Recording another consecutive throttle event of type %@", buf, 0x16u);
@@ -991,26 +991,26 @@ LABEL_19:
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     *buf = 134349314;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v5;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Disabling %@", buf, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_session);
-  v7 = [WeakRetained technique];
-  [v7 setVioThrottled:0];
+  technique = [WeakRetained technique];
+  [technique setVioThrottled:0];
 
   v8.receiver = self;
   v8.super_class = VIOSessionStateManager;
   [(VIOSessionStateManager *)&v8 dealloc];
 }
 
-- (VIOSessionStateManager)initWithSession:(id)a3 configuration:(id)a4
+- (VIOSessionStateManager)initWithSession:(id)session configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  sessionCopy = session;
+  configurationCopy = configuration;
+  if (!sessionCopy)
   {
     v19 = sub_10006D178();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1039,7 +1039,7 @@ LABEL_19:
     }
   }
 
-  if (!v7)
+  if (!configurationCopy)
   {
     v22 = sub_10006D178();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -1085,8 +1085,8 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Enabling %@", buf, 0x16u);
     }
 
-    objc_storeWeak(&v8->_session, v6);
-    objc_storeStrong(&v8->_configuration, a4);
+    objc_storeWeak(&v8->_session, sessionCopy);
+    objc_storeStrong(&v8->_configuration, configuration);
     v12 = +[NSMutableDictionary dictionary];
     stateEnteredThrottleEventTimers = v8->_stateEnteredThrottleEventTimers;
     v8->_stateEnteredThrottleEventTimers = v12;

@@ -1,9 +1,9 @@
 @interface ICThumbnailDataCache
 - (ICThumbnailDataCache)init;
-- (id)thumbnailDataForKey:(id)a3;
+- (id)thumbnailDataForKey:(id)key;
 - (void)removeAllThumbnailData;
-- (void)removeThumbnailDataForKey:(id)a3;
-- (void)setThumbnailData:(id)a3 forKey:(id)a4;
+- (void)removeThumbnailDataForKey:(id)key;
+- (void)setThumbnailData:(id)data forKey:(id)key;
 @end
 
 @implementation ICThumbnailDataCache
@@ -22,49 +22,49 @@
   return v2;
 }
 
-- (void)setThumbnailData:(id)a3 forKey:(id)a4
+- (void)setThumbnailData:(id)data forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(ICThumbnailDataCache *)v7 imageCache];
-  [v8 setObject:v9 forKey:v6];
+  dataCopy = data;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  imageCache = [(ICThumbnailDataCache *)selfCopy imageCache];
+  [imageCache setObject:dataCopy forKey:keyCopy];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeThumbnailDataForKey:(id)a3
+- (void)removeThumbnailDataForKey:(id)key
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(ICThumbnailDataCache *)v4 imageCache];
-  [v5 removeObjectForKey:v6];
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  imageCache = [(ICThumbnailDataCache *)selfCopy imageCache];
+  [imageCache removeObjectForKey:keyCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)thumbnailDataForKey:(id)a3
+- (id)thumbnailDataForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(ICThumbnailDataCache *)v5 imageCache];
-  v7 = [v6 objectForKey:v4];
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  imageCache = [(ICThumbnailDataCache *)selfCopy imageCache];
+  v7 = [imageCache objectForKey:keyCopy];
 
   objc_opt_class();
   v8 = ICDynamicCast();
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
 - (void)removeAllThumbnailData
 {
-  v2 = [(ICThumbnailDataCache *)self imageCache];
-  [v2 removeAllObjects];
+  imageCache = [(ICThumbnailDataCache *)self imageCache];
+  [imageCache removeAllObjects];
 }
 
 @end

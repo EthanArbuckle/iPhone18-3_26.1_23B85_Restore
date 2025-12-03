@@ -10,22 +10,22 @@
 {
   v4 = a3;
   v5 = objc_alloc_init(MEMORY[0x277D05A18]);
-  v6 = [v4 notificationIdentifier];
-  [v5 setIdentifier:v6];
+  notificationIdentifier = [v4 notificationIdentifier];
+  [v5 setIdentifier:notificationIdentifier];
 
-  v7 = [v4 sectionIdentifier];
-  [v5 setBundleIdentifier:v7];
+  sectionIdentifier = [v4 sectionIdentifier];
+  [v5 setBundleIdentifier:sectionIdentifier];
 
-  v8 = [v4 threadIdentifier];
-  [v5 setThreadIdentifier:v8];
+  threadIdentifier = [v4 threadIdentifier];
+  [v5 setThreadIdentifier:threadIdentifier];
 
-  v9 = [v4 filterCriteria];
-  [v5 setFilterCriteria:v9];
+  filterCriteria = [v4 filterCriteria];
+  [v5 setFilterCriteria:filterCriteria];
 
   v10 = DNDContactHandleFromNotificationRequest(v4);
   [v5 setSender:v10];
-  v11 = [v4 options];
-  if ([v11 overridesQuietMode])
+  options = [v4 options];
+  if ([options overridesQuietMode])
   {
 
 LABEL_4:
@@ -35,9 +35,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v12 = [v4 interruptionLevel];
+  interruptionLevel = [v4 interruptionLevel];
 
-  if (v12 == 3)
+  if (interruptionLevel == 3)
   {
     goto LABEL_4;
   }
@@ -49,33 +49,33 @@ LABEL_5:
   }
 
 LABEL_6:
-  v14 = [v4 content];
-  v15 = [v14 communicationContext];
-  v16 = [v15 notifyRecipientAnyway];
+  content = [v4 content];
+  communicationContext = [content communicationContext];
+  notifyRecipientAnyway = [communicationContext notifyRecipientAnyway];
 
-  if (v16)
+  if (notifyRecipientAnyway)
   {
     [v5 setNotifyAnyway:1];
   }
 
-  v17 = [v4 content];
-  v18 = [v17 contentType];
-  v19 = [a1 nc_dndClientEventTypeFromNotificationRequestType:v18];
+  content2 = [v4 content];
+  contentType = [content2 contentType];
+  v19 = [self nc_dndClientEventTypeFromNotificationRequestType:contentType];
 
   [v5 setType:v19];
-  v20 = [v4 content];
-  v21 = [v20 title];
-  [v5 setTitle:v21];
+  content3 = [v4 content];
+  title = [content3 title];
+  [v5 setTitle:title];
 
-  v22 = [v4 content];
-  v23 = [v22 subtitle];
-  [v5 setSubtitle:v23];
+  content4 = [v4 content];
+  subtitle = [content4 subtitle];
+  [v5 setSubtitle:subtitle];
 
-  v24 = [v4 content];
-  v25 = [v24 message];
-  [v5 setBody:v25];
+  content5 = [v4 content];
+  message = [content5 message];
+  [v5 setBody:message];
 
-  v26 = [a1 resolveBehaviorForEventDetails:v5 error:0];
+  v26 = [self resolveBehaviorForEventDetails:v5 error:0];
 
   return v26;
 }
@@ -83,16 +83,16 @@ LABEL_6:
 - (BOOL)nc_shouldSuppressNotificationRequest:()Notifications
 {
   v4 = a3;
-  v5 = [v4 eventBehavior];
-  v6 = v5;
-  if (v5)
+  eventBehavior = [v4 eventBehavior];
+  v6 = eventBehavior;
+  if (eventBehavior)
   {
-    v7 = v5;
+    v7 = eventBehavior;
   }
 
   else
   {
-    v7 = [a1 nc_behaviorForNotificationRequest:v4];
+    v7 = [self nc_behaviorForNotificationRequest:v4];
   }
 
   v8 = v7;

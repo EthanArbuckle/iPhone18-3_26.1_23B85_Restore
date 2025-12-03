@@ -1,7 +1,7 @@
 @interface MDLSubmeshTopology
-+ (id)decodeTopologyWithCoder:(id)a3 allocator:(id)a4;
++ (id)decodeTopologyWithCoder:(id)coder allocator:(id)allocator;
 - (MDLSubmeshTopology)initWithSubmesh:(MDLSubmesh *)submesh;
-- (void)encodeTopologyWithCoder:(id)a3 allocator:(id)a4;
+- (void)encodeTopologyWithCoder:(id)coder allocator:(id)allocator;
 @end
 
 @implementation MDLSubmeshTopology
@@ -185,17 +185,17 @@ LABEL_28:
   return v20;
 }
 
-+ (id)decodeTopologyWithCoder:(id)a3 allocator:(id)a4
++ (id)decodeTopologyWithCoder:(id)coder allocator:(id)allocator
 {
-  v5 = a3;
-  v6 = a4;
+  coderCopy = coder;
+  allocatorCopy = allocator;
   v7 = objc_alloc_init(MDLSubmeshTopology);
-  v7->_faceCount = objc_msgSend_decodeIntegerForKey_(v5, v8, @"faceCount");
+  v7->_faceCount = objc_msgSend_decodeIntegerForKey_(coderCopy, v8, @"faceCount");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v6;
-    v11 = objc_msgSend_decodeMeshBufferWithCoder_forKey_(v9, v10, v5, @"faceTopology");
+    v9 = allocatorCopy;
+    v11 = objc_msgSend_decodeMeshBufferWithCoder_forKey_(v9, v10, coderCopy, @"faceTopology");
     faceTopology = v7->_faceTopology;
     v7->_faceTopology = v11;
   }
@@ -203,16 +203,16 @@ LABEL_28:
   return v7;
 }
 
-- (void)encodeTopologyWithCoder:(id)a3 allocator:(id)a4
+- (void)encodeTopologyWithCoder:(id)coder allocator:(id)allocator
 {
-  v12 = a3;
-  v6 = a4;
-  objc_msgSend_encodeInteger_forKey_(v12, v7, self->_faceCount, @"faceCount");
+  coderCopy = coder;
+  allocatorCopy = allocator;
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v7, self->_faceCount, @"faceCount");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
-    v10 = objc_msgSend_decodeMeshBufferWithCoder_forKey_(v8, v9, v12, @"faceTopology");
+    v8 = allocatorCopy;
+    v10 = objc_msgSend_decodeMeshBufferWithCoder_forKey_(v8, v9, coderCopy, @"faceTopology");
     faceTopology = self->_faceTopology;
     self->_faceTopology = v10;
   }

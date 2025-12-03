@@ -1,19 +1,19 @@
 @interface LaunchViewController
 - (LaunchViewControllerDelegate)delegate;
-- (void)applyLayout:(id)a3;
+- (void)applyLayout:(id)layout;
 - (void)dealloc;
 - (void)detachVideoController;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)splashScreenLayoutDidChange:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)splashScreenLayoutDidChange:(id)change;
 - (void)startPlayingVideos;
 - (void)stopPlayingVideos;
-- (void)strongPopupPresentationNotification:(id)a3;
-- (void)tappedCancelButton:(id)a3;
-- (void)tappedContinueButton:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)strongPopupPresentationNotification:(id)notification;
+- (void)tappedCancelButton:(id)button;
+- (void)tappedContinueButton:(id)button;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -33,62 +33,62 @@
   v53.super_class = LaunchViewController;
   [(LaunchViewController *)&v53 viewDidLoad];
   v3 = +[AVTUIColorRepository modalBackgroundColor];
-  v4 = [(LaunchViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(LaunchViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = [UIScrollView alloc];
-  v6 = [(LaunchViewController *)self view];
-  [v6 bounds];
+  view2 = [(LaunchViewController *)self view];
+  [view2 bounds];
   v8 = v7;
-  v9 = [(LaunchViewController *)self view];
-  [v9 bounds];
+  view3 = [(LaunchViewController *)self view];
+  [view3 bounds];
   v10 = [v5 initWithFrame:{0.0, 0.0, v8}];
   scrollView = self->_scrollView;
   self->_scrollView = v10;
 
   [(UIScrollView *)self->_scrollView setAutoresizingMask:18];
-  v12 = [(LaunchViewController *)self view];
-  [v12 addSubview:self->_scrollView];
+  view4 = [(LaunchViewController *)self view];
+  [view4 addSubview:self->_scrollView];
 
   v13 = objc_alloc_init(AVPlayerViewController);
   videoController = self->_videoController;
   self->_videoController = v13;
 
   v15 = +[UIColor clearColor];
-  v16 = [(AVPlayerViewController *)self->_videoController view];
-  [v16 setBackgroundColor:v15];
+  view5 = [(AVPlayerViewController *)self->_videoController view];
+  [view5 setBackgroundColor:v15];
 
-  v17 = [(AVPlayerViewController *)self->_videoController view];
-  [v17 setUserInteractionEnabled:0];
+  view6 = [(AVPlayerViewController *)self->_videoController view];
+  [view6 setUserInteractionEnabled:0];
 
   [(AVPlayerViewController *)self->_videoController setShowsPlaybackControls:0];
   [(AVPlayerViewController *)self->_videoController setUpdatesNowPlayingInfoCenter:0];
-  v18 = [(AVPlayerViewController *)self->_videoController player];
-  [v18 setAllowsExternalPlayback:0];
+  player = [(AVPlayerViewController *)self->_videoController player];
+  [player setAllowsExternalPlayback:0];
 
   v19 = self->_scrollView;
-  v20 = [(AVPlayerViewController *)self->_videoController view];
-  [(UIScrollView *)v19 addSubview:v20];
+  view7 = [(AVPlayerViewController *)self->_videoController view];
+  [(UIScrollView *)v19 addSubview:view7];
 
   v21 = objc_alloc_init(AVPlayerViewController);
   bottomVideoController = self->_bottomVideoController;
   self->_bottomVideoController = v21;
 
   v23 = +[UIColor clearColor];
-  v24 = [(AVPlayerViewController *)self->_bottomVideoController view];
-  [v24 setBackgroundColor:v23];
+  view8 = [(AVPlayerViewController *)self->_bottomVideoController view];
+  [view8 setBackgroundColor:v23];
 
-  v25 = [(AVPlayerViewController *)self->_bottomVideoController view];
-  [v25 setUserInteractionEnabled:0];
+  view9 = [(AVPlayerViewController *)self->_bottomVideoController view];
+  [view9 setUserInteractionEnabled:0];
 
   [(AVPlayerViewController *)self->_bottomVideoController setShowsPlaybackControls:0];
   [(AVPlayerViewController *)self->_bottomVideoController setUpdatesNowPlayingInfoCenter:0];
-  v26 = [(AVPlayerViewController *)self->_bottomVideoController player];
-  [v26 setAllowsExternalPlayback:0];
+  player2 = [(AVPlayerViewController *)self->_bottomVideoController player];
+  [player2 setAllowsExternalPlayback:0];
 
   v27 = self->_scrollView;
-  v28 = [(AVPlayerViewController *)self->_bottomVideoController view];
-  [(UIScrollView *)v27 addSubview:v28];
+  view10 = [(AVPlayerViewController *)self->_bottomVideoController view];
+  [(UIScrollView *)v27 addSubview:view10];
 
   v29 = objc_alloc_init(UILabel);
   titleLabel = self->_titleLabel;
@@ -155,19 +155,19 @@
   [(UIScrollView *)self->_scrollView addSubview:*p_continueButton];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a4;
-  if ([a3 isEqualToString:@"status"])
+  objectCopy = object;
+  if ([path isEqualToString:@"status"])
   {
-    v9 = v8;
+    v9 = objectCopy;
     if ([v9 status] == 2)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v9 error];
+        error = [v9 error];
         v11 = 138412290;
-        v12 = v10;
+        v12 = error;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] mediaserverd failed with error %@; restarting videos", &v11, 0xCu);
       }
 
@@ -184,118 +184,118 @@
   [(LaunchViewController *)&v21 viewWillLayoutSubviews];
   if (![(LaunchViewController *)self freezeLayout])
   {
-    v3 = [(LaunchViewController *)self view];
-    [v3 bounds];
+    view = [(LaunchViewController *)self view];
+    [view bounds];
     v6 = [AVTSplashScreenLayout appropriateLabelEdgePaddingStyleForViewSize:v4, v5];
 
     v7 = [AVTSplashScreenLayout alloc];
-    v8 = [(LaunchViewController *)self view];
-    [v8 bounds];
+    view2 = [(LaunchViewController *)self view];
+    [view2 bounds];
     v10 = v9;
     v12 = v11;
-    v13 = [(LaunchViewController *)self view];
-    [v13 safeAreaInsets];
+    view3 = [(LaunchViewController *)self view];
+    [view3 safeAreaInsets];
     v18 = [v7 initWithContainerSize:1 edgeInsets:v6 wantsSecondaryVideo:v10 labelEdgePaddingStyle:{v12, v14, v15, v16, v17}];
 
-    v19 = [(LaunchViewController *)self currentLayout];
-    LOBYTE(v8) = [v18 isEqual:v19];
+    currentLayout = [(LaunchViewController *)self currentLayout];
+    LOBYTE(view2) = [v18 isEqual:currentLayout];
 
-    if ((v8 & 1) == 0)
+    if ((view2 & 1) == 0)
     {
       [(LaunchViewController *)self setCurrentLayout:v18];
-      v20 = [(LaunchViewController *)self currentLayout];
-      [v20 setDelegate:self];
+      currentLayout2 = [(LaunchViewController *)self currentLayout];
+      [currentLayout2 setDelegate:self];
 
       [(LaunchViewController *)self applyLayout:v18];
     }
   }
 }
 
-- (void)applyLayout:(id)a3
+- (void)applyLayout:(id)layout
 {
-  v35 = a3;
+  layoutCopy = layout;
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"sJFLaunchTitle" value:&stru_100035080 table:@"JFStrings"];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"sJFLaunchBody" value:&stru_100035080 table:@"JFStrings"];
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"sJFLaunchContinueButton" value:&stru_100035080 table:@"JFStrings"];
-  [v35 calculateLayoutWithTitleString:v5 subTitleString:v7 buttonTitle:v9];
+  [layoutCopy calculateLayoutWithTitleString:v5 subTitleString:v7 buttonTitle:v9];
 
   v10 = +[AVTSplashScreenLayout titleFont];
   [(UILabel *)self->_titleLabel setFont:v10];
 
-  [v35 titleFrame];
+  [layoutCopy titleFrame];
   [(UILabel *)self->_titleLabel setFrame:?];
   v11 = +[AVTSplashScreenLayout subTitleFont];
   [(UILabel *)self->_bodyLabel setFont:v11];
 
-  [v35 subTitleFrame];
+  [layoutCopy subTitleFrame];
   [(UILabel *)self->_bodyLabel setFrame:?];
   v12 = +[AVTSplashScreenLayout buttonFont];
   p_continueButton = &self->_continueButton;
-  v14 = [(UIButton *)self->_continueButton titleLabel];
-  [v14 setFont:v12];
+  titleLabel = [(UIButton *)self->_continueButton titleLabel];
+  [titleLabel setFont:v12];
 
   v15 = +[AVTSplashScreenLayout buttonFont];
-  v16 = [(UIButton *)self->_cancelButton titleLabel];
-  [v16 setFont:v15];
+  titleLabel2 = [(UIButton *)self->_cancelButton titleLabel];
+  [titleLabel2 setFont:v15];
 
   LODWORD(v15) = AVTDeviceIsGreenTea();
-  [v35 buttonFrame];
+  [layoutCopy buttonFrame];
   if (v15)
   {
     p_continueButton = &self->_buttonsStack;
   }
 
   [*p_continueButton setFrame:?];
-  [v35 primaryVideoFrame];
+  [layoutCopy primaryVideoFrame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(AVPlayerViewController *)self->_videoController view];
-  [v25 setFrame:{v18, v20, v22, v24}];
+  view = [(AVPlayerViewController *)self->_videoController view];
+  [view setFrame:{v18, v20, v22, v24}];
 
-  [v35 secondaryVideoFrame];
+  [layoutCopy secondaryVideoFrame];
   v27 = v26;
   v29 = v28;
   v31 = v30;
   v33 = v32;
-  v34 = [(AVPlayerViewController *)self->_bottomVideoController view];
-  [v34 setFrame:{v27, v29, v31, v33}];
+  view2 = [(AVPlayerViewController *)self->_bottomVideoController view];
+  [view2 setFrame:{v27, v29, v31, v33}];
 
-  [v35 unconstrainedContentSize];
+  [layoutCopy unconstrainedContentSize];
   [(UIScrollView *)self->_scrollView setContentSize:?];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = LaunchViewController;
-  [(LaunchViewController *)&v5 viewDidAppear:a3];
+  [(LaunchViewController *)&v5 viewDidAppear:appear];
   [(LaunchViewController *)self startPlayingVideos];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"strongPopupPresentationNotification:" name:@"BaseMessagesViewControllerStrongPopupPresentationNotification" object:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = LaunchViewController;
-  [(LaunchViewController *)&v5 viewWillDisappear:a3];
+  [(LaunchViewController *)&v5 viewWillDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:@"BaseMessagesViewControllerStrongPopupPresentationNotification" object:0];
 }
 
-- (void)strongPopupPresentationNotification:(id)a3
+- (void)strongPopupPresentationNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"BaseMessagesViewControllerStrongPopupPresentedKey"];
-  v6 = [v5 BOOLValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"BaseMessagesViewControllerStrongPopupPresentedKey"];
+  bOOLValue = [v5 BOOLValue];
 
   videoPlayer = self->_videoPlayer;
-  if (v6)
+  if (bOOLValue)
   {
     [(AVPlayer *)videoPlayer pause];
     bottomVideoPlayer = self->_bottomVideoPlayer;
@@ -312,24 +312,24 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = LaunchViewController;
-  [(LaunchViewController *)&v4 viewDidDisappear:a3];
+  [(LaunchViewController *)&v4 viewDidDisappear:disappear];
   [(LaunchViewController *)self stopPlayingVideos];
 }
 
-- (void)tappedContinueButton:(id)a3
+- (void)tappedContinueButton:(id)button
 {
-  v4 = [(LaunchViewController *)self delegate];
-  [v4 launchViewControllerDidConfirm:self];
+  delegate = [(LaunchViewController *)self delegate];
+  [delegate launchViewControllerDidConfirm:self];
 }
 
-- (void)tappedCancelButton:(id)a3
+- (void)tappedCancelButton:(id)button
 {
-  v4 = [(LaunchViewController *)self delegate];
-  [v4 launchViewControllerDidCancel:self];
+  delegate = [(LaunchViewController *)self delegate];
+  [delegate launchViewControllerDidCancel:self];
 }
 
 - (void)detachVideoController
@@ -402,16 +402,16 @@
   }
 }
 
-- (void)splashScreenLayoutDidChange:(id)a3
+- (void)splashScreenLayoutDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[Jellyfish] splashScreenLayoutDidChange", v5, 2u);
   }
 
-  [(LaunchViewController *)self applyLayout:v4];
+  [(LaunchViewController *)self applyLayout:changeCopy];
 }
 
 - (LaunchViewControllerDelegate)delegate

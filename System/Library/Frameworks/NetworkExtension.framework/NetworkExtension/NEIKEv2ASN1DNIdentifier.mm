@@ -1,17 +1,17 @@
 @interface NEIKEv2ASN1DNIdentifier
-- (NEIKEv2ASN1DNIdentifier)initWithData:(id)a3;
+- (NEIKEv2ASN1DNIdentifier)initWithData:(id)data;
 @end
 
 @implementation NEIKEv2ASN1DNIdentifier
 
-- (NEIKEv2ASN1DNIdentifier)initWithData:(id)a3
+- (NEIKEv2ASN1DNIdentifier)initWithData:(id)data
 {
-  v3 = self;
+  selfCopy = self;
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (data)
   {
-    v3 = [(NEIKEv2Identifier *)self initWithIdentifierData:a3];
-    v4 = v3;
+    selfCopy = [(NEIKEv2Identifier *)self initWithIdentifierData:data];
+    v4 = selfCopy;
   }
 
   else

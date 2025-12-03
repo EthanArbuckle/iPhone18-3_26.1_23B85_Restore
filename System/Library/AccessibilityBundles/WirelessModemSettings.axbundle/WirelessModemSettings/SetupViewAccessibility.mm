@@ -1,23 +1,23 @@
 @interface SetupViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation SetupViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SetupView" hasInstanceVariable:@"_title" withType:"UILabel"];
-  [v3 validateClass:@"SetupView" hasInstanceVariable:@"_setupSteps" withType:"NSMutableArray"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SetupView" hasInstanceVariable:@"_title" withType:"UILabel"];
+  [validationsCopy validateClass:@"SetupView" hasInstanceVariable:@"_setupSteps" withType:"NSMutableArray"];
 }
 
 - (id)accessibilityElements
 {
   v34 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(SetupViewAccessibility *)self safeValueForKey:@"_title"];
-  [v3 axSafelyAddObject:v4];
+  [array axSafelyAddObject:v4];
 
   v31 = 0u;
   v32 = 0u;
@@ -45,17 +45,17 @@
 
         v11 = *(*(&v29 + 1) + 8 * v10);
         v12 = __UIAccessibilitySafeClass();
-        v13 = [v12 firstObject];
+        firstObject = [v12 firstObject];
         v14 = __UIAccessibilitySafeClass();
 
-        v15 = [v12 lastObject];
+        lastObject = [v12 lastObject];
         v16 = __UIAccessibilitySafeClass();
 
         if ([v14 isAccessibilityElement])
         {
           v17 = MEMORY[0x29EDBA0F8];
           [v14 accessibilityLabel];
-          v19 = v18 = v3;
+          v19 = v18 = array;
           [v16 accessibilityLabel];
           v20 = v9;
           v22 = v21 = v7;
@@ -65,13 +65,13 @@
           v7 = v21;
           v9 = v20;
 
-          v3 = v18;
+          array = v18;
           v8 = v26;
           v6 = v27;
           [v14 setIsAccessibilityElement:0];
         }
 
-        [v3 axSafelyAddObject:v16];
+        [array axSafelyAddObject:v16];
 
         ++v10;
       }
@@ -85,7 +85,7 @@
 
   v24 = *MEMORY[0x29EDCA608];
 
-  return v3;
+  return array;
 }
 
 @end

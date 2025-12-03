@@ -1,6 +1,6 @@
 @interface ISIconTypeResourceLocator
-- (ISIconTypeResourceLocator)initWithCoder:(id)a3;
-- (ISIconTypeResourceLocator)initWithType:(id)a3;
+- (ISIconTypeResourceLocator)initWithCoder:(id)coder;
+- (ISIconTypeResourceLocator)initWithType:(id)type;
 - (id)bundleIdentifier;
 - (id)preferedResourceName;
 - (id)resourceDirectoryURL;
@@ -8,30 +8,30 @@
 
 @implementation ISIconTypeResourceLocator
 
-- (ISIconTypeResourceLocator)initWithType:(id)a3
+- (ISIconTypeResourceLocator)initWithType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = ISIconTypeResourceLocator;
   v6 = [(ISIconTypeResourceLocator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_type, a3);
+    objc_storeStrong(&v6->_type, type);
   }
 
   return v7;
 }
 
-- (ISIconTypeResourceLocator)initWithCoder:(id)a3
+- (ISIconTypeResourceLocator)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ISIconTypeResourceLocator;
   v5 = [(ISIconTypeResourceLocator *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_type"];
     type = v5->_type;
     v5->_type = v6;
   }

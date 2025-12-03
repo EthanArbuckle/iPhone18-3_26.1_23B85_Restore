@@ -1,61 +1,61 @@
 @interface SBKTransaction
-- (SBKTransaction)initWithDomain:(id)a3 requestURL:(id)a4;
+- (SBKTransaction)initWithDomain:(id)domain requestURL:(id)l;
 - (id)clampsKey;
 - (id)newRequest;
-- (id)transactionContextForKey:(id)a3;
-- (void)processDataInResponse:(id)a3 withCompletionHandler:(id)a4;
-- (void)setTransactionContext:(id)a3 forKey:(id)a4;
+- (id)transactionContextForKey:(id)key;
+- (void)processDataInResponse:(id)response withCompletionHandler:(id)handler;
+- (void)setTransactionContext:(id)context forKey:(id)key;
 @end
 
 @implementation SBKTransaction
 
 - (id)newRequest
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBKTransaction.m" lineNumber:62 description:@"Subclass must implement"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBKTransaction.m" lineNumber:62 description:@"Subclass must implement"];
 
   return 0;
 }
 
 - (id)clampsKey
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBKTransaction.m" lineNumber:56 description:@"Subclass must implement"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBKTransaction.m" lineNumber:56 description:@"Subclass must implement"];
 
   return 0;
 }
 
-- (void)processDataInResponse:(id)a3 withCompletionHandler:(id)a4
+- (void)processDataInResponse:(id)response withCompletionHandler:(id)handler
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"SBKTransaction.m" lineNumber:51 description:@"Subclass must implement"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBKTransaction.m" lineNumber:51 description:@"Subclass must implement"];
 }
 
-- (id)transactionContextForKey:(id)a3
+- (id)transactionContextForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_userInfo valueForKey:v4];
-  objc_sync_exit(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_userInfo valueForKey:keyCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)setTransactionContext:(id)a3 forKey:(id)a4
+- (void)setTransactionContext:(id)context forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(NSMutableDictionary *)v7->_userInfo setValue:v8 forKey:v6];
-  objc_sync_exit(v7);
+  contextCopy = context;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_userInfo setValue:contextCopy forKey:keyCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (SBKTransaction)initWithDomain:(id)a3 requestURL:(id)a4
+- (SBKTransaction)initWithDomain:(id)domain requestURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  domainCopy = domain;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = SBKTransaction;
   v9 = [(SBKTransaction *)&v13 init];
@@ -65,8 +65,8 @@
     userInfo = v9->_userInfo;
     v9->_userInfo = v10;
 
-    objc_storeStrong(&v9->_requestURL, a4);
-    objc_storeStrong(&v9->_domain, a3);
+    objc_storeStrong(&v9->_requestURL, l);
+    objc_storeStrong(&v9->_domain, domain);
   }
 
   return v9;

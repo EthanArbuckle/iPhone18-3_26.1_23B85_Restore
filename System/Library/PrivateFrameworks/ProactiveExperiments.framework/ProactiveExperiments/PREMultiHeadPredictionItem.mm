@@ -1,8 +1,8 @@
 @interface PREMultiHeadPredictionItem
-- (PREMultiHeadPredictionItem)initWithCoder:(id)a3;
-- (PREMultiHeadPredictionItem)initWithScore:(id)a3 label:(id)a4;
+- (PREMultiHeadPredictionItem)initWithCoder:(id)coder;
+- (PREMultiHeadPredictionItem)initWithScore:(id)score label:(id)label;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PREMultiHeadPredictionItem
@@ -24,15 +24,15 @@
   return v2;
 }
 
-- (PREMultiHeadPredictionItem)initWithCoder:(id)a3
+- (PREMultiHeadPredictionItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PREMultiHeadPredictionItem;
   v5 = [(PREMultiHeadPredictionItem *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"score"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"score"];
     if (!v6)
     {
       v10 = 0;
@@ -42,7 +42,7 @@
     score = v5->_score;
     v5->_score = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     label = v5->_label;
     v5->_label = v8;
   }
@@ -53,22 +53,22 @@ LABEL_6:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   score = self->_score;
-  v5 = a3;
-  [v5 encodeObject:score forKey:@"score"];
-  [v5 encodeObject:self->_label forKey:@"label"];
+  coderCopy = coder;
+  [coderCopy encodeObject:score forKey:@"score"];
+  [coderCopy encodeObject:self->_label forKey:@"label"];
 }
 
-- (PREMultiHeadPredictionItem)initWithScore:(id)a3 label:(id)a4
+- (PREMultiHeadPredictionItem)initWithScore:(id)score label:(id)label
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  scoreCopy = score;
+  labelCopy = label;
+  if (!scoreCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PREMultiHeadPredictionItem.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"score"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PREMultiHeadPredictionItem.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"score"}];
   }
 
   v14.receiver = self;
@@ -77,8 +77,8 @@ LABEL_6:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_score, a3);
-    objc_storeStrong(&v11->_label, a4);
+    objc_storeStrong(&v10->_score, score);
+    objc_storeStrong(&v11->_label, label);
   }
 
   return v11;

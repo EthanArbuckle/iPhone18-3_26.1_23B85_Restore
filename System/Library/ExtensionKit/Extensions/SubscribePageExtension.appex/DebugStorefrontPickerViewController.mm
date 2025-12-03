@@ -1,10 +1,10 @@
 @interface DebugStorefrontPickerViewController
-- (_TtC22SubscribePageExtension35DebugStorefrontPickerViewController)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension35DebugStorefrontPickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)pickerView:(id)a3 widthForComponent:(int64_t)a4;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (_TtC22SubscribePageExtension35DebugStorefrontPickerViewController)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension35DebugStorefrontPickerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)pickerView:(id)view widthForComponent:(int64_t)component;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 - (void)setStorefront;
 - (void)setStorefrontToUS;
 - (void)viewDidLayoutSubviews;
@@ -13,7 +13,7 @@
 
 @implementation DebugStorefrontPickerViewController
 
-- (_TtC22SubscribePageExtension35DebugStorefrontPickerViewController)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension35DebugStorefrontPickerViewController)initWithCoder:(id)coder
 {
   result = sub_100754644();
   __break(1u);
@@ -22,48 +22,48 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10007E0A4();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10007E678();
 }
 
 - (void)setStorefront
 {
-  v2 = self;
+  selfCopy = self;
   sub_10074CE54();
 }
 
 - (void)setStorefrontToUS
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension35DebugStorefrontPickerViewController_countryPicker);
-  v3 = self;
+  selfCopy = self;
   [v2 selectRow:157 inComponent:0 animated:1];
   sub_10074CE94();
-  [*(&v3->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension35DebugStorefrontPickerViewController_languagePicker) selectRow:0 inComponent:0 animated:1];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension35DebugStorefrontPickerViewController_languagePicker) selectRow:0 inComponent:0 animated:1];
   sub_10074CEA4();
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   v7 = sub_10007F100();
 
   return v7;
 }
 
-- (double)pickerView:(id)a3 widthForComponent:(int64_t)a4
+- (double)pickerView:(id)view widthForComponent:(int64_t)component
 {
-  v4 = self;
-  v5 = [(DebugStorefrontPickerViewController *)v4 view];
-  if (v5)
+  selfCopy = self;
+  view = [(DebugStorefrontPickerViewController *)selfCopy view];
+  if (view)
   {
-    v7 = v5;
+    v7 = view;
     sub_100016C60(0, &qword_100922300);
     sub_1007477B4();
     v9 = v8;
@@ -88,10 +88,10 @@
   return result;
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v6 = a3;
-  v7 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_10007F1A4();
   v9 = v8;
 
@@ -108,14 +108,14 @@
   return v10;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v6 = a3;
-  v7 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_10007F260();
 }
 
-- (_TtC22SubscribePageExtension35DebugStorefrontPickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22SubscribePageExtension35DebugStorefrontPickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

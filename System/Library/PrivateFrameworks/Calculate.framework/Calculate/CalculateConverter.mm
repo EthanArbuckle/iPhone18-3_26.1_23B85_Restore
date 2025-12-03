@@ -12,22 +12,22 @@
   if (!+[_TtC9Calculate22StocksKitCurrencyCache isEnabled])
   {
     v4 = +[CalculateCurrencyCache shared];
-    v5 = [v4 refreshIfNeeded];
+    refreshIfNeeded = [v4 refreshIfNeeded];
     goto LABEL_5;
   }
 
   v2 = +[_TtC9Calculate22StocksKitCurrencyCache shared];
-  v3 = [v2 needsRefresh];
+  needsRefresh = [v2 needsRefresh];
 
-  if (v3)
+  if (needsRefresh)
   {
     v4 = +[_TtC9Calculate22StocksKitCurrencyCache shared];
-    v5 = [v4 refreshSynchronously];
+    refreshIfNeeded = [v4 refreshSynchronously];
 LABEL_5:
-    LOBYTE(v3) = v5;
+    LOBYTE(needsRefresh) = refreshIfNeeded;
   }
 
-  return v3;
+  return needsRefresh;
 }
 
 + (BOOL)refreshCurrencyCache
@@ -35,16 +35,16 @@ LABEL_5:
   if (+[_TtC9Calculate22StocksKitCurrencyCache isEnabled])
   {
     v2 = +[_TtC9Calculate22StocksKitCurrencyCache shared];
-    v3 = [v2 refreshSynchronously];
+    refreshSynchronously = [v2 refreshSynchronously];
   }
 
   else
   {
     v2 = +[CalculateCurrencyCache shared];
-    v3 = [v2 refresh];
+    refreshSynchronously = [v2 refresh];
   }
 
-  v4 = v3;
+  v4 = refreshSynchronously;
 
   return v4;
 }
@@ -58,26 +58,26 @@ LABEL_5:
     v3 = &off_1E815B888;
   }
 
-  v4 = [(__objc2_class *)*v3 shared];
-  v5 = [v4 needsRefresh];
+  shared = [(__objc2_class *)*v3 shared];
+  needsRefresh = [shared needsRefresh];
 
-  return v5;
+  return needsRefresh;
 }
 
 + (id)currencyCacheLastRefreshDate
 {
   if (+[_TtC9Calculate22StocksKitCurrencyCache isEnabled])
   {
-    v2 = objc_opt_new();
+    lastRefreshDate = objc_opt_new();
   }
 
   else
   {
     v3 = +[CalculateCurrencyCache shared];
-    v2 = [v3 lastRefreshDate];
+    lastRefreshDate = [v3 lastRefreshDate];
   }
 
-  return v2;
+  return lastRefreshDate;
 }
 
 @end

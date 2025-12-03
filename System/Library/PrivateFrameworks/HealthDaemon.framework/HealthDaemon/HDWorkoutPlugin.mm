@@ -1,22 +1,22 @@
 @interface HDWorkoutPlugin
-+ (BOOL)shouldLoadPluginForDaemon:(id)a3;
-- (id)extensionForHealthDaemon:(id)a3;
++ (BOOL)shouldLoadPluginForDaemon:(id)daemon;
+- (id)extensionForHealthDaemon:(id)daemon;
 @end
 
 @implementation HDWorkoutPlugin
 
-+ (BOOL)shouldLoadPluginForDaemon:(id)a3
++ (BOOL)shouldLoadPluginForDaemon:(id)daemon
 {
-  v3 = [a3 behavior];
-  v4 = [v3 supportsWorkouts];
+  behavior = [daemon behavior];
+  supportsWorkouts = [behavior supportsWorkouts];
 
-  return v4;
+  return supportsWorkouts;
 }
 
-- (id)extensionForHealthDaemon:(id)a3
+- (id)extensionForHealthDaemon:(id)daemon
 {
-  v3 = a3;
-  v4 = [[HDWorkoutPluginDaemonExtension alloc] initWithDaemon:v3];
+  daemonCopy = daemon;
+  v4 = [[HDWorkoutPluginDaemonExtension alloc] initWithDaemon:daemonCopy];
 
   return v4;
 }

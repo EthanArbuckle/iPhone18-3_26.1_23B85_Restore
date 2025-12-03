@@ -1,16 +1,16 @@
 @interface _TVRUIHorizontalLoadingCell
-- (_TVRUIHorizontalLoadingCell)initWithFrame:(CGRect)a3;
+- (_TVRUIHorizontalLoadingCell)initWithFrame:(CGRect)frame;
 - (void)animate;
 - (void)configureHierarchy;
 @end
 
 @implementation _TVRUIHorizontalLoadingCell
 
-- (_TVRUIHorizontalLoadingCell)initWithFrame:(CGRect)a3
+- (_TVRUIHorizontalLoadingCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _TVRUIHorizontalLoadingCell;
-  v3 = [(_TVRUIHorizontalLoadingCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVRUIHorizontalLoadingCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,9 +23,9 @@
 - (void)configureHierarchy
 {
   v26 = *MEMORY[0x277D85DE8];
-  v2 = [(_TVRUIHorizontalLoadingCell *)self contentView];
+  contentView = [(_TVRUIHorizontalLoadingCell *)self contentView];
   v3 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:101];
-  [v2 addSubview:v3];
+  [contentView addSubview:v3];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -58,13 +58,13 @@
   }
 
   v9 = MEMORY[0x277CCAAD0];
-  v10 = [(UIActivityIndicatorView *)v3 centerXAnchor];
-  v11 = [v2 centerXAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  centerXAnchor = [(UIActivityIndicatorView *)v3 centerXAnchor];
+  centerXAnchor2 = [contentView centerXAnchor];
+  v12 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v23[0] = v12;
-  v13 = [(UIActivityIndicatorView *)v3 centerYAnchor];
-  v14 = [v2 centerYAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  centerYAnchor = [(UIActivityIndicatorView *)v3 centerYAnchor];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v23[1] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
   [v9 activateConstraints:v16];
@@ -75,8 +75,8 @@
 
 - (void)animate
 {
-  v2 = [(_TVRUIHorizontalLoadingCell *)self activityIndicatorView];
-  [v2 startAnimating];
+  activityIndicatorView = [(_TVRUIHorizontalLoadingCell *)self activityIndicatorView];
+  [activityIndicatorView startAnimating];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface DADSystemAvailabilityChecker
-+ (void)waitForSyncEngineSystemAvailabilityBlockingQueue:(id)a3 completionQueue:(id)a4 completionBlock:(id)a5;
++ (void)waitForSyncEngineSystemAvailabilityBlockingQueue:(id)queue completionQueue:(id)completionQueue completionBlock:(id)block;
 @end
 
 @implementation DADSystemAvailabilityChecker
 
-+ (void)waitForSyncEngineSystemAvailabilityBlockingQueue:(id)a3 completionQueue:(id)a4 completionBlock:(id)a5
++ (void)waitForSyncEngineSystemAvailabilityBlockingQueue:(id)queue completionQueue:(id)completionQueue completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  completionQueueCopy = completionQueue;
+  blockCopy = block;
   v10 = objc_alloc_init(MEMORY[0x277D445F8]);
   if ([v10 isDatabaseMigrated])
   {
@@ -17,9 +17,9 @@
     v16[2] = __113__DADSystemAvailabilityChecker_waitForSyncEngineSystemAvailabilityBlockingQueue_completionQueue_completionBlock___block_invoke_2;
     v16[3] = &unk_278D52C98;
     v11 = &v17;
-    v17 = v9;
-    v12 = v9;
-    dispatch_async(v8, v16);
+    v17 = blockCopy;
+    v12 = blockCopy;
+    dispatch_async(completionQueueCopy, v16);
   }
 
   else
@@ -38,10 +38,10 @@
     block[3] = &unk_278D52CC0;
     v11 = &v19;
     v19 = v10;
-    v20 = v8;
-    v21 = v9;
-    v15 = v9;
-    dispatch_async(v7, block);
+    v20 = completionQueueCopy;
+    v21 = blockCopy;
+    v15 = blockCopy;
+    dispatch_async(queueCopy, block);
   }
 }
 

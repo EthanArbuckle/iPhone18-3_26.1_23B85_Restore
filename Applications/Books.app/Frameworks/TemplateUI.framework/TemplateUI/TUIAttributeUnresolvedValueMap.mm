@@ -1,25 +1,25 @@
 @interface TUIAttributeUnresolvedValueMap
-- ($738B17BD11CC339B30296C0EA03CEC2B)valueForAttribute:(unsigned __int16)a3;
-- (TUIAttributeUnresolvedValueMap)initWithOther:(id)a3;
+- ($738B17BD11CC339B30296C0EA03CEC2B)valueForAttribute:(unsigned __int16)attribute;
+- (TUIAttributeUnresolvedValueMap)initWithOther:(id)other;
 - (id).cxx_construct;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)enumerateAttributesAndValuesUsingBlock:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)enumerateAttributesAndValuesUsingBlock:(id)block;
 @end
 
 @implementation TUIAttributeUnresolvedValueMap
 
-- (TUIAttributeUnresolvedValueMap)initWithOther:(id)a3
+- (TUIAttributeUnresolvedValueMap)initWithOther:(id)other
 {
-  v4 = a3;
+  otherCopy = other;
   v9.receiver = self;
   v9.super_class = TUIAttributeUnresolvedValueMap;
   v5 = [(TUIAttributeUnresolvedValueMap *)&v9 init];
   v6 = v5;
-  if (v4)
+  if (otherCopy)
   {
     if (v5)
     {
-      v7 = v5 == v4;
+      v7 = v5 == otherCopy;
     }
 
     else
@@ -29,25 +29,25 @@
 
     if (!v7)
     {
-      v5->_map.__table_.__max_load_factor_ = v4->_map.__table_.__max_load_factor_;
-      sub_33FA4(&v5->_map.__table_.__bucket_list_.__ptr_, v4->_map.__table_.__first_node_.__next_, 0);
+      v5->_map.__table_.__max_load_factor_ = otherCopy->_map.__table_.__max_load_factor_;
+      sub_33FA4(&v5->_map.__table_.__bucket_list_.__ptr_, otherCopy->_map.__table_.__first_node_.__next_, 0);
     }
   }
 
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TUIMutableAttributeUnresolvedValueMap allocWithZone:a3];
+  v4 = [TUIMutableAttributeUnresolvedValueMap allocWithZone:zone];
 
   return [(TUIAttributeUnresolvedValueMap *)v4 initWithOther:self];
 }
 
-- ($738B17BD11CC339B30296C0EA03CEC2B)valueForAttribute:(unsigned __int16)a3
+- ($738B17BD11CC339B30296C0EA03CEC2B)valueForAttribute:(unsigned __int16)attribute
 {
-  v6 = a3;
-  v3 = sub_11F88(&self->_map.__table_.__bucket_list_.__ptr_, &v6);
+  attributeCopy = attribute;
+  v3 = sub_11F88(&self->_map.__table_.__bucket_list_.__ptr_, &attributeCopy);
   v4 = v3 + 5;
   if (!v3)
   {
@@ -57,9 +57,9 @@
   return v4->var0;
 }
 
-- (void)enumerateAttributesAndValuesUsingBlock:(id)a3
+- (void)enumerateAttributesAndValuesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6 = 0;
   p_first_node = &self->_map.__table_.__first_node_;
   do
@@ -70,7 +70,7 @@
       break;
     }
 
-    (*(v4 + 2))(v4, LOWORD(p_first_node[2].__next_), HIDWORD(p_first_node[2].__next_), &v6);
+    (*(blockCopy + 2))(blockCopy, LOWORD(p_first_node[2].__next_), HIDWORD(p_first_node[2].__next_), &v6);
   }
 
   while ((v6 & 1) == 0);

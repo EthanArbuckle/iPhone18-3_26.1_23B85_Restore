@@ -1,13 +1,13 @@
 @interface SiriCoreNetworkManager
-+ (id)connectionTypeForInterfaceName:(id)a3 isCellular:(BOOL)a4;
++ (id)connectionTypeForInterfaceName:(id)name isCellular:(BOOL)cellular;
 + (id)sharedInstance;
 + (int64_t)connectionSubTypeForCellularInterface;
-+ (int64_t)connectionTypeForInterface:(id)a3;
-+ (void)_ifnameTypeForName:(char *)a3 isWiFi:(BOOL *)a4 isCellular:(BOOL *)a5;
-+ (void)acquireDormancySuspendAssertion:(const void *)a3;
-+ (void)getCarrierName:(id *)a3 signalStrength:(id *)a4 subscriptionCount:(id *)a5;
-+ (void)releaseDormancySuspendAssertion:(void *)a3;
-- (BOOL)_getConnectionSuccessRate:(id)a3 hasMetric:(BOOL *)a4;
++ (int64_t)connectionTypeForInterface:(id)interface;
++ (void)_ifnameTypeForName:(char *)name isWiFi:(BOOL *)fi isCellular:(BOOL *)cellular;
++ (void)acquireDormancySuspendAssertion:(const void *)assertion;
++ (void)getCarrierName:(id *)name signalStrength:(id *)strength subscriptionCount:(id *)count;
++ (void)releaseDormancySuspendAssertion:(void *)assertion;
+- (BOOL)_getConnectionSuccessRate:(id)rate hasMetric:(BOOL *)metric;
 - (id)_init;
 - (id)_wiFiManagerClient;
 - (int64_t)_getConnectionTechnologyForCellularInterface;
@@ -19,52 +19,52 @@
 - (int64_t)cellularNetworkQuality;
 - (int64_t)wifiNetworkQuality;
 - (void)_dataServiceDescriptorUpdate;
-- (void)_dataSubscriptionContextChange:(id)a3;
-- (void)_getCarrierName:(id *)a3;
-- (void)_pathUpdated:(id)a3;
+- (void)_dataSubscriptionContextChange:(id)change;
+- (void)_getCarrierName:(id *)name;
+- (void)_pathUpdated:(id)updated;
 - (void)_serviceSubscriptionInfoUpdate;
-- (void)_signalStrengthChange:(id)a3;
+- (void)_signalStrengthChange:(id)change;
 - (void)_signalStrengthUpdate;
 - (void)_stopMonitoringNetwork;
-- (void)_subscribeToLinkRecommendations:(id)a3;
-- (void)acquireWiFiAssertion:(int64_t)a3;
-- (void)addObserver:(id)a3;
-- (void)carrierBundleChange:(id)a3;
+- (void)_subscribeToLinkRecommendations:(id)recommendations;
+- (void)acquireWiFiAssertion:(int64_t)assertion;
+- (void)addObserver:(id)observer;
+- (void)carrierBundleChange:(id)change;
 - (void)deRegisterWithWirelessCoexManager;
 - (void)dealloc;
-- (void)getLinkRecommendation:(BOOL)a3 recommendation:(id)a4;
+- (void)getLinkRecommendation:(BOOL)recommendation recommendation:(id)a4;
 - (void)getNetworkPerformanceFeed;
-- (void)getQualityReport:(id)a3;
-- (void)getSignalStrength:(id *)a3 subscriptionCount:(unint64_t *)a4;
-- (void)preferredDataSimChanged:(id)a3;
-- (void)proximityRecomendationWithCompletion:(id)a3;
+- (void)getQualityReport:(id)report;
+- (void)getSignalStrength:(id *)strength subscriptionCount:(unint64_t *)count;
+- (void)preferredDataSimChanged:(id)changed;
+- (void)proximityRecomendationWithCompletion:(id)completion;
 - (void)registerWithWirelessCoexManager;
 - (void)releaseWiFiAssertion;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)resetLinkMetrics;
-- (void)signalStrengthChanged:(id)a3 info:(id)a4;
-- (void)simStatusDidChange:(id)a3 status:(id)a4;
-- (void)startMonitoringNetworkForHost:(id)a3;
+- (void)signalStrengthChanged:(id)changed info:(id)info;
+- (void)simStatusDidChange:(id)change status:(id)status;
+- (void)startMonitoringNetworkForHost:(id)host;
 - (void)stopMonitoringNetwork;
 @end
 
 @implementation SiriCoreNetworkManager
 
-- (BOOL)_getConnectionSuccessRate:(id)a3 hasMetric:(BOOL *)a4
+- (BOOL)_getConnectionSuccessRate:(id)rate hasMetric:(BOOL *)metric
 {
-  if (a4)
+  if (metric)
   {
-    *a4 = 0;
+    *metric = 0;
   }
 
   return 1;
 }
 
-- (void)signalStrengthChanged:(id)a3 info:(id)a4
+- (void)signalStrengthChanged:(id)changed info:(id)info
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  infoCopy = info;
   v8 = *MEMORY[0x277CEF0E0];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E0], OS_LOG_TYPE_DEFAULT))
   {
@@ -73,16 +73,16 @@
     _os_log_impl(&dword_2669D1000, v8, OS_LOG_TYPE_DEFAULT, "%s ", &v11, 0xCu);
   }
 
-  if (v6)
+  if (changedCopy)
   {
-    if (v7)
+    if (infoCopy)
     {
       os_unfair_lock_lock(&self->_ctLock);
       lastDataSubscriptionSlot = self->_lastDataSubscriptionSlot;
       os_unfair_lock_unlock(&self->_ctLock);
-      if ([v6 slotID] == lastDataSubscriptionSlot)
+      if ([changedCopy slotID] == lastDataSubscriptionSlot)
       {
-        [(SiriCoreNetworkManager *)self _signalStrengthChange:v7];
+        [(SiriCoreNetworkManager *)self _signalStrengthChange:infoCopy];
       }
     }
   }
@@ -90,13 +90,13 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simStatusDidChange:(id)a3 status:(id)a4
+- (void)simStatusDidChange:(id)change status:(id)status
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  changeCopy = change;
+  statusCopy = status;
+  v8 = statusCopy;
+  if (changeCopy && statusCopy)
   {
     v9 = *MEMORY[0x277CEF0A0];
     if (os_log_type_enabled(*MEMORY[0x277CEF0A0], OS_LOG_TYPE_DEFAULT))
@@ -105,21 +105,21 @@
       v15 = 136315650;
       v16 = "[SiriCoreNetworkManager simStatusDidChange:status:]";
       v17 = 2048;
-      v18 = [v6 slotID];
+      slotID = [changeCopy slotID];
       v19 = 2112;
       v20 = v8;
       _os_log_impl(&dword_2669D1000, v10, OS_LOG_TYPE_DEFAULT, "%s SIM Slot %ld - Status: %@", &v15, 0x20u);
     }
 
     os_unfair_lock_lock(&self->_ctLock);
-    if ([v6 slotID] == 1)
+    if ([changeCopy slotID] == 1)
     {
       v11 = 88;
     }
 
     else
     {
-      if ([v6 slotID] != 2)
+      if ([changeCopy slotID] != 2)
       {
 LABEL_10:
         os_unfair_lock_unlock(&self->_ctLock);
@@ -143,10 +143,10 @@ LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = *MEMORY[0x277CEF0A0];
   if (os_log_type_enabled(*MEMORY[0x277CEF0A0], OS_LOG_TYPE_DEFAULT))
   {
@@ -158,11 +158,11 @@ LABEL_11:
   os_unfair_lock_lock(&self->_ctLock);
   lastDataSubscriptionSlot = self->_lastDataSubscriptionSlot;
   os_unfair_lock_unlock(&self->_ctLock);
-  if (v4 && lastDataSubscriptionSlot)
+  if (changeCopy && lastDataSubscriptionSlot)
   {
-    if ([v4 slotID] == lastDataSubscriptionSlot)
+    if ([changeCopy slotID] == lastDataSubscriptionSlot)
     {
-      [(SiriCoreNetworkManager *)self _dataSubscriptionContextChange:v4];
+      [(SiriCoreNetworkManager *)self _dataSubscriptionContextChange:changeCopy];
     }
   }
 
@@ -204,10 +204,10 @@ uint64_t __46__SiriCoreNetworkManager_carrierBundleChange___block_invoke_2(uint6
   return result;
 }
 
-- (void)preferredDataSimChanged:(id)a3
+- (void)preferredDataSimChanged:(id)changed
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = *MEMORY[0x277CEF0E0];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E0], OS_LOG_TYPE_DEFAULT))
   {
@@ -216,16 +216,16 @@ uint64_t __46__SiriCoreNetworkManager_carrierBundleChange___block_invoke_2(uint6
     _os_log_impl(&dword_2669D1000, v5, OS_LOG_TYPE_DEFAULT, "%s ", &v7, 0xCu);
   }
 
-  [(SiriCoreNetworkManager *)self _dataSubscriptionContextChange:v4];
+  [(SiriCoreNetworkManager *)self _dataSubscriptionContextChange:changedCopy];
   [(SiriCoreNetworkManager *)self _dataServiceDescriptorUpdate];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_signalStrengthChange:(id)a3
+- (void)_signalStrengthChange:(id)change
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = *MEMORY[0x277CEF0E0];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E0], OS_LOG_TYPE_DEFAULT))
   {
@@ -235,8 +235,8 @@ uint64_t __46__SiriCoreNetworkManager_carrierBundleChange___block_invoke_2(uint6
   }
 
   os_unfair_lock_lock(&self->_ctLock);
-  v6 = [v4 bars];
-  v7 = [v6 copy];
+  bars = [changeCopy bars];
+  v7 = [bars copy];
   lastSignalStrength = self->_lastSignalStrength;
   self->_lastSignalStrength = v7;
 
@@ -504,11 +504,11 @@ void __54__SiriCoreNetworkManager__dataServiceDescriptorUpdate__block_invoke_2(u
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_dataSubscriptionContextChange:(id)a3
+- (void)_dataSubscriptionContextChange:(id)change
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  changeCopy = change;
+  if (changeCopy)
   {
     v5 = *MEMORY[0x277CEF0A0];
     if (os_log_type_enabled(*MEMORY[0x277CEF0A0], OS_LOG_TYPE_DEFAULT))
@@ -524,7 +524,7 @@ void __54__SiriCoreNetworkManager__dataServiceDescriptorUpdate__block_invoke_2(u
     v8[2] = __57__SiriCoreNetworkManager__dataSubscriptionContextChange___block_invoke;
     v8[3] = &unk_279BD6540;
     v8[4] = self;
-    v9 = v4;
+    v9 = changeCopy;
     dispatch_async(queue, v8);
   }
 
@@ -617,16 +617,16 @@ uint64_t __42__SiriCoreNetworkManager_resetLinkMetrics__block_invoke(uint64_t re
   return result;
 }
 
-- (void)proximityRecomendationWithCompletion:(id)a3
+- (void)proximityRecomendationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__SiriCoreNetworkManager_proximityRecomendationWithCompletion___block_invoke;
   block[3] = &unk_279BD6288;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -641,7 +641,7 @@ uint64_t __63__SiriCoreNetworkManager_proximityRecomendationWithCompletion___blo
   return result;
 }
 
-- (void)getLinkRecommendation:(BOOL)a3 recommendation:(id)a4
+- (void)getLinkRecommendation:(BOOL)recommendation recommendation:(id)a4
 {
   v6 = a4;
   v7 = v6;
@@ -654,7 +654,7 @@ uint64_t __63__SiriCoreNetworkManager_proximityRecomendationWithCompletion___blo
     block[3] = &unk_279BD6260;
     block[4] = self;
     v10 = v6;
-    v11 = a3;
+    recommendationCopy = recommendation;
     dispatch_async(queue, block);
   }
 }
@@ -951,9 +951,9 @@ uint64_t __68__SiriCoreNetworkManager__getLinkRecommendationSafe_recommendation_
   return v6();
 }
 
-- (void)_subscribeToLinkRecommendations:(id)a3
+- (void)_subscribeToLinkRecommendations:(id)recommendations
 {
-  v4 = a3;
+  recommendationsCopy = recommendations;
   dispatch_assert_queue_V2(self->_queue);
   interface = self->_interface;
   v7[0] = MEMORY[0x277D85DD0];
@@ -961,8 +961,8 @@ uint64_t __68__SiriCoreNetworkManager__getLinkRecommendationSafe_recommendation_
   v7[2] = __58__SiriCoreNetworkManager__subscribeToLinkRecommendations___block_invoke;
   v7[3] = &unk_279BD6198;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = recommendationsCopy;
+  v6 = recommendationsCopy;
   [(WRM_iRATInterface *)interface subscribeStandaloneLinkRecommendation:v7];
 }
 
@@ -1016,7 +1016,7 @@ LABEL_10:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)acquireWiFiAssertion:(int64_t)a3
+- (void)acquireWiFiAssertion:(int64_t)assertion
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1024,7 +1024,7 @@ LABEL_10:
   v4[2] = __47__SiriCoreNetworkManager_acquireWiFiAssertion___block_invoke;
   v4[3] = &unk_279BD6170;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = assertion;
   dispatch_async(queue, v4);
 }
 
@@ -1190,7 +1190,7 @@ void __43__SiriCoreNetworkManager_forceFastDormancy__block_invoke()
   return v9;
 }
 
-- (void)_getCarrierName:(id *)a3
+- (void)_getCarrierName:(id *)name
 {
   os_unfair_lock_lock(&self->_ctLock);
   lastDataSubscriptionSlot = self->_lastDataSubscriptionSlot;
@@ -1215,31 +1215,31 @@ LABEL_6:
 LABEL_8:
   os_unfair_lock_unlock(&self->_ctLock);
   v6 = v8;
-  if (a3)
+  if (name)
   {
     v7 = v8;
     v6 = v8;
-    *a3 = v8;
+    *name = v8;
   }
 }
 
-- (void)getSignalStrength:(id *)a3 subscriptionCount:(unint64_t *)a4
+- (void)getSignalStrength:(id *)strength subscriptionCount:(unint64_t *)count
 {
   os_unfair_lock_lock(&self->_ctLock);
   v10 = [(NSNumber *)self->_lastSignalStrength copy];
   subscriptionCount = self->_subscriptionCount;
   os_unfair_lock_unlock(&self->_ctLock);
-  if (a4)
+  if (count)
   {
-    *a4 = subscriptionCount;
+    *count = subscriptionCount;
   }
 
   v8 = v10;
-  if (a3)
+  if (strength)
   {
     v9 = v10;
     v8 = v10;
-    *a3 = v10;
+    *strength = v10;
   }
 }
 
@@ -1303,17 +1303,17 @@ LABEL_8:
   return 2;
 }
 
-- (void)getQualityReport:(id)a3
+- (void)getQualityReport:(id)report
 {
-  v4 = a3;
+  reportCopy = report;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__SiriCoreNetworkManager_getQualityReport___block_invoke;
   v7[3] = &unk_279BD6148;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = reportCopy;
+  v6 = reportCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1454,13 +1454,13 @@ uint64_t __48__SiriCoreNetworkManager_cellularNetworkQuality__block_invoke(uint6
 
 - (void)getNetworkPerformanceFeed
 {
-  v3 = [MEMORY[0x277CEF2F8] sharedObserver];
+  mEMORY[0x277CEF2F8] = [MEMORY[0x277CEF2F8] sharedObserver];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51__SiriCoreNetworkManager_getNetworkPerformanceFeed__block_invoke;
   v4[3] = &unk_279BD60F8;
   v4[4] = self;
-  [v3 getCurrentConditionWithCompletion:v4];
+  [mEMORY[0x277CEF2F8] getCurrentConditionWithCompletion:v4];
 }
 
 void __51__SiriCoreNetworkManager_getNetworkPerformanceFeed__block_invoke(uint64_t a1, uint64_t a2)
@@ -1517,17 +1517,17 @@ void __51__SiriCoreNetworkManager_getNetworkPerformanceFeed__block_invoke(uint64
   }
 }
 
-- (void)startMonitoringNetworkForHost:(id)a3
+- (void)startMonitoringNetworkForHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__SiriCoreNetworkManager_startMonitoringNetworkForHost___block_invoke;
   v7[3] = &unk_279BD6540;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = hostCopy;
+  v6 = hostCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1573,14 +1573,14 @@ void __56__SiriCoreNetworkManager_startMonitoringNetworkForHost___block_invoke_8
   [WeakRetained _pathUpdated:v3];
 }
 
-- (void)_pathUpdated:(id)a3
+- (void)_pathUpdated:(id)updated
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  updatedCopy = updated;
+  v5 = updatedCopy;
+  if (updatedCopy)
   {
-    status = nw_path_get_status(v4);
+    status = nw_path_get_status(updatedCopy);
     v7 = MEMORY[0x26D5E5AE0](v5, 2);
   }
 
@@ -1705,17 +1705,17 @@ LABEL_31:
   return wiFiManagerClient;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__SiriCoreNetworkManager_removeObserver___block_invoke;
   v7[3] = &unk_279BD6540;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1733,17 +1733,17 @@ uint64_t __41__SiriCoreNetworkManager_removeObserver___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__SiriCoreNetworkManager_addObserver___block_invoke;
   v7[3] = &unk_279BD6540;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1807,10 +1807,10 @@ uint64_t __41__SiriCoreNetworkManager_removeObserver___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (void)releaseDormancySuspendAssertion:(void *)a3
++ (void)releaseDormancySuspendAssertion:(void *)assertion
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (assertion)
   {
     v4 = *MEMORY[0x277CEF0A0];
     if (os_log_type_enabled(*MEMORY[0x277CEF0A0], OS_LOG_TYPE_DEFAULT))
@@ -1820,18 +1820,18 @@ uint64_t __41__SiriCoreNetworkManager_removeObserver___block_invoke(uint64_t a1)
       _os_log_impl(&dword_2669D1000, v4, OS_LOG_TYPE_DEFAULT, "%s Released dormancy suspension assertion.", &v6, 0xCu);
     }
 
-    CFRelease(a3);
+    CFRelease(assertion);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)acquireDormancySuspendAssertion:(const void *)a3
++ (void)acquireDormancySuspendAssertion:(const void *)assertion
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (assertion)
   {
-    v3 = *a3;
+    v3 = *assertion;
     v4 = MEMORY[0x277CEF0A0];
     v5 = *MEMORY[0x277CEF0A0];
     v6 = os_log_type_enabled(*MEMORY[0x277CEF0A0], OS_LOG_TYPE_DEFAULT);
@@ -1924,18 +1924,18 @@ void __58__SiriCoreNetworkManager_acquireDormancySuspendAssertion___block_invoke
   v1 = *MEMORY[0x277D85DE8];
 }
 
-+ (int64_t)connectionTypeForInterface:(id)a3
++ (int64_t)connectionTypeForInterface:(id)interface
 {
-  if (!a3)
+  if (!interface)
   {
     return 0;
   }
 
   v5 = 0;
-  result = [a3 UTF8String];
+  result = [interface UTF8String];
   if (result)
   {
-    [a1 _ifnameTypeForName:result isWiFi:&v5 + 1 isCellular:&v5];
+    [self _ifnameTypeForName:result isWiFi:&v5 + 1 isCellular:&v5];
     if ((v5 & 0x100) != 0)
     {
       result = 1000;
@@ -1948,48 +1948,48 @@ void __58__SiriCoreNetworkManager_acquireDormancySuspendAssertion___block_invoke
 
     if (v5)
     {
-      return [a1 connectionSubTypeForCellularInterface];
+      return [self connectionSubTypeForCellularInterface];
     }
   }
 
   return result;
 }
 
-+ (id)connectionTypeForInterfaceName:(id)a3 isCellular:(BOOL)a4
++ (id)connectionTypeForInterfaceName:(id)name isCellular:(BOOL)cellular
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  cellularCopy = cellular;
+  nameCopy = name;
+  v7 = nameCopy;
+  if (cellularCopy)
   {
-    v8 = [a1 connectionSubTypeForCellularInterface];
+    connectionSubTypeForCellularInterface = [self connectionSubTypeForCellularInterface];
   }
 
-  else if (v6 && (v12 = 0, (v9 = [v6 UTF8String]) != 0))
+  else if (nameCopy && (v12 = 0, (v9 = [nameCopy UTF8String]) != 0))
   {
-    [a1 _ifnameTypeForName:v9 isWiFi:&v12 isCellular:0];
+    [self _ifnameTypeForName:v9 isWiFi:&v12 isCellular:0];
     if (v12)
     {
-      v8 = 1000;
+      connectionSubTypeForCellularInterface = 1000;
     }
 
     else
     {
-      v8 = 0;
+      connectionSubTypeForCellularInterface = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    connectionSubTypeForCellularInterface = 0;
   }
 
-  v10 = [[SiriCoreConnectionType alloc] initWithTechnology:v8];
+  v10 = [[SiriCoreConnectionType alloc] initWithTechnology:connectionSubTypeForCellularInterface];
 
   return v10;
 }
 
-+ (void)getCarrierName:(id *)a3 signalStrength:(id *)a4 subscriptionCount:(id *)a5
++ (void)getCarrierName:(id *)name signalStrength:(id *)strength subscriptionCount:(id *)count
 {
   v31 = *MEMORY[0x277D85DE8];
   v22 = 0;
@@ -2003,21 +2003,21 @@ void __58__SiriCoreNetworkManager_acquireDormancySuspendAssertion___block_invoke
   [v10 _getCarrierName:&v20];
   v11 = v20;
 
-  if (a3)
+  if (name)
   {
     v12 = v11;
-    *a3 = v11;
+    *name = v11;
   }
 
-  if (a4)
+  if (strength)
   {
     v13 = v9;
-    *a4 = v9;
+    *strength = v9;
   }
 
-  if (a5)
+  if (count)
   {
-    *a5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v22];
+    *count = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v22];
   }
 
   v14 = *MEMORY[0x277CEF0A0];
@@ -2044,30 +2044,30 @@ void __58__SiriCoreNetworkManager_acquireDormancySuspendAssertion___block_invoke
 + (int64_t)connectionSubTypeForCellularInterface
 {
   v2 = +[SiriCoreNetworkManager sharedInstance];
-  v3 = [v2 _getConnectionTechnologyForCellularInterface];
+  _getConnectionTechnologyForCellularInterface = [v2 _getConnectionTechnologyForCellularInterface];
 
-  return v3;
+  return _getConnectionTechnologyForCellularInterface;
 }
 
-+ (void)_ifnameTypeForName:(char *)a3 isWiFi:(BOOL *)a4 isCellular:(BOOL *)a5
++ (void)_ifnameTypeForName:(char *)name isWiFi:(BOOL *)fi isCellular:(BOOL *)cellular
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (name)
   {
     v7 = socket(2, 2, 0);
     v10 = 0u;
     v11 = 0u;
     __strlcpy_chk();
-    if (ioctl(v7, 0xC0206911uLL, &v10) != -1 && a5 && (v11 & 0x10) != 0)
+    if (ioctl(v7, 0xC0206911uLL, &v10) != -1 && cellular && (v11 & 0x10) != 0)
     {
-      *a5 = 1;
+      *cellular = 1;
     }
 
     memset(v9, 0, 44);
     __strlcpy_chk();
-    if (ioctl(v7, 0xC02C6938uLL, v9) != -1 && a4 && (v9[1] & 0xE0) == 0x80)
+    if (ioctl(v7, 0xC02C6938uLL, v9) != -1 && fi && (v9[1] & 0xE0) == 0x80)
     {
-      *a4 = 1;
+      *fi = 1;
     }
 
     close(v7);

@@ -1,30 +1,30 @@
 @interface InitializationParameters
 - (NSString)description;
 - (_TtC8Settings24InitializationParameters)init;
-- (_TtC8Settings24InitializationParameters)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC8Settings24InitializationParameters)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation InitializationParameters
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_21CE1878C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_21CE1878C(coderCopy);
 }
 
-- (_TtC8Settings24InitializationParameters)initWithCoder:(id)a3
+- (_TtC8Settings24InitializationParameters)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_21CE1F1D0(v3);
+  coderCopy = coder;
+  v4 = sub_21CE1F1D0(coderCopy);
 
   return v4;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_21CE18BFC();
 
   v3 = sub_21CE6CC20();

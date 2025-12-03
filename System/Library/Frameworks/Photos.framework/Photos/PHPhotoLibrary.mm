@@ -1,66 +1,66 @@
 @interface PHPhotoLibrary
-+ (BOOL)_isInternalObserver:(id)a3;
-+ (BOOL)additionalCheckForProcessingNeededForAsset:(id)a3 taskID:(unint64_t)a4 priority:(unint64_t)a5;
-+ (BOOL)checkAuthorizationStatusForAPIAccessLevel:(int64_t)a3 suppressPrompt:(BOOL)a4;
++ (BOOL)_isInternalObserver:(id)observer;
++ (BOOL)additionalCheckForProcessingNeededForAsset:(id)asset taskID:(unint64_t)d priority:(unint64_t)priority;
++ (BOOL)checkAuthorizationStatusForAPIAccessLevel:(int64_t)level suppressPrompt:(BOOL)prompt;
 + (BOOL)isPhotosApplicationInstalled;
-+ (BOOL)setImagePickerPhotoLibrary:(id)a3 error:(id *)a4;
-+ (BOOL)setSystemPhotoLibraryURL:(id)a3 error:(id *)a4;
-+ (BOOL)shouldDisplayMergeCandidates:(id)a3 forPerson:(id)a4;
-+ (Class)PHObjectClassForEntityName:(id)a3;
-+ (Class)PHObjectClassForIdentifierCode:(id)a3;
-+ (Class)PHObjectClassForOID:(id)a3;
-+ (Class)PHObjectClassForObjectType:(int64_t)a3;
++ (BOOL)setImagePickerPhotoLibrary:(id)library error:(id *)error;
++ (BOOL)setSystemPhotoLibraryURL:(id)l error:(id *)error;
++ (BOOL)shouldDisplayMergeCandidates:(id)candidates forPerson:(id)person;
++ (Class)PHObjectClassForEntityName:(id)name;
++ (Class)PHObjectClassForIdentifierCode:(id)code;
++ (Class)PHObjectClassForOID:(id)d;
++ (Class)PHObjectClassForObjectType:(int64_t)type;
 + (PHAuthorizationStatus)authorizationStatus;
 + (PHAuthorizationStatus)authorizationStatusForAccessLevel:(PHAccessLevel)accessLevel;
 + (PHPhotoLibrary)sharedPhotoLibrary;
 + (id)PHObjectClasses;
 + (id)PHObjectClassesByEntityName;
-+ (id)_countOfAnalysisVersionsForKey:(id)a3 inLibrary:(id)a4;
-+ (id)_effectiveRootEntity:(id)a3;
++ (id)_countOfAnalysisVersionsForKey:(id)key inLibrary:(id)library;
++ (id)_effectiveRootEntity:(id)entity;
 + (id)_sharedPhotoLibrary;
-+ (id)fetchTypeForLocalIdentifierCode:(id)a3;
++ (id)fetchTypeForLocalIdentifierCode:(id)code;
 + (id)imagePickerPhotoLibrary;
 + (id)mediaProcessingDeviceIndependentFacesSortDescriptors;
 + (id)mediaProcessingFacesSortDescriptorsForGeneratingPersonModel;
-+ (id)openPhotoLibraryWithWellKnownIdentifier:(int64_t)a3 error:(id *)a4;
-+ (id)plLibraryOptionsFromPHOptions:(id)a3 createOptions:(unint64_t *)a4;
++ (id)openPhotoLibraryWithWellKnownIdentifier:(int64_t)identifier error:(id *)error;
++ (id)plLibraryOptionsFromPHOptions:(id)options createOptions:(unint64_t *)createOptions;
 + (id)sharedContactStore;
 + (id)sharedLazyPhotoLibraryForCMM;
 + (id)sharedMomentSharePhotoLibrary;
-+ (id)stringFromPHPhotoLibraryType:(unsigned __int16)a3;
++ (id)stringFromPHPhotoLibraryType:(unsigned __int16)type;
 + (id)uniqueObjectIDCache;
-+ (id)uniquedOID:(id)a3;
-+ (id)uniquedOIDs:(id)a3;
-+ (id)uniquedOIDsFromObjects:(id)a3;
-+ (int64_t)_photosAccessAllowedForAccessLevel:(int64_t)a3;
-+ (int64_t)collectionListTypeForIdentifierCode:(id)a3;
-+ (unint64_t)_countOfAssetsWithPredicate:(id)a3 entityName:(id)a4 inLibrary:(id)a5;
++ (id)uniquedOID:(id)d;
++ (id)uniquedOIDs:(id)ds;
++ (id)uniquedOIDsFromObjects:(id)objects;
++ (int64_t)_photosAccessAllowedForAccessLevel:(int64_t)level;
++ (int64_t)collectionListTypeForIdentifierCode:(id)code;
++ (unint64_t)_countOfAssetsWithPredicate:(id)predicate entityName:(id)name inLibrary:(id)library;
 + (void)_forceUserInterfaceReload;
-+ (void)_requestAuthorizationForAccessLevel:(int64_t)a3 supportsLimited:(BOOL)a4 handler:(id)a5;
++ (void)_requestAuthorizationForAccessLevel:(int64_t)level supportsLimited:(BOOL)limited handler:(id)handler;
 + (void)assertRunningInExtension;
 + (void)assertTransaction;
 + (void)removeAllUniquedOIDs;
-+ (void)setNeedsToRepairKeyCuratedAssetForMemories:(id)a3;
-+ (void)setSharedPhotoLibrary:(id)a3;
-+ (void)unsafeShutdownLibraryWithPhotoLibraryURL:(id)a3;
++ (void)setNeedsToRepairKeyCuratedAssetForMemories:(id)memories;
++ (void)setSharedPhotoLibrary:(id)library;
++ (void)unsafeShutdownLibraryWithPhotoLibraryURL:(id)l;
 - (BOOL)_openApplicationOwnedFoldersIfNecessary;
-- (BOOL)_postOpenInitializationWithError:(id *)a3;
-- (BOOL)_preflightRequest:(id)a3 withError:(id *)a4;
-- (BOOL)_setUnavailabilityReason:(id)a3;
-- (BOOL)_shouldIncludeAllBurstAssetsForTaskID:(unint64_t)a3;
-- (BOOL)_shouldIncludeGuestAssetsForTaskID:(unint64_t)a3;
-- (BOOL)_shouldIncludeOnlyAssetsAllowedForAnalysisForTaskID:(unint64_t)a3;
-- (BOOL)assetsArePendingForDuplicateMergeProcessingWithLocalIdentifiers:(id)a3;
-- (BOOL)bfa_supportsPrivacyRestrictionsForOIDs:(id)a3;
-- (BOOL)cancelReservedCloudIdentifiers:(id)a3 error:(id *)a4;
-- (BOOL)cancelReservedCloudIdentifiersWithObjectType:(int64_t)a3 error:(id *)a4;
-- (BOOL)cloudQuotaResourceBytesUsed:(id *)a3 minVideoSize:(unint64_t)a4 error:(id *)a5;
-- (BOOL)createPhotoLibraryUsingOptions:(id)a3 error:(id *)a4;
-- (BOOL)forceSyndicationIngestSyncToDate:(id)a3 error:(id *)a4;
-- (BOOL)hasSyncProgressReturningImportOperations:(int *)a3;
-- (BOOL)internal_processIdenticalDuplicatesWithError:(id *)a3;
-- (BOOL)invalidatePersistentGraphCachesAndReturnError:(id *)a3;
-- (BOOL)invalidateTransientGraphCachesAndReturnError:(id *)a3;
+- (BOOL)_postOpenInitializationWithError:(id *)error;
+- (BOOL)_preflightRequest:(id)request withError:(id *)error;
+- (BOOL)_setUnavailabilityReason:(id)reason;
+- (BOOL)_shouldIncludeAllBurstAssetsForTaskID:(unint64_t)d;
+- (BOOL)_shouldIncludeGuestAssetsForTaskID:(unint64_t)d;
+- (BOOL)_shouldIncludeOnlyAssetsAllowedForAnalysisForTaskID:(unint64_t)d;
+- (BOOL)assetsArePendingForDuplicateMergeProcessingWithLocalIdentifiers:(id)identifiers;
+- (BOOL)bfa_supportsPrivacyRestrictionsForOIDs:(id)ds;
+- (BOOL)cancelReservedCloudIdentifiers:(id)identifiers error:(id *)error;
+- (BOOL)cancelReservedCloudIdentifiersWithObjectType:(int64_t)type error:(id *)error;
+- (BOOL)cloudQuotaResourceBytesUsed:(id *)used minVideoSize:(unint64_t)size error:(id *)error;
+- (BOOL)createPhotoLibraryUsingOptions:(id)options error:(id *)error;
+- (BOOL)forceSyndicationIngestSyncToDate:(id)date error:(id *)error;
+- (BOOL)hasSyncProgressReturningImportOperations:(int *)operations;
+- (BOOL)internal_processIdenticalDuplicatesWithError:(id *)error;
+- (BOOL)invalidatePersistentGraphCachesAndReturnError:(id *)error;
+- (BOOL)invalidateTransientGraphCachesAndReturnError:(id *)error;
 - (BOOL)isCPLSyncablePhotoLibrary;
 - (BOOL)isFaceProcessingFinished;
 - (BOOL)isInitialDuplicateDetectorProcessingCompleted;
@@ -73,23 +73,23 @@
 - (BOOL)isSystemPhotoLibrary;
 - (BOOL)isUploadJobExtensionEnabled;
 - (BOOL)isWalrusEnabled;
-- (BOOL)localResourceBytesUsed:(id *)a3 minVideoSize:(unint64_t)a4 error:(id *)a5;
-- (BOOL)openAndWaitWithUpgrade:(BOOL)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)performCancellableChangesAndWait:(id)a3 error:(id *)a4;
+- (BOOL)localResourceBytesUsed:(id *)used minVideoSize:(unint64_t)size error:(id *)error;
+- (BOOL)openAndWaitWithUpgrade:(BOOL)upgrade options:(id)options error:(id *)error;
+- (BOOL)performCancellableChangesAndWait:(id)wait error:(id *)error;
 - (BOOL)petVIPModelExists;
 - (BOOL)photoAnalysisClientAllowed;
-- (BOOL)processDuplicateAssetsWithLocalIdentifiers:(id)a3 error:(id *)a4;
-- (BOOL)processUniversalSearchJITForAssetLocalIdentifier:(id)a3 processingTypes:(unint64_t)a4 error:(id *)a5;
-- (BOOL)requestAssetRevGeocodingForAssetLocalIdentifiers:(id)a3 withError:(id *)a4;
-- (BOOL)requestAssetRevGeocodingWithError:(id *)a3;
-- (BOOL)requestEnrichmentWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)requestHighlightCollectionEnrichmentWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)requestHighlightEnrichmentWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)requestSandboxExtensionsIfNeededWithError:(id *)a3;
-- (BOOL)requestStartSharedLibrarySuggestionResultWithError:(id *)a3;
-- (BOOL)resetStateForMediaProcessingTaskID:(unint64_t)a3 assetIdentifiers:(id)a4 resetOptions:(unint64_t)a5 error:(id *)a6;
-- (BOOL)setUploadJobExtensionEnabled:(BOOL)a3 error:(id *)a4;
-- (BOOL)shouldMobileSlideShowLaunchWithError:(id *)a3;
+- (BOOL)processDuplicateAssetsWithLocalIdentifiers:(id)identifiers error:(id *)error;
+- (BOOL)processUniversalSearchJITForAssetLocalIdentifier:(id)identifier processingTypes:(unint64_t)types error:(id *)error;
+- (BOOL)requestAssetRevGeocodingForAssetLocalIdentifiers:(id)identifiers withError:(id *)error;
+- (BOOL)requestAssetRevGeocodingWithError:(id *)error;
+- (BOOL)requestEnrichmentWithOptions:(id)options error:(id *)error;
+- (BOOL)requestHighlightCollectionEnrichmentWithOptions:(id)options error:(id *)error;
+- (BOOL)requestHighlightEnrichmentWithOptions:(id)options error:(id *)error;
+- (BOOL)requestSandboxExtensionsIfNeededWithError:(id *)error;
+- (BOOL)requestStartSharedLibrarySuggestionResultWithError:(id *)error;
+- (BOOL)resetStateForMediaProcessingTaskID:(unint64_t)d assetIdentifiers:(id)identifiers resetOptions:(unint64_t)options error:(id *)error;
+- (BOOL)setUploadJobExtensionEnabled:(BOOL)enabled error:(id *)error;
+- (BOOL)shouldMobileSlideShowLaunchWithError:(id *)error;
 - (CPLStatus)cplStatus;
 - (NSArray)cloudIdentifiersForLocalIdentifiers:(NSArray *)localIdentifiers;
 - (NSArray)localIdentifiersForCloudIdentifiers:(NSArray *)cloudIdentifiers;
@@ -101,9 +101,9 @@
 - (PHPersistentChangeFetchResult)fetchPersistentChangesSinceToken:(PHPersistentChangeToken *)token error:(NSError *)error;
 - (PHPersistentChangeToken)currentToken;
 - (PHPhotoLibrary)init;
-- (PHPhotoLibrary)initWithPLPhotoLibrary:(id)a3 type:(unsigned __int16)a4;
-- (PHPhotoLibrary)initWithPhotoLibraryBundle:(id)a3 type:(unsigned __int16)a4;
-- (PHPhotoLibrary)initWithPhotoLibraryURL:(id)a3 type:(unsigned __int16)a4;
+- (PHPhotoLibrary)initWithPLPhotoLibrary:(id)library type:(unsigned __int16)type;
+- (PHPhotoLibrary)initWithPhotoLibraryBundle:(id)bundle type:(unsigned __int16)type;
+- (PHPhotoLibrary)initWithPhotoLibraryURL:(id)l type:(unsigned __int16)type;
 - (PHPhotoLibraryCloudStatus)cloudStatus;
 - (PLPhotoLibrary)backgroundQueueObjectFetchingPhotoLibrary;
 - (PLPhotoLibrary)backgroundQueuePhotoLibrary;
@@ -111,22 +111,22 @@
 - (PLPhotoLibrary)mainQueuePhotoLibrary;
 - (PLPhotoLibrary)photoLibrary;
 - (PLPhotoLibrary)userInitiatedQueuePhotoLibrary;
-- (double)_analysisProgressForHighlight:(id)a3 fetchCountBlock:(id)a4;
-- (double)_ratioOfAssetsAtOrAboveVersion:(signed __int16)a3 forKey:(id)a4;
+- (double)_analysisProgressForHighlight:(id)highlight fetchCountBlock:(id)block;
+- (double)_ratioOfAssetsAtOrAboveVersion:(signed __int16)version forKey:(id)key;
 - (double)ratioOfAssetsWithMediaAnalysisImageProcessed;
 - (double)ratioOfAssetsWithMediaAnalysisVideoProcessed;
 - (id)_assetBytesForOsMigration;
-- (id)_assetOIDsForHighlight:(id)a3 withContext:(id)a4;
+- (id)_assetOIDsForHighlight:(id)highlight withContext:(id)context;
 - (id)_baseFetchOptionsForMediaProcessing;
 - (id)_cachedCloudStatus;
-- (id)_clientForAccessLevel:(int64_t)a3;
+- (id)_clientForAccessLevel:(int64_t)level;
 - (id)_cloudInternalClient;
-- (id)_countOfMediaProcessingAssetsWithInternalPredicate:(id)a3 taskID:(unint64_t)a4 processed:(BOOL)a5 exactVersionMatch:(BOOL)a6 versionProvider:(id)a7;
+- (id)_countOfMediaProcessingAssetsWithInternalPredicate:(id)predicate taskID:(unint64_t)d processed:(BOOL)processed exactVersionMatch:(BOOL)match versionProvider:(id)provider;
 - (id)_deriveMainScopeIdentifierFromCPLSettings;
-- (id)_errorCodeForAuthorizationStatus:(int64_t)a3 accessLevel:(int64_t)a4;
-- (id)_errorForAuthorizationStatus:(int64_t)a3 accessLevel:(int64_t)a4;
+- (id)_errorCodeForAuthorizationStatus:(int64_t)status accessLevel:(int64_t)level;
+- (id)_errorForAuthorizationStatus:(int64_t)status accessLevel:(int64_t)level;
 - (id)_facesFetchOptionsForMediaProcessing;
-- (id)_graphBasedPHObjectsForOIDs:(id)a3 propertyHint:(unint64_t)a4 includeTrash:(BOOL)a5;
+- (id)_graphBasedPHObjectsForOIDs:(id)ds propertyHint:(unint64_t)hint includeTrash:(BOOL)trash;
 - (id)_initializeAppPrivateData;
 - (id)_initializeCPLStatus;
 - (id)_initializeIsReadyForAnalysis;
@@ -137,58 +137,58 @@
 - (id)_lazyPhotoLibrary;
 - (id)_popChangesRequest;
 - (id)_predicateForSettingsStorageSuggestions;
-- (id)_propertySetsForTaskID:(unint64_t)a3;
-- (id)_updateGraphAvailabilityInFeatureAvailability:(id)a3 forFeature:(unint64_t)a4 error:(id *)a5;
-- (id)_urlForApplicationDataFolderIdentifier:(int64_t)a3 pathManager:(id)a4 error:(id *)a5;
-- (id)allSocialGroupsForMemberLocalIdentifier:(id)a3 options:(id)a4 error:(id *)a5;
+- (id)_propertySetsForTaskID:(unint64_t)d;
+- (id)_updateGraphAvailabilityInFeatureAvailability:(id)availability forFeature:(unint64_t)feature error:(id *)error;
+- (id)_urlForApplicationDataFolderIdentifier:(int64_t)identifier pathManager:(id)manager error:(id *)error;
+- (id)allSocialGroupsForMemberLocalIdentifier:(id)identifier options:(id)options error:(id *)error;
 - (id)allowedEntities;
-- (id)analyzeAssets:(id)a3 forFeature:(unint64_t)a4 withCompletion:(id)a5;
-- (id)analyzeLibraryForFeature:(unint64_t)a3 withCompletion:(id)a4;
-- (id)assetIdentifiersForPersonIdentifiers:(id)a3 error:(id *)a4;
-- (id)bfa_fetchUUIDsForRestrictedOIDs:(id)a3;
-- (id)bfa_tombstoneObjectForOID:(id)a3 uuid:(id)a4 propertyHint:(unint64_t)a5 overrideResultsWithClass:(Class)a6;
-- (id)changeRequestForUUID:(id)a3;
-- (id)cloudIdentifierMappingsForLocalIdentifiers:(id)a3 excludeUnsyncedItems:(BOOL)a4;
-- (id)countOfAssetsByMediaTypeForMediaProcessingTaskID:(unint64_t)a3 processed:(BOOL)a4 algorithmVersion:(id)a5 exactVersionMatch:(BOOL)a6 error:(id *)a7;
-- (id)curationDebugInformationForAssetCollectionWithLocalIdentifier:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)curationDebugInformationForAssetLocalIdentifier:(id)a3 error:(id *)a4;
+- (id)analyzeAssets:(id)assets forFeature:(unint64_t)feature withCompletion:(id)completion;
+- (id)analyzeLibraryForFeature:(unint64_t)feature withCompletion:(id)completion;
+- (id)assetIdentifiersForPersonIdentifiers:(id)identifiers error:(id *)error;
+- (id)bfa_fetchUUIDsForRestrictedOIDs:(id)ds;
+- (id)bfa_tombstoneObjectForOID:(id)d uuid:(id)uuid propertyHint:(unint64_t)hint overrideResultsWithClass:(Class)class;
+- (id)changeRequestForUUID:(id)d;
+- (id)cloudIdentifierMappingsForLocalIdentifiers:(id)identifiers excludeUnsyncedItems:(BOOL)items;
+- (id)countOfAssetsByMediaTypeForMediaProcessingTaskID:(unint64_t)d processed:(BOOL)processed algorithmVersion:(id)version exactVersionMatch:(BOOL)match error:(id *)error;
+- (id)curationDebugInformationForAssetCollectionWithLocalIdentifier:(id)identifier options:(id)options error:(id *)error;
+- (id)curationDebugInformationForAssetLocalIdentifier:(id)identifier error:(id *)error;
 - (id)estimatedLibrarySizeForOsMigration;
-- (id)exportGraphForPurpose:(id)a3 error:(id *)a4;
+- (id)exportGraphForPurpose:(id)purpose error:(id *)error;
 - (id)faceAnalysisProcessingCounts;
 - (id)faceAnalysisProgressCounts;
-- (id)faceClusterSequenceNumbersOfFacesWithClusterSequenceNumbers:(id)a3 error:(id *)a4;
-- (id)faceClusterSequenceNumbersOfKeyFacesInAlgorithmicFaceGroupsForPerson:(id)a3 verifiedClusterSequenceNumbers:(id)a4;
-- (id)featureAvailabilityForFeature:(unint64_t)a3 readOptions:(id)a4 error:(id *)a5;
-- (id)fetchAssetsForMediaProcessingTaskID:(unint64_t)a3 priority:(unint64_t)a4 algorithmVersion:(id)a5 sceneConfidenceThreshold:(float)a6 error:(id *)a7;
-- (id)fetchDictionariesByPHClassForOIDs:(id)a3 propertyHint:(unint64_t)a4 includeTrash:(BOOL)a5 overrideWithPHClass:(Class)a6;
-- (id)fetchFacesForMediaProcessingWithPersonLocalIdentifiers:(id)a3 inMoment:(id)a4;
-- (id)fetchOptionsForMediaProcessingTaskID:(unint64_t)a3 priority:(unint64_t)a4 algorithmVersion:(id)a5 sceneConfidenceThreshold:(float)a6 processed:(BOOL)a7 exactVersionMatch:(BOOL)a8 error:(id *)a9;
-- (id)fetchPHObjectsForOIDs:(id)a3 propertyHint:(unint64_t)a4 includeTrash:(BOOL)a5 overrideResultsWithClass:(Class)a6;
-- (id)fetchPHObjectsForUUIDs:(id)a3 entityName:(id)a4;
-- (id)fetchPersistentChangesWithRequest:(id)a3 error:(id *)a4;
-- (id)fetchPersonAvailabilityOfDetectionTypes:(id)a3 error:(id *)a4;
-- (id)fetchProcessedAssetsBelowAnalysisStage:(signed __int16)a3 forTaskIDs:(id)a4 algorithmVersion:(id)a5 error:(id *)a6;
-- (id)fetchProcessedAssetsForMediaProcessingTaskID:(unint64_t)a3 priority:(unint64_t)a4 algorithmVersion:(id)a5 sceneConfidenceThreshold:(float)a6 error:(id *)a7;
-- (id)fetchPropertiesByOID:(id)a3 propertyNamesByEntityName:(id)a4;
-- (id)fetchUnprocessedAssetsForMediaProcessingTaskID:(unint64_t)a3 priority:(unint64_t)a4 algorithmVersion:(id)a5 sceneConfidenceThreshold:(float)a6 error:(id *)a7;
-- (id)fetchUpdatedObject:(id)a3;
-- (id)fetchedObjectsForOIDs:(id)a3 propertySetClass:(Class)a4;
-- (id)forceSyndicationIngestAsyncToDate:(id)a3 completionHandler:(id)a4;
-- (id)getLibrarySizesFromDB:(BOOL)a3 error:(id *)a4;
-- (id)graphStatisticsDescription:(id *)a3;
-- (id)graphStatusDescription:(id *)a3;
-- (id)highlightDebugInformationForHighlightWithLocalIdentifier:(id)a3 error:(id *)a4;
-- (id)ingestItemWithSpotlightUniqueIdentifier:(id)a3 bundleID:(id)a4 purgeUrgency:(int64_t)a5 error:(id *)a6;
+- (id)faceClusterSequenceNumbersOfFacesWithClusterSequenceNumbers:(id)numbers error:(id *)error;
+- (id)faceClusterSequenceNumbersOfKeyFacesInAlgorithmicFaceGroupsForPerson:(id)person verifiedClusterSequenceNumbers:(id)numbers;
+- (id)featureAvailabilityForFeature:(unint64_t)feature readOptions:(id)options error:(id *)error;
+- (id)fetchAssetsForMediaProcessingTaskID:(unint64_t)d priority:(unint64_t)priority algorithmVersion:(id)version sceneConfidenceThreshold:(float)threshold error:(id *)error;
+- (id)fetchDictionariesByPHClassForOIDs:(id)ds propertyHint:(unint64_t)hint includeTrash:(BOOL)trash overrideWithPHClass:(Class)class;
+- (id)fetchFacesForMediaProcessingWithPersonLocalIdentifiers:(id)identifiers inMoment:(id)moment;
+- (id)fetchOptionsForMediaProcessingTaskID:(unint64_t)d priority:(unint64_t)priority algorithmVersion:(id)version sceneConfidenceThreshold:(float)threshold processed:(BOOL)processed exactVersionMatch:(BOOL)match error:(id *)error;
+- (id)fetchPHObjectsForOIDs:(id)ds propertyHint:(unint64_t)hint includeTrash:(BOOL)trash overrideResultsWithClass:(Class)class;
+- (id)fetchPHObjectsForUUIDs:(id)ds entityName:(id)name;
+- (id)fetchPersistentChangesWithRequest:(id)request error:(id *)error;
+- (id)fetchPersonAvailabilityOfDetectionTypes:(id)types error:(id *)error;
+- (id)fetchProcessedAssetsBelowAnalysisStage:(signed __int16)stage forTaskIDs:(id)ds algorithmVersion:(id)version error:(id *)error;
+- (id)fetchProcessedAssetsForMediaProcessingTaskID:(unint64_t)d priority:(unint64_t)priority algorithmVersion:(id)version sceneConfidenceThreshold:(float)threshold error:(id *)error;
+- (id)fetchPropertiesByOID:(id)d propertyNamesByEntityName:(id)name;
+- (id)fetchUnprocessedAssetsForMediaProcessingTaskID:(unint64_t)d priority:(unint64_t)priority algorithmVersion:(id)version sceneConfidenceThreshold:(float)threshold error:(id *)error;
+- (id)fetchUpdatedObject:(id)object;
+- (id)fetchedObjectsForOIDs:(id)ds propertySetClass:(Class)class;
+- (id)forceSyndicationIngestAsyncToDate:(id)date completionHandler:(id)handler;
+- (id)getLibrarySizesFromDB:(BOOL)b error:(id *)error;
+- (id)graphStatisticsDescription:(id *)description;
+- (id)graphStatusDescription:(id *)description;
+- (id)highlightDebugInformationForHighlightWithLocalIdentifier:(id)identifier error:(id *)error;
+- (id)ingestItemWithSpotlightUniqueIdentifier:(id)identifier bundleID:(id)d purgeUrgency:(int64_t)urgency error:(id *)error;
 - (id)initMomentShareLibrary;
 - (id)initSharedLibrary;
-- (id)keyAssetUUIDOfSocialGroupWithPersonUUIDs:(id)a3 candidateAssetUUIDs:(id)a4 error:(id *)a5;
+- (id)keyAssetUUIDOfSocialGroupWithPersonUUIDs:(id)ds candidateAssetUUIDs:(id)iDs error:(id *)error;
 - (id)libraryID;
 - (id)librarySpecificFetchOptions;
-- (id)limitedLibraryPredicateForApplication:(id)a3 fetchType:(id)a4;
+- (id)limitedLibraryPredicateForApplication:(id)application fetchType:(id)type;
 - (id)mainQueueManagedObjectContext;
 - (id)managedObjectContext;
 - (id)managedObjectContextForCurrentQueueQoS;
-- (id)memoryDebugInformationForMemoryWithLocalIdentifier:(id)a3 error:(id *)a4;
+- (id)memoryDebugInformationForMemoryWithLocalIdentifier:(id)identifier error:(id *)error;
 - (id)migrationDate;
 - (id)newClusteringEligibleFacesFetchOptions;
 - (id)newFaceCropsToBeGeneratedFetchOptions;
@@ -196,32 +196,32 @@
 - (id)objectFetchingContextForCurrentQueueQoS;
 - (id)photoLibraryForCurrentQueueQoS;
 - (id)pl_photoLibraryForCMM;
-- (id)processUniversalSearchJITForCoreSpotlightUniqueIdentifier:(id)a3 bundleID:(id)a4 processingTypes:(unint64_t)a5 error:(id *)a6;
-- (id)queryForType:(id)a3 withIdentifiers:(id)a4 local:(BOOL)a5;
-- (id)requestGraphInferencesSummaryWithDateInterval:(id)a3 error:(id *)a4;
-- (id)requestGraphInferencesSummaryWithMomentLocalIdentifiers:(id)a3 error:(id *)a4;
-- (id)requestGraphMomentLocalIdentifiersWithDateInterval:(id)a3 error:(id *)a4;
-- (id)requestPersonalTraitsForAssetsWithUUIDs:(id)a3 error:(id *)a4;
-- (id)requestPersonalTraitsForHighlightsWithUUIDs:(id)a3 error:(id *)a4;
-- (id)requestTextFeaturesForMomentLocalIdentifiers:(id)a3 error:(id *)a4;
-- (id)reserveCloudIdentifiersWithObjectType:(int64_t)a3 count:(unint64_t)a4 error:(id *)a5;
-- (id)reservedCloudIdentifiersWithObjectType:(int64_t)a3 error:(id *)a4;
-- (id)sceneTaxonomyDetectorNodeSceneIDsFromSceneID:(unint64_t)a3 sceneTaxonomy:(id)a4;
-- (id)searchDebugInformationForAssetLocalIdentifier:(id)a3 redacted:(BOOL)a4 error:(id *)a5;
-- (id)sharingMessageSuggestionDebugInformationForAssetCollectionLocalIdentifier:(id)a3 error:(id *)a4;
-- (id)sharingSuggestionDebugInformationForAssetCollectionLocalIdentifier:(id)a3 error:(id *)a4;
-- (id)sharingSuggestionWithRandomPick:(BOOL)a3 fallbackToRecentMoments:(BOOL)a4 needsNotification:(BOOL)a5;
-- (id)socialGroupsOverlappingMemberLocalIdentifiers:(id)a3 error:(id *)a4;
-- (id)sortedArrayOfPersonIdentifiers:(id)a3 error:(id *)a4;
+- (id)processUniversalSearchJITForCoreSpotlightUniqueIdentifier:(id)identifier bundleID:(id)d processingTypes:(unint64_t)types error:(id *)error;
+- (id)queryForType:(id)type withIdentifiers:(id)identifiers local:(BOOL)local;
+- (id)requestGraphInferencesSummaryWithDateInterval:(id)interval error:(id *)error;
+- (id)requestGraphInferencesSummaryWithMomentLocalIdentifiers:(id)identifiers error:(id *)error;
+- (id)requestGraphMomentLocalIdentifiersWithDateInterval:(id)interval error:(id *)error;
+- (id)requestPersonalTraitsForAssetsWithUUIDs:(id)ds error:(id *)error;
+- (id)requestPersonalTraitsForHighlightsWithUUIDs:(id)ds error:(id *)error;
+- (id)requestTextFeaturesForMomentLocalIdentifiers:(id)identifiers error:(id *)error;
+- (id)reserveCloudIdentifiersWithObjectType:(int64_t)type count:(unint64_t)count error:(id *)error;
+- (id)reservedCloudIdentifiersWithObjectType:(int64_t)type error:(id *)error;
+- (id)sceneTaxonomyDetectorNodeSceneIDsFromSceneID:(unint64_t)d sceneTaxonomy:(id)taxonomy;
+- (id)searchDebugInformationForAssetLocalIdentifier:(id)identifier redacted:(BOOL)redacted error:(id *)error;
+- (id)sharingMessageSuggestionDebugInformationForAssetCollectionLocalIdentifier:(id)identifier error:(id *)error;
+- (id)sharingSuggestionDebugInformationForAssetCollectionLocalIdentifier:(id)identifier error:(id *)error;
+- (id)sharingSuggestionWithRandomPick:(BOOL)pick fallbackToRecentMoments:(BOOL)moments needsNotification:(BOOL)notification;
+- (id)socialGroupsOverlappingMemberLocalIdentifiers:(id)identifiers error:(id *)error;
+- (id)sortedArrayOfPersonIdentifiers:(id)identifiers error:(id *)error;
 - (id)stateCaptureDictionary;
-- (id)suggestedMePersonIdentifierWithError:(id *)a3;
-- (id)suggestionsForPersonLocalIdentifier:(id)a3 clusterSequenceNumbers:(id)a4 excludePersonLocalIdentifiers:(id)a5 minimumSuggestionFaceCount:(unint64_t)a6;
-- (id)summaryCurationForHighlightForLocalIdentifier:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)upgradePhotoLibraryUsingOptions:(id)a3 completion:(id)a4;
-- (id)urlForApplicationDataFolderIdentifier:(int64_t)a3;
-- (id)urlForApplicationDataFolderIdentifier:(int64_t)a3 error:(id *)a4;
-- (int)requestProcessingTypes:(unint64_t)a3 forAssetsWithLocalIdentifiers:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
-- (int64_t)_initialRetryCountForChangesRequest:(id)a3;
+- (id)suggestedMePersonIdentifierWithError:(id *)error;
+- (id)suggestionsForPersonLocalIdentifier:(id)identifier clusterSequenceNumbers:(id)numbers excludePersonLocalIdentifiers:(id)identifiers minimumSuggestionFaceCount:(unint64_t)count;
+- (id)summaryCurationForHighlightForLocalIdentifier:(id)identifier options:(id)options error:(id *)error;
+- (id)upgradePhotoLibraryUsingOptions:(id)options completion:(id)completion;
+- (id)urlForApplicationDataFolderIdentifier:(int64_t)identifier;
+- (id)urlForApplicationDataFolderIdentifier:(int64_t)identifier error:(id *)error;
+- (int)requestProcessingTypes:(unint64_t)types forAssetsWithLocalIdentifiers:(id)identifiers progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (int64_t)_initialRetryCountForChangesRequest:(id)request;
 - (int64_t)fetchCountOfAssetsWithAllowedForAnalysis;
 - (int64_t)fetchCountOfAssetsWithFacesProcessedToAnyVersion;
 - (int64_t)fetchCountOfAssetsWithFacesProcessedToLatestVersion;
@@ -229,97 +229,97 @@
 - (int64_t)fetchCountOfAssetsWithMediaAnalysisVideoProcessed;
 - (int64_t)fetchCountOfAssetsWithScenesProcessed;
 - (int64_t)fetchCountOfVideosWithAllowedForAnalysis;
-- (uint64_t)_performCancellableChangesAndWait:(void *)a3 withInstrumentation:(void *)a4 error:;
-- (unint64_t)countOfAllAssetsForMediaProcessingTaskID:(unint64_t)a3 priority:(unint64_t)a4 sceneConfidenceThreshold:(float)a5 error:(id *)a6;
+- (uint64_t)_performCancellableChangesAndWait:(void *)wait withInstrumentation:(void *)instrumentation error:;
+- (unint64_t)countOfAllAssetsForMediaProcessingTaskID:(unint64_t)d priority:(unint64_t)priority sceneConfidenceThreshold:(float)threshold error:(id *)error;
 - (unint64_t)countOfClusteringEligibleFaces;
 - (unint64_t)countOfFaceCropsToBeGenerated;
-- (unint64_t)countOfProcessedAssetsForMediaProcessingTaskID:(unint64_t)a3 priority:(unint64_t)a4 algorithmVersion:(id)a5 sceneConfidenceThreshold:(float)a6 error:(id *)a7;
+- (unint64_t)countOfProcessedAssetsForMediaProcessingTaskID:(unint64_t)d priority:(unint64_t)priority algorithmVersion:(id)version sceneConfidenceThreshold:(float)threshold error:(id *)error;
 - (unint64_t)countOfUnclusteredFaces;
-- (unint64_t)countOfUnprocessedAssetsForMediaProcessingTaskID:(unint64_t)a3 priority:(unint64_t)a4 algorithmVersion:(id)a5 sceneConfidenceThreshold:(float)a6 error:(id *)a7;
+- (unint64_t)countOfUnprocessedAssetsForMediaProcessingTaskID:(unint64_t)d priority:(unint64_t)priority algorithmVersion:(id)version sceneConfidenceThreshold:(float)threshold error:(id *)error;
 - (unint64_t)countOfUnprocessedFaceCrops;
 - (void)_beginTransaction;
-- (void)_callLegacyCompletionTarget:(id)a3 completionSelector:(SEL)a4 contextInfo:(void *)a5 withSuccess:(BOOL)a6 error:(id)a7;
-- (void)_cancelTransactionOnExecutionContext:(id)a3 withInstrumentation:(id)a4 completionHandler:(id)a5;
-- (void)_commitTransactionOnExecutionContext:(id)a3 withInstrumentation:(id)a4 completionHandler:(id)a5;
-- (void)_denyTransactionOnExecutionContext:(id)a3 withInstrumentation:(id)a4 authorizationStatus:(int64_t)a5 accessLevel:(int64_t)a6 completionHandler:(id)a7;
+- (void)_callLegacyCompletionTarget:(id)target completionSelector:(SEL)selector contextInfo:(void *)info withSuccess:(BOOL)success error:(id)error;
+- (void)_cancelTransactionOnExecutionContext:(id)context withInstrumentation:(id)instrumentation completionHandler:(id)handler;
+- (void)_commitTransactionOnExecutionContext:(id)context withInstrumentation:(id)instrumentation completionHandler:(id)handler;
+- (void)_denyTransactionOnExecutionContext:(id)context withInstrumentation:(id)instrumentation authorizationStatus:(int64_t)status accessLevel:(int64_t)level completionHandler:(id)handler;
 - (void)_endTransaction;
-- (void)_handleLibraryBecameUnavailable:(id)a3 reason:(id)a4;
-- (void)_handleServiceConnectionClosed:(id)a3;
-- (void)_invalidateEverythingWithReason:(id)a3;
-- (void)_notifyAvailabilityObserversWithReason:(id)a3;
+- (void)_handleLibraryBecameUnavailable:(id)unavailable reason:(id)reason;
+- (void)_handleServiceConnectionClosed:(id)closed;
+- (void)_invalidateEverythingWithReason:(id)reason;
+- (void)_notifyAvailabilityObserversWithReason:(id)reason;
 - (void)_notifyPersistentChangeObservers;
-- (void)_onQueueNotifyAvailabilityObserversWithReason:(id)a3;
-- (void)_performCancellableChanges:(void *)a3 withInstrumentation:(void *)a4 completionHandler:;
-- (void)_performCancellableChanges:(void *)a3 withInstrumentation:(void *)a4 onExecutionContext:(void *)a5 completionHandler:;
-- (void)_processCPLStatusDidChange:(id)a3;
-- (void)_processPendingChangesWithDebugEvent:(id)a3;
-- (void)_publishChangeWithDebugEvent:(id)a3 block:(id)a4;
-- (void)_publishCloudStatusUpdate:(id)a3;
+- (void)_onQueueNotifyAvailabilityObserversWithReason:(id)reason;
+- (void)_performCancellableChanges:(void *)changes withInstrumentation:(void *)instrumentation completionHandler:;
+- (void)_performCancellableChanges:(void *)changes withInstrumentation:(void *)instrumentation onExecutionContext:(void *)context completionHandler:;
+- (void)_processCPLStatusDidChange:(id)change;
+- (void)_processPendingChangesWithDebugEvent:(id)event;
+- (void)_publishChangeWithDebugEvent:(id)event block:(id)block;
+- (void)_publishCloudStatusUpdate:(id)update;
 - (void)_resetCachedValues;
-- (void)_resourceBytesUsedForPredicate:(id)a3 minVideoSize:(unint64_t)a4 completion:(id)a5;
-- (void)_sendChangesRequest:(id)a3 onExecutionContext:(id)a4 withInstrumentation:(id)a5 remainingRetryCount:(int64_t)a6 reply:(id)a7;
-- (void)_sendChangesRequest:(id)a3 onExecutionContext:(id)a4 withInstrumentation:(id)a5 reply:(id)a6;
-- (void)_setCachedCloudStatus:(id)a3;
-- (void)_setFetchLimit:(id)a3 forTaskID:(unint64_t)a4;
-- (void)_setSortDescriptors:(id)a3 forTaskID:(unint64_t)a4;
+- (void)_resourceBytesUsedForPredicate:(id)predicate minVideoSize:(unint64_t)size completion:(id)completion;
+- (void)_sendChangesRequest:(id)request onExecutionContext:(id)context withInstrumentation:(id)instrumentation remainingRetryCount:(int64_t)count reply:(id)reply;
+- (void)_sendChangesRequest:(id)request onExecutionContext:(id)context withInstrumentation:(id)instrumentation reply:(id)reply;
+- (void)_setCachedCloudStatus:(id)status;
+- (void)_setFetchLimit:(id)limit forTaskID:(unint64_t)d;
+- (void)_setSortDescriptors:(id)descriptors forTaskID:(unint64_t)d;
 - (void)_startObservingServiceConnectionInvalidated;
 - (void)_startWatchingForLibraryAvailability;
 - (void)_stopObservingServiceConnectionInvalidated;
 - (void)_stopWatchingForLibraryAvailability;
-- (void)_updateFetchOptionsForMediaProcessingCounts:(id)a3;
-- (void)_updateFetchOptionsForProcessedAssets:(id)a3;
-- (void)_validateSpotlightAvailabilityInFeatureAvailability:(id)a3 forFeature:(unint64_t)a4 completionHandler:(id)a5;
-- (void)accountDidChange:(id)a3;
-- (void)appPrivateDataWriteFailedWithError:(id)a3;
+- (void)_updateFetchOptionsForMediaProcessingCounts:(id)counts;
+- (void)_updateFetchOptionsForProcessedAssets:(id)assets;
+- (void)_validateSpotlightAvailabilityInFeatureAvailability:(id)availability forFeature:(unint64_t)feature completionHandler:(id)handler;
+- (void)accountDidChange:(id)change;
+- (void)appPrivateDataWriteFailedWithError:(id)error;
 - (void)assertTransaction;
-- (void)cancelOperationsWithIdentifiers:(id)a3 reply:(id)a4;
+- (void)cancelOperationsWithIdentifiers:(id)identifiers reply:(id)reply;
 - (void)close;
-- (void)cloudQuotaResourceBytesUsedForMinVideoSize:(unint64_t)a3 completion:(id)a4;
-- (void)coalesceAndAnalyzeAssets:(id)a3 forFeature:(unint64_t)a4;
-- (void)countOfReferencedMediaWithCompletionHandler:(id)a3;
+- (void)cloudQuotaResourceBytesUsedForMinVideoSize:(unint64_t)size completion:(id)completion;
+- (void)coalesceAndAnalyzeAssets:(id)assets forFeature:(unint64_t)feature;
+- (void)countOfReferencedMediaWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)featureAvailabilityForFeature:(unint64_t)a3 readOptions:(id)a4 completionHandler:(id)a5;
-- (void)getCPLConfigrationValueForClient:(unint64_t)a3 completionHandler:(id)a4;
-- (void)handleMergeNotification:(id)a3;
-- (void)legacySaveImageDataToCameraRoll:(id)a3 completionTarget:(id)a4 completionSelector:(SEL)a5 contextInfo:(void *)a6;
-- (void)legacySaveImageToCameraRoll:(id)a3 completionTarget:(id)a4 completionSelector:(SEL)a5 contextInfo:(void *)a6;
-- (void)legacySaveScreenshotToCameraRoll:(id)a3 completionTarget:(id)a4 completionSelector:(SEL)a5 contextInfo:(void *)a6;
-- (void)legacySaveVideoToCameraRoll:(id)a3 completionTarget:(id)a4 completionSelector:(SEL)a5 contextInfo:(void *)a6;
-- (void)localResourceBytesUsedForMinVideoSize:(unint64_t)a3 completion:(id)a4;
-- (void)mergeDuplicateAssetsWithLocalIdentifierGroupingContainer:(id)a3 completionHandler:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)overrideSystemBudgetsForSyncSession:(BOOL)a3 pauseReason:(id)a4 systemBudgets:(unint64_t)a5 completionHandler:(id)a6;
-- (void)performCancellableChanges:(id)a3 completionHandler:(id)a4;
-- (void)personPromotionProcessingStatusForUserInterface:(id)a3;
-- (void)recordDeleteRequest:(id)a3;
-- (void)recordInsertRequest:(id)a3;
-- (void)recordOtherChangeRequest:(id)a3;
-- (void)recordUpdateRequest:(id)a3;
+- (void)featureAvailabilityForFeature:(unint64_t)feature readOptions:(id)options completionHandler:(id)handler;
+- (void)getCPLConfigrationValueForClient:(unint64_t)client completionHandler:(id)handler;
+- (void)handleMergeNotification:(id)notification;
+- (void)legacySaveImageDataToCameraRoll:(id)roll completionTarget:(id)target completionSelector:(SEL)selector contextInfo:(void *)info;
+- (void)legacySaveImageToCameraRoll:(id)roll completionTarget:(id)target completionSelector:(SEL)selector contextInfo:(void *)info;
+- (void)legacySaveScreenshotToCameraRoll:(id)roll completionTarget:(id)target completionSelector:(SEL)selector contextInfo:(void *)info;
+- (void)legacySaveVideoToCameraRoll:(id)roll completionTarget:(id)target completionSelector:(SEL)selector contextInfo:(void *)info;
+- (void)localResourceBytesUsedForMinVideoSize:(unint64_t)size completion:(id)completion;
+- (void)mergeDuplicateAssetsWithLocalIdentifierGroupingContainer:(id)container completionHandler:(id)handler;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)overrideSystemBudgetsForSyncSession:(BOOL)session pauseReason:(id)reason systemBudgets:(unint64_t)budgets completionHandler:(id)handler;
+- (void)performCancellableChanges:(id)changes completionHandler:(id)handler;
+- (void)personPromotionProcessingStatusForUserInterface:(id)interface;
+- (void)recordDeleteRequest:(id)request;
+- (void)recordInsertRequest:(id)request;
+- (void)recordOtherChangeRequest:(id)request;
+- (void)recordUpdateRequest:(id)request;
 - (void)registerAvailabilityObserver:(id)observer;
 - (void)registerChangeObserver:(id)observer;
-- (void)registerCloudStatusObserver:(id)a3;
-- (void)requestExternalAssetRelevanceProcessingWithReply:(id)a3;
-- (void)requestGenerateQuestionsWithOptions:(id)a3 reply:(id)a4;
-- (void)requestGraphModelResultWithOptions:(id)a3 progress:(id)a4 completion:(id)a5;
-- (void)requestGraphReadyNotificationWithCoalescingIdentifier:(id)a3 completion:(id)a4;
-- (void)requestGraphRebuildProgressWithCompletion:(id)a3;
-- (void)requestHighlightEstimatesWithCompletion:(id)a3;
-- (void)requestSyndicationProcessingWithOptions:(id)a3 reply:(id)a4;
-- (void)requestTotalProgressCountsForWorkerType:(signed __int16)a3 states:(id)a4 completion:(id)a5;
-- (void)resetFaceAnalysisWithResetLevel:(int64_t)a3 completionHandler:(id)a4;
-- (void)resetLimitedLibraryAccessForApplication:(id)a3 completionHandler:(id)a4;
-- (void)runPFLWithAttachments:(id)a3 recipeUserInfo:(id)a4 resultBlock:(id)a5;
-- (void)runShadowEvaluationWithRecipe:(id)a3 models:(id)a4 trialDeploymentID:(id)a5 trialExperimentID:(id)a6 trialTreatmentID:(id)a7 resultBlock:(id)a8;
-- (void)setChangeRequest:(id)a3 forUUID:(id)a4;
-- (void)setCloudPhotoLibraryPauseState:(BOOL)a3 reason:(signed __int16)a4;
-- (void)setCustomLibrarySpecificFetchOptions:(id)a3;
-- (void)setKeepOriginalsEnabled:(BOOL)a3;
-- (void)setWidgetTimelineGeneratedForDisplaySize:(CGSize)a3;
-- (void)simulateMemoriesNotificationWithOptions:(id)a3 reply:(id)a4;
-- (void)statusDidChange:(id)a3;
+- (void)registerCloudStatusObserver:(id)observer;
+- (void)requestExternalAssetRelevanceProcessingWithReply:(id)reply;
+- (void)requestGenerateQuestionsWithOptions:(id)options reply:(id)reply;
+- (void)requestGraphModelResultWithOptions:(id)options progress:(id)progress completion:(id)completion;
+- (void)requestGraphReadyNotificationWithCoalescingIdentifier:(id)identifier completion:(id)completion;
+- (void)requestGraphRebuildProgressWithCompletion:(id)completion;
+- (void)requestHighlightEstimatesWithCompletion:(id)completion;
+- (void)requestSyndicationProcessingWithOptions:(id)options reply:(id)reply;
+- (void)requestTotalProgressCountsForWorkerType:(signed __int16)type states:(id)states completion:(id)completion;
+- (void)resetFaceAnalysisWithResetLevel:(int64_t)level completionHandler:(id)handler;
+- (void)resetLimitedLibraryAccessForApplication:(id)application completionHandler:(id)handler;
+- (void)runPFLWithAttachments:(id)attachments recipeUserInfo:(id)info resultBlock:(id)block;
+- (void)runShadowEvaluationWithRecipe:(id)recipe models:(id)models trialDeploymentID:(id)d trialExperimentID:(id)iD trialTreatmentID:(id)treatmentID resultBlock:(id)block;
+- (void)setChangeRequest:(id)request forUUID:(id)d;
+- (void)setCloudPhotoLibraryPauseState:(BOOL)state reason:(signed __int16)reason;
+- (void)setCustomLibrarySpecificFetchOptions:(id)options;
+- (void)setKeepOriginalsEnabled:(BOOL)enabled;
+- (void)setWidgetTimelineGeneratedForDisplaySize:(CGSize)size;
+- (void)simulateMemoriesNotificationWithOptions:(id)options reply:(id)reply;
+- (void)statusDidChange:(id)change;
 - (void)unregisterAvailabilityObserver:(id)observer;
 - (void)unregisterChangeObserver:(id)observer;
-- (void)unregisterCloudStatusObserver:(id)a3;
+- (void)unregisterCloudStatusObserver:(id)observer;
 @end
 
 @implementation PHPhotoLibrary
@@ -327,8 +327,8 @@
 - (BOOL)isSystemPhotoLibrary
 {
   v3 = objc_opt_class();
-  v4 = [(PHPhotoLibrary *)self photoLibraryURL];
-  LOBYTE(v3) = [v3 isSystemPhotoLibraryURL:v4];
+  photoLibraryURL = [(PHPhotoLibrary *)self photoLibraryURL];
+  LOBYTE(v3) = [v3 isSystemPhotoLibraryURL:photoLibraryURL];
 
   return v3;
 }
@@ -358,8 +358,8 @@
 - (id)_initializeAppPrivateData
 {
   v3 = MEMORY[0x1E69BE670];
-  v4 = [(PHPhotoLibrary *)self photoLibraryBundle];
-  if ([v3 shouldTryFastPathWithLibraryBundle:v4])
+  photoLibraryBundle = [(PHPhotoLibrary *)self photoLibraryBundle];
+  if ([v3 shouldTryFastPathWithLibraryBundle:photoLibraryBundle])
   {
 
 LABEL_4:
@@ -367,9 +367,9 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v5 = [(PHPhotoLibrary *)self photoLibrary];
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
 
-  if (v5)
+  if (photoLibrary)
   {
     goto LABEL_4;
   }
@@ -412,9 +412,9 @@ uint64_t __37__PHPhotoLibrary_uniqueObjectIDCache__block_invoke()
 - (PLPhotoLibrary)photoLibrary
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(PHPhotoLibrary *)self _lazyPhotoLibrary];
-  v4 = [v3 objectValue];
-  if (!v4)
+  _lazyPhotoLibrary = [(PHPhotoLibrary *)self _lazyPhotoLibrary];
+  objectValue = [_lazyPhotoLibrary objectValue];
+  if (!objectValue)
   {
     v5 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -426,22 +426,22 @@ uint64_t __37__PHPhotoLibrary_uniqueObjectIDCache__block_invoke()
     }
   }
 
-  return v4;
+  return objectValue;
 }
 
 - (id)managedObjectContextForCurrentQueueQoS
 {
-  v2 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
-  v3 = [v2 managedObjectContext];
+  photoLibraryForCurrentQueueQoS = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  managedObjectContext = [photoLibraryForCurrentQueueQoS managedObjectContext];
 
-  return v3;
+  return managedObjectContext;
 }
 
 - (id)photoLibraryForCurrentQueueQoS
 {
   if ([(PHPhotoLibrary *)self isPHPhotoLibraryForCMM])
   {
-    v3 = [(PHPhotoLibrary *)self pl_photoLibraryForCMM];
+    pl_photoLibraryForCMM = [(PHPhotoLibrary *)self pl_photoLibraryForCMM];
   }
 
   else
@@ -449,7 +449,7 @@ uint64_t __37__PHPhotoLibrary_uniqueObjectIDCache__block_invoke()
     v4 = qos_class_self();
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
-      v3 = [(PHPhotoLibrary *)self mainQueuePhotoLibrary];
+      pl_photoLibraryForCMM = [(PHPhotoLibrary *)self mainQueuePhotoLibrary];
     }
 
     else
@@ -463,11 +463,11 @@ uint64_t __37__PHPhotoLibrary_uniqueObjectIDCache__block_invoke()
       {
         [(PHPhotoLibrary *)self userInitiatedQueuePhotoLibrary];
       }
-      v3 = ;
+      pl_photoLibraryForCMM = ;
     }
   }
 
-  return v3;
+  return pl_photoLibraryForCMM;
 }
 
 - (PLPhotoLibrary)userInitiatedQueuePhotoLibrary
@@ -488,8 +488,8 @@ uint64_t __37__PHPhotoLibrary_uniqueObjectIDCache__block_invoke()
 
 - (id)allowedEntities
 {
-  v2 = [(PHPhotoLibrary *)self type];
-  if (v2 == 1)
+  type = [(PHPhotoLibrary *)self type];
+  if (type == 1)
   {
     pl_dispatch_once();
     v3 = &allowedEntities_pl_once_object_78;
@@ -497,7 +497,7 @@ uint64_t __37__PHPhotoLibrary_uniqueObjectIDCache__block_invoke()
 
   else
   {
-    if (v2)
+    if (type)
     {
       goto LABEL_6;
     }
@@ -506,10 +506,10 @@ uint64_t __37__PHPhotoLibrary_uniqueObjectIDCache__block_invoke()
     v3 = &allowedEntities_pl_once_object_77;
   }
 
-  v2 = *v3;
+  type = *v3;
 LABEL_6:
 
-  return v2;
+  return type;
 }
 
 void __33__PHPhotoLibrary_allowedEntities__block_invoke()
@@ -554,16 +554,16 @@ void __33__PHPhotoLibrary_allowedEntities__block_invoke()
 {
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v3 = [(PHPhotoLibrary *)self mainQueueManagedObjectContext];
+    mainQueueManagedObjectContext = [(PHPhotoLibrary *)self mainQueueManagedObjectContext];
   }
 
   else
   {
-    v4 = [(PHPhotoLibrary *)self backgroundQueueObjectFetchingPhotoLibrary];
-    v3 = [v4 managedObjectContext];
+    backgroundQueueObjectFetchingPhotoLibrary = [(PHPhotoLibrary *)self backgroundQueueObjectFetchingPhotoLibrary];
+    mainQueueManagedObjectContext = [backgroundQueueObjectFetchingPhotoLibrary managedObjectContext];
   }
 
-  return v3;
+  return mainQueueManagedObjectContext;
 }
 
 - (PLPhotoLibrary)backgroundQueueObjectFetchingPhotoLibrary
@@ -593,7 +593,7 @@ void __33__PHPhotoLibrary_allowedEntities__block_invoke()
     *buf = 138412802;
     v9 = v4;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = photoLibraryBundle;
     _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p dealloc %@", buf, 0x20u);
@@ -619,8 +619,8 @@ void __33__PHPhotoLibrary_allowedEntities__block_invoke()
 
 - (void)_stopObservingServiceConnectionInvalidated
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69BF3A8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69BF3A8] object:0];
 }
 
 - (BOOL)_openApplicationOwnedFoldersIfNecessary
@@ -818,13 +818,13 @@ void __45__PHPhotoLibrary_PHObjectClassesByEntityName__block_invoke()
 {
   [MEMORY[0x1E69BF2A0] assertSingleLibraryMode];
 
-  return [a1 _sharedPhotoLibrary];
+  return [self _sharedPhotoLibrary];
 }
 
 - (id)initSharedLibrary
 {
-  v3 = [MEMORY[0x1E69BF2A0] systemLibraryURL];
-  v4 = [(PHPhotoLibrary *)self initWithPhotoLibraryURL:v3 type:0];
+  systemLibraryURL = [MEMORY[0x1E69BF2A0] systemLibraryURL];
+  v4 = [(PHPhotoLibrary *)self initWithPhotoLibraryURL:systemLibraryURL type:0];
 
   return v4;
 }
@@ -871,10 +871,10 @@ uint64_t __37__PHPhotoLibrary__sharedPhotoLibrary__block_invoke()
 
 - (id)mainQueueManagedObjectContext
 {
-  v2 = [(PHPhotoLibrary *)self mainQueuePhotoLibrary];
-  v3 = [v2 managedObjectContext];
+  mainQueuePhotoLibrary = [(PHPhotoLibrary *)self mainQueuePhotoLibrary];
+  managedObjectContext = [mainQueuePhotoLibrary managedObjectContext];
 
-  return v3;
+  return managedObjectContext;
 }
 
 - (PLPhotoLibrary)backgroundQueuePhotoLibrary
@@ -902,7 +902,7 @@ uint64_t __37__PHPhotoLibrary__sharedPhotoLibrary__block_invoke()
 
 - (id)libraryID
 {
-  v2 = [(PLPhotoLibraryBundle *)self->_photoLibraryBundle pathManager];
+  pathManager = [(PLPhotoLibraryBundle *)self->_photoLibraryBundle pathManager];
   v3 = PLLibraryIDFromPathManager();
 
   return v3;
@@ -910,8 +910,8 @@ uint64_t __37__PHPhotoLibrary__sharedPhotoLibrary__block_invoke()
 
 - (void)_notifyPersistentChangeObservers
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"PHPhotoLibraryPersistentHistoryDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PHPhotoLibraryPersistentHistoryDidChangeNotification" object:self];
 }
 
 - (PLPhotoLibrary)changeHandlingPhotoLibrary
@@ -935,45 +935,45 @@ uint64_t __37__PHPhotoLibrary__sharedPhotoLibrary__block_invoke()
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = [objc_opt_class() stringFromPHPhotoLibraryType:{-[PHPhotoLibrary type](self, "type")}];
-  v6 = [(PHPhotoLibrary *)self photoLibraryURL];
-  v7 = [v6 path];
-  v8 = [v3 stringWithFormat:@"<%@: %p> type:%@ path:%@", v4, self, v5, v7];
+  photoLibraryURL = [(PHPhotoLibrary *)self photoLibraryURL];
+  path = [photoLibraryURL path];
+  v8 = [v3 stringWithFormat:@"<%@: %p> type:%@ path:%@", v4, self, v5, path];
 
   return v8;
 }
 
 - (NSString)uuid
 {
-  v2 = [(PHPhotoLibrary *)self photoLibrary];
-  v3 = [v2 pathManager];
-  v4 = [v3 photoDirectoryWithType:1];
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+  pathManager = [photoLibrary pathManager];
+  v4 = [pathManager photoDirectoryWithType:1];
 
   return v4;
 }
 
-- (id)searchDebugInformationForAssetLocalIdentifier:(id)a3 redacted:(BOOL)a4 error:(id *)a5
+- (id)searchDebugInformationForAssetLocalIdentifier:(id)identifier redacted:(BOOL)redacted error:(id *)error
 {
-  v6 = a4;
-  v8 = [(PHObject *)PHAsset uuidFromLocalIdentifier:a3];
-  v9 = [(PHPhotoLibrary *)self photoLibrary];
-  v10 = [v9 assetsdClient];
-  v11 = [v10 debugClient];
-  v12 = [v11 requestSearchDebugInformationForAssetUUID:v8 redacted:v6 error:a5];
+  redactedCopy = redacted;
+  v8 = [(PHObject *)PHAsset uuidFromLocalIdentifier:identifier];
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
+  debugClient = [assetsdClient debugClient];
+  v12 = [debugClient requestSearchDebugInformationForAssetUUID:v8 redacted:redactedCopy error:error];
 
   return v12;
 }
 
-- (BOOL)resetStateForMediaProcessingTaskID:(unint64_t)a3 assetIdentifiers:(id)a4 resetOptions:(unint64_t)a5 error:(id *)a6
+- (BOOL)resetStateForMediaProcessingTaskID:(unint64_t)d assetIdentifiers:(id)identifiers resetOptions:(unint64_t)options error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = [(PHPhotoLibrary *)self assetsdClient];
-  v12 = [v11 photoKitClient];
+  identifiersCopy = identifiers;
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  photoKitClient = [assetsdClient photoKitClient];
 
-  if (v12)
+  if (photoKitClient)
   {
-    v13 = [v10 _pl_map:&__block_literal_global_2629];
-    v14 = [v12 resetStateForMediaProcessingTaskID:a3 assetUUIDs:v13 resetOptions:a5 error:a6];
+    v13 = [identifiersCopy _pl_map:&__block_literal_global_2629];
+    v14 = [photoKitClient resetStateForMediaProcessingTaskID:d assetUUIDs:v13 resetOptions:options error:error];
   }
 
   else
@@ -983,10 +983,10 @@ uint64_t __37__PHPhotoLibrary__sharedPhotoLibrary__block_invoke()
     v20[0] = @"photokit client is nil";
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     v17 = [v15 errorWithDomain:@"PHPhotosErrorDomain" code:4302 userInfo:v16];
-    if (a6)
+    if (error)
     {
       v17 = v17;
-      *a6 = v17;
+      *error = v17;
     }
 
     v14 = 0;
@@ -998,53 +998,53 @@ uint64_t __37__PHPhotoLibrary__sharedPhotoLibrary__block_invoke()
 - (id)_facesFetchOptionsForMediaProcessing
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  v2 = [(PHPhotoLibrary *)self _baseFetchOptionsForMediaProcessing];
+  _baseFetchOptionsForMediaProcessing = [(PHPhotoLibrary *)self _baseFetchOptionsForMediaProcessing];
   v8[0] = @"PHFacePropertySetIdentifier";
   v8[1] = @"PHFacePropertySetCore";
   v8[2] = @"PHFacePropertySetClustering";
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:3];
-  [v2 setFetchPropertySets:v3];
+  [_baseFetchOptionsForMediaProcessing setFetchPropertySets:v3];
 
   v4 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:1];
   v7 = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v7 count:1];
-  [v2 setSortDescriptors:v5];
+  [_baseFetchOptionsForMediaProcessing setSortDescriptors:v5];
 
-  [v2 setIncludeTorsoAndFaceDetectionData:1];
-  [v2 setIncludedDetectionTypes:&unk_1F102DE20];
+  [_baseFetchOptionsForMediaProcessing setIncludeTorsoAndFaceDetectionData:1];
+  [_baseFetchOptionsForMediaProcessing setIncludedDetectionTypes:&unk_1F102DE20];
 
-  return v2;
+  return _baseFetchOptionsForMediaProcessing;
 }
 
 - (id)_baseFetchOptionsForMediaProcessing
 {
-  v2 = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
-  [v2 setWantsIncrementalChangeDetails:0];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
 
-  return v2;
+  return librarySpecificFetchOptions;
 }
 
-- (id)fetchFacesForMediaProcessingWithPersonLocalIdentifiers:(id)a3 inMoment:(id)a4
+- (id)fetchFacesForMediaProcessingWithPersonLocalIdentifiers:(id)identifiers inMoment:(id)moment
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHPhotoLibrary *)self _facesFetchOptionsForMediaProcessing];
-  v9 = [(PHPhotoLibrary *)self _assetFetchOptionsForMediaProcessing];
-  v10 = [PHAsset fetchAssetsInAssetCollection:v7 options:v9];
+  identifiersCopy = identifiers;
+  momentCopy = moment;
+  _facesFetchOptionsForMediaProcessing = [(PHPhotoLibrary *)self _facesFetchOptionsForMediaProcessing];
+  _assetFetchOptionsForMediaProcessing = [(PHPhotoLibrary *)self _assetFetchOptionsForMediaProcessing];
+  v10 = [PHAsset fetchAssetsInAssetCollection:momentCopy options:_assetFetchOptionsForMediaProcessing];
 
-  v11 = [v10 fetchedObjectIDs];
-  if ([v11 count])
+  fetchedObjectIDs = [v10 fetchedObjectIDs];
+  if ([fetchedObjectIDs count])
   {
     v26 = v10;
-    v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in (%@)", @"assetForFace", v11];
+    v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in (%@)", @"assetForFace", fetchedObjectIDs];
     v13 = objc_opt_new();
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v27 = v6;
-    v14 = v6;
+    v27 = identifiersCopy;
+    v14 = identifiersCopy;
     v15 = [v14 countByEnumeratingWithState:&v28 objects:v35 count:16];
     if (v15)
     {
@@ -1076,10 +1076,10 @@ uint64_t __37__PHPhotoLibrary__sharedPhotoLibrary__block_invoke()
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
     v23 = [v21 andPredicateWithSubpredicates:v22];
 
-    [v8 setInternalPredicate:v23];
-    v24 = [PHFace fetchFacesWithOptions:v8];
+    [_facesFetchOptionsForMediaProcessing setInternalPredicate:v23];
+    v24 = [PHFace fetchFacesWithOptions:_facesFetchOptionsForMediaProcessing];
 
-    v6 = v27;
+    identifiersCopy = v27;
     v10 = v26;
   }
 
@@ -1089,7 +1089,7 @@ uint64_t __37__PHPhotoLibrary__sharedPhotoLibrary__block_invoke()
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v33 = v7;
+      v33 = momentCopy;
       _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_ERROR, "Getting no object IDs when fetching assets on moment %@", buf, 0xCu);
     }
 
@@ -1099,7 +1099,7 @@ uint64_t __37__PHPhotoLibrary__sharedPhotoLibrary__block_invoke()
   return v24;
 }
 
-- (id)_propertySetsForTaskID:(unint64_t)a3
+- (id)_propertySetsForTaskID:(unint64_t)d
 {
   v32[5] = *MEMORY[0x1E69E9840];
   v32[0] = @"PHAssetPropertySetCharacterRecognition";
@@ -1110,7 +1110,7 @@ uint64_t __37__PHPhotoLibrary__sharedPhotoLibrary__block_invoke()
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:5];
   v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   [v6 addObject:@"PHAssetPropertySetOriginalMetadata"];
-  switch(a3)
+  switch(d)
   {
     case 1uLL:
     case 0x11uLL:
@@ -1228,7 +1228,7 @@ LABEL_21:
 
       break;
     default:
-      if (a3 == 0x7FFFFFFF)
+      if (d == 0x7FFFFFFF)
       {
 LABEL_6:
         [v6 addObjectsFromArray:v5];
@@ -1241,29 +1241,29 @@ LABEL_6:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v15 = 134218242;
-    v16 = a3;
+    dCopy = d;
     v17 = 2114;
     v18 = v6;
     _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_INFO, "PHMediaProcessingTaskID %tu using property sets:%{public}@", &v15, 0x16u);
   }
 
-  v13 = [v6 allObjects];
+  allObjects = [v6 allObjects];
 
-  return v13;
+  return allObjects;
 }
 
-- (BOOL)_shouldIncludeAllBurstAssetsForTaskID:(unint64_t)a3
+- (BOOL)_shouldIncludeAllBurstAssetsForTaskID:(unint64_t)d
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3 > 0x14)
+  if (d > 0x14)
   {
-    if (a3 != 0x7FFFFFFF)
+    if (d != 0x7FFFFFFF)
     {
       v5 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v6 = 134217984;
-        v7 = a3;
+        dCopy = d;
         _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_DEFAULT, "PHMediaProcessingTaskID (%tu); defaulting to include all burst assets", &v6, 0xCu);
       }
     }
@@ -1271,15 +1271,15 @@ LABEL_6:
     return 1;
   }
 
-  return ((1 << a3) & 0x2E9F3) != 0;
+  return ((1 << d) & 0x2E9F3) != 0;
 }
 
-- (BOOL)_shouldIncludeGuestAssetsForTaskID:(unint64_t)a3
+- (BOOL)_shouldIncludeGuestAssetsForTaskID:(unint64_t)d
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3 - 4 >= 0x11 && a3 >= 3 && a3 != 0x7FFFFFFF)
+  if (d - 4 >= 0x11 && d >= 3 && d != 0x7FFFFFFF)
   {
-    if (a3 == 3)
+    if (d == 3)
     {
       return ![(PHPhotoLibrary *)self isSystemPhotoLibrary];
     }
@@ -1288,7 +1288,7 @@ LABEL_6:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = a3;
+      dCopy = d;
       _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_DEFAULT, "PHMediaProcessingTaskID (%tu); defaulting to include guest assets", &v8, 0xCu);
     }
   }
@@ -1296,23 +1296,23 @@ LABEL_6:
   return 1;
 }
 
-- (BOOL)_shouldIncludeOnlyAssetsAllowedForAnalysisForTaskID:(unint64_t)a3
+- (BOOL)_shouldIncludeOnlyAssetsAllowedForAnalysisForTaskID:(unint64_t)d
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3 - 4 >= 0x11 && a3 >= 3)
+  if (d - 4 >= 0x11 && d >= 3)
   {
-    if (a3 == 3)
+    if (d == 3)
     {
       return 1;
     }
 
-    if (a3 != 0x7FFFFFFF)
+    if (d != 0x7FFFFFFF)
     {
       v6 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v7 = 134217984;
-        v8 = a3;
+        dCopy = d;
         _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_DEFAULT, "PHMediaProcessingTaskID (%tu); defaulting to NOT only allowed for analysis assets", &v7, 0xCu);
       }
     }
@@ -1321,29 +1321,29 @@ LABEL_6:
   return 0;
 }
 
-- (void)_setFetchLimit:(id)a3 forTaskID:(unint64_t)a4
+- (void)_setFetchLimit:(id)limit forTaskID:(unint64_t)d
 {
-  if (a4 == 16)
+  if (d == 16)
   {
-    [a3 setFetchLimit:1000];
+    [limit setFetchLimit:1000];
   }
 }
 
-- (void)_setSortDescriptors:(id)a3 forTaskID:(unint64_t)a4
+- (void)_setSortDescriptors:(id)descriptors forTaskID:(unint64_t)d
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a4 > 0x14)
+  descriptorsCopy = descriptors;
+  if (d > 0x14)
   {
-    if (a4 != 0x7FFFFFFF)
+    if (d != 0x7FFFFFFF)
     {
       goto LABEL_8;
     }
   }
 
-  else if (((1 << a4) & 0x2EBFF) == 0)
+  else if (((1 << d) & 0x2EBFF) == 0)
   {
-    if (((1 << a4) & 0x1C1400) != 0)
+    if (((1 << d) & 0x1C1400) != 0)
     {
       v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"assetDateCreated" ascending:0];
       v11 = v6;
@@ -1360,31 +1360,31 @@ LABEL_6:
     }
 
     v7 = [v8 arrayWithObjects:v9 count:1];
-    [v5 setInternalSortDescriptors:v7];
+    [descriptorsCopy setInternalSortDescriptors:v7];
     goto LABEL_7;
   }
 
   v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:0];
   v10 = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v10 count:1];
-  [v5 setSortDescriptors:v7];
+  [descriptorsCopy setSortDescriptors:v7];
 LABEL_7:
 
 LABEL_8:
 }
 
-- (id)fetchOptionsForMediaProcessingTaskID:(unint64_t)a3 priority:(unint64_t)a4 algorithmVersion:(id)a5 sceneConfidenceThreshold:(float)a6 processed:(BOOL)a7 exactVersionMatch:(BOOL)a8 error:(id *)a9
+- (id)fetchOptionsForMediaProcessingTaskID:(unint64_t)d priority:(unint64_t)priority algorithmVersion:(id)version sceneConfidenceThreshold:(float)threshold processed:(BOOL)processed exactVersionMatch:(BOOL)match error:(id *)error
 {
-  v10 = a7;
+  processedCopy = processed;
   v38 = *MEMORY[0x1E69E9840];
-  v14 = a5;
-  if ([(PHPhotoLibrary *)self _isValidTaskID:a3])
+  versionCopy = version;
+  if ([(PHPhotoLibrary *)self _isValidTaskID:d])
   {
-    v15 = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
-    [v15 setIncludeAssetSourceTypes:5];
-    if (v14)
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setIncludeAssetSourceTypes:5];
+    if (versionCopy)
     {
-      v16 = [[PHMediaProcessingAlgorithmVersionProvider alloc] initWithProvider:v14];
+      v16 = [[PHMediaProcessingAlgorithmVersionProvider alloc] initWithProvider:versionCopy];
     }
 
     else
@@ -1392,46 +1392,46 @@ LABEL_8:
       v16 = 0;
     }
 
-    if ([(PHPhotoLibrary *)self _isOptimizedMediaProcessingTaskID:a3])
+    if ([(PHPhotoLibrary *)self _isOptimizedMediaProcessingTaskID:d])
     {
       v24 = PLOptimizedInternalPredicateForMediaProcessingTaskID();
-      [v15 setInternalPredicate:v24];
+      [librarySpecificFetchOptions setInternalPredicate:v24];
 
-      [v15 setIsExclusivePredicate:1];
-      v25 = [MEMORY[0x1E69BE588] entityName];
-      [v15 setRelatedEntityName:v25];
+      [librarySpecificFetchOptions setIsExclusivePredicate:1];
+      entityName = [MEMORY[0x1E69BE588] entityName];
+      [librarySpecificFetchOptions setRelatedEntityName:entityName];
 
-      [v15 setRelatedRelationshipProperty:@"asset"];
+      [librarySpecificFetchOptions setRelatedRelationshipProperty:@"asset"];
     }
 
     else
     {
-      [v15 setIncludeAllBurstAssets:{-[PHPhotoLibrary _shouldIncludeAllBurstAssetsForTaskID:](self, "_shouldIncludeAllBurstAssetsForTaskID:", a3)}];
-      [v15 setIncludeTrashedAssets:{-[PHPhotoLibrary _shouldIncludeTrashedAssetsForTaskID:](self, "_shouldIncludeTrashedAssetsForTaskID:", a3)}];
-      [v15 setIncludeHiddenAssets:{-[PHPhotoLibrary _shouldIncludeHiddenAssetsForTaskID:](self, "_shouldIncludeHiddenAssetsForTaskID:", a3)}];
-      [v15 setIncludeGuestAssets:{-[PHPhotoLibrary _shouldIncludeGuestAssetsForTaskID:](self, "_shouldIncludeGuestAssetsForTaskID:", a3)}];
-      [v15 setIncludeOnlyAssetsAllowedForAnalysis:{-[PHPhotoLibrary _shouldIncludeOnlyAssetsAllowedForAnalysisForTaskID:](self, "_shouldIncludeOnlyAssetsAllowedForAnalysisForTaskID:", a3)}];
+      [librarySpecificFetchOptions setIncludeAllBurstAssets:{-[PHPhotoLibrary _shouldIncludeAllBurstAssetsForTaskID:](self, "_shouldIncludeAllBurstAssetsForTaskID:", d)}];
+      [librarySpecificFetchOptions setIncludeTrashedAssets:{-[PHPhotoLibrary _shouldIncludeTrashedAssetsForTaskID:](self, "_shouldIncludeTrashedAssetsForTaskID:", d)}];
+      [librarySpecificFetchOptions setIncludeHiddenAssets:{-[PHPhotoLibrary _shouldIncludeHiddenAssetsForTaskID:](self, "_shouldIncludeHiddenAssetsForTaskID:", d)}];
+      [librarySpecificFetchOptions setIncludeGuestAssets:{-[PHPhotoLibrary _shouldIncludeGuestAssetsForTaskID:](self, "_shouldIncludeGuestAssetsForTaskID:", d)}];
+      [librarySpecificFetchOptions setIncludeOnlyAssetsAllowedForAnalysis:{-[PHPhotoLibrary _shouldIncludeOnlyAssetsAllowedForAnalysisForTaskID:](self, "_shouldIncludeOnlyAssetsAllowedForAnalysisForTaskID:", d)}];
       v26 = PLInternalPredicateForMediaProcessingTaskID();
-      [v15 setInternalPredicate:v26];
+      [librarySpecificFetchOptions setInternalPredicate:v26];
     }
 
-    v27 = [(PHPhotoLibrary *)self _propertySetsForTaskID:a3];
-    [v15 setFetchPropertySets:v27];
+    v27 = [(PHPhotoLibrary *)self _propertySetsForTaskID:d];
+    [librarySpecificFetchOptions setFetchPropertySets:v27];
 
     v28 = MEMORY[0x1E696AEC0];
-    v29 = PHMediaProcessingDescriptionForTaskID(a3);
+    v29 = PHMediaProcessingDescriptionForTaskID(d);
     v30 = v29;
     v31 = @"NO";
-    if (v10)
+    if (processedCopy)
     {
       v31 = @"YES";
     }
 
-    v32 = [v28 stringWithFormat:@"!MediaProcessing task: %@ priority: %tu processed: %@", v29, a4, v31];
-    [v15 setImportantFetchName:v32];
+    v32 = [v28 stringWithFormat:@"!MediaProcessing task: %@ priority: %tu processed: %@", v29, priority, v31];
+    [librarySpecificFetchOptions setImportantFetchName:v32];
 
-    [(PHPhotoLibrary *)self _setSortDescriptors:v15 forTaskID:a3];
-    [(PHPhotoLibrary *)self _setFetchLimit:v15 forTaskID:a3];
+    [(PHPhotoLibrary *)self _setSortDescriptors:librarySpecificFetchOptions forTaskID:d];
+    [(PHPhotoLibrary *)self _setFetchLimit:librarySpecificFetchOptions forTaskID:d];
   }
 
   else
@@ -1440,46 +1440,46 @@ LABEL_8:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v37 = a3;
+      dCopy = d;
       _os_log_impl(&dword_19C86F000, v17, OS_LOG_TYPE_DEFAULT, "Unknown PHMediaProcessingTaskID (%tu)", buf, 0xCu);
     }
 
     v18 = MEMORY[0x1E696ABC0];
     v34 = *MEMORY[0x1E696A278];
-    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    v20 = [v19 stringValue];
-    v21 = [@"unknown taskID " stringByAppendingString:v20];
+    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
+    stringValue = [v19 stringValue];
+    v21 = [@"unknown taskID " stringByAppendingString:stringValue];
     v35 = v21;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
     v23 = [v18 errorWithDomain:@"PHPhotosErrorDomain" code:8002 userInfo:v22];
-    if (a9)
+    if (error)
     {
       v23 = v23;
-      *a9 = v23;
+      *error = v23;
     }
 
-    v15 = 0;
+    librarySpecificFetchOptions = 0;
   }
 
-  return v15;
+  return librarySpecificFetchOptions;
 }
 
-- (void)_updateFetchOptionsForProcessedAssets:(id)a3
+- (void)_updateFetchOptionsForProcessedAssets:(id)assets
 {
-  v3 = a3;
-  [v3 setInternalSortDescriptors:0];
-  [v3 setSortDescriptors:0];
+  assetsCopy = assets;
+  [assetsCopy setInternalSortDescriptors:0];
+  [assetsCopy setSortDescriptors:0];
 }
 
-- (id)_countOfMediaProcessingAssetsWithInternalPredicate:(id)a3 taskID:(unint64_t)a4 processed:(BOOL)a5 exactVersionMatch:(BOOL)a6 versionProvider:(id)a7
+- (id)_countOfMediaProcessingAssetsWithInternalPredicate:(id)predicate taskID:(unint64_t)d processed:(BOOL)processed exactVersionMatch:(BOOL)match versionProvider:(id)provider
 {
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v13 = a7;
-  if (v13)
+  matchCopy = match;
+  processedCopy = processed;
+  predicateCopy = predicate;
+  providerCopy = provider;
+  if (providerCopy)
   {
-    v14 = [[PHMediaProcessingAlgorithmVersionProvider alloc] initWithProvider:v13];
+    v14 = [[PHMediaProcessingAlgorithmVersionProvider alloc] initWithProvider:providerCopy];
   }
 
   else
@@ -1488,17 +1488,17 @@ LABEL_8:
   }
 
   v23 = 0;
-  v15 = [(PHPhotoLibrary *)self fetchOptionsForMediaProcessingTaskID:a4 priority:0 algorithmVersion:v14 sceneConfidenceThreshold:v9 processed:v8 exactVersionMatch:&v23 error:0.0];
+  v15 = [(PHPhotoLibrary *)self fetchOptionsForMediaProcessingTaskID:d priority:0 algorithmVersion:v14 sceneConfidenceThreshold:processedCopy processed:matchCopy exactVersionMatch:&v23 error:0.0];
   v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v17 = [v15 internalPredicate];
+  internalPredicate = [v15 internalPredicate];
 
-  if (v17)
+  if (internalPredicate)
   {
-    v18 = [v15 internalPredicate];
-    [v16 addObject:v18];
+    internalPredicate2 = [v15 internalPredicate];
+    [v16 addObject:internalPredicate2];
   }
 
-  [v16 addObject:v12];
+  [v16 addObject:predicateCopy];
   v19 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v16];
   [v15 setInternalPredicate:v19];
 
@@ -1509,64 +1509,64 @@ LABEL_8:
   return v21;
 }
 
-- (id)countOfAssetsByMediaTypeForMediaProcessingTaskID:(unint64_t)a3 processed:(BOOL)a4 algorithmVersion:(id)a5 exactVersionMatch:(BOOL)a6 error:(id *)a7
+- (id)countOfAssetsByMediaTypeForMediaProcessingTaskID:(unint64_t)d processed:(BOOL)processed algorithmVersion:(id)version exactVersionMatch:(BOOL)match error:(id *)error
 {
-  v7 = a6;
-  v8 = a4;
+  matchCopy = match;
+  processedCopy = processed;
   v11 = MEMORY[0x1E695DF90];
-  v12 = a5;
+  versionCopy = version;
   v13 = objc_alloc_init(v11);
   v14 = PLStillImagesInternalPredicate();
-  v15 = [(PHPhotoLibrary *)self _countOfMediaProcessingAssetsWithInternalPredicate:v14 taskID:a3 processed:v8 exactVersionMatch:v7 versionProvider:v12];
+  v15 = [(PHPhotoLibrary *)self _countOfMediaProcessingAssetsWithInternalPredicate:v14 taskID:d processed:processedCopy exactVersionMatch:matchCopy versionProvider:versionCopy];
   [v13 setObject:v15 forKeyedSubscript:@"StillImage"];
 
   v16 = PLLivePhotosInternalPredicate();
-  v17 = [(PHPhotoLibrary *)self _countOfMediaProcessingAssetsWithInternalPredicate:v16 taskID:a3 processed:v8 exactVersionMatch:v7 versionProvider:v12];
+  v17 = [(PHPhotoLibrary *)self _countOfMediaProcessingAssetsWithInternalPredicate:v16 taskID:d processed:processedCopy exactVersionMatch:matchCopy versionProvider:versionCopy];
   [v13 setObject:v17 forKeyedSubscript:@"LivePhoto"];
 
   v18 = PLMoviesInternalPredicate();
-  v19 = [(PHPhotoLibrary *)self _countOfMediaProcessingAssetsWithInternalPredicate:v18 taskID:a3 processed:v8 exactVersionMatch:v7 versionProvider:v12];
+  v19 = [(PHPhotoLibrary *)self _countOfMediaProcessingAssetsWithInternalPredicate:v18 taskID:d processed:processedCopy exactVersionMatch:matchCopy versionProvider:versionCopy];
 
   [v13 setObject:v19 forKeyedSubscript:@"Video"];
 
   return v13;
 }
 
-- (void)_updateFetchOptionsForMediaProcessingCounts:(id)a3
+- (void)_updateFetchOptionsForMediaProcessingCounts:(id)counts
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  [v3 setShouldPrefetchCount:1];
+  countsCopy = counts;
+  [countsCopy setShouldPrefetchCount:1];
   v5[0] = @"PHAssetPropertySetIdentifier";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
-  [v3 setFetchPropertySets:v4];
+  [countsCopy setFetchPropertySets:v4];
 
-  [v3 setInternalSortDescriptors:0];
-  [v3 setSortDescriptors:0];
-  [v3 setFetchLimit:0];
+  [countsCopy setInternalSortDescriptors:0];
+  [countsCopy setSortDescriptors:0];
+  [countsCopy setFetchLimit:0];
 }
 
-- (unint64_t)countOfProcessedAssetsForMediaProcessingTaskID:(unint64_t)a3 priority:(unint64_t)a4 algorithmVersion:(id)a5 sceneConfidenceThreshold:(float)a6 error:(id *)a7
+- (unint64_t)countOfProcessedAssetsForMediaProcessingTaskID:(unint64_t)d priority:(unint64_t)priority algorithmVersion:(id)version sceneConfidenceThreshold:(float)threshold error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v12 = a5;
+  versionCopy = version;
   v13 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [PHMediaProcessingAlgorithmVersionProvider descriptionForVersionProvider:v12];
+    v14 = [PHMediaProcessingAlgorithmVersionProvider descriptionForVersionProvider:versionCopy];
     v24 = 134218754;
-    v25 = a3;
+    dCopy = d;
     v26 = 2048;
-    v27 = a4;
+    priorityCopy = priority;
     v28 = 2114;
     v29 = v14;
     v30 = 2048;
-    v31 = a6;
+    thresholdCopy = threshold;
     _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_INFO, "countOfProcessedAssetsForMediaProcessingTaskID:%tu priority:%tu versions:%{public}@ confidence:%f", &v24, 0x2Au);
   }
 
-  *&v15 = a6;
-  v16 = [(PHPhotoLibrary *)self fetchOptionsForMediaProcessingTaskID:a3 priority:a4 algorithmVersion:v12 sceneConfidenceThreshold:1 processed:0 exactVersionMatch:a7 error:v15];
+  *&v15 = threshold;
+  v16 = [(PHPhotoLibrary *)self fetchOptionsForMediaProcessingTaskID:d priority:priority algorithmVersion:versionCopy sceneConfidenceThreshold:1 processed:0 exactVersionMatch:error error:v15];
   [(PHPhotoLibrary *)self _updateFetchOptionsForMediaProcessingCounts:v16];
   if (!v16)
   {
@@ -1574,24 +1574,24 @@ LABEL_8:
   }
 
   v17 = [PHAsset fetchAssetsWithOptions:v16];
-  v18 = [v17 fetchError];
+  fetchError = [v17 fetchError];
 
-  if (v18)
+  if (fetchError)
   {
     v19 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v17 fetchError];
+      fetchError2 = [v17 fetchError];
       v24 = 138412290;
-      v25 = v20;
+      dCopy = fetchError2;
       _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_ERROR, "Error fetching assets for media processing: %@", &v24, 0xCu);
     }
 
-    v21 = [v17 fetchError];
-    if (a7)
+    fetchError3 = [v17 fetchError];
+    if (error)
     {
-      v21 = v21;
-      *a7 = v21;
+      fetchError3 = fetchError3;
+      *error = fetchError3;
     }
 
     v22 = 0x7FFFFFFFFFFFFFFFLL;
@@ -1612,23 +1612,23 @@ LABEL_14:
   return v22;
 }
 
-- (unint64_t)countOfAllAssetsForMediaProcessingTaskID:(unint64_t)a3 priority:(unint64_t)a4 sceneConfidenceThreshold:(float)a5 error:(id *)a6
+- (unint64_t)countOfAllAssetsForMediaProcessingTaskID:(unint64_t)d priority:(unint64_t)priority sceneConfidenceThreshold:(float)threshold error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   v11 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v21 = 134218496;
-    v22 = a3;
+    dCopy = d;
     v23 = 2048;
-    v24 = a4;
+    priorityCopy = priority;
     v25 = 2048;
-    v26 = a5;
+    thresholdCopy = threshold;
     _os_log_impl(&dword_19C86F000, v11, OS_LOG_TYPE_INFO, "countOfAllAssetsForMediaProcessingTaskID:%tu priority:%tu confidence:%f", &v21, 0x20u);
   }
 
-  *&v12 = a5;
-  v13 = [(PHPhotoLibrary *)self fetchOptionsForMediaProcessingTaskID:a3 priority:a4 algorithmVersion:0 sceneConfidenceThreshold:0 processed:0 exactVersionMatch:a6 error:v12];
+  *&v12 = threshold;
+  v13 = [(PHPhotoLibrary *)self fetchOptionsForMediaProcessingTaskID:d priority:priority algorithmVersion:0 sceneConfidenceThreshold:0 processed:0 exactVersionMatch:error error:v12];
   [(PHPhotoLibrary *)self _updateFetchOptionsForMediaProcessingCounts:v13];
   if (!v13)
   {
@@ -1636,24 +1636,24 @@ LABEL_14:
   }
 
   v14 = [PHAsset fetchAssetsWithOptions:v13];
-  v15 = [v14 fetchError];
+  fetchError = [v14 fetchError];
 
-  if (v15)
+  if (fetchError)
   {
     v16 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v14 fetchError];
+      fetchError2 = [v14 fetchError];
       v21 = 138412290;
-      v22 = v17;
+      dCopy = fetchError2;
       _os_log_impl(&dword_19C86F000, v16, OS_LOG_TYPE_ERROR, "Error fetching assets for media processing: %@", &v21, 0xCu);
     }
 
-    v18 = [v14 fetchError];
-    if (a6)
+    fetchError3 = [v14 fetchError];
+    if (error)
     {
-      v18 = v18;
-      *a6 = v18;
+      fetchError3 = fetchError3;
+      *error = fetchError3;
     }
 
     v19 = 0x7FFFFFFFFFFFFFFFLL;
@@ -1674,27 +1674,27 @@ LABEL_14:
   return v19;
 }
 
-- (unint64_t)countOfUnprocessedAssetsForMediaProcessingTaskID:(unint64_t)a3 priority:(unint64_t)a4 algorithmVersion:(id)a5 sceneConfidenceThreshold:(float)a6 error:(id *)a7
+- (unint64_t)countOfUnprocessedAssetsForMediaProcessingTaskID:(unint64_t)d priority:(unint64_t)priority algorithmVersion:(id)version sceneConfidenceThreshold:(float)threshold error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v12 = a5;
+  versionCopy = version;
   v13 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [PHMediaProcessingAlgorithmVersionProvider descriptionForVersionProvider:v12];
+    v14 = [PHMediaProcessingAlgorithmVersionProvider descriptionForVersionProvider:versionCopy];
     v24 = 134218754;
-    v25 = a3;
+    dCopy = d;
     v26 = 2048;
-    v27 = a4;
+    priorityCopy = priority;
     v28 = 2114;
     v29 = v14;
     v30 = 2048;
-    v31 = a6;
+    thresholdCopy = threshold;
     _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_INFO, "countOfUnprocessedAssetsForMediaProcessingTaskID:%tu priority:%tu versions:%{public}@ confidence:%f", &v24, 0x2Au);
   }
 
-  *&v15 = a6;
-  v16 = [(PHPhotoLibrary *)self fetchOptionsForMediaProcessingTaskID:a3 priority:a4 algorithmVersion:v12 sceneConfidenceThreshold:0 processed:0 exactVersionMatch:a7 error:v15];
+  *&v15 = threshold;
+  v16 = [(PHPhotoLibrary *)self fetchOptionsForMediaProcessingTaskID:d priority:priority algorithmVersion:versionCopy sceneConfidenceThreshold:0 processed:0 exactVersionMatch:error error:v15];
   [(PHPhotoLibrary *)self _updateFetchOptionsForMediaProcessingCounts:v16];
   if (!v16)
   {
@@ -1702,24 +1702,24 @@ LABEL_14:
   }
 
   v17 = [PHAsset fetchAssetsWithOptions:v16];
-  v18 = [v17 fetchError];
+  fetchError = [v17 fetchError];
 
-  if (v18)
+  if (fetchError)
   {
     v19 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v17 fetchError];
+      fetchError2 = [v17 fetchError];
       v24 = 138412290;
-      v25 = v20;
+      dCopy = fetchError2;
       _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_ERROR, "Error fetching assets for media processing: %@", &v24, 0xCu);
     }
 
-    v21 = [v17 fetchError];
-    if (a7)
+    fetchError3 = [v17 fetchError];
+    if (error)
     {
-      v21 = v21;
-      *a7 = v21;
+      fetchError3 = fetchError3;
+      *error = fetchError3;
     }
 
     v22 = 0x7FFFFFFFFFFFFFFFLL;
@@ -1740,16 +1740,16 @@ LABEL_14:
   return v22;
 }
 
-- (id)fetchProcessedAssetsBelowAnalysisStage:(signed __int16)a3 forTaskIDs:(id)a4 algorithmVersion:(id)a5 error:(id *)a6
+- (id)fetchProcessedAssetsBelowAnalysisStage:(signed __int16)stage forTaskIDs:(id)ds algorithmVersion:(id)version error:(id *)error
 {
-  v7 = a3;
+  stageCopy = stage;
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  dsCopy = ds;
+  versionCopy = version;
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v9)
+  if (versionCopy)
   {
-    v11 = [[PHMediaProcessingAlgorithmVersionProvider alloc] initWithProvider:v9];
+    v11 = [[PHMediaProcessingAlgorithmVersionProvider alloc] initWithProvider:versionCopy];
   }
 
   else
@@ -1762,7 +1762,7 @@ LABEL_14:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v13 = v8;
+  v13 = dsCopy;
   v14 = [v13 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v14)
   {
@@ -1794,50 +1794,50 @@ LABEL_14:
   v19 = MEMORY[0x1E696AB28];
   v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == NULL", @"computeSyncAttributes"];
   v33[0] = v20;
-  v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K < %d", @"computeSyncAttributes.localAnalysisStage", v7];
-  v33[1] = v21;
+  stageCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K < %d", @"computeSyncAttributes.localAnalysisStage", stageCopy];
+  v33[1] = stageCopy;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
   v23 = [v19 orPredicateWithSubpredicates:v22];
 
   [v10 addObject:v23];
-  v24 = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
   v25 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v10];
-  [v24 setInternalPredicate:v25];
+  [librarySpecificFetchOptions setInternalPredicate:v25];
 
-  [(PHPhotoLibrary *)self _updateFetchOptionsForProcessedAssets:v24];
-  v26 = [PHAsset fetchAssetsWithOptions:v24];
+  [(PHPhotoLibrary *)self _updateFetchOptionsForProcessedAssets:librarySpecificFetchOptions];
+  v26 = [PHAsset fetchAssetsWithOptions:librarySpecificFetchOptions];
 
   return v26;
 }
 
-- (id)fetchProcessedAssetsForMediaProcessingTaskID:(unint64_t)a3 priority:(unint64_t)a4 algorithmVersion:(id)a5 sceneConfidenceThreshold:(float)a6 error:(id *)a7
+- (id)fetchProcessedAssetsForMediaProcessingTaskID:(unint64_t)d priority:(unint64_t)priority algorithmVersion:(id)version sceneConfidenceThreshold:(float)threshold error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v12 = a5;
+  versionCopy = version;
   v13 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [PHMediaProcessingAlgorithmVersionProvider descriptionForVersionProvider:v12];
+    v14 = [PHMediaProcessingAlgorithmVersionProvider descriptionForVersionProvider:versionCopy];
     v23 = 134218754;
-    v24 = a3;
+    dCopy = d;
     v25 = 2048;
-    v26 = a4;
+    priorityCopy = priority;
     v27 = 2114;
     v28 = v14;
     v29 = 2048;
-    v30 = a6;
+    thresholdCopy = threshold;
     _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_INFO, "fetchProcessedAssetsForMediaProcessingTaskID:%tu priority:%tu versions:%{public}@ confidence:%f", &v23, 0x2Au);
   }
 
-  *&v15 = a6;
-  v16 = [(PHPhotoLibrary *)self fetchOptionsForMediaProcessingTaskID:a3 priority:a4 algorithmVersion:v12 sceneConfidenceThreshold:1 processed:0 exactVersionMatch:a7 error:v15];
+  *&v15 = threshold;
+  v16 = [(PHPhotoLibrary *)self fetchOptionsForMediaProcessingTaskID:d priority:priority algorithmVersion:versionCopy sceneConfidenceThreshold:1 processed:0 exactVersionMatch:error error:v15];
   [(PHPhotoLibrary *)self _updateFetchOptionsForProcessedAssets:v16];
   if (v16)
   {
     v17 = [PHAsset fetchAssetsWithOptions:v16];
-    v18 = [v17 fetchError];
+    fetchError = [v17 fetchError];
 
-    if (!v18)
+    if (!fetchError)
     {
       goto LABEL_11;
     }
@@ -1845,17 +1845,17 @@ LABEL_14:
     v19 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v17 fetchError];
+      fetchError2 = [v17 fetchError];
       v23 = 138412290;
-      v24 = v20;
+      dCopy = fetchError2;
       _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_ERROR, "Error fetching assets for media processing: %@", &v23, 0xCu);
     }
 
-    v21 = [v17 fetchError];
-    if (a7)
+    fetchError3 = [v17 fetchError];
+    if (error)
     {
-      v21 = v21;
-      *a7 = v21;
+      fetchError3 = fetchError3;
+      *error = fetchError3;
     }
   }
 
@@ -1865,33 +1865,33 @@ LABEL_11:
   return v17;
 }
 
-- (id)fetchUnprocessedAssetsForMediaProcessingTaskID:(unint64_t)a3 priority:(unint64_t)a4 algorithmVersion:(id)a5 sceneConfidenceThreshold:(float)a6 error:(id *)a7
+- (id)fetchUnprocessedAssetsForMediaProcessingTaskID:(unint64_t)d priority:(unint64_t)priority algorithmVersion:(id)version sceneConfidenceThreshold:(float)threshold error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v12 = a5;
+  versionCopy = version;
   v13 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [PHMediaProcessingAlgorithmVersionProvider descriptionForVersionProvider:v12];
+    v14 = [PHMediaProcessingAlgorithmVersionProvider descriptionForVersionProvider:versionCopy];
     v23 = 134218754;
-    v24 = a3;
+    dCopy = d;
     v25 = 2048;
-    v26 = a4;
+    priorityCopy = priority;
     v27 = 2114;
     v28 = v14;
     v29 = 2048;
-    v30 = a6;
+    thresholdCopy = threshold;
     _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_INFO, "fetchUnprocessedAssetsForMediaProcessingTaskID:%tu priority:%tu versions:%{public}@ confidence:%f", &v23, 0x2Au);
   }
 
-  *&v15 = a6;
-  v16 = [(PHPhotoLibrary *)self fetchOptionsForMediaProcessingTaskID:a3 priority:a4 algorithmVersion:v12 sceneConfidenceThreshold:0 processed:0 exactVersionMatch:a7 error:v15];
+  *&v15 = threshold;
+  v16 = [(PHPhotoLibrary *)self fetchOptionsForMediaProcessingTaskID:d priority:priority algorithmVersion:versionCopy sceneConfidenceThreshold:0 processed:0 exactVersionMatch:error error:v15];
   if (v16)
   {
     v17 = [PHAsset fetchAssetsWithOptions:v16];
-    v18 = [v17 fetchError];
+    fetchError = [v17 fetchError];
 
-    if (!v18)
+    if (!fetchError)
     {
       goto LABEL_11;
     }
@@ -1899,17 +1899,17 @@ LABEL_11:
     v19 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v17 fetchError];
+      fetchError2 = [v17 fetchError];
       v23 = 138412290;
-      v24 = v20;
+      dCopy = fetchError2;
       _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_ERROR, "Error fetching assets for media processing: %@", &v23, 0xCu);
     }
 
-    v21 = [v17 fetchError];
-    if (a7)
+    fetchError3 = [v17 fetchError];
+    if (error)
     {
-      v21 = v21;
-      *a7 = v21;
+      fetchError3 = fetchError3;
+      *error = fetchError3;
     }
   }
 
@@ -1919,33 +1919,33 @@ LABEL_11:
   return v17;
 }
 
-- (id)fetchAssetsForMediaProcessingTaskID:(unint64_t)a3 priority:(unint64_t)a4 algorithmVersion:(id)a5 sceneConfidenceThreshold:(float)a6 error:(id *)a7
+- (id)fetchAssetsForMediaProcessingTaskID:(unint64_t)d priority:(unint64_t)priority algorithmVersion:(id)version sceneConfidenceThreshold:(float)threshold error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v12 = a5;
+  versionCopy = version;
   v13 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [PHMediaProcessingAlgorithmVersionProvider descriptionForVersionProvider:v12];
+    v14 = [PHMediaProcessingAlgorithmVersionProvider descriptionForVersionProvider:versionCopy];
     v23 = 134218754;
-    v24 = a3;
+    dCopy = d;
     v25 = 2048;
-    v26 = a4;
+    priorityCopy = priority;
     v27 = 2114;
     v28 = v14;
     v29 = 2048;
-    v30 = a6;
+    thresholdCopy = threshold;
     _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_INFO, "fetchAssetsForMediaProcessingTaskID:%tu priority:%tu versions:%{public}@ confidence:%f", &v23, 0x2Au);
   }
 
-  *&v15 = a6;
-  v16 = [(PHPhotoLibrary *)self fetchOptionsForMediaProcessingTaskID:a3 priority:a4 algorithmVersion:v12 sceneConfidenceThreshold:0 processed:a7 error:v15];
+  *&v15 = threshold;
+  v16 = [(PHPhotoLibrary *)self fetchOptionsForMediaProcessingTaskID:d priority:priority algorithmVersion:versionCopy sceneConfidenceThreshold:0 processed:error error:v15];
   if (v16)
   {
     v17 = [PHAsset fetchAssetsWithOptions:v16];
-    v18 = [v17 fetchError];
+    fetchError = [v17 fetchError];
 
-    if (!v18)
+    if (!fetchError)
     {
       goto LABEL_11;
     }
@@ -1953,17 +1953,17 @@ LABEL_11:
     v19 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v17 fetchError];
+      fetchError2 = [v17 fetchError];
       v23 = 138412290;
-      v24 = v20;
+      dCopy = fetchError2;
       _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_ERROR, "Error fetching assets for media processing: %@", &v23, 0xCu);
     }
 
-    v21 = [v17 fetchError];
-    if (a7)
+    fetchError3 = [v17 fetchError];
+    if (error)
     {
-      v21 = v21;
-      *a7 = v21;
+      fetchError3 = fetchError3;
+      *error = fetchError3;
     }
   }
 
@@ -1973,20 +1973,20 @@ LABEL_11:
   return v17;
 }
 
-- (id)forceSyndicationIngestAsyncToDate:(id)a3 completionHandler:(id)a4
+- (id)forceSyndicationIngestAsyncToDate:(id)date completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PHPhotoLibrary *)self assetsdClient];
-  v9 = [v8 photoKitClient];
+  handlerCopy = handler;
+  dateCopy = date;
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  photoKitClient = [assetsdClient photoKitClient];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __87__PHPhotoLibrary_MediaProcessing__forceSyndicationIngestAsyncToDate_completionHandler___block_invoke;
   v13[3] = &unk_1E75AA248;
-  v14 = v6;
-  v10 = v6;
-  v11 = [v9 forceSyndicationIngestAsyncToDate:v7 withCompletionHandler:v13];
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = [photoKitClient forceSyndicationIngestAsyncToDate:dateCopy withCompletionHandler:v13];
 
   return v11;
 }
@@ -2008,31 +2008,31 @@ void __87__PHPhotoLibrary_MediaProcessing__forceSyndicationIngestAsyncToDate_com
   }
 }
 
-- (BOOL)forceSyndicationIngestSyncToDate:(id)a3 error:(id *)a4
+- (BOOL)forceSyndicationIngestSyncToDate:(id)date error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self assetsdClient];
-  v8 = [v7 photoKitClient];
+  dateCopy = date;
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  photoKitClient = [assetsdClient photoKitClient];
 
-  LOBYTE(a4) = [v8 forceSyndicationIngestSyncToDate:v6 error:a4];
-  return a4;
+  LOBYTE(error) = [photoKitClient forceSyndicationIngestSyncToDate:dateCopy error:error];
+  return error;
 }
 
-- (id)ingestItemWithSpotlightUniqueIdentifier:(id)a3 bundleID:(id)a4 purgeUrgency:(int64_t)a5 error:(id *)a6
+- (id)ingestItemWithSpotlightUniqueIdentifier:(id)identifier bundleID:(id)d purgeUrgency:(int64_t)urgency error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a3;
+  dCopy = d;
+  identifierCopy = identifier;
   if ([(PHPhotoLibrary *)self wellKnownPhotoLibraryIdentifier]!= 3 && (PLIsInternalTool() & 1) == 0 && (MEMORY[0x19EAF1E50]() & 1) == 0)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+MediaProcessing.m" lineNumber:532 description:{@"Invalid parameter not satisfying: %@", @"PLIsInternalTool() || PLIsXcTest()"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+MediaProcessing.m" lineNumber:532 description:{@"Invalid parameter not satisfying: %@", @"PLIsInternalTool() || PLIsXcTest()"}];
   }
 
-  v13 = [(PHPhotoLibrary *)self assetsdClient];
-  v14 = [v13 photoKitClient];
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  photoKitClient = [assetsdClient photoKitClient];
 
-  v15 = [v14 ingestItemWithCoreSpotlightUniqueIdentifier:v12 bundleID:v11 purgeUrgency:a5 error:a6];
+  v15 = [photoKitClient ingestItemWithCoreSpotlightUniqueIdentifier:identifierCopy bundleID:dCopy purgeUrgency:urgency error:error];
 
   if (v15)
   {
@@ -2047,10 +2047,10 @@ void __87__PHPhotoLibrary_MediaProcessing__forceSyndicationIngestAsyncToDate_com
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v19 = [v17 errorWithDomain:@"PHPhotosErrorDomain" code:4302 userInfo:v18];
     v20 = v19;
-    if (!v14 && a6)
+    if (!photoKitClient && error)
     {
       v21 = v19;
-      *a6 = v20;
+      *error = v20;
     }
 
     v16 = 0;
@@ -2059,24 +2059,24 @@ void __87__PHPhotoLibrary_MediaProcessing__forceSyndicationIngestAsyncToDate_com
   return v16;
 }
 
-- (BOOL)processUniversalSearchJITForAssetLocalIdentifier:(id)a3 processingTypes:(unint64_t)a4 error:(id *)a5
+- (BOOL)processUniversalSearchJITForAssetLocalIdentifier:(id)identifier processingTypes:(unint64_t)types error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  identifierCopy = identifier;
   if ([(PHPhotoLibrary *)self wellKnownPhotoLibraryIdentifier]!= 3 && (PLIsInternalTool() & 1) == 0 && (MEMORY[0x19EAF1E50]() & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+MediaProcessing.m" lineNumber:509 description:{@"Invalid parameter not satisfying: %@", @"PLIsInternalTool() || PLIsXcTest()"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+MediaProcessing.m" lineNumber:509 description:{@"Invalid parameter not satisfying: %@", @"PLIsInternalTool() || PLIsXcTest()"}];
   }
 
-  v10 = [(PHPhotoLibrary *)self assetsdClient];
-  v11 = [v10 photoKitClient];
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  photoKitClient = [assetsdClient photoKitClient];
 
-  v12 = [(PHObject *)PHAsset uuidFromLocalIdentifier:v9];
+  v12 = [(PHObject *)PHAsset uuidFromLocalIdentifier:identifierCopy];
 
-  if (v11)
+  if (photoKitClient)
   {
-    v13 = [v11 processUniversalSearchJITForAssetUUID:v12 processingTypes:a4 error:a5];
+    v13 = [photoKitClient processUniversalSearchJITForAssetUUID:v12 processingTypes:types error:error];
   }
 
   else
@@ -2086,10 +2086,10 @@ void __87__PHPhotoLibrary_MediaProcessing__forceSyndicationIngestAsyncToDate_com
     v20[0] = @"PhotoKit client is nil";
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     v16 = [v14 errorWithDomain:@"PHPhotosErrorDomain" code:4302 userInfo:v15];
-    if (a5)
+    if (error)
     {
       v16 = v16;
-      *a5 = v16;
+      *error = v16;
     }
 
     v13 = 0;
@@ -2098,21 +2098,21 @@ void __87__PHPhotoLibrary_MediaProcessing__forceSyndicationIngestAsyncToDate_com
   return v13;
 }
 
-- (id)processUniversalSearchJITForCoreSpotlightUniqueIdentifier:(id)a3 bundleID:(id)a4 processingTypes:(unint64_t)a5 error:(id *)a6
+- (id)processUniversalSearchJITForCoreSpotlightUniqueIdentifier:(id)identifier bundleID:(id)d processingTypes:(unint64_t)types error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a3;
+  dCopy = d;
+  identifierCopy = identifier;
   if ([(PHPhotoLibrary *)self wellKnownPhotoLibraryIdentifier]!= 3 && (PLIsInternalTool() & 1) == 0 && (MEMORY[0x19EAF1E50]() & 1) == 0)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+MediaProcessing.m" lineNumber:486 description:{@"Invalid parameter not satisfying: %@", @"PLIsInternalTool() || PLIsXcTest()"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+MediaProcessing.m" lineNumber:486 description:{@"Invalid parameter not satisfying: %@", @"PLIsInternalTool() || PLIsXcTest()"}];
   }
 
-  v13 = [(PHPhotoLibrary *)self assetsdClient];
-  v14 = [v13 photoKitClient];
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  photoKitClient = [assetsdClient photoKitClient];
 
-  v15 = [v14 processUniversalSearchJITForCoreSpotlightUniqueIdentifier:v12 bundleID:v11 processingTypes:a5 error:a6];
+  v15 = [photoKitClient processUniversalSearchJITForCoreSpotlightUniqueIdentifier:identifierCopy bundleID:dCopy processingTypes:types error:error];
 
   if (v15)
   {
@@ -2127,10 +2127,10 @@ void __87__PHPhotoLibrary_MediaProcessing__forceSyndicationIngestAsyncToDate_com
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v19 = [v17 errorWithDomain:@"PHPhotosErrorDomain" code:4302 userInfo:v18];
     v20 = v19;
-    if (!v14 && a6)
+    if (!photoKitClient && error)
     {
       v21 = v19;
-      *a6 = v20;
+      *error = v20;
     }
 
     v16 = 0;
@@ -2139,16 +2139,16 @@ void __87__PHPhotoLibrary_MediaProcessing__forceSyndicationIngestAsyncToDate_com
   return v16;
 }
 
-- (int)requestProcessingTypes:(unint64_t)a3 forAssetsWithLocalIdentifiers:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (int)requestProcessingTypes:(unint64_t)types forAssetsWithLocalIdentifiers:(id)identifiers progressHandler:(id)handler completionHandler:(id)completionHandler
 {
   v10 = MEMORY[0x1E69BE5A0];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [(PHPhotoLibrary *)self photoLibraryURL];
-  LODWORD(a3) = [v10 requestProcessingTypes:a3 forAssetsWithLocalIdentifiers:v13 fromPhotoLibraryWithURL:v14 progressHandler:v12 completionHandler:v11];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
+  photoLibraryURL = [(PHPhotoLibrary *)self photoLibraryURL];
+  LODWORD(types) = [v10 requestProcessingTypes:types forAssetsWithLocalIdentifiers:identifiersCopy fromPhotoLibraryWithURL:photoLibraryURL progressHandler:handlerCopy completionHandler:completionHandlerCopy];
 
-  return a3;
+  return types;
 }
 
 + (id)mediaProcessingFacesSortDescriptorsForGeneratingPersonModel
@@ -2180,25 +2180,25 @@ void __87__PHPhotoLibrary_MediaProcessing__forceSyndicationIngestAsyncToDate_com
   return v7;
 }
 
-+ (BOOL)additionalCheckForProcessingNeededForAsset:(id)a3 taskID:(unint64_t)a4 priority:(unint64_t)a5
++ (BOOL)additionalCheckForProcessingNeededForAsset:(id)asset taskID:(unint64_t)d priority:(unint64_t)priority
 {
-  v6 = a3;
-  v7 = v6;
+  assetCopy = asset;
+  v7 = assetCopy;
   v8 = 0;
-  if (a4 > 2)
+  if (d > 2)
   {
-    if (a4 <= 0x14)
+    if (d <= 0x14)
     {
-      if (((1 << a4) & 0x2EBF8) != 0)
+      if (((1 << d) & 0x2EBF8) != 0)
       {
 LABEL_4:
         v9 = PLIsSavedAssetTypeAllowedForMediaAnalysis(v7);
         goto LABEL_5;
       }
 
-      if (((1 << a4) & 0x51000) != 0)
+      if (((1 << d) & 0x51000) != 0)
       {
-        if ([v6 mediaSubtypes] != 1)
+        if ([assetCopy mediaSubtypes] != 1)
         {
           goto LABEL_4;
         }
@@ -2206,9 +2206,9 @@ LABEL_4:
         goto LABEL_15;
       }
 
-      if (((1 << a4) & 0x180400) != 0)
+      if (((1 << d) & 0x180400) != 0)
       {
-        if ([v6 mediaType] == 1)
+        if ([assetCopy mediaType] == 1)
         {
           goto LABEL_4;
         }
@@ -2219,7 +2219,7 @@ LABEL_15:
       }
     }
 
-    if (a4 != 0x7FFFFFFF)
+    if (d != 0x7FFFFFFF)
     {
       goto LABEL_6;
     }
@@ -2227,12 +2227,12 @@ LABEL_15:
     goto LABEL_4;
   }
 
-  if (a4 < 2)
+  if (d < 2)
   {
     goto LABEL_4;
   }
 
-  if (a4 != 2)
+  if (d != 2)
   {
     goto LABEL_6;
   }
@@ -2247,26 +2247,26 @@ LABEL_6:
   return v8;
 }
 
-- (id)sharingSuggestionWithRandomPick:(BOOL)a3 fallbackToRecentMoments:(BOOL)a4 needsNotification:(BOOL)a5
+- (id)sharingSuggestionWithRandomPick:(BOOL)pick fallbackToRecentMoments:(BOOL)moments needsNotification:(BOOL)notification
 {
-  v40 = a5;
-  v5 = a4;
-  v6 = a3;
+  notificationCopy = notification;
+  momentsCopy = moments;
+  pickCopy = pick;
   v64[1] = *MEMORY[0x1E69E9840];
-  v8 = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"type == %d && state == %d", 1, 1];
-  [v8 setPredicate:v9];
+  [librarySpecificFetchOptions setPredicate:v9];
 
   v10 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:0];
   v64[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:1];
-  [v8 setSortDescriptors:v11];
+  [librarySpecificFetchOptions setSortDescriptors:v11];
 
-  [v8 setFetchLimit:1];
-  v12 = [PHSuggestion fetchSuggestionsWithOptions:v8];
+  [librarySpecificFetchOptions setFetchLimit:1];
+  v12 = [PHSuggestion fetchSuggestionsWithOptions:librarySpecificFetchOptions];
   if ([v12 count])
   {
-    if (v6)
+    if (pickCopy)
     {
       [v12 objectAtIndex:{arc4random_uniform(objc_msgSend(v12, "count"))}];
     }
@@ -2276,8 +2276,8 @@ LABEL_6:
       [v12 firstObject];
     }
     v13 = ;
-    v14 = v13;
-    if (!v40)
+    firstObject2 = v13;
+    if (!notificationCopy)
     {
       goto LABEL_36;
     }
@@ -2286,8 +2286,8 @@ LABEL_6:
     v50[1] = 3221225472;
     v50[2] = __110__PHPhotoLibrary_PHDebugUtilities__sharingSuggestionWithRandomPick_fallbackToRecentMoments_needsNotification___block_invoke;
     v50[3] = &unk_1E75AB270;
-    v14 = v13;
-    v51 = v14;
+    firstObject2 = v13;
+    v51 = firstObject2;
     v49 = 0;
     v26 = [(PHPhotoLibrary *)self performChangesAndWait:v50 error:&v49];
     v15 = v49;
@@ -2308,33 +2308,33 @@ LABEL_6:
     goto LABEL_35;
   }
 
-  v14 = 0;
-  if (![v12 count] && v5)
+  firstObject2 = 0;
+  if (![v12 count] && momentsCopy)
   {
     v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
     v16 = objc_alloc_init(MEMORY[0x1E695DF10]);
     [v16 setMonth:-240];
-    v17 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v18 = [MEMORY[0x1E695DF00] date];
-    v19 = [v17 dateByAddingComponents:v16 toDate:v18 options:0];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    date = [MEMORY[0x1E695DF00] date];
+    v19 = [currentCalendar dateByAddingComponents:v16 toDate:date options:0];
 
     v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"startDate >= %@", v19];
     [v15 addObject:v20];
 
     v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"estimatedAssetCount > 8"];
     [v15 addObject:v21];
-    v22 = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
+    librarySpecificFetchOptions2 = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
 
     v23 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v15];
-    [v22 setPredicate:v23];
+    [librarySpecificFetchOptions2 setPredicate:v23];
 
     v39 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"startDate" ascending:0];
     v63 = v39;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v63 count:1];
-    [v22 setSortDescriptors:v24];
+    [librarySpecificFetchOptions2 setSortDescriptors:v24];
 
-    [v22 setFetchLimit:6];
-    v25 = [PHAssetCollection fetchMomentsWithOptions:v22];
+    [librarySpecificFetchOptions2 setFetchLimit:6];
+    v25 = [PHAssetCollection fetchMomentsWithOptions:librarySpecificFetchOptions2];
     if (![v25 count])
     {
       v28 = PLPhotoKitGetLog();
@@ -2345,11 +2345,11 @@ LABEL_6:
         _os_log_impl(&dword_19C86F000, v28, OS_LOG_TYPE_ERROR, "%s Fail to add Suggestion (no moments found in the past 20 years)", buf, 0xCu);
       }
 
-      v14 = 0;
+      firstObject2 = 0;
       goto LABEL_34;
     }
 
-    if (v6)
+    if (pickCopy)
     {
       [v25 objectAtIndex:{arc4random_uniform(objc_msgSend(v25, "count"))}];
     }
@@ -2360,12 +2360,12 @@ LABEL_6:
     }
     v28 = ;
     v29 = [PHAsset fetchKeyAssetsInAssetCollection:v28 options:0];
-    v30 = [v29 firstObject];
+    firstObject = [v29 firstObject];
 
     v38 = [PHAsset fetchAssetsInAssetCollection:v28 options:0];
-    if (!v30)
+    if (!firstObject)
     {
-      v30 = [v38 firstObject];
+      firstObject = [v38 firstObject];
     }
 
     *buf = 0;
@@ -2374,15 +2374,15 @@ LABEL_6:
     v60 = __Block_byref_object_copy__12436;
     v61 = __Block_byref_object_dispose__12437;
     v62 = 0;
-    if (v30 && [v38 count])
+    if (firstObject && [v38 count])
     {
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __110__PHPhotoLibrary_PHDebugUtilities__sharingSuggestionWithRandomPick_fallbackToRecentMoments_needsNotification___block_invoke_25;
       v43[3] = &unk_1E75A5210;
-      v44 = v30;
+      v44 = firstObject;
       v45 = v38;
-      v48 = v40;
+      v48 = notificationCopy;
       v46 = v28;
       v47 = buf;
       v42 = 0;
@@ -2391,20 +2391,20 @@ LABEL_6:
 
       if (v31)
       {
-        v32 = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
+        librarySpecificFetchOptions3 = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
         v58 = *(*&buf[8] + 40);
         v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v58 count:1];
-        v33 = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:v37 options:v32];
-        v14 = [v33 firstObject];
+        v33 = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:v37 options:librarySpecificFetchOptions3];
+        firstObject2 = [v33 firstObject];
 
-        if (v14)
+        if (firstObject2)
         {
 LABEL_33:
 
           _Block_object_dispose(buf, 8);
 LABEL_34:
 
-          v8 = v22;
+          librarySpecificFetchOptions = librarySpecificFetchOptions2;
 LABEL_35:
 
           goto LABEL_36;
@@ -2424,7 +2424,7 @@ LABEL_35:
         }
 
 LABEL_32:
-        v14 = 0;
+        firstObject2 = 0;
         goto LABEL_33;
       }
     }
@@ -2434,14 +2434,14 @@ LABEL_32:
       v41 = 0;
     }
 
-    v32 = PLPhotoKitGetLog();
-    if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+    librarySpecificFetchOptions3 = PLPhotoKitGetLog();
+    if (os_log_type_enabled(librarySpecificFetchOptions3, OS_LOG_TYPE_ERROR))
     {
       *v52 = 136315394;
       v53 = "[PHPhotoLibrary(PHDebugUtilities) sharingSuggestionWithRandomPick:fallbackToRecentMoments:needsNotification:]";
       v54 = 2112;
       v55 = v41;
-      _os_log_impl(&dword_19C86F000, v32, OS_LOG_TYPE_ERROR, "%s Fail to add Suggestion: %@", v52, 0x16u);
+      _os_log_impl(&dword_19C86F000, librarySpecificFetchOptions3, OS_LOG_TYPE_ERROR, "%s Fail to add Suggestion: %@", v52, 0x16u);
     }
 
     goto LABEL_32;
@@ -2449,7 +2449,7 @@ LABEL_32:
 
 LABEL_36:
 
-  return v14;
+  return firstObject2;
 }
 
 void __110__PHPhotoLibrary_PHDebugUtilities__sharingSuggestionWithRandomPick_fallbackToRecentMoments_needsNotification___block_invoke(uint64_t a1)
@@ -2486,9 +2486,9 @@ void __110__PHPhotoLibrary_PHDebugUtilities__sharingSuggestionWithRandomPick_fal
   *(v10 + 40) = v9;
 }
 
-- (BOOL)hasSyncProgressReturningImportOperations:(int *)a3
+- (BOOL)hasSyncProgressReturningImportOperations:(int *)operations
 {
-  v4 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  photoLibraryForCurrentQueueQoS = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -2497,15 +2497,15 @@ void __110__PHPhotoLibrary_PHDebugUtilities__sharingSuggestionWithRandomPick_fal
   v7[1] = 3221225472;
   v7[2] = __80__PHPhotoLibrary_PHAdoptionUtilities__hasSyncProgressReturningImportOperations___block_invoke;
   v7[3] = &unk_1E75A9F38;
-  v5 = v4;
+  v5 = photoLibraryForCurrentQueueQoS;
   v9 = &v11;
-  v10 = a3;
+  operationsCopy = operations;
   v8 = v5;
   [v5 performBlockAndWait:v7];
-  LOBYTE(a3) = *(v12 + 24);
+  LOBYTE(operations) = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
-  return a3;
+  return operations;
 }
 
 void __80__PHPhotoLibrary_PHAdoptionUtilities__hasSyncProgressReturningImportOperations___block_invoke(uint64_t a1)
@@ -2567,15 +2567,15 @@ void __80__PHPhotoLibrary_PHAdoptionUtilities__hasSyncProgressReturningImportOpe
   *(*(*(a1 + 40) + 8) + 24) = v12;
 }
 
-- (id)getLibrarySizesFromDB:(BOOL)a3 error:(id *)a4
+- (id)getLibrarySizesFromDB:(BOOL)b error:(id *)error
 {
-  v5 = a3;
+  bCopy = b;
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = [(PHPhotoLibrary *)self photoLibrary];
-  v7 = v6;
-  if (v6)
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+  v7 = photoLibrary;
+  if (photoLibrary)
   {
-    v8 = [v6 librarySizesFromDB:v5];
+    v8 = [photoLibrary librarySizesFromDB:bCopy];
   }
 
   else
@@ -2592,10 +2592,10 @@ void __80__PHPhotoLibrary_PHAdoptionUtilities__hasSyncProgressReturningImportOpe
     v16[0] = @"unable to create PLPhotoLibrary";
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v12 = [v10 errorWithDomain:@"PHPhotosErrorDomain" code:4302 userInfo:v11];
-    if (a4)
+    if (error)
     {
       v12 = v12;
-      *a4 = v12;
+      *error = v12;
     }
 
     v8 = 0;
@@ -2632,24 +2632,24 @@ void __80__PHPhotoLibrary_PHAdoptionUtilities__hasSyncProgressReturningImportOpe
 
         v10 = *(*(&v22 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:@"asset.kind"];
-        v12 = [v11 unsignedIntegerValue];
+        unsignedIntegerValue = [v11 unsignedIntegerValue];
 
         v13 = [v10 objectForKeyedSubscript:@"totalResourceBytes"];
-        v14 = [v13 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v13 unsignedIntegerValue];
 
-        if (v12)
+        if (unsignedIntegerValue)
         {
           ++v5;
         }
 
         else
         {
-          v4 += v14;
+          v4 += unsignedIntegerValue2;
         }
 
-        if (v12)
+        if (unsignedIntegerValue)
         {
-          v6 += v14;
+          v6 += unsignedIntegerValue2;
         }
 
         else
@@ -2697,14 +2697,14 @@ void __80__PHPhotoLibrary_PHAdoptionUtilities__hasSyncProgressReturningImportOpe
   v13 = __Block_byref_object_copy__21754;
   v14 = __Block_byref_object_dispose__21755;
   v15 = 0;
-  v2 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  photoLibraryForCurrentQueueQoS = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__PHPhotoLibrary__assetBytesForOsMigration__block_invoke;
   v6[3] = &unk_1E75A6C08;
   v9 = 0;
   v8 = &v10;
-  v3 = v2;
+  v3 = photoLibraryForCurrentQueueQoS;
   v7 = v3;
   [v3 performBlockAndWait:v6];
   v4 = v11[5];
@@ -2757,86 +2757,86 @@ void __43__PHPhotoLibrary__assetBytesForOsMigration__block_invoke(uint64_t a1)
   {
     v4 = [MEMORY[0x1E69BF220] descriptionWithFileURL:self->_photoLibraryURL];
     v12 = 134218242;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v4;
     _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_DEFAULT, "STATEDUMP: State information for PHPhotoLibrary-%p at path %@", &v12, 0x16u);
   }
 
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_wellKnownPhotoLibraryIdentifier];
-  [v5 setObject:v6 forKeyedSubscript:@"wellKnownPhotoLibraryIdentifier"];
+  [dictionary setObject:v6 forKeyedSubscript:@"wellKnownPhotoLibraryIdentifier"];
 
   v7 = [MEMORY[0x1E69BF238] redactedDescriptionForFileURL:self->_photoLibraryURL];
-  [v5 setObject:v7 forKeyedSubscript:@"photoLibraryURL"];
+  [dictionary setObject:v7 forKeyedSubscript:@"photoLibraryURL"];
 
-  v8 = [(PHChangeHandlingDebugger *)self->_changeHandlingDebugger stateCaptureDictionary];
-  [v5 setObject:v8 forKeyedSubscript:@"changeHandling"];
+  stateCaptureDictionary = [(PHChangeHandlingDebugger *)self->_changeHandlingDebugger stateCaptureDictionary];
+  [dictionary setObject:stateCaptureDictionary forKeyedSubscript:@"changeHandling"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PHPhotoLibraryChangeObserverRegistrar countOfRegisteredFetchResults](self->_changeObserverRegistrar, "countOfRegisteredFetchResults")}];
-  [v5 setObject:v9 forKeyedSubscript:@"registeredFetchResults"];
+  [dictionary setObject:v9 forKeyedSubscript:@"registeredFetchResults"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{+[PHPhotoLibrary useBindingClient](PHPhotoLibrary, "useBindingClient")}];
-  [v5 setObject:v10 forKeyedSubscript:@"useBindingClient"];
+  [dictionary setObject:v10 forKeyedSubscript:@"useBindingClient"];
 
-  return v5;
+  return dictionary;
 }
 
-- (void)legacySaveScreenshotToCameraRoll:(id)a3 completionTarget:(id)a4 completionSelector:(SEL)a5 contextInfo:(void *)a6
+- (void)legacySaveScreenshotToCameraRoll:(id)roll completionTarget:(id)target completionSelector:(SEL)selector contextInfo:(void *)info
 {
-  v10 = a3;
-  v11 = a4;
+  rollCopy = roll;
+  targetCopy = target;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __99__PHPhotoLibrary_legacySaveScreenshotToCameraRoll_completionTarget_completionSelector_contextInfo___block_invoke;
   v18[3] = &unk_1E75AB270;
-  v19 = v10;
+  v19 = rollCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __99__PHPhotoLibrary_legacySaveScreenshotToCameraRoll_completionTarget_completionSelector_contextInfo___block_invoke_2;
   v14[3] = &unk_1E75A6BE0;
   v14[4] = self;
-  v15 = v11;
-  v16 = a5;
-  v17 = a6;
-  v12 = v11;
-  v13 = v10;
+  v15 = targetCopy;
+  selectorCopy = selector;
+  infoCopy = info;
+  v12 = targetCopy;
+  v13 = rollCopy;
   [(PHPhotoLibrary *)self performChanges:v18 completionHandler:v14];
 }
 
-- (void)legacySaveImageToCameraRoll:(id)a3 completionTarget:(id)a4 completionSelector:(SEL)a5 contextInfo:(void *)a6
+- (void)legacySaveImageToCameraRoll:(id)roll completionTarget:(id)target completionSelector:(SEL)selector contextInfo:(void *)info
 {
-  v10 = a3;
-  v11 = a4;
+  rollCopy = roll;
+  targetCopy = target;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __94__PHPhotoLibrary_legacySaveImageToCameraRoll_completionTarget_completionSelector_contextInfo___block_invoke;
   v18[3] = &unk_1E75AB270;
-  v19 = v10;
+  v19 = rollCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __94__PHPhotoLibrary_legacySaveImageToCameraRoll_completionTarget_completionSelector_contextInfo___block_invoke_2;
   v14[3] = &unk_1E75A6BE0;
   v14[4] = self;
-  v15 = v11;
-  v16 = a5;
-  v17 = a6;
-  v12 = v11;
-  v13 = v10;
+  v15 = targetCopy;
+  selectorCopy = selector;
+  infoCopy = info;
+  v12 = targetCopy;
+  v13 = rollCopy;
   [(PHPhotoLibrary *)self performChanges:v18 completionHandler:v14];
 }
 
-- (void)legacySaveVideoToCameraRoll:(id)a3 completionTarget:(id)a4 completionSelector:(SEL)a5 contextInfo:(void *)a6
+- (void)legacySaveVideoToCameraRoll:(id)roll completionTarget:(id)target completionSelector:(SEL)selector contextInfo:(void *)info
 {
-  v11 = a3;
-  v12 = a4;
-  if (!v11)
+  rollCopy = roll;
+  targetCopy = target;
+  if (!rollCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:3676 description:{@"Invalid parameter not satisfying: %@", @"videoPath != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:3676 description:{@"Invalid parameter not satisfying: %@", @"videoPath != nil"}];
   }
 
-  v13 = [MEMORY[0x1E695DFF8] fileURLWithPath:v11 isDirectory:0];
+  v13 = [MEMORY[0x1E695DFF8] fileURLWithPath:rollCopy isDirectory:0];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __94__PHPhotoLibrary_legacySaveVideoToCameraRoll_completionTarget_completionSelector_contextInfo___block_invoke;
@@ -2846,12 +2846,12 @@ void __43__PHPhotoLibrary__assetBytesForOsMigration__block_invoke(uint64_t a1)
   v18[1] = 3221225472;
   v18[2] = __94__PHPhotoLibrary_legacySaveVideoToCameraRoll_completionTarget_completionSelector_contextInfo___block_invoke_2;
   v18[3] = &unk_1E75A6BE0;
-  v19 = v11;
-  v20 = v12;
-  v21 = a5;
-  v22 = a6;
-  v14 = v12;
-  v15 = v11;
+  v19 = rollCopy;
+  v20 = targetCopy;
+  selectorCopy = selector;
+  infoCopy = info;
+  v14 = targetCopy;
+  v15 = rollCopy;
   v16 = v13;
   [(PHPhotoLibrary *)self performChanges:v23 completionHandler:v18];
 }
@@ -2870,25 +2870,25 @@ void __94__PHPhotoLibrary_legacySaveVideoToCameraRoll_completionTarget_completio
   }
 }
 
-- (void)legacySaveImageDataToCameraRoll:(id)a3 completionTarget:(id)a4 completionSelector:(SEL)a5 contextInfo:(void *)a6
+- (void)legacySaveImageDataToCameraRoll:(id)roll completionTarget:(id)target completionSelector:(SEL)selector contextInfo:(void *)info
 {
-  v10 = a3;
-  v11 = a4;
+  rollCopy = roll;
+  targetCopy = target;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __98__PHPhotoLibrary_legacySaveImageDataToCameraRoll_completionTarget_completionSelector_contextInfo___block_invoke;
   v18[3] = &unk_1E75AB270;
-  v19 = v10;
+  v19 = rollCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __98__PHPhotoLibrary_legacySaveImageDataToCameraRoll_completionTarget_completionSelector_contextInfo___block_invoke_2;
   v14[3] = &unk_1E75A6BE0;
   v14[4] = self;
-  v15 = v11;
-  v16 = a5;
-  v17 = a6;
-  v12 = v11;
-  v13 = v10;
+  v15 = targetCopy;
+  selectorCopy = selector;
+  infoCopy = info;
+  v12 = targetCopy;
+  v13 = rollCopy;
   [(PHPhotoLibrary *)self performChanges:v18 completionHandler:v14];
 }
 
@@ -2898,59 +2898,59 @@ void __98__PHPhotoLibrary_legacySaveImageDataToCameraRoll_completionTarget_compl
   [v2 addResourceWithType:1 data:*(a1 + 32) options:0];
 }
 
-- (void)_callLegacyCompletionTarget:(id)a3 completionSelector:(SEL)a4 contextInfo:(void *)a5 withSuccess:(BOOL)a6 error:(id)a7
+- (void)_callLegacyCompletionTarget:(id)target completionSelector:(SEL)selector contextInfo:(void *)info withSuccess:(BOOL)success error:(id)error
 {
-  v10 = a7;
-  v11 = [MEMORY[0x1E69BE290] createWriteImageCompletionBlockWithImage:0 target:a3 selector:a4 contextInfo:a5];
+  errorCopy = error;
+  v11 = [MEMORY[0x1E69BE290] createWriteImageCompletionBlockWithImage:0 target:target selector:selector contextInfo:info];
   v12 = v11;
   if (v11)
   {
     v14 = v11;
-    v13 = v10;
+    v13 = errorCopy;
     pl_dispatch_async();
   }
 }
 
-- (void)localResourceBytesUsedForMinVideoSize:(unint64_t)a3 completion:(id)a4
+- (void)localResourceBytesUsedForMinVideoSize:(unint64_t)size completion:(id)completion
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:3638 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:3638 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v8 = [(PHPhotoLibrary *)self photoLibrary];
-  v9 = [v8 isCloudPhotoLibraryEnabled];
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+  isCloudPhotoLibraryEnabled = [photoLibrary isCloudPhotoLibraryEnabled];
 
-  if (v9)
+  if (isCloudPhotoLibraryEnabled)
   {
     v10 = MEMORY[0x1E696ABC0];
     v18 = *MEMORY[0x1E696A278];
     v19 = @"SPI not available: [PHPhotoLibrary localResourceBytesUsedForMinVideoSize:completion:] cannot be called if iCPL is ENABLED";
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v12 = [v10 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3126 userInfo:v11];
-    (*(v7 + 2))(v7, 0, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v12);
   }
 
   else
   {
     v13 = MEMORY[0x1E696AB28];
-    v14 = [(PHPhotoLibrary *)self _predicateForSettingsStorageSuggestions];
-    v20[0] = v14;
+    _predicateForSettingsStorageSuggestions = [(PHPhotoLibrary *)self _predicateForSettingsStorageSuggestions];
+    v20[0] = _predicateForSettingsStorageSuggestions;
     v15 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForVideosAlbumExclusions"), 0}];
     v20[1] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v11 = [v13 andPredicateWithSubpredicates:v16];
 
-    [(PHPhotoLibrary *)self _resourceBytesUsedForPredicate:v11 minVideoSize:a3 completion:v7];
+    [(PHPhotoLibrary *)self _resourceBytesUsedForPredicate:v11 minVideoSize:size completion:completionCopy];
   }
 }
 
-- (BOOL)localResourceBytesUsed:(id *)a3 minVideoSize:(unint64_t)a4 error:(id *)a5
+- (BOOL)localResourceBytesUsed:(id *)used minVideoSize:(unint64_t)size error:(id *)error
 {
-  if (a3)
+  if (used)
   {
     v31 = 0;
     v32 = &v31;
@@ -2978,15 +2978,15 @@ void __98__PHPhotoLibrary_legacySaveImageDataToCameraRoll_completionTarget_compl
     v20 = &v21;
     v10 = v9;
     v17 = v10;
-    [(PHPhotoLibrary *)self localResourceBytesUsedForMinVideoSize:a4 completion:v16];
+    [(PHPhotoLibrary *)self localResourceBytesUsedForMinVideoSize:size completion:v16];
     dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-    *a3 = v32[5];
+    *used = v32[5];
     v11 = v26[5];
     v12 = v11;
-    if (v11 && a5)
+    if (v11 && error)
     {
       v12 = v12;
-      *a5 = v12;
+      *error = v12;
     }
 
     v13 = *(v22 + 24);
@@ -2999,10 +2999,10 @@ void __98__PHPhotoLibrary_legacySaveImageDataToCameraRoll_completionTarget_compl
   else
   {
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PHPhotosErrorDomain" code:1 userInfo:MEMORY[0x1E695E0F8]];
-    if (a5)
+    if (error)
     {
       v14 = v14;
-      *a5 = v14;
+      *error = v14;
     }
 
     v13 = 0;
@@ -3029,18 +3029,18 @@ void __60__PHPhotoLibrary_localResourceBytesUsed_minVideoSize_error___block_invo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)cloudQuotaResourceBytesUsedForMinVideoSize:(unint64_t)a3 completion:(id)a4
+- (void)cloudQuotaResourceBytesUsedForMinVideoSize:(unint64_t)size completion:(id)completion
 {
   v19[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PHPhotoLibrary *)self photoLibrary];
-  v8 = [v7 isCloudPhotoLibraryEnabled];
+  completionCopy = completion;
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+  isCloudPhotoLibraryEnabled = [photoLibrary isCloudPhotoLibraryEnabled];
 
-  if (v8)
+  if (isCloudPhotoLibraryEnabled)
   {
     v9 = MEMORY[0x1E696AB28];
-    v10 = [(PHPhotoLibrary *)self _predicateForSettingsStorageSuggestions];
-    v19[0] = v10;
+    _predicateForSettingsStorageSuggestions = [(PHPhotoLibrary *)self _predicateForSettingsStorageSuggestions];
+    v19[0] = _predicateForSettingsStorageSuggestions;
     v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K) == %d", @"master.cloudLocalState", 3];
     v19[1] = v11;
     v12 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForCplQuotaExclusions"), 0}];
@@ -3048,7 +3048,7 @@ void __60__PHPhotoLibrary_localResourceBytesUsed_minVideoSize_error___block_invo
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:3];
     v14 = [v9 andPredicateWithSubpredicates:v13];
 
-    [(PHPhotoLibrary *)self _resourceBytesUsedForPredicate:v14 minVideoSize:a3 completion:v6];
+    [(PHPhotoLibrary *)self _resourceBytesUsedForPredicate:v14 minVideoSize:size completion:completionCopy];
   }
 
   else
@@ -3058,15 +3058,15 @@ void __60__PHPhotoLibrary_localResourceBytesUsed_minVideoSize_error___block_invo
     v18 = @"SPI not available: [PHPhotoLibrary cloudQuotaResourceBytesUsedForMinVideoSize:completion:] cannot be called if iCPL is DISABLED";
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v16 = [v15 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3126 userInfo:v14];
-    (*(v6 + 2))(v6, 0, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v16);
 
-    v6 = v16;
+    completionCopy = v16;
   }
 }
 
-- (BOOL)cloudQuotaResourceBytesUsed:(id *)a3 minVideoSize:(unint64_t)a4 error:(id *)a5
+- (BOOL)cloudQuotaResourceBytesUsed:(id *)used minVideoSize:(unint64_t)size error:(id *)error
 {
-  if (a3)
+  if (used)
   {
     v31 = 0;
     v32 = &v31;
@@ -3094,15 +3094,15 @@ void __60__PHPhotoLibrary_localResourceBytesUsed_minVideoSize_error___block_invo
     v20 = &v21;
     v10 = v9;
     v17 = v10;
-    [(PHPhotoLibrary *)self cloudQuotaResourceBytesUsedForMinVideoSize:a4 completion:v16];
+    [(PHPhotoLibrary *)self cloudQuotaResourceBytesUsedForMinVideoSize:size completion:v16];
     dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-    *a3 = v32[5];
+    *used = v32[5];
     v11 = v26[5];
     v12 = v11;
-    if (v11 && a5)
+    if (v11 && error)
     {
       v12 = v12;
-      *a5 = v12;
+      *error = v12;
     }
 
     v13 = *(v22 + 24);
@@ -3115,10 +3115,10 @@ void __60__PHPhotoLibrary_localResourceBytesUsed_minVideoSize_error___block_invo
   else
   {
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PHPhotosErrorDomain" code:1 userInfo:MEMORY[0x1E695E0F8]];
-    if (a5)
+    if (error)
     {
       v14 = v14;
-      *a5 = v14;
+      *error = v14;
     }
 
     v13 = 0;
@@ -3175,16 +3175,16 @@ void __65__PHPhotoLibrary_cloudQuotaResourceBytesUsed_minVideoSize_error___block
   return v14;
 }
 
-- (void)_resourceBytesUsedForPredicate:(id)a3 minVideoSize:(unint64_t)a4 completion:(id)a5
+- (void)_resourceBytesUsedForPredicate:(id)predicate minVideoSize:(unint64_t)size completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  predicateCopy = predicate;
+  completionCopy = completion;
+  if (!completionCopy)
     v16 = {;
     objc_exception_throw(v16);
   }
 
-  v10 = v9;
+  v10 = completionCopy;
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x3032000000;
@@ -3202,28 +3202,28 @@ void __65__PHPhotoLibrary_cloudQuotaResourceBytesUsed_minVideoSize_error___block
   v27[2] = 0x3032000000;
   v27[3] = __Block_byref_object_copy__21754;
   v27[4] = __Block_byref_object_dispose__21755;
-  v11 = v8;
+  v11 = predicateCopy;
   v28 = v11;
-  v12 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
-  if (a4)
+  photoLibraryForCurrentQueueQoS = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  if (size)
   {
-    v13 = a4;
+    sizeCopy = size;
   }
 
   else
   {
-    v13 = 31457280;
+    sizeCopy = 31457280;
   }
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __73__PHPhotoLibrary__resourceBytesUsedForPredicate_minVideoSize_completion___block_invoke;
   v21[3] = &unk_1E75A6B68;
-  v14 = v12;
+  v14 = photoLibraryForCurrentQueueQoS;
   v22 = v14;
   v23 = v27;
   v25 = v31;
-  v26 = v13;
+  v26 = sizeCopy;
   v24 = v29;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -3407,21 +3407,21 @@ LABEL_32:
   [*(*(*(v41 + 56) + 8) + 40) setObject:v38 forKeyedSubscript:@"PHCloudQuotaBytesUsedMediaTypeDuplicate"];
 }
 
-- (id)limitedLibraryPredicateForApplication:(id)a3 fetchType:(id)a4
+- (id)limitedLibraryPredicateForApplication:(id)application fetchType:(id)type
 {
-  v6 = a4;
+  typeCopy = type;
   v7 = MEMORY[0x1E696AE18];
-  v8 = a3;
+  applicationCopy = application;
   v9 = [v7 predicateWithValue:0];
-  v10 = [MEMORY[0x1E69BE510] fetchFilterIdentifierForApplicationIdentifier:v8];
+  v10 = [MEMORY[0x1E69BE510] fetchFilterIdentifierForApplicationIdentifier:applicationCopy];
 
-  v11 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
-  v12 = v11;
-  if (v11)
+  photoLibraryForCurrentQueueQoS = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  v12 = photoLibraryForCurrentQueueQoS;
+  if (photoLibraryForCurrentQueueQoS)
   {
     v13 = MEMORY[0x1E69BE510];
-    v14 = [v11 managedObjectContext];
-    v15 = [v13 fetchLimitedLibraryFetchFilterWithApplicationIdentifier:v10 inManagedObjectContext:v14];
+    managedObjectContext = [photoLibraryForCurrentQueueQoS managedObjectContext];
+    v15 = [v13 fetchLimitedLibraryFetchFilterWithApplicationIdentifier:v10 inManagedObjectContext:managedObjectContext];
 
     if (v15)
     {
@@ -3440,30 +3440,30 @@ LABEL_32:
   return v9;
 }
 
-- (void)resetLimitedLibraryAccessForApplication:(id)a3 completionHandler:(id)a4
+- (void)resetLimitedLibraryAccessForApplication:(id)application completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  handlerCopy = handler;
   v8 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v15 = v6;
+    v15 = applicationCopy;
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19C86F000, v8, OS_LOG_TYPE_DEFAULT, "Resetting limited library access for %{public}@ to %@", buf, 0x16u);
   }
 
-  v9 = [(PHPhotoLibrary *)self assetsdClient];
-  v10 = [v9 libraryInternalClient];
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  libraryInternalClient = [assetsdClient libraryInternalClient];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __76__PHPhotoLibrary_resetLimitedLibraryAccessForApplication_completionHandler___block_invoke;
   v12[3] = &unk_1E75AA5B8;
-  v13 = v7;
-  v11 = v7;
-  [v10 resetLimitedLibraryAccessForApplication:v6 completionHandler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [libraryInternalClient resetLimitedLibraryAccessForApplication:applicationCopy completionHandler:v12];
 }
 
 uint64_t __76__PHPhotoLibrary_resetLimitedLibraryAccessForApplication_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -3489,26 +3489,26 @@ uint64_t __76__PHPhotoLibrary_resetLimitedLibraryAccessForApplication_completion
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)countOfReferencedMediaWithCompletionHandler:(id)a3
+- (void)countOfReferencedMediaWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
-  [v5 countOfReferencedMediaWithCompletionHandler:v4];
+  handlerCopy = handler;
+  photoLibraryForCurrentQueueQoS = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  [photoLibraryForCurrentQueueQoS countOfReferencedMediaWithCompletionHandler:handlerCopy];
 }
 
 - (BOOL)isReadyForAnalysisCPLInitialDownloadCompleted
 {
-  v2 = [(PLLazyObject *)self->_lazyIsReadyForAnalysisCPLInitialDownloadCompleted objectValue];
-  v3 = [v2 BOOLValue];
+  objectValue = [(PLLazyObject *)self->_lazyIsReadyForAnalysisCPLInitialDownloadCompleted objectValue];
+  bOOLValue = [objectValue BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isReadyForAnalysis_FOR_UI_USE_ONLY_NON_BLOCKING
 {
-  v3 = [(PLLazyObject *)self->_lazyIsReadyForAnalysisQuickCheck currentObjectValueWithoutForcingEvaluation];
+  currentObjectValueWithoutForcingEvaluation = [(PLLazyObject *)self->_lazyIsReadyForAnalysisQuickCheck currentObjectValueWithoutForcingEvaluation];
 
-  if (v3)
+  if (currentObjectValueWithoutForcingEvaluation)
   {
 
     return [(PHPhotoLibrary *)self isReadyForAnalysis_FOR_UI_USE_ONLY];
@@ -3516,10 +3516,10 @@ uint64_t __76__PHPhotoLibrary_resetLimitedLibraryAccessForApplication_completion
 
   else
   {
-    v5 = [(PHPhotoLibrary *)self photoLibrary];
-    v6 = [v5 globalValues];
-    v7 = [v6 libraryReadyForAnalysisDate];
-    v8 = v7 != 0;
+    photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+    globalValues = [photoLibrary globalValues];
+    libraryReadyForAnalysisDate = [globalValues libraryReadyForAnalysisDate];
+    v8 = libraryReadyForAnalysisDate != 0;
 
     objc_initWeak(&location, self);
     readyForAnalysisQueue = self->_readyForAnalysisQueue;
@@ -3543,27 +3543,27 @@ void __65__PHPhotoLibrary_isReadyForAnalysis_FOR_UI_USE_ONLY_NON_BLOCKING__block
 
 - (BOOL)isReadyForAnalysis_FOR_UI_USE_ONLY
 {
-  v2 = [(PLLazyObject *)self->_lazyIsReadyForAnalysisQuickCheck objectValue];
-  v3 = [v2 BOOLValue];
+  objectValue = [(PLLazyObject *)self->_lazyIsReadyForAnalysisQuickCheck objectValue];
+  bOOLValue = [objectValue BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isReadyForAnalysis
 {
-  v3 = [(PLLazyObject *)self->_lazyIsReadyForAnalysis objectValue];
-  v4 = [v3 BOOLValue];
+  objectValue = [(PLLazyObject *)self->_lazyIsReadyForAnalysis objectValue];
+  bOOLValue = [objectValue BOOLValue];
 
-  if (!v4)
+  if (!bOOLValue)
   {
     return 0;
   }
 
   if (![(PHPhotoLibrary *)self photoAnalysisClientAllowed])
   {
-    v5 = [MEMORY[0x1E696AAE8] mainBundle];
-    v6 = [v5 bundleIdentifier];
-    v7 = [v6 isEqualToString:@"com.apple.photoanalysisd"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v7 = [bundleIdentifier isEqualToString:@"com.apple.photoanalysisd"];
 
     if (v7)
     {
@@ -3613,31 +3613,31 @@ void __65__PHPhotoLibrary_isReadyForAnalysis_FOR_UI_USE_ONLY_NON_BLOCKING__block
 
 - (PHPersistentChangeToken)currentToken
 {
-  v2 = [(PHPhotoLibrary *)self changeHandlingPhotoLibrary];
-  v3 = [v2 managedObjectContext];
+  changeHandlingPhotoLibrary = [(PHPhotoLibrary *)self changeHandlingPhotoLibrary];
+  managedObjectContext = [changeHandlingPhotoLibrary managedObjectContext];
 
-  v4 = [PHPersistentChangeToken currentTokenForContext:v3];
+  v4 = [PHPersistentChangeToken currentTokenForContext:managedObjectContext];
 
   return v4;
 }
 
-- (id)fetchPersistentChangesWithRequest:(id)a3 error:(id *)a4
+- (id)fetchPersistentChangesWithRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = objc_alloc_init(PHPersistentChangeFetchOptions);
-  -[PHPersistentChangeFetchOptions setMaximumChangeThreshold:](v7, "setMaximumChangeThreshold:", [v6 maximumChangeThreshold]);
+  -[PHPersistentChangeFetchOptions setMaximumChangeThreshold:](v7, "setMaximumChangeThreshold:", [requestCopy maximumChangeThreshold]);
   [(PHPersistentChangeFetchOptions *)v7 setExcludesPrivateChanges:0];
-  v8 = [v6 token];
+  token = [requestCopy token];
 
-  v9 = [(PHPhotoLibrary *)self _fetchPersistentChangesSinceToken:v8 options:v7 error:a4];
+  v9 = [(PHPhotoLibrary *)self _fetchPersistentChangesSinceToken:token options:v7 error:error];
 
   return v9;
 }
 
-- (void)_processPendingChangesWithDebugEvent:(id)a3
+- (void)_processPendingChangesWithDebugEvent:(id)event
 {
   v121 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v92 = 0;
   v93 = &v92;
   v94 = 0x3032000000;
@@ -3684,9 +3684,9 @@ void __65__PHPhotoLibrary_isReadyForAnalysis_FOR_UI_USE_ONLY_NON_BLOCKING__block
   block[5] = &v73;
   block[6] = &v69;
   dispatch_sync(isolationQueue, block);
-  [v4 setInternalObserversCount:{objc_msgSend(v93[5], "count")}];
-  [v4 setExternalObserversCount:{objc_msgSend(v87[5], "count")}];
-  v54 = self;
+  [eventCopy setInternalObserversCount:{objc_msgSend(v93[5], "count")}];
+  [eventCopy setExternalObserversCount:{objc_msgSend(v87[5], "count")}];
+  selfCopy = self;
   v7 = [v74[5] objectForKeyedSubscript:*MEMORY[0x1E695D320]];
   v8 = [v7 count];
 
@@ -3699,22 +3699,22 @@ void __65__PHPhotoLibrary_isReadyForAnalysis_FOR_UI_USE_ONLY_NON_BLOCKING__block
 
   v55 = [v81[5] count];
   v13 = [v74[5] objectForKeyedSubscript:*MEMORY[0x1E69BE9A0]];
-  v14 = [v13 unsignedLongLongValue];
+  unsignedLongLongValue = [v13 unsignedLongLongValue];
 
   v15 = [v74[5] objectForKeyedSubscript:*MEMORY[0x1E69BF108]];
-  v16 = [v15 integerValue];
+  integerValue = [v15 integerValue];
 
   v17 = [v74[5] objectForKeyedSubscript:*MEMORY[0x1E69BE910]];
-  v18 = [v17 integerValue];
+  integerValue2 = [v17 integerValue];
 
-  [v4 setInsertedCount:v8];
-  [v4 setUpdatedCount:v10];
-  [v4 setDeletedCount:v12];
-  [v4 setUnknownMergeEvent:*(v70 + 24)];
-  [v4 setFetchResultCount:v55];
-  [v4 setLastTransactionNumber:v14];
-  [v4 setTransactionCount:v16];
-  [v4 setChangeCount:v18];
+  [eventCopy setInsertedCount:v8];
+  [eventCopy setUpdatedCount:v10];
+  [eventCopy setDeletedCount:v12];
+  [eventCopy setUnknownMergeEvent:*(v70 + 24)];
+  [eventCopy setFetchResultCount:v55];
+  [eventCopy setLastTransactionNumber:unsignedLongLongValue];
+  [eventCopy setTransactionCount:integerValue];
+  [eventCopy setChangeCount:integerValue2];
   v19 = PLChangeHandlingGetLog();
   spid = os_signpost_id_generate(v19);
 
@@ -3738,7 +3738,7 @@ void __65__PHPhotoLibrary_isReadyForAnalysis_FOR_UI_USE_ONLY_NON_BLOCKING__block
     }
 
     *buf = 134220546;
-    v100 = v54;
+    v100 = selfCopy;
     v101 = 2112;
     v102 = v22;
     v103 = 2048;
@@ -3754,11 +3754,11 @@ void __65__PHPhotoLibrary_isReadyForAnalysis_FOR_UI_USE_ONLY_NON_BLOCKING__block
     v113 = 1024;
     v114 = v25;
     v115 = 2048;
-    v116 = v14;
+    v116 = unsignedLongLongValue;
     v117 = 2048;
-    v118 = v16;
+    v118 = integerValue;
     v119 = 2048;
-    v120 = v18;
+    v120 = integerValue2;
     v21 = log;
     _os_signpost_emit_with_name_impl(&dword_19C86F000, log, OS_SIGNPOST_INTERVAL_BEGIN, spid, "ProcessPendingChanges", "%p: qos: %@, int: %tu, ext: %tu, ins: %tu, upd: %tu, del: %tu, unk: %c, tx#: %llu, tx cnt: %zd, ch cnt: %zd", buf, 0x6Cu);
   }
@@ -3767,8 +3767,8 @@ void __65__PHPhotoLibrary_isReadyForAnalysis_FOR_UI_USE_ONLY_NON_BLOCKING__block
   v27 = [v93[5] count];
   if (v27 + [v87[5] count] && (objc_msgSend(v74[5], "count") || *(v70 + 24) == 1))
   {
-    v30 = [MEMORY[0x1E695E000] standardUserDefaults];
-    if ([v30 BOOLForKey:@"com.apple.PHPhotoLibrary.simulateEveryObjectChanged"])
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    if ([standardUserDefaults BOOLForKey:@"com.apple.PHPhotoLibrary.simulateEveryObjectChanged"])
     {
       v31 = *(v70 + 24);
 
@@ -3776,42 +3776,42 @@ void __65__PHPhotoLibrary_isReadyForAnalysis_FOR_UI_USE_ONLY_NON_BLOCKING__block
       {
 LABEL_26:
         v43 = [PHChange alloc];
-        v29 = [(PHChange *)v43 initWithChangedIdentifiers:v74[5] unknownMergeEvent:*(v70 + 24) library:v54];
+        v29 = [(PHChange *)v43 initWithChangedIdentifiers:v74[5] unknownMergeEvent:*(v70 + 24) library:selfCopy];
         v44 = PLPhotoKitGetLog();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
         {
           v45 = [v93[5] count];
           v46 = [v87[5] count];
           v47 = [v81[5] count];
-          v48 = [v29 _pl_prettyDescription];
+          _pl_prettyDescription = [v29 _pl_prettyDescription];
           *buf = 134218498;
           v100 = (v46 + v45);
           v101 = 2048;
           v102 = v47;
           v103 = 2112;
-          v104 = v48;
+          v104 = _pl_prettyDescription;
           _os_log_impl(&dword_19C86F000, v44, OS_LOG_TYPE_DEBUG, "Handle merge notification observer count: %lu, result count: %lu, change: %@", buf, 0x20u);
         }
 
-        v49 = [(PHPhotoLibrary *)v54 changeHandlingPhotoLibrary];
-        v50 = [v49 managedObjectContext];
+        changeHandlingPhotoLibrary = [(PHPhotoLibrary *)selfCopy changeHandlingPhotoLibrary];
+        managedObjectContext = [changeHandlingPhotoLibrary managedObjectContext];
         v51 = [MEMORY[0x1E695DFD8] setWithArray:v81[5]];
         v57[0] = MEMORY[0x1E69E9820];
         v57[1] = 3254779904;
         v57[2] = __55__PHPhotoLibrary__processPendingChangesWithDebugEvent___block_invoke_699;
         v57[3] = &unk_1F0FC35B0;
-        v58 = v4;
+        v58 = eventCopy;
         v59 = &v92;
         v60 = &v86;
         v61 = v26;
         v62 = spid;
         v63 = v55;
-        [v29 preloadChangeDetailsForFetchResults:v51 inManagedObjectContext:v50 debugEvent:v58 handler:v57];
+        [v29 preloadChangeDetailsForFetchResults:v51 inManagedObjectContext:managedObjectContext debugEvent:v58 handler:v57];
 
         goto LABEL_29;
       }
 
-      v30 = objc_alloc_init(MEMORY[0x1E695DFA8]);
+      standardUserDefaults = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v66 = 0u;
       v67 = 0u;
       v64 = 0u;
@@ -3831,12 +3831,12 @@ LABEL_26:
             }
 
             v36 = *(*(&v64 + 1) + 8 * i);
-            v37 = [v36 fetchedObjectIDsSet];
+            fetchedObjectIDsSet = [v36 fetchedObjectIDsSet];
 
-            if (v37)
+            if (fetchedObjectIDsSet)
             {
-              v38 = [v36 fetchedObjectIDsSet];
-              [v30 unionSet:v38];
+              fetchedObjectIDsSet2 = [v36 fetchedObjectIDsSet];
+              [standardUserDefaults unionSet:fetchedObjectIDsSet2];
             }
           }
 
@@ -3847,7 +3847,7 @@ LABEL_26:
       }
 
       v39 = [v74[5] mutableCopy];
-      v40 = [v30 copy];
+      v40 = [standardUserDefaults copy];
       [v39 setObject:v40 forKeyedSubscript:v53];
 
       v41 = [v39 copy];
@@ -3998,10 +3998,10 @@ void __55__PHPhotoLibrary__processPendingChangesWithDebugEvent___block_invoke_69
   }
 }
 
-- (void)_publishCloudStatusUpdate:(id)a3
+- (void)_publishCloudStatusUpdate:(id)update
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updateCopy = update;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -4025,15 +4025,15 @@ void __55__PHPhotoLibrary__processPendingChangesWithDebugEvent___block_invoke_69
     qos_class_self();
     v10 = PLShortStringFromQoSClass();
     v11 = [v30[5] count];
-    v12 = [v4 isCloudSyncEnabled];
+    isCloudSyncEnabled = [updateCopy isCloudSyncEnabled];
     *buf = 134218754;
-    v37 = self;
+    selfCopy = self;
     v38 = 2112;
     v39 = v10;
     v40 = 2048;
     v41 = v11;
     v42 = 1024;
-    v43 = v12;
+    v43 = isCloudSyncEnabled;
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "PublishCloudStatusChange", "%p: qos: %@, obs: %tu, sync: %d", buf, 0x26u);
   }
 
@@ -4043,11 +4043,11 @@ void __55__PHPhotoLibrary__processPendingChangesWithDebugEvent___block_invoke_69
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       v14 = [v30[5] count];
-      v15 = [v4 _pl_prettyDescription];
+      _pl_prettyDescription = [updateCopy _pl_prettyDescription];
       *buf = 134218242;
-      v37 = v14;
+      selfCopy = v14;
       v38 = 2112;
-      v39 = v15;
+      v39 = _pl_prettyDescription;
       _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_DEBUG, "Publish cloud status change observer count: %lu, change: %@", buf, 0x16u);
     }
 
@@ -4071,7 +4071,7 @@ void __55__PHPhotoLibrary__processPendingChangesWithDebugEvent___block_invoke_69
 
           v20 = *(*(&v24 + 1) + 8 * i);
           v21 = objc_autoreleasePoolPush();
-          [v20 photoLibraryDidUpdateCloudStatus:{v4, v24}];
+          [v20 photoLibraryDidUpdateCloudStatus:{updateCopy, v24}];
           objc_autoreleasePoolPop(v21);
         }
 
@@ -4093,13 +4093,13 @@ void __55__PHPhotoLibrary__processPendingChangesWithDebugEvent___block_invoke_69
   _Block_object_dispose(&v29, 8);
 }
 
-- (void)_publishChangeWithDebugEvent:(id)a3 block:(id)a4
+- (void)_publishChangeWithDebugEvent:(id)event block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  blockCopy = block;
   v8 = [PHPhotoLibrary authorizationStatusForAccessLevel:2]- 3;
-  [v6 setIsAuthorizedForChanges:v8 < 2];
-  if (v7 && v8 <= 1)
+  [eventCopy setIsAuthorizedForChanges:v8 < 2];
+  if (blockCopy && v8 <= 1)
   {
     changeObserverRegistrar = self->_changeObserverRegistrar;
     v10 = +[PHChange handlerQueue];
@@ -4107,14 +4107,14 @@ void __55__PHPhotoLibrary__processPendingChangesWithDebugEvent___block_invoke_69
     v11[1] = 3221225472;
     v11[2] = __53__PHPhotoLibrary__publishChangeWithDebugEvent_block___block_invoke;
     v11[3] = &unk_1E75AA820;
-    v13 = v7;
-    v12 = v6;
+    v13 = blockCopy;
+    v12 = eventCopy;
     [(PHPhotoLibraryChangeObserverRegistrar *)changeObserverRegistrar publishChangesToObserversOnQueue:v10 withDebugEvent:v12 block:v11];
   }
 
   else
   {
-    [v6 end];
+    [eventCopy end];
   }
 }
 
@@ -4126,18 +4126,18 @@ uint64_t __53__PHPhotoLibrary__publishChangeWithDebugEvent_block___block_invoke(
   return [v2 end];
 }
 
-- (void)handleMergeNotification:(id)a3
+- (void)handleMergeNotification:(id)notification
 {
   v46 = *MEMORY[0x1E69E9840];
-  v18 = a3;
+  notificationCopy = notification;
   val = self;
-  v17 = [(PHChangeHandlingDebugger *)self->_changeHandlingDebugger beginProcessPendingChanges];
+  beginProcessPendingChanges = [(PHChangeHandlingDebugger *)self->_changeHandlingDebugger beginProcessPendingChanges];
   [(PHPhotoLibrary *)self _notifyPersistentChangeObservers];
-  v23 = [v18 userInfo];
-  v4 = [v23 objectForKeyedSubscript:*MEMORY[0x1E69BF118]];
-  v5 = [v4 BOOLValue];
+  userInfo = [notificationCopy userInfo];
+  v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BF118]];
+  bOOLValue = [v4 BOOLValue];
 
-  if (!v5)
+  if (!bOOLValue)
   {
     v22 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
     v37 = 0u;
@@ -4160,12 +4160,12 @@ uint64_t __53__PHPhotoLibrary__publishChangeWithDebugEvent_block___block_invoke(
           }
 
           v9 = *(*(&v35 + 1) + 8 * i);
-          v10 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           v33 = 0u;
           v34 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v11 = [v23 objectForKeyedSubscript:v9];
+          v11 = [userInfo objectForKeyedSubscript:v9];
           v12 = [v11 countByEnumeratingWithState:&v31 objects:v44 count:16];
           if (v12)
           {
@@ -4180,7 +4180,7 @@ uint64_t __53__PHPhotoLibrary__publishChangeWithDebugEvent_block___block_invoke(
                 }
 
                 v15 = [PHPhotoLibrary uniquedOID:*(*(&v31 + 1) + 8 * j)];
-                [v10 addObject:v15];
+                [array addObject:v15];
               }
 
               v12 = [v11 countByEnumeratingWithState:&v31 objects:v44 count:16];
@@ -4190,7 +4190,7 @@ uint64_t __53__PHPhotoLibrary__publishChangeWithDebugEvent_block___block_invoke(
             v7 = 1;
           }
 
-          [v22 setObject:v10 forKey:v9];
+          [v22 setObject:array forKey:v9];
         }
 
         v6 = [obj countByEnumeratingWithState:&v35 objects:v45 count:16];
@@ -4209,7 +4209,7 @@ uint64_t __53__PHPhotoLibrary__publishChangeWithDebugEvent_block___block_invoke(
       location[4] = &unk_1E75AB248;
       v28 = v22;
       v29 = val;
-      v30 = v23;
+      v30 = userInfo;
       pl_dispatch_sync();
 
       obj = v28;
@@ -4232,7 +4232,7 @@ LABEL_22:
   v24[2] = __42__PHPhotoLibrary_handleMergeNotification___block_invoke_3;
   v24[3] = &unk_1E75A7300;
   objc_copyWeak(&v26, location);
-  v16 = v17;
+  v16 = beginProcessPendingChanges;
   v25 = v16;
   [(PHPhotoLibrary *)val _publishChangeWithDebugEvent:v16 block:v24];
 
@@ -4521,9 +4521,9 @@ void __42__PHPhotoLibrary_handleMergeNotification___block_invoke_3(uint64_t a1)
   [WeakRetained _processPendingChangesWithDebugEvent:*(a1 + 32)];
 }
 
-- (void)setCustomLibrarySpecificFetchOptions:(id)a3
+- (void)setCustomLibrarySpecificFetchOptions:(id)options
 {
-  self->_customLibrarySpecificFetchOptions = [a3 copy];
+  self->_customLibrarySpecificFetchOptions = [options copy];
 
   MEMORY[0x1EEE66BB8]();
 }
@@ -4539,42 +4539,42 @@ void __33__PHPhotoLibrary_allowedEntities__block_invoke_2()
   allowedEntities_pl_once_object_78 = v3;
 }
 
-- (id)fetchUpdatedObject:(id)a3
+- (id)fetchUpdatedObject:(id)object
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectID];
-  v9[0] = v4;
+  objectID = [object objectID];
+  v9[0] = objectID;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v6 = [(PHPhotoLibrary *)self fetchPHObjectsForOIDs:v5];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
-- (id)fetchPHObjectsForUUIDs:(id)a3 entityName:(id)a4
+- (id)fetchPHObjectsForUUIDs:(id)ds entityName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
-  if ([v6 count])
+  dsCopy = ds;
+  nameCopy = name;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([dsCopy count])
   {
-    v9 = [(PHPhotoLibrary *)self managedObjectContext];
-    v10 = [PHPhotoLibrary PHObjectClassForEntityName:v7];
+    managedObjectContext = [(PHPhotoLibrary *)self managedObjectContext];
+    v10 = [PHPhotoLibrary PHObjectClassForEntityName:nameCopy];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __52__PHPhotoLibrary_fetchPHObjectsForUUIDs_entityName___block_invoke;
     v13[3] = &unk_1E75A6AF0;
-    v14 = v7;
-    v15 = v6;
-    v16 = v9;
+    v14 = nameCopy;
+    v15 = dsCopy;
+    v16 = managedObjectContext;
     v19 = v10;
-    v17 = self;
-    v18 = v8;
-    v11 = v9;
+    selfCopy = self;
+    v18 = array;
+    v11 = managedObjectContext;
     [v11 performBlockAndWait:v13];
   }
 
-  return v8;
+  return array;
 }
 
 void __52__PHPhotoLibrary_fetchPHObjectsForUUIDs_entityName___block_invoke(uint64_t a1)
@@ -4622,27 +4622,27 @@ void __52__PHPhotoLibrary_fetchPHObjectsForUUIDs_entityName___block_invoke(uint6
   }
 }
 
-- (id)fetchedObjectsForOIDs:(id)a3 propertySetClass:(Class)a4
+- (id)fetchedObjectsForOIDs:(id)ds propertySetClass:(Class)class
 {
   v59[1] = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  v5 = [v36 count];
+  dsCopy = ds;
+  v5 = [dsCopy count];
   v6 = MEMORY[0x1E695E0F0];
   if (v5)
   {
     v34 = objc_alloc_init(MEMORY[0x1E695D5C8]);
     [v34 setName:@"objectID"];
-    v7 = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
-    [v34 setExpression:v7];
+    expressionForEvaluatedObject = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
+    [v34 setExpression:expressionForEvaluatedObject];
 
     [v34 setExpressionResultType:2000];
     v59[0] = v34;
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:1];
-    v8 = [(objc_class *)a4 propertiesToFetch];
-    v9 = v8;
-    if (v8)
+    propertiesToFetch = [(objc_class *)class propertiesToFetch];
+    v9 = propertiesToFetch;
+    if (propertiesToFetch)
     {
-      v10 = v8;
+      v10 = propertiesToFetch;
     }
 
     else
@@ -4653,9 +4653,9 @@ void __52__PHPhotoLibrary_fetchPHObjectsForUUIDs_entityName___block_invoke(uint6
     v32 = v10;
 
     v30 = [v33 arrayByAddingObjectsFromArray:v32];
-    v31 = [(objc_class *)a4 entityName];
-    v37 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:v31];
-    if ([(objc_class *)a4 useNoIndexSelf])
+    entityName = [(objc_class *)class entityName];
+    v37 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:entityName];
+    if ([(objc_class *)class useNoIndexSelf])
     {
       v11 = @"noindex:(self) IN %@";
     }
@@ -4665,21 +4665,21 @@ void __52__PHPhotoLibrary_fetchPHObjectsForUUIDs_entityName___block_invoke(uint6
       v11 = @"self IN %@";
     }
 
-    v12 = [MEMORY[0x1E696AE18] predicateWithFormat:v11, v36];
-    [v37 setPredicate:v12];
+    dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:v11, dsCopy];
+    [v37 setPredicate:dsCopy];
 
     [v37 setPropertiesToFetch:v30];
     [v37 setResultType:2];
     [v37 setAllocationType:1];
-    v35 = [(objc_class *)a4 propertiesToSortBy];
-    if ([v35 count])
+    propertiesToSortBy = [(objc_class *)class propertiesToSortBy];
+    if ([propertiesToSortBy count])
     {
-      v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v35, "count")}];
+      v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(propertiesToSortBy, "count")}];
       v55 = 0u;
       v56 = 0u;
       v53 = 0u;
       v54 = 0u;
-      v14 = v35;
+      v14 = propertiesToSortBy;
       v15 = [v14 countByEnumeratingWithState:&v53 objects:v58 count:16];
       if (v15)
       {
@@ -4712,7 +4712,7 @@ void __52__PHPhotoLibrary_fetchPHObjectsForUUIDs_entityName___block_invoke(uint6
     v50 = __Block_byref_object_copy__21754;
     v51 = __Block_byref_object_dispose__21755;
     v52 = 0;
-    if ([(objc_class *)a4 useObjectFetchingContext])
+    if ([(objc_class *)class useObjectFetchingContext])
     {
       [(PHPhotoLibrary *)self objectFetchingContextForCurrentQueueQoS];
     }
@@ -4732,7 +4732,7 @@ void __52__PHPhotoLibrary_fetchPHObjectsForUUIDs_entityName___block_invoke(uint6
     v45 = v37;
     [v20 performBlockAndWait:v43];
 
-    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v36, "count")}];
+    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
@@ -4755,7 +4755,7 @@ void __52__PHPhotoLibrary_fetchPHObjectsForUUIDs_entityName___block_invoke(uint6
           v26 = [v25 valueAtIndex:0];
           v27 = [PHPhotoLibrary uniquedOID:v26];
 
-          v28 = [[a4 alloc] initWithObjectID:v27 knownKeysDictionary:v25 photoLibrary:self];
+          v28 = [[class alloc] initWithObjectID:v27 knownKeysDictionary:v25 photoLibrary:self];
           [v6 addObject:v28];
         }
 
@@ -4795,23 +4795,23 @@ void __57__PHPhotoLibrary_fetchedObjectsForOIDs_propertySetClass___block_invoke(
   }
 }
 
-- (id)fetchPropertiesByOID:(id)a3 propertyNamesByEntityName:(id)a4
+- (id)fetchPropertiesByOID:(id)d propertyNamesByEntityName:(id)name
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  nameCopy = name;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if ([v6 count])
+  if ([dCopy count])
   {
     v25 = v8;
-    v26 = v7;
-    v24 = [(PHPhotoLibrary *)self objectFetchingContextForCurrentQueueQoS];
-    v9 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    v26 = nameCopy;
+    objectFetchingContextForCurrentQueueQoS = [(PHPhotoLibrary *)self objectFetchingContextForCurrentQueueQoS];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v10 = v6;
+    v10 = dCopy;
     v11 = [v10 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v11)
     {
@@ -4827,9 +4827,9 @@ void __57__PHPhotoLibrary_fetchedObjectsForOIDs_propertySetClass___block_invoke(
           }
 
           v15 = *(*(&v33 + 1) + 8 * i);
-          v16 = [v15 entity];
-          v17 = [v16 name];
-          v18 = [v9 objectForKey:v17];
+          entity = [v15 entity];
+          name = [entity name];
+          v18 = [strongToStrongObjectsMapTable objectForKey:name];
           if (v18)
           {
             v19 = v18;
@@ -4839,7 +4839,7 @@ void __57__PHPhotoLibrary_fetchedObjectsForOIDs_propertySetClass___block_invoke(
           else
           {
             v19 = [MEMORY[0x1E695DF70] arrayWithObject:v15];
-            [v9 setObject:v19 forKey:v17];
+            [strongToStrongObjectsMapTable setObject:v19 forKey:name];
           }
         }
 
@@ -4853,15 +4853,15 @@ void __57__PHPhotoLibrary_fetchedObjectsForOIDs_propertySetClass___block_invoke(
     v27[1] = 3221225472;
     v27[2] = __65__PHPhotoLibrary_fetchPropertiesByOID_propertyNamesByEntityName___block_invoke;
     v27[3] = &unk_1E75AA130;
-    v28 = v9;
-    v7 = v26;
+    v28 = strongToStrongObjectsMapTable;
+    nameCopy = v26;
     v29 = v26;
-    v30 = v24;
+    v30 = objectFetchingContextForCurrentQueueQoS;
     v31 = v10;
     v8 = v25;
     v32 = v25;
-    v20 = v24;
-    v21 = v9;
+    v20 = objectFetchingContextForCurrentQueueQoS;
+    v21 = strongToStrongObjectsMapTable;
     [v20 performBlockAndWait:v27];
   }
 
@@ -4970,20 +4970,20 @@ void __65__PHPhotoLibrary_fetchPropertiesByOID_propertyNamesByEntityName___block
   }
 }
 
-- (id)fetchPHObjectsForOIDs:(id)a3 propertyHint:(unint64_t)a4 includeTrash:(BOOL)a5 overrideResultsWithClass:(Class)a6
+- (id)fetchPHObjectsForOIDs:(id)ds propertyHint:(unint64_t)hint includeTrash:(BOOL)trash overrideResultsWithClass:(Class)class
 {
-  v6 = a5;
+  trashCopy = trash;
   v53 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
-  v34 = [MEMORY[0x1E69BE470] entity];
-  v35 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
-  v33 = [MEMORY[0x1E695DF70] array];
+  dsCopy = ds;
+  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(dsCopy, "count")}];
+  entity = [MEMORY[0x1E69BE470] entity];
+  v35 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(dsCopy, "count")}];
+  array = [MEMORY[0x1E695DF70] array];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v9;
+  obj = dsCopy;
   v11 = [obj countByEnumeratingWithState:&v46 objects:v52 count:16];
   if (v11)
   {
@@ -4999,12 +4999,12 @@ void __65__PHPhotoLibrary_fetchPropertiesByOID_propertyNamesByEntityName___block
         }
 
         v15 = *(*(&v46 + 1) + 8 * i);
-        v16 = [v15 entity];
-        v17 = [v16 isKindOfEntity:v34];
+        entity2 = [v15 entity];
+        v17 = [entity2 isKindOfEntity:entity];
 
         if (v17)
         {
-          v18 = v33;
+          v18 = array;
         }
 
         else
@@ -5021,8 +5021,8 @@ void __65__PHPhotoLibrary_fetchPropertiesByOID_propertyNamesByEntityName___block
     while (v12);
   }
 
-  v29 = v6;
-  [(PHPhotoLibrary *)self fetchDictionariesByPHClassForOIDs:v35 propertyHint:a4 includeTrash:v6 overrideWithPHClass:a6];
+  v29 = trashCopy;
+  [(PHPhotoLibrary *)self fetchDictionariesByPHClassForOIDs:v35 propertyHint:hint includeTrash:trashCopy overrideWithPHClass:class];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -5040,8 +5040,8 @@ void __65__PHPhotoLibrary_fetchPropertiesByOID_propertyNamesByEntityName___block
           objc_enumerationMutation(v37);
         }
 
-        v20 = *(*(&v42 + 1) + 8 * j);
-        v21 = [v37 objectForKey:v20];
+        classCopy = *(*(&v42 + 1) + 8 * j);
+        v21 = [v37 objectForKey:classCopy];
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
@@ -5051,9 +5051,9 @@ void __65__PHPhotoLibrary_fetchPropertiesByOID_propertyNamesByEntityName___block
         {
           v23 = v22;
           v24 = *v39;
-          if (a6)
+          if (class)
           {
-            v20 = a6;
+            classCopy = class;
           }
 
           do
@@ -5065,7 +5065,7 @@ void __65__PHPhotoLibrary_fetchPropertiesByOID_propertyNamesByEntityName___block
                 objc_enumerationMutation(v21);
               }
 
-              v26 = [[v20 alloc] initWithFetchDictionary:*(*(&v38 + 1) + 8 * k) propertyHint:a4 photoLibrary:self];
+              v26 = [[classCopy alloc] initWithFetchDictionary:*(*(&v38 + 1) + 8 * k) propertyHint:hint photoLibrary:self];
               [v10 addObject:v26];
             }
 
@@ -5082,33 +5082,33 @@ void __65__PHPhotoLibrary_fetchPropertiesByOID_propertyNamesByEntityName___block
     while (v36);
   }
 
-  if ([v33 count])
+  if ([array count])
   {
-    v27 = [(PHPhotoLibrary *)self _graphBasedPHObjectsForOIDs:v33 propertyHint:2 includeTrash:v29];
+    v27 = [(PHPhotoLibrary *)self _graphBasedPHObjectsForOIDs:array propertyHint:2 includeTrash:v29];
     [v10 addObjectsFromArray:v27];
   }
 
   return v10;
 }
 
-- (id)fetchDictionariesByPHClassForOIDs:(id)a3 propertyHint:(unint64_t)a4 includeTrash:(BOOL)a5 overrideWithPHClass:(Class)a6
+- (id)fetchDictionariesByPHClassForOIDs:(id)ds propertyHint:(unint64_t)hint includeTrash:(BOOL)trash overrideWithPHClass:(Class)class
 {
   v45 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  if ([v10 count])
+  dsCopy = ds;
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  if ([dsCopy count])
   {
-    v28 = a4;
-    v29 = a5;
-    v31 = v11;
-    v27 = [(PHPhotoLibrary *)self objectFetchingContextForCurrentQueueQoS];
-    v12 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    hintCopy = hint;
+    trashCopy = trash;
+    v31 = strongToStrongObjectsMapTable;
+    objectFetchingContextForCurrentQueueQoS = [(PHPhotoLibrary *)self objectFetchingContextForCurrentQueueQoS];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v30 = v10;
-    obj = v10;
+    v30 = dsCopy;
+    obj = dsCopy;
     v13 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v13)
     {
@@ -5124,16 +5124,16 @@ void __65__PHPhotoLibrary_fetchPropertiesByOID_propertyNamesByEntityName___block
           }
 
           v17 = *(*(&v40 + 1) + 8 * i);
-          v18 = [v17 entity];
-          v19 = v18;
-          v20 = a6;
-          if (!a6)
+          entity = [v17 entity];
+          v19 = entity;
+          classCopy = class;
+          if (!class)
           {
-            v21 = [v18 name];
-            v20 = [PHPhotoLibrary PHObjectClassForEntityName:v21];
+            name = [entity name];
+            classCopy = [PHPhotoLibrary PHObjectClassForEntityName:name];
           }
 
-          v22 = [v12 objectForKey:v20];
+          v22 = [strongToStrongObjectsMapTable2 objectForKey:classCopy];
           if (v22)
           {
             v23 = v22;
@@ -5143,7 +5143,7 @@ void __65__PHPhotoLibrary_fetchPropertiesByOID_propertyNamesByEntityName___block
           else
           {
             v23 = [MEMORY[0x1E695DF70] arrayWithObject:v17];
-            [v12 setObject:v23 forKey:v20];
+            [strongToStrongObjectsMapTable2 setObject:v23 forKey:classCopy];
           }
         }
 
@@ -5157,21 +5157,21 @@ void __65__PHPhotoLibrary_fetchPropertiesByOID_propertyNamesByEntityName___block
     v33[1] = 3221225472;
     v33[2] = __98__PHPhotoLibrary_fetchDictionariesByPHClassForOIDs_propertyHint_includeTrash_overrideWithPHClass___block_invoke;
     v33[3] = &unk_1E75A6AC8;
-    v39 = v29;
-    v38 = v28;
-    v34 = v12;
-    v35 = v27;
+    v39 = trashCopy;
+    v38 = hintCopy;
+    v34 = strongToStrongObjectsMapTable2;
+    v35 = objectFetchingContextForCurrentQueueQoS;
     v36 = obj;
-    v11 = v31;
+    strongToStrongObjectsMapTable = v31;
     v37 = v31;
-    v24 = v27;
-    v25 = v12;
+    v24 = objectFetchingContextForCurrentQueueQoS;
+    v25 = strongToStrongObjectsMapTable2;
     [v24 performBlockAndWait:v33];
 
-    v10 = v30;
+    dsCopy = v30;
   }
 
-  return v11;
+  return strongToStrongObjectsMapTable;
 }
 
 void __98__PHPhotoLibrary_fetchDictionariesByPHClassForOIDs_propertyHint_includeTrash_overrideWithPHClass___block_invoke(uint64_t a1)
@@ -5247,25 +5247,25 @@ void __98__PHPhotoLibrary_fetchDictionariesByPHClassForOIDs_propertyHint_include
   }
 }
 
-- (id)_graphBasedPHObjectsForOIDs:(id)a3 propertyHint:(unint64_t)a4 includeTrash:(BOOL)a5
+- (id)_graphBasedPHObjectsForOIDs:(id)ds propertyHint:(unint64_t)hint includeTrash:(BOOL)trash
 {
-  v7 = a3;
-  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
-  v9 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
-  v10 = [v9 managedObjectContext];
+  dsCopy = ds;
+  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(dsCopy, "count")}];
+  photoLibraryForCurrentQueueQoS = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  managedObjectContext = [photoLibraryForCurrentQueueQoS managedObjectContext];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __72__PHPhotoLibrary__graphBasedPHObjectsForOIDs_propertyHint_includeTrash___block_invoke;
   v17[3] = &unk_1E75A6AA0;
-  v18 = v7;
-  v19 = v10;
-  v20 = self;
+  v18 = dsCopy;
+  v19 = managedObjectContext;
+  selfCopy = self;
   v22 = a2;
   v11 = v8;
   v21 = v11;
-  v12 = v10;
-  v13 = v7;
+  v12 = managedObjectContext;
+  v13 = dsCopy;
   [v12 performBlockAndWait:v17];
   v14 = v21;
   v15 = v11;
@@ -5366,18 +5366,18 @@ LABEL_12:
   }
 }
 
-- (id)queryForType:(id)a3 withIdentifiers:(id)a4 local:(BOOL)a5
+- (id)queryForType:(id)type withIdentifiers:(id)identifiers local:(BOOL)local
 {
-  v5 = a5;
+  localCopy = local;
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  typeCopy = type;
+  identifiersCopy = identifiers;
+  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = v9;
+  v11 = identifiersCopy;
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
@@ -5412,7 +5412,7 @@ LABEL_12:
 
   if ([v10 count])
   {
-    if (v5)
+    if (localCopy)
     {
       v19 = @"uuid IN (%@)";
     }
@@ -5423,7 +5423,7 @@ LABEL_12:
     }
 
     v20 = [MEMORY[0x1E696AE18] predicateWithFormat:v19, v10];
-    v21 = [PHQuery queryForType:v8 withBasePredicate:v20 inLibrary:self];
+    v21 = [PHQuery queryForType:typeCopy withBasePredicate:v20 inLibrary:self];
   }
 
   else
@@ -5434,124 +5434,124 @@ LABEL_12:
   return v21;
 }
 
-- (id)_urlForApplicationDataFolderIdentifier:(int64_t)a3 pathManager:(id)a4 error:(id *)a5
+- (id)_urlForApplicationDataFolderIdentifier:(int64_t)identifier pathManager:(id)manager error:(id *)error
 {
-  v9 = a4;
-  if (!v9)
+  managerCopy = manager;
+  if (!managerCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2406 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2406 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
   }
 
-  switch(a3)
+  switch(identifier)
   {
     case 1:
       v10 = MEMORY[0x1E695DFF8];
       v36 = 0;
-      v11 = [v9 privateCacheDirectoryWithSubType:4 createIfNeeded:1 error:&v36];
+      v11 = [managerCopy privateCacheDirectoryWithSubType:4 createIfNeeded:1 error:&v36];
       v12 = v36;
       goto LABEL_20;
     case 2:
       v10 = MEMORY[0x1E695DFF8];
       v35 = 0;
-      v11 = [v9 privateCacheDirectoryWithSubType:5 createIfNeeded:1 error:&v35];
+      v11 = [managerCopy privateCacheDirectoryWithSubType:5 createIfNeeded:1 error:&v35];
       v12 = v35;
       goto LABEL_20;
     case 3:
       v10 = MEMORY[0x1E695DFF8];
       v34 = 0;
-      v11 = [v9 privateCacheDirectoryWithSubType:6 createIfNeeded:1 error:&v34];
+      v11 = [managerCopy privateCacheDirectoryWithSubType:6 createIfNeeded:1 error:&v34];
       v12 = v34;
       goto LABEL_20;
     case 4:
       v10 = MEMORY[0x1E695DFF8];
       v33 = 0;
-      v11 = [v9 privateCacheDirectoryWithSubType:7 createIfNeeded:1 error:&v33];
+      v11 = [managerCopy privateCacheDirectoryWithSubType:7 createIfNeeded:1 error:&v33];
       v12 = v33;
       goto LABEL_20;
     case 5:
       v10 = MEMORY[0x1E695DFF8];
       v32 = 0;
-      v11 = [v9 privateDirectoryWithSubType:0 createIfNeeded:1 error:&v32];
+      v11 = [managerCopy privateDirectoryWithSubType:0 createIfNeeded:1 error:&v32];
       v12 = v32;
       goto LABEL_20;
     case 6:
       v10 = MEMORY[0x1E695DFF8];
       v31 = 0;
-      v11 = [v9 photoDirectoryWithType:17 createIfNeeded:1 error:&v31];
+      v11 = [managerCopy photoDirectoryWithType:17 createIfNeeded:1 error:&v31];
       v12 = v31;
       goto LABEL_20;
     case 7:
       v10 = MEMORY[0x1E695DFF8];
       v30 = 0;
-      v11 = [v9 photoDirectoryWithType:16 createIfNeeded:1 error:&v30];
+      v11 = [managerCopy photoDirectoryWithType:16 createIfNeeded:1 error:&v30];
       v12 = v30;
       goto LABEL_20;
     case 8:
       v10 = MEMORY[0x1E695DFF8];
       v29 = 0;
-      v11 = [v9 photoDirectoryWithType:34 leafType:1 additionalPathComponents:@"ExternalEditSessions" createIfNeeded:1 error:&v29];
+      v11 = [managerCopy photoDirectoryWithType:34 leafType:1 additionalPathComponents:@"ExternalEditSessions" createIfNeeded:1 error:&v29];
       v12 = v29;
       goto LABEL_20;
     case 9:
       v10 = MEMORY[0x1E695DFF8];
       v28 = 0;
-      v11 = [v9 photoDirectoryWithType:18 createIfNeeded:1 error:&v28];
+      v11 = [managerCopy photoDirectoryWithType:18 createIfNeeded:1 error:&v28];
       v12 = v28;
       goto LABEL_20;
     case 10:
       v10 = MEMORY[0x1E695DFF8];
       v27 = 0;
-      v11 = [v9 photoDirectoryWithType:21 createIfNeeded:1 error:&v27];
+      v11 = [managerCopy photoDirectoryWithType:21 createIfNeeded:1 error:&v27];
       v12 = v27;
       goto LABEL_20;
     case 11:
       v10 = MEMORY[0x1E695DFF8];
       v26 = 0;
-      v11 = [v9 internalDirectoryWithSubType:3 additionalPathComponents:0 createIfNeeded:1 error:&v26];
+      v11 = [managerCopy internalDirectoryWithSubType:3 additionalPathComponents:0 createIfNeeded:1 error:&v26];
       v12 = v26;
       goto LABEL_20;
     case 12:
       v10 = MEMORY[0x1E695DFF8];
       v25 = 0;
-      v11 = [v9 internalDirectoryWithSubType:5 additionalPathComponents:0 createIfNeeded:1 error:&v25];
+      v11 = [managerCopy internalDirectoryWithSubType:5 additionalPathComponents:0 createIfNeeded:1 error:&v25];
       v12 = v25;
       goto LABEL_20;
     case 13:
       v10 = MEMORY[0x1E695DFF8];
       v24 = 0;
-      v11 = [v9 internalDirectoryWithSubType:6 additionalPathComponents:0 createIfNeeded:1 error:&v24];
+      v11 = [managerCopy internalDirectoryWithSubType:6 additionalPathComponents:0 createIfNeeded:1 error:&v24];
       v12 = v24;
       goto LABEL_20;
     case 14:
       v10 = MEMORY[0x1E695DFF8];
       v23 = 0;
-      v11 = [v9 privateCacheDirectoryWithSubType:16 createIfNeeded:1 error:&v23];
+      v11 = [managerCopy privateCacheDirectoryWithSubType:16 createIfNeeded:1 error:&v23];
       v12 = v23;
       goto LABEL_20;
     case 15:
       v10 = MEMORY[0x1E695DFF8];
       v22 = 0;
-      v11 = [v9 internalDirectoryWithSubType:4 additionalPathComponents:0 createIfNeeded:1 error:&v22];
+      v11 = [managerCopy internalDirectoryWithSubType:4 additionalPathComponents:0 createIfNeeded:1 error:&v22];
       v12 = v22;
       goto LABEL_20;
     case 16:
       v10 = MEMORY[0x1E695DFF8];
       v21 = 0;
-      v11 = [v9 internalDirectoryWithSubType:7 additionalPathComponents:0 createIfNeeded:1 error:&v21];
+      v11 = [managerCopy internalDirectoryWithSubType:7 additionalPathComponents:0 createIfNeeded:1 error:&v21];
       v12 = v21;
 LABEL_20:
       v13 = v12;
       goto LABEL_21;
     default:
       v37 = 0;
-      v17 = [v9 validateCreationRequestWithError:&v37];
+      v17 = [managerCopy validateCreationRequestWithError:&v37];
       v18 = v37;
       v13 = v18;
       if (v17)
       {
         v10 = MEMORY[0x1E695DFF8];
-        v11 = [v9 photoDirectoryWithType:29];
+        v11 = [managerCopy photoDirectoryWithType:29];
 LABEL_21:
         v14 = [v10 fileURLWithPath:v11 isDirectory:1];
 
@@ -5572,11 +5572,11 @@ LABEL_28:
       }
 
 LABEL_22:
-      if (a5)
+      if (error)
       {
         v15 = v13;
         v16 = 0;
-        *a5 = v13;
+        *error = v13;
       }
 
       else
@@ -5590,11 +5590,11 @@ LABEL_29:
   }
 }
 
-- (id)urlForApplicationDataFolderIdentifier:(int64_t)a3 error:(id *)a4
+- (id)urlForApplicationDataFolderIdentifier:(int64_t)identifier error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v7 = [(PHPhotoLibrary *)self pathManager];
-  if (!v7)
+  pathManager = [(PHPhotoLibrary *)self pathManager];
+  if (!pathManager)
   {
     v11 = MEMORY[0x1E696ABC0];
     v23 = *MEMORY[0x1E696A578];
@@ -5608,11 +5608,11 @@ LABEL_29:
       *buf = 136446466;
       v18 = "[PHPhotoLibrary urlForApplicationDataFolderIdentifier:error:]";
       v19 = 2112;
-      v20 = v9;
+      identifierCopy = v9;
       _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_ERROR, "%{public}s: Failed to access path manager for application folder identifier. Error: %@", buf, 0x16u);
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -5620,17 +5620,17 @@ LABEL_29:
 LABEL_12:
     v14 = v9;
     v8 = 0;
-    *a4 = v9;
+    *error = v9;
     goto LABEL_13;
   }
 
-  if ([(PHPhotoLibrary *)self _isApplicationOwnedFolderWithApplicationDataFolderIdentifier:a3])
+  if ([(PHPhotoLibrary *)self _isApplicationOwnedFolderWithApplicationDataFolderIdentifier:identifier])
   {
     [(PHPhotoLibrary *)self _openApplicationOwnedFoldersIfNecessary];
   }
 
   v16 = 0;
-  v8 = [(PHPhotoLibrary *)self _urlForApplicationDataFolderIdentifier:a3 pathManager:v7 error:&v16];
+  v8 = [(PHPhotoLibrary *)self _urlForApplicationDataFolderIdentifier:identifier pathManager:pathManager error:&v16];
   v9 = v16;
   if (!v8)
   {
@@ -5640,13 +5640,13 @@ LABEL_12:
       *buf = 136446722;
       v18 = "[PHPhotoLibrary urlForApplicationDataFolderIdentifier:error:]";
       v19 = 2048;
-      v20 = a3;
+      identifierCopy = identifier;
       v21 = 2112;
       v22 = v9;
       _os_log_impl(&dword_19C86F000, v10, OS_LOG_TYPE_ERROR, "%{public}s: Failed to create directories for application folder identifier %td. Error: %@", buf, 0x20u);
     }
 
-    if (!a4)
+    if (!error)
     {
 LABEL_8:
       v8 = 0;
@@ -5661,11 +5661,11 @@ LABEL_13:
   return v8;
 }
 
-- (id)urlForApplicationDataFolderIdentifier:(int64_t)a3
+- (id)urlForApplicationDataFolderIdentifier:(int64_t)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
   v8 = 0;
-  v4 = [(PHPhotoLibrary *)self urlForApplicationDataFolderIdentifier:a3 error:&v8];
+  v4 = [(PHPhotoLibrary *)self urlForApplicationDataFolderIdentifier:identifier error:&v8];
   v5 = v8;
   if (!v4)
   {
@@ -5675,7 +5675,7 @@ LABEL_13:
       *buf = 136446722;
       v10 = "[PHPhotoLibrary urlForApplicationDataFolderIdentifier:]";
       v11 = 2048;
-      v12 = a3;
+      identifierCopy = identifier;
       v13 = 2112;
       v14 = v5;
       _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_ERROR, "%{public}s: Failed to create directories for application folder identifier %td. Error: %@", buf, 0x20u);
@@ -5685,105 +5685,105 @@ LABEL_13:
   return v4;
 }
 
-- (void)setChangeRequest:(id)a3 forUUID:(id)a4
+- (void)setChangeRequest:(id)request forUUID:(id)d
 {
-  v7 = a4;
-  v11 = a3;
+  dCopy = d;
+  requestCopy = request;
   if (PLIsAssetsd())
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2316 description:@"cannot be run from assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2316 description:@"cannot be run from assetsd"];
 
-    if (v7)
+    if (dCopy)
     {
       goto LABEL_3;
     }
   }
 
-  else if (v7)
+  else if (dCopy)
   {
     goto LABEL_3;
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2317 description:@"uuid is a required argument"];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2317 description:@"uuid is a required argument"];
 
 LABEL_3:
-  if (!v11)
+  if (!requestCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2318 description:@"changeRequest is a required argument"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2318 description:@"changeRequest is a required argument"];
   }
 
   [(PHPhotoLibrary *)self assertTransaction];
-  [(PHPerformChangesRequest *)self->_performChangesRequest setChangeRequest:v11 forUUID:v7];
+  [(PHPerformChangesRequest *)self->_performChangesRequest setChangeRequest:requestCopy forUUID:dCopy];
 }
 
-- (id)changeRequestForUUID:(id)a3
+- (id)changeRequestForUUID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2309 description:@"uuid is a required argument"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2309 description:@"uuid is a required argument"];
   }
 
   [(PHPhotoLibrary *)self assertTransaction];
-  v6 = [(PHPerformChangesRequest *)self->_performChangesRequest changeRequestForUUID:v5];
+  v6 = [(PHPerformChangesRequest *)self->_performChangesRequest changeRequestForUUID:dCopy];
 
   return v6;
 }
 
-- (void)recordOtherChangeRequest:(id)a3
+- (void)recordOtherChangeRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   if (PLIsAssetsd())
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2303 description:@"cannot be run from assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2303 description:@"cannot be run from assetsd"];
   }
 
-  v7 = [objc_opt_class() photoLibraryForCurrentTransaction];
-  [v7[44] recordOtherChangeRequest:v5];
+  photoLibraryForCurrentTransaction = [objc_opt_class() photoLibraryForCurrentTransaction];
+  [photoLibraryForCurrentTransaction[44] recordOtherChangeRequest:requestCopy];
 }
 
-- (void)recordDeleteRequest:(id)a3
+- (void)recordDeleteRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   if (PLIsAssetsd())
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2296 description:@"cannot be run from assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2296 description:@"cannot be run from assetsd"];
   }
 
-  v7 = [objc_opt_class() photoLibraryForCurrentTransaction];
-  [v7[44] recordDeleteRequest:v5];
+  photoLibraryForCurrentTransaction = [objc_opt_class() photoLibraryForCurrentTransaction];
+  [photoLibraryForCurrentTransaction[44] recordDeleteRequest:requestCopy];
 }
 
-- (void)recordUpdateRequest:(id)a3
+- (void)recordUpdateRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   if (PLIsAssetsd())
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2289 description:@"cannot be run from assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2289 description:@"cannot be run from assetsd"];
   }
 
-  v7 = [objc_opt_class() photoLibraryForCurrentTransaction];
-  [v7[44] recordUpdateRequest:v5];
+  photoLibraryForCurrentTransaction = [objc_opt_class() photoLibraryForCurrentTransaction];
+  [photoLibraryForCurrentTransaction[44] recordUpdateRequest:requestCopy];
 }
 
-- (void)recordInsertRequest:(id)a3
+- (void)recordInsertRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   if (PLIsAssetsd())
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2282 description:@"cannot be run from assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2282 description:@"cannot be run from assetsd"];
   }
 
-  v7 = [objc_opt_class() photoLibraryForCurrentTransaction];
-  [v7[44] recordInsertRequest:v5];
+  photoLibraryForCurrentTransaction = [objc_opt_class() photoLibraryForCurrentTransaction];
+  [photoLibraryForCurrentTransaction[44] recordInsertRequest:requestCopy];
 }
 
 - (void)assertTransaction
@@ -5794,8 +5794,8 @@ LABEL_3:
     return;
   }
 
-  v3 = [objc_opt_class() photoLibraryForCurrentTransaction];
-  if (!v3)
+  photoLibraryForCurrentTransaction = [objc_opt_class() photoLibraryForCurrentTransaction];
+  if (!photoLibraryForCurrentTransaction)
   {
     v4 = MEMORY[0x1E695DF30];
     v5 = *MEMORY[0x1E695D930];
@@ -5803,14 +5803,14 @@ LABEL_3:
     goto LABEL_11;
   }
 
-  v12 = v3;
-  if (v3 != self)
+  v12 = photoLibraryForCurrentTransaction;
+  if (photoLibraryForCurrentTransaction != self)
   {
-    v11 = self;
+    selfCopy = self;
     v7 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(PHPhotoLibrary *)v11 debugDescription];
+      v8 = [(PHPhotoLibrary *)selfCopy debugDescription];
       v9 = [(PHPhotoLibrary *)v12 debugDescription];
       *buf = 138412546;
       v14 = v8;
@@ -5823,18 +5823,18 @@ LABEL_3:
     v5 = *MEMORY[0x1E695D930];
     v6 = @"Using wrong PHPhotoLibrary instance in perform transaction";
 LABEL_11:
-    v10 = [v4 exceptionWithName:v5 reason:v6 userInfo:{0, v11}];
+    v10 = [v4 exceptionWithName:v5 reason:v6 userInfo:{0, selfCopy}];
     objc_exception_throw(v10);
   }
 
   dispatch_assert_queue_V2(self->_transactionQueue);
 }
 
-- (uint64_t)_performCancellableChangesAndWait:(void *)a3 withInstrumentation:(void *)a4 error:
+- (uint64_t)_performCancellableChangesAndWait:(void *)wait withInstrumentation:(void *)instrumentation error:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  waitCopy = wait;
+  if (self)
   {
     v18 = 0;
     v19 = &v18;
@@ -5853,18 +5853,18 @@ LABEL_11:
     v11[3] = &unk_1E75A6A50;
     v11[4] = &v18;
     v11[5] = &v12;
-    [(PHPhotoLibrary *)a1 _performCancellableChanges:v7 withInstrumentation:v8 onExecutionContext:v9 completionHandler:v11];
+    [(PHPhotoLibrary *)self _performCancellableChanges:v7 withInstrumentation:waitCopy onExecutionContext:v9 completionHandler:v11];
 
-    [(PHPerformChangesInstrumentation *)v8 endPerformChangesWithSuccess:v13[5] error:?];
+    [(PHPerformChangesInstrumentation *)waitCopy endPerformChangesWithSuccess:v13[5] error:?];
     if (v19[3])
     {
-      LOBYTE(a4) = 1;
+      LOBYTE(instrumentation) = 1;
     }
 
-    else if (a4)
+    else if (instrumentation)
     {
-      *a4 = v13[5];
-      LOBYTE(a4) = *(v19 + 24);
+      *instrumentation = v13[5];
+      LOBYTE(instrumentation) = *(v19 + 24);
     }
 
     _Block_object_dispose(&v12, 8);
@@ -5874,31 +5874,31 @@ LABEL_11:
 
   else
   {
-    LOBYTE(a4) = 0;
+    LOBYTE(instrumentation) = 0;
   }
 
-  return a4 & 1;
+  return instrumentation & 1;
 }
 
-- (void)_performCancellableChanges:(void *)a3 withInstrumentation:(void *)a4 onExecutionContext:(void *)a5 completionHandler:
+- (void)_performCancellableChanges:(void *)changes withInstrumentation:(void *)instrumentation onExecutionContext:(void *)context completionHandler:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = *(a1 + 344);
+  changesCopy = changes;
+  instrumentationCopy = instrumentation;
+  contextCopy = context;
+  v13 = *(self + 344);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __102__PHPhotoLibrary__performCancellableChanges_withInstrumentation_onExecutionContext_completionHandler___block_invoke;
   v18[3] = &unk_1E75A6A78;
-  v18[4] = a1;
+  v18[4] = self;
   v14 = v9;
   v21 = v14;
-  v15 = v11;
+  v15 = instrumentationCopy;
   v19 = v15;
-  v16 = v10;
+  v16 = changesCopy;
   v20 = v16;
-  v17 = v12;
+  v17 = contextCopy;
   v22 = v17;
   [v15 dispatchOnQueue:v13 block:v18];
 }
@@ -5936,11 +5936,11 @@ uint64_t __102__PHPhotoLibrary__performCancellableChanges_withInstrumentation_on
   return [*(a1 + 32) _endTransaction];
 }
 
-- (void)_performCancellableChanges:(void *)a3 withInstrumentation:(void *)a4 completionHandler:
+- (void)_performCancellableChanges:(void *)changes withInstrumentation:(void *)instrumentation completionHandler:
 {
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  changesCopy = changes;
+  instrumentationCopy = instrumentation;
+  if (self)
   {
     v9 = a2;
     v10 = +[PHAsynchronousPhotoLibraryExecutionContext asynchronousExecutionContext];
@@ -5948,9 +5948,9 @@ uint64_t __102__PHPhotoLibrary__performCancellableChanges_withInstrumentation_on
     v11[1] = 3221225472;
     v11[2] = __83__PHPhotoLibrary__performCancellableChanges_withInstrumentation_completionHandler___block_invoke;
     v11[3] = &unk_1E75A84A0;
-    v12 = v7;
-    v13 = v8;
-    [(PHPhotoLibrary *)a1 _performCancellableChanges:v9 withInstrumentation:v12 onExecutionContext:v10 completionHandler:v11];
+    v12 = changesCopy;
+    v13 = instrumentationCopy;
+    [(PHPhotoLibrary *)self _performCancellableChanges:v9 withInstrumentation:v12 onExecutionContext:v10 completionHandler:v11];
   }
 }
 
@@ -5965,32 +5965,32 @@ void __83__PHPhotoLibrary__performCancellableChanges_withInstrumentation_complet
   }
 }
 
-- (BOOL)performCancellableChangesAndWait:(id)a3 error:(id *)a4
+- (BOOL)performCancellableChangesAndWait:(id)wait error:(id *)error
 {
-  v6 = a3;
+  waitCopy = wait;
   v7 = [PHPerformChangesInstrumentation startPeformChangesWithName:?];
-  LOBYTE(a4) = [(PHPhotoLibrary *)self _performCancellableChangesAndWait:v6 withInstrumentation:v7 error:a4];
+  LOBYTE(error) = [(PHPhotoLibrary *)self _performCancellableChangesAndWait:waitCopy withInstrumentation:v7 error:error];
 
-  return a4;
+  return error;
 }
 
-- (void)performCancellableChanges:(id)a3 completionHandler:(id)a4
+- (void)performCancellableChanges:(id)changes completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  changesCopy = changes;
   v8 = [PHPerformChangesInstrumentation startPeformChangesWithName:?];
-  [(PHPhotoLibrary *)self _performCancellableChanges:v7 withInstrumentation:v8 completionHandler:v6];
+  [(PHPhotoLibrary *)self _performCancellableChanges:changesCopy withInstrumentation:v8 completionHandler:handlerCopy];
 }
 
-- (BOOL)_preflightRequest:(id)a3 withError:(id *)a4
+- (BOOL)_preflightRequest:(id)request withError:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v23 = a3;
-  obj = [v23 requestSets];
+  requestCopy = request;
+  obj = [requestCopy requestSets];
   v5 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v5)
   {
@@ -6047,7 +6047,7 @@ void __83__PHPhotoLibrary__performCancellableChanges_withInstrumentation_complet
 
             if ((v18 & 1) == 0)
             {
-              if (a4)
+              if (error)
               {
                 v7 = v19;
 LABEL_23:
@@ -6055,7 +6055,7 @@ LABEL_23:
                 v6 = v25;
                 v21 = v19;
                 v9 = 0;
-                *a4 = v19;
+                *error = v19;
                 goto LABEL_27;
               }
 
@@ -6073,7 +6073,7 @@ LABEL_26:
 
             if ((v20 & 1) == 0)
             {
-              if (a4)
+              if (error)
               {
                 v19 = v7;
                 goto LABEL_23;
@@ -6118,11 +6118,11 @@ LABEL_32:
   return v9;
 }
 
-- (id)_errorCodeForAuthorizationStatus:(int64_t)a3 accessLevel:(int64_t)a4
+- (id)_errorCodeForAuthorizationStatus:(int64_t)status accessLevel:(int64_t)level
 {
-  if (a3 > 1)
+  if (status > 1)
   {
-    if (a3 == 2 || a3 == 4)
+    if (status == 2 || status == 4)
     {
       v4 = MEMORY[0x1E696ABC0];
       v5 = 3311;
@@ -6130,18 +6130,18 @@ LABEL_32:
     }
 
 LABEL_8:
-    v6 = [MEMORY[0x1E696ABC0] ph_errorWithCode:-1 localizedDescription:{@"Photos Access denied (authorization status %ld)", a3}];
+    v6 = [MEMORY[0x1E696ABC0] ph_errorWithCode:-1 localizedDescription:{@"Photos Access denied (authorization status %ld)", status}];
     goto LABEL_11;
   }
 
-  if (!a3)
+  if (!status)
   {
     v4 = MEMORY[0x1E696ABC0];
     v5 = 5102;
     goto LABEL_10;
   }
 
-  if (a3 != 1)
+  if (status != 1)
   {
     goto LABEL_8;
   }
@@ -6155,12 +6155,12 @@ LABEL_11:
   return v6;
 }
 
-- (id)_errorForAuthorizationStatus:(int64_t)a3 accessLevel:(int64_t)a4
+- (id)_errorForAuthorizationStatus:(int64_t)status accessLevel:(int64_t)level
 {
-  [PHPhotoLibrary requestAuthorizationForAccessLevel:a4 handler:&__block_literal_global_503];
-  if (a3 > 1)
+  [PHPhotoLibrary requestAuthorizationForAccessLevel:level handler:&__block_literal_global_503];
+  if (status > 1)
   {
-    if (a3 == 2 || a3 == 4)
+    if (status == 2 || status == 4)
     {
       v5 = MEMORY[0x1E696ABC0];
       v6 = 3311;
@@ -6168,18 +6168,18 @@ LABEL_11:
     }
 
 LABEL_8:
-    v7 = [MEMORY[0x1E696ABC0] ph_errorWithCode:-1 localizedDescription:{@"Photos Access denied (authorization status %ld)", a3}];
+    v7 = [MEMORY[0x1E696ABC0] ph_errorWithCode:-1 localizedDescription:{@"Photos Access denied (authorization status %ld)", status}];
     goto LABEL_11;
   }
 
-  if (!a3)
+  if (!status)
   {
     v5 = MEMORY[0x1E696ABC0];
     v6 = 5102;
     goto LABEL_10;
   }
 
-  if (a3 != 1)
+  if (status != 1)
   {
     goto LABEL_8;
   }
@@ -6193,22 +6193,22 @@ LABEL_11:
   return v7;
 }
 
-- (void)_denyTransactionOnExecutionContext:(id)a3 withInstrumentation:(id)a4 authorizationStatus:(int64_t)a5 accessLevel:(int64_t)a6 completionHandler:(id)a7
+- (void)_denyTransactionOnExecutionContext:(id)context withInstrumentation:(id)instrumentation authorizationStatus:(int64_t)status accessLevel:(int64_t)level completionHandler:(id)handler
 {
-  v11 = self;
+  selfCopy = self;
   v55 = *MEMORY[0x1E69E9840];
   transactionQueue = self->_transactionQueue;
-  v13 = a7;
-  v14 = a4;
-  v15 = a3;
+  handlerCopy = handler;
+  instrumentationCopy = instrumentation;
+  contextCopy = context;
   dispatch_assert_queue_V2(transactionQueue);
-  v16 = [(PHPhotoLibrary *)v11 _popChangesRequest];
-  v44 = v16;
-  if (v14)
+  _popChangesRequest = [(PHPhotoLibrary *)selfCopy _popChangesRequest];
+  v44 = _popChangesRequest;
+  if (instrumentationCopy)
   {
-    v17 = [v16 accessScopeOptionsRequiredForRequestedChanges];
+    accessScopeOptionsRequiredForRequestedChanges = [_popChangesRequest accessScopeOptionsRequiredForRequestedChanges];
     v18 = @"read/write";
-    if (v17 == 1)
+    if (accessScopeOptionsRequiredForRequestedChanges == 1)
     {
       v18 = @"add-only";
     }
@@ -6217,20 +6217,20 @@ LABEL_11:
     v20 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v43 = v11;
-      v21 = v15;
-      v22 = v13;
-      v23 = a6;
-      v24 = v14[8];
-      v25 = a5;
-      if ((a5 - 1) > 3)
+      v43 = selfCopy;
+      v21 = contextCopy;
+      v22 = handlerCopy;
+      levelCopy = level;
+      v24 = instrumentationCopy[8];
+      statusCopy = status;
+      if ((status - 1) > 3)
       {
         v26 = @"not determined";
       }
 
       else
       {
-        v26 = off_1E75A6C70[a5 - 1];
+        v26 = off_1E75A6C70[status - 1];
       }
 
       v27 = v26;
@@ -6248,11 +6248,11 @@ LABEL_11:
       v54 = v44;
       _os_log_impl(&dword_19C86F000, v20, OS_LOG_TYPE_DEFAULT, "PhotoKit changes: [%{public}@] Request denied with authorization status %{public}@ for access scope %{public}@ at %{public}@, %{public}@", buf, 0x34u);
 
-      a6 = v23;
-      a5 = v25;
-      v13 = v22;
-      v15 = v21;
-      v11 = v43;
+      level = levelCopy;
+      status = statusCopy;
+      handlerCopy = v22;
+      contextCopy = v21;
+      selfCopy = v43;
     }
 
     v29 = PLPhotoKitGetLog();
@@ -6262,73 +6262,73 @@ LABEL_11:
       _os_log_impl(&dword_19C86F000, v29, OS_LOG_TYPE_DEBUG, "#####  Deny transaction:", buf, 2u);
     }
 
-    v30 = [v44 inserts];
-    v31 = [v30 count];
+    inserts = [v44 inserts];
+    v31 = [inserts count];
 
     if (v31)
     {
       v32 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
-        v33 = [v44 inserts];
+        inserts2 = [v44 inserts];
         *buf = 138412290;
-        v46 = v33;
+        v46 = inserts2;
         _os_log_impl(&dword_19C86F000, v32, OS_LOG_TYPE_DEBUG, "##### denied inserts: %@", buf, 0xCu);
       }
     }
 
-    v34 = [v44 updates];
-    v35 = [v34 count];
+    updates = [v44 updates];
+    v35 = [updates count];
 
     if (v35)
     {
       v36 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
       {
-        v37 = [v44 updates];
+        updates2 = [v44 updates];
         *buf = 138412290;
-        v46 = v37;
+        v46 = updates2;
         _os_log_impl(&dword_19C86F000, v36, OS_LOG_TYPE_DEBUG, "##### denied updates: %@", buf, 0xCu);
       }
     }
 
-    v38 = [v44 deletes];
-    v39 = [v38 count];
+    deletes = [v44 deletes];
+    v39 = [deletes count];
 
     if (v39)
     {
       v40 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
       {
-        v41 = [v44 deletes];
+        deletes2 = [v44 deletes];
         *buf = 138412290;
-        v46 = v41;
+        v46 = deletes2;
         _os_log_impl(&dword_19C86F000, v40, OS_LOG_TYPE_DEBUG, "##### denied deletes: %@", buf, 0xCu);
       }
     }
 
-    v16 = v44;
+    _popChangesRequest = v44;
   }
 
-  v42 = [(PHPhotoLibrary *)v11 _errorForAuthorizationStatus:a5 accessLevel:a6];
-  [v15 callTransactionCompletionHandler:v13 withSuccess:0 error:v42];
+  v42 = [(PHPhotoLibrary *)selfCopy _errorForAuthorizationStatus:status accessLevel:level];
+  [contextCopy callTransactionCompletionHandler:handlerCopy withSuccess:0 error:v42];
 }
 
-- (void)_cancelTransactionOnExecutionContext:(id)a3 withInstrumentation:(id)a4 completionHandler:(id)a5
+- (void)_cancelTransactionOnExecutionContext:(id)context withInstrumentation:(id)instrumentation completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
   transactionQueue = self->_transactionQueue;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  handlerCopy = handler;
+  instrumentationCopy = instrumentation;
+  contextCopy = context;
   dispatch_assert_queue_V2(transactionQueue);
-  v29 = [(PHPhotoLibrary *)self _popChangesRequest];
-  if (v10)
+  _popChangesRequest = [(PHPhotoLibrary *)self _popChangesRequest];
+  if (instrumentationCopy)
   {
     v12 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = v10[8];
+      v13 = instrumentationCopy[8];
       qos_class_self();
       v14 = PLStringFromQoSClass();
       *buf = 138543874;
@@ -6336,7 +6336,7 @@ LABEL_11:
       v32 = 2114;
       v33 = v14;
       v34 = 2114;
-      v35 = v29;
+      v35 = _popChangesRequest;
       _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_DEFAULT, "PhotoKit changes: [%{public}@] Request cancelled at %{public}@, %{public}@", buf, 0x20u);
     }
 
@@ -6347,62 +6347,62 @@ LABEL_11:
       _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_DEBUG, "#####  Cancel transaction:", buf, 2u);
     }
 
-    v16 = [v29 inserts];
-    v17 = [v16 count];
+    inserts = [_popChangesRequest inserts];
+    v17 = [inserts count];
 
     if (v17)
     {
       v18 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        v19 = [v29 inserts];
+        inserts2 = [_popChangesRequest inserts];
         *buf = 138412290;
-        v31 = v19;
+        v31 = inserts2;
         _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_DEBUG, "##### cancelled inserts: %@", buf, 0xCu);
       }
     }
 
-    v20 = [v29 updates];
-    v21 = [v20 count];
+    updates = [_popChangesRequest updates];
+    v21 = [updates count];
 
     if (v21)
     {
       v22 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
-        v23 = [v29 updates];
+        updates2 = [_popChangesRequest updates];
         *buf = 138412290;
-        v31 = v23;
+        v31 = updates2;
         _os_log_impl(&dword_19C86F000, v22, OS_LOG_TYPE_DEBUG, "##### cancelled updates: %@", buf, 0xCu);
       }
     }
 
-    v24 = [v29 deletes];
-    v25 = [v24 count];
+    deletes = [_popChangesRequest deletes];
+    v25 = [deletes count];
 
     if (v25)
     {
       v26 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
-        v27 = [v29 deletes];
+        deletes2 = [_popChangesRequest deletes];
         *buf = 138412290;
-        v31 = v27;
+        v31 = deletes2;
         _os_log_impl(&dword_19C86F000, v26, OS_LOG_TYPE_DEBUG, "##### cancelled deletes: %@", buf, 0xCu);
       }
     }
   }
 
   v28 = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:3072 userInfo:0];
-  [v11 callTransactionCompletionHandler:v9 withSuccess:0 error:v28];
+  [contextCopy callTransactionCompletionHandler:handlerCopy withSuccess:0 error:v28];
 }
 
 - (void)_endTransaction
 {
   if ([(PHPerformChangesRequest *)self->_performChangesRequest hasChangeRequests])
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2061 description:@"Transaction is not clean"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:2061 description:@"Transaction is not clean"];
   }
 
   transactionQueue = self->_transactionQueue;
@@ -6410,32 +6410,32 @@ LABEL_11:
   dispatch_queue_set_specific(transactionQueue, "PHPhotoLibrary_transactionPhotoLibrary", 0, 0);
 }
 
-- (id)_clientForAccessLevel:(int64_t)a3
+- (id)_clientForAccessLevel:(int64_t)level
 {
   v5 = +[PHPhotoLibrary useBindingClient];
-  v6 = [(PHPhotoLibrary *)self assetsdClient];
-  v7 = v6;
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  v7 = assetsdClient;
   if (v5)
   {
-    if (a3 == 1)
+    if (level == 1)
     {
-      [v6 photoKitAddClient];
+      [assetsdClient photoKitAddClient];
     }
 
     else
     {
-      [v6 photoKitClient];
+      [assetsdClient photoKitClient];
     }
   }
 
-  else if (a3 == 1)
+  else if (level == 1)
   {
-    [v6 nonBindingPhotoKitAddClient];
+    [assetsdClient nonBindingPhotoKitAddClient];
   }
 
   else
   {
-    [v6 nonBindingPhotoKitClient];
+    [assetsdClient nonBindingPhotoKitClient];
   }
   v8 = ;
   v9 = v8;
@@ -6443,41 +6443,41 @@ LABEL_11:
   return v9;
 }
 
-- (void)_sendChangesRequest:(id)a3 onExecutionContext:(id)a4 withInstrumentation:(id)a5 reply:(id)a6
+- (void)_sendChangesRequest:(id)request onExecutionContext:(id)context withInstrumentation:(id)instrumentation reply:(id)reply
 {
   v50 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = -[PHPhotoLibrary _clientForAccessLevel:](self, "_clientForAccessLevel:", [v10 accessLevel]);
-  v15 = [v14 clientName];
-  v16 = v10;
-  v17 = v15;
-  if (v12)
+  requestCopy = request;
+  contextCopy = context;
+  instrumentationCopy = instrumentation;
+  replyCopy = reply;
+  v14 = -[PHPhotoLibrary _clientForAccessLevel:](self, "_clientForAccessLevel:", [requestCopy accessLevel]);
+  clientName = [v14 clientName];
+  v16 = requestCopy;
+  v17 = clientName;
+  if (instrumentationCopy)
   {
-    v35 = v11;
-    if (v12[9] < 1)
+    v35 = contextCopy;
+    if (instrumentationCopy[9] < 1)
     {
       v18 = &stru_1F0FC60C8;
     }
 
     else
     {
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@" (remaining retry: %zd)", v12[9]];
+      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@" (remaining retry: %zd)", instrumentationCopy[9]];
     }
 
     v19 = PLPhotoKitGetLog();
-    v12[2] = os_signpost_id_generate(v19);
+    instrumentationCopy[2] = os_signpost_id_generate(v19);
     v20 = v19;
     v21 = v20;
-    v22 = v12[2];
+    v22 = instrumentationCopy[2];
     if (v22 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
     {
-      v23 = v12[8];
+      v23 = instrumentationCopy[8];
       qos_class_self();
       PLStringFromQoSClass();
-      v24 = v33 = v13;
+      v24 = v33 = replyCopy;
       *buf = 138544386;
       v41 = v23;
       v42 = 2114;
@@ -6490,18 +6490,18 @@ LABEL_11:
       v49 = v16;
       _os_signpost_emit_with_name_impl(&dword_19C86F000, v21, OS_SIGNPOST_INTERVAL_BEGIN, v22, "PhotoKit request [client]", "PhotoKit changes: [%{public}@] Request sent%{public}@ at %{public}@ on %{public}@, %{public}@", buf, 0x34u);
 
-      v13 = v33;
+      replyCopy = v33;
     }
 
     v25 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = v12[8];
+      v26 = instrumentationCopy[8];
       qos_class_self();
       PLStringFromQoSClass();
       v34 = v14;
-      v27 = self;
-      v29 = v28 = v13;
+      selfCopy = self;
+      v29 = v28 = replyCopy;
       *buf = 138544386;
       v41 = v26;
       v42 = 2114;
@@ -6514,12 +6514,12 @@ LABEL_11:
       v49 = v16;
       _os_log_impl(&dword_19C86F000, v25, OS_LOG_TYPE_DEFAULT, "PhotoKit changes: [%{public}@] Request sent%{public}@ at %{public}@ on %{public}@, %{public}@", buf, 0x34u);
 
-      v13 = v28;
-      self = v27;
+      replyCopy = v28;
+      self = selfCopy;
       v14 = v34;
     }
 
-    v11 = v35;
+    contextCopy = v35;
   }
 
   if ([(PHPhotoLibrary *)self waitForDelayedSaveActions])
@@ -6531,13 +6531,13 @@ LABEL_11:
   v36[1] = 3221225472;
   v36[2] = __83__PHPhotoLibrary__sendChangesRequest_onExecutionContext_withInstrumentation_reply___block_invoke;
   v36[3] = &unk_1E75A69B0;
-  v37 = v12;
+  v37 = instrumentationCopy;
   v38 = v16;
-  v39 = v13;
-  v30 = v13;
+  v39 = replyCopy;
+  v30 = replyCopy;
   v31 = v16;
-  v32 = v12;
-  [v11 sendChangesRequest:v31 onClient:v14 reply:v36];
+  v32 = instrumentationCopy;
+  [contextCopy sendChangesRequest:v31 onClient:v14 reply:v36];
 }
 
 void __83__PHPhotoLibrary__sendChangesRequest_onExecutionContext_withInstrumentation_reply___block_invoke(void *a1, int a2, void *a3)
@@ -6612,15 +6612,15 @@ void __83__PHPhotoLibrary__sendChangesRequest_onExecutionContext_withInstrumenta
   (*(a1[6] + 16))();
 }
 
-- (void)_sendChangesRequest:(id)a3 onExecutionContext:(id)a4 withInstrumentation:(id)a5 remainingRetryCount:(int64_t)a6 reply:(id)a7
+- (void)_sendChangesRequest:(id)request onExecutionContext:(id)context withInstrumentation:(id)instrumentation remainingRetryCount:(int64_t)count reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (v14)
+  requestCopy = request;
+  contextCopy = context;
+  instrumentationCopy = instrumentation;
+  replyCopy = reply;
+  if (instrumentationCopy)
   {
-    v14[9] = a6;
+    instrumentationCopy[9] = count;
   }
 
   v20[0] = MEMORY[0x1E69E9820];
@@ -6628,15 +6628,15 @@ void __83__PHPhotoLibrary__sendChangesRequest_onExecutionContext_withInstrumenta
   v20[2] = __103__PHPhotoLibrary__sendChangesRequest_onExecutionContext_withInstrumentation_remainingRetryCount_reply___block_invoke;
   v20[3] = &unk_1E75A6A00;
   v20[4] = self;
-  v21 = v12;
-  v22 = v13;
-  v23 = v14;
-  v24 = v15;
-  v25 = a6;
-  v16 = v15;
-  v17 = v14;
-  v18 = v13;
-  v19 = v12;
+  v21 = requestCopy;
+  v22 = contextCopy;
+  v23 = instrumentationCopy;
+  v24 = replyCopy;
+  countCopy = count;
+  v16 = replyCopy;
+  v17 = instrumentationCopy;
+  v18 = contextCopy;
+  v19 = requestCopy;
   [(PHPhotoLibrary *)self _sendChangesRequest:v19 onExecutionContext:v18 withInstrumentation:v17 reply:v20];
 }
 
@@ -6734,10 +6734,10 @@ LABEL_17:
 LABEL_18:
 }
 
-- (int64_t)_initialRetryCountForChangesRequest:(id)a3
+- (int64_t)_initialRetryCountForChangesRequest:(id)request
 {
   result = 0;
-  if ([a3 accessLevel] == 1)
+  if ([request accessLevel] == 1)
   {
     pl_dispatch_once();
     if (PLIsScreenShotOrScreenRecordingClient_sIsScreenShotOrScreenRecordingClient)
@@ -6760,23 +6760,23 @@ LABEL_18:
   return v3;
 }
 
-- (void)_commitTransactionOnExecutionContext:(id)a3 withInstrumentation:(id)a4 completionHandler:(id)a5
+- (void)_commitTransactionOnExecutionContext:(id)context withInstrumentation:(id)instrumentation completionHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  instrumentationCopy = instrumentation;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_transactionQueue);
   if (PLIsAssetsd())
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:1908 description:@"cannot commit PhotoKit transactions from assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:1908 description:@"cannot commit PhotoKit transactions from assetsd"];
   }
 
-  v12 = [(PHPhotoLibrary *)self _popChangesRequest];
-  [v12 setInstrumentation:v10];
-  v13 = v12;
-  if (v10)
+  _popChangesRequest = [(PHPhotoLibrary *)self _popChangesRequest];
+  [_popChangesRequest setInstrumentation:instrumentationCopy];
+  v13 = _popChangesRequest;
+  if (instrumentationCopy)
   {
     v14 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -6785,58 +6785,58 @@ LABEL_18:
       _os_log_impl(&dword_19C86F000, v14, OS_LOG_TYPE_DEBUG, "#####  Commit transaction:", buf, 2u);
     }
 
-    v15 = [v13 inserts];
-    v16 = [v15 count];
+    inserts = [v13 inserts];
+    v16 = [inserts count];
 
     if (v16)
     {
       v17 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        v18 = [v13 inserts];
+        inserts2 = [v13 inserts];
         *buf = 138412290;
-        v38 = v18;
+        v38 = inserts2;
         _os_log_impl(&dword_19C86F000, v17, OS_LOG_TYPE_DEBUG, "##### inserts: %@", buf, 0xCu);
       }
     }
 
-    v19 = [v13 updates];
-    v20 = [v19 count];
+    updates = [v13 updates];
+    v20 = [updates count];
 
     if (v20)
     {
       v21 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
-        v22 = [v13 updates];
+        updates2 = [v13 updates];
         *buf = 138412290;
-        v38 = v22;
+        v38 = updates2;
         _os_log_impl(&dword_19C86F000, v21, OS_LOG_TYPE_DEBUG, "##### updates: %@", buf, 0xCu);
       }
     }
 
-    v23 = [v13 deletes];
-    v24 = [v23 count];
+    deletes = [v13 deletes];
+    v24 = [deletes count];
 
     if (v24)
     {
       v25 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
-        v26 = [v13 deletes];
+        deletes2 = [v13 deletes];
         *buf = 138412290;
-        v38 = v26;
+        v38 = deletes2;
         _os_log_impl(&dword_19C86F000, v25, OS_LOG_TYPE_DEBUG, "##### deletes: %@", buf, 0xCu);
       }
     }
   }
 
-  v27 = [v13 hasChangeRequests];
-  if (!v27)
+  hasChangeRequests = [v13 hasChangeRequests];
+  if (!hasChangeRequests)
   {
     v29 = 0;
 LABEL_23:
-    [v9 callTransactionCompletionHandler:v11 withSuccess:v27 ^ 1u error:v29];
+    [contextCopy callTransactionCompletionHandler:handlerCopy withSuccess:hasChangeRequests ^ 1u error:v29];
     goto LABEL_24;
   }
 
@@ -6845,8 +6845,8 @@ LABEL_23:
   v29 = v36;
   if (!v28)
   {
-    v31 = [(PHPhotoLibrary *)self _lazyPhotoLibrary];
-    [v13 notifyChangesTransactionFailedWithLazyPhotoLibrary:v31 error:v29];
+    _lazyPhotoLibrary = [(PHPhotoLibrary *)self _lazyPhotoLibrary];
+    [v13 notifyChangesTransactionFailedWithLazyPhotoLibrary:_lazyPhotoLibrary error:v29];
 
     goto LABEL_23;
   }
@@ -6858,8 +6858,8 @@ LABEL_23:
   v33[3] = &unk_1E75A69B0;
   v33[4] = self;
   v34 = v13;
-  v35 = v11;
-  [(PHPhotoLibrary *)self _sendChangesRequest:v34 onExecutionContext:v9 withInstrumentation:v10 remainingRetryCount:v30 reply:v33];
+  v35 = handlerCopy;
+  [(PHPhotoLibrary *)self _sendChangesRequest:v34 onExecutionContext:contextCopy withInstrumentation:instrumentationCopy remainingRetryCount:v30 reply:v33];
 
 LABEL_24:
 }
@@ -6893,8 +6893,8 @@ void __93__PHPhotoLibrary__commitTransactionOnExecutionContext_withInstrumentati
 {
   if ([(PHPerformChangesRequest *)self->_performChangesRequest hasChangeRequests])
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:1902 description:@"Transaction is not clean"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:1902 description:@"Transaction is not clean"];
   }
 
   transactionQueue = self->_transactionQueue;
@@ -6902,22 +6902,22 @@ void __93__PHPhotoLibrary__commitTransactionOnExecutionContext_withInstrumentati
   dispatch_queue_set_specific(transactionQueue, "PHPhotoLibrary_transactionPhotoLibrary", self, 0);
 }
 
-- (void)unregisterCloudStatusObserver:(id)a3
+- (void)unregisterCloudStatusObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(PHPhotoLibrary *)self _removeCloudStatusObserver:?];
   }
 }
 
-- (void)registerCloudStatusObserver:(id)a3
+- (void)registerCloudStatusObserver:(id)observer
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     v5 = [PHPhotoLibrary authorizationStatusForAccessLevel:2];
-    v11[0] = v4;
+    v11[0] = observerCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     [(PHPhotoLibrary *)self _addCloudStatusObservers:v6 authorizationStatus:v5];
 
@@ -6933,8 +6933,8 @@ void __93__PHPhotoLibrary__commitTransactionOnExecutionContext_withInstrumentati
 
     else
     {
-      v7 = [(PHPhotoLibrary *)self photoLibrary];
-      if (!v7)
+      photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+      if (!photoLibrary)
       {
         v8 = PLPhotoKitGetLog();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -6978,8 +6978,8 @@ void __93__PHPhotoLibrary__commitTransactionOnExecutionContext_withInstrumentati
 
     else
     {
-      v7 = [(PHPhotoLibrary *)self photoLibrary];
-      if (!v7)
+      photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+      if (!photoLibrary)
       {
         v8 = PLPhotoKitGetLog();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -6992,30 +6992,30 @@ void __93__PHPhotoLibrary__commitTransactionOnExecutionContext_withInstrumentati
   }
 }
 
-- (void)appPrivateDataWriteFailedWithError:(id)a3
+- (void)appPrivateDataWriteFailedWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)self photoLibraryURL];
-  [(PHPhotoLibrary *)self _handleLibraryBecameUnavailable:v5 reason:v4];
+  errorCopy = error;
+  photoLibraryURL = [(PHPhotoLibrary *)self photoLibraryURL];
+  [(PHPhotoLibrary *)self _handleLibraryBecameUnavailable:photoLibraryURL reason:errorCopy];
 }
 
-- (void)_onQueueNotifyAvailabilityObserversWithReason:(id)a3
+- (void)_onQueueNotifyAvailabilityObserversWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v5 = [(PHPhotoLibrary *)self availabilityObservers];
-  v6 = [v5 allObjects];
+  availabilityObservers = [(PHPhotoLibrary *)self availabilityObservers];
+  allObjects = [availabilityObservers allObjects];
 
   availabilityObserversNotifyQueue = self->_availabilityObserversNotifyQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__PHPhotoLibrary__onQueueNotifyAvailabilityObserversWithReason___block_invoke;
   block[3] = &unk_1E75AB248;
-  v11 = v6;
-  v12 = self;
-  v13 = v4;
-  v8 = v4;
-  v9 = v6;
+  v11 = allObjects;
+  selfCopy = self;
+  v13 = reasonCopy;
+  v8 = reasonCopy;
+  v9 = allObjects;
   dispatch_async(availabilityObserversNotifyQueue, block);
 }
 
@@ -7079,20 +7079,20 @@ void __64__PHPhotoLibrary__onQueueNotifyAvailabilityObserversWithReason___block_
   dispatch_async(v14, block);
 }
 
-- (void)_notifyAvailabilityObserversWithReason:(id)a3
+- (void)_notifyAvailabilityObserversWithReason:(id)reason
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)self _setUnavailabilityReason:v4];
+  reasonCopy = reason;
+  v5 = [(PHPhotoLibrary *)self _setUnavailabilityReason:reasonCopy];
   v6 = PLPhotoKitGetLog();
   v7 = v6;
   if (v5)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(PHPhotoLibrary *)self unavailabilityReason];
+      unavailabilityReason = [(PHPhotoLibrary *)self unavailabilityReason];
       *buf = 138412290;
-      v14 = v8;
+      v14 = unavailabilityReason;
       _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_ERROR, "Photo Library became unavailable because: %@", buf, 0xCu);
     }
 
@@ -7103,7 +7103,7 @@ void __64__PHPhotoLibrary__onQueueNotifyAvailabilityObserversWithReason___block_
     v10[2] = __57__PHPhotoLibrary__notifyAvailabilityObserversWithReason___block_invoke;
     v10[3] = &unk_1E75A7300;
     objc_copyWeak(&v12, buf);
-    v11 = v4;
+    v11 = reasonCopy;
     dispatch_async(isolationQueue, v10);
 
     objc_destroyWeak(&v12);
@@ -7115,7 +7115,7 @@ void __64__PHPhotoLibrary__onQueueNotifyAvailabilityObserversWithReason___block_
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = reasonCopy;
       _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_DEBUG, "Ignoring additional unavailability reason received: %@", buf, 0xCu);
     }
   }
@@ -7138,42 +7138,42 @@ void __57__PHPhotoLibrary__notifyAvailabilityObserversWithReason___block_invoke(
   [WeakRetained _onQueueNotifyAvailabilityObserversWithReason:*(a1 + 32)];
 }
 
-- (BOOL)_setUnavailabilityReason:(id)a3
+- (BOOL)_setUnavailabilityReason:(id)reason
 {
-  v5 = a3;
-  if (!v5)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:1764 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:1764 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(PHPhotoLibrary *)v6 unavailabilityReason];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  unavailabilityReason = [(PHPhotoLibrary *)selfCopy unavailabilityReason];
 
-  if (!v7)
+  if (!unavailabilityReason)
   {
     v8 = MEMORY[0x1E696ABC0];
-    v9 = [v5 domain];
-    v10 = [v5 code];
-    v11 = [v5 userInfo];
-    v12 = [v8 ph_errorWithDomain:v9 code:v10 userInfo:v11];
-    [(PHPhotoLibrary *)v6 setUnavailabilityReason:v12];
+    domain = [reasonCopy domain];
+    code = [reasonCopy code];
+    userInfo = [reasonCopy userInfo];
+    v12 = [v8 ph_errorWithDomain:domain code:code userInfo:userInfo];
+    [(PHPhotoLibrary *)selfCopy setUnavailabilityReason:v12];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  return v7 == 0;
+  return unavailabilityReason == 0;
 }
 
-- (void)_handleServiceConnectionClosed:(id)a3
+- (void)_handleServiceConnectionClosed:(id)closed
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696ABC0];
   v8[0] = *MEMORY[0x1E696A998];
-  v5 = [(PHPhotoLibrary *)self photoLibraryURL];
+  photoLibraryURL = [(PHPhotoLibrary *)self photoLibraryURL];
   v8[1] = *MEMORY[0x1E696A588];
-  v9[0] = v5;
+  v9[0] = photoLibraryURL;
   v9[1] = @"Connection to photos service has been invalidated";
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
   v7 = [v4 errorWithDomain:@"PHPhotosErrorDomain" code:3133 userInfo:v6];
@@ -7183,20 +7183,20 @@ void __57__PHPhotoLibrary__notifyAvailabilityObserversWithReason___block_invoke(
 
 - (void)_startObservingServiceConnectionInvalidated
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__handleServiceConnectionClosed_ name:*MEMORY[0x1E69BF3A8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleServiceConnectionClosed_ name:*MEMORY[0x1E69BF3A8] object:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == "PHPhotoLibraryFileSystemVolumeKVOContext")
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == "PHPhotoLibraryFileSystemVolumeKVOContext")
   {
     libraryFileSystemVolume = self->_libraryFileSystemVolume;
-    if (libraryFileSystemVolume == v11)
+    if (libraryFileSystemVolume == objectCopy)
     {
       if ([(PLFileSystemVolume *)libraryFileSystemVolume faultingState])
       {
@@ -7237,19 +7237,19 @@ LABEL_10:
   }
 }
 
-- (void)_handleLibraryBecameUnavailable:(id)a3 reason:(id)a4
+- (void)_handleLibraryBecameUnavailable:(id)unavailable reason:(id)reason
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 path];
-  v9 = [(PHPhotoLibrary *)self photoLibraryURL];
-  v10 = [v9 path];
-  v11 = [v8 isEqual:v10];
+  unavailableCopy = unavailable;
+  reasonCopy = reason;
+  path = [unavailableCopy path];
+  photoLibraryURL = [(PHPhotoLibrary *)self photoLibraryURL];
+  path2 = [photoLibraryURL path];
+  v11 = [path isEqual:path2];
 
   if (v11)
   {
-    v12 = PHErrorFromPLError(v7);
+    v12 = PHErrorFromPLError(reasonCopy);
     [(PHPhotoLibrary *)self _notifyAvailabilityObserversWithReason:v12];
   }
 
@@ -7258,11 +7258,11 @@ LABEL_10:
     v12 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(PHPhotoLibrary *)self photoLibraryURL];
+      photoLibraryURL2 = [(PHPhotoLibrary *)self photoLibraryURL];
       v14 = 138412546;
-      v15 = v6;
+      v15 = unavailableCopy;
       v16 = 2112;
-      v17 = v13;
+      v17 = photoLibraryURL2;
       _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_DEFAULT, "unavailable library %@ does not match mine %@", &v14, 0x16u);
     }
   }
@@ -7274,14 +7274,14 @@ LABEL_10:
   [(PHPhotoLibrary *)self _startWatchingFileSystemVolumeForLibraryAvailability];
   [(PHPhotoLibrary *)self _startObservingServiceConnectionInvalidated];
   objc_initWeak(&location, self);
-  v3 = [(PHPhotoLibrary *)self photoLibrary];
-  v4 = [v3 assetsdClient];
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __54__PHPhotoLibrary__startWatchingForLibraryAvailability__block_invoke;
   v5[3] = &unk_1E75A6988;
   objc_copyWeak(&v6, &location);
-  [v4 addPhotoLibraryUnavailabilityHandler:v5];
+  [assetsdClient addPhotoLibraryUnavailabilityHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -7369,18 +7369,18 @@ void __47__PHPhotoLibrary_registerAvailabilityObserver___block_invoke(uint64_t a
 
 - (id)managedObjectContext
 {
-  v2 = [(PHPhotoLibrary *)self photoLibrary];
-  v3 = [v2 managedObjectContext];
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+  managedObjectContext = [photoLibrary managedObjectContext];
 
-  return v3;
+  return managedObjectContext;
 }
 
 - (id)pl_photoLibraryForCMM
 {
   v10 = *MEMORY[0x1E69E9840];
   v3 = +[PHPhotoLibrary sharedLazyPhotoLibraryForCMM];
-  v4 = [v3 objectValue];
-  if (!v4)
+  objectValue = [v3 objectValue];
+  if (!objectValue)
   {
     v5 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -7392,22 +7392,22 @@ void __47__PHPhotoLibrary_registerAvailabilityObserver___block_invoke(uint64_t a
     }
   }
 
-  return v4;
+  return objectValue;
 }
 
 - (NSString)databaseUUID
 {
-  v2 = [(PHPhotoLibrary *)self photoLibrary];
-  v3 = [v2 managedObjectContext];
-  v4 = [v3 storeUUID];
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+  managedObjectContext = [photoLibrary managedObjectContext];
+  storeUUID = [managedObjectContext storeUUID];
 
-  return v4;
+  return storeUUID;
 }
 
-- (void)accountDidChange:(id)a3
+- (void)accountDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69598B8]];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69598B8]];
   v6 = [v5 isEqualToString:*MEMORY[0x1E69597F8]];
 
   if (v6)
@@ -7463,11 +7463,11 @@ void __36__PHPhotoLibrary__resetCachedValues__block_invoke_2(uint64_t a1)
 
 - (id)_initializeIsReadyForAnalysisCPLInitialDownloadCompleted
 {
-  v2 = [(PHPhotoLibrary *)self assetsdClient];
-  v3 = [v2 cloudInternalClient];
-  v4 = [v3 isReadyForAnalysisCPLInitialDownloadCompleted];
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
+  isReadyForAnalysisCPLInitialDownloadCompleted = [cloudInternalClient isReadyForAnalysisCPLInitialDownloadCompleted];
 
-  if (v4)
+  if (isReadyForAnalysisCPLInitialDownloadCompleted)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:1];
   }
@@ -7482,11 +7482,11 @@ void __36__PHPhotoLibrary__resetCachedValues__block_invoke_2(uint64_t a1)
 
 - (id)_initializeIsReadyForAnalysisQuickCheck
 {
-  v2 = [(PHPhotoLibrary *)self assetsdClient];
-  v3 = [v2 cloudInternalClient];
-  v4 = [v3 isReadyForAnalysisQuickCheck];
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
+  isReadyForAnalysisQuickCheck = [cloudInternalClient isReadyForAnalysisQuickCheck];
 
-  if (v4)
+  if (isReadyForAnalysisQuickCheck)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:1];
   }
@@ -7501,11 +7501,11 @@ void __36__PHPhotoLibrary__resetCachedValues__block_invoke_2(uint64_t a1)
 
 - (id)_initializeIsReadyForAnalysis
 {
-  v2 = [(PHPhotoLibrary *)self assetsdClient];
-  v3 = [v2 cloudInternalClient];
-  v4 = [v3 isReadyForAnalysis];
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
+  isReadyForAnalysis = [cloudInternalClient isReadyForAnalysis];
 
-  if (v4)
+  if (isReadyForAnalysis)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:1];
   }
@@ -7518,13 +7518,13 @@ void __36__PHPhotoLibrary__resetCachedValues__block_invoke_2(uint64_t a1)
   return v5;
 }
 
-- (void)_processCPLStatusDidChange:(id)a3
+- (void)_processCPLStatusDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)self _cachedCloudStatus];
-  v6 = [[PHPhotoLibraryCloudStatus alloc] initWithCPLStatus:v4 isEnabled:[(PHPhotoLibrary *)self isCloudPhotoLibraryEnabled]];
+  changeCopy = change;
+  _cachedCloudStatus = [(PHPhotoLibrary *)self _cachedCloudStatus];
+  v6 = [[PHPhotoLibraryCloudStatus alloc] initWithCPLStatus:changeCopy isEnabled:[(PHPhotoLibrary *)self isCloudPhotoLibraryEnabled]];
 
-  if (![(PHPhotoLibraryCloudStatus *)v6 isEqual:v5])
+  if (![(PHPhotoLibraryCloudStatus *)v6 isEqual:_cachedCloudStatus])
   {
     [(PHPhotoLibrary *)self _setCachedCloudStatus:v6];
     if (([PHPhotoLibrary authorizationStatusForAccessLevel:2]- 3) <= 1)
@@ -7551,23 +7551,23 @@ void __45__PHPhotoLibrary__processCPLStatusDidChange___block_invoke(uint64_t a1)
   [WeakRetained _publishCloudStatusUpdate:*(a1 + 32)];
 }
 
-- (void)statusDidChange:(id)a3
+- (void)statusDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if ([(PHPhotoLibraryCloudStatusObserverRegistrar *)self->_cloudStatusObserverRegistrar hasObservers])
   {
-    [(PHPhotoLibrary *)self _processCPLStatusDidChange:v4];
+    [(PHPhotoLibrary *)self _processCPLStatusDidChange:changeCopy];
   }
 }
 
 - (id)_deriveMainScopeIdentifierFromCPLSettings
 {
-  v2 = [(PLCPLSettingsObserver *)self->_cplSettingsObserver settings];
-  v3 = [v2 deriveMainScopeIdentifier];
-  v4 = v3;
-  if (v3)
+  settings = [(PLCPLSettingsObserver *)self->_cplSettingsObserver settings];
+  deriveMainScopeIdentifier = [settings deriveMainScopeIdentifier];
+  v4 = deriveMainScopeIdentifier;
+  if (deriveMainScopeIdentifier)
   {
-    v5 = v3;
+    v5 = deriveMainScopeIdentifier;
   }
 
   else
@@ -7585,11 +7585,11 @@ void __45__PHPhotoLibrary__processCPLStatusDidChange___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x1E69E9840];
   if ([(PHPhotoLibrary *)self isCPLSyncablePhotoLibrary])
   {
-    v3 = [(PHPhotoLibrary *)self photoLibrary];
-    v4 = v3;
-    if (v3)
+    photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+    v4 = photoLibrary;
+    if (photoLibrary)
     {
-      v5 = [v3 pathManager];
+      pathManager = [photoLibrary pathManager];
       v6 = CPLStatusFromPathManager();
 
       [v6 setDelegateQueue:self->_cplStatusDelegateQueue];
@@ -7619,19 +7619,19 @@ void __45__PHPhotoLibrary__processCPLStatusDidChange___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)_invalidateEverythingWithReason:(id)a3
+- (void)_invalidateEverythingWithReason:(id)reason
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = PLPhotosObjectLifecycleGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412802;
     v9 = objc_opt_class();
     v10 = 2048;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = reasonCopy;
     _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_DEBUG, "%@ %p _invalidateEverythingWithReason:%@", &v8, 0x20u);
   }
 
@@ -7659,17 +7659,17 @@ void __45__PHPhotoLibrary__processCPLStatusDidChange___block_invoke(uint64_t a1)
     v8 = 138412802;
     v9 = v7;
     v10 = 2048;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = reasonCopy;
     _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_DEBUG, "%@ %p finished _invalidateEverythingWithReason:%@", &v8, 0x20u);
   }
 }
 
-- (PHPhotoLibrary)initWithPhotoLibraryBundle:(id)a3 type:(unsigned __int16)a4
+- (PHPhotoLibrary)initWithPhotoLibraryBundle:(id)bundle type:(unsigned __int16)type
 {
   v213 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  bundleCopy = bundle;
   v207.receiver = self;
   v207.super_class = PHPhotoLibrary;
   v8 = [(PHPhotoLibrary *)&v207 init];
@@ -7679,26 +7679,26 @@ void __45__PHPhotoLibrary__processCPLStatusDidChange___block_invoke(uint64_t a1)
     transactionQueue = v8->_transactionQueue;
     v8->_transactionQueue = v9;
 
-    v8->_type = a4;
+    v8->_type = type;
     v11 = objc_alloc_init(PHPerformChangesRequest);
     performChangesRequest = v8->_performChangesRequest;
     v8->_performChangesRequest = v11;
 
-    v13 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     availabilityObservers = v8->_availabilityObservers;
-    v8->_availabilityObservers = v13;
+    v8->_availabilityObservers = weakObjectsHashTable;
 
     v15 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
     changeNotificationInfo = v8->_changeNotificationInfo;
     v8->_changeNotificationInfo = v15;
 
-    v17 = [v7 libraryURL];
-    v18 = [v17 copy];
+    libraryURL = [bundleCopy libraryURL];
+    v18 = [libraryURL copy];
     photoLibraryURL = v8->_photoLibraryURL;
     v8->_photoLibraryURL = v18;
 
     v8->_wellKnownPhotoLibraryIdentifier = [MEMORY[0x1E69BF2A0] wellKnownPhotoLibraryIdentifierForURL:v8->_photoLibraryURL];
-    objc_storeStrong(&v8->_photoLibraryBundle, a3);
+    objc_storeStrong(&v8->_photoLibraryBundle, bundle);
     v20 = objc_alloc_init(_TtC6Photos27PHDatabaseStatisticsTracker);
     objc_storeStrong(&v8->_databaseStatisticsTracker, v20);
     v21 = objc_initWeak(location, v8);
@@ -7709,7 +7709,7 @@ void __45__PHPhotoLibrary__processCPLStatusDidChange___block_invoke(uint64_t a1)
     v203[2] = __50__PHPhotoLibrary_initWithPhotoLibraryBundle_type___block_invoke;
     v203[3] = &unk_1E75A6940;
     objc_copyWeak(&v206, location);
-    v23 = v7;
+    v23 = bundleCopy;
     v204 = v23;
     v24 = v20;
     v205 = v24;
@@ -8076,14 +8076,14 @@ void __45__PHPhotoLibrary__processCPLStatusDidChange___block_invoke(uint64_t a1)
     readyForAnalysisQueue = v8->_readyForAnalysisQueue;
     v8->_readyForAnalysisQueue = v140;
 
-    v142 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v142 addObserver:v8 selector:sel_handleMergeNotification_ name:*MEMORY[0x1E69BEA00] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_handleMergeNotification_ name:*MEMORY[0x1E69BEA00] object:0];
 
     if ([(PHPhotoLibrary *)v8 isSystemPhotoLibrary])
     {
-      v143 = [MEMORY[0x1E696AD88] defaultCenter];
-      v144 = [MEMORY[0x1E69BE248] pl_sharedAccountStore];
-      [v143 addObserver:v8 selector:sel_accountDidChange_ name:*MEMORY[0x1E69BE8E8] object:v144];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      pl_sharedAccountStore = [MEMORY[0x1E69BE248] pl_sharedAccountStore];
+      [defaultCenter2 addObserver:v8 selector:sel_accountDidChange_ name:*MEMORY[0x1E69BE8E8] object:pl_sharedAccountStore];
     }
 
     v145 = [objc_alloc(MEMORY[0x1E69BDD80]) initWithProvider:v8];
@@ -8103,7 +8103,7 @@ void __45__PHPhotoLibrary__processCPLStatusDidChange___block_invoke(uint64_t a1)
     v209 = 2048;
     v210 = v8;
     v211 = 2112;
-    v212 = v7;
+    v212 = bundleCopy;
     _os_log_impl(&dword_19C86F000, v147, OS_LOG_TYPE_DEBUG, "%@ %p initWithPhotoLibraryBundle:%@", location, 0x20u);
   }
 
@@ -8461,29 +8461,29 @@ void __50__PHPhotoLibrary_initWithPhotoLibraryBundle_type___block_invoke_7_456(u
   v1 = [WeakRetained _setupLazyCPLStatusIfNecessary];
 }
 
-- (PHPhotoLibrary)initWithPhotoLibraryURL:(id)a3 type:(unsigned __int16)a4
+- (PHPhotoLibrary)initWithPhotoLibraryURL:(id)l type:(unsigned __int16)type
 {
-  v4 = a4;
+  typeCopy = type;
   v6 = MEMORY[0x1E69BE688];
-  v7 = a3;
-  v8 = [v6 sharedBundleController];
-  v9 = [v8 openBundleAtLibraryURL:v7];
+  lCopy = l;
+  sharedBundleController = [v6 sharedBundleController];
+  v9 = [sharedBundleController openBundleAtLibraryURL:lCopy];
 
-  v10 = [(PHPhotoLibrary *)self initWithPhotoLibraryBundle:v9 type:v4];
+  v10 = [(PHPhotoLibrary *)self initWithPhotoLibraryBundle:v9 type:typeCopy];
   return v10;
 }
 
-- (PHPhotoLibrary)initWithPLPhotoLibrary:(id)a3 type:(unsigned __int16)a4
+- (PHPhotoLibrary)initWithPLPhotoLibrary:(id)library type:(unsigned __int16)type
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 pathManager];
-  v8 = [v7 libraryURL];
-  v9 = [(PHPhotoLibrary *)self initWithPhotoLibraryURL:v8 type:v4];
+  typeCopy = type;
+  libraryCopy = library;
+  pathManager = [libraryCopy pathManager];
+  libraryURL = [pathManager libraryURL];
+  v9 = [(PHPhotoLibrary *)self initWithPhotoLibraryURL:libraryURL type:typeCopy];
 
   if (v9)
   {
-    v10 = [objc_alloc(MEMORY[0x1E69BF270]) initWithObject:v6];
+    v10 = [objc_alloc(MEMORY[0x1E69BF270]) initWithObject:libraryCopy];
     lazyPhotoLibrary = v9->_lazyPhotoLibrary;
     v9->_lazyPhotoLibrary = v10;
   }
@@ -8497,40 +8497,40 @@ void __50__PHPhotoLibrary_initWithPhotoLibraryBundle_type___block_invoke_7_456(u
   [(PHPhotoLibrary *)self closeWithReason:v3];
 }
 
-- (BOOL)requestSandboxExtensionsIfNeededWithError:(id *)a3
+- (BOOL)requestSandboxExtensionsIfNeededWithError:(id *)error
 {
-  v4 = [(PHPhotoLibrary *)self assetsdClient];
-  v5 = [v4 libraryClient];
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  libraryClient = [assetsdClient libraryClient];
   v10 = 0;
-  v6 = [v5 openPhotoLibraryDatabaseWithoutProgressIfNeededWithOptions:0 error:&v10];
+  v6 = [libraryClient openPhotoLibraryDatabaseWithoutProgressIfNeededWithOptions:0 error:&v10];
   v7 = v10;
 
-  if ((v6 & 1) == 0 && a3)
+  if ((v6 & 1) == 0 && error)
   {
     v8 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   return v6;
 }
 
-- (void)resetFaceAnalysisWithResetLevel:(int64_t)a3 completionHandler:(id)a4
+- (void)resetFaceAnalysisWithResetLevel:(int64_t)level completionHandler:(id)handler
 {
-  if (a3 == 2)
+  if (level == 2)
   {
     v5 = 262145;
   }
 
   else
   {
-    v5 = a3 == 1;
+    v5 = level == 1;
   }
 
   v9 = 0;
-  v6 = a4;
+  handlerCopy = handler;
   v7 = [(PHPhotoLibrary *)self resetStateForMediaProcessingTaskID:3 assetIdentifiers:0 resetOptions:v5 error:&v9];
   v8 = v9;
-  v6[2](v6, v7, v8);
+  handlerCopy[2](handlerCopy, v7, v8);
 }
 
 - (NSProgress)postOpenProgress
@@ -8588,15 +8588,15 @@ void __50__PHPhotoLibrary_initWithPhotoLibraryBundle_type___block_invoke_7_456(u
   return v5;
 }
 
-- (id)upgradePhotoLibraryUsingOptions:(id)a3 completion:(id)a4
+- (id)upgradePhotoLibraryUsingOptions:(id)options completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PHPhotoLibrary *)self assetsdClient];
-  v10 = [v9 libraryClient];
+  optionsCopy = options;
+  completionCopy = completion;
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  libraryClient = [assetsdClient libraryClient];
 
   v39 = 0;
-  v11 = [objc_opt_class() plLibraryOptionsFromPHOptions:v7 createOptions:&v39];
+  v11 = [objc_opt_class() plLibraryOptionsFromPHOptions:optionsCopy createOptions:&v39];
   if ((v39 & 4) == 0)
   {
     v28[0] = MEMORY[0x1E69E9820];
@@ -8604,8 +8604,8 @@ void __50__PHPhotoLibrary_initWithPhotoLibraryBundle_type___block_invoke_7_456(u
     v28[2] = __61__PHPhotoLibrary_upgradePhotoLibraryUsingOptions_completion___block_invoke_3;
     v28[3] = &unk_1E75A6918;
     v28[4] = self;
-    v29 = v8;
-    v12 = [v10 upgradePhotoLibraryDatabaseWithOptions:v11 completion:v28];
+    v29 = completionCopy;
+    v12 = [libraryClient upgradePhotoLibraryDatabaseWithOptions:v11 completion:v28];
     v13 = v29;
     goto LABEL_11;
   }
@@ -8613,8 +8613,8 @@ void __50__PHPhotoLibrary_initWithPhotoLibraryBundle_type___block_invoke_7_456(u
   v14 = atomic_load(&self->_isCompletedPostOpenInitialization);
   if (v14)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:1059 description:{@"Invalid parameter not satisfying: %@", @"_isCompletedPostOpenInitialization == NO"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:1059 description:{@"Invalid parameter not satisfying: %@", @"_isCompletedPostOpenInitialization == NO"}];
   }
 
   v33 = 0;
@@ -8631,36 +8631,36 @@ void __50__PHPhotoLibrary_initWithPhotoLibraryBundle_type___block_invoke_7_456(u
   v32 = &v33;
   v16 = v15;
   v31 = v16;
-  v12 = [v10 upgradePhotoLibraryDatabaseWithOptions:v11 completion:v30];
+  v12 = [libraryClient upgradePhotoLibraryDatabaseWithOptions:v11 completion:v30];
   dispatch_block_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
-  v17 = [v34[5] domain];
-  if (![v17 isEqualToString:*MEMORY[0x1E69BFF48]])
+  domain = [v34[5] domain];
+  if (![domain isEqualToString:*MEMORY[0x1E69BFF48]])
   {
 
     goto LABEL_9;
   }
 
-  v18 = [v34[5] code];
+  code = [v34[5] code];
 
-  if (v18 != 41020)
+  if (code != 41020)
   {
 LABEL_9:
     v23 = PHErrorFromPLError(v34[5]);
-    (*(v8 + 2))(v8, 0, v23);
+    (*(completionCopy + 2))(completionCopy, 0, v23);
     goto LABEL_10;
   }
 
-  v19 = [MEMORY[0x1E69BE688] sharedBundleController];
-  v20 = [(PLPhotoLibraryBundle *)self->_photoLibraryBundle libraryURL];
-  v21 = [v19 replaceBundleForRebuildAtLibraryURL:v20];
+  mEMORY[0x1E69BE688] = [MEMORY[0x1E69BE688] sharedBundleController];
+  libraryURL = [(PLPhotoLibraryBundle *)self->_photoLibraryBundle libraryURL];
+  v21 = [mEMORY[0x1E69BE688] replaceBundleForRebuildAtLibraryURL:libraryURL];
   photoLibraryBundle = self->_photoLibraryBundle;
   self->_photoLibraryBundle = v21;
 
   v23 = [v11 mutableCopy];
-  v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v39 & 0xFFFFFFFFFFFFFFFBLL];
-  [v23 setObject:v24 forKeyedSubscript:*MEMORY[0x1E69BEC60]];
+  0xFFFFFFFFFFFFFFFBLL = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v39 & 0xFFFFFFFFFFFFFFFBLL];
+  [v23 setObject:0xFFFFFFFFFFFFFFFBLL forKeyedSubscript:*MEMORY[0x1E69BEC60]];
 
-  v25 = [(PHPhotoLibrary *)self upgradePhotoLibraryUsingOptions:v23 completion:v8];
+  v25 = [(PHPhotoLibrary *)self upgradePhotoLibraryUsingOptions:v23 completion:completionCopy];
 
   v12 = v25;
 LABEL_10:
@@ -8699,10 +8699,10 @@ void __61__PHPhotoLibrary_upgradePhotoLibraryUsingOptions_completion___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)openAndWaitWithUpgrade:(BOOL)a3 options:(id)a4 error:(id *)a5
+- (BOOL)openAndWaitWithUpgrade:(BOOL)upgrade options:(id)options error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  optionsCopy = options;
   [(PHPhotoLibrary *)self wellKnownPhotoLibraryIdentifier];
   v9 = [PHPhotoLibrary authorizationStatusForAccessLevel:2];
   v10 = PLPhotoKitGetLog();
@@ -8744,11 +8744,11 @@ void __61__PHPhotoLibrary_upgradePhotoLibraryUsingOptions_completion___block_inv
   v18[2] = __55__PHPhotoLibrary_openAndWaitWithUpgrade_options_error___block_invoke_2;
   v18[3] = &unk_1E75A68C8;
   p_buf = &buf;
-  v21 = a5;
-  v22 = a3;
+  errorCopy = error;
+  upgradeCopy = upgrade;
   v18[4] = self;
-  v19 = v8;
-  v15 = v8;
+  v19 = optionsCopy;
+  v15 = optionsCopy;
   dispatch_sync(isolationQueue, v18);
   v16 = *(*(&buf + 1) + 24);
 
@@ -8945,7 +8945,7 @@ void __55__PHPhotoLibrary_openAndWaitWithUpgrade_options_error___block_invoke_2_
   (*(a1[4] + 16))();
 }
 
-- (BOOL)shouldMobileSlideShowLaunchWithError:(id *)a3
+- (BOOL)shouldMobileSlideShowLaunchWithError:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
   v5 = PLPhotoKitGetLog();
@@ -8962,10 +8962,10 @@ void __55__PHPhotoLibrary_openAndWaitWithUpgrade_options_error___block_invoke_2_
 
   if ([MEMORY[0x1E69BE5B8] shouldPromptUserForLibrarySchemaMismatch])
   {
-    v10 = [(PHPhotoLibrary *)self photoLibraryBundle];
-    v11 = [v10 persistentContainer];
+    photoLibraryBundle = [(PHPhotoLibrary *)self photoLibraryBundle];
+    persistentContainer = [photoLibraryBundle persistentContainer];
     v38 = 0;
-    v12 = [v11 sharedPersistentStoreCoordinatorWithError:&v38];
+    v12 = [persistentContainer sharedPersistentStoreCoordinatorWithError:&v38];
     v13 = v38;
 
     if (v12)
@@ -8991,10 +8991,10 @@ void __55__PHPhotoLibrary_openAndWaitWithUpgrade_options_error___block_invoke_2_
     }
 
     v19 = MEMORY[0x1E69BE5E8];
-    v20 = [(PHPhotoLibrary *)self photoLibraryBundle];
-    v21 = [v20 pathManager];
+    photoLibraryBundle2 = [(PHPhotoLibrary *)self photoLibraryBundle];
+    pathManager = [photoLibraryBundle2 pathManager];
     v37 = 0;
-    v16 = [v19 currentModelVersionMatchesLibrarySchemaVersionWithPathManager:v21 error:&v37];
+    v16 = [v19 currentModelVersionMatchesLibrarySchemaVersionWithPathManager:pathManager error:&v37];
     v15 = v37;
 
     if ((v16 & 1) == 0)
@@ -9052,10 +9052,10 @@ void __55__PHPhotoLibrary_openAndWaitWithUpgrade_options_error___block_invoke_2_
             _os_log_impl(&dword_19C86F000, v31, OS_LOG_TYPE_ERROR, "Library upgrade failed with error %@", buf, 0xCu);
           }
 
-          if (a3)
+          if (error)
           {
             v32 = v15;
-            *a3 = v15;
+            *error = v15;
           }
 
           v33 = v8;
@@ -9079,10 +9079,10 @@ LABEL_44:
       }
 
       v28 = PHErrorFromPLError(v15);
-      if (a3)
+      if (error)
       {
         v28 = v28;
-        *a3 = v28;
+        *error = v28;
       }
     }
 
@@ -9115,21 +9115,21 @@ LABEL_45:
   return v16;
 }
 
-- (BOOL)createPhotoLibraryUsingOptions:(id)a3 error:(id *)a4
+- (BOOL)createPhotoLibraryUsingOptions:(id)options error:(id *)error
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  optionsCopy = options;
   v7 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  v8 = [(PHPhotoLibrary *)self photoLibraryURL];
-  v9 = [v8 path];
-  v10 = [v7 fileExistsAtPath:v9];
+  photoLibraryURL = [(PHPhotoLibrary *)self photoLibraryURL];
+  path = [photoLibraryURL path];
+  v10 = [v7 fileExistsAtPath:path];
 
   if (v10)
   {
     v11 = MEMORY[0x1E696ABC0];
     v33 = *MEMORY[0x1E696A998];
-    v12 = [(PHPhotoLibrary *)self photoLibraryURL];
-    v34[0] = v12;
+    photoLibraryURL2 = [(PHPhotoLibrary *)self photoLibraryURL];
+    v34[0] = photoLibraryURL2;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
     v14 = [v11 errorWithDomain:@"PHPhotosErrorDomain" code:3107 userInfo:v13];
 
@@ -9138,33 +9138,33 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  v17 = [(PHPhotoLibrary *)self photoLibraryURL];
+  photoLibraryURL3 = [(PHPhotoLibrary *)self photoLibraryURL];
   v32 = 0;
-  v18 = [v7 createDirectoryAtURL:v17 withIntermediateDirectories:1 attributes:0 error:&v32];
+  v18 = [v7 createDirectoryAtURL:photoLibraryURL3 withIntermediateDirectories:1 attributes:0 error:&v32];
   v14 = v32;
 
   if ((v18 & 1) == 0)
   {
-    v12 = [v14 domain];
-    if ([v12 isEqualToString:*MEMORY[0x1E696A250]])
+    photoLibraryURL2 = [v14 domain];
+    if ([photoLibraryURL2 isEqualToString:*MEMORY[0x1E696A250]])
     {
-      v25 = [v14 code];
+      code = [v14 code];
 
-      if (v25 != 513)
+      if (code != 513)
       {
         v15 = 0;
         goto LABEL_5;
       }
 
-      v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v26 = [(PHPhotoLibrary *)self photoLibraryURL];
-      v27 = [v26 path];
-      v28 = [v27 stringByDeletingLastPathComponent];
-      [v12 setObject:v28 forKeyedSubscript:*MEMORY[0x1E696A368]];
+      photoLibraryURL2 = objc_alloc_init(MEMORY[0x1E695DF90]);
+      photoLibraryURL4 = [(PHPhotoLibrary *)self photoLibraryURL];
+      path2 = [photoLibraryURL4 path];
+      stringByDeletingLastPathComponent = [path2 stringByDeletingLastPathComponent];
+      [photoLibraryURL2 setObject:stringByDeletingLastPathComponent forKeyedSubscript:*MEMORY[0x1E696A368]];
 
-      [v12 setObject:@"You do not have permission to write to the selected folder" forKeyedSubscript:*MEMORY[0x1E696A588]];
-      [v12 setObject:v14 forKeyedSubscript:*MEMORY[0x1E696AA08]];
-      v29 = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:5404 userInfo:v12];
+      [photoLibraryURL2 setObject:@"You do not have permission to write to the selected folder" forKeyedSubscript:*MEMORY[0x1E696A588]];
+      [photoLibraryURL2 setObject:v14 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+      v29 = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:5404 userInfo:photoLibraryURL2];
 
       v15 = 0;
       v14 = v29;
@@ -9174,49 +9174,49 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v19 = [(PHPhotoLibrary *)self assetsdClient];
-  v20 = [v19 libraryManagementClient];
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  libraryManagementClient = [assetsdClient libraryManagementClient];
 
-  v21 = [objc_opt_class() plLibraryOptionsFromPHOptions:v6 createOptions:0];
+  v21 = [objc_opt_class() plLibraryOptionsFromPHOptions:optionsCopy createOptions:0];
   v22 = [v21 mutableCopy];
 
-  v23 = [(PHPhotoLibrary *)self photoLibraryURL];
-  [v22 setObject:v23 forKeyedSubscript:*MEMORY[0x1E69BEC70]];
+  photoLibraryURL5 = [(PHPhotoLibrary *)self photoLibraryURL];
+  [v22 setObject:photoLibraryURL5 forKeyedSubscript:*MEMORY[0x1E69BEC70]];
 
   v31 = v14;
-  v24 = [v20 createManagedPhotoLibraryWithOptions:v22 error:&v31];
-  v12 = v31;
+  v24 = [libraryManagementClient createManagedPhotoLibraryWithOptions:v22 error:&v31];
+  photoLibraryURL2 = v31;
 
   if (!v24)
   {
     v15 = 0;
-    v14 = v12;
+    v14 = photoLibraryURL2;
     goto LABEL_5;
   }
 
-  v30 = v12;
+  v30 = photoLibraryURL2;
   v15 = [(PHPhotoLibrary *)self _postOpenInitializationWithError:&v30];
   v14 = v30;
 LABEL_4:
 
 LABEL_5:
-  if (a4 && !v15)
+  if (error && !v15)
   {
-    *a4 = PHErrorFromPLError(v14);
+    *error = PHErrorFromPLError(v14);
   }
 
   return v15;
 }
 
-- (BOOL)_postOpenInitializationWithError:(id *)a3
+- (BOOL)_postOpenInitializationWithError:(id *)error
 {
-  v5 = [(PHPhotoLibrary *)self photoLibrary];
-  if (v5)
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+  if (photoLibrary)
   {
     atomic_store(1u, &self->_isCompletedPostOpenInitialization);
   }
 
-  else if (a3)
+  else if (error)
   {
     photoLibraryBundle = self->_photoLibraryBundle;
     v12 = 0;
@@ -9224,8 +9224,8 @@ LABEL_5:
     v8 = v12;
 
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v10 = [(PHPhotoLibrary *)self photoLibraryURL];
-    [v9 setObject:v10 forKeyedSubscript:*MEMORY[0x1E696A998]];
+    photoLibraryURL = [(PHPhotoLibrary *)self photoLibraryURL];
+    [v9 setObject:photoLibraryURL forKeyedSubscript:*MEMORY[0x1E696A998]];
 
     [v9 setObject:@"Creation of PLPhotoLibrary failed" forKeyedSubscript:*MEMORY[0x1E696A278]];
     if (v8)
@@ -9233,19 +9233,19 @@ LABEL_5:
       [v9 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696AA08]];
     }
 
-    *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v9];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v9];
   }
 
-  return v5 != 0;
+  return photoLibrary != 0;
 }
 
 - (id)_initializePhotoLibraryIdentifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(PHPhotoLibrary *)self assetsdClient];
-  v4 = [v3 photoKitClient];
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  photoKitClient = [assetsdClient photoKitClient];
   v10 = 0;
-  v5 = [v4 photoLibraryIdentifierWithError:&v10];
+  v5 = [photoKitClient photoLibraryIdentifierWithError:&v10];
   v6 = v10;
 
   if (v5)
@@ -9259,7 +9259,7 @@ LABEL_5:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
       v14 = v6;
       _os_log_impl(&dword_19C86F000, v8, OS_LOG_TYPE_ERROR, "Failed to retrieve library identifier for %@: %@", buf, 0x16u);
@@ -9271,13 +9271,13 @@ LABEL_5:
   return v7;
 }
 
-- (void)getCPLConfigrationValueForClient:(unint64_t)a3 completionHandler:(id)a4
+- (void)getCPLConfigrationValueForClient:(unint64_t)client completionHandler:(id)handler
 {
-  v6 = a4;
-  v11 = v6;
-  if (a3)
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (client)
   {
-    if (a3 != 1)
+    if (client != 1)
     {
       goto LABEL_7;
     }
@@ -9291,66 +9291,66 @@ LABEL_5:
   }
 
   v8 = *v7;
-  v6 = v11;
+  handlerCopy = v11;
   if (v8)
   {
-    v9 = [(PHPhotoLibrary *)self assetsdClient];
-    v10 = [v9 cloudInternalClient];
-    [v10 getCPLConfigurationValueForKey:v8 completionHandler:v11];
+    assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+    cloudInternalClient = [assetsdClient cloudInternalClient];
+    [cloudInternalClient getCPLConfigurationValueForKey:v8 completionHandler:v11];
 
     goto LABEL_9;
   }
 
 LABEL_7:
-  if (!v6)
+  if (!handlerCopy)
   {
     goto LABEL_10;
   }
 
-  (*(v6 + 2))(v11, 0);
+  (*(handlerCopy + 2))(v11, 0);
 LABEL_9:
-  v6 = v11;
+  handlerCopy = v11;
 LABEL_10:
 }
 
 - (BOOL)isWalrusEnabled
 {
-  v2 = [(PLLazyObject *)self->_lazyCPLStatus objectValue];
-  v3 = [v2 isWalrusEnabled];
+  objectValue = [(PLLazyObject *)self->_lazyCPLStatus objectValue];
+  isWalrusEnabled = [objectValue isWalrusEnabled];
 
-  return v3;
+  return isWalrusEnabled;
 }
 
 - (PHPhotoLibraryCloudStatus)cloudStatus
 {
-  v3 = [(PHPhotoLibrary *)self _cachedCloudStatus];
-  if (!v3)
+  _cachedCloudStatus = [(PHPhotoLibrary *)self _cachedCloudStatus];
+  if (!_cachedCloudStatus)
   {
-    v4 = [(PLLazyObject *)self->_lazyCPLStatus objectValue];
-    v3 = [[PHPhotoLibraryCloudStatus alloc] initWithCPLStatus:v4 isEnabled:[(PHPhotoLibrary *)self isCloudPhotoLibraryEnabled]];
-    [(PHPhotoLibrary *)self _setCachedCloudStatus:v3];
+    objectValue = [(PLLazyObject *)self->_lazyCPLStatus objectValue];
+    _cachedCloudStatus = [[PHPhotoLibraryCloudStatus alloc] initWithCPLStatus:objectValue isEnabled:[(PHPhotoLibrary *)self isCloudPhotoLibraryEnabled]];
+    [(PHPhotoLibrary *)self _setCachedCloudStatus:_cachedCloudStatus];
   }
 
-  return v3;
+  return _cachedCloudStatus;
 }
 
-- (void)_setCachedCloudStatus:(id)a3
+- (void)_setCachedCloudStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   obj = self;
   objc_sync_enter(obj);
   cachedCloudStatus = obj->_cachedCloudStatus;
-  obj->_cachedCloudStatus = v4;
+  obj->_cachedCloudStatus = statusCopy;
 
   objc_sync_exit(obj);
 }
 
 - (id)_cachedCloudStatus
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_cachedCloudStatus;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_cachedCloudStatus;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -9359,8 +9359,8 @@ LABEL_10:
 {
   if ([(PHPhotoLibrary *)self isCloudPhotoLibraryEnabled])
   {
-    v3 = [(PHPhotoLibrary *)self photoLibrary];
-    v4 = [v3 pathManager];
+    photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+    pathManager = [photoLibrary pathManager];
 
     v5 = CPLStatusFromPathManager();
   }
@@ -9373,13 +9373,13 @@ LABEL_10:
   return v5;
 }
 
-- (void)setKeepOriginalsEnabled:(BOOL)a3
+- (void)setKeepOriginalsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x1E69E9840];
   cplSettingsObserver = self->_cplSettingsObserver;
   v8 = 0;
-  v5 = [(PLCPLSettingsObserver *)cplSettingsObserver setPrefetchMode:a3 error:&v8];
+  v5 = [(PLCPLSettingsObserver *)cplSettingsObserver setPrefetchMode:enabled error:&v8];
   v6 = v8;
   if ((v5 & 1) == 0)
   {
@@ -9387,7 +9387,7 @@ LABEL_10:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109378;
-      v10 = v3;
+      v10 = enabledCopy;
       v11 = 2112;
       v12 = v6;
       _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_ERROR, "Couldn't set keepOriginals to: %d, error: %@", buf, 0x12u);
@@ -9397,20 +9397,20 @@ LABEL_10:
 
 - (BOOL)isKeepOriginalsEnabled
 {
-  v2 = [(PLCPLSettingsObserver *)self->_cplSettingsObserver settings];
-  v3 = [v2 isKeepOriginalsEnabled];
+  settings = [(PLCPLSettingsObserver *)self->_cplSettingsObserver settings];
+  isKeepOriginalsEnabled = [settings isKeepOriginalsEnabled];
 
-  return v3;
+  return isKeepOriginalsEnabled;
 }
 
 - (BOOL)isReadOnlyCloudPhotoLibrary
 {
-  v2 = [(PHPhotoLibrary *)self cplStatus];
-  v3 = v2;
-  if (v2)
+  cplStatus = [(PHPhotoLibrary *)self cplStatus];
+  v3 = cplStatus;
+  if (cplStatus)
   {
-    v4 = [v2 exitDeleteTime];
-    v5 = v4 != 0;
+    exitDeleteTime = [cplStatus exitDeleteTime];
+    v5 = exitDeleteTime != 0;
   }
 
   else
@@ -9428,25 +9428,25 @@ LABEL_10:
     return 1;
   }
 
-  v4 = [(PLCPLSettingsObserver *)self->_cplSettingsObserver settings];
-  if ([v4 isAppLibrary])
+  settings = [(PLCPLSettingsObserver *)self->_cplSettingsObserver settings];
+  if ([settings isAppLibrary])
   {
-    v5 = [(PLCPLSettingsObserver *)self->_cplSettingsObserver settings];
-    v3 = [v5 isCloudPhotoLibraryEnabled];
+    settings2 = [(PLCPLSettingsObserver *)self->_cplSettingsObserver settings];
+    isCloudPhotoLibraryEnabled = [settings2 isCloudPhotoLibraryEnabled];
   }
 
   else
   {
-    v3 = 0;
+    isCloudPhotoLibraryEnabled = 0;
   }
 
-  return v3;
+  return isCloudPhotoLibraryEnabled;
 }
 
 - (id)initMomentShareLibrary
 {
-  v3 = [MEMORY[0x1E69BF2A0] systemLibraryURL];
-  v4 = [(PHPhotoLibrary *)self initWithPhotoLibraryURL:v3 type:1];
+  systemLibraryURL = [MEMORY[0x1E69BF2A0] systemLibraryURL];
+  v4 = [(PHPhotoLibrary *)self initWithPhotoLibraryURL:systemLibraryURL type:1];
 
   return v4;
 }
@@ -9457,30 +9457,30 @@ LABEL_10:
   objc_exception_throw(v2);
 }
 
-- (BOOL)setUploadJobExtensionEnabled:(BOOL)a3 error:(id *)a4
+- (BOOL)setUploadJobExtensionEnabled:(BOOL)enabled error:(id *)error
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v26[1] = *MEMORY[0x1E69E9840];
-  v8 = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
-  v9 = [PHAssetResourceUploadJobConfiguration fetchAssetResourceUploadJobConfigurationsWithOptions:v8];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
+  v9 = [PHAssetResourceUploadJobConfiguration fetchAssetResourceUploadJobConfigurationsWithOptions:librarySpecificFetchOptions];
 
   if ([v9 count] == 1)
   {
-    v10 = [v9 firstObject];
-    v11 = v10;
-    if (!v5)
+    firstObject = [v9 firstObject];
+    v11 = firstObject;
+    if (!enabledCopy)
     {
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __53__PHPhotoLibrary_setUploadJobExtensionEnabled_error___block_invoke;
       v23[3] = &unk_1E75AB270;
       v24 = v9;
-      v16 = [(PHPhotoLibrary *)self performChangesAndWait:v23 error:a4];
+      v16 = [(PHPhotoLibrary *)self performChangesAndWait:v23 error:error];
 
       goto LABEL_21;
     }
 
-    v12 = [v10 state] == 2 || objc_msgSend(v11, "state") == 3;
+    v12 = [firstObject state] == 2 || objc_msgSend(v11, "state") == 3;
 
     v15 = 0;
   }
@@ -9498,9 +9498,9 @@ LABEL_10:
 
   else
   {
-    if (v5)
+    if (enabledCopy)
     {
-      v16 = [(PHPhotoLibrary *)self performChangesAndWait:&__block_literal_global_387 error:a4];
+      v16 = [(PHPhotoLibrary *)self performChangesAndWait:&__block_literal_global_387 error:error];
       goto LABEL_21;
     }
 
@@ -9510,13 +9510,13 @@ LABEL_10:
 
   if ([v9 count] >= 2)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:499 description:@"Should only have 1 configuration"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:499 description:@"Should only have 1 configuration"];
   }
 
   v17 = v15;
   v18 = v17;
-  if (a4)
+  if (error)
   {
     v19 = v12;
   }
@@ -9529,7 +9529,7 @@ LABEL_10:
   if ((v19 & 1) == 0)
   {
     v20 = v17;
-    *a4 = v18;
+    *error = v18;
   }
 
   v16 = 0;
@@ -9549,21 +9549,21 @@ void __53__PHPhotoLibrary_setUploadJobExtensionEnabled_error___block_invoke(uint
 
 - (BOOL)isUploadJobExtensionEnabled
 {
-  v4 = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
-  v5 = [PHAssetResourceUploadJobConfiguration fetchAssetResourceUploadJobConfigurationsWithOptions:v4];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
+  v5 = [PHAssetResourceUploadJobConfiguration fetchAssetResourceUploadJobConfigurationsWithOptions:librarySpecificFetchOptions];
 
   if ([v5 count] >= 2)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:444 description:@"Should only have 1 configuration"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary.m" lineNumber:444 description:@"Should only have 1 configuration"];
   }
 
   if ([v5 count])
   {
-    v6 = [v5 firstObject];
-    v7 = [v6 state];
+    firstObject = [v5 firstObject];
+    state = [firstObject state];
 
-    v8 = (v7 & 0xFFFFFFFE) == 2;
+    v8 = (state & 0xFFFFFFFE) == 2;
   }
 
   else
@@ -9576,8 +9576,8 @@ void __53__PHPhotoLibrary_setUploadJobExtensionEnabled_error___block_invoke(uint
 
 + (id)sharedContactStore
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = sharedContactStore___sContactStore;
   if (!sharedContactStore___sContactStore)
   {
@@ -9589,14 +9589,14 @@ void __53__PHPhotoLibrary_setUploadJobExtensionEnabled_error___block_invoke(uint
   }
 
   v6 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-+ (BOOL)_isInternalObserver:(id)a3
++ (BOOL)_isInternalObserver:(id)observer
 {
-  v3 = a3;
+  observerCopy = observer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -9605,35 +9605,35 @@ void __53__PHPhotoLibrary_setUploadJobExtensionEnabled_error___block_invoke(uint
 
 + (void)removeAllUniquedOIDs
 {
-  v2 = [a1 uniqueObjectIDCache];
+  uniqueObjectIDCache = [self uniqueObjectIDCache];
 }
 
-+ (id)uniquedOIDsFromObjects:(id)a3
++ (id)uniquedOIDsFromObjects:(id)objects
 {
-  v4 = a3;
-  v5 = [a1 uniqueObjectIDCache];
-  v6 = [(PHUniqueObjectIDCache *)v5 uniquedOIDsFromObjects:v4];
+  objectsCopy = objects;
+  uniqueObjectIDCache = [self uniqueObjectIDCache];
+  v6 = [(PHUniqueObjectIDCache *)uniqueObjectIDCache uniquedOIDsFromObjects:objectsCopy];
 
   return v6;
 }
 
-+ (id)uniquedOIDs:(id)a3
++ (id)uniquedOIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [a1 uniqueObjectIDCache];
-  v6 = [(PHUniqueObjectIDCache *)v5 uniquedOIDs:v4];
+  dsCopy = ds;
+  uniqueObjectIDCache = [self uniqueObjectIDCache];
+  v6 = [(PHUniqueObjectIDCache *)uniqueObjectIDCache uniquedOIDs:dsCopy];
 
   return v6;
 }
 
-+ (id)uniquedOID:(id)a3
++ (id)uniquedOID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 uniqueObjectIDCache];
-  v6 = v4;
-  if (v5)
+  dCopy = d;
+  uniqueObjectIDCache = [self uniqueObjectIDCache];
+  v6 = dCopy;
+  if (uniqueObjectIDCache)
   {
-    [v5 _verifyObjectIDIsTagged:v6];
+    [uniqueObjectIDCache _verifyObjectIDIsTagged:v6];
     v7 = v6;
   }
 
@@ -9645,18 +9645,18 @@ void __53__PHPhotoLibrary_setUploadJobExtensionEnabled_error___block_invoke(uint
   return v7;
 }
 
-+ (id)_effectiveRootEntity:(id)a3
++ (id)_effectiveRootEntity:(id)entity
 {
-  v3 = a3;
+  entityCopy = entity;
   if (_effectiveRootEntity__onceToken != -1)
   {
     dispatch_once(&_effectiveRootEntity__onceToken, &__block_literal_global_675);
   }
 
-  v4 = v3;
+  v4 = entityCopy;
   v5 = _effectiveRootEntity__effectiveRootEntityNames;
-  v6 = [v4 name];
-  LOBYTE(v5) = [v5 containsObject:v6];
+  name = [v4 name];
+  LOBYTE(v5) = [v5 containsObject:name];
 
   if (v5)
   {
@@ -9668,17 +9668,17 @@ void __53__PHPhotoLibrary_setUploadJobExtensionEnabled_error___block_invoke(uint
     v8 = v4;
     while (1)
     {
-      v9 = [v8 superentity];
-      if (!v9)
+      superentity = [v8 superentity];
+      if (!superentity)
       {
         break;
       }
 
-      v7 = v9;
+      v7 = superentity;
 
       v10 = _effectiveRootEntity__effectiveRootEntityNames;
-      v11 = [v4 name];
-      v12 = [v10 containsObject:v11];
+      name2 = [v4 name];
+      v12 = [v10 containsObject:name2];
 
       v8 = v7;
       if (v12)
@@ -9704,17 +9704,17 @@ uint64_t __39__PHPhotoLibrary__effectiveRootEntity___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (Class)PHObjectClassForIdentifierCode:(id)a3
++ (Class)PHObjectClassForIdentifierCode:(id)code
 {
-  v3 = [PHPhotoLibrary fetchTypeForLocalIdentifierCode:a3];
+  v3 = [PHPhotoLibrary fetchTypeForLocalIdentifierCode:code];
   v4 = [PHPhotoLibrary classForFetchType:v3];
 
   return v4;
 }
 
-+ (Class)PHObjectClassForObjectType:(int64_t)a3
++ (Class)PHObjectClassForObjectType:(int64_t)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     v4 = 0;
   }
@@ -9727,11 +9727,11 @@ uint64_t __39__PHPhotoLibrary__effectiveRootEntity___block_invoke()
   return v4;
 }
 
-+ (Class)PHObjectClassForOID:(id)a3
++ (Class)PHObjectClassForOID:(id)d
 {
-  v3 = [a3 entity];
-  v4 = [v3 name];
-  v5 = [PHPhotoLibrary PHObjectClassForEntityName:v4];
+  entity = [d entity];
+  name = [entity name];
+  v5 = [PHPhotoLibrary PHObjectClassForEntityName:name];
 
   v6 = v5;
   return v5;
@@ -9743,7 +9743,7 @@ uint64_t __39__PHPhotoLibrary__effectiveRootEntity___block_invoke()
   block[1] = 3221225472;
   block[2] = __33__PHPhotoLibrary_PHObjectClasses__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (PHObjectClasses_onceToken != -1)
   {
     dispatch_once(&PHObjectClasses_onceToken, block);
@@ -9767,25 +9767,25 @@ void __33__PHPhotoLibrary_PHObjectClasses__block_invoke(uint64_t a1)
   PHObjectClasses_classes = v5;
 }
 
-+ (Class)PHObjectClassForEntityName:(id)a3
++ (Class)PHObjectClassForEntityName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 PHObjectClassesByEntityName];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  pHObjectClassesByEntityName = [self PHObjectClassesByEntityName];
+  v6 = [pHObjectClassesByEntityName objectForKeyedSubscript:nameCopy];
 
   return v6;
 }
 
-+ (id)fetchTypeForLocalIdentifierCode:(id)a3
++ (id)fetchTypeForLocalIdentifierCode:(id)code
 {
   v3 = fetchTypeForLocalIdentifierCode__onceToken;
-  v4 = a3;
+  codeCopy = code;
   if (v3 != -1)
   {
     dispatch_once(&fetchTypeForLocalIdentifierCode__onceToken, &__block_literal_global_567);
   }
 
-  v5 = [fetchTypeForLocalIdentifierCode___fetchTypesByIdentifierCode objectForKeyedSubscript:v4];
+  v5 = [fetchTypeForLocalIdentifierCode___fetchTypesByIdentifierCode objectForKeyedSubscript:codeCopy];
 
   return v5;
 }
@@ -9855,23 +9855,23 @@ void __50__PHPhotoLibrary_fetchTypeForLocalIdentifierCode___block_invoke()
   fetchTypeForLocalIdentifierCode___fetchTypesByIdentifierCode = v10;
 }
 
-+ (int64_t)collectionListTypeForIdentifierCode:(id)a3
++ (int64_t)collectionListTypeForIdentifierCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   pl_dispatch_once();
-  v4 = [collectionListTypeForIdentifierCode___typeByCode objectForKeyedSubscript:v3];
+  v4 = [collectionListTypeForIdentifierCode___typeByCode objectForKeyedSubscript:codeCopy];
 
   if (v4)
   {
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
 void __54__PHPhotoLibrary_collectionListTypeForIdentifierCode___block_invoke()
@@ -9880,33 +9880,33 @@ void __54__PHPhotoLibrary_collectionListTypeForIdentifierCode___block_invoke()
   collectionListTypeForIdentifierCode___typeByCode = &unk_1F102E640;
 }
 
-+ (id)stringFromPHPhotoLibraryType:(unsigned __int16)a3
++ (id)stringFromPHPhotoLibraryType:(unsigned __int16)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v4 = @"CMM";
+    type = @"CMM";
   }
 
-  else if (a3)
+  else if (type)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UnknownType(%u)", a3];
+    type = [MEMORY[0x1E696AEC0] stringWithFormat:@"UnknownType(%u)", type];
   }
 
   else
   {
-    v4 = @"UserLibrary";
+    type = @"UserLibrary";
   }
 
-  return v4;
+  return type;
 }
 
 + (void)assertTransaction
 {
-  v2 = [a1 photoLibraryForCurrentTransaction];
-  v4 = v2;
-  if (v2)
+  photoLibraryForCurrentTransaction = [self photoLibraryForCurrentTransaction];
+  v4 = photoLibraryForCurrentTransaction;
+  if (photoLibraryForCurrentTransaction)
   {
-    [v2 assertTransaction];
+    [photoLibraryForCurrentTransaction assertTransaction];
   }
 
   else if ((PLIsAssetsd() & 1) == 0 && ([MEMORY[0x1E69BF1A8] inTransactionProxy] & 1) == 0)
@@ -9991,23 +9991,23 @@ id __46__PHPhotoLibrary_sharedLazyPhotoLibraryForCMM__block_invoke_2(uint64_t a1
   return WeakRetained;
 }
 
-+ (id)plLibraryOptionsFromPHOptions:(id)a3 createOptions:(unint64_t *)a4
++ (id)plLibraryOptionsFromPHOptions:(id)options createOptions:(unint64_t *)createOptions
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  optionsCopy = options;
+  v6 = optionsCopy;
+  if (optionsCopy)
   {
-    v7 = [v5 objectForKeyedSubscript:@"PHPhotoLibraryCreateOptions"];
-    v8 = [v7 unsignedIntegerValue];
+    v7 = [optionsCopy objectForKeyedSubscript:@"PHPhotoLibraryCreateOptions"];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
     v9 = [v6 objectForKeyedSubscript:@"PHPhotoLibraryUpgradeOptions"];
-    v10 = [v9 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v9 unsignedIntegerValue];
 
     v11 = 0;
     for (i = 0; i != 64; ++i)
     {
-      v13 = v10 & (1 << i);
+      v13 = unsignedIntegerValue2 & (1 << i);
       v14 = v11 | 4;
       if (v13 != 4)
       {
@@ -10027,7 +10027,7 @@ id __46__PHPhotoLibrary_sharedLazyPhotoLibraryForCMM__block_invoke_2(uint64_t a1
 
     for (j = 0; j != 64; ++j)
     {
-      v16 = v8 & (1 << j);
+      v16 = unsignedIntegerValue & (1 << j);
       v17 = v11 | 0x80;
       v18 = v11 | 0x100;
       v19 = v11 | 0x200;
@@ -10105,9 +10105,9 @@ id __46__PHPhotoLibrary_sharedLazyPhotoLibraryForCMM__block_invoke_2(uint64_t a1
 
     if (v11)
     {
-      if (a4)
+      if (createOptions)
       {
-        *a4 = v11;
+        *createOptions = v11;
       }
 
       v26 = [v6 mutableCopy];
@@ -10136,53 +10136,53 @@ id __46__PHPhotoLibrary_sharedLazyPhotoLibraryForCMM__block_invoke_2(uint64_t a1
 
 + (BOOL)isPhotosApplicationInstalled
 {
-  v2 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v3 = [v2 applicationIsInstalled:*MEMORY[0x1E69BFF18]];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  v3 = [defaultWorkspace applicationIsInstalled:*MEMORY[0x1E69BFF18]];
 
   return v3;
 }
 
-+ (BOOL)setSystemPhotoLibraryURL:(id)a3 error:(id *)a4
++ (BOOL)setSystemPhotoLibraryURL:(id)l error:(id *)error
 {
   v10 = 0;
-  v5 = [MEMORY[0x1E69BF2A0] setSystemLibraryURL:a3 options:0 error:&v10];
+  v5 = [MEMORY[0x1E69BF2A0] setSystemLibraryURL:l options:0 error:&v10];
   v6 = v10;
   v7 = v6;
-  if (a4 && (v5 & 1) == 0)
+  if (error && (v5 & 1) == 0)
   {
     v8 = PHErrorFromPLError(v6);
-    *a4 = v8;
+    *error = v8;
   }
 
   return v5;
 }
 
-+ (void)unsafeShutdownLibraryWithPhotoLibraryURL:(id)a3
++ (void)unsafeShutdownLibraryWithPhotoLibraryURL:(id)l
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v4 = PLLibraryBundleGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
   {
-    v5 = [MEMORY[0x1E69BF220] descriptionWithFileURL:v3];
+    v5 = [MEMORY[0x1E69BF220] descriptionWithFileURL:lCopy];
     v9 = 138412290;
     v10 = v5;
     _os_log_impl(&dword_19C86F000, v4, OS_LOG_TYPE_FAULT, "Unsafe PHPhotoLibrary shutdown for URL: %@", &v9, 0xCu);
   }
 
-  v6 = [MEMORY[0x1E69BE688] sharedBundleController];
-  v7 = [v6 bundleForLibraryURL:v3];
+  mEMORY[0x1E69BE688] = [MEMORY[0x1E69BE688] sharedBundleController];
+  v7 = [mEMORY[0x1E69BE688] bundleForLibraryURL:lCopy];
   if (v7)
   {
     v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:46019 userInfo:0];
-    [v6 shutdownBundle:v7 reason:v8];
+    [mEMORY[0x1E69BE688] shutdownBundle:v7 reason:v8];
   }
 }
 
-+ (id)openPhotoLibraryWithWellKnownIdentifier:(int64_t)a3 error:(id *)a4
++ (id)openPhotoLibraryWithWellKnownIdentifier:(int64_t)identifier error:(id *)error
 {
   v7 = [PHPhotoLibrary alloc];
-  v8 = [a1 wellKnownPhotoLibraryURLForIdentifier:a3];
+  v8 = [self wellKnownPhotoLibraryURLForIdentifier:identifier];
   v9 = [(PHPhotoLibrary *)v7 initWithPhotoLibraryURL:v8];
 
   v13 = 0;
@@ -10190,17 +10190,17 @@ id __46__PHPhotoLibrary_sharedLazyPhotoLibraryForCMM__block_invoke_2(uint64_t a1
   v10 = v13;
   if (v8)
   {
-    [a1 enableMultiLibraryMode];
+    [self enableMultiLibraryMode];
   }
 
   else
   {
 
-    if (a4)
+    if (error)
     {
       v11 = v10;
       v9 = 0;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -10214,15 +10214,15 @@ id __46__PHPhotoLibrary_sharedLazyPhotoLibraryForCMM__block_invoke_2(uint64_t a1
 
 + (void)_forceUserInterfaceReload
 {
-  v2 = [MEMORY[0x1E69BE688] sharedBundleController];
-  [v2 handleUnknownMergeEvent];
+  mEMORY[0x1E69BE688] = [MEMORY[0x1E69BE688] sharedBundleController];
+  [mEMORY[0x1E69BE688] handleUnknownMergeEvent];
 }
 
-+ (void)_requestAuthorizationForAccessLevel:(int64_t)a3 supportsLimited:(BOOL)a4 handler:(id)a5
++ (void)_requestAuthorizationForAccessLevel:(int64_t)level supportsLimited:(BOOL)limited handler:(id)handler
 {
-  v8 = a5;
-  v9 = [PHPhotoLibrary authorizationStatusForAccessLevel:a3];
-  if (a3 == 1)
+  handlerCopy = handler;
+  v9 = [PHPhotoLibrary authorizationStatusForAccessLevel:level];
+  if (level == 1)
   {
     v10 = 1;
   }
@@ -10232,18 +10232,18 @@ id __46__PHPhotoLibrary_sharedLazyPhotoLibraryForCMM__block_invoke_2(uint64_t a1
     v10 = 7;
   }
 
-  v11 = [MEMORY[0x1E69BF2B0] sharedInstance];
+  mEMORY[0x1E69BF2B0] = [MEMORY[0x1E69BF2B0] sharedInstance];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __78__PHPhotoLibrary__requestAuthorizationForAccessLevel_supportsLimited_handler___block_invoke;
   v13[3] = &unk_1E75A6850;
-  v14 = v8;
-  v15 = a3;
-  v18 = a4;
+  v14 = handlerCopy;
+  levelCopy = level;
+  limitedCopy = limited;
   v16 = v9;
-  v17 = a1;
-  v12 = v8;
-  [v11 checkPhotosAccessAllowedWithScope:v10 handler:v13];
+  selfCopy = self;
+  v12 = handlerCopy;
+  [mEMORY[0x1E69BF2B0] checkPhotosAccessAllowedWithScope:v10 handler:v13];
 }
 
 uint64_t __78__PHPhotoLibrary__requestAuthorizationForAccessLevel_supportsLimited_handler___block_invoke(uint64_t a1)
@@ -10278,7 +10278,7 @@ uint64_t __78__PHPhotoLibrary__requestAuthorizationForAccessLevel_supportsLimite
 
 + (PHAuthorizationStatus)authorizationStatusForAccessLevel:(PHAccessLevel)accessLevel
 {
-  v3 = [a1 _photosAccessAllowedForAccessLevel:accessLevel];
+  v3 = [self _photosAccessAllowedForAccessLevel:accessLevel];
   if (v3 > 4)
   {
     return 0;
@@ -10290,11 +10290,11 @@ uint64_t __78__PHPhotoLibrary__requestAuthorizationForAccessLevel_supportsLimite
   }
 }
 
-+ (int64_t)_photosAccessAllowedForAccessLevel:(int64_t)a3
++ (int64_t)_photosAccessAllowedForAccessLevel:(int64_t)level
 {
-  v4 = [MEMORY[0x1E69BF2B0] sharedInstance];
-  v5 = v4;
-  if (a3 == 1)
+  mEMORY[0x1E69BF2B0] = [MEMORY[0x1E69BF2B0] sharedInstance];
+  v5 = mEMORY[0x1E69BF2B0];
+  if (level == 1)
   {
     v6 = 1;
   }
@@ -10304,14 +10304,14 @@ uint64_t __78__PHPhotoLibrary__requestAuthorizationForAccessLevel_supportsLimite
     v6 = 7;
   }
 
-  v7 = [v4 photosAccessAllowedWithScope:v6];
+  v7 = [mEMORY[0x1E69BF2B0] photosAccessAllowedWithScope:v6];
 
   return v7;
 }
 
-+ (BOOL)checkAuthorizationStatusForAPIAccessLevel:(int64_t)a3 suppressPrompt:(BOOL)a4
++ (BOOL)checkAuthorizationStatusForAPIAccessLevel:(int64_t)level suppressPrompt:(BOOL)prompt
 {
-  v5 = [a1 _photosAccessAllowedForAccessLevel:a3];
+  v5 = [self _photosAccessAllowedForAccessLevel:level];
   if (!v5)
   {
     return 1;
@@ -10319,10 +10319,10 @@ uint64_t __78__PHPhotoLibrary__requestAuthorizationForAccessLevel_supportsLimite
 
   if (v5 == 4)
   {
-    if (!a4)
+    if (!prompt)
     {
-      v6 = [MEMORY[0x1E69BF2B0] sharedInstance];
-      [v6 presentAsyncPromptForLimitedLibraryPickerIfNeeded];
+      mEMORY[0x1E69BF2B0] = [MEMORY[0x1E69BF2B0] sharedInstance];
+      [mEMORY[0x1E69BF2B0] presentAsyncPromptForLimitedLibraryPickerIfNeeded];
     }
 
     return 1;
@@ -10333,8 +10333,8 @@ uint64_t __78__PHPhotoLibrary__requestAuthorizationForAccessLevel_supportsLimite
 
 + (PHAuthorizationStatus)authorizationStatus
 {
-  v2 = [MEMORY[0x1E69BF2B0] sharedInstance];
-  v3 = [v2 photosAccessAllowedWithScope:7];
+  mEMORY[0x1E69BF2B0] = [MEMORY[0x1E69BF2B0] sharedInstance];
+  v3 = [mEMORY[0x1E69BF2B0] photosAccessAllowedWithScope:7];
 
   result = PHAuthorizationStatusNotDetermined;
   if (v3 > 2)
@@ -10389,7 +10389,7 @@ uint64_t __47__PHPhotoLibrary_sharedMomentSharePhotoLibrary__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)setImagePickerPhotoLibrary:(id)a3 error:(id *)a4
++ (BOOL)setImagePickerPhotoLibrary:(id)library error:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -10397,12 +10397,12 @@ uint64_t __47__PHPhotoLibrary_sharedMomentSharePhotoLibrary__block_invoke()
   v12 = __Block_byref_object_copy__21754;
   v13 = __Block_byref_object_dispose__21755;
   v14 = 0;
-  v5 = a3;
+  libraryCopy = library;
   PLRunWithUnfairLock();
   v6 = v10[5];
-  if (a4 && v6)
+  if (error && v6)
   {
-    *a4 = v6;
+    *error = v6;
     v6 = v10[5];
   }
 
@@ -10468,13 +10468,13 @@ void __41__PHPhotoLibrary_imagePickerPhotoLibrary__block_invoke(uint64_t a1)
   objc_storeStrong(v5, v2);
 }
 
-- (void)setWidgetTimelineGeneratedForDisplaySize:(CGSize)a3
+- (void)setWidgetTimelineGeneratedForDisplaySize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(PHPhotoLibrary *)self assetsdClient];
-  v5 = [v6 libraryInternalClient];
-  [v5 setWidgetTimelineGeneratedForDisplaySize:&__block_literal_global_1393 completionHandler:{width, height}];
+  height = size.height;
+  width = size.width;
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  libraryInternalClient = [assetsdClient libraryInternalClient];
+  [libraryInternalClient setWidgetTimelineGeneratedForDisplaySize:&__block_literal_global_1393 completionHandler:{width, height}];
 }
 
 void __68__PHPhotoLibrary_Widgets__setWidgetTimelineGeneratedForDisplaySize___block_invoke(uint64_t a1, int a2, void *a3)
@@ -10509,14 +10509,14 @@ LABEL_6:
   }
 }
 
-- (id)sceneTaxonomyDetectorNodeSceneIDsFromSceneID:(unint64_t)a3 sceneTaxonomy:(id)a4
+- (id)sceneTaxonomyDetectorNodeSceneIDsFromSceneID:(unint64_t)d sceneTaxonomy:(id)taxonomy
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  taxonomyCopy = taxonomy;
+  v6 = taxonomyCopy;
+  if (taxonomyCopy)
   {
-    if ([v5 nodeRefForExtendedSceneClassId:a3])
+    if ([taxonomyCopy nodeRefForExtendedSceneClassId:d])
     {
       v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:PFSceneTaxonomyNodeDetectorsCount()];
       PFSceneTaxonomyNodeVisitDetectors();
@@ -10528,7 +10528,7 @@ LABEL_6:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v15 = a3;
+      dCopy = d;
       v16 = 2112;
       v17 = v6;
       v9 = "Failed to find sceneID (%llu) in sceneTaxonomy: %@";
@@ -10571,7 +10571,7 @@ uint64_t __91__PHPhotoLibrary_PhotosFormat__sceneTaxonomyDetectorNodeSceneIDsFro
 
 - (id)migrationDate
 {
-  v2 = [(PHPhotoLibrary *)self photoLibrary];
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -10582,7 +10582,7 @@ uint64_t __91__PHPhotoLibrary_PhotosFormat__sceneTaxonomyDetectorNodeSceneIDsFro
   v6[1] = 3221225472;
   v6[2] = __46__PHPhotoLibrary_MigrationDate__migrationDate__block_invoke;
   v6[3] = &unk_1E75AADC0;
-  v3 = v2;
+  v3 = photoLibrary;
   v7 = v3;
   v8 = &v9;
   [v3 performBlockAndWait:v6];
@@ -10605,13 +10605,13 @@ void __46__PHPhotoLibrary_MigrationDate__migrationDate__block_invoke(uint64_t a1
   *(v5 + 40) = v4;
 }
 
-- (BOOL)cancelReservedCloudIdentifiers:(id)a3 error:(id *)a4
+- (BOOL)cancelReservedCloudIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = [a3 _pl_map:&__block_literal_global_1403];
-  v7 = [(PHPhotoLibrary *)self assetsdClient];
-  v8 = [v7 photoKitClient];
+  v6 = [identifiers _pl_map:&__block_literal_global_1403];
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  photoKitClient = [assetsdClient photoKitClient];
   v16 = 0;
-  v9 = [v8 cancelReservedCloudIdentifiers:v6 error:&v16];
+  v9 = [photoKitClient cancelReservedCloudIdentifiers:v6 error:&v16];
   v10 = v16;
 
   if (v9)
@@ -10625,25 +10625,25 @@ void __46__PHPhotoLibrary_MigrationDate__migrationDate__block_invoke(uint64_t a1
 
     v13 = v12;
     v11 = v13;
-    if (a4)
+    if (error)
     {
       v14 = v13;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
   return v9;
 }
 
-- (BOOL)cancelReservedCloudIdentifiersWithObjectType:(int64_t)a3 error:(id *)a4
+- (BOOL)cancelReservedCloudIdentifiersWithObjectType:(int64_t)type error:(id *)error
 {
-  v6 = [PHPhotoLibrary PHObjectClassForObjectType:a3];
-  v7 = [(objc_class *)v6 identifierCode];
-  v8 = [(objc_class *)v6 managedEntityName];
-  v9 = v8;
-  if (v7)
+  v6 = [PHPhotoLibrary PHObjectClassForObjectType:type];
+  identifierCode = [(objc_class *)v6 identifierCode];
+  managedEntityName = [(objc_class *)v6 managedEntityName];
+  v9 = managedEntityName;
+  if (identifierCode)
   {
-    v10 = v8 == 0;
+    v10 = managedEntityName == 0;
   }
 
   else
@@ -10660,10 +10660,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v11 = [(PHPhotoLibrary *)self assetsdClient];
-  v12 = [v11 photoKitClient];
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  photoKitClient = [assetsdClient photoKitClient];
   v21 = 0;
-  v13 = [v12 cancelReservedCloudIdentifiersWithEntityName:v9 error:&v21];
+  v13 = [photoKitClient cancelReservedCloudIdentifiersWithEntityName:v9 error:&v21];
   v14 = v21;
 
   if (v13)
@@ -10675,11 +10675,11 @@ LABEL_8:
 
   v19 = v18;
   v15 = v19;
-  if (a4)
+  if (error)
   {
     v20 = v19;
     v16 = 0;
-    *a4 = v15;
+    *error = v15;
   }
 
   else
@@ -10692,16 +10692,16 @@ LABEL_9:
   return v16;
 }
 
-- (id)reservedCloudIdentifiersWithObjectType:(int64_t)a3 error:(id *)a4
+- (id)reservedCloudIdentifiersWithObjectType:(int64_t)type error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = [PHPhotoLibrary PHObjectClassForObjectType:a3];
-  v7 = [(objc_class *)v6 identifierCode];
-  v8 = [(objc_class *)v6 managedEntityName];
-  v9 = v8;
-  if (v7)
+  v6 = [PHPhotoLibrary PHObjectClassForObjectType:type];
+  identifierCode = [(objc_class *)v6 identifierCode];
+  managedEntityName = [(objc_class *)v6 managedEntityName];
+  v9 = managedEntityName;
+  if (identifierCode)
   {
-    v10 = v8 == 0;
+    v10 = managedEntityName == 0;
   }
 
   else
@@ -10713,38 +10713,38 @@ LABEL_9:
   {
     v11 = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:0];
 LABEL_18:
-    if (a4)
+    if (error)
     {
       v24 = v11;
-      v16 = 0;
-      *a4 = v11;
+      array = 0;
+      *error = v11;
     }
 
     else
     {
-      v16 = 0;
+      array = 0;
     }
 
     goto LABEL_21;
   }
 
-  v12 = [(PHPhotoLibrary *)self assetsdClient];
-  v13 = [v12 photoKitClient];
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  photoKitClient = [assetsdClient photoKitClient];
   v31 = 0;
-  v14 = [v13 reservedCloudIdentifiersWithEntityName:v9 error:&v31];
+  v14 = [photoKitClient reservedCloudIdentifiersWithEntityName:v9 error:&v31];
   v15 = v31;
 
   if (v14)
   {
     v26 = v15;
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
   else
   {
     v17 = PHPublicErrorFromError(v15);
 
-    v16 = 0;
+    array = 0;
     v26 = v17;
   }
 
@@ -10767,8 +10767,8 @@ LABEL_18:
           objc_enumerationMutation(v18);
         }
 
-        v23 = [[PHCloudIdentifier alloc] initWithLocalCloudIdentifier:*(*(&v27 + 1) + 8 * i) identifierCode:v7 stableHash:&stru_1F0FC60C8];
-        [v16 addObject:v23];
+        v23 = [[PHCloudIdentifier alloc] initWithLocalCloudIdentifier:*(*(&v27 + 1) + 8 * i) identifierCode:identifierCode stableHash:&stru_1F0FC60C8];
+        [array addObject:v23];
       }
 
       v20 = [v18 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -10778,45 +10778,45 @@ LABEL_18:
   }
 
   v11 = v26;
-  if (!v16)
+  if (!array)
   {
     goto LABEL_18;
   }
 
 LABEL_21:
 
-  return v16;
+  return array;
 }
 
-- (id)reserveCloudIdentifiersWithObjectType:(int64_t)a3 count:(unint64_t)a4 error:(id *)a5
+- (id)reserveCloudIdentifiersWithObjectType:(int64_t)type count:(unint64_t)count error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (*MEMORY[0x1E69BE930] < a4)
+  if (*MEMORY[0x1E69BE930] < count)
   {
     v6 = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:3204 userInfo:0];
 LABEL_21:
-    if (a5)
+    if (error)
     {
       v27 = v6;
-      v15 = 0;
-      *a5 = v6;
+      array = 0;
+      *error = v6;
     }
 
     else
     {
-      v15 = 0;
+      array = 0;
     }
 
     goto LABEL_24;
   }
 
-  v9 = [PHPhotoLibrary PHObjectClassForObjectType:a3];
-  v10 = [(objc_class *)v9 identifierCode];
-  v11 = [(objc_class *)v9 managedEntityName];
-  v12 = v11;
-  if (v10)
+  v9 = [PHPhotoLibrary PHObjectClassForObjectType:type];
+  identifierCode = [(objc_class *)v9 identifierCode];
+  managedEntityName = [(objc_class *)v9 managedEntityName];
+  v12 = managedEntityName;
+  if (identifierCode)
   {
-    v13 = v11 == 0;
+    v13 = managedEntityName == 0;
   }
 
   else
@@ -10827,28 +10827,28 @@ LABEL_21:
   if (v13)
   {
     v14 = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:0];
-    v15 = 0;
+    array = 0;
   }
 
   else
   {
-    v16 = [(PHPhotoLibrary *)self assetsdClient];
-    v17 = [v16 photoKitClient];
+    assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+    photoKitClient = [assetsdClient photoKitClient];
     v34 = 0;
-    v18 = [v17 reserveCloudIdentifiersWithEntityName:v12 count:a4 error:&v34];
+    v18 = [photoKitClient reserveCloudIdentifiersWithEntityName:v12 count:count error:&v34];
     v19 = v34;
 
     if (v18)
     {
       v29 = v19;
-      v15 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
     else
     {
       v20 = PHPublicErrorFromError(v19);
 
-      v15 = 0;
+      array = 0;
       v29 = v20;
     }
 
@@ -10871,8 +10871,8 @@ LABEL_21:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [[PHCloudIdentifier alloc] initWithLocalCloudIdentifier:*(*(&v30 + 1) + 8 * i) identifierCode:v10 stableHash:&stru_1F0FC60C8];
-          [v15 addObject:v26];
+          v26 = [[PHCloudIdentifier alloc] initWithLocalCloudIdentifier:*(*(&v30 + 1) + 8 * i) identifierCode:identifierCode stableHash:&stru_1F0FC60C8];
+          [array addObject:v26];
         }
 
         v23 = [v21 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -10885,20 +10885,20 @@ LABEL_21:
   }
 
   v6 = v14;
-  if (!v15)
+  if (!array)
   {
     goto LABEL_21;
   }
 
 LABEL_24:
 
-  return v15;
+  return array;
 }
 
-+ (void)setNeedsToRepairKeyCuratedAssetForMemories:(id)a3
++ (void)setNeedsToRepairKeyCuratedAssetForMemories:(id)memories
 {
-  v3 = a3;
-  v4 = [v3 valueForKey:@"uuid"];
+  memoriesCopy = memories;
+  v4 = [memoriesCopy valueForKey:@"uuid"];
   if (setNeedsToRepairKeyCuratedAssetForMemories__onceToken != -1)
   {
     dispatch_once(&setNeedsToRepairKeyCuratedAssetForMemories__onceToken, &__block_literal_global_1369);
@@ -10909,10 +10909,10 @@ LABEL_24:
   v8[1] = 3221225472;
   v8[2] = __69__PHPhotoLibrary_Repair__setNeedsToRepairKeyCuratedAssetForMemories___block_invoke_2;
   v8[3] = &unk_1E75AAEB0;
-  v9 = v3;
+  v9 = memoriesCopy;
   v10 = v4;
   v6 = v4;
-  v7 = v3;
+  v7 = memoriesCopy;
   dispatch_async(v5, v8);
 }
 
@@ -10998,17 +10998,17 @@ uint64_t __69__PHPhotoLibrary_Repair__setNeedsToRepairKeyCuratedAssetForMemories
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)setSharedPhotoLibrary:(id)a3
++ (void)setSharedPhotoLibrary:(id)library
 {
-  v4 = a3;
-  [a1 assertRunningInExtension];
+  libraryCopy = library;
+  [self assertRunningInExtension];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__PHPhotoLibrary_ProjectExtensions__setSharedPhotoLibrary___block_invoke;
   block[3] = &unk_1E75AB270;
-  v8 = v4;
+  v8 = libraryCopy;
   v5 = sharedPhotoLibraryOnceToken;
-  v6 = v4;
+  v6 = libraryCopy;
   if (v5 != -1)
   {
     dispatch_once(&sharedPhotoLibraryOnceToken, block);
@@ -11056,34 +11056,34 @@ void __61__PHPhotoLibrary_ProjectExtensions__assertRunningInExtension__block_inv
 
 - (id)_cloudInternalClient
 {
-  v2 = [(PHPhotoLibrary *)self photoLibrary];
-  v3 = [v2 assetsdClient];
-  v4 = [v3 cloudInternalClient];
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
 
-  return v4;
+  return cloudInternalClient;
 }
 
-- (void)overrideSystemBudgetsForSyncSession:(BOOL)a3 pauseReason:(id)a4 systemBudgets:(unint64_t)a5 completionHandler:(id)a6
+- (void)overrideSystemBudgetsForSyncSession:(BOOL)session pauseReason:(id)reason systemBudgets:(unint64_t)budgets completionHandler:(id)handler
 {
-  v8 = a3;
-  v10 = a6;
-  v11 = a4;
-  v12 = [(PHPhotoLibrary *)self _cloudInternalClient];
-  [v12 overrideSystemBudgetsForSyncSession:v8 pauseReason:v11 systemBudgets:a5 completionHandler:v10];
+  sessionCopy = session;
+  handlerCopy = handler;
+  reasonCopy = reason;
+  _cloudInternalClient = [(PHPhotoLibrary *)self _cloudInternalClient];
+  [_cloudInternalClient overrideSystemBudgetsForSyncSession:sessionCopy pauseReason:reasonCopy systemBudgets:budgets completionHandler:handlerCopy];
 }
 
-- (void)setCloudPhotoLibraryPauseState:(BOOL)a3 reason:(signed __int16)a4
+- (void)setCloudPhotoLibraryPauseState:(BOOL)state reason:(signed __int16)reason
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(PHPhotoLibrary *)self _cloudInternalClient];
-  [v6 setCloudPhotoLibraryPauseState:v5 reason:v4];
+  reasonCopy = reason;
+  stateCopy = state;
+  _cloudInternalClient = [(PHPhotoLibrary *)self _cloudInternalClient];
+  [_cloudInternalClient setCloudPhotoLibraryPauseState:stateCopy reason:reasonCopy];
 }
 
-- (void)_validateSpotlightAvailabilityInFeatureAvailability:(id)a3 forFeature:(unint64_t)a4 completionHandler:(id)a5
+- (void)_validateSpotlightAvailabilityInFeatureAvailability:(id)availability forFeature:(unint64_t)feature completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  availabilityCopy = availability;
+  handlerCopy = handler;
   v9 = PLPhotoKitGetLog();
   v10 = os_signpost_id_generate(v9);
 
@@ -11095,19 +11095,19 @@ void __61__PHPhotoLibrary_ProjectExtensions__assertRunningInExtension__block_inv
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "PHFeatureAvailability - validateSpotlightAvailabilityInFeatureAvailability", byte_19CB567AE, buf, 2u);
   }
 
-  v13 = [(PHPhotoLibrary *)self searchIndex];
+  searchIndex = [(PHPhotoLibrary *)self searchIndex];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3254779904;
   v17[2] = __120__PHPhotoLibrary_FeatureAvailability___validateSpotlightAvailabilityInFeatureAvailability_forFeature_completionHandler___block_invoke;
   v17[3] = &unk_1F0FC3DA0;
-  v14 = v7;
+  v14 = availabilityCopy;
   v18 = v14;
   v15 = v12;
   v20 = v15;
   v21 = v10;
-  v16 = v8;
+  v16 = handlerCopy;
   v19 = v16;
-  [v13 validateSpotlightIndexForLibraryExistsWithCompletionHandler:v17];
+  [searchIndex validateSpotlightIndexForLibraryExistsWithCompletionHandler:v17];
 }
 
 void __120__PHPhotoLibrary_FeatureAvailability___validateSpotlightAvailabilityInFeatureAvailability_forFeature_completionHandler___block_invoke(uint64_t a1, char a2, void *a3)
@@ -11156,10 +11156,10 @@ void __120__PHPhotoLibrary_FeatureAvailability___validateSpotlightAvailabilityIn
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_updateGraphAvailabilityInFeatureAvailability:(id)a3 forFeature:(unint64_t)a4 error:(id *)a5
+- (id)_updateGraphAvailabilityInFeatureAvailability:(id)availability forFeature:(unint64_t)feature error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  availabilityCopy = availability;
   v8 = PLPhotoKitGetLog();
   v9 = os_signpost_id_generate(v8);
 
@@ -11181,21 +11181,21 @@ void __120__PHPhotoLibrary_FeatureAvailability___validateSpotlightAvailabilityIn
       _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - %s called from PAD, using input FeatureAvailability as is", &v22, 0xCu);
     }
 
-    v13 = v7;
+    v13 = availabilityCopy;
   }
 
   else
   {
-    v14 = [(PHPhotoLibrary *)self photoAnalysisClient];
-    v15 = v14;
-    if (v14)
+    photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+    v15 = photoAnalysisClient;
+    if (photoAnalysisClient)
     {
-      v16 = [v14 requestGraphStatus:a5];
+      v16 = [photoAnalysisClient requestGraphStatus:error];
       v17 = v16;
       if (v16)
       {
         v18 = [v16 availability] == 2;
-        v13 = [MEMORY[0x1E69BE418] availabilityFromFeatureAvailability:v7 withGraphIsAvailable:v18];
+        v13 = [MEMORY[0x1E69BE418] availabilityFromFeatureAvailability:availabilityCopy withGraphIsAvailable:v18];
         v19 = v11;
         v20 = v19;
         if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
@@ -11211,10 +11211,10 @@ void __120__PHPhotoLibrary_FeatureAvailability___validateSpotlightAvailabilityIn
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       [MEMORY[0x1E696ABC0] ph_errorWithCode:-1 localizedDescription:@"Could not get PhotoAnalysis client."];
-      *a5 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -11226,10 +11226,10 @@ void __120__PHPhotoLibrary_FeatureAvailability___validateSpotlightAvailabilityIn
   return v13;
 }
 
-- (void)featureAvailabilityForFeature:(unint64_t)a3 readOptions:(id)a4 completionHandler:(id)a5
+- (void)featureAvailabilityForFeature:(unint64_t)feature readOptions:(id)options completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  handlerCopy = handler;
   v10 = PLPhotoKitGetLog();
   v11 = os_signpost_id_generate(v10);
 
@@ -11241,27 +11241,27 @@ void __120__PHPhotoLibrary_FeatureAvailability___validateSpotlightAvailabilityIn
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "PHFeatureAvailability - featureAvailabilityForFeature", byte_19CB567AE, buf, 2u);
   }
 
-  v14 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
-  v15 = [v14 globalValues];
-  v16 = [v15 featureAvailability];
+  photoLibraryForCurrentQueueQoS = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  globalValues = [photoLibraryForCurrentQueueQoS globalValues];
+  featureAvailability = [globalValues featureAvailability];
 
-  if (v16)
+  if (featureAvailability)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3254779904;
     aBlock[2] = __99__PHPhotoLibrary_FeatureAvailability__featureAvailabilityForFeature_readOptions_completionHandler___block_invoke;
     aBlock[3] = &unk_1F0FC3D68;
-    v33 = a3;
+    featureCopy = feature;
     v34 = v13;
     v35 = v11;
-    v32 = v9;
+    v32 = handlerCopy;
     v17 = _Block_copy(aBlock);
-    v18 = [objc_alloc(MEMORY[0x1E69BE418]) initWithDictionary:v16];
+    v18 = [objc_alloc(MEMORY[0x1E69BE418]) initWithDictionary:featureAvailability];
     v19 = v18;
-    if ([v8 useJustInTimeGraphAvailability])
+    if ([optionsCopy useJustInTimeGraphAvailability])
     {
       v30 = 0;
-      v20 = [(PHPhotoLibrary *)self _updateGraphAvailabilityInFeatureAvailability:v18 forFeature:a3 error:&v30];
+      v20 = [(PHPhotoLibrary *)self _updateGraphAvailabilityInFeatureAvailability:v18 forFeature:feature error:&v30];
       v19 = v30;
 
       if (!v20)
@@ -11280,14 +11280,14 @@ LABEL_18:
       v19 = v20;
     }
 
-    if ([v8 validateSpotlightAvailability])
+    if ([optionsCopy validateSpotlightAvailability])
     {
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __99__PHPhotoLibrary_FeatureAvailability__featureAvailabilityForFeature_readOptions_completionHandler___block_invoke_35;
       v27[3] = &unk_1E75A7510;
       v27[4] = self;
-      v29 = a3;
+      featureCopy2 = feature;
       v28 = v17;
       v21 = _Block_copy(v27);
     }
@@ -11308,7 +11308,7 @@ LABEL_18:
     _os_log_impl(&dword_19C86F000, v22, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - availability was nil, initing new", buf, 2u);
   }
 
-  v23 = [[PHFeatureAvailability alloc] initForFeature:a3];
+  v23 = [[PHFeatureAvailability alloc] initForFeature:feature];
   v24 = v13;
   v25 = v24;
   if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
@@ -11317,7 +11317,7 @@ LABEL_18:
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v25, OS_SIGNPOST_INTERVAL_END, v11, "PHFeatureAvailability - featureAvailabilityForFeature", byte_19CB567AE, buf, 2u);
   }
 
-  (*(v9 + 2))(v9, v23, 0);
+  (*(handlerCopy + 2))(handlerCopy, v23, 0);
 LABEL_19:
 }
 
@@ -11369,10 +11369,10 @@ void __99__PHPhotoLibrary_FeatureAvailability__featureAvailabilityForFeature_rea
   }
 }
 
-- (id)featureAvailabilityForFeature:(unint64_t)a3 readOptions:(id)a4 error:(id *)a5
+- (id)featureAvailabilityForFeature:(unint64_t)feature readOptions:(id)options error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  optionsCopy = options;
   v8 = PLPhotoKitGetLog();
   v9 = os_signpost_id_generate(v8);
 
@@ -11384,22 +11384,22 @@ void __99__PHPhotoLibrary_FeatureAvailability__featureAvailabilityForFeature_rea
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "PHFeatureAvailability - featureAvailabilityForFeature", byte_19CB567AE, buf, 2u);
   }
 
-  v12 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
-  v13 = [v12 globalValues];
-  v14 = [v13 featureAvailability];
+  photoLibraryForCurrentQueueQoS = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  globalValues = [photoLibraryForCurrentQueueQoS globalValues];
+  featureAvailability = [globalValues featureAvailability];
 
-  if (v14)
+  if (featureAvailability)
   {
-    v15 = [objc_alloc(MEMORY[0x1E69BE418]) initWithDictionary:v14];
-    if ([v7 useJustInTimeGraphAvailability])
+    v15 = [objc_alloc(MEMORY[0x1E69BE418]) initWithDictionary:featureAvailability];
+    if ([optionsCopy useJustInTimeGraphAvailability])
     {
       v25 = 0;
-      v16 = [(PHPhotoLibrary *)self _updateGraphAvailabilityInFeatureAvailability:v15 forFeature:a3 error:&v25];
+      v16 = [(PHPhotoLibrary *)self _updateGraphAvailabilityInFeatureAvailability:v15 forFeature:feature error:&v25];
       v17 = v25;
 
       if (v16)
       {
-        v18 = [[PHFeatureAvailability alloc] initForFeature:a3 withPLFeatureAvailability:v16];
+        v18 = [[PHFeatureAvailability alloc] initForFeature:feature withPLFeatureAvailability:v16];
       }
 
       else
@@ -11412,7 +11412,7 @@ void __99__PHPhotoLibrary_FeatureAvailability__featureAvailabilityForFeature_rea
           _os_log_impl(&dword_19C86F000, v21, OS_LOG_TYPE_ERROR, "FeatureAvailability - updated availability was nil, initing new. Encountered error: %@", buf, 0xCu);
         }
 
-        v18 = [[PHFeatureAvailability alloc] initForFeature:a3];
+        v18 = [[PHFeatureAvailability alloc] initForFeature:feature];
       }
 
       v20 = v18;
@@ -11420,7 +11420,7 @@ void __99__PHPhotoLibrary_FeatureAvailability__featureAvailabilityForFeature_rea
 
     else
     {
-      v20 = [[PHFeatureAvailability alloc] initForFeature:a3 withPLFeatureAvailability:v15];
+      v20 = [[PHFeatureAvailability alloc] initForFeature:feature withPLFeatureAvailability:v15];
       v16 = v15;
     }
 
@@ -11442,7 +11442,7 @@ void __99__PHPhotoLibrary_FeatureAvailability__featureAvailabilityForFeature_rea
       _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - availability was nil, initing new", buf, 2u);
     }
 
-    v20 = [[PHFeatureAvailability alloc] initForFeature:a3];
+    v20 = [[PHFeatureAvailability alloc] initForFeature:feature];
   }
 
   return v20;
@@ -11518,8 +11518,8 @@ void __99__PHPhotoLibrary_FeatureAvailability__featureAvailabilityForFeature_rea
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * i) localCloudIdentifier];
-        v13 = [v5 objectForKeyedSubscript:v12];
+        localCloudIdentifier = [*(*(&v17 + 1) + 8 * i) localCloudIdentifier];
+        v13 = [v5 objectForKeyedSubscript:localCloudIdentifier];
 
         if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
@@ -11543,21 +11543,21 @@ void __99__PHPhotoLibrary_FeatureAvailability__featureAvailabilityForFeature_rea
   return v6;
 }
 
-- (id)cloudIdentifierMappingsForLocalIdentifiers:(id)a3 excludeUnsyncedItems:(BOOL)a4
+- (id)cloudIdentifierMappingsForLocalIdentifiers:(id)identifiers excludeUnsyncedItems:(BOOL)items
 {
-  v4 = a4;
+  itemsCopy = items;
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifiersCopy = identifiers;
   v7 = [[PHCloudIdentifierLookup alloc] initWithPhotoLibrary:self];
-  [(PHCloudIdentifierLookup *)v7 setExcludeUnsyncedItems:v4];
+  [(PHCloudIdentifierLookup *)v7 setExcludeUnsyncedItems:itemsCopy];
   v20 = v7;
-  v8 = [(PHCloudIdentifierLookup *)v7 lookupCloudIdentifiersForLocalIdentifiers:v6];
-  v21 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  v8 = [(PHCloudIdentifierLookup *)v7 lookupCloudIdentifiersForLocalIdentifiers:identifiersCopy];
+  v21 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v6;
+  obj = identifiersCopy;
   v9 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
@@ -11576,7 +11576,7 @@ void __99__PHPhotoLibrary_FeatureAvailability__featureAvailabilityForFeature_rea
         v14 = objc_autoreleasePoolPush();
         v15 = [v8 objectForKeyedSubscript:v13];
         v16 = v15;
-        if (v15 || !v4)
+        if (v15 || !itemsCopy)
         {
           if (v15)
           {
@@ -11632,8 +11632,8 @@ void __99__PHPhotoLibrary_FeatureAvailability__featureAvailabilityForFeature_rea
 
         v10 = *(*(&v26 + 1) + 8 * i);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 localCloudIdentifier];
-        v13 = [v5 objectForKeyedSubscript:v12];
+        localCloudIdentifier = [v10 localCloudIdentifier];
+        v13 = [v5 objectForKeyedSubscript:localCloudIdentifier];
 
         if (!v13)
         {
@@ -11685,16 +11685,16 @@ LABEL_15:
   return v25;
 }
 
-- (id)bfa_fetchUUIDsForRestrictedOIDs:(id)a3
+- (id)bfa_fetchUUIDsForRestrictedOIDs:(id)ds
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)self assetsdClient];
-  v6 = [v5 photoKitClient];
+  dsCopy = ds;
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  photoKitClient = [assetsdClient photoKitClient];
 
-  v7 = [(PHPhotoLibrary *)self objectFetchingContextForCurrentQueueQoS];
+  objectFetchingContextForCurrentQueueQoS = [(PHPhotoLibrary *)self objectFetchingContextForCurrentQueueQoS];
   v12 = 0;
-  v8 = [v6 getUUIDsForAssetObjectIDs:v4 filterPredicate:0 context:v7 error:&v12];
+  v8 = [photoKitClient getUUIDsForAssetObjectIDs:dsCopy filterPredicate:0 context:objectFetchingContextForCurrentQueueQoS error:&v12];
 
   v9 = v12;
   if (!v8)
@@ -11711,27 +11711,27 @@ LABEL_15:
   return v8;
 }
 
-- (BOOL)bfa_supportsPrivacyRestrictionsForOIDs:(id)a3
+- (BOOL)bfa_supportsPrivacyRestrictionsForOIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v14 = 0;
-  if ([v4 count])
+  if ([dsCopy count])
   {
-    v5 = [(PHPhotoLibrary *)self photoLibraryBundle];
-    v6 = [v5 connectionType];
+    photoLibraryBundle = [(PHPhotoLibrary *)self photoLibraryBundle];
+    connectionType = [photoLibraryBundle connectionType];
 
-    if (v6 == 1)
+    if (connectionType == 1)
     {
       objc_opt_class();
-      v7 = [v4 firstObject];
-      v8 = (objc_opt_isKindOfClass() & 1) != 0 ? v7 : 0;
+      firstObject = [dsCopy firstObject];
+      v8 = (objc_opt_isKindOfClass() & 1) != 0 ? firstObject : 0;
       v9 = v8;
 
-      v10 = [v9 entity];
+      entity = [v9 entity];
 
-      v11 = [v10 name];
-      v12 = [MEMORY[0x1E69BE540] entityName];
-      v13 = [v11 isEqualToString:v12];
+      name = [entity name];
+      entityName = [MEMORY[0x1E69BE540] entityName];
+      v13 = [name isEqualToString:entityName];
 
       if (v13)
       {
@@ -11743,17 +11743,17 @@ LABEL_15:
   return v14;
 }
 
-- (id)bfa_tombstoneObjectForOID:(id)a3 uuid:(id)a4 propertyHint:(unint64_t)a5 overrideResultsWithClass:(Class)a6
+- (id)bfa_tombstoneObjectForOID:(id)d uuid:(id)uuid propertyHint:(unint64_t)hint overrideResultsWithClass:(Class)class
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  if (!a6)
+  dCopy = d;
+  uuidCopy = uuid;
+  if (!class)
   {
-    a6 = [PHPhotoLibrary PHObjectClassForOID:v10];
+    class = [PHPhotoLibrary PHObjectClassForOID:dCopy];
   }
 
-  v12 = [(objc_class *)a6 entityKeyForPropertyKey:@"uuid"];
+  v12 = [(objc_class *)class entityKeyForPropertyKey:@"uuid"];
   v13 = v12;
   if (v12)
   {
@@ -11769,30 +11769,30 @@ LABEL_15:
 
   v19[0] = @"objectID";
   v19[1] = @"deleted";
-  v20[0] = v10;
+  v20[0] = dCopy;
   v20[1] = MEMORY[0x1E695E118];
   v19[2] = v15;
-  v20[2] = v11;
+  v20[2] = uuidCopy;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
 
-  v17 = [[a6 alloc] initWithFetchDictionary:v16 propertyHint:a5 photoLibrary:self];
+  v17 = [[class alloc] initWithFetchDictionary:v16 propertyHint:hint photoLibrary:self];
 
   return v17;
 }
 
-- (id)fetchPersonAvailabilityOfDetectionTypes:(id)a3 error:(id *)a4
+- (id)fetchPersonAvailabilityOfDetectionTypes:(id)types error:(id *)error
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoLibrary];
-  if (v7)
+  typesCopy = types;
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+  if (photoLibrary)
   {
-    if (!v6)
+    if (!typesCopy)
     {
-      v6 = +[PHFetchOptions defaultDetectionTypes];
+      typesCopy = +[PHFetchOptions defaultDetectionTypes];
     }
 
-    v8 = [MEMORY[0x1E69BE608] predicateForIncludedDetectionTypes:v6];
+    v8 = [MEMORY[0x1E69BE608] predicateForIncludedDetectionTypes:typesCopy];
     v30 = 0;
     v31 = &v30;
     v32 = 0x3032000000;
@@ -11805,26 +11805,26 @@ LABEL_15:
     v27 = __Block_byref_object_copy__47428;
     v28 = __Block_byref_object_dispose__47429;
     v29 = 0;
-    v9 = [v7 managedObjectContext];
+    managedObjectContext = [photoLibrary managedObjectContext];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __84__PHPhotoLibrary_PersonAvailability__fetchPersonAvailabilityOfDetectionTypes_error___block_invoke;
     v18[3] = &unk_1E75A9FC0;
     v10 = v8;
     v19 = v10;
-    v11 = v9;
+    v11 = managedObjectContext;
     v20 = v11;
     v22 = &v24;
     v23 = &v30;
-    v6 = v6;
-    v21 = v6;
+    typesCopy = typesCopy;
+    v21 = typesCopy;
     [v11 performBlockAndWait:v18];
     v12 = v31[5];
     v13 = v25[5];
-    if (!v12 && a4)
+    if (!v12 && error)
     {
       v13 = v13;
-      *a4 = v13;
+      *error = v13;
     }
 
     v14 = v31[5];
@@ -11840,10 +11840,10 @@ LABEL_15:
     v37[0] = @"Unable to obtain PLPhotoLibrary";
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
     v16 = [v15 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3109 userInfo:v10];
-    if (a4)
+    if (error)
     {
       v16 = v16;
-      *a4 = v16;
+      *error = v16;
     }
 
     v14 = 0;
@@ -11990,25 +11990,25 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)coalesceAndAnalyzeAssets:(id)a3 forFeature:(unint64_t)a4
+- (void)coalesceAndAnalyzeAssets:(id)assets forFeature:(unint64_t)feature
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self analysisCoalescer];
-  [v7 coalesceAndAnalyzeAssets:v6 forFeature:a4];
+  assetsCopy = assets;
+  analysisCoalescer = [(PHPhotoLibrary *)self analysisCoalescer];
+  [analysisCoalescer coalesceAndAnalyzeAssets:assetsCopy forFeature:feature];
 }
 
-- (id)analyzeLibraryForFeature:(unint64_t)a3 withCompletion:(id)a4
+- (id)analyzeLibraryForFeature:(unint64_t)feature withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PHPhotoLibrary *)self assetsdClient];
-  v8 = [v7 photoKitClient];
+  completionCopy = completion;
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  photoKitClient = [assetsdClient photoKitClient];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __73__PHPhotoLibrary_AssetAnalysis__analyzeLibraryForFeature_withCompletion___block_invoke;
   v12[3] = &unk_1E75AA248;
-  v13 = v6;
-  v9 = v6;
-  v10 = [v8 analyzeLibraryForFeature:a3 withCompletionHandler:v12];
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = [photoKitClient analyzeLibraryForFeature:feature withCompletionHandler:v12];
 
   return v10;
 }
@@ -12023,19 +12023,19 @@ void __73__PHPhotoLibrary_AssetAnalysis__analyzeLibraryForFeature_withCompletion
   (*(v2 + 16))(v2, v4, v5);
 }
 
-- (id)analyzeAssets:(id)a3 forFeature:(unint64_t)a4 withCompletion:(id)a5
+- (id)analyzeAssets:(id)assets forFeature:(unint64_t)feature withCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PHPhotoLibrary *)self assetsdClient];
-  v11 = [v10 photoKitClient];
+  completionCopy = completion;
+  assetsCopy = assets;
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  photoKitClient = [assetsdClient photoKitClient];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __73__PHPhotoLibrary_AssetAnalysis__analyzeAssets_forFeature_withCompletion___block_invoke;
   v15[3] = &unk_1E75AA248;
-  v16 = v8;
-  v12 = v8;
-  v13 = [v11 analyzeAssets:v9 forFeature:a4 withCompletionHandler:v15];
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = [photoKitClient analyzeAssets:assetsCopy forFeature:feature withCompletionHandler:v15];
 
   return v13;
 }
@@ -12050,67 +12050,67 @@ void __73__PHPhotoLibrary_AssetAnalysis__analyzeAssets_forFeature_withCompletion
   (*(v2 + 16))(v2, v4, v5);
 }
 
-- (void)requestGraphModelResultWithOptions:(id)a3 progress:(id)a4 completion:(id)a5
+- (void)requestGraphModelResultWithOptions:(id)options progress:(id)progress completion:(id)completion
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v11 = v10;
-  if (v10)
+  optionsCopy = options;
+  progressCopy = progress;
+  completionCopy = completion;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v11 = photoAnalysisClient;
+  if (photoAnalysisClient)
   {
-    [v10 requestGraphModelResultWithOptions:v12 progress:v8 reply:v9];
+    [photoAnalysisClient requestGraphModelResultWithOptions:optionsCopy progress:progressCopy reply:completionCopy];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
 - (id)newUnclusteredFacesFetchOptions
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69BE5A0] currentFaceVersion];
-  v4 = [v3 intValue];
+  currentFaceVersion = [MEMORY[0x1E69BE5A0] currentFaceVersion];
+  intValue = [currentFaceVersion intValue];
 
-  v5 = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
-  [v5 setIncludeNonvisibleFaces:1];
-  [v5 setIncludeOnlyFacesWithFaceprints:1];
-  v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K = %d) AND (((%K = 0) AND (%K = 0) AND ((%K = %d) OR (%K = nil))) OR ((%K = %d) OR (%K = %d) OR (%K = %d)))", @"faceAlgorithmVersion", v4, @"hidden", @"manual", @"trainingType", 0, @"trainingType", @"trainingType", 1, @"trainingType", 2, @"trainingType", 5];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeNonvisibleFaces:1];
+  [librarySpecificFetchOptions setIncludeOnlyFacesWithFaceprints:1];
+  v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K = %d) AND (((%K = 0) AND (%K = 0) AND ((%K = %d) OR (%K = nil))) OR ((%K = %d) OR (%K = %d) OR (%K = %d)))", @"faceAlgorithmVersion", intValue, @"hidden", @"manual", @"trainingType", 0, @"trainingType", @"trainingType", 1, @"trainingType", 2, @"trainingType", 5];
   v7 = MEMORY[0x1E696AB28];
   v12[0] = v6;
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = 0", @"vuObservationID"];
   v12[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
   v10 = [v7 andPredicateWithSubpredicates:v9];
-  [v5 setInternalPredicate:v10];
+  [librarySpecificFetchOptions setInternalPredicate:v10];
 
-  [v5 setIncludedDetectionTypes:&unk_1F102E438];
-  return v5;
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F102E438];
+  return librarySpecificFetchOptions;
 }
 
 - (id)newFaceCropsToBeGeneratedFetchOptions
 {
-  v2 = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
-  [v2 setIncludeOnlyFacesNeedingFaceCrop:1];
-  [v2 setIncludeNonvisibleFaces:1];
-  [v2 setIncludedDetectionTypes:&unk_1F102E420];
-  return v2;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeOnlyFacesNeedingFaceCrop:1];
+  [librarySpecificFetchOptions setIncludeNonvisibleFaces:1];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F102E420];
+  return librarySpecificFetchOptions;
 }
 
 - (id)newClusteringEligibleFacesFetchOptions
 {
-  v3 = [MEMORY[0x1E69BE5A0] currentFaceVersion];
-  v4 = [v3 intValue];
+  currentFaceVersion = [MEMORY[0x1E69BE5A0] currentFaceVersion];
+  intValue = [currentFaceVersion intValue];
 
-  v5 = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
-  [v5 setIncludeNonvisibleFaces:1];
-  [v5 setIncludeOnlyFacesWithFaceprints:1];
-  v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(faceAlgorithmVersion = %d) AND (((hidden = 0) AND (manual = 0) AND ((trainingType = %d) OR (trainingType = nil))) OR ((trainingType = %d) OR (trainingType = %d) OR (trainingType = %d)))", v4, 0, 1, 2, 5];
-  [v5 setInternalPredicate:v6];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeNonvisibleFaces:1];
+  [librarySpecificFetchOptions setIncludeOnlyFacesWithFaceprints:1];
+  v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(faceAlgorithmVersion = %d) AND (((hidden = 0) AND (manual = 0) AND ((trainingType = %d) OR (trainingType = nil))) OR ((trainingType = %d) OR (trainingType = %d) OR (trainingType = %d)))", intValue, 0, 1, 2, 5];
+  [librarySpecificFetchOptions setInternalPredicate:v6];
 
-  return v5;
+  return librarySpecificFetchOptions;
 }
 
 - (unint64_t)countOfUnclusteredFaces
@@ -12126,13 +12126,13 @@ void __73__PHPhotoLibrary_AssetAnalysis__analyzeAssets_forFeature_withCompletion
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v4, "CountOfUnclusteredFaces", byte_19CB567AE, v14, 2u);
   }
 
-  v7 = [(PHPhotoLibrary *)self newUnclusteredFacesFetchOptions];
-  [v7 setShouldPrefetchCount:1];
+  newUnclusteredFacesFetchOptions = [(PHPhotoLibrary *)self newUnclusteredFacesFetchOptions];
+  [newUnclusteredFacesFetchOptions setShouldPrefetchCount:1];
   v15[0] = @"PHFacePropertySetIdentifier";
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  [v7 setFetchPropertySets:v8];
+  [newUnclusteredFacesFetchOptions setFetchPropertySets:v8];
 
-  v9 = [PHFace fetchFacesWithOptions:v7];
+  v9 = [PHFace fetchFacesWithOptions:newUnclusteredFacesFetchOptions];
   v10 = [v9 count];
   v11 = v6;
   v12 = v11;
@@ -12158,13 +12158,13 @@ void __73__PHPhotoLibrary_AssetAnalysis__analyzeAssets_forFeature_withCompletion
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v4, "CountOfClusteringEligibleFaces", byte_19CB567AE, v14, 2u);
   }
 
-  v7 = [(PHPhotoLibrary *)self newClusteringEligibleFacesFetchOptions];
-  [v7 setShouldPrefetchCount:1];
+  newClusteringEligibleFacesFetchOptions = [(PHPhotoLibrary *)self newClusteringEligibleFacesFetchOptions];
+  [newClusteringEligibleFacesFetchOptions setShouldPrefetchCount:1];
   v15[0] = @"PHFacePropertySetIdentifier";
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  [v7 setFetchPropertySets:v8];
+  [newClusteringEligibleFacesFetchOptions setFetchPropertySets:v8];
 
-  v9 = [PHFace fetchFacesWithOptions:v7];
+  v9 = [PHFace fetchFacesWithOptions:newClusteringEligibleFacesFetchOptions];
   v10 = [v9 count];
   v11 = v6;
   v12 = v11;
@@ -12194,18 +12194,18 @@ void __73__PHPhotoLibrary_AssetAnalysis__analyzeAssets_forFeature_withCompletion
   v20 = buf;
   v21 = 0x2020000000;
   v22 = 0;
-  v7 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
-  v8 = [v7 managedObjectContext];
+  photoLibraryForCurrentQueueQoS = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  managedObjectContext = [photoLibraryForCurrentQueueQoS managedObjectContext];
 
-  v9 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  photoLibraryForCurrentQueueQoS2 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __62__PHPhotoLibrary_AssetAnalysis__countOfFaceCropsToBeGenerated__block_invoke;
   v16[3] = &unk_1E75AADC0;
   v18 = buf;
-  v10 = v8;
+  v10 = managedObjectContext;
   v17 = v10;
-  [v9 performBlockAndWait:v16];
+  [photoLibraryForCurrentQueueQoS2 performBlockAndWait:v16];
 
   v11 = v6;
   v12 = v11;
@@ -12276,9 +12276,9 @@ void __62__PHPhotoLibrary_AssetAnalysis__countOfFaceCropsToBeGenerated__block_in
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v4, "CountOfUnprocessedFaceCrops", byte_19CB567AE, buf, 2u);
   }
 
-  v7 = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
-  [v7 setShouldPrefetchCount:1];
-  v8 = [PHFaceCrop fetchFaceCropsNeedingFaceDetectionWithOptions:v7];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setShouldPrefetchCount:1];
+  v8 = [PHFaceCrop fetchFaceCropsNeedingFaceDetectionWithOptions:librarySpecificFetchOptions];
   v9 = [v8 count];
   v10 = v6;
   v11 = v10;
@@ -12291,10 +12291,10 @@ void __62__PHPhotoLibrary_AssetAnalysis__countOfFaceCropsToBeGenerated__block_in
   return v9;
 }
 
-- (id)faceClusterSequenceNumbersOfFacesWithClusterSequenceNumbers:(id)a3 error:(id *)a4
+- (id)faceClusterSequenceNumbersOfFacesWithClusterSequenceNumbers:(id)numbers error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 count];
+  numbersCopy = numbers;
+  v7 = [numbersCopy count];
   if (v7)
   {
     v8 = v7;
@@ -12310,26 +12310,26 @@ void __62__PHPhotoLibrary_AssetAnalysis__countOfFaceCropsToBeGenerated__block_in
     v25 = __Block_byref_object_copy__47915;
     v26 = __Block_byref_object_dispose__47916;
     v27 = 0;
-    v9 = [(PHPhotoLibrary *)self photoLibrary];
-    v10 = [v9 managedObjectContext];
+    photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+    managedObjectContext = [photoLibrary managedObjectContext];
     v11 = objc_autoreleasePoolPush();
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __99__PHPhotoLibrary_AssetAnalysis__faceClusterSequenceNumbersOfFacesWithClusterSequenceNumbers_error___block_invoke;
     v16[3] = &unk_1E75AA420;
-    v17 = v6;
-    v12 = v10;
+    v17 = numbersCopy;
+    v12 = managedObjectContext;
     v18 = v12;
     v19 = &v28;
     v20 = &v22;
     v21 = v8;
-    [v9 performBlockAndWait:v16];
+    [photoLibrary performBlockAndWait:v16];
 
     objc_autoreleasePoolPop(v11);
     v13 = v23[5];
-    if (a4 && !v13)
+    if (error && !v13)
     {
-      *a4 = v29[5];
+      *error = v29[5];
       v13 = v23[5];
     }
 
@@ -12436,27 +12436,27 @@ void __99__PHPhotoLibrary_AssetAnalysis__faceClusterSequenceNumbersOfFacesWithCl
   return v7;
 }
 
-- (id)faceClusterSequenceNumbersOfKeyFacesInAlgorithmicFaceGroupsForPerson:(id)a3 verifiedClusterSequenceNumbers:(id)a4
+- (id)faceClusterSequenceNumbersOfKeyFacesInAlgorithmicFaceGroupsForPerson:(id)person verifiedClusterSequenceNumbers:(id)numbers
 {
-  v6 = a3;
-  v7 = a4;
+  personCopy = person;
+  numbersCopy = numbers;
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v10 = [(PHPhotoLibrary *)self photoLibrary];
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __133__PHPhotoLibrary_AssetAnalysis__faceClusterSequenceNumbersOfKeyFacesInAlgorithmicFaceGroupsForPerson_verifiedClusterSequenceNumbers___block_invoke;
   v21[3] = &unk_1E75AA130;
   v21[4] = self;
-  v22 = v6;
+  v22 = personCopy;
   v11 = v8;
   v23 = v11;
-  v24 = v7;
+  v24 = numbersCopy;
   v12 = v9;
   v25 = v12;
-  v13 = v7;
-  v14 = v6;
-  [v10 performBlockAndWait:v21];
+  v13 = numbersCopy;
+  v14 = personCopy;
+  [photoLibrary performBlockAndWait:v21];
 
   if (![v12 count])
   {
@@ -12675,12 +12675,12 @@ LABEL_7:
   ++*(*(*(a1 + v15) + 8) + 24);
 }
 
-- (id)suggestionsForPersonLocalIdentifier:(id)a3 clusterSequenceNumbers:(id)a4 excludePersonLocalIdentifiers:(id)a5 minimumSuggestionFaceCount:(unint64_t)a6
+- (id)suggestionsForPersonLocalIdentifier:(id)identifier clusterSequenceNumbers:(id)numbers excludePersonLocalIdentifiers:(id)identifiers minimumSuggestionFaceCount:(unint64_t)count
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  identifierCopy = identifier;
+  numbersCopy = numbers;
+  identifiersCopy = identifiers;
+  if (identifierCopy)
   {
     v22 = 0;
     v23 = &v22;
@@ -12688,18 +12688,18 @@ LABEL_7:
     v25 = __Block_byref_object_copy__47915;
     v26 = __Block_byref_object_dispose__47916;
     v27 = 0;
-    v13 = [(PHPhotoLibrary *)self photoLibrary];
+    photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __149__PHPhotoLibrary_AssetAnalysis__suggestionsForPersonLocalIdentifier_clusterSequenceNumbers_excludePersonLocalIdentifiers_minimumSuggestionFaceCount___block_invoke;
     v16[3] = &unk_1E75AA1F0;
     v16[4] = self;
-    v17 = v11;
-    v18 = v10;
-    v21 = a6;
-    v19 = v12;
+    v17 = numbersCopy;
+    v18 = identifierCopy;
+    countCopy = count;
+    v19 = identifiersCopy;
     v20 = &v22;
-    [v13 performBlockAndWait:v16];
+    [photoLibrary performBlockAndWait:v16];
 
     v14 = v23[5];
     _Block_object_dispose(&v22, 8);
@@ -12921,345 +12921,345 @@ uint64_t __149__PHPhotoLibrary_AssetAnalysis__suggestionsForPersonLocalIdentifie
   }
 }
 
-- (id)keyAssetUUIDOfSocialGroupWithPersonUUIDs:(id)a3 candidateAssetUUIDs:(id)a4 error:(id *)a5
+- (id)keyAssetUUIDOfSocialGroupWithPersonUUIDs:(id)ds candidateAssetUUIDs:(id)iDs error:(id *)error
 {
   v8 = MEMORY[0x1E69BE7F8];
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PHPhotoLibrary *)self photoLibrary];
-  v12 = [v8 keyAssetUUIDOfSocialGroupWithPersonUUIDs:v10 candidateAssetUUIDs:v9 inLibrary:v11 error:a5];
+  iDsCopy = iDs;
+  dsCopy = ds;
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+  v12 = [v8 keyAssetUUIDOfSocialGroupWithPersonUUIDs:dsCopy candidateAssetUUIDs:iDsCopy inLibrary:photoLibrary error:error];
 
   return v12;
 }
 
-- (void)personPromotionProcessingStatusForUserInterface:(id)a3
+- (void)personPromotionProcessingStatusForUserInterface:(id)interface
 {
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  [v5 personPromoterStatus:v4];
+  interfaceCopy = interface;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  [photoAnalysisClient personPromoterStatus:interfaceCopy];
 }
 
-- (id)suggestedMePersonIdentifierWithError:(id *)a3
+- (id)suggestedMePersonIdentifierWithError:(id *)error
 {
-  v4 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v5 = [v4 requestSuggestedMePersonIdentifierWithError:a3];
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v5 = [photoAnalysisClient requestSuggestedMePersonIdentifierWithError:error];
 
   return v5;
 }
 
-- (id)assetIdentifiersForPersonIdentifiers:(id)a3 error:(id *)a4
+- (id)assetIdentifiersForPersonIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v8 = [v7 requestAssetsForPersonLocalIdentifiers:v6 withError:a4];
+  identifiersCopy = identifiers;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v8 = [photoAnalysisClient requestAssetsForPersonLocalIdentifiers:identifiersCopy withError:error];
 
   return v8;
 }
 
-- (id)socialGroupsOverlappingMemberLocalIdentifiers:(id)a3 error:(id *)a4
+- (id)socialGroupsOverlappingMemberLocalIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v8 = [v7 requestSocialGroupsOverlappingMemberLocalIdentifiers:v6 withError:a4];
+  identifiersCopy = identifiers;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v8 = [photoAnalysisClient requestSocialGroupsOverlappingMemberLocalIdentifiers:identifiersCopy withError:error];
 
   return v8;
 }
 
-- (id)allSocialGroupsForMemberLocalIdentifier:(id)a3 options:(id)a4 error:(id *)a5
+- (id)allSocialGroupsForMemberLocalIdentifier:(id)identifier options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v11 = [v10 requestAllSocialGroupsForMemberLocalIdentifier:v9 withOptions:v8 error:a5];
+  optionsCopy = options;
+  identifierCopy = identifier;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v11 = [photoAnalysisClient requestAllSocialGroupsForMemberLocalIdentifier:identifierCopy withOptions:optionsCopy error:error];
 
   return v11;
 }
 
-- (id)sortedArrayOfPersonIdentifiers:(id)a3 error:(id *)a4
+- (id)sortedArrayOfPersonIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v8 = [v7 requestSortedArrayOfPersonLocalIdentifiers:v6 withError:a4];
+  identifiersCopy = identifiers;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v8 = [photoAnalysisClient requestSortedArrayOfPersonLocalIdentifiers:identifiersCopy withError:error];
 
   return v8;
 }
 
-- (void)requestExternalAssetRelevanceProcessingWithReply:(id)a3
+- (void)requestExternalAssetRelevanceProcessingWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  [v5 requestExternalAssetRelevanceProcessingWithReply:v4];
+  replyCopy = reply;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  [photoAnalysisClient requestExternalAssetRelevanceProcessingWithReply:replyCopy];
 }
 
-- (void)requestSyndicationProcessingWithOptions:(id)a3 reply:(id)a4
+- (void)requestSyndicationProcessingWithOptions:(id)options reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  [v8 requestSyndicationProcessingWithOptions:v7 reply:v6];
+  replyCopy = reply;
+  optionsCopy = options;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  [photoAnalysisClient requestSyndicationProcessingWithOptions:optionsCopy reply:replyCopy];
 }
 
-- (void)requestGenerateQuestionsWithOptions:(id)a3 reply:(id)a4
+- (void)requestGenerateQuestionsWithOptions:(id)options reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  [v8 requestGenerateQuestionsWithOptions:v7 reply:v6];
+  replyCopy = reply;
+  optionsCopy = options;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  [photoAnalysisClient requestGenerateQuestionsWithOptions:optionsCopy reply:replyCopy];
 }
 
-- (void)runShadowEvaluationWithRecipe:(id)a3 models:(id)a4 trialDeploymentID:(id)a5 trialExperimentID:(id)a6 trialTreatmentID:(id)a7 resultBlock:(id)a8
+- (void)runShadowEvaluationWithRecipe:(id)recipe models:(id)models trialDeploymentID:(id)d trialExperimentID:(id)iD trialTreatmentID:(id)treatmentID resultBlock:(id)block
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  [v20 requestRunShadowEvaluationWithRecipe:v19 models:v18 trialDeploymentID:v17 trialExperimentID:v16 trialTreatmentID:v15 resultBlock:v14];
+  blockCopy = block;
+  treatmentIDCopy = treatmentID;
+  iDCopy = iD;
+  dCopy = d;
+  modelsCopy = models;
+  recipeCopy = recipe;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  [photoAnalysisClient requestRunShadowEvaluationWithRecipe:recipeCopy models:modelsCopy trialDeploymentID:dCopy trialExperimentID:iDCopy trialTreatmentID:treatmentIDCopy resultBlock:blockCopy];
 }
 
-- (void)runPFLWithAttachments:(id)a3 recipeUserInfo:(id)a4 resultBlock:(id)a5
+- (void)runPFLWithAttachments:(id)attachments recipeUserInfo:(id)info resultBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  [v11 requestRunPFLWithAttachments:v10 recipeUserInfo:v9 resultBlock:v8];
+  blockCopy = block;
+  infoCopy = info;
+  attachmentsCopy = attachments;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  [photoAnalysisClient requestRunPFLWithAttachments:attachmentsCopy recipeUserInfo:infoCopy resultBlock:blockCopy];
 }
 
-- (id)requestTextFeaturesForMomentLocalIdentifiers:(id)a3 error:(id *)a4
+- (id)requestTextFeaturesForMomentLocalIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v8 = [v7 requestTextFeaturesForMomentLocalIdentifiers:v6 error:a4];
+  identifiersCopy = identifiers;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v8 = [photoAnalysisClient requestTextFeaturesForMomentLocalIdentifiers:identifiersCopy error:error];
 
   return v8;
 }
 
-- (void)simulateMemoriesNotificationWithOptions:(id)a3 reply:(id)a4
+- (void)simulateMemoriesNotificationWithOptions:(id)options reply:(id)reply
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v8 = v7;
-  if (v7)
+  optionsCopy = options;
+  replyCopy = reply;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v8 = photoAnalysisClient;
+  if (photoAnalysisClient)
   {
-    [v7 simulateMemoriesNotificationWithOptions:v9 reply:v6];
+    [photoAnalysisClient simulateMemoriesNotificationWithOptions:optionsCopy reply:replyCopy];
   }
 
-  else if (v6)
+  else if (replyCopy)
   {
-    (*(v6 + 2))(v6, 0, 0);
-  }
-}
-
-- (BOOL)requestEnrichmentWithOptions:(id)a3 error:(id *)a4
-{
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  LOBYTE(a4) = [v7 requestEnrichmentWithOptions:v6 error:a4];
-
-  return a4;
-}
-
-- (BOOL)requestAssetRevGeocodingForAssetLocalIdentifiers:(id)a3 withError:(id *)a4
-{
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  LOBYTE(a4) = [v7 requestAssetRevGeocodingForAssetLocalIdentifiers:v6 withError:a4];
-
-  return a4;
-}
-
-- (BOOL)requestAssetRevGeocodingWithError:(id *)a3
-{
-  v4 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  LOBYTE(a3) = [v4 requestAssetRevGeocodingWithError:a3];
-
-  return a3;
-}
-
-- (BOOL)requestHighlightCollectionEnrichmentWithOptions:(id)a3 error:(id *)a4
-{
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  LOBYTE(a4) = [v7 requestHighlightCollectionEnrichmentWithOptions:v6 error:a4];
-
-  return a4;
-}
-
-- (BOOL)requestHighlightEnrichmentWithOptions:(id)a3 error:(id *)a4
-{
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  LOBYTE(a4) = [v7 requestHighlightEnrichmentWithOptions:v6 error:a4];
-
-  return a4;
-}
-
-- (void)requestGraphReadyNotificationWithCoalescingIdentifier:(id)a3 completion:(id)a4
-{
-  v9 = a3;
-  v6 = a4;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v8 = v7;
-  if (v7)
-  {
-    [v7 notifyWhenGraphReadyWithCoalescingIdentifier:v9 reply:v6];
-  }
-
-  else if (v6)
-  {
-    v6[2](v6, 1, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0);
   }
 }
 
-- (void)requestGraphRebuildProgressWithCompletion:(id)a3
+- (BOOL)requestEnrichmentWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v4 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v5 = v4;
-  if (v4)
+  optionsCopy = options;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  LOBYTE(error) = [photoAnalysisClient requestEnrichmentWithOptions:optionsCopy error:error];
+
+  return error;
+}
+
+- (BOOL)requestAssetRevGeocodingForAssetLocalIdentifiers:(id)identifiers withError:(id *)error
+{
+  identifiersCopy = identifiers;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  LOBYTE(error) = [photoAnalysisClient requestAssetRevGeocodingForAssetLocalIdentifiers:identifiersCopy withError:error];
+
+  return error;
+}
+
+- (BOOL)requestAssetRevGeocodingWithError:(id *)error
+{
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  LOBYTE(error) = [photoAnalysisClient requestAssetRevGeocodingWithError:error];
+
+  return error;
+}
+
+- (BOOL)requestHighlightCollectionEnrichmentWithOptions:(id)options error:(id *)error
+{
+  optionsCopy = options;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  LOBYTE(error) = [photoAnalysisClient requestHighlightCollectionEnrichmentWithOptions:optionsCopy error:error];
+
+  return error;
+}
+
+- (BOOL)requestHighlightEnrichmentWithOptions:(id)options error:(id *)error
+{
+  optionsCopy = options;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  LOBYTE(error) = [photoAnalysisClient requestHighlightEnrichmentWithOptions:optionsCopy error:error];
+
+  return error;
+}
+
+- (void)requestGraphReadyNotificationWithCoalescingIdentifier:(id)identifier completion:(id)completion
+{
+  identifierCopy = identifier;
+  completionCopy = completion;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v8 = photoAnalysisClient;
+  if (photoAnalysisClient)
   {
-    [v4 requestGraphRebuildFractionCompletedWithReply:v6];
+    [photoAnalysisClient notifyWhenGraphReadyWithCoalescingIdentifier:identifierCopy reply:completionCopy];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6, &unk_1F102E5B8, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (BOOL)invalidatePersistentGraphCachesAndReturnError:(id *)a3
+- (void)requestGraphRebuildProgressWithCompletion:(id)completion
 {
-  v4 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  LOBYTE(a3) = [v4 requestInvalidatePersistentCaches:a3];
+  completionCopy = completion;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v5 = photoAnalysisClient;
+  if (photoAnalysisClient)
+  {
+    [photoAnalysisClient requestGraphRebuildFractionCompletedWithReply:completionCopy];
+  }
 
-  return a3;
+  else if (completionCopy)
+  {
+    completionCopy[2](completionCopy, &unk_1F102E5B8, 0);
+  }
 }
 
-- (BOOL)invalidateTransientGraphCachesAndReturnError:(id *)a3
+- (BOOL)invalidatePersistentGraphCachesAndReturnError:(id *)error
 {
-  v4 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  LOBYTE(a3) = [v4 requestInvalidateTransientCaches:a3];
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  LOBYTE(error) = [photoAnalysisClient requestInvalidatePersistentCaches:error];
 
-  return a3;
+  return error;
 }
 
-- (id)exportGraphForPurpose:(id)a3 error:(id *)a4
+- (BOOL)invalidateTransientGraphCachesAndReturnError:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v8 = [v7 requestExportGraphForPurpose:v6 error:a4];
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  LOBYTE(error) = [photoAnalysisClient requestInvalidateTransientCaches:error];
+
+  return error;
+}
+
+- (id)exportGraphForPurpose:(id)purpose error:(id *)error
+{
+  purposeCopy = purpose;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v8 = [photoAnalysisClient requestExportGraphForPurpose:purposeCopy error:error];
 
   return v8;
 }
 
-- (void)requestHighlightEstimatesWithCompletion:(id)a3
+- (void)requestHighlightEstimatesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  [v5 requestHighlightEstimatesWithReply:v4];
+  completionCopy = completion;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  [photoAnalysisClient requestHighlightEstimatesWithReply:completionCopy];
 }
 
-- (id)graphStatisticsDescription:(id *)a3
+- (id)graphStatisticsDescription:(id *)description
 {
-  v4 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v5 = [v4 requestGraphStatisticsWithOptions:MEMORY[0x1E695E0F8] error:a3];
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v5 = [photoAnalysisClient requestGraphStatisticsWithOptions:MEMORY[0x1E695E0F8] error:description];
 
   return v5;
 }
 
-- (id)graphStatusDescription:(id *)a3
+- (id)graphStatusDescription:(id *)description
 {
-  v4 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v5 = [v4 requestGraphStatus:a3];
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v5 = [photoAnalysisClient requestGraphStatus:description];
 
   if (v5)
   {
-    v6 = [v5 statusDescription];
+    statusDescription = [v5 statusDescription];
   }
 
   else
   {
-    v6 = 0;
+    statusDescription = 0;
   }
 
-  return v6;
+  return statusDescription;
 }
 
-- (id)sharingMessageSuggestionDebugInformationForAssetCollectionLocalIdentifier:(id)a3 error:(id *)a4
+- (id)sharingMessageSuggestionDebugInformationForAssetCollectionLocalIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v8 = [v7 requestSharingMessageSuggestionDebugInformationForAssetCollectionLocalIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v8 = [photoAnalysisClient requestSharingMessageSuggestionDebugInformationForAssetCollectionLocalIdentifier:identifierCopy error:error];
 
   return v8;
 }
 
-- (id)sharingSuggestionDebugInformationForAssetCollectionLocalIdentifier:(id)a3 error:(id *)a4
+- (id)sharingSuggestionDebugInformationForAssetCollectionLocalIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v8 = [v7 requestSharingSuggestionDebugInformationForAssetCollectionLocalIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v8 = [photoAnalysisClient requestSharingSuggestionDebugInformationForAssetCollectionLocalIdentifier:identifierCopy error:error];
 
   return v8;
 }
 
-- (id)summaryCurationForHighlightForLocalIdentifier:(id)a3 options:(id)a4 error:(id *)a5
+- (id)summaryCurationForHighlightForLocalIdentifier:(id)identifier options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v11 = [v10 requestSummaryCurationForHighlightLocalIdentifier:v9 options:v8 error:a5];
+  optionsCopy = options;
+  identifierCopy = identifier;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v11 = [photoAnalysisClient requestSummaryCurationForHighlightLocalIdentifier:identifierCopy options:optionsCopy error:error];
 
   return v11;
 }
 
-- (id)curationDebugInformationForAssetCollectionWithLocalIdentifier:(id)a3 options:(id)a4 error:(id *)a5
+- (id)curationDebugInformationForAssetCollectionWithLocalIdentifier:(id)identifier options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v11 = [v10 requestCurationDebugInformationForAssetCollectionWithLocalIdentifier:v9 options:v8 error:a5];
+  optionsCopy = options;
+  identifierCopy = identifier;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v11 = [photoAnalysisClient requestCurationDebugInformationForAssetCollectionWithLocalIdentifier:identifierCopy options:optionsCopy error:error];
 
   return v11;
 }
 
-- (id)curationDebugInformationForAssetLocalIdentifier:(id)a3 error:(id *)a4
+- (id)curationDebugInformationForAssetLocalIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v8 = [v7 requestCurationDebugInformationForAssetLocalIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v8 = [photoAnalysisClient requestCurationDebugInformationForAssetLocalIdentifier:identifierCopy error:error];
 
   return v8;
 }
 
-- (id)highlightDebugInformationForHighlightWithLocalIdentifier:(id)a3 error:(id *)a4
+- (id)highlightDebugInformationForHighlightWithLocalIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v8 = [v7 requestHighlightDebugInformationForHighlightWithLocalIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v8 = [photoAnalysisClient requestHighlightDebugInformationForHighlightWithLocalIdentifier:identifierCopy error:error];
 
   return v8;
 }
 
-- (id)memoryDebugInformationForMemoryWithLocalIdentifier:(id)a3 error:(id *)a4
+- (id)memoryDebugInformationForMemoryWithLocalIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v8 = [v7 requestMemoryDebugInformationForMemoryWithLocalIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v8 = [photoAnalysisClient requestMemoryDebugInformationForMemoryWithLocalIdentifier:identifierCopy error:error];
 
   return v8;
 }
 
-- (void)cancelOperationsWithIdentifiers:(id)a3 reply:(id)a4
+- (void)cancelOperationsWithIdentifiers:(id)identifiers reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  [v8 cancelOperationsWithIdentifiers:v7 reply:v6];
+  replyCopy = reply;
+  identifiersCopy = identifiers;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  [photoAnalysisClient cancelOperationsWithIdentifiers:identifiersCopy reply:replyCopy];
 }
 
 - (BOOL)photoAnalysisClientAllowed
@@ -13269,33 +13269,33 @@ uint64_t __149__PHPhotoLibrary_AssetAnalysis__suggestionsForPersonLocalIdentifie
     return 0;
   }
 
-  v4 = [(PHPhotoLibrary *)self photoLibrary];
-  v5 = [v4 globalValues];
-  v6 = [v5 libraryCreateOptions];
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+  globalValues = [photoLibrary globalValues];
+  libraryCreateOptions = [globalValues libraryCreateOptions];
 
-  return (v6 & 1) == 0;
+  return (libraryCreateOptions & 1) == 0;
 }
 
-- (double)_analysisProgressForHighlight:(id)a3 fetchCountBlock:(id)a4
+- (double)_analysisProgressForHighlight:(id)highlight fetchCountBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  highlightCopy = highlight;
+  blockCopy = block;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v8 = [(PHPhotoLibrary *)self photoLibrary];
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__PHPhotoLibrary_AssetAnalysis___analysisProgressForHighlight_fetchCountBlock___block_invoke;
   v14[3] = &unk_1E75AA180;
-  v9 = v8;
+  v9 = photoLibrary;
   v15 = v9;
-  v16 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = highlightCopy;
   v17 = v10;
   v19 = &v20;
-  v11 = v7;
+  v11 = blockCopy;
   v18 = v11;
   [v9 performBlockAndWait:v14];
   v12 = v21[3];
@@ -13395,9 +13395,9 @@ uint64_t __67__PHPhotoLibrary_AssetAnalysis__sceneAnalysisProgressForHighlight__
 {
   v3 = objc_opt_class();
   v4 = [MEMORY[0x1E69BE250] predicateToIncludeOnlyAllowedForAnalysisAndProcessedToFaceVersion:0 noindex:0];
-  v5 = [MEMORY[0x1E69BE250] entityName];
-  v6 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
-  v7 = [v3 _countOfAssetsWithPredicate:v4 entityName:v5 inLibrary:v6];
+  entityName = [MEMORY[0x1E69BE250] entityName];
+  photoLibraryForCurrentQueueQoS = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  v7 = [v3 _countOfAssetsWithPredicate:v4 entityName:entityName inLibrary:photoLibraryForCurrentQueueQoS];
 
   return v7;
 }
@@ -13406,9 +13406,9 @@ uint64_t __67__PHPhotoLibrary_AssetAnalysis__sceneAnalysisProgressForHighlight__
 {
   v3 = objc_opt_class();
   v4 = [MEMORY[0x1E69BE250] predicateToIncludeOnlyAllowedForAnalysisAndProcessedToLatestFaceVersionWithNoindex:0];
-  v5 = [MEMORY[0x1E69BE250] entityName];
-  v6 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
-  v7 = [v3 _countOfAssetsWithPredicate:v4 entityName:v5 inLibrary:v6];
+  entityName = [MEMORY[0x1E69BE250] entityName];
+  photoLibraryForCurrentQueueQoS = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  v7 = [v3 _countOfAssetsWithPredicate:v4 entityName:entityName inLibrary:photoLibraryForCurrentQueueQoS];
 
   return v7;
 }
@@ -13417,9 +13417,9 @@ uint64_t __67__PHPhotoLibrary_AssetAnalysis__sceneAnalysisProgressForHighlight__
 {
   v3 = objc_opt_class();
   v4 = [MEMORY[0x1E69BE250] predicateToIncludeOnlyAllowedForAnalysisAndProcessedToLatestSceneVersionWithNoindex:0];
-  v5 = [MEMORY[0x1E69BE250] entityName];
-  v6 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
-  v7 = [v3 _countOfAssetsWithPredicate:v4 entityName:v5 inLibrary:v6];
+  entityName = [MEMORY[0x1E69BE250] entityName];
+  photoLibraryForCurrentQueueQoS = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  v7 = [v3 _countOfAssetsWithPredicate:v4 entityName:entityName inLibrary:photoLibraryForCurrentQueueQoS];
 
   return v7;
 }
@@ -13428,16 +13428,16 @@ uint64_t __67__PHPhotoLibrary_AssetAnalysis__sceneAnalysisProgressForHighlight__
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v3 = PLAssetKindPredicateForTaskID();
-  v4 = [MEMORY[0x1E69BE540] predicateToIncludeOnlyAllowedForAnalysisAssets];
+  predicateToIncludeOnlyAllowedForAnalysisAssets = [MEMORY[0x1E69BE540] predicateToIncludeOnlyAllowedForAnalysisAssets];
   v5 = objc_opt_class();
   v6 = MEMORY[0x1E696AB28];
   v13[0] = v3;
-  v13[1] = v4;
+  v13[1] = predicateToIncludeOnlyAllowedForAnalysisAssets;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
   v8 = [v6 andPredicateWithSubpredicates:v7];
-  v9 = [MEMORY[0x1E69BE540] entityName];
-  v10 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
-  v11 = [v5 _countOfAssetsWithPredicate:v8 entityName:v9 inLibrary:v10];
+  entityName = [MEMORY[0x1E69BE540] entityName];
+  photoLibraryForCurrentQueueQoS = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  v11 = [v5 _countOfAssetsWithPredicate:v8 entityName:entityName inLibrary:photoLibraryForCurrentQueueQoS];
 
   return v11;
 }
@@ -13446,21 +13446,21 @@ uint64_t __67__PHPhotoLibrary_AssetAnalysis__sceneAnalysisProgressForHighlight__
 {
   v3 = objc_opt_class();
   v4 = [MEMORY[0x1E69BE250] predicateToIncludeOnlyAllowedForAnalysisWithNoindex:0];
-  v5 = [MEMORY[0x1E69BE250] entityName];
-  v6 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
-  v7 = [v3 _countOfAssetsWithPredicate:v4 entityName:v5 inLibrary:v6];
+  entityName = [MEMORY[0x1E69BE250] entityName];
+  photoLibraryForCurrentQueueQoS = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  v7 = [v3 _countOfAssetsWithPredicate:v4 entityName:entityName inLibrary:photoLibraryForCurrentQueueQoS];
 
   return v7;
 }
 
-- (double)_ratioOfAssetsAtOrAboveVersion:(signed __int16)a3 forKey:(id)a4
+- (double)_ratioOfAssetsAtOrAboveVersion:(signed __int16)version forKey:(id)key
 {
-  v4 = a3;
+  versionCopy = version;
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  keyCopy = key;
   v7 = objc_opt_class();
-  v8 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
-  v9 = [v7 _countOfAnalysisVersionsForKey:v6 inLibrary:v8];
+  photoLibraryForCurrentQueueQoS = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  v9 = [v7 _countOfAnalysisVersionsForKey:keyCopy inLibrary:photoLibraryForCurrentQueueQoS];
 
   v26 = 0u;
   v27 = 0u;
@@ -13471,7 +13471,7 @@ uint64_t __67__PHPhotoLibrary_AssetAnalysis__sceneAnalysisProgressForHighlight__
   if (v11)
   {
     v12 = v11;
-    v23 = v6;
+    v23 = keyCopy;
     v13 = 0;
     v14 = 0;
     v15 = *v25;
@@ -13486,11 +13486,11 @@ uint64_t __67__PHPhotoLibrary_AssetAnalysis__sceneAnalysisProgressForHighlight__
 
         v17 = *(*(&v24 + 1) + 8 * i);
         v18 = [v10 objectForKeyedSubscript:v17];
-        v19 = [v18 unsignedIntegerValue];
-        v13 += v19;
-        if ([v17 shortValue] >= v4)
+        unsignedIntegerValue = [v18 unsignedIntegerValue];
+        v13 += unsignedIntegerValue;
+        if ([v17 shortValue] >= versionCopy)
         {
-          v20 = v19;
+          v20 = unsignedIntegerValue;
         }
 
         else
@@ -13516,7 +13516,7 @@ uint64_t __67__PHPhotoLibrary_AssetAnalysis__sceneAnalysisProgressForHighlight__
       v21 = 0.0;
     }
 
-    v6 = v23;
+    keyCopy = v23;
   }
 
   else
@@ -13533,8 +13533,8 @@ uint64_t __67__PHPhotoLibrary_AssetAnalysis__sceneAnalysisProgressForHighlight__
   v14 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69BE5A0];
   v11 = 0;
-  v3 = [(PHPhotoLibrary *)self photoLibraryURL];
-  v4 = [v2 queryProgressDetail:&v11 forPhotoLibraryURL:v3 andTaskID:{objc_msgSend(MEMORY[0x1E69BE5A0], "faceAnalysisTaskID")}];
+  photoLibraryURL = [(PHPhotoLibrary *)self photoLibraryURL];
+  v4 = [v2 queryProgressDetail:&v11 forPhotoLibraryURL:photoLibraryURL andTaskID:{objc_msgSend(MEMORY[0x1E69BE5A0], "faceAnalysisTaskID")}];
   v5 = v11;
 
   if (v4)
@@ -13557,15 +13557,15 @@ uint64_t __67__PHPhotoLibrary_AssetAnalysis__sceneAnalysisProgressForHighlight__
       _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_ERROR, "Failed to get face processing counts from VideoProcessing, status: %d", buf, 8u);
     }
 
-    v8 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
   }
 
   else
   {
-    v8 = v5;
+    dictionary = v5;
   }
 
-  v9 = v8;
+  v9 = dictionary;
 
   return v9;
 }
@@ -13578,8 +13578,8 @@ uint64_t __67__PHPhotoLibrary_AssetAnalysis__sceneAnalysisProgressForHighlight__
   v19 = 0;
   v3 = dispatch_block_create(0, &__block_literal_global_110);
   v4 = MEMORY[0x1E69BE5A0];
-  v5 = [(PHPhotoLibrary *)self photoLibraryURL];
-  v6 = [MEMORY[0x1E69BE5A0] petVIPModelType];
+  photoLibraryURL = [(PHPhotoLibrary *)self photoLibraryURL];
+  petVIPModelType = [MEMORY[0x1E69BE5A0] petVIPModelType];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __50__PHPhotoLibrary_AssetAnalysis__petVIPModelExists__block_invoke_2;
@@ -13587,7 +13587,7 @@ uint64_t __67__PHPhotoLibrary_AssetAnalysis__sceneAnalysisProgressForHighlight__
   v15 = &v16;
   v7 = v3;
   v14 = v7;
-  [v4 requestVIPModelFilepathForPhotoLibraryURL:v5 forModelType:v6 andCompletionHandler:v13];
+  [v4 requestVIPModelFilepathForPhotoLibraryURL:photoLibraryURL forModelType:petVIPModelType andCompletionHandler:v13];
 
   v8 = dispatch_time(0, 10000000000);
   if (dispatch_block_wait(v7, v8))
@@ -13647,34 +13647,34 @@ uint64_t __66__PHPhotoLibrary_AssetAnalysis__faceAnalysisProgressForHighlight___
   return v10;
 }
 
-- (id)_assetOIDsForHighlight:(id)a3 withContext:(id)a4
+- (id)_assetOIDsForHighlight:(id)highlight withContext:(id)context
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69BE540] entityName];
-  v8 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:v7];
-  v9 = [v5 kind];
-  if (!v9)
+  highlightCopy = highlight;
+  contextCopy = context;
+  entityName = [MEMORY[0x1E69BE540] entityName];
+  v8 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:entityName];
+  kind = [highlightCopy kind];
+  if (!kind)
   {
     v10 = @"highlightBeingAssets";
     goto LABEL_5;
   }
 
-  if (v9 == 3)
+  if (kind == 3)
   {
     v10 = @"dayGroupHighlightBeingAssets";
 LABEL_5:
     v11 = MEMORY[0x1E696AE18];
-    v12 = [v5 objectID];
-    v13 = [v11 predicateWithFormat:@"%K = %@", v10, v12];
+    objectID = [highlightCopy objectID];
+    v13 = [v11 predicateWithFormat:@"%K = %@", v10, objectID];
 
     v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"kind", &unk_1F102E3D8];
-    v15 = [MEMORY[0x1E69BE540] predicateToIncludeOnlyAllowedForAnalysisAssets];
+    predicateToIncludeOnlyAllowedForAnalysisAssets = [MEMORY[0x1E69BE540] predicateToIncludeOnlyAllowedForAnalysisAssets];
     v16 = MEMORY[0x1E696AB28];
     v21[0] = v13;
     v21[1] = v14;
-    v21[2] = v15;
+    v21[2] = predicateToIncludeOnlyAllowedForAnalysisAssets;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:3];
     v18 = [v16 andPredicateWithSubpredicates:v17];
     [v8 setPredicate:v18];
@@ -13682,7 +13682,7 @@ LABEL_5:
     [v8 setResultType:1];
     [v8 setIncludesPropertyValues:0];
     [v8 setIncludesPendingChanges:0];
-    v19 = [v6 executeFetchRequest:v8 error:0];
+    v19 = [contextCopy executeFetchRequest:v8 error:0];
 
     goto LABEL_7;
   }
@@ -13693,25 +13693,25 @@ LABEL_7:
   return v19;
 }
 
-- (void)requestTotalProgressCountsForWorkerType:(signed __int16)a3 states:(id)a4 completion:(id)a5
+- (void)requestTotalProgressCountsForWorkerType:(signed __int16)type states:(id)states completion:(id)completion
 {
-  v6 = a3;
+  typeCopy = type;
   v18[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  statesCopy = states;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6 != 4)
+    if (typeCopy != 4)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      v16 = [MEMORY[0x1E696AD98] numberWithShort:v6];
-      [v15 handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+AssetAnalysis.m" lineNumber:88 description:{@"Input worker type (%@) not supported, only %@ supported", v16, &unk_1F102D9D0}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v16 = [MEMORY[0x1E696AD98] numberWithShort:typeCopy];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PHPhotoLibrary+AssetAnalysis.m" lineNumber:88 description:{@"Input worker type (%@) not supported, only %@ supported", v16, &unk_1F102D9D0}];
     }
 
-    v11 = [(PHPhotoLibrary *)self faceAnalysisProcessingCounts];
-    if (v11)
+    faceAnalysisProcessingCounts = [(PHPhotoLibrary *)self faceAnalysisProcessingCounts];
+    if (faceAnalysisProcessingCounts)
     {
-      v12 = v11;
+      v12 = faceAnalysisProcessingCounts;
     }
 
     else
@@ -13723,33 +13723,33 @@ LABEL_7:
     v17 = v13;
     v18[0] = v12;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-    v10[2](v10, v14, 0);
+    completionCopy[2](completionCopy, v14, 0);
   }
 }
 
 - (id)faceAnalysisProcessingCounts
 {
-  v3 = [MEMORY[0x1E69BE5A0] faceAnalysisTaskID];
+  faceAnalysisTaskID = [MEMORY[0x1E69BE5A0] faceAnalysisTaskID];
   v4 = MEMORY[0x1E69BE5A0];
   v9 = 0;
-  v5 = [(PHPhotoLibrary *)self photoLibraryURL];
-  [v4 queryProgressDetail:&v9 forPhotoLibraryURL:v5 andTaskID:v3];
+  photoLibraryURL = [(PHPhotoLibrary *)self photoLibraryURL];
+  [v4 queryProgressDetail:&v9 forPhotoLibraryURL:photoLibraryURL andTaskID:faceAnalysisTaskID];
   v6 = v9;
   v7 = v9;
 
   return v6;
 }
 
-+ (BOOL)shouldDisplayMergeCandidates:(id)a3 forPerson:(id)a4
++ (BOOL)shouldDisplayMergeCandidates:(id)candidates forPerson:(id)person
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  candidatesCopy = candidates;
+  personCopy = person;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = candidatesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   v9 = 0;
   if (v8)
@@ -13786,7 +13786,7 @@ LABEL_7:
 
 LABEL_11:
 
-  v13 = [v6 faceCount] * 0.1;
+  v13 = [personCopy faceCount] * 0.1;
   if (v13 < 1.0)
   {
     v13 = 1.0;
@@ -13800,13 +13800,13 @@ LABEL_11:
   return v8;
 }
 
-+ (unint64_t)_countOfAssetsWithPredicate:(id)a3 entityName:(id)a4 inLibrary:(id)a5
++ (unint64_t)_countOfAssetsWithPredicate:(id)predicate entityName:(id)name inLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:v8];
-  [v10 setPredicate:v7];
+  predicateCopy = predicate;
+  nameCopy = name;
+  libraryCopy = library;
+  v10 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:nameCopy];
+  [v10 setPredicate:predicateCopy];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -13816,11 +13816,11 @@ LABEL_11:
   v16[2] = __82__PHPhotoLibrary_AssetAnalysis___countOfAssetsWithPredicate_entityName_inLibrary___block_invoke;
   v16[3] = &unk_1E75AA158;
   v20 = &v21;
-  v11 = v9;
+  v11 = libraryCopy;
   v17 = v11;
   v12 = v10;
   v18 = v12;
-  v13 = v7;
+  v13 = predicateCopy;
   v19 = v13;
   [v11 performBlockAndWait:v16];
   if (v22[3] == 0x7FFFFFFFFFFFFFFFLL)
@@ -13862,32 +13862,32 @@ void __82__PHPhotoLibrary_AssetAnalysis___countOfAssetsWithPredicate_entityName_
   }
 }
 
-+ (id)_countOfAnalysisVersionsForKey:(id)a3 inLibrary:(id)a4
++ (id)_countOfAnalysisVersionsForKey:(id)key inLibrary:(id)library
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  libraryCopy = library;
   v7 = MEMORY[0x1E695D5E0];
-  v8 = [MEMORY[0x1E69BE250] entityName];
-  v9 = [v7 fetchRequestWithEntityName:v8];
+  entityName = [MEMORY[0x1E69BE250] entityName];
+  v9 = [v7 fetchRequestWithEntityName:entityName];
 
   [v9 setResultType:2];
   v10 = objc_alloc_init(MEMORY[0x1E695D5C8]);
   [v10 setName:@"count"];
   v11 = MEMORY[0x1E696ABC8];
-  v12 = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
-  v35[0] = v12;
+  expressionForEvaluatedObject = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
+  v35[0] = expressionForEvaluatedObject;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
   v14 = [v11 expressionForFunction:@"count:" arguments:v13];
   [v10 setExpression:v14];
 
   [v10 setExpressionResultType:200];
-  v34[0] = v5;
+  v34[0] = keyCopy;
   v34[1] = @"allowedForAnalysis";
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
   [v9 setPropertiesToGroupBy:v15];
 
-  v33[0] = v5;
+  v33[0] = keyCopy;
   v33[1] = v10;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
   [v9 setPropertiesToFetch:v16];
@@ -13900,16 +13900,16 @@ void __82__PHPhotoLibrary_AssetAnalysis___countOfAssetsWithPredicate_entityName_
   v27[1] = 3221225472;
   v27[2] = __74__PHPhotoLibrary_AssetAnalysis___countOfAnalysisVersionsForKey_inLibrary___block_invoke;
   v27[3] = &unk_1E75AA130;
-  v28 = v6;
+  v28 = libraryCopy;
   v29 = v9;
   v19 = v18;
   v30 = v19;
-  v31 = v5;
+  v31 = keyCopy;
   v32 = v10;
   v20 = v10;
-  v21 = v5;
+  v21 = keyCopy;
   v22 = v9;
-  v23 = v6;
+  v23 = libraryCopy;
   [v23 performBlockAndWait:v27];
   v24 = v32;
   v25 = v19;
@@ -13976,63 +13976,63 @@ void __74__PHPhotoLibrary_AssetAnalysis___countOfAnalysisVersionsForKey_inLibrar
   }
 }
 
-- (BOOL)requestStartSharedLibrarySuggestionResultWithError:(id *)a3
+- (BOOL)requestStartSharedLibrarySuggestionResultWithError:(id *)error
 {
-  v4 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  LOBYTE(a3) = [v4 requestStartSharedLibrarySuggestionResultWithError:a3];
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  LOBYTE(error) = [photoAnalysisClient requestStartSharedLibrarySuggestionResultWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (id)requestPersonalTraitsForAssetsWithUUIDs:(id)a3 error:(id *)a4
+- (id)requestPersonalTraitsForAssetsWithUUIDs:(id)ds error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v8 = [v7 requestPersonalTraitsForAssetsWithUUIDs:v6 error:a4];
+  dsCopy = ds;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v8 = [photoAnalysisClient requestPersonalTraitsForAssetsWithUUIDs:dsCopy error:error];
 
   return v8;
 }
 
-- (id)requestPersonalTraitsForHighlightsWithUUIDs:(id)a3 error:(id *)a4
+- (id)requestPersonalTraitsForHighlightsWithUUIDs:(id)ds error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v8 = [v7 requestPersonalTraitsForHighlightsWithUUIDs:v6 error:a4];
+  dsCopy = ds;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v8 = [photoAnalysisClient requestPersonalTraitsForHighlightsWithUUIDs:dsCopy error:error];
 
   return v8;
 }
 
-- (id)requestGraphMomentLocalIdentifiersWithDateInterval:(id)a3 error:(id *)a4
+- (id)requestGraphMomentLocalIdentifiersWithDateInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v8 = [v7 requestGraphMomentLocalIdentifiersWithDateInterval:v6 error:a4];
+  intervalCopy = interval;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v8 = [photoAnalysisClient requestGraphMomentLocalIdentifiersWithDateInterval:intervalCopy error:error];
 
   return v8;
 }
 
-- (id)requestGraphInferencesSummaryWithMomentLocalIdentifiers:(id)a3 error:(id *)a4
+- (id)requestGraphInferencesSummaryWithMomentLocalIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v8 = [v7 requestGraphInferencesSummaryWithMomentLocalIdentifiers:v6 error:a4];
+  identifiersCopy = identifiers;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v8 = [photoAnalysisClient requestGraphInferencesSummaryWithMomentLocalIdentifiers:identifiersCopy error:error];
 
   return v8;
 }
 
-- (id)requestGraphInferencesSummaryWithDateInterval:(id)a3 error:(id *)a4
+- (id)requestGraphInferencesSummaryWithDateInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self photoAnalysisClient];
-  v8 = [v7 requestGraphInferencesSummaryWithDateInterval:v6 error:a4];
+  intervalCopy = interval;
+  photoAnalysisClient = [(PHPhotoLibrary *)self photoAnalysisClient];
+  v8 = [photoAnalysisClient requestGraphInferencesSummaryWithDateInterval:intervalCopy error:error];
 
   return v8;
 }
 
-- (BOOL)processDuplicateAssetsWithLocalIdentifiers:(id)a3 error:(id *)a4
+- (BOOL)processDuplicateAssetsWithLocalIdentifiers:(id)identifiers error:(id *)error
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifiersCopy = identifiers;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -14043,14 +14043,14 @@ void __74__PHPhotoLibrary_AssetAnalysis___countOfAnalysisVersionsForKey_inLibrar
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v7 = [MEMORY[0x1E695DFD8] setWithArray:v6];
+  v7 = [MEMORY[0x1E695DFD8] setWithArray:identifiersCopy];
   v8 = [PHObject uuidsFromLocalIdentifiers:v7];
 
   if ([v8 count])
   {
     v9 = dispatch_semaphore_create(0);
-    v10 = [(PHPhotoLibrary *)self assetsdClient];
-    v11 = [v10 libraryInternalClient];
+    assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+    libraryInternalClient = [assetsdClient libraryInternalClient];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __88__PHPhotoLibrary_DuplicateProcessing__processDuplicateAssetsWithLocalIdentifiers_error___block_invoke;
@@ -14059,7 +14059,7 @@ void __74__PHPhotoLibrary_AssetAnalysis___countOfAnalysisVersionsForKey_inLibrar
     v29 = &v30;
     v12 = v9;
     v27 = v12;
-    [v11 mergeDuplicateAssetUuidSelection:v8 completionHandler:v26];
+    [libraryInternalClient mergeDuplicateAssetUuidSelection:v8 completionHandler:v26];
 
     dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
     v13 = v27;
@@ -14096,10 +14096,10 @@ void __74__PHPhotoLibrary_AssetAnalysis___countOfAnalysisVersionsForKey_inLibrar
 
   v22 = *(v31 + 24);
   v23 = v35[5];
-  if (a4 && (v22 & 1) == 0)
+  if (error && (v22 & 1) == 0)
   {
     v23 = v23;
-    *a4 = v23;
+    *error = v23;
   }
 
   v24 = *(v31 + 24);
@@ -14122,20 +14122,20 @@ intptr_t __88__PHPhotoLibrary_DuplicateProcessing__processDuplicateAssetsWithLoc
   return dispatch_semaphore_signal(v8);
 }
 
-- (void)mergeDuplicateAssetsWithLocalIdentifierGroupingContainer:(id)a3 completionHandler:(id)a4
+- (void)mergeDuplicateAssetsWithLocalIdentifierGroupingContainer:(id)container completionHandler:(id)handler
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  containerCopy = container;
+  handlerCopy = handler;
+  if ([containerCopy count])
   {
     if (mergeDuplicateAssetsWithLocalIdentifierGroupingContainer_completionHandler__onceToken != -1)
     {
       dispatch_once(&mergeDuplicateAssetsWithLocalIdentifierGroupingContainer_completionHandler__onceToken, &__block_literal_global_49755);
     }
 
-    v11 = v5;
-    v12 = v6;
+    v11 = containerCopy;
+    v12 = handlerCopy;
     pl_dispatch_async();
 
     v7 = v11;
@@ -14157,9 +14157,9 @@ intptr_t __88__PHPhotoLibrary_DuplicateProcessing__processDuplicateAssetsWithLoc
       _os_log_impl(&dword_19C86F000, v10, OS_LOG_TYPE_ERROR, "Duplicate Merge processing failed with missing identifiers. Error: %@", buf, 0xCu);
     }
 
-    if (v6)
+    if (handlerCopy)
     {
-      (*(v6 + 2))(v6, 0, v7);
+      (*(handlerCopy + 2))(handlerCopy, 0, v7);
     }
   }
 }
@@ -14241,34 +14241,34 @@ uint64_t __114__PHPhotoLibrary_DuplicateProcessing__mergeDuplicateAssetsWithLoca
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (BOOL)assetsArePendingForDuplicateMergeProcessingWithLocalIdentifiers:(id)a3
+- (BOOL)assetsArePendingForDuplicateMergeProcessingWithLocalIdentifiers:(id)identifiers
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithArray:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithArray:identifiers];
   v5 = [PHObject uuidsFromLocalIdentifiers:v4];
 
-  v6 = [(PHPhotoLibrary *)self assetsdClient];
-  v7 = [v6 libraryInternalClient];
-  v8 = [v7 checkAssetsArePendingForDuplicateMergeProcessing:v5];
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  libraryInternalClient = [assetsdClient libraryInternalClient];
+  v8 = [libraryInternalClient checkAssetsArePendingForDuplicateMergeProcessing:v5];
 
   return v8;
 }
 
 - (BOOL)isInitialDuplicateDetectorProcessingCompleted
 {
-  v2 = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
-  v3 = [v2 globalValues];
-  v4 = [v3 isInitialDuplicateDetectorProcessingCompleted];
+  photoLibraryForCurrentQueueQoS = [(PHPhotoLibrary *)self photoLibraryForCurrentQueueQoS];
+  globalValues = [photoLibraryForCurrentQueueQoS globalValues];
+  isInitialDuplicateDetectorProcessingCompleted = [globalValues isInitialDuplicateDetectorProcessingCompleted];
 
-  return v4;
+  return isInitialDuplicateDetectorProcessingCompleted;
 }
 
-- (BOOL)internal_processIdenticalDuplicatesWithError:(id *)a3
+- (BOOL)internal_processIdenticalDuplicatesWithError:(id *)error
 {
-  v4 = [(PHPhotoLibrary *)self assetsdClient];
-  v5 = [v4 libraryInternalClient];
-  LOBYTE(a3) = [v5 processIdenticalDuplicatesWithProcessingType:7 error:a3];
+  assetsdClient = [(PHPhotoLibrary *)self assetsdClient];
+  libraryInternalClient = [assetsdClient libraryInternalClient];
+  LOBYTE(error) = [libraryInternalClient processIdenticalDuplicatesWithProcessingType:7 error:error];
 
-  return a3;
+  return error;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface CATestDisplay
-+ (id)fakeDisplayWithType:(int64_t)a3;
++ (id)fakeDisplayWithType:(int64_t)type;
 + (id)testDisplays;
-- (CATestDisplay)initWithType:(int64_t)a3;
+- (CATestDisplay)initWithType:(int64_t)type;
 - (CGRect)bounds;
 - (CGSize)overscanAmounts;
 - (id)availableModes;
@@ -49,7 +49,7 @@
   return [CATestDisplay preferredMode]::mode;
 }
 
-- (CATestDisplay)initWithType:(int64_t)a3
+- (CATestDisplay)initWithType:(int64_t)type
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
@@ -57,7 +57,7 @@
   result = [(CATestDisplay *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
@@ -70,10 +70,10 @@
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v3 count:1];
 }
 
-+ (id)fakeDisplayWithType:(int64_t)a3
++ (id)fakeDisplayWithType:(int64_t)type
 {
   {
-    +[CATestDisplay fakeDisplayWithType:]::fake = [[CATestDisplay alloc] initWithType:a3];
+    +[CATestDisplay fakeDisplayWithType:]::fake = [[CATestDisplay alloc] initWithType:type];
   }
 
   return +[CATestDisplay fakeDisplayWithType:]::fake;

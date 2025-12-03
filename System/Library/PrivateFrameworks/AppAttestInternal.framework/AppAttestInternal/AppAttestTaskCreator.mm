@@ -10,11 +10,11 @@
 + (id)create
 {
   v9[3] = *MEMORY[0x277D85DE8];
-  v3 = [a1 createForDefaultAttest];
-  v4 = [a1 createForWebAuthAttestKeychain];
-  v9[1] = v4;
-  v5 = [a1 createForDeviceAttestKeychain];
-  v9[2] = v5;
+  createForDefaultAttest = [self createForDefaultAttest];
+  createForWebAuthAttestKeychain = [self createForWebAuthAttestKeychain];
+  v9[1] = createForWebAuthAttestKeychain;
+  createForDeviceAttestKeychain = [self createForDeviceAttestKeychain];
+  v9[2] = createForDeviceAttestKeychain;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:3];
 
   v7 = *MEMORY[0x277D85DE8];

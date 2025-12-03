@@ -1,32 +1,32 @@
 @interface PaletteViewController
-- (PaletteViewController)initWithSizingDelegate:(id)a3 dateProvider:(id)a4 pauseRingsCoordinator:(id)a5;
+- (PaletteViewController)initWithSizingDelegate:(id)delegate dateProvider:(id)provider pauseRingsCoordinator:(id)coordinator;
 - (void)_registerForNotifications;
-- (void)currentSelectedDateChanged:(id)a3;
+- (void)currentSelectedDateChanged:(id)changed;
 - (void)dealloc;
-- (void)paletteDateSelected:(id)a3;
-- (void)paletteScrolledInDirection:(BOOL)a3;
-- (void)setActivitySummaryProvider:(id)a3;
-- (void)setIsExpanded:(BOOL)a3 collapseDayMarkers:(BOOL)a4;
+- (void)paletteDateSelected:(id)selected;
+- (void)paletteScrolledInDirection:(BOOL)direction;
+- (void)setActivitySummaryProvider:(id)provider;
+- (void)setIsExpanded:(BOOL)expanded collapseDayMarkers:(BOOL)markers;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PaletteViewController
 
-- (PaletteViewController)initWithSizingDelegate:(id)a3 dateProvider:(id)a4 pauseRingsCoordinator:(id)a5
+- (PaletteViewController)initWithSizingDelegate:(id)delegate dateProvider:(id)provider pauseRingsCoordinator:(id)coordinator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  delegateCopy = delegate;
+  providerCopy = provider;
+  coordinatorCopy = coordinator;
   v15.receiver = self;
   v15.super_class = PaletteViewController;
   v12 = [(PaletteViewController *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sizingDelegate, a3);
-    objc_storeStrong(&v13->_dateProvider, a4);
-    objc_storeStrong(&v13->_pauseRingsCoordinator, a5);
+    objc_storeStrong(&v12->_sizingDelegate, delegate);
+    objc_storeStrong(&v13->_dateProvider, provider);
+    objc_storeStrong(&v13->_pauseRingsCoordinator, coordinator);
     [(PaletteViewController *)v13 _registerForNotifications];
   }
 
@@ -38,16 +38,16 @@
   v11.receiver = self;
   v11.super_class = PaletteViewController;
   [(PaletteViewController *)&v11 viewDidLoad];
-  v3 = [(PaletteViewController *)self view];
-  [v3 setClipsToBounds:1];
+  view = [(PaletteViewController *)self view];
+  [view setClipsToBounds:1];
 
   v4 = objc_alloc_init(PaletteWeekdayHeaderView);
   paletteView = self->_paletteView;
   self->_paletteView = v4;
 
   [(PaletteWeekdayHeaderView *)self->_paletteView setIsExpanded:1];
-  v6 = [(PaletteViewController *)self view];
-  [v6 addSubview:self->_paletteView];
+  view2 = [(PaletteViewController *)self view];
+  [view2 addSubview:self->_paletteView];
 
   v7 = [[PaletteScrollViewController alloc] initWithPauseRingsCoordinator:self->_pauseRingsCoordinator];
   paletteScrollVC = self->_paletteScrollVC;
@@ -55,9 +55,9 @@
 
   [(PaletteScrollViewController *)self->_paletteScrollVC setDelegate:self];
   [(PaletteViewController *)self addChildViewController:self->_paletteScrollVC];
-  v9 = [(PaletteViewController *)self view];
-  v10 = [(PaletteScrollViewController *)self->_paletteScrollVC view];
-  [v9 addSubview:v10];
+  view3 = [(PaletteViewController *)self view];
+  view4 = [(PaletteScrollViewController *)self->_paletteScrollVC view];
+  [view3 addSubview:view4];
 }
 
 - (void)viewWillLayoutSubviews
@@ -68,17 +68,17 @@
   paletteView = self->_paletteView;
   [(CHPaletteViewControllerSizingDelegate *)self->_sizingDelegate bounds];
   [(PaletteWeekdayHeaderView *)paletteView setFrame:?];
-  v4 = [(PaletteScrollViewController *)self->_paletteScrollVC view];
+  view = [(PaletteScrollViewController *)self->_paletteScrollVC view];
   [(CHPaletteViewControllerSizingDelegate *)self->_sizingDelegate bounds];
-  [v4 setFrame:?];
+  [view setFrame:?];
 }
 
-- (void)setActivitySummaryProvider:(id)a3
+- (void)setActivitySummaryProvider:(id)provider
 {
   paletteView = self->_paletteView;
-  v5 = a3;
-  -[PaletteWeekdayHeaderView adjustWeekLabelsByOffset:](paletteView, "adjustWeekLabelsByOffset:", [v5 fitnessStartOfWeekOffset]);
-  [(PaletteScrollViewController *)self->_paletteScrollVC setActivitySummaryProvider:v5];
+  providerCopy = provider;
+  -[PaletteWeekdayHeaderView adjustWeekLabelsByOffset:](paletteView, "adjustWeekLabelsByOffset:", [providerCopy fitnessStartOfWeekOffset]);
+  [(PaletteScrollViewController *)self->_paletteScrollVC setActivitySummaryProvider:providerCopy];
 }
 
 - (void)_registerForNotifications
@@ -97,60 +97,60 @@
   [(PaletteViewController *)&v4 dealloc];
 }
 
-- (void)currentSelectedDateChanged:(id)a3
+- (void)currentSelectedDateChanged:(id)changed
 {
-  v10 = a3;
-  v4 = [v10 object];
+  changedCopy = changed;
+  object = [changedCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v6 = [(ActivityDateProviding *)self->_dateProvider currentSelectedDate];
-    v7 = [v10 object];
+    currentSelectedDate = [(ActivityDateProviding *)self->_dateProvider currentSelectedDate];
+    object2 = [changedCopy object];
     objc_opt_class();
     v8 = objc_opt_isKindOfClass();
 
     paletteScrollVC = self->_paletteScrollVC;
     if (v8)
     {
-      [(PaletteScrollViewController *)paletteScrollVC reloadViewDataAtDate:v6];
+      [(PaletteScrollViewController *)paletteScrollVC reloadViewDataAtDate:currentSelectedDate];
     }
 
     else
     {
-      [(PaletteScrollViewController *)paletteScrollVC scrollOrRelayoutWeekIfNeededToDate:v6];
+      [(PaletteScrollViewController *)paletteScrollVC scrollOrRelayoutWeekIfNeededToDate:currentSelectedDate];
     }
 
-    [(PaletteWeekdayHeaderView *)self->_paletteView highlightWeekdayLabelForDateAndSetDay:v6];
+    [(PaletteWeekdayHeaderView *)self->_paletteView highlightWeekdayLabelForDateAndSetDay:currentSelectedDate];
   }
 }
 
-- (void)setIsExpanded:(BOOL)a3 collapseDayMarkers:(BOOL)a4
+- (void)setIsExpanded:(BOOL)expanded collapseDayMarkers:(BOOL)markers
 {
-  v4 = a4;
-  v5 = a3;
+  markersCopy = markers;
+  expandedCopy = expanded;
   [(PaletteWeekdayHeaderView *)self->_paletteView setIsExpanded:?];
-  v7 = [(PaletteScrollViewController *)self->_paletteScrollVC view];
-  v8 = v7;
+  view = [(PaletteScrollViewController *)self->_paletteScrollVC view];
+  v8 = view;
   v9 = 0.0;
-  if (v5)
+  if (expandedCopy)
   {
     v9 = 1.0;
   }
 
-  [v7 setAlpha:v9];
+  [view setAlpha:v9];
 
   [(CHPaletteViewControllerSizingDelegate *)self->_sizingDelegate size];
-  if (v5)
+  if (expandedCopy)
   {
     [(PaletteWeekdayHeaderView *)self->_paletteView setAlpha:1.0];
     paletteView = self->_paletteView;
-    v12 = [(ActivityDateProviding *)self->_dateProvider currentSelectedDate];
-    [(PaletteWeekdayHeaderView *)paletteView highlightWeekdayLabelForDateAndSetDay:v12];
+    currentSelectedDate = [(ActivityDateProviding *)self->_dateProvider currentSelectedDate];
+    [(PaletteWeekdayHeaderView *)paletteView highlightWeekdayLabelForDateAndSetDay:currentSelectedDate];
   }
 
-  else if (v4)
+  else if (markersCopy)
   {
     v11 = self->_paletteView;
 
@@ -158,9 +158,9 @@
   }
 }
 
-- (void)paletteScrolledInDirection:(BOOL)a3
+- (void)paletteScrolledInDirection:(BOOL)direction
 {
-  if (a3)
+  if (direction)
   {
     v4 = -1;
   }
@@ -171,8 +171,8 @@
   }
 
   v13 = +[NSCalendar currentCalendar];
-  v5 = [(ActivityDateProviding *)self->_dateProvider currentSelectedDate];
-  v6 = [v13 dateByAddingUnit:0x2000 value:v4 toDate:v5 options:0];
+  currentSelectedDate = [(ActivityDateProviding *)self->_dateProvider currentSelectedDate];
+  v6 = [v13 dateByAddingUnit:0x2000 value:v4 toDate:currentSelectedDate options:0];
 
   v7 = +[NSDate date];
   v8 = [v13 startOfDayForDate:v7];
@@ -191,12 +191,12 @@
   [(PaletteWeekdayHeaderView *)self->_paletteView highlightWeekdayLabelForDateAndSetDay:v6];
 }
 
-- (void)paletteDateSelected:(id)a3
+- (void)paletteDateSelected:(id)selected
 {
   dateProvider = self->_dateProvider;
-  v5 = a3;
-  [(ActivityDateProviding *)dateProvider setWithCurrentSelectedDate:v5 caller:self];
-  [(PaletteWeekdayHeaderView *)self->_paletteView highlightWeekdayLabelForDateAndSetDay:v5];
+  selectedCopy = selected;
+  [(ActivityDateProviding *)dateProvider setWithCurrentSelectedDate:selectedCopy caller:self];
+  [(PaletteWeekdayHeaderView *)self->_paletteView highlightWeekdayLabelForDateAndSetDay:selectedCopy];
 }
 
 @end

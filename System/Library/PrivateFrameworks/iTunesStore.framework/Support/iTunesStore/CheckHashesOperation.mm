@@ -1,5 +1,5 @@
 @interface CheckHashesOperation
-- (CheckHashesOperation)initWithFilePath:(id)a3 hashes:(id)a4 bytesToHash:(int64_t)a5;
+- (CheckHashesOperation)initWithFilePath:(id)path hashes:(id)hashes bytesToHash:(int64_t)hash;
 - (NSArray)hashes;
 - (NSString)filePath;
 - (void)dealloc;
@@ -8,7 +8,7 @@
 
 @implementation CheckHashesOperation
 
-- (CheckHashesOperation)initWithFilePath:(id)a3 hashes:(id)a4 bytesToHash:(int64_t)a5
+- (CheckHashesOperation)initWithFilePath:(id)path hashes:(id)hashes bytesToHash:(int64_t)hash
 {
   v11.receiver = self;
   v11.super_class = CheckHashesOperation;
@@ -16,9 +16,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_bytesToHash = a5;
-    v8->_filePath = [a3 copy];
-    v9->_hashes = [a4 copy];
+    v8->_bytesToHash = hash;
+    v8->_filePath = [path copy];
+    v9->_hashes = [hashes copy];
   }
 
   return v9;
@@ -53,20 +53,20 @@
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v4 |= 2u;
+    shouldLog |= 2u;
   }
 
   if (os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_INFO))
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
   else
   {
-    v5 = v4 & 2;
+    v5 = shouldLog & 2;
   }
 
   if (v5)
@@ -107,20 +107,20 @@
       v33 = +[SSLogConfig sharedConfig];
     }
 
-    v34 = [v33 shouldLog];
+    shouldLog2 = [v33 shouldLog];
     if ([v33 shouldLogToDisk])
     {
-      v34 |= 2u;
+      shouldLog2 |= 2u;
     }
 
     if (os_log_type_enabled([v33 OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
-      v32 = v34;
+      v32 = shouldLog2;
     }
 
     else
     {
-      v32 = v34 & 2;
+      v32 = shouldLog2 & 2;
     }
 
     if (v32)
@@ -157,7 +157,7 @@
     }
 
     v16 = self->_bytesToHash;
-    v17 = self;
+    selfCopy = self;
     if ([(NSArray *)self->_hashes count]== 1)
     {
       v18 = st_size;
@@ -169,11 +169,11 @@
     }
 
     v19 = OBJC_IVAR___ISOperation__progress;
-    [*&v17->ISOperation_opaque[OBJC_IVAR___ISOperation__progress] setMaxValue:st_size];
+    [*&selfCopy->ISOperation_opaque[OBJC_IVAR___ISOperation__progress] setMaxValue:st_size];
     v58 = v19;
-    [*&v17->ISOperation_opaque[v19] setUnits:1];
+    [*&selfCopy->ISOperation_opaque[v19] setUnits:1];
     v20 = malloc_type_malloc(0x20000uLL, 0x494493A7uLL);
-    v62 = v17;
+    v62 = selfCopy;
     if (v20)
     {
       v21 = v20;
@@ -182,7 +182,7 @@
       v65 = 0u;
       v66 = 0u;
       v67 = 0u;
-      obj = v17->_hashes;
+      obj = selfCopy->_hashes;
       v57 = [(NSArray *)obj countByEnumeratingWithState:&v64 objects:v75 count:16];
       if (v57)
       {
@@ -285,20 +285,20 @@
                 v45 = +[SSLogConfig sharedConfig];
               }
 
-              v46 = [v45 shouldLog];
+              shouldLog3 = [v45 shouldLog];
               if ([v45 shouldLogToDisk])
               {
-                v46 |= 2u;
+                shouldLog3 |= 2u;
               }
 
               if (os_log_type_enabled([v45 OSLogObject], OS_LOG_TYPE_DEFAULT))
               {
-                v47 = v46;
+                v47 = shouldLog3;
               }
 
               else
               {
-                v47 = v46 & 2;
+                v47 = shouldLog3 & 2;
               }
 
               if (v47)
@@ -369,20 +369,20 @@ LABEL_82:
         v39 = +[SSLogConfig sharedConfig];
       }
 
-      v40 = [v39 shouldLog];
+      shouldLog4 = [v39 shouldLog];
       if ([v39 shouldLogToDisk])
       {
-        v40 |= 2u;
+        shouldLog4 |= 2u;
       }
 
       if (os_log_type_enabled([v39 OSLogObject], OS_LOG_TYPE_DEFAULT))
       {
-        v32 = v40;
+        v32 = shouldLog4;
       }
 
       else
       {
-        v32 = v40 & 2;
+        v32 = shouldLog4 & 2;
       }
 
       self = v62;

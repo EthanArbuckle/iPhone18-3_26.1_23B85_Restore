@@ -1,30 +1,30 @@
 @interface ASRSchemaASRDictationVoiceCommandMetricsReported
-- (ASRSchemaASRDictationVoiceCommandMetricsReported)initWithDictionary:(id)a3;
-- (ASRSchemaASRDictationVoiceCommandMetricsReported)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRDictationVoiceCommandMetricsReported)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRDictationVoiceCommandMetricsReported)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCommandParserEndTimeInNs:(BOOL)a3;
-- (void)setHasCommandParserStartTimeInNs:(BOOL)a3;
-- (void)setHasUtteranceEndTimeInNs:(BOOL)a3;
-- (void)setHasUtteranceStartTimeInNs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCommandParserEndTimeInNs:(BOOL)ns;
+- (void)setHasCommandParserStartTimeInNs:(BOOL)ns;
+- (void)setHasUtteranceEndTimeInNs:(BOOL)ns;
+- (void)setHasUtteranceStartTimeInNs:(BOOL)ns;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRDictationVoiceCommandMetricsReported
 
-- (ASRSchemaASRDictationVoiceCommandMetricsReported)initWithDictionary:(id)a3
+- (ASRSchemaASRDictationVoiceCommandMetricsReported)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = ASRSchemaASRDictationVoiceCommandMetricsReported;
   v5 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"voiceCommandId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"voiceCommandId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,42 +33,42 @@
     }
 
     v19 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"commandEndTimeInNs"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"commandEndTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRDictationVoiceCommandMetricsReported setCommandEndTimeInNs:](v5, "setCommandEndTimeInNs:", [v8 unsignedLongLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"commandParserStartTimeInNs"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"commandParserStartTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRDictationVoiceCommandMetricsReported setCommandParserStartTimeInNs:](v5, "setCommandParserStartTimeInNs:", [v9 unsignedLongLongValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"commandParserEndTimeInNs"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"commandParserEndTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRDictationVoiceCommandMetricsReported setCommandParserEndTimeInNs:](v5, "setCommandParserEndTimeInNs:", [v10 unsignedLongLongValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"utteranceStartTimeInNs"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"utteranceStartTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRDictationVoiceCommandMetricsReported setUtteranceStartTimeInNs:](v5, "setUtteranceStartTimeInNs:", [v11 unsignedLongLongValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"utteranceEndTimeInNs"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"utteranceEndTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRDictationVoiceCommandMetricsReported setUtteranceEndTimeInNs:](v5, "setUtteranceEndTimeInNs:", [v12 unsignedLongLongValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"recognitionResultLinkId"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"recognitionResultLinkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,7 +76,7 @@
       [(ASRSchemaASRDictationVoiceCommandMetricsReported *)v5 setRecognitionResultLinkId:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"dictationVoiceCommandLinkId"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"dictationVoiceCommandLinkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,30 +90,30 @@
   return v5;
 }
 
-- (ASRSchemaASRDictationVoiceCommandMetricsReported)initWithJSON:(id)a3
+- (ASRSchemaASRDictationVoiceCommandMetricsReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -126,12 +126,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRDictationVoiceCommandMetricsReported commandEndTimeInNs](self, "commandEndTimeInNs")}];
-    [v3 setObject:v8 forKeyedSubscript:@"commandEndTimeInNs"];
+    [dictionary setObject:v8 forKeyedSubscript:@"commandEndTimeInNs"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -152,45 +152,45 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRDictationVoiceCommandMetricsReported commandParserEndTimeInNs](self, "commandParserEndTimeInNs")}];
-  [v3 setObject:v9 forKeyedSubscript:@"commandParserEndTimeInNs"];
+  [dictionary setObject:v9 forKeyedSubscript:@"commandParserEndTimeInNs"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRDictationVoiceCommandMetricsReported commandParserStartTimeInNs](self, "commandParserStartTimeInNs")}];
-    [v3 setObject:v5 forKeyedSubscript:@"commandParserStartTimeInNs"];
+    [dictionary setObject:v5 forKeyedSubscript:@"commandParserStartTimeInNs"];
   }
 
 LABEL_5:
   if (self->_dictationVoiceCommandLinkId)
   {
-    v6 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self dictationVoiceCommandLinkId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    dictationVoiceCommandLinkId = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self dictationVoiceCommandLinkId];
+    dictionaryRepresentation = [dictationVoiceCommandLinkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"dictationVoiceCommandLinkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dictationVoiceCommandLinkId"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"dictationVoiceCommandLinkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"dictationVoiceCommandLinkId"];
     }
   }
 
   if (self->_recognitionResultLinkId)
   {
-    v11 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self recognitionResultLinkId];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    recognitionResultLinkId = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self recognitionResultLinkId];
+    dictionaryRepresentation2 = [recognitionResultLinkId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"recognitionResultLinkId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"recognitionResultLinkId"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"recognitionResultLinkId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"recognitionResultLinkId"];
     }
   }
 
@@ -198,7 +198,7 @@ LABEL_5:
   if ((v14 & 0x10) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRDictationVoiceCommandMetricsReported utteranceEndTimeInNs](self, "utteranceEndTimeInNs")}];
-    [v3 setObject:v15 forKeyedSubscript:@"utteranceEndTimeInNs"];
+    [dictionary setObject:v15 forKeyedSubscript:@"utteranceEndTimeInNs"];
 
     v14 = self->_has;
   }
@@ -206,28 +206,28 @@ LABEL_5:
   if ((v14 & 8) != 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRDictationVoiceCommandMetricsReported utteranceStartTimeInNs](self, "utteranceStartTimeInNs")}];
-    [v3 setObject:v16 forKeyedSubscript:@"utteranceStartTimeInNs"];
+    [dictionary setObject:v16 forKeyedSubscript:@"utteranceStartTimeInNs"];
   }
 
   if (self->_voiceCommandId)
   {
-    v17 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self voiceCommandId];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    voiceCommandId = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self voiceCommandId];
+    dictionaryRepresentation3 = [voiceCommandId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"voiceCommandId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"voiceCommandId"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"voiceCommandId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"voiceCommandId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -301,28 +301,28 @@ LABEL_12:
   return v9 ^ [(SISchemaUUID *)self->_dictationVoiceCommandLinkId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
-  v5 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self voiceCommandId];
-  v6 = [v4 voiceCommandId];
-  if ((v5 != 0) == (v6 == 0))
+  voiceCommandId = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self voiceCommandId];
+  voiceCommandId2 = [equalCopy voiceCommandId];
+  if ((voiceCommandId != 0) == (voiceCommandId2 == 0))
   {
     goto LABEL_35;
   }
 
-  v7 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self voiceCommandId];
-  if (v7)
+  voiceCommandId3 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self voiceCommandId];
+  if (voiceCommandId3)
   {
-    v8 = v7;
-    v9 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self voiceCommandId];
-    v10 = [v4 voiceCommandId];
-    v11 = [v9 isEqual:v10];
+    v8 = voiceCommandId3;
+    voiceCommandId4 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self voiceCommandId];
+    voiceCommandId5 = [equalCopy voiceCommandId];
+    v11 = [voiceCommandId4 isEqual:voiceCommandId5];
 
     if (!v11)
     {
@@ -335,7 +335,7 @@ LABEL_12:
   }
 
   has = self->_has;
-  v13 = v4[72];
+  v13 = equalCopy[72];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_36;
@@ -344,13 +344,13 @@ LABEL_12:
   if (*&has)
   {
     commandEndTimeInNs = self->_commandEndTimeInNs;
-    if (commandEndTimeInNs != [v4 commandEndTimeInNs])
+    if (commandEndTimeInNs != [equalCopy commandEndTimeInNs])
     {
       goto LABEL_36;
     }
 
     has = self->_has;
-    v13 = v4[72];
+    v13 = equalCopy[72];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -362,13 +362,13 @@ LABEL_12:
   if (v15)
   {
     commandParserStartTimeInNs = self->_commandParserStartTimeInNs;
-    if (commandParserStartTimeInNs != [v4 commandParserStartTimeInNs])
+    if (commandParserStartTimeInNs != [equalCopy commandParserStartTimeInNs])
     {
       goto LABEL_36;
     }
 
     has = self->_has;
-    v13 = v4[72];
+    v13 = equalCopy[72];
   }
 
   v17 = (*&has >> 2) & 1;
@@ -380,13 +380,13 @@ LABEL_12:
   if (v17)
   {
     commandParserEndTimeInNs = self->_commandParserEndTimeInNs;
-    if (commandParserEndTimeInNs != [v4 commandParserEndTimeInNs])
+    if (commandParserEndTimeInNs != [equalCopy commandParserEndTimeInNs])
     {
       goto LABEL_36;
     }
 
     has = self->_has;
-    v13 = v4[72];
+    v13 = equalCopy[72];
   }
 
   v19 = (*&has >> 3) & 1;
@@ -398,13 +398,13 @@ LABEL_12:
   if (v19)
   {
     utteranceStartTimeInNs = self->_utteranceStartTimeInNs;
-    if (utteranceStartTimeInNs != [v4 utteranceStartTimeInNs])
+    if (utteranceStartTimeInNs != [equalCopy utteranceStartTimeInNs])
     {
       goto LABEL_36;
     }
 
     has = self->_has;
-    v13 = v4[72];
+    v13 = equalCopy[72];
   }
 
   v21 = (*&has >> 4) & 1;
@@ -416,26 +416,26 @@ LABEL_12:
   if (v21)
   {
     utteranceEndTimeInNs = self->_utteranceEndTimeInNs;
-    if (utteranceEndTimeInNs != [v4 utteranceEndTimeInNs])
+    if (utteranceEndTimeInNs != [equalCopy utteranceEndTimeInNs])
     {
       goto LABEL_36;
     }
   }
 
-  v5 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self recognitionResultLinkId];
-  v6 = [v4 recognitionResultLinkId];
-  if ((v5 != 0) == (v6 == 0))
+  voiceCommandId = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self recognitionResultLinkId];
+  voiceCommandId2 = [equalCopy recognitionResultLinkId];
+  if ((voiceCommandId != 0) == (voiceCommandId2 == 0))
   {
     goto LABEL_35;
   }
 
-  v23 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self recognitionResultLinkId];
-  if (v23)
+  recognitionResultLinkId = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self recognitionResultLinkId];
+  if (recognitionResultLinkId)
   {
-    v24 = v23;
-    v25 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self recognitionResultLinkId];
-    v26 = [v4 recognitionResultLinkId];
-    v27 = [v25 isEqual:v26];
+    v24 = recognitionResultLinkId;
+    recognitionResultLinkId2 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self recognitionResultLinkId];
+    recognitionResultLinkId3 = [equalCopy recognitionResultLinkId];
+    v27 = [recognitionResultLinkId2 isEqual:recognitionResultLinkId3];
 
     if (!v27)
     {
@@ -447,17 +447,17 @@ LABEL_12:
   {
   }
 
-  v5 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self dictationVoiceCommandLinkId];
-  v6 = [v4 dictationVoiceCommandLinkId];
-  if ((v5 != 0) == (v6 == 0))
+  voiceCommandId = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self dictationVoiceCommandLinkId];
+  voiceCommandId2 = [equalCopy dictationVoiceCommandLinkId];
+  if ((voiceCommandId != 0) == (voiceCommandId2 == 0))
   {
 LABEL_35:
 
     goto LABEL_36;
   }
 
-  v28 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self dictationVoiceCommandLinkId];
-  if (!v28)
+  dictationVoiceCommandLinkId = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self dictationVoiceCommandLinkId];
+  if (!dictationVoiceCommandLinkId)
   {
 
 LABEL_39:
@@ -465,10 +465,10 @@ LABEL_39:
     goto LABEL_37;
   }
 
-  v29 = v28;
-  v30 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self dictationVoiceCommandLinkId];
-  v31 = [v4 dictationVoiceCommandLinkId];
-  v32 = [v30 isEqual:v31];
+  v29 = dictationVoiceCommandLinkId;
+  dictationVoiceCommandLinkId2 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self dictationVoiceCommandLinkId];
+  dictationVoiceCommandLinkId3 = [equalCopy dictationVoiceCommandLinkId];
+  v32 = [dictationVoiceCommandLinkId2 isEqual:dictationVoiceCommandLinkId3];
 
   if (v32)
   {
@@ -482,14 +482,14 @@ LABEL_37:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
-  v4 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self voiceCommandId];
+  toCopy = to;
+  voiceCommandId = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self voiceCommandId];
 
-  if (v4)
+  if (voiceCommandId)
   {
-    v5 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self voiceCommandId];
+    voiceCommandId2 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self voiceCommandId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -551,29 +551,29 @@ LABEL_8:
   }
 
 LABEL_9:
-  v7 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self recognitionResultLinkId];
+  recognitionResultLinkId = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self recognitionResultLinkId];
 
-  if (v7)
+  if (recognitionResultLinkId)
   {
-    v8 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self recognitionResultLinkId];
+    recognitionResultLinkId2 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self recognitionResultLinkId];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self dictationVoiceCommandLinkId];
+  dictationVoiceCommandLinkId = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self dictationVoiceCommandLinkId];
 
-  v10 = v12;
-  if (v9)
+  v10 = toCopy;
+  if (dictationVoiceCommandLinkId)
   {
-    v11 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self dictationVoiceCommandLinkId];
+    dictationVoiceCommandLinkId2 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self dictationVoiceCommandLinkId];
     PBDataWriterWriteSubmessage();
 
-    v10 = v12;
+    v10 = toCopy;
   }
 }
 
-- (void)setHasUtteranceEndTimeInNs:(BOOL)a3
+- (void)setHasUtteranceEndTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 16;
   }
@@ -586,9 +586,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasUtteranceStartTimeInNs:(BOOL)a3
+- (void)setHasUtteranceStartTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 8;
   }
@@ -601,9 +601,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasCommandParserEndTimeInNs:(BOOL)a3
+- (void)setHasCommandParserEndTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 4;
   }
@@ -616,9 +616,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCommandParserStartTimeInNs:(BOOL)a3
+- (void)setHasCommandParserStartTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 2;
   }
@@ -631,35 +631,35 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = ASRSchemaASRDictationVoiceCommandMetricsReported;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self voiceCommandId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  voiceCommandId = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self voiceCommandId];
+  v7 = [voiceCommandId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self deleteVoiceCommandId];
   }
 
-  v9 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self recognitionResultLinkId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  recognitionResultLinkId = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self recognitionResultLinkId];
+  v10 = [recognitionResultLinkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self deleteRecognitionResultLinkId];
   }
 
-  v12 = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self dictationVoiceCommandLinkId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  dictationVoiceCommandLinkId = [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self dictationVoiceCommandLinkId];
+  v13 = [dictationVoiceCommandLinkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(ASRSchemaASRDictationVoiceCommandMetricsReported *)self deleteDictationVoiceCommandLinkId];
   }

@@ -1,13 +1,13 @@
 @interface RFSelfAuthController
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 @end
 
 @implementation RFSelfAuthController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  [(RFSelfAuthController *)self setInputs:a3, a4];
+  [(RFSelfAuthController *)self setInputs:inputs, responder];
 
   [(RFSelfAuthController *)self setFinished:0];
 }
@@ -29,8 +29,8 @@
   if ([(RFSelfAuthExtensionHelper *)self->fDiagHelper loadTestConfigFromUserDefaults])
   {
     v6 = ([(RFSelfAuthExtensionHelper *)self->fDiagHelper testConfiguration]>> 8) & 1;
-    v7 = [(RFSelfAuthController *)self inputs];
-    [v7 setAddAPTagToTicket:v6];
+    inputs = [(RFSelfAuthController *)self inputs];
+    [inputs setAddAPTagToTicket:v6];
 
     v8 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -41,13 +41,13 @@
   }
 
   [(RFSelfAuthExtensionHelper *)self->fDiagHelper clearRFSelfTestTicket];
-  v9 = [(RFSelfAuthExtensionHelper *)self->fDiagHelper getPersonalizationInfo];
-  if (v9)
+  getPersonalizationInfo = [(RFSelfAuthExtensionHelper *)self->fDiagHelper getPersonalizationInfo];
+  if (getPersonalizationInfo)
   {
-    v10 = v9;
-    v11 = [NSNumber numberWithInteger:v9];
-    v12 = [(RFSelfAuthController *)self result];
-    [v12 setStatusCode:v11];
+    v10 = getPersonalizationInfo;
+    v11 = [NSNumber numberWithInteger:getPersonalizationInfo];
+    result = [(RFSelfAuthController *)self result];
+    [result setStatusCode:v11];
 
     v13 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -64,14 +64,14 @@ LABEL_12:
   }
 
   v15 = self->fDiagHelper;
-  v16 = [(RFSelfAuthController *)self inputs];
-  v17 = -[RFSelfAuthExtensionHelper getSignedTicketAndStore:](v15, "getSignedTicketAndStore:", [v16 addAPTagToTicket]);
+  inputs2 = [(RFSelfAuthController *)self inputs];
+  v17 = -[RFSelfAuthExtensionHelper getSignedTicketAndStore:](v15, "getSignedTicketAndStore:", [inputs2 addAPTagToTicket]);
 
   if (v17)
   {
     v18 = [NSNumber numberWithInteger:v17];
-    v19 = [(RFSelfAuthController *)self result];
-    [v19 setStatusCode:v18];
+    result2 = [(RFSelfAuthController *)self result];
+    [result2 setStatusCode:v18];
 
     v13 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -85,8 +85,8 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v20 = [(RFSelfAuthController *)self result];
-  [v20 setStatusCode:&off_1000041F8];
+  result3 = [(RFSelfAuthController *)self result];
+  [result3 setStatusCode:&off_1000041F8];
 
 LABEL_14:
   [(RFSelfAuthController *)self setFinished:1, v22];

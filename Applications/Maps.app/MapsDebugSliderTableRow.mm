@@ -1,14 +1,14 @@
 @interface MapsDebugSliderTableRow
 - (MapsDebugSliderTableRow)init;
-- (id)_createSliderForIdiom:(int64_t)a3;
+- (id)_createSliderForIdiom:(int64_t)idiom;
 - (int64_t)cellStyle;
-- (void)_sliderDidChangeValue:(id)a3;
-- (void)_updateSecondaryText:(float)a3;
-- (void)configureCell:(id)a3;
-- (void)configureCollectionViewCell:(id)a3;
+- (void)_sliderDidChangeValue:(id)value;
+- (void)_updateSecondaryText:(float)text;
+- (void)configureCell:(id)cell;
+- (void)configureCollectionViewCell:(id)cell;
 - (void)invalidate;
-- (void)setMaximum:(float)a3;
-- (void)setMinimum:(float)a3;
+- (void)setMaximum:(float)maximum;
+- (void)setMinimum:(float)minimum;
 @end
 
 @implementation MapsDebugSliderTableRow
@@ -38,54 +38,54 @@
   return v3;
 }
 
-- (void)_updateSecondaryText:(float)a3
+- (void)_updateSecondaryText:(float)text
 {
-  v5 = [(MapsDebugSliderTableRow *)self subtitleHandler];
+  subtitleHandler = [(MapsDebugSliderTableRow *)self subtitleHandler];
 
-  if (v5)
+  if (subtitleHandler)
   {
-    v6 = [(MapsDebugTableRow *)self currentCell];
-    v15 = [v6 contentConfiguration];
+    currentCell = [(MapsDebugTableRow *)self currentCell];
+    contentConfiguration = [currentCell contentConfiguration];
 
-    v7 = [(MapsDebugSliderTableRow *)self subtitleHandler];
-    v8 = v7[2](a3);
-    [v15 setSecondaryText:v8];
+    subtitleHandler2 = [(MapsDebugSliderTableRow *)self subtitleHandler];
+    v8 = subtitleHandler2[2](text);
+    [contentConfiguration setSecondaryText:v8];
   }
 
   else
   {
-    v9 = [(MapsDebugSliderTableRow *)self subtitleFormatString];
+    subtitleFormatString = [(MapsDebugSliderTableRow *)self subtitleFormatString];
 
-    if (!v9)
+    if (!subtitleFormatString)
     {
       return;
     }
 
-    v10 = [(MapsDebugTableRow *)self currentCell];
-    v15 = [v10 contentConfiguration];
+    currentCell2 = [(MapsDebugTableRow *)self currentCell];
+    contentConfiguration = [currentCell2 contentConfiguration];
 
-    v7 = [(MapsDebugSliderTableRow *)self subtitleFormatString];
-    *&v11 = a3;
+    subtitleHandler2 = [(MapsDebugSliderTableRow *)self subtitleFormatString];
+    *&v11 = text;
     v8 = [NSNumber numberWithFloat:v11];
-    v12 = [v8 stringValue];
-    v13 = [v7 stringByReplacingOccurrencesOfString:@"%f" withString:v12];
-    [v15 setSecondaryText:v13];
+    stringValue = [v8 stringValue];
+    v13 = [subtitleHandler2 stringByReplacingOccurrencesOfString:@"%f" withString:stringValue];
+    [contentConfiguration setSecondaryText:v13];
   }
 
-  v14 = [(MapsDebugTableRow *)self currentCell];
-  [v14 setContentConfiguration:v15];
+  currentCell3 = [(MapsDebugTableRow *)self currentCell];
+  [currentCell3 setContentConfiguration:contentConfiguration];
 }
 
-- (void)_sliderDidChangeValue:(id)a3
+- (void)_sliderDidChangeValue:(id)value
 {
-  [a3 value];
+  [value value];
   v5 = v4;
-  v6 = [(MapsDebugSliderTableRow *)self validate];
+  validate = [(MapsDebugSliderTableRow *)self validate];
 
-  if (v6)
+  if (validate)
   {
-    v7 = [(MapsDebugSliderTableRow *)self validate];
-    v5 = v7[2](v5);
+    validate2 = [(MapsDebugSliderTableRow *)self validate];
+    v5 = validate2[2](v5);
   }
 
   v8 = [(MapsDebugSliderTableRow *)self set];
@@ -101,39 +101,39 @@
   [(MapsDebugSliderTableRow *)self _updateSecondaryText:v9];
 }
 
-- (void)setMaximum:(float)a3
+- (void)setMaximum:(float)maximum
 {
-  if (self->_maximum != a3)
+  if (self->_maximum != maximum)
   {
-    self->_maximum = a3;
-    v6 = [(MapsDebugTableRow *)self currentCell];
-    v4 = [v6 accessoryView];
-    *&v5 = a3;
-    [v4 setMaximumValue:v5];
+    self->_maximum = maximum;
+    currentCell = [(MapsDebugTableRow *)self currentCell];
+    accessoryView = [currentCell accessoryView];
+    *&v5 = maximum;
+    [accessoryView setMaximumValue:v5];
   }
 }
 
-- (void)setMinimum:(float)a3
+- (void)setMinimum:(float)minimum
 {
-  if (self->_minimum != a3)
+  if (self->_minimum != minimum)
   {
-    self->_minimum = a3;
-    v6 = [(MapsDebugTableRow *)self currentCell];
-    v4 = [v6 accessoryView];
-    *&v5 = a3;
-    [v4 setMinimumValue:v5];
+    self->_minimum = minimum;
+    currentCell = [(MapsDebugTableRow *)self currentCell];
+    accessoryView = [currentCell accessoryView];
+    *&v5 = minimum;
+    [accessoryView setMinimumValue:v5];
   }
 }
 
-- (void)configureCollectionViewCell:(id)a3
+- (void)configureCollectionViewCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v10.receiver = self;
   v10.super_class = MapsDebugSliderTableRow;
-  [(MapsDebugTableRow *)&v10 configureCollectionViewCell:v4];
-  v5 = v4;
-  v6 = [v5 traitCollection];
-  v7 = -[MapsDebugSliderTableRow _createSliderForIdiom:](self, "_createSliderForIdiom:", [v6 userInterfaceIdiom]);
+  [(MapsDebugTableRow *)&v10 configureCollectionViewCell:cellCopy];
+  v5 = cellCopy;
+  traitCollection = [v5 traitCollection];
+  v7 = -[MapsDebugSliderTableRow _createSliderForIdiom:](self, "_createSliderForIdiom:", [traitCollection userInterfaceIdiom]);
 
   [v7 value];
   [(MapsDebugSliderTableRow *)self _updateSecondaryText:?];
@@ -144,21 +144,21 @@
   [v5 setTrailingAccessoryConfigurations:v9];
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
   v7.receiver = self;
   v7.super_class = MapsDebugSliderTableRow;
-  v4 = a3;
-  [(MapsDebugTableRow *)&v7 configureCell:v4];
-  v5 = [v4 traitCollection];
-  v6 = -[MapsDebugSliderTableRow _createSliderForIdiom:](self, "_createSliderForIdiom:", [v5 userInterfaceIdiom]);
+  cellCopy = cell;
+  [(MapsDebugTableRow *)&v7 configureCell:cellCopy];
+  traitCollection = [cellCopy traitCollection];
+  v6 = -[MapsDebugSliderTableRow _createSliderForIdiom:](self, "_createSliderForIdiom:", [traitCollection userInterfaceIdiom]);
 
   [v6 value];
   [(MapsDebugSliderTableRow *)self _updateSecondaryText:?];
-  [v4 setAccessoryView:v6];
+  [cellCopy setAccessoryView:v6];
 }
 
-- (id)_createSliderForIdiom:(int64_t)a3
+- (id)_createSliderForIdiom:(int64_t)idiom
 {
   v4 = [[UISlider alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(MapsDebugSliderTableRow *)self minimum];
@@ -201,8 +201,8 @@
 
 - (int64_t)cellStyle
 {
-  v3 = [(MapsDebugSliderTableRow *)self subtitleFormatString];
-  v4 = [v3 length];
+  subtitleFormatString = [(MapsDebugSliderTableRow *)self subtitleFormatString];
+  v4 = [subtitleFormatString length];
 
   if (v4)
   {

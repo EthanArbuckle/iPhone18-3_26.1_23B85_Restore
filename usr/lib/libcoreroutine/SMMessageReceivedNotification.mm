@@ -1,6 +1,6 @@
 @interface SMMessageReceivedNotification
 - (SMMessageReceivedNotification)init;
-- (SMMessageReceivedNotification)initWithMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5;
+- (SMMessageReceivedNotification)initWithMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me;
 @end
 
 @implementation SMMessageReceivedNotification
@@ -21,19 +21,19 @@
   return 0;
 }
 
-- (SMMessageReceivedNotification)initWithMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5
+- (SMMessageReceivedNotification)initWithMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  messageCopy = message;
+  handleCopy = handle;
+  v11 = handleCopy;
+  if (!messageCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -44,7 +44,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v10)
+  if (!handleCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -63,16 +63,16 @@ LABEL_12:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_message, a3);
-    objc_storeStrong(&v13->_from, a4);
-    v13->_fromMe = a5;
+    objc_storeStrong(&v12->_message, message);
+    objc_storeStrong(&v13->_from, handle);
+    v13->_fromMe = me;
   }
 
   self = v13;
-  v14 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v14;
+  return selfCopy;
 }
 
 @end

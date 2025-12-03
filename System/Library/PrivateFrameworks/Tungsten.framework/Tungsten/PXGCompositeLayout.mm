@@ -1,32 +1,32 @@
 @interface PXGCompositeLayout
 - (PXGCompositeLayout)init;
-- (PXGCompositeLayout)initWithComposition:(id)a3;
+- (PXGCompositeLayout)initWithComposition:(id)composition;
 - (PXGSublayoutFaultingDelegate)sublayoutFaultingDelegate;
 - (UIEdgeInsets)faultInOutsets;
 - (UIEdgeInsets)faultOutOutsets;
-- (double)alphaForSublayout:(id)a3 atIndex:(int64_t)a4;
-- (void)_invalidateStylableType:(int64_t)a3;
+- (double)alphaForSublayout:(id)sublayout atIndex:(int64_t)index;
+- (void)_invalidateStylableType:(int64_t)type;
 - (void)_invalidateSublayouts;
-- (void)_updateSublayoutOfStylableType:(int64_t)a3;
+- (void)_updateSublayoutOfStylableType:(int64_t)type;
 - (void)_updateSublayouts;
-- (void)axGroup:(id)a3 didChange:(unint64_t)a4 userInfo:(id)a5;
+- (void)axGroup:(id)group didChange:(unint64_t)change userInfo:(id)info;
 - (void)dealloc;
-- (void)didAddSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5;
-- (void)didApplySublayoutChangeDetails:(id)a3 axAdjustedSubgroupChangeDetails:(id)a4 countAfterChanges:(int64_t)a5;
+- (void)didAddSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags;
+- (void)didApplySublayoutChangeDetails:(id)details axAdjustedSubgroupChangeDetails:(id)changeDetails countAfterChanges:(int64_t)changes;
 - (void)didUpdate;
 - (void)displayScaleDidChange;
-- (void)insertSublayoutProvider:(id)a3 inRange:(_NSRange)a4;
+- (void)insertSublayoutProvider:(id)provider inRange:(_NSRange)range;
 - (void)referenceDepthDidChange;
 - (void)referenceSizeDidChange;
 - (void)scrollSpeedRegimeDidChange;
-- (void)setComposition:(id)a3;
-- (void)setSublayoutIndex:(int64_t)a3 forUniquelyStylableType:(int64_t)a4 animated:(BOOL)a5;
-- (void)sublayoutDidChangeContentSize:(id)a3;
-- (void)sublayoutNeedsUpdate:(id)a3;
+- (void)setComposition:(id)composition;
+- (void)setSublayoutIndex:(int64_t)index forUniquelyStylableType:(int64_t)type animated:(BOOL)animated;
+- (void)sublayoutDidChangeContentSize:(id)size;
+- (void)sublayoutNeedsUpdate:(id)update;
 - (void)update;
 - (void)viewEnvironmentDidChange;
 - (void)visibleRectDidChange;
-- (void)willRemoveSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5;
+- (void)willRemoveSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags;
 - (void)willUpdate;
 @end
 
@@ -65,39 +65,39 @@
   return WeakRetained;
 }
 
-- (void)axGroup:(id)a3 didChange:(unint64_t)a4 userInfo:(id)a5
+- (void)axGroup:(id)group didChange:(unint64_t)change userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if ((a4 & 2) != 0)
+  groupCopy = group;
+  infoCopy = info;
+  v10 = infoCopy;
+  if ((change & 2) != 0)
   {
     v20 = 0;
-    PXGAXGetFocusFromAndToInfosForUserInfo(v9, 0, &v20);
+    PXGAXGetFocusFromAndToInfosForUserInfo(infoCopy, 0, &v20);
     v11 = v20;
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 axContainingGroup];
-      for (i = [v13 containingLayout];
+      axContainingGroup = [v11 axContainingGroup];
+      for (i = [axContainingGroup containingLayout];
       {
         v15 = i;
 
-        v16 = [v15 superlayout];
+        superlayout = [v15 superlayout];
 
-        if (!v15 || v16 == self)
+        if (!v15 || superlayout == self)
         {
           break;
         }
 
-        v13 = v15;
+        axContainingGroup = v15;
         [v15 superlayout];
       }
 
       if (v15)
       {
-        v17 = [(PXGLayout *)self sublayoutDataStore];
-        v18 = [v17 indexOfSublayout:v15];
+        sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+        v18 = [sublayoutDataStore indexOfSublayout:v15];
       }
 
       else
@@ -119,13 +119,13 @@
 
   v19.receiver = self;
   v19.super_class = PXGCompositeLayout;
-  [(PXGLayout *)&v19 axGroup:v8 didChange:a4 userInfo:v10];
+  [(PXGLayout *)&v19 axGroup:groupCopy didChange:change userInfo:v10];
 }
 
 - (void)_updateSublayouts
 {
-  v4 = [(PXGLayout *)self sublayoutDataStore];
-  v5 = [v4 count];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  v5 = [sublayoutDataStore count];
   if (!v5)
   {
     goto LABEL_44;
@@ -134,16 +134,16 @@
   v6 = v5;
   if (self->_isUpdatingSublayouts)
   {
-    v78 = [MEMORY[0x277CCA890] currentHandler];
-    [v78 handleFailureInMethod:a2 object:self file:@"PXGCompositeLayout.m" lineNumber:319 description:{@"Invalid parameter not satisfying: %@", @"!_isUpdatingSublayouts"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGCompositeLayout.m" lineNumber:319 description:{@"Invalid parameter not satisfying: %@", @"!_isUpdatingSublayouts"}];
   }
 
   self->_isUpdatingSublayouts = 1;
-  v7 = [(PXGCompositeLayout *)self composition];
-  if (!v7)
+  composition = [(PXGCompositeLayout *)self composition];
+  if (!composition)
   {
-    v79 = [MEMORY[0x277CCA890] currentHandler];
-    [v79 handleFailureInMethod:a2 object:self file:@"PXGCompositeLayout.m" lineNumber:323 description:{@"%@ has no defined composition", self}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGCompositeLayout.m" lineNumber:323 description:{@"%@ has no defined composition", self}];
   }
 
   v143 = 0;
@@ -157,12 +157,12 @@
   *(&v147 + 1) = v9;
   *&v148 = v10;
   *(&v148 + 1) = v11;
-  [v7 setSublayoutDataStore:v4];
+  [composition setSublayoutDataStore:sublayoutDataStore];
   [(PXGLayout *)self referenceSize];
-  [v7 setReferenceSize:?];
+  [composition setReferenceSize:?];
   [(PXGLayout *)self visibleRect];
-  [v7 setVisibleRect:?];
-  [v7 updateEstimate];
+  [composition setVisibleRect:?];
+  [composition updateEstimate];
   v139 = 0;
   v140 = &v139;
   v141 = 0x2020000000;
@@ -172,10 +172,10 @@
   v136 = &v135;
   v137 = 0x2020000000;
   v138 = 0;
-  v13 = [(PXGLayout *)self anchoredContentEdges];
-  v14 = v13;
+  anchoredContentEdges = [(PXGLayout *)self anchoredContentEdges];
+  v14 = anchoredContentEdges;
   v15 = v140[3];
-  if (v15 != 0x7FFFFFFFFFFFFFFFLL || !v13)
+  if (v15 != 0x7FFFFFFFFFFFFFFFLL || !anchoredContentEdges)
   {
 LABEL_10:
     if (v15 != 0x7FFFFFFFFFFFFFFFLL)
@@ -186,20 +186,20 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v16 = [v7 anchorSublayoutIndexForAnchoredContentEdges:v13];
+  v16 = [composition anchorSublayoutIndexForAnchoredContentEdges:anchoredContentEdges];
   v140[3] = v16;
   if (v16 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v17 = [(PXGLayout *)self shouldFaultInContentAtAnchoredContentEdges];
-    *(v136 + 24) = v17;
+    shouldFaultInContentAtAnchoredContentEdges = [(PXGLayout *)self shouldFaultInContentAtAnchoredContentEdges];
+    *(v136 + 24) = shouldFaultInContentAtAnchoredContentEdges;
     v15 = v140[3];
     goto LABEL_10;
   }
 
 LABEL_11:
-  v18 = [(PXGLayout *)self anchoredSublayoutIndex];
-  v140[3] = v18;
-  if (v18 != 0x7FFFFFFFFFFFFFFFLL)
+  anchoredSublayoutIndex = [(PXGLayout *)self anchoredSublayoutIndex];
+  v140[3] = anchoredSublayoutIndex;
+  if (anchoredSublayoutIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
     v25 = 1;
 LABEL_25:
@@ -213,7 +213,7 @@ LABEL_25:
   v134[3] = &unk_2782A8EF0;
   v134[4] = &v139;
   v134[5] = &v135;
-  [v4 enumerateSublayoutsUsingBlock:v134];
+  [sublayoutDataStore enumerateSublayoutsUsingBlock:v134];
   if (v140[3] == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (v6 >= 1)
@@ -221,11 +221,11 @@ LABEL_25:
       v19 = 0;
       for (i = 0; i != v6; ++i)
       {
-        v21 = [v4 geometries];
-        v22 = *(v21 + v19 + 48);
-        v23 = *(v21 + v19 + 56);
-        v150.size.width = *(v21 + v19 + 32);
-        v150.size.height = *(v21 + v19 + 40);
+        geometries = [sublayoutDataStore geometries];
+        v22 = *(geometries + v19 + 48);
+        v23 = *(geometries + v19 + 56);
+        v150.size.width = *(geometries + v19 + 32);
+        v150.size.height = *(geometries + v19 + 40);
         v150.origin.x = v22;
         v150.origin.y = v23;
         if (CGRectIntersectsRect(v150, v144[1]))
@@ -262,8 +262,8 @@ LABEL_24:
   }
 
 LABEL_26:
-  v26 = [(PXGLayout *)self viewEnvironment];
-  if ([v26 accessibilityEnabled])
+  viewEnvironment = [(PXGLayout *)self viewEnvironment];
+  if ([viewEnvironment accessibilityEnabled])
   {
     v27 = v140[3];
     v28 = 1;
@@ -293,8 +293,8 @@ LABEL_26:
     v95 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v91 = [v4 geometries];
-  v89 = [v4 infos];
+  geometries2 = [sublayoutDataStore geometries];
+  infos = [sublayoutDataStore infos];
   [(PXGCompositeLayout *)self faultInOutsets];
   PXEdgeInsetsInvert();
   v87 = v32;
@@ -312,8 +312,8 @@ LABEL_26:
   [(PXGLayout *)self lastScrollDirection];
   v80 = v43;
   v81 = v42;
-  v44 = [(PXGLayout *)self scrollSpeedRegime];
-  v45 = [(PXGLayout *)self userInterfaceDirection];
+  scrollSpeedRegime = [(PXGLayout *)self scrollSpeedRegime];
+  userInterfaceDirection = [(PXGLayout *)self userInterfaceDirection];
   [(PXGLayout *)self safeAreaInsets];
   v47 = v46;
   v49 = v48;
@@ -321,50 +321,50 @@ LABEL_26:
   v53 = v52;
   [(PXGLayout *)self referenceDepth];
   v55 = v54;
-  v56 = [(PXGCompositeLayout *)self wantsCustomAlphaForSublayouts];
-  v57 = [(PXGCompositeLayout *)self sublayoutFaultingDelegate];
+  wantsCustomAlphaForSublayouts = [(PXGCompositeLayout *)self wantsCustomAlphaForSublayouts];
+  sublayoutFaultingDelegate = [(PXGCompositeLayout *)self sublayoutFaultingDelegate];
   v103[0] = MEMORY[0x277D85DD0];
   v103[1] = 3221225472;
   v103[2] = __39__PXGCompositeLayout__updateSublayouts__block_invoke_2;
   v103[3] = &unk_2782A8F18;
   v107 = &v139;
   v108 = &v135;
-  v111 = v89;
+  v111 = infos;
   v112 = v95;
   v113 = v93;
   v109 = &v143;
-  v110 = v91;
+  v110 = geometries2;
   v114 = v40;
   v115 = v85;
   v116 = v84;
   v117 = v83;
-  v94 = v57;
+  v94 = sublayoutFaultingDelegate;
   v104 = v94;
-  v105 = self;
+  selfCopy = self;
   v118 = v35;
   v119 = v88;
   v120 = v87;
   v121 = v86;
-  v58 = v26;
+  v58 = viewEnvironment;
   v106 = v58;
   v122 = v55;
   v123 = v82;
   v124 = v81;
   v125 = v80;
-  v126 = v44;
-  v127 = v45;
+  v126 = scrollSpeedRegime;
+  v127 = userInterfaceDirection;
   v128 = v47;
   v129 = v49;
   v130 = v51;
   v131 = v53;
-  v133 = v56;
+  v133 = wantsCustomAlphaForSublayouts;
   v132 = v14;
   v59 = MEMORY[0x21CEE40A0](v103);
   v99[0] = MEMORY[0x277D85DD0];
   v99[1] = 3221225472;
   v99[2] = __39__PXGCompositeLayout__updateSublayouts__block_invoke_3;
   v99[3] = &unk_2782A8F68;
-  v60 = v7;
+  v60 = composition;
   v100 = v60;
   v102 = &v139;
   v61 = v59;
@@ -398,7 +398,7 @@ LABEL_26:
       v96 = v72;
       do
       {
-        v73 = ([v4 geometries] + v71);
+        v73 = ([sublayoutDataStore geometries] + v71);
         v74 = v73[4].f64[0] + 0.0;
         v73[3] = vaddq_f64(v96, v73[3]);
         v73[4].f64[0] = v74;
@@ -644,9 +644,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 8) != 0)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGCompositeLayout _invalidateSublayouts]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGCompositeLayout.m" lineNumber:308 description:{@"invalidating %lu after it already has been updated", 8}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGCompositeLayout.m" lineNumber:308 description:{@"invalidating %lu after it already has been updated", 8}];
 
         abort();
       }
@@ -669,13 +669,13 @@ LABEL_6:
   }
 }
 
-- (void)_updateSublayoutOfStylableType:(int64_t)a3
+- (void)_updateSublayoutOfStylableType:(int64_t)type
 {
   v5 = +[PXTungstenSettings sharedInstance];
-  v6 = [(PXGLayout *)self sublayoutDataStore];
-  v7 = [v6 geometries];
-  v8 = [(PXGCompositeLayout *)self composition];
-  [v8 sublayoutInsetsForStylableType:a3];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  geometries = [sublayoutDataStore geometries];
+  composition = [(PXGCompositeLayout *)self composition];
+  [composition sublayoutInsetsForStylableType:type];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -685,30 +685,30 @@ LABEL_6:
   v31[1] = 3221225472;
   v31[2] = __53__PXGCompositeLayout__updateSublayoutOfStylableType___block_invoke;
   v31[3] = &__block_descriptor_72_e11_v20__0q8B16l;
-  v31[4] = v7;
+  v31[4] = geometries;
   v31[5] = v10;
   v31[6] = v12;
   v31[7] = v14;
   v31[8] = v16;
   v17 = MEMORY[0x21CEE40A0](v31);
   v18 = v17;
-  v19 = self->_currentSingleLayouts[a3];
+  v19 = self->_currentSingleLayouts[type];
   if (v19 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    (*(v17 + 16))(v17, self->_currentSingleLayouts[a3], 0);
+    (*(v17 + 16))(v17, self->_currentSingleLayouts[type], 0);
   }
 
-  v20 = self->_pendingSingleLayouts[a3];
+  v20 = self->_pendingSingleLayouts[type];
   if (v20 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v18[2](v18, self->_pendingSingleLayouts[a3], 1);
+    v18[2](v18, self->_pendingSingleLayouts[type], 1);
   }
 
-  if (self->_pendingAnimations[a3])
+  if (self->_pendingAnimations[type])
   {
-    v21 = [v5 enableTungstenKeyboardNavigation];
+    enableTungstenKeyboardNavigation = [v5 enableTungstenKeyboardNavigation];
     v22 = v20 == 0x7FFFFFFFFFFFFFFFLL && v19 == 0x7FFFFFFFFFFFFFFFLL;
-    if (!v22 && v21 != 0)
+    if (!v22 && enableTungstenKeyboardNavigation != 0)
     {
       v28 = v5;
       v29[0] = MEMORY[0x277D85DD0];
@@ -717,22 +717,22 @@ LABEL_6:
       v29[3] = &unk_2782A8EC8;
       v30 = v5;
       v24 = MEMORY[0x21CEE40A0](v29);
-      v27 = [(PXGLayout *)self createAnimation];
+      createAnimation = [(PXGLayout *)self createAnimation];
       v24[2](v24);
-      v25 = [(PXGLayout *)self superlayout];
+      superlayout = [(PXGLayout *)self superlayout];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v26 = [v25 createAnimation];
-        (v24[2])(v24, v26);
+        createAnimation2 = [superlayout createAnimation];
+        (v24[2])(v24, createAnimation2);
       }
 
       v5 = v28;
     }
   }
 
-  self->_currentSingleLayouts[a3] = v20;
-  self->_pendingAnimations[a3] = 0;
+  self->_currentSingleLayouts[type] = v20;
+  self->_pendingAnimations[type] = 0;
 }
 
 CGFloat __53__PXGCompositeLayout__updateSublayoutOfStylableType___block_invoke(uint64_t a1, uint64_t a2, int a3)
@@ -787,9 +787,9 @@ void __53__PXGCompositeLayout__updateSublayoutOfStylableType___block_invoke_2(ui
   [v5 setScope:1];
 }
 
-- (void)_invalidateStylableType:(int64_t)a3
+- (void)_invalidateStylableType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
@@ -812,16 +812,16 @@ LABEL_18:
 
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGCompositeLayout _invalidateStylableType:]"];
-      [v10 handleFailureInFunction:v11 file:@"PXGCompositeLayout.m" lineNumber:237 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v11 file:@"PXGCompositeLayout.m" lineNumber:237 description:{@"invalidating %lu after it already has been updated", 4}];
       goto LABEL_34;
     }
 
     goto LABEL_18;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     p_updateFlags = &self->_updateFlags;
     v5 = self->_updateFlags.needsUpdate;
@@ -846,16 +846,16 @@ LABEL_22:
 
     if (self->_updateFlags.updated)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGCompositeLayout _invalidateStylableType:]"];
-      [v10 handleFailureInFunction:v11 file:@"PXGCompositeLayout.m" lineNumber:234 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v11 file:@"PXGCompositeLayout.m" lineNumber:234 description:{@"invalidating %lu after it already has been updated", 1}];
       goto LABEL_34;
     }
 
     goto LABEL_15;
   }
 
-  if (a3)
+  if (type)
   {
     return;
   }
@@ -882,9 +882,9 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGCompositeLayout _invalidateStylableType:]"];
-    [v10 handleFailureInFunction:v11 file:@"PXGCompositeLayout.m" lineNumber:231 description:{@"invalidating %lu after it already has been updated", 2}];
+    [currentHandler handleFailureInFunction:v11 file:@"PXGCompositeLayout.m" lineNumber:231 description:{@"invalidating %lu after it already has been updated", 2}];
 LABEL_34:
 
     abort();
@@ -908,18 +908,18 @@ LABEL_27:
   [(PXGLayout *)&v5 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGCompositeLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXGCompositeLayout.m" lineNumber:225 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXGCompositeLayout.m" lineNumber:225 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 }
 
 - (void)update
 {
-  v3 = [(PXGLayout *)self numberOfDescendantAnchors];
+  numberOfDescendantAnchors = [(PXGLayout *)self numberOfDescendantAnchors];
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
-  if (v3 < 1)
+  if (numberOfDescendantAnchors < 1)
   {
     self->_updateFlags.willPerformUpdate = 0;
     if (!needsUpdate)
@@ -940,9 +940,9 @@ LABEL_27:
     {
       if ((self->_updateFlags.updated & 8) != 0)
       {
-        v20 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGCompositeLayout update]"];
-        [v20 handleFailureInFunction:v21 file:@"PXGCompositeLayout.m" lineNumber:202 description:{@"invalidating %lu after it already has been updated", 8}];
+        [currentHandler handleFailureInFunction:v21 file:@"PXGCompositeLayout.m" lineNumber:202 description:{@"invalidating %lu after it already has been updated", 8}];
 
         abort();
       }
@@ -951,9 +951,9 @@ LABEL_27:
       self->_updateFlags.willPerformUpdate = 0;
       p_isPerformingUpdate = &self->_updateFlags.isPerformingUpdate;
 LABEL_5:
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGCompositeLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXGCompositeLayout.m" lineNumber:205 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXGCompositeLayout.m" lineNumber:205 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
       goto LABEL_10;
@@ -974,9 +974,9 @@ LABEL_10:
     [(PXGCompositeLayout *)self _updateSublayouts];
     if (!self->_updateFlags.isPerformingUpdate)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGCompositeLayout update]"];
-      [v12 handleFailureInFunction:v13 file:@"PXGCompositeLayout.m" lineNumber:209 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v13 file:@"PXGCompositeLayout.m" lineNumber:209 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
   }
 
@@ -990,9 +990,9 @@ LABEL_10:
 
   if (!*p_isPerformingUpdate)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGCompositeLayout update]"];
-    [v14 handleFailureInFunction:v15 file:@"PXGCompositeLayout.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler4 handleFailureInFunction:v15 file:@"PXGCompositeLayout.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   v10 = p_updateFlags->needsUpdate;
@@ -1005,9 +1005,9 @@ LABEL_10:
 
   if (!*p_isPerformingUpdate)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGCompositeLayout update]"];
-    [v16 handleFailureInFunction:v17 file:@"PXGCompositeLayout.m" lineNumber:215 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler5 handleFailureInFunction:v17 file:@"PXGCompositeLayout.m" lineNumber:215 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   v11 = p_updateFlags->needsUpdate;
@@ -1022,9 +1022,9 @@ LABEL_10:
   *p_isPerformingUpdate = 0;
   if (v11)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGCompositeLayout update]"];
-    [v18 handleFailureInFunction:v19 file:@"PXGCompositeLayout.m" lineNumber:218 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+    [currentHandler6 handleFailureInFunction:v19 file:@"PXGCompositeLayout.m" lineNumber:218 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
   }
 
 LABEL_25:
@@ -1041,19 +1041,19 @@ LABEL_25:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGCompositeLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXGCompositeLayout.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXGCompositeLayout.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 }
 
-- (void)didApplySublayoutChangeDetails:(id)a3 axAdjustedSubgroupChangeDetails:(id)a4 countAfterChanges:(int64_t)a5
+- (void)didApplySublayoutChangeDetails:(id)details axAdjustedSubgroupChangeDetails:(id)changeDetails countAfterChanges:(int64_t)changes
 {
-  v8 = a3;
+  detailsCopy = details;
   v17.receiver = self;
   v17.super_class = PXGCompositeLayout;
-  [(PXGLayout *)&v17 didApplySublayoutChangeDetails:v8 axAdjustedSubgroupChangeDetails:a4 countAfterChanges:a5];
-  if ([v8 hasMoves])
+  [(PXGLayout *)&v17 didApplySublayoutChangeDetails:detailsCopy axAdjustedSubgroupChangeDetails:changeDetails countAfterChanges:changes];
+  if ([detailsCopy hasMoves])
   {
     [(PXGCompositeLayout *)self _invalidateSublayouts];
   }
@@ -1062,8 +1062,8 @@ LABEL_25:
   v12[1] = 3221225472;
   v13 = __103__PXGCompositeLayout_didApplySublayoutChangeDetails_axAdjustedSubgroupChangeDetails_countAfterChanges___block_invoke;
   v14 = &unk_2782AAF40;
-  v15 = self;
-  v9 = v8;
+  selfCopy = self;
+  v9 = detailsCopy;
   v10 = 0;
   v16 = v9;
   v18 = 0;
@@ -1153,23 +1153,23 @@ uint64_t __103__PXGCompositeLayout_didApplySublayoutChangeDetails_axAdjustedSubg
   [(PXGCompositeLayout *)self _invalidateSublayouts];
 }
 
-- (void)sublayoutDidChangeContentSize:(id)a3
+- (void)sublayoutDidChangeContentSize:(id)size
 {
   v4.receiver = self;
   v4.super_class = PXGCompositeLayout;
-  [(PXGLayout *)&v4 sublayoutDidChangeContentSize:a3];
+  [(PXGLayout *)&v4 sublayoutDidChangeContentSize:size];
   [(PXGCompositeLayout *)self _invalidateSublayouts];
 }
 
-- (void)sublayoutNeedsUpdate:(id)a3
+- (void)sublayoutNeedsUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5.receiver = self;
   v5.super_class = PXGCompositeLayout;
-  [(PXGLayout *)&v5 sublayoutNeedsUpdate:v4];
+  [(PXGLayout *)&v5 sublayoutNeedsUpdate:updateCopy];
   if (self->_isUpdatingSublayouts)
   {
-    [(PXGLayout *)self assumeWillUpdateSublayoutInUpdatePass:v4];
+    [(PXGLayout *)self assumeWillUpdateSublayoutInUpdatePass:updateCopy];
   }
 
   else
@@ -1178,65 +1178,65 @@ uint64_t __103__PXGCompositeLayout_didApplySublayoutChangeDetails_axAdjustedSubg
   }
 }
 
-- (void)willRemoveSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5
+- (void)willRemoveSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags
 {
   v6.receiver = self;
   v6.super_class = PXGCompositeLayout;
-  [(PXGLayout *)&v6 willRemoveSublayout:a3 atIndex:a4 flags:a5];
+  [(PXGLayout *)&v6 willRemoveSublayout:sublayout atIndex:index flags:flags];
   [(PXGCompositeLayout *)self _invalidateSublayouts];
 }
 
-- (void)didAddSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5
+- (void)didAddSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags
 {
   v6.receiver = self;
   v6.super_class = PXGCompositeLayout;
-  [(PXGLayout *)&v6 didAddSublayout:a3 atIndex:a4 flags:a5];
+  [(PXGLayout *)&v6 didAddSublayout:sublayout atIndex:index flags:flags];
   [(PXGCompositeLayout *)self _invalidateSublayouts];
 }
 
-- (void)insertSublayoutProvider:(id)a3 inRange:(_NSRange)a4
+- (void)insertSublayoutProvider:(id)provider inRange:(_NSRange)range
 {
   v5.receiver = self;
   v5.super_class = PXGCompositeLayout;
-  [(PXGLayout *)&v5 insertSublayoutProvider:a3 inRange:a4.location, a4.length];
+  [(PXGLayout *)&v5 insertSublayoutProvider:provider inRange:range.location, range.length];
   [(PXGCompositeLayout *)self _invalidateSublayouts];
 }
 
-- (void)setSublayoutIndex:(int64_t)a3 forUniquelyStylableType:(int64_t)a4 animated:(BOOL)a5
+- (void)setSublayoutIndex:(int64_t)index forUniquelyStylableType:(int64_t)type animated:(BOOL)animated
 {
-  self->_pendingSingleLayouts[a4] = a3;
-  self->_pendingAnimations[a4] = a5;
-  [(PXGCompositeLayout *)self _invalidateStylableType:a4];
+  self->_pendingSingleLayouts[type] = index;
+  self->_pendingAnimations[type] = animated;
+  [(PXGCompositeLayout *)self _invalidateStylableType:type];
 }
 
-- (double)alphaForSublayout:(id)a3 atIndex:(int64_t)a4
+- (double)alphaForSublayout:(id)sublayout atIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  sublayoutCopy = sublayout;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v7 handleFailureInMethod:a2 object:self file:@"PXGCompositeLayout.m" lineNumber:89 description:{@"Method %s is a responsibility of subclass %@", "-[PXGCompositeLayout alphaForSublayout:atIndex:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGCompositeLayout.m" lineNumber:89 description:{@"Method %s is a responsibility of subclass %@", "-[PXGCompositeLayout alphaForSublayout:atIndex:]", v9}];
 
   abort();
 }
 
-- (void)setComposition:(id)a3
+- (void)setComposition:(id)composition
 {
-  v6 = a3;
+  compositionCopy = composition;
   composition = self->_composition;
-  if (composition != v6)
+  if (composition != compositionCopy)
   {
-    v12 = v6;
+    v12 = compositionCopy;
     [(PXGSublayoutComposition *)composition setCompositeLayout:0];
-    objc_storeStrong(&self->_composition, a3);
-    v8 = [(PXGSublayoutComposition *)self->_composition compositeLayout];
+    objc_storeStrong(&self->_composition, composition);
+    compositeLayout = [(PXGSublayoutComposition *)self->_composition compositeLayout];
 
-    if (v8)
+    if (compositeLayout)
     {
-      v9 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v10 = self->_composition;
-      v11 = [(PXGSublayoutComposition *)v10 compositeLayout];
-      [v9 handleFailureInMethod:a2 object:self file:@"PXGCompositeLayout.m" lineNumber:72 description:{@"a layout composition currently cannot be use for multiple PXGCompositeLayouts (%@ is already assigned to %@, and thus can't be used with %@)", v10, v11, self}];
+      compositeLayout2 = [(PXGSublayoutComposition *)v10 compositeLayout];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGCompositeLayout.m" lineNumber:72 description:{@"a layout composition currently cannot be use for multiple PXGCompositeLayouts (%@ is already assigned to %@, and thus can't be used with %@)", v10, compositeLayout2, self}];
     }
 
     [(PXGSublayoutComposition *)self->_composition setCompositeLayout:self];
@@ -1244,15 +1244,15 @@ uint64_t __103__PXGCompositeLayout_didApplySublayoutChangeDetails_axAdjustedSubg
     [(PXGCompositeLayout *)self _invalidateStylableType:1];
     [(PXGCompositeLayout *)self _invalidateStylableType:0];
     [(PXGCompositeLayout *)self _invalidateStylableType:2];
-    v6 = v12;
+    compositionCopy = v12;
   }
 }
 
-- (PXGCompositeLayout)initWithComposition:(id)a3
+- (PXGCompositeLayout)initWithComposition:(id)composition
 {
-  v4 = a3;
+  compositionCopy = composition;
   v5 = [(PXGCompositeLayout *)self init];
-  [(PXGCompositeLayout *)v5 setComposition:v4];
+  [(PXGCompositeLayout *)v5 setComposition:compositionCopy];
 
   return v5;
 }

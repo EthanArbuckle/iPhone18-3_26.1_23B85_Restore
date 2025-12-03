@@ -1,16 +1,16 @@
 @interface ADDeviceRouter
-- (ADDeviceRouter)initWithQueue:(id)a3;
-- (id)_initWithQueue:(id)a3 deviceProximityManager:(id)a4;
-- (void)_fetchCurrentDeviceContextTuplesIfNecessaryWithCompletion:(id)a3;
-- (void)_updateContext:(id)a3;
-- (void)getPreferredDeviceToHandleCommand:(id)a3 logNearbyDeviceMetrics:(BOOL)a4 executionContext:(id)a5 sharedUserID:(id)a6 completion:(id)a7;
-- (void)requestLifecycleObserver:(id)a3 requestDidEndWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6;
-- (void)updateContext:(id)a3;
+- (ADDeviceRouter)initWithQueue:(id)queue;
+- (id)_initWithQueue:(id)queue deviceProximityManager:(id)manager;
+- (void)_fetchCurrentDeviceContextTuplesIfNecessaryWithCompletion:(id)completion;
+- (void)_updateContext:(id)context;
+- (void)getPreferredDeviceToHandleCommand:(id)command logNearbyDeviceMetrics:(BOOL)metrics executionContext:(id)context sharedUserID:(id)d completion:(id)completion;
+- (void)requestLifecycleObserver:(id)observer requestDidEndWithInfo:(id)info origin:(int64_t)origin client:(id)client;
+- (void)updateContext:(id)context;
 @end
 
 @implementation ADDeviceRouter
 
-- (void)requestLifecycleObserver:(id)a3 requestDidEndWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6
+- (void)requestLifecycleObserver:(id)observer requestDidEndWithInfo:(id)info origin:(int64_t)origin client:(id)client
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -21,33 +21,33 @@
   dispatch_async(queue, block);
 }
 
-- (void)getPreferredDeviceToHandleCommand:(id)a3 logNearbyDeviceMetrics:(BOOL)a4 executionContext:(id)a5 sharedUserID:(id)a6 completion:(id)a7
+- (void)getPreferredDeviceToHandleCommand:(id)command logNearbyDeviceMetrics:(BOOL)metrics executionContext:(id)context sharedUserID:(id)d completion:(id)completion
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  commandCopy = command;
+  contextCopy = context;
+  dCopy = d;
+  completionCopy = completion;
   if (AFSupportsHALDeviceRouting())
   {
     dispatch_assert_queue_V2(self->_queue);
-    if ([v11 ad_requiresDeviceContext])
+    if ([commandCopy ad_requiresDeviceContext])
     {
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_1000988DC;
       v17[3] = &unk_100511D30;
       v17[4] = self;
-      v18 = v11;
-      v19 = v12;
-      v20 = v13;
-      v21 = v14;
+      v18 = commandCopy;
+      v19 = contextCopy;
+      v20 = dCopy;
+      v21 = completionCopy;
       [(ADDeviceRouter *)self _fetchCurrentDeviceContextTuplesIfNecessaryWithCompletion:v17];
     }
 
     else
     {
-      v16 = [v11 ad_executionDeviceForDeviceContextTuples:self->_currentDeviceContextTuples executionContext:v12 proximityMap:0 sharedUserID:v13 localDeviceIsFollower:self->_isLocalDeviceFollowerInStereoPair == 2];
-      (*(v14 + 2))(v14, v16, 0);
+      v16 = [commandCopy ad_executionDeviceForDeviceContextTuples:self->_currentDeviceContextTuples executionContext:contextCopy proximityMap:0 sharedUserID:dCopy localDeviceIsFollower:self->_isLocalDeviceFollowerInStereoPair == 2];
+      (*(completionCopy + 2))(completionCopy, v16, 0);
     }
   }
 
@@ -61,19 +61,19 @@
       _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%s #hal Not supported on this platform", buf, 0xCu);
     }
 
-    (*(v14 + 2))(v14, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)_fetchCurrentDeviceContextTuplesIfNecessaryWithCompletion:(id)a3
+- (void)_fetchCurrentDeviceContextTuplesIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     if (self->_currentDeviceContextTuples)
     {
-      (*(v4 + 2))(v4);
+      (*(completionCopy + 2))(completionCopy);
     }
 
     else
@@ -100,10 +100,10 @@
   }
 }
 
-- (void)_updateContext:(id)a3
+- (void)_updateContext:(id)context
 {
-  v5 = a3;
-  objc_storeStrong(&self->_currentDeviceContextTuples, a3);
+  contextCopy = context;
+  objc_storeStrong(&self->_currentDeviceContextTuples, context);
   v6 = AFIsInternalInstall();
   v7 = AFSiriLogContextDaemon;
   v8 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG);
@@ -144,9 +144,9 @@ LABEL_9:
   }
 }
 
-- (void)updateContext:(id)a3
+- (void)updateContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (AFSupportsHALDeviceRouting())
   {
     queue = self->_queue;
@@ -155,7 +155,7 @@ LABEL_9:
     v7[2] = sub_1000993C0;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = contextCopy;
     dispatch_async(queue, v7);
   }
 
@@ -171,18 +171,18 @@ LABEL_9:
   }
 }
 
-- (id)_initWithQueue:(id)a3 deviceProximityManager:(id)a4
+- (id)_initWithQueue:(id)queue deviceProximityManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = ADDeviceRouter;
   v9 = [(ADDeviceRouter *)&v13 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeStrong(p_isa + 4, a4);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(p_isa + 4, manager);
     v11 = +[ADRequestLifecycleObserver sharedObserver];
     [v11 addListener:p_isa];
   }
@@ -190,11 +190,11 @@ LABEL_9:
   return p_isa;
 }
 
-- (ADDeviceRouter)initWithQueue:(id)a3
+- (ADDeviceRouter)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = +[ADDeviceProximityManager sharedManager];
-  v6 = [(ADDeviceRouter *)self _initWithQueue:v4 deviceProximityManager:v5];
+  v6 = [(ADDeviceRouter *)self _initWithQueue:queueCopy deviceProximityManager:v5];
 
   return v6;
 }

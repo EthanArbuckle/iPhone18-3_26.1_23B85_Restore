@@ -1,26 +1,26 @@
 @interface ATArrayOfCalendarEvents
 - (_TtC9Archetype23ATArrayOfCalendarEvents)init;
-- (_TtC9Archetype23ATArrayOfCalendarEvents)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC9Archetype23ATArrayOfCalendarEvents)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATArrayOfCalendarEvents
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtC9Archetype23ATArrayOfCalendarEvents_calendarEvents);
   type metadata accessor for ATCalendarEvent();
-  v6 = a3;
-  v9 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v7 = sub_240FAE9C0();
   v8 = sub_240FAE970();
-  [v6 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:v7 forKey:v8];
 }
 
-- (_TtC9Archetype23ATArrayOfCalendarEvents)initWithCoder:(id)a3
+- (_TtC9Archetype23ATArrayOfCalendarEvents)initWithCoder:(id)coder
 {
   type metadata accessor for ATCalendarEvent();
-  v5 = a3;
+  coderCopy = coder;
   if (sub_240FAEA60())
   {
     v6 = sub_240FAE9C0();

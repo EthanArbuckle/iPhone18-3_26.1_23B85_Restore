@@ -1,20 +1,20 @@
 @interface SUUIStoreItemRelationship
-- (SUUIStoreItemRelationship)initWithParent:(id)a3 andChildren:(id)a4;
+- (SUUIStoreItemRelationship)initWithParent:(id)parent andChildren:(id)children;
 @end
 
 @implementation SUUIStoreItemRelationship
 
-- (SUUIStoreItemRelationship)initWithParent:(id)a3 andChildren:(id)a4
+- (SUUIStoreItemRelationship)initWithParent:(id)parent andChildren:(id)children
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  parentCopy = parent;
+  childrenCopy = children;
   v25.receiver = self;
   v25.super_class = SUUIStoreItemRelationship;
   v8 = [(SUUIStoreItemRelationship *)&v25 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [parentCopy copy];
     singleParent = v8->_singleParent;
     v8->_singleParent = v9;
 
@@ -23,7 +23,7 @@
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = v7;
+    v12 = childrenCopy;
     v13 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v13)
     {

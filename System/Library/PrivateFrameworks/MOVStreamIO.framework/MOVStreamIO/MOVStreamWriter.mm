@@ -1,165 +1,165 @@
 @interface MOVStreamWriter
 + (id)getMOVStreamIOMetadataItem;
-+ (id)getTimeRangeMetadataKeyHintMetadataItem:(id)a3 error:(id *)a4;
-+ (unsigned)getPixelFormatFromStreamData:(StreamRecordingData *)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeWithSeconds:(SEL)a3;
-- (BOOL)activateNewState:(id)a3 byEvent:(id)a4;
++ (id)getTimeRangeMetadataKeyHintMetadataItem:(id)item error:(id *)error;
++ (unsigned)getPixelFormatFromStreamData:(StreamRecordingData *)data;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeWithSeconds:(SEL)seconds;
+- (BOOL)activateNewState:(id)state byEvent:(id)event;
 - (BOOL)checkIfFifoAreEmpty;
 - (BOOL)enableAVEHighPerformanceProfile;
-- (BOOL)encoder:(id)a3 configureSessionOverride:(OpaqueVTCompressionSession *)a4 streamId:(id)a5;
-- (BOOL)isCustomTrackMetadataCompatibleObject:(id)a3;
-- (BOOL)isReadyForMoreDataForStreamId:(id)a3 fromMap:(void *)a4;
-- (BOOL)marksOutputTracksAsEnabledForStream:()basic_string<char fromMap:()std:(std::allocator<char>> *)a3 :char_traits<char>;
+- (BOOL)encoder:(id)encoder configureSessionOverride:(OpaqueVTCompressionSession *)override streamId:(id)id;
+- (BOOL)isCustomTrackMetadataCompatibleObject:(id)object;
+- (BOOL)isReadyForMoreDataForStreamId:(id)id fromMap:(void *)map;
+- (BOOL)marksOutputTracksAsEnabledForStream:()basic_string<char fromMap:()std:(std::allocator<char>> *)std :char_traits<char>;
 - (BOOL)multiThreadWritingEnabled;
-- (BOOL)relateStream:(id)a3 toStream:(id)a4 relationSpecifier:(id)a5 error:(id *)a6;
-- (BOOL)setExpectedFrameRate:(double)a3;
-- (BOOL)setMediaTimeScale:(int)a3 forMetadataStream:(id)a4 error:(id *)a5;
-- (BOOL)setMediaTimeScale:(int)a3 forStream:(id)a4 error:(id *)a5;
-- (BOOL)setMultiThreadWritingEnabled:(BOOL)a3 error:(id *)a4;
-- (BOOL)setMultiThreadWritingThreadsCount:(unint64_t)a3 error:(id *)a4;
-- (BOOL)setRealTimeCapture:(BOOL)a3;
-- (BOOL)setShouldOptimizeForNetworkUse:(BOOL)a3;
-- (BOOL)setTrackMetadata:(id)a3 forMetadataStream:(id)a4 error:(id *)a5;
-- (BOOL)setTrackMetadata:(id)a3 forStream:(id)a4 error:(id *)a5;
-- (BOOL)setTrackMetadataItems:(id)a3 forStream:(id)a4 error:(id *)a5;
-- (BOOL)setVideoTransform:(CGAffineTransform *)a3;
-- (BOOL)setVideoTransformFromOrientation:(int)a3;
-- (BOOL)setWritingThreadPriority:(double)a3 error:(id *)a4;
-- (BOOL)startSessionWithFallbackSampleTime:(id *)a3 streamId:(id)a4 mediaType:(int64_t)a5 writerDelegate:(id)a6 delegateCallbackQueue:(id)a7 error:(id *)a8;
-- (BOOL)writeVideoFrameStreamAttachmentsData:(id)a3 toMetadataAdaptor:(id)a4 ofStream:(id)a5 signpost:(unint64_t)a6;
-- (CGAffineTransform)getVideoTransformForStream:(SEL)a3;
+- (BOOL)relateStream:(id)stream toStream:(id)toStream relationSpecifier:(id)specifier error:(id *)error;
+- (BOOL)setExpectedFrameRate:(double)rate;
+- (BOOL)setMediaTimeScale:(int)scale forMetadataStream:(id)stream error:(id *)error;
+- (BOOL)setMediaTimeScale:(int)scale forStream:(id)stream error:(id *)error;
+- (BOOL)setMultiThreadWritingEnabled:(BOOL)enabled error:(id *)error;
+- (BOOL)setMultiThreadWritingThreadsCount:(unint64_t)count error:(id *)error;
+- (BOOL)setRealTimeCapture:(BOOL)capture;
+- (BOOL)setShouldOptimizeForNetworkUse:(BOOL)use;
+- (BOOL)setTrackMetadata:(id)metadata forMetadataStream:(id)stream error:(id *)error;
+- (BOOL)setTrackMetadata:(id)metadata forStream:(id)stream error:(id *)error;
+- (BOOL)setTrackMetadataItems:(id)items forStream:(id)stream error:(id *)error;
+- (BOOL)setVideoTransform:(CGAffineTransform *)transform;
+- (BOOL)setVideoTransformFromOrientation:(int)orientation;
+- (BOOL)setWritingThreadPriority:(double)priority error:(id *)error;
+- (BOOL)startSessionWithFallbackSampleTime:(id *)time streamId:(id)id mediaType:(int64_t)type writerDelegate:(id)delegate delegateCallbackQueue:(id)queue error:(id *)error;
+- (BOOL)writeVideoFrameStreamAttachmentsData:(id)data toMetadataAdaptor:(id)adaptor ofStream:(id)stream signpost:(unint64_t)signpost;
+- (CGAffineTransform)getVideoTransformForStream:(SEL)stream;
 - (MIOMovieMetadataUtility)movieMetadataUtility;
 - (MOVStreamCustomEncoderConfigDelegate)customEncoderConfigDelegate;
-- (MOVStreamWriter)initWithURL:(id)a3 andExpectedFrameRate:(double)a4;
+- (MOVStreamWriter)initWithURL:(id)l andExpectedFrameRate:(double)rate;
 - (MOVStreamWriterDelegate)delegate;
 - (double)finishingTimeout;
-- (double)getExpectedFrameRateForStream:(id)a3;
+- (double)getExpectedFrameRateForStream:(id)stream;
 - (double)writingThreadPriority;
 - (id).cxx_construct;
-- (id)createRelatedToStreamMetadata:(id)a3;
-- (id)createRelationSpecifierMetadata:(id)a3;
-- (id)customMetadataTrackMetadataForStream:(id)a3 fromMap:(void *)a4;
-- (id)customTrackMetadataForStream:(id)a3 fromMap:(void *)a4;
-- (id)encoder:(id)a3 overrideVideoEncoderSpecificationForStreamId:(id)a4;
-- (id)getAudioMetadataForBuffer:(opaqueCMSampleBuffer *)a3;
-- (id)getLegacyTrackEncodedPixelFormatMetadataForStream:(id)a3 fromMap:(void *)a4;
-- (id)getLegacyTrackInputPixelFormatMetadataForStream:(id)a3 fromMap:(void *)a4;
-- (id)getLegacyTrackMetadataForAttachmentsSerializationMode:(id)a3 fromMap:(void *)a4;
-- (id)getLegacyTrackMetadataForStream:(id)a3;
-- (id)getMetadataGroupForBuffer:(__CVBuffer *)a3 stream:(id)a4 presentationTime:(id *)a5 serializationMode:(int)a6;
-- (id)getTrackEncodedPixelFormatMetadataForStream:(id)a3 fromMap:(void *)a4;
-- (id)getTrackInputPixelFormatMetadataForStream:(id)a3 fromMap:(void *)a4;
-- (id)getTrackMIOStreamEncoderTypeMetadataForStream:(id)a3 fromMap:(void *)a4;
-- (id)getTrackMetadataForAttachmentsSerializationMode:(id)a3 fromMap:(void *)a4;
-- (id)getTrackMetadataForExactBytesPerRow:(id)a3 fromMap:(void *)a4 error:(id *)a5;
-- (id)getTrackMetadataForRawBayerRearrangeType:(id)a3 fromMap:(void *)a4;
-- (id)getTrackMetadataForStream:(id)a3;
-- (id)getTrackMetadataForTimeRangeMetadata:(id)a3 fromMap:(void *)a4;
-- (id)getTrackMetadataForTrackTypeInfo:(id)a3 fromMap:(void *)a4;
+- (id)createRelatedToStreamMetadata:(id)metadata;
+- (id)createRelationSpecifierMetadata:(id)metadata;
+- (id)customMetadataTrackMetadataForStream:(id)stream fromMap:(void *)map;
+- (id)customTrackMetadataForStream:(id)stream fromMap:(void *)map;
+- (id)encoder:(id)encoder overrideVideoEncoderSpecificationForStreamId:(id)id;
+- (id)getAudioMetadataForBuffer:(opaqueCMSampleBuffer *)buffer;
+- (id)getLegacyTrackEncodedPixelFormatMetadataForStream:(id)stream fromMap:(void *)map;
+- (id)getLegacyTrackInputPixelFormatMetadataForStream:(id)stream fromMap:(void *)map;
+- (id)getLegacyTrackMetadataForAttachmentsSerializationMode:(id)mode fromMap:(void *)map;
+- (id)getLegacyTrackMetadataForStream:(id)stream;
+- (id)getMetadataGroupForBuffer:(__CVBuffer *)buffer stream:(id)stream presentationTime:(id *)time serializationMode:(int)mode;
+- (id)getTrackEncodedPixelFormatMetadataForStream:(id)stream fromMap:(void *)map;
+- (id)getTrackInputPixelFormatMetadataForStream:(id)stream fromMap:(void *)map;
+- (id)getTrackMIOStreamEncoderTypeMetadataForStream:(id)stream fromMap:(void *)map;
+- (id)getTrackMetadataForAttachmentsSerializationMode:(id)mode fromMap:(void *)map;
+- (id)getTrackMetadataForExactBytesPerRow:(id)row fromMap:(void *)map error:(id *)error;
+- (id)getTrackMetadataForRawBayerRearrangeType:(id)type fromMap:(void *)map;
+- (id)getTrackMetadataForStream:(id)stream;
+- (id)getTrackMetadataForTimeRangeMetadata:(id)metadata fromMap:(void *)map;
+- (id)getTrackMetadataForTrackTypeInfo:(id)info fromMap:(void *)map;
 - (id)startWritingThreadForMetadata;
-- (id)startWritingThreadForNonMetadataOnlyThreadId:(unsigned __int8)a3;
-- (int)attachmentSerializationModeForStream:()basic_string<char withDefaultMode:()std:(std::allocator<char>> *)a3 :char_traits<char>;
-- (int)attachmentSerializationModeForStream:()basic_string<char withDefaultMode:()std:(std::allocator<char>> *)a3 :char_traits<char> fromMap:;
-- (int)encoderTypeForStream:(id)a3;
-- (int)getCountByPriorityForFifo:(unint64_t)a3 capacity:(unint64_t)a4;
+- (id)startWritingThreadForNonMetadataOnlyThreadId:(unsigned __int8)id;
+- (int)attachmentSerializationModeForStream:()basic_string<char withDefaultMode:()std:(std::allocator<char>> *)std :char_traits<char>;
+- (int)attachmentSerializationModeForStream:()basic_string<char withDefaultMode:()std:(std::allocator<char>> *)std :char_traits<char> fromMap:;
+- (int)encoderTypeForStream:(id)stream;
+- (int)getCountByPriorityForFifo:(unint64_t)fifo capacity:(unint64_t)capacity;
 - (int64_t)status;
-- (opaqueCMFormatDescription)createMetadataFormatDescription:(id)a3;
-- (unint64_t)fifoBufferSizeForStream:(id)a3;
-- (unint64_t)writingBufferCapacityForAudioStream:(id)a3;
-- (unint64_t)writingBufferCapacityForMetadataStream:(id)a3;
-- (unint64_t)writingBufferCapacityForStream:(id)a3;
-- (unint64_t)writingBufferUsageForAudioStream:(id)a3;
-- (unint64_t)writingBufferUsageForMetadataStream:(id)a3;
-- (unint64_t)writingBufferUsageForStream:(id)a3;
+- (opaqueCMFormatDescription)createMetadataFormatDescription:(id)description;
+- (unint64_t)fifoBufferSizeForStream:(id)stream;
+- (unint64_t)writingBufferCapacityForAudioStream:(id)stream;
+- (unint64_t)writingBufferCapacityForMetadataStream:(id)stream;
+- (unint64_t)writingBufferCapacityForStream:(id)stream;
+- (unint64_t)writingBufferUsageForAudioStream:(id)stream;
+- (unint64_t)writingBufferUsageForMetadataStream:(id)stream;
+- (unint64_t)writingBufferUsageForStream:(id)stream;
 - (unint64_t)writingThreadsCount;
-- (unsigned)encoder:(id)a3 codecTypeOverrideForstreamId:(id)a4;
-- (unsigned)getPixelFormatForStream:(id)a3 fromMap:(void *)a4;
-- (void)addAudioTrackForStreamWithIdentifier:(id)a3 audioFormat:(id)a4 additionalSettings:(id)a5;
+- (unsigned)encoder:(id)encoder codecTypeOverrideForstreamId:(id)id;
+- (unsigned)getPixelFormatForStream:(id)stream fromMap:(void *)map;
+- (void)addAudioTrackForStreamWithIdentifier:(id)identifier audioFormat:(id)format additionalSettings:(id)settings;
 - (void)addIsReadyObservers;
-- (void)addMetadataTrack:(id)a3 copyData:(BOOL)a4;
-- (void)addMetadataTrack:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4;
-- (void)addMetadataTrackAssociatedWith:(id)a3 withIdentifier:(id)a4 withFormatDescription:(opaqueCMFormatDescription *)a5;
-- (void)addTimeRangeMetadataTrack:(id)a3;
-- (void)addTrackForStreamWithIdentifier:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 recordingConfiguration:(id)a5;
-- (void)appendAudioBuffer:(opaqueCMSampleBuffer *)a3 forStream:(id)a4;
-- (void)appendMetadata:(id)a3 associatedWith:(id)a4 toStream:(id)a5;
-- (void)appendMetadata:(id)a3 withTimeStamp:(id *)a4 toStream:(id)a5;
-- (void)appendPixelBuffer:(__CVBuffer *)a3 presentationTime:(id *)a4 toStreamId:(id)a5;
-- (void)appendSampleBuffer:(opaqueCMSampleBuffer *)a3 attachments:(id)a4 streamId:(id)a5;
-- (void)appendTimeCode:(CVSMPTETime *)a3 rangeStart:(unint64_t)a4 rangeEnd:(unint64_t)a5 withTimeStamp:(id *)a6 toStream:(id)a7;
-- (void)appendTimeCode:(CVSMPTETime *)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5 withTimeStamp:(id *)a6 toStream:(id)a7;
-- (void)appendTimeMetadataGroup:(id)a3 toStream:(id)a4;
-- (void)appendVideoSampleBuffer:(opaqueCMSampleBuffer *)a3 attachmentMetadata:(id)a4 streamId:(id)a5;
-- (void)asyncWriteAssociatedMetadata:(id)a3 metadataKey:()basic_string<char associatedStreamKey:()std:(std::allocator<char>> *)a4 :char_traits<char>;
+- (void)addMetadataTrack:(id)track copyData:(BOOL)data;
+- (void)addMetadataTrack:(id)track formatDescription:(opaqueCMFormatDescription *)description;
+- (void)addMetadataTrackAssociatedWith:(id)with withIdentifier:(id)identifier withFormatDescription:(opaqueCMFormatDescription *)description;
+- (void)addTimeRangeMetadataTrack:(id)track;
+- (void)addTrackForStreamWithIdentifier:(id)identifier formatDescription:(opaqueCMFormatDescription *)description recordingConfiguration:(id)configuration;
+- (void)appendAudioBuffer:(opaqueCMSampleBuffer *)buffer forStream:(id)stream;
+- (void)appendMetadata:(id)metadata associatedWith:(id)with toStream:(id)stream;
+- (void)appendMetadata:(id)metadata withTimeStamp:(id *)stamp toStream:(id)stream;
+- (void)appendPixelBuffer:(__CVBuffer *)buffer presentationTime:(id *)time toStreamId:(id)id;
+- (void)appendSampleBuffer:(opaqueCMSampleBuffer *)buffer attachments:(id)attachments streamId:(id)id;
+- (void)appendTimeCode:(CVSMPTETime *)code rangeStart:(unint64_t)start rangeEnd:(unint64_t)end withTimeStamp:(id *)stamp toStream:(id)stream;
+- (void)appendTimeCode:(CVSMPTETime *)code startTime:(unint64_t)time endTime:(unint64_t)endTime withTimeStamp:(id *)stamp toStream:(id)stream;
+- (void)appendTimeMetadataGroup:(id)group toStream:(id)stream;
+- (void)appendVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer attachmentMetadata:(id)metadata streamId:(id)id;
+- (void)asyncWriteAssociatedMetadata:(id)metadata metadataKey:()basic_string<char associatedStreamKey:()std:(std::allocator<char>> *)std :char_traits<char>;
 - (void)cancelRecording;
 - (void)cancelTimeoutBlock;
 - (void)checkForFinishing;
 - (void)clearAllFifoQueues;
 - (void)closeEncodersAfterFailure;
-- (void)consumeMetadatOfMetadataStream:(id)a3;
-- (void)consumeSamplesOfVideoAudioStream:(id)a3;
+- (void)consumeMetadatOfMetadataStream:(id)stream;
+- (void)consumeSamplesOfVideoAudioStream:(id)stream;
 - (void)dealloc;
 - (void)deleteFileOnCancel;
 - (void)deleteMOVFile;
-- (void)encoder:(id)a3 encodedSampleBuffer:(opaqueCMSampleBuffer *)a4 metadata:(id)a5 presentationTime:(id *)a6 streamId:(id)a7;
-- (void)encoder:(id)a3 encodingFailedForStream:(id)a4;
-- (void)executePrepareToRecordWithMovieMetadata:(id)a3;
+- (void)encoder:(id)encoder encodedSampleBuffer:(opaqueCMSampleBuffer *)buffer metadata:(id)metadata presentationTime:(id *)time streamId:(id)id;
+- (void)encoder:(id)encoder encodingFailedForStream:(id)stream;
+- (void)executePrepareToRecordWithMovieMetadata:(id)metadata;
 - (void)finishAVWriter;
 - (void)finishAndDrainFifoFirst;
 - (void)finishRecording;
 - (void)forceFinishRecording;
-- (void)informDelegateAboutError:(id)a3;
+- (void)informDelegateAboutError:(id)error;
 - (void)informDelegateAboutFinishingTimeout;
-- (void)informDelegateAboutIsReady:(BOOL)a3 forStream:(id)a4;
-- (void)informDelegateAboutMediaWrittenForStream:(id)a3 mediaType:(int64_t)a4;
+- (void)informDelegateAboutIsReady:(BOOL)ready forStream:(id)stream;
+- (void)informDelegateAboutMediaWrittenForStream:(id)stream mediaType:(int64_t)type;
 - (void)logFifoUsage;
-- (void)newSampleReady:(opaqueCMSampleBuffer *)a3 metadata:(id)a4 presentationTime:(id *)a5 streamKey:()basic_string<char streamId:()std:(std::allocator<char>> *)a6 :char_traits<char> isAudioSample:;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)prepareToRecordWithMovieMetadata:(id)a3;
+- (void)newSampleReady:(opaqueCMSampleBuffer *)ready metadata:(id)metadata presentationTime:(id *)time streamKey:()basic_string<char streamId:()std:(std::allocator<char>> *)std :char_traits<char> isAudioSample:;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)prepareToRecordWithMovieMetadata:(id)metadata;
 - (void)processCancelRecording;
 - (void)processFinishRecording;
 - (void)processForceFinishRecording;
-- (void)queueMetadataGroup:(id)a3 stream:(id)a4;
+- (void)queueMetadataGroup:(id)group stream:(id)stream;
 - (void)removeIsReadyObservers;
 - (void)resetTimeoutRefTime;
 - (void)resubmitTimeoutBlock;
-- (void)setDefaultAudioWritingBufferCapacity:(unint64_t)a3;
-- (void)setDefaultMetadataWritingBufferCapacity:(unint64_t)a3;
-- (void)setDefaultWritingBufferCapacity:(unint64_t)a3;
-- (void)setDelegate:(id)a3 callbackQueue:(id)a4;
-- (void)setFifoBufferCapacity:(unint64_t)a3;
-- (void)setFinishingTimeout:(double)a3;
-- (void)setMultiplexWritingDisabled:(BOOL)a3;
-- (void)setWritingBufferCapacity:(unint64_t)a3 forAudioStream:(id)a4;
-- (void)setWritingBufferCapacity:(unint64_t)a3 forMetadataStream:(id)a4;
-- (void)setWritingBufferCapacity:(unint64_t)a3 forStream:(id)a4;
-- (void)setupAssetWriterStreamInputsWithError:(id *)a3;
-- (void)setupAssociatedMetadataInputsWithError:(id *)a3;
-- (void)setupMetadataInputsWithError:(id *)a3;
+- (void)setDefaultAudioWritingBufferCapacity:(unint64_t)capacity;
+- (void)setDefaultMetadataWritingBufferCapacity:(unint64_t)capacity;
+- (void)setDefaultWritingBufferCapacity:(unint64_t)capacity;
+- (void)setDelegate:(id)delegate callbackQueue:(id)queue;
+- (void)setFifoBufferCapacity:(unint64_t)capacity;
+- (void)setFinishingTimeout:(double)timeout;
+- (void)setMultiplexWritingDisabled:(BOOL)disabled;
+- (void)setWritingBufferCapacity:(unint64_t)capacity forAudioStream:(id)stream;
+- (void)setWritingBufferCapacity:(unint64_t)capacity forMetadataStream:(id)stream;
+- (void)setWritingBufferCapacity:(unint64_t)capacity forStream:(id)stream;
+- (void)setupAssetWriterStreamInputsWithError:(id *)error;
+- (void)setupAssociatedMetadataInputsWithError:(id *)error;
+- (void)setupMetadataInputsWithError:(id *)error;
 - (void)simulateFailure;
 - (void)startFinishingTimeoutTimer;
 - (void)startWritingThread;
 - (void)triggerWritingThread;
-- (void)writeMetadata:(id)a3 forStreamId:(id)a4;
-- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)a3 andMetadata:(id)a4 forStreamId:(id)a5 signpost:(unint64_t)a6;
-- (void)writerStatusChanged:(int64_t)a3 writerDelegate:(id)a4 delegateCallbackQueue:(id)a5;
-- (void)writingSessionDidStartAtTime:(id *)a3 streamId:(id)a4 mediaType:(int64_t)a5 writerDelegate:(id)a6 delegateCallbackQueue:(id)a7;
+- (void)writeMetadata:(id)metadata forStreamId:(id)id;
+- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)buffer andMetadata:(id)metadata forStreamId:(id)id signpost:(unint64_t)signpost;
+- (void)writerStatusChanged:(int64_t)changed writerDelegate:(id)delegate delegateCallbackQueue:(id)queue;
+- (void)writingSessionDidStartAtTime:(id *)time streamId:(id)id mediaType:(int64_t)type writerDelegate:(id)delegate delegateCallbackQueue:(id)queue;
 @end
 
 @implementation MOVStreamWriter
 
-- (void)writerStatusChanged:(int64_t)a3 writerDelegate:(id)a4 delegateCallbackQueue:(id)a5
+- (void)writerStatusChanged:(int64_t)changed writerDelegate:(id)delegate delegateCallbackQueue:(id)queue
 {
-  v8 = a4;
+  delegateCopy = delegate;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__MOVStreamWriter_Delegate__writerStatusChanged_writerDelegate_delegateCallbackQueue___block_invoke;
   block[3] = &unk_279847E18;
-  v11 = v8;
-  v12 = self;
-  v13 = a3;
-  v9 = v8;
-  dispatch_async(a5, block);
+  v11 = delegateCopy;
+  selfCopy = self;
+  changedCopy = changed;
+  v9 = delegateCopy;
+  dispatch_async(queue, block);
 }
 
 void __86__MOVStreamWriter_Delegate__writerStatusChanged_writerDelegate_delegateCallbackQueue___block_invoke(uint64_t a1)
@@ -208,24 +208,24 @@ void __86__MOVStreamWriter_Delegate__writerStatusChanged_writerDelegate_delegate
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)writingSessionDidStartAtTime:(id *)a3 streamId:(id)a4 mediaType:(int64_t)a5 writerDelegate:(id)a6 delegateCallbackQueue:(id)a7
+- (void)writingSessionDidStartAtTime:(id *)time streamId:(id)id mediaType:(int64_t)type writerDelegate:(id)delegate delegateCallbackQueue:(id)queue
 {
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  idCopy = id;
+  delegateCopy = delegate;
+  queueCopy = queue;
   if (objc_opt_respondsToSelector())
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_mediaType_writerDelegate_delegateCallbackQueue___block_invoke;
     block[3] = &unk_279847E40;
-    v16 = v13;
-    v17 = self;
-    v20 = *&a3->var0;
-    var3 = a3->var3;
-    v18 = v12;
-    v19 = a5;
-    dispatch_async(v14, block);
+    v16 = delegateCopy;
+    selfCopy = self;
+    v20 = *&time->var0;
+    var3 = time->var3;
+    v18 = idCopy;
+    typeCopy = type;
+    dispatch_async(queueCopy, block);
   }
 }
 
@@ -242,17 +242,17 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   objc_autoreleasePoolPop(v2);
 }
 
-- (MOVStreamWriter)initWithURL:(id)a3 andExpectedFrameRate:(double)a4
+- (MOVStreamWriter)initWithURL:(id)l andExpectedFrameRate:(double)rate
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  lCopy = l;
+  if (lCopy)
   {
     +[MIOLog recheckDebugEnabled];
     v35 = 0;
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
-    v9 = [v7 path];
-    v10 = [v8 fileExistsAtPath:v9 isDirectory:&v35];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [lCopy path];
+    v10 = [defaultManager fileExistsAtPath:path isDirectory:&v35];
     v11 = v35;
 
     if ((v10 & v11) != 0)
@@ -271,9 +271,9 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
         v13 = +[MIOLog defaultLog];
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
         {
-          v14 = [v7 path];
+          path2 = [lCopy path];
           *buf = 138543362;
-          *&buf[4] = v14;
+          *&buf[4] = path2;
           _os_log_impl(&dword_257883000, v13, OS_LOG_TYPE_DEBUG, "MOVStreamWriter init with URL %{public}@", buf, 0xCu);
         }
       }
@@ -296,9 +296,9 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
       v23 = *(v12 + 5);
       *(v12 + 5) = v22;
 
-      objc_storeStrong(v12 + 11, a3);
+      objc_storeStrong(v12 + 11, l);
       objc_storeWeak(v12 + 65, 0);
-      *(v12 + 13) = a4;
+      *(v12 + 13) = rate;
       v24 = MEMORY[0x277CBF2C0];
       v25 = *(MEMORY[0x277CBF2C0] + 16);
       *(v12 + 120) = *MEMORY[0x277CBF2C0];
@@ -337,15 +337,15 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
     }
 
     self = v12;
-    v31 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v31 = 0;
+    selfCopy = 0;
   }
 
-  return v31;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -535,7 +535,7 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   [(MOVStreamWriter *)&v23 dealloc];
 }
 
-- (void)setMultiplexWritingDisabled:(BOOL)a3
+- (void)setMultiplexWritingDisabled:(BOOL)disabled
 {
   v3 = +[MIOLog defaultLog];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -551,9 +551,9 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   if ([(MOVStreamWriter *)self status]== 5 && !self->_movieMetadataUtility)
   {
     v3 = [MIOMovieMetadataUtility alloc];
-    v4 = [(AVAssetWriter *)self->m_assetWriter outputURL];
+    outputURL = [(AVAssetWriter *)self->m_assetWriter outputURL];
     v11 = 0;
-    v5 = [(MIOMovieMetadataUtility *)v3 initWithURL:v4 error:&v11];
+    v5 = [(MIOMovieMetadataUtility *)v3 initWithURL:outputURL error:&v11];
     v6 = v11;
     movieMetadataUtility = self->_movieMetadataUtility;
     self->_movieMetadataUtility = v5;
@@ -575,34 +575,34 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   return v9;
 }
 
-- (BOOL)setMediaTimeScale:(int)a3 forStream:(id)a4 error:(id *)a5
+- (BOOL)setMediaTimeScale:(int)scale forStream:(id)stream error:(id *)error
 {
-  v8 = a4;
+  streamCopy = stream;
   if (([(MOVStreamWriterState *)self->_state canConfigure:self]& 1) != 0)
   {
-    std::string::basic_string[abi:ne200100]<0>(__p, [v8 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
     {
       v10 = [(MOVStreamWriter *)self isAudioStream:v9];
       if (v10)
       {
-        if (a5)
+        if (error)
         {
-          *a5 = [MEMORY[0x277CCA9B8] writerErrorWithMessage:@"Cannot set baseMediaTimeScale for audio stream." code:7];
+          *error = [MEMORY[0x277CCA9B8] writerErrorWithMessage:@"Cannot set baseMediaTimeScale for audio stream." code:7];
         }
       }
 
       else
       {
-        *(v9 + 208) = a3;
+        *(v9 + 208) = scale;
       }
 
       v11 = !v10;
     }
 
-    else if (a5)
+    else if (error)
     {
       [MEMORY[0x277CCA9B8] writerErrorWithMessage:@"Unknown stream id." code:7];
-      *a5 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -616,10 +616,10 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] writerErrorWithMessage:@"Cannot set baseMediaTimeScale in current writer state." code:17];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -630,20 +630,20 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   return v11;
 }
 
-- (BOOL)setMediaTimeScale:(int)a3 forMetadataStream:(id)a4 error:(id *)a5
+- (BOOL)setMediaTimeScale:(int)scale forMetadataStream:(id)stream error:(id *)error
 {
-  v8 = a4;
+  streamCopy = stream;
   if (([(MOVStreamWriterState *)self->_state canConfigure:self]& 1) != 0)
   {
-    std::string::basic_string[abi:ne200100]<0>(__p, [v8 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
     v10 = v9 != 0;
     if (v9)
     {
     }
 
-    else if (a5)
+    else if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] writerErrorWithMessage:@"Unknown metadata stream id." code:7];
+      *error = [MEMORY[0x277CCA9B8] writerErrorWithMessage:@"Unknown metadata stream id." code:7];
     }
 
     if (v13 < 0)
@@ -652,10 +652,10 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] writerErrorWithMessage:@"Cannot set baseMediaTimeScale in current writer state." code:17];
-    *a5 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else
@@ -666,16 +666,16 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   return v10;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeWithSeconds:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeWithSeconds:(SEL)seconds
 {
-  v6 = [(MOVStreamWriter *)self baseMediaTimeScale];
+  baseMediaTimeScale = [(MOVStreamWriter *)self baseMediaTimeScale];
 
-  return CMTimeMakeWithSeconds(retstr, a4, v6);
+  return CMTimeMakeWithSeconds(retstr, a4, baseMediaTimeScale);
 }
 
-- (void)setDefaultWritingBufferCapacity:(unint64_t)a3
+- (void)setDefaultWritingBufferCapacity:(unint64_t)capacity
 {
-  self->_defaultWritingBufferCapacity = a3;
+  self->_defaultWritingBufferCapacity = capacity;
   begin_node = self->m_streamDataMap.__tree_.__begin_node_;
   p_end_node = &self->m_streamDataMap.__tree_.__end_node_;
   if (begin_node != &self->m_streamDataMap.__tree_.__end_node_)
@@ -718,9 +718,9 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   }
 }
 
-- (void)setDefaultAudioWritingBufferCapacity:(unint64_t)a3
+- (void)setDefaultAudioWritingBufferCapacity:(unint64_t)capacity
 {
-  self->_defaultAudioWritingBufferCapacity = a3;
+  self->_defaultAudioWritingBufferCapacity = capacity;
   begin_node = self->m_streamDataMap.__tree_.__begin_node_;
   p_end_node = &self->m_streamDataMap.__tree_.__end_node_;
   if (begin_node != &self->m_streamDataMap.__tree_.__end_node_)
@@ -763,15 +763,15 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   }
 }
 
-- (void)setDefaultMetadataWritingBufferCapacity:(unint64_t)a3
+- (void)setDefaultMetadataWritingBufferCapacity:(unint64_t)capacity
 {
-  self->_defaultMetadataWritingBufferCapacity = a3;
+  self->_defaultMetadataWritingBufferCapacity = capacity;
   begin_node = self->m_metadataDataMap.__tree_.__begin_node_;
   if (begin_node != &self->m_metadataDataMap.__tree_.__end_node_)
   {
     do
     {
-      begin_node->m_assetWriter = a3;
+      begin_node->m_assetWriter = capacity;
       m_delegateCallbackQueue = begin_node->m_delegateCallbackQueue;
       if (m_delegateCallbackQueue)
       {
@@ -803,10 +803,10 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   }
 }
 
-- (void)setWritingBufferCapacity:(unint64_t)a3 forStream:(id)a4
+- (void)setWritingBufferCapacity:(unint64_t)capacity forStream:(id)stream
 {
-  v6 = a4;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v6 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   {
     v8 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Unknown stream id." userInfo:0];
     objc_exception_throw(v8);
@@ -818,17 +818,17 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
     objc_exception_throw(v9);
   }
 
-  *(v7 + 64) = a3;
+  *(v7 + 64) = capacity;
   if (v11 < 0)
   {
     operator delete(__p[0]);
   }
 }
 
-- (void)setWritingBufferCapacity:(unint64_t)a3 forAudioStream:(id)a4
+- (void)setWritingBufferCapacity:(unint64_t)capacity forAudioStream:(id)stream
 {
-  v6 = a4;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v6 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   {
     v8 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Unknown stream id." userInfo:0];
     objc_exception_throw(v8);
@@ -840,17 +840,17 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
     objc_exception_throw(v9);
   }
 
-  *(v7 + 64) = a3;
+  *(v7 + 64) = capacity;
   if (v11 < 0)
   {
     operator delete(__p[0]);
   }
 }
 
-- (void)setWritingBufferCapacity:(unint64_t)a3 forMetadataStream:(id)a4
+- (void)setWritingBufferCapacity:(unint64_t)capacity forMetadataStream:(id)stream
 {
-  v6 = a4;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v6 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   {
     v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Unknown stream id." userInfo:0];
     objc_exception_throw(v7);
@@ -862,10 +862,10 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   }
 }
 
-- (unint64_t)writingBufferCapacityForStream:(id)a3
+- (unint64_t)writingBufferCapacityForStream:(id)stream
 {
-  v4 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   {
     v8 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Unknown stream id." userInfo:0];
     objc_exception_throw(v8);
@@ -886,10 +886,10 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   return v6;
 }
 
-- (unint64_t)writingBufferCapacityForAudioStream:(id)a3
+- (unint64_t)writingBufferCapacityForAudioStream:(id)stream
 {
-  v4 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   {
     v8 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Unknown stream id." userInfo:0];
     objc_exception_throw(v8);
@@ -910,10 +910,10 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   return v6;
 }
 
-- (unint64_t)writingBufferCapacityForMetadataStream:(id)a3
+- (unint64_t)writingBufferCapacityForMetadataStream:(id)stream
 {
-  v4 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   {
     v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Unknown stream id." userInfo:0];
     objc_exception_throw(v7);
@@ -927,10 +927,10 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   return v5;
 }
 
-- (unint64_t)writingBufferUsageForStream:(id)a3
+- (unint64_t)writingBufferUsageForStream:(id)stream
 {
-  v4 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   {
     v8 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Unknown stream id." userInfo:0];
     objc_exception_throw(v8);
@@ -951,10 +951,10 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   return v6;
 }
 
-- (unint64_t)writingBufferUsageForAudioStream:(id)a3
+- (unint64_t)writingBufferUsageForAudioStream:(id)stream
 {
-  v4 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   {
     v8 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Unknown stream id." userInfo:0];
     objc_exception_throw(v8);
@@ -975,10 +975,10 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   return v6;
 }
 
-- (unint64_t)writingBufferUsageForMetadataStream:(id)a3
+- (unint64_t)writingBufferUsageForMetadataStream:(id)stream
 {
-  v4 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   {
     v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Unknown stream id." userInfo:0];
     objc_exception_throw(v7);
@@ -992,16 +992,16 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   return v5;
 }
 
-- (BOOL)activateNewState:(id)a3 byEvent:(id)a4
+- (BOOL)activateNewState:(id)state byEvent:(id)event
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7 && self->_state != v7)
+  stateCopy = state;
+  eventCopy = event;
+  if (stateCopy && self->_state != stateCopy)
   {
     v9 = MEMORY[0x277CCACA8];
     v10 = objc_opt_class();
-    v11 = [v9 stringWithFormat:@"State Change: %@ - (%@) -> %@", v10, v8, objc_opt_class()];
+    v11 = [v9 stringWithFormat:@"State Change: %@ - (%@) -> %@", v10, eventCopy, objc_opt_class()];
     v12 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -1010,37 +1010,37 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
       _os_log_impl(&dword_257883000, v12, OS_LOG_TYPE_INFO, "%{public}@", buf, 0xCu);
     }
 
-    v13 = [(MOVStreamWriterState *)self->_state writerStatus];
-    objc_storeStrong(&self->_state, a3);
+    writerStatus = [(MOVStreamWriterState *)self->_state writerStatus];
+    objc_storeStrong(&self->_state, state);
     [(MOVStreamWriter *)self setCanWriteData:[(MOVStreamWriterState *)self->_state canWriteData:self]];
     v14 = [(MOVStreamWriterState *)self->_state writerStatus]== 6 || [(MOVStreamWriterState *)self->_state writerStatus]== 7;
     [(MOVStreamWriter *)self setIsOrWasCanceled:v14];
-    v15 = [(MOVStreamWriterState *)self->_state writerStatus];
+    writerStatus2 = [(MOVStreamWriterState *)self->_state writerStatus];
     [(MOVStreamWriterState *)self->_state activateWithContext:self];
-    if (v13 != v15)
+    if (writerStatus != writerStatus2)
     {
       [(MOVStreamWriter *)self willChangeValueForKey:@"status"];
       [(MOVStreamWriter *)self didChangeValueForKey:@"status"];
-      v16 = [(MOVStreamWriter *)self delegate];
-      v17 = v16 == 0;
+      delegate = [(MOVStreamWriter *)self delegate];
+      v17 = delegate == 0;
 
       if (!v17)
       {
-        v18 = [(MOVStreamWriter *)self delegate];
-        [(MOVStreamWriter *)self writerStatusChanged:v15 writerDelegate:v18 delegateCallbackQueue:self->m_delegateCallbackQueue];
+        delegate2 = [(MOVStreamWriter *)self delegate];
+        [(MOVStreamWriter *)self writerStatusChanged:writerStatus2 writerDelegate:delegate2 delegateCallbackQueue:self->m_delegateCallbackQueue];
       }
     }
   }
 
-  return v7 != 0;
+  return stateCopy != 0;
 }
 
 - (void)deleteMOVFile
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   m_writeURL = self->m_writeURL;
   v6 = 0;
-  [v3 removeItemAtURL:m_writeURL error:&v6];
+  [defaultManager removeItemAtURL:m_writeURL error:&v6];
   v5 = v6;
 
   if (v5)
@@ -1051,41 +1051,41 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
 
 - (int64_t)status
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  state = v2->_state;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  state = selfCopy->_state;
   if (state)
   {
-    v4 = [(MOVStreamWriterState *)state writerStatus];
+    writerStatus = [(MOVStreamWriterState *)state writerStatus];
   }
 
   else
   {
-    v4 = 0;
+    writerStatus = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return writerStatus;
 }
 
-- (void)setDelegate:(id)a3 callbackQueue:(id)a4
+- (void)setDelegate:(id)delegate callbackQueue:(id)queue
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10 && !v6)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  if (delegateCopy && !queueCopy)
   {
     v9 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Caller must provide a delegateCallbackQueue" userInfo:0];
     objc_exception_throw(v9);
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  [(MOVStreamWriter *)v7 setDelegate:v10];
-  m_delegateCallbackQueue = v7->m_delegateCallbackQueue;
-  v7->m_delegateCallbackQueue = v6;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MOVStreamWriter *)selfCopy setDelegate:delegateCopy];
+  m_delegateCallbackQueue = selfCopy->m_delegateCallbackQueue;
+  selfCopy->m_delegateCallbackQueue = queueCopy;
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)enableAVEHighPerformanceProfile
@@ -1099,14 +1099,14 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   return v3;
 }
 
-- (BOOL)setExpectedFrameRate:(double)a3
+- (BOOL)setExpectedFrameRate:(double)rate
 {
   if (self->m_expectedFrameRate >= 0.0)
   {
     v4 = [(MOVStreamWriterState *)self->_state canConfigure:self];
     if (v4)
     {
-      self->m_expectedFrameRate = a3;
+      self->m_expectedFrameRate = rate;
       LOBYTE(v4) = 1;
     }
   }
@@ -1119,14 +1119,14 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   return v4;
 }
 
-- (BOOL)setVideoTransform:(CGAffineTransform *)a3
+- (BOOL)setVideoTransform:(CGAffineTransform *)transform
 {
   v5 = [(MOVStreamWriterState *)self->_state canConfigure:self];
   if (v5)
   {
-    v6 = *&a3->a;
-    v7 = *&a3->c;
-    *&self->m_videoTransform.tx = *&a3->tx;
+    v6 = *&transform->a;
+    v7 = *&transform->c;
+    *&self->m_videoTransform.tx = *&transform->tx;
     *&self->m_videoTransform.c = v7;
     *&self->m_videoTransform.a = v6;
   }
@@ -1134,38 +1134,38 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   return v5;
 }
 
-- (BOOL)relateStream:(id)a3 toStream:(id)a4 relationSpecifier:(id)a5 error:(id *)a6
+- (BOOL)relateStream:(id)stream toStream:(id)toStream relationSpecifier:(id)specifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  streamCopy = stream;
+  toStreamCopy = toStream;
+  specifierCopy = specifier;
   if (([(MOVStreamWriterState *)self->_state canConfigure:self]& 1) != 0)
   {
-    std::string::basic_string[abi:ne200100]<0>(v24, [v10 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(v24, [streamCopy UTF8String]);
     p_end_node = &self->m_streamDataMap.__tree_.__end_node_;
     {
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find track for stream %@", v10];
-      [MEMORY[0x277CCA9B8] populateStreamError:a6 message:v20 code:26];
+      streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find track for stream %@", streamCopy];
+      [MEMORY[0x277CCA9B8] populateStreamError:error message:streamCopy code:26];
 
       v16 = 0;
     }
 
     else
     {
-      std::string::basic_string[abi:ne200100]<0>(__p, [v11 UTF8String]);
+      std::string::basic_string[abi:ne200100]<0>(__p, [toStreamCopy UTF8String]);
       v15 = p_end_node == v14;
       v16 = p_end_node != v14;
       if (v15)
       {
-        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find track for stream %@", v11];
-        [MEMORY[0x277CCA9B8] populateStreamError:a6 message:v19 code:26];
+        toStreamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find track for stream %@", toStreamCopy];
+        [MEMORY[0x277CCA9B8] populateStreamError:error message:toStreamCopy code:26];
       }
 
       else
       {
-        objc_storeStrong((v17 + 104), a4);
-        v18 = v12;
-        v19 = *(v17 + 112);
+        objc_storeStrong((v17 + 104), toStream);
+        v18 = specifierCopy;
+        toStreamCopy = *(v17 + 112);
         *(v17 + 112) = v18;
       }
 
@@ -1189,23 +1189,23 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
   return v16;
 }
 
-- (BOOL)setRealTimeCapture:(BOOL)a3
+- (BOOL)setRealTimeCapture:(BOOL)capture
 {
   v5 = [(MOVStreamWriterState *)self->_state canConfigure:self];
   if (v5)
   {
-    self->m_realtime = a3;
+    self->m_realtime = capture;
   }
 
   return v5;
 }
 
-- (BOOL)setShouldOptimizeForNetworkUse:(BOOL)a3
+- (BOOL)setShouldOptimizeForNetworkUse:(BOOL)use
 {
   v5 = [(MOVStreamWriterState *)self->_state canConfigure:self];
   if (v5)
   {
-    self->m_shouldOptimizeForNetworkUse = a3;
+    self->m_shouldOptimizeForNetworkUse = use;
   }
 
   return v5;
@@ -1236,17 +1236,17 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
       v6 = +[MIOLog defaultLog];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [begin_node[32].__left_ fifoItemCount];
-        v8 = [begin_node[9].__left_ isReadyForMoreMediaData];
-        v9 = [begin_node[10].__left_ isReadyForMoreMediaData];
+        fifoItemCount = [begin_node[32].__left_ fifoItemCount];
+        isReadyForMoreMediaData = [begin_node[9].__left_ isReadyForMoreMediaData];
+        isReadyForMoreMediaData2 = [begin_node[10].__left_ isReadyForMoreMediaData];
         *buf = 138544130;
         v23 = v5;
         v24 = 2048;
-        v25 = v7;
+        v25 = fifoItemCount;
         v26 = 1024;
-        v27 = v8;
+        v27 = isReadyForMoreMediaData;
         v28 = 1024;
-        v29 = v9;
+        v29 = isReadyForMoreMediaData2;
         _os_log_impl(&dword_257883000, v6, OS_LOG_TYPE_INFO, "  [FIFO] %{public}@ = %lu ready: %d %d", buf, 0x22u);
       }
 
@@ -1295,14 +1295,14 @@ void __114__MOVStreamWriter_Delegate__writingSessionDidStartAtTime_streamId_medi
       v16 = +[MIOLog defaultLog];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
-        v17 = [v13[15].__left_ fifoItemCount];
-        v18 = [v13[7].__left_ isReadyForMoreMediaData];
+        fifoItemCount2 = [v13[15].__left_ fifoItemCount];
+        isReadyForMoreMediaData3 = [v13[7].__left_ isReadyForMoreMediaData];
         *buf = 138543874;
         v23 = v15;
         v24 = 2048;
-        v25 = v17;
+        v25 = fifoItemCount2;
         v26 = 1024;
-        v27 = v18;
+        v27 = isReadyForMoreMediaData3;
         _os_log_impl(&dword_257883000, v16, OS_LOG_TYPE_INFO, "  [FIFO] %{public}@ = %lu (metadata)  ready: %d", buf, 0x1Cu);
       }
 
@@ -1355,9 +1355,9 @@ LABEL_9:
     {
       do
       {
-        v10 = [v8[15].__left_ fifoItemCount];
-        result = v10 == 0;
-        if (v10)
+        fifoItemCount = [v8[15].__left_ fifoItemCount];
+        result = fifoItemCount == 0;
+        if (fifoItemCount)
         {
           break;
         }
@@ -1434,20 +1434,20 @@ LABEL_9:
   return result;
 }
 
-- (void)addMetadataTrack:(id)a3 copyData:(BOOL)a4
+- (void)addMetadataTrack:(id)track copyData:(BOOL)data
 {
-  v6 = a3;
-  [(MOVStreamWriter *)self addMetadataTrack:v6 formatDescription:0];
-  std::string::basic_string[abi:ne200100]<0>(__p, [v6 UTF8String]);
+  trackCopy = track;
+  [(MOVStreamWriter *)self addMetadataTrack:trackCopy formatDescription:0];
+  std::string::basic_string[abi:ne200100]<0>(__p, [trackCopy UTF8String]);
   if (v8 < 0)
   {
     operator delete(__p[0]);
   }
 }
 
-- (void)addTimeRangeMetadataTrack:(id)a3
+- (void)addTimeRangeMetadataTrack:(id)track
 {
-  v4 = a3;
+  trackCopy = track;
   begin_node = self->m_metadataDataMap.__tree_.__begin_node_;
   if (begin_node != &self->m_metadataDataMap.__tree_.__end_node_)
   {
@@ -1489,36 +1489,36 @@ LABEL_9:
     while (m_writingQueue != &self->m_metadataDataMap.__tree_.__end_node_);
   }
 
-  v9 = [MEMORY[0x277CE6520] createMIOTimeRangeMetadataStreamFormatDescription];
-  if (!v9)
+  createMIOTimeRangeMetadataStreamFormatDescription = [MEMORY[0x277CE6520] createMIOTimeRangeMetadataStreamFormatDescription];
+  if (!createMIOTimeRangeMetadataStreamFormatDescription)
   {
     v11 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"Cannot create format description for time range metadata track." userInfo:0];
     objc_exception_throw(v11);
   }
 
-  [(MOVStreamWriter *)self addMetadataTrack:v4 formatDescription:v9];
-  CFRelease(v9);
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  [(MOVStreamWriter *)self addMetadataTrack:trackCopy formatDescription:createMIOTimeRangeMetadataStreamFormatDescription];
+  CFRelease(createMIOTimeRangeMetadataStreamFormatDescription);
+  std::string::basic_string[abi:ne200100]<0>(__p, [trackCopy UTF8String]);
   if (v13 < 0)
   {
     operator delete(__p[0]);
   }
 }
 
-- (void)addMetadataTrack:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4
+- (void)addMetadataTrack:(id)track formatDescription:(opaqueCMFormatDescription *)description
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  trackCopy = track;
+  v7 = trackCopy;
+  if (!trackCopy)
   {
     v18 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"Invalid metadata streamId 'nil'." userInfo:0];
     objc_exception_throw(v18);
   }
 
-  std::string::basic_string[abi:ne200100]<0>(__p, [v6 UTF8String]);
-  v8 = self;
-  objc_sync_enter(v8);
-  if (([(MOVStreamWriterState *)v8->_state canConfigure:v8]& 1) == 0)
+  std::string::basic_string[abi:ne200100]<0>(__p, [trackCopy UTF8String]);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (([(MOVStreamWriterState *)selfCopy->_state canConfigure:selfCopy]& 1) == 0)
   {
     v19 = @"Cannot add tracks while not idle";
     goto LABEL_12;
@@ -1533,10 +1533,10 @@ LABEL_12:
 
   v9 = objc_opt_new();
   v10 = v9;
-  v11 = [(MOVStreamWriter *)v8 defaultMetadataWritingBufferCapacity];
-  if (a4)
+  defaultMetadataWritingBufferCapacity = [(MOVStreamWriter *)selfCopy defaultMetadataWritingBufferCapacity];
+  if (description)
   {
-    CFRetain(a4);
+    CFRetain(description);
   }
 
   v21 = objc_opt_new();
@@ -1547,35 +1547,35 @@ LABEL_12:
   *(v12 + 8) = 0;
 
   *(v12 + 24) = 0;
-  *(v12 + 16) = a4;
+  *(v12 + 16) = description;
   objc_storeStrong((v12 + 32), v9);
   v15 = *(v12 + 48);
-  *(v12 + 40) = v11;
+  *(v12 + 40) = defaultMetadataWritingBufferCapacity;
   *(v12 + 48) = 0;
 
   *(v12 + 56) = 1;
   objc_storeStrong((v12 + 64), v21);
   *(v12 + 72) = 0;
-  std::vector<std::string>::push_back[abi:ne200100](&v8->m_orderedMetadataStreamNames, __p);
+  std::vector<std::string>::push_back[abi:ne200100](&selfCopy->m_orderedMetadataStreamNames, __p);
   v24 = __p;
-  v16 = std::__tree<std::__value_type<std::string,CMTime>,std::__map_value_compare<std::string,std::__value_type<std::string,CMTime>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,CMTime>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string const&>,std::tuple<>>(&v8->m_lastPtsForMetadataStream, __p);
+  v16 = std::__tree<std::__value_type<std::string,CMTime>,std::__map_value_compare<std::string,std::__value_type<std::string,CMTime>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,CMTime>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string const&>,std::tuple<>>(&selfCopy->m_lastPtsForMetadataStream, __p);
   v17 = MEMORY[0x277CC0890];
   *(v16 + 56) = *MEMORY[0x277CC0890];
   *(v16 + 72) = *(v17 + 16);
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   if (v23 < 0)
   {
     operator delete(__p[0]);
   }
 }
 
-- (void)addMetadataTrackAssociatedWith:(id)a3 withIdentifier:(id)a4 withFormatDescription:(opaqueCMFormatDescription *)a5
+- (void)addMetadataTrackAssociatedWith:(id)with withIdentifier:(id)identifier withFormatDescription:(opaqueCMFormatDescription *)description
 {
-  v8 = a3;
-  v9 = a4;
-  std::string::basic_string[abi:ne200100]<0>(v27, [v8 UTF8String]);
-  std::string::basic_string[abi:ne200100]<0>(__p, [v9 UTF8String]);
+  withCopy = with;
+  identifierCopy = identifier;
+  std::string::basic_string[abi:ne200100]<0>(v27, [withCopy UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(__p, [identifierCopy UTF8String]);
   if (([(MOVStreamWriterState *)self->_state canConfigure:self]& 1) == 0)
   {
     v19 = @"Cannot add tracks while not idle";
@@ -1583,7 +1583,7 @@ LABEL_12:
   }
 
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to find stream with identifier %@", v8];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to find stream with identifier %@", withCopy];
     v20 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
     objc_exception_throw(v20);
   }
@@ -1597,12 +1597,12 @@ LABEL_15:
     }
   }
 
-  if (a5)
+  if (description)
   {
-    CFRetain(a5);
+    CFRetain(description);
   }
 
-  v22 = [(MOVStreamWriter *)self defaultMetadataWritingBufferCapacity];
+  defaultMetadataWritingBufferCapacity = [(MOVStreamWriter *)self defaultMetadataWritingBufferCapacity];
   LOBYTE(v23) = 1;
   v24 = objc_opt_new();
   v13 = *v12;
@@ -1612,12 +1612,12 @@ LABEL_15:
   *(v12 + 8) = 0;
 
   *(v12 + 24) = 0;
-  *(v12 + 16) = a5;
+  *(v12 + 16) = description;
   v15 = *(v12 + 32);
   *(v12 + 32) = 0;
 
   v16 = *(v12 + 48);
-  *(v12 + 40) = v22;
+  *(v12 + 40) = defaultMetadataWritingBufferCapacity;
   *(v12 + 48) = 0;
 
   *(v12 + 56) = v23;
@@ -1637,24 +1637,24 @@ LABEL_15:
   }
 }
 
-- (void)addTrackForStreamWithIdentifier:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 recordingConfiguration:(id)a5
+- (void)addTrackForStreamWithIdentifier:(id)identifier formatDescription:(opaqueCMFormatDescription *)description recordingConfiguration:(id)configuration
 {
-  v8 = a3;
-  v9 = a5;
-  v63 = v8;
-  std::string::basic_string[abi:ne200100]<0>(&v84, [v8 UTF8String]);
-  if (!v9 || ![v9 count])
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  v63 = identifierCopy;
+  std::string::basic_string[abi:ne200100]<0>(&v84, [identifierCopy UTF8String]);
+  if (!configurationCopy || ![configurationCopy count])
   {
     v57 = @"recordingConfiguration cannot be null or empty";
     goto LABEL_40;
   }
 
-  if (!a4)
+  if (!description)
   {
-    v10 = [v9 valueForKey:@"StreamEncoderType"];
-    v11 = [v10 intValue];
+    v10 = [configurationCopy valueForKey:@"StreamEncoderType"];
+    intValue = [v10 intValue];
 
-    if (v11 != 17)
+    if (intValue != 17)
     {
       v57 = @"Format description cannot be null";
 LABEL_40:
@@ -1663,9 +1663,9 @@ LABEL_40:
     }
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  if (([(MOVStreamWriterState *)v12->_state canConfigure:v12]& 1) == 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (([(MOVStreamWriterState *)selfCopy->_state canConfigure:selfCopy]& 1) == 0)
   {
     v59 = @"Cannot add tracks while not idle";
     goto LABEL_43;
@@ -1678,12 +1678,12 @@ LABEL_43:
     objc_exception_throw(v60);
   }
 
-  v13 = [v9 objectForKey:@"PixelBufferExactBytesPerRow"];
+  v13 = [configurationCopy objectForKey:@"PixelBufferExactBytesPerRow"];
   v62 = v13;
   if (v13)
   {
-    Dimensions = CMVideoFormatDescriptionGetDimensions(a4);
-    if (![MOVStreamIOUtility verifyExactBytesPerRow:v13 width:Dimensions.width height:*&Dimensions >> 32 pixelFormat:CMFormatDescriptionGetMediaSubType(a4)])
+    Dimensions = CMVideoFormatDescriptionGetDimensions(description);
+    if (![MOVStreamIOUtility verifyExactBytesPerRow:v13 width:Dimensions.width height:*&Dimensions >> 32 pixelFormat:CMFormatDescriptionGetMediaSubType(description)])
     {
       [MEMORY[0x277CCACA8] stringWithFormat:@"Not matching kMIOPixelBufferExactBytesPerRow value %@.", v13, v13];
       v61 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
@@ -1691,32 +1691,32 @@ LABEL_43:
     }
   }
 
-  MediaType = CMFormatDescriptionGetMediaType(a4);
-  v16 = [v9 objectForKey:@"VideoTrackTypeInfo"];
+  MediaType = CMFormatDescriptionGetMediaType(description);
+  v16 = [configurationCopy objectForKey:@"VideoTrackTypeInfo"];
 
   if (!v16 && MediaType != 1936684398)
   {
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"No video track type info (MIOVideoTrackTypeInfo) specified for stream '%@'.", v8, v13];
+    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"No video track type info (MIOVideoTrackTypeInfo) specified for stream '%@'.", identifierCopy, v13];
     v18 = [MEMORY[0x277CCA9B8] writerWarningWithMessage:v17 code:0];
   }
 
-  v19 = [v9 objectForKey:@"BufferCacheMode"];
+  v19 = [configurationCopy objectForKey:@"BufferCacheMode"];
   if (v19)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [v19 intValue];
+      intValue2 = [v19 intValue];
       goto LABEL_17;
     }
 
-    v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Surface cache mode (MIOBufferCacheMode) is not an NSNumber value, specified for stream '%@'.", v8];
-    v22 = [MEMORY[0x277CCA9B8] writerWarningWithMessage:v21 code:0];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Surface cache mode (MIOBufferCacheMode) is not an NSNumber value, specified for stream '%@'.", identifierCopy];
+    v22 = [MEMORY[0x277CCA9B8] writerWarningWithMessage:identifierCopy code:0];
   }
 
-  v20 = 0;
+  intValue2 = 0;
 LABEL_17:
-  v23 = [v9 objectForKey:@"EncodeAttachments"];
+  v23 = [configurationCopy objectForKey:@"EncodeAttachments"];
   if (!v23)
   {
     goto LABEL_30;
@@ -1780,9 +1780,9 @@ LABEL_30:
   *v72 = 0u;
   v75 = 0;
   v73 = 0;
-  if (a4)
+  if (description)
   {
-    v31 = CFRetain(a4);
+    v31 = CFRetain(description);
   }
 
   else
@@ -1791,7 +1791,7 @@ LABEL_30:
   }
 
   v64 = v31;
-  v32 = [v9 copy];
+  v32 = [configurationCopy copy];
   v33 = v67[1];
   v67[1] = v32;
 
@@ -1800,8 +1800,8 @@ LABEL_30:
   v71[1] = 0;
 
   objc_storeStrong(&v73, v23);
-  v35 = [v9 objectForKey:@"DoNotRecordAttachments"];
-  v74 = [v35 BOOLValue];
+  v35 = [configurationCopy objectForKey:@"DoNotRecordAttachments"];
+  bOOLValue = [v35 BOOLValue];
 
   v36 = objc_opt_new();
   v37 = v75;
@@ -1812,15 +1812,15 @@ LABEL_30:
   *&v77 = *(MEMORY[0x277CC0890] + 16);
   if (MediaType == 1936684398)
   {
-    v39 = [(MOVStreamWriter *)v12 defaultAudioWritingBufferCapacity];
+    defaultAudioWritingBufferCapacity = [(MOVStreamWriter *)selfCopy defaultAudioWritingBufferCapacity];
   }
 
   else
   {
-    v39 = [(MOVStreamWriter *)v12 defaultWritingBufferCapacity];
+    defaultAudioWritingBufferCapacity = [(MOVStreamWriter *)selfCopy defaultWritingBufferCapacity];
   }
 
-  v69 = v39;
+  v69 = defaultAudioWritingBufferCapacity;
   v40 = objc_opt_new();
   objc_storeStrong(&v68[1], v40);
   *(&v77 + 1) = 0;
@@ -1828,20 +1828,20 @@ LABEL_30:
   v42 = v78;
   v78 = v41;
 
-  v80 = v20;
+  v80 = intValue2;
   v82 = 0;
   v43 = objc_opt_new();
   v44 = v81;
   v81 = v43;
 
-  size = v12->m_streamDataMap.__tree_.__size_;
-  v83 = size % [(MOVStreamWriter *)v12 writingThreadsCount];
+  size = selfCopy->m_streamDataMap.__tree_.__size_;
+  v83 = size % [(MOVStreamWriter *)selfCopy writingThreadsCount];
   v46 = +[MOVStreamPreProcessorFactory defaultFactory];
-  v47 = [v46 preProcessorForFormat:v64 recordingConfiguration:v9];
+  v47 = [v46 preProcessorForFormat:v64 recordingConfiguration:configurationCopy];
   v48 = v71[0];
   v71[0] = v47;
 
-  v49 = [MOVStreamOutputSettings outputSettingsForStream:&v64 defaultFrameRate:v12->m_enableAVEHighPerformanceProfile enableAVEHighPerformanceProfile:v12->m_expectedFrameRate];
+  v49 = [MOVStreamOutputSettings outputSettingsForStream:&v64 defaultFrameRate:selfCopy->m_enableAVEHighPerformanceProfile enableAVEHighPerformanceProfile:selfCopy->m_expectedFrameRate];
   v51 = v64;
   *(v50 + 8) = v65;
   *v50 = v51;
@@ -1859,7 +1859,7 @@ LABEL_30:
   objc_storeStrong((v50 + 104), v72[0]);
   objc_storeStrong((v50 + 112), v72[1]);
   objc_storeStrong((v50 + 120), v73);
-  *(v50 + 128) = v74;
+  *(v50 + 128) = bOOLValue;
   objc_storeStrong((v50 + 136), v75);
   v52 = v77;
   *(v50 + 144) = v76;
@@ -1872,17 +1872,17 @@ LABEL_30:
   v54 = v82;
   *(v50 + 212) = v83;
   *(v50 + 208) = v54;
-  std::vector<std::string>::push_back[abi:ne200100](&v12->m_orderedStreamNames, &v84);
+  std::vector<std::string>::push_back[abi:ne200100](&selfCopy->m_orderedStreamNames, &v84);
   v86 = &v84;
-  v55 = std::__tree<std::__value_type<std::string,CMTime>,std::__map_value_compare<std::string,std::__value_type<std::string,CMTime>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,CMTime>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string const&>,std::tuple<>>(&v12->m_lastPtsForStream, &v84);
+  v55 = std::__tree<std::__value_type<std::string,CMTime>,std::__map_value_compare<std::string,std::__value_type<std::string,CMTime>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,CMTime>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string const&>,std::tuple<>>(&selfCopy->m_lastPtsForStream, &v84);
   *(v55 + 56) = *v38;
   *(v55 + 72) = *(v38 + 16);
   v86 = &v84;
-  v56 = std::__tree<std::__value_type<std::string,CMTime>,std::__map_value_compare<std::string,std::__value_type<std::string,CMTime>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,CMTime>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string const&>,std::tuple<>>(&v12->m_lastPtsForAttachmentsStream, &v84);
+  v56 = std::__tree<std::__value_type<std::string,CMTime>,std::__map_value_compare<std::string,std::__value_type<std::string,CMTime>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,CMTime>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string const&>,std::tuple<>>(&selfCopy->m_lastPtsForAttachmentsStream, &v84);
   *(v56 + 56) = *v38;
   *(v56 + 72) = *(v38 + 16);
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 
   if (v85 < 0)
   {
@@ -1890,13 +1890,13 @@ LABEL_30:
   }
 }
 
-- (void)addAudioTrackForStreamWithIdentifier:(id)a3 audioFormat:(id)a4 additionalSettings:(id)a5
+- (void)addAudioTrackForStreamWithIdentifier:(id)identifier audioFormat:(id)format additionalSettings:(id)settings
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 formatDescription];
-  if (!v10)
+  identifierCopy = identifier;
+  formatCopy = format;
+  settingsCopy = settings;
+  formatDescription = [formatCopy formatDescription];
+  if (!formatDescription)
   {
     v13 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Invalid audio format" userInfo:0];
     objc_exception_throw(v13);
@@ -1905,26 +1905,26 @@ LABEL_30:
   v11 = +[MOVStreamIOUtility audioNoneEncoderConfig];
   v12 = [v11 mutableCopy];
 
-  [v12 setObject:v8 forKey:@"AudioFormatObject"];
-  if (v9)
+  [v12 setObject:formatCopy forKey:@"AudioFormatObject"];
+  if (settingsCopy)
   {
-    [v12 setObject:v9 forKey:@"AdditionalAudioSettings"];
+    [v12 setObject:settingsCopy forKey:@"AdditionalAudioSettings"];
   }
 
-  [(MOVStreamWriter *)self addTrackForStreamWithIdentifier:v14 formatDescription:v10 recordingConfiguration:v12];
+  [(MOVStreamWriter *)self addTrackForStreamWithIdentifier:identifierCopy formatDescription:formatDescription recordingConfiguration:v12];
 }
 
-- (BOOL)setTrackMetadata:(id)a3 forStream:(id)a4 error:(id *)a5
+- (BOOL)setTrackMetadata:(id)metadata forStream:(id)stream error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  metadataCopy = metadata;
+  streamCopy = stream;
   if (([(MOVStreamWriterState *)self->_state canConfigure:self]& 1) != 0)
   {
-    std::string::basic_string[abi:ne200100]<0>(__p, [v9 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
     {
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find track for stream %@", v9];
-      [MEMORY[0x277CCA9B8] populateStreamError:a5 message:v10 code:26];
+      streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find track for stream %@", streamCopy];
+      [MEMORY[0x277CCA9B8] populateStreamError:error message:streamCopy code:26];
 LABEL_17:
       v18 = 0;
     }
@@ -1935,8 +1935,8 @@ LABEL_17:
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v10 = v8;
-      v11 = [v10 countByEnumeratingWithState:&v21 objects:v27 count:16];
+      streamCopy = metadataCopy;
+      v11 = [streamCopy countByEnumeratingWithState:&v21 objects:v27 count:16];
       if (v11)
       {
         v12 = *v22;
@@ -1946,24 +1946,24 @@ LABEL_17:
           {
             if (*v22 != v12)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(streamCopy);
             }
 
             v14 = *(*(&v21 + 1) + 8 * i);
-            v15 = [v10 objectForKeyedSubscript:v14];
+            v15 = [streamCopy objectForKeyedSubscript:v14];
             if (![(MOVStreamWriter *)self isCustomTrackMetadataCompatibleObject:v15])
             {
-              if (a5)
+              if (error)
               {
                 v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Incompatible item %@:%@.", v14, objc_opt_class(), v21];
-                *a5 = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v19 code:10];
+                *error = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v19 code:10];
               }
 
               goto LABEL_17;
             }
           }
 
-          v11 = [v10 countByEnumeratingWithState:&v21 objects:v27 count:16];
+          v11 = [streamCopy countByEnumeratingWithState:&v21 objects:v27 count:16];
           if (v11)
           {
             continue;
@@ -1973,8 +1973,8 @@ LABEL_17:
         }
       }
 
-      v17 = v10;
-      v10 = *(v16 + 72);
+      v17 = streamCopy;
+      streamCopy = *(v16 + 72);
       *(v16 + 72) = v17;
       v18 = 1;
     }
@@ -1993,24 +1993,24 @@ LABEL_17:
   return v18;
 }
 
-- (BOOL)setTrackMetadataItems:(id)a3 forStream:(id)a4 error:(id *)a5
+- (BOOL)setTrackMetadataItems:(id)items forStream:(id)stream error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  itemsCopy = items;
+  streamCopy = stream;
   if (([(MOVStreamWriterState *)self->_state canConfigure:self]& 1) != 0)
   {
-    std::string::basic_string[abi:ne200100]<0>(__p, [v9 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
     v11 = &self->m_streamDataMap.__tree_.__end_node_ != v10;
     if (&self->m_streamDataMap.__tree_.__end_node_ == v10)
     {
-      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find track for stream %@", v9];
-      [MEMORY[0x277CCA9B8] populateStreamError:a5 message:v14 code:26];
+      streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find track for stream %@", streamCopy];
+      [MEMORY[0x277CCA9B8] populateStreamError:error message:streamCopy code:26];
     }
 
     else
     {
-      v13 = v8;
-      v14 = *(v12 + 80);
+      v13 = itemsCopy;
+      streamCopy = *(v12 + 80);
       *(v12 + 80) = v13;
     }
 
@@ -2022,24 +2022,24 @@ LABEL_17:
 
   else
   {
-    [MEMORY[0x277CCA9B8] populateStreamError:a5 message:@"Writer is not in MIOWriterStatusInit state." code:17];
+    [MEMORY[0x277CCA9B8] populateStreamError:error message:@"Writer is not in MIOWriterStatusInit state." code:17];
     v11 = 0;
   }
 
   return v11;
 }
 
-- (BOOL)setTrackMetadata:(id)a3 forMetadataStream:(id)a4 error:(id *)a5
+- (BOOL)setTrackMetadata:(id)metadata forMetadataStream:(id)stream error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  metadataCopy = metadata;
+  streamCopy = stream;
   if (([(MOVStreamWriterState *)self->_state canConfigure:self]& 1) != 0)
   {
-    std::string::basic_string[abi:ne200100]<0>(__p, [v9 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
     {
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find track for stream %@", v9];
-      [MEMORY[0x277CCA9B8] populateStreamError:a5 message:v10 code:26];
+      streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find track for stream %@", streamCopy];
+      [MEMORY[0x277CCA9B8] populateStreamError:error message:streamCopy code:26];
 LABEL_17:
       v18 = 0;
     }
@@ -2050,8 +2050,8 @@ LABEL_17:
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v10 = v8;
-      v11 = [v10 countByEnumeratingWithState:&v21 objects:v27 count:16];
+      streamCopy = metadataCopy;
+      v11 = [streamCopy countByEnumeratingWithState:&v21 objects:v27 count:16];
       if (v11)
       {
         v12 = *v22;
@@ -2061,24 +2061,24 @@ LABEL_17:
           {
             if (*v22 != v12)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(streamCopy);
             }
 
             v14 = *(*(&v21 + 1) + 8 * i);
-            v15 = [v10 objectForKeyedSubscript:v14];
+            v15 = [streamCopy objectForKeyedSubscript:v14];
             if (![(MOVStreamWriter *)self isCustomTrackMetadataCompatibleObject:v15])
             {
-              if (a5)
+              if (error)
               {
                 v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Incompatible item %@:%@.", v14, objc_opt_class(), v21];
-                *a5 = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v19 code:10];
+                *error = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v19 code:10];
               }
 
               goto LABEL_17;
             }
           }
 
-          v11 = [v10 countByEnumeratingWithState:&v21 objects:v27 count:16];
+          v11 = [streamCopy countByEnumeratingWithState:&v21 objects:v27 count:16];
           if (v11)
           {
             continue;
@@ -2088,8 +2088,8 @@ LABEL_17:
         }
       }
 
-      v17 = v10;
-      v10 = *(v16 + 48);
+      v17 = streamCopy;
+      streamCopy = *(v16 + 48);
       *(v16 + 48) = v17;
       v18 = 1;
     }
@@ -2108,9 +2108,9 @@ LABEL_17:
   return v18;
 }
 
-- (void)prepareToRecordWithMovieMetadata:(id)a3
+- (void)prepareToRecordWithMovieMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   if (([(MOVStreamWriterState *)self->_state canConfigure:self]& 1) == 0)
   {
     v12 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"Current state does not support prepareToRecord." userInfo:0];
@@ -2118,9 +2118,9 @@ LABEL_17:
   }
 
   v15 = 0;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [(NSURL *)self->m_writeURL path];
-  v7 = [v5 fileExistsAtPath:v6 isDirectory:&v15];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [(NSURL *)self->m_writeURL path];
+  v7 = [defaultManager fileExistsAtPath:path isDirectory:&v15];
   v8 = (v7 & v15);
 
   if (v8 == 1)
@@ -2129,11 +2129,11 @@ LABEL_17:
     objc_exception_throw(v13);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  [(MOVStreamWriter *)v9 setMovMetadataItems:v4];
-  v10 = [(MOVStreamWriterState *)self->_state prepareRecording:v9];
-  v11 = [(MOVStreamWriter *)v9 activateNewState:v10 byEvent:@"prepareToRecord"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MOVStreamWriter *)selfCopy setMovMetadataItems:metadataCopy];
+  v10 = [(MOVStreamWriterState *)self->_state prepareRecording:selfCopy];
+  v11 = [(MOVStreamWriter *)selfCopy activateNewState:v10 byEvent:@"prepareToRecord"];
 
   if (!v11)
   {
@@ -2141,12 +2141,12 @@ LABEL_17:
     objc_exception_throw(v14);
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)executePrepareToRecordWithMovieMetadata:(id)a3
+- (void)executePrepareToRecordWithMovieMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   if (+[MIOLog debugEnabled])
   {
     v5 = +[MIOLog defaultLog];
@@ -2163,8 +2163,8 @@ LABEL_17:
   v8[2] = __59__MOVStreamWriter_executePrepareToRecordWithMovieMetadata___block_invoke;
   v8[3] = &unk_279847E68;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = metadataCopy;
+  v7 = metadataCopy;
   dispatch_async(v6, v8);
 }
 
@@ -2470,7 +2470,7 @@ LABEL_66:
   objc_autoreleasePoolPop(context);
 }
 
-- (BOOL)setWritingThreadPriority:(double)a3 error:(id *)a4
+- (BOOL)setWritingThreadPriority:(double)priority error:(id *)error
 {
   if (([(MOVStreamWriterState *)self->_state canConfigure:self]& 1) != 0)
   {
@@ -2479,22 +2479,22 @@ LABEL_66:
 
     if (v8)
     {
-      [MEMORY[0x277CCA9B8] populateStreamError:a4 message:@"Writing-Thread priority is overriden by defaults. Setting has no effect." code:17];
+      [MEMORY[0x277CCA9B8] populateStreamError:error message:@"Writing-Thread priority is overriden by defaults. Setting has no effect." code:17];
     }
 
     else
     {
-      if (a3 <= 1.0 && a3 >= 0.0)
+      if (priority <= 1.0 && priority >= 0.0)
       {
-        self->m_writingThreadPriority = a3;
+        self->m_writingThreadPriority = priority;
         v9 = 1;
         goto LABEL_13;
       }
 
-      if (a4)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] writerErrorWithMessage:@"Priority must be floating point number from 0.0 to 1.0." code:17];
-        *a4 = v9 = 0;
+        *error = v9 = 0;
         goto LABEL_13;
       }
     }
@@ -2505,13 +2505,13 @@ LABEL_13:
     return v9;
   }
 
-  if (!a4)
+  if (!error)
   {
     return 0;
   }
 
   [MEMORY[0x277CCA9B8] writerErrorWithMessage:@"Cannot set writingThreadPriority in current writer state." code:17];
-  *a4 = v9 = 0;
+  *error = v9 = 0;
   return v9;
 }
 
@@ -2556,7 +2556,7 @@ LABEL_10:
   return m_writingThreadPriority;
 }
 
-- (BOOL)setMultiThreadWritingEnabled:(BOOL)a3 error:(id *)a4
+- (BOOL)setMultiThreadWritingEnabled:(BOOL)enabled error:(id *)error
 {
   if (([(MOVStreamWriterState *)self->_state canConfigure:self]& 1) != 0)
   {
@@ -2566,18 +2566,18 @@ LABEL_10:
 
     if (v8)
     {
-      [MEMORY[0x277CCA9B8] populateStreamError:a4 message:@"Multi-Thread-Writing is overriden by defaults. Setting has no effect." code:17];
+      [MEMORY[0x277CCA9B8] populateStreamError:error message:@"Multi-Thread-Writing is overriden by defaults. Setting has no effect." code:17];
     }
 
     else
     {
-      self->_multiThreadWritingEnabled = a3;
+      self->_multiThreadWritingEnabled = enabled;
     }
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] populateStreamError:a4 message:@"Writer is not in MIOWriterStatusInit state." code:17];
+    [MEMORY[0x277CCA9B8] populateStreamError:error message:@"Writer is not in MIOWriterStatusInit state." code:17];
     return 0;
   }
 
@@ -2602,18 +2602,18 @@ LABEL_10:
   return multiThreadWritingEnabled & 1;
 }
 
-- (BOOL)setMultiThreadWritingThreadsCount:(unint64_t)a3 error:(id *)a4
+- (BOOL)setMultiThreadWritingThreadsCount:(unint64_t)count error:(id *)error
 {
   if (([(MOVStreamWriterState *)self->_state canConfigure:self]& 1) == 0)
   {
     v10 = MEMORY[0x277CCA9B8];
     v11 = @"Writer is not in MIOWriterStatusInit state.";
 LABEL_7:
-    [v10 populateStreamError:a4 message:v11 code:17];
+    [v10 populateStreamError:error message:v11 code:17];
     return 0;
   }
 
-  if (!a3)
+  if (!count)
   {
     v10 = MEMORY[0x277CCA9B8];
     v11 = @"Multi-Thread-Writing thread count must be larger than 0.";
@@ -2626,12 +2626,12 @@ LABEL_7:
 
   if (v8)
   {
-    [MEMORY[0x277CCA9B8] populateStreamError:a4 message:@"Multi-Thread-Writing thread count is overriden by defaults. Setting has no effect." code:17];
+    [MEMORY[0x277CCA9B8] populateStreamError:error message:@"Multi-Thread-Writing thread count is overriden by defaults. Setting has no effect." code:17];
   }
 
   else
   {
-    self->_multiThreadWritingThreadsCount = a3;
+    self->_multiThreadWritingThreadsCount = count;
   }
 
   return v9;
@@ -2645,10 +2645,10 @@ LABEL_7:
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 integerValue];
-    if (v7)
+    integerValue = [v5 integerValue];
+    if (integerValue)
     {
-      multiThreadWritingThreadsCount = v7;
+      multiThreadWritingThreadsCount = integerValue;
     }
   }
 
@@ -2754,13 +2754,13 @@ LABEL_7:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 objectForKey:*MEMORY[0x277CCA2F0]];
-  v11 = [v10 BOOLValue];
+  objectCopy = object;
+  changeCopy = change;
+  v10 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
+  bOOLValue = [v10 BOOLValue];
 
   begin_node = self->m_streamDataMap.__tree_.__begin_node_;
   if (begin_node != &self->m_streamDataMap.__tree_.__end_node_)
@@ -2769,7 +2769,7 @@ LABEL_7:
     {
       v13 = begin_node[9].__left_;
       objc_sync_enter(v13);
-      v14 = begin_node[9].__left_ == v8 || begin_node[10].__left_ == v8;
+      v14 = begin_node[9].__left_ == objectCopy || begin_node[10].__left_ == objectCopy;
       if (v14)
       {
         break;
@@ -2821,16 +2821,16 @@ LABEL_7:
       v27 = 138543618;
       v28 = v18;
       v29 = 1024;
-      v30 = v11;
+      v30 = bOOLValue;
       _os_log_impl(&dword_257883000, v19, OS_LOG_TYPE_INFO, "[KVO] Update stream '%{public}@' input ready: %d", &v27, 0x12u);
     }
 
     if ([(MOVStreamWriterState *)self->_state writerStatus]== 3)
     {
-      [(MOVStreamWriter *)self informDelegateAboutIsReady:v11 forStream:v18];
+      [(MOVStreamWriter *)self informDelegateAboutIsReady:bOOLValue forStream:v18];
     }
 
-    if (v11)
+    if (bOOLValue)
     {
       [(MOVStreamWriter *)self consumeSamplesOfVideoAudioStream:v18];
     }
@@ -2846,7 +2846,7 @@ LABEL_22:
     {
       v21 = v20[7].__left_;
       objc_sync_enter(v21);
-      if (v20[7].__left_ == v8)
+      if (v20[7].__left_ == objectCopy)
       {
         break;
       }
@@ -2897,16 +2897,16 @@ LABEL_22:
       v27 = 138543618;
       v28 = v25;
       v29 = 1024;
-      v30 = v11;
+      v30 = bOOLValue;
       _os_log_impl(&dword_257883000, v26, OS_LOG_TYPE_INFO, "[KVO] Update metadata stream '%{public}@' input ready: %d", &v27, 0x12u);
     }
 
     if ([(MOVStreamWriterState *)self->_state writerStatus]== 3)
     {
-      [(MOVStreamWriter *)self informDelegateAboutIsReady:v11 forStream:v25];
+      [(MOVStreamWriter *)self informDelegateAboutIsReady:bOOLValue forStream:v25];
     }
 
-    if (v11)
+    if (bOOLValue)
     {
       [(MOVStreamWriter *)self consumeMetadatOfMetadataStream:v25];
     }
@@ -2917,23 +2917,23 @@ LABEL_22:
 LABEL_40:
 }
 
-- (int)attachmentSerializationModeForStream:()basic_string<char withDefaultMode:()std:(std::allocator<char>> *)a3 :char_traits<char>
+- (int)attachmentSerializationModeForStream:()basic_string<char withDefaultMode:()std:(std::allocator<char>> *)std :char_traits<char>
 {
-  v5 = v4 = v3;
+  v5 = intValue = v3;
   v6 = v5;
   if (v5)
   {
-    v4 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
-  return v4;
+  return intValue;
 }
 
-- (void)appendPixelBuffer:(__CVBuffer *)a3 presentationTime:(id *)a4 toStreamId:(id)a5
+- (void)appendPixelBuffer:(__CVBuffer *)buffer presentationTime:(id *)time toStreamId:(id)id
 {
   v41 = *MEMORY[0x277D85DE8];
-  v27 = a5;
-  std::string::basic_string[abi:ne200100]<0>(&v36, [v27 UTF8String]);
+  idCopy = id;
+  std::string::basic_string[abi:ne200100]<0>(&v36, [idCopy UTF8String]);
   {
     v25 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"Cannot append to stream that hasn't been set up." userInfo:0];
     objc_exception_throw(v25);
@@ -2951,12 +2951,12 @@ LABEL_40:
     v8 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      time = *a4;
+      time = *time;
       Seconds = CMTimeGetSeconds(&time);
       *buf = 134218242;
       v38 = Seconds;
       v39 = 2114;
-      v40 = v27;
+      v40 = idCopy;
       _os_log_impl(&dword_257883000, v8, OS_LOG_TYPE_DEBUG, "MOVStreamWriter appendPixelBuffer at '%5.3f' to stream '%{public}@'", buf, 0x16u);
     }
   }
@@ -2964,16 +2964,16 @@ LABEL_40:
   [(MOVStreamWriter *)self sessionStartTime];
   if ((time.flags & 1) == 0)
   {
-    time = *a4;
+    time = *time;
     [(MOVStreamWriter *)self setSessionStartTime:&time];
   }
 
   v11 = v10;
   if (*(v10 + 48) && (v12 = *(v10 + 176), objc_sync_enter(v12), v13 = [*(v11 + 48) pendingFrames], v14 = *(v11 + 168), objc_sync_exit(v12), v12, v15 = *(v11 + 56), objc_sync_enter(v15), v16 = objc_msgSend(*(v11 + 56), "count"), objc_sync_exit(v15), v15, v17 = v13 & ~(v13 >> 63), v18 = *(v11 + 64), v14 + v17 + v16 > v18))
   {
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"[VTEncoder] processing buffer for stream '%@' is full, dropping buffer (Pending:%lld Queue:%ld Fifo:%ld Capacity:%ld) (%llu/%llu/%llu/%llu).", v27, v17, v14, v16, v18, -[MOVStreamWriter writeThreadCount](self, "writeThreadCount"), objc_msgSend(*(v11 + 200), "visitCount"), objc_msgSend(*(v11 + 200), "attemptCount"), objc_msgSend(*(v11 + 200), "writeCount")];
+    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"[VTEncoder] processing buffer for stream '%@' is full, dropping buffer (Pending:%lld Queue:%ld Fifo:%ld Capacity:%ld) (%llu/%llu/%llu/%llu).", idCopy, v17, v14, v16, v18, -[MOVStreamWriter writeThreadCount](self, "writeThreadCount"), objc_msgSend(*(v11 + 200), "visitCount"), objc_msgSend(*(v11 + 200), "attemptCount"), objc_msgSend(*(v11 + 200), "writeCount")];
     v20 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:v19 code:18];
-    v21 = [v20 errorByAddingStreamId:v27];
+    v21 = [v20 errorByAddingStreamId:idCopy];
 
     [(MOVStreamWriter *)self informDelegateAboutError:v21];
     [(MOVStreamWriter *)self triggerWritingThread];
@@ -2986,7 +2986,7 @@ LABEL_40:
     ++*(v11 + 168);
     objc_sync_exit(v22);
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(buffer);
     m_processingQueue = self->m_processingQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3321888768;
@@ -3003,10 +3003,10 @@ LABEL_40:
       __p = v36;
     }
 
-    v31 = a3;
-    v24 = v27;
-    v33 = *&a4->var0;
-    var3 = a4->var3;
+    bufferCopy = buffer;
+    v24 = idCopy;
+    v33 = *&time->var0;
+    var3 = time->var3;
     v29 = v24;
     v32 = v11;
     dispatch_async(m_processingQueue, block);
@@ -3214,19 +3214,19 @@ LABEL_17:
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)appendVideoSampleBuffer:(opaqueCMSampleBuffer *)a3 attachmentMetadata:(id)a4 streamId:(id)a5
+- (void)appendVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer attachmentMetadata:(id)metadata streamId:(id)id
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!a3)
+  metadataCopy = metadata;
+  idCopy = id;
+  v10 = idCopy;
+  if (!buffer)
   {
     v16 = @"Sample Buffer cannot be nil.";
     goto LABEL_23;
   }
 
-  if (!v8)
+  if (!metadataCopy)
   {
     v16 = @"Attachments cannot be nil.";
 LABEL_23:
@@ -3234,7 +3234,7 @@ LABEL_23:
     objc_exception_throw(v17);
   }
 
-  std::string::basic_string[abi:ne200100]<0>(&v29, [v9 UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(&v29, [idCopy UTF8String]);
   {
     v18 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"Cannot append to a stream that hasn't been set up." userInfo:0];
     objc_exception_throw(v18);
@@ -3248,7 +3248,7 @@ LABEL_23:
   }
 
   memset(&v28, 0, sizeof(v28));
-  CMSampleBufferGetPresentationTimeStamp(&v28, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v28, buffer);
   if ((v28.flags & 1) == 0)
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"Sample Buffer with invalid PTS for stream '%@'.", v10];
@@ -3284,15 +3284,15 @@ LABEL_23:
     }
   }
 
-  CFRetain(a3);
+  CFRetain(buffer);
   m_processingQueue = self->m_processingQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3321888768;
   block[2] = __71__MOVStreamWriter_appendVideoSampleBuffer_attachmentMetadata_streamId___block_invoke;
   block[3] = &unk_2868CE048;
   block[4] = self;
-  v25 = a3;
-  v14 = v8;
+  bufferCopy = buffer;
+  v14 = metadataCopy;
   v23 = v14;
   __p[1] = v28;
   if (SHIBYTE(v29.__r_.__value_.__r.__words[2]) < 0)
@@ -3347,19 +3347,19 @@ void __71__MOVStreamWriter_appendVideoSampleBuffer_attachmentMetadata_streamId__
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)appendSampleBuffer:(opaqueCMSampleBuffer *)a3 attachments:(id)a4 streamId:(id)a5
+- (void)appendSampleBuffer:(opaqueCMSampleBuffer *)buffer attachments:(id)attachments streamId:(id)id
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!a3)
+  attachmentsCopy = attachments;
+  idCopy = id;
+  v10 = idCopy;
+  if (!buffer)
   {
     v16 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"Sample Buffer cannot be nil." userInfo:0];
     objc_exception_throw(v16);
   }
 
-  std::string::basic_string[abi:ne200100]<0>(&v29, [v9 UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(&v29, [idCopy UTF8String]);
   {
     v17 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"Cannot append to a stream that hasn't been set up." userInfo:0];
     objc_exception_throw(v17);
@@ -3380,7 +3380,7 @@ void __71__MOVStreamWriter_appendVideoSampleBuffer_attachmentMetadata_streamId__
   }
 
   memset(&v28, 0, sizeof(v28));
-  CMSampleBufferGetPresentationTimeStamp(&v28, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v28, buffer);
   if (+[MIOLog debugEnabled])
   {
     v11 = +[MIOLog defaultLog];
@@ -3403,15 +3403,15 @@ void __71__MOVStreamWriter_appendVideoSampleBuffer_attachmentMetadata_streamId__
     [(MOVStreamWriter *)self setSessionStartTime:&time];
   }
 
-  CFRetain(a3);
+  CFRetain(buffer);
   m_processingQueue = self->m_processingQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3321888768;
   block[2] = __59__MOVStreamWriter_appendSampleBuffer_attachments_streamId___block_invoke;
   block[3] = &unk_2868CE080;
-  v14 = v8;
+  v14 = attachmentsCopy;
   v21 = v14;
-  v22 = self;
+  selfCopy = self;
   if (SHIBYTE(v29.__r_.__value_.__r.__words[2]) < 0)
   {
     std::string::__init_copy_ctor_external(&__p, v29.__r_.__value_.__l.__data_, v29.__r_.__value_.__l.__size_);
@@ -3422,7 +3422,7 @@ void __71__MOVStreamWriter_appendVideoSampleBuffer_attachmentMetadata_streamId__
     __p = v29;
   }
 
-  v25 = a3;
+  bufferCopy = buffer;
   v26 = v28;
   v15 = v10;
   v23 = v15;
@@ -3539,26 +3539,26 @@ LABEL_19:
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)newSampleReady:(opaqueCMSampleBuffer *)a3 metadata:(id)a4 presentationTime:(id *)a5 streamKey:()basic_string<char streamId:()std:(std::allocator<char>> *)a6 :char_traits<char> isAudioSample:
+- (void)newSampleReady:(opaqueCMSampleBuffer *)ready metadata:(id)metadata presentationTime:(id *)time streamKey:()basic_string<char streamId:()std:(std::allocator<char>> *)std :char_traits<char> isAudioSample:
 {
   v28 = v7;
   v8 = v6;
   v32 = *MEMORY[0x277D85DE8];
-  v13 = a4;
+  metadataCopy = metadata;
   v14 = v8;
   if ([(MOVStreamWriter *)self isOrWasCanceled])
   {
-    CFRelease(a3);
+    CFRelease(ready);
   }
 
   else
   {
-    v27 = a5;
+    timeCopy = time;
     v16 = *(v15 + 56);
     objc_sync_enter(v16);
     v17 = objc_opt_new();
-    [v17 setSampleBuffer:a3];
-    [v17 setMetadata:v13];
+    [v17 setSampleBuffer:ready];
+    [v17 setMetadata:metadataCopy];
     [v16 addObject:v17];
     [*(v15 + 200) setFifoItemCount:{objc_msgSend(v16, "count")}];
     if (+[MIOLog debugEnabled])
@@ -3576,14 +3576,14 @@ LABEL_19:
 
     if ([v16 count] > *(v15 + 64) && -[MOVStreamWriter fifoDropsEnabled:](self, "fifoDropsEnabled:", v15))
     {
-      v26 = [v16 firstObject];
-      v19 = [v26 sampleBuffer];
+      firstObject = [v16 firstObject];
+      sampleBuffer = [firstObject sampleBuffer];
       [v16 removeObjectAtIndex:0];
-      CFRelease(v19);
-      var0 = a6;
-      if (*(&a6->var0.var1 + 23) < 0)
+      CFRelease(sampleBuffer);
+      var0 = std;
+      if (*(&std->var0.var1 + 23) < 0)
       {
-        var0 = a6->var0.var1.var0;
+        var0 = std->var0.var1.var0;
       }
 
       v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"[FIFO] FIFO buffer for stream '%s' is full, dropping older buffer (%llu/%llu/%llu/%llu) .", var0, -[MOVStreamWriter writeThreadCount](self, "writeThreadCount"), objc_msgSend(*(v15 + 200), "visitCount"), objc_msgSend(*(v15 + 200), "attemptCount"), objc_msgSend(*(v15 + 200), "writeCount")];
@@ -3596,10 +3596,10 @@ LABEL_19:
     objc_sync_exit(v16);
     if ((v28 & 1) == 0)
     {
-      *buf = a6;
-      v24 = std::__tree<std::__value_type<std::string,CMTime>,std::__map_value_compare<std::string,std::__value_type<std::string,CMTime>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,CMTime>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string const&>,std::tuple<>>(&self->m_lastPtsForStream, a6);
-      v25 = *&v27->var0;
-      *(v24 + 72) = v27->var3;
+      *buf = std;
+      v24 = std::__tree<std::__value_type<std::string,CMTime>,std::__map_value_compare<std::string,std::__value_type<std::string,CMTime>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,CMTime>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string const&>,std::tuple<>>(&self->m_lastPtsForStream, std);
+      v25 = *&timeCopy->var0;
+      *(v24 + 72) = timeCopy->var3;
       *(v24 + 56) = v25;
     }
 
@@ -3607,13 +3607,13 @@ LABEL_19:
   }
 }
 
-- (void)encoder:(id)a3 encodedSampleBuffer:(opaqueCMSampleBuffer *)a4 metadata:(id)a5 presentationTime:(id *)a6 streamId:(id)a7
+- (void)encoder:(id)encoder encodedSampleBuffer:(opaqueCMSampleBuffer *)buffer metadata:(id)metadata presentationTime:(id *)time streamId:(id)id
 {
   v34 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  std::string::basic_string[abi:ne200100]<0>(&__p, [v14 UTF8String]);
+  encoderCopy = encoder;
+  metadataCopy = metadata;
+  idCopy = id;
+  std::string::basic_string[abi:ne200100]<0>(&__p, [idCopy UTF8String]);
   time1.value = &__p;
   v15 = std::__tree<std::__value_type<std::string,CMTime>,std::__map_value_compare<std::string,std::__value_type<std::string,CMTime>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,CMTime>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string const&>,std::tuple<>>(&self->m_lastPtsForStream, &__p.__r_.__value_.__l.__data_);
   v17 = *(v15 + 56);
@@ -3621,14 +3621,14 @@ LABEL_19:
   v32 = v17;
   v18 = *(v16 + 12);
   v33 = *(v16 + 8);
-  if (v18 & 1) == 0 || (v19 = *(v16 + 16), time1.value = *v16, time1.timescale = *(v16 + 8), time1.flags = v18, time1.epoch = v19, time2 = *a6, CMTimeCompare(&time1, &time2) < 0) || ([v12 frameReorderingEnabled])
+  if (v18 & 1) == 0 || (v19 = *(v16 + 16), time1.value = *v16, time1.timescale = *(v16 + 8), time1.flags = v18, time1.epoch = v19, time2 = *time, CMTimeCompare(&time1, &time2) < 0) || ([encoderCopy frameReorderingEnabled])
   {
-    v20 = [(MOVStreamWriter *)self delegate];
+    delegate = [(MOVStreamWriter *)self delegate];
     v21 = objc_opt_respondsToSelector();
 
-    if ((v21 & 1) == 0 || (-[MOVStreamWriter delegate](self, "delegate"), v22 = objc_claimAutoreleasedReturnValue(), time1 = *a6, v23 = [v22 streamWriter:self encodedBuffer:a4 pts:&time1 metadata:v13 forStream:v14], v22, (v23 & 1) == 0))
+    if ((v21 & 1) == 0 || (-[MOVStreamWriter delegate](self, "delegate"), v22 = objc_claimAutoreleasedReturnValue(), time1 = *time, v23 = [v22 streamWriter:self encodedBuffer:buffer pts:&time1 metadata:metadataCopy forStream:idCopy], v22, (v23 & 1) == 0))
     {
-      time1 = *a6;
+      time1 = *time;
       if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
       {
         std::string::__init_copy_ctor_external(&v28, __p.__r_.__value_.__l.__data_, __p.__r_.__value_.__l.__size_);
@@ -3639,7 +3639,7 @@ LABEL_19:
         v28 = __p;
       }
 
-      [(MOVStreamWriter *)self newSampleReady:a4 metadata:v13 presentationTime:&time1 streamKey:&v28 streamId:v14 isAudioSample:0];
+      [(MOVStreamWriter *)self newSampleReady:buffer metadata:metadataCopy presentationTime:&time1 streamKey:&v28 streamId:idCopy isAudioSample:0];
       if (SHIBYTE(v28.__r_.__value_.__r.__words[2]) < 0)
       {
         operator delete(v28.__r_.__value_.__l.__data_);
@@ -3649,16 +3649,16 @@ LABEL_19:
 
   else
   {
-    CFRelease(a4);
+    CFRelease(buffer);
     v24 = MEMORY[0x277CCACA8];
-    time1 = *a6;
+    time1 = *time;
     Seconds = CMTimeGetSeconds(&time1);
     time1.value = v32;
     time1.timescale = v33;
     time1.flags = v18;
     time1.epoch = v19;
-    v26 = [v24 stringWithFormat:@"Sample buffer was appended with presentation timestamp (%f) less than (or equal to) previous sample buffer (%f) for stream '%@'. Dropping frame.", *&Seconds, CMTimeGetSeconds(&time1), v14];
-    v27 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:v26 code:15];
+    idCopy = [v24 stringWithFormat:@"Sample buffer was appended with presentation timestamp (%f) less than (or equal to) previous sample buffer (%f) for stream '%@'. Dropping frame.", *&Seconds, CMTimeGetSeconds(&time1), idCopy];
+    v27 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:idCopy code:15];
     [(MOVStreamWriter *)self informDelegateAboutError:v27];
   }
 
@@ -3668,18 +3668,18 @@ LABEL_19:
   }
 }
 
-- (void)encoder:(id)a3 encodingFailedForStream:(id)a4
+- (void)encoder:(id)encoder encodingFailedForStream:(id)stream
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Sample buffer encoding failed (encoder status: %i flags: %d) for stream '%@'.", objc_msgSend(v11, "lastEncodingStatus"), objc_msgSend(v11, "lastEncodingInfoFlags"), v6];
-  v9 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:v8 code:14];
-  v10 = [(MOVStreamWriterState *)v7->_state criticalErrorOccurred:v9 context:v7];
-  [(MOVStreamWriter *)v7 activateNewState:v10 byEvent:@"encodingFailedForStream"];
+  encoderCopy = encoder;
+  streamCopy = stream;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Sample buffer encoding failed (encoder status: %i flags: %d) for stream '%@'.", objc_msgSend(encoderCopy, "lastEncodingStatus"), objc_msgSend(encoderCopy, "lastEncodingInfoFlags"), streamCopy];
+  v9 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:streamCopy code:14];
+  v10 = [(MOVStreamWriterState *)selfCopy->_state criticalErrorOccurred:v9 context:selfCopy];
+  [(MOVStreamWriter *)selfCopy activateNewState:v10 byEvent:@"encodingFailedForStream"];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)simulateFailure
@@ -3689,101 +3689,101 @@ LABEL_19:
   [(MOVStreamWriter *)self activateNewState:v3 byEvent:@"simulateFailure"];
 }
 
-- (id)encoder:(id)a3 overrideVideoEncoderSpecificationForStreamId:(id)a4
+- (id)encoder:(id)encoder overrideVideoEncoderSpecificationForStreamId:(id)id
 {
-  v5 = a4;
-  v6 = [(MOVStreamWriter *)self customEncoderConfigDelegate];
+  idCopy = id;
+  customEncoderConfigDelegate = [(MOVStreamWriter *)self customEncoderConfigDelegate];
 
-  if (v6)
+  if (customEncoderConfigDelegate)
   {
-    v7 = [(MOVStreamWriter *)self customEncoderConfigDelegate];
-    v8 = [(MOVStreamWriter *)v7 streamWriter:self overrideVideoEncoderSpecificationForStream:v5];
+    selfCopy = [(MOVStreamWriter *)self customEncoderConfigDelegate];
+    v8 = [(MOVStreamWriter *)selfCopy streamWriter:self overrideVideoEncoderSpecificationForStream:idCopy];
   }
 
   else
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing customEncoderConfigDelegate '%@'. Cannot encode!", v5];
-    v10 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:v9 code:14];
-    v11 = [(MOVStreamWriterState *)v7->_state criticalErrorOccurred:v10 context:v7];
-    [(MOVStreamWriter *)v7 activateNewState:v11 byEvent:@"overrideVideoEncoderSpecificationForStreamId"];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    idCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing customEncoderConfigDelegate '%@'. Cannot encode!", idCopy];
+    v10 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:idCopy code:14];
+    v11 = [(MOVStreamWriterState *)selfCopy->_state criticalErrorOccurred:v10 context:selfCopy];
+    [(MOVStreamWriter *)selfCopy activateNewState:v11 byEvent:@"overrideVideoEncoderSpecificationForStreamId"];
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
     v8 = 0;
   }
 
   return v8;
 }
 
-- (BOOL)encoder:(id)a3 configureSessionOverride:(OpaqueVTCompressionSession *)a4 streamId:(id)a5
+- (BOOL)encoder:(id)encoder configureSessionOverride:(OpaqueVTCompressionSession *)override streamId:(id)id
 {
-  v7 = a5;
-  v8 = [(MOVStreamWriter *)self customEncoderConfigDelegate];
+  idCopy = id;
+  customEncoderConfigDelegate = [(MOVStreamWriter *)self customEncoderConfigDelegate];
 
-  if (v8)
+  if (customEncoderConfigDelegate)
   {
-    v9 = [(MOVStreamWriter *)self customEncoderConfigDelegate];
-    v10 = [(MOVStreamWriter *)v9 streamWriter:self configureSessionOverride:a4 forStream:v7];
+    selfCopy = [(MOVStreamWriter *)self customEncoderConfigDelegate];
+    v10 = [(MOVStreamWriter *)selfCopy streamWriter:self configureSessionOverride:override forStream:idCopy];
   }
 
   else
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing customEncoderConfigDelegate '%@'. Cannot encode!", v7];
-    v12 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:v11 code:14];
-    v13 = [(MOVStreamWriterState *)v9->_state criticalErrorOccurred:v12 context:v9];
-    [(MOVStreamWriter *)v9 activateNewState:v13 byEvent:@"configureSessionOverride"];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    idCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing customEncoderConfigDelegate '%@'. Cannot encode!", idCopy];
+    v12 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:idCopy code:14];
+    v13 = [(MOVStreamWriterState *)selfCopy->_state criticalErrorOccurred:v12 context:selfCopy];
+    [(MOVStreamWriter *)selfCopy activateNewState:v13 byEvent:@"configureSessionOverride"];
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
     v10 = 0;
   }
 
   return v10;
 }
 
-- (unsigned)encoder:(id)a3 codecTypeOverrideForstreamId:(id)a4
+- (unsigned)encoder:(id)encoder codecTypeOverrideForstreamId:(id)id
 {
-  v5 = a4;
-  v6 = [(MOVStreamWriter *)self customEncoderConfigDelegate];
+  idCopy = id;
+  customEncoderConfigDelegate = [(MOVStreamWriter *)self customEncoderConfigDelegate];
 
-  if (v6)
+  if (customEncoderConfigDelegate)
   {
-    v7 = [(MOVStreamWriter *)self customEncoderConfigDelegate];
-    v8 = [(MOVStreamWriter *)v7 streamWriter:self codecTypeOverrideForStream:v5];
+    selfCopy = [(MOVStreamWriter *)self customEncoderConfigDelegate];
+    v8 = [(MOVStreamWriter *)selfCopy streamWriter:self codecTypeOverrideForStream:idCopy];
   }
 
   else
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing customEncoderConfigDelegate '%@'. Cannot encode!", v5];
-    v10 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:v9 code:14];
-    v11 = [(MOVStreamWriterState *)v7->_state criticalErrorOccurred:v10 context:v7];
-    [(MOVStreamWriter *)v7 activateNewState:v11 byEvent:@"codecTypeOverrideForstreamId"];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    idCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing customEncoderConfigDelegate '%@'. Cannot encode!", idCopy];
+    v10 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:idCopy code:14];
+    v11 = [(MOVStreamWriterState *)selfCopy->_state criticalErrorOccurred:v10 context:selfCopy];
+    [(MOVStreamWriter *)selfCopy activateNewState:v11 byEvent:@"codecTypeOverrideForstreamId"];
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
     v8 = 0;
   }
 
   return v8;
 }
 
-- (void)appendTimeMetadataGroup:(id)a3 toStream:(id)a4
+- (void)appendTimeMetadataGroup:(id)group toStream:(id)stream
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  std::string::basic_string[abi:ne200100]<0>(v24, [v7 UTF8String]);
+  groupCopy = group;
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(v24, [streamCopy UTF8String]);
   {
     v13 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"Cannot append metadata when the track was never added. Call addMetadataTrack: before prepareToRecord." userInfo:0];
     objc_exception_throw(v13);
   }
 
-  if (v6)
+  if (groupCopy)
   {
-    [v6 timeRange];
+    [groupCopy timeRange];
   }
 
   else
@@ -3805,7 +3805,7 @@ LABEL_19:
       *buf = 134218242;
       v27 = Seconds;
       v28 = 2114;
-      v29 = v7;
+      v29 = streamCopy;
       _os_log_impl(&dword_257883000, v8, OS_LOG_TYPE_DEBUG, "MOVStreamWriter metadata group at '%5.3f' to stream '%{public}@'", buf, 0x16u);
     }
   }
@@ -3825,10 +3825,10 @@ LABEL_19:
   v14[3] = &unk_279847E90;
   v18 = v22;
   v19 = v23;
-  v11 = v7;
+  v11 = streamCopy;
   v15 = v11;
-  v16 = self;
-  v12 = v6;
+  selfCopy = self;
+  v12 = groupCopy;
   v17 = v12;
   dispatch_async(m_processingQueue, v14);
 
@@ -3856,11 +3856,11 @@ void __52__MOVStreamWriter_appendTimeMetadataGroup_toStream___block_invoke(uint6
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)appendTimeCode:(CVSMPTETime *)a3 rangeStart:(unint64_t)a4 rangeEnd:(unint64_t)a5 withTimeStamp:(id *)a6 toStream:(id)a7
+- (void)appendTimeCode:(CVSMPTETime *)code rangeStart:(unint64_t)start rangeEnd:(unint64_t)end withTimeStamp:(id *)stamp toStream:(id)stream
 {
   v42 = *MEMORY[0x277D85DE8];
-  v12 = a7;
-  std::string::basic_string[abi:ne200100]<0>(&v38, [v12 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(&v38, [streamCopy UTF8String]);
   {
     v25 = @"Cannot append metadata when the track was never added. Call addMetadataTrack: before prepareToRecord.";
     goto LABEL_23;
@@ -3880,19 +3880,19 @@ LABEL_23:
   v40 = v15;
   v16 = *(v14 + 12);
   v41 = *(v14 + 8);
-  if ((v16 & 1) == 0 || (v17 = *(v14 + 16), time1.value = *v14, time1.timescale = *(v14 + 8), time1.flags = v16, time1.epoch = v17, time2 = *a6, CMTimeCompare(&time1, &time2) < 0))
+  if ((v16 & 1) == 0 || (v17 = *(v14 + 16), time1.value = *v14, time1.timescale = *(v14 + 8), time1.flags = v16, time1.epoch = v17, time2 = *stamp, CMTimeCompare(&time1, &time2) < 0))
   {
     if (+[MIOLog debugEnabled])
     {
       v22 = +[MIOLog defaultLog];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
-        time1 = *a6;
+        time1 = *stamp;
         Seconds = CMTimeGetSeconds(&time1);
         LODWORD(time2.value) = 134218242;
         *(&time2.value + 4) = Seconds;
         LOWORD(time2.flags) = 2114;
-        *(&time2.flags + 2) = v12;
+        *(&time2.flags + 2) = streamCopy;
         _os_log_impl(&dword_257883000, v22, OS_LOG_TYPE_DEBUG, "MOVStreamWriter time range metadata at '%5.3f' to stream '%{public}@'", &time2, 0x16u);
       }
     }
@@ -3900,7 +3900,7 @@ LABEL_23:
     [(MOVStreamWriter *)self sessionStartTime];
     if ((time1.flags & 1) == 0)
     {
-      time1 = *a6;
+      time1 = *stamp;
       [(MOVStreamWriter *)self setSessionStartTime:&time1];
     }
 
@@ -3909,14 +3909,14 @@ LABEL_23:
     block[1] = 3321888768;
     block[2] = __77__MOVStreamWriter_appendTimeCode_rangeStart_rangeEnd_withTimeStamp_toStream___block_invoke;
     block[3] = &unk_2868CE188;
-    v30 = a4;
-    v31 = a5;
-    v33 = *&a3->subframes;
-    v34 = *&a3->hours;
-    v35 = *&a6->var0;
-    var3 = a6->var3;
-    v28 = v12;
-    v29 = self;
+    startCopy = start;
+    endCopy = end;
+    v33 = *&code->subframes;
+    v34 = *&code->hours;
+    v35 = *&stamp->var0;
+    var3 = stamp->var3;
+    v28 = streamCopy;
+    selfCopy = self;
     if (SHIBYTE(v38.__r_.__value_.__r.__words[2]) < 0)
     {
       std::string::__init_copy_ctor_external(&__p, v38.__r_.__value_.__l.__data_, v38.__r_.__value_.__l.__size_);
@@ -3933,20 +3933,20 @@ LABEL_23:
       operator delete(__p.__r_.__value_.__l.__data_);
     }
 
-    v20 = v28;
+    streamCopy = v28;
   }
 
   else
   {
     v18 = MEMORY[0x277CCACA8];
-    time1 = *a6;
+    time1 = *stamp;
     v19 = CMTimeGetSeconds(&time1);
     time1.value = v40;
     time1.timescale = v41;
     time1.flags = v16;
     time1.epoch = v17;
-    v20 = [v18 stringWithFormat:@"Metadata was appended with presentation timestamp (%f) less than (or equal to) previous sample buffer (%f) for stream '%@'. Dropping sample.", *&v19, CMTimeGetSeconds(&time1), v12];
-    v21 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:v20 code:15];
+    streamCopy = [v18 stringWithFormat:@"Metadata was appended with presentation timestamp (%f) less than (or equal to) previous sample buffer (%f) for stream '%@'. Dropping sample.", *&v19, CMTimeGetSeconds(&time1), streamCopy];
+    v21 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:streamCopy code:15];
     [(MOVStreamWriter *)self informDelegateAboutError:v21];
   }
 
@@ -4004,12 +4004,12 @@ LABEL_6:
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)appendMetadata:(id)a3 withTimeStamp:(id *)a4 toStream:(id)a5
+- (void)appendMetadata:(id)metadata withTimeStamp:(id *)stamp toStream:(id)stream
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  std::string::basic_string[abi:ne200100]<0>(&v24, [v9 UTF8String]);
+  metadataCopy = metadata;
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(&v24, [streamCopy UTF8String]);
   {
     v15 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"Cannot append metadata when the track was never added. Call addMetadataTrack: before prepareToRecord." userInfo:0];
     objc_exception_throw(v15);
@@ -4020,12 +4020,12 @@ LABEL_6:
     v10 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      time = *a4;
+      time = *stamp;
       Seconds = CMTimeGetSeconds(&time);
       *buf = 134218242;
       v26 = Seconds;
       v27 = 2114;
-      v28 = v9;
+      v28 = streamCopy;
       _os_log_impl(&dword_257883000, v10, OS_LOG_TYPE_DEBUG, "MOVStreamWriter metadata at '%5.3f' to stream '%{public}@'", buf, 0x16u);
     }
   }
@@ -4033,7 +4033,7 @@ LABEL_6:
   [(MOVStreamWriter *)self sessionStartTime];
   if ((time.flags & 1) == 0)
   {
-    time = *a4;
+    time = *stamp;
     [(MOVStreamWriter *)self setSessionStartTime:&time];
   }
 
@@ -4042,9 +4042,9 @@ LABEL_6:
   block[1] = 3321888768;
   block[2] = __57__MOVStreamWriter_appendMetadata_withTimeStamp_toStream___block_invoke;
   block[3] = &unk_2868CE0B8;
-  v13 = v8;
+  v13 = metadataCopy;
   v17 = v13;
-  v18 = self;
+  selfCopy = self;
   if (SHIBYTE(v24.__r_.__value_.__r.__words[2]) < 0)
   {
     std::string::__init_copy_ctor_external(&__p, v24.__r_.__value_.__l.__data_, v24.__r_.__value_.__l.__size_);
@@ -4055,9 +4055,9 @@ LABEL_6:
     __p = v24;
   }
 
-  v21 = *&a4->var0;
-  var3 = a4->var3;
-  v14 = v9;
+  v21 = *&stamp->var0;
+  var3 = stamp->var3;
+  v14 = streamCopy;
   v19 = v14;
   dispatch_async(m_processingQueue, block);
 
@@ -4202,15 +4202,15 @@ void __57__MOVStreamWriter_appendMetadata_withTimeStamp_toStream___block_invoke(
   objc_autoreleasePoolPop(context);
 }
 
-- (void)queueMetadataGroup:(id)a3 stream:(id)a4
+- (void)queueMetadataGroup:(id)group stream:(id)stream
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v7 UTF8String]);
+  groupCopy = group;
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   v9 = *(v8 + 32);
   objc_sync_enter(v9);
-  [v9 addObject:v6];
+  [v9 addObject:groupCopy];
   [*(v8 + 64) setFifoItemCount:{objc_msgSend(v9, "count")}];
   if (+[MIOLog debugEnabled])
   {
@@ -4219,7 +4219,7 @@ void __57__MOVStreamWriter_appendMetadata_withTimeStamp_toStream___block_invoke(
     {
       v11 = [v9 count];
       *buf = 138543618;
-      v18 = v7;
+      v18 = streamCopy;
       v19 = 2048;
       v20 = v11;
       _os_log_impl(&dword_257883000, v10, OS_LOG_TYPE_DEBUG, "[FIFO] add to fifo '%{public}@' %lu", buf, 0x16u);
@@ -4229,35 +4229,35 @@ void __57__MOVStreamWriter_appendMetadata_withTimeStamp_toStream___block_invoke(
   if ([v9 count] > *(v8 + 40))
   {
     [v9 removeObjectAtIndex:0];
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"FIFO buffer for metadata stream '%@' is full, dropping older buffer (%llu/%llu/%llu/%llu).", v7, -[MOVStreamWriter writeThreadCount](self, "writeThreadCount"), objc_msgSend(*(v8 + 64), "visitCount"), objc_msgSend(*(v8 + 64), "attemptCount"), objc_msgSend(*(v8 + 64), "writeCount")];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"FIFO buffer for metadata stream '%@' is full, dropping older buffer (%llu/%llu/%llu/%llu).", streamCopy, -[MOVStreamWriter writeThreadCount](self, "writeThreadCount"), objc_msgSend(*(v8 + 64), "visitCount"), objc_msgSend(*(v8 + 64), "attemptCount"), objc_msgSend(*(v8 + 64), "writeCount")];
     v13 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:v12 code:18];
-    v14 = [v13 errorByAddingStreamId:v7];
+    v14 = [v13 errorByAddingStreamId:streamCopy];
 
     [(MOVStreamWriter *)self informDelegateAboutError:v14];
   }
 
   objc_sync_exit(v9);
 
-  [(MOVStreamWriter *)self consumeMetadatOfMetadataStream:v7];
+  [(MOVStreamWriter *)self consumeMetadatOfMetadataStream:streamCopy];
   if (v16 < 0)
   {
     operator delete(__p[0]);
   }
 }
 
-- (void)appendMetadata:(id)a3 associatedWith:(id)a4 toStream:(id)a5
+- (void)appendMetadata:(id)metadata associatedWith:(id)with toStream:(id)stream
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  std::string::basic_string[abi:ne200100]<0>(&v23, [v9 UTF8String]);
-  std::string::basic_string[abi:ne200100]<0>(&v22, [v10 UTF8String]);
+  metadataCopy = metadata;
+  withCopy = with;
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(&v23, [withCopy UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(&v22, [streamCopy UTF8String]);
   [(MOVStreamWriter *)self sessionStartTime];
   if ((BYTE12(v19) & 1) == 0)
   {
-    if (v8)
+    if (metadataCopy)
     {
-      [v8 timeRange];
+      [metadataCopy timeRange];
     }
 
     else
@@ -4298,7 +4298,7 @@ void __57__MOVStreamWriter_appendMetadata_withTimeStamp_toStream___block_invoke(
     __p = v22;
   }
 
-  v12 = v8;
+  v12 = metadataCopy;
   v14 = v12;
   dispatch_async(m_processingQueue, v13);
 
@@ -4375,15 +4375,15 @@ void __58__MOVStreamWriter_appendMetadata_associatedWith_toStream___block_invoke
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)startSessionWithFallbackSampleTime:(id *)a3 streamId:(id)a4 mediaType:(int64_t)a5 writerDelegate:(id)a6 delegateCallbackQueue:(id)a7 error:(id *)a8
+- (BOOL)startSessionWithFallbackSampleTime:(id *)time streamId:(id)id mediaType:(int64_t)type writerDelegate:(id)delegate delegateCallbackQueue:(id)queue error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = self;
-  objc_sync_enter(v17);
-  if (v17->m_haveStartedSession)
+  idCopy = id;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->m_haveStartedSession)
   {
     v18 = 1;
   }
@@ -4391,11 +4391,11 @@ void __58__MOVStreamWriter_appendMetadata_associatedWith_toStream___block_invoke
   else
   {
     memset(&v25, 0, sizeof(v25));
-    [(MOVStreamWriter *)v17 sessionStartTime];
+    [(MOVStreamWriter *)selfCopy sessionStartTime];
     flags = 0 >> 96;
     if (0 >> 96 != 1)
     {
-      v25 = *a3;
+      v25 = *time;
       flags = v25.flags;
     }
 
@@ -4409,39 +4409,39 @@ void __58__MOVStreamWriter_appendMetadata_associatedWith_toStream___block_invoke
           time = v25;
           Seconds = CMTimeGetSeconds(&time);
           *buf = 138543618;
-          v27 = v14;
+          v27 = idCopy;
           v28 = 2048;
           v29 = Seconds;
           _os_log_impl(&dword_257883000, v20, OS_LOG_TYPE_DEBUG, "Start Session by '%{public}@' at %f", buf, 0x16u);
         }
       }
 
-      m_assetWriter = v17->m_assetWriter;
+      m_assetWriter = selfCopy->m_assetWriter;
       time = v25;
       [(AVAssetWriter *)m_assetWriter startSessionAtSourceTime:&time];
       time = v25;
-      [(MOVStreamWriter *)v17 writingSessionDidStartAtTime:&time streamId:v14 mediaType:a5 writerDelegate:v15 delegateCallbackQueue:v16];
+      [(MOVStreamWriter *)selfCopy writingSessionDidStartAtTime:&time streamId:idCopy mediaType:type writerDelegate:delegateCopy delegateCallbackQueue:queueCopy];
       v18 = 1;
-      v17->m_haveStartedSession = 1;
+      selfCopy->m_haveStartedSession = 1;
     }
 
     else
     {
-      [MEMORY[0x277CCA9B8] populateReaderError:a8 message:@"Writer invalid sessionStartTime code:{startSession failed.", 16}];
+      [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Writer invalid sessionStartTime code:{startSession failed.", 16}];
       v18 = 0;
     }
   }
 
-  objc_sync_exit(v17);
+  objc_sync_exit(selfCopy);
 
   return v18;
 }
 
-- (void)asyncWriteAssociatedMetadata:(id)a3 metadataKey:()basic_string<char associatedStreamKey:()std:(std::allocator<char>> *)a4 :char_traits<char>
+- (void)asyncWriteAssociatedMetadata:(id)metadata metadataKey:()basic_string<char associatedStreamKey:()std:(std::allocator<char>> *)std :char_traits<char>
 {
   v5 = v4;
-  v8 = a3;
-  if (!v8)
+  metadataCopy = metadata;
+  if (!metadataCopy)
   {
     v11 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"nullptr IMU metadata" userInfo:0];
     objc_exception_throw(v11);
@@ -4453,16 +4453,16 @@ void __58__MOVStreamWriter_appendMetadata_associatedWith_toStream___block_invoke
   v12[2] = __80__MOVStreamWriter_asyncWriteAssociatedMetadata_metadataKey_associatedStreamKey___block_invoke;
   v12[3] = &unk_2868CDFD8;
   v12[4] = self;
-  v10 = v8;
+  v10 = metadataCopy;
   v13 = v10;
-  if (*(&a4->var0.var1 + 23) < 0)
+  if (*(&std->var0.var1 + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&v14, a4->var0.var1.var0, a4->var0.var1.var1);
+    std::string::__init_copy_ctor_external(&v14, std->var0.var1.var0, std->var0.var1.var1);
   }
 
   else
   {
-    v14 = *a4;
+    v14 = *std;
   }
 
   if (*(v5 + 23) < 0)
@@ -4598,17 +4598,17 @@ LABEL_23:
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)appendAudioBuffer:(opaqueCMSampleBuffer *)a3 forStream:(id)a4
+- (void)appendAudioBuffer:(opaqueCMSampleBuffer *)buffer forStream:(id)stream
 {
-  v6 = a4;
-  v7 = v6;
-  if (!a3)
+  streamCopy = stream;
+  v7 = streamCopy;
+  if (!buffer)
   {
     v10 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"Cannot append audioSample <null>." userInfo:0];
     objc_exception_throw(v10);
   }
 
-  std::string::basic_string[abi:ne200100]<0>(&v18, [v6 UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(&v18, [streamCopy UTF8String]);
   {
     v11 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"Cannot append stream type that hasn't been set up." userInfo:0];
     objc_exception_throw(v11);
@@ -4617,18 +4617,18 @@ LABEL_23:
   [(MOVStreamWriter *)self sessionStartTime];
   if ((v17.flags & 1) == 0)
   {
-    CMSampleBufferGetPresentationTimeStamp(&v16, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v16, buffer);
     v17 = v16;
     [(MOVStreamWriter *)self setSessionStartTime:&v17];
   }
 
-  CFRetain(a3);
+  CFRetain(buffer);
   m_processingQueue = self->m_processingQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3321888768;
   block[2] = __47__MOVStreamWriter_appendAudioBuffer_forStream___block_invoke;
   block[3] = &unk_2868CE010;
-  v14 = a3;
+  bufferCopy = buffer;
   block[4] = self;
   if (SHIBYTE(v18.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -4698,16 +4698,16 @@ void __47__MOVStreamWriter_appendAudioBuffer_forStream___block_invoke(uint64_t a
     _os_log_impl(&dword_257883000, v3, OS_LOG_TYPE_INFO, "[FINISH] finishRecording", v9, 2u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  if (([(MOVStreamWriterState *)v4->_state canFinishRecording:v4]& 1) == 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (([(MOVStreamWriterState *)selfCopy->_state canFinishRecording:selfCopy]& 1) == 0)
   {
     v7 = @"Current writer state does not support finishRecording.";
     goto LABEL_8;
   }
 
-  v5 = [(MOVStreamWriterState *)v4->_state finishRecording:v4];
-  v6 = [(MOVStreamWriter *)v4 activateNewState:v5 byEvent:@"finishRecording"];
+  v5 = [(MOVStreamWriterState *)selfCopy->_state finishRecording:selfCopy];
+  v6 = [(MOVStreamWriter *)selfCopy activateNewState:v5 byEvent:@"finishRecording"];
 
   if (!v6)
   {
@@ -4717,7 +4717,7 @@ LABEL_8:
     objc_exception_throw(v8);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)finishAndDrainFifoFirst
@@ -4751,34 +4751,34 @@ LABEL_8:
   }
 }
 
-- (void)setFinishingTimeout:(double)a3
+- (void)setFinishingTimeout:(double)timeout
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  objc_sync_enter(v4);
-  if (a3 < 45.0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (timeout < 45.0)
   {
     v5 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v6 = 134218240;
-      v7 = a3;
+      timeoutCopy = timeout;
       v8 = 2048;
       v9 = 0x4046800000000000;
       _os_log_impl(&dword_257883000, v5, OS_LOG_TYPE_ERROR, "⚠️⚠️⚠️ WARNING [MOVStreamIO]: setFinishingTimeout to %.1f sec below recommended minimum value %.1f sec.", &v6, 0x16u);
     }
   }
 
-  v4->_finishingTimeout = a3;
-  objc_sync_exit(v4);
+  selfCopy->_finishingTimeout = timeout;
+  objc_sync_exit(selfCopy);
 }
 
 - (double)finishingTimeout
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  finishingTimeout = v2->_finishingTimeout;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  finishingTimeout = selfCopy->_finishingTimeout;
+  objc_sync_exit(selfCopy);
 
   return finishingTimeout;
 }
@@ -5331,14 +5331,14 @@ void __41__MOVStreamWriter_processCancelRecording__block_invoke(uint64_t a1)
 - (void)deleteFileOnCancel
 {
   v3 = objc_opt_new();
-  v4 = [(NSURL *)self->m_writeURL path];
-  v5 = [v3 fileExistsAtPath:v4];
+  path = [(NSURL *)self->m_writeURL path];
+  v5 = [v3 fileExistsAtPath:path];
 
   if (v5)
   {
-    v6 = [(NSURL *)self->m_writeURL path];
+    path2 = [(NSURL *)self->m_writeURL path];
     v9 = 0;
-    v7 = [v3 removeItemAtPath:v6 error:&v9];
+    v7 = [v3 removeItemAtPath:path2 error:&v9];
     v8 = v9;
 
     if ((v7 & 1) == 0)
@@ -5753,12 +5753,12 @@ uint64_t __41__MOVStreamWriter_processFinishRecording__block_invoke_549(uint64_t
 
 - (void)checkForFinishing
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MOVStreamWriter *)v2 state];
-  v4 = [v3 stopWriterWhenFifosAreEmpty:v2];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  state = [(MOVStreamWriter *)selfCopy state];
+  v4 = [state stopWriterWhenFifosAreEmpty:selfCopy];
 
-  if (v4 && [(MOVStreamWriter *)v2 checkIfFifoAreEmpty])
+  if (v4 && [(MOVStreamWriter *)selfCopy checkIfFifoAreEmpty])
   {
     v5 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -5767,9 +5767,9 @@ uint64_t __41__MOVStreamWriter_processFinishRecording__block_invoke_549(uint64_t
       _os_log_impl(&dword_257883000, v5, OS_LOG_TYPE_INFO, "FINISHING!", v9, 2u);
     }
 
-    v6 = [(MOVStreamWriter *)v2 state];
-    v7 = [v6 nextFinishStep:v2];
-    v8 = [(MOVStreamWriter *)v2 activateNewState:v7 byEvent:@"checkForFinishing"];
+    state2 = [(MOVStreamWriter *)selfCopy state];
+    v7 = [state2 nextFinishStep:selfCopy];
+    v8 = [(MOVStreamWriter *)selfCopy activateNewState:v7 byEvent:@"checkForFinishing"];
 
     if (!v8)
     {
@@ -5777,7 +5777,7 @@ uint64_t __41__MOVStreamWriter_processFinishRecording__block_invoke_549(uint64_t
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)triggerWritingThread
@@ -5788,9 +5788,9 @@ uint64_t __41__MOVStreamWriter_processFinishRecording__block_invoke_549(uint64_t
   dispatch_semaphore_signal(writingMetadataSema);
 }
 
-- (int)getCountByPriorityForFifo:(unint64_t)a3 capacity:(unint64_t)a4
+- (int)getCountByPriorityForFifo:(unint64_t)fifo capacity:(unint64_t)capacity
 {
-  if (a3 <= 2)
+  if (fifo <= 2)
   {
     return 1;
   }
@@ -6537,90 +6537,90 @@ LABEL_170:
 LABEL_173:
 }
 
-- (void)consumeMetadatOfMetadataStream:(id)a3
+- (void)consumeMetadatOfMetadataStream:(id)stream
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  streamCopy = stream;
   if (+[MIOLog debugEnabled])
   {
     v5 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = streamCopy;
       _os_log_impl(&dword_257883000, v5, OS_LOG_TYPE_DEBUG, "consumeMetadatOfMetadataStream: %@", &v9, 0xCu);
     }
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(MOVStreamWriter *)v6 state];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  state = [(MOVStreamWriter *)selfCopy state];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    [(MOVStreamWriter *)v6 resetTimeoutRefTime];
+    [(MOVStreamWriter *)selfCopy resetTimeoutRefTime];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  [(MOVStreamWriter *)v6 triggerWritingThread];
+  [(MOVStreamWriter *)selfCopy triggerWritingThread];
 }
 
-- (void)consumeSamplesOfVideoAudioStream:(id)a3
+- (void)consumeSamplesOfVideoAudioStream:(id)stream
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  streamCopy = stream;
   if (+[MIOLog debugEnabled])
   {
     v5 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = streamCopy;
       _os_log_impl(&dword_257883000, v5, OS_LOG_TYPE_DEBUG, "consumeSamplesOfVideoAudioStream: %@", &v9, 0xCu);
     }
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(MOVStreamWriter *)v6 state];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  state = [(MOVStreamWriter *)selfCopy state];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    [(MOVStreamWriter *)v6 resetTimeoutRefTime];
+    [(MOVStreamWriter *)selfCopy resetTimeoutRefTime];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  [(MOVStreamWriter *)v6 triggerWritingThread];
+  [(MOVStreamWriter *)selfCopy triggerWritingThread];
 }
 
-- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)a3 andMetadata:(id)a4 forStreamId:(id)a5 signpost:(unint64_t)a6
+- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)buffer andMetadata:(id)metadata forStreamId:(id)id signpost:(unint64_t)signpost
 {
   v45 = *MEMORY[0x277D85DE8];
-  v34 = a4;
-  v10 = a5;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v10 UTF8String]);
+  metadataCopy = metadata;
+  idCopy = id;
+  std::string::basic_string[abi:ne200100]<0>(__p, [idCopy UTF8String]);
   v12 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   v13 = self->_perfLogAVF;
   v14 = v13;
-  if (a6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
+  if (signpost - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     LOWORD(buf[0].value) = 0;
-    _os_signpost_emit_with_name_impl(&dword_257883000, v14, OS_SIGNPOST_INTERVAL_BEGIN, a6, "mio.appendSampleBuffer", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_257883000, v14, OS_SIGNPOST_INTERVAL_BEGIN, signpost, "mio.appendSampleBuffer", "", buf, 2u);
   }
 
-  v15 = [*(v11 + 16) appendSampleBuffer:a3];
+  v15 = [*(v11 + 16) appendSampleBuffer:buffer];
   v16 = self->_perfLogAVF;
   v17 = v16;
-  if (a6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
+  if (signpost - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
     LOWORD(buf[0].value) = 0;
-    _os_signpost_emit_with_name_impl(&dword_257883000, v17, OS_SIGNPOST_INTERVAL_END, a6, "mio.appendSampleBuffer", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_257883000, v17, OS_SIGNPOST_INTERVAL_END, signpost, "mio.appendSampleBuffer", "", buf, 2u);
   }
 
   if (v15)
@@ -6632,21 +6632,21 @@ LABEL_173:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf[0].value) = 138543618;
-        *(&buf[0].value + 4) = v10;
+        *(&buf[0].value + 4) = idCopy;
         LOWORD(buf[0].flags) = 2048;
         *(&buf[0].flags + 2) = v18;
         _os_log_impl(&dword_257883000, v19, OS_LOG_TYPE_ERROR, "[MIO PERF] duration %{public}@ %llu", buf, 0x16u);
       }
     }
 
-    if (!v34 || (*(v11 + 128) & 1) != 0)
+    if (!metadataCopy || (*(v11 + 128) & 1) != 0)
     {
 LABEL_31:
-      [(MOVStreamWriter *)self informDelegateAboutMediaWrittenForStream:v10 mediaType:*(v11 + 184)];
+      [(MOVStreamWriter *)self informDelegateAboutMediaWrittenForStream:idCopy mediaType:*(v11 + 184)];
       goto LABEL_33;
     }
 
-    [v34 timeRange];
+    [metadataCopy timeRange];
     v40 = buf[0];
     if ([*(v11 + 48) frameReorderingEnabled])
     {
@@ -6660,13 +6660,13 @@ LABEL_31:
         {
           v20 = [v33 sortedArrayUsingComparator:&__block_literal_global_576];
           [*(v11 + 136) removeAllObjects];
-          [*(v11 + 136) addObject:v34];
+          [*(v11 + 136) addObject:metadataCopy];
           *(v11 + 144) = v40;
         }
 
         else
         {
-          [v33 addObject:v34];
+          [v33 addObject:metadataCopy];
           v20 = 0;
         }
 
@@ -6676,7 +6676,7 @@ LABEL_31:
       *(v11 + 144) = v40;
     }
 
-    v20 = [MEMORY[0x277CBEA60] arrayWithObject:v34];
+    v20 = [MEMORY[0x277CBEA60] arrayWithObject:metadataCopy];
 LABEL_18:
     v37 = 0u;
     v38 = 0u;
@@ -6698,7 +6698,7 @@ LABEL_20:
 
         v25 = *(*(&v35 + 1) + 8 * v24);
         v26 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
-        if (![(MOVStreamWriter *)self writeVideoFrameStreamAttachmentsData:v25 toMetadataAdaptor:*(v11 + 32) ofStream:v10 signpost:a6])
+        if (![(MOVStreamWriter *)self writeVideoFrameStreamAttachmentsData:v25 toMetadataAdaptor:*(v11 + 32) ofStream:idCopy signpost:signpost])
         {
           break;
         }
@@ -6710,7 +6710,7 @@ LABEL_20:
           if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
           {
             LODWORD(buf[0].value) = 138543618;
-            *(&buf[0].value + 4) = v10;
+            *(&buf[0].value + 4) = idCopy;
             LOWORD(buf[0].flags) = 2048;
             *(&buf[0].flags + 2) = v27;
             _os_log_impl(&dword_257883000, v28, OS_LOG_TYPE_INFO, "[MIO PERF a] %{public}@ duration %llu", buf, 0x16u);
@@ -6733,13 +6733,13 @@ LABEL_20:
     goto LABEL_31;
   }
 
-  v29 = [(AVAssetWriter *)self->m_assetWriter error];
-  v30 = self;
-  objc_sync_enter(v30);
-  v31 = [(MOVStreamWriterState *)v30->_state criticalErrorOccurred:v29 context:v30];
-  [(MOVStreamWriter *)v30 activateNewState:v31 byEvent:@"writeSampleBuffer"];
+  error = [(AVAssetWriter *)self->m_assetWriter error];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v31 = [(MOVStreamWriterState *)selfCopy->_state criticalErrorOccurred:error context:selfCopy];
+  [(MOVStreamWriter *)selfCopy activateNewState:v31 byEvent:@"writeSampleBuffer"];
 
-  objc_sync_exit(v30);
+  objc_sync_exit(selfCopy);
 LABEL_33:
   if (v42 < 0)
   {
@@ -6784,22 +6784,22 @@ uint64_t __70__MOVStreamWriter_writeSampleBuffer_andMetadata_forStreamId_signpos
   return v6;
 }
 
-- (BOOL)writeVideoFrameStreamAttachmentsData:(id)a3 toMetadataAdaptor:(id)a4 ofStream:(id)a5 signpost:(unint64_t)a6
+- (BOOL)writeVideoFrameStreamAttachmentsData:(id)data toMetadataAdaptor:(id)adaptor ofStream:(id)stream signpost:(unint64_t)signpost
 {
   v39 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v12 UTF8String]);
+  dataCopy = data;
+  adaptorCopy = adaptor;
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   *time1 = __p;
   v13 = std::__tree<std::__value_type<std::string,CMTime>,std::__map_value_compare<std::string,std::__value_type<std::string,CMTime>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,CMTime>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string const&>,std::tuple<>>(&self->m_lastPtsForAttachmentsStream, __p);
   v37 = *(v13 + 56);
   v14 = *(v13 + 68);
   v38 = *(v13 + 64);
   v15 = *(v13 + 72);
-  if (v10)
+  if (dataCopy)
   {
-    [v10 timeRange];
+    [dataCopy timeRange];
   }
 
   else
@@ -6823,8 +6823,8 @@ uint64_t __70__MOVStreamWriter_writeSampleBuffer_andMetadata_forStreamId_signpos
       *time1 = v37;
       *&time1[8] = __PAIR64__(v14, v38);
       *&time1[16] = v15;
-      v18 = [v16 stringWithFormat:@"Sample buffers attachments appended with presentation timestamp (%f) less than (or equal to) previous sample buffer (%f) for stream '%@'. Inconsistency!", *&Seconds, CMTimeGetSeconds(time1), v12];
-      v19 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:v18 code:15];
+      streamCopy = [v16 stringWithFormat:@"Sample buffers attachments appended with presentation timestamp (%f) less than (or equal to) previous sample buffer (%f) for stream '%@'. Inconsistency!", *&Seconds, CMTimeGetSeconds(time1), streamCopy];
+      v19 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:streamCopy code:15];
       [(MOVStreamWriter *)self informDelegateAboutError:v19];
 
       if (v36 < 0)
@@ -6838,19 +6838,19 @@ uint64_t __70__MOVStreamWriter_writeSampleBuffer_andMetadata_forStreamId_signpos
 
   v20 = self->_perfLogAVF;
   v21 = v20;
-  if (a6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
+  if (signpost - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
   {
     *time1 = 0;
-    _os_signpost_emit_with_name_impl(&dword_257883000, v21, OS_SIGNPOST_INTERVAL_BEGIN, a6, "mio.att_appendTimedMetadataGroup", "", time1, 2u);
+    _os_signpost_emit_with_name_impl(&dword_257883000, v21, OS_SIGNPOST_INTERVAL_BEGIN, signpost, "mio.att_appendTimedMetadataGroup", "", time1, 2u);
   }
 
-  v22 = [v11 appendTimedMetadataGroup:v10];
+  v22 = [adaptorCopy appendTimedMetadataGroup:dataCopy];
   v23 = self->_perfLogAVF;
   v24 = v23;
-  if (a6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
+  if (signpost - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
   {
     *time1 = 0;
-    _os_signpost_emit_with_name_impl(&dword_257883000, v24, OS_SIGNPOST_INTERVAL_END, a6, "mio.att_appendTimedMetadataGroup", "", time1, 2u);
+    _os_signpost_emit_with_name_impl(&dword_257883000, v24, OS_SIGNPOST_INTERVAL_END, signpost, "mio.att_appendTimedMetadataGroup", "", time1, 2u);
   }
 
   if (v22)
@@ -6862,13 +6862,13 @@ uint64_t __70__MOVStreamWriter_writeSampleBuffer_andMetadata_forStreamId_signpos
 
   else
   {
-    v26 = [(AVAssetWriter *)self->m_assetWriter error];
-    v27 = self;
-    objc_sync_enter(v27);
-    v28 = [(MOVStreamWriterState *)v27->_state criticalErrorOccurred:v26 context:v27];
-    [(MOVStreamWriter *)v27 activateNewState:v28 byEvent:@"writeMetadataOfSample"];
+    error = [(AVAssetWriter *)self->m_assetWriter error];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v28 = [(MOVStreamWriterState *)selfCopy->_state criticalErrorOccurred:error context:selfCopy];
+    [(MOVStreamWriter *)selfCopy activateNewState:v28 byEvent:@"writeMetadataOfSample"];
 
-    objc_sync_exit(v27);
+    objc_sync_exit(selfCopy);
   }
 
   if (v36 < 0)
@@ -6893,13 +6893,13 @@ LABEL_23:
   return v29;
 }
 
-- (void)writeMetadata:(id)a3 forStreamId:(id)a4
+- (void)writeMetadata:(id)metadata forStreamId:(id)id
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v7 UTF8String]);
-  if (v6)
+  metadataCopy = metadata;
+  idCopy = id;
+  std::string::basic_string[abi:ne200100]<0>(__p, [idCopy UTF8String]);
+  if (metadataCopy)
   {
     v9 = v8;
     if (+[MIOLog debugEnabled])
@@ -6908,7 +6908,7 @@ LABEL_23:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v25 = v7;
+        v25 = idCopy;
         _os_log_impl(&dword_257883000, v10, OS_LOG_TYPE_DEBUG, "writeMetadata: call 'metadataAdaptor appendTimedMetadataGroup' for stream: %@", buf, 0xCu);
       }
     }
@@ -6922,7 +6922,7 @@ LABEL_23:
       _os_signpost_emit_with_name_impl(&dword_257883000, v12, OS_SIGNPOST_INTERVAL_BEGIN, avfAppendMetadataSignPost, "mio.append.timed.metadata.group", "", buf, 2u);
     }
 
-    v14 = [*(v9 + 8) appendTimedMetadataGroup:v6];
+    v14 = [*(v9 + 8) appendTimedMetadataGroup:metadataCopy];
     v15 = self->_perfLogAVF;
     v16 = v15;
     v17 = self->_avfAppendMetadataSignPost;
@@ -6938,7 +6938,7 @@ LABEL_23:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v25 = v7;
+        v25 = idCopy;
         v26 = 1024;
         v27 = v14;
         _os_log_impl(&dword_257883000, v18, OS_LOG_TYPE_DEBUG, "writeMetadata: call 'metadataAdaptor appendTimedMetadataGroup' for stream: %@ Success: %d", buf, 0x12u);
@@ -6947,18 +6947,18 @@ LABEL_23:
 
     if (v14)
     {
-      [(MOVStreamWriter *)self informDelegateAboutMediaWrittenForStream:v7 mediaType:2];
+      [(MOVStreamWriter *)self informDelegateAboutMediaWrittenForStream:idCopy mediaType:2];
     }
 
     else
     {
-      v19 = [(AVAssetWriter *)self->m_assetWriter error];
-      v20 = self;
-      objc_sync_enter(v20);
-      v21 = [(MOVStreamWriterState *)v20->_state criticalErrorOccurred:v19 context:v20];
-      [(MOVStreamWriter *)v20 activateNewState:v21 byEvent:@"writeMetadata"];
+      error = [(AVAssetWriter *)self->m_assetWriter error];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      v21 = [(MOVStreamWriterState *)selfCopy->_state criticalErrorOccurred:error context:selfCopy];
+      [(MOVStreamWriter *)selfCopy activateNewState:v21 byEvent:@"writeMetadata"];
 
-      objc_sync_exit(v20);
+      objc_sync_exit(selfCopy);
     }
   }
 
@@ -6968,10 +6968,10 @@ LABEL_23:
   }
 }
 
-- (double)getExpectedFrameRateForStream:(id)a3
+- (double)getExpectedFrameRateForStream:(id)stream
 {
-  v4 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   v6 = v5;
   if (v5 && ([v5 objectForKey:@"ExpectedFrameRateForStream"], v7 = objc_claimAutoreleasedReturnValue(), (v8 = v7) != 0))
   {
@@ -6992,7 +6992,7 @@ LABEL_23:
   return m_expectedFrameRate;
 }
 
-- (CGAffineTransform)getVideoTransformForStream:(SEL)a3
+- (CGAffineTransform)getVideoTransformForStream:(SEL)stream
 {
   v6 = a4;
   std::string::basic_string[abi:ne200100]<0>(__p, [v6 UTF8String]);
@@ -7018,10 +7018,10 @@ LABEL_23:
   return result;
 }
 
-- (int)encoderTypeForStream:(id)a3
+- (int)encoderTypeForStream:(id)stream
 {
-  v4 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   v6 = v5;
   if (!v5)
   {
@@ -7029,17 +7029,17 @@ LABEL_23:
   }
 
   v7 = [v5 objectForKey:@"StreamEncoderType"];
-  v8 = [v7 intValue];
+  intValue = [v7 intValue];
 
   if (v11 < 0)
   {
     operator delete(__p[0]);
   }
 
-  return v8;
+  return intValue;
 }
 
-- (void)setupAssetWriterStreamInputsWithError:(id *)a3
+- (void)setupAssetWriterStreamInputsWithError:(id *)error
 {
   v116 = *MEMORY[0x277D85DE8];
   begin = self->m_orderedStreamNames.__begin_;
@@ -7070,40 +7070,40 @@ LABEL_23:
       goto LABEL_32;
     }
 
-    v8 = [v7 settings];
-    v9 = v8 == 0;
+    settings = [v7 settings];
+    v9 = settings == 0;
 
     if (v9)
     {
       if ([v98 useAsVCPConfig])
       {
         v14 = [MOVStreamVideoEncoderInterface alloc];
-        v15 = [v98 encoderSpecVCP];
-        v16 = [v98 sessionPropertiesVCP];
-        v17 = [(MOVStreamVideoEncoderInterface *)v14 initForVCPEncodingStream:v104 videoEncoderSpec:v15 sessionProperties:v16 delegate:self];
+        encoderSpecVCP = [v98 encoderSpecVCP];
+        sessionPropertiesVCP = [v98 sessionPropertiesVCP];
+        v17 = [(MOVStreamVideoEncoderInterface *)v14 initForVCPEncodingStream:v104 videoEncoderSpec:encoderSpecVCP sessionProperties:sessionPropertiesVCP delegate:self];
         v18 = *(v5 + 48);
         *(v5 + 48) = v17;
       }
 
       else
       {
-        v19 = [v98 config];
-        v20 = v19 == 0;
+        config = [v98 config];
+        v20 = config == 0;
 
         if (v20)
         {
           v25 = [MOVStreamVideoEncoderInterface alloc];
           [v98 expectedFrameRate];
           v26 = [(MOVStreamVideoEncoderInterface *)v25 initWithExpectedFrameRate:v104 forStream:self delegate:self->m_enableAVEHighPerformanceProfile enableAVEHighPerformanceProfile:?];
-          v22 = *(v5 + 48);
+          config2 = *(v5 + 48);
           *(v5 + 48) = v26;
         }
 
         else
         {
           v21 = [MOVStreamVideoEncoderInterface alloc];
-          v22 = [v98 config];
-          v23 = [(MOVStreamVideoEncoderInterface *)v21 initForStream:v104 configuration:v22 delegate:self];
+          config2 = [v98 config];
+          v23 = [(MOVStreamVideoEncoderInterface *)v21 initForStream:v104 configuration:config2 delegate:self];
           v24 = *(v5 + 48);
           *(v5 + 48) = v23;
         }
@@ -7112,9 +7112,9 @@ LABEL_23:
       }
 
       v27 = +[MOVStreamOptions sharedOptions];
-      v28 = [v27 disableVTPreSetup];
+      disableVTPreSetup = [v27 disableVTPreSetup];
 
-      if (v28)
+      if (disableVTPreSetup)
       {
         v13 = +[MIOLog defaultLog];
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -7161,12 +7161,12 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    v10 = [v98 settings];
-    v11 = [(MOVStreamWriter *)self inProcessRecording];
-    v100 = v10;
-    if (v10)
+    settings2 = [v98 settings];
+    inProcessRecording = [(MOVStreamWriter *)self inProcessRecording];
+    v100 = settings2;
+    if (settings2)
     {
-      v12 = v11;
+      v12 = inProcessRecording;
     }
 
     else
@@ -7207,8 +7207,8 @@ LABEL_33:
     v103 = v34;
     if (!v34)
     {
-      v85 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported media type (%d) for stream '%@'.", MediaType, v104];
-      [MEMORY[0x277CCA9B8] populateStreamError:a3 message:v85 code:11];
+      v104 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported media type (%d) for stream '%@'.", MediaType, v104];
+      [MEMORY[0x277CCA9B8] populateStreamError:error message:v104 code:11];
 
 LABEL_103:
       goto LABEL_109;
@@ -7216,23 +7216,23 @@ LABEL_103:
 
     if (![(AVAssetWriter *)self->m_assetWriter canApplyOutputSettings:v100 forMediaType:?])
     {
-      v86 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to use output settings (%@) for track '%@'.", v100, v104];
-      [MEMORY[0x277CCA9B8] populateStreamError:a3 message:v86 code:11];
+      v1042 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to use output settings (%@) for track '%@'.", v100, v104];
+      [MEMORY[0x277CCA9B8] populateStreamError:error message:v1042 code:11];
 
       goto LABEL_103;
     }
 
-    v97 = *(v5 + 208);
-    if (v97 <= 0)
+    baseMediaTimeScale = *(v5 + 208);
+    if (baseMediaTimeScale <= 0)
     {
-      v97 = [(MOVStreamWriter *)self baseMediaTimeScale];
+      baseMediaTimeScale = [(MOVStreamWriter *)self baseMediaTimeScale];
     }
 
     v36 = [*(v5 + 88) createTrackFormatDescriptionFromStreamData:v5];
     v37 = +[MOVStreamOptions sharedOptions];
-    v38 = [v37 skipSourceHint];
+    skipSourceHint = [v37 skipSourceHint];
 
-    if (v38 && v36)
+    if (skipSourceHint && v36)
     {
       CFRelease(v36);
       v36 = 0;
@@ -7272,7 +7272,7 @@ LABEL_103:
 
     if (v103 != v90)
     {
-      [*(v5 + 16) setMediaTimeScale:v97];
+      [*(v5 + 16) setMediaTimeScale:baseMediaTimeScale];
     }
 
     if (v103 == v93)
@@ -7339,9 +7339,9 @@ LABEL_103:
       [v101 addObject:v53];
     }
 
-    v54 = [(MOVStreamWriter *)self getTrackMetadataForExactBytesPerRow:v104 fromMap:&self->m_streamDataMap error:a3];
+    v54 = [(MOVStreamWriter *)self getTrackMetadataForExactBytesPerRow:v104 fromMap:&self->m_streamDataMap error:error];
     v55 = v54;
-    if (*a3 && !v54)
+    if (*error && !v54)
     {
 
       goto LABEL_109;
@@ -7442,8 +7442,8 @@ LABEL_103:
 
     if (![(AVAssetWriter *)self->m_assetWriter canAddInput:*(v5 + 16)])
     {
-      v73 = [MEMORY[0x277CCACA8] stringWithFormat:@"Can't add stream input to the asset writer to stream: %@", v104];
-      [MEMORY[0x277CCA9B8] populateStreamError:a3 message:v73 code:13];
+      v1043 = [MEMORY[0x277CCACA8] stringWithFormat:@"Can't add stream input to the asset writer to stream: %@", v104];
+      [MEMORY[0x277CCA9B8] populateStreamError:error message:v1043 code:13];
       goto LABEL_108;
     }
 
@@ -7453,10 +7453,10 @@ LABEL_103:
 
     if (v72)
     {
-      v73 = objc_loadWeakRetained(&self->_delegate);
+      v1043 = objc_loadWeakRetained(&self->_delegate);
       v111 = *(v5 + 16);
       v74 = [MEMORY[0x277CBEA60] arrayWithObjects:&v111 count:1];
-      [v73 streamWriter:self stream:v104 preparedTrackInputs:v74 mediaType:*(v5 + 184)];
+      [v1043 streamWriter:self stream:v104 preparedTrackInputs:v74 mediaType:*(v5 + 184)];
 LABEL_98:
     }
 
@@ -7475,10 +7475,10 @@ LABEL_98:
     *(v5 + 24) = v76;
 
     CFRelease(v75);
-    v73 = [MOVStreamIOUtility qtTrackNameForAssociatedAttachmentsTrack:v104];
-    v74 = [MEMORY[0x277CE6520] qtTrackMetadataItemsForStreamId:v73];
+    v1043 = [MOVStreamIOUtility qtTrackNameForAssociatedAttachmentsTrack:v104];
+    v74 = [MEMORY[0x277CE6520] qtTrackMetadataItemsForStreamId:v1043];
     [*(v5 + 24) setMetadata:v74];
-    [*(v5 + 24) setMediaTimeScale:v97];
+    [*(v5 + 24) setMediaTimeScale:baseMediaTimeScale];
     [*(v5 + 24) setExpectsMediaDataInRealTime:self->m_realtime];
     [*(v5 + 24) addTrackAssociationWithTrackOfInput:*(v5 + 16) type:v88];
     v78 = [MEMORY[0x277CE6470] assetWriterInputMetadataAdaptorWithAssetWriterInput:*(v5 + 24)];
@@ -7487,8 +7487,8 @@ LABEL_98:
 
     if (![(AVAssetWriter *)self->m_assetWriter canAddInput:*(v5 + 16)]|| ![(AVAssetWriter *)self->m_assetWriter canAddInput:*(v5 + 24)])
     {
-      v87 = [MEMORY[0x277CCACA8] stringWithFormat:@"Can't add stream and metadata inputs to the asset writer to stream: %@", v104];
-      [MEMORY[0x277CCA9B8] populateStreamError:a3 message:v87 code:13];
+      v1044 = [MEMORY[0x277CCACA8] stringWithFormat:@"Can't add stream and metadata inputs to the asset writer to stream: %@", v104];
+      [MEMORY[0x277CCA9B8] populateStreamError:error message:v1044 code:13];
 
       goto LABEL_108;
     }
@@ -7511,14 +7511,14 @@ LABEL_98:
     goto LABEL_98;
   }
 
-  v73 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to get metadata format description for stream: %@", v104];
-  [MEMORY[0x277CCA9B8] populateStreamError:a3 message:v73 code:12];
+  v1043 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to get metadata format description for stream: %@", v104];
+  [MEMORY[0x277CCA9B8] populateStreamError:error message:v1043 code:12];
 LABEL_108:
 
 LABEL_109:
 }
 
-- (void)setupMetadataInputsWithError:(id *)a3
+- (void)setupMetadataInputsWithError:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
   begin = self->m_orderedMetadataStreamNames.__begin_;
@@ -7544,7 +7544,7 @@ LABEL_109:
         if (!v7)
         {
           v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to get metadata format description for stream: %@", v38];
-          [MEMORY[0x277CCA9B8] populateStreamError:a3 message:v33 code:12];
+          [MEMORY[0x277CCA9B8] populateStreamError:error message:v33 code:12];
 
           return;
         }
@@ -7556,14 +7556,14 @@ LABEL_109:
 
       v5[2] = 0;
       CFRelease(v7);
-      v11 = *(v5 + 18);
-      if (v11 <= 0)
+      baseMediaTimeScale = *(v5 + 18);
+      if (baseMediaTimeScale <= 0)
       {
-        v11 = [(MOVStreamWriter *)self baseMediaTimeScale];
+        baseMediaTimeScale = [(MOVStreamWriter *)self baseMediaTimeScale];
       }
 
-      v12 = [MEMORY[0x277CE6558] metadataItem];
-      v13 = v12;
+      metadataItem = [MEMORY[0x277CE6558] metadataItem];
+      v13 = metadataItem;
       if (*(v5 + 24))
       {
         v14 = @"mdta/com.apple.imuTrackType";
@@ -7574,7 +7574,7 @@ LABEL_109:
         v14 = @"mdta/com.apple.track_kind";
       }
 
-      [v12 setIdentifier:v14];
+      [metadataItem setIdentifier:v14];
       v15 = +[MIOLog defaultLog];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -7588,27 +7588,27 @@ LABEL_109:
       [v13 setValue:v38];
       if ([(MOVStreamWriter *)self legacyKeysMode])
       {
-        v16 = [MEMORY[0x277CE6558] metadataItem];
+        metadataItem2 = [MEMORY[0x277CE6558] metadataItem];
         v17 = +[MIOVersion versionZero];
         v18 = [v17 versionedKey:@"mdta/com.apple.track_kind" modifier:@"metadata"];
-        [v16 setIdentifier:v18];
+        [metadataItem2 setIdentifier:v18];
 
         if (+[MIOLog debugEnabled])
         {
           v19 = +[MIOLog defaultLog];
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
           {
-            v20 = [v16 identifier];
+            identifier = [metadataItem2 identifier];
             *buf = 138543362;
-            v41 = v20;
+            v41 = identifier;
             _os_log_impl(&dword_257883000, v19, OS_LOG_TYPE_DEBUG, "Setup metadata track with legacy identifier %{public}@", buf, 0xCu);
           }
         }
 
-        [v16 setDataType:v37];
-        [v16 setExtraAttributes:0];
-        [v16 setValue:v38];
-        v21 = [MEMORY[0x277CBEB18] arrayWithObjects:{v13, v16, 0}];
+        [metadataItem2 setDataType:v37];
+        [metadataItem2 setExtraAttributes:0];
+        [metadataItem2 setValue:v38];
+        v21 = [MEMORY[0x277CBEB18] arrayWithObjects:{v13, metadataItem2, 0}];
       }
 
       else
@@ -7628,7 +7628,7 @@ LABEL_109:
       [v21 addObjectsFromArray:v24];
 
       [*v5 setMetadata:v21];
-      [*v5 setMediaTimeScale:v11];
+      [*v5 setMediaTimeScale:baseMediaTimeScale];
       [*v5 setExpectsMediaDataInRealTime:self->m_realtime];
       v25 = [MEMORY[0x277CE6470] assetWriterInputMetadataAdaptorWithAssetWriterInput:*v5];
       v26 = v5[1];
@@ -7662,12 +7662,12 @@ LABEL_30:
     }
 
     v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"Can't add metadata input to the asset writer to stream: %@", v38];
-    [MEMORY[0x277CCA9B8] populateStreamError:a3 message:v30 code:13];
+    [MEMORY[0x277CCA9B8] populateStreamError:error message:v30 code:13];
     goto LABEL_30;
   }
 }
 
-- (void)setupAssociatedMetadataInputsWithError:(id *)a3
+- (void)setupAssociatedMetadataInputsWithError:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
   begin_node = self->m_associatedMetadataDataMap.__tree_.__begin_node_;
@@ -7720,18 +7720,18 @@ LABEL_26:
           }
 
           v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:v9];
-          v12 = *(v11 + 208);
-          if (v12 <= 0)
+          baseMediaTimeScale = *(v11 + 208);
+          if (baseMediaTimeScale <= 0)
           {
-            v12 = [(MOVStreamWriter *)self baseMediaTimeScale];
+            baseMediaTimeScale = [(MOVStreamWriter *)self baseMediaTimeScale];
           }
 
           v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"mdta/%@", v10];
-          v14 = [MEMORY[0x277CE6558] metadataItem];
-          [v14 setIdentifier:v13];
-          [v14 setDataType:v37];
-          [v14 setExtraAttributes:0];
-          [v14 setValue:v7];
+          metadataItem = [MEMORY[0x277CE6558] metadataItem];
+          [metadataItem setIdentifier:v13];
+          [metadataItem setDataType:v37];
+          [metadataItem setExtraAttributes:0];
+          [metadataItem setValue:v7];
           v15 = +[MIOLog defaultLog];
           if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
           {
@@ -7758,11 +7758,11 @@ LABEL_26:
 
           left[9].__left_ = 0;
           CFRelease(v16);
-          v40 = v14;
+          v40 = metadataItem;
           v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v40 count:1];
           [left[7].__left_ setMetadata:v19];
 
-          [left[7].__left_ setMediaTimeScale:v12];
+          [left[7].__left_ setMediaTimeScale:baseMediaTimeScale];
           [left[7].__left_ setExpectsMediaDataInRealTime:self->m_realtime];
           [left[7].__left_ addTrackAssociationWithTrackOfInput:*(v11 + 16) type:v35];
           v20 = [MEMORY[0x277CE6470] assetWriterInputMetadataAdaptorWithAssetWriterInput:left[7].__left_];
@@ -7817,7 +7817,7 @@ LABEL_26:
           }
         }
 
-        [MEMORY[0x277CCA9B8] populateStreamError:a3 message:@"Unable to get metadata format" code:13];
+        [MEMORY[0x277CCA9B8] populateStreamError:error message:@"Unable to get metadata format" code:13];
 
         v29 = 0;
       }
@@ -7864,7 +7864,7 @@ LABEL_26:
     }
 
     v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot setup metadata associated with %@: %@ stream doesn't exist", v7, v7];
-    [MEMORY[0x277CCA9B8] populateStreamError:a3 message:v32 code:13];
+    [MEMORY[0x277CCA9B8] populateStreamError:error message:v32 code:13];
 
     if (SHIBYTE(v38.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -7873,10 +7873,10 @@ LABEL_26:
   }
 }
 
-- (unint64_t)fifoBufferSizeForStream:(id)a3
+- (unint64_t)fifoBufferSizeForStream:(id)stream
 {
-  v4 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   {
   }
 
@@ -7893,24 +7893,24 @@ LABEL_26:
   return v5;
 }
 
-- (void)setFifoBufferCapacity:(unint64_t)a3
+- (void)setFifoBufferCapacity:(unint64_t)capacity
 {
   [(MOVStreamWriter *)self setDefaultWritingBufferCapacity:?];
-  [(MOVStreamWriter *)self setDefaultAudioWritingBufferCapacity:a3];
+  [(MOVStreamWriter *)self setDefaultAudioWritingBufferCapacity:capacity];
 
-  [(MOVStreamWriter *)self setDefaultMetadataWritingBufferCapacity:a3];
+  [(MOVStreamWriter *)self setDefaultMetadataWritingBufferCapacity:capacity];
 }
 
-- (void)appendTimeCode:(CVSMPTETime *)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5 withTimeStamp:(id *)a6 toStream:(id)a7
+- (void)appendTimeCode:(CVSMPTETime *)code startTime:(unint64_t)time endTime:(unint64_t)endTime withTimeStamp:(id *)stamp toStream:(id)stream
 {
-  v8 = *a3;
-  v7 = *a6;
-  [(MOVStreamWriter *)self appendTimeCode:&v8 rangeStart:a4 rangeEnd:a5 withTimeStamp:&v7 toStream:a7];
+  v8 = *code;
+  v7 = *stamp;
+  [(MOVStreamWriter *)self appendTimeCode:&v8 rangeStart:time rangeEnd:endTime withTimeStamp:&v7 toStream:stream];
 }
 
-- (BOOL)setVideoTransformFromOrientation:(int)a3
+- (BOOL)setVideoTransformFromOrientation:(int)orientation
 {
-  v3 = *&a3;
+  v3 = *&orientation;
   v5 = [(MOVStreamWriterState *)self->_state canConfigure:self];
   if (v5)
   {
@@ -7925,14 +7925,14 @@ LABEL_26:
   return v5;
 }
 
-- (id)startWritingThreadForNonMetadataOnlyThreadId:(unsigned __int8)a3
+- (id)startWritingThreadForNonMetadataOnlyThreadId:(unsigned __int8)id
 {
-  v3 = a3;
+  idCopy = id;
   objc_initWeak(&location, self);
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
-  v15 = v3;
+  v15 = idCopy;
   v4 = objc_alloc(MEMORY[0x277CCACC8]);
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
@@ -7941,7 +7941,7 @@ LABEL_26:
   objc_copyWeak(&v13, &location);
   v12 = v14;
   v5 = [v4 initWithBlock:&v8];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"MOVStreamWriterSamples.%u", v3, v8, v9, v10, v11];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"MOVStreamWriterSamples.%u", idCopy, v8, v9, v10, v11];
   [v5 setName:v6];
   [v5 setQualityOfService:33];
   [v5 start];
@@ -8967,10 +8967,10 @@ LABEL_115:
 LABEL_118:
 }
 
-- (void)informDelegateAboutError:(id)a3
+- (void)informDelegateAboutError:(id)error
 {
-  v4 = a3;
-  v5 = [(MOVStreamWriter *)self delegate];
+  errorCopy = error;
+  delegate = [(MOVStreamWriter *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
@@ -8981,7 +8981,7 @@ LABEL_118:
     v8[2] = __44__MOVStreamWriter_informDelegateAboutError___block_invoke;
     v8[3] = &unk_279847E68;
     v8[4] = self;
-    v9 = v4;
+    v9 = errorCopy;
     dispatch_async(m_delegateCallbackQueue, v8);
   }
 }
@@ -8995,10 +8995,10 @@ void __44__MOVStreamWriter_informDelegateAboutError___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)informDelegateAboutIsReady:(BOOL)a3 forStream:(id)a4
+- (void)informDelegateAboutIsReady:(BOOL)ready forStream:(id)stream
 {
-  v6 = a4;
-  v7 = [(MOVStreamWriter *)self delegate];
+  streamCopy = stream;
+  delegate = [(MOVStreamWriter *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
@@ -9009,8 +9009,8 @@ void __44__MOVStreamWriter_informDelegateAboutError___block_invoke(uint64_t a1)
     block[2] = __56__MOVStreamWriter_informDelegateAboutIsReady_forStream___block_invoke;
     block[3] = &unk_279847FA0;
     block[4] = self;
-    v11 = v6;
-    v12 = a3;
+    v11 = streamCopy;
+    readyCopy = ready;
     dispatch_async(m_delegateCallbackQueue, block);
   }
 }
@@ -9026,7 +9026,7 @@ void __56__MOVStreamWriter_informDelegateAboutIsReady_forStream___block_invoke(u
 
 - (void)informDelegateAboutFinishingTimeout
 {
-  v3 = [(MOVStreamWriter *)self delegate];
+  delegate = [(MOVStreamWriter *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
@@ -9050,10 +9050,10 @@ void __54__MOVStreamWriter_informDelegateAboutFinishingTimeout__block_invoke(uin
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)informDelegateAboutMediaWrittenForStream:(id)a3 mediaType:(int64_t)a4
+- (void)informDelegateAboutMediaWrittenForStream:(id)stream mediaType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(MOVStreamWriter *)self delegate];
+  streamCopy = stream;
+  delegate = [(MOVStreamWriter *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
@@ -9064,8 +9064,8 @@ void __54__MOVStreamWriter_informDelegateAboutFinishingTimeout__block_invoke(uin
     block[2] = __70__MOVStreamWriter_informDelegateAboutMediaWrittenForStream_mediaType___block_invoke;
     block[3] = &unk_279847FC8;
     block[4] = self;
-    v11 = v6;
-    v12 = a4;
+    v11 = streamCopy;
+    typeCopy = type;
     dispatch_async(m_delegateCallbackQueue, block);
   }
 }
@@ -9128,8 +9128,8 @@ void __70__MOVStreamWriter_informDelegateAboutMediaWrittenForStream_mediaType___
   v2 = objc_opt_new();
   [v2 setObject:@"3.34.5" forKey:@"version"];
   v3 = +[MOVStreamOptions sharedOptions];
-  v4 = [v3 currentOptions];
-  [v2 setObject:v4 forKey:@"default_options"];
+  currentOptions = [v3 currentOptions];
+  [v2 setObject:currentOptions forKey:@"default_options"];
 
   v5 = [MOVStreamIOUtility getJsonFriendlyCopy:v2];
   v12 = 0;
@@ -9140,55 +9140,55 @@ void __70__MOVStreamWriter_informDelegateAboutMediaWrittenForStream_mediaType___
     v8 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v7 localizedDescription];
+      localizedDescription = [v7 localizedDescription];
       *buf = 138543362;
-      v14 = v9;
+      v14 = localizedDescription;
       _os_log_impl(&dword_257883000, v8, OS_LOG_TYPE_ERROR, "Unable to serialize MOVStream State metatdata as JSON: %{public}@", buf, 0xCu);
     }
 
-    v10 = 0;
+    metadataItem = 0;
   }
 
   else
   {
-    v10 = [MEMORY[0x277CE6558] metadataItem];
-    [v10 setIdentifier:@"mdta/com.apple.framework.state.MOVStreamIO"];
-    [v10 setDataType:*MEMORY[0x277CC05B8]];
-    [v10 setExtraAttributes:0];
-    [v10 setValue:v6];
+    metadataItem = [MEMORY[0x277CE6558] metadataItem];
+    [metadataItem setIdentifier:@"mdta/com.apple.framework.state.MOVStreamIO"];
+    [metadataItem setDataType:*MEMORY[0x277CC05B8]];
+    [metadataItem setExtraAttributes:0];
+    [metadataItem setValue:v6];
   }
 
-  return v10;
+  return metadataItem;
 }
 
-+ (id)getTimeRangeMetadataKeyHintMetadataItem:(id)a3 error:(id *)a4
++ (id)getTimeRangeMetadataKeyHintMetadataItem:(id)item error:(id *)error
 {
-  v4 = [MOVStreamIOUtility plistSerializedObject:a3 error:a4];
+  v4 = [MOVStreamIOUtility plistSerializedObject:item error:error];
   if (v4)
   {
-    v5 = [MEMORY[0x277CE6558] metadataItem];
-    [v5 setIdentifier:@"mdta/com.apple.framework.mio.timeRangeMetadataKeyHint"];
-    [v5 setDataType:*MEMORY[0x277CC05B8]];
-    [v5 setValue:v4];
+    metadataItem = [MEMORY[0x277CE6558] metadataItem];
+    [metadataItem setIdentifier:@"mdta/com.apple.framework.mio.timeRangeMetadataKeyHint"];
+    [metadataItem setDataType:*MEMORY[0x277CC05B8]];
+    [metadataItem setValue:v4];
   }
 
   else
   {
-    v5 = 0;
+    metadataItem = 0;
   }
 
-  return v5;
+  return metadataItem;
 }
 
-- (id)getAudioMetadataForBuffer:(opaqueCMSampleBuffer *)a3
+- (id)getAudioMetadataForBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CE6558] metadataItem];
-  [v4 setIdentifier:@"mdta/com.apple.stream_sample_attachments"];
-  [v4 setDataType:*MEMORY[0x277CC05B8]];
-  [v4 setExtraAttributes:0];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_sample_attachments"];
+  [metadataItem setDataType:*MEMORY[0x277CC05B8]];
+  [metadataItem setExtraAttributes:0];
   v5 = *MEMORY[0x277CBECE8];
-  v6 = CMCopyDictionaryOfAttachments(*MEMORY[0x277CBECE8], a3, 1u);
+  v6 = CMCopyDictionaryOfAttachments(*MEMORY[0x277CBECE8], buffer, 1u);
   if (v6)
   {
     v7 = [MOVStreamIOUtility getPlistFriendlyCopyOf:v6];
@@ -9201,7 +9201,7 @@ void __70__MOVStreamWriter_informDelegateAboutMediaWrittenForStream_mediaType___
 
   v8 = v7;
   memset(&v22, 0, sizeof(v22));
-  CMSampleBufferGetPresentationTimeStamp(&v22, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v22, buffer);
   v9 = [v8 objectForKey:@"OriginalTimestampWhenWrittenToFile"];
   v10 = v9 == 0;
 
@@ -9220,9 +9220,9 @@ void __70__MOVStreamWriter_informDelegateAboutMediaWrittenForStream_mediaType___
     v14 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v13 localizedDescription];
+      localizedDescription = [v13 localizedDescription];
       LODWORD(time.start.value) = 138543362;
-      *(&time.start.value + 4) = v15;
+      *(&time.start.value + 4) = localizedDescription;
       _os_log_impl(&dword_257883000, v14, OS_LOG_TYPE_ERROR, "Unable to serialize audio metatdata as PLIST: %{public}@", &time, 0xCu);
     }
 
@@ -9231,9 +9231,9 @@ void __70__MOVStreamWriter_informDelegateAboutMediaWrittenForStream_mediaType___
 
   else
   {
-    [v4 setValue:v12];
+    [metadataItem setValue:v12];
     v17 = objc_alloc(MEMORY[0x277CE6648]);
-    v24[0] = v4;
+    v24[0] = metadataItem;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
     start = v22;
     v19 = **&MEMORY[0x277CC0890];
@@ -9244,11 +9244,11 @@ void __70__MOVStreamWriter_informDelegateAboutMediaWrittenForStream_mediaType___
   return v16;
 }
 
-- (BOOL)isReadyForMoreDataForStreamId:(id)a3 fromMap:(void *)a4
+- (BOOL)isReadyForMoreDataForStreamId:(id)id fromMap:(void *)map
 {
-  v5 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v5 UTF8String]);
-  v6 = *(a4 + 1);
+  idCopy = id;
+  std::string::basic_string[abi:ne200100]<0>(__p, [idCopy UTF8String]);
+  v6 = *(map + 1);
   if (!v6)
   {
     goto LABEL_9;
@@ -9272,43 +9272,43 @@ LABEL_5:
 
   if ([*(v7 + 16) isReadyForMoreMediaData])
   {
-    v8 = [*(v7 + 24) isReadyForMoreMediaData];
+    isReadyForMoreMediaData = [*(v7 + 24) isReadyForMoreMediaData];
     goto LABEL_10;
   }
 
 LABEL_9:
-  v8 = 0;
+  isReadyForMoreMediaData = 0;
 LABEL_10:
   if (v11 < 0)
   {
     operator delete(__p[0]);
   }
 
-  return v8;
+  return isReadyForMoreMediaData;
 }
 
-- (id)getMetadataGroupForBuffer:(__CVBuffer *)a3 stream:(id)a4 presentationTime:(id *)a5 serializationMode:(int)a6
+- (id)getMetadataGroupForBuffer:(__CVBuffer *)buffer stream:(id)stream presentationTime:(id *)time serializationMode:(int)mode
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v10 = [MEMORY[0x277CE6558] metadataItem];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
   if ([(MOVStreamWriter *)self legacyKeysMode])
   {
     v11 = +[MIOVersion versionZero];
     v12 = [v11 versionedKey:@"mdta/com.apple.stream_sample_attachments" modifier:0];
-    [v10 setIdentifier:v12];
+    [metadataItem setIdentifier:v12];
   }
 
   else
   {
-    [v10 setIdentifier:@"mdta/com.apple.stream_sample_attachments"];
+    [metadataItem setIdentifier:@"mdta/com.apple.stream_sample_attachments"];
   }
 
-  [v10 setDataType:*MEMORY[0x277CC05B8]];
-  [v10 setExtraAttributes:0];
-  v13 = [MIOPixelBufferUtility isPixelBufferRawBayer:a3];
-  v14 = [MIOPixelBufferUtility isPixelBufferCompandedRawBayer:a3];
-  v29 = CVBufferCopyAttachments(a3, kCVAttachmentMode_ShouldPropagate);
-  if (a6)
+  [metadataItem setDataType:*MEMORY[0x277CC05B8]];
+  [metadataItem setExtraAttributes:0];
+  v13 = [MIOPixelBufferUtility isPixelBufferRawBayer:buffer];
+  v14 = [MIOPixelBufferUtility isPixelBufferCompandedRawBayer:buffer];
+  v29 = CVBufferCopyAttachments(buffer, kCVAttachmentMode_ShouldPropagate);
+  if (mode)
   {
     [MOVStreamIOUtility getPlistFriendlyCopyOf:v29];
   }
@@ -9322,17 +9322,17 @@ LABEL_10:
 
   if (!v16)
   {
-    *&time.start.value = *&a5->var0;
-    time.start.epoch = a5->var3;
+    *&time.start.value = *&time->var0;
+    time.start.epoch = time->var3;
     v17 = CMTimeCopyAsDictionary(&time.start, *MEMORY[0x277CBECE8]);
     [v15 setObject:v17 forKey:@"OriginalTimestampWhenWrittenToFile"];
   }
 
-  if (a6)
+  if (mode)
   {
     if (v13 || v14)
     {
-      v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:CVPixelBufferGetPixelFormatType(a3)];
+      v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:CVPixelBufferGetPixelFormatType(buffer)];
       [v15 setValue:v18 forKey:@"RawBayerFormat"];
     }
 
@@ -9383,9 +9383,9 @@ LABEL_23:
       v24 = +[MIOLog defaultLog];
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v25 = [v20 localizedDescription];
+        localizedDescription = [v20 localizedDescription];
         LODWORD(time.start.value) = 138543362;
-        *(&time.start.value + 4) = v25;
+        *(&time.start.value + 4) = localizedDescription;
         _os_log_impl(&dword_257883000, v24, OS_LOG_TYPE_ERROR, "Unable to serialize depth metatdata as JSON: %{public}@", &time, 0xCu);
       }
 
@@ -9393,11 +9393,11 @@ LABEL_23:
     }
   }
 
-  [v10 setValue:v19];
+  [metadataItem setValue:v19];
   v27 = objc_alloc(MEMORY[0x277CE6648]);
-  v35[0] = v10;
+  v35[0] = metadataItem;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
-  start = *a5;
+  start = *time;
   duration = **&MEMORY[0x277CC0890];
   CMTimeRangeMake(&time, &start, &duration);
   v26 = [v27 initWithItems:v20 timeRange:&time];
@@ -9406,21 +9406,21 @@ LABEL_27:
   return v26;
 }
 
-- (BOOL)marksOutputTracksAsEnabledForStream:()basic_string<char fromMap:()std:(std::allocator<char>> *)a3 :char_traits<char>
+- (BOOL)marksOutputTracksAsEnabledForStream:()basic_string<char fromMap:()std:(std::allocator<char>> *)std :char_traits<char>
 {
   v4 = v3;
-  var0 = a3;
+  var0 = std;
   v22 = *MEMORY[0x277D85DE8];
   v8 = [v7 objectForKey:@"MarksOutputTrackAsEnabled"];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
   }
 
   else if (*(v4 + 16) == 1)
   {
-    v10 = 1;
+    bOOLValue = 1;
   }
 
   else
@@ -9461,31 +9461,31 @@ LABEL_15:
       v14 = v20;
     }
 
-    v10 = v14 == v20;
+    bOOLValue = v14 == v20;
 
     std::__tree<std::__value_type<BT_2111::SignalLevel,BT_2111::rgb>,std::__map_value_compare<BT_2111::SignalLevel,std::__value_type<BT_2111::SignalLevel,BT_2111::rgb>,std::less<BT_2111::SignalLevel>,true>,std::allocator<std::__value_type<BT_2111::SignalLevel,BT_2111::rgb>>>::destroy(&v19, v20[0]);
   }
 
-  return v10;
+  return bOOLValue;
 }
 
-- (int)attachmentSerializationModeForStream:()basic_string<char withDefaultMode:()std:(std::allocator<char>> *)a3 :char_traits<char> fromMap:
+- (int)attachmentSerializationModeForStream:()basic_string<char withDefaultMode:()std:(std::allocator<char>> *)std :char_traits<char> fromMap:
 {
-  v6 = v5 = v3;
+  v6 = intValue = v3;
   v7 = v6;
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
-  return v5;
+  return intValue;
 }
 
-- (id)customTrackMetadataForStream:(id)a3 fromMap:(void *)a4
+- (id)customTrackMetadataForStream:(id)stream fromMap:(void *)map
 {
   v26 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v17 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   if ([*(v5 + 72) count] || objc_msgSend(*(v5 + 80), "count"))
   {
     v6 = objc_opt_new();
@@ -9509,15 +9509,15 @@ LABEL_15:
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
-          v12 = [MEMORY[0x277CE6558] metadataItem];
+          metadataItem = [MEMORY[0x277CE6558] metadataItem];
           v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"mdta/custom.", v11];
-          [v12 setIdentifier:v13];
-          [v12 setDataType:v9];
-          [v12 setExtraAttributes:0];
+          [metadataItem setIdentifier:v13];
+          [metadataItem setDataType:v9];
+          [metadataItem setExtraAttributes:0];
           v14 = [*(v5 + 72) objectForKey:v11];
-          [v12 setValue:v14];
+          [metadataItem setValue:v14];
 
-          [v6 addObject:v12];
+          [v6 addObject:metadataItem];
         }
 
         v7 = [obj countByEnumeratingWithState:&v19 objects:v25 count:16];
@@ -9547,11 +9547,11 @@ LABEL_15:
   return v15;
 }
 
-- (id)customMetadataTrackMetadataForStream:(id)a3 fromMap:(void *)a4
+- (id)customMetadataTrackMetadataForStream:(id)stream fromMap:(void *)map
 {
   v26 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v17 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   if ([*(v5 + 48) count])
   {
     v6 = objc_opt_new();
@@ -9575,15 +9575,15 @@ LABEL_15:
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
-          v12 = [MEMORY[0x277CE6558] metadataItem];
+          metadataItem = [MEMORY[0x277CE6558] metadataItem];
           v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"mdta/custom.", v11];
-          [v12 setIdentifier:v13];
-          [v12 setDataType:v9];
-          [v12 setExtraAttributes:0];
+          [metadataItem setIdentifier:v13];
+          [metadataItem setDataType:v9];
+          [metadataItem setExtraAttributes:0];
           v14 = [*(v5 + 48) objectForKey:v11];
-          [v12 setValue:v14];
+          [metadataItem setValue:v14];
 
-          [v6 addObject:v12];
+          [v6 addObject:metadataItem];
         }
 
         v7 = [obj countByEnumeratingWithState:&v19 objects:v25 count:16];
@@ -9608,14 +9608,14 @@ LABEL_15:
   return v15;
 }
 
-- (id)getTrackMetadataForAttachmentsSerializationMode:(id)a3 fromMap:(void *)a4
+- (id)getTrackMetadataForAttachmentsSerializationMode:(id)mode fromMap:(void *)map
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CE6558] metadataItem];
-  [v7 setIdentifier:@"mdta/com.apple.stream_sample_attachments_serialization_mode"];
-  [v7 setDataType:*MEMORY[0x277CC05F0]];
-  [v7 setExtraAttributes:0];
-  std::string::basic_string[abi:ne200100]<0>(&v12, [v6 UTF8String]);
+  modeCopy = mode;
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_sample_attachments_serialization_mode"];
+  [metadataItem setDataType:*MEMORY[0x277CC05F0]];
+  [metadataItem setExtraAttributes:0];
+  std::string::basic_string[abi:ne200100]<0>(&v12, [modeCopy UTF8String]);
   if (SHIBYTE(v12.__r_.__value_.__r.__words[2]) < 0)
   {
     std::string::__init_copy_ctor_external(&__p, v12.__r_.__value_.__l.__data_, v12.__r_.__value_.__l.__size_);
@@ -9626,34 +9626,34 @@ LABEL_15:
     __p = v12;
   }
 
-  v8 = [(MOVStreamWriter *)self attachmentSerializationModeForStream:&__p withDefaultMode:1 fromMap:a4];
+  v8 = [(MOVStreamWriter *)self attachmentSerializationModeForStream:&__p withDefaultMode:1 fromMap:map];
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
   {
     operator delete(__p.__r_.__value_.__l.__data_);
   }
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{v8, *&__p.__r_.__value_.__l.__data_, __p.__r_.__value_.__r.__words[2]}];
-  [v7 setValue:v9];
+  [metadataItem setValue:v9];
 
   if (SHIBYTE(v12.__r_.__value_.__r.__words[2]) < 0)
   {
     operator delete(v12.__r_.__value_.__l.__data_);
   }
 
-  return v7;
+  return metadataItem;
 }
 
-- (id)getLegacyTrackMetadataForAttachmentsSerializationMode:(id)a3 fromMap:(void *)a4
+- (id)getLegacyTrackMetadataForAttachmentsSerializationMode:(id)mode fromMap:(void *)map
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CE6558] metadataItem];
+  modeCopy = mode;
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
   v8 = +[MIOVersion versionZero];
   v9 = [v8 versionedKey:@"mdta/com.apple.stream_sample_attachments_serialization_mode" modifier:0];
-  [v7 setIdentifier:v9];
+  [metadataItem setIdentifier:v9];
 
-  [v7 setDataType:*MEMORY[0x277CC05F0]];
-  [v7 setExtraAttributes:0];
-  std::string::basic_string[abi:ne200100]<0>(&v14, [v6 UTF8String]);
+  [metadataItem setDataType:*MEMORY[0x277CC05F0]];
+  [metadataItem setExtraAttributes:0];
+  std::string::basic_string[abi:ne200100]<0>(&v14, [modeCopy UTF8String]);
   if (SHIBYTE(v14.__r_.__value_.__r.__words[2]) < 0)
   {
     std::string::__init_copy_ctor_external(&__p, v14.__r_.__value_.__l.__data_, v14.__r_.__value_.__l.__size_);
@@ -9664,27 +9664,27 @@ LABEL_15:
     __p = v14;
   }
 
-  v10 = [(MOVStreamWriter *)self attachmentSerializationModeForStream:&__p withDefaultMode:1 fromMap:a4];
+  v10 = [(MOVStreamWriter *)self attachmentSerializationModeForStream:&__p withDefaultMode:1 fromMap:map];
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
   {
     operator delete(__p.__r_.__value_.__l.__data_);
   }
 
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{v10, *&__p.__r_.__value_.__l.__data_, __p.__r_.__value_.__r.__words[2]}];
-  [v7 setValue:v11];
+  [metadataItem setValue:v11];
 
   if (SHIBYTE(v14.__r_.__value_.__r.__words[2]) < 0)
   {
     operator delete(v14.__r_.__value_.__l.__data_);
   }
 
-  return v7;
+  return metadataItem;
 }
 
-- (id)getTrackMetadataForRawBayerRearrangeType:(id)a3 fromMap:(void *)a4
+- (id)getTrackMetadataForRawBayerRearrangeType:(id)type fromMap:(void *)map
 {
-  v5 = a3;
-  v6 = std::string::basic_string[abi:ne200100]<0>(__p, [v5 UTF8String]);
+  typeCopy = type;
+  v6 = std::string::basic_string[abi:ne200100]<0>(__p, [typeCopy UTF8String]);
   if (v6)
   {
     v7 = v6;
@@ -9695,24 +9695,24 @@ LABEL_15:
     v7 = &unk_2868E3A08;
   }
 
-  v8 = [MEMORY[0x277CE6558] metadataItem];
-  [v8 setIdentifier:@"mdta/com.apple.stream_raw_bayer_rearrange_type"];
-  [v8 setDataType:*MEMORY[0x277CC05E8]];
-  [v8 setExtraAttributes:0];
-  [v8 setValue:v7];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_raw_bayer_rearrange_type"];
+  [metadataItem setDataType:*MEMORY[0x277CC05E8]];
+  [metadataItem setExtraAttributes:0];
+  [metadataItem setValue:v7];
 
   if (v11 < 0)
   {
     operator delete(__p[0]);
   }
 
-  return v8;
+  return metadataItem;
 }
 
-- (id)getTrackMetadataForTimeRangeMetadata:(id)a3 fromMap:(void *)a4
+- (id)getTrackMetadataForTimeRangeMetadata:(id)metadata fromMap:(void *)map
 {
-  v5 = a3;
-  v6 = std::string::basic_string[abi:ne200100]<0>(__p, [v5 UTF8String]);
+  metadataCopy = metadata;
+  v6 = std::string::basic_string[abi:ne200100]<0>(__p, [metadataCopy UTF8String]);
   if (v9 < 0)
   {
     operator delete(__p[0]);
@@ -9721,184 +9721,184 @@ LABEL_15:
   return v6;
 }
 
-- (id)getTrackMetadataForStream:(id)a3
+- (id)getTrackMetadataForStream:(id)stream
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CE6558] metadataItem];
-  [v4 setIdentifier:@"mdta/com.apple.track_kind"];
-  [v4 setDataType:*MEMORY[0x277CC05F0]];
-  [v4 setExtraAttributes:0];
-  [v4 setValue:v3];
+  streamCopy = stream;
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.track_kind"];
+  [metadataItem setDataType:*MEMORY[0x277CC05F0]];
+  [metadataItem setExtraAttributes:0];
+  [metadataItem setValue:streamCopy];
 
-  return v4;
+  return metadataItem;
 }
 
-- (id)getLegacyTrackMetadataForStream:(id)a3
+- (id)getLegacyTrackMetadataForStream:(id)stream
 {
-  v3 = a3;
+  streamCopy = stream;
   {
     [MOVStreamWriter(TrackMetadata) getLegacyTrackMetadataForStream:]::legacyVersion = +[MIOVersion versionZero];
   }
 
-  v4 = [MEMORY[0x277CE6558] metadataItem];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
   v5 = [-[MOVStreamWriter(TrackMetadata) getLegacyTrackMetadataForStream:]::legacyVersion versionedKey:@"mdta/com.apple.track_kind" modifier:0];
-  [v4 setIdentifier:v5];
+  [metadataItem setIdentifier:v5];
 
-  [v4 setDataType:*MEMORY[0x277CC05F0]];
-  [v4 setExtraAttributes:0];
-  [v4 setValue:v3];
+  [metadataItem setDataType:*MEMORY[0x277CC05F0]];
+  [metadataItem setExtraAttributes:0];
+  [metadataItem setValue:streamCopy];
 
-  return v4;
+  return metadataItem;
 }
 
-- (id)getTrackInputPixelFormatMetadataForStream:(id)a3 fromMap:(void *)a4
+- (id)getTrackInputPixelFormatMetadataForStream:(id)stream fromMap:(void *)map
 {
-  v5 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v5 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   v7 = [*(v6 + 88) inputPixelFormatFromStreamData:v6];
-  v8 = [MEMORY[0x277CE6558] metadataItem];
-  [v8 setIdentifier:@"mdta/com.apple.stream_sample_format"];
-  [v8 setDataType:*MEMORY[0x277CC05F0]];
-  [v8 setExtraAttributes:0];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_sample_format"];
+  [metadataItem setDataType:*MEMORY[0x277CC05F0]];
+  [metadataItem setExtraAttributes:0];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v7];
-  [v8 setValue:v9];
+  [metadataItem setValue:v9];
 
   if (v12 < 0)
   {
     operator delete(__p[0]);
   }
 
-  return v8;
+  return metadataItem;
 }
 
-- (id)getTrackMIOStreamEncoderTypeMetadataForStream:(id)a3 fromMap:(void *)a4
+- (id)getTrackMIOStreamEncoderTypeMetadataForStream:(id)stream fromMap:(void *)map
 {
-  v5 = a3;
-  v6 = std::string::basic_string[abi:ne200100]<0>(__p, [v5 UTF8String]);
-  v7 = [v6 intValue];
+  streamCopy = stream;
+  v6 = std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
+  intValue = [v6 intValue];
 
-  v8 = [MEMORY[0x277CE6558] metadataItem];
-  [v8 setIdentifier:@"mdta/com.apple.writer_encoder_type"];
-  [v8 setDataType:*MEMORY[0x277CC05D0]];
-  [v8 setExtraAttributes:0];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v7];
-  [v8 setValue:v9];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.writer_encoder_type"];
+  [metadataItem setDataType:*MEMORY[0x277CC05D0]];
+  [metadataItem setExtraAttributes:0];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:intValue];
+  [metadataItem setValue:v9];
 
   if (v12 < 0)
   {
     operator delete(__p[0]);
   }
 
-  return v8;
+  return metadataItem;
 }
 
-- (id)getLegacyTrackInputPixelFormatMetadataForStream:(id)a3 fromMap:(void *)a4
+- (id)getLegacyTrackInputPixelFormatMetadataForStream:(id)stream fromMap:(void *)map
 {
-  v5 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v5 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   v7 = [*(v6 + 88) inputPixelFormatFromStreamData:v6];
-  v8 = [MEMORY[0x277CE6558] metadataItem];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
   v9 = +[MIOVersion versionZero];
   v10 = [v9 versionedKey:@"mdta/com.apple.stream_sample_format" modifier:0];
-  [v8 setIdentifier:v10];
+  [metadataItem setIdentifier:v10];
 
-  [v8 setDataType:*MEMORY[0x277CC05F0]];
-  [v8 setExtraAttributes:0];
+  [metadataItem setDataType:*MEMORY[0x277CC05F0]];
+  [metadataItem setExtraAttributes:0];
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v7];
-  [v8 setValue:v11];
+  [metadataItem setValue:v11];
 
   if (v14 < 0)
   {
     operator delete(__p[0]);
   }
 
-  return v8;
+  return metadataItem;
 }
 
-- (id)getLegacyTrackEncodedPixelFormatMetadataForStream:(id)a3 fromMap:(void *)a4
+- (id)getLegacyTrackEncodedPixelFormatMetadataForStream:(id)stream fromMap:(void *)map
 {
-  v5 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v5 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   v7 = [*(v6 + 88) encodedPixelFormatFromStreamData:v6];
-  v8 = [MEMORY[0x277CE6558] metadataItem];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
   v9 = +[MIOVersion versionZero];
   v10 = [v9 versionedKey:@"mdta/com.apple.stream_encoded_sample_format" modifier:0];
-  [v8 setIdentifier:v10];
+  [metadataItem setIdentifier:v10];
 
-  [v8 setDataType:*MEMORY[0x277CC05F0]];
-  [v8 setExtraAttributes:0];
+  [metadataItem setDataType:*MEMORY[0x277CC05F0]];
+  [metadataItem setExtraAttributes:0];
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v7];
-  [v8 setValue:v11];
+  [metadataItem setValue:v11];
 
   if (v14 < 0)
   {
     operator delete(__p[0]);
   }
 
-  return v8;
+  return metadataItem;
 }
 
-- (id)getTrackEncodedPixelFormatMetadataForStream:(id)a3 fromMap:(void *)a4
+- (id)getTrackEncodedPixelFormatMetadataForStream:(id)stream fromMap:(void *)map
 {
-  v5 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v5 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   v7 = [*(v6 + 88) encodedPixelFormatFromStreamData:v6];
-  v8 = [MEMORY[0x277CE6558] metadataItem];
-  [v8 setIdentifier:@"mdta/com.apple.stream_encoded_sample_format"];
-  [v8 setDataType:*MEMORY[0x277CC05F0]];
-  [v8 setExtraAttributes:0];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_encoded_sample_format"];
+  [metadataItem setDataType:*MEMORY[0x277CC05F0]];
+  [metadataItem setExtraAttributes:0];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v7];
-  [v8 setValue:v9];
+  [metadataItem setValue:v9];
 
   if (v12 < 0)
   {
     operator delete(__p[0]);
   }
 
-  return v8;
+  return metadataItem;
 }
 
-- (id)createRelatedToStreamMetadata:(id)a3
+- (id)createRelatedToStreamMetadata:(id)metadata
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CE6558] metadataItem];
-  [v4 setIdentifier:@"mdta/com.apple.stream_related_to_stream"];
-  [v4 setDataType:*MEMORY[0x277CC05F0]];
-  [v4 setExtraAttributes:0];
-  [v4 setValue:v3];
+  metadataCopy = metadata;
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_related_to_stream"];
+  [metadataItem setDataType:*MEMORY[0x277CC05F0]];
+  [metadataItem setExtraAttributes:0];
+  [metadataItem setValue:metadataCopy];
 
-  return v4;
+  return metadataItem;
 }
 
-- (id)createRelationSpecifierMetadata:(id)a3
+- (id)createRelationSpecifierMetadata:(id)metadata
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CE6558] metadataItem];
-  [v4 setIdentifier:@"mdta/com.apple.stream_relation_specifier"];
-  [v4 setDataType:*MEMORY[0x277CC05F0]];
-  [v4 setExtraAttributes:0];
-  [v4 setValue:v3];
+  metadataCopy = metadata;
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_relation_specifier"];
+  [metadataItem setDataType:*MEMORY[0x277CC05F0]];
+  [metadataItem setExtraAttributes:0];
+  [metadataItem setValue:metadataCopy];
 
-  return v4;
+  return metadataItem;
 }
 
-- (id)getTrackMetadataForTrackTypeInfo:(id)a3 fromMap:(void *)a4
+- (id)getTrackMetadataForTrackTypeInfo:(id)info fromMap:(void *)map
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CE6558] metadataItem];
-  [v6 setIdentifier:@"mdta/com.apple.stream_type_info"];
-  [v6 setDataType:*MEMORY[0x277CC05F0]];
-  [v6 setExtraAttributes:0];
-  v7 = std::string::basic_string[abi:ne200100]<0>(__p, [v5 UTF8String]);
+  infoCopy = info;
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_type_info"];
+  [metadataItem setDataType:*MEMORY[0x277CC05F0]];
+  [metadataItem setExtraAttributes:0];
+  v7 = std::string::basic_string[abi:ne200100]<0>(__p, [infoCopy UTF8String]);
   if (v7)
   {
-    [v6 setValue:v7];
+    [metadataItem setValue:v7];
   }
 
   else
   {
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:0];
-    [v6 setValue:v8];
+    [metadataItem setValue:v8];
   }
 
   if (v11 < 0)
@@ -9906,56 +9906,56 @@ LABEL_15:
     operator delete(__p[0]);
   }
 
-  return v6;
+  return metadataItem;
 }
 
-- (id)getTrackMetadataForExactBytesPerRow:(id)a3 fromMap:(void *)a4 error:(id *)a5
+- (id)getTrackMetadataForExactBytesPerRow:(id)row fromMap:(void *)map error:(id *)error
 {
-  v7 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v7 UTF8String]);
+  rowCopy = row;
+  std::string::basic_string[abi:ne200100]<0>(__p, [rowCopy UTF8String]);
   v9 = *(v8 + 40);
   v10 = [v9 objectForKey:@"PixelBufferExactBytesPerRow"];
   if (!v10)
   {
-    v11 = 0;
+    metadataItem = 0;
     goto LABEL_20;
   }
 
-  v11 = [MEMORY[0x277CE6558] metadataItem];
-  [v11 setIdentifier:@"mdta/com.apple.stream_sample_exact_bytes_per_row"];
-  [v11 setExtraAttributes:0];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_sample_exact_bytes_per_row"];
+  [metadataItem setExtraAttributes:0];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [MOVStreamIOUtility plistSerializedObject:v10 error:a5];
+      v13 = [MOVStreamIOUtility plistSerializedObject:v10 error:error];
       if (v13)
       {
-        [v11 setDataType:*MEMORY[0x277CC05B8]];
-        [v11 setValue:v13];
-        [v11 setIdentifier:@"mdta/com.apple.stream_sample_exact_bytes_per_row_multiplanar"];
+        [metadataItem setDataType:*MEMORY[0x277CC05B8]];
+        [metadataItem setValue:v13];
+        [metadataItem setIdentifier:@"mdta/com.apple.stream_sample_exact_bytes_per_row_multiplanar"];
         goto LABEL_12;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] internalErrorWithMessage:@"Invalid value type for PixelBufferExactBytesPerRow." code:10];
+      *error = [MEMORY[0x277CCA9B8] internalErrorWithMessage:@"Invalid value type for PixelBufferExactBytesPerRow." code:10];
     }
 
 LABEL_18:
-    v15 = v11;
-    v11 = 0;
+    v15 = metadataItem;
+    metadataItem = 0;
     goto LABEL_19;
   }
 
   v12 = [MIOPixelBufferUtility numberOfPlanesForPixelFormatType:CMFormatDescriptionGetMediaSubType(*v8)];
   if (v12 < 1)
   {
-    [v11 setDataType:*MEMORY[0x277CC05D8]];
-    [v11 setValue:v10];
+    [metadataItem setDataType:*MEMORY[0x277CC05D8]];
+    [metadataItem setValue:v10];
     goto LABEL_16;
   }
 
@@ -9967,16 +9967,16 @@ LABEL_18:
   }
 
   while (v12);
-  v14 = [MOVStreamIOUtility plistSerializedObject:v13 error:a5];
+  v14 = [MOVStreamIOUtility plistSerializedObject:v13 error:error];
   if (!v14)
   {
 
     goto LABEL_18;
   }
 
-  [v11 setDataType:*MEMORY[0x277CC05B8]];
-  [v11 setValue:v14];
-  [v11 setIdentifier:@"mdta/com.apple.stream_sample_exact_bytes_per_row_multiplanar"];
+  [metadataItem setDataType:*MEMORY[0x277CC05B8]];
+  [metadataItem setValue:v14];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_sample_exact_bytes_per_row_multiplanar"];
 
 LABEL_12:
 LABEL_16:
@@ -9989,18 +9989,18 @@ LABEL_20:
     operator delete(__p[0]);
   }
 
-  return v11;
+  return metadataItem;
 }
 
-- (opaqueCMFormatDescription)createMetadataFormatDescription:(id)a3
+- (opaqueCMFormatDescription)createMetadataFormatDescription:(id)description
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptionCopy = description;
   formatDescriptionOut = 0;
   if ([(MOVStreamWriter *)self legacyKeysMode])
   {
     v5 = +[MIOVersion versionZero];
-    v6 = [v5 versionedKey:v4 modifier:0];
+    v6 = [v5 versionedKey:descriptionCopy modifier:0];
 
     v8 = *MEMORY[0x277CC0600];
     v25[0] = *MEMORY[0x277CC0610];
@@ -10013,7 +10013,7 @@ LABEL_20:
     v27[0] = v10;
     v23[0] = v7;
     v23[1] = v8;
-    v24[0] = v4;
+    v24[0] = descriptionCopy;
     v24[1] = v9;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
     v27[1] = v11;
@@ -10026,7 +10026,7 @@ LABEL_20:
     v20[0] = *MEMORY[0x277CC0610];
     v20[1] = v13;
     v14 = *MEMORY[0x277CC05B8];
-    v21[0] = v4;
+    v21[0] = descriptionCopy;
     v21[1] = v14;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
     v22 = v6;
@@ -10054,9 +10054,9 @@ LABEL_20:
   return v16;
 }
 
-- (BOOL)isCustomTrackMetadataCompatibleObject:(id)a3
+- (BOOL)isCustomTrackMetadataCompatibleObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -10072,10 +10072,10 @@ LABEL_20:
   return isKindOfClass & 1;
 }
 
-- (unsigned)getPixelFormatForStream:(id)a3 fromMap:(void *)a4
+- (unsigned)getPixelFormatForStream:(id)stream fromMap:(void *)map
 {
-  v5 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v5 UTF8String]);
+  streamCopy = stream;
+  std::string::basic_string[abi:ne200100]<0>(__p, [streamCopy UTF8String]);
   v7 = [objc_opt_class() getPixelFormatFromStreamData:v6];
   if (v10 < 0)
   {
@@ -10085,9 +10085,9 @@ LABEL_20:
   return v7;
 }
 
-+ (unsigned)getPixelFormatFromStreamData:(StreamRecordingData *)a3
++ (unsigned)getPixelFormatFromStreamData:(StreamRecordingData *)data
 {
-  v4 = a3->var5;
+  v4 = data->var5;
   v5 = [v4 objectForKeyedSubscript:@"PixelFormat"];
 
   if (v5)
@@ -10098,7 +10098,7 @@ LABEL_20:
 
   else
   {
-    MediaSubType = CMFormatDescriptionGetMediaSubType(a3->var0);
+    MediaSubType = CMFormatDescriptionGetMediaSubType(data->var0);
   }
 
   return MediaSubType;

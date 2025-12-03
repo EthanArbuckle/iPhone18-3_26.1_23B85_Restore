@@ -1,7 +1,7 @@
 @interface CSAvatarResponseMessage
 + (id)requiredParameters;
-- (CSAvatarResponseMessage)initWithAvatar:(id)a3;
-- (CSAvatarResponseMessage)initWithMessage:(id)a3;
+- (CSAvatarResponseMessage)initWithAvatar:(id)avatar;
+- (CSAvatarResponseMessage)initWithMessage:(id)message;
 - (id)dictionaryRepresentation;
 @end
 
@@ -9,7 +9,7 @@
 
 + (id)requiredParameters
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CSAvatarResponseMessage;
   v2 = objc_msgSendSuper2(&v5, sel_requiredParameters);
   v3 = [v2 mutableCopy];
@@ -19,27 +19,27 @@
   return v3;
 }
 
-- (CSAvatarResponseMessage)initWithAvatar:(id)a3
+- (CSAvatarResponseMessage)initWithAvatar:(id)avatar
 {
-  v5 = a3;
+  avatarCopy = avatar;
   v9.receiver = self;
   v9.super_class = CSAvatarResponseMessage;
   v6 = [(CSAvatarResponseMessage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_avatar, a3);
+    objc_storeStrong(&v6->_avatar, avatar);
   }
 
   return v7;
 }
 
-- (CSAvatarResponseMessage)initWithMessage:(id)a3
+- (CSAvatarResponseMessage)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v10.receiver = self;
   v10.super_class = CSAvatarResponseMessage;
-  v5 = [(CSMessage *)&v10 initWithMessage:v4];
+  v5 = [(CSMessage *)&v10 initWithMessage:messageCopy];
   if (v5)
   {
     CFDataGetTypeID();
@@ -59,8 +59,8 @@
 {
   v8.receiver = self;
   v8.super_class = CSAvatarResponseMessage;
-  v3 = [(CSMessage *)&v8 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(CSMessage *)&v8 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   avatar = self->_avatar;
   if (avatar)

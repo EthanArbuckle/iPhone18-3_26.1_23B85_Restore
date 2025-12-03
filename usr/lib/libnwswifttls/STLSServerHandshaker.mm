@@ -1,28 +1,28 @@
 @interface STLSServerHandshaker
 - (BOOL)getEarlyDataAccepted;
 - (_TtC10nwswifttls20STLSServerHandshaker)init;
-- (id)continueHandshake:(id)a3;
-- (id)getEncryptionSecretWithWrite:(BOOL)a3;
+- (id)continueHandshake:(id)handshake;
+- (id)getEncryptionSecretWithWrite:(BOOL)write;
 - (id)getNegotiatedGroup;
 - (id)getPeerQUICTransportParameters;
-- (id)init:(id)a3 quicTransportParameters:(id)a4 alpn:(id)a5 pakeContext:(id)a6 pakeClientIdentity:(id)a7 pakeServerIdentity:(id)a8 pakePasswordVerifier:(id)a9;
-- (id)init:(id)a3 serverKey:(__SecKey *)a4 quicTransportParameters:(id)a5 alpn:(id)a6;
-- (id)init:(id)a3 serverKey:(__SecKey *)a4 quicTransportParameters:(id)a5 alpn:(id)a6 EPSKs:(id)a7 rawEPSKsEnabled:(BOOL)a8 epskSelectionBlock:(id)a9 enableEarlyData:(BOOL)a10;
+- (id)init:(id)init quicTransportParameters:(id)parameters alpn:(id)alpn pakeContext:(id)context pakeClientIdentity:(id)identity pakeServerIdentity:(id)serverIdentity pakePasswordVerifier:(id)verifier;
+- (id)init:(id)init serverKey:(__SecKey *)key quicTransportParameters:(id)parameters alpn:(id)alpn;
+- (id)init:(id)init serverKey:(__SecKey *)key quicTransportParameters:(id)parameters alpn:(id)alpn EPSKs:(id)ks rawEPSKsEnabled:(BOOL)enabled epskSelectionBlock:(id)block enableEarlyData:(BOOL)self0;
 - (int)getErrorCode;
-- (int64_t)getEncryptionLevelWithWrite:(BOOL)a3;
+- (int64_t)getEncryptionLevelWithWrite:(BOOL)write;
 @end
 
 @implementation STLSServerHandshaker
 
-- (id)init:(id)a3 serverKey:(__SecKey *)a4 quicTransportParameters:(id)a5 alpn:(id)a6 EPSKs:(id)a7 rawEPSKsEnabled:(BOOL)a8 epskSelectionBlock:(id)a9 enableEarlyData:(BOOL)a10
+- (id)init:(id)init serverKey:(__SecKey *)key quicTransportParameters:(id)parameters alpn:(id)alpn EPSKs:(id)ks rawEPSKsEnabled:(BOOL)enabled epskSelectionBlock:(id)block enableEarlyData:(BOOL)self0
 {
-  v28 = a8;
+  enabledCopy = enabled;
   ObjectType = swift_getObjectType();
-  v17 = _Block_copy(a9);
-  if (a7)
+  v17 = _Block_copy(block);
+  if (ks)
   {
     type metadata accessor for SwiftTLSExternalPreSharedKey(0, &lazy cache variable for type metadata for SwiftTLSExternalPreSharedKey, off_1E7B2E030);
-    a7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    ks = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
   if (v17)
@@ -38,11 +38,11 @@
   }
 
   v19 = objc_allocWithZone(ObjectType);
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = a6;
-  v24 = STLSServerHandshaker.init(_:serverKey:quicTransportParameters:alpn:EPSKs:epskSelectionBlock:useRawEPSKs:pakeServerConfiguration:enableEarlyData:)(a3, a4, a5, a6, a7, v17, v18, v28, 0, a10);
+  initCopy = init;
+  keyCopy = key;
+  parametersCopy = parameters;
+  alpnCopy = alpn;
+  v24 = STLSServerHandshaker.init(_:serverKey:quicTransportParameters:alpn:EPSKs:epskSelectionBlock:useRawEPSKs:pakeServerConfiguration:enableEarlyData:)(init, key, parameters, alpn, ks, v17, v18, enabledCopy, 0, data);
   swift_getObjectType();
   v25 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x30);
   v26 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x34);
@@ -50,14 +50,14 @@
   return v24;
 }
 
-- (id)init:(id)a3 serverKey:(__SecKey *)a4 quicTransportParameters:(id)a5 alpn:(id)a6
+- (id)init:(id)init serverKey:(__SecKey *)key quicTransportParameters:(id)parameters alpn:(id)alpn
 {
   v11 = objc_allocWithZone(swift_getObjectType());
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = STLSServerHandshaker.init(_:serverKey:quicTransportParameters:alpn:EPSKs:epskSelectionBlock:useRawEPSKs:pakeServerConfiguration:enableEarlyData:)(a3, a4, a5, a6, 0, 0, 0, 0, 0, 0);
+  initCopy = init;
+  keyCopy = key;
+  parametersCopy = parameters;
+  alpnCopy = alpn;
+  v16 = STLSServerHandshaker.init(_:serverKey:quicTransportParameters:alpn:EPSKs:epskSelectionBlock:useRawEPSKs:pakeServerConfiguration:enableEarlyData:)(init, key, parameters, alpn, 0, 0, 0, 0, 0, 0);
   swift_getObjectType();
   v17 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x30);
   v18 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x34);
@@ -65,19 +65,19 @@
   return v16;
 }
 
-- (id)init:(id)a3 quicTransportParameters:(id)a4 alpn:(id)a5 pakeContext:(id)a6 pakeClientIdentity:(id)a7 pakeServerIdentity:(id)a8 pakePasswordVerifier:(id)a9
+- (id)init:(id)init quicTransportParameters:(id)parameters alpn:(id)alpn pakeContext:(id)context pakeClientIdentity:(id)identity pakeServerIdentity:(id)serverIdentity pakePasswordVerifier:(id)verifier
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  return STLSServerHandshaker.init(_:quicTransportParameters:alpn:pakeContext:pakeClientIdentity:pakeServerIdentity:pakePasswordVerifier:)(a3, a4, a5, a6, a7, a8, a9);
+  initCopy = init;
+  parametersCopy = parameters;
+  alpnCopy = alpn;
+  return STLSServerHandshaker.init(_:quicTransportParameters:alpn:pakeContext:pakeClientIdentity:pakeServerIdentity:pakePasswordVerifier:)(init, parameters, alpn, context, identity, serverIdentity, verifier);
 }
 
-- (id)continueHandshake:(id)a3
+- (id)continueHandshake:(id)handshake
 {
-  v5 = a3;
-  v6 = self;
-  v10.value.super.isa = a3;
+  handshakeCopy = handshake;
+  selfCopy = self;
+  v10.value.super.isa = handshake;
   v7 = STLSServerHandshaker.continueHandshake(_:)(v10);
 
   return v7;
@@ -85,31 +85,31 @@
 
 - (int)getErrorCode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STLSServerHandshaker.getErrorCode()();
 
   return v3;
 }
 
-- (int64_t)getEncryptionLevelWithWrite:(BOOL)a3
+- (int64_t)getEncryptionLevelWithWrite:(BOOL)write
 {
-  v4 = self;
-  v5 = STLSServerHandshaker.getEncryptionLevel(write:)(a3);
+  selfCopy = self;
+  v5 = STLSServerHandshaker.getEncryptionLevel(write:)(write);
 
   return v5;
 }
 
-- (id)getEncryptionSecretWithWrite:(BOOL)a3
+- (id)getEncryptionSecretWithWrite:(BOOL)write
 {
-  v4 = self;
-  v5 = STLSServerHandshaker.getEncryptionSecret(write:)(a3);
+  selfCopy = self;
+  v5 = STLSServerHandshaker.getEncryptionSecret(write:)(write);
 
   return v5;
 }
 
 - (id)getPeerQUICTransportParameters
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STLSServerHandshaker.getPeerQUICTransportParameters()();
 
   return v3;
@@ -133,7 +133,7 @@
 
   else
   {
-    v10 = self;
+    selfCopy = self;
     v11 = ServerHandshakeStateMachine.negotiatedGroup.getter();
     v13 = v12;
     outlined destroy of ServerHandshakeStateMachine(v6, type metadata accessor for ServerHandshakeStateMachine);

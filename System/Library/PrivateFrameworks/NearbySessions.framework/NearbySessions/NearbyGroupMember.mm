@@ -1,18 +1,18 @@
 @interface NearbyGroupMember
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_TtC14NearbySessions17NearbyGroupMember)init;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NearbyGroupMember
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -21,7 +21,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = NearbyGroupMember.isEqual(_:)(v8);
@@ -32,17 +32,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = NearbyGroupMember.hash.getter();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  NearbyGroupMember.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  NearbyGroupMember.encode(with:)(coderCopy);
 }
 
 - (_TtC14NearbySessions17NearbyGroupMember)init
@@ -54,7 +54,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = NearbyGroupMember.description.getter();
   v5 = v4;
 

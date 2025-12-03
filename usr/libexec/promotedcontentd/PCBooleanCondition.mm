@@ -1,6 +1,6 @@
 @interface PCBooleanCondition
-- (PCBooleanCondition)initWithType:(id)a3 value:(id)a4 identifier:(id)a5;
-- (id)shortCircuitBundleIdentifier:(id)a3 condition:(id)a4;
+- (PCBooleanCondition)initWithType:(id)type value:(id)value identifier:(id)identifier;
+- (id)shortCircuitBundleIdentifier:(id)identifier condition:(id)condition;
 - (id)storageRepresentation;
 @end
 
@@ -9,29 +9,29 @@
 - (id)storageRepresentation
 {
   v3 = +[APIDAccountProvider privateUserAccount];
-  v4 = [v3 iTunesDSID];
-  v5 = [(PCBooleanCondition *)self type];
-  v6 = [(PCBooleanCondition *)self value];
-  v7 = [(PCBooleanCondition *)self identifier];
-  v8 = [NSString stringWithFormat:@"%@%@%@%@", v4, v5, v6, v7];
+  iTunesDSID = [v3 iTunesDSID];
+  type = [(PCBooleanCondition *)self type];
+  value = [(PCBooleanCondition *)self value];
+  identifier = [(PCBooleanCondition *)self identifier];
+  v8 = [NSString stringWithFormat:@"%@%@%@%@", iTunesDSID, type, value, identifier];
 
   return v8;
 }
 
-- (PCBooleanCondition)initWithType:(id)a3 value:(id)a4 identifier:(id)a5
+- (PCBooleanCondition)initWithType:(id)type value:(id)value identifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  valueCopy = value;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = PCBooleanCondition;
   v12 = [(PCBooleanCondition *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_type, a3);
-    objc_storeStrong(&v13->_value, a4);
-    v14 = [(PCBooleanCondition *)v13 shortCircuitBundleIdentifier:v11 condition:v10];
+    objc_storeStrong(&v12->_type, type);
+    objc_storeStrong(&v13->_value, value);
+    v14 = [(PCBooleanCondition *)v13 shortCircuitBundleIdentifier:identifierCopy condition:valueCopy];
     identifier = v13->_identifier;
     v13->_identifier = v14;
   }
@@ -39,15 +39,15 @@
   return v13;
 }
 
-- (id)shortCircuitBundleIdentifier:(id)a3 condition:(id)a4
+- (id)shortCircuitBundleIdentifier:(id)identifier condition:(id)condition
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [&off_100494820 objectForKey:v5];
+  identifierCopy = identifier;
+  conditionCopy = condition;
+  v7 = [&off_100494820 objectForKey:identifierCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 objectForKey:v6];
+    v9 = [v7 objectForKey:conditionCopy];
     v10 = v9;
     if (v9)
     {
@@ -56,7 +56,7 @@
 
     else
     {
-      v11 = v5;
+      v11 = identifierCopy;
     }
 
     v12 = v11;
@@ -64,7 +64,7 @@
 
   else
   {
-    v12 = v5;
+    v12 = identifierCopy;
   }
 
   return v12;

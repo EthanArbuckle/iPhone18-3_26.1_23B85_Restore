@@ -1,12 +1,12 @@
 @interface NFLookbackReaderRestrictor
 - (BOOL)loadCustomDefaults;
 - (BOOL)loadDefaultValues;
-- (NFLookbackReaderRestrictor)initWithThermalMonitor:(id)a3 delegate:(id)a4;
+- (NFLookbackReaderRestrictor)initWithThermalMonitor:(id)monitor delegate:(id)delegate;
 - (double)getCooloffTime;
 - (double)maxReaderTime;
-- (id)_allOperationsSince:(double)a3 referenceTime:(id)a4;
+- (id)_allOperationsSince:(double)since referenceTime:(id)time;
 - (id)description;
-- (void)_getReaderOnTime:(double *)a3 andOff:(double *)a4 since:(double)a5 referenceTime:(id)a6;
+- (void)_getReaderOnTime:(double *)time andOff:(double *)off since:(double)since referenceTime:(id)referenceTime;
 - (void)dealloc;
 @end
 
@@ -306,11 +306,11 @@ LABEL_31:
   return v14;
 }
 
-- (NFLookbackReaderRestrictor)initWithThermalMonitor:(id)a3 delegate:(id)a4
+- (NFLookbackReaderRestrictor)initWithThermalMonitor:(id)monitor delegate:(id)delegate
 {
   v20.receiver = self;
   v20.super_class = NFLookbackReaderRestrictor;
-  v5 = [(NFReaderRestrictor *)&v20 initWithThermalMonitor:a3 delegate:a4];
+  v5 = [(NFReaderRestrictor *)&v20 initWithThermalMonitor:monitor delegate:delegate];
   if (!v5)
   {
     goto LABEL_16;
@@ -423,13 +423,13 @@ LABEL_17:
 
 - (double)maxReaderTime
 {
-  v3 = [(NFReaderRestrictor *)self thermalPressureNominal];
+  thermalPressureNominal = [(NFReaderRestrictor *)self thermalPressureNominal];
   result = 20.0;
-  if ((v3 & 1) == 0)
+  if ((thermalPressureNominal & 1) == 0)
   {
-    v5 = [(NFReaderRestrictor *)self thermalPressureBackoff];
+    thermalPressureBackoff = [(NFReaderRestrictor *)self thermalPressureBackoff];
     result = 0.0;
-    if (v5)
+    if (thermalPressureBackoff)
     {
       return 7.0;
     }
@@ -438,19 +438,19 @@ LABEL_17:
   return result;
 }
 
-- (id)_allOperationsSince:(double)a3 referenceTime:(id)a4
+- (id)_allOperationsSince:(double)since referenceTime:(id)time
 {
-  v6 = a4;
-  v7 = [(NFReaderRestrictor *)self readerOperations];
-  v8 = [v7 reverseObjectEnumerator];
-  v9 = [v8 allObjects];
+  timeCopy = time;
+  readerOperations = [(NFReaderRestrictor *)self readerOperations];
+  reverseObjectEnumerator = [readerOperations reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v10 = objc_opt_new();
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v11 = v9;
+  v11 = allObjects;
   v12 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v12)
   {
@@ -478,10 +478,10 @@ LABEL_17:
         }
 
         v18 = v17;
-        [v6 timeIntervalSinceDate:{v18, v26}];
+        [timeCopy timeIntervalSinceDate:{v18, v26}];
         v20 = v19;
 
-        if (v20 > a3)
+        if (v20 > since)
         {
           if (v16)
           {
@@ -525,10 +525,10 @@ LABEL_18:
   return v10;
 }
 
-- (void)_getReaderOnTime:(double *)a3 andOff:(double *)a4 since:(double)a5 referenceTime:(id)a6
+- (void)_getReaderOnTime:(double *)time andOff:(double *)off since:(double)since referenceTime:(id)referenceTime
 {
-  v10 = a6;
-  v11 = [(NFLookbackReaderRestrictor *)self _allOperationsSince:v10 referenceTime:a5];
+  referenceTimeCopy = referenceTime;
+  v11 = [(NFLookbackReaderRestrictor *)self _allOperationsSince:referenceTimeCopy referenceTime:since];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -537,9 +537,9 @@ LABEL_18:
   if (v12)
   {
     v13 = v12;
-    v37 = a3;
-    v38 = a4;
-    v39 = v10;
+    timeCopy = time;
+    offCopy = off;
+    v39 = referenceTimeCopy;
     v14 = 0;
     v15 = 0;
     v16 = *v41;
@@ -652,15 +652,15 @@ LABEL_18:
     }
 
     while (v33);
-    v10 = v39;
+    referenceTimeCopy = v39;
     if (v14)
     {
       [v39 timeIntervalSinceDate:v14];
       v18 = v34 + v18;
     }
 
-    a3 = v37;
-    a4 = v38;
+    time = timeCopy;
+    off = offCopy;
   }
 
   else
@@ -671,39 +671,39 @@ LABEL_18:
     v18 = 0.0;
   }
 
-  if ((v17 + v18) >= a5)
+  if ((v17 + v18) >= since)
   {
     v36 = v17;
   }
 
   else
   {
-    v35 = a5 - v18;
+    v35 = since - v18;
     v36 = v35;
   }
 
-  *a3 = v18;
-  *a4 = v36;
+  *time = v18;
+  *off = v36;
 }
 
 - (double)getCooloffTime
 {
   v18.receiver = self;
   v18.super_class = NFLookbackReaderRestrictor;
-  v3 = [(NFReaderRestrictor *)&v18 currentTestTime];
-  if (v3)
+  currentTestTime = [(NFReaderRestrictor *)&v18 currentTestTime];
+  if (currentTestTime)
   {
     v17.receiver = self;
     v17.super_class = NFLookbackReaderRestrictor;
-    v4 = [(NFReaderRestrictor *)&v17 currentTestTime];
+    currentTestTime2 = [(NFReaderRestrictor *)&v17 currentTestTime];
   }
 
   else
   {
-    v4 = [NSDate dateWithTimeIntervalSinceNow:0.0];
+    currentTestTime2 = [NSDate dateWithTimeIntervalSinceNow:0.0];
   }
 
-  v5 = v4;
+  v5 = currentTestTime2;
 
   if (self->_maxTimeWindows < 1)
   {
@@ -793,20 +793,20 @@ LABEL_23:
 
   v24.receiver = self;
   v24.super_class = NFLookbackReaderRestrictor;
-  v5 = [(NFReaderRestrictor *)&v24 currentTestTime];
-  if (v5)
+  currentTestTime = [(NFReaderRestrictor *)&v24 currentTestTime];
+  if (currentTestTime)
   {
     v23.receiver = self;
     v23.super_class = NFLookbackReaderRestrictor;
-    v6 = [(NFReaderRestrictor *)&v23 currentTestTime];
+    currentTestTime2 = [(NFReaderRestrictor *)&v23 currentTestTime];
   }
 
   else
   {
-    v6 = [NSDate dateWithTimeIntervalSinceNow:0.0];
+    currentTestTime2 = [NSDate dateWithTimeIntervalSinceNow:0.0];
   }
 
-  v7 = v6;
+  v7 = currentTestTime2;
 
   [v4 appendFormat:@"\n\t Time Windows = {"];
   if (self->_maxTimeWindows >= 1)
@@ -872,13 +872,13 @@ LABEL_23:
       v13 = self->_timeWindows[v12];
       v21 = 0.0;
       v22 = 0.0;
-      v14 = [(NFReaderRestrictor *)self thermalPressureCritical];
+      thermalPressureCritical = [(NFReaderRestrictor *)self thermalPressureCritical];
       v15 = &OBJC_IVAR___NFLookbackReaderRestrictor__maxOnTimesCritical;
-      if ((v14 & 1) == 0)
+      if ((thermalPressureCritical & 1) == 0)
       {
-        v16 = [(NFReaderRestrictor *)self thermalPressureBackoff];
+        thermalPressureBackoff = [(NFReaderRestrictor *)self thermalPressureBackoff];
         v17 = 2;
-        if (v16)
+        if (thermalPressureBackoff)
         {
           v17 = 3;
         }
@@ -905,8 +905,8 @@ LABEL_23:
   }
 
   [v4 appendFormat:@"}\n"];
-  v19 = [(NFReaderRestrictor *)self readerOperations];
-  [v4 appendFormat:@"\t Operations = %@", v19];
+  readerOperations = [(NFReaderRestrictor *)self readerOperations];
+  [v4 appendFormat:@"\t Operations = %@", readerOperations];
 
   return v4;
 }

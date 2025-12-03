@@ -1,26 +1,26 @@
 @interface TSPCompression
-+ (id)nameForAlgorithm:(int64_t)a3;
-+ (unint64_t)componentReadVersionForCompressionAlgorithm:(int64_t)a3;
++ (id)nameForAlgorithm:(int64_t)algorithm;
++ (unint64_t)componentReadVersionForCompressionAlgorithm:(int64_t)algorithm;
 @end
 
 @implementation TSPCompression
 
-+ (id)nameForAlgorithm:(int64_t)a3
++ (id)nameForAlgorithm:(int64_t)algorithm
 {
-  if (a3 > 5)
+  if (algorithm > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_27A6E4260[a3];
+    return off_27A6E4260[algorithm];
   }
 }
 
-+ (unint64_t)componentReadVersionForCompressionAlgorithm:(int64_t)a3
++ (unint64_t)componentReadVersionForCompressionAlgorithm:(int64_t)algorithm
 {
-  if ((a3 - 1) >= 5)
+  if ((algorithm - 1) >= 5)
   {
     return 0;
   }

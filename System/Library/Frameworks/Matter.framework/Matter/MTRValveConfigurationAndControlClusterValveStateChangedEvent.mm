@@ -1,6 +1,6 @@
 @interface MTRValveConfigurationAndControlClusterValveStateChangedEvent
 - (MTRValveConfigurationAndControlClusterValveStateChangedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRValveConfigurationAndControlClusterValveStateChangedEvent);
-  v5 = [(MTRValveConfigurationAndControlClusterValveStateChangedEvent *)self valveState];
-  [(MTRValveConfigurationAndControlClusterValveStateChangedEvent *)v4 setValveState:v5];
+  valveState = [(MTRValveConfigurationAndControlClusterValveStateChangedEvent *)self valveState];
+  [(MTRValveConfigurationAndControlClusterValveStateChangedEvent *)v4 setValveState:valveState];
 
-  v6 = [(MTRValveConfigurationAndControlClusterValveStateChangedEvent *)self valveLevel];
-  [(MTRValveConfigurationAndControlClusterValveStateChangedEvent *)v4 setValveLevel:v6];
+  valveLevel = [(MTRValveConfigurationAndControlClusterValveStateChangedEvent *)self valveLevel];
+  [(MTRValveConfigurationAndControlClusterValveStateChangedEvent *)v4 setValveLevel:valveLevel];
 
   return v4;
 }

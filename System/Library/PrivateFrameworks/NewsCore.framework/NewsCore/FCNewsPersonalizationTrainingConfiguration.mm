@@ -1,52 +1,52 @@
 @interface FCNewsPersonalizationTrainingConfiguration
-- (FCNewsPersonalizationTrainingConfiguration)initWithDictionary:(id)a3;
+- (FCNewsPersonalizationTrainingConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation FCNewsPersonalizationTrainingConfiguration
 
-- (FCNewsPersonalizationTrainingConfiguration)initWithDictionary:(id)a3
+- (FCNewsPersonalizationTrainingConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = FCNewsPersonalizationTrainingConfiguration;
   v5 = [(FCNewsPersonalizationTrainingConfiguration *)&v33 init];
   if (v5)
   {
-    v6 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"eventConditionals", 0);
+    v6 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"eventConditionals", 0);
     v7 = [[FCNewsPersonalizationEventConditionalsConfigurations alloc] initWithDictionary:v6];
     eventConditionalsConfigurations = v5->_eventConditionalsConfigurations;
     v5->_eventConditionalsConfigurations = v7;
 
-    v9 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"aggregateModificationConfigurations", 0);
+    v9 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"aggregateModificationConfigurations", 0);
     v10 = [[FCNewsPersonalizationAggregateModificationConfigurations alloc] initWithDictionary:v9];
     aggregateModificationConfigurations = v5->_aggregateModificationConfigurations;
     v5->_aggregateModificationConfigurations = v10;
 
-    v12 = FCAppConfigurationNumberValue(v4, @"decayRate", 0);
+    v12 = FCAppConfigurationNumberValue(dictionaryCopy, @"decayRate", 0);
     if (v12)
     {
       v13 = v12;
       [v12 doubleValue];
       v5->_decayRate = v14;
-      v15 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"featurePriors", 0);
+      v15 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"featurePriors", 0);
       v16 = [[FCNewsPersonalizationFeaturePriorsConfiguration alloc] initWithDictionary:v15];
       if (v16)
       {
         objc_storeStrong(&v5->_priorsConfiguration, v16);
         v17 = [FCNewsPersonalizationTrainingBiases alloc];
-        v18 = FCAppConfigurationArrayValueWithDefaultValue(v4, @"biases", 0);
+        v18 = FCAppConfigurationArrayValueWithDefaultValue(dictionaryCopy, @"biases", 0);
         v19 = [(FCNewsPersonalizationTrainingBiases *)v17 initWithBiases:v18];
         biases = v5->_biases;
         v5->_biases = v19;
 
         v21 = [FCNewsPersonalizationTrainingFeatureFlags alloc];
-        v22 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"featureFlags", 0);
+        v22 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"featureFlags", 0);
         v23 = [(FCNewsPersonalizationTrainingFeatureFlags *)v21 initWithDictionary:v22];
         featureFlags = v5->_featureFlags;
         v5->_featureFlags = v23;
 
-        v25 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"legacyBridgeConfiguration", 0);
+        v25 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"legacyBridgeConfiguration", 0);
         v26 = [[FCNewsPersonalizationTrainingLegacyBridgeConfiguration alloc] initWithDictionary:v25];
         legacyBridgeConfiguration = v5->_legacyBridgeConfiguration;
         v5->_legacyBridgeConfiguration = v26;
@@ -59,7 +59,7 @@
 
         else
         {
-          v5->_disableTrainingLegacyAggregates = FCAppConfigurationBoolValue(v4, @"disableTrainingLegacyAggregates", 0);
+          v5->_disableTrainingLegacyAggregates = FCAppConfigurationBoolValue(dictionaryCopy, @"disableTrainingLegacyAggregates", 0);
         }
 
         if (v16)
@@ -86,25 +86,25 @@ LABEL_13:
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsPersonalizationTrainingConfiguration *)self eventConditionalsConfigurations];
-  [v3 appendFormat:@"; eventConditionalsConfigurations: %@", v4];
+  eventConditionalsConfigurations = [(FCNewsPersonalizationTrainingConfiguration *)self eventConditionalsConfigurations];
+  [v3 appendFormat:@"; eventConditionalsConfigurations: %@", eventConditionalsConfigurations];
 
-  v5 = [(FCNewsPersonalizationTrainingConfiguration *)self aggregateModificationConfigurations];
-  [v3 appendFormat:@"; aggregateModificationConfigurations: %@", v5];
+  aggregateModificationConfigurations = [(FCNewsPersonalizationTrainingConfiguration *)self aggregateModificationConfigurations];
+  [v3 appendFormat:@"; aggregateModificationConfigurations: %@", aggregateModificationConfigurations];
 
   [(FCNewsPersonalizationTrainingConfiguration *)self decayRate];
   [v3 appendFormat:@"; decayRate: %f", v6];
-  v7 = [(FCNewsPersonalizationTrainingConfiguration *)self priorsConfiguration];
-  [v3 appendFormat:@"; priorsConfiguration: %@", v7];
+  priorsConfiguration = [(FCNewsPersonalizationTrainingConfiguration *)self priorsConfiguration];
+  [v3 appendFormat:@"; priorsConfiguration: %@", priorsConfiguration];
 
-  v8 = [(FCNewsPersonalizationTrainingConfiguration *)self biases];
-  [v3 appendFormat:@"; biases: %@", v8];
+  biases = [(FCNewsPersonalizationTrainingConfiguration *)self biases];
+  [v3 appendFormat:@"; biases: %@", biases];
 
-  v9 = [(FCNewsPersonalizationTrainingConfiguration *)self featureFlags];
-  [v3 appendFormat:@"; featureFlags: %@", v9];
+  featureFlags = [(FCNewsPersonalizationTrainingConfiguration *)self featureFlags];
+  [v3 appendFormat:@"; featureFlags: %@", featureFlags];
 
-  v10 = [(FCNewsPersonalizationTrainingConfiguration *)self legacyBridgeConfiguration];
-  [v3 appendFormat:@"; legacyBridgeConfiguration: %@", v10];
+  legacyBridgeConfiguration = [(FCNewsPersonalizationTrainingConfiguration *)self legacyBridgeConfiguration];
+  [v3 appendFormat:@"; legacyBridgeConfiguration: %@", legacyBridgeConfiguration];
 
   [v3 appendFormat:@"; disableTrainingLegacyAggregates: %d", -[FCNewsPersonalizationTrainingConfiguration disableTrainingLegacyAggregates](self, "disableTrainingLegacyAggregates")];
   [v3 appendString:@">"];

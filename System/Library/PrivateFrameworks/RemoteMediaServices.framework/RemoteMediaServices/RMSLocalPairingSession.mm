@@ -1,18 +1,18 @@
 @interface RMSLocalPairingSession
 - (RMSLocalPairingSession)init;
 - (RMSPairingSessionDelegate)delegate;
-- (id)_expectedPasscodeHashForPasscode:(id)a3 publicKey:(id)a4;
+- (id)_expectedPasscodeHashForPasscode:(id)passcode publicKey:(id)key;
 - (id)_pairingNetServiceName;
-- (void)_startBonjourAdvertisingWithPublicKey:(id)a3 httpServerPort:(unsigned __int16)a4;
+- (void)_startBonjourAdvertisingWithPublicKey:(id)key httpServerPort:(unsigned __int16)port;
 - (void)beginPairing;
 - (void)dealloc;
 - (void)endPairing;
-- (void)netService:(id)a3 didNotPublish:(id)a4;
-- (void)netServiceDidPublish:(id)a3;
-- (void)netServiceDidStop:(id)a3;
-- (void)pairingServer:(id)a3 didPairWithService:(id)a4 pairingGUID:(id)a5;
-- (void)pairingServerDidFail:(id)a3;
-- (void)unpairService:(id)a3 completionHandler:(id)a4;
+- (void)netService:(id)service didNotPublish:(id)publish;
+- (void)netServiceDidPublish:(id)publish;
+- (void)netServiceDidStop:(id)stop;
+- (void)pairingServer:(id)server didPairWithService:(id)service pairingGUID:(id)d;
+- (void)pairingServerDidFail:(id)fail;
+- (void)unpairService:(id)service completionHandler:(id)handler;
 @end
 
 @implementation RMSLocalPairingSession
@@ -24,8 +24,8 @@
   v2 = [(RMSLocalPairingSession *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCA8D8] mainBundle];
-    v4 = [v3 objectForInfoDictionaryKey:@"CFBundleName"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v4 = [mainBundle objectForInfoDictionaryKey:@"CFBundleName"];
     advertisedAppName = v2->_advertisedAppName;
     v2->_advertisedAppName = v4;
 
@@ -43,9 +43,9 @@
 
 - (void)dealloc
 {
-  v3 = [__netService delegate];
+  delegate = [__netService delegate];
 
-  if (v3 == self)
+  if (delegate == self)
   {
     [__netService stop];
     v4 = __netService;
@@ -66,7 +66,7 @@
     self->_passcode = v3;
   }
 
-  v9 = [(RMSLocalPairingSession *)self _generatePublicKey];
+  _generatePublicKey = [(RMSLocalPairingSession *)self _generatePublicKey];
   v5 = [(RMSLocalPairingSession *)self _expectedPasscodeHashForPasscode:self->_passcode publicKey:?];
   v6 = objc_opt_new();
   pairingServer = self->_pairingServer;
@@ -75,7 +75,7 @@
   [(RMSPairingServer *)self->_pairingServer setDelegate:self];
   if ([(RMSPairingServer *)self->_pairingServer startServerWithExpectedPasscodeHash:v5 advertisedDeviceName:self->_advertisedDeviceName advertisedDeviceModel:self->_advertisedDeviceModel])
   {
-    [(RMSLocalPairingSession *)self _startBonjourAdvertisingWithPublicKey:v9 httpServerPort:[(RMSPairingServer *)self->_pairingServer port]];
+    [(RMSLocalPairingSession *)self _startBonjourAdvertisingWithPublicKey:_generatePublicKey httpServerPort:[(RMSPairingServer *)self->_pairingServer port]];
   }
 
   else
@@ -93,15 +93,15 @@
   [v2 stop];
 }
 
-- (void)unpairService:(id)a3 completionHandler:(id)a4
+- (void)unpairService:(id)service completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)netServiceDidPublish:(id)a3
+- (void)netServiceDidPublish:(id)publish
 {
   v4 = RMSLogger();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -120,14 +120,14 @@
   }
 }
 
-- (void)netService:(id)a3 didNotPublish:(id)a4
+- (void)netService:(id)service didNotPublish:(id)publish
 {
-  [(RMSPairingServer *)self->_pairingServer stopServer:a3];
+  [(RMSPairingServer *)self->_pairingServer stopServer:service];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained pairingSessionDidFail:self];
 }
 
-- (void)netServiceDidStop:(id)a3
+- (void)netServiceDidStop:(id)stop
 {
   v3 = RMSLogger();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -140,44 +140,44 @@
   __netService = 0;
 }
 
-- (void)pairingServer:(id)a3 didPairWithService:(id)a4 pairingGUID:(id)a5
+- (void)pairingServer:(id)server didPairWithService:(id)service pairingGUID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  serviceCopy = service;
+  dCopy = d;
   v9 = RMSLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v7;
+    v12 = serviceCopy;
     v13 = 2112;
-    v14 = v8;
+    v14 = dCopy;
     _os_log_impl(&dword_261E98000, v9, OS_LOG_TYPE_DEFAULT, "Pairing server successfully paired, serviceName=[%@] pairingGUID=[%@]", &v11, 0x16u);
   }
 
   [(RMSLocalPairingSession *)self endPairing];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained pairingSession:self didPairWithServiceNetworkName:v7 pairingGUID:v8];
+  [WeakRetained pairingSession:self didPairWithServiceNetworkName:serviceCopy pairingGUID:dCopy];
 }
 
-- (void)pairingServerDidFail:(id)a3
+- (void)pairingServerDidFail:(id)fail
 {
   [(RMSLocalPairingSession *)self endPairing];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained pairingSessionDidFail:self];
 }
 
-- (void)_startBonjourAdvertisingWithPublicKey:(id)a3 httpServerPort:(unsigned __int16)a4
+- (void)_startBonjourAdvertisingWithPublicKey:(id)key httpServerPort:(unsigned __int16)port
 {
-  v6 = a3;
+  keyCopy = key;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__RMSLocalPairingSession__startBonjourAdvertisingWithPublicKey_httpServerPort___block_invoke;
   block[3] = &unk_279B08C28;
   block[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = keyCopy;
+  portCopy = port;
+  v7 = keyCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -220,20 +220,20 @@ void __79__RMSLocalPairingSession__startBonjourAdvertisingWithPublicKey_httpServ
   [__netService publish];
 }
 
-- (id)_expectedPasscodeHashForPasscode:(id)a3 publicKey:(id)a4
+- (id)_expectedPasscodeHashForPasscode:(id)passcode publicKey:(id)key
 {
   v15 = *MEMORY[0x277D85DE8];
   memset(c, 0, 92);
-  v5 = a4;
+  keyCopy = key;
   CC_MD5_Init(c);
-  v6 = [v5 UTF8String];
-  v7 = [v5 lengthOfBytesUsingEncoding:4];
+  uTF8String = [keyCopy UTF8String];
+  v7 = [keyCopy lengthOfBytesUsingEncoding:4];
 
-  CC_MD5_Update(c, v6, v7);
-  v8 = [(RMSLocalPairingSession *)self passcode];
-  v9 = [v8 cStringUsingEncoding:10];
-  v10 = [(RMSLocalPairingSession *)self passcode];
-  CC_MD5_Update(c, v9, [v10 lengthOfBytesUsingEncoding:10]);
+  CC_MD5_Update(c, uTF8String, v7);
+  passcode = [(RMSLocalPairingSession *)self passcode];
+  v9 = [passcode cStringUsingEncoding:10];
+  passcode2 = [(RMSLocalPairingSession *)self passcode];
+  CC_MD5_Update(c, v9, [passcode2 lengthOfBytesUsingEncoding:10]);
 
   CC_MD5_Final(md, c);
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X", md[0], md[1], md[2], md[3], md[4], md[5], md[6], md[7], md[8], md[9], md[10], md[11], md[12], md[13], md[14], md[15], *c, *&c[16], *&c[24], *&c[40], *&c[48], *&c[64], *&c[72], *&c[88]];
@@ -243,18 +243,18 @@ void __79__RMSLocalPairingSession__startBonjourAdvertisingWithPublicKey_httpServ
 
 - (id)_pairingNetServiceName
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PairingNetServiceName"];
-  if (!v3)
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  uUIDString = [standardUserDefaults stringForKey:@"PairingNetServiceName"];
+  if (!uUIDString)
   {
-    v4 = [MEMORY[0x277CCAD78] UUID];
-    v3 = [v4 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    [v2 setValue:v3 forKey:@"PairingNetServiceName"];
-    [v2 synchronize];
+    [standardUserDefaults setValue:uUIDString forKey:@"PairingNetServiceName"];
+    [standardUserDefaults synchronize];
   }
 
-  return v3;
+  return uUIDString;
 }
 
 - (RMSPairingSessionDelegate)delegate

@@ -1,24 +1,24 @@
 @interface SanityTaskServer
 + (id)taskIdentifier;
-- (_TtC25FitnessIntelligencePlugin16SanityTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (_TtC25FitnessIntelligencePlugin16SanityTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (id)exportedInterface;
 - (id)remoteInterface;
-- (void)queryMismatchingCheckpointsWithCompletion:(id)a3;
+- (void)queryMismatchingCheckpointsWithCompletion:(id)completion;
 @end
 
 @implementation SanityTaskServer
 
-- (_TtC25FitnessIntelligencePlugin16SanityTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (_TtC25FitnessIntelligencePlugin16SanityTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
   v9 = sub_749B8();
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v17 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_74998();
-  v13 = a4;
-  v14 = a5;
+  configurationCopy = configuration;
+  clientCopy = client;
   swift_unknownObjectRetain();
-  v15 = sub_16F58(v12, a4, v14, a6);
+  v15 = sub_16F58(v12, configuration, clientCopy, delegate);
 
   swift_unknownObjectRelease();
   return v15;
@@ -46,12 +46,12 @@
   return v2;
 }
 
-- (void)queryMismatchingCheckpointsWithCompletion:(id)a3
+- (void)queryMismatchingCheckpointsWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   SanityTaskServer.queryMismatchingCheckpoints(completion:)(sub_199A0, v5);
 }
 

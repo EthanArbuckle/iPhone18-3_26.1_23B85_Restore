@@ -1,21 +1,21 @@
 @interface RMSConnectToServiceResponseMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasResponseData:(BOOL)a3;
-- (void)setHasSessionIdentifier:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasResponseData:(BOOL)data;
+- (void)setHasSessionIdentifier:(BOOL)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RMSConnectToServiceResponseMessage
 
-- (void)setHasSessionIdentifier:(BOOL)a3
+- (void)setHasSessionIdentifier:(BOOL)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasResponseData:(BOOL)a3
+- (void)setHasResponseData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
     v3 = 2;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = RMSConnectToServiceResponseMessage;
   v4 = [(RMSConnectToServiceResponseMessage *)&v8 description];
-  v5 = [(RMSConnectToServiceResponseMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(RMSConnectToServiceResponseMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithInt:self->_responseCode];
-    [v3 setObject:v5 forKey:@"responseCode"];
+    [dictionary setObject:v5 forKey:@"responseCode"];
 
     has = self->_has;
   }
@@ -70,28 +70,28 @@
   if ((has & 4) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithInt:self->_sessionIdentifier];
-    [v3 setObject:v6 forKey:@"sessionIdentifier"];
+    [dictionary setObject:v6 forKey:@"sessionIdentifier"];
   }
 
   controlInterface = self->_controlInterface;
   if (controlInterface)
   {
-    v8 = [(RMSControlInterfaceMessage *)controlInterface dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"controlInterface"];
+    dictionaryRepresentation = [(RMSControlInterfaceMessage *)controlInterface dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"controlInterface"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithInt:self->_responseData];
-    [v3 setObject:v9 forKey:@"responseData"];
+    [dictionary setObject:v9 forKey:@"responseData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -115,40 +115,40 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[4] = self->_responseCode;
-    *(v4 + 28) |= 1u;
+    toCopy[4] = self->_responseCode;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    v4[6] = self->_sessionIdentifier;
-    *(v4 + 28) |= 4u;
+    toCopy[6] = self->_sessionIdentifier;
+    *(toCopy + 28) |= 4u;
   }
 
   if (self->_controlInterface)
   {
-    v6 = v4;
-    [v4 setControlInterface:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setControlInterface:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[5] = self->_responseData;
-    *(v4 + 28) |= 2u;
+    toCopy[5] = self->_responseData;
+    *(toCopy + 28) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -164,7 +164,7 @@
     *(v5 + 28) |= 4u;
   }
 
-  v8 = [(RMSControlInterfaceMessage *)self->_controlInterface copyWithZone:a3];
+  v8 = [(RMSControlInterfaceMessage *)self->_controlInterface copyWithZone:zone];
   v9 = *(v6 + 8);
   *(v6 + 8) = v8;
 
@@ -177,10 +177,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
@@ -188,32 +188,32 @@
   has = self->_has;
   if (has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_responseCode != *(v4 + 4))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_responseCode != *(equalCopy + 4))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_sessionIdentifier != *(v4 + 6))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_sessionIdentifier != *(equalCopy + 6))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
     goto LABEL_19;
   }
 
   controlInterface = self->_controlInterface;
-  if (controlInterface | *(v4 + 1))
+  if (controlInterface | *(equalCopy + 1))
   {
     if (![(RMSControlInterfaceMessage *)controlInterface isEqual:?])
     {
@@ -225,10 +225,10 @@ LABEL_19:
     has = self->_has;
   }
 
-  v7 = (*(v4 + 28) & 2) == 0;
+  v7 = (*(equalCopy + 28) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_responseData != *(v4 + 5))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_responseData != *(equalCopy + 5))
     {
       goto LABEL_19;
     }
@@ -279,21 +279,21 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 28);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 28);
   if (v6)
   {
-    self->_responseCode = v4[4];
+    self->_responseCode = fromCopy[4];
     *&self->_has |= 1u;
-    v6 = *(v4 + 28);
+    v6 = *(fromCopy + 28);
   }
 
   if ((v6 & 4) != 0)
   {
-    self->_sessionIdentifier = v4[6];
+    self->_sessionIdentifier = fromCopy[6];
     *&self->_has |= 4u;
   }
 

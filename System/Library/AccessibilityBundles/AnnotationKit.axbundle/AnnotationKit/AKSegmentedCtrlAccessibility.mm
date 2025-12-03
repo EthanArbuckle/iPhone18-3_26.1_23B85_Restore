@@ -1,18 +1,18 @@
 @interface AKSegmentedCtrlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)setTag:(int64_t)a3 forSegment:(unint64_t)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)setTag:(int64_t)tag forSegment:(unint64_t)segment;
 @end
 
 @implementation AKSegmentedCtrlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AKSegmentedCtrl" hasInstanceMethod:@"setTag: forSegment:" withFullSignature:{"v", "q", "Q", 0}];
-  [v3 validateClass:@"AKSegmentedCtrl" hasInstanceMethod:@"segmentAtIndex:" withFullSignature:{"@", "Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AKSegmentedCtrl" hasInstanceMethod:@"setTag: forSegment:" withFullSignature:{"v", "q", "Q", 0}];
+  [validationsCopy validateClass:@"AKSegmentedCtrl" hasInstanceMethod:@"segmentAtIndex:" withFullSignature:{"@", "Q", 0}];
 }
 
-- (void)setTag:(int64_t)a3 forSegment:(unint64_t)a4
+- (void)setTag:(int64_t)tag forSegment:(unint64_t)segment
 {
   v14.receiver = self;
   v14.super_class = AKSegmentedCtrlAccessibility;
@@ -27,9 +27,9 @@
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
-  if (a3 < 4)
+  if (tag < 4)
   {
-    v6 = accessibilityLocalizedString(off_29F29D4F0[a3]);
+    v6 = accessibilityLocalizedString(off_29F29D4F0[tag]);
     if (v6)
     {
       v7 = v6;

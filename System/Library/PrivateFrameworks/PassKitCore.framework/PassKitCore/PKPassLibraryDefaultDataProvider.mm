@@ -1,7 +1,7 @@
 @interface PKPassLibraryDefaultDataProvider
 - (PKPassLibraryDefaultDataProvider)init;
-- (PKPassLibraryDefaultDataProvider)initWithPassLibrary:(id)a3;
-- (void)removePass:(id)a3;
+- (PKPassLibraryDefaultDataProvider)initWithPassLibrary:(id)library;
+- (void)removePass:(id)pass;
 @end
 
 @implementation PKPassLibraryDefaultDataProvider
@@ -14,26 +14,26 @@
   return v4;
 }
 
-- (PKPassLibraryDefaultDataProvider)initWithPassLibrary:(id)a3
+- (PKPassLibraryDefaultDataProvider)initWithPassLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = PKPassLibraryDefaultDataProvider;
   v6 = [(PKPassLibraryDefaultDataProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_library, a3);
+    objc_storeStrong(&v6->_library, library);
   }
 
   return v7;
 }
 
-- (void)removePass:(id)a3
+- (void)removePass:(id)pass
 {
   library = self->_library;
-  v4 = [a3 uniqueID];
-  [(PKPassLibrary *)library removePassWithUniqueID:v4 diagnosticReason:@"Removed via User Interface"];
+  uniqueID = [pass uniqueID];
+  [(PKPassLibrary *)library removePassWithUniqueID:uniqueID diagnosticReason:@"Removed via User Interface"];
 }
 
 @end

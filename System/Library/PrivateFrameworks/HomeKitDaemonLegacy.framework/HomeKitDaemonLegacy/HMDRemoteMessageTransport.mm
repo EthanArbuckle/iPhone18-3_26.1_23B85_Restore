@@ -1,41 +1,41 @@
 @interface HMDRemoteMessageTransport
-+ (id)_createModernTransportForProductInfo:(id)a3 preferences:(id)a4;
++ (id)_createModernTransportForProductInfo:(id)info preferences:(id)preferences;
 + (id)logCategory;
-+ (id)remoteMessageFromMessage:(id)a3 secure:(BOOL)a4 accountRegistry:(id)a5;
-+ (id)remoteMessageTransportsForProductInfo:(id)a3;
-- (BOOL)canSendMessage:(id)a3;
-- (BOOL)doesResponse:(id)a3 matchAllCapabilities:(id)a4;
++ (id)remoteMessageFromMessage:(id)message secure:(BOOL)secure accountRegistry:(id)registry;
++ (id)remoteMessageTransportsForProductInfo:(id)info;
+- (BOOL)canSendMessage:(id)message;
+- (BOOL)doesResponse:(id)response matchAllCapabilities:(id)capabilities;
 - (HMDHomeMembershipVerifier)homeMembershipVerifier;
 - (HMDRemoteMessageTransport)init;
-- (HMDRemoteMessageTransport)initWithAccountRegistry:(id)a3;
+- (HMDRemoteMessageTransport)initWithAccountRegistry:(id)registry;
 - (HMDRemoteMessageTransportReachabilityDelegate)reachabilityDelegate;
 - (double)defaultTimeout;
 - (double)retryInterval;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
-- (id)matchResponse:(id)a3 requestedCapabilities:(id)a4;
-- (id)remoteMessageFromMessage:(id)a3;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
+- (id)matchResponse:(id)response requestedCapabilities:(id)capabilities;
+- (id)remoteMessageFromMessage:(id)message;
 - (id)start;
-- (int64_t)compareCapability:(id)a3 key:(id)a4 withCapability:(id)a5;
+- (int64_t)compareCapability:(id)capability key:(id)key withCapability:(id)withCapability;
 - (unint64_t)numRetries;
-- (void)postDidReceiveRemoteMessageWithNoListenerFromDevice:(id)a3;
+- (void)postDidReceiveRemoteMessageWithNoListenerFromDevice:(id)device;
 @end
 
 @implementation HMDRemoteMessageTransport
 
-+ (id)_createModernTransportForProductInfo:(id)a3 preferences:(id)a4
++ (id)_createModernTransportForProductInfo:(id)info preferences:(id)preferences
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 productPlatform];
-  if (v8 > 5)
+  infoCopy = info;
+  preferencesCopy = preferences;
+  productPlatform = [infoCopy productPlatform];
+  if (productPlatform > 5)
   {
     goto LABEL_7;
   }
 
-  if (((1 << v8) & 0x36) == 0)
+  if (((1 << productPlatform) & 0x36) == 0)
   {
-    if (v8 == 3)
+    if (productPlatform == 3)
     {
 LABEL_10:
       v15 = 0;
@@ -44,7 +44,7 @@ LABEL_10:
 
 LABEL_7:
     v16 = objc_autoreleasePoolPush();
-    v17 = a1;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -59,7 +59,7 @@ LABEL_7:
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = a1;
+  selfCopy2 = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -80,20 +80,20 @@ LABEL_11:
   return v15;
 }
 
-+ (id)remoteMessageTransportsForProductInfo:(id)a3
++ (id)remoteMessageTransportsForProductInfo:(id)info
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  infoCopy = info;
+  if (!infoCopy)
   {
     v21 = 0;
     goto LABEL_51;
   }
 
-  v5 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v6 = [MEMORY[0x277CBEB18] array];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = objc_autoreleasePoolPush();
-  v8 = a1;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -104,16 +104,16 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [v4 productPlatform];
-  if ((v11 - 1) >= 5)
+  productPlatform = [infoCopy productPlatform];
+  if ((productPlatform - 1) >= 5)
   {
-    if (v11)
+    if (productPlatform)
     {
       goto LABEL_20;
     }
 
     v14 = objc_autoreleasePoolPush();
-    v15 = v8;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -129,13 +129,13 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v12 = [v5 preferenceForKey:@"disableIDSTransport"];
-  v13 = [v12 BOOLValue];
+  v12 = [mEMORY[0x277D0F8D0] preferenceForKey:@"disableIDSTransport"];
+  bOOLValue = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = v8;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -164,13 +164,13 @@ LABEL_14:
 
   if (v25)
   {
-    [v6 addObject:v25];
+    [array addObject:v25];
   }
 
   else
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = v8;
+    v27 = selfCopy;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -184,15 +184,15 @@ LABEL_14:
   }
 
 LABEL_20:
-  v30 = [v4 productPlatform];
-  if (v30 <= 5)
+  productPlatform2 = [infoCopy productPlatform];
+  if (productPlatform2 <= 5)
   {
-    if (((1 << v30) & 0x36) != 0)
+    if (((1 << productPlatform2) & 0x36) != 0)
     {
-      v31 = [v5 preferenceForKey:@"disableHTTPTransport"];
-      v32 = [v31 BOOLValue];
+      v31 = [mEMORY[0x277D0F8D0] preferenceForKey:@"disableHTTPTransport"];
+      bOOLValue2 = [v31 BOOLValue];
 
-      if ((v32 & 1) == 0)
+      if ((bOOLValue2 & 1) == 0)
       {
         v40 = [HMDHTTPMessageTransport alloc];
         v41 = +[HMDAccountRegistry sharedRegistry];
@@ -200,13 +200,13 @@ LABEL_20:
 
         if (v42)
         {
-          [v6 addObject:v42];
+          [array addObject:v42];
         }
 
         else
         {
           v43 = objc_autoreleasePoolPush();
-          v44 = v8;
+          v44 = selfCopy;
           v45 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
           {
@@ -223,7 +223,7 @@ LABEL_20:
       }
 
       v33 = objc_autoreleasePoolPush();
-      v34 = v8;
+      v34 = selfCopy;
       v35 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
       {
@@ -239,10 +239,10 @@ LABEL_20:
       goto LABEL_30;
     }
 
-    if (!v30)
+    if (!productPlatform2)
     {
       v33 = objc_autoreleasePoolPush();
-      v34 = v8;
+      v34 = selfCopy;
       v35 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
@@ -266,21 +266,21 @@ LABEL_30:
   }
 
 LABEL_36:
-  v47 = [v8 _createModernTransportForProductInfo:v4 preferences:{v5, *v63}];
+  v47 = [selfCopy _createModernTransportForProductInfo:infoCopy preferences:{mEMORY[0x277D0F8D0], *v63}];
   if (v47)
   {
-    [v6 addObject:v47];
+    [array addObject:v47];
   }
 
-  if ([v4 productPlatform] == 3 || objc_msgSend(v4, "productClass") == 1)
+  if ([infoCopy productPlatform] == 3 || objc_msgSend(infoCopy, "productClass") == 1)
   {
-    v48 = [v5 preferenceForKey:@"disableIDSProxyTransport"];
-    v49 = [v48 BOOLValue];
+    v48 = [mEMORY[0x277D0F8D0] preferenceForKey:@"disableIDSProxyTransport"];
+    bOOLValue3 = [v48 BOOLValue];
 
-    if (v49)
+    if (bOOLValue3)
     {
       v50 = objc_autoreleasePoolPush();
-      v51 = v8;
+      v51 = selfCopy;
       v52 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
       {
@@ -301,13 +301,13 @@ LABEL_36:
 
       if (v56)
       {
-        [v6 addObject:v56];
+        [array addObject:v56];
       }
 
       else
       {
         v57 = objc_autoreleasePoolPush();
-        v58 = v8;
+        v58 = selfCopy;
         v59 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
         {
@@ -322,7 +322,7 @@ LABEL_36:
     }
   }
 
-  v21 = [v6 copy];
+  v21 = [array copy];
 LABEL_51:
 
   v61 = *MEMORY[0x277D85DE8];
@@ -344,28 +344,28 @@ LABEL_51:
   return WeakRetained;
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = [(HMFObject *)self debugDescription];
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x277D0F0D0]];
+  [dictionary setObject:v5 forKeyedSubscript:*MEMORY[0x277D0F0D0]];
 
-  return v4;
+  return dictionary;
 }
 
-- (int64_t)compareCapability:(id)a3 key:(id)a4 withCapability:(id)a5
+- (int64_t)compareCapability:(id)capability key:(id)key withCapability:(id)withCapability
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (([v8 isEqualToString:@"kHomedVersionKey"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"kHomeConfigurationVersionKey") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"kMetadataInfoSchemaVersionKey") & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"kMetadataInfoVersionKey")) && (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_opt_class(), (objc_opt_isKindOfClass()))
+  capabilityCopy = capability;
+  keyCopy = key;
+  withCapabilityCopy = withCapability;
+  if (([keyCopy isEqualToString:@"kHomedVersionKey"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"kHomeConfigurationVersionKey") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"kMetadataInfoSchemaVersionKey") & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"kMetadataInfoVersionKey")) && (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v10 = [v7 compare:v9];
+    v10 = [capabilityCopy compare:withCapabilityCopy];
   }
 
-  else if ([v8 isEqualToString:*MEMORY[0x277CD0640]] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if ([keyCopy isEqualToString:*MEMORY[0x277CD0640]] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v10 = [v7 isEqualToString:v9] - 1;
+    v10 = [capabilityCopy isEqualToString:withCapabilityCopy] - 1;
   }
 
   else
@@ -376,16 +376,16 @@ LABEL_51:
   return v10;
 }
 
-- (BOOL)doesResponse:(id)a3 matchAllCapabilities:(id)a4
+- (BOOL)doesResponse:(id)response matchAllCapabilities:(id)capabilities
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  responseCopy = response;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  capabilitiesCopy = capabilities;
+  v8 = [capabilitiesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -396,12 +396,12 @@ LABEL_51:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(capabilitiesCopy);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v6 objectForKeyedSubscript:{v12, v19}];
-        v14 = [v7 objectForKeyedSubscript:v12];
+        v13 = [responseCopy objectForKeyedSubscript:{v12, v19}];
+        v14 = [capabilitiesCopy objectForKeyedSubscript:v12];
         v15 = [(HMDRemoteMessageTransport *)self compareCapability:v13 key:v12 withCapability:v14];
 
         if (v15 > 1)
@@ -411,7 +411,7 @@ LABEL_51:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [capabilitiesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v9)
       {
         continue;
@@ -428,11 +428,11 @@ LABEL_11:
   return v16;
 }
 
-- (id)matchResponse:(id)a3 requestedCapabilities:(id)a4
+- (id)matchResponse:(id)response requestedCapabilities:(id)capabilities
 {
   v81[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v49 = a4;
+  responseCopy = response;
+  capabilitiesCopy = capabilities;
   v6 = objc_autoreleasePoolPush();
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -441,9 +441,9 @@ LABEL_11:
     *buf = 138543874;
     v71 = v8;
     v72 = 2112;
-    v73 = v49;
+    v73 = capabilitiesCopy;
     v74 = 2112;
-    v75 = v5;
+    v75 = responseCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Select based on capability %@, and responses %@", buf, 0x20u);
   }
 
@@ -453,7 +453,7 @@ LABEL_11:
   v47 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:0 ascending:0 comparator:&__block_literal_global_312_190785];
   v81[0] = v47;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v81 count:1];
-  v51 = [v5 sortedArrayUsingDescriptors:v11];
+  v51 = [responseCopy sortedArrayUsingDescriptors:v11];
 
   v12 = objc_autoreleasePoolPush();
   v13 = HMFGetOSLogHandle();
@@ -468,15 +468,15 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v12);
-  v48 = v5;
+  v48 = responseCopy;
   v57 = v9;
-  if ([v5 count] >= 2)
+  if ([responseCopy count] >= 2)
   {
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v15 = v49;
+    v15 = capabilitiesCopy;
     v52 = [v15 countByEnumeratingWithState:&v66 objects:v80 count:16];
     if (v52)
     {
@@ -578,18 +578,18 @@ LABEL_11:
           objc_enumerationMutation(v56);
         }
 
-        v37 = [*(*(&v58 + 1) + 8 * j) integerValue];
+        integerValue = [*(*(&v58 + 1) + 8 * j) integerValue];
         v38 = [v57 objectAtIndexedSubscript:v32];
         v39 = [v38 objectForKeyedSubscript:@"kIDSMessageResponseErrorDataKey"];
 
         if (v39)
         {
-          v40 = v37;
+          v40 = integerValue;
         }
 
         else
         {
-          v40 = v37 + 1;
+          v40 = integerValue + 1;
         }
 
         if (v40 > v34)
@@ -727,28 +727,28 @@ LABEL_22:
   return v14;
 }
 
-- (id)remoteMessageFromMessage:(id)a3
+- (id)remoteMessageFromMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_opt_class();
-  v6 = [(HMDRemoteMessageTransport *)self accountRegistry];
-  v7 = [v5 remoteMessageFromMessage:v4 secure:0 accountRegistry:v6];
+  accountRegistry = [(HMDRemoteMessageTransport *)self accountRegistry];
+  v7 = [v5 remoteMessageFromMessage:messageCopy secure:0 accountRegistry:accountRegistry];
 
   return v7;
 }
 
-- (void)postDidReceiveRemoteMessageWithNoListenerFromDevice:(id)a3
+- (void)postDidReceiveRemoteMessageWithNoListenerFromDevice:(id)device
 {
-  v4 = a3;
-  if (v4)
+  deviceCopy = device;
+  if (deviceCopy)
   {
     v5 = dispatch_get_global_queue(0, 0);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __81__HMDRemoteMessageTransport_postDidReceiveRemoteMessageWithNoListenerFromDevice___block_invoke;
     v6[3] = &unk_2797359B0;
-    v7 = v4;
-    v8 = self;
+    v7 = deviceCopy;
+    selfCopy = self;
     dispatch_async(v5, v6);
   }
 }
@@ -783,15 +783,15 @@ void __81__HMDRemoteMessageTransport_postDidReceiveRemoteMessageWithNoListenerFr
 
 - (id)start
 {
-  v3 = [(HMDRemoteMessageTransport *)self startPromise];
-  [v3 fulfillWithValue:0];
+  startPromise = [(HMDRemoteMessageTransport *)self startPromise];
+  [startPromise fulfillWithValue:0];
 
   return [(HMDRemoteMessageTransport *)self startFuture];
 }
 
-- (HMDRemoteMessageTransport)initWithAccountRegistry:(id)a3
+- (HMDRemoteMessageTransport)initWithAccountRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   v11.receiver = self;
   v11.super_class = HMDRemoteMessageTransport;
   v6 = [(HMDRemoteMessageTransport *)&v11 init];
@@ -803,15 +803,15 @@ void __81__HMDRemoteMessageTransport_postDidReceiveRemoteMessageWithNoListenerFr
     v6->_startFuture = v7;
 
     objc_storeStrong(&v6->_startPromise, obj);
-    objc_storeStrong(&v6->_accountRegistry, a3);
+    objc_storeStrong(&v6->_accountRegistry, registry);
   }
 
   return v6;
 }
 
-- (BOOL)canSendMessage:(id)a3
+- (BOOL)canSendMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -825,10 +825,10 @@ void __81__HMDRemoteMessageTransport_postDidReceiveRemoteMessageWithNoListenerFr
 
 - (double)retryInterval
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"HMDRemoteMessageTransportSendMessageRetryIntervalKey"];
-  v4 = [v3 numberValue];
-  [v4 doubleValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"HMDRemoteMessageTransportSendMessageRetryIntervalKey"];
+  numberValue = [v3 numberValue];
+  [numberValue doubleValue];
   v6 = v5;
 
   return v6;
@@ -836,20 +836,20 @@ void __81__HMDRemoteMessageTransport_postDidReceiveRemoteMessageWithNoListenerFr
 
 - (unint64_t)numRetries
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"HMDRemoteMessageTransportSendMessageNumberOfRetriesKey"];
-  v4 = [v3 numberValue];
-  v5 = [v4 unsignedIntegerValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"HMDRemoteMessageTransportSendMessageNumberOfRetriesKey"];
+  numberValue = [v3 numberValue];
+  unsignedIntegerValue = [numberValue unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (double)defaultTimeout
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"HMDRemoteMessageTransportSendMessageDefaultTimeoutKey"];
-  v4 = [v3 numberValue];
-  [v4 doubleValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"HMDRemoteMessageTransportSendMessageDefaultTimeoutKey"];
+  numberValue = [v3 numberValue];
+  [numberValue doubleValue];
   v6 = v5;
 
   return v6;
@@ -890,13 +890,13 @@ uint64_t __40__HMDRemoteMessageTransport_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (id)remoteMessageFromMessage:(id)a3 secure:(BOOL)a4 accountRegistry:(id)a5
++ (id)remoteMessageFromMessage:(id)message secure:(BOOL)secure accountRegistry:(id)registry
 {
-  v6 = a4;
+  secureCopy = secure;
   v67 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v8;
+  messageCopy = message;
+  registryCopy = registry;
+  v10 = messageCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -913,7 +913,7 @@ uint64_t __40__HMDRemoteMessageTransport_logCategory__block_invoke()
   if (v12)
   {
     v13 = v10;
-    if (v6)
+    if (secureCopy)
     {
       [(HMDRemoteMessage *)v12 setSecure:1];
       v13 = v10;
@@ -923,37 +923,37 @@ uint64_t __40__HMDRemoteMessageTransport_logCategory__block_invoke()
   else
   {
     v14 = [HMDRemoteMessage alloc];
-    v15 = [(HMDRemoteMessage *)v10 name];
-    v16 = [(HMDRemoteMessage *)v10 qualityOfService];
-    v17 = [(HMDRemoteMessage *)v10 destination];
-    v18 = [(HMDRemoteMessage *)v10 messagePayload];
+    name = [(HMDRemoteMessage *)v10 name];
+    qualityOfService = [(HMDRemoteMessage *)v10 qualityOfService];
+    destination = [(HMDRemoteMessage *)v10 destination];
+    messagePayload = [(HMDRemoteMessage *)v10 messagePayload];
     [(HMDRemoteMessage *)v10 timeout];
     v20 = v19;
-    LOBYTE(v53) = [(HMFMessage *)v10 isSecureRemote]|| v6;
-    v13 = [(HMDRemoteMessage *)v14 initWithName:v15 qualityOfService:v16 destination:v17 payload:v18 headers:0 type:3 timeout:v20 secure:v53 restriction:[(HMFMessage *)v10 remoteRestriction] sendOptions:0];
+    LOBYTE(v53) = [(HMFMessage *)v10 isSecureRemote]|| secureCopy;
+    v13 = [(HMDRemoteMessage *)v14 initWithName:name qualityOfService:qualityOfService destination:destination payload:messagePayload headers:0 type:3 timeout:v20 secure:v53 restriction:[(HMFMessage *)v10 remoteRestriction] sendOptions:0];
 
-    v21 = [(HMDRemoteMessage *)v10 identifier];
-    [(HMDRemoteMessage *)v13 setIdentifier:v21];
+    identifier = [(HMDRemoteMessage *)v10 identifier];
+    [(HMDRemoteMessage *)v13 setIdentifier:identifier];
 
-    v22 = [(HMDRemoteMessage *)v10 responseHandler];
-    [(HMDRemoteMessage *)v13 setResponseHandler:v22];
+    responseHandler = [(HMDRemoteMessage *)v10 responseHandler];
+    [(HMDRemoteMessage *)v13 setResponseHandler:responseHandler];
   }
 
-  v23 = [(HMDRemoteMessage *)v13 attributedMessageName];
+  attributedMessageName = [(HMDRemoteMessage *)v13 attributedMessageName];
 
-  if (!v23)
+  if (!attributedMessageName)
   {
-    v24 = [(HMDRemoteMessage *)v10 name];
-    [(HMDRemoteMessage *)v13 setAttributedMessageName:v24];
+    name2 = [(HMDRemoteMessage *)v10 name];
+    [(HMDRemoteMessage *)v13 setAttributedMessageName:name2];
   }
 
-  if (v9)
+  if (registryCopy)
   {
-    v25 = [(HMDRemoteMessage *)v13 destination];
+    destination2 = [(HMDRemoteMessage *)v13 destination];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v26 = v25;
+      v26 = destination2;
     }
 
     else
@@ -966,10 +966,10 @@ uint64_t __40__HMDRemoteMessageTransport_logCategory__block_invoke()
     if (v27)
     {
       v54 = 0;
-      v28 = [v27 device];
-      v29 = [v28 handles];
-      v30 = [v29 firstObject];
-      v31 = [v9 deviceForHandle:v30 exists:&v54];
+      device = [v27 device];
+      handles = [device handles];
+      firstObject = [handles firstObject];
+      v31 = [registryCopy deviceForHandle:firstObject exists:&v54];
 
       if (v54 == 1)
       {
@@ -978,11 +978,11 @@ uint64_t __40__HMDRemoteMessageTransport_logCategory__block_invoke()
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
         {
           v34 = HMFGetLogIdentifier();
-          v35 = [v27 device];
+          device2 = [v27 device];
           *buf = 138543874;
           v56 = v34;
           v57 = 2112;
-          v58 = v35;
+          v58 = device2;
           v59 = 2112;
           v60 = v31;
           _os_log_impl(&dword_2531F8000, v33, OS_LOG_TYPE_DEBUG, "%{public}@Replacing device destination, %@, with device: %@", buf, 0x20u);
@@ -990,50 +990,50 @@ uint64_t __40__HMDRemoteMessageTransport_logCategory__block_invoke()
 
         objc_autoreleasePoolPop(v32);
         v36 = [HMDRemoteDeviceMessageDestination alloc];
-        v37 = [v27 target];
-        v38 = [(HMDRemoteDeviceMessageDestination *)v36 initWithTarget:v37 device:v31];
+        target = [v27 target];
+        v38 = [(HMDRemoteDeviceMessageDestination *)v36 initWithTarget:target device:v31];
 
         [(HMDRemoteMessage *)v13 setDestination:v38];
-        v39 = [v27 preferredHandle];
+        preferredHandle = [v27 preferredHandle];
 
-        if (v39)
+        if (preferredHandle)
         {
-          v40 = [v27 preferredHandle];
-          [(HMDRemoteDeviceMessageDestination *)v38 setPreferredHandle:v40];
+          preferredHandle2 = [v27 preferredHandle];
+          [(HMDRemoteDeviceMessageDestination *)v38 setPreferredHandle:preferredHandle2];
         }
       }
     }
   }
 
   v41 = objc_autoreleasePoolPush();
-  v42 = a1;
+  selfCopy = self;
   v43 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
   {
     v44 = HMFGetLogIdentifier();
-    v45 = [(HMDRemoteMessage *)v13 identifier];
-    v46 = [(HMDRemoteMessage *)v13 name];
+    identifier2 = [(HMDRemoteMessage *)v13 identifier];
+    name3 = [(HMDRemoteMessage *)v13 name];
     [(HMDRemoteMessage *)v13 timeout];
     v48 = v47;
-    v49 = [(HMDRemoteMessage *)v13 type];
-    if (v49 > 3)
+    type = [(HMDRemoteMessage *)v13 type];
+    if (type > 3)
     {
       v50 = 0;
     }
 
     else
     {
-      v50 = off_2797356F0[v49];
+      v50 = off_2797356F0[type];
     }
 
     *buf = 138544642;
     v56 = v44;
     v57 = 2112;
-    v58 = v42;
+    v58 = selfCopy;
     v59 = 2112;
-    v60 = v45;
+    v60 = identifier2;
     v61 = 2112;
-    v62 = v46;
+    v62 = name3;
     v63 = 2048;
     v64 = v48;
     v65 = 2112;

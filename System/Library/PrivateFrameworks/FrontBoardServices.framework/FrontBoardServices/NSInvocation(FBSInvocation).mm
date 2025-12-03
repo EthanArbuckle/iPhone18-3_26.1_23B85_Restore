@@ -16,11 +16,11 @@
   v30 = 0u;
   *aSelector = 0u;
   v28 = 0u;
-  [a1 getArgument:aSelector atIndex:a4];
-  v8 = [v7 type];
-  if (v8 > 0x3Fu)
+  [self getArgument:aSelector atIndex:a4];
+  type = [v7 type];
+  if (type > 0x3Fu)
   {
-    if (v8 == 66)
+    if (type == 66)
     {
       v16 = MEMORY[0x1E695E4D0];
       if (!LOBYTE(aSelector[0]))
@@ -32,11 +32,11 @@
       goto LABEL_21;
     }
 
-    if (v8 == 64)
+    if (type == 64)
     {
       v11 = aSelector[0];
-      v12 = [a1 methodSignature];
-      v13 = [v12 _classForObjectAtArgumentIndex:a4];
+      methodSignature = [self methodSignature];
+      v13 = [methodSignature _classForObjectAtArgumentIndex:a4];
 
       if (!v13)
       {
@@ -50,13 +50,13 @@
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v20 = MEMORY[0x1E696AEC0];
-          v21 = [v14 classForCoder];
-          if (!v21)
+          classForCoder = [v14 classForCoder];
+          if (!classForCoder)
           {
-            v21 = objc_opt_class();
+            classForCoder = objc_opt_class();
           }
 
-          v22 = NSStringFromClass(v21);
+          v22 = NSStringFromClass(classForCoder);
           v23 = objc_opt_class();
           v24 = NSStringFromClass(v23);
           v25 = [v20 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"object", v22, v24];
@@ -77,13 +77,13 @@
 
   else
   {
-    if (v8 == 35)
+    if (type == 35)
     {
       v10 = NSStringFromClass(aSelector[0]);
       goto LABEL_17;
     }
 
-    if (v8 == 58)
+    if (type == 58)
     {
       v10 = NSStringFromSelector(aSelector[0]);
 LABEL_17:
@@ -92,7 +92,7 @@ LABEL_17:
     }
   }
 
-  v15 = v8 & 0xDF;
+  v15 = type & 0xDF;
   if (v15 <= 0x4B)
   {
     if (v15 == 67)
@@ -124,15 +124,15 @@ LABEL_17:
     }
   }
 
-  if (v8 <= 0x65u)
+  if (type <= 0x65u)
   {
-    if (v8 == 42)
+    if (type == 42)
     {
       v10 = [MEMORY[0x1E696AEC0] bs_stringWithUTF8String:aSelector[0]];
       goto LABEL_17;
     }
 
-    if (v8 == 100)
+    if (type == 100)
     {
       v10 = [MEMORY[0x1E696AD98] numberWithDouble:*aSelector];
       goto LABEL_17;
@@ -149,9 +149,9 @@ LABEL_47:
     _bs_set_crash_log_message();
   }
 
-  if (v8 != 123)
+  if (type != 123)
   {
-    if (v8 == 102)
+    if (type == 102)
     {
       LODWORD(v9) = aSelector[0];
       v10 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
@@ -167,8 +167,8 @@ LABEL_47:
   }
 
   v18 = MEMORY[0x1E696B098];
-  v19 = [v7 encoding];
-  v14 = [v18 valueWithBytes:aSelector objCType:{objc_msgSend(v19, "UTF8String")}];
+  encoding = [v7 encoding];
+  v14 = [v18 valueWithBytes:aSelector objCType:{objc_msgSend(encoding, "UTF8String")}];
 
 LABEL_21:
 

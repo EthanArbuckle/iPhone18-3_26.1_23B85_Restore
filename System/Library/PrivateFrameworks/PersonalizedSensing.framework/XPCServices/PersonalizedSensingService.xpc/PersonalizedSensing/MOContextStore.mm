@@ -1,18 +1,18 @@
 @interface MOContextStore
-- (MOContextStore)initWithPersistenceManager:(id)a3;
-- (void)fetchContextsGeneratedFromClientRequest:(id)a3 handler:(id)a4;
-- (void)fetchContextsWithOption:(id)a3 handler:(id)a4;
-- (void)removeContexts:(id)a3 handler:(id)a4;
-- (void)removeExpiredContextWithHandler:(id)a3;
-- (void)storeContexts:(id)a3 handler:(id)a4;
+- (MOContextStore)initWithPersistenceManager:(id)manager;
+- (void)fetchContextsGeneratedFromClientRequest:(id)request handler:(id)handler;
+- (void)fetchContextsWithOption:(id)option handler:(id)handler;
+- (void)removeContexts:(id)contexts handler:(id)handler;
+- (void)removeExpiredContextWithHandler:(id)handler;
+- (void)storeContexts:(id)contexts handler:(id)handler;
 @end
 
 @implementation MOContextStore
 
-- (MOContextStore)initWithPersistenceManager:(id)a3
+- (MOContextStore)initWithPersistenceManager:(id)manager
 {
-  v5 = a3;
-  if (v5)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v13.receiver = self;
     v13.super_class = MOContextStore;
@@ -20,7 +20,7 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_persistenceManager, a3);
+      objc_storeStrong(&v6->_persistenceManager, manager);
       v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v9 = dispatch_queue_create("MOContextStore", v8);
       queue = v7->_queue;
@@ -28,21 +28,21 @@
     }
 
     self = v7;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)fetchContextsWithOption:(id)a3 handler:(id)a4
+- (void)fetchContextsWithOption:(id)option handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  optionCopy = option;
+  handlerCopy = handler;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -55,21 +55,21 @@
   v19 = __Block_byref_object_copy__0;
   v20 = __Block_byref_object_dispose__0;
   v21 = objc_opt_new();
-  v9 = [(MOContextStore *)self persistenceManager];
+  persistenceManager = [(MOContextStore *)self persistenceManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __50__MOContextStore_fetchContextsWithOption_handler___block_invoke;
   v11[3] = &unk_1000B4E30;
-  v10 = v7;
+  v10 = optionCopy;
   v12 = v10;
   v13 = &v22;
   v14 = &v16;
   v15 = a2;
-  [v9 performBlockAndWait:v11];
+  [persistenceManager performBlockAndWait:v11];
 
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2](v8, v17[5], v23[5]);
+    handlerCopy[2](handlerCopy, v17[5], v23[5]);
   }
 
   _Block_object_dispose(&v16, 8);
@@ -169,26 +169,26 @@ void __50__MOContextStore_fetchContextsWithOption_handler___block_invoke(uint64_
   [v3 reset];
 }
 
-- (void)storeContexts:(id)a3 handler:(id)a4
+- (void)storeContexts:(id)contexts handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextsCopy = contexts;
+  handlerCopy = handler;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__0;
   v18 = __Block_byref_object_dispose__0;
   v19 = 0;
-  if ([v6 count])
+  if ([contextsCopy count])
   {
-    v8 = [(MOContextStore *)self persistenceManager];
+    persistenceManager = [(MOContextStore *)self persistenceManager];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = __40__MOContextStore_storeContexts_handler___block_invoke;
     v11[3] = &unk_1000B4E58;
-    v12 = v6;
+    v12 = contextsCopy;
     v13 = &v14;
-    [v8 performBlockAndWait:v11];
+    [persistenceManager performBlockAndWait:v11];
 
     v9 = v12;
   }
@@ -203,9 +203,9 @@ void __50__MOContextStore_fetchContextsWithOption_handler___block_invoke(uint64_
     }
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v15[5]);
+    handlerCopy[2](handlerCopy, v15[5]);
   }
 
   _Block_object_dispose(&v14, 8);
@@ -346,30 +346,30 @@ LABEL_19:
   [v3 reset];
 }
 
-- (void)removeContexts:(id)a3 handler:(id)a4
+- (void)removeContexts:(id)contexts handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  contextsCopy = contexts;
+  handlerCopy = handler;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__0;
   v19 = __Block_byref_object_dispose__0;
   v20 = 0;
-  v9 = [(MOContextStore *)self persistenceManager];
+  persistenceManager = [(MOContextStore *)self persistenceManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __41__MOContextStore_removeContexts_handler___block_invoke;
   v11[3] = &unk_1000B4E80;
-  v10 = v7;
+  v10 = contextsCopy;
   v12 = v10;
   v13 = &v15;
   v14 = a2;
-  [v9 performBlockAndWait:v11];
+  [persistenceManager performBlockAndWait:v11];
 
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2](v8, v16[5]);
+    handlerCopy[2](handlerCopy, v16[5]);
   }
 
   _Block_object_dispose(&v15, 8);
@@ -498,27 +498,27 @@ void __41__MOContextStore_removeContexts_handler___block_invoke(uint64_t a1, voi
   [v3 reset];
 }
 
-- (void)removeExpiredContextWithHandler:(id)a3
+- (void)removeExpiredContextWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  v6 = [(MOContextStore *)self persistenceManager];
+  persistenceManager = [(MOContextStore *)self persistenceManager];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __50__MOContextStore_removeExpiredContextWithHandler___block_invoke;
   v7[3] = &unk_1000B4EA8;
   v7[4] = &v8;
   v7[5] = a2;
-  [v6 performBlockAndWait:v7];
+  [persistenceManager performBlockAndWait:v7];
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, v9[5]);
+    handlerCopy[2](handlerCopy, v9[5]);
   }
 
   _Block_object_dispose(&v8, 8);
@@ -616,10 +616,10 @@ void __50__MOContextStore_removeExpiredContextWithHandler___block_invoke(uint64_
   [v3 reset];
 }
 
-- (void)fetchContextsGeneratedFromClientRequest:(id)a3 handler:(id)a4
+- (void)fetchContextsGeneratedFromClientRequest:(id)request handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -632,18 +632,18 @@ void __50__MOContextStore_removeExpiredContextWithHandler___block_invoke(uint64_
   v20 = __Block_byref_object_copy__0;
   v21 = __Block_byref_object_dispose__0;
   v22 = objc_opt_new();
-  if (v7)
+  if (requestCopy)
   {
-    v9 = [(MOContextStore *)self persistenceManager];
+    persistenceManager = [(MOContextStore *)self persistenceManager];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = __66__MOContextStore_fetchContextsGeneratedFromClientRequest_handler___block_invoke;
     v12[3] = &unk_1000B4E30;
-    v13 = v7;
+    v13 = requestCopy;
     v14 = &v23;
     v15 = &v17;
     v16 = a2;
-    [v9 performBlockAndWait:v12];
+    [persistenceManager performBlockAndWait:v12];
 
     v10 = v13;
   }
@@ -658,9 +658,9 @@ void __50__MOContextStore_removeExpiredContextWithHandler___block_invoke(uint64_
     }
   }
 
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2](v8, v18[5], v24[5]);
+    handlerCopy[2](handlerCopy, v18[5], v24[5]);
   }
 
   _Block_object_dispose(&v17, 8);

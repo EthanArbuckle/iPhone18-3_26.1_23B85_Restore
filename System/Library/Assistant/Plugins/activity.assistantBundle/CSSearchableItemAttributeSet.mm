@@ -10,11 +10,11 @@
 
 - (BOOL)hasLocationData
 {
-  v3 = [(CSSearchableItemAttributeSet *)self thoroughfare];
-  if (v3)
+  thoroughfare = [(CSSearchableItemAttributeSet *)self thoroughfare];
+  if (thoroughfare)
   {
-    v4 = [(CSSearchableItemAttributeSet *)self city];
-    if (v4)
+    city = [(CSSearchableItemAttributeSet *)self city];
+    if (city)
     {
       v5 = 1;
 LABEL_12:
@@ -23,18 +23,18 @@ LABEL_12:
     }
   }
 
-  v6 = [(CSSearchableItemAttributeSet *)self latitude];
-  if (v6 && ([(CSSearchableItemAttributeSet *)self longitude], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  latitude = [(CSSearchableItemAttributeSet *)self latitude];
+  if (latitude && ([(CSSearchableItemAttributeSet *)self longitude], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = 1;
   }
 
   else
   {
-    v8 = [(CSSearchableItemAttributeSet *)self postalCode];
-    v5 = v8 != 0;
+    postalCode = [(CSSearchableItemAttributeSet *)self postalCode];
+    v5 = postalCode != 0;
 
-    if (!v6)
+    if (!latitude)
     {
       goto LABEL_10;
     }
@@ -43,9 +43,9 @@ LABEL_12:
   }
 
 LABEL_10:
-  if (v3)
+  if (thoroughfare)
   {
-    v4 = 0;
+    city = 0;
     goto LABEL_12;
   }
 
@@ -56,11 +56,11 @@ LABEL_13:
 
 - (void)openDirections
 {
-  v2 = [(CSSearchableItemAttributeSet *)self mapItem];
-  v3 = v2;
-  if (v2)
+  mapItem = [(CSSearchableItemAttributeSet *)self mapItem];
+  v3 = mapItem;
+  if (mapItem)
   {
-    v8 = v2;
+    v8 = mapItem;
     v4 = [NSArray arrayWithObjects:&v8 count:1];
     v6 = MKLaunchOptionsDirectionsModeKey;
     v7 = MKLaunchOptionsDirectionsModeDriving;
@@ -71,10 +71,10 @@ LABEL_13:
 
 - (CLLocationCoordinate2D)coordinate
 {
-  v3 = [(CSSearchableItemAttributeSet *)self latitude];
-  v4 = [(CSSearchableItemAttributeSet *)self longitude];
-  v5 = v4;
-  if (!v3 || !v4 || ([v3 floatValue], v7 = v6, objc_msgSend(v5, "floatValue"), v13 = CLLocationCoordinate2DMake(v7, v8), latitude = v13.latitude, longitude = v13.longitude, !CLLocationCoordinate2DIsValid(v13)))
+  latitude = [(CSSearchableItemAttributeSet *)self latitude];
+  longitude = [(CSSearchableItemAttributeSet *)self longitude];
+  v5 = longitude;
+  if (!latitude || !longitude || ([latitude floatValue], v7 = v6, objc_msgSend(v5, "floatValue"), v13 = CLLocationCoordinate2DMake(v7, v8), latitude = v13.latitude, longitude = v13.longitude, !CLLocationCoordinate2DIsValid(v13)))
   {
     latitude = kCLLocationCoordinate2DInvalid.latitude;
     longitude = kCLLocationCoordinate2DInvalid.longitude;
@@ -96,72 +96,72 @@ LABEL_13:
   }
 
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(CSSearchableItemAttributeSet *)self subThoroughfare];
-  if (v4)
+  subThoroughfare = [(CSSearchableItemAttributeSet *)self subThoroughfare];
+  if (subThoroughfare)
   {
-    v5 = v4;
-    v6 = [(CSSearchableItemAttributeSet *)self thoroughfare];
+    v5 = subThoroughfare;
+    thoroughfare = [(CSSearchableItemAttributeSet *)self thoroughfare];
 
-    if (v6)
+    if (thoroughfare)
     {
-      v7 = [(CSSearchableItemAttributeSet *)self subThoroughfare];
-      v8 = [(CSSearchableItemAttributeSet *)self thoroughfare];
-      v9 = [NSString stringWithFormat:@"%@ %@", v7, v8];
+      subThoroughfare2 = [(CSSearchableItemAttributeSet *)self subThoroughfare];
+      thoroughfare2 = [(CSSearchableItemAttributeSet *)self thoroughfare];
+      thoroughfare4 = [NSString stringWithFormat:@"%@ %@", subThoroughfare2, thoroughfare2];
 
 LABEL_8:
-      [v3 setObject:v9 forKey:CNPostalAddressStreetKey];
+      [v3 setObject:thoroughfare4 forKey:CNPostalAddressStreetKey];
 
       goto LABEL_9;
     }
   }
 
-  v10 = [(CSSearchableItemAttributeSet *)self thoroughfare];
+  thoroughfare3 = [(CSSearchableItemAttributeSet *)self thoroughfare];
 
-  if (v10)
+  if (thoroughfare3)
   {
-    v9 = [(CSSearchableItemAttributeSet *)self thoroughfare];
+    thoroughfare4 = [(CSSearchableItemAttributeSet *)self thoroughfare];
     goto LABEL_8;
   }
 
 LABEL_9:
-  v11 = [(CSSearchableItemAttributeSet *)self stateOrProvince];
+  stateOrProvince = [(CSSearchableItemAttributeSet *)self stateOrProvince];
 
-  if (v11)
+  if (stateOrProvince)
   {
-    v12 = [(CSSearchableItemAttributeSet *)self city];
-    [v3 setObject:v12 forKey:CNPostalAddressStateKey];
+    city = [(CSSearchableItemAttributeSet *)self city];
+    [v3 setObject:city forKey:CNPostalAddressStateKey];
   }
 
-  v13 = [(CSSearchableItemAttributeSet *)self city];
+  city2 = [(CSSearchableItemAttributeSet *)self city];
 
-  if (v13)
+  if (city2)
   {
-    v14 = [(CSSearchableItemAttributeSet *)self city];
-    [v3 setObject:v14 forKey:CNPostalAddressCityKey];
+    city3 = [(CSSearchableItemAttributeSet *)self city];
+    [v3 setObject:city3 forKey:CNPostalAddressCityKey];
   }
 
-  v15 = [(CSSearchableItemAttributeSet *)self stateOrProvince];
+  stateOrProvince2 = [(CSSearchableItemAttributeSet *)self stateOrProvince];
 
-  if (v15)
+  if (stateOrProvince2)
   {
-    v16 = [(CSSearchableItemAttributeSet *)self stateOrProvince];
-    [v3 setObject:v16 forKey:CNPostalAddressStateKey];
+    stateOrProvince3 = [(CSSearchableItemAttributeSet *)self stateOrProvince];
+    [v3 setObject:stateOrProvince3 forKey:CNPostalAddressStateKey];
   }
 
-  v17 = [(CSSearchableItemAttributeSet *)self postalCode];
+  postalCode = [(CSSearchableItemAttributeSet *)self postalCode];
 
-  if (v17)
+  if (postalCode)
   {
-    v18 = [(CSSearchableItemAttributeSet *)self postalCode];
-    [v3 setObject:v18 forKey:CNPostalAddressPostalCodeKey];
+    postalCode2 = [(CSSearchableItemAttributeSet *)self postalCode];
+    [v3 setObject:postalCode2 forKey:CNPostalAddressPostalCodeKey];
   }
 
-  v19 = [(CSSearchableItemAttributeSet *)self country];
+  country = [(CSSearchableItemAttributeSet *)self country];
 
-  if (v19)
+  if (country)
   {
-    v20 = [(CSSearchableItemAttributeSet *)self country];
-    [v3 setObject:v20 forKey:CNPostalAddressCountryKey];
+    country2 = [(CSSearchableItemAttributeSet *)self country];
+    [v3 setObject:country2 forKey:CNPostalAddressCountryKey];
   }
 
 LABEL_19:
@@ -177,8 +177,8 @@ LABEL_19:
     [(CSSearchableItemAttributeSet *)self coordinate];
     v5 = v4;
     v7 = v6;
-    v8 = [(CSSearchableItemAttributeSet *)self addressDictionary];
-    v9 = [v3 initWithCoordinate:v8 addressDictionary:{v5, v7}];
+    addressDictionary = [(CSSearchableItemAttributeSet *)self addressDictionary];
+    v9 = [v3 initWithCoordinate:addressDictionary addressDictionary:{v5, v7}];
 
     v10 = [[MKMapItem alloc] initWithPlacemark:v9];
   }

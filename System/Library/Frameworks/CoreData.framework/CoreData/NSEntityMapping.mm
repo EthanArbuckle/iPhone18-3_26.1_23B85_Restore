@@ -1,16 +1,16 @@
 @interface NSEntityMapping
-- (BOOL)isEqual:(id)a3;
-- (NSEntityMapping)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NSEntityMapping)initWithCoder:(id)coder;
 - (NSEntityMigrationPolicy)_migrationPolicy;
 - (NSString)name;
-- (id)_initWithSourceEntityDescription:(id)a3 destinationEntityDescription:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithSourceEntityDescription:(id)description destinationEntityDescription:(id)entityDescription;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)_mappingsByName;
-- (void)_setIsEditable:(BOOL)a3;
+- (void)_setIsEditable:(BOOL)editable;
 - (void)_throwIfNotEditable;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAttributeMappings:(NSArray *)attributeMappings;
 - (void)setDestinationEntityName:(NSString *)destinationEntityName;
 - (void)setDestinationEntityVersionHash:(NSData *)destinationEntityVersionHash;
@@ -48,9 +48,9 @@
   [(NSEntityMapping *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
     v5[4] = [(NSString *)self->_name copy];
@@ -62,30 +62,30 @@
     v5[10] = [(NSExpression *)self->_sourceExpression copy];
     v5[11] = [(NSDictionary *)self->_userInfo copy];
     v5[12] = [(NSString *)self->_entityMigrationPolicyClassName copy];
-    v6 = [(NSEntityMapping *)self attributeMappings];
-    v7 = [objc_msgSend(MEMORY[0x1E695DF70] allocWithZone:{a3), "init"}];
-    v8 = [(NSArray *)v6 count];
+    attributeMappings = [(NSEntityMapping *)self attributeMappings];
+    v7 = [objc_msgSend(MEMORY[0x1E695DF70] allocWithZone:{zone), "init"}];
+    v8 = [(NSArray *)attributeMappings count];
     if (v8)
     {
       v9 = v8;
       for (i = 0; i != v9; ++i)
       {
-        v11 = [-[NSArray objectAtIndex:](v6 objectAtIndex:{i), "copy"}];
+        v11 = [-[NSArray objectAtIndex:](attributeMappings objectAtIndex:{i), "copy"}];
         [v7 addObject:v11];
       }
     }
 
     [v5 setAttributeMappings:v7];
 
-    v12 = [(NSEntityMapping *)self relationshipMappings];
-    v13 = [objc_msgSend(MEMORY[0x1E695DF70] allocWithZone:{a3), "init"}];
-    v14 = [(NSArray *)v12 count];
+    relationshipMappings = [(NSEntityMapping *)self relationshipMappings];
+    v13 = [objc_msgSend(MEMORY[0x1E695DF70] allocWithZone:{zone), "init"}];
+    v14 = [(NSArray *)relationshipMappings count];
     if (v14)
     {
       v15 = v14;
       for (j = 0; j != v15; ++j)
       {
-        v17 = [-[NSArray objectAtIndex:](v12 objectAtIndex:{j), "copy"}];
+        v17 = [-[NSArray objectAtIndex:](relationshipMappings objectAtIndex:{j), "copy"}];
         [v13 addObject:v17];
       }
     }
@@ -96,14 +96,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_48;
   }
 
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_47;
   }
@@ -114,86 +114,86 @@
     goto LABEL_47;
   }
 
-  v5 = [(NSEntityMapping *)self name];
-  v6 = [a3 name];
-  if (v5 != v6)
+  name = [(NSEntityMapping *)self name];
+  name2 = [equal name];
+  if (name != name2)
   {
-    v7 = v6;
-    LOBYTE(v6) = 0;
-    if (!v5)
+    v7 = name2;
+    LOBYTE(name2) = 0;
+    if (!name)
     {
-      return v6;
+      return name2;
     }
 
     if (!v7)
     {
-      return v6;
+      return name2;
     }
 
-    LODWORD(v6) = [(NSString *)v5 isEqual:?];
-    if (!v6)
+    LODWORD(name2) = [(NSString *)name isEqual:?];
+    if (!name2)
     {
-      return v6;
+      return name2;
     }
   }
 
-  v8 = [(NSEntityMapping *)self mappingType];
-  if (v8 != [a3 mappingType])
+  mappingType = [(NSEntityMapping *)self mappingType];
+  if (mappingType != [equal mappingType])
   {
 LABEL_47:
-    LOBYTE(v6) = 0;
-    return v6;
+    LOBYTE(name2) = 0;
+    return name2;
   }
 
-  v9 = [(NSEntityMapping *)self sourceEntityName];
-  v6 = [a3 sourceEntityName];
-  if (v9 == v6 || (v10 = v6, LOBYTE(v6) = 0, v9) && v10 && (LODWORD(v6) = [(NSString *)v9 isEqual:?], v6))
+  sourceEntityName = [(NSEntityMapping *)self sourceEntityName];
+  name2 = [equal sourceEntityName];
+  if (sourceEntityName == name2 || (v10 = name2, LOBYTE(name2) = 0, sourceEntityName) && v10 && (LODWORD(name2) = [(NSString *)sourceEntityName isEqual:?], name2))
   {
-    v11 = [(NSEntityMapping *)self sourceEntityVersionHash];
-    v6 = [a3 sourceEntityVersionHash];
-    if (v11 == v6 || (v12 = v6, LOBYTE(v6) = 0, v11) && v12 && (LODWORD(v6) = [(NSData *)v11 isEqual:?], v6))
+    sourceEntityVersionHash = [(NSEntityMapping *)self sourceEntityVersionHash];
+    name2 = [equal sourceEntityVersionHash];
+    if (sourceEntityVersionHash == name2 || (v12 = name2, LOBYTE(name2) = 0, sourceEntityVersionHash) && v12 && (LODWORD(name2) = [(NSData *)sourceEntityVersionHash isEqual:?], name2))
     {
-      v13 = [(NSEntityMapping *)self destinationEntityName];
-      v6 = [a3 destinationEntityName];
-      if (v13 == v6 || (v14 = v6, LOBYTE(v6) = 0, v13) && v14 && (LODWORD(v6) = [(NSString *)v13 isEqual:?], v6))
+      destinationEntityName = [(NSEntityMapping *)self destinationEntityName];
+      name2 = [equal destinationEntityName];
+      if (destinationEntityName == name2 || (v14 = name2, LOBYTE(name2) = 0, destinationEntityName) && v14 && (LODWORD(name2) = [(NSString *)destinationEntityName isEqual:?], name2))
       {
-        v15 = [(NSEntityMapping *)self destinationEntityVersionHash];
-        v6 = [a3 destinationEntityVersionHash];
-        if (v15 == v6 || (v16 = v6, LOBYTE(v6) = 0, v15) && v16 && (LODWORD(v6) = [(NSData *)v15 isEqual:?], v6))
+        destinationEntityVersionHash = [(NSEntityMapping *)self destinationEntityVersionHash];
+        name2 = [equal destinationEntityVersionHash];
+        if (destinationEntityVersionHash == name2 || (v16 = name2, LOBYTE(name2) = 0, destinationEntityVersionHash) && v16 && (LODWORD(name2) = [(NSData *)destinationEntityVersionHash isEqual:?], name2))
         {
-          v17 = [(NSEntityMapping *)self sourceExpression];
-          v6 = [a3 sourceExpression];
-          if (v17 == v6 || (v18 = v6, LOBYTE(v6) = 0, v17) && v18 && (LODWORD(v6) = [(NSExpression *)v17 isEqual:?], v6))
+          sourceExpression = [(NSEntityMapping *)self sourceExpression];
+          name2 = [equal sourceExpression];
+          if (sourceExpression == name2 || (v18 = name2, LOBYTE(name2) = 0, sourceExpression) && v18 && (LODWORD(name2) = [(NSExpression *)sourceExpression isEqual:?], name2))
           {
-            v19 = [(NSEntityMapping *)self userInfo];
-            v6 = [a3 userInfo];
-            if (v19 == v6 || (v20 = v6, LOBYTE(v6) = 0, v19) && v20 && (LODWORD(v6) = [(NSDictionary *)v19 isEqual:?], v6))
+            userInfo = [(NSEntityMapping *)self userInfo];
+            name2 = [equal userInfo];
+            if (userInfo == name2 || (v20 = name2, LOBYTE(name2) = 0, userInfo) && v20 && (LODWORD(name2) = [(NSDictionary *)userInfo isEqual:?], name2))
             {
-              v21 = [(NSEntityMapping *)self entityMigrationPolicyClassName];
-              v6 = [a3 entityMigrationPolicyClassName];
-              if (v21 == v6 || (v22 = v6, LOBYTE(v6) = 0, v21) && v22 && (LODWORD(v6) = [(NSString *)v21 isEqual:?], v6))
+              entityMigrationPolicyClassName = [(NSEntityMapping *)self entityMigrationPolicyClassName];
+              name2 = [equal entityMigrationPolicyClassName];
+              if (entityMigrationPolicyClassName == name2 || (v22 = name2, LOBYTE(name2) = 0, entityMigrationPolicyClassName) && v22 && (LODWORD(name2) = [(NSString *)entityMigrationPolicyClassName isEqual:?], name2))
               {
-                v23 = [(NSEntityMapping *)self attributeMappings];
-                v6 = [a3 attributeMappings];
-                if (v23 == v6 || (v24 = v6, LOBYTE(v6) = 0, v23) && v24 && (LODWORD(v6) = [(NSArray *)v23 isEqual:?], v6))
+                attributeMappings = [(NSEntityMapping *)self attributeMappings];
+                name2 = [equal attributeMappings];
+                if (attributeMappings == name2 || (v24 = name2, LOBYTE(name2) = 0, attributeMappings) && v24 && (LODWORD(name2) = [(NSArray *)attributeMappings isEqual:?], name2))
                 {
-                  v25 = [(NSEntityMapping *)self relationshipMappings];
-                  v6 = [a3 relationshipMappings];
-                  if (v25 != v6)
+                  relationshipMappings = [(NSEntityMapping *)self relationshipMappings];
+                  name2 = [equal relationshipMappings];
+                  if (relationshipMappings != name2)
                   {
-                    v26 = v6;
-                    LOBYTE(v6) = 0;
-                    if (v25 && v26)
+                    v26 = name2;
+                    LOBYTE(name2) = 0;
+                    if (relationshipMappings && v26)
                     {
 
-                      LOBYTE(v6) = [(NSArray *)v25 isEqual:?];
+                      LOBYTE(name2) = [(NSArray *)relationshipMappings isEqual:?];
                     }
 
-                    return v6;
+                    return name2;
                   }
 
 LABEL_48:
-                  LOBYTE(v6) = 1;
+                  LOBYTE(name2) = 1;
                 }
               }
             }
@@ -203,7 +203,7 @@ LABEL_48:
     }
   }
 
-  return v6;
+  return name2;
 }
 
 - (id)description
@@ -336,35 +336,35 @@ LABEL_48:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self->_name)
   {
-    [a3 encodeObject:-[NSEntityMapping name](self forKey:{"name"), @"NSMappingName"}];
+    [coder encodeObject:-[NSEntityMapping name](self forKey:{"name"), @"NSMappingName"}];
   }
 
-  [a3 encodeInt:-[NSEntityMapping mappingType](self forKey:{"mappingType"), @"NSMappingType"}];
-  [a3 encodeObject:-[NSEntityMapping sourceEntityName](self forKey:{"sourceEntityName"), @"NSSourceEntityName"}];
-  [a3 encodeObject:-[NSEntityMapping sourceEntityVersionHash](self forKey:{"sourceEntityVersionHash"), @"NSSourceEntityVersionHash"}];
-  [a3 encodeObject:-[NSEntityMapping destinationEntityName](self forKey:{"destinationEntityName"), @"NSDestinationEntityName"}];
-  [a3 encodeObject:-[NSEntityMapping destinationEntityVersionHash](self forKey:{"destinationEntityVersionHash"), @"NSDestinationEntityVersionHash"}];
-  [a3 encodeObject:-[NSEntityMapping sourceExpression](self forKey:{"sourceExpression"), @"NSSourceExpression"}];
-  [a3 encodeObject:-[NSEntityMapping userInfo](self forKey:{"userInfo"), @"NSUserInfo"}];
-  [a3 encodeObject:-[NSEntityMapping entityMigrationPolicyClassName](self forKey:{"entityMigrationPolicyClassName"), @"NSEntityMigrationPolicyClassName"}];
-  [a3 encodeObject:-[NSEntityMapping attributeMappings](self forKey:{"attributeMappings"), @"NSAttributeMappings"}];
-  v5 = [(NSEntityMapping *)self relationshipMappings];
+  [coder encodeInt:-[NSEntityMapping mappingType](self forKey:{"mappingType"), @"NSMappingType"}];
+  [coder encodeObject:-[NSEntityMapping sourceEntityName](self forKey:{"sourceEntityName"), @"NSSourceEntityName"}];
+  [coder encodeObject:-[NSEntityMapping sourceEntityVersionHash](self forKey:{"sourceEntityVersionHash"), @"NSSourceEntityVersionHash"}];
+  [coder encodeObject:-[NSEntityMapping destinationEntityName](self forKey:{"destinationEntityName"), @"NSDestinationEntityName"}];
+  [coder encodeObject:-[NSEntityMapping destinationEntityVersionHash](self forKey:{"destinationEntityVersionHash"), @"NSDestinationEntityVersionHash"}];
+  [coder encodeObject:-[NSEntityMapping sourceExpression](self forKey:{"sourceExpression"), @"NSSourceExpression"}];
+  [coder encodeObject:-[NSEntityMapping userInfo](self forKey:{"userInfo"), @"NSUserInfo"}];
+  [coder encodeObject:-[NSEntityMapping entityMigrationPolicyClassName](self forKey:{"entityMigrationPolicyClassName"), @"NSEntityMigrationPolicyClassName"}];
+  [coder encodeObject:-[NSEntityMapping attributeMappings](self forKey:{"attributeMappings"), @"NSAttributeMappings"}];
+  relationshipMappings = [(NSEntityMapping *)self relationshipMappings];
 
-  [a3 encodeObject:v5 forKey:@"NSRelationshipMappings"];
+  [coder encodeObject:relationshipMappings forKey:@"NSRelationshipMappings"];
 }
 
-- (NSEntityMapping)initWithCoder:(id)a3
+- (NSEntityMapping)initWithCoder:(id)coder
 {
   v19.receiver = self;
   v19.super_class = NSEntityMapping;
   v4 = [(NSEntityMapping *)&v19 init];
   if (v4)
   {
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSMappingName"];
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSMappingName"];
     v4->_name = v5;
     if (v5 && ([(NSString *)v5 isNSString]& 1) == 0)
     {
@@ -375,8 +375,8 @@ LABEL_48:
 
     else
     {
-      v4->_mappingType = [a3 decodeIntForKey:@"NSMappingType"];
-      v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSSourceEntityName"];
+      v4->_mappingType = [coder decodeIntForKey:@"NSMappingType"];
+      v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSSourceEntityName"];
       v4->_sourceEntityName = v6;
       if (v6 && ([(NSString *)v6 isNSString]& 1) == 0)
       {
@@ -387,8 +387,8 @@ LABEL_48:
 
       else
       {
-        v4->_sourceEntityVersionHash = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSSourceEntityVersionHash"];
-        v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSDestinationEntityName"];
+        v4->_sourceEntityVersionHash = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSSourceEntityVersionHash"];
+        v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSDestinationEntityName"];
         v4->_destinationEntityName = v7;
         if (v7 && ([(NSString *)v7 isNSString]& 1) == 0)
         {
@@ -399,27 +399,27 @@ LABEL_48:
 
         else
         {
-          v4->_destinationEntityVersionHash = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSDestinationEntityVersionHash"];
+          v4->_destinationEntityVersionHash = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSDestinationEntityVersionHash"];
           v8 = MEMORY[0x1E695DFD8];
           v9 = objc_opt_class();
-          v4->_sourceExpression = [a3 decodeObjectOfClasses:objc_msgSend(v8 forKey:{"setWithObjects:", v9, objc_opt_class(), 0), @"NSSourceExpression"}];
+          v4->_sourceExpression = [coder decodeObjectOfClasses:objc_msgSend(v8 forKey:{"setWithObjects:", v9, objc_opt_class(), 0), @"NSSourceExpression"}];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             [(NSExpression *)v4->_sourceExpression allowEvaluation];
           }
 
-          v4->_userInfo = [a3 decodeObjectOfClasses:+[_PFRoutines plistClassesForSecureCoding]() forKey:@"NSUserInfo"];
-          v10 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSEntityMigrationPolicyClassName"];
+          v4->_userInfo = [coder decodeObjectOfClasses:+[_PFRoutines plistClassesForSecureCoding]() forKey:@"NSUserInfo"];
+          v10 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSEntityMigrationPolicyClassName"];
           v4->_entityMigrationPolicyClassName = v10;
           if (!v10 || ([(NSString *)v10 isNSString]& 1) != 0)
           {
             v11 = MEMORY[0x1E695DFD8];
             v12 = objc_opt_class();
-            v4->_attributeMappings = [a3 decodeObjectOfClasses:objc_msgSend(v11 forKey:{"setWithObjects:", v12, objc_opt_class(), 0), @"NSAttributeMappings"}];
+            v4->_attributeMappings = [coder decodeObjectOfClasses:objc_msgSend(v11 forKey:{"setWithObjects:", v12, objc_opt_class(), 0), @"NSAttributeMappings"}];
             v13 = MEMORY[0x1E695DFD8];
             v14 = objc_opt_class();
-            v4->_relationshipMappings = [a3 decodeObjectOfClasses:objc_msgSend(v13 forKey:{"setWithObjects:", v14, objc_opt_class(), 0), @"NSRelationshipMappings"}];
+            v4->_relationshipMappings = [coder decodeObjectOfClasses:objc_msgSend(v13 forKey:{"setWithObjects:", v14, objc_opt_class(), 0), @"NSRelationshipMappings"}];
             *&v4->_entityMappingFlags &= ~1u;
             return v4;
           }
@@ -431,7 +431,7 @@ LABEL_48:
       }
     }
 
-    [a3 failWithError:{objc_msgSend(v15, "errorWithDomain:code:userInfo:", v16, 4866, v17)}];
+    [coder failWithError:{objc_msgSend(v15, "errorWithDomain:code:userInfo:", v16, 4866, v17)}];
 
     return 0;
   }
@@ -464,7 +464,7 @@ LABEL_48:
   return result;
 }
 
-- (id)_initWithSourceEntityDescription:(id)a3 destinationEntityDescription:(id)a4
+- (id)_initWithSourceEntityDescription:(id)description destinationEntityDescription:(id)entityDescription
 {
   v11.receiver = self;
   v11.super_class = NSEntityMapping;
@@ -476,10 +476,10 @@ LABEL_48:
     v6->_mappingType = 0;
     v6->_attributeMappings = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7->_relationshipMappings = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (a3)
+    if (description)
     {
-      v7->_sourceEntityName = [objc_msgSend(a3 "name")];
-      v8 = [objc_msgSend(a3 "versionHash")];
+      v7->_sourceEntityName = [objc_msgSend(description "name")];
+      v8 = [objc_msgSend(description "versionHash")];
     }
 
     else
@@ -489,10 +489,10 @@ LABEL_48:
     }
 
     v7->_sourceEntityVersionHash = v8;
-    if (a4)
+    if (entityDescription)
     {
-      v7->_destinationEntityName = [objc_msgSend(a4 "name")];
-      v9 = [objc_msgSend(a4 "versionHash")];
+      v7->_destinationEntityName = [objc_msgSend(entityDescription "name")];
+      v9 = [objc_msgSend(entityDescription "versionHash")];
     }
 
     else
@@ -511,17 +511,17 @@ LABEL_48:
   return v7;
 }
 
-- (void)_setIsEditable:(BOOL)a3
+- (void)_setIsEditable:(BOOL)editable
 {
   entityMappingFlags = self->_entityMappingFlags;
-  if (((*&entityMappingFlags ^ a3) & 1) == 0)
+  if (((*&entityMappingFlags ^ editable) & 1) == 0)
   {
     if (*&entityMappingFlags)
     {
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Entity Mappings cannot become mutable after being marked immutable." userInfo:{0, v3, v4}]);
     }
 
-    self->_entityMappingFlags = (*&entityMappingFlags | !a3);
+    self->_entityMappingFlags = (*&entityMappingFlags | !editable);
 
     [(NSEntityMapping *)self _createCachesAndOptimizeState];
   }
@@ -549,17 +549,17 @@ LABEL_48:
         [v1 _setIsEditable:0];
       }
 
-      v2 = [v1 attributeMappings];
-      v3 = [v1 relationshipMappings];
-      v4 = [v2 count];
-      v5 = [v3 count];
+      attributeMappings = [v1 attributeMappings];
+      relationshipMappings = [v1 relationshipMappings];
+      v4 = [attributeMappings count];
+      v5 = [relationshipMappings count];
       v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v5 + v4];
       v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v5 + v4];
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v8 = [v2 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v8 = [attributeMappings countByEnumeratingWithState:&v23 objects:v28 count:16];
       if (v8)
       {
         v9 = v8;
@@ -570,7 +570,7 @@ LABEL_48:
           {
             if (*v24 != v10)
             {
-              objc_enumerationMutation(v2);
+              objc_enumerationMutation(attributeMappings);
             }
 
             v12 = *(*(&v23 + 1) + 8 * i);
@@ -578,7 +578,7 @@ LABEL_48:
             [v6 addObject:{objc_msgSend(v12, "name")}];
           }
 
-          v9 = [v2 countByEnumeratingWithState:&v23 objects:v28 count:16];
+          v9 = [attributeMappings countByEnumeratingWithState:&v23 objects:v28 count:16];
         }
 
         while (v9);
@@ -588,7 +588,7 @@ LABEL_48:
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v13 = [v3 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v13 = [relationshipMappings countByEnumeratingWithState:&v19 objects:v27 count:16];
       if (v13)
       {
         v14 = v13;
@@ -599,7 +599,7 @@ LABEL_48:
           {
             if (*v20 != v15)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(relationshipMappings);
             }
 
             v17 = *(*(&v19 + 1) + 8 * j);
@@ -607,7 +607,7 @@ LABEL_48:
             [v6 addObject:{objc_msgSend(v17, "name")}];
           }
 
-          v14 = [v3 countByEnumeratingWithState:&v19 objects:v27 count:16];
+          v14 = [relationshipMappings countByEnumeratingWithState:&v19 objects:v27 count:16];
         }
 
         while (v14);

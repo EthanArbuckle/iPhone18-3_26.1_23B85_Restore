@@ -1,18 +1,18 @@
 @interface RansacEstimation
-- (BOOL)ApplyRansacEstimation:(id)a3 desMatchInput:(id)a4 desMatchInput:(id)a5 desMatchInput:(id)a6 desMatchCountInput:(int)a7 xscaleFactorInput:(float)a8 yscaleFactorInput:(float)a9 imageDimInput:(int)a10 imageDimInput:(int)a11 homographyMatrixOutput:(_xform2D *)a12 waitForComplete:(BOOL)a13;
-- (BOOL)allocateInternalBuffer:(int)a3;
-- (RansacEstimation)initWithDevice:(id)a3 commmandQueue:(id)a4;
+- (BOOL)ApplyRansacEstimation:(id)estimation desMatchInput:(id)input desMatchInput:(id)matchInput desMatchInput:(id)desMatchInput desMatchCountInput:(int)countInput xscaleFactorInput:(float)factorInput yscaleFactorInput:(float)yscaleFactorInput imageDimInput:(int)self0 imageDimInput:(int)self1 homographyMatrixOutput:(_xform2D *)self2 waitForComplete:(BOOL)self3;
+- (BOOL)allocateInternalBuffer:(int)buffer;
+- (RansacEstimation)initWithDevice:(id)device commmandQueue:(id)queue;
 - (void)dealloc;
 - (void)freeScratchSpace;
 @end
 
 @implementation RansacEstimation
 
-- (RansacEstimation)initWithDevice:(id)a3 commmandQueue:(id)a4
+- (RansacEstimation)initWithDevice:(id)device commmandQueue:(id)queue
 {
   v9.receiver = self;
   v9.super_class = RansacEstimation;
-  v4 = [(VEMetalBase *)&v9 initWithDevice:a3 commmandQueue:a4];
+  v4 = [(VEMetalBase *)&v9 initWithDevice:device commmandQueue:queue];
   v5 = v4;
   if (!v4)
   {
@@ -24,8 +24,8 @@
     goto LABEL_10;
   }
 
-  v6 = [(RansacEstimation *)v4 setupMetal];
-  if ((v6 & [(RansacEstimation *)v5 allocateInternalBuffer:2048]& 1) == 0)
+  setupMetal = [(RansacEstimation *)v4 setupMetal];
+  if ((setupMetal & [(RansacEstimation *)v5 allocateInternalBuffer:2048]& 1) == 0)
   {
     if ((global_logLevel & 0x10) != 0 && os_log_type_enabled(global_logger, OS_LOG_TYPE_ERROR))
     {
@@ -70,22 +70,22 @@ LABEL_11:
   }
 }
 
-- (BOOL)allocateInternalBuffer:(int)a3
+- (BOOL)allocateInternalBuffer:(int)buffer
 {
   p_scratchSpace = &self->_scratchSpace;
-  if (self->_scratchSpace.inlierCount >= a3)
+  if (self->_scratchSpace.inlierCount >= buffer)
   {
     goto LABEL_7;
   }
 
-  if (a3 >= -127)
+  if (buffer >= -127)
   {
-    v4 = a3 + 127;
+    v4 = buffer + 127;
   }
 
   else
   {
-    v4 = a3 + 254;
+    v4 = buffer + 254;
   }
 
   v5 = v4 >> 7;
@@ -126,29 +126,29 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)ApplyRansacEstimation:(id)a3 desMatchInput:(id)a4 desMatchInput:(id)a5 desMatchInput:(id)a6 desMatchCountInput:(int)a7 xscaleFactorInput:(float)a8 yscaleFactorInput:(float)a9 imageDimInput:(int)a10 imageDimInput:(int)a11 homographyMatrixOutput:(_xform2D *)a12 waitForComplete:(BOOL)a13
+- (BOOL)ApplyRansacEstimation:(id)estimation desMatchInput:(id)input desMatchInput:(id)matchInput desMatchInput:(id)desMatchInput desMatchCountInput:(int)countInput xscaleFactorInput:(float)factorInput yscaleFactorInput:(float)yscaleFactorInput imageDimInput:(int)self0 imageDimInput:(int)self1 homographyMatrixOutput:(_xform2D *)self2 waitForComplete:(BOOL)self3
 {
-  v133 = *&a8;
-  v13 = *&a7;
+  v133 = *&factorInput;
+  v13 = *&countInput;
   v169 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v19 = a4;
-  v20 = v18;
-  v21 = v19;
-  v22 = a5;
+  estimationCopy = estimation;
+  inputCopy = input;
+  v20 = estimationCopy;
+  v21 = inputCopy;
+  matchInputCopy = matchInput;
   v161 = 0;
   v160 = 0;
   v163 = 0;
   v164 = 0x3F80000000000000;
   v159 = 1.0;
   v162 = 1065353216;
-  v136 = a6;
+  desMatchInputCopy = desMatchInput;
   v137 = v21;
-  v23 = [v18 contents];
-  v24 = [v21 contents];
-  v25 = [v22 contents];
-  v26 = [v136 contents];
-  v135 = v22;
+  contents = [estimationCopy contents];
+  contents2 = [v21 contents];
+  contents3 = [matchInputCopy contents];
+  contents4 = [desMatchInputCopy contents];
+  v135 = matchInputCopy;
   v134 = [(RansacEstimation *)self allocateInternalBuffer:v13];
   if (v134)
   {
@@ -209,13 +209,13 @@ LABEL_7:
             v168.columns[1] = 0x3F800000uLL;
             v168.columns[0] = 0x3F800000uLL;
             v53 = 4 * pRandomIndices[v48];
-            v158[0] = *(v23 + v53);
-            v54 = *(v24 + v53);
-            v55 = *(v25 + v53);
+            v158[0] = *(contents + v53);
+            v54 = *(contents2 + v53);
+            v55 = *(contents3 + v53);
             v168.columns[2].i32[0] = 1065353216;
             v166 = v55;
             v167 = v54;
-            v165 = *(v26 + v53);
+            v165 = *(contents4 + v53);
             v56 = &v168;
             RegWarp_homographyEstimation(v158, &v167, &v166, &v165, 4, &v168, p_scratchSpace->pH1_t);
             v57 = 0;
@@ -252,9 +252,9 @@ LABEL_7:
             v68 = 0.0;
             do
             {
-              v69 = vaddq_f32(v67, vmlaq_n_f32(vmulq_n_f32(v65, *(v25 + 4 * v63)), v66, *(v26 + 4 * v63)));
-              v70.i32[0] = *(v23 + 4 * v63);
-              v70.i32[1] = *(v24 + 4 * v63);
+              v69 = vaddq_f32(v67, vmlaq_n_f32(vmulq_n_f32(v65, *(contents3 + 4 * v63)), v66, *(contents4 + 4 * v63)));
+              v70.i32[0] = *(contents + 4 * v63);
+              v70.i32[1] = *(contents2 + 4 * v63);
               if (vaddv_f32(vabd_f32(vdiv_f32(*v69.i8, vdup_laneq_s32(v69, 2)), v70)) <= 3.0)
               {
                 v68 = v68 + 1.0;
@@ -332,10 +332,10 @@ LABEL_36:
           do
           {
             v89 = *v83++;
-            *v84++ = *(v23 + 4 * v89);
-            *v85++ = *(v24 + 4 * v89);
-            *v86++ = *(v25 + 4 * v89);
-            *v87++ = *(v26 + 4 * v89);
+            *v84++ = *(contents + 4 * v89);
+            *v85++ = *(contents2 + 4 * v89);
+            *v86++ = *(contents3 + 4 * v89);
+            *v87++ = *(contents4 + 4 * v89);
             --v88;
           }
 
@@ -378,9 +378,9 @@ LABEL_36:
         v102 = v128;
         do
         {
-          v103 = vaddq_f32(v101, vmlaq_n_f32(vmulq_n_f32(v99, *(v25 + 4 * v97)), v100, *(v26 + 4 * v97)));
-          v104.i32[0] = *(v23 + 4 * v97);
-          v104.i32[1] = *(v24 + 4 * v97);
+          v103 = vaddq_f32(v101, vmlaq_n_f32(vmulq_n_f32(v99, *(contents3 + 4 * v97)), v100, *(contents4 + 4 * v97)));
+          v104.i32[0] = *(contents + 4 * v97);
+          v104.i32[1] = *(contents2 + 4 * v97);
           if (vaddv_f32(vabd_f32(vdiv_f32(*v103.i8, vdup_laneq_s32(v103, 2)), v104)) <= 3.0)
           {
             v92[v98++] = v97;
@@ -406,7 +406,7 @@ LABEL_36:
 
         v108 = 0;
         v109 = &v159;
-        v30 = v136;
+        v30 = desMatchInputCopy;
         v29 = v137;
         do
         {
@@ -439,7 +439,7 @@ LABEL_36:
         v146 = v158[2];
         v105.i32[2] = *(MEMORY[0x277D860B0] + 8);
         v117 = v116;
-        v117.f32[1] = a9;
+        v117.f32[1] = yscaleFactorInput;
         v117.i32[2] = *(MEMORY[0x277D860B0] + 24);
         v115.i32[2] = 0;
         v116.i32[2] = 0;
@@ -496,20 +496,20 @@ LABEL_36:
         v124 = vmulq_n_f32(v155, 1.0 / *&v157.width);
         v125 = vmulq_n_f32(v156, 1.0 / *&v157.width);
         v126 = vmulq_n_f32(v157, 1.0 / *&v157.width);
-        a12->width = v124.i32[2];
-        *&a12->confidence = v124.i64[0];
-        a12[1].width = v125.i32[2];
-        *&a12[1].confidence = v125.i64[0];
-        a12[2].width = v126.i32[2];
-        *&a12[2].confidence = v126.i64[0];
-        a12[3].confidence = v98 / v50;
-        a12[3].inlierCnt = v98;
+        output->width = v124.i32[2];
+        *&output->confidence = v124.i64[0];
+        output[1].width = v125.i32[2];
+        *&output[1].confidence = v125.i64[0];
+        output[2].width = v126.i32[2];
+        *&output[2].confidence = v126.i64[0];
+        output[3].confidence = v98 / v50;
+        output[3].inlierCnt = v98;
         v20 = v129;
       }
 
       else
       {
-        v30 = v136;
+        v30 = desMatchInputCopy;
         v29 = v137;
         if ((global_logLevel & 0x10) != 0 && (!os_log_type_enabled(global_logger, OS_LOG_TYPE_ERROR) || ![RansacEstimation ApplyRansacEstimation:desMatchInput:desMatchInput:desMatchInput:desMatchCountInput:xscaleFactorInput:yscaleFactorInput:imageDimInput:imageDimInput:homographyMatrixOutput:waitForComplete:]) && os_log_type_enabled(global_logger, OS_LOG_TYPE_ERROR))
         {
@@ -522,7 +522,7 @@ LABEL_36:
     {
       v27 = 0;
       v28 = &v159;
-      v30 = v136;
+      v30 = desMatchInputCopy;
       v29 = v137;
       do
       {
@@ -547,16 +547,16 @@ LABEL_36:
 
       while (v27 != 3);
       v35 = v156;
-      *a12 = v155;
-      a12[1] = v35;
-      a12[2] = v157;
-      *&a12[3].confidence = 0;
+      *output = v155;
+      output[1] = v35;
+      output[2] = v157;
+      *&output[3].confidence = 0;
     }
   }
 
   else
   {
-    v30 = v136;
+    v30 = desMatchInputCopy;
     v29 = v137;
     if ((global_logLevel & 0x10) != 0 && os_log_type_enabled(global_logger, OS_LOG_TYPE_ERROR))
     {

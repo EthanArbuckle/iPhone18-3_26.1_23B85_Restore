@@ -1,23 +1,23 @@
 @interface _NSTextHighlightCluster
 - (uint64_t)addRunsWithTextRangeArray:(uint64_t)result;
-- (uint64_t)bottomNeighborExistsAtPoint:(uint64_t)a3 withinDistance:(double)a4 withLeftCornerExtensionDistance:(double)a5 withRightCornerExtensionDistance:(double)a6;
-- (uint64_t)topNeighborExistsAtPoint:(uint64_t)a3 withinDistance:(double)a4 withLeftCornerExtensionDistance:(double)a5 withRightCornerExtensionDistance:(double)a6;
-- (void)accessBorderDict:(id)a3 forKey:(double)a4 usingBlock:(id)a5;
-- (void)addToBorderDict:(id)a3 key:(double)a4 object:(CGRect)a5;
-- (void)drawRunsUsingBlock:(uint64_t)a1;
-- (void)initWithShapeProvider:(void *)a1;
-- (void)registerMaxYOfRun:(id)a3;
-- (void)registerMinYOfRun:(id)a3;
+- (uint64_t)bottomNeighborExistsAtPoint:(uint64_t)point withinDistance:(double)distance withLeftCornerExtensionDistance:(double)extensionDistance withRightCornerExtensionDistance:(double)cornerExtensionDistance;
+- (uint64_t)topNeighborExistsAtPoint:(uint64_t)point withinDistance:(double)distance withLeftCornerExtensionDistance:(double)extensionDistance withRightCornerExtensionDistance:(double)cornerExtensionDistance;
+- (void)accessBorderDict:(id)dict forKey:(double)key usingBlock:(id)block;
+- (void)addToBorderDict:(id)dict key:(double)key object:(CGRect)object;
+- (void)drawRunsUsingBlock:(uint64_t)block;
+- (void)initWithShapeProvider:(void *)provider;
+- (void)registerMaxYOfRun:(id)run;
+- (void)registerMinYOfRun:(id)run;
 @end
 
 @implementation _NSTextHighlightCluster
 
-- (uint64_t)topNeighborExistsAtPoint:(uint64_t)a3 withinDistance:(double)a4 withLeftCornerExtensionDistance:(double)a5 withRightCornerExtensionDistance:(double)a6
+- (uint64_t)topNeighborExistsAtPoint:(uint64_t)point withinDistance:(double)distance withLeftCornerExtensionDistance:(double)extensionDistance withRightCornerExtensionDistance:(double)cornerExtensionDistance
 {
-  if (a1)
+  if (self)
   {
-    v12 = *(a1 + 8);
-    v13 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+    v12 = *(self + 8);
+    v13 = [MEMORY[0x1E696AD98] numberWithDouble:extensionDistance];
     v14 = [v12 objectForKey:v13];
 
     v18 = 0;
@@ -30,12 +30,12 @@
       v17[1] = 3221225472;
       v17[2] = __132___NSTextHighlightCluster_topNeighborExistsAtPoint_withinDistance_withLeftCornerExtensionDistance_withRightCornerExtensionDistance___block_invoke;
       v17[3] = &unk_1E7267280;
-      *&v17[6] = a4;
-      *&v17[7] = a5;
-      *&v17[8] = a6;
+      *&v17[6] = distance;
+      *&v17[7] = extensionDistance;
+      *&v17[8] = cornerExtensionDistance;
       v17[9] = a2;
-      v17[10] = a3;
-      v17[4] = a1;
+      v17[10] = point;
+      v17[4] = self;
       v17[5] = &v18;
       [v14 enumerateObjectsUsingBlock:v17];
     }
@@ -52,12 +52,12 @@
   return v15 & 1;
 }
 
-- (uint64_t)bottomNeighborExistsAtPoint:(uint64_t)a3 withinDistance:(double)a4 withLeftCornerExtensionDistance:(double)a5 withRightCornerExtensionDistance:(double)a6
+- (uint64_t)bottomNeighborExistsAtPoint:(uint64_t)point withinDistance:(double)distance withLeftCornerExtensionDistance:(double)extensionDistance withRightCornerExtensionDistance:(double)cornerExtensionDistance
 {
-  if (a1)
+  if (self)
   {
-    v12 = *(a1 + 16);
-    v13 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+    v12 = *(self + 16);
+    v13 = [MEMORY[0x1E696AD98] numberWithDouble:extensionDistance];
     v14 = [v12 objectForKey:v13];
 
     v18 = 0;
@@ -70,12 +70,12 @@
       v17[1] = 3221225472;
       v17[2] = __135___NSTextHighlightCluster_bottomNeighborExistsAtPoint_withinDistance_withLeftCornerExtensionDistance_withRightCornerExtensionDistance___block_invoke;
       v17[3] = &unk_1E7267280;
-      *&v17[6] = a4;
-      *&v17[7] = a5;
-      *&v17[8] = a6;
+      *&v17[6] = distance;
+      *&v17[7] = extensionDistance;
+      *&v17[8] = cornerExtensionDistance;
       v17[9] = a2;
-      v17[10] = a3;
-      v17[4] = a1;
+      v17[10] = point;
+      v17[4] = self;
       v17[5] = &v18;
       [v14 enumerateObjectsUsingBlock:v17];
     }
@@ -92,32 +92,32 @@
   return v15 & 1;
 }
 
-- (void)addToBorderDict:(id)a3 key:(double)a4 object:(CGRect)a5
+- (void)addToBorderDict:(id)dict key:(double)key object:(CGRect)object
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3;
-  v10 = [MEMORY[0x1E696AD98] numberWithLong:(a4 * 1000.0)];
-  v11 = [v13 objectForKey:v10];
-  if (!v11)
+  height = object.size.height;
+  width = object.size.width;
+  y = object.origin.y;
+  x = object.origin.x;
+  dictCopy = dict;
+  v10 = [MEMORY[0x1E696AD98] numberWithLong:(key * 1000.0)];
+  array = [dictCopy objectForKey:v10];
+  if (!array)
   {
-    v11 = [MEMORY[0x1E695DF70] array];
-    [v13 setObject:v11 forKey:v10];
+    array = [MEMORY[0x1E695DF70] array];
+    [dictCopy setObject:array forKey:v10];
   }
 
   v12 = [MEMORY[0x1E696B098] valueWithRect:{x, y, width, height}];
-  [v11 addObject:v12];
+  [array addObject:v12];
 }
 
-- (void)accessBorderDict:(id)a3 forKey:(double)a4 usingBlock:(id)a5
+- (void)accessBorderDict:(id)dict forKey:(double)key usingBlock:(id)block
 {
-  v7 = a5;
+  blockCopy = block;
   v8 = MEMORY[0x1E696AD98];
-  v9 = a3;
-  v10 = [v8 numberWithLong:(a4 * 1000.0)];
-  v11 = [v9 objectForKey:v10];
+  dictCopy = dict;
+  v10 = [v8 numberWithLong:(key * 1000.0)];
+  v11 = [dictCopy objectForKey:v10];
 
   if (v11 && [v11 count])
   {
@@ -125,15 +125,15 @@
     v12[1] = 3221225472;
     v12[2] = __62___NSTextHighlightCluster_accessBorderDict_forKey_usingBlock___block_invoke;
     v12[3] = &unk_1E7267258;
-    v13 = v7;
+    v13 = blockCopy;
     [v11 enumerateObjectsUsingBlock:v12];
   }
 }
 
-- (void)registerMinYOfRun:(id)a3
+- (void)registerMinYOfRun:(id)run
 {
-  v3 = a3;
-  if (v3 && [v3[7] count])
+  runCopy = run;
+  if (runCopy && [runCopy[7] count])
   {
     [_NSTextHighlightCluster registerMinYOfRun:];
   }
@@ -141,10 +141,10 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)registerMaxYOfRun:(id)a3
+- (void)registerMaxYOfRun:(id)run
 {
-  v3 = a3;
-  if (v3 && [v3[7] count])
+  runCopy = run;
+  if (runCopy && [runCopy[7] count])
   {
     [_NSTextHighlightCluster registerMaxYOfRun:];
   }
@@ -152,33 +152,33 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)initWithShapeProvider:(void *)a1
+- (void)initWithShapeProvider:(void *)provider
 {
   v3 = a2;
-  if (a1)
+  if (provider)
   {
-    v12.receiver = a1;
+    v12.receiver = provider;
     v12.super_class = _NSTextHighlightCluster;
     v4 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v4;
+    provider = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 3, v3);
-      v5 = [MEMORY[0x1E695DF70] array];
-      v6 = a1[4];
-      a1[4] = v5;
+      array = [MEMORY[0x1E695DF70] array];
+      v6 = provider[4];
+      provider[4] = array;
 
       v7 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:0 valueOptions:0 capacity:10];
-      v8 = a1[1];
-      a1[1] = v7;
+      v8 = provider[1];
+      provider[1] = v7;
 
       v9 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:0 valueOptions:0 capacity:10];
-      v10 = a1[2];
-      a1[2] = v9;
+      v10 = provider[2];
+      provider[2] = v9;
     }
   }
 
-  return a1;
+  return provider;
 }
 
 - (uint64_t)addRunsWithTextRangeArray:(uint64_t)result
@@ -196,12 +196,12 @@
   return result;
 }
 
-- (void)drawRunsUsingBlock:(uint64_t)a1
+- (void)drawRunsUsingBlock:(uint64_t)block
 {
   v3 = a2;
-  if (a1)
+  if (block)
   {
-    v4 = *(a1 + 32);
+    v4 = *(block + 32);
     OUTLINED_FUNCTION_0_2();
     v6 = 3221225472;
     v7 = __46___NSTextHighlightCluster_drawRunsUsingBlock___block_invoke;

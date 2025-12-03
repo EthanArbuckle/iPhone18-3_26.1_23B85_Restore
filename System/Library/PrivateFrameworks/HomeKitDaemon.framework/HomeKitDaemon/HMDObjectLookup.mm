@@ -1,23 +1,23 @@
 @interface HMDObjectLookup
 + (id)logCategory;
-- (HMDObjectLookup)initWithWorkQueue:(id)a3;
-- (id)_lookUpObjectWithUUID:(id)a3 applyObjectChange:(id)a4 previous:(id)a5 result:(id)a6 completionHandler:(id)a7;
-- (void)applyChange:(id)a3 previous:(id)a4 onObject:(id)a5 result:(id)a6 completionHandler:(id)a7;
-- (void)lookUpAndApplyObjectChange:(id)a3 previous:(id)a4 result:(id)a5 completionHandler:(id)a6;
+- (HMDObjectLookup)initWithWorkQueue:(id)queue;
+- (id)_lookUpObjectWithUUID:(id)d applyObjectChange:(id)change previous:(id)previous result:(id)result completionHandler:(id)handler;
+- (void)applyChange:(id)change previous:(id)previous onObject:(id)object result:(id)result completionHandler:(id)handler;
+- (void)lookUpAndApplyObjectChange:(id)change previous:(id)previous result:(id)result completionHandler:(id)handler;
 - (void)resetObjects;
 @end
 
 @implementation HMDObjectLookup
 
-- (void)applyChange:(id)a3 previous:(id)a4 onObject:(id)a5 result:(id)a6 completionHandler:(id)a7
+- (void)applyChange:(id)change previous:(id)previous onObject:(id)object result:(id)result completionHandler:(id)handler
 {
   v59 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v46 = a4;
-  v13 = a5;
-  v14 = a6;
-  aBlock = a7;
-  v15 = v13;
+  changeCopy = change;
+  previousCopy = previous;
+  objectCopy = object;
+  resultCopy = result;
+  aBlock = handler;
+  v15 = objectCopy;
   if ([v15 conformsToProtocol:&unk_283E8A838])
   {
     v16 = v15;
@@ -30,26 +30,26 @@
 
   v17 = v16;
 
-  v47 = v14;
+  v47 = resultCopy;
   if (v17)
   {
-    v18 = [v14 label];
+    label = [resultCopy label];
     v19 = HMFEqualObjects();
 
     if ((v19 & 1) == 0)
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         v23 = HMFGetLogIdentifier();
-        v24 = [v12 change];
-        v25 = [v24 uuid];
+        change = [changeCopy change];
+        uuid = [change uuid];
         *buf = 138543618;
         v56 = v23;
         v57 = 2112;
-        v58 = v25;
+        v58 = uuid;
         _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_INFO, "%{public}@Applying object change with UUID %@", buf, 0x16u);
       }
 
@@ -57,39 +57,39 @@
     }
 
     objc_initWeak(buf, self);
-    v26 = [v12 message];
-    v27 = v26;
-    if (v26)
+    message = [changeCopy message];
+    v27 = message;
+    if (message)
     {
       if (!aBlock)
       {
 LABEL_22:
-        v42 = [v12 change];
-        v43 = [v42 objectChangeType] == 3;
+        change2 = [changeCopy change];
+        v43 = [change2 objectChangeType] == 3;
 
-        v44 = [v12 change];
+        change3 = [changeCopy change];
         if (v43)
         {
-          [v17 transactionObjectRemoved:v44 message:v27];
+          [v17 transactionObjectRemoved:change3 message:v27];
         }
 
         else
         {
-          [v17 transactionObjectUpdated:v46 newValues:v44 message:v27];
+          [v17 transactionObjectUpdated:previousCopy newValues:change3 message:v27];
         }
 
         objc_destroyWeak(buf);
         goto LABEL_26;
       }
 
-      v28 = [v26 mutableCopy];
-      v29 = [v27 responseHandler];
+      v28 = [message mutableCopy];
+      responseHandler = [v27 responseHandler];
       [v28 setTransactionResult:v47];
       v49[0] = MEMORY[0x277D85DD0];
       v49[1] = 3221225472;
       v49[2] = __74__HMDObjectLookup_applyChange_previous_onObject_result_completionHandler___block_invoke_2;
       v49[3] = &unk_278678C68;
-      v30 = v29;
+      v30 = responseHandler;
       v50 = v30;
       v51 = aBlock;
       [v28 setResponseHandler:v49];
@@ -101,8 +101,8 @@ LABEL_22:
     else
     {
       v40 = MEMORY[0x277D0F848];
-      v41 = [MEMORY[0x277D0F820] allMessageDestinations];
-      v28 = [v40 messageWithName:@"kTransactionUpdate" destination:v41 payload:0];
+      allMessageDestinations = [MEMORY[0x277D0F820] allMessageDestinations];
+      v28 = [v40 messageWithName:@"kTransactionUpdate" destination:allMessageDestinations payload:0];
 
       [v28 setTransactionResult:v47];
       [v28 setRemote:1];
@@ -131,17 +131,17 @@ LABEL_22:
   }
 
   v32 = objc_autoreleasePoolPush();
-  v33 = self;
+  selfCopy2 = self;
   v34 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
   {
     v35 = HMFGetLogIdentifier();
-    v36 = [v12 change];
-    v37 = [v36 uuid];
+    change4 = [changeCopy change];
+    uuid2 = [change4 uuid];
     *buf = 138543618;
     v56 = v35;
     v57 = 2112;
-    v58 = v37;
+    v58 = uuid2;
     _os_log_impl(&dword_229538000, v34, OS_LOG_TYPE_ERROR, "%{public}@Object does not implement backing store protocol, cannot apply transaction for object-change: %@", buf, 0x16u);
   }
 
@@ -195,35 +195,35 @@ void __74__HMDObjectLookup_applyChange_previous_onObject_result_completionHandle
 
 - (void)resetObjects
 {
-  v2 = [(HMDObjectLookup *)self uuidToObjectMapping];
-  [v2 removeAllObjects];
+  uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+  [uuidToObjectMapping removeAllObjects];
 }
 
-- (id)_lookUpObjectWithUUID:(id)a3 applyObjectChange:(id)a4 previous:(id)a5 result:(id)a6 completionHandler:(id)a7
+- (id)_lookUpObjectWithUUID:(id)d applyObjectChange:(id)change previous:(id)previous result:(id)result completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(HMDObjectLookup *)self uuidToObjectMapping];
-  v18 = [v17 objectForKey:v12];
+  dCopy = d;
+  changeCopy = change;
+  previousCopy = previous;
+  resultCopy = result;
+  handlerCopy = handler;
+  uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+  v18 = [uuidToObjectMapping objectForKey:dCopy];
 
   if (v18)
   {
-    [(HMDObjectLookup *)self applyChange:v13 previous:v14 onObject:v18 result:v15 completionHandler:v16];
+    [(HMDObjectLookup *)self applyChange:changeCopy previous:previousCopy onObject:v18 result:resultCopy completionHandler:handlerCopy];
     v19 = 0;
   }
 
   else
   {
     [(HMDObjectLookup *)self scanObjects];
-    v20 = [(HMDObjectLookup *)self uuidToObjectMapping];
-    v21 = [v20 objectForKey:v12];
+    uuidToObjectMapping2 = [(HMDObjectLookup *)self uuidToObjectMapping];
+    v21 = [uuidToObjectMapping2 objectForKey:dCopy];
 
     if (v21)
     {
-      [(HMDObjectLookup *)self applyChange:v13 previous:v14 onObject:v21 result:v15 completionHandler:v16];
+      [(HMDObjectLookup *)self applyChange:changeCopy previous:previousCopy onObject:v21 result:resultCopy completionHandler:handlerCopy];
       v19 = 0;
     }
 
@@ -236,54 +236,54 @@ void __74__HMDObjectLookup_applyChange_previous_onObject_result_completionHandle
   return v19;
 }
 
-- (void)lookUpAndApplyObjectChange:(id)a3 previous:(id)a4 result:(id)a5 completionHandler:(id)a6
+- (void)lookUpAndApplyObjectChange:(id)change previous:(id)previous result:(id)result completionHandler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 change];
-  v15 = [v14 objectChangeType];
+  changeCopy = change;
+  previousCopy = previous;
+  resultCopy = result;
+  handlerCopy = handler;
+  change = [changeCopy change];
+  objectChangeType = [change objectChangeType];
 
-  v16 = [v10 change];
-  v17 = v16;
-  if (v15 == 3)
+  change2 = [changeCopy change];
+  v17 = change2;
+  if (objectChangeType == 3)
   {
-    v18 = [v16 parentUUID];
-    v19 = [(HMDObjectLookup *)self _lookUpObjectWithUUID:v18 applyObjectChange:v10 previous:v11 result:v12 completionHandler:v13];
+    parentUUID = [change2 parentUUID];
+    v19 = [(HMDObjectLookup *)self _lookUpObjectWithUUID:parentUUID applyObjectChange:changeCopy previous:previousCopy result:resultCopy completionHandler:handlerCopy];
 
-    v20 = [(HMDObjectLookup *)self uuidToObjectMapping];
-    v21 = [v10 change];
-    v22 = [v21 uuid];
-    [v20 removeObjectForKey:v22];
+    uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+    change3 = [changeCopy change];
+    uuid = [change3 uuid];
+    [uuidToObjectMapping removeObjectForKey:uuid];
   }
 
   else
   {
-    v23 = [v16 uuid];
-    v22 = [(HMDObjectLookup *)self _lookUpObjectWithUUID:v23 applyObjectChange:v10 previous:v11 result:v12 completionHandler:v13];
+    uuid2 = [change2 uuid];
+    uuid = [(HMDObjectLookup *)self _lookUpObjectWithUUID:uuid2 applyObjectChange:changeCopy previous:previousCopy result:resultCopy completionHandler:handlerCopy];
 
-    if (!v22)
+    if (!uuid)
     {
       goto LABEL_11;
     }
 
-    v20 = [v10 change];
-    v21 = [v20 parentUUID];
-    v19 = [(HMDObjectLookup *)self _lookUpObjectWithUUID:v21 applyObjectChange:v10 previous:v11 result:v12 completionHandler:v13];
+    uuidToObjectMapping = [changeCopy change];
+    change3 = [uuidToObjectMapping parentUUID];
+    v19 = [(HMDObjectLookup *)self _lookUpObjectWithUUID:change3 applyObjectChange:changeCopy previous:previousCopy result:resultCopy completionHandler:handlerCopy];
   }
 
   if (v19)
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       v27 = HMFGetLogIdentifier();
-      v28 = [v10 change];
-      [v28 uuid];
+      change4 = [changeCopy change];
+      [change4 uuid];
       v29 = v33 = v24;
       *buf = 138543874;
       v35 = v27;
@@ -297,7 +297,7 @@ void __74__HMDObjectLookup_applyChange_previous_onObject_result_completionHandle
     }
 
     objc_autoreleasePoolPop(v24);
-    v30 = _Block_copy(v13);
+    v30 = _Block_copy(handlerCopy);
     v31 = v30;
     if (v30)
     {
@@ -310,19 +310,19 @@ LABEL_11:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDObjectLookup)initWithWorkQueue:(id)a3
+- (HMDObjectLookup)initWithWorkQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = HMDObjectLookup;
   v6 = [(HMDObjectLookup *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     uuidToObjectMapping = v6->_uuidToObjectMapping;
-    v6->_uuidToObjectMapping = v7;
+    v6->_uuidToObjectMapping = strongToWeakObjectsMapTable;
 
-    objc_storeStrong(&v6->_workQueue, a3);
+    objc_storeStrong(&v6->_workQueue, queue);
   }
 
   return v6;

@@ -1,9 +1,9 @@
 @interface lite_job_t
 + (id)gatherLogInfo;
-+ (void)cancelJob:(int)a3;
++ (void)cancelJob:(int)job;
 + (void)checkJobsOnMainQueue;
-+ (void)getAllJobsCompletionHandler:(id)a3;
-- (BOOL)_isCanceled:(id)a3;
++ (void)getAllJobsCompletionHandler:(id)handler;
+- (BOOL)_isCanceled:(id)canceled;
 - (BOOL)is_canceled;
 - (NSString)debugDescription;
 - (NSString)description;
@@ -11,24 +11,24 @@
 - (id)addJobAndAllowToProceed;
 - (id)addJobAndReturnLogMessageOnFailure;
 - (id)allowThisJobToProceedNoLock;
-- (id)getJobAttributes:(BOOL)a3;
+- (id)getJobAttributes:(BOOL)attributes;
 - (id)logInfo;
 - (int)printer_preferred_landscape;
-- (lite_job_t)initWithRequestParams:(id)a3 session:(id)a4 printer:(id)a5 printSettings:(id)a6;
-- (void)_clearCancelFlag:(id)a3;
-- (void)_setCancelFlag:(id)a3;
+- (lite_job_t)initWithRequestParams:(id)params session:(id)session printer:(id)printer printSettings:(id)settings;
+- (void)_clearCancelFlag:(id)flag;
+- (void)_setCancelFlag:(id)flag;
 - (void)_setupCancelSource;
 - (void)_setupCancelSource0;
-- (void)_withActivity:(id)a3;
-- (void)_workAdded:(unint64_t)a3;
+- (void)_withActivity:(id)activity;
+- (void)_workAdded:(unint64_t)added;
 - (void)cancelNoLock;
 - (void)cancelThisJob;
 - (void)clear_cancel_flag;
 - (void)dealloc;
-- (void)finishJob:(int64_t)a3;
-- (void)make_progress:(int64_t)a3;
-- (void)notifyJobHeldPinRequired:(BOOL)a3 logMessage:(id)a4;
-- (void)postGlobalNotification:(unsigned int)a3 logMsg:(id)a4;
+- (void)finishJob:(int64_t)job;
+- (void)make_progress:(int64_t)make_progress;
+- (void)notifyJobHeldPinRequired:(BOOL)required logMessage:(id)message;
+- (void)postGlobalNotification:(unsigned int)notification logMsg:(id)msg;
 - (void)resetJob;
 - (void)set_cancel_flag;
 - (void)set_processing;
@@ -146,16 +146,16 @@ LABEL_21:
       v19 = *(*(&v46 + 1) + 8 * v18);
 
       v11 = v19;
-      v20 = [(lite_job_t *)v19 printer];
-      v21 = [v20 currentJob];
-      if (v21 || [(lite_job_t *)v11 localJobState]!= 3)
+      printer = [(lite_job_t *)v19 printer];
+      currentJob = [printer currentJob];
+      if (currentJob || [(lite_job_t *)v11 localJobState]!= 3)
       {
       }
 
       else
       {
-        v22 = [(lite_job_t *)v11 spoolDocumentFilename];
-        v23 = v22 == 0;
+        spoolDocumentFilename = [(lite_job_t *)v11 spoolDocumentFilename];
+        v23 = spoolDocumentFilename == 0;
 
         if (!v23)
         {
@@ -198,8 +198,8 @@ LABEL_38:
       [(lite_job_t *)v11 setPrintTriesCount:[(lite_job_t *)v11 printTriesCount]+ 1];
       pthread_mutex_lock(&stru_1000C7630);
       [qword_1000C7BE8 addObject:v11];
-      v24 = [(lite_job_t *)v11 printer];
-      [v24 setCurrentJob:v11];
+      printer2 = [(lite_job_t *)v11 printer];
+      [printer2 setCurrentJob:v11];
 
       pthread_mutex_unlock(&stru_1000C7630);
       liteDoPrint(v11);
@@ -231,8 +231,8 @@ LABEL_38:
         v32 = *(*(&v42 + 1) + 8 * i);
         if ([v32 localJobState] >= 6)
         {
-          v33 = [v32 completedTime];
-          if ((v33 + 60) <= v25)
+          completedTime = [v32 completedTime];
+          if ((completedTime + 60) <= v25)
           {
             if (!v28)
             {
@@ -244,14 +244,14 @@ LABEL_38:
 
           else
           {
-            if ((v33 + 60) >= v27)
+            if ((completedTime + 60) >= v27)
             {
               v34 = v27;
             }
 
             else
             {
-              v34 = v33 + 60;
+              v34 = completedTime + 60;
             }
 
             if (v27)
@@ -261,7 +261,7 @@ LABEL_38:
 
             else
             {
-              v27 = v33 + 60;
+              v27 = completedTime + 60;
             }
           }
         }
@@ -333,14 +333,14 @@ LABEL_38:
   if (MaxJobs >= 1 && (v3 = [qword_1000C7BD8 count], v3 >= MaxJobs))
   {
     v6 = [qword_1000C7BD8 count];
-    v5 = [NSString stringWithFormat:@"Unable to create job: Too many jobs (%d >= %d).", v6, MaxJobs];
+    maxJobs = [NSString stringWithFormat:@"Unable to create job: Too many jobs (%d >= %d).", v6, MaxJobs];
     pthread_mutex_unlock(&stru_1000C7630);
   }
 
   else if (MaxActiveJobs >= 1 && (v4 = [qword_1000C7BE0 count], v4 >= MaxActiveJobs))
   {
     v7 = [qword_1000C7BE0 count];
-    v5 = [NSString stringWithFormat:@"Unable to create job: Too many active jobs (%d >= %d).", v7, MaxActiveJobs];
+    maxJobs = [NSString stringWithFormat:@"Unable to create job: Too many active jobs (%d >= %d).", v7, MaxActiveJobs];
     pthread_mutex_unlock(&stru_1000C7630);
   }
 
@@ -350,24 +350,24 @@ LABEL_38:
     [qword_1000C7BE0 addObject:self];
     pthread_mutex_unlock(&stru_1000C7630);
     [(lite_job_t *)self postGlobalNotification:4096 logMsg:@"Job created."];
-    v5 = 0;
+    maxJobs = 0;
   }
 
-  return v5;
+  return maxJobs;
 }
 
-- (void)notifyJobHeldPinRequired:(BOOL)a3 logMessage:(id)a4
+- (void)notifyJobHeldPinRequired:(BOOL)required logMessage:(id)message
 {
-  v4 = a3;
-  v7 = a4;
+  requiredCopy = required;
+  messageCopy = message;
   pthread_mutex_lock(&stru_1000C7630);
   [(lite_job_t *)self setLocalJobState:4];
   self->release_wait = 1;
-  v6 = [(lite_job_t *)self printer];
-  [v6 setCurrentJob:0];
+  printer = [(lite_job_t *)self printer];
+  [printer setCurrentJob:0];
 
-  [(lite_job_t *)self postGlobalNotification:2048 logMsg:v7];
-  if (v4)
+  [(lite_job_t *)self postGlobalNotification:2048 logMsg:messageCopy];
+  if (requiredCopy)
   {
     liteNotifyPINRequired(self);
   }
@@ -412,42 +412,42 @@ LABEL_38:
   [(lite_job_t *)self clear_cancel_flag];
   [(lite_job_t *)self setReadyTime:0];
   [(lite_job_t *)self setSheetsCompleted:0];
-  v3 = [(lite_job_t *)self printer];
-  v4 = [v3 reasons];
+  printer = [(lite_job_t *)self printer];
+  reasons = [printer reasons];
 
-  if ((v4 & 0x20) != 0)
+  if ((reasons & 0x20) != 0)
   {
     pthread_mutex_unlock(&stru_1000C7630);
     sleep(3u);
     pthread_mutex_lock(&stru_1000C7630);
   }
 
-  v5 = [(lite_job_t *)self printer];
-  v6 = [(lite_job_t *)self printer];
-  [v5 setReasonsBits:{objc_msgSend(v6, "reasons") & 0xFFE6BFDD}];
+  printer2 = [(lite_job_t *)self printer];
+  printer3 = [(lite_job_t *)self printer];
+  [printer2 setReasonsBits:{objc_msgSend(printer3, "reasons") & 0xFFE6BFDD}];
 
   [(lite_job_t *)self setDestination_job_id:0];
   [(lite_job_t *)self postGlobalNotification:2048 logMsg:@"Job restarting."];
-  v7 = [(lite_job_t *)self printer];
-  [v7 setCurrentJob:0];
+  printer4 = [(lite_job_t *)self printer];
+  [printer4 setCurrentJob:0];
   v8 = _PKLogCategory(PKLogCategoryProgress[0]);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(lite_job_t *)self printd_job_id];
+    printd_job_id = [(lite_job_t *)self printd_job_id];
     if (self)
     {
-      v10 = [(lite_job_t *)self destination_job_id];
+      destination_job_id = [(lite_job_t *)self destination_job_id];
     }
 
     else
     {
-      v10 = -1;
+      destination_job_id = -1;
     }
 
     v13[0] = 67109376;
-    v13[1] = v9;
+    v13[1] = printd_job_id;
     v14 = 1024;
-    v15 = v10;
+    v15 = destination_job_id;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[Job %d][%d] Restarting JobTimer to this job to go again", v13, 0xEu);
   }
 
@@ -466,12 +466,12 @@ LABEL_38:
   pthread_mutex_unlock(&stru_1000C7630);
 }
 
-- (lite_job_t)initWithRequestParams:(id)a3 session:(id)a4 printer:(id)a5 printSettings:(id)a6
+- (lite_job_t)initWithRequestParams:(id)params session:(id)session printer:(id)printer printSettings:(id)settings
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  paramsCopy = params;
+  sessionCopy = session;
+  printerCopy = printer;
+  settingsCopy = settings;
   v15.receiver = self;
   v15.super_class = lite_job_t;
   if ([(lite_job_t *)&v15 init])
@@ -487,26 +487,26 @@ LABEL_38:
   v3 = _PKLogCategory(PKLogCategoryProgress[0]);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(lite_job_t *)self printd_job_id];
+    printd_job_id = [(lite_job_t *)self printd_job_id];
     if (self)
     {
-      v5 = [(lite_job_t *)self destination_job_id];
+      destination_job_id = [(lite_job_t *)self destination_job_id];
     }
 
     else
     {
-      v5 = -1;
+      destination_job_id = -1;
     }
 
     *buf = 67109376;
-    v18 = v4;
+    v18 = printd_job_id;
     v19 = 1024;
-    v20 = v5;
+    v20 = destination_job_id;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[Job %d][%d] Freeing job.", buf, 0xEu);
   }
 
-  v6 = [(lite_job_t *)self spoolDocumentFilename];
-  v7 = v6 == 0;
+  spoolDocumentFilename = [(lite_job_t *)self spoolDocumentFilename];
+  v7 = spoolDocumentFilename == 0;
 
   if (PreserveJobFiles)
   {
@@ -523,30 +523,30 @@ LABEL_38:
     v9 = _PKLogCategory(PKLogCategoryProgress[0]);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(lite_job_t *)self printd_job_id];
+      printd_job_id2 = [(lite_job_t *)self printd_job_id];
       if (self)
       {
-        v11 = [(lite_job_t *)self destination_job_id];
+        destination_job_id2 = [(lite_job_t *)self destination_job_id];
       }
 
       else
       {
-        v11 = -1;
+        destination_job_id2 = -1;
       }
 
-      v12 = [(lite_job_t *)self spoolDocumentFilename];
+      spoolDocumentFilename2 = [(lite_job_t *)self spoolDocumentFilename];
       *buf = 67109634;
-      v18 = v10;
+      v18 = printd_job_id2;
       v19 = 1024;
-      v20 = v11;
+      v20 = destination_job_id2;
       v21 = 2112;
-      v22 = v12;
+      v22 = spoolDocumentFilename2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[Job %d][%d] Removing %@.", buf, 0x18u);
     }
 
-    v13 = [(lite_job_t *)self spoolDocumentFilename];
-    v14 = v13;
-    unlink([v13 UTF8String]);
+    spoolDocumentFilename3 = [(lite_job_t *)self spoolDocumentFilename];
+    v14 = spoolDocumentFilename3;
+    unlink([spoolDocumentFilename3 UTF8String]);
   }
 
   request_attrs = self->_request_attrs;
@@ -560,43 +560,43 @@ LABEL_38:
   [(lite_job_t *)&v16 dealloc];
 }
 
-- (void)finishJob:(int64_t)a3
+- (void)finishJob:(int64_t)job
 {
   v5 = _PKLogCategory(PKLogCategoryProgress[0]);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(lite_job_t *)self printd_job_id];
+    printd_job_id = [(lite_job_t *)self printd_job_id];
     if (self)
     {
-      v7 = [(lite_job_t *)self destination_job_id];
+      destination_job_id = [(lite_job_t *)self destination_job_id];
     }
 
     else
     {
-      v7 = -1;
+      destination_job_id = -1;
     }
 
     *buf = 67109632;
-    v16 = v6;
+    v16 = printd_job_id;
     v17 = 1024;
-    v18 = v7;
+    v18 = destination_job_id;
     v19 = 1024;
-    v20 = a3;
+    jobCopy = job;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[Job %d][%d] Finishing job, new job-state %d", buf, 0x14u);
   }
 
   pthread_mutex_lock(&stru_1000C7630);
   [qword_1000C7BE0 removeObject:self];
   [qword_1000C7BE8 removeObject:self];
-  [(lite_job_t *)self setLocalJobState:a3];
+  [(lite_job_t *)self setLocalJobState:job];
   [(lite_job_t *)self setCompletedTime:time(0)];
   v8 = "completed.";
-  if (a3 == 8)
+  if (job == 8)
   {
     v8 = "aborted.";
   }
 
-  if (a3 == 7)
+  if (job == 7)
   {
     v8 = "canceled.";
   }
@@ -604,8 +604,8 @@ LABEL_38:
   v9 = [NSString stringWithFormat:@"Job %s", v8];
   [(lite_job_t *)self postGlobalNotification:0x2000 logMsg:v9];
 
-  v10 = [(lite_job_t *)self printer];
-  [v10 setCurrentJob:0];
+  printer = [(lite_job_t *)self printer];
+  [printer setCurrentJob:0];
 
   cancel_source = self->_cancel_source;
   if (cancel_source)
@@ -637,9 +637,9 @@ LABEL_38:
   pthread_mutex_unlock(&stru_1000C7630);
 }
 
-- (void)_withActivity:(id)a3
+- (void)_withActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = objc_autoreleasePoolPush();
   jobActivity = self->_jobActivity;
   if (!jobActivity)
@@ -657,7 +657,7 @@ LABEL_38:
   v10[1] = 3221225472;
   v10[2] = sub_100017B1C;
   v10[3] = &unk_100095B90;
-  v8 = v4;
+  v8 = activityCopy;
   v11 = v7;
   v12 = v8;
   v9 = v7;
@@ -666,36 +666,36 @@ LABEL_38:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)_workAdded:(unint64_t)a3
+- (void)_workAdded:(unint64_t)added
 {
-  v4 = [(lite_job_t *)self payloadSent]+ a3;
+  v4 = [(lite_job_t *)self payloadSent]+ added;
 
   [(lite_job_t *)self setPayloadSent:v4];
 }
 
-- (BOOL)_isCanceled:(id)a3
+- (BOOL)_isCanceled:(id)canceled
 {
-  v4 = dispatch_source_testcancel(a3);
+  v4 = dispatch_source_testcancel(canceled);
   if (v4)
   {
     v5 = _PKLogCategory(PKLogCategoryProgress[0]);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(lite_job_t *)self printd_job_id];
+      printd_job_id = [(lite_job_t *)self printd_job_id];
       if (self)
       {
-        v7 = [(lite_job_t *)self destination_job_id];
+        destination_job_id = [(lite_job_t *)self destination_job_id];
       }
 
       else
       {
-        v7 = -1;
+        destination_job_id = -1;
       }
 
       v9[0] = 67109376;
-      v9[1] = v6;
+      v9[1] = printd_job_id;
       v10 = 1024;
-      v11 = v7;
+      v11 = destination_job_id;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[Job %d][%d] job shows as canceled", v9, 0xEu);
     }
   }
@@ -703,47 +703,47 @@ LABEL_38:
   return v4 != 0;
 }
 
-- (void)_setCancelFlag:(id)a3
+- (void)_setCancelFlag:(id)flag
 {
-  v4 = a3;
+  flagCopy = flag;
   v5 = _PKLogCategory(PKLogCategoryProgress[0]);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(lite_job_t *)self printd_job_id];
+    printd_job_id = [(lite_job_t *)self printd_job_id];
     if (self)
     {
-      v7 = [(lite_job_t *)self destination_job_id];
+      destination_job_id = [(lite_job_t *)self destination_job_id];
     }
 
     else
     {
-      v7 = -1;
+      destination_job_id = -1;
     }
 
     v8[0] = 67109376;
-    v8[1] = v6;
+    v8[1] = printd_job_id;
     v9 = 1024;
-    v10 = v7;
+    v10 = destination_job_id;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[Job %d][%d] job being canceled", v8, 0xEu);
   }
 
-  dispatch_source_cancel(v4);
+  dispatch_source_cancel(flagCopy);
 }
 
-- (void)_clearCancelFlag:(id)a3
+- (void)_clearCancelFlag:(id)flag
 {
-  v4 = a3;
-  if (self->_cancel_source == v4)
+  flagCopy = flag;
+  if (self->_cancel_source == flagCopy)
   {
     v9 = _PKLogCategory(PKLogCategoryProgress[0]);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 67109634;
-      v11 = [(lite_job_t *)self printd_job_id];
+      printd_job_id = [(lite_job_t *)self printd_job_id];
       v12 = 1024;
-      v13 = [(lite_job_t *)self destination_job_id];
+      destination_job_id = [(lite_job_t *)self destination_job_id];
       v14 = 2112;
-      v15 = v4;
+      v15 = flagCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[Job %d][%d] clearing cancel flag %@", &v10, 0x18u);
     }
 
@@ -755,17 +755,17 @@ LABEL_38:
     v5 = _PKLogCategory(PKLogCategoryProgress[0]);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(lite_job_t *)self printd_job_id];
-      v7 = [(lite_job_t *)self destination_job_id];
+      printd_job_id2 = [(lite_job_t *)self printd_job_id];
+      destination_job_id2 = [(lite_job_t *)self destination_job_id];
       cancel_source = self->_cancel_source;
       v10 = 67109890;
-      v11 = v6;
+      printd_job_id = printd_job_id2;
       v12 = 1024;
-      v13 = v7;
+      destination_job_id = destination_job_id2;
       v14 = 2112;
       v15 = cancel_source;
       v16 = 2112;
-      v17 = v4;
+      v17 = flagCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[Job %d][%d] _clearCancelFlag - already cleared (%@ currently, trying to clear %@)", &v10, 0x22u);
     }
   }
@@ -854,7 +854,7 @@ LABEL_38:
   {
     [(lite_job_t *)self set_cancel_flag];
     v3 = @"Canceling job.";
-    v4 = self;
+    selfCopy2 = self;
     v5 = 2048;
   }
 
@@ -866,11 +866,11 @@ LABEL_38:
     [(lite_job_t *)self setCompletedTime:time(0)];
     [(lite_job_t *)self set_cancel_flag];
     v3 = @"Job canceled.";
-    v4 = self;
+    selfCopy2 = self;
     v5 = 0x2000;
   }
 
-  [(lite_job_t *)v4 postGlobalNotification:v5 logMsg:v3];
+  [(lite_job_t *)selfCopy2 postGlobalNotification:v5 logMsg:v3];
   v6 = qword_1000C7BF0;
   if (qword_1000C7BF0)
   {
@@ -887,7 +887,7 @@ LABEL_38:
   pthread_mutex_unlock(&stru_1000C7630);
 }
 
-+ (void)cancelJob:(int)a3
++ (void)cancelJob:(int)job
 {
   pthread_mutex_lock(&stru_1000C7630);
   v9 = 0u;
@@ -909,7 +909,7 @@ LABEL_38:
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
-        if ([v8 printd:v9 job:?id] == a3)
+        if ([v8 printd:v9 job:?id] == job)
         {
           [v8 cancelNoLock];
           goto LABEL_11;
@@ -933,15 +933,15 @@ LABEL_11:
 
 - (id)addJobAndAllowToProceed
 {
-  v3 = [(lite_job_t *)self addJobAndReturnLogMessageOnFailure];
-  if (!v3)
+  addJobAndReturnLogMessageOnFailure = [(lite_job_t *)self addJobAndReturnLogMessageOnFailure];
+  if (!addJobAndReturnLogMessageOnFailure)
   {
     pthread_mutex_lock(&stru_1000C7630);
-    v3 = [(lite_job_t *)self allowThisJobToProceedNoLock];
+    addJobAndReturnLogMessageOnFailure = [(lite_job_t *)self allowThisJobToProceedNoLock];
     pthread_mutex_unlock(&stru_1000C7630);
   }
 
-  return v3;
+  return addJobAndReturnLogMessageOnFailure;
 }
 
 + (id)gatherLogInfo
@@ -966,8 +966,8 @@ LABEL_11:
           objc_enumerationMutation(v3);
         }
 
-        v7 = [*(*(&v11 + 1) + 8 * i) logInfo];
-        [v2 addObject:v7];
+        logInfo = [*(*(&v11 + 1) + 8 * i) logInfo];
+        [v2 addObject:logInfo];
       }
 
       v4 = [v3 countByEnumeratingWithState:&v11 objects:v17 count:16];
@@ -980,8 +980,8 @@ LABEL_11:
   v15[0] = @"jobs";
   v15[1] = @"tick";
   v16[0] = v2;
-  v8 = [NSString stringWithFormat:@"Timer<%@>", qword_1000C7BF0];
-  v16[1] = v8;
+  qword_1000C7BF0 = [NSString stringWithFormat:@"Timer<%@>", qword_1000C7BF0];
+  v16[1] = qword_1000C7BF0;
   v9 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
 
   return v9;
@@ -1008,15 +1008,15 @@ LABEL_11:
   v17 = [NSNumber numberWithInt:[(lite_job_t *)self destination_job_id]];
   v20[2] = v17;
   v19[3] = @"printer";
-  v16 = [(lite_job_t *)self printer];
-  v15 = [v16 debugDescription];
+  printer = [(lite_job_t *)self printer];
+  v15 = [printer debugDescription];
   v20[3] = v15;
   v19[4] = @"format";
-  v4 = [(lite_job_t *)self spoolDocumentFormat];
-  v20[4] = v4;
+  spoolDocumentFormat = [(lite_job_t *)self spoolDocumentFormat];
+  v20[4] = spoolDocumentFormat;
   v19[5] = @"filename";
-  v5 = [(lite_job_t *)self spoolDocumentFilename];
-  v20[5] = v5;
+  spoolDocumentFilename = [(lite_job_t *)self spoolDocumentFilename];
+  v20[5] = spoolDocumentFilename;
   v19[6] = @"state";
   v6 = jobStateString(self->_localJobState);
   v20[6] = v6;
@@ -1082,32 +1082,32 @@ LABEL_11:
 - (NSString)debugDescription
 {
   v3 = [(lite_job_t *)self description];
-  v4 = [(lite_job_t *)self logInfo];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  logInfo = [(lite_job_t *)self logInfo];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, logInfo];
 
   return v5;
 }
 
-- (id)getJobAttributes:(BOOL)a3
+- (id)getJobAttributes:(BOOL)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   v5 = objc_opt_new();
   [v5 setLocalJobID:{-[lite_job_t printd_job_id](self, "printd_job_id")}];
-  v6 = [(lite_job_t *)self printer];
-  v7 = [v6 bonjourName];
-  v8 = [v7 dataRepresentation];
-  [v5 setPrinterEndpointData:v8];
+  printer = [(lite_job_t *)self printer];
+  bonjourName = [printer bonjourName];
+  dataRepresentation = [bonjourName dataRepresentation];
+  [v5 setPrinterEndpointData:dataRepresentation];
 
-  v9 = [(lite_job_t *)self printer];
-  v10 = [v9 displayName];
-  [v5 setPrinterDisplayName:v10];
+  printer2 = [(lite_job_t *)self printer];
+  displayName = [printer2 displayName];
+  [v5 setPrinterDisplayName:displayName];
 
-  v11 = [(lite_job_t *)self printer];
-  v12 = [v11 location];
-  v13 = v12;
-  if (v12)
+  printer3 = [(lite_job_t *)self printer];
+  location = [printer3 location];
+  v13 = location;
+  if (location)
   {
-    v14 = v12;
+    v14 = location;
   }
 
   else
@@ -1117,10 +1117,10 @@ LABEL_11:
 
   [v5 setPrinterLocation:v14];
 
-  v15 = [(lite_job_t *)self printer];
-  v16 = [v15 browseInfo];
-  v17 = [v16 bonjourName];
-  if ([v17 provenance] == 8)
+  printer4 = [(lite_job_t *)self printer];
+  browseInfo = [printer4 browseInfo];
+  bonjourName2 = [browseInfo bonjourName];
+  if ([bonjourName2 provenance] == 8)
   {
     v18 = 3;
   }
@@ -1132,13 +1132,13 @@ LABEL_11:
 
   [v5 setPrinterKind:v18];
 
-  v19 = [(lite_job_t *)self printSettings];
-  [v5 setSettings:v19];
+  printSettings = [(lite_job_t *)self printSettings];
+  [v5 setSettings:printSettings];
 
   v20 = [NSDate dateWithTimeIntervalSince1970:self->_createdTime];
   [v5 setTimeAtCreation:v20];
 
-  if (v3)
+  if (attributesCopy)
   {
     [v5 setThumbnailImage:self->_thumbnail];
   }
@@ -1150,9 +1150,9 @@ LABEL_11:
   v22 = [NSDate dateWithTimeIntervalSince1970:[(lite_job_t *)self completedTime]];
   [v5 setTimeAtCompleted:v22];
 
-  v23 = [(lite_job_t *)self numberOfSheetsPerCopy];
-  v24 = [(lite_job_t *)self request_attrs];
-  v25 = (*(v24->var0 + 16))(v24);
+  numberOfSheetsPerCopy = [(lite_job_t *)self numberOfSheetsPerCopy];
+  request_attrs = [(lite_job_t *)self request_attrs];
+  v25 = (*(request_attrs->var0 + 16))(request_attrs);
   if (v25 <= 1)
   {
     v26 = 1;
@@ -1163,29 +1163,29 @@ LABEL_11:
     v26 = v25;
   }
 
-  [v5 setMediaSheets:(v26 * v23)];
+  [v5 setMediaSheets:(v26 * numberOfSheetsPerCopy)];
   [v5 setMediaProgress:self->_mediaProgress];
   [v5 setRemoteJobId:{-[lite_job_t destination_job_id](self, "destination_job_id")}];
-  v27 = [(lite_job_t *)self printer];
-  v28 = [v27 currentJob];
+  printer5 = [(lite_job_t *)self printer];
+  currentJob = [printer5 currentJob];
 
-  if (v28 == self)
+  if (currentJob == self)
   {
-    v29 = [(lite_job_t *)self printer];
-    v30 = [v29 printerStateMessage];
-    [v5 setJobPrinterStateMessage:v30];
+    printer6 = [(lite_job_t *)self printer];
+    printerStateMessage = [printer6 printerStateMessage];
+    [v5 setJobPrinterStateMessage:printerStateMessage];
 
-    v31 = [(lite_job_t *)self printer];
-    v32 = [v31 printerStateReasons];
-    [v5 setJobPrinterStateReasons:v32];
+    printer7 = [(lite_job_t *)self printer];
+    printerStateReasons = [printer7 printerStateReasons];
+    [v5 setJobPrinterStateReasons:printerStateReasons];
   }
 
   [v5 setJobStateMessage:&stru_1000A4BB0];
-  v33 = self;
-  v34 = [(lite_job_t *)v33 localJobState];
-  if (v34 > 5)
+  selfCopy = self;
+  localJobState = [(lite_job_t *)selfCopy localJobState];
+  if (localJobState > 5)
   {
-    switch(v34)
+    switch(localJobState)
     {
       case 6:
         v35 = @"job-stopped";
@@ -1201,17 +1201,17 @@ LABEL_11:
     goto LABEL_27;
   }
 
-  if (v34 == 3)
+  if (localJobState == 3)
   {
     v35 = @"none";
     goto LABEL_31;
   }
 
-  if (v34 != 4)
+  if (localJobState != 4)
   {
-    if (v34 == 5)
+    if (localJobState == 5)
     {
-      if ([(lite_job_t *)v33 is_canceled])
+      if ([(lite_job_t *)selfCopy is_canceled])
       {
         v35 = @"processing-to-stop-point";
       }
@@ -1229,23 +1229,23 @@ LABEL_27:
     goto LABEL_31;
   }
 
-  v36 = [(lite_job_t *)v33 jobPassword];
+  jobPassword = [(lite_job_t *)selfCopy jobPassword];
 
-  if (v36)
+  if (jobPassword)
   {
     v35 = @"job-password-wait";
   }
 
-  else if (v33->release_wait)
+  else if (selfCopy->release_wait)
   {
     v35 = @"job-release-wait";
   }
 
   else
   {
-    v46 = [(lite_job_t *)v33 jobHoldUntil];
+    jobHoldUntil = [(lite_job_t *)selfCopy jobHoldUntil];
 
-    if (v46)
+    if (jobHoldUntil)
     {
       v35 = @"job-hold-until-specified";
     }
@@ -1263,22 +1263,22 @@ LABEL_31:
   v38 = [NSArray arrayWithObjects:&v47 count:1];
   [v5 setJobStateReasons:v38];
 
-  if ([(lite_job_t *)v33 localJobState]== 5 && [(lite_job_t *)v33 is_canceled])
+  if ([(lite_job_t *)selfCopy localJobState]== 5 && [(lite_job_t *)selfCopy is_canceled])
   {
-    v39 = 10;
+    localJobState2 = 10;
   }
 
   else
   {
-    v39 = [(lite_job_t *)v33 localJobState];
+    localJobState2 = [(lite_job_t *)selfCopy localJobState];
   }
 
-  [v5 setState:v39];
-  v40 = [(lite_job_t *)v33 jobPassword];
-  v41 = v40;
-  if (v40)
+  [v5 setState:localJobState2];
+  jobPassword2 = [(lite_job_t *)selfCopy jobPassword];
+  v41 = jobPassword2;
+  if (jobPassword2)
   {
-    v42 = [v40 length];
+    v42 = [jobPassword2 length];
     v43 = v41;
     v44 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%.*s", v42, [v41 bytes]);
     [v5 setPIN:v44];
@@ -1287,58 +1287,58 @@ LABEL_31:
   return v5;
 }
 
-- (void)postGlobalNotification:(unsigned int)a3 logMsg:(id)a4
+- (void)postGlobalNotification:(unsigned int)notification logMsg:(id)msg
 {
-  v6 = a4;
-  if ([v6 length])
+  msgCopy = msg;
+  if ([msgCopy length])
   {
     v7 = _PKLogCategory(PKLogCategoryProgress[0]);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(lite_job_t *)self printd_job_id];
+      printd_job_id = [(lite_job_t *)self printd_job_id];
       if (self)
       {
-        v9 = [(lite_job_t *)self destination_job_id];
+        destination_job_id = [(lite_job_t *)self destination_job_id];
       }
 
       else
       {
-        v9 = -1;
+        destination_job_id = -1;
       }
 
       v16 = 67109634;
-      v17 = v8;
+      v17 = printd_job_id;
       v18 = 1024;
-      v19 = v9;
+      v19 = destination_job_id;
       v20 = 2112;
-      v21 = v6;
+      v21 = msgCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[Job %d][%d] postGlobalNotification(%@)", &v16, 0x18u);
     }
   }
 
-  if (a3 >= 0x4000)
+  if (notification >= 0x4000)
   {
-    if (a3 == 0x4000)
+    if (notification == 0x4000)
     {
 LABEL_22:
       v13 = _PKLogCategory(PKLogCategoryProgress[0]);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(lite_job_t *)self printd_job_id];
+        printd_job_id2 = [(lite_job_t *)self printd_job_id];
         if (self)
         {
-          v15 = [(lite_job_t *)self destination_job_id];
+          destination_job_id2 = [(lite_job_t *)self destination_job_id];
         }
 
         else
         {
-          v15 = -1;
+          destination_job_id2 = -1;
         }
 
         v16 = 67109376;
-        v17 = v14;
+        v17 = printd_job_id2;
         v18 = 1024;
-        v19 = v15;
+        v19 = destination_job_id2;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[Job %d][%d] Sending com.apple.printd.job-list event", &v16, 0xEu);
       }
 
@@ -1346,15 +1346,15 @@ LABEL_22:
       goto LABEL_28;
     }
 
-    if (a3 != 0x10000 && a3 != 0x8000)
+    if (notification != 0x10000 && notification != 0x8000)
     {
       goto LABEL_28;
     }
   }
 
-  else if (a3 != 2048)
+  else if (notification != 2048)
   {
-    if (a3 != 4096 && a3 != 0x2000)
+    if (notification != 4096 && notification != 0x2000)
     {
       goto LABEL_28;
     }
@@ -1365,26 +1365,26 @@ LABEL_22:
   v10 = _PKLogCategory(PKLogCategoryProgress[0]);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(lite_job_t *)self printd_job_id];
+    printd_job_id3 = [(lite_job_t *)self printd_job_id];
     if (self)
     {
-      v12 = [(lite_job_t *)self destination_job_id];
+      destination_job_id3 = [(lite_job_t *)self destination_job_id];
     }
 
     else
     {
-      v12 = -1;
+      destination_job_id3 = -1;
     }
 
     v16 = 67109376;
-    v17 = v11;
+    v17 = printd_job_id3;
     v18 = 1024;
-    v19 = v12;
+    v19 = destination_job_id3;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[Job %d][%d] Sending com.apple.printd.job-progress event", &v16, 0xEu);
   }
 
   quantized_notify_post(4u);
-  if (a3 != 0x10000)
+  if (notification != 0x10000)
   {
     goto LABEL_22;
   }
@@ -1394,31 +1394,31 @@ LABEL_28:
 
 - (NSString)printer_driverformat
 {
-  v2 = [(lite_job_t *)self printer];
-  v3 = [v2 driverformat];
+  printer = [(lite_job_t *)self printer];
+  driverformat = [printer driverformat];
 
-  return v3;
+  return driverformat;
 }
 
 - (int)printer_preferred_landscape
 {
-  v2 = [(lite_job_t *)self printer];
-  v3 = [v2 preferred_landscape];
+  printer = [(lite_job_t *)self printer];
+  preferred_landscape = [printer preferred_landscape];
 
-  return v3;
+  return preferred_landscape;
 }
 
 - (BOOL)is_canceled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*(v2->zis_canceled + 2))();
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*(selfCopy->zis_canceled + 2))();
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)make_progress:(int64_t)a3
+- (void)make_progress:(int64_t)make_progress
 {
   obj = self;
   objc_sync_enter(obj);
@@ -1442,9 +1442,9 @@ LABEL_28:
   objc_sync_exit(obj);
 }
 
-+ (void)getAllJobsCompletionHandler:(id)a3
++ (void)getAllJobsCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   pthread_mutex_lock(&stru_1000C7630);
@@ -1481,7 +1481,7 @@ LABEL_28:
   }
 
   pthread_mutex_unlock(&stru_1000C7630);
-  v3[2](v3, v4, v5);
+  handlerCopy[2](handlerCopy, v4, v5);
 }
 
 @end

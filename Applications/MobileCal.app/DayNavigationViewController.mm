@@ -1,47 +1,47 @@
 @interface DayNavigationViewController
 - (BOOL)dayNavigationViewAllowedToChangeSelectedDate;
-- (DayNavigationViewController)initWithModel:(id)a3;
+- (DayNavigationViewController)initWithModel:(id)model;
 - (DayNavigationViewControllerDelegate)delegate;
 - (UIEdgeInsets)paletteSafeAreaInsets;
-- (id)dayNavigationView:(id)a3 dayDataForDate:(id)a4;
+- (id)dayNavigationView:(id)view dayDataForDate:(id)date;
 - (id)visibleCellBadgeColors;
 - (id)visibleCellBadgeLocales;
 - (id)visibleCellDayTypes;
-- (void)_cachedOccurrencesChanged:(id)a3;
+- (void)_cachedOccurrencesChanged:(id)changed;
 - (void)_contentSizeCategoryChanged;
-- (void)_localeChanged:(id)a3;
-- (void)_timeZoneChanged:(id)a3;
+- (void)_localeChanged:(id)changed;
+- (void)_timeZoneChanged:(id)changed;
 - (void)_updateOverlayCalendar;
 - (void)_updateShowsWeekNumber;
-- (void)dayNavigationView:(id)a3 didChangeCellWidth:(double)a4;
-- (void)dayNavigationView:(id)a3 selectedDateChanged:(id)a4;
-- (void)dayNavigationViewFailedToSelectDate:(id)a3;
+- (void)dayNavigationView:(id)view didChangeCellWidth:(double)width;
+- (void)dayNavigationView:(id)view selectedDateChanged:(id)changed;
+- (void)dayNavigationViewFailedToSelectDate:(id)date;
 - (void)loadView;
-- (void)setEventSpringLoadingEnabled:(BOOL)a3;
-- (void)setVisible:(BOOL)a3;
+- (void)setEventSpringLoadingEnabled:(BOOL)enabled;
+- (void)setVisible:(BOOL)visible;
 - (void)timeZoneChanged;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DayNavigationViewController
 
 - (void)loadView
 {
-  v17 = [(CUIKCalendarModel *)self->_model calendar];
-  v3 = [(CUIKCalendarModel *)self->_model selectedDate];
-  v4 = [v3 date];
+  calendar = [(CUIKCalendarModel *)self->_model calendar];
+  selectedDate = [(CUIKCalendarModel *)self->_model selectedDate];
+  date = [selectedDate date];
 
   v5 = [DayNavigationView alloc];
-  v6 = [(DayNavigationViewController *)self cellFactory];
-  v7 = [(DayNavigationView *)v5 initWithCalendar:v17 selectedDate:v4 cellFactory:v6 eventSpringLoadingEnabled:self->_eventSpringLoadingEnabled];
+  cellFactory = [(DayNavigationViewController *)self cellFactory];
+  v7 = [(DayNavigationView *)v5 initWithCalendar:calendar selectedDate:date cellFactory:cellFactory eventSpringLoadingEnabled:self->_eventSpringLoadingEnabled];
   navigationView = self->_navigationView;
   self->_navigationView = v7;
 
   [(DayNavigationView *)self->_navigationView setDelegate:self];
   [(DayNavigationView *)self->_navigationView setShowsMultiDay:self->_showsMultiDay];
   [(DayNavigationViewController *)self setView:self->_navigationView];
-  v9 = [(DayNavigationView *)self->_navigationView weekScrollView];
-  [v9 updateDayBadges];
+  weekScrollView = [(DayNavigationView *)self->_navigationView weekScrollView];
+  [weekScrollView updateDayBadges];
 
   [(DayNavigationViewController *)self _updateShowsWeekNumber];
   [(DayNavigationViewController *)self _updateOverlayCalendar];
@@ -72,26 +72,26 @@
   return WeakRetained;
 }
 
-- (DayNavigationViewController)initWithModel:(id)a3
+- (DayNavigationViewController)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = DayNavigationViewController;
   v6 = [(DayNavigationViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
   }
 
   return v7;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = DayNavigationViewController;
-  [(DayNavigationViewController *)&v4 viewWillAppear:a3];
+  [(DayNavigationViewController *)&v4 viewWillAppear:appear];
   [(DayNavigationViewController *)self _updateOverlayCalendar];
 }
 
@@ -100,39 +100,39 @@
   v4 = +[CUIKPreferences sharedPreferences];
   if ([v4 showWeekNumbers])
   {
-    v3 = [(DayNavigationViewController *)self showsWeekNumberWhenEnabled];
+    showsWeekNumberWhenEnabled = [(DayNavigationViewController *)self showsWeekNumberWhenEnabled];
   }
 
   else
   {
-    v3 = 0;
+    showsWeekNumberWhenEnabled = 0;
   }
 
-  [(DayNavigationView *)self->_navigationView setShowWeekNumber:v3];
+  [(DayNavigationView *)self->_navigationView setShowWeekNumber:showsWeekNumberWhenEnabled];
 }
 
 - (void)_updateOverlayCalendar
 {
-  v10 = [(DayNavigationViewController *)self delegate];
+  delegate = [(DayNavigationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(DayNavigationViewController *)self delegate];
-    v4 = [v3 dayNavigationViewControllerShowsOverlayCalendar];
+    delegate2 = [(DayNavigationViewController *)self delegate];
+    dayNavigationViewControllerShowsOverlayCalendar = [delegate2 dayNavigationViewControllerShowsOverlayCalendar];
 
-    if (!v4)
+    if (!dayNavigationViewControllerShowsOverlayCalendar)
     {
       return;
     }
 
     v5 = CUIKGetOverlayCalendar();
     navigationView = self->_navigationView;
-    v10 = v5;
+    delegate = v5;
     if (v5)
     {
-      v7 = [(DayNavigationView *)navigationView weekScrollView];
-      v8 = [v7 startDateOfSelectedWeek];
+      weekScrollView = [(DayNavigationView *)navigationView weekScrollView];
+      startDateOfSelectedWeek = [weekScrollView startDateOfSelectedWeek];
 
-      v9 = [CUIKDateStrings monthStringForDate:v8 inCalendar:v10];
+      v9 = [CUIKDateStrings monthStringForDate:startDateOfSelectedWeek inCalendar:delegate];
       [(DayNavigationView *)self->_navigationView setOverlayMonthText:v9];
     }
 
@@ -143,36 +143,36 @@
   }
 }
 
-- (void)dayNavigationView:(id)a3 selectedDateChanged:(id)a4
+- (void)dayNavigationView:(id)view selectedDateChanged:(id)changed
 {
-  v7 = a4;
-  v5 = [(DayNavigationViewController *)self delegate];
+  changedCopy = changed;
+  delegate = [(DayNavigationViewController *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(DayNavigationViewController *)self delegate];
-    [v6 dayNavigationViewController:self didSelectDate:v7];
+    delegate2 = [(DayNavigationViewController *)self delegate];
+    [delegate2 dayNavigationViewController:self didSelectDate:changedCopy];
   }
 
   [(DayNavigationViewController *)self _updateOverlayCalendar];
 }
 
-- (void)dayNavigationViewFailedToSelectDate:(id)a3
+- (void)dayNavigationViewFailedToSelectDate:(id)date
 {
-  v7 = a3;
-  v4 = [(DayNavigationViewController *)self delegate];
+  dateCopy = date;
+  delegate = [(DayNavigationViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DayNavigationViewController *)self delegate];
-    [v6 dayNavigationViewControllerFailedToChangeDate:v7];
+    delegate2 = [(DayNavigationViewController *)self delegate];
+    [delegate2 dayNavigationViewControllerFailedToChangeDate:dateCopy];
   }
 }
 
 - (BOOL)dayNavigationViewAllowedToChangeSelectedDate
 {
-  v3 = [(DayNavigationViewController *)self delegate];
+  delegate = [(DayNavigationViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -180,33 +180,33 @@
     return 1;
   }
 
-  v5 = [(DayNavigationViewController *)self delegate];
-  v6 = [v5 dayNavigationViewControllerAllowedToChangeSelectedDate];
+  delegate2 = [(DayNavigationViewController *)self delegate];
+  dayNavigationViewControllerAllowedToChangeSelectedDate = [delegate2 dayNavigationViewControllerAllowedToChangeSelectedDate];
 
-  return v6;
+  return dayNavigationViewControllerAllowedToChangeSelectedDate;
 }
 
-- (void)dayNavigationView:(id)a3 didChangeCellWidth:(double)a4
+- (void)dayNavigationView:(id)view didChangeCellWidth:(double)width
 {
-  v6 = [(DayNavigationViewController *)self delegate];
+  delegate = [(DayNavigationViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(DayNavigationViewController *)self delegate];
-    [v8 dayNavigationViewController:self didChangeCellWidth:a4];
+    delegate2 = [(DayNavigationViewController *)self delegate];
+    [delegate2 dayNavigationViewController:self didChangeCellWidth:width];
   }
 }
 
-- (id)dayNavigationView:(id)a3 dayDataForDate:(id)a4
+- (id)dayNavigationView:(id)view dayDataForDate:(id)date
 {
-  v5 = a4;
+  dateCopy = date;
   if (_os_feature_enabled_impl())
   {
     if ([(CUIKCalendarModel *)self->_model cachedOccurrencesAreLoaded])
     {
       v12 = 0;
-      v6 = [(CUIKCalendarModel *)self->_model sectionForCachedOccurrencesOnDate:v5 sectionExistsForDay:&v12];
+      v6 = [(CUIKCalendarModel *)self->_model sectionForCachedOccurrencesOnDate:dateCopy sectionExistsForDay:&v12];
       if (v12 == 1)
       {
         v7 = [(CUIKCalendarModel *)self->_model cachedSpecialDayDataForSection:v6];
@@ -228,7 +228,7 @@
       block[2] = sub_1001217E0;
       block[3] = &unk_10020EC68;
       block[4] = self;
-      v11 = v5;
+      v11 = dateCopy;
       dispatch_async(v8, block);
     }
   }
@@ -239,7 +239,7 @@ LABEL_10:
   return v7;
 }
 
-- (void)_localeChanged:(id)a3
+- (void)_localeChanged:(id)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -249,57 +249,57 @@ LABEL_10:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_timeZoneChanged:(id)a3
+- (void)_timeZoneChanged:(id)changed
 {
-  v4 = [(CUIKCalendarModel *)self->_model calendar];
-  [(DayNavigationView *)self->_navigationView setCalendar:v4];
+  calendar = [(CUIKCalendarModel *)self->_model calendar];
+  [(DayNavigationView *)self->_navigationView setCalendar:calendar];
 }
 
 - (void)_contentSizeCategoryChanged
 {
-  v3 = [(DayNavigationViewController *)self cellFactory];
-  [v3 contentSizeCategoryChanged];
+  cellFactory = [(DayNavigationViewController *)self cellFactory];
+  [cellFactory contentSizeCategoryChanged];
 
   [(DayNavigationView *)self->_navigationView contentSizeCategoryChanged];
-  v5 = [(DayNavigationViewController *)self view];
-  v4 = [v5 superview];
-  [v4 setNeedsLayout];
+  view = [(DayNavigationViewController *)self view];
+  superview = [view superview];
+  [superview setNeedsLayout];
 }
 
-- (void)_cachedOccurrencesChanged:(id)a3
+- (void)_cachedOccurrencesChanged:(id)changed
 {
   if (_os_feature_enabled_impl())
   {
-    v4 = [(DayNavigationView *)self->_navigationView weekScrollView];
-    [v4 updateDayBadges];
+    weekScrollView = [(DayNavigationView *)self->_navigationView weekScrollView];
+    [weekScrollView updateDayBadges];
   }
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(DayNavigationViewController *)self view];
-  [v4 setHidden:v3 ^ 1];
-  [v4 setUserInteractionEnabled:v3];
+  visibleCopy = visible;
+  view = [(DayNavigationViewController *)self view];
+  [view setHidden:visibleCopy ^ 1];
+  [view setUserInteractionEnabled:visibleCopy];
 }
 
 - (void)timeZoneChanged
 {
   navigationView = self->_navigationView;
-  v4 = [(CUIKCalendarModel *)self->_model calendar];
-  [(DayNavigationView *)navigationView setCalendar:v4];
+  calendar = [(CUIKCalendarModel *)self->_model calendar];
+  [(DayNavigationView *)navigationView setCalendar:calendar];
 
   v5 = self->_navigationView;
 
   [(DayNavigationView *)v5 significantTimeChangeOccurred];
 }
 
-- (void)setEventSpringLoadingEnabled:(BOOL)a3
+- (void)setEventSpringLoadingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_eventSpringLoadingEnabled = a3;
-  v4 = [(DayNavigationViewController *)self weekScrollView];
-  [v4 setEventSpringLoadingEnabled:v3];
+  enabledCopy = enabled;
+  self->_eventSpringLoadingEnabled = enabled;
+  weekScrollView = [(DayNavigationViewController *)self weekScrollView];
+  [weekScrollView setEventSpringLoadingEnabled:enabledCopy];
 }
 
 - (UIEdgeInsets)paletteSafeAreaInsets
@@ -314,26 +314,26 @@ LABEL_10:
 
 - (id)visibleCellDayTypes
 {
-  v2 = [(DayNavigationView *)self->_navigationView weekScrollView];
-  v3 = [v2 visibleCellDayTypes];
+  weekScrollView = [(DayNavigationView *)self->_navigationView weekScrollView];
+  visibleCellDayTypes = [weekScrollView visibleCellDayTypes];
 
-  return v3;
+  return visibleCellDayTypes;
 }
 
 - (id)visibleCellBadgeColors
 {
-  v2 = [(DayNavigationView *)self->_navigationView weekScrollView];
-  v3 = [v2 visibleCellBadgeColors];
+  weekScrollView = [(DayNavigationView *)self->_navigationView weekScrollView];
+  visibleCellBadgeColors = [weekScrollView visibleCellBadgeColors];
 
-  return v3;
+  return visibleCellBadgeColors;
 }
 
 - (id)visibleCellBadgeLocales
 {
-  v2 = [(DayNavigationView *)self->_navigationView weekScrollView];
-  v3 = [v2 visibleCellBadgeLocales];
+  weekScrollView = [(DayNavigationView *)self->_navigationView weekScrollView];
+  visibleCellBadgeLocales = [weekScrollView visibleCellBadgeLocales];
 
-  return v3;
+  return visibleCellBadgeLocales;
 }
 
 @end

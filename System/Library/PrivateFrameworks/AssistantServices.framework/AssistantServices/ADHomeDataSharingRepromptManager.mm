@@ -1,32 +1,32 @@
 @interface ADHomeDataSharingRepromptManager
 + (id)sharedManager;
-- (ADHomeDataSharingRepromptManager)initWithPropagationDelay:(unint64_t)a3;
+- (ADHomeDataSharingRepromptManager)initWithPropagationDelay:(unint64_t)delay;
 - (void)_clearPropagationStatusFromLocalStorage;
-- (void)_homeKitDataSyncHasFinished:(id)a3;
-- (void)_kickOffInitialPropagationWithCompletion:(id)a3;
+- (void)_homeKitDataSyncHasFinished:(id)finished;
+- (void)_kickOffInitialPropagationWithCompletion:(id)completion;
 - (void)_loadStoredPropagationStatus;
-- (void)_propagateDataSharingStatusToAccessoriesWithPropagationEvent:(int64_t)a3 propagationReason:(id)a4 completion:(id)a5;
-- (void)_propagateSiriDataSharingToAccessory:(id)a3 home:(id)a4 homeManager:(id)a5 propagationEvent:(int64_t)a6 propagationReason:(id)a7 completion:(id)a8;
-- (void)_propagateToAllHomeAccessoriesAfterReprompt:(int64_t)a3 completion:(id)a4;
+- (void)_propagateDataSharingStatusToAccessoriesWithPropagationEvent:(int64_t)event propagationReason:(id)reason completion:(id)completion;
+- (void)_propagateSiriDataSharingToAccessory:(id)accessory home:(id)home homeManager:(id)manager propagationEvent:(int64_t)event propagationReason:(id)reason completion:(id)completion;
+- (void)_propagateToAllHomeAccessoriesAfterReprompt:(int64_t)reprompt completion:(id)completion;
 - (void)_writePropagationStatusToLocalStorage;
-- (void)propagateDataSharingStatusToAccessoriesWithCompletion:(id)a3;
-- (void)propagateToAllHomeAccessoriesAfterReprompt:(int64_t)a3 source:(int64_t)a4 reason:(id)a5 completion:(id)a6;
-- (void)removeAccessoryFromPropagationList:(id)a3;
+- (void)propagateDataSharingStatusToAccessoriesWithCompletion:(id)completion;
+- (void)propagateToAllHomeAccessoriesAfterReprompt:(int64_t)reprompt source:(int64_t)source reason:(id)reason completion:(id)completion;
+- (void)removeAccessoryFromPropagationList:(id)list;
 @end
 
 @implementation ADHomeDataSharingRepromptManager
 
-- (void)removeAccessoryFromPropagationList:(id)a3
+- (void)removeAccessoryFromPropagationList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007F658;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = listCopy;
+  v6 = listCopy;
   dispatch_async(queue, v7);
 }
 
@@ -41,9 +41,9 @@
   if (!self->_logEventIdentifier)
   {
     v3 = +[NSUUID UUID];
-    v4 = [v3 UUIDString];
+    uUIDString = [v3 UUIDString];
     logEventIdentifier = self->_logEventIdentifier;
-    self->_logEventIdentifier = v4;
+    self->_logEventIdentifier = uUIDString;
   }
 
   v11[0] = @"Target HomeKit Siri Data Sharing status";
@@ -66,30 +66,30 @@
 - (void)_loadStoredPropagationStatus
 {
   v3 = +[AFPreferences sharedPreferences];
-  v8 = [v3 getHomeAccessoriesRepromptStatus];
+  getHomeAccessoriesRepromptStatus = [v3 getHomeAccessoriesRepromptStatus];
 
-  v4 = [v8 valueForKey:@"Target HomeKit Siri Data Sharing status"];
+  v4 = [getHomeAccessoriesRepromptStatus valueForKey:@"Target HomeKit Siri Data Sharing status"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_storeStrong(&self->_targetHomeKitOptInStatus, v4);
   }
 
-  v5 = [v8 valueForKey:@"Accessories that need propagation"];
+  v5 = [getHomeAccessoriesRepromptStatus valueForKey:@"Accessories that need propagation"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_storeStrong(&self->_accessoryIdsThatNeedPropagation, v5);
   }
 
-  v6 = [v8 valueForKey:@"Retry counter"];
+  v6 = [getHomeAccessoriesRepromptStatus valueForKey:@"Retry counter"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     self->_retryCounter = [v6 intValue];
   }
 
-  v7 = [v8 valueForKey:@"Log Event Identifier"];
+  v7 = [getHomeAccessoriesRepromptStatus valueForKey:@"Log Event Identifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -97,7 +97,7 @@
   }
 }
 
-- (void)_homeKitDataSyncHasFinished:(id)a3
+- (void)_homeKitDataSyncHasFinished:(id)finished
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -108,28 +108,28 @@
   dispatch_async(queue, block);
 }
 
-- (void)_propagateSiriDataSharingToAccessory:(id)a3 home:(id)a4 homeManager:(id)a5 propagationEvent:(int64_t)a6 propagationReason:(id)a7 completion:(id)a8
+- (void)_propagateSiriDataSharingToAccessory:(id)accessory home:(id)home homeManager:(id)manager propagationEvent:(int64_t)event propagationReason:(id)reason completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  accessoryCopy = accessory;
+  homeCopy = home;
+  managerCopy = manager;
+  reasonCopy = reason;
+  completionCopy = completion;
   if (self->_targetHomeKitOptInStatus)
   {
-    v19 = [v14 uniqueIdentifier];
-    v20 = [v19 UUIDString];
+    uniqueIdentifier = [accessoryCopy uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
 
-    [(ADHomeAccessorySiriDataSharingLogger *)self->_homeAccessorySiriDataSharingLogger logSiriDataSharingPropagationAccessoryIdentifier:v20 propagationEvent:a6 propagationReason:v17 associatedLogEventIdentifier:self->_logEventIdentifier];
-    v21 = [v14 category];
-    v22 = [v21 categoryType];
-    v23 = [v22 isEqual:HMAccessoryCategoryTypeHomePod];
+    [(ADHomeAccessorySiriDataSharingLogger *)self->_homeAccessorySiriDataSharingLogger logSiriDataSharingPropagationAccessoryIdentifier:uUIDString propagationEvent:event propagationReason:reasonCopy associatedLogEventIdentifier:self->_logEventIdentifier];
+    category = [accessoryCopy category];
+    categoryType = [category categoryType];
+    v23 = [categoryType isEqual:HMAccessoryCategoryTypeHomePod];
 
     if (v23)
     {
-      v24 = [v14 settings];
-      v25 = [v24 rootGroup];
-      v26 = [ADHomeInfoManager findSettingWithKeyPath:@"root.general.analytics.shareSiriAnalytics" group:v25];
+      settings = [accessoryCopy settings];
+      rootGroup = [settings rootGroup];
+      v26 = [ADHomeInfoManager findSettingWithKeyPath:@"root.general.analytics.shareSiriAnalytics" group:rootGroup];
 
       if (v26)
       {
@@ -138,7 +138,7 @@
         v38[1] = 3221225472;
         v38[2] = sub_100080388;
         v38[3] = &unk_10051D2F0;
-        v39 = v18;
+        v39 = completionCopy;
         [v26 updateValue:targetHomeKitOptInStatus completionHandler:v38];
         v28 = v39;
 LABEL_17:
@@ -153,21 +153,21 @@ LABEL_18:
         *buf = 136315395;
         v41 = "[ADHomeDataSharingRepromptManager _propagateSiriDataSharingToAccessory:home:homeManager:propagationEvent:propagationReason:completion:]";
         v42 = 2113;
-        v43 = v14;
+        v43 = accessoryCopy;
         _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "%s Siri Data Sharing setting not found when attempting propagation to accessory %{private}@", buf, 0x16u);
-        if (v18)
+        if (completionCopy)
         {
           goto LABEL_12;
         }
       }
 
-      else if (v18)
+      else if (completionCopy)
       {
 LABEL_12:
         v34 = @"Siri Data Sharing setting is not found on HomePod.";
 LABEL_16:
         v28 = [AFError errorWithCode:47 description:v34];
-        (*(v18 + 2))(v18, v28);
+        (*(completionCopy + 2))(completionCopy, v28);
         v26 = 0;
         goto LABEL_17;
       }
@@ -177,19 +177,19 @@ LABEL_26:
       goto LABEL_18;
     }
 
-    v24 = [[HMSettingBooleanValue alloc] initWithBoolValue:{-[NSNumber BOOLValue](self->_targetHomeKitOptInStatus, "BOOLValue")}];
-    v30 = [v16 createAccessorySettingsController];
-    if (v30)
+    settings = [[HMSettingBooleanValue alloc] initWithBoolValue:{-[NSNumber BOOLValue](self->_targetHomeKitOptInStatus, "BOOLValue")}];
+    createAccessorySettingsController = [managerCopy createAccessorySettingsController];
+    if (createAccessorySettingsController)
     {
-      v26 = v30;
-      v31 = [v15 uniqueIdentifier];
-      v32 = [v14 uniqueIdentifier];
+      v26 = createAccessorySettingsController;
+      uniqueIdentifier2 = [homeCopy uniqueIdentifier];
+      uniqueIdentifier3 = [accessoryCopy uniqueIdentifier];
       v36[0] = _NSConcreteStackBlock;
       v36[1] = 3221225472;
       v36[2] = sub_1000803A0;
       v36[3] = &unk_10051D2F0;
-      v37 = v18;
-      [v26 updateAccessorySettingWithHomeIdentifier:v31 accessoryIdentifier:v32 keyPath:@"root.general.analytics.shareSiriAnalytics" settingValue:v24 completionHandler:v36];
+      v37 = completionCopy;
+      [v26 updateAccessorySettingWithHomeIdentifier:uniqueIdentifier2 accessoryIdentifier:uniqueIdentifier3 keyPath:@"root.general.analytics.shareSiriAnalytics" settingValue:settings completionHandler:v36];
 
       v28 = v37;
       goto LABEL_17;
@@ -201,15 +201,15 @@ LABEL_26:
       *buf = 136315395;
       v41 = "[ADHomeDataSharingRepromptManager _propagateSiriDataSharingToAccessory:home:homeManager:propagationEvent:propagationReason:completion:]";
       v42 = 2113;
-      v43 = v14;
+      v43 = accessoryCopy;
       _os_log_error_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "%s Nil HMAccessorySettingsController when attempting propagation to accessory %{private}@", buf, 0x16u);
-      if (!v18)
+      if (!completionCopy)
       {
         goto LABEL_26;
       }
     }
 
-    else if (!v18)
+    else if (!completionCopy)
     {
       goto LABEL_26;
     }
@@ -224,9 +224,9 @@ LABEL_26:
     *buf = 136315395;
     v41 = "[ADHomeDataSharingRepromptManager _propagateSiriDataSharingToAccessory:home:homeManager:propagationEvent:propagationReason:completion:]";
     v42 = 2113;
-    v43 = v14;
+    v43 = accessoryCopy;
     _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "%s Siri Data Sharing value to propagate to accessory is unexpectedly nil.  Cancelling propagation attempt to accessory %{private}@.", buf, 0x16u);
-    if (!v18)
+    if (!completionCopy)
     {
       goto LABEL_20;
     }
@@ -234,21 +234,21 @@ LABEL_26:
     goto LABEL_7;
   }
 
-  if (v18)
+  if (completionCopy)
   {
 LABEL_7:
-    v20 = [AFError errorWithCode:47 description:@"Siri Data Sharing value to propagate is unexpectedly nil."];
-    (*(v18 + 2))(v18, v20);
+    uUIDString = [AFError errorWithCode:47 description:@"Siri Data Sharing value to propagate is unexpectedly nil."];
+    (*(completionCopy + 2))(completionCopy, uUIDString);
 LABEL_19:
   }
 
 LABEL_20:
 }
 
-- (void)_propagateDataSharingStatusToAccessoriesWithPropagationEvent:(int64_t)a3 propagationReason:(id)a4 completion:(id)a5
+- (void)_propagateDataSharingStatusToAccessoriesWithPropagationEvent:(int64_t)event propagationReason:(id)reason completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  reasonCopy = reason;
+  completionCopy = completion;
   targetHomeKitOptInStatus = self->_targetHomeKitOptInStatus;
   if (!targetHomeKitOptInStatus || (accessoryIdsThatNeedPropagation = self->_accessoryIdsThatNeedPropagation) == 0)
   {
@@ -262,19 +262,19 @@ LABEL_20:
         *buf = 136315138;
         v22 = "[ADHomeDataSharingRepromptManager _propagateDataSharingStatusToAccessoriesWithPropagationEvent:propagationReason:completion:]";
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s Required propgation information is not available.  Cancelling Siri Data Sharing propagation to home accessories.", buf, 0xCu);
-        if (!v9)
+        if (!completionCopy)
         {
           goto LABEL_11;
         }
       }
 
-      else if (!v9)
+      else if (!completionCopy)
       {
         goto LABEL_11;
       }
 
       v15 = [AFError errorWithCode:47 description:@"Required propagation information is not available."];
-      v9[2](v9, v15);
+      completionCopy[2](completionCopy, v15);
 
       goto LABEL_11;
     }
@@ -298,32 +298,32 @@ LABEL_20:
   v16[2] = sub_100080614;
   v16[3] = &unk_10050F8E8;
   v16[4] = self;
-  v19 = a3;
-  v17 = v8;
+  eventCopy = event;
+  v17 = reasonCopy;
   v20 = 6;
-  v18 = v9;
+  v18 = completionCopy;
   [v13 getHomeManagerWithCompletion:v16];
 
 LABEL_11:
 }
 
-- (void)propagateDataSharingStatusToAccessoriesWithCompletion:(id)a3
+- (void)propagateDataSharingStatusToAccessoriesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100081274;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_kickOffInitialPropagationWithCompletion:(id)a3
+- (void)_kickOffInitialPropagationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -338,16 +338,16 @@ LABEL_11:
   v8[2] = sub_100081774;
   v8[3] = &unk_10050F870;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [v6 getHomeManagerWithCompletion:v8];
 }
 
-- (void)_propagateToAllHomeAccessoriesAfterReprompt:(int64_t)a3 completion:(id)a4
+- (void)_propagateToAllHomeAccessoriesAfterReprompt:(int64_t)reprompt completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   sub_100287080(0);
-  if (a3 == 1)
+  if (reprompt == 1)
   {
     v7 = &off_100533770;
   }
@@ -364,22 +364,22 @@ LABEL_11:
   v10[2] = sub_100081C1C;
   v10[3] = &unk_10050F870;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [v8 getHomeManagerWithCompletion:v10];
 }
 
-- (void)propagateToAllHomeAccessoriesAfterReprompt:(int64_t)a3 source:(int64_t)a4 reason:(id)a5 completion:(id)a6
+- (void)propagateToAllHomeAccessoriesAfterReprompt:(int64_t)reprompt source:(int64_t)source reason:(id)reason completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
+  reasonCopy = reason;
+  completionCopy = completion;
   v12 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315395;
     v22 = "[ADHomeDataSharingRepromptManager propagateToAllHomeAccessoriesAfterReprompt:source:reason:completion:]";
     v23 = 2049;
-    v24 = a3;
+    repromptCopy = reprompt;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%s Will propagate Siri Data Sharing opt-in status=%{private}ld to home accessories.", buf, 0x16u);
   }
 
@@ -388,17 +388,17 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = sub_10008205C;
   block[3] = &unk_10051BA90;
-  v19 = a3;
-  v20 = a4;
+  repromptCopy2 = reprompt;
+  sourceCopy = source;
   block[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v14 = v11;
-  v15 = v10;
+  v17 = reasonCopy;
+  v18 = completionCopy;
+  v14 = completionCopy;
+  v15 = reasonCopy;
   dispatch_async(queue, block);
 }
 
-- (ADHomeDataSharingRepromptManager)initWithPropagationDelay:(unint64_t)a3
+- (ADHomeDataSharingRepromptManager)initWithPropagationDelay:(unint64_t)delay
 {
   v12.receiver = self;
   v12.super_class = ADHomeDataSharingRepromptManager;
@@ -415,7 +415,7 @@ LABEL_11:
     homeAccessorySiriDataSharingLogger = v4->_homeAccessorySiriDataSharingLogger;
     v4->_homeAccessorySiriDataSharingLogger = v8;
 
-    v4->_propagationDelayInSeconds = a3;
+    v4->_propagationDelayInSeconds = delay;
     v10 = +[NSNotificationCenter defaultCenter];
     [v10 addObserver:v4 selector:"_homeKitDataSyncHasFinished:" name:@"ADHomeInfoCurrentHomeIsReady" object:0];
   }

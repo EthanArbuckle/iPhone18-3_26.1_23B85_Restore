@@ -1,18 +1,18 @@
 @interface MPSNDArrayGatherND
-- (MPSNDArrayGatherND)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayGatherND)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeToCommandBuffer:(id)a3 primarySourceArray:(id)a4 secondarySourceArray:(id)a5 destinationArray:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (MPSNDArrayGatherND)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayGatherND)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeToCommandBuffer:(id)buffer primarySourceArray:(id)array secondarySourceArray:(id)sourceArray destinationArray:(id)destinationArray;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayGatherND
 
-- (MPSNDArrayGatherND)initWithDevice:(id)a3
+- (MPSNDArrayGatherND)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSNDArrayGatherND;
-  result = [(MPSNDArrayBinaryKernel *)&v4 initWithDevice:a3];
+  result = [(MPSNDArrayBinaryKernel *)&v4 initWithDevice:device];
   result->super.super._encode = EncodeGatherND;
   result->super.super.super._encodeData = result;
   result->_batchDimensions = 0;
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (MPSNDArrayGatherND)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayGatherND)initWithCoder:(id)coder device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayGatherND;
-  result = [(MPSNDArrayBinaryKernel *)&v5 initWithCoder:a3 device:a4];
+  result = [(MPSNDArrayBinaryKernel *)&v5 initWithCoder:coder device:device];
   if (result)
   {
     result->super.super._encode = EncodeGatherND;
@@ -36,18 +36,18 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = MPSNDArrayGatherND;
-  [(MPSNDArrayMultiaryBase *)&v3 encodeWithCoder:a3];
+  [(MPSNDArrayMultiaryBase *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayGatherND;
-  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     self->super.super._encode = EncodeGatherND;
@@ -57,30 +57,30 @@
   return result;
 }
 
-- (void)encodeToCommandBuffer:(id)a3 primarySourceArray:(id)a4 secondarySourceArray:(id)a5 destinationArray:(id)a6
+- (void)encodeToCommandBuffer:(id)buffer primarySourceArray:(id)array secondarySourceArray:(id)sourceArray destinationArray:(id)destinationArray
 {
-  v7 = *(a6 + *MEMORY[0x277CD73C8]);
+  v7 = *(destinationArray + *MEMORY[0x277CD73C8]);
   if (v7 != 268435488 && v7 != 536870944)
   {
-    v9 = a5;
-    v10 = a4;
-    v11 = a3;
+    sourceArrayCopy = sourceArray;
+    arrayCopy = array;
+    bufferCopy = buffer;
     v12 = MTLReportFailureTypeEnabled();
-    a3 = v11;
-    a4 = v10;
-    a5 = v9;
+    buffer = bufferCopy;
+    array = arrayCopy;
+    sourceArray = sourceArrayCopy;
     if (v12)
     {
       MTLReportFailure();
-      a3 = v11;
-      a4 = v10;
-      a5 = v9;
+      buffer = bufferCopy;
+      array = arrayCopy;
+      sourceArray = sourceArrayCopy;
     }
   }
 
   v13.receiver = self;
   v13.super_class = MPSNDArrayGatherND;
-  [(MPSNDArrayBinaryKernel *)&v13 encodeToCommandBuffer:a3 primarySourceArray:a4 secondarySourceArray:a5 destinationArray:?];
+  [(MPSNDArrayBinaryKernel *)&v13 encodeToCommandBuffer:buffer primarySourceArray:array secondarySourceArray:sourceArray destinationArray:?];
 }
 
 @end

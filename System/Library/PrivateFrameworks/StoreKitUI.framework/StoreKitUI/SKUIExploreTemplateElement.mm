@@ -1,18 +1,18 @@
 @interface SKUIExploreTemplateElement
 - (NSArray)childViewElements;
-- (SKUIExploreTemplateElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUIExploreTemplateElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SKUIViewElement)leftSplit;
 - (SKUIViewElement)rightSplit;
-- (void)_getLeftSplit:(id *)a3 rightSplit:(id *)a4;
+- (void)_getLeftSplit:(id *)split rightSplit:(id *)rightSplit;
 @end
 
 @implementation SKUIExploreTemplateElement
 
-- (SKUIExploreTemplateElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIExploreTemplateElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIExploreTemplateElement initWithDOMElement:parent:elementFactory:];
@@ -20,10 +20,10 @@
 
   v14.receiver = self;
   v14.super_class = SKUIExploreTemplateElement;
-  v11 = [(SKUIViewElement *)&v14 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v14 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 childElementsByTagName:@"split"];
+    v12 = [elementCopy childElementsByTagName:@"split"];
     v11->_usesSplits = [v12 count] == 2;
   }
 
@@ -32,21 +32,21 @@
 
 - (NSArray)childViewElements
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = self;
-  v5 = v4;
-  if (v4->_usesSplits)
+  array = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  v5 = selfCopy;
+  if (selfCopy->_usesSplits)
   {
-    v6 = [(SKUIExploreTemplateElement *)v4 leftSplit];
+    leftSplit = [(SKUIExploreTemplateElement *)selfCopy leftSplit];
 
-    v5 = v6;
+    v5 = leftSplit;
   }
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__SKUIExploreTemplateElement_childViewElements__block_invoke;
   v9[3] = &unk_2781F9640;
-  v7 = v3;
+  v7 = array;
   v10 = v7;
   [v5 enumerateChildrenUsingBlock:v9];
 
@@ -101,7 +101,7 @@ void __47__SKUIExploreTemplateElement_childViewElements__block_invoke(uint64_t a
   return v4;
 }
 
-- (void)_getLeftSplit:(id *)a3 rightSplit:(id *)a4
+- (void)_getLeftSplit:(id *)split rightSplit:(id *)rightSplit
 {
   v14 = 0;
   v15 = &v14;
@@ -115,23 +115,23 @@ void __47__SKUIExploreTemplateElement_childViewElements__block_invoke(uint64_t a
   v11 = __Block_byref_object_copy__56;
   v12 = __Block_byref_object_dispose__56;
   v13 = 0;
-  v6 = [(SKUIExploreTemplateElement *)self children];
+  children = [(SKUIExploreTemplateElement *)self children];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__SKUIExploreTemplateElement__getLeftSplit_rightSplit___block_invoke;
   v7[3] = &unk_2781FDF70;
   v7[4] = &v14;
   v7[5] = &v8;
-  [v6 enumerateObjectsUsingBlock:v7];
+  [children enumerateObjectsUsingBlock:v7];
 
-  if (a3)
+  if (split)
   {
-    *a3 = v15[5];
+    *split = v15[5];
   }
 
-  if (a4)
+  if (rightSplit)
   {
-    *a4 = v9[5];
+    *rightSplit = v9[5];
   }
 
   _Block_object_dispose(&v8, 8);

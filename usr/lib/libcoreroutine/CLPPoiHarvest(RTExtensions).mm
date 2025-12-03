@@ -15,13 +15,13 @@
   if ([v10 validMUID] && objc_msgSend(v11, "count"))
   {
     v13 = objc_alloc(MEMORY[0x277CFFE90]);
-    v14 = [v11 firstObject];
-    v15 = [v14 date];
-    v16 = [v13 initWithMapItem:v10 date:v15];
+    firstObject = [v11 firstObject];
+    date = [firstObject date];
+    v16 = [v13 initWithMapItem:v10 date:date];
 
     if (v16)
     {
-      v55 = a1;
+      selfCopy = self;
       v17 = objc_opt_new();
       v51 = v16;
       [v17 setTriggerEvent:v16];
@@ -74,10 +74,10 @@
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v73 count:1];
       v52 = v12;
       v29 = [v12 sortedArrayUsingDescriptors:v28];
-      v30 = [v29 objectEnumerator];
+      objectEnumerator = [v29 objectEnumerator];
 
-      v31 = [v30 nextObject];
-      v57 = [MEMORY[0x277CBEB18] array];
+      nextObject = [objectEnumerator nextObject];
+      array = [MEMORY[0x277CBEB18] array];
       v62 = 0u;
       v63 = 0u;
       v64 = 0u;
@@ -99,31 +99,31 @@
             }
 
             v36 = *(*(&v62 + 1) + 8 * v35);
-            if (v31)
+            if (nextObject)
             {
               do
               {
-                v37 = [v36 date];
-                v38 = [v31 startDate];
-                v39 = [v37 compare:v38];
+                date2 = [v36 date];
+                startDate = [nextObject startDate];
+                v39 = [date2 compare:startDate];
 
                 if (v39 != -1)
                 {
                   break;
                 }
 
-                v40 = [v30 nextObject];
+                nextObject2 = [objectEnumerator nextObject];
 
-                v31 = v40;
+                nextObject = nextObject2;
               }
 
-              while (v40);
+              while (nextObject2);
             }
 
-            v41 = [objc_alloc(MEMORY[0x277CFFE78]) initWithRTLocation:v36 rtMotionActivity:v31];
+            v41 = [objc_alloc(MEMORY[0x277CFFE78]) initWithRTLocation:v36 rtMotionActivity:nextObject];
             if (v41)
             {
-              [v57 addObject:v41];
+              [array addObject:v41];
             }
 
             ++v35;
@@ -143,7 +143,7 @@
       v42 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"timestamp" ascending:1];
       v70 = v42;
       v43 = [MEMORY[0x277CBEA60] arrayWithObjects:&v70 count:1];
-      v44 = [v57 sortedArrayUsingDescriptors:v43];
+      v44 = [array sortedArrayUsingDescriptors:v43];
 
       v45 = [v44 countByEnumeratingWithState:&v58 objects:v71 count:16];
       v10 = v54;
@@ -173,7 +173,7 @@
       }
 
       v49 = v17;
-      a1 = v55;
+      self = selfCopy;
       v12 = v52;
       v11 = v53;
     }
@@ -195,11 +195,11 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 triggerEvent];
-  v4 = [a1 accessPoints];
-  v5 = [v4 count];
-  v6 = [a1 locations];
-  v7 = [v2 stringWithFormat:@"triggerEvent, %@, wifiAccessPoints, %lu, locations, %lu", v3, v5, objc_msgSend(v6, "count")];
+  triggerEvent = [self triggerEvent];
+  accessPoints = [self accessPoints];
+  v5 = [accessPoints count];
+  locations = [self locations];
+  v7 = [v2 stringWithFormat:@"triggerEvent, %@, wifiAccessPoints, %lu, locations, %lu", triggerEvent, v5, objc_msgSend(locations, "count")];
 
   return v7;
 }

@@ -1,8 +1,8 @@
 @interface PXPhotosGridRecentlyDeletedDecorationView
 - (CGRect)clippingRect;
-- (PXPhotosGridRecentlyDeletedDecorationView)initWithFrame:(CGRect)a3;
+- (PXPhotosGridRecentlyDeletedDecorationView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setUserData:(id)a3;
+- (void)setUserData:(id)data;
 - (void)updateTextBanner;
 @end
 
@@ -21,15 +21,15 @@
   return result;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v5 = a3;
-  if (self->_userData != v5)
+  dataCopy = data;
+  if (self->_userData != dataCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_userData, a3);
+    v6 = dataCopy;
+    objc_storeStrong(&self->_userData, data);
     [(PXPhotosGridRecentlyDeletedDecorationView *)self updateTextBanner];
-    v5 = v6;
+    dataCopy = v6;
   }
 }
 
@@ -44,30 +44,30 @@
 
 - (void)updateTextBanner
 {
-  v3 = [(PXPhotosGridRecentlyDeletedDecorationView *)self textBannerView];
-  v4 = [(PXPhotosGridRecentlyDeletedDecorationView *)self userData];
-  v5 = [v4 asset];
+  textBannerView = [(PXPhotosGridRecentlyDeletedDecorationView *)self textBannerView];
+  userData = [(PXPhotosGridRecentlyDeletedDecorationView *)self userData];
+  asset = [userData asset];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = 0;
-    v6 = PXPhotoKitLocalizedMessageForRecentlyDeletedDaysRemainingAsset(v5, &v7);
-    [v3 setText:v6];
-    [v3 setDestructiveText:v7];
+    v6 = PXPhotoKitLocalizedMessageForRecentlyDeletedDaysRemainingAsset(asset, &v7);
+    [textBannerView setText:v6];
+    [textBannerView setDestructiveText:v7];
   }
 
   else
   {
-    [v3 setText:0];
+    [textBannerView setText:0];
   }
 }
 
-- (PXPhotosGridRecentlyDeletedDecorationView)initWithFrame:(CGRect)a3
+- (PXPhotosGridRecentlyDeletedDecorationView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PXPhotosGridRecentlyDeletedDecorationView;
-  v3 = [(PXPhotosGridRecentlyDeletedDecorationView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXPhotosGridRecentlyDeletedDecorationView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [PXTextBannerView alloc];

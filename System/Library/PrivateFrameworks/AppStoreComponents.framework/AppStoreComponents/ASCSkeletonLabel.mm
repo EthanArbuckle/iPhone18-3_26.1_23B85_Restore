@@ -1,24 +1,24 @@
 @interface ASCSkeletonLabel
-- (ASCSkeletonLabel)initWithCoder:(id)a3;
-- (ASCSkeletonLabel)initWithFrame:(CGRect)a3;
+- (ASCSkeletonLabel)initWithCoder:(id)coder;
+- (ASCSkeletonLabel)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIColor)skeletonColor;
 - (double)_baselineOffsetFromBottom;
 - (double)_firstBaselineOffsetFromTop;
-- (void)drawRect:(CGRect)a3;
-- (void)setSkeleton:(id)a3;
-- (void)setSkeletonColor:(id)a3;
-- (void)setSkeletonNumberOfLines:(int64_t)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setSkeleton:(id)skeleton;
+- (void)setSkeletonColor:(id)color;
+- (void)setSkeletonNumberOfLines:(int64_t)lines;
 @end
 
 @implementation ASCSkeletonLabel
 
-- (ASCSkeletonLabel)initWithFrame:(CGRect)a3
+- (ASCSkeletonLabel)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = ASCSkeletonLabel;
-  result = [(ASCSkeletonLabel *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(ASCSkeletonLabel *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_skeletonNumberOfLines = 1;
@@ -27,7 +27,7 @@
   return result;
 }
 
-- (ASCSkeletonLabel)initWithCoder:(id)a3
+- (ASCSkeletonLabel)initWithCoder:(id)coder
 {
   [(ASCSkeletonLabel *)self doesNotRecognizeSelector:a2];
 
@@ -36,12 +36,12 @@
 
 - (double)_firstBaselineOffsetFromTop
 {
-  v3 = [(ASCSkeletonLabel *)self skeleton];
+  skeleton = [(ASCSkeletonLabel *)self skeleton];
 
-  if (v3)
+  if (skeleton)
   {
-    v4 = [(ASCSkeletonLabel *)self font];
-    [v4 ascender];
+    font = [(ASCSkeletonLabel *)self font];
+    [font ascender];
     UIRoundToViewScale();
     v6 = v5;
 
@@ -60,12 +60,12 @@
 
 - (double)_baselineOffsetFromBottom
 {
-  v3 = [(ASCSkeletonLabel *)self skeleton];
+  skeleton = [(ASCSkeletonLabel *)self skeleton];
 
-  if (v3)
+  if (skeleton)
   {
-    v4 = [(ASCSkeletonLabel *)self font];
-    [v4 descender];
+    font = [(ASCSkeletonLabel *)self font];
+    [font descender];
 
     UIRoundToViewScale();
   }
@@ -80,11 +80,11 @@
   return result;
 }
 
-- (void)setSkeletonNumberOfLines:(int64_t)a3
+- (void)setSkeletonNumberOfLines:(int64_t)lines
 {
-  if (self->_skeletonNumberOfLines != a3)
+  if (self->_skeletonNumberOfLines != lines)
   {
-    self->_skeletonNumberOfLines = a3;
+    self->_skeletonNumberOfLines = lines;
     [(ASCSkeletonLabel *)self invalidateIntrinsicContentSize];
 
     [(ASCSkeletonLabel *)self setNeedsDisplay];
@@ -116,14 +116,14 @@
   return v3;
 }
 
-- (void)setSkeletonColor:(id)a3
+- (void)setSkeletonColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   skeletonColor = self->_skeletonColor;
-  v9 = v4;
-  if (!v4 || !skeletonColor)
+  v9 = colorCopy;
+  if (!colorCopy || !skeletonColor)
   {
-    if (skeletonColor == v4)
+    if (skeletonColor == colorCopy)
     {
       goto LABEL_7;
     }
@@ -131,12 +131,12 @@
     goto LABEL_6;
   }
 
-  v6 = [(UIColor *)skeletonColor isEqual:v4];
-  v4 = v9;
+  v6 = [(UIColor *)skeletonColor isEqual:colorCopy];
+  colorCopy = v9;
   if ((v6 & 1) == 0)
   {
 LABEL_6:
-    v7 = [(UIColor *)v4 copy];
+    v7 = [(UIColor *)colorCopy copy];
     v8 = self->_skeletonColor;
     self->_skeletonColor = v7;
 
@@ -148,14 +148,14 @@ LABEL_7:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setSkeleton:(id)a3
+- (void)setSkeleton:(id)skeleton
 {
-  v4 = a3;
+  skeletonCopy = skeleton;
   skeleton = self->_skeleton;
-  v9 = v4;
-  if (!v4 || !skeleton)
+  v9 = skeletonCopy;
+  if (!skeletonCopy || !skeleton)
   {
-    if (skeleton == v4)
+    if (skeleton == skeletonCopy)
     {
       goto LABEL_7;
     }
@@ -163,12 +163,12 @@ LABEL_7:
     goto LABEL_6;
   }
 
-  v6 = [(ASCContentSkeleton *)skeleton isEqual:v4];
-  v4 = v9;
+  v6 = [(ASCContentSkeleton *)skeleton isEqual:skeletonCopy];
+  skeletonCopy = v9;
   if (!v6)
   {
 LABEL_6:
-    v7 = [(ASCContentSkeleton *)v4 copy];
+    v7 = [(ASCContentSkeleton *)skeletonCopy copy];
     v8 = self->_skeleton;
     self->_skeleton = v7;
 
@@ -183,13 +183,13 @@ LABEL_7:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(ASCSkeletonLabel *)self skeleton];
+  skeleton = [(ASCSkeletonLabel *)self skeleton];
 
-  if (v3)
+  if (skeleton)
   {
     v4 = *MEMORY[0x277D77260];
-    v5 = [(ASCSkeletonLabel *)self skeleton];
-    [v5 skeletonHeightFromContext:self];
+    skeleton2 = [(ASCSkeletonLabel *)self skeleton];
+    [skeleton2 skeletonHeightFromContext:self];
     v7 = v6;
   }
 
@@ -209,16 +209,16 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(ASCSkeletonLabel *)self skeleton];
+  height = fits.height;
+  width = fits.width;
+  skeleton = [(ASCSkeletonLabel *)self skeleton];
 
-  if (v6)
+  if (skeleton)
   {
-    v7 = [(ASCSkeletonLabel *)self skeleton];
-    [v7 skeletonHeightFromContext:self];
+    skeleton2 = [(ASCSkeletonLabel *)self skeleton];
+    [skeleton2 skeletonHeightFromContext:self];
     v9 = v8;
   }
 
@@ -238,18 +238,18 @@ LABEL_7:
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(ASCSkeletonLabel *)self skeleton];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  skeleton = [(ASCSkeletonLabel *)self skeleton];
 
-  if (v8)
+  if (skeleton)
   {
-    v9 = [(ASCSkeletonLabel *)self skeleton];
-    [v9 drawSkeletonInRect:self usingSkeletonContext:{x, y, width, height}];
+    skeleton2 = [(ASCSkeletonLabel *)self skeleton];
+    [skeleton2 drawSkeletonInRect:self usingSkeletonContext:{x, y, width, height}];
   }
 
   else

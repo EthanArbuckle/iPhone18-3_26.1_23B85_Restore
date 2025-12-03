@@ -1,12 +1,12 @@
 @interface IMSharedUtilitiesProtoCloudKitEncryptedMessageSummaryInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IMSharedUtilitiesProtoCloudKitEncryptedMessageSummaryInfo
@@ -29,12 +29,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   messageSummaryInfo = self->_messageSummaryInfo;
   if (messageSummaryInfo)
   {
-    [v3 setObject:messageSummaryInfo forKey:@"message_summary_info"];
+    [dictionary setObject:messageSummaryInfo forKey:@"message_summary_info"];
   }
 
   padding = self->_padding;
@@ -46,7 +46,7 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_messageSummaryInfo)
   {
@@ -60,39 +60,39 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_messageSummaryInfo)
   {
-    [a3 setMessageSummaryInfo:?];
+    [to setMessageSummaryInfo:?];
   }
 
   if (self->_padding)
   {
 
-    [a3 setPadding:?];
+    [to setPadding:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  v5[1] = [(NSData *)self->_messageSummaryInfo copyWithZone:a3];
-  v5[2] = [(NSData *)self->_padding copyWithZone:a3];
+  v5[1] = [(NSData *)self->_messageSummaryInfo copyWithZone:zone];
+  v5[2] = [(NSData *)self->_padding copyWithZone:zone];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     messageSummaryInfo = self->_messageSummaryInfo;
-    if (!(messageSummaryInfo | *(a3 + 1)) || (v5 = [(NSData *)messageSummaryInfo isEqual:?]) != 0)
+    if (!(messageSummaryInfo | *(equal + 1)) || (v5 = [(NSData *)messageSummaryInfo isEqual:?]) != 0)
     {
       padding = self->_padding;
-      if (padding | *(a3 + 2))
+      if (padding | *(equal + 2))
       {
 
         LOBYTE(v5) = [(NSData *)padding isEqual:?];
@@ -108,14 +108,14 @@
   return v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessageSummaryInfo *)self setMessageSummaryInfo:?];
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
 
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessageSummaryInfo *)self setPadding:?];

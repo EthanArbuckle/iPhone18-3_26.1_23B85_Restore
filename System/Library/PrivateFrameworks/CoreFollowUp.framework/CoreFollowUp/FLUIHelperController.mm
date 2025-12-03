@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (FLUIHelperController)init;
 - (id)connection;
-- (void)showHSA2PasswordChangeForAppleID:(id)a3 completion:(id)a4;
-- (void)showUIForHSA2LoginCode:(id)a3 notification:(id)a4 completion:(id)a5;
-- (void)showUIForHSA2LoginNotification:(id)a3 completion:(id)a4;
-- (void)tearDownUIForHSA2LoginNotificationWithPushMessageID:(id)a3;
+- (void)showHSA2PasswordChangeForAppleID:(id)d completion:(id)completion;
+- (void)showUIForHSA2LoginCode:(id)code notification:(id)notification completion:(id)completion;
+- (void)showUIForHSA2LoginNotification:(id)notification completion:(id)completion;
+- (void)tearDownUIForHSA2LoginNotificationWithPushMessageID:(id)d;
 @end
 
 @implementation FLUIHelperController
@@ -44,17 +44,17 @@ uint64_t __38__FLUIHelperController_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)showUIForHSA2LoginNotification:(id)a3 completion:(id)a4
+- (void)showUIForHSA2LoginNotification:(id)notification completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FLUIHelperController *)self connection];
+  completionCopy = completion;
+  notificationCopy = notification;
+  connection = [(FLUIHelperController *)self connection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __66__FLUIHelperController_showUIForHSA2LoginNotification_completion___block_invoke;
   v15[3] = &unk_278852F30;
   v15[4] = self;
-  v9 = [v8 remoteObjectProxyWithErrorHandler:v15];
+  v9 = [connection remoteObjectProxyWithErrorHandler:v15];
 
   v10 = _FLLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -67,9 +67,9 @@ uint64_t __38__FLUIHelperController_sharedInstance__block_invoke()
   v12[1] = 3221225472;
   v12[2] = __66__FLUIHelperController_showUIForHSA2LoginNotification_completion___block_invoke_3;
   v12[3] = &unk_278852AA8;
-  v13 = v6;
-  v11 = v6;
-  [v9 showHSA2LoginNotification:v7 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [v9 showHSA2LoginNotification:notificationCopy completion:v12];
 }
 
 void __66__FLUIHelperController_showUIForHSA2LoginNotification_completion___block_invoke(uint64_t a1, void *a2)
@@ -99,17 +99,17 @@ void __66__FLUIHelperController_showUIForHSA2LoginNotification_completion___bloc
   }
 }
 
-- (void)showHSA2PasswordChangeForAppleID:(id)a3 completion:(id)a4
+- (void)showHSA2PasswordChangeForAppleID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FLUIHelperController *)self connection];
+  completionCopy = completion;
+  dCopy = d;
+  connection = [(FLUIHelperController *)self connection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __68__FLUIHelperController_showHSA2PasswordChangeForAppleID_completion___block_invoke;
   v15[3] = &unk_278852F30;
   v15[4] = self;
-  v9 = [v8 remoteObjectProxyWithErrorHandler:v15];
+  v9 = [connection remoteObjectProxyWithErrorHandler:v15];
 
   v10 = _FLLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -122,9 +122,9 @@ void __66__FLUIHelperController_showUIForHSA2LoginNotification_completion___bloc
   v12[1] = 3221225472;
   v12[2] = __68__FLUIHelperController_showHSA2PasswordChangeForAppleID_completion___block_invoke_5;
   v12[3] = &unk_278852AA8;
-  v13 = v6;
-  v11 = v6;
-  [v9 showHSA2ChangePasswordForAppleID:v7 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [v9 showHSA2ChangePasswordForAppleID:dCopy completion:v12];
 }
 
 void __68__FLUIHelperController_showHSA2PasswordChangeForAppleID_completion___block_invoke(uint64_t a1, void *a2)
@@ -154,18 +154,18 @@ void __68__FLUIHelperController_showHSA2PasswordChangeForAppleID_completion___bl
   }
 }
 
-- (void)showUIForHSA2LoginCode:(id)a3 notification:(id)a4 completion:(id)a5
+- (void)showUIForHSA2LoginCode:(id)code notification:(id)notification completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(FLUIHelperController *)self connection];
+  completionCopy = completion;
+  notificationCopy = notification;
+  codeCopy = code;
+  connection = [(FLUIHelperController *)self connection];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __71__FLUIHelperController_showUIForHSA2LoginCode_notification_completion___block_invoke;
   v18[3] = &unk_278852F30;
   v18[4] = self;
-  v12 = [v11 remoteObjectProxyWithErrorHandler:v18];
+  v12 = [connection remoteObjectProxyWithErrorHandler:v18];
 
   v13 = _FLLogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -178,9 +178,9 @@ void __68__FLUIHelperController_showHSA2PasswordChangeForAppleID_completion___bl
   v15[1] = 3221225472;
   v15[2] = __71__FLUIHelperController_showUIForHSA2LoginCode_notification_completion___block_invoke_6;
   v15[3] = &unk_278852AA8;
-  v16 = v8;
-  v14 = v8;
-  [v12 showHSA2LoginCode:v10 withNotification:v9 completion:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [v12 showHSA2LoginCode:codeCopy withNotification:notificationCopy completion:v15];
 }
 
 void __71__FLUIHelperController_showUIForHSA2LoginCode_notification_completion___block_invoke(uint64_t a1, void *a2)
@@ -210,18 +210,18 @@ void __71__FLUIHelperController_showUIForHSA2LoginCode_notification_completion__
   }
 }
 
-- (void)tearDownUIForHSA2LoginNotificationWithPushMessageID:(id)a3
+- (void)tearDownUIForHSA2LoginNotificationWithPushMessageID:(id)d
 {
-  v4 = a3;
-  v5 = [(FLUIHelperController *)self connection];
+  dCopy = d;
+  connection = [(FLUIHelperController *)self connection];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__FLUIHelperController_tearDownUIForHSA2LoginNotificationWithPushMessageID___block_invoke;
   v7[3] = &unk_278852F30;
   v7[4] = self;
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v7];
+  v6 = [connection remoteObjectProxyWithErrorHandler:v7];
 
-  [v6 tearDownUIForHSA2LoginNotificationWithPushMessageID:v4];
+  [v6 tearDownUIForHSA2LoginNotificationWithPushMessageID:dCopy];
 }
 
 void __76__FLUIHelperController_tearDownUIForHSA2LoginNotificationWithPushMessageID___block_invoke(uint64_t a1, void *a2)
@@ -245,15 +245,15 @@ void __76__FLUIHelperController_tearDownUIForHSA2LoginNotificationWithPushMessag
     self->_conn = v4;
 
     v6 = self->_conn;
-    v7 = [(FLUIHelperController *)self remoteObjectInterface];
-    [(NSXPCConnection *)v6 setRemoteObjectInterface:v7];
+    remoteObjectInterface = [(FLUIHelperController *)self remoteObjectInterface];
+    [(NSXPCConnection *)v6 setRemoteObjectInterface:remoteObjectInterface];
 
     v14[0] = 0;
     v14[1] = v14;
     v14[2] = 0x3032000000;
     v14[3] = __Block_byref_object_copy__2;
     v14[4] = __Block_byref_object_dispose__2;
-    v15 = self;
+    selfCopy = self;
     v8 = self->_conn;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;

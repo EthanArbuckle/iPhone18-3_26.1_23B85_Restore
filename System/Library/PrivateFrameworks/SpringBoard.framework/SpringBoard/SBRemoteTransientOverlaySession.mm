@@ -1,56 +1,56 @@
 @interface SBRemoteTransientOverlaySession
-- (BOOL)hasPendingButtonEvents:(unint64_t)a3;
-- (BOOL)isPresentedOnWindowScene:(id)a3;
-- (BOOL)remoteTransientOverlayViewController:(id)a3 prefersStatusBarActivityItemVisibleForServiceBundleIdentifier:(id)a4;
+- (BOOL)hasPendingButtonEvents:(unint64_t)events;
+- (BOOL)isPresentedOnWindowScene:(id)scene;
+- (BOOL)remoteTransientOverlayViewController:(id)controller prefersStatusBarActivityItemVisibleForServiceBundleIdentifier:(id)identifier;
 - (SBRemoteTransientOverlaySessionHostDelegate)hostDelegate;
-- (id)_actionForHandlingButtonEvents:(unint64_t)a3;
-- (id)_initWithSessionID:(id)a3 definition:(id)a4 sceneWorkspaceController:(id)a5;
-- (id)remoteTransientOverlayViewController:(id)a3 requestsActionForHandlingButtonEvents:(unint64_t)a4;
-- (void)_addTransaction:(id)a3;
+- (id)_actionForHandlingButtonEvents:(unint64_t)events;
+- (id)_initWithSessionID:(id)d definition:(id)definition sceneWorkspaceController:(id)controller;
+- (id)remoteTransientOverlayViewController:(id)controller requestsActionForHandlingButtonEvents:(unint64_t)events;
+- (void)_addTransaction:(id)transaction;
 - (void)_didActivate;
 - (void)_didDeactivate;
-- (void)_invalidateWithReason:(int64_t)a3 error:(id)a4;
+- (void)_invalidateWithReason:(int64_t)reason error:(id)error;
 - (void)_processPendingTransactions;
-- (void)_registerObserversForTransaction:(id)a3;
-- (void)_requestInvalidationWithReason:(int64_t)a3 error:(id)a4;
-- (void)activateWithContext:(id)a3;
-- (void)addSessionObserver:(id)a3;
+- (void)_registerObserversForTransaction:(id)transaction;
+- (void)_requestInvalidationWithReason:(int64_t)reason error:(id)error;
+- (void)activateWithContext:(id)context;
+- (void)addSessionObserver:(id)observer;
 - (void)deactivate;
 - (void)dealloc;
-- (void)getActionForHandlingButtonEvents:(unint64_t)a3 completion:(id)a4;
+- (void)getActionForHandlingButtonEvents:(unint64_t)events completion:(id)completion;
 - (void)invalidate;
-- (void)prepareWithConfigurationContext:(id)a3;
-- (void)remoteTransientOverlayViewController:(id)a3 didDisappearAnimated:(BOOL)a4;
-- (void)remoteTransientOverlayViewController:(id)a3 didTerminateWithError:(id)a4;
-- (void)remoteTransientOverlayViewController:(id)a3 willAppearAnimated:(BOOL)a4;
-- (void)remoteTransientOverlayViewControllerDidInvalidate:(id)a3;
-- (void)remoteTransientOverlayViewControllerRequestsDeactivation:(id)a3;
-- (void)remoteTransientOverlayViewControllerRequestsInvalidation:(id)a3;
-- (void)removeSessionObserver:(id)a3;
+- (void)prepareWithConfigurationContext:(id)context;
+- (void)remoteTransientOverlayViewController:(id)controller didDisappearAnimated:(BOOL)animated;
+- (void)remoteTransientOverlayViewController:(id)controller didTerminateWithError:(id)error;
+- (void)remoteTransientOverlayViewController:(id)controller willAppearAnimated:(BOOL)animated;
+- (void)remoteTransientOverlayViewControllerDidInvalidate:(id)invalidate;
+- (void)remoteTransientOverlayViewControllerRequestsDeactivation:(id)deactivation;
+- (void)remoteTransientOverlayViewControllerRequestsInvalidation:(id)invalidation;
+- (void)removeSessionObserver:(id)observer;
 @end
 
 @implementation SBRemoteTransientOverlaySession
 
-- (id)_initWithSessionID:(id)a3 definition:(id)a4 sceneWorkspaceController:(id)a5
+- (id)_initWithSessionID:(id)d definition:(id)definition sceneWorkspaceController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  definitionCopy = definition;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = SBRemoteTransientOverlaySession;
   v11 = [(SBRemoteTransientOverlaySession *)&v17 init];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [definitionCopy copy];
     definition = v11->_definition;
     v11->_definition = v12;
 
-    v14 = [v8 copy];
+    v14 = [dCopy copy];
     sessionID = v11->_sessionID;
     v11->_sessionID = v14;
 
     v11->_valid = 1;
-    objc_storeStrong(&v11->_sceneWorkspaceController, a5);
+    objc_storeStrong(&v11->_sceneWorkspaceController, controller);
   }
 
   return v11;
@@ -65,80 +65,80 @@
   [(SBRemoteTransientOverlaySession *)&v3 dealloc];
 }
 
-- (void)remoteTransientOverlayViewControllerRequestsDeactivation:(id)a3
+- (void)remoteTransientOverlayViewControllerRequestsDeactivation:(id)deactivation
 {
   v7 = *MEMORY[0x277D85DE8];
   v4 = SBLogTransientOverlay();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: remoteTransientOverlayViewControllerRequestsDeactivation", &v5, 0xCu);
   }
 
   [(SBRemoteTransientOverlaySession *)self deactivate];
 }
 
-- (BOOL)remoteTransientOverlayViewController:(id)a3 prefersStatusBarActivityItemVisibleForServiceBundleIdentifier:(id)a4
+- (BOOL)remoteTransientOverlayViewController:(id)controller prefersStatusBarActivityItemVisibleForServiceBundleIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_hostDelegate);
-  LOBYTE(self) = [WeakRetained remoteTransientOverlaySession:self prefersStatusBarActivityItemVisibleForServiceBundleIdentifier:v5];
+  LOBYTE(self) = [WeakRetained remoteTransientOverlaySession:self prefersStatusBarActivityItemVisibleForServiceBundleIdentifier:identifierCopy];
 
   return self;
 }
 
-- (id)remoteTransientOverlayViewController:(id)a3 requestsActionForHandlingButtonEvents:(unint64_t)a4
+- (id)remoteTransientOverlayViewController:(id)controller requestsActionForHandlingButtonEvents:(unint64_t)events
 {
   v11 = *MEMORY[0x277D85DE8];
   v6 = SBLogTransientOverlay();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: remoteTransientOverlayViewController:requestsActionForHandlingButtonEvents", &v9, 0xCu);
   }
 
-  v7 = [(SBRemoteTransientOverlaySession *)self _actionForHandlingButtonEvents:a4];
+  v7 = [(SBRemoteTransientOverlaySession *)self _actionForHandlingButtonEvents:events];
 
   return v7;
 }
 
-- (void)remoteTransientOverlayViewControllerDidInvalidate:(id)a3
+- (void)remoteTransientOverlayViewControllerDidInvalidate:(id)invalidate
 {
   v7 = *MEMORY[0x277D85DE8];
   v4 = SBLogTransientOverlay();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: remoteTransientOverlayViewControllerDidInvalidate", &v5, 0xCu);
   }
 
   [(SBRemoteTransientOverlaySession *)self _invalidateWithReason:3 error:0];
 }
 
-- (void)remoteTransientOverlayViewControllerRequestsInvalidation:(id)a3
+- (void)remoteTransientOverlayViewControllerRequestsInvalidation:(id)invalidation
 {
   v7 = *MEMORY[0x277D85DE8];
   v4 = SBLogTransientOverlay();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: remoteTransientOverlayViewControllerRequestsInvalidation", &v5, 0xCu);
   }
 
   [(SBRemoteTransientOverlaySession *)self _requestInvalidationWithReason:2 error:0];
 }
 
-- (void)remoteTransientOverlayViewController:(id)a3 didTerminateWithError:(id)a4
+- (void)remoteTransientOverlayViewController:(id)controller didTerminateWithError:(id)error
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = SBLogTransientOverlay();
   v7 = v6;
-  if (v5)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -149,21 +149,21 @@
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: remoteTransientOverlayViewController:didTerminateWithError", &v8, 0xCu);
   }
 
-  [(SBRemoteTransientOverlaySession *)self _requestInvalidationWithReason:5 error:v5];
+  [(SBRemoteTransientOverlaySession *)self _requestInvalidationWithReason:5 error:errorCopy];
 }
 
-- (void)remoteTransientOverlayViewController:(id)a3 willAppearAnimated:(BOOL)a4
+- (void)remoteTransientOverlayViewController:(id)controller willAppearAnimated:(BOOL)animated
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = SBLogTransientOverlay();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: remoteTransientOverlayViewController:willAppearAnimated", &v8, 0xCu);
   }
 
@@ -174,23 +174,23 @@
   [(SBRemoteTransientOverlayViewController *)self->_secondaryViewController setWallpaperVariant:v7];
 }
 
-- (void)remoteTransientOverlayViewController:(id)a3 didDisappearAnimated:(BOOL)a4
+- (void)remoteTransientOverlayViewController:(id)controller didDisappearAnimated:(BOOL)animated
 {
-  v5 = a3;
+  controllerCopy = controller;
   [(SBRemoteTransientOverlaySession *)self _didDeactivate];
-  v6 = [v5 shouldInvalidateWhenDeactivated];
+  shouldInvalidateWhenDeactivated = [controllerCopy shouldInvalidateWhenDeactivated];
 
-  if (v6)
+  if (shouldInvalidateWhenDeactivated)
   {
 
     [(SBRemoteTransientOverlaySession *)self _requestInvalidationWithReason:3 error:0];
   }
 }
 
-- (void)activateWithContext:(id)a3
+- (void)activateWithContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   BSDispatchQueueAssertMain();
   if (!self->_prepared)
   {
@@ -201,14 +201,14 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
-    v19 = v5;
+    v19 = contextCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: activateWithContext: %{public}@", buf, 0x16u);
   }
 
-  v7 = [(SBRemoteTransientOverlaySession *)self hostDelegate];
-  v8 = [v7 remoteTransientOverlaySession:self shouldActivateWithContext:v5];
+  hostDelegate = [(SBRemoteTransientOverlaySession *)self hostDelegate];
+  v8 = [hostDelegate remoteTransientOverlaySession:self shouldActivateWithContext:contextCopy];
 
   if (v8)
   {
@@ -220,8 +220,8 @@
     v12[2] = __55__SBRemoteTransientOverlaySession_activateWithContext___block_invoke;
     v12[3] = &unk_2783C0030;
     objc_copyWeak(&v15, buf);
-    v13 = v5;
-    v14 = self;
+    v13 = contextCopy;
+    selfCopy2 = self;
     v10 = [v9 initWithBlock:v12];
     [v10 setDebugName:@"activateWithContext"];
     [(SBRemoteTransientOverlaySession *)self _addTransaction:v10];
@@ -629,21 +629,21 @@ LABEL_26:
   return (*(*(a1 + 80) + 16))();
 }
 
-- (void)addSessionObserver:(id)a3
+- (void)addSessionObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   BSDispatchQueueAssertMain();
   observers = self->_observers;
   if (!observers)
   {
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v6 = self->_observers;
-    self->_observers = v5;
+    self->_observers = weakObjectsHashTable;
 
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v7];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
 - (void)deactivate
@@ -654,7 +654,7 @@ LABEL_26:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: deactivate", buf, 0xCu);
   }
 
@@ -728,9 +728,9 @@ void __45__SBRemoteTransientOverlaySession_deactivate__block_invoke(uint64_t a1,
   }
 }
 
-- (void)getActionForHandlingButtonEvents:(unint64_t)a3 completion:(id)a4
+- (void)getActionForHandlingButtonEvents:(unint64_t)events completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
   objc_initWeak(&location, self);
   v7 = objc_alloc(MEMORY[0x277CF0BA8]);
@@ -739,9 +739,9 @@ void __45__SBRemoteTransientOverlaySession_deactivate__block_invoke(uint64_t a1,
   v12 = __79__SBRemoteTransientOverlaySession_getActionForHandlingButtonEvents_completion___block_invoke;
   v13 = &unk_2783C0080;
   objc_copyWeak(v15, &location);
-  v8 = v6;
+  v8 = completionCopy;
   v14 = v8;
-  v15[1] = a3;
+  v15[1] = events;
   v9 = [v7 initWithBlock:&v10];
   [v9 setDebugName:{@"getActionForHandlingButtonEvents", v10, v11, v12, v13}];
   [(SBRemoteTransientOverlaySession *)self _addTransaction:v9];
@@ -784,7 +784,7 @@ void __79__SBRemoteTransientOverlaySession_getActionForHandlingButtonEvents_comp
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)hasPendingButtonEvents:(unint64_t)a3
+- (BOOL)hasPendingButtonEvents:(unint64_t)events
 {
   v7 = 0;
   v8 = &v7;
@@ -796,7 +796,7 @@ void __79__SBRemoteTransientOverlaySession_getActionForHandlingButtonEvents_comp
   v6[2] = __58__SBRemoteTransientOverlaySession_hasPendingButtonEvents___block_invoke;
   v6[3] = &unk_2783C00A8;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = events;
   [(NSMutableDictionary *)identifierToHandlingButtonEvents enumerateKeysAndObjectsUsingBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -815,21 +815,21 @@ uint64_t __58__SBRemoteTransientOverlaySession_hasPendingButtonEvents___block_in
   return result;
 }
 
-- (BOOL)isPresentedOnWindowScene:(id)a3
+- (BOOL)isPresentedOnWindowScene:(id)scene
 {
-  v4 = [(SBTransientOverlayViewController *)self->_containerViewController _sbWindowScene];
-  if ([v4 isMainDisplayWindowScene])
+  _sbWindowScene = [(SBTransientOverlayViewController *)self->_containerViewController _sbWindowScene];
+  if ([_sbWindowScene isMainDisplayWindowScene])
   {
-    v5 = 1;
+    isMainDisplayWindowScene = 1;
   }
 
   else
   {
-    v6 = [(SBTransientOverlayViewController *)self->_secondaryViewController _sbWindowScene];
-    v5 = [v6 isMainDisplayWindowScene];
+    _sbWindowScene2 = [(SBTransientOverlayViewController *)self->_secondaryViewController _sbWindowScene];
+    isMainDisplayWindowScene = [_sbWindowScene2 isMainDisplayWindowScene];
   }
 
-  return v5;
+  return isMainDisplayWindowScene;
 }
 
 - (void)invalidate
@@ -839,10 +839,10 @@ uint64_t __58__SBRemoteTransientOverlaySession_hasPendingButtonEvents___block_in
   [(SBRemoteTransientOverlaySession *)self _requestInvalidationWithReason:2 error:0];
 }
 
-- (void)prepareWithConfigurationContext:(id)a3
+- (void)prepareWithConfigurationContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   BSDispatchQueueAssertMain();
   if (!self->_prepared)
   {
@@ -850,9 +850,9 @@ uint64_t __58__SBRemoteTransientOverlaySession_hasPendingButtonEvents___block_in
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
-      v17 = v4;
+      v17 = contextCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: prepareWithConfigurationContext: %{public}@", buf, 0x16u);
     }
 
@@ -864,7 +864,7 @@ uint64_t __58__SBRemoteTransientOverlaySession_hasPendingButtonEvents___block_in
     v10 = __67__SBRemoteTransientOverlaySession_prepareWithConfigurationContext___block_invoke;
     v11 = &unk_2783C00F8;
     objc_copyWeak(&v13, buf);
-    v12 = v4;
+    v12 = contextCopy;
     v7 = [v6 initWithBlock:&v8];
     [v7 setDebugName:{@"prepareWithConfigurationContext", v8, v9, v10, v11}];
     [(SBRemoteTransientOverlaySession *)self _addTransaction:v7];
@@ -971,11 +971,11 @@ void __67__SBRemoteTransientOverlaySession_prepareWithConfigurationContext___blo
   }
 }
 
-- (void)removeSessionObserver:(id)a3
+- (void)removeSessionObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   BSDispatchQueueAssertMain();
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   if (![(NSHashTable *)self->_observers count])
   {
@@ -984,9 +984,9 @@ void __67__SBRemoteTransientOverlaySession_prepareWithConfigurationContext___blo
   }
 }
 
-- (void)_addTransaction:(id)a3
+- (void)_addTransaction:(id)transaction
 {
-  v8 = a3;
+  transactionCopy = transaction;
   BSDispatchQueueAssertMain();
   if (self->_activeTransaction)
   {
@@ -1000,12 +1000,12 @@ void __67__SBRemoteTransientOverlaySession_prepareWithConfigurationContext___blo
       pendingTransactions = self->_pendingTransactions;
     }
 
-    [(NSMutableArray *)pendingTransactions addObject:v8];
+    [(NSMutableArray *)pendingTransactions addObject:transactionCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->_activeTransaction, a3);
+    objc_storeStrong(&self->_activeTransaction, transaction);
     [(SBRemoteTransientOverlaySession *)self _registerObserversForTransaction:self->_activeTransaction];
     [(BSTransaction *)self->_activeTransaction begin];
   }
@@ -1021,7 +1021,7 @@ void __67__SBRemoteTransientOverlaySession_prepareWithConfigurationContext___blo
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: _didActivate", buf, 0xCu);
     }
 
@@ -1074,7 +1074,7 @@ void __67__SBRemoteTransientOverlaySession_prepareWithConfigurationContext___blo
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: _didDeactivate", buf, 0xCu);
     }
 
@@ -1119,12 +1119,12 @@ void __67__SBRemoteTransientOverlaySession_prepareWithConfigurationContext___blo
   }
 }
 
-- (id)_actionForHandlingButtonEvents:(unint64_t)a3
+- (id)_actionForHandlingButtonEvents:(unint64_t)events
 {
   BSDispatchQueueAssertMain();
   if (self->_containerViewController)
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifierToHandlingButtonEvents = self->_identifierToHandlingButtonEvents;
     if (!identifierToHandlingButtonEvents)
     {
@@ -1135,8 +1135,8 @@ void __67__SBRemoteTransientOverlaySession_prepareWithConfigurationContext___blo
       identifierToHandlingButtonEvents = self->_identifierToHandlingButtonEvents;
     }
 
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    [(NSMutableDictionary *)identifierToHandlingButtonEvents setObject:v9 forKey:v5];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:events];
+    [(NSMutableDictionary *)identifierToHandlingButtonEvents setObject:v9 forKey:uUID];
 
     v10 = objc_alloc(MEMORY[0x277D67D90]);
     v14[0] = MEMORY[0x277D85DD0];
@@ -1144,10 +1144,10 @@ void __67__SBRemoteTransientOverlaySession_prepareWithConfigurationContext___blo
     v14[2] = __66__SBRemoteTransientOverlaySession__actionForHandlingButtonEvents___block_invoke;
     v14[3] = &unk_2783C0120;
     v14[4] = self;
-    v15 = v5;
-    v16 = a3;
-    v11 = v5;
-    v12 = [v10 initWithButtonEvents:a3 withHandler:v14];
+    v15 = uUID;
+    eventsCopy = events;
+    v11 = uUID;
+    v12 = [v10 initWithButtonEvents:events withHandler:v14];
   }
 
   else
@@ -1195,15 +1195,15 @@ void __66__SBRemoteTransientOverlaySession__actionForHandlingButtonEvents___bloc
   [WeakRetained remoteTransientOverlaySession:*(a1 + 32) requestsHandlingForButtonEvents:*(a1 + 56) viewController:*(*(a1 + 32) + 16)];
 }
 
-- (void)_invalidateWithReason:(int64_t)a3 error:(id)a4
+- (void)_invalidateWithReason:(int64_t)reason error:(id)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   BSDispatchQueueAssertMain();
   self->_pendingInvalidation = 0;
   v7 = SBLogTransientOverlay();
   v8 = v7;
-  if (v6)
+  if (errorCopy)
   {
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -1213,11 +1213,11 @@ void __66__SBRemoteTransientOverlaySession__actionForHandlingButtonEvents___bloc
     SBSRemoteAlertHandleInvalidationErrorCodeForInvalidationReason();
     v9 = SBSRemoteAlertHandleInvalidationErrorDescription();
     *buf = 138543874;
-    v38 = self;
+    selfCopy2 = self;
     v39 = 2114;
     v40 = v9;
     v41 = 2114;
-    v42 = v6;
+    v42 = errorCopy;
     _os_log_error_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_ERROR, "%{public}@: _invalidateWithReason: %{public}@, error: %{public}@", buf, 0x20u);
   }
 
@@ -1231,7 +1231,7 @@ void __66__SBRemoteTransientOverlaySession__actionForHandlingButtonEvents___bloc
     SBSRemoteAlertHandleInvalidationErrorCodeForInvalidationReason();
     v9 = SBSRemoteAlertHandleInvalidationErrorDescription();
     *buf = 138543618;
-    v38 = self;
+    selfCopy2 = self;
     v39 = 2114;
     v40 = v9;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: _invalidateWithReason: %{public}@", buf, 0x16u);
@@ -1287,12 +1287,12 @@ LABEL_7:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostDelegate);
-  [WeakRetained remoteTransientOverlaySession:self didInvalidateWithReason:a3 error:v6];
+  [WeakRetained remoteTransientOverlaySession:self didInvalidateWithReason:reason error:errorCopy];
 
   if (self->_valid)
   {
     self->_valid = 0;
-    v19 = [v6 copy];
+    v19 = [errorCopy copy];
     error = self->_error;
     self->_error = v19;
 
@@ -1319,7 +1319,7 @@ LABEL_7:
           v26 = *(*(&v27 + 1) + 8 * v25);
           if (objc_opt_respondsToSelector())
           {
-            [v26 remoteTransientOverlaySession:self didInvalidateWithReason:a3 error:v6];
+            [v26 remoteTransientOverlaySession:self didInvalidateWithReason:reason error:errorCopy];
           }
 
           ++v25;
@@ -1334,10 +1334,10 @@ LABEL_7:
   }
 }
 
-- (void)_requestInvalidationWithReason:(int64_t)a3 error:(id)a4
+- (void)_requestInvalidationWithReason:(int64_t)reason error:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   BSDispatchQueueAssertMain();
   if (self->_valid && !self->_pendingInvalidation)
   {
@@ -1346,18 +1346,18 @@ LABEL_7:
 
   v7 = SBLogTransientOverlay();
   v8 = v7;
-  if (v6)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       SBSRemoteAlertHandleInvalidationErrorCodeForInvalidationReason();
       v9 = SBSRemoteAlertHandleInvalidationErrorDescription();
       *buf = 138543874;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2114;
       v20 = v9;
       v21 = 2114;
-      v22 = v6;
+      v22 = errorCopy;
       _os_log_error_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_ERROR, "%{public}@: _requestInvalidationWithReason: %{public}@, error: %{public}@", buf, 0x20u);
     }
   }
@@ -1367,7 +1367,7 @@ LABEL_7:
     SBSRemoteAlertHandleInvalidationErrorCodeForInvalidationReason();
     v10 = SBSRemoteAlertHandleInvalidationErrorDescription();
     *buf = 138543618;
-    v18 = self;
+    selfCopy2 = self;
     v19 = 2114;
     v20 = v10;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: _requestInvalidationWithReason: %{public}@", buf, 0x16u);
@@ -1380,8 +1380,8 @@ LABEL_7:
   v14[2] = __72__SBRemoteTransientOverlaySession__requestInvalidationWithReason_error___block_invoke;
   v14[3] = &unk_2783C0170;
   objc_copyWeak(v16, buf);
-  v16[1] = a3;
-  v12 = v6;
+  v16[1] = reason;
+  v12 = errorCopy;
   v15 = v12;
   v13 = [v11 initWithBlock:v14];
   [v13 setDebugName:@"_requestInvalidationWithReason"];
@@ -1489,16 +1489,16 @@ uint64_t __72__SBRemoteTransientOverlaySession__requestInvalidationWithReason_er
   }
 }
 
-- (void)_registerObserversForTransaction:(id)a3
+- (void)_registerObserversForTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __68__SBRemoteTransientOverlaySession__registerObserversForTransaction___block_invoke;
   v5[3] = &unk_2783C01C0;
   objc_copyWeak(&v6, &location);
-  [v4 registerBlockObserver:v5];
+  [transactionCopy registerBlockObserver:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }

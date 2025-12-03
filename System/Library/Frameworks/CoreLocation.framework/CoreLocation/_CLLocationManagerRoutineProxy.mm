@@ -1,21 +1,21 @@
 @interface _CLLocationManagerRoutineProxy
-- (_CLLocationManagerRoutineProxy)initWithQueue:(id)a3 locationManagerRoutine:(id)a4;
-- (id)getRemoteObjectProxyWithErrorHandler:(id)a3;
+- (_CLLocationManagerRoutineProxy)initWithQueue:(id)queue locationManagerRoutine:(id)routine;
+- (id)getRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)createConnection;
 - (void)dealloc;
-- (void)didUpdateInertialData:(id)a3;
-- (void)didUpdateLocations:(id)a3;
-- (void)didUpdateLocations:(id)a3 withReply:(id)a4;
+- (void)didUpdateInertialData:(id)data;
+- (void)didUpdateLocations:(id)locations;
+- (void)didUpdateLocations:(id)locations withReply:(id)reply;
 @end
 
 @implementation _CLLocationManagerRoutineProxy
 
-- (_CLLocationManagerRoutineProxy)initWithQueue:(id)a3 locationManagerRoutine:(id)a4
+- (_CLLocationManagerRoutineProxy)initWithQueue:(id)queue locationManagerRoutine:(id)routine
 {
-  if (!a3)
+  if (!queue)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-    if (a4)
+    if (routine)
     {
       return 0;
     }
@@ -25,7 +25,7 @@ LABEL_7:
     return 0;
   }
 
-  if (!a4)
+  if (!routine)
   {
     goto LABEL_7;
   }
@@ -35,9 +35,9 @@ LABEL_7:
   v8 = [(_CLLocationManagerRoutineProxy *)&v11 init];
   if (v8)
   {
-    v8->_queue = a3;
+    v8->_queue = queue;
     [(_CLLocationManagerRoutineProxy *)v8 createConnection];
-    v8->_locationManagerRoutine = a4;
+    v8->_locationManagerRoutine = routine;
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v8, sub_19B891FAC, @"com.apple.locationd.routine", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
   }
@@ -65,7 +65,7 @@ LABEL_7:
   [(_CLLocationManagerRoutineProxy *)&v5 dealloc];
 }
 
-- (void)didUpdateLocations:(id)a3
+- (void)didUpdateLocations:(id)locations
 {
   v13 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46C0 != -1)
@@ -89,12 +89,12 @@ LABEL_7:
   v8[2] = sub_19B8921E8;
   v8[3] = &unk_1E753CF38;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = locations;
   dispatch_async(queue, v8);
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didUpdateLocations:(id)a3 withReply:(id)a4
+- (void)didUpdateLocations:(id)locations withReply:(id)reply
 {
   v15 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46C0 != -1)
@@ -112,7 +112,7 @@ LABEL_7:
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#location #routine sendLocations to RT, didUpdateLocations:withReply}", buf, 0x12u);
   }
 
-  if (a4)
+  if (reply)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -120,20 +120,20 @@ LABEL_7:
     block[2] = sub_19B89248C;
     block[3] = &unk_1E753CF60;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
+    block[5] = locations;
+    block[6] = reply;
     dispatch_async(queue, block);
   }
 
   else
   {
-    [(_CLLocationManagerRoutineProxy *)self didUpdateLocations:a3];
+    [(_CLLocationManagerRoutineProxy *)self didUpdateLocations:locations];
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didUpdateInertialData:(id)a3
+- (void)didUpdateInertialData:(id)data
 {
   v13 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46C0 != -1)
@@ -157,7 +157,7 @@ LABEL_7:
   v8[2] = sub_19B89272C;
   v8[3] = &unk_1E753CF38;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = data;
   dispatch_async(queue, v8);
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -209,20 +209,20 @@ LABEL_7:
     [(NSXPCInterface *)[(NSXPCConnection *)self->_connection remoteObjectInterface] setClasses:v12 forSelector:sel_fetchLocationAtMachContinuousTime_withHandler_ argumentIndex:0 ofReply:1];
     [(NSXPCInterface *)[(NSXPCConnection *)self->_connection remoteObjectInterface] setClasses:v12 forSelector:sel_fetchLocationsInLastSeconds_withHandler_ argumentIndex:0 ofReply:1];
     [(NSXPCInterface *)[(NSXPCConnection *)self->_connection remoteObjectInterface] setClasses:v12 forSelector:sel_fetchRecentLocationsWithOptions_withHandler_ argumentIndex:0 ofReply:1];
-    v13 = [(NSXPCConnection *)self->_connection serviceName];
+    serviceName = [(NSXPCConnection *)self->_connection serviceName];
     v14 = self->_connection;
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = sub_19B892C28;
     v18[3] = &unk_1E753CC90;
-    v18[4] = v13;
+    v18[4] = serviceName;
     [(NSXPCConnection *)v14 setInterruptionHandler:v18];
     v15 = self->_connection;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = sub_19B892C58;
     v17[3] = &unk_1E753CC90;
-    v17[4] = v13;
+    v17[4] = serviceName;
     [(NSXPCConnection *)v15 setInvalidationHandler:v17];
     [(NSXPCConnection *)self->_connection resume];
   }
@@ -235,14 +235,14 @@ LABEL_7:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)getRemoteObjectProxyWithErrorHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_19B892DE4;
   v9[3] = &unk_1E753CF88;
-  v9[4] = a3;
+  v9[4] = handler;
   v4 = [(NSXPCConnection *)[(_CLLocationManagerRoutineProxy *)self connection] remoteObjectProxyWithErrorHandler:v9];
   if (qword_1EAFE46C0 != -1)
   {
@@ -252,7 +252,7 @@ LABEL_7:
   v5 = qword_1EAFE46F8;
   if (os_log_type_enabled(qword_1EAFE46F8, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(_CLLocationManagerRoutineProxy *)self connection];
+    connection = [(_CLLocationManagerRoutineProxy *)self connection];
     *buf = 68289538;
     v11 = 0;
     v12 = 2082;
@@ -260,7 +260,7 @@ LABEL_7:
     v14 = 2114;
     v15 = v4;
     v16 = 2114;
-    v17 = v6;
+    v17 = connection;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#ADL #location #routine getRemoteObjectProxy, proxy:%{public, location:escape_only}@, connection:%{public, location:escape_only}@}", buf, 0x26u);
   }
 

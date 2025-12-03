@@ -6,18 +6,18 @@
 - (VoiceOverController)init;
 - (id)areVoiceOverHandGesturesEnabled;
 - (id)instructionsText;
-- (id)speakingRate:(id)a3;
+- (id)speakingRate:(id)rate;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)voiceOverDelayUntilSpeakInterval:(id)a3;
-- (id)voiceOverDigitalCrownNavigationEnabled:(id)a3;
-- (id)voiceOverDoubleTapInterval:(id)a3;
-- (id)voiceOverGestureDirectionSummary:(id)a3;
-- (id)voiceOverTapticTimeSummary:(id)a3;
-- (id)voiceOverTouchEnabled:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)voiceOverDelayUntilSpeakInterval:(id)interval;
+- (id)voiceOverDigitalCrownNavigationEnabled:(id)enabled;
+- (id)voiceOverDoubleTapInterval:(id)interval;
+- (id)voiceOverGestureDirectionSummary:(id)summary;
+- (id)voiceOverTapticTimeSummary:(id)summary;
+- (id)voiceOverTouchEnabled:(id)enabled;
 - (void)dealloc;
-- (void)setSpeakingRate:(id)a3 specifier:(id)a4;
-- (void)setVoiceOverTouchEnabled:(id)a3 specifier:(id)a4;
+- (void)setSpeakingRate:(id)rate specifier:(id)specifier;
+- (void)setVoiceOverTouchEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation VoiceOverController
@@ -29,8 +29,8 @@
   v2 = [(AccessibilityBridgeBaseController *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_reload name:@"AXVoiceOverReloadNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_reload name:@"AXVoiceOverReloadNotification" object:0];
 
     v4 = v2;
   }
@@ -90,19 +90,19 @@
 
         if (v11)
         {
-          v12 = [MEMORY[0x277D7A910] sharedInstance];
-          if ([v12 featureEnabled])
+          mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+          if ([mEMORY[0x277D7A910] featureEnabled])
           {
             v13 = [(VoiceOverController *)self voiceOverTouchEnabled:0];
-            v14 = [v13 BOOLValue];
+            bOOLValue = [v13 BOOLValue];
           }
 
           else
           {
-            v14 = 1;
+            bOOLValue = 1;
           }
 
-          v15 = [MEMORY[0x277CCABB0] numberWithInt:v14];
+          v15 = [MEMORY[0x277CCABB0] numberWithInt:bOOLValue];
           [v9 setProperty:v15 forKey:v51];
         }
 
@@ -261,14 +261,14 @@ LABEL_48:
   return v3;
 }
 
-- (void)setSpeakingRate:(id)a3 specifier:(id)a4
+- (void)setSpeakingRate:(id)rate specifier:(id)specifier
 {
-  [a3 floatValue];
+  [rate floatValue];
 
   [_TtC21AccessibilitySettings16VOSettingsHelper setSpeakingRate:?];
 }
 
-- (id)speakingRate:(id)a3
+- (id)speakingRate:(id)rate
 {
   v3 = MEMORY[0x277CCABB0];
   +[_TtC21AccessibilitySettings16VOSettingsHelper speakingRate];
@@ -276,31 +276,31 @@ LABEL_48:
   return [v3 numberWithFloat:?];
 }
 
-- (id)voiceOverTouchEnabled:(id)a3
+- (id)voiceOverTouchEnabled:(id)enabled
 {
   v4 = *MEMORY[0x277D81E88];
-  v5 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v6 = [(AccessibilityBridgeBaseController *)self gizmoValueForKey:v4 domainAccessor:v5];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v6 = [(AccessibilityBridgeBaseController *)self gizmoValueForKey:v4 domainAccessor:accessibilityDomainAccessor];
 
   return v6;
 }
 
-- (void)setVoiceOverTouchEnabled:(id)a3 specifier:(id)a4
+- (void)setVoiceOverTouchEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [v5 BOOLValue];
+  enabledCopy = enabled;
+  bOOLValue = [enabledCopy BOOLValue];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __58__VoiceOverController_setVoiceOverTouchEnabled_specifier___block_invoke;
   v15 = &unk_278B909B0;
-  v16 = self;
-  v17 = v5;
-  v7 = v5;
+  selfCopy = self;
+  v17 = enabledCopy;
+  v7 = enabledCopy;
   v8 = _Block_copy(&v12);
   v9 = [(VoiceOverController *)self areVoiceOverHandGesturesEnabled:v12];
-  v10 = [v9 BOOLValue];
+  bOOLValue2 = [v9 BOOLValue];
 
-  if (AXActivePairedDeviceSupportsHasEltonEnabled() && v6 && v10)
+  if (AXActivePairedDeviceSupportsHasEltonEnabled() && bOOLValue && bOOLValue2)
   {
     v11 = settingsLocString(@"GREY_FEATURE_NAME_VOICEOVER", @"AccessibilitySettings-elton");
     [(AccessibilityBridgeBaseController *)self presentDisableEltonAlert:v11 greyOptional:1 confirmBlock:v8 disableGreyBlock:&__block_literal_global_4];
@@ -318,10 +318,10 @@ void __58__VoiceOverController_setVoiceOverTouchEnabled_specifier___block_invoke
   [v0 setVoiceOverHandGestures:0];
 }
 
-- (id)voiceOverGestureDirectionSummary:(id)a3
+- (id)voiceOverGestureDirectionSummary:(id)summary
 {
-  v3 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v4 = [v3 objectForKey:@"VoiceOverNavigationDirectionMode"];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v4 = [accessibilityDomainAccessor objectForKey:@"VoiceOverNavigationDirectionMode"];
 
   if (v4 && [v4 integerValue] != 2)
   {
@@ -338,10 +338,10 @@ void __58__VoiceOverController_setVoiceOverTouchEnabled_specifier___block_invoke
   return v6;
 }
 
-- (id)voiceOverTapticTimeSummary:(id)a3
+- (id)voiceOverTapticTimeSummary:(id)summary
 {
-  v3 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v4 = [v3 objectForKey:@"VoiceOverTapticTimeMode"];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v4 = [accessibilityDomainAccessor objectForKey:@"VoiceOverTapticTimeMode"];
 
   v5 = @"ON";
   if (v4 && ![v4 BOOLValue])
@@ -354,27 +354,27 @@ void __58__VoiceOverController_setVoiceOverTouchEnabled_specifier___block_invoke
   return v6;
 }
 
-- (id)voiceOverDigitalCrownNavigationEnabled:(id)a3
+- (id)voiceOverDigitalCrownNavigationEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "BOOLForKey:", *MEMORY[0x277CE7FB0])}];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v5 = [v3 numberWithBool:{objc_msgSend(accessibilityDomainAccessor, "BOOLForKey:", *MEMORY[0x277CE7FB0])}];
 
   return v5;
 }
 
-- (id)voiceOverDelayUntilSpeakInterval:(id)a3
+- (id)voiceOverDelayUntilSpeakInterval:(id)interval
 {
-  v3 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  [v3 doubleForKey:@"VoiceOverDelayUntilSpeakUnderTouch"];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  [accessibilityDomainAccessor doubleForKey:@"VoiceOverDelayUntilSpeakUnderTouch"];
 
   return AXLocalizedTimeSummary();
 }
 
-- (id)voiceOverDoubleTapInterval:(id)a3
+- (id)voiceOverDoubleTapInterval:(id)interval
 {
-  v3 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  [v3 doubleForKey:@"VoiceOverDoubleTapInterval"];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  [accessibilityDomainAccessor doubleForKey:@"VoiceOverDoubleTapInterval"];
 
   *MEMORY[0x277CE6A20];
 
@@ -419,7 +419,7 @@ void __58__VoiceOverController_setVoiceOverTouchEnabled_specifier___block_invoke
 - (BOOL)_gizmoLocaleIsRTL
 {
   v2 = [objc_opt_class() domainAccessorForDomain:@".GlobalPreferences"];
-  v3 = [v2 synchronize];
+  synchronize = [v2 synchronize];
   v4 = [v2 objectForKey:@"AppleLocale"];
   if (v4)
   {
@@ -449,25 +449,25 @@ void __58__VoiceOverController_setVoiceOverTouchEnabled_specifier___block_invoke
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = VoiceOverController;
-  v6 = a4;
-  v7 = [(VoiceOverController *)&v14 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(VoiceOverController *)self specifierAtIndexPath:v6, v14.receiver, v14.super_class];
+  pathCopy = path;
+  v7 = [(VoiceOverController *)&v14 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(VoiceOverController *)self specifierAtIndexPath:pathCopy, v14.receiver, v14.super_class];
 
-  v9 = [v8 identifier];
-  LODWORD(v6) = [v9 isEqualToString:@"DigitalCrownNavigation"];
+  identifier = [v8 identifier];
+  LODWORD(pathCopy) = [identifier isEqualToString:@"DigitalCrownNavigation"];
 
-  if (v6)
+  if (pathCopy)
   {
-    v10 = [v7 textLabel];
-    [v10 setNumberOfLines:0];
+    textLabel = [v7 textLabel];
+    [textLabel setNumberOfLines:0];
 
-    v11 = [v7 textLabel];
+    textLabel2 = [v7 textLabel];
     LODWORD(v12) = 0.5;
-    [v11 _setHyphenationFactor:v12];
+    [textLabel2 _setHyphenationFactor:v12];
   }
 
   return v7;
@@ -476,8 +476,8 @@ void __58__VoiceOverController_setVoiceOverTouchEnabled_specifier___block_invoke
 - (id)areVoiceOverHandGesturesEnabled
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [MEMORY[0x277D7A910] sharedInstance];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "voiceOverHandGesturesEnabled")}];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  v4 = [v2 numberWithBool:{objc_msgSend(mEMORY[0x277D7A910], "voiceOverHandGesturesEnabled")}];
 
   return v4;
 }
@@ -491,8 +491,8 @@ void __58__VoiceOverController_setVoiceOverTouchEnabled_specifier___block_invoke
   v7 = settingsLocString(@"SCROLL_ITEM_INSTRUCTION", @"VoiceOverSettings");
   v8 = [v3 stringWithFormat:@"%@\n%@\n%@\n%@", v4, v5, v6, v7];
 
-  v9 = [MEMORY[0x277D7A910] sharedInstance];
-  if ([v9 featureEnabled])
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  if ([mEMORY[0x277D7A910] featureEnabled])
   {
     v10 = [(VoiceOverController *)self voiceOverTouchEnabled:0];
 
@@ -502,8 +502,8 @@ void __58__VoiceOverController_setVoiceOverTouchEnabled_specifier___block_invoke
     }
 
     v11 = MEMORY[0x277CCACA8];
-    v9 = settingsLocString(@"VOICEOVER_WATCH_CONTROL_INSTRUCTION", @"VoiceOverSettings");
-    v12 = [v11 stringWithFormat:@"%@\n\n%@", v9, v8];
+    mEMORY[0x277D7A910] = settingsLocString(@"VOICEOVER_WATCH_CONTROL_INSTRUCTION", @"VoiceOverSettings");
+    v12 = [v11 stringWithFormat:@"%@\n\n%@", mEMORY[0x277D7A910], v8];
 
     v8 = v12;
   }

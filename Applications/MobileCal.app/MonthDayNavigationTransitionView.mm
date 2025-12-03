@@ -3,29 +3,29 @@
 - (CGRect)monthFrame;
 - (CGRect)monthOccurrencesFrame;
 - (CGSize)dayCellSize;
-- (MonthDayNavigationTransitionView)initWithFrame:(CGRect)a3;
+- (MonthDayNavigationTransitionView)initWithFrame:(CGRect)frame;
 - (id)_selectedCell;
 - (id)_todayCell;
-- (void)_animateView:(id)a3 toPosition:(CGPoint)a4;
-- (void)_setToDayStateAnimated:(BOOL)a3;
-- (void)_setToMonthStateAnimated:(BOOL)a3;
+- (void)_animateView:(id)view toPosition:(CGPoint)position;
+- (void)_setToDayStateAnimated:(BOOL)animated;
+- (void)_setToMonthStateAnimated:(BOOL)animated;
 - (void)_updateWeekendIndices;
 - (void)animateToDayLayout;
 - (void)animateToMonthLayout;
 - (void)completeSetup;
-- (void)setDayTypes:(id)a3 badgeColors:(id)a4 badgeLocales:(id)a5;
-- (void)setStrings:(id)a3 overlayStrings:(id)a4 weekNumberString:(id)a5 todayInWeek:(BOOL)a6;
-- (void)setUnderlineThickness:(double)a3 forOverlayStringAtIndex:(int64_t)a4;
-- (void)setVerticallyCompressedState:(BOOL)a3;
+- (void)setDayTypes:(id)types badgeColors:(id)colors badgeLocales:(id)locales;
+- (void)setStrings:(id)strings overlayStrings:(id)overlayStrings weekNumberString:(id)string todayInWeek:(BOOL)week;
+- (void)setUnderlineThickness:(double)thickness forOverlayStringAtIndex:(int64_t)index;
+- (void)setVerticallyCompressedState:(BOOL)state;
 @end
 
 @implementation MonthDayNavigationTransitionView
 
-- (MonthDayNavigationTransitionView)initWithFrame:(CGRect)a3
+- (MonthDayNavigationTransitionView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = MonthDayNavigationTransitionView;
-  v3 = [(MonthDayNavigationTransitionView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MonthDayNavigationTransitionView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -44,19 +44,19 @@
   return v4;
 }
 
-- (void)setStrings:(id)a3 overlayStrings:(id)a4 weekNumberString:(id)a5 todayInWeek:(BOOL)a6
+- (void)setStrings:(id)strings overlayStrings:(id)overlayStrings weekNumberString:(id)string todayInWeek:(BOOL)week
 {
-  v35 = a6;
-  v36 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 count];
-  self->_hasOverlay = v11 == [v36 count];
+  weekCopy = week;
+  stringsCopy = strings;
+  overlayStringsCopy = overlayStrings;
+  stringCopy = string;
+  v11 = [overlayStringsCopy count];
+  self->_hasOverlay = v11 == [stringsCopy count];
   v12 = [[NSMutableArray alloc] initWithCapacity:7];
   cells = self->_cells;
   self->_cells = v12;
 
-  if ([v36 count])
+  if ([stringsCopy count])
   {
     v14 = 0;
     do
@@ -72,23 +72,23 @@
 
       [(MonthDayNavigationTransitionView *)self addSubview:v20];
       [(NSMutableArray *)self->_cells addObject:v20];
-      v22 = [v36 objectAtIndex:v14];
+      v22 = [stringsCopy objectAtIndex:v14];
       [(CompactDayNavigationViewCell *)v20 setDisplayedString:v22];
 
       if (self->_hasOverlay)
       {
-        v23 = [v9 objectAtIndex:v14];
+        v23 = [overlayStringsCopy objectAtIndex:v14];
         [(CompactDayNavigationViewCell *)v20 setOverlayString:v23];
       }
 
       ++v14;
     }
 
-    while (v14 < [v36 count]);
+    while (v14 < [stringsCopy count]);
   }
 
-  self->_showWeekNumber = v10 != 0;
-  if (v10)
+  self->_showWeekNumber = stringCopy != 0;
+  if (stringCopy)
   {
     v24 = objc_opt_new();
     weekNumberLabel = self->_weekNumberLabel;
@@ -97,8 +97,8 @@
     v26 = +[CompactMonthWeekView weekNumberFont];
     [(UILabel *)self->_weekNumberLabel setFont:v26];
 
-    [(UILabel *)self->_weekNumberLabel setText:v10];
-    v27 = [CompactMonthWeekView weekNumberColorForThisWeek:v35];
+    [(UILabel *)self->_weekNumberLabel setText:stringCopy];
+    v27 = [CompactMonthWeekView weekNumberColorForThisWeek:weekCopy];
     [(UILabel *)self->_weekNumberLabel setTextColor:v27];
 
     [(MonthDayNavigationTransitionView *)self addSubview:self->_weekNumberLabel];
@@ -120,41 +120,41 @@
   [(MonthDayNavigationTransitionView *)self setFrame:v29, v31, Width, v34];
 }
 
-- (void)setUnderlineThickness:(double)a3 forOverlayStringAtIndex:(int64_t)a4
+- (void)setUnderlineThickness:(double)thickness forOverlayStringAtIndex:(int64_t)index
 {
-  if ((a4 & 0x8000000000000000) == 0 && [(NSMutableArray *)self->_cells count]> a4)
+  if ((index & 0x8000000000000000) == 0 && [(NSMutableArray *)self->_cells count]> index)
   {
-    v7 = [(NSMutableArray *)self->_cells objectAtIndexedSubscript:a4];
-    [v7 setUnderlineThickness:a3];
+    v7 = [(NSMutableArray *)self->_cells objectAtIndexedSubscript:index];
+    [v7 setUnderlineThickness:thickness];
   }
 }
 
-- (void)setDayTypes:(id)a3 badgeColors:(id)a4 badgeLocales:(id)a5
+- (void)setDayTypes:(id)types badgeColors:(id)colors badgeLocales:(id)locales
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v19 count];
+  typesCopy = types;
+  colorsCopy = colors;
+  localesCopy = locales;
+  v10 = [typesCopy count];
   if (v10 == [(NSMutableArray *)self->_cells count])
   {
-    v11 = [v8 count];
+    v11 = [colorsCopy count];
     if (v11 == [(NSMutableArray *)self->_cells count])
     {
-      v12 = [v9 count];
+      v12 = [localesCopy count];
       if (v12 == [(NSMutableArray *)self->_cells count]&& [(NSMutableArray *)self->_cells count]>= 1)
       {
         v13 = 0;
         do
         {
-          v14 = [v19 objectAtIndexedSubscript:v13];
-          v15 = [v14 integerValue];
+          v14 = [typesCopy objectAtIndexedSubscript:v13];
+          integerValue = [v14 integerValue];
 
           v16 = [(NSMutableArray *)self->_cells objectAtIndexedSubscript:v13];
-          [v16 setBadgeType:v15];
-          v17 = [v8 objectAtIndexedSubscript:v13];
+          [v16 setBadgeType:integerValue];
+          v17 = [colorsCopy objectAtIndexedSubscript:v13];
           [v16 setBadgeColor:v17];
 
-          v18 = [v9 objectAtIndexedSubscript:v13];
+          v18 = [localesCopy objectAtIndexedSubscript:v13];
           [v16 setBadgeLocale:v18];
 
           ++v13;
@@ -166,10 +166,10 @@
   }
 }
 
-- (void)setVerticallyCompressedState:(BOOL)a3
+- (void)setVerticallyCompressedState:(BOOL)state
 {
-  v3 = a3;
-  self->_verticallyCompressedState = a3;
+  stateCopy = state;
+  self->_verticallyCompressedState = state;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -190,7 +190,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) setVerticallyCompressedState:{v3, v9}];
+        [*(*(&v9 + 1) + 8 * v8) setVerticallyCompressedState:{stateCopy, v9}];
         v8 = v8 + 1;
       }
 
@@ -270,16 +270,16 @@
     while (v5);
   }
 
-  v8 = [(MonthDayNavigationTransitionView *)self weekendIndices];
+  weekendIndices = [(MonthDayNavigationTransitionView *)self weekendIndices];
 
-  if (v8)
+  if (weekendIndices)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [(MonthDayNavigationTransitionView *)self weekendIndices];
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+    weekendIndices2 = [(MonthDayNavigationTransitionView *)self weekendIndices];
+    v10 = [weekendIndices2 countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (v10)
     {
       v11 = v10;
@@ -291,14 +291,14 @@
         {
           if (*v18 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(weekendIndices2);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * v13) integerValue];
-          if ((v14 & 0x8000000000000000) == 0)
+          integerValue = [*(*(&v17 + 1) + 8 * v13) integerValue];
+          if ((integerValue & 0x8000000000000000) == 0)
           {
-            v15 = v14;
-            if (v14 < [(NSMutableArray *)self->_cells count])
+            v15 = integerValue;
+            if (integerValue < [(NSMutableArray *)self->_cells count])
             {
               v16 = [(NSMutableArray *)self->_cells objectAtIndex:v15];
               [v16 setIsWeekend:1];
@@ -309,7 +309,7 @@
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v11 = [weekendIndices2 countByEnumeratingWithState:&v17 objects:v25 count:16];
       }
 
       while (v11);
@@ -331,36 +331,36 @@
   [(MonthDayNavigationTransitionView *)self _setToMonthStateAnimated:1];
 }
 
-- (void)_setToDayStateAnimated:(BOOL)a3
+- (void)_setToDayStateAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(MonthDayNavigationTransitionView *)self monthOccurrencesSnapshot];
+  animatedCopy = animated;
+  monthOccurrencesSnapshot = [(MonthDayNavigationTransitionView *)self monthOccurrencesSnapshot];
 
-  if (v5)
+  if (monthOccurrencesSnapshot)
   {
-    v6 = [(MonthDayNavigationTransitionView *)self monthOccurrencesSnapshot];
-    v7 = [v6 superview];
+    monthOccurrencesSnapshot2 = [(MonthDayNavigationTransitionView *)self monthOccurrencesSnapshot];
+    superview = [monthOccurrencesSnapshot2 superview];
 
-    if (!v7)
+    if (!superview)
     {
-      v8 = [(MonthDayNavigationTransitionView *)self monthOccurrencesSnapshot];
-      [(MonthDayNavigationTransitionView *)self addSubview:v8];
+      monthOccurrencesSnapshot3 = [(MonthDayNavigationTransitionView *)self monthOccurrencesSnapshot];
+      [(MonthDayNavigationTransitionView *)self addSubview:monthOccurrencesSnapshot3];
     }
 
-    v9 = [(MonthDayNavigationTransitionView *)self monthOccurrencesSnapshot];
-    [(MonthDayNavigationTransitionView *)self bringSubviewToFront:v9];
+    monthOccurrencesSnapshot4 = [(MonthDayNavigationTransitionView *)self monthOccurrencesSnapshot];
+    [(MonthDayNavigationTransitionView *)self bringSubviewToFront:monthOccurrencesSnapshot4];
   }
 
-  v10 = [(MonthDayNavigationTransitionView *)self monthSummarySnapshots];
-  if (![v10 count])
+  monthSummarySnapshots = [(MonthDayNavigationTransitionView *)self monthSummarySnapshots];
+  if (![monthSummarySnapshots count])
   {
     goto LABEL_16;
   }
 
-  v11 = [(MonthDayNavigationTransitionView *)self monthSummarySnapshots];
-  v12 = [v11 count];
-  v13 = [(MonthDayNavigationTransitionView *)self monthSummaryFrames];
-  v14 = [v13 count];
+  monthSummarySnapshots2 = [(MonthDayNavigationTransitionView *)self monthSummarySnapshots];
+  v12 = [monthSummarySnapshots2 count];
+  monthSummaryFrames = [(MonthDayNavigationTransitionView *)self monthSummaryFrames];
+  v14 = [monthSummaryFrames count];
 
   if (v12 == v14)
   {
@@ -368,8 +368,8 @@
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v10 = [(MonthDayNavigationTransitionView *)self monthSummarySnapshots];
-    v15 = [v10 countByEnumeratingWithState:&v38 objects:v42 count:16];
+    monthSummarySnapshots = [(MonthDayNavigationTransitionView *)self monthSummarySnapshots];
+    v15 = [monthSummarySnapshots countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v15)
     {
       v16 = v15;
@@ -380,13 +380,13 @@
         {
           if (*v39 != v17)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(monthSummarySnapshots);
           }
 
           v19 = *(*(&v38 + 1) + 8 * i);
-          v20 = [v19 superview];
+          superview2 = [v19 superview];
 
-          if (!v20)
+          if (!superview2)
           {
             [(MonthDayNavigationTransitionView *)self addSubview:v19];
           }
@@ -394,7 +394,7 @@
           [(MonthDayNavigationTransitionView *)self bringSubviewToFront:v19];
         }
 
-        v16 = [v10 countByEnumeratingWithState:&v38 objects:v42 count:16];
+        v16 = [monthSummarySnapshots countByEnumeratingWithState:&v38 objects:v42 count:16];
       }
 
       while (v16);
@@ -409,24 +409,24 @@ LABEL_16:
   v37[3] = &unk_10020EB00;
   v37[4] = self;
   v21 = objc_retainBlock(v37);
-  v22 = [(MonthDayNavigationTransitionView *)self _todayCell];
-  [v22 setIsToday:1];
+  _todayCell = [(MonthDayNavigationTransitionView *)self _todayCell];
+  [_todayCell setIsToday:1];
 
   animateNavigationPreferringFRR();
   if (self->_selectedIndex != self->_todayIndex)
   {
     animateNavigationPreferringFRR();
-    if (!v3)
+    if (!animatedCopy)
     {
-      v23 = [(MonthDayNavigationTransitionView *)self _selectedCell];
-      [v23 layoutIfNeeded];
+      _selectedCell = [(MonthDayNavigationTransitionView *)self _selectedCell];
+      [_selectedCell layoutIfNeeded];
 
-      v24 = [(MonthDayNavigationTransitionView *)self _todayCell];
-      [v24 layoutIfNeeded];
+      _todayCell2 = [(MonthDayNavigationTransitionView *)self _todayCell];
+      [_todayCell2 layoutIfNeeded];
     }
   }
 
-  if (v3)
+  if (animatedCopy)
   {
     springAnimationDuration();
     v26 = v25;
@@ -455,33 +455,33 @@ LABEL_16:
   }
 }
 
-- (void)_setToMonthStateAnimated:(BOOL)a3
+- (void)_setToMonthStateAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(MonthDayNavigationTransitionView *)self monthOccurrencesSnapshot];
+  animatedCopy = animated;
+  monthOccurrencesSnapshot = [(MonthDayNavigationTransitionView *)self monthOccurrencesSnapshot];
 
-  if (v5)
+  if (monthOccurrencesSnapshot)
   {
-    v6 = [(MonthDayNavigationTransitionView *)self monthOccurrencesSnapshot];
-    v7 = [v6 superview];
+    monthOccurrencesSnapshot2 = [(MonthDayNavigationTransitionView *)self monthOccurrencesSnapshot];
+    superview = [monthOccurrencesSnapshot2 superview];
 
-    if (!v7)
+    if (!superview)
     {
-      v8 = [(MonthDayNavigationTransitionView *)self monthOccurrencesSnapshot];
-      [(MonthDayNavigationTransitionView *)self addSubview:v8];
+      monthOccurrencesSnapshot3 = [(MonthDayNavigationTransitionView *)self monthOccurrencesSnapshot];
+      [(MonthDayNavigationTransitionView *)self addSubview:monthOccurrencesSnapshot3];
     }
 
-    v9 = [(MonthDayNavigationTransitionView *)self monthOccurrencesSnapshot];
-    [(MonthDayNavigationTransitionView *)self bringSubviewToFront:v9];
+    monthOccurrencesSnapshot4 = [(MonthDayNavigationTransitionView *)self monthOccurrencesSnapshot];
+    [(MonthDayNavigationTransitionView *)self bringSubviewToFront:monthOccurrencesSnapshot4];
   }
 
-  v10 = [(MonthDayNavigationTransitionView *)self monthSummarySnapshots];
-  if ([v10 count])
+  monthSummarySnapshots = [(MonthDayNavigationTransitionView *)self monthSummarySnapshots];
+  if ([monthSummarySnapshots count])
   {
-    v11 = [(MonthDayNavigationTransitionView *)self monthSummarySnapshots];
-    v12 = [v11 count];
-    v13 = [(MonthDayNavigationTransitionView *)self monthSummaryFrames];
-    v14 = [v13 count];
+    monthSummarySnapshots2 = [(MonthDayNavigationTransitionView *)self monthSummarySnapshots];
+    v12 = [monthSummarySnapshots2 count];
+    monthSummaryFrames = [(MonthDayNavigationTransitionView *)self monthSummaryFrames];
+    v14 = [monthSummaryFrames count];
 
     if (v12 != v14)
     {
@@ -492,8 +492,8 @@ LABEL_16:
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v10 = [(MonthDayNavigationTransitionView *)self monthSummarySnapshots];
-    v15 = [v10 countByEnumeratingWithState:&v42 objects:v46 count:16];
+    monthSummarySnapshots = [(MonthDayNavigationTransitionView *)self monthSummarySnapshots];
+    v15 = [monthSummarySnapshots countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v15)
     {
       v16 = v15;
@@ -504,13 +504,13 @@ LABEL_16:
         {
           if (*v43 != v17)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(monthSummarySnapshots);
           }
 
           v19 = *(*(&v42 + 1) + 8 * i);
-          v20 = [v19 superview];
+          superview2 = [v19 superview];
 
-          if (!v20)
+          if (!superview2)
           {
             [(MonthDayNavigationTransitionView *)self addSubview:v19];
           }
@@ -518,7 +518,7 @@ LABEL_16:
           [(MonthDayNavigationTransitionView *)self bringSubviewToFront:v19];
         }
 
-        v16 = [v10 countByEnumeratingWithState:&v42 objects:v46 count:16];
+        v16 = [monthSummarySnapshots countByEnumeratingWithState:&v42 objects:v46 count:16];
       }
 
       while (v16);
@@ -532,11 +532,11 @@ LABEL_17:
   v41[3] = &unk_10020EB00;
   v41[4] = self;
   v21 = objc_retainBlock(v41);
-  v22 = [(MonthDayNavigationTransitionView *)self verticallyCompressedState];
-  v23 = [(MonthDayNavigationTransitionView *)self _todayCell];
-  [v23 setIsToday:1];
+  verticallyCompressedState = [(MonthDayNavigationTransitionView *)self verticallyCompressedState];
+  _todayCell = [(MonthDayNavigationTransitionView *)self _todayCell];
+  [_todayCell setIsToday:1];
 
-  if (v22)
+  if (verticallyCompressedState)
   {
     animateNavigationPreferringFRR();
     if (self->_selectedIndex == self->_todayIndex)
@@ -545,34 +545,34 @@ LABEL_17:
     }
 
     animateNavigationPreferringFRR();
-    if (v3)
+    if (animatedCopy)
     {
       goto LABEL_25;
     }
 
-    v24 = [(MonthDayNavigationTransitionView *)self _selectedCell];
-    [v24 layoutIfNeeded];
+    _selectedCell = [(MonthDayNavigationTransitionView *)self _selectedCell];
+    [_selectedCell layoutIfNeeded];
 
-    v25 = [(MonthDayNavigationTransitionView *)self _todayCell];
-    [v25 layoutIfNeeded];
+    _todayCell2 = [(MonthDayNavigationTransitionView *)self _todayCell];
+    [_todayCell2 layoutIfNeeded];
   }
 
   else
   {
-    v25 = navigationAnimationsPreferringFRR();
-    v25[2]();
+    _todayCell2 = navigationAnimationsPreferringFRR();
+    _todayCell2[2]();
     if (self->_todayIndex != self->_selectedIndex)
     {
       v26 = navigationAnimationsPreferringFRR();
       v26[2]();
     }
 
-    v27 = [(MonthDayNavigationTransitionView *)self _todayCell];
-    [v27 layoutBelowIfNeeded];
+    _todayCell3 = [(MonthDayNavigationTransitionView *)self _todayCell];
+    [_todayCell3 layoutBelowIfNeeded];
   }
 
 LABEL_25:
-  if (v3)
+  if (animatedCopy)
   {
     springAnimationDuration();
     v29 = v28;
@@ -632,14 +632,14 @@ LABEL_25:
   return v4;
 }
 
-- (void)_animateView:(id)a3 toPosition:(CGPoint)a4
+- (void)_animateView:(id)view toPosition:(CGPoint)position
 {
-  v4 = a3;
+  viewCopy = view;
   springAnimationDuration();
   v6 = v5;
   v7 = +[SpringFactory sharedFactory];
-  v10 = v4;
-  v8 = v4;
+  v10 = viewCopy;
+  v8 = viewCopy;
   v9 = navigationAnimationsPreferringFRR();
   [UIView _animateWithDuration:393216 delay:v7 options:v9 factory:0 animations:v6 completion:0.0];
 }

@@ -1,17 +1,17 @@
 @interface SearchUIContactsThumbnailView
 + (id)avatarSettings;
 + (void)clearAvatarSettings;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (SearchUIContactsThumbnailView)init;
 - (id)singleContactPreviewButtonItemOnRowModel;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setContactImage:(id)a3 useCompactDisplay:(BOOL)a4;
-- (void)setUsesCompactWidth:(BOOL)a3;
-- (void)tlk_updateForAppearance:(id)a3;
+- (void)setContactImage:(id)image useCompactDisplay:(BOOL)display;
+- (void)setUsesCompactWidth:(BOOL)width;
+- (void)tlk_updateForAppearance:(id)appearance;
 - (void)updateForcePressView;
-- (void)updateWithRowModel:(id)a3;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIContactsThumbnailView
@@ -29,8 +29,8 @@
   {
     v3 = MEMORY[0x1E695D0E0];
     v4 = +[SearchUIContactCache sharedCache];
-    v5 = [v4 contactStore];
-    v6 = [v3 settingsWithContactStore:v5];
+    contactStore = [v4 contactStore];
+    v6 = [v3 settingsWithContactStore:contactStore];
     v7 = avatarViewControllerSettings;
     avatarViewControllerSettings = v6;
 
@@ -46,22 +46,22 @@
   block[1] = 3221225472;
   block[2] = __37__SearchUIContactsThumbnailView_init__block_invoke;
   block[3] = &unk_1E85B24C8;
-  v2 = self;
-  v9 = v2;
+  selfCopy = self;
+  v9 = selfCopy;
   if (init_onceToken != -1)
   {
     dispatch_once(&init_onceToken, block);
   }
 
-  v3 = [objc_opt_class() avatarSettings];
-  v7.receiver = v2;
+  avatarSettings = [objc_opt_class() avatarSettings];
+  v7.receiver = selfCopy;
   v7.super_class = SearchUIContactsThumbnailView;
-  v4 = [(CNAvatarView *)&v7 initWithSettings:v3];
+  v4 = [(CNAvatarView *)&v7 initWithSettings:avatarSettings];
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel_tlk_updateWithCurrentAppearance name:*MEMORY[0x1E69DEA38] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_tlk_updateWithCurrentAppearance name:*MEMORY[0x1E69DEA38] object:0];
   }
 
   return v4;
@@ -90,17 +90,17 @@ void __37__SearchUIContactsThumbnailView_init__block_invoke()
   [(SearchUIContactsThumbnailView *)self updateForcePressView];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
   v9.receiver = self;
   v9.super_class = SearchUIContactsThumbnailView;
-  v4 = a3;
-  [(SearchUIContactsThumbnailView *)&v9 tlk_updateForAppearance:v4];
+  appearanceCopy = appearance;
+  [(SearchUIContactsThumbnailView *)&v9 tlk_updateForAppearance:appearanceCopy];
   v5 = MEMORY[0x1E69D9108];
-  v6 = [v4 isVibrant];
+  isVibrant = [appearanceCopy isVibrant];
 
-  v7 = [MEMORY[0x1E69D9108] bestAppearanceForSystem];
-  v8 = [v5 appearanceWithVibrancyEnabled:v6 isDark:{objc_msgSend(v7, "isDark")}];
+  bestAppearanceForSystem = [MEMORY[0x1E69D9108] bestAppearanceForSystem];
+  v8 = [v5 appearanceWithVibrancyEnabled:isVibrant isDark:{objc_msgSend(bestAppearanceForSystem, "isDark")}];
 
   [v8 overrideAppearanceForView:self];
   if ([v8 style] == 1)
@@ -114,28 +114,28 @@ void __37__SearchUIContactsThumbnailView_init__block_invoke()
   }
 }
 
-- (void)setContactImage:(id)a3 useCompactDisplay:(BOOL)a4
+- (void)setContactImage:(id)image useCompactDisplay:(BOOL)display
 {
-  objc_storeStrong(&self->_contactImage, a3);
-  self->_useCompactDisplay = a4;
+  objc_storeStrong(&self->_contactImage, image);
+  self->_useCompactDisplay = display;
 
   [(SearchUIContactsThumbnailView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setUsesCompactWidth:(BOOL)a3
+- (void)setUsesCompactWidth:(BOOL)width
 {
-  if (self->_usesCompactWidth != a3)
+  if (self->_usesCompactWidth != width)
   {
-    self->_usesCompactWidth = a3;
+    self->_usesCompactWidth = width;
     [(SearchUIContactsThumbnailView *)self invalidateIntrinsicContentSize];
 
     [(SearchUIContactsThumbnailView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  if ([(SearchUIContactsThumbnailView *)self useCompactDisplay:a3.width])
+  if ([(SearchUIContactsThumbnailView *)self useCompactDisplay:fits.width])
   {
 
     +[SearchUISuggestionImageUtilities maximumSize];
@@ -145,8 +145,8 @@ void __37__SearchUIContactsThumbnailView_init__block_invoke()
   {
     [MEMORY[0x1E69D91A8] maxThumbnailSizeIsCompactWidth:{-[SearchUIContactsThumbnailView usesCompactWidth](self, "usesCompactWidth")}];
     v7 = v6;
-    v8 = [(SearchUIContactsThumbnailView *)self contactImage];
-    [v8 size];
+    contactImage = [(SearchUIContactsThumbnailView *)self contactImage];
+    [contactImage size];
     if (v10 == *MEMORY[0x1E695F060] && v9 == *(MEMORY[0x1E695F060] + 8))
     {
       v15 = v7;
@@ -154,8 +154,8 @@ void __37__SearchUIContactsThumbnailView_init__block_invoke()
 
     else
     {
-      v12 = [(SearchUIContactsThumbnailView *)self contactImage];
-      [v12 size];
+      contactImage2 = [(SearchUIContactsThumbnailView *)self contactImage];
+      [contactImage2 size];
       v7 = v13;
       v15 = v14;
     }
@@ -169,45 +169,45 @@ void __37__SearchUIContactsThumbnailView_init__block_invoke()
   return result;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(SearchUIContactsThumbnailView *)self setRowModel:v4];
-  v5 = [v4 leadingImage];
-  v6 = [(SearchUIContactsThumbnailView *)self contactImage];
-  v7 = [v5 isEqual:v6];
+  modelCopy = model;
+  [(SearchUIContactsThumbnailView *)self setRowModel:modelCopy];
+  leadingImage = [modelCopy leadingImage];
+  contactImage = [(SearchUIContactsThumbnailView *)self contactImage];
+  v7 = [leadingImage isEqual:contactImage];
 
-  v8 = [v4 useCompactVersionOfUI];
-  v9 = [(SearchUIContactsThumbnailView *)self useCompactDisplay];
-  if (!v7 || v8 != v9)
+  useCompactVersionOfUI = [modelCopy useCompactVersionOfUI];
+  useCompactDisplay = [(SearchUIContactsThumbnailView *)self useCompactDisplay];
+  if (!v7 || useCompactVersionOfUI != useCompactDisplay)
   {
-    -[SearchUIContactsThumbnailView setContactImage:useCompactDisplay:](self, "setContactImage:useCompactDisplay:", v5, [v4 useCompactVersionOfUI]);
+    -[SearchUIContactsThumbnailView setContactImage:useCompactDisplay:](self, "setContactImage:useCompactDisplay:", leadingImage, [modelCopy useCompactVersionOfUI]);
     if ((v7 & 1) == 0)
     {
       [(CNAvatarView *)self setContacts:MEMORY[0x1E695E0F0]];
       v10 = +[SearchUIContactCache sharedCache];
-      v11 = [v5 contactIdentifiers];
+      contactIdentifiers = [leadingImage contactIdentifiers];
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __52__SearchUIContactsThumbnailView_updateWithRowModel___block_invoke;
       v43[3] = &unk_1E85B29E8;
       v43[4] = self;
-      v44 = v5;
-      [v10 fetchContactsForIdentifiers:v11 completionHandler:v43];
+      v44 = leadingImage;
+      [v10 fetchContactsForIdentifiers:contactIdentifiers completionHandler:v43];
     }
   }
 
-  v38 = v5;
-  v12 = [(SearchUIContactsThumbnailView *)self singleContactPreviewButtonItemOnRowModel];
-  [(SearchUIContactsThumbnailView *)self setForcePressViewIsEntireEnclosingCell:v12 != 0];
+  v38 = leadingImage;
+  singleContactPreviewButtonItemOnRowModel = [(SearchUIContactsThumbnailView *)self singleContactPreviewButtonItemOnRowModel];
+  [(SearchUIContactsThumbnailView *)self setForcePressViewIsEntireEnclosingCell:singleContactPreviewButtonItemOnRowModel != 0];
   v13 = objc_opt_new();
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v14 = [v12 actionTypesToShow];
-  v15 = [v14 countByEnumeratingWithState:&v39 objects:v45 count:16];
+  actionTypesToShow = [singleContactPreviewButtonItemOnRowModel actionTypesToShow];
+  v15 = [actionTypesToShow countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v15)
   {
     v16 = v15;
@@ -218,7 +218,7 @@ void __37__SearchUIContactsThumbnailView_init__block_invoke()
       {
         if (*v40 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(actionTypesToShow);
         }
 
         v19 = [*(*(&v39 + 1) + 8 * i) intValue] - 1;
@@ -233,15 +233,15 @@ void __37__SearchUIContactsThumbnailView_init__block_invoke()
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v39 objects:v45 count:16];
+      v16 = [actionTypesToShow countByEnumeratingWithState:&v39 objects:v45 count:16];
     }
 
     while (v16);
   }
 
-  v22 = [(SearchUIContactsThumbnailView *)self contactImage];
-  v23 = [v22 threeDTouchEnabled];
-  if (v12 || v23)
+  contactImage2 = [(SearchUIContactsThumbnailView *)self contactImage];
+  threeDTouchEnabled = [contactImage2 threeDTouchEnabled];
+  if (singleContactPreviewButtonItemOnRowModel || threeDTouchEnabled)
   {
     v24 = [(SearchUIContactsThumbnailView *)self useCompactDisplay]^ 1;
   }
@@ -256,21 +256,21 @@ void __37__SearchUIContactsThumbnailView_init__block_invoke()
   [(SearchUIContactsThumbnailView *)self updateForcePressView];
   if (![v13 count])
   {
-    v25 = [v38 badgingImage];
+    badgingImage = [v38 badgingImage];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v26 = [v38 badgingImage];
-      v27 = [v26 bundleIdentifier];
+      badgingImage2 = [v38 badgingImage];
+      bundleIdentifier = [badgingImage2 bundleIdentifier];
     }
 
     else
     {
-      v27 = 0;
+      bundleIdentifier = 0;
     }
 
     v28 = [SearchUIUtilities bundleIdentifierForApp:10];
-    v29 = [v27 isEqualToString:v28];
+    v29 = [bundleIdentifier isEqualToString:v28];
 
     if (v29)
     {
@@ -280,7 +280,7 @@ void __37__SearchUIContactsThumbnailView_init__block_invoke()
     else
     {
       v31 = [SearchUIUtilities bundleIdentifierForApp:8];
-      v32 = [v27 isEqualToString:v31];
+      v32 = [bundleIdentifier isEqualToString:v31];
 
       if (v32)
       {
@@ -290,7 +290,7 @@ void __37__SearchUIContactsThumbnailView_init__block_invoke()
       else
       {
         v33 = [SearchUIUtilities bundleIdentifierForApp:26];
-        v34 = [v27 isEqualToString:v33];
+        v34 = [bundleIdentifier isEqualToString:v33];
 
         v30 = MEMORY[0x1E695D068];
         if (v34)
@@ -304,10 +304,10 @@ void __37__SearchUIContactsThumbnailView_init__block_invoke()
   }
 
   [(CNAvatarView *)self setActionCategories:v13];
-  v35 = [v4 contactIdentifiers];
-  v36 = [v35 count] < 2;
-  v37 = [(SearchUIContactsThumbnailView *)self layer];
-  [v37 setShadowPathIsBounds:v36];
+  contactIdentifiers2 = [modelCopy contactIdentifiers];
+  v36 = [contactIdentifiers2 count] < 2;
+  layer = [(SearchUIContactsThumbnailView *)self layer];
+  [layer setShadowPathIsBounds:v36];
 }
 
 void __52__SearchUIContactsThumbnailView_updateWithRowModel___block_invoke(uint64_t a1, void *a2)
@@ -341,31 +341,31 @@ void __52__SearchUIContactsThumbnailView_updateWithRowModel___block_invoke_2(uin
 
 - (id)singleContactPreviewButtonItemOnRowModel
 {
-  v2 = [(SearchUIContactsThumbnailView *)self rowModel];
-  v3 = [v2 cardSection];
-  v4 = [v3 previewButtonItems];
+  rowModel = [(SearchUIContactsThumbnailView *)self rowModel];
+  cardSection = [rowModel cardSection];
+  previewButtonItems = [cardSection previewButtonItems];
 
-  if ([v4 count] == 1)
+  if ([previewButtonItems count] == 1)
   {
-    v5 = [v4 firstObject];
+    firstObject = [previewButtonItems firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 firstObject];
+      firstObject2 = [previewButtonItems firstObject];
     }
 
     else
     {
-      v6 = 0;
+      firstObject2 = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    firstObject2 = 0;
   }
 
-  return v6;
+  return firstObject2;
 }
 
 - (void)layoutSubviews
@@ -375,20 +375,20 @@ void __52__SearchUIContactsThumbnailView_updateWithRowModel___block_invoke_2(uin
   [(CNAvatarView *)&v5 layoutSubviews];
   [(SearchUIContactsThumbnailView *)self bounds];
   v3 = CGRectGetWidth(v6) * 0.5;
-  v4 = [(SearchUIContactsThumbnailView *)self layer];
-  [v4 setCornerRadius:v3];
+  layer = [(SearchUIContactsThumbnailView *)self layer];
+  [layer setCornerRadius:v3];
 }
 
 - (void)updateForcePressView
 {
   if ([(CNAvatarView *)self isThreeDTouchEnabled])
   {
-    v6 = self;
-    if ([(SearchUIContactsThumbnailView *)v6 forcePressViewIsEntireEnclosingCell])
+    selfCopy = self;
+    if ([(SearchUIContactsThumbnailView *)selfCopy forcePressViewIsEntireEnclosingCell])
     {
-      if (v6)
+      if (selfCopy)
       {
-        v3 = v6;
+        v3 = selfCopy;
         while (1)
         {
           objc_opt_class();
@@ -403,10 +403,10 @@ void __52__SearchUIContactsThumbnailView_updateWithRowModel___block_invoke_2(uin
             break;
           }
 
-          v4 = [(SearchUIContactsThumbnailView *)v3 superview];
+          superview = [(SearchUIContactsThumbnailView *)v3 superview];
 
-          v3 = v4;
-          if (!v4)
+          v3 = superview;
+          if (!superview)
           {
             goto LABEL_8;
           }
@@ -418,13 +418,13 @@ void __52__SearchUIContactsThumbnailView_updateWithRowModel___block_invoke_2(uin
       else
       {
 LABEL_8:
-        v5 = v6;
+        v5 = selfCopy;
       }
     }
 
     else
     {
-      v5 = v6;
+      v5 = selfCopy;
     }
   }
 

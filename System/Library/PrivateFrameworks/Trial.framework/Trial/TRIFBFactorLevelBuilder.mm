@@ -1,18 +1,18 @@
 @interface TRIFBFactorLevelBuilder
 - (void)dealloc;
-- (void)setAlias:(id)a3;
-- (void)setCacheKey:(unsigned int)a3;
-- (void)setFactorId:(id)a3;
-- (void)setFactorNamespaceName:(id)a3;
-- (void)setLevelWithBoolVal:(id)a3;
-- (void)setLevelWithDoubleVal:(id)a3;
-- (void)setLevelWithInt64Val:(id)a3;
-- (void)setLevelWithMaRefVal:(id)a3;
-- (void)setLevelWithStringVal:(id)a3;
-- (void)setLevelWithTrialAssetVal:(id)a3;
-- (void)setMetadata:(id)a3;
-- (void)setName:(id)a3;
-- (void)setNamespaceId:(unsigned int)a3;
+- (void)setAlias:(id)alias;
+- (void)setCacheKey:(unsigned int)key;
+- (void)setFactorId:(id)id;
+- (void)setFactorNamespaceName:(id)name;
+- (void)setLevelWithBoolVal:(id)val;
+- (void)setLevelWithDoubleVal:(id)val;
+- (void)setLevelWithInt64Val:(id)val;
+- (void)setLevelWithMaRefVal:(id)val;
+- (void)setLevelWithStringVal:(id)val;
+- (void)setLevelWithTrialAssetVal:(id)val;
+- (void)setMetadata:(id)metadata;
+- (void)setName:(id)name;
+- (void)setNamespaceId:(unsigned int)id;
 @end
 
 @implementation TRIFBFactorLevelBuilder
@@ -30,179 +30,179 @@
   [(TRIFBFactorLevelBuilder *)&v4 dealloc];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3720 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3720 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  v6 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v6)
+  if (!firstError)
   {
-    v7 = v5;
+    v7 = nameCopy;
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(self->_bldr->var0, 4, [v7 unsignedIntValue]);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLevelWithBoolVal:(id)a3
+- (void)setLevelWithBoolVal:(id)val
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  valCopy = val;
+  if (!valCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3730 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3730 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  v6 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v6)
+  if (!firstError)
   {
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(self->_bldr->var0, 6, 1);
-    v7 = v5;
+    v7 = valCopy;
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(self->_bldr->var0, 8, [v7 unsignedIntValue]);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLevelWithStringVal:(id)a3
+- (void)setLevelWithStringVal:(id)val
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  valCopy = val;
+  if (!valCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3740 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3740 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  v6 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v6)
+  if (!firstError)
   {
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(self->_bldr->var0, 6, 2);
-    v7 = v5;
+    v7 = valCopy;
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(self->_bldr->var0, 8, [v7 unsignedIntValue]);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLevelWithInt64Val:(id)a3
+- (void)setLevelWithInt64Val:(id)val
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  valCopy = val;
+  if (!valCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3751 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3751 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  v6 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v6)
+  if (!firstError)
   {
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(self->_bldr->var0, 6, 3);
-    v7 = v5;
+    v7 = valCopy;
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(self->_bldr->var0, 8, [v7 unsignedIntValue]);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLevelWithDoubleVal:(id)a3
+- (void)setLevelWithDoubleVal:(id)val
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  valCopy = val;
+  if (!valCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3762 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3762 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  v6 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v6)
+  if (!firstError)
   {
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(self->_bldr->var0, 6, 4);
-    v7 = v5;
+    v7 = valCopy;
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(self->_bldr->var0, 8, [v7 unsignedIntValue]);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLevelWithTrialAssetVal:(id)a3
+- (void)setLevelWithTrialAssetVal:(id)val
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  valCopy = val;
+  if (!valCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3773 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3773 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  v6 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v6)
+  if (!firstError)
   {
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(self->_bldr->var0, 6, 5);
-    v7 = v5;
+    v7 = valCopy;
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(self->_bldr->var0, 8, [v7 unsignedIntValue]);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLevelWithMaRefVal:(id)a3
+- (void)setLevelWithMaRefVal:(id)val
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  valCopy = val;
+  if (!valCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3784 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3784 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  v6 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v6)
+  if (!firstError)
   {
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(self->_bldr->var0, 6, 6);
-    v7 = v5;
+    v7 = valCopy;
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(self->_bldr->var0, 8, [v7 unsignedIntValue]);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  metadataCopy = metadata;
+  if (!metadataCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3795 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3795 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  v6 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v6)
+  if (!firstError)
   {
-    v7 = v5;
-    v8 = [v7 unsignedIntValue];
-    if (v8)
+    v7 = metadataCopy;
+    unsignedIntValue = [v7 unsignedIntValue];
+    if (unsignedIntValue)
     {
       var0 = self->_bldr->var0;
-      v10 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(var0, v8);
+      v10 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(var0, unsignedIntValue);
       apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(var0, 10, v10);
     }
   }
@@ -210,90 +210,90 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCacheKey:(unsigned int)a3
+- (void)setCacheKey:(unsigned int)key
 {
   v7 = *MEMORY[0x277D85DE8];
-  v5 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v5)
+  if (!firstError)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(self->_bldr->var0, 12, a3);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(self->_bldr->var0, 12, key);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAlias:(id)a3
+- (void)setAlias:(id)alias
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  aliasCopy = alias;
+  if (!aliasCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3812 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3812 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  v6 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v6)
+  if (!firstError)
   {
-    v7 = v5;
+    v7 = aliasCopy;
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(self->_bldr->var0, 14, [v7 unsignedIntValue]);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFactorNamespaceName:(id)a3
+- (void)setFactorNamespaceName:(id)name
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3822 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3822 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  v6 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v6)
+  if (!firstError)
   {
-    v7 = v5;
+    v7 = nameCopy;
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(self->_bldr->var0, 16, [v7 unsignedIntValue]);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFactorId:(id)a3
+- (void)setFactorId:(id)id
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  idCopy = id;
+  if (!idCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3832 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3832 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  v6 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v6)
+  if (!firstError)
   {
-    v7 = v5;
+    v7 = idCopy;
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(self->_bldr->var0, 18, [v7 unsignedIntValue]);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNamespaceId:(unsigned int)a3
+- (void)setNamespaceId:(unsigned int)id
 {
   v7 = *MEMORY[0x277D85DE8];
-  v5 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v5)
+  if (!firstError)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(self->_bldr->var0, 20, a3);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(self->_bldr->var0, 20, id);
   }
 
   v6 = *MEMORY[0x277D85DE8];

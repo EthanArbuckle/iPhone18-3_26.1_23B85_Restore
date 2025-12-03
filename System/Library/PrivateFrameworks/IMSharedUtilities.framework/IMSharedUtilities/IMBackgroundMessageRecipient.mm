@@ -1,67 +1,67 @@
 @interface IMBackgroundMessageRecipient
-- (BOOL)isEqual:(id)a3;
-- (IMBackgroundMessageRecipient)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (IMBackgroundMessageRecipient)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMBackgroundMessageRecipient
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IMBackgroundMessageRecipient *)self phoneNumber];
-  [v4 encodeObject:v5 forKey:@"kIMBackgroundMessageRecipientPhoneNumber"];
+  coderCopy = coder;
+  phoneNumber = [(IMBackgroundMessageRecipient *)self phoneNumber];
+  [coderCopy encodeObject:phoneNumber forKey:@"kIMBackgroundMessageRecipientPhoneNumber"];
 
-  v6 = [(IMBackgroundMessageRecipient *)self displayName];
-  [v4 encodeObject:v6 forKey:@"kIMBackgroundMessageRecipientDisplayName"];
+  displayName = [(IMBackgroundMessageRecipient *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"kIMBackgroundMessageRecipientDisplayName"];
 }
 
-- (IMBackgroundMessageRecipient)initWithCoder:(id)a3
+- (IMBackgroundMessageRecipient)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = IMBackgroundMessageRecipient;
   v5 = [(IMBackgroundMessageRecipient *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kIMBackgroundMessageRecipientPhoneNumber"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kIMBackgroundMessageRecipientPhoneNumber"];
     [(IMBackgroundMessageRecipient *)v5 setPhoneNumber:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kIMBackgroundMessageRecipientDisplayName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kIMBackgroundMessageRecipientDisplayName"];
     [(IMBackgroundMessageRecipient *)v5 setDisplayName:v7];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(IMBackgroundMessageRecipient *)self phoneNumber];
-  [v4 setPhoneNumber:v5];
+  phoneNumber = [(IMBackgroundMessageRecipient *)self phoneNumber];
+  [v4 setPhoneNumber:phoneNumber];
 
-  v6 = [(IMBackgroundMessageRecipient *)self displayName];
-  [v4 setDisplayName:v6];
+  displayName = [(IMBackgroundMessageRecipient *)self displayName];
+  [v4 setDisplayName:displayName];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(IMBackgroundMessageRecipient *)self phoneNumber];
-  v6 = [v4 phoneNumber];
+  equalCopy = equal;
+  phoneNumber = [(IMBackgroundMessageRecipient *)self phoneNumber];
+  phoneNumber2 = [equalCopy phoneNumber];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(equalCopy) = [phoneNumber isEqualToString:phoneNumber2];
+  return equalCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(IMBackgroundMessageRecipient *)self phoneNumber];
-  v3 = [v2 hash];
+  phoneNumber = [(IMBackgroundMessageRecipient *)self phoneNumber];
+  v3 = [phoneNumber hash];
 
   return v3;
 }

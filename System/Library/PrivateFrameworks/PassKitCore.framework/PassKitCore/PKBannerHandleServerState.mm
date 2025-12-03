@@ -1,13 +1,13 @@
 @interface PKBannerHandleServerState
-- (PKBannerHandleServerState)initWithCoder:(id)a3;
+- (PKBannerHandleServerState)initWithCoder:(id)coder;
 @end
 
 @implementation PKBannerHandleServerState
 
-- (PKBannerHandleServerState)initWithCoder:(id)a3
+- (PKBannerHandleServerState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 decodeIntegerForKey:@"type"] == 1 && objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
+  coderCopy = coder;
+  if ([coderCopy decodeIntegerForKey:@"type"] == 1 && objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     if (self)
     {
@@ -26,18 +26,18 @@
     }
 
     self = v5;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
     v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKBannerHandleServerState" code:0 userInfo:0];
-    [v4 failWithError:v7];
+    [coderCopy failWithError:v7];
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

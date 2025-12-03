@@ -1,5 +1,5 @@
 @interface DOCArchiveOperation
-- (_TtC26DocumentManagerExecutables19DOCArchiveOperation)initWithItems:(id)a3 destinationFolder:(id)a4;
+- (_TtC26DocumentManagerExecutables19DOCArchiveOperation)initWithItems:(id)items destinationFolder:(id)folder;
 - (id)operationForRedoing;
 - (id)operationForUndoing;
 @end
@@ -8,7 +8,7 @@
 
 - (id)operationForRedoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCArchiveOperation.operationForRedoing()();
 
   return v3;
@@ -16,13 +16,13 @@
 
 - (id)operationForUndoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCArchiveOperation.operationForUndoing()();
 
   return v3;
 }
 
-- (_TtC26DocumentManagerExecutables19DOCArchiveOperation)initWithItems:(id)a3 destinationFolder:(id)a4
+- (_TtC26DocumentManagerExecutables19DOCArchiveOperation)initWithItems:(id)items destinationFolder:(id)folder
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

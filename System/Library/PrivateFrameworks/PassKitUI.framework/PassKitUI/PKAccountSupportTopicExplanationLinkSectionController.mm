@@ -1,29 +1,29 @@
 @interface PKAccountSupportTopicExplanationLinkSectionController
-- (PKAccountSupportTopicExplanationLinkSectionController)initWithLink:(id)a3 delegate:(id)a4;
-- (id)_decorateListCell:(id)a3 forExplanationLink:(id)a4;
-- (id)cellRegistrationForItem:(id)a3;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)didSelectItem:(id)a3;
+- (PKAccountSupportTopicExplanationLinkSectionController)initWithLink:(id)link delegate:(id)delegate;
+- (id)_decorateListCell:(id)cell forExplanationLink:(id)link;
+- (id)cellRegistrationForItem:(id)item;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)didSelectItem:(id)item;
 @end
 
 @implementation PKAccountSupportTopicExplanationLinkSectionController
 
-- (PKAccountSupportTopicExplanationLinkSectionController)initWithLink:(id)a3 delegate:(id)a4
+- (PKAccountSupportTopicExplanationLinkSectionController)initWithLink:(id)link delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  linkCopy = link;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PKAccountSupportTopicExplanationLinkSectionController;
   v9 = [(PKPaymentSetupListSectionController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    if (v7)
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    if (linkCopy)
     {
-      if ([v8 shouldShowSupportLink:v7])
+      if ([delegateCopy shouldShowSupportLink:linkCopy])
       {
-        objc_storeStrong(&v10->_link, a3);
+        objc_storeStrong(&v10->_link, link);
       }
     }
   }
@@ -31,22 +31,22 @@
   return v10;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v7 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained deselectCells];
 
-    v5 = v7;
+    v5 = itemCopy;
     v6 = objc_loadWeakRetained(&self->_delegate);
     [v6 openSupportLink:v5];
   }
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
@@ -66,9 +66,9 @@
   return v6;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E69DC800];
   v6 = objc_opt_class();
@@ -92,23 +92,23 @@ void __81__PKAccountSupportTopicExplanationLinkSectionController_cellRegistratio
   v8 = [WeakRetained _decorateListCell:v9 forExplanationLink:v6];
 }
 
-- (id)_decorateListCell:(id)a3 forExplanationLink:(id)a4
+- (id)_decorateListCell:(id)cell forExplanationLink:(id)link
 {
   v5 = MEMORY[0x1E69DCC28];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 valueCellConfiguration];
-  v9 = [v6 text];
+  linkCopy = link;
+  cellCopy = cell;
+  valueCellConfiguration = [v5 valueCellConfiguration];
+  text = [linkCopy text];
 
-  [v8 setText:v9];
-  v10 = [v8 textProperties];
-  v11 = [MEMORY[0x1E69DC888] tintColor];
-  [v10 setColor:v11];
+  [valueCellConfiguration setText:text];
+  textProperties = [valueCellConfiguration textProperties];
+  tintColor = [MEMORY[0x1E69DC888] tintColor];
+  [textProperties setColor:tintColor];
 
-  [v8 setDirectionalLayoutMargins:{12.0, 0.0, 12.0, 0.0}];
-  [v7 setContentConfiguration:v8];
+  [valueCellConfiguration setDirectionalLayoutMargins:{12.0, 0.0, 12.0, 0.0}];
+  [cellCopy setContentConfiguration:valueCellConfiguration];
 
-  return v8;
+  return valueCellConfiguration;
 }
 
 @end

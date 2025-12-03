@@ -1,12 +1,12 @@
 @interface BKMatchPearlOperation
-- (BOOL)startNewMatchAttemptWithError:(id *)a3;
-- (id)matchResultInfoWithServerIdentity:(id)a3 details:(id)a4;
-- (id)optionsDictionaryWithError:(id *)a3;
+- (BOOL)startNewMatchAttemptWithError:(id *)error;
+- (id)matchResultInfoWithServerIdentity:(id)identity details:(id)details;
+- (id)optionsDictionaryWithError:(id *)error;
 @end
 
 @implementation BKMatchPearlOperation
 
-- (id)optionsDictionaryWithError:(id *)a3
+- (id)optionsDictionaryWithError:(id *)error
 {
   v13.receiver = self;
   v13.super_class = BKMatchPearlOperation;
@@ -39,16 +39,16 @@
   preAugmentationCheckIdentity = self->_preAugmentationCheckIdentity;
   if (preAugmentationCheckIdentity)
   {
-    v8 = [(BKIdentity *)preAugmentationCheckIdentity serverIdentity];
-    if (!v8)
+    serverIdentity = [(BKIdentity *)preAugmentationCheckIdentity serverIdentity];
+    if (!serverIdentity)
     {
       [BKMatchPearlOperation optionsDictionaryWithError:];
       v11 = 0;
       goto LABEL_18;
     }
 
-    v9 = v8;
-    [v6 setObject:v8 forKey:@"BKOptionMatchPreAugmentationCheckIdentity"];
+    v9 = serverIdentity;
+    [v6 setObject:serverIdentity forKey:@"BKOptionMatchPreAugmentationCheckIdentity"];
   }
 
   if (self->_fullFaceOnly)
@@ -74,7 +74,7 @@ LABEL_18:
   return v11;
 }
 
-- (BOOL)startNewMatchAttemptWithError:(id *)a3
+- (BOOL)startNewMatchAttemptWithError:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69E9C10];
@@ -97,15 +97,15 @@ LABEL_18:
     _os_log_impl(&dword_1C82AD000, v8, OS_LOG_TYPE_DEFAULT, "BKMatchPearlOperation::startNewMatchAttempt (_cid:%lu)\n", &v18, 0xCu);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  if ([(BKOperation *)v9 state]== 5)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(BKOperation *)selfCopy state]== 5)
   {
-    v10 = [(BiometricKitXPCClient *)v9->super.super._xpcClient startNewMatchAttempt];
-    if (!v10)
+    startNewMatchAttempt = [(BiometricKitXPCClient *)selfCopy->super.super._xpcClient startNewMatchAttempt];
+    if (!startNewMatchAttempt)
     {
       BKLogEvent(0x40001u);
-      objc_sync_exit(v9);
+      objc_sync_exit(selfCopy);
 
       if (__osLogTrace)
       {
@@ -119,9 +119,9 @@ LABEL_18:
 
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (error)
         {
-          v12 = *a3;
+          v12 = *error;
         }
 
         else
@@ -148,16 +148,16 @@ LABEL_18:
     }
 
     [BKMatchPearlOperation startNewMatchAttemptWithError:];
-    setErrorWithOSStatus(v10, a3);
+    setErrorWithOSStatus(startNewMatchAttempt, error);
   }
 
   else
   {
-    setError(1, a3);
-    LODWORD(v10) = 0;
+    setError(1, error);
+    LODWORD(startNewMatchAttempt) = 0;
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
   if (__osLogTrace)
   {
@@ -171,9 +171,9 @@ LABEL_18:
 
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
-    if (a3)
+    if (error)
     {
-      v17 = *a3;
+      v17 = *error;
     }
 
     else
@@ -184,7 +184,7 @@ LABEL_18:
     v18 = 67109634;
     *v19 = 0;
     *&v19[4] = 1024;
-    *&v19[6] = v10;
+    *&v19[6] = startNewMatchAttempt;
     v20 = 2112;
     v21 = v17;
     _os_log_impl(&dword_1C82AD000, v16, OS_LOG_TYPE_ERROR, "BKMatchPearlOperation::startNewMatchAttempt -> %d(err:0x%x), error:%@\n", &v18, 0x18u);
@@ -196,13 +196,13 @@ LABEL_17:
   return v13;
 }
 
-- (id)matchResultInfoWithServerIdentity:(id)a3 details:(id)a4
+- (id)matchResultInfoWithServerIdentity:(id)identity details:(id)details
 {
-  v6 = a4;
-  v7 = a3;
+  detailsCopy = details;
+  identityCopy = identity;
   v8 = [BKMatchPearlResultInfo alloc];
-  v9 = [(BKOperation *)self device];
-  v10 = [(BKMatchPearlResultInfo *)v8 initWithServerIdentity:v7 details:v6 device:v9];
+  device = [(BKOperation *)self device];
+  v10 = [(BKMatchPearlResultInfo *)v8 initWithServerIdentity:identityCopy details:detailsCopy device:device];
 
   return v10;
 }

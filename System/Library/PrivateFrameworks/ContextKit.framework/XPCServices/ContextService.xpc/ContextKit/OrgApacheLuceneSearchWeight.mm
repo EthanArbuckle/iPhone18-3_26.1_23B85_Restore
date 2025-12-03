@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneSearchWeight
-- (id)bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3;
+- (id)bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchWeight
 
-- (id)bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3
+- (id)bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
-  result = [(OrgApacheLuceneSearchWeight *)self scorerWithOrgApacheLuceneIndexLeafReaderContext:a3];
+  result = [(OrgApacheLuceneSearchWeight *)self scorerWithOrgApacheLuceneIndexLeafReaderContext:context];
   if (result)
   {
     v4 = result;

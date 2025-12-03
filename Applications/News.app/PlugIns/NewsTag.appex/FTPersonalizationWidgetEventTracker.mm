@@ -1,9 +1,9 @@
 @interface FTPersonalizationWidgetEventTracker
 - (FTPersonalizationWidgetEventTracker)init;
-- (id)personalizationEventAtDate:(id)a3 withAction:(int)a4 headline:(id)a5 section:(id)a6 trackableWidgetState:(id)a7;
-- (void)submitEventsIfNeededWithCompletion:(id)a3;
-- (void)userEngagedWithWidgetAtDate:(id)a3 actionURL:(id)a4 trackableWidgetState:(id)a5;
-- (void)widgetDidAppearAtDate:(id)a3 withTrackableWidgetState:(id)a4;
+- (id)personalizationEventAtDate:(id)date withAction:(int)action headline:(id)headline section:(id)section trackableWidgetState:(id)state;
+- (void)submitEventsIfNeededWithCompletion:(id)completion;
+- (void)userEngagedWithWidgetAtDate:(id)date actionURL:(id)l trackableWidgetState:(id)state;
+- (void)widgetDidAppearAtDate:(id)date withTrackableWidgetState:(id)state;
 @end
 
 @implementation FTPersonalizationWidgetEventTracker
@@ -29,45 +29,45 @@
   return v2;
 }
 
-- (void)widgetDidAppearAtDate:(id)a3 withTrackableWidgetState:(id)a4
+- (void)widgetDidAppearAtDate:(id)date withTrackableWidgetState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 todayResults];
-  v9 = v8;
-  if (v8)
+  dateCopy = date;
+  stateCopy = state;
+  todayResults = [stateCopy todayResults];
+  v9 = todayResults;
+  if (todayResults)
   {
     v15[0] = 0;
     v15[1] = v15;
     v15[2] = 0x2020000000;
     v15[3] = 0;
-    v10 = [v8 sections];
+    sections = [todayResults sections];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100014094;
     v11[3] = &unk_1000D7388;
     v11[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = dateCopy;
+    v13 = stateCopy;
     v14 = v15;
-    [v10 enumerateObjectsUsingBlock:v11];
+    [sections enumerateObjectsUsingBlock:v11];
 
     _Block_object_dispose(v15, 8);
   }
 }
 
-- (void)submitEventsIfNeededWithCompletion:(id)a3
+- (void)submitEventsIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FTPersonalizationWidgetEventTracker *)self events];
-  if ([v5 count])
+  completionCopy = completion;
+  events = [(FTPersonalizationWidgetEventTracker *)self events];
+  if ([events count])
   {
     v6 = objc_opt_new();
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = v5;
+    v7 = events;
     v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
@@ -94,34 +94,34 @@
       while (v9);
     }
 
-    v12 = [(FTPersonalizationWidgetEventTracker *)self fileCoordinatedStore];
-    [v12 submitUpdate:v6];
+    fileCoordinatedStore = [(FTPersonalizationWidgetEventTracker *)self fileCoordinatedStore];
+    [fileCoordinatedStore submitUpdate:v6];
 
     v13 = objc_opt_new();
     [(FTPersonalizationWidgetEventTracker *)self setEvents:v13];
   }
 
-  v4[2](v4);
+  completionCopy[2](completionCopy);
 }
 
-- (void)userEngagedWithWidgetAtDate:(id)a3 actionURL:(id)a4 trackableWidgetState:(id)a5
+- (void)userEngagedWithWidgetAtDate:(id)date actionURL:(id)l trackableWidgetState:(id)state
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 fc_NewsArticleID];
-  v12 = v11;
-  if (v11)
+  dateCopy = date;
+  lCopy = l;
+  stateCopy = state;
+  fc_NewsArticleID = [lCopy fc_NewsArticleID];
+  v12 = fc_NewsArticleID;
+  if (fc_NewsArticleID)
   {
-    v13 = v11;
+    v13 = fc_NewsArticleID;
     v27 = 0;
     v28 = &v27;
     v29 = 0x3032000000;
     v30 = sub_1000145EC;
     v31 = sub_1000145FC;
     v32 = 0;
-    v14 = [v10 todayResults];
-    v15 = [v14 sections];
+    todayResults = [stateCopy todayResults];
+    sections = [todayResults sections];
     v21 = _NSConcreteStackBlock;
     v22 = 3221225472;
     v23 = sub_100014604;
@@ -129,18 +129,18 @@
     v16 = v13;
     v25 = v16;
     v26 = &v27;
-    [v15 enumerateObjectsUsingBlock:&v21];
+    [sections enumerateObjectsUsingBlock:&v21];
 
     v17 = v28[5];
     if (v17)
     {
-      v18 = [v10 sectionForItem:{v28[5], v21, v22, v23, v24}];
-      v19 = [(FTPersonalizationWidgetEventTracker *)self personalizationEventAtDate:v8 withAction:2 headline:v17 section:v18 trackableWidgetState:v10];
+      v18 = [stateCopy sectionForItem:{v28[5], v21, v22, v23, v24}];
+      v19 = [(FTPersonalizationWidgetEventTracker *)self personalizationEventAtDate:dateCopy withAction:2 headline:v17 section:v18 trackableWidgetState:stateCopy];
 
       if (v19)
       {
-        v20 = [(FTPersonalizationWidgetEventTracker *)self events];
-        [v20 addObject:v19];
+        events = [(FTPersonalizationWidgetEventTracker *)self events];
+        [events addObject:v19];
       }
     }
 
@@ -148,23 +148,23 @@
   }
 }
 
-- (id)personalizationEventAtDate:(id)a3 withAction:(int)a4 headline:(id)a5 section:(id)a6 trackableWidgetState:(id)a7
+- (id)personalizationEventAtDate:(id)date withAction:(int)action headline:(id)headline section:(id)section trackableWidgetState:(id)state
 {
-  v10 = *&a4;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if (!v11 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  v10 = *&action;
+  dateCopy = date;
+  headlineCopy = headline;
+  sectionCopy = section;
+  stateCopy = state;
+  if (!dateCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000A0B08();
-    if (v12)
+    if (headlineCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v12)
+  else if (headlineCopy)
   {
     goto LABEL_6;
   }
@@ -175,16 +175,16 @@
   }
 
 LABEL_6:
-  if (!v13 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!sectionCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000A0C90();
-    if (v14)
+    if (stateCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v14)
+  else if (stateCopy)
   {
     goto LABEL_11;
   }
@@ -195,11 +195,11 @@ LABEL_6:
   }
 
 LABEL_11:
-  v15 = [v12 personalizationMetadata];
+  personalizationMetadata = [headlineCopy personalizationMetadata];
 
-  if (v15)
+  if (personalizationMetadata)
   {
-    v16 = +[NTPBTodayPersonalizationEvent ft_eventWithDate:action:headline:section:headlineIndexInSection:precedingHeadlinesCount:precedingSectionsCount:](NTPBTodayPersonalizationEvent, "ft_eventWithDate:action:headline:section:headlineIndexInSection:precedingHeadlinesCount:precedingSectionsCount:", v11, v10, v12, v13, [v14 absoluteOrderOfItemInSection:v12], objc_msgSend(v14, "absoluteOrderOfItem:", v12), objc_msgSend(v14, "absoluteOrderOfSection:", v13));
+    v16 = +[NTPBTodayPersonalizationEvent ft_eventWithDate:action:headline:section:headlineIndexInSection:precedingHeadlinesCount:precedingSectionsCount:](NTPBTodayPersonalizationEvent, "ft_eventWithDate:action:headline:section:headlineIndexInSection:precedingHeadlinesCount:precedingSectionsCount:", dateCopy, v10, headlineCopy, sectionCopy, [stateCopy absoluteOrderOfItemInSection:headlineCopy], objc_msgSend(stateCopy, "absoluteOrderOfItem:", headlineCopy), objc_msgSend(stateCopy, "absoluteOrderOfSection:", sectionCopy));
   }
 
   else

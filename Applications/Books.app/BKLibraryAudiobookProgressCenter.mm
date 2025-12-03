@@ -1,7 +1,7 @@
 @interface BKLibraryAudiobookProgressCenter
 - (BKLibraryAudiobookProgressCenter)init;
-- (id)dynamicProgressForKind:(id)a3 instance:(id)a4 parameters:(id)a5;
-- (void)_minifiedAssetPresentersChangedNotification:(id)a3;
+- (id)dynamicProgressForKind:(id)kind instance:(id)instance parameters:(id)parameters;
+- (void)_minifiedAssetPresentersChangedNotification:(id)notification;
 - (void)dealloc;
 @end
 
@@ -43,7 +43,7 @@
   [(BKLibraryAudiobookProgressCenter *)&v4 dealloc];
 }
 
-- (void)_minifiedAssetPresentersChangedNotification:(id)a3
+- (void)_minifiedAssetPresentersChangedNotification:(id)notification
 {
   [(NSMapTable *)self->_progressInstanceMap removeAllObjects];
   timeRemainingInstanceMap = self->_timeRemainingInstanceMap;
@@ -51,11 +51,11 @@
   [(NSMapTable *)timeRemainingInstanceMap removeAllObjects];
 }
 
-- (id)dynamicProgressForKind:(id)a3 instance:(id)a4 parameters:(id)a5
+- (id)dynamicProgressForKind:(id)kind instance:(id)instance parameters:(id)parameters
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  kindCopy = kind;
+  instanceCopy = instance;
+  parametersCopy = parameters;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -67,14 +67,14 @@
   block[1] = 3221225472;
   block[2] = sub_1001DEFE0;
   block[3] = &unk_100A0B6C8;
-  v21 = v10;
+  v21 = parametersCopy;
   v22 = &v23;
-  v18 = v8;
-  v19 = self;
-  v20 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v18 = kindCopy;
+  selfCopy = self;
+  v20 = instanceCopy;
+  v12 = parametersCopy;
+  v13 = instanceCopy;
+  v14 = kindCopy;
   dispatch_sync(access, block);
   v15 = v24[5];
 

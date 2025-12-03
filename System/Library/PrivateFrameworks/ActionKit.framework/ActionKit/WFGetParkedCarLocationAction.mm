@@ -1,12 +1,12 @@
 @interface WFGetParkedCarLocationAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFGetParkedCarLocationAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2050000000;
@@ -25,13 +25,13 @@
 
   v6 = v5;
   _Block_object_dispose(&v10, 8);
-  v7 = [v5 defaultManager];
+  defaultManager = [v5 defaultManager];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__WFGetParkedCarLocationAction_runAsynchronouslyWithInput___block_invoke;
   v8[3] = &unk_278C22518;
   v8[4] = self;
-  [v7 fetchLastVehicleEventsWithHandler:v8];
+  [defaultManager fetchLastVehicleEventsWithHandler:v8];
 }
 
 void __59__WFGetParkedCarLocationAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, void *a3)

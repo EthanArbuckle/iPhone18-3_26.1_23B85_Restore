@@ -7,15 +7,15 @@
 - (void)nu_updateDigest:()NUDigest
 {
   v6 = a3;
-  v4 = [a1 absoluteString];
-  if (v4)
+  absoluteString = [self absoluteString];
+  if (absoluteString)
   {
-    [v6 addString:v4];
+    [v6 addString:absoluteString];
   }
 
   else
   {
-    v5 = [a1 description];
+    v5 = [self description];
     [v6 addString:v5];
   }
 }

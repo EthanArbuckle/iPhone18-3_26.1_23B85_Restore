@@ -1,18 +1,18 @@
 @interface CMBordersProperty
-+ (BOOL)isStroked:(id)a3;
++ (BOOL)isStroked:(id)stroked;
 - (CMBordersProperty)init;
-- (CMBordersProperty)initWithOADStroke:(id)a3;
+- (CMBordersProperty)initWithOADStroke:(id)stroke;
 - (id)colorString;
 - (id)cssString;
-- (id)cssStringForName:(id)a3;
-- (id)stringFromColor:(id)a3;
-- (id)stringFromStyleEnum:(int)a3;
-- (id)stringFromWidthEnum:(int)a3;
+- (id)cssStringForName:(id)name;
+- (id)stringFromColor:(id)color;
+- (id)stringFromStyleEnum:(int)enum;
+- (id)stringFromWidthEnum:(int)enum;
 - (id)styleString;
 - (id)widthString;
 - (void)adjustValues;
-- (void)setFromOadStroke:(id)a3 atLocation:(int)a4 state:(id)a5;
-- (void)setNoneAtLocation:(int)a3;
+- (void)setFromOadStroke:(id)stroke atLocation:(int)location state:(id)state;
+- (void)setNoneAtLocation:(int)location;
 @end
 
 @implementation CMBordersProperty
@@ -74,14 +74,14 @@
 - (id)cssString
 {
   v3 = MEMORY[0x277CCAB68];
-  v4 = [(CMBordersProperty *)self styleString];
-  v5 = [v3 stringWithString:v4];
+  styleString = [(CMBordersProperty *)self styleString];
+  v5 = [v3 stringWithString:styleString];
 
-  v6 = [(CMBordersProperty *)self widthString];
-  [v5 appendString:v6];
+  widthString = [(CMBordersProperty *)self widthString];
+  [v5 appendString:widthString];
 
-  v7 = [(CMBordersProperty *)self colorString];
-  [v5 appendString:v7];
+  colorString = [(CMBordersProperty *)self colorString];
+  [v5 appendString:colorString];
 
   return v5;
 }
@@ -229,12 +229,12 @@ LABEL_13:
   return v3;
 }
 
-+ (BOOL)isStroked:(id)a3
++ (BOOL)isStroked:(id)stroked
 {
-  v3 = a3;
-  if ([v3 isFillOverridden])
+  strokedCopy = stroked;
+  if ([strokedCopy isFillOverridden])
   {
-    v4 = [v3 fill];
+    fill = [strokedCopy fill];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -247,9 +247,9 @@ LABEL_13:
   return isKindOfClass & 1;
 }
 
-- (CMBordersProperty)initWithOADStroke:(id)a3
+- (CMBordersProperty)initWithOADStroke:(id)stroke
 {
-  v4 = a3;
+  strokeCopy = stroke;
   v28.receiver = self;
   v28.super_class = CMBordersProperty;
   v5 = [(CMBordersProperty *)&v28 init];
@@ -260,24 +260,24 @@ LABEL_13:
   }
 
   v5->mCustomWidth = 0;
-  if (![v4 isFillOverridden] || (objc_msgSend(v4, "width"), v7 == 0.0) || (objc_msgSend(v4, "fill"), v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass & 1) == 0))
+  if (![strokeCopy isFillOverridden] || (objc_msgSend(strokeCopy, "width"), v7 == 0.0) || (objc_msgSend(strokeCopy, "fill"), v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass & 1) == 0))
   {
     v6->mBorderStyle[0] = 0;
     goto LABEL_10;
   }
 
-  v10 = [v4 fill];
+  fill = [strokeCopy fill];
   v6->mBorderWidth[0] = 1;
-  if ([v4 isDashOverridden])
+  if ([strokeCopy isDashOverridden])
   {
-    v11 = [v4 dash];
+    dash = [strokeCopy dash];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v4 dash];
-      v13 = [v12 type];
+      dash2 = [strokeCopy dash];
+      type = [dash2 type];
 
-      if (v13)
+      if (type)
       {
         v14 = 3;
         goto LABEL_16;
@@ -289,7 +289,7 @@ LABEL_13:
     }
   }
 
-  if ([v4 isCompoundTypeOverridden] && objc_msgSend(v4, "compoundType"))
+  if ([strokeCopy isCompoundTypeOverridden] && objc_msgSend(strokeCopy, "compoundType"))
   {
     v6->mBorderStyle[0] = 2;
     v6->mBorderWidth[0] = 2;
@@ -304,20 +304,20 @@ LABEL_17:
   mBorderColor = v6->mBorderColor;
   v6->mBorderColor = v16;
 
-  if ([v10 isColorOverridden])
+  if ([fill isColorOverridden])
   {
-    v18 = [v10 color];
+    color = [fill color];
     objc_opt_class();
     v19 = objc_opt_isKindOfClass();
 
     if (v19)
     {
-      v20 = [v10 color];
-      [v20 red];
+      color2 = [fill color];
+      [color2 red];
       v22 = v21;
-      [v20 green];
+      [color2 green];
       v24 = v23;
-      [v20 blue];
+      [color2 blue];
       v26 = [OITSUColor colorWithCalibratedRed:v22 green:v24 blue:v25 alpha:1.0];
       v27 = v6->mBorderColor;
       v6->mBorderColor = v26;
@@ -328,11 +328,11 @@ LABEL_10:
   return v6;
 }
 
-- (void)setNoneAtLocation:(int)a3
+- (void)setNoneAtLocation:(int)location
 {
   mBorderStyle = self->mBorderStyle;
-  self->mBorderStyle[a3] = 0;
-  if (a3)
+  self->mBorderStyle[location] = 0;
+  if (location)
   {
     if (*mBorderStyle)
     {
@@ -341,29 +341,29 @@ LABEL_10:
   }
 }
 
-- (void)setFromOadStroke:(id)a3 atLocation:(int)a4 state:(id)a5
+- (void)setFromOadStroke:(id)stroke atLocation:(int)location state:(id)state
 {
-  v22 = a3;
-  v8 = a5;
-  if (![v22 isFillOverridden] || (objc_msgSend(v22, "fill"), v9 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v9, (isKindOfClass & 1) == 0))
+  strokeCopy = stroke;
+  stateCopy = state;
+  if (![strokeCopy isFillOverridden] || (objc_msgSend(strokeCopy, "fill"), v9 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v9, (isKindOfClass & 1) == 0))
   {
-    self->mBorderStyle[a4] = 0;
+    self->mBorderStyle[location] = 0;
     goto LABEL_23;
   }
 
-  v11 = [v22 fill];
+  fill = [strokeCopy fill];
   mBorderWidth = self->mBorderWidth;
-  self->mBorderWidth[a4] = 1;
-  if ([v22 isDashOverridden])
+  self->mBorderWidth[location] = 1;
+  if ([strokeCopy isDashOverridden])
   {
-    v13 = [v22 dash];
+    dash = [strokeCopy dash];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v22 dash];
-      v15 = [v14 type];
+      dash2 = [strokeCopy dash];
+      type = [dash2 type];
 
-      if (v15)
+      if (type)
       {
         mBorderStyle = self->mBorderStyle;
         v17 = 3;
@@ -376,40 +376,40 @@ LABEL_10:
     }
   }
 
-  if ([v22 isCompoundTypeOverridden] && objc_msgSend(v22, "compoundType"))
+  if ([strokeCopy isCompoundTypeOverridden] && objc_msgSend(strokeCopy, "compoundType"))
   {
-    self->mBorderStyle[a4] = 2;
-    mBorderWidth[a4] = 2;
+    self->mBorderStyle[location] = 2;
+    mBorderWidth[location] = 2;
     goto LABEL_14;
   }
 
   mBorderStyle = self->mBorderStyle;
   v17 = 1;
 LABEL_13:
-  mBorderStyle[a4] = v17;
+  mBorderStyle[location] = v17;
 LABEL_14:
-  if ([v22 isWidthOverridden])
+  if ([strokeCopy isWidthOverridden])
   {
-    [v22 width];
+    [strokeCopy width];
     if (v18 > 1.5)
     {
       *mBorderWidth = 4;
-      [v22 width];
+      [strokeCopy width];
       self->mCustomWidth = v19;
     }
   }
 
-  if ([v11 isColorOverridden])
+  if ([fill isColorOverridden])
   {
-    v20 = [CMColorProperty nsColorFromOADFill:v11 state:v8];
-    if ((a4 - 1) >= 4)
+    v20 = [CMColorProperty nsColorFromOADFill:fill state:stateCopy];
+    if ((location - 1) >= 4)
     {
       v21 = &OBJC_IVAR___CMBordersProperty_mBorderColor;
     }
 
     else
     {
-      v21 = off_2799CDD90[a4 - 1];
+      v21 = off_2799CDD90[location - 1];
     }
 
     objc_storeStrong((&self->super.super.isa + *v21), v20);
@@ -418,39 +418,39 @@ LABEL_14:
 LABEL_23:
 }
 
-- (id)cssStringForName:(id)a3
+- (id)cssStringForName:(id)name
 {
   if (self->mBorderStyle[0])
   {
-    v4 = [(CMBordersProperty *)self cssString];
+    cssString = [(CMBordersProperty *)self cssString];
   }
 
   else
   {
-    v4 = @"border-style:none;";
+    cssString = @"border-style:none;";
   }
 
-  return v4;
+  return cssString;
 }
 
-- (id)stringFromStyleEnum:(int)a3
+- (id)stringFromStyleEnum:(int)enum
 {
-  if (a3 > 4)
+  if (enum > 4)
   {
     return @":solid;";
   }
 
   else
   {
-    return off_2799CDDB0[a3];
+    return off_2799CDDB0[enum];
   }
 }
 
-- (id)stringFromWidthEnum:(int)a3
+- (id)stringFromWidthEnum:(int)enum
 {
-  if (a3 <= 1)
+  if (enum <= 1)
   {
-    if (a3)
+    if (enum)
     {
 LABEL_9:
       v4 = @":thin;";
@@ -463,7 +463,7 @@ LABEL_9:
 
   else
   {
-    switch(a3)
+    switch(enum)
     {
       case 2:
         v4 = @":medium;";
@@ -485,17 +485,17 @@ LABEL_9:
   return v4;
 }
 
-- (id)stringFromColor:(id)a3
+- (id)stringFromColor:(id)color
 {
-  v3 = a3;
-  if (([v3 isBlack] & 1) != 0 || (objc_msgSend(v3, "redComponent"), v5 == 1.0) && (objc_msgSend(v3, "greenComponent"), v6 == 1.0) && (objc_msgSend(v3, "blueComponent"), v7 == 1.0) && (objc_msgSend(v3, "alphaComponent"), v8 == 0.0))
+  colorCopy = color;
+  if (([colorCopy isBlack] & 1) != 0 || (objc_msgSend(colorCopy, "redComponent"), v5 == 1.0) && (objc_msgSend(colorCopy, "greenComponent"), v6 == 1.0) && (objc_msgSend(colorCopy, "blueComponent"), v7 == 1.0) && (objc_msgSend(colorCopy, "alphaComponent"), v8 == 0.0))
   {
     v4 = @":black;";
   }
 
   else
   {
-    v9 = [[CMColorProperty alloc] initWithColor:v3];
+    v9 = [[CMColorProperty alloc] initWithColor:colorCopy];
     v4 = [(CMColorProperty *)v9 cssStringForName:&stru_286EE1130];
   }
 

@@ -1,10 +1,10 @@
 @interface DOCLabel
 - (CGSize)doc_effectiveContentSize;
-- (DOCLabel)initWithCoder:(id)a3;
-- (DOCLabel)initWithFrame:(CGRect)a3;
+- (DOCLabel)initWithCoder:(id)coder;
+- (DOCLabel)initWithFrame:(CGRect)frame;
 - (void)doc_commonInit;
-- (void)setAttributedText:(id)a3;
-- (void)setText:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setText:(id)text;
 - (void)updateForChangedTraitsAffectingFonts;
 @end
 
@@ -12,15 +12,15 @@
 
 - (void)doc_commonInit
 {
-  v4 = [MEMORY[0x277D75C80] doc_traitsAffectingFonts];
-  v3 = [(DOCLabel *)self registerForTraitChanges:v4 withAction:sel_updateForChangedTraitsAffectingFonts];
+  doc_traitsAffectingFonts = [MEMORY[0x277D75C80] doc_traitsAffectingFonts];
+  v3 = [(DOCLabel *)self registerForTraitChanges:doc_traitsAffectingFonts withAction:sel_updateForChangedTraitsAffectingFonts];
 }
 
-- (DOCLabel)initWithFrame:(CGRect)a3
+- (DOCLabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = DOCLabel;
-  v3 = [(DOCLabel *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DOCLabel *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,11 +30,11 @@
   return v4;
 }
 
-- (DOCLabel)initWithCoder:(id)a3
+- (DOCLabel)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DOCLabel;
-  v3 = [(DOCLabel *)&v6 initWithCoder:a3];
+  v3 = [(DOCLabel *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -44,10 +44,10 @@
   return v4;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   useAttributedTextNumber = self->useAttributedTextNumber;
-  v6 = a3;
+  textCopy = text;
   if ([(NSNumber *)useAttributedTextNumber BOOLValue])
   {
     [(DOCLabel *)a2 setText:?];
@@ -58,12 +58,12 @@
 
   v8.receiver = self;
   v8.super_class = DOCLabel;
-  [(DOCLabel *)&v8 setText:v6];
+  [(DOCLabel *)&v8 setText:textCopy];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   useAttributedTextNumber = self->useAttributedTextNumber;
   if (useAttributedTextNumber && ![(NSNumber *)useAttributedTextNumber BOOLValue])
   {
@@ -75,7 +75,7 @@
 
   v8.receiver = self;
   v8.super_class = DOCLabel;
-  [(DOCLabel *)&v8 setAttributedText:v5];
+  [(DOCLabel *)&v8 setAttributedText:textCopy];
 }
 
 - (CGSize)doc_effectiveContentSize

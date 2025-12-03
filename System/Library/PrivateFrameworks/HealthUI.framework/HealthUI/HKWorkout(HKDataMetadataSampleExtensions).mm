@@ -6,7 +6,7 @@
 
 - (id)hk_defaultDistanceQuantityType
 {
-  [a1 workoutActivityType];
+  [self workoutActivityType];
   v2 = _HKWorkoutDistanceTypeForActivityType();
   v3 = v2;
   if (v2)
@@ -16,7 +16,7 @@
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &off_1F4452D88;
     v4 = objc_msgSendSuper2(&v7, sel_hk_defaultDistanceQuantityType);
   }

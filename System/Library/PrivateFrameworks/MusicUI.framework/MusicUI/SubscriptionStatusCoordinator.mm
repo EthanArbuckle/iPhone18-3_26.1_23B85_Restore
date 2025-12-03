@@ -1,10 +1,10 @@
 @interface SubscriptionStatusCoordinator
-- (void)subscriptionPurchaseCompleted:(id)a3;
+- (void)subscriptionPurchaseCompleted:(id)completed;
 @end
 
 @implementation SubscriptionStatusCoordinator
 
-- (void)subscriptionPurchaseCompleted:(id)a3
+- (void)subscriptionPurchaseCompleted:(id)completed
 {
   v3 = sub_217005974();
   v4 = *(v3 - 8);

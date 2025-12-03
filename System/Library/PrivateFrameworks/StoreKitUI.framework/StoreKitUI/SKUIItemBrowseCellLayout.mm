@@ -3,31 +3,31 @@
 - (NSString)indexNumberString;
 - (NSString)subtitle;
 - (NSString)title;
-- (SKUIItemBrowseCellLayout)initWithCollectionViewCell:(id)a3;
-- (SKUIItemBrowseCellLayout)initWithParentView:(id)a3;
-- (SKUIItemBrowseCellLayout)initWithTableViewCell:(id)a3;
+- (SKUIItemBrowseCellLayout)initWithCollectionViewCell:(id)cell;
+- (SKUIItemBrowseCellLayout)initWithParentView:(id)view;
+- (SKUIItemBrowseCellLayout)initWithTableViewCell:(id)cell;
 - (id)_decimalNumberFormatter;
 - (void)_initSKUIItemBrowseCellLayout;
 - (void)_reloadUserRatingViews;
 - (void)layoutForItemOfferChange;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColoringWithColorScheme:(id)a3;
-- (void)setIconImage:(id)a3;
-- (void)setImageBoundingSize:(CGSize)a3;
-- (void)setIndexNumberString:(id)a3;
-- (void)setLargeSpacing:(BOOL)a3;
-- (void)setNumberOfUserRatings:(int64_t)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUserRating:(double)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setColoringWithColorScheme:(id)scheme;
+- (void)setIconImage:(id)image;
+- (void)setImageBoundingSize:(CGSize)size;
+- (void)setIndexNumberString:(id)string;
+- (void)setLargeSpacing:(BOOL)spacing;
+- (void)setNumberOfUserRatings:(int64_t)ratings;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)setUserRating:(double)rating;
 @end
 
 @implementation SKUIItemBrowseCellLayout
 
-- (SKUIItemBrowseCellLayout)initWithCollectionViewCell:(id)a3
+- (SKUIItemBrowseCellLayout)initWithCollectionViewCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -42,7 +42,7 @@
 
   v16.receiver = self;
   v16.super_class = SKUIItemBrowseCellLayout;
-  v13 = [(SKUICellLayout *)&v16 initWithCollectionViewCell:v4];
+  v13 = [(SKUICellLayout *)&v16 initWithCollectionViewCell:cellCopy];
   v14 = v13;
   if (v13)
   {
@@ -52,9 +52,9 @@
   return v14;
 }
 
-- (SKUIItemBrowseCellLayout)initWithParentView:(id)a3
+- (SKUIItemBrowseCellLayout)initWithParentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -69,7 +69,7 @@
 
   v16.receiver = self;
   v16.super_class = SKUIItemBrowseCellLayout;
-  v13 = [(SKUICellLayout *)&v16 initWithParentView:v4];
+  v13 = [(SKUICellLayout *)&v16 initWithParentView:viewCopy];
   v14 = v13;
   if (v13)
   {
@@ -79,9 +79,9 @@
   return v14;
 }
 
-- (SKUIItemBrowseCellLayout)initWithTableViewCell:(id)a3
+- (SKUIItemBrowseCellLayout)initWithTableViewCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -96,7 +96,7 @@
 
   v16.receiver = self;
   v16.super_class = SKUIItemBrowseCellLayout;
-  v13 = [(SKUICellLayout *)&v16 initWithTableViewCell:v4];
+  v13 = [(SKUICellLayout *)&v16 initWithTableViewCell:cellCopy];
   v14 = v13;
   if (v13)
   {
@@ -108,24 +108,24 @@
 
 - (NSString)indexNumberString
 {
-  v2 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
-  v3 = [v2 text];
+  indexNumberLabel = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
+  text = [indexNumberLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setColoringWithColorScheme:(id)a3
+- (void)setColoringWithColorScheme:(id)scheme
 {
-  v4 = a3;
-  v5 = [v4 primaryTextColor];
+  schemeCopy = scheme;
+  primaryTextColor = [schemeCopy primaryTextColor];
   primaryTextColor = self->_primaryTextColor;
-  self->_primaryTextColor = v5;
+  self->_primaryTextColor = primaryTextColor;
 
-  v7 = [(SKUIItemCellLayout *)self itemOfferNoticeLabel];
-  v8 = v7;
+  itemOfferNoticeLabel = [(SKUIItemCellLayout *)self itemOfferNoticeLabel];
+  v8 = itemOfferNoticeLabel;
   if (self->_primaryTextColor)
   {
-    [v7 setTextColor:?];
+    [itemOfferNoticeLabel setTextColor:?];
   }
 
   else
@@ -134,11 +134,11 @@
     [v8 setTextColor:v9];
   }
 
-  v10 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
-  v11 = v10;
+  subtitleLabel = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
+  v11 = subtitleLabel;
   if (self->_primaryTextColor)
   {
-    [v10 setTextColor:?];
+    [subtitleLabel setTextColor:?];
   }
 
   else
@@ -147,11 +147,11 @@
     [v11 setTextColor:v12];
   }
 
-  v13 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
-  v14 = v13;
+  indexNumberLabel = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
+  v14 = indexNumberLabel;
   if (self->_primaryTextColor)
   {
-    [v13 setTextColor:?];
+    [indexNumberLabel setTextColor:?];
   }
 
   else
@@ -160,11 +160,11 @@
     [v14 setTextColor:v15];
   }
 
-  v16 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel];
-  v17 = v16;
+  userRatingLabel = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel];
+  v17 = userRatingLabel;
   if (self->_primaryTextColor)
   {
-    [v16 setTextColor:?];
+    [userRatingLabel setTextColor:?];
   }
 
   else
@@ -173,72 +173,72 @@
     [v17 setTextColor:v18];
   }
 
-  v19 = [v4 secondaryTextColor];
+  secondaryTextColor = [schemeCopy secondaryTextColor];
 
-  v20 = v19;
-  if (!v19)
+  v20 = secondaryTextColor;
+  if (!secondaryTextColor)
   {
     v20 = self->_primaryTextColor;
   }
 
   objc_storeStrong(&self->_secondaryTextColor, v20);
 
-  v21 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
-  v23 = v21;
+  titleLabel = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
+  v23 = titleLabel;
   if (self->_secondaryTextColor)
   {
-    [v21 setTextColor:?];
+    [titleLabel setTextColor:?];
   }
 
   else
   {
-    v22 = [MEMORY[0x277D75348] blackColor];
-    [v23 setTextColor:v22];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [v23 setTextColor:blackColor];
   }
 }
 
-- (void)setImageBoundingSize:(CGSize)a3
+- (void)setImageBoundingSize:(CGSize)size
 {
-  if (self->_imageBoundingSize.width != a3.width || self->_imageBoundingSize.height != a3.height)
+  if (self->_imageBoundingSize.width != size.width || self->_imageBoundingSize.height != size.height)
   {
-    self->_imageBoundingSize = a3;
+    self->_imageBoundingSize = size;
     [(SKUICellLayout *)self setNeedsLayout];
   }
 }
 
-- (void)setIndexNumberString:(id)a3
+- (void)setIndexNumberString:(id)string
 {
-  v22 = a3;
-  v4 = [(SKUIItemBrowseCellLayout *)self indexNumberString];
-  if (v4 != v22 && ([v4 isEqualToString:v22] & 1) == 0)
+  stringCopy = string;
+  indexNumberString = [(SKUIItemBrowseCellLayout *)self indexNumberString];
+  if (indexNumberString != stringCopy && ([indexNumberString isEqualToString:stringCopy] & 1) == 0)
   {
     cellContentView = self->_cellContentView;
-    if (v22)
+    if (stringCopy)
     {
-      v6 = [(_SKUIItemBrowseCellContentView *)cellContentView indexNumberLabel];
+      indexNumberLabel = [(_SKUIItemBrowseCellContentView *)cellContentView indexNumberLabel];
 
-      if (!v6)
+      if (!indexNumberLabel)
       {
         v7 = self->_cellContentView;
         v8 = objc_alloc_init(MEMORY[0x277D756B8]);
         [(_SKUIItemBrowseCellContentView *)v7 setIndexNumberLabel:v8];
 
-        v9 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
-        [v9 setAdjustsFontSizeToFitWidth:1];
+        indexNumberLabel2 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
+        [indexNumberLabel2 setAdjustsFontSizeToFitWidth:1];
 
-        v10 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
-        v11 = [(SKUICellLayout *)self parentCellView];
-        v12 = [v11 backgroundColor];
-        [v10 setBackgroundColor:v12];
+        indexNumberLabel3 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
+        parentCellView = [(SKUICellLayout *)self parentCellView];
+        backgroundColor = [parentCellView backgroundColor];
+        [indexNumberLabel3 setBackgroundColor:backgroundColor];
 
-        v13 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
-        [v13 setTextAlignment:1];
+        indexNumberLabel4 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
+        [indexNumberLabel4 setTextAlignment:1];
 
-        v14 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
-        v15 = v14;
+        indexNumberLabel5 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
+        v15 = indexNumberLabel5;
         if (self->_primaryTextColor)
         {
-          [v14 setTextColor:?];
+          [indexNumberLabel5 setTextColor:?];
         }
 
         else
@@ -248,7 +248,7 @@
         }
 
         largeSpacing = self->_largeSpacing;
-        v18 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
+        indexNumberLabel6 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
         v19 = 15.0;
         if (largeSpacing)
         {
@@ -256,11 +256,11 @@
         }
 
         v20 = [MEMORY[0x277D74300] systemFontOfSize:v19];
-        [v18 setFont:v20];
+        [indexNumberLabel6 setFont:v20];
       }
 
-      v21 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
-      [v21 setText:v22];
+      indexNumberLabel7 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
+      [indexNumberLabel7 setText:stringCopy];
     }
 
     else
@@ -272,56 +272,56 @@
   }
 }
 
-- (void)setLargeSpacing:(BOOL)a3
+- (void)setLargeSpacing:(BOOL)spacing
 {
-  if (self->_largeSpacing != a3)
+  if (self->_largeSpacing != spacing)
   {
-    self->_largeSpacing = a3;
+    self->_largeSpacing = spacing;
     [(SKUICellLayout *)self setNeedsLayout];
   }
 }
 
-- (void)setNumberOfUserRatings:(int64_t)a3
+- (void)setNumberOfUserRatings:(int64_t)ratings
 {
-  if (self->_numberOfUserRatings != a3 || ([(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  if (self->_numberOfUserRatings != ratings || ([(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
-    self->_numberOfUserRatings = a3;
+    self->_numberOfUserRatings = ratings;
 
     [(SKUIItemBrowseCellLayout *)self _reloadUserRatingViews];
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v18 = a3;
-  v4 = [(SKUIItemBrowseCellLayout *)self subtitle];
-  if (v4 != v18 && ([v4 isEqualToString:v18] & 1) == 0)
+  subtitleCopy = subtitle;
+  subtitle = [(SKUIItemBrowseCellLayout *)self subtitle];
+  if (subtitle != subtitleCopy && ([subtitle isEqualToString:subtitleCopy] & 1) == 0)
   {
     cellContentView = self->_cellContentView;
-    if (v18)
+    if (subtitleCopy)
     {
-      v6 = [(_SKUIItemBrowseCellContentView *)cellContentView subtitleLabel];
+      subtitleLabel = [(_SKUIItemBrowseCellContentView *)cellContentView subtitleLabel];
 
-      if (!v6)
+      if (!subtitleLabel)
       {
         v7 = self->_cellContentView;
         v8 = objc_alloc_init(MEMORY[0x277D756B8]);
         [(_SKUIItemBrowseCellContentView *)v7 setSubtitleLabel:v8];
 
-        v9 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
-        v10 = [(SKUICellLayout *)self parentCellView];
-        v11 = [v10 backgroundColor];
-        [v9 setBackgroundColor:v11];
+        subtitleLabel2 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
+        parentCellView = [(SKUICellLayout *)self parentCellView];
+        backgroundColor = [parentCellView backgroundColor];
+        [subtitleLabel2 setBackgroundColor:backgroundColor];
 
-        v12 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
+        subtitleLabel3 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
         v13 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-        [v12 setFont:v13];
+        [subtitleLabel3 setFont:v13];
 
-        v14 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
-        v15 = v14;
+        subtitleLabel4 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
+        v15 = subtitleLabel4;
         if (self->_primaryTextColor)
         {
-          [v14 setTextColor:?];
+          [subtitleLabel4 setTextColor:?];
         }
 
         else
@@ -331,8 +331,8 @@
         }
       }
 
-      v17 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
-      [v17 setText:v18];
+      subtitleLabel5 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
+      [subtitleLabel5 setText:subtitleCopy];
     }
 
     else
@@ -345,51 +345,51 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v19 = a3;
-  v4 = [(SKUIItemBrowseCellLayout *)self title];
-  if (v4 != v19 && ([v4 isEqualToString:v19] & 1) == 0)
+  titleCopy = title;
+  title = [(SKUIItemBrowseCellLayout *)self title];
+  if (title != titleCopy && ([title isEqualToString:titleCopy] & 1) == 0)
   {
     cellContentView = self->_cellContentView;
-    if (v19)
+    if (titleCopy)
     {
-      v6 = [(_SKUIItemBrowseCellContentView *)cellContentView titleLabel];
+      titleLabel = [(_SKUIItemBrowseCellContentView *)cellContentView titleLabel];
 
-      if (!v6)
+      if (!titleLabel)
       {
         v7 = self->_cellContentView;
         v8 = objc_alloc_init(MEMORY[0x277D756B8]);
         [(_SKUIItemBrowseCellContentView *)v7 setTitleLabel:v8];
 
-        v9 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
-        [v9 setNumberOfLines:2];
+        titleLabel2 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
+        [titleLabel2 setNumberOfLines:2];
 
-        v10 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
-        v11 = [(SKUICellLayout *)self parentCellView];
-        v12 = [v11 backgroundColor];
-        [v10 setBackgroundColor:v12];
+        titleLabel3 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
+        parentCellView = [(SKUICellLayout *)self parentCellView];
+        backgroundColor = [parentCellView backgroundColor];
+        [titleLabel3 setBackgroundColor:backgroundColor];
 
-        v13 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
+        titleLabel4 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
         v14 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
-        [v13 setFont:v14];
+        [titleLabel4 setFont:v14];
 
-        v15 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
-        v16 = v15;
+        titleLabel5 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
+        v16 = titleLabel5;
         if (self->_secondaryTextColor)
         {
-          [v15 setTextColor:?];
+          [titleLabel5 setTextColor:?];
         }
 
         else
         {
-          v17 = [MEMORY[0x277D75348] blackColor];
-          [v16 setTextColor:v17];
+          blackColor = [MEMORY[0x277D75348] blackColor];
+          [v16 setTextColor:blackColor];
         }
       }
 
-      v18 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
-      [v18 setText:v19];
+      titleLabel6 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
+      [titleLabel6 setText:titleCopy];
     }
 
     else
@@ -401,11 +401,11 @@
   }
 }
 
-- (void)setUserRating:(double)a3
+- (void)setUserRating:(double)rating
 {
-  if (self->_userRating != a3 || ([(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingImageView], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  if (self->_userRating != rating || ([(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingImageView], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
-    self->_userRating = a3;
+    self->_userRating = rating;
 
     [(SKUIItemBrowseCellLayout *)self _reloadUserRatingViews];
   }
@@ -413,45 +413,45 @@
 
 - (NSString)subtitle
 {
-  v2 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
-  v3 = [v2 text];
+  subtitleLabel = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
+  text = [subtitleLabel text];
 
-  return v3;
+  return text;
 }
 
 - (NSString)title
 {
-  v2 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
 - (void)layoutForItemOfferChange
 {
-  v3 = [(SKUICellLayout *)self contentView];
-  [v3 bounds];
+  contentView = [(SKUICellLayout *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
 
-  v24 = [(SKUIItemCellLayout *)self itemOfferButton];
-  [v24 frame];
-  [v24 sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
+  itemOfferButton = [(SKUIItemCellLayout *)self itemOfferButton];
+  [itemOfferButton frame];
+  [itemOfferButton sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
   v9 = v8;
   v11 = v10;
   v12 = *(MEMORY[0x277CBF3A0] + 16);
   v13 = *(MEMORY[0x277CBF3A0] + 24);
-  v14 = [(SKUIItemCellLayout *)self itemOfferNoticeLabel];
-  if ([v14 isHidden])
+  itemOfferNoticeLabel = [(SKUIItemCellLayout *)self itemOfferNoticeLabel];
+  if ([itemOfferNoticeLabel isHidden])
   {
 
-    v14 = 0;
+    itemOfferNoticeLabel = 0;
   }
 
-  else if (v14)
+  else if (itemOfferNoticeLabel)
   {
-    [v14 frame];
-    [v14 sizeThatFits:{v9 + 10.0, 1.79769313e308}];
+    [itemOfferNoticeLabel frame];
+    [itemOfferNoticeLabel sizeThatFits:{v9 + 10.0, 1.79769313e308}];
     v12 = v15;
     v13 = v16;
     v17 = v11 + v16 + 3.0;
@@ -470,8 +470,8 @@ LABEL_6:
   v26.size.width = v9;
   v26.size.height = v11;
   v23 = CGRectGetMaxY(v26) + 3.0;
-  [v24 setFrame:{v20, v19, v9, v11}];
-  [v14 setFrame:{v22, v23, v12, v13}];
+  [itemOfferButton setFrame:{v20, v19, v9, v11}];
+  [itemOfferNoticeLabel setFrame:{v22, v23, v12, v13}];
 }
 
 - (void)layoutSubviews
@@ -479,8 +479,8 @@ LABEL_6:
   v85.receiver = self;
   v85.super_class = SKUIItemBrowseCellLayout;
   [(SKUICellLayout *)&v85 layoutSubviews];
-  v3 = [(SKUICellLayout *)self contentView];
-  [v3 bounds];
+  contentView = [(SKUICellLayout *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -488,12 +488,12 @@ LABEL_6:
 
   [(_SKUIItemBrowseCellContentView *)self->_cellContentView setFrame:v5, v7, v9, v11];
   [(_SKUIItemBrowseCellContentView *)self->_cellContentView setNeedsDisplay];
-  v12 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
+  indexNumberLabel = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
 
-  if (v12)
+  if (indexNumberLabel)
   {
-    v13 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
-    [v13 frame];
+    indexNumberLabel2 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
+    [indexNumberLabel2 frame];
 
     if (self->_largeSpacing)
     {
@@ -517,8 +517,8 @@ LABEL_6:
 
     v16 = (v11 - v14) * 0.5;
     v17 = floorf(v16);
-    v18 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
-    [v18 setFrame:{10.0, v17, v15, v14}];
+    indexNumberLabel3 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView indexNumberLabel];
+    [indexNumberLabel3 setFrame:{10.0, v17, v15, v14}];
 
     v86.origin.x = 10.0;
     v86.origin.y = v17;
@@ -532,11 +532,11 @@ LABEL_6:
     v19 = 15.0;
   }
 
-  v20 = [(SKUIItemCellLayout *)self iconImageView];
-  v21 = v20;
-  if (v20)
+  iconImageView = [(SKUIItemCellLayout *)self iconImageView];
+  v21 = iconImageView;
+  if (iconImageView)
   {
-    [v20 frame];
+    [iconImageView frame];
     width = self->_imageBoundingSize.width;
     if (width <= 0.00000011920929)
     {
@@ -565,28 +565,28 @@ LABEL_6:
   v88.size.width = v9;
   v88.size.height = v11;
   MaxX = CGRectGetMaxX(v88);
-  v29 = [(SKUIItemCellLayout *)self itemOfferNoticeLabel];
-  if ([v29 isHidden])
+  itemOfferNoticeLabel = [(SKUIItemCellLayout *)self itemOfferNoticeLabel];
+  if ([itemOfferNoticeLabel isHidden])
   {
 
-    v29 = 0;
+    itemOfferNoticeLabel = 0;
   }
 
   else if (self->_primaryTextColor)
   {
-    [v29 setTextColor:?];
+    [itemOfferNoticeLabel setTextColor:?];
   }
 
   else
   {
     v30 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
-    [v29 setTextColor:v30];
+    [itemOfferNoticeLabel setTextColor:v30];
   }
 
   v31 = MaxX + -15.0;
-  v32 = [(SKUIItemCellLayout *)self itemOfferButton];
-  v33 = v32;
-  if (v32 && ([v32 isHidden] & 1) == 0)
+  itemOfferButton = [(SKUIItemCellLayout *)self itemOfferButton];
+  v33 = itemOfferButton;
+  if (itemOfferButton && ([itemOfferButton isHidden] & 1) == 0)
   {
     [v33 frame];
     v35 = v34;
@@ -594,9 +594,9 @@ LABEL_6:
     [v33 layoutSizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
     v84 = v38;
     v39 = v11;
-    if (v29)
+    if (itemOfferNoticeLabel)
     {
-      [v29 sizeThatFits:{v38 + 10.0, 1.79769313e308}];
+      [itemOfferNoticeLabel sizeThatFits:{v38 + 10.0, 1.79769313e308}];
       v41 = v40;
       v83 = v42;
       v43 = v37 + v42 + 3.0;
@@ -625,33 +625,33 @@ LABEL_6:
     v52 = v44;
     v11 = v39;
     [v33 setFrame:{v52, v46, v35, v50}];
-    [v29 setFrame:{v48, v51, v41, v83}];
+    [itemOfferNoticeLabel setFrame:{v48, v51, v41, v83}];
     v31 = v82 - v84 + -15.0;
   }
 
-  v53 = [(SKUIItemCellLayout *)self removeControlView];
-  v54 = v53;
-  if (v53)
+  removeControlView = [(SKUIItemCellLayout *)self removeControlView];
+  v54 = removeControlView;
+  if (removeControlView)
   {
-    [v53 frame];
+    [removeControlView frame];
     v31 = v55 + -15.0;
   }
 
   v56 = v31 - v19;
-  v57 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
-  [v57 sizeThatFits:{v31 - v19, 1.79769313e308}];
+  titleLabel = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
+  [titleLabel sizeThatFits:{v31 - v19, 1.79769313e308}];
   v59 = v58;
 
-  v60 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingImageView];
-  v61 = v60;
+  userRatingImageView = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingImageView];
+  v61 = userRatingImageView;
   v62 = 0.0;
-  if (v60 && ([v60 isHidden] & 1) == 0)
+  if (userRatingImageView && ([userRatingImageView isHidden] & 1) == 0)
   {
     [v61 frame];
     v62 = v63;
   }
 
-  v64 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel];
+  userRatingLabel = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel];
 
   if (v62 >= 16.0)
   {
@@ -663,7 +663,7 @@ LABEL_6:
     v65 = 16.0;
   }
 
-  if (v64)
+  if (userRatingLabel)
   {
     v62 = v65;
   }
@@ -676,15 +676,15 @@ LABEL_6:
 
   v67 = (v11 - (v59 + 1.0 + 16.0 + v66)) * 0.5;
   v68 = ceilf(v67);
-  v69 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
+  titleLabel2 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
 
-  if (v69)
+  if (titleLabel2)
   {
-    v70 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
-    [v70 frame];
+    titleLabel3 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
+    [titleLabel3 frame];
 
-    v71 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
-    [v71 setFrame:{v19, v68, v31 - v19, v59}];
+    titleLabel4 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView titleLabel];
+    [titleLabel4 setFrame:{v19, v68, v31 - v19, v59}];
 
     v90.origin.x = v19;
     v90.origin.y = v68;
@@ -693,15 +693,15 @@ LABEL_6:
     v68 = CGRectGetMaxY(v90) + 1.0;
   }
 
-  v72 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
+  subtitleLabel = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
 
-  if (v72)
+  if (subtitleLabel)
   {
-    v73 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
-    [v73 frame];
+    subtitleLabel2 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
+    [subtitleLabel2 frame];
 
-    v74 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
-    [v74 setFrame:{v19, v68, v31 - v19, 16.0}];
+    subtitleLabel3 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView subtitleLabel];
+    [subtitleLabel3 setFrame:{v19, v68, v31 - v19, 16.0}];
 
     v91.size.height = 16.0;
     v91.origin.x = v19;
@@ -717,12 +717,12 @@ LABEL_6:
     [v61 setFrame:{v19, v68 + 1.0 + floorf(v76)}];
   }
 
-  v77 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel];
+  userRatingLabel2 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel];
 
-  if (v77)
+  if (userRatingLabel2)
   {
-    v78 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel];
-    [v78 frame];
+    userRatingLabel3 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel];
+    [userRatingLabel3 frame];
 
     if (v61 && ([v61 isHidden] & 1) == 0)
     {
@@ -733,32 +733,32 @@ LABEL_6:
 
     v79 = (v62 + -16.0) * 0.5;
     v80 = v68 + floorf(v79);
-    v81 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel];
-    [v81 setFrame:{v19, v80, v56, 16.0}];
+    userRatingLabel4 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel];
+    [userRatingLabel4 setFrame:{v19, v80, v56, 16.0}];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   cellContentView = self->_cellContentView;
-  v5 = a3;
-  [(_SKUIItemBrowseCellContentView *)cellContentView setBackgroundColor:v5];
+  colorCopy = color;
+  [(_SKUIItemBrowseCellContentView *)cellContentView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUIItemBrowseCellLayout;
-  [(SKUIItemCellLayout *)&v6 setBackgroundColor:v5];
+  [(SKUIItemCellLayout *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
   v7.receiver = self;
   v7.super_class = SKUIItemBrowseCellLayout;
-  [(SKUIItemCellLayout *)&v7 setIconImage:a3];
-  v4 = [(SKUIItemCellLayout *)self iconImageView];
-  [v4 setContentMode:4];
+  [(SKUIItemCellLayout *)&v7 setIconImage:image];
+  iconImageView = [(SKUIItemCellLayout *)self iconImageView];
+  [iconImageView setContentMode:4];
 
-  v5 = [(SKUICellLayout *)self contentView];
-  v6 = [(SKUIItemCellLayout *)self iconImageView];
-  [v5 insertSubview:v6 aboveSubview:self->_cellContentView];
+  contentView = [(SKUICellLayout *)self contentView];
+  iconImageView2 = [(SKUIItemCellLayout *)self iconImageView];
+  [contentView insertSubview:iconImageView2 aboveSubview:self->_cellContentView];
 }
 
 - (id)_decimalNumberFormatter
@@ -786,27 +786,27 @@ uint64_t __51__SKUIItemBrowseCellLayout__decimalNumberFormatter__block_invoke()
 
 - (void)_initSKUIItemBrowseCellLayout
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  self->_largeSpacing = [v3 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  self->_largeSpacing = [currentDevice userInterfaceIdiom] == 1;
 
   v4 = objc_alloc_init(_SKUIItemBrowseCellContentView);
   cellContentView = self->_cellContentView;
   self->_cellContentView = v4;
 
-  v6 = [(SKUICellLayout *)self contentView];
-  [v6 addSubview:self->_cellContentView];
+  contentView = [(SKUICellLayout *)self contentView];
+  [contentView addSubview:self->_cellContentView];
 }
 
 - (void)_reloadUserRatingViews
 {
-  v20 = [(SKUICellLayout *)self parentCellView];
-  v3 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel];
+  parentCellView = [(SKUICellLayout *)self parentCellView];
+  userRatingLabel = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel];
 
-  if (!v3)
+  if (!userRatingLabel)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
-    v5 = [v20 backgroundColor];
-    [v4 setBackgroundColor:v5];
+    backgroundColor = [parentCellView backgroundColor];
+    [v4 setBackgroundColor:backgroundColor];
 
     v6 = [MEMORY[0x277D74300] systemFontOfSize:10.0];
     [v4 setFont:v6];
@@ -827,42 +827,42 @@ uint64_t __51__SKUIItemBrowseCellLayout__decimalNumberFormatter__block_invoke()
 
   if (self->_numberOfUserRatings)
   {
-    v8 = [(SKUIItemBrowseCellLayout *)self _decimalNumberFormatter];
-    v9 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel];
+    _decimalNumberFormatter = [(SKUIItemBrowseCellLayout *)self _decimalNumberFormatter];
+    userRatingLabel2 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel];
     v10 = MEMORY[0x277CCACA8];
     v11 = [MEMORY[0x277CCABB0] numberWithInteger:self->_numberOfUserRatings];
-    v12 = [v8 stringFromNumber:v11];
+    v12 = [_decimalNumberFormatter stringFromNumber:v11];
     v13 = [v10 stringWithFormat:@"(%@)", v12];
-    [v9 setText:v13];
+    [userRatingLabel2 setText:v13];
 
-    v14 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingImageView];
-    if (!v14)
+    userRatingImageView = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingImageView];
+    if (!userRatingImageView)
     {
-      v14 = objc_alloc_init(SKUICellImageView);
-      [(_SKUIItemBrowseCellContentView *)self->_cellContentView setUserRatingImageView:v14];
-      v15 = [v20 backgroundColor];
-      [(SKUICellImageView *)v14 setBackgroundColor:v15];
+      userRatingImageView = objc_alloc_init(SKUICellImageView);
+      [(_SKUIItemBrowseCellContentView *)self->_cellContentView setUserRatingImageView:userRatingImageView];
+      backgroundColor2 = [parentCellView backgroundColor];
+      [(SKUICellImageView *)userRatingImageView setBackgroundColor:backgroundColor2];
     }
 
     v16 = [SKUIRatingStarsCache cacheWithProperties:1];
-    [(SKUICellImageView *)v14 setHidden:0];
+    [(SKUICellImageView *)userRatingImageView setHidden:0];
     v17 = [v16 ratingStarsImageForRating:self->_userRating];
-    [(SKUICellImageView *)v14 setImage:v17];
+    [(SKUICellImageView *)userRatingImageView setImage:v17];
 
-    [(SKUICellImageView *)v14 sizeToFit];
+    [(SKUICellImageView *)userRatingImageView sizeToFit];
   }
 
   else
   {
-    v18 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingImageView];
-    [v18 setHidden:1];
+    userRatingImageView2 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingImageView];
+    [userRatingImageView2 setHidden:1];
 
-    v8 = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel];
-    v19 = [(SKUICellLayout *)self clientContext];
-    v14 = v19;
-    if (v19)
+    _decimalNumberFormatter = [(_SKUIItemBrowseCellContentView *)self->_cellContentView userRatingLabel];
+    clientContext = [(SKUICellLayout *)self clientContext];
+    userRatingImageView = clientContext;
+    if (clientContext)
     {
-      [(SKUICellImageView *)v19 localizedStringForKey:@"NO_RATINGS"];
+      [(SKUICellImageView *)clientContext localizedStringForKey:@"NO_RATINGS"];
     }
 
     else
@@ -870,7 +870,7 @@ uint64_t __51__SKUIItemBrowseCellLayout__decimalNumberFormatter__block_invoke()
       [SKUIClientContext localizedStringForKey:@"NO_RATINGS" inBundles:0];
     }
     v16 = ;
-    [v8 setText:v16];
+    [_decimalNumberFormatter setText:v16];
   }
 
   [(SKUICellLayout *)self setNeedsLayout];

@@ -1,48 +1,48 @@
 @interface CompactWidthMonthViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
-- (void)showDate:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
+- (void)showDate:(id)date animated:(BOOL)animated completionBlock:(id)block;
 @end
 
 @implementation CompactWidthMonthViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CompactMonthWeekView"];
-  [v3 validateClass:@"CompactWidthMonthViewController" isKindOfClass:@"InfiniteScrollViewController"];
-  [v3 validateClass:@"CompactWidthMonthViewController" isKindOfClass:@"MonthViewController"];
-  [v3 validateClass:@"CompactWidthMonthViewController" hasInstanceMethod:@"showDate: animated: completionBlock:" withFullSignature:{"v", "@", "B", "@?", 0}];
-  [v3 validateClass:@"InfiniteScrollViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CompactMonthWeekView"];
+  [validationsCopy validateClass:@"CompactWidthMonthViewController" isKindOfClass:@"InfiniteScrollViewController"];
+  [validationsCopy validateClass:@"CompactWidthMonthViewController" isKindOfClass:@"MonthViewController"];
+  [validationsCopy validateClass:@"CompactWidthMonthViewController" hasInstanceMethod:@"showDate: animated: completionBlock:" withFullSignature:{"v", "@", "B", "@?", 0}];
+  [validationsCopy validateClass:@"InfiniteScrollViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
   v4 = MEMORY[0x29EDBA0F8];
   v5 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:"^{CGPoint=dd}"];
   v7 = [v4 stringWithFormat:@"N%@", v5];
 
   v6 = v7;
-  [v3 validateClass:@"InfiniteScrollViewController" hasInstanceMethod:@"willEndDraggingWithVelocity: targetContentOffset:" withFullSignature:{"v", "{CGPoint=dd}", objc_msgSend(v7, "UTF8String"), 0}];
-  [v3 validateClass:@"InfiniteScrollViewController" isKindOfClass:@"MainViewController"];
-  [v3 validateClass:@"MainViewController" hasInstanceMethod:@"model" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CUIKCalendarModel" hasInstanceMethod:@"selectedDate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CompactMonthWeekView" hasInstanceVariable:@"_today" withType:"CompactMonthWeekDayNumber"];
-  [v3 validateClass:@"CompactWidthMonthViewController" hasInstanceVariable:@"_dividedListMode" withType:"B"];
+  [validationsCopy validateClass:@"InfiniteScrollViewController" hasInstanceMethod:@"willEndDraggingWithVelocity: targetContentOffset:" withFullSignature:{"v", "{CGPoint=dd}", objc_msgSend(v7, "UTF8String"), 0}];
+  [validationsCopy validateClass:@"InfiniteScrollViewController" isKindOfClass:@"MainViewController"];
+  [validationsCopy validateClass:@"MainViewController" hasInstanceMethod:@"model" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CUIKCalendarModel" hasInstanceMethod:@"selectedDate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CompactMonthWeekView" hasInstanceVariable:@"_today" withType:"CompactMonthWeekDayNumber"];
+  [validationsCopy validateClass:@"CompactWidthMonthViewController" hasInstanceVariable:@"_dividedListMode" withType:"B"];
 }
 
-- (void)showDate:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)showDate:(id)date animated:(BOOL)animated completionBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  blockCopy = block;
   v13[0] = MEMORY[0x29EDCA5F8];
   v13[1] = 3221225472;
   v13[2] = __82__CompactWidthMonthViewControllerAccessibility_showDate_animated_completionBlock___block_invoke;
   v13[3] = &unk_29F2D29D8;
   v13[4] = self;
-  v14 = v8;
-  v9 = v8;
-  v10 = a3;
+  v14 = blockCopy;
+  v9 = blockCopy;
+  dateCopy = date;
   v11 = MEMORY[0x29C2DF650](v13);
   v12.receiver = self;
   v12.super_class = CompactWidthMonthViewControllerAccessibility;
-  [(CompactWidthMonthViewControllerAccessibility *)&v12 showDate:v10 animated:v5 completionBlock:v11];
+  [(CompactWidthMonthViewControllerAccessibility *)&v12 showDate:dateCopy animated:animatedCopy completionBlock:v11];
 }
 
 void __82__CompactWidthMonthViewControllerAccessibility_showDate_animated_completionBlock___block_invoke(uint64_t a1)
@@ -89,17 +89,17 @@ BOOL __82__CompactWidthMonthViewControllerAccessibility_showDate_animated_comple
   return v4;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   v5 = [(CompactWidthMonthViewControllerAccessibility *)self safeBoolForKey:@"_dividedListMode"];
-  if ((a3 - 3) <= 1 && v5)
+  if ((scroll - 3) <= 1 && v5)
   {
     v12 = MEMORY[0x29EDCA5F8];
     v13 = 3221225472;
     v14 = __68__CompactWidthMonthViewControllerAccessibility_accessibilityScroll___block_invoke;
     v15 = &unk_29F2D2A28;
-    v16 = self;
-    v17 = a3;
+    selfCopy = self;
+    scrollCopy = scroll;
     AXPerformSafeBlock();
     v6 = [(CompactWidthMonthViewControllerAccessibility *)self safeValueForKey:@"model"];
     v7 = [v6 safeValueForKey:@"selectedDate"];
@@ -107,7 +107,7 @@ BOOL __82__CompactWidthMonthViewControllerAccessibility_showDate_animated_comple
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v7 date];
+      date = [v7 date];
       v9 = AXDateStringForFormat();
     }
 
@@ -126,7 +126,7 @@ BOOL __82__CompactWidthMonthViewControllerAccessibility_showDate_animated_comple
   {
     v11.receiver = self;
     v11.super_class = CompactWidthMonthViewControllerAccessibility;
-    return [(CompactWidthMonthViewControllerAccessibility *)&v11 accessibilityScroll:a3];
+    return [(CompactWidthMonthViewControllerAccessibility *)&v11 accessibilityScroll:scroll];
   }
 }
 

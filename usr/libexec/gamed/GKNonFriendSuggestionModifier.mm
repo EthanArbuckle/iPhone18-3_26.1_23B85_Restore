@@ -1,24 +1,24 @@
 @interface GKNonFriendSuggestionModifier
-- (GKNonFriendSuggestionModifier)initWithContactsController:(id)a3 transactionGroupProvider:(id)a4;
-- (id)modifySuggestions:(id)a3;
-- (id)nonFriendSuggestionsFromInitialSuggestions:(id)a3;
-- (void)populateContactAssocicationIDsForSuggestions:(id)a3 contactAssociationIDMap:(id)a4;
+- (GKNonFriendSuggestionModifier)initWithContactsController:(id)controller transactionGroupProvider:(id)provider;
+- (id)modifySuggestions:(id)suggestions;
+- (id)nonFriendSuggestionsFromInitialSuggestions:(id)suggestions;
+- (void)populateContactAssocicationIDsForSuggestions:(id)suggestions contactAssociationIDMap:(id)map;
 @end
 
 @implementation GKNonFriendSuggestionModifier
 
-- (GKNonFriendSuggestionModifier)initWithContactsController:(id)a3 transactionGroupProvider:(id)a4
+- (GKNonFriendSuggestionModifier)initWithContactsController:(id)controller transactionGroupProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = GKNonFriendSuggestionModifier;
   v9 = [(GKNonFriendSuggestionModifier *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contactsController, a3);
-    v11 = objc_retainBlock(v8);
+    objc_storeStrong(&v9->_contactsController, controller);
+    v11 = objc_retainBlock(providerCopy);
     transactionGroupProvider = v10->_transactionGroupProvider;
     v10->_transactionGroupProvider = v11;
   }
@@ -26,17 +26,17 @@
   return v10;
 }
 
-- (id)modifySuggestions:(id)a3
+- (id)modifySuggestions:(id)suggestions
 {
-  v4 = a3;
-  if ([v4 count])
+  suggestionsCopy = suggestions;
+  if ([suggestionsCopy count])
   {
-    v5 = [(GKNonFriendSuggestionModifier *)self nonFriendSuggestionsFromInitialSuggestions:v4];
+    v5 = [(GKNonFriendSuggestionModifier *)self nonFriendSuggestionsFromInitialSuggestions:suggestionsCopy];
   }
 
   else
   {
-    v5 = v4;
+    v5 = suggestionsCopy;
   }
 
   v6 = v5;
@@ -44,24 +44,24 @@
   return v6;
 }
 
-- (id)nonFriendSuggestionsFromInitialSuggestions:(id)a3
+- (id)nonFriendSuggestionsFromInitialSuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = [v4 _gkValuesForKeyPath:@"contactID"];
+  suggestionsCopy = suggestions;
+  v5 = [suggestionsCopy _gkValuesForKeyPath:@"contactID"];
   v6 = [NSString stringWithFormat:@"%s:%d %s", "GKNonFriendSuggestionModifier.m", 55, "[GKNonFriendSuggestionModifier nonFriendSuggestionsFromInitialSuggestions:]"];
   v7 = [GKDispatchGroup dispatchGroupWithName:v6];
 
-  v8 = [(GKNonFriendSuggestionModifier *)self contactsController];
-  v9 = [v8 contactStore];
-  v10 = [v9 _gkContactsWithContactIDs:v5];
-  v11 = [v10 allObjects];
+  contactsController = [(GKNonFriendSuggestionModifier *)self contactsController];
+  contactStore = [contactsController contactStore];
+  v10 = [contactStore _gkContactsWithContactIDs:v5];
+  allObjects = [v10 allObjects];
 
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_100179B08;
   v39[3] = &unk_100360F00;
   v39[4] = self;
-  v12 = v11;
+  v12 = allObjects;
   v40 = v12;
   v13 = v7;
   v41 = v13;
@@ -69,8 +69,8 @@
   [v13 wait];
   v14 = [v13 objectForKeyedSubscript:@"relationships"];
   v15 = [v13 objectForKeyedSubscript:@"contactAssociationIDMap"];
-  v16 = [v13 error];
-  if (v16)
+  error = [v13 error];
+  if (error)
   {
     if (!os_log_GKGeneral)
     {
@@ -80,11 +80,11 @@
     v18 = os_log_GKContacts;
     if (os_log_type_enabled(os_log_GKContacts, OS_LOG_TYPE_DEBUG))
     {
-      sub_100294570(v16, v18);
+      sub_100294570(error, v18);
     }
   }
 
-  [(GKNonFriendSuggestionModifier *)self populateContactAssocicationIDsForSuggestions:v4 contactAssociationIDMap:v15];
+  [(GKNonFriendSuggestionModifier *)self populateContactAssocicationIDsForSuggestions:suggestionsCopy contactAssociationIDMap:v15];
   if ([v14 count])
   {
     v30 = v15;
@@ -113,8 +113,8 @@
           v25 = *(*(&v35 + 1) + 8 * i);
           if ([v25 relationship] != 2)
           {
-            v26 = [v25 handle];
-            [v19 addObject:v26];
+            handle = [v25 handle];
+            [v19 addObject:handle];
           }
         }
 
@@ -130,7 +130,7 @@
     v33[3] = &unk_100365F20;
     v34 = v19;
     v27 = v19;
-    v28 = [v4 _gkFilterWithBlock:v33];
+    v28 = [suggestionsCopy _gkFilterWithBlock:v33];
 
     v12 = v31;
     v5 = v32;
@@ -139,23 +139,23 @@
 
   else
   {
-    v28 = v4;
+    v28 = suggestionsCopy;
   }
 
   return v28;
 }
 
-- (void)populateContactAssocicationIDsForSuggestions:(id)a3 contactAssociationIDMap:(id)a4
+- (void)populateContactAssocicationIDsForSuggestions:(id)suggestions contactAssociationIDMap:(id)map
 {
-  v5 = a3;
-  v26 = a4;
-  v6 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
-  v7 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v5 count]);
+  suggestionsCopy = suggestions;
+  mapCopy = map;
+  v6 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(suggestionsCopy, "count")}];
+  v7 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [suggestionsCopy count]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = v5;
+  v8 = suggestionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v9)
   {
@@ -171,11 +171,11 @@
         }
 
         v13 = *(*(&v31 + 1) + 8 * i);
-        v14 = [v13 prefixedHandle];
-        if ([v14 length])
+        prefixedHandle = [v13 prefixedHandle];
+        if ([prefixedHandle length])
         {
-          v15 = [v13 prefixedHandle];
-          [v6 addObject:v15];
+          prefixedHandle2 = [v13 prefixedHandle];
+          [v6 addObject:prefixedHandle2];
         }
       }
 
@@ -205,15 +205,15 @@
         }
 
         v21 = *(*(&v27 + 1) + 8 * j);
-        v22 = [v21 prefixedHandle];
-        if ([v22 length])
+        prefixedHandle3 = [v21 prefixedHandle];
+        if ([prefixedHandle3 length])
         {
-          v23 = [v21 contactAssociationID];
-          v24 = [v23 length];
+          contactAssociationID = [v21 contactAssociationID];
+          v24 = [contactAssociationID length];
 
           if (!v24)
           {
-            v25 = [v26 objectForKeyedSubscript:v22];
+            v25 = [mapCopy objectForKeyedSubscript:prefixedHandle3];
             if ([v25 length] && (objc_msgSend(v7, "containsObject:", v25) & 1) == 0)
             {
               [v21 setContactAssociationID:v25];

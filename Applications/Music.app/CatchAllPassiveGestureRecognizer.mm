@@ -1,12 +1,12 @@
 @interface CatchAllPassiveGestureRecognizer
-- (_TtC5Music32CatchAllPassiveGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtC5Music32CatchAllPassiveGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 @end
 
 @implementation CatchAllPassiveGestureRecognizer
 
-- (_TtC5Music32CatchAllPassiveGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC5Music32CatchAllPassiveGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -18,7 +18,7 @@
     memset(v6, 0, sizeof(v6));
   }
 
-  return sub_100658FA4(v6, a4);
+  return sub_100658FA4(v6, action);
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface ATXDefaultHomeScreenItemUpdater
 + (NSDictionary)assets;
-+ (id)atxHomeScreenStackConfigFromATXWidgetStack:(id)a3;
-+ (id)atxHomeScreenWidgetIdentifierFromATXWidget:(id)a3;
-- (ATXDefaultHomeScreenItemUpdater)initWithSpotlightAppLaunchHistogram:(id)a3;
++ (id)atxHomeScreenStackConfigFromATXWidgetStack:(id)stack;
++ (id)atxHomeScreenWidgetIdentifierFromATXWidget:(id)widget;
+- (ATXDefaultHomeScreenItemUpdater)initWithSpotlightAppLaunchHistogram:(id)histogram;
 - (BOOL)_isDayZeroExperience;
 - (id)_retrieveLastUpdateDate;
-- (void)_updateAllDefaultsOnQueueWithReason:(id)a3 updateCarPlayDefaults:(BOOL)a4;
-- (void)_updateAmbientDefaultsOnQueueWithReason:(id)a3 appLaunchCounts:(id)a4;
-- (void)_updateCarPlayDefaultsOnQueueWithReason:(id)a3 appLaunchCounts:(id)a4;
-- (void)_updateHomeScreenDefaultsOnQueueWithReason:(id)a3 appLaunchCounts:(id)a4;
+- (void)_updateAllDefaultsOnQueueWithReason:(id)reason updateCarPlayDefaults:(BOOL)defaults;
+- (void)_updateAmbientDefaultsOnQueueWithReason:(id)reason appLaunchCounts:(id)counts;
+- (void)_updateCarPlayDefaultsOnQueueWithReason:(id)reason appLaunchCounts:(id)counts;
+- (void)_updateHomeScreenDefaultsOnQueueWithReason:(id)reason appLaunchCounts:(id)counts;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)updateDefaultsDueToAmbientConfigUpdate;
 - (void)updateDefaultsDueToCarPlayConfigUpdate;
 - (void)updateDefaultsDueToRelevantHomeScreenConfigUpdate;
-- (void)updateDefaultsIfNeededWithSystemDescriptors:(id)a3 installDatesCache:(id)a4 reason:(id)a5;
-- (void)updateDefaultsWithSystemDescriptors:(id)a3 updateCarPlayDefaults:(BOOL)a4 installDatesCache:(id)a5 reason:(id)a6;
+- (void)updateDefaultsIfNeededWithSystemDescriptors:(id)descriptors installDatesCache:(id)cache reason:(id)reason;
+- (void)updateDefaultsWithSystemDescriptors:(id)descriptors updateCarPlayDefaults:(BOOL)defaults installDatesCache:(id)cache reason:(id)reason;
 @end
 
 @implementation ATXDefaultHomeScreenItemUpdater
 
-- (ATXDefaultHomeScreenItemUpdater)initWithSpotlightAppLaunchHistogram:(id)a3
+- (ATXDefaultHomeScreenItemUpdater)initWithSpotlightAppLaunchHistogram:(id)histogram
 {
-  v5 = a3;
+  histogramCopy = histogram;
   v14.receiver = self;
   v14.super_class = ATXDefaultHomeScreenItemUpdater;
   v6 = [(ATXDefaultHomeScreenItemUpdater *)&v14 init];
@@ -33,7 +33,7 @@
     internalQueue = v6->_internalQueue;
     v6->_internalQueue = v8;
 
-    objc_storeStrong(&v6->_spotlightAppLaunchHistogram, a3);
+    objc_storeStrong(&v6->_spotlightAppLaunchHistogram, histogram);
     if ([MEMORY[0x1E69C5CF8] isInternalBuild])
     {
       v10 = objc_alloc(MEMORY[0x1E695E000]);
@@ -60,12 +60,12 @@
   [(ATXDefaultHomeScreenItemUpdater *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"ATXWidgetsForceDayZeroAddSheet"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"ATXWidgetsForceDayZeroAddSheet"])
   {
     v13 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -81,7 +81,7 @@
   {
     v14.receiver = self;
     v14.super_class = ATXDefaultHomeScreenItemUpdater;
-    [(ATXDefaultHomeScreenItemUpdater *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(ATXDefaultHomeScreenItemUpdater *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -92,22 +92,22 @@
   return [ATXAssets2 dictionaryForClass:v2];
 }
 
-- (void)updateDefaultsIfNeededWithSystemDescriptors:(id)a3 installDatesCache:(id)a4 reason:(id)a5
+- (void)updateDefaultsIfNeededWithSystemDescriptors:(id)descriptors installDatesCache:(id)cache reason:(id)reason
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  descriptorsCopy = descriptors;
+  cacheCopy = cache;
+  reasonCopy = reason;
+  if (descriptorsCopy)
   {
-    v11 = [(ATXDefaultHomeScreenItemUpdater *)self _retrieveLastUpdateDate];
-    v12 = [MEMORY[0x1E695DEE8] currentCalendar];
+    _retrieveLastUpdateDate = [(ATXDefaultHomeScreenItemUpdater *)self _retrieveLastUpdateDate];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     v13 = [MEMORY[0x1E695DF00] now];
-    v14 = [v12 dateByAddingUnit:16 value:-1 toDate:v13 options:0];
+    v14 = [currentCalendar dateByAddingUnit:16 value:-1 toDate:v13 options:0];
 
-    if (!v11 || ([v14 earlierDate:v11], v15 = objc_claimAutoreleasedReturnValue(), v15, v15 == v11))
+    if (!_retrieveLastUpdateDate || ([v14 earlierDate:_retrieveLastUpdateDate], v15 = objc_claimAutoreleasedReturnValue(), v15, v15 == _retrieveLastUpdateDate))
     {
-      [(ATXDefaultHomeScreenItemUpdater *)self updateDefaultsWithSystemDescriptors:v8 updateCarPlayDefaults:1 installDatesCache:v9 reason:v10];
+      [(ATXDefaultHomeScreenItemUpdater *)self updateDefaultsWithSystemDescriptors:descriptorsCopy updateCarPlayDefaults:1 installDatesCache:cacheCopy reason:reasonCopy];
     }
 
     else
@@ -116,19 +116,19 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412290;
-        v18 = v11;
+        v18 = _retrieveLastUpdateDate;
         _os_log_impl(&dword_1BF549000, v16, OS_LOG_TYPE_DEFAULT, "ATXDefaultHomeScreenItemUpdater: Not updating stack and widget suggestions because last update was recent (%@)", &v17, 0xCu);
       }
     }
   }
 }
 
-- (void)updateDefaultsWithSystemDescriptors:(id)a3 updateCarPlayDefaults:(BOOL)a4 installDatesCache:(id)a5 reason:(id)a6
+- (void)updateDefaultsWithSystemDescriptors:(id)descriptors updateCarPlayDefaults:(BOOL)defaults installDatesCache:(id)cache reason:(id)reason
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v10)
+  descriptorsCopy = descriptors;
+  cacheCopy = cache;
+  reasonCopy = reason;
+  if (descriptorsCopy)
   {
     v13 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -143,10 +143,10 @@
     block[2] = __118__ATXDefaultHomeScreenItemUpdater_updateDefaultsWithSystemDescriptors_updateCarPlayDefaults_installDatesCache_reason___block_invoke;
     block[3] = &unk_1E80C41E8;
     block[4] = self;
-    v16 = v10;
-    v17 = v11;
-    v18 = v12;
-    v19 = a4;
+    v16 = descriptorsCopy;
+    v17 = cacheCopy;
+    v18 = reasonCopy;
+    defaultsCopy = defaults;
     dispatch_async(internalQueue, block);
   }
 }
@@ -249,38 +249,38 @@ void __73__ATXDefaultHomeScreenItemUpdater_updateDefaultsDueToCarPlayConfigUpdat
   }
 }
 
-- (void)_updateAllDefaultsOnQueueWithReason:(id)a3 updateCarPlayDefaults:(BOOL)a4
+- (void)_updateAllDefaultsOnQueueWithReason:(id)reason updateCarPlayDefaults:(BOOL)defaults
 {
-  v4 = a4;
+  defaultsCopy = defaults;
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(self->_internalQueue);
   v7 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v6;
+    v11 = reasonCopy;
     _os_log_impl(&dword_1BF549000, v7, OS_LOG_TYPE_DEFAULT, "ATXDefaultHomeScreenItemUpdater: updating defaults with reason: %{public}@", &v10, 0xCu);
   }
 
   if ([(NSSet *)self->_descriptors count])
   {
     v8 = objc_opt_new();
-    v9 = [v8 rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps];
+    rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps = [v8 rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps];
 
-    [(ATXDefaultHomeScreenItemUpdater *)self _updateHomeScreenDefaultsOnQueueWithReason:v6 appLaunchCounts:v9];
-    [(ATXDefaultHomeScreenItemUpdater *)self _updateAmbientDefaultsOnQueueWithReason:v6 appLaunchCounts:v9];
-    if (v4)
+    [(ATXDefaultHomeScreenItemUpdater *)self _updateHomeScreenDefaultsOnQueueWithReason:reasonCopy appLaunchCounts:rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps];
+    [(ATXDefaultHomeScreenItemUpdater *)self _updateAmbientDefaultsOnQueueWithReason:reasonCopy appLaunchCounts:rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps];
+    if (defaultsCopy)
     {
-      [(ATXDefaultHomeScreenItemUpdater *)self _updateCarPlayDefaultsOnQueueWithReason:v6 appLaunchCounts:v9];
+      [(ATXDefaultHomeScreenItemUpdater *)self _updateCarPlayDefaultsOnQueueWithReason:reasonCopy appLaunchCounts:rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps];
     }
   }
 }
 
-- (void)_updateHomeScreenDefaultsOnQueueWithReason:(id)a3 appLaunchCounts:(id)a4
+- (void)_updateHomeScreenDefaultsOnQueueWithReason:(id)reason appLaunchCounts:(id)counts
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  countsCopy = counts;
   v6 = os_transaction_create();
   v7 = objc_alloc_init(ATXHomeScreenConfigCache);
   v23 = 0;
@@ -314,10 +314,10 @@ void __73__ATXDefaultHomeScreenItemUpdater_updateDefaultsDueToCarPlayConfigUpdat
   v13 = [ATXDefaultHomeScreenItemProducer alloc];
   descriptors = self->_descriptors;
   descriptorInstallDates = self->_descriptorInstallDates;
-  v16 = [(ATXDefaultHomeScreenItemUpdater *)self _isDayZeroExperience];
-  v17 = -[ATXDefaultHomeScreenItemProducer initWithDescriptors:descriptorInstallDates:homeScreenConfig:isDayZeroExperience:isiPad:spotlightAppLaunchHistogram:appLaunchCounts:](v13, "initWithDescriptors:descriptorInstallDates:homeScreenConfig:isDayZeroExperience:isiPad:spotlightAppLaunchHistogram:appLaunchCounts:", descriptors, descriptorInstallDates, v11, v16, [MEMORY[0x1E69C5CF8] isiPad], self->_spotlightAppLaunchHistogram, v5);
+  _isDayZeroExperience = [(ATXDefaultHomeScreenItemUpdater *)self _isDayZeroExperience];
+  v17 = -[ATXDefaultHomeScreenItemProducer initWithDescriptors:descriptorInstallDates:homeScreenConfig:isDayZeroExperience:isiPad:spotlightAppLaunchHistogram:appLaunchCounts:](v13, "initWithDescriptors:descriptorInstallDates:homeScreenConfig:isDayZeroExperience:isiPad:spotlightAppLaunchHistogram:appLaunchCounts:", descriptors, descriptorInstallDates, v11, _isDayZeroExperience, [MEMORY[0x1E69C5CF8] isiPad], self->_spotlightAppLaunchHistogram, countsCopy);
 
-  v18 = [(ATXDefaultHomeScreenItemProducer *)v17 update];
+  update = [(ATXDefaultHomeScreenItemProducer *)v17 update];
   v19 = +[ATXDefaultHomeScreenItemManager sharedInstance];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -325,7 +325,7 @@ void __73__ATXDefaultHomeScreenItemUpdater_updateDefaultsDueToCarPlayConfigUpdat
   v21[3] = &unk_1E80C2AF8;
   v22 = v6;
   v20 = v6;
-  [v19 writeHomeScreenUpdate:v18 completionHandler:v21];
+  [v19 writeHomeScreenUpdate:update completionHandler:v21];
 }
 
 void __94__ATXDefaultHomeScreenItemUpdater__updateHomeScreenDefaultsOnQueueWithReason_appLaunchCounts___block_invoke(uint64_t a1, void *a2)
@@ -356,9 +356,9 @@ void __94__ATXDefaultHomeScreenItemUpdater__updateHomeScreenDefaultsOnQueueWithR
   }
 }
 
-- (void)_updateAmbientDefaultsOnQueueWithReason:(id)a3 appLaunchCounts:(id)a4
+- (void)_updateAmbientDefaultsOnQueueWithReason:(id)reason appLaunchCounts:(id)counts
 {
-  v5 = a4;
+  countsCopy = counts;
   v6 = os_transaction_create();
   v7 = objc_opt_new();
   v10[0] = MEMORY[0x1E69E9820];
@@ -366,10 +366,10 @@ void __94__ATXDefaultHomeScreenItemUpdater__updateHomeScreenDefaultsOnQueueWithR
   v10[2] = __91__ATXDefaultHomeScreenItemUpdater__updateAmbientDefaultsOnQueueWithReason_appLaunchCounts___block_invoke;
   v10[3] = &unk_1E80C4258;
   v10[4] = self;
-  v11 = v5;
+  v11 = countsCopy;
   v12 = v6;
   v8 = v6;
-  v9 = v5;
+  v9 = countsCopy;
   [v7 readStacksWithCompletion:v10];
 }
 
@@ -445,14 +445,14 @@ void __91__ATXDefaultHomeScreenItemUpdater__updateAmbientDefaultsOnQueueWithReas
   }
 }
 
-- (void)_updateCarPlayDefaultsOnQueueWithReason:(id)a3 appLaunchCounts:(id)a4
+- (void)_updateCarPlayDefaultsOnQueueWithReason:(id)reason appLaunchCounts:(id)counts
 {
-  v5 = a4;
+  countsCopy = counts;
   v6 = os_transaction_create();
   v7 = [ATXDefaultHomeScreenItemProducer alloc];
-  v8 = [(ATXDefaultHomeScreenItemProducer *)v7 initWithDescriptors:self->_descriptors descriptorInstallDates:self->_descriptorInstallDates homeScreenConfig:MEMORY[0x1E695E0F0] isDayZeroExperience:0 isiPad:0 spotlightAppLaunchHistogram:self->_spotlightAppLaunchHistogram appLaunchCounts:v5];
+  v8 = [(ATXDefaultHomeScreenItemProducer *)v7 initWithDescriptors:self->_descriptors descriptorInstallDates:self->_descriptorInstallDates homeScreenConfig:MEMORY[0x1E695E0F0] isDayZeroExperience:0 isiPad:0 spotlightAppLaunchHistogram:self->_spotlightAppLaunchHistogram appLaunchCounts:countsCopy];
 
-  v9 = [(ATXDefaultHomeScreenItemProducer *)v8 update];
+  update = [(ATXDefaultHomeScreenItemProducer *)v8 update];
   v10 = +[ATXDefaultHomeScreenItemManager sharedInstance];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -460,7 +460,7 @@ void __91__ATXDefaultHomeScreenItemUpdater__updateAmbientDefaultsOnQueueWithReas
   v12[3] = &unk_1E80C2AF8;
   v13 = v6;
   v11 = v6;
-  [v10 writeCarPlayUpdate:v9 completionHandler:v12];
+  [v10 writeCarPlayUpdate:update completionHandler:v12];
 }
 
 void __91__ATXDefaultHomeScreenItemUpdater__updateCarPlayDefaultsOnQueueWithReason_appLaunchCounts___block_invoke(uint64_t a1, void *a2)
@@ -516,36 +516,36 @@ void __91__ATXDefaultHomeScreenItemUpdater__updateCarPlayDefaultsOnQueueWithReas
   return v4;
 }
 
-+ (id)atxHomeScreenStackConfigFromATXWidgetStack:(id)a3
++ (id)atxHomeScreenStackConfigFromATXWidgetStack:(id)stack
 {
-  v3 = a3;
+  stackCopy = stack;
   v4 = objc_opt_new();
-  v5 = [v3 widgets];
+  widgets = [stackCopy widgets];
 
-  v6 = [v5 _pas_mappedArrayWithTransform:&__block_literal_global_62];
+  v6 = [widgets _pas_mappedArrayWithTransform:&__block_literal_global_62];
   [v4 setWidgets:v6];
 
   return v4;
 }
 
-+ (id)atxHomeScreenWidgetIdentifierFromATXWidget:(id)a3
++ (id)atxHomeScreenWidgetIdentifierFromATXWidget:(id)widget
 {
-  v3 = a3;
+  widgetCopy = widget;
   v4 = objc_opt_new();
-  v5 = [v3 chsWidget];
-  v6 = [v5 extensionIdentity];
-  v7 = [v6 extensionBundleIdentifier];
-  [v4 setExtensionBundleId:v7];
+  chsWidget = [widgetCopy chsWidget];
+  extensionIdentity = [chsWidget extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+  [v4 setExtensionBundleId:extensionBundleIdentifier];
 
-  v8 = [v3 chsWidget];
-  v9 = [v8 kind];
-  [v4 setWidgetKind:v9];
+  chsWidget2 = [widgetCopy chsWidget];
+  kind = [chsWidget2 kind];
+  [v4 setWidgetKind:kind];
 
-  v10 = [v3 chsWidget];
+  chsWidget3 = [widgetCopy chsWidget];
 
-  v11 = [v10 extensionIdentity];
-  v12 = [v11 containerBundleIdentifier];
-  [v4 setAppBundleId:v12];
+  extensionIdentity2 = [chsWidget3 extensionIdentity];
+  containerBundleIdentifier = [extensionIdentity2 containerBundleIdentifier];
+  [v4 setAppBundleId:containerBundleIdentifier];
 
   return v4;
 }

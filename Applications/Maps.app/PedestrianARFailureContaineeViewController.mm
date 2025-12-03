@@ -1,17 +1,17 @@
 @interface PedestrianARFailureContaineeViewController
 - (BOOL)_isLandscape;
 - (PedestrianARFailureContaineeDelegate)failureContaineeDelegate;
-- (PedestrianARFailureContaineeViewController)initWithEntryPoint:(int64_t)a3;
-- (double)heightForLayout:(unint64_t)a3;
-- (void)_dismissButtonTapped:(id)a3;
-- (void)_retryButtonTapped:(id)a3;
+- (PedestrianARFailureContaineeViewController)initWithEntryPoint:(int64_t)point;
+- (double)heightForLayout:(unint64_t)layout;
+- (void)_dismissButtonTapped:(id)tapped;
+- (void)_retryButtonTapped:(id)tapped;
 - (void)_updateFonts;
 - (void)_updateForCurrentLayout;
 - (void)dealloc;
-- (void)didChangeContainerStyle:(unint64_t)a3;
-- (void)didChangeLayout:(unint64_t)a3;
-- (void)pedestrianARViewControllerDidDisappearNotification:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)didChangeContainerStyle:(unint64_t)style;
+- (void)didChangeLayout:(unint64_t)layout;
+- (void)pedestrianARViewControllerDidDisappearNotification:(id)notification;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -25,13 +25,13 @@
   return WeakRetained;
 }
 
-- (void)pedestrianARViewControllerDidDisappearNotification:(id)a3
+- (void)pedestrianARViewControllerDidDisappearNotification:(id)notification
 {
   v4 = sub_100C82064();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v7 = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Pedestrian AR was dismissed; resigning session ownership", &v7, 0xCu);
   }
 
@@ -42,13 +42,13 @@
   [v6 resignSessionWithOwner:self];
 }
 
-- (void)_retryButtonTapped:(id)a3
+- (void)_retryButtonTapped:(id)tapped
 {
   v4 = sub_100C82064();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v7 = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Retry button tapped", &v7, 0xCu);
   }
 
@@ -63,17 +63,17 @@
   }
 
   [GEOAPPortal captureUserAction:128 target:v5 value:0];
-  v6 = [(PedestrianARFailureContaineeViewController *)self failureContaineeDelegate];
-  [v6 failureViewRetryButtonTapped:self];
+  failureContaineeDelegate = [(PedestrianARFailureContaineeViewController *)self failureContaineeDelegate];
+  [failureContaineeDelegate failureViewRetryButtonTapped:self];
 }
 
-- (void)_dismissButtonTapped:(id)a3
+- (void)_dismissButtonTapped:(id)tapped
 {
   v4 = sub_100C82064();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v7 = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Dismiss button tapped", &v7, 0xCu);
   }
 
@@ -88,11 +88,11 @@
   }
 
   [GEOAPPortal captureUserAction:125 target:v5 value:0];
-  v6 = [(PedestrianARFailureContaineeViewController *)self failureContaineeDelegate];
-  [v6 failureViewDismissButtonTapped:self];
+  failureContaineeDelegate = [(PedestrianARFailureContaineeViewController *)self failureContaineeDelegate];
+  [failureContaineeDelegate failureViewDismissButtonTapped:self];
 }
 
-- (void)didChangeContainerStyle:(unint64_t)a3
+- (void)didChangeContainerStyle:(unint64_t)style
 {
   v6.receiver = self;
   v6.super_class = PedestrianARFailureContaineeViewController;
@@ -101,16 +101,16 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349312;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
-    v10 = a3;
+    styleCopy = style;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Did change style to: %lu", buf, 0x16u);
   }
 
   [(PedestrianARFailureContaineeViewController *)self _updateForCurrentLayout];
 }
 
-- (void)didChangeLayout:(unint64_t)a3
+- (void)didChangeLayout:(unint64_t)layout
 {
   v6.receiver = self;
   v6.super_class = PedestrianARFailureContaineeViewController;
@@ -119,37 +119,37 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349312;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
-    v10 = a3;
+    layoutCopy = layout;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Did change layout to: %lu", buf, 0x16u);
   }
 
   [(PedestrianARFailureContaineeViewController *)self _updateForCurrentLayout];
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
   v3 = -1.0;
-  if (a3 == 5)
+  if (layout == 5)
   {
     [(PedestrianARFailureContaineeViewController *)self _updateForCurrentLayout];
     if ([(PedestrianARFailureContaineeViewController *)self _isLandscape])
     {
-      v5 = [(ContaineeViewController *)self cardPresentationController];
-      [v5 availableHeight];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController availableHeight];
       v3 = v6;
     }
 
     else
     {
-      v5 = [(PedestrianARFailureContaineeViewController *)self view];
-      v7 = [(PedestrianARFailureContaineeViewController *)self view];
-      [v7 frame];
+      cardPresentationController = [(PedestrianARFailureContaineeViewController *)self view];
+      view = [(PedestrianARFailureContaineeViewController *)self view];
+      [view frame];
       v9 = v8;
       LODWORD(v8) = 1148846080;
       LODWORD(v10) = 1112014848;
-      [v5 systemLayoutSizeFittingSize:v9 withHorizontalFittingPriority:UILayoutFittingCompressedSize.height verticalFittingPriority:{v8, v10}];
+      [cardPresentationController systemLayoutSizeFittingSize:v9 withHorizontalFittingPriority:UILayoutFittingCompressedSize.height verticalFittingPriority:{v8, v10}];
       v3 = v11;
     }
   }
@@ -159,117 +159,117 @@
 
 - (BOOL)_isLandscape
 {
-  v2 = [(ContaineeViewController *)self cardPresentationController];
-  v3 = [v2 containerStyle];
-  v4 = (v3 > 7) | (0x5Cu >> v3);
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController containerStyle];
+  v4 = (containerStyle > 7) | (0x5Cu >> containerStyle);
 
   return v4 & 1;
 }
 
 - (void)_updateFonts
 {
-  v3 = [(PedestrianARFailureContaineeViewController *)self _isLandscape];
+  _isLandscape = [(PedestrianARFailureContaineeViewController *)self _isLandscape];
   v4 = UIContentSizeCategoryExtraExtraExtraLarge;
-  if (!v3)
+  if (!_isLandscape)
   {
     v4 = UIContentSizeCategoryAccessibilityLarge;
   }
 
   v31 = v4;
-  v5 = [(PedestrianARFailureContaineeViewController *)self _isLandscape];
+  _isLandscape2 = [(PedestrianARFailureContaineeViewController *)self _isLandscape];
   v6 = UIContentSizeCategoryExtraLarge;
-  if (!v5)
+  if (!_isLandscape2)
   {
     v6 = UIContentSizeCategoryAccessibilityLarge;
   }
 
   v7 = v6;
-  v8 = [(PedestrianARFailureContaineeViewController *)self traitCollection];
-  v9 = [v8 _maps_traitCollectionWithMaximumContentSizeCategory:v31];
+  traitCollection = [(PedestrianARFailureContaineeViewController *)self traitCollection];
+  v9 = [traitCollection _maps_traitCollectionWithMaximumContentSizeCategory:v31];
 
-  v10 = [(PedestrianARFailureContaineeViewController *)self traitCollection];
-  v11 = [v10 _maps_traitCollectionWithMaximumContentSizeCategory:v7];
+  traitCollection2 = [(PedestrianARFailureContaineeViewController *)self traitCollection];
+  v11 = [traitCollection2 _maps_traitCollectionWithMaximumContentSizeCategory:v7];
 
   v12 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleTitle2 weight:v9 compatibleWithTraitCollection:UIFontWeightBold];
-  v13 = [(PedestrianARFailureContaineeViewController *)self titleLabel];
-  [v13 setFont:v12];
+  titleLabel = [(PedestrianARFailureContaineeViewController *)self titleLabel];
+  [titleLabel setFont:v12];
 
   v14 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleTitle3 weight:v11 compatibleWithTraitCollection:UIFontWeightRegular];
-  v15 = [(PedestrianARFailureContaineeViewController *)self descriptionLabel];
-  [v15 setFont:v14];
+  descriptionLabel = [(PedestrianARFailureContaineeViewController *)self descriptionLabel];
+  [descriptionLabel setFont:v14];
 
   v16 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleBody weight:v11 compatibleWithTraitCollection:UIFontWeightSemibold];
-  v17 = [(PedestrianARFailureContaineeViewController *)self retryButton];
-  v18 = [v17 titleLabel];
-  [v18 setFont:v16];
+  retryButton = [(PedestrianARFailureContaineeViewController *)self retryButton];
+  titleLabel2 = [retryButton titleLabel];
+  [titleLabel2 setFont:v16];
 
   [v16 lineHeight];
   v20 = v19;
   [v16 leading];
   v22 = v20 + 28.0 + v21;
-  v23 = [(PedestrianARFailureContaineeViewController *)self retryButtonHeightConstraint];
-  [v23 setConstant:v22];
+  retryButtonHeightConstraint = [(PedestrianARFailureContaineeViewController *)self retryButtonHeightConstraint];
+  [retryButtonHeightConstraint setConstant:v22];
 
-  v24 = [(PedestrianARFailureContaineeViewController *)self dismissButton];
-  v25 = [v24 titleLabel];
-  [v25 setFont:v16];
+  dismissButton = [(PedestrianARFailureContaineeViewController *)self dismissButton];
+  titleLabel3 = [dismissButton titleLabel];
+  [titleLabel3 setFont:v16];
 
   [v16 lineHeight];
   v27 = v26;
   [v16 leading];
   v29 = v27 + 28.0 + v28;
-  v30 = [(PedestrianARFailureContaineeViewController *)self dismissButtonHeightConstraint];
-  [v30 setConstant:v29];
+  dismissButtonHeightConstraint = [(PedestrianARFailureContaineeViewController *)self dismissButtonHeightConstraint];
+  [dismissButtonHeightConstraint setConstant:v29];
 }
 
 - (void)_updateForCurrentLayout
 {
-  v3 = [(PedestrianARFailureContaineeViewController *)self _isLandscape];
-  v4 = [(PedestrianARFailureContaineeViewController *)self titleLabel];
-  v5 = v4;
-  if (v3)
+  _isLandscape = [(PedestrianARFailureContaineeViewController *)self _isLandscape];
+  titleLabel = [(PedestrianARFailureContaineeViewController *)self titleLabel];
+  v5 = titleLabel;
+  if (_isLandscape)
   {
-    [v4 setNumberOfLines:2];
+    [titleLabel setNumberOfLines:2];
 
-    v6 = [(PedestrianARFailureContaineeViewController *)self descriptionLabel];
-    [v6 setNumberOfLines:0];
+    descriptionLabel = [(PedestrianARFailureContaineeViewController *)self descriptionLabel];
+    [descriptionLabel setNumberOfLines:0];
 
-    v7 = [(PedestrianARFailureContaineeViewController *)self topContainerTopConstraint];
-    [v7 setConstant:24.0];
+    topContainerTopConstraint = [(PedestrianARFailureContaineeViewController *)self topContainerTopConstraint];
+    [topContainerTopConstraint setConstant:24.0];
 
-    v8 = [(PedestrianARFailureContaineeViewController *)self titleLabelFirstBaselineConstraint];
-    [v8 setActive:0];
+    titleLabelFirstBaselineConstraint = [(PedestrianARFailureContaineeViewController *)self titleLabelFirstBaselineConstraint];
+    [titleLabelFirstBaselineConstraint setActive:0];
 
-    v9 = [(PedestrianARFailureContaineeViewController *)self labelContainerLeadingConstraint];
-    [v9 setConstant:24.0];
+    labelContainerLeadingConstraint = [(PedestrianARFailureContaineeViewController *)self labelContainerLeadingConstraint];
+    [labelContainerLeadingConstraint setConstant:24.0];
 
-    v10 = [(PedestrianARFailureContaineeViewController *)self labelContainerTrailingConstraint];
-    [v10 setConstant:-24.0];
+    labelContainerTrailingConstraint = [(PedestrianARFailureContaineeViewController *)self labelContainerTrailingConstraint];
+    [labelContainerTrailingConstraint setConstant:-24.0];
 
-    v11 = [(ContaineeViewController *)self cardPresentationController];
-    v12 = [v11 containerStyle];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    containerStyle = [cardPresentationController containerStyle];
 
-    v13 = [(PedestrianARFailureContaineeViewController *)self view];
-    v14 = v13;
-    if (v12 == 6)
+    view = [(PedestrianARFailureContaineeViewController *)self view];
+    v14 = view;
+    if (containerStyle == 6)
     {
-      v15 = [(PedestrianARFailureContaineeViewController *)self view];
-      [v15 bounds];
+      view2 = [(PedestrianARFailureContaineeViewController *)self view];
+      [view2 bounds];
       v17 = v16;
       v19 = v18;
       v21 = v20;
       v23 = v22;
-      v24 = [(PedestrianARFailureContaineeViewController *)self view];
-      v25 = [v24 window];
-      [v14 convertRect:v25 toView:{v17, v19, v21, v23}];
+      view3 = [(PedestrianARFailureContaineeViewController *)self view];
+      window = [view3 window];
+      [v14 convertRect:window toView:{v17, v19, v21, v23}];
       v27 = v26;
       v29 = v28;
       v31 = v30;
       v33 = v32;
 
-      v34 = [(PedestrianARFailureContaineeViewController *)self view];
-      v35 = [v34 window];
-      [v35 frame];
+      view4 = [(PedestrianARFailureContaineeViewController *)self view];
+      window2 = [view4 window];
+      [window2 frame];
       v37 = v36;
       v66.origin.x = v27;
       v66.origin.y = v29;
@@ -277,18 +277,18 @@
       v66.size.height = v33;
       MaxY = CGRectGetMaxY(v66);
 
-      v39 = [(PedestrianARFailureContaineeViewController *)self view];
-      v40 = [v39 window];
-      [v40 frame];
+      view5 = [(PedestrianARFailureContaineeViewController *)self view];
+      window3 = [view5 window];
+      [window3 frame];
       v42 = v37 - MaxY + v41 * -0.07;
-      v43 = [(PedestrianARFailureContaineeViewController *)self retryButtonBottomConstraint];
-      [v43 setConstant:v42];
+      retryButtonBottomConstraint = [(PedestrianARFailureContaineeViewController *)self retryButtonBottomConstraint];
+      [retryButtonBottomConstraint setConstant:v42];
 
       v44 = sub_100C82064();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
       {
         v64 = 134349056;
-        v65 = self;
+        selfCopy3 = self;
         v45 = "[%{public}p] Laying out for landscape floating";
 LABEL_12:
         _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEBUG, v45, &v64, 0xCu);
@@ -297,17 +297,17 @@ LABEL_12:
 
     else
     {
-      v60 = [v13 window];
-      [v60 frame];
+      window4 = [view window];
+      [window4 frame];
       v62 = v61 * -0.07;
-      v63 = [(PedestrianARFailureContaineeViewController *)self retryButtonBottomConstraint];
-      [v63 setConstant:v62];
+      retryButtonBottomConstraint2 = [(PedestrianARFailureContaineeViewController *)self retryButtonBottomConstraint];
+      [retryButtonBottomConstraint2 setConstant:v62];
 
       v44 = sub_100C82064();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
       {
         v64 = 134349056;
-        v65 = self;
+        selfCopy3 = self;
         v45 = "[%{public}p] Laying out for landscape fixed";
         goto LABEL_12;
       }
@@ -316,14 +316,14 @@ LABEL_12:
 
   else
   {
-    [v4 setNumberOfLines:3];
+    [titleLabel setNumberOfLines:3];
 
-    v46 = [(PedestrianARFailureContaineeViewController *)self traitCollection];
-    v47 = [v46 preferredContentSizeCategory];
-    v48 = sub_10008FB5C(v47, UIContentSizeCategoryExtraLarge);
+    traitCollection = [(PedestrianARFailureContaineeViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v48 = sub_10008FB5C(preferredContentSizeCategory, UIContentSizeCategoryExtraLarge);
 
-    v49 = [(PedestrianARFailureContaineeViewController *)self descriptionLabel];
-    v50 = v49;
+    descriptionLabel2 = [(PedestrianARFailureContaineeViewController *)self descriptionLabel];
+    v50 = descriptionLabel2;
     if (v48 == 1)
     {
       v51 = 6;
@@ -334,31 +334,31 @@ LABEL_12:
       v51 = 5;
     }
 
-    [v49 setNumberOfLines:v51];
+    [descriptionLabel2 setNumberOfLines:v51];
 
-    v52 = [(PedestrianARFailureContaineeViewController *)self topContainerTopConstraint];
-    [v52 setConstant:0.0];
+    topContainerTopConstraint2 = [(PedestrianARFailureContaineeViewController *)self topContainerTopConstraint];
+    [topContainerTopConstraint2 setConstant:0.0];
 
-    v53 = [(PedestrianARFailureContaineeViewController *)self titleLabelFirstBaselineConstraint];
-    [v53 setActive:1];
+    titleLabelFirstBaselineConstraint2 = [(PedestrianARFailureContaineeViewController *)self titleLabelFirstBaselineConstraint];
+    [titleLabelFirstBaselineConstraint2 setActive:1];
 
-    v54 = [(PedestrianARFailureContaineeViewController *)self labelContainerLeadingConstraint];
-    [v54 setConstant:26.0];
+    labelContainerLeadingConstraint2 = [(PedestrianARFailureContaineeViewController *)self labelContainerLeadingConstraint];
+    [labelContainerLeadingConstraint2 setConstant:26.0];
 
-    v55 = [(PedestrianARFailureContaineeViewController *)self labelContainerTrailingConstraint];
-    [v55 setConstant:-26.0];
+    labelContainerTrailingConstraint2 = [(PedestrianARFailureContaineeViewController *)self labelContainerTrailingConstraint];
+    [labelContainerTrailingConstraint2 setConstant:-26.0];
 
-    v56 = [(ContaineeViewController *)self cardPresentationController];
-    [v56 bottomSafeOffset];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 bottomSafeOffset];
     v58 = -10.0 - v57;
-    v59 = [(PedestrianARFailureContaineeViewController *)self retryButtonBottomConstraint];
-    [v59 setConstant:v58];
+    retryButtonBottomConstraint3 = [(PedestrianARFailureContaineeViewController *)self retryButtonBottomConstraint];
+    [retryButtonBottomConstraint3 setConstant:v58];
 
     v44 = sub_100C82064();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
     {
       v64 = 134349056;
-      v65 = self;
+      selfCopy3 = self;
       v45 = "[%{public}p] Laying out for portrait";
       goto LABEL_12;
     }
@@ -367,13 +367,13 @@ LABEL_12:
   [(PedestrianARFailureContaineeViewController *)self _updateFonts];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = PedestrianARFailureContaineeViewController;
-  [(MapsThemeViewController *)&v9 traitCollectionDidChange:v4];
-  if (!v4 || (-[PedestrianARFailureContaineeViewController traitCollection](self, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), [v5 preferredContentSizeCategory], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "preferredContentSizeCategory"), v7 = objc_claimAutoreleasedReturnValue(), v8 = UIContentSizeCategoryCompareToCategory(v6, v7), v7, v6, v5, v8))
+  [(MapsThemeViewController *)&v9 traitCollectionDidChange:changeCopy];
+  if (!changeCopy || (-[PedestrianARFailureContaineeViewController traitCollection](self, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), [v5 preferredContentSizeCategory], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(changeCopy, "preferredContentSizeCategory"), v7 = objc_claimAutoreleasedReturnValue(), v8 = UIContentSizeCategoryCompareToCategory(v6, v7), v7, v6, v5, v8))
   {
     [(PedestrianARFailureContaineeViewController *)self _updateForCurrentLayout];
   }
@@ -384,10 +384,10 @@ LABEL_12:
   v5.receiver = self;
   v5.super_class = PedestrianARFailureContaineeViewController;
   [(ContaineeViewController *)&v5 viewDidLayoutSubviews];
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  v4 = [v3 containerStyle];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController containerStyle];
 
-  if (v4)
+  if (containerStyle)
   {
     [(PedestrianARFailureContaineeViewController *)self _updateForCurrentLayout];
   }
@@ -400,38 +400,38 @@ LABEL_12:
   [(ContaineeViewController *)&v170 viewDidLoad];
   [(PedestrianARFailureContaineeViewController *)self setOverrideUserInterfaceStyle:2];
   v3 = +[UIColor clearColor];
-  v4 = [(PedestrianARFailureContaineeViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(PedestrianARFailureContaineeViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = [[MUBlurView alloc] initWithBlurEffectStyle:19];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   v6 = +[UIColor systemBackgroundColor];
   [v5 setNonBlurredColor:v6];
 
-  v7 = [(PedestrianARFailureContaineeViewController *)self view];
-  [v7 addSubview:v5];
+  view2 = [(PedestrianARFailureContaineeViewController *)self view];
+  [view2 addSubview:v5];
 
-  v165 = [v5 leadingAnchor];
-  v167 = [(PedestrianARFailureContaineeViewController *)self view];
-  v160 = [v167 leadingAnchor];
-  v157 = [v165 constraintEqualToAnchor:v160];
+  leadingAnchor = [v5 leadingAnchor];
+  view3 = [(PedestrianARFailureContaineeViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v157 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v181[0] = v157;
-  v150 = [v5 trailingAnchor];
-  v153 = [(PedestrianARFailureContaineeViewController *)self view];
-  v148 = [v153 trailingAnchor];
-  v146 = [v150 constraintEqualToAnchor:v148];
+  trailingAnchor = [v5 trailingAnchor];
+  view4 = [(PedestrianARFailureContaineeViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v146 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v181[1] = v146;
   v8 = v5;
   v164 = v5;
-  v9 = [v5 topAnchor];
-  v10 = [(PedestrianARFailureContaineeViewController *)self view];
-  v11 = [v10 topAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  topAnchor = [v5 topAnchor];
+  view5 = [(PedestrianARFailureContaineeViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v181[2] = v12;
-  v13 = [v8 bottomAnchor];
-  v14 = [(PedestrianARFailureContaineeViewController *)self view];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  bottomAnchor = [v8 bottomAnchor];
+  view6 = [(PedestrianARFailureContaineeViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v181[3] = v16;
   v17 = [NSArray arrayWithObjects:v181 count:4];
   [NSLayoutConstraint activateConstraints:v17];
@@ -442,25 +442,25 @@ LABEL_12:
   height = CGRectZero.size.height;
   v22 = [v18 initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v23 = [(PedestrianARFailureContaineeViewController *)self view];
-  [v23 addSubview:v22];
+  view7 = [(PedestrianARFailureContaineeViewController *)self view];
+  [view7 addSubview:v22];
 
-  v24 = [v22 topAnchor];
-  v25 = [(PedestrianARFailureContaineeViewController *)self view];
-  v26 = [v25 topAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  topAnchor3 = [v22 topAnchor];
+  view8 = [(PedestrianARFailureContaineeViewController *)self view];
+  topAnchor4 = [view8 topAnchor];
+  v27 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   topContainerTopConstraint = self->_topContainerTopConstraint;
   self->_topContainerTopConstraint = v27;
 
-  v168 = [v22 leadingAnchor];
-  v29 = [(PedestrianARFailureContaineeViewController *)self view];
-  v30 = [v29 leadingAnchor];
-  v31 = [v168 constraintEqualToAnchor:v30];
+  leadingAnchor3 = [v22 leadingAnchor];
+  view9 = [(PedestrianARFailureContaineeViewController *)self view];
+  leadingAnchor4 = [view9 leadingAnchor];
+  v31 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v180[0] = v31;
-  v32 = [v22 trailingAnchor];
-  v33 = [(PedestrianARFailureContaineeViewController *)self view];
-  v34 = [v33 trailingAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34];
+  trailingAnchor3 = [v22 trailingAnchor];
+  view10 = [(PedestrianARFailureContaineeViewController *)self view];
+  trailingAnchor4 = [view10 trailingAnchor];
+  v35 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v36 = self->_topContainerTopConstraint;
   v180[1] = v35;
   v180[2] = v36;
@@ -472,35 +472,35 @@ LABEL_12:
   LODWORD(v39) = 1148846080;
   [v38 setContentHuggingPriority:1 forAxis:v39];
   [v22 addSubview:v38];
-  v40 = [v38 leadingAnchor];
-  v41 = [v22 leadingAnchor];
-  v42 = [v40 constraintEqualToAnchor:v41 constant:26.0];
+  leadingAnchor5 = [v38 leadingAnchor];
+  leadingAnchor6 = [v22 leadingAnchor];
+  v42 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:26.0];
   labelContainerLeadingConstraint = self->_labelContainerLeadingConstraint;
   self->_labelContainerLeadingConstraint = v42;
 
-  v44 = [v38 trailingAnchor];
-  v45 = [v22 trailingAnchor];
-  v46 = [v44 constraintEqualToAnchor:v45 constant:-26.0];
+  trailingAnchor5 = [v38 trailingAnchor];
+  trailingAnchor6 = [v22 trailingAnchor];
+  v46 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-26.0];
   labelContainerTrailingConstraint = self->_labelContainerTrailingConstraint;
   self->_labelContainerTrailingConstraint = v46;
 
   v48 = self->_labelContainerTrailingConstraint;
   v179[0] = self->_labelContainerLeadingConstraint;
   v179[1] = v48;
-  v161 = [v38 topAnchor];
+  topAnchor5 = [v38 topAnchor];
   v49 = v22;
-  v50 = [v22 topAnchor];
-  v51 = [v161 constraintGreaterThanOrEqualToAnchor:v50];
+  topAnchor6 = [v22 topAnchor];
+  v51 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor6];
   v179[2] = v51;
   v169 = v38;
-  v52 = [v38 bottomAnchor];
+  bottomAnchor3 = [v38 bottomAnchor];
   v166 = v49;
-  v53 = [v49 bottomAnchor];
-  v54 = [v52 constraintLessThanOrEqualToAnchor:v53];
+  bottomAnchor4 = [v49 bottomAnchor];
+  v54 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4];
   v179[3] = v54;
-  v55 = [v38 centerYAnchor];
-  v56 = [v49 centerYAnchor];
-  v57 = [v55 constraintEqualToAnchor:v56];
+  centerYAnchor = [v38 centerYAnchor];
+  centerYAnchor2 = [v49 centerYAnchor];
+  v57 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v179[4] = v57;
   v58 = [NSArray arrayWithObjects:v179 count:5];
   [NSLayoutConstraint activateConstraints:v58];
@@ -522,23 +522,23 @@ LABEL_12:
   [(UILabel *)self->_titleLabel setText:v64];
 
   [v169 addSubview:self->_titleLabel];
-  v65 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-  v66 = [v166 topAnchor];
-  v67 = [v65 constraintEqualToAnchor:v66 constant:60.0];
+  firstBaselineAnchor = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+  topAnchor7 = [v166 topAnchor];
+  v67 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor7 constant:60.0];
   titleLabelFirstBaselineConstraint = self->_titleLabelFirstBaselineConstraint;
   self->_titleLabelFirstBaselineConstraint = v67;
 
-  v162 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v69 = [v169 leadingAnchor];
-  v70 = [v162 constraintEqualToAnchor:v69];
+  leadingAnchor7 = [(UILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor8 = [v169 leadingAnchor];
+  v70 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v178[0] = v70;
-  v71 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v72 = [v169 trailingAnchor];
-  v73 = [v71 constraintEqualToAnchor:v72];
+  trailingAnchor7 = [(UILabel *)self->_titleLabel trailingAnchor];
+  trailingAnchor8 = [v169 trailingAnchor];
+  v73 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   v178[1] = v73;
-  v74 = [(UILabel *)self->_titleLabel topAnchor];
-  v75 = [v169 topAnchor];
-  v76 = [v74 constraintEqualToAnchor:v75];
+  topAnchor8 = [(UILabel *)self->_titleLabel topAnchor];
+  topAnchor9 = [v169 topAnchor];
+  v76 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
   v77 = self->_titleLabelFirstBaselineConstraint;
   v178[2] = v76;
   v178[3] = v77;
@@ -576,21 +576,21 @@ LABEL_12:
   [(UILabel *)self->_descriptionLabel setText:v89];
 
   [v169 addSubview:self->_descriptionLabel];
-  v154 = [(UILabel *)self->_descriptionLabel leadingAnchor];
-  v151 = [v169 leadingAnchor];
-  v149 = [v154 constraintEqualToAnchor:v151];
+  leadingAnchor9 = [(UILabel *)self->_descriptionLabel leadingAnchor];
+  leadingAnchor10 = [v169 leadingAnchor];
+  v149 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   v173[0] = v149;
-  v147 = [(UILabel *)self->_descriptionLabel trailingAnchor];
-  v90 = [v169 trailingAnchor];
-  v91 = [v147 constraintEqualToAnchor:v90];
+  trailingAnchor9 = [(UILabel *)self->_descriptionLabel trailingAnchor];
+  trailingAnchor10 = [v169 trailingAnchor];
+  v91 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   v173[1] = v91;
-  v92 = [(UILabel *)self->_descriptionLabel topAnchor];
-  v93 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v94 = [v92 constraintEqualToAnchor:v93 constant:15.0];
+  topAnchor10 = [(UILabel *)self->_descriptionLabel topAnchor];
+  bottomAnchor5 = [(UILabel *)self->_titleLabel bottomAnchor];
+  v94 = [topAnchor10 constraintEqualToAnchor:bottomAnchor5 constant:15.0];
   v173[2] = v94;
-  v95 = [(UILabel *)self->_descriptionLabel bottomAnchor];
-  v96 = [v169 bottomAnchor];
-  v97 = [v95 constraintEqualToAnchor:v96];
+  bottomAnchor6 = [(UILabel *)self->_descriptionLabel bottomAnchor];
+  bottomAnchor7 = [v169 bottomAnchor];
+  v97 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   v173[3] = v97;
   v98 = [NSArray arrayWithObjects:v173 count:4];
   [NSLayoutConstraint activateConstraints:v98];
@@ -600,8 +600,8 @@ LABEL_12:
   self->_dismissButton = v99;
 
   [(UIButton *)self->_dismissButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  v101 = [(UIButton *)self->_dismissButton layer];
-  [v101 setCornerRadius:12.0];
+  layer = [(UIButton *)self->_dismissButton layer];
+  [layer setCornerRadius:12.0];
 
   v102 = +[UIColor systemBlueColor];
   [(UIButton *)self->_dismissButton setBackgroundColor:v102];
@@ -616,25 +616,25 @@ LABEL_12:
   [(UIButton *)v105 setTitle:v107 forState:0];
 
   [(UIButton *)self->_dismissButton addTarget:self action:"_dismissButtonTapped:" forControlEvents:64];
-  v108 = [(PedestrianARFailureContaineeViewController *)self view];
-  [v108 addSubview:self->_dismissButton];
+  view11 = [(PedestrianARFailureContaineeViewController *)self view];
+  [view11 addSubview:self->_dismissButton];
 
-  v109 = [(UIButton *)self->_dismissButton heightAnchor];
-  v110 = [v109 constraintEqualToConstant:50.0];
+  heightAnchor = [(UIButton *)self->_dismissButton heightAnchor];
+  v110 = [heightAnchor constraintEqualToConstant:50.0];
   dismissButtonHeightConstraint = self->_dismissButtonHeightConstraint;
   self->_dismissButtonHeightConstraint = v110;
 
-  v158 = [(UIButton *)self->_dismissButton leadingAnchor];
-  v155 = [v169 leadingAnchor];
-  v112 = [v158 constraintEqualToAnchor:v155];
+  leadingAnchor11 = [(UIButton *)self->_dismissButton leadingAnchor];
+  leadingAnchor12 = [v169 leadingAnchor];
+  v112 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
   v172[0] = v112;
-  v113 = [(UIButton *)self->_dismissButton trailingAnchor];
-  v114 = [v169 trailingAnchor];
-  v115 = [v113 constraintEqualToAnchor:v114];
+  trailingAnchor11 = [(UIButton *)self->_dismissButton trailingAnchor];
+  trailingAnchor12 = [v169 trailingAnchor];
+  v115 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
   v172[1] = v115;
-  v116 = [(UIButton *)self->_dismissButton topAnchor];
-  v117 = [v166 bottomAnchor];
-  v118 = [v116 constraintEqualToAnchor:v117 constant:26.0];
+  topAnchor11 = [(UIButton *)self->_dismissButton topAnchor];
+  bottomAnchor8 = [v166 bottomAnchor];
+  v118 = [topAnchor11 constraintEqualToAnchor:bottomAnchor8 constant:26.0];
   v119 = self->_dismissButtonHeightConstraint;
   v172[2] = v118;
   v172[3] = v119;
@@ -659,32 +659,32 @@ LABEL_12:
   [(UIButton *)v126 setTitle:v128 forState:0];
 
   [(UIButton *)self->_retryButton addTarget:self action:"_retryButtonTapped:" forControlEvents:64];
-  v129 = [(PedestrianARFailureContaineeViewController *)self view];
-  [v129 addSubview:self->_retryButton];
+  view12 = [(PedestrianARFailureContaineeViewController *)self view];
+  [view12 addSubview:self->_retryButton];
 
-  v130 = [(UIButton *)self->_retryButton bottomAnchor];
-  v131 = [(PedestrianARFailureContaineeViewController *)self view];
-  v132 = [v131 bottomAnchor];
-  v133 = [v130 constraintEqualToAnchor:v132];
+  bottomAnchor9 = [(UIButton *)self->_retryButton bottomAnchor];
+  view13 = [(PedestrianARFailureContaineeViewController *)self view];
+  bottomAnchor10 = [view13 bottomAnchor];
+  v133 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10];
   retryButtonBottomConstraint = self->_retryButtonBottomConstraint;
   self->_retryButtonBottomConstraint = v133;
 
-  v135 = [(UIButton *)self->_retryButton heightAnchor];
-  v136 = [v135 constraintEqualToConstant:50.0];
+  heightAnchor2 = [(UIButton *)self->_retryButton heightAnchor];
+  v136 = [heightAnchor2 constraintEqualToConstant:50.0];
   retryButtonHeightConstraint = self->_retryButtonHeightConstraint;
   self->_retryButtonHeightConstraint = v136;
 
-  v159 = [(UIButton *)self->_retryButton leadingAnchor];
-  v156 = [v169 leadingAnchor];
-  v152 = [v159 constraintEqualToAnchor:v156];
+  leadingAnchor13 = [(UIButton *)self->_retryButton leadingAnchor];
+  leadingAnchor14 = [v169 leadingAnchor];
+  v152 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14];
   v171[0] = v152;
-  v138 = [(UIButton *)self->_retryButton trailingAnchor];
-  v139 = [v169 trailingAnchor];
-  v140 = [v138 constraintEqualToAnchor:v139];
+  trailingAnchor13 = [(UIButton *)self->_retryButton trailingAnchor];
+  trailingAnchor14 = [v169 trailingAnchor];
+  v140 = [trailingAnchor13 constraintEqualToAnchor:trailingAnchor14];
   v171[1] = v140;
-  v141 = [(UIButton *)self->_retryButton topAnchor];
-  v142 = [(UIButton *)self->_dismissButton bottomAnchor];
-  v143 = [v141 constraintEqualToAnchor:v142 constant:4.0];
+  topAnchor12 = [(UIButton *)self->_retryButton topAnchor];
+  bottomAnchor11 = [(UIButton *)self->_dismissButton bottomAnchor];
+  v143 = [topAnchor12 constraintEqualToAnchor:bottomAnchor11 constant:4.0];
   v144 = self->_retryButtonBottomConstraint;
   v171[2] = v143;
   v171[3] = v144;
@@ -701,7 +701,7 @@ LABEL_12:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -713,7 +713,7 @@ LABEL_12:
   [(PedestrianARFailureContaineeViewController *)&v5 dealloc];
 }
 
-- (PedestrianARFailureContaineeViewController)initWithEntryPoint:(int64_t)a3
+- (PedestrianARFailureContaineeViewController)initWithEntryPoint:(int64_t)point
 {
   v14.receiver = self;
   v14.super_class = PedestrianARFailureContaineeViewController;
@@ -726,31 +726,31 @@ LABEL_12:
       *buf = 134349312;
       v16 = v4;
       v17 = 2048;
-      v18 = a3;
+      pointCopy = point;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Initializing with entry point: %ld", buf, 0x16u);
     }
 
-    v4->_entryPoint = a3;
+    v4->_entryPoint = point;
     v6 = +[MapsARSessionManager sharedManager];
     [v6 requestSessionWithOwner:v4];
 
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 addObserver:v4 selector:"pedestrianARViewControllerDidDisappearNotification:" name:@"PedestrianARViewControllerDidDisappearNotification" object:0];
 
-    v8 = [(ContaineeViewController *)v4 cardPresentationController];
-    [v8 setHideGrabber:1];
+    cardPresentationController = [(ContaineeViewController *)v4 cardPresentationController];
+    [cardPresentationController setHideGrabber:1];
 
-    v9 = [(ContaineeViewController *)v4 cardPresentationController];
-    [v9 setAllowsSwipeToDismiss:0];
+    cardPresentationController2 = [(ContaineeViewController *)v4 cardPresentationController];
+    [cardPresentationController2 setAllowsSwipeToDismiss:0];
 
-    v10 = [(ContaineeViewController *)v4 cardPresentationController];
-    [v10 setPresentedModally:1];
+    cardPresentationController3 = [(ContaineeViewController *)v4 cardPresentationController];
+    [cardPresentationController3 setPresentedModally:1];
 
-    v11 = [(ContaineeViewController *)v4 cardPresentationController];
-    [v11 setTakesAvailableHeight:1];
+    cardPresentationController4 = [(ContaineeViewController *)v4 cardPresentationController];
+    [cardPresentationController4 setTakesAvailableHeight:1];
 
-    v12 = [(ContaineeViewController *)v4 cardPresentationController];
-    [v12 setEdgeAttachedRegularHeightDimmingBehavior:1];
+    cardPresentationController5 = [(ContaineeViewController *)v4 cardPresentationController];
+    [cardPresentationController5 setEdgeAttachedRegularHeightDimmingBehavior:1];
   }
 
   return v4;

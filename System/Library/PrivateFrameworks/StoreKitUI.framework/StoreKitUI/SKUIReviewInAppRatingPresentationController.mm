@@ -1,6 +1,6 @@
 @interface SKUIReviewInAppRatingPresentationController
-- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)a3;
-- (SKUIReviewInAppRatingPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)superview;
+- (SKUIReviewInAppRatingPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (void)_prepareConstraintsIfNecessary;
 - (void)_prepareDimmingViewIfNecessary;
 - (void)containerViewDidLayoutSubviews;
@@ -10,11 +10,11 @@
 
 @implementation SKUIReviewInAppRatingPresentationController
 
-- (SKUIReviewInAppRatingPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (SKUIReviewInAppRatingPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v7.receiver = self;
   v7.super_class = SKUIReviewInAppRatingPresentationController;
-  v4 = [(SKUIReviewInAppRatingPresentationController *)&v7 initWithPresentedViewController:a3 presentingViewController:a4];
+  v4 = [(SKUIReviewInAppRatingPresentationController *)&v7 initWithPresentedViewController:controller presentingViewController:viewController];
   v5 = v4;
   if (v4)
   {
@@ -36,24 +36,24 @@
   v14.receiver = self;
   v14.super_class = SKUIReviewInAppRatingPresentationController;
   [(SKUIReviewInAppRatingPresentationController *)&v14 containerViewDidLayoutSubviews];
-  v3 = [(SKUIReviewInAppRatingPresentationController *)self dimmingView];
+  dimmingView = [(SKUIReviewInAppRatingPresentationController *)self dimmingView];
 
-  if (v3)
+  if (dimmingView)
   {
-    v4 = [(SKUIReviewInAppRatingPresentationController *)self containerView];
-    [v4 bounds];
+    containerView = [(SKUIReviewInAppRatingPresentationController *)self containerView];
+    [containerView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(SKUIReviewInAppRatingPresentationController *)self dimmingView];
-    [v13 setFrame:{v6, v8, v10, v12}];
+    dimmingView2 = [(SKUIReviewInAppRatingPresentationController *)self dimmingView];
+    [dimmingView2 setFrame:{v6, v8, v10, v12}];
   }
 }
 
-- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)a3
+- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)superview
 {
-  [a3 bounds];
+  [superview bounds];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -63,15 +63,15 @@
 
 - (void)_prepareDimmingViewIfNecessary
 {
-  v10 = [(SKUIReviewInAppRatingPresentationController *)self presentedViewController];
-  v3 = [(SKUIReviewInAppRatingPresentationController *)self dimmingView];
+  presentedViewController = [(SKUIReviewInAppRatingPresentationController *)self presentedViewController];
+  dimmingView = [(SKUIReviewInAppRatingPresentationController *)self dimmingView];
 
-  v4 = v10;
-  if (!v3 && v10)
+  v4 = presentedViewController;
+  if (!dimmingView && presentedViewController)
   {
-    v5 = [(SKUIReviewInAppRatingPresentationController *)self containerView];
-    v6 = [(SKUIReviewInAppRatingPresentationController *)self dimmingView];
-    [v6 removeFromSuperview];
+    containerView = [(SKUIReviewInAppRatingPresentationController *)self containerView];
+    dimmingView2 = [(SKUIReviewInAppRatingPresentationController *)self dimmingView];
+    [dimmingView2 removeFromSuperview];
 
     v7 = objc_alloc(MEMORY[0x277D75D18]);
     v8 = [v7 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -81,18 +81,18 @@
 
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SKUIReviewInAppRatingPresentationController *)self setDimmingView:v8];
-    [v5 insertSubview:v8 atIndex:0];
-    [v5 sendSubviewToBack:v8];
+    [containerView insertSubview:v8 atIndex:0];
+    [containerView sendSubviewToBack:v8];
 
-    v4 = v10;
+    v4 = presentedViewController;
   }
 }
 
 - (void)presentationTransitionWillBegin
 {
-  v4 = [(SKUIReviewInAppRatingPresentationController *)self containerView];
-  v3 = [(SKUIReviewInAppRatingPresentationController *)self presentedView];
-  [v4 addSubview:v3];
+  containerView = [(SKUIReviewInAppRatingPresentationController *)self containerView];
+  presentedView = [(SKUIReviewInAppRatingPresentationController *)self presentedView];
+  [containerView addSubview:presentedView];
 
   [(SKUIReviewInAppRatingPresentationController *)self _prepareDimmingViewIfNecessary];
   [(SKUIReviewInAppRatingPresentationController *)self _prepareConstraintsIfNecessary];
@@ -102,24 +102,24 @@
 {
   if (![(SKUIReviewInAppRatingPresentationController *)self constraintsPrepared])
   {
-    v3 = [(SKUIReviewInAppRatingPresentationController *)self presentedViewController];
-    v4 = [v3 view];
+    presentedViewController = [(SKUIReviewInAppRatingPresentationController *)self presentedViewController];
+    view = [presentedViewController view];
 
-    [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [(SKUIReviewInAppRatingPresentationController *)self containerView];
-    if ([v4 isDescendantOfView:v5])
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    containerView = [(SKUIReviewInAppRatingPresentationController *)self containerView];
+    if ([view isDescendantOfView:containerView])
     {
       [(SKUIReviewInAppRatingPresentationController *)self setConstraintsPrepared:1];
-      v6 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v7 = MEMORY[0x277D75D18];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __77__SKUIReviewInAppRatingPresentationController__prepareConstraintsIfNecessary__block_invoke;
       v9[3] = &unk_2781F8680;
-      v10 = v4;
-      v11 = v5;
-      v12 = v6;
-      v8 = v6;
+      v10 = view;
+      v11 = containerView;
+      v12 = array;
+      v8 = array;
       [v7 performWithoutAnimation:v9];
     }
   }

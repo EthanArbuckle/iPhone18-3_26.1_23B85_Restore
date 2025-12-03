@@ -1,15 +1,15 @@
 @interface INPrivatePlayMediaIntentData
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INPrivatePlayMediaIntentData)initWithAppSelectionEnabled:(id)a3 appInferred:(id)a4 audioSearchResults:(id)a5 privateMediaIntentData:(id)a6 appSelectionSignalsEnabled:(id)a7 appSelectionSignalsFrequencyDenominator:(id)a8 shouldSuppressCommonWholeHouseAudioRoutes:(id)a9 immediatelyStartPlayback:(id)a10 isAmbiguousPlay:(id)a11 isPersonalizedRequest:(id)a12 internalSignals:(id)a13 entityConfidenceSignalsEnabled:(id)a14 entityConfidenceSignalsFrequencyDenominatorInternal:(id)a15 entityConfidenceSignalsFrequencyDenominatorProd:(id)a16 entityConfidenceSignalsMaxItemsToDisambiguate:(id)a17 alternativeProviderBundleIdentifier:(id)a18 ampPAFDataSetID:(id)a19 pegasusMetaData:(id)a20;
-- (INPrivatePlayMediaIntentData)initWithCoder:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INPrivatePlayMediaIntentData)initWithAppSelectionEnabled:(id)enabled appInferred:(id)inferred audioSearchResults:(id)results privateMediaIntentData:(id)data appSelectionSignalsEnabled:(id)signalsEnabled appSelectionSignalsFrequencyDenominator:(id)denominator shouldSuppressCommonWholeHouseAudioRoutes:(id)routes immediatelyStartPlayback:(id)self0 isAmbiguousPlay:(id)self1 isPersonalizedRequest:(id)self2 internalSignals:(id)self3 entityConfidenceSignalsEnabled:(id)self4 entityConfidenceSignalsFrequencyDenominatorInternal:(id)self5 entityConfidenceSignalsFrequencyDenominatorProd:(id)self6 entityConfidenceSignalsMaxItemsToDisambiguate:(id)self7 alternativeProviderBundleIdentifier:(id)self8 ampPAFDataSetID:(id)self9 pegasusMetaData:(id)metaData;
+- (INPrivatePlayMediaIntentData)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
 - (id)_intents_cacheableObjects;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)_intents_updateContainerWithCache:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_intents_updateContainerWithCache:(id)cache;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INPrivatePlayMediaIntentData
@@ -19,13 +19,13 @@
   v59[18] = *MEMORY[0x1E69E9840];
   v58[0] = @"appSelectionEnabled";
   appSelectionEnabled = self->_appSelectionEnabled;
-  v3 = appSelectionEnabled;
+  null = appSelectionEnabled;
   if (!appSelectionEnabled)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v59[0] = v3;
+  v59[0] = null;
   v58[1] = @"appInferred";
   appInferred = self->_appInferred;
   v54 = appInferred;
@@ -132,68 +132,68 @@
   v59[11] = entityConfidenceSignalsEnabled;
   v58[12] = @"entityConfidenceSignalsFrequencyDenominatorInternal";
   entityConfidenceSignalsFrequencyDenominatorInternal = self->_entityConfidenceSignalsFrequencyDenominatorInternal;
-  v16 = entityConfidenceSignalsFrequencyDenominatorInternal;
+  null2 = entityConfidenceSignalsFrequencyDenominatorInternal;
   if (!entityConfidenceSignalsFrequencyDenominatorInternal)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
   v45 = appSelectionSignalsFrequencyDenominator;
   v51 = audioSearchResults;
-  v33 = v16;
-  v59[12] = v16;
+  v33 = null2;
+  v59[12] = null2;
   v58[13] = @"entityConfidenceSignalsFrequencyDenominatorProd";
   entityConfidenceSignalsFrequencyDenominatorProd = self->_entityConfidenceSignalsFrequencyDenominatorProd;
-  v18 = entityConfidenceSignalsFrequencyDenominatorProd;
+  null3 = entityConfidenceSignalsFrequencyDenominatorProd;
   if (!entityConfidenceSignalsFrequencyDenominatorProd)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v43 = shouldSuppressCommonWholeHouseAudioRoutes;
-  v55 = v3;
-  v32 = v18;
-  v59[13] = v18;
+  v55 = null;
+  v32 = null3;
+  v59[13] = null3;
   v58[14] = @"entityConfidenceSignalsMaxItemsToDisambiguate";
   entityConfidenceSignalsMaxItemsToDisambiguate = self->_entityConfidenceSignalsMaxItemsToDisambiguate;
-  v20 = entityConfidenceSignalsMaxItemsToDisambiguate;
+  null4 = entityConfidenceSignalsMaxItemsToDisambiguate;
   if (!entityConfidenceSignalsMaxItemsToDisambiguate)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v41 = immediatelyStartPlayback;
   v53 = appInferred;
-  v31 = v20;
-  v59[14] = v20;
+  v31 = null4;
+  v59[14] = null4;
   v58[15] = @"alternativeProviderBundleIdentifier";
   alternativeProviderBundleIdentifier = self->_alternativeProviderBundleIdentifier;
-  v22 = alternativeProviderBundleIdentifier;
+  null5 = alternativeProviderBundleIdentifier;
   if (!alternativeProviderBundleIdentifier)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v23 = isAmbiguousPlay;
-  v59[15] = v22;
+  v59[15] = null5;
   v58[16] = @"ampPAFDataSetID";
   ampPAFDataSetID = self->_ampPAFDataSetID;
-  v25 = ampPAFDataSetID;
+  null6 = ampPAFDataSetID;
   if (!ampPAFDataSetID)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v59[16] = v25;
+  v59[16] = null6;
   v58[17] = @"pegasusMetaData";
   pegasusMetaData = self->_pegasusMetaData;
-  v27 = pegasusMetaData;
+  null7 = pegasusMetaData;
   if (!pegasusMetaData)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v59[17] = v27;
+  v59[17] = null7;
   v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v59 forKeys:v58 count:18];
   if (!pegasusMetaData)
   {
@@ -285,151 +285,151 @@
   return v35;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INPrivatePlayMediaIntentData;
   v6 = [(INPrivatePlayMediaIntentData *)&v11 description];
-  v7 = [(INPrivatePlayMediaIntentData *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INPrivatePlayMediaIntentData *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_appSelectionEnabled];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"appSelectionEnabled"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_appSelectionEnabled];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"appSelectionEnabled"];
 
-  v9 = [v6 encodeObject:self->_appInferred];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"appInferred"];
+  v9 = [encoderCopy encodeObject:self->_appInferred];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"appInferred"];
 
-  v10 = [v6 encodeObject:self->_audioSearchResults];
-  [v7 if_setObjectIfNonNil:v10 forKey:@"audioSearchResults"];
+  v10 = [encoderCopy encodeObject:self->_audioSearchResults];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"audioSearchResults"];
 
-  v11 = [v6 encodeObject:self->_privateMediaIntentData];
-  [v7 if_setObjectIfNonNil:v11 forKey:@"privateMediaIntentData"];
+  v11 = [encoderCopy encodeObject:self->_privateMediaIntentData];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"privateMediaIntentData"];
 
-  v12 = [v6 encodeObject:self->_appSelectionSignalsEnabled];
-  [v7 if_setObjectIfNonNil:v12 forKey:@"appSelectionSignalsEnabled"];
+  v12 = [encoderCopy encodeObject:self->_appSelectionSignalsEnabled];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"appSelectionSignalsEnabled"];
 
-  v13 = [v6 encodeObject:self->_appSelectionSignalsFrequencyDenominator];
-  [v7 if_setObjectIfNonNil:v13 forKey:@"appSelectionSignalsFrequencyDenominator"];
+  v13 = [encoderCopy encodeObject:self->_appSelectionSignalsFrequencyDenominator];
+  [dictionary if_setObjectIfNonNil:v13 forKey:@"appSelectionSignalsFrequencyDenominator"];
 
-  v14 = [v6 encodeObject:self->_shouldSuppressCommonWholeHouseAudioRoutes];
-  [v7 if_setObjectIfNonNil:v14 forKey:@"shouldSuppressCommonWholeHouseAudioRoutes"];
+  v14 = [encoderCopy encodeObject:self->_shouldSuppressCommonWholeHouseAudioRoutes];
+  [dictionary if_setObjectIfNonNil:v14 forKey:@"shouldSuppressCommonWholeHouseAudioRoutes"];
 
-  v15 = [v6 encodeObject:self->_immediatelyStartPlayback];
-  [v7 if_setObjectIfNonNil:v15 forKey:@"immediatelyStartPlayback"];
+  v15 = [encoderCopy encodeObject:self->_immediatelyStartPlayback];
+  [dictionary if_setObjectIfNonNil:v15 forKey:@"immediatelyStartPlayback"];
 
-  v16 = [v6 encodeObject:self->_isAmbiguousPlay];
-  [v7 if_setObjectIfNonNil:v16 forKey:@"isAmbiguousPlay"];
+  v16 = [encoderCopy encodeObject:self->_isAmbiguousPlay];
+  [dictionary if_setObjectIfNonNil:v16 forKey:@"isAmbiguousPlay"];
 
-  v17 = [v6 encodeObject:self->_isPersonalizedRequest];
-  [v7 if_setObjectIfNonNil:v17 forKey:@"isPersonalizedRequest"];
+  v17 = [encoderCopy encodeObject:self->_isPersonalizedRequest];
+  [dictionary if_setObjectIfNonNil:v17 forKey:@"isPersonalizedRequest"];
 
-  v18 = [v6 encodeObject:self->_internalSignals];
-  [v7 if_setObjectIfNonNil:v18 forKey:@"internalSignals"];
+  v18 = [encoderCopy encodeObject:self->_internalSignals];
+  [dictionary if_setObjectIfNonNil:v18 forKey:@"internalSignals"];
 
-  v19 = [v6 encodeObject:self->_entityConfidenceSignalsEnabled];
-  [v7 if_setObjectIfNonNil:v19 forKey:@"entityConfidenceSignalsEnabled"];
+  v19 = [encoderCopy encodeObject:self->_entityConfidenceSignalsEnabled];
+  [dictionary if_setObjectIfNonNil:v19 forKey:@"entityConfidenceSignalsEnabled"];
 
-  v20 = [v6 encodeObject:self->_entityConfidenceSignalsFrequencyDenominatorInternal];
-  [v7 if_setObjectIfNonNil:v20 forKey:@"entityConfidenceSignalsFrequencyDenominatorInternal"];
+  v20 = [encoderCopy encodeObject:self->_entityConfidenceSignalsFrequencyDenominatorInternal];
+  [dictionary if_setObjectIfNonNil:v20 forKey:@"entityConfidenceSignalsFrequencyDenominatorInternal"];
 
-  v21 = [v6 encodeObject:self->_entityConfidenceSignalsFrequencyDenominatorProd];
-  [v7 if_setObjectIfNonNil:v21 forKey:@"entityConfidenceSignalsFrequencyDenominatorProd"];
+  v21 = [encoderCopy encodeObject:self->_entityConfidenceSignalsFrequencyDenominatorProd];
+  [dictionary if_setObjectIfNonNil:v21 forKey:@"entityConfidenceSignalsFrequencyDenominatorProd"];
 
-  v22 = [v6 encodeObject:self->_entityConfidenceSignalsMaxItemsToDisambiguate];
-  [v7 if_setObjectIfNonNil:v22 forKey:@"entityConfidenceSignalsMaxItemsToDisambiguate"];
+  v22 = [encoderCopy encodeObject:self->_entityConfidenceSignalsMaxItemsToDisambiguate];
+  [dictionary if_setObjectIfNonNil:v22 forKey:@"entityConfidenceSignalsMaxItemsToDisambiguate"];
 
-  v23 = [v6 encodeObject:self->_alternativeProviderBundleIdentifier];
-  [v7 if_setObjectIfNonNil:v23 forKey:@"alternativeProviderBundleIdentifier"];
+  v23 = [encoderCopy encodeObject:self->_alternativeProviderBundleIdentifier];
+  [dictionary if_setObjectIfNonNil:v23 forKey:@"alternativeProviderBundleIdentifier"];
 
-  v24 = [v6 encodeObject:self->_ampPAFDataSetID];
-  [v7 if_setObjectIfNonNil:v24 forKey:@"ampPAFDataSetID"];
+  v24 = [encoderCopy encodeObject:self->_ampPAFDataSetID];
+  [dictionary if_setObjectIfNonNil:v24 forKey:@"ampPAFDataSetID"];
 
-  v25 = [v6 encodeObject:self->_pegasusMetaData];
+  v25 = [encoderCopy encodeObject:self->_pegasusMetaData];
 
-  [v7 if_setObjectIfNonNil:v25 forKey:@"pegasusMetaData"];
+  [dictionary if_setObjectIfNonNil:v25 forKey:@"pegasusMetaData"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appSelectionEnabled = self->_appSelectionEnabled;
-  v5 = a3;
-  [v5 encodeObject:appSelectionEnabled forKey:@"appSelectionEnabled"];
-  [v5 encodeObject:self->_appInferred forKey:@"appInferred"];
-  [v5 encodeObject:self->_audioSearchResults forKey:@"audioSearchResults"];
-  [v5 encodeObject:self->_privateMediaIntentData forKey:@"privateMediaIntentData"];
-  [v5 encodeObject:self->_appSelectionSignalsEnabled forKey:@"appSelectionSignalsEnabled"];
-  [v5 encodeObject:self->_appSelectionSignalsFrequencyDenominator forKey:@"appSelectionSignalsFrequencyDenominator"];
-  [v5 encodeObject:self->_shouldSuppressCommonWholeHouseAudioRoutes forKey:@"shouldSuppressCommonWholeHouseAudioRoutes"];
-  [v5 encodeObject:self->_immediatelyStartPlayback forKey:@"immediatelyStartPlayback"];
-  [v5 encodeObject:self->_isAmbiguousPlay forKey:@"isAmbiguousPlay"];
-  [v5 encodeObject:self->_isPersonalizedRequest forKey:@"isPersonalizedRequest"];
-  [v5 encodeObject:self->_internalSignals forKey:@"internalSignals"];
-  [v5 encodeObject:self->_entityConfidenceSignalsEnabled forKey:@"entityConfidenceSignalsEnabled"];
-  [v5 encodeObject:self->_entityConfidenceSignalsFrequencyDenominatorInternal forKey:@"entityConfidenceSignalsFrequencyDenominatorInternal"];
-  [v5 encodeObject:self->_entityConfidenceSignalsFrequencyDenominatorProd forKey:@"entityConfidenceSignalsFrequencyDenominatorProd"];
-  [v5 encodeObject:self->_entityConfidenceSignalsMaxItemsToDisambiguate forKey:@"entityConfidenceSignalsMaxItemsToDisambiguate"];
-  [v5 encodeObject:self->_alternativeProviderBundleIdentifier forKey:@"alternativeProviderBundleIdentifier"];
-  [v5 encodeObject:self->_ampPAFDataSetID forKey:@"ampPAFDataSetID"];
-  [v5 encodeObject:self->_pegasusMetaData forKey:@"pegasusMetaData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appSelectionEnabled forKey:@"appSelectionEnabled"];
+  [coderCopy encodeObject:self->_appInferred forKey:@"appInferred"];
+  [coderCopy encodeObject:self->_audioSearchResults forKey:@"audioSearchResults"];
+  [coderCopy encodeObject:self->_privateMediaIntentData forKey:@"privateMediaIntentData"];
+  [coderCopy encodeObject:self->_appSelectionSignalsEnabled forKey:@"appSelectionSignalsEnabled"];
+  [coderCopy encodeObject:self->_appSelectionSignalsFrequencyDenominator forKey:@"appSelectionSignalsFrequencyDenominator"];
+  [coderCopy encodeObject:self->_shouldSuppressCommonWholeHouseAudioRoutes forKey:@"shouldSuppressCommonWholeHouseAudioRoutes"];
+  [coderCopy encodeObject:self->_immediatelyStartPlayback forKey:@"immediatelyStartPlayback"];
+  [coderCopy encodeObject:self->_isAmbiguousPlay forKey:@"isAmbiguousPlay"];
+  [coderCopy encodeObject:self->_isPersonalizedRequest forKey:@"isPersonalizedRequest"];
+  [coderCopy encodeObject:self->_internalSignals forKey:@"internalSignals"];
+  [coderCopy encodeObject:self->_entityConfidenceSignalsEnabled forKey:@"entityConfidenceSignalsEnabled"];
+  [coderCopy encodeObject:self->_entityConfidenceSignalsFrequencyDenominatorInternal forKey:@"entityConfidenceSignalsFrequencyDenominatorInternal"];
+  [coderCopy encodeObject:self->_entityConfidenceSignalsFrequencyDenominatorProd forKey:@"entityConfidenceSignalsFrequencyDenominatorProd"];
+  [coderCopy encodeObject:self->_entityConfidenceSignalsMaxItemsToDisambiguate forKey:@"entityConfidenceSignalsMaxItemsToDisambiguate"];
+  [coderCopy encodeObject:self->_alternativeProviderBundleIdentifier forKey:@"alternativeProviderBundleIdentifier"];
+  [coderCopy encodeObject:self->_ampPAFDataSetID forKey:@"ampPAFDataSetID"];
+  [coderCopy encodeObject:self->_pegasusMetaData forKey:@"pegasusMetaData"];
 }
 
-- (INPrivatePlayMediaIntentData)initWithCoder:(id)a3
+- (INPrivatePlayMediaIntentData)initWithCoder:(id)coder
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v31 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"appSelectionEnabled"];
-  v30 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"appInferred"];
+  coderCopy = coder;
+  v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appSelectionEnabled"];
+  v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appInferred"];
   v4 = MEMORY[0x1E695DFD8];
   v33[0] = objc_opt_class();
   v33[1] = objc_opt_class();
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
   v6 = [v4 setWithArray:v5];
-  v29 = [v3 decodeObjectOfClasses:v6 forKey:@"audioSearchResults"];
+  v29 = [coderCopy decodeObjectOfClasses:v6 forKey:@"audioSearchResults"];
 
-  v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"privateMediaIntentData"];
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"appSelectionSignalsEnabled"];
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"appSelectionSignalsFrequencyDenominator"];
-  v28 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"shouldSuppressCommonWholeHouseAudioRoutes"];
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"immediatelyStartPlayback"];
-  v27 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"isAmbiguousPlay"];
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"isPersonalizedRequest"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"privateMediaIntentData"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appSelectionSignalsEnabled"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appSelectionSignalsFrequencyDenominator"];
+  v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shouldSuppressCommonWholeHouseAudioRoutes"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"immediatelyStartPlayback"];
+  v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isAmbiguousPlay"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isPersonalizedRequest"];
   v7 = MEMORY[0x1E695DFD8];
   v32[0] = objc_opt_class();
   v32[1] = objc_opt_class();
   v32[2] = objc_opt_class();
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:3];
   v9 = [v7 setWithArray:v8];
-  v19 = [v3 decodeObjectOfClasses:v9 forKey:@"internalSignals"];
+  v19 = [coderCopy decodeObjectOfClasses:v9 forKey:@"internalSignals"];
 
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"entityConfidenceSignalsEnabled"];
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"entityConfidenceSignalsFrequencyDenominatorInternal"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"entityConfidenceSignalsFrequencyDenominatorProd"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"entityConfidenceSignalsMaxItemsToDisambiguate"];
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"alternativeProviderBundleIdentifier"];
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ampPAFDataSetID"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"pegasusMetaData"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityConfidenceSignalsEnabled"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityConfidenceSignalsFrequencyDenominatorInternal"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityConfidenceSignalsFrequencyDenominatorProd"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityConfidenceSignalsMaxItemsToDisambiguate"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alternativeProviderBundleIdentifier"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ampPAFDataSetID"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pegasusMetaData"];
 
   v26 = [(INPrivatePlayMediaIntentData *)self initWithAppSelectionEnabled:v31 appInferred:v30 audioSearchResults:v29 privateMediaIntentData:v24 appSelectionSignalsEnabled:v23 appSelectionSignalsFrequencyDenominator:v22 shouldSuppressCommonWholeHouseAudioRoutes:v28 immediatelyStartPlayback:v21 isAmbiguousPlay:v27 isPersonalizedRequest:v20 internalSignals:v19 entityConfidenceSignalsEnabled:v18 entityConfidenceSignalsFrequencyDenominatorInternal:v17 entityConfidenceSignalsFrequencyDenominatorProd:v10 entityConfidenceSignalsMaxItemsToDisambiguate:v11 alternativeProviderBundleIdentifier:v12 ampPAFDataSetID:v13 pegasusMetaData:v14];
   v15 = *MEMORY[0x1E69E9840];
   return v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v24 = 1;
   }
@@ -439,7 +439,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       appSelectionEnabled = self->_appSelectionEnabled;
       if (appSelectionEnabled != v5->_appSelectionEnabled && ![(NSNumber *)appSelectionEnabled isEqual:?])
       {
@@ -549,100 +549,100 @@ LABEL_42:
   return v18 ^ v19 ^ [(NSData *)self->_pegasusMetaData hash];
 }
 
-- (INPrivatePlayMediaIntentData)initWithAppSelectionEnabled:(id)a3 appInferred:(id)a4 audioSearchResults:(id)a5 privateMediaIntentData:(id)a6 appSelectionSignalsEnabled:(id)a7 appSelectionSignalsFrequencyDenominator:(id)a8 shouldSuppressCommonWholeHouseAudioRoutes:(id)a9 immediatelyStartPlayback:(id)a10 isAmbiguousPlay:(id)a11 isPersonalizedRequest:(id)a12 internalSignals:(id)a13 entityConfidenceSignalsEnabled:(id)a14 entityConfidenceSignalsFrequencyDenominatorInternal:(id)a15 entityConfidenceSignalsFrequencyDenominatorProd:(id)a16 entityConfidenceSignalsMaxItemsToDisambiguate:(id)a17 alternativeProviderBundleIdentifier:(id)a18 ampPAFDataSetID:(id)a19 pegasusMetaData:(id)a20
+- (INPrivatePlayMediaIntentData)initWithAppSelectionEnabled:(id)enabled appInferred:(id)inferred audioSearchResults:(id)results privateMediaIntentData:(id)data appSelectionSignalsEnabled:(id)signalsEnabled appSelectionSignalsFrequencyDenominator:(id)denominator shouldSuppressCommonWholeHouseAudioRoutes:(id)routes immediatelyStartPlayback:(id)self0 isAmbiguousPlay:(id)self1 isPersonalizedRequest:(id)self2 internalSignals:(id)self3 entityConfidenceSignalsEnabled:(id)self4 entityConfidenceSignalsFrequencyDenominatorInternal:(id)self5 entityConfidenceSignalsFrequencyDenominatorProd:(id)self6 entityConfidenceSignalsMaxItemsToDisambiguate:(id)self7 alternativeProviderBundleIdentifier:(id)self8 ampPAFDataSetID:(id)self9 pegasusMetaData:(id)metaData
 {
-  v25 = a3;
-  v81 = a4;
-  v80 = a5;
-  v79 = a6;
-  v78 = a7;
-  v77 = a8;
-  v76 = a9;
-  v75 = a10;
-  v74 = a11;
-  v73 = a12;
-  v26 = a13;
-  v27 = a14;
-  v28 = a15;
-  v29 = a16;
-  v30 = a17;
-  v31 = a18;
-  v32 = a19;
-  v33 = a20;
+  enabledCopy = enabled;
+  inferredCopy = inferred;
+  resultsCopy = results;
+  dataCopy = data;
+  signalsEnabledCopy = signalsEnabled;
+  denominatorCopy = denominator;
+  routesCopy = routes;
+  playbackCopy = playback;
+  playCopy = play;
+  requestCopy = request;
+  signalsCopy = signals;
+  confidenceSignalsEnabledCopy = confidenceSignalsEnabled;
+  internalCopy = internal;
+  prodCopy = prod;
+  disambiguateCopy = disambiguate;
+  identifierCopy = identifier;
+  dCopy = d;
+  metaDataCopy = metaData;
   v82.receiver = self;
   v82.super_class = INPrivatePlayMediaIntentData;
   v34 = [(INPrivatePlayMediaIntentData *)&v82 init];
   if (v34)
   {
-    v35 = [v25 copy];
+    v35 = [enabledCopy copy];
     appSelectionEnabled = v34->_appSelectionEnabled;
     v34->_appSelectionEnabled = v35;
 
-    v37 = [v81 copy];
+    v37 = [inferredCopy copy];
     appInferred = v34->_appInferred;
     v34->_appInferred = v37;
 
-    v39 = [v80 copy];
+    v39 = [resultsCopy copy];
     audioSearchResults = v34->_audioSearchResults;
     v34->_audioSearchResults = v39;
 
-    v41 = [v79 copy];
+    v41 = [dataCopy copy];
     privateMediaIntentData = v34->_privateMediaIntentData;
     v34->_privateMediaIntentData = v41;
 
-    v43 = [v78 copy];
+    v43 = [signalsEnabledCopy copy];
     appSelectionSignalsEnabled = v34->_appSelectionSignalsEnabled;
     v34->_appSelectionSignalsEnabled = v43;
 
-    v45 = [v77 copy];
+    v45 = [denominatorCopy copy];
     appSelectionSignalsFrequencyDenominator = v34->_appSelectionSignalsFrequencyDenominator;
     v34->_appSelectionSignalsFrequencyDenominator = v45;
 
-    v47 = [v76 copy];
+    v47 = [routesCopy copy];
     shouldSuppressCommonWholeHouseAudioRoutes = v34->_shouldSuppressCommonWholeHouseAudioRoutes;
     v34->_shouldSuppressCommonWholeHouseAudioRoutes = v47;
 
-    v49 = [v75 copy];
+    v49 = [playbackCopy copy];
     immediatelyStartPlayback = v34->_immediatelyStartPlayback;
     v34->_immediatelyStartPlayback = v49;
 
-    v51 = [v74 copy];
+    v51 = [playCopy copy];
     isAmbiguousPlay = v34->_isAmbiguousPlay;
     v34->_isAmbiguousPlay = v51;
 
-    v53 = [v73 copy];
+    v53 = [requestCopy copy];
     isPersonalizedRequest = v34->_isPersonalizedRequest;
     v34->_isPersonalizedRequest = v53;
 
-    v55 = [v26 copy];
+    v55 = [signalsCopy copy];
     internalSignals = v34->_internalSignals;
     v34->_internalSignals = v55;
 
-    v57 = [v27 copy];
+    v57 = [confidenceSignalsEnabledCopy copy];
     entityConfidenceSignalsEnabled = v34->_entityConfidenceSignalsEnabled;
     v34->_entityConfidenceSignalsEnabled = v57;
 
-    v59 = [v28 copy];
+    v59 = [internalCopy copy];
     entityConfidenceSignalsFrequencyDenominatorInternal = v34->_entityConfidenceSignalsFrequencyDenominatorInternal;
     v34->_entityConfidenceSignalsFrequencyDenominatorInternal = v59;
 
-    v61 = [v29 copy];
+    v61 = [prodCopy copy];
     entityConfidenceSignalsFrequencyDenominatorProd = v34->_entityConfidenceSignalsFrequencyDenominatorProd;
     v34->_entityConfidenceSignalsFrequencyDenominatorProd = v61;
 
-    v63 = [v30 copy];
+    v63 = [disambiguateCopy copy];
     entityConfidenceSignalsMaxItemsToDisambiguate = v34->_entityConfidenceSignalsMaxItemsToDisambiguate;
     v34->_entityConfidenceSignalsMaxItemsToDisambiguate = v63;
 
-    v65 = [v31 copy];
+    v65 = [identifierCopy copy];
     alternativeProviderBundleIdentifier = v34->_alternativeProviderBundleIdentifier;
     v34->_alternativeProviderBundleIdentifier = v65;
 
-    v67 = [v32 copy];
+    v67 = [dCopy copy];
     ampPAFDataSetID = v34->_ampPAFDataSetID;
     v34->_ampPAFDataSetID = v67;
 
-    v69 = [v33 copy];
+    v69 = [metaDataCopy copy];
     pegasusMetaData = v34->_pegasusMetaData;
     v34->_pegasusMetaData = v69;
   }
@@ -650,54 +650,54 @@ LABEL_42:
   return v34;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v43 = [v8 objectForKeyedSubscript:@"appSelectionEnabled"];
-    v41 = [v8 objectForKeyedSubscript:@"appInferred"];
-    v35 = a1;
+    v43 = [fromCopy objectForKeyedSubscript:@"appSelectionEnabled"];
+    v41 = [fromCopy objectForKeyedSubscript:@"appInferred"];
+    selfCopy = self;
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"audioSearchResults"];
-    v42 = [v7 decodeObjectsOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"audioSearchResults"];
+    v42 = [decoderCopy decodeObjectsOfClass:v9 from:v10];
 
     v11 = objc_opt_class();
-    v12 = [v8 objectForKeyedSubscript:@"privateMediaIntentData"];
-    v40 = [v7 decodeObjectOfClass:v11 from:v12];
+    v12 = [fromCopy objectForKeyedSubscript:@"privateMediaIntentData"];
+    v40 = [decoderCopy decodeObjectOfClass:v11 from:v12];
 
-    v39 = [v8 objectForKeyedSubscript:@"appSelectionSignalsEnabled"];
-    v34 = [v8 objectForKeyedSubscript:@"appSelectionSignalsFrequencyDenominator"];
-    v38 = [v8 objectForKeyedSubscript:@"shouldSuppressCommonWholeHouseAudioRoutes"];
-    v37 = [v8 objectForKeyedSubscript:@"immediatelyStartPlayback"];
-    v33 = [v8 objectForKeyedSubscript:@"isAmbiguousPlay"];
-    v32 = [v8 objectForKeyedSubscript:@"isPersonalizedRequest"];
-    v31 = [v8 objectForKeyedSubscript:@"internalSignals"];
-    v28 = [v8 objectForKeyedSubscript:@"entityConfidenceSignalsEnabled"];
-    v30 = [v8 objectForKeyedSubscript:@"entityConfidenceSignalsFrequencyDenominatorInternal"];
-    v13 = [v8 objectForKeyedSubscript:@"entityConfidenceSignalsFrequencyDenominatorProd"];
-    v27 = [v8 objectForKeyedSubscript:@"entityConfidenceSignalsMaxItemsToDisambiguate"];
+    v39 = [fromCopy objectForKeyedSubscript:@"appSelectionSignalsEnabled"];
+    v34 = [fromCopy objectForKeyedSubscript:@"appSelectionSignalsFrequencyDenominator"];
+    v38 = [fromCopy objectForKeyedSubscript:@"shouldSuppressCommonWholeHouseAudioRoutes"];
+    v37 = [fromCopy objectForKeyedSubscript:@"immediatelyStartPlayback"];
+    v33 = [fromCopy objectForKeyedSubscript:@"isAmbiguousPlay"];
+    v32 = [fromCopy objectForKeyedSubscript:@"isPersonalizedRequest"];
+    v31 = [fromCopy objectForKeyedSubscript:@"internalSignals"];
+    v28 = [fromCopy objectForKeyedSubscript:@"entityConfidenceSignalsEnabled"];
+    v30 = [fromCopy objectForKeyedSubscript:@"entityConfidenceSignalsFrequencyDenominatorInternal"];
+    v13 = [fromCopy objectForKeyedSubscript:@"entityConfidenceSignalsFrequencyDenominatorProd"];
+    v27 = [fromCopy objectForKeyedSubscript:@"entityConfidenceSignalsMaxItemsToDisambiguate"];
     v14 = objc_opt_class();
-    v15 = [v8 objectForKeyedSubscript:@"alternativeProviderBundleIdentifier"];
-    v16 = [v7 decodeObjectOfClass:v14 from:v15];
+    v15 = [fromCopy objectForKeyedSubscript:@"alternativeProviderBundleIdentifier"];
+    v16 = [decoderCopy decodeObjectOfClass:v14 from:v15];
 
     v17 = objc_opt_class();
-    v18 = [v8 objectForKeyedSubscript:@"ampPAFDataSetID"];
-    v19 = v7;
-    v20 = [v7 decodeObjectOfClass:v17 from:v18];
+    v18 = [fromCopy objectForKeyedSubscript:@"ampPAFDataSetID"];
+    v19 = decoderCopy;
+    v20 = [decoderCopy decodeObjectOfClass:v17 from:v18];
 
     v21 = objc_opt_class();
-    v22 = [v8 objectForKeyedSubscript:@"pegasusMetaData"];
-    v23 = [v7 decodeObjectOfClass:v21 from:v22];
+    v22 = [fromCopy objectForKeyedSubscript:@"pegasusMetaData"];
+    v23 = [decoderCopy decodeObjectOfClass:v21 from:v22];
 
-    v24 = [v35 alloc];
+    v24 = [selfCopy alloc];
     v36 = v19;
     v29 = [v24 initWithAppSelectionEnabled:v43 appInferred:v41 audioSearchResults:v42 privateMediaIntentData:v40 appSelectionSignalsEnabled:v39 appSelectionSignalsFrequencyDenominator:v34 shouldSuppressCommonWholeHouseAudioRoutes:v38 immediatelyStartPlayback:v37 isAmbiguousPlay:v33 isPersonalizedRequest:v32 internalSignals:v31 entityConfidenceSignalsEnabled:v28 entityConfidenceSignalsFrequencyDenominatorInternal:v30 entityConfidenceSignalsFrequencyDenominatorProd:v13 entityConfidenceSignalsMaxItemsToDisambiguate:v27 alternativeProviderBundleIdentifier:v16 ampPAFDataSetID:v20 pegasusMetaData:v23];
 
     v25 = v29;
-    v7 = v36;
+    decoderCopy = v36;
   }
 
   else
@@ -708,16 +708,16 @@ LABEL_42:
   return v25;
 }
 
-- (void)_intents_updateContainerWithCache:(id)a3
+- (void)_intents_updateContainerWithCache:(id)cache
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cacheCopy = cache;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(INPrivatePlayMediaIntentData *)self audioSearchResults];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  audioSearchResults = [(INPrivatePlayMediaIntentData *)self audioSearchResults];
+  v6 = [audioSearchResults countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -729,14 +729,14 @@ LABEL_42:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(audioSearchResults);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) _intents_updateContainerWithCache:v4];
+        [*(*(&v11 + 1) + 8 * v9++) _intents_updateContainerWithCache:cacheCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [audioSearchResults countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -753,8 +753,8 @@ LABEL_42:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(INPrivatePlayMediaIntentData *)self audioSearchResults];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  audioSearchResults = [(INPrivatePlayMediaIntentData *)self audioSearchResults];
+  v5 = [audioSearchResults countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -766,17 +766,17 @@ LABEL_42:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(audioSearchResults);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * v8) _intents_cacheableObjects];
-        [v3 unionSet:v9];
+        _intents_cacheableObjects = [*(*(&v14 + 1) + 8 * v8) _intents_cacheableObjects];
+        [v3 unionSet:_intents_cacheableObjects];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [audioSearchResults countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);

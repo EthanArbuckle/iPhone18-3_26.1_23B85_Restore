@@ -1,27 +1,27 @@
 @interface SVXVoiceGenderConverter
-- (int64_t)getAFVoiceGenderFromTTSAssetVoiceGender:(int64_t)a3;
-- (int64_t)getSpeechGenderFromGender:(int64_t)a3;
-- (int64_t)getSpeechGenderFromVoiceInfo:(id)a3;
+- (int64_t)getAFVoiceGenderFromTTSAssetVoiceGender:(int64_t)gender;
+- (int64_t)getSpeechGenderFromGender:(int64_t)gender;
+- (int64_t)getSpeechGenderFromVoiceInfo:(id)info;
 @end
 
 @implementation SVXVoiceGenderConverter
 
-- (int64_t)getAFVoiceGenderFromTTSAssetVoiceGender:(int64_t)a3
+- (int64_t)getAFVoiceGenderFromTTSAssetVoiceGender:(int64_t)gender
 {
-  if ((a3 - 1) >= 3)
+  if ((gender - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return gender;
   }
 }
 
-- (int64_t)getSpeechGenderFromVoiceInfo:(id)a3
+- (int64_t)getSpeechGenderFromVoiceInfo:(id)info
 {
-  result = [a3 gender];
+  result = [info gender];
   if ((result - 1) >= 3)
   {
     return 0;
@@ -30,16 +30,16 @@
   return result;
 }
 
-- (int64_t)getSpeechGenderFromGender:(int64_t)a3
+- (int64_t)getSpeechGenderFromGender:(int64_t)gender
 {
-  if ((a3 - 1) >= 3)
+  if ((gender - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return gender;
   }
 }
 

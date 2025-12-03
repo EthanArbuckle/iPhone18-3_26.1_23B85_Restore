@@ -1,25 +1,25 @@
 @interface NMSPodcastUpNextMediaItemGroup
 - (id)_upNextEpisodes;
 - (id)_upNextFeedURLs;
-- (id)identifiersForContainerType:(unint64_t)a3;
+- (id)identifiersForContainerType:(unint64_t)type;
 - (id)itemList;
 - (void)_upNextEpisodes;
 @end
 
 @implementation NMSPodcastUpNextMediaItemGroup
 
-- (id)identifiersForContainerType:(unint64_t)a3
+- (id)identifiersForContainerType:(unint64_t)type
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
-  if ([(NMSMediaItemGroup *)self type]== a3)
+  array = [MEMORY[0x277CBEB18] array];
+  if ([(NMSMediaItemGroup *)self type]== type)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(NMSPodcastUpNextMediaItemGroup *)self _upNextFeedURLs];
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    _upNextFeedURLs = [(NMSPodcastUpNextMediaItemGroup *)self _upNextFeedURLs];
+    v7 = [_upNextFeedURLs countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
@@ -30,7 +30,7 @@
         {
           if (*v19 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(_upNextFeedURLs);
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
@@ -41,17 +41,17 @@
           v17[3] = &unk_27993DFA0;
           v17[4] = v11;
           v13 = [v12 initWithBlock:v17];
-          [v5 addObject:v13];
+          [array addObject:v13];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v8 = [_upNextFeedURLs countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v8);
     }
   }
 
-  v14 = [v5 copy];
+  v14 = [array copy];
 
   v15 = *MEMORY[0x277D85DE8];
 
@@ -60,10 +60,10 @@
 
 - (id)itemList
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc_init(NMSPodcastSizeEstimation);
-  v5 = [MEMORY[0x277D3DAE8] sharedInstance];
-  v6 = [v5 mainOrPrivateContext];
+  mEMORY[0x277D3DAE8] = [MEMORY[0x277D3DAE8] sharedInstance];
+  mainOrPrivateContext = [mEMORY[0x277D3DAE8] mainOrPrivateContext];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -71,10 +71,10 @@
   v11[3] = &unk_27993E5C0;
   v11[4] = self;
   v12 = v4;
-  v13 = v3;
-  v7 = v3;
+  v13 = array;
+  v7 = array;
   v8 = v4;
-  [v6 performBlockAndWait:v11];
+  [mainOrPrivateContext performBlockAndWait:v11];
   v9 = [v7 copy];
 
   return v9;
@@ -138,15 +138,15 @@ void __42__NMSPodcastUpNextMediaItemGroup_itemList__block_invoke(uint64_t a1)
     v16[2] = __Block_byref_object_copy__7;
     v16[3] = __Block_byref_object_dispose__7;
     v17 = 0;
-    v5 = [MEMORY[0x277D3DAE8] sharedInstance];
-    v6 = [v5 mainOrPrivateContext];
+    mEMORY[0x277D3DAE8] = [MEMORY[0x277D3DAE8] sharedInstance];
+    mainOrPrivateContext = [mEMORY[0x277D3DAE8] mainOrPrivateContext];
 
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __49__NMSPodcastUpNextMediaItemGroup__upNextEpisodes__block_invoke;
     v11[3] = &unk_27993EB48;
     v11[4] = self;
-    v7 = v6;
+    v7 = mainOrPrivateContext;
     v12 = v7;
     v8 = v4;
     v13 = v8;
@@ -186,15 +186,15 @@ void __49__NMSPodcastUpNextMediaItemGroup__upNextEpisodes__block_invoke(void *a1
   upNextFeedURLs = self->_upNextFeedURLs;
   if (!upNextFeedURLs)
   {
-    v4 = [MEMORY[0x277D3DAE8] sharedInstance];
-    v5 = [v4 mainOrPrivateContext];
+    mEMORY[0x277D3DAE8] = [MEMORY[0x277D3DAE8] sharedInstance];
+    mainOrPrivateContext = [mEMORY[0x277D3DAE8] mainOrPrivateContext];
 
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __49__NMSPodcastUpNextMediaItemGroup__upNextFeedURLs__block_invoke;
     v7[3] = &unk_27993DD20;
     v7[4] = self;
-    [v5 performBlockAndWait:v7];
+    [mainOrPrivateContext performBlockAndWait:v7];
 
     upNextFeedURLs = self->_upNextFeedURLs;
   }
@@ -216,7 +216,7 @@ void __49__NMSPodcastUpNextMediaItemGroup__upNextFeedURLs__block_invoke(uint64_t
 - (void)_upNextEpisodes
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *(*a1 + 40);
+  v7 = *(*self + 40);
   OUTLINED_FUNCTION_1_0();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x277D85DE8];

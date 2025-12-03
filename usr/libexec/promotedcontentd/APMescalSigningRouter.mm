@@ -1,16 +1,16 @@
 @interface APMescalSigningRouter
-- (APMescalSigningRouter)initWithAMSProvider:(BOOL)a3;
+- (APMescalSigningRouter)initWithAMSProvider:(BOOL)provider;
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
-- (void)signatureForData:(id)a3 completion:(id)a4;
-- (void)signatureForData:(id)a3 waitTime:(double)a4 completion:(id)a5;
+- (void)signatureForData:(id)data completion:(id)completion;
+- (void)signatureForData:(id)data waitTime:(double)time completion:(id)completion;
 @end
 
 @implementation APMescalSigningRouter
 
-- (APMescalSigningRouter)initWithAMSProvider:(BOOL)a3
+- (APMescalSigningRouter)initWithAMSProvider:(BOOL)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = APMescalSigningRouter;
   v4 = [(APMescalSigningRouter *)&v9 init];
@@ -26,20 +26,20 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{private}@] Initializing listener for MescalSigning", buf, 0xCu);
     }
 
-    [APMescalSigningService createServiceWithAMSProvider:v3];
+    [APMescalSigningService createServiceWithAMSProvider:providerCopy];
     [APXPCListenerManager addDelegate:v4];
   }
 
   return v4;
 }
 
-- (void)signatureForData:(id)a3 completion:(id)a4
+- (void)signatureForData:(id)data completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dataCopy = data;
   v7 = +[APMescalSigningService service];
   v11 = 0;
-  v8 = [v7 signatureForData:v6 error:&v11];
+  v8 = [v7 signatureForData:dataCopy error:&v11];
 
   v9 = v11;
   if (v9)
@@ -53,24 +53,24 @@
     }
   }
 
-  if (v5)
+  if (completionCopy)
   {
-    v5[2](v5, v8, v9);
+    completionCopy[2](completionCopy, v8, v9);
   }
 }
 
-- (void)signatureForData:(id)a3 waitTime:(double)a4 completion:(id)a5
+- (void)signatureForData:(id)data waitTime:(double)time completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  dataCopy = data;
   v9 = +[APMescalSigningService service];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100322D08;
   v11[3] = &unk_10047E240;
-  v12 = v7;
-  v10 = v7;
-  [v9 signatureForData:v8 waitTime:v11 completion:a4];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [v9 signatureForData:dataCopy waitTime:v11 completion:time];
 }
 
 - (void)connectionInterrupted

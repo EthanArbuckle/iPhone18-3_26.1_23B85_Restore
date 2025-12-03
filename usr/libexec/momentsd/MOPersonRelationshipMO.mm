@@ -1,21 +1,21 @@
 @interface MOPersonRelationshipMO
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation MOPersonRelationshipMO
 
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOPersonRelationshipMO alloc] initWithContext:v5];
+  contextCopy = context;
+  objectCopy = object;
+  v7 = [[MOPersonRelationshipMO alloc] initWithContext:contextCopy];
 
-  -[MOPersonRelationshipMO setRelationship:](v7, "setRelationship:", [v6 relationship]);
-  [v6 score];
+  -[MOPersonRelationshipMO setRelationship:](v7, "setRelationship:", [objectCopy relationship]);
+  [objectCopy score];
   [(MOPersonRelationshipMO *)v7 setScore:?];
-  v8 = [v6 source];
+  source = [objectCopy source];
 
-  [(MOPersonRelationshipMO *)v7 setSource:v8];
+  [(MOPersonRelationshipMO *)v7 setSource:source];
 
   return v7;
 }

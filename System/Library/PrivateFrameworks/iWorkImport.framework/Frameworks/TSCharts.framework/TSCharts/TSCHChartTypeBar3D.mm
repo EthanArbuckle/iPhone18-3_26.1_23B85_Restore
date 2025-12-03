@@ -1,16 +1,16 @@
 @interface TSCHChartTypeBar3D
 - (TSCH3DChartRotationLimit)rotation3DLimit;
-- (id)imageWithPreset:(id)a3 target:(int)a4 imageSize:(CGSize)a5 imageScale:(double)a6 swatchFrame:(CGRect)a7 documentRoot:(id)a8 shouldCache:(BOOL *)a9;
+- (id)imageWithPreset:(id)preset target:(int)target imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame documentRoot:(id)root shouldCache:(BOOL *)cache;
 - (id)name;
-- (id)titlePositionerWithInfo:(id)a3 scene:(id)a4;
+- (id)titlePositionerWithInfo:(id)info scene:(id)scene;
 - (id)userInterfaceName;
 @end
 
 @implementation TSCHChartTypeBar3D
 
-- (id)titlePositionerWithInfo:(id)a3 scene:(id)a4
+- (id)titlePositionerWithInfo:(id)info scene:(id)scene
 {
-  v7 = objc_msgSend_positionerWithInfo_scene_(TSCH3DHorizontalChartTitlePositioner, a2, v4, v5, v6, a3, a4);
+  v7 = objc_msgSend_positionerWithInfo_scene_(TSCH3DHorizontalChartTitlePositioner, a2, v4, v5, v6, info, scene);
 
   return v7;
 }
@@ -36,11 +36,11 @@
   return v10;
 }
 
-- (id)imageWithPreset:(id)a3 target:(int)a4 imageSize:(CGSize)a5 imageScale:(double)a6 swatchFrame:(CGRect)a7 documentRoot:(id)a8 shouldCache:(BOOL *)a9
+- (id)imageWithPreset:(id)preset target:(int)target imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame documentRoot:(id)root shouldCache:(BOOL *)cache
 {
   v11.receiver = self;
   v11.super_class = TSCHChartTypeBar3D;
-  v9 = [(TSCHChartType *)&v11 imageWithPreset:a3 target:*&a4 imageSize:a8 imageScale:a9 swatchFrame:a5.width documentRoot:a5.height shouldCache:a6, a7.origin.x, a7.origin.y, a7.size.width, a7.size.height];
+  v9 = [(TSCHChartType *)&v11 imageWithPreset:preset target:*&target imageSize:root imageScale:cache swatchFrame:size.width documentRoot:size.height shouldCache:scale, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 
   return v9;
 }

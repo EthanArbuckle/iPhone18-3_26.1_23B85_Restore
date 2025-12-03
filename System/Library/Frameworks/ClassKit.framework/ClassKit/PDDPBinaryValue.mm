@@ -1,22 +1,22 @@
 @interface PDDPBinaryValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsValueType:(id)a3;
+- (int)StringAsValueType:(id)type;
 - (int)valueType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPBinaryValue
 
-- (void)setHasValue:(BOOL)a3
+- (void)setHasValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -42,30 +42,30 @@
   }
 }
 
-- (int)StringAsValueType:(id)a3
+- (int)StringAsValueType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"TRUE_FALSE"])
+  else if ([typeCopy isEqualToString:@"TRUE_FALSE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PASS_FAIL"])
+  else if ([typeCopy isEqualToString:@"PASS_FAIL"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"YES_NO"])
+  else if ([typeCopy isEqualToString:@"YES_NO"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CORRECT_INCORRECT"])
+  else if ([typeCopy isEqualToString:@"CORRECT_INCORRECT"])
   {
     v4 = 4;
   }
@@ -83,8 +83,8 @@
   v7.receiver = self;
   v7.super_class = PDDPBinaryValue;
   v3 = [(PDDPBinaryValue *)&v7 description];
-  v4 = [(PDDPBinaryValue *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPBinaryValue *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -120,16 +120,16 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     value = self->_value;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -137,31 +137,31 @@
   {
     valueType = self->_valueType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[12] = self->_value;
-    v4[16] |= 2u;
+    toCopy[12] = self->_value;
+    toCopy[16] |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 2) = self->_valueType;
-    v4[16] |= 1u;
+    *(toCopy + 2) = self->_valueType;
+    toCopy[16] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -179,45 +179,45 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 16) & 2) == 0)
+    if ((*(equalCopy + 16) & 2) == 0)
     {
       goto LABEL_9;
     }
 
-    v7 = *(v4 + 12);
+    v7 = *(equalCopy + 12);
     if (self->_value)
     {
-      if ((*(v4 + 12) & 1) == 0)
+      if ((*(equalCopy + 12) & 1) == 0)
       {
         goto LABEL_9;
       }
     }
 
-    else if (*(v4 + 12))
+    else if (*(equalCopy + 12))
     {
       goto LABEL_9;
     }
   }
 
-  else if ((*(v4 + 16) & 2) != 0)
+  else if ((*(equalCopy + 16) & 2) != 0)
   {
     goto LABEL_9;
   }
 
-  v5 = (*(v4 + 16) & 1) == 0;
+  v5 = (*(equalCopy + 16) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) != 0 && self->_valueType == *(v4 + 2))
+    if ((*(equalCopy + 16) & 1) != 0 && self->_valueType == *(equalCopy + 2))
     {
       v5 = 1;
       goto LABEL_10;
@@ -258,20 +258,20 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 16);
+  fromCopy = from;
+  v5 = *(fromCopy + 16);
   if ((v5 & 2) != 0)
   {
-    self->_value = *(v4 + 12);
+    self->_value = *(fromCopy + 12);
     *&self->_has |= 2u;
-    v5 = *(v4 + 16);
+    v5 = *(fromCopy + 16);
   }
 
   if (v5)
   {
-    self->_valueType = *(v4 + 2);
+    self->_valueType = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 }

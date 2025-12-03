@@ -1,15 +1,15 @@
 @interface ISHashedDownloadProvider
-- (BOOL)_checkHashForByteCount:(int64_t)a3;
+- (BOOL)_checkHashForByteCount:(int64_t)count;
 - (BOOL)_openFile;
-- (BOOL)_truncateToSize:(int64_t)a3;
-- (BOOL)_writeDataWithHashing:(id)a3 returningError:(id *)a4;
-- (BOOL)_writeDataWithoutHashing:(id)a3 returningError:(id *)a4;
-- (BOOL)canStreamContentLength:(int64_t)a3 error:(id *)a4;
-- (BOOL)parseData:(id)a3 returningError:(id *)a4;
+- (BOOL)_truncateToSize:(int64_t)size;
+- (BOOL)_writeDataWithHashing:(id)hashing returningError:(id *)error;
+- (BOOL)_writeDataWithoutHashing:(id)hashing returningError:(id *)error;
+- (BOOL)canStreamContentLength:(int64_t)length error:(id *)error;
+- (BOOL)parseData:(id)data returningError:(id *)error;
 - (ISHashedDownloadProvider)init;
 - (id)closeStream;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)_verifiedBytesByInitializingHashForFileSize:(int64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)_verifiedBytesByInitializingHashForFileSize:(int64_t)size;
 - (void)_closeFile;
 - (void)dealloc;
 - (void)resetStream;
@@ -43,18 +43,18 @@
   [(ISHashedDownloadProvider *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = ISHashedDownloadProvider;
   v5 = [(ISDataProvider *)&v7 copyWithZone:?];
-  v5[15] = [(NSArray *)[(ISHashedDownloadProvider *)self hashes] copyWithZone:a3];
-  v5[17] = [(NSString *)[(ISHashedDownloadProvider *)self localFilePath] copyWithZone:a3];
+  v5[15] = [(NSArray *)[(ISHashedDownloadProvider *)self hashes] copyWithZone:zone];
+  v5[17] = [(NSString *)[(ISHashedDownloadProvider *)self localFilePath] copyWithZone:zone];
   v5[30] = [(ISHashedDownloadProvider *)self numberOfBytesToHash];
   return v5;
 }
 
-- (BOOL)canStreamContentLength:(int64_t)a3 error:(id *)a4
+- (BOOL)canStreamContentLength:(int64_t)length error:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -66,7 +66,7 @@
   v17 = __Block_byref_object_copy__5;
   v18 = __Block_byref_object_dispose__5;
   v19 = 0;
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((length & 0x8000000000000000) == 0)
   {
     v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:self->_localFilePath];
     v8 = dispatch_semaphore_create(0);
@@ -78,17 +78,17 @@
     v13[5] = v8;
     v13[6] = &v14;
     v13[7] = &v20;
-    v13[8] = a3;
+    v13[8] = length;
     v13[4] = self;
-    [(ISDevice *)v9 requestFreeSpace:a3 atPath:v7 withOptions:0 completionBlock:v13];
+    [(ISDevice *)v9 requestFreeSpace:length atPath:v7 withOptions:0 completionBlock:v13];
     dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
     dispatch_release(v8);
     v10 = v15[5];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v11 = *(v21 + 24);
@@ -168,7 +168,7 @@ intptr_t __57__ISHashedDownloadProvider_canStreamContentLength_error___block_inv
   return [(ISDataProvider *)&v4 closeStream];
 }
 
-- (BOOL)parseData:(id)a3 returningError:(id *)a4
+- (BOOL)parseData:(id)data returningError:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
   v18 = 0;
@@ -176,8 +176,8 @@ intptr_t __57__ISHashedDownloadProvider_canStreamContentLength_error___block_inv
   {
     if ([(ISHashedDownloadProvider *)self numberOfBytesToHash])
     {
-      result = [(ISHashedDownloadProvider *)self _writeDataWithHashing:a3 returningError:&v18];
-      if (!a4)
+      result = [(ISHashedDownloadProvider *)self _writeDataWithHashing:data returningError:&v18];
+      if (!error)
       {
         goto LABEL_17;
       }
@@ -185,8 +185,8 @@ intptr_t __57__ISHashedDownloadProvider_canStreamContentLength_error___block_inv
 
     else
     {
-      result = [(ISHashedDownloadProvider *)self _writeDataWithoutHashing:a3 returningError:&v18];
-      if (!a4)
+      result = [(ISHashedDownloadProvider *)self _writeDataWithoutHashing:data returningError:&v18];
+      if (!error)
       {
         goto LABEL_17;
       }
@@ -195,24 +195,24 @@ intptr_t __57__ISHashedDownloadProvider_canStreamContentLength_error___block_inv
     goto LABEL_16;
   }
 
-  v8 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v8)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v8 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v9 = [v8 shouldLog];
-  if ([v8 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_ERROR))
+  if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_ERROR))
   {
     v10 &= 2u;
   }
@@ -226,7 +226,7 @@ intptr_t __57__ISHashedDownloadProvider_canStreamContentLength_error___block_inv
     v21 = 1024;
     v22 = fileDescriptor;
     v23 = 2112;
-    v24 = [(ISHashedDownloadProvider *)self localFilePath];
+    localFilePath = [(ISHashedDownloadProvider *)self localFilePath];
     LODWORD(v17) = 28;
     v13 = _os_log_send_and_compose_impl();
     if (v13)
@@ -241,10 +241,10 @@ intptr_t __57__ISHashedDownloadProvider_canStreamContentLength_error___block_inv
   v15 = ISError(7, 0, 0);
   result = 0;
   v18 = v15;
-  if (a4)
+  if (error)
   {
 LABEL_16:
-    *a4 = v18;
+    *error = v18;
   }
 
 LABEL_17:
@@ -268,28 +268,28 @@ LABEL_17:
 {
   v27 = *MEMORY[0x277D85DE8];
   [(ISHashedDownloadProvider *)self _openFile];
-  v3 = [(ISHashedDownloadProvider *)self streamedBytes];
-  if (v3 >= 1)
+  streamedBytes = [(ISHashedDownloadProvider *)self streamedBytes];
+  if (streamedBytes >= 1)
   {
-    v4 = v3;
-    v5 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v5)
+    v4 = streamedBytes;
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v5 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
-    if ([v5 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_INFO))
     {
       v7 &= 2u;
     }
@@ -323,24 +323,24 @@ LABEL_17:
 
     else
     {
-      v11 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-      if (!v11)
+      mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+      if (!mEMORY[0x277D69B38]2)
       {
-        v11 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v12 = [v11 shouldLog];
-      if ([v11 shouldLogToDisk])
+      shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+      if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
       {
-        v13 = v12 | 2;
+        v13 = shouldLog2 | 2;
       }
 
       else
       {
-        v13 = v12;
+        v13 = shouldLog2;
       }
 
-      if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled([mEMORY[0x277D69B38]2 OSLogObject], OS_LOG_TYPE_ERROR))
       {
         v13 &= 2u;
       }
@@ -373,36 +373,36 @@ LABEL_17:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_checkHashForByteCount:(int64_t)a3
+- (BOOL)_checkHashForByteCount:(int64_t)count
 {
   v32 = *MEMORY[0x277D85DE8];
   CC_MD5_Final(md, &self->_md5Context);
   v5 = ISStringFromDigest(md, 0x10u);
-  v6 = [(ISHashedDownloadProvider *)self numberOfBytesToHash];
-  v7 = a3 / v6;
+  numberOfBytesToHash = [(ISHashedDownloadProvider *)self numberOfBytesToHash];
+  v7 = count / numberOfBytesToHash;
   v8 = (ceilf(v7) + -1.0);
   v9 = [(NSArray *)[(ISHashedDownloadProvider *)self hashes] objectAtIndex:v8];
   v10 = [v5 isEqualToString:v9];
   if ((v10 & 1) == 0)
   {
-    v11 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v11)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v11 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v12 = [v11 shouldLog];
-    if ([v11 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_ERROR))
     {
       v13 &= 2u;
     }
@@ -410,12 +410,12 @@ LABEL_17:
     if (v13)
     {
       v21 = 138413314;
-      v14 = v6 * v8;
+      v14 = numberOfBytesToHash * v8;
       v22 = objc_opt_class();
       v23 = 2048;
       v24 = v14;
       v25 = 2048;
-      v26 = a3;
+      countCopy = count;
       v27 = 2112;
       v28 = v5;
       v29 = 2112;
@@ -433,13 +433,13 @@ LABEL_17:
 
     else
     {
-      v14 = v6 * v8;
+      v14 = numberOfBytesToHash * v8;
     }
 
     v17 = objc_alloc_init(ISHashError);
     [(ISHashError *)v17 setActualHashString:v5];
     [(ISHashError *)v17 setExpectedHashString:v9];
-    [(ISHashError *)v17 setRangeEnd:a3];
+    [(ISHashError *)v17 setRangeEnd:count];
     [(ISHashError *)v17 setRangeStart:v14];
     [(ISHashedDownloadProvider *)self setLastHashError:v17];
   }
@@ -465,9 +465,9 @@ LABEL_17:
     return 1;
   }
 
-  v4 = [(NSString *)[(ISHashedDownloadProvider *)self localFilePath] fileSystemRepresentation];
+  fileSystemRepresentation = [(NSString *)[(ISHashedDownloadProvider *)self localFilePath] fileSystemRepresentation];
   memset(&v8, 0, sizeof(v8));
-  if (stat(v4, &v8) == -1)
+  if (stat(fileSystemRepresentation, &v8) == -1)
   {
     st_size = 0;
   }
@@ -479,12 +479,12 @@ LABEL_17:
 
   if (st_size <= 0)
   {
-    v6 = open(v4, 1538, 420);
+    v6 = open(fileSystemRepresentation, 1538, 420);
   }
 
   else
   {
-    v6 = open(v4, 522, 420);
+    v6 = open(fileSystemRepresentation, 522, 420);
   }
 
   self->_fileDescriptor = v6;
@@ -500,26 +500,26 @@ LABEL_17:
   return v2;
 }
 
-- (BOOL)_truncateToSize:(int64_t)a3
+- (BOOL)_truncateToSize:(int64_t)size
 {
   fileDescriptor = self->_fileDescriptor;
-  v6 = fileDescriptor < 0 || ftruncate(fileDescriptor, a3) == 0;
-  [(ISHashedDownloadProvider *)self setStreamedBytes:a3];
+  v6 = fileDescriptor < 0 || ftruncate(fileDescriptor, size) == 0;
+  [(ISHashedDownloadProvider *)self setStreamedBytes:size];
   CC_MD5_Init(&self->_md5Context);
   return v6;
 }
 
-- (int64_t)_verifiedBytesByInitializingHashForFileSize:(int64_t)a3
+- (int64_t)_verifiedBytesByInitializingHashForFileSize:(int64_t)size
 {
-  v5 = [(ISHashedDownloadProvider *)self numberOfBytesToHash];
+  numberOfBytesToHash = [(ISHashedDownloadProvider *)self numberOfBytesToHash];
   v6 = 0;
-  if (a3)
+  if (size)
   {
-    if (v5)
+    if (numberOfBytesToHash)
     {
-      v6 = a3 / v5 * v5;
-      v7 = a3 % v5;
-      if (a3 % v5)
+      v6 = size / numberOfBytesToHash * numberOfBytesToHash;
+      v7 = size % numberOfBytesToHash;
+      if (size % numberOfBytesToHash)
       {
         if (lseek(self->_fileDescriptor, v6, 0) == -1)
         {
@@ -572,75 +572,75 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)_writeDataWithHashing:(id)a3 returningError:(id *)a4
+- (BOOL)_writeDataWithHashing:(id)hashing returningError:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = [(ISDataProvider *)self contentLength];
-  v8 = [(ISHashedDownloadProvider *)self streamedBytes];
-  v33 = [(ISHashedDownloadProvider *)self validatedBytes];
-  v9 = [(ISHashedDownloadProvider *)self numberOfBytesToHash];
-  v10 = [a3 length];
+  contentLength = [(ISDataProvider *)self contentLength];
+  streamedBytes = [(ISHashedDownloadProvider *)self streamedBytes];
+  validatedBytes = [(ISHashedDownloadProvider *)self validatedBytes];
+  numberOfBytesToHash = [(ISHashedDownloadProvider *)self numberOfBytesToHash];
+  v10 = [hashing length];
   if (v10 >= 1)
   {
     v11 = v10;
-    v32 = a4;
+    errorCopy = error;
     v12 = 0;
-    v13 = v8 % v9;
+    v13 = streamedBytes % numberOfBytesToHash;
     while (1)
     {
-      if (v9 - v13 >= v11 - v12)
+      if (numberOfBytesToHash - v13 >= v11 - v12)
       {
         v14 = v11 - v12;
       }
 
       else
       {
-        v14 = v9 - v13;
+        v14 = numberOfBytesToHash - v13;
       }
 
       if (v14 >= 1)
       {
-        CC_MD5_Update(&self->_md5Context, ([a3 bytes] + v12), v14);
+        CC_MD5_Update(&self->_md5Context, ([hashing bytes] + v12), v14);
       }
 
       v15 = v14 + v13;
-      if (v15 == v9 || v8 + v14 == v7)
+      if (v15 == numberOfBytesToHash || streamedBytes + v14 == contentLength)
       {
         if (![(ISHashedDownloadProvider *)self _checkHashForByteCount:?])
         {
           v19 = ISError(8, 0, 0);
-          v27 = v33;
-          [(ISHashedDownloadProvider *)self _truncateToSize:v33];
-          a4 = v32;
+          v27 = validatedBytes;
+          [(ISHashedDownloadProvider *)self _truncateToSize:validatedBytes];
+          error = errorCopy;
           goto LABEL_33;
         }
 
         CC_MD5_Init(&self->_md5Context);
-        v33 += v15;
+        validatedBytes += v15;
       }
 
-      v17 = write(self->_fileDescriptor, ([a3 bytes] + v12), v14);
+      v17 = write(self->_fileDescriptor, ([hashing bytes] + v12), v14);
       v18 = v17;
       if (v17 < v14)
       {
-        v20 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-        if (!v20)
+        mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+        if (!mEMORY[0x277D69B38])
         {
-          v20 = [MEMORY[0x277D69B38] sharedConfig];
+          mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
         }
 
-        v21 = [v20 shouldLog];
-        if ([v20 shouldLogToDisk])
+        shouldLog = [mEMORY[0x277D69B38] shouldLog];
+        if ([mEMORY[0x277D69B38] shouldLogToDisk])
         {
-          v22 = v21 | 2;
+          v22 = shouldLog | 2;
         }
 
         else
         {
-          v22 = v21;
+          v22 = shouldLog;
         }
 
-        if (os_log_type_enabled([v20 OSLogObject], OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_ERROR))
         {
           v23 = v22;
         }
@@ -677,12 +677,12 @@ LABEL_17:
 
       v13 = 0;
       v12 += v14;
-      v8 += v17;
+      streamedBytes += v17;
       if (v12 >= v11)
       {
         v19 = 0;
 LABEL_31:
-        a4 = v32;
+        error = errorCopy;
         goto LABEL_32;
       }
     }
@@ -690,13 +690,13 @@ LABEL_31:
 
   v19 = 0;
 LABEL_32:
-  v27 = v33;
+  v27 = validatedBytes;
 LABEL_33:
-  [(ISHashedDownloadProvider *)self setStreamedBytes:v8, v30];
+  [(ISHashedDownloadProvider *)self setStreamedBytes:streamedBytes, v30];
   [(ISHashedDownloadProvider *)self setValidatedBytes:v27];
-  if (a4)
+  if (error)
   {
-    *a4 = v19;
+    *error = v19;
   }
 
   result = v19 == 0;
@@ -704,17 +704,17 @@ LABEL_33:
   return result;
 }
 
-- (BOOL)_writeDataWithoutHashing:(id)a3 returningError:(id *)a4
+- (BOOL)_writeDataWithoutHashing:(id)hashing returningError:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = [a3 length];
-  v8 = write(self->_fileDescriptor, [a3 bytes], v7);
+  v7 = [hashing length];
+  v8 = write(self->_fileDescriptor, [hashing bytes], v7);
   if (v8 == v7)
   {
     [(ISHashedDownloadProvider *)self setStreamedBytes:[(ISHashedDownloadProvider *)self streamedBytes]+ v7];
     [(ISHashedDownloadProvider *)self setValidatedBytes:[(ISHashedDownloadProvider *)self validatedBytes]+ v7];
     v9 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -722,24 +722,24 @@ LABEL_33:
     goto LABEL_15;
   }
 
-  v10 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v10)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v10 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v11 = [v10 shouldLog];
-  if ([v10 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v12 = v11 | 2;
+    v12 = shouldLog | 2;
   }
 
   else
   {
-    v12 = v11;
+    v12 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_ERROR))
+  if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_ERROR))
   {
     v12 &= 2u;
   }
@@ -764,10 +764,10 @@ LABEL_33:
   }
 
   v9 = ISError(7, 0, 0);
-  if (a4)
+  if (error)
   {
 LABEL_15:
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_16:

@@ -3,8 +3,8 @@
 - (id)description;
 - (id)insertNewLayer;
 - (id)nextJournaledViewController;
-- (void)addPresentedViewController:(id)a3 withPresenter:(id)a4;
-- (void)addPushedViewController:(id)a3 withPresenter:(id)a4;
+- (void)addPresentedViewController:(id)controller withPresenter:(id)presenter;
+- (void)addPushedViewController:(id)controller withPresenter:(id)presenter;
 @end
 
 @implementation ViewControllerJournal
@@ -42,52 +42,52 @@
   return v3;
 }
 
-- (void)addPushedViewController:(id)a3 withPresenter:(id)a4
+- (void)addPushedViewController:(id)controller withPresenter:(id)presenter
 {
-  v13 = a4;
+  presenterCopy = presenter;
   journal = self->_journal;
-  v7 = a3;
-  v8 = [(NSMutableArray *)journal firstObject];
-  v9 = v8;
-  if (!v8 || ([v8 presentingViewController], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 != v13))
+  controllerCopy = controller;
+  firstObject = [(NSMutableArray *)journal firstObject];
+  v9 = firstObject;
+  if (!firstObject || ([firstObject presentingViewController], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 != presenterCopy))
   {
-    v11 = [(ViewControllerJournal *)self insertNewLayer];
+    insertNewLayer = [(ViewControllerJournal *)self insertNewLayer];
 
-    [v11 setPresentingViewController:v13];
-    v9 = v11;
+    [insertNewLayer setPresentingViewController:presenterCopy];
+    v9 = insertNewLayer;
   }
 
-  v12 = [v9 pushedViewControllers];
-  [v12 insertObject:v7 atIndex:0];
+  pushedViewControllers = [v9 pushedViewControllers];
+  [pushedViewControllers insertObject:controllerCopy atIndex:0];
 }
 
-- (void)addPresentedViewController:(id)a3 withPresenter:(id)a4
+- (void)addPresentedViewController:(id)controller withPresenter:(id)presenter
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ViewControllerJournal *)self insertNewLayer];
-  [v8 setPresentedViewController:v7];
+  presenterCopy = presenter;
+  controllerCopy = controller;
+  insertNewLayer = [(ViewControllerJournal *)self insertNewLayer];
+  [insertNewLayer setPresentedViewController:controllerCopy];
 
-  [v8 setPresentingViewController:v6];
+  [insertNewLayer setPresentingViewController:presenterCopy];
 }
 
 - (id)nextJournaledViewController
 {
   if (!self->_journalEnumerator)
   {
-    v3 = [(NSMutableArray *)self->_journal objectEnumerator];
+    objectEnumerator = [(NSMutableArray *)self->_journal objectEnumerator];
     journalEnumerator = self->_journalEnumerator;
-    self->_journalEnumerator = v3;
+    self->_journalEnumerator = objectEnumerator;
   }
 
   currentLayerEnumerator = self->_currentLayerEnumerator;
   if (currentLayerEnumerator)
   {
-    v6 = [(NSEnumerator *)currentLayerEnumerator nextObject];
-    if (v6)
+    nextObject = [(NSEnumerator *)currentLayerEnumerator nextObject];
+    if (nextObject)
     {
-      v7 = v6;
-      v8 = 0;
+      nextObject3 = nextObject;
+      presentingViewController = 0;
       goto LABEL_6;
     }
 
@@ -95,52 +95,52 @@
     self->_currentLayerEnumerator = 0;
   }
 
-  v12 = [(NSEnumerator *)self->_journalEnumerator nextObject];
-  if (!v12)
+  nextObject2 = [(NSEnumerator *)self->_journalEnumerator nextObject];
+  if (!nextObject2)
   {
     v17 = self->_journalEnumerator;
     self->_journalEnumerator = 0;
 
-    v8 = 0;
-    v10 = 0;
-    v7 = 0;
+    presentingViewController = 0;
+    presentedViewController = 0;
+    nextObject3 = 0;
 LABEL_12:
     v9 = 0;
     goto LABEL_13;
   }
 
-  v13 = v12;
-  v14 = [v12 pushedViewControllers];
-  v15 = [v14 objectEnumerator];
+  v13 = nextObject2;
+  pushedViewControllers = [nextObject2 pushedViewControllers];
+  objectEnumerator2 = [pushedViewControllers objectEnumerator];
   v16 = self->_currentLayerEnumerator;
-  self->_currentLayerEnumerator = v15;
+  self->_currentLayerEnumerator = objectEnumerator2;
 
-  v10 = [v13 presentedViewController];
-  v8 = [v13 presentingViewController];
-  if (v10)
+  presentedViewController = [v13 presentedViewController];
+  presentingViewController = [v13 presentingViewController];
+  if (presentedViewController)
   {
 
     v9 = objc_alloc_init(JournaledDisplayedViewController);
-    [(JournaledDisplayedViewController *)v9 setViewController:v10];
-    [(JournaledDisplayedViewController *)v9 setPresentingViewController:v8];
+    [(JournaledDisplayedViewController *)v9 setViewController:presentedViewController];
+    [(JournaledDisplayedViewController *)v9 setPresentingViewController:presentingViewController];
     [(JournaledDisplayedViewController *)v9 setDisplayType:1];
-    v7 = 0;
+    nextObject3 = 0;
     goto LABEL_13;
   }
 
-  v7 = [(NSEnumerator *)self->_currentLayerEnumerator nextObject];
+  nextObject3 = [(NSEnumerator *)self->_currentLayerEnumerator nextObject];
 
-  if (!v7)
+  if (!nextObject3)
   {
-    v10 = 0;
+    presentedViewController = 0;
     goto LABEL_12;
   }
 
 LABEL_6:
   v9 = objc_alloc_init(JournaledDisplayedViewController);
-  [(JournaledDisplayedViewController *)v9 setViewController:v7];
+  [(JournaledDisplayedViewController *)v9 setViewController:nextObject3];
   [(JournaledDisplayedViewController *)v9 setDisplayType:0];
-  v10 = 0;
+  presentedViewController = 0;
 LABEL_13:
   v18 = v9;
 

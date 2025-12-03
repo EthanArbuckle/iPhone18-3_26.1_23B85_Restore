@@ -1,24 +1,24 @@
 @interface HULayeredContentEffect
-+ (id)contentWithTintColor:(id)a3;
-+ (id)contentWithVibrancyEffect:(id)a3;
++ (id)contentWithTintColor:(id)color;
++ (id)contentWithVibrancyEffect:(id)effect;
 @end
 
 @implementation HULayeredContentEffect
 
-+ (id)contentWithVibrancyEffect:(id)a3
++ (id)contentWithVibrancyEffect:(id)effect
 {
-  v3 = a3;
+  effectCopy = effect;
   v4 = objc_alloc_init(HULayeredContentEffect);
-  [(HULayeredContentEffect *)v4 setVibrancyEffect:v3];
+  [(HULayeredContentEffect *)v4 setVibrancyEffect:effectCopy];
 
   return v4;
 }
 
-+ (id)contentWithTintColor:(id)a3
++ (id)contentWithTintColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = objc_alloc_init(HULayeredContentEffect);
-  [(HULayeredContentEffect *)v4 setTintColor:v3];
+  [(HULayeredContentEffect *)v4 setTintColor:colorCopy];
 
   return v4;
 }

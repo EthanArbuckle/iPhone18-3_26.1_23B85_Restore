@@ -1,16 +1,16 @@
 @interface VNCIFilter
-- (VNCIFilter)initWithKernelName:(id)a3;
-- (VNCIFilter)initWithKernelName:(id)a3 inputParameters:(id)a4;
-- (id)applyWithArguments:(id *)a1;
+- (VNCIFilter)initWithKernelName:(id)name;
+- (VNCIFilter)initWithKernelName:(id)name inputParameters:(id)parameters;
+- (id)applyWithArguments:(id *)arguments;
 @end
 
 @implementation VNCIFilter
 
-- (VNCIFilter)initWithKernelName:(id)a3 inputParameters:(id)a4
+- (VNCIFilter)initWithKernelName:(id)name inputParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VNCIFilter *)self initWithKernelName:v6];
+  nameCopy = name;
+  parametersCopy = parameters;
+  v8 = [(VNCIFilter *)self initWithKernelName:nameCopy];
   v9 = v8;
   if (v8)
   {
@@ -20,16 +20,16 @@
     v13[3] = &unk_1E77B64E8;
     v10 = v8;
     v14 = v10;
-    [v7 enumerateKeysAndObjectsUsingBlock:v13];
+    [parametersCopy enumerateKeysAndObjectsUsingBlock:v13];
     v11 = v10;
   }
 
   return v9;
 }
 
-- (VNCIFilter)initWithKernelName:(id)a3
+- (VNCIFilter)initWithKernelName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = VNCIFilter;
   v5 = [(VNCIFilter *)&v13 init];
@@ -38,7 +38,7 @@
     goto LABEL_6;
   }
 
-  v6 = v4;
+  v6 = nameCopy;
   objc_opt_self();
   if (getVNBundle(void)::onceToken != -1)
   {
@@ -66,37 +66,37 @@ LABEL_6:
   return v11;
 }
 
-- (id)applyWithArguments:(id *)a1
+- (id)applyWithArguments:(id *)arguments
 {
   v3 = a2;
-  if (a1)
+  if (arguments)
   {
-    v4 = [a1 inputImage];
-    if (v4)
+    inputImage = [arguments inputImage];
+    if (inputImage)
     {
       v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      [v5 addObject:v4];
+      [v5 addObject:inputImage];
       if (v3)
       {
         [v5 addObjectsFromArray:v3];
       }
 
-      v6 = [v4 imageByUnpremultiplyingAlpha];
+      imageByUnpremultiplyingAlpha = [inputImage imageByUnpremultiplyingAlpha];
 
-      v7 = a1[10];
-      [v6 extent];
+      v7 = arguments[10];
+      [imageByUnpremultiplyingAlpha extent];
       v8 = [v7 applyWithExtent:v5 arguments:?];
 
-      a1 = [v8 imageByPremultiplyingAlpha];
+      arguments = [v8 imageByPremultiplyingAlpha];
     }
 
     else
     {
-      a1 = 0;
+      arguments = 0;
     }
   }
 
-  return a1;
+  return arguments;
 }
 
 @end

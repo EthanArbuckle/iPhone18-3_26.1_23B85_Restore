@@ -1,13 +1,13 @@
 @interface ASKLoadImageResourceOperation
 + (NSURLSession)URLSession;
 + (OS_dispatch_queue)dataConsumerQueue;
-- (ASKLoadImageResourceOperation)initWithURLRequest:(id)a3 URLSession:(id)a4 dataConsumer:(id)a5 dataConsumerQueue:(id)a6;
-- (ASKLoadImageResourceOperation)initWithURLRequest:(id)a3 dataConsumer:(id)a4;
+- (ASKLoadImageResourceOperation)initWithURLRequest:(id)request URLSession:(id)session dataConsumer:(id)consumer dataConsumerQueue:(id)queue;
+- (ASKLoadImageResourceOperation)initWithURLRequest:(id)request dataConsumer:(id)consumer;
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
 - (void)cancel;
-- (void)didFinishTaskWithData:(id)a3 response:(id)a4 error:(id)a5;
-- (void)setQueuePriority:(int64_t)a3;
+- (void)didFinishTaskWithData:(id)data response:(id)response error:(id)error;
+- (void)setQueuePriority:(int64_t)priority;
 - (void)start;
 @end
 
@@ -62,19 +62,19 @@ void __50__ASKLoadImageResourceOperation_dataConsumerQueue__block_invoke(id a1)
   dataConsumerQueue_dataConsumerQueue = v2;
 }
 
-- (ASKLoadImageResourceOperation)initWithURLRequest:(id)a3 URLSession:(id)a4 dataConsumer:(id)a5 dataConsumerQueue:(id)a6
+- (ASKLoadImageResourceOperation)initWithURLRequest:(id)request URLSession:(id)session dataConsumer:(id)consumer dataConsumerQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  sessionCopy = session;
+  consumerCopy = consumer;
+  queueCopy = queue;
   v27.receiver = self;
   v27.super_class = ASKLoadImageResourceOperation;
   v14 = [(ASKLoadImageResourceOperation *)&v27 init];
   if (v14)
   {
     objc_initWeak(&location, v14);
-    v15 = [v10 URL];
+    v15 = [requestCopy URL];
     v16 = [v15 hash];
 
     if (!v16)
@@ -90,7 +90,7 @@ void __50__ASKLoadImageResourceOperation_dataConsumerQueue__block_invoke(id a1)
     v24[3] = &unk_4AF348;
     v25[1] = v16;
     objc_copyWeak(v25, &location);
-    v18 = [v11 dataTaskWithRequest:v10 completionHandler:v24];
+    v18 = [sessionCopy dataTaskWithRequest:requestCopy completionHandler:v24];
     task = v14->_task;
     v14->_task = v18;
 
@@ -102,8 +102,8 @@ void __50__ASKLoadImageResourceOperation_dataConsumerQueue__block_invoke(id a1)
       _os_signpost_emit_with_name_impl(&dword_0, v21, OS_SIGNPOST_EVENT, v16, "ASKLoadImageResourceOperation task created", "", v23, 2u);
     }
 
-    objc_storeStrong(&v14->_dataConsumer, a5);
-    objc_storeStrong(&v14->_dataConsumerQueue, a6);
+    objc_storeStrong(&v14->_dataConsumer, consumer);
+    objc_storeStrong(&v14->_dataConsumerQueue, queue);
     objc_destroyWeak(v25);
     objc_destroyWeak(&location);
   }
@@ -129,33 +129,33 @@ void __94__ASKLoadImageResourceOperation_initWithURLRequest_URLSession_dataConsu
   [WeakRetained didFinishTaskWithData:v9 response:v8 error:v7];
 }
 
-- (ASKLoadImageResourceOperation)initWithURLRequest:(id)a3 dataConsumer:(id)a4
+- (ASKLoadImageResourceOperation)initWithURLRequest:(id)request dataConsumer:(id)consumer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() URLSession];
-  v9 = [objc_opt_class() dataConsumerQueue];
-  v10 = [(ASKLoadImageResourceOperation *)self initWithURLRequest:v7 URLSession:v8 dataConsumer:v6 dataConsumerQueue:v9];
+  consumerCopy = consumer;
+  requestCopy = request;
+  uRLSession = [objc_opt_class() URLSession];
+  dataConsumerQueue = [objc_opt_class() dataConsumerQueue];
+  v10 = [(ASKLoadImageResourceOperation *)self initWithURLRequest:requestCopy URLSession:uRLSession dataConsumer:consumerCopy dataConsumerQueue:dataConsumerQueue];
 
   return v10;
 }
 
-- (void)didFinishTaskWithData:(id)a3 response:(id)a4 error:(id)a5
+- (void)didFinishTaskWithData:(id)data response:(id)response error:(id)error
 {
-  v7 = a3;
-  v8 = a5;
+  dataCopy = data;
+  errorCopy = error;
   [(ASKLoadImageResourceOperation *)self willChangeValueForKey:@"isExecuting"];
-  v9 = [(ASKLoadImageResourceOperation *)self dataConsumerQueue];
+  dataConsumerQueue = [(ASKLoadImageResourceOperation *)self dataConsumerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __70__ASKLoadImageResourceOperation_didFinishTaskWithData_response_error___block_invoke;
   block[3] = &unk_4AF370;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = dataCopy;
+  selfCopy = self;
+  v15 = errorCopy;
+  v10 = errorCopy;
+  v11 = dataCopy;
+  dispatch_async(dataConsumerQueue, block);
 
   [(ASKLoadImageResourceOperation *)self didChangeValueForKey:@"isExecuting"];
 }
@@ -202,8 +202,8 @@ void __70__ASKLoadImageResourceOperation_didFinishTaskWithData_response_error___
     return 0;
   }
 
-  v4 = [(ASKLoadImageResourceOperation *)self task];
-  v3 = [v4 state] == 0;
+  task = [(ASKLoadImageResourceOperation *)self task];
+  v3 = [task state] == 0;
 
   return v3;
 }
@@ -215,18 +215,18 @@ void __70__ASKLoadImageResourceOperation_didFinishTaskWithData_response_error___
     return 1;
   }
 
-  v4 = [(ASKLoadImageResourceOperation *)self task];
-  v3 = [v4 state] == &dword_0 + 3;
+  task = [(ASKLoadImageResourceOperation *)self task];
+  v3 = [task state] == &dword_0 + 3;
 
   return v3;
 }
 
-- (void)setQueuePriority:(int64_t)a3
+- (void)setQueuePriority:(int64_t)priority
 {
   v9.receiver = self;
   v9.super_class = ASKLoadImageResourceOperation;
   [(ASKLoadImageResourceOperation *)&v9 setQueuePriority:?];
-  v5 = __ROR8__(a3 + 8, 2) - 1;
+  v5 = __ROR8__(priority + 8, 2) - 1;
   if (v5 > 3)
   {
     v6 = 1045220557;
@@ -237,19 +237,19 @@ void __70__ASKLoadImageResourceOperation_didFinishTaskWithData_response_error___
     v6 = dword_3F3550[v5];
   }
 
-  v7 = [(ASKLoadImageResourceOperation *)self task];
+  task = [(ASKLoadImageResourceOperation *)self task];
   LODWORD(v8) = v6;
-  [v7 setPriority:v8];
+  [task setPriority:v8];
 }
 
 - (void)start
 {
-  v3 = [(ASKLoadImageResourceOperation *)self task];
-  v4 = [v3 state];
+  task = [(ASKLoadImageResourceOperation *)self task];
+  state = [task state];
 
-  if (([(ASKLoadImageResourceOperation *)self isCancelled]& 1) == 0 && v4 != &dword_0 + 2)
+  if (([(ASKLoadImageResourceOperation *)self isCancelled]& 1) == 0 && state != &dword_0 + 2)
   {
-    if (v4 == &dword_0 + 1)
+    if (state == &dword_0 + 1)
     {
       [(ASKLoadImageResourceOperation *)self willChangeValueForKey:@"isExecuting"];
       v5 = __ROR8__([(ASKLoadImageResourceOperation *)self queuePriority]+ 8, 2) - 1;
@@ -263,9 +263,9 @@ void __70__ASKLoadImageResourceOperation_didFinishTaskWithData_response_error___
         v6 = dword_3F3550[v5];
       }
 
-      v7 = [(ASKLoadImageResourceOperation *)self task];
+      task2 = [(ASKLoadImageResourceOperation *)self task];
       LODWORD(v8) = v6;
-      [v7 setPriority:v8];
+      [task2 setPriority:v8];
 
       v9 = _MTLogCategoryArtworkDownload();
       v10 = v9;
@@ -276,8 +276,8 @@ void __70__ASKLoadImageResourceOperation_didFinishTaskWithData_response_error___
         _os_signpost_emit_with_name_impl(&dword_0, v10, OS_SIGNPOST_INTERVAL_BEGIN, signpostID, "ASKLoadImageResourceOperation", "", buf, 2u);
       }
 
-      v12 = [(ASKLoadImageResourceOperation *)self task];
-      [v12 resume];
+      task3 = [(ASKLoadImageResourceOperation *)self task];
+      [task3 resume];
 
       [(ASKLoadImageResourceOperation *)self didChangeValueForKey:@"isExecuting"];
     }
@@ -291,8 +291,8 @@ void __70__ASKLoadImageResourceOperation_didFinishTaskWithData_response_error___
 
 - (void)cancel
 {
-  v3 = [(ASKLoadImageResourceOperation *)self task];
-  [v3 cancel];
+  task = [(ASKLoadImageResourceOperation *)self task];
+  [task cancel];
 
   v4.receiver = self;
   v4.super_class = ASKLoadImageResourceOperation;

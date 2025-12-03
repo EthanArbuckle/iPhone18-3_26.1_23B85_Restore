@@ -1,33 +1,33 @@
 @interface ICCollaborationAnalyticsTrackerInternal
 - (ICCollaborationAnalyticsTrackerInternal)init;
-- (void)saveActivityType:(id)a3 isCollaborationSelected:(BOOL)a4 error:(id)a5 completed:(BOOL)a6 forNote:(id)a7;
-- (void)saveNewShare:(id)a3 forNote:(id)a4;
-- (void)trackShare:(id)a3 forNote:(id)a4;
-- (void)unshareNote:(id)a3;
+- (void)saveActivityType:(id)type isCollaborationSelected:(BOOL)selected error:(id)error completed:(BOOL)completed forNote:(id)note;
+- (void)saveNewShare:(id)share forNote:(id)note;
+- (void)trackShare:(id)share forNote:(id)note;
+- (void)unshareNote:(id)note;
 @end
 
 @implementation ICCollaborationAnalyticsTrackerInternal
 
-- (void)trackShare:(id)a3 forNote:(id)a4
+- (void)trackShare:(id)share forNote:(id)note
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  ICCollaborationAnalyticsTrackerInternal.track(share:note:)(a3, v8);
+  shareCopy = share;
+  noteCopy = note;
+  selfCopy = self;
+  ICCollaborationAnalyticsTrackerInternal.track(share:note:)(share, noteCopy);
 }
 
-- (void)saveNewShare:(id)a3 forNote:(id)a4
+- (void)saveNewShare:(id)share forNote:(id)note
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  ICCollaborationAnalyticsTrackerInternal.save(newShare:note:)(v6, v7);
+  shareCopy = share;
+  noteCopy = note;
+  selfCopy = self;
+  ICCollaborationAnalyticsTrackerInternal.save(newShare:note:)(shareCopy, noteCopy);
 }
 
-- (void)saveActivityType:(id)a3 isCollaborationSelected:(BOOL)a4 error:(id)a5 completed:(BOOL)a6 forNote:(id)a7
+- (void)saveActivityType:(id)type isCollaborationSelected:(BOOL)selected error:(id)error completed:(BOOL)completed forNote:(id)note
 {
-  v8 = a6;
-  if (a3)
+  completedCopy = completed;
+  if (type)
   {
     v12 = sub_1D4419C54();
     v14 = v13;
@@ -39,17 +39,17 @@
     v14 = 0;
   }
 
-  v15 = a5;
-  v16 = a7;
-  v17 = self;
-  ICCollaborationAnalyticsTrackerInternal.save(activityType:collaborationSelected:error:completed:note:)(v12, v14, a4, a5, v8, v16);
+  errorCopy = error;
+  noteCopy = note;
+  selfCopy = self;
+  ICCollaborationAnalyticsTrackerInternal.save(activityType:collaborationSelected:error:completed:note:)(v12, v14, selected, error, completedCopy, noteCopy);
 }
 
-- (void)unshareNote:(id)a3
+- (void)unshareNote:(id)note
 {
-  v4 = a3;
-  v5 = self;
-  ICCollaborationAnalyticsTrackerInternal.unshare(note:)(v4);
+  noteCopy = note;
+  selfCopy = self;
+  ICCollaborationAnalyticsTrackerInternal.unshare(note:)(noteCopy);
 }
 
 - (ICCollaborationAnalyticsTrackerInternal)init

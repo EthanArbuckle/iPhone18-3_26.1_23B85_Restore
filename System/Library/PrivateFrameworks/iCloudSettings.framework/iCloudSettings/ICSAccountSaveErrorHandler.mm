@@ -1,67 +1,67 @@
 @interface ICSAccountSaveErrorHandler
-- (ICSAccountSaveErrorHandler)initWithPresenter:(id)a3;
-- (void)_beginManateeUpgradeForAccount:(id)a3 failedDataclassName:(id)a4;
-- (void)_displayAccountSaveErrorAlertWithTitle:(id)a3 message:(id)a4 alternativeAction:(id)a5;
-- (void)_handleInsufficientStorageWithUserInfo:(id)a3;
-- (void)_handleManateeErrorForAccount:(id)a3 withDescription:(id)a4 failedDataclasses:(id)a5;
-- (void)_handleMaxTierAndInsufficientStorageErrorWithFailedDataclasses:(id)a3;
-- (void)handleAccountSaveError:(id)a3 forAccount:(id)a4 failedDataclasses:(id)a5;
+- (ICSAccountSaveErrorHandler)initWithPresenter:(id)presenter;
+- (void)_beginManateeUpgradeForAccount:(id)account failedDataclassName:(id)name;
+- (void)_displayAccountSaveErrorAlertWithTitle:(id)title message:(id)message alternativeAction:(id)action;
+- (void)_handleInsufficientStorageWithUserInfo:(id)info;
+- (void)_handleManateeErrorForAccount:(id)account withDescription:(id)description failedDataclasses:(id)dataclasses;
+- (void)_handleMaxTierAndInsufficientStorageErrorWithFailedDataclasses:(id)dataclasses;
+- (void)handleAccountSaveError:(id)error forAccount:(id)account failedDataclasses:(id)dataclasses;
 @end
 
 @implementation ICSAccountSaveErrorHandler
 
-- (ICSAccountSaveErrorHandler)initWithPresenter:(id)a3
+- (ICSAccountSaveErrorHandler)initWithPresenter:(id)presenter
 {
-  v4 = a3;
+  presenterCopy = presenter;
   v8.receiver = self;
   v8.super_class = ICSAccountSaveErrorHandler;
   v5 = [(ICSAccountSaveErrorHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_presenter, v4);
+    objc_storeWeak(&v5->_presenter, presenterCopy);
   }
 
   return v6;
 }
 
-- (void)handleAccountSaveError:(id)a3 forAccount:(id)a4 failedDataclasses:(id)a5
+- (void)handleAccountSaveError:(id)error forAccount:(id)account failedDataclasses:(id)dataclasses
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 domain];
-  v12 = [v11 isEqualToString:*MEMORY[0x277CEC6A8]];
+  errorCopy = error;
+  accountCopy = account;
+  dataclassesCopy = dataclasses;
+  domain = [errorCopy domain];
+  v12 = [domain isEqualToString:*MEMORY[0x277CEC6A8]];
 
   if (v12)
   {
-    v13 = [v8 code];
-    v14 = LogSubsystem();
-    v15 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
-    if (v13 == 2)
+    code = [errorCopy code];
+    localizedRecoverySuggestion = LogSubsystem();
+    v15 = os_log_type_enabled(localizedRecoverySuggestion, OS_LOG_TYPE_ERROR);
+    if (code == 2)
     {
       if (v15)
       {
         [ICSAccountSaveErrorHandler handleAccountSaveError:forAccount:failedDataclasses:];
       }
 
-      [(ICSAccountSaveErrorHandler *)self _handleMaxTierAndInsufficientStorageErrorWithFailedDataclasses:v10];
+      [(ICSAccountSaveErrorHandler *)self _handleMaxTierAndInsufficientStorageErrorWithFailedDataclasses:dataclassesCopy];
     }
 
     else
     {
-      if (v13 == 1)
+      if (code == 1)
       {
         if (v15)
         {
           [ICSAccountSaveErrorHandler handleAccountSaveError:forAccount:failedDataclasses:];
         }
 
-        v14 = [v8 localizedRecoverySuggestion];
-        [(ICSAccountSaveErrorHandler *)self _handleManateeErrorForAccount:v9 withDescription:v14 failedDataclasses:v10];
+        localizedRecoverySuggestion = [errorCopy localizedRecoverySuggestion];
+        [(ICSAccountSaveErrorHandler *)self _handleManateeErrorForAccount:accountCopy withDescription:localizedRecoverySuggestion failedDataclasses:dataclassesCopy];
       }
 
-      else if (v13)
+      else if (code)
       {
         if (v15)
         {
@@ -76,25 +76,25 @@
           [ICSAccountSaveErrorHandler handleAccountSaveError:forAccount:failedDataclasses:];
         }
 
-        v14 = [v8 userInfo];
-        [(ICSAccountSaveErrorHandler *)self _handleInsufficientStorageWithUserInfo:v14];
+        localizedRecoverySuggestion = [errorCopy userInfo];
+        [(ICSAccountSaveErrorHandler *)self _handleInsufficientStorageWithUserInfo:localizedRecoverySuggestion];
       }
     }
   }
 
-  [v9 reload];
+  [accountCopy reload];
 }
 
-- (void)_handleInsufficientStorageWithUserInfo:(id)a3
+- (void)_handleInsufficientStorageWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__ICSAccountSaveErrorHandler__handleInsufficientStorageWithUserInfo___block_invoke;
   v6[3] = &unk_27A666410;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = infoCopy;
+  selfCopy = self;
+  v5 = infoCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -127,19 +127,19 @@ void __69__ICSAccountSaveErrorHandler__handleInsufficientStorageWithUserInfo___b
   *(v1 + 40) = 0;
 }
 
-- (void)_handleManateeErrorForAccount:(id)a3 withDescription:(id)a4 failedDataclasses:(id)a5
+- (void)_handleManateeErrorForAccount:(id)account withDescription:(id)description failedDataclasses:(id)dataclasses
 {
-  v7 = a3;
-  v8 = a5;
+  accountCopy = account;
+  dataclassesCopy = dataclasses;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __94__ICSAccountSaveErrorHandler__handleManateeErrorForAccount_withDescription_failedDataclasses___block_invoke;
   block[3] = &unk_27A666728;
-  v12 = v8;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v8;
+  v12 = dataclassesCopy;
+  selfCopy = self;
+  v14 = accountCopy;
+  v9 = accountCopy;
+  v10 = dataclassesCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -169,17 +169,17 @@ void __94__ICSAccountSaveErrorHandler__handleManateeErrorForAccount_withDescript
   [*(a1 + 40) _beginManateeUpgradeForAccount:*(a1 + 48) failedDataclassName:v2];
 }
 
-- (void)_beginManateeUpgradeForAccount:(id)a3 failedDataclassName:(id)a4
+- (void)_beginManateeUpgradeForAccount:(id)account failedDataclassName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  nameCopy = name;
   v8 = objc_alloc(MEMORY[0x277CFDAE8]);
-  v9 = [v6 aa_altDSID];
-  v10 = [v8 initWithAltDSID:v9];
+  aa_altDSID = [accountCopy aa_altDSID];
+  v10 = [v8 initWithAltDSID:aa_altDSID];
 
   [v10 setDeviceToDeviceEncryptionUpgradeUIStyle:0];
   [v10 setDeviceToDeviceEncryptionUpgradeType:0];
-  if ([v7 isEqualToString:*MEMORY[0x277CB89D8]])
+  if ([nameCopy isEqualToString:*MEMORY[0x277CB89D8]])
   {
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:@"UPGRADE_ACCOUNT_SECURITY_FEATURE_MESSAGES" value:&stru_288487370 table:@"Localizable-AppleID"];
@@ -195,10 +195,10 @@ void __94__ICSAccountSaveErrorHandler__handleManateeErrorForAccount_withDescript
   v17[2] = __81__ICSAccountSaveErrorHandler__beginManateeUpgradeForAccount_failedDataclassName___block_invoke;
   v17[3] = &unk_27A666778;
   v17[4] = self;
-  v18 = v7;
-  v19 = v6;
-  v15 = v6;
-  v16 = v7;
+  v18 = nameCopy;
+  v19 = accountCopy;
+  v15 = accountCopy;
+  v16 = nameCopy;
   [v14 performDeviceToDeviceEncryptionStateRepairWithCompletion:v17];
 }
 
@@ -332,16 +332,16 @@ void __81__ICSAccountSaveErrorHandler__beginManateeUpgradeForAccount_failedDatac
   [v7 openURL:v6 withCompletionHandler:0];
 }
 
-- (void)_handleMaxTierAndInsufficientStorageErrorWithFailedDataclasses:(id)a3
+- (void)_handleMaxTierAndInsufficientStorageErrorWithFailedDataclasses:(id)dataclasses
 {
-  v15 = a3;
-  v4 = [v15 count];
+  dataclassesCopy = dataclasses;
+  v4 = [dataclassesCopy count];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = v5;
   if (v4)
   {
-    v7 = [v15 anyObject];
-    v8 = [v6 localizedStringForKey:v7 value:&stru_288487370 table:@"Localizable-AppleID"];
+    anyObject = [dataclassesCopy anyObject];
+    v8 = [v6 localizedStringForKey:anyObject value:&stru_288487370 table:@"Localizable-AppleID"];
 
     v9 = MEMORY[0x277CCACA8];
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -361,22 +361,22 @@ void __81__ICSAccountSaveErrorHandler__beginManateeUpgradeForAccount_failedDatac
   [(ICSAccountSaveErrorHandler *)self _displayAccountSaveErrorAlertWithTitle:v14 message:v12 alternativeAction:0];
 }
 
-- (void)_displayAccountSaveErrorAlertWithTitle:(id)a3 message:(id)a4 alternativeAction:(id)a5
+- (void)_displayAccountSaveErrorAlertWithTitle:(id)title message:(id)message alternativeAction:(id)action
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  actionCopy = action;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __95__ICSAccountSaveErrorHandler__displayAccountSaveErrorAlertWithTitle_message_alternativeAction___block_invoke;
   v14[3] = &unk_27A6667A0;
-  v15 = v9;
-  v16 = self;
-  v17 = v8;
-  v18 = v10;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v15 = messageCopy;
+  selfCopy = self;
+  v17 = titleCopy;
+  v18 = actionCopy;
+  v11 = actionCopy;
+  v12 = titleCopy;
+  v13 = messageCopy;
   dispatch_async(MEMORY[0x277D85CD0], v14);
 }
 

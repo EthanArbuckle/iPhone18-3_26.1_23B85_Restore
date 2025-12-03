@@ -1,81 +1,81 @@
 @interface MechanismPearl
-- (BOOL)_checkFailureCounter:(BOOL)a3 wrongAuthentication:(BOOL)a4 error:(id *)a5;
+- (BOOL)_checkFailureCounter:(BOOL)counter wrongAuthentication:(BOOL)authentication error:(id *)error;
 - (BOOL)_exceededFailureLimit;
 - (BOOL)_shouldShowUIBeforeFailure;
-- (BOOL)isAvailableForPurpose:(int64_t)a3 error:(id *)a4;
+- (BOOL)isAvailableForPurpose:(int64_t)purpose error:(id *)error;
 - (LACRemoteUI)remoteUiDelegate;
-- (MechanismPearl)initWithParams:(id)a3 request:(id)a4;
-- (id)additionalControllerInternalInfoForPolicy:(int64_t)a3;
-- (void)_cancelOperation:(id)a3;
-- (void)_dispatchBKOperationWithBlock:(id)a3;
-- (void)_expireMatchThatStartedAt:(id)a3;
+- (MechanismPearl)initWithParams:(id)params request:(id)request;
+- (id)additionalControllerInternalInfoForPolicy:(int64_t)policy;
+- (void)_cancelOperation:(id)operation;
+- (void)_dispatchBKOperationWithBlock:(id)block;
+- (void)_expireMatchThatStartedAt:(id)at;
 - (void)_finishFaceDetectPhase;
 - (void)_generateArtificialFaceOutIfNeeded;
-- (void)_matchOperation:(id)a3 matchedWithResult:(id)a4;
-- (void)_operation:(id)a3 failedWithReason:(int64_t)a4;
-- (void)_operation:(id)a3 finishedWithReason:(int64_t)a4;
-- (void)_operation:(id)a3 presenceStateChanged:(BOOL)a4;
-- (void)_operation:(id)a3 providedFeedback:(int64_t)a4;
-- (void)_operation:(id)a3 stateChanged:(int64_t)a4;
+- (void)_matchOperation:(id)operation matchedWithResult:(id)result;
+- (void)_operation:(id)_operation failedWithReason:(int64_t)reason;
+- (void)_operation:(id)_operation finishedWithReason:(int64_t)reason;
+- (void)_operation:(id)_operation presenceStateChanged:(BOOL)changed;
+- (void)_operation:(id)_operation providedFeedback:(int64_t)feedback;
+- (void)_operation:(id)_operation stateChanged:(int64_t)changed;
 - (void)_pauseFaceIdAfterSecureUIMovement;
-- (void)_prepareCustomSecureUiWithCompletion:(id)a3;
-- (void)_scheduleMatchExpirationWithResult:(id)a3 identityUUID:(id)a4;
+- (void)_prepareCustomSecureUiWithCompletion:(id)completion;
+- (void)_scheduleMatchExpirationWithResult:(id)result identityUUID:(id)d;
 - (void)_setFaceDetectTimeout;
 - (void)_setupCoachingFilter;
 - (void)_startBiometry;
 - (void)_startFaceDetectPhase;
 - (void)_startMatching;
 - (void)_stopBiometry;
-- (void)_succeedAuthenticationWithResult:(id)a3 identityUUID:(id)a4;
-- (void)companionStateChanged:(id)a3 newState:(BOOL)a4;
-- (void)handleUIEvent:(int64_t)a3 params:(id)a4;
-- (void)matchOperation:(id)a3 failedWithReason:(int64_t)a4;
-- (void)matchOperation:(id)a3 matchedWithResult:(id)a4;
-- (void)matchOperation:(id)a3 providedFeedback:(int64_t)a4;
-- (void)mechanismEvent:(int64_t)a3 value:(id)a4 reply:(id)a5;
-- (void)mechanismEvent:(int64_t)a3 value:(id)a4 timeout:(double)a5 reply:(id)a6;
-- (void)noResponseEventWithParams:(id)a3;
-- (void)operation:(id)a3 finishedWithReason:(int64_t)a4;
-- (void)operation:(id)a3 presenceStateChanged:(BOOL)a4;
-- (void)operation:(id)a3 stateChanged:(int64_t)a4;
-- (void)runWithHints:(id)a3 eventsDelegate:(id)a4 reply:(id)a5;
+- (void)_succeedAuthenticationWithResult:(id)result identityUUID:(id)d;
+- (void)companionStateChanged:(id)changed newState:(BOOL)state;
+- (void)handleUIEvent:(int64_t)event params:(id)params;
+- (void)matchOperation:(id)operation failedWithReason:(int64_t)reason;
+- (void)matchOperation:(id)operation matchedWithResult:(id)result;
+- (void)matchOperation:(id)operation providedFeedback:(int64_t)feedback;
+- (void)mechanismEvent:(int64_t)event value:(id)value reply:(id)reply;
+- (void)mechanismEvent:(int64_t)event value:(id)value timeout:(double)timeout reply:(id)reply;
+- (void)noResponseEventWithParams:(id)params;
+- (void)operation:(id)operation finishedWithReason:(int64_t)reason;
+- (void)operation:(id)operation presenceStateChanged:(BOOL)changed;
+- (void)operation:(id)operation stateChanged:(int64_t)changed;
+- (void)runWithHints:(id)hints eventsDelegate:(id)delegate reply:(id)reply;
 - (void)willFinish;
 @end
 
 @implementation MechanismPearl
 
-- (MechanismPearl)initWithParams:(id)a3 request:(id)a4
+- (MechanismPearl)initWithParams:(id)params request:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"AcmContextRecord"];
-  v9 = [v7 objectForKeyedSubscript:@"EvaluationMode"];
-  v10 = [v9 integerValue];
-  v11 = [v7 objectForKeyedSubscript:@"UserId"];
+  requestCopy = request;
+  paramsCopy = params;
+  v8 = [paramsCopy objectForKeyedSubscript:@"AcmContextRecord"];
+  v9 = [paramsCopy objectForKeyedSubscript:@"EvaluationMode"];
+  integerValue = [v9 integerValue];
+  v11 = [paramsCopy objectForKeyedSubscript:@"UserId"];
 
   v14.receiver = self;
   v14.super_class = MechanismPearl;
-  v12 = [(MechanismPearl *)&v14 initWithEventIdentifier:7 remoteViewController:5 acmContextRecord:v8 request:v6 evaluationMode:v10 userId:v11];
+  v12 = [(MechanismPearl *)&v14 initWithEventIdentifier:7 remoteViewController:5 acmContextRecord:v8 request:requestCopy evaluationMode:integerValue userId:v11];
 
   return v12;
 }
 
-- (BOOL)isAvailableForPurpose:(int64_t)a3 error:(id *)a4
+- (BOOL)isAvailableForPurpose:(int64_t)purpose error:(id *)error
 {
-  if (LACPurposeSecureUIRecording == a3)
+  if (LACPurposeSecureUIRecording == purpose)
   {
     v32.receiver = self;
     v32.super_class = MechanismPearl;
-    return [(MechanismPearl *)&v32 isAvailableForPurpose:a3 error:a4];
+    return [(MechanismPearl *)&v32 isAvailableForPurpose:purpose error:error];
   }
 
-  v8 = [(MechanismPearl *)self evaluationMode];
-  if (v8)
+  evaluationMode = [(MechanismPearl *)self evaluationMode];
+  if (evaluationMode)
   {
-    if (v8 == &dword_0 + 1)
+    if (evaluationMode == &dword_0 + 1)
     {
       v9 = +[BiometryHelper faceIdInstance];
-      v10 = [v9 isAnyUserEnrolledWithError:a4];
+      v10 = [v9 isAnyUserEnrolledWithError:error];
 
       if ((v10 & 1) == 0)
       {
@@ -87,8 +87,8 @@
   else
   {
     v11 = +[BiometryHelper faceIdInstance];
-    v12 = [(MechanismPearl *)self userId];
-    v13 = [v11 isEnrolled:v12 error:a4];
+    userId = [(MechanismPearl *)self userId];
+    v13 = [v11 isEnrolled:userId error:error];
 
     if (!v13)
     {
@@ -96,9 +96,9 @@
     }
 
     v14 = +[BiometryHelper faceIdInstance];
-    v15 = [(MechanismPearl *)self userId];
-    v16 = [(MechanismPearl *)self request];
-    v17 = [v14 isLockedOutForUser:v15 request:v16 error:a4];
+    userId2 = [(MechanismPearl *)self userId];
+    request = [(MechanismPearl *)self request];
+    v17 = [v14 isLockedOutForUser:userId2 request:request error:error];
 
     if (v17)
     {
@@ -107,36 +107,36 @@
   }
 
   v18 = +[LAPasscodeHelper sharedInstance];
-  v19 = [(MechanismPearl *)self userId];
-  v20 = [v18 isPasscodeSetForUser:objc_msgSend(v19 error:{"unsignedIntValue"), a4}];
+  userId3 = [(MechanismPearl *)self userId];
+  v20 = [v18 isPasscodeSetForUser:objc_msgSend(userId3 error:{"unsignedIntValue"), error}];
 
   if (!v20)
   {
     return 0;
   }
 
-  v21 = [(MechanismPearl *)self request];
-  v22 = [v21 serviceLocator];
+  request2 = [(MechanismPearl *)self request];
+  serviceLocator = [request2 serviceLocator];
   v23 = NSStringFromProtocol(&OBJC_PROTOCOL___LACCompanionAuthenticationService);
-  v24 = [v22 serviceWithIdentifier:v23];
+  v24 = [serviceLocator serviceWithIdentifier:v23];
 
   if (![v24 isCompanionDeviceAvailable])
   {
     goto LABEL_12;
   }
 
-  v25 = [(MechanismPearl *)self request];
-  v26 = [v25 options];
+  request3 = [(MechanismPearl *)self request];
+  options = [request3 options];
   v27 = [NSNumber numberWithInteger:LACPolicyOptionConcurrentBiometryAndCompanion];
-  v28 = [v26 objectForKeyedSubscript:v27];
-  v29 = [v28 BOOLValue];
+  v28 = [options objectForKeyedSubscript:v27];
+  bOOLValue = [v28 BOOLValue];
 
-  if ((v29 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       [LACError errorWithCode:LACErrorCodeBiometryNotAvailable debugDescription:@"Companion authentication is active and concurrent run with biometry is not allowed"];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -150,121 +150,121 @@
 LABEL_12:
     v31.receiver = self;
     v31.super_class = MechanismPearl;
-    v7 = [(MechanismPearl *)&v31 isAvailableForPurpose:a3 error:a4];
+    v7 = [(MechanismPearl *)&v31 isAvailableForPurpose:purpose error:error];
   }
 
   return v7;
 }
 
-- (void)runWithHints:(id)a3 eventsDelegate:(id)a4 reply:(id)a5
+- (void)runWithHints:(id)hints eventsDelegate:(id)delegate reply:(id)reply
 {
-  v7 = a3;
+  hintsCopy = hints;
   v32.receiver = self;
   v32.super_class = MechanismPearl;
-  v29 = a4;
-  v30 = v7;
-  [MechanismPearl runWithHints:"runWithHints:eventsDelegate:reply:" eventsDelegate:v7 reply:?];
-  v8 = [(MechanismPearl *)self internalOptions];
-  v9 = [v8 objectForKeyedSubscript:@"AuditToken"];
-  v10 = [(MechanismPearl *)self internalOptions];
-  v11 = [v10 objectForKeyedSubscript:@"Options"];
+  delegateCopy = delegate;
+  v30 = hintsCopy;
+  [MechanismPearl runWithHints:"runWithHints:eventsDelegate:reply:" eventsDelegate:hintsCopy reply:?];
+  internalOptions = [(MechanismPearl *)self internalOptions];
+  v9 = [internalOptions objectForKeyedSubscript:@"AuditToken"];
+  internalOptions2 = [(MechanismPearl *)self internalOptions];
+  v11 = [internalOptions2 objectForKeyedSubscript:@"Options"];
   v12 = [v11 objectForKey:&off_10AB0];
-  v13 = [(MechanismPearl *)self policyOptions];
-  v14 = [v13 objectForKeyedSubscript:&off_10AC8];
+  policyOptions = [(MechanismPearl *)self policyOptions];
+  v14 = [policyOptions objectForKeyedSubscript:&off_10AC8];
   v31 = 0;
-  LOBYTE(a4) = [(MechanismPearl *)self isTCCAllowedWithAuditTokenData:v9 optionAuditTokenData:v12 forcePrompt:0 auditTokenUsage:v14 error:&v31];
+  LOBYTE(delegate) = [(MechanismPearl *)self isTCCAllowedWithAuditTokenData:v9 optionAuditTokenData:v12 forcePrompt:0 auditTokenUsage:v14 error:&v31];
   v15 = v31;
 
-  if ((a4 & 1) == 0)
+  if ((delegate & 1) == 0)
   {
     [(MechanismPearl *)self failAuthenticationWithError:v15];
 LABEL_10:
-    v28 = v29;
+    v28 = delegateCopy;
     v27 = v30;
     goto LABEL_11;
   }
 
   v16 = +[BiometryHelper faceIdInstance];
-  v17 = [v16 device];
+  device = [v16 device];
   pearlDevice = self->_pearlDevice;
-  self->_pearlDevice = v17;
+  self->_pearlDevice = device;
 
   self->_standardUifailures = 0;
   [(MechanismPearl *)self setFailures:0];
-  v19 = [(MechanismPearl *)self policyOptions];
-  v20 = [v19 objectForKey:&off_10AE0];
+  policyOptions2 = [(MechanismPearl *)self policyOptions];
+  v20 = [policyOptions2 objectForKey:&off_10AE0];
   [(MechanismPearl *)self setFailureLimit:v20];
 
-  v21 = [(MechanismPearl *)self failureLimit];
+  failureLimit = [(MechanismPearl *)self failureLimit];
 
-  if (!v21)
+  if (!failureLimit)
   {
     [(MechanismPearl *)self setFailureLimit:&off_10AF8];
   }
 
-  v22 = [(MechanismPearl *)self preCompanion];
+  preCompanion = [(MechanismPearl *)self preCompanion];
 
-  if (!v22)
+  if (!preCompanion)
   {
     [(MechanismPearl *)self _startBiometry];
     goto LABEL_10;
   }
 
-  v23 = [(MechanismPearl *)self policyOptions];
-  v24 = [v23 objectForKeyedSubscript:&off_10B10];
-  v25 = [v24 BOOLValue];
+  policyOptions3 = [(MechanismPearl *)self policyOptions];
+  v24 = [policyOptions3 objectForKeyedSubscript:&off_10B10];
+  bOOLValue = [v24 BOOLValue];
 
-  if (v25)
+  if (bOOLValue)
   {
     [(MechanismPearl *)self _startBiometry];
   }
 
-  v26 = [(MechanismPearl *)self preCompanion];
-  v28 = v29;
+  preCompanion2 = [(MechanismPearl *)self preCompanion];
+  v28 = delegateCopy;
   v27 = v30;
-  [v26 runWithHints:v30 eventsDelegate:v29 reply:&stru_10360];
+  [preCompanion2 runWithHints:v30 eventsDelegate:delegateCopy reply:&stru_10360];
 
 LABEL_11:
 }
 
 - (BOOL)_exceededFailureLimit
 {
-  v3 = [(MechanismPearl *)self failureLimit];
+  failureLimit = [(MechanismPearl *)self failureLimit];
 
-  if (!v3)
+  if (!failureLimit)
   {
     return 0;
   }
 
   v4 = [(MechanismPearl *)self failures]+ 1;
   [(MechanismPearl *)self setFailures:v4];
-  v5 = [(MechanismPearl *)self failureLimit];
-  v6 = v4 > [v5 unsignedIntegerValue];
+  failureLimit2 = [(MechanismPearl *)self failureLimit];
+  v6 = v4 > [failureLimit2 unsignedIntegerValue];
 
   return v6;
 }
 
-- (BOOL)_checkFailureCounter:(BOOL)a3 wrongAuthentication:(BOOL)a4 error:(id *)a5
+- (BOOL)_checkFailureCounter:(BOOL)counter wrongAuthentication:(BOOL)authentication error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(MechanismPearl *)self failureLimit];
+  authenticationCopy = authentication;
+  counterCopy = counter;
+  failureLimit = [(MechanismPearl *)self failureLimit];
 
-  if (v9 && ((lastCounterCheckInNoMatch = self->_lastCounterCheckInNoMatch, self->_lastCounterCheckInNoMatch = v7, v7) || !lastCounterCheckInNoMatch) && [(MechanismPearl *)self _exceededFailureLimit])
+  if (failureLimit && ((lastCounterCheckInNoMatch = self->_lastCounterCheckInNoMatch, self->_lastCounterCheckInNoMatch = counterCopy, counterCopy) || !lastCounterCheckInNoMatch) && [(MechanismPearl *)self _exceededFailureLimit])
   {
-    if (a5 && v6)
+    if (error && authenticationCopy)
     {
       v11 = [LAErrorHelper errorWithCode:-1022 message:@"Application retry limit exceeded - matched unbound identity."];
       v12 = v11;
       result = 0;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
     {
-      if (a5)
+      if (error)
       {
-        if (v7)
+        if (counterCopy)
         {
           [LAErrorHelper errorWithCode:-1 message:@"Application retry limit exceeded."];
         }
@@ -274,7 +274,7 @@ LABEL_11:
           [LAErrorHelper errorWithCode:-1 subcode:11 message:@"Application retry limit exceeded."];
         }
         v14 = ;
-        *a5 = v14;
+        *error = v14;
       }
 
       return 0;
@@ -283,9 +283,9 @@ LABEL_11:
 
   else
   {
-    if (a5)
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
 
     return 1;
@@ -294,19 +294,19 @@ LABEL_11:
   return result;
 }
 
-- (void)matchOperation:(id)a3 matchedWithResult:(id)a4
+- (void)matchOperation:(id)operation matchedWithResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  resultCopy = result;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_2398;
   v10[3] = &unk_10388;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = operationCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = resultCopy;
   v12 = v9;
   [(MechanismPearl *)self _dispatchBKOperationWithBlock:v10];
 
@@ -314,9 +314,9 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)_dispatchBKOperationWithBlock:(id)a3
+- (void)_dispatchBKOperationWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[NSDate now];
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
@@ -326,7 +326,7 @@ LABEL_11:
   objc_copyWeak(&v11, &location);
   v6 = v5;
   v9 = v6;
-  v7 = v4;
+  v7 = blockCopy;
   v10 = v7;
   [(MechanismPearl *)self dispatchAsyncOnServerQueueIfRunning:v8];
 
@@ -339,8 +339,8 @@ LABEL_11:
   v3 = +[LACDevice sharedInstance];
   if ([v3 isDynamicIslandAvailable])
   {
-    v4 = [(MechanismPearl *)self policyOptions];
-    v5 = [v4 objectForKeyedSubscript:&off_10B28];
+    policyOptions = [(MechanismPearl *)self policyOptions];
+    v5 = [policyOptions objectForKeyedSubscript:&off_10B28];
     v6 = [v5 BOOLValue] ^ 1;
   }
 
@@ -350,22 +350,22 @@ LABEL_11:
   }
 
   v7 = [(MechanismPearl *)self hasUI]& v6;
-  v8 = [(MechanismPearl *)self policyOptions];
-  v9 = [v8 objectForKeyedSubscript:&off_10B40];
-  v10 = [v9 BOOLValue];
+  policyOptions2 = [(MechanismPearl *)self policyOptions];
+  v9 = [policyOptions2 objectForKeyedSubscript:&off_10B40];
+  bOOLValue = [v9 BOOLValue];
 
-  return v7 & (v10 ^ 1);
+  return v7 & (bOOLValue ^ 1);
 }
 
-- (void)_matchOperation:(id)a3 matchedWithResult:(id)a4
+- (void)_matchOperation:(id)operation matchedWithResult:(id)result
 {
-  v67 = a3;
-  v6 = a4;
-  v7 = [v6 identity];
+  operationCopy = operation;
+  resultCopy = result;
+  identity = [resultCopy identity];
 
-  v8 = v7 == 0;
-  v9 = [(MechanismPearl *)self request];
-  v10 = [v9 log];
+  v8 = identity == 0;
+  request = [(MechanismPearl *)self request];
+  v10 = [request log];
 
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
   if (v8)
@@ -376,11 +376,11 @@ LABEL_11:
     }
 
     *buf = 138543874;
-    v80 = self;
+    selfCopy2 = self;
     v81 = 2112;
-    v82 = v67;
+    v82 = operationCopy;
     v83 = 1024;
-    v84 = [v6 lockoutState];
+    lockoutState = [resultCopy lockoutState];
     v12 = "%{public}@ has received no-match from %@ (lockout state:%d)";
     v13 = v10;
     v14 = 28;
@@ -394,15 +394,15 @@ LABEL_11:
     }
 
     *buf = 138544386;
-    v80 = self;
+    selfCopy2 = self;
     v81 = 2112;
-    v82 = v67;
+    v82 = operationCopy;
     v83 = 1024;
-    v84 = [v6 unlocked];
+    lockoutState = [resultCopy unlocked];
     v85 = 1024;
-    v86 = [v6 credentialAdded];
+    credentialAdded = [resultCopy credentialAdded];
     v87 = 1024;
-    v88 = [v6 resultIgnored];
+    resultIgnored = [resultCopy resultIgnored];
     v12 = "%{public}@ has matched by %@ (unlocked:%d, credential:%d, resultIgnored:%d)";
     v13 = v10;
     v14 = 40;
@@ -411,23 +411,23 @@ LABEL_11:
   _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, v12, buf, v14);
 LABEL_7:
 
-  v15 = [(MechanismPearl *)self request];
-  v16 = [v15 analytics];
-  v17 = [v6 identity];
-  v18 = v17 == 0;
-  [v16 authenticationAttempt:v18 event:{-[MechanismPearl eventIdentifier](self, "eventIdentifier")}];
+  request2 = [(MechanismPearl *)self request];
+  analytics = [request2 analytics];
+  identity2 = [resultCopy identity];
+  identity3 = identity2 == 0;
+  [analytics authenticationAttempt:identity3 event:{-[MechanismPearl eventIdentifier](self, "eventIdentifier")}];
 
   v77 = &off_10B58;
-  v19 = [v6 resultIgnored];
-  if (v19)
+  resultIgnored2 = [resultCopy resultIgnored];
+  if (resultIgnored2)
   {
     v20 = 13;
   }
 
   else
   {
-    v18 = [v6 identity];
-    if (v18)
+    identity3 = [resultCopy identity];
+    if (identity3)
     {
       v20 = 2;
     }
@@ -443,16 +443,16 @@ LABEL_7:
   v22 = [NSDictionary dictionaryWithObjects:&v78 forKeys:&v77 count:1];
   v23 = [NSMutableDictionary dictionaryWithDictionary:v22];
 
-  if ((v19 & 1) == 0)
+  if ((resultIgnored2 & 1) == 0)
   {
   }
 
   v24 = [(BKMatchPearlOperation *)self->_matchOperation purpose]== &dword_0 + 2 || [(BKMatchPearlOperation *)self->_matchOperation purpose]== &dword_4;
-  v25 = -[MechanismPearl checkLockoutState:isEffectiveLockoutForMatchWithPurpose:](self, "checkLockoutState:isEffectiveLockoutForMatchWithPurpose:", [v6 lockoutState], -[BKMatchPearlOperation purpose](self->_matchOperation, "purpose"));
-  v26 = [(BKMatchPearlOperation *)self->_matchOperation userID];
-  if (!v26)
+  v25 = -[MechanismPearl checkLockoutState:isEffectiveLockoutForMatchWithPurpose:](self, "checkLockoutState:isEffectiveLockoutForMatchWithPurpose:", [resultCopy lockoutState], -[BKMatchPearlOperation purpose](self->_matchOperation, "purpose"));
+  userID = [(BKMatchPearlOperation *)self->_matchOperation userID];
+  if (!userID)
   {
-    if ((([v6 lockoutState] == &dword_4 + 2) & v25) == 1)
+    if ((([resultCopy lockoutState] == &dword_4 + 2) & v25) == 1)
     {
       goto LABEL_19;
     }
@@ -470,33 +470,33 @@ LABEL_21:
 
 LABEL_19:
   v27 = +[BiometryHelper faceIdInstance];
-  v28 = [v6 lockoutState];
-  v29 = [(MechanismPearl *)self userId];
-  v65 = [v27 lockoutErrorForState:v28 userId:v29];
+  lockoutState2 = [resultCopy lockoutState];
+  userId = [(MechanismPearl *)self userId];
+  v65 = [v27 lockoutErrorForState:lockoutState2 userId:userId];
 
   [v23 setObject:v65 forKey:&off_10B70];
   [(MechanismPearl *)self setBiolockout:1];
   v30 = 1;
 LABEL_22:
   [(MechanismPearl *)self noResponseEventWithParams:v23, v65];
-  v31 = [v6 identity];
-  if (v31)
+  identity4 = [resultCopy identity];
+  if (identity4)
   {
-    v32 = [v6 resultIgnored];
+    resultIgnored3 = [resultCopy resultIgnored];
 
-    if ((v32 & 1) == 0)
+    if ((resultIgnored3 & 1) == 0)
     {
       v39 = [NSMutableDictionary dictionaryWithObject:&__kCFBooleanTrue forKey:&off_10B88];
-      v43 = [v6 identity];
-      v44 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v43 userID]);
+      identity5 = [resultCopy identity];
+      v44 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [identity5 userID]);
       [v39 setObject:v44 forKey:&off_10BA0];
 
-      v45 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 credentialAdded]);
+      v45 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [resultCopy credentialAdded]);
       [v39 setObject:v45 forKey:&off_10BB8];
 
       if (v24)
       {
-        v46 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 unlocked]);
+        v46 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [resultCopy unlocked]);
         [v39 setObject:v46 forKey:&off_10BD0];
       }
 
@@ -505,14 +505,14 @@ LABEL_22:
         [v39 setObject:&__kCFBooleanTrue forKey:&off_10BE8];
       }
 
-      v47 = [(MechanismPearl *)self policyOptions];
-      v41 = [v47 objectForKeyedSubscript:&off_10C00];
+      policyOptions = [(MechanismPearl *)self policyOptions];
+      v41 = [policyOptions objectForKeyedSubscript:&off_10C00];
 
       if (!v41 || [v41 BOOLValue])
       {
         v48 = +[BiometryHelper faceIdInstance];
-        v49 = [v6 identity];
-        v50 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v49 userID]);
+        identity6 = [resultCopy identity];
+        v50 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [identity6 userID]);
         v74 = 0;
         v51 = [v48 biometryDatabaseHashForUser:v50 error:&v74];
         v52 = v74;
@@ -524,33 +524,33 @@ LABEL_22:
 
         else
         {
-          v54 = [(MechanismPearl *)self request];
-          v55 = [v54 log];
+          request3 = [(MechanismPearl *)self request];
+          v55 = [request3 log];
 
           if (os_log_type_enabled(v55, OS_LOG_TYPE_FAULT))
           {
-            sub_7430(v6, v52, v55);
+            sub_7430(resultCopy, v52, v55);
           }
         }
       }
 
-      v42 = [(MechanismPearl *)self preCompanion];
-      if (v42 && ([v39 setObject:&__kCFBooleanTrue forKey:&off_10B70], (objc_msgSend(v42, "checkCredentialValid") & 1) == 0))
+      preCompanion = [(MechanismPearl *)self preCompanion];
+      if (preCompanion && ([v39 setObject:&__kCFBooleanTrue forKey:&off_10B70], (objc_msgSend(preCompanion, "checkCredentialValid") & 1) == 0))
       {
-        v57 = [v6 identity];
-        v58 = [v57 uuid];
-        [(MechanismPearl *)self _scheduleMatchExpirationWithResult:v39 identityUUID:v58];
+        identity7 = [resultCopy identity];
+        uuid = [identity7 uuid];
+        [(MechanismPearl *)self _scheduleMatchExpirationWithResult:v39 identityUUID:uuid];
 
         v75 = &off_10BE8;
         v76 = &__kCFBooleanFalse;
         v59 = [NSDictionary dictionaryWithObjects:&v76 forKeys:&v75 count:1];
-        [v42 noResponseEventWithParams:v59];
+        [preCompanion noResponseEventWithParams:v59];
 
-        v60 = [(MechanismPearl *)self policyOptions];
-        v61 = [v60 objectForKeyedSubscript:&off_10B10];
-        LODWORD(v58) = [v61 BOOLValue];
+        policyOptions2 = [(MechanismPearl *)self policyOptions];
+        v61 = [policyOptions2 objectForKeyedSubscript:&off_10B10];
+        LODWORD(uuid) = [v61 BOOLValue];
 
-        if (v58)
+        if (uuid)
         {
           v62 = [LAErrorHelper errorWithCode:-1023 message:@"Double press is required."];
           [(MechanismPearl *)self failAuthenticationWithError:v62];
@@ -574,7 +574,7 @@ LABEL_22:
         v70[3] = &unk_10388;
         objc_copyWeak(&v73, buf);
         v71 = v39;
-        v72 = v6;
+        v72 = resultCopy;
         v56 = objc_retainBlock(v70);
         if ([(CoachingFeedbackFilter *)self->_coachingFeedbackFilter isFinished])
         {
@@ -591,8 +591,8 @@ LABEL_22:
       }
 
       v63 = +[MechanismContext sharedInstance];
-      v64 = [v63 backoffCounter];
-      [v64 actionSuccess];
+      backoffCounter = [v63 backoffCounter];
+      [backoffCounter actionSuccess];
 
       goto LABEL_60;
     }
@@ -601,9 +601,9 @@ LABEL_22:
   if (v30)
   {
     v33 = +[BiometryHelper faceIdInstance];
-    v34 = [v6 lockoutState];
-    v35 = [(MechanismPearl *)self userId];
-    v36 = [v33 lockoutErrorForState:v34 userId:v35];
+    lockoutState3 = [resultCopy lockoutState];
+    userId2 = [(MechanismPearl *)self userId];
+    v36 = [v33 lockoutErrorForState:lockoutState3 userId:userId2];
 
     if ([(MechanismPearl *)self _shouldShowUIBeforeFailure])
     {
@@ -622,7 +622,7 @@ LABEL_22:
   }
 
   v69 = 0;
-  v38 = -[MechanismPearl _checkFailureCounter:wrongAuthentication:error:](self, "_checkFailureCounter:wrongAuthentication:error:", 1, [v6 resultIgnored], &v69);
+  v38 = -[MechanismPearl _checkFailureCounter:wrongAuthentication:error:](self, "_checkFailureCounter:wrongAuthentication:error:", 1, [resultCopy resultIgnored], &v69);
   v39 = v69;
   if (v38)
   {
@@ -637,8 +637,8 @@ LABEL_22:
     }
 
     [(MechanismPearl *)self prepareForRestart];
-    v42 = -[MechanismPearl failuresInfoDictionaryWithError:unboundMatch:](self, "failuresInfoDictionaryWithError:unboundMatch:", 0, [v6 resultIgnored]);
-    [(MechanismPearl *)self mechanismEvent:1 value:v42 reply:&stru_10430];
+    preCompanion = -[MechanismPearl failuresInfoDictionaryWithError:unboundMatch:](self, "failuresInfoDictionaryWithError:unboundMatch:", 0, [resultCopy resultIgnored]);
+    [(MechanismPearl *)self mechanismEvent:1 value:preCompanion reply:&stru_10430];
 LABEL_60:
 
     self->_expectingEndOfMatching = 1;
@@ -647,7 +647,7 @@ LABEL_60:
 
   if ([(MechanismPearl *)self _shouldShowUIBeforeFailure])
   {
-    v53 = -[MechanismPearl failuresInfoDictionaryWithError:unboundMatch:](self, "failuresInfoDictionaryWithError:unboundMatch:", v39, [v6 resultIgnored]);
+    v53 = -[MechanismPearl failuresInfoDictionaryWithError:unboundMatch:](self, "failuresInfoDictionaryWithError:unboundMatch:", v39, [resultCopy resultIgnored]);
     [(MechanismPearl *)self mechanismEvent:1 value:v53 reply:&stru_10410];
 
     self->_expectingEndOfMatching = 1;
@@ -661,46 +661,46 @@ LABEL_60:
 LABEL_61:
 }
 
-- (void)operation:(id)a3 finishedWithReason:(int64_t)a4
+- (void)operation:(id)operation finishedWithReason:(int64_t)reason
 {
-  v6 = a3;
+  operationCopy = operation;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_32B0;
   v8[3] = &unk_10458;
   objc_copyWeak(v10, &location);
-  v7 = v6;
+  v7 = operationCopy;
   v9 = v7;
-  v10[1] = a4;
+  v10[1] = reason;
   [(MechanismPearl *)self _dispatchBKOperationWithBlock:v8];
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
 }
 
-- (void)_operation:(id)a3 finishedWithReason:(int64_t)a4
+- (void)_operation:(id)_operation finishedWithReason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [(MechanismPearl *)self request];
-  v8 = [v7 log];
+  _operationCopy = _operation;
+  request = [(MechanismPearl *)self request];
+  v8 = [request log];
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543874;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
-    v17 = v6;
+    v17 = _operationCopy;
     v18 = 1024;
-    v19 = a4;
+    reasonCopy = reason;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ has been finished by %{public}@, reason:%d", &v14, 0x1Cu);
   }
 
-  if (a4 == 3)
+  if (reason == 3)
   {
-    v9 = [(MechanismPearl *)self request];
-    v10 = [v9 analytics];
-    [v10 authenticationAttempt:3 event:{-[MechanismPearl eventIdentifier](self, "eventIdentifier")}];
+    request2 = [(MechanismPearl *)self request];
+    analytics = [request2 analytics];
+    [analytics authenticationAttempt:3 event:{-[MechanismPearl eventIdentifier](self, "eventIdentifier")}];
 
     if (!self->_expectingEndOfMatching)
     {
@@ -711,50 +711,50 @@ LABEL_61:
 
   p_matchOperation = &self->_matchOperation;
   matchOperation = self->_matchOperation;
-  if (matchOperation == v6 || (p_matchOperation = &self->_detectOperation, matchOperation = self->_detectOperation, matchOperation == v6))
+  if (matchOperation == _operationCopy || (p_matchOperation = &self->_detectOperation, matchOperation = self->_detectOperation, matchOperation == _operationCopy))
   {
     *p_matchOperation = 0;
   }
 }
 
-- (void)operation:(id)a3 stateChanged:(int64_t)a4
+- (void)operation:(id)operation stateChanged:(int64_t)changed
 {
-  v6 = a3;
+  operationCopy = operation;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_35A0;
   v8[3] = &unk_10458;
   objc_copyWeak(v10, &location);
-  v7 = v6;
+  v7 = operationCopy;
   v9 = v7;
-  v10[1] = a4;
+  v10[1] = changed;
   [(MechanismPearl *)self _dispatchBKOperationWithBlock:v8];
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
 }
 
-- (void)_operation:(id)a3 stateChanged:(int64_t)a4
+- (void)_operation:(id)_operation stateChanged:(int64_t)changed
 {
-  v6 = a3;
-  v7 = [(MechanismPearl *)self request];
-  v8 = [v7 log];
+  _operationCopy = _operation;
+  request = [(MechanismPearl *)self request];
+  v8 = [request log];
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v37 = self;
+    selfCopy = self;
     v38 = 1024;
-    v39 = a4;
+    changedCopy = changed;
     v40 = 2114;
-    v41 = v6;
+    v41 = _operationCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ state has changed to %d on %{public}@", buf, 0x1Cu);
   }
 
-  if (a4 <= 3)
+  if (changed <= 3)
   {
-    if (a4 == 2)
+    if (changed == 2)
     {
       if ([(CoachingFeedbackFilter *)self->_coachingFeedbackFilter isFinished])
       {
@@ -769,7 +769,7 @@ LABEL_61:
       [(MechanismPearl *)self mechanismEvent:5 reply:&stru_10478];
     }
 
-    else if (a4 == 3)
+    else if (changed == 3)
     {
       v32 = &off_10B58;
       v33 = &off_10BE8;
@@ -779,15 +779,15 @@ LABEL_61:
       v10 = [LAErrorHelper errorWithCode:-4 message:@"Preempted by another biometric operation."];
       [(MechanismPearl *)self failAuthenticationWithError:v10];
 
-      [(MechanismPearl *)self _cancelOperation:v6];
+      [(MechanismPearl *)self _cancelOperation:_operationCopy];
     }
 
     goto LABEL_31;
   }
 
-  if (a4 != 4)
+  if (changed != 4)
   {
-    if (a4 != 5)
+    if (changed != 5)
     {
       goto LABEL_31;
     }
@@ -817,8 +817,8 @@ LABEL_61:
       v14 = [(MechanismPearl *)self failuresInfoDictionaryWithError:v12];
       [(MechanismPearl *)self mechanismEvent:6 value:v14 reply:&stru_10498];
 
-      v15 = [(MechanismPearl *)self eventsDelegate];
-      if (!v15)
+      eventsDelegate = [(MechanismPearl *)self eventsDelegate];
+      if (!eventsDelegate)
       {
         v16 = self->_standardUifailures + 1;
         self->_standardUifailures = v16;
@@ -828,9 +828,9 @@ LABEL_61:
         }
       }
 
-      v17 = [(MechanismPearl *)self isLastRestartAttempt];
+      isLastRestartAttempt = [(MechanismPearl *)self isLastRestartAttempt];
 
-      if (v17)
+      if (isLastRestartAttempt)
       {
 LABEL_17:
         [(MechanismPearl *)self _stopBiometry];
@@ -851,7 +851,7 @@ LABEL_30:
   }
 
   matchOperation = self->_matchOperation;
-  if (matchOperation == v6)
+  if (matchOperation == _operationCopy)
   {
     v28 = &off_10B58;
     v29 = &off_10B70;
@@ -861,55 +861,55 @@ LABEL_30:
     matchOperation = self->_matchOperation;
   }
 
-  if (matchOperation == v6 && !self->_expectingEndOfMatching || self->_detectOperation == v6 && !self->_expectingEndOfDetection)
+  if (matchOperation == _operationCopy && !self->_expectingEndOfMatching || self->_detectOperation == _operationCopy && !self->_expectingEndOfDetection)
   {
     v12 = +[BiometryHelper faceIdInstance];
-    v22 = [(MechanismPearl *)self userId];
-    v23 = [(MechanismPearl *)self request];
-    v24 = [v12 biometryLostErrorForUser:v22 request:v23];
+    userId = [(MechanismPearl *)self userId];
+    request2 = [(MechanismPearl *)self request];
+    v24 = [v12 biometryLostErrorForUser:userId request:request2];
     [(MechanismPearl *)self failAuthenticationWithError:v24];
 
     goto LABEL_30;
   }
 
 LABEL_31:
-  self->_operationState = a4;
+  self->_operationState = changed;
 }
 
-- (void)noResponseEventWithParams:(id)a3
+- (void)noResponseEventWithParams:(id)params
 {
-  v4 = a3;
+  paramsCopy = params;
   if ([(MechanismPearl *)self isMirroringUI])
   {
-    v5 = [v4 objectForKeyedSubscript:&off_10B58];
-    v6 = [v5 integerValue];
+    v5 = [paramsCopy objectForKeyedSubscript:&off_10B58];
+    integerValue = [v5 integerValue];
 
-    if (v6 == &dword_8 + 3)
+    if (integerValue == &dword_8 + 3)
     {
       goto LABEL_5;
     }
 
-    if (v6 == &dword_8 + 2)
+    if (integerValue == &dword_8 + 2)
     {
       v7 = &__kCFBooleanTrue;
       goto LABEL_7;
     }
 
-    if (v6 == &dword_0 + 3)
+    if (integerValue == &dword_0 + 3)
     {
 LABEL_5:
       v7 = &__kCFBooleanFalse;
 LABEL_7:
-      v8 = [NSMutableDictionary dictionaryWithDictionary:v4];
+      v8 = [NSMutableDictionary dictionaryWithDictionary:paramsCopy];
       [v8 setObject:v7 forKey:&off_10C30];
 
-      v4 = v8;
+      paramsCopy = v8;
     }
   }
 
   v9.receiver = self;
   v9.super_class = MechanismPearl;
-  [(MechanismPearl *)&v9 noResponseEventWithParams:v4];
+  [(MechanismPearl *)&v9 noResponseEventWithParams:paramsCopy];
 }
 
 - (void)_generateArtificialFaceOutIfNeeded
@@ -924,62 +924,62 @@ LABEL_7:
   }
 }
 
-- (void)operation:(id)a3 presenceStateChanged:(BOOL)a4
+- (void)operation:(id)operation presenceStateChanged:(BOOL)changed
 {
-  v6 = a3;
+  operationCopy = operation;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_3D38;
   v8[3] = &unk_104C0;
   objc_copyWeak(&v10, &location);
-  v7 = v6;
+  v7 = operationCopy;
   v9 = v7;
-  v11 = a4;
+  changedCopy = changed;
   [(MechanismPearl *)self _dispatchBKOperationWithBlock:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)_operation:(id)a3 presenceStateChanged:(BOOL)a4
+- (void)_operation:(id)_operation presenceStateChanged:(BOOL)changed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MechanismPearl *)self request];
-  v8 = [v7 log];
+  changedCopy = changed;
+  _operationCopy = _operation;
+  request = [(MechanismPearl *)self request];
+  v8 = [request log];
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"out";
     *buf = 138543874;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    if (v4)
+    if (changedCopy)
     {
       v9 = @"in";
     }
 
     v23 = v9;
     v24 = 2114;
-    v25 = v6;
+    v25 = _operationCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ has received face-%{public}@ from %{public}@", buf, 0x20u);
   }
 
-  self->_facePresent = v4;
+  self->_facePresent = changedCopy;
   if (self->_detectOperation)
   {
     v10 = +[DaemonUtils sharedInstance];
-    v11 = [v10 serverQueue];
+    serverQueue = [v10 serverQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_3FE8;
     block[3] = &unk_10300;
     block[4] = self;
-    dispatch_async(v11, block);
+    dispatch_async(serverQueue, block);
   }
 
-  if (v4)
+  if (changedCopy)
   {
     v12 = &off_10C48;
     v13 = 3;
@@ -988,9 +988,9 @@ LABEL_7:
   else
   {
     ++self->_faceOutCounter;
-    v14 = [(MechanismPearl *)self request];
-    v15 = [v14 analytics];
-    [v15 authenticationAttempt:2 event:{-[MechanismPearl eventIdentifier](self, "eventIdentifier")}];
+    request2 = [(MechanismPearl *)self request];
+    analytics = [request2 analytics];
+    [analytics authenticationAttempt:2 event:{-[MechanismPearl eventIdentifier](self, "eventIdentifier")}];
 
     v12 = &off_10B88;
     v13 = 4;
@@ -1004,42 +1004,42 @@ LABEL_7:
   [(MechanismPearl *)self mechanismEvent:v13 reply:&stru_104E0];
 }
 
-- (void)matchOperation:(id)a3 failedWithReason:(int64_t)a4
+- (void)matchOperation:(id)operation failedWithReason:(int64_t)reason
 {
-  v6 = a3;
+  operationCopy = operation;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_40E0;
   v8[3] = &unk_10458;
   objc_copyWeak(v10, &location);
-  v7 = v6;
+  v7 = operationCopy;
   v9 = v7;
-  v10[1] = a4;
+  v10[1] = reason;
   [(MechanismPearl *)self _dispatchBKOperationWithBlock:v8];
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
 }
 
-- (void)_operation:(id)a3 failedWithReason:(int64_t)a4
+- (void)_operation:(id)_operation failedWithReason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [(MechanismPearl *)self request];
-  v8 = [v7 log];
+  _operationCopy = _operation;
+  request = [(MechanismPearl *)self request];
+  v8 = [request log];
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    v23 = v6;
+    v23 = _operationCopy;
     v24 = 1024;
-    v25 = a4;
+    reasonCopy = reason;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ has failed by %{public}@ with reason:%d", buf, 0x1Cu);
   }
 
-  switch(a4)
+  switch(reason)
   {
     case 3:
       v10 = 8;
@@ -1096,47 +1096,47 @@ LABEL_7:
 LABEL_17:
 }
 
-- (void)matchOperation:(id)a3 providedFeedback:(int64_t)a4
+- (void)matchOperation:(id)operation providedFeedback:(int64_t)feedback
 {
-  v6 = a3;
+  operationCopy = operation;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_44C0;
   v8[3] = &unk_10458;
   objc_copyWeak(v10, &location);
-  v7 = v6;
+  v7 = operationCopy;
   v9 = v7;
-  v10[1] = a4;
+  v10[1] = feedback;
   [(MechanismPearl *)self _dispatchBKOperationWithBlock:v8];
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
 }
 
-- (void)_operation:(id)a3 providedFeedback:(int64_t)a4
+- (void)_operation:(id)_operation providedFeedback:(int64_t)feedback
 {
-  v6 = a3;
-  if ((a4 - 1) < 0xA || (a4 - 12) < 2)
+  _operationCopy = _operation;
+  if ((feedback - 1) < 0xA || (feedback - 12) < 2)
   {
     goto LABEL_2;
   }
 
-  if (a4 == 11)
+  if (feedback == 11)
   {
     v7 = +[BiometryHelper faceIdInstance];
-    v8 = [(MechanismPearl *)self userId];
-    v9 = [v7 isPeriocularMatchingEnabledForUser:v8];
+    userId = [(MechanismPearl *)self userId];
+    v9 = [v7 isPeriocularMatchingEnabledForUser:userId];
 
     if (v9)
     {
-      v10 = [(MechanismPearl *)self request];
-      v11 = [v10 log];
+      request = [(MechanismPearl *)self request];
+      v11 = [request log];
 
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138543362;
-        v15 = self;
+        selfCopy = self;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ will ignore occlusion feedback", &v14, 0xCu);
       }
 
@@ -1144,32 +1144,32 @@ LABEL_17:
     }
 
 LABEL_2:
-    [(CoachingFeedbackFilter *)self->_coachingFeedbackFilter scheduleFeedback:a4];
+    [(CoachingFeedbackFilter *)self->_coachingFeedbackFilter scheduleFeedback:feedback];
     goto LABEL_3;
   }
 
-  v12 = [(MechanismPearl *)self request];
-  v13 = [v12 log];
+  request2 = [(MechanismPearl *)self request];
+  v13 = [request2 log];
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
   {
-    sub_74DC(a4, v13);
+    sub_74DC(feedback, v13);
   }
 
 LABEL_3:
 }
 
-- (void)_cancelOperation:(id)a3
+- (void)_cancelOperation:(id)operation
 {
-  v4 = a3;
-  if (self->_matchOperation == v4)
+  operationCopy = operation;
+  if (self->_matchOperation == operationCopy)
   {
     v5 = &OBJC_IVAR___MechanismPearl__expectingEndOfMatching;
   }
 
   else
   {
-    if (self->_detectOperation != v4)
+    if (self->_detectOperation != operationCopy)
     {
       goto LABEL_6;
     }
@@ -1178,16 +1178,16 @@ LABEL_3:
   }
 
   self->MechanismBiometry_opaque[*v5] = 1;
-  v6 = v4;
-  [(BKPresenceDetectOperation *)v4 cancel];
-  v4 = v6;
+  v6 = operationCopy;
+  [(BKPresenceDetectOperation *)operationCopy cancel];
+  operationCopy = v6;
 LABEL_6:
 }
 
 - (void)_startBiometry
 {
-  v3 = [(MechanismPearl *)self policyOptions];
-  v4 = [v3 objectForKey:&off_10C60];
+  policyOptions = [(MechanismPearl *)self policyOptions];
+  v4 = [policyOptions objectForKey:&off_10C60];
   faceDetectTimeout = self->_faceDetectTimeout;
   self->_faceDetectTimeout = v4;
 
@@ -1214,16 +1214,16 @@ LABEL_6:
 
 - (void)_startMatching
 {
-  v4 = [(MechanismPearl *)self request];
-  v5 = [v4 log];
+  request = [(MechanismPearl *)self request];
+  v5 = [request log];
 
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MechanismPearl *)self userId];
-    if (v6)
+    userId = [(MechanismPearl *)self userId];
+    if (userId)
     {
-      v2 = [(MechanismPearl *)self userId];
-      v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"user %d", [v2 intValue]);
+      userId2 = [(MechanismPearl *)self userId];
+      v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"user %d", [userId2 intValue]);
     }
 
     else
@@ -1232,11 +1232,11 @@ LABEL_6:
     }
 
     *buf = 138543618;
-    v28 = self;
+    selfCopy = self;
     v29 = 2114;
     v30 = v7;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ will start matching %{public}@", buf, 0x16u);
-    if (v6)
+    if (userId)
     {
     }
   }
@@ -1252,24 +1252,24 @@ LABEL_6:
 
   [(BKMatchPearlOperation *)self->_matchOperation setDelegate:self];
   v12 = self->_matchOperation;
-  v13 = [(MechanismPearl *)self externalizedContext];
-  [(BKMatchPearlOperation *)v12 setCredentialSet:v13];
+  externalizedContext = [(MechanismPearl *)self externalizedContext];
+  [(BKMatchPearlOperation *)v12 setCredentialSet:externalizedContext];
 
   [(BKMatchPearlOperation *)self->_matchOperation setPriority:50];
   [(BKMatchPearlOperation *)self->_matchOperation setStopOnSuccess:1];
   v14 = self->_matchOperation;
-  v15 = [(MechanismPearl *)self identityUUIDs];
-  [(BKMatchPearlOperation *)v14 setSelectedIdentities:v15];
+  identityUUIDs = [(MechanismPearl *)self identityUUIDs];
+  [(BKMatchPearlOperation *)v14 setSelectedIdentities:identityUUIDs];
 
   v16 = self->_matchOperation;
-  v17 = [(MechanismPearl *)self userId];
-  [(BKMatchPearlOperation *)v16 setUserID:v17];
+  userId3 = [(MechanismPearl *)self userId];
+  [(BKMatchPearlOperation *)v16 setUserID:userId3];
 
-  v18 = [(MechanismPearl *)self policyOptions];
-  v19 = [v18 objectForKeyedSubscript:&off_10C78];
-  v20 = [v19 BOOLValue];
+  policyOptions = [(MechanismPearl *)self policyOptions];
+  v19 = [policyOptions objectForKeyedSubscript:&off_10C78];
+  bOOLValue = [v19 BOOLValue];
 
-  if (v20)
+  if (bOOLValue)
   {
     v21 = 4;
   }
@@ -1288,10 +1288,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v23 = [(MechanismPearl *)self request];
-  v24 = [v23 isPurposeApplePay];
+  request2 = [(MechanismPearl *)self request];
+  isPurposeApplePay = [request2 isPurposeApplePay];
 
-  if (v24)
+  if (isPurposeApplePay)
   {
     v22 = 3;
     goto LABEL_15;
@@ -1306,27 +1306,27 @@ LABEL_16:
   [(MechanismPearl *)self _prepareCustomSecureUiWithCompletion:v25];
 }
 
-- (void)_prepareCustomSecureUiWithCompletion:(id)a3
+- (void)_prepareCustomSecureUiWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MechanismPearl *)self eventsDelegate];
+  completionCopy = completion;
+  eventsDelegate = [(MechanismPearl *)self eventsDelegate];
 
-  if (v5 && (+[LACSecureFaceIDUIUtilities sharedInstance](LACSecureFaceIDUIUtilities, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isActive], v6, (v7 & 1) != 0))
+  if (eventsDelegate && (+[LACSecureFaceIDUIUtilities sharedInstance](LACSecureFaceIDUIUtilities, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isActive], v6, (v7 & 1) != 0))
   {
-    v8 = [(MechanismPearl *)self policyOptions];
-    v9 = [v8 objectForKeyedSubscript:&off_10C90];
+    policyOptions = [(MechanismPearl *)self policyOptions];
+    v9 = [policyOptions objectForKeyedSubscript:&off_10C90];
     v10 = [v9 objectForKeyedSubscript:&off_10C18];
     v11 = [v10 objectForKeyedSubscript:&off_10CA8];
 
     if (v11 && [v11 integerValue])
     {
-      v12 = [(MechanismPearl *)self request];
-      v13 = [v12 log];
+      request = [(MechanismPearl *)self request];
+      v13 = [request log];
 
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v25 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ is waiting for mirrored default UI to prepare secure UI", buf, 0xCu);
       }
 
@@ -1336,19 +1336,19 @@ LABEL_16:
       v20[3] = &unk_10548;
       v20[4] = self;
       v14 = &v21;
-      v21 = v4;
+      v21 = completionCopy;
       [(MechanismPearl *)self mechanismEvent:20 value:0 timeout:v20 reply:1.0];
     }
 
     else
     {
-      v15 = [(MechanismPearl *)self request];
-      v16 = [v15 log];
+      request2 = [(MechanismPearl *)self request];
+      v16 = [request2 log];
 
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v25 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ is waiting for custom UI client to prepare secure UI", buf, 0xCu);
       }
 
@@ -1361,26 +1361,26 @@ LABEL_16:
       v18[3] = &unk_10570;
       v18[4] = self;
       v14 = &v19;
-      v19 = v4;
+      v19 = completionCopy;
       [(MechanismPearl *)self responseEventWithParams:v17 timeout:v18 reply:1.0];
     }
   }
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
 - (void)_startFaceDetectPhase
 {
-  v3 = [(MechanismPearl *)self request];
-  v4 = [v3 log];
+  request = [(MechanismPearl *)self request];
+  v4 = [request log];
 
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ is starting face detect phase", buf, 0xCu);
   }
 
@@ -1414,13 +1414,13 @@ LABEL_16:
 
 - (void)_finishFaceDetectPhase
 {
-  v3 = [(MechanismPearl *)self request];
-  v4 = [v3 log];
+  request = [(MechanismPearl *)self request];
+  v4 = [request log];
 
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ will finish face detect phase", buf, 0xCu);
   }
 
@@ -1445,20 +1445,20 @@ LABEL_16:
   faceOutCounter = self->_faceOutCounter;
   v7 = dispatch_time(0, (v4 * 1000000000.0));
   v8 = +[DaemonUtils sharedInstance];
-  v9 = [v8 serverQueue];
+  serverQueue = [v8 serverQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_55F4;
   block[3] = &unk_10598;
   block[4] = self;
   block[5] = faceOutCounter;
-  dispatch_after(v7, v9, block);
+  dispatch_after(v7, serverQueue, block);
 }
 
 - (void)_stopBiometry
 {
-  v3 = [(MechanismPearl *)self request];
-  v4 = [v3 log];
+  request = [(MechanismPearl *)self request];
+  v4 = [request log];
 
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1469,7 +1469,7 @@ LABEL_16:
     }
 
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
     v9 = matchOperation;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ will stop biometric operation: %{public}@", &v6, 0x16u);
@@ -1503,23 +1503,23 @@ LABEL_16:
   [(MechanismPearl *)self _stopBiometry];
 }
 
-- (void)companionStateChanged:(id)a3 newState:(BOOL)a4
+- (void)companionStateChanged:(id)changed newState:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MechanismPearl *)self request];
-  v8 = [v7 log];
+  stateCopy = state;
+  changedCopy = changed;
+  request = [(MechanismPearl *)self request];
+  v8 = [request log];
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v16 = v6;
+    v16 = changedCopy;
     v17 = 1024;
-    v18 = v4;
+    v18 = stateCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ state changed to %d", buf, 0x12u);
   }
 
-  if (v4)
+  if (stateCopy)
   {
     matchResult = self->_matchResult;
     if (matchResult)
@@ -1535,8 +1535,8 @@ LABEL_14:
 
     if ([(MechanismPearl *)self biolockout])
     {
-      v12 = [(MechanismPearl *)self request];
-      v10 = [v12 log];
+      request2 = [(MechanismPearl *)self request];
+      v10 = [request2 log];
 
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
@@ -1580,15 +1580,15 @@ LABEL_14:
 LABEL_15:
 }
 
-- (id)additionalControllerInternalInfoForPolicy:(int64_t)a3
+- (id)additionalControllerInternalInfoForPolicy:(int64_t)policy
 {
-  v4 = [(MechanismPearl *)self preCompanion];
-  if (v4)
+  preCompanion = [(MechanismPearl *)self preCompanion];
+  if (preCompanion)
   {
-    v5 = [(MechanismPearl *)self preCompanion];
-    v6 = [v5 eventIdentifier];
+    preCompanion2 = [(MechanismPearl *)self preCompanion];
+    eventIdentifier = [preCompanion2 eventIdentifier];
 
-    if (v6 == &dword_4 + 1)
+    if (eventIdentifier == &dword_4 + 1)
     {
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
@@ -1601,47 +1601,47 @@ LABEL_15:
       {
         v11 = @"FaceIdWithButton";
         v12 = v7;
-        v4 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
+        preCompanion = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
       }
 
       else
       {
-        v4 = 0;
+        preCompanion = 0;
       }
     }
 
     else
     {
-      v4 = 0;
+      preCompanion = 0;
     }
   }
 
-  return v4;
+  return preCompanion;
 }
 
-- (void)mechanismEvent:(int64_t)a3 value:(id)a4 reply:(id)a5
+- (void)mechanismEvent:(int64_t)event value:(id)value reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MechanismPearl *)self request];
-  v11 = [v10 log];
+  valueCopy = value;
+  replyCopy = reply;
+  request = [(MechanismPearl *)self request];
+  v11 = [request log];
 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109634;
-    v31 = a3;
+    eventCopy2 = event;
     v32 = 2114;
-    v33 = v8;
+    v33 = valueCopy;
     v34 = 2114;
-    v35 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Mechanism event %d(%{public}@) on %{public}@", buf, 0x1Cu);
   }
 
   if (self->_hasUI && self->_coachingFeedbackFilter)
   {
-    if (a3 == 14 && !self->_facePresent && [v8 intValue] != 11)
+    if (event == 14 && !self->_facePresent && [valueCopy intValue] != 11)
     {
-      v12 = [v8 isEqualToNumber:&off_10B88];
+      v12 = [valueCopy isEqualToNumber:&off_10B88];
       if (v12 == self->_faceDetectTimerPaused)
       {
         v13 = v12 ^ 1;
@@ -1659,23 +1659,23 @@ LABEL_15:
           v17 = v11;
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
-            sub_7644(v8, v16, v17);
+            sub_7644(valueCopy, v16, v17);
           }
         }
       }
     }
 
-    v19 = a3 == 14 || a3 == 3;
+    v19 = event == 14 || event == 3;
     v20 = v11;
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       WeakRetained = objc_loadWeakRetained(&self->_remoteUiDelegate);
       *buf = 67109634;
-      v31 = a3;
+      eventCopy2 = event;
       v32 = 2112;
-      v33 = v8;
+      v33 = valueCopy;
       v34 = 2112;
-      v35 = WeakRetained;
+      selfCopy = WeakRetained;
       _os_log_impl(&dword_0, v20, OS_LOG_TYPE_INFO, "Pre-fligthing mechanism event %d (%@) to %@", buf, 0x1Cu);
     }
 
@@ -1685,23 +1685,23 @@ LABEL_15:
     v23[2] = sub_64CC;
     v23[3] = &unk_10630;
     v24 = v20;
-    v28 = a3;
-    v25 = v8;
-    v26 = self;
-    v27 = v9;
-    [(CoachingFeedbackFilter *)coachingFeedbackFilter dispatchNowOrWhenFeedbackDurationAchieved:v19 finish:(a3 - 1) < 2 block:v23];
+    eventCopy3 = event;
+    v25 = valueCopy;
+    selfCopy2 = self;
+    v27 = replyCopy;
+    [(CoachingFeedbackFilter *)coachingFeedbackFilter dispatchNowOrWhenFeedbackDurationAchieved:v19 finish:(event - 1) < 2 block:v23];
   }
 
   else
   {
-    v9[2](v9);
+    replyCopy[2](replyCopy);
   }
 }
 
-- (void)mechanismEvent:(int64_t)a3 value:(id)a4 timeout:(double)a5 reply:(id)a6
+- (void)mechanismEvent:(int64_t)event value:(id)value timeout:(double)timeout reply:(id)reply
 {
-  v10 = a4;
-  v11 = a6;
+  valueCopy = value;
+  replyCopy = reply;
   objc_initWeak(&location, self);
   v12 = [LACBackgroundTask alloc];
   v21[0] = _NSConcreteStackBlock;
@@ -1709,8 +1709,8 @@ LABEL_15:
   v21[2] = sub_6818;
   v21[3] = &unk_10658;
   objc_copyWeak(v23, &location);
-  v23[1] = a3;
-  v13 = v10;
+  v23[1] = event;
+  v13 = valueCopy;
   v22 = v13;
   v14 = [v12 initWithWorker:v21];
   v15 = +[LACConcurrencyUtilities daemonQueue];
@@ -1718,34 +1718,34 @@ LABEL_15:
   v18[1] = 3221225472;
   v18[2] = sub_6944;
   v18[3] = &unk_10680;
-  v16 = v11;
+  v16 = replyCopy;
   v20 = v16;
   v17 = v14;
   v19 = v17;
-  [v17 runWithTimeout:v15 queue:v18 completion:a5];
+  [v17 runWithTimeout:v15 queue:v18 completion:timeout];
 
   objc_destroyWeak(v23);
   objc_destroyWeak(&location);
 }
 
-- (void)_succeedAuthenticationWithResult:(id)a3 identityUUID:(id)a4
+- (void)_succeedAuthenticationWithResult:(id)result identityUUID:(id)d
 {
-  v5 = [(MechanismPearl *)self mergeResult:a3 withUpdateOfIdentityUUID:a4];
+  v5 = [(MechanismPearl *)self mergeResult:result withUpdateOfIdentityUUID:d];
   v6.receiver = self;
   v6.super_class = MechanismPearl;
   [(MechanismPearl *)&v6 succeedAuthenticationWithResult:v5];
 }
 
-- (void)_scheduleMatchExpirationWithResult:(id)a3 identityUUID:(id)a4
+- (void)_scheduleMatchExpirationWithResult:(id)result identityUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_matchResult, a3);
-  objc_storeStrong(&self->_matchIdentityUUID, a4);
+  resultCopy = result;
+  dCopy = d;
+  objc_storeStrong(&self->_matchResult, result);
+  objc_storeStrong(&self->_matchIdentityUUID, d);
   v9 = self->_startedMatching;
   objc_initWeak(&location, self);
   v10 = +[DaemonUtils sharedInstance];
-  v11 = [v10 serverQueue];
+  serverQueue = [v10 serverQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_6B3C;
@@ -1753,15 +1753,15 @@ LABEL_15:
   objc_copyWeak(&v15, &location);
   v12 = v9;
   v14 = v12;
-  [DaemonUtils dispatchReallyAfter:29900000000 tolerance:v11 queue:v13 block:0.0];
+  [DaemonUtils dispatchReallyAfter:29900000000 tolerance:serverQueue queue:v13 block:0.0];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 }
 
-- (void)_expireMatchThatStartedAt:(id)a3
+- (void)_expireMatchThatStartedAt:(id)at
 {
-  if (self->_startedMatching == a3)
+  if (self->_startedMatching == at)
   {
     matchResult = self->_matchResult;
     self->_matchResult = 0;
@@ -1776,17 +1776,17 @@ LABEL_15:
   }
 }
 
-- (void)handleUIEvent:(int64_t)a3 params:(id)a4
+- (void)handleUIEvent:(int64_t)event params:(id)params
 {
   v8.receiver = self;
   v8.super_class = MechanismPearl;
-  [(MechanismPearl *)&v8 handleUIEvent:a3 params:a4];
-  if (a3 == 13)
+  [(MechanismPearl *)&v8 handleUIEvent:event params:params];
+  if (event == 13)
   {
     v6 = +[LACSecureFaceIDUIUtilities sharedInstance];
-    v7 = [v6 isActive];
+    isActive = [v6 isActive];
 
-    if (v7)
+    if (isActive)
     {
       [(MechanismPearl *)self _pauseFaceIdAfterSecureUIMovement];
     }
@@ -1803,7 +1803,7 @@ LABEL_15:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ paused after secure UI movement", buf, 0xCu);
     }
 

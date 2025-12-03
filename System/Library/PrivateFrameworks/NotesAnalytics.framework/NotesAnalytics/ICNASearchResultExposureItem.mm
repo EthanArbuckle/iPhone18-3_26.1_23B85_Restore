@@ -1,31 +1,31 @@
 @interface ICNASearchResultExposureItem
-- (ICNASearchResultExposureItem)initWithSearchString:(id)a3;
-- (void)updateWithTopHitResultCount:(unint64_t)a3 nonTopHitResultCount:(unint64_t)a4 attachmentSectionCount:(unint64_t)a5;
+- (ICNASearchResultExposureItem)initWithSearchString:(id)string;
+- (void)updateWithTopHitResultCount:(unint64_t)count nonTopHitResultCount:(unint64_t)resultCount attachmentSectionCount:(unint64_t)sectionCount;
 @end
 
 @implementation ICNASearchResultExposureItem
 
-- (ICNASearchResultExposureItem)initWithSearchString:(id)a3
+- (ICNASearchResultExposureItem)initWithSearchString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = ICNASearchResultExposureItem;
   v6 = [(ICNASearchResultExposureItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_searchString, a3);
+    objc_storeStrong(&v6->_searchString, string);
   }
 
   return v7;
 }
 
-- (void)updateWithTopHitResultCount:(unint64_t)a3 nonTopHitResultCount:(unint64_t)a4 attachmentSectionCount:(unint64_t)a5
+- (void)updateWithTopHitResultCount:(unint64_t)count nonTopHitResultCount:(unint64_t)resultCount attachmentSectionCount:(unint64_t)sectionCount
 {
-  [(ICNASearchResultExposureItem *)self setTopHitResultCount:a3];
-  [(ICNASearchResultExposureItem *)self setNonTopHitResultCount:a4];
+  [(ICNASearchResultExposureItem *)self setTopHitResultCount:count];
+  [(ICNASearchResultExposureItem *)self setNonTopHitResultCount:resultCount];
 
-  [(ICNASearchResultExposureItem *)self setAttachmentSectionCount:a5];
+  [(ICNASearchResultExposureItem *)self setAttachmentSectionCount:sectionCount];
 }
 
 @end

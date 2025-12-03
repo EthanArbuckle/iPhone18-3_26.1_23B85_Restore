@@ -43,15 +43,15 @@
     v5.receiver = self;
     v5.super_class = VTRemoteDarwinHIDEventNotifier;
     self = [(VTRemoteDarwinHIDEventNotifier *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

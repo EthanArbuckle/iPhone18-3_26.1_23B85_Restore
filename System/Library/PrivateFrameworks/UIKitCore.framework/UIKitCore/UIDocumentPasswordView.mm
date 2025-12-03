@@ -1,16 +1,16 @@
 @interface UIDocumentPasswordView
-- (UIDocumentPasswordView)initWithDocumentName:(id)a3;
-- (void)_passwordEntered:(id)a3;
+- (UIDocumentPasswordView)initWithDocumentName:(id)name;
+- (void)_passwordEntered:(id)entered;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation UIDocumentPasswordView
 
-- (UIDocumentPasswordView)initWithDocumentName:(id)a3
+- (UIDocumentPasswordView)initWithDocumentName:(id)name
 {
   v14.receiver = self;
   v14.super_class = UIDocumentPasswordView;
@@ -27,17 +27,17 @@
     [(UILabel *)v8->_label setTextColor:[(UIDocumentPasswordView *)v8 _labelTextColor]];
     [(UILabel *)v8->_label setBaselineAdjustment:1];
     label = v8->_label;
-    if (a3)
+    if (name)
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:_UINSLocalizedStringWithDefaultValue(@"The document “%@” is password protected.", @"The document “%@” is password protected.", a3];
+      name = [MEMORY[0x1E696AEC0] stringWithFormat:_UINSLocalizedStringWithDefaultValue(@"The document “%@” is password protected.", @"The document “%@” is password protected.", name];
     }
 
     else
     {
-      v11 = _UINSLocalizedStringWithDefaultValue(@"This document is password protected.", @"This document is password protected.");
+      name = _UINSLocalizedStringWithDefaultValue(@"This document is password protected.", @"This document is password protected.");
     }
 
-    [(UILabel *)label setText:v11];
+    [(UILabel *)label setText:name];
     [(UILabel *)v8->_label setLineBreakMode:0];
     [(UIView *)v8->_label setBackgroundColor:+[UIColor clearColor]];
     [(UILabel *)v8->_label setTextAlignment:1];
@@ -98,11 +98,11 @@
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v16.receiver = self;
   v16.super_class = UIDocumentPasswordView;
-  [(UIView *)&v16 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v16 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
   {
@@ -158,32 +158,32 @@
   CGContextRestoreGState(v5);
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   if (objc_opt_respondsToSelector())
   {
     passwordDelegate = self->passwordDelegate;
 
-    [(UIDocumentPasswordViewDelegate *)passwordDelegate didBeginEditingPassword:a3 inView:self];
+    [(UIDocumentPasswordViewDelegate *)passwordDelegate didBeginEditingPassword:editing inView:self];
   }
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
   if (objc_opt_respondsToSelector())
   {
     passwordDelegate = self->passwordDelegate;
 
-    [(UIDocumentPasswordViewDelegate *)passwordDelegate didEndEditingPassword:a3 inView:self];
+    [(UIDocumentPasswordViewDelegate *)passwordDelegate didEndEditingPassword:editing inView:self];
   }
 }
 
-- (void)_passwordEntered:(id)a3
+- (void)_passwordEntered:(id)entered
 {
   passwordDelegate = self->passwordDelegate;
-  v5 = [(UITextField *)self->_passwordTextField text];
+  text = [(UITextField *)self->_passwordTextField text];
 
-  [(UIDocumentPasswordViewDelegate *)passwordDelegate userDidEnterPassword:v5 forPasswordView:self];
+  [(UIDocumentPasswordViewDelegate *)passwordDelegate userDidEnterPassword:text forPasswordView:self];
 }
 
 @end

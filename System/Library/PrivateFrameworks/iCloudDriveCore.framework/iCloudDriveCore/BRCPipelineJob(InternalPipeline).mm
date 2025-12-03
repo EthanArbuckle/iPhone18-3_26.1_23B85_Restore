@@ -34,7 +34,7 @@
     OUTLINED_FUNCTION_0_2(&dword_223E7A000, v5, v6, "[CRIT] Assertion failed: _jobPlan%@", &v8);
   }
 
-  *a2 = *a1;
+  *a2 = *self;
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -42,7 +42,7 @@
 {
   v6 = *MEMORY[0x277D85DE8];
   v4 = 138412290;
-  v5 = a1;
+  selfCopy = self;
   OUTLINED_FUNCTION_0_2(&dword_223E7A000, a2, a3, "[CRIT] UNREACHABLE: Can't advance job to next state when haven't started or already finished%@", &v4);
   v3 = *MEMORY[0x277D85DE8];
 }

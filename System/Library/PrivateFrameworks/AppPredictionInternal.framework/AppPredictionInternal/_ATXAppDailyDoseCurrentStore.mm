@@ -1,22 +1,22 @@
 @interface _ATXAppDailyDoseCurrentStore
-- (BOOL)isExpiredAt:(id)a3;
+- (BOOL)isExpiredAt:(id)at;
 - (BOOL)isExpiredNow;
-- (_ATXAppDailyDoseCurrentStore)initWithPath:(id)a3;
-- (double)currentDoseFor:(id)a3;
+- (_ATXAppDailyDoseCurrentStore)initWithPath:(id)path;
+- (double)currentDoseFor:(id)for;
 - (id)_getCacheFromFile;
 - (void)_overwrite;
 - (void)_readCacheAndExpiration;
 - (void)closePermanently;
 - (void)dealloc;
-- (void)increaseDoseFor:(id)a3 by:(double)a4;
-- (void)resetWithDurationMap:(id)a3 on:(id)a4;
+- (void)increaseDoseFor:(id)for by:(double)by;
+- (void)resetWithDurationMap:(id)map on:(id)on;
 @end
 
 @implementation _ATXAppDailyDoseCurrentStore
 
-- (_ATXAppDailyDoseCurrentStore)initWithPath:(id)a3
+- (_ATXAppDailyDoseCurrentStore)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = _ATXAppDailyDoseCurrentStore;
   v6 = [(_ATXAppDailyDoseCurrentStore *)&v14 init];
@@ -24,13 +24,13 @@
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_create(v9, v10);
+    v11 = dispatch_queue_create(uTF8String, v10);
     queue = v6->_queue;
     v6->_queue = v11;
 
-    objc_storeStrong(&v6->_path, a3);
+    objc_storeStrong(&v6->_path, path);
     [(_ATXAppDailyDoseCurrentStore *)v6 _openFd];
   }
 
@@ -181,9 +181,9 @@ LABEL_10:
     if (v12)
     {
       v14 = [v12 objectForKeyedSubscript:@"version"];
-      v15 = [v14 integerValue];
+      integerValue = [v14 integerValue];
 
-      if (v15 != 1)
+      if (integerValue != 1)
       {
 LABEL_16:
 
@@ -229,9 +229,9 @@ LABEL_18:
     v26 = self->_cache;
     self->_cache = v25;
 
-    v27 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     v28 = self->_expires;
-    self->_expires = v27;
+    self->_expires = distantPast;
   }
 
   objc_autoreleasePoolPop(v3);
@@ -251,9 +251,9 @@ LABEL_18:
   return cache;
 }
 
-- (BOOL)isExpiredAt:(id)a3
+- (BOOL)isExpiredAt:(id)at
 {
-  v4 = a3;
+  atCopy = at;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -263,10 +263,10 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = __44___ATXAppDailyDoseCurrentStore_isExpiredAt___block_invoke;
   block[3] = &unk_27859B1C0;
-  v9 = v4;
+  v9 = atCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = atCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -282,26 +282,26 @@ LABEL_18:
   return self;
 }
 
-- (void)resetWithDurationMap:(id)a3 on:(id)a4
+- (void)resetWithDurationMap:(id)map on:(id)on
 {
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  onCopy = on;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56___ATXAppDailyDoseCurrentStore_resetWithDurationMap_on___block_invoke;
   block[3] = &unk_278597828;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = mapCopy;
+  v13 = onCopy;
+  v9 = onCopy;
+  v10 = mapCopy;
   dispatch_sync(queue, block);
 }
 
-- (double)currentDoseFor:(id)a3
+- (double)currentDoseFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -311,10 +311,10 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = __47___ATXAppDailyDoseCurrentStore_currentDoseFor___block_invoke;
   block[3] = &unk_27859A8B0;
-  v10 = v4;
+  v10 = forCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = forCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -322,9 +322,9 @@ LABEL_18:
   return v7;
 }
 
-- (void)increaseDoseFor:(id)a3 by:(double)a4
+- (void)increaseDoseFor:(id)for by:(double)by
 {
-  v7 = a3;
+  forCopy = for;
   sel_getName(a2);
   v8 = os_transaction_create();
   queue = self->_queue;
@@ -333,11 +333,11 @@ LABEL_18:
   v12[2] = __51___ATXAppDailyDoseCurrentStore_increaseDoseFor_by___block_invoke;
   v12[3] = &unk_278599FF0;
   v12[4] = self;
-  v13 = v7;
-  v15 = a4;
+  v13 = forCopy;
+  byCopy = by;
   v14 = v8;
   v10 = v8;
-  v11 = v7;
+  v11 = forCopy;
   dispatch_sync(queue, v12);
 }
 

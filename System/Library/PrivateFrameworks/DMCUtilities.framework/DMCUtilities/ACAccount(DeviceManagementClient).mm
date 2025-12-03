@@ -23,9 +23,9 @@
   v3 = MEMORY[0x1E6959A28];
   v4 = a3;
   v5 = [v3 alloc];
-  v6 = [v4 dmc_RemoteManagementAccountType];
+  dmc_RemoteManagementAccountType = [v4 dmc_RemoteManagementAccountType];
 
-  v7 = [v5 initWithAccountType:v6];
+  v7 = [v5 initWithAccountType:dmc_RemoteManagementAccountType];
   [v7 dmc_setAccountScheme:@"Bearer"];
   [v7 setAuthenticated:1];
 
@@ -34,121 +34,121 @@
 
 - (id)dmc_bearerToken
 {
-  v1 = [a1 credential];
-  v2 = [v1 token];
+  credential = [self credential];
+  token = [credential token];
 
-  return v2;
+  return token;
 }
 
 - (void)dmc_setBearerToken:()DeviceManagementClient
 {
   v6 = a3;
-  v4 = [a1 credential];
-  if (!v4)
+  credential = [self credential];
+  if (!credential)
   {
-    v4 = objc_opt_new();
+    credential = objc_opt_new();
     v5 = *MEMORY[0x1E6959960];
-    [v4 setCredentialType:*MEMORY[0x1E6959960]];
-    [a1 setCredential:v4];
-    [a1 setCredentialType:v5];
+    [credential setCredentialType:*MEMORY[0x1E6959960]];
+    [self setCredential:credential];
+    [self setCredentialType:v5];
   }
 
-  [v4 setToken:v6];
+  [credential setToken:v6];
 }
 
 - (uint64_t)dmc_enrollmentMethod
 {
-  v1 = [a1 objectForKeyedSubscript:@"DMCEnrollmentMethod"];
-  v2 = [v1 unsignedIntValue];
+  v1 = [self objectForKeyedSubscript:@"DMCEnrollmentMethod"];
+  unsignedIntValue = [v1 unsignedIntValue];
 
-  return v2;
+  return unsignedIntValue;
 }
 
 - (void)dmc_setEnrollmentMethod:()DeviceManagementClient
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-  [a1 setObject:v2 forKeyedSubscript:@"DMCEnrollmentMethod"];
+  [self setObject:v2 forKeyedSubscript:@"DMCEnrollmentMethod"];
 }
 
 - (uint64_t)dmc_enrollmentType
 {
-  v1 = [a1 objectForKeyedSubscript:@"DMCEnrollmentType"];
-  v2 = [v1 unsignedIntValue];
+  v1 = [self objectForKeyedSubscript:@"DMCEnrollmentType"];
+  unsignedIntValue = [v1 unsignedIntValue];
 
-  return v2;
+  return unsignedIntValue;
 }
 
 - (void)dmc_setEnrollmentType:()DeviceManagementClient
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-  [a1 setObject:v2 forKeyedSubscript:@"DMCEnrollmentType"];
+  [self setObject:v2 forKeyedSubscript:@"DMCEnrollmentType"];
 }
 
 - (uint64_t)dmc_isManagementProfileLocked
 {
-  v1 = [a1 objectForKeyedSubscript:@"DMCIsManagementProfileLocked"];
-  v2 = [v1 BOOLValue];
+  v1 = [self objectForKeyedSubscript:@"DMCIsManagementProfileLocked"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)dmc_setManagementProfileLocked:()DeviceManagementClient
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 setObject:v2 forKeyedSubscript:@"DMCIsManagementProfileLocked"];
+  [self setObject:v2 forKeyedSubscript:@"DMCIsManagementProfileLocked"];
 }
 
 - (id)dmc_remoteManagementAccount
 {
-  v2 = [a1 accountType];
-  v3 = [v2 identifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69598E8]];
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  v4 = [identifier isEqualToString:*MEMORY[0x1E69598E8]];
 
   if (v4)
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [a1 dmc_remoteManagingAccountIdentifier];
+    dmc_remoteManagingAccountIdentifier = [self dmc_remoteManagingAccountIdentifier];
 
-    if (v6)
+    if (dmc_remoteManagingAccountIdentifier)
     {
-      v7 = [MEMORY[0x1E6959A48] defaultStore];
-      v8 = [a1 dmc_remoteManagingAccountIdentifier];
-      v5 = [v7 accountWithIdentifier:v8];
+      defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+      dmc_remoteManagingAccountIdentifier2 = [self dmc_remoteManagingAccountIdentifier];
+      selfCopy = [defaultStore accountWithIdentifier:dmc_remoteManagingAccountIdentifier2];
     }
 
     else
     {
-      v5 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (uint64_t)dmc_mdmServerToken
 {
   AppleAccountLibrary();
 
-  return [a1 aa_mdmServerToken];
+  return [self aa_mdmServerToken];
 }
 
 - (uint64_t)dmc_isVisibleRemoteManagementAccount
 {
-  v2 = [a1 dmc_managementProfileIdentifier];
+  dmc_managementProfileIdentifier = [self dmc_managementProfileIdentifier];
 
-  if (!v2)
+  if (!dmc_managementProfileIdentifier)
   {
     return 0;
   }
 
-  v3 = [a1 dmc_enrollmentType];
-  if ([a1 dmc_enrollmentMethod])
+  dmc_enrollmentType = [self dmc_enrollmentType];
+  if ([self dmc_enrollmentMethod])
   {
-    v4 = [a1 dmc_enrollmentMethod] != 3;
+    v4 = [self dmc_enrollmentMethod] != 3;
   }
 
   else
@@ -156,15 +156,15 @@
     v4 = 0;
   }
 
-  return (v3 != 0) & v4;
+  return (dmc_enrollmentType != 0) & v4;
 }
 
 - (uint64_t)dmc_isPrimaryAccount
 {
-  v1 = [a1 objectForKeyedSubscript:@"primaryAccount"];
-  v2 = [v1 BOOLValue];
+  v1 = [self objectForKeyedSubscript:@"primaryAccount"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (id)dmc_accountQuotaString
@@ -194,13 +194,13 @@
 
   v4 = v3;
   _Block_object_dispose(&v19, 8);
-  v5 = [[v3 alloc] initDetailedRequestWithAccount:a1];
+  v5 = [[v3 alloc] initDetailedRequestWithAccount:self];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__ACAccount_DeviceManagementClient__dmc_accountQuotaString__block_invoke;
   v9[3] = &unk_1E7ADC190;
   v11 = &v12;
-  v9[4] = a1;
+  v9[4] = self;
   v6 = v2;
   v10 = v6;
   [v5 performRequestWithHandler:v9];
@@ -214,8 +214,8 @@
 
 - (uint64_t)dmc_isAccountSchemeSharediPad
 {
-  v1 = [a1 dmc_accountScheme];
-  v2 = [v1 isEqualToString:@"SharediPad"];
+  dmc_accountScheme = [self dmc_accountScheme];
+  v2 = [dmc_accountScheme isEqualToString:@"SharediPad"];
 
   return v2;
 }

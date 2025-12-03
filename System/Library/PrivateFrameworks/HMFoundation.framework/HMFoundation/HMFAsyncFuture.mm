@@ -1,47 +1,47 @@
 @interface HMFAsyncFuture
-- (BOOL)_resolveWithState:(void *)a3 value:;
+- (BOOL)_resolveWithState:(void *)state value:;
 - (BOOL)isPending;
-- (HMFAsyncFuture)_inContext:(void *)a3 then:(void *)a4 orRecover:;
+- (HMFAsyncFuture)_inContext:(void *)context then:(void *)then orRecover:;
 - (_HMFFutureBlockOutcome)outcomeIfSettled;
-- (uint64_t)_callOrAddCompletionBlock:(uint64_t)a1;
-- (uint64_t)initWithPromise:(uint64_t)a1;
+- (uint64_t)_callOrAddCompletionBlock:(uint64_t)block;
+- (uint64_t)initWithPromise:(uint64_t)promise;
 @end
 
 @implementation HMFAsyncFuture
 
-- (uint64_t)initWithPromise:(uint64_t)a1
+- (uint64_t)initWithPromise:(uint64_t)promise
 {
-  if (a1)
+  if (promise)
   {
     v4 = [HMFPromise alloc];
-    *(a1 + 12) = 0;
-    *(a1 + 16) = v4;
-    objc_storeWeak(&v4->_future, a1);
+    *(promise + 12) = 0;
+    *(promise + 16) = v4;
+    objc_storeWeak(&v4->_future, promise);
     v5 = *a2;
     *a2 = v4;
 
-    v6 = a1;
+    promiseCopy = promise;
   }
 
-  return a1;
+  return promise;
 }
 
-- (BOOL)_resolveWithState:(void *)a3 value:
+- (BOOL)_resolveWithState:(void *)state value:
 {
-  v6 = a3;
-  if (a1)
+  stateCopy = state;
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    v7 = *(a1 + 12);
+    v7 = *(self + 12);
     v8 = v7 == 0;
     if (!v7)
     {
-      *(a1 + 12) = a2;
-      *(a1 + 16) = 0;
-      objc_storeStrong((a1 + 24), a3);
+      *(self + 12) = a2;
+      *(self + 16) = 0;
+      objc_storeStrong((self + 24), state);
     }
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((self + 8));
   }
 
   else
@@ -85,7 +85,7 @@
   switch(state)
   {
     case 3:
-      v5 = [self->_value outcomeIfSettled];
+      outcomeIfSettled = [self->_value outcomeIfSettled];
       v4 = v9;
       break;
     case 2:
@@ -93,87 +93,87 @@
       v7 = v6;
       if (v6)
       {
-        v8 = v6;
+        hmfUnspecifiedError = v6;
       }
 
       else
       {
-        v8 = [MEMORY[0x277CCA9B8] hmfUnspecifiedError];
+        hmfUnspecifiedError = [MEMORY[0x277CCA9B8] hmfUnspecifiedError];
       }
 
-      v4 = v8;
+      v4 = hmfUnspecifiedError;
 
-      v5 = 2;
+      outcomeIfSettled = 2;
       break;
     case 1:
       v4 = self->_value;
-      v5 = 1;
+      outcomeIfSettled = 1;
       break;
     default:
-      v5 = 0;
+      outcomeIfSettled = 0;
       v4 = 0;
       break;
   }
 
   v10 = v4;
   result.var1 = v10;
-  result.var0 = v5;
+  result.var0 = outcomeIfSettled;
   return result;
 }
 
-- (uint64_t)_callOrAddCompletionBlock:(uint64_t)a1
+- (uint64_t)_callOrAddCompletionBlock:(uint64_t)block
 {
   v3 = a2;
-  if (a1)
+  if (block)
   {
     os_unfair_lock_lock_with_options();
-    v4 = *(a1 + 12);
+    v4 = *(block + 12);
     if (v4)
     {
-      os_unfair_lock_unlock((a1 + 8));
+      os_unfair_lock_unlock((block + 8));
       switch(v4)
       {
         case 3:
-          a1 = [(HMFAsyncFuture *)*(a1 + 24) _callOrAddCompletionBlock:v3];
+          block = [(HMFAsyncFuture *)*(block + 24) _callOrAddCompletionBlock:v3];
           goto LABEL_10;
         case 2:
-          (*(v3 + 2))(v3, 0, *(a1 + 24));
+          (*(v3 + 2))(v3, 0, *(block + 24));
           break;
         case 1:
-          (*(v3 + 2))(v3, *(a1 + 24), 0);
+          (*(v3 + 2))(v3, *(block + 24), 0);
           break;
         default:
-          a1 = 0;
+          block = 0;
           goto LABEL_10;
       }
     }
 
     else
     {
-      [(HMFPromise *)*(a1 + 16) _addCompletion:v3];
-      os_unfair_lock_unlock((a1 + 8));
+      [(HMFPromise *)*(block + 16) _addCompletion:v3];
+      os_unfair_lock_unlock((block + 8));
     }
 
-    a1 = 1;
+    block = 1;
   }
 
 LABEL_10:
 
-  return a1;
+  return block;
 }
 
-- (HMFAsyncFuture)_inContext:(void *)a3 then:(void *)a4 orRecover:
+- (HMFAsyncFuture)_inContext:(void *)context then:(void *)then orRecover:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (!a1)
+  contextCopy = context;
+  thenCopy = then;
+  if (!self)
   {
     goto LABEL_11;
   }
 
   os_unfair_lock_lock_with_options();
-  v10 = *(a1 + 12);
+  v10 = *(self + 12);
   if (!v10)
   {
     if (v7)
@@ -190,28 +190,28 @@ LABEL_10:
     v30 = 0;
     v11 = [HMFAsyncFuture alloc];
     [(HMFAsyncFuture *)v11 initWithPromise:?];
-    v18 = *(a1 + 16);
+    v18 = *(self + 16);
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __44__HMFAsyncFuture__inContext_then_orRecover___block_invoke;
     v25[3] = &unk_2786E6DB8;
     v27 = v17;
-    v28 = v8;
+    v28 = contextCopy;
     v19 = v30;
     v26 = v30;
-    v29 = v9;
+    v29 = thenCopy;
     v20 = v17;
     v21 = v19;
     [(HMFPromise *)v18 _addCompletion:v25];
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((self + 8));
     goto LABEL_25;
   }
 
-  os_unfair_lock_unlock((a1 + 8));
+  os_unfair_lock_unlock((self + 8));
   if (v10 == 3)
   {
-    v16 = [(HMFAsyncFuture *)*(a1 + 24) _inContext:v7 then:v8 orRecover:v9];
+    selfCopy = [(HMFAsyncFuture *)*(self + 24) _inContext:v7 then:contextCopy orRecover:thenCopy];
     goto LABEL_24;
   }
 
@@ -219,27 +219,27 @@ LABEL_10:
   {
     if (v10 == 1)
     {
-      if (v8)
+      if (contextCopy)
       {
         v11 = HMFFuture;
         if (v7)
         {
-          v12 = *(a1 + 24);
+          v12 = *(self + 24);
           v13 = v7;
-          v14 = v8;
+          v14 = contextCopy;
 LABEL_15:
-          v16 = [HMFFuture _inContext:v13 transform:v12 with:v14];
+          selfCopy = [HMFFuture _inContext:v13 transform:v12 with:v14];
 LABEL_24:
-          v11 = v16;
+          v11 = selfCopy;
           goto LABEL_25;
         }
 
-        v22 = (*(v8 + 2))(v8, *(a1 + 24));
+        v22 = (*(contextCopy + 2))(contextCopy, *(self + 24));
         goto LABEL_22;
       }
 
 LABEL_19:
-      v16 = a1;
+      selfCopy = self;
       goto LABEL_24;
     }
 
@@ -248,7 +248,7 @@ LABEL_11:
     goto LABEL_25;
   }
 
-  if (!v9)
+  if (!thenCopy)
   {
     goto LABEL_19;
   }
@@ -256,17 +256,17 @@ LABEL_11:
   v11 = HMFFuture;
   if (v7)
   {
-    v12 = *(a1 + 24);
+    v12 = *(self + 24);
     v13 = v7;
-    v14 = v9;
+    v14 = thenCopy;
     goto LABEL_15;
   }
 
-  v22 = (*(v9 + 2))(v9, *(a1 + 24));
+  v22 = (*(thenCopy + 2))(thenCopy, *(self + 24));
 LABEL_22:
   if (HMFFuture)
   {
-    v16 = [HMFFuture _futureWithOutcome:v22, v23];
+    selfCopy = [HMFFuture _futureWithOutcome:v22, v23];
     goto LABEL_24;
   }
 

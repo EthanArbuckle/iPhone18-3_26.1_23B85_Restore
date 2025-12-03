@@ -4,41 +4,41 @@
 - (BOOL)isFeatureStrictModeEnabled;
 - (BOOL)isFeatureSupported;
 - (BOOL)isSensorTrusted;
-- (LACDTORatchetManager)initWithContextProvider:(id)a3;
+- (LACDTORatchetManager)initWithContextProvider:(id)provider;
 - (LACDTORatchetState)ratchetState;
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3;
-- (void)_performArmRequestWithIdentifier:(id)a3 context:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)addObserver:(id)a3;
-- (void)cancelArmRequestWithIdentifier:(id)a3 reason:(id)a4 completion:(id)a5;
-- (void)checkCanEnableFeatureWithCompletion:(id)a3;
-- (void)disableFeatureStrictModeWithContext:(id)a3 completion:(id)a4;
-- (void)disableFeatureWithContext:(id)a3 completion:(id)a4;
-- (void)enableFeatureActivatingGracePeriodWithReply:(id)a3;
-- (void)enableFeatureStrictModeWithCompletion:(id)a3;
-- (void)enableFeatureWithReply:(id)a3;
-- (void)notificationCenter:(id)a3 didReceiveNotification:(__CFString *)a4;
-- (void)performArmRequestWithIdentifier:(id)a3 context:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)removeObserver:(id)a3;
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler;
+- (void)_performArmRequestWithIdentifier:(id)identifier context:(id)context options:(id)options completion:(id)completion;
+- (void)addObserver:(id)observer;
+- (void)cancelArmRequestWithIdentifier:(id)identifier reason:(id)reason completion:(id)completion;
+- (void)checkCanEnableFeatureWithCompletion:(id)completion;
+- (void)disableFeatureStrictModeWithContext:(id)context completion:(id)completion;
+- (void)disableFeatureWithContext:(id)context completion:(id)completion;
+- (void)enableFeatureActivatingGracePeriodWithReply:(id)reply;
+- (void)enableFeatureStrictModeWithCompletion:(id)completion;
+- (void)enableFeatureWithReply:(id)reply;
+- (void)notificationCenter:(id)center didReceiveNotification:(__CFString *)notification;
+- (void)performArmRequestWithIdentifier:(id)identifier context:(id)context options:(id)options completion:(id)completion;
+- (void)removeObserver:(id)observer;
 - (void)reset;
-- (void)stateCompositeInContext:(id)a3 completion:(id)a4;
-- (void)stateCompositeWithCompletion:(id)a3;
-- (void)stateInContext:(id)a3 completion:(id)a4;
-- (void)stateWithCompletion:(id)a3;
+- (void)stateCompositeInContext:(id)context completion:(id)completion;
+- (void)stateCompositeWithCompletion:(id)completion;
+- (void)stateInContext:(id)context completion:(id)completion;
+- (void)stateWithCompletion:(id)completion;
 @end
 
 @implementation LACDTORatchetManager
 
-- (LACDTORatchetManager)initWithContextProvider:(id)a3
+- (LACDTORatchetManager)initWithContextProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = LACDTORatchetManager;
   v5 = [(LACDTORatchetManager *)&v15 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v5->_observers;
-    v5->_observers = v6;
+    v5->_observers = weakObjectsHashTable;
 
     v8 = +[LACDarwinNotificationCenter sharedInstance];
     notificationCenter = v5->_notificationCenter;
@@ -48,7 +48,7 @@
     v13[1] = 3221225472;
     v13[2] = __48__LACDTORatchetManager_initWithContextProvider___block_invoke;
     v13[3] = &unk_1E7A959E8;
-    v14 = v4;
+    v14 = providerCopy;
     v10 = __48__LACDTORatchetManager_initWithContextProvider___block_invoke(v13);
     remoteObjectProxy = v5->_remoteObjectProxy;
     v5->_remoteObjectProxy = v10;
@@ -77,13 +77,13 @@ LACDTOServiceXPCClient *__48__LACDTORatchetManager_initWithContextProvider___blo
   }
 
   v4 = [(LACDTORatchetManager *)self _remoteObjectProxyWithErrorHandler:&__block_literal_global_3];
-  v5 = [v4 isFeatureEnabled];
+  isFeatureEnabled = [v4 isFeatureEnabled];
 
   v6 = LACLogDTOClient();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = "NO";
-    if (v5)
+    if (isFeatureEnabled)
     {
       v7 = "YES";
     }
@@ -94,7 +94,7 @@ LACDTOServiceXPCClient *__48__LACDTORatchetManager_initWithContextProvider___blo
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v5;
+  return isFeatureEnabled;
 }
 
 - (BOOL)isFeatureSupported
@@ -109,13 +109,13 @@ LACDTOServiceXPCClient *__48__LACDTORatchetManager_initWithContextProvider___blo
   }
 
   v4 = [(LACDTORatchetManager *)self _remoteObjectProxyWithErrorHandler:&__block_literal_global_8];
-  v5 = [v4 isFeatureSupported];
+  isFeatureSupported = [v4 isFeatureSupported];
 
   v6 = LACLogDTOClient();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = "NO";
-    if (v5)
+    if (isFeatureSupported)
     {
       v7 = "YES";
     }
@@ -128,7 +128,7 @@ LACDTOServiceXPCClient *__48__LACDTORatchetManager_initWithContextProvider___blo
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v5;
+  return isFeatureSupported;
 }
 
 - (BOOL)isFeatureAvailable
@@ -143,13 +143,13 @@ LACDTOServiceXPCClient *__48__LACDTORatchetManager_initWithContextProvider___blo
   }
 
   v4 = [(LACDTORatchetManager *)self _remoteObjectProxyWithErrorHandler:&__block_literal_global_10];
-  v5 = [v4 isFeatureAvailable];
+  isFeatureAvailable = [v4 isFeatureAvailable];
 
   v6 = LACLogDTOClient();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = "NO";
-    if (v5)
+    if (isFeatureAvailable)
     {
       v7 = "YES";
     }
@@ -162,7 +162,7 @@ LACDTOServiceXPCClient *__48__LACDTORatchetManager_initWithContextProvider___blo
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v5;
+  return isFeatureAvailable;
 }
 
 - (BOOL)isFeatureStrictModeEnabled
@@ -177,13 +177,13 @@ LACDTOServiceXPCClient *__48__LACDTORatchetManager_initWithContextProvider___blo
   }
 
   v4 = [(LACDTORatchetManager *)self _remoteObjectProxyWithErrorHandler:&__block_literal_global_12];
-  v5 = [v4 isFeatureStrictModeEnabled];
+  isFeatureStrictModeEnabled = [v4 isFeatureStrictModeEnabled];
 
   v6 = LACLogDTOClient();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = "NO";
-    if (v5)
+    if (isFeatureStrictModeEnabled)
     {
       v7 = "YES";
     }
@@ -196,7 +196,7 @@ LACDTOServiceXPCClient *__48__LACDTORatchetManager_initWithContextProvider___blo
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v5;
+  return isFeatureStrictModeEnabled;
 }
 
 - (BOOL)isSensorTrusted
@@ -211,13 +211,13 @@ LACDTOServiceXPCClient *__48__LACDTORatchetManager_initWithContextProvider___blo
   }
 
   v4 = [(LACDTORatchetManager *)self _remoteObjectProxyWithErrorHandler:&__block_literal_global_14];
-  v5 = [v4 isSensorTrusted];
+  isSensorTrusted = [v4 isSensorTrusted];
 
   v6 = LACLogDTOClient();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = "NO";
-    if (v5)
+    if (isSensorTrusted)
     {
       v7 = "YES";
     }
@@ -230,7 +230,7 @@ LACDTOServiceXPCClient *__48__LACDTORatchetManager_initWithContextProvider___blo
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v5;
+  return isSensorTrusted;
 }
 
 - (LACDTORatchetState)ratchetState
@@ -245,7 +245,7 @@ LACDTOServiceXPCClient *__48__LACDTORatchetManager_initWithContextProvider___blo
   }
 
   v4 = [(LACDTORatchetManager *)self _remoteObjectProxyWithErrorHandler:&__block_literal_global_16];
-  v5 = [v4 ratchetState];
+  ratchetState = [v4 ratchetState];
 
   v6 = LACLogDTOClient();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -253,19 +253,19 @@ LACDTOServiceXPCClient *__48__LACDTORatchetManager_initWithContextProvider___blo
     v9 = 136315394;
     v10 = "[LACDTORatchetManager ratchetState]";
     v11 = 2114;
-    v12 = v5;
+    v12 = ratchetState;
     _os_log_impl(&dword_1B0233000, v6, OS_LOG_TYPE_DEFAULT, "%s returned %{public}@", &v9, 0x16u);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return ratchetState;
 }
 
-- (void)stateWithCompletion:(id)a3
+- (void)stateWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = LACLogDTOClient();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -279,7 +279,7 @@ LACDTOServiceXPCClient *__48__LACDTORatchetManager_initWithContextProvider___blo
   v13[1] = 3221225472;
   v13[2] = __44__LACDTORatchetManager_stateWithCompletion___block_invoke;
   v13[3] = &unk_1E7A95A10;
-  v6 = v4;
+  v6 = completionCopy;
   v14 = v6;
   v7 = [(LACDTORatchetManager *)self _remoteObjectProxyWithErrorHandler:v13];
   v10[0] = MEMORY[0x1E69E9820];
@@ -349,10 +349,10 @@ void __44__LACDTORatchetManager_stateWithCompletion___block_invoke_17(uint64_t a
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stateCompositeWithCompletion:(id)a3
+- (void)stateCompositeWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = LACLogDTOClient();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -366,7 +366,7 @@ void __44__LACDTORatchetManager_stateWithCompletion___block_invoke_17(uint64_t a
   v13[1] = 3221225472;
   v13[2] = __53__LACDTORatchetManager_stateCompositeWithCompletion___block_invoke;
   v13[3] = &unk_1E7A95A10;
-  v6 = v4;
+  v6 = completionCopy;
   v14 = v6;
   v7 = [(LACDTORatchetManager *)self _remoteObjectProxyWithErrorHandler:v13];
   v10[0] = MEMORY[0x1E69E9820];
@@ -436,10 +436,10 @@ void __53__LACDTORatchetManager_stateCompositeWithCompletion___block_invoke_19(u
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkCanEnableFeatureWithCompletion:(id)a3
+- (void)checkCanEnableFeatureWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = LACLogDTOClient();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -452,7 +452,7 @@ void __53__LACDTORatchetManager_stateCompositeWithCompletion___block_invoke_19(u
   v12[1] = 3221225472;
   v12[2] = __60__LACDTORatchetManager_checkCanEnableFeatureWithCompletion___block_invoke;
   v12[3] = &unk_1E7A95A10;
-  v6 = v4;
+  v6 = completionCopy;
   v13 = v6;
   v7 = [(LACDTORatchetManager *)self _remoteObjectProxyWithErrorHandler:v12];
   v10[0] = MEMORY[0x1E69E9820];
@@ -500,10 +500,10 @@ void __60__LACDTORatchetManager_checkCanEnableFeatureWithCompletion___block_invo
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableFeatureWithReply:(id)a3
+- (void)enableFeatureWithReply:(id)reply
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v5 = LACLogDTOClient();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -516,7 +516,7 @@ void __60__LACDTORatchetManager_checkCanEnableFeatureWithCompletion___block_invo
   v12[1] = 3221225472;
   v12[2] = __47__LACDTORatchetManager_enableFeatureWithReply___block_invoke;
   v12[3] = &unk_1E7A95A10;
-  v6 = v4;
+  v6 = replyCopy;
   v13 = v6;
   v7 = [(LACDTORatchetManager *)self _remoteObjectProxyWithErrorHandler:v12];
   v10[0] = MEMORY[0x1E69E9820];
@@ -564,10 +564,10 @@ void __47__LACDTORatchetManager_enableFeatureWithReply___block_invoke_23(uint64_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableFeatureActivatingGracePeriodWithReply:(id)a3
+- (void)enableFeatureActivatingGracePeriodWithReply:(id)reply
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v5 = LACLogDTOClient();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -580,7 +580,7 @@ void __47__LACDTORatchetManager_enableFeatureWithReply___block_invoke_23(uint64_
   v12[1] = 3221225472;
   v12[2] = __68__LACDTORatchetManager_enableFeatureActivatingGracePeriodWithReply___block_invoke;
   v12[3] = &unk_1E7A95A10;
-  v6 = v4;
+  v6 = replyCopy;
   v13 = v6;
   v7 = [(LACDTORatchetManager *)self _remoteObjectProxyWithErrorHandler:v12];
   v10[0] = MEMORY[0x1E69E9820];
@@ -628,11 +628,11 @@ void __68__LACDTORatchetManager_enableFeatureActivatingGracePeriodWithReply___bl
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)disableFeatureWithContext:(id)a3 completion:(id)a4
+- (void)disableFeatureWithContext:(id)context completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v8 = LACLogDTOClient();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -645,10 +645,10 @@ void __68__LACDTORatchetManager_enableFeatureActivatingGracePeriodWithReply___bl
   v16[1] = 3221225472;
   v16[2] = __61__LACDTORatchetManager_disableFeatureWithContext_completion___block_invoke;
   v16[3] = &unk_1E7A95A10;
-  v9 = v6;
+  v9 = completionCopy;
   v17 = v9;
   v10 = [(LACDTORatchetManager *)self _remoteObjectProxyWithErrorHandler:v16];
-  v11 = [v7 uuid];
+  uuid = [contextCopy uuid];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -656,7 +656,7 @@ void __68__LACDTORatchetManager_enableFeatureActivatingGracePeriodWithReply___bl
   v14[3] = &unk_1E7A95A10;
   v15 = v9;
   v12 = v9;
-  [v10 disableFeatureWithContext:v11 completion:v14];
+  [v10 disableFeatureWithContext:uuid completion:v14];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -692,10 +692,10 @@ void __61__LACDTORatchetManager_disableFeatureWithContext_completion___block_inv
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableFeatureStrictModeWithCompletion:(id)a3
+- (void)enableFeatureStrictModeWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = LACLogDTOClient();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -708,7 +708,7 @@ void __61__LACDTORatchetManager_disableFeatureWithContext_completion___block_inv
   v12[1] = 3221225472;
   v12[2] = __62__LACDTORatchetManager_enableFeatureStrictModeWithCompletion___block_invoke;
   v12[3] = &unk_1E7A95A10;
-  v6 = v4;
+  v6 = completionCopy;
   v13 = v6;
   v7 = [(LACDTORatchetManager *)self _remoteObjectProxyWithErrorHandler:v12];
   v10[0] = MEMORY[0x1E69E9820];
@@ -753,11 +753,11 @@ void __62__LACDTORatchetManager_enableFeatureStrictModeWithCompletion___block_in
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)disableFeatureStrictModeWithContext:(id)a3 completion:(id)a4
+- (void)disableFeatureStrictModeWithContext:(id)context completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v8 = LACLogDTOClient();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -770,10 +770,10 @@ void __62__LACDTORatchetManager_enableFeatureStrictModeWithCompletion___block_in
   v16[1] = 3221225472;
   v16[2] = __71__LACDTORatchetManager_disableFeatureStrictModeWithContext_completion___block_invoke;
   v16[3] = &unk_1E7A95A10;
-  v9 = v6;
+  v9 = completionCopy;
   v17 = v9;
   v10 = [(LACDTORatchetManager *)self _remoteObjectProxyWithErrorHandler:v16];
-  v11 = [v7 uuid];
+  uuid = [contextCopy uuid];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -781,7 +781,7 @@ void __62__LACDTORatchetManager_enableFeatureStrictModeWithCompletion___block_in
   v14[3] = &unk_1E7A95A10;
   v15 = v9;
   v12 = v9;
-  [v10 disableFeatureStrictModeWithContext:v11 completion:v14];
+  [v10 disableFeatureStrictModeWithContext:uuid completion:v14];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -817,10 +817,10 @@ void __71__LACDTORatchetManager_disableFeatureStrictModeWithContext_completion__
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v5 = LACLogDTOClient();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -829,7 +829,7 @@ void __71__LACDTORatchetManager_disableFeatureStrictModeWithContext_completion__
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v7, 0xCu);
   }
 
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   if (![(LACDarwinNotificationCenter *)self->_notificationCenter hasObserver:self])
   {
     [(LACDarwinNotificationCenter *)self->_notificationCenter addObserver:self notification:@"com.apple.LocalAuthentication.ratchet.StateDidChange"];
@@ -838,10 +838,10 @@ void __71__LACDTORatchetManager_disableFeatureStrictModeWithContext_completion__
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v5 = LACLogDTOClient();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -850,7 +850,7 @@ void __71__LACDTORatchetManager_disableFeatureStrictModeWithContext_completion__
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v7, 0xCu);
   }
 
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
   if (![(NSHashTable *)self->_observers count])
   {
     [(LACDarwinNotificationCenter *)self->_notificationCenter removeObserver:self];
@@ -867,24 +867,24 @@ void __71__LACDTORatchetManager_disableFeatureStrictModeWithContext_completion__
   [(LACDarwinNotificationCenter *)notificationCenter removeObserver:self];
 }
 
-- (void)performArmRequestWithIdentifier:(id)a3 context:(id)a4 options:(id)a5 completion:(id)a6
+- (void)performArmRequestWithIdentifier:(id)identifier context:(id)context options:(id)options completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  contextCopy = context;
+  optionsCopy = options;
+  completionCopy = completion;
   v14 = LACLogDTOClient();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
     v20 = "[LACDTORatchetManager performArmRequestWithIdentifier:context:options:completion:]";
     v21 = 2114;
-    v22 = v11;
+    v22 = contextCopy;
     v23 = 2114;
-    v24 = v10;
+    v24 = identifierCopy;
     v25 = 2114;
-    v26 = v12;
+    v26 = optionsCopy;
     _os_log_impl(&dword_1B0233000, v14, OS_LOG_TYPE_DEFAULT, "%s context:%{public}@ identifier:%{public}@ options:%{public}@", buf, 0x2Au);
   }
 
@@ -892,9 +892,9 @@ void __71__LACDTORatchetManager_disableFeatureStrictModeWithContext_completion__
   v17[1] = 3221225472;
   v17[2] = __83__LACDTORatchetManager_performArmRequestWithIdentifier_context_options_completion___block_invoke;
   v17[3] = &unk_1E7A95A88;
-  v18 = v13;
-  v15 = v13;
-  [(LACDTORatchetManager *)self _performArmRequestWithIdentifier:v10 context:v11 options:v12 completion:v17];
+  v18 = completionCopy;
+  v15 = completionCopy;
+  [(LACDTORatchetManager *)self _performArmRequestWithIdentifier:identifierCopy context:contextCopy options:optionsCopy completion:v17];
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -921,10 +921,10 @@ void __83__LACDTORatchetManager_performArmRequestWithIdentifier_context_options_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stateInContext:(id)a3 completion:(id)a4
+- (void)stateInContext:(id)context completion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  completionCopy = completion;
   v6 = LACLogDTOClient();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -937,8 +937,8 @@ void __83__LACDTORatchetManager_performArmRequestWithIdentifier_context_options_
   v9[1] = 3221225472;
   v9[2] = __50__LACDTORatchetManager_stateInContext_completion___block_invoke;
   v9[3] = &unk_1E7A95AB0;
-  v10 = v5;
-  v7 = v5;
+  v10 = completionCopy;
+  v7 = completionCopy;
   [(LACDTORatchetManager *)self stateWithCompletion:v9];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -966,10 +966,10 @@ void __50__LACDTORatchetManager_stateInContext_completion___block_invoke(uint64_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stateCompositeInContext:(id)a3 completion:(id)a4
+- (void)stateCompositeInContext:(id)context completion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  completionCopy = completion;
   v6 = LACLogDTOClient();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -982,8 +982,8 @@ void __50__LACDTORatchetManager_stateInContext_completion___block_invoke(uint64_
   v9[1] = 3221225472;
   v9[2] = __59__LACDTORatchetManager_stateCompositeInContext_completion___block_invoke;
   v9[3] = &unk_1E7A95AD8;
-  v10 = v5;
-  v7 = v5;
+  v10 = completionCopy;
+  v7 = completionCopy;
   [(LACDTORatchetManager *)self stateCompositeWithCompletion:v9];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -1011,21 +1011,21 @@ void __59__LACDTORatchetManager_stateCompositeInContext_completion___block_invok
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelArmRequestWithIdentifier:(id)a3 reason:(id)a4 completion:(id)a5
+- (void)cancelArmRequestWithIdentifier:(id)identifier reason:(id)reason completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  completionCopy = completion;
   v11 = LACLogDTOClient();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v21 = "[LACDTORatchetManager cancelArmRequestWithIdentifier:reason:completion:]";
     v22 = 2114;
-    v23 = v8;
+    v23 = identifierCopy;
     v24 = 2114;
-    v25 = v9;
+    v25 = reasonCopy;
     _os_log_impl(&dword_1B0233000, v11, OS_LOG_TYPE_DEFAULT, "%s identifier:%{public}@, reason:%{public}@", buf, 0x20u);
   }
 
@@ -1033,7 +1033,7 @@ void __59__LACDTORatchetManager_stateCompositeInContext_completion___block_invok
   v18[1] = 3221225472;
   v18[2] = __73__LACDTORatchetManager_cancelArmRequestWithIdentifier_reason_completion___block_invoke;
   v18[3] = &unk_1E7A95A10;
-  v12 = v10;
+  v12 = completionCopy;
   v19 = v12;
   v13 = [(LACDTORatchetManager *)self _remoteObjectProxyWithErrorHandler:v18];
   v16[0] = MEMORY[0x1E69E9820];
@@ -1042,7 +1042,7 @@ void __59__LACDTORatchetManager_stateCompositeInContext_completion___block_invok
   v16[3] = &unk_1E7A95A10;
   v17 = v12;
   v14 = v12;
-  [v13 cancelPendingEvaluationWithRatchetIdentifier:v8 reason:v9 completion:v16];
+  [v13 cancelPendingEvaluationWithRatchetIdentifier:identifierCopy reason:reasonCopy completion:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -1078,21 +1078,21 @@ void __73__LACDTORatchetManager_cancelArmRequestWithIdentifier_reason_completion
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_performArmRequestWithIdentifier:(id)a3 context:(id)a4 options:(id)a5 completion:(id)a6
+- (void)_performArmRequestWithIdentifier:(id)identifier context:(id)context options:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  contextCopy = context;
+  optionsCopy = options;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v14 = [(LACDTORatchetManager *)self _armPolicy];
+  _armPolicy = [(LACDTORatchetManager *)self _armPolicy];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __84__LACDTORatchetManager__performArmRequestWithIdentifier_context_options_completion___block_invoke;
   v24[3] = &unk_1E7A95B00;
-  v15 = v12;
+  v15 = optionsCopy;
   v25 = v15;
-  v16 = v10;
+  v16 = identifierCopy;
   v26 = v16;
   v17 = __84__LACDTORatchetManager__performArmRequestWithIdentifier_context_options_completion___block_invoke(v24);
   v20[0] = MEMORY[0x1E69E9820];
@@ -1100,11 +1100,11 @@ void __73__LACDTORatchetManager_cancelArmRequestWithIdentifier_reason_completion
   v20[2] = __84__LACDTORatchetManager__performArmRequestWithIdentifier_context_options_completion___block_invoke_2;
   v20[3] = &unk_1E7A95B50;
   objc_copyWeak(&v23, &location);
-  v18 = v11;
+  v18 = contextCopy;
   v21 = v18;
-  v19 = v13;
+  v19 = completionCopy;
   v22 = v19;
-  [v18 evaluateCorePolicy:v14 options:v17 reply:v20];
+  [v18 evaluateCorePolicy:_armPolicy options:v17 reply:v20];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(&location);
@@ -1257,13 +1257,13 @@ void __84__LACDTORatchetManager__performArmRequestWithIdentifier_context_options
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notificationCenter:(id)a3 didReceiveNotification:(__CFString *)a4
+- (void)notificationCenter:(id)center didReceiveNotification:(__CFString *)notification
 {
-  if (self->_notificationCenter == a3)
+  if (self->_notificationCenter == center)
   {
     v9[3] = v4;
     v9[4] = v5;
-    if (LACDarwinNotificationsEqual(a4, @"com.apple.LocalAuthentication.ratchet.StateDidChange"))
+    if (LACDarwinNotificationsEqual(notification, @"com.apple.LocalAuthentication.ratchet.StateDidChange"))
     {
       objc_initWeak(v9, self);
       v7[0] = MEMORY[0x1E69E9820];
@@ -1346,7 +1346,7 @@ void __66__LACDTORatchetManager_notificationCenter_didReceiveNotification___bloc
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler
 {
   remoteObjectProxy = self->_remoteObjectProxy;
   if (remoteObjectProxy)
@@ -1356,9 +1356,9 @@ void __66__LACDTORatchetManager_notificationCenter_didReceiveNotification___bloc
 
   else
   {
-    v6 = a3;
+    handlerCopy = handler;
     v7 = [LACError errorWithCode:-1000 debugDescription:@"Platform not supported"];
-    (*(a3 + 2))(v6, v7);
+    (*(handler + 2))(handlerCopy, v7);
   }
 
   return remoteObjectProxy;

@@ -1,6 +1,6 @@
 @interface ARUICountdownWindUp
 - (id)identifier;
-- (void)applyToCountdownView:(id)a3 completion:(id)a4;
+- (void)applyToCountdownView:(id)view completion:(id)completion;
 @end
 
 @implementation ARUICountdownWindUp
@@ -12,17 +12,17 @@
   return [v2 identifier];
 }
 
-- (void)applyToCountdownView:(id)a3 completion:(id)a4
+- (void)applyToCountdownView:(id)view completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  completionCopy = completion;
   [(ARUICountdownWindUp *)self duration];
   v9 = v8;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __55__ARUICountdownWindUp_applyToCountdownView_completion___block_invoke;
   v18[3] = &unk_1E83CDFF0;
-  v10 = v6;
+  v10 = viewCopy;
   v19 = v10;
   [ARUIRingGroup animateWithDuration:v18 animations:3 curve:0 completion:v9];
   [(ARUICountdownWindUp *)self duration];
@@ -32,9 +32,9 @@
   block[2] = __55__ARUICountdownWindUp_applyToCountdownView_completion___block_invoke_2;
   block[3] = &unk_1E83CE558;
   v16 = v10;
-  v17 = v7;
+  v17 = completionCopy;
   v13 = v10;
-  v14 = v7;
+  v14 = completionCopy;
   dispatch_after(v12, MEMORY[0x1E69E96A0], block);
 }
 

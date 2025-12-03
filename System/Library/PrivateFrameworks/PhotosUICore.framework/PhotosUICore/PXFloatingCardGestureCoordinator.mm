@@ -1,32 +1,32 @@
 @interface PXFloatingCardGestureCoordinator
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGPoint)centerPointForPosition:(unint64_t)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGPoint)centerPointForPosition:(unint64_t)position;
 - (CGPoint)previousPanTranslation;
-- (PXFloatingCardGestureCoordinator)initWithCardViewController:(id)a3 layout:(id)a4;
+- (PXFloatingCardGestureCoordinator)initWithCardViewController:(id)controller layout:(id)layout;
 - (PXFloatingCardGestureCoordinatorDelegate)delegate;
 - (PXFloatingCardLayout)layout;
 - (PXFloatingCardViewController)cardViewController;
-- (double)applyRubberBandToValue:(double)a3 withRange:(double)a4;
-- (double)closestHeightForProjectedHeight:(double)a3;
-- (double)heightForRubberBandHeight:(double)a3;
+- (double)applyRubberBandToValue:(double)value withRange:(double)range;
+- (double)closestHeightForProjectedHeight:(double)height;
+- (double)heightForRubberBandHeight:(double)height;
 - (double)maximumHeight;
 - (double)minimumHeight;
-- (double)rubberBandHeightForHeight:(double)a3;
-- (double)unapplyRubberBandToValue:(double)a3 withRange:(double)a4;
-- (unint64_t)closestPositionToProjectedCenter:(CGPoint)a3;
+- (double)rubberBandHeightForHeight:(double)height;
+- (double)unapplyRubberBandToValue:(double)value withRange:(double)range;
+- (unint64_t)closestPositionToProjectedCenter:(CGPoint)center;
 - (void)_addGestureRecognizers;
-- (void)_handlePositionGestureEnded:(CGPoint)a3;
+- (void)_handlePositionGestureEnded:(CGPoint)ended;
 - (void)_removeGestureRecognizers;
 - (void)dealloc;
 - (void)dragBegan;
-- (void)dragChangedWithVerticalDelta:(double)a3;
-- (void)dragEndedWithAnimation:(id)a3;
-- (void)handleHeightGesture:(id)a3;
-- (void)handlePositionGesture:(id)a3;
+- (void)dragChangedWithVerticalDelta:(double)delta;
+- (void)dragEndedWithAnimation:(id)animation;
+- (void)handleHeightGesture:(id)gesture;
+- (void)handlePositionGesture:(id)gesture;
 - (void)layoutDidChange;
-- (void)snapToHeight:(double)a3;
-- (void)updateCardHeightConstraintWithHeight:(double)a3;
+- (void)snapToHeight:(double)height;
+- (void)updateCardHeightConstraintWithHeight:(double)height;
 @end
 
 @implementation PXFloatingCardGestureCoordinator
@@ -61,17 +61,17 @@
   return WeakRetained;
 }
 
-- (double)heightForRubberBandHeight:(double)a3
+- (double)heightForRubberBandHeight:(double)height
 {
   [(PXFloatingCardGestureCoordinator *)self minimumHeight];
   v6 = v5;
   [(PXFloatingCardGestureCoordinator *)self maximumHeight];
-  if (v7 >= a3)
+  if (v7 >= height)
   {
-    if (v6 > a3)
+    if (v6 > height)
     {
       [(PXFloatingCardGestureCoordinator *)self topRubberBandRange];
-      [(PXFloatingCardGestureCoordinator *)self unapplyRubberBandToValue:v6 - a3 withRange:v12];
+      [(PXFloatingCardGestureCoordinator *)self unapplyRubberBandToValue:v6 - height withRange:v12];
       return v6 - v13;
     }
   }
@@ -79,26 +79,26 @@
   else
   {
     v8 = v7;
-    v9 = a3 - v7;
+    v9 = height - v7;
     [(PXFloatingCardGestureCoordinator *)self bottomRubberBandRange];
     [(PXFloatingCardGestureCoordinator *)self unapplyRubberBandToValue:v9 withRange:v10];
     return v8 + v11;
   }
 
-  return a3;
+  return height;
 }
 
-- (double)rubberBandHeightForHeight:(double)a3
+- (double)rubberBandHeightForHeight:(double)height
 {
   [(PXFloatingCardGestureCoordinator *)self minimumHeight];
   v6 = v5;
   [(PXFloatingCardGestureCoordinator *)self maximumHeight];
-  if (v7 >= a3)
+  if (v7 >= height)
   {
-    if (v6 > a3)
+    if (v6 > height)
     {
       [(PXFloatingCardGestureCoordinator *)self topRubberBandRange];
-      [(PXFloatingCardGestureCoordinator *)self applyRubberBandToValue:v6 - a3 withRange:v12];
+      [(PXFloatingCardGestureCoordinator *)self applyRubberBandToValue:v6 - height withRange:v12];
       return v6 - v13;
     }
   }
@@ -106,46 +106,46 @@
   else
   {
     v8 = v7;
-    v9 = a3 - v7;
+    v9 = height - v7;
     [(PXFloatingCardGestureCoordinator *)self bottomRubberBandRange];
     [(PXFloatingCardGestureCoordinator *)self applyRubberBandToValue:v9 withRange:v10];
     return v8 + v11;
   }
 
-  return a3;
+  return height;
 }
 
-- (double)unapplyRubberBandToValue:(double)a3 withRange:(double)a4
+- (double)unapplyRubberBandToValue:(double)value withRange:(double)range
 {
-  v4 = (a4 - a3) * 0.550000012;
+  v4 = (range - value) * 0.550000012;
   v5 = 0.0;
   if (fabs(v4) >= 2.22044605e-16)
   {
-    return a3 * a4 / v4;
+    return value * range / v4;
   }
 
   return v5;
 }
 
-- (double)applyRubberBandToValue:(double)a3 withRange:(double)a4
+- (double)applyRubberBandToValue:(double)value withRange:(double)range
 {
-  v4 = a4 + a3 * 0.550000012;
+  v4 = range + value * 0.550000012;
   v5 = 0.0;
   if (fabs(v4) >= 2.22044605e-16)
   {
-    return a4 * 0.550000012 * a3 / v4;
+    return range * 0.550000012 * value / v4;
   }
 
   return v5;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXFloatingCardGestureCoordinator *)self heightGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  heightGestureRecognizer = [(PXFloatingCardGestureCoordinator *)self heightGestureRecognizer];
 
-  if (v8 != v7)
+  if (heightGestureRecognizer != recognizerCopy)
   {
 
 LABEL_6:
@@ -161,10 +161,10 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v10 = [v6 view];
-  v11 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-  v12 = [v11 view];
-  v13 = [v10 isDescendantOfView:v12];
+  view = [gestureRecognizerCopy view];
+  cardViewController = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+  view2 = [cardViewController view];
+  v13 = [view isDescendantOfView:view2];
 
   if ((v13 & 1) == 0)
   {
@@ -177,23 +177,23 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXFloatingCardGestureCoordinator *)self heightGestureRecognizer];
+  touchCopy = touch;
+  recognizerCopy = recognizer;
+  heightGestureRecognizer = [(PXFloatingCardGestureCoordinator *)self heightGestureRecognizer];
 
-  if (v8 == v7)
+  if (heightGestureRecognizer == recognizerCopy)
   {
-    v10 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-    [v10 grabAreaBounds];
+    cardViewController = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+    [cardViewController grabAreaBounds];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-    v20 = [v19 backgroundView];
-    [v6 locationInView:v20];
+    cardViewController2 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+    backgroundView = [cardViewController2 backgroundView];
+    [touchCopy locationInView:backgroundView];
     v24.x = v21;
     v24.y = v22;
     v25.origin.x = v12;
@@ -211,17 +211,17 @@ LABEL_7:
   return v9;
 }
 
-- (void)handleHeightGesture:(id)a3
+- (void)handleHeightGesture:(id)gesture
 {
-  v16 = a3;
-  v4 = [v16 state];
-  if ((v4 - 3) >= 3)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if ((state - 3) >= 3)
   {
-    if (v4 == 2)
+    if (state == 2)
     {
-      v8 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-      v9 = [v8 view];
-      [v16 translationInView:v9];
+      cardViewController = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+      view = [cardViewController view];
+      [gestureCopy translationInView:view];
       v11 = v10;
       v13 = v12;
 
@@ -231,13 +231,13 @@ LABEL_7:
       [(PXFloatingCardGestureCoordinator *)self dragChangedWithVerticalDelta:-v15];
     }
 
-    else if (v4 == 1)
+    else if (state == 1)
     {
       [(PXFloatingCardGestureCoordinator *)self dragBegan];
-      v5 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-      v6 = [v5 view];
-      v7 = [v6 layer];
-      [v7 removeAllAnimations];
+      cardViewController2 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+      view2 = [cardViewController2 view];
+      layer = [view2 layer];
+      [layer removeAllAnimations];
 
       [(PXFloatingCardGestureCoordinator *)self setPreviousPanTranslation:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
     }
@@ -249,16 +249,16 @@ LABEL_7:
   }
 }
 
-- (unint64_t)closestPositionToProjectedCenter:(CGPoint)a3
+- (unint64_t)closestPositionToProjectedCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-  v6 = [v5 view];
+  y = center.y;
+  x = center.x;
+  cardViewController = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+  view = [cardViewController view];
 
-  v7 = [v6 superview];
-  v8 = [v7 safeAreaLayoutGuide];
-  [v8 layoutFrame];
+  superview = [view superview];
+  safeAreaLayoutGuide = [superview safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -299,17 +299,17 @@ LABEL_7:
   return v21;
 }
 
-- (CGPoint)centerPointForPosition:(unint64_t)a3
+- (CGPoint)centerPointForPosition:(unint64_t)position
 {
-  v5 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-  v6 = [v5 view];
+  cardViewController = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+  view = [cardViewController view];
 
-  [v6 bounds];
+  [view bounds];
   v8 = v7;
   v10 = v9;
-  v11 = [v6 superview];
-  v12 = [v11 safeAreaLayoutGuide];
-  [v12 layoutFrame];
+  superview = [view superview];
+  safeAreaLayoutGuide = [superview safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -337,26 +337,26 @@ LABEL_7:
   MinY = CGRectGetMinY(v43);
   v23 = v8 * 0.5;
   v24 = v10 * 0.5;
-  v25 = [(PXFloatingCardGestureCoordinator *)self layout];
-  [v25 insets];
+  layout = [(PXFloatingCardGestureCoordinator *)self layout];
+  [layout insets];
   v27 = v26;
   v29 = v28;
   v31 = v30;
   v33 = v32;
 
-  if (a3 > 1)
+  if (position > 1)
   {
-    if (a3 == 4)
+    if (position == 4)
     {
       MinY = MaxX - v33 - v23;
     }
 
     else
     {
-      if (a3 != 3)
+      if (position != 3)
       {
         v34 = MinY;
-        if (a3 != 2)
+        if (position != 2)
         {
           goto LABEL_14;
         }
@@ -372,14 +372,14 @@ LABEL_7:
   }
 
   v34 = MinY;
-  if (!a3)
+  if (!position)
   {
 LABEL_9:
     MinY = MaxX - v33 - v23;
     goto LABEL_10;
   }
 
-  if (a3 == 1)
+  if (position == 1)
   {
     MinY = v23 + MinX + v29;
 LABEL_10:
@@ -395,9 +395,9 @@ LABEL_14:
   return result;
 }
 
-- (void)_handlePositionGestureEnded:(CGPoint)a3
+- (void)_handlePositionGestureEnded:(CGPoint)ended
 {
-  v4 = [(PXFloatingCardGestureCoordinator *)self closestPositionToProjectedCenter:a3.x, a3.y];
+  v4 = [(PXFloatingCardGestureCoordinator *)self closestPositionToProjectedCenter:ended.x, ended.y];
   [(PXFloatingCardGestureCoordinator *)self centerPointForPosition:v4];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -434,44 +434,44 @@ void __64__PXFloatingCardGestureCoordinator__handlePositionGestureEnded___block_
   }
 }
 
-- (void)handlePositionGesture:(id)a3
+- (void)handlePositionGesture:(id)gesture
 {
-  v27 = a3;
-  v4 = [v27 state];
-  if ((v4 - 3) >= 3)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if ((state - 3) >= 3)
   {
-    if ((v4 - 1) > 1)
+    if ((state - 1) > 1)
     {
       goto LABEL_6;
     }
 
-    v20 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-    v6 = [v20 view];
+    cardViewController = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+    view = [cardViewController view];
 
-    v7 = [v6 superview];
-    [v27 translationInView:v7];
+    superview = [view superview];
+    [gestureCopy translationInView:superview];
     v22 = v21;
     v24 = v23;
-    [v6 center];
-    [v6 setCenter:{v22 + v25, v24 + v26}];
-    [v27 setTranslation:v7 inView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+    [view center];
+    [view setCenter:{v22 + v25, v24 + v26}];
+    [gestureCopy setTranslation:superview inView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
   }
 
   else
   {
-    v5 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-    v6 = [v5 view];
+    cardViewController2 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+    view = [cardViewController2 view];
 
-    v7 = [v6 superview];
-    [v27 velocityInView:v7];
+    superview = [view superview];
+    [gestureCopy velocityInView:superview];
     v9 = v8;
     v11 = v10;
     v12 = *MEMORY[0x1E69DE3A8];
-    [v6 center];
+    [view center];
     v14 = v13;
     [(PXFloatingCardGestureCoordinator *)self projectionWithVelocity:v9 decelerationRate:v12];
     v16 = v14 + v15;
-    [v6 center];
+    [view center];
     v18 = v17;
     [(PXFloatingCardGestureCoordinator *)self projectionWithVelocity:v11 decelerationRate:v12];
     [(PXFloatingCardGestureCoordinator *)self _handlePositionGestureEnded:v16, v18 + v19];
@@ -482,19 +482,19 @@ LABEL_6:
 
 - (double)maximumHeight
 {
-  v3 = [(PXFloatingCardGestureCoordinator *)self layout];
-  v4 = [v3 snappableHeights];
-  v5 = [v4 count];
+  layout = [(PXFloatingCardGestureCoordinator *)self layout];
+  snappableHeights = [layout snappableHeights];
+  v5 = [snappableHeights count];
 
   if (!v5)
   {
     return 0.0;
   }
 
-  v6 = [(PXFloatingCardGestureCoordinator *)self layout];
-  v7 = [v6 snappableHeights];
-  v8 = [v7 lastObject];
-  [v8 floatValue];
+  layout2 = [(PXFloatingCardGestureCoordinator *)self layout];
+  snappableHeights2 = [layout2 snappableHeights];
+  lastObject = [snappableHeights2 lastObject];
+  [lastObject floatValue];
   v10 = v9;
 
   return v10;
@@ -502,41 +502,41 @@ LABEL_6:
 
 - (double)minimumHeight
 {
-  v3 = [(PXFloatingCardGestureCoordinator *)self layout];
-  v4 = [v3 snappableHeights];
-  v5 = [v4 count];
+  layout = [(PXFloatingCardGestureCoordinator *)self layout];
+  snappableHeights = [layout snappableHeights];
+  v5 = [snappableHeights count];
 
   if (!v5)
   {
     return 0.0;
   }
 
-  v6 = [(PXFloatingCardGestureCoordinator *)self layout];
-  v7 = [v6 snappableHeights];
-  v8 = [v7 firstObject];
-  [v8 floatValue];
+  layout2 = [(PXFloatingCardGestureCoordinator *)self layout];
+  snappableHeights2 = [layout2 snappableHeights];
+  firstObject = [snappableHeights2 firstObject];
+  [firstObject floatValue];
   v10 = v9;
 
   return v10;
 }
 
-- (void)snapToHeight:(double)a3
+- (void)snapToHeight:(double)height
 {
-  v5 = [(PXFloatingCardGestureCoordinator *)self animationManager];
-  v6 = [v5 heightAnimation];
+  animationManager = [(PXFloatingCardGestureCoordinator *)self animationManager];
+  heightAnimation = [animationManager heightAnimation];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__PXFloatingCardGestureCoordinator_snapToHeight___block_invoke;
   v8[3] = &unk_1E77498A0;
   v8[4] = self;
-  *&v8[5] = a3;
+  *&v8[5] = height;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__PXFloatingCardGestureCoordinator_snapToHeight___block_invoke_2;
   v7[3] = &unk_1E77482F0;
   v7[4] = self;
-  *&v7[5] = a3;
-  [v6 applyAnimations:v8 completion:v7];
+  *&v7[5] = height;
+  [heightAnimation applyAnimations:v8 completion:v7];
 }
 
 void __49__PXFloatingCardGestureCoordinator_snapToHeight___block_invoke(uint64_t a1)
@@ -559,75 +559,75 @@ void __49__PXFloatingCardGestureCoordinator_snapToHeight___block_invoke_2(uint64
   [v3 cardViewController:v2 didUpdateHeight:*(a1 + 40)];
 }
 
-- (void)updateCardHeightConstraintWithHeight:(double)a3
+- (void)updateCardHeightConstraintWithHeight:(double)height
 {
-  v5 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-  [v5 size];
+  cardViewController = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+  [cardViewController size];
   v7 = v6;
 
-  if (v7 != a3)
+  if (v7 != height)
   {
     [(PXFloatingCardGestureCoordinator *)self maximumHeight];
     v9 = v8;
     [(PXFloatingCardGestureCoordinator *)self minimumHeight];
     v11 = v10;
-    v12 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-    [v12 size];
+    cardViewController2 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+    [cardViewController2 size];
     v14 = v13;
 
-    if (v11 > a3 || v9 < a3)
+    if (v11 > height || v9 < height)
     {
-      if (v11 <= a3)
+      if (v11 <= height)
       {
-        if (v9 >= a3)
+        if (v9 >= height)
         {
           return;
         }
 
-        [(PXFloatingCardGestureCoordinator *)self heightForRubberBandHeight:a3];
-        if (v16 <= a3)
+        [(PXFloatingCardGestureCoordinator *)self heightForRubberBandHeight:height];
+        if (v16 <= height)
         {
-          a3 = v16;
+          height = v16;
         }
 
         if (![(PXFloatingCardGestureCoordinator *)self isDragging])
         {
-          a3 = v9;
+          height = v9;
         }
       }
 
       else
       {
-        [(PXFloatingCardGestureCoordinator *)self heightForRubberBandHeight:a3];
-        if (v15 > a3)
+        [(PXFloatingCardGestureCoordinator *)self heightForRubberBandHeight:height];
+        if (v15 > height)
         {
-          a3 = v15;
+          height = v15;
         }
 
         if (![(PXFloatingCardGestureCoordinator *)self isDragging])
         {
-          a3 = v11;
+          height = v11;
         }
       }
     }
 
-    v17 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-    [v17 setSize:{v14, a3}];
+    cardViewController3 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+    [cardViewController3 setSize:{v14, height}];
   }
 }
 
-- (double)closestHeightForProjectedHeight:(double)a3
+- (double)closestHeightForProjectedHeight:(double)height
 {
-  v4 = [(PXFloatingCardGestureCoordinator *)self layout];
-  v5 = [v4 snappableHeights];
+  layout = [(PXFloatingCardGestureCoordinator *)self layout];
+  snappableHeights = [layout snappableHeights];
 
-  if ([v5 count])
+  if ([snappableHeights count])
   {
     v13 = 0;
     v14 = &v13;
     v15 = 0x2020000000;
-    v6 = [v5 firstObject];
-    [v6 floatValue];
+    firstObject = [snappableHeights firstObject];
+    [firstObject floatValue];
     v8 = v7;
 
     v16 = v8;
@@ -639,10 +639,10 @@ void __49__PXFloatingCardGestureCoordinator_snapToHeight___block_invoke_2(uint64
     v11[1] = 3221225472;
     v11[2] = __68__PXFloatingCardGestureCoordinator_closestHeightForProjectedHeight___block_invoke;
     v11[3] = &unk_1E773DE88;
-    *&v11[6] = a3;
+    *&v11[6] = height;
     v11[4] = v12;
     v11[5] = &v13;
-    [v5 enumerateObjectsUsingBlock:v11];
+    [snappableHeights enumerateObjectsUsingBlock:v11];
     v9 = v14[3];
     _Block_object_dispose(v12, 8);
     _Block_object_dispose(&v13, 8);
@@ -671,18 +671,18 @@ uint64_t __68__PXFloatingCardGestureCoordinator_closestHeightForProjectedHeight_
   return result;
 }
 
-- (void)dragEndedWithAnimation:(id)a3
+- (void)dragEndedWithAnimation:(id)animation
 {
-  v19 = a3;
+  animationCopy = animation;
   [(PXFloatingCardGestureCoordinator *)self setIsDragging:0];
-  v4 = [(PXFloatingCardGestureCoordinator *)self heightGestureRecognizer];
-  v5 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-  v6 = [v5 view];
-  [v4 velocityInView:v6];
+  heightGestureRecognizer = [(PXFloatingCardGestureCoordinator *)self heightGestureRecognizer];
+  cardViewController = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+  view = [cardViewController view];
+  [heightGestureRecognizer velocityInView:view];
   v8 = v7;
 
-  v9 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-  [v9 size];
+  cardViewController2 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+  [cardViewController2 size];
   v11 = v10;
 
   [(PXFloatingCardGestureCoordinator *)self projectionWithVelocity:v8 decelerationRate:*MEMORY[0x1E69DE3A0]];
@@ -698,31 +698,31 @@ uint64_t __68__PXFloatingCardGestureCoordinator_closestHeightForProjectedHeight_
     v15 = v8 / (v13 - v11);
   }
 
-  v16 = v19;
-  if (!v19)
+  v16 = animationCopy;
+  if (!animationCopy)
   {
     v16 = [PXFloatingCardAnimation animationWithMass:"animationWithMass:stiffness:damping:initialVelocity:delay:" stiffness:1.0 damping:dbl_1A5380D50[v15 > 4.0] initialVelocity:dbl_1A5380D60[v15 > 4.0] delay:?];
   }
 
   v20 = v16;
-  v17 = [(PXFloatingCardGestureCoordinator *)self animationManager];
-  [v17 pushHeightAnimation:v20];
+  animationManager = [(PXFloatingCardGestureCoordinator *)self animationManager];
+  [animationManager pushHeightAnimation:v20];
 
   [(PXFloatingCardGestureCoordinator *)self snapToHeight:v14];
-  v18 = [(PXFloatingCardGestureCoordinator *)self animationManager];
-  [v18 popHeightAnimation];
+  animationManager2 = [(PXFloatingCardGestureCoordinator *)self animationManager];
+  [animationManager2 popHeightAnimation];
 }
 
-- (void)dragChangedWithVerticalDelta:(double)a3
+- (void)dragChangedWithVerticalDelta:(double)delta
 {
-  v5 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-  [v5 size];
+  cardViewController = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+  [cardViewController size];
   v7 = v6;
 
   [(PXFloatingCardGestureCoordinator *)self heightForRubberBandHeight:v7];
-  [(PXFloatingCardGestureCoordinator *)self rubberBandHeightForHeight:v8 + a3];
-  v9 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-  v10 = [v9 view];
+  [(PXFloatingCardGestureCoordinator *)self rubberBandHeightForHeight:v8 + delta];
+  cardViewController2 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+  view = [cardViewController2 view];
   UIRoundToViewScale();
   v12 = v11;
 
@@ -734,13 +734,13 @@ uint64_t __68__PXFloatingCardGestureCoordinator_closestHeightForProjectedHeight_
   [(PXFloatingCardGestureCoordinator *)self setIsDragging:1];
   [(PXFloatingCardGestureCoordinator *)self setTopRubberBandRange:15.0];
   [(PXFloatingCardGestureCoordinator *)self setBottomRubberBandRange:15.0];
-  v3 = [(PXFloatingCardGestureCoordinator *)self delegate];
+  delegate = [(PXFloatingCardGestureCoordinator *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PXFloatingCardGestureCoordinator *)self delegate];
-    [v5 gestureCoordinatorDidBeginInteraction:self];
+    delegate2 = [(PXFloatingCardGestureCoordinator *)self delegate];
+    [delegate2 gestureCoordinatorDidBeginInteraction:self];
   }
 }
 
@@ -753,15 +753,15 @@ uint64_t __68__PXFloatingCardGestureCoordinator_closestHeightForProjectedHeight_
 
 - (void)dealloc
 {
-  v3 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-  v4 = [v3 view];
-  v5 = [(PXFloatingCardGestureCoordinator *)self heightGestureRecognizer];
-  [v4 removeGestureRecognizer:v5];
+  cardViewController = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+  view = [cardViewController view];
+  heightGestureRecognizer = [(PXFloatingCardGestureCoordinator *)self heightGestureRecognizer];
+  [view removeGestureRecognizer:heightGestureRecognizer];
 
-  v6 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-  v7 = [v6 view];
-  v8 = [(PXFloatingCardGestureCoordinator *)self positionGestureRecognizer];
-  [v7 removeGestureRecognizer:v8];
+  cardViewController2 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+  view2 = [cardViewController2 view];
+  positionGestureRecognizer = [(PXFloatingCardGestureCoordinator *)self positionGestureRecognizer];
+  [view2 removeGestureRecognizer:positionGestureRecognizer];
 
   v9.receiver = self;
   v9.super_class = PXFloatingCardGestureCoordinator;
@@ -770,26 +770,26 @@ uint64_t __68__PXFloatingCardGestureCoordinator_closestHeightForProjectedHeight_
 
 - (void)_removeGestureRecognizers
 {
-  v3 = [(PXFloatingCardGestureCoordinator *)self heightGestureRecognizer];
+  heightGestureRecognizer = [(PXFloatingCardGestureCoordinator *)self heightGestureRecognizer];
 
-  if (v3)
+  if (heightGestureRecognizer)
   {
-    v4 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-    v5 = [v4 view];
-    v6 = [(PXFloatingCardGestureCoordinator *)self heightGestureRecognizer];
-    [v5 removeGestureRecognizer:v6];
+    cardViewController = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+    view = [cardViewController view];
+    heightGestureRecognizer2 = [(PXFloatingCardGestureCoordinator *)self heightGestureRecognizer];
+    [view removeGestureRecognizer:heightGestureRecognizer2];
 
     [(PXFloatingCardGestureCoordinator *)self setHeightGestureRecognizer:0];
   }
 
-  v7 = [(PXFloatingCardGestureCoordinator *)self positionGestureRecognizer];
+  positionGestureRecognizer = [(PXFloatingCardGestureCoordinator *)self positionGestureRecognizer];
 
-  if (v7)
+  if (positionGestureRecognizer)
   {
-    v8 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-    v9 = [v8 view];
-    v10 = [(PXFloatingCardGestureCoordinator *)self positionGestureRecognizer];
-    [v9 removeGestureRecognizer:v10];
+    cardViewController2 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+    view2 = [cardViewController2 view];
+    positionGestureRecognizer2 = [(PXFloatingCardGestureCoordinator *)self positionGestureRecognizer];
+    [view2 removeGestureRecognizer:positionGestureRecognizer2];
 
     [(PXFloatingCardGestureCoordinator *)self setPositionGestureRecognizer:0];
   }
@@ -800,39 +800,39 @@ uint64_t __68__PXFloatingCardGestureCoordinator_closestHeightForProjectedHeight_
   obj = [objc_alloc(MEMORY[0x1E69DCD28]) initWithTarget:self action:sel_handleHeightGesture_];
   [obj setDelegate:self];
   [obj setMaximumNumberOfTouches:1];
-  v3 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-  v4 = [v3 view];
-  [v4 addGestureRecognizer:obj];
+  cardViewController = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+  view = [cardViewController view];
+  [view addGestureRecognizer:obj];
 
   objc_storeStrong(&self->_heightGestureRecognizer, obj);
-  v5 = [(PXFloatingCardGestureCoordinator *)self layout];
-  LODWORD(v4) = [v5 canDrag];
+  layout = [(PXFloatingCardGestureCoordinator *)self layout];
+  LODWORD(view) = [layout canDrag];
 
-  if (v4)
+  if (view)
   {
     v6 = [objc_alloc(MEMORY[0x1E69DCD28]) initWithTarget:self action:sel_handlePositionGesture_];
     [(UIPanGestureRecognizer *)v6 setDelegate:self];
-    v7 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
-    v8 = [v7 view];
-    [v8 addGestureRecognizer:v6];
+    cardViewController2 = [(PXFloatingCardGestureCoordinator *)self cardViewController];
+    view2 = [cardViewController2 view];
+    [view2 addGestureRecognizer:v6];
 
     positionGestureRecognizer = self->_positionGestureRecognizer;
     self->_positionGestureRecognizer = v6;
   }
 }
 
-- (PXFloatingCardGestureCoordinator)initWithCardViewController:(id)a3 layout:(id)a4
+- (PXFloatingCardGestureCoordinator)initWithCardViewController:(id)controller layout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  layoutCopy = layout;
   v13.receiver = self;
   v13.super_class = PXFloatingCardGestureCoordinator;
   v8 = [(PXFloatingCardGestureCoordinator *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_cardViewController, v6);
-    objc_storeWeak(&v9->_layout, v7);
+    objc_storeWeak(&v8->_cardViewController, controllerCopy);
+    objc_storeWeak(&v9->_layout, layoutCopy);
     v10 = objc_alloc_init(PXFloatingCardAnimationManager);
     animationManager = v9->_animationManager;
     v9->_animationManager = v10;

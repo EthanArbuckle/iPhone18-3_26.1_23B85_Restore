@@ -1,14 +1,14 @@
 @interface AWDBiometricKitEventLog
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)eventAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)eventAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDBiometricKitEventLog
@@ -21,20 +21,20 @@
   [(AWDBiometricKitEventLog *)&v3 dealloc];
 }
 
-- (unsigned)eventAtIndex:(unint64_t)a3
+- (unsigned)eventAtIndex:(unint64_t)index
 {
   p_events = &self->_events;
   count = self->_events.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_events->list[a3];
+  return p_events->list[index];
 }
 
 - (id)description
@@ -43,36 +43,36 @@
   v8.receiver = self;
   v8.super_class = AWDBiometricKitEventLog;
   v4 = [(AWDBiometricKitEventLog *)&v8 description];
-  v5 = [(AWDBiometricKitEventLog *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDBiometricKitEventLog *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   v5 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v5 forKey:@"event"];
+  [dictionary setObject:v5 forKey:@"event"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   p_events = &self->_events;
@@ -83,7 +83,7 @@
     {
       v8 = p_events->list[v7];
       PBDataWriterWriteUint32Field();
-      v4 = v9;
+      toCopy = v9;
       ++v7;
     }
 
@@ -91,23 +91,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_timestamp;
-    *(v4 + 40) |= 1u;
+    toCopy[4] = self->_timestamp;
+    *(toCopy + 40) |= 1u;
   }
 
-  v8 = v4;
+  v8 = toCopy;
   if ([(AWDBiometricKitEventLog *)self eventsCount])
   {
     [v8 clearEvents];
-    v5 = [(AWDBiometricKitEventLog *)self eventsCount];
-    if (v5)
+    eventsCount = [(AWDBiometricKitEventLog *)self eventsCount];
+    if (eventsCount)
     {
-      v6 = v5;
+      v6 = eventsCount;
       for (i = 0; i != v6; ++i)
       {
         [v8 addEvent:{-[AWDBiometricKitEventLog eventAtIndex:](self, "eventAtIndex:", i)}];
@@ -116,9 +116,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (*&self->_has)
   {
@@ -130,24 +130,24 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_timestamp != *(v4 + 4))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_timestamp != *(equalCopy + 4))
     {
       goto LABEL_8;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_8:
     IsEqual = 0;
@@ -175,20 +175,20 @@ LABEL_9:
   return PBRepeatedUInt32Hash() ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[5])
+  fromCopy = from;
+  if (fromCopy[5])
   {
-    self->_timestamp = v4[4];
+    self->_timestamp = fromCopy[4];
     *&self->_has |= 1u;
   }
 
-  v8 = v4;
-  v5 = [v4 eventsCount];
-  if (v5)
+  v8 = fromCopy;
+  eventsCount = [fromCopy eventsCount];
+  if (eventsCount)
   {
-    v6 = v5;
+    v6 = eventsCount;
     for (i = 0; i != v6; ++i)
     {
       -[AWDBiometricKitEventLog addEvent:](self, "addEvent:", [v8 eventAtIndex:i]);

@@ -1,31 +1,31 @@
 @interface MSBackoffManager
-- (BOOL)isEqual:(id)a3;
-- (MSBackoffManager)initWithCoder:(id)a3;
-- (MSBackoffManager)initWithInitialInterval:(double)a3 backoffFactor:(double)a4 randomizeFactor:(double)a5 maxBackoffInterval:(double)a6 retryAfterDate:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (MSBackoffManager)initWithCoder:(id)coder;
+- (MSBackoffManager)initWithInitialInterval:(double)interval backoffFactor:(double)factor randomizeFactor:(double)randomizeFactor maxBackoffInterval:(double)backoffInterval retryAfterDate:(id)date;
 - (NSDate)nextExpiryDate;
 - (id)copyParameters;
-- (void)_complainAboutMissingKeyInArchive:(id)a3;
+- (void)_complainAboutMissingKeyInArchive:(id)archive;
 - (void)backoff;
-- (void)didReceiveRetryAfterDate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)didReceiveRetryAfterDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
 - (void)reset;
-- (void)setCurrentInterval:(double)a3;
-- (void)setNextExpiryDate:(id)a3;
+- (void)setCurrentInterval:(double)interval;
+- (void)setNextExpiryDate:(id)date;
 @end
 
 @implementation MSBackoffManager
 
-- (MSBackoffManager)initWithCoder:(id)a3
+- (MSBackoffManager)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = MSBackoffManager;
   v5 = [(MSBackoffManager *)&v18 init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"initialInterval"])
+    if ([coderCopy containsValueForKey:@"initialInterval"])
     {
-      [v4 decodeDoubleForKey:@"initialInterval"];
+      [coderCopy decodeDoubleForKey:@"initialInterval"];
       v5->_initialInterval = v6;
     }
 
@@ -34,9 +34,9 @@
       [(MSBackoffManager *)v5 _complainAboutMissingKeyInArchive:@"initialInterval"];
     }
 
-    if ([v4 containsValueForKey:@"backoffFactor"])
+    if ([coderCopy containsValueForKey:@"backoffFactor"])
     {
-      [v4 decodeDoubleForKey:@"backoffFactor"];
+      [coderCopy decodeDoubleForKey:@"backoffFactor"];
       v5->_backoffFactor = v7;
     }
 
@@ -45,9 +45,9 @@
       [(MSBackoffManager *)v5 _complainAboutMissingKeyInArchive:@"backoffFactor"];
     }
 
-    if ([v4 containsValueForKey:@"randomizeFactor"])
+    if ([coderCopy containsValueForKey:@"randomizeFactor"])
     {
-      [v4 decodeDoubleForKey:@"randomizeFactor"];
+      [coderCopy decodeDoubleForKey:@"randomizeFactor"];
       v5->_randomizeFactor = v8;
     }
 
@@ -56,9 +56,9 @@
       [(MSBackoffManager *)v5 _complainAboutMissingKeyInArchive:@"randomizeFactor"];
     }
 
-    if ([v4 containsValueForKey:@"maxBackoffInterval"])
+    if ([coderCopy containsValueForKey:@"maxBackoffInterval"])
     {
-      [v4 decodeDoubleForKey:@"maxBackoffInterval"];
+      [coderCopy decodeDoubleForKey:@"maxBackoffInterval"];
       v5->_maxBackoffInterval = v9;
     }
 
@@ -67,9 +67,9 @@
       [(MSBackoffManager *)v5 _complainAboutMissingKeyInArchive:@"maxBackoffInterval"];
     }
 
-    if ([v4 containsValueForKey:@"currentInterval"])
+    if ([coderCopy containsValueForKey:@"currentInterval"])
     {
-      [v4 decodeDoubleForKey:@"currentInterval"];
+      [coderCopy decodeDoubleForKey:@"currentInterval"];
       v5->_currentInterval = v10;
     }
 
@@ -78,19 +78,19 @@
       [(MSBackoffManager *)v5 _complainAboutMissingKeyInArchive:@"currentInterval"];
     }
 
-    if ([v4 containsValueForKey:@"nextExpiryDate"])
+    if ([coderCopy containsValueForKey:@"nextExpiryDate"])
     {
       v11 = MEMORY[0x277CBEAA8];
-      [v4 decodeDoubleForKey:@"nextExpiryDate"];
+      [coderCopy decodeDoubleForKey:@"nextExpiryDate"];
       v12 = [v11 dateWithTimeIntervalSinceReferenceDate:?];
       nextExpiryDate = v5->_nextExpiryDate;
       v5->_nextExpiryDate = v12;
     }
 
-    if ([v4 containsValueForKey:@"retryAfterDate"])
+    if ([coderCopy containsValueForKey:@"retryAfterDate"])
     {
       v14 = MEMORY[0x277CBEAA8];
-      [v4 decodeDoubleForKey:@"retryAfterDate"];
+      [coderCopy decodeDoubleForKey:@"retryAfterDate"];
       v15 = [v14 dateWithTimeIntervalSinceReferenceDate:?];
       retryAfterDate = v5->_retryAfterDate;
       v5->_retryAfterDate = v15;
@@ -100,15 +100,15 @@
   return v5;
 }
 
-- (void)_complainAboutMissingKeyInArchive:(id)a3
+- (void)_complainAboutMissingKeyInArchive:(id)archive
 {
   v10 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
-    v9 = a3;
+    archiveCopy = archive;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Missing key in archive: “%{public}@”.", &v6, 0x16u);
   }
 
@@ -117,66 +117,66 @@
 
 - (id)copyParameters
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:self->_initialInterval];
-  [v3 setObject:v4 forKey:@"initialInterval"];
+  [dictionary setObject:v4 forKey:@"initialInterval"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_backoffFactor];
-  [v3 setObject:v5 forKey:@"backoffFactor"];
+  [dictionary setObject:v5 forKey:@"backoffFactor"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_randomizeFactor];
-  [v3 setObject:v6 forKey:@"randomizeFactor"];
+  [dictionary setObject:v6 forKey:@"randomizeFactor"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_maxBackoffInterval];
-  [v3 setObject:v7 forKey:@"maxBackoffInterval"];
+  [dictionary setObject:v7 forKey:@"maxBackoffInterval"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_currentInterval];
-  [v3 setObject:v8 forKey:@"currentInterval"];
+  [dictionary setObject:v8 forKey:@"currentInterval"];
 
-  v9 = [(MSBackoffManager *)self nextExpiryDate];
-  if (v9)
+  nextExpiryDate = [(MSBackoffManager *)self nextExpiryDate];
+  if (nextExpiryDate)
   {
-    [v3 setObject:v9 forKey:@"nextExpiryDate"];
+    [dictionary setObject:nextExpiryDate forKey:@"nextExpiryDate"];
   }
 
-  v10 = [(MSBackoffManager *)self retryAfterDate];
-  if (v10)
+  retryAfterDate = [(MSBackoffManager *)self retryAfterDate];
+  if (retryAfterDate)
   {
-    [v3 setObject:v10 forKey:@"retryAfterDate"];
+    [dictionary setObject:retryAfterDate forKey:@"retryAfterDate"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeDouble:@"initialInterval" forKey:self->_initialInterval];
-  [v8 encodeDouble:@"backoffFactor" forKey:self->_backoffFactor];
-  [v8 encodeDouble:@"randomizeFactor" forKey:self->_randomizeFactor];
-  [v8 encodeDouble:@"maxBackoffInterval" forKey:self->_maxBackoffInterval];
-  [v8 encodeDouble:@"currentInterval" forKey:self->_currentInterval];
-  v4 = [(MSBackoffManager *)self nextExpiryDate];
-  v5 = v4;
-  if (v4)
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"initialInterval" forKey:self->_initialInterval];
+  [coderCopy encodeDouble:@"backoffFactor" forKey:self->_backoffFactor];
+  [coderCopy encodeDouble:@"randomizeFactor" forKey:self->_randomizeFactor];
+  [coderCopy encodeDouble:@"maxBackoffInterval" forKey:self->_maxBackoffInterval];
+  [coderCopy encodeDouble:@"currentInterval" forKey:self->_currentInterval];
+  nextExpiryDate = [(MSBackoffManager *)self nextExpiryDate];
+  v5 = nextExpiryDate;
+  if (nextExpiryDate)
   {
-    [v4 timeIntervalSinceReferenceDate];
-    [v8 encodeDouble:@"nextExpiryDate" forKey:?];
+    [nextExpiryDate timeIntervalSinceReferenceDate];
+    [coderCopy encodeDouble:@"nextExpiryDate" forKey:?];
   }
 
-  v6 = [(MSBackoffManager *)self retryAfterDate];
-  v7 = v6;
-  if (v6)
+  retryAfterDate = [(MSBackoffManager *)self retryAfterDate];
+  v7 = retryAfterDate;
+  if (retryAfterDate)
   {
-    [v6 timeIntervalSinceReferenceDate];
-    [v8 encodeDouble:@"retryAfterDate" forKey:?];
+    [retryAfterDate timeIntervalSinceReferenceDate];
+    [coderCopy encodeDouble:@"retryAfterDate" forKey:?];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v18 = 1;
   }
@@ -186,7 +186,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       initialInterval = self->_initialInterval;
       [(MSBackoffManager *)v5 initialInterval];
       if (vabdd_f64(initialInterval, v7) >= 2.22044605e-16)
@@ -205,8 +205,8 @@ LABEL_11:
       else
       {
         retryAfterDate = self->_retryAfterDate;
-        v17 = [(MSBackoffManager *)v5 retryAfterDate];
-        v18 = [(NSDate *)retryAfterDate isEqual:v17];
+        retryAfterDate = [(MSBackoffManager *)v5 retryAfterDate];
+        v18 = [(NSDate *)retryAfterDate isEqual:retryAfterDate];
       }
     }
 
@@ -214,7 +214,7 @@ LABEL_11:
     {
       v20.receiver = self;
       v20.super_class = MSBackoffManager;
-      v18 = [(MSBackoffManager *)&v20 isEqual:v4];
+      v18 = [(MSBackoffManager *)&v20 isEqual:equalCopy];
     }
   }
 
@@ -281,20 +281,20 @@ LABEL_11:
   [(MSBackoffManagerDelegate *)self->_delegate MSBackoffManagerDidUpdateNextExpiryDate:self];
 }
 
-- (void)didReceiveRetryAfterDate:(id)a3
+- (void)didReceiveRetryAfterDate:(id)date
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MSBackoffManager *)self retryAfterDate];
-  v6 = v5;
-  if (v4)
+  dateCopy = date;
+  retryAfterDate = [(MSBackoffManager *)self retryAfterDate];
+  v6 = retryAfterDate;
+  if (dateCopy)
   {
-    if (v5 && [v5 compare:v4] == 1)
+    if (retryAfterDate && [retryAfterDate compare:dateCopy] == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v8 = 138543618;
-        v9 = v4;
+        v9 = dateCopy;
         v10 = 2114;
         v11 = v6;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Not resetting retry-after date, because the new date %{public}@ is not later than the existing date %{public}@", &v8, 0x16u);
@@ -306,13 +306,13 @@ LABEL_11:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v8 = 138543618;
-        v9 = v4;
+        v9 = dateCopy;
         v10 = 2114;
         v11 = v6;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Setting retry-after date to %{public}@. Old retry-after date was %{public}@", &v8, 0x16u);
       }
 
-      [(MSBackoffManager *)self setRetryAfterDate:v4];
+      [(MSBackoffManager *)self setRetryAfterDate:dateCopy];
     }
   }
 
@@ -329,48 +329,48 @@ LABEL_11:
 
 - (NSDate)nextExpiryDate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  nextExpiryDate = v2->_nextExpiryDate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  nextExpiryDate = selfCopy->_nextExpiryDate;
   if (nextExpiryDate)
   {
-    v4 = nextExpiryDate;
+    distantPast = nextExpiryDate;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  v5 = v4;
-  v6 = [(MSBackoffManager *)v2 retryAfterDate];
-  v7 = v6;
-  if (v6 && [v6 compare:v5] == 1)
+  v5 = distantPast;
+  retryAfterDate = [(MSBackoffManager *)selfCopy retryAfterDate];
+  v7 = retryAfterDate;
+  if (retryAfterDate && [retryAfterDate compare:v5] == 1)
   {
     v8 = v7;
 
     v5 = v8;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (void)setNextExpiryDate:(id)a3
+- (void)setNextExpiryDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   obj = self;
   objc_sync_enter(obj);
   nextExpiryDate = obj->_nextExpiryDate;
-  obj->_nextExpiryDate = v4;
+  obj->_nextExpiryDate = dateCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setCurrentInterval:(double)a3
+- (void)setCurrentInterval:(double)interval
 {
-  if (self->_maxBackoffInterval <= a3)
+  if (self->_maxBackoffInterval <= interval)
   {
     maxBackoffInterval = self->_maxBackoffInterval;
   }
@@ -395,21 +395,21 @@ LABEL_11:
   }
 }
 
-- (MSBackoffManager)initWithInitialInterval:(double)a3 backoffFactor:(double)a4 randomizeFactor:(double)a5 maxBackoffInterval:(double)a6 retryAfterDate:(id)a7
+- (MSBackoffManager)initWithInitialInterval:(double)interval backoffFactor:(double)factor randomizeFactor:(double)randomizeFactor maxBackoffInterval:(double)backoffInterval retryAfterDate:(id)date
 {
-  v13 = a7;
+  dateCopy = date;
   v17.receiver = self;
   v17.super_class = MSBackoffManager;
   v14 = [(MSBackoffManager *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_initialInterval = a3;
-    v14->_backoffFactor = a4;
-    v14->_randomizeFactor = a5;
-    v14->_maxBackoffInterval = a6;
+    v14->_initialInterval = interval;
+    v14->_backoffFactor = factor;
+    v14->_randomizeFactor = randomizeFactor;
+    v14->_maxBackoffInterval = backoffInterval;
     v14->_currentInterval = 0.0;
-    objc_storeStrong(&v14->_retryAfterDate, a7);
+    objc_storeStrong(&v14->_retryAfterDate, date);
   }
 
   return v15;

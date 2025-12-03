@@ -1,20 +1,20 @@
 @interface PLBuildVersion
 + (id)currentBuildVersionString;
-- (PLBuildVersion)initWithString:(id)a3;
-- (int64_t)compareBuildVersion:(id)a3 withPrecision:(int64_t)a4;
-- (int64_t)compareBuildVersionString:(id)a3 withPrecision:(int64_t)a4;
+- (PLBuildVersion)initWithString:(id)string;
+- (int64_t)compareBuildVersion:(id)version withPrecision:(int64_t)precision;
+- (int64_t)compareBuildVersionString:(id)string withPrecision:(int64_t)precision;
 @end
 
 @implementation PLBuildVersion
 
-- (int64_t)compareBuildVersionString:(id)a3 withPrecision:(int64_t)a4
+- (int64_t)compareBuildVersionString:(id)string withPrecision:(int64_t)precision
 {
-  v6 = a3;
-  v7 = [[PLBuildVersion alloc] initWithString:v6];
+  stringCopy = string;
+  v7 = [[PLBuildVersion alloc] initWithString:stringCopy];
 
   if (v7)
   {
-    v8 = [(PLBuildVersion *)self compareBuildVersion:v7 withPrecision:a4];
+    v8 = [(PLBuildVersion *)self compareBuildVersion:v7 withPrecision:precision];
   }
 
   else
@@ -25,60 +25,60 @@
   return v8;
 }
 
-- (int64_t)compareBuildVersion:(id)a3 withPrecision:(int64_t)a4
+- (int64_t)compareBuildVersion:(id)version withPrecision:(int64_t)precision
 {
-  v7 = a3;
-  if (!v7)
+  versionCopy = version;
+  if (!versionCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PLHelper.m" lineNumber:2062 description:{@"Invalid parameter not satisfying: %@", @"otherBuildVersion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLHelper.m" lineNumber:2062 description:{@"Invalid parameter not satisfying: %@", @"otherBuildVersion"}];
   }
 
-  v8 = [(PLBuildVersion *)self majorBuildNumber];
-  v9 = [v7 majorBuildNumber];
-  if (v8 < v9)
+  majorBuildNumber = [(PLBuildVersion *)self majorBuildNumber];
+  majorBuildNumber2 = [versionCopy majorBuildNumber];
+  if (majorBuildNumber < majorBuildNumber2)
   {
     v10 = -1;
   }
 
   else
   {
-    v10 = v8 > v9;
+    v10 = majorBuildNumber > majorBuildNumber2;
   }
 
   if (!v10)
   {
-    if ((a4 - 1) > 1)
+    if ((precision - 1) > 1)
     {
       goto LABEL_18;
     }
 
-    v11 = [(PLBuildVersion *)self majorBuildLetterString];
-    v12 = [v7 majorBuildLetterString];
-    v10 = [v11 caseInsensitiveCompare:v12];
+    majorBuildLetterString = [(PLBuildVersion *)self majorBuildLetterString];
+    majorBuildLetterString2 = [versionCopy majorBuildLetterString];
+    v10 = [majorBuildLetterString caseInsensitiveCompare:majorBuildLetterString2];
 
-    if (a4 == 2 && !v10)
+    if (precision == 2 && !v10)
     {
-      v13 = [(PLBuildVersion *)self minorBuildNumber];
-      v14 = [v7 minorBuildNumber];
-      v10 = v13 < v14 ? -1 : v13 > v14;
+      minorBuildNumber = [(PLBuildVersion *)self minorBuildNumber];
+      minorBuildNumber2 = [versionCopy minorBuildNumber];
+      v10 = minorBuildNumber < minorBuildNumber2 ? -1 : minorBuildNumber > minorBuildNumber2;
       if (!v10)
       {
-        v15 = [(PLBuildVersion *)self minorBuildLetterString];
-        if (v15)
+        minorBuildLetterString = [(PLBuildVersion *)self minorBuildLetterString];
+        if (minorBuildLetterString)
         {
 
 LABEL_17:
-          v17 = [(PLBuildVersion *)self minorBuildLetterString];
-          v18 = [v7 minorBuildLetterString];
-          v10 = [v17 caseInsensitiveCompare:v18];
+          minorBuildLetterString2 = [(PLBuildVersion *)self minorBuildLetterString];
+          minorBuildLetterString3 = [versionCopy minorBuildLetterString];
+          v10 = [minorBuildLetterString2 caseInsensitiveCompare:minorBuildLetterString3];
 
           goto LABEL_19;
         }
 
-        v16 = [v7 minorBuildLetterString];
+        minorBuildLetterString4 = [versionCopy minorBuildLetterString];
 
-        if (v16)
+        if (minorBuildLetterString4)
         {
           goto LABEL_17;
         }
@@ -94,14 +94,14 @@ LABEL_19:
   return v10;
 }
 
-- (PLBuildVersion)initWithString:(id)a3
+- (PLBuildVersion)initWithString:(id)string
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AB08] letterCharacterSet];
-  v6 = [v4 rangeOfCharacterFromSet:v5];
+  stringCopy = string;
+  letterCharacterSet = [MEMORY[0x1E696AB08] letterCharacterSet];
+  v6 = [stringCopy rangeOfCharacterFromSet:letterCharacterSet];
   v8 = v7;
 
-  if ([v4 length])
+  if ([stringCopy length])
   {
     if (v6 != 0x7FFFFFFFFFFFFFFFLL && v8 == 1)
     {
@@ -110,21 +110,21 @@ LABEL_19:
       self = [(PLBuildVersion *)&v29 init];
       if (self)
       {
-        v10 = [v4 copy];
+        v10 = [stringCopy copy];
         stringRepresentation = self->_stringRepresentation;
         self->_stringRepresentation = v10;
 
-        v12 = [v4 substringToIndex:v6];
+        v12 = [stringCopy substringToIndex:v6];
         self->_majorBuildNumber = [v12 integerValue];
 
-        v13 = [v4 substringWithRange:{v6, v8}];
+        v13 = [stringCopy substringWithRange:{v6, v8}];
         v14 = [v13 copy];
         majorBuildLetterString = self->_majorBuildLetterString;
         self->_majorBuildLetterString = v14;
 
-        v16 = [v4 substringFromIndex:v6 + 1];
-        v17 = [MEMORY[0x1E696AB08] letterCharacterSet];
-        v18 = [v16 rangeOfCharacterFromSet:v17];
+        v16 = [stringCopy substringFromIndex:v6 + 1];
+        letterCharacterSet2 = [MEMORY[0x1E696AB08] letterCharacterSet];
+        v18 = [v16 rangeOfCharacterFromSet:letterCharacterSet2];
         v20 = v19;
 
         if (v18 == 0x7FFFFFFFFFFFFFFFLL || v20 != 1)
@@ -135,7 +135,7 @@ LABEL_19:
             minorBuildLetterString = self->_minorBuildLetterString;
             self->_minorBuildLetterString = v25;
 
-            v24 = [v4 substringFromIndex:v6 + 1];
+            v24 = [stringCopy substringFromIndex:v6 + 1];
             goto LABEL_14;
           }
         }
@@ -149,14 +149,14 @@ LABEL_19:
 
           v24 = [v16 substringToIndex:v18];
 LABEL_14:
-          v27 = v24;
+          selfCopy = v24;
           self->_minorBuildNumber = [(PLBuildVersion *)v24 integerValue];
 LABEL_16:
 
           goto LABEL_17;
         }
 
-        v27 = self;
+        selfCopy = self;
         self = 0;
         goto LABEL_16;
       }

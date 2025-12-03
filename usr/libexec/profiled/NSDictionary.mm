@@ -1,44 +1,44 @@
 @interface NSDictionary
-+ (id)MCDictionaryFromFile:(id)a3;
-+ (id)MCShortenedArray:(id)a3;
-+ (id)MCShortenedData:(id)a3;
-+ (id)MCShortenedDictionary:(id)a3;
-+ (id)MCShortenedObject:(id)a3;
-- (BOOL)MCValidateBoolRestriction:(id)a3 inRestrictions:(id)a4 defaultRestrictions:(id)a5;
-- (BOOL)MCValidateIntersectionRestriction:(id)a3 inRestrictions:(id)a4 defaultRestrictions:(id)a5;
++ (id)MCDictionaryFromFile:(id)file;
++ (id)MCShortenedArray:(id)array;
++ (id)MCShortenedData:(id)data;
++ (id)MCShortenedDictionary:(id)dictionary;
++ (id)MCShortenedObject:(id)object;
+- (BOOL)MCValidateBoolRestriction:(id)restriction inRestrictions:(id)restrictions defaultRestrictions:(id)defaultRestrictions;
+- (BOOL)MCValidateIntersectionRestriction:(id)restriction inRestrictions:(id)restrictions defaultRestrictions:(id)defaultRestrictions;
 - (BOOL)MCValidateRestrictions;
-- (BOOL)MCValidateUnionRestriction:(id)a3 inRestrictions:(id)a4 defaultRestrictions:(id)a5;
-- (BOOL)MCValidateValueRestriction:(id)a3 inRestrictions:(id)a4 defaultRestrictions:(id)a5;
-- (BOOL)MCWriteToBinaryFile:(id)a3;
-- (BOOL)MCWriteToBinaryFile:(id)a3 atomically:(BOOL)a4;
-- (id)MCDictionaryAdditiveDeltaToCreateDictionary:(id)a3;
-- (id)MCDictionarySubtractiveDeltaToCreateDictionary:(id)a3;
-- (id)MCDictionaryWithLeafValuesSetToValue:(id)a3;
-- (id)MCInsertedKeysFromDictionary:(id)a3 withNewLeafValue:(id)a4;
-- (id)MCMutableDeepCopyWithZone:(_NSZone *)a3;
-- (id)MCRemovedKeysFromDictionary:(id)a3;
-- (id)MCRetainOptionalNonZeroLengthStringKey:(id)a3 errorDomain:(id)a4 invalidDataCode:(int64_t)a5 invalidDataErrorString:(id)a6 outError:(id *)a7;
-- (id)MCRetainOptionalObjectKey:(id)a3 type:(Class)a4 errorDomain:(id)a5 invalidDataCode:(int64_t)a6 invalidDataErrorString:(id)a7 outError:(id *)a8;
-- (id)MCRetainRequiredNonZeroLengthStringKey:(id)a3 errorDomain:(id)a4 missingDataCode:(int64_t)a5 missingDataErrorString:(id)a6 invalidDataCode:(int64_t)a7 invalidDataErrorString:(id)a8 outError:(id *)a9;
-- (id)MCRetainRequiredObjectKey:(id)a3 type:(Class)a4 errorDomain:(id)a5 missingDataCode:(int64_t)a6 missingDataErrorString:(id)a7 invalidDataCode:(int64_t)a8 invalidDataErrorString:(id)a9 outError:(id *)a10;
+- (BOOL)MCValidateUnionRestriction:(id)restriction inRestrictions:(id)restrictions defaultRestrictions:(id)defaultRestrictions;
+- (BOOL)MCValidateValueRestriction:(id)restriction inRestrictions:(id)restrictions defaultRestrictions:(id)defaultRestrictions;
+- (BOOL)MCWriteToBinaryFile:(id)file;
+- (BOOL)MCWriteToBinaryFile:(id)file atomically:(BOOL)atomically;
+- (id)MCDictionaryAdditiveDeltaToCreateDictionary:(id)dictionary;
+- (id)MCDictionarySubtractiveDeltaToCreateDictionary:(id)dictionary;
+- (id)MCDictionaryWithLeafValuesSetToValue:(id)value;
+- (id)MCInsertedKeysFromDictionary:(id)dictionary withNewLeafValue:(id)value;
+- (id)MCMutableDeepCopyWithZone:(_NSZone *)zone;
+- (id)MCRemovedKeysFromDictionary:(id)dictionary;
+- (id)MCRetainOptionalNonZeroLengthStringKey:(id)key errorDomain:(id)domain invalidDataCode:(int64_t)code invalidDataErrorString:(id)string outError:(id *)error;
+- (id)MCRetainOptionalObjectKey:(id)key type:(Class)type errorDomain:(id)domain invalidDataCode:(int64_t)code invalidDataErrorString:(id)string outError:(id *)error;
+- (id)MCRetainRequiredNonZeroLengthStringKey:(id)key errorDomain:(id)domain missingDataCode:(int64_t)code missingDataErrorString:(id)string invalidDataCode:(int64_t)dataCode invalidDataErrorString:(id)errorString outError:(id *)error;
+- (id)MCRetainRequiredObjectKey:(id)key type:(Class)type errorDomain:(id)domain missingDataCode:(int64_t)code missingDataErrorString:(id)string invalidDataCode:(int64_t)dataCode invalidDataErrorString:(id)errorString outError:(id *)self0;
 - (id)MCShortenedPlistDescription;
 @end
 
 @implementation NSDictionary
 
-- (BOOL)MCWriteToBinaryFile:(id)a3
+- (BOOL)MCWriteToBinaryFile:(id)file
 {
-  v4 = a3;
-  v5 = [[MCDictionaryWriter alloc] initWithDictionary:self path:v4];
+  fileCopy = file;
+  v5 = [[MCDictionaryWriter alloc] initWithDictionary:self path:fileCopy];
 
-  v6 = [v5 write];
-  return v6;
+  write = [v5 write];
+  return write;
 }
 
-- (BOOL)MCWriteToBinaryFile:(id)a3 atomically:(BOOL)a4
+- (BOOL)MCWriteToBinaryFile:(id)file atomically:(BOOL)atomically
 {
-  v4 = a4;
-  v6 = a3;
+  atomicallyCopy = atomically;
+  fileCopy = file;
   v7 = objc_autoreleasePoolPush();
   v17 = 0;
   v8 = [NSPropertyListSerialization dataWithPropertyList:self format:200 options:0 error:&v17];
@@ -46,7 +46,7 @@
   if (v8)
   {
     v16 = 0;
-    v10 = [v8 writeToFile:v6 options:v4 error:&v16];
+    v10 = [v8 writeToFile:fileCopy options:atomicallyCopy error:&v16];
     v11 = v16;
     if (v10)
     {
@@ -61,7 +61,7 @@
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v19 = v6;
+      v19 = fileCopy;
       v20 = 2114;
       v21 = v9;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Could not serialize data for %{public}@: %{public}@", buf, 0x16u);
@@ -74,7 +74,7 @@
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v19 = v6;
+    v19 = fileCopy;
     v20 = 2114;
     v21 = v11;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Could not write data to path %{public}@: %{public}@", buf, 0x16u);
@@ -87,10 +87,10 @@ LABEL_10:
   return v12;
 }
 
-+ (id)MCDictionaryFromFile:(id)a3
++ (id)MCDictionaryFromFile:(id)file
 {
-  v3 = a3;
-  v4 = [NSURL fileURLWithPath:v3];
+  fileCopy = file;
+  v4 = [NSURL fileURLWithPath:fileCopy];
   v9 = 0;
   v5 = [NSDictionary dictionaryWithContentsOfURL:v4 error:&v9];
   v6 = v9;
@@ -100,7 +100,7 @@ LABEL_10:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v11 = v3;
+      v11 = fileCopy;
       v12 = 2114;
       v13 = v6;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to make dictionary from file at path: %{public}@ with error: %{public}@", buf, 0x16u);
@@ -110,7 +110,7 @@ LABEL_10:
   return v5;
 }
 
-- (id)MCMutableDeepCopyWithZone:(_NSZone *)a3
+- (id)MCMutableDeepCopyWithZone:(_NSZone *)zone
 {
   v5 = [[NSMutableDictionary alloc] initWithCapacity:{-[NSDictionary count](self, "count")}];
   v18 = 0u;
@@ -137,14 +137,14 @@ LABEL_10:
         v11 = v10;
         if ([v10 conformsToProtocol:&OBJC_PROTOCOL___NSMutableCopying])
         {
-          v11 = [v10 mutableCopyWithZone:a3];
+          v11 = [v10 mutableCopyWithZone:zone];
         }
 
         v12 = [(NSDictionary *)self objectForKey:v10];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v12 MCMutableDeepCopyWithZone:a3];
+          v13 = [v12 MCMutableDeepCopyWithZone:zone];
 LABEL_13:
           v14 = v13;
           [v5 setObject:v13 forKey:v11];
@@ -155,13 +155,13 @@ LABEL_13:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 || [v12 conformsToProtocol:&OBJC_PROTOCOL___NSMutableCopying])
         {
-          v13 = [v12 mutableCopyWithZone:a3];
+          v13 = [v12 mutableCopyWithZone:zone];
           goto LABEL_13;
         }
 
         if ([v12 conformsToProtocol:&OBJC_PROTOCOL___NSCopying])
         {
-          v13 = [v12 copyWithZone:a3];
+          v13 = [v12 copyWithZone:zone];
           goto LABEL_13;
         }
 
@@ -182,13 +182,13 @@ LABEL_14:
   return v5;
 }
 
-- (id)MCRetainRequiredObjectKey:(id)a3 type:(Class)a4 errorDomain:(id)a5 missingDataCode:(int64_t)a6 missingDataErrorString:(id)a7 invalidDataCode:(int64_t)a8 invalidDataErrorString:(id)a9 outError:(id *)a10
+- (id)MCRetainRequiredObjectKey:(id)key type:(Class)type errorDomain:(id)domain missingDataCode:(int64_t)code missingDataErrorString:(id)string invalidDataCode:(int64_t)dataCode invalidDataErrorString:(id)errorString outError:(id *)self0
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a7;
-  v18 = a9;
-  v19 = [(NSDictionary *)self objectForKey:v15];
+  keyCopy = key;
+  domainCopy = domain;
+  stringCopy = string;
+  errorStringCopy = errorString;
+  v19 = [(NSDictionary *)self objectForKey:keyCopy];
   if (v19)
   {
     if (objc_opt_isKindOfClass())
@@ -197,26 +197,26 @@ LABEL_14:
       goto LABEL_10;
     }
 
-    if (a10)
+    if (error)
     {
-      v26 = v15;
+      v26 = keyCopy;
       v21 = MCErrorArray();
       v22 = MCErrorTypeFatal;
-      v23 = v16;
-      v24 = a8;
+      v23 = domainCopy;
+      codeCopy = dataCode;
       goto LABEL_8;
     }
   }
 
-  else if (a10)
+  else if (error)
   {
-    v26 = v15;
+    v26 = keyCopy;
     v21 = MCErrorArray();
     v22 = MCErrorTypeFatal;
-    v23 = v16;
-    v24 = a6;
+    v23 = domainCopy;
+    codeCopy = code;
 LABEL_8:
-    *a10 = [NSError MCErrorWithDomain:v23 code:v24 descriptionArray:v21 errorType:v22, v26, 0];
+    *error = [NSError MCErrorWithDomain:v23 code:codeCopy descriptionArray:v21 errorType:v22, v26, 0];
   }
 
   v20 = 0;
@@ -225,49 +225,49 @@ LABEL_10:
   return v20;
 }
 
-- (id)MCRetainOptionalObjectKey:(id)a3 type:(Class)a4 errorDomain:(id)a5 invalidDataCode:(int64_t)a6 invalidDataErrorString:(id)a7 outError:(id *)a8
+- (id)MCRetainOptionalObjectKey:(id)key type:(Class)type errorDomain:(id)domain invalidDataCode:(int64_t)code invalidDataErrorString:(id)string outError:(id *)error
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a7;
-  v16 = [(NSDictionary *)self objectForKey:v13];
+  keyCopy = key;
+  domainCopy = domain;
+  stringCopy = string;
+  v16 = [(NSDictionary *)self objectForKey:keyCopy];
   if (v16 && (objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a8)
+    if (error)
     {
       v17 = MCErrorArray();
-      *a8 = [NSError MCErrorWithDomain:v14 code:a6 descriptionArray:v17 errorType:MCErrorTypeFatal, v13, 0];
+      *error = [NSError MCErrorWithDomain:domainCopy code:code descriptionArray:v17 errorType:MCErrorTypeFatal, keyCopy, 0];
 
-      a8 = 0;
+      error = 0;
     }
   }
 
   else
   {
-    a8 = v16;
+    error = v16;
   }
 
-  return a8;
+  return error;
 }
 
-- (id)MCRetainRequiredNonZeroLengthStringKey:(id)a3 errorDomain:(id)a4 missingDataCode:(int64_t)a5 missingDataErrorString:(id)a6 invalidDataCode:(int64_t)a7 invalidDataErrorString:(id)a8 outError:(id *)a9
+- (id)MCRetainRequiredNonZeroLengthStringKey:(id)key errorDomain:(id)domain missingDataCode:(int64_t)code missingDataErrorString:(id)string invalidDataCode:(int64_t)dataCode invalidDataErrorString:(id)errorString outError:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a8;
-  v19 = [(NSDictionary *)self objectForKey:v15];
+  keyCopy = key;
+  domainCopy = domain;
+  stringCopy = string;
+  errorStringCopy = errorString;
+  v19 = [(NSDictionary *)self objectForKey:keyCopy];
   if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    if (a9)
+    if (error)
     {
-      v26 = v15;
+      v26 = keyCopy;
       v21 = MCErrorArray();
       v22 = MCErrorTypeFatal;
-      v23 = v16;
-      v24 = a7;
+      v23 = domainCopy;
+      codeCopy = dataCode;
 LABEL_9:
-      *a9 = [NSError MCErrorWithDomain:v23 code:v24 descriptionArray:v21 errorType:v22, v26, 0];
+      *error = [NSError MCErrorWithDomain:v23 code:codeCopy descriptionArray:v21 errorType:v22, v26, 0];
     }
   }
 
@@ -279,13 +279,13 @@ LABEL_9:
       goto LABEL_11;
     }
 
-    if (a9)
+    if (error)
     {
-      v26 = v15;
+      v26 = keyCopy;
       v21 = MCErrorArray();
       v22 = MCErrorTypeFatal;
-      v23 = v16;
-      v24 = a5;
+      v23 = domainCopy;
+      codeCopy = code;
       goto LABEL_9;
     }
   }
@@ -296,12 +296,12 @@ LABEL_11:
   return v20;
 }
 
-- (id)MCRetainOptionalNonZeroLengthStringKey:(id)a3 errorDomain:(id)a4 invalidDataCode:(int64_t)a5 invalidDataErrorString:(id)a6 outError:(id *)a7
+- (id)MCRetainOptionalNonZeroLengthStringKey:(id)key errorDomain:(id)domain invalidDataCode:(int64_t)code invalidDataErrorString:(id)string outError:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = [(NSDictionary *)self objectForKey:v12];
+  keyCopy = key;
+  domainCopy = domain;
+  stringCopy = string;
+  v15 = [(NSDictionary *)self objectForKey:keyCopy];
   if (!v15)
   {
     goto LABEL_4;
@@ -313,26 +313,26 @@ LABEL_11:
     if ([v15 length])
     {
 LABEL_4:
-      a7 = v15;
+      error = v15;
       goto LABEL_8;
     }
   }
 
   else
   {
-    if (!a7)
+    if (!error)
     {
       goto LABEL_8;
     }
 
     v16 = MCErrorArray();
-    *a7 = [NSError MCErrorWithDomain:v13 code:a5 descriptionArray:v16 errorType:MCErrorTypeFatal, v12, 0];
+    *error = [NSError MCErrorWithDomain:domainCopy code:code descriptionArray:v16 errorType:MCErrorTypeFatal, keyCopy, 0];
   }
 
-  a7 = 0;
+  error = 0;
 LABEL_8:
 
-  return a7;
+  return error;
 }
 
 - (id)MCShortenedPlistDescription
@@ -343,13 +343,13 @@ LABEL_8:
   return v3;
 }
 
-+ (id)MCShortenedObject:(id)a3
++ (id)MCShortenedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 MCShortenedArray:v4];
+    v5 = [self MCShortenedArray:objectCopy];
   }
 
   else
@@ -357,7 +357,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [a1 MCShortenedDictionary:v4];
+      v5 = [self MCShortenedDictionary:objectCopy];
     }
 
     else
@@ -365,12 +365,12 @@ LABEL_8:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [a1 MCShortenedData:v4];
+        v5 = [self MCShortenedData:objectCopy];
       }
 
       else
       {
-        v5 = v4;
+        v5 = objectCopy;
       }
     }
   }
@@ -380,24 +380,24 @@ LABEL_8:
   return v6;
 }
 
-+ (id)MCShortenedData:(id)a3
++ (id)MCShortenedData:(id)data
 {
-  v3 = a3;
-  if ([v3 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
-    if ([v3 length] > 0x10)
+    if ([dataCopy length] > 0x10)
     {
-      v4 = [v3 subdataWithRange:{0, 8}];
-      v6 = [v4 MCHexString];
-      v7 = [v3 subdataWithRange:{objc_msgSend(v3, "length") - 8, 8}];
-      v8 = [v7 MCHexString];
-      v5 = [NSString stringWithFormat:@"0x%@ ... 0x%@", v6, v8];
+      mCHexString3 = [dataCopy subdataWithRange:{0, 8}];
+      mCHexString = [mCHexString3 MCHexString];
+      v7 = [dataCopy subdataWithRange:{objc_msgSend(dataCopy, "length") - 8, 8}];
+      mCHexString2 = [v7 MCHexString];
+      v5 = [NSString stringWithFormat:@"0x%@ ... 0x%@", mCHexString, mCHexString2];
     }
 
     else
     {
-      v4 = [v3 MCHexString];
-      v5 = [NSString stringWithFormat:@"0x%@", v4];
+      mCHexString3 = [dataCopy MCHexString];
+      v5 = [NSString stringWithFormat:@"0x%@", mCHexString3];
     }
   }
 
@@ -406,20 +406,20 @@ LABEL_8:
     v5 = @"<empty>";
   }
 
-  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Data { length = %lu, bytes = %@ }", [v3 length], v5);
+  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Data { length = %lu, bytes = %@ }", [dataCopy length], v5);
 
   return v9;
 }
 
-+ (id)MCShortenedArray:(id)a3
++ (id)MCShortenedArray:(id)array
 {
-  v4 = a3;
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  arrayCopy = array;
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [arrayCopy count]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -434,7 +434,7 @@ LABEL_8:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 MCShortenedObject:{*(*(&v13 + 1) + 8 * i), v13}];
+        v11 = [self MCShortenedObject:{*(*(&v13 + 1) + 8 * i), v13}];
         [v5 addObject:v11];
       }
 
@@ -447,17 +447,17 @@ LABEL_8:
   return v5;
 }
 
-+ (id)MCShortenedDictionary:(id)a3
++ (id)MCShortenedDictionary:(id)dictionary
 {
-  v4 = a3;
-  +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
+  dictionaryCopy = dictionary;
+  +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [dictionaryCopy count]);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001354C;
   v5 = v7[3] = &unk_10011BE90;
   v8 = v5;
-  v9 = a1;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  selfCopy = self;
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -465,7 +465,7 @@ LABEL_8:
 - (BOOL)MCValidateRestrictions
 {
   v3 = +[MCRestrictionManager sharedManager];
-  v4 = [v3 defaultRestrictions];
+  defaultRestrictions = [v3 defaultRestrictions];
 
   [(NSDictionary *)self objectForKeyedSubscript:MCRestrictedBoolKey];
   v39 = 0u;
@@ -486,7 +486,7 @@ LABEL_8:
           objc_enumerationMutation(v5);
         }
 
-        if (![(NSDictionary *)self MCValidateBoolRestriction:*(*(&v39 + 1) + 8 * i) inRestrictions:v5 defaultRestrictions:v4])
+        if (![(NSDictionary *)self MCValidateBoolRestriction:*(*(&v39 + 1) + 8 * i) inRestrictions:v5 defaultRestrictions:defaultRestrictions])
         {
           v25 = 0;
           v10 = v5;
@@ -523,7 +523,7 @@ LABEL_8:
           objc_enumerationMutation(v10);
         }
 
-        if (![(NSDictionary *)self MCValidateValueRestriction:*(*(&v35 + 1) + 8 * j) inRestrictions:v10 defaultRestrictions:v4])
+        if (![(NSDictionary *)self MCValidateValueRestriction:*(*(&v35 + 1) + 8 * j) inRestrictions:v10 defaultRestrictions:defaultRestrictions])
         {
           v25 = 0;
           v15 = v10;
@@ -560,7 +560,7 @@ LABEL_8:
           objc_enumerationMutation(v15);
         }
 
-        if (![(NSDictionary *)self MCValidateIntersectionRestriction:*(*(&v31 + 1) + 8 * k) inRestrictions:v15 defaultRestrictions:v4])
+        if (![(NSDictionary *)self MCValidateIntersectionRestriction:*(*(&v31 + 1) + 8 * k) inRestrictions:v15 defaultRestrictions:defaultRestrictions])
         {
           v25 = 0;
           v20 = v15;
@@ -597,7 +597,7 @@ LABEL_8:
           objc_enumerationMutation(v20);
         }
 
-        if (![(NSDictionary *)self MCValidateUnionRestriction:*(*(&v27 + 1) + 8 * m) inRestrictions:v20 defaultRestrictions:v4, v27])
+        if (![(NSDictionary *)self MCValidateUnionRestriction:*(*(&v27 + 1) + 8 * m) inRestrictions:v20 defaultRestrictions:defaultRestrictions, v27])
         {
           v25 = 0;
           goto LABEL_38;
@@ -624,22 +624,22 @@ LABEL_41:
   return v25;
 }
 
-- (BOOL)MCValidateBoolRestriction:(id)a3 inRestrictions:(id)a4 defaultRestrictions:(id)a5
+- (BOOL)MCValidateBoolRestriction:(id)restriction inRestrictions:(id)restrictions defaultRestrictions:(id)defaultRestrictions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 objectForKeyedSubscript:MCRestrictedBoolKey];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  restrictionCopy = restriction;
+  restrictionsCopy = restrictions;
+  v9 = [defaultRestrictions objectForKeyedSubscript:MCRestrictedBoolKey];
+  v10 = [v9 objectForKeyedSubscript:restrictionCopy];
 
   if (v10)
   {
-    v11 = [v8 objectForKeyedSubscript:v7];
+    v11 = [restrictionsCopy objectForKeyedSubscript:restrictionCopy];
     v12 = [v11 objectForKeyedSubscript:MCRestrictedBoolPreferenceKey];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v8 objectForKeyedSubscript:v7];
+      v10 = [restrictionsCopy objectForKeyedSubscript:restrictionCopy];
       v13 = [v10 objectForKeyedSubscript:MCRestrictedBoolValueKey];
 
       objc_opt_class();
@@ -655,22 +655,22 @@ LABEL_41:
   return v10 & 1;
 }
 
-- (BOOL)MCValidateValueRestriction:(id)a3 inRestrictions:(id)a4 defaultRestrictions:(id)a5
+- (BOOL)MCValidateValueRestriction:(id)restriction inRestrictions:(id)restrictions defaultRestrictions:(id)defaultRestrictions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 objectForKeyedSubscript:MCRestrictedValueKey];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  restrictionCopy = restriction;
+  restrictionsCopy = restrictions;
+  v9 = [defaultRestrictions objectForKeyedSubscript:MCRestrictedValueKey];
+  v10 = [v9 objectForKeyedSubscript:restrictionCopy];
 
   if (v10)
   {
-    v11 = [v8 objectForKeyedSubscript:v7];
+    v11 = [restrictionsCopy objectForKeyedSubscript:restrictionCopy];
     v12 = [v11 objectForKeyedSubscript:MCRestrictedValuePreferSmallerValuesKey];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v8 objectForKeyedSubscript:v7];
+      v10 = [restrictionsCopy objectForKeyedSubscript:restrictionCopy];
       v13 = [v10 objectForKeyedSubscript:MCRestrictedValueValueKey];
 
       objc_opt_class();
@@ -686,16 +686,16 @@ LABEL_41:
   return v10 & 1;
 }
 
-- (BOOL)MCValidateIntersectionRestriction:(id)a3 inRestrictions:(id)a4 defaultRestrictions:(id)a5
+- (BOOL)MCValidateIntersectionRestriction:(id)restriction inRestrictions:(id)restrictions defaultRestrictions:(id)defaultRestrictions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 objectForKeyedSubscript:MCIntersectionKey];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  restrictionCopy = restriction;
+  restrictionsCopy = restrictions;
+  v9 = [defaultRestrictions objectForKeyedSubscript:MCIntersectionKey];
+  v10 = [v9 objectForKeyedSubscript:restrictionCopy];
 
   if (v10)
   {
-    v11 = [v8 objectForKeyedSubscript:v7];
+    v11 = [restrictionsCopy objectForKeyedSubscript:restrictionCopy];
     v12 = [v11 objectForKeyedSubscript:MCIntersectionValuesKey];
 
     objc_opt_class();
@@ -710,16 +710,16 @@ LABEL_41:
   return isKindOfClass & 1;
 }
 
-- (BOOL)MCValidateUnionRestriction:(id)a3 inRestrictions:(id)a4 defaultRestrictions:(id)a5
+- (BOOL)MCValidateUnionRestriction:(id)restriction inRestrictions:(id)restrictions defaultRestrictions:(id)defaultRestrictions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 objectForKeyedSubscript:MCUnionKey];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  restrictionCopy = restriction;
+  restrictionsCopy = restrictions;
+  v9 = [defaultRestrictions objectForKeyedSubscript:MCUnionKey];
+  v10 = [v9 objectForKeyedSubscript:restrictionCopy];
 
   if (v10)
   {
-    v11 = [v8 objectForKeyedSubscript:v7];
+    v11 = [restrictionsCopy objectForKeyedSubscript:restrictionCopy];
     v12 = [v11 objectForKeyedSubscript:MCUnionValuesKey];
 
     objc_opt_class();
@@ -734,15 +734,15 @@ LABEL_41:
   return isKindOfClass & 1;
 }
 
-- (id)MCDictionaryAdditiveDeltaToCreateDictionary:(id)a3
+- (id)MCDictionaryAdditiveDeltaToCreateDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = dictionaryCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -805,16 +805,16 @@ LABEL_12:
   return v5;
 }
 
-- (id)MCDictionarySubtractiveDeltaToCreateDictionary:(id)a3
+- (id)MCDictionarySubtractiveDeltaToCreateDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = self;
-  v7 = [(NSDictionary *)v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  selfCopy = self;
+  v7 = [(NSDictionary *)selfCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -826,12 +826,12 @@ LABEL_12:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [(NSDictionary *)v6 objectForKeyedSubscript:v12, v18];
-        v14 = [v4 objectForKeyedSubscript:v12];
+        v13 = [(NSDictionary *)selfCopy objectForKeyedSubscript:v12, v18];
+        v14 = [dictionaryCopy objectForKeyedSubscript:v12];
         if (v14)
         {
           objc_opt_class();
@@ -858,7 +858,7 @@ LABEL_12:
         }
       }
 
-      v8 = [(NSDictionary *)v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [(NSDictionary *)selfCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -867,22 +867,22 @@ LABEL_12:
   return v5;
 }
 
-- (id)MCRemovedKeysFromDictionary:(id)a3
+- (id)MCRemovedKeysFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [NSMutableDictionary dictionaryWithDictionary:self];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v4;
+  v6 = dictionaryCopy;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v23;
     v10 = &kSecCMSAdditionalCerts_ptr;
-    v21 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v8; i = i + 1)
@@ -916,7 +916,7 @@ LABEL_12:
               [v17 removeObjectForKey:v12];
             }
 
-            self = v21;
+            self = selfCopy;
             v10 = &kSecCMSAdditionalCerts_ptr;
           }
 
@@ -936,20 +936,20 @@ LABEL_12:
   return v5;
 }
 
-- (id)MCInsertedKeysFromDictionary:(id)a3 withNewLeafValue:(id)a4
+- (id)MCInsertedKeysFromDictionary:(id)dictionary withNewLeafValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  valueCopy = value;
   v23 = [NSMutableDictionary dictionaryWithDictionary:self];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v6;
+  v8 = dictionaryCopy;
   v24 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v24)
   {
-    v21 = self;
+    selfCopy = self;
     v22 = *v26;
     v20 = v8;
     do
@@ -965,9 +965,9 @@ LABEL_12:
         v11 = [(NSDictionary *)self objectForKeyedSubscript:v10];
         v12 = [v8 objectForKeyedSubscript:v10];
         v13 = v12;
-        if (v7)
+        if (valueCopy)
         {
-          v14 = v7;
+          v14 = valueCopy;
         }
 
         else
@@ -977,25 +977,25 @@ LABEL_12:
 
         v15 = v14;
         v16 = v13;
-        if (v7)
+        if (valueCopy)
         {
           objc_opt_class();
-          v16 = v7;
+          v16 = valueCopy;
           if (objc_opt_isKindOfClass())
           {
-            v16 = [v13 MCDictionaryWithLeafValuesSetToValue:v7];
+            v16 = [v13 MCDictionaryWithLeafValuesSetToValue:valueCopy];
           }
         }
 
         if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v17 = [NSMutableDictionary dictionaryWithDictionary:v11];
-          v18 = [v17 MCInsertedKeysFromDictionary:v13 withNewLeafValue:v7];
+          v18 = [v17 MCInsertedKeysFromDictionary:v13 withNewLeafValue:valueCopy];
 
           v8 = v20;
           [v23 setObject:v18 forKeyedSubscript:v10];
 
-          self = v21;
+          self = selfCopy;
         }
 
         else
@@ -1013,16 +1013,16 @@ LABEL_12:
   return v23;
 }
 
-- (id)MCDictionaryWithLeafValuesSetToValue:(id)a3
+- (id)MCDictionaryWithLeafValuesSetToValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = [NSMutableDictionary dictionaryWithDictionary:self];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = self;
-  v7 = [(NSDictionary *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v7 = [(NSDictionary *)selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1033,25 +1033,25 @@ LABEL_12:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [(NSDictionary *)v6 objectForKeyedSubscript:v11, v15];
+        v12 = [(NSDictionary *)selfCopy objectForKeyedSubscript:v11, v15];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v12 MCDictionaryWithLeafValuesSetToValue:v4];
+          v13 = [v12 MCDictionaryWithLeafValuesSetToValue:valueCopy];
           [v5 setObject:v13 forKeyedSubscript:v11];
         }
 
         else
         {
-          [v5 setObject:v4 forKeyedSubscript:v11];
+          [v5 setObject:valueCopy forKeyedSubscript:v11];
         }
       }
 
-      v8 = [(NSDictionary *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [(NSDictionary *)selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);

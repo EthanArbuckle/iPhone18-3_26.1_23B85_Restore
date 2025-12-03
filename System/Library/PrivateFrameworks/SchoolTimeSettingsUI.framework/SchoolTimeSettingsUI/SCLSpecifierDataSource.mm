@@ -1,30 +1,30 @@
 @interface SCLSpecifierDataSource
 - (NSArray)allSpecifiers;
 - (SCLListViewController)listController;
-- (SCLSpecifierDataSource)initWithListController:(id)a3 viewModel:(id)a4;
+- (SCLSpecifierDataSource)initWithListController:(id)controller viewModel:(id)model;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setChildDataSources:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 specifier:(id)a5;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setChildDataSources:(id)sources;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path specifier:(id)specifier;
 @end
 
 @implementation SCLSpecifierDataSource
 
-- (SCLSpecifierDataSource)initWithListController:(id)a3 viewModel:(id)a4
+- (SCLSpecifierDataSource)initWithListController:(id)controller viewModel:(id)model
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = SCLSpecifierDataSource;
   v8 = [(SCLSpecifierDataSource *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_listController, v6);
+    objc_storeWeak(&v8->_listController, controllerCopy);
     specifiers = v9->_specifiers;
     v9->_specifiers = MEMORY[0x277CBEBF8];
 
-    objc_storeStrong(&v9->_viewModel, a4);
+    objc_storeStrong(&v9->_viewModel, model);
   }
 
   return v9;
@@ -38,10 +38,10 @@
   [(SCLSpecifierDataSource *)&v3 dealloc];
 }
 
-- (void)setChildDataSources:(id)a3
+- (void)setChildDataSources:(id)sources
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sourcesCopy = sources;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -72,7 +72,7 @@
     while (v7);
   }
 
-  v10 = [v4 copy];
+  v10 = [sourcesCopy copy];
   childDataSources = self->_childDataSources;
   self->_childDataSources = v10;
 
@@ -80,7 +80,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = v4;
+  v12 = sourcesCopy;
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
@@ -115,15 +115,15 @@
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([(SCLSpecifierDataSource *)self isActive])
   {
-    v4 = [(SCLSpecifierDataSource *)self specifiers];
-    [v3 addObjectsFromArray:v4];
+    specifiers = [(SCLSpecifierDataSource *)self specifiers];
+    [v3 addObjectsFromArray:specifiers];
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(SCLSpecifierDataSource *)self childDataSources];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    childDataSources = [(SCLSpecifierDataSource *)self childDataSources];
+    v6 = [childDataSources countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -134,18 +134,18 @@
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(childDataSources);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
           if ([v10 isActive])
           {
-            v11 = [v10 allSpecifiers];
-            [v3 addObjectsFromArray:v11];
+            allSpecifiers = [v10 allSpecifiers];
+            [v3 addObjectsFromArray:allSpecifiers];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [childDataSources countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -157,14 +157,14 @@
   return v3;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"active")
+  if (context == @"active")
   {
-    v7 = [a5 objectForKeyedSubscript:{*MEMORY[0x277CCA2F8], a4}];
-    v8 = [v7 BOOLValue];
+    v7 = [change objectForKeyedSubscript:{*MEMORY[0x277CCA2F8], object}];
+    bOOLValue = [v7 BOOLValue];
 
-    if (v8)
+    if (bOOLValue)
     {
 
       [(SCLSpecifierDataSource *)self willChangeValueForKey:@"allSpecifiers"];
@@ -181,18 +181,18 @@
   {
     v9.receiver = self;
     v9.super_class = SCLSpecifierDataSource;
-    [(SCLSpecifierDataSource *)&v9 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(SCLSpecifierDataSource *)&v9 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 specifier:(id)a5
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path specifier:(id)specifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SCLSpecifierDataSource *)self childDataSources];
-  v12 = [v11 copy];
+  viewCopy = view;
+  pathCopy = path;
+  specifierCopy = specifier;
+  childDataSources = [(SCLSpecifierDataSource *)self childDataSources];
+  v12 = [childDataSources copy];
 
   v22 = 0u;
   v23 = 0u;
@@ -216,7 +216,7 @@
         v18 = *(*(&v20 + 1) + 8 * i);
         if ([v18 isActive])
         {
-          [v18 tableView:v8 didSelectRowAtIndexPath:v9 specifier:v10];
+          [v18 tableView:viewCopy didSelectRowAtIndexPath:pathCopy specifier:specifierCopy];
         }
       }
 

@@ -1,15 +1,15 @@
 @interface OKNavigatorCollectionViewLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
 - (OKNavigatorCollectionViewLayout)init;
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
 - (id)itemClosestToCenter;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 - (void)dealloc;
 - (void)finalizeAnimatedBoundsChange;
-- (void)handlePanGesture:(id)a3;
-- (void)prepareForAnimatedBoundsChange:(CGRect)a3;
+- (void)handlePanGesture:(id)gesture;
+- (void)prepareForAnimatedBoundsChange:(CGRect)change;
 - (void)prepareLayout;
 @end
 
@@ -79,7 +79,7 @@
   [-[OKNavigatorCollectionViewLayout collectionView](self "collectionView")];
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
   if (self->_transitionStyle == 2)
   {
@@ -90,18 +90,18 @@
   v8 = v4;
   v6.receiver = self;
   v6.super_class = OKNavigatorCollectionViewLayout;
-  return [(UICollectionViewFlowLayout *)&v6 shouldInvalidateLayoutForBoundsChange:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(UICollectionViewFlowLayout *)&v6 shouldInvalidateLayoutForBoundsChange:change.origin.x, change.origin.y, change.size.width, change.size.height];
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v55 = *MEMORY[0x277D85DE8];
   v53.receiver = self;
   v53.super_class = OKNavigatorCollectionViewLayout;
-  rect2[0] = *&a3.origin.x;
-  y = a3.origin.y;
-  width = a3.size.width;
-  height = a3.size.height;
+  rect2[0] = *&rect.origin.x;
+  y = rect.origin.y;
+  width = rect.size.width;
+  height = rect.size.height;
   v7 = [MEMORY[0x277CBEB18] arrayWithArray:{-[UICollectionViewFlowLayout layoutAttributesForElementsInRect:](&v53, sel_layoutAttributesForElementsInRect_)}];
   if (self->_transitionStyle == 2)
   {
@@ -137,12 +137,12 @@
           v57.size.height = height;
           if (CGRectIntersectsRect(v56, v57))
           {
-            v20 = [(UICollectionViewFlowLayout *)self scrollDirection];
+            scrollDirection = [(UICollectionViewFlowLayout *)self scrollDirection];
             v21 = v9;
-            v22 = rect;
+            rectCopy = rect;
             v23 = v12;
             v24 = v14;
-            if (v20 == 1)
+            if (scrollDirection == 1)
             {
               MidX = CGRectGetMidX(*&v21);
               [v19 center];
@@ -170,12 +170,12 @@
               v35 = v12;
               v36 = v9;
               v38 = v37;
-              v39 = [(UICollectionViewFlowLayout *)self scrollDirection];
+              scrollDirection2 = [(UICollectionViewFlowLayout *)self scrollDirection];
               v40 = v32 + v34;
               v41 = v32 + v38;
               width = v31;
               y = v48;
-              if (v39 == 1)
+              if (scrollDirection2 == 1)
               {
                 v41 = v38;
               }
@@ -188,14 +188,14 @@
               v9 = v36;
               v12 = v35;
               [v19 setCenter:{v40, v41}];
-              v42 = [(NSIndexPath *)[(OKNavigatorCollectionViewLayout *)self sourceItemIndexPath] item];
+              item = [(NSIndexPath *)[(OKNavigatorCollectionViewLayout *)self sourceItemIndexPath] item];
               v43 = [objc_msgSend(v19 "indexPath")];
-              v44 = [(NSIndexPath *)[(OKNavigatorCollectionViewLayout *)self sourceItemIndexPath] item];
+              item2 = [(NSIndexPath *)[(OKNavigatorCollectionViewLayout *)self sourceItemIndexPath] item];
               v45 = [objc_msgSend(v19 "indexPath")];
-              v46 = v44 - v45;
-              if (v42 >= v43)
+              v46 = item2 - v45;
+              if (item >= v43)
               {
-                v46 = v45 - v44;
+                v46 = v45 - item2;
               }
 
               v28 = v46 + 100;
@@ -220,36 +220,36 @@
   return v7;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   if (self->_transitionStyle == 2)
   {
-    v6 = a4.y;
-    v7 = a4.x;
-    v9 = [(OKNavigatorCollectionViewLayout *)self sourceItemIndexPath];
+    v6 = velocity.y;
+    v7 = velocity.x;
+    sourceItemIndexPath = [(OKNavigatorCollectionViewLayout *)self sourceItemIndexPath];
     v33.receiver = self;
     v33.super_class = OKNavigatorCollectionViewLayout;
     v10 = [(UICollectionViewFlowLayout *)&v33 layoutAttributesForItemAtIndexPath:[(OKNavigatorCollectionViewLayout *)self sourceItemIndexPath]];
     [-[OKNavigatorCollectionViewLayout collectionView](self "collectionView")];
     v12 = v11;
     v14 = v13;
-    v15 = [(UICollectionViewFlowLayout *)self scrollDirection];
+    scrollDirection = [(UICollectionViewFlowLayout *)self scrollDirection];
     [-[OKNavigatorCollectionViewLayout collectionView](self "collectionView")];
-    if (v15 == 1)
+    if (scrollDirection == 1)
     {
       v20 = v12 + CGRectGetWidth(*&v16) * 0.5;
       [v10 center];
       v22 = v21 - v20;
       if (v7 > 0.5 || ([-[OKNavigatorCollectionViewLayout collectionView](self "collectionView")], v22 < CGRectGetWidth(v35) * -0.5))
       {
-        v9 = [MEMORY[0x277CCAA70] indexPathForItem:-[NSIndexPath item](-[OKNavigatorCollectionViewLayout sourceItemIndexPath](self inSection:{"sourceItemIndexPath"), "item") + 1, -[NSIndexPath section](-[OKNavigatorCollectionViewLayout sourceItemIndexPath](self, "sourceItemIndexPath"), "section")}];
+        sourceItemIndexPath = [MEMORY[0x277CCAA70] indexPathForItem:-[NSIndexPath item](-[OKNavigatorCollectionViewLayout sourceItemIndexPath](self inSection:{"sourceItemIndexPath"), "item") + 1, -[NSIndexPath section](-[OKNavigatorCollectionViewLayout sourceItemIndexPath](self, "sourceItemIndexPath"), "section")}];
       }
 
       if (v7 < -0.5 || ([-[OKNavigatorCollectionViewLayout collectionView](self "collectionView")], v22 > CGRectGetWidth(v36) * 0.5))
       {
-        v9 = [MEMORY[0x277CCAA70] indexPathForItem:-[NSIndexPath item](-[OKNavigatorCollectionViewLayout sourceItemIndexPath](self inSection:{"sourceItemIndexPath"), "item") - 1, -[NSIndexPath section](-[OKNavigatorCollectionViewLayout sourceItemIndexPath](self, "sourceItemIndexPath"), "section")}];
+        sourceItemIndexPath = [MEMORY[0x277CCAA70] indexPathForItem:-[NSIndexPath item](-[OKNavigatorCollectionViewLayout sourceItemIndexPath](self inSection:{"sourceItemIndexPath"), "item") - 1, -[NSIndexPath section](-[OKNavigatorCollectionViewLayout sourceItemIndexPath](self, "sourceItemIndexPath"), "section")}];
       }
 
       v32.receiver = self;
@@ -274,12 +274,12 @@
       v27 = v26 - v25;
       if (v6 > 0.5 || ([-[OKNavigatorCollectionViewLayout collectionView](self "collectionView")], v27 < CGRectGetHeight(v37) * -0.5))
       {
-        v9 = [MEMORY[0x277CCAA70] indexPathForItem:-[NSIndexPath item](-[OKNavigatorCollectionViewLayout sourceItemIndexPath](self inSection:{"sourceItemIndexPath"), "item") + 1, -[NSIndexPath section](-[OKNavigatorCollectionViewLayout sourceItemIndexPath](self, "sourceItemIndexPath"), "section")}];
+        sourceItemIndexPath = [MEMORY[0x277CCAA70] indexPathForItem:-[NSIndexPath item](-[OKNavigatorCollectionViewLayout sourceItemIndexPath](self inSection:{"sourceItemIndexPath"), "item") + 1, -[NSIndexPath section](-[OKNavigatorCollectionViewLayout sourceItemIndexPath](self, "sourceItemIndexPath"), "section")}];
       }
 
       if (v6 < -0.5 || ([-[OKNavigatorCollectionViewLayout collectionView](self "collectionView")], v27 > CGRectGetHeight(v38) * 0.5))
       {
-        v9 = [MEMORY[0x277CCAA70] indexPathForItem:-[NSIndexPath item](-[OKNavigatorCollectionViewLayout sourceItemIndexPath](self inSection:{"sourceItemIndexPath"), "item") - 1, -[NSIndexPath section](-[OKNavigatorCollectionViewLayout sourceItemIndexPath](self, "sourceItemIndexPath"), "section")}];
+        sourceItemIndexPath = [MEMORY[0x277CCAA70] indexPathForItem:-[NSIndexPath item](-[OKNavigatorCollectionViewLayout sourceItemIndexPath](self inSection:{"sourceItemIndexPath"), "item") - 1, -[NSIndexPath section](-[OKNavigatorCollectionViewLayout sourceItemIndexPath](self, "sourceItemIndexPath"), "section")}];
       }
 
       v31.receiver = self;
@@ -304,15 +304,15 @@
   return result;
 }
 
-- (void)prepareForAnimatedBoundsChange:(CGRect)a3
+- (void)prepareForAnimatedBoundsChange:(CGRect)change
 {
-  self->_oldBounds = a3;
-  v4 = [(OKNavigatorCollectionViewControllerProxy *)[(OKNavigatorCollectionViewLayout *)self collectionViewController] currentPageViewControllerIndexPath];
+  self->_oldBounds = change;
+  currentPageViewControllerIndexPath = [(OKNavigatorCollectionViewControllerProxy *)[(OKNavigatorCollectionViewLayout *)self collectionViewController] currentPageViewControllerIndexPath];
   if ([(UICollectionViewFlowLayout *)self scrollDirection]== 1)
   {
-    v5 = [v4 item];
+    item = [currentPageViewControllerIndexPath item];
     [(UICollectionViewFlowLayout *)self itemSize];
-    v7 = v6 * v5;
+    v7 = v6 * item;
     [-[OKNavigatorCollectionViewLayout collectionView](self "collectionView")];
     v9 = v8;
   }
@@ -321,14 +321,14 @@
   {
     [-[OKNavigatorCollectionViewLayout collectionView](self "collectionView")];
     v7 = v10;
-    v11 = [v4 item];
+    item2 = [currentPageViewControllerIndexPath item];
     [(UICollectionViewFlowLayout *)self itemSize];
-    v9 = v12 * v11;
+    v9 = v12 * item2;
   }
 
-  v13 = [(OKNavigatorCollectionViewLayout *)self collectionView];
+  collectionView = [(OKNavigatorCollectionViewLayout *)self collectionView];
 
-  [v13 setContentOffset:{v7, v9}];
+  [collectionView setContentOffset:{v7, v9}];
 }
 
 - (void)finalizeAnimatedBoundsChange
@@ -338,19 +338,19 @@
   self->_oldBounds.size = v2;
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = OKNavigatorCollectionViewLayout;
-  v4 = [(OKNavigatorCollectionViewLayout *)&v13 initialLayoutAttributesForAppearingItemAtIndexPath:a3];
+  v4 = [(OKNavigatorCollectionViewLayout *)&v13 initialLayoutAttributesForAppearingItemAtIndexPath:path];
   p_oldBounds = &self->_oldBounds;
   if (!CGRectIsEmpty(self->_oldBounds))
   {
-    v6 = [(UICollectionViewFlowLayout *)self scrollDirection];
+    scrollDirection = [(UICollectionViewFlowLayout *)self scrollDirection];
     v7 = [objc_msgSend(v4 "indexPath")];
     width = p_oldBounds->size.width;
     height = p_oldBounds->size.height;
-    if (v6 == 1)
+    if (scrollDirection == 1)
     {
       v10 = width * v7;
       v11 = 0.0;
@@ -369,12 +369,12 @@
   return v4;
 }
 
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path
 {
   v18.receiver = self;
   v18.super_class = OKNavigatorCollectionViewLayout;
-  v4 = [(OKNavigatorCollectionViewLayout *)&v18 finalLayoutAttributesForDisappearingItemAtIndexPath:a3];
-  v5 = [(UICollectionViewFlowLayout *)self scrollDirection];
+  v4 = [(OKNavigatorCollectionViewLayout *)&v18 finalLayoutAttributesForDisappearingItemAtIndexPath:path];
+  scrollDirection = [(UICollectionViewFlowLayout *)self scrollDirection];
   v6 = [objc_msgSend(v4 "indexPath")];
   [(UICollectionViewFlowLayout *)self itemSize];
   v8 = v7;
@@ -385,7 +385,7 @@
   v14 = v13;
   v15 = v10 * v6;
   v16 = v8 * v6;
-  if (v5 == 1)
+  if (scrollDirection == 1)
   {
     v15 = 0.0;
   }
@@ -425,7 +425,7 @@
   }
 
   v13 = v12;
-  v14 = 0;
+  indexPath = 0;
   v15 = v4 + v6 * 0.5;
   v16 = *v26;
   v17 = 3.40282347e38;
@@ -455,7 +455,7 @@
 
       if (v22 < v23)
       {
-        v14 = [v19 indexPath];
+        indexPath = [v19 indexPath];
         v17 = v21;
       }
     }
@@ -464,25 +464,25 @@
   }
 
   while (v13);
-  return v14;
+  return indexPath;
 }
 
-- (void)handlePanGesture:(id)a3
+- (void)handlePanGesture:(id)gesture
 {
-  if ([a3 state] == 1)
+  if ([gesture state] == 1)
   {
     if (self->_transitionStyle == 2)
     {
-      v5 = [(OKNavigatorCollectionViewLayout *)self itemClosestToCenter];
+      itemClosestToCenter = [(OKNavigatorCollectionViewLayout *)self itemClosestToCenter];
 
-      [(OKNavigatorCollectionViewLayout *)self setSourceItemIndexPath:v5];
+      [(OKNavigatorCollectionViewLayout *)self setSourceItemIndexPath:itemClosestToCenter];
     }
   }
 
-  else if ([a3 state] != 4 && objc_msgSend(a3, "state") != 3)
+  else if ([gesture state] != 4 && objc_msgSend(gesture, "state") != 3)
   {
 
-    [a3 state];
+    [gesture state];
   }
 }
 

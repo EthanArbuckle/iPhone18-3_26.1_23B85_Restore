@@ -1,21 +1,21 @@
 @interface _ML3DatabaseConnectionSubPool
 - (BOOL)hasBusyConnections;
-- (BOOL)isBusyConnection:(id)a3;
+- (BOOL)isBusyConnection:(id)connection;
 - (_ML3DatabaseConnectionSubPool)init;
-- (_ML3DatabaseConnectionSubPool)initWithDatabasePath:(id)a3 maxConcurrentConnections:(unint64_t)a4;
-- (id)_checkoutConnection:(BOOL *)a3 ignoreSubPoolClosedState:(BOOL)a4;
+- (_ML3DatabaseConnectionSubPool)initWithDatabasePath:(id)path maxConcurrentConnections:(unint64_t)connections;
+- (id)_checkoutConnection:(BOOL *)connection ignoreSubPoolClosedState:(BOOL)state;
 - (void)_handleDatabaseDeletion;
-- (void)checkInConnection:(id)a3 returnToPool:(BOOL)a4;
-- (void)closeConnection:(id)a3;
-- (void)closeConnectionsForOwningPoolClosed:(BOOL)a3 andWaitForBusyConnections:(BOOL)a4;
+- (void)checkInConnection:(id)connection returnToPool:(BOOL)pool;
+- (void)closeConnection:(id)connection;
+- (void)closeConnectionsForOwningPoolClosed:(BOOL)closed andWaitForBusyConnections:(BOOL)connections;
 - (void)dealloc;
-- (void)handleDiagnostic:(id)a3;
+- (void)handleDiagnostic:(id)diagnostic;
 - (void)setSubPoolIsClosed;
 @end
 
 @implementation _ML3DatabaseConnectionSubPool
 
-- (id)_checkoutConnection:(BOOL *)a3 ignoreSubPoolClosedState:(BOOL)a4
+- (id)_checkoutConnection:(BOOL *)connection ignoreSubPoolClosedState:(BOOL)state
 {
   v14 = 0;
   v15 = &v14;
@@ -32,14 +32,14 @@
   v8[1] = 3221225472;
   v8[2] = __78___ML3DatabaseConnectionSubPool__checkoutConnection_ignoreSubPoolClosedState___block_invoke;
   v8[3] = &unk_278765D60;
-  v9 = a4;
+  stateCopy = state;
   v8[4] = self;
   v8[5] = &v14;
   v8[6] = &v10;
   dispatch_sync(checkoutQueue, v8);
-  if (a3)
+  if (connection)
   {
-    *a3 = *(v11 + 24);
+    *connection = *(v11 + 24);
   }
 
   v6 = v15[5];
@@ -56,7 +56,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D2FA000, v3, OS_LOG_TYPE_DEFAULT, "Connection subpool %{public}@ closing all connections.", &v4, 0xCu);
   }
 
@@ -74,9 +74,9 @@
   dispatch_sync(serialQueue, block);
 }
 
-- (BOOL)isBusyConnection:(id)a3
+- (BOOL)isBusyConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -86,10 +86,10 @@
   block[1] = 3221225472;
   block[2] = __50___ML3DatabaseConnectionSubPool_isBusyConnection___block_invoke;
   block[3] = &unk_278765F28;
-  v9 = v4;
+  v9 = connectionCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = connectionCopy;
   dispatch_sync(checkinQueue, block);
   LOBYTE(checkinQueue) = *(v12 + 24);
 
@@ -97,24 +97,24 @@
   return checkinQueue;
 }
 
-- (void)handleDiagnostic:(id)a3
+- (void)handleDiagnostic:(id)diagnostic
 {
-  v4 = a3;
+  diagnosticCopy = diagnostic;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50___ML3DatabaseConnectionSubPool_handleDiagnostic___block_invoke;
   v7[3] = &unk_2787660F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = diagnosticCopy;
+  v6 = diagnosticCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (void)closeConnectionsForOwningPoolClosed:(BOOL)a3 andWaitForBusyConnections:(BOOL)a4
+- (void)closeConnectionsForOwningPoolClosed:(BOOL)closed andWaitForBusyConnections:(BOOL)connections
 {
-  v26 = a4;
-  v4 = a3;
+  connectionsCopy = connections;
+  closedCopy = closed;
   v51 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -128,11 +128,11 @@
     v8 = [(NSMutableSet *)self->_availableConnections debugDescription];
     v9 = [(NSMutableSet *)self->_busyConnections debugDescription];
     *buf = 134219010;
-    v45 = self;
+    selfCopy4 = self;
     v46 = 1024;
-    *v47 = v4;
+    *v47 = closedCopy;
     *&v47[4] = 1024;
-    *&v47[6] = v26;
+    *&v47[6] = connectionsCopy;
     *v48 = 2114;
     *&v48[2] = v8;
     v49 = 2114;
@@ -140,22 +140,22 @@
     _os_log_impl(&dword_22D2FA000, v7, OS_LOG_TYPE_DEFAULT, "ML3DatabaseConnectionSubPool=%p closeConnectionsAndWaitForBusyConnections owningPoolClosed=%{BOOL}u, waitForBusyConnections=%{BOOL}u,_availableConnections(count)=%{public}@, _busyConnections=%{public}@", buf, 0x2Cu);
   }
 
-  v10 = self;
+  selfCopy3 = self;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __95___ML3DatabaseConnectionSubPool_closeConnectionsForOwningPoolClosed_andWaitForBusyConnections___block_invoke;
   block[3] = &unk_278765D10;
   block[4] = self;
-  v37 = v4;
-  v38 = v26;
+  v37 = closedCopy;
+  v38 = connectionsCopy;
   v25 = v6;
   v34 = v25;
   v12 = v5;
   v35 = v12;
   v36 = &v39;
   dispatch_sync(serialQueue, block);
-  if (v4)
+  if (closedCopy)
   {
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
@@ -167,20 +167,20 @@
   }
 
   v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:self->_maxConcurrentConnections];
-  if (v26 && *(v40 + 24) == 1 && self->_maxConcurrentConnections)
+  if (connectionsCopy && *(v40 + 24) == 1 && self->_maxConcurrentConnections)
   {
     v14 = 0;
     do
     {
       buf[0] = 0;
-      if (v4)
+      if (closedCopy)
       {
-        [(_ML3DatabaseConnectionSubPool *)v10 _checkoutConnection:buf ignoreSubPoolClosedState:1];
+        [(_ML3DatabaseConnectionSubPool *)selfCopy3 _checkoutConnection:buf ignoreSubPoolClosedState:1];
       }
 
       else
       {
-        [(_ML3DatabaseConnectionSubPool *)v10 checkoutConnection:buf];
+        [(_ML3DatabaseConnectionSubPool *)selfCopy3 checkoutConnection:buf];
       }
       v15 = ;
       if (v15)
@@ -193,7 +193,7 @@
       }
 
       ++v14;
-      v10 = self;
+      selfCopy3 = self;
     }
 
     while (self->_maxConcurrentConnections > v14);
@@ -224,7 +224,7 @@
           v22 = [v20 debugDescription];
           v23 = [v13 containsObject:v20];
           *buf = 138543874;
-          v45 = self;
+          selfCopy4 = self;
           v46 = 2114;
           *v47 = v22;
           *&v47[8] = 1024;
@@ -232,10 +232,10 @@
           _os_log_impl(&dword_22D2FA000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ closing open connection=%{public}@, returnToPool=%{BOOL}u", buf, 0x1Cu);
         }
 
-        v24 = [v20 connection];
-        [v24 close];
+        connection = [v20 connection];
+        [connection close];
 
-        if (v26)
+        if (connectionsCopy)
         {
           -[_ML3DatabaseConnectionSubPool checkInConnection:returnToPool:](self, "checkInConnection:returnToPool:", v20, [v13 containsObject:v20] ^ 1);
         }
@@ -250,32 +250,32 @@
   _Block_object_dispose(&v39, 8);
 }
 
-- (void)closeConnection:(id)a3
+- (void)closeConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   checkinQueue = self->_checkinQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49___ML3DatabaseConnectionSubPool_closeConnection___block_invoke;
   v7[3] = &unk_2787660F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = connectionCopy;
+  selfCopy = self;
+  v6 = connectionCopy;
   dispatch_sync(checkinQueue, v7);
 }
 
-- (void)checkInConnection:(id)a3 returnToPool:(BOOL)a4
+- (void)checkInConnection:(id)connection returnToPool:(BOOL)pool
 {
-  v6 = a3;
+  connectionCopy = connection;
   checkinQueue = self->_checkinQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64___ML3DatabaseConnectionSubPool_checkInConnection_returnToPool___block_invoke;
   block[3] = &unk_278765CE8;
-  v11 = a4;
+  poolCopy = pool;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = connectionCopy;
+  v8 = connectionCopy;
   dispatch_sync(checkinQueue, block);
 }
 
@@ -305,7 +305,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v29 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D2FA000, v3, OS_LOG_TYPE_DEFAULT, "%p dealloc", buf, 0xCu);
   }
 
@@ -370,8 +370,8 @@
 
   if ([(NSMutableSet *)self->_busyConnections count])
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionPool.m" lineNumber:571 description:{@"deallocating pool %@ has %lld active connections", self, -[NSMutableSet count](self->_busyConnections, "count")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionPool.m" lineNumber:571 description:{@"deallocating pool %@ has %lld active connections", self, -[NSMutableSet count](self->_busyConnections, "count")}];
   }
 
   notify_cancel(self->_homeSharingCachesClearedNotifyToken);
@@ -389,19 +389,19 @@
   return 0;
 }
 
-- (_ML3DatabaseConnectionSubPool)initWithDatabasePath:(id)a3 maxConcurrentConnections:(unint64_t)a4
+- (_ML3DatabaseConnectionSubPool)initWithDatabasePath:(id)path maxConcurrentConnections:(unint64_t)connections
 {
-  v6 = a3;
+  pathCopy = path;
   v33.receiver = self;
   v33.super_class = _ML3DatabaseConnectionSubPool;
   v7 = [(_ML3DatabaseConnectionSubPool *)&v33 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [pathCopy copy];
     databasePath = v7->_databasePath;
     v7->_databasePath = v8;
 
-    v7->_maxConcurrentConnections = a4;
+    v7->_maxConcurrentConnections = connections;
     v7->_useDistantConnections = 0;
     *&v7->_isSubPoolClosed = 0;
     v10 = dispatch_queue_create("com.apple.MusicLibrary._ML3DatabaseConnectionSubPool.checkoutQueue", 0);
@@ -431,7 +431,7 @@
     if (!__daemonProcessInfo)
     {
       objc_initWeak(&location, v7);
-      v22 = [@"MLMediaLibraryWillDeleteDatabaseNotification" UTF8String];
+      uTF8String = [@"MLMediaLibraryWillDeleteDatabaseNotification" UTF8String];
       v23 = MEMORY[0x277D85CD0];
       v24 = MEMORY[0x277D85CD0];
       handler[0] = MEMORY[0x277D85DD0];
@@ -439,7 +439,7 @@
       handler[2] = __79___ML3DatabaseConnectionSubPool_initWithDatabasePath_maxConcurrentConnections___block_invoke;
       handler[3] = &unk_278765C98;
       objc_copyWeak(&v31, &location);
-      notify_register_dispatch(v22, &v7->_willDeleteDatabaseNotifyToken, v23, handler);
+      notify_register_dispatch(uTF8String, &v7->_willDeleteDatabaseNotifyToken, v23, handler);
       v25 = MEMORY[0x277D85CD0];
 
       v27[0] = MEMORY[0x277D85DD0];
@@ -447,7 +447,7 @@
       v27[2] = __79___ML3DatabaseConnectionSubPool_initWithDatabasePath_maxConcurrentConnections___block_invoke_207;
       v27[3] = &unk_278765CC0;
       objc_copyWeak(&v29, &location);
-      v28 = v6;
+      v28 = pathCopy;
       notify_register_dispatch("HSCachesClearedNotification", &v7->_homeSharingCachesClearedNotifyToken, v25, v27);
 
       objc_destroyWeak(&v29);

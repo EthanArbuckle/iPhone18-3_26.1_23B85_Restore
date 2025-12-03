@@ -21,17 +21,17 @@
 
   [v4 setObject:objc_opt_class() forKeyedSubscript:@"27"];
   [v4 setObject:objc_opt_class() forKeyedSubscript:@"41"];
-  v5 = [(AMSDPushHandler *)self configuration];
-  v6 = [v5 enabledActionTypes];
+  configuration = [(AMSDPushHandler *)self configuration];
+  enabledActionTypes = [configuration enabledActionTypes];
 
-  if (v6)
+  if (enabledActionTypes)
   {
     v7 = objc_alloc_init(NSMutableDictionary);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = v6;
+    v8 = enabledActionTypes;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -67,8 +67,8 @@
 
   v17.receiver = self;
   v17.super_class = AMSDPushHandler;
-  v14 = [(AMSDPushHandler *)&v17 enabledParsables];
-  v15 = [v14 ams_dictionaryByAddingEntriesFromDictionary:v7];
+  enabledParsables = [(AMSDPushHandler *)&v17 enabledParsables];
+  v15 = [enabledParsables ams_dictionaryByAddingEntriesFromDictionary:v7];
 
   return v15;
 }

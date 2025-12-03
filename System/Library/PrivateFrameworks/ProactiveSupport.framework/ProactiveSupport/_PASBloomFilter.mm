@@ -1,10 +1,10 @@
 @interface _PASBloomFilter
-+ (id)bloomFilterWithData:(id)a3;
-+ (id)bloomFilterWithPathToFile:(id)a3;
-- (BOOL)getWithHashes:(id)a3;
-- (_PASBloomFilter)initWithData:(id)a3 numBits:(unsigned int)a4 hashFunctionCode:(unsigned int)a5 numHashFunctions:(int)a6;
-- (id)combineHashesWithSeed:(int)a3 hashA:(id)a4 hashB:(id)a5 reuse:(id)a6;
-- (id)computeHashesForString:(id)a3 reuse:(id)a4;
++ (id)bloomFilterWithData:(id)data;
++ (id)bloomFilterWithPathToFile:(id)file;
+- (BOOL)getWithHashes:(id)hashes;
+- (_PASBloomFilter)initWithData:(id)data numBits:(unsigned int)bits hashFunctionCode:(unsigned int)code numHashFunctions:(int)functions;
+- (id)combineHashesWithSeed:(int)seed hashA:(id)a hashB:(id)b reuse:(id)reuse;
+- (id)computeHashesForString:(id)string reuse:(id)reuse;
 - (id)initDummy;
 - (id)newHashesArray;
 @end
@@ -19,44 +19,44 @@
   return [(_PASBloomFilterHashArray *)v3 initWithCapacity:hashArrayLength];
 }
 
-- (id)combineHashesWithSeed:(int)a3 hashA:(id)a4 hashB:(id)a5 reuse:(id)a6
+- (id)combineHashesWithSeed:(int)seed hashA:(id)a hashB:(id)b reuse:(id)reuse
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v12)
+  aCopy = a;
+  bCopy = b;
+  reuseCopy = reuse;
+  if (!reuseCopy)
   {
-    v12 = [(_PASBloomFilter *)self newHashesArray];
+    reuseCopy = [(_PASBloomFilter *)self newHashesArray];
   }
 
-  v13 = [v12 hashes];
-  v14 = [v10 hashes];
-  v15 = [v11 hashes];
+  hashes = [reuseCopy hashes];
+  hashes2 = [aCopy hashes];
+  hashes3 = [bCopy hashes];
   if (self->_numHashFunctions >= 1)
   {
     v16 = 0;
     do
     {
       v17 = 715827883 * (v16 * v16 - 1) * v16;
-      *(v13 + 4 * v16) = *(v14 + 4 * v16) + HIDWORD(v17) + (v17 >> 63) + *(v15 + 4 * v16) * (a3 + v16);
+      *(hashes + 4 * v16) = *(hashes2 + 4 * v16) + HIDWORD(v17) + (v17 >> 63) + *(hashes3 + 4 * v16) * (seed + v16);
       ++v16;
     }
 
     while (v16 < self->_numHashFunctions);
   }
 
-  return v12;
+  return reuseCopy;
 }
 
-- (BOOL)getWithHashes:(id)a3
+- (BOOL)getWithHashes:(id)hashes
 {
-  v5 = a3;
-  v6 = [a3 hashes];
+  hashesCopy = hashes;
+  hashes = [hashes hashes];
   v15 = 0;
   v7 = 1;
   if (self->_numHashFunctions >= 1)
   {
-    v8 = v6;
+    v8 = hashes;
     v9 = 0;
     while (1)
     {
@@ -88,17 +88,17 @@
   return v7;
 }
 
-- (id)computeHashesForString:(id)a3 reuse:(id)a4
+- (id)computeHashesForString:(id)string reuse:(id)reuse
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  reuseCopy = reuse;
   v8 = objc_autoreleasePoolPush();
   v14 = 255;
-  v9 = _PASRepairString(v6);
-  v10 = [v9 UTF8String];
-  if (v10)
+  v9 = _PASRepairString(stringCopy);
+  uTF8String = [v9 UTF8String];
+  if (uTF8String)
   {
-    v11 = v10;
+    v11 = uTF8String;
   }
 
   else
@@ -106,7 +106,7 @@
     v11 = &v14;
   }
 
-  v12 = [(_PASBloomFilter *)self _computeHashesWithSeed:1 bytes:v11 length:strlen(v11) reuse:v7];
+  v12 = [(_PASBloomFilter *)self _computeHashesWithSeed:1 bytes:v11 length:strlen(v11) reuse:reuseCopy];
   objc_autoreleasePoolPop(v8);
 
   return v12;
@@ -131,10 +131,10 @@
   return v3;
 }
 
-- (_PASBloomFilter)initWithData:(id)a3 numBits:(unsigned int)a4 hashFunctionCode:(unsigned int)a5 numHashFunctions:(int)a6
+- (_PASBloomFilter)initWithData:(id)data numBits:(unsigned int)bits hashFunctionCode:(unsigned int)code numHashFunctions:(int)functions
 {
   v22 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  dataCopy = data;
   v19.receiver = self;
   v19.super_class = _PASBloomFilter;
   v12 = [(_PASBloomFilter *)&v19 init];
@@ -146,36 +146,36 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v12->_data, a3);
-  v13->_numBits = a4;
-  v13->_numHashFunctions = a6;
-  if (a6 <= 4)
+  objc_storeStrong(&v12->_data, data);
+  v13->_numBits = bits;
+  v13->_numHashFunctions = functions;
+  if (functions <= 4)
   {
-    v14 = 4;
+    functionsCopy = 4;
   }
 
   else
   {
-    v14 = a6;
+    functionsCopy = functions;
   }
 
-  v13->_hashArrayLength = v14;
+  v13->_hashArrayLength = functionsCopy;
   v15 = computeHashes_MURMUR3_X86_32;
-  if (a5 == 1)
+  if (code == 1)
   {
 LABEL_8:
     v13->_computeHashes = v15;
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
       *buf = 67109120;
-      v21 = a5;
+      codeCopy2 = code;
       _os_log_debug_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Hash function code: %i", buf, 8u);
     }
 
     goto LABEL_10;
   }
 
-  if (a5 == 2)
+  if (code == 2)
   {
     v15 = computeHashes_MURMUR3_X64_128;
     goto LABEL_8;
@@ -184,7 +184,7 @@ LABEL_8:
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 67109120;
-    v21 = a5;
+    codeCopy2 = code;
     _os_log_error_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unsupported hash function code: %i", buf, 8u);
   }
 
@@ -195,25 +195,25 @@ LABEL_14:
   return v16;
 }
 
-+ (id)bloomFilterWithPathToFile:(id)a3
++ (id)bloomFilterWithPathToFile:(id)file
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  fileCopy = file;
+  if (!fileCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"_PASBloomFilter.m" lineNumber:207 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASBloomFilter.m" lineNumber:207 description:{@"Invalid parameter not satisfying: %@", @"path"}];
   }
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v17 = v5;
+    v17 = fileCopy;
     _os_log_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "_PASBloomFilter: loading bloom filter from path '%@'", buf, 0xCu);
   }
 
   v15 = 0;
-  v6 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v5 options:8 error:&v15];
+  v6 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:fileCopy options:8 error:&v15];
   v7 = v15;
   v8 = v7;
   if (v6)
@@ -228,7 +228,7 @@ LABEL_14:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v17 = v5;
+        v17 = fileCopy;
         _os_log_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "No bloom filter file at path '%@'", buf, 0xCu);
       }
     }
@@ -236,7 +236,7 @@ LABEL_14:
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v17 = v5;
+      v17 = fileCopy;
       v18 = 2112;
       v19 = v8;
       _os_log_error_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Could not load bloom filter at path '%@'. Error: %@", buf, 0x16u);
@@ -250,18 +250,18 @@ LABEL_14:
   return v9;
 }
 
-+ (id)bloomFilterWithData:(id)a3
++ (id)bloomFilterWithData:(id)data
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dataCopy = data;
+  if (!dataCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"_PASBloomFilter.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"data"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASBloomFilter.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"data"}];
   }
 
   v18 = 0uLL;
-  [v5 getBytes:&v18 range:{0, 16}];
+  [dataCopy getBytes:&v18 range:{0, 16}];
   v6 = v18;
   if (v18 == 390004919)
   {
@@ -312,7 +312,7 @@ LABEL_20:
   }
 
   v8 = DWORD2(v18);
-  if ([v5 length] - 16 != v8)
+  if ([dataCopy length] - 16 != v8)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -344,7 +344,7 @@ LABEL_18:
   }
 
   v16 = [_PASBloomFilter alloc];
-  v13 = [(_PASBloomFilter *)v16 initWithData:v5 numBits:(8 * DWORD2(v18)) hashFunctionCode:DWORD1(v18) numHashFunctions:HIDWORD(v18)];
+  v13 = [(_PASBloomFilter *)v16 initWithData:dataCopy numBits:(8 * DWORD2(v18)) hashFunctionCode:DWORD1(v18) numHashFunctions:HIDWORD(v18)];
 LABEL_21:
 
   v14 = *MEMORY[0x1E69E9840];

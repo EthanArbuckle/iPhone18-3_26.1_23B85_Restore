@@ -1,14 +1,14 @@
 @interface AFAssistedDisambiguationRules
 + (id)defaultRules;
-- (double)weightForEvent:(id)a3;
+- (double)weightForEvent:(id)event;
 @end
 
 @implementation AFAssistedDisambiguationRules
 
-- (double)weightForEvent:(id)a3
+- (double)weightForEvent:(id)event
 {
-  v4 = [a3 date];
-  [v4 timeIntervalSinceNow];
+  date = [event date];
+  [date timeIntervalSinceNow];
   v6 = v5;
 
   if (v6 <= -900.0)

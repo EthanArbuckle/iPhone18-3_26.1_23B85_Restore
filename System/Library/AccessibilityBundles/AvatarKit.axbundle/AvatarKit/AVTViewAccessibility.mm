@@ -1,21 +1,21 @@
 @interface AVTViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation AVTViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTView" hasInstanceMethod:@"faceIsTracked" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AVTView" hasInstanceMethod:@"enableFaceTracking" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AVTView" hasInstanceVariable:@"_faceTrackingPaused" withType:"B"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTView" hasInstanceMethod:@"faceIsTracked" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AVTView" hasInstanceMethod:@"enableFaceTracking" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AVTView" hasInstanceVariable:@"_faceTrackingPaused" withType:"B"];
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(AVTViewAccessibility *)self accessibilityUserDefinedValue];
+  accessibilityUserDefinedValue = [(AVTViewAccessibility *)self accessibilityUserDefinedValue];
   if ([(AVTViewAccessibility *)self safeBoolForKey:@"enableFaceTracking"]&& ([(AVTViewAccessibility *)self safeBoolForKey:@"_faceTrackingPaused"]& 1) == 0)
   {
     if ([(AVTViewAccessibility *)self safeBoolForKey:@"faceIsTracked"])
@@ -34,7 +34,7 @@
 
   else
   {
-    v4 = v3;
+    v4 = accessibilityUserDefinedValue;
   }
 
   return v4;

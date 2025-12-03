@@ -1,24 +1,24 @@
 @interface HKFeatureAvailabilityHealthDataRequirementStore
 + (id)taskIdentifier;
-- (BOOL)_synchronouslyStartObservingWithError:(id *)a3;
-- (HKFeatureAvailabilityHealthDataRequirementStore)initWithHealthStore:(id)a3;
+- (BOOL)_synchronouslyStartObservingWithError:(id *)error;
+- (HKFeatureAvailabilityHealthDataRequirementStore)initWithHealthStore:(id)store;
 - (id)_allObservedRequirements;
-- (id)evaluationOfRequirements:(id)a3 error:(id *)a4;
+- (id)evaluationOfRequirements:(id)requirements error:(id *)error;
 - (void)_handleAutomaticProxyReconnection;
-- (void)_notifyObservers:(id)a3;
+- (void)_notifyObservers:(id)observers;
 - (void)_reevaluateAllObservedRequirementsAndNotifyObservers;
-- (void)_startObservingRequirements:(id)a3 activationHandler:(id)a4;
-- (void)client_featureAvailabilityRequirement:(id)a3 didUpdateSatisfaction:(BOOL)a4;
-- (void)registerObserver:(id)a3 forRequirements:(id)a4 queue:(id)a5;
-- (void)registerObserver:(id)a3 forRequirements:(id)a4 queue:(id)a5 activationHandler:(id)a6;
-- (void)unregisterObserver:(id)a3;
+- (void)_startObservingRequirements:(id)requirements activationHandler:(id)handler;
+- (void)client_featureAvailabilityRequirement:(id)requirement didUpdateSatisfaction:(BOOL)satisfaction;
+- (void)registerObserver:(id)observer forRequirements:(id)requirements queue:(id)queue;
+- (void)registerObserver:(id)observer forRequirements:(id)requirements queue:(id)queue activationHandler:(id)handler;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HKFeatureAvailabilityHealthDataRequirementStore
 
-- (HKFeatureAvailabilityHealthDataRequirementStore)initWithHealthStore:(id)a3
+- (HKFeatureAvailabilityHealthDataRequirementStore)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v19.receiver = self;
   v19.super_class = HKFeatureAvailabilityHealthDataRequirementStore;
   v5 = [(HKFeatureAvailabilityHealthDataRequirementStore *)&v19 init];
@@ -31,9 +31,9 @@
     v5->_observers = v8;
 
     v10 = [HKTaskServerProxyProvider alloc];
-    v11 = [objc_opt_class() taskIdentifier];
-    v12 = [MEMORY[0x1E696AFB0] UUID];
-    v13 = [(HKTaskServerProxyProvider *)v10 initWithHealthStore:v4 taskIdentifier:v11 exportedObject:v5 taskUUID:v12];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v13 = [(HKTaskServerProxyProvider *)v10 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v13;
 
@@ -42,9 +42,9 @@
     [(HKTaskServerProxyProvider *)v5->_proxyProvider setTaskConfiguration:v15];
 
     v5->_lock._os_unfair_lock_opaque = 0;
-    v16 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     lock_requirementsByObserver = v5->_lock_requirementsByObserver;
-    v5->_lock_requirementsByObserver = v16;
+    v5->_lock_requirementsByObserver = weakToStrongObjectsMapTable;
   }
 
   return v5;
@@ -57,10 +57,10 @@
   return NSStringFromClass(v2);
 }
 
-- (id)evaluationOfRequirements:(id)a3 error:(id *)a4
+- (id)evaluationOfRequirements:(id)requirements error:(id *)error
 {
-  v6 = a3;
-  if ([v6 count])
+  requirementsCopy = requirements;
+  if ([requirementsCopy count])
   {
     v24 = 0;
     v25 = &v24;
@@ -79,7 +79,7 @@
     v14[1] = 3221225472;
     v14[2] = __82__HKFeatureAvailabilityHealthDataRequirementStore_evaluationOfRequirements_error___block_invoke;
     v14[3] = &unk_1E737F5C8;
-    v15 = v6;
+    v15 = requirementsCopy;
     v16 = &v24;
     v17 = &v18;
     v13[0] = MEMORY[0x1E69E9820];
@@ -92,10 +92,10 @@
     v9 = v8;
     if (v8)
     {
-      if (a4)
+      if (error)
       {
         v10 = v8;
-        *a4 = v9;
+        *error = v9;
       }
 
       else
@@ -143,26 +143,26 @@ void __82__HKFeatureAvailabilityHealthDataRequirementStore_evaluationOfRequireme
   *(v9 + 40) = v6;
 }
 
-- (void)registerObserver:(id)a3 forRequirements:(id)a4 queue:(id)a5
+- (void)registerObserver:(id)observer forRequirements:(id)requirements queue:(id)queue
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 count])
+  observerCopy = observer;
+  requirementsCopy = requirements;
+  queueCopy = queue;
+  if ([requirementsCopy count])
   {
-    [(HKFeatureAvailabilityHealthDataRequirementStore *)self registerObserver:v10 forRequirements:v8 queue:v9 activationHandler:0];
+    [(HKFeatureAvailabilityHealthDataRequirementStore *)self registerObserver:observerCopy forRequirements:requirementsCopy queue:queueCopy activationHandler:0];
   }
 }
 
-- (void)registerObserver:(id)a3 forRequirements:(id)a4 queue:(id)a5 activationHandler:(id)a6
+- (void)registerObserver:(id)observer forRequirements:(id)requirements queue:(id)queue activationHandler:(id)handler
 {
   proxyProvider = self->_proxyProvider;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(HKProxyProvider *)proxyProvider clientQueueActionHandlerWithCompletion:a6];
+  queueCopy = queue;
+  requirementsCopy = requirements;
+  observerCopy = observer;
+  v14 = [(HKProxyProvider *)proxyProvider clientQueueActionHandlerWithCompletion:handler];
   os_unfair_lock_lock(&self->_lock);
-  [(NSMapTable *)self->_lock_requirementsByObserver setObject:v12 forKey:v13];
+  [(NSMapTable *)self->_lock_requirementsByObserver setObject:requirementsCopy forKey:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
   observers = self->_observers;
   v16[0] = MEMORY[0x1E69E9820];
@@ -170,9 +170,9 @@ void __82__HKFeatureAvailabilityHealthDataRequirementStore_evaluationOfRequireme
   v16[2] = __108__HKFeatureAvailabilityHealthDataRequirementStore_registerObserver_forRequirements_queue_activationHandler___block_invoke;
   v16[3] = &unk_1E7376780;
   v16[4] = self;
-  [(HKObserverSet *)observers registerObserver:v13 queue:v11 runIfFirstObserver:v16];
+  [(HKObserverSet *)observers registerObserver:observerCopy queue:queueCopy runIfFirstObserver:v16];
 
-  [(HKFeatureAvailabilityHealthDataRequirementStore *)self _startObservingRequirements:v12 activationHandler:v14];
+  [(HKFeatureAvailabilityHealthDataRequirementStore *)self _startObservingRequirements:requirementsCopy activationHandler:v14];
 }
 
 void __108__HKFeatureAvailabilityHealthDataRequirementStore_registerObserver_forRequirements_queue_activationHandler___block_invoke(uint64_t a1)
@@ -207,11 +207,11 @@ void __108__HKFeatureAvailabilityHealthDataRequirementStore_registerObserver_for
   [WeakRetained _handleAutomaticProxyReconnection];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMapTable *)self->_lock_requirementsByObserver removeObjectForKey:v4];
+  [(NSMapTable *)self->_lock_requirementsByObserver removeObjectForKey:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
   observers = self->_observers;
   v6[0] = MEMORY[0x1E69E9820];
@@ -219,7 +219,7 @@ void __108__HKFeatureAvailabilityHealthDataRequirementStore_registerObserver_for
   v6[2] = __70__HKFeatureAvailabilityHealthDataRequirementStore_unregisterObserver___block_invoke;
   v6[3] = &unk_1E7376780;
   v6[4] = self;
-  [(HKObserverSet *)observers unregisterObserver:v4 runIfLastObserver:v6];
+  [(HKObserverSet *)observers unregisterObserver:observerCopy runIfLastObserver:v6];
 }
 
 uint64_t __70__HKFeatureAvailabilityHealthDataRequirementStore_unregisterObserver___block_invoke(uint64_t a1)
@@ -259,17 +259,17 @@ void __70__HKFeatureAvailabilityHealthDataRequirementStore_unregisterObserver___
   }
 }
 
-- (void)_startObservingRequirements:(id)a3 activationHandler:(id)a4
+- (void)_startObservingRequirements:(id)requirements activationHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requirementsCopy = requirements;
+  handlerCopy = handler;
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __97__HKFeatureAvailabilityHealthDataRequirementStore__startObservingRequirements_activationHandler___block_invoke;
   v13[3] = &unk_1E737F610;
-  v14 = v6;
-  v15 = v7;
+  v14 = requirementsCopy;
+  v15 = handlerCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __97__HKFeatureAvailabilityHealthDataRequirementStore__startObservingRequirements_activationHandler___block_invoke_2;
@@ -277,7 +277,7 @@ void __70__HKFeatureAvailabilityHealthDataRequirementStore_unregisterObserver___
   v11[4] = self;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = requirementsCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
@@ -294,7 +294,7 @@ void __97__HKFeatureAvailabilityHealthDataRequirementStore__startObservingRequir
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)_synchronouslyStartObservingWithError:(id *)a3
+- (BOOL)_synchronouslyStartObservingWithError:(id *)error
 {
   v24 = 0;
   v25 = &v24;
@@ -306,13 +306,13 @@ void __97__HKFeatureAvailabilityHealthDataRequirementStore__startObservingRequir
   v21 = __Block_byref_object_copy__25;
   v22 = __Block_byref_object_dispose__25;
   v23 = 0;
-  v5 = [(HKFeatureAvailabilityHealthDataRequirementStore *)self _allObservedRequirements];
+  _allObservedRequirements = [(HKFeatureAvailabilityHealthDataRequirementStore *)self _allObservedRequirements];
   proxyProvider = self->_proxyProvider;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __89__HKFeatureAvailabilityHealthDataRequirementStore__synchronouslyStartObservingWithError___block_invoke;
   v14[3] = &unk_1E737F5C8;
-  v7 = v5;
+  v7 = _allObservedRequirements;
   v15 = v7;
   v16 = &v24;
   v17 = &v18;
@@ -327,10 +327,10 @@ void __97__HKFeatureAvailabilityHealthDataRequirementStore__startObservingRequir
   v9 = v8;
   if (v8)
   {
-    if (a3)
+    if (error)
     {
       v10 = v8;
-      *a3 = v9;
+      *error = v9;
     }
 
     else
@@ -376,7 +376,7 @@ void __89__HKFeatureAvailabilityHealthDataRequirementStore__synchronouslyStartOb
 {
   v5 = *MEMORY[0x1E69E9840];
   LODWORD(v4) = 138543618;
-  *(&v4 + 4) = a1;
+  *(&v4 + 4) = self;
   OUTLINED_FUNCTION_0_10();
   OUTLINED_FUNCTION_1(&dword_19197B000, v1, v2, "[%{public}@] Failed to resume observation on server reconnection: %{public}@", v4, DWORD2(v4));
   v3 = *MEMORY[0x1E69E9840];
@@ -386,7 +386,7 @@ void __89__HKFeatureAvailabilityHealthDataRequirementStore__synchronouslyStartOb
 {
   v5 = *MEMORY[0x1E69E9840];
   LODWORD(v4) = 138543618;
-  *(&v4 + 4) = a1;
+  *(&v4 + 4) = self;
   OUTLINED_FUNCTION_0_10();
   OUTLINED_FUNCTION_1(&dword_19197B000, v1, v2, "[%{public}@] Error reevaluating requirements on automatic proxy reconnection: %{public}@", v4, DWORD2(v4));
   v3 = *MEMORY[0x1E69E9840];
@@ -433,9 +433,9 @@ void __103__HKFeatureAvailabilityHealthDataRequirementStore__reevaluateAllObserv
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyObservers:(id)a3
+- (void)_notifyObservers:(id)observers
 {
-  v4 = a3;
+  observersCopy = observers;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSMapTable *)self->_lock_requirementsByObserver copy];
   os_unfair_lock_unlock(&self->_lock);
@@ -445,8 +445,8 @@ void __103__HKFeatureAvailabilityHealthDataRequirementStore__reevaluateAllObserv
   v9[2] = __68__HKFeatureAvailabilityHealthDataRequirementStore__notifyObservers___block_invoke;
   v9[3] = &unk_1E737F660;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = observersCopy;
+  v7 = observersCopy;
   v8 = v5;
   [(HKObserverSet *)observers notifyObservers:v9];
 }
@@ -470,8 +470,8 @@ void __68__HKFeatureAvailabilityHealthDataRequirementStore__notifyObservers___bl
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSMapTable *)self->_lock_requirementsByObserver objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  objectEnumerator = [(NSMapTable *)self->_lock_requirementsByObserver objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -482,13 +482,13 @@ void __68__HKFeatureAvailabilityHealthDataRequirementStore__notifyObservers___bl
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [v3 unionSet:*(*(&v12 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -502,16 +502,16 @@ void __68__HKFeatureAvailabilityHealthDataRequirementStore__notifyObservers___bl
   return v9;
 }
 
-- (void)client_featureAvailabilityRequirement:(id)a3 didUpdateSatisfaction:(BOOL)a4
+- (void)client_featureAvailabilityRequirement:(id)requirement didUpdateSatisfaction:(BOOL)satisfaction
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  requirementCopy = requirement;
   _HKInitializeLogging();
   v7 = HKLogInfrastructure();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19197B000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received server notification of requirement satisfaction update", buf, 0xCu);
   }
 
@@ -519,9 +519,9 @@ void __68__HKFeatureAvailabilityHealthDataRequirementStore__notifyObservers___bl
   v10[1] = 3221225472;
   v10[2] = __111__HKFeatureAvailabilityHealthDataRequirementStore_client_featureAvailabilityRequirement_didUpdateSatisfaction___block_invoke;
   v10[3] = &unk_1E737F688;
-  v11 = v6;
-  v12 = a4;
-  v8 = v6;
+  v11 = requirementCopy;
+  satisfactionCopy = satisfaction;
+  v8 = requirementCopy;
   [(HKFeatureAvailabilityHealthDataRequirementStore *)self _notifyObservers:v10];
 
   v9 = *MEMORY[0x1E69E9840];

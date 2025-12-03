@@ -1,32 +1,32 @@
 @interface pathElement
-+ (id)pathElementFromName:(id)a3 withParentFH:(id)a4 withCookie:(unint64_t)a5 andWithCookieVerifier:(unint64_t)a6;
-- (pathElement)initWithTheName:(id)a3 withParentFH:(id)a4 withCookie:(unint64_t)a5 andWithCookieVerifier:(unint64_t)a6;
++ (id)pathElementFromName:(id)name withParentFH:(id)h withCookie:(unint64_t)cookie andWithCookieVerifier:(unint64_t)verifier;
+- (pathElement)initWithTheName:(id)name withParentFH:(id)h withCookie:(unint64_t)cookie andWithCookieVerifier:(unint64_t)verifier;
 @end
 
 @implementation pathElement
 
-- (pathElement)initWithTheName:(id)a3 withParentFH:(id)a4 withCookie:(unint64_t)a5 andWithCookieVerifier:(unint64_t)a6
+- (pathElement)initWithTheName:(id)name withParentFH:(id)h withCookie:(unint64_t)cookie andWithCookieVerifier:(unint64_t)verifier
 {
-  v11 = a3;
-  v12 = a4;
+  nameCopy = name;
+  hCopy = h;
   v13 = [(pathElement *)self init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_elementName, a3);
-    objc_storeStrong(&v14->_parentFH, a4);
-    v14->_cookie = a5;
-    v14->_cookieVerifier = a6;
+    objc_storeStrong(&v13->_elementName, name);
+    objc_storeStrong(&v14->_parentFH, h);
+    v14->_cookie = cookie;
+    v14->_cookieVerifier = verifier;
   }
 
   return v14;
 }
 
-+ (id)pathElementFromName:(id)a3 withParentFH:(id)a4 withCookie:(unint64_t)a5 andWithCookieVerifier:(unint64_t)a6
++ (id)pathElementFromName:(id)name withParentFH:(id)h withCookie:(unint64_t)cookie andWithCookieVerifier:(unint64_t)verifier
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [[a1 alloc] initWithTheName:v11 withParentFH:v10 withCookie:a5 andWithCookieVerifier:a6];
+  hCopy = h;
+  nameCopy = name;
+  v12 = [[self alloc] initWithTheName:nameCopy withParentFH:hCopy withCookie:cookie andWithCookieVerifier:verifier];
 
   return v12;
 }

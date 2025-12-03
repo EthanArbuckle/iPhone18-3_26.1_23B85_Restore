@@ -1,18 +1,18 @@
 @interface PKSelectionInput
-+ (id)inputWithType:(int64_t)a3 location:(CGPoint)a4 inputType:(int64_t)a5;
++ (id)inputWithType:(int64_t)type location:(CGPoint)location inputType:(int64_t)inputType;
 - (CGPoint)location;
 @end
 
 @implementation PKSelectionInput
 
-+ (id)inputWithType:(int64_t)a3 location:(CGPoint)a4 inputType:(int64_t)a5
++ (id)inputWithType:(int64_t)type location:(CGPoint)location inputType:(int64_t)inputType
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v9 = objc_alloc_init(PKSelectionInput);
-  [(PKSelectionInput *)v9 setSelectionType:a3];
+  [(PKSelectionInput *)v9 setSelectionType:type];
   [(PKSelectionInput *)v9 setLocation:x, y];
-  [(PKSelectionInput *)v9 setInputType:a5];
+  [(PKSelectionInput *)v9 setInputType:inputType];
 
   return v9;
 }

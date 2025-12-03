@@ -9,36 +9,36 @@
 {
   v2 = objc_opt_new();
   [v2 setObject:@"http://schema.org/Seat" forKeyedSubscript:@"@type"];
-  v3 = [a1 seatNumber];
+  seatNumber = [self seatNumber];
 
-  if (v3)
+  if (seatNumber)
   {
-    v4 = [a1 seatNumber];
-    [v2 setObject:v4 forKeyedSubscript:@"seatNumber"];
+    seatNumber2 = [self seatNumber];
+    [v2 setObject:seatNumber2 forKeyedSubscript:@"seatNumber"];
   }
 
-  v5 = [a1 seatRow];
+  seatRow = [self seatRow];
 
-  if (v5)
+  if (seatRow)
   {
-    v6 = [a1 seatRow];
-    [v2 setObject:v6 forKeyedSubscript:@"seatRow"];
+    seatRow2 = [self seatRow];
+    [v2 setObject:seatRow2 forKeyedSubscript:@"seatRow"];
   }
 
-  v7 = [a1 seatSection];
+  seatSection = [self seatSection];
 
-  if (v7)
+  if (seatSection)
   {
-    v8 = [a1 seatSection];
-    [v2 setObject:v8 forKeyedSubscript:@"seatSection"];
+    seatSection2 = [self seatSection];
+    [v2 setObject:seatSection2 forKeyedSubscript:@"seatSection"];
   }
 
-  v9 = [a1 seatingType];
+  seatingType = [self seatingType];
 
-  if (v9)
+  if (seatingType)
   {
-    v10 = [a1 seatingType];
-    [v2 setObject:v10 forKeyedSubscript:@"seatingType"];
+    seatingType2 = [self seatingType];
+    [v2 setObject:seatingType2 forKeyedSubscript:@"seatingType"];
   }
 
   if ([v2 count] < 2)

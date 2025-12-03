@@ -1,13 +1,13 @@
 @interface MLCloudSession
-- (MLCloudSession)initWithTeamIdentifier:(id)a3;
-- (id)fetchKeyResponseFromServerForKeyID:(id)a3 signedKeyRequest:(id)a4 error:(id *)a5;
+- (MLCloudSession)initWithTeamIdentifier:(id)identifier;
+- (id)fetchKeyResponseFromServerForKeyID:(id)d signedKeyRequest:(id)request error:(id *)error;
 @end
 
 @implementation MLCloudSession
 
-- (MLCloudSession)initWithTeamIdentifier:(id)a3
+- (MLCloudSession)initWithTeamIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = MLCloudSession;
   v5 = [(MLCloudSession *)&v14 init];
@@ -21,7 +21,7 @@
     serviceName = v5->_serviceName;
     v5->_serviceName = @"mks-production";
 
-    v10 = [v4 copy];
+    v10 = [identifierCopy copy];
     teamIdentifier = v5->_teamIdentifier;
     v5->_teamIdentifier = v10;
 
@@ -31,19 +31,19 @@
   return v5;
 }
 
-- (id)fetchKeyResponseFromServerForKeyID:(id)a3 signedKeyRequest:(id)a4 error:(id *)a5
+- (id)fetchKeyResponseFromServerForKeyID:(id)d signedKeyRequest:(id)request error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  requestCopy = request;
   v10 = [CKCodeOperation alloc];
-  v11 = [(MLCloudSession *)self serviceName];
-  v12 = [v10 initWithServiceName:v11 functionName:@"fetchKey2" responseClass:objc_opt_class()];
+  serviceName = [(MLCloudSession *)self serviceName];
+  v12 = [v10 initWithServiceName:serviceName functionName:@"fetchKey2" responseClass:objc_opt_class()];
 
   v13 = objc_alloc_init(ModelKeyServerAPIFetchKeyRequest);
-  [(ModelKeyServerAPIFetchKeyRequest *)v13 setKeyId:v8];
-  [(ModelKeyServerAPIFetchKeyRequest *)v13 setSignedKeyRequest:v9];
-  v14 = [(MLCloudSession *)self teamIdentifier];
-  [(ModelKeyServerAPIFetchKeyRequest *)v13 setTeamId:v14];
+  [(ModelKeyServerAPIFetchKeyRequest *)v13 setKeyId:dCopy];
+  [(ModelKeyServerAPIFetchKeyRequest *)v13 setSignedKeyRequest:requestCopy];
+  teamIdentifier = [(MLCloudSession *)self teamIdentifier];
+  [(ModelKeyServerAPIFetchKeyRequest *)v13 setTeamId:teamIdentifier];
 
   [(ModelKeyServerAPIFetchKeyRequest *)v13 setRawRequest:0];
   [v12 setRequest:v13];
@@ -69,16 +69,16 @@
   v30 = v15;
   v32 = &v39;
   [v12 setCodeOperationCompletionBlock:v29];
-  v16 = [(MLCloudSession *)self container];
-  v17 = [v16 publicCloudDatabase];
-  [v17 addOperation:v12];
+  container = [(MLCloudSession *)self container];
+  publicCloudDatabase = [container publicCloudDatabase];
+  [publicCloudDatabase addOperation:v12];
 
   v18 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v15, v18))
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MLModelErrorUtils modelDecryptionKeyFetchErrorWithUnderlyingError:0 format:@"Fetching decryption key from server timed out. Make sure the device is online."];
+      *error = [MLModelErrorUtils modelDecryptionKeyFetchErrorWithUnderlyingError:0 format:@"Fetching decryption key from server timed out. Make sure the device is online."];
     }
 
     v19 = +[MLLogging coreChannel];
@@ -92,9 +92,9 @@
 
   else
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v34[5];
+      *error = v34[5];
     }
 
     v27 = v40[5];

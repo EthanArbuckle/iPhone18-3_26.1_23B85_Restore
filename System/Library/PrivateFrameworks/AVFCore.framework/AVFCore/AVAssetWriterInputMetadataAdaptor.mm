@@ -162,10 +162,10 @@ LABEL_21:
     }
   }
 
-  v11 = [[(AVAssetWriterInputMetadataAdaptor *)self assetWriterInput] _status];
-  if ((v11 - 1) >= 4)
+  _status = [[(AVAssetWriterInputMetadataAdaptor *)self assetWriterInput] _status];
+  if ((_status - 1) >= 4)
   {
-    if (v11)
+    if (_status)
     {
       return 1;
     }
@@ -200,15 +200,15 @@ LABEL_9:
   if ([v36 code] == -11999)
   {
     v22 = [objc_msgSend(v36 "userInfo")];
-    v23 = [v22 reason];
+    reason = [v22 reason];
     v24 = MEMORY[0x1E695DF30];
-    v30 = [v22 name];
-    if (v23)
+    name = [v22 name];
+    if (reason)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@": %@", v23];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@": %@", reason];
     }
 
-    v31 = [v24 exceptionWithName:v30 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"Cannot write to file timed metadata group %p%@", v25, v26, v27, v28, v29, timedMetadataGroup), 0}];
+    v31 = [v24 exceptionWithName:name reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"Cannot write to file timed metadata group %p%@", v25, v26, v27, v28, v29, timedMetadataGroup), 0}];
     if (v12)
     {
       CFRelease(v12);
@@ -217,8 +217,8 @@ LABEL_9:
     objc_exception_throw(v31);
   }
 
-  v16 = [(AVAssetWriterInputMetadataAdaptor *)self assetWriterInput];
-  [(AVAssetWriterInput *)v16 _tellAssetWriterToTransitionToFailedStatusWithError:v36];
+  assetWriterInput = [(AVAssetWriterInputMetadataAdaptor *)self assetWriterInput];
+  [(AVAssetWriterInput *)assetWriterInput _tellAssetWriterToTransitionToFailedStatusWithError:v36];
   v14 = 0;
   if (v12)
   {

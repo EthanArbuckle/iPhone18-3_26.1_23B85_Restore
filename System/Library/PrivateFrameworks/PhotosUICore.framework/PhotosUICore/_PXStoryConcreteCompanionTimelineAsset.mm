@@ -5,7 +5,7 @@
 - (CGRect)frame;
 - (PHAsset)photoLibraryAsset;
 - (PXStoryCompanionColorEffect)colorNormalizationEffect;
-- (_PXStoryConcreteCompanionTimelineAsset)initWithFrame:(CGRect)a3 clip:(id)a4;
+- (_PXStoryConcreteCompanionTimelineAsset)initWithFrame:(CGRect)frame clip:(id)clip;
 - (int64_t)playbackStyle;
 @end
 
@@ -34,8 +34,8 @@
   v22 = 0;
   v3 = dispatch_semaphore_create(0);
   v4 = +[PXStoryColorNormalizationCubeLibrary sharedInstance];
-  v5 = [(_PXStoryConcreteCompanionTimelineAsset *)self clip];
-  v6 = [v5 colorNormalization];
+  clip = [(_PXStoryConcreteCompanionTimelineAsset *)self clip];
+  colorNormalization = [clip colorNormalization];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __66___PXStoryConcreteCompanionTimelineAsset_colorNormalizationEffect__block_invoke;
@@ -43,7 +43,7 @@
   v16 = &v17;
   v7 = v3;
   v15 = v7;
-  [v4 requestColorCubeForAssetNormalization:v6 completionHandler:&v11];
+  [v4 requestColorCubeForAssetNormalization:colorNormalization completionHandler:&v11];
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v8 = [_PXStoryConcreteCompanionColorEffect alloc];
@@ -56,10 +56,10 @@
 
 - ($AD15B6C785738E514ABCC493A298F7F8)finalContentsRect
 {
-  v3 = [(_PXStoryConcreteCompanionTimelineAsset *)self clip];
-  if (v3)
+  clip = [(_PXStoryConcreteCompanionTimelineAsset *)self clip];
+  if (clip)
   {
-    [v3 info];
+    [clip info];
   }
 
   else
@@ -75,10 +75,10 @@
 
 - ($AD15B6C785738E514ABCC493A298F7F8)initialContentsRect
 {
-  v3 = [(_PXStoryConcreteCompanionTimelineAsset *)self clip];
-  if (v3)
+  clip = [(_PXStoryConcreteCompanionTimelineAsset *)self clip];
+  if (clip)
   {
-    [v3 info];
+    [clip info];
   }
 
   else
@@ -94,11 +94,11 @@
 
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)videoTimeRange
 {
-  v4 = [(_PXStoryConcreteCompanionTimelineAsset *)self clip];
-  v5 = v4;
-  if (v4)
+  clip = [(_PXStoryConcreteCompanionTimelineAsset *)self clip];
+  v5 = clip;
+  if (clip)
   {
-    [v4 videoTimeRange];
+    [clip videoTimeRange];
   }
 
   else
@@ -117,14 +117,14 @@
 
 - (int64_t)playbackStyle
 {
-  v2 = [(_PXStoryConcreteCompanionTimelineAsset *)self clip];
-  if (!v2)
+  clip = [(_PXStoryConcreteCompanionTimelineAsset *)self clip];
+  if (!clip)
   {
     return 0;
   }
 
-  v3 = v2;
-  [v2 info];
+  v3 = clip;
+  [clip info];
   v4 = v6;
 
   if ((v4 - 1) >= 5)
@@ -140,12 +140,12 @@
 
 - (PHAsset)photoLibraryAsset
 {
-  v4 = [(_PXStoryConcreteCompanionTimelineAsset *)self clip];
-  v5 = [v4 resource];
+  clip = [(_PXStoryConcreteCompanionTimelineAsset *)self clip];
+  resource = [clip resource];
 
-  v6 = [v5 px_storyResourceDisplayAsset];
+  px_storyResourceDisplayAsset = [resource px_storyResourceDisplayAsset];
 
-  v7 = v6;
+  v7 = px_storyResourceDisplayAsset;
   if (v7)
   {
     objc_opt_class();
@@ -154,19 +154,19 @@
       goto LABEL_3;
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v11 = NSStringFromClass(v12);
-    v13 = [v7 px_descriptionForAssertionMessage];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteCompanionTimeline.m" lineNumber:171 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v11, v13}];
+    px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteCompanionTimeline.m" lineNumber:171 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v11, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteCompanionTimeline.m" lineNumber:171 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteCompanionTimeline.m" lineNumber:171 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v11}];
   }
 
 LABEL_3:
@@ -174,13 +174,13 @@ LABEL_3:
   return v7;
 }
 
-- (_PXStoryConcreteCompanionTimelineAsset)initWithFrame:(CGRect)a3 clip:(id)a4
+- (_PXStoryConcreteCompanionTimelineAsset)initWithFrame:(CGRect)frame clip:(id)clip
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  clipCopy = clip;
   v14.receiver = self;
   v14.super_class = _PXStoryConcreteCompanionTimelineAsset;
   v11 = [(_PXStoryConcreteCompanionTimelineAsset *)&v14 init];
@@ -191,7 +191,7 @@ LABEL_3:
     v11->_frame.origin.y = y;
     v11->_frame.size.width = width;
     v11->_frame.size.height = height;
-    objc_storeStrong(&v11->_clip, a4);
+    objc_storeStrong(&v11->_clip, clip);
   }
 
   return v12;

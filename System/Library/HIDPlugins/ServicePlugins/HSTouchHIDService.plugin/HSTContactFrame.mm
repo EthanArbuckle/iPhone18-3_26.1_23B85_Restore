@@ -1,23 +1,23 @@
 @interface HSTContactFrame
-- (BOOL)decodeFromMap:(void *)a3;
+- (BOOL)decodeFromMap:(void *)map;
 - (BOOL)isTouching;
 - (HSTContactFrame)init;
 - (id).cxx_construct;
-- (id)contactAtIndex:(unint64_t)a3;
+- (id)contactAtIndex:(unint64_t)index;
 - (id)description;
 - (id)metadata;
 - (signed)imagePixels;
 - (void)_clear;
-- (void)encodeToMap:(void *)a3;
+- (void)encodeToMap:(void *)map;
 @end
 
 @implementation HSTContactFrame
 
-- (id)contactAtIndex:(unint64_t)a3
+- (id)contactAtIndex:(unint64_t)index
 {
   v5 = objc_opt_new();
   objc_storeStrong((v5 + 8), self);
-  *(v5 + 16) = a3;
+  *(v5 + 16) = index;
 
   return v5;
 }
@@ -93,29 +93,29 @@
   }
 }
 
-- (void)encodeToMap:(void *)a3
+- (void)encodeToMap:(void *)map
 {
   v9.receiver = self;
   v9.super_class = HSTContactFrame;
   [(HSTFrame *)&v9 encodeToMap:?];
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)102,(char)114,(char)97,(char)109,(char)101,(char)78,(char)117,(char)109,(char)98,(char)101,(char)114>::Key, self->frameNumber);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)102,(char)105,(char)114,(char)109,(char)119,(char)97,(char)114,(char)101,(char)84,(char)105,(char)109,(char)101,(char)115,(char)116,(char)97,(char)109,(char)112>::Key, self->firmwareTimestamp);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)105,(char)110,(char)112,(char)117,(char)116,(char)68,(char)101,(char)116,(char)101,(char)99,(char)116,(char)105,(char)111,(char)110,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, self->inputDetectionState);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)100,(char)101,(char)118,(char)105,(char)99,(char)101,(char)79,(char)112,(char)101,(char)114,(char)97,(char)116,(char)105,(char)110,(char)103,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, self->deviceOperatingState);
-  HSUtil::Encoder::encodeArrayStart(a3, HSUtil::CoderKey::Literal<(char)99,(char)111,(char)110,(char)116,(char)97,(char)99,(char)116,(char)115>::Key, 2);
+  HSUtil::Encoder::encodeUInt(map, HSUtil::CoderKey::Literal<(char)102,(char)114,(char)97,(char)109,(char)101,(char)78,(char)117,(char)109,(char)98,(char)101,(char)114>::Key, self->frameNumber);
+  HSUtil::Encoder::encodeUInt(map, HSUtil::CoderKey::Literal<(char)102,(char)105,(char)114,(char)109,(char)119,(char)97,(char)114,(char)101,(char)84,(char)105,(char)109,(char)101,(char)115,(char)116,(char)97,(char)109,(char)112>::Key, self->firmwareTimestamp);
+  HSUtil::Encoder::encodeUInt(map, HSUtil::CoderKey::Literal<(char)105,(char)110,(char)112,(char)117,(char)116,(char)68,(char)101,(char)116,(char)101,(char)99,(char)116,(char)105,(char)111,(char)110,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, self->inputDetectionState);
+  HSUtil::Encoder::encodeUInt(map, HSUtil::CoderKey::Literal<(char)100,(char)101,(char)118,(char)105,(char)99,(char)101,(char)79,(char)112,(char)101,(char)114,(char)97,(char)116,(char)105,(char)110,(char)103,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, self->deviceOperatingState);
+  HSUtil::Encoder::encodeArrayStart(map, HSUtil::CoderKey::Literal<(char)99,(char)111,(char)110,(char)116,(char)97,(char)99,(char)116,(char)115>::Key, 2);
   begin = self->contacts.__begin_;
   end = self->contacts.__end_;
-  v7 = *a3;
+  v7 = *map;
   while (begin != end)
   {
     if (!v7)
     {
-      v8 = HSTPipeline::Contact::encode(begin, a3);
-      v7 = *a3;
-      if (!*a3 && (v8 & 1) == 0)
+      v8 = HSTPipeline::Contact::encode(begin, map);
+      v7 = *map;
+      if (!*map && (v8 & 1) == 0)
       {
         v7 = 10;
-        *a3 = 10;
+        *map = 10;
       }
     }
 
@@ -124,13 +124,13 @@
 
   if (!v7)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(map);
   }
 
-  HSUtil::Encoder::encodeCodable<HSTContactFrameMetadata>(a3, HSUtil::CoderKey::Literal<(char)109,(char)101,(char)116,(char)97,(char)100,(char)97,(char)116,(char)97>::Key, &self->metadata);
+  HSUtil::Encoder::encodeCodable<HSTContactFrameMetadata>(map, HSUtil::CoderKey::Literal<(char)109,(char)101,(char)116,(char)97,(char)100,(char)97,(char)116,(char)97>::Key, &self->metadata);
 }
 
-- (BOOL)decodeFromMap:(void *)a3
+- (BOOL)decodeFromMap:(void *)map
 {
   v42.receiver = self;
   v42.super_class = HSTContactFrame;
@@ -147,18 +147,18 @@
   }
 
   [(HSTContactFrame *)self _clear];
-  HSUtil::Decoder::setOffset(a3, 0);
+  HSUtil::Decoder::setOffset(map, 0);
   while (1)
   {
-    v5 = HSUtil::Decoder::decodeKey(a3);
-    if (*a3)
+    v5 = HSUtil::Decoder::decodeKey(map);
+    if (*map)
     {
       break;
     }
 
     if (v5 == HSUtil::CoderKey::Literal<(char)102,(char)114,(char)97,(char)109,(char)101,(char)78,(char)117,(char)109,(char)98,(char)101,(char)114>::Key)
     {
-      v6 = HSUtil::Decoder::decodeUInt(a3);
+      v6 = HSUtil::Decoder::decodeUInt(map);
       v7 = 24;
 LABEL_13:
       *(&self->super.super.isa + v7) = v6;
@@ -167,14 +167,14 @@ LABEL_13:
 
     if (v5 == HSUtil::CoderKey::Literal<(char)102,(char)105,(char)114,(char)109,(char)119,(char)97,(char)114,(char)101,(char)84,(char)105,(char)109,(char)101,(char)115,(char)116,(char)97,(char)109,(char)112>::Key)
     {
-      v6 = HSUtil::Decoder::decodeUInt(a3);
+      v6 = HSUtil::Decoder::decodeUInt(map);
       v7 = 32;
       goto LABEL_13;
     }
 
     if (v5 == HSUtil::CoderKey::Literal<(char)105,(char)110,(char)112,(char)117,(char)116,(char)68,(char)101,(char)116,(char)101,(char)99,(char)116,(char)105,(char)111,(char)110,(char)83,(char)116,(char)97,(char)116,(char)101>::Key)
     {
-      v8 = HSUtil::Decoder::decodeUInt(a3);
+      v8 = HSUtil::Decoder::decodeUInt(map);
       v9 = 40;
     }
 
@@ -191,7 +191,7 @@ LABEL_13:
           v38 = v10;
           v39 = v10;
           v37 = v10;
-          HSUtil::Decoder::decodeArray(a3, &v37);
+          HSUtil::Decoder::decodeArray(map, &v37);
           while (1)
           {
             *&v35[8] = -1431655936;
@@ -321,24 +321,24 @@ LABEL_13:
 
         else if (v5 == HSUtil::CoderKey::Literal<(char)109,(char)101,(char)116,(char)97,(char)100,(char)97,(char)116,(char)97>::Key)
         {
-          HSUtil::Decoder::decodeCodable<HSTContactFrameMetadata>(a3, &self->metadata);
+          HSUtil::Decoder::decodeCodable<HSTContactFrameMetadata>(map, &self->metadata);
         }
 
         else
         {
-          HSUtil::Decoder::skipElement(a3);
+          HSUtil::Decoder::skipElement(map);
         }
 
         goto LABEL_17;
       }
 
-      v8 = HSUtil::Decoder::decodeUInt(a3);
+      v8 = HSUtil::Decoder::decodeUInt(map);
       v9 = 44;
     }
 
     *(&self->super.super.isa + v9) = v8;
 LABEL_17:
-    if (*a3)
+    if (*map)
     {
       memset(__b, 170, sizeof(__b));
       basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTFrame.mm", __b);
@@ -351,7 +351,7 @@ LABEL_17:
     }
   }
 
-  if (*a3 == 3)
+  if (*map == 3)
   {
     return 1;
   }

@@ -1,64 +1,64 @@
 @interface DCMarkupUtilities
-+ (BOOL)hasPrivateImageMetadata:(id)a3;
-+ (id)cleanImageMetadataFromData:(id)a3;
++ (BOOL)hasPrivateImageMetadata:(id)metadata;
++ (id)cleanImageMetadataFromData:(id)data;
 + (id)createMarkupViewController;
-+ (id)createProcessingMarkupViewControllerOutWindow:(id *)a3;
-+ (id)dataToEditForDocumentInfo:(id)a3 includeMarkupModelData:(BOOL)a4 imageCache:(id)a5 embedMarkupModelDataInImage:(BOOL)a6;
-+ (id)imageDataWithMarkupModelData:(id)a3 sourceImageData:(id)a4 embedData:(BOOL)a5;
-+ (id)imageDataWithMarkupModelData:(id)a3 sourceImageURL:(id)a4;
-+ (id)markupModelDataFromData:(id)a3;
-+ (id)markupModelDataFromDataAtURL:(id)a3;
-+ (void)applyMarkupModelData:(id)a3 documentInfo:(id)a4 completionBlock:(id)a5;
-+ (void)extractReturnedMarkupURL:(id)a3 documentInfo:(id)a4 completionBlock:(id)a5;
++ (id)createProcessingMarkupViewControllerOutWindow:(id *)window;
++ (id)dataToEditForDocumentInfo:(id)info includeMarkupModelData:(BOOL)data imageCache:(id)cache embedMarkupModelDataInImage:(BOOL)image;
++ (id)imageDataWithMarkupModelData:(id)data sourceImageData:(id)imageData embedData:(BOOL)embedData;
++ (id)imageDataWithMarkupModelData:(id)data sourceImageURL:(id)l;
++ (id)markupModelDataFromData:(id)data;
++ (id)markupModelDataFromDataAtURL:(id)l;
++ (void)applyMarkupModelData:(id)data documentInfo:(id)info completionBlock:(id)block;
++ (void)extractReturnedMarkupURL:(id)l documentInfo:(id)info completionBlock:(id)block;
 @end
 
 @implementation DCMarkupUtilities
 
-+ (id)dataToEditForDocumentInfo:(id)a3 includeMarkupModelData:(BOOL)a4 imageCache:(id)a5 embedMarkupModelDataInImage:(BOOL)a6
++ (id)dataToEditForDocumentInfo:(id)info includeMarkupModelData:(BOOL)data imageCache:(id)cache embedMarkupModelDataInImage:(BOOL)image
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 fullImageUUID];
-  v11 = [v9 getImage:v10];
+  infoCopy = info;
+  cacheCopy = cache;
+  fullImageUUID = [infoCopy fullImageUUID];
+  v11 = [cacheCopy getImage:fullImageUUID];
 
   v12 = UIImageJPEGRepresentation(v11, 1.0);
   if (v12)
   {
-    v25 = a1;
-    v13 = [v8 currentOrientation];
-    v14 = [v8 markupModelData];
-    v15 = [v8 imageQuad];
-    if (v13 || [v8 currentFilter] || v15)
+    selfCopy = self;
+    currentOrientation = [infoCopy currentOrientation];
+    markupModelData = [infoCopy markupModelData];
+    imageQuad = [infoCopy imageQuad];
+    if (currentOrientation || [infoCopy currentFilter] || imageQuad)
     {
       context = objc_autoreleasePoolPush();
       v16 = [MEMORY[0x277D755B8] imageWithData:v12];
-      if (v15)
+      if (imageQuad)
       {
-        v17 = [ICDocCamImageFilters perspectiveCorrectedImageFromImage:v16 normalizedImageQuad:v15];
+        v17 = [ICDocCamImageFilters perspectiveCorrectedImageFromImage:v16 normalizedImageQuad:imageQuad];
 
         v16 = v17;
       }
 
-      v18 = +[ICDocCamImageFilters filteredImage:orientation:imageFilterType:](ICDocCamImageFilters, "filteredImage:orientation:imageFilterType:", v16, 0, [v8 currentFilter]);
+      v18 = +[ICDocCamImageFilters filteredImage:orientation:imageFilterType:](ICDocCamImageFilters, "filteredImage:orientation:imageFilterType:", v16, 0, [infoCopy currentFilter]);
 
       v19 = [ICDocCamImageFilters imageWithRGBColorspaceFromImage:v18];
 
-      if (v13)
+      if (currentOrientation)
       {
-        v20 = [MEMORY[0x277D755B8] dc_orientedImageFromImage:v19 toOrientation:v13];
+        v20 = [MEMORY[0x277D755B8] dc_orientedImageFromImage:v19 toOrientation:currentOrientation];
 
         v19 = v20;
       }
 
-      v21 = [v19 dc_JPEGData];
+      dc_JPEGData = [v19 dc_JPEGData];
 
       objc_autoreleasePoolPop(context);
-      v12 = v21;
+      v12 = dc_JPEGData;
     }
 
-    if ([v14 length])
+    if ([markupModelData length])
     {
-      v22 = [v25 imageDataWithMarkupModelData:v14 sourceImageData:v12];
+      v22 = [selfCopy imageDataWithMarkupModelData:markupModelData sourceImageData:v12];
 
       v12 = v22;
     }
@@ -67,18 +67,18 @@
   return v12;
 }
 
-+ (BOOL)hasPrivateImageMetadata:(id)a3
++ (BOOL)hasPrivateImageMetadata:(id)metadata
 {
-  v3 = a3;
-  v4 = [getMarkupViewControllerClass() hasPrivateImageMetadata:v3];
+  metadataCopy = metadata;
+  v4 = [getMarkupViewControllerClass() hasPrivateImageMetadata:metadataCopy];
 
   return v4;
 }
 
-+ (id)cleanImageMetadataFromData:(id)a3
++ (id)cleanImageMetadataFromData:(id)data
 {
-  v3 = a3;
-  v4 = [getMarkupViewControllerClass() cleanImageMetadataFromData:v3];
+  dataCopy = data;
+  v4 = [getMarkupViewControllerClass() cleanImageMetadataFromData:dataCopy];
 
   return v4;
 }
@@ -90,21 +90,21 @@
   return v2;
 }
 
-+ (id)createProcessingMarkupViewControllerOutWindow:(id *)a3
++ (id)createProcessingMarkupViewControllerOutWindow:(id *)window
 {
-  v3 = [a1 createMarkupViewController];
-  [v3 setEncryptPrivateMetadata:0];
+  createMarkupViewController = [self createMarkupViewController];
+  [createMarkupViewController setEncryptPrivateMetadata:0];
 
-  return v3;
+  return createMarkupViewController;
 }
 
-+ (id)imageDataWithMarkupModelData:(id)a3 sourceImageData:(id)a4 embedData:(BOOL)a5
++ (id)imageDataWithMarkupModelData:(id)data sourceImageData:(id)imageData embedData:(BOOL)embedData
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  embedDataCopy = embedData;
+  dataCopy = data;
+  imageDataCopy = imageData;
   v24 = 0;
-  v10 = [a1 createProcessingMarkupViewControllerOutWindow:&v24];
+  v10 = [self createProcessingMarkupViewControllerOutWindow:&v24];
   v11 = v24;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -112,13 +112,13 @@
   v20[3] = &unk_278F93258;
   v12 = v10;
   v21 = v12;
-  v13 = v9;
+  v13 = imageDataCopy;
   v22 = v13;
-  v14 = v8;
+  v14 = dataCopy;
   v23 = v14;
   dc_performBlockOnMainThread(v20);
   v19 = 0;
-  v15 = [v12 dataRepresentationEmbeddingSourceImageAndEditModel:v5 error:&v19];
+  v15 = [v12 dataRepresentationEmbeddingSourceImageAndEditModel:embedDataCopy error:&v19];
   v16 = v19;
   if (v16)
   {
@@ -132,12 +132,12 @@
   return v15;
 }
 
-+ (id)imageDataWithMarkupModelData:(id)a3 sourceImageURL:(id)a4
++ (id)imageDataWithMarkupModelData:(id)data sourceImageURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  lCopy = l;
   v22 = 0;
-  v8 = [a1 createProcessingMarkupViewControllerOutWindow:&v22];
+  v8 = [self createProcessingMarkupViewControllerOutWindow:&v22];
   v9 = v22;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -145,9 +145,9 @@
   v18[3] = &unk_278F93258;
   v10 = v8;
   v19 = v10;
-  v11 = v7;
+  v11 = lCopy;
   v20 = v11;
-  v12 = v6;
+  v12 = dataCopy;
   v21 = v12;
   dc_performBlockOnMainThread(v18);
   v17 = 0;
@@ -165,79 +165,79 @@
   return v13;
 }
 
-+ (id)markupModelDataFromDataAtURL:(id)a3
++ (id)markupModelDataFromDataAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v14 = 0;
-  v5 = [a1 createProcessingMarkupViewControllerOutWindow:&v14];
+  v5 = [self createProcessingMarkupViewControllerOutWindow:&v14];
   v6 = v14;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __50__DCMarkupUtilities_markupModelDataFromDataAtURL___block_invoke;
   v11[3] = &unk_278F92DE8;
   v12 = v5;
-  v13 = v4;
-  v7 = v4;
+  v13 = lCopy;
+  v7 = lCopy;
   v8 = v5;
   dc_performBlockOnMainThread(v11);
-  v9 = [v8 createArchivedModelData];
+  createArchivedModelData = [v8 createArchivedModelData];
 
-  return v9;
+  return createArchivedModelData;
 }
 
-+ (id)markupModelDataFromData:(id)a3
++ (id)markupModelDataFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v14 = 0;
-  v5 = [a1 createProcessingMarkupViewControllerOutWindow:&v14];
+  v5 = [self createProcessingMarkupViewControllerOutWindow:&v14];
   v6 = v14;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __45__DCMarkupUtilities_markupModelDataFromData___block_invoke;
   v11[3] = &unk_278F92DE8;
   v12 = v5;
-  v13 = v4;
-  v7 = v4;
+  v13 = dataCopy;
+  v7 = dataCopy;
   v8 = v5;
   dc_performBlockOnMainThread(v11);
-  v9 = [v8 createArchivedModelData];
+  createArchivedModelData = [v8 createArchivedModelData];
 
-  return v9;
+  return createArchivedModelData;
 }
 
-+ (void)applyMarkupModelData:(id)a3 documentInfo:(id)a4 completionBlock:(id)a5
++ (void)applyMarkupModelData:(id)data documentInfo:(id)info completionBlock:(id)block
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 markupModelData];
-  if (v12 | v9)
+  dataCopy = data;
+  infoCopy = info;
+  blockCopy = block;
+  markupModelData = [infoCopy markupModelData];
+  if (dataCopy | markupModelData)
   {
-    v10 = v9;
-    v11 = [v12 isEqual:v9];
+    v10 = markupModelData;
+    v11 = [dataCopy isEqual:markupModelData];
 
     if ((v11 & 1) == 0)
     {
-      [v7 setMarkupModelData:v12];
+      [infoCopy setMarkupModelData:dataCopy];
     }
   }
 
-  if (v8)
+  if (blockCopy)
   {
-    v8[2](v8);
+    blockCopy[2](blockCopy);
   }
 }
 
-+ (void)extractReturnedMarkupURL:(id)a3 documentInfo:(id)a4 completionBlock:(id)a5
++ (void)extractReturnedMarkupURL:(id)l documentInfo:(id)info completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [v10 startAccessingSecurityScopedResource];
-  v11 = [a1 markupModelDataFromDataAtURL:v10];
-  [v10 stopAccessingSecurityScopedResource];
+  blockCopy = block;
+  infoCopy = info;
+  lCopy = l;
+  [lCopy startAccessingSecurityScopedResource];
+  v11 = [self markupModelDataFromDataAtURL:lCopy];
+  [lCopy stopAccessingSecurityScopedResource];
 
-  [a1 applyMarkupModelData:v11 documentInfo:v9 completionBlock:v8];
+  [self applyMarkupModelData:v11 documentInfo:infoCopy completionBlock:blockCopy];
 }
 
 + (void)imageDataWithMarkupModelData:(uint64_t)a1 sourceImageData:(NSObject *)a2 embedData:.cold.1(uint64_t a1, NSObject *a2)

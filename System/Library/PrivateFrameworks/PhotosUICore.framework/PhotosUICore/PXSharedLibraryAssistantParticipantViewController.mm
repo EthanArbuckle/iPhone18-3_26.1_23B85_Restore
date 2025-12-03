@@ -1,11 +1,11 @@
 @interface PXSharedLibraryAssistantParticipantViewController
 - (PXAssistantViewControllerDelegate)assistantViewControllerDelegate;
-- (PXSharedLibraryAssistantParticipantViewController)initWithAssistantViewModel:(id)a3 participantViewModel:(id)a4;
+- (PXSharedLibraryAssistantParticipantViewController)initWithAssistantViewModel:(id)model participantViewModel:(id)viewModel;
 - (void)_continueAssistant;
 - (void)_updateButtonsAppearance;
 - (void)_updateTableViewLayoutConstraints;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -18,9 +18,9 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 0x20) != 0 && PXSharedLibraryAssistantViewModelObservationContext == a5)
+  if ((change & 0x20) != 0 && PXSharedLibraryAssistantViewModelObservationContext == context)
   {
     [(PXSharedLibraryAssistantParticipantViewController *)self _updateButtonsAppearance];
   }
@@ -29,30 +29,30 @@
 - (void)_continueAssistant
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = [(PXSharedLibraryAssistantParticipantViewController *)self assistantViewControllerDelegate];
-  if (!v3)
+  assistantViewControllerDelegate = [(PXSharedLibraryAssistantParticipantViewController *)self assistantViewControllerDelegate];
+  if (!assistantViewControllerDelegate)
   {
     PXAssertGetLog();
   }
 
-  [v3 stepForwardInAssistantForAssistantViewController:self];
+  [assistantViewControllerDelegate stepForwardInAssistantForAssistantViewController:self];
 }
 
 - (void)_updateButtonsAppearance
 {
-  v3 = [(PXSharedLibraryAssistantParticipantViewController *)self assistantViewModel];
-  v7 = [v3 participantDataSource];
+  assistantViewModel = [(PXSharedLibraryAssistantParticipantViewController *)self assistantViewModel];
+  participantDataSource = [assistantViewModel participantDataSource];
 
-  v4 = [v7 emailAddresses];
-  if ([v4 count])
+  emailAddresses = [participantDataSource emailAddresses];
+  if ([emailAddresses count])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v7 phoneNumbers];
-    v5 = [v6 count] != 0;
+    phoneNumbers = [participantDataSource phoneNumbers];
+    v5 = [phoneNumbers count] != 0;
   }
 
   [(OBTrayButton *)self->_titleButton setEnabled:v5];
@@ -65,9 +65,9 @@
   [MEMORY[0x1E696ACD8] deactivateConstraints:self->_tableViewLayoutConstraints];
   [(PXSharedLibraryParticipantTableViewController *)self->_tableViewController tableViewHeight];
   v4 = v3;
-  v5 = [(PXSharedLibraryParticipantTableViewController *)self->_tableViewController tableView];
-  v6 = [v5 heightAnchor];
-  v7 = [v6 constraintEqualToConstant:v4];
+  tableView = [(PXSharedLibraryParticipantTableViewController *)self->_tableViewController tableView];
+  heightAnchor = [tableView heightAnchor];
+  v7 = [heightAnchor constraintEqualToConstant:v4];
   v10[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   tableViewLayoutConstraints = self->_tableViewLayoutConstraints;
@@ -76,17 +76,17 @@
   [MEMORY[0x1E696ACD8] activateConstraints:self->_tableViewLayoutConstraints];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PXSharedLibraryAssistantParticipantViewController;
-  v4 = a3;
-  [(PXSharedLibraryAssistantParticipantViewController *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PXSharedLibraryAssistantParticipantViewController *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(PXSharedLibraryAssistantParticipantViewController *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(PXSharedLibraryAssistantParticipantViewController *)self _updateIcon];
   }
@@ -97,66 +97,66 @@
   v21.receiver = self;
   v21.super_class = PXSharedLibraryAssistantParticipantViewController;
   [(OBTableWelcomeController *)&v21 viewDidLoad];
-  v3 = [(PXSharedLibraryAssistantParticipantViewController *)self assistantViewModel];
-  [v3 registerChangeObserver:self context:PXSharedLibraryAssistantViewModelObservationContext];
+  assistantViewModel = [(PXSharedLibraryAssistantParticipantViewController *)self assistantViewModel];
+  [assistantViewModel registerChangeObserver:self context:PXSharedLibraryAssistantViewModelObservationContext];
   v4 = [PXSharedLibraryParticipantTableViewController alloc];
-  v5 = [v3 participantDataSourceManager];
-  v6 = [(PXSharedLibraryParticipantTableViewController *)v4 initWithDataSourceManager:v5];
+  participantDataSourceManager = [assistantViewModel participantDataSourceManager];
+  v6 = [(PXSharedLibraryParticipantTableViewController *)v4 initWithDataSourceManager:participantDataSourceManager];
   tableViewController = self->_tableViewController;
   self->_tableViewController = v6;
 
   [(PXSharedLibraryParticipantTableViewController *)self->_tableViewController setDelegate:self];
-  v8 = [(PXSharedLibraryParticipantTableViewController *)self->_tableViewController tableView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v8 setBackgroundColor:v9];
+  tableView = [(PXSharedLibraryParticipantTableViewController *)self->_tableViewController tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [tableView setBackgroundColor:systemBackgroundColor];
 
-  [(OBTableWelcomeController *)self setTableView:v8];
-  v10 = [MEMORY[0x1E69B7D00] boldButton];
+  [(OBTableWelcomeController *)self setTableView:tableView];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   v11 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_ButtonTitle_Continue");
-  [v10 setTitle:v11 forState:0];
+  [boldButton setTitle:v11 forState:0];
 
-  [v10 addTarget:self action:sel_continueButtonTapped_ forControlEvents:0x2000];
-  v12 = [(PXSharedLibraryAssistantParticipantViewController *)self buttonTray];
-  [v12 addButton:v10];
+  [boldButton addTarget:self action:sel_continueButtonTapped_ forControlEvents:0x2000];
+  buttonTray = [(PXSharedLibraryAssistantParticipantViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
   v13 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"\r" modifierFlags:0 action:sel_continueButtonTapped_];
   [(PXSharedLibraryAssistantParticipantViewController *)self addKeyCommand:v13];
 
   titleButton = self->_titleButton;
-  self->_titleButton = v10;
-  v15 = v10;
+  self->_titleButton = boldButton;
+  v15 = boldButton;
 
-  v16 = [MEMORY[0x1E69B7D38] linkButton];
+  linkButton = [MEMORY[0x1E69B7D38] linkButton];
   addLaterButton = self->_addLaterButton;
-  self->_addLaterButton = v16;
+  self->_addLaterButton = linkButton;
 
   v18 = self->_addLaterButton;
   v19 = PXLocalizedSharedLibraryString(@"PXSharedLibrarySetupAssistant_Participants_AddLater");
   [(OBLinkTrayButton *)v18 setTitle:v19 forState:0];
 
   [(OBLinkTrayButton *)self->_addLaterButton addTarget:self action:sel_addLaterButtonTapped_ forControlEvents:0x2000];
-  v20 = [(PXSharedLibraryAssistantParticipantViewController *)self buttonTray];
-  [v20 addButton:self->_addLaterButton];
+  buttonTray2 = [(PXSharedLibraryAssistantParticipantViewController *)self buttonTray];
+  [buttonTray2 addButton:self->_addLaterButton];
 
   [(PXSharedLibraryAssistantParticipantViewController *)self _updateButtonsAppearance];
   [(PXSharedLibraryAssistantParticipantViewController *)self _updateIcon];
 }
 
-- (PXSharedLibraryAssistantParticipantViewController)initWithAssistantViewModel:(id)a3 participantViewModel:(id)a4
+- (PXSharedLibraryAssistantParticipantViewController)initWithAssistantViewModel:(id)model participantViewModel:(id)viewModel
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 title];
-  v10 = [v8 subtitle];
+  modelCopy = model;
+  viewModelCopy = viewModel;
+  title = [viewModelCopy title];
+  subtitle = [viewModelCopy subtitle];
   v14.receiver = self;
   v14.super_class = PXSharedLibraryAssistantParticipantViewController;
-  v11 = [(OBTableWelcomeController *)&v14 initWithTitle:v9 detailText:v10 icon:0 adoptTableViewScrollView:0];
+  v11 = [(OBTableWelcomeController *)&v14 initWithTitle:title detailText:subtitle icon:0 adoptTableViewScrollView:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_assistantViewModel, a3);
-    objc_storeStrong(&v12->_participantViewModel, a4);
+    objc_storeStrong(&v11->_assistantViewModel, model);
+    objc_storeStrong(&v12->_participantViewModel, viewModel);
   }
 
   return v12;

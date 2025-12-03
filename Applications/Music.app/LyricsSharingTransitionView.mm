@@ -1,12 +1,12 @@
 @interface LyricsSharingTransitionView
-- (_TtC5Music27LyricsSharingTransitionView)initWithCoder:(id)a3;
-- (_TtC5Music27LyricsSharingTransitionView)initWithFrame:(CGRect)a3;
+- (_TtC5Music27LyricsSharingTransitionView)initWithCoder:(id)coder;
+- (_TtC5Music27LyricsSharingTransitionView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation LyricsSharingTransitionView
 
-- (_TtC5Music27LyricsSharingTransitionView)initWithCoder:(id)a3
+- (_TtC5Music27LyricsSharingTransitionView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC5Music27LyricsSharingTransitionView_finalLabelTopConstraint) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -16,11 +16,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005F0598();
 }
 
-- (_TtC5Music27LyricsSharingTransitionView)initWithFrame:(CGRect)a3
+- (_TtC5Music27LyricsSharingTransitionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

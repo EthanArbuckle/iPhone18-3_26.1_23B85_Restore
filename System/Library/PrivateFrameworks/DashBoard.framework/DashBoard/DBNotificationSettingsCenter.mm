@@ -1,10 +1,10 @@
 @interface DBNotificationSettingsCenter
 + (id)defaultCenter;
 - (id)_init;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)userNotificationSettingsCenter:(id)a3 didUpdateNotificationSourceIdentifiers:(id)a4;
-- (void)userNotificationSettingsCenter:(id)a3 didUpdateNotificationSystemSettings:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)userNotificationSettingsCenter:(id)center didUpdateNotificationSourceIdentifiers:(id)identifiers;
+- (void)userNotificationSettingsCenter:(id)center didUpdateNotificationSystemSettings:(id)settings;
 @end
 
 @implementation DBNotificationSettingsCenter
@@ -41,41 +41,41 @@ uint64_t __45__DBNotificationSettingsCenter_defaultCenter__block_invoke()
     observers = v2->_observers;
     v2->_observers = v3;
 
-    v5 = [MEMORY[0x277D77F68] currentNotificationSettingsCenter];
-    [v5 setDelegate:v2];
+    currentNotificationSettingsCenter = [MEMORY[0x277D77F68] currentNotificationSettingsCenter];
+    [currentNotificationSettingsCenter setDelegate:v2];
   }
 
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBNotificationSettingsCenter *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(DBNotificationSettingsCenter *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBNotificationSettingsCenter *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(DBNotificationSettingsCenter *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)userNotificationSettingsCenter:(id)a3 didUpdateNotificationSourceIdentifiers:(id)a4
+- (void)userNotificationSettingsCenter:(id)center didUpdateNotificationSourceIdentifiers:(id)identifiers
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DBNotificationSettingsCenter *)self observers];
-  [v8 userNotificationSettingsCenter:v7 didUpdateNotificationSourceIdentifiers:v6];
+  identifiersCopy = identifiers;
+  centerCopy = center;
+  observers = [(DBNotificationSettingsCenter *)self observers];
+  [observers userNotificationSettingsCenter:centerCopy didUpdateNotificationSourceIdentifiers:identifiersCopy];
 }
 
-- (void)userNotificationSettingsCenter:(id)a3 didUpdateNotificationSystemSettings:(id)a4
+- (void)userNotificationSettingsCenter:(id)center didUpdateNotificationSystemSettings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DBNotificationSettingsCenter *)self observers];
-  [v8 userNotificationSettingsCenter:v7 didUpdateNotificationSystemSettings:v6];
+  settingsCopy = settings;
+  centerCopy = center;
+  observers = [(DBNotificationSettingsCenter *)self observers];
+  [observers userNotificationSettingsCenter:centerCopy didUpdateNotificationSystemSettings:settingsCopy];
 }
 
 @end

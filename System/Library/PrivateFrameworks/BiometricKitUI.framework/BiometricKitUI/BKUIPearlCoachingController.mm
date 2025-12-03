@@ -4,13 +4,13 @@
 - (BOOL)needsToShow;
 - (BOOL)resetDeviceView;
 - (void)deviceOrientationChanged;
-- (void)escapeHatchButtonPressed:(id)a3;
+- (void)escapeHatchButtonPressed:(id)pressed;
 - (void)handleRotation;
-- (void)setInBuddy:(BOOL)a3;
+- (void)setInBuddy:(BOOL)buddy;
 - (void)stopCoachingAnimation;
 - (void)updateInstructionText;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BKUIPearlCoachingController
@@ -29,85 +29,85 @@
   v8 = [v3 initWithFrame:{*MEMORY[0x277CBF3A0], v5, v6, v7}];
   [(BKUIPearlCoachingController *)self setScrollview:v8];
 
-  v9 = [(BKUIPearlCoachingController *)self scrollview];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  scrollview = [(BKUIPearlCoachingController *)self scrollview];
+  [scrollview setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v10 = *MEMORY[0x277CBF3A8];
   v11 = *(MEMORY[0x277CBF3A8] + 8);
-  v12 = [(BKUIPearlCoachingController *)self scrollview];
-  [v12 setContentSize:{v10, v11}];
+  scrollview2 = [(BKUIPearlCoachingController *)self scrollview];
+  [scrollview2 setContentSize:{v10, v11}];
 
-  v13 = [(BKUIPearlCoachingController *)self scrollview];
-  [v13 setIndicatorStyle:2];
+  scrollview3 = [(BKUIPearlCoachingController *)self scrollview];
+  [scrollview3 setIndicatorStyle:2];
 
   v14 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v4, v5, v6, v7}];
   [(BKUIPearlCoachingController *)self setScrollContentView:v14];
 
-  v15 = [(BKUIPearlCoachingController *)self scrollContentView];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  scrollContentView = [(BKUIPearlCoachingController *)self scrollContentView];
+  [scrollContentView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(BKUIPearlCoachingController *)self scrollview];
-  v17 = [(BKUIPearlCoachingController *)self scrollContentView];
-  [v16 addSubview:v17];
+  scrollview4 = [(BKUIPearlCoachingController *)self scrollview];
+  scrollContentView2 = [(BKUIPearlCoachingController *)self scrollContentView];
+  [scrollview4 addSubview:scrollContentView2];
 
   v137 = MEMORY[0x277CCAAD0];
-  v173 = [(BKUIPearlCoachingController *)self scrollContentView];
-  v165 = [v173 topAnchor];
-  v169 = [(BKUIPearlCoachingController *)self scrollview];
-  v161 = [v169 topAnchor];
-  v158 = [v165 constraintEqualToAnchor:v161];
+  scrollContentView3 = [(BKUIPearlCoachingController *)self scrollContentView];
+  topAnchor = [scrollContentView3 topAnchor];
+  scrollview5 = [(BKUIPearlCoachingController *)self scrollview];
+  topAnchor2 = [scrollview5 topAnchor];
+  v158 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v180[0] = v158;
-  v155 = [(BKUIPearlCoachingController *)self scrollContentView];
-  v149 = [v155 bottomAnchor];
-  v152 = [(BKUIPearlCoachingController *)self scrollview];
-  v146 = [v152 bottomAnchor];
-  v143 = [v149 constraintEqualToAnchor:v146];
+  scrollContentView4 = [(BKUIPearlCoachingController *)self scrollContentView];
+  bottomAnchor = [scrollContentView4 bottomAnchor];
+  scrollview6 = [(BKUIPearlCoachingController *)self scrollview];
+  bottomAnchor2 = [scrollview6 bottomAnchor];
+  v143 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v180[1] = v143;
-  v140 = [(BKUIPearlCoachingController *)self scrollContentView];
-  v131 = [v140 widthAnchor];
-  v134 = [(BKUIPearlCoachingController *)self scrollview];
-  v129 = [v134 widthAnchor];
-  v127 = [v131 constraintEqualToAnchor:v129];
+  scrollContentView5 = [(BKUIPearlCoachingController *)self scrollContentView];
+  widthAnchor = [scrollContentView5 widthAnchor];
+  scrollview7 = [(BKUIPearlCoachingController *)self scrollview];
+  widthAnchor2 = [scrollview7 widthAnchor];
+  v127 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v180[2] = v127;
-  v125 = [(BKUIPearlCoachingController *)self scrollContentView];
-  v123 = [v125 centerXAnchor];
-  v18 = [(BKUIPearlCoachingController *)self scrollview];
-  v19 = [v18 centerXAnchor];
-  v20 = [v123 constraintEqualToAnchor:v19];
+  scrollContentView6 = [(BKUIPearlCoachingController *)self scrollContentView];
+  centerXAnchor = [scrollContentView6 centerXAnchor];
+  scrollview8 = [(BKUIPearlCoachingController *)self scrollview];
+  centerXAnchor2 = [scrollview8 centerXAnchor];
+  v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v180[3] = v20;
-  v21 = [(BKUIPearlCoachingController *)self scrollContentView];
-  v22 = [v21 heightAnchor];
-  v23 = [(BKUIPearlCoachingController *)self scrollview];
-  v24 = [v23 heightAnchor];
-  v25 = [v22 constraintGreaterThanOrEqualToAnchor:v24];
+  scrollContentView7 = [(BKUIPearlCoachingController *)self scrollContentView];
+  heightAnchor = [scrollContentView7 heightAnchor];
+  scrollview9 = [(BKUIPearlCoachingController *)self scrollview];
+  heightAnchor2 = [scrollview9 heightAnchor];
+  v25 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2];
   v180[4] = v25;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v180 count:5];
   [v137 activateConstraints:v26];
 
-  v27 = [(BKUIPearlCoachingController *)self view];
-  v28 = [(BKUIPearlCoachingController *)self scrollview];
-  [v27 addSubview:v28];
+  view = [(BKUIPearlCoachingController *)self view];
+  scrollview10 = [(BKUIPearlCoachingController *)self scrollview];
+  [view addSubview:scrollview10];
 
-  v29 = [MEMORY[0x277D75348] blackColor];
-  v30 = [(BKUIPearlCoachingController *)self view];
-  [v30 setBackgroundColor:v29];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  view2 = [(BKUIPearlCoachingController *)self view];
+  [view2 setBackgroundColor:blackColor];
 
   v31 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v32 = [(BKUIPearlCoachingController *)self view];
-  [v32 addSubview:v31];
+  view3 = [(BKUIPearlCoachingController *)self view];
+  [view3 addSubview:v31];
 
   v170 = MEMORY[0x277CCAAD0];
   v174 = v31;
-  v33 = [v31 topAnchor];
-  v34 = [(BKUIPearlCoachingController *)self view];
-  v35 = [v34 topAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35];
+  topAnchor3 = [v31 topAnchor];
+  view4 = [(BKUIPearlCoachingController *)self view];
+  topAnchor4 = [view4 topAnchor];
+  v36 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v179[0] = v36;
-  v37 = [v31 heightAnchor];
-  v38 = [(BKUIPearlCoachingController *)self view];
-  v39 = [v38 heightAnchor];
-  v40 = [v37 constraintEqualToAnchor:v39 multiplier:0.41];
+  heightAnchor3 = [v31 heightAnchor];
+  view5 = [(BKUIPearlCoachingController *)self view];
+  heightAnchor4 = [view5 heightAnchor];
+  v40 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4 multiplier:0.41];
   v179[1] = v40;
   v41 = [MEMORY[0x277CBEA60] arrayWithObjects:v179 count:2];
   [v170 activateConstraints:v41];
@@ -115,173 +115,173 @@
   v42 = [[BKUIPearlCoachingDeviceView alloc] initWithSheetLayout:[(BKUIPearlCoachingController *)self inSheet]];
   [(BKUIPearlCoachingController *)self setDeviceView:v42];
 
-  v43 = [(BKUIPearlCoachingController *)self isDisplayZoomEnabled];
-  v44 = [(BKUIPearlCoachingController *)self deviceView];
-  [v44 setIsDisplayZoomEnabled:v43];
+  isDisplayZoomEnabled = [(BKUIPearlCoachingController *)self isDisplayZoomEnabled];
+  deviceView = [(BKUIPearlCoachingController *)self deviceView];
+  [deviceView setIsDisplayZoomEnabled:isDisplayZoomEnabled];
 
-  v45 = [(BKUIPearlCoachingController *)self deviceView];
-  [v45 setAlpha:0.0];
+  deviceView2 = [(BKUIPearlCoachingController *)self deviceView];
+  [deviceView2 setAlpha:0.0];
 
-  v46 = [(BKUIPearlCoachingController *)self deviceView];
-  [v46 setTranslatesAutoresizingMaskIntoConstraints:0];
+  deviceView3 = [(BKUIPearlCoachingController *)self deviceView];
+  [deviceView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v47 = [(BKUIPearlCoachingController *)self view];
-  v48 = [(BKUIPearlCoachingController *)self deviceView];
-  [v47 addSubview:v48];
+  view6 = [(BKUIPearlCoachingController *)self view];
+  deviceView4 = [(BKUIPearlCoachingController *)self deviceView];
+  [view6 addSubview:deviceView4];
 
-  v49 = [(BKUIPearlCoachingController *)self deviceView];
-  v50 = [MEMORY[0x277D75348] redColor];
-  v51 = [v49 bkui_debugBorder:v50 withWidth:1];
+  deviceView5 = [(BKUIPearlCoachingController *)self deviceView];
+  redColor = [MEMORY[0x277D75348] redColor];
+  v51 = [deviceView5 bkui_debugBorder:redColor withWidth:1];
 
-  v52 = [(BKUIPearlCoachingController *)self deviceView];
-  v53 = [v52 centerXAnchor];
-  v54 = [(BKUIPearlCoachingController *)self view];
-  v55 = [v54 centerXAnchor];
-  v56 = [v53 constraintEqualToAnchor:v55];
+  deviceView6 = [(BKUIPearlCoachingController *)self deviceView];
+  centerXAnchor3 = [deviceView6 centerXAnchor];
+  view7 = [(BKUIPearlCoachingController *)self view];
+  centerXAnchor4 = [view7 centerXAnchor];
+  v56 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v56 setActive:1];
 
-  v57 = [(BKUIPearlCoachingController *)self deviceView];
-  v58 = [v57 centerYAnchor];
-  v59 = [v174 bottomAnchor];
-  v60 = [v58 constraintEqualToAnchor:v59];
+  deviceView7 = [(BKUIPearlCoachingController *)self deviceView];
+  centerYAnchor = [deviceView7 centerYAnchor];
+  bottomAnchor3 = [v174 bottomAnchor];
+  v60 = [centerYAnchor constraintEqualToAnchor:bottomAnchor3];
   [v60 setActive:1];
 
   v61 = [BKUIButtonTray alloc];
-  v62 = [(BKUIPearlCoachingController *)self parentViewController];
-  [v62 preferredContentSize];
+  parentViewController = [(BKUIPearlCoachingController *)self parentViewController];
+  [parentViewController preferredContentSize];
   v64 = [(BKUIButtonTray *)v61 initWithFrame:0.0, 0.0, v63, 0.0];
   [(BKUIPearlCoachingController *)self setButtonTray:v64];
 
-  v65 = [(BKUIPearlCoachingController *)self buttonTray];
-  [v65 setTranslatesAutoresizingMaskIntoConstraints:0];
+  buttonTray = [(BKUIPearlCoachingController *)self buttonTray];
+  [buttonTray setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v66 = [(BKUIPearlCoachingController *)self buttonTray];
-  v67 = [v66 bottomLinkButton];
-  [(BKUIPearlCoachingController *)self setEscapeHatchButton:v67];
+  buttonTray2 = [(BKUIPearlCoachingController *)self buttonTray];
+  bottomLinkButton = [buttonTray2 bottomLinkButton];
+  [(BKUIPearlCoachingController *)self setEscapeHatchButton:bottomLinkButton];
 
-  v68 = [(BKUIPearlCoachingController *)self escapeHatchButton];
+  escapeHatchButton = [(BKUIPearlCoachingController *)self escapeHatchButton];
   v69 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v70 = [v69 localizedStringForKey:@"SET_UP_LATER_IN_SETTINGS" value:&stru_2853BB280 table:@"Pearl-j3xx"];
-  [v68 setTitle:v70 forState:0];
+  [escapeHatchButton setTitle:v70 forState:0];
 
-  v71 = [(BKUIPearlCoachingController *)self escapeHatchButton];
-  [v71 addTarget:self action:sel_escapeHatchButtonPressed_ forControlEvents:0x2000];
+  escapeHatchButton2 = [(BKUIPearlCoachingController *)self escapeHatchButton];
+  [escapeHatchButton2 addTarget:self action:sel_escapeHatchButtonPressed_ forControlEvents:0x2000];
 
-  LODWORD(v71) = [(BKUIPearlCoachingController *)self inBuddy];
-  v72 = [(BKUIPearlCoachingController *)self escapeHatchButton];
-  [v72 setHidden:v71 ^ 1];
+  LODWORD(escapeHatchButton2) = [(BKUIPearlCoachingController *)self inBuddy];
+  escapeHatchButton3 = [(BKUIPearlCoachingController *)self escapeHatchButton];
+  [escapeHatchButton3 setHidden:escapeHatchButton2 ^ 1];
 
   v73 = objc_alloc_init(BKUIPearlInstructionView);
   [(BKUIPearlCoachingController *)self setInstructionView:v73];
 
-  v74 = [(BKUIPearlCoachingController *)self instructionView];
-  [v74 setTranslatesAutoresizingMaskIntoConstraints:0];
+  instructionView = [(BKUIPearlCoachingController *)self instructionView];
+  [instructionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v75 = [(BKUIPearlCoachingController *)self instructionView];
-  [v75 setDarkMode:1];
+  instructionView2 = [(BKUIPearlCoachingController *)self instructionView];
+  [instructionView2 setDarkMode:1];
 
-  v76 = [(BKUIPearlCoachingController *)self instructionView];
+  instructionView3 = [(BKUIPearlCoachingController *)self instructionView];
   LODWORD(v77) = 1148846080;
-  [v76 setContentCompressionResistancePriority:1 forAxis:v77];
+  [instructionView3 setContentCompressionResistancePriority:1 forAxis:v77];
 
-  v78 = [(BKUIPearlCoachingController *)self scrollContentView];
-  v79 = [(BKUIPearlCoachingController *)self buttonTray];
-  [v78 addSubview:v79];
+  scrollContentView8 = [(BKUIPearlCoachingController *)self scrollContentView];
+  buttonTray3 = [(BKUIPearlCoachingController *)self buttonTray];
+  [scrollContentView8 addSubview:buttonTray3];
 
-  v80 = [(BKUIPearlCoachingController *)self scrollContentView];
-  v81 = [(BKUIPearlCoachingController *)self instructionView];
-  [v80 addSubview:v81];
+  scrollContentView9 = [(BKUIPearlCoachingController *)self scrollContentView];
+  instructionView4 = [(BKUIPearlCoachingController *)self instructionView];
+  [scrollContentView9 addSubview:instructionView4];
 
   v126 = MEMORY[0x277CCAAD0];
-  v171 = [(BKUIPearlCoachingController *)self instructionView];
-  v162 = [v171 topAnchor];
-  v166 = [(BKUIPearlCoachingController *)self scrollContentView];
-  v159 = [v166 topAnchor];
-  v156 = [v162 constraintEqualToAnchor:v159];
+  instructionView5 = [(BKUIPearlCoachingController *)self instructionView];
+  topAnchor5 = [instructionView5 topAnchor];
+  scrollContentView10 = [(BKUIPearlCoachingController *)self scrollContentView];
+  topAnchor6 = [scrollContentView10 topAnchor];
+  v156 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v178[0] = v156;
-  v153 = [(BKUIPearlCoachingController *)self instructionView];
-  v147 = [v153 leadingAnchor];
-  v150 = [(BKUIPearlCoachingController *)self view];
-  v144 = [v150 leadingAnchor];
-  v141 = [v147 constraintEqualToAnchor:v144];
+  instructionView6 = [(BKUIPearlCoachingController *)self instructionView];
+  leadingAnchor = [instructionView6 leadingAnchor];
+  view8 = [(BKUIPearlCoachingController *)self view];
+  leadingAnchor2 = [view8 leadingAnchor];
+  v141 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v178[1] = v141;
-  v138 = [(BKUIPearlCoachingController *)self instructionView];
-  v132 = [v138 trailingAnchor];
-  v135 = [(BKUIPearlCoachingController *)self view];
-  v130 = [v135 trailingAnchor];
-  v128 = [v132 constraintEqualToAnchor:v130];
+  instructionView7 = [(BKUIPearlCoachingController *)self instructionView];
+  trailingAnchor = [instructionView7 trailingAnchor];
+  view9 = [(BKUIPearlCoachingController *)self view];
+  trailingAnchor2 = [view9 trailingAnchor];
+  v128 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v178[2] = v128;
-  v124 = [(BKUIPearlCoachingController *)self instructionView];
-  v121 = [v124 bottomAnchor];
-  v122 = [(BKUIPearlCoachingController *)self buttonTray];
-  v120 = [v122 topAnchor];
-  v119 = [v121 constraintEqualToAnchor:v120 constant:45.0];
+  instructionView8 = [(BKUIPearlCoachingController *)self instructionView];
+  bottomAnchor4 = [instructionView8 bottomAnchor];
+  buttonTray4 = [(BKUIPearlCoachingController *)self buttonTray];
+  topAnchor7 = [buttonTray4 topAnchor];
+  v119 = [bottomAnchor4 constraintEqualToAnchor:topAnchor7 constant:45.0];
   v178[3] = v119;
-  v118 = [(BKUIPearlCoachingController *)self buttonTray];
-  v116 = [v118 leadingAnchor];
-  v117 = [(BKUIPearlCoachingController *)self view];
-  v115 = [v117 leadingAnchor];
-  v114 = [v116 constraintEqualToAnchor:v115];
+  buttonTray5 = [(BKUIPearlCoachingController *)self buttonTray];
+  leadingAnchor3 = [buttonTray5 leadingAnchor];
+  view10 = [(BKUIPearlCoachingController *)self view];
+  leadingAnchor4 = [view10 leadingAnchor];
+  v114 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v178[4] = v114;
-  v113 = [(BKUIPearlCoachingController *)self buttonTray];
-  v112 = [v113 trailingAnchor];
-  v82 = [(BKUIPearlCoachingController *)self view];
-  v83 = [v82 trailingAnchor];
-  v84 = [v112 constraintEqualToAnchor:v83];
+  buttonTray6 = [(BKUIPearlCoachingController *)self buttonTray];
+  trailingAnchor3 = [buttonTray6 trailingAnchor];
+  view11 = [(BKUIPearlCoachingController *)self view];
+  trailingAnchor4 = [view11 trailingAnchor];
+  v84 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v178[5] = v84;
-  v85 = [(BKUIPearlCoachingController *)self buttonTray];
-  v86 = [v85 bottomAnchor];
-  v87 = [(BKUIPearlCoachingController *)self scrollContentView];
-  v88 = [v87 bottomAnchor];
-  v89 = [v86 constraintEqualToAnchor:v88];
+  buttonTray7 = [(BKUIPearlCoachingController *)self buttonTray];
+  bottomAnchor5 = [buttonTray7 bottomAnchor];
+  scrollContentView11 = [(BKUIPearlCoachingController *)self scrollContentView];
+  bottomAnchor6 = [scrollContentView11 bottomAnchor];
+  v89 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v178[6] = v89;
   v90 = [MEMORY[0x277CBEA60] arrayWithObjects:v178 count:7];
   [v126 activateConstraints:v90];
 
   v91 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v91 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v92 = [(BKUIPearlCoachingController *)self view];
-  [v92 addSubview:v91];
+  view12 = [(BKUIPearlCoachingController *)self view];
+  [view12 addSubview:v91];
 
   v163 = MEMORY[0x277CCAAD0];
-  v167 = [v91 topAnchor];
-  v93 = [(BKUIPearlCoachingController *)self view];
-  v94 = [v93 topAnchor];
-  v95 = [v167 constraintEqualToAnchor:v94];
+  topAnchor8 = [v91 topAnchor];
+  view13 = [(BKUIPearlCoachingController *)self view];
+  topAnchor9 = [view13 topAnchor];
+  v95 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
   v177[0] = v95;
   v96 = v91;
   v172 = v91;
-  v97 = [v91 heightAnchor];
-  v98 = [(BKUIPearlCoachingController *)self view];
-  v99 = [v98 heightAnchor];
-  v100 = [v97 constraintEqualToAnchor:v99 multiplier:0.75];
+  heightAnchor5 = [v91 heightAnchor];
+  view14 = [(BKUIPearlCoachingController *)self view];
+  heightAnchor6 = [view14 heightAnchor];
+  v100 = [heightAnchor5 constraintEqualToAnchor:heightAnchor6 multiplier:0.75];
   v177[1] = v100;
   v101 = [MEMORY[0x277CBEA60] arrayWithObjects:v177 count:2];
   [v163 activateConstraints:v101];
 
   v139 = MEMORY[0x277CCAAD0];
-  v168 = [(BKUIPearlCoachingController *)self scrollview];
-  v164 = [v168 topAnchor];
-  v160 = [v96 bottomAnchor];
-  v157 = [v164 constraintEqualToAnchor:v160];
+  scrollview11 = [(BKUIPearlCoachingController *)self scrollview];
+  topAnchor10 = [scrollview11 topAnchor];
+  bottomAnchor7 = [v96 bottomAnchor];
+  v157 = [topAnchor10 constraintEqualToAnchor:bottomAnchor7];
   v176[0] = v157;
-  v154 = [(BKUIPearlCoachingController *)self scrollview];
-  v148 = [v154 leadingAnchor];
-  v151 = [(BKUIPearlCoachingController *)self view];
-  v145 = [v151 leadingAnchor];
-  v142 = [v148 constraintEqualToAnchor:v145];
+  scrollview12 = [(BKUIPearlCoachingController *)self scrollview];
+  leadingAnchor5 = [scrollview12 leadingAnchor];
+  view15 = [(BKUIPearlCoachingController *)self view];
+  leadingAnchor6 = [view15 leadingAnchor];
+  v142 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v176[1] = v142;
-  v136 = [(BKUIPearlCoachingController *)self scrollview];
-  v133 = [v136 trailingAnchor];
-  v102 = [(BKUIPearlCoachingController *)self view];
-  v103 = [v102 trailingAnchor];
-  v104 = [v133 constraintEqualToAnchor:v103];
+  scrollview13 = [(BKUIPearlCoachingController *)self scrollview];
+  trailingAnchor5 = [scrollview13 trailingAnchor];
+  view16 = [(BKUIPearlCoachingController *)self view];
+  trailingAnchor6 = [view16 trailingAnchor];
+  v104 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v176[2] = v104;
-  v105 = [(BKUIPearlCoachingController *)self scrollview];
-  v106 = [v105 bottomAnchor];
-  v107 = [(BKUIPearlCoachingController *)self view];
-  v108 = [v107 bottomAnchor];
-  v109 = [v106 constraintEqualToAnchor:v108];
+  scrollview14 = [(BKUIPearlCoachingController *)self scrollview];
+  bottomAnchor8 = [scrollview14 bottomAnchor];
+  view17 = [(BKUIPearlCoachingController *)self view];
+  bottomAnchor9 = [view17 bottomAnchor];
+  v109 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
   v176[3] = v109;
   v110 = [MEMORY[0x277CBEA60] arrayWithObjects:v176 count:4];
   [v139 activateConstraints:v110];
@@ -290,28 +290,28 @@
   v111 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setInBuddy:(BOOL)a3
+- (void)setInBuddy:(BOOL)buddy
 {
-  v3 = a3;
-  self->_inBuddy = a3;
-  v4 = [(BKUIPearlCoachingController *)self escapeHatchButton];
-  [v4 setHidden:!v3];
+  buddyCopy = buddy;
+  self->_inBuddy = buddy;
+  escapeHatchButton = [(BKUIPearlCoachingController *)self escapeHatchButton];
+  [escapeHatchButton setHidden:!buddyCopy];
 }
 
 - (void)stopCoachingAnimation
 {
-  v2 = [(BKUIPearlCoachingController *)self deviceView];
-  [v2 stopAnimation];
+  deviceView = [(BKUIPearlCoachingController *)self deviceView];
+  [deviceView stopAnimation];
 }
 
 - (void)deviceOrientationChanged
 {
-  v3 = [(BKUIPearlCoachingController *)self needsToShow];
-  v4 = [(BKUIPearlCoachingController *)self deviceView];
-  [v4 alpha];
+  needsToShow = [(BKUIPearlCoachingController *)self needsToShow];
+  deviceView = [(BKUIPearlCoachingController *)self deviceView];
+  [deviceView alpha];
   v6 = v5;
 
-  if (v3)
+  if (needsToShow)
   {
     if (v6 == 1.0)
     {
@@ -339,8 +339,8 @@
 
   else
   {
-    v8 = [(BKUIPearlCoachingController *)self deviceView];
-    [v8 setAlpha:0.0];
+    deviceView2 = [(BKUIPearlCoachingController *)self deviceView];
+    [deviceView2 setAlpha:0.0];
   }
 }
 
@@ -361,46 +361,46 @@ void __55__BKUIPearlCoachingController_deviceOrientationChanged__block_invoke_2(
 
 - (BOOL)resetDeviceView
 {
-  v3 = [(BKUIPearlCoachingController *)self didOrientationChange];
-  if (v3)
+  didOrientationChange = [(BKUIPearlCoachingController *)self didOrientationChange];
+  if (didOrientationChange)
   {
-    v4 = [(BKUIPearlCoachingController *)self deviceView];
-    [v4 setAlpha:0.0];
+    deviceView = [(BKUIPearlCoachingController *)self deviceView];
+    [deviceView setAlpha:0.0];
 
-    v5 = [(BKUIPearlCoachingController *)self deviceView];
-    [v5 setOrientation:{-[BKUIPearlCoachingController orientation](self, "orientation")}];
+    deviceView2 = [(BKUIPearlCoachingController *)self deviceView];
+    [deviceView2 setOrientation:{-[BKUIPearlCoachingController orientation](self, "orientation")}];
 
     [(BKUIPearlCoachingController *)self updateInstructionText];
   }
 
-  return v3;
+  return didOrientationChange;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v16.receiver = self;
   v16.super_class = BKUIPearlCoachingController;
-  v7 = a4;
-  [(BKUIPearlCoachingController *)&v16 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(BKUIPearlCoachingController *)self resetDeviceView];
-  v9 = [(BKUIPearlCoachingController *)self needsToShow];
+  coordinatorCopy = coordinator;
+  [(BKUIPearlCoachingController *)&v16 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  resetDeviceView = [(BKUIPearlCoachingController *)self resetDeviceView];
+  needsToShow = [(BKUIPearlCoachingController *)self needsToShow];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __82__BKUIPearlCoachingController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v13[3] = &unk_278D099E8;
-  v14 = v8;
-  v15 = v9;
+  v14 = resetDeviceView;
+  v15 = needsToShow;
   v13[4] = self;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __82__BKUIPearlCoachingController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v10[3] = &unk_278D099E8;
-  v11 = v8;
-  v12 = v9;
+  v11 = resetDeviceView;
+  v12 = needsToShow;
   v10[4] = self;
-  [v7 animateAlongsideTransition:v13 completion:v10];
+  [coordinatorCopy animateAlongsideTransition:v13 completion:v10];
 }
 
 void __82__BKUIPearlCoachingController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1, void *a2)
@@ -431,16 +431,16 @@ void __82__BKUIPearlCoachingController_viewWillTransitionToSize_withTransitionCo
 
 - (void)handleRotation
 {
-  v3 = [(BKUIPearlCoachingController *)self resetDeviceView];
-  v4 = [(BKUIPearlCoachingController *)self needsToShow];
-  if (v3 && v4)
+  resetDeviceView = [(BKUIPearlCoachingController *)self resetDeviceView];
+  needsToShow = [(BKUIPearlCoachingController *)self needsToShow];
+  if (resetDeviceView && needsToShow)
   {
-    v5 = [(BKUIPearlCoachingController *)self deviceView];
-    [v5 startAnimation];
+    deviceView = [(BKUIPearlCoachingController *)self deviceView];
+    [deviceView startAnimation];
   }
 }
 
-- (void)escapeHatchButtonPressed:(id)a3
+- (void)escapeHatchButtonPressed:(id)pressed
 {
   v4 = _BKUILoggingFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -449,8 +449,8 @@ void __82__BKUIPearlCoachingController_viewWillTransitionToSize_withTransitionCo
     _os_log_impl(&dword_241B0A000, v4, OS_LOG_TYPE_DEFAULT, "Skipped coaching", v6, 2u);
   }
 
-  v5 = [(BKUIPearlCoachingController *)self delegate];
-  [v5 coachingSkipped];
+  delegate = [(BKUIPearlCoachingController *)self delegate];
+  [delegate coachingSkipped];
 }
 
 - (BOOL)needsToShow
@@ -458,17 +458,17 @@ void __82__BKUIPearlCoachingController_viewWillTransitionToSize_withTransitionCo
   v20 = *MEMORY[0x277D85DE8];
   v3 = MGGetProductType();
   v4 = +[BKUIDevice sharedInstance];
-  v5 = [v4 isRestrictedToLandscapeEnrollment];
+  isRestrictedToLandscapeEnrollment = [v4 isRestrictedToLandscapeEnrollment];
 
-  v6 = [(BKUIPearlCoachingController *)self orientation];
-  if (v5)
+  orientation = [(BKUIPearlCoachingController *)self orientation];
+  if (isRestrictedToLandscapeEnrollment)
   {
-    v7 = v6 == 4;
+    v7 = orientation == 4;
   }
 
   else
   {
-    if (v6 != 1)
+    if (orientation != 1)
     {
       v8 = 1;
       goto LABEL_9;
@@ -487,9 +487,9 @@ LABEL_9:
     v14 = 1024;
     v15 = v8;
     v16 = 2048;
-    v17 = [(BKUIPearlCoachingController *)self orientation];
+    orientation2 = [(BKUIPearlCoachingController *)self orientation];
     v18 = 1024;
-    v19 = [(BKUIPearlCoachingController *)self isDeviceFlat];
+    isDeviceFlat = [(BKUIPearlCoachingController *)self isDeviceFlat];
     _os_log_impl(&dword_241B0A000, v9, OS_LOG_TYPE_DEFAULT, "Coaching controller needs to show: model: %ld, %i, orientation: %li, flat: %i", &v12, 0x22u);
   }
 
@@ -500,14 +500,14 @@ LABEL_9:
 - (void)updateInstructionText
 {
   v3 = +[BKUIDevice sharedInstance];
-  v4 = [v3 isRestrictedToLandscapeEnrollment];
+  isRestrictedToLandscapeEnrollment = [v3 isRestrictedToLandscapeEnrollment];
 
-  v5 = [(BKUIPearlCoachingController *)self orientation];
+  orientation = [(BKUIPearlCoachingController *)self orientation];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = v6;
-  if (v4)
+  if (isRestrictedToLandscapeEnrollment)
   {
-    if (v5 == 3)
+    if (orientation == 3)
     {
       v16 = [v6 localizedStringForKey:@"ROTATE_GENERAL" value:&stru_2853BB280 table:@"Pearl-j3xx"];
 
@@ -529,7 +529,7 @@ LABEL_9:
   else
   {
     v12 = @"Pearl-j3xx";
-    if (v5 == 2)
+    if (orientation == 2)
     {
       v16 = [v6 localizedStringForKey:@"ROTATE_GENERAL" value:&stru_2853BB280 table:@"Pearl-j3xx"];
 
@@ -552,20 +552,20 @@ LABEL_9:
 LABEL_9:
   v13 = [v8 localizedStringForKey:v10 value:&stru_2853BB280 table:v11];
 
-  v14 = [(BKUIPearlCoachingController *)self instructionView];
-  [v14 setInstruction:v16];
+  instructionView = [(BKUIPearlCoachingController *)self instructionView];
+  [instructionView setInstruction:v16];
 
-  v15 = [(BKUIPearlCoachingController *)self instructionView];
-  [v15 setDetail:v13];
+  instructionView2 = [(BKUIPearlCoachingController *)self instructionView];
+  [instructionView2 setDetail:v13];
 }
 
 - (BOOL)didOrientationChange
 {
-  v3 = [(BKUIPearlCoachingController *)self orientation];
-  v4 = [(BKUIPearlCoachingController *)self deviceView];
-  LOBYTE(v3) = v3 != [v4 orientation];
+  orientation = [(BKUIPearlCoachingController *)self orientation];
+  deviceView = [(BKUIPearlCoachingController *)self deviceView];
+  LOBYTE(orientation) = orientation != [deviceView orientation];
 
-  return v3;
+  return orientation;
 }
 
 - (BKUIPearlCoachingControllerDelegate)delegate

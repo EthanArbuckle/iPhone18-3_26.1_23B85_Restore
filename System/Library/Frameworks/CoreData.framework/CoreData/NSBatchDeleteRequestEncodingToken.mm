@@ -1,22 +1,22 @@
 @interface NSBatchDeleteRequestEncodingToken
-- (NSBatchDeleteRequestEncodingToken)initWithCoder:(id)a3;
-- (id)initForRequest:(id)a3;
+- (NSBatchDeleteRequestEncodingToken)initWithCoder:(id)coder;
+- (id)initForRequest:(id)request;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSBatchDeleteRequestEncodingToken
 
-- (id)initForRequest:(id)a3
+- (id)initForRequest:(id)request
 {
   v6.receiver = self;
   v6.super_class = NSBatchDeleteRequestEncodingToken;
   v4 = [(NSBatchDeleteRequestEncodingToken *)&v6 init];
   if (v4)
   {
-    v4->_fetchData = [objc_msgSend(a3 "fetchRequest")];
-    v4->_resultType = [a3 resultType];
-    v4->_secure = [a3 _secureOperation];
+    v4->_fetchData = [objc_msgSend(request "fetchRequest")];
+    v4->_resultType = [request resultType];
+    v4->_secure = [request _secureOperation];
   }
 
   return v4;
@@ -30,7 +30,7 @@
   [(NSBatchDeleteRequestEncodingToken *)&v3 dealloc];
 }
 
-- (NSBatchDeleteRequestEncodingToken)initWithCoder:(id)a3
+- (NSBatchDeleteRequestEncodingToken)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = NSBatchDeleteRequestEncodingToken;
@@ -39,21 +39,21 @@
   {
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
-    v4->_fetchData = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"fetch"}];
-    v4->_resultType = [a3 decodeIntegerForKey:@"resultType"];
-    v4->_secure = [a3 decodeBoolForKey:@"secure"];
+    v4->_fetchData = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"fetch"}];
+    v4->_resultType = [coder decodeIntegerForKey:@"resultType"];
+    v4->_secure = [coder decodeBoolForKey:@"secure"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_fetchData forKey:@"fetch"];
-  [a3 encodeInteger:self->_resultType forKey:@"resultType"];
+  [coder encodeObject:self->_fetchData forKey:@"fetch"];
+  [coder encodeInteger:self->_resultType forKey:@"resultType"];
   secure = self->_secure;
 
-  [a3 encodeBool:secure forKey:@"secure"];
+  [coder encodeBool:secure forKey:@"secure"];
 }
 
 @end

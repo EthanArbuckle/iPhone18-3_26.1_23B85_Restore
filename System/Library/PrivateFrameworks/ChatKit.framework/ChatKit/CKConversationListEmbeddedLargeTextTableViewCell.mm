@@ -2,7 +2,7 @@
 + (id)reuseIdentifier;
 - (CGRect)containerBounds;
 - (UIEdgeInsets)marginInsets;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation CKConversationListEmbeddedLargeTextTableViewCell
@@ -14,13 +14,13 @@
   return NSStringFromClass(v2);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = CKConversationListEmbeddedLargeTextTableViewCell;
-  v5 = [(CKConversationListEmbeddedLargeTextTableViewCell *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
-  v6 = [(CKConversationListCell *)self closeButton];
-  if (v5 == v6)
+  v5 = [(CKConversationListEmbeddedLargeTextTableViewCell *)&v10 hitTest:event withEvent:test.x, test.y];
+  closeButton = [(CKConversationListCell *)self closeButton];
+  if (v5 == closeButton)
   {
     v7 = v5;
   }

@@ -1,20 +1,20 @@
 @interface DTXService
-+ (void)instantiateServiceWithChannel:(id)a3;
-- (DTXService)initWithChannel:(id)a3;
++ (void)instantiateServiceWithChannel:(id)channel;
+- (DTXService)initWithChannel:(id)channel;
 @end
 
 @implementation DTXService
 
-+ (void)instantiateServiceWithChannel:(id)a3
++ (void)instantiateServiceWithChannel:(id)channel
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v7 = objc_msgSend_initWithChannel_(v5, v6, v4);
+  channelCopy = channel;
+  v5 = [self alloc];
+  v7 = objc_msgSend_initWithChannel_(v5, v6, channelCopy);
 }
 
-- (DTXService)initWithChannel:(id)a3
+- (DTXService)initWithChannel:(id)channel
 {
-  v5 = a3;
+  channelCopy = channel;
   v14.receiver = self;
   v14.super_class = DTXService;
   v6 = [(DTXService *)&v14 init];
@@ -27,9 +27,9 @@
     v12[3] = &unk_278EEE5C8;
     v8 = v6;
     v13 = v8;
-    objc_msgSend_setMessageHandler_(v5, v9, v12);
-    objc_msgSend_setDispatchTarget_(v5, v10, v8);
-    objc_storeStrong(v8 + 1, a3);
+    objc_msgSend_setMessageHandler_(channelCopy, v9, v12);
+    objc_msgSend_setDispatchTarget_(channelCopy, v10, v8);
+    objc_storeStrong(v8 + 1, channel);
   }
 
   return v7;

@@ -1,8 +1,8 @@
 @interface HUSoftwareLibraryLookupResult
-+ (id)_libraryResultForRequests:(id)a3;
-+ (id)_storeResultForRequests:(id)a3;
-+ (id)resultForAccessories:(id)a3;
-+ (id)resultForRequests:(id)a3;
++ (id)_libraryResultForRequests:(id)requests;
++ (id)_storeResultForRequests:(id)requests;
++ (id)resultForAccessories:(id)accessories;
++ (id)resultForRequests:(id)requests;
 - (HUSoftwareLibraryLookupResult)init;
 @end
 
@@ -19,17 +19,17 @@
     matchedLibraryItems = v2->_matchedLibraryItems;
     v2->_matchedLibraryItems = v3;
 
-    v5 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     accessoriesByBundleIDs = v2->_accessoriesByBundleIDs;
-    v2->_accessoriesByBundleIDs = v5;
+    v2->_accessoriesByBundleIDs = dictionary;
 
     v7 = [MEMORY[0x277CBEB98] set];
     matchedStoreItems = v2->_matchedStoreItems;
     v2->_matchedStoreItems = v7;
 
-    v9 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary2 = [MEMORY[0x277CBEAC0] dictionary];
     accessoriesByStoreIDs = v2->_accessoriesByStoreIDs;
-    v2->_accessoriesByStoreIDs = v9;
+    v2->_accessoriesByStoreIDs = dictionary2;
 
     v11 = [MEMORY[0x277CBEB98] set];
     unmatchedRequests = v2->_unmatchedRequests;
@@ -39,10 +39,10 @@
   return v2;
 }
 
-+ (id)resultForAccessories:(id)a3
++ (id)resultForAccessories:(id)accessories
 {
-  v4 = [a3 na_map:&__block_literal_global_280];
-  v5 = [a1 resultForRequests:v4];
+  v4 = [accessories na_map:&__block_literal_global_280];
+  v5 = [self resultForRequests:v4];
 
   return v5;
 }
@@ -55,14 +55,14 @@ HUSoftwareLibraryLookupRequest *__54__HUSoftwareLibraryLookupResult_resultForAcc
   return v3;
 }
 
-+ (id)resultForRequests:(id)a3
++ (id)resultForRequests:(id)requests
 {
-  v4 = [a1 _libraryResultForRequests:a3];
+  v4 = [self _libraryResultForRequests:requests];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__HUSoftwareLibraryLookupResult_resultForRequests___block_invoke;
   v7[3] = &__block_descriptor_40_e49___NAFuture_16__0__HUSoftwareLibraryLookupResult_8l;
-  v7[4] = a1;
+  v7[4] = self;
   v5 = [v4 flatMap:v7];
 
   return v5;
@@ -109,16 +109,16 @@ id __51__HUSoftwareLibraryLookupResult_resultForRequests___block_invoke_2(uint64
   return v10;
 }
 
-+ (id)_libraryResultForRequests:(id)a3
++ (id)_libraryResultForRequests:(id)requests
 {
-  v3 = a3;
+  requestsCopy = requests;
   v4 = MEMORY[0x277D2C900];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__HUSoftwareLibraryLookupResult__libraryResultForRequests___block_invoke;
   v8[3] = &unk_277DB7580;
-  v9 = v3;
-  v5 = v3;
+  v9 = requestsCopy;
+  v5 = requestsCopy;
   v6 = [v4 futureWithBlock:v8];
 
   return v6;
@@ -179,30 +179,30 @@ id __59__HUSoftwareLibraryLookupResult__libraryResultForRequests___block_invoke_
   return v13;
 }
 
-+ (id)_storeResultForRequests:(id)a3
++ (id)_storeResultForRequests:(id)requests
 {
-  v3 = a3;
-  if ([v3 count])
+  requestsCopy = requests;
+  if ([requestsCopy count])
   {
-    v4 = [v3 na_map:&__block_literal_global_41_2];
+    v4 = [requestsCopy na_map:&__block_literal_global_41_2];
     v5 = MEMORY[0x277CEE3F8];
-    v6 = [MEMORY[0x277CEE510] bagSubProfile];
-    v7 = [MEMORY[0x277CEE510] bagSubProfileVersion];
-    v8 = [v5 bagForProfile:v6 profileVersion:v7];
+    bagSubProfile = [MEMORY[0x277CEE510] bagSubProfile];
+    bagSubProfileVersion = [MEMORY[0x277CEE510] bagSubProfileVersion];
+    v8 = [v5 bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
     v9 = objc_alloc(MEMORY[0x277CEE510]);
     v10 = [v9 initWithBag:v8 caller:*MEMORY[0x277D13948] keyProfile:*MEMORY[0x277CEE1E8]];
-    v11 = [v4 allObjects];
-    v12 = [v10 performLookupWithBundleIdentifiers:0 itemIdentifiers:v11];
+    allObjects = [v4 allObjects];
+    v12 = [v10 performLookupWithBundleIdentifiers:0 itemIdentifiers:allObjects];
 
     v13 = MEMORY[0x277D2C900];
     v21 = MEMORY[0x277D85DD0];
     v22 = v12;
-    v23 = v3;
+    v23 = requestsCopy;
     v14 = MEMORY[0x277D2C938];
     v15 = v12;
-    v16 = [v14 mainThreadScheduler];
-    v17 = [v13 futureWithBlock:&v21 scheduler:v16];
+    mainThreadScheduler = [v14 mainThreadScheduler];
+    v17 = [v13 futureWithBlock:&v21 scheduler:mainThreadScheduler];
   }
 
   else

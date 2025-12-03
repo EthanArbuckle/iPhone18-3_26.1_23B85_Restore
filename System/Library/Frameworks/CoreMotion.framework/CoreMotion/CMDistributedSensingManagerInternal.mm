@@ -1,6 +1,6 @@
 @interface CMDistributedSensingManagerInternal
 - (CMDistributedSensingManagerInternal)init;
-- (void)_handleDaemonMessage:(id)a3 data:(id)a4;
+- (void)_handleDaemonMessage:(id)message data:(id)data;
 - (void)_registerForVehicleStateUpdates;
 - (void)_teardown;
 - (void)_unregisterForVehicleStateUpdates;
@@ -56,7 +56,7 @@
   self->_locationdConnection = 0;
 }
 
-- (void)_handleDaemonMessage:(id)a3 data:(id)a4
+- (void)_handleDaemonMessage:(id)message data:(id)data
 {
   v38 = *MEMORY[0x1E69E9840];
   if (!objc_loadWeak(&self->_delegate))
@@ -64,13 +64,13 @@
     goto LABEL_39;
   }
 
-  if (a4)
+  if (data)
   {
-    if (objc_msgSend_isEqualToString_(a3, v7, @"DistributedSensing/kCLConnectionMessageDistributedSensingVehicleStateUpdate"))
+    if (objc_msgSend_isEqualToString_(message, v7, @"DistributedSensing/kCLConnectionMessageDistributedSensingVehicleStateUpdate"))
     {
-      if (objc_msgSend_objectForKeyedSubscript_(a4, v8, @"CMErrorMessage"))
+      if (objc_msgSend_objectForKeyedSubscript_(data, v8, @"CMErrorMessage"))
       {
-        v10 = objc_msgSend_objectForKeyedSubscript_(a4, v9, @"CMErrorMessage");
+        v10 = objc_msgSend_objectForKeyedSubscript_(data, v9, @"CMErrorMessage");
         v13 = objc_msgSend_integerValue(v10, v11, v12);
         v15 = objc_msgSend_CMErrorWithCode_(CMErrorUtils, v14, v13);
         if (qword_1EAFE2A38 != -1)
@@ -115,9 +115,9 @@
         dispatch_async(clientQueue, block);
       }
 
-      else if (objc_msgSend_objectForKeyedSubscript_(a4, v9, @"CMDistributedSensingVehicleStateUpdateKey"))
+      else if (objc_msgSend_objectForKeyedSubscript_(data, v9, @"CMDistributedSensingVehicleStateUpdateKey"))
       {
-        v27 = objc_msgSend_objectForKeyedSubscript_(a4, v26, @"CMDistributedSensingVehicleStateUpdateKey");
+        v27 = objc_msgSend_objectForKeyedSubscript_(data, v26, @"CMDistributedSensingVehicleStateUpdateKey");
         v30 = objc_msgSend_copy(v27, v28, v29);
         v31 = self->_clientQueue;
         v32[0] = MEMORY[0x1E69E9820];

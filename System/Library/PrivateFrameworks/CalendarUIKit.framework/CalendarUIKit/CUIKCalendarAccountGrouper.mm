@@ -1,26 +1,26 @@
 @interface CUIKCalendarAccountGrouper
-+ (id)_groupForCustomGroupType:(unint64_t)a3 inMap:(id)a4;
-+ (id)_groupForSource:(id)a3 inMap:(id)a4;
-+ (id)calendarsLimitedToSource:(id)a3 writability:(int64_t)a4 onlyUnmanagedAccounts:(BOOL)a5 forEvent:(id)a6 entityType:(unint64_t)a7 inEventStore:(id)a8;
-+ (id)calendarsLimitedToSource:(id)a3 writability:(int64_t)a4 onlyUnmanagedAccounts:(BOOL)a5 forEvents:(id)a6 entityType:(unint64_t)a7 inEventStore:(id)a8;
-+ (id)eligibleCalendarsForMovingEvent:(id)a3;
-+ (id)generateGroupsForCalendars:(id)a3 eventStore:(id)a4 entityType:(unint64_t)a5 forMode:(int64_t)a6 usingBackgroundColor:(id)a7 includingAccountsWithoutCalendars:(BOOL)a8 filterByFocus:(BOOL)a9 usingUnselectedCalendars:(id)a10 foundRefreshableCalendar:(BOOL *)a11 anyGroupsHiddenByFocus:(BOOL *)a12 numberOfCalendarsHiddenByFocus:(int64_t *)a13;
-+ (void)_insertStore:(id)a3 intoByGroupArray:(id)a4;
-+ (void)_populateGroups:(id)a3 forNonDelegateSources:(id)a4;
++ (id)_groupForCustomGroupType:(unint64_t)type inMap:(id)map;
++ (id)_groupForSource:(id)source inMap:(id)map;
++ (id)calendarsLimitedToSource:(id)source writability:(int64_t)writability onlyUnmanagedAccounts:(BOOL)accounts forEvent:(id)event entityType:(unint64_t)type inEventStore:(id)store;
++ (id)calendarsLimitedToSource:(id)source writability:(int64_t)writability onlyUnmanagedAccounts:(BOOL)accounts forEvents:(id)events entityType:(unint64_t)type inEventStore:(id)store;
++ (id)eligibleCalendarsForMovingEvent:(id)event;
++ (id)generateGroupsForCalendars:(id)calendars eventStore:(id)store entityType:(unint64_t)type forMode:(int64_t)mode usingBackgroundColor:(id)color includingAccountsWithoutCalendars:(BOOL)withoutCalendars filterByFocus:(BOOL)focus usingUnselectedCalendars:(id)self0 foundRefreshableCalendar:(BOOL *)self1 anyGroupsHiddenByFocus:(BOOL *)self2 numberOfCalendarsHiddenByFocus:(int64_t *)self3;
++ (void)_insertStore:(id)store intoByGroupArray:(id)array;
++ (void)_populateGroups:(id)groups forNonDelegateSources:(id)sources;
 @end
 
 @implementation CUIKCalendarAccountGrouper
 
-+ (void)_populateGroups:(id)a3 forNonDelegateSources:(id)a4
++ (void)_populateGroups:(id)groups forNonDelegateSources:(id)sources
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  groupsCopy = groups;
+  sourcesCopy = sources;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [sourcesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -31,50 +31,50 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sourcesCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         if (([v11 isDelegate] & 1) == 0)
         {
-          v12 = [v11 constraints];
-          if (-[CUIKGroupInfo allowsEvents](v12, "allowsEvents") && [v11 syncs])
+          constraints = [v11 constraints];
+          if (-[CUIKGroupInfo allowsEvents](constraints, "allowsEvents") && [v11 syncs])
           {
-            v13 = [v11 sourceType];
+            sourceType = [v11 sourceType];
 
-            if (v13 == 4)
+            if (sourceType == 4)
             {
               continue;
             }
 
-            v12 = [[CUIKGroupInfo alloc] initWithSource:v11];
-            v14 = [v11 sourceIdentifier];
-            [v5 setObject:v12 forKey:v14];
+            constraints = [[CUIKGroupInfo alloc] initWithSource:v11];
+            sourceIdentifier = [v11 sourceIdentifier];
+            [groupsCopy setObject:constraints forKey:sourceIdentifier];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [sourcesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 }
 
-+ (id)_groupForCustomGroupType:(unint64_t)a3 inMap:(id)a4
++ (id)_groupForCustomGroupType:(unint64_t)type inMap:(id)map
 {
-  v5 = a4;
-  if (a3)
+  mapCopy = map;
+  if (type)
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithInt:a3];
-    v7 = [v5 objectForKey:v6];
+    v6 = [MEMORY[0x1E696AD98] numberWithInt:type];
+    v7 = [mapCopy objectForKey:v6];
 
     if (!v7)
     {
-      v7 = [[CUIKGroupInfo alloc] initWithCustomGroupType:a3];
+      v7 = [[CUIKGroupInfo alloc] initWithCustomGroupType:type];
       [(CUIKGroupInfo *)v7 setSelected:0];
-      v8 = [MEMORY[0x1E696AD98] numberWithInt:a3];
-      [v5 setObject:v7 forKey:v8];
+      v8 = [MEMORY[0x1E696AD98] numberWithInt:type];
+      [mapCopy setObject:v7 forKey:v8];
     }
   }
 
@@ -86,35 +86,35 @@
   return v7;
 }
 
-+ (id)_groupForSource:(id)a3 inMap:(id)a4
++ (id)_groupForSource:(id)source inMap:(id)map
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 sourceIdentifier];
+  sourceCopy = source;
+  mapCopy = map;
+  sourceIdentifier = [sourceCopy sourceIdentifier];
 
-  if (v7)
+  if (sourceIdentifier)
   {
-    v8 = [v5 sourceIdentifier];
-    v7 = [v6 objectForKey:v8];
+    sourceIdentifier2 = [sourceCopy sourceIdentifier];
+    sourceIdentifier = [mapCopy objectForKey:sourceIdentifier2];
 
-    if (!v7)
+    if (!sourceIdentifier)
     {
-      v7 = [[CUIKGroupInfo alloc] initWithSource:v5];
-      [(CUIKGroupInfo *)v7 setSelected:0];
-      v9 = [v5 sourceIdentifier];
-      [v6 setObject:v7 forKey:v9];
+      sourceIdentifier = [[CUIKGroupInfo alloc] initWithSource:sourceCopy];
+      [(CUIKGroupInfo *)sourceIdentifier setSelected:0];
+      sourceIdentifier3 = [sourceCopy sourceIdentifier];
+      [mapCopy setObject:sourceIdentifier forKey:sourceIdentifier3];
     }
   }
 
-  return v7;
+  return sourceIdentifier;
 }
 
-+ (void)_insertStore:(id)a3 intoByGroupArray:(id)a4
++ (void)_insertStore:(id)store intoByGroupArray:(id)array
 {
-  v5 = a4;
-  v9 = a3;
-  v6 = [v5 count];
-  v7 = [v5 indexOfObject:v9 inSortedRange:0 options:v6 usingComparator:{1024, &__block_literal_global_6}];
+  arrayCopy = array;
+  storeCopy = store;
+  v6 = [arrayCopy count];
+  v7 = [arrayCopy indexOfObject:storeCopy inSortedRange:0 options:v6 usingComparator:{1024, &__block_literal_global_6}];
   if (v6 >= v7)
   {
     v8 = v7;
@@ -125,7 +125,7 @@
     v8 = v6;
   }
 
-  [v5 insertObject:v9 atIndex:v8];
+  [arrayCopy insertObject:storeCopy atIndex:v8];
 }
 
 uint64_t __60__CUIKCalendarAccountGrouper__insertStore_intoByGroupArray___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -157,35 +157,35 @@ uint64_t __60__CUIKCalendarAccountGrouper__insertStore_intoByGroupArray___block_
   return v7;
 }
 
-+ (id)generateGroupsForCalendars:(id)a3 eventStore:(id)a4 entityType:(unint64_t)a5 forMode:(int64_t)a6 usingBackgroundColor:(id)a7 includingAccountsWithoutCalendars:(BOOL)a8 filterByFocus:(BOOL)a9 usingUnselectedCalendars:(id)a10 foundRefreshableCalendar:(BOOL *)a11 anyGroupsHiddenByFocus:(BOOL *)a12 numberOfCalendarsHiddenByFocus:(int64_t *)a13
++ (id)generateGroupsForCalendars:(id)calendars eventStore:(id)store entityType:(unint64_t)type forMode:(int64_t)mode usingBackgroundColor:(id)color includingAccountsWithoutCalendars:(BOOL)withoutCalendars filterByFocus:(BOOL)focus usingUnselectedCalendars:(id)self0 foundRefreshableCalendar:(BOOL *)self1 anyGroupsHiddenByFocus:(BOOL *)self2 numberOfCalendarsHiddenByFocus:(int64_t *)self3
 {
-  v13 = a8;
+  withoutCalendarsCopy = withoutCalendars;
   v77 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  v57 = a7;
-  v58 = a10;
-  v19 = [MEMORY[0x1E695DF70] array];
-  v20 = [MEMORY[0x1E695DF90] dictionary];
-  v21 = [MEMORY[0x1E695DF90] dictionary];
-  if (v13)
+  calendarsCopy = calendars;
+  storeCopy = store;
+  colorCopy = color;
+  unselectedCalendarsCopy = unselectedCalendars;
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  if (withoutCalendarsCopy)
   {
-    v22 = [v18 sources];
-    [a1 _populateGroups:v20 forNonDelegateSources:v22];
+    sources = [storeCopy sources];
+    [self _populateGroups:dictionary forNonDelegateSources:sources];
   }
 
-  if (v58)
+  if (unselectedCalendarsCopy)
   {
-    v23 = a9;
+    focusCopy = focus;
   }
 
   else
   {
-    v23 = 0;
+    focusCopy = 0;
   }
 
-  v62 = v23;
-  if (v23)
+  v62 = focusCopy;
+  if (focusCopy)
   {
     v59 = [MEMORY[0x1E695DFA8] set];
     v54 = [MEMORY[0x1E695DFA8] set];
@@ -202,15 +202,15 @@ uint64_t __60__CUIKCalendarAccountGrouper__insertStore_intoByGroupArray___block_
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  obj = v17;
+  obj = calendarsCopy;
   v24 = [obj countByEnumeratingWithState:&v72 objects:v76 count:16];
   if (v24)
   {
     v25 = v24;
-    v60 = v21;
-    v55 = v20;
-    v52 = v19;
-    v53 = v18;
+    v60 = dictionary2;
+    v55 = dictionary;
+    v52 = array;
+    v53 = storeCopy;
     v56 = 0;
     v26 = *v73;
     while (1)
@@ -223,14 +223,14 @@ uint64_t __60__CUIKCalendarAccountGrouper__insertStore_intoByGroupArray___block_
         }
 
         v28 = *(*(&v72 + 1) + 8 * i);
-        if (a5)
+        if (type)
         {
-          if (a5 == 1)
+          if (type == 1)
           {
-            v29 = [*(*(&v72 + 1) + 8 * i) allowReminders];
-            if (a11)
+            allowReminders = [*(*(&v72 + 1) + 8 * i) allowReminders];
+            if (calendar)
             {
-              if (v29)
+              if (allowReminders)
               {
                 goto LABEL_21;
               }
@@ -240,29 +240,29 @@ uint64_t __60__CUIKCalendarAccountGrouper__insertStore_intoByGroupArray___block_
 
         else
         {
-          v30 = [*(*(&v72 + 1) + 8 * i) allowEvents];
-          if (a11 && (v30 & 1) != 0)
+          allowEvents = [*(*(&v72 + 1) + 8 * i) allowEvents];
+          if (calendar && (allowEvents & 1) != 0)
           {
 LABEL_21:
-            *a11 = 1;
+            *calendar = 1;
           }
         }
 
-        v31 = [v28 source];
-        if ([v31 sourceType] == 6)
+        source = [v28 source];
+        if ([source sourceType] == 6)
         {
-          v32 = [v31 externalID];
-          v33 = [v65 objectForKeyedSubscript:v32];
+          externalID = [source externalID];
+          v33 = [v65 objectForKeyedSubscript:externalID];
 
           if (!v33)
           {
             v33 = objc_alloc_init(MEMORY[0x1E695DF90]);
-            v34 = [v31 externalID];
-            [v65 setObject:v33 forKeyedSubscript:v34];
+            externalID2 = [source externalID];
+            [v65 setObject:v33 forKeyedSubscript:externalID2];
           }
 
-          v35 = [v28 externalID];
-          v36 = [v33 objectForKeyedSubscript:v35];
+          externalID3 = [v28 externalID];
+          v36 = [v33 objectForKeyedSubscript:externalID3];
 
           if (v36)
           {
@@ -279,22 +279,22 @@ LABEL_21:
         v36 = [[CUIKCalendarInfo alloc] initWithCalendar:v28];
         if (v33)
         {
-          v37 = [v28 externalID];
-          [v33 setObject:v36 forKeyedSubscript:v37];
+          externalID4 = [v28 externalID];
+          [v33 setObject:v36 forKeyedSubscript:externalID4];
         }
 
-        if (a6 == 1)
+        if (mode == 1)
         {
-          v38 = [v31 constraints];
-          v39 = [v38 prohibitsICSImport];
+          constraints = [source constraints];
+          prohibitsICSImport = [constraints prohibitsICSImport];
 
-          if (v39)
+          if (prohibitsICSImport)
           {
             [(CUIKCalendarInfo *)v36 setIsEnabled:0];
           }
         }
 
-        if ([v31 sourceType] == 6 && objc_msgSend(MEMORY[0x1E6966958], "isReminderAppLocked"))
+        if ([source sourceType] == 6 && objc_msgSend(MEMORY[0x1E6966958], "isReminderAppLocked"))
         {
           [(CUIKCalendarInfo *)v36 setIsEnabled:0];
         }
@@ -304,19 +304,19 @@ LABEL_21:
           goto LABEL_60;
         }
 
-        if (!a5)
+        if (!type)
         {
-          v40 = [v31 constraints];
-          v41 = [v40 allowsEvents];
+          constraints2 = [source constraints];
+          allowsEvents = [constraints2 allowsEvents];
           goto LABEL_42;
         }
 
-        if (a5 == 1)
+        if (type == 1)
         {
-          v40 = [v31 constraints];
-          v41 = [v40 allowsTasks];
+          constraints2 = [source constraints];
+          allowsEvents = [constraints2 allowsTasks];
 LABEL_42:
-          v42 = v41;
+          v42 = allowsEvents;
 
           goto LABEL_44;
         }
@@ -325,27 +325,27 @@ LABEL_42:
 LABEL_44:
         if ([(CUIKCalendarInfo *)v36 customGroupType])
         {
-          v43 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CUIKCalendarInfo customGroupType](v36, "customGroupType")}];
+          sourceIdentifier = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CUIKCalendarInfo customGroupType](v36, "customGroupType")}];
           goto LABEL_48;
         }
 
-        if (((v31 != 0) & v42) == 1)
+        if (((source != 0) & v42) == 1)
         {
-          v43 = [v31 sourceIdentifier];
+          sourceIdentifier = [source sourceIdentifier];
 LABEL_48:
-          v44 = v43;
-          if (v43)
+          v44 = sourceIdentifier;
+          if (sourceIdentifier)
           {
-            [v59 addObject:v43];
+            [v59 addObject:sourceIdentifier];
           }
         }
 
         if (v62)
         {
-          if ([v58 containsObject:v28])
+          if ([unselectedCalendarsCopy containsObject:v28])
           {
             [(CUIKCalendarInfo *)v36 setFilteredByFocus:1];
-            if (a13)
+            if (hiddenByFocus)
             {
               ++v56;
               goto LABEL_60;
@@ -355,25 +355,25 @@ LABEL_48:
 
         if ([(CUIKCalendarInfo *)v36 customGroupType])
         {
-          v45 = [a1 _groupForCustomGroupType:-[CUIKCalendarInfo customGroupType](v36 inMap:{"customGroupType"), v60}];
+          v45 = [self _groupForCustomGroupType:-[CUIKCalendarInfo customGroupType](v36 inMap:{"customGroupType"), v60}];
         }
 
         else
         {
-          if (((v31 != 0) & v42) != 1)
+          if (((source != 0) & v42) != 1)
           {
             goto LABEL_60;
           }
 
-          v45 = [a1 _groupForSource:v31 inMap:v55];
+          v45 = [self _groupForSource:source inMap:v55];
         }
 
         v46 = v45;
         if (v45)
         {
           [(CUIKCalendarInfo *)v36 setSelected:0];
-          v47 = [v28 displayColor];
-          v48 = CUIKAdjustedColorForBackgroundColor(v47, v57);
+          displayColor = [v28 displayColor];
+          v48 = CUIKAdjustedColorForBackgroundColor(displayColor, colorCopy);
           [(CUIKCalendarInfo *)v36 setColor:v48];
 
           [v46 insertCalendarInfo:v36];
@@ -386,10 +386,10 @@ LABEL_60:
       if (!v25)
       {
         v49 = v56;
-        v19 = v52;
-        v18 = v53;
-        v20 = v55;
-        v21 = v60;
+        array = v52;
+        storeCopy = v53;
+        dictionary = v55;
+        dictionary2 = v60;
         goto LABEL_64;
       }
     }
@@ -398,63 +398,63 @@ LABEL_60:
   v49 = 0;
 LABEL_64:
 
-  if (a13)
+  if (hiddenByFocus)
   {
-    *a13 = v49;
+    *hiddenByFocus = v49;
   }
 
-  if (a12)
+  if (byFocus)
   {
     v50 = [v54 count];
     if (v50 != [v59 count])
     {
-      *a12 = 1;
+      *byFocus = 1;
     }
   }
 
-  if ([v20 count])
+  if ([dictionary count])
   {
     v69[0] = MEMORY[0x1E69E9820];
     v69[1] = 3221225472;
     v69[2] = __260__CUIKCalendarAccountGrouper_generateGroupsForCalendars_eventStore_entityType_forMode_usingBackgroundColor_includingAccountsWithoutCalendars_filterByFocus_usingUnselectedCalendars_foundRefreshableCalendar_anyGroupsHiddenByFocus_numberOfCalendarsHiddenByFocus___block_invoke;
     v69[3] = &unk_1E8399FA8;
-    v71 = a1;
-    v70 = v19;
-    [v20 enumerateKeysAndObjectsUsingBlock:v69];
+    selfCopy = self;
+    v70 = array;
+    [dictionary enumerateKeysAndObjectsUsingBlock:v69];
   }
 
-  if ([v21 count])
+  if ([dictionary2 count])
   {
     v66[0] = MEMORY[0x1E69E9820];
     v66[1] = 3221225472;
     v66[2] = __260__CUIKCalendarAccountGrouper_generateGroupsForCalendars_eventStore_entityType_forMode_usingBackgroundColor_includingAccountsWithoutCalendars_filterByFocus_usingUnselectedCalendars_foundRefreshableCalendar_anyGroupsHiddenByFocus_numberOfCalendarsHiddenByFocus___block_invoke_2;
     v66[3] = &unk_1E8399FA8;
-    v68 = a1;
-    v67 = v19;
-    [v21 enumerateKeysAndObjectsUsingBlock:v66];
+    selfCopy2 = self;
+    v67 = array;
+    [dictionary2 enumerateKeysAndObjectsUsingBlock:v66];
   }
 
-  return v19;
+  return array;
 }
 
-+ (id)eligibleCalendarsForMovingEvent:(id)a3
++ (id)eligibleCalendarsForMovingEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 calendar];
-  v5 = [v4 source];
+  eventCopy = event;
+  calendar = [eventCopy calendar];
+  source = [calendar source];
 
   v6 = +[CUIKAccountsController sharedInstance];
-  v7 = [v6 sourceIsManaged:v5];
+  v7 = [v6 sourceIsManaged:source];
 
-  v8 = [v3 attachments];
-  v9 = [v8 count];
+  attachments = [eventCopy attachments];
+  v9 = [attachments count];
 
-  v10 = [v3 isNew];
-  v11 = [v5 isDelegate];
+  isNew = [eventCopy isNew];
+  isDelegate = [source isDelegate];
   v12 = 0;
   if (v9)
   {
-    v13 = v10;
+    v13 = isNew;
   }
 
   else
@@ -462,12 +462,12 @@ LABEL_64:
     v13 = 1;
   }
 
-  v14 = v5;
-  if (!v11 && v13)
+  v14 = source;
+  if (!isDelegate && v13)
   {
-    if (v10)
+    if (isNew)
     {
-      v15 = v7;
+      hasAttendees = v7;
       if (!v9)
       {
         v14 = 0;
@@ -478,12 +478,12 @@ LABEL_64:
 
     else
     {
-      v15 = [v3 hasAttendees];
+      hasAttendees = [eventCopy hasAttendees];
     }
 
-    if (v15)
+    if (hasAttendees)
     {
-      v14 = v5;
+      v14 = source;
     }
 
     else
@@ -491,28 +491,28 @@ LABEL_64:
       v14 = 0;
     }
 
-    v12 = (v15 | v10 ^ 1 | (v9 == 0) | v7) ^ 1;
+    v12 = (hasAttendees | isNew ^ 1 | (v9 == 0) | v7) ^ 1;
   }
 
 LABEL_14:
-  v16 = [v3 eventStore];
-  v17 = [CUIKCalendarAccountGrouper calendarsLimitedToSource:v14 writability:2 onlyUnmanagedAccounts:v12 & 1 forEvent:v3 entityType:0 inEventStore:v16];
+  eventStore = [eventCopy eventStore];
+  v17 = [CUIKCalendarAccountGrouper calendarsLimitedToSource:v14 writability:2 onlyUnmanagedAccounts:v12 & 1 forEvent:eventCopy entityType:0 inEventStore:eventStore];
 
   return v17;
 }
 
-+ (id)calendarsLimitedToSource:(id)a3 writability:(int64_t)a4 onlyUnmanagedAccounts:(BOOL)a5 forEvent:(id)a6 entityType:(unint64_t)a7 inEventStore:(id)a8
++ (id)calendarsLimitedToSource:(id)source writability:(int64_t)writability onlyUnmanagedAccounts:(BOOL)accounts forEvent:(id)event entityType:(unint64_t)type inEventStore:(id)store
 {
-  v11 = a5;
+  accountsCopy = accounts;
   v22 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a8;
-  if (a6)
+  sourceCopy = source;
+  storeCopy = store;
+  if (event)
   {
-    v21 = a6;
+    eventCopy = event;
     v16 = MEMORY[0x1E695DEC8];
-    v17 = a6;
-    v18 = [v16 arrayWithObjects:&v21 count:1];
+    eventCopy2 = event;
+    v18 = [v16 arrayWithObjects:&eventCopy count:1];
   }
 
   else
@@ -520,39 +520,39 @@ LABEL_14:
     v18 = MEMORY[0x1E695E0F0];
   }
 
-  v19 = [a1 calendarsLimitedToSource:v14 writability:a4 onlyUnmanagedAccounts:v11 forEvents:v18 entityType:a7 inEventStore:{v15, v21, v22}];
+  v19 = [self calendarsLimitedToSource:sourceCopy writability:writability onlyUnmanagedAccounts:accountsCopy forEvents:v18 entityType:type inEventStore:{storeCopy, eventCopy, v22}];
 
   return v19;
 }
 
-+ (id)calendarsLimitedToSource:(id)a3 writability:(int64_t)a4 onlyUnmanagedAccounts:(BOOL)a5 forEvents:(id)a6 entityType:(unint64_t)a7 inEventStore:(id)a8
++ (id)calendarsLimitedToSource:(id)source writability:(int64_t)writability onlyUnmanagedAccounts:(BOOL)accounts forEvents:(id)events entityType:(unint64_t)type inEventStore:(id)store
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a8;
-  v16 = v15;
-  v17 = a4 - 1;
-  v18 = a4 == 1;
-  v19 = (a4 - 1) < 2;
-  if (v13)
+  sourceCopy = source;
+  eventsCopy = events;
+  storeCopy = store;
+  v16 = storeCopy;
+  v17 = writability - 1;
+  v18 = writability == 1;
+  v19 = (writability - 1) < 2;
+  if (sourceCopy)
   {
     if (v17 > 1)
     {
-      v20 = [v13 calendarsForEntityType:a7];
+      v20 = [sourceCopy calendarsForEntityType:type];
     }
 
     else
     {
-      v20 = [v13 readWriteCalendarsForEntityType:a7];
-      if ([v14 count])
+      v20 = [sourceCopy readWriteCalendarsForEntityType:type];
+      if ([eventsCopy count])
       {
         v21 = MEMORY[0x1E696AE18];
         v46[0] = MEMORY[0x1E69E9820];
         v46[1] = 3221225472;
         v46[2] = __123__CUIKCalendarAccountGrouper_calendarsLimitedToSource_writability_onlyUnmanagedAccounts_forEvents_entityType_inEventStore___block_invoke;
         v46[3] = &unk_1E8399FD0;
-        v47 = v14;
-        v48 = a4 == 1;
+        v47 = eventsCopy;
+        v48 = writability == 1;
         v22 = [v21 predicateWithBlock:v46];
         v23 = [v20 filteredSetUsingPredicate:v22];
 
@@ -566,23 +566,23 @@ LABEL_14:
     v24 = MEMORY[0x1E695DFD8];
     if (v17 > 1)
     {
-      v30 = [v15 calendarsForEntityType:a7];
+      v30 = [storeCopy calendarsForEntityType:type];
       v26 = [v24 setWithArray:v30];
     }
 
     else
     {
-      v25 = [v15 readWriteCalendarsForEntityType:a7];
+      v25 = [storeCopy readWriteCalendarsForEntityType:type];
       v26 = [v24 setWithArray:v25];
 
-      if ([v14 count])
+      if ([eventsCopy count])
       {
         v27 = MEMORY[0x1E696AE18];
         v43[0] = MEMORY[0x1E69E9820];
         v43[1] = 3221225472;
         v43[2] = __123__CUIKCalendarAccountGrouper_calendarsLimitedToSource_writability_onlyUnmanagedAccounts_forEvents_entityType_inEventStore___block_invoke_2;
         v43[3] = &unk_1E8399FD0;
-        v44 = v14;
+        v44 = eventsCopy;
         v45 = v18;
         v28 = [v27 predicateWithBlock:v43];
         v29 = [v26 filteredSetUsingPredicate:v28];
@@ -591,16 +591,16 @@ LABEL_14:
       }
     }
 
-    v31 = [v16 blockList];
+    blockList = [v16 blockList];
     v32 = MEMORY[0x1E696AE18];
     v36 = MEMORY[0x1E69E9820];
     v37 = 3221225472;
     v38 = __123__CUIKCalendarAccountGrouper_calendarsLimitedToSource_writability_onlyUnmanagedAccounts_forEvents_entityType_inEventStore___block_invoke_3;
     v39 = &unk_1E8399FF8;
     v41 = v19;
-    v42 = a5;
-    v40 = v31;
-    v33 = v31;
+    accountsCopy = accounts;
+    v40 = blockList;
+    v33 = blockList;
     v34 = [v32 predicateWithBlock:&v36];
     v20 = [v26 filteredSetUsingPredicate:{v34, v36, v37, v38, v39}];
   }

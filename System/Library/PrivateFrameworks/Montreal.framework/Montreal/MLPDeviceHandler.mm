@@ -1,27 +1,27 @@
 @interface MLPDeviceHandler
-- (MLPDeviceHandler)initWithDataLayout:(id)a3;
-- (float)uniformRandWithParamA:(float)a3 paramB:(float)a4;
+- (MLPDeviceHandler)initWithDataLayout:(id)layout;
+- (float)uniformRandWithParamA:(float)a paramB:(float)b;
 - (id).cxx_construct;
-- (id)biasVectorWithLength:(unint64_t)a3 stdDev:(float)a4 values:(const void *)a5;
+- (id)biasVectorWithLength:(unint64_t)length stdDev:(float)dev values:(const void *)values;
 - (id)deduceDevice;
-- (id)imageBatchFromMatrix:(id)a3 m2iKernel:(id)a4 cmdBuf:(id)a5 width:(unint64_t)a6 height:(unint64_t)a7 channels:(unint64_t)a8;
-- (id)imageFromData:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 featureChannels:(unint64_t)a6;
-- (id)imageFromMatrix:(id)a3 m2iKernel:(id)a4 cmdBuf:(id)a5 width:(unint64_t)a6 height:(unint64_t)a7 featureChannels:(unint64_t)a8;
-- (id)matrixFromImages:(id)a3 i2mKernel:(id)a4 cmdBuf:(id)a5;
-- (id)matrixToVector:(id)a3;
-- (id)matrixWithRows:(unint64_t)a3 columns:(unint64_t)a4 cmdBuf:(id)a5;
-- (id)tempMatrixFromImages:(id)a3 i2mKernel:(id)a4 cmdBuf:(id)a5;
-- (id)tempMatrixWithRows:(unint64_t)a3 columns:(unint64_t)a4 cmdBuf:(id)a5;
-- (id)vectorWithLength:(unint64_t)a3 cmdBuf:(id)a4;
-- (id)weightMatrixFixedRowBytesWithRows:(unint64_t)a3 columns:(unint64_t)a4;
-- (id)weightMatrixWithRows:(unint64_t)a3 columns:(unint64_t)a4 stdDev:(float)a5 initialValues:(const void *)a6 columnMajor:(BOOL)a7;
+- (id)imageBatchFromMatrix:(id)matrix m2iKernel:(id)kernel cmdBuf:(id)buf width:(unint64_t)width height:(unint64_t)height channels:(unint64_t)channels;
+- (id)imageFromData:(id)data width:(unint64_t)width height:(unint64_t)height featureChannels:(unint64_t)channels;
+- (id)imageFromMatrix:(id)matrix m2iKernel:(id)kernel cmdBuf:(id)buf width:(unint64_t)width height:(unint64_t)height featureChannels:(unint64_t)channels;
+- (id)matrixFromImages:(id)images i2mKernel:(id)kernel cmdBuf:(id)buf;
+- (id)matrixToVector:(id)vector;
+- (id)matrixWithRows:(unint64_t)rows columns:(unint64_t)columns cmdBuf:(id)buf;
+- (id)tempMatrixFromImages:(id)images i2mKernel:(id)kernel cmdBuf:(id)buf;
+- (id)tempMatrixWithRows:(unint64_t)rows columns:(unint64_t)columns cmdBuf:(id)buf;
+- (id)vectorWithLength:(unint64_t)length cmdBuf:(id)buf;
+- (id)weightMatrixFixedRowBytesWithRows:(unint64_t)rows columns:(unint64_t)columns;
+- (id)weightMatrixWithRows:(unint64_t)rows columns:(unint64_t)columns stdDev:(float)dev initialValues:(const void *)values columnMajor:(BOOL)major;
 @end
 
 @implementation MLPDeviceHandler
 
-- (MLPDeviceHandler)initWithDataLayout:(id)a3
+- (MLPDeviceHandler)initWithDataLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v26.receiver = self;
   v26.super_class = MLPDeviceHandler;
   v5 = [(MLPDeviceHandler *)&v26 init];
@@ -47,7 +47,7 @@
   while (v10 != 626);
   v5->weightSeed.__i_ = 0;
   v5->_dataLayout = 1;
-  if (objc_msgSend_isEqualToString_(v4, v6, MLPModelTrainerDataLayoutFeatureChannelsxHeightxWidth, v7))
+  if (objc_msgSend_isEqualToString_(layoutCopy, v6, MLPModelTrainerDataLayoutFeatureChannelsxHeightxWidth, v7))
   {
     v16 = 1;
 LABEL_8:
@@ -55,7 +55,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (objc_msgSend_isEqualToString_(v4, v13, MLPModelTrainerDataLayoutHeightxWidthxFeatureChannels, v15))
+  if (objc_msgSend_isEqualToString_(layoutCopy, v13, MLPModelTrainerDataLayoutHeightxWidthxFeatureChannels, v15))
   {
     v16 = 0;
     goto LABEL_8;
@@ -85,10 +85,10 @@ LABEL_11:
   return v2;
 }
 
-- (id)weightMatrixFixedRowBytesWithRows:(unint64_t)a3 columns:(unint64_t)a4
+- (id)weightMatrixFixedRowBytesWithRows:(unint64_t)rows columns:(unint64_t)columns
 {
-  v5 = 4 * a4;
-  v6 = objc_msgSend_matrixDescriptorWithRows_columns_rowBytes_dataType_(MEMORY[0x1E6974480], a2, a3, a4, 4 * a4, 268435488);
+  v5 = 4 * columns;
+  v6 = objc_msgSend_matrixDescriptorWithRows_columns_rowBytes_dataType_(MEMORY[0x1E6974480], a2, rows, columns, 4 * columns, 268435488);
   v10 = objc_msgSend_device(self, v7, v8, v9);
   v14 = objc_msgSend_rows(v6, v11, v12, v13);
   v16 = objc_msgSend_newBufferWithLength_options_(v10, v15, v14 * v5, 0);
@@ -103,12 +103,12 @@ LABEL_11:
   return v19;
 }
 
-- (id)weightMatrixWithRows:(unint64_t)a3 columns:(unint64_t)a4 stdDev:(float)a5 initialValues:(const void *)a6 columnMajor:(BOOL)a7
+- (id)weightMatrixWithRows:(unint64_t)rows columns:(unint64_t)columns stdDev:(float)dev initialValues:(const void *)values columnMajor:(BOOL)major
 {
-  v8 = a7;
-  v14 = objc_msgSend_rowBytesForColumns_dataType_(MEMORY[0x1E6974480], a2, a4, 268435488);
-  v104 = a4;
-  v16 = objc_msgSend_matrixDescriptorWithRows_columns_rowBytes_dataType_(MEMORY[0x1E6974480], v15, a3, a4, v14, 268435488);
+  majorCopy = major;
+  v14 = objc_msgSend_rowBytesForColumns_dataType_(MEMORY[0x1E6974480], a2, columns, 268435488);
+  columnsCopy = columns;
+  v16 = objc_msgSend_matrixDescriptorWithRows_columns_rowBytes_dataType_(MEMORY[0x1E6974480], v15, rows, columns, v14, 268435488);
   v20 = objc_msgSend_device(self, v17, v18, v19);
   v24 = objc_msgSend_rows(v16, v21, v22, v23);
   v26 = objc_msgSend_newBufferWithLength_options_(v20, v25, v24 * v14, 0);
@@ -119,11 +119,11 @@ LABEL_11:
   v37 = objc_msgSend_contents(v30, v31, v32, v33);
   v98 = v29;
   v99 = v26;
-  if (a6)
+  if (values)
   {
-    if (v104 * a3)
+    if (columnsCopy * rows)
     {
-      if (!((v104 * a3) >> 62))
+      if (!((columnsCopy * rows) >> 62))
       {
         operator new();
       }
@@ -135,48 +135,48 @@ LABEL_11:
     bzero(v37, v75);
     v76 = v26;
     v80 = objc_msgSend_contents(v76, v77, v78, v79);
-    if (a3)
+    if (rows)
     {
-      v84 = v8 ? a3 : v104;
-      if (v104)
+      v84 = majorCopy ? rows : columnsCopy;
+      if (columnsCopy)
       {
         v85 = v80;
         v86 = 0;
         v87 = 4 * v84;
-        if (v8)
+        if (majorCopy)
         {
           do
           {
-            v88 = v104;
+            v88 = columnsCopy;
             v89 = v85;
-            v90 = a6;
+            valuesCopy = values;
             do
             {
-              *(v89 + v86 * objc_msgSend_rowBytes(v16, v81, v82, v83)) = *v90;
-              v90 = (v90 + v87);
+              *(v89 + v86 * objc_msgSend_rowBytes(v16, v81, v82, v83)) = *valuesCopy;
+              valuesCopy = (valuesCopy + v87);
               v89 += 4;
               --v88;
             }
 
             while (v88);
             ++v86;
-            a6 = a6 + 4;
+            values = values + 4;
           }
 
-          while (v86 != a3);
+          while (v86 != rows);
         }
 
         else
         {
           do
           {
-            v91 = v104;
+            v91 = columnsCopy;
             v92 = v85;
-            v93 = a6;
+            valuesCopy2 = values;
             do
             {
               v94 = objc_msgSend_rowBytes(v16, v81, v82, v83);
-              v95 = *v93++;
+              v95 = *valuesCopy2++;
               *(v92 + v86 * v94) = v95;
               v92 += 4;
               --v91;
@@ -184,16 +184,16 @@ LABEL_11:
 
             while (v91);
             ++v86;
-            a6 = a6 + v87;
+            values = values + v87;
           }
 
-          while (v86 != a3);
+          while (v86 != rows);
         }
       }
     }
   }
 
-  else if (a5 <= 0.0)
+  else if (dev <= 0.0)
   {
     v96 = objc_msgSend_length(v26, v34, v35, v36);
     bzero(v37, v96);
@@ -205,7 +205,7 @@ LABEL_11:
     bzero(v37, v38);
     v39 = v26;
     v102 = objc_msgSend_contents(v39, v40, v41, v42);
-    if (a3 && v104)
+    if (rows && columnsCopy)
     {
       v103 = 0;
       v46 = 0;
@@ -217,7 +217,7 @@ LABEL_11:
       do
       {
         v55 = 0;
-        v100 = v46 ^ v104;
+        v100 = v46 ^ columnsCopy;
         do
         {
           v56 = objc_msgSend_rowBytes(v16, v43, v44, v45, v98, v99);
@@ -293,29 +293,29 @@ LABEL_11:
           }
 
           LOBYTE(v46) = v46 ^ 1;
-          *(v102 + v56 * v103 + 4 * v55++) = v57 * a5;
+          *(v102 + v56 * v103 + 4 * v55++) = v57 * dev;
         }
 
-        while (v55 != v104);
+        while (v55 != columnsCopy);
         ++v103;
         v46 = v100;
       }
 
-      while (v103 != a3);
+      while (v103 != rows);
     }
   }
 
   return v98;
 }
 
-- (id)biasVectorWithLength:(unint64_t)a3 stdDev:(float)a4 values:(const void *)a5
+- (id)biasVectorWithLength:(unint64_t)length stdDev:(float)dev values:(const void *)values
 {
-  v7 = a3;
+  lengthCopy = length;
   LODWORD(v41) = 0;
-  *(&v41 + 1) = a4;
+  *(&v41 + 1) = dev;
   v42 = 0;
-  v9 = objc_msgSend_vectorDescriptorWithLength_dataType_(MEMORY[0x1E69744B8], a2, a3, 268435488, v41);
-  v11 = objc_msgSend_vectorBytesForLength_dataType_(MEMORY[0x1E69744B8], v10, v7, 268435488);
+  v9 = objc_msgSend_vectorDescriptorWithLength_dataType_(MEMORY[0x1E69744B8], a2, length, 268435488, v41);
+  v11 = objc_msgSend_vectorBytesForLength_dataType_(MEMORY[0x1E69744B8], v10, lengthCopy, 268435488);
   v15 = objc_msgSend_device(self, v12, v13, v14);
   v17 = objc_msgSend_newBufferWithLength_options_(v15, v16, v11, 0);
 
@@ -324,25 +324,25 @@ LABEL_11:
   v21 = v17;
   v25 = objc_msgSend_contents(v21, v22, v23, v24);
   v29 = v25;
-  if (a5)
+  if (values)
   {
-    if (v7)
+    if (lengthCopy)
     {
       v30 = 0;
-      if (v7 < 8)
+      if (lengthCopy < 8)
       {
         goto LABEL_8;
       }
 
-      if ((v25 - a5) <= 0x1F)
+      if ((v25 - values) <= 0x1F)
       {
         goto LABEL_8;
       }
 
-      v30 = v7 & 0xFFFFFFFFFFFFFFF8;
-      v31 = (a5 + 16);
+      v30 = lengthCopy & 0xFFFFFFFFFFFFFFF8;
+      v31 = (values + 16);
       v32 = (v25 + 16);
-      v33 = v7 & 0xFFFFFFFFFFFFFFF8;
+      v33 = lengthCopy & 0xFFFFFFFFFFFFFFF8;
       do
       {
         v34 = *v31;
@@ -354,12 +354,12 @@ LABEL_11:
       }
 
       while (v33);
-      if (v30 != v7)
+      if (v30 != lengthCopy)
       {
 LABEL_8:
         v35 = (v25 + 4 * v30);
-        v36 = (a5 + 4 * v30);
-        v37 = v7 - v30;
+        v36 = (values + 4 * v30);
+        v37 = lengthCopy - v30;
         do
         {
           v38 = *v36++;
@@ -372,7 +372,7 @@ LABEL_8:
     }
   }
 
-  else if (a4 <= 0.0)
+  else if (dev <= 0.0)
   {
     v39 = objc_msgSend_length(v17, v26, v27, v28);
     bzero(v29, v39);
@@ -380,7 +380,7 @@ LABEL_8:
 
   else
   {
-    for (; v7; --v7)
+    for (; lengthCopy; --lengthCopy)
     {
       *v29++ = sub_19D36472C(&v41, &self->weightSeed, &v41);
     }
@@ -389,15 +389,15 @@ LABEL_8:
   return v20;
 }
 
-- (id)imageFromData:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 featureChannels:(unint64_t)a6
+- (id)imageFromData:(id)data width:(unint64_t)width height:(unint64_t)height featureChannels:(unint64_t)channels
 {
-  v10 = a3;
-  v12 = objc_msgSend_imageDescriptorWithChannelFormat_width_height_featureChannels_(MEMORY[0x1E6974468], v11, 4, a4, a5, a6);
+  dataCopy = data;
+  v12 = objc_msgSend_imageDescriptorWithChannelFormat_width_height_featureChannels_(MEMORY[0x1E6974468], v11, 4, width, height, channels);
   v13 = objc_alloc(MEMORY[0x1E6974460]);
   v17 = objc_msgSend_device(self, v14, v15, v16);
   v19 = objc_msgSend_initWithDevice_imageDescriptor_(v13, v18, v17, v12);
 
-  v20 = v10;
+  v20 = dataCopy;
   v24 = objc_msgSend_bytes(v20, v21, v22, v23);
   v28 = objc_msgSend_dataLayout(self, v25, v26, v27);
   objc_msgSend_writeBytes_dataLayout_imageIndex_(v19, v29, v24, v28, 0);
@@ -405,94 +405,94 @@ LABEL_8:
   return v19;
 }
 
-- (id)imageFromMatrix:(id)a3 m2iKernel:(id)a4 cmdBuf:(id)a5 width:(unint64_t)a6 height:(unint64_t)a7 featureChannels:(unint64_t)a8
+- (id)imageFromMatrix:(id)matrix m2iKernel:(id)kernel cmdBuf:(id)buf width:(unint64_t)width height:(unint64_t)height featureChannels:(unint64_t)channels
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v17 = objc_msgSend_imageDescriptorWithChannelFormat_width_height_featureChannels_(MEMORY[0x1E6974468], v16, 4, a6, a7, a8);
-  v19 = objc_msgSend_temporaryImageWithCommandBuffer_imageDescriptor_(MEMORY[0x1E6974498], v18, v15, v17);
-  objc_msgSend_encodeToCommandBuffer_sourceMatrix_destinationImage_(v14, v20, v15, v13, v19);
+  matrixCopy = matrix;
+  kernelCopy = kernel;
+  bufCopy = buf;
+  v17 = objc_msgSend_imageDescriptorWithChannelFormat_width_height_featureChannels_(MEMORY[0x1E6974468], v16, 4, width, height, channels);
+  v19 = objc_msgSend_temporaryImageWithCommandBuffer_imageDescriptor_(MEMORY[0x1E6974498], v18, bufCopy, v17);
+  objc_msgSend_encodeToCommandBuffer_sourceMatrix_destinationImage_(kernelCopy, v20, bufCopy, matrixCopy, v19);
 
   return v19;
 }
 
-- (id)imageBatchFromMatrix:(id)a3 m2iKernel:(id)a4 cmdBuf:(id)a5 width:(unint64_t)a6 height:(unint64_t)a7 channels:(unint64_t)a8
+- (id)imageBatchFromMatrix:(id)matrix m2iKernel:(id)kernel cmdBuf:(id)buf width:(unint64_t)width height:(unint64_t)height channels:(unint64_t)channels
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v19 = objc_msgSend_rows(v13, v16, v17, v18);
+  matrixCopy = matrix;
+  kernelCopy = kernel;
+  bufCopy = buf;
+  v19 = objc_msgSend_rows(matrixCopy, v16, v17, v18);
   v22 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], v20, v19, v21);
-  for (i = objc_msgSend_imageDescriptorWithChannelFormat_width_height_featureChannels_(MEMORY[0x1E6974468], v23, 4, a6, a7, a8);
+  for (i = objc_msgSend_imageDescriptorWithChannelFormat_width_height_featureChannels_(MEMORY[0x1E6974468], v23, 4, width, height, channels);
   {
-    v26 = objc_msgSend_temporaryImageWithCommandBuffer_imageDescriptor_(MEMORY[0x1E6974498], v24, v15, i);
+    v26 = objc_msgSend_temporaryImageWithCommandBuffer_imageDescriptor_(MEMORY[0x1E6974498], v24, bufCopy, i);
     objc_msgSend_addObject_(v22, v27, v26, v28);
   }
 
-  objc_msgSend_encodeBatchToCommandBuffer_sourceMatrix_destinationImages_(v14, v24, v15, v13, v22);
+  objc_msgSend_encodeBatchToCommandBuffer_sourceMatrix_destinationImages_(kernelCopy, v24, bufCopy, matrixCopy, v22);
 
   return v22;
 }
 
-- (id)tempMatrixWithRows:(unint64_t)a3 columns:(unint64_t)a4 cmdBuf:(id)a5
+- (id)tempMatrixWithRows:(unint64_t)rows columns:(unint64_t)columns cmdBuf:(id)buf
 {
-  v7 = a5;
-  v9 = objc_msgSend_rowBytesForColumns_dataType_(MEMORY[0x1E6974480], v8, a4, 268435488);
-  v11 = objc_msgSend_matrixDescriptorWithRows_columns_rowBytes_dataType_(MEMORY[0x1E6974480], v10, a3, a4, v9, 268435488);
-  v13 = objc_msgSend_temporaryMatrixWithCommandBuffer_matrixDescriptor_(MEMORY[0x1E69744A0], v12, v7, v11);
+  bufCopy = buf;
+  v9 = objc_msgSend_rowBytesForColumns_dataType_(MEMORY[0x1E6974480], v8, columns, 268435488);
+  v11 = objc_msgSend_matrixDescriptorWithRows_columns_rowBytes_dataType_(MEMORY[0x1E6974480], v10, rows, columns, v9, 268435488);
+  v13 = objc_msgSend_temporaryMatrixWithCommandBuffer_matrixDescriptor_(MEMORY[0x1E69744A0], v12, bufCopy, v11);
 
   return v13;
 }
 
-- (id)matrixWithRows:(unint64_t)a3 columns:(unint64_t)a4 cmdBuf:(id)a5
+- (id)matrixWithRows:(unint64_t)rows columns:(unint64_t)columns cmdBuf:(id)buf
 {
-  v5 = objc_msgSend_weightMatrixWithRows_columns_stdDev_initialValues_columnMajor_(self, a2, a3, a4, 0, 0, 0.0);
+  v5 = objc_msgSend_weightMatrixWithRows_columns_stdDev_initialValues_columnMajor_(self, a2, rows, columns, 0, 0, 0.0);
 
   return v5;
 }
 
-- (id)tempMatrixFromImages:(id)a3 i2mKernel:(id)a4 cmdBuf:(id)a5
+- (id)tempMatrixFromImages:(id)images i2mKernel:(id)kernel cmdBuf:(id)buf
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v14 = objc_msgSend_count(v8, v11, v12, v13);
-  v17 = objc_msgSend_objectAtIndexedSubscript_(v8, v15, 0, v16);
+  imagesCopy = images;
+  kernelCopy = kernel;
+  bufCopy = buf;
+  v14 = objc_msgSend_count(imagesCopy, v11, v12, v13);
+  v17 = objc_msgSend_objectAtIndexedSubscript_(imagesCopy, v15, 0, v16);
   v21 = objc_msgSend_featureChannels(v17, v18, v19, v20);
-  v24 = objc_msgSend_objectAtIndexedSubscript_(v8, v22, 0, v23);
+  v24 = objc_msgSend_objectAtIndexedSubscript_(imagesCopy, v22, 0, v23);
   v28 = objc_msgSend_width(v24, v25, v26, v27);
-  v31 = objc_msgSend_objectAtIndexedSubscript_(v8, v29, 0, v30);
+  v31 = objc_msgSend_objectAtIndexedSubscript_(imagesCopy, v29, 0, v30);
   v35 = v28 * v21 * objc_msgSend_height(v31, v32, v33, v34);
 
-  v37 = objc_msgSend_tempMatrixWithRows_columns_cmdBuf_(self, v36, v14, v35, v10);
-  objc_msgSend_encodeBatchToCommandBuffer_sourceImages_destinationMatrix_(v9, v38, v10, v8, v37);
+  v37 = objc_msgSend_tempMatrixWithRows_columns_cmdBuf_(self, v36, v14, v35, bufCopy);
+  objc_msgSend_encodeBatchToCommandBuffer_sourceImages_destinationMatrix_(kernelCopy, v38, bufCopy, imagesCopy, v37);
 
   return v37;
 }
 
-- (id)matrixFromImages:(id)a3 i2mKernel:(id)a4 cmdBuf:(id)a5
+- (id)matrixFromImages:(id)images i2mKernel:(id)kernel cmdBuf:(id)buf
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v14 = objc_msgSend_count(v8, v11, v12, v13);
-  v17 = objc_msgSend_objectAtIndexedSubscript_(v8, v15, 0, v16);
+  imagesCopy = images;
+  kernelCopy = kernel;
+  bufCopy = buf;
+  v14 = objc_msgSend_count(imagesCopy, v11, v12, v13);
+  v17 = objc_msgSend_objectAtIndexedSubscript_(imagesCopy, v15, 0, v16);
   v21 = objc_msgSend_featureChannels(v17, v18, v19, v20);
-  v24 = objc_msgSend_objectAtIndexedSubscript_(v8, v22, 0, v23);
+  v24 = objc_msgSend_objectAtIndexedSubscript_(imagesCopy, v22, 0, v23);
   v28 = objc_msgSend_width(v24, v25, v26, v27);
-  v31 = objc_msgSend_objectAtIndexedSubscript_(v8, v29, 0, v30);
+  v31 = objc_msgSend_objectAtIndexedSubscript_(imagesCopy, v29, 0, v30);
   v35 = v28 * v21 * objc_msgSend_height(v31, v32, v33, v34);
 
-  v37 = objc_msgSend_matrixWithRows_columns_cmdBuf_(self, v36, v14, v35, v10);
-  objc_msgSend_encodeBatchToCommandBuffer_sourceImages_destinationMatrix_(v9, v38, v10, v8, v37);
+  v37 = objc_msgSend_matrixWithRows_columns_cmdBuf_(self, v36, v14, v35, bufCopy);
+  objc_msgSend_encodeBatchToCommandBuffer_sourceImages_destinationMatrix_(kernelCopy, v38, bufCopy, imagesCopy, v37);
 
   return v37;
 }
 
-- (id)vectorWithLength:(unint64_t)a3 cmdBuf:(id)a4
+- (id)vectorWithLength:(unint64_t)length cmdBuf:(id)buf
 {
-  v5 = objc_msgSend_vectorDescriptorWithLength_dataType_(MEMORY[0x1E69744B8], a2, a3, 268435488);
+  v5 = objc_msgSend_vectorDescriptorWithLength_dataType_(MEMORY[0x1E69744B8], a2, length, 268435488);
   v6 = objc_alloc(MEMORY[0x1E69744B0]);
   v10 = objc_msgSend_device(self, v7, v8, v9);
   v12 = objc_msgSend_initWithDevice_descriptor_(v6, v11, v10, v5);
@@ -500,22 +500,22 @@ LABEL_8:
   return v12;
 }
 
-- (id)matrixToVector:(id)a3
+- (id)matrixToVector:(id)vector
 {
-  v3 = a3;
-  v7 = objc_msgSend_rowBytes(v3, v4, v5, v6);
-  v11 = objc_msgSend_rows(v3, v8, v9, v10);
+  vectorCopy = vector;
+  v7 = objc_msgSend_rowBytes(vectorCopy, v4, v5, v6);
+  v11 = objc_msgSend_rows(vectorCopy, v8, v9, v10);
   v13 = objc_msgSend_vectorDescriptorWithLength_dataType_(MEMORY[0x1E69744B8], v12, v11 * (v7 >> 2), 268435488);
   v14 = objc_alloc(MEMORY[0x1E69744B0]);
-  v18 = objc_msgSend_data(v3, v15, v16, v17);
+  v18 = objc_msgSend_data(vectorCopy, v15, v16, v17);
   v20 = objc_msgSend_initWithBuffer_descriptor_(v14, v19, v18, v13);
 
   return v20;
 }
 
-- (float)uniformRandWithParamA:(float)a3 paramB:(float)a4
+- (float)uniformRandWithParamA:(float)a paramB:(float)b
 {
-  v4 = a4 - a3;
+  v4 = b - a;
   i = self->weightSeed.__i_;
   v6 = (i + 1) % 0x270;
   v7 = self + 4 * i;
@@ -535,7 +535,7 @@ LABEL_8:
   *(v7 + 2) = v11;
   v12 = ((v11 ^ (v11 >> 11)) << 7) & 0x9D2C5680 ^ v11 ^ (v11 >> 11);
   self->weightSeed.__i_ = v6;
-  return a3 + ((v4 * 2.3283e-10) * ((v12 << 15) & 0xEFC60000 ^ v12 ^ (((v12 << 15) & 0xEFC60000 ^ v12) >> 18)));
+  return a + ((v4 * 2.3283e-10) * ((v12 << 15) & 0xEFC60000 ^ v12 ^ (((v12 << 15) & 0xEFC60000 ^ v12) >> 18)));
 }
 
 - (id).cxx_construct

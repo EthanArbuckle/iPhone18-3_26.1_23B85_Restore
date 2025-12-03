@@ -1,28 +1,28 @@
 @interface SBCaptureApplicationLaunchRequest
-- (SBCaptureApplicationLaunchRequest)initWithCaptureApplicationBundleIdentifier:(id)a3;
+- (SBCaptureApplicationLaunchRequest)initWithCaptureApplicationBundleIdentifier:(id)identifier;
 - (id)_cameraPrewarmer;
-- (id)_errorWithCode:(int64_t)a3 underlyingError:(id)a4;
-- (void)_completeLaunchWithError:(id)a3;
-- (void)_setupContentObserverWithSceneEntity:(id)a3;
-- (void)captureApplicationLaunchAssertionManager:(id)a3 didUpdateAssertionForBundleIdentifier:(id)a4;
+- (id)_errorWithCode:(int64_t)code underlyingError:(id)error;
+- (void)_completeLaunchWithError:(id)error;
+- (void)_setupContentObserverWithSceneEntity:(id)entity;
+- (void)captureApplicationLaunchAssertionManager:(id)manager didUpdateAssertionForBundleIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)initiate;
-- (void)setLaunchTransaction:(id)a3;
-- (void)transactionDidComplete:(id)a3;
+- (void)setLaunchTransaction:(id)transaction;
+- (void)transactionDidComplete:(id)complete;
 @end
 
 @implementation SBCaptureApplicationLaunchRequest
 
-- (SBCaptureApplicationLaunchRequest)initWithCaptureApplicationBundleIdentifier:(id)a3
+- (SBCaptureApplicationLaunchRequest)initWithCaptureApplicationBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = SBCaptureApplicationLaunchRequest;
   v6 = [(SBCaptureApplicationLaunchRequest *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_captureApplicationBundleIdentifier, a3);
+    objc_storeStrong(&v6->_captureApplicationBundleIdentifier, identifier);
     v8 = +[SBCaptureApplicationLaunchAssertionManager sharedInstance];
     launchAssertionManager = v7->_launchAssertionManager;
     v7->_launchAssertionManager = v8;
@@ -65,15 +65,15 @@
   v14 = __45__SBCaptureApplicationLaunchRequest_initiate__block_invoke;
   v15 = &unk_2783ABB98;
   objc_copyWeak(&v17, buf);
-  v16 = self;
+  selfCopy = self;
   v5 = MEMORY[0x223D6F7F0](&v12);
   if (self->_prewarmCamera)
   {
     launchType = self->_launchType;
     v7 = objc_alloc(MEMORY[0x277D02BC0]);
     v8 = [v7 initWithCameraPrewarmType:launchType == 0 applicationBundleIdentifier:{self->_captureApplicationBundleIdentifier, v12, v13, v14, v15}];
-    v9 = [(SBCaptureApplicationLaunchRequest *)self _cameraPrewarmer];
-    [v9 prewarmCameraForIdentifier:v8];
+    _cameraPrewarmer = [(SBCaptureApplicationLaunchRequest *)self _cameraPrewarmer];
+    [_cameraPrewarmer prewarmCameraForIdentifier:v8];
   }
 
   v10 = [SBCaptureApplicationCenter sharedInstance:v12];
@@ -116,17 +116,17 @@ void __45__SBCaptureApplicationLaunchRequest_initiate__block_invoke(uint64_t a1,
 LABEL_6:
 }
 
-- (void)transactionDidComplete:(id)a3
+- (void)transactionDidComplete:(id)complete
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completeCopy = complete;
   BSDispatchQueueAssertMain();
-  v5 = [v4 isFailed];
+  isFailed = [completeCopy isFailed];
 
-  if (v5)
+  if (isFailed)
   {
-    v6 = [(BSTransaction *)self->_launchTransaction error];
-    v7 = [(SBCaptureApplicationLaunchRequest *)self _errorWithCode:2 underlyingError:v6];
+    error = [(BSTransaction *)self->_launchTransaction error];
+    v7 = [(SBCaptureApplicationLaunchRequest *)self _errorWithCode:2 underlyingError:error];
   }
 
   else
@@ -165,13 +165,13 @@ LABEL_6:
   }
 }
 
-- (void)setLaunchTransaction:(id)a3
+- (void)setLaunchTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   launchTransaction = self->_launchTransaction;
-  if (launchTransaction != v5)
+  if (launchTransaction != transactionCopy)
   {
-    v8 = v5;
+    v8 = transactionCopy;
     if (launchTransaction)
     {
       [(BSTransaction *)launchTransaction removeObserver:self];
@@ -179,16 +179,16 @@ LABEL_6:
       self->_launchTransaction = 0;
     }
 
-    objc_storeStrong(&self->_launchTransaction, a3);
+    objc_storeStrong(&self->_launchTransaction, transaction);
     [(BSTransaction *)self->_launchTransaction addObserver:self];
-    v5 = v8;
+    transactionCopy = v8;
   }
 }
 
-- (void)_completeLaunchWithError:(id)a3
+- (void)_completeLaunchWithError:(id)error
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = SBLogCaptureApplication();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -202,50 +202,50 @@ LABEL_6:
   completionBlock = self->_completionBlock;
   if (completionBlock)
   {
-    completionBlock[2](completionBlock, v4);
+    completionBlock[2](completionBlock, errorCopy);
   }
 }
 
 - (id)_cameraPrewarmer
 {
   v2 = +[SBLockScreenManager sharedInstance];
-  v3 = [v2 coverSheetViewController];
-  v4 = [v3 cameraPrewarmer];
+  coverSheetViewController = [v2 coverSheetViewController];
+  cameraPrewarmer = [coverSheetViewController cameraPrewarmer];
 
-  return v4;
+  return cameraPrewarmer;
 }
 
-- (void)_setupContentObserverWithSceneEntity:(id)a3
+- (void)_setupContentObserverWithSceneEntity:(id)entity
 {
-  v6 = [a3 sceneHandle];
-  v4 = [[SBWaitForSceneContentAvailableTransaction alloc] initWithSceneHandle:v6 manualListener:0];
+  sceneHandle = [entity sceneHandle];
+  v4 = [[SBWaitForSceneContentAvailableTransaction alloc] initWithSceneHandle:sceneHandle manualListener:0];
   [(SBCaptureApplicationLaunchRequest *)self setLaunchTransaction:v4];
 
-  v5 = [(SBCaptureApplicationLaunchRequest *)self launchTransaction];
-  [v5 begin];
+  launchTransaction = [(SBCaptureApplicationLaunchRequest *)self launchTransaction];
+  [launchTransaction begin];
 }
 
-- (id)_errorWithCode:(int64_t)a3 underlyingError:(id)a4
+- (id)_errorWithCode:(int64_t)code underlyingError:(id)error
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = v6;
-  if (v5)
+  errorCopy = error;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v7 = dictionary;
+  if (errorCopy)
   {
-    [v6 setObject:v5 forKey:*MEMORY[0x277CCA7E8]];
+    [dictionary setObject:errorCopy forKey:*MEMORY[0x277CCA7E8]];
   }
 
-  v8 = [MEMORY[0x277CCA9B8] errorWithDomain:SBCaptureApplicationLaunchErrorDomain code:a3 userInfo:v7];
+  v8 = [MEMORY[0x277CCA9B8] errorWithDomain:SBCaptureApplicationLaunchErrorDomain code:code userInfo:v7];
 
   return v8;
 }
 
-- (void)captureApplicationLaunchAssertionManager:(id)a3 didUpdateAssertionForBundleIdentifier:(id)a4
+- (void)captureApplicationLaunchAssertionManager:(id)manager didUpdateAssertionForBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v5;
-  v7 = v8;
+  managerCopy = manager;
+  identifierCopy = identifier;
+  v6 = managerCopy;
+  v7 = identifierCopy;
   BSDispatchMain();
 }
 

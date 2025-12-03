@@ -1,20 +1,20 @@
 @interface PKPaymentPassActionExternalActionContent
-- (PKPaymentPassActionExternalActionContent)initWithCoder:(id)a3;
-- (PKPaymentPassActionExternalActionContent)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPaymentPassActionExternalActionContent)initWithCoder:(id)coder;
+- (PKPaymentPassActionExternalActionContent)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentPassActionExternalActionContent
 
-- (PKPaymentPassActionExternalActionContent)initWithDictionary:(id)a3
+- (PKPaymentPassActionExternalActionContent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
 LABEL_12:
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -23,7 +23,7 @@ LABEL_12:
   self = [(PKPaymentPassActionExternalActionContent *)&v15 init];
   if (self)
   {
-    v5 = [v4 PKStringForKey:@"type"];
+    v5 = [dictionaryCopy PKStringForKey:@"type"];
     self->_type = PKPaymentPassActionTypeFromString(v5);
 
     type = self->_type;
@@ -32,7 +32,7 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    v8 = [v4 PKStringForKey:@"url"];
+    v8 = [dictionaryCopy PKStringForKey:@"url"];
     if (v8)
     {
       v9 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v8];
@@ -40,34 +40,34 @@ LABEL_12:
       self->_url = v9;
     }
 
-    v11 = [v4 PKStringForKey:@"displayName"];
+    v11 = [dictionaryCopy PKStringForKey:@"displayName"];
     displayName = self->_displayName;
     self->_displayName = v11;
   }
 
   self = self;
-  v13 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v13;
+  return selfCopy;
 }
 
-- (PKPaymentPassActionExternalActionContent)initWithCoder:(id)a3
+- (PKPaymentPassActionExternalActionContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKPaymentPassActionExternalActionContent;
   v5 = [(PKPaymentPassActionExternalActionContent *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = PKPaymentPassActionTypeFromString(v6);
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     url = v5->_url;
     v5->_url = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v9;
   }
@@ -75,20 +75,20 @@ LABEL_13:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v6 = a3;
+  coderCopy = coder;
   v5 = PKPaymentPassActionTypeToString(type);
-  [v6 encodeObject:v5 forKey:@"type"];
+  [coderCopy encodeObject:v5 forKey:@"type"];
 
-  [v6 encodeObject:self->_url forKey:@"url"];
-  [v6 encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_url forKey:@"url"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   *(v4 + 8) = self->_type;
   objc_storeStrong((v4 + 16), self->_url);
   objc_storeStrong((v4 + 24), self->_displayName);

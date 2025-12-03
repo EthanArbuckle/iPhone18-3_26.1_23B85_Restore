@@ -1,9 +1,9 @@
 @interface _StringAndWidthCache
 - (_StringAndWidthCache)init;
-- (id)attributedStringAndSize:(CGSize *)a3 forMaxWidth:(double)a4;
-- (id)attributedStringForIndex:(unint64_t)a3;
-- (id)smallestAttributedStringAndSize:(CGSize *)a3;
-- (void)addAttributedString:(id)a3 withSize:(CGSize)a4;
+- (id)attributedStringAndSize:(CGSize *)size forMaxWidth:(double)width;
+- (id)attributedStringForIndex:(unint64_t)index;
+- (id)smallestAttributedStringAndSize:(CGSize *)size;
+- (void)addAttributedString:(id)string withSize:(CGSize)size;
 @end
 
 @implementation _StringAndWidthCache
@@ -27,17 +27,17 @@
   return v2;
 }
 
-- (void)addAttributedString:(id)a3 withSize:(CGSize)a4
+- (void)addAttributedString:(id)string withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  [(NSMutableArray *)self->_attributedStrings addObject:a3];
+  height = size.height;
+  width = size.width;
+  [(NSMutableArray *)self->_attributedStrings addObject:string];
   boxedSizes = self->_boxedSizes;
   v8 = [MEMORY[0x277CCAE60] valueWithCGSize:{width, height}];
   [(NSMutableArray *)boxedSizes addObject:v8];
 }
 
-- (id)attributedStringAndSize:(CGSize *)a3 forMaxWidth:(double)a4
+- (id)attributedStringAndSize:(CGSize *)size forMaxWidth:(double)width
 {
   v8 = 0;
   v9 = &v8;
@@ -50,10 +50,10 @@
   v7[1] = 3221225472;
   v7[2] = __60___StringAndWidthCache_attributedStringAndSize_forMaxWidth___block_invoke;
   v7[3] = &unk_278A1F998;
-  *&v7[6] = a4;
+  *&v7[6] = width;
   v7[4] = self;
   v7[5] = &v8;
-  v7[7] = a3;
+  v7[7] = size;
   [(NSMutableArray *)boxedSizes enumerateObjectsUsingBlock:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -61,22 +61,22 @@
   return v5;
 }
 
-- (id)attributedStringForIndex:(unint64_t)a3
+- (id)attributedStringForIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_attributedStrings count]<= a3)
+  if ([(NSMutableArray *)self->_attributedStrings count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_attributedStrings objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_attributedStrings objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (id)smallestAttributedStringAndSize:(CGSize *)a3
+- (id)smallestAttributedStringAndSize:(CGSize *)size
 {
   v18 = 0;
   v19 = &v18;
@@ -84,8 +84,8 @@
   v22 = 0;
   v23 = 0;
   v21 = &unk_2370AF046;
-  v5 = [(NSMutableArray *)self->_boxedSizes lastObject];
-  [v5 CGSizeValue];
+  lastObject = [(NSMutableArray *)self->_boxedSizes lastObject];
+  [lastObject CGSizeValue];
   v22 = v6;
   v23 = v7;
 
@@ -94,7 +94,7 @@
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__4;
   v16 = __Block_byref_object_dispose__4;
-  v17 = [(NSMutableArray *)self->_attributedStrings lastObject];
+  lastObject2 = [(NSMutableArray *)self->_attributedStrings lastObject];
   boxedSizes = self->_boxedSizes;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -104,9 +104,9 @@
   v11[6] = &v12;
   v11[4] = self;
   [(NSMutableArray *)boxedSizes enumerateObjectsUsingBlock:v11];
-  if (a3)
+  if (size)
   {
-    *a3 = v19[2];
+    *size = v19[2];
   }
 
   v9 = v13[5];

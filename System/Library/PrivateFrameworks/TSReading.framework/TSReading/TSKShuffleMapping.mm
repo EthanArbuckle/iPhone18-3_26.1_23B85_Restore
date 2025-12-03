@@ -1,20 +1,20 @@
 @interface TSKShuffleMapping
-- (TSKShuffleMapping)initWithStartIndex:(unsigned __int16)a3 endIndex:(unsigned __int16)a4 mapping:(unsigned __int16 *)a5;
+- (TSKShuffleMapping)initWithStartIndex:(unsigned __int16)index endIndex:(unsigned __int16)endIndex mapping:(unsigned __int16 *)mapping;
 - (id)copyInverse;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initForMovedIndicesStartingAtIndex:(unsigned __int16)a3 destinationIndex:(unsigned __int16)a4 numberOfIndices:(unsigned __int16)a5 vertical:(BOOL)a6;
-- (unsigned)mapIndex:(unsigned __int16)a3;
-- (unsigned)reverseMapIndex:(unsigned __int16)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initForMovedIndicesStartingAtIndex:(unsigned __int16)index destinationIndex:(unsigned __int16)destinationIndex numberOfIndices:(unsigned __int16)indices vertical:(BOOL)vertical;
+- (unsigned)mapIndex:(unsigned __int16)index;
+- (unsigned)reverseMapIndex:(unsigned __int16)index;
 - (void)dealloc;
-- (void)enumerateMappingRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)insert:(unsigned __int16)a3 indicesAtIndex:(unsigned __int16)a4 insertingBefore:(BOOL)a5;
-- (void)remove:(unsigned __int16)a3 indicesAtIndex:(unsigned __int16)a4;
-- (void)swapIndex:(unsigned __int16)a3 withIndex:(unsigned __int16)a4;
+- (void)enumerateMappingRange:(_NSRange)range usingBlock:(id)block;
+- (void)insert:(unsigned __int16)insert indicesAtIndex:(unsigned __int16)index insertingBefore:(BOOL)before;
+- (void)remove:(unsigned __int16)remove indicesAtIndex:(unsigned __int16)index;
+- (void)swapIndex:(unsigned __int16)index withIndex:(unsigned __int16)withIndex;
 @end
 
 @implementation TSKShuffleMapping
 
-- (TSKShuffleMapping)initWithStartIndex:(unsigned __int16)a3 endIndex:(unsigned __int16)a4 mapping:(unsigned __int16 *)a5
+- (TSKShuffleMapping)initWithStartIndex:(unsigned __int16)index endIndex:(unsigned __int16)endIndex mapping:(unsigned __int16 *)mapping
 {
   v23.receiver = self;
   v23.super_class = TSKShuffleMapping;
@@ -22,15 +22,15 @@
   v9 = v8;
   if (v8)
   {
-    v8->mStartIndex = a3;
-    v8->mEndIndex = a4;
+    v8->mStartIndex = index;
+    v8->mEndIndex = endIndex;
     *&v8->mIsVertical = 1;
-    v10 = (a4 - a3 + 1);
+    v10 = (endIndex - index + 1);
     v11 = malloc_type_malloc(2 * v10, 0x1000040BDFB0063uLL);
     v9->mMapping = v11;
-    if (a5)
+    if (mapping)
     {
-      memcpy(v11, a5, 2 * v10);
+      memcpy(v11, mapping, 2 * v10);
     }
 
     else if (v10)
@@ -94,38 +94,38 @@
   return v9;
 }
 
-- (id)initForMovedIndicesStartingAtIndex:(unsigned __int16)a3 destinationIndex:(unsigned __int16)a4 numberOfIndices:(unsigned __int16)a5 vertical:(BOOL)a6
+- (id)initForMovedIndicesStartingAtIndex:(unsigned __int16)index destinationIndex:(unsigned __int16)destinationIndex numberOfIndices:(unsigned __int16)indices vertical:(BOOL)vertical
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v11 = a5 + a3;
-  if (a4 <= a3)
+  indicesCopy = indices;
+  destinationIndexCopy = destinationIndex;
+  indexCopy = index;
+  v11 = indices + index;
+  if (destinationIndex <= index)
   {
-    v12 = a5 + a3;
+    destinationIndexCopy2 = indices + index;
   }
 
   else
   {
-    v12 = a4;
+    destinationIndexCopy2 = destinationIndex;
   }
 
-  v13 = malloc_type_malloc(2 * v12, 0x1000040BDFB0063uLL);
+  v13 = malloc_type_malloc(2 * destinationIndexCopy2, 0x1000040BDFB0063uLL);
   v14 = v13;
-  if (v7)
+  if (indicesCopy)
   {
-    if (v8 <= v9)
+    if (destinationIndexCopy <= indexCopy)
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = v7;
+      v15 = indicesCopy;
     }
 
-    v16 = v8 - v9 - v15;
-    v17 = v9;
+    v16 = destinationIndexCopy - indexCopy - v15;
+    v17 = indexCopy;
     do
     {
       v13[v17] = v16 + v17;
@@ -135,54 +135,54 @@
     while (v11 > v17);
   }
 
-  if (v8 <= v9)
+  if (destinationIndexCopy <= indexCopy)
   {
-    if (v8 >= v9)
+    if (destinationIndexCopy >= indexCopy)
     {
       goto LABEL_59;
     }
 
     v27 = 0;
-    v28 = v9 - v8;
+    v28 = indexCopy - destinationIndexCopy;
     v29 = (v28 + 7) & 0xFFFFFFFFFFFFFFF8;
     v30 = vdupq_n_s64(v28 - 1);
-    v31 = &v13[v8 + 4];
+    v31 = &v13[destinationIndexCopy + 4];
     do
     {
-      v32 = v27 + v8;
+      v32 = v27 + destinationIndexCopy;
       v33 = vdupq_n_s64(v27);
       v34 = vmovn_s64(vcgeq_u64(v30, vorrq_s8(v33, xmmword_26CA639B0)));
       if (vuzp1_s8(vuzp1_s16(v34, *v30.i8), *v30.i8).u8[0])
       {
-        *(v31 - 4) = v32 + v7;
+        *(v31 - 4) = v32 + indicesCopy;
       }
 
       if (vuzp1_s8(vuzp1_s16(v34, *&v30), *&v30).i8[1])
       {
-        *(v31 - 3) = v32 + v7 + 1;
+        *(v31 - 3) = v32 + indicesCopy + 1;
       }
 
       if (vuzp1_s8(vuzp1_s16(*&v30, vmovn_s64(vcgeq_u64(v30, vorrq_s8(v33, xmmword_26CA63D50)))), *&v30).i8[2])
       {
-        *(v31 - 2) = v32 + v7 + 2;
-        *(v31 - 1) = v32 + v7 + 3;
+        *(v31 - 2) = v32 + indicesCopy + 2;
+        *(v31 - 1) = v32 + indicesCopy + 3;
       }
 
       v35 = vmovn_s64(vcgeq_u64(v30, vorrq_s8(v33, xmmword_26CA63D40)));
       if (vuzp1_s8(*&v30, vuzp1_s16(v35, *&v30)).i32[1])
       {
-        *v31 = v32 + v7 + 4;
+        *v31 = v32 + indicesCopy + 4;
       }
 
       if (vuzp1_s8(*&v30, vuzp1_s16(v35, *&v30)).i8[5])
       {
-        v31[1] = v32 + v7 + 5;
+        v31[1] = v32 + indicesCopy + 5;
       }
 
       if (vuzp1_s8(*&v30, vuzp1_s16(*&v30, vmovn_s64(vcgeq_u64(v30, vorrq_s8(v33, xmmword_26CA63D30))))).i8[6])
       {
-        v31[2] = v32 + v7 + 6;
-        v31[3] = v32 + v7 + 7;
+        v31[2] = v32 + indicesCopy + 6;
+        v31[3] = v32 + indicesCopy + 7;
       }
 
       v27 += 8;
@@ -194,13 +194,13 @@
 
   else
   {
-    if (v8 <= v11)
+    if (destinationIndexCopy <= v11)
     {
       goto LABEL_43;
     }
 
     v18 = 0;
-    v19 = v8 - v11;
+    v19 = destinationIndexCopy - v11;
     v20 = (v19 + 7) & 0xFFFFFFFFFFFFFFF8;
     v21 = vdupq_n_s64(v19 - 1);
     v22 = &v13[v11 + 4];
@@ -211,35 +211,35 @@
       v25 = vmovn_s64(vcgeq_u64(v21, vorrq_s8(v24, xmmword_26CA639B0)));
       if (vuzp1_s8(vuzp1_s16(v25, *v21.i8), *v21.i8).u8[0])
       {
-        *(v22 - 4) = v23 - v7;
+        *(v22 - 4) = v23 - indicesCopy;
       }
 
       if (vuzp1_s8(vuzp1_s16(v25, *&v21), *&v21).i8[1])
       {
-        *(v22 - 3) = v23 - v7 + 1;
+        *(v22 - 3) = v23 - indicesCopy + 1;
       }
 
       if (vuzp1_s8(vuzp1_s16(*&v21, vmovn_s64(vcgeq_u64(v21, vorrq_s8(v24, xmmword_26CA63D50)))), *&v21).i8[2])
       {
-        *(v22 - 2) = v23 - v7 + 2;
-        *(v22 - 1) = v23 - v7 + 3;
+        *(v22 - 2) = v23 - indicesCopy + 2;
+        *(v22 - 1) = v23 - indicesCopy + 3;
       }
 
       v26 = vmovn_s64(vcgeq_u64(v21, vorrq_s8(v24, xmmword_26CA63D40)));
       if (vuzp1_s8(*&v21, vuzp1_s16(v26, *&v21)).i32[1])
       {
-        *v22 = v23 - v7 + 4;
+        *v22 = v23 - indicesCopy + 4;
       }
 
       if (vuzp1_s8(*&v21, vuzp1_s16(v26, *&v21)).i8[5])
       {
-        v22[1] = v23 - v7 + 5;
+        v22[1] = v23 - indicesCopy + 5;
       }
 
       if (vuzp1_s8(*&v21, vuzp1_s16(*&v21, vmovn_s64(vcgeq_u64(v21, vorrq_s8(v24, xmmword_26CA63D30))))).i8[6])
       {
-        v22[2] = v23 - v7 + 6;
-        v22[3] = v23 - v7 + 7;
+        v22[2] = v23 - indicesCopy + 6;
+        v22[3] = v23 - indicesCopy + 7;
       }
 
       v18 += 8;
@@ -249,13 +249,13 @@
     while (v20 != v18);
   }
 
-  if (v8 > v9)
+  if (destinationIndexCopy > indexCopy)
   {
 LABEL_43:
-    if (v9)
+    if (indexCopy)
     {
       v36 = 0;
-      v37 = vdupq_n_s64(v9 - 1);
+      v37 = vdupq_n_s64(indexCopy - 1);
       v38 = xmmword_26CA63D30;
       v39 = xmmword_26CA63D40;
       v40 = xmmword_26CA63D50;
@@ -306,17 +306,17 @@ LABEL_43:
         v42 += 8;
       }
 
-      while (((v9 + 7) & 0x1FFF8) != v36);
+      while (((indexCopy + 7) & 0x1FFF8) != v36);
     }
 
     goto LABEL_74;
   }
 
 LABEL_59:
-  if (v8)
+  if (destinationIndexCopy)
   {
     v46 = 0;
-    v47 = vdupq_n_s64(v8 - 1);
+    v47 = vdupq_n_s64(destinationIndexCopy - 1);
     v48 = xmmword_26CA63D30;
     v49 = xmmword_26CA63D40;
     v50 = xmmword_26CA63D50;
@@ -367,19 +367,19 @@ LABEL_59:
       v52 += 8;
     }
 
-    while (((v8 + 7) & 0x1FFF8) != v46);
+    while (((destinationIndexCopy + 7) & 0x1FFF8) != v46);
   }
 
 LABEL_74:
-  v56 = [(TSKShuffleMapping *)self initWithStartIndex:0 endIndex:(v12 - 1) mapping:v13];
+  v56 = [(TSKShuffleMapping *)self initWithStartIndex:0 endIndex:(destinationIndexCopy2 - 1) mapping:v13];
   v57 = v56;
   if (v56)
   {
-    v56->mIsVertical = a6;
+    v56->mIsVertical = vertical;
     v56->mIsMoveOperation = 1;
-    v56->mFirstMovedIndex = v9;
-    v56->mDestinationIndexForMove = v8;
-    v56->mNumberOfIndicesMoved = v7;
+    v56->mFirstMovedIndex = indexCopy;
+    v56->mDestinationIndexForMove = destinationIndexCopy;
+    v56->mNumberOfIndicesMoved = indicesCopy;
   }
 
   free(v14);
@@ -394,7 +394,7 @@ LABEL_74:
   [(TSKShuffleMapping *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[TSKShuffleMapping allocWithZone:?]endIndex:"initWithStartIndex:endIndex:mapping:" mapping:self->mStartIndex, self->mEndIndex, self->mMapping];
   if (result)
@@ -412,61 +412,61 @@ LABEL_74:
 - (id)copyInverse
 {
   v3 = [(TSKShuffleMapping *)self copy];
-  v4 = [(TSKShuffleMapping *)self mappingSize];
-  v5 = [v3 mapping];
-  if (v4)
+  mappingSize = [(TSKShuffleMapping *)self mappingSize];
+  mapping = [v3 mapping];
+  if (mappingSize)
   {
     v6 = 0;
     mMapping = self->mMapping;
     do
     {
-      *(v5 + 2 * mMapping[v6]) = v6;
+      *(mapping + 2 * mMapping[v6]) = v6;
       ++v6;
     }
 
-    while (v4 != v6);
+    while (mappingSize != v6);
   }
 
   return v3;
 }
 
-- (unsigned)mapIndex:(unsigned __int16)a3
+- (unsigned)mapIndex:(unsigned __int16)index
 {
   mStartIndex = self->mStartIndex;
-  if (mStartIndex <= a3 && self->mEndIndex >= a3)
+  if (mStartIndex <= index && self->mEndIndex >= index)
   {
-    return self->mMapping[a3 - mStartIndex] + mStartIndex;
+    return self->mMapping[index - mStartIndex] + mStartIndex;
   }
 
-  return a3;
+  return index;
 }
 
-- (unsigned)reverseMapIndex:(unsigned __int16)a3
+- (unsigned)reverseMapIndex:(unsigned __int16)index
 {
-  v3 = a3;
-  v5 = [(TSKShuffleMapping *)self mappingSize];
+  indexCopy = index;
+  mappingSize = [(TSKShuffleMapping *)self mappingSize];
   mStartIndex = self->mStartIndex;
-  if (mStartIndex <= v3 && self->mEndIndex >= v3 && v5 != 0)
+  if (mStartIndex <= indexCopy && self->mEndIndex >= indexCopy && mappingSize != 0)
   {
     v8 = 0;
-    while (v3 - mStartIndex != self->mMapping[v8])
+    while (indexCopy - mStartIndex != self->mMapping[v8])
     {
-      if (v5 <= ++v8)
+      if (mappingSize <= ++v8)
       {
-        return v3;
+        return indexCopy;
       }
     }
 
-    LOWORD(v3) = v8 + mStartIndex;
+    LOWORD(indexCopy) = v8 + mStartIndex;
   }
 
-  return v3;
+  return indexCopy;
 }
 
-- (void)enumerateMappingRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateMappingRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v13.location = self->mStartIndex;
   v13.length = self->mEndIndex - v13.location;
   v12.location = location;
@@ -477,7 +477,7 @@ LABEL_74:
     v10 = location;
     do
     {
-      (*(a4 + 2))(a4, v10, v10);
+      (*(block + 2))(block, v10, v10);
       ++v10;
     }
 
@@ -495,7 +495,7 @@ LABEL_74:
   {
     do
     {
-      (*(a4 + 2))(a4, v10++, self->mMapping[v9]);
+      (*(block + 2))(block, v10++, self->mMapping[v9]);
       v9 = v10;
     }
 
@@ -507,7 +507,7 @@ LABEL_74:
   {
     do
     {
-      (*(a4 + 2))(a4, v10, v10);
+      (*(block + 2))(block, v10, v10);
       ++v10;
     }
 
@@ -515,21 +515,21 @@ LABEL_74:
   }
 }
 
-- (void)insert:(unsigned __int16)a3 indicesAtIndex:(unsigned __int16)a4 insertingBefore:(BOOL)a5
+- (void)insert:(unsigned __int16)insert indicesAtIndex:(unsigned __int16)index insertingBefore:(BOOL)before
 {
   mStartIndex = self->mStartIndex;
-  v16 = a4 >= mStartIndex;
-  v17 = a4 - mStartIndex;
+  v16 = index >= mStartIndex;
+  v17 = index - mStartIndex;
   if (v16)
   {
     v41 = v10;
     v42 = v9;
     v43 = v6;
     v44 = v5;
-    if (self->mEndIndex >= a4)
+    if (self->mEndIndex >= index)
     {
-      v19 = a3;
-      if (a5)
+      insertCopy = insert;
+      if (before)
       {
         v20 = self->mMapping[v17];
         v21 = v17;
@@ -552,7 +552,7 @@ LABEL_74:
           v26 = *v25;
           if (v26 >= v20)
           {
-            *v25 = v26 + v19;
+            *v25 = v26 + insertCopy;
           }
 
           ++v25;
@@ -562,23 +562,23 @@ LABEL_74:
         while (v24);
       }
 
-      v27 = v22 + v19;
-      self->mEndIndex += v19;
-      v28 = malloc_type_realloc(mMapping, 2 * (v22 + v19), 0x1000040BDFB0063uLL);
+      v27 = v22 + insertCopy;
+      self->mEndIndex += insertCopy;
+      v28 = malloc_type_realloc(mMapping, 2 * (v22 + insertCopy), 0x1000040BDFB0063uLL);
       self->mMapping = v28;
       if (!v28)
       {
-        v29 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKShuffleMapping insert:indicesAtIndex:insertingBefore:]"];
-        [v29 handleFailureInFunction:v30 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKShuffleMapping.mm"), 327, @"shuffle mapping couldn't grow mapping table!"}];
+        [currentHandler handleFailureInFunction:v30 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKShuffleMapping.mm"), 327, @"shuffle mapping couldn't grow mapping table!"}];
         v28 = self->mMapping;
       }
 
-      memmove(&v28[v19 + v21], &v28[v21], 2 * (v27 - (v19 + v21)));
-      if (v19)
+      memmove(&v28[insertCopy + v21], &v28[v21], 2 * (v27 - (insertCopy + v21)));
+      if (insertCopy)
       {
         v31 = 0;
-        v32 = vdupq_n_s64(v19 - 1);
+        v32 = vdupq_n_s64(insertCopy - 1);
         v33 = &self->mMapping[v21 + 4];
         v34 = xmmword_26CA63D30;
         v35 = xmmword_26CA63D40;
@@ -629,45 +629,45 @@ LABEL_74:
           v33 += 8;
         }
 
-        while (((v19 + 7) & 0x1FFF8) != v31);
+        while (((insertCopy + 7) & 0x1FFF8) != v31);
       }
     }
   }
 }
 
-- (void)remove:(unsigned __int16)a3 indicesAtIndex:(unsigned __int16)a4
+- (void)remove:(unsigned __int16)remove indicesAtIndex:(unsigned __int16)index
 {
   mStartIndex = self->mStartIndex;
-  v5 = a4 - mStartIndex;
-  if (a4 >= mStartIndex)
+  v5 = index - mStartIndex;
+  if (index >= mStartIndex)
   {
     mEndIndex = self->mEndIndex;
-    v8 = mEndIndex >= a4;
-    v9 = mEndIndex - a4;
+    v8 = mEndIndex >= index;
+    v9 = mEndIndex - index;
     if (v8)
     {
-      if ((v9 + 1) < a3)
+      if ((v9 + 1) < remove)
       {
-        v10 = v9 + 1;
+        removeCopy = v9 + 1;
       }
 
       else
       {
-        v10 = a3;
+        removeCopy = remove;
       }
 
-      v11 = [(TSKShuffleMapping *)self mappingSize];
-      v12 = v11;
-      v13 = v10 + v5;
-      if (v10)
+      mappingSize = [(TSKShuffleMapping *)self mappingSize];
+      v12 = mappingSize;
+      v13 = removeCopy + v5;
+      if (removeCopy)
       {
         mMapping = self->mMapping;
         v15 = v5;
         do
         {
-          v16 = v11;
+          v16 = mappingSize;
           v17 = mMapping;
-          if (v11)
+          if (mappingSize)
           {
             do
             {
@@ -695,37 +695,37 @@ LABEL_74:
         mMapping = self->mMapping;
       }
 
-      memmove(&mMapping[v5], &mMapping[v13], 2 * (v11 - v13));
-      self->mEndIndex -= v10;
-      v19 = malloc_type_realloc(self->mMapping, 2 * (v12 - v10), 0x1000040BDFB0063uLL);
+      memmove(&mMapping[v5], &mMapping[v13], 2 * (mappingSize - v13));
+      self->mEndIndex -= removeCopy;
+      v19 = malloc_type_realloc(self->mMapping, 2 * (v12 - removeCopy), 0x1000040BDFB0063uLL);
       self->mMapping = v19;
       if (!v19)
       {
-        v20 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKShuffleMapping remove:indicesAtIndex:]"];
         v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKShuffleMapping.mm"];
 
-        [v20 handleFailureInFunction:v21 file:v22 lineNumber:384 description:@"shuffle mapping couldn't shrink translation table!"];
+        [currentHandler handleFailureInFunction:v21 file:v22 lineNumber:384 description:@"shuffle mapping couldn't shrink translation table!"];
       }
     }
   }
 }
 
-- (void)swapIndex:(unsigned __int16)a3 withIndex:(unsigned __int16)a4
+- (void)swapIndex:(unsigned __int16)index withIndex:(unsigned __int16)withIndex
 {
   mStartIndex = self->mStartIndex;
-  if (mStartIndex > a3 || ((mEndIndex = self->mEndIndex, mEndIndex >= a4) ? (v9 = mStartIndex > a4) : (v9 = 1), !v9 ? (v10 = mEndIndex >= a3) : (v10 = 0), !v10))
+  if (mStartIndex > index || ((mEndIndex = self->mEndIndex, mEndIndex >= withIndex) ? (v9 = mStartIndex > withIndex) : (v9 = 1), !v9 ? (v10 = mEndIndex >= index) : (v10 = 0), !v10))
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKShuffleMapping swapIndex:withIndex:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKShuffleMapping.mm"), 395, @"Can't swap indices outside of mapping range!"}];
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKShuffleMapping.mm"), 395, @"Can't swap indices outside of mapping range!"}];
     LOWORD(mStartIndex) = self->mStartIndex;
   }
 
   mMapping = self->mMapping;
-  v14 = (a3 - mStartIndex);
+  v14 = (index - mStartIndex);
   v15 = mMapping[v14];
-  v16 = (a4 - mStartIndex);
+  v16 = (withIndex - mStartIndex);
   mMapping[v14] = mMapping[v16];
   mMapping[v16] = v15;
 }

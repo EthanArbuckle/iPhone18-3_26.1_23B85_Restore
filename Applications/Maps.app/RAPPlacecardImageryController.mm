@@ -1,17 +1,17 @@
 @interface RAPPlacecardImageryController
-- (RAPPlacecardImageryController)initWithReport:(id)a3 layoutManager:(id)a4;
-- (void)_invokeCompletionHandlerWithShouldSubmit:(BOOL)a3;
+- (RAPPlacecardImageryController)initWithReport:(id)report layoutManager:(id)manager;
+- (void)_invokeCompletionHandlerWithShouldSubmit:(BOOL)submit;
 - (void)_setupAlertController;
 @end
 
 @implementation RAPPlacecardImageryController
 
-- (void)_invokeCompletionHandlerWithShouldSubmit:(BOOL)a3
+- (void)_invokeCompletionHandlerWithShouldSubmit:(BOOL)submit
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, a3, self->_report, self->_question);
+    completionHandler[2](completionHandler, submit, self->_report, self->_question);
   }
 }
 
@@ -23,19 +23,19 @@
   self = (self + 40);
   self->super.isa = v3;
 
-  v5 = [(objc_class *)self->super.isa popoverPresentationController];
-  [v5 setPermittedArrowDirections:3];
+  popoverPresentationController = [(objc_class *)self->super.isa popoverPresentationController];
+  [popoverPresentationController setPermittedArrowDirections:3];
 
-  v6 = [(RAPPlacecardImageryQuestion *)val->_question localizedTitle];
-  [(objc_class *)self->super.isa setTitle:v6];
+  localizedTitle = [(RAPPlacecardImageryQuestion *)val->_question localizedTitle];
+  [(objc_class *)self->super.isa setTitle:localizedTitle];
 
   objc_initWeak(&location, val);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(RAPPlacecardImageryLayoutManager *)val->_layoutManager issueItems];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  issueItems = [(RAPPlacecardImageryLayoutManager *)val->_layoutManager issueItems];
+  v8 = [issueItems countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {
     v9 = *v23;
@@ -45,24 +45,24 @@
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(issueItems);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [v11 localizedTitle];
+        localizedTitle2 = [v11 localizedTitle];
         v20[0] = _NSConcreteStackBlock;
         v20[1] = 3221225472;
         v20[2] = sub_100CDFE00;
         v20[3] = &unk_1016540D8;
         objc_copyWeak(&v21, &location);
         v20[4] = v11;
-        v13 = [UIAlertAction actionWithTitle:v12 style:0 handler:v20];
+        v13 = [UIAlertAction actionWithTitle:localizedTitle2 style:0 handler:v20];
 
         [(UIAlertController *)val->_alertController addAction:v13];
         objc_destroyWeak(&v21);
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v8 = [issueItems countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v8);
@@ -82,25 +82,25 @@
   objc_destroyWeak(&location);
 }
 
-- (RAPPlacecardImageryController)initWithReport:(id)a3 layoutManager:(id)a4
+- (RAPPlacecardImageryController)initWithReport:(id)report layoutManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  reportCopy = report;
+  managerCopy = manager;
   v16.receiver = self;
   v16.super_class = RAPPlacecardImageryController;
   v9 = [(RAPPlacecardImageryController *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_layoutManager, a4);
-    objc_storeStrong(&v10->_report, a3);
+    objc_storeStrong(&v9->_layoutManager, manager);
+    objc_storeStrong(&v10->_report, report);
     v11 = [RAPPlacecardImageryQuestion alloc];
-    v12 = [(RAPPlacecardImageryLayoutManager *)v10->_layoutManager issueItems];
-    v13 = [(RAPPlacecardImageryQuestion *)v11 initWithReport:v7 parentQuestion:0 supportedIssueItems:v12];
+    issueItems = [(RAPPlacecardImageryLayoutManager *)v10->_layoutManager issueItems];
+    v13 = [(RAPPlacecardImageryQuestion *)v11 initWithReport:reportCopy parentQuestion:0 supportedIssueItems:issueItems];
     question = v10->_question;
     v10->_question = v13;
 
-    [v7 setInitialQuestion:v10->_question];
+    [reportCopy setInitialQuestion:v10->_question];
     [(RAPPlacecardImageryController *)v10 _setupAlertController];
   }
 

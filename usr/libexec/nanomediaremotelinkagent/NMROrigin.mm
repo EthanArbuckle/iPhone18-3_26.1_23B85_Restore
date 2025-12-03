@@ -1,27 +1,27 @@
 @interface NMROrigin
-+ (id)_transientOriginWithEndpointRoute:(id)a3;
++ (id)_transientOriginWithEndpointRoute:(id)route;
 - (BOOL)isCompanion;
 - (BOOL)isLocal;
 - (MPAVRoute)route;
 - (NMROrigin)init;
-- (NMROrigin)initWithOrigin:(void *)a3 deviceInfo:(void *)a4;
-- (NMROrigin)initWithRoute:(id)a3;
+- (NMROrigin)initWithOrigin:(void *)origin deviceInfo:(void *)info;
+- (NMROrigin)initWithRoute:(id)route;
 - (NSNumber)uniqueIdentifier;
 - (NSString)deviceIdentifier;
 - (NSString)displayName;
 - (id)description;
-- (id)playerPathWithBundleID:(id)a3 playerID:(id)a4;
+- (id)playerPathWithBundleID:(id)d playerID:(id)iD;
 - (int64_t)logicalDeviceCount;
 - (unint64_t)connectionState;
 - (unint64_t)type;
-- (void)_handleExternalDeviceConnectionStateDidChangeNotification:(id)a3;
-- (void)_handleRouteConnectionDidConnectNotification:(id)a3;
-- (void)_handleRouteConnectionDidInvalidateNotification:(id)a3;
+- (void)_handleExternalDeviceConnectionStateDidChangeNotification:(id)notification;
+- (void)_handleRouteConnectionDidConnectNotification:(id)notification;
+- (void)_handleRouteConnectionDidInvalidateNotification:(id)notification;
 - (void)_updateConnectionState;
 - (void)dealloc;
 - (void)mediaRemoteOrigin;
-- (void)updateOrigin:(void *)a3 deviceInfo:(void *)a4;
-- (void)updateRoute:(id)a3;
+- (void)updateOrigin:(void *)origin deviceInfo:(void *)info;
+- (void)updateRoute:(id)route;
 @end
 
 @implementation NMROrigin
@@ -51,14 +51,14 @@
   return v2;
 }
 
-- (NMROrigin)initWithRoute:(id)a3
+- (NMROrigin)initWithRoute:(id)route
 {
-  v5 = a3;
+  routeCopy = route;
   v6 = [(NMROrigin *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_route, a3);
+    objc_storeStrong(&v6->_route, route);
     v7->_connectionState = 2;
     [(NMROrigin *)v7 _updateConnectionState];
   }
@@ -66,12 +66,12 @@
   return v7;
 }
 
-- (NMROrigin)initWithOrigin:(void *)a3 deviceInfo:(void *)a4
+- (NMROrigin)initWithOrigin:(void *)origin deviceInfo:(void *)info
 {
   v5 = [(NMROrigin *)self init];
   if (v5)
   {
-    v5->_mediaRemoteOrigin = CFRetain(a3);
+    v5->_mediaRemoteOrigin = CFRetain(origin);
     Copy = MRPairedDeviceCreateCopy();
     v5->_connectionState = 2;
     v5->_deviceInfo = Copy;
@@ -305,21 +305,21 @@
   return v3;
 }
 
-- (void)updateRoute:(id)a3
+- (void)updateRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001A124;
   v7[3] = &unk_100048C80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = routeCopy;
+  selfCopy = self;
+  v6 = routeCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)updateOrigin:(void *)a3 deviceInfo:(void *)a4
+- (void)updateOrigin:(void *)origin deviceInfo:(void *)info
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -327,8 +327,8 @@
   block[2] = sub_10001A200;
   block[3] = &unk_100049228;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = origin;
+  block[6] = info;
   dispatch_sync(queue, block);
 }
 
@@ -336,18 +336,18 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(NMROrigin *)self displayName];
-  v6 = [(NMROrigin *)self deviceIdentifier];
-  v7 = [(NMROrigin *)self uniqueIdentifier];
-  v8 = [NSString stringWithFormat:@"<%@:%p displayName: %@, deviceIdentifier: %@, originIdentifier: %@, type: %lu>", v4, self, v5, v6, v7, [(NMROrigin *)self type]];
+  displayName = [(NMROrigin *)self displayName];
+  deviceIdentifier = [(NMROrigin *)self deviceIdentifier];
+  uniqueIdentifier = [(NMROrigin *)self uniqueIdentifier];
+  v8 = [NSString stringWithFormat:@"<%@:%p displayName: %@, deviceIdentifier: %@, originIdentifier: %@, type: %lu>", v4, self, displayName, deviceIdentifier, uniqueIdentifier, [(NMROrigin *)self type]];
 
   return v8;
 }
 
-- (id)playerPathWithBundleID:(id)a3 playerID:(id)a4
+- (id)playerPathWithBundleID:(id)d playerID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -365,7 +365,7 @@
   v9 = v14[5];
   if (v9)
   {
-    v10 = [MPCPlayerPath pathWithRoute:v9 bundleID:v6 playerID:v7];
+    v10 = [MPCPlayerPath pathWithRoute:v9 bundleID:dCopy playerID:iDCopy];
   }
 
   else
@@ -378,56 +378,56 @@
   return v10;
 }
 
-- (void)_handleRouteConnectionDidConnectNotification:(id)a3
+- (void)_handleRouteConnectionDidConnectNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001A700;
   v7[3] = &unk_100048C80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_handleRouteConnectionDidInvalidateNotification:(id)a3
+- (void)_handleRouteConnectionDidInvalidateNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001A818;
   v7[3] = &unk_100048C80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_handleExternalDeviceConnectionStateDidChangeNotification:(id)a3
+- (void)_handleExternalDeviceConnectionStateDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001A930;
   v7[3] = &unk_100048C80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(queue, v7);
 }
 
-+ (id)_transientOriginWithEndpointRoute:(id)a3
++ (id)_transientOriginWithEndpointRoute:(id)route
 {
-  v4 = a3;
-  v5 = [a1 alloc];
+  routeCopy = route;
+  v5 = [self alloc];
   v6 = v5;
-  if (v4)
+  if (routeCopy)
   {
-    v7 = [v5 initWithRoute:v4];
+    v7 = [v5 initWithRoute:routeCopy];
   }
 
   else
@@ -444,18 +444,18 @@
   route = self->_route;
   if (route)
   {
-    v4 = [(MPAVRoute *)route connection];
-    v5 = [v4 isInvalidated];
+    connection = [(MPAVRoute *)route connection];
+    isInvalidated = [connection isInvalidated];
 
-    if (v5)
+    if (isInvalidated)
     {
 LABEL_3:
       v6 = 2;
       goto LABEL_11;
     }
 
-    v7 = [(MPAVRoute *)self->_route connection];
-    if ([v7 isConnected])
+    connection2 = [(MPAVRoute *)self->_route connection];
+    if ([connection2 isConnected])
     {
 
 LABEL_10:
@@ -463,23 +463,23 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v8 = [(MPAVRoute *)self->_route isDeviceRoute];
+    isDeviceRoute = [(MPAVRoute *)self->_route isDeviceRoute];
 
-    if (v8)
+    if (isDeviceRoute)
     {
       goto LABEL_10;
     }
 
-    v13 = [(MPAVRoute *)self->_route connection];
-    v14 = [v13 externalDevice];
+    connection3 = [(MPAVRoute *)self->_route connection];
+    externalDevice = [connection3 externalDevice];
 
-    if (!v14)
+    if (!externalDevice)
     {
       goto LABEL_3;
     }
 
-    v15 = [(MPAVRoute *)self->_route connection];
-    [v15 externalDevice];
+    connection4 = [(MPAVRoute *)self->_route connection];
+    [connection4 externalDevice];
     ConnectionState = MRExternalDeviceGetConnectionState();
 
     if (ConnectionState == 2)

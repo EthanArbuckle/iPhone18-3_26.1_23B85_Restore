@@ -1,8 +1,8 @@
 @interface CUPowerSourceLEDInfo
-- (BOOL)isEqual:(id)a3;
-- (CUPowerSourceLEDInfo)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CUPowerSourceLEDInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CUPowerSourceLEDInfo
@@ -24,14 +24,14 @@
   return v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (LEDState = self->_LEDState, LEDState == [v4 LEDState]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (LEDState = self->_LEDState, LEDState == [equalCopy LEDState]))
   {
     LEDColor = self->_LEDColor;
-    v7 = LEDColor == [v4 LEDColor];
+    v7 = LEDColor == [equalCopy LEDColor];
   }
 
   else
@@ -42,41 +42,41 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   LEDState = self->_LEDState;
-  v7 = v4;
+  v7 = coderCopy;
   if (LEDState)
   {
-    [v4 encodeInteger:LEDState forKey:@"state"];
-    v4 = v7;
+    [coderCopy encodeInteger:LEDState forKey:@"state"];
+    coderCopy = v7;
   }
 
   LEDColor = self->_LEDColor;
   if (LEDColor)
   {
     [v7 encodeInteger:LEDColor forKey:@"color"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 
-- (CUPowerSourceLEDInfo)initWithCoder:(id)a3
+- (CUPowerSourceLEDInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CUPowerSourceLEDInfo;
   v5 = [(CUPowerSourceLEDInfo *)&v8 init];
   if (v5)
   {
     v9 = 0;
-    if (NSDecodeSInt64RangedIfPresent(v4, @"state", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, &v9))
+    if (NSDecodeSInt64RangedIfPresent(coderCopy, @"state", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, &v9))
     {
       v5->_LEDState = v9;
     }
 
     v9 = 0;
-    if (NSDecodeSInt64RangedIfPresent(v4, @"color", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, &v9))
+    if (NSDecodeSInt64RangedIfPresent(coderCopy, @"color", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, &v9))
     {
       v5->_LEDColor = v9;
     }

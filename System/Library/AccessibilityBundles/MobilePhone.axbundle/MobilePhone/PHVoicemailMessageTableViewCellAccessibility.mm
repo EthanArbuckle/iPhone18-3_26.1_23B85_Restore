@@ -1,5 +1,5 @@
 @interface PHVoicemailMessageTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axInfoAction;
 - (BOOL)_axShareAction;
 - (BOOL)isAccessibilityElement;
@@ -12,23 +12,23 @@
 
 @implementation PHVoicemailMessageTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PHVoicemailMessageTableViewCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"PHVoicemailMessageTableViewCell" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHVoicemailMessageTableViewCell" hasInstanceMethod:@"metadataView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHVoicemailMessageTableViewCell" hasProperty:@"contentScrollView" withType:"@"];
-  [v3 validateClass:@"PHVoicemailMessageTableViewCell" hasInstanceMethod:@"loadExpandedViewsIfNecessary" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"VMMessageMetadataView"];
-  [v3 validateClass:@"VMMessageMetadataView" hasInstanceMethod:@"didTapInfo:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"VMMessageMetadataView" hasInstanceMethod:@"didTapAction:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PHVoicemailMessageTableViewCell" hasInstanceMethod:@"setExpanded:animated:" withFullSignature:{"v", "B", "B", 0}];
-  [v3 validateClass:@"PHAudioDeviceController"];
-  [v3 validateClass:@"PHAudioDeviceController" hasClassMethod:@"sharedAudioDeviceController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHAudioDeviceController" hasInstanceMethod:@"receiverRouteIsPicked" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHAudioDeviceController" hasInstanceMethod:@"speakerRouteAvailable" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHAudioDeviceController" hasInstanceMethod:@"pickSpeakerRoute" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PHVoicemailMessageTableViewCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"PHVoicemailMessageTableViewCell" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHVoicemailMessageTableViewCell" hasInstanceMethod:@"metadataView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHVoicemailMessageTableViewCell" hasProperty:@"contentScrollView" withType:"@"];
+  [validationsCopy validateClass:@"PHVoicemailMessageTableViewCell" hasInstanceMethod:@"loadExpandedViewsIfNecessary" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"VMMessageMetadataView"];
+  [validationsCopy validateClass:@"VMMessageMetadataView" hasInstanceMethod:@"didTapInfo:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"VMMessageMetadataView" hasInstanceMethod:@"didTapAction:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PHVoicemailMessageTableViewCell" hasInstanceMethod:@"setExpanded:animated:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"PHAudioDeviceController"];
+  [validationsCopy validateClass:@"PHAudioDeviceController" hasClassMethod:@"sharedAudioDeviceController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHAudioDeviceController" hasInstanceMethod:@"receiverRouteIsPicked" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHAudioDeviceController" hasInstanceMethod:@"speakerRouteAvailable" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHAudioDeviceController" hasInstanceMethod:@"pickSpeakerRoute" withFullSignature:{"v", 0}];
 }
 
 - (id)accessibilityElements
@@ -55,24 +55,24 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 isEditing];
+  isEditing = [v2 isEditing];
 
-  return v3;
+  return isEditing;
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(PHVoicemailMessageTableViewCellAccessibility *)self safeValueForKey:@"metadataView"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v6.receiver = self;
   v6.super_class = PHVoicemailMessageTableViewCellAccessibility;
-  v2 = [(PHVoicemailMessageTableViewCellAccessibility *)&v6 accessibilityTraits];
+  accessibilityTraits = [(PHVoicemailMessageTableViewCellAccessibility *)&v6 accessibilityTraits];
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
   if ([v3 isSelected])
@@ -85,24 +85,24 @@
     v4 = 0;
   }
 
-  return v4 | v2;
+  return v4 | accessibilityTraits;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = objc_alloc(MEMORY[0x29EDC78E0]);
   v5 = accessibilityLocalizedString(@"voicemail.info");
   v6 = [v4 initWithName:v5 target:self selector:sel__axInfoAction];
 
-  [v3 addObject:v6];
+  [array addObject:v6];
   v7 = objc_alloc(MEMORY[0x29EDC78E0]);
   v8 = accessibilityLocalizedString(@"voicemail.share");
   v9 = [v7 initWithName:v8 target:self selector:sel__axShareAction];
 
-  [v3 addObject:v9];
+  [array addObject:v9];
 
-  return v3;
+  return array;
 }
 
 - (BOOL)_axInfoAction

@@ -1,79 +1,79 @@
 @interface SXCalendarEventActionSerializer
-- (id)URLForAction:(id)a3 type:(int64_t)a4;
-- (id)queryItemForName:(id)a3 value:(id)a4;
+- (id)URLForAction:(id)action type:(int64_t)type;
+- (id)queryItemForName:(id)name value:(id)value;
 @end
 
 @implementation SXCalendarEventActionSerializer
 
-- (id)URLForAction:(id)a3 type:(int64_t)a4
+- (id)URLForAction:(id)action type:(int64_t)type
 {
-  v6 = a3;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  actionCopy = action;
+  if (actionCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [v6 startDate];
+    startDate = [actionCopy startDate];
 
     v8 = 0;
-    if (a4 != 1 && v7)
+    if (type != 1 && startDate)
     {
       v9 = objc_alloc_init(MEMORY[0x1E696AF20]);
       [v9 setScheme:@"action"];
       [v9 setHost:@"calendar-event"];
-      v10 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v11 = objc_alloc_init(MEMORY[0x1E696AC80]);
-      v12 = [v6 startDate];
-      v13 = [v11 stringFromDate:v12];
+      startDate2 = [actionCopy startDate];
+      v13 = [v11 stringFromDate:startDate2];
       v14 = [(SXCalendarEventActionSerializer *)self queryItemForName:@"startDate" value:v13];
-      [v10 addObject:v14];
+      [array addObject:v14];
 
-      v15 = [v6 endDate];
+      endDate = [actionCopy endDate];
 
-      if (v15)
+      if (endDate)
       {
-        v16 = [v6 endDate];
-        v17 = [v11 stringFromDate:v16];
+        endDate2 = [actionCopy endDate];
+        v17 = [v11 stringFromDate:endDate2];
         v18 = [(SXCalendarEventActionSerializer *)self queryItemForName:@"endDate" value:v17];
-        [v10 addObject:v18];
+        [array addObject:v18];
       }
 
-      v19 = [v6 title];
+      title = [actionCopy title];
 
-      if (v19)
+      if (title)
       {
-        v20 = [v6 title];
-        v21 = [(SXCalendarEventActionSerializer *)self queryItemForName:@"title" value:v20];
-        [v10 addObject:v21];
+        title2 = [actionCopy title];
+        v21 = [(SXCalendarEventActionSerializer *)self queryItemForName:@"title" value:title2];
+        [array addObject:v21];
       }
 
-      v22 = [v6 location];
+      location = [actionCopy location];
 
-      if (v22)
+      if (location)
       {
-        v23 = [v6 location];
-        v24 = [(SXCalendarEventActionSerializer *)self queryItemForName:@"location" value:v23];
-        [v10 addObject:v24];
+        location2 = [actionCopy location];
+        v24 = [(SXCalendarEventActionSerializer *)self queryItemForName:@"location" value:location2];
+        [array addObject:v24];
       }
 
-      v25 = [v6 notes];
+      notes = [actionCopy notes];
 
-      if (v25)
+      if (notes)
       {
-        v26 = [v6 notes];
-        v27 = [v26 text];
-        v28 = [(SXCalendarEventActionSerializer *)self queryItemForName:@"notes" value:v27];
-        [v10 addObject:v28];
+        notes2 = [actionCopy notes];
+        text = [notes2 text];
+        v28 = [(SXCalendarEventActionSerializer *)self queryItemForName:@"notes" value:text];
+        [array addObject:v28];
       }
 
-      v29 = [v6 URL];
+      v29 = [actionCopy URL];
 
       if (v29)
       {
-        v30 = [v6 URL];
-        v31 = [v30 absoluteString];
-        v32 = [(SXCalendarEventActionSerializer *)self queryItemForName:@"URL" value:v31];
-        [v10 addObject:v32];
+        v30 = [actionCopy URL];
+        absoluteString = [v30 absoluteString];
+        v32 = [(SXCalendarEventActionSerializer *)self queryItemForName:@"URL" value:absoluteString];
+        [array addObject:v32];
       }
 
-      [v9 setQueryItems:v10];
+      [v9 setQueryItems:array];
       v8 = [v9 URL];
     }
   }
@@ -86,16 +86,16 @@
   return v8;
 }
 
-- (id)queryItemForName:(id)a3 value:(id)a4
+- (id)queryItemForName:(id)name value:(id)value
 {
   v5 = MEMORY[0x1E696AF60];
   v6 = MEMORY[0x1E696AB08];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 URLQueryAllowedCharacterSet];
-  v10 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:v9];
+  valueCopy = value;
+  nameCopy = name;
+  uRLQueryAllowedCharacterSet = [v6 URLQueryAllowedCharacterSet];
+  v10 = [valueCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
-  v11 = [v5 queryItemWithName:v8 value:v10];
+  v11 = [v5 queryItemWithName:nameCopy value:v10];
 
   return v11;
 }

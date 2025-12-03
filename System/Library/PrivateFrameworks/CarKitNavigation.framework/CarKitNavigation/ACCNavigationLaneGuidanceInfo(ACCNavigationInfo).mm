@@ -33,7 +33,7 @@
     v6 = v10;
   }
 
-  v11 = [a1 setInfo:a3 data:v6];
+  v11 = [self setInfo:a3 data:v6];
 
   return v11;
 }
@@ -45,7 +45,7 @@
   do
   {
     v4 = v3;
-    v5 = [a1 copyInfo:v3];
+    v5 = [self copyInfo:v3];
     if (v5)
     {
       if (v3 == 2)

@@ -1,7 +1,7 @@
 @interface AAUISignOutController
 - (AAUIFinanceKitAdapterProtocol)walletOrderChecker;
-- (AAUISignOutController)initWithAccount:(id)a3;
-- (AAUISignOutController)initWithCoder:(id)a3;
+- (AAUISignOutController)initWithAccount:(id)account;
+- (AAUISignOutController)initWithCoder:(id)coder;
 - (BOOL)_hasOrders;
 - (BOOL)_hasPaymentPasses;
 - (BOOL)_hasiCloudDriveData;
@@ -9,65 +9,65 @@
 - (BOOL)_showWalletFooter;
 - (NSDictionary)_dataclassOptions;
 - (id)_actionableDataclassOptions;
-- (id)_appendToSignoutMessage:(id)a3 appendedString:(id)a4;
+- (id)_appendToSignoutMessage:(id)message appendedString:(id)string;
 - (id)_dataclassViewController;
-- (id)_signOutMessageSimplified:(BOOL)a3 withConfirmation:(BOOL)a4;
-- (id)_spinnerViewControllerForActions:(id)a3;
-- (id)messageTextForDataclassPickerViewController:(id)a3;
-- (id)titleTextForDataclassPickerViewController:(id)a3;
+- (id)_signOutMessageSimplified:(BOOL)simplified withConfirmation:(BOOL)confirmation;
+- (id)_spinnerViewControllerForActions:(id)actions;
+- (id)messageTextForDataclassPickerViewController:(id)controller;
+- (id)titleTextForDataclassPickerViewController:(id)controller;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_delegate_signOutControllerDidCancel;
-- (void)_delegate_signOutControllerDidCompleteWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)_mainQueue_continueSignOutWithDataclassActions:(id)a3;
-- (void)_mainQueue_presentSpinnerPageWithDataclassActions:(id)a3 completion:(id)a4;
-- (void)_mainQueue_promptForConfirmationInViewController:(id)a3 simplified:(BOOL)a4 withCompletion:(id)a5;
-- (void)dataclassPickerViewController:(id)a3 didCompleteWithDataclassActions:(id)a4;
-- (void)prepareInViewController:(id)a3 completion:(id)a4;
+- (void)_delegate_signOutControllerDidCompleteWithSuccess:(BOOL)success error:(id)error;
+- (void)_mainQueue_continueSignOutWithDataclassActions:(id)actions;
+- (void)_mainQueue_presentSpinnerPageWithDataclassActions:(id)actions completion:(id)completion;
+- (void)_mainQueue_promptForConfirmationInViewController:(id)controller simplified:(BOOL)simplified withCompletion:(id)completion;
+- (void)dataclassPickerViewController:(id)controller didCompleteWithDataclassActions:(id)actions;
+- (void)prepareInViewController:(id)controller completion:(id)completion;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AAUISignOutController
 
-- (AAUISignOutController)initWithAccount:(id)a3
+- (AAUISignOutController)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v11.receiver = self;
   v11.super_class = AAUISignOutController;
   v6 = [(AAUISignOutController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
-    v8 = [(ACAccount *)v7->_account accountStore];
+    objc_storeStrong(&v6->_account, account);
+    accountStore = [(ACAccount *)v7->_account accountStore];
     accountStore = v7->_accountStore;
-    v7->_accountStore = v8;
+    v7->_accountStore = accountStore;
   }
 
   return v7;
 }
 
-- (AAUISignOutController)initWithCoder:(id)a3
+- (AAUISignOutController)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AAUISignOutController;
-  v5 = [(AAUISignOutController *)&v11 initWithCoder:v4];
+  v5 = [(AAUISignOutController *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_account"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_account"];
     account = v5->_account;
     v5->_account = v6;
 
-    v8 = [(ACAccount *)v5->_account accountStore];
-    v9 = v8;
-    if (!v8)
+    accountStore = [(ACAccount *)v5->_account accountStore];
+    defaultStore = accountStore;
+    if (!accountStore)
     {
-      v9 = [MEMORY[0x1E6959A48] defaultStore];
+      defaultStore = [MEMORY[0x1E6959A48] defaultStore];
     }
 
-    objc_storeStrong(&v5->_accountStore, v9);
-    if (!v8)
+    objc_storeStrong(&v5->_accountStore, defaultStore);
+    if (!accountStore)
     {
     }
   }
@@ -81,20 +81,20 @@
   v8.receiver = self;
   v8.super_class = AAUISignOutController;
   [(AAUISignOutController *)&v8 viewDidLoad];
-  v3 = [(AAUISignOutController *)self _actionableDataclassOptions];
-  v4 = [v3 count];
+  _actionableDataclassOptions = [(AAUISignOutController *)self _actionableDataclassOptions];
+  v4 = [_actionableDataclassOptions count];
 
   if (v4)
   {
-    v5 = [(AAUISignOutController *)self _dataclassViewController];
-    v10[0] = v5;
+    _dataclassViewController = [(AAUISignOutController *)self _dataclassViewController];
+    v10[0] = _dataclassViewController;
     v6 = v10;
   }
 
   else
   {
-    v5 = [(AAUISignOutController *)self _spinnerViewControllerForActions:0];
-    v9 = v5;
+    _dataclassViewController = [(AAUISignOutController *)self _spinnerViewControllerForActions:0];
+    v9 = _dataclassViewController;
     v6 = &v9;
   }
 
@@ -102,13 +102,13 @@
   [(AAUISignOutController *)self setViewControllers:v7 animated:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = AAUISignOutController;
-  [(AAUISignOutController *)&v7 viewWillAppear:a3];
-  v4 = [(AAUISignOutController *)self viewControllers];
-  v5 = [v4 firstObject];
+  [(AAUISignOutController *)&v7 viewWillAppear:appear];
+  viewControllers = [(AAUISignOutController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -127,22 +127,22 @@
   }
 
   v4 = [AAUIDataclassPickerViewController alloc];
-  v5 = [(AAUISignOutController *)self _dataclassOptions];
-  v6 = [(AAUIDataclassPickerViewController *)v4 initWithDataclassOptions:v5 account:self->_account];
+  _dataclassOptions = [(AAUISignOutController *)self _dataclassOptions];
+  v6 = [(AAUIDataclassPickerViewController *)v4 initWithDataclassOptions:_dataclassOptions account:self->_account];
 
-  v7 = [(AAUISignOutController *)self telemetryFlowID];
-  [(AAUIDataclassPickerViewController *)v6 setTelemetryFlowID:v7];
+  telemetryFlowID = [(AAUISignOutController *)self telemetryFlowID];
+  [(AAUIDataclassPickerViewController *)v6 setTelemetryFlowID:telemetryFlowID];
 
   [(AAUIDataclassPickerViewController *)v6 setDelegate:self];
 
   return v6;
 }
 
-- (id)_spinnerViewControllerForActions:(id)a3
+- (id)_spinnerViewControllerForActions:(id)actions
 {
-  v3 = [a3 allValues];
+  allValues = [actions allValues];
   v4 = [MEMORY[0x1E6959A58] actionWithType:2];
-  v5 = [v3 containsObject:v4];
+  v5 = [allValues containsObject:v4];
 
   v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v7 = v6;
@@ -159,15 +159,15 @@
   v9 = [v6 localizedStringForKey:v8 value:&stru_1F447F790 table:@"Localizable"];
 
   v10 = objc_alloc_init(AAUISpinnerViewController);
-  v11 = [(AAUISpinnerViewController *)v10 label];
-  [v11 setText:v9];
+  label = [(AAUISpinnerViewController *)v10 label];
+  [label setText:v9];
 
   return v10;
 }
 
-- (id)_signOutMessageSimplified:(BOOL)a3 withConfirmation:(BOOL)a4
+- (id)_signOutMessageSimplified:(BOOL)simplified withConfirmation:(BOOL)confirmation
 {
-  if (a3)
+  if (simplified)
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = [MEMORY[0x1E69DC938] modelSpecificLocalizedStringKeyForKey:@"SIGN_OUT_CONFIRM_MESSAGE"];
@@ -177,7 +177,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v7 = a4;
+  confirmationCopy = confirmation;
   if ([(AAUISignOutController *)self _showWalletFooter])
   {
     v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -227,7 +227,7 @@ LABEL_20:
     }
   }
 
-  if (v7)
+  if (confirmationCopy)
   {
     v18 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v19 = [MEMORY[0x1E69DC938] modelSpecificLocalizedStringKeyForKey:@"SIGN_OUT_CONFIRM_MESSAGE"];
@@ -254,18 +254,18 @@ LABEL_21:
   return v6;
 }
 
-- (id)_appendToSignoutMessage:(id)a3 appendedString:(id)a4
+- (id)_appendToSignoutMessage:(id)message appendedString:(id)string
 {
-  v5 = a4;
-  v6 = a3;
-  if ([v6 length])
+  stringCopy = string;
+  messageCopy = message;
+  if ([messageCopy length])
   {
-    [v6 stringByAppendingFormat:@"\n\n%@", v5];
+    [messageCopy stringByAppendingFormat:@"\n\n%@", stringCopy];
   }
 
   else
   {
-    [v6 stringByAppendingString:v5];
+    [messageCopy stringByAppendingString:stringCopy];
   }
   v7 = ;
 
@@ -279,8 +279,8 @@ LABEL_21:
     return 1;
   }
 
-  v4 = [(AAUISignOutController *)self account];
-  v5 = [v4 isEnabledForDataclass:*MEMORY[0x1E6959B58]];
+  account = [(AAUISignOutController *)self account];
+  v5 = [account isEnabledForDataclass:*MEMORY[0x1E6959B58]];
 
   return v5;
 }
@@ -292,24 +292,24 @@ LABEL_21:
     return 1;
   }
 
-  v4 = [(AAUISignOutController *)self account];
-  if ([v4 isEnabledForDataclass:*MEMORY[0x1E69596D0]])
+  account = [(AAUISignOutController *)self account];
+  if ([account isEnabledForDataclass:*MEMORY[0x1E69596D0]])
   {
     v3 = 1;
   }
 
   else
   {
-    v5 = [(AAUISignOutController *)self account];
-    if ([v5 isEnabledForDataclass:*MEMORY[0x1E69596A0]])
+    account2 = [(AAUISignOutController *)self account];
+    if ([account2 isEnabledForDataclass:*MEMORY[0x1E69596A0]])
     {
       v3 = 1;
     }
 
     else
     {
-      v6 = [(AAUISignOutController *)self account];
-      v3 = [v6 isEnabledForDataclass:*MEMORY[0x1E69596F0]];
+      account3 = [(AAUISignOutController *)self account];
+      v3 = [account3 isEnabledForDataclass:*MEMORY[0x1E69596F0]];
     }
   }
 
@@ -318,17 +318,17 @@ LABEL_21:
 
 - (BOOL)_hasOrders
 {
-  v3 = [(AAUISignOutController *)self walletOrderChecker];
+  walletOrderChecker = [(AAUISignOutController *)self walletOrderChecker];
 
-  if (!v3)
+  if (!walletOrderChecker)
   {
     return 0;
   }
 
-  v4 = [(AAUISignOutController *)self walletOrderChecker];
-  v5 = [v4 hasOrders];
+  walletOrderChecker2 = [(AAUISignOutController *)self walletOrderChecker];
+  hasOrders = [walletOrderChecker2 hasOrders];
 
-  return v5;
+  return hasOrders;
 }
 
 - (AAUIFinanceKitAdapterProtocol)walletOrderChecker
@@ -426,17 +426,17 @@ AAUIDataclassOption *__42__AAUISignOutController__dataclassOptions__block_invoke
 
 - (id)_actionableDataclassOptions
 {
-  v2 = [(AAUISignOutController *)self _dataclassOptions];
-  v3 = [v2 aaf_filter:&__block_literal_global_116];
+  _dataclassOptions = [(AAUISignOutController *)self _dataclassOptions];
+  v3 = [_dataclassOptions aaf_filter:&__block_literal_global_116];
 
   return v3;
 }
 
-- (void)prepareInViewController:(id)a3 completion:(id)a4
+- (void)prepareInViewController:(id)controller completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -450,11 +450,11 @@ AAUIDataclassOption *__42__AAUISignOutController__dataclassOptions__block_invoke
   aBlock[1] = 3221225472;
   aBlock[2] = __60__AAUISignOutController_prepareInViewController_completion___block_invoke;
   aBlock[3] = &unk_1E820C308;
-  v10 = v7;
+  v10 = completionCopy;
   v18 = v10;
   v11 = _Block_copy(aBlock);
-  v12 = [(AAUISignOutController *)self _actionableDataclassOptions];
-  v13 = [v12 count];
+  _actionableDataclassOptions = [(AAUISignOutController *)self _actionableDataclassOptions];
+  v13 = [_actionableDataclassOptions count];
 
   if (v13)
   {
@@ -468,7 +468,7 @@ AAUIDataclassOption *__42__AAUISignOutController__dataclassOptions__block_invoke
     v14[2] = __60__AAUISignOutController_prepareInViewController_completion___block_invoke_2;
     v14[3] = &unk_1E820B708;
     v14[4] = self;
-    v15 = v6;
+    v15 = controllerCopy;
     v16 = v11;
     dispatch_async(MEMORY[0x1E69E96A0], v14);
   }
@@ -485,33 +485,33 @@ uint64_t __60__AAUISignOutController_prepareInViewController_completion___block_
   return result;
 }
 
-- (void)_mainQueue_promptForConfirmationInViewController:(id)a3 simplified:(BOOL)a4 withCompletion:(id)a5
+- (void)_mainQueue_promptForConfirmationInViewController:(id)controller simplified:(BOOL)simplified withCompletion:(id)completion
 {
-  v5 = a4;
+  simplifiedCopy = simplified;
   v30[2] = *MEMORY[0x1E69E9840];
-  v25 = a5;
-  v27 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   [(AAUISignOutController *)self setModalInPresentation:1];
   v8 = MEMORY[0x1E6985DB0];
   v9 = *MEMORY[0x1E698BA60];
-  v10 = [(ACAccount *)self->_account aa_altDSID];
-  v11 = [v8 analyticsEventWithName:v9 altDSID:v10 flowID:self->_telemetryFlowID];
+  aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
+  v11 = [v8 analyticsEventWithName:v9 altDSID:aa_altDSID flowID:self->_telemetryFlowID];
 
   v12 = *MEMORY[0x1E698BB30];
   v30[0] = *MEMORY[0x1E698BB28];
   v30[1] = v12;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
-  v13 = [v26 aaf_arrayAsCommaSeperatedString];
-  [v11 setObject:v13 forKeyedSubscript:*MEMORY[0x1E6997818]];
+  aaf_arrayAsCommaSeperatedString = [v26 aaf_arrayAsCommaSeperatedString];
+  [v11 setObject:aaf_arrayAsCommaSeperatedString forKeyedSubscript:*MEMORY[0x1E6997818]];
 
-  v14 = [MEMORY[0x1E698B810] reporter];
-  [v14 sendEvent:v11];
+  reporter = [MEMORY[0x1E698B810] reporter];
+  [reporter sendEvent:v11];
 
   v24 = MEMORY[0x1E69DC650];
   v15 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v16 = [v15 localizedStringForKey:@"SIGN_OUT_CONFIRM_TITLE" value:&stru_1F447F790 table:@"Localizable"];
-  v17 = [(AAUISignOutController *)self _signOutMessageSimplified:v5 withConfirmation:1];
+  v17 = [(AAUISignOutController *)self _signOutMessageSimplified:simplifiedCopy withConfirmation:1];
   v18 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v19 = [v18 localizedStringForKey:@"SIGN_OUT_CONFIRM_CANCEL" value:&stru_1F447F790 table:@"Localizable"];
   v20 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -521,11 +521,11 @@ uint64_t __60__AAUISignOutController_prepareInViewController_completion___block_
   v28[2] = __100__AAUISignOutController__mainQueue_promptForConfirmationInViewController_simplified_withCompletion___block_invoke;
   v28[3] = &unk_1E820DE28;
   v28[4] = self;
-  v29 = v25;
-  v22 = v25;
+  v29 = completionCopy;
+  v22 = completionCopy;
   v23 = [v24 alertWithTitle:v16 message:v17 cancelButtonTitle:v19 destructiveButtonTitle:v21 actionHandler:v28];
 
-  [v27 presentViewController:v23 animated:1 completion:0];
+  [controllerCopy presentViewController:v23 animated:1 completion:0];
 }
 
 void __100__AAUISignOutController__mainQueue_promptForConfirmationInViewController_simplified_withCompletion___block_invoke(uint64_t a1, int a2)
@@ -570,10 +570,10 @@ void __100__AAUISignOutController__mainQueue_promptForConfirmationInViewControll
   }
 }
 
-- (void)_mainQueue_continueSignOutWithDataclassActions:(id)a3
+- (void)_mainQueue_continueSignOutWithDataclassActions:(id)actions
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionsCopy = actions;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -582,7 +582,7 @@ void __100__AAUISignOutController__mainQueue_promptForConfirmationInViewControll
     *buf = 138412546;
     v12 = account;
     v13 = 2112;
-    v14 = v4;
+    v14 = actionsCopy;
     _os_log_impl(&dword_1C5355000, v5, OS_LOG_TYPE_DEFAULT, "Attempting to sign out account %@ with dataclass actions %@.", buf, 0x16u);
   }
 
@@ -594,7 +594,7 @@ void __100__AAUISignOutController__mainQueue_promptForConfirmationInViewControll
   v9[2] = __72__AAUISignOutController__mainQueue_continueSignOutWithDataclassActions___block_invoke;
   v9[3] = &unk_1E820D308;
   objc_copyWeak(&v10, buf);
-  [(ACAccountStore *)accountStore removeAccount:v8 withDataclassActions:v4 completion:v9];
+  [(ACAccountStore *)accountStore removeAccount:v8 withDataclassActions:actionsCopy completion:v9];
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
 }
@@ -638,29 +638,29 @@ void __72__AAUISignOutController__mainQueue_continueSignOutWithDataclassActions_
   [WeakRetained _delegate_signOutControllerDidCompleteWithSuccess:*(a1 + 48) error:*(a1 + 32)];
 }
 
-- (void)_mainQueue_presentSpinnerPageWithDataclassActions:(id)a3 completion:(id)a4
+- (void)_mainQueue_presentSpinnerPageWithDataclassActions:(id)actions completion:(id)completion
 {
-  v9 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  actionsCopy = actions;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v7 = [(AAUISignOutController *)self _spinnerViewControllerForActions:v6];
+  v7 = [(AAUISignOutController *)self _spinnerViewControllerForActions:actionsCopy];
 
   [(AAUISignOutController *)self pushViewController:v7 animated:1];
-  v8 = v9;
-  if (v9)
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    (*(v9 + 2))(v9);
-    v8 = v9;
+    (*(completionCopy + 2))(completionCopy);
+    v8 = completionCopy;
   }
 }
 
 - (void)_delegate_signOutControllerDidCancel
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(AAUISignOutController *)self delegate];
+  delegate = [(AAUISignOutController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 signOutControllerDidCancel:self];
+    [delegate signOutControllerDidCancel:self];
   }
 
   else
@@ -675,15 +675,15 @@ void __72__AAUISignOutController__mainQueue_continueSignOutWithDataclassActions_
   }
 }
 
-- (void)_delegate_signOutControllerDidCompleteWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_delegate_signOutControllerDidCompleteWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
-  v6 = a4;
+  successCopy = success;
+  errorCopy = error;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v7 = [(AAUISignOutController *)self delegate];
+  delegate = [(AAUISignOutController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 signOutController:self didCompleteWithSuccess:v4 error:v6];
+    [delegate signOutController:self didCompleteWithSuccess:successCopy error:errorCopy];
   }
 
   else
@@ -698,7 +698,7 @@ void __72__AAUISignOutController__mainQueue_continueSignOutWithDataclassActions_
   }
 }
 
-- (id)titleTextForDataclassPickerViewController:(id)a3
+- (id)titleTextForDataclassPickerViewController:(id)controller
 {
   v3 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v4 = [MEMORY[0x1E69DC938] modelSpecificLocalizedStringKeyForKey:@"SIGN_OUT_TITLE"];
@@ -707,7 +707,7 @@ void __72__AAUISignOutController__mainQueue_continueSignOutWithDataclassActions_
   return v5;
 }
 
-- (id)messageTextForDataclassPickerViewController:(id)a3
+- (id)messageTextForDataclassPickerViewController:(id)controller
 {
   v3 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v4 = [MEMORY[0x1E69DC938] modelSpecificLocalizedStringKeyForKey:@"SIGN_OUT_SUBTITLE"];
@@ -716,16 +716,16 @@ void __72__AAUISignOutController__mainQueue_continueSignOutWithDataclassActions_
   return v5;
 }
 
-- (void)dataclassPickerViewController:(id)a3 didCompleteWithDataclassActions:(id)a4
+- (void)dataclassPickerViewController:(id)controller didCompleteWithDataclassActions:(id)actions
 {
-  v5 = a4;
+  actionsCopy = actions;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __87__AAUISignOutController_dataclassPickerViewController_didCompleteWithDataclassActions___block_invoke;
   v7[3] = &unk_1E820CCC8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = actionsCopy;
+  v6 = actionsCopy;
   [(AAUISignOutController *)self _mainQueue_promptForConfirmationInViewController:self simplified:1 withCompletion:v7];
 }
 
@@ -747,10 +747,10 @@ void __87__AAUISignOutController_dataclassPickerViewController_didCompleteWithDa
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }

@@ -1,12 +1,12 @@
 @interface SFSelectableGridCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFSelectableGridCardSection)initWithCoder:(id)a3;
-- (SFSelectableGridCardSection)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFSelectableGridCardSection)initWithCoder:(id)coder;
+- (SFSelectableGridCardSection)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFSelectableGridCardSection
@@ -16,48 +16,48 @@
   v23.receiver = self;
   v23.super_class = SFSelectableGridCardSection;
   v3 = [(SFCardSection *)&v23 hash];
-  v4 = [(SFCardSection *)self punchoutOptions];
-  v5 = [v4 hash];
-  v6 = [(SFCardSection *)self punchoutPickerTitle];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(SFCardSection *)self punchoutPickerDismissText];
-  v9 = v7 ^ [v8 hash];
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  v5 = [punchoutOptions hash];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  v7 = v5 ^ [punchoutPickerTitle hash];
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  v9 = v7 ^ [punchoutPickerDismissText hash];
   v10 = v9 ^ [(SFCardSection *)self canBeHidden];
   v11 = v10 ^ [(SFCardSection *)self hasTopPadding]^ v3;
-  v12 = [(SFCardSection *)self hasBottomPadding];
-  v13 = [(SFSelectableGridCardSection *)self type];
-  v14 = v12 ^ [v13 hash];
+  hasBottomPadding = [(SFCardSection *)self hasBottomPadding];
+  type = [(SFSelectableGridCardSection *)self type];
+  v14 = hasBottomPadding ^ [type hash];
   v15 = v14 ^ [(SFCardSection *)self separatorStyle];
-  v16 = [(SFCardSection *)self backgroundColor];
-  v17 = v15 ^ [v16 hash];
-  v18 = [(SFSelectableGridCardSection *)self entries];
-  v19 = v11 ^ v17 ^ [v18 hash];
-  v20 = [(SFSelectableGridCardSection *)self initialSelectedIndex];
-  v21 = [v20 hash];
+  backgroundColor = [(SFCardSection *)self backgroundColor];
+  v17 = v15 ^ [backgroundColor hash];
+  entries = [(SFSelectableGridCardSection *)self entries];
+  v19 = v11 ^ v17 ^ [entries hash];
+  initialSelectedIndex = [(SFSelectableGridCardSection *)self initialSelectedIndex];
+  v21 = [initialSelectedIndex hash];
 
   return v19 ^ v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFSelectableGridCardSection *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFSelectableGridCardSection *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v78.receiver = self;
       v78.super_class = SFSelectableGridCardSection;
-      if ([(SFCardSection *)&v78 isEqual:v5])
+      if ([(SFCardSection *)&v78 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFCardSection *)self punchoutOptions];
-        v8 = [(SFCardSection *)v6 punchoutOptions];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        punchoutOptions = [(SFCardSection *)self punchoutOptions];
+        punchoutOptions2 = [(SFCardSection *)v6 punchoutOptions];
+        if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
         {
           v11 = 0;
 LABEL_58:
@@ -65,32 +65,32 @@ LABEL_58:
           goto LABEL_59;
         }
 
-        v9 = [(SFCardSection *)self punchoutOptions];
-        if (v9)
+        punchoutOptions3 = [(SFCardSection *)self punchoutOptions];
+        if (punchoutOptions3)
         {
-          v10 = [(SFCardSection *)self punchoutOptions];
-          v3 = [(SFCardSection *)v6 punchoutOptions];
-          if (![v10 isEqual:v3])
+          punchoutOptions4 = [(SFCardSection *)self punchoutOptions];
+          punchoutOptions5 = [(SFCardSection *)v6 punchoutOptions];
+          if (![punchoutOptions4 isEqual:punchoutOptions5])
           {
             v11 = 0;
             goto LABEL_56;
           }
 
-          v77 = v10;
+          v77 = punchoutOptions4;
         }
 
-        v12 = [(SFCardSection *)self punchoutPickerTitle];
-        v13 = [(SFCardSection *)v6 punchoutPickerTitle];
-        if ((v12 != 0) != (v13 == 0))
+        punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+        punchoutPickerTitle2 = [(SFCardSection *)v6 punchoutPickerTitle];
+        if ((punchoutPickerTitle != 0) != (punchoutPickerTitle2 == 0))
         {
-          v14 = [(SFCardSection *)self punchoutPickerTitle];
-          v74 = v3;
-          if (v14)
+          punchoutPickerTitle3 = [(SFCardSection *)self punchoutPickerTitle];
+          v74 = punchoutOptions5;
+          if (punchoutPickerTitle3)
           {
-            v71 = v12;
-            v15 = [(SFCardSection *)self punchoutPickerTitle];
-            v16 = [(SFCardSection *)v6 punchoutPickerTitle];
-            if (([v15 isEqual:v16] & 1) == 0)
+            v71 = punchoutPickerTitle;
+            punchoutPickerTitle4 = [(SFCardSection *)self punchoutPickerTitle];
+            punchoutPickerTitle5 = [(SFCardSection *)v6 punchoutPickerTitle];
+            if (([punchoutPickerTitle4 isEqual:punchoutPickerTitle5] & 1) == 0)
             {
 
 LABEL_31:
@@ -98,49 +98,49 @@ LABEL_31:
               goto LABEL_32;
             }
 
-            v69 = v16;
-            v70 = v15;
+            v69 = punchoutPickerTitle5;
+            v70 = punchoutPickerTitle4;
             v75 = v6;
-            v73 = v8;
-            v17 = v7;
-            v18 = v9;
-            v19 = v13;
+            v73 = punchoutOptions2;
+            v17 = punchoutOptions;
+            v18 = punchoutOptions3;
+            v19 = punchoutPickerTitle2;
             v20 = v71;
-            v3 = v74;
-            v21 = v14;
+            punchoutOptions5 = v74;
+            v21 = punchoutPickerTitle3;
           }
 
           else
           {
             v75 = v6;
-            v73 = v8;
-            v17 = v7;
-            v18 = v9;
-            v19 = v13;
-            v20 = v12;
+            v73 = punchoutOptions2;
+            v17 = punchoutOptions;
+            v18 = punchoutOptions3;
+            v19 = punchoutPickerTitle2;
+            v20 = punchoutPickerTitle;
             v21 = 0;
           }
 
-          v22 = [(SFCardSection *)self punchoutPickerDismissText];
-          v23 = [(SFCardSection *)v75 punchoutPickerDismissText];
+          punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+          punchoutPickerDismissText2 = [(SFCardSection *)v75 punchoutPickerDismissText];
           v24 = v21;
-          v12 = v20;
-          v13 = v19;
-          v9 = v18;
-          v7 = v17;
-          v8 = v73;
-          if ((v22 != 0) != (v23 == 0))
+          punchoutPickerTitle = v20;
+          punchoutPickerTitle2 = v19;
+          punchoutOptions3 = v18;
+          punchoutOptions = v17;
+          punchoutOptions2 = v73;
+          if ((punchoutPickerDismissText != 0) != (punchoutPickerDismissText2 == 0))
           {
-            v67 = v23;
-            v68 = v22;
-            v72 = [(SFCardSection *)self punchoutPickerDismissText];
-            if (v72)
+            v67 = punchoutPickerDismissText2;
+            v68 = punchoutPickerDismissText;
+            punchoutPickerDismissText3 = [(SFCardSection *)self punchoutPickerDismissText];
+            if (punchoutPickerDismissText3)
             {
-              v25 = [(SFCardSection *)self punchoutPickerDismissText];
+              punchoutPickerDismissText4 = [(SFCardSection *)self punchoutPickerDismissText];
               v6 = v75;
-              v64 = [(SFCardSection *)v75 punchoutPickerDismissText];
-              v65 = v25;
-              v26 = [v25 isEqual:?];
+              punchoutPickerDismissText5 = [(SFCardSection *)v75 punchoutPickerDismissText];
+              v65 = punchoutPickerDismissText4;
+              v26 = [punchoutPickerDismissText4 isEqual:?];
               v27 = v68;
               if (!v26)
               {
@@ -155,11 +155,11 @@ LABEL_31:
             }
 
             v66 = v24;
-            v28 = [(SFCardSection *)self canBeHidden];
-            if (v28 != [(SFCardSection *)v6 canBeHidden]|| (v29 = [(SFCardSection *)self hasTopPadding], v29 != [(SFCardSection *)v6 hasTopPadding]) || (v30 = [(SFCardSection *)self hasBottomPadding], v30 != [(SFCardSection *)v6 hasBottomPadding]))
+            canBeHidden = [(SFCardSection *)self canBeHidden];
+            if (canBeHidden != [(SFCardSection *)v6 canBeHidden]|| (v29 = [(SFCardSection *)self hasTopPadding], v29 != [(SFCardSection *)v6 hasTopPadding]) || (v30 = [(SFCardSection *)self hasBottomPadding], v30 != [(SFCardSection *)v6 hasBottomPadding]))
             {
               v24 = v66;
-              if (!v72)
+              if (!punchoutPickerDismissText3)
               {
 LABEL_28:
 
@@ -175,24 +175,24 @@ LABEL_27:
               goto LABEL_28;
             }
 
-            v31 = [(SFSelectableGridCardSection *)self type];
-            v32 = [(SFSelectableGridCardSection *)v6 type];
-            if ((v31 != 0) != (v32 == 0))
+            type = [(SFSelectableGridCardSection *)self type];
+            type2 = [(SFSelectableGridCardSection *)v6 type];
+            if ((type != 0) != (type2 == 0))
             {
-              v63 = v32;
-              v76 = v31;
-              v33 = [(SFSelectableGridCardSection *)self type];
-              if (v33)
+              v63 = type2;
+              v76 = type;
+              type3 = [(SFSelectableGridCardSection *)self type];
+              if (type3)
               {
-                v62 = [(SFSelectableGridCardSection *)self type];
-                v60 = [(SFSelectableGridCardSection *)v6 type];
-                if (![v62 isEqual:?])
+                type4 = [(SFSelectableGridCardSection *)self type];
+                type5 = [(SFSelectableGridCardSection *)v6 type];
+                if (![type4 isEqual:?])
                 {
                   v11 = 0;
                   goto LABEL_68;
                 }
 
-                v61 = v33;
+                v61 = type3;
               }
 
               else
@@ -200,59 +200,59 @@ LABEL_27:
                 v61 = 0;
               }
 
-              v34 = [(SFCardSection *)self separatorStyle];
-              if (v34 != [(SFCardSection *)v6 separatorStyle])
+              separatorStyle = [(SFCardSection *)self separatorStyle];
+              if (separatorStyle != [(SFCardSection *)v6 separatorStyle])
               {
                 v11 = 0;
                 goto LABEL_67;
               }
 
-              v35 = [(SFCardSection *)self backgroundColor];
-              v36 = [(SFCardSection *)v6 backgroundColor];
-              if ((v35 != 0) != (v36 == 0))
+              backgroundColor = [(SFCardSection *)self backgroundColor];
+              backgroundColor2 = [(SFCardSection *)v6 backgroundColor];
+              if ((backgroundColor != 0) != (backgroundColor2 == 0))
               {
-                v59 = v36;
-                v57 = v9;
-                v58 = v7;
-                v56 = v13;
-                v37 = v12;
-                v38 = [(SFCardSection *)self backgroundColor];
-                if (v38)
+                v59 = backgroundColor2;
+                v57 = punchoutOptions3;
+                v58 = punchoutOptions;
+                v56 = punchoutPickerTitle2;
+                v37 = punchoutPickerTitle;
+                backgroundColor3 = [(SFCardSection *)self backgroundColor];
+                if (backgroundColor3)
                 {
-                  v39 = [(SFCardSection *)self backgroundColor];
-                  v54 = [(SFCardSection *)v6 backgroundColor];
-                  v55 = v39;
-                  if (![v39 isEqual:?])
+                  backgroundColor4 = [(SFCardSection *)self backgroundColor];
+                  backgroundColor5 = [(SFCardSection *)v6 backgroundColor];
+                  v55 = backgroundColor4;
+                  if (![backgroundColor4 isEqual:?])
                   {
                     v11 = 0;
                     goto LABEL_65;
                   }
                 }
 
-                v41 = [(SFSelectableGridCardSection *)self entries];
-                v42 = [(SFSelectableGridCardSection *)v6 entries];
-                v43 = v42;
-                if ((v41 != 0) == (v42 == 0))
+                entries = [(SFSelectableGridCardSection *)self entries];
+                entries2 = [(SFSelectableGridCardSection *)v6 entries];
+                v43 = entries2;
+                if ((entries != 0) == (entries2 == 0))
                 {
 
                   v11 = 0;
-                  if (!v38)
+                  if (!backgroundColor3)
                   {
 LABEL_66:
 
-                    v12 = v37;
-                    v13 = v56;
-                    v9 = v57;
-                    v7 = v58;
-                    v8 = v73;
+                    punchoutPickerTitle = v37;
+                    punchoutPickerTitle2 = v56;
+                    punchoutOptions3 = v57;
+                    punchoutOptions = v58;
+                    punchoutOptions2 = v73;
                     v27 = v68;
 LABEL_67:
-                    v33 = v61;
+                    type3 = v61;
                     if (!v61)
                     {
 LABEL_69:
 
-                      if (v72)
+                      if (punchoutPickerDismissText3)
                       {
                       }
 
@@ -261,9 +261,9 @@ LABEL_69:
                       }
 
 LABEL_32:
-                      v10 = v77;
-                      v3 = v74;
-                      if (!v9)
+                      punchoutOptions4 = v77;
+                      punchoutOptions5 = v74;
+                      if (!punchoutOptions3)
                       {
                         goto LABEL_57;
                       }
@@ -281,13 +281,13 @@ LABEL_65:
                   goto LABEL_66;
                 }
 
-                v53 = [(SFSelectableGridCardSection *)self entries];
-                if (!v53 || (-[SFSelectableGridCardSection entries](self, "entries"), v44 = objc_claimAutoreleasedReturnValue(), -[SFSelectableGridCardSection entries](v6, "entries"), v50 = objc_claimAutoreleasedReturnValue(), v51 = v44, [v44 isEqual:?]))
+                entries3 = [(SFSelectableGridCardSection *)self entries];
+                if (!entries3 || (-[SFSelectableGridCardSection entries](self, "entries"), v44 = objc_claimAutoreleasedReturnValue(), -[SFSelectableGridCardSection entries](v6, "entries"), v50 = objc_claimAutoreleasedReturnValue(), v51 = v44, [v44 isEqual:?]))
                 {
-                  v52 = [(SFSelectableGridCardSection *)self initialSelectedIndex];
-                  v45 = [(SFSelectableGridCardSection *)v6 initialSelectedIndex];
-                  v46 = v45;
-                  if ((v52 != 0) == (v45 == 0))
+                  initialSelectedIndex = [(SFSelectableGridCardSection *)self initialSelectedIndex];
+                  initialSelectedIndex2 = [(SFSelectableGridCardSection *)v6 initialSelectedIndex];
+                  v46 = initialSelectedIndex2;
+                  if ((initialSelectedIndex != 0) == (initialSelectedIndex2 == 0))
                   {
 
                     v11 = 0;
@@ -295,12 +295,12 @@ LABEL_65:
 
                   else
                   {
-                    v49 = [(SFSelectableGridCardSection *)self initialSelectedIndex];
-                    if (v49)
+                    initialSelectedIndex3 = [(SFSelectableGridCardSection *)self initialSelectedIndex];
+                    if (initialSelectedIndex3)
                     {
-                      v48 = [(SFSelectableGridCardSection *)self initialSelectedIndex];
-                      v47 = [(SFSelectableGridCardSection *)v6 initialSelectedIndex];
-                      v11 = [v48 isEqual:v47];
+                      initialSelectedIndex4 = [(SFSelectableGridCardSection *)self initialSelectedIndex];
+                      initialSelectedIndex5 = [(SFSelectableGridCardSection *)v6 initialSelectedIndex];
+                      v11 = [initialSelectedIndex4 isEqual:initialSelectedIndex5];
                     }
 
                     else
@@ -310,11 +310,11 @@ LABEL_65:
                     }
                   }
 
-                  if (!v53)
+                  if (!entries3)
                   {
 LABEL_81:
 
-                    if (!v38)
+                    if (!backgroundColor3)
                     {
                       goto LABEL_66;
                     }
@@ -335,20 +335,20 @@ LABEL_81:
               {
               }
 
-              v31 = v76;
-              v32 = v63;
+              type = v76;
+              type2 = v63;
             }
 
             v75 = v6;
 
             v24 = v66;
-            if (v72)
+            if (punchoutPickerDismissText3)
             {
             }
 
-            v23 = v67;
-            v22 = v68;
-            v3 = v74;
+            punchoutPickerDismissText2 = v67;
+            punchoutPickerDismissText = v68;
+            punchoutOptions5 = v74;
           }
 
           if (v24)
@@ -359,8 +359,8 @@ LABEL_81:
         }
 
         v11 = 0;
-        v10 = v77;
-        if (!v9)
+        punchoutOptions4 = v77;
+        if (!punchoutOptions3)
         {
 LABEL_57:
 
@@ -381,41 +381,41 @@ LABEL_59:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20.receiver = self;
   v20.super_class = SFSelectableGridCardSection;
-  v4 = [(SFCardSection *)&v20 copyWithZone:a3];
-  v5 = [(SFCardSection *)self punchoutOptions];
-  v6 = [v5 copy];
+  v4 = [(SFCardSection *)&v20 copyWithZone:zone];
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  v6 = [punchoutOptions copy];
   [v4 setPunchoutOptions:v6];
 
-  v7 = [(SFCardSection *)self punchoutPickerTitle];
-  v8 = [v7 copy];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  v8 = [punchoutPickerTitle copy];
   [v4 setPunchoutPickerTitle:v8];
 
-  v9 = [(SFCardSection *)self punchoutPickerDismissText];
-  v10 = [v9 copy];
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  v10 = [punchoutPickerDismissText copy];
   [v4 setPunchoutPickerDismissText:v10];
 
   [v4 setCanBeHidden:{-[SFCardSection canBeHidden](self, "canBeHidden")}];
   [v4 setHasTopPadding:{-[SFCardSection hasTopPadding](self, "hasTopPadding")}];
   [v4 setHasBottomPadding:{-[SFCardSection hasBottomPadding](self, "hasBottomPadding")}];
-  v11 = [(SFSelectableGridCardSection *)self type];
-  v12 = [v11 copy];
+  type = [(SFSelectableGridCardSection *)self type];
+  v12 = [type copy];
   [v4 setType:v12];
 
   [v4 setSeparatorStyle:{-[SFCardSection separatorStyle](self, "separatorStyle")}];
-  v13 = [(SFCardSection *)self backgroundColor];
-  v14 = [v13 copy];
+  backgroundColor = [(SFCardSection *)self backgroundColor];
+  v14 = [backgroundColor copy];
   [v4 setBackgroundColor:v14];
 
-  v15 = [(SFSelectableGridCardSection *)self entries];
-  v16 = [v15 copy];
+  entries = [(SFSelectableGridCardSection *)self entries];
+  v16 = [entries copy];
   [v4 setEntries:v16];
 
-  v17 = [(SFSelectableGridCardSection *)self initialSelectedIndex];
-  v18 = [v17 copy];
+  initialSelectedIndex = [(SFSelectableGridCardSection *)self initialSelectedIndex];
+  v18 = [initialSelectedIndex copy];
   [v4 setInitialSelectedIndex:v18];
 
   return v4;
@@ -424,161 +424,161 @@ LABEL_59:
 - (NSData)jsonData
 {
   v2 = [[_SFPBSelectableGridCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBSelectableGridCardSection *)v2 jsonData];
+  jsonData = [(_SFPBSelectableGridCardSection *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBSelectableGridCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBSelectableGridCardSection *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBSelectableGridCardSection *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFSelectableGridCardSection;
-  [(SFCardSection *)&v3 encodeWithCoder:a3];
+  [(SFCardSection *)&v3 encodeWithCoder:coder];
 }
 
-- (SFSelectableGridCardSection)initWithCoder:(id)a3
+- (SFSelectableGridCardSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFCardSection *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCardSection alloc] initWithData:v6];
   v8 = [[SFCardSection alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v9];
+    punchoutOptions = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions];
 
-    v10 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v10];
+    punchoutPickerTitle = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle];
 
-    v11 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v11];
+    punchoutPickerDismissText = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
-    v12 = [(SFCardSection *)v8 type];
-    [(SFSelectableGridCardSection *)v5 setType:v12];
+    type = [(SFCardSection *)v8 type];
+    [(SFSelectableGridCardSection *)v5 setType:type];
 
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v13 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v13];
+    backgroundColor = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor];
 
-    v14 = [(SFCardSection *)v8 entries];
-    [(SFSelectableGridCardSection *)v5 setEntries:v14];
+    entries = [(SFCardSection *)v8 entries];
+    [(SFSelectableGridCardSection *)v5 setEntries:entries];
 
-    v15 = [(SFCardSection *)v8 initialSelectedIndex];
-    [(SFSelectableGridCardSection *)v5 setInitialSelectedIndex:v15];
+    initialSelectedIndex = [(SFCardSection *)v8 initialSelectedIndex];
+    [(SFSelectableGridCardSection *)v5 setInitialSelectedIndex:initialSelectedIndex];
 
-    v16 = [(SFCardSection *)v8 nextCard];
-    [(SFCardSection *)v5 setNextCard:v16];
+    nextCard = [(SFCardSection *)v8 nextCard];
+    [(SFCardSection *)v5 setNextCard:nextCard];
 
-    v17 = [(SFCardSection *)v8 commands];
-    [(SFCardSection *)v5 setCommands:v17];
+    commands = [(SFCardSection *)v8 commands];
+    [(SFCardSection *)v5 setCommands:commands];
 
-    v18 = [(SFCardSection *)v8 parameterKeyPaths];
-    [(SFCardSection *)v5 setParameterKeyPaths:v18];
+    parameterKeyPaths = [(SFCardSection *)v8 parameterKeyPaths];
+    [(SFCardSection *)v5 setParameterKeyPaths:parameterKeyPaths];
 
-    v19 = [(SFCardSection *)v8 cardSectionId];
-    [(SFCardSection *)v5 setCardSectionId:v19];
+    cardSectionId = [(SFCardSection *)v8 cardSectionId];
+    [(SFCardSection *)v5 setCardSectionId:cardSectionId];
 
-    v20 = [(SFCardSection *)v8 resultIdentifier];
-    [(SFCardSection *)v5 setResultIdentifier:v20];
+    resultIdentifier = [(SFCardSection *)v8 resultIdentifier];
+    [(SFCardSection *)v5 setResultIdentifier:resultIdentifier];
 
-    v21 = [(SFCardSection *)v8 userReportRequest];
-    [(SFCardSection *)v5 setUserReportRequest:v21];
+    userReportRequest = [(SFCardSection *)v8 userReportRequest];
+    [(SFCardSection *)v5 setUserReportRequest:userReportRequest];
 
-    v22 = [(SFCardSection *)v8 command];
-    [(SFCardSection *)v5 setCommand:v22];
+    command = [(SFCardSection *)v8 command];
+    [(SFCardSection *)v5 setCommand:command];
 
-    v23 = [(SFCardSection *)v8 previewCommand];
-    [(SFCardSection *)v5 setPreviewCommand:v23];
+    previewCommand = [(SFCardSection *)v8 previewCommand];
+    [(SFCardSection *)v5 setPreviewCommand:previewCommand];
 
-    v24 = [(SFCardSection *)v8 previewButtonItems];
-    [(SFCardSection *)v5 setPreviewButtonItems:v24];
+    previewButtonItems = [(SFCardSection *)v8 previewButtonItems];
+    [(SFCardSection *)v5 setPreviewButtonItems:previewButtonItems];
 
-    v25 = [(SFCardSection *)v8 cardSectionDetail];
-    [(SFCardSection *)v5 setCardSectionDetail:v25];
+    cardSectionDetail = [(SFCardSection *)v8 cardSectionDetail];
+    [(SFCardSection *)v5 setCardSectionDetail:cardSectionDetail];
 
-    v26 = [(SFCardSection *)v8 previewButtonItemsTitle];
-    [(SFCardSection *)v5 setPreviewButtonItemsTitle:v26];
+    previewButtonItemsTitle = [(SFCardSection *)v8 previewButtonItemsTitle];
+    [(SFCardSection *)v5 setPreviewButtonItemsTitle:previewButtonItemsTitle];
 
-    v27 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v27];
+    backgroundColor2 = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor2];
 
     [(SFCardSection *)v5 setShouldHideInAmbientMode:[(SFCardSection *)v8 shouldHideInAmbientMode]];
-    v28 = [(SFCardSection *)v8 leadingSwipeButtonItems];
-    [(SFCardSection *)v5 setLeadingSwipeButtonItems:v28];
+    leadingSwipeButtonItems = [(SFCardSection *)v8 leadingSwipeButtonItems];
+    [(SFCardSection *)v5 setLeadingSwipeButtonItems:leadingSwipeButtonItems];
 
-    v29 = [(SFCardSection *)v8 trailingSwipeButtonItems];
-    [(SFCardSection *)v5 setTrailingSwipeButtonItems:v29];
+    trailingSwipeButtonItems = [(SFCardSection *)v8 trailingSwipeButtonItems];
+    [(SFCardSection *)v5 setTrailingSwipeButtonItems:trailingSwipeButtonItems];
 
-    v30 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v30];
+    punchoutOptions2 = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions2];
 
-    v31 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v31];
+    punchoutPickerTitle2 = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
 
-    v32 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v32];
+    punchoutPickerDismissText2 = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v33 = [(SFCardSection *)v8 referencedCommands];
-    [(SFCardSection *)v5 setReferencedCommands:v33];
+    referencedCommands = [(SFCardSection *)v8 referencedCommands];
+    [(SFCardSection *)v5 setReferencedCommands:referencedCommands];
 
     [(SFCardSection *)v5 setForceEnable3DTouch:[(SFCardSection *)v8 forceEnable3DTouch]];
     [(SFCardSection *)v5 setShouldShowInSmartDialog:[(SFCardSection *)v8 shouldShowInSmartDialog]];
-    v34 = [(SFCardSection *)v8 appEntityAnnotation];
-    [(SFCardSection *)v5 setAppEntityAnnotation:v34];
+    appEntityAnnotation = [(SFCardSection *)v8 appEntityAnnotation];
+    [(SFCardSection *)v5 setAppEntityAnnotation:appEntityAnnotation];
 
-    v35 = [(SFCardSection *)v8 emphasisSubjectId];
-    [(SFCardSection *)v5 setEmphasisSubjectId:v35];
+    emphasisSubjectId = [(SFCardSection *)v8 emphasisSubjectId];
+    [(SFCardSection *)v5 setEmphasisSubjectId:emphasisSubjectId];
 
     [(SFCardSection *)v5 setIncreasedContrastMode:[(SFCardSection *)v8 increasedContrastMode]];
-    v36 = [(SFCardSection *)v8 secondaryCommand];
-    [(SFCardSection *)v5 setSecondaryCommand:v36];
+    secondaryCommand = [(SFCardSection *)v8 secondaryCommand];
+    [(SFCardSection *)v5 setSecondaryCommand:secondaryCommand];
 
     [(SFCardSection *)v5 setRequiredLevelOfDetail:[(SFCardSection *)v8 requiredLevelOfDetail]];
-    v37 = [(SFCardSection *)v8 racFeedbackSubfeatureId];
-    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:v37];
+    racFeedbackSubfeatureId = [(SFCardSection *)v8 racFeedbackSubfeatureId];
+    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:racFeedbackSubfeatureId];
 
-    v38 = [(SFCardSection *)v8 racFeedbackLoggingContent];
-    [(SFCardSection *)v5 setRacFeedbackLoggingContent:v38];
+    racFeedbackLoggingContent = [(SFCardSection *)v8 racFeedbackLoggingContent];
+    [(SFCardSection *)v5 setRacFeedbackLoggingContent:racFeedbackLoggingContent];
 
-    v39 = [(SFCardSection *)v8 copyableItems];
-    [(SFCardSection *)v5 setCopyableItems:v39];
+    copyableItems = [(SFCardSection *)v8 copyableItems];
+    [(SFCardSection *)v5 setCopyableItems:copyableItems];
 
-    v40 = [(SFCardSection *)v8 applicationBundleIdentifier];
-    [(SFCardSection *)v5 setApplicationBundleIdentifier:v40];
+    applicationBundleIdentifier = [(SFCardSection *)v8 applicationBundleIdentifier];
+    [(SFCardSection *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier];
   }
 
   return v5;
 }
 
-- (SFSelectableGridCardSection)initWithProtobuf:(id)a3
+- (SFSelectableGridCardSection)initWithProtobuf:(id)protobuf
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v44.receiver = self;
   v44.super_class = SFSelectableGridCardSection;
   v5 = [(SFCardSection *)&v44 init];
   if (v5)
   {
-    v6 = [v4 punchoutOptions];
-    if (v6)
+    punchoutOptions = [protobufCopy punchoutOptions];
+    if (punchoutOptions)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -592,8 +592,8 @@ LABEL_59:
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v8 = [v4 punchoutOptions];
-    v9 = [v8 countByEnumeratingWithState:&v40 objects:v46 count:16];
+    punchoutOptions2 = [protobufCopy punchoutOptions];
+    v9 = [punchoutOptions2 countByEnumeratingWithState:&v40 objects:v46 count:16];
     if (v9)
     {
       v10 = v9;
@@ -604,7 +604,7 @@ LABEL_59:
         {
           if (*v41 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(punchoutOptions2);
           }
 
           v13 = [[SFPunchout alloc] initWithProtobuf:*(*(&v40 + 1) + 8 * i)];
@@ -614,69 +614,69 @@ LABEL_59:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v40 objects:v46 count:16];
+        v10 = [punchoutOptions2 countByEnumeratingWithState:&v40 objects:v46 count:16];
       }
 
       while (v10);
     }
 
     [(SFCardSection *)v5 setPunchoutOptions:v7];
-    v14 = [v4 punchoutPickerTitle];
+    punchoutPickerTitle = [protobufCopy punchoutPickerTitle];
 
-    if (v14)
+    if (punchoutPickerTitle)
     {
-      v15 = [v4 punchoutPickerTitle];
-      [(SFCardSection *)v5 setPunchoutPickerTitle:v15];
+      punchoutPickerTitle2 = [protobufCopy punchoutPickerTitle];
+      [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
     }
 
-    v16 = [v4 punchoutPickerDismissText];
+    punchoutPickerDismissText = [protobufCopy punchoutPickerDismissText];
 
-    if (v16)
+    if (punchoutPickerDismissText)
     {
-      v17 = [v4 punchoutPickerDismissText];
-      [(SFCardSection *)v5 setPunchoutPickerDismissText:v17];
+      punchoutPickerDismissText2 = [protobufCopy punchoutPickerDismissText];
+      [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
     }
 
-    if ([v4 canBeHidden])
+    if ([protobufCopy canBeHidden])
     {
-      -[SFCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v4 canBeHidden]);
+      -[SFCardSection setCanBeHidden:](v5, "setCanBeHidden:", [protobufCopy canBeHidden]);
     }
 
-    if ([v4 hasTopPadding])
+    if ([protobufCopy hasTopPadding])
     {
-      -[SFCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v4 hasTopPadding]);
+      -[SFCardSection setHasTopPadding:](v5, "setHasTopPadding:", [protobufCopy hasTopPadding]);
     }
 
-    if ([v4 hasBottomPadding])
+    if ([protobufCopy hasBottomPadding])
     {
-      -[SFCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v4 hasBottomPadding]);
+      -[SFCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [protobufCopy hasBottomPadding]);
     }
 
-    v18 = [v4 type];
+    type = [protobufCopy type];
 
-    if (v18)
+    if (type)
     {
-      v19 = [v4 type];
-      [(SFSelectableGridCardSection *)v5 setType:v19];
+      type2 = [protobufCopy type];
+      [(SFSelectableGridCardSection *)v5 setType:type2];
     }
 
-    if ([v4 separatorStyle])
+    if ([protobufCopy separatorStyle])
     {
-      -[SFCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v4 separatorStyle]);
+      -[SFCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [protobufCopy separatorStyle]);
     }
 
-    v20 = [v4 backgroundColor];
+    backgroundColor = [protobufCopy backgroundColor];
 
-    if (v20)
+    if (backgroundColor)
     {
       v21 = [SFColor alloc];
-      v22 = [v4 backgroundColor];
-      v23 = [(SFColor *)v21 initWithProtobuf:v22];
+      backgroundColor2 = [protobufCopy backgroundColor];
+      v23 = [(SFColor *)v21 initWithProtobuf:backgroundColor2];
       [(SFCardSection *)v5 setBackgroundColor:v23];
     }
 
-    v24 = [v4 entries];
-    if (v24)
+    entries = [protobufCopy entries];
+    if (entries)
     {
       v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -690,8 +690,8 @@ LABEL_59:
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v26 = [v4 entries];
-    v27 = [v26 countByEnumeratingWithState:&v36 objects:v45 count:16];
+    entries2 = [protobufCopy entries];
+    v27 = [entries2 countByEnumeratingWithState:&v36 objects:v45 count:16];
     if (v27)
     {
       v28 = v27;
@@ -702,7 +702,7 @@ LABEL_59:
         {
           if (*v37 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(entries2);
           }
 
           v31 = [[SFTitleSubtitleTuple alloc] initWithProtobuf:*(*(&v36 + 1) + 8 * j)];
@@ -712,16 +712,16 @@ LABEL_59:
           }
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v36 objects:v45 count:16];
+        v28 = [entries2 countByEnumeratingWithState:&v36 objects:v45 count:16];
       }
 
       while (v28);
     }
 
     [(SFSelectableGridCardSection *)v5 setEntries:v25];
-    if ([v4 initialSelectedIndex])
+    if ([protobufCopy initialSelectedIndex])
     {
-      v32 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "initialSelectedIndex")}];
+      v32 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "initialSelectedIndex")}];
       [(SFSelectableGridCardSection *)v5 setInitialSelectedIndex:v32];
     }
 

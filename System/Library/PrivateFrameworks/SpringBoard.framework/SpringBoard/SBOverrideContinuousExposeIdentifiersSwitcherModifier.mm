@@ -1,27 +1,27 @@
 @interface SBOverrideContinuousExposeIdentifiersSwitcherModifier
-- (SBOverrideContinuousExposeIdentifiersSwitcherModifier)initWithContinuousExposeIdentifiersInSwitcher:(id)a3 continuousExposeIdentifiersInStrip:(id)a4;
+- (SBOverrideContinuousExposeIdentifiersSwitcherModifier)initWithContinuousExposeIdentifiersInSwitcher:(id)switcher continuousExposeIdentifiersInStrip:(id)strip;
 - (id)continuousExposeIdentifiersInStrip;
 - (id)continuousExposeIdentifiersInSwitcher;
-- (void)didMoveToParentModifier:(id)a3;
-- (void)setState:(int64_t)a3;
+- (void)didMoveToParentModifier:(id)modifier;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation SBOverrideContinuousExposeIdentifiersSwitcherModifier
 
-- (SBOverrideContinuousExposeIdentifiersSwitcherModifier)initWithContinuousExposeIdentifiersInSwitcher:(id)a3 continuousExposeIdentifiersInStrip:(id)a4
+- (SBOverrideContinuousExposeIdentifiersSwitcherModifier)initWithContinuousExposeIdentifiersInSwitcher:(id)switcher continuousExposeIdentifiersInStrip:(id)strip
 {
-  v6 = a3;
-  v7 = a4;
+  switcherCopy = switcher;
+  stripCopy = strip;
   v14.receiver = self;
   v14.super_class = SBOverrideContinuousExposeIdentifiersSwitcherModifier;
   v8 = [(SBSwitcherModifier *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [switcherCopy copy];
     overrideContinuousExposeIdentifiersInSwitcher = v8->_overrideContinuousExposeIdentifiersInSwitcher;
     v8->_overrideContinuousExposeIdentifiersInSwitcher = v9;
 
-    v11 = [v7 copy];
+    v11 = [stripCopy copy];
     overrideContinuousExposeIdentifiersInStrip = v8->_overrideContinuousExposeIdentifiersInStrip;
     v8->_overrideContinuousExposeIdentifiersInStrip = v11;
   }
@@ -29,24 +29,24 @@
   return v8;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v5.receiver = self;
   v5.super_class = SBOverrideContinuousExposeIdentifiersSwitcherModifier;
   [(SBChainableModifier *)&v5 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     [(SBOverrideContinuousExposeIdentifiersSwitcherModifier *)self newContinuousExposeIdentifiersGenerationCount];
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v5 = [(SBChainableModifier *)self state];
-  if (a3 == 1 && v5 != 1)
+  state = [(SBChainableModifier *)self state];
+  if (state == 1 && state != 1)
   {
-    v6 = [(SBChainableModifier *)self parentModifier];
-    if (v6)
+    parentModifier = [(SBChainableModifier *)self parentModifier];
+    if (parentModifier)
     {
 
 LABEL_6:
@@ -54,9 +54,9 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v7 = [(SBChainableModifier *)self delegate];
+    delegate = [(SBChainableModifier *)self delegate];
 
-    if (v7)
+    if (delegate)
     {
       goto LABEL_6;
     }
@@ -65,7 +65,7 @@ LABEL_6:
 LABEL_7:
   v8.receiver = self;
   v8.super_class = SBOverrideContinuousExposeIdentifiersSwitcherModifier;
-  [(SBChainableModifier *)&v8 setState:a3];
+  [(SBChainableModifier *)&v8 setState:state];
 }
 
 - (id)continuousExposeIdentifiersInSwitcher
@@ -73,17 +73,17 @@ LABEL_7:
   overrideContinuousExposeIdentifiersInSwitcher = self->_overrideContinuousExposeIdentifiersInSwitcher;
   if (overrideContinuousExposeIdentifiersInSwitcher)
   {
-    v3 = overrideContinuousExposeIdentifiersInSwitcher;
+    continuousExposeIdentifiersInSwitcher = overrideContinuousExposeIdentifiersInSwitcher;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SBOverrideContinuousExposeIdentifiersSwitcherModifier;
-    v3 = [(SBOverrideContinuousExposeIdentifiersSwitcherModifier *)&v5 continuousExposeIdentifiersInSwitcher];
+    continuousExposeIdentifiersInSwitcher = [(SBOverrideContinuousExposeIdentifiersSwitcherModifier *)&v5 continuousExposeIdentifiersInSwitcher];
   }
 
-  return v3;
+  return continuousExposeIdentifiersInSwitcher;
 }
 
 - (id)continuousExposeIdentifiersInStrip
@@ -91,17 +91,17 @@ LABEL_7:
   overrideContinuousExposeIdentifiersInStrip = self->_overrideContinuousExposeIdentifiersInStrip;
   if (overrideContinuousExposeIdentifiersInStrip)
   {
-    v3 = overrideContinuousExposeIdentifiersInStrip;
+    continuousExposeIdentifiersInStrip = overrideContinuousExposeIdentifiersInStrip;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SBOverrideContinuousExposeIdentifiersSwitcherModifier;
-    v3 = [(SBOverrideContinuousExposeIdentifiersSwitcherModifier *)&v5 continuousExposeIdentifiersInStrip];
+    continuousExposeIdentifiersInStrip = [(SBOverrideContinuousExposeIdentifiersSwitcherModifier *)&v5 continuousExposeIdentifiersInStrip];
   }
 
-  return v3;
+  return continuousExposeIdentifiersInStrip;
 }
 
 @end

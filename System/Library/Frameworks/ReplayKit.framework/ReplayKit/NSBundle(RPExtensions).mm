@@ -27,8 +27,8 @@
 
 - (id)_rpLocalizedAppName
 {
-  v2 = [a1 objectForInfoDictionaryKey:*MEMORY[0x277CBEC40]];
-  if (v2 || ([a1 objectForInfoDictionaryKey:*MEMORY[0x277CBED50]], (v2 = objc_claimAutoreleasedReturnValue()) != 0))
+  v2 = [self objectForInfoDictionaryKey:*MEMORY[0x277CBEC40]];
+  if (v2 || ([self objectForInfoDictionaryKey:*MEMORY[0x277CBED50]], (v2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v3 = v2;
     v4 = v3;
@@ -36,7 +36,7 @@
 
   else
   {
-    v3 = [a1 objectForInfoDictionaryKey:*MEMORY[0x277CBED30]];
+    v3 = [self objectForInfoDictionaryKey:*MEMORY[0x277CBED30]];
     v4 = 0;
   }
 
@@ -51,9 +51,9 @@
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 localizedName];
-    v8 = v7;
-    if (v7 && ([v7 isEqualToString:&stru_284D763F8] & 1) == 0 && !objc_msgSend(v8, "isEqualToString:", @"$(PRODUCT_BUNDLE_IDENTIFIER)"))
+    localizedName = [v5 localizedName];
+    v8 = localizedName;
+    if (localizedName && ([localizedName isEqualToString:&stru_284D763F8] & 1) == 0 && !objc_msgSend(v8, "isEqualToString:", @"$(PRODUCT_BUNDLE_IDENTIFIER)"))
     {
       goto LABEL_8;
     }
@@ -64,10 +64,10 @@
     v8 = 0;
   }
 
-  v9 = [v4 _rpLocalizedAppName];
+  _rpLocalizedAppName = [v4 _rpLocalizedAppName];
 
-  v8 = v9;
-  if (!v9)
+  v8 = _rpLocalizedAppName;
+  if (!_rpLocalizedAppName)
   {
 LABEL_10:
     v10 = v3;
@@ -90,18 +90,18 @@ LABEL_11:
 + (id)_rpLocalizedStringFromFrameworkBundleWithKey:()RPExtensions
 {
   v4 = a3;
-  v5 = [MEMORY[0x277CCA8D8] _rpFrameworkBundle];
-  v6 = [a1 preferredLanguage];
-  v7 = [v5 localizedStringForKey:v4 value:0 table:@"Localizable" localization:v6];
+  _rpFrameworkBundle = [MEMORY[0x277CCA8D8] _rpFrameworkBundle];
+  preferredLanguage = [self preferredLanguage];
+  v7 = [_rpFrameworkBundle localizedStringForKey:v4 value:0 table:@"Localizable" localization:preferredLanguage];
 
   if (!v7)
   {
-    v8 = [a1 fallbackLanguage];
-    v7 = [v5 localizedStringForKey:v4 value:0 table:@"Localizable" localization:v8];
+    fallbackLanguage = [self fallbackLanguage];
+    v7 = [_rpFrameworkBundle localizedStringForKey:v4 value:0 table:@"Localizable" localization:fallbackLanguage];
 
     if (!v7)
     {
-      v7 = [v5 localizedStringForKey:v4 value:0 table:@"Localizable"];
+      v7 = [_rpFrameworkBundle localizedStringForKey:v4 value:0 table:@"Localizable"];
     }
   }
 
@@ -111,18 +111,18 @@ LABEL_11:
 + (id)_rpPluralLocalizedStringFromFrameworkBundleWithKey:()RPExtensions
 {
   v4 = a3;
-  v5 = [MEMORY[0x277CCA8D8] _rpFrameworkBundle];
-  v6 = [a1 preferredLanguage];
-  v7 = [v5 localizedStringForKey:v4 value:0 table:@"LocalizablePlural" localization:v6];
+  _rpFrameworkBundle = [MEMORY[0x277CCA8D8] _rpFrameworkBundle];
+  preferredLanguage = [self preferredLanguage];
+  v7 = [_rpFrameworkBundle localizedStringForKey:v4 value:0 table:@"LocalizablePlural" localization:preferredLanguage];
 
   if (!v7)
   {
-    v8 = [a1 fallbackLanguage];
-    v7 = [v5 localizedStringForKey:v4 value:0 table:@"LocalizablePlural" localization:v8];
+    fallbackLanguage = [self fallbackLanguage];
+    v7 = [_rpFrameworkBundle localizedStringForKey:v4 value:0 table:@"LocalizablePlural" localization:fallbackLanguage];
 
     if (!v7)
     {
-      v7 = [v5 localizedStringForKey:v4 value:0 table:@"LocalizablePlural"];
+      v7 = [_rpFrameworkBundle localizedStringForKey:v4 value:0 table:@"LocalizablePlural"];
     }
   }
 
@@ -131,25 +131,25 @@ LABEL_11:
 
 + (id)fallbackLanguage
 {
-  v0 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v1 = [v0 firstObject];
-  v2 = [v1 componentsSeparatedByString:@"-"];
-  v3 = [v2 firstObject];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
+  v2 = [firstObject componentsSeparatedByString:@"-"];
+  firstObject2 = [v2 firstObject];
 
-  return v3;
+  return firstObject2;
 }
 
 + (id)preferredLanguage
 {
-  v0 = [MEMORY[0x277CBEAF8] preferredLanguages];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
   v1 = MEMORY[0x277CCA8D8];
-  v2 = [objc_opt_class() _rpFrameworkBundle];
-  v3 = [v2 localizations];
-  v4 = [v1 preferredLocalizationsFromArray:v3 forPreferences:v0];
+  _rpFrameworkBundle = [objc_opt_class() _rpFrameworkBundle];
+  localizations = [_rpFrameworkBundle localizations];
+  v4 = [v1 preferredLocalizationsFromArray:localizations forPreferences:preferredLanguages];
 
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 + (id)baseIdentifier:()RPExtensions

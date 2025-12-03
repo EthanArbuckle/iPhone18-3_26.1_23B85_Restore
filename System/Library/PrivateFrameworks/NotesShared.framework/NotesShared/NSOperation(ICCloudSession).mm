@@ -7,11 +7,11 @@
 - (void)setIc_cloudSession:()ICCloudSession
 {
   value = a3;
-  v4 = [value identifier];
-  v5 = [v4 UUIDString];
-  [a1 ic_setCloudSessionIdentifier:v5];
+  identifier = [value identifier];
+  uUIDString = [identifier UUIDString];
+  [self ic_setCloudSessionIdentifier:uUIDString];
 
-  objc_setAssociatedObject(a1, &ICNSOperationCloudSession, value, 1);
+  objc_setAssociatedObject(self, &ICNSOperationCloudSession, value, 1);
 }
 
 @end

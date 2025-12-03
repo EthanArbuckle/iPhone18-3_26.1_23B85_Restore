@@ -10,17 +10,17 @@
   v9 = a3;
   v10 = a4;
   v11 = a6;
-  v12 = [v10 window];
+  window = [v10 window];
 
-  if (v12)
+  if (window)
   {
     v13 = objc_autoreleasePoolPush();
     [v10 bounds];
     v15 = v14;
     v17 = v16;
-    v18 = [v10 window];
-    v19 = [v18 screen];
-    [v19 scale];
+    window2 = [v10 window];
+    screen = [window2 screen];
+    [screen scale];
     v21 = v20;
 
     if (a5)

@@ -1,25 +1,25 @@
 @interface UserNotification
-- (UserNotification)initWithType:(int)a3 device:(id)a4 bundleID:(id)a5;
+- (UserNotification)initWithType:(int)type device:(id)device bundleID:(id)d;
 - (void)dealloc;
-- (void)setNotification:(__CFUserNotification *)a3;
-- (void)setRunLoopSource:(__CFRunLoopSource *)a3;
+- (void)setNotification:(__CFUserNotification *)notification;
+- (void)setRunLoopSource:(__CFRunLoopSource *)source;
 @end
 
 @implementation UserNotification
 
-- (UserNotification)initWithType:(int)a3 device:(id)a4 bundleID:(id)a5
+- (UserNotification)initWithType:(int)type device:(id)device bundleID:(id)d
 {
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = UserNotification;
   v11 = [(UserNotification *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_type = a3;
-    objc_storeStrong(&v11->_device, a4);
-    objc_storeStrong(&v12->_bundleID, a5);
+    v11->_type = type;
+    objc_storeStrong(&v11->_device, device);
+    objc_storeStrong(&v12->_bundleID, d);
     v12->_notification = 0;
     v12->_runLoopSource = 0;
   }
@@ -48,12 +48,12 @@
   [(UserNotification *)&v5 dealloc];
 }
 
-- (void)setNotification:(__CFUserNotification *)a3
+- (void)setNotification:(__CFUserNotification *)notification
 {
   notification = self->_notification;
-  if (a3)
+  if (notification)
   {
-    v5 = CFRetain(a3);
+    v5 = CFRetain(notification);
   }
 
   else
@@ -70,12 +70,12 @@
   }
 }
 
-- (void)setRunLoopSource:(__CFRunLoopSource *)a3
+- (void)setRunLoopSource:(__CFRunLoopSource *)source
 {
   runLoopSource = self->_runLoopSource;
-  if (a3)
+  if (source)
   {
-    v6 = CFRetain(a3);
+    v6 = CFRetain(source);
   }
 
   else
@@ -91,11 +91,11 @@
     CFRelease(runLoopSource);
   }
 
-  if (a3)
+  if (source)
   {
     v8 = CFRunLoopGetMain();
 
-    CFRunLoopAddSource(v8, a3, kCFRunLoopDefaultMode);
+    CFRunLoopAddSource(v8, source, kCFRunLoopDefaultMode);
   }
 }
 

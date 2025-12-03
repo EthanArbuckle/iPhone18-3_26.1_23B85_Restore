@@ -1,12 +1,12 @@
 @interface MTPromiseCompletionBlocks
 - (MTPromiseCompletionBlocks)init;
-- (void)addCompletionBlock:(id)a3;
-- (void)addErrorBlock:(id)a3;
-- (void)addSuccessBlock:(id)a3;
-- (void)callCompletionBlock:(id)a3 withPromiseResult:(id)a4;
-- (void)callErrorBlock:(id)a3 withPromiseResult:(id)a4;
-- (void)callSuccessBlock:(id)a3 withPromiseResult:(id)a4;
-- (void)flushCompletionBlocksWithPromiseResult:(id)a3;
+- (void)addCompletionBlock:(id)block;
+- (void)addErrorBlock:(id)block;
+- (void)addSuccessBlock:(id)block;
+- (void)callCompletionBlock:(id)block withPromiseResult:(id)result;
+- (void)callErrorBlock:(id)block withPromiseResult:(id)result;
+- (void)callSuccessBlock:(id)block withPromiseResult:(id)result;
+- (void)flushCompletionBlocksWithPromiseResult:(id)result;
 @end
 
 @implementation MTPromiseCompletionBlocks
@@ -26,27 +26,27 @@
   return v2;
 }
 
-- (void)addCompletionBlock:(id)a3
+- (void)addCompletionBlock:(id)block
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  completionBlocks = v4->_completionBlocks;
-  v6 = [v7 copy];
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  completionBlocks = selfCopy->_completionBlocks;
+  v6 = [blockCopy copy];
   [(NSMutableArray *)completionBlocks addObject:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addErrorBlock:(id)a3
+- (void)addErrorBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__MTPromiseCompletionBlocks_addErrorBlock___block_invoke;
   v6[3] = &unk_2798CD598;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MTPromiseCompletionBlocks *)self addCompletionBlock:v6];
 }
 
@@ -60,15 +60,15 @@ uint64_t __43__MTPromiseCompletionBlocks_addErrorBlock___block_invoke(uint64_t r
   return result;
 }
 
-- (void)addSuccessBlock:(id)a3
+- (void)addSuccessBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__MTPromiseCompletionBlocks_addSuccessBlock___block_invoke;
   v6[3] = &unk_2798CD598;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MTPromiseCompletionBlocks *)self addCompletionBlock:v6];
 }
 
@@ -82,26 +82,26 @@ uint64_t __45__MTPromiseCompletionBlocks_addSuccessBlock___block_invoke(uint64_t
   return result;
 }
 
-- (void)callCompletionBlock:(id)a3 withPromiseResult:(id)a4
+- (void)callCompletionBlock:(id)block withPromiseResult:(id)result
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = [v5 result];
-  v7 = [v5 error];
+  resultCopy = result;
+  blockCopy = block;
+  result = [resultCopy result];
+  error = [resultCopy error];
 
-  (*(a3 + 2))(v6, v8, v7);
+  (*(block + 2))(blockCopy, result, error);
 }
 
-- (void)callErrorBlock:(id)a3 withPromiseResult:(id)a4
+- (void)callErrorBlock:(id)block withPromiseResult:(id)result
 {
-  v6 = a3;
+  blockCopy = block;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__MTPromiseCompletionBlocks_callErrorBlock_withPromiseResult___block_invoke;
   v8[3] = &unk_2798CD598;
-  v9 = v6;
-  v7 = v6;
-  [(MTPromiseCompletionBlocks *)self callCompletionBlock:v8 withPromiseResult:a4];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [(MTPromiseCompletionBlocks *)self callCompletionBlock:v8 withPromiseResult:result];
 }
 
 uint64_t __62__MTPromiseCompletionBlocks_callErrorBlock_withPromiseResult___block_invoke(uint64_t result, uint64_t a2, uint64_t a3)
@@ -114,16 +114,16 @@ uint64_t __62__MTPromiseCompletionBlocks_callErrorBlock_withPromiseResult___bloc
   return result;
 }
 
-- (void)callSuccessBlock:(id)a3 withPromiseResult:(id)a4
+- (void)callSuccessBlock:(id)block withPromiseResult:(id)result
 {
-  v6 = a3;
+  blockCopy = block;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__MTPromiseCompletionBlocks_callSuccessBlock_withPromiseResult___block_invoke;
   v8[3] = &unk_2798CD598;
-  v9 = v6;
-  v7 = v6;
-  [(MTPromiseCompletionBlocks *)self callCompletionBlock:v8 withPromiseResult:a4];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [(MTPromiseCompletionBlocks *)self callCompletionBlock:v8 withPromiseResult:result];
 }
 
 uint64_t __64__MTPromiseCompletionBlocks_callSuccessBlock_withPromiseResult___block_invoke(uint64_t result, uint64_t a2)
@@ -136,15 +136,15 @@ uint64_t __64__MTPromiseCompletionBlocks_callSuccessBlock_withPromiseResult___bl
   return result;
 }
 
-- (void)flushCompletionBlocksWithPromiseResult:(id)a3
+- (void)flushCompletionBlocksWithPromiseResult:(id)result
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableArray *)v5->_completionBlocks copy];
-  [(NSMutableArray *)v5->_completionBlocks removeAllObjects];
-  objc_sync_exit(v5);
+  resultCopy = result;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableArray *)selfCopy->_completionBlocks copy];
+  [(NSMutableArray *)selfCopy->_completionBlocks removeAllObjects];
+  objc_sync_exit(selfCopy);
 
   v17 = 0u;
   v18 = 0u;
@@ -166,9 +166,9 @@ uint64_t __64__MTPromiseCompletionBlocks_callSuccessBlock_withPromiseResult___bl
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
-        v12 = [v4 result];
-        v13 = [v4 error];
-        (*(v11 + 16))(v11, v12, v13);
+        result = [resultCopy result];
+        error = [resultCopy error];
+        (*(v11 + 16))(v11, result, error);
 
         ++v10;
       }

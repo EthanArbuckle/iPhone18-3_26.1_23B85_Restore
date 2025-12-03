@@ -1,30 +1,30 @@
 @interface SBSearchGesture
 - (BOOL)_isShowingSearch;
-- (BOOL)searchScrollViewShouldRecognize:(id)a3;
-- (CGPoint)locationInView:(id)a3;
-- (SBSearchGesture)initWithSearchPresenter:(id)a3;
+- (BOOL)searchScrollViewShouldRecognize:(id)recognize;
+- (CGPoint)locationInView:(id)view;
+- (SBSearchGesture)initWithSearchPresenter:(id)presenter;
 - (SBSearchGestureDelegate)delegate;
 - (double)_maxGestureOffset;
 - (double)_progressThreshold;
 - (double)_startingGestureOffset;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)_notifyThaWeStartedShowingOrHiding;
-- (void)_notifyThatGestureEndedWithShowingIfNeeded:(BOOL)a3;
+- (void)_notifyThatGestureEndedWithShowingIfNeeded:(BOOL)needed;
 - (void)_updateForFinalContentOffset;
 - (void)_updateForScrollingEnded;
 - (void)_updateScrollingEnabled;
-- (void)addObserver:(id)a3;
-- (void)resetAnimated:(BOOL)a3;
-- (void)revealAnimated:(BOOL)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setDisabled:(BOOL)a3 forReason:(id)a4;
-- (void)setTargetView:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)resetAnimated:(BOOL)animated;
+- (void)revealAnimated:(BOOL)animated;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setDisabled:(BOOL)disabled forReason:(id)reason;
+- (void)setTargetView:(id)view;
 - (void)updateForRotation;
 @end
 
@@ -54,8 +54,8 @@
   [(SBSearchScrollView *)self->_scrollView contentOffset];
   v4 = v3;
   v6 = v5;
-  v7 = [(SBSearchScrollView *)self->_scrollView superview];
-  [v7 bounds];
+  superview = [(SBSearchScrollView *)self->_scrollView superview];
+  [superview bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -89,24 +89,24 @@
   [(SBSearchScrollView *)scrollView setScrollEnabled:v3];
 }
 
-- (SBSearchGesture)initWithSearchPresenter:(id)a3
+- (SBSearchGesture)initWithSearchPresenter:(id)presenter
 {
-  v5 = a3;
+  presenterCopy = presenter;
   v17.receiver = self;
   v17.super_class = SBSearchGesture;
   v6 = [(SBSearchGesture *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_searchPresenter, a3);
-    v7->_suppressObserverCallbacks = v5 != 0;
+    objc_storeStrong(&v6->_searchPresenter, presenter);
+    v7->_suppressObserverCallbacks = presenterCopy != 0;
     v8 = [SBSearchScrollView alloc];
     v9 = [(SBSearchScrollView *)v8 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     scrollView = v7->_scrollView;
     v7->_scrollView = v9;
 
     [(SBSearchScrollView *)v7->_scrollView setBounces:1];
-    [(SBSearchScrollView *)v7->_scrollView setAlwaysBounceVertical:v5 != 0];
+    [(SBSearchScrollView *)v7->_scrollView setAlwaysBounceVertical:presenterCopy != 0];
     [(SBSearchScrollView *)v7->_scrollView setDelegate:v7];
     [(SBSearchScrollView *)v7->_scrollView setShowsVerticalScrollIndicator:0];
     [(SBSearchScrollView *)v7->_scrollView setHidden:1];
@@ -115,13 +115,13 @@
     [(SBSearchGesture *)v7 _startingGestureOffset];
     [(SBSearchScrollView *)v11 setContentOffset:0.0, v12];
     [(SBSearchScrollView *)v7->_scrollView setContentInsetAdjustmentBehavior:2];
-    v13 = [(SBSearchScrollView *)v7->_scrollView panGestureRecognizer];
-    [v13 _setHysteresis:18.5];
+    panGestureRecognizer = [(SBSearchScrollView *)v7->_scrollView panGestureRecognizer];
+    [panGestureRecognizer _setHysteresis:18.5];
 
     [(SBSearchScrollView *)v7->_scrollView setSearchDelegate:v7];
-    v14 = [(SBSearchScrollView *)v7->_scrollView panGestureRecognizer];
+    panGestureRecognizer2 = [(SBSearchScrollView *)v7->_scrollView panGestureRecognizer];
     panGestureRecognizer = v7->_panGestureRecognizer;
-    v7->_panGestureRecognizer = v14;
+    v7->_panGestureRecognizer = panGestureRecognizer2;
 
     v7->_lastOffset = 0.0;
   }
@@ -129,20 +129,20 @@
   return v7;
 }
 
-- (void)setTargetView:(id)a3
+- (void)setTargetView:(id)view
 {
-  v5 = a3;
-  if (self->_targetView != v5)
+  viewCopy = view;
+  if (self->_targetView != viewCopy)
   {
     self->_suppressObserverCallbacks = 1;
-    v13 = v5;
-    v6 = [(SBSearchScrollView *)self->_scrollView panGestureRecognizer];
+    v13 = viewCopy;
+    panGestureRecognizer = [(SBSearchScrollView *)self->_scrollView panGestureRecognizer];
     panGestureRecognizer = self->_panGestureRecognizer;
-    self->_panGestureRecognizer = v6;
-    v8 = v6;
+    self->_panGestureRecognizer = panGestureRecognizer;
+    v8 = panGestureRecognizer;
 
     [(UIView *)self->_targetView removeGestureRecognizer:v8];
-    objc_storeStrong(&self->_targetView, a3);
+    objc_storeStrong(&self->_targetView, view);
     [(SBSearchScrollView *)self->_scrollView contentOffset];
     v10 = v9;
     v12 = v11;
@@ -152,44 +152,44 @@
     [(SBSearchGesture *)self updateForRotation];
     [(UIView *)self->_targetView addGestureRecognizer:v8];
 
-    v5 = v13;
+    viewCopy = v13;
     self->_suppressObserverCallbacks = self->_searchPresenter != 0;
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)revealAnimated:(BOOL)a3
+- (void)revealAnimated:(BOOL)animated
 {
   if (!self->_searchPresenter)
   {
-    v3 = a3;
-    if (!self->_animatingResetOrReveal || !a3)
+    animatedCopy = animated;
+    if (!self->_animatingResetOrReveal || !animated)
     {
       [(SBSearchScrollView *)self->_scrollView contentOffset];
       if (v6 != 0.0 || v5 != 0.0)
       {
         [(SBSearchGesture *)self setDisabled:1 forReason:@"revealAnimated"];
-        self->_animatingResetOrReveal = v3;
+        self->_animatingResetOrReveal = animatedCopy;
         [(SBSearchGesture *)self _notifyThaWeStartedShowingOrHiding];
-        [(SBSearchScrollView *)self->_scrollView setContentOffset:v3 animated:0.0, 0.0];
-        if (!v3)
+        [(SBSearchScrollView *)self->_scrollView setContentOffset:animatedCopy animated:0.0, 0.0];
+        if (!animatedCopy)
         {
 
           [(SBSearchGesture *)self _updateForFinalContentOffset];
@@ -199,12 +199,12 @@
   }
 }
 
-- (void)resetAnimated:(BOOL)a3
+- (void)resetAnimated:(BOOL)animated
 {
   v21 = *MEMORY[0x1E69E9840];
   if (!self->_searchPresenter)
   {
-    v3 = a3;
+    animatedCopy = animated;
     self->_isDismissing = 1;
     if (!self->_suppressObserverCallbacks)
     {
@@ -231,7 +231,7 @@
             v10 = *(*(&v16 + 1) + 8 * v9);
             if (objc_opt_respondsToSelector())
             {
-              [v10 searchGesture:self resetAnimated:v3];
+              [v10 searchGesture:self resetAnimated:animatedCopy];
             }
 
             ++v9;
@@ -245,7 +245,7 @@
       }
     }
 
-    if (!self->_animatingResetOrReveal || !v3)
+    if (!self->_animatingResetOrReveal || !animatedCopy)
     {
       [(SBSearchGesture *)self _maxGestureOffset];
       v12 = v11;
@@ -257,9 +257,9 @@
 
       else
       {
-        self->_animatingResetOrReveal = v3;
-        [(SBSearchScrollView *)self->_scrollView setContentOffset:v3 animated:0.0, v12];
-        if (!v3)
+        self->_animatingResetOrReveal = animatedCopy;
+        [(SBSearchScrollView *)self->_scrollView setContentOffset:animatedCopy animated:0.0, v12];
+        if (!animatedCopy)
         {
           [(SBSearchGesture *)self _updateForScrollingEnded];
         }
@@ -268,16 +268,16 @@
   }
 }
 
-- (void)setDisabled:(BOOL)a3 forReason:(id)a4
+- (void)setDisabled:(BOOL)disabled forReason:(id)reason
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  disabledCopy = disabled;
+  reasonCopy = reason;
+  v7 = reasonCopy;
+  if (reasonCopy)
   {
     disabledReasons = self->_disabledReasons;
     v11 = v7;
-    if (v4)
+    if (disabledCopy)
     {
       if (!disabledReasons)
       {
@@ -297,19 +297,19 @@
       [(NSMutableSet *)disabledReasons removeObject:v7];
     }
 
-    v6 = [(SBSearchGesture *)self _updateScrollingEnabled];
+    reasonCopy = [(SBSearchGesture *)self _updateScrollingEnabled];
     v7 = v11;
   }
 
-  MEMORY[0x1EEE66BB8](v6, v7);
+  MEMORY[0x1EEE66BB8](reasonCopy, v7);
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
   scrollView = self->_scrollView;
-  v4 = a3;
-  v5 = [(SBSearchScrollView *)scrollView panGestureRecognizer];
-  [v5 locationInView:v4];
+  viewCopy = view;
+  panGestureRecognizer = [(SBSearchScrollView *)scrollView panGestureRecognizer];
+  [panGestureRecognizer locationInView:viewCopy];
   v7 = v6;
   v9 = v8;
 
@@ -325,7 +325,7 @@
   v15 = *MEMORY[0x1E69E9840];
   if (!self->_suppressObserverCallbacks)
   {
-    v3 = [(SBSearchGesture *)self _isShowingSearch];
+    _isShowingSearch = [(SBSearchGesture *)self _isShowingSearch];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -349,7 +349,7 @@
           v9 = *(*(&v10 + 1) + 8 * v8);
           if (objc_opt_respondsToSelector())
           {
-            [v9 searchGesture:self startedShowing:!v3];
+            [v9 searchGesture:self startedShowing:!_isShowingSearch];
           }
 
           ++v8;
@@ -364,7 +364,7 @@
   }
 }
 
-- (void)_notifyThatGestureEndedWithShowingIfNeeded:(BOOL)a3
+- (void)_notifyThatGestureEndedWithShowingIfNeeded:(BOOL)needed
 {
   v16 = *MEMORY[0x1E69E9840];
   if (self->_isDraggingAccordingToScrollView)
@@ -372,7 +372,7 @@
     self->_isDraggingAccordingToScrollView = 0;
     if (!self->_suppressObserverCallbacks)
     {
-      v4 = a3;
+      neededCopy = needed;
       v13 = 0u;
       v14 = 0u;
       v11 = 0u;
@@ -396,7 +396,7 @@
             v10 = *(*(&v11 + 1) + 8 * v9);
             if (objc_opt_respondsToSelector())
             {
-              [v10 searchGesture:self endedGesture:v4];
+              [v10 searchGesture:self endedGesture:neededCopy];
             }
 
             ++v9;
@@ -429,11 +429,11 @@
     {
       if (self->_isDismissing)
       {
-        v5 = [(SBSearchScrollView *)self->_scrollView panGestureRecognizer];
-        [v5 setEnabled:0];
+        panGestureRecognizer = [(SBSearchScrollView *)self->_scrollView panGestureRecognizer];
+        [panGestureRecognizer setEnabled:0];
 
-        v6 = [(SBSearchScrollView *)self->_scrollView panGestureRecognizer];
-        [v6 setEnabled:1];
+        panGestureRecognizer2 = [(SBSearchScrollView *)self->_scrollView panGestureRecognizer];
+        [panGestureRecognizer2 setEnabled:1];
 
         v7 = self->_scrollView;
         [(SBSearchGesture *)self _maxGestureOffset];
@@ -467,9 +467,9 @@
         [(SBSearchGesture *)self _updateForFinalContentOffset];
       }
 
-      v18 = [(SBSearchGesture *)self isShowingSearch];
+      isShowingSearch = [(SBSearchGesture *)self isShowingSearch];
 
-      [(SBSearchGesture *)self _notifyThatGestureEndedWithShowingIfNeeded:v18];
+      [(SBSearchGesture *)self _notifyThatGestureEndedWithShowingIfNeeded:isShowingSearch];
     }
   }
 }
@@ -479,10 +479,10 @@
   v16 = *MEMORY[0x1E69E9840];
   [(SBSearchGesture *)self setDisabled:0 forReason:@"revealAnimated"];
   self->_animatingResetOrReveal = 0;
-  v3 = [(SBSearchGesture *)self _isShowingSearch];
+  _isShowingSearch = [(SBSearchGesture *)self _isShowingSearch];
   if (!self->_suppressObserverCallbacks)
   {
-    v4 = v3;
+    v4 = _isShowingSearch;
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -544,25 +544,25 @@
   return v3;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   self->_isDraggingAccordingToScrollView = 1;
   scrollView = self->_scrollView;
-  v5 = a3;
+  draggingCopy = dragging;
   [(SBSearchScrollView *)scrollView setBounces:1];
   [(SBSearchGesture *)self _notifyThaWeStartedShowingOrHiding];
-  [(SBHSearchPresenting *)self->_searchPresenter scrollViewWillBeginDragging:v5];
+  [(SBHSearchPresenting *)self->_searchPresenter scrollViewWillBeginDragging:draggingCopy];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  scrollCopy = scroll;
   [(SBSearchScrollView *)self->_scrollView contentOffset];
   v6 = v5;
   if ((SBFFloatEqualsFloat() & 1) == 0)
   {
-    [(SBHSearchPresenting *)self->_searchPresenter scrollViewDidScroll:v4];
+    [(SBHSearchPresenting *)self->_searchPresenter scrollViewDidScroll:scrollCopy];
     [(SBSearchGesture *)self _startingGestureOffset];
     v8 = v7;
     [(SBSearchGesture *)self _maxGestureOffset];
@@ -605,23 +605,23 @@
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v19 = v9;
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  v19 = draggingCopy;
   if (self->_searchPresenter)
   {
-    [v9 contentOffset];
-    a5->x = v10;
-    a5->y = v11;
+    [draggingCopy contentOffset];
+    offset->x = v10;
+    offset->y = v11;
     [(SBHSearchPresenting *)self->_searchPresenter scrollViewWillEndDragging:v19 withVelocity:x, y];
   }
 
   else
   {
-    v12 = a5->y;
+    v12 = offset->y;
     [(SBSearchGesture *)self _maxGestureOffset];
     v14 = v13;
     [(SBSearchGesture *)self _progressThreshold];
@@ -632,22 +632,22 @@
       v17 = v14;
     }
 
-    a5->y = v17;
+    offset->y = v17;
     v18 = fabs(v14) < 2.22044605e-16 || v16;
     [(SBSearchScrollView *)self->_scrollView setBounces:v18];
     [(SBSearchGesture *)self _notifyThatGestureEndedWithShowingIfNeeded:v18];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(SBSearchGesture *)self _updateForScrollingEnded];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   if (([(SBSearchScrollView *)self->_scrollView isTracking]& 1) == 0 && !self->_animatingResetOrReveal)
   {
@@ -656,7 +656,7 @@
   }
 }
 
-- (BOOL)searchScrollViewShouldRecognize:(id)a3
+- (BOOL)searchScrollViewShouldRecognize:(id)recognize
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = WeakRetained;
@@ -673,15 +673,15 @@
   return v6;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSearchGesture *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSearchGesture *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x1E698E680] builderWithObject:self];
   v5 = [v4 appendBool:self->_isDismissing withName:@"isDismissing"];
@@ -694,10 +694,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBSearchGesture *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSearchGesture *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (SBSearchGestureDelegate)delegate

@@ -1,12 +1,12 @@
 @interface DOCViewController
 - (_TtC26DocumentManagerExecutables17DOCViewController)init;
-- (_TtC26DocumentManagerExecutables17DOCViewController)initWithCoder:(id)a3;
-- (_TtC26DocumentManagerExecutables17DOCViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC26DocumentManagerExecutables17DOCViewController)initWithCoder:(id)coder;
+- (_TtC26DocumentManagerExecutables17DOCViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation DOCViewController
 
-- (_TtC26DocumentManagerExecutables17DOCViewController)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables17DOCViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC26DocumentManagerExecutables17DOCViewController_appearStateTracker;
   type metadata accessor for DOCAppearStateTracker();
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (_TtC26DocumentManagerExecutables17DOCViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26DocumentManagerExecutables17DOCViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables17DOCViewController_appearStateTracker;
   type metadata accessor for DOCAppearStateTracker();

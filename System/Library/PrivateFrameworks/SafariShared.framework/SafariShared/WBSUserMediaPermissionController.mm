@@ -1,53 +1,53 @@
 @interface WBSUserMediaPermissionController
-+ (id)localizedStringForPerSitePreferenceValue:(id)a3;
++ (id)localizedStringForPerSitePreferenceValue:(id)value;
 + (id)sharedController;
-- (BOOL)_isPreferenceValid:(id)a3;
-- (BOOL)_removePreferenceValuesForDomains:(id)a3 fromPreference:(id)a4;
-- (BOOL)_setValue:(id)a3 ofPreference:(id)a4 forDomain:(id)a5;
-- (WBSUserMediaPermissionController)initWithUserMediaPermissionsFileURL:(id)a3 perSitePreferencesStore:(id)a4;
+- (BOOL)_isPreferenceValid:(id)valid;
+- (BOOL)_removePreferenceValuesForDomains:(id)domains fromPreference:(id)preference;
+- (BOOL)_setValue:(id)value ofPreference:(id)preference forDomain:(id)domain;
+- (WBSUserMediaPermissionController)initWithUserMediaPermissionsFileURL:(id)l perSitePreferencesStore:(id)store;
 - (id)_dictionaryRepresentation;
 - (id)_init;
-- (id)_policyForOrigin:(id)a3 topLevelOrigin:(id)a4;
-- (id)_saltForOrigin:(id)a3 topLevelOrigin:(id)a4 frameIdentifier:(unint64_t)a5;
-- (id)_saltWithPolicyEntry:(id)a3 computedPermission:(unint64_t)a4 frameIdentifier:(unint64_t)a5;
-- (id)_standardizedURLForDomain:(id)a3;
-- (id)_validPolicyForDomainWithOrigin:(id)a3 topLevelOrigin:(id)a4;
-- (id)_validPolicyForOrigin:(id)a3 topLevelOrigin:(id)a4;
-- (id)localizedStringForValue:(id)a3 inPreference:(id)a4;
-- (id)preferenceNameForPreference:(id)a3;
+- (id)_policyForOrigin:(id)origin topLevelOrigin:(id)levelOrigin;
+- (id)_saltForOrigin:(id)origin topLevelOrigin:(id)levelOrigin frameIdentifier:(unint64_t)identifier;
+- (id)_saltWithPolicyEntry:(id)entry computedPermission:(unint64_t)permission frameIdentifier:(unint64_t)identifier;
+- (id)_standardizedURLForDomain:(id)domain;
+- (id)_validPolicyForDomainWithOrigin:(id)origin topLevelOrigin:(id)levelOrigin;
+- (id)_validPolicyForOrigin:(id)origin topLevelOrigin:(id)levelOrigin;
+- (id)localizedStringForValue:(id)value inPreference:(id)preference;
+- (id)preferenceNameForPreference:(id)preference;
 - (id)preferences;
-- (id)saltForOrigin:(id)a3 topLevelOrigin:(id)a4 frameIdentifier:(unint64_t)a5;
-- (id)valuesForPreference:(id)a3;
-- (int64_t)_mediaCaptureSettingForMediaCaptureType:(int64_t)a3 userMediaPermission:(unint64_t)a4;
-- (unint64_t)_permissionByApplyingDefaultsForMissingValuesInPermission:(unint64_t)a3;
-- (unint64_t)_permissionByRemovingDefaultPermissionFlagsInPermission:(unint64_t)a3;
-- (unint64_t)_permissionForOrigin:(id)a3 topLevelOrigin:(id)a4;
-- (unint64_t)_permissionMaskForMediaCaptureType:(int64_t)a3;
-- (unint64_t)_userMediaPermissionForMediaCaptureType:(int64_t)a3 mediaCaptureSetting:(int64_t)a4;
-- (unint64_t)permissionForDomain:(id)a3;
-- (unint64_t)permissionForNonHTTPSOriginFromPermission:(unint64_t)a3;
-- (unint64_t)permissionForOrigin:(id)a3 topLevelOrigin:(id)a4;
-- (void)_cachedSettingsDidChangeAndWriteImmediately:(BOOL)a3 completionHandler:(id)a4;
-- (void)_dispatchAsyncOnInternalQueue:(id)a3;
-- (void)_dispatchSyncOnInternalQueue:(id)a3;
-- (void)_invalidateAllPermissionsForDomain:(id)a3;
-- (void)_invalidateCachedSettingsForOriginHash:(id)a3;
+- (id)saltForOrigin:(id)origin topLevelOrigin:(id)levelOrigin frameIdentifier:(unint64_t)identifier;
+- (id)valuesForPreference:(id)preference;
+- (int64_t)_mediaCaptureSettingForMediaCaptureType:(int64_t)type userMediaPermission:(unint64_t)permission;
+- (unint64_t)_permissionByApplyingDefaultsForMissingValuesInPermission:(unint64_t)permission;
+- (unint64_t)_permissionByRemovingDefaultPermissionFlagsInPermission:(unint64_t)permission;
+- (unint64_t)_permissionForOrigin:(id)origin topLevelOrigin:(id)levelOrigin;
+- (unint64_t)_permissionMaskForMediaCaptureType:(int64_t)type;
+- (unint64_t)_userMediaPermissionForMediaCaptureType:(int64_t)type mediaCaptureSetting:(int64_t)setting;
+- (unint64_t)permissionForDomain:(id)domain;
+- (unint64_t)permissionForNonHTTPSOriginFromPermission:(unint64_t)permission;
+- (unint64_t)permissionForOrigin:(id)origin topLevelOrigin:(id)levelOrigin;
+- (void)_cachedSettingsDidChangeAndWriteImmediately:(BOOL)immediately completionHandler:(id)handler;
+- (void)_dispatchAsyncOnInternalQueue:(id)queue;
+- (void)_dispatchSyncOnInternalQueue:(id)queue;
+- (void)_invalidateAllPermissionsForDomain:(id)domain;
+- (void)_invalidateCachedSettingsForOriginHash:(id)hash;
 - (void)_loadSavedPermissions;
-- (void)_setPermission:(unint64_t)a3 expirationPolicy:(unint64_t)a4 forOrigin:(id)a5 topLevelOrigin:(id)a6;
-- (void)checkUserMediaPermissionForURL:(id)a3 mainFrameURL:(id)a4 frameIdentifier:(unint64_t)a5 decisionHandler:(id)a6;
-- (void)didCommitLoadForFrameWithIdentifier:(unint64_t)a3;
-- (void)getAllDomainsConfiguredForPreference:(id)a3 usingBlock:(id)a4;
-- (void)getPermissionForOrigin:(id)a3 topLevelOrigin:(id)a4 completionHandler:(id)a5;
-- (void)getValueOfPreference:(id)a3 forDomain:(id)a4 withTimeout:(id)a5 usingBlock:(id)a6;
+- (void)_setPermission:(unint64_t)permission expirationPolicy:(unint64_t)policy forOrigin:(id)origin topLevelOrigin:(id)levelOrigin;
+- (void)checkUserMediaPermissionForURL:(id)l mainFrameURL:(id)rL frameIdentifier:(unint64_t)identifier decisionHandler:(id)handler;
+- (void)didCommitLoadForFrameWithIdentifier:(unint64_t)identifier;
+- (void)getAllDomainsConfiguredForPreference:(id)preference usingBlock:(id)block;
+- (void)getPermissionForOrigin:(id)origin topLevelOrigin:(id)levelOrigin completionHandler:(id)handler;
+- (void)getValueOfPreference:(id)preference forDomain:(id)domain withTimeout:(id)timeout usingBlock:(id)block;
 - (void)reloadPreferences;
-- (void)removeAllOriginsAddedAfterDate:(id)a3;
-- (void)removeAllPermissionsWithCompletionHandler:(id)a3;
-- (void)removePreferenceValuesForDomains:(id)a3 fromPreference:(id)a4 completionHandler:(id)a5;
-- (void)resetOriginPermissionsWithCompletionHandler:(id)a3;
+- (void)removeAllOriginsAddedAfterDate:(id)date;
+- (void)removeAllPermissionsWithCompletionHandler:(id)handler;
+- (void)removePreferenceValuesForDomains:(id)domains fromPreference:(id)preference completionHandler:(id)handler;
+- (void)resetOriginPermissionsWithCompletionHandler:(id)handler;
 - (void)savePendingChangesBeforeTermination;
-- (void)savePendingChangesWithCompletionHandler:(id)a3;
-- (void)setPermission:(unint64_t)a3 expirationPolicy:(unint64_t)a4 forOrigin:(id)a5 topLevelOrigin:(id)a6;
-- (void)setValue:(id)a3 ofPreference:(id)a4 forDomain:(id)a5 completionHandler:(id)a6;
+- (void)savePendingChangesWithCompletionHandler:(id)handler;
+- (void)setPermission:(unint64_t)permission expirationPolicy:(unint64_t)policy forOrigin:(id)origin topLevelOrigin:(id)levelOrigin;
+- (void)setValue:(id)value ofPreference:(id)preference forDomain:(id)domain completionHandler:(id)handler;
 @end
 
 @implementation WBSUserMediaPermissionController
@@ -58,7 +58,7 @@
   block[1] = 3221225472;
   block[2] = __52__WBSUserMediaPermissionController_sharedController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[WBSUserMediaPermissionController sharedController]::onceToken != -1)
   {
     dispatch_once(&+[WBSUserMediaPermissionController sharedController]::onceToken, block);
@@ -76,10 +76,10 @@ void __52__WBSUserMediaPermissionController_sharedController__block_invoke(uint6
   +[WBSUserMediaPermissionController sharedController]::controller = v1;
 }
 
-- (WBSUserMediaPermissionController)initWithUserMediaPermissionsFileURL:(id)a3 perSitePreferencesStore:(id)a4
+- (WBSUserMediaPermissionController)initWithUserMediaPermissionsFileURL:(id)l perSitePreferencesStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  storeCopy = store;
   v25.receiver = self;
   v25.super_class = WBSUserMediaPermissionController;
   v9 = [(WBSUserMediaPermissionController *)&v25 init];
@@ -92,10 +92,10 @@ void __52__WBSUserMediaPermissionController_sharedController__block_invoke(uint6
 
     dispatch_suspend(*(v9 + 6));
     atomic_store(0, v9 + 7);
-    objc_storeStrong(v9 + 8, a3);
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(v9 + 8, l);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v14 = *(v9 + 4);
-    *(v9 + 4) = v13;
+    *(v9 + 4) = dictionary;
 
     v15 = *(v9 + 6);
     block[0] = MEMORY[0x1E69E9820];
@@ -106,7 +106,7 @@ void __52__WBSUserMediaPermissionController_sharedController__block_invoke(uint6
     v24 = v16;
     dispatch_async(v15, block);
     [v16 setDefaultsDelegate:v16];
-    objc_storeStrong(v16 + 9, a4);
+    objc_storeStrong(v16 + 9, store);
     v17 = [[WBSPerSitePreference alloc] initWithIdentifier:@"CameraPreference"];
     v18 = v16[10];
     v16[10] = v17;
@@ -123,9 +123,9 @@ void __52__WBSUserMediaPermissionController_sharedController__block_invoke(uint6
 
 - (id)_init
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 safari_settingsDirectoryURL];
-  v5 = [v4 URLByAppendingPathComponent:@"UserMediaPermissions.plist" isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  safari_settingsDirectoryURL = [defaultManager safari_settingsDirectoryURL];
+  v5 = [safari_settingsDirectoryURL URLByAppendingPathComponent:@"UserMediaPermissions.plist" isDirectory:0];
 
   v6 = +[WBSPerSitePreferencesSQLiteStore sharedStore];
   v7 = [(WBSUserMediaPermissionController *)self initWithUserMediaPermissionsFileURL:v5 perSitePreferencesStore:v6];
@@ -176,10 +176,10 @@ uint64_t __53__WBSUserMediaPermissionController_reloadPreferences__block_invoke(
   }
 }
 
-- (void)savePendingChangesWithCompletionHandler:(id)a3
+- (void)savePendingChangesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   v6 = atomic_load(&self->_savedStateLoadStatus);
   if (v6 && self->_userMediaPermissionsFileURL && self->_saveUserMediaPermissionsWriter)
   {
@@ -188,19 +188,19 @@ uint64_t __53__WBSUserMediaPermissionController_reloadPreferences__block_invoke(
     v7[2] = __76__WBSUserMediaPermissionController_savePendingChangesWithCompletionHandler___block_invoke;
     v7[3] = &unk_1E7FB6F08;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     [(WBSUserMediaPermissionController *)self _dispatchAsyncOnInternalQueue:v7];
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)_invalidateCachedSettingsForOriginHash:(id)a3
+- (void)_invalidateCachedSettingsForOriginHash:(id)hash
 {
-  v4 = [(NSMutableDictionary *)self->_cachedSettings objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_cachedSettings objectForKeyedSubscript:hash];
   if (v4)
   {
     [v4 setPersistentSalt:0];
@@ -209,10 +209,10 @@ uint64_t __53__WBSUserMediaPermissionController_reloadPreferences__block_invoke(
   }
 }
 
-- (unint64_t)permissionForOrigin:(id)a3 topLevelOrigin:(id)a4
+- (unint64_t)permissionForOrigin:(id)origin topLevelOrigin:(id)levelOrigin
 {
-  v6 = a3;
-  v7 = a4;
+  originCopy = origin;
+  levelOriginCopy = levelOrigin;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -222,11 +222,11 @@ uint64_t __53__WBSUserMediaPermissionController_reloadPreferences__block_invoke(
   v12[2] = __71__WBSUserMediaPermissionController_permissionForOrigin_topLevelOrigin___block_invoke;
   v12[3] = &unk_1E7FCB3B8;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = originCopy;
+  v14 = levelOriginCopy;
   v15 = &v16;
-  v8 = v7;
-  v9 = v6;
+  v8 = levelOriginCopy;
+  v9 = originCopy;
   [(WBSUserMediaPermissionController *)self _dispatchSyncOnInternalQueue:v12];
   v10 = v17[3];
 
@@ -241,26 +241,26 @@ uint64_t __71__WBSUserMediaPermissionController_permissionForOrigin_topLevelOrig
   return result;
 }
 
-- (void)getPermissionForOrigin:(id)a3 topLevelOrigin:(id)a4 completionHandler:(id)a5
+- (void)getPermissionForOrigin:(id)origin topLevelOrigin:(id)levelOrigin completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
+  originCopy = origin;
+  levelOriginCopy = levelOrigin;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
   v16[3] = __Block_byref_object_copy__38;
   v16[4] = __Block_byref_object_dispose__38;
-  v17 = MEMORY[0x1BFB13CE0](a5);
+  v17 = MEMORY[0x1BFB13CE0](handler);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __92__WBSUserMediaPermissionController_getPermissionForOrigin_topLevelOrigin_completionHandler___block_invoke;
   v12[3] = &unk_1E7FC9558;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
+  v13 = originCopy;
+  v14 = levelOriginCopy;
   v15 = v16;
-  v10 = v9;
-  v11 = v8;
+  v10 = levelOriginCopy;
+  v11 = originCopy;
   [(WBSUserMediaPermissionController *)self _dispatchAsyncOnInternalQueue:v12];
 
   _Block_object_dispose(v16, 8);
@@ -286,39 +286,39 @@ void __92__WBSUserMediaPermissionController_getPermissionForOrigin_topLevelOrigi
   *(v2 + 40) = 0;
 }
 
-- (unint64_t)_permissionForOrigin:(id)a3 topLevelOrigin:(id)a4
+- (unint64_t)_permissionForOrigin:(id)origin topLevelOrigin:(id)levelOrigin
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSUserMediaPermissionController *)self _validPolicyForDomainWithOrigin:v6 topLevelOrigin:v7];
-  v9 = [v8 permission];
+  originCopy = origin;
+  levelOriginCopy = levelOrigin;
+  v8 = [(WBSUserMediaPermissionController *)self _validPolicyForDomainWithOrigin:originCopy topLevelOrigin:levelOriginCopy];
+  permission = [v8 permission];
 
-  v10 = [(WBSUserMediaPermissionController *)self _permissionByApplyingDefaultsForMissingValuesInPermission:v9];
+  v10 = [(WBSUserMediaPermissionController *)self _permissionByApplyingDefaultsForMissingValuesInPermission:permission];
   return v10;
 }
 
-- (id)_validPolicyForDomainWithOrigin:(id)a3 topLevelOrigin:(id)a4
+- (id)_validPolicyForDomainWithOrigin:(id)origin topLevelOrigin:(id)levelOrigin
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSUserMediaPermissionController *)self _standardizedURLForDomain:v7];
+  originCopy = origin;
+  levelOriginCopy = levelOrigin;
+  v8 = [(WBSUserMediaPermissionController *)self _standardizedURLForDomain:levelOriginCopy];
   if (![v8 length] || ((-[WBSUserMediaPermissionController _validPolicyForOrigin:topLevelOrigin:](self, "_validPolicyForOrigin:topLevelOrigin:", v8, v8), v9 = objc_claimAutoreleasedReturnValue(), v10 = -[WBSUserMediaPermissionController _captureDevicesAreAllDefaultsGivenPermission:](self, "_captureDevicesAreAllDefaultsGivenPermission:", objc_msgSend(v9, "permission")), v11 = v10, !v10) ? (v12 = 0) : (v12 = v9), v12, v11))
   {
-    v9 = [(WBSUserMediaPermissionController *)self _validPolicyForOrigin:v6 topLevelOrigin:v7];
+    v9 = [(WBSUserMediaPermissionController *)self _validPolicyForOrigin:originCopy topLevelOrigin:levelOriginCopy];
   }
 
   return v9;
 }
 
-- (id)_validPolicyForOrigin:(id)a3 topLevelOrigin:(id)a4
+- (id)_validPolicyForOrigin:(id)origin topLevelOrigin:(id)levelOrigin
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSUserMediaPermissionController *)self _policyForOrigin:v6 topLevelOrigin:v7];
+  originCopy = origin;
+  levelOriginCopy = levelOrigin;
+  v8 = [(WBSUserMediaPermissionController *)self _policyForOrigin:originCopy topLevelOrigin:levelOriginCopy];
   v9 = v8;
   if (v8 && ([v8 isValid] & 1) == 0)
   {
-    v10 = originHash(v6, v7);
+    v10 = originHash(originCopy, levelOriginCopy);
     [(WBSUserMediaPermissionController *)self _invalidateCachedSettingsForOriginHash:v10];
 
     v9 = 0;
@@ -327,107 +327,107 @@ void __92__WBSUserMediaPermissionController_getPermissionForOrigin_topLevelOrigi
   return v9;
 }
 
-- (id)_policyForOrigin:(id)a3 topLevelOrigin:(id)a4
+- (id)_policyForOrigin:(id)origin topLevelOrigin:(id)levelOrigin
 {
   cachedSettings = self->_cachedSettings;
-  v5 = originHash(a3, a4);
+  v5 = originHash(origin, levelOrigin);
   v6 = [(NSMutableDictionary *)cachedSettings objectForKeyedSubscript:v5];
 
   return v6;
 }
 
-- (unint64_t)permissionForNonHTTPSOriginFromPermission:(unint64_t)a3
+- (unint64_t)permissionForNonHTTPSOriginFromPermission:(unint64_t)permission
 {
-  v3 = a3 & 0xFFFFFFFFFFFFFFFALL | 1;
-  if ((a3 & 4) == 0)
+  permissionCopy = permission & 0xFFFFFFFFFFFFFFFALL | 1;
+  if ((permission & 4) == 0)
   {
-    v3 = a3;
+    permissionCopy = permission;
   }
 
-  if ((v3 & 0x20) != 0)
+  if ((permissionCopy & 0x20) != 0)
   {
-    return v3 & 0xFFFFFFFFFFFFFFD3 | 8;
+    return permissionCopy & 0xFFFFFFFFFFFFFFD3 | 8;
   }
 
   else
   {
-    return v3;
+    return permissionCopy;
   }
 }
 
-- (void)setPermission:(unint64_t)a3 expirationPolicy:(unint64_t)a4 forOrigin:(id)a5 topLevelOrigin:(id)a6
+- (void)setPermission:(unint64_t)permission expirationPolicy:(unint64_t)policy forOrigin:(id)origin topLevelOrigin:(id)levelOrigin
 {
-  v10 = a5;
-  v11 = a6;
+  originCopy = origin;
+  levelOriginCopy = levelOrigin;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __92__WBSUserMediaPermissionController_setPermission_expirationPolicy_forOrigin_topLevelOrigin___block_invoke;
   v14[3] = &unk_1E7FC8190;
-  v17 = a3;
-  v18 = a4;
+  permissionCopy = permission;
+  policyCopy = policy;
   v14[4] = self;
-  v15 = v10;
-  v16 = v11;
-  v12 = v11;
-  v13 = v10;
+  v15 = originCopy;
+  v16 = levelOriginCopy;
+  v12 = levelOriginCopy;
+  v13 = originCopy;
   [(WBSUserMediaPermissionController *)self _dispatchAsyncOnInternalQueue:v14];
 }
 
-- (void)_setPermission:(unint64_t)a3 expirationPolicy:(unint64_t)a4 forOrigin:(id)a5 topLevelOrigin:(id)a6
+- (void)_setPermission:(unint64_t)permission expirationPolicy:(unint64_t)policy forOrigin:(id)origin topLevelOrigin:(id)levelOrigin
 {
-  v15 = a5;
-  v10 = a6;
-  v11 = [(WBSUserMediaPermissionController *)self _permissionByRemovingDefaultPermissionFlagsInPermission:a3];
-  v12 = originHash(v15, v10);
+  originCopy = origin;
+  levelOriginCopy = levelOrigin;
+  v11 = [(WBSUserMediaPermissionController *)self _permissionByRemovingDefaultPermissionFlagsInPermission:permission];
+  v12 = originHash(originCopy, levelOriginCopy);
   v13 = [(NSMutableDictionary *)self->_cachedSettings objectForKeyedSubscript:v12];
   v14 = v13;
   if (v13)
   {
-    [(WBSUserMediaCapturePolicyEntry *)v13 updatePermission:v11 expirationPolicy:a4];
+    [(WBSUserMediaCapturePolicyEntry *)v13 updatePermission:v11 expirationPolicy:policy];
   }
 
   else
   {
-    v14 = [[WBSUserMediaCapturePolicyEntry alloc] initWithPermission:v11 expirationPolicy:a4 forOrigin:v15 topLevelOrigin:v10];
+    v14 = [[WBSUserMediaCapturePolicyEntry alloc] initWithPermission:v11 expirationPolicy:policy forOrigin:originCopy topLevelOrigin:levelOriginCopy];
     [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
   }
 
   [(WBSUserMediaPermissionController *)self _cachedSettingsDidChange];
 }
 
-- (unint64_t)_permissionByRemovingDefaultPermissionFlagsInPermission:(unint64_t)a3
+- (unint64_t)_permissionByRemovingDefaultPermissionFlagsInPermission:(unint64_t)permission
 {
   v4 = [(WBSUserMediaPermissionController *)self _permissionByApplyingDefaultsForMissingValuesInPermission:0];
-  if (((v4 ^ a3) & 7) != 0)
+  if (((v4 ^ permission) & 7) != 0)
   {
-    v5 = a3;
+    permissionCopy = permission;
   }
 
   else
   {
-    v5 = a3 & 0xFFFFFFFFFFFFFFF8;
+    permissionCopy = permission & 0xFFFFFFFFFFFFFFF8;
   }
 
-  if (((v5 ^ v4) & 0x38) == 0)
+  if (((permissionCopy ^ v4) & 0x38) == 0)
   {
-    v5 &= 0xFFFFFFFFFFFFFFC7;
+    permissionCopy &= 0xFFFFFFFFFFFFFFC7;
   }
 
-  if (((v5 ^ v4) & 0xC0) != 0)
+  if (((permissionCopy ^ v4) & 0xC0) != 0)
   {
-    return v5;
+    return permissionCopy;
   }
 
   else
   {
-    return v5 & 0xFFFFFFFFFFFFFF3FLL;
+    return permissionCopy & 0xFFFFFFFFFFFFFF3FLL;
   }
 }
 
-- (id)saltForOrigin:(id)a3 topLevelOrigin:(id)a4 frameIdentifier:(unint64_t)a5
+- (id)saltForOrigin:(id)origin topLevelOrigin:(id)levelOrigin frameIdentifier:(unint64_t)identifier
 {
-  v8 = a3;
-  v9 = a4;
+  originCopy = origin;
+  levelOriginCopy = levelOrigin;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -439,12 +439,12 @@ void __92__WBSUserMediaPermissionController_getPermissionForOrigin_topLevelOrigi
   v14[2] = __81__WBSUserMediaPermissionController_saltForOrigin_topLevelOrigin_frameIdentifier___block_invoke;
   v14[3] = &unk_1E7FCB408;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
+  v15 = originCopy;
+  v16 = levelOriginCopy;
   v17 = &v19;
-  v18 = a5;
-  v10 = v9;
-  v11 = v8;
+  identifierCopy = identifier;
+  v10 = levelOriginCopy;
+  v11 = originCopy;
   [(WBSUserMediaPermissionController *)self _dispatchSyncOnInternalQueue:v14];
   v12 = v20[5];
 
@@ -461,11 +461,11 @@ void __81__WBSUserMediaPermissionController_saltForOrigin_topLevelOrigin_frameId
   *(v3 + 40) = v2;
 }
 
-- (id)_saltForOrigin:(id)a3 topLevelOrigin:(id)a4 frameIdentifier:(unint64_t)a5
+- (id)_saltForOrigin:(id)origin topLevelOrigin:(id)levelOrigin frameIdentifier:(unint64_t)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = originHash(v8, v9);
+  originCopy = origin;
+  levelOriginCopy = levelOrigin;
+  v10 = originHash(originCopy, levelOriginCopy);
   if (v10)
   {
     v11 = [(NSMutableDictionary *)self->_cachedSettings objectForKeyedSubscript:v10];
@@ -480,11 +480,11 @@ void __81__WBSUserMediaPermissionController_saltForOrigin_topLevelOrigin_frameId
 
     else
     {
-      v12 = [[WBSUserMediaCapturePolicyEntry alloc] initWithPermission:0 expirationPolicy:1 forOrigin:v8 topLevelOrigin:v9];
+      v12 = [[WBSUserMediaCapturePolicyEntry alloc] initWithPermission:0 expirationPolicy:1 forOrigin:originCopy topLevelOrigin:levelOriginCopy];
       [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
     }
 
-    v14 = [(WBSUserMediaPermissionController *)self _saltWithPolicyEntry:v12 computedPermission:[(WBSUserMediaPermissionController *)self _permissionByApplyingDefaultsForMissingValuesInPermission:[(WBSUserMediaCapturePolicyEntry *)v12 permission]] frameIdentifier:a5];
+    v14 = [(WBSUserMediaPermissionController *)self _saltWithPolicyEntry:v12 computedPermission:[(WBSUserMediaPermissionController *)self _permissionByApplyingDefaultsForMissingValuesInPermission:[(WBSUserMediaCapturePolicyEntry *)v12 permission]] frameIdentifier:identifier];
   }
 
   else
@@ -501,48 +501,48 @@ void __81__WBSUserMediaPermissionController_saltForOrigin_topLevelOrigin_frameId
   return v14;
 }
 
-- (id)_saltWithPolicyEntry:(id)a3 computedPermission:(unint64_t)a4 frameIdentifier:(unint64_t)a5
+- (id)_saltWithPolicyEntry:(id)entry computedPermission:(unint64_t)permission frameIdentifier:(unint64_t)identifier
 {
-  v6 = a4;
-  v8 = ~a4;
-  v9 = a3;
-  v10 = v9;
+  permissionCopy = permission;
+  v8 = ~permission;
+  entryCopy = entry;
+  v10 = entryCopy;
   if ((v8 & 0x12) == 0)
   {
-    v11 = &stru_1F3A5E418;
+    persistentSalt2 = &stru_1F3A5E418;
     goto LABEL_13;
   }
 
-  v12 = [v9 ephemeralSalts];
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
-  v11 = [v12 objectForKeyedSubscript:v13];
+  ephemeralSalts = [entryCopy ephemeralSalts];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:identifier];
+  persistentSalt2 = [ephemeralSalts objectForKeyedSubscript:v13];
 
-  if ((v6 & 0x24) != 0)
+  if ((permissionCopy & 0x24) != 0)
   {
-    if (!v11)
+    if (!persistentSalt2)
     {
-      v14 = [v10 persistentSalt];
+      persistentSalt = [v10 persistentSalt];
 
-      if (!v14)
+      if (!persistentSalt)
       {
         v15 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-        v16 = [v15 UUIDString];
-        [v10 setPersistentSalt:v16];
+        uUIDString = [v15 UUIDString];
+        [v10 setPersistentSalt:uUIDString];
 
         [(WBSUserMediaPermissionController *)self _cachedSettingsDidChange];
       }
 
-      v11 = [v10 persistentSalt];
+      persistentSalt2 = [v10 persistentSalt];
     }
   }
 
   else
   {
-    v17 = [v10 ephemeralSalts];
+    ephemeralSalts2 = [v10 ephemeralSalts];
 
-    if (v17)
+    if (ephemeralSalts2)
     {
-      if (v11)
+      if (persistentSalt2)
       {
         goto LABEL_13;
       }
@@ -550,38 +550,38 @@ void __81__WBSUserMediaPermissionController_saltForOrigin_topLevelOrigin_frameId
 
     else
     {
-      v18 = [MEMORY[0x1E695DF90] dictionary];
-      [v10 setEphemeralSalts:v18];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [v10 setEphemeralSalts:dictionary];
 
-      if (v11)
+      if (persistentSalt2)
       {
         goto LABEL_13;
       }
     }
 
     v19 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-    v11 = [v19 UUIDString];
+    persistentSalt2 = [v19 UUIDString];
 
-    v20 = [v10 ephemeralSalts];
-    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
-    [v20 setObject:v11 forKeyedSubscript:v21];
+    ephemeralSalts3 = [v10 ephemeralSalts];
+    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:identifier];
+    [ephemeralSalts3 setObject:persistentSalt2 forKeyedSubscript:v21];
   }
 
 LABEL_13:
 
-  return v11;
+  return persistentSalt2;
 }
 
-- (void)removeAllOriginsAddedAfterDate:(id)a3
+- (void)removeAllOriginsAddedAfterDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__WBSUserMediaPermissionController_removeAllOriginsAddedAfterDate___block_invoke;
   v6[3] = &unk_1E7FB7F10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dateCopy;
+  v5 = dateCopy;
   [(WBSUserMediaPermissionController *)self _dispatchAsyncOnInternalQueue:v6];
 }
 
@@ -646,16 +646,16 @@ void __67__WBSUserMediaPermissionController_removeAllOriginsAddedAfterDate___blo
   }
 }
 
-- (void)resetOriginPermissionsWithCompletionHandler:(id)a3
+- (void)resetOriginPermissionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __80__WBSUserMediaPermissionController_resetOriginPermissionsWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7FB6F08;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(WBSUserMediaPermissionController *)self _dispatchAsyncOnInternalQueue:v6];
 }
 
@@ -721,14 +721,14 @@ void __57__WBSUserMediaPermissionController__loadSavedPermissions__block_invoke(
   }
 }
 
-- (void)didCommitLoadForFrameWithIdentifier:(unint64_t)a3
+- (void)didCommitLoadForFrameWithIdentifier:(unint64_t)identifier
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __72__WBSUserMediaPermissionController_didCommitLoadForFrameWithIdentifier___block_invoke;
   v3[3] = &unk_1E7FB7610;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = identifier;
   [(WBSUserMediaPermissionController *)self _dispatchAsyncOnInternalQueue:v3];
 }
 
@@ -820,10 +820,10 @@ void __61__WBSUserMediaPermissionController__dictionaryRepresentation__block_inv
   }
 }
 
-- (void)_cachedSettingsDidChangeAndWriteImmediately:(BOOL)a3 completionHandler:(id)a4
+- (void)_cachedSettingsDidChangeAndWriteImmediately:(BOOL)immediately completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  immediatelyCopy = immediately;
+  handlerCopy = handler;
   if (self->_userMediaPermissionsFileURL)
   {
     saveUserMediaPermissionsWriter = self->_saveUserMediaPermissionsWriter;
@@ -849,20 +849,20 @@ void __61__WBSUserMediaPermissionController__dictionaryRepresentation__block_inv
     }
 
     [(WBSCoalescedAsynchronousWriter *)saveUserMediaPermissionsWriter scheduleWrite];
-    if (v4)
+    if (immediatelyCopy)
     {
       v13 = self->_saveUserMediaPermissionsWriter;
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __98__WBSUserMediaPermissionController__cachedSettingsDidChangeAndWriteImmediately_completionHandler___block_invoke_2;
       v14[3] = &unk_1E7FB7B80;
-      v15 = v6;
+      v15 = handlerCopy;
       [(WBSCoalescedAsynchronousWriter *)v13 startScheduledWriteNowWithCompletionHandler:v14];
     }
 
-    else if (v6)
+    else if (handlerCopy)
     {
-      (*(v6 + 2))(v6, 1);
+      (*(handlerCopy + 2))(handlerCopy, 1);
     }
   }
 }
@@ -888,23 +888,23 @@ uint64_t __98__WBSUserMediaPermissionController__cachedSettingsDidChangeAndWrite
   return result;
 }
 
-- (void)checkUserMediaPermissionForURL:(id)a3 mainFrameURL:(id)a4 frameIdentifier:(unint64_t)a5 decisionHandler:(id)a6
+- (void)checkUserMediaPermissionForURL:(id)l mainFrameURL:(id)rL frameIdentifier:(unint64_t)identifier decisionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __112__WBSUserMediaPermissionController_checkUserMediaPermissionForURL_mainFrameURL_frameIdentifier_decisionHandler___block_invoke;
   v16[3] = &unk_1E7FC5910;
-  v17 = v10;
-  v18 = v11;
-  v20 = v12;
-  v21 = a5;
-  v19 = self;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v17 = lCopy;
+  v18 = rLCopy;
+  v20 = handlerCopy;
+  identifierCopy = identifier;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v14 = rLCopy;
+  v15 = lCopy;
   [(WBSUserMediaPermissionController *)self _dispatchAsyncOnInternalQueue:v16];
 }
 
@@ -927,9 +927,9 @@ void __112__WBSUserMediaPermissionController_checkUserMediaPermissionForURL_main
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (unint64_t)_permissionMaskForMediaCaptureType:(int64_t)a3
+- (unint64_t)_permissionMaskForMediaCaptureType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return 7;
   }
@@ -951,9 +951,9 @@ void __112__WBSUserMediaPermissionController_checkUserMediaPermissionForURL_main
   return v3;
 }
 
-- (id)valuesForPreference:(id)a3
+- (id)valuesForPreference:(id)preference
 {
-  if ([(WBSUserMediaPermissionController *)self _mediaCaptureTypeForPreference:a3]>= 2)
+  if ([(WBSUserMediaPermissionController *)self _mediaCaptureTypeForPreference:preference]>= 2)
   {
     return 0;
   }
@@ -964,33 +964,33 @@ void __112__WBSUserMediaPermissionController_checkUserMediaPermissionForURL_main
   }
 }
 
-- (id)localizedStringForValue:(id)a3 inPreference:(id)a4
+- (id)localizedStringForValue:(id)value inPreference:(id)preference
 {
-  v4 = a3;
-  v5 = [objc_opt_class() localizedStringForPerSitePreferenceValue:v4];
+  valueCopy = value;
+  v5 = [objc_opt_class() localizedStringForPerSitePreferenceValue:valueCopy];
 
   return v5;
 }
 
-- (void)setValue:(id)a3 ofPreference:(id)a4 forDomain:(id)a5 completionHandler:(id)a6
+- (void)setValue:(id)value ofPreference:(id)preference forDomain:(id)domain completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  valueCopy = value;
+  preferenceCopy = preference;
+  domainCopy = domain;
+  handlerCopy = handler;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __86__WBSUserMediaPermissionController_setValue_ofPreference_forDomain_completionHandler___block_invoke;
   v18[3] = &unk_1E7FCB4A8;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = valueCopy;
+  v20 = preferenceCopy;
+  v21 = domainCopy;
+  v22 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = domainCopy;
+  v16 = preferenceCopy;
+  v17 = valueCopy;
   [(WBSUserMediaPermissionController *)self _dispatchAsyncOnInternalQueue:v18];
 }
 
@@ -1010,22 +1010,22 @@ void __86__WBSUserMediaPermissionController_setValue_ofPreference_forDomain_comp
   }
 }
 
-- (BOOL)_setValue:(id)a3 ofPreference:(id)a4 forDomain:(id)a5
+- (BOOL)_setValue:(id)value ofPreference:(id)preference forDomain:(id)domain
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WBSUserMediaPermissionController *)self _standardizedURLForDomain:v10];
+  valueCopy = value;
+  preferenceCopy = preference;
+  domainCopy = domain;
+  v11 = [(WBSUserMediaPermissionController *)self _standardizedURLForDomain:domainCopy];
   v12 = [(WBSUserMediaPermissionController *)self _validPolicyForDomainWithOrigin:v11 topLevelOrigin:v11];
-  v13 = [v12 permission];
+  permission = [v12 permission];
 
-  v14 = [(WBSUserMediaPermissionController *)self _mediaCaptureTypeForPreference:v9];
+  v14 = [(WBSUserMediaPermissionController *)self _mediaCaptureTypeForPreference:preferenceCopy];
   v15 = [(WBSUserMediaPermissionController *)self _permissionMaskForMediaCaptureType:v14];
-  v16 = [v8 integerValue];
-  v17 = v13 & ~v15;
-  if (v16)
+  integerValue = [valueCopy integerValue];
+  v17 = permission & ~v15;
+  if (integerValue)
   {
-    if (v16 == 1)
+    if (integerValue == 1)
     {
       if (v14)
       {
@@ -1041,7 +1041,7 @@ void __86__WBSUserMediaPermissionController_setValue_ofPreference_forDomain_comp
       }
     }
 
-    else if (v16 == 2)
+    else if (integerValue == 2)
     {
       if (v14)
       {
@@ -1077,36 +1077,36 @@ void __86__WBSUserMediaPermissionController_setValue_ofPreference_forDomain_comp
     }
   }
 
-  if (v17 != v13)
+  if (v17 != permission)
   {
-    [(WBSUserMediaPermissionController *)self _invalidateAllPermissionsForDomain:v10];
+    [(WBSUserMediaPermissionController *)self _invalidateAllPermissionsForDomain:domainCopy];
     [(WBSUserMediaPermissionController *)self _setPermission:v17 expirationPolicy:2 forOrigin:v11 topLevelOrigin:v11];
-    v19 = [(WBSPerSitePreferenceManager *)self delegate];
+    delegate = [(WBSPerSitePreferenceManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v19 perSitePreferenceManager:self didUpdateValueForPreference:v9 onDomain:v10 toValue:v8];
+      [delegate perSitePreferenceManager:self didUpdateValueForPreference:preferenceCopy onDomain:domainCopy toValue:valueCopy];
     }
   }
 
   return 1;
 }
 
-- (void)getValueOfPreference:(id)a3 forDomain:(id)a4 withTimeout:(id)a5 usingBlock:(id)a6
+- (void)getValueOfPreference:(id)preference forDomain:(id)domain withTimeout:(id)timeout usingBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  preferenceCopy = preference;
+  domainCopy = domain;
+  blockCopy = block;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __90__WBSUserMediaPermissionController_getValueOfPreference_forDomain_withTimeout_usingBlock___block_invoke;
   v15[3] = &unk_1E7FC6910;
   v15[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v18 = v11;
-  v12 = v11;
-  v13 = v10;
-  v14 = v9;
+  v16 = preferenceCopy;
+  v17 = domainCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = domainCopy;
+  v14 = preferenceCopy;
   [(WBSUserMediaPermissionController *)self _dispatchAsyncOnInternalQueue:v15];
 }
 
@@ -1160,38 +1160,38 @@ void __90__WBSUserMediaPermissionController_getValueOfPreference_forDomain_withT
   (*(v1 + 16))(v1);
 }
 
-- (int64_t)_mediaCaptureSettingForMediaCaptureType:(int64_t)a3 userMediaPermission:(unint64_t)a4
+- (int64_t)_mediaCaptureSettingForMediaCaptureType:(int64_t)type userMediaPermission:(unint64_t)permission
 {
   v4 = 1;
   v5 = 2;
-  if ((a4 & 4) == 0)
+  if ((permission & 4) == 0)
   {
-    v5 = (a4 & 1) - 1;
+    v5 = (permission & 1) - 1;
   }
 
-  if ((a4 & 2) == 0)
+  if ((permission & 2) == 0)
   {
     v4 = v5;
   }
 
   v6 = 1;
   v7 = 2;
-  if ((a4 & 0x20) == 0)
+  if ((permission & 0x20) == 0)
   {
-    v7 = ((a4 >> 3) & 1) - 1;
+    v7 = ((permission >> 3) & 1) - 1;
   }
 
-  if ((a4 & 0x10) == 0)
+  if ((permission & 0x10) == 0)
   {
     v6 = v7;
   }
 
-  if (a3)
+  if (type)
   {
     v6 = v4;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return v4;
   }
@@ -1202,18 +1202,18 @@ void __90__WBSUserMediaPermissionController_getValueOfPreference_forDomain_withT
   }
 }
 
-- (unint64_t)_userMediaPermissionForMediaCaptureType:(int64_t)a3 mediaCaptureSetting:(int64_t)a4
+- (unint64_t)_userMediaPermissionForMediaCaptureType:(int64_t)type mediaCaptureSetting:(int64_t)setting
 {
-  if (a4 != 2)
+  if (setting != 2)
   {
-    if (a4 == 1)
+    if (setting == 1)
     {
-      if (!a3)
+      if (!type)
       {
         return 16;
       }
 
-      if (a3 == 1)
+      if (type == 1)
       {
         return 2;
       }
@@ -1221,24 +1221,24 @@ void __90__WBSUserMediaPermissionController_getValueOfPreference_forDomain_withT
 
     else
     {
-      if (a4)
+      if (setting)
       {
         return self;
       }
 
-      if (!a3)
+      if (!type)
       {
         return 8;
       }
 
-      if (a3 == 1)
+      if (type == 1)
       {
         return 1;
       }
     }
   }
 
-  if (a3)
+  if (type)
   {
     return 4;
   }
@@ -1249,7 +1249,7 @@ void __90__WBSUserMediaPermissionController_getValueOfPreference_forDomain_withT
   }
 }
 
-- (unint64_t)_permissionByApplyingDefaultsForMissingValuesInPermission:(unint64_t)a3
+- (unint64_t)_permissionByApplyingDefaultsForMissingValuesInPermission:(unint64_t)permission
 {
   v5 = dispatch_group_create();
   v6 = v5;
@@ -1257,7 +1257,7 @@ void __90__WBSUserMediaPermissionController_getValueOfPreference_forDomain_withT
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  if ((a3 & 0x38) == 0)
+  if ((permission & 0x38) == 0)
   {
     dispatch_group_enter(v5);
     cameraMediaCapturePreference = self->_cameraMediaCapturePreference;
@@ -1275,7 +1275,7 @@ void __90__WBSUserMediaPermissionController_getValueOfPreference_forDomain_withT
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  if ((a3 & 7) == 0)
+  if ((permission & 7) == 0)
   {
     dispatch_group_enter(v6);
     microphoneMediaCapturePreference = self->_microphoneMediaCapturePreference;
@@ -1294,7 +1294,7 @@ void __90__WBSUserMediaPermissionController_getValueOfPreference_forDomain_withT
   _Block_object_dispose(&v14, 8);
   _Block_object_dispose(&v21, 8);
 
-  return v9 | a3;
+  return v9 | permission;
 }
 
 void __94__WBSUserMediaPermissionController__permissionByApplyingDefaultsForMissingValuesInPermission___block_invoke(uint64_t a1, void *a2)
@@ -1311,27 +1311,27 @@ void __94__WBSUserMediaPermissionController__permissionByApplyingDefaultsForMiss
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (unint64_t)permissionForDomain:(id)a3
+- (unint64_t)permissionForDomain:(id)domain
 {
-  v4 = [(WBSUserMediaPermissionController *)self _standardizedURLForDomain:a3];
+  v4 = [(WBSUserMediaPermissionController *)self _standardizedURLForDomain:domain];
   v5 = [(WBSUserMediaPermissionController *)self permissionForOrigin:v4 topLevelOrigin:v4];
 
   return v5;
 }
 
-- (void)getAllDomainsConfiguredForPreference:(id)a3 usingBlock:(id)a4
+- (void)getAllDomainsConfiguredForPreference:(id)preference usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  preferenceCopy = preference;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__WBSUserMediaPermissionController_getAllDomainsConfiguredForPreference_usingBlock___block_invoke;
   v10[3] = &unk_1E7FCB4F8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = preferenceCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = preferenceCopy;
   [(WBSPerSitePreferenceManager *)self getDefaultPreferenceValueForPreference:v9 completionHandler:v10];
 }
 
@@ -1408,22 +1408,22 @@ void __84__WBSUserMediaPermissionController_getAllDomainsConfiguredForPreference
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)removePreferenceValuesForDomains:(id)a3 fromPreference:(id)a4 completionHandler:(id)a5
+- (void)removePreferenceValuesForDomains:(id)domains fromPreference:(id)preference completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  domainsCopy = domains;
+  preferenceCopy = preference;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __102__WBSUserMediaPermissionController_removePreferenceValuesForDomains_fromPreference_completionHandler___block_invoke;
   v14[3] = &unk_1E7FC6910;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = domainsCopy;
+  v16 = preferenceCopy;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = preferenceCopy;
+  v13 = domainsCopy;
   [(WBSUserMediaPermissionController *)self _dispatchAsyncOnInternalQueue:v14];
 }
 
@@ -1443,18 +1443,18 @@ void __102__WBSUserMediaPermissionController_removePreferenceValuesForDomains_fr
   }
 }
 
-- (BOOL)_removePreferenceValuesForDomains:(id)a3 fromPreference:(id)a4
+- (BOOL)_removePreferenceValuesForDomains:(id)domains fromPreference:(id)preference
 {
   v39 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v24 = a4;
+  domainsCopy = domains;
+  preferenceCopy = preference;
   v6 = [(WBSUserMediaPermissionController *)self _permissionMaskForMediaCaptureType:[(WBSUserMediaPermissionController *)self _mediaCaptureTypeForPreference:?]];
   v26 = [MEMORY[0x1E695DFA8] set];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v25;
+  obj = domainsCopy;
   v7 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v7)
   {
@@ -1518,9 +1518,9 @@ void __102__WBSUserMediaPermissionController_removePreferenceValuesForDomains_fr
 
         cachedSettings = self->_cachedSettings;
         v19 = *(*(&v29 + 1) + 8 * v17);
-        v20 = [v19 origin];
-        v21 = [v19 topLevelOrigin];
-        v22 = originHash(v20, v21);
+        origin = [v19 origin];
+        topLevelOrigin = [v19 topLevelOrigin];
+        v22 = originHash(origin, topLevelOrigin);
 
         [(NSMutableDictionary *)cachedSettings removeObjectForKey:v22];
         ++v17;
@@ -1537,9 +1537,9 @@ void __102__WBSUserMediaPermissionController_removePreferenceValuesForDomains_fr
   return 1;
 }
 
-- (id)preferenceNameForPreference:(id)a3
+- (id)preferenceNameForPreference:(id)preference
 {
-  v3 = [(WBSUserMediaPermissionController *)self _mediaCaptureTypeForPreference:a3];
+  v3 = [(WBSUserMediaPermissionController *)self _mediaCaptureTypeForPreference:preference];
   if (v3 == 1)
   {
     v4 = WBSPerSitePreferenceNameMicrophone;
@@ -1561,26 +1561,26 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)_isPreferenceValid:(id)a3
+- (BOOL)_isPreferenceValid:(id)valid
 {
-  v4 = a3;
-  if ([v4 isEqual:self->_cameraMediaCapturePreference])
+  validCopy = valid;
+  if ([validCopy isEqual:self->_cameraMediaCapturePreference])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqual:self->_microphoneMediaCapturePreference];
+    v5 = [validCopy isEqual:self->_microphoneMediaCapturePreference];
   }
 
   return v5;
 }
 
-+ (id)localizedStringForPerSitePreferenceValue:(id)a3
++ (id)localizedStringForPerSitePreferenceValue:(id)value
 {
-  v4 = a3;
-  if ([v4 integerValue] <= 2)
+  valueCopy = value;
+  if ([valueCopy integerValue] <= 2)
   {
     v3 = _WBSLocalizedString();
   }
@@ -1588,21 +1588,21 @@ LABEL_6:
   return v3;
 }
 
-- (id)_standardizedURLForDomain:(id)a3
+- (id)_standardizedURLForDomain:(id)domain
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DFF8] URLWithString:v3];
-  v5 = [v4 safari_userVisibleHostWithoutWWWSubdomain];
+  domainCopy = domain;
+  v4 = [MEMORY[0x1E695DFF8] URLWithString:domainCopy];
+  safari_userVisibleHostWithoutWWWSubdomain = [v4 safari_userVisibleHostWithoutWWWSubdomain];
 
   v6 = MEMORY[0x1E696AEC0];
-  if ([v5 length])
+  if ([safari_userVisibleHostWithoutWWWSubdomain length])
   {
-    v7 = v5;
+    v7 = safari_userVisibleHostWithoutWWWSubdomain;
   }
 
   else
   {
-    v7 = v3;
+    v7 = domainCopy;
   }
 
   v8 = [v6 stringWithFormat:@"mediacapture://%@", v7];
@@ -1610,10 +1610,10 @@ LABEL_6:
   return v8;
 }
 
-- (void)_invalidateAllPermissionsForDomain:(id)a3
+- (void)_invalidateAllPermissionsForDomain:(id)domain
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  domainCopy = domain;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -1634,16 +1634,16 @@ LABEL_6:
 
         v8 = *(*(&v18 + 1) + 8 * i);
         v9 = MEMORY[0x1E695DFF8];
-        v10 = [v8 topLevelOrigin];
-        v11 = [v9 URLWithString:v10];
-        v12 = [v11 safari_userVisibleHostWithoutWWWSubdomain];
-        v13 = [v12 isEqualToString:v4];
+        topLevelOrigin = [v8 topLevelOrigin];
+        v11 = [v9 URLWithString:topLevelOrigin];
+        safari_userVisibleHostWithoutWWWSubdomain = [v11 safari_userVisibleHostWithoutWWWSubdomain];
+        v13 = [safari_userVisibleHostWithoutWWWSubdomain isEqualToString:domainCopy];
 
         if (v13)
         {
-          v14 = [v8 origin];
-          v15 = [v8 topLevelOrigin];
-          v16 = originHash(v14, v15);
+          origin = [v8 origin];
+          topLevelOrigin2 = [v8 topLevelOrigin];
+          v16 = originHash(origin, topLevelOrigin2);
           [(WBSUserMediaPermissionController *)self _invalidateCachedSettingsForOriginHash:v16];
         }
       }
@@ -1655,48 +1655,48 @@ LABEL_6:
   }
 }
 
-- (void)_dispatchAsyncOnInternalQueue:(id)a3
+- (void)_dispatchAsyncOnInternalQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = atomic_load(&self->_savedStateLoadStatus);
-  block = v4;
+  block = queueCopy;
   if (!v5)
   {
     atomic_store(1uLL, &self->_savedStateLoadStatus);
     dispatch_resume(self->_internalQueue);
-    v4 = block;
+    queueCopy = block;
   }
 
-  if (v4)
+  if (queueCopy)
   {
     dispatch_async(self->_internalQueue, block);
-    v4 = block;
+    queueCopy = block;
   }
 }
 
-- (void)_dispatchSyncOnInternalQueue:(id)a3
+- (void)_dispatchSyncOnInternalQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = atomic_load(&self->_savedStateLoadStatus);
-  block = v4;
+  block = queueCopy;
   if (!v5)
   {
     atomic_store(1uLL, &self->_savedStateLoadStatus);
     dispatch_resume(self->_internalQueue);
-    v4 = block;
+    queueCopy = block;
   }
 
-  if (v4)
+  if (queueCopy)
   {
     dispatch_sync(self->_internalQueue, block);
-    v4 = block;
+    queueCopy = block;
   }
 }
 
-- (void)removeAllPermissionsWithCompletionHandler:(id)a3
+- (void)removeAllPermissionsWithCompletionHandler:(id)handler
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   microphoneMediaCapturePreference = self->_microphoneMediaCapturePreference;
   v12[0] = self->_cameraMediaCapturePreference;
@@ -1709,7 +1709,7 @@ LABEL_6:
   v8[2] = __78__WBSUserMediaPermissionController_removeAllPermissionsWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7FCB520;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = handlerCopy;
   v9 = v7;
   [(WBSPerSitePreferenceManager *)self setDefaultPreferenceValues:v6 completionHandler:v8];
 

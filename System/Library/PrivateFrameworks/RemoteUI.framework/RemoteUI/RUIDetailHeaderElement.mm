@@ -1,55 +1,55 @@
 @interface RUIDetailHeaderElement
-- (void)configureView:(id)a3;
-- (void)setBody:(id)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)configureView:(id)view;
+- (void)setBody:(id)body;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation RUIDetailHeaderElement
 
-- (void)configureView:(id)a3
+- (void)configureView:(id)view
 {
   v44[10] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(RUIElement *)self body];
-    v6 = [(RUIElement *)self attributes];
-    [v4 setDetailText:v5 attributes:v6];
+    body = [(RUIElement *)self body];
+    attributes = [(RUIElement *)self attributes];
+    [viewCopy setDetailText:body attributes:attributes];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeWeak(&self->_headerView, v4);
+    objc_storeWeak(&self->_headerView, viewCopy);
     v7 = MEMORY[0x277D75348];
-    v8 = [(RUIElement *)self attributes];
-    v9 = [v8 objectForKeyedSubscript:@"color"];
+    attributes2 = [(RUIElement *)self attributes];
+    v9 = [attributes2 objectForKeyedSubscript:@"color"];
     v10 = [v7 _remoteUI_colorWithString:v9 defaultColor:0];
     v11 = v10;
     if (v10)
     {
-      v12 = v10;
+      detailHeaderLabelTextColor = v10;
     }
 
     else
     {
-      v13 = [(RUIElement *)self style];
-      v12 = [v13 detailHeaderLabelTextColor];
+      style = [(RUIElement *)self style];
+      detailHeaderLabelTextColor = [style detailHeaderLabelTextColor];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_headerView);
-    [WeakRetained setDetailHeaderColor:v12];
+    [WeakRetained setDetailHeaderColor:detailHeaderLabelTextColor];
 
-    v15 = [(RUIElement *)self attributes];
-    v16 = [v15 objectForKeyedSubscript:@"url"];
+    attributes3 = [(RUIElement *)self attributes];
+    v16 = [attributes3 objectForKeyedSubscript:@"url"];
     if (v16)
     {
     }
 
     else
     {
-      v17 = [(RUIElement *)self attributes];
-      v18 = [v17 objectForKeyedSubscript:@"activationFunction"];
+      attributes4 = [(RUIElement *)self attributes];
+      v18 = [attributes4 objectForKeyedSubscript:@"activationFunction"];
 
       if (!v18)
       {
@@ -59,13 +59,13 @@
 
     objc_initWeak(location, self);
     v19 = objc_loadWeakRetained(&self->_headerView);
-    v20 = [v19 detailHeaderLabel];
+    detailHeaderLabel = [v19 detailHeaderLabel];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __40__RUIDetailHeaderElement_configureView___block_invoke;
     v40[3] = &unk_2782E81C8;
     objc_copyWeak(&v41, location);
-    [v20 setAction:v40];
+    [detailHeaderLabel setAction:v40];
 
     objc_destroyWeak(&v41);
     objc_destroyWeak(location);
@@ -100,20 +100,20 @@ LABEL_11:
     v44[8] = *MEMORY[0x277D76938];
     v44[9] = v29;
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:10];
-    v31 = [(RUIElement *)self attributes];
-    v32 = [v31 objectForKeyedSubscript:@"textStyle"];
+    attributes5 = [(RUIElement *)self attributes];
+    v32 = [attributes5 objectForKeyedSubscript:@"textStyle"];
 
     v33 = [v30 objectForKeyedSubscript:v32];
 
     if (v33)
     {
       v34 = objc_loadWeakRetained(&self->_headerView);
-      v35 = [v34 detailHeaderLabel];
+      detailHeaderLabel2 = [v34 detailHeaderLabel];
       v36 = MEMORY[0x277D74300];
       v37 = [v30 objectForKeyedSubscript:v32];
-      v38 = [v4 traitCollection];
-      v39 = [v36 preferredFontForTextStyle:v37 compatibleWithTraitCollection:v38];
-      [v35 setFont:v39];
+      traitCollection = [viewCopy traitCollection];
+      v39 = [v36 preferredFontForTextStyle:v37 compatibleWithTraitCollection:traitCollection];
+      [detailHeaderLabel2 setFont:v39];
     }
 
     else
@@ -142,32 +142,32 @@ void __40__RUIDetailHeaderElement_configureView___block_invoke(uint64_t a1)
   [WeakRetained performAction:2 completion:0];
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
-  v4 = a3;
-  v5 = [(RUIElement *)self body];
+  bodyCopy = body;
+  body = [(RUIElement *)self body];
 
-  if (v5 != v4)
+  if (body != bodyCopy)
   {
     v9.receiver = self;
     v9.super_class = RUIDetailHeaderElement;
-    [(RUIElement *)&v9 setBody:v4];
+    [(RUIElement *)&v9 setBody:bodyCopy];
     WeakRetained = objc_loadWeakRetained(&self->_headerView);
-    v7 = [(RUIElement *)self body];
-    v8 = [(RUIElement *)self attributes];
-    [WeakRetained setDetailText:v7 attributes:v8];
+    body2 = [(RUIElement *)self body];
+    attributes = [(RUIElement *)self attributes];
+    [WeakRetained setDetailText:body2 attributes:attributes];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7.receiver = self;
   v7.super_class = RUIDetailHeaderElement;
   [(RUIElement *)&v7 setEnabled:?];
   WeakRetained = objc_loadWeakRetained(&self->_headerView);
-  v6 = [WeakRetained detailHeaderLabel];
-  [v6 setEnabled:v3];
+  detailHeaderLabel = [WeakRetained detailHeaderLabel];
+  [detailHeaderLabel setEnabled:enabledCopy];
 }
 
 @end

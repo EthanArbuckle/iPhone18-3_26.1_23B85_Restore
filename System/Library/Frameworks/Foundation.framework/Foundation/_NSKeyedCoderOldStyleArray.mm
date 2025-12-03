@@ -1,20 +1,20 @@
 @interface _NSKeyedCoderOldStyleArray
-- (_NSKeyedCoderOldStyleArray)initWithCoder:(id)a3;
-- (_NSKeyedCoderOldStyleArray)initWithObjCType:(char)a3 count:(unint64_t)a4 at:(const void *)a5;
+- (_NSKeyedCoderOldStyleArray)initWithCoder:(id)coder;
+- (_NSKeyedCoderOldStyleArray)initWithObjCType:(char)type count:(unint64_t)count at:(const void *)at;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)fillObjCType:(char)a3 count:(unint64_t)a4 at:(void *)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)fillObjCType:(char)type count:(unint64_t)count at:(void *)at;
 @end
 
 @implementation _NSKeyedCoderOldStyleArray
 
-- (_NSKeyedCoderOldStyleArray)initWithObjCType:(char)a3 count:(unint64_t)a4 at:(const void *)a5
+- (_NSKeyedCoderOldStyleArray)initWithObjCType:(char)type count:(unint64_t)count at:(const void *)at
 {
-  v7 = a3;
+  typeCopy = type;
   v18 = *MEMORY[0x1E69E9840];
   alignp = 0;
   sizep = 0;
-  typePtr[0] = a3;
+  typePtr[0] = type;
   typePtr[1] = 0;
   NSGetSizeAndAlignment(typePtr, &sizep, &alignp);
   v10 = alignp;
@@ -33,13 +33,13 @@
   {
 
     v13 = _NSMethodExceptionProem(self, sel_encodeArrayOfObjCType_count_at_);
-    v14 = [NSString stringWithFormat:@"%@: size (%ld) or alignment (%ld) of type ('%c') is zero", v13, sizep, alignp, v7];
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v14 userInfo:0]);
+    typeCopy = [NSString stringWithFormat:@"%@: size (%ld) or alignment (%ld) of type ('%c') is zero", v13, sizep, alignp, typeCopy];
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:typeCopy userInfo:0]);
   }
 
-  self->_type = v7;
-  self->_addr = a5;
-  self->_count = a4;
+  self->_type = typeCopy;
+  self->_addr = at;
+  self->_count = count;
   if (v9 <= v10)
   {
     v9 = v10;
@@ -67,7 +67,7 @@
   [(_NSKeyedCoderOldStyleArray *)&v4 dealloc];
 }
 
-- (void)fillObjCType:(char)a3 count:(unint64_t)a4 at:(void *)a5
+- (void)fillObjCType:(char)type count:(unint64_t)count at:(void *)at
 {
   count = self->_count;
   if (!count || (size = self->_size) == 0)
@@ -79,9 +79,9 @@
     goto LABEL_10;
   }
 
-  if (count != a4 || self->_type != a3)
+  if (count != count || self->_type != type)
   {
-    v10 = [NSString stringWithFormat:@"%@: type ('%c') or count (%ld) does not match stored type and count ('%c', %ld)", _NSMethodExceptionProem(self, sel_decodeArrayOfObjCType_count_at_), a3, a4, self->_type, self->_count];
+    v10 = [NSString stringWithFormat:@"%@: type ('%c') or count (%ld) does not match stored type and count ('%c', %ld)", _NSMethodExceptionProem(self, sel_decodeArrayOfObjCType_count_at_), type, count, self->_type, self->_count];
     v11 = MEMORY[0x1E695DF30];
     v12 = MEMORY[0x1E695D940];
 LABEL_10:
@@ -90,56 +90,56 @@ LABEL_10:
 
   addr = self->_addr;
 
-  memmove(a5, addr, size * a4);
+  memmove(at, addr, size * count);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt32:LODWORD(self->_count) forKey:@"NS.count"];
-  [a3 encodeInt32:LODWORD(self->_size) forKey:@"NS.size"];
-  [a3 encodeInt32:self->_type forKey:@"NS.type"];
+  [coder encodeInt32:LODWORD(self->_count) forKey:@"NS.count"];
+  [coder encodeInt32:LODWORD(self->_size) forKey:@"NS.size"];
+  [coder encodeInt32:self->_type forKey:@"NS.type"];
   if (self->_count)
   {
     v5 = 0;
     do
     {
-      _compatEncodeValueOfObjCType(a3, self->_type, (self->_addr + self->_size * v5++), sel_encodeArrayOfObjCType_count_at_);
+      _compatEncodeValueOfObjCType(coder, self->_type, (self->_addr + self->_size * v5++), sel_encodeArrayOfObjCType_count_at_);
     }
 
     while (v5 < self->_count);
   }
 }
 
-- (_NSKeyedCoderOldStyleArray)initWithCoder:(id)a3
+- (_NSKeyedCoderOldStyleArray)initWithCoder:(id)coder
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = [a3 decodeInt32ForKey:@"NS.count"];
+  v6 = [coder decodeInt32ForKey:@"NS.count"];
   v7 = v6;
   if ((v6 & 0x80000000) != 0)
   {
     v15 = _NSMethodExceptionProem(self, a2);
 
-    [a3 __failWithExceptionName:@"NSArchiverArchiveInconsistency" errorCode:4864 format:{@"%@: unable to decode array with negative count (%d)", v15, v7}];
+    [coder __failWithExceptionName:@"NSArchiverArchiveInconsistency" errorCode:4864 format:{@"%@: unable to decode array with negative count (%d)", v15, v7}];
   }
 
   else
   {
     v8 = v6;
     self->_count = v6;
-    v9 = [a3 decodeInt32ForKey:@"NS.size"];
+    v9 = [coder decodeInt32ForKey:@"NS.size"];
     v10 = v9;
     if ((v9 & 0x80000000) != 0)
     {
       v16 = _NSMethodExceptionProem(self, a2);
 
-      [a3 __failWithExceptionName:@"NSArchiverArchiveInconsistency" errorCode:4864 format:{@"%@: unable to decode array with negative size (%d)", v16, v10}];
+      [coder __failWithExceptionName:@"NSArchiverArchiveInconsistency" errorCode:4864 format:{@"%@: unable to decode array with negative size (%d)", v16, v10}];
     }
 
     else
     {
       v11 = v9;
       self->_size = v9;
-      v12 = [a3 decodeInt32ForKey:@"NS.type"];
+      v12 = [coder decodeInt32ForKey:@"NS.type"];
       v13 = v12;
       if (v12 == v12)
       {
@@ -171,7 +171,7 @@ LABEL_10:
           }
 
           v20 = 0;
-          while ((_compatDecodeValueOfObjCType(a3, self->_type, self->_addr + self->_size * v20, sel_decodeArrayOfObjCType_count_at_) & 1) != 0)
+          while ((_compatDecodeValueOfObjCType(coder, self->_type, self->_addr + self->_size * v20, sel_decodeArrayOfObjCType_count_at_) & 1) != 0)
           {
             if (++v20 >= self->_count)
             {
@@ -181,9 +181,9 @@ LABEL_10:
 
           v22 = _NSMethodExceptionProem(self, a2);
 
-          if (![a3 error])
+          if (![coder error])
           {
-            [a3 __failWithExceptionName:@"NSArchiverArchiveInconsistency" errorCode:4864 format:{@"%@: unable to decode element in array of size (%ld) and count (%ld)", v22, v11, v8}];
+            [coder __failWithExceptionName:@"NSArchiverArchiveInconsistency" errorCode:4864 format:{@"%@: unable to decode element in array of size (%ld) and count (%ld)", v22, v11, v8}];
           }
         }
 
@@ -191,7 +191,7 @@ LABEL_10:
         {
           v21 = _NSMethodExceptionProem(self, a2);
 
-          [a3 __failWithExceptionName:*MEMORY[0x1E695DA18] errorCode:4864 format:{@"%@: unable to allocate memory for size (%ld) and count (%ld)", v21, v11, v8}];
+          [coder __failWithExceptionName:*MEMORY[0x1E695DA18] errorCode:4864 format:{@"%@: unable to allocate memory for size (%ld) and count (%ld)", v21, v11, v8}];
         }
       }
 
@@ -199,7 +199,7 @@ LABEL_10:
       {
         v14 = _NSMethodExceptionProem(self, a2);
 
-        [a3 __failWithExceptionName:@"NSArchiverArchiveInconsistency" errorCode:4864 format:{@"%@: unable to decode array with invalid type (%d)", v14, v13}];
+        [coder __failWithExceptionName:@"NSArchiverArchiveInconsistency" errorCode:4864 format:{@"%@: unable to decode array with invalid type (%d)", v14, v13}];
       }
     }
   }

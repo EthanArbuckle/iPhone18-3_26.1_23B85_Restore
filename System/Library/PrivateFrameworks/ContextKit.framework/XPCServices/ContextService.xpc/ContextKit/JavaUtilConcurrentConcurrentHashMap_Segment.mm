@@ -1,13 +1,13 @@
 @interface JavaUtilConcurrentConcurrentHashMap_Segment
-- (JavaUtilConcurrentConcurrentHashMap_Segment)initWithFloat:(float)a3;
+- (JavaUtilConcurrentConcurrentHashMap_Segment)initWithFloat:(float)float;
 @end
 
 @implementation JavaUtilConcurrentConcurrentHashMap_Segment
 
-- (JavaUtilConcurrentConcurrentHashMap_Segment)initWithFloat:(float)a3
+- (JavaUtilConcurrentConcurrentHashMap_Segment)initWithFloat:(float)float
 {
   JavaUtilConcurrentLocksReentrantLock_init(self);
-  self->loadFactor_ = a3;
+  self->loadFactor_ = float;
   return self;
 }
 

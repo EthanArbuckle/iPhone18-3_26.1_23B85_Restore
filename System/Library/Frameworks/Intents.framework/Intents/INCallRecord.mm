@@ -1,61 +1,61 @@
 @interface INCallRecord
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INCallRecord)initWithCoder:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INCallRecord)initWithCoder:(id)coder;
 - (INCallRecord)initWithIdentifier:(NSString *)identifier dateCreated:(NSDate *)dateCreated callRecordType:(INCallRecordType)callRecordType callCapability:(INCallCapability)callCapability callDuration:(NSNumber *)callDuration unseen:(NSNumber *)unseen participants:(NSArray *)participants numberOfCalls:(NSNumber *)numberOfCalls isCallerIdBlocked:(NSNumber *)isCallerIdBlocked;
-- (INCallRecord)initWithIdentifier:(id)a3 dateCreated:(id)a4 callRecordType:(int64_t)a5 callCapability:(int64_t)a6 callDuration:(id)a7 unseen:(id)a8 preferredCallProvider:(int64_t)a9 participants:(id)a10 numberOfCalls:(id)a11 providerId:(id)a12 providerBundleId:(id)a13 isCallerIdBlocked:(id)a14;
-- (INCallRecord)initWithIdentifier:(id)a3 dateCreated:(id)a4 caller:(id)a5 callRecordType:(int64_t)a6 callCapability:(int64_t)a7 callDuration:(id)a8 unseen:(id)a9 numberOfCalls:(id)a10 isCallerIdBlocked:(id)a11;
-- (INCallRecord)initWithIdentifier:(id)a3 dateCreated:(id)a4 caller:(id)a5 callRecordType:(int64_t)a6 callCapability:(int64_t)a7 callDuration:(id)a8 unseen:(id)a9 preferredCallProvider:(int64_t)a10 numberOfCalls:(id)a11 providerId:(id)a12 providerBundleId:(id)a13 isCallerIdBlocked:(id)a14;
+- (INCallRecord)initWithIdentifier:(id)identifier dateCreated:(id)created callRecordType:(int64_t)type callCapability:(int64_t)capability callDuration:(id)duration unseen:(id)unseen preferredCallProvider:(int64_t)provider participants:(id)self0 numberOfCalls:(id)self1 providerId:(id)self2 providerBundleId:(id)self3 isCallerIdBlocked:(id)self4;
+- (INCallRecord)initWithIdentifier:(id)identifier dateCreated:(id)created caller:(id)caller callRecordType:(int64_t)type callCapability:(int64_t)capability callDuration:(id)duration unseen:(id)unseen numberOfCalls:(id)self0 isCallerIdBlocked:(id)self1;
+- (INCallRecord)initWithIdentifier:(id)identifier dateCreated:(id)created caller:(id)caller callRecordType:(int64_t)type callCapability:(int64_t)capability callDuration:(id)duration unseen:(id)unseen preferredCallProvider:(int64_t)self0 numberOfCalls:(id)self1 providerId:(id)self2 providerBundleId:(id)self3 isCallerIdBlocked:(id)self4;
 - (id)_dictionaryRepresentation;
 - (id)_intents_cacheableObjects;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)_intents_updateContainerWithCache:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_intents_updateContainerWithCache:(id)cache;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INCallRecord
 
-- (INCallRecord)initWithIdentifier:(id)a3 dateCreated:(id)a4 caller:(id)a5 callRecordType:(int64_t)a6 callCapability:(int64_t)a7 callDuration:(id)a8 unseen:(id)a9 numberOfCalls:(id)a10 isCallerIdBlocked:(id)a11
+- (INCallRecord)initWithIdentifier:(id)identifier dateCreated:(id)created caller:(id)caller callRecordType:(int64_t)type callCapability:(int64_t)capability callDuration:(id)duration unseen:(id)unseen numberOfCalls:(id)self0 isCallerIdBlocked:(id)self1
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
-  if (a5)
+  identifierCopy = identifier;
+  createdCopy = created;
+  durationCopy = duration;
+  unseenCopy = unseen;
+  callsCopy = calls;
+  blockedCopy = blocked;
+  if (caller)
   {
-    v28[0] = a5;
+    v28[0] = caller;
     v21 = MEMORY[0x1E695DEC8];
-    v22 = a5;
-    a5 = [v21 arrayWithObjects:v28 count:1];
+    callerCopy = caller;
+    caller = [v21 arrayWithObjects:v28 count:1];
   }
 
-  v23 = [(INCallRecord *)self initWithIdentifier:v15 dateCreated:v16 callRecordType:a6 callCapability:a7 callDuration:v17 unseen:v18 participants:a5 numberOfCalls:v19 isCallerIdBlocked:v20];
+  v23 = [(INCallRecord *)self initWithIdentifier:identifierCopy dateCreated:createdCopy callRecordType:type callCapability:capability callDuration:durationCopy unseen:unseenCopy participants:caller numberOfCalls:callsCopy isCallerIdBlocked:blockedCopy];
 
   v24 = *MEMORY[0x1E69E9840];
   return v23;
 }
 
-- (INCallRecord)initWithIdentifier:(id)a3 dateCreated:(id)a4 caller:(id)a5 callRecordType:(int64_t)a6 callCapability:(int64_t)a7 callDuration:(id)a8 unseen:(id)a9 preferredCallProvider:(int64_t)a10 numberOfCalls:(id)a11 providerId:(id)a12 providerBundleId:(id)a13 isCallerIdBlocked:(id)a14
+- (INCallRecord)initWithIdentifier:(id)identifier dateCreated:(id)created caller:(id)caller callRecordType:(int64_t)type callCapability:(int64_t)capability callDuration:(id)duration unseen:(id)unseen preferredCallProvider:(int64_t)self0 numberOfCalls:(id)self1 providerId:(id)self2 providerBundleId:(id)self3 isCallerIdBlocked:(id)self4
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  v19 = a8;
-  v20 = a9;
-  v21 = a11;
-  v22 = a12;
-  v23 = a13;
-  v24 = a14;
-  if (a5)
+  identifierCopy = identifier;
+  createdCopy = created;
+  durationCopy = duration;
+  unseenCopy = unseen;
+  callsCopy = calls;
+  idCopy = id;
+  bundleIdCopy = bundleId;
+  blockedCopy = blocked;
+  if (caller)
   {
-    v34[0] = a5;
+    v34[0] = caller;
     v25 = MEMORY[0x1E695DEC8];
-    v26 = a5;
+    callerCopy = caller;
     v27 = [v25 arrayWithObjects:v34 count:1];
   }
 
@@ -64,25 +64,25 @@
     v27 = 0;
   }
 
-  v28 = [(INCallRecord *)self initWithIdentifier:v17 dateCreated:v18 callRecordType:a6 callCapability:a7 callDuration:v19 unseen:v20 preferredCallProvider:a10 participants:v27 numberOfCalls:v21 providerId:v22 providerBundleId:v23 isCallerIdBlocked:v24];
+  v28 = [(INCallRecord *)self initWithIdentifier:identifierCopy dateCreated:createdCopy callRecordType:type callCapability:capability callDuration:durationCopy unseen:unseenCopy preferredCallProvider:provider participants:v27 numberOfCalls:callsCopy providerId:idCopy providerBundleId:bundleIdCopy isCallerIdBlocked:blockedCopy];
 
   v29 = *MEMORY[0x1E69E9840];
   return v28;
 }
 
-- (void)_intents_updateContainerWithCache:(id)a3
+- (void)_intents_updateContainerWithCache:(id)cache
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INCallRecord(Deprecated) *)self caller];
-  [v5 _intents_updateContainerWithCache:v4];
+  cacheCopy = cache;
+  caller = [(INCallRecord(Deprecated) *)self caller];
+  [caller _intents_updateContainerWithCache:cacheCopy];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(INCallRecord *)self participants];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  participants = [(INCallRecord *)self participants];
+  v7 = [participants countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -94,14 +94,14 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(participants);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) _intents_updateContainerWithCache:v4];
+        [*(*(&v12 + 1) + 8 * v10++) _intents_updateContainerWithCache:cacheCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [participants countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -114,16 +114,16 @@
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(INCallRecord(Deprecated) *)self caller];
-  v5 = [v4 _intents_cacheableObjects];
-  [v3 unionSet:v5];
+  caller = [(INCallRecord(Deprecated) *)self caller];
+  _intents_cacheableObjects = [caller _intents_cacheableObjects];
+  [v3 unionSet:_intents_cacheableObjects];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(INCallRecord *)self participants];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  participants = [(INCallRecord *)self participants];
+  v7 = [participants countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -135,17 +135,17 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(participants);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * v10) _intents_cacheableObjects];
-        [v3 unionSet:v11];
+        _intents_cacheableObjects2 = [*(*(&v16 + 1) + 8 * v10) _intents_cacheableObjects];
+        [v3 unionSet:_intents_cacheableObjects2];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [participants countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -218,52 +218,52 @@
   v33[5] = v26;
   v32[6] = @"numberOfCalls";
   numberOfCalls = self->_numberOfCalls;
-  v8 = numberOfCalls;
+  null = numberOfCalls;
   if (!numberOfCalls)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33[6] = v8;
+  v33[6] = null;
   v32[7] = @"preferredCallProvider";
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{self->_preferredCallProvider, v8}];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{self->_preferredCallProvider, null}];
   v33[7] = v9;
   v32[8] = @"providerId";
   providerId = self->_providerId;
-  v11 = providerId;
+  null2 = providerId;
   if (!providerId)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33[8] = v11;
+  v33[8] = null2;
   v32[9] = @"providerBundleId";
   providerBundleId = self->_providerBundleId;
-  v13 = providerBundleId;
+  null3 = providerBundleId;
   if (!providerBundleId)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33[9] = v13;
+  v33[9] = null3;
   v32[10] = @"isCallerIdBlocked";
   isCallerIdBlocked = self->_isCallerIdBlocked;
-  v15 = isCallerIdBlocked;
+  null4 = isCallerIdBlocked;
   if (!isCallerIdBlocked)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33[10] = v15;
+  v33[10] = null4;
   v32[11] = @"participants";
   participants = self->_participants;
-  v17 = participants;
+  null5 = participants;
   if (!participants)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33[11] = v17;
+  v33[11] = null5;
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:12];
   if (participants)
   {
@@ -334,29 +334,29 @@ LABEL_23:
   return v25;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INCallRecord;
   v6 = [(INCallRecord *)&v11 description];
-  v7 = [(INCallRecord *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INCallRecord *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_identifier];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"identifier"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_identifier];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"identifier"];
 
-  v9 = [v6 encodeObject:self->_dateCreated];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"dateCreated"];
+  v9 = [encoderCopy encodeObject:self->_dateCreated];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"dateCreated"];
 
   v10 = self->_callRecordType - 1;
   if (v10 > 7)
@@ -370,13 +370,13 @@ LABEL_23:
   }
 
   v12 = v11;
-  [v7 if_setObjectIfNonNil:v12 forKey:@"callRecordType"];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"callRecordType"];
 
-  v13 = [v6 encodeObject:self->_callDuration];
-  [v7 if_setObjectIfNonNil:v13 forKey:@"callDuration"];
+  v13 = [encoderCopy encodeObject:self->_callDuration];
+  [dictionary if_setObjectIfNonNil:v13 forKey:@"callDuration"];
 
-  v14 = [v6 encodeObject:self->_unseen];
-  [v7 if_setObjectIfNonNil:v14 forKey:@"unseen"];
+  v14 = [encoderCopy encodeObject:self->_unseen];
+  [dictionary if_setObjectIfNonNil:v14 forKey:@"unseen"];
 
   callCapability = self->_callCapability;
   v16 = @"unknown";
@@ -396,10 +396,10 @@ LABEL_23:
   }
 
   v18 = v17;
-  [v7 if_setObjectIfNonNil:v18 forKey:@"callCapability"];
+  [dictionary if_setObjectIfNonNil:v18 forKey:@"callCapability"];
 
-  v19 = [v6 encodeObject:self->_numberOfCalls];
-  [v7 if_setObjectIfNonNil:v19 forKey:@"numberOfCalls"];
+  v19 = [encoderCopy encodeObject:self->_numberOfCalls];
+  [dictionary if_setObjectIfNonNil:v19 forKey:@"numberOfCalls"];
 
   v20 = self->_preferredCallProvider - 1;
   if (v20 > 2)
@@ -413,85 +413,85 @@ LABEL_23:
   }
 
   v22 = v21;
-  [v7 if_setObjectIfNonNil:v22 forKey:@"preferredCallProvider"];
+  [dictionary if_setObjectIfNonNil:v22 forKey:@"preferredCallProvider"];
 
-  v23 = [v6 encodeObject:self->_providerId];
-  [v7 if_setObjectIfNonNil:v23 forKey:@"providerId"];
+  v23 = [encoderCopy encodeObject:self->_providerId];
+  [dictionary if_setObjectIfNonNil:v23 forKey:@"providerId"];
 
-  v24 = [v6 encodeObject:self->_providerBundleId];
-  [v7 if_setObjectIfNonNil:v24 forKey:@"providerBundleId"];
+  v24 = [encoderCopy encodeObject:self->_providerBundleId];
+  [dictionary if_setObjectIfNonNil:v24 forKey:@"providerBundleId"];
 
-  v25 = [v6 encodeObject:self->_isCallerIdBlocked];
-  [v7 if_setObjectIfNonNil:v25 forKey:@"isCallerIdBlocked"];
+  v25 = [encoderCopy encodeObject:self->_isCallerIdBlocked];
+  [dictionary if_setObjectIfNonNil:v25 forKey:@"isCallerIdBlocked"];
 
-  v26 = [v6 encodeObject:self->_participants];
+  v26 = [encoderCopy encodeObject:self->_participants];
 
-  [v7 if_setObjectIfNonNil:v26 forKey:@"participants"];
+  [dictionary if_setObjectIfNonNil:v26 forKey:@"participants"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_dateCreated forKey:@"dateCreated"];
-  [v5 encodeInteger:self->_callRecordType forKey:@"callRecordType"];
-  [v5 encodeObject:self->_callDuration forKey:@"callDuration"];
-  [v5 encodeObject:self->_unseen forKey:@"unseen"];
-  [v5 encodeInteger:self->_callCapability forKey:@"callCapability"];
-  [v5 encodeObject:self->_numberOfCalls forKey:@"numberOfCalls"];
-  [v5 encodeInteger:self->_preferredCallProvider forKey:@"preferredCallProvider"];
-  [v5 encodeObject:self->_providerId forKey:@"providerId"];
-  [v5 encodeObject:self->_providerBundleId forKey:@"providerBundleId"];
-  [v5 encodeObject:self->_isCallerIdBlocked forKey:@"isCallerIdBlocked"];
-  [v5 encodeObject:self->_participants forKey:@"participants"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_dateCreated forKey:@"dateCreated"];
+  [coderCopy encodeInteger:self->_callRecordType forKey:@"callRecordType"];
+  [coderCopy encodeObject:self->_callDuration forKey:@"callDuration"];
+  [coderCopy encodeObject:self->_unseen forKey:@"unseen"];
+  [coderCopy encodeInteger:self->_callCapability forKey:@"callCapability"];
+  [coderCopy encodeObject:self->_numberOfCalls forKey:@"numberOfCalls"];
+  [coderCopy encodeInteger:self->_preferredCallProvider forKey:@"preferredCallProvider"];
+  [coderCopy encodeObject:self->_providerId forKey:@"providerId"];
+  [coderCopy encodeObject:self->_providerBundleId forKey:@"providerBundleId"];
+  [coderCopy encodeObject:self->_isCallerIdBlocked forKey:@"isCallerIdBlocked"];
+  [coderCopy encodeObject:self->_participants forKey:@"participants"];
 }
 
-- (INCallRecord)initWithCoder:(id)a3
+- (INCallRecord)initWithCoder:(id)coder
 {
   v32[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = [v3 setWithObjects:{v5, objc_opt_class(), 0}];
-  v30 = [v4 decodeObjectOfClasses:v6 forKey:@"identifier"];
+  v30 = [coderCopy decodeObjectOfClasses:v6 forKey:@"identifier"];
 
-  v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateCreated"];
-  v28 = [v4 decodeIntegerForKey:@"callRecordType"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callDuration"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unseen"];
-  v27 = [v4 decodeIntegerForKey:@"callCapability"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"numberOfCalls"];
-  v26 = [v4 decodeIntegerForKey:@"preferredCallProvider"];
+  v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateCreated"];
+  v28 = [coderCopy decodeIntegerForKey:@"callRecordType"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callDuration"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unseen"];
+  v27 = [coderCopy decodeIntegerForKey:@"callCapability"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"numberOfCalls"];
+  v26 = [coderCopy decodeIntegerForKey:@"preferredCallProvider"];
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"providerId"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"providerId"];
 
   v14 = MEMORY[0x1E695DFD8];
   v15 = objc_opt_class();
   v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-  v17 = [v4 decodeObjectOfClasses:v16 forKey:@"providerBundleId"];
+  v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"providerBundleId"];
 
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isCallerIdBlocked"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isCallerIdBlocked"];
   v19 = MEMORY[0x1E695DFD8];
   v32[0] = objc_opt_class();
   v32[1] = objc_opt_class();
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:2];
   v21 = [v19 setWithArray:v20];
-  v22 = [v4 decodeObjectOfClasses:v21 forKey:@"participants"];
+  v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"participants"];
 
   v23 = [(INCallRecord *)self initWithIdentifier:v30 dateCreated:v29 callRecordType:v28 callCapability:v27 callDuration:v7 unseen:v8 preferredCallProvider:v26 participants:v22 numberOfCalls:v9 providerId:v13 providerBundleId:v17 isCallerIdBlocked:v18];
   v24 = *MEMORY[0x1E69E9840];
   return v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -501,7 +501,7 @@ LABEL_23:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = self->_identifier;
       if (identifier != v5->_identifier && ![(NSString *)identifier isEqual:?])
       {
@@ -556,58 +556,58 @@ LABEL_27:
   return v14 ^ v17;
 }
 
-- (INCallRecord)initWithIdentifier:(id)a3 dateCreated:(id)a4 callRecordType:(int64_t)a5 callCapability:(int64_t)a6 callDuration:(id)a7 unseen:(id)a8 preferredCallProvider:(int64_t)a9 participants:(id)a10 numberOfCalls:(id)a11 providerId:(id)a12 providerBundleId:(id)a13 isCallerIdBlocked:(id)a14
+- (INCallRecord)initWithIdentifier:(id)identifier dateCreated:(id)created callRecordType:(int64_t)type callCapability:(int64_t)capability callDuration:(id)duration unseen:(id)unseen preferredCallProvider:(int64_t)provider participants:(id)self0 numberOfCalls:(id)self1 providerId:(id)self2 providerBundleId:(id)self3 isCallerIdBlocked:(id)self4
 {
-  v48 = a3;
-  v19 = a4;
-  v20 = a7;
-  v21 = a8;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
-  v26 = a14;
+  identifierCopy = identifier;
+  createdCopy = created;
+  durationCopy = duration;
+  unseenCopy = unseen;
+  participantsCopy = participants;
+  callsCopy = calls;
+  idCopy = id;
+  bundleIdCopy = bundleId;
+  blockedCopy = blocked;
   v49.receiver = self;
   v49.super_class = INCallRecord;
   v27 = [(INCallRecord *)&v49 init];
   if (v27)
   {
-    v28 = [v48 copy];
+    v28 = [identifierCopy copy];
     identifier = v27->_identifier;
     v27->_identifier = v28;
 
-    v30 = [v19 copy];
+    v30 = [createdCopy copy];
     dateCreated = v27->_dateCreated;
     v27->_dateCreated = v30;
 
-    v27->_callRecordType = a5;
-    v32 = [v20 copy];
+    v27->_callRecordType = type;
+    v32 = [durationCopy copy];
     callDuration = v27->_callDuration;
     v27->_callDuration = v32;
 
-    v34 = [v21 copy];
+    v34 = [unseenCopy copy];
     unseen = v27->_unseen;
     v27->_unseen = v34;
 
-    v27->_callCapability = a6;
-    v36 = [v23 copy];
+    v27->_callCapability = capability;
+    v36 = [callsCopy copy];
     numberOfCalls = v27->_numberOfCalls;
     v27->_numberOfCalls = v36;
 
-    v27->_preferredCallProvider = a9;
-    v38 = [v24 copy];
+    v27->_preferredCallProvider = provider;
+    v38 = [idCopy copy];
     providerId = v27->_providerId;
     v27->_providerId = v38;
 
-    v40 = [v25 copy];
+    v40 = [bundleIdCopy copy];
     providerBundleId = v27->_providerBundleId;
     v27->_providerBundleId = v40;
 
-    v42 = [v26 copy];
+    v42 = [blockedCopy copy];
     isCallerIdBlocked = v27->_isCallerIdBlocked;
     v27->_isCallerIdBlocked = v42;
 
-    v44 = [v22 copy];
+    v44 = [participantsCopy copy];
     participants = v27->_participants;
     v27->_participants = v44;
   }
@@ -663,45 +663,45 @@ LABEL_27:
   return v24;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v31 = [v8 objectForKeyedSubscript:@"identifier"];
-    v34 = a1;
+    v31 = [fromCopy objectForKeyedSubscript:@"identifier"];
+    selfCopy = self;
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"dateCreated"];
-    v33 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"dateCreated"];
+    v33 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
-    v11 = [v8 objectForKeyedSubscript:@"callRecordType"];
+    v11 = [fromCopy objectForKeyedSubscript:@"callRecordType"];
     v29 = INCallRecordTypeWithString(v11);
 
     v12 = objc_opt_class();
-    v13 = [v8 objectForKeyedSubscript:@"callDuration"];
-    v28 = [v7 decodeObjectOfClass:v12 from:v13];
+    v13 = [fromCopy objectForKeyedSubscript:@"callDuration"];
+    v28 = [decoderCopy decodeObjectOfClass:v12 from:v13];
 
-    v32 = [v8 objectForKeyedSubscript:@"unseen"];
-    v14 = [v8 objectForKeyedSubscript:@"callCapability"];
+    v32 = [fromCopy objectForKeyedSubscript:@"unseen"];
+    v14 = [fromCopy objectForKeyedSubscript:@"callCapability"];
     v30 = INCallCapabilityWithString(v14);
 
     v15 = objc_opt_class();
-    v16 = [v8 objectForKeyedSubscript:@"numberOfCalls"];
-    v27 = [v7 decodeObjectOfClass:v15 from:v16];
+    v16 = [fromCopy objectForKeyedSubscript:@"numberOfCalls"];
+    v27 = [decoderCopy decodeObjectOfClass:v15 from:v16];
 
-    v17 = [v8 objectForKeyedSubscript:@"preferredCallProvider"];
+    v17 = [fromCopy objectForKeyedSubscript:@"preferredCallProvider"];
     v18 = INPreferredCallProviderWithString(v17);
 
-    v26 = [v8 objectForKeyedSubscript:@"providerId"];
-    v19 = [v8 objectForKeyedSubscript:@"providerBundleId"];
-    v20 = [v8 objectForKeyedSubscript:@"isCallerIdBlocked"];
+    v26 = [fromCopy objectForKeyedSubscript:@"providerId"];
+    v19 = [fromCopy objectForKeyedSubscript:@"providerBundleId"];
+    v20 = [fromCopy objectForKeyedSubscript:@"isCallerIdBlocked"];
     v21 = objc_opt_class();
-    v22 = [v8 objectForKeyedSubscript:@"participants"];
-    v23 = [v7 decodeObjectsOfClass:v21 from:v22];
+    v22 = [fromCopy objectForKeyedSubscript:@"participants"];
+    v23 = [decoderCopy decodeObjectsOfClass:v21 from:v22];
 
-    v24 = [[v34 alloc] initWithIdentifier:v31 dateCreated:v33 callRecordType:v29 callCapability:v30 callDuration:v28 unseen:v32 preferredCallProvider:v18 participants:v23 numberOfCalls:v27 providerId:v26 providerBundleId:v19 isCallerIdBlocked:v20];
+    v24 = [[selfCopy alloc] initWithIdentifier:v31 dateCreated:v33 callRecordType:v29 callCapability:v30 callDuration:v28 unseen:v32 preferredCallProvider:v18 participants:v23 numberOfCalls:v27 providerId:v26 providerBundleId:v19 isCallerIdBlocked:v20];
   }
 
   else

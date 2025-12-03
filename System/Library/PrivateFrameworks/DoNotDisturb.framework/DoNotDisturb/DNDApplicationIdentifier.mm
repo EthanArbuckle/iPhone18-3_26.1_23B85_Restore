@@ -1,37 +1,37 @@
 @interface DNDApplicationIdentifier
-- (BOOL)isEqual:(id)a3;
-- (DNDApplicationIdentifier)initWithBundleID:(id)a3;
-- (DNDApplicationIdentifier)initWithBundleID:(id)a3 platform:(unint64_t)a4;
-- (DNDApplicationIdentifier)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DNDApplicationIdentifier)initWithBundleID:(id)d;
+- (DNDApplicationIdentifier)initWithBundleID:(id)d platform:(unint64_t)platform;
+- (DNDApplicationIdentifier)initWithCoder:(id)coder;
 - (NSString)description;
 - (id)diffDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDApplicationIdentifier
 
-- (DNDApplicationIdentifier)initWithBundleID:(id)a3
+- (DNDApplicationIdentifier)initWithBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(DNDApplicationIdentifier *)self initWithBundleID:v4 platform:DNDPlatformForCurrentDevice()];
+  dCopy = d;
+  v5 = [(DNDApplicationIdentifier *)self initWithBundleID:dCopy platform:DNDPlatformForCurrentDevice()];
 
   return v5;
 }
 
-- (DNDApplicationIdentifier)initWithBundleID:(id)a3 platform:(unint64_t)a4
+- (DNDApplicationIdentifier)initWithBundleID:(id)d platform:(unint64_t)platform
 {
-  v6 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = DNDApplicationIdentifier;
   v7 = [(DNDApplicationIdentifier *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dCopy copy];
     bundleID = v7->_bundleID;
     v7->_bundleID = v8;
 
-    v7->_platform = a4;
+    v7->_platform = platform;
   }
 
   return v7;
@@ -39,17 +39,17 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDApplicationIdentifier *)self bundleID];
-  v4 = [v3 hash];
-  v5 = [(DNDApplicationIdentifier *)self platform];
+  bundleID = [(DNDApplicationIdentifier *)self bundleID];
+  v4 = [bundleID hash];
+  platform = [(DNDApplicationIdentifier *)self platform];
 
-  return v5 ^ v4;
+  return platform ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = a3;
-  if (self == v8)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -59,30 +59,30 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
-      v10 = [(DNDApplicationIdentifier *)self bundleID];
-      v11 = [(DNDApplicationIdentifier *)v9 bundleID];
-      if (v10 != v11)
+      v9 = equalCopy;
+      bundleID = [(DNDApplicationIdentifier *)self bundleID];
+      bundleID2 = [(DNDApplicationIdentifier *)v9 bundleID];
+      if (bundleID != bundleID2)
       {
-        v12 = [(DNDApplicationIdentifier *)self bundleID];
-        if (!v12)
+        bundleID3 = [(DNDApplicationIdentifier *)self bundleID];
+        if (!bundleID3)
         {
           v14 = 0;
           goto LABEL_15;
         }
 
-        v3 = v12;
-        v13 = [(DNDApplicationIdentifier *)v9 bundleID];
-        if (!v13)
+        v3 = bundleID3;
+        bundleID4 = [(DNDApplicationIdentifier *)v9 bundleID];
+        if (!bundleID4)
         {
           v14 = 0;
           goto LABEL_14;
         }
 
-        v4 = v13;
-        v5 = [(DNDApplicationIdentifier *)self bundleID];
-        v6 = [(DNDApplicationIdentifier *)v9 bundleID];
-        if (![v5 isEqual:v6])
+        v4 = bundleID4;
+        bundleID5 = [(DNDApplicationIdentifier *)self bundleID];
+        bundleID6 = [(DNDApplicationIdentifier *)v9 bundleID];
+        if (![bundleID5 isEqual:bundleID6])
         {
           v14 = 0;
 LABEL_11:
@@ -92,9 +92,9 @@ LABEL_14:
         }
       }
 
-      v15 = [(DNDApplicationIdentifier *)self platform];
-      v14 = v15 == [(DNDApplicationIdentifier *)v9 platform];
-      if (v10 != v11)
+      platform = [(DNDApplicationIdentifier *)self platform];
+      v14 = platform == [(DNDApplicationIdentifier *)v9 platform];
+      if (bundleID != bundleID2)
       {
         goto LABEL_11;
       }
@@ -116,9 +116,9 @@ LABEL_16:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDApplicationIdentifier *)self bundleID];
+  bundleID = [(DNDApplicationIdentifier *)self bundleID];
   v6 = NSStringFromDNDPlatform(self->_platform);
-  v7 = [v3 stringWithFormat:@"<%@: %p bundleID: %@; platform: %@>", v4, self, v5, v6];;
+  v7 = [v3 stringWithFormat:@"<%@: %p bundleID: %@; platform: %@>", v4, self, bundleID, v6];;
 
   return v7;
 }
@@ -133,22 +133,22 @@ LABEL_16:
   return v5;
 }
 
-- (DNDApplicationIdentifier)initWithCoder:(id)a3
+- (DNDApplicationIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
-  v6 = [v4 decodeIntegerForKey:@"platform"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+  v6 = [coderCopy decodeIntegerForKey:@"platform"];
 
   v7 = [(DNDApplicationIdentifier *)self initWithBundleID:v5 platform:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleID = self->_bundleID;
-  v5 = a3;
-  [v5 encodeObject:bundleID forKey:@"bundleID"];
-  [v5 encodeInteger:self->_platform forKey:@"platform"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleID forKey:@"bundleID"];
+  [coderCopy encodeInteger:self->_platform forKey:@"platform"];
 }
 
 @end

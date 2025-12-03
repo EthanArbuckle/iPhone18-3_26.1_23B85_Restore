@@ -1,40 +1,40 @@
 @interface Core_Audio_Driver
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (Core_Audio_Driver)init;
 - (id).cxx_construct;
-- (id)init_driver_interface:(AudioServerPlugInDriverInterface *)a3 invalidation_handler:(function<void)(;
-- (int)create_and_start_io_receiver:(unsigned int)a3 client_id:(unsigned int)a4 nominal_sample_rate:(double)a5 io_buffer_frame_size:(unsigned int)a6 work_group_port:(id)a7 io_messenger:(id)a8;
-- (int)destroy_io_receiver:(unsigned int)a3;
-- (int)destroy_io_receiver:(unsigned int)a3 client_id:(unsigned int)a4;
-- (int)handle_register_buffer:(dict)a3;
-- (int)handle_unregister_buffer:(dict)a3;
+- (id)init_driver_interface:(AudioServerPlugInDriverInterface *)init_driver_interface invalidation_handler:(function<void)(;
+- (int)create_and_start_io_receiver:(unsigned int)create_and_start_io_receiver client_id:(unsigned int)client_id nominal_sample_rate:(double)nominal_sample_rate io_buffer_frame_size:(unsigned int)io_buffer_frame_size work_group_port:(id)work_group_port io_messenger:(id)io_messenger;
+- (int)destroy_io_receiver:(unsigned int)destroy_io_receiver;
+- (int)destroy_io_receiver:(unsigned int)destroy_io_receiver client_id:(unsigned int)client_id;
+- (int)handle_register_buffer:(dict)handle_register_buffer;
+- (int)handle_unregister_buffer:(dict)handle_unregister_buffer;
 - (shared_ptr<Property_Type_Info>)m_property_type_info;
 - (shared_ptr<caulk::mach::unfair_lock>)config_change_info_lock;
 - (shared_ptr<caulk::mach::unfair_lock>)io_receiver_lock;
 - (shared_ptr<std::map<unsigned)config_change_info_map;
 - (shared_ptr<std::unordered_map<AMCP::Portal::IPC::io_messenger_id_t,)io_receivers;
 - (shared_ptr<std::vector<std::pair<AMCP::Portal::IPC::shared_buffer_info_t,)io_buffer_list;
-- (void)abort_device_configuration_change:(unsigned int)a3 action:(unint64_t)a4 change:(unint64_t)a5 reply:(id)a6;
-- (void)create_device:(id)a3 client_id:(unsigned int)a4 process_id:(int)a5 is_native_endianess:(BOOL)a6 bundle_id:(id)a7 reply:(id)a8;
+- (void)abort_device_configuration_change:(unsigned int)abort_device_configuration_change action:(unint64_t)action change:(unint64_t)change reply:(id)reply;
+- (void)create_device:(id)create_device client_id:(unsigned int)client_id process_id:(int)process_id is_native_endianess:(BOOL)is_native_endianess bundle_id:(id)bundle_id reply:(id)reply;
 - (void)dealloc;
-- (void)get_property_data:(Driver_Property_Identity *)a3 qualifier:(id)a4 data_size:(unsigned int)a5 reply:(id)a6;
-- (void)get_property_data_size:(Driver_Property_Identity *)a3 qualifier:(id)a4 reply:(id)a5;
-- (void)has_property:(Driver_Property_Identity *)a3 reply:(id)a4;
-- (void)initialize:(id)a3 reply:(id)a4;
-- (void)is_property_settable:(Driver_Property_Identity *)a3 reply:(id)a4;
-- (void)object_was_destroyed:(unsigned int)a3 reply:(id)a4;
-- (void)perform_device_configuration_change:(unsigned int)a3 action:(unint64_t)a4 change:(unint64_t)a5 reply:(id)a6;
-- (void)register_io_buffer:(id)a3 reply:(id)a4;
-- (void)release_unpacked_cf_objects:(unsigned int)a3 qualifier_data:(id)a4 data_type:(unsigned int)a5 data:(id)a6;
-- (void)setConfig_change_info_map:(shared_ptr<std:(void *>>)a3 :map<unsigned long)long;
-- (void)setIo_buffer_list:()shared_ptr<std:(applesauce::xpc::dict>>>)a3 :vector<std::pair<AMCP::Portal::IPC::shared_buffer_info_t;
-- (void)setIo_receiver_lock:(shared_ptr<caulk::mach::unfair_lock>)a3;
-- (void)setIo_receivers:()shared_ptr<std:(std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>>)a3 :unordered_map<AMCP::Portal::IPC::io_messenger_id_t;
-- (void)setM_property_type_info:(shared_ptr<Property_Type_Info>)a3;
-- (void)set_property_data:(Driver_Property_Identity *)a3 qualifier:(id)a4 data:(id)a5 reply:(id)a6;
-- (void)stop_synchronous_messenger:(unsigned int)a3 client_id:(unsigned int)a4 reply:(id)a5;
-- (void)store_change_info:(void *)a3 for_token:(unint64_t)a4;
-- (void)unregister_io_buffer:(id)a3 reply:(id)a4;
+- (void)get_property_data:(Driver_Property_Identity *)get_property_data qualifier:(id)qualifier data_size:(unsigned int)data_size reply:(id)reply;
+- (void)get_property_data_size:(Driver_Property_Identity *)get_property_data_size qualifier:(id)qualifier reply:(id)reply;
+- (void)has_property:(Driver_Property_Identity *)has_property reply:(id)reply;
+- (void)initialize:(id)initialize reply:(id)reply;
+- (void)is_property_settable:(Driver_Property_Identity *)is_property_settable reply:(id)reply;
+- (void)object_was_destroyed:(unsigned int)object_was_destroyed reply:(id)reply;
+- (void)perform_device_configuration_change:(unsigned int)perform_device_configuration_change action:(unint64_t)action change:(unint64_t)change reply:(id)reply;
+- (void)register_io_buffer:(id)register_io_buffer reply:(id)reply;
+- (void)release_unpacked_cf_objects:(unsigned int)release_unpacked_cf_objects qualifier_data:(id)qualifier_data data_type:(unsigned int)data_type data:(id)data;
+- (void)setConfig_change_info_map:(shared_ptr<std:(void *>>)config_change_info_map :map<unsigned long)long;
+- (void)setIo_buffer_list:()shared_ptr<std:(applesauce::xpc::dict>>>)std :vector<std::pair<AMCP::Portal::IPC::shared_buffer_info_t;
+- (void)setIo_receiver_lock:(shared_ptr<caulk::mach::unfair_lock>)io_receiver_lock;
+- (void)setIo_receivers:()shared_ptr<std:(std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>>)std :unordered_map<AMCP::Portal::IPC::io_messenger_id_t;
+- (void)setM_property_type_info:(shared_ptr<Property_Type_Info>)m_property_type_info;
+- (void)set_property_data:(Driver_Property_Identity *)set_property_data qualifier:(id)qualifier data:(id)data reply:(id)reply;
+- (void)stop_synchronous_messenger:(unsigned int)stop_synchronous_messenger client_id:(unsigned int)client_id reply:(id)reply;
+- (void)store_change_info:(void *)store_change_info for_token:(unint64_t)for_token;
+- (void)unregister_io_buffer:(id)unregister_io_buffer reply:(id)reply;
 @end
 
 @implementation Core_Audio_Driver
@@ -51,10 +51,10 @@
   return self;
 }
 
-- (void)setIo_buffer_list:()shared_ptr<std:(applesauce::xpc::dict>>>)a3 :vector<std::pair<AMCP::Portal::IPC::shared_buffer_info_t
+- (void)setIo_buffer_list:()shared_ptr<std:(applesauce::xpc::dict>>>)std :vector<std::pair<AMCP::Portal::IPC::shared_buffer_info_t
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *std.__ptr_;
+  v3 = *(std.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -84,10 +84,10 @@
   return result;
 }
 
-- (void)setIo_receivers:()shared_ptr<std:(std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>>)a3 :unordered_map<AMCP::Portal::IPC::io_messenger_id_t
+- (void)setIo_receivers:()shared_ptr<std:(std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>>)std :unordered_map<AMCP::Portal::IPC::io_messenger_id_t
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *std.__ptr_;
+  v3 = *(std.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -117,10 +117,10 @@
   return result;
 }
 
-- (void)setIo_receiver_lock:(shared_ptr<caulk::mach::unfair_lock>)a3
+- (void)setIo_receiver_lock:(shared_ptr<caulk::mach::unfair_lock>)io_receiver_lock
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *io_receiver_lock.__ptr_;
+  v3 = *(io_receiver_lock.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -150,10 +150,10 @@
   return result;
 }
 
-- (void)setM_property_type_info:(shared_ptr<Property_Type_Info>)a3
+- (void)setM_property_type_info:(shared_ptr<Property_Type_Info>)m_property_type_info
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *m_property_type_info.__ptr_;
+  v3 = *(m_property_type_info.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -183,10 +183,10 @@
   return result;
 }
 
-- (void)setConfig_change_info_map:(shared_ptr<std:(void *>>)a3 :map<unsigned long)long
+- (void)setConfig_change_info_map:(shared_ptr<std:(void *>>)config_change_info_map :map<unsigned long)long
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *config_change_info_map.__ptr_;
+  v3 = *(config_change_info_map.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -231,27 +231,27 @@
   return result;
 }
 
-- (void)set_property_data:(Driver_Property_Identity *)a3 qualifier:(id)a4 data:(id)a5 reply:(id)a6
+- (void)set_property_data:(Driver_Property_Identity *)set_property_data qualifier:(id)qualifier data:(id)data reply:(id)reply
 {
   v61 = *MEMORY[0x1E69E9840];
-  v43 = a4;
-  v42 = a5;
-  v40 = self;
-  v41 = a6;
-  v10 = [(Core_Audio_Driver *)self asp_interface];
+  qualifierCopy = qualifier;
+  dataCopy = data;
+  selfCopy = self;
+  replyCopy = reply;
+  asp_interface = [(Core_Audio_Driver *)self asp_interface];
   [(Core_Audio_Driver *)self m_property_type_info];
-  p_var2 = &a3->var2;
-  property_data_and_qualifier_type_code = Property_Type_Info::get_property_data_and_qualifier_type_code(*buf, a3->var0, a3->var2.mSelector);
+  p_var2 = &set_property_data->var2;
+  property_data_and_qualifier_type_code = Property_Type_Info::get_property_data_and_qualifier_type_code(*buf, set_property_data->var0, set_property_data->var2.mSelector);
   if (*&buf[8])
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](*&buf[8]);
   }
 
-  unpack_data_from_qualifier(buf, HIDWORD(property_data_and_qualifier_type_code), v43);
+  unpack_data_from_qualifier(buf, HIDWORD(property_data_and_qualifier_type_code), qualifierCopy);
   v44 = *buf;
   v13 = *&buf[8];
   v39 = *&buf[12];
-  v14 = v42;
+  v14 = dataCopy;
   if (!v14)
   {
     v31 = atomic_load(StaticContainer<AMCP::Log::AMCP_Scope_Registry_Statics>::s_statics_initialized);
@@ -383,41 +383,41 @@
 
   v22 = v46;
 
-  SetPropertyData = (*v10)->SetPropertyData;
-  var0 = a3->var0;
-  var1 = a3->var1;
+  SetPropertyData = (*asp_interface)->SetPropertyData;
+  var0 = set_property_data->var0;
+  var1 = set_property_data->var1;
   v26 = v44;
-  v27 = [v44 bytes];
+  bytes = [v44 bytes];
   v28 = v19;
-  v29 = (SetPropertyData)(v10, var0, var1, p_var2, v13, v27, v22, [v19 bytes]);
-  v41[2](v41, v29);
-  [(Core_Audio_Driver *)v40 release_unpacked_cf_objects:v39 qualifier_data:v44 data_type:property_data_and_qualifier_type_code data:v19];
+  v29 = (SetPropertyData)(asp_interface, var0, var1, p_var2, v13, bytes, v22, [v19 bytes]);
+  replyCopy[2](replyCopy, v29);
+  [(Core_Audio_Driver *)selfCopy release_unpacked_cf_objects:v39 qualifier_data:v44 data_type:property_data_and_qualifier_type_code data:v19];
 
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)get_property_data:(Driver_Property_Identity *)a3 qualifier:(id)a4 data_size:(unsigned int)a5 reply:(id)a6
+- (void)get_property_data:(Driver_Property_Identity *)get_property_data qualifier:(id)qualifier data_size:(unsigned int)data_size reply:(id)reply
 {
   v48 = *MEMORY[0x1E69E9840];
-  v41 = a4;
-  v42 = a6;
-  v43 = self;
-  v40 = [(Core_Audio_Driver *)self asp_interface];
+  qualifierCopy = qualifier;
+  replyCopy = reply;
+  selfCopy = self;
+  asp_interface = [(Core_Audio_Driver *)self asp_interface];
   [(Core_Audio_Driver *)self m_property_type_info];
-  property_qualifier_type_code = Property_Type_Info::get_property_qualifier_type_code(v46, a3->var0, a3->var2.mSelector);
+  property_qualifier_type_code = Property_Type_Info::get_property_qualifier_type_code(v46, get_property_data->var0, get_property_data->var2.mSelector);
   if (v47)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v47);
   }
 
-  unpack_data_from_qualifier(&v46, property_qualifier_type_code, v41);
+  unpack_data_from_qualifier(&v46, property_qualifier_type_code, qualifierCopy);
   v44 = v46;
   v11 = v47;
   v38 = HIDWORD(v47);
   [(Core_Audio_Driver *)self m_property_type_info];
   v12 = v46;
-  var0 = a3->var0;
-  mSelector = a3->var2.mSelector;
+  var0 = get_property_data->var0;
+  mSelector = get_property_data->var2.mSelector;
   std::mutex::lock((v46 + 24));
   v15 = *v12;
   v16 = *(v12 + 1);
@@ -481,18 +481,18 @@ LABEL_16:
   v21 = qword_1DE7962A0[hal_property_value_type_code] | qword_1DE796208[hal_property_value_type_code];
   if ((v21 & 0x100000000) == 0)
   {
-    LODWORD(v21) = a5;
+    LODWORD(v21) = data_size;
   }
 
   v45 = v21;
   v22 = [objc_alloc(MEMORY[0x1E695DF80]) initWithLength:v21];
-  GetPropertyData = (*v40)->GetPropertyData;
-  v24 = a3->var0;
-  var1 = a3->var1;
+  GetPropertyData = (*asp_interface)->GetPropertyData;
+  v24 = get_property_data->var0;
+  var1 = get_property_data->var1;
   v26 = v44;
-  v27 = [(Property_Type_Info *)v44 bytes];
+  bytes = [(Property_Type_Info *)v44 bytes];
   v28 = v22;
-  v29 = (GetPropertyData)(v40, v24, var1, &a3->var2, v11, v27, v45, &v45, [v22 mutableBytes]);
+  v29 = (GetPropertyData)(asp_interface, v24, var1, &get_property_data->var2, v11, bytes, v45, &v45, [v22 mutableBytes]);
   if (v29)
   {
     v30 = 0;
@@ -500,11 +500,11 @@ LABEL_16:
 
   else
   {
-    if (a3->var2.mSelector == 1668641652)
+    if (get_property_data->var2.mSelector == 1668641652)
     {
-      [(Core_Audio_Driver *)v43 m_property_type_info];
+      [(Core_Audio_Driver *)selfCopy m_property_type_info];
       v31 = v46;
-      v32 = a3->var0;
+      v32 = get_property_data->var0;
       v33 = v45;
       v34 = v22;
       Property_Type_Info::add_custom_properties(v31, v32, v33 / 0xCuLL, [v22 bytes]);
@@ -519,64 +519,64 @@ LABEL_16:
     v30 = AMCP::HAL::pack_property_data(v39, v35, [v22 bytes]);
   }
 
-  v42[2](v42, v29, v30);
-  [(Core_Audio_Driver *)v43 release_unpacked_cf_objects:v38 qualifier_data:v44 data_type:v39 data:v22];
+  replyCopy[2](replyCopy, v29, v30);
+  [(Core_Audio_Driver *)selfCopy release_unpacked_cf_objects:v38 qualifier_data:v44 data_type:v39 data:v22];
 
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)get_property_data_size:(Driver_Property_Identity *)a3 qualifier:(id)a4 reply:(id)a5
+- (void)get_property_data_size:(Driver_Property_Identity *)get_property_data_size qualifier:(id)qualifier reply:(id)reply
 {
   v25 = *MEMORY[0x1E69E9840];
-  v21 = a4;
-  v8 = a5;
+  qualifierCopy = qualifier;
+  replyCopy = reply;
   v22 = 0;
-  v9 = [(Core_Audio_Driver *)self asp_interface];
+  asp_interface = [(Core_Audio_Driver *)self asp_interface];
   [(Core_Audio_Driver *)self m_property_type_info];
-  p_var2 = &a3->var2;
-  property_qualifier_type_code = Property_Type_Info::get_property_qualifier_type_code(v23, a3->var0, a3->var2.mSelector);
+  p_var2 = &get_property_data_size->var2;
+  property_qualifier_type_code = Property_Type_Info::get_property_qualifier_type_code(v23, get_property_data_size->var0, get_property_data_size->var2.mSelector);
   if (v24)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v24);
   }
 
-  unpack_data_from_qualifier(&v23, property_qualifier_type_code, v21);
+  unpack_data_from_qualifier(&v23, property_qualifier_type_code, qualifierCopy);
   v12 = v23;
   v14 = v24;
   v13 = HIDWORD(v24);
-  GetPropertyDataSize = (*v9)->GetPropertyDataSize;
-  var0 = a3->var0;
-  var1 = a3->var1;
+  GetPropertyDataSize = (*asp_interface)->GetPropertyDataSize;
+  var0 = get_property_data_size->var0;
+  var1 = get_property_data_size->var1;
   v18 = v23;
-  v19 = (GetPropertyDataSize)(v9, var0, var1, p_var2, v14, [v12 bytes], &v22);
-  v8[2](v8, v19, v22);
+  v19 = (GetPropertyDataSize)(asp_interface, var0, var1, p_var2, v14, [v12 bytes], &v22);
+  replyCopy[2](replyCopy, v19, v22);
   [(Core_Audio_Driver *)self release_unpacked_cf_objects:v13 qualifier_data:v12 data_type:0 data:0];
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)is_property_settable:(Driver_Property_Identity *)a3 reply:(id)a4
+- (void)is_property_settable:(Driver_Property_Identity *)is_property_settable reply:(id)reply
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   v10[0] = 0;
-  v7 = [(Core_Audio_Driver *)self asp_interface];
-  v8 = ((*v7)->IsPropertySettable)(v7, a3->var0, a3->var1, &a3->var2, v10);
-  v6[2](v6, v8, v10[0]);
+  asp_interface = [(Core_Audio_Driver *)self asp_interface];
+  v8 = ((*asp_interface)->IsPropertySettable)(asp_interface, is_property_settable->var0, is_property_settable->var1, &is_property_settable->var2, v10);
+  replyCopy[2](replyCopy, v8, v10[0]);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)release_unpacked_cf_objects:(unsigned int)a3 qualifier_data:(id)a4 data_type:(unsigned int)a5 data:(id)a6
+- (void)release_unpacked_cf_objects:(unsigned int)release_unpacked_cf_objects qualifier_data:(id)qualifier_data data_type:(unsigned int)data_type data:(id)data
 {
-  v9 = a4;
-  v10 = a6;
-  v15 = v9;
+  qualifier_dataCopy = qualifier_data;
+  dataCopy = data;
+  v15 = qualifier_dataCopy;
   if (v15)
   {
     if ([v15 bytes])
     {
-      if (a3 <= 0x10 && ((1 << a3) & 0x18040) != 0)
+      if (release_unpacked_cf_objects <= 0x10 && ((1 << release_unpacked_cf_objects) & 0x18040) != 0)
       {
         v11 = *[v15 bytes];
         if (v11)
@@ -587,13 +587,13 @@ LABEL_16:
     }
   }
 
-  v12 = v10;
+  v12 = dataCopy;
   v13 = v12;
   if (v12)
   {
     if ([v12 bytes])
     {
-      if (a5 <= 0x10 && ((1 << a5) & 0x18040) != 0)
+      if (data_type <= 0x10 && ((1 << data_type) & 0x18040) != 0)
       {
         v14 = *[v13 bytes];
         if (v14)
@@ -605,21 +605,21 @@ LABEL_16:
   }
 }
 
-- (void)has_property:(Driver_Property_Identity *)a3 reply:(id)a4
+- (void)has_property:(Driver_Property_Identity *)has_property reply:(id)reply
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(Core_Audio_Driver *)self asp_interface];
-  v8 = ((*v7)->HasProperty)(v7, a3->var0, a3->var1, &a3->var2);
-  v6[2](v6, v8);
+  replyCopy = reply;
+  asp_interface = [(Core_Audio_Driver *)self asp_interface];
+  v8 = ((*asp_interface)->HasProperty)(asp_interface, has_property->var0, has_property->var1, &has_property->var2);
+  replyCopy[2](replyCopy, v8);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stop_synchronous_messenger:(unsigned int)a3 client_id:(unsigned int)a4 reply:(id)a5
+- (void)stop_synchronous_messenger:(unsigned int)stop_synchronous_messenger client_id:(unsigned int)client_id reply:(id)reply
 {
   v14 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  replyCopy = reply;
   [(Core_Audio_Driver *)self io_receiver_lock];
   os_unfair_lock_lock(lock);
   if (v13)
@@ -628,7 +628,7 @@ LABEL_16:
   }
 
   [(Core_Audio_Driver *)self io_receivers];
-  v9 = std::__hash_table<std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Sender>>,std::__unordered_map_hasher<AMCP::Portal::IPC::io_messenger_id_t,std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Sender>>,std::hash<AMCP::Portal::IPC::io_messenger_id_t>,std::equal_to<AMCP::Portal::IPC::io_messenger_id_t>,true>,std::__unordered_map_equal<AMCP::Portal::IPC::io_messenger_id_t,std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Sender>>,std::equal_to<AMCP::Portal::IPC::io_messenger_id_t>,std::hash<AMCP::Portal::IPC::io_messenger_id_t>,true>,std::allocator<std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Sender>>>>::find<AMCP::Portal::IPC::io_messenger_id_t>(lock, a3, a4);
+  v9 = std::__hash_table<std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Sender>>,std::__unordered_map_hasher<AMCP::Portal::IPC::io_messenger_id_t,std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Sender>>,std::hash<AMCP::Portal::IPC::io_messenger_id_t>,std::equal_to<AMCP::Portal::IPC::io_messenger_id_t>,true>,std::__unordered_map_equal<AMCP::Portal::IPC::io_messenger_id_t,std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Sender>>,std::equal_to<AMCP::Portal::IPC::io_messenger_id_t>,std::hash<AMCP::Portal::IPC::io_messenger_id_t>,true>,std::allocator<std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Sender>>>>::find<AMCP::Portal::IPC::io_messenger_id_t>(lock, stop_synchronous_messenger, client_id);
   if (!v9)
   {
     std::__throw_out_of_range[abi:ne200100]("unordered_map::at: key not found");
@@ -642,25 +642,25 @@ LABEL_16:
 
   caulk::ipc::synchronous_messenger::semaphore_receiver::stop(*(v10[3] + 32), 5.0);
   [(Core_Audio_Driver *)self io_receivers];
-  std::__hash_table<std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>,std::__unordered_map_hasher<AMCP::Portal::IPC::io_messenger_id_t,std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>,std::hash<AMCP::Portal::IPC::io_messenger_id_t>,std::equal_to<AMCP::Portal::IPC::io_messenger_id_t>,true>,std::__unordered_map_equal<AMCP::Portal::IPC::io_messenger_id_t,std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>,std::equal_to<AMCP::Portal::IPC::io_messenger_id_t>,std::hash<AMCP::Portal::IPC::io_messenger_id_t>,true>,std::allocator<std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>>>::__erase_unique<AMCP::Portal::IPC::io_messenger_id_t>(lock, a3, a4);
+  std::__hash_table<std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>,std::__unordered_map_hasher<AMCP::Portal::IPC::io_messenger_id_t,std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>,std::hash<AMCP::Portal::IPC::io_messenger_id_t>,std::equal_to<AMCP::Portal::IPC::io_messenger_id_t>,true>,std::__unordered_map_equal<AMCP::Portal::IPC::io_messenger_id_t,std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>,std::equal_to<AMCP::Portal::IPC::io_messenger_id_t>,std::hash<AMCP::Portal::IPC::io_messenger_id_t>,true>,std::allocator<std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>>>::__erase_unique<AMCP::Portal::IPC::io_messenger_id_t>(lock, stop_synchronous_messenger, client_id);
   if (v13)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v13);
   }
 
   os_unfair_lock_unlock(lock);
-  v8[2](v8, 0);
+  replyCopy[2](replyCopy, 0);
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregister_io_buffer:(id)a3 reply:(id)a4
+- (void)unregister_io_buffer:(id)unregister_io_buffer reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 object];
-  v9 = v8;
-  if (!v8)
+  unregister_io_bufferCopy = unregister_io_buffer;
+  replyCopy = reply;
+  object = [unregister_io_bufferCopy object];
+  v9 = object;
+  if (!object)
   {
     v9 = xpc_null_create();
   }
@@ -677,16 +677,16 @@ LABEL_16:
   v14 = v15;
   v15 = 0;
 
-  v7[2](v7, v13);
+  replyCopy[2](replyCopy, v13);
 }
 
-- (void)register_io_buffer:(id)a3 reply:(id)a4
+- (void)register_io_buffer:(id)register_io_buffer reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 object];
-  v9 = v8;
-  if (!v8)
+  register_io_bufferCopy = register_io_buffer;
+  replyCopy = reply;
+  object = [register_io_bufferCopy object];
+  v9 = object;
+  if (!object)
   {
     v9 = xpc_null_create();
   }
@@ -703,13 +703,13 @@ LABEL_16:
   v14 = v15;
   v15 = 0;
 
-  v7[2](v7, v13);
+  replyCopy[2](replyCopy, v13);
 }
 
-- (int)handle_unregister_buffer:(dict)a3
+- (int)handle_unregister_buffer:(dict)handle_unregister_buffer
 {
   v82 = *MEMORY[0x1E69E9840];
-  buffer_key = get_buffer_key(a3.var0.fObj);
+  buffer_key = get_buffer_key(handle_unregister_buffer.var0.fObj);
   v7 = v6;
   [(Core_Audio_Driver *)self io_receiver_lock];
   v8 = *buf;
@@ -860,7 +860,7 @@ LABEL_16:
   if (v21)
   {
     v22 = v21[3];
-    v23 = AMCP::Log::Scope::get_os_log_t(*a3.var0.fObj);
+    v23 = AMCP::Log::Scope::get_os_log_t(*handle_unregister_buffer.var0.fObj);
     v24 = v23;
     if (!v23)
     {
@@ -1085,10 +1085,10 @@ LABEL_71:
   return v40;
 }
 
-- (int)handle_register_buffer:(dict)a3
+- (int)handle_register_buffer:(dict)handle_register_buffer
 {
   v46 = *MEMORY[0x1E69E9840];
-  buffer_key = get_buffer_key(a3.var0.fObj);
+  buffer_key = get_buffer_key(handle_register_buffer.var0.fObj);
   v6 = v5;
   [(Core_Audio_Driver *)self io_receiver_lock];
   i = *lock;
@@ -1138,7 +1138,7 @@ LABEL_71:
     [(Core_Audio_Driver *)self io_buffer_list];
     *lock = buffer_key;
     *&lock[8] = v6;
-    applesauce::xpc::object::object(&lock[16], *a3.var0.fObj);
+    applesauce::xpc::object::object(&lock[16], *handle_register_buffer.var0.fObj);
     v17 = v39[1];
     v16 = v39[2];
     if (v17 >= v16)
@@ -1257,8 +1257,8 @@ LABEL_71:
     if (v31)
     {
       v32 = v31[3];
-      v33 = *a3.var0.fObj;
-      AMCP::Log::Scope::get_os_log_t(*a3.var0.fObj);
+      v33 = *handle_register_buffer.var0.fObj;
+      AMCP::Log::Scope::get_os_log_t(*handle_register_buffer.var0.fObj);
       objc_claimAutoreleasedReturnValue();
       AMCP::Portal::IPC::IO_Receiver::register_buffer(v32, v33);
     }
@@ -1311,41 +1311,41 @@ LABEL_71:
   return 0;
 }
 
-- (void)object_was_destroyed:(unsigned int)a3 reply:(id)a4
+- (void)object_was_destroyed:(unsigned int)object_was_destroyed reply:(id)reply
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   [(Core_Audio_Driver *)self m_property_type_info];
-  Property_Type_Info::remove_custom_properties(v8, a3);
+  Property_Type_Info::remove_custom_properties(v8, object_was_destroyed);
   if (v9)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v9);
   }
 
-  v6[2](v6, 0);
+  replyCopy[2](replyCopy, 0);
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)create_device:(id)a3 client_id:(unsigned int)a4 process_id:(int)a5 is_native_endianess:(BOOL)a6 bundle_id:(id)a7 reply:(id)a8
+- (void)create_device:(id)create_device client_id:(unsigned int)client_id process_id:(int)process_id is_native_endianess:(BOOL)is_native_endianess bundle_id:(id)bundle_id reply:(id)reply
 {
   v24 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
+  create_deviceCopy = create_device;
+  bundle_idCopy = bundle_id;
+  replyCopy = reply;
   v20 = 0;
-  v21[0] = a4;
-  v21[1] = a5;
-  v23 = v15;
-  v22 = a6;
-  v17 = [(Core_Audio_Driver *)self asp_interface];
-  v18 = ((*v17)->CreateDevice)(v17, v14, v21, &v20);
-  v16[2](v16, v18, v20);
+  v21[0] = client_id;
+  v21[1] = process_id;
+  v23 = bundle_idCopy;
+  is_native_endianessCopy = is_native_endianess;
+  asp_interface = [(Core_Audio_Driver *)self asp_interface];
+  v18 = ((*asp_interface)->CreateDevice)(asp_interface, create_deviceCopy, v21, &v20);
+  replyCopy[2](replyCopy, v18, v20);
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (int)destroy_io_receiver:(unsigned int)a3
+- (int)destroy_io_receiver:(unsigned int)destroy_io_receiver
 {
   [(Core_Audio_Driver *)self io_receiver_lock];
   os_unfair_lock_lock(lock);
@@ -1357,7 +1357,7 @@ LABEL_71:
   [(Core_Audio_Driver *)self io_receivers];
   for (i = *&lock[4]._os_unfair_lock_opaque; i; i = *i)
   {
-    if (*(i + 4) == a3)
+    if (*(i + 4) == destroy_io_receiver)
     {
       operator new();
     }
@@ -1372,7 +1372,7 @@ LABEL_71:
   return 0;
 }
 
-- (int)destroy_io_receiver:(unsigned int)a3 client_id:(unsigned int)a4
+- (int)destroy_io_receiver:(unsigned int)destroy_io_receiver client_id:(unsigned int)client_id
 {
   [(Core_Audio_Driver *)self io_receiver_lock];
   os_unfair_lock_lock(lock);
@@ -1382,7 +1382,7 @@ LABEL_71:
   }
 
   [(Core_Audio_Driver *)self io_receivers];
-  std::__hash_table<std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>,std::__unordered_map_hasher<AMCP::Portal::IPC::io_messenger_id_t,std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>,std::hash<AMCP::Portal::IPC::io_messenger_id_t>,std::equal_to<AMCP::Portal::IPC::io_messenger_id_t>,true>,std::__unordered_map_equal<AMCP::Portal::IPC::io_messenger_id_t,std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>,std::equal_to<AMCP::Portal::IPC::io_messenger_id_t>,std::hash<AMCP::Portal::IPC::io_messenger_id_t>,true>,std::allocator<std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>>>::__erase_unique<AMCP::Portal::IPC::io_messenger_id_t>(lock, a3, a4);
+  std::__hash_table<std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>,std::__unordered_map_hasher<AMCP::Portal::IPC::io_messenger_id_t,std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>,std::hash<AMCP::Portal::IPC::io_messenger_id_t>,std::equal_to<AMCP::Portal::IPC::io_messenger_id_t>,true>,std::__unordered_map_equal<AMCP::Portal::IPC::io_messenger_id_t,std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>,std::equal_to<AMCP::Portal::IPC::io_messenger_id_t>,std::hash<AMCP::Portal::IPC::io_messenger_id_t>,true>,std::allocator<std::__hash_value_type<AMCP::Portal::IPC::io_messenger_id_t,std::shared_ptr<AMCP::Portal::IPC::IO_Receiver>>>>::__erase_unique<AMCP::Portal::IPC::io_messenger_id_t>(lock, destroy_io_receiver, client_id);
   if (v9)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v9);
@@ -1392,12 +1392,12 @@ LABEL_71:
   return 0;
 }
 
-- (int)create_and_start_io_receiver:(unsigned int)a3 client_id:(unsigned int)a4 nominal_sample_rate:(double)a5 io_buffer_frame_size:(unsigned int)a6 work_group_port:(id)a7 io_messenger:(id)a8
+- (int)create_and_start_io_receiver:(unsigned int)create_and_start_io_receiver client_id:(unsigned int)client_id nominal_sample_rate:(double)nominal_sample_rate io_buffer_frame_size:(unsigned int)io_buffer_frame_size work_group_port:(id)work_group_port io_messenger:(id)io_messenger
 {
   v42 = *MEMORY[0x1E69E9840];
-  v25 = a7;
-  v26 = a8;
-  if (v26)
+  work_group_portCopy = work_group_port;
+  io_messengerCopy = io_messenger;
+  if (io_messengerCopy)
   {
     [(Core_Audio_Driver *)self asp_interface];
     [(Core_Audio_Driver *)self io_receiver_lock];
@@ -1412,7 +1412,7 @@ LABEL_71:
     [(Core_Audio_Driver *)self io_receivers];
     if (v12)
     {
-      while (*(v12 + 4) != a3 || *(v12 + 5) != a4)
+      while (*(v12 + 4) != create_and_start_io_receiver || *(v12 + 5) != client_id)
       {
         v12 = *v12;
         if (!v12)
@@ -1449,7 +1449,7 @@ LABEL_8:
 
     if (v13)
     {
-      [v26 object];
+      [io_messengerCopy object];
       objc_claimAutoreleasedReturnValue();
       operator new();
     }
@@ -1543,68 +1543,68 @@ LABEL_8:
   return 1852797029;
 }
 
-- (void)abort_device_configuration_change:(unsigned int)a3 action:(unint64_t)a4 change:(unint64_t)a5 reply:(id)a6
+- (void)abort_device_configuration_change:(unsigned int)abort_device_configuration_change action:(unint64_t)action change:(unint64_t)change reply:(id)reply
 {
-  v10 = a6;
-  v11 = [(Core_Audio_Driver *)self concurrent_queue];
+  replyCopy = reply;
+  concurrent_queue = [(Core_Audio_Driver *)self concurrent_queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3321888768;
   block[2] = __75__Core_Audio_Driver_abort_device_configuration_change_action_change_reply___block_invoke;
   block[3] = &__block_descriptor_72_ea8_32c89_ZTSKZ75__Core_Audio_Driver_abort_device_configuration_change_action_change_reply__E4__10_e5_v8__0l;
-  v12 = self;
-  v13 = _Block_copy(v10);
-  v14 = v12;
+  selfCopy = self;
+  v13 = _Block_copy(replyCopy);
+  v14 = selfCopy;
   v16 = v14;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
+  abort_device_configuration_changeCopy = abort_device_configuration_change;
+  actionCopy = action;
+  changeCopy = change;
   v20 = _Block_copy(v13);
-  dispatch_async(v11, block);
+  dispatch_async(concurrent_queue, block);
 }
 
-- (void)perform_device_configuration_change:(unsigned int)a3 action:(unint64_t)a4 change:(unint64_t)a5 reply:(id)a6
+- (void)perform_device_configuration_change:(unsigned int)perform_device_configuration_change action:(unint64_t)action change:(unint64_t)change reply:(id)reply
 {
-  v10 = a6;
-  v11 = [(Core_Audio_Driver *)self concurrent_queue];
+  replyCopy = reply;
+  concurrent_queue = [(Core_Audio_Driver *)self concurrent_queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3321888768;
   block[2] = __77__Core_Audio_Driver_perform_device_configuration_change_action_change_reply___block_invoke;
   block[3] = &__block_descriptor_72_ea8_32c90_ZTSKZ77__Core_Audio_Driver_perform_device_configuration_change_action_change_reply__E3__9_e5_v8__0l;
-  v12 = self;
-  v13 = _Block_copy(v10);
-  v14 = v12;
+  selfCopy = self;
+  v13 = _Block_copy(replyCopy);
+  v14 = selfCopy;
   v16 = v14;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
+  perform_device_configuration_changeCopy = perform_device_configuration_change;
+  actionCopy = action;
+  changeCopy = change;
   v20 = _Block_copy(v13);
-  dispatch_async(v11, block);
+  dispatch_async(concurrent_queue, block);
 }
 
-- (void)initialize:(id)a3 reply:(id)a4
+- (void)initialize:(id)initialize reply:(id)reply
 {
   v14 = *MEMORY[0x1E69E9840];
   v6 = 2003329396;
-  v7 = a3;
-  v8 = a4;
-  v9 = [(Core_Audio_Driver *)self asp_interface];
-  v10 = [[Core_Audio_Driver_Host_Proxy alloc] init_with_host_endpoint:v7 driver:self];
+  initializeCopy = initialize;
+  replyCopy = reply;
+  asp_interface = [(Core_Audio_Driver *)self asp_interface];
+  v10 = [[Core_Audio_Driver_Host_Proxy alloc] init_with_host_endpoint:initializeCopy driver:self];
   [(Core_Audio_Driver *)self setDriver_host_proxy:v10];
 
-  v11 = [(Core_Audio_Driver *)self driver_host_proxy];
-  v12 = [v11 get_host_interface];
+  driver_host_proxy = [(Core_Audio_Driver *)self driver_host_proxy];
+  get_host_interface = [driver_host_proxy get_host_interface];
 
-  if (v9 && v12)
+  if (asp_interface && get_host_interface)
   {
-    v6 = ((*v9)->Initialize)(v9, v12);
+    v6 = ((*asp_interface)->Initialize)(asp_interface, get_host_interface);
   }
 
-  v8[2](v8, v6);
+  replyCopy[2](replyCopy, v6);
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)store_change_info:(void *)a3 for_token:(unint64_t)a4
+- (void)store_change_info:(void *)store_change_info for_token:(unint64_t)for_token
 {
   v35 = *MEMORY[0x1E69E9840];
   [(Core_Audio_Driver *)self config_change_info_lock];
@@ -1614,7 +1614,7 @@ LABEL_8:
     std::__shared_weak_count::__release_shared[abi:ne200100](*&buf[8]);
   }
 
-  v6 = [(Core_Audio_Driver *)self config_change_info_map];
+  config_change_info_map = [(Core_Audio_Driver *)self config_change_info_map];
   v7 = *(v29 + 8);
   if (!v7)
   {
@@ -1627,8 +1627,8 @@ LABEL_16:
   do
   {
     v10 = *(v9 + 32);
-    v11 = v10 >= a4;
-    v12 = v10 < a4;
+    v11 = v10 >= for_token;
+    v12 = v10 < for_token;
     if (v11)
     {
       v8 = v9;
@@ -1638,12 +1638,12 @@ LABEL_16:
   }
 
   while (v9);
-  if (v8 != v29 + 8 && *(v8 + 32) <= a4)
+  if (v8 != v29 + 8 && *(v8 + 32) <= for_token)
   {
     v16 = atomic_load(StaticContainer<AMCP::Log::AMCP_Scope_Registry_Statics>::s_statics_initialized);
     if ((v16 & 1) == 0)
     {
-      AMCP::Log::AMCP_Scope_Registry::initialize(v6);
+      AMCP::Log::AMCP_Scope_Registry::initialize(config_change_info_map);
     }
 
     v17 = **StaticContainer<AMCP::Log::AMCP_Scope_Registry_Statics>::s_statics;
@@ -1696,7 +1696,7 @@ LABEL_16:
     {
       v13 = v7;
       v14 = v7[4];
-      if (v14 <= a4)
+      if (v14 <= for_token)
       {
         break;
       }
@@ -1708,7 +1708,7 @@ LABEL_16:
       }
     }
 
-    if (v14 >= a4)
+    if (v14 >= for_token)
     {
       break;
     }
@@ -1729,21 +1729,21 @@ LABEL_16:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F599BDF0];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
-  [v5 setInterruptionHandler:&__block_literal_global_16029];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy setInterruptionHandler:&__block_literal_global_16029];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__Core_Audio_Driver_listener_shouldAcceptNewConnection___block_invoke_2;
   v8[3] = &unk_1E8678318;
   v8[4] = self;
-  [v5 setInvalidationHandler:v8];
-  [v5 resume];
+  [connectionCopy setInvalidationHandler:v8];
+  [connectionCopy resume];
 
   return 1;
 }
@@ -1777,30 +1777,30 @@ LABEL_16:
   [(Core_Audio_Driver *)&v8 dealloc];
 }
 
-- (id)init_driver_interface:(AudioServerPlugInDriverInterface *)a3 invalidation_handler:(function<void)(
+- (id)init_driver_interface:(AudioServerPlugInDriverInterface *)init_driver_interface invalidation_handler:(function<void)(
 {
   v6 = [(Core_Audio_Driver *)self init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696B0D8] anonymousListener];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     listener = v6->_listener;
-    v6->_listener = v7;
+    v6->_listener = anonymousListener;
 
     [(NSXPCListener *)v6->_listener setDelegate:v6];
     [(NSXPCListener *)v6->_listener resume];
-    v9 = [(Core_Audio_Driver *)v6 listener];
-    v10 = [v9 endpoint];
+    listener = [(Core_Audio_Driver *)v6 listener];
+    endpoint = [listener endpoint];
     endpoint = v6->_endpoint;
-    v6->_endpoint = v10;
+    v6->_endpoint = endpoint;
 
     std::function<void ()(void)>::operator=(v6->_m_invalidation_handler.__f_.__buf_.__data, a4);
-    v6->_asp_interface = a3;
-    if (a3)
+    v6->_asp_interface = init_driver_interface;
+    if (init_driver_interface)
     {
-      AddRef = (*a3)->AddRef;
+      AddRef = (*init_driver_interface)->AddRef;
       if (AddRef)
       {
-        (AddRef)(a3);
+        (AddRef)(init_driver_interface);
       }
     }
   }

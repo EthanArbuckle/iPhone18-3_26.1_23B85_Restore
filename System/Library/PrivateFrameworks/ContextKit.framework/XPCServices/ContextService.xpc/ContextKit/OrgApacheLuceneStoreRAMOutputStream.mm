@@ -8,7 +8,7 @@
 - (uint64_t)flush;
 - (void)dealloc;
 - (void)reset;
-- (void)writeToWithOrgApacheLuceneStoreDataOutput:(id)a3;
+- (void)writeToWithOrgApacheLuceneStoreDataOutput:(id)output;
 @end
 
 @implementation OrgApacheLuceneStoreRAMOutputStream
@@ -20,7 +20,7 @@
   return self;
 }
 
-- (void)writeToWithOrgApacheLuceneStoreDataOutput:(id)a3
+- (void)writeToWithOrgApacheLuceneStoreDataOutput:(id)output
 {
   [(OrgApacheLuceneStoreRAMOutputStream *)self flush];
   file = self->file_;
@@ -35,7 +35,7 @@
     return;
   }
 
-  if (!a3)
+  if (!output)
   {
 LABEL_10:
     JreThrowNullPointerException();
@@ -57,7 +57,7 @@ LABEL_10:
       v10 = v9;
     }
 
-    [a3 writeBytesWithByteArray:-[OrgApacheLuceneStoreRAMFile getBufferWithInt:](self->file_ withInt:{"getBufferWithInt:", v8), v10}];
+    [output writeBytesWithByteArray:-[OrgApacheLuceneStoreRAMFile getBufferWithInt:](self->file_ withInt:{"getBufferWithInt:", v8), v10}];
     LODWORD(v9) = v9 - 1024;
     v8 = (v8 + 1);
   }
@@ -89,39 +89,39 @@ LABEL_10:
 
 - (id)switchCurrentBuffer
 {
-  v2 = *(a1 + 24);
+  v2 = *(self + 24);
   if (!v2)
   {
     goto LABEL_7;
   }
 
-  v3 = *(a1 + 40);
-  v4 = [v2 numBuffers];
-  v5 = *(a1 + 24);
-  v6 = v3 == v4 ? [v5 addBufferWithInt:1024] : objc_msgSend(v5, "getBufferWithInt:", *(a1 + 40));
-  result = JreStrongAssign((a1 + 32), v6);
-  *(a1 + 44) = 0;
-  *(a1 + 48) = *(a1 + 40) << 10;
-  v8 = *(a1 + 32);
+  v3 = *(self + 40);
+  numBuffers = [v2 numBuffers];
+  v5 = *(self + 24);
+  v6 = v3 == numBuffers ? [v5 addBufferWithInt:1024] : objc_msgSend(v5, "getBufferWithInt:", *(self + 40));
+  result = JreStrongAssign((self + 32), v6);
+  *(self + 44) = 0;
+  *(self + 48) = *(self + 40) << 10;
+  v8 = *(self + 32);
   if (!v8)
   {
 LABEL_7:
     JreThrowNullPointerException();
   }
 
-  *(a1 + 56) = *(v8 + 8);
+  *(self + 56) = *(v8 + 8);
   return result;
 }
 
 - (uint64_t)flush
 {
-  result = *(a1 + 24);
+  result = *(self + 24);
   if (!result)
   {
     JreThrowNullPointerException();
   }
 
-  if (*(a1 + 48) + *(a1 + 44) > result[2])
+  if (*(self + 48) + *(self + 44) > result[2])
   {
 
     return [result setLengthWithLong:?];

@@ -9,14 +9,14 @@
 - (id)tokens
 {
   v2 = objc_opt_new();
-  v3 = [a1 length];
+  v3 = [self length];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__NSString_ExemptTermsDetector__tokens__block_invoke;
   v6[3] = &unk_279ABAE00;
   v4 = v2;
   v7 = v4;
-  [a1 enumerateSubstringsInRange:0 options:v3 usingBlock:{3, v6}];
+  [self enumerateSubstringsInRange:0 options:v3 usingBlock:{3, v6}];
 
   return v4;
 }
@@ -24,7 +24,7 @@
 - (id)removeApostrophes
 {
   v14 = *MEMORY[0x277D85DE8];
-  v1 = [a1 copy];
+  v1 = [self copy];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -65,7 +65,7 @@
 
 - (id)removeCharactersWithCharacterSet:()ExemptTermsDetector
 {
-  v1 = [a1 componentsSeparatedByCharactersInSet:?];
+  v1 = [self componentsSeparatedByCharactersInSet:?];
   v2 = [v1 componentsJoinedByString:&stru_28733D8C0];
 
   return v2;

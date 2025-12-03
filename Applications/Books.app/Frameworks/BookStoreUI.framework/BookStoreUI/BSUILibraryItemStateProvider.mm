@@ -1,32 +1,32 @@
 @interface BSUILibraryItemStateProvider
 + (id)sharedInstance;
-- (BOOL)_hasRemainingDownloadsForIdentifier:(id)a3;
-- (BOOL)_itemIsBeingDownloaded:(id)a3;
-- (BOOL)_itemIsPurchasedThisSession:(id)a3;
-- (BOOL)_updateItemStateFieldsFromBookLibrary:(id)a3;
-- (BOOL)_updateItemStateFieldsFromCache:(id)a3;
-- (BOOL)_updateItemStateFieldsFromJalisco:(id)a3;
-- (BOOL)_updateItemStateFieldsFromMediaLibrary:(id)a3;
+- (BOOL)_hasRemainingDownloadsForIdentifier:(id)identifier;
+- (BOOL)_itemIsBeingDownloaded:(id)downloaded;
+- (BOOL)_itemIsPurchasedThisSession:(id)session;
+- (BOOL)_updateItemStateFieldsFromBookLibrary:(id)library;
+- (BOOL)_updateItemStateFieldsFromCache:(id)cache;
+- (BOOL)_updateItemStateFieldsFromJalisco:(id)jalisco;
+- (BOOL)_updateItemStateFieldsFromMediaLibrary:(id)library;
 - (BSUILibraryItemStateProvider)init;
-- (id)_stateForItemIdentifier:(id)a3;
+- (id)_stateForItemIdentifier:(id)identifier;
 - (id)itemsOfInterest;
-- (void)_cacheNewPurchaseWithIdentifier:(id)a3 isPreorder:(id)a4;
-- (void)_trackChildIdentifier:(id)a3 forParentIdentifier:(id)a4;
-- (void)_untrackChildIdentifier:(id)a3 forParentIdentifier:(id)a4;
-- (void)_updateStateToDownloadFinishedForIdentifier:(id)a3;
-- (void)_updateStateToDownloadingForIdentifier:(id)a3;
+- (void)_cacheNewPurchaseWithIdentifier:(id)identifier isPreorder:(id)preorder;
+- (void)_trackChildIdentifier:(id)identifier forParentIdentifier:(id)parentIdentifier;
+- (void)_untrackChildIdentifier:(id)identifier forParentIdentifier:(id)parentIdentifier;
+- (void)_updateStateToDownloadFinishedForIdentifier:(id)identifier;
+- (void)_updateStateToDownloadingForIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)downloadQueue:(id)a3 downloadStates:(id)a4 didCompleteWithError:(id)a5;
-- (void)downloadQueue:(id)a3 downloadStatesDidChange:(id)a4;
-- (void)downloadQueue:(id)a3 purchaseAttemptForRequest:(id)a4;
+- (void)downloadQueue:(id)queue downloadStates:(id)states didCompleteWithError:(id)error;
+- (void)downloadQueue:(id)queue downloadStatesDidChange:(id)change;
+- (void)downloadQueue:(id)queue purchaseAttemptForRequest:(id)request;
 - (void)updateAllItemsOfInterest;
-- (void)updateFinishedState:(BOOL)a3 identifier:(id)a4;
-- (void)updateInterest:(id)a3;
-- (void)updateItemOfInterestForItemIdentifier:(id)a3;
-- (void)updateStateToDeletedForIdentifier:(id)a3;
-- (void)updateStateToPurchaseFailedForIdentifier:(id)a3;
-- (void)updateStateToPurchasingForIdentifier:(id)a3;
-- (void)updateWantToReadState:(BOOL)a3 identifier:(id)a4;
+- (void)updateFinishedState:(BOOL)state identifier:(id)identifier;
+- (void)updateInterest:(id)interest;
+- (void)updateItemOfInterestForItemIdentifier:(id)identifier;
+- (void)updateStateToDeletedForIdentifier:(id)identifier;
+- (void)updateStateToPurchaseFailedForIdentifier:(id)identifier;
+- (void)updateStateToPurchasingForIdentifier:(id)identifier;
+- (void)updateWantToReadState:(BOOL)state identifier:(id)identifier;
 @end
 
 @implementation BSUILibraryItemStateProvider
@@ -170,106 +170,106 @@
   [(BSUILibraryItemStateProvider *)&v12 dealloc];
 }
 
-- (void)updateStateToPurchasingForIdentifier:(id)a3
+- (void)updateStateToPurchasingForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   accessQ = self->_accessQ;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_B2F8;
   v11 = &unk_386D98;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(accessQ, &v8);
-  v7 = [(BSUILibraryItemStateProvider *)self _stateForItemIdentifier:v6, v8, v9, v10, v11, v12];
-  [(BSUILibraryItemStateCenter *)self->_stateCenter updateItemWithIdentifier:v6 state:v7];
+  selfCopy = [(BSUILibraryItemStateProvider *)self _stateForItemIdentifier:v6, v8, v9, v10, v11, selfCopy];
+  [(BSUILibraryItemStateCenter *)self->_stateCenter updateItemWithIdentifier:v6 state:selfCopy];
 }
 
-- (void)updateStateToPurchaseFailedForIdentifier:(id)a3
+- (void)updateStateToPurchaseFailedForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   accessQ = self->_accessQ;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_B3D4;
   v11 = &unk_386D98;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(accessQ, &v8);
-  v7 = [(BSUILibraryItemStateProvider *)self _stateForItemIdentifier:v6, v8, v9, v10, v11, v12];
-  [(BSUILibraryItemStateCenter *)self->_stateCenter updateItemWithIdentifier:v6 state:v7];
+  selfCopy = [(BSUILibraryItemStateProvider *)self _stateForItemIdentifier:v6, v8, v9, v10, v11, selfCopy];
+  [(BSUILibraryItemStateCenter *)self->_stateCenter updateItemWithIdentifier:v6 state:selfCopy];
 }
 
-- (void)updateStateToDeletedForIdentifier:(id)a3
+- (void)updateStateToDeletedForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   accessQ = self->_accessQ;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_B4AC;
   v11 = &unk_386D98;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(accessQ, &v8);
-  v7 = [(BSUILibraryItemStateProvider *)self _stateForItemIdentifier:v6, v8, v9, v10, v11, v12];
-  [(BSUILibraryItemStateCenter *)self->_stateCenter updateItemWithIdentifier:v6 state:v7];
+  selfCopy = [(BSUILibraryItemStateProvider *)self _stateForItemIdentifier:v6, v8, v9, v10, v11, selfCopy];
+  [(BSUILibraryItemStateCenter *)self->_stateCenter updateItemWithIdentifier:v6 state:selfCopy];
 }
 
-- (void)updateWantToReadState:(BOOL)a3 identifier:(id)a4
+- (void)updateWantToReadState:(BOOL)state identifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   accessQ = self->_accessQ;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_B564;
   block[3] = &unk_386FD8;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = identifierCopy;
+  stateCopy = state;
+  v8 = identifierCopy;
   dispatch_sync(accessQ, block);
 }
 
-- (void)updateFinishedState:(BOOL)a3 identifier:(id)a4
+- (void)updateFinishedState:(BOOL)state identifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   accessQ = self->_accessQ;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_B670;
   block[3] = &unk_386FD8;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = identifierCopy;
+  stateCopy = state;
+  v8 = identifierCopy;
   dispatch_sync(accessQ, block);
 }
 
-- (void)_cacheNewPurchaseWithIdentifier:(id)a3 isPreorder:(id)a4
+- (void)_cacheNewPurchaseWithIdentifier:(id)identifier isPreorder:(id)preorder
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  preorderCopy = preorder;
   accessQ = self->_accessQ;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_B7E4;
   block[3] = &unk_387000;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = identifierCopy;
+  v14 = preorderCopy;
+  v9 = preorderCopy;
+  v10 = identifierCopy;
   dispatch_sync(accessQ, block);
   v11 = [(BSUILibraryItemStateProvider *)self _stateForItemIdentifier:v10];
   [(BSUILibraryItemStateCenter *)self->_stateCenter updateItemWithIdentifier:v10 state:v11];
 }
 
-- (BOOL)_itemIsPurchasedThisSession:(id)a3
+- (BOOL)_itemIsPurchasedThisSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -279,10 +279,10 @@
   block[1] = 3221225472;
   block[2] = sub_B8C0;
   block[3] = &unk_387028;
-  v9 = v4;
+  v9 = sessionCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = sessionCopy;
   dispatch_sync(accessQ, block);
   LOBYTE(accessQ) = *(v12 + 24);
 
@@ -296,8 +296,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(BSUILibraryItemStateProvider *)self itemsOfInterest];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  itemsOfInterest = [(BSUILibraryItemStateProvider *)self itemsOfInterest];
+  v4 = [itemsOfInterest countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -308,7 +308,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsOfInterest);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -316,43 +316,43 @@
         [(BSUILibraryItemStateCenter *)self->_stateCenter updateItemWithIdentifier:v8 state:v9];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [itemsOfInterest countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)updateItemOfInterestForItemIdentifier:(id)a3
+- (void)updateItemOfInterestForItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BSUILibraryItemStateProvider *)self _stateForItemIdentifier:v4];
-  [(BSUILibraryItemStateCenter *)self->_stateCenter updateItemWithIdentifier:v4 state:v5];
+  identifierCopy = identifier;
+  v5 = [(BSUILibraryItemStateProvider *)self _stateForItemIdentifier:identifierCopy];
+  [(BSUILibraryItemStateCenter *)self->_stateCenter updateItemWithIdentifier:identifierCopy state:v5];
 }
 
-- (void)updateInterest:(id)a3
+- (void)updateInterest:(id)interest
 {
-  v4 = a3;
+  interestCopy = interest;
   accessQ = self->_accessQ;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_BB38;
   v7[3] = &unk_386D98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = interestCopy;
+  v6 = interestCopy;
   dispatch_sync(accessQ, v7);
 }
 
-- (void)_updateStateToDownloadingForIdentifier:(id)a3
+- (void)_updateStateToDownloadingForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  if (v4)
+  if (identifierCopy)
   {
     accessQ = self->_accessQ;
     block[0] = _NSConcreteStackBlock;
@@ -360,7 +360,7 @@
     block[2] = sub_BD04;
     block[3] = &unk_387050;
     block[4] = self;
-    v7 = v4;
+    v7 = identifierCopy;
     v10 = v7;
     v11 = &v12;
     dispatch_sync(accessQ, block);
@@ -379,15 +379,15 @@
   _Block_object_dispose(&v12, 8);
 }
 
-- (void)_updateStateToDownloadFinishedForIdentifier:(id)a3
+- (void)_updateStateToDownloadFinishedForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  if (v4)
+  if (identifierCopy)
   {
     accessQ = self->_accessQ;
     block[0] = _NSConcreteStackBlock;
@@ -395,7 +395,7 @@
     block[2] = sub_BEF0;
     block[3] = &unk_387050;
     block[4] = self;
-    v7 = v4;
+    v7 = identifierCopy;
     v10 = v7;
     v11 = &v12;
     dispatch_sync(accessQ, block);
@@ -414,9 +414,9 @@
   _Block_object_dispose(&v12, 8);
 }
 
-- (BOOL)_itemIsBeingDownloaded:(id)a3
+- (BOOL)_itemIsBeingDownloaded:(id)downloaded
 {
-  v4 = a3;
+  downloadedCopy = downloaded;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -426,10 +426,10 @@
   block[1] = 3221225472;
   block[2] = sub_C024;
   block[3] = &unk_387028;
-  v9 = v4;
+  v9 = downloadedCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = downloadedCopy;
   dispatch_sync(accessQ, block);
   LOBYTE(accessQ) = *(v12 + 24);
 
@@ -437,14 +437,14 @@
   return accessQ;
 }
 
-- (BOOL)_updateItemStateFieldsFromCache:(id)a3
+- (BOOL)_updateItemStateFieldsFromCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  v5 = [v4 itemIdentifier];
+  itemIdentifier = [cacheCopy itemIdentifier];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -458,13 +458,13 @@
   block[3] = &unk_387028;
   v21 = &v22;
   block[4] = self;
-  v7 = v5;
+  v7 = itemIdentifier;
   v20 = v7;
   dispatch_sync(accessQ, block);
   v8 = v23;
   *(v29 + 24) = v23[5] != 0;
-  [v4 setLibrary:{objc_msgSend(v8[5], "longLongValue")}];
-  [v4 setDownload:0];
+  [cacheCopy setLibrary:{objc_msgSend(v8[5], "longLongValue")}];
+  [cacheCopy setDownload:0];
   if (v29[3])
   {
     v9 = 1;
@@ -478,14 +478,14 @@
     v14 = sub_C318;
     v15 = &unk_387028;
     v18 = &v28;
-    v16 = self;
+    selfCopy = self;
     v17 = v7;
     dispatch_sync(v10, &v12);
     if (*(v29 + 24) == 1)
     {
-      [v4 setLibrary:{4, v12, v13, v14, v15, v16}];
-      [v4 setIsPurchased:1];
-      [v4 setDownload:1];
+      [cacheCopy setLibrary:{4, v12, v13, v14, v15, selfCopy}];
+      [cacheCopy setIsPurchased:1];
+      [cacheCopy setDownload:1];
     }
 
     v9 = *(v29 + 24);
@@ -497,18 +497,18 @@
   return v9 & 1;
 }
 
-- (BOOL)_updateItemStateFieldsFromBookLibrary:(id)a3
+- (BOOL)_updateItemStateFieldsFromBookLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [v3 itemIdentifier];
+  libraryCopy = library;
+  itemIdentifier = [libraryCopy itemIdentifier];
   v5 = +[BLLibrary defaultBookLibrary];
-  v6 = [v5 allBookItems];
+  allBookItems = [v5 allBookItems];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v6;
+  v7 = allBookItems;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -524,8 +524,8 @@
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 storeIdentifier];
-        v14 = [v13 isEqualToString:v4];
+        storeIdentifier = [v12 storeIdentifier];
+        v14 = [storeIdentifier isEqualToString:itemIdentifier];
 
         if (v14)
         {
@@ -539,11 +539,11 @@
             v16 = 4;
           }
 
-          [v3 setLibrary:v16];
-          [v3 setIsPurchased:{objc_msgSend(v12, "isSample") ^ 1}];
-          [v3 setDownload:2];
-          [v3 setIsInSamples:{objc_msgSend(v12, "isSample")}];
-          [v3 setIsSample:{objc_msgSend(v12, "isSample")}];
+          [libraryCopy setLibrary:v16];
+          [libraryCopy setIsPurchased:{objc_msgSend(v12, "isSample") ^ 1}];
+          [libraryCopy setDownload:2];
+          [libraryCopy setIsInSamples:{objc_msgSend(v12, "isSample")}];
+          [libraryCopy setIsSample:{objc_msgSend(v12, "isSample")}];
           v15 = 1;
           goto LABEL_14;
         }
@@ -565,15 +565,15 @@ LABEL_14:
   return v15;
 }
 
-- (BOOL)_updateItemStateFieldsFromMediaLibrary:(id)a3
+- (BOOL)_updateItemStateFieldsFromMediaLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [v4 itemIdentifier];
+  libraryCopy = library;
+  itemIdentifier = [libraryCopy itemIdentifier];
   v6 = +[MPMediaQuery bk_audiobooksQuery];
-  if (v6 && [v5 length])
+  if (v6 && [itemIdentifier length])
   {
-    v7 = [MPMediaPropertyPredicate predicateWithValue:v5 forProperty:MPMediaItemPropertyStorePlaylistID];
-    v8 = [MPMediaPropertyPredicate predicateWithValue:v5 forProperty:MPMediaItemPropertyStoreID];
+    v7 = [MPMediaPropertyPredicate predicateWithValue:itemIdentifier forProperty:MPMediaItemPropertyStorePlaylistID];
+    v8 = [MPMediaPropertyPredicate predicateWithValue:itemIdentifier forProperty:MPMediaItemPropertyStoreID];
     v34[0] = v7;
     v34[1] = v8;
     v9 = [NSArray arrayWithObjects:v34 count:2];
@@ -589,11 +589,11 @@ LABEL_14:
     v11 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v11)
     {
-      v23 = self;
+      selfCopy = self;
       v24 = v8;
       v25 = v7;
       v26 = v6;
-      v28 = v5;
+      v28 = itemIdentifier;
       v12 = *v30;
       while (2)
       {
@@ -604,43 +604,43 @@ LABEL_14:
             objc_enumerationMutation(obj);
           }
 
-          v14 = [*(*(&v29 + 1) + 8 * i) bk_representativeItem];
+          bk_representativeItem = [*(*(&v29 + 1) + 8 * i) bk_representativeItem];
           objc_opt_class();
-          v15 = [v14 valueForProperty:MPMediaItemPropertyAlbumPersistentID];
+          v15 = [bk_representativeItem valueForProperty:MPMediaItemPropertyAlbumPersistentID];
           v16 = BUDynamicCast();
 
           if (v16)
           {
-            v17 = [v14 bk_storeID];
-            v18 = [v17 stringValue];
-            v19 = [v28 isEqualToString:v18];
+            bk_storeID = [bk_representativeItem bk_storeID];
+            stringValue = [bk_storeID stringValue];
+            v19 = [v28 isEqualToString:stringValue];
 
             if (v19)
             {
               objc_opt_class();
-              v20 = [v14 valueForProperty:MPMediaItemPropertyIsCloudItem];
+              v20 = [bk_representativeItem valueForProperty:MPMediaItemPropertyIsCloudItem];
               v11 = BUDynamicCast();
 
-              [v4 setLibrary:4];
-              [v4 setIsPurchased:1];
+              [libraryCopy setLibrary:4];
+              [libraryCopy setIsPurchased:1];
               if ([v11 BOOLValue])
               {
                 v21 = BLAudiobookStreamingEnabled();
-                v5 = v28;
+                itemIdentifier = v28;
               }
 
               else
               {
-                v5 = v28;
-                [(BSUILibraryItemStateProvider *)v23 _updateStateToDownloadFinishedForIdentifier:v28];
-                [v4 setDownload:2];
+                itemIdentifier = v28;
+                [(BSUILibraryItemStateProvider *)selfCopy _updateStateToDownloadFinishedForIdentifier:v28];
+                [libraryCopy setDownload:2];
                 v21 = 0;
               }
 
               v7 = v25;
               v6 = v26;
               v8 = v24;
-              [v4 setStreamable:v21];
+              [libraryCopy setStreamable:v21];
 
               LOBYTE(v11) = 1;
               goto LABEL_18;
@@ -658,7 +658,7 @@ LABEL_14:
       }
 
       v6 = v26;
-      v5 = v28;
+      itemIdentifier = v28;
       v8 = v24;
       v7 = v25;
     }
@@ -674,18 +674,18 @@ LABEL_18:
   return v11;
 }
 
-- (BOOL)_updateItemStateFieldsFromJalisco:(id)a3
+- (BOOL)_updateItemStateFieldsFromJalisco:(id)jalisco
 {
-  v4 = a3;
+  jaliscoCopy = jalisco;
   v5 = +[BUAccountsProvider sharedProvider];
-  v6 = [v5 activeStoreAccount];
-  v7 = [v6 ams_DSID];
+  activeStoreAccount = [v5 activeStoreAccount];
+  ams_DSID = [activeStoreAccount ams_DSID];
 
-  v8 = [v4 itemIdentifier];
-  v9 = v8;
-  if (v7)
+  itemIdentifier = [jaliscoCopy itemIdentifier];
+  v9 = itemIdentifier;
+  if (ams_DSID)
   {
-    v10 = v8 == 0;
+    v10 = itemIdentifier == 0;
   }
 
   else
@@ -695,7 +695,7 @@ LABEL_18:
 
   if (v10)
   {
-    if (!v8)
+    if (!itemIdentifier)
     {
       goto LABEL_15;
     }
@@ -705,12 +705,12 @@ LABEL_18:
 
   v11 = +[BLJaliscoReadOnlyDAAPClient sharedClient];
   v12 = [NSSet setWithObject:v9];
-  v25 = v7;
+  v25 = ams_DSID;
   v13 = [NSArray arrayWithObjects:&v25 count:1];
   v14 = [v11 fetchServerItemsForStoreIDs:v12 andDSIDS:v13];
 
-  v15 = [v14 firstObject];
-  if (!v15)
+  firstObject = [v14 firstObject];
+  if (!firstObject)
   {
 
 LABEL_14:
@@ -721,7 +721,7 @@ LABEL_14:
     block[3] = &unk_387000;
     block[4] = self;
     v23 = v9;
-    v24 = v4;
+    v24 = jaliscoCopy;
     dispatch_sync(accessQ, block);
 
 LABEL_15:
@@ -729,10 +729,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v16 = v15;
-  v17 = [v15 expectedDate];
+  v16 = firstObject;
+  expectedDate = [firstObject expectedDate];
 
-  if (v17)
+  if (expectedDate)
   {
     v18 = 3;
   }
@@ -742,19 +742,19 @@ LABEL_15:
     v18 = 4;
   }
 
-  [v4 setLibrary:v18];
+  [jaliscoCopy setLibrary:v18];
   v19 = 1;
-  [v4 setIsPurchased:1];
+  [jaliscoCopy setIsPurchased:1];
 LABEL_16:
 
   return v19;
 }
 
-- (id)_stateForItemIdentifier:(id)a3
+- (id)_stateForItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(PPLibraryItemState);
-  [(PPLibraryItemState *)v5 setItemIdentifier:v4];
+  [(PPLibraryItemState *)v5 setItemIdentifier:identifierCopy];
   [(PPLibraryItemState *)v5 setLibrary:0];
   [(PPLibraryItemState *)v5 setDownload:0];
   [(PPLibraryItemState *)v5 setIsInSamples:0];
@@ -775,7 +775,7 @@ LABEL_16:
   block[3] = &unk_387028;
   v43 = &v44;
   block[4] = self;
-  v7 = v4;
+  v7 = identifierCopy;
   v42 = v7;
   dispatch_sync(accessQ, block);
   if (!v45[5])
@@ -809,7 +809,7 @@ LABEL_16:
   if (!v34[5])
   {
     v11 = +[BCCloudAssetManager sharedManager];
-    v12 = [v11 assetDetailManager];
+    assetDetailManager = [v11 assetDetailManager];
 
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
@@ -817,7 +817,7 @@ LABEL_16:
     v28[3] = &unk_3870A0;
     v28[4] = self;
     v29 = v10;
-    [v12 assetDetailForAssetID:v29 completion:v28];
+    [assetDetailManager assetDetailForAssetID:v29 completion:v28];
   }
 
   if (![(BSUILibraryItemStateProvider *)self _updateItemStateFieldsFromMediaLibrary:v5]&& ![(BSUILibraryItemStateProvider *)self _updateItemStateFieldsFromCache:v5]&& ![(BSUILibraryItemStateProvider *)self _updateItemStateFieldsFromBookLibrary:v5])
@@ -842,7 +842,7 @@ LABEL_16:
   v20 = sub_D3DC;
   v21 = &unk_387028;
   v24 = &v33;
-  v22 = self;
+  selfCopy = self;
   v16 = v14;
   v23 = v16;
   dispatch_sync(v15, &v18);
@@ -877,12 +877,12 @@ LABEL_16:
   return v3;
 }
 
-- (void)_trackChildIdentifier:(id)a3 forParentIdentifier:(id)a4
+- (void)_trackChildIdentifier:(id)identifier forParentIdentifier:(id)parentIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  identifierCopy = identifier;
+  parentIdentifierCopy = parentIdentifier;
+  v8 = parentIdentifierCopy;
+  if (identifierCopy && parentIdentifierCopy)
   {
     accessQ = self->_accessQ;
     block[0] = _NSConcreteStackBlock;
@@ -890,18 +890,18 @@ LABEL_16:
     block[2] = sub_D638;
     block[3] = &unk_387000;
     block[4] = self;
-    v11 = v6;
+    v11 = identifierCopy;
     v12 = v8;
     dispatch_sync(accessQ, block);
   }
 }
 
-- (void)_untrackChildIdentifier:(id)a3 forParentIdentifier:(id)a4
+- (void)_untrackChildIdentifier:(id)identifier forParentIdentifier:(id)parentIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  identifierCopy = identifier;
+  parentIdentifierCopy = parentIdentifier;
+  v8 = parentIdentifierCopy;
+  if (identifierCopy && parentIdentifierCopy)
   {
     accessQ = self->_accessQ;
     block[0] = _NSConcreteStackBlock;
@@ -909,21 +909,21 @@ LABEL_16:
     block[2] = sub_D7AC;
     block[3] = &unk_387000;
     block[4] = self;
-    v11 = v7;
-    v12 = v6;
+    v11 = parentIdentifierCopy;
+    v12 = identifierCopy;
     dispatch_sync(accessQ, block);
   }
 }
 
-- (BOOL)_hasRemainingDownloadsForIdentifier:(id)a3
+- (BOOL)_hasRemainingDownloadsForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  if (v4)
+  if (identifierCopy)
   {
     accessQ = self->_accessQ;
     block[0] = _NSConcreteStackBlock;
@@ -931,7 +931,7 @@ LABEL_16:
     block[2] = sub_D90C;
     block[3] = &unk_387050;
     block[4] = self;
-    v10 = v4;
+    v10 = identifierCopy;
     v11 = &v12;
     dispatch_sync(accessQ, block);
 
@@ -948,14 +948,14 @@ LABEL_16:
   return v7 & 1;
 }
 
-- (void)downloadQueue:(id)a3 downloadStatesDidChange:(id)a4
+- (void)downloadQueue:(id)queue downloadStatesDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v32 count:16];
+  v6 = [changeCopy countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v6)
   {
     v8 = v6;
@@ -968,43 +968,43 @@ LABEL_16:
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(changeCopy);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [v11 storeID];
-        v13 = [v12 stringValue];
+        storeID = [v11 storeID];
+        stringValue = [storeID stringValue];
 
-        v14 = [v11 storePlaylistID];
-        v15 = [v14 stringValue];
+        storePlaylistID = [v11 storePlaylistID];
+        stringValue2 = [storePlaylistID stringValue];
 
-        v16 = [v11 downloadID];
+        downloadID = [v11 downloadID];
         v17 = BKLibraryItemStateProviderLog();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
           *buf = v21;
-          v27 = v13;
+          v27 = stringValue;
           v28 = 2112;
-          v29 = v15;
+          v29 = stringValue2;
           v30 = 2114;
-          v31 = v16;
+          v31 = downloadID;
           _os_log_debug_impl(&dword_0, v17, OS_LOG_TYPE_DEBUG, "Processing download state change: %@, parent:%@, downloadID:%{public}@", buf, 0x20u);
         }
 
-        if (v15)
+        if (stringValue2)
         {
-          v18 = v15;
+          v18 = stringValue2;
         }
 
         else
         {
-          v18 = v13;
+          v18 = stringValue;
         }
 
         v19 = v18;
         if (v19)
         {
-          [(BSUILibraryItemStateProvider *)self _trackChildIdentifier:v13 forParentIdentifier:v15];
+          [(BSUILibraryItemStateProvider *)self _trackChildIdentifier:stringValue forParentIdentifier:stringValue2];
           if (![(BSUILibraryItemStateProvider *)self _itemIsBeingDownloaded:v19])
           {
             if ([(BSUILibraryItemStateProvider *)self _itemIsPurchasedThisSession:v19])
@@ -1017,21 +1017,21 @@ LABEL_16:
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v22 objects:v32 count:16];
+      v8 = [changeCopy countByEnumeratingWithState:&v22 objects:v32 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)downloadQueue:(id)a3 downloadStates:(id)a4 didCompleteWithError:(id)a5
+- (void)downloadQueue:(id)queue downloadStates:(id)states didCompleteWithError:(id)error
 {
-  v6 = a4;
+  statesCopy = states;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v33 count:16];
+  v7 = [statesCopy countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (v7)
   {
     v9 = v7;
@@ -1044,44 +1044,44 @@ LABEL_16:
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(statesCopy);
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [v12 storeID];
-        v14 = [v13 stringValue];
+        storeID = [v12 storeID];
+        stringValue = [storeID stringValue];
 
-        v15 = [v12 storePlaylistID];
-        v16 = [v15 stringValue];
+        storePlaylistID = [v12 storePlaylistID];
+        stringValue2 = [storePlaylistID stringValue];
 
-        if (v16)
+        if (stringValue2)
         {
-          v17 = v16;
+          v17 = stringValue2;
         }
 
         else
         {
-          v17 = v14;
+          v17 = stringValue;
         }
 
         v18 = v17;
-        v19 = [v12 downloadID];
+        downloadID = [v12 downloadID];
         v20 = BKLibraryItemStateProviderLog();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v22;
-          v28 = v14;
+          v28 = stringValue;
           v29 = 2112;
-          v30 = v16;
+          v30 = stringValue2;
           v31 = 2114;
-          v32 = v19;
+          v32 = downloadID;
           _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Processing download complete: %@, parent:%@, downloadID:%{public}@", buf, 0x20u);
         }
 
         if (v18)
         {
-          [(BSUILibraryItemStateProvider *)self _untrackChildIdentifier:v14 forParentIdentifier:v16];
-          if (![(BSUILibraryItemStateProvider *)self _hasRemainingDownloadsForIdentifier:v16])
+          [(BSUILibraryItemStateProvider *)self _untrackChildIdentifier:stringValue forParentIdentifier:stringValue2];
+          if (![(BSUILibraryItemStateProvider *)self _hasRemainingDownloadsForIdentifier:stringValue2])
           {
             [(BSUILibraryItemStateProvider *)self _updateStateToDownloadFinishedForIdentifier:v18];
             v21 = [(BSUILibraryItemStateProvider *)self _stateForItemIdentifier:v18];
@@ -1090,23 +1090,23 @@ LABEL_16:
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v23 objects:v33 count:16];
+      v9 = [statesCopy countByEnumeratingWithState:&v23 objects:v33 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)downloadQueue:(id)a3 purchaseAttemptForRequest:(id)a4
+- (void)downloadQueue:(id)queue purchaseAttemptForRequest:(id)request
 {
-  v5 = [a4 storeIdentifier];
-  v7 = [v5 stringValue];
+  storeIdentifier = [request storeIdentifier];
+  stringValue = [storeIdentifier stringValue];
 
-  v6 = v7;
-  if (v7)
+  v6 = stringValue;
+  if (stringValue)
   {
-    [(BSUILibraryItemStateProvider *)self updateStateToPurchasingForIdentifier:v7];
-    v6 = v7;
+    [(BSUILibraryItemStateProvider *)self updateStateToPurchasingForIdentifier:stringValue];
+    v6 = stringValue;
   }
 }
 

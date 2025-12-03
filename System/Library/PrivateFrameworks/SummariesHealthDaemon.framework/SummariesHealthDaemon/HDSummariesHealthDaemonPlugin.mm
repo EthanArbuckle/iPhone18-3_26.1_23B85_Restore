@@ -1,16 +1,16 @@
 @interface HDSummariesHealthDaemonPlugin
-- (id)extensionForProfile:(id)a3;
+- (id)extensionForProfile:(id)profile;
 @end
 
 @implementation HDSummariesHealthDaemonPlugin
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [[HDSummariesHealthDaemonPluginProfileExtension alloc] initWithProfile:v3];
+    v4 = [[HDSummariesHealthDaemonPluginProfileExtension alloc] initWithProfile:profileCopy];
   }
 
   else

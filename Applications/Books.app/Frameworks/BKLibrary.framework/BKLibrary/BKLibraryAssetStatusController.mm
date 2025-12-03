@@ -1,63 +1,63 @@
 @interface BKLibraryAssetStatusController
 + (id)sharedController;
 - (BKLibraryAssetStatusController)init;
-- (BKLibraryAssetStatusController)initWithLibrary:(id)a3;
+- (BKLibraryAssetStatusController)initWithLibrary:(id)library;
 - (BKLibraryAssetStatusControllerStoreDelegate)storeDelegate;
-- (BOOL)_filterDownloadForAsset:(id)a3;
-- (BOOL)_filterUpdateForAsset:(id)a3;
-- (BOOL)_filterUploadsForAsset:(id)a3;
-- (BOOL)_hasActiveDownloadForAssetID:(id)a3;
-- (BOOL)_includeInDownloadsForAssetID:(id)a3;
-- (BOOL)_includeInUploadsForAssetID:(id)a3;
-- (BOOL)_includedInUpdatesForAssetID:(id)a3;
-- (BOOL)_isSignedInForAssetID:(id)a3;
-- (BOOL)_passesExplicitContentFilter:(id)a3;
+- (BOOL)_filterDownloadForAsset:(id)asset;
+- (BOOL)_filterUpdateForAsset:(id)asset;
+- (BOOL)_filterUploadsForAsset:(id)asset;
+- (BOOL)_hasActiveDownloadForAssetID:(id)d;
+- (BOOL)_includeInDownloadsForAssetID:(id)d;
+- (BOOL)_includeInUploadsForAssetID:(id)d;
+- (BOOL)_includedInUpdatesForAssetID:(id)d;
+- (BOOL)_isSignedInForAssetID:(id)d;
+- (BOOL)_passesExplicitContentFilter:(id)filter;
 - (BUCoalescingCallBlock)downloadRelatedNotificationCoalescingBlock;
-- (id)_addArrayControllerWithFilter:(id)a3;
+- (id)_addArrayControllerWithFilter:(id)filter;
 - (id)_persistedInfoURL;
-- (id)_updateInfoForAssetID:(id)a3;
-- (id)addStatusObserverWithFilter:(id)a3 notify:(id)a4;
-- (id)ephemeralStatusForAssetID:(id)a3;
-- (id)statusForAssetID:(id)a3;
+- (id)_updateInfoForAssetID:(id)d;
+- (id)addStatusObserverWithFilter:(id)filter notify:(id)notify;
+- (id)ephemeralStatusForAssetID:(id)d;
+- (id)statusForAssetID:(id)d;
 - (unint64_t)downloadAssetsCount;
 - (unint64_t)updateAssetsCount;
 - (unint64_t)uploadAssetsCount;
-- (void)_addAssetID:(id)a3;
-- (void)_downloadStatusNotification:(id)a3;
-- (void)_libraryOwnershipNotification:(id)a3;
-- (void)_libraryUpdateNotification:(id)a3;
-- (void)_processDownloadRelatedNotificationsCompletion:(id)a3;
-- (void)_processDownloadStatuses:(id)a3 completion:(id)a4;
-- (void)_processLibraryAssetChanges:(id)a3;
-- (void)_processLibraryOwnershipNotification:(id)a3 completion:(id)a4;
+- (void)_addAssetID:(id)d;
+- (void)_downloadStatusNotification:(id)notification;
+- (void)_libraryOwnershipNotification:(id)notification;
+- (void)_libraryUpdateNotification:(id)notification;
+- (void)_processDownloadRelatedNotificationsCompletion:(id)completion;
+- (void)_processDownloadStatuses:(id)statuses completion:(id)completion;
+- (void)_processLibraryAssetChanges:(id)changes;
+- (void)_processLibraryOwnershipNotification:(id)notification completion:(id)completion;
 - (void)_readPersistedInfoFromDisk;
-- (void)_removeAssetID:(id)a3;
-- (void)_removeAssetIDs:(id)a3;
-- (void)_removeTrackingOfAssetID:(id)a3;
-- (void)_showUpdateFailureForAssetID:(id)a3;
-- (void)_startUpdateForAssetIDs:(id)a3;
+- (void)_removeAssetID:(id)d;
+- (void)_removeAssetIDs:(id)ds;
+- (void)_removeTrackingOfAssetID:(id)d;
+- (void)_showUpdateFailureForAssetID:(id)d;
+- (void)_startUpdateForAssetIDs:(id)ds;
 - (void)_trimUpdateDictionary;
-- (void)_updateAcknowledgeCountsWithAssetIDs:(id)a3;
-- (void)_updateAssetsWithBlock:(id)a3;
-- (void)_updateCountsForAssetIDs:(id)a3;
-- (void)_updateSeriesContainerDownloadStatusForAssetIDs:(id)a3;
-- (void)_updateTotalPercentCompleteForAssetIDs:(id)a3;
-- (void)_updateUploadStatusForAssetIDs:(id)a3;
+- (void)_updateAcknowledgeCountsWithAssetIDs:(id)ds;
+- (void)_updateAssetsWithBlock:(id)block;
+- (void)_updateCountsForAssetIDs:(id)ds;
+- (void)_updateSeriesContainerDownloadStatusForAssetIDs:(id)ds;
+- (void)_updateTotalPercentCompleteForAssetIDs:(id)ds;
+- (void)_updateUploadStatusForAssetIDs:(id)ds;
 - (void)_updatedAssets;
 - (void)_writePersistedInfoToDisk;
 - (void)_writePersistentInfoIfNeeded;
 - (void)acknowledgeCurrentUpdatesAndDownloads;
-- (void)cancelDownloadOfAsset:(id)a3;
-- (void)checkForUpdates:(id)a3;
+- (void)cancelDownloadOfAsset:(id)asset;
+- (void)checkForUpdates:(id)updates;
 - (void)dealloc;
-- (void)makeAccountPrimaryAndCheckForUpdateAndUpdateAssetUnacknowledged:(id)a3;
-- (void)pauseDownloadOfAsset:(id)a3;
+- (void)makeAccountPrimaryAndCheckForUpdateAndUpdateAssetUnacknowledged:(id)unacknowledged;
+- (void)pauseDownloadOfAsset:(id)asset;
 - (void)primaryAccountChanged;
 - (void)removeCompletedDownloads;
 - (void)removeCompletedUploads;
-- (void)restartDownloadOfAsset:(id)a3;
-- (void)restrictionsForExplicitContentAllowedChanged:(BOOL)a3;
-- (void)resumeDownloadOfAsset:(id)a3;
+- (void)restartDownloadOfAsset:(id)asset;
+- (void)restrictionsForExplicitContentAllowedChanged:(BOOL)changed;
+- (void)resumeDownloadOfAsset:(id)asset;
 - (void)setupStateObservation;
 @end
 
@@ -83,9 +83,9 @@
   return v4;
 }
 
-- (BKLibraryAssetStatusController)initWithLibrary:(id)a3
+- (BKLibraryAssetStatusController)initWithLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v59.receiver = self;
   v59.super_class = BKLibraryAssetStatusController;
   v5 = [(BKLibraryAssetStatusController *)&v59 init];
@@ -161,7 +161,7 @@
     objc_copyWeak(&v53, &location);
     [v30 setFilter:v52];
     [v5 setupStateObservation];
-    v31 = [v4 dataSourcesConformingToProtocol:&OBJC_PROTOCOL___BKBookDownloadController];
+    v31 = [libraryCopy dataSourcesConformingToProtocol:&OBJC_PROTOCOL___BKBookDownloadController];
     v32 = *(v5 + 7);
     *(v5 + 7) = v31;
 
@@ -194,7 +194,7 @@
       while (v34);
     }
 
-    v38 = [v4 dataSourceConformingToProtocol:&OBJC_PROTOCOL___BKBookUpdateController];
+    v38 = [libraryCopy dataSourceConformingToProtocol:&OBJC_PROTOCOL___BKBookUpdateController];
     v39 = *(v5 + 8);
     *(v5 + 8) = v38;
 
@@ -205,7 +205,7 @@
     block[3] = &unk_D5420;
     v41 = v5;
     v46 = v41;
-    v47 = v4;
+    v47 = libraryCopy;
     dispatch_async(v40, block);
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
@@ -305,13 +305,13 @@
   }
 }
 
-- (void)_addAssetID:(id)a3
+- (void)_addAssetID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = v4;
-    if (([(NSMutableArray *)self->_assetsArray containsObject:v4]& 1) == 0)
+    v5 = dCopy;
+    if (([(NSMutableArray *)self->_assetsArray containsObject:dCopy]& 1) == 0)
     {
       [(NSMutableArray *)self->_assetsArray addObject:v5];
     }
@@ -320,13 +320,13 @@
   _objc_release_x1();
 }
 
-- (void)_removeAssetID:(id)a3
+- (void)_removeAssetID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = v4;
-    if ([(NSMutableArray *)self->_assetsArray containsObject:v4])
+    v5 = dCopy;
+    if ([(NSMutableArray *)self->_assetsArray containsObject:dCopy])
     {
       [(NSMutableArray *)self->_assetsArray removeObject:v5];
     }
@@ -335,14 +335,14 @@
   _objc_release_x1();
 }
 
-- (void)_removeAssetIDs:(id)a3
+- (void)_removeAssetIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [dsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -354,7 +354,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dsCopy);
         }
 
         [(NSMutableArray *)self->_assetsArray removeObject:*(*(&v9 + 1) + 8 * v8)];
@@ -362,7 +362,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [dsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -409,15 +409,15 @@
   v10[2] = sub_40EA8;
   v10[3] = &unk_D5420;
   v11 = v4;
-  v12 = self;
+  selfCopy = self;
   v9 = v4;
   dispatch_async(backgroundQueue, v10);
 }
 
 - (void)_readPersistedInfoFromDisk
 {
-  v3 = [(BKLibraryAssetStatusController *)self _persistedInfoURL];
-  v4 = [NSData dataWithContentsOfURL:v3];
+  _persistedInfoURL = [(BKLibraryAssetStatusController *)self _persistedInfoURL];
+  v4 = [NSData dataWithContentsOfURL:_persistedInfoURL];
 
   persistentInfo = self->_persistentInfo;
   self->_persistentInfo = 0;
@@ -522,13 +522,13 @@
   }
 }
 
-- (id)_updateInfoForAssetID:(id)a3
+- (id)_updateInfoForAssetID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     objc_opt_class();
-    v5 = [(NSMutableDictionary *)self->_updateDictionary objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_updateDictionary objectForKey:dCopy];
     v6 = BUDynamicCast();
 
     objc_opt_class();
@@ -556,7 +556,7 @@
         updateDictionary = self->_updateDictionary;
       }
 
-      [(NSMutableDictionary *)updateDictionary setObject:v7 forKey:v4];
+      [(NSMutableDictionary *)updateDictionary setObject:v7 forKey:dCopy];
     }
   }
 
@@ -568,20 +568,20 @@
   return v7;
 }
 
-- (BOOL)_isSignedInForAssetID:(id)a3
+- (BOOL)_isSignedInForAssetID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[BKLibraryManager defaultManager];
-  v6 = [v5 libraryAssetOnMainQueueWithAssetID:v4];
+  v6 = [v5 libraryAssetOnMainQueueWithAssetID:dCopy];
 
   if (v6)
   {
-    v7 = [v6 storeID];
-    if (v7)
+    storeID = [v6 storeID];
+    if (storeID)
     {
-      v8 = [(BKLibraryAssetStatusController *)self storeDelegate];
-      v9 = [v6 accountID];
-      v10 = [v8 libraryAssetStatusController:self isAccountPrimaryAndSignedIn:v9];
+      storeDelegate = [(BKLibraryAssetStatusController *)self storeDelegate];
+      accountID = [v6 accountID];
+      v10 = [storeDelegate libraryAssetStatusController:self isAccountPrimaryAndSignedIn:accountID];
     }
 
     else
@@ -598,23 +598,23 @@
   return v10;
 }
 
-- (BOOL)_hasActiveDownloadForAssetID:(id)a3
+- (BOOL)_hasActiveDownloadForAssetID:(id)d
 {
-  v3 = [(BKLibraryAssetStatusController *)self statusForAssetID:a3];
+  v3 = [(BKLibraryAssetStatusController *)self statusForAssetID:d];
   v4 = [v3 state] - 2 < &dword_4 + 3;
 
   return v4;
 }
 
-- (BOOL)_passesExplicitContentFilter:(id)a3
+- (BOOL)_passesExplicitContentFilter:(id)filter
 {
   if (self->_explicitContentRestricted)
   {
-    v3 = [a3 isExplicit];
-    v4 = v3;
-    if (v3)
+    isExplicit = [filter isExplicit];
+    v4 = isExplicit;
+    if (isExplicit)
     {
-      v5 = [v3 BOOLValue] ^ 1;
+      v5 = [isExplicit BOOLValue] ^ 1;
     }
 
     else
@@ -631,12 +631,12 @@
   return v5;
 }
 
-- (BOOL)_includedInUpdatesForAssetID:(id)a3
+- (BOOL)_includedInUpdatesForAssetID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_statusDictionary objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_statusDictionary objectForKey:dCopy];
     if ([v5 state] == &dword_0 + 1)
     {
       v6 = 1;
@@ -644,8 +644,8 @@
 
     else
     {
-      v7 = [(BKAssetArrayController *)self->_updateAssets arrangedObjects];
-      v6 = [v7 containsObject:v4];
+      arrangedObjects = [(BKAssetArrayController *)self->_updateAssets arrangedObjects];
+      v6 = [arrangedObjects containsObject:dCopy];
     }
   }
 
@@ -657,12 +657,12 @@
   return v6;
 }
 
-- (BOOL)_includeInDownloadsForAssetID:(id)a3
+- (BOOL)_includeInDownloadsForAssetID:(id)d
 {
-  v4 = a3;
-  if (v4 && ![(BKLibraryAssetStatusController *)self _includedInUpdatesForAssetID:v4])
+  dCopy = d;
+  if (dCopy && ![(BKLibraryAssetStatusController *)self _includedInUpdatesForAssetID:dCopy])
   {
-    v5 = [(BKLibraryAssetStatusController *)self _hasActiveDownloadForAssetID:v4];
+    v5 = [(BKLibraryAssetStatusController *)self _hasActiveDownloadForAssetID:dCopy];
   }
 
   else
@@ -673,9 +673,9 @@
   return v5;
 }
 
-- (BOOL)_includeInUploadsForAssetID:(id)a3
+- (BOOL)_includeInUploadsForAssetID:(id)d
 {
-  if (!a3)
+  if (!d)
   {
     return 0;
   }
@@ -686,13 +686,13 @@
   return v4;
 }
 
-- (BOOL)_filterUpdateForAsset:(id)a3
+- (BOOL)_filterUpdateForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 assetID];
-  if ([(BKLibraryAssetStatusController *)self _includedInUpdatesForAssetID:v5]&& ([(BKLibraryAssetStatusController *)self _isSignedInForAssetID:v5]|| [(BKLibraryAssetStatusController *)self _hasActiveDownloadForAssetID:v5]))
+  assetCopy = asset;
+  assetID = [assetCopy assetID];
+  if ([(BKLibraryAssetStatusController *)self _includedInUpdatesForAssetID:assetID]&& ([(BKLibraryAssetStatusController *)self _isSignedInForAssetID:assetID]|| [(BKLibraryAssetStatusController *)self _hasActiveDownloadForAssetID:assetID]))
   {
-    v6 = [(BKLibraryAssetStatusController *)self _passesExplicitContentFilter:v4];
+    v6 = [(BKLibraryAssetStatusController *)self _passesExplicitContentFilter:assetCopy];
   }
 
   else
@@ -703,13 +703,13 @@
   return v6;
 }
 
-- (BOOL)_filterDownloadForAsset:(id)a3
+- (BOOL)_filterDownloadForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 assetID];
-  if ([(BKLibraryAssetStatusController *)self _includeInDownloadsForAssetID:v5])
+  assetCopy = asset;
+  assetID = [assetCopy assetID];
+  if ([(BKLibraryAssetStatusController *)self _includeInDownloadsForAssetID:assetID])
   {
-    v6 = [(BKLibraryAssetStatusController *)self _passesExplicitContentFilter:v4];
+    v6 = [(BKLibraryAssetStatusController *)self _passesExplicitContentFilter:assetCopy];
   }
 
   else
@@ -720,34 +720,34 @@
   return v6;
 }
 
-- (BOOL)_filterUploadsForAsset:(id)a3
+- (BOOL)_filterUploadsForAsset:(id)asset
 {
-  v4 = [a3 assetID];
-  LOBYTE(self) = [(BKLibraryAssetStatusController *)self _includeInUploadsForAssetID:v4];
+  assetID = [asset assetID];
+  LOBYTE(self) = [(BKLibraryAssetStatusController *)self _includeInUploadsForAssetID:assetID];
 
   return self;
 }
 
 - (unint64_t)updateAssetsCount
 {
-  v2 = [(BKAssetArrayController *)self->_updateAssets arrangedObjects];
-  v3 = [v2 count];
+  arrangedObjects = [(BKAssetArrayController *)self->_updateAssets arrangedObjects];
+  v3 = [arrangedObjects count];
 
   return v3;
 }
 
 - (unint64_t)downloadAssetsCount
 {
-  v2 = [(BKAssetArrayController *)self->_downloadAssets arrangedObjects];
-  v3 = [v2 count];
+  arrangedObjects = [(BKAssetArrayController *)self->_downloadAssets arrangedObjects];
+  v3 = [arrangedObjects count];
 
   return v3;
 }
 
 - (unint64_t)uploadAssetsCount
 {
-  v2 = [(BKAssetArrayController *)self->_uploadAssets arrangedObjects];
-  v3 = [v2 count];
+  arrangedObjects = [(BKAssetArrayController *)self->_uploadAssets arrangedObjects];
+  v3 = [arrangedObjects count];
 
   return v3;
 }
@@ -774,9 +774,9 @@
   [(BKLibraryAssetStatusController *)&v5 dealloc];
 }
 
-- (void)_updateTotalPercentCompleteForAssetIDs:(id)a3
+- (void)_updateTotalPercentCompleteForAssetIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -790,7 +790,7 @@
   v9[1] = 3221225472;
   v9[2] = sub_41C3C;
   v9[3] = &unk_D6880;
-  v6 = v4;
+  v6 = dsCopy;
   v10 = v6;
   v11 = &v13;
   v12 = &v17;
@@ -812,15 +812,15 @@
   _Block_object_dispose(&v17, 8);
 }
 
-- (void)_updateSeriesContainerDownloadStatusForAssetIDs:(id)a3
+- (void)_updateSeriesContainerDownloadStatusForAssetIDs:(id)ds
 {
   statusDictionary = self->_statusDictionary;
-  v5 = a3;
+  dsCopy = ds;
   v6 = [(NSMutableDictionary *)statusDictionary copy];
-  v7 = [v6 allKeys];
-  v8 = [NSMutableSet setWithArray:v7];
+  allKeys = [v6 allKeys];
+  v8 = [NSMutableSet setWithArray:allKeys];
 
-  [v8 intersectSet:v5];
+  [v8 intersectSet:dsCopy];
   v9 = +[NSMutableDictionary dictionary];
   v10 = +[NSMutableDictionary dictionary];
   v11 = +[NSMutableSet set];
@@ -841,7 +841,7 @@
   v25 = v17;
   v18 = v9;
   v26 = v18;
-  v27 = self;
+  selfCopy = self;
   v19 = objc_retainBlock(v20);
   if (+[NSThread isMainThread])
   {
@@ -854,9 +854,9 @@
   }
 }
 
-- (void)_updateCountsForAssetIDs:(id)a3
+- (void)_updateCountsForAssetIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -870,7 +870,7 @@
   v7[1] = 3221225472;
   v7[2] = sub_42748;
   v7[3] = &unk_D6880;
-  v6 = v4;
+  v6 = dsCopy;
   v8 = v6;
   v9 = &v15;
   v10 = &v11;
@@ -889,9 +889,9 @@
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)_updateAcknowledgeCountsWithAssetIDs:(id)a3
+- (void)_updateAcknowledgeCountsWithAssetIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -905,9 +905,9 @@
   v8 = 3221225472;
   v9 = sub_42928;
   v10 = &unk_D68F8;
-  v6 = v4;
+  v6 = dsCopy;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v13 = &v19;
   v14 = &v15;
   [(NSMutableDictionary *)statusDictionary enumerateKeysAndObjectsUsingBlock:&v7];
@@ -925,9 +925,9 @@
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)_updateUploadStatusForAssetIDs:(id)a3
+- (void)_updateUploadStatusForAssetIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -948,7 +948,7 @@
   v6[5] = &v11;
   v6[6] = &v15;
   v6[7] = &v7;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [dsCopy enumerateObjectsUsingBlock:v6];
   if (v12[3])
   {
     v5 = 1;
@@ -1002,33 +1002,33 @@
   _Block_object_dispose(&v5, 8);
 }
 
-- (void)_updateAssetsWithBlock:(id)a3
+- (void)_updateAssetsWithBlock:(id)block
 {
-  v22 = a3;
-  v4 = [(BKAssetArrayController *)self->_updateAssets arrangedObjects];
-  v5 = [v4 count];
+  blockCopy = block;
+  arrangedObjects = [(BKAssetArrayController *)self->_updateAssets arrangedObjects];
+  v5 = [arrangedObjects count];
 
-  v6 = [(BKAssetArrayController *)self->_downloadAssets arrangedObjects];
-  v7 = [v6 count];
+  arrangedObjects2 = [(BKAssetArrayController *)self->_downloadAssets arrangedObjects];
+  v7 = [arrangedObjects2 count];
 
-  v8 = [(BKAssetArrayController *)self->_uploadAssets arrangedObjects];
-  v9 = [v8 count];
+  arrangedObjects3 = [(BKAssetArrayController *)self->_uploadAssets arrangedObjects];
+  v9 = [arrangedObjects3 count];
 
   v21 = (v5 | v7 | v9) != 0;
-  if (v22)
+  if (blockCopy)
   {
-    v22[2](v22);
+    blockCopy[2](blockCopy);
   }
 
   v10 = v5 != 0;
-  v11 = [(BKAssetArrayController *)self->_updateAssets arrangedObjects];
-  v12 = [v11 count];
+  arrangedObjects4 = [(BKAssetArrayController *)self->_updateAssets arrangedObjects];
+  v12 = [arrangedObjects4 count];
 
-  v13 = [(BKAssetArrayController *)self->_downloadAssets arrangedObjects];
-  v14 = [v13 count];
+  arrangedObjects5 = [(BKAssetArrayController *)self->_downloadAssets arrangedObjects];
+  v14 = [arrangedObjects5 count];
 
-  v15 = [(BKAssetArrayController *)self->_uploadAssets arrangedObjects];
-  v16 = [v15 count];
+  arrangedObjects6 = [(BKAssetArrayController *)self->_uploadAssets arrangedObjects];
+  v16 = [arrangedObjects6 count];
 
   if (v10 != (v12 != 0))
   {
@@ -1051,14 +1051,14 @@
   }
 
   v17 = objc_alloc_init(NSMutableSet);
-  v18 = [(BKAssetArrayController *)self->_updateAssets arrangedObjects];
-  [v17 addObjectsFromArray:v18];
+  arrangedObjects7 = [(BKAssetArrayController *)self->_updateAssets arrangedObjects];
+  [v17 addObjectsFromArray:arrangedObjects7];
 
-  v19 = [(BKAssetArrayController *)self->_downloadAssets arrangedObjects];
-  [v17 addObjectsFromArray:v19];
+  arrangedObjects8 = [(BKAssetArrayController *)self->_downloadAssets arrangedObjects];
+  [v17 addObjectsFromArray:arrangedObjects8];
 
-  v20 = [(BKAssetArrayController *)self->_uploadAssets arrangedObjects];
-  [(BKLibraryAssetStatusController *)self _updateUploadStatusForAssetIDs:v20];
+  arrangedObjects9 = [(BKAssetArrayController *)self->_uploadAssets arrangedObjects];
+  [(BKLibraryAssetStatusController *)self _updateUploadStatusForAssetIDs:arrangedObjects9];
 
   [(BKLibraryAssetStatusController *)self _updateTotalPercentCompleteForAssetIDs:v17];
   [(BKLibraryAssetStatusController *)self _updateCountsForAssetIDs:v17];
@@ -1090,12 +1090,12 @@
   return downloadRelatedNotificationCoalescingBlock;
 }
 
-- (void)_downloadStatusNotification:(id)a3
+- (void)_downloadStatusNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"BKLibraryDownloadStatusKey"];
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"BKLibraryDownloadStatusKey"];
   v7 = BUDynamicCast();
 
   if ([v7 count])
@@ -1105,100 +1105,100 @@
     v11 = 3221225472;
     v12 = sub_43254;
     v13 = &unk_D5420;
-    v14 = self;
-    v15 = v4;
+    selfCopy = self;
+    v15 = notificationCopy;
     dispatch_sync(downloadStatusesQueue, &v10);
     v9 = [(BKLibraryAssetStatusController *)self downloadRelatedNotificationCoalescingBlock:v10];
     [v9 signalWithCompletion:&stru_D6990];
   }
 }
 
-- (void)_processDownloadRelatedNotificationsCompletion:(id)a3
+- (void)_processDownloadRelatedNotificationsCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   downloadStatusesQueue = self->_downloadStatusesQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_432FC;
   v7[3] = &unk_D5550;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_sync(downloadStatusesQueue, v7);
 }
 
-- (void)_processDownloadStatuses:(id)a3 completion:(id)a4
+- (void)_processDownloadStatuses:(id)statuses completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  statusesCopy = statuses;
+  completionCopy = completion;
+  if ([statusesCopy count])
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_43920;
     block[3] = &unk_D62F8;
     block[4] = self;
-    v9 = v6;
-    v10 = v7;
+    v9 = statusesCopy;
+    v10 = completionCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
 
-- (void)_libraryUpdateNotification:(id)a3
+- (void)_libraryUpdateNotification:(id)notification
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_43C68;
   v4[3] = &unk_D5420;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  notificationCopy = notification;
+  v3 = notificationCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)_removeTrackingOfAssetID:(id)a3
+- (void)_removeTrackingOfAssetID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_44030;
     v6[3] = &unk_D5420;
     v6[4] = self;
-    v7 = v4;
+    v7 = dCopy;
     [(BKLibraryAssetStatusController *)self _updateAssetsWithBlock:v6];
   }
 }
 
-- (void)_libraryOwnershipNotification:(id)a3
+- (void)_libraryOwnershipNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   downloadStatusesQueue = self->_downloadStatusesQueue;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_4415C;
   v11 = &unk_D5420;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_sync(downloadStatusesQueue, &v8);
   v7 = [(BKLibraryAssetStatusController *)self downloadRelatedNotificationCoalescingBlock:v8];
   [v7 signalWithCompletion:&stru_D69B0];
 }
 
-- (void)_processLibraryOwnershipNotification:(id)a3 completion:(id)a4
+- (void)_processLibraryOwnershipNotification:(id)notification completion:(id)completion
 {
-  v21 = a4;
-  v5 = [a3 userInfo];
+  completionCopy = completion;
+  userInfo = [notification userInfo];
   v6 = dispatch_group_create();
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v22 = v5;
-  obj = [v5 objectForKeyedSubscript:@"BKLibraryOwnershipAssetsKey"];
+  v22 = userInfo;
+  obj = [userInfo objectForKeyedSubscript:@"BKLibraryOwnershipAssetsKey"];
   v7 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v7)
   {
@@ -1215,16 +1215,16 @@
 
         v10 = *(*(&v35 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:@"BKLibraryOwnershipNewState"];
-        v12 = [v11 integerValue];
+        integerValue = [v11 integerValue];
 
         v13 = [v10 objectForKeyedSubscript:@"BKLibraryOwnershipOldState"];
-        v14 = [v13 integerValue];
+        integerValue2 = [v13 integerValue];
 
         v15 = [v10 objectForKeyedSubscript:@"BKLibraryOwnershipAssetIDKey"];
         v16 = v15;
         if (v15)
         {
-          v17 = v12 == 3;
+          v17 = integerValue == 3;
         }
 
         else
@@ -1241,12 +1241,12 @@
           block[3] = &unk_D69D8;
           block[4] = self;
           v32 = v16;
-          v34 = v14;
+          v34 = integerValue2;
           v33 = v6;
           dispatch_async(&_dispatch_main_q, block);
         }
 
-        else if (v12 == 2)
+        else if (integerValue == 2)
         {
           if (!v15)
           {
@@ -1264,7 +1264,7 @@
           goto LABEL_16;
         }
 
-        if (v14 != 2)
+        if (integerValue2 != 2)
         {
           goto LABEL_17;
         }
@@ -1277,7 +1277,7 @@
         v28[3] = &unk_D69D8;
         v28[4] = self;
         v28[5] = v16;
-        v29 = v12;
+        v29 = integerValue;
 LABEL_16:
         v18[6] = v6;
         dispatch_async(&_dispatch_main_q, v18);
@@ -1296,85 +1296,85 @@ LABEL_17:
   v26[1] = 3221225472;
   v26[2] = sub_44A30;
   v26[3] = &unk_D6858;
-  v27 = v21;
-  v20 = v21;
+  v27 = completionCopy;
+  v20 = completionCopy;
   dispatch_group_notify(v6, downloadStatusesQueue, v26);
 }
 
-- (void)_showUpdateFailureForAssetID:(id)a3
+- (void)_showUpdateFailureForAssetID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_44B18;
     v6[3] = &unk_D5420;
     v6[4] = self;
-    v7 = v4;
+    v7 = dCopy;
     [(BKLibraryAssetStatusController *)self _updateAssetsWithBlock:v6];
   }
 }
 
-- (void)makeAccountPrimaryAndCheckForUpdateAndUpdateAssetUnacknowledged:(id)a3
+- (void)makeAccountPrimaryAndCheckForUpdateAndUpdateAssetUnacknowledged:(id)unacknowledged
 {
-  v4 = a3;
-  v5 = [v4 assetID];
-  v6 = [v4 accountID];
+  unacknowledgedCopy = unacknowledged;
+  assetID = [unacknowledgedCopy assetID];
+  accountID = [unacknowledgedCopy accountID];
 
-  if (v5 && v6)
+  if (assetID && accountID)
   {
-    v7 = [(BKLibraryAssetStatusController *)self storeDelegate];
+    storeDelegate = [(BKLibraryAssetStatusController *)self storeDelegate];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_44C94;
     v8[3] = &unk_D6A78;
     v8[4] = self;
-    v9 = v5;
-    [v7 libraryAssetStatusController:self makeAccountPrimaryAndSignedIn:v6 completion:v8];
+    v9 = assetID;
+    [storeDelegate libraryAssetStatusController:self makeAccountPrimaryAndSignedIn:accountID completion:v8];
   }
 }
 
-- (void)_startUpdateForAssetIDs:(id)a3
+- (void)_startUpdateForAssetIDs:(id)ds
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_4548C;
   v5[3] = &unk_D5420;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  dsCopy = ds;
+  selfCopy = self;
+  v4 = dsCopy;
   _os_activity_initiate(&dword_0, "Start update for assets", OS_ACTIVITY_FLAG_DEFAULT, v5);
 }
 
-- (void)pauseDownloadOfAsset:(id)a3
+- (void)pauseDownloadOfAsset:(id)asset
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_45924;
   v4[3] = &unk_D5420;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  assetCopy = asset;
+  v3 = assetCopy;
   _os_activity_initiate(&dword_0, "Pause download for asset", OS_ACTIVITY_FLAG_DEFAULT, v4);
 }
 
-- (void)resumeDownloadOfAsset:(id)a3
+- (void)resumeDownloadOfAsset:(id)asset
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_45AC0;
   v4[3] = &unk_D5420;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  assetCopy = asset;
+  v3 = assetCopy;
   _os_activity_initiate(&dword_0, "Resume download for asset", OS_ACTIVITY_FLAG_DEFAULT, v4);
 }
 
-- (void)cancelDownloadOfAsset:(id)a3
+- (void)cancelDownloadOfAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -1395,7 +1395,7 @@ LABEL_17:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) cancelDownloadForAssetID:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9) cancelDownloadForAssetID:{assetCopy, v10}];
         v9 = v9 + 1;
       }
 
@@ -1407,9 +1407,9 @@ LABEL_17:
   }
 }
 
-- (void)restartDownloadOfAsset:(id)a3
+- (void)restartDownloadOfAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -1430,7 +1430,7 @@ LABEL_17:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) restartDownloadForAssetID:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9) restartDownloadForAssetID:{assetCopy, v10}];
         v9 = v9 + 1;
       }
 
@@ -1462,9 +1462,9 @@ LABEL_17:
   [(BKLibraryAssetStatusController *)self _updateAssetsWithBlock:v2];
 }
 
-- (void)checkForUpdates:(id)a3
+- (void)checkForUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   [(BKLibraryAssetStatusController *)self setCheckingForUpdates:1];
   updateController = self->_updateController;
   v7[0] = _NSConcreteStackBlock;
@@ -1472,21 +1472,21 @@ LABEL_17:
   v7[2] = sub_46250;
   v7[3] = &unk_D6AC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updatesCopy;
+  v6 = updatesCopy;
   [(BKBookUpdateController *)updateController checkForUpdates:v7];
 }
 
-- (id)statusForAssetID:(id)a3
+- (id)statusForAssetID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_statusDictionary objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_statusDictionary objectForKey:dCopy];
     if (!v5)
     {
-      v5 = [[BKLibraryDownloadStatus alloc] initWithAssetID:v4 state:0 progressValue:-1 timeRemaining:0x7FFFFFFFFFFFFFFFLL bytesDownloaded:0x7FFFFFFFFFFFFFFFLL fileSize:0.0];
-      [(NSMutableDictionary *)self->_statusDictionary setObject:v5 forKey:v4];
+      v5 = [[BKLibraryDownloadStatus alloc] initWithAssetID:dCopy state:0 progressValue:-1 timeRemaining:0x7FFFFFFFFFFFFFFFLL bytesDownloaded:0x7FFFFFFFFFFFFFFFLL fileSize:0.0];
+      [(NSMutableDictionary *)self->_statusDictionary setObject:v5 forKey:dCopy];
     }
   }
 
@@ -1498,9 +1498,9 @@ LABEL_17:
   return v5;
 }
 
-- (id)ephemeralStatusForAssetID:(id)a3
+- (id)ephemeralStatusForAssetID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = [(NSMutableDictionary *)self->_statusDictionary objectForKey:?];
   }
@@ -1533,23 +1533,23 @@ LABEL_17:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_processLibraryAssetChanges:(id)a3
+- (void)_processLibraryAssetChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v5 = BKLibraryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 addedObjects];
-    v7 = [v6 count];
-    v8 = [v4 deletedObjects];
-    v9 = [v8 count];
-    v10 = [v4 updatedObjects];
+    addedObjects = [changesCopy addedObjects];
+    v7 = [addedObjects count];
+    deletedObjects = [changesCopy deletedObjects];
+    v9 = [deletedObjects count];
+    updatedObjects = [changesCopy updatedObjects];
     *buf = 134218496;
     v17 = v7;
     v18 = 2048;
     v19 = v9;
     v20 = 2048;
-    v21 = [v10 count];
+    v21 = [updatedObjects count];
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "BKLibraryAssetStatusController _processLibraryAssetChanges: added: %ld deleted: %ld updated: %ld", buf, 0x20u);
   }
 
@@ -1558,41 +1558,41 @@ LABEL_17:
   v13[1] = 3221225472;
   v13[2] = sub_4691C;
   v13[3] = &unk_D58E0;
-  v14 = v4;
-  v15 = self;
-  v12 = v4;
+  v14 = changesCopy;
+  selfCopy = self;
+  v12 = changesCopy;
   [v11 performBackgroundReadOnlyBlock:v13];
 }
 
-- (id)_addArrayControllerWithFilter:(id)a3
+- (id)_addArrayControllerWithFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   v5 = [[BKAssetArrayController alloc] initWithContent:self->_assetsArray];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_46C18;
   v11 = &unk_D6AF0;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = filterCopy;
+  v6 = filterCopy;
   [(BKAssetArrayController *)v5 setFilter:&v8];
-  [(NSMutableArray *)self->_additionalArrayControllers addObject:v5, v8, v9, v10, v11, v12];
+  [(NSMutableArray *)self->_additionalArrayControllers addObject:v5, v8, v9, v10, v11, selfCopy];
 
   return v5;
 }
 
-- (id)addStatusObserverWithFilter:(id)a3 notify:(id)a4
+- (id)addStatusObserverWithFilter:(id)filter notify:(id)notify
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[BKLibraryAssetStatusObserver alloc] initWithFilter:v6 notify:v5];
+  notifyCopy = notify;
+  filterCopy = filter;
+  v7 = [[BKLibraryAssetStatusObserver alloc] initWithFilter:filterCopy notify:notifyCopy];
 
   return v7;
 }
 
-- (void)restrictionsForExplicitContentAllowedChanged:(BOOL)a3
+- (void)restrictionsForExplicitContentAllowedChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1613,7 +1613,7 @@ LABEL_17:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9) setExplicitContentRestricted:!v3];
+        [*(*(&v11 + 1) + 8 * v9) setExplicitContentRestricted:!changedCopy];
         v9 = v9 + 1;
       }
 

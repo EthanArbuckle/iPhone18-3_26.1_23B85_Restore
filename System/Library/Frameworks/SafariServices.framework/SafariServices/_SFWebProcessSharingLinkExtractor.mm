@@ -1,26 +1,26 @@
 @interface _SFWebProcessSharingLinkExtractor
-- (_SFWebProcessSharingLinkExtractor)initWithPageController:(id)a3;
-- (id)_extractCanonicalLinkWithInjectedObject:(id)a3;
-- (id)_extractDominantIFrameWithInjectedObject:(id)a3;
+- (_SFWebProcessSharingLinkExtractor)initWithPageController:(id)controller;
+- (id)_extractCanonicalLinkWithInjectedObject:(id)object;
+- (id)_extractDominantIFrameWithInjectedObject:(id)object;
 - (id)_extractSharingLink;
 - (id)_injectedLinkExtractorSourceString;
 - (void)_setUpRemoteInterface;
-- (void)_withInjectedLinkExtractorObjectInFrame:(id)a3 callback:(id)a4;
-- (void)fetchSharingLinkWithCompletionHandler:(id)a3;
+- (void)_withInjectedLinkExtractorObjectInFrame:(id)frame callback:(id)callback;
+- (void)fetchSharingLinkWithCompletionHandler:(id)handler;
 @end
 
 @implementation _SFWebProcessSharingLinkExtractor
 
-- (_SFWebProcessSharingLinkExtractor)initWithPageController:(id)a3
+- (_SFWebProcessSharingLinkExtractor)initWithPageController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = _SFWebProcessSharingLinkExtractor;
   v5 = [(_SFWebProcessSharingLinkExtractor *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_pageController, v4);
+    objc_storeWeak(&v5->_pageController, controllerCopy);
     [(_SFWebProcessSharingLinkExtractor *)v6 _setUpRemoteInterface];
     v7 = v6;
   }
@@ -35,10 +35,10 @@
   self->_sharingLinkExtractorInterface = v3;
 
   WeakRetained = objc_loadWeakRetained(&self->_pageController);
-  v6 = [WeakRetained browserContextController];
-  v7 = [v6 _remoteObjectRegistry];
+  browserContextController = [WeakRetained browserContextController];
+  _remoteObjectRegistry = [browserContextController _remoteObjectRegistry];
 
-  [v7 registerExportedObject:self interface:self->_sharingLinkExtractorInterface];
+  [_remoteObjectRegistry registerExportedObject:self interface:self->_sharingLinkExtractorInterface];
 }
 
 - (id)_injectedLinkExtractorSourceString
@@ -57,36 +57,36 @@
   return v2;
 }
 
-- (void)_withInjectedLinkExtractorObjectInFrame:(id)a3 callback:(id)a4
+- (void)_withInjectedLinkExtractorObjectInFrame:(id)frame callback:(id)callback
 {
   v6 = MEMORY[0x1E6985398];
-  v7 = a4;
-  v8 = a3;
-  v14 = [v6 world];
-  v9 = [v8 jsContextForWorld:v14];
+  callbackCopy = callback;
+  frameCopy = frame;
+  world = [v6 world];
+  v9 = [frameCopy jsContextForWorld:world];
 
-  v10 = [(_SFWebProcessSharingLinkExtractor *)self _injectedLinkExtractorSourceString];
-  v11 = [v9 evaluateScript:v10];
+  _injectedLinkExtractorSourceString = [(_SFWebProcessSharingLinkExtractor *)self _injectedLinkExtractorSourceString];
+  v11 = [v9 evaluateScript:_injectedLinkExtractorSourceString];
 
-  v12 = [v9 globalObject];
-  v13 = [v12 valueForProperty:@"SharingLinkExtractorJS"];
+  globalObject = [v9 globalObject];
+  v13 = [globalObject valueForProperty:@"SharingLinkExtractorJS"];
 
-  v7[2](v7, v13);
-  [v14 clearWrappers];
+  callbackCopy[2](callbackCopy, v13);
+  [world clearWrappers];
 }
 
-- (void)fetchSharingLinkWithCompletionHandler:(id)a3
+- (void)fetchSharingLinkWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(_SFWebProcessSharingLinkExtractor *)self _extractSharingLink];
-  v4[2](v4, v5);
+  handlerCopy = handler;
+  _extractSharingLink = [(_SFWebProcessSharingLinkExtractor *)self _extractSharingLink];
+  handlerCopy[2](handlerCopy, _extractSharingLink);
 }
 
 - (id)_extractSharingLink
 {
   WeakRetained = objc_loadWeakRetained(&self->_pageController);
-  v4 = [WeakRetained browserContextController];
-  v5 = [v4 mainFrame];
+  browserContextController = [WeakRetained browserContextController];
+  mainFrame = [browserContextController mainFrame];
 
   v24 = 0;
   v25 = &v24;
@@ -107,7 +107,7 @@
   v17[4] = self;
   v17[5] = &v24;
   v17[6] = &v18;
-  [(_SFWebProcessSharingLinkExtractor *)self _withInjectedLinkExtractorObjectInFrame:v5 callback:v17];
+  [(_SFWebProcessSharingLinkExtractor *)self _withInjectedLinkExtractorObjectInFrame:mainFrame callback:v17];
   v6 = v25[5];
   if (v6 || (v8 = v19[5]) == 0)
   {
@@ -140,9 +140,9 @@
   return v7;
 }
 
-- (id)_extractCanonicalLinkWithInjectedObject:(id)a3
+- (id)_extractCanonicalLinkWithInjectedObject:(id)object
 {
-  v3 = [a3 invokeMethod:@"extractCanonicalLink" withArguments:0];
+  v3 = [object invokeMethod:@"extractCanonicalLink" withArguments:0];
   v4 = [v3 toObjectOfClass:objc_opt_class()];
   if (v4)
   {
@@ -157,21 +157,21 @@
   return v5;
 }
 
-- (id)_extractDominantIFrameWithInjectedObject:(id)a3
+- (id)_extractDominantIFrameWithInjectedObject:(id)object
 {
-  v3 = a3;
-  v4 = [v3 invokeMethod:@"viewportDominantIFrameElement" withArguments:0];
-  v5 = 0;
+  objectCopy = object;
+  v4 = [objectCopy invokeMethod:@"viewportDominantIFrameElement" withArguments:0];
+  htmlIFrameElementContentFrame = 0;
   if ([v4 isObject])
   {
     v6 = MEMORY[0x1E6985390];
-    v7 = [v3 context];
-    v8 = [v6 nodeHandleWithJSValue:v4 inContext:v7];
+    context = [objectCopy context];
+    v8 = [v6 nodeHandleWithJSValue:v4 inContext:context];
 
-    v5 = [v8 htmlIFrameElementContentFrame];
+    htmlIFrameElementContentFrame = [v8 htmlIFrameElementContentFrame];
   }
 
-  return v5;
+  return htmlIFrameElementContentFrame;
 }
 
 @end

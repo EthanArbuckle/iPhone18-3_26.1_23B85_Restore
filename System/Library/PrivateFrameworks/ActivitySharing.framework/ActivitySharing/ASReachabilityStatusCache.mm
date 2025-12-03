@@ -1,9 +1,9 @@
 @interface ASReachabilityStatusCache
 - (ASReachabilityStatusCache)init;
-- (id)statusForDestination:(id)a3;
-- (id)statusesForDestinations:(id)a3;
-- (void)addStatusesByDestination:(id)a3;
-- (void)setStatus:(id)a3 forDestination:(id)a4;
+- (id)statusForDestination:(id)destination;
+- (id)statusesForDestinations:(id)destinations;
+- (void)addStatusesByDestination:(id)destination;
+- (void)setStatus:(id)status forDestination:(id)destination;
 @end
 
 @implementation ASReachabilityStatusCache
@@ -19,17 +19,17 @@
     serialQueue = v2->_serialQueue;
     v2->_serialQueue = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     cache = v2->_cache;
-    v2->_cache = v5;
+    v2->_cache = dictionary;
   }
 
   return v2;
 }
 
-- (id)statusForDestination:(id)a3
+- (id)statusForDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -41,10 +41,10 @@
   block[1] = 3221225472;
   block[2] = __50__ASReachabilityStatusCache_statusForDestination___block_invoke;
   block[3] = &unk_278C46C40;
-  v10 = v4;
+  v10 = destinationCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = destinationCopy;
   dispatch_sync(serialQueue, block);
   v7 = v13[5];
 
@@ -67,9 +67,9 @@ void __50__ASReachabilityStatusCache_statusForDestination___block_invoke(void *a
   }
 }
 
-- (id)statusesForDestinations:(id)a3
+- (id)statusesForDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -81,10 +81,10 @@ void __50__ASReachabilityStatusCache_statusForDestination___block_invoke(void *a
   block[1] = 3221225472;
   block[2] = __53__ASReachabilityStatusCache_statusesForDestinations___block_invoke;
   block[3] = &unk_278C46C40;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
-  v10 = v4;
-  v6 = v4;
+  v10 = destinationsCopy;
+  v6 = destinationsCopy;
   dispatch_sync(serialQueue, block);
   v7 = v14[5];
 
@@ -138,34 +138,34 @@ void __53__ASReachabilityStatusCache_statusesForDestinations___block_invoke(uint
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setStatus:(id)a3 forDestination:(id)a4
+- (void)setStatus:(id)status forDestination:(id)destination
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  destinationCopy = destination;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__ASReachabilityStatusCache_setStatus_forDestination___block_invoke;
   block[3] = &unk_278C46C68;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = statusCopy;
+  v13 = destinationCopy;
+  v9 = destinationCopy;
+  v10 = statusCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (void)addStatusesByDestination:(id)a3
+- (void)addStatusesByDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__ASReachabilityStatusCache_addStatusesByDestination___block_invoke;
   v7[3] = &unk_278C46C90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = destinationCopy;
+  v6 = destinationCopy;
   dispatch_async(serialQueue, v7);
 }
 

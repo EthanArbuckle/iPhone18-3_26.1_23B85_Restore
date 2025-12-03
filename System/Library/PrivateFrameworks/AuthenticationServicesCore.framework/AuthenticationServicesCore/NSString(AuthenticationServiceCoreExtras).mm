@@ -8,11 +8,11 @@
 - (uint64_t)isValidRPIDForOrigin:()AuthenticationServiceCoreExtras
 {
   v2 = [MEMORY[0x1E695DFF8] URLWithString:?];
-  v3 = [v2 host];
+  host = [v2 host];
 
-  if (v3)
+  if (host)
   {
-    v4 = [a1 isValidRPIDForHost:v3];
+    v4 = [self isValidRPIDForHost:host];
   }
 
   else
@@ -26,14 +26,14 @@
 - (BOOL)isValidRPIDForHost:()AuthenticationServiceCoreExtras
 {
   v4 = a3;
-  if ([a1 isEqualToString:v4])
+  if ([self isEqualToString:v4])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [@"." stringByAppendingString:a1];
+    v6 = [@"." stringByAppendingString:self];
     v7 = [v4 hasSuffix:v6];
 
     if (v7)

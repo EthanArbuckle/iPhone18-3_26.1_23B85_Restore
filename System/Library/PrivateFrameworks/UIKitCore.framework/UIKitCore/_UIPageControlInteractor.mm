@@ -1,29 +1,29 @@
 @interface _UIPageControlInteractor
-- (_UIPageControlInteractor)initWithMaximumDistance:(double)a3;
+- (_UIPageControlInteractor)initWithMaximumDistance:(double)distance;
 - (double)boundedScrubPosition;
 - (double)hyperConstrainedPosition;
 - (double)joggingDistance;
 - (double)unconstrainedPosition;
 - (void)commitTranslation;
-- (void)reduceScrubOffsetByOffset:(double)a3;
-- (void)setTranslation:(double)a3 velocity:(double)a4;
-- (void)setUnconstrainedPosition:(double)a3 offset:(double)a4;
-- (void)updateRubberbandLowerBound:(double)a3 upperBound:(double)a4;
+- (void)reduceScrubOffsetByOffset:(double)offset;
+- (void)setTranslation:(double)translation velocity:(double)velocity;
+- (void)setUnconstrainedPosition:(double)position offset:(double)offset;
+- (void)updateRubberbandLowerBound:(double)bound upperBound:(double)upperBound;
 @end
 
 @implementation _UIPageControlInteractor
 
 - (double)joggingDistance
 {
-  v3 = [(_UIPageControlInteractor *)self interactor];
-  v4 = *[v3 _constrainedPoint];
-  v5 = [(_UIPageControlInteractor *)self interactor];
-  v6 = v4 - *[v5 _closestPoint];
+  interactor = [(_UIPageControlInteractor *)self interactor];
+  v4 = *[interactor _constrainedPoint];
+  interactor2 = [(_UIPageControlInteractor *)self interactor];
+  v6 = v4 - *[interactor2 _closestPoint];
 
   return v6;
 }
 
-- (_UIPageControlInteractor)initWithMaximumDistance:(double)a3
+- (_UIPageControlInteractor)initWithMaximumDistance:(double)distance
 {
   v11.receiver = self;
   v11.super_class = _UIPageControlInteractor;
@@ -31,16 +31,16 @@
   if (v4)
   {
     v5 = [[_UIHyperConstantExtender alloc] initWithDimensions:1];
-    [(_UIHyperConstantExtender *)v5 _setMaximumDistance:a3];
+    [(_UIHyperConstantExtender *)v5 _setMaximumDistance:distance];
     v6 = [[_UIHyperInteractor alloc] initWithDimensions:1];
     [(_UIPageControlInteractor *)v4 setInteractor:v6];
 
     v7 = [[_UIHyperrectangle alloc] initWithDimensions:1];
-    v8 = [(_UIPageControlInteractor *)v4 interactor];
-    [v8 _setRegion:v7];
+    interactor = [(_UIPageControlInteractor *)v4 interactor];
+    [interactor _setRegion:v7];
 
-    v9 = [(_UIPageControlInteractor *)v4 interactor];
-    [v9 _setExtender:v5];
+    interactor2 = [(_UIPageControlInteractor *)v4 interactor];
+    [interactor2 _setExtender:v5];
   }
 
   return v4;
@@ -48,16 +48,16 @@
 
 - (double)unconstrainedPosition
 {
-  v2 = [(_UIPageControlInteractor *)self interactor];
-  v3 = *[v2 _translatedUnconstrainedPoint];
+  interactor = [(_UIPageControlInteractor *)self interactor];
+  v3 = *[interactor _translatedUnconstrainedPoint];
 
   return v3;
 }
 
 - (double)hyperConstrainedPosition
 {
-  v2 = [(_UIPageControlInteractor *)self interactor];
-  v3 = *[v2 _constrainedPoint];
+  interactor = [(_UIPageControlInteractor *)self interactor];
+  v3 = *[interactor _constrainedPoint];
 
   return v3;
 }
@@ -69,41 +69,41 @@
   return fmax(lowerBound, fmin(v4, self->_upperBound));
 }
 
-- (void)updateRubberbandLowerBound:(double)a3 upperBound:(double)a4
+- (void)updateRubberbandLowerBound:(double)bound upperBound:(double)upperBound
 {
-  v6 = [(_UIPageControlInteractor *)self interactor];
-  v7 = [v6 _region];
+  interactor = [(_UIPageControlInteractor *)self interactor];
+  _region = [interactor _region];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __66___UIPageControlInteractor_updateRubberbandLowerBound_upperBound___block_invoke;
   v9[3] = &__block_descriptor_40_e9_v16__0_d8l;
-  *&v9[4] = a3;
-  [v7 _mutateMinimumPoint:v9];
+  *&v9[4] = bound;
+  [_region _mutateMinimumPoint:v9];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66___UIPageControlInteractor_updateRubberbandLowerBound_upperBound___block_invoke_2;
   v8[3] = &__block_descriptor_40_e9_v16__0_d8l;
-  *&v8[4] = a4;
-  [v7 _mutateMaximumPoint:v8];
+  *&v8[4] = upperBound;
+  [_region _mutateMaximumPoint:v8];
 }
 
-- (void)setUnconstrainedPosition:(double)a3 offset:(double)a4
+- (void)setUnconstrainedPosition:(double)position offset:(double)offset
 {
-  v7 = a3;
-  v6 = [(_UIPageControlInteractor *)self interactor];
-  [v6 _copyUnconstrainedPoint:&v7];
+  positionCopy = position;
+  interactor = [(_UIPageControlInteractor *)self interactor];
+  [interactor _copyUnconstrainedPoint:&positionCopy];
 
-  self->_scrubbingOffset = a4;
+  self->_scrubbingOffset = offset;
 }
 
-- (void)setTranslation:(double)a3 velocity:(double)a4
+- (void)setTranslation:(double)translation velocity:(double)velocity
 {
-  v5 = [(_UIPageControlInteractor *)self interactor:*&a4];
+  v5 = [(_UIPageControlInteractor *)self interactor:*&velocity];
   [v5 _copyTranslation:&v15];
 
-  v6 = [(_UIPageControlInteractor *)self interactor];
-  [v6 _copyVelocity:&v14];
+  interactor = [(_UIPageControlInteractor *)self interactor];
+  [interactor _copyVelocity:&v14];
 
   [(_UIPageControlInteractor *)self unboundedScrubPosition];
   scrubbingOffset = self->_scrubbingOffset;
@@ -140,11 +140,11 @@ LABEL_8:
 
 - (void)commitTranslation
 {
-  v2 = [(_UIPageControlInteractor *)self interactor];
-  [v2 _commitTranslation];
+  interactor = [(_UIPageControlInteractor *)self interactor];
+  [interactor _commitTranslation];
 }
 
-- (void)reduceScrubOffsetByOffset:(double)a3
+- (void)reduceScrubOffsetByOffset:(double)offset
 {
   scrubbingOffset = self->_scrubbingOffset;
   if (scrubbingOffset >= 0.0)
@@ -154,12 +154,12 @@ LABEL_8:
       return;
     }
 
-    v4 = fmax(scrubbingOffset - a3, 0.0);
+    v4 = fmax(scrubbingOffset - offset, 0.0);
   }
 
   else
   {
-    v4 = fmin(scrubbingOffset + a3, 0.0);
+    v4 = fmin(scrubbingOffset + offset, 0.0);
   }
 
   self->_scrubbingOffset = v4;

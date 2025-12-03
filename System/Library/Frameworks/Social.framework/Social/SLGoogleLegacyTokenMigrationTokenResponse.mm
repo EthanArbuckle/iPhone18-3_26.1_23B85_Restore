@@ -1,20 +1,20 @@
 @interface SLGoogleLegacyTokenMigrationTokenResponse
-- (SLGoogleLegacyTokenMigrationTokenResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5;
+- (SLGoogleLegacyTokenMigrationTokenResponse)initWithData:(id)data urlResponse:(id)response error:(id)error;
 @end
 
 @implementation SLGoogleLegacyTokenMigrationTokenResponse
 
-- (SLGoogleLegacyTokenMigrationTokenResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5
+- (SLGoogleLegacyTokenMigrationTokenResponse)initWithData:(id)data urlResponse:(id)response error:(id)error
 {
   v26 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = SLGoogleLegacyTokenMigrationTokenResponse;
-  v7 = [(SLGoogleLegacyTokenMigrationResponse *)&v24 initWithData:a3 urlResponse:a4 error:?];
+  v7 = [(SLGoogleLegacyTokenMigrationResponse *)&v24 initWithData:data urlResponse:response error:?];
   v8 = v7;
-  if (!a5 && v7)
+  if (!error && v7)
   {
-    v9 = [(SLGoogleLegacyTokenMigrationResponse *)v7 responseBody];
-    v10 = [v9 componentsSeparatedByString:@"\n"];
+    responseBody = [(SLGoogleLegacyTokenMigrationResponse *)v7 responseBody];
+    v10 = [responseBody componentsSeparatedByString:@"\n"];
 
     v22 = 0u;
     v23 = 0u;

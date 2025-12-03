@@ -1,20 +1,20 @@
 @interface MOVStreamDefaultPostProcessor
-- (BOOL)shouldChangeBytesPerRowOfPixelBuffer:(__CVBuffer *)a3;
-- (BOOL)shouldRemovePaddingOfPixelBuffer:(__CVBuffer *)a3 metadata:(id)a4;
-- (MOVStreamDefaultPostProcessor)initWithOriginalPixelFormat:(unsigned int)a3;
-- (MOVStreamDefaultPostProcessor)initWithOriginalPixelFormat:(unsigned int)a3 bufferCacheMode:(int)a4;
-- (__CVBuffer)pixelBufferWithExactBytesPerRow:(id)a3 fromPixelBuffer:(__CVBuffer *)a4 error:(id *)a5;
-- (__CVBuffer)pixelBufferWithoutPaddingFromPixelBuffer:(__CVBuffer *)a3 error:(id *)a4;
-- (__CVBuffer)processedPixelBufferFrom:(__CVBuffer *)a3 metadata:(id)a4 error:(id *)a5;
+- (BOOL)shouldChangeBytesPerRowOfPixelBuffer:(__CVBuffer *)buffer;
+- (BOOL)shouldRemovePaddingOfPixelBuffer:(__CVBuffer *)buffer metadata:(id)metadata;
+- (MOVStreamDefaultPostProcessor)initWithOriginalPixelFormat:(unsigned int)format;
+- (MOVStreamDefaultPostProcessor)initWithOriginalPixelFormat:(unsigned int)format bufferCacheMode:(int)mode;
+- (__CVBuffer)pixelBufferWithExactBytesPerRow:(id)row fromPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
+- (__CVBuffer)pixelBufferWithoutPaddingFromPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
+- (__CVBuffer)processedPixelBufferFrom:(__CVBuffer *)from metadata:(id)metadata error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MOVStreamDefaultPostProcessor
 
-- (MOVStreamDefaultPostProcessor)initWithOriginalPixelFormat:(unsigned int)a3 bufferCacheMode:(int)a4
+- (MOVStreamDefaultPostProcessor)initWithOriginalPixelFormat:(unsigned int)format bufferCacheMode:(int)mode
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&mode;
+  v5 = *&format;
   v10.receiver = self;
   v10.super_class = MOVStreamDefaultPostProcessor;
   v6 = [(MOVStreamDefaultPostProcessor *)&v10 init];
@@ -29,9 +29,9 @@
   return v7;
 }
 
-- (MOVStreamDefaultPostProcessor)initWithOriginalPixelFormat:(unsigned int)a3
+- (MOVStreamDefaultPostProcessor)initWithOriginalPixelFormat:(unsigned int)format
 {
-  v3 = *&a3;
+  v3 = *&format;
   v8.receiver = self;
   v8.super_class = MOVStreamDefaultPostProcessor;
   v4 = [(MOVStreamDefaultPostProcessor *)&v8 init];
@@ -46,26 +46,26 @@
   return v5;
 }
 
-- (__CVBuffer)processedPixelBufferFrom:(__CVBuffer *)a3 metadata:(id)a4 error:(id *)a5
+- (__CVBuffer)processedPixelBufferFrom:(__CVBuffer *)from metadata:(id)metadata error:(id *)error
 {
-  v8 = a4;
-  if ([(MOVStreamDefaultPostProcessor *)self shouldRemovePaddingOfPixelBuffer:a3 metadata:v8])
+  metadataCopy = metadata;
+  if ([(MOVStreamDefaultPostProcessor *)self shouldRemovePaddingOfPixelBuffer:from metadata:metadataCopy])
   {
-    a3 = [(MOVStreamDefaultPostProcessor *)self pixelBufferWithoutPaddingFromPixelBuffer:a3 error:a5];
+    from = [(MOVStreamDefaultPostProcessor *)self pixelBufferWithoutPaddingFromPixelBuffer:from error:error];
   }
 
-  else if ([(MOVStreamDefaultPostProcessor *)self shouldChangeBytesPerRowOfPixelBuffer:a3])
+  else if ([(MOVStreamDefaultPostProcessor *)self shouldChangeBytesPerRowOfPixelBuffer:from])
   {
-    v9 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
-    a3 = [(MOVStreamDefaultPostProcessor *)self pixelBufferWithExactBytesPerRow:v9 fromPixelBuffer:a3 error:a5];
+    exactBytesPerRow = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
+    from = [(MOVStreamDefaultPostProcessor *)self pixelBufferWithExactBytesPerRow:exactBytesPerRow fromPixelBuffer:from error:error];
   }
 
   else
   {
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(from);
   }
 
-  return a3;
+  return from;
 }
 
 - (void)dealloc
@@ -78,16 +78,16 @@
   [(MOVStreamDefaultPostProcessor *)&v4 dealloc];
 }
 
-- (BOOL)shouldChangeBytesPerRowOfPixelBuffer:(__CVBuffer *)a3
+- (BOOL)shouldChangeBytesPerRowOfPixelBuffer:(__CVBuffer *)buffer
 {
-  v5 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
+  exactBytesPerRow = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
 
-  if (!v5)
+  if (!exactBytesPerRow)
   {
     goto LABEL_11;
   }
 
-  PlaneCount = CVPixelBufferGetPlaneCount(a3);
+  PlaneCount = CVPixelBufferGetPlaneCount(buffer);
   v7 = PlaneCount;
   if (PlaneCount <= 1)
   {
@@ -99,12 +99,12 @@
     v8 = PlaneCount;
   }
 
-  v9 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
+  exactBytesPerRow2 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
-    v11 = [v10 count];
+    exactBytesPerRow3 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
+    v11 = [exactBytesPerRow3 count];
 
     if (v11 < v8)
     {
@@ -135,15 +135,15 @@ LABEL_11:
   v15 = 1;
   while (1)
   {
-    v16 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
+    exactBytesPerRow4 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v18 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
-    v19 = v18;
+    exactBytesPerRow5 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
+    exactBytesPerRow6 = exactBytesPerRow5;
     if (isKindOfClass)
     {
-      v20 = [v18 unsignedIntegerValue];
+      unsignedIntegerValue = [exactBytesPerRow5 unsignedIntegerValue];
       goto LABEL_18;
     }
 
@@ -155,12 +155,12 @@ LABEL_11:
       break;
     }
 
-    v19 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
-    v22 = [v19 objectAtIndex:v14];
-    v20 = [v22 unsignedIntegerValue];
+    exactBytesPerRow6 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
+    v22 = [exactBytesPerRow6 objectAtIndex:v14];
+    unsignedIntegerValue = [v22 unsignedIntegerValue];
 
 LABEL_18:
-    if (CVPixelBufferGetBytesPerRowOfPlane(a3, v14) == v20)
+    if (CVPixelBufferGetBytesPerRowOfPlane(buffer, v14) == unsignedIntegerValue)
     {
       v15 = v7 > ++v14;
       if (v8 != v14)
@@ -186,53 +186,53 @@ LABEL_24:
   return v12;
 }
 
-- (BOOL)shouldRemovePaddingOfPixelBuffer:(__CVBuffer *)a3 metadata:(id)a4
+- (BOOL)shouldRemovePaddingOfPixelBuffer:(__CVBuffer *)buffer metadata:(id)metadata
 {
-  v6 = [(MOVStreamDefaultPostProcessor *)self minimumBytesPerRowForPixelBuffer:a3, a4];
-  v7 = [(MOVStreamDefaultPostProcessor *)self removePadding];
-  if (v7)
+  metadata = [(MOVStreamDefaultPostProcessor *)self minimumBytesPerRowForPixelBuffer:buffer, metadata];
+  removePadding = [(MOVStreamDefaultPostProcessor *)self removePadding];
+  if (removePadding)
   {
-    LOBYTE(v7) = v6 < CVPixelBufferGetBytesPerRow(a3);
+    LOBYTE(removePadding) = metadata < CVPixelBufferGetBytesPerRow(buffer);
   }
 
-  return v7;
+  return removePadding;
 }
 
-- (__CVBuffer)pixelBufferWithoutPaddingFromPixelBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (__CVBuffer)pixelBufferWithoutPaddingFromPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
   converter = self->_converter;
   if (!converter)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
-    v9 = [[MOVStreamFrameConverter alloc] initWithTargetWidth:Width height:Height format:CVPixelBufferGetPixelFormatType(a3) bytesPerRow:[(MOVStreamDefaultPostProcessor *)self minimumBytesPerRowForPixelBuffer:a3] bufferCacheMode:self->bufferCacheMode];
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
+    v9 = [[MOVStreamFrameConverter alloc] initWithTargetWidth:Width height:Height format:CVPixelBufferGetPixelFormatType(buffer) bytesPerRow:[(MOVStreamDefaultPostProcessor *)self minimumBytesPerRowForPixelBuffer:buffer] bufferCacheMode:self->bufferCacheMode];
     v10 = self->_converter;
     self->_converter = v9;
 
     converter = self->_converter;
   }
 
-  return [(MOVStreamFrameConverter *)converter convertPixelBuffer:a3, a4];
+  return [(MOVStreamFrameConverter *)converter convertPixelBuffer:buffer, error];
 }
 
-- (__CVBuffer)pixelBufferWithExactBytesPerRow:(id)a3 fromPixelBuffer:(__CVBuffer *)a4 error:(id *)a5
+- (__CVBuffer)pixelBufferWithExactBytesPerRow:(id)row fromPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  rowCopy = row;
   if (!self->_converter)
   {
-    Width = CVPixelBufferGetWidth(a4);
-    Height = CVPixelBufferGetHeight(a4);
-    v11 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
+    exactBytesPerRow = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
       v13 = [MOVStreamFrameConverter alloc];
-      PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
-      v15 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
-      v28[0] = v15;
+      PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+      exactBytesPerRow2 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
+      v28[0] = exactBytesPerRow2;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
       v17 = [(MOVStreamFrameConverter *)v13 initWithTargetWidth:Width height:Height format:PixelFormatType bytesPerRows:v16 bufferCacheMode:self->bufferCacheMode];
       converter = self->_converter;
@@ -241,27 +241,27 @@ LABEL_24:
 
     else
     {
-      v19 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
+      exactBytesPerRow3 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
       objc_opt_class();
       v20 = objc_opt_isKindOfClass();
 
       if ((v20 & 1) == 0)
       {
-        [MEMORY[0x277CCA9B8] populateStreamError:a5 message:@"Invalid ExactBytesPerRow value type!" code:19];
+        [MEMORY[0x277CCA9B8] populateStreamError:error message:@"Invalid ExactBytesPerRow value type!" code:19];
         v26 = 0;
         goto LABEL_7;
       }
 
       v21 = [MOVStreamFrameConverter alloc];
-      v22 = CVPixelBufferGetPixelFormatType(a4);
-      v23 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
-      v24 = [(MOVStreamFrameConverter *)v21 initWithTargetWidth:Width height:Height format:v22 bytesPerRows:v23 bufferCacheMode:self->bufferCacheMode];
+      v22 = CVPixelBufferGetPixelFormatType(buffer);
+      exactBytesPerRow4 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
+      v24 = [(MOVStreamFrameConverter *)v21 initWithTargetWidth:Width height:Height format:v22 bytesPerRows:exactBytesPerRow4 bufferCacheMode:self->bufferCacheMode];
       v25 = self->_converter;
       self->_converter = v24;
     }
   }
 
-  v26 = [(MOVStreamFrameConverter *)self->_converter convertPixelBuffer:a4];
+  v26 = [(MOVStreamFrameConverter *)self->_converter convertPixelBuffer:buffer];
 LABEL_7:
 
   return v26;

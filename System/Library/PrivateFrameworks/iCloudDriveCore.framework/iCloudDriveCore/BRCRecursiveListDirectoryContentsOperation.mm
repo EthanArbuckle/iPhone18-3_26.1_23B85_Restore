@@ -1,11 +1,11 @@
 @interface BRCRecursiveListDirectoryContentsOperation
 - (BOOL)_finishIfBlockedFromListing;
-- (void)addRecursiveDirectoryListCompletionBlock:(id)a3;
+- (void)addRecursiveDirectoryListCompletionBlock:(id)block;
 - (void)cancel;
 - (void)fetchNextItemToList;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)listNextItem;
-- (void)listOperation:(id)a3 wasReplacedByOperation:(id)a4;
+- (void)listOperation:(id)operation wasReplacedByOperation:(id)byOperation;
 - (void)listOrFetchNextItem;
 - (void)main;
 @end
@@ -31,15 +31,15 @@
 {
   if (![(_BRCOperation *)self finishIfCancelled])
   {
-    v3 = [(BRCServerZone *)self->_serverZone clientZone];
-    v4 = [v3 db];
-    v5 = [v4 serialQueue];
+    clientZone = [(BRCServerZone *)self->_serverZone clientZone];
+    v4 = [clientZone db];
+    serialQueue = [v4 serialQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__BRCRecursiveListDirectoryContentsOperation_listNextItem__block_invoke;
     block[3] = &unk_2784FF450;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(serialQueue, block);
   }
 }
 
@@ -139,8 +139,8 @@ void __58__BRCRecursiveListDirectoryContentsOperation_listNextItem__block_invoke
 - (BOOL)_finishIfBlockedFromListing
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(BRCServerZone *)self->_serverZone clientZone];
-  v4 = [v3 _isSideSyncOperationBlockedWithName:@"rec-list fetch next item"];
+  clientZone = [(BRCServerZone *)self->_serverZone clientZone];
+  v4 = [clientZone _isSideSyncOperationBlockedWithName:@"rec-list fetch next item"];
 
   if (v4)
   {
@@ -153,8 +153,8 @@ void __58__BRCRecursiveListDirectoryContentsOperation_listNextItem__block_invoke
       _os_log_impl(&dword_223E7A000, v6, OS_LOG_TYPE_DEFAULT, "[WARNING] Can't list anymore in the middle of a rec-list operation%@", &v10, 0xCu);
     }
 
-    v7 = [MEMORY[0x277CCA9B8] brc_errorSyncBlocked];
-    [(_BRCOperation *)self completedWithResult:0 error:v7];
+    brc_errorSyncBlocked = [MEMORY[0x277CCA9B8] brc_errorSyncBlocked];
+    [(_BRCOperation *)self completedWithResult:0 error:brc_errorSyncBlocked];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -163,26 +163,26 @@ void __58__BRCRecursiveListDirectoryContentsOperation_listNextItem__block_invoke
 
 - (void)cancel
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(BRCListDirectoryContentsOperation *)v2->_activeListOp endObservingChangesWithDelegate:v2];
-  activeListOp = v2->_activeListOp;
-  v2->_activeListOp = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(BRCListDirectoryContentsOperation *)selfCopy->_activeListOp endObservingChangesWithDelegate:selfCopy];
+  activeListOp = selfCopy->_activeListOp;
+  selfCopy->_activeListOp = 0;
 
-  objc_sync_exit(v2);
-  v4.receiver = v2;
+  objc_sync_exit(selfCopy);
+  v4.receiver = selfCopy;
   v4.super_class = BRCRecursiveListDirectoryContentsOperation;
   [(_BRCOperation *)&v4 cancel];
 }
 
-- (void)listOperation:(id)a3 wasReplacedByOperation:(id)a4
+- (void)listOperation:(id)operation wasReplacedByOperation:(id)byOperation
 {
-  v7 = a4;
-  if (self->_activeListOp == a3)
+  byOperationCopy = byOperation;
+  if (self->_activeListOp == operation)
   {
-    v8 = v7;
-    objc_storeStrong(&self->_activeListOp, a4);
-    v7 = v8;
+    v8 = byOperationCopy;
+    objc_storeStrong(&self->_activeListOp, byOperation);
+    byOperationCopy = v8;
   }
 }
 
@@ -190,18 +190,18 @@ void __58__BRCRecursiveListDirectoryContentsOperation_listNextItem__block_invoke
 {
   if (![(_BRCOperation *)self finishIfCancelled])
   {
-    v3 = [(BRCServerZone *)self->_serverZone clientZone];
-    v4 = [v3 serverZone];
-    v5 = [v4 db];
-    v6 = [v5 serialQueue];
+    clientZone = [(BRCServerZone *)self->_serverZone clientZone];
+    serverZone = [clientZone serverZone];
+    v5 = [serverZone db];
+    serialQueue = [v5 serialQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __65__BRCRecursiveListDirectoryContentsOperation_fetchNextItemToList__block_invoke;
     v8[3] = &unk_2784FF478;
     v8[4] = self;
-    v9 = v3;
-    v7 = v3;
-    dispatch_async(v6, v8);
+    v9 = clientZone;
+    v7 = clientZone;
+    dispatch_async(serialQueue, v8);
   }
 }
 
@@ -335,20 +335,20 @@ LABEL_9:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   v20.receiver = self;
   v20.super_class = BRCRecursiveListDirectoryContentsOperation;
-  [(_BRCOperation *)&v20 finishWithResult:a3 error:v6];
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = v7->_recursiveListCompletionBlocks;
-  recursiveListCompletionBlocks = v7->_recursiveListCompletionBlocks;
-  v7->_recursiveListCompletionBlocks = 0;
+  [(_BRCOperation *)&v20 finishWithResult:result error:errorCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = selfCopy->_recursiveListCompletionBlocks;
+  recursiveListCompletionBlocks = selfCopy->_recursiveListCompletionBlocks;
+  selfCopy->_recursiveListCompletionBlocks = 0;
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -393,9 +393,9 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v3 = [(BRCServerZone *)self->_serverZone session];
-  v4 = [(BRCItemID *)self->_rootItemID appLibraryRowID];
-  v5 = [v3 appLibraryByRowID:v4];
+  session = [(BRCServerZone *)self->_serverZone session];
+  appLibraryRowID = [(BRCItemID *)self->_rootItemID appLibraryRowID];
+  v5 = [session appLibraryByRowID:appLibraryRowID];
 
   if ((!-[BRCItemID isDocumentsFolder](self->_rootItemID, "isDocumentsFolder") || ([v5 state] & 0x4000000) == 0) && (!-[BRCItemID isNonDesktopRoot](self->_rootItemID, "isNonDesktopRoot") || (objc_msgSend(v5, "state") & 0x2000000) == 0))
   {
@@ -409,31 +409,31 @@ LABEL_8:
   [(BRCRecursiveListDirectoryContentsOperation *)self fetchNextItemToList];
 }
 
-- (void)addRecursiveDirectoryListCompletionBlock:(id)a3
+- (void)addRecursiveDirectoryListCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  recursiveListCompletionBlocks = v5->_recursiveListCompletionBlocks;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  recursiveListCompletionBlocks = selfCopy->_recursiveListCompletionBlocks;
   if (recursiveListCompletionBlocks)
   {
-    v7 = MEMORY[0x22AA4A310](v4);
+    v7 = MEMORY[0x22AA4A310](blockCopy);
     [(NSMutableArray *)recursiveListCompletionBlocks addObject:v7];
   }
 
   else
   {
-    v8 = [(_BRCOperation *)v5 callbackQueue];
+    callbackQueue = [(_BRCOperation *)selfCopy callbackQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __87__BRCRecursiveListDirectoryContentsOperation_addRecursiveDirectoryListCompletionBlock___block_invoke;
     v9[3] = &unk_2784FFBC8;
-    v9[4] = v5;
-    v10 = v4;
-    dispatch_async(v8, v9);
+    v9[4] = selfCopy;
+    v10 = blockCopy;
+    dispatch_async(callbackQueue, v9);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __87__BRCRecursiveListDirectoryContentsOperation_addRecursiveDirectoryListCompletionBlock___block_invoke(uint64_t a1)

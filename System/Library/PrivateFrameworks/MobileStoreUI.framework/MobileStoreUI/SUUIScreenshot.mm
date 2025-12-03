@@ -1,14 +1,14 @@
 @interface SUUIScreenshot
-- (CGSize)sizeForVariant:(id)a3;
+- (CGSize)sizeForVariant:(id)variant;
 - (NSMutableDictionary)cacheRepresentation;
-- (SUUIScreenshot)initWithCacheRepresentation:(id)a3;
-- (SUUIScreenshot)initWithScreenshotDictionary:(id)a3;
-- (id)URLForVariant:(id)a3;
+- (SUUIScreenshot)initWithCacheRepresentation:(id)representation;
+- (SUUIScreenshot)initWithScreenshotDictionary:(id)dictionary;
+- (id)URLForVariant:(id)variant;
 - (id)_firstVariant;
 - (id)_initSUUIScreenshot;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_addURLsFromDictionary:(id)a3 withRemoteLocalKeysMap:(id)a4;
-- (void)setArtwork:(id)a3 forVariant:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_addURLsFromDictionary:(id)dictionary withRemoteLocalKeysMap:(id)map;
+- (void)setArtwork:(id)artwork forVariant:(id)variant;
 @end
 
 @implementation SUUIScreenshot
@@ -26,28 +26,28 @@
   return result;
 }
 
-- (SUUIScreenshot)initWithScreenshotDictionary:(id)a3
+- (SUUIScreenshot)initWithScreenshotDictionary:(id)dictionary
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUUIScreenshot *)self _initSUUIScreenshot];
-  if (v5)
+  dictionaryCopy = dictionary;
+  _initSUUIScreenshot = [(SUUIScreenshot *)self _initSUUIScreenshot];
+  if (_initSUUIScreenshot)
   {
-    v6 = [v4 objectForKey:@"orientation"];
+    v6 = [dictionaryCopy objectForKey:@"orientation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v7 = [v6 copy];
-      orientation = v5->_orientation;
-      v5->_orientation = v7;
+      orientation = _initSUUIScreenshot->_orientation;
+      _initSUUIScreenshot->_orientation = v7;
     }
 
     v35 = v6;
     v38 = @"low-dpi";
     v39[0] = @"high-dpi";
     v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    urls = v5->_urls;
-    v5->_urls = v9;
+    urls = _initSUUIScreenshot->_urls;
+    _initSUUIScreenshot->_urls = v9;
 
     v11 = &v38;
     v12 = 1;
@@ -55,7 +55,7 @@
     {
       v13 = v12;
       v14 = *v11;
-      v15 = [v4 objectForKey:{*v11, v35}];
+      v15 = [dictionaryCopy objectForKey:{*v11, v35}];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -66,7 +66,7 @@
           v17 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v16];
           if (v17)
           {
-            [(NSMutableDictionary *)v5->_urls setObject:v17 forKey:v14];
+            [(NSMutableDictionary *)_initSUUIScreenshot->_urls setObject:v17 forKey:v14];
           }
         }
       }
@@ -77,29 +77,29 @@
 
     while ((v13 & 1) != 0);
     v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    sizes = v5->_sizes;
-    v5->_sizes = v18;
+    sizes = _initSUUIScreenshot->_sizes;
+    _initSUUIScreenshot->_sizes = v18;
 
-    v20 = [v4 objectForKey:@"width"];
+    v20 = [dictionaryCopy objectForKey:@"width"];
 
-    v21 = [v4 objectForKey:@"height"];
+    v21 = [dictionaryCopy objectForKey:@"height"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v22 = [v20 intValue];
-        v23 = [v21 intValue];
-        v24 = v5->_sizes;
-        v25 = [MEMORY[0x277CCAE60] valueWithCGSize:{v22, v23}];
+        intValue = [v20 intValue];
+        intValue2 = [v21 intValue];
+        v24 = _initSUUIScreenshot->_sizes;
+        v25 = [MEMORY[0x277CCAE60] valueWithCGSize:{intValue, intValue2}];
         [(NSMutableDictionary *)v24 setObject:v25 forKey:@"low-dpi"];
       }
     }
 
-    v26 = [v4 objectForKey:@"width2x"];
+    v26 = [dictionaryCopy objectForKey:@"width2x"];
 
-    v27 = [v4 objectForKey:@"height2x"];
+    v27 = [dictionaryCopy objectForKey:@"height2x"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -107,10 +107,10 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v28 = [v26 intValue];
-        v29 = [v27 intValue];
-        v30 = v5->_sizes;
-        v31 = [MEMORY[0x277CCAE60] valueWithCGSize:{v28, v29}];
+        intValue3 = [v26 intValue];
+        intValue4 = [v27 intValue];
+        v30 = _initSUUIScreenshot->_sizes;
+        v31 = [MEMORY[0x277CCAE60] valueWithCGSize:{intValue3, intValue4}];
         [(NSMutableDictionary *)v30 setObject:v31 forKey:@"high-dpi"];
       }
     }
@@ -120,27 +120,27 @@
     v37[0] = @"low-dpi";
     v37[1] = @"high-dpi";
     v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
-    [(SUUIScreenshot *)v5 _addURLsFromDictionary:v4 withRemoteLocalKeysMap:v32];
+    [(SUUIScreenshot *)_initSUUIScreenshot _addURLsFromDictionary:dictionaryCopy withRemoteLocalKeysMap:v32];
 
     for (i = 1; i != -1; --i)
     {
     }
   }
 
-  return v5;
+  return _initSUUIScreenshot;
 }
 
-- (void)setArtwork:(id)a3 forVariant:(id)a4
+- (void)setArtwork:(id)artwork forVariant:(id)variant
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = [v19 width];
-  v8 = [v19 height];
+  artworkCopy = artwork;
+  variantCopy = variant;
+  width = [artworkCopy width];
+  height = [artworkCopy height];
   if (![(SUUIScreenshot *)self numberOfVariants])
   {
     v9 = @"portrait";
     orientation = self->_orientation;
-    if (v7 > v8)
+    if (width > height)
     {
       v9 = @"landscape";
     }
@@ -158,8 +158,8 @@
     sizes = self->_sizes;
   }
 
-  v14 = [MEMORY[0x277CCAE60] valueWithCGSize:{v7, v8}];
-  [(NSMutableDictionary *)sizes setObject:v14 forKey:v6];
+  v14 = [MEMORY[0x277CCAE60] valueWithCGSize:{width, height}];
+  [(NSMutableDictionary *)sizes setObject:v14 forKey:variantCopy];
 
   urls = self->_urls;
   if (!urls)
@@ -171,13 +171,13 @@
     urls = self->_urls;
   }
 
-  v18 = [v19 URL];
-  [(NSMutableDictionary *)urls setObject:v18 forKey:v6];
+  v18 = [artworkCopy URL];
+  [(NSMutableDictionary *)urls setObject:v18 forKey:variantCopy];
 }
 
-- (CGSize)sizeForVariant:(id)a3
+- (CGSize)sizeForVariant:(id)variant
 {
-  v4 = [(NSMutableDictionary *)self->_sizes objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_sizes objectForKey:variant];
   if (v4)
   {
     v5 = v4;
@@ -202,16 +202,16 @@ LABEL_7:
   return result;
 }
 
-- (id)URLForVariant:(id)a3
+- (id)URLForVariant:(id)variant
 {
-  v4 = [(NSMutableDictionary *)self->_urls objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_urls objectForKey:variant];
   if (!v4)
   {
     if ([(NSMutableDictionary *)self->_urls count])
     {
       urls = self->_urls;
-      v6 = [(SUUIScreenshot *)self _firstVariant];
-      v4 = [(NSMutableDictionary *)urls objectForKey:v6];
+      _firstVariant = [(SUUIScreenshot *)self _firstVariant];
+      v4 = [(NSMutableDictionary *)urls objectForKey:_firstVariant];
     }
 
     else
@@ -223,54 +223,54 @@ LABEL_7:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_orientation copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_orientation copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSMutableDictionary *)self->_sizes mutableCopyWithZone:a3];
+  v8 = [(NSMutableDictionary *)self->_sizes mutableCopyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSMutableDictionary *)self->_urls mutableCopyWithZone:a3];
+  v10 = [(NSMutableDictionary *)self->_urls mutableCopyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
   return v5;
 }
 
-- (SUUIScreenshot)initWithCacheRepresentation:(id)a3
+- (SUUIScreenshot)initWithCacheRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SUUIScreenshot *)self _initSUUIScreenshot];
-    if (v5)
+    _initSUUIScreenshot = [(SUUIScreenshot *)self _initSUUIScreenshot];
+    if (_initSUUIScreenshot)
     {
-      v6 = [v4 objectForKey:@"orient"];
+      v6 = [representationCopy objectForKey:@"orient"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v5->_orientation, v6);
+        objc_storeStrong(&_initSUUIScreenshot->_orientation, v6);
       }
 
-      v7 = [v4 objectForKey:@"urls"];
+      v7 = [representationCopy objectForKey:@"urls"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        urls = v5->_urls;
-        v5->_urls = v8;
+        urls = _initSUUIScreenshot->_urls;
+        _initSUUIScreenshot->_urls = v8;
 
         v11[0] = MEMORY[0x277D85DD0];
         v11[1] = 3221225472;
         v11[2] = __46__SUUIScreenshot_initWithCacheRepresentation___block_invoke;
         v11[3] = &unk_2798FBFF8;
-        v12 = v5;
+        v12 = _initSUUIScreenshot;
         [v7 enumerateKeysAndObjectsUsingBlock:v11];
       }
     }
@@ -279,10 +279,10 @@ LABEL_7:
   else
   {
 
-    v5 = 0;
+    _initSUUIScreenshot = 0;
   }
 
-  return v5;
+  return _initSUUIScreenshot;
 }
 
 void __46__SUUIScreenshot_initWithCacheRepresentation___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -306,12 +306,12 @@ void __46__SUUIScreenshot_initWithCacheRepresentation___block_invoke(uint64_t a1
 
 - (NSMutableDictionary)cacheRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   orientation = self->_orientation;
   if (orientation)
   {
-    [v3 setObject:orientation forKey:@"orient"];
+    [dictionary setObject:orientation forKey:@"orient"];
   }
 
   if (self->_urls)
@@ -339,17 +339,17 @@ void __37__SUUIScreenshot_cacheRepresentation__block_invoke(uint64_t a1, void *a
   [v4 setObject:v6 forKey:v5];
 }
 
-- (void)_addURLsFromDictionary:(id)a3 withRemoteLocalKeysMap:(id)a4
+- (void)_addURLsFromDictionary:(id)dictionary withRemoteLocalKeysMap:(id)map
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__SUUIScreenshot__addURLsFromDictionary_withRemoteLocalKeysMap___block_invoke;
   v8[3] = &unk_2798FE860;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
-  [a4 enumerateKeysAndObjectsUsingBlock:v8];
+  v9 = dictionaryCopy;
+  selfCopy = self;
+  v7 = dictionaryCopy;
+  [map enumerateKeysAndObjectsUsingBlock:v8];
 }
 
 void __64__SUUIScreenshot__addURLsFromDictionary_withRemoteLocalKeysMap___block_invoke(uint64_t a1, uint64_t a2, void *a3)

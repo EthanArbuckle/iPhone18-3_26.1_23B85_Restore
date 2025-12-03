@@ -1,39 +1,39 @@
 @interface MTiOSGenericSettingsViewController
-- (id)optionsTableViewControllerWithOption:(id)a3;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (void)configureCell:(id)a3 atIndexPath:(id)a4 withDescription:(id)a5 inGroupWithIdentifier:(id)a6;
-- (void)dismissKeyboard:(id)a3;
-- (void)setCell:(id)a3 enabled:(BOOL)a4 withDescription:(id)a5;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (id)optionsTableViewControllerWithOption:(id)option;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (void)configureCell:(id)cell atIndexPath:(id)path withDescription:(id)description inGroupWithIdentifier:(id)identifier;
+- (void)dismissKeyboard:(id)keyboard;
+- (void)setCell:(id)cell enabled:(BOOL)enabled withDescription:(id)description;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation MTiOSGenericSettingsViewController
 
-- (void)configureCell:(id)a3 atIndexPath:(id)a4 withDescription:(id)a5 inGroupWithIdentifier:(id)a6
+- (void)configureCell:(id)cell atIndexPath:(id)path withDescription:(id)description inGroupWithIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  cellCopy = cell;
+  pathCopy = path;
+  descriptionCopy = description;
+  identifierCopy = identifier;
   v26.receiver = self;
   v26.super_class = MTiOSGenericSettingsViewController;
-  [(MTGenericSettingsViewController *)&v26 configureCell:v10 atIndexPath:v11 withDescription:v12 inGroupWithIdentifier:v13];
-  if ([v12 type] == 6)
+  [(MTGenericSettingsViewController *)&v26 configureCell:cellCopy atIndexPath:pathCopy withDescription:descriptionCopy inGroupWithIdentifier:identifierCopy];
+  if ([descriptionCopy type] == 6)
   {
-    v14 = v12;
-    v15 = v10;
+    v14 = descriptionCopy;
+    v15 = cellCopy;
     [v15 setDelegate:self];
-    v16 = [v15 textField];
-    v17 = [v14 value];
-    [v16 setText:v17];
+    textField = [v15 textField];
+    value = [v14 value];
+    [textField setText:value];
 
-    v18 = [v15 textField];
-    v19 = [v14 placeholder];
-    [v18 setPlaceholder:v19];
+    textField2 = [v15 textField];
+    placeholder = [v14 placeholder];
+    [textField2 setPlaceholder:placeholder];
 
-    v20 = [v15 textField];
-    [v20 setReturnKeyType:9];
+    textField3 = [v15 textField];
+    [textField3 setReturnKeyType:9];
 
     [v15 setSelectionStyle:0];
     objc_initWeak(&location, self);
@@ -51,37 +51,37 @@
   }
 }
 
-- (void)setCell:(id)a3 enabled:(BOOL)a4 withDescription:(id)a5
+- (void)setCell:(id)cell enabled:(BOOL)enabled withDescription:(id)description
 {
-  v6 = a4;
-  v8 = a3;
+  enabledCopy = enabled;
+  cellCopy = cell;
   v12.receiver = self;
   v12.super_class = MTiOSGenericSettingsViewController;
-  v9 = a5;
-  [(MTGenericSettingsViewController *)&v12 setCell:v8 enabled:v6 withDescription:v9];
-  v10 = [v9 type];
+  descriptionCopy = description;
+  [(MTGenericSettingsViewController *)&v12 setCell:cellCopy enabled:enabledCopy withDescription:descriptionCopy];
+  type = [descriptionCopy type];
 
-  if (v10 == 6)
+  if (type == 6)
   {
-    v11 = [v8 textField];
-    [v11 setEnabled:v6];
+    textField = [cellCopy textField];
+    [textField setEnabled:enabledCopy];
   }
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = MTiOSGenericSettingsViewController;
-  v7 = [(MTGenericSettingsViewController *)&v12 tableView:a3 willSelectRowAtIndexPath:v6];
+  v7 = [(MTGenericSettingsViewController *)&v12 tableView:view willSelectRowAtIndexPath:pathCopy];
   if (v7)
   {
-    v8 = [(MTGenericSettingsViewController *)self settingAtIndexPath:v6];
-    v9 = [v8 type];
+    v8 = [(MTGenericSettingsViewController *)self settingAtIndexPath:pathCopy];
+    type = [v8 type];
     v10 = 0;
-    if (v9 && v9 != 6)
+    if (type && type != 6)
     {
-      v10 = v6;
+      v10 = pathCopy;
     }
   }
 
@@ -93,42 +93,42 @@
   return v10;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   v5 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"dismissKeyboard:"];
   tap = self->_tap;
   self->_tap = v5;
 
   [(UITapGestureRecognizer *)self->_tap setCancelsTouchesInView:0];
   activeTextField = self->_activeTextField;
-  self->_activeTextField = v4;
-  v8 = v4;
+  self->_activeTextField = editingCopy;
+  v8 = editingCopy;
 
-  v9 = [(MTiOSGenericSettingsViewController *)self tableView];
-  [v9 addGestureRecognizer:self->_tap];
+  tableView = [(MTiOSGenericSettingsViewController *)self tableView];
+  [tableView addGestureRecognizer:self->_tap];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
   activeTextField = self->_activeTextField;
   self->_activeTextField = 0;
 
-  v5 = [(MTiOSGenericSettingsViewController *)self tableView];
-  [v5 removeGestureRecognizer:self->_tap];
+  tableView = [(MTiOSGenericSettingsViewController *)self tableView];
+  [tableView removeGestureRecognizer:self->_tap];
 }
 
-- (void)dismissKeyboard:(id)a3
+- (void)dismissKeyboard:(id)keyboard
 {
   [(UITextField *)self->_activeTextField resignFirstResponder];
   activeTextField = self->_activeTextField;
   self->_activeTextField = 0;
 }
 
-- (id)optionsTableViewControllerWithOption:(id)a3
+- (id)optionsTableViewControllerWithOption:(id)option
 {
-  v3 = a3;
-  v4 = [[MTOptionsTableViewController alloc] initWithOption:v3 largeTitleDisplayMode:2];
+  optionCopy = option;
+  v4 = [[MTOptionsTableViewController alloc] initWithOption:optionCopy largeTitleDisplayMode:2];
 
   return v4;
 }

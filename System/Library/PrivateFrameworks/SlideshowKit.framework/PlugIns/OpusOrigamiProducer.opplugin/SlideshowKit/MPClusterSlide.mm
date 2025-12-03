@@ -1,12 +1,12 @@
 @interface MPClusterSlide
 - (MPClusterSlide)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)usageCountDescription;
 - (int64_t)overallUsageCounter;
 - (void)dealloc;
-- (void)increaseUsageCounterForLayer:(id)a3;
+- (void)increaseUsageCounterForLayer:(id)layer;
 - (void)resetAllUsageCounters;
-- (void)setUsageCounterForLayer:(id)a3 to:(int64_t)a4;
+- (void)setUsageCounterForLayer:(id)layer to:(int64_t)to;
 @end
 
 @implementation MPClusterSlide
@@ -41,9 +41,9 @@
   [(MPClusterSlide *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [v4 setUsableSlideClusters:self->mUsableSlideClusters];
   [v4 setCaptureDate:self->mCaptureDate];
   [v4 setReferenceCounter:self->mReferenceCounter];
@@ -51,7 +51,7 @@
   return v4;
 }
 
-- (void)increaseUsageCounterForLayer:(id)a3
+- (void)increaseUsageCounterForLayer:(id)layer
 {
   mUsageCounterPerLayer = self->mUsageCounterPerLayer;
   if (!mUsageCounterPerLayer)
@@ -60,12 +60,12 @@
     self->mUsageCounterPerLayer = mUsageCounterPerLayer;
   }
 
-  v6 = [(NSMutableDictionary *)mUsageCounterPerLayer objectForKey:a3];
+  v6 = [(NSMutableDictionary *)mUsageCounterPerLayer objectForKey:layer];
   if (v6)
   {
-    v7 = [v6 intValue];
+    intValue = [v6 intValue];
     v8 = self->mUsageCounterPerLayer;
-    v9 = [NSNumber numberWithInteger:v7 + 1];
+    v9 = [NSNumber numberWithInteger:intValue + 1];
   }
 
   else
@@ -74,20 +74,20 @@
     v9 = [NSNumber numberWithInt:1];
   }
 
-  [(NSMutableDictionary *)v8 setObject:v9 forKey:a3];
+  [(NSMutableDictionary *)v8 setObject:v9 forKey:layer];
 }
 
-- (void)setUsageCounterForLayer:(id)a3 to:(int64_t)a4
+- (void)setUsageCounterForLayer:(id)layer to:(int64_t)to
 {
   mUsageCounterPerLayer = self->mUsageCounterPerLayer;
   if (mUsageCounterPerLayer)
   {
-    if (a3)
+    if (layer)
     {
 LABEL_3:
-      v8 = [NSNumber numberWithInteger:a4];
+      v8 = [NSNumber numberWithInteger:to];
 
-      [(NSMutableDictionary *)mUsageCounterPerLayer setObject:v8 forKey:a3];
+      [(NSMutableDictionary *)mUsageCounterPerLayer setObject:v8 forKey:layer];
       return;
     }
   }
@@ -96,7 +96,7 @@ LABEL_3:
   {
     mUsageCounterPerLayer = objc_alloc_init(NSMutableDictionary);
     self->mUsageCounterPerLayer = mUsageCounterPerLayer;
-    if (a3)
+    if (layer)
     {
       goto LABEL_3;
     }
@@ -120,7 +120,7 @@ LABEL_3:
           objc_enumerationMutation(mUsageCounterPerLayer);
         }
 
-        [(MPClusterSlide *)self setUsageCounterForLayer:*(*(&v13 + 1) + 8 * i) to:a4];
+        [(MPClusterSlide *)self setUsageCounterForLayer:*(*(&v13 + 1) + 8 * i) to:to];
       }
 
       v10 = [(NSMutableDictionary *)mUsageCounterPerLayer countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -136,8 +136,8 @@ LABEL_3:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NSMutableDictionary *)self->mUsageCounterPerLayer allValues];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->mUsageCounterPerLayer allValues];
+  v3 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (!v3)
   {
     return 0;
@@ -152,13 +152,13 @@ LABEL_3:
     {
       if (*v10 != v6)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(allValues);
       }
 
       v5 += [*(*(&v9 + 1) + 8 * i) intValue];
     }
 
-    v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   }
 
   while (v4);
@@ -202,8 +202,8 @@ LABEL_3:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NSMutableDictionary *)self->mUsageCounterPerLayer allValues];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->mUsageCounterPerLayer allValues];
+  v3 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -215,13 +215,13 @@ LABEL_3:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         v6 = +[NSMutableString stringWithString:](NSMutableString, "stringWithString:", -[NSMutableString stringByAppendingFormat:](v6, "stringByAppendingFormat:", @"%d:", [*(*(&v9 + 1) + 8 * i) intValue]));
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);

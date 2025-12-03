@@ -1,17 +1,17 @@
 @interface BMIntelligencePlatformEmailMessageIds
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMIntelligencePlatformEmailMessageIds)initWithCreationTimeStamp:(id)a3 classifierType:(id)a4 messageUUID:(id)a5 messageSourceType:(int)a6;
-- (BMIntelligencePlatformEmailMessageIds)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMIntelligencePlatformEmailMessageIds)initWithCreationTimeStamp:(id)stamp classifierType:(id)type messageUUID:(id)d messageSourceType:(int)sourceType;
+- (BMIntelligencePlatformEmailMessageIds)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)creationTimeStamp;
 - (NSString)description;
 - (NSUUID)messageUUID;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMIntelligencePlatformEmailMessageIds
@@ -34,25 +34,25 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMIntelligencePlatformEmailMessageIds *)self creationTimeStamp];
-    v7 = [v5 creationTimeStamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    creationTimeStamp = [(BMIntelligencePlatformEmailMessageIds *)self creationTimeStamp];
+    creationTimeStamp2 = [v5 creationTimeStamp];
+    v8 = creationTimeStamp2;
+    if (creationTimeStamp == creationTimeStamp2)
     {
     }
 
     else
     {
-      v9 = [(BMIntelligencePlatformEmailMessageIds *)self creationTimeStamp];
-      v10 = [v5 creationTimeStamp];
-      v11 = [v9 isEqual:v10];
+      creationTimeStamp3 = [(BMIntelligencePlatformEmailMessageIds *)self creationTimeStamp];
+      creationTimeStamp4 = [v5 creationTimeStamp];
+      v11 = [creationTimeStamp3 isEqual:creationTimeStamp4];
 
       if (!v11)
       {
@@ -60,18 +60,18 @@
       }
     }
 
-    v13 = [(BMIntelligencePlatformEmailMessageIds *)self classifierType];
-    v14 = [v5 classifierType];
-    v15 = v14;
-    if (v13 == v14)
+    classifierType = [(BMIntelligencePlatformEmailMessageIds *)self classifierType];
+    classifierType2 = [v5 classifierType];
+    v15 = classifierType2;
+    if (classifierType == classifierType2)
     {
     }
 
     else
     {
-      v16 = [(BMIntelligencePlatformEmailMessageIds *)self classifierType];
-      v17 = [v5 classifierType];
-      v18 = [v16 isEqual:v17];
+      classifierType3 = [(BMIntelligencePlatformEmailMessageIds *)self classifierType];
+      classifierType4 = [v5 classifierType];
+      v18 = [classifierType3 isEqual:classifierType4];
 
       if (!v18)
       {
@@ -79,18 +79,18 @@
       }
     }
 
-    v19 = [(BMIntelligencePlatformEmailMessageIds *)self messageUUID];
-    v20 = [v5 messageUUID];
-    v21 = v20;
-    if (v19 == v20)
+    messageUUID = [(BMIntelligencePlatformEmailMessageIds *)self messageUUID];
+    messageUUID2 = [v5 messageUUID];
+    v21 = messageUUID2;
+    if (messageUUID == messageUUID2)
     {
     }
 
     else
     {
-      v22 = [(BMIntelligencePlatformEmailMessageIds *)self messageUUID];
-      v23 = [v5 messageUUID];
-      v24 = [v22 isEqual:v23];
+      messageUUID3 = [(BMIntelligencePlatformEmailMessageIds *)self messageUUID];
+      messageUUID4 = [v5 messageUUID];
+      v24 = [messageUUID3 isEqual:messageUUID4];
 
       if (!v24)
       {
@@ -102,8 +102,8 @@ LABEL_16:
       }
     }
 
-    v25 = [(BMIntelligencePlatformEmailMessageIds *)self messageSourceType];
-    v12 = v25 == [v5 messageSourceType];
+    messageSourceType = [(BMIntelligencePlatformEmailMessageIds *)self messageSourceType];
+    v12 = messageSourceType == [v5 messageSourceType];
     goto LABEL_16;
   }
 
@@ -149,12 +149,12 @@ LABEL_17:
 - (id)jsonDictionary
 {
   v19[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMIntelligencePlatformEmailMessageIds *)self creationTimeStamp];
-  if (v3)
+  creationTimeStamp = [(BMIntelligencePlatformEmailMessageIds *)self creationTimeStamp];
+  if (creationTimeStamp)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMIntelligencePlatformEmailMessageIds *)self creationTimeStamp];
-    [v5 timeIntervalSince1970];
+    creationTimeStamp2 = [(BMIntelligencePlatformEmailMessageIds *)self creationTimeStamp];
+    [creationTimeStamp2 timeIntervalSince1970];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -163,47 +163,47 @@ LABEL_17:
     v6 = 0;
   }
 
-  v7 = [(BMIntelligencePlatformEmailMessageIds *)self classifierType];
-  v8 = [(BMIntelligencePlatformEmailMessageIds *)self messageUUID];
-  v9 = [v8 UUIDString];
+  classifierType = [(BMIntelligencePlatformEmailMessageIds *)self classifierType];
+  messageUUID = [(BMIntelligencePlatformEmailMessageIds *)self messageUUID];
+  uUIDString = [messageUUID UUIDString];
 
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMIntelligencePlatformEmailMessageIds messageSourceType](self, "messageSourceType")}];
   v18[0] = @"creationTimeStamp";
-  v11 = v6;
+  null = v6;
   if (!v6)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[0] = v11;
+  v19[0] = null;
   v18[1] = @"classifierType";
-  v12 = v7;
-  if (!v7)
+  null2 = classifierType;
+  if (!classifierType)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[1] = v12;
+  v19[1] = null2;
   v18[2] = @"messageUUID";
-  v13 = v9;
-  if (!v9)
+  null3 = uUIDString;
+  if (!uUIDString)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[2] = v13;
+  v19[2] = null3;
   v18[3] = @"messageSourceType";
-  v14 = v10;
+  null4 = v10;
   if (!v10)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[3] = v14;
+  v19[3] = null4;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:4];
   if (v10)
   {
-    if (v9)
+    if (uUIDString)
     {
       goto LABEL_14;
     }
@@ -212,10 +212,10 @@ LABEL_17:
   else
   {
 
-    if (v9)
+    if (uUIDString)
     {
 LABEL_14:
-      if (v7)
+      if (classifierType)
       {
         goto LABEL_15;
       }
@@ -231,7 +231,7 @@ LABEL_21:
     }
   }
 
-  if (!v7)
+  if (!classifierType)
   {
     goto LABEL_21;
   }
@@ -250,11 +250,11 @@ LABEL_16:
   return v15;
 }
 
-- (BMIntelligencePlatformEmailMessageIds)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMIntelligencePlatformEmailMessageIds)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"creationTimeStamp"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"creationTimeStamp"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -283,11 +283,11 @@ LABEL_16:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v44 = 0;
           v24 = 0;
-          v25 = self;
+          selfCopy6 = self;
           goto LABEL_37;
         }
 
@@ -299,8 +299,8 @@ LABEL_16:
         v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:&v53 count:1];
         v44 = 0;
         v24 = 0;
-        *a4 = [v37 initWithDomain:v38 code:2 userInfo:v14];
-        a4 = v39;
+        *error = [v37 initWithDomain:v38 code:2 userInfo:v14];
+        error = v39;
         goto LABEL_51;
       }
 
@@ -316,17 +316,17 @@ LABEL_16:
   }
 
 LABEL_9:
-  v14 = [v5 objectForKeyedSubscript:@"classifierType"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"classifierType"];
   if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v42 = 0;
 LABEL_12:
-    v15 = [v5 objectForKeyedSubscript:@"messageUUID"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"messageUUID"];
     if (!v15 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v16 = 0;
 LABEL_15:
-      v17 = [v5 objectForKeyedSubscript:@"messageSourceType"];
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"messageSourceType"];
       if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
@@ -340,7 +340,7 @@ LABEL_15:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (a4)
+            if (error)
             {
               v41 = objc_alloc(MEMORY[0x1E696ABC0]);
               v40 = *MEMORY[0x1E698F240];
@@ -348,13 +348,13 @@ LABEL_15:
               v31 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"messageSourceType"];
               v46 = v31;
               v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-              *a4 = [v41 initWithDomain:v40 code:2 userInfo:v32];
+              *error = [v41 initWithDomain:v40 code:2 userInfo:v32];
             }
 
             v18 = 0;
             v24 = 0;
-            a4 = v42;
-            v25 = self;
+            error = v42;
+            selfCopy6 = self;
             goto LABEL_33;
           }
 
@@ -369,9 +369,9 @@ LABEL_15:
         v18 = 0;
       }
 
-      a4 = v42;
-      v25 = -[BMIntelligencePlatformEmailMessageIds initWithCreationTimeStamp:classifierType:messageUUID:messageSourceType:](self, "initWithCreationTimeStamp:classifierType:messageUUID:messageSourceType:", v44, v42, v16, [v18 intValue]);
-      v24 = v25;
+      error = v42;
+      selfCopy6 = -[BMIntelligencePlatformEmailMessageIds initWithCreationTimeStamp:classifierType:messageUUID:messageSourceType:](self, "initWithCreationTimeStamp:classifierType:messageUUID:messageSourceType:", v44, v42, v16, [v18 intValue]);
+      v24 = selfCopy6;
 LABEL_33:
 
       goto LABEL_34;
@@ -390,7 +390,7 @@ LABEL_33:
         goto LABEL_15;
       }
 
-      if (a4)
+      if (error)
       {
         v33 = objc_alloc(MEMORY[0x1E696ABC0]);
         v34 = *MEMORY[0x1E698F240];
@@ -398,7 +398,7 @@ LABEL_33:
         v35 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"-initWithUUIDString: for %@ returned nil", @"messageUUID"];
         v50 = v35;
         v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
-        *a4 = [v33 initWithDomain:v34 code:2 userInfo:v36];
+        *error = [v33 initWithDomain:v34 code:2 userInfo:v36];
       }
 
       v24 = 0;
@@ -407,11 +407,11 @@ LABEL_33:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         v24 = 0;
-        a4 = v42;
-        v25 = self;
+        error = v42;
+        selfCopy6 = self;
         goto LABEL_35;
       }
 
@@ -421,13 +421,13 @@ LABEL_33:
       v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"messageUUID"];
       v48 = v16;
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
-      *a4 = [v26 initWithDomain:v27 code:2 userInfo:v28];
+      *error = [v26 initWithDomain:v27 code:2 userInfo:v28];
 
       v24 = 0;
     }
 
-    a4 = v42;
-    v25 = self;
+    error = v42;
+    selfCopy6 = self;
     goto LABEL_34;
   }
 
@@ -438,11 +438,11 @@ LABEL_33:
     goto LABEL_12;
   }
 
-  if (!a4)
+  if (!error)
   {
     v24 = 0;
 LABEL_51:
-    v25 = self;
+    selfCopy6 = self;
     goto LABEL_36;
   }
 
@@ -453,9 +453,9 @@ LABEL_51:
   v52 = v15;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
   v24 = 0;
-  *a4 = [v22 initWithDomain:v23 code:2 userInfo:v16];
-  a4 = 0;
-  v25 = self;
+  *error = [v22 initWithDomain:v23 code:2 userInfo:v16];
+  error = 0;
+  selfCopy6 = self;
 LABEL_34:
 
 LABEL_35:
@@ -470,14 +470,14 @@ LABEL_37:
 {
   v3 = objc_opt_new();
   [(BMIntelligencePlatformEmailMessageIds *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (self->_hasRaw_creationTimeStamp)
   {
     raw_creationTimeStamp = self->_raw_creationTimeStamp;
@@ -498,9 +498,9 @@ LABEL_37:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v32.receiver = self;
   v32.super_class = BMIntelligencePlatformEmailMessageIds;
   v5 = [(BMEventBase *)&v32 init];
@@ -509,12 +509,12 @@ LABEL_37:
     goto LABEL_50;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_48;
       }
@@ -525,18 +525,18 @@ LABEL_37:
       while (1)
       {
         LOBYTE(v33) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v33) & 0x7F) << v7;
@@ -553,9 +553,9 @@ LABEL_37:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_48;
       }
@@ -599,18 +599,18 @@ LABEL_33:
       while (1)
       {
         LOBYTE(v33) = 0;
-        v21 = [v4 position] + 1;
-        if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+        v21 = [fromCopy position] + 1;
+        if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
         {
-          v23 = [v4 data];
-          [v23 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v20 |= (LOBYTE(v33) & 0x7F) << v18;
@@ -626,7 +626,7 @@ LABEL_33:
         }
       }
 
-      if (([v4 hasError] & 1) != 0 || v20 > 2)
+      if (([fromCopy hasError] & 1) != 0 || v20 > 2)
       {
 LABEL_43:
         LODWORD(v20) = 0;
@@ -634,8 +634,8 @@ LABEL_43:
 
       v5->_messageSourceType = v20;
 LABEL_47:
-      v29 = [v4 position];
-      if (v29 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_48;
       }
@@ -645,18 +645,18 @@ LABEL_47:
     {
       v5->_hasRaw_creationTimeStamp = 1;
       v33 = 0.0;
-      v25 = [v4 position] + 8;
-      if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 8, v26 <= objc_msgSend(v4, "length")))
+      v25 = [fromCopy position] + 8;
+      if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 8, v26 <= objc_msgSend(fromCopy, "length")))
       {
-        v28 = [v4 data];
-        [v28 getBytes:&v33 range:{objc_msgSend(v4, "position"), 8}];
+        data3 = [fromCopy data];
+        [data3 getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v5->_raw_creationTimeStamp = v33;
@@ -675,7 +675,7 @@ LABEL_47:
   }
 
 LABEL_48:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_49:
     v30 = 0;
@@ -693,31 +693,31 @@ LABEL_50:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMIntelligencePlatformEmailMessageIds *)self creationTimeStamp];
-  v5 = [(BMIntelligencePlatformEmailMessageIds *)self classifierType];
-  v6 = [(BMIntelligencePlatformEmailMessageIds *)self messageUUID];
+  creationTimeStamp = [(BMIntelligencePlatformEmailMessageIds *)self creationTimeStamp];
+  classifierType = [(BMIntelligencePlatformEmailMessageIds *)self classifierType];
+  messageUUID = [(BMIntelligencePlatformEmailMessageIds *)self messageUUID];
   v7 = BMIntelligencePlatformEmailMessageIdsSourceTypeAsString([(BMIntelligencePlatformEmailMessageIds *)self messageSourceType]);
-  v8 = [v3 initWithFormat:@"BMIntelligencePlatformEmailMessageIds with creationTimeStamp: %@, classifierType: %@, messageUUID: %@, messageSourceType: %@", v4, v5, v6, v7];
+  v8 = [v3 initWithFormat:@"BMIntelligencePlatformEmailMessageIds with creationTimeStamp: %@, classifierType: %@, messageUUID: %@, messageSourceType: %@", creationTimeStamp, classifierType, messageUUID, v7];
 
   return v8;
 }
 
-- (BMIntelligencePlatformEmailMessageIds)initWithCreationTimeStamp:(id)a3 classifierType:(id)a4 messageUUID:(id)a5 messageSourceType:(int)a6
+- (BMIntelligencePlatformEmailMessageIds)initWithCreationTimeStamp:(id)stamp classifierType:(id)type messageUUID:(id)d messageSourceType:(int)sourceType
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  stampCopy = stamp;
+  typeCopy = type;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = BMIntelligencePlatformEmailMessageIds;
   v13 = [(BMEventBase *)&v19 init];
   if (v13)
   {
     v13->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v10)
+    if (stampCopy)
     {
       v13->_hasRaw_creationTimeStamp = 1;
-      [v10 timeIntervalSince1970];
+      [stampCopy timeIntervalSince1970];
     }
 
     else
@@ -727,12 +727,12 @@ LABEL_50:
     }
 
     v13->_raw_creationTimeStamp = v14;
-    objc_storeStrong(&v13->_classifierType, a4);
-    if (v12)
+    objc_storeStrong(&v13->_classifierType, type);
+    if (dCopy)
     {
       v20[0] = 0;
       v20[1] = 0;
-      [v12 getUUIDBytes:v20];
+      [dCopy getUUIDBytes:v20];
       v15 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v20 length:16];
       raw_messageUUID = v13->_raw_messageUUID;
       v13->_raw_messageUUID = v15;
@@ -744,7 +744,7 @@ LABEL_50:
       v13->_raw_messageUUID = 0;
     }
 
-    v13->_messageSourceType = a6;
+    v13->_messageSourceType = sourceType;
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -769,9 +769,9 @@ LABEL_50:
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -779,8 +779,8 @@ LABEL_50:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMIntelligencePlatformEmailMessageIds alloc] initByReadFrom:v7];
     v4 = v8;

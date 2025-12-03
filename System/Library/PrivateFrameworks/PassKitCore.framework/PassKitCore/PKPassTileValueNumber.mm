@@ -1,28 +1,28 @@
 @interface PKPassTileValueNumber
-+ (id)createWithContent:(id)a3 currencyCode:(id)a4 numberStyle:(int64_t)a5;
-- (BOOL)_isEqual:(id)a3;
-- (BOOL)_setUpWithDictionary:(id)a3;
-- (PKPassTileValueNumber)initWithCoder:(id)a3;
-- (id)createResolvedValueWithBundle:(id)a3 privateBundle:(id)a4;
-- (id)displayableStringWithPassState:(id)a3 inContext:(int64_t)a4;
++ (id)createWithContent:(id)content currencyCode:(id)code numberStyle:(int64_t)style;
+- (BOOL)_isEqual:(id)equal;
+- (BOOL)_setUpWithDictionary:(id)dictionary;
+- (PKPassTileValueNumber)initWithCoder:(id)coder;
+- (id)createResolvedValueWithBundle:(id)bundle privateBundle:(id)privateBundle;
+- (id)displayableStringWithPassState:(id)state inContext:(int64_t)context;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassTileValueNumber
 
-- (BOOL)_setUpWithDictionary:(id)a3
+- (BOOL)_setUpWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = PKPassTileValueNumber;
-  if (-[PKPassTileValue _setUpWithDictionary:](&v16, sel__setUpWithDictionary_, v4) && ([v4 PKNumberForKey:@"content"], v5 = objc_claimAutoreleasedReturnValue(), content = self->_content, self->_content = v5, content, self->_content))
+  if (-[PKPassTileValue _setUpWithDictionary:](&v16, sel__setUpWithDictionary_, dictionaryCopy) && ([dictionaryCopy PKNumberForKey:@"content"], v5 = objc_claimAutoreleasedReturnValue(), content = self->_content, self->_content = v5, content, self->_content))
   {
-    v7 = [v4 PKStringForKey:@"currencyCode"];
+    v7 = [dictionaryCopy PKStringForKey:@"currencyCode"];
     currencyCode = self->_currencyCode;
     self->_currencyCode = v7;
 
-    v9 = [v4 PKStringForKey:@"numberStyle"];
+    v9 = [dictionaryCopy PKStringForKey:@"numberStyle"];
     v10 = 1;
     self->_numberStyle = _PKEnumValueFromString(v9, 0, @"PKNumberStyle", @"PKNumberStyleDecimal, WLNumberStyleDecimal, PKNumberStylePercent, WLNumberStylePercent, PKNumberStyleScientific, WLNumberStyleScientific, PKNumberStyleSpellOut, WLNumberStyleSpellOut", v11, v12, v13, v14, 1u);
   }
@@ -35,16 +35,16 @@
   return v10;
 }
 
-+ (id)createWithContent:(id)a3 currencyCode:(id)a4 numberStyle:(int64_t)a5
++ (id)createWithContent:(id)content currencyCode:(id)code numberStyle:(int64_t)style
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  contentCopy = content;
+  codeCopy = code;
+  if (contentCopy)
   {
     v10 = [PKPassTileValue _createForType:2 resolved:1];
-    objc_storeStrong(v10 + 3, a3);
-    objc_storeStrong(v10 + 4, a4);
-    v10[5] = a5;
+    objc_storeStrong(v10 + 3, content);
+    objc_storeStrong(v10 + 4, code);
+    v10[5] = style;
   }
 
   else
@@ -55,18 +55,18 @@
   return v10;
 }
 
-- (id)createResolvedValueWithBundle:(id)a3 privateBundle:(id)a4
+- (id)createResolvedValueWithBundle:(id)bundle privateBundle:(id)privateBundle
 {
   v7.receiver = self;
   v7.super_class = PKPassTileValueNumber;
-  v5 = [(PKPassTileValue *)&v7 createResolvedValueWithBundle:a3 privateBundle:a4];
+  v5 = [(PKPassTileValue *)&v7 createResolvedValueWithBundle:bundle privateBundle:privateBundle];
   objc_storeStrong(v5 + 3, self->_content);
   objc_storeStrong(v5 + 4, self->_currencyCode);
   v5[5] = self->_numberStyle;
   return v5;
 }
 
-- (id)displayableStringWithPassState:(id)a3 inContext:(int64_t)a4
+- (id)displayableStringWithPassState:(id)state inContext:(int64_t)context
 {
   v5 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   v6 = v5;
@@ -87,39 +87,39 @@
   return v8;
 }
 
-- (PKPassTileValueNumber)initWithCoder:(id)a3
+- (PKPassTileValueNumber)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PKPassTileValueNumber;
-  v5 = [(PKPassTileValue *)&v16 initWithCoder:v4];
+  v5 = [(PKPassTileValue *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"content"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"content"];
     content = v5->_content;
     v5->_content = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"numberStyle"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"numberStyle"];
     v5->_numberStyle = _PKEnumValueFromString(v10, 0, @"PKNumberStyle", @"PKNumberStyleDecimal, WLNumberStyleDecimal, PKNumberStylePercent, WLNumberStylePercent, PKNumberStyleScientific, WLNumberStyleScientific, PKNumberStyleSpellOut, WLNumberStyleSpellOut", v11, v12, v13, v14, 1u);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = PKPassTileValueNumber;
-  v4 = a3;
-  [(PKPassTileValue *)&v11 encodeWithCoder:v4];
-  [v4 encodeObject:self->_content forKey:@"content"];
-  [v4 encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  coderCopy = coder;
+  [(PKPassTileValue *)&v11 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_content forKey:@"content"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
   v10 = _PKEnumValueToString(self->_numberStyle, @"PKNumberStyle", @"PKNumberStyleDecimal, WLNumberStyleDecimal, PKNumberStylePercent, WLNumberStylePercent, PKNumberStyleScientific, WLNumberStyleScientific, PKNumberStyleSpellOut, WLNumberStyleSpellOut", v5, v6, v7, v8, v9, 1);
-  [v4 encodeObject:v10 forKey:@"numberStyle"];
+  [coderCopy encodeObject:v10 forKey:@"numberStyle"];
 }
 
 - (unint64_t)hash
@@ -135,14 +135,14 @@
   return SipHash();
 }
 
-- (BOOL)_isEqual:(id)a3
+- (BOOL)_isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v14.receiver = self;
   v14.super_class = PKPassTileValueNumber;
-  if ([(PKPassTileValue *)&v14 _isEqual:v4])
+  if ([(PKPassTileValue *)&v14 _isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ([v5[3] isEqualToNumber:self->_content])
     {
       currencyCode = self->_currencyCode;

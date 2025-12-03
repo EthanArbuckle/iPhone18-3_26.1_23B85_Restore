@@ -1,37 +1,37 @@
 @interface PLSharedStreamsDataStore
-+ (signed)_cloudSharedAssetPlaceholderKindFromSharedStreamsResourceType:(unsigned int)a3;
-+ (signed)cloudSharedPlaceholderKindFromSharedAlbumAsset:(id)a3;
-- (BOOL)canStoreExternalResource:(id)a3;
-- (BOOL)canStreamResource:(id)a3;
-- (BOOL)storeExternalResource:(id)a3 forAsset:(id)a4 options:(id)a5 error:(id *)a6 resultingResource:(id *)a7;
-- (BOOL)videoResource:(id)a3 matchesOrExceedsQualityLevel:(unsigned int)a4;
-- (id)_sharedStreamsExternalResourceForAsset:(id)a3 type:(unsigned int)a4;
-- (id)_utiStringForAsset:(id)a3 type:(unsigned int)a4;
-- (id)descriptionForSubtype:(int64_t)a3;
-- (id)expectedFileURLForResource:(id)a3 asset:(id)a4;
-- (id)keyFromKeyStruct:(const void *)a3;
-- (id)requestLocalAvailabilityChange:(signed __int16)a3 forResource:(id)a4 options:(id)a5 completion:(id)a6;
-- (id)requiredExternalResourcesForMigratingOrImportingAsset:(id)a3;
-- (id)resourceDataForKey:(id)a3 assetID:(id)a4;
-- (id)updateDerivativeResourcesForAsset:(id)a3 forLifecycleEvent:(unsigned int)a4;
-- (signed)_localAvailabilityForAsset:(id)a3 album:(id)a4 type:(unsigned int)a5;
-- (signed)_localAvailabilityForAsset:(id)a3 collectionShare:(id)a4 type:(unsigned int)a5;
-- (unsigned)_mainResourceTypeForAsset:(id)a3;
-- (void)_prepareForDownloadNotification:(id)a3 atFileURL:(id)a4 completion:(id)a5;
-- (void)requestStreamingURLForResource:(id)a3 asset:(id)a4 intent:(unint64_t)a5 timeRange:(id *)a6 streamingHints:(id)a7 inContext:(id)a8 clientBundleID:(id)a9 completion:(id)a10;
++ (signed)_cloudSharedAssetPlaceholderKindFromSharedStreamsResourceType:(unsigned int)type;
++ (signed)cloudSharedPlaceholderKindFromSharedAlbumAsset:(id)asset;
+- (BOOL)canStoreExternalResource:(id)resource;
+- (BOOL)canStreamResource:(id)resource;
+- (BOOL)storeExternalResource:(id)resource forAsset:(id)asset options:(id)options error:(id *)error resultingResource:(id *)resultingResource;
+- (BOOL)videoResource:(id)resource matchesOrExceedsQualityLevel:(unsigned int)level;
+- (id)_sharedStreamsExternalResourceForAsset:(id)asset type:(unsigned int)type;
+- (id)_utiStringForAsset:(id)asset type:(unsigned int)type;
+- (id)descriptionForSubtype:(int64_t)subtype;
+- (id)expectedFileURLForResource:(id)resource asset:(id)asset;
+- (id)keyFromKeyStruct:(const void *)struct;
+- (id)requestLocalAvailabilityChange:(signed __int16)change forResource:(id)resource options:(id)options completion:(id)completion;
+- (id)requiredExternalResourcesForMigratingOrImportingAsset:(id)asset;
+- (id)resourceDataForKey:(id)key assetID:(id)d;
+- (id)updateDerivativeResourcesForAsset:(id)asset forLifecycleEvent:(unsigned int)event;
+- (signed)_localAvailabilityForAsset:(id)asset album:(id)album type:(unsigned int)type;
+- (signed)_localAvailabilityForAsset:(id)asset collectionShare:(id)share type:(unsigned int)type;
+- (unsigned)_mainResourceTypeForAsset:(id)asset;
+- (void)_prepareForDownloadNotification:(id)notification atFileURL:(id)l completion:(id)completion;
+- (void)requestStreamingURLForResource:(id)resource asset:(id)asset intent:(unint64_t)intent timeRange:(id *)range streamingHints:(id)hints inContext:(id)context clientBundleID:(id)d completion:(id)self0;
 @end
 
 @implementation PLSharedStreamsDataStore
 
-+ (signed)cloudSharedPlaceholderKindFromSharedAlbumAsset:(id)a3
++ (signed)cloudSharedPlaceholderKindFromSharedAlbumAsset:(id)asset
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 hasAllThumbs])
+  assetCopy = asset;
+  if ([assetCopy hasAllThumbs])
   {
-    if ([v4 hasLargerThanThumbResourceLocal])
+    if ([assetCopy hasLargerThanThumbResourceLocal])
     {
-      v5 = [v4 persistedResourcesMatching:&__block_literal_global_107];
+      v5 = [assetCopy persistedResourcesMatching:&__block_literal_global_107];
       v6 = [MEMORY[0x1E695DFA8] set];
       v22 = 0u;
       v23 = 0u;
@@ -52,8 +52,8 @@
               objc_enumerationMutation(v7);
             }
 
-            v12 = [*(*(&v22 + 1) + 8 * i) dataStoreSubtype];
-            v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v12];
+            dataStoreSubtype = [*(*(&v22 + 1) + 8 * i) dataStoreSubtype];
+            v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:dataStoreSubtype];
             [v6 addObject:v13];
           }
 
@@ -63,18 +63,18 @@
         while (v9);
       }
 
-      v14 = [v6 allObjects];
+      allObjects = [v6 allObjects];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __75__PLSharedStreamsDataStore_cloudSharedPlaceholderKindFromSharedAlbumAsset___block_invoke_2;
       v20[3] = &unk_1E7567DF0;
       v21 = &unk_1F0FBF568;
-      v15 = [v14 sortedArrayUsingComparator:v20];
+      v15 = [allObjects sortedArrayUsingComparator:v20];
 
-      v16 = [v15 firstObject];
-      v17 = [v16 integerValue];
+      firstObject = [v15 firstObject];
+      integerValue = [firstObject integerValue];
 
-      v18 = [a1 _cloudSharedAssetPlaceholderKindFromSharedStreamsResourceType:v17];
+      v18 = [self _cloudSharedAssetPlaceholderKindFromSharedStreamsResourceType:integerValue];
     }
 
     else
@@ -122,36 +122,36 @@ BOOL __75__PLSharedStreamsDataStore_cloudSharedPlaceholderKindFromSharedAlbumAss
   return v4;
 }
 
-+ (signed)_cloudSharedAssetPlaceholderKindFromSharedStreamsResourceType:(unsigned int)a3
++ (signed)_cloudSharedAssetPlaceholderKindFromSharedStreamsResourceType:(unsigned int)type
 {
-  if (a3 > 9)
+  if (type > 9)
   {
     return 3;
   }
 
   else
   {
-    return word_19C60B8C0[a3];
+    return word_19C60B8C0[type];
   }
 }
 
-- (id)requiredExternalResourcesForMigratingOrImportingAsset:(id)a3
+- (id)requiredExternalResourcesForMigratingOrImportingAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v4 isCloudSharedAsset])
+  if ([assetCopy isCloudSharedAsset])
   {
-    v6 = [v4 collectionShare];
-    v7 = [v4 albums];
-    v8 = [v7 anyObject];
+    collectionShare = [assetCopy collectionShare];
+    albums = [assetCopy albums];
+    anyObject = [albums anyObject];
 
-    if (v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (collectionShare || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v9 = [(PLSharedStreamsDataStore *)self _sharedStreamsExternalResourceForAsset:v4 type:[(PLSharedStreamsDataStore *)self _mainResourceTypeForAsset:v4]];
+      v9 = [(PLSharedStreamsDataStore *)self _sharedStreamsExternalResourceForAsset:assetCopy type:[(PLSharedStreamsDataStore *)self _mainResourceTypeForAsset:assetCopy]];
       [v5 addObject:v9];
-      if ([v4 isPhotoIris])
+      if ([assetCopy isPhotoIris])
       {
-        v10 = [(PLSharedStreamsDataStore *)self _sharedStreamsExternalResourceForAsset:v4 type:6];
+        v10 = [(PLSharedStreamsDataStore *)self _sharedStreamsExternalResourceForAsset:assetCopy type:6];
         [v5 addObject:v10];
       }
     }
@@ -160,56 +160,56 @@ BOOL __75__PLSharedStreamsDataStore_cloudSharedPlaceholderKindFromSharedAlbumAss
   return v5;
 }
 
-- (void)requestStreamingURLForResource:(id)a3 asset:(id)a4 intent:(unint64_t)a5 timeRange:(id *)a6 streamingHints:(id)a7 inContext:(id)a8 clientBundleID:(id)a9 completion:(id)a10
+- (void)requestStreamingURLForResource:(id)resource asset:(id)asset intent:(unint64_t)intent timeRange:(id *)range streamingHints:(id)hints inContext:(id)context clientBundleID:(id)d completion:(id)self0
 {
   v32 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a10;
-  v14 = [v12 mainFileURL];
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
-  v16 = [v14 path];
-  v17 = [v15 fileExistsAtPath:v16];
+  resourceCopy = resource;
+  assetCopy = asset;
+  completionCopy = completion;
+  mainFileURL = [assetCopy mainFileURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [mainFileURL path];
+  v17 = [defaultManager fileExistsAtPath:path];
 
   if (v17)
   {
     v18 = PLImageManagerGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v12 cloudAssetGUID];
+      cloudAssetGUID = [assetCopy cloudAssetGUID];
       *buf = 138412546;
-      v29 = v14;
+      v29 = mainFileURL;
       v30 = 2112;
-      v31 = v19;
+      v31 = cloudAssetGUID;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "Using local file URL %@ for asset %@", buf, 0x16u);
     }
 
     v20 = [MEMORY[0x1E695DF00] now];
     v21 = [v20 dateByAddingTimeInterval:600.0];
-    (*(v13 + 2))(v13, v14, 0, v21, 0, 0);
+    (*(completionCopy + 2))(completionCopy, mainFileURL, 0, v21, 0, 0);
 
     goto LABEL_10;
   }
 
-  if ([v11 dataStoreSubtype] == 7)
+  if ([resourceCopy dataStoreSubtype] == 7)
   {
     v22 = 6;
 LABEL_9:
     v20 = +[PLPhotoSharingHelper sharingPersonID];
-    v23 = [v12 cloudAssetGUID];
-    v24 = [MEMORY[0x1E69B14F8] sharedConnection];
+    cloudAssetGUID2 = [assetCopy cloudAssetGUID];
+    mEMORY[0x1E69B14F8] = [MEMORY[0x1E69B14F8] sharedConnection];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __133__PLSharedStreamsDataStore_requestStreamingURLForResource_asset_intent_timeRange_streamingHints_inContext_clientBundleID_completion___block_invoke;
     v26[3] = &unk_1E7567DC8;
-    v27 = v13;
-    [v24 videoURLsForAssetCollectionWithGUID:v23 forMediaAssetType:v22 personID:v20 completionBlock:v26];
+    v27 = completionCopy;
+    [mEMORY[0x1E69B14F8] videoURLsForAssetCollectionWithGUID:cloudAssetGUID2 forMediaAssetType:v22 personID:v20 completionBlock:v26];
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v11 dataStoreSubtype] == 8)
+  if ([resourceCopy dataStoreSubtype] == 8)
   {
     v22 = 7;
     goto LABEL_9;
@@ -222,7 +222,7 @@ LABEL_10:
     _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_ERROR, "Resource does not support streaming URL", buf, 2u);
   }
 
-  (*(v13 + 2))(v13, 0, 0, 0, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0, 0);
 LABEL_11:
 }
 
@@ -235,68 +235,68 @@ void __133__PLSharedStreamsDataStore_requestStreamingURLForResource_asset_intent
   (*(v6 + 16))(v6, v9, 0, v7, 0, v8);
 }
 
-- (BOOL)canStreamResource:(id)a3
+- (BOOL)canStreamResource:(id)resource
 {
-  v3 = a3;
-  v4 = [v3 dataStoreSubtype];
-  v5 = [v3 uniformTypeIdentifier];
+  resourceCopy = resource;
+  dataStoreSubtype = [resourceCopy dataStoreSubtype];
+  uniformTypeIdentifier = [resourceCopy uniformTypeIdentifier];
 
-  v6 = [v5 conformsToMovie];
-  if ((v4 & 0xFFFFFFFB) == 2)
+  conformsToMovie = [uniformTypeIdentifier conformsToMovie];
+  if ((dataStoreSubtype & 0xFFFFFFFB) == 2)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v6;
+    v7 = conformsToMovie;
   }
 
   return v7;
 }
 
-- (BOOL)videoResource:(id)a3 matchesOrExceedsQualityLevel:(unsigned int)a4
+- (BOOL)videoResource:(id)resource matchesOrExceedsQualityLevel:(unsigned int)level
 {
-  v5 = [a3 dataStoreSubtype];
-  v6 = a4 == 3;
-  if (v5 != 7)
+  dataStoreSubtype = [resource dataStoreSubtype];
+  v6 = level == 3;
+  if (dataStoreSubtype != 7)
   {
     v6 = 0;
   }
 
-  if (v5 == 8)
+  if (dataStoreSubtype == 8)
   {
     v6 = 1;
   }
 
-  return v5 == 6 || v6;
+  return dataStoreSubtype == 6 || v6;
 }
 
-- (id)requestLocalAvailabilityChange:(signed __int16)a3 forResource:(id)a4 options:(id)a5 completion:(id)a6
+- (id)requestLocalAvailabilityChange:(signed __int16)change forResource:(id)resource options:(id)options completion:(id)completion
 {
-  v8 = a3;
+  changeCopy = change;
   v89[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v64 = a6;
-  v12 = [v10 asset];
-  v13 = [v10 dataStoreSubtype];
-  v14 = [v10 objectID];
-  v15 = [v12 collectionShare];
-  v16 = [v12 albums];
-  v17 = [v16 anyObject];
+  resourceCopy = resource;
+  optionsCopy = options;
+  completionCopy = completion;
+  asset = [resourceCopy asset];
+  dataStoreSubtype = [resourceCopy dataStoreSubtype];
+  objectID = [resourceCopy objectID];
+  collectionShare = [asset collectionShare];
+  albums = [asset albums];
+  anyObject = [albums anyObject];
 
-  v65 = [v12 assetID];
-  v63 = [v15 photoLibrary];
-  v62 = v17;
-  if (![v11 isTransient])
+  assetID = [asset assetID];
+  photoLibrary = [collectionShare photoLibrary];
+  v62 = anyObject;
+  if (![optionsCopy isTransient])
   {
-    if (!v15)
+    if (!collectionShare)
     {
-      v18 = v14;
+      v18 = objectID;
       v28 = MEMORY[0x1E696AEC0];
-      v29 = [0 objectID];
-      v19 = [v28 stringWithFormat:@"Shared stream downloads are only supported for sharedstream collection shares, collection share: %@", v29];
+      objectID2 = [0 objectID];
+      v19 = [v28 stringWithFormat:@"Shared stream downloads are only supported for sharedstream collection shares, collection share: %@", objectID2];
 
       v30 = PLImageManagerGetLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -316,11 +316,11 @@ void __133__PLSharedStreamsDataStore_requestStreamingURLForResource_asset_intent
       goto LABEL_15;
     }
 
-    v26 = [v15 photoLibrary];
+    photoLibrary2 = [collectionShare photoLibrary];
 
-    if (!v26)
+    if (!photoLibrary2)
     {
-      v18 = v14;
+      v18 = objectID;
       v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Shared stream download requires photo library to be set on collection share."];
       v31 = PLImageManagerGetLog();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -340,19 +340,19 @@ void __133__PLSharedStreamsDataStore_requestStreamingURLForResource_asset_intent
       goto LABEL_15;
     }
 
-    v61 = v11;
-    if (v17)
+    v61 = optionsCopy;
+    if (anyObject)
     {
-      v27 = v17;
-      v19 = [[PLSharedStreamsDataStoreKey alloc] initWithAsset:v12 album:v27 type:v13];
+      v27 = anyObject;
+      v19 = [[PLSharedStreamsDataStoreKey alloc] initWithAsset:asset album:v27 type:dataStoreSubtype];
     }
 
     else
     {
-      v19 = [[PLSharedStreamsDataStoreKey alloc] initWithAsset:v12 collectionShare:v15 type:v13];
+      v19 = [[PLSharedStreamsDataStoreKey alloc] initWithAsset:asset collectionShare:collectionShare type:dataStoreSubtype];
     }
 
-    v32 = [(PLSharedStreamsDataStoreKey *)v19 fileURLForAssetID:v65];
+    v32 = [(PLSharedStreamsDataStoreKey *)v19 fileURLForAssetID:assetID];
     if (!v19)
     {
       v42 = MEMORY[0x1E696ABC0];
@@ -360,13 +360,13 @@ void __133__PLSharedStreamsDataStore_requestStreamingURLForResource_asset_intent
       v82 = *MEMORY[0x1E696A578];
       v83 = @"Unable to generate a shared stream key.";
       [MEMORY[0x1E695DF20] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
-      v45 = v44 = v14;
+      v45 = v44 = objectID;
       v33 = [v42 errorWithDomain:v43 code:5 userInfo:v45];
 
-      v14 = v44;
-      v34 = v64;
-      (*(v64 + 2))(v64, v33, 0, 0);
-      v11 = v61;
+      objectID = v44;
+      v34 = completionCopy;
+      (*(completionCopy + 2))(completionCopy, v33, 0, 0);
+      optionsCopy = v61;
       goto LABEL_16;
     }
 
@@ -374,92 +374,92 @@ void __133__PLSharedStreamsDataStore_requestStreamingURLForResource_asset_intent
     aBlock[1] = 3221225472;
     aBlock[2] = __90__PLSharedStreamsDataStore_requestLocalAvailabilityChange_forResource_options_completion___block_invoke;
     aBlock[3] = &unk_1E7567D78;
-    v36 = v64;
+    v36 = completionCopy;
     v77 = v36;
-    v76 = v10;
+    v76 = resourceCopy;
     v60 = _Block_copy(aBlock);
-    if (v8 < 1)
+    if (changeCopy < 1)
     {
-      v46 = PLImageManagerGetLog();
-      if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
+      keyData = PLImageManagerGetLog();
+      if (os_log_type_enabled(keyData, OS_LOG_TYPE_DEBUG))
       {
         *buf = 0;
-        _os_log_impl(&dword_19BF1F000, v46, OS_LOG_TYPE_DEBUG, "[RM] This business is totally not supported yet", buf, 2u);
+        _os_log_impl(&dword_19BF1F000, keyData, OS_LOG_TYPE_DEBUG, "[RM] This business is totally not supported yet", buf, 2u);
       }
     }
 
     else
     {
       v57 = v36;
-      v59 = v14;
-      v37 = [MEMORY[0x1E696AC08] defaultManager];
-      v38 = [v32 path];
-      v39 = [v37 fileExistsAtPath:v38];
+      v59 = objectID;
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      path = [v32 path];
+      v39 = [defaultManager fileExistsAtPath:path];
 
       if (!v39)
       {
-        v47 = [objc_opt_class() _cloudSharedAssetPlaceholderKindFromSharedStreamsResourceType:v13];
-        v48 = [v12 uuid];
+        v47 = [objc_opt_class() _cloudSharedAssetPlaceholderKindFromSharedStreamsResourceType:dataStoreSubtype];
+        uuid = [asset uuid];
         v56 = v47;
-        v49 = [PLPhotoSharingHelper downloadNotificationForAssetwithUUID:v48 cloudPlaceholderKind:v47];
+        v49 = [PLPhotoSharingHelper downloadNotificationForAssetwithUUID:uuid cloudPlaceholderKind:v47];
 
-        v50 = [v12 uuid];
+        uuid2 = [asset uuid];
         v66[0] = MEMORY[0x1E69E9820];
         v66[1] = 3221225472;
         v66[2] = __90__PLSharedStreamsDataStore_requestLocalAvailabilityChange_forResource_options_completion___block_invoke_78;
         v66[3] = &unk_1E7567DA0;
-        v74 = v13;
+        v74 = dataStoreSubtype;
         v67 = v49;
-        v68 = v50;
+        v68 = uuid2;
         v72 = v57;
         v73 = v60;
         v69 = v59;
         v70 = v19;
-        v71 = v63;
-        v58 = v50;
-        v51 = self;
-        v46 = v67;
-        [(PLSharedStreamsDataStore *)v51 _prepareForDownloadNotification:v67 atFileURL:v32 completion:v66];
+        v71 = photoLibrary;
+        v58 = uuid2;
+        selfCopy = self;
+        keyData = v67;
+        [(PLSharedStreamsDataStore *)selfCopy _prepareForDownloadNotification:v67 atFileURL:v32 completion:v66];
         v52 = PLImageManagerGetLog();
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
         {
-          if (v13 > 9)
+          if (dataStoreSubtype > 9)
           {
             v53 = @"vid-post-frame";
           }
 
           else
           {
-            v53 = off_1E7576C48[v13 & 0xF];
+            v53 = off_1E7576C48[dataStoreSubtype & 0xF];
           }
 
           v55 = v53;
           *buf = 138412546;
           v79 = v55;
           v80 = 2112;
-          v81 = v46;
+          v81 = keyData;
           _os_log_impl(&dword_19BF1F000, v52, OS_LOG_TYPE_DEBUG, "[RM] Starting download for shared streams resource: %@ with notification: %@", buf, 0x16u);
         }
 
-        v11 = v61;
-        +[PLPhotoSharingHelper downloadAsset:cloudPlaceholderKind:shouldPrioritize:shouldExtendTimer:](PLPhotoSharingHelper, "downloadAsset:cloudPlaceholderKind:shouldPrioritize:shouldExtendTimer:", v12, v56, [v61 shouldPrioritize], objc_msgSend(v61, "shouldPrioritize"));
+        optionsCopy = v61;
+        +[PLPhotoSharingHelper downloadAsset:cloudPlaceholderKind:shouldPrioritize:shouldExtendTimer:](PLPhotoSharingHelper, "downloadAsset:cloudPlaceholderKind:shouldPrioritize:shouldExtendTimer:", asset, v56, [v61 shouldPrioritize], objc_msgSend(v61, "shouldPrioritize"));
 
-        v14 = v59;
+        objectID = v59;
         goto LABEL_37;
       }
 
       v40 = PLImageManagerGetLog();
-      v14 = v59;
+      objectID = v59;
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
       {
-        if (v13 > 9)
+        if (dataStoreSubtype > 9)
         {
           v41 = @"vid-post-frame";
         }
 
         else
         {
-          v41 = off_1E7576C48[v13 & 0xF];
+          v41 = off_1E7576C48[dataStoreSubtype & 0xF];
         }
 
         v54 = v41;
@@ -468,19 +468,19 @@ void __133__PLSharedStreamsDataStore_requestStreamingURLForResource_asset_intent
         _os_log_impl(&dword_19BF1F000, v40, OS_LOG_TYPE_DEBUG, "[RM] Shared streams resource: %@ already on disk, skipping download and marking as locally available", buf, 0xCu);
       }
 
-      v46 = [(PLSharedStreamsDataStoreKey *)v19 keyData];
-      (*(v60 + 2))(v60, v59, v46, v63);
+      keyData = [(PLSharedStreamsDataStoreKey *)v19 keyData];
+      (*(v60 + 2))(v60, v59, keyData, photoLibrary);
     }
 
-    v11 = v61;
+    optionsCopy = v61;
 LABEL_37:
-    v34 = v64;
+    v34 = completionCopy;
 
     v33 = v77;
     goto LABEL_16;
   }
 
-  v18 = v14;
+  v18 = objectID;
   v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Transient downloads not supported for shared streams"];
   v20 = PLImageManagerGetLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -500,9 +500,9 @@ LABEL_37:
 LABEL_15:
   v32 = [v23 dictionaryWithObjects:v24 forKeys:v25 count:1];
   v33 = [v21 errorWithDomain:v22 code:47001 userInfo:v32];
-  v34 = v64;
-  (*(v64 + 2))(v64, v33, 0, 0);
-  v14 = v18;
+  v34 = completionCopy;
+  (*(completionCopy + 2))(completionCopy, v33, 0, 0);
+  objectID = v18;
 LABEL_16:
 
   return 0;
@@ -627,38 +627,38 @@ void __90__PLSharedStreamsDataStore_requestLocalAvailabilityChange_forResource_o
   (*(v1 + 16))(v1, 0, 0, v2);
 }
 
-- (BOOL)storeExternalResource:(id)a3 forAsset:(id)a4 options:(id)a5 error:(id *)a6 resultingResource:(id *)a7
+- (BOOL)storeExternalResource:(id)resource forAsset:(id)asset options:(id)options error:(id *)error resultingResource:(id *)resultingResource
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 uniformTypeIdentifier];
+  resourceCopy = resource;
+  assetCopy = asset;
+  uniformTypeIdentifier = [resourceCopy uniformTypeIdentifier];
 
-  if (!v12)
+  if (!uniformTypeIdentifier)
   {
-    v13 = -[PLResourceDataStore guessUTIForExternalResource:forAssetKind:](self, "guessUTIForExternalResource:forAssetKind:", v10, [v11 kind]);
-    [v10 setUniformTypeIdentifier:v13];
+    v13 = -[PLResourceDataStore guessUTIForExternalResource:forAssetKind:](self, "guessUTIForExternalResource:forAssetKind:", resourceCopy, [assetCopy kind]);
+    [resourceCopy setUniformTypeIdentifier:v13];
 
     v14 = PLImageManagerGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v11 uuid];
+      uuid = [assetCopy uuid];
       *buf = 138543618;
-      v32 = v10;
+      v32 = resourceCopy;
       v33 = 2114;
-      v34 = v15;
+      v34 = uuid;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "[RM] guessed UTI for external resource: %{public}@ for asset uuid: %{public}@", buf, 0x16u);
     }
   }
 
-  if (-[PLSharedStreamsDataStore canStoreExternalResource:](self, "canStoreExternalResource:", v10) && [v11 isCloudSharedAsset])
+  if (-[PLSharedStreamsDataStore canStoreExternalResource:](self, "canStoreExternalResource:", resourceCopy) && [assetCopy isCloudSharedAsset])
   {
-    v16 = v10;
-    v17 = [v11 collectionShare];
-    v18 = [v11 albums];
-    v19 = [v18 anyObject];
+    v16 = resourceCopy;
+    collectionShare = [assetCopy collectionShare];
+    albums = [assetCopy albums];
+    anyObject = [albums anyObject];
 
-    if (!v17)
+    if (!collectionShare)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -670,41 +670,41 @@ LABEL_27:
       }
     }
 
-    v20 = v19;
-    v21 = [v11 fetchOrCreateResourceWithIdentity:v16];
+    v20 = anyObject;
+    v21 = [assetCopy fetchOrCreateResourceWithIdentity:v16];
     [v21 setDataStoreClassID:{objc_msgSend(objc_opt_class(), "storeClassID")}];
     [v21 setRecipeID:{objc_msgSend(v16, "recipeID")}];
     [v21 setDataStoreSubtype:{objc_msgSend(v16, "sharedStreamsType")}];
-    v22 = [v16 codecFourCharCode];
+    codecFourCharCode = [v16 codecFourCharCode];
 
-    if (v22)
+    if (codecFourCharCode)
     {
-      v23 = [v16 codecFourCharCode];
-      [v21 setCodecFourCharCodeName:v23];
+      codecFourCharCode2 = [v16 codecFourCharCode];
+      [v21 setCodecFourCharCodeName:codecFourCharCode2];
     }
 
     [v21 setUnorientedWidth:{objc_msgSend(v16, "unorientedWidth")}];
     [v21 setUnorientedHeight:{objc_msgSend(v16, "unorientedHeight")}];
     if (v20)
     {
-      [v21 setLocalAvailability:{-[PLSharedStreamsDataStore _localAvailabilityForAsset:album:type:](self, "_localAvailabilityForAsset:album:type:", v11, v20, objc_msgSend(v16, "sharedStreamsType"))}];
+      [v21 setLocalAvailability:{-[PLSharedStreamsDataStore _localAvailabilityForAsset:album:type:](self, "_localAvailabilityForAsset:album:type:", assetCopy, v20, objc_msgSend(v16, "sharedStreamsType"))}];
       if ([v21 localAvailability] == 1)
       {
-        v30 = v19;
-        v24 = -[PLSharedStreamsDataStoreKey initWithAsset:album:type:]([PLSharedStreamsDataStoreKey alloc], "initWithAsset:album:type:", v11, v20, [v16 sharedStreamsType]);
+        v30 = anyObject;
+        v24 = -[PLSharedStreamsDataStoreKey initWithAsset:album:type:]([PLSharedStreamsDataStoreKey alloc], "initWithAsset:album:type:", assetCopy, v20, [v16 sharedStreamsType]);
 LABEL_18:
         v26 = v24;
 LABEL_19:
-        v27 = [(PLSharedStreamsDataStoreKey *)v26 keyData];
-        [v21 setDataStoreKeyData:v27];
+        keyData = [(PLSharedStreamsDataStoreKey *)v26 keyData];
+        [v21 setDataStoreKeyData:keyData];
 
-        v19 = v30;
+        anyObject = v30;
 LABEL_24:
         [v21 setRemoteAvailability:{-[PLSharedStreamsDataStore _remoteAvailabilityForType:](self, "_remoteAvailabilityForType:", objc_msgSend(v16, "sharedStreamsType"))}];
-        if (a7)
+        if (resultingResource)
         {
           v28 = v21;
-          *a7 = v21;
+          *resultingResource = v21;
         }
 
         v25 = 1;
@@ -712,20 +712,20 @@ LABEL_24:
       }
     }
 
-    else if (v17)
+    else if (collectionShare)
     {
-      [v21 setLocalAvailability:{-[PLSharedStreamsDataStore _localAvailabilityForAsset:collectionShare:type:](self, "_localAvailabilityForAsset:collectionShare:type:", v11, v17, objc_msgSend(v16, "sharedStreamsType"))}];
+      [v21 setLocalAvailability:{-[PLSharedStreamsDataStore _localAvailabilityForAsset:collectionShare:type:](self, "_localAvailabilityForAsset:collectionShare:type:", assetCopy, collectionShare, objc_msgSend(v16, "sharedStreamsType"))}];
       if ([v21 localAvailability] == 1)
       {
-        v30 = v19;
-        v24 = -[PLSharedStreamsDataStoreKey initWithAsset:collectionShare:type:]([PLSharedStreamsDataStoreKey alloc], "initWithAsset:collectionShare:type:", v11, v17, [v16 sharedStreamsType]);
+        v30 = anyObject;
+        v24 = -[PLSharedStreamsDataStoreKey initWithAsset:collectionShare:type:]([PLSharedStreamsDataStoreKey alloc], "initWithAsset:collectionShare:type:", assetCopy, collectionShare, [v16 sharedStreamsType]);
         goto LABEL_18;
       }
     }
 
     else if ([v21 localAvailability] == 1)
     {
-      v30 = v19;
+      v30 = anyObject;
       v26 = 0;
       goto LABEL_19;
     }
@@ -740,41 +740,41 @@ LABEL_28:
   return v25;
 }
 
-- (BOOL)canStoreExternalResource:(id)a3
+- (BOOL)canStoreExternalResource:(id)resource
 {
-  v3 = a3;
+  resourceCopy = resource;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (id)updateDerivativeResourcesForAsset:(id)a3 forLifecycleEvent:(unsigned int)a4
+- (id)updateDerivativeResourcesForAsset:(id)asset forLifecycleEvent:(unsigned int)event
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
+  assetCopy = asset;
+  array = [MEMORY[0x1E695DF70] array];
   v8 = [MEMORY[0x1E695DFA8] set];
-  if (a4 <= 2 && [v6 isCloudSharedAsset])
+  if (event <= 2 && [assetCopy isCloudSharedAsset])
   {
-    v9 = [v6 collectionShare];
-    v10 = [v6 albums];
-    v11 = [v10 anyObject];
+    collectionShare = [assetCopy collectionShare];
+    albums = [assetCopy albums];
+    anyObject = [albums anyObject];
 
-    if (v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (collectionShare || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      if (![v6 kind])
+      if (![assetCopy kind])
       {
-        v12 = [(PLSharedStreamsDataStore *)self _sharedStreamsExternalResourceForAsset:v6 type:4];
-        [v7 addObject:v12];
+        v12 = [(PLSharedStreamsDataStore *)self _sharedStreamsExternalResourceForAsset:assetCopy type:4];
+        [array addObject:v12];
       }
 
-      if ([v6 kind] == 1)
+      if ([assetCopy kind] == 1)
       {
-        v13 = [(PLSharedStreamsDataStore *)self _sharedStreamsExternalResourceForAsset:v6 type:7];
-        [v7 addObject:v13];
-        v14 = [(PLSharedStreamsDataStore *)self _sharedStreamsExternalResourceForAsset:v6 type:8];
-        [v7 addObject:v14];
+        v13 = [(PLSharedStreamsDataStore *)self _sharedStreamsExternalResourceForAsset:assetCopy type:7];
+        [array addObject:v13];
+        v14 = [(PLSharedStreamsDataStore *)self _sharedStreamsExternalResourceForAsset:assetCopy type:8];
+        [array addObject:v14];
       }
     }
   }
@@ -783,7 +783,7 @@ LABEL_28:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v15 = v7;
+  v15 = array;
   v16 = [v15 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v16)
   {
@@ -801,13 +801,13 @@ LABEL_28:
         v20 = *(*(&v27 + 1) + 8 * i);
         v25 = 0;
         v26 = 0;
-        [(PLSharedStreamsDataStore *)self storeExternalResource:v20 forAsset:v6 options:0 error:&v26 resultingResource:&v25];
+        [(PLSharedStreamsDataStore *)self storeExternalResource:v20 forAsset:assetCopy options:0 error:&v26 resultingResource:&v25];
         v21 = v26;
         v22 = v25;
         v23 = v22;
         if (v22)
         {
-          [v22 setAsset:v6];
+          [v22 setAsset:assetCopy];
           [v8 addObject:v23];
         }
       }
@@ -821,30 +821,30 @@ LABEL_28:
   return v8;
 }
 
-- (id)expectedFileURLForResource:(id)a3 asset:(id)a4
+- (id)expectedFileURLForResource:(id)resource asset:(id)asset
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 collectionShare];
-  v8 = [v6 albums];
-  v9 = [v8 anyObject];
+  resourceCopy = resource;
+  assetCopy = asset;
+  collectionShare = [assetCopy collectionShare];
+  albums = [assetCopy albums];
+  anyObject = [albums anyObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
-    v11 = -[PLSharedStreamsDataStoreKey initWithAsset:album:type:]([PLSharedStreamsDataStoreKey alloc], "initWithAsset:album:type:", v6, v10, [v5 dataStoreSubtype]);
+    v10 = anyObject;
+    v11 = -[PLSharedStreamsDataStoreKey initWithAsset:album:type:]([PLSharedStreamsDataStoreKey alloc], "initWithAsset:album:type:", assetCopy, v10, [resourceCopy dataStoreSubtype]);
 
 LABEL_5:
-    v12 = [v6 assetID];
-    v13 = [(PLSharedStreamsDataStoreKey *)v11 fileURLForAssetID:v12];
+    assetID = [assetCopy assetID];
+    v13 = [(PLSharedStreamsDataStoreKey *)v11 fileURLForAssetID:assetID];
 
     goto LABEL_6;
   }
 
-  if (v7)
+  if (collectionShare)
   {
-    v11 = -[PLSharedStreamsDataStoreKey initWithAsset:collectionShare:type:]([PLSharedStreamsDataStoreKey alloc], "initWithAsset:collectionShare:type:", v6, v7, [v5 dataStoreSubtype]);
+    v11 = -[PLSharedStreamsDataStoreKey initWithAsset:collectionShare:type:]([PLSharedStreamsDataStoreKey alloc], "initWithAsset:collectionShare:type:", assetCopy, collectionShare, [resourceCopy dataStoreSubtype]);
     goto LABEL_5;
   }
 
@@ -854,9 +854,9 @@ LABEL_6:
   return v13;
 }
 
-- (id)resourceDataForKey:(id)a3 assetID:(id)a4
+- (id)resourceDataForKey:(id)key assetID:(id)d
 {
-  v4 = [a3 fileURLForAssetID:a4];
+  v4 = [key fileURLForAssetID:d];
   if (v4)
   {
     v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v4];
@@ -870,29 +870,29 @@ LABEL_6:
   return v5;
 }
 
-- (id)keyFromKeyStruct:(const void *)a3
+- (id)keyFromKeyStruct:(const void *)struct
 {
-  v3 = [[PLSharedStreamsDataStoreKey alloc] initWithKeyStruct:a3];
+  v3 = [[PLSharedStreamsDataStoreKey alloc] initWithKeyStruct:struct];
 
   return v3;
 }
 
-- (id)descriptionForSubtype:(int64_t)a3
+- (id)descriptionForSubtype:(int64_t)subtype
 {
-  if (a3 > 9)
+  if (subtype > 9)
   {
     return @"vid-post-frame";
   }
 
   else
   {
-    return off_1E7576C48[a3 & 0xF];
+    return off_1E7576C48[subtype & 0xF];
   }
 }
 
-- (unsigned)_mainResourceTypeForAsset:(id)a3
+- (unsigned)_mainResourceTypeForAsset:(id)asset
 {
-  if ([a3 kind])
+  if ([asset kind])
   {
     return 5;
   }
@@ -903,13 +903,13 @@ LABEL_6:
   }
 }
 
-- (signed)_localAvailabilityForAsset:(id)a3 album:(id)a4 type:(unsigned int)a5
+- (signed)_localAvailabilityForAsset:(id)asset album:(id)album type:(unsigned int)type
 {
-  v5 = *&a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v7 assetID];
+  v5 = *&type;
+  assetCopy = asset;
+  albumCopy = album;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  assetID = [assetCopy assetID];
   v11 = -1;
   if (v5 > 3)
   {
@@ -918,8 +918,8 @@ LABEL_6:
       if (v5 == 5)
       {
         v15 = [PLSharedStreamsDataStoreKey alloc];
-        v16 = v7;
-        v17 = v8;
+        v16 = assetCopy;
+        v17 = albumCopy;
         v18 = 5;
         goto LABEL_15;
       }
@@ -932,11 +932,11 @@ LABEL_6:
       goto LABEL_11;
     }
 
-    if ([v7 cloudSharedPlaceholderKind] == 3)
+    if ([assetCopy cloudSharedPlaceholderKind] == 3)
     {
       v15 = [PLSharedStreamsDataStoreKey alloc];
-      v16 = v7;
-      v17 = v8;
+      v16 = assetCopy;
+      v17 = albumCopy;
       v18 = 4;
       goto LABEL_15;
     }
@@ -946,24 +946,24 @@ LABEL_6:
   {
     if ((v5 - 1) < 2)
     {
-      v12 = [v7 mainFileURL];
-      v13 = [v12 path];
+      mainFileURL = [assetCopy mainFileURL];
+      path = [mainFileURL path];
 
-      v14 = [v9 fileExistsAtPath:v13] == 0;
+      v14 = [defaultManager fileExistsAtPath:path] == 0;
       goto LABEL_17;
     }
 
     if (v5 == 3)
     {
-      if ([v7 cloudSharedPlaceholderKind] == 4)
+      if ([assetCopy cloudSharedPlaceholderKind] == 4)
       {
         v15 = [PLSharedStreamsDataStoreKey alloc];
-        v16 = v7;
-        v17 = v8;
+        v16 = assetCopy;
+        v17 = albumCopy;
         v18 = 3;
 LABEL_15:
         v19 = [(PLSharedStreamsDataStoreKey *)v15 initWithAsset:v16 album:v17 type:v18];
-        v13 = v19;
+        path = v19;
         if (!v19)
         {
 LABEL_20:
@@ -971,9 +971,9 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v20 = [(PLSharedStreamsDataStoreKey *)v19 fileURLForAssetID:v10];
-        v21 = [v20 path];
-        v22 = [v9 fileExistsAtPath:v21];
+        v20 = [(PLSharedStreamsDataStoreKey *)v19 fileURLForAssetID:assetID];
+        path2 = [v20 path];
+        v22 = [defaultManager fileExistsAtPath:path2];
 
         v14 = (v22 & 1) == 0;
 LABEL_17:
@@ -992,8 +992,8 @@ LABEL_17:
 
 LABEL_11:
       v15 = [PLSharedStreamsDataStoreKey alloc];
-      v16 = v7;
-      v17 = v8;
+      v16 = assetCopy;
+      v17 = albumCopy;
       v18 = v5;
       goto LABEL_15;
     }
@@ -1004,22 +1004,22 @@ LABEL_21:
   return v11;
 }
 
-- (signed)_localAvailabilityForAsset:(id)a3 collectionShare:(id)a4 type:(unsigned int)a5
+- (signed)_localAvailabilityForAsset:(id)asset collectionShare:(id)share type:(unsigned int)type
 {
-  v5 = *&a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v7 assetID];
+  v5 = *&type;
+  assetCopy = asset;
+  shareCopy = share;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  assetID = [assetCopy assetID];
   v11 = -1;
   if (v5 <= 3)
   {
     if ((v5 - 1) < 2)
     {
-      v12 = [v7 mainFileURL];
-      v13 = [v12 path];
+      mainFileURL = [assetCopy mainFileURL];
+      path = [mainFileURL path];
 
-      v14 = [v9 fileExistsAtPath:v13] == 0;
+      v14 = [defaultManager fileExistsAtPath:path] == 0;
       goto LABEL_8;
     }
 
@@ -1028,23 +1028,23 @@ LABEL_21:
       goto LABEL_12;
     }
 
-    if ([v7 cloudSharedPlaceholderKind] == 4)
+    if ([assetCopy cloudSharedPlaceholderKind] == 4)
     {
       v15 = [PLSharedStreamsDataStoreKey alloc];
-      v16 = v7;
-      v17 = v8;
+      v16 = assetCopy;
+      v17 = shareCopy;
       v18 = 3;
       goto LABEL_6;
     }
 
 LABEL_5:
     v15 = [PLSharedStreamsDataStoreKey alloc];
-    v16 = v7;
-    v17 = v8;
+    v16 = assetCopy;
+    v17 = shareCopy;
     v18 = v5;
 LABEL_6:
     v19 = [(PLSharedStreamsDataStoreKey *)v15 initWithAsset:v16 collectionShare:v17 type:v18];
-    v13 = v19;
+    path = v19;
     if (!v19)
     {
 LABEL_11:
@@ -1052,9 +1052,9 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v20 = [(PLSharedStreamsDataStoreKey *)v19 fileURLForAssetID:v10];
-    v21 = [v20 path];
-    v22 = [v9 fileExistsAtPath:v21];
+    v20 = [(PLSharedStreamsDataStoreKey *)v19 fileURLForAssetID:assetID];
+    path2 = [v20 path];
+    v22 = [defaultManager fileExistsAtPath:path2];
 
     v14 = (v22 & 1) == 0;
 LABEL_8:
@@ -1076,11 +1076,11 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  if (v5 == 4 && [v7 cloudSharedPlaceholderKind] == 3)
+  if (v5 == 4 && [assetCopy cloudSharedPlaceholderKind] == 3)
   {
     v15 = [PLSharedStreamsDataStoreKey alloc];
-    v16 = v7;
-    v17 = v8;
+    v16 = assetCopy;
+    v17 = shareCopy;
     v18 = 4;
     goto LABEL_6;
   }
@@ -1090,14 +1090,14 @@ LABEL_12:
   return v11;
 }
 
-- (id)_sharedStreamsExternalResourceForAsset:(id)a3 type:(unsigned int)a4
+- (id)_sharedStreamsExternalResourceForAsset:(id)asset type:(unsigned int)type
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&type;
+  assetCopy = asset;
   v7 = objc_alloc_init(PLSharedStreamsValidatedExternalResource);
   [(PLSharedStreamsValidatedExternalResource *)v7 setSharedStreamsType:v4];
   [(PLValidatedExternalResource *)v7 setVersion:0];
-  v8 = [(PLSharedStreamsDataStore *)self _utiStringForAsset:v6 type:v4];
+  v8 = [(PLSharedStreamsDataStore *)self _utiStringForAsset:assetCopy type:v4];
   if (v8)
   {
     v9 = [PLUniformTypeIdentifier utiWithIdentifier:v8];
@@ -1119,8 +1119,8 @@ LABEL_12:
   {
     if (v4 == 3)
     {
-      -[PLValidatedExternalResource setUnorientedWidth:](v7, "setUnorientedWidth:", [v6 originalWidth]);
-      v27 = [v6 originalHeight];
+      -[PLValidatedExternalResource setUnorientedWidth:](v7, "setUnorientedWidth:", [assetCopy originalWidth]);
+      originalHeight = [assetCopy originalHeight];
       goto LABEL_23;
     }
 
@@ -1129,7 +1129,7 @@ LABEL_12:
       goto LABEL_24;
     }
 
-    +[PLPhotoSharingHelper derivedAssetSizeForMasterSizeWidth:height:derivativeType:withSpecificationInfo:](PLPhotoSharingHelper, "derivedAssetSizeForMasterSizeWidth:height:derivativeType:withSpecificationInfo:", 1, 0, [v6 originalWidth], objc_msgSend(v6, "originalHeight"));
+    +[PLPhotoSharingHelper derivedAssetSizeForMasterSizeWidth:height:derivativeType:withSpecificationInfo:](PLPhotoSharingHelper, "derivedAssetSizeForMasterSizeWidth:height:derivativeType:withSpecificationInfo:", 1, 0, [assetCopy originalWidth], objc_msgSend(assetCopy, "originalHeight"));
   }
 
   else
@@ -1140,8 +1140,8 @@ LABEL_12:
         +[PLPhotoSharingHelper videoPosterFrameDimension];
         v17 = v16;
         v19 = v18;
-        v20 = [v6 width];
-        v21 = [v6 height];
+        width = [assetCopy width];
+        height = [assetCopy height];
         if (v17 <= v19)
         {
           v22 = v19;
@@ -1153,10 +1153,10 @@ LABEL_12:
         }
 
         v23 = v22;
-        v24 = v20 / v21;
+        v24 = width / height;
         v14 = v22;
         v25 = v24;
-        if (v20 <= v21)
+        if (width <= height)
         {
           v26 = v23;
           v14 = rint(v25 * v14);
@@ -1169,43 +1169,43 @@ LABEL_12:
 
         goto LABEL_22;
       case 7:
-        v11 = [v6 width];
-        v12 = [v6 height];
+        width2 = [assetCopy width];
+        height2 = [assetCopy height];
         v13 = 360.0;
         break;
       case 8:
-        v11 = [v6 width];
-        v12 = [v6 height];
+        width2 = [assetCopy width];
+        height2 = [assetCopy height];
         v13 = 720.0;
         break;
       default:
         goto LABEL_24;
     }
 
-    [PLPrimaryResourceDataStoreImageRecipe scaleOriginalSize:v11 toShortSideTarget:v12 maxLongSideLength:v13, 0.0];
+    [PLPrimaryResourceDataStoreImageRecipe scaleOriginalSize:width2 toShortSideTarget:height2 maxLongSideLength:v13, 0.0];
   }
 
   v26 = v15;
 LABEL_22:
   [(PLValidatedExternalResource *)v7 setUnorientedWidth:v14];
-  v27 = v26;
+  originalHeight = v26;
 LABEL_23:
-  [(PLValidatedExternalResource *)v7 setUnorientedHeight:v27];
+  [(PLValidatedExternalResource *)v7 setUnorientedHeight:originalHeight];
 LABEL_24:
 
   return v7;
 }
 
-- (id)_utiStringForAsset:(id)a3 type:(unsigned int)a4
+- (id)_utiStringForAsset:(id)asset type:(unsigned int)type
 {
-  v5 = a3;
-  v6 = v5;
+  assetCopy = asset;
+  v6 = assetCopy;
   v7 = 0;
-  if (a4 > 5)
+  if (type > 5)
   {
-    if (a4 - 7 >= 2)
+    if (type - 7 >= 2)
     {
-      if (a4 != 6)
+      if (type != 6)
       {
         goto LABEL_12;
       }
@@ -1221,33 +1221,33 @@ LABEL_24:
 
   else
   {
-    if (a4 - 3 >= 3)
+    if (type - 3 >= 3)
     {
-      if (a4 - 1 >= 2)
+      if (type - 1 >= 2)
       {
         goto LABEL_12;
       }
 
-      v9 = [v5 originalUniformTypeIdentifier];
+      originalUniformTypeIdentifier = [assetCopy originalUniformTypeIdentifier];
       goto LABEL_11;
     }
 
     v8 = MEMORY[0x1E6982E58];
   }
 
-  v9 = [*v8 identifier];
+  originalUniformTypeIdentifier = [*v8 identifier];
 LABEL_11:
-  v7 = v9;
+  v7 = originalUniformTypeIdentifier;
 LABEL_12:
 
   return v7;
 }
 
-- (void)_prepareForDownloadNotification:(id)a3 atFileURL:(id)a4 completion:(id)a5
+- (void)_prepareForDownloadNotification:(id)notification atFileURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  notificationCopy = notification;
+  lCopy = l;
+  completionCopy = completion;
   if (_prepareForDownloadNotification_atFileURL_completion__onceToken != -1)
   {
     dispatch_once(&_prepareForDownloadNotification_atFileURL_completion__onceToken, &__block_literal_global_16025);
@@ -1266,23 +1266,23 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = __81__PLSharedStreamsDataStore__prepareForDownloadNotification_atFileURL_completion___block_invoke_47;
   block[3] = &unk_1E7577C08;
-  v13 = v9;
+  v13 = lCopy;
   v30 = v13;
-  v14 = v10;
+  v14 = completionCopy;
   v31 = v14;
   dispatch_group_notify(v11, v12, block);
   out_token = 0;
-  v15 = [v8 UTF8String];
+  uTF8String = [notificationCopy UTF8String];
   v16 = _prepareForDownloadNotification_atFileURL_completion__mediaStreamDownloadQueue;
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __81__PLSharedStreamsDataStore__prepareForDownloadNotification_atFileURL_completion___block_invoke_2;
   handler[3] = &unk_1E756ED40;
   handler[4] = self;
-  v17 = v8;
+  v17 = notificationCopy;
   v26 = v17;
   v27 = &v32;
-  notify_register_dispatch(v15, &out_token, v16, handler);
+  notify_register_dispatch(uTF8String, &out_token, v16, handler);
   v18 = dispatch_time(0, 300000000000);
   v19 = _prepareForDownloadNotification_atFileURL_completion__mediaStreamDownloadQueue;
   v21[0] = MEMORY[0x1E69E9820];

@@ -1,30 +1,30 @@
 @interface WBSHostTabProvider
-- (void)_setHostTab:(id)a3;
-- (void)setHostTab:(id)a3;
+- (void)_setHostTab:(id)tab;
+- (void)setHostTab:(id)tab;
 @end
 
 @implementation WBSHostTabProvider
 
-- (void)setHostTab:(id)a3
+- (void)setHostTab:(id)tab
 {
-  v5 = a3;
-  [(WBSHostTabProvider *)self _setHostTab:v5];
-  if (v5)
+  tabCopy = tab;
+  [(WBSHostTabProvider *)self _setHostTab:tabCopy];
+  if (tabCopy)
   {
     v4 = +[WBSHostTabProviderManager sharedManager];
-    [v4 registerHostTab:v5];
+    [v4 registerHostTab:tabCopy];
   }
 }
 
-- (void)_setHostTab:(id)a3
+- (void)_setHostTab:(id)tab
 {
-  v5 = a3;
+  tabCopy = tab;
   hostTab = self->_hostTab;
-  if (hostTab != v5)
+  if (hostTab != tabCopy)
   {
-    v8 = v5;
+    v8 = tabCopy;
     v7 = hostTab;
-    objc_storeStrong(&self->_hostTab, a3);
+    objc_storeStrong(&self->_hostTab, tab);
     if (v7)
     {
       [(WBSHostableTab *)v7 setHostTabProvider:self];
@@ -35,7 +35,7 @@
       [(WBSHostableTab *)v8 setHostTabProvider:0];
     }
 
-    v5 = v8;
+    tabCopy = v8;
   }
 }
 

@@ -1,11 +1,11 @@
 @interface EventDispatcher
 + (id)eventDispatcher;
-+ (void)connectEventMonitorWithMessage:(id)a3 connection:(id)a4;
++ (void)connectEventMonitorWithMessage:(id)message connection:(id)connection;
 - (EventDispatcher)init;
-- (void)_clientDisconnectNotification:(id)a3;
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingBlock:(id)a5;
+- (void)_clientDisconnectNotification:(id)notification;
+- (void)_handleMessage:(id)message connection:(id)connection usingBlock:(id)block;
 - (void)dealloc;
-- (void)postEventWithName:(id)a3 userInfo:(id)a4;
+- (void)postEventWithName:(id)name userInfo:(id)info;
 @end
 
 @implementation EventDispatcher
@@ -49,7 +49,7 @@
   [(EventDispatcher *)&v4 dealloc];
 }
 
-- (void)postEventWithName:(id)a3 userInfo:(id)a4
+- (void)postEventWithName:(id)name userInfo:(id)info
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -57,49 +57,49 @@
   block[2] = sub_1001A0460;
   block[3] = &unk_1003273E0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = name;
+  block[6] = info;
   dispatch_async(dispatchQueue, block);
 }
 
-+ (void)connectEventMonitorWithMessage:(id)a3 connection:(id)a4
++ (void)connectEventMonitorWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1001A074C;
   v4[3] = &unk_10032AE90;
-  v4[4] = a4;
-  v4[5] = a1;
-  v4[6] = a3;
+  v4[4] = connection;
+  v4[5] = self;
+  v4[6] = message;
   [+[EventDispatcher eventDispatcher](EventDispatcher "eventDispatcher")];
 }
 
-- (void)_clientDisconnectNotification:(id)a3
+- (void)_clientDisconnectNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
   dispatchQueue = self->_dispatchQueue;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001A0B24;
   v6[3] = &unk_100327350;
   v6[4] = self;
-  v6[5] = v4;
+  v6[5] = object;
   dispatch_async(dispatchQueue, v6);
 }
 
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingBlock:(id)a5
+- (void)_handleMessage:(id)message connection:(id)connection usingBlock:(id)block
 {
   [+[Daemon daemon](Daemon "daemon")];
-  xpc_retain(a4);
-  xpc_retain(a3);
+  xpc_retain(connection);
+  xpc_retain(message);
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A0D88;
   block[3] = &unk_100327408;
-  block[5] = a4;
-  block[6] = a5;
-  block[4] = a3;
+  block[5] = connection;
+  block[6] = block;
+  block[4] = message;
   dispatch_async(dispatchQueue, block);
 }
 

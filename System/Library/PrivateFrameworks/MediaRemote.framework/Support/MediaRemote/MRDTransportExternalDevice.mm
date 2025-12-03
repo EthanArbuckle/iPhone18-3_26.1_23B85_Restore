@@ -1,17 +1,17 @@
 @interface MRDTransportExternalDevice
-- (BOOL)_maybeBatchRequest:(id)a3;
-- (MRDTransportExternalDevice)initWithTransport:(id)a3;
+- (BOOL)_maybeBatchRequest:(id)request;
+- (MRDTransportExternalDevice)initWithTransport:(id)transport;
 - (MRDeviceInfo)deviceInfo;
 - (MRExternalClientConnection)clientConnection;
 - (MROrigin)customOrigin;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)_onSerialQueue_deviceInfo;
-- (id)_onWorkerQueue_createClientConnectionWithTransport:(id)a3;
-- (id)_onWorkerQueue_loadDeviceInfoWithUserInfo:(id)a3;
-- (id)_onWorkerQueue_reRegisterCustomOriginWithUserInfo:(id)a3;
-- (id)_onWorkerQueue_registerCustomOriginWithUserInfo:(id)a3;
-- (id)_onWorkerQueue_syncClientStateWithUserInfo:(id)a3;
+- (id)_onWorkerQueue_createClientConnectionWithTransport:(id)transport;
+- (id)_onWorkerQueue_loadDeviceInfoWithUserInfo:(id)info;
+- (id)_onWorkerQueue_reRegisterCustomOriginWithUserInfo:(id)info;
+- (id)_onWorkerQueue_registerCustomOriginWithUserInfo:(id)info;
+- (id)_onWorkerQueue_syncClientStateWithUserInfo:(id)info;
 - (id)currentClientUpdatesConfigMessage;
 - (id)errorForCurrentState;
 - (id)externalOutputContext;
@@ -22,87 +22,87 @@
 - (id)subscribedPlayerPaths;
 - (id)supportedMessages;
 - (unsigned)connectionState;
-- (void)_activeSystemEndpointDidChangeNotification:(id)a3;
-- (void)_callAllPendingCompletionsWithError:(id)a3;
-- (void)_callClientConnectionStateCallback:(unsigned int)a3 previousConnectionState:(unsigned int)a4 error:(id)a5;
-- (void)_callClientCustomDataCallback:(id)a3 name:(id)a4;
-- (void)_callDeviceInfoCallback:(id)a3 oldDeviceInfo:(id)a4;
-- (void)_cleanUpStreamsWithReason:(int64_t)a3 error:(id)a4;
-- (void)_cleanUpWithReason:(int64_t)a3 error:(id)a4;
-- (void)_handleApplicationConnectionProtocolMessage:(id)a3;
-- (void)_handleDeviceInfoChange:(id)a3 oldDevice:(id)a4;
-- (void)_handleDeviceInfoUpdateMessage:(id)a3;
-- (void)_handleDiscoveryUpdateOutputDevicesMessage:(id)a3;
-- (void)_handleGenericMessage:(id)a3;
-- (void)_handleInvalidateApplicationConnectionMessage:(id)a3;
-- (void)_handleLegacyVolumeControlCapabilitiesDidChangeMessage:(id)a3;
-- (void)_handleNotificationMessage:(id)a3;
-- (void)_handleOutputDevicesRemovedMessage:(id)a3;
-- (void)_handleOutputDevicesUpdatedMessage:(id)a3;
-- (void)_handlePlaybackQueueRequest:(id)a3 forPlayerPath:(id)a4 completion:(id)a5;
-- (void)_handlePlaybackSessionMigrateBeginRequest:(id)a3 forPlayerPath:(id)a4 completion:(id)a5;
-- (void)_handlePlaybackSessionMigrateEndRequest:(id)a3 setPlaybackSessionCommandStatus:(id)a4 error:(id)a5 forPlayerPath:(id)a6 completion:(id)a7;
-- (void)_handlePlaybackSessionMigratePostRequest:(id)a3 setPlaybackSessionCommandID:(id)a4 forPlayerPath:(id)a5 completion:(id)a6;
-- (void)_handlePlaybackSessionMigrateRequest:(id)a3 request:(id)a4 forPlayerPath:(id)a5 completion:(id)a6;
-- (void)_handlePlaybackSessionRequest:(id)a3 forPlayerPath:(id)a4 completion:(id)a5;
-- (void)_handlePlayerClientParticipantsUpdateMessage:(id)a3;
-- (void)_handlePresentRouteAuthorizationStatusMessage:(id)a3;
-- (void)_handlePromptForRouteAuthorizationMessage:(id)a3;
-- (void)_handleRemoveClientMessage:(id)a3;
-- (void)_handleRemovePlayerMessage:(id)a3;
-- (void)_handleSetConnectionStateMessage:(id)a3;
-- (void)_handleSetDefaultSupportedCommandsMessage:(id)a3;
-- (void)_handleSetNowPlayingClientMessage:(id)a3;
-- (void)_handleSetNowPlayingPlayerMessage:(id)a3;
-- (void)_handleSetOriginClientPropertiesMessage:(id)a3;
-- (void)_handleSetPlayerClientPropertiesMessage:(id)a3;
-- (void)_handleSetStateMessage:(id)a3;
-- (void)_handleUpdateActiveSystemEndpoint:(id)a3;
-- (void)_handleUpdateClientMessage:(id)a3;
-- (void)_handleUpdateContentItemsMessage:(id)a3;
-- (void)_handleUpdatePlayerMessage:(id)a3;
-- (void)_handleVolumeControlCapabilitiesDidChangeMessage:(id)a3;
-- (void)_handleVolumeDidChangeMessage:(id)a3;
-- (void)_handleVolumeMutedDidChangeMessage:(id)a3;
-- (void)_localDeviceInfoDidChangeNotification:(id)a3;
-- (void)_onSerialQueue_completeGroupSessionRequestsWithIdentifier:(id)a3 error:(id)a4;
-- (void)_onSerialQueue_prepareToConnectWithOptions:(unsigned int)a3 userInfo:(id)a4 connectionAttemptDetails:(id)a5 connectionHandler:(id)a6;
-- (void)_onSerialQueue_prepareToDisconnect:(id)a3 userInfo:(id)a4 completion:(id)a5;
+- (void)_activeSystemEndpointDidChangeNotification:(id)notification;
+- (void)_callAllPendingCompletionsWithError:(id)error;
+- (void)_callClientConnectionStateCallback:(unsigned int)callback previousConnectionState:(unsigned int)state error:(id)error;
+- (void)_callClientCustomDataCallback:(id)callback name:(id)name;
+- (void)_callDeviceInfoCallback:(id)callback oldDeviceInfo:(id)info;
+- (void)_cleanUpStreamsWithReason:(int64_t)reason error:(id)error;
+- (void)_cleanUpWithReason:(int64_t)reason error:(id)error;
+- (void)_handleApplicationConnectionProtocolMessage:(id)message;
+- (void)_handleDeviceInfoChange:(id)change oldDevice:(id)device;
+- (void)_handleDeviceInfoUpdateMessage:(id)message;
+- (void)_handleDiscoveryUpdateOutputDevicesMessage:(id)message;
+- (void)_handleGenericMessage:(id)message;
+- (void)_handleInvalidateApplicationConnectionMessage:(id)message;
+- (void)_handleLegacyVolumeControlCapabilitiesDidChangeMessage:(id)message;
+- (void)_handleNotificationMessage:(id)message;
+- (void)_handleOutputDevicesRemovedMessage:(id)message;
+- (void)_handleOutputDevicesUpdatedMessage:(id)message;
+- (void)_handlePlaybackQueueRequest:(id)request forPlayerPath:(id)path completion:(id)completion;
+- (void)_handlePlaybackSessionMigrateBeginRequest:(id)request forPlayerPath:(id)path completion:(id)completion;
+- (void)_handlePlaybackSessionMigrateEndRequest:(id)request setPlaybackSessionCommandStatus:(id)status error:(id)error forPlayerPath:(id)path completion:(id)completion;
+- (void)_handlePlaybackSessionMigratePostRequest:(id)request setPlaybackSessionCommandID:(id)d forPlayerPath:(id)path completion:(id)completion;
+- (void)_handlePlaybackSessionMigrateRequest:(id)request request:(id)a4 forPlayerPath:(id)path completion:(id)completion;
+- (void)_handlePlaybackSessionRequest:(id)request forPlayerPath:(id)path completion:(id)completion;
+- (void)_handlePlayerClientParticipantsUpdateMessage:(id)message;
+- (void)_handlePresentRouteAuthorizationStatusMessage:(id)message;
+- (void)_handlePromptForRouteAuthorizationMessage:(id)message;
+- (void)_handleRemoveClientMessage:(id)message;
+- (void)_handleRemovePlayerMessage:(id)message;
+- (void)_handleSetConnectionStateMessage:(id)message;
+- (void)_handleSetDefaultSupportedCommandsMessage:(id)message;
+- (void)_handleSetNowPlayingClientMessage:(id)message;
+- (void)_handleSetNowPlayingPlayerMessage:(id)message;
+- (void)_handleSetOriginClientPropertiesMessage:(id)message;
+- (void)_handleSetPlayerClientPropertiesMessage:(id)message;
+- (void)_handleSetStateMessage:(id)message;
+- (void)_handleUpdateActiveSystemEndpoint:(id)endpoint;
+- (void)_handleUpdateClientMessage:(id)message;
+- (void)_handleUpdateContentItemsMessage:(id)message;
+- (void)_handleUpdatePlayerMessage:(id)message;
+- (void)_handleVolumeControlCapabilitiesDidChangeMessage:(id)message;
+- (void)_handleVolumeDidChangeMessage:(id)message;
+- (void)_handleVolumeMutedDidChangeMessage:(id)message;
+- (void)_localDeviceInfoDidChangeNotification:(id)notification;
+- (void)_onSerialQueue_completeGroupSessionRequestsWithIdentifier:(id)identifier error:(id)error;
+- (void)_onSerialQueue_prepareToConnectWithOptions:(unsigned int)options userInfo:(id)info connectionAttemptDetails:(id)details connectionHandler:(id)handler;
+- (void)_onSerialQueue_prepareToDisconnect:(id)disconnect userInfo:(id)info completion:(id)completion;
 - (void)_onSerialQueue_registerOriginCallbacks;
-- (void)_onWorkerQueue_disconnect:(id)a3;
+- (void)_onWorkerQueue_disconnect:(id)queue_disconnect;
 - (void)_onWorkerQueue_sendBatchedMessages;
-- (void)_sendClientMessage:(id)a3 completion:(id)a4;
-- (void)_transportDeviceInfoDidChangeNotification:(id)a3;
-- (void)adjustOutputDeviceVolume:(int64_t)a3 outputDeviceUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)clientConnection:(id)a3 didReceiveMessage:(id)a4;
-- (void)createHostedEndpointWithOutputDeviceUIDs:(id)a3 details:(id)a4 queue:(id)a5 completion:(id)a6;
+- (void)_sendClientMessage:(id)message completion:(id)completion;
+- (void)_transportDeviceInfoDidChangeNotification:(id)notification;
+- (void)adjustOutputDeviceVolume:(int64_t)volume outputDeviceUID:(id)d details:(id)details queue:(id)queue completion:(id)completion;
+- (void)clientConnection:(id)connection didReceiveMessage:(id)message;
+- (void)createHostedEndpointWithOutputDeviceUIDs:(id)ds details:(id)details queue:(id)queue completion:(id)completion;
 - (void)dealloc;
-- (void)disconnect:(id)a3;
-- (void)modifyTopologyWithRequest:(id)a3 withReplyQueue:(id)a4 completion:(id)a5;
-- (void)outputDeviceVolume:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)outputDeviceVolumeControlCapabilities:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)ping:(double)a3 callback:(id)a4 withQueue:(id)a5;
-- (void)removeFromParentGroup:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)requestGroupSessionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)requestMicrophoneConnectionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)sendButtonEvent:(_MRHIDButtonEvent)a3;
-- (void)sendClientUpdatesConfigMessageWithCompletion:(id)a3;
-- (void)sendCustomData:(id)a3 withName:(id)a4;
-- (void)setClientConnection:(id)a3;
-- (void)setCustomDataCallback:(id)a3 withQueue:(id)a4;
-- (void)setCustomOrigin:(id)a3;
-- (void)setDeviceInfo:(id)a3;
-- (void)setListeningMode:(id)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)setName:(id)a3;
-- (void)setOutputDeviceVolume:(float)a3 outputDeviceUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)setSubscribedPlayerPaths:(id)a3;
-- (void)setWantsEndpointChangeNotifications:(BOOL)a3;
-- (void)setWantsNowPlayingArtworkNotifications:(BOOL)a3;
-- (void)setWantsNowPlayingNotifications:(BOOL)a3;
-- (void)setWantsOutputDeviceNotifications:(BOOL)a3;
-- (void)setWantsSystemEndpointNotifications:(BOOL)a3;
-- (void)setWantsVolumeNotifications:(BOOL)a3;
-- (void)verifyConnectionStatusAndMaybeDisconnect:(id)a3 completion:(id)a4;
+- (void)disconnect:(id)disconnect;
+- (void)modifyTopologyWithRequest:(id)request withReplyQueue:(id)queue completion:(id)completion;
+- (void)outputDeviceVolume:(id)volume queue:(id)queue completion:(id)completion;
+- (void)outputDeviceVolumeControlCapabilities:(id)capabilities queue:(id)queue completion:(id)completion;
+- (void)ping:(double)ping callback:(id)callback withQueue:(id)queue;
+- (void)removeFromParentGroup:(id)group queue:(id)queue completion:(id)completion;
+- (void)requestGroupSessionWithDetails:(id)details queue:(id)queue completion:(id)completion;
+- (void)requestMicrophoneConnectionWithDetails:(id)details queue:(id)queue completion:(id)completion;
+- (void)sendButtonEvent:(_MRHIDButtonEvent)event;
+- (void)sendClientUpdatesConfigMessageWithCompletion:(id)completion;
+- (void)sendCustomData:(id)data withName:(id)name;
+- (void)setClientConnection:(id)connection;
+- (void)setCustomDataCallback:(id)callback withQueue:(id)queue;
+- (void)setCustomOrigin:(id)origin;
+- (void)setDeviceInfo:(id)info;
+- (void)setListeningMode:(id)mode outputDeviceUID:(id)d queue:(id)queue completion:(id)completion;
+- (void)setName:(id)name;
+- (void)setOutputDeviceVolume:(float)volume outputDeviceUID:(id)d details:(id)details queue:(id)queue completion:(id)completion;
+- (void)setSubscribedPlayerPaths:(id)paths;
+- (void)setWantsEndpointChangeNotifications:(BOOL)notifications;
+- (void)setWantsNowPlayingArtworkNotifications:(BOOL)notifications;
+- (void)setWantsNowPlayingNotifications:(BOOL)notifications;
+- (void)setWantsOutputDeviceNotifications:(BOOL)notifications;
+- (void)setWantsSystemEndpointNotifications:(BOOL)notifications;
+- (void)setWantsVolumeNotifications:(BOOL)notifications;
+- (void)verifyConnectionStatusAndMaybeDisconnect:(id)disconnect completion:(id)completion;
 @end
 
 @implementation MRDTransportExternalDevice
@@ -129,9 +129,9 @@
     transport = self->_transport;
   }
 
-  v5 = [transport name];
+  name = [transport name];
 
-  return v5;
+  return name;
 }
 
 - (id)externalOutputContext
@@ -175,9 +175,9 @@
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(MRDTransportExternalDevice *)self name];
-  v5 = [(MRDTransportExternalDevice *)self transport];
-  v6 = [NSString stringWithFormat:@"<%@:%p %@ transport=%@>", v3, self, v4, v5];
+  name = [(MRDTransportExternalDevice *)self name];
+  transport = [(MRDTransportExternalDevice *)self transport];
+  v6 = [NSString stringWithFormat:@"<%@:%p %@ transport=%@>", v3, self, name, transport];
 
   return v6;
 }
@@ -203,27 +203,27 @@
   deviceInfo = self->_deviceInfo;
   if (deviceInfo)
   {
-    v3 = deviceInfo;
+    deviceInfo = deviceInfo;
   }
 
   else
   {
-    v3 = [(MRExternalDeviceTransport *)self->_transport deviceInfo];
+    deviceInfo = [(MRExternalDeviceTransport *)self->_transport deviceInfo];
   }
 
-  return v3;
+  return deviceInfo;
 }
 
-- (MRDTransportExternalDevice)initWithTransport:(id)a3
+- (MRDTransportExternalDevice)initWithTransport:(id)transport
 {
-  v5 = a3;
+  transportCopy = transport;
   v30.receiver = self;
   v30.super_class = MRDTransportExternalDevice;
-  v6 = [(MRDTransportExternalDevice *)&v30 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(MRDTransportExternalDevice *)&v30 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(&v6->_transport, a3);
+    objc_storeStrong(&_init->_transport, transport);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.MediaRemote.MRExternalDevice.SerialQueue", v8);
     serialQueue = v7->_serialQueue;
@@ -244,15 +244,15 @@
     v7->_connectionOptions = 0;
     v7->_forceReconnectOnConnectionFailure = 0;
     v17 = +[NSUUID UUID];
-    v18 = [v17 UUIDString];
+    uUIDString = [v17 UUIDString];
     connectionUID = v7->_connectionUID;
-    v7->_connectionUID = v18;
+    v7->_connectionUID = uUIDString;
 
     v20 = [MRExternalOutputContextDataSource alloc];
     v21 = [NSString alloc];
     v22 = [(MRDTransportExternalDevice *)v7 uid];
-    v23 = [(MRDTransportExternalDevice *)v7 name];
-    v24 = [v21 initWithFormat:@"%@-%@", v22, v23];
+    name = [(MRDTransportExternalDevice *)v7 name];
+    v24 = [v21 initWithFormat:@"%@-%@", v22, name];
     v25 = [v20 initWithUniqueIdentifier:v24];
     externalOutputContext = v7->_externalOutputContext;
     v7->_externalOutputContext = v25;
@@ -263,8 +263,8 @@
     [v27 addObserver:v7 selector:"_localDeviceInfoDidChangeNotification:" name:kMRDeviceInfoDidChangeNotification object:0];
     [v27 addObserver:v7 selector:"_transportDeviceInfoDidChangeNotification:" name:MRExternalDeviceTransportDeviceInfoDidChangeNotification object:v7->_transport];
     [v27 addObserver:v7 selector:"_activeSystemEndpointDidChangeNotification:" name:kMRMediaRemoteActiveSystemEndpointDidChangeNotification object:0];
-    v28 = [(MRExternalDeviceTransport *)v7->_transport deviceInfo];
-    [(MRDTransportExternalDevice *)v7 _handleDeviceInfoChange:v28 oldDevice:0];
+    deviceInfo = [(MRExternalDeviceTransport *)v7->_transport deviceInfo];
+    [(MRDTransportExternalDevice *)v7 _handleDeviceInfoChange:deviceInfo oldDevice:0];
   }
 
   return v7;
@@ -292,32 +292,32 @@
 - (NSString)debugDescription
 {
   v3 = objc_opt_class();
-  v4 = [(MRDTransportExternalDevice *)self name];
-  v5 = [(MRDTransportExternalDevice *)self customOrigin];
+  name = [(MRDTransportExternalDevice *)self name];
+  customOrigin = [(MRDTransportExternalDevice *)self customOrigin];
   v6 = MRCreateIndentedDebugDescriptionFromObject();
-  v7 = [(MRDTransportExternalDevice *)self transport];
+  transport = [(MRDTransportExternalDevice *)self transport];
   v8 = MRCreateIndentedDebugDescriptionFromObject();
-  v9 = [(MRDTransportExternalDevice *)self clientConnection];
+  clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
   v10 = MRCreateIndentedDebugDescriptionFromObject();
-  v11 = [NSString stringWithFormat:@"<%@:%p {\n    device=%@\n    origin=%@\n    transport=%@\n    connection=%@\n}>", v3, self, v4, v6, v8, v10];
+  v11 = [NSString stringWithFormat:@"<%@:%p {\n    device=%@\n    origin=%@\n    transport=%@\n    connection=%@\n}>", v3, self, name, v6, v8, v10];
 
   return v11;
 }
 
 - (id)groupSessionToken
 {
-  v3 = [(MRDTransportExternalDevice *)self deviceInfo];
-  v4 = [v3 groupSessionToken];
-  v5 = [v4 equivalentMediaIdentifier];
-  if (v5)
+  deviceInfo = [(MRDTransportExternalDevice *)self deviceInfo];
+  groupSessionToken = [deviceInfo groupSessionToken];
+  equivalentMediaIdentifier = [groupSessionToken equivalentMediaIdentifier];
+  if (equivalentMediaIdentifier)
   {
-    v6 = v5;
+    v6 = equivalentMediaIdentifier;
     v7 = +[MRSharedSettings currentSettings];
-    v8 = [v7 supportGroupSessionHome];
+    supportGroupSessionHome = [v7 supportGroupSessionHome];
 
-    if (!v8)
+    if (!supportGroupSessionHome)
     {
-      v9 = 0;
+      groupSessionToken2 = 0;
       goto LABEL_6;
     }
   }
@@ -326,74 +326,74 @@
   {
   }
 
-  v10 = [(MRDTransportExternalDevice *)self deviceInfo];
-  v9 = [v10 groupSessionToken];
+  deviceInfo2 = [(MRDTransportExternalDevice *)self deviceInfo];
+  groupSessionToken2 = [deviceInfo2 groupSessionToken];
 
 LABEL_6:
 
-  return v9;
+  return groupSessionToken2;
 }
 
-- (void)setWantsNowPlayingNotifications:(BOOL)a3
+- (void)setWantsNowPlayingNotifications:(BOOL)notifications
 {
-  if (self->_wantsNowPlayingNotifications != a3)
+  if (self->_wantsNowPlayingNotifications != notifications)
   {
-    self->_wantsNowPlayingNotifications = a3;
+    self->_wantsNowPlayingNotifications = notifications;
     [(MRDTransportExternalDevice *)self sendClientUpdatesConfigMessage];
   }
 }
 
-- (void)setWantsNowPlayingArtworkNotifications:(BOOL)a3
+- (void)setWantsNowPlayingArtworkNotifications:(BOOL)notifications
 {
-  if (self->_wantsNowPlayingArtworkNotifications != a3)
+  if (self->_wantsNowPlayingArtworkNotifications != notifications)
   {
-    self->_wantsNowPlayingArtworkNotifications = a3;
+    self->_wantsNowPlayingArtworkNotifications = notifications;
     [(MRDTransportExternalDevice *)self sendClientUpdatesConfigMessage];
   }
 }
 
-- (void)setWantsVolumeNotifications:(BOOL)a3
+- (void)setWantsVolumeNotifications:(BOOL)notifications
 {
-  if (self->_wantsVolumeNotifications != a3)
+  if (self->_wantsVolumeNotifications != notifications)
   {
-    self->_wantsVolumeNotifications = a3;
+    self->_wantsVolumeNotifications = notifications;
     MRMediaRemoteSetWantsVolumeControlNotifications();
 
     [(MRDTransportExternalDevice *)self sendClientUpdatesConfigMessage];
   }
 }
 
-- (void)setWantsOutputDeviceNotifications:(BOOL)a3
+- (void)setWantsOutputDeviceNotifications:(BOOL)notifications
 {
-  if (self->_wantsOutputDeviceNotifications != a3)
+  if (self->_wantsOutputDeviceNotifications != notifications)
   {
-    self->_wantsOutputDeviceNotifications = a3;
+    self->_wantsOutputDeviceNotifications = notifications;
     [(MRDTransportExternalDevice *)self sendClientUpdatesConfigMessage];
   }
 }
 
-- (void)setWantsEndpointChangeNotifications:(BOOL)a3
+- (void)setWantsEndpointChangeNotifications:(BOOL)notifications
 {
-  if (self->_wantsEndpointChangeNotifications != a3)
+  if (self->_wantsEndpointChangeNotifications != notifications)
   {
-    self->_wantsEndpointChangeNotifications = a3;
+    self->_wantsEndpointChangeNotifications = notifications;
     [(MRDTransportExternalDevice *)self sendClientUpdatesConfigMessage];
   }
 }
 
-- (void)setWantsSystemEndpointNotifications:(BOOL)a3
+- (void)setWantsSystemEndpointNotifications:(BOOL)notifications
 {
-  if (self->_wantsSystemEndpointNotifications != a3)
+  if (self->_wantsSystemEndpointNotifications != notifications)
   {
-    self->_wantsSystemEndpointNotifications = a3;
+    self->_wantsSystemEndpointNotifications = notifications;
     [(MRDTransportExternalDevice *)self sendClientUpdatesConfigMessage];
   }
 }
 
 - (id)subscribedPlayerPaths
 {
-  v3 = [(MRExternalDeviceTransport *)self->_transport subscribedPlayerPaths];
-  v4 = [v3 copy];
+  subscribedPlayerPaths = [(MRExternalDeviceTransport *)self->_transport subscribedPlayerPaths];
+  v4 = [subscribedPlayerPaths copy];
   v5 = v4;
   if (v4)
   {
@@ -410,15 +410,15 @@ LABEL_6:
   return v7;
 }
 
-- (void)setSubscribedPlayerPaths:(id)a3
+- (void)setSubscribedPlayerPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   subscribedPlayerPaths = self->_subscribedPlayerPaths;
-  if (subscribedPlayerPaths != v4)
+  if (subscribedPlayerPaths != pathsCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)subscribedPlayerPaths isEqual:v4];
-    v4 = v9;
+    v9 = pathsCopy;
+    v6 = [(NSArray *)subscribedPlayerPaths isEqual:pathsCopy];
+    pathsCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSArray *)v9 copy];
@@ -426,31 +426,31 @@ LABEL_6:
       self->_subscribedPlayerPaths = v7;
 
       [(MRDTransportExternalDevice *)self sendClientUpdatesConfigMessage];
-      v4 = v9;
+      pathsCopy = v9;
     }
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 UTF8String];
-  v8 = [v6 length];
+  nameCopy = name;
+  nameCopy2 = name;
+  uTF8String = [nameCopy2 UTF8String];
+  v8 = [nameCopy2 length];
 
-  v12 = [NSData dataWithBytes:v7 length:v8];
-  v9 = [(MRDTransportExternalDevice *)self clientConnection];
+  v12 = [NSData dataWithBytes:uTF8String length:v8];
+  clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
   v10 = [MRGenericMessage alloc];
   v11 = [v10 initWithKey:MRGenericMessageSetNameKey data:v12];
-  [v9 sendMessage:v11];
+  [clientConnection sendMessage:v11];
 }
 
-- (void)setClientConnection:(id)a3
+- (void)setClientConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = connectionCopy;
+  v6 = connectionCopy;
   msv_dispatch_sync_on_queue();
 }
 
@@ -470,12 +470,12 @@ LABEL_6:
   return v3;
 }
 
-- (void)setCustomOrigin:(id)a3
+- (void)setCustomOrigin:(id)origin
 {
-  v4 = a3;
+  originCopy = origin;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = originCopy;
+  v6 = originCopy;
   msv_dispatch_sync_on_queue();
 }
 
@@ -495,9 +495,9 @@ LABEL_6:
   return v3;
 }
 
-- (void)setDeviceInfo:(id)a3
+- (void)setDeviceInfo:(id)info
 {
-  v4 = [a3 copy];
+  v4 = [info copy];
   serialQueue = self->_serialQueue;
   v7 = v4;
   v6 = v4;
@@ -506,24 +506,24 @@ LABEL_6:
 
 - (id)supportedMessages
 {
-  v2 = [(MRDTransportExternalDevice *)self clientConnection];
-  v3 = [v2 supportedMessages];
+  clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
+  supportedMessages = [clientConnection supportedMessages];
 
-  return v3;
+  return supportedMessages;
 }
 
-- (void)sendButtonEvent:(_MRHIDButtonEvent)a3
+- (void)sendButtonEvent:(_MRHIDButtonEvent)event
 {
-  v3 = *&a3.down;
-  v4 = *&a3.usagePage;
-  v6 = [(MRDTransportExternalDevice *)self errorForCurrentState];
-  if (!v6)
+  v3 = *&event.down;
+  v4 = *&event.usagePage;
+  errorForCurrentState = [(MRDTransportExternalDevice *)self errorForCurrentState];
+  if (!errorForCurrentState)
   {
     v7 = [[MRSendButtonEventMessage alloc] initWithButtonEvent:{v4, v3}];
-    v8 = [(MRDTransportExternalDevice *)self clientConnection];
-    [v8 sendMessage:v7];
+    clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
+    [clientConnection sendMessage:v7];
 
-    v6 = 0;
+    errorForCurrentState = 0;
   }
 }
 
@@ -549,21 +549,21 @@ LABEL_6:
   return v3;
 }
 
-- (void)_onSerialQueue_prepareToConnectWithOptions:(unsigned int)a3 userInfo:(id)a4 connectionAttemptDetails:(id)a5 connectionHandler:(id)a6
+- (void)_onSerialQueue_prepareToConnectWithOptions:(unsigned int)options userInfo:(id)info connectionAttemptDetails:(id)details connectionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  infoCopy = info;
+  detailsCopy = details;
+  handlerCopy = handler;
   v13 = [MRBlockGuard alloc];
   v14 = [NSString alloc];
-  v15 = [v11 requestID];
-  v16 = [v11 reason];
-  v17 = [v14 initWithFormat:@"%@<%@:%@>", @"TransportExternalDevice.connectWithOptions", v15, v16];
+  requestID = [detailsCopy requestID];
+  reason = [detailsCopy reason];
+  v17 = [v14 initWithFormat:@"%@<%@:%@>", @"TransportExternalDevice.connectWithOptions", requestID, reason];
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_1000D6A94;
   v38[3] = &unk_1004B6FE8;
-  v18 = v12;
+  v18 = handlerCopy;
   v39 = v18;
   v19 = [v13 initWithTimeout:v17 reason:v38 handler:30.0];
 
@@ -583,33 +583,33 @@ LABEL_6:
     v27 = _MRLogForCategory();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [v11 requestID];
+      requestID2 = [detailsCopy requestID];
       *buf = 138543874;
       v41 = @"TransportExternalDevice.connectWithOptions";
       v42 = 2114;
-      v43 = v28;
+      v43 = requestID2;
       v44 = 2112;
       v45 = v26;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
     }
 
-    if ((a3 & 1) != 0 && (self->_connectionOptions & 1) == 0)
+    if ((options & 1) != 0 && (self->_connectionOptions & 1) == 0)
     {
       v29 = _MRLogForCategory();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
-        v32 = [v11 requestID];
+        requestID3 = [detailsCopy requestID];
         *buf = 138543874;
         v41 = @"TransportExternalDevice.connectWithOptions";
         v42 = 2114;
-        v43 = v32;
+        v43 = requestID3;
         v44 = 2112;
         v45 = @"AuthUpgrade required";
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
       }
 
       self->_forceReconnectOnConnectionFailure = 1;
-      self->_connectionOptions = a3;
+      self->_connectionOptions = options;
     }
 
     [v20 disarm];
@@ -620,11 +620,11 @@ LABEL_6:
     v24 = _MRLogForCategory();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v11 requestID];
+      requestID4 = [detailsCopy requestID];
       *buf = 138543874;
       v41 = @"TransportExternalDevice.connectWithOptions";
       v42 = 2114;
-      v43 = v25;
+      v43 = requestID4;
       v44 = 2112;
       v45 = @"Already Connected";
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
@@ -635,26 +635,26 @@ LABEL_6:
 
   else
   {
-    self->_connectionOptions = a3;
+    self->_connectionOptions = options;
     [(MRDTransportExternalDevice *)self setConnectionState:1 error:0];
     workerQueue = self->_workerQueue;
-    v33 = v10;
+    v33 = infoCopy;
     v34 = v22;
     v31 = MRCreateDonatedQosBlock();
     dispatch_async(workerQueue, v31);
   }
 }
 
-- (void)_onWorkerQueue_disconnect:(id)a3
+- (void)_onWorkerQueue_disconnect:(id)queue_disconnect
 {
-  v4 = a3;
+  queue_disconnectCopy = queue_disconnect;
   dispatch_assert_queue_V2(self->_workerQueue);
   [(MRDTransportExternalDevice *)self _onWorkerQueue_sendBatchedMessages];
-  [(MRExternalDeviceTransport *)self->_transport resetWithError:v4];
-  [(MRDTransportExternalDevice *)self _cleanUpWithReason:3 error:v4];
+  [(MRExternalDeviceTransport *)self->_transport resetWithError:queue_disconnectCopy];
+  [(MRDTransportExternalDevice *)self _cleanUpWithReason:3 error:queue_disconnectCopy];
   if (self->_connectionState != 3)
   {
-    [(MRDTransportExternalDevice *)self setConnectionState:3 error:v4];
+    [(MRDTransportExternalDevice *)self setConnectionState:3 error:queue_disconnectCopy];
   }
 
   serialQueue = self->_serialQueue;
@@ -666,12 +666,12 @@ LABEL_6:
   dispatch_sync(serialQueue, block);
 }
 
-- (void)_onSerialQueue_prepareToDisconnect:(id)a3 userInfo:(id)a4 completion:(id)a5
+- (void)_onSerialQueue_prepareToDisconnect:(id)disconnect userInfo:(id)info completion:(id)completion
 {
-  v8 = a3;
-  v59 = a5;
+  disconnectCopy = disconnect;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
-  v10 = a4;
+  infoCopy = info;
   dispatch_assert_queue_V2(serialQueue);
   v11 = _MRLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -679,21 +679,21 @@ LABEL_6:
     sub_1003A811C();
   }
 
-  v12 = [v10 objectForKeyedSubscript:MRExternalDeviceConnectionReasonUserInfoKey];
-  v13 = [v10 objectForKeyedSubscript:MRExternalDeviceConnectionCorrelationIDUserInfoKey];
-  v14 = [v10 objectForKeyedSubscript:MRExternalDeviceConnectionClientBundleIDUserInfoKey];
+  v12 = [infoCopy objectForKeyedSubscript:MRExternalDeviceConnectionReasonUserInfoKey];
+  v13 = [infoCopy objectForKeyedSubscript:MRExternalDeviceConnectionCorrelationIDUserInfoKey];
+  v14 = [infoCopy objectForKeyedSubscript:MRExternalDeviceConnectionClientBundleIDUserInfoKey];
 
-  v15 = [v8 domain];
-  v16 = [v15 isEqualToString:kMRMediaRemoteFrameworkErrorDomain];
+  domain = [disconnectCopy domain];
+  v16 = [domain isEqualToString:kMRMediaRemoteFrameworkErrorDomain];
 
   if (v16)
   {
-    v17 = [v8 code];
+    code = [disconnectCopy code];
   }
 
   else
   {
-    v17 = 1;
+    code = 1;
   }
 
   v61 = v12;
@@ -705,13 +705,13 @@ LABEL_6:
   }
 
   v20 = qword_100529360;
-  v21 = [NSNumber numberWithUnsignedInt:v17];
+  v21 = [NSNumber numberWithUnsignedInt:code];
   LOBYTE(v20) = [v20 containsObject:v21];
 
-  v22 = v19;
+  bundleIdentifier = v19;
   v60 = v18;
   v23 = v18;
-  v24 = v61;
+  uUIDString = v61;
   if ((v20 & 1) == 0)
   {
     if (self->_forceReconnectOnConnectionFailure)
@@ -723,7 +723,7 @@ LABEL_6:
     else
     {
       v26 = v18;
-      v25 = v17 != 119 && self->_connectionRecoveryBehavior == 1 && [(MRExternalDeviceTransport *)self->_transport supportsReconnection]&& self->_reconnectionAttemptCount == 0;
+      v25 = code != 119 && self->_connectionRecoveryBehavior == 1 && [(MRExternalDeviceTransport *)self->_transport supportsReconnection]&& self->_reconnectionAttemptCount == 0;
     }
 
     v23 = v26;
@@ -758,19 +758,19 @@ LABEL_6:
       v23 = [v27 initWithFormat:@"attemptReconnection due to <%@>", v28];
     }
 
-    v24 = v61;
+    uUIDString = v61;
     if (!v61)
     {
       v31 = +[NSUUID UUID];
-      v24 = [v31 UUIDString];
+      uUIDString = [v31 UUIDString];
     }
 
-    v22 = v19;
+    bundleIdentifier = v19;
     if (!v19)
     {
       v32 = +[MRDMediaRemoteServer server];
-      v33 = [v32 daemonClient];
-      v22 = [v33 bundleIdentifier];
+      daemonClient = [v32 daemonClient];
+      bundleIdentifier = [daemonClient bundleIdentifier];
     }
 
     [(NSDate *)self->_connectionStateTimestamp timeIntervalSinceNow];
@@ -791,7 +791,7 @@ LABEL_6:
       {
         v38 = self->_reconnectionAttemptCount + 1;
         *buf = 138543874;
-        v81 = self;
+        selfCopy3 = self;
         v82 = 2048;
         v83 = v38;
         v84 = 2048;
@@ -802,20 +802,20 @@ LABEL_6:
       ++self->_reconnectionAttemptCount;
       self->_forceReconnectOnConnectionFailure = 0;
       v39 = +[NSDate now];
-      v40 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"TransportExternalDevice.connectWithOptions.attemptReconnection", v24];
-      v41 = [(MRDTransportExternalDevice *)self shortDescription];
+      v40 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"TransportExternalDevice.connectWithOptions.attemptReconnection", uUIDString];
+      shortDescription = [(MRDTransportExternalDevice *)self shortDescription];
 
-      if (v41)
+      if (shortDescription)
       {
-        v42 = [(MRDTransportExternalDevice *)self shortDescription];
-        [(MRDTransportExternalDevice *)v40 appendFormat:@" for %@", v42];
+        shortDescription2 = [(MRDTransportExternalDevice *)self shortDescription];
+        [(MRDTransportExternalDevice *)v40 appendFormat:@" for %@", shortDescription2];
       }
 
       v43 = _MRLogForCategory();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v81 = v40;
+        selfCopy3 = v40;
         _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
       }
 
@@ -832,14 +832,14 @@ LABEL_6:
       block[3] = &unk_1004BBAD8;
       v23 = v23;
       v67 = v23;
-      v24 = v24;
-      v68 = v24;
-      v22 = v22;
-      v69 = v22;
-      v70 = self;
+      uUIDString = uUIDString;
+      v68 = uUIDString;
+      bundleIdentifier = bundleIdentifier;
+      v69 = bundleIdentifier;
+      selfCopy2 = self;
       v71 = v39;
-      v72 = v59;
-      v48 = v59;
+      v72 = completionCopy;
+      v48 = completionCopy;
       v49 = v39;
       dispatch_after(v46, workerQueue, block);
 
@@ -861,9 +861,9 @@ LABEL_6:
         v52 = "none";
       }
 
-      v81 = self;
+      selfCopy3 = self;
       v82 = 2114;
-      v83 = v8;
+      v83 = disconnectCopy;
       v84 = 2082;
       v85 = v52;
       v86 = 2048;
@@ -884,8 +884,8 @@ LABEL_6:
     [v55 logEvent:MRPowerLogEventRemoteControlSession withInfo:v54];
   }
 
-  v56 = [(MRExternalClientConnection *)self->_clientConnection cryptoSession];
-  [v56 close];
+  cryptoSession = [(MRExternalClientConnection *)self->_clientConnection cryptoSession];
+  [cryptoSession close];
 
   self->_disconnecting = 1;
   objc_initWeak(buf, self);
@@ -895,20 +895,20 @@ LABEL_6:
   v62[2] = sub_1000D82AC;
   v62[3] = &unk_1004BBB00;
   objc_copyWeak(&v65, buf);
-  v63 = v8;
-  v64 = v59;
-  v58 = v59;
+  v63 = disconnectCopy;
+  v64 = completionCopy;
+  v58 = completionCopy;
   dispatch_async(v57, v62);
 
   objc_destroyWeak(&v65);
   objc_destroyWeak(buf);
 LABEL_46:
-  [(MRDTransportExternalDevice *)self _onSerialQueue_completeGroupSessionRequestsWithIdentifier:0 error:v8];
+  [(MRDTransportExternalDevice *)self _onSerialQueue_completeGroupSessionRequestsWithIdentifier:0 error:disconnectCopy];
 }
 
-- (void)_callAllPendingCompletionsWithError:(id)a3
+- (void)_callAllPendingCompletionsWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -920,7 +920,7 @@ LABEL_46:
   v21 = 3221225472;
   v22 = sub_1000D860C;
   v23 = &unk_1004B6D30;
-  v24 = self;
+  selfCopy = self;
   v25 = &v26;
   msv_dispatch_sync_on_queue();
   if ([v27[5] count] >= 2)
@@ -930,12 +930,12 @@ LABEL_46:
     v8 = _MRLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v27[5] firstObject];
-      v10 = [v9 requestID];
+      firstObject = [v27[5] firstObject];
+      requestID = [firstObject requestID];
       *buf = 138543874;
       v34 = @"TransportExternalDevice.connectWithOptions";
       v35 = 2114;
-      v36 = v10;
+      v36 = requestID;
       v37 = 2112;
       v38 = v7;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
@@ -961,8 +961,8 @@ LABEL_46:
           objc_enumerationMutation(v11);
         }
 
-        v15 = [*(*(&v16 + 1) + 8 * v14) completion];
-        (v15)[2](v15, v4);
+        completion = [*(*(&v16 + 1) + 8 * v14) completion];
+        (completion)[2](completion, errorCopy);
 
         v14 = v14 + 1;
       }
@@ -977,30 +977,30 @@ LABEL_46:
   _Block_object_dispose(&v26, 8);
 }
 
-- (void)disconnect:(id)a3
+- (void)disconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000D870C;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = disconnectCopy;
+  v6 = disconnectCopy;
   dispatch_async(serialQueue, v7);
 }
 
-- (void)verifyConnectionStatusAndMaybeDisconnect:(id)a3 completion:(id)a4
+- (void)verifyConnectionStatusAndMaybeDisconnect:(id)disconnect completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  disconnectCopy = disconnect;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000D8824;
   v9[3] = &unk_1004BBB28;
-  v8 = v7;
+  v8 = completionCopy;
   v10 = v8;
   objc_copyWeak(&v11, &location);
   [(MRDTransportExternalDevice *)self ping:v9 callback:self->_workerQueue withQueue:7.0];
@@ -1009,12 +1009,12 @@ LABEL_46:
   objc_destroyWeak(&location);
 }
 
-- (void)sendCustomData:(id)a3 withName:(id)a4
+- (void)sendCustomData:(id)data withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRDTransportExternalDevice *)self errorForCurrentState];
-  if (v8)
+  dataCopy = data;
+  nameCopy = name;
+  errorForCurrentState = [(MRDTransportExternalDevice *)self errorForCurrentState];
+  if (errorForCurrentState)
   {
     v9 = _MRLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1025,29 +1025,29 @@ LABEL_46:
 
   else
   {
-    v10 = [[MRGenericMessage alloc] initWithKey:v7 data:v6];
-    v11 = [(MRDTransportExternalDevice *)self clientConnection];
-    [v11 sendMessage:v10];
+    v10 = [[MRGenericMessage alloc] initWithKey:nameCopy data:dataCopy];
+    clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
+    [clientConnection sendMessage:v10];
   }
 }
 
-- (void)ping:(double)a3 callback:(id)a4 withQueue:(id)a5
+- (void)ping:(double)ping callback:(id)callback withQueue:(id)queue
 {
-  v8 = a4;
-  v9 = a5;
+  callbackCopy = callback;
+  queueCopy = queue;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1000D8BC0;
   v23[3] = &unk_1004BAD88;
   v10 = [[MSVBlockGuard alloc] initWithDeallocHandler:&stru_1004BBB48];
   v24 = v10;
-  v11 = v8;
+  v11 = callbackCopy;
   v26 = v11;
-  v12 = v9;
+  v12 = queueCopy;
   v25 = v12;
   v13 = objc_retainBlock(v23);
-  v14 = [(MRDTransportExternalDevice *)self errorForCurrentState];
-  if (v14)
+  errorForCurrentState = [(MRDTransportExternalDevice *)self errorForCurrentState];
+  if (errorForCurrentState)
   {
     v15 = _MRLogForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1055,14 +1055,14 @@ LABEL_46:
       sub_1003A82DC();
     }
 
-    (v13[2])(v13, v14);
+    (v13[2])(v13, errorForCurrentState);
   }
 
   else
   {
-    v16 = [[MRBlockGuard alloc] initWithTimeout:@"ping" reason:v13 handler:a3];
+    v16 = [[MRBlockGuard alloc] initWithTimeout:@"ping" reason:v13 handler:ping];
     v17 = [[MRGenericMessage alloc] initWithKey:0 data:0];
-    v18 = [(MRDTransportExternalDevice *)self clientConnection];
+    clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1000D8C90;
@@ -1070,7 +1070,7 @@ LABEL_46:
     v21 = v16;
     v22 = v13;
     v19 = v16;
-    [v18 sendMessage:v17 reply:v20];
+    [clientConnection sendMessage:v17 reply:v20];
   }
 }
 
@@ -1080,36 +1080,36 @@ LABEL_46:
   [v3 setPriority:5];
   [v3 setWaking:1];
   v4 = [MRClientUpdatesConfigMessage alloc];
-  v5 = [(MRDTransportExternalDevice *)self wantsNowPlayingNotifications];
-  v6 = [(MRDTransportExternalDevice *)self wantsNowPlayingArtworkNotifications];
-  v7 = [(MRDTransportExternalDevice *)self wantsVolumeNotifications];
-  v8 = [(MRDTransportExternalDevice *)self wantsOutputDeviceNotifications];
-  v9 = [(MRDTransportExternalDevice *)self wantsSystemEndpointNotifications];
-  v10 = [(MRDTransportExternalDevice *)self subscribedPlayerPaths];
-  v11 = [v4 initWithNowPlayingUpdates:v5 artworkUpdates:v6 volumeUpdates:v7 keyboardUpdates:0 outputDeviceUpdates:v8 systemEndpointUpdates:v9 subscribedPlayerPaths:v10];
+  wantsNowPlayingNotifications = [(MRDTransportExternalDevice *)self wantsNowPlayingNotifications];
+  wantsNowPlayingArtworkNotifications = [(MRDTransportExternalDevice *)self wantsNowPlayingArtworkNotifications];
+  wantsVolumeNotifications = [(MRDTransportExternalDevice *)self wantsVolumeNotifications];
+  wantsOutputDeviceNotifications = [(MRDTransportExternalDevice *)self wantsOutputDeviceNotifications];
+  wantsSystemEndpointNotifications = [(MRDTransportExternalDevice *)self wantsSystemEndpointNotifications];
+  subscribedPlayerPaths = [(MRDTransportExternalDevice *)self subscribedPlayerPaths];
+  v11 = [v4 initWithNowPlayingUpdates:wantsNowPlayingNotifications artworkUpdates:wantsNowPlayingArtworkNotifications volumeUpdates:wantsVolumeNotifications keyboardUpdates:0 outputDeviceUpdates:wantsOutputDeviceNotifications systemEndpointUpdates:wantsSystemEndpointNotifications subscribedPlayerPaths:subscribedPlayerPaths];
 
   [v11 setTransportOptions:v3];
 
   return v11;
 }
 
-- (void)sendClientUpdatesConfigMessageWithCompletion:(id)a3
+- (void)sendClientUpdatesConfigMessageWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MRDTransportExternalDevice *)self deviceInfo];
+  completionCopy = completion;
+  deviceInfo = [(MRDTransportExternalDevice *)self deviceInfo];
   objc_initWeak(&location, self);
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000D9064;
   v17[3] = &unk_1004B9498;
   objc_copyWeak(&v19, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v18 = v6;
   v7 = objc_retainBlock(v17);
-  v8 = [(MRDTransportExternalDevice *)self errorForCurrentState];
-  if (v8)
+  errorForCurrentState = [(MRDTransportExternalDevice *)self errorForCurrentState];
+  if (errorForCurrentState)
   {
-    (v7[2])(v7, v8);
+    (v7[2])(v7, errorForCurrentState);
   }
 
   else
@@ -1118,23 +1118,23 @@ LABEL_46:
     SharedQueueVersion = MRPairedDeviceGetSharedQueueVersion();
     if (v6 && SharedQueueVersion >= 2)
     {
-      v10 = [(MRDTransportExternalDevice *)self clientConnection];
-      v11 = [(MRDTransportExternalDevice *)self currentClientUpdatesConfigMessage];
+      clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
+      currentClientUpdatesConfigMessage = [(MRDTransportExternalDevice *)self currentClientUpdatesConfigMessage];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_1000D9170;
       v15[3] = &unk_1004BBBC0;
       v16 = v7;
-      [v10 sendMessage:v11 reply:v15];
+      [clientConnection sendMessage:currentClientUpdatesConfigMessage reply:v15];
 
       Error = v16;
     }
 
     else
     {
-      v13 = [(MRDTransportExternalDevice *)self clientConnection];
-      v14 = [(MRDTransportExternalDevice *)self currentClientUpdatesConfigMessage];
-      [v13 sendMessage:v14];
+      clientConnection2 = [(MRDTransportExternalDevice *)self clientConnection];
+      currentClientUpdatesConfigMessage2 = [(MRDTransportExternalDevice *)self currentClientUpdatesConfigMessage];
+      [clientConnection2 sendMessage:currentClientUpdatesConfigMessage2];
 
       Error = MRMediaRemoteCreateError();
       (v7[2])(v7, Error);
@@ -1145,37 +1145,37 @@ LABEL_46:
   objc_destroyWeak(&location);
 }
 
-- (void)setOutputDeviceVolume:(float)a3 outputDeviceUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)setOutputDeviceVolume:(float)volume outputDeviceUID:(id)d details:(id)details queue:(id)queue completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  detailsCopy = details;
+  queueCopy = queue;
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_1000D9530;
   v33[3] = &unk_1004B9DE8;
-  v15 = a7;
-  v35 = v15;
-  v16 = v14;
+  completionCopy = completion;
+  v35 = completionCopy;
+  v16 = queueCopy;
   v34 = v16;
   v17 = objc_retainBlock(v33);
-  v18 = self;
-  v19 = [(MRDTransportExternalDevice *)v18 errorForCurrentState];
-  if (v19)
+  selfCopy = self;
+  errorForCurrentState = [(MRDTransportExternalDevice *)selfCopy errorForCurrentState];
+  if (errorForCurrentState)
   {
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_1000D9658;
     v25[3] = &unk_1004BBBE8;
-    v25[4] = v18;
-    v30 = a3;
-    v26 = v12;
-    v27 = v13;
+    v25[4] = selfCopy;
+    volumeCopy = volume;
+    v26 = dCopy;
+    v27 = detailsCopy;
     v28 = v16;
-    v29 = v15;
-    if (![(MRDTransportExternalDevice *)v18 _maybeBatchRequest:v25])
+    v29 = completionCopy;
+    if (![(MRDTransportExternalDevice *)selfCopy _maybeBatchRequest:v25])
     {
-      (v17[2])(v17, v19);
+      (v17[2])(v17, errorForCurrentState);
     }
   }
 
@@ -1185,50 +1185,50 @@ LABEL_46:
     [v20 setPriority:4];
     [v20 setWaking:1];
     v21 = [MRSetVolumeMessage alloc];
-    *&v22 = a3;
-    v23 = [v21 initWithVolume:v12 outputDeviceUID:v13 details:v22];
+    *&v22 = volume;
+    v23 = [v21 initWithVolume:dCopy outputDeviceUID:detailsCopy details:v22];
     [v23 setTransportOptions:v20];
-    v24 = [(MRDTransportExternalDevice *)v18 clientConnection];
+    clientConnection = [(MRDTransportExternalDevice *)selfCopy clientConnection];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_1000D95F8;
     v31[3] = &unk_1004BBBC0;
     v32 = v17;
-    [v24 sendMessage:v23 reply:v31];
+    [clientConnection sendMessage:v23 reply:v31];
   }
 }
 
-- (void)adjustOutputDeviceVolume:(int64_t)a3 outputDeviceUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)adjustOutputDeviceVolume:(int64_t)volume outputDeviceUID:(id)d details:(id)details queue:(id)queue completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  detailsCopy = details;
+  queueCopy = queue;
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_1000D9CE0;
   v31[3] = &unk_1004B9DE8;
-  v15 = a7;
-  v33 = v15;
-  v16 = v14;
+  completionCopy = completion;
+  v33 = completionCopy;
+  v16 = queueCopy;
   v32 = v16;
   v17 = objc_retainBlock(v31);
-  v18 = self;
-  v19 = [(MRDTransportExternalDevice *)v18 errorForCurrentState];
-  if (v19)
+  selfCopy = self;
+  errorForCurrentState = [(MRDTransportExternalDevice *)selfCopy errorForCurrentState];
+  if (errorForCurrentState)
   {
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_1000D9E08;
     v23[3] = &unk_1004BBC10;
-    v23[4] = v18;
-    v28 = a3;
-    v24 = v12;
-    v25 = v13;
+    v23[4] = selfCopy;
+    volumeCopy = volume;
+    v24 = dCopy;
+    v25 = detailsCopy;
     v26 = v16;
-    v27 = v15;
-    if (![(MRDTransportExternalDevice *)v18 _maybeBatchRequest:v23])
+    v27 = completionCopy;
+    if (![(MRDTransportExternalDevice *)selfCopy _maybeBatchRequest:v23])
     {
-      (v17[2])(v17, v19);
+      (v17[2])(v17, errorForCurrentState);
     }
   }
 
@@ -1237,92 +1237,92 @@ LABEL_46:
     v20 = objc_alloc_init(MRProtocolMessageOptions);
     [v20 setPriority:4];
     [v20 setWaking:1];
-    v21 = [[MRAdjustVolumeMessage alloc] initWithAdjustment:a3 outputDeviceUID:v12 details:v13];
+    v21 = [[MRAdjustVolumeMessage alloc] initWithAdjustment:volume outputDeviceUID:dCopy details:detailsCopy];
     [v21 setTransportOptions:v20];
-    v22 = [(MRDTransportExternalDevice *)v18 clientConnection];
+    clientConnection = [(MRDTransportExternalDevice *)selfCopy clientConnection];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_1000D9DA8;
     v29[3] = &unk_1004BBBC0;
     v30 = v17;
-    [v22 sendMessage:v21 reply:v29];
+    [clientConnection sendMessage:v21 reply:v29];
   }
 }
 
-- (void)outputDeviceVolume:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)outputDeviceVolume:(id)volume queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  volumeCopy = volume;
+  queueCopy = queue;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000D9FD0;
   v18[3] = &unk_1004BBC38;
-  v10 = a5;
-  v20 = v10;
-  v11 = v9;
+  completionCopy = completion;
+  v20 = completionCopy;
+  v11 = queueCopy;
   v19 = v11;
   v12 = objc_retainBlock(v18);
-  v13 = [(MRDTransportExternalDevice *)self errorForCurrentState];
-  if (v13)
+  errorForCurrentState = [(MRDTransportExternalDevice *)self errorForCurrentState];
+  if (errorForCurrentState)
   {
-    (v12[2])(v12, v13, 0.0);
+    (v12[2])(v12, errorForCurrentState, 0.0);
   }
 
   else
   {
-    v14 = [(MRDTransportExternalDevice *)self clientConnection];
-    v15 = [[MRGetVolumeMessage alloc] initWithOutputDeviceUID:v8];
+    clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
+    v15 = [[MRGetVolumeMessage alloc] initWithOutputDeviceUID:volumeCopy];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000DA138;
     v16[3] = &unk_1004BBBC0;
     v17 = v12;
-    [v14 sendMessage:v15 timeout:v16 reply:63.0];
+    [clientConnection sendMessage:v15 timeout:v16 reply:63.0];
   }
 }
 
-- (void)outputDeviceVolumeControlCapabilities:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)outputDeviceVolumeControlCapabilities:(id)capabilities queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  capabilitiesCopy = capabilities;
+  queueCopy = queue;
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_1000DA44C;
   v25[3] = &unk_1004BBC60;
-  v10 = a5;
-  v27 = v10;
-  v11 = v9;
+  completionCopy = completion;
+  v27 = completionCopy;
+  v11 = queueCopy;
   v26 = v11;
   v12 = objc_retainBlock(v25);
-  v13 = [(MRDTransportExternalDevice *)self errorForCurrentState];
-  if (v13)
+  errorForCurrentState = [(MRDTransportExternalDevice *)self errorForCurrentState];
+  if (errorForCurrentState)
   {
-    (v12[2])(v12, 0, v13);
+    (v12[2])(v12, 0, errorForCurrentState);
   }
 
   else
   {
-    v14 = [(MRDTransportExternalDevice *)self clientConnection];
-    v15 = [v14 supportedMessages];
-    v16 = [v15 isSupported:62];
+    clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
+    supportedMessages = [clientConnection supportedMessages];
+    v16 = [supportedMessages isSupported:62];
 
     if (v16)
     {
-      v17 = [(MRDTransportExternalDevice *)self clientConnection];
-      v18 = [[MRGetVolumeControlCapabilitiesMessage alloc] initWithOutputDeviceUID:v8];
+      clientConnection2 = [(MRDTransportExternalDevice *)self clientConnection];
+      v18 = [[MRGetVolumeControlCapabilitiesMessage alloc] initWithOutputDeviceUID:capabilitiesCopy];
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = sub_1000DA5AC;
       v23[3] = &unk_1004BBBC0;
       v24 = v12;
-      [v17 sendMessage:v18 timeout:v23 reply:63.0];
+      [clientConnection2 sendMessage:v18 timeout:v23 reply:63.0];
 
       v19 = v24;
     }
 
     else
     {
-      v20 = [(MRDTransportExternalDevice *)self customOrigin];
+      customOrigin = [(MRDTransportExternalDevice *)self customOrigin];
       v21 = dispatch_get_global_queue(0, 0);
       v22 = v12;
       MRMediaRemoteGetPickedRoutedVolumeControlCapabilities();
@@ -1332,205 +1332,205 @@ LABEL_46:
   }
 }
 
-- (void)setListeningMode:(id)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)setListeningMode:(id)mode outputDeviceUID:(id)d queue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  modeCopy = mode;
+  dCopy = d;
+  queueCopy = queue;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000DA820;
   v21[3] = &unk_1004B9DE8;
-  v13 = a6;
-  v23 = v13;
-  v14 = v12;
+  completionCopy = completion;
+  v23 = completionCopy;
+  v14 = queueCopy;
   v22 = v14;
   v15 = objc_retainBlock(v21);
-  v16 = [(MRDTransportExternalDevice *)self errorForCurrentState];
-  if (v16)
+  errorForCurrentState = [(MRDTransportExternalDevice *)self errorForCurrentState];
+  if (errorForCurrentState)
   {
-    (v15[2])(v15, v16);
+    (v15[2])(v15, errorForCurrentState);
   }
 
   else
   {
-    v17 = [[MRSetListeningModeMessage alloc] initWithListeningMode:v10 outputDeviceUID:v11];
-    v18 = [(MRDTransportExternalDevice *)self clientConnection];
+    v17 = [[MRSetListeningModeMessage alloc] initWithListeningMode:modeCopy outputDeviceUID:dCopy];
+    clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000DA974;
     v19[3] = &unk_1004BBBC0;
     v20 = v15;
-    [v18 sendMessage:v17 reply:v19];
+    [clientConnection sendMessage:v17 reply:v19];
   }
 }
 
-- (void)modifyTopologyWithRequest:(id)a3 withReplyQueue:(id)a4 completion:(id)a5
+- (void)modifyTopologyWithRequest:(id)request withReplyQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  queueCopy = queue;
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_1000DAFF0;
   v28[3] = &unk_1004B9DE8;
-  v10 = a5;
-  v30 = v10;
-  v11 = v9;
+  completionCopy = completion;
+  v30 = completionCopy;
+  v11 = queueCopy;
   v29 = v11;
   v12 = objc_retainBlock(v28);
-  v13 = self;
-  v14 = [(MRDTransportExternalDevice *)v13 errorForCurrentState];
-  if (v14)
+  selfCopy = self;
+  errorForCurrentState = [(MRDTransportExternalDevice *)selfCopy errorForCurrentState];
+  if (errorForCurrentState)
   {
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_1000DB118;
     v22[3] = &unk_1004B6BB0;
-    v22[4] = v13;
-    v23 = v8;
+    v22[4] = selfCopy;
+    v23 = requestCopy;
     v24 = v11;
-    v25 = v10;
-    if (![(MRDTransportExternalDevice *)v13 _maybeBatchRequest:v22])
+    v25 = completionCopy;
+    if (![(MRDTransportExternalDevice *)selfCopy _maybeBatchRequest:v22])
     {
-      (v12[2])(v12, v14);
+      (v12[2])(v12, errorForCurrentState);
     }
   }
 
   else
   {
-    if ([v8 type] == 1)
+    if ([requestCopy type] == 1)
     {
       v15 = +[MRDeviceInfoRequest localDeviceInfo];
-      v16 = [v8 outputDeviceUIDs];
-      v17 = [v15 deviceUID];
-      v18 = [v16 containsObject:v17];
+      outputDeviceUIDs = [requestCopy outputDeviceUIDs];
+      deviceUID = [v15 deviceUID];
+      v18 = [outputDeviceUIDs containsObject:deviceUID];
 
       if (v18)
       {
         v19 = MRMediaRemoteAirPlayReceiverCopyAuthorizationString();
-        [v8 setPassword:v19];
+        [requestCopy setPassword:v19];
       }
     }
 
-    v20 = [[MRModifyOutputContextRequestMessage alloc] initWithRequest:v8];
-    v21 = [(MRDTransportExternalDevice *)v13 clientConnection];
+    v20 = [[MRModifyOutputContextRequestMessage alloc] initWithRequest:requestCopy];
+    clientConnection = [(MRDTransportExternalDevice *)selfCopy clientConnection];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_1000DB0B8;
     v26[3] = &unk_1004BBBC0;
     v27 = v12;
-    [v21 sendMessage:v20 reply:v26];
+    [clientConnection sendMessage:v20 reply:v26];
   }
 }
 
-- (void)createHostedEndpointWithOutputDeviceUIDs:(id)a3 details:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)createHostedEndpointWithOutputDeviceUIDs:(id)ds details:(id)details queue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dsCopy = ds;
+  detailsCopy = details;
+  queueCopy = queue;
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_1000DB384;
   v27[3] = &unk_1004BBCB0;
-  v13 = a6;
-  v29 = v13;
-  v14 = v12;
+  completionCopy = completion;
+  v29 = completionCopy;
+  v14 = queueCopy;
   v28 = v14;
   v15 = objc_retainBlock(v27);
-  v16 = self;
-  v17 = [(MRDTransportExternalDevice *)v16 errorForCurrentState];
-  if (v17)
+  selfCopy = self;
+  errorForCurrentState = [(MRDTransportExternalDevice *)selfCopy errorForCurrentState];
+  if (errorForCurrentState)
   {
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1000DB598;
     v20[3] = &unk_1004BBCD8;
-    v20[4] = v16;
-    v21 = v10;
-    v22 = v11;
+    v20[4] = selfCopy;
+    v21 = dsCopy;
+    v22 = detailsCopy;
     v23 = v14;
-    v24 = v13;
-    if (![(MRDTransportExternalDevice *)v16 _maybeBatchRequest:v20])
+    v24 = completionCopy;
+    if (![(MRDTransportExternalDevice *)selfCopy _maybeBatchRequest:v20])
     {
-      (v15[2])(v15, 0, v17);
+      (v15[2])(v15, 0, errorForCurrentState);
     }
   }
 
   else
   {
-    v18 = [[MRCreateHostedEndpointRequestMessage alloc] initWithOutputDeviceUIDs:v10];
-    v19 = [(MRDTransportExternalDevice *)v16 clientConnection];
+    v18 = [[MRCreateHostedEndpointRequestMessage alloc] initWithOutputDeviceUIDs:dsCopy];
+    clientConnection = [(MRDTransportExternalDevice *)selfCopy clientConnection];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_1000DB478;
     v25[3] = &unk_1004BBBC0;
     v26 = v15;
-    [v19 sendMessage:v18 reply:v25];
+    [clientConnection sendMessage:v18 reply:v25];
   }
 }
 
-- (void)removeFromParentGroup:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)removeFromParentGroup:(id)group queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  groupCopy = group;
+  queueCopy = queue;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1000DB800;
   v23[3] = &unk_1004B9DE8;
-  v10 = a5;
-  v25 = v10;
-  v11 = v9;
+  completionCopy = completion;
+  v25 = completionCopy;
+  v11 = queueCopy;
   v24 = v11;
   v12 = objc_retainBlock(v23);
-  v13 = self;
-  v14 = [(MRDTransportExternalDevice *)v13 errorForCurrentState];
-  if (v14)
+  selfCopy = self;
+  errorForCurrentState = [(MRDTransportExternalDevice *)selfCopy errorForCurrentState];
+  if (errorForCurrentState)
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000DB954;
     v19[3] = &unk_1004B6BB0;
-    v19[4] = v13;
-    v20 = v8;
+    v19[4] = selfCopy;
+    v20 = groupCopy;
     v21 = v11;
-    v22 = v10;
-    if (![(MRDTransportExternalDevice *)v13 _maybeBatchRequest:v19])
+    v22 = completionCopy;
+    if (![(MRDTransportExternalDevice *)selfCopy _maybeBatchRequest:v19])
     {
-      (v12[2])(v12, v14);
+      (v12[2])(v12, errorForCurrentState);
     }
   }
 
   else
   {
-    v15 = [(MRDTransportExternalDevice *)v13 clientConnection];
+    clientConnection = [(MRDTransportExternalDevice *)selfCopy clientConnection];
     v16 = [MRRemoveFromParentGroupMessage alloc];
-    v26 = v8;
+    v26 = groupCopy;
     v17 = [NSArray arrayWithObjects:&v26 count:1];
     v18 = [v16 initWithOutputDeviceUIDs:v17];
-    [v15 sendMessage:v18];
+    [clientConnection sendMessage:v18];
 
     (v12[2])(v12, 0);
   }
 }
 
-- (void)requestGroupSessionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)requestGroupSessionWithDetails:(id)details queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_1000DBB7C;
   v25[3] = &unk_1004BAD10;
-  v11 = v9;
+  v11 = queueCopy;
   v26 = v11;
-  v12 = v10;
+  v12 = completionCopy;
   v27 = v12;
   v13 = objc_retainBlock(v25);
-  v14 = [(MRDTransportExternalDevice *)self errorForCurrentState];
-  if (v14)
+  errorForCurrentState = [(MRDTransportExternalDevice *)self errorForCurrentState];
+  if (errorForCurrentState)
   {
-    (v13[2])(v13, 0, v14);
+    (v13[2])(v13, 0, errorForCurrentState);
   }
 
   else
@@ -1550,47 +1550,47 @@ LABEL_46:
     dispatch_sync(serialQueue, block);
     if (*(v22 + 24) == 1)
     {
-      v16 = [[MRRequestGroupSessionMessage alloc] initWithDetails:v8];
-      v17 = [(MRDTransportExternalDevice *)self clientConnection];
-      [v17 sendMessage:v16];
+      v16 = [[MRRequestGroupSessionMessage alloc] initWithDetails:detailsCopy];
+      clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
+      [clientConnection sendMessage:v16];
     }
 
     _Block_object_dispose(&v21, 8);
   }
 }
 
-- (void)requestMicrophoneConnectionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)requestMicrophoneConnectionWithDetails:(id)details queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_1000DC318;
   v39[3] = &unk_1004BBD50;
-  v11 = v9;
+  v11 = queueCopy;
   v40 = v11;
-  v12 = v10;
+  v12 = completionCopy;
   v41 = v12;
   v13 = objc_retainBlock(v39);
-  v14 = [(MRDTransportExternalDevice *)self errorForCurrentState];
-  if (v14)
+  errorForCurrentState = [(MRDTransportExternalDevice *)self errorForCurrentState];
+  if (errorForCurrentState)
   {
-    (v13[2])(v13, 0, v14);
+    (v13[2])(v13, 0, errorForCurrentState);
   }
 
   else if (_os_feature_enabled_impl())
   {
-    v31 = v8;
+    v31 = detailsCopy;
     v15 = +[MRDMediaRemoteServer server];
     [v15 loadLocalRapportDeviceInfo];
 
     v16 = +[MRDMediaRemoteServer server];
-    v17 = [v16 sharedCompanionLinkClient];
-    v18 = [v17 localDevice];
-    v19 = [v18 idsDeviceIdentifier];
+    sharedCompanionLinkClient = [v16 sharedCompanionLinkClient];
+    localDevice = [sharedCompanionLinkClient localDevice];
+    idsDeviceIdentifier = [localDevice idsDeviceIdentifier];
 
-    if (v19)
+    if (idsDeviceIdentifier)
     {
       v20 = [MRBlockGuard alloc];
       serialQueue = self->_serialQueue;
@@ -1608,15 +1608,15 @@ LABEL_46:
       v36 = v22;
       v23 = v35;
       v24 = objc_retainBlock(v34);
-      v25 = [[MRMicrophoneConnectionRequestMessage alloc] initWithDetails:v31 rapportIdentifier:v19];
-      v26 = [(MRDTransportExternalDevice *)self clientConnection];
+      v25 = [[MRMicrophoneConnectionRequestMessage alloc] initWithDetails:v31 rapportIdentifier:idsDeviceIdentifier];
+      clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
       v32[0] = _NSConcreteStackBlock;
       v32[1] = 3221225472;
       v32[2] = sub_1000DC46C;
       v32[3] = &unk_1004BBBC0;
       v33 = v24;
       v27 = v24;
-      [v26 sendMessage:v25 reply:v32];
+      [clientConnection sendMessage:v25 reply:v32];
 
       v28 = v38;
     }
@@ -1627,7 +1627,7 @@ LABEL_46:
       (v13[2])(v13, 0, v28);
     }
 
-    v8 = v31;
+    detailsCopy = v31;
   }
 
   else
@@ -1643,65 +1643,65 @@ LABEL_46:
   }
 }
 
-- (void)clientConnection:(id)a3 didReceiveMessage:(id)a4
+- (void)clientConnection:(id)connection didReceiveMessage:(id)message
 {
-  v5 = a4;
-  v6 = [v5 type];
-  v7 = v6;
-  if (v6 > 103)
+  messageCopy = message;
+  type = [messageCopy type];
+  v7 = type;
+  if (type > 103)
   {
-    if (v6 <= 128)
+    if (type <= 128)
     {
-      switch(v6)
+      switch(type)
       {
         case 'h':
-          [(MRDTransportExternalDevice *)self _handleSetPlayerClientPropertiesMessage:v5];
+          [(MRDTransportExternalDevice *)self _handleSetPlayerClientPropertiesMessage:messageCopy];
           break;
         case 'i':
-          [(MRDTransportExternalDevice *)self _handleSetOriginClientPropertiesMessage:v5];
+          [(MRDTransportExternalDevice *)self _handleSetOriginClientPropertiesMessage:messageCopy];
           break;
         case 'm':
-          [(MRDTransportExternalDevice *)self _handleDiscoveryUpdateOutputDevicesMessage:v5];
+          [(MRDTransportExternalDevice *)self _handleDiscoveryUpdateOutputDevicesMessage:messageCopy];
           break;
       }
     }
 
-    else if (v6 > 134)
+    else if (type > 134)
     {
-      if (v6 == 135)
+      if (type == 135)
       {
-        [(MRDTransportExternalDevice *)self _handleApplicationConnectionProtocolMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleApplicationConnectionProtocolMessage:messageCopy];
       }
 
-      else if (v6 == 136)
+      else if (type == 136)
       {
-        [(MRDTransportExternalDevice *)self _handleInvalidateApplicationConnectionMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleInvalidateApplicationConnectionMessage:messageCopy];
       }
     }
 
-    else if (v6 == 129)
+    else if (type == 129)
     {
-      [(MRDTransportExternalDevice *)self _handleVolumeMutedDidChangeMessage:v5];
+      [(MRDTransportExternalDevice *)self _handleVolumeMutedDidChangeMessage:messageCopy];
     }
 
-    else if (v6 == 131)
+    else if (type == 131)
     {
-      [(MRDTransportExternalDevice *)self _handlePlayerClientParticipantsUpdateMessage:v5];
+      [(MRDTransportExternalDevice *)self _handlePlayerClientParticipantsUpdateMessage:messageCopy];
     }
   }
 
-  else if (v6 <= 16)
+  else if (type <= 16)
   {
-    if (v6)
+    if (type)
     {
-      if (v6 == 4)
+      if (type == 4)
       {
-        [(MRDTransportExternalDevice *)self _handleSetStateMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleSetStateMessage:messageCopy];
       }
 
-      else if (v6 == 11)
+      else if (type == 11)
       {
-        [(MRDTransportExternalDevice *)self _handleNotificationMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleNotificationMessage:messageCopy];
       }
     }
 
@@ -1711,16 +1711,16 @@ LABEL_14:
       v8 = _MRLogForCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v5 uniqueIdentifier];
-        v10 = [v5 replyIdentifier];
+        uniqueIdentifier = [messageCopy uniqueIdentifier];
+        replyIdentifier = [messageCopy replyIdentifier];
         v11 = 134218754;
         v12 = v7;
         v13 = 2112;
-        v14 = v9;
+        v14 = uniqueIdentifier;
         v15 = 2112;
-        v16 = v10;
+        v16 = replyIdentifier;
         v17 = 2114;
-        v18 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Unknown message type=%ld identifier=%@ replyIdentifier=%@ attempting to be handled for device %{public}@", &v11, 0x2Au);
       }
     }
@@ -1728,7 +1728,7 @@ LABEL_14:
 
   else
   {
-    switch(v6)
+    switch(type)
     {
       case '!':
       case '""':
@@ -1760,63 +1760,63 @@ LABEL_14:
       case 'L':
         break;
       case '%':
-        [(MRDTransportExternalDevice *)self _handleDeviceInfoUpdateMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleDeviceInfoUpdateMessage:messageCopy];
         break;
       case '&':
-        [(MRDTransportExternalDevice *)self _handleSetConnectionStateMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleSetConnectionStateMessage:messageCopy];
         break;
       case '*':
-        [(MRDTransportExternalDevice *)self _handleGenericMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleGenericMessage:messageCopy];
         break;
       case '.':
-        [(MRDTransportExternalDevice *)self _handleSetNowPlayingClientMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleSetNowPlayingClientMessage:messageCopy];
         break;
       case '/':
-        [(MRDTransportExternalDevice *)self _handleSetNowPlayingPlayerMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleSetNowPlayingPlayerMessage:messageCopy];
         break;
       case '4':
-        [(MRDTransportExternalDevice *)self _handleVolumeDidChangeMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleVolumeDidChangeMessage:messageCopy];
         break;
       case '5':
-        [(MRDTransportExternalDevice *)self _handleRemoveClientMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleRemoveClientMessage:messageCopy];
         break;
       case '6':
-        [(MRDTransportExternalDevice *)self _handleRemovePlayerMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleRemovePlayerMessage:messageCopy];
         break;
       case '7':
-        [(MRDTransportExternalDevice *)self _handleUpdateClientMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleUpdateClientMessage:messageCopy];
         break;
       case '8':
-        [(MRDTransportExternalDevice *)self _handleUpdateContentItemsMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleUpdateContentItemsMessage:messageCopy];
         break;
       case ':':
-        [(MRDTransportExternalDevice *)self _handleUpdatePlayerMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleUpdatePlayerMessage:messageCopy];
         break;
       case ';':
-        [(MRDTransportExternalDevice *)self _handlePromptForRouteAuthorizationMessage:v5];
+        [(MRDTransportExternalDevice *)self _handlePromptForRouteAuthorizationMessage:messageCopy];
         break;
       case '=':
-        [(MRDTransportExternalDevice *)self _handlePresentRouteAuthorizationStatusMessage:v5];
+        [(MRDTransportExternalDevice *)self _handlePresentRouteAuthorizationStatusMessage:messageCopy];
         break;
       case '@':
-        [(MRDTransportExternalDevice *)self _handleVolumeControlCapabilitiesDidChangeMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleVolumeControlCapabilitiesDidChangeMessage:messageCopy];
         break;
       case 'A':
-        [(MRDTransportExternalDevice *)self _handleOutputDevicesUpdatedMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleOutputDevicesUpdatedMessage:messageCopy];
         break;
       case 'B':
-        [(MRDTransportExternalDevice *)self _handleOutputDevicesRemovedMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleOutputDevicesRemovedMessage:messageCopy];
         break;
       case 'H':
-        [(MRDTransportExternalDevice *)self _handleSetDefaultSupportedCommandsMessage:v5];
+        [(MRDTransportExternalDevice *)self _handleSetDefaultSupportedCommandsMessage:messageCopy];
         break;
       case 'M':
-        [(MRDTransportExternalDevice *)self _handleUpdateActiveSystemEndpoint:v5];
+        [(MRDTransportExternalDevice *)self _handleUpdateActiveSystemEndpoint:messageCopy];
         break;
       default:
-        if (v6 == 17)
+        if (type == 17)
         {
-          [(MRDTransportExternalDevice *)self _handleLegacyVolumeControlCapabilitiesDidChangeMessage:v5];
+          [(MRDTransportExternalDevice *)self _handleLegacyVolumeControlCapabilitiesDidChangeMessage:messageCopy];
         }
 
         break;
@@ -1824,51 +1824,51 @@ LABEL_14:
   }
 }
 
-- (void)_handleDiscoveryUpdateOutputDevicesMessage:(id)a3
+- (void)_handleDiscoveryUpdateOutputDevicesMessage:(id)message
 {
-  v4 = a3;
-  v6 = [v4 outputDevices];
-  v5 = [v4 configuration];
+  messageCopy = message;
+  outputDevices = [messageCopy outputDevices];
+  configuration = [messageCopy configuration];
 
-  [(MRDTransportExternalDevice *)self notifyDiscoveryOutputDevicesChanged:v6 forConfiguration:v5];
+  [(MRDTransportExternalDevice *)self notifyDiscoveryOutputDevicesChanged:outputDevices forConfiguration:configuration];
 }
 
-- (void)_localDeviceInfoDidChangeNotification:(id)a3
+- (void)_localDeviceInfoDidChangeNotification:(id)notification
 {
-  v10 = a3;
-  v4 = [v10 userInfo];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
   v5 = MRGetOriginFromUserInfo();
   if ([v5 isLocal])
   {
-    v6 = [v10 userInfo];
+    userInfo2 = [notificationCopy userInfo];
     v7 = MRGetDeviceInfoFromUserInfo();
 
     if (v7)
     {
-      v8 = [(MRDTransportExternalDevice *)self clientConnection];
+      clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
       v9 = [[MRDeviceInfoUpdateMessage alloc] initWithDeviceInfo:v7];
-      [v8 sendMessage:v9];
+      [clientConnection sendMessage:v9];
     }
   }
 }
 
-- (void)_transportDeviceInfoDidChangeNotification:(id)a3
+- (void)_transportDeviceInfoDidChangeNotification:(id)notification
 {
-  v10 = a3;
-  v4 = [v10 userInfo];
-  v5 = [v4 objectForKey:MRExternalDeviceTransportNewDeviceInfoUserInfoKey];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v5 = [userInfo objectForKey:MRExternalDeviceTransportNewDeviceInfoUserInfoKey];
 
-  v6 = [(MRDTransportExternalDevice *)self clientConnection];
+  clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
 
-  if (v6)
+  if (clientConnection)
   {
     if (!self->_deviceInfo)
     {
       goto LABEL_7;
     }
 
-    v7 = [v5 bluetoothAddress];
-    if (v7)
+    bluetoothAddress = [v5 bluetoothAddress];
+    if (bluetoothAddress)
     {
       deviceInfo = self->_deviceInfo;
       MRPairedDeviceSetBluetoothAddress();
@@ -1877,27 +1877,27 @@ LABEL_14:
 
   else
   {
-    v9 = [v10 userInfo];
-    v7 = [v9 objectForKey:MRExternalDeviceTransportOldDeviceInfoUserInfoKey];
+    userInfo2 = [notificationCopy userInfo];
+    bluetoothAddress = [userInfo2 objectForKey:MRExternalDeviceTransportOldDeviceInfoUserInfoKey];
 
-    [(MRDTransportExternalDevice *)self _handleDeviceInfoChange:v5 oldDevice:v7];
+    [(MRDTransportExternalDevice *)self _handleDeviceInfoChange:v5 oldDevice:bluetoothAddress];
   }
 
 LABEL_7:
 }
 
-- (void)_activeSystemEndpointDidChangeNotification:(id)a3
+- (void)_activeSystemEndpointDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:MRUpdateActiveSystemEndpointRequestUserInfoKey];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:MRUpdateActiveSystemEndpointRequestUserInfoKey];
 
-  v6 = [v5 type];
-  v7 = [v5 outputDeviceUID];
-  if (v7)
+  type = [v5 type];
+  outputDeviceUID = [v5 outputDeviceUID];
+  if (outputDeviceUID)
   {
-    v8 = [v5 outputDeviceUID];
+    outputDeviceUID2 = [v5 outputDeviceUID];
     v9 = +[MRAVOutputDevice localDeviceUID];
-    v10 = [v8 isEqualToString:v9];
+    v10 = [outputDeviceUID2 isEqualToString:v9];
   }
 
   else
@@ -1905,11 +1905,11 @@ LABEL_7:
     v10 = 1;
   }
 
-  if (!v6)
+  if (!type)
   {
-    v11 = [(MRDTransportExternalDevice *)self clientConnection];
-    v12 = [v11 deviceInfo];
-    if ([v12 isCompanion] && !objc_msgSend(v5, "isPairedDeviceSync"))
+    clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
+    deviceInfo = [clientConnection deviceInfo];
+    if ([deviceInfo isCompanion] && !objc_msgSend(v5, "isPairedDeviceSync"))
     {
       v13 = [v5 suppressPairedDeviceSync] | v10;
 
@@ -1931,8 +1931,8 @@ LABEL_7:
 
         v16 = [[MRUpdateActiveSystemEndpointMessage alloc] initWithRequest:v5];
         [v16 setTransportOptions:v14];
-        v17 = [(MRDTransportExternalDevice *)self clientConnection];
-        [v17 sendMessage:v16];
+        clientConnection2 = [(MRDTransportExternalDevice *)self clientConnection];
+        [clientConnection2 sendMessage:v16];
       }
     }
 
@@ -1942,34 +1942,34 @@ LABEL_7:
   }
 }
 
-- (id)_onWorkerQueue_createClientConnectionWithTransport:(id)a3
+- (id)_onWorkerQueue_createClientConnectionWithTransport:(id)transport
 {
   v3 = qword_100529378;
-  v4 = a3;
+  transportCopy = transport;
   if (v3 != -1)
   {
     sub_1003A83F8();
   }
 
   v5 = [MRExternalClientConnection alloc];
-  v6 = [v5 initWithConnection:v4 replyQueue:qword_100529370];
+  v6 = [v5 initWithConnection:transportCopy replyQueue:qword_100529370];
 
   return v6;
 }
 
-- (id)_onWorkerQueue_loadDeviceInfoWithUserInfo:(id)a3
+- (id)_onWorkerQueue_loadDeviceInfoWithUserInfo:(id)info
 {
-  v44 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_workerQueue);
   v43 = +[NSDate date];
-  v4 = [v44 objectForKeyedSubscript:MRExternalDeviceConnectionCorrelationIDUserInfoKey];
+  v4 = [infoCopy objectForKeyedSubscript:MRExternalDeviceConnectionCorrelationIDUserInfoKey];
   v5 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"TransportExternalDevice.connectWithOptions.loadDeviceInfo", v4];
-  v6 = [(MRDTransportExternalDevice *)self shortDescription];
+  shortDescription = [(MRDTransportExternalDevice *)self shortDescription];
 
-  if (v6)
+  if (shortDescription)
   {
-    v7 = [(MRDTransportExternalDevice *)self shortDescription];
-    [v5 appendFormat:@" for %@", v7];
+    shortDescription2 = [(MRDTransportExternalDevice *)self shortDescription];
+    [v5 appendFormat:@" for %@", shortDescription2];
   }
 
   v8 = _MRLogForCategory();
@@ -1980,8 +1980,8 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
   }
 
-  v9 = [(MRDTransportExternalDevice *)self clientConnection];
-  if (v9)
+  clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
+  if (clientConnection)
   {
     v10 = dispatch_semaphore_create(0);
     v11 = objc_alloc_init(MRProtocolMessageOptions);
@@ -1989,8 +1989,8 @@ LABEL_7:
     [v11 setWaking:1];
     v12 = [MRDeviceInfoMessage alloc];
     v13 = +[MRDMediaRemoteServer server];
-    v14 = [v13 deviceInfo];
-    v15 = [v12 initWithDeviceInfo:v14];
+    deviceInfo = [v13 deviceInfo];
+    v15 = [v12 initWithDeviceInfo:deviceInfo];
 
     [v15 setTransportOptions:v11];
     *buf = 0;
@@ -2018,7 +2018,7 @@ LABEL_7:
     v45[3] = &unk_1004BBBC0;
     v21 = v17;
     v46 = v21;
-    [v9 sendMessage:v15 timeout:v45 reply:v20];
+    [clientConnection sendMessage:v15 timeout:v45 reply:v20];
 
     v22 = +[MRUserSettings currentSettings];
     [v22 externalDeviceTimeoutDuration];
@@ -2046,18 +2046,18 @@ LABEL_7:
     v26 = [[NSError alloc] initWithMRError:100];
   }
 
-  v27 = [(MRDTransportExternalDevice *)self shortDescription];
+  shortDescription3 = [(MRDTransportExternalDevice *)self shortDescription];
 
   v28 = _MRLogForCategory();
   v29 = v28;
   if (v26)
   {
     v30 = os_log_type_enabled(v28, OS_LOG_TYPE_ERROR);
-    if (v27)
+    if (shortDescription3)
     {
       if (v30)
       {
-        v31 = [(MRDTransportExternalDevice *)self shortDescription];
+        shortDescription4 = [(MRDTransportExternalDevice *)self shortDescription];
         v32 = +[NSDate date];
         [v32 timeIntervalSinceDate:v43];
         *buf = 138544386;
@@ -2067,7 +2067,7 @@ LABEL_7:
         *&buf[22] = 2114;
         v53 = v26;
         *v54 = 2114;
-        *&v54[2] = v31;
+        *&v54[2] = shortDescription4;
         *&v54[10] = 2048;
         *&v54[12] = v33;
         _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Response: %{public}@<%{public}@> returned with error <%{public}@> for %{public}@ in %.4lf seconds", buf, 0x34u);
@@ -2093,11 +2093,11 @@ LABEL_7:
   else
   {
     v34 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
-    if (v27)
+    if (shortDescription3)
     {
       if (v34)
       {
-        v35 = [(MRDTransportExternalDevice *)self shortDescription];
+        shortDescription5 = [(MRDTransportExternalDevice *)self shortDescription];
         v36 = +[NSDate date];
         [v36 timeIntervalSinceDate:v43];
         *buf = 138544130;
@@ -2105,7 +2105,7 @@ LABEL_7:
         *&buf[12] = 2114;
         *&buf[14] = v4;
         *&buf[22] = 2114;
-        v53 = v35;
+        v53 = shortDescription5;
         *v54 = 2048;
         *&v54[2] = v37;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds", buf, 0x2Au);
@@ -2129,14 +2129,14 @@ LABEL_7:
   return v26;
 }
 
-- (id)_onWorkerQueue_registerCustomOriginWithUserInfo:(id)a3
+- (id)_onWorkerQueue_registerCustomOriginWithUserInfo:(id)info
 {
   workerQueue = self->_workerQueue;
-  v5 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(workerQueue);
   v6 = +[NSDate date];
-  v7 = [(MRDTransportExternalDevice *)self deviceInfo];
-  if ([v7 isCompanion])
+  deviceInfo = [(MRDTransportExternalDevice *)self deviceInfo];
+  if ([deviceInfo isCompanion])
   {
     v8 = 1129140302;
   }
@@ -2144,21 +2144,21 @@ LABEL_7:
   else
   {
     v9 = MSVNanoIDCreateWithCharacters();
-    v10 = [v9 UTF8String];
-    v8 = (v10[1] << 16) | (*v10 << 24) | (v10[2] << 8) | v10[3];
+    uTF8String = [v9 UTF8String];
+    v8 = (uTF8String[1] << 16) | (*uTF8String << 24) | (uTF8String[2] << 8) | uTF8String[3];
   }
 
-  v11 = [(MRDTransportExternalDevice *)self name];
-  v12 = [v5 objectForKeyedSubscript:MRExternalDeviceConnectionCorrelationIDUserInfoKey];
+  name = [(MRDTransportExternalDevice *)self name];
+  v12 = [infoCopy objectForKeyedSubscript:MRExternalDeviceConnectionCorrelationIDUserInfoKey];
 
-  v13 = [[MROrigin alloc] initWithIdentifier:v8 type:1 displayName:v11];
+  v13 = [[MROrigin alloc] initWithIdentifier:v8 type:1 displayName:name];
   v14 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"TransportExternalDevice.connectWithOptions.registerCustomOrigin", v12];
-  v15 = [(MRDTransportExternalDevice *)self shortDescription];
+  shortDescription = [(MRDTransportExternalDevice *)self shortDescription];
 
-  if (v15)
+  if (shortDescription)
   {
-    v16 = [(MRDTransportExternalDevice *)self shortDescription];
-    [(__CFString *)v14 appendFormat:@" for %@", v16];
+    shortDescription2 = [(MRDTransportExternalDevice *)self shortDescription];
+    [(__CFString *)v14 appendFormat:@" for %@", shortDescription2];
   }
 
   v17 = _MRLogForCategory();
@@ -2170,21 +2170,21 @@ LABEL_7:
   }
 
   v18 = +[MRDMediaRemoteServer server];
-  v19 = [v18 nowPlayingServer];
-  [v19 registerOrigin:v13 deviceInfo:v7];
+  nowPlayingServer = [v18 nowPlayingServer];
+  [nowPlayingServer registerOrigin:v13 deviceInfo:deviceInfo];
 
   [(MRDTransportExternalDevice *)self setCustomOrigin:v13];
-  v20 = [(MRDTransportExternalDevice *)self shortDescription];
+  shortDescription3 = [(MRDTransportExternalDevice *)self shortDescription];
 
   v21 = _MRLogForCategory();
   v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
   if (v13)
   {
-    if (v20)
+    if (shortDescription3)
     {
       if (v22)
       {
-        v23 = [(MRDTransportExternalDevice *)self shortDescription];
+        shortDescription4 = [(MRDTransportExternalDevice *)self shortDescription];
         v24 = +[NSDate date];
         [v24 timeIntervalSinceDate:v6];
         *buf = 138544386;
@@ -2194,7 +2194,7 @@ LABEL_7:
         v40 = 2112;
         v41 = v13;
         v42 = 2114;
-        v43 = v23;
+        v43 = shortDescription4;
         v44 = 2048;
         v45 = v25;
         v26 = "Response: %{public}@<%{public}@> returned <%@> for %{public}@ in %.4lf seconds";
@@ -2215,8 +2215,8 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v23 = +[NSDate date];
-    [v23 timeIntervalSinceDate:v6];
+    shortDescription4 = +[NSDate date];
+    [shortDescription4 timeIntervalSinceDate:v6];
     *buf = 138544130;
     v37 = @"TransportExternalDevice.connectWithOptions.registerCustomOrigin";
     v38 = 2114;
@@ -2233,15 +2233,15 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (!v20)
+  if (!shortDescription3)
   {
     if (!v22)
     {
       goto LABEL_22;
     }
 
-    v23 = +[NSDate date];
-    [v23 timeIntervalSinceDate:v6];
+    shortDescription4 = +[NSDate date];
+    [shortDescription4 timeIntervalSinceDate:v6];
     *buf = 138543874;
     v37 = @"TransportExternalDevice.connectWithOptions.registerCustomOrigin";
     v38 = 2114;
@@ -2256,7 +2256,7 @@ LABEL_20:
 
   if (v22)
   {
-    v23 = [(MRDTransportExternalDevice *)self shortDescription];
+    shortDescription4 = [(MRDTransportExternalDevice *)self shortDescription];
     v24 = +[NSDate date];
     [v24 timeIntervalSinceDate:v6];
     *buf = 138544130;
@@ -2264,7 +2264,7 @@ LABEL_20:
     v38 = 2114;
     v39 = v12;
     v40 = 2114;
-    v41 = v23;
+    v41 = shortDescription4;
     v42 = 2048;
     v43 = v29;
     v26 = "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds";
@@ -2278,21 +2278,21 @@ LABEL_22:
   return 0;
 }
 
-- (id)_onWorkerQueue_reRegisterCustomOriginWithUserInfo:(id)a3
+- (id)_onWorkerQueue_reRegisterCustomOriginWithUserInfo:(id)info
 {
   workerQueue = self->_workerQueue;
-  v5 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(workerQueue);
   v6 = +[NSDate date];
-  v7 = [v5 objectForKeyedSubscript:MRExternalDeviceConnectionCorrelationIDUserInfoKey];
+  v7 = [infoCopy objectForKeyedSubscript:MRExternalDeviceConnectionCorrelationIDUserInfoKey];
 
   v8 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"TransportExternalDevice.connectWithOptions.reregisterCustomOrigin", v7];
-  v9 = [(MRDTransportExternalDevice *)self customOrigin];
+  customOrigin = [(MRDTransportExternalDevice *)self customOrigin];
 
-  if (v9)
+  if (customOrigin)
   {
-    v10 = [(MRDTransportExternalDevice *)self customOrigin];
-    [(__CFString *)v8 appendFormat:@" for %@", v10];
+    customOrigin2 = [(MRDTransportExternalDevice *)self customOrigin];
+    [(__CFString *)v8 appendFormat:@" for %@", customOrigin2];
   }
 
   v11 = _MRLogForCategory();
@@ -2304,10 +2304,10 @@ LABEL_22:
   }
 
   v12 = +[MRDMediaRemoteServer server];
-  v13 = [v12 nowPlayingServer];
-  v14 = [(MRDTransportExternalDevice *)self customOrigin];
-  v15 = [(MRDTransportExternalDevice *)self deviceInfo];
-  [v13 reregisterOrigin:v14 deviceInfo:v15];
+  nowPlayingServer = [v12 nowPlayingServer];
+  customOrigin3 = [(MRDTransportExternalDevice *)self customOrigin];
+  deviceInfo = [(MRDTransportExternalDevice *)self deviceInfo];
+  [nowPlayingServer reregisterOrigin:customOrigin3 deviceInfo:deviceInfo];
 
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
@@ -2316,15 +2316,15 @@ LABEL_22:
   block[3] = &unk_1004B6D08;
   block[4] = self;
   dispatch_sync(serialQueue, block);
-  v17 = [(MRDTransportExternalDevice *)self shortDescription];
+  shortDescription = [(MRDTransportExternalDevice *)self shortDescription];
 
   v18 = _MRLogForCategory();
   v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-  if (v17)
+  if (shortDescription)
   {
     if (v19)
     {
-      v20 = [(MRDTransportExternalDevice *)self shortDescription];
+      shortDescription2 = [(MRDTransportExternalDevice *)self shortDescription];
       v21 = +[NSDate date];
       [v21 timeIntervalSinceDate:v6];
       *buf = 138544130;
@@ -2332,7 +2332,7 @@ LABEL_22:
       v28 = 2114;
       v29 = v7;
       v30 = 2114;
-      v31 = v20;
+      v31 = shortDescription2;
       v32 = 2048;
       v33 = v22;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds", buf, 0x2Au);
@@ -2343,8 +2343,8 @@ LABEL_10:
 
   else if (v19)
   {
-    v20 = +[NSDate date];
-    [v20 timeIntervalSinceDate:v6];
+    shortDescription2 = +[NSDate date];
+    [shortDescription2 timeIntervalSinceDate:v6];
     *buf = 138543874;
     v27 = @"TransportExternalDevice.connectWithOptions.reregisterCustomOrigin";
     v28 = 2114;
@@ -2358,21 +2358,21 @@ LABEL_10:
   return 0;
 }
 
-- (id)_onWorkerQueue_syncClientStateWithUserInfo:(id)a3
+- (id)_onWorkerQueue_syncClientStateWithUserInfo:(id)info
 {
   workerQueue = self->_workerQueue;
-  v5 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(workerQueue);
   v6 = +[NSDate date];
-  v7 = [v5 objectForKeyedSubscript:MRExternalDeviceConnectionCorrelationIDUserInfoKey];
+  v7 = [infoCopy objectForKeyedSubscript:MRExternalDeviceConnectionCorrelationIDUserInfoKey];
 
   v8 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"TransportExternalDevice.connectWithOptions.syncClientState", v7];
-  v9 = [(MRDTransportExternalDevice *)self shortDescription];
+  shortDescription = [(MRDTransportExternalDevice *)self shortDescription];
 
-  if (v9)
+  if (shortDescription)
   {
-    v10 = [(MRDTransportExternalDevice *)self shortDescription];
-    [(__CFString *)v8 appendFormat:@" for %@", v10];
+    shortDescription2 = [(MRDTransportExternalDevice *)self shortDescription];
+    [(__CFString *)v8 appendFormat:@" for %@", shortDescription2];
   }
 
   v11 = _MRLogForCategory();
@@ -2391,8 +2391,8 @@ LABEL_10:
   [v15 setWaking:1];
   v16 = [[MRSetConnectionStateMessage alloc] initWithConnectionState:2];
   [v16 setTransportOptions:v15];
-  v17 = [(MRDTransportExternalDevice *)self clientConnection];
-  [v17 sendMessage:v16];
+  clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
+  [clientConnection sendMessage:v16];
 
   if (-[MRDTransportExternalDevice wantsNowPlayingNotifications](self, "wantsNowPlayingNotifications") || -[MRDTransportExternalDevice wantsVolumeNotifications](self, "wantsVolumeNotifications") || -[MRDTransportExternalDevice wantsOutputDeviceNotifications](self, "wantsOutputDeviceNotifications") || -[MRDTransportExternalDevice wantsNowPlayingArtworkNotifications](self, "wantsNowPlayingArtworkNotifications") || -[MRDTransportExternalDevice wantsSystemEndpointNotifications](self, "wantsSystemEndpointNotifications") || (-[MRDTransportExternalDevice subscribedPlayerPaths](self, "subscribedPlayerPaths"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 count], v18, v19))
   {
@@ -2420,18 +2420,18 @@ LABEL_10:
     Error = 0;
   }
 
-  v23 = [(MRDTransportExternalDevice *)self shortDescription];
+  shortDescription3 = [(MRDTransportExternalDevice *)self shortDescription];
 
   v24 = _MRLogForCategory();
   v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
-  if (v23)
+  if (shortDescription3)
   {
     if (!v25)
     {
       goto LABEL_21;
     }
 
-    v26 = [(MRDTransportExternalDevice *)self shortDescription];
+    shortDescription4 = [(MRDTransportExternalDevice *)self shortDescription];
     v27 = +[NSDate date];
     [v27 timeIntervalSinceDate:v6];
     *buf = 138544130;
@@ -2439,7 +2439,7 @@ LABEL_10:
     v35 = 2114;
     v36 = v7;
     v37 = 2114;
-    v38 = v26;
+    v38 = shortDescription4;
     v39 = 2048;
     v40 = v28;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds", buf, 0x2Au);
@@ -2452,8 +2452,8 @@ LABEL_10:
       goto LABEL_21;
     }
 
-    v26 = +[NSDate date];
-    [v26 timeIntervalSinceDate:v6];
+    shortDescription4 = +[NSDate date];
+    [shortDescription4 timeIntervalSinceDate:v6];
     *buf = 138543874;
     v34 = @"TransportExternalDevice.connectWithOptions.syncClientState";
     v35 = 2114;
@@ -2525,20 +2525,20 @@ LABEL_21:
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)_cleanUpStreamsWithReason:(int64_t)a3 error:(id)a4
+- (void)_cleanUpStreamsWithReason:(int64_t)reason error:(id)error
 {
-  v14 = a4;
-  v6 = [(MRDTransportExternalDevice *)self clientConnection];
-  v7 = v6;
-  if (v6)
+  errorCopy = error;
+  clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
+  v7 = clientConnection;
+  if (clientConnection)
   {
-    [v6 setDelegate:0];
-    if (a3)
+    [clientConnection setDelegate:0];
+    if (reason)
     {
-      if (a3 != 1)
+      if (reason != 1)
       {
         v8 = 0;
-        if (a3 != 3)
+        if (reason != 3)
         {
 LABEL_10:
           [v7 disconnectWithError:v8];
@@ -2546,7 +2546,7 @@ LABEL_10:
           goto LABEL_11;
         }
 
-        v9 = v14;
+        v9 = errorCopy;
 LABEL_9:
         v8 = v9;
         goto LABEL_10;
@@ -2567,17 +2567,17 @@ LABEL_9:
   }
 
 LABEL_11:
-  v12 = [(MRDTransportExternalDevice *)self clientConnection];
-  [v12 setDelegate:0];
+  clientConnection2 = [(MRDTransportExternalDevice *)self clientConnection];
+  [clientConnection2 setDelegate:0];
 
   [(MRDTransportExternalDevice *)self setClientConnection:0];
-  v13 = [(MRDTransportExternalDevice *)self transport];
-  [v13 resetWithError:v14];
+  transport = [(MRDTransportExternalDevice *)self transport];
+  [transport resetWithError:errorCopy];
 }
 
-- (void)_cleanUpWithReason:(int64_t)a3 error:(id)a4
+- (void)_cleanUpWithReason:(int64_t)reason error:(id)error
 {
-  [(MRDTransportExternalDevice *)self _cleanUpStreamsWithReason:a3 error:a4];
+  [(MRDTransportExternalDevice *)self _cleanUpStreamsWithReason:reason error:error];
   serialQueue = self->_serialQueue;
   msv_dispatch_sync_on_queue();
 }
@@ -2593,9 +2593,9 @@ LABEL_11:
   v52[4] = &unk_1004B8CC8;
   objc_copyWeak(&v53, &location);
   MRMediaRemoteSetCommandHandler();
-  v4 = [(MRDTransportExternalDevice *)self clientConnection];
-  v5 = [v4 supportedMessages];
-  v6 = [v5 isSupported:32];
+  clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
+  supportedMessages = [clientConnection supportedMessages];
+  v6 = [supportedMessages isSupported:32];
 
   if (v6)
   {
@@ -2609,9 +2609,9 @@ LABEL_11:
     objc_destroyWeak(v52);
   }
 
-  v8 = [(MRDTransportExternalDevice *)self clientConnection];
-  v9 = [v8 supportedMessages];
-  v10 = [v9 isSupported:44];
+  clientConnection2 = [(MRDTransportExternalDevice *)self clientConnection];
+  supportedMessages2 = [clientConnection2 supportedMessages];
+  v10 = [supportedMessages2 isSupported:44];
 
   if (v10)
   {
@@ -2629,9 +2629,9 @@ LABEL_11:
     objc_destroyWeak(v51);
   }
 
-  v14 = [(MRDTransportExternalDevice *)self clientConnection];
-  v15 = [v14 supportedMessages];
-  v16 = [v15 isSupported:73];
+  clientConnection3 = [(MRDTransportExternalDevice *)self clientConnection];
+  supportedMessages3 = [clientConnection3 supportedMessages];
+  v16 = [supportedMessages3 isSupported:73];
 
   if (v16)
   {
@@ -2656,9 +2656,9 @@ LABEL_11:
     objc_destroyWeak(&v49);
   }
 
-  v20 = [(MRDTransportExternalDevice *)self clientConnection];
-  v21 = [v20 supportedMessages];
-  v22 = [v21 isSupported:75];
+  clientConnection4 = [(MRDTransportExternalDevice *)self clientConnection];
+  supportedMessages4 = [clientConnection4 supportedMessages];
+  v22 = [supportedMessages4 isSupported:75];
 
   if (v22)
   {
@@ -2672,9 +2672,9 @@ LABEL_11:
     objc_destroyWeak(&v46);
   }
 
-  v24 = [(MRDTransportExternalDevice *)self clientConnection];
-  v25 = [v24 supportedMessages];
-  v26 = [v25 isSupported:76];
+  clientConnection5 = [(MRDTransportExternalDevice *)self clientConnection];
+  supportedMessages5 = [clientConnection5 supportedMessages];
+  v26 = [supportedMessages5 isSupported:76];
 
   if (v26)
   {
@@ -2688,9 +2688,9 @@ LABEL_11:
     objc_destroyWeak(v45);
   }
 
-  v28 = [(MRDTransportExternalDevice *)self clientConnection];
-  v29 = [v28 supportedMessages];
-  v30 = [v29 isSupported:78];
+  clientConnection6 = [(MRDTransportExternalDevice *)self clientConnection];
+  supportedMessages6 = [clientConnection6 supportedMessages];
+  v30 = [supportedMessages6 isSupported:78];
 
   if (v30)
   {
@@ -2714,14 +2714,14 @@ LABEL_11:
   objc_copyWeak(v43, &location);
   [v33 setClientMessageCallback:v42];
   v34 = +[MRDMediaRemoteServer server];
-  v35 = [v34 nowPlayingServer];
-  v36 = [v35 originClientForOrigin:self->_customOrigin];
+  nowPlayingServer = [v34 nowPlayingServer];
+  v36 = [nowPlayingServer originClientForOrigin:self->_customOrigin];
 
-  v37 = [(MRDTransportExternalDevice *)self clientConnection];
-  v38 = [v37 supportedMessages];
-  LODWORD(v35) = [v38 isSupported:134];
+  clientConnection7 = [(MRDTransportExternalDevice *)self clientConnection];
+  supportedMessages7 = [clientConnection7 supportedMessages];
+  LODWORD(nowPlayingServer) = [supportedMessages7 isSupported:134];
 
-  if (!v35)
+  if (!nowPlayingServer)
   {
     v39 = &stru_1004BBEC0;
 LABEL_18:
@@ -2749,27 +2749,27 @@ LABEL_19:
   objc_destroyWeak(&location);
 }
 
-- (void)_handlePlaybackQueueRequest:(id)a3 forPlayerPath:(id)a4 completion:(id)a5
+- (void)_handlePlaybackQueueRequest:(id)request forPlayerPath:(id)path completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  pathCopy = path;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v11 = [(MRDTransportExternalDevice *)self errorForCurrentState];
-  if (v11)
+  errorForCurrentState = [(MRDTransportExternalDevice *)self errorForCurrentState];
+  if (errorForCurrentState)
   {
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1000E0CF0;
     v18[3] = &unk_1004BBF10;
     objc_copyWeak(&v22, &location);
-    v19 = v8;
-    v20 = v9;
-    v12 = v10;
+    v19 = requestCopy;
+    v20 = pathCopy;
+    v12 = completionCopy;
     v21 = v12;
     if (![(MRDTransportExternalDevice *)self _maybeBatchRequest:v18])
     {
-      (*(v12 + 2))(v12, 0, v11);
+      (*(v12 + 2))(v12, 0, errorForCurrentState);
     }
 
     objc_destroyWeak(&v22);
@@ -2777,22 +2777,22 @@ LABEL_19:
 
   else
   {
-    v13 = [v8 copy];
+    v13 = [requestCopy copy];
     v14 = objc_alloc_init(MRProtocolMessageOptions);
     [v14 setPriority:4];
     [v14 setWaking:1];
-    v15 = [[MRPlaybackQueueRequestMessage alloc] initWithRequest:v13 forPlayerPath:v9];
+    v15 = [[MRPlaybackQueueRequestMessage alloc] initWithRequest:v13 forPlayerPath:pathCopy];
     [v15 setTransportOptions:v14];
-    v16 = [(MRDTransportExternalDevice *)self clientConnection];
+    clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_1000E0950;
     v23[3] = &unk_1004BBEE8;
     objc_copyWeak(&v26, &location);
-    v25 = v10;
+    v25 = completionCopy;
     v17 = v13;
     v24 = v17;
-    [v16 sendMessage:v15 timeout:v23 reply:63.0];
+    [clientConnection sendMessage:v15 timeout:v23 reply:63.0];
 
     objc_destroyWeak(&v26);
   }
@@ -2800,31 +2800,31 @@ LABEL_19:
   objc_destroyWeak(&location);
 }
 
-- (void)_handlePlaybackSessionRequest:(id)a3 forPlayerPath:(id)a4 completion:(id)a5
+- (void)_handlePlaybackSessionRequest:(id)request forPlayerPath:(id)path completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  pathCopy = path;
+  completionCopy = completion;
   v11 = objc_alloc_init(MRPlaybackSessionMigrateRequest);
   v12 = [v11 startEvent:@"GetPlaybackSession" role:1];
   objc_initWeak(&location, self);
-  v13 = [(MRDTransportExternalDevice *)self errorForCurrentState];
-  if (v13)
+  errorForCurrentState = [(MRDTransportExternalDevice *)self errorForCurrentState];
+  if (errorForCurrentState)
   {
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1000E116C;
     v18[3] = &unk_1004BBF10;
     objc_copyWeak(&v22, &location);
-    v19 = v8;
-    v20 = v9;
-    v14 = v10;
+    v19 = requestCopy;
+    v20 = pathCopy;
+    v14 = completionCopy;
     v21 = v14;
     if (![(MRDTransportExternalDevice *)self _maybeBatchRequest:v18])
     {
-      [v11 endEventWithID:v12 error:v13];
+      [v11 endEventWithID:v12 error:errorForCurrentState];
       v15 = [[MRPlaybackSessionResponseMessage alloc] initWithPlaybackSession:0 request:v11];
-      (*(v14 + 2))(v14, v15, v13);
+      (*(v14 + 2))(v14, v15, errorForCurrentState);
     }
 
     objc_destroyWeak(&v22);
@@ -2832,8 +2832,8 @@ LABEL_19:
 
   else
   {
-    v16 = [[MRPlaybackSessionRequestMessage alloc] initWithRequest:v8 forPlayerPath:v9];
-    v17 = [(MRDTransportExternalDevice *)self clientConnection];
+    v16 = [[MRPlaybackSessionRequestMessage alloc] initWithRequest:requestCopy forPlayerPath:pathCopy];
+    clientConnection = [(MRDTransportExternalDevice *)self clientConnection];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_1000E0FDC;
@@ -2841,193 +2841,193 @@ LABEL_19:
     v24 = v11;
     v25 = 0;
     v27 = v12;
-    v26 = v10;
-    [v17 sendMessage:v16 timeout:v23 reply:63.0];
+    v26 = completionCopy;
+    [clientConnection sendMessage:v16 timeout:v23 reply:63.0];
   }
 
   objc_destroyWeak(&location);
 }
 
-- (void)_handlePlaybackSessionMigrateRequest:(id)a3 request:(id)a4 forPlayerPath:(id)a5 completion:(id)a6
+- (void)_handlePlaybackSessionMigrateRequest:(id)request request:(id)a4 forPlayerPath:(id)path completion:(id)completion
 {
-  v10 = a3;
+  requestCopy = request;
   v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pathCopy = path;
+  completionCopy = completion;
   v14 = [v11 startEvent:@"SendPlaybackSession" role:1];
-  v15 = self;
-  v16 = [(MRDTransportExternalDevice *)v15 errorForCurrentState];
-  if (v16)
+  selfCopy = self;
+  errorForCurrentState = [(MRDTransportExternalDevice *)selfCopy errorForCurrentState];
+  if (errorForCurrentState)
   {
     v21 = _NSConcreteStackBlock;
     v22 = 3221225472;
     v23 = sub_1000E14E4;
     v24 = &unk_1004BBCD8;
-    v25 = v15;
-    v26 = v10;
+    v25 = selfCopy;
+    v26 = requestCopy;
     v17 = v11;
     v27 = v17;
-    v28 = v12;
-    v18 = v13;
+    v28 = pathCopy;
+    v18 = completionCopy;
     v29 = v18;
-    if (![(MRDTransportExternalDevice *)v15 _maybeBatchRequest:&v21])
+    if (![(MRDTransportExternalDevice *)selfCopy _maybeBatchRequest:&v21])
     {
-      [v17 endEventWithID:v14 error:{v16, v21, v22, v23, v24, v25, v26, v27, v28}];
-      (*(v18 + 2))(v18, v17, v16);
+      [v17 endEventWithID:v14 error:{errorForCurrentState, v21, v22, v23, v24, v25, v26, v27, v28}];
+      (*(v18 + 2))(v18, v17, errorForCurrentState);
     }
   }
 
   else
   {
-    v19 = [[MRPlaybackSessionMigrateRequestMessage alloc] initWithPlaybackSession:v10 request:v11 forPlayerPath:v12];
-    v20 = [(MRDTransportExternalDevice *)v15 clientConnection];
+    v19 = [[MRPlaybackSessionMigrateRequestMessage alloc] initWithPlaybackSession:requestCopy request:v11 forPlayerPath:pathCopy];
+    clientConnection = [(MRDTransportExternalDevice *)selfCopy clientConnection];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_1000E1400;
     v30[3] = &unk_1004BBF60;
     v31 = v11;
     v33 = v14;
-    v32 = v13;
-    [v20 sendMessage:v19 timeout:v30 reply:63.0];
+    v32 = completionCopy;
+    [clientConnection sendMessage:v19 timeout:v30 reply:63.0];
   }
 }
 
-- (void)_handlePlaybackSessionMigrateBeginRequest:(id)a3 forPlayerPath:(id)a4 completion:(id)a5
+- (void)_handlePlaybackSessionMigrateBeginRequest:(id)request forPlayerPath:(id)path completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  pathCopy = path;
+  completionCopy = completion;
   v11 = objc_alloc_init(MRPlaybackSessionMigrateRequest);
   v12 = [v11 startEvent:@"Prepare" role:1];
-  v13 = self;
-  v14 = [(MRDTransportExternalDevice *)v13 errorForCurrentState];
-  if (v14)
+  selfCopy = self;
+  errorForCurrentState = [(MRDTransportExternalDevice *)selfCopy errorForCurrentState];
+  if (errorForCurrentState)
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000E1894;
     v19[3] = &unk_1004B6BB0;
-    v19[4] = v13;
-    v20 = v8;
-    v21 = v9;
-    v15 = v10;
+    v19[4] = selfCopy;
+    v20 = requestCopy;
+    v21 = pathCopy;
+    v15 = completionCopy;
     v22 = v15;
-    if (![(MRDTransportExternalDevice *)v13 _maybeBatchRequest:v19])
+    if (![(MRDTransportExternalDevice *)selfCopy _maybeBatchRequest:v19])
     {
-      [v11 endEventWithID:v12 error:v14];
+      [v11 endEventWithID:v12 error:errorForCurrentState];
       v16 = [[MRPlaybackSessionMigrateResponseMessage alloc] initWithRequest:v11];
-      (*(v15 + 2))(v15, v16, v14);
+      (*(v15 + 2))(v15, v16, errorForCurrentState);
     }
   }
 
   else
   {
-    v17 = [[MRPlaybackSessionMigrateBeginMessage alloc] initWithRequest:v8 playerPath:v9];
-    v18 = [(MRDTransportExternalDevice *)v13 clientConnection];
+    v17 = [[MRPlaybackSessionMigrateBeginMessage alloc] initWithRequest:requestCopy playerPath:pathCopy];
+    clientConnection = [(MRDTransportExternalDevice *)selfCopy clientConnection];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_1000E1734;
     v23[3] = &unk_1004BBF60;
     v24 = v11;
     v26 = v12;
-    v25 = v10;
-    [v18 sendMessage:v17 reply:v23];
+    v25 = completionCopy;
+    [clientConnection sendMessage:v17 reply:v23];
   }
 }
 
-- (void)_handlePlaybackSessionMigrateEndRequest:(id)a3 setPlaybackSessionCommandStatus:(id)a4 error:(id)a5 forPlayerPath:(id)a6 completion:(id)a7
+- (void)_handlePlaybackSessionMigrateEndRequest:(id)request setPlaybackSessionCommandStatus:(id)status error:(id)error forPlayerPath:(id)path completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  requestCopy = request;
+  statusCopy = status;
+  errorCopy = error;
+  pathCopy = path;
+  completionCopy = completion;
   v17 = objc_alloc_init(MRPlaybackSessionMigrateRequest);
   v18 = [v17 startEvent:@"Finalize" role:1];
-  v19 = self;
-  v20 = [(MRDTransportExternalDevice *)v19 errorForCurrentState];
-  if (v20)
+  selfCopy = self;
+  errorForCurrentState = [(MRDTransportExternalDevice *)selfCopy errorForCurrentState];
+  if (errorForCurrentState)
   {
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_1000E1CC8;
     v33[3] = &unk_1004BBAD8;
-    v33[4] = v19;
-    v34 = v12;
-    v35 = v13;
-    v36 = v14;
-    v37 = v15;
-    v21 = v16;
+    v33[4] = selfCopy;
+    v34 = requestCopy;
+    v35 = statusCopy;
+    v36 = errorCopy;
+    v37 = pathCopy;
+    v21 = completionCopy;
     v38 = v21;
-    if (![(MRDTransportExternalDevice *)v19 _maybeBatchRequest:v33])
+    if (![(MRDTransportExternalDevice *)selfCopy _maybeBatchRequest:v33])
     {
-      [v17 endEventWithID:v18 error:v20];
-      v22 = v15;
-      v23 = v14;
-      v24 = v13;
-      v25 = v12;
+      [v17 endEventWithID:v18 error:errorForCurrentState];
+      v22 = pathCopy;
+      v23 = errorCopy;
+      v24 = statusCopy;
+      v25 = requestCopy;
       v26 = [[MRPlaybackSessionMigrateResponseMessage alloc] initWithRequest:v17];
-      (*(v21 + 2))(v21, v26, v20);
+      (*(v21 + 2))(v21, v26, errorForCurrentState);
 
-      v12 = v25;
-      v13 = v24;
-      v14 = v23;
-      v15 = v22;
+      requestCopy = v25;
+      statusCopy = v24;
+      errorCopy = v23;
+      pathCopy = v22;
     }
   }
 
   else
   {
-    v27 = [[MRPlaybackSessionMigrateEndMessage alloc] initWithRequest:v12 error:v14 setPlaybackSessionCommandStatus:v13 playerPath:v15];
-    [(MRDTransportExternalDevice *)v19 clientConnection];
-    v32 = v15;
-    v28 = v14;
-    v29 = v13;
-    v31 = v30 = v12;
+    v27 = [[MRPlaybackSessionMigrateEndMessage alloc] initWithRequest:requestCopy error:errorCopy setPlaybackSessionCommandStatus:statusCopy playerPath:pathCopy];
+    [(MRDTransportExternalDevice *)selfCopy clientConnection];
+    v32 = pathCopy;
+    v28 = errorCopy;
+    v29 = statusCopy;
+    v31 = v30 = requestCopy;
     v39[0] = _NSConcreteStackBlock;
     v39[1] = 3221225472;
     v39[2] = sub_1000E1B68;
     v39[3] = &unk_1004BBF60;
     v40 = v17;
     v42 = v18;
-    v41 = v16;
+    v41 = completionCopy;
     [v31 sendMessage:v27 reply:v39];
 
-    v12 = v30;
-    v13 = v29;
-    v14 = v28;
-    v15 = v32;
+    requestCopy = v30;
+    statusCopy = v29;
+    errorCopy = v28;
+    pathCopy = v32;
   }
 }
 
-- (void)_handlePlaybackSessionMigratePostRequest:(id)a3 setPlaybackSessionCommandID:(id)a4 forPlayerPath:(id)a5 completion:(id)a6
+- (void)_handlePlaybackSessionMigratePostRequest:(id)request setPlaybackSessionCommandID:(id)d forPlayerPath:(id)path completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 startEvent:@"Post" role:1];
-  v15 = self;
-  v16 = [[MRPlaybackSessionMigratePostMessage alloc] initWithRequest:v10 playerPath:v12 setPlaybackSessionCommandID:v11];
-  v17 = [(MRDTransportExternalDevice *)v15 errorForCurrentState];
-  if (v17)
+  requestCopy = request;
+  dCopy = d;
+  pathCopy = path;
+  completionCopy = completion;
+  v14 = [requestCopy startEvent:@"Post" role:1];
+  selfCopy = self;
+  v16 = [[MRPlaybackSessionMigratePostMessage alloc] initWithRequest:requestCopy playerPath:pathCopy setPlaybackSessionCommandID:dCopy];
+  errorForCurrentState = [(MRDTransportExternalDevice *)selfCopy errorForCurrentState];
+  if (errorForCurrentState)
   {
     v22 = _NSConcreteStackBlock;
     v23 = 3221225472;
     v24 = sub_1000E2030;
     v25 = &unk_1004BBCD8;
-    v26 = v15;
-    v27 = v10;
-    v28 = v11;
-    v29 = v12;
-    v18 = v13;
+    v26 = selfCopy;
+    v27 = requestCopy;
+    v28 = dCopy;
+    v29 = pathCopy;
+    v18 = completionCopy;
     v30 = v18;
-    if (![(MRDTransportExternalDevice *)v15 _maybeBatchRequest:&v22])
+    if (![(MRDTransportExternalDevice *)selfCopy _maybeBatchRequest:&v22])
     {
-      v19 = [v16 request];
-      [v19 endEventWithID:v14 error:v17];
+      request = [v16 request];
+      [request endEventWithID:v14 error:errorForCurrentState];
 
-      (*(v18 + 2))(v18, v16, v17);
+      (*(v18 + 2))(v18, v16, errorForCurrentState);
     }
 
     v20 = v27;
@@ -3035,70 +3035,70 @@ LABEL_19:
 
   else
   {
-    v21 = [(MRDTransportExternalDevice *)v15 clientConnection];
+    clientConnection = [(MRDTransportExternalDevice *)selfCopy clientConnection];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_1000E1F28;
     v31[3] = &unk_1004BBF88;
     v34 = v14;
-    v33 = v13;
+    v33 = completionCopy;
     v32 = v16;
-    [v21 sendMessage:v32 timeout:v31 reply:63.0];
+    [clientConnection sendMessage:v32 timeout:v31 reply:63.0];
 
     v20 = v33;
   }
 }
 
-- (void)_callClientConnectionStateCallback:(unsigned int)a3 previousConnectionState:(unsigned int)a4 error:(id)a5
+- (void)_callClientConnectionStateCallback:(unsigned int)callback previousConnectionState:(unsigned int)state error:(id)error
 {
-  v7 = a5;
+  errorCopy = error;
   notificationQueue = self->_notificationQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E20F4;
   block[3] = &unk_1004B87F8;
-  v13 = a3;
-  v11 = v7;
-  v12 = self;
-  v9 = v7;
+  callbackCopy = callback;
+  v11 = errorCopy;
+  selfCopy = self;
+  v9 = errorCopy;
   dispatch_async(notificationQueue, block);
 }
 
-- (void)_callClientCustomDataCallback:(id)a3 name:(id)a4
+- (void)_callClientCustomDataCallback:(id)callback name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  callbackCopy = callback;
+  nameCopy = name;
   serialQueue = self->_serialQueue;
-  v11 = v7;
-  v9 = v6;
-  v10 = v7;
+  v11 = nameCopy;
+  v9 = callbackCopy;
+  v10 = nameCopy;
   msv_dispatch_sync_on_queue();
 }
 
-- (void)_callDeviceInfoCallback:(id)a3 oldDeviceInfo:(id)a4
+- (void)_callDeviceInfoCallback:(id)callback oldDeviceInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  callbackCopy = callback;
+  infoCopy = info;
   notificationQueue = self->_notificationQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E24F4;
   block[3] = &unk_1004B69D0;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
+  v12 = infoCopy;
+  v13 = callbackCopy;
+  selfCopy = self;
+  v9 = callbackCopy;
+  v10 = infoCopy;
   dispatch_async(notificationQueue, block);
 }
 
-- (void)setCustomDataCallback:(id)a3 withQueue:(id)a4
+- (void)setCustomDataCallback:(id)callback withQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  callbackCopy = callback;
+  queueCopy = queue;
+  if (!queueCopy)
   {
-    v7 = &_dispatch_main_q;
+    queueCopy = &_dispatch_main_q;
     v8 = &_dispatch_main_q;
   }
 
@@ -3107,17 +3107,17 @@ LABEL_19:
   block[1] = 3221225472;
   block[2] = sub_1000E2680;
   block[3] = &unk_1004BB428;
-  v13 = v7;
-  v14 = v6;
+  v13 = queueCopy;
+  v14 = callbackCopy;
   block[4] = self;
-  v10 = v7;
-  v11 = v6;
+  v10 = queueCopy;
+  v11 = callbackCopy;
   dispatch_sync(serialQueue, block);
 }
 
-- (BOOL)_maybeBatchRequest:(id)a3
+- (BOOL)_maybeBatchRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -3128,9 +3128,9 @@ LABEL_19:
   block[2] = sub_1000E2794;
   block[3] = &unk_1004BBFD8;
   block[4] = self;
-  v9 = v4;
+  v9 = requestCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = requestCopy;
   dispatch_sync(serialQueue, block);
   LOBYTE(serialQueue) = *(v12 + 24);
 
@@ -3138,30 +3138,30 @@ LABEL_19:
   return serialQueue;
 }
 
-- (void)_handleSetStateMessage:(id)a3
+- (void)_handleSetStateMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(MRDTransportExternalDevice *)self customOrigin];
-  v6 = [v4 state];
-  v7 = [v6 playerPath];
-  v8 = [v7 copy];
+  messageCopy = message;
+  customOrigin = [(MRDTransportExternalDevice *)self customOrigin];
+  state = [messageCopy state];
+  playerPath = [state playerPath];
+  v8 = [playerPath copy];
 
   v9 = MRNowPlayingPlayerPathResolveExternalDevicePlayerPath();
-  v10 = [v6 supportedCommands];
-  if (v10)
+  supportedCommands = [state supportedCommands];
+  if (supportedCommands)
   {
     MRMediaRemoteSetSupportedCommandsForPlayer();
   }
 
-  if ([v6 playbackState])
+  if ([state playbackState])
   {
-    v11 = [v4 state];
-    v12 = [v11 hasPlaybackStateTimestamp];
+    state2 = [messageCopy state];
+    hasPlaybackStateTimestamp = [state2 hasPlaybackStateTimestamp];
 
-    if (v12)
+    if (hasPlaybackStateTimestamp)
     {
-      v13 = [v4 state];
-      [v13 playbackStateTimestamp];
+      state3 = [messageCopy state];
+      [state3 playbackStateTimestamp];
     }
 
     else if (!self->_isClientSyncActive)
@@ -3169,23 +3169,23 @@ LABEL_19:
       +[NSDate timeIntervalSinceReferenceDate];
     }
 
-    [v6 playbackState];
+    [state playbackState];
     MRMediaRemoteSetPlaybackStateForPlayerWithTimestamp();
   }
 
-  v14 = [v6 playbackQueue];
-  v15 = [v14 copy];
+  playbackQueue = [state playbackQueue];
+  v15 = [playbackQueue copy];
 
   if (v15)
   {
     v23 = v8;
-    v24 = v5;
-    v16 = [v15 contentItems];
+    v24 = customOrigin;
+    contentItems = [v15 contentItems];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v17 = [v16 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v17 = [contentItems countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v17)
     {
       v18 = v17;
@@ -3197,109 +3197,109 @@ LABEL_19:
         {
           if (*v26 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(contentItems);
           }
 
-          v21 = [*(*(&v25 + 1) + 8 * v20) metadata];
-          [v21 setDeviceSpecificUserInfo:0];
+          metadata = [*(*(&v25 + 1) + 8 * v20) metadata];
+          [metadata setDeviceSpecificUserInfo:0];
 
           v20 = v20 + 1;
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v18 = [contentItems countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v18);
     }
 
-    v22 = [v15 contentItems];
+    contentItems2 = [v15 contentItems];
     MRMediaRemotePlaybackQueueDataSourceContentItemsChangedForPlayer();
 
     MRMediaRemoteSetPlaybackQueue();
     v8 = v23;
-    v5 = v24;
+    customOrigin = v24;
   }
 
-  if ([v6 playbackQueueCapabilities])
+  if ([state playbackQueueCapabilities])
   {
-    [v6 playbackQueueCapabilities];
+    [state playbackQueueCapabilities];
     MRMediaRemoteSetPlaybackQueueCapabilities();
   }
 
   CFRelease(v9);
 }
 
-- (void)_handleSetNowPlayingClientMessage:(id)a3
+- (void)_handleSetNowPlayingClientMessage:(id)message
 {
-  v4 = a3;
-  v6 = [(MRDTransportExternalDevice *)self customOrigin];
-  v5 = [v4 client];
+  messageCopy = message;
+  customOrigin = [(MRDTransportExternalDevice *)self customOrigin];
+  client = [messageCopy client];
 
   MRMediaRemoteSetNowPlayingClientForOrigin();
 }
 
-- (void)_handleSetNowPlayingPlayerMessage:(id)a3
+- (void)_handleSetNowPlayingPlayerMessage:(id)message
 {
-  v4 = a3;
-  v7 = [(MRDTransportExternalDevice *)self customOrigin];
-  v5 = [v4 playerPath];
+  messageCopy = message;
+  customOrigin = [(MRDTransportExternalDevice *)self customOrigin];
+  playerPath = [messageCopy playerPath];
 
   v6 = MRNowPlayingPlayerPathResolveExternalDevicePlayerPath();
   MRMediaRemoteSetNowPlayingPlayer();
 }
 
-- (void)_handleRemoveClientMessage:(id)a3
+- (void)_handleRemoveClientMessage:(id)message
 {
-  v4 = a3;
-  v6 = [(MRDTransportExternalDevice *)self customOrigin];
-  v5 = [v4 client];
+  messageCopy = message;
+  customOrigin = [(MRDTransportExternalDevice *)self customOrigin];
+  client = [messageCopy client];
 
   MRMediaRemoteRemoveClientForOrigin();
 }
 
-- (void)_handleRemovePlayerMessage:(id)a3
+- (void)_handleRemovePlayerMessage:(id)message
 {
-  v4 = a3;
-  v7 = [(MRDTransportExternalDevice *)self customOrigin];
-  v5 = [v4 playerPath];
+  messageCopy = message;
+  customOrigin = [(MRDTransportExternalDevice *)self customOrigin];
+  playerPath = [messageCopy playerPath];
 
   v6 = MRNowPlayingPlayerPathResolveExternalDevicePlayerPath();
   MRMediaRemoteRemovePlayer();
 }
 
-- (void)_handleUpdateClientMessage:(id)a3
+- (void)_handleUpdateClientMessage:(id)message
 {
-  v4 = a3;
-  v6 = [(MRDTransportExternalDevice *)self customOrigin];
-  v5 = [v4 client];
+  messageCopy = message;
+  customOrigin = [(MRDTransportExternalDevice *)self customOrigin];
+  client = [messageCopy client];
 
   MRMediaRemoteUpdateClientProperties();
 }
 
-- (void)_handleUpdatePlayerMessage:(id)a3
+- (void)_handleUpdatePlayerMessage:(id)message
 {
-  v4 = a3;
-  v7 = [(MRDTransportExternalDevice *)self customOrigin];
-  v5 = [v4 playerPath];
+  messageCopy = message;
+  customOrigin = [(MRDTransportExternalDevice *)self customOrigin];
+  playerPath = [messageCopy playerPath];
 
   v6 = MRNowPlayingPlayerPathResolveExternalDevicePlayerPath();
   MRMediaRemoteUpdatePlayerProperties();
 }
 
-- (void)_handleUpdateContentItemsMessage:(id)a3
+- (void)_handleUpdateContentItemsMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(MRDTransportExternalDevice *)self customOrigin];
-  v6 = [v4 playerPath];
+  messageCopy = message;
+  customOrigin = [(MRDTransportExternalDevice *)self customOrigin];
+  playerPath = [messageCopy playerPath];
   v7 = MRNowPlayingPlayerPathResolveExternalDevicePlayerPath();
 
-  v8 = [v4 contentItems];
+  contentItems = [messageCopy contentItems];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v9 = [contentItems countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -3311,17 +3311,17 @@ LABEL_19:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(contentItems);
         }
 
-        v13 = [*(*(&v14 + 1) + 8 * v12) metadata];
-        [v13 setDeviceSpecificUserInfo:0];
+        metadata = [*(*(&v14 + 1) + 8 * v12) metadata];
+        [metadata setDeviceSpecificUserInfo:0];
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [contentItems countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -3330,16 +3330,16 @@ LABEL_19:
   MRMediaRemotePlaybackQueueDataSourceContentItemsChangedForPlayer();
 }
 
-- (void)_handleNotificationMessage:(id)a3
+- (void)_handleNotificationMessage:(id)message
 {
-  v4 = a3;
-  v11 = [(MRDTransportExternalDevice *)self customOrigin];
-  v5 = [v4 notification];
-  v6 = [v4 userInfo];
-  v7 = [v4 playerPath];
+  messageCopy = message;
+  customOrigin = [(MRDTransportExternalDevice *)self customOrigin];
+  notification = [messageCopy notification];
+  userInfo = [messageCopy userInfo];
+  playerPath = [messageCopy playerPath];
 
   v8 = MRNowPlayingPlayerPathResolveExternalDevicePlayerPath();
-  if ([v5 isEqualToString:kMRPlaybackQueueContentItemArtworkChangedNotification])
+  if ([notification isEqualToString:kMRPlaybackQueueContentItemArtworkChangedNotification])
   {
     v9 = [[MRPlaybackQueueRequest alloc] initWithRange:{0, 1}];
     [v9 setArtworkWidth:600.0];
@@ -3351,9 +3351,9 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v5 isEqualToString:kMRMediaRemotePickedRouteVolumeControlAvailabilityDidChangeNotification])
+  if ([notification isEqualToString:kMRMediaRemotePickedRouteVolumeControlAvailabilityDidChangeNotification])
   {
-    v9 = [v6 objectForKey:kMRMediaRemotePickedRouteVolumeControlAvailabilityUserInfoKey];
+    v9 = [userInfo objectForKey:kMRMediaRemotePickedRouteVolumeControlAvailabilityUserInfoKey];
     [v9 BOOLValue];
     MRMediaRemoteSetPickedRouteHasVolumeControlForOrigin();
     goto LABEL_5;
@@ -3363,95 +3363,95 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)_handleOutputDevicesUpdatedMessage:(id)a3
+- (void)_handleOutputDevicesUpdatedMessage:(id)message
 {
-  v4 = [a3 outputDevices];
+  outputDevices = [message outputDevices];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000E3AA0;
   v6[3] = &unk_1004B9AF8;
   v6[4] = self;
-  v5 = [v4 msv_map:v6];
+  v5 = [outputDevices msv_map:v6];
 
   [(MRExternalOutputContextDataSource *)self->_externalOutputContext updateOutputDevices:v5];
 }
 
-- (void)_handleOutputDevicesRemovedMessage:(id)a3
+- (void)_handleOutputDevicesRemovedMessage:(id)message
 {
   externalOutputContext = self->_externalOutputContext;
-  v4 = [a3 outputDeviceUIDs];
-  [(MRExternalOutputContextDataSource *)externalOutputContext removeOutputDevices:v4];
+  outputDeviceUIDs = [message outputDeviceUIDs];
+  [(MRExternalOutputContextDataSource *)externalOutputContext removeOutputDevices:outputDeviceUIDs];
 }
 
-- (void)_handleVolumeDidChangeMessage:(id)a3
+- (void)_handleVolumeDidChangeMessage:(id)message
 {
   externalOutputContext = self->_externalOutputContext;
-  v4 = a3;
-  [v4 volume];
+  messageCopy = message;
+  [messageCopy volume];
   v6 = v5;
-  v8 = [v4 outputDeviceUID];
+  outputDeviceUID = [messageCopy outputDeviceUID];
 
   LODWORD(v7) = v6;
-  [(MRExternalOutputContextDataSource *)externalOutputContext updateVolume:v8 outputDeviceUID:v7];
+  [(MRExternalOutputContextDataSource *)externalOutputContext updateVolume:outputDeviceUID outputDeviceUID:v7];
 }
 
-- (void)_handleVolumeControlCapabilitiesDidChangeMessage:(id)a3
+- (void)_handleVolumeControlCapabilitiesDidChangeMessage:(id)message
 {
   externalOutputContext = self->_externalOutputContext;
-  v4 = a3;
-  v5 = [v4 capabilities];
-  v6 = [v4 outputDeviceUID];
+  messageCopy = message;
+  capabilities = [messageCopy capabilities];
+  outputDeviceUID = [messageCopy outputDeviceUID];
 
-  [(MRExternalOutputContextDataSource *)externalOutputContext updateVolumeControlCapabilities:v5 outputDeviceUID:v6];
+  [(MRExternalOutputContextDataSource *)externalOutputContext updateVolumeControlCapabilities:capabilities outputDeviceUID:outputDeviceUID];
 }
 
-- (void)_handleVolumeMutedDidChangeMessage:(id)a3
+- (void)_handleVolumeMutedDidChangeMessage:(id)message
 {
   externalOutputContext = self->_externalOutputContext;
-  v4 = a3;
-  v5 = [v4 isMuted];
-  v6 = [v4 outputDeviceUID];
+  messageCopy = message;
+  isMuted = [messageCopy isMuted];
+  outputDeviceUID = [messageCopy outputDeviceUID];
 
-  [(MRExternalOutputContextDataSource *)externalOutputContext updateVolumeMuted:v5 outputDeviceUID:v6];
+  [(MRExternalOutputContextDataSource *)externalOutputContext updateVolumeMuted:isMuted outputDeviceUID:outputDeviceUID];
 }
 
-- (void)_handleLegacyVolumeControlCapabilitiesDidChangeMessage:(id)a3
+- (void)_handleLegacyVolumeControlCapabilitiesDidChangeMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(MRDTransportExternalDevice *)self customOrigin];
-  [v4 capabilities];
+  messageCopy = message;
+  customOrigin = [(MRDTransportExternalDevice *)self customOrigin];
+  [messageCopy capabilities];
 
   MRMediaRemoteSetPickedRouteVolumeControlCapabilities();
 }
 
-- (void)_handleDeviceInfoUpdateMessage:(id)a3
+- (void)_handleDeviceInfoUpdateMessage:(id)message
 {
-  v4 = a3;
-  v7 = [(MRDTransportExternalDevice *)self deviceInfo];
-  v5 = [v7 copy];
-  v6 = [v4 deviceInfo];
+  messageCopy = message;
+  deviceInfo = [(MRDTransportExternalDevice *)self deviceInfo];
+  v5 = [deviceInfo copy];
+  deviceInfo2 = [messageCopy deviceInfo];
 
-  [(MRDTransportExternalDevice *)self _handleDeviceInfoChange:v6 oldDevice:v5];
+  [(MRDTransportExternalDevice *)self _handleDeviceInfoChange:deviceInfo2 oldDevice:v5];
 }
 
-- (void)_handleDeviceInfoChange:(id)a3 oldDevice:(id)a4
+- (void)_handleDeviceInfoChange:(id)change oldDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  deviceCopy = device;
   serialQueue = self->_serialQueue;
-  v11 = v6;
-  v12 = v7;
-  v9 = v7;
-  v10 = v6;
+  v11 = changeCopy;
+  v12 = deviceCopy;
+  v9 = deviceCopy;
+  v10 = changeCopy;
   msv_dispatch_sync_on_queue();
 }
 
-- (void)_onSerialQueue_completeGroupSessionRequestsWithIdentifier:(id)a3 error:(id)a4
+- (void)_onSerialQueue_completeGroupSessionRequestsWithIdentifier:(id)identifier error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (v6 | v7)
+  if (identifierCopy | errorCopy)
   {
     v16 = 0u;
     v17 = 0u;
@@ -3489,128 +3489,128 @@ LABEL_7:
   }
 }
 
-- (void)_handleSetConnectionStateMessage:(id)a3
+- (void)_handleSetConnectionStateMessage:(id)message
 {
-  v5 = a3;
-  if ([v5 state] == 3)
+  messageCopy = message;
+  if ([messageCopy state] == 3)
   {
-    v4 = [v5 error];
-    [(MRDTransportExternalDevice *)self disconnect:v4];
+    error = [messageCopy error];
+    [(MRDTransportExternalDevice *)self disconnect:error];
   }
 }
 
-- (void)_handleGenericMessage:(id)a3
+- (void)_handleGenericMessage:(id)message
 {
-  v4 = a3;
-  v6 = [v4 data];
-  v5 = [v4 key];
+  messageCopy = message;
+  data = [messageCopy data];
+  v5 = [messageCopy key];
 
-  [(MRDTransportExternalDevice *)self _callClientCustomDataCallback:v6 name:v5];
+  [(MRDTransportExternalDevice *)self _callClientCustomDataCallback:data name:v5];
 }
 
-- (void)_handlePromptForRouteAuthorizationMessage:(id)a3
+- (void)_handlePromptForRouteAuthorizationMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   MRGetSharedService();
   v4 = +[MRMediaRemoteServiceClient sharedServiceClient];
-  v5 = [v4 workerQueue];
-  v7 = v3;
-  v6 = v3;
+  workerQueue = [v4 workerQueue];
+  v7 = messageCopy;
+  v6 = messageCopy;
   MRMediaRemoteServicePromptRouteAuthorization();
 }
 
-- (void)_handlePresentRouteAuthorizationStatusMessage:(id)a3
+- (void)_handlePresentRouteAuthorizationStatusMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   MRGetSharedService();
   v4 = +[MRMediaRemoteServiceClient sharedServiceClient];
-  v5 = [v4 workerQueue];
-  v7 = v3;
-  v6 = v3;
+  workerQueue = [v4 workerQueue];
+  v7 = messageCopy;
+  v6 = messageCopy;
   MRMediaRemoteServicePresentRouteAuthorizationStatus();
 }
 
-- (void)_handleSetDefaultSupportedCommandsMessage:(id)a3
+- (void)_handleSetDefaultSupportedCommandsMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = [MRClient alloc];
-  v6 = [v4 bundleID];
-  v9 = [v5 initWithProcessIdentifier:0 bundleIdentifier:v6];
+  bundleID = [messageCopy bundleID];
+  v9 = [v5 initWithProcessIdentifier:0 bundleIdentifier:bundleID];
 
-  v7 = [(MRDTransportExternalDevice *)self customOrigin];
-  v8 = [v4 supportedCommands];
+  customOrigin = [(MRDTransportExternalDevice *)self customOrigin];
+  supportedCommands = [messageCopy supportedCommands];
 
   MRMediaRemoteSetDefaultSupportedCommandsForClient();
 }
 
-- (void)_handleUpdateActiveSystemEndpoint:(id)a3
+- (void)_handleUpdateActiveSystemEndpoint:(id)endpoint
 {
-  v3 = a3;
+  endpointCopy = endpoint;
   v8 = +[MRDMediaRemoteServer server];
-  v4 = [v8 nowPlayingServer];
-  v5 = [v4 lockScreenRoutingController];
-  v6 = [v3 request];
+  nowPlayingServer = [v8 nowPlayingServer];
+  lockScreenRoutingController = [nowPlayingServer lockScreenRoutingController];
+  request = [endpointCopy request];
 
-  v7 = [v6 outputDeviceUID];
-  [v5 companionASEDidChangeToOutputDeviceUID:v7];
+  outputDeviceUID = [request outputDeviceUID];
+  [lockScreenRoutingController companionASEDidChangeToOutputDeviceUID:outputDeviceUID];
 }
 
-- (void)_handleSetPlayerClientPropertiesMessage:(id)a3
+- (void)_handleSetPlayerClientPropertiesMessage:(id)message
 {
-  v4 = a3;
-  v7 = [(MRDTransportExternalDevice *)self customOrigin];
-  v5 = [v4 playerPath];
+  messageCopy = message;
+  customOrigin = [(MRDTransportExternalDevice *)self customOrigin];
+  playerPath = [messageCopy playerPath];
   v6 = MRNowPlayingPlayerPathResolveExternalDevicePlayerPath();
 
   MRGetSharedService();
   MRMediaRemoteServiceSetPlayerClientProperties();
 }
 
-- (void)_handleSetOriginClientPropertiesMessage:(id)a3
+- (void)_handleSetOriginClientPropertiesMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(MRDTransportExternalDevice *)self customOrigin];
+  messageCopy = message;
+  customOrigin = [(MRDTransportExternalDevice *)self customOrigin];
   MRGetSharedService();
   MRMediaRemoteServiceSetOriginClientProperties();
 }
 
-- (void)_handlePlayerClientParticipantsUpdateMessage:(id)a3
+- (void)_handlePlayerClientParticipantsUpdateMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = [MRPlayerPath alloc];
-  v6 = [(MRDTransportExternalDevice *)self customOrigin];
-  v7 = [v4 playerPath];
-  v8 = [v7 client];
-  v9 = [v4 playerPath];
-  v10 = [v9 player];
-  v11 = [v5 initWithOrigin:v6 client:v8 player:v10];
+  customOrigin = [(MRDTransportExternalDevice *)self customOrigin];
+  playerPath = [messageCopy playerPath];
+  client = [playerPath client];
+  playerPath2 = [messageCopy playerPath];
+  player = [playerPath2 player];
+  v11 = [v5 initWithOrigin:customOrigin client:client player:player];
 
   if ([v11 isResolved])
   {
     v12 = +[MRDMediaRemoteServer server];
-    v13 = [v12 nowPlayingServer];
+    nowPlayingServer = [v12 nowPlayingServer];
     v14 = +[MRDMediaRemoteServer server];
-    v15 = [v14 daemonClient];
-    v16 = [v13 queryPlayerPath:v11 forClient:v15];
+    daemonClient = [v14 daemonClient];
+    v16 = [nowPlayingServer queryPlayerPath:v11 forClient:daemonClient];
 
-    v17 = [v16 playerClient];
-    v18 = v17;
-    if (v17)
+    playerClient = [v16 playerClient];
+    v18 = playerClient;
+    if (playerClient)
     {
-      v19 = [v17 remoteParticipantDataSource];
+      remoteParticipantDataSource = [playerClient remoteParticipantDataSource];
 
-      if (v19)
+      if (remoteParticipantDataSource)
       {
         v30 = v16;
-        v20 = [v4 participants];
-        v21 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v20 count]);
+        participants = [messageCopy participants];
+        v21 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [participants count]);
 
         v33 = 0u;
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v22 = [v4 participants];
-        v23 = [v22 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        participants2 = [messageCopy participants];
+        v23 = [participants2 countByEnumeratingWithState:&v31 objects:v35 count:16];
         if (v23)
         {
           v24 = v23;
@@ -3622,7 +3622,7 @@ LABEL_7:
             {
               if (*v32 != v25)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(participants2);
               }
 
               v27 = [[MRPlaybackQueueParticipant alloc] initWithProtobuf:*(*(&v31 + 1) + 8 * v26)];
@@ -3632,15 +3632,15 @@ LABEL_7:
             }
 
             while (v24 != v26);
-            v24 = [v22 countByEnumeratingWithState:&v31 objects:v35 count:16];
+            v24 = [participants2 countByEnumeratingWithState:&v31 objects:v35 count:16];
           }
 
           while (v24);
         }
 
-        v28 = [v18 remoteParticipantDataSource];
+        remoteParticipantDataSource2 = [v18 remoteParticipantDataSource];
         v29 = [v21 copy];
-        [v28 updateParticipants:v29];
+        [remoteParticipantDataSource2 updateParticipants:v29];
 
         v16 = v30;
       }
@@ -3648,42 +3648,42 @@ LABEL_7:
   }
 }
 
-- (void)_handleApplicationConnectionProtocolMessage:(id)a3
+- (void)_handleApplicationConnectionProtocolMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v5 = +[MRDMediaRemoteServer server];
-  v4 = [v5 remoteControlServer];
-  [v4 handleClientBoundApplicationConnectionMessage:v3];
+  remoteControlServer = [v5 remoteControlServer];
+  [remoteControlServer handleClientBoundApplicationConnectionMessage:messageCopy];
 }
 
-- (void)_handleInvalidateApplicationConnectionMessage:(id)a3
+- (void)_handleInvalidateApplicationConnectionMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v5 = +[MRDMediaRemoteServer server];
-  v4 = [v5 remoteControlServer];
-  [v4 handleInvalidateApplicationConnectionMessage:v3];
+  remoteControlServer = [v5 remoteControlServer];
+  [remoteControlServer handleInvalidateApplicationConnectionMessage:messageCopy];
 }
 
-- (void)_sendClientMessage:(id)a3 completion:(id)a4
+- (void)_sendClientMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = [(MRDTransportExternalDevice *)v8 errorForCurrentState];
-  if (v9)
+  messageCopy = message;
+  completionCopy = completion;
+  selfCopy = self;
+  errorForCurrentState = [(MRDTransportExternalDevice *)selfCopy errorForCurrentState];
+  if (errorForCurrentState)
   {
     v15 = _NSConcreteStackBlock;
     v16 = 3221225472;
     v17 = sub_1000E4BD8;
     v18 = &unk_1004B71F8;
-    v19 = v8;
-    v20 = v6;
-    v10 = v7;
+    v19 = selfCopy;
+    v20 = messageCopy;
+    v10 = completionCopy;
     v21 = v10;
-    if (![(MRDTransportExternalDevice *)v8 _maybeBatchRequest:&v15])
+    if (![(MRDTransportExternalDevice *)selfCopy _maybeBatchRequest:&v15])
     {
       v11 = [MRProtocolMessage alloc];
-      v12 = [v11 initWithUnderlyingCodableMessage:0 error:{v9, v15, v16, v17, v18, v19}];
+      v12 = [v11 initWithUnderlyingCodableMessage:0 error:{errorForCurrentState, v15, v16, v17, v18, v19}];
       (*(v10 + 2))(v10, v12);
     }
 
@@ -3692,13 +3692,13 @@ LABEL_7:
 
   else
   {
-    v14 = [(MRDTransportExternalDevice *)v8 clientConnection];
+    clientConnection = [(MRDTransportExternalDevice *)selfCopy clientConnection];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_1000E4BC8;
     v22[3] = &unk_1004BBBC0;
-    v23 = v7;
-    [v14 sendMessage:v6 reply:v22];
+    v23 = completionCopy;
+    [clientConnection sendMessage:messageCopy reply:v22];
 
     v13 = v23;
   }

@@ -1,38 +1,38 @@
 @interface SQLiteCursor
-- (SQLiteCursor)initWithStatement:(id)a3;
-- (double)doubleForColumnName:(id)a3;
-- (id)JSONObjectForColumnIndex:(int)a3;
-- (id)URLForColumnIndex:(int)a3;
-- (id)URLForColumnName:(id)a3;
-- (id)UUIDForColumnIndex:(int)a3;
-- (id)UUIDForColumnName:(id)a3;
-- (id)dataForColumnIndex:(int)a3;
-- (id)dataForColumnName:(id)a3;
-- (id)dateForColumnIndex:(int)a3;
-- (id)dateForColumnName:(id)a3;
-- (id)dictionaryWithValuesForColumnNames:(id)a3;
-- (id)numberForColumnIndex:(int)a3;
-- (id)numberForColumnName:(id)a3;
-- (id)stringForColumnIndex:(int)a3;
-- (id)stringForColumnName:(id)a3;
-- (int)intForColumnName:(id)a3;
-- (int64_t)int64ForColumnName:(id)a3;
-- (unsigned)_declaredTypeForColumnIndex:(int)a3;
+- (SQLiteCursor)initWithStatement:(id)statement;
+- (double)doubleForColumnName:(id)name;
+- (id)JSONObjectForColumnIndex:(int)index;
+- (id)URLForColumnIndex:(int)index;
+- (id)URLForColumnName:(id)name;
+- (id)UUIDForColumnIndex:(int)index;
+- (id)UUIDForColumnName:(id)name;
+- (id)dataForColumnIndex:(int)index;
+- (id)dataForColumnName:(id)name;
+- (id)dateForColumnIndex:(int)index;
+- (id)dateForColumnName:(id)name;
+- (id)dictionaryWithValuesForColumnNames:(id)names;
+- (id)numberForColumnIndex:(int)index;
+- (id)numberForColumnName:(id)name;
+- (id)stringForColumnIndex:(int)index;
+- (id)stringForColumnName:(id)name;
+- (int)intForColumnName:(id)name;
+- (int64_t)int64ForColumnName:(id)name;
+- (unsigned)_declaredTypeForColumnIndex:(int)index;
 - (void)dealloc;
 @end
 
 @implementation SQLiteCursor
 
-- (SQLiteCursor)initWithStatement:(id)a3
+- (SQLiteCursor)initWithStatement:(id)statement
 {
-  v5 = a3;
+  statementCopy = statement;
   v19.receiver = self;
   v19.super_class = SQLiteCursor;
   v6 = [(SQLiteCursor *)&v19 init];
   if (v6)
   {
-    v6->_statement = [v5 sqlite3_stmt];
-    objc_storeStrong(&v6->_statementWrapper, a3);
+    v6->_statement = [statementCopy sqlite3_stmt];
+    objc_storeStrong(&v6->_statementWrapper, statement);
     v7 = sqlite3_column_count(v6->_statement);
     v6->_columnCount = v7;
     v8 = [NSMutableArray arrayWithCapacity:v7];
@@ -111,25 +111,25 @@ LABEL_17:
   [(SQLiteCursor *)&v3 dealloc];
 }
 
-- (id)dataForColumnIndex:(int)a3
+- (id)dataForColumnIndex:(int)index
 {
-  if (sqlite3_column_type(self->_statement, a3) == 5)
+  if (sqlite3_column_type(self->_statement, index) == 5)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = sqlite3_column_blob(self->_statement, a3);
-    v5 = [NSData dataWithBytes:v6 length:sqlite3_column_bytes(self->_statement, a3)];
+    v6 = sqlite3_column_blob(self->_statement, index);
+    v5 = [NSData dataWithBytes:v6 length:sqlite3_column_bytes(self->_statement, index)];
   }
 
   return v5;
 }
 
-- (id)dataForColumnName:(id)a3
+- (id)dataForColumnName:(id)name
 {
-  v4 = [(SQLiteCursor *)self columnIndexForColumnName:a3];
+  v4 = [(SQLiteCursor *)self columnIndexForColumnName:name];
   if ((v4 & 0x80000000) != 0)
   {
     v5 = 0;
@@ -143,18 +143,18 @@ LABEL_17:
   return v5;
 }
 
-- (id)dateForColumnIndex:(int)a3
+- (id)dateForColumnIndex:(int)index
 {
-  v5 = sqlite3_column_type(self->_statement, a3);
+  v5 = sqlite3_column_type(self->_statement, index);
   if (v5 == 1)
   {
-    v6 = sqlite3_column_int64(self->_statement, a3);
+    v6 = sqlite3_column_int64(self->_statement, index);
     goto LABEL_5;
   }
 
   if (v5 == 2)
   {
-    v6 = sqlite3_column_double(self->_statement, a3);
+    v6 = sqlite3_column_double(self->_statement, index);
 LABEL_5:
     v7 = [NSDate dateWithTimeIntervalSinceReferenceDate:v6];
     goto LABEL_7;
@@ -166,9 +166,9 @@ LABEL_7:
   return v7;
 }
 
-- (id)dateForColumnName:(id)a3
+- (id)dateForColumnName:(id)name
 {
-  v4 = [(SQLiteCursor *)self columnIndexForColumnName:a3];
+  v4 = [(SQLiteCursor *)self columnIndexForColumnName:name];
   if ((v4 & 0x80000000) != 0)
   {
     v5 = 0;
@@ -182,9 +182,9 @@ LABEL_7:
   return v5;
 }
 
-- (double)doubleForColumnName:(id)a3
+- (double)doubleForColumnName:(id)name
 {
-  v4 = [(SQLiteCursor *)self columnIndexForColumnName:a3];
+  v4 = [(SQLiteCursor *)self columnIndexForColumnName:name];
   if ((v4 & 0x80000000) != 0)
   {
     return 0.0;
@@ -196,9 +196,9 @@ LABEL_7:
   return sqlite3_column_double(statement, v5);
 }
 
-- (int)intForColumnName:(id)a3
+- (int)intForColumnName:(id)name
 {
-  v4 = [(SQLiteCursor *)self columnIndexForColumnName:a3];
+  v4 = [(SQLiteCursor *)self columnIndexForColumnName:name];
   if ((v4 & 0x80000000) != 0)
   {
     return 0;
@@ -210,9 +210,9 @@ LABEL_7:
   return sqlite3_column_int(statement, v5);
 }
 
-- (int64_t)int64ForColumnName:(id)a3
+- (int64_t)int64ForColumnName:(id)name
 {
-  v4 = [(SQLiteCursor *)self columnIndexForColumnName:a3];
+  v4 = [(SQLiteCursor *)self columnIndexForColumnName:name];
   if ((v4 & 0x80000000) != 0)
   {
     return 0;
@@ -224,7 +224,7 @@ LABEL_7:
   return sqlite3_column_int64(statement, v5);
 }
 
-- (id)JSONObjectForColumnIndex:(int)a3
+- (id)JSONObjectForColumnIndex:(int)index
 {
   v5 = [(SQLiteCursor *)self dataForColumnIndex:?];
   if (!v5)
@@ -250,7 +250,7 @@ LABEL_8:
     {
       columnNames = self->_columnNames;
       v10 = v8;
-      v11 = [(NSMutableArray *)columnNames objectAtIndexedSubscript:a3];
+      v11 = [(NSMutableArray *)columnNames objectAtIndexedSubscript:index];
       *buf = 138543618;
       v16 = v11;
       v17 = 2114;
@@ -266,17 +266,17 @@ LABEL_9:
   return v6;
 }
 
-- (id)numberForColumnIndex:(int)a3
+- (id)numberForColumnIndex:(int)index
 {
-  v5 = sqlite3_column_type(self->_statement, a3);
+  v5 = sqlite3_column_type(self->_statement, index);
   if (v5 == 1)
   {
-    v6 = [NSNumber numberWithLongLong:sqlite3_column_int64(self->_statement, a3)];
+    v6 = [NSNumber numberWithLongLong:sqlite3_column_int64(self->_statement, index)];
   }
 
   else if (v5 == 2)
   {
-    v6 = [NSNumber numberWithDouble:sqlite3_column_double(self->_statement, a3)];
+    v6 = [NSNumber numberWithDouble:sqlite3_column_double(self->_statement, index)];
   }
 
   else
@@ -287,9 +287,9 @@ LABEL_9:
   return v6;
 }
 
-- (id)numberForColumnName:(id)a3
+- (id)numberForColumnName:(id)name
 {
-  v4 = [(SQLiteCursor *)self columnIndexForColumnName:a3];
+  v4 = [(SQLiteCursor *)self columnIndexForColumnName:name];
   if ((v4 & 0x80000000) != 0)
   {
     v5 = 0;
@@ -303,16 +303,16 @@ LABEL_9:
   return v5;
 }
 
-- (id)stringForColumnIndex:(int)a3
+- (id)stringForColumnIndex:(int)index
 {
-  if (sqlite3_column_type(self->_statement, a3) == 5)
+  if (sqlite3_column_type(self->_statement, index) == 5)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = sqlite3_column_text(self->_statement, a3);
+    v5 = sqlite3_column_text(self->_statement, index);
     if (v5)
     {
       v5 = [NSString stringWithUTF8String:v5];
@@ -322,9 +322,9 @@ LABEL_9:
   return v5;
 }
 
-- (id)stringForColumnName:(id)a3
+- (id)stringForColumnName:(id)name
 {
-  v4 = [(SQLiteCursor *)self columnIndexForColumnName:a3];
+  v4 = [(SQLiteCursor *)self columnIndexForColumnName:name];
   if ((v4 & 0x80000000) != 0)
   {
     v5 = 0;
@@ -338,9 +338,9 @@ LABEL_9:
   return v5;
 }
 
-- (id)UUIDForColumnIndex:(int)a3
+- (id)UUIDForColumnIndex:(int)index
 {
-  v3 = [(SQLiteCursor *)self stringForColumnIndex:*&a3];
+  v3 = [(SQLiteCursor *)self stringForColumnIndex:*&index];
   if (v3)
   {
     v4 = [[NSUUID alloc] initWithUUIDString:v3];
@@ -354,9 +354,9 @@ LABEL_9:
   return v4;
 }
 
-- (id)UUIDForColumnName:(id)a3
+- (id)UUIDForColumnName:(id)name
 {
-  v4 = [(SQLiteCursor *)self columnIndexForColumnName:a3];
+  v4 = [(SQLiteCursor *)self columnIndexForColumnName:name];
   if ((v4 & 0x80000000) != 0)
   {
     v5 = 0;
@@ -370,9 +370,9 @@ LABEL_9:
   return v5;
 }
 
-- (id)URLForColumnIndex:(int)a3
+- (id)URLForColumnIndex:(int)index
 {
-  v3 = [(SQLiteCursor *)self stringForColumnIndex:*&a3];
+  v3 = [(SQLiteCursor *)self stringForColumnIndex:*&index];
   if (v3)
   {
     v4 = [NSURL URLWithString:v3];
@@ -386,9 +386,9 @@ LABEL_9:
   return v4;
 }
 
-- (id)URLForColumnName:(id)a3
+- (id)URLForColumnName:(id)name
 {
-  v4 = [(SQLiteCursor *)self columnIndexForColumnName:a3];
+  v4 = [(SQLiteCursor *)self columnIndexForColumnName:name];
   if ((v4 & 0x80000000) != 0)
   {
     v5 = 0;
@@ -402,9 +402,9 @@ LABEL_9:
   return v5;
 }
 
-- (id)dictionaryWithValuesForColumnNames:(id)a3
+- (id)dictionaryWithValuesForColumnNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   columnKeySet = self->_columnKeySet;
   if (!columnKeySet)
   {
@@ -421,27 +421,27 @@ LABEL_9:
   v14[1] = 3221225472;
   v14[2] = sub_100061124;
   v14[3] = &unk_1003826D0;
-  v15 = v4;
+  v15 = namesCopy;
   v16 = v8;
-  v17 = self;
+  selfCopy = self;
   v10 = v8;
-  v11 = v4;
+  v11 = namesCopy;
   [(NSMutableArray *)columnNames enumerateObjectsUsingBlock:v14];
   v12 = [v10 copy];
 
   return v12;
 }
 
-- (unsigned)_declaredTypeForColumnIndex:(int)a3
+- (unsigned)_declaredTypeForColumnIndex:(int)index
 {
-  if (a3 < 0 || self->_columnCount <= a3)
+  if (index < 0 || self->_columnCount <= index)
   {
     return 0;
   }
 
   else
   {
-    return self->_columnDeclaredTypes[a3];
+    return self->_columnDeclaredTypes[index];
   }
 }
 

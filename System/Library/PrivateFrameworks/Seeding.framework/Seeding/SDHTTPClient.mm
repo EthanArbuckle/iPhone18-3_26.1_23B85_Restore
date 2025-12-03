@@ -4,7 +4,7 @@
 - (NSURL)baseURL;
 - (SDHTTPClient)init;
 - (id)overrideServerURL;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 - (void)baseURL;
 @end
 
@@ -37,8 +37,8 @@ uint64_t __30__SDHTTPClient_sharedInstance__block_invoke()
   if (v2)
   {
     v3 = MEMORY[0x277CCAD30];
-    v4 = [objc_opt_class() _seedingSessionConfiguration];
-    v5 = [v3 sessionWithConfiguration:v4 delegate:v2 delegateQueue:0];
+    _seedingSessionConfiguration = [objc_opt_class() _seedingSessionConfiguration];
+    v5 = [v3 sessionWithConfiguration:_seedingSessionConfiguration delegate:v2 delegateQueue:0];
     urlSession = v2->_urlSession;
     v2->_urlSession = v5;
 
@@ -53,35 +53,35 @@ uint64_t __30__SDHTTPClient_sharedInstance__block_invoke()
 + (id)_seedingSessionConfiguration
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [MEMORY[0x277CCAC38] processInfo];
-  v5 = [v4 processName];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
   v6 = +[SDDevice deviceProductType];
   v7 = +[SDDevice marketingProductName];
   v8 = +[SDDevice productVersion];
   v9 = +[SDDevice osBuild];
-  v10 = [v3 stringWithFormat:@"%@ (Seeding) (Model %@) (%@ %@) Version/%@", v5, v6, v7, v8, v9];
+  v10 = [v3 stringWithFormat:@"%@ (Seeding) (Model %@) (%@ %@) Version/%@", processName, v6, v7, v8, v9];
 
   v16[0] = @"Seeding-Device-Id";
   v11 = +[SDAnalytics deviceIdentifier];
-  v12 = [v11 UUIDString];
+  uUIDString = [v11 UUIDString];
   v16[1] = @"User-Agent";
-  v17[0] = v12;
+  v17[0] = uUIDString;
   v17[1] = v10;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
-  [v2 setHTTPAdditionalHeaders:v13];
+  [defaultSessionConfiguration setHTTPAdditionalHeaders:v13];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return defaultSessionConfiguration;
 }
 
 - (NSURL)baseURL
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(SDHTTPClient *)self overrideServerURL];
-  if (!v2)
+  overrideServerURL = [(SDHTTPClient *)self overrideServerURL];
+  if (!overrideServerURL)
   {
 LABEL_8:
     v4 = [MEMORY[0x277CBEBC0] URLWithString:@"https://bpapi.apple.com"];
@@ -92,17 +92,17 @@ LABEL_8:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v2;
+    v9 = overrideServerURL;
     _os_log_impl(&dword_22E41E000, v3, OS_LOG_TYPE_INFO, "Attempting to use custom ServerURL: %@", &v8, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CBEBC0] URLWithString:v2];
+  v4 = [MEMORY[0x277CBEBC0] URLWithString:overrideServerURL];
   if (!v4)
   {
     v5 = +[SDSeedingLogging fwHandle];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(SDHTTPClient *)v2 baseURL];
+      [(SDHTTPClient *)overrideServerURL baseURL];
     }
 
     goto LABEL_8;
@@ -122,10 +122,10 @@ LABEL_9:
   return v2;
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   v9 = [(SDHTTPClient *)self log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -134,9 +134,9 @@ LABEL_9:
 
   if (SDIsInternalInstall())
   {
-    v10 = [(SDHTTPClient *)self overrideServerURL];
+    overrideServerURL = [(SDHTTPClient *)self overrideServerURL];
 
-    if (v10)
+    if (overrideServerURL)
     {
       v11 = [(SDHTTPClient *)self log];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -153,11 +153,11 @@ LABEL_15:
     }
   }
 
-  v14 = [v7 protectionSpace];
-  v15 = [v14 host];
-  v16 = [(SDHTTPClient *)self baseURL];
-  v17 = [v16 host];
-  v18 = [v15 isEqualToString:v17];
+  protectionSpace = [challengeCopy protectionSpace];
+  host = [protectionSpace host];
+  baseURL = [(SDHTTPClient *)self baseURL];
+  host2 = [baseURL host];
+  v18 = [host isEqualToString:host2];
 
   if ((v18 & 1) == 0)
   {
@@ -175,36 +175,36 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v19 = [v7 protectionSpace];
-  v20 = [v19 authenticationMethod];
-  v21 = [v20 isEqualToString:*MEMORY[0x277CCA720]];
+  protectionSpace2 = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace2 authenticationMethod];
+  v21 = [authenticationMethod isEqualToString:*MEMORY[0x277CCA720]];
 
   if (!v21)
   {
 LABEL_17:
-    v8[2](v8, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
     goto LABEL_18;
   }
 
-  v22 = [(SDHTTPClient *)self baseURL];
-  v23 = [v22 host];
+  baseURL2 = [(SDHTTPClient *)self baseURL];
+  host3 = [baseURL2 host];
 
   AppleSSLPinned = SecPolicyCreateAppleSSLPinned();
   if (AppleSSLPinned)
   {
     v25 = AppleSSLPinned;
-    v26 = [v7 protectionSpace];
-    v27 = [v26 serverTrust];
+    protectionSpace3 = [challengeCopy protectionSpace];
+    serverTrust = [protectionSpace3 serverTrust];
 
-    LODWORD(v26) = SecTrustSetPolicies(v27, v25);
+    LODWORD(protectionSpace3) = SecTrustSetPolicies(serverTrust, v25);
     CFRelease(v25);
-    if (!v26)
+    if (!protectionSpace3)
     {
       error = 0;
-      if (SecTrustEvaluateWithError(v27, &error))
+      if (SecTrustEvaluateWithError(serverTrust, &error))
       {
-        v28 = [MEMORY[0x277CCACF0] credentialForTrust:v27];
-        (v8)[2](v8, 0, v28);
+        v28 = [MEMORY[0x277CCACF0] credentialForTrust:serverTrust];
+        (handlerCopy)[2](handlerCopy, 0, v28);
 
         goto LABEL_12;
       }
@@ -223,7 +223,7 @@ LABEL_17:
     }
   }
 
-  v8[2](v8, 2, 0);
+  handlerCopy[2](handlerCopy, 2, 0);
 LABEL_12:
 
 LABEL_18:
@@ -233,7 +233,7 @@ LABEL_18:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_22E41E000, a2, OS_LOG_TYPE_ERROR, "Invalid custom ServerURL: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

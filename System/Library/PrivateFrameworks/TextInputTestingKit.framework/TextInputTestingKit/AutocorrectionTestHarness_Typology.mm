@@ -1,27 +1,27 @@
 @interface AutocorrectionTestHarness_Typology
-- (id)makeErrorForTest:(id)a3;
+- (id)makeErrorForTest:(id)test;
 @end
 
 @implementation AutocorrectionTestHarness_Typology
 
-- (id)makeErrorForTest:(id)a3
+- (id)makeErrorForTest:(id)test
 {
-  v3 = a3;
-  v4 = [v3 input];
+  testCopy = test;
+  input = [testCopy input];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 touches];
+    touches = [testCopy touches];
   }
 
   else
   {
-    v6 = 0;
+    touches = 0;
   }
 
-  return v6;
+  return touches;
 }
 
 @end

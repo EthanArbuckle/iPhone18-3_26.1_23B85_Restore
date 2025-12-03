@@ -2,25 +2,25 @@
 - (NSArray)allPages;
 - (NUPage)firstPage;
 - (NUPage)lastPage;
-- (NUPagingBlueprint)initWithPages:(id)a3;
-- (id)pageAfterIdentifier:(id)a3;
-- (id)pageBeforeForIdentifier:(id)a3;
-- (id)pageForIdentifier:(id)a3;
-- (void)forEachPage:(id)a3;
+- (NUPagingBlueprint)initWithPages:(id)pages;
+- (id)pageAfterIdentifier:(id)identifier;
+- (id)pageBeforeForIdentifier:(id)identifier;
+- (id)pageForIdentifier:(id)identifier;
+- (void)forEachPage:(id)page;
 @end
 
 @implementation NUPagingBlueprint
 
-- (NUPagingBlueprint)initWithPages:(id)a3
+- (NUPagingBlueprint)initWithPages:(id)pages
 {
-  v4 = a3;
+  pagesCopy = pages;
   v11.receiver = self;
   v11.super_class = NUPagingBlueprint;
   v5 = [(NUPagingBlueprint *)&v11 init];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB70];
-    v7 = [v4 fc_arrayByTransformingWithBlock:&__block_literal_global_17];
+    v7 = [pagesCopy fc_arrayByTransformingWithBlock:&__block_literal_global_17];
     v8 = [v6 orderedSetWithArray:v7];
     blueprintItems = v5->_blueprintItems;
     v5->_blueprintItems = v8;
@@ -37,13 +37,13 @@ NUPagingBlueprintItem *__35__NUPagingBlueprint_initWithPages___block_invoke(uint
   return v3;
 }
 
-- (id)pageBeforeForIdentifier:(id)a3
+- (id)pageBeforeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[NUPagingBlueprintItem alloc] initWithPageID:v4];
+  identifierCopy = identifier;
+  v5 = [[NUPagingBlueprintItem alloc] initWithPageID:identifierCopy];
 
-  v6 = [(NUPagingBlueprint *)self blueprintItems];
-  v7 = [v6 indexOfObject:v5];
+  blueprintItems = [(NUPagingBlueprint *)self blueprintItems];
+  v7 = [blueprintItems indexOfObject:v5];
 
   if (v7)
   {
@@ -57,80 +57,80 @@ NUPagingBlueprintItem *__35__NUPagingBlueprint_initWithPages___block_invoke(uint
 
   if (v8)
   {
-    v11 = 0;
+    page = 0;
   }
 
   else
   {
-    v9 = [(NUPagingBlueprint *)self blueprintItems];
-    v10 = [v9 objectAtIndex:v7 - 1];
+    blueprintItems2 = [(NUPagingBlueprint *)self blueprintItems];
+    v10 = [blueprintItems2 objectAtIndex:v7 - 1];
 
-    v11 = [v10 page];
+    page = [v10 page];
   }
 
-  return v11;
+  return page;
 }
 
-- (id)pageForIdentifier:(id)a3
+- (id)pageForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[NUPagingBlueprintItem alloc] initWithPageID:v4];
+  identifierCopy = identifier;
+  v5 = [[NUPagingBlueprintItem alloc] initWithPageID:identifierCopy];
 
-  v6 = [(NUPagingBlueprint *)self blueprintItems];
-  v7 = [v6 indexOfObject:v5];
+  blueprintItems = [(NUPagingBlueprint *)self blueprintItems];
+  v7 = [blueprintItems indexOfObject:v5];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = 0;
+    page = 0;
   }
 
   else
   {
-    v9 = [(NUPagingBlueprint *)self blueprintItems];
-    v10 = [v9 objectAtIndex:v7];
+    blueprintItems2 = [(NUPagingBlueprint *)self blueprintItems];
+    v10 = [blueprintItems2 objectAtIndex:v7];
 
-    v8 = [v10 page];
+    page = [v10 page];
   }
 
-  return v8;
+  return page;
 }
 
-- (id)pageAfterIdentifier:(id)a3
+- (id)pageAfterIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[NUPagingBlueprintItem alloc] initWithPageID:v4];
+  identifierCopy = identifier;
+  v5 = [[NUPagingBlueprintItem alloc] initWithPageID:identifierCopy];
 
-  v6 = [(NUPagingBlueprint *)self blueprintItems];
-  v7 = [v6 indexOfObject:v5];
+  blueprintItems = [(NUPagingBlueprint *)self blueprintItems];
+  v7 = [blueprintItems indexOfObject:v5];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL || (v8 = v7 + 1, -[NUPagingBlueprint blueprintItems](self, "blueprintItems"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v9, v8 >= v10))
   {
-    v13 = 0;
+    page = 0;
   }
 
   else
   {
-    v11 = [(NUPagingBlueprint *)self blueprintItems];
-    v12 = [v11 objectAtIndex:v8];
+    blueprintItems2 = [(NUPagingBlueprint *)self blueprintItems];
+    v12 = [blueprintItems2 objectAtIndex:v8];
 
-    v13 = [v12 page];
+    page = [v12 page];
   }
 
-  return v13;
+  return page;
 }
 
-- (void)forEachPage:(id)a3
+- (void)forEachPage:(id)page
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  pageCopy = page;
+  if (pageCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(NUPagingBlueprint *)self blueprintItems];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    blueprintItems = [(NUPagingBlueprint *)self blueprintItems];
+    v6 = [blueprintItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -142,20 +142,20 @@ NUPagingBlueprintItem *__35__NUPagingBlueprint_initWithPages___block_invoke(uint
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(blueprintItems);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * v9) page];
-          if (v10)
+          page = [*(*(&v12 + 1) + 8 * v9) page];
+          if (page)
           {
-            v4[2](v4, v10);
+            pageCopy[2](pageCopy, page);
           }
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [blueprintItems countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -167,26 +167,26 @@ NUPagingBlueprintItem *__35__NUPagingBlueprint_initWithPages___block_invoke(uint
 
 - (NUPage)firstPage
 {
-  v2 = [(NUPagingBlueprint *)self blueprintItems];
-  v3 = [v2 firstObject];
-  v4 = [v3 page];
+  blueprintItems = [(NUPagingBlueprint *)self blueprintItems];
+  firstObject = [blueprintItems firstObject];
+  page = [firstObject page];
 
-  return v4;
+  return page;
 }
 
 - (NUPage)lastPage
 {
-  v2 = [(NUPagingBlueprint *)self blueprintItems];
-  v3 = [v2 lastObject];
-  v4 = [v3 page];
+  blueprintItems = [(NUPagingBlueprint *)self blueprintItems];
+  lastObject = [blueprintItems lastObject];
+  page = [lastObject page];
 
-  return v4;
+  return page;
 }
 
 - (NSArray)allPages
 {
-  v2 = [(NUPagingBlueprint *)self blueprintItems];
-  v3 = [v2 valueForKeyPath:@"page"];
+  blueprintItems = [(NUPagingBlueprint *)self blueprintItems];
+  v3 = [blueprintItems valueForKeyPath:@"page"];
 
   return v3;
 }

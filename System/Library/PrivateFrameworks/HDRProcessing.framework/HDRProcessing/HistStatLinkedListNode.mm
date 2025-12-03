@@ -1,14 +1,14 @@
 @interface HistStatLinkedListNode
-- (HistStatLinkedListNode)initWithStreamId:(int64_t)a3 bufferSize:(unsigned __int16)a4;
+- (HistStatLinkedListNode)initWithStreamId:(int64_t)id bufferSize:(unsigned __int16)size;
 - (void)dealloc;
 - (void)detachAllNodes;
 @end
 
 @implementation HistStatLinkedListNode
 
-- (HistStatLinkedListNode)initWithStreamId:(int64_t)a3 bufferSize:(unsigned __int16)a4
+- (HistStatLinkedListNode)initWithStreamId:(int64_t)id bufferSize:(unsigned __int16)size
 {
-  v4 = a4;
+  sizeCopy = size;
   v34 = *MEMORY[0x277D85DE8];
   v27.receiver = self;
   v27.super_class = HistStatLinkedListNode;
@@ -16,7 +16,7 @@
   v7 = v6;
   if (v6)
   {
-    v6->_streamId = a3;
+    v6->_streamId = id;
     v6->_numOfProcessedFrames = 0;
     next = v6->_next;
     v6->_next = 0;
@@ -24,19 +24,19 @@
     prev = v7->_prev;
     v7->_prev = 0;
 
-    v10 = malloc_type_calloc(v4, 4uLL, 0x100004052888210uLL);
+    v10 = malloc_type_calloc(sizeCopy, 4uLL, 0x100004052888210uLL);
     v7->_minValBuffer = v10;
     if (v10)
     {
-      v11 = malloc_type_calloc(v4, 4uLL, 0x100004052888210uLL);
+      v11 = malloc_type_calloc(sizeCopy, 4uLL, 0x100004052888210uLL);
       v7->_maxValBuffer = v11;
       if (v11)
       {
-        v12 = malloc_type_calloc(v4, 4uLL, 0x100004052888210uLL);
+        v12 = malloc_type_calloc(sizeCopy, 4uLL, 0x100004052888210uLL);
         v7->_avgValBuffer = v12;
         if (v12)
         {
-          v13 = malloc_type_calloc(v4, 4uLL, 0x100004052888210uLL);
+          v13 = malloc_type_calloc(sizeCopy, 4uLL, 0x100004052888210uLL);
           v7->_stdValBuffer = v13;
           if (v13)
           {
@@ -46,7 +46,7 @@
             {
               for (i = 0; i != 15; ++i)
               {
-                v7->_prctValBuffer[i] = malloc_type_calloc(v4, 4uLL, 0x100004052888210uLL);
+                v7->_prctValBuffer[i] = malloc_type_calloc(sizeCopy, 4uLL, 0x100004052888210uLL);
                 if (!v7->_prctValBuffer[i])
                 {
                   if (enableLogInstance)
@@ -90,7 +90,7 @@
               v7->_prevNormHistHeight = v16;
               if (v16)
               {
-                v17 = malloc_type_calloc(v4, 8uLL, 0x100004000313F17uLL);
+                v17 = malloc_type_calloc(sizeCopy, 8uLL, 0x100004000313F17uLL);
                 v7->_targetMaxBuffer = v17;
                 if (v17)
                 {
@@ -472,21 +472,21 @@ LABEL_90:
 
 - (void)detachAllNodes
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v3 = v2;
+    v3 = selfCopy;
     do
     {
-      v4 = [v3 prev];
-      v5 = [v3 next];
+      prev = [v3 prev];
+      next = [v3 next];
       [v3 setNext:0];
       [v3 setPrev:0];
 
-      v3 = v5;
+      v3 = next;
     }
 
-    while (v5);
+    while (next);
   }
 }
 

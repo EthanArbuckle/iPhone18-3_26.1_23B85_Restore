@@ -1,14 +1,14 @@
 @interface FrameEvent
 - (NSString)description;
 - (_TtC7Measure10FrameEvent)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FrameEvent
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_10015AD68();
 
   v3 = String._bridgeToObjectiveC()();
@@ -16,11 +16,11 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_10015B274(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_10015B274(coderCopy);
 }
 
 - (_TtC7Measure10FrameEvent)init

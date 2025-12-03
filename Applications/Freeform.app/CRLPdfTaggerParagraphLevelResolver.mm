@@ -1,23 +1,23 @@
 @interface CRLPdfTaggerParagraphLevelResolver
-- (BOOL)paragraphInfo:(id)a3 matchesParagraphInfo:(id)a4 level:(int)a5;
+- (BOOL)paragraphInfo:(id)info matchesParagraphInfo:(id)paragraphInfo level:(int)level;
 - (CRLPdfTagger)tagger;
-- (CRLPdfTaggerParagraphLevelResolver)initWithTagger:(id)a3;
-- (int)levelOfCurrentParagraph:(id *)a3;
+- (CRLPdfTaggerParagraphLevelResolver)initWithTagger:(id)tagger;
+- (int)levelOfCurrentParagraph:(id *)paragraph;
 - (int)tagType;
 @end
 
 @implementation CRLPdfTaggerParagraphLevelResolver
 
-- (CRLPdfTaggerParagraphLevelResolver)initWithTagger:(id)a3
+- (CRLPdfTaggerParagraphLevelResolver)initWithTagger:(id)tagger
 {
-  v4 = a3;
+  taggerCopy = tagger;
   v8.receiver = self;
   v8.super_class = CRLPdfTaggerParagraphLevelResolver;
   v5 = [(CRLPdfTaggerParagraphLevelResolver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_tagger, v4);
+    objc_storeWeak(&v5->_tagger, taggerCopy);
   }
 
   return v6;
@@ -80,7 +80,7 @@
   objc_exception_throw(v15);
 }
 
-- (int)levelOfCurrentParagraph:(id *)a3
+- (int)levelOfCurrentParagraph:(id *)paragraph
 {
   v3 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -137,10 +137,10 @@
   objc_exception_throw(v16);
 }
 
-- (BOOL)paragraphInfo:(id)a3 matchesParagraphInfo:(id)a4 level:(int)a5
+- (BOOL)paragraphInfo:(id)info matchesParagraphInfo:(id)paragraphInfo level:(int)level
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  paragraphInfoCopy = paragraphInfo;
   v8 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {

@@ -2,7 +2,7 @@
 - ($8814E4F230000EB768D7E307C62B5F7C)lossCount;
 - (const)processImageUUIDBytes;
 - (const)senderImageUUIDBytes;
-- (id)_frameForDict:(id)a3;
+- (id)_frameForDict:(id)dict;
 - (id)backtrace;
 - (id)bootUUID;
 - (id)category;
@@ -49,10 +49,10 @@
 - (unint64_t)traceIdentifier;
 - (unint64_t)transitionActivityIdentifier;
 - (unint64_t)type;
-- (void)_populate_timeval:(timeval *)a3 withDict:(id)a4;
-- (void)_populate_timezone:(timezone *)a3 withDict:(id)a4;
+- (void)_populate_timeval:(timeval *)_populate_timeval withDict:(id)dict;
+- (void)_populate_timezone:(timezone *)_populate_timezone withDict:(id)dict;
 - (void)_resetNeedsLookup;
-- (void)setCurEventDictionary:(id)a3;
+- (void)setCurEventDictionary:(id)dictionary;
 @end
 
 @implementation _OSLogDeserializedEventProxy
@@ -61,22 +61,22 @@
 {
   if ([(_OSLogDeserializedEventProxy *)self type]== 1536 || [(_OSLogDeserializedEventProxy *)self type]== 1024 || [(_OSLogDeserializedEventProxy *)self type]== 768)
   {
-    v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-    v5 = [v4 objectForKeyedSubscript:@"dm"];
+    curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+    v5 = [curEventDictionary objectForKeyedSubscript:@"dm"];
 
     if (v5)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v10 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v11 = objc_opt_class();
-        [v10 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1150 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1150 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
       }
 
       v6 = [OSLogDeserializedEventDecomposedMessage alloc];
-      v7 = [(_OSLogDeserializedEventProxy *)self metadata];
-      v8 = [(OSLogDeserializedEventDecomposedMessage *)v6 initWithDict:v5 metadata:v7];
+      metadata = [(_OSLogDeserializedEventProxy *)self metadata];
+      v8 = [(OSLogDeserializedEventDecomposedMessage *)v6 initWithDict:v5 metadata:metadata];
     }
 
     else
@@ -96,18 +96,18 @@
 - (id)backtrace
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"bt"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"bt"];
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v20 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v21 = objc_opt_class();
-      [v20 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1123 description:{@"Unexpected class: %@. Expected: %@", v21, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1123 description:{@"Unexpected class: %@. Expected: %@", v21, objc_opt_class()}];
     }
 
     v23 = a2;
@@ -135,13 +135,13 @@
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v14 = [MEMORY[0x277CCA890] currentHandler];
+            currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
             v22 = objc_opt_class();
-            [v14 handleFailureInMethod:v23 object:self file:@"EventSerializer.m" lineNumber:1125 description:{@"Unexpected class: %@. Expected: %@", v22, objc_opt_class()}];
+            [currentHandler2 handleFailureInMethod:v23 object:self file:@"EventSerializer.m" lineNumber:1125 description:{@"Unexpected class: %@. Expected: %@", v22, objc_opt_class()}];
           }
 
           v13 = [(_OSLogDeserializedEventProxy *)self _frameForDict:v12];
-          [v6 addObject:v13];
+          [array addObject:v13];
 
           ++v11;
         }
@@ -156,17 +156,17 @@
 
   else
   {
-    v15 = [(_OSLogDeserializedEventProxy *)self senderImageUUIDBytes];
-    if (v15)
+    senderImageUUIDBytes = [(_OSLogDeserializedEventProxy *)self senderImageUUIDBytes];
+    if (senderImageUUIDBytes)
     {
-      v16 = [[OSLogEventBacktraceFrame alloc] initWithUUIDBytes:v15 andOffset:[(_OSLogDeserializedEventProxy *)self senderImageOffset]];
-      [v6 addObject:v16];
+      v16 = [[OSLogEventBacktraceFrame alloc] initWithUUIDBytes:senderImageUUIDBytes andOffset:[(_OSLogDeserializedEventProxy *)self senderImageOffset]];
+      [array addObject:v16];
     }
   }
 
-  if ([v6 count])
+  if ([array count])
   {
-    v17 = [[OSLogEventBacktrace alloc] initWithFrames:v6];
+    v17 = [[OSLogEventBacktrace alloc] initWithFrames:array];
   }
 
   else
@@ -179,22 +179,22 @@
   return v17;
 }
 
-- (id)_frameForDict:(id)a3
+- (id)_frameForDict:(id)dict
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"iu"];
+  dictCopy = dict;
+  v6 = [dictCopy objectForKeyedSubscript:@"iu"];
   if (v6)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = objc_opt_class();
-      [v10 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1108 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1108 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
     }
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"io"];
+  v7 = [dictCopy objectForKeyedSubscript:@"io"];
   if (v7)
   {
     objc_opt_class();
@@ -208,9 +208,9 @@
 
     else
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v13 = objc_opt_class();
-      [v12 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1112 description:{@"Unexpected class: %@. Expected: %@", v13, objc_opt_class()}];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1112 description:{@"Unexpected class: %@. Expected: %@", v13, objc_opt_class()}];
 
       if (v6)
       {
@@ -219,8 +219,8 @@
     }
   }
 
-  v14 = [MEMORY[0x277CCA890] currentHandler];
-  [v14 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1114 description:@"Malformed frame dictionary"];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1114 description:@"Malformed frame dictionary"];
 
 LABEL_7:
   v8 = -[OSLogEventBacktraceFrame initWithUUIDBytes:andOffset:]([OSLogEventBacktraceFrame alloc], "initWithUUIDBytes:andOffset:", [v6 bytes], objc_msgSend(v7, "unsignedLongLongValue"));
@@ -232,22 +232,22 @@ LABEL_7:
 {
   if ([(_OSLogDeserializedEventProxy *)self type]== 1792)
   {
-    v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-    v5 = [v4 objectForKeyedSubscript:@"lc"];
+    curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+    v5 = [curEventDictionary objectForKeyedSubscript:@"lc"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1096 description:@"Unexpected type for loss count dict"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1096 description:@"Unexpected type for loss count dict"];
     }
 
     v6 = [v5 objectForKeyedSubscript:@"c"];
     v7 = [v5 objectForKeyedSubscript:@"s"];
-    v8 = [v6 unsignedLongLongValue];
-    v9 = [v7 BOOLValue];
+    unsignedLongLongValue = [v6 unsignedLongLongValue];
+    bOOLValue = [v7 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
       v10 = 0x100000000;
     }
@@ -257,7 +257,7 @@ LABEL_7:
       v10 = 0;
     }
 
-    return (v10 & 0xFFFFFFFF00000000 | v8);
+    return (v10 & 0xFFFFFFFF00000000 | unsignedLongLongValue);
   }
 
   else
@@ -279,17 +279,17 @@ LABEL_7:
   }
 
   self->_lossEndUnixTimeZoneNeedsLookup = 0;
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"leutz"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"leutz"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1089 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1089 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
     p_lossEndUnixTimeZone = &self->_lossEndUnixTimeZone;
@@ -317,17 +317,17 @@ LABEL_7:
   }
 
   self->_lossEndUnixDateNeedsLookup = 0;
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"leud"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"leud"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1089 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1089 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
     p_lossEndUnixDate = &self->_lossEndUnixDate;
@@ -355,17 +355,17 @@ LABEL_7:
   }
 
   self->_lossStartUnixTimeZoneNeedsLookup = 0;
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"lsutz"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"lsutz"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1088 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1088 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
     p_lossStartUnixTimeZone = &self->_lossStartUnixTimeZone;
@@ -393,17 +393,17 @@ LABEL_7:
   }
 
   self->_lossStartUnixDateNeedsLookup = 0;
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"lsud"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"lsud"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1088 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1088 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
     p_lossStartUnixDate = &self->_lossStartUnixDate;
@@ -420,29 +420,29 @@ LABEL_7:
 
 - (id)timeZone
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self unixTimeZone];
-  if (!v4)
+  unixTimeZone = [(_OSLogDeserializedEventProxy *)self unixTimeZone];
+  if (!unixTimeZone)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1078 description:@"Could not get Unix timezone"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1078 description:@"Could not get Unix timezone"];
   }
 
   v5 = MEMORY[0x277CBEBB0];
-  v6 = -60 * v4->tz_minuteswest + 3600 * v4->tz_dsttime;
+  v6 = -60 * unixTimeZone->tz_minuteswest + 3600 * unixTimeZone->tz_dsttime;
 
   return [v5 timeZoneForSecondsFromGMT:v6];
 }
 
 - (id)date
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self unixDate];
-  if (!v4)
+  unixDate = [(_OSLogDeserializedEventProxy *)self unixDate];
+  if (!unixDate)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1070 description:@"Could not get Unix date"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1070 description:@"Could not get Unix date"];
   }
 
-  v5 = v4->tv_usec / 1000000.0 + v4->tv_sec;
+  v5 = unixDate->tv_usec / 1000000.0 + unixDate->tv_sec;
   v6 = MEMORY[0x277CBEAA8];
 
   return [v6 dateWithTimeIntervalSince1970:v5];
@@ -456,21 +456,21 @@ LABEL_7:
   }
 
   self->_unixTimeZoneNeedsLookup = 0;
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"utz"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"utz"];
 
   if (!v5)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1061 description:@"Could not fetch nonnull property"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1061 description:@"Could not fetch nonnull property"];
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v10 = objc_opt_class();
-    [v9 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1061 description:{@"Unexpected class: %@. Expected: %@", v10, objc_opt_class()}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1061 description:{@"Unexpected class: %@. Expected: %@", v10, objc_opt_class()}];
   }
 
   p_unixTimeZone = &self->_unixTimeZone;
@@ -487,21 +487,21 @@ LABEL_7:
   }
 
   self->_unixDateNeedsLookup = 0;
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"ud"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"ud"];
 
   if (!v5)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1061 description:@"Could not fetch nonnull property"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1061 description:@"Could not fetch nonnull property"];
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v10 = objc_opt_class();
-    [v9 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1061 description:{@"Unexpected class: %@. Expected: %@", v10, objc_opt_class()}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1061 description:{@"Unexpected class: %@. Expected: %@", v10, objc_opt_class()}];
   }
 
   p_unixDate = &self->_unixDate;
@@ -510,59 +510,59 @@ LABEL_7:
   return p_unixDate;
 }
 
-- (void)_populate_timezone:(timezone *)a3 withDict:(id)a4
+- (void)_populate_timezone:(timezone *)_populate_timezone withDict:(id)dict
 {
-  v7 = a4;
-  v10 = [v7 objectForKeyedSubscript:@"mw"];
-  v8 = [v7 objectForKeyedSubscript:@"dt"];
+  dictCopy = dict;
+  v10 = [dictCopy objectForKeyedSubscript:@"mw"];
+  v8 = [dictCopy objectForKeyedSubscript:@"dt"];
 
   if (!v10 || !v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1055 description:@"Malformed timeval dict"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1055 description:@"Malformed timeval dict"];
   }
 
-  a3->tz_minuteswest = [v10 intValue];
-  a3->tz_dsttime = [v8 intValue];
+  _populate_timezone->tz_minuteswest = [v10 intValue];
+  _populate_timezone->tz_dsttime = [v8 intValue];
 }
 
-- (void)_populate_timeval:(timeval *)a3 withDict:(id)a4
+- (void)_populate_timeval:(timeval *)_populate_timeval withDict:(id)dict
 {
-  v7 = a4;
-  v10 = [v7 objectForKeyedSubscript:@"sec"];
-  v8 = [v7 objectForKeyedSubscript:@"usec"];
+  dictCopy = dict;
+  v10 = [dictCopy objectForKeyedSubscript:@"sec"];
+  v8 = [dictCopy objectForKeyedSubscript:@"usec"];
 
   if (!v10 || !v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1043 description:@"Malformed timeval dict"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1043 description:@"Malformed timeval dict"];
   }
 
-  a3->tv_sec = [v10 longValue];
-  a3->tv_usec = [v8 intValue];
+  _populate_timeval->tv_sec = [v10 longValue];
+  _populate_timeval->tv_usec = [v8 intValue];
 }
 
 - (id)bootUUID
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"b"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"b"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v9 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v10 = objc_opt_class();
-      [v9 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1011 description:{@"Unexpected class: %@. Expected: %@", v10, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1011 description:{@"Unexpected class: %@. Expected: %@", v10, objc_opt_class()}];
     }
   }
 
   v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:{objc_msgSend(v5, "bytes")}];
   if (!v6)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1014 description:@"Encountered nil bootUUID"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1014 description:@"Encountered nil bootUUID"];
   }
 
   return v6;
@@ -570,43 +570,43 @@ LABEL_7:
 
 - (const)senderImageUUIDBytes
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"siu"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"siu"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1006 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1006 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 bytes];
+    bytes = [v5 bytes];
   }
 
   else
   {
-    v6 = 0;
+    bytes = 0;
   }
 
-  return v6;
+  return bytes;
 }
 
 - (id)senderImageUUID
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"siu"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"siu"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1006 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1006 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
     v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:{objc_msgSend(v5, "bytes")}];
@@ -622,43 +622,43 @@ LABEL_7:
 
 - (const)processImageUUIDBytes
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"piu"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"piu"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1005 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1005 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 bytes];
+    bytes = [v5 bytes];
   }
 
   else
   {
-    v6 = 0;
+    bytes = 0;
   }
 
-  return v6;
+  return bytes;
 }
 
 - (id)processImageUUID
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"piu"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"piu"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1005 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1005 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
     v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:{objc_msgSend(v5, "bytes")}];
@@ -676,15 +676,15 @@ LABEL_7:
 {
   if ([(_OSLogDeserializedEventProxy *)self type]== 2048)
   {
-    v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-    v5 = [v4 objectForKeyedSubscript:@"mtd"];
+    curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+    v5 = [curEventDictionary objectForKeyedSubscript:@"mtd"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = objc_opt_class();
-      [v6 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1000 description:{@"Unexpected class: %@. Expected: %@", v7, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1000 description:{@"Unexpected class: %@. Expected: %@", v7, objc_opt_class()}];
     }
   }
 
@@ -700,15 +700,15 @@ LABEL_7:
 {
   if ([(_OSLogDeserializedEventProxy *)self type]== 2048)
   {
-    v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-    v5 = [v4 objectForKeyedSubscript:@"mtm"];
+    curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+    v5 = [curEventDictionary objectForKeyedSubscript:@"mtm"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = objc_opt_class();
-      [v6 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:990 description:{@"Unexpected class: %@. Expected: %@", v7, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:990 description:{@"Unexpected class: %@. Expected: %@", v7, objc_opt_class()}];
     }
   }
 
@@ -724,15 +724,15 @@ LABEL_7:
 {
   if ([(_OSLogDeserializedEventProxy *)self type]== 2048)
   {
-    v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-    v5 = [v4 objectForKeyedSubscript:@"mtdi"];
+    curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+    v5 = [curEventDictionary objectForKeyedSubscript:@"mtdi"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = objc_opt_class();
-      [v6 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:980 description:{@"Unexpected class: %@. Expected: %@", v7, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:980 description:{@"Unexpected class: %@. Expected: %@", v7, objc_opt_class()}];
     }
   }
 
@@ -748,29 +748,29 @@ LABEL_7:
 {
   if ([(_OSLogDeserializedEventProxy *)self type]== 2048)
   {
-    v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-    v5 = [v4 objectForKeyedSubscript:@"mtl"];
+    curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+    v5 = [curEventDictionary objectForKeyedSubscript:@"mtl"];
 
     if (v5)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v10 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v11 = objc_opt_class();
-        [v10 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:973 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:973 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
       }
 
-      v6 = [(_OSLogDeserializedEventProxy *)self metadata];
-      v7 = [v6 stringForIndex:v5];
+      metadata = [(_OSLogDeserializedEventProxy *)self metadata];
+      v7 = [metadata stringForIndex:v5];
 
       if (v7)
       {
         goto LABEL_8;
       }
 
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:973 description:{@"Could not look up string for: %s", "metricLabel"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:973 description:{@"Could not look up string for: %s", "metricLabel"}];
     }
 
     v7 = 0;
@@ -789,29 +789,29 @@ LABEL_10:
 {
   if ([(_OSLogDeserializedEventProxy *)self type]== 1536)
   {
-    v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-    v5 = [v4 objectForKeyedSubscript:@"sn"];
+    curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+    v5 = [curEventDictionary objectForKeyedSubscript:@"sn"];
 
     if (v5)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v10 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v11 = objc_opt_class();
-        [v10 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:970 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:970 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
       }
 
-      v6 = [(_OSLogDeserializedEventProxy *)self metadata];
-      v7 = [v6 stringForIndex:v5];
+      metadata = [(_OSLogDeserializedEventProxy *)self metadata];
+      v7 = [metadata stringForIndex:v5];
 
       if (v7)
       {
         goto LABEL_8;
       }
 
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:970 description:{@"Could not look up string for: %s", "signpostName"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:970 description:{@"Could not look up string for: %s", "signpostName"}];
     }
 
     v7 = 0;
@@ -830,29 +830,29 @@ LABEL_10:
 {
   if ([(_OSLogDeserializedEventProxy *)self type]== 1536 || [(_OSLogDeserializedEventProxy *)self type]== 1024 || [(_OSLogDeserializedEventProxy *)self type]== 768)
   {
-    v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-    v5 = [v4 objectForKeyedSubscript:@"f"];
+    curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+    v5 = [curEventDictionary objectForKeyedSubscript:@"f"];
 
     if (v5)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v10 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v11 = objc_opt_class();
-        [v10 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:968 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:968 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
       }
 
-      v6 = [(_OSLogDeserializedEventProxy *)self metadata];
-      v7 = [v6 stringForIndex:v5];
+      metadata = [(_OSLogDeserializedEventProxy *)self metadata];
+      v7 = [metadata stringForIndex:v5];
 
       if (v7)
       {
         goto LABEL_10;
       }
 
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:968 description:{@"Could not look up string for: %s", "formatString"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:968 description:{@"Could not look up string for: %s", "formatString"}];
     }
 
     v7 = 0;
@@ -871,29 +871,29 @@ LABEL_11:
 {
   if ([(_OSLogDeserializedEventProxy *)self type]== 1536 || [(_OSLogDeserializedEventProxy *)self type]== 1024 || [(_OSLogDeserializedEventProxy *)self type]== 2048)
   {
-    v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-    v5 = [v4 objectForKeyedSubscript:@"cat"];
+    curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+    v5 = [curEventDictionary objectForKeyedSubscript:@"cat"];
 
     if (v5)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v10 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v11 = objc_opt_class();
-        [v10 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:967 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:967 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
       }
 
-      v6 = [(_OSLogDeserializedEventProxy *)self metadata];
-      v7 = [v6 stringForIndex:v5];
+      metadata = [(_OSLogDeserializedEventProxy *)self metadata];
+      v7 = [metadata stringForIndex:v5];
 
       if (v7)
       {
         goto LABEL_10;
       }
 
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:967 description:{@"Could not look up string for: %s", "category"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:967 description:{@"Could not look up string for: %s", "category"}];
     }
 
     v7 = 0;
@@ -912,29 +912,29 @@ LABEL_11:
 {
   if ([(_OSLogDeserializedEventProxy *)self type]== 1536 || [(_OSLogDeserializedEventProxy *)self type]== 1024 || [(_OSLogDeserializedEventProxy *)self type]== 2048)
   {
-    v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-    v5 = [v4 objectForKeyedSubscript:@"sub"];
+    curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+    v5 = [curEventDictionary objectForKeyedSubscript:@"sub"];
 
     if (v5)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v10 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v11 = objc_opt_class();
-        [v10 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:966 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:966 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
       }
 
-      v6 = [(_OSLogDeserializedEventProxy *)self metadata];
-      v7 = [v6 stringForIndex:v5];
+      metadata = [(_OSLogDeserializedEventProxy *)self metadata];
+      v7 = [metadata stringForIndex:v5];
 
       if (v7)
       {
         goto LABEL_10;
       }
 
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:966 description:{@"Could not look up string for: %s", "subsystem"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:966 description:{@"Could not look up string for: %s", "subsystem"}];
     }
 
     v7 = 0;
@@ -951,8 +951,8 @@ LABEL_11:
 
 - (id)sender
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"send"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"send"];
 
   if (!v5)
   {
@@ -962,18 +962,18 @@ LABEL_11:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v11 = objc_opt_class();
-    [v10 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:963 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:963 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
   }
 
-  v6 = [(_OSLogDeserializedEventProxy *)self metadata];
-  v7 = [v6 stringForIndex:v5];
+  metadata = [(_OSLogDeserializedEventProxy *)self metadata];
+  v7 = [metadata stringForIndex:v5];
 
   if (!v7)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:963 description:{@"Could not look up string for: %s", "sender"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:963 description:{@"Could not look up string for: %s", "sender"}];
 
 LABEL_6:
     v7 = 0;
@@ -984,8 +984,8 @@ LABEL_6:
 
 - (id)senderImagePath
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"sip"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"sip"];
 
   if (!v5)
   {
@@ -995,18 +995,18 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v11 = objc_opt_class();
-    [v10 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:962 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:962 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
   }
 
-  v6 = [(_OSLogDeserializedEventProxy *)self metadata];
-  v7 = [v6 stringForIndex:v5];
+  metadata = [(_OSLogDeserializedEventProxy *)self metadata];
+  v7 = [metadata stringForIndex:v5];
 
   if (!v7)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:962 description:{@"Could not look up string for: %s", "senderImagePath"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:962 description:{@"Could not look up string for: %s", "senderImagePath"}];
 
 LABEL_6:
     v7 = 0;
@@ -1017,8 +1017,8 @@ LABEL_6:
 
 - (id)process
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"p"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"p"];
 
   if (!v5)
   {
@@ -1028,18 +1028,18 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v11 = objc_opt_class();
-    [v10 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:961 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:961 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
   }
 
-  v6 = [(_OSLogDeserializedEventProxy *)self metadata];
-  v7 = [v6 stringForIndex:v5];
+  metadata = [(_OSLogDeserializedEventProxy *)self metadata];
+  v7 = [metadata stringForIndex:v5];
 
   if (!v7)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:961 description:{@"Could not look up string for: %s", "process"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:961 description:{@"Could not look up string for: %s", "process"}];
 
 LABEL_6:
     v7 = 0;
@@ -1050,8 +1050,8 @@ LABEL_6:
 
 - (id)processImagePath
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"pip"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"pip"];
 
   if (!v5)
   {
@@ -1061,18 +1061,18 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v11 = objc_opt_class();
-    [v10 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:960 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:960 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
   }
 
-  v6 = [(_OSLogDeserializedEventProxy *)self metadata];
-  v7 = [v6 stringForIndex:v5];
+  metadata = [(_OSLogDeserializedEventProxy *)self metadata];
+  v7 = [metadata stringForIndex:v5];
 
   if (!v7)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:960 description:{@"Could not look up string for: %s", "processImagePath"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:960 description:{@"Could not look up string for: %s", "processImagePath"}];
 
 LABEL_6:
     v7 = 0;
@@ -1083,8 +1083,8 @@ LABEL_6:
 
 - (id)composedMessage
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"cm"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"cm"];
 
   if (!v5)
   {
@@ -1094,18 +1094,18 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v11 = objc_opt_class();
-    [v10 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:959 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:959 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
   }
 
-  v6 = [(_OSLogDeserializedEventProxy *)self metadata];
-  v7 = [v6 stringForIndex:v5];
+  metadata = [(_OSLogDeserializedEventProxy *)self metadata];
+  v7 = [metadata stringForIndex:v5];
 
   if (!v7)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:959 description:{@"Could not look up string for: %s", "composedMessage"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:959 description:{@"Could not look up string for: %s", "composedMessage"}];
 
 LABEL_6:
     v7 = 0;
@@ -1116,28 +1116,28 @@ LABEL_6:
 
 - (int)processIdentifier
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"pid"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"pid"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:956 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:956 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 longLongValue];
+    longLongValue = [v5 longLongValue];
   }
 
   else
   {
-    v6 = 0;
+    longLongValue = 0;
   }
 
-  return v6;
+  return longLongValue;
 }
 
 - (unint64_t)lossEndMachContinuousTimestamp
@@ -1147,28 +1147,28 @@ LABEL_6:
     return 0;
   }
 
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"lemct"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"lemct"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:953 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:953 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)lossStartMachContinuousTimestamp
@@ -1178,28 +1178,28 @@ LABEL_6:
     return 0;
   }
 
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"lsmct"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"lsmct"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:952 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:952 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)creatorProcessUniqueIdentifier
@@ -1209,28 +1209,28 @@ LABEL_6:
     return 0;
   }
 
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"cpui"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"cpui"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:949 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:949 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)creatorActivityIdentifier
@@ -1240,28 +1240,28 @@ LABEL_6:
     return 0;
   }
 
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"cai"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"cai"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:948 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:948 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)signpostScope
@@ -1271,28 +1271,28 @@ LABEL_6:
     return 0;
   }
 
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"ss"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"ss"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:945 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:945 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)signpostType
@@ -1302,340 +1302,340 @@ LABEL_6:
     return 0;
   }
 
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"st"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"st"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:944 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:944 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)signpostIdentifier
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"si"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"si"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:941 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:941 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)senderImageOffset
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"sio"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"sio"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:940 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:940 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)machContinuousTimestamp
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"mct"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"mct"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:939 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:939 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)continuousNanosecondsSinceBoot
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"ns"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"ns"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:938 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:938 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)transitionActivityIdentifier
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"tai"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"tai"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:937 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:937 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)parentActivityIdentifier
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"paid"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"paid"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:936 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:936 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)activityIdentifier
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"aid"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"aid"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:935 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:935 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)threadIdentifier
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"tid"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"tid"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:934 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:934 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)traceIdentifier
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"ti"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"ti"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:933 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:933 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)timeToLive
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"ttl"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"ttl"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:932 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:932 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)size
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"s"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"s"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:931 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:931 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)logType
 {
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"lt"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"lt"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:930 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:930 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)type
@@ -1646,32 +1646,32 @@ LABEL_6:
   }
 
   self->_needsTypeLookup = 0;
-  v4 = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"t"];
+  curEventDictionary = [(_OSLogDeserializedEventProxy *)self curEventDictionary];
+  v5 = [curEventDictionary objectForKeyedSubscript:@"t"];
 
   if (!v5)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:925 description:@"Could not get type for proxy"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:925 description:@"Could not get type for proxy"];
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v10 = objc_opt_class();
-    [v9 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:926 description:{@"Unexpected class: %@. Expected: %@", v10, objc_opt_class()}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:926 description:{@"Unexpected class: %@. Expected: %@", v10, objc_opt_class()}];
   }
 
-  v6 = [v5 unsignedLongLongValue];
-  self->_type = v6;
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
+  self->_type = unsignedLongLongValue;
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
-- (void)setCurEventDictionary:(id)a3
+- (void)setCurEventDictionary:(id)dictionary
 {
-  objc_storeStrong(&self->_curEventDictionary, a3);
+  objc_storeStrong(&self->_curEventDictionary, dictionary);
 
   [(_OSLogDeserializedEventProxy *)self _resetNeedsLookup];
 }

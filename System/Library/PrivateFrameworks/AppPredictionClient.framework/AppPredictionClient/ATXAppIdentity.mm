@@ -1,54 +1,54 @@
 @interface ATXAppIdentity
 + (ATXAppIdentity)currentAppIdentity;
-+ (id)descriptionForAppType:(unint64_t)a3;
-- (ATXAppIdentity)initWithBundleIdentifier:(id)a3;
-- (ATXAppIdentity)initWithBundleURL:(id)a3;
-- (ATXAppIdentity)initWithBundleURL:(id)a3 appType:(unint64_t)a4;
-- (ATXAppIdentity)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXAppIdentity:(id)a3;
-- (id)_initWithBundleIdentifier:(id)a3 bundleURL:(id)a4 appType:(unint64_t)a5;
++ (id)descriptionForAppType:(unint64_t)type;
+- (ATXAppIdentity)initWithBundleIdentifier:(id)identifier;
+- (ATXAppIdentity)initWithBundleURL:(id)l;
+- (ATXAppIdentity)initWithBundleURL:(id)l appType:(unint64_t)type;
+- (ATXAppIdentity)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXAppIdentity:(id)identity;
+- (id)_initWithBundleIdentifier:(id)identifier bundleURL:(id)l appType:(unint64_t)type;
 - (id)bundleIDWithRelevantPrefix;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXAppIdentity
 
-- (id)_initWithBundleIdentifier:(id)a3 bundleURL:(id)a4 appType:(unint64_t)a5
+- (id)_initWithBundleIdentifier:(id)identifier bundleURL:(id)l appType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  lCopy = l;
   v16.receiver = self;
   v16.super_class = ATXAppIdentity;
   v10 = [(ATXAppIdentity *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     bundleIdentifier = v10->_bundleIdentifier;
     v10->_bundleIdentifier = v11;
 
-    v13 = [v9 copy];
+    v13 = [lCopy copy];
     bundleURL = v10->_bundleURL;
     v10->_bundleURL = v13;
 
-    v10->_appType = a5;
+    v10->_appType = type;
   }
 
   return v10;
 }
 
-- (ATXAppIdentity)initWithBundleIdentifier:(id)a3
+- (ATXAppIdentity)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (ATXIsRemoteAppBundleId())
   {
     v5 = ATXBundleIdForRemoteBundleId();
 
     v6 = 1;
-    v4 = v5;
+    identifierCopy = v5;
   }
 
   else
@@ -56,78 +56,78 @@
     v6 = 0;
   }
 
-  v7 = [(ATXAppIdentity *)self _initWithBundleIdentifier:v4 bundleURL:0 appType:v6];
+  v7 = [(ATXAppIdentity *)self _initWithBundleIdentifier:identifierCopy bundleURL:0 appType:v6];
 
   return v7;
 }
 
-- (ATXAppIdentity)initWithBundleURL:(id)a3
+- (ATXAppIdentity)initWithBundleURL:(id)l
 {
   v4 = MEMORY[0x1E696AAE8];
-  v5 = a3;
-  v6 = [v4 bundleWithURL:v5];
-  v7 = [v6 bundleIdentifier];
-  v8 = [(ATXAppIdentity *)self _initWithBundleIdentifier:v7 bundleURL:v5 appType:0];
+  lCopy = l;
+  v6 = [v4 bundleWithURL:lCopy];
+  bundleIdentifier = [v6 bundleIdentifier];
+  v8 = [(ATXAppIdentity *)self _initWithBundleIdentifier:bundleIdentifier bundleURL:lCopy appType:0];
 
   return v8;
 }
 
-- (ATXAppIdentity)initWithBundleURL:(id)a3 appType:(unint64_t)a4
+- (ATXAppIdentity)initWithBundleURL:(id)l appType:(unint64_t)type
 {
   v6 = MEMORY[0x1E696AAE8];
-  v7 = a3;
-  v8 = [v6 bundleWithURL:v7];
-  v9 = [v8 bundleIdentifier];
-  v10 = [(ATXAppIdentity *)self _initWithBundleIdentifier:v9 bundleURL:v7 appType:a4];
+  lCopy = l;
+  v8 = [v6 bundleWithURL:lCopy];
+  bundleIdentifier = [v8 bundleIdentifier];
+  v10 = [(ATXAppIdentity *)self _initWithBundleIdentifier:bundleIdentifier bundleURL:lCopy appType:type];
 
   return v10;
 }
 
 + (ATXAppIdentity)currentAppIdentity
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [a1 alloc];
-  v5 = [v3 bundleIdentifier];
-  v6 = [v3 bundleURL];
-  v7 = [v4 _initWithBundleIdentifier:v5 bundleURL:v6 appType:0];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v4 = [self alloc];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  bundleURL = [mainBundle bundleURL];
+  v7 = [v4 _initWithBundleIdentifier:bundleIdentifier bundleURL:bundleURL appType:0];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(ATXAppIdentity *)self bundleIdentifier];
-  v4 = [v3 hash];
+  bundleIdentifier = [(ATXAppIdentity *)self bundleIdentifier];
+  v4 = [bundleIdentifier hash];
 
-  v5 = [(ATXAppIdentity *)self bundleURL];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  bundleURL = [(ATXAppIdentity *)self bundleURL];
+  v6 = [bundleURL hash] - v4 + 32 * v4;
 
   return [(ATXAppIdentity *)self appType]- v6 + 32 * v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXAppIdentity *)self isEqualToATXAppIdentity:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXAppIdentity *)self isEqualToATXAppIdentity:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXAppIdentity:(id)a3
+- (BOOL)isEqualToATXAppIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = self->_bundleIdentifier;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == identityCopy[1])
   {
   }
 
@@ -143,7 +143,7 @@
 
   v8 = self->_bundleURL;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == identityCopy[2])
   {
 
     goto LABEL_9;
@@ -154,7 +154,7 @@
   if (v10)
   {
 LABEL_9:
-    v11 = self->_appType == v4[3];
+    v11 = self->_appType == identityCopy[3];
     goto LABEL_10;
   }
 
@@ -167,28 +167,28 @@ LABEL_10:
 
 - (id)description
 {
-  v3 = [(ATXAppIdentity *)self bundleIdentifier];
-  if (v3)
+  bundleIdentifier = [(ATXAppIdentity *)self bundleIdentifier];
+  if (bundleIdentifier)
   {
-    v4 = [(ATXAppIdentity *)self bundleIdentifier];
+    bundleIdentifier2 = [(ATXAppIdentity *)self bundleIdentifier];
   }
 
   else
   {
-    v5 = [(ATXAppIdentity *)self bundleURL];
-    v4 = [v5 path];
+    bundleURL = [(ATXAppIdentity *)self bundleURL];
+    bundleIdentifier2 = [bundleURL path];
   }
 
   v6 = MEMORY[0x1E696AEC0];
   v7 = [objc_opt_class() descriptionForAppType:{-[ATXAppIdentity appType](self, "appType")}];
-  v8 = [v6 stringWithFormat:@"ATXAppIdentity %@, type: %@", v4, v7];;
+  v8 = [v6 stringWithFormat:@"ATXAppIdentity %@, type: %@", bundleIdentifier2, v7];;
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ATXAppIdentity allocWithZone:a3];
+  v4 = [ATXAppIdentity allocWithZone:zone];
   bundleIdentifier = self->_bundleIdentifier;
   bundleURL = self->_bundleURL;
   appType = self->_appType;
@@ -198,59 +198,59 @@ LABEL_10:
 
 - (id)bundleIDWithRelevantPrefix
 {
-  v3 = [(ATXAppIdentity *)self appType];
-  v4 = [(ATXAppIdentity *)self bundleIdentifier];
-  if (v3 == 1)
+  appType = [(ATXAppIdentity *)self appType];
+  bundleIdentifier = [(ATXAppIdentity *)self bundleIdentifier];
+  if (appType == 1)
   {
     v5 = ATXRemoteBundleIdForBundleId();
 
-    v4 = v5;
+    bundleIdentifier = v5;
   }
 
-  return v4;
+  return bundleIdentifier;
 }
 
-- (ATXAppIdentity)initWithCoder:(id)a3
+- (ATXAppIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ATXAppIdentity;
   v5 = [(ATXAppIdentity *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
     bundleURL = v5->_bundleURL;
     v5->_bundleURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v8;
 
-    v5->_appType = [v4 decodeInt32ForKey:@"appType"];
+    v5->_appType = [coderCopy decodeInt32ForKey:@"appType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleURL = self->_bundleURL;
-  v5 = a3;
-  [v5 encodeObject:bundleURL forKey:@"bundleURL"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"bundleID"];
-  [v5 encodeInt32:LODWORD(self->_appType) forKey:@"appType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleURL forKey:@"bundleURL"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleID"];
+  [coderCopy encodeInt32:LODWORD(self->_appType) forKey:@"appType"];
 }
 
-+ (id)descriptionForAppType:(unint64_t)a3
++ (id)descriptionForAppType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return @"Unknown app type";
   }
 
   else
   {
-    return off_1E80C0838[a3];
+    return off_1E80C0838[type];
   }
 }
 

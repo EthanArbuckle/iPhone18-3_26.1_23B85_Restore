@@ -1,16 +1,16 @@
 @interface AMUIOnboardingViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation AMUIOnboardingViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AMUIOnboardingView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"AMUIOnboardingView" hasInstanceVariable:@"_continueButton" withType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AMUIOnboardingView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"AMUIOnboardingView" hasInstanceVariable:@"_continueButton" withType:"UIButton"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

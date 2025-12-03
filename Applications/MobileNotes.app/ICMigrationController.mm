@@ -2,57 +2,57 @@
 + (BOOL)didChooseToMigrateLocalAccount;
 + (BOOL)didMigrateLocalAccount;
 + (BOOL)shouldHideICloudIMAPAccount;
-+ (id)cloudKitAccountForIdentifier:(id)a3;
-+ (id)ensureLegacyAccountIsValid:(id)a3;
++ (id)cloudKitAccountForIdentifier:(id)identifier;
++ (id)ensureLegacyAccountIsValid:(id)valid;
 + (id)legacyAccountContext;
-+ (id)legacyAccountForAccountIdentifier:(id)a3;
-+ (id)legacyAccountForICloudACAccount:(id)a3;
++ (id)legacyAccountForAccountIdentifier:(id)identifier;
++ (id)legacyAccountForICloudACAccount:(id)account;
 + (id)legacyAccountForPrimaryICloudAccount;
 + (id)legacyAccountNameForPrimaryICloudAccount;
 + (id)legacyAccountsBeingCopied;
 + (id)legacyLocalAccount;
 + (id)sharedController;
-+ (signed)currentMigrationStateForAccountID:(id)a3;
++ (signed)currentMigrationStateForAccountID:(id)d;
 + (void)continueMigrationIfNecessary;
 + (void)initialize;
 + (void)migrateLocalAccountIfNecessary;
-+ (void)pushMigrationStateToCloudForAccountID:(id)a3;
-+ (void)setCurrentMigrationState:(signed __int16)a3 forAccountID:(id)a4;
-+ (void)setDidChooseToMigrateLocalAccount:(BOOL)a3;
-+ (void)setDidMigrateLocalAccount:(BOOL)a3;
++ (void)pushMigrationStateToCloudForAccountID:(id)d;
++ (void)setCurrentMigrationState:(signed __int16)state forAccountID:(id)d;
++ (void)setDidChooseToMigrateLocalAccount:(BOOL)account;
++ (void)setDidMigrateLocalAccount:(BOOL)account;
 + (void)upgradeEmptyLocalLegacyAccountIfNecessary;
 - (BOOL)isInternetReachable;
 - (ICMigrationController)init;
-- (id)importLegacyNotesForICloudAccountID:(id)a3 withCompletionHandler:(id)a4;
-- (id)importNotesFromLegacyAccount:(id)a3 toAccount:(id)a4 renameFolders:(BOOL)a5 isPrimaryAccount:(BOOL)a6 withCompletionHandler:(id)a7;
+- (id)importLegacyNotesForICloudAccountID:(id)d withCompletionHandler:(id)handler;
+- (id)importNotesFromLegacyAccount:(id)account toAccount:(id)toAccount renameFolders:(BOOL)folders isPrimaryAccount:(BOOL)primaryAccount withCompletionHandler:(id)handler;
 - (id)legacyAccountObjectIDsBeingCopied;
-- (signed)currentMigrationStateForAccountID:(id)a3;
-- (unint64_t)numberOfRetriesForSelector:(SEL)a3 accountID:(id)a4;
-- (void)accountsDidChange:(id)a3;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
-- (void)cancelAllOperationsWithCompletionHandler:(id)a3;
-- (void)clearRetryCountForSelector:(SEL)a3 accountID:(id)a4;
-- (void)continueMigrationForICloudAccountID:(id)a3;
-- (void)copyNotesFromLegacyAccount:(id)a3 toAccount:(id)a4;
+- (signed)currentMigrationStateForAccountID:(id)d;
+- (unint64_t)numberOfRetriesForSelector:(SEL)selector accountID:(id)d;
+- (void)accountsDidChange:(id)change;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationWillEnterForeground:(id)foreground;
+- (void)cancelAllOperationsWithCompletionHandler:(id)handler;
+- (void)clearRetryCountForSelector:(SEL)selector accountID:(id)d;
+- (void)continueMigrationForICloudAccountID:(id)d;
+- (void)copyNotesFromLegacyAccount:(id)account toAccount:(id)toAccount;
 - (void)dealloc;
-- (void)disableLegacyAccount:(id)a3;
-- (void)disableNotesForACAccount:(id)a3 inStore:(id)a4;
-- (void)handleDarwinNotificationName:(id)a3;
-- (void)migrationStateDidChange:(id)a3;
-- (void)performFinalImportForICloudAccountID:(id)a3;
-- (void)performFinalPushToCloudKitForAccountID:(id)a3;
-- (void)performFinalRefreshForICloudAccountID:(id)a3;
-- (void)reachabilityChanged:(id)a3;
-- (void)refreshFolderContentsForICloudAccountID:(id)a3;
-- (void)refreshFolderListForICloudAccountID:(id)a3;
+- (void)disableLegacyAccount:(id)account;
+- (void)disableNotesForACAccount:(id)account inStore:(id)store;
+- (void)handleDarwinNotificationName:(id)name;
+- (void)migrationStateDidChange:(id)change;
+- (void)performFinalImportForICloudAccountID:(id)d;
+- (void)performFinalPushToCloudKitForAccountID:(id)d;
+- (void)performFinalRefreshForICloudAccountID:(id)d;
+- (void)reachabilityChanged:(id)changed;
+- (void)refreshFolderContentsForICloudAccountID:(id)d;
+- (void)refreshFolderListForICloudAccountID:(id)d;
 - (void)resetNotificationObservers;
 - (void)resetRetryCounts;
-- (void)retrySelector:(SEL)a3 accountID:(id)a4;
-- (void)setCurrentMigrationState:(signed __int16)a3 forAccountID:(id)a4;
-- (void)setNumberOfRetries:(unint64_t)a3 forSelector:(SEL)a4 accountID:(id)a5;
+- (void)retrySelector:(SEL)selector accountID:(id)d;
+- (void)setCurrentMigrationState:(signed __int16)state forAccountID:(id)d;
+- (void)setNumberOfRetries:(unint64_t)retries forSelector:(SEL)selector accountID:(id)d;
 - (void)startICloudImportOperationIfNecessary;
-- (void)startMigrationForICloudAccountID:(id)a3;
+- (void)startMigrationForICloudAccountID:(id)d;
 - (void)startRepeatingImportTimer;
 - (void)stopRepeatingImportTimer;
 @end
@@ -61,7 +61,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = +[NSUserDefaults standardUserDefaults];
     v4 = kICDefaultsKeyDidMigrateLocalAccount;
@@ -78,7 +78,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000C2058;
   block[3] = &unk_100648758;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(v3, block);
 }
 
@@ -104,8 +104,8 @@
     v3 = objc_alloc_init(NSOperationQueue);
     [(ICMigrationController *)v2 setOperationQueue:v3];
 
-    v4 = [(ICMigrationController *)v2 operationQueue];
-    [v4 setName:@"com.apple.notes.migration-queue"];
+    operationQueue = [(ICMigrationController *)v2 operationQueue];
+    [operationQueue setName:@"com.apple.notes.migration-queue"];
 
     v5 = objc_alloc_init(NSMutableDictionary);
     [(ICMigrationController *)v2 setCurrentMigrationStateByAccountID:v5];
@@ -139,10 +139,10 @@
   return v3;
 }
 
-+ (void)setDidMigrateLocalAccount:(BOOL)a3
++ (void)setDidMigrateLocalAccount:(BOOL)account
 {
-  v3 = a3;
-  if ([a1 didMigrateLocalAccount] != a3)
+  accountCopy = account;
+  if ([self didMigrateLocalAccount] != account)
   {
     v4 = +[NSNotificationCenter defaultCenter];
     v5 = ICMigrationStateWillChangeNotification;
@@ -152,7 +152,7 @@
     [v4 postNotificationName:v5 object:0 userInfo:v6];
 
     v7 = +[NSUserDefaults standardUserDefaults];
-    [v7 setBool:v3 forKey:kICDefaultsKeyDidMigrateLocalAccount];
+    [v7 setBool:accountCopy forKey:kICDefaultsKeyDidMigrateLocalAccount];
 
     v8 = +[NSNotificationCenter defaultCenter];
     v9 = ICMigrationStateDidChangeNotification;
@@ -171,31 +171,31 @@
   return v3;
 }
 
-+ (void)setDidChooseToMigrateLocalAccount:(BOOL)a3
++ (void)setDidChooseToMigrateLocalAccount:(BOOL)account
 {
-  v3 = a3;
-  if ([a1 didChooseToMigrateLocalAccount] != a3)
+  accountCopy = account;
+  if ([self didChooseToMigrateLocalAccount] != account)
   {
     v5 = +[NSUserDefaults standardUserDefaults];
-    [v5 setBool:v3 forKey:kICDefaultsKeyDidChooseToMigrateLocalAccount];
+    [v5 setBool:accountCopy forKey:kICDefaultsKeyDidChooseToMigrateLocalAccount];
 
     v14 = ICLocalAccountDidChooseToMigrateKey;
-    v6 = [NSNumber numberWithBool:v3];
+    v6 = [NSNumber numberWithBool:accountCopy];
     v15 = v6;
     v7 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
 
     v8 = +[NSNotificationCenter defaultCenter];
-    [v8 postNotificationName:ICLocalAccountDidChooseToMigrateNotification object:a1 userInfo:v7];
+    [v8 postNotificationName:ICLocalAccountDidChooseToMigrateNotification object:self userInfo:v7];
 
     v9 = +[ICNoteContext sharedContext];
-    v10 = [v9 managedObjectContext];
+    managedObjectContext = [v9 managedObjectContext];
 
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000C2930;
     v12[3] = &unk_100645E30;
-    v13 = v10;
-    v11 = v10;
+    v13 = managedObjectContext;
+    v11 = managedObjectContext;
     [v11 performBlockAndWait:v12];
   }
 }
@@ -225,22 +225,22 @@
   [v11 addObserver:self selector:"applicationWillEnterForeground:" name:UIApplicationWillEnterForegroundNotification object:0];
 }
 
-- (void)migrationStateDidChange:(id)a3
+- (void)migrationStateDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:ICMigrationStateChangeAccountID];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:ICMigrationStateChangeAccountID];
 
   v6 = [v5 length];
   v7 = +[ICNoteContext sharedContext];
-  v8 = [v7 managedObjectContext];
+  managedObjectContext = [v7 managedObjectContext];
   if (v6)
   {
-    v9 = [ICAccount accountWithIdentifier:v5 context:v8];
+    v9 = [ICAccount accountWithIdentifier:v5 context:managedObjectContext];
   }
 
   else
   {
-    v9 = [ICAccount cloudKitAccountInContext:v8];
+    v9 = [ICAccount cloudKitAccountInContext:managedObjectContext];
 
     [v9 identifier];
     v5 = v7 = v5;
@@ -258,7 +258,7 @@
   }
 }
 
-- (void)accountsDidChange:(id)a3
+- (void)accountsDidChange:(id)change
 {
   v4 = os_log_create("com.apple.notes", "Migration");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -269,69 +269,69 @@
   [(ICMigrationController *)self cancelAllOperationsWithCompletionHandler:0];
 }
 
-+ (signed)currentMigrationStateForAccountID:(id)a3
++ (signed)currentMigrationStateForAccountID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[ICMigrationController sharedController];
-  v5 = [v4 currentMigrationStateForAccountID:v3];
+  v5 = [v4 currentMigrationStateForAccountID:dCopy];
 
   return v5;
 }
 
-+ (void)setCurrentMigrationState:(signed __int16)a3 forAccountID:(id)a4
++ (void)setCurrentMigrationState:(signed __int16)state forAccountID:(id)d
 {
-  v4 = a3;
-  v5 = a4;
+  stateCopy = state;
+  dCopy = d;
   v6 = +[ICMigrationController sharedController];
-  [v6 setCurrentMigrationState:v4 forAccountID:v5];
+  [v6 setCurrentMigrationState:stateCopy forAccountID:dCopy];
 }
 
-- (signed)currentMigrationStateForAccountID:(id)a3
+- (signed)currentMigrationStateForAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[ICNoteContext sharedContext];
-  v6 = [v5 managedObjectContext];
-  v7 = [ICDeviceMigrationState deviceMigrationStateWithDeviceIdentifier:v4 context:v6];
+  managedObjectContext = [v5 managedObjectContext];
+  v7 = [ICDeviceMigrationState deviceMigrationStateWithDeviceIdentifier:dCopy context:managedObjectContext];
 
   if (v7 && [v7 state])
   {
-    v8 = [v7 state];
+    state = [v7 state];
   }
 
   else
   {
-    v9 = [(ICMigrationController *)self currentMigrationStateByAccountID];
-    v10 = [v9 objectForKeyedSubscript:v4];
+    currentMigrationStateByAccountID = [(ICMigrationController *)self currentMigrationStateByAccountID];
+    v10 = [currentMigrationStateByAccountID objectForKeyedSubscript:dCopy];
 
     if (v10)
     {
-      v11 = [(ICMigrationController *)self currentMigrationStateByAccountID];
-      v12 = [v11 objectForKeyedSubscript:v4];
-      v8 = [v12 shortValue];
+      currentMigrationStateByAccountID2 = [(ICMigrationController *)self currentMigrationStateByAccountID];
+      v12 = [currentMigrationStateByAccountID2 objectForKeyedSubscript:dCopy];
+      state = [v12 shortValue];
     }
 
     else
     {
-      v8 = 0;
+      state = 0;
     }
   }
 
-  return v8;
+  return state;
 }
 
-- (void)setCurrentMigrationState:(signed __int16)a3 forAccountID:(id)a4
+- (void)setCurrentMigrationState:(signed __int16)state forAccountID:(id)d
 {
-  v4 = a3;
-  v6 = a4;
+  stateCopy = state;
+  dCopy = d;
   v7 = +[ICNoteContext sharedContext];
-  v8 = [v7 managedObjectContext];
+  managedObjectContext = [v7 managedObjectContext];
 
-  v9 = [ICAccount accountWithIdentifier:v6 context:v8];
-  v10 = [ICDeviceMigrationState deviceMigrationStateWithDeviceIdentifier:v6 context:v8];
-  if ([v10 state] == v4)
+  v9 = [ICAccount accountWithIdentifier:dCopy context:managedObjectContext];
+  v10 = [ICDeviceMigrationState deviceMigrationStateWithDeviceIdentifier:dCopy context:managedObjectContext];
+  if ([v10 state] == stateCopy)
   {
-    v11 = [(ICMigrationController *)self currentMigrationStateByAccountID];
-    [v11 removeObjectForKey:v6];
+    currentMigrationStateByAccountID = [(ICMigrationController *)self currentMigrationStateByAccountID];
+    [currentMigrationStateByAccountID removeObjectForKey:dCopy];
 
     goto LABEL_26;
   }
@@ -339,7 +339,7 @@
   v12 = os_log_create("com.apple.notes", "Migration");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [objc_opt_class() stringFromMigrationState:v4];
+    v13 = [objc_opt_class() stringFromMigrationState:stateCopy];
     *buf = 138412290;
     v41 = v13;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Setting current migration state: %@", buf, 0xCu);
@@ -347,12 +347,12 @@
 
   if (!v10 && v9)
   {
-    v10 = [ICDeviceMigrationState newDeviceMigrationStateWithDeviceIdentifier:v6 account:v9];
+    v10 = [ICDeviceMigrationState newDeviceMigrationStateWithDeviceIdentifier:dCopy account:v9];
   }
 
   if (v10)
   {
-    [v10 setState:v4];
+    [v10 setState:stateCopy];
     v14 = +[NSDate date];
     [v10 setStateModificationDate:v14];
 
@@ -361,13 +361,13 @@
 
   else
   {
-    v15 = [NSNumber numberWithShort:v4];
-    v16 = [(ICMigrationController *)self currentMigrationStateByAccountID];
-    [v16 setObject:v15 forKeyedSubscript:v6];
+    v15 = [NSNumber numberWithShort:stateCopy];
+    currentMigrationStateByAccountID2 = [(ICMigrationController *)self currentMigrationStateByAccountID];
+    [currentMigrationStateByAccountID2 setObject:v15 forKeyedSubscript:dCopy];
   }
 
   [ICNoteContext setLegacyNotesDisabled:0];
-  if (v4 == 7)
+  if (stateCopy == 7)
   {
     if ([v9 didFinishMigration])
     {
@@ -385,7 +385,7 @@
   else
   {
     v17 = 0;
-    if (v4 < 2)
+    if (stateCopy < 2)
     {
       goto LABEL_18;
     }
@@ -428,9 +428,9 @@ LABEL_18:
 
 LABEL_20:
   v28 = +[ICNoteContext sharedContext];
-  v29 = [v28 primaryICloudACAccount];
+  primaryICloudACAccount = [v28 primaryICloudACAccount];
 
-  if (v17 && v29)
+  if (v17 && primaryICloudACAccount)
   {
     v30 = os_log_create("com.apple.notes", "Migration");
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -438,14 +438,14 @@ LABEL_20:
       sub_1004DDCE8();
     }
 
-    v31 = [v9 didChooseToMigrate];
-    v32 = [v9 didFinishMigration];
-    v33 = [v9 didMigrateOnMac];
-    v34 = [v29 accountStore];
-    [ICMigrationUtilities saveDidChooseToMigrate:v31 didFinishMigration:v32 didMigrateOnMac:v33 toACAccount:v29 inStore:v34 completionHandler:0];
+    didChooseToMigrate = [v9 didChooseToMigrate];
+    didFinishMigration = [v9 didFinishMigration];
+    didMigrateOnMac = [v9 didMigrateOnMac];
+    accountStore = [primaryICloudACAccount accountStore];
+    [ICMigrationUtilities saveDidChooseToMigrate:didChooseToMigrate didFinishMigration:didFinishMigration didMigrateOnMac:didMigrateOnMac toACAccount:primaryICloudACAccount inStore:accountStore completionHandler:0];
   }
 
-  [objc_opt_class() pushMigrationStateToCloudForAccountID:v6];
+  [objc_opt_class() pushMigrationStateToCloudForAccountID:dCopy];
   v35 = +[NSNotificationCenter defaultCenter];
   [v35 postNotificationName:@"ICCurrentDeviceMigrationStateDidChange" object:v10];
 
@@ -460,8 +460,8 @@ LABEL_26:
   if ((v3 & 1) == 0)
   {
     v5 = +[ICNoteContext sharedContext];
-    v6 = [v5 managedObjectContext];
-    v7 = [ICAccount cloudKitAccountInContext:v6];
+    managedObjectContext = [v5 managedObjectContext];
+    v7 = [ICAccount cloudKitAccountInContext:managedObjectContext];
 
     if (([v7 didChooseToMigrate] & 1) == 0)
     {
@@ -487,10 +487,10 @@ LABEL_10:
   return 0;
 }
 
-- (void)startMigrationForICloudAccountID:(id)a3
+- (void)startMigrationForICloudAccountID:(id)d
 {
-  v4 = a3;
-  v5 = [objc_opt_class() currentMigrationStateForAccountID:v4];
+  dCopy = d;
+  v5 = [objc_opt_class() currentMigrationStateForAccountID:dCopy];
   v6 = os_log_create("com.apple.notes", "Migration");
   v7 = v6;
   if (v5 < 2)
@@ -514,8 +514,8 @@ LABEL_10:
   }
 
   v10 = +[ICNoteContext sharedContext];
-  v11 = [v10 managedObjectContext];
-  v12 = [ICAccount localAccountInContext:v11];
+  managedObjectContext = [v10 managedObjectContext];
+  v12 = [ICAccount localAccountInContext:managedObjectContext];
 
   if (v12)
   {
@@ -534,13 +534,13 @@ LABEL_10:
   v14 = [NSNumber numberWithBool:v13];
   [ICSettingsUtilities setObject:v14 forKey:@"LocalNotes"];
 
-  [objc_opt_class() setCurrentMigrationState:2 forAccountID:v4];
-  [(ICMigrationController *)self continueMigrationForICloudAccountID:v4];
+  [objc_opt_class() setCurrentMigrationState:2 forAccountID:dCopy];
+  [(ICMigrationController *)self continueMigrationForICloudAccountID:dCopy];
 }
 
-- (void)continueMigrationForICloudAccountID:(id)a3
+- (void)continueMigrationForICloudAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = os_log_create("com.apple.notes", "Migration");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -548,7 +548,7 @@ LABEL_10:
   }
 
   v6 = +[ICAccountUtilities sharedInstance];
-  v7 = [v6 iCloudACAccountWithIdentifier:v4];
+  v7 = [v6 iCloudACAccountWithIdentifier:dCopy];
 
   if (v7 && [v7 isEnabledForDataclass:ACAccountDataclassNotes] && (objc_msgSend(v7, "ic_hasICloudEmailAddress") & 1) == 0)
   {
@@ -559,7 +559,7 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Trying to continue migration, but there is no iCloud email address. Finishing now.", buf, 2u);
     }
 
-    [objc_opt_class() setCurrentMigrationState:7 forAccountID:v4];
+    [objc_opt_class() setCurrentMigrationState:7 forAccountID:dCopy];
   }
 
   else
@@ -577,18 +577,18 @@ LABEL_10:
     }
   }
 
-  v11 = [objc_opt_class() currentMigrationStateForAccountID:v4];
+  v11 = [objc_opt_class() currentMigrationStateForAccountID:dCopy];
   if (v11 > 4u)
   {
     if (v11 == 5)
     {
-      [(ICMigrationController *)self performFinalImportForICloudAccountID:v4];
+      [(ICMigrationController *)self performFinalImportForICloudAccountID:dCopy];
       goto LABEL_28;
     }
 
     if (v11 == 6)
     {
-      [(ICMigrationController *)self performFinalPushToCloudKitForAccountID:v4];
+      [(ICMigrationController *)self performFinalPushToCloudKitForAccountID:dCopy];
       goto LABEL_28;
     }
 
@@ -617,7 +617,7 @@ LABEL_10:
       v18[2] = sub_1000C3A90;
       v18[3] = &unk_1006487A0;
       v18[4] = self;
-      v19 = v4;
+      v19 = dCopy;
       [v13 fetchRecordZoneChangesForZoneIDs:v15 accountID:v19 reason:@"StartingMigration" completionHandler:v18];
 
       goto LABEL_28;
@@ -643,12 +643,12 @@ LABEL_28:
 
 + (void)migrateLocalAccountIfNecessary
 {
-  if ([a1 didChooseToMigrateLocalAccount])
+  if ([self didChooseToMigrateLocalAccount])
   {
-    if ([a1 didMigrateLocalAccount])
+    if ([self didMigrateLocalAccount])
     {
-      v3 = os_log_create("com.apple.notes", "Migration");
-      if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+      legacyLocalAccount = os_log_create("com.apple.notes", "Migration");
+      if (os_log_type_enabled(legacyLocalAccount, OS_LOG_TYPE_DEBUG))
       {
         sub_1004DDF8C();
       }
@@ -656,30 +656,30 @@ LABEL_28:
 
     else
     {
-      v3 = [a1 legacyLocalAccount];
+      legacyLocalAccount = [self legacyLocalAccount];
       v4 = os_log_create("com.apple.notes", "Migration");
       v5 = v4;
-      if (v3)
+      if (legacyLocalAccount)
       {
         v6 = v4;
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
         {
-          sub_1004DDE54(a1, v3, v6);
+          sub_1004DDE54(self, legacyLocalAccount, v6);
         }
 
         v7 = +[ICNoteContext sharedContext];
-        v8 = [v7 managedObjectContext];
-        v9 = [ICAccount localAccountInContext:v8];
+        managedObjectContext = [v7 managedObjectContext];
+        v9 = [ICAccount localAccountInContext:managedObjectContext];
 
         if (v9 || (+[NSNotificationCenter defaultCenter](NSNotificationCenter, "defaultCenter"), v10 = objc_claimAutoreleasedReturnValue(), v11 = ICMigrationStateWillChangeNotification, v25 = @"ICCurrentDeviceMigrationStateChangeWasForLocalAccountKey", v26 = &__kCFBooleanTrue, +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v26, &v25, 1), v12 = objc_claimAutoreleasedReturnValue(), [v10 postNotificationName:v11 object:0 userInfo:v12], v12, v10, +[ICNoteContext sharedContext](ICNoteContext, "sharedContext"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "managedObjectContext"), v14 = objc_claimAutoreleasedReturnValue(), v9 = +[ICAccount newLocalAccountInContext:](ICAccount, "newLocalAccountInContext:", v14), v14, v13, +[ICNoteContext sharedContext](ICNoteContext, "sharedContext"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "save"), v15, +[NSNotificationCenter defaultCenter](NSNotificationCenter, "defaultCenter"), v16 = objc_claimAutoreleasedReturnValue(), v17 = ICMigrationStateDidChangeNotification, v23 = @"ICCurrentDeviceMigrationStateChangeWasForLocalAccountKey", v24 = &__kCFBooleanTrue, +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v24, &v23, 1), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "postNotificationName:object:userInfo:", v17, 0, v18), v18, v16, v9))
         {
-          v19 = [a1 sharedController];
+          sharedController = [self sharedController];
           v22[0] = _NSConcreteStackBlock;
           v22[1] = 3221225472;
           v22[2] = sub_1000C3F68;
           v22[3] = &unk_1006487C0;
-          v22[4] = a1;
-          v20 = [v19 importNotesFromLegacyAccount:v3 toAccount:v9 renameFolders:0 isPrimaryAccount:1 withCompletionHandler:v22];
+          v22[4] = self;
+          v20 = [sharedController importNotesFromLegacyAccount:legacyLocalAccount toAccount:v9 renameFolders:0 isPrimaryAccount:1 withCompletionHandler:v22];
         }
 
         else
@@ -700,15 +700,15 @@ LABEL_28:
           sub_1004DDF58();
         }
 
-        [a1 setDidMigrateLocalAccount:1];
+        [self setDidMigrateLocalAccount:1];
       }
     }
   }
 
   else
   {
-    v3 = os_log_create("com.apple.notes", "Migration");
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+    legacyLocalAccount = os_log_create("com.apple.notes", "Migration");
+    if (os_log_type_enabled(legacyLocalAccount, OS_LOG_TYPE_DEBUG))
     {
       sub_1004DDE20();
     }
@@ -717,25 +717,25 @@ LABEL_28:
 
 + (void)upgradeEmptyLocalLegacyAccountIfNecessary
 {
-  if (([a1 didChooseToMigrateLocalAccount] & 1) == 0)
+  if (([self didChooseToMigrateLocalAccount] & 1) == 0)
   {
-    v7 = [a1 legacyAccountContext];
-    v3 = [a1 legacyLocalAccount];
+    legacyAccountContext = [self legacyAccountContext];
+    legacyLocalAccount = [self legacyLocalAccount];
     v4 = ICProtocolCast();
 
-    if (!v4 || ([v4 objectID], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v7, "nonEmptyNoteExistsForLegacyAccountWithObjectID:", v5), v5, (v6 & 1) == 0))
+    if (!v4 || ([v4 objectID], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(legacyAccountContext, "nonEmptyNoteExistsForLegacyAccountWithObjectID:", v5), v5, (v6 & 1) == 0))
     {
-      [a1 setDidChooseToMigrateLocalAccount:1];
-      [a1 migrateLocalAccountIfNecessary];
+      [self setDidChooseToMigrateLocalAccount:1];
+      [self migrateLocalAccountIfNecessary];
     }
   }
 }
 
-- (void)performFinalImportForICloudAccountID:(id)a3
+- (void)performFinalImportForICloudAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[ICAccountUtilities sharedInstance];
-  v6 = [v5 iCloudACAccountWithIdentifier:v4];
+  v6 = [v5 iCloudACAccountWithIdentifier:dCopy];
 
   v7 = [objc_opt_class() legacyAccountForICloudACAccount:v6];
   v8 = os_log_create("com.apple.notes", "Migration");
@@ -752,7 +752,7 @@ LABEL_28:
     v11[2] = sub_1000C4288;
     v11[3] = &unk_1006487E8;
     v11[4] = self;
-    v12 = v4;
+    v12 = dCopy;
     v10 = [(ICMigrationController *)self importLegacyNotesForICloudAccountID:v12 withCompletionHandler:v11];
   }
 
@@ -764,16 +764,16 @@ LABEL_28:
     }
 
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [(ICMigrationController *)self retrySelector:"continueMigrationForICloudAccountID:" accountID:v4];
+    [(ICMigrationController *)self retrySelector:"continueMigrationForICloudAccountID:" accountID:dCopy];
   }
 }
 
-- (id)importLegacyNotesForICloudAccountID:(id)a3 withCompletionHandler:(id)a4
+- (id)importLegacyNotesForICloudAccountID:(id)d withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = +[ICAccountUtilities sharedInstance];
-  v9 = [v8 iCloudACAccountWithIdentifier:v6];
+  v9 = [v8 iCloudACAccountWithIdentifier:dCopy];
 
   v10 = [objc_opt_class() legacyAccountForICloudACAccount:v9];
   v11 = os_log_create("com.apple.notes", "Migration");
@@ -785,8 +785,8 @@ LABEL_28:
       sub_1004DE0C4();
     }
 
-    v11 = [objc_opt_class() cloudKitAccountForIdentifier:v6];
-    v13 = [(ICMigrationController *)self importNotesFromLegacyAccount:v10 toAccount:v11 renameFolders:0 isPrimaryAccount:1 withCompletionHandler:v7];
+    v11 = [objc_opt_class() cloudKitAccountForIdentifier:dCopy];
+    v13 = [(ICMigrationController *)self importNotesFromLegacyAccount:v10 toAccount:v11 renameFolders:0 isPrimaryAccount:1 withCompletionHandler:handlerCopy];
   }
 
   else
@@ -802,21 +802,21 @@ LABEL_28:
   return v13;
 }
 
-- (id)importNotesFromLegacyAccount:(id)a3 toAccount:(id)a4 renameFolders:(BOOL)a5 isPrimaryAccount:(BOOL)a6 withCompletionHandler:(id)a7
+- (id)importNotesFromLegacyAccount:(id)account toAccount:(id)toAccount renameFolders:(BOOL)folders isPrimaryAccount:(BOOL)primaryAccount withCompletionHandler:(id)handler
 {
-  v8 = a6;
-  v9 = a5;
-  v28 = self;
-  v11 = a3;
-  v12 = a4;
-  v29 = a7;
-  v30 = v12;
+  primaryAccountCopy = primaryAccount;
+  foldersCopy = folders;
+  selfCopy = self;
+  accountCopy = account;
+  toAccountCopy = toAccount;
+  handlerCopy = handler;
+  v30 = toAccountCopy;
   v13 = 0;
-  v31 = v11;
-  if (v11 && v12)
+  v31 = accountCopy;
+  if (accountCopy && toAccountCopy)
   {
-    v13 = [[ICImportLegacyAccountOperation alloc] initWithLegacyAccount:v11 destinationAccount:v12 renameFolders:v9];
-    [(ICImportLegacyAccountOperation *)v13 setCopyingPrimaryAccount:v8];
+    v13 = [[ICImportLegacyAccountOperation alloc] initWithLegacyAccount:accountCopy destinationAccount:toAccountCopy renameFolders:foldersCopy];
+    [(ICImportLegacyAccountOperation *)v13 setCopyingPrimaryAccount:primaryAccountCopy];
     if (v13)
     {
       objc_initWeak(&location, v13);
@@ -825,17 +825,17 @@ LABEL_28:
       v36[2] = sub_1000C4758;
       v36[3] = &unk_100648838;
       objc_copyWeak(&v39, &location);
-      v38 = v29;
-      v14 = v11;
+      v38 = handlerCopy;
+      v14 = accountCopy;
       v37 = v14;
       [(ICImportLegacyAccountOperation *)v13 setCompletionBlock:v36];
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v15 = [(ICMigrationController *)v28 operationQueue];
-      v16 = [v15 operations];
-      v17 = [v16 copy];
+      operationQueue = [(ICMigrationController *)selfCopy operationQueue];
+      operations = [operationQueue operations];
+      v17 = [operations copy];
 
       v18 = [v17 countByEnumeratingWithState:&v32 objects:v41 count:16];
       if (v18)
@@ -851,9 +851,9 @@ LABEL_28:
             }
 
             v21 = *(*(&v32 + 1) + 8 * i);
-            v22 = [v21 legacyAccountObjectID];
-            v23 = [v14 objectID];
-            v24 = [v22 isEqual:v23];
+            legacyAccountObjectID = [v21 legacyAccountObjectID];
+            objectID = [v14 objectID];
+            v24 = [legacyAccountObjectID isEqual:objectID];
 
             if (v24)
             {
@@ -868,8 +868,8 @@ LABEL_28:
         while (v18);
       }
 
-      v25 = [(ICMigrationController *)v28 operationQueue];
-      [v25 addOperation:v13];
+      operationQueue2 = [(ICMigrationController *)selfCopy operationQueue];
+      [operationQueue2 addOperation:v13];
 
       v26 = v13;
       objc_destroyWeak(&v39);
@@ -880,9 +880,9 @@ LABEL_28:
   return v13;
 }
 
-- (void)cancelAllOperationsWithCompletionHandler:(id)a3
+- (void)cancelAllOperationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.notes", "Migration");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -893,8 +893,8 @@ LABEL_28:
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   [NSObject cancelPreviousPerformRequestsWithTarget:objc_opt_class()];
   [(ICMigrationController *)self stopRepeatingImportTimer];
-  v6 = [(ICMigrationController *)self operationQueue];
-  [v6 cancelAllOperations];
+  operationQueue = [(ICMigrationController *)self operationQueue];
+  [operationQueue cancelAllOperations];
 
   v7 = dispatch_get_global_queue(-2, 0);
   v9[0] = _NSConcreteStackBlock;
@@ -902,8 +902,8 @@ LABEL_28:
   v9[2] = sub_1000C49F8;
   v9[3] = &unk_100645E80;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(v7, v9);
 }
 
@@ -919,8 +919,8 @@ LABEL_28:
 
 - (void)stopRepeatingImportTimer
 {
-  v3 = [(ICMigrationController *)self repeatingImportTimer];
-  [v3 invalidate];
+  repeatingImportTimer = [(ICMigrationController *)self repeatingImportTimer];
+  [repeatingImportTimer invalidate];
 
   [(ICMigrationController *)self setRepeatingImportTimer:0];
 }
@@ -928,15 +928,15 @@ LABEL_28:
 - (void)startICloudImportOperationIfNecessary
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 workerManagedObjectContext];
+  workerManagedObjectContext = [v3 workerManagedObjectContext];
 
-  v5 = [ICDeviceMigrationState deviceMigrationStatesByAccountIDInContext:v4];
+  v5 = [ICDeviceMigrationState deviceMigrationStatesByAccountIDInContext:workerManagedObjectContext];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v6 = [v5 allKeys];
-  v39 = [v6 countByEnumeratingWithState:&v46 objects:v53 count:16];
+  allKeys = [v5 allKeys];
+  v39 = [allKeys countByEnumeratingWithState:&v46 objects:v53 count:16];
   if (!v39)
   {
 
@@ -945,26 +945,26 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v32 = v4;
+  v32 = workerManagedObjectContext;
   v7 = 0;
   v38 = *v47;
   v34 = v5;
-  v35 = self;
-  v33 = v6;
+  selfCopy = self;
+  v33 = allKeys;
   do
   {
     for (i = 0; i != v39; i = i + 1)
     {
       if (*v47 != v38)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(allKeys);
       }
 
       v9 = *(*(&v46 + 1) + 8 * i);
       v10 = [v5 objectForKeyedSubscript:v9];
-      v11 = [v10 shortValue];
+      shortValue = [v10 shortValue];
 
-      if ((v11 - 3) > 1u)
+      if ((shortValue - 3) > 1u)
       {
         v14 = os_log_create("com.apple.notes", "Migration");
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -991,9 +991,9 @@ LABEL_29:
         v43 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v15 = [(ICMigrationController *)self operationQueue];
-        v16 = [v15 operations];
-        v17 = [v16 copy];
+        operationQueue = [(ICMigrationController *)self operationQueue];
+        operations = [operationQueue operations];
+        v17 = [operations copy];
 
         v18 = [v17 countByEnumeratingWithState:&v42 objects:v52 count:16];
         if (v18)
@@ -1010,9 +1010,9 @@ LABEL_9:
             }
 
             v22 = *(*(&v42 + 1) + 8 * v21);
-            v23 = [v22 legacyAccountObjectID];
-            v24 = [v14 objectID];
-            v25 = [v23 isEqual:v24];
+            legacyAccountObjectID = [v22 legacyAccountObjectID];
+            objectID = [v14 objectID];
+            v25 = [legacyAccountObjectID isEqual:objectID];
 
             if (v25)
             {
@@ -1033,8 +1033,8 @@ LABEL_9:
 
           v29 = v22;
 
-          self = v35;
-          v6 = v33;
+          self = selfCopy;
+          allKeys = v33;
           if (v29)
           {
             goto LABEL_23;
@@ -1045,8 +1045,8 @@ LABEL_9:
         {
 LABEL_15:
 
-          self = v35;
-          v6 = v33;
+          self = selfCopy;
+          allKeys = v33;
         }
 
         v30 = os_log_create("com.apple.notes", "Migration");
@@ -1067,12 +1067,12 @@ LABEL_23:
       }
     }
 
-    v39 = [v6 countByEnumeratingWithState:&v46 objects:v53 count:16];
+    v39 = [allKeys countByEnumeratingWithState:&v46 objects:v53 count:16];
   }
 
   while (v39);
 
-  v4 = v32;
+  workerManagedObjectContext = v32;
   if ((v7 & 1) == 0)
   {
     goto LABEL_29;
@@ -1081,11 +1081,11 @@ LABEL_23:
 LABEL_30:
 }
 
-- (void)performFinalPushToCloudKitForAccountID:(id)a3
+- (void)performFinalPushToCloudKitForAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[ICAccountUtilities sharedInstance];
-  v6 = [v5 iCloudACAccountWithIdentifier:v4];
+  v6 = [v5 iCloudACAccountWithIdentifier:dCopy];
 
   v7 = [objc_opt_class() legacyAccountForICloudACAccount:v6];
   v8 = os_log_create("com.apple.notes", "Migration");
@@ -1103,7 +1103,7 @@ LABEL_30:
     v11[2] = sub_1000C51E0;
     v11[3] = &unk_1006487A0;
     v11[4] = self;
-    v12 = v4;
+    v12 = dCopy;
     [v10 syncWithReason:@"FinishingMigration" completionHandler:v11];
   }
 
@@ -1115,16 +1115,16 @@ LABEL_30:
     }
 
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [(ICMigrationController *)self retrySelector:"continueMigrationForICloudAccountID:" accountID:v4];
+    [(ICMigrationController *)self retrySelector:"continueMigrationForICloudAccountID:" accountID:dCopy];
   }
 }
 
-+ (void)pushMigrationStateToCloudForAccountID:(id)a3
++ (void)pushMigrationStateToCloudForAccountID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[ICNoteContext sharedContext];
-  v5 = [v4 managedObjectContext];
-  v6 = [ICAccount cloudKitAccountWithIdentifier:v3 context:v5];
+  managedObjectContext = [v4 managedObjectContext];
+  v6 = [ICAccount cloudKitAccountWithIdentifier:dCopy context:managedObjectContext];
 
   if (!v6)
   {
@@ -1168,9 +1168,9 @@ LABEL_9:
   v12 = v9;
   v24 = v12;
   v13 = objc_retainBlock(v21);
-  v14 = [v10 userRecordName];
+  userRecordName = [v10 userRecordName];
 
-  if (v14)
+  if (userRecordName)
   {
     (v13[2])(v13);
   }
@@ -1184,14 +1184,14 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "No user record name when changing migration state. Fetching now.", buf, 2u);
     }
 
-    v17 = [v10 identifier];
+    identifier = [v10 identifier];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1000C5A38;
     v18[3] = &unk_100648880;
     v19 = v10;
     v20 = v13;
-    [v12 fetchUserRecordWithAccountID:v17 completionHandler:v18];
+    [v12 fetchUserRecordWithAccountID:identifier completionHandler:v18];
   }
 
 LABEL_14:
@@ -1199,17 +1199,17 @@ LABEL_14:
 
 + (id)legacyAccountsBeingCopied
 {
-  if ([a1 sharedControllerExists])
+  if ([self sharedControllerExists])
   {
     v3 = +[NSMutableArray array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v4 = [a1 sharedController];
-    v5 = [v4 legacyAccountObjectIDsBeingCopied];
+    sharedController = [self sharedController];
+    legacyAccountObjectIDsBeingCopied = [sharedController legacyAccountObjectIDsBeingCopied];
 
-    v6 = [v5 countByEnumeratingWithState:&v19 objects:v27 count:16];
+    v6 = [legacyAccountObjectIDsBeingCopied countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v6)
     {
       v8 = v6;
@@ -1223,13 +1223,13 @@ LABEL_14:
         {
           if (*v20 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(legacyAccountObjectIDsBeingCopied);
           }
 
           v11 = *(*(&v19 + 1) + 8 * v10);
-          v12 = [a1 legacyAccountContext];
+          legacyAccountContext = [self legacyAccountContext];
           v18 = 0;
-          v13 = [v12 existingObjectWithID:v11 error:&v18];
+          v13 = [legacyAccountContext existingObjectWithID:v11 error:&v18];
           v14 = v18;
 
           if (v14)
@@ -1254,7 +1254,7 @@ LABEL_14:
         }
 
         while (v8 != v10);
-        v8 = [v5 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        v8 = [legacyAccountObjectIDsBeingCopied countByEnumeratingWithState:&v19 objects:v27 count:16];
       }
 
       while (v8);
@@ -1271,16 +1271,16 @@ LABEL_14:
 
 - (id)legacyAccountObjectIDsBeingCopied
 {
-  v3 = [objc_opt_class() legacyAccountForPrimaryICloudAccount];
-  v20 = [objc_opt_class() legacyLocalAccount];
+  legacyAccountForPrimaryICloudAccount = [objc_opt_class() legacyAccountForPrimaryICloudAccount];
+  legacyLocalAccount = [objc_opt_class() legacyLocalAccount];
   v19 = +[NSMutableArray array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [(ICMigrationController *)self operationQueue];
-  v5 = [v4 operations];
-  v6 = [v5 copy];
+  operationQueue = [(ICMigrationController *)self operationQueue];
+  operations = [operationQueue operations];
+  v6 = [operations copy];
 
   obj = v6;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -1298,25 +1298,25 @@ LABEL_14:
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [v11 legacyAccountObjectID];
-        v13 = [v3 objectID];
-        if ([v12 isEqual:v13])
+        legacyAccountObjectID = [v11 legacyAccountObjectID];
+        objectID = [legacyAccountForPrimaryICloudAccount objectID];
+        if ([legacyAccountObjectID isEqual:objectID])
         {
         }
 
         else
         {
-          v14 = [v11 legacyAccountObjectID];
-          v15 = [v20 objectID];
-          v16 = [v14 isEqual:v15];
+          legacyAccountObjectID2 = [v11 legacyAccountObjectID];
+          objectID2 = [legacyLocalAccount objectID];
+          v16 = [legacyAccountObjectID2 isEqual:objectID2];
 
           if (v16)
           {
             continue;
           }
 
-          v12 = [v11 legacyAccountObjectID];
-          [v19 addObject:v12];
+          legacyAccountObjectID = [v11 legacyAccountObjectID];
+          [v19 addObject:legacyAccountObjectID];
         }
       }
 
@@ -1331,21 +1331,21 @@ LABEL_14:
   return v17;
 }
 
-- (void)copyNotesFromLegacyAccount:(id)a3 toAccount:(id)a4
+- (void)copyNotesFromLegacyAccount:(id)account toAccount:(id)toAccount
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  toAccountCopy = toAccount;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_1000C6204;
   v17 = sub_1000C6214;
-  v18 = [objc_opt_class() ensureLegacyAccountIsValid:v6];
+  v18 = [objc_opt_class() ensureLegacyAccountIsValid:accountCopy];
   v8 = os_log_create("com.apple.notes", "Migration");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v14[5] objectIdentifier];
-    sub_1004DE43C(v9, buf, v8);
+    objectIdentifier = [v14[5] objectIdentifier];
+    sub_1004DE43C(objectIdentifier, buf, v8);
   }
 
   v10 = v14[5];
@@ -1355,19 +1355,19 @@ LABEL_14:
   v12[3] = &unk_1006488A8;
   v12[4] = self;
   v12[5] = &v13;
-  v11 = [(ICMigrationController *)self importNotesFromLegacyAccount:v10 toAccount:v7 renameFolders:1 isPrimaryAccount:0 withCompletionHandler:v12];
+  v11 = [(ICMigrationController *)self importNotesFromLegacyAccount:v10 toAccount:toAccountCopy renameFolders:1 isPrimaryAccount:0 withCompletionHandler:v12];
   _Block_object_dispose(&v13, 8);
 }
 
-+ (id)ensureLegacyAccountIsValid:(id)a3
++ (id)ensureLegacyAccountIsValid:(id)valid
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 objectID], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_opt_class(), ICCheckedDynamicCast(), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isDeleted"), v7, v6, !v8))
+  validCopy = valid;
+  v4 = validCopy;
+  if (validCopy && ([validCopy objectID], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_opt_class(), ICCheckedDynamicCast(), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isDeleted"), v7, v6, !v8))
   {
-    v12 = [v4 managedObjectContext];
+    managedObjectContext = [v4 managedObjectContext];
 
-    if (v12)
+    if (managedObjectContext)
     {
       v10 = v4;
     }
@@ -1375,11 +1375,11 @@ LABEL_14:
     else
     {
       v13 = +[NotesApp sharedNotesApp];
-      v14 = [v13 noteContext];
-      v15 = [v14 managedObjectContext];
+      noteContext = [v13 noteContext];
+      managedObjectContext2 = [noteContext managedObjectContext];
 
-      v16 = [v4 objectID];
-      v10 = [v15 objectWithID:v16];
+      objectID = [v4 objectID];
+      v10 = [managedObjectContext2 objectWithID:objectID];
     }
   }
 
@@ -1398,12 +1398,12 @@ LABEL_14:
   return v10;
 }
 
-- (void)reachabilityChanged:(id)a3
+- (void)reachabilityChanged:(id)changed
 {
-  v4 = [(ICMigrationController *)self isInternetReachable];
+  isInternetReachable = [(ICMigrationController *)self isInternetReachable];
   v5 = os_log_create("com.apple.notes", "Migration");
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-  if (v4)
+  if (isInternetReachable)
   {
     if (v6)
     {
@@ -1412,15 +1412,15 @@ LABEL_14:
 
     [(ICMigrationController *)self resetRetryCounts];
     v7 = +[ICNoteContext sharedContext];
-    v8 = [v7 snapshotManagedObjectContext];
+    snapshotManagedObjectContext = [v7 snapshotManagedObjectContext];
 
-    v9 = [ICDeviceMigrationState deviceMigrationStatesByAccountIDInContext:v8];
+    v9 = [ICDeviceMigrationState deviceMigrationStatesByAccountIDInContext:snapshotManagedObjectContext];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [v9 allKeys];
-    v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    allKeys = [v9 allKeys];
+    v11 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1431,20 +1431,20 @@ LABEL_14:
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allKeys);
           }
 
           v15 = *(*(&v18 + 1) + 8 * i);
           v16 = [v9 objectForKeyedSubscript:v15];
-          v17 = [v16 shortValue];
+          shortValue = [v16 shortValue];
 
-          if (v17 - 2 <= 4)
+          if (shortValue - 2 <= 4)
           {
             [(ICMigrationController *)self continueMigrationForICloudAccountID:v15];
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v12 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v12);
@@ -1465,16 +1465,16 @@ LABEL_14:
 - (BOOL)isInternetReachable
 {
   v2 = +[ICReachability sharedReachabilityForInternetConnection];
-  v3 = [v2 currentReachabilityStatus];
+  currentReachabilityStatus = [v2 currentReachabilityStatus];
 
-  return v3 != 0;
+  return currentReachabilityStatus != 0;
 }
 
-- (void)retrySelector:(SEL)a3 accountID:(id)a4
+- (void)retrySelector:(SEL)selector accountID:(id)d
 {
-  v6 = a4;
-  v7 = [(ICMigrationController *)self numberOfRetriesForSelector:a3 accountID:v6];
-  [(ICMigrationController *)self setNumberOfRetries:v7 + 1 forSelector:a3 accountID:v6];
+  dCopy = d;
+  v7 = [(ICMigrationController *)self numberOfRetriesForSelector:selector accountID:dCopy];
+  [(ICMigrationController *)self setNumberOfRetries:v7 + 1 forSelector:selector accountID:dCopy];
   v8 = pow(3.0, v7);
   if (v8 <= 300.0)
   {
@@ -1489,20 +1489,20 @@ LABEL_14:
   v10 = os_log_create("com.apple.notes", "Migration");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    sub_1004DE594(a3);
+    sub_1004DE594(selector);
   }
 
-  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:a3 object:v6];
-  [(ICMigrationController *)self performSelector:a3 withObject:v6 afterDelay:v9];
+  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:selector object:dCopy];
+  [(ICMigrationController *)self performSelector:selector withObject:dCopy afterDelay:v9];
 }
 
-- (void)clearRetryCountForSelector:(SEL)a3 accountID:(id)a4
+- (void)clearRetryCountForSelector:(SEL)selector accountID:(id)d
 {
-  v6 = a4;
-  v9 = [(ICMigrationController *)self numberOfRetriesBySelector];
-  v7 = NSStringFromSelector(a3);
-  v8 = [v9 objectForKeyedSubscript:v7];
-  [v8 removeObjectForKey:v6];
+  dCopy = d;
+  numberOfRetriesBySelector = [(ICMigrationController *)self numberOfRetriesBySelector];
+  v7 = NSStringFromSelector(selector);
+  v8 = [numberOfRetriesBySelector objectForKeyedSubscript:v7];
+  [v8 removeObjectForKey:dCopy];
 }
 
 - (void)resetRetryCounts
@@ -1511,50 +1511,50 @@ LABEL_14:
   [(ICMigrationController *)self setNumberOfRetriesBySelector:v3];
 }
 
-- (unint64_t)numberOfRetriesForSelector:(SEL)a3 accountID:(id)a4
+- (unint64_t)numberOfRetriesForSelector:(SEL)selector accountID:(id)d
 {
-  v6 = a4;
-  v7 = [(ICMigrationController *)self numberOfRetriesBySelector];
-  v8 = NSStringFromSelector(a3);
-  v9 = [v7 objectForKeyedSubscript:v8];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  dCopy = d;
+  numberOfRetriesBySelector = [(ICMigrationController *)self numberOfRetriesBySelector];
+  v8 = NSStringFromSelector(selector);
+  v9 = [numberOfRetriesBySelector objectForKeyedSubscript:v8];
+  v10 = [v9 objectForKeyedSubscript:dCopy];
 
-  v11 = [v10 unsignedIntegerValue];
-  return v11;
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (void)setNumberOfRetries:(unint64_t)a3 forSelector:(SEL)a4 accountID:(id)a5
+- (void)setNumberOfRetries:(unint64_t)retries forSelector:(SEL)selector accountID:(id)d
 {
-  v8 = a5;
-  v9 = [(ICMigrationController *)self numberOfRetriesBySelector];
-  v10 = NSStringFromSelector(a4);
-  v14 = [v9 objectForKeyedSubscript:v10];
+  dCopy = d;
+  numberOfRetriesBySelector = [(ICMigrationController *)self numberOfRetriesBySelector];
+  v10 = NSStringFromSelector(selector);
+  v14 = [numberOfRetriesBySelector objectForKeyedSubscript:v10];
 
   if (!v14)
   {
     v14 = objc_alloc_init(NSMutableDictionary);
-    v11 = [(ICMigrationController *)self numberOfRetriesBySelector];
-    v12 = NSStringFromSelector(a4);
-    [v11 setObject:v14 forKeyedSubscript:v12];
+    numberOfRetriesBySelector2 = [(ICMigrationController *)self numberOfRetriesBySelector];
+    v12 = NSStringFromSelector(selector);
+    [numberOfRetriesBySelector2 setObject:v14 forKeyedSubscript:v12];
   }
 
-  v13 = [NSNumber numberWithUnsignedInteger:a3];
-  [v14 setObject:v13 forKeyedSubscript:v8];
+  v13 = [NSNumber numberWithUnsignedInteger:retries];
+  [v14 setObject:v13 forKeyedSubscript:dCopy];
 }
 
-+ (id)legacyAccountForAccountIdentifier:(id)a3
++ (id)legacyAccountForAccountIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 legacyAccountContext];
-  v6 = [ICLegacyAccountUtilities accountForAccountIdentifier:v4 context:v5];
+  identifierCopy = identifier;
+  legacyAccountContext = [self legacyAccountContext];
+  v6 = [ICLegacyAccountUtilities accountForAccountIdentifier:identifierCopy context:legacyAccountContext];
 
   return v6;
 }
 
-+ (id)legacyAccountForICloudACAccount:(id)a3
++ (id)legacyAccountForICloudACAccount:(id)account
 {
-  v4 = a3;
-  if (v4)
+  accountCopy = account;
+  if (accountCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -1562,15 +1562,15 @@ LABEL_14:
     v15 = sub_1000C6204;
     v16 = sub_1000C6214;
     v17 = 0;
-    v5 = [a1 legacyAccountContext];
+    legacyAccountContext = [self legacyAccountContext];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1000C6C74;
     v8[3] = &unk_1006488D0;
     v10 = &v12;
-    v9 = v4;
-    v11 = a1;
-    [v5 performBlockAndWait:v8];
+    v9 = accountCopy;
+    selfCopy = self;
+    [legacyAccountContext performBlockAndWait:v8];
 
     v6 = v13[5];
     _Block_object_dispose(&v12, 8);
@@ -1586,8 +1586,8 @@ LABEL_14:
 
 + (id)legacyAccountForPrimaryICloudAccount
 {
-  v2 = [a1 legacyAccountContext];
-  v3 = [ICLegacyAccountUtilities legacyAccountForPrimaryICloudAccountWithContext:v2];
+  legacyAccountContext = [self legacyAccountContext];
+  v3 = [ICLegacyAccountUtilities legacyAccountForPrimaryICloudAccountWithContext:legacyAccountContext];
 
   return v3;
 }
@@ -1595,20 +1595,20 @@ LABEL_14:
 + (id)legacyAccountNameForPrimaryICloudAccount
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 primaryICloudACAccount];
+  primaryICloudACAccount = [v3 primaryICloudACAccount];
 
-  v5 = [v4 username];
-  if (![(__CFString *)v5 length])
+  username = [primaryICloudACAccount username];
+  if (![(__CFString *)username length])
   {
-    v6 = [a1 legacyAccountForPrimaryICloudAccount];
-    v7 = [v6 emailAddress];
+    legacyAccountForPrimaryICloudAccount = [self legacyAccountForPrimaryICloudAccount];
+    emailAddress = [legacyAccountForPrimaryICloudAccount emailAddress];
 
-    v5 = v7;
+    username = emailAddress;
   }
 
-  if (v5)
+  if (username)
   {
-    v8 = v5;
+    v8 = username;
   }
 
   else
@@ -1621,80 +1621,80 @@ LABEL_14:
   return v8;
 }
 
-+ (id)cloudKitAccountForIdentifier:(id)a3
++ (id)cloudKitAccountForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[ICAccountUtilities sharedInstance];
-  v5 = [v4 accountStore];
+  accountStore = [v4 accountStore];
 
-  v6 = [v5 accountWithIdentifier:v3];
-  v7 = [v6 parentAccountIdentifier];
-  v8 = v7;
-  if (v7)
+  v6 = [accountStore accountWithIdentifier:identifierCopy];
+  parentAccountIdentifier = [v6 parentAccountIdentifier];
+  v8 = parentAccountIdentifier;
+  if (parentAccountIdentifier)
   {
-    v9 = v7;
+    v9 = parentAccountIdentifier;
   }
 
   else
   {
-    v9 = v3;
+    v9 = identifierCopy;
   }
 
   v10 = v9;
 
   v11 = +[ICNoteContext sharedContext];
-  v12 = [v11 managedObjectContext];
-  v13 = [ICAccount cloudKitAccountWithIdentifier:v10 context:v12];
+  managedObjectContext = [v11 managedObjectContext];
+  v13 = [ICAccount cloudKitAccountWithIdentifier:v10 context:managedObjectContext];
 
   return v13;
 }
 
-- (void)disableNotesForACAccount:(id)a3 inStore:(id)a4
+- (void)disableNotesForACAccount:(id)account inStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
+  accountCopy = account;
+  storeCopy = store;
   v7 = os_log_create("com.apple.notes", "Migration");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    sub_1004DE638(v5);
+    sub_1004DE638(accountCopy);
   }
 
-  [v5 setEnabled:0 forDataclass:ACAccountDataclassNotes];
+  [accountCopy setEnabled:0 forDataclass:ACAccountDataclassNotes];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000C7018;
   v9[3] = &unk_100646B50;
-  v10 = v5;
-  v8 = v5;
-  [v6 saveAccount:v8 withCompletionHandler:v9];
+  v10 = accountCopy;
+  v8 = accountCopy;
+  [storeCopy saveAccount:v8 withCompletionHandler:v9];
 }
 
 + (id)legacyAccountContext
 {
   v2 = +[NotesApp sharedNotesApp];
-  v3 = [v2 noteContext];
+  noteContext = [v2 noteContext];
 
-  return v3;
+  return noteContext;
 }
 
-- (void)handleDarwinNotificationName:(id)a3
+- (void)handleDarwinNotificationName:(id)name
 {
-  v4 = a3;
-  v5 = [(__CFString *)v4 rangeOfString:@"-"];
+  nameCopy = name;
+  v5 = [(__CFString *)nameCopy rangeOfString:@"-"];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(__CFString *)v4 substringFromIndex:&v5[v6]];
+    v7 = [(__CFString *)nameCopy substringFromIndex:&v5[v6]];
     objc_opt_class();
     v8 = [objc_opt_class() legacyAccountForAccountIdentifier:v7];
     v9 = ICCheckedDynamicCast();
 
     v10 = +[ICAccountUtilities sharedInstance];
-    v11 = [v10 accountStore];
+    accountStore = [v10 accountStore];
 
-    v12 = [v11 accountWithIdentifier:v7];
-    v13 = [v12 parentAccountIdentifier];
+    v12 = [accountStore accountWithIdentifier:v7];
+    parentAccountIdentifier = [v12 parentAccountIdentifier];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, v4, 0);
+    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, nameCopy, 0);
     if (!v9)
     {
       v20 = os_log_create("com.apple.notes", "Migration");
@@ -1707,23 +1707,23 @@ LABEL_14:
     }
 
     v15 = [@"IMAPNotesAccountFolderHierarchySyncCompleteNotification-" stringByAppendingString:v7];
-    v16 = [(__CFString *)v4 isEqualToString:v15];
+    v16 = [(__CFString *)nameCopy isEqualToString:v15];
 
     if (v16)
     {
-      v17 = [(ICMigrationController *)self isInternetReachable];
+      isInternetReachable = [(ICMigrationController *)self isInternetReachable];
       v18 = os_log_create("com.apple.notes", "Migration");
       v19 = v18;
-      if (v17)
+      if (isInternetReachable)
       {
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
           sub_1004DE830();
         }
 
-        [(ICMigrationController *)self clearRetryCountForSelector:"refreshFolderListForICloudAccountID:" accountID:v13];
-        [objc_opt_class() setCurrentMigrationState:4 forAccountID:v13];
-        [(ICMigrationController *)self refreshFolderContentsForICloudAccountID:v13];
+        [(ICMigrationController *)self clearRetryCountForSelector:"refreshFolderListForICloudAccountID:" accountID:parentAccountIdentifier];
+        [objc_opt_class() setCurrentMigrationState:4 forAccountID:parentAccountIdentifier];
+        [(ICMigrationController *)self refreshFolderContentsForICloudAccountID:parentAccountIdentifier];
         goto LABEL_22;
       }
 
@@ -1743,7 +1743,7 @@ LABEL_22:
     else
     {
       v21 = [@"IMAPNotesAccountFolderHierarchySyncFailedNotification-" stringByAppendingString:v7];
-      v22 = [(__CFString *)v4 isEqualToString:v21];
+      v22 = [(__CFString *)nameCopy isEqualToString:v21];
 
       if (v22)
       {
@@ -1756,19 +1756,19 @@ LABEL_22:
 
         if ([(ICMigrationController *)self isInternetReachable])
         {
-          [(ICMigrationController *)self retryRefreshFolderListForICloudAccountID:v13];
+          [(ICMigrationController *)self retryRefreshFolderListForICloudAccountID:parentAccountIdentifier];
         }
 
         goto LABEL_22;
       }
 
       v26 = [@"IMAPNotesAccountContentSyncCompleteNotification-" stringByAppendingString:v7];
-      v27 = [(__CFString *)v4 isEqualToString:v26];
+      v27 = [(__CFString *)nameCopy isEqualToString:v26];
 
       if (!v27)
       {
         v30 = [@"IMAPNotesAccountContentSyncFailedNotification-" stringByAppendingString:v7];
-        v31 = [(__CFString *)v4 isEqualToString:v30];
+        v31 = [(__CFString *)nameCopy isEqualToString:v30];
 
         if (v31)
         {
@@ -1781,27 +1781,27 @@ LABEL_22:
 
           if ([(ICMigrationController *)self isInternetReachable])
           {
-            [(ICMigrationController *)self retryRefreshFolderContentsForICloudAccountID:v13];
+            [(ICMigrationController *)self retryRefreshFolderContentsForICloudAccountID:parentAccountIdentifier];
           }
         }
 
         goto LABEL_22;
       }
 
-      v28 = [(ICMigrationController *)self isInternetReachable];
+      isInternetReachable2 = [(ICMigrationController *)self isInternetReachable];
       v29 = os_log_create("com.apple.notes", "Migration");
       v19 = v29;
-      if (v28)
+      if (isInternetReachable2)
       {
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
         {
           sub_1004DE7FC();
         }
 
-        [(ICMigrationController *)self clearRetryCountForSelector:"refreshFolderContentsForICloudAccountID:" accountID:v13];
-        [objc_opt_class() setCurrentMigrationState:5 forAccountID:v13];
+        [(ICMigrationController *)self clearRetryCountForSelector:"refreshFolderContentsForICloudAccountID:" accountID:parentAccountIdentifier];
+        [objc_opt_class() setCurrentMigrationState:5 forAccountID:parentAccountIdentifier];
         [(ICMigrationController *)self stopRepeatingImportTimer];
-        [(ICMigrationController *)self performFinalImportForICloudAccountID:v13];
+        [(ICMigrationController *)self performFinalImportForICloudAccountID:parentAccountIdentifier];
         goto LABEL_22;
       }
 
@@ -1831,17 +1831,17 @@ LABEL_23:
 + (id)legacyLocalAccount
 {
   v2 = +[NotesApp sharedNotesApp];
-  v3 = [v2 noteContext];
-  v4 = [v3 localAccount];
+  noteContext = [v2 noteContext];
+  localAccount = [noteContext localAccount];
 
-  return v4;
+  return localAccount;
 }
 
-- (void)performFinalRefreshForICloudAccountID:(id)a3
+- (void)performFinalRefreshForICloudAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[ICAccountUtilities sharedInstance];
-  v6 = [v5 iCloudACAccountWithIdentifier:v4];
+  v6 = [v5 iCloudACAccountWithIdentifier:dCopy];
 
   v7 = [objc_opt_class() legacyAccountForICloudACAccount:v6];
   if (!v7)
@@ -1853,14 +1853,14 @@ LABEL_23:
     }
 
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [(ICMigrationController *)self retrySelector:"continueMigrationForICloudAccountID:" accountID:v4];
+    [(ICMigrationController *)self retrySelector:"continueMigrationForICloudAccountID:" accountID:dCopy];
     goto LABEL_20;
   }
 
-  v8 = [(ICMigrationController *)self isInternetReachable];
+  isInternetReachable = [(ICMigrationController *)self isInternetReachable];
   v9 = os_log_create("com.apple.notes", "Migration");
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
-  if ((v8 & 1) == 0)
+  if ((isInternetReachable & 1) == 0)
   {
     if (v10)
     {
@@ -1875,14 +1875,14 @@ LABEL_23:
     sub_1004DE940();
   }
 
-  v11 = [objc_opt_class() currentMigrationStateForAccountID:v4];
+  v11 = [objc_opt_class() currentMigrationStateForAccountID:dCopy];
   if (v11 > 3u)
   {
     if (v11 - 5 >= 3)
     {
       if (v11 == 4)
       {
-        [(ICMigrationController *)self refreshFolderContentsForICloudAccountID:v4];
+        [(ICMigrationController *)self refreshFolderContentsForICloudAccountID:dCopy];
       }
 
       goto LABEL_20;
@@ -1909,7 +1909,7 @@ LABEL_19:
 
   if (v11 == 2)
   {
-    [objc_opt_class() setCurrentMigrationState:3 forAccountID:v4];
+    [objc_opt_class() setCurrentMigrationState:3 forAccountID:dCopy];
   }
 
   else if (v11 != 3)
@@ -1917,35 +1917,35 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  [(ICMigrationController *)self refreshFolderListForICloudAccountID:v4];
+  [(ICMigrationController *)self refreshFolderListForICloudAccountID:dCopy];
 LABEL_20:
 }
 
-- (void)refreshFolderListForICloudAccountID:(id)a3
+- (void)refreshFolderListForICloudAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[ICAccountUtilities sharedInstance];
-  v6 = [v5 iCloudACAccountWithIdentifier:v4];
+  v6 = [v5 iCloudACAccountWithIdentifier:dCopy];
 
   objc_opt_class();
   v7 = [objc_opt_class() legacyAccountForICloudACAccount:v6];
   v8 = ICCheckedDynamicCast();
 
-  v9 = [v8 accountIdentifier];
+  accountIdentifier = [v8 accountIdentifier];
   [(ICMigrationController *)self resetNotificationObservers];
-  if (v9)
+  if (accountIdentifier)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    v11 = [@"IMAPNotesAccountFolderHierarchySyncCompleteNotification-" stringByAppendingString:v9];
+    v11 = [@"IMAPNotesAccountFolderHierarchySyncCompleteNotification-" stringByAppendingString:accountIdentifier];
     CFNotificationCenterAddObserver(DarwinNotifyCenter, self, sub_1000C7AF0, v11, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 
     v12 = CFNotificationCenterGetDarwinNotifyCenter();
-    v13 = [@"IMAPNotesAccountFolderHierarchySyncFailedNotification-" stringByAppendingString:v9];
+    v13 = [@"IMAPNotesAccountFolderHierarchySyncFailedNotification-" stringByAppendingString:accountIdentifier];
     CFNotificationCenterAddObserver(v12, self, sub_1000C7AF0, v13, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 
     v15 = sub_1004E9EF0(v14);
-    v17 = [*(v16 + 4048) sharedConnection];
-    LOBYTE(v13) = [v17 updateFolderListForAccountID:v9 andDataclasses:32 isUserRequested:1];
+    sharedConnection = [*(v16 + 4048) sharedConnection];
+    LOBYTE(v13) = [sharedConnection updateFolderListForAccountID:accountIdentifier andDataclasses:32 isUserRequested:1];
 
     v18 = os_log_create("com.apple.notes", "Migration");
     v19 = v18;
@@ -1965,7 +1965,7 @@ LABEL_20:
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Failed to refresh folder list from DataAccess iCloud account. DataAccess returned NO.", v21, 2u);
       }
 
-      [(ICMigrationController *)self retryRefreshFolderListForICloudAccountID:v4];
+      [(ICMigrationController *)self retryRefreshFolderListForICloudAccountID:dCopy];
     }
   }
 
@@ -1978,35 +1978,35 @@ LABEL_20:
     }
 
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [(ICMigrationController *)self retrySelector:"continueMigrationForICloudAccountID:" accountID:v4];
+    [(ICMigrationController *)self retrySelector:"continueMigrationForICloudAccountID:" accountID:dCopy];
   }
 }
 
-- (void)refreshFolderContentsForICloudAccountID:(id)a3
+- (void)refreshFolderContentsForICloudAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[ICAccountUtilities sharedInstance];
-  v6 = [v5 iCloudACAccountWithIdentifier:v4];
+  v6 = [v5 iCloudACAccountWithIdentifier:dCopy];
 
   objc_opt_class();
   v7 = [objc_opt_class() legacyAccountForICloudACAccount:v6];
   v8 = ICCheckedDynamicCast();
 
-  v9 = [v8 accountIdentifier];
+  accountIdentifier = [v8 accountIdentifier];
   [(ICMigrationController *)self resetNotificationObservers];
   if (v8)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    v11 = [@"IMAPNotesAccountContentSyncCompleteNotification-" stringByAppendingString:v9];
+    v11 = [@"IMAPNotesAccountContentSyncCompleteNotification-" stringByAppendingString:accountIdentifier];
     CFNotificationCenterAddObserver(DarwinNotifyCenter, self, sub_1000C7AF0, v11, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 
     v12 = CFNotificationCenterGetDarwinNotifyCenter();
-    v13 = [@"IMAPNotesAccountContentSyncFailedNotification-" stringByAppendingString:v9];
+    v13 = [@"IMAPNotesAccountContentSyncFailedNotification-" stringByAppendingString:accountIdentifier];
     CFNotificationCenterAddObserver(v12, self, sub_1000C7AF0, v13, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 
     v15 = sub_1004E9EF0(v14);
-    v17 = [*(v16 + 4048) sharedConnection];
-    LOBYTE(v13) = [v17 updateContentsOfAllFoldersForAccountID:v9 andDataclasses:32 isUserRequested:1];
+    sharedConnection = [*(v16 + 4048) sharedConnection];
+    LOBYTE(v13) = [sharedConnection updateContentsOfAllFoldersForAccountID:accountIdentifier andDataclasses:32 isUserRequested:1];
 
     v18 = os_log_create("com.apple.notes", "Migration");
     v19 = v18;
@@ -2026,7 +2026,7 @@ LABEL_20:
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Failed to refresh folder contents from DataAccess iCloud account. DataAccess returned NO.", v21, 2u);
       }
 
-      [(ICMigrationController *)self retryRefreshFolderContentsForICloudAccountID:v4];
+      [(ICMigrationController *)self retryRefreshFolderContentsForICloudAccountID:dCopy];
     }
   }
 
@@ -2039,23 +2039,23 @@ LABEL_20:
     }
 
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [(ICMigrationController *)self retrySelector:"continueMigrationForICloudAccountID:" accountID:v4];
+    [(ICMigrationController *)self retrySelector:"continueMigrationForICloudAccountID:" accountID:dCopy];
   }
 }
 
-- (void)disableLegacyAccount:(id)a3
+- (void)disableLegacyAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v11 = +[ACAccountStore defaultStore];
-  v5 = [v4 accountIdentifier];
+  accountIdentifier = [accountCopy accountIdentifier];
 
-  v6 = [v11 accountWithIdentifier:v5];
+  v6 = [v11 accountWithIdentifier:accountIdentifier];
 
-  v7 = [v6 displayAccount];
-  v8 = v7;
-  if (v7)
+  displayAccount = [v6 displayAccount];
+  v8 = displayAccount;
+  if (displayAccount)
   {
-    v9 = v7;
+    v9 = displayAccount;
   }
 
   else
@@ -2071,7 +2071,7 @@ LABEL_20:
   }
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
   v4 = +[UIApplication sharedApplication];
   v5 = [v4 beginBackgroundTaskWithName:@"Cancel Migration" expirationHandler:&stru_1006488F0];
@@ -2084,7 +2084,7 @@ LABEL_20:
   [(ICMigrationController *)self cancelAllOperationsWithCompletionHandler:v6];
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   v3 = objc_opt_class();
 

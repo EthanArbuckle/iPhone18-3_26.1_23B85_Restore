@@ -1,33 +1,33 @@
 @interface CKDMoveRecordHandler
-+ (id)moveHandlerWithMoveChange:(id)a3 operation:(id)a4;
-- (id)_initWithMoveChange:(id)a3 operation:(id)a4;
++ (id)moveHandlerWithMoveChange:(id)change operation:(id)operation;
+- (id)_initWithMoveChange:(id)change operation:(id)operation;
 - (id)record;
 @end
 
 @implementation CKDMoveRecordHandler
 
-- (id)_initWithMoveChange:(id)a3 operation:(id)a4
+- (id)_initWithMoveChange:(id)change operation:(id)operation
 {
-  v7 = a3;
+  changeCopy = change;
   v12.receiver = self;
   v12.super_class = CKDMoveRecordHandler;
-  v8 = [(CKDModifyRecordHandler *)&v12 _initCommonWithOperation:a4];
+  v8 = [(CKDModifyRecordHandler *)&v12 _initCommonWithOperation:operation];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 18, a3);
+    objc_storeStrong(v8 + 18, change);
     objc_msgSend_setState_(v9, v10, 0);
   }
 
   return v9;
 }
 
-+ (id)moveHandlerWithMoveChange:(id)a3 operation:(id)a4
++ (id)moveHandlerWithMoveChange:(id)change operation:(id)operation
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
-  v10 = objc_msgSend__initWithMoveChange_operation_(v8, v9, v7, v6);
+  operationCopy = operation;
+  changeCopy = change;
+  v8 = [self alloc];
+  v10 = objc_msgSend__initWithMoveChange_operation_(v8, v9, changeCopy, operationCopy);
 
   return v10;
 }

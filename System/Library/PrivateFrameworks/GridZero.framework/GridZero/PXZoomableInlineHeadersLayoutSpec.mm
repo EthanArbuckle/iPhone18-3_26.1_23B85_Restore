@@ -1,14 +1,14 @@
 @interface PXZoomableInlineHeadersLayoutSpec
-- (PXZoomableInlineHeadersLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4;
-- (UIEdgeInsets)headerFloatMarginsForSafeAreaInsets:(UIEdgeInsets)a3;
+- (PXZoomableInlineHeadersLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options;
+- (UIEdgeInsets)headerFloatMarginsForSafeAreaInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation PXZoomableInlineHeadersLayoutSpec
 
-- (UIEdgeInsets)headerFloatMarginsForSafeAreaInsets:(UIEdgeInsets)a3
+- (UIEdgeInsets)headerFloatMarginsForSafeAreaInsets:(UIEdgeInsets)insets
 {
   v3 = &OBJC_IVAR___PXZoomableInlineHeadersLayoutSpec__headerFloatMargins;
-  if (a3.top > 44.0)
+  if (insets.top > 44.0)
   {
     v3 = &OBJC_IVAR___PXZoomableInlineHeadersLayoutSpec__headerFloatMarginsWithTallSafeAreaInsets;
   }
@@ -25,20 +25,20 @@
   return result;
 }
 
-- (PXZoomableInlineHeadersLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4
+- (PXZoomableInlineHeadersLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options
 {
-  v6 = a3;
+  collectionCopy = collection;
   v18.receiver = self;
   v18.super_class = PXZoomableInlineHeadersLayoutSpec;
-  v7 = [(PXZoomableInlineHeadersLayoutSpec *)&v18 initWithExtendedTraitCollection:v6 options:a4];
+  v7 = [(PXZoomableInlineHeadersLayoutSpec *)&v18 initWithExtendedTraitCollection:collectionCopy options:options];
   if (v7)
   {
-    v8 = [v6 layoutSizeClass];
-    [v6 contentSizeCategory];
+    layoutSizeClass = [collectionCopy layoutSizeClass];
+    [collectionCopy contentSizeCategory];
     IsAccessibility = PXPreferredContentSizeCategoryIsAccessibility();
     *(v7 + 37) = IsAccessibility;
     [v7 safeAreaInsets];
-    if ((IsAccessibility & (v8 == 1)) != 0)
+    if ((IsAccessibility & (layoutSizeClass == 1)) != 0)
     {
       v10 = 50.0;
     }
@@ -48,8 +48,8 @@
       v10 = 8.0;
     }
 
-    [v6 layoutReferenceSize];
-    [v6 userInterfaceIdiom];
+    [collectionCopy layoutReferenceSize];
+    [collectionCopy userInterfaceIdiom];
     if (v10 >= 10.0)
     {
       v11 = v10;

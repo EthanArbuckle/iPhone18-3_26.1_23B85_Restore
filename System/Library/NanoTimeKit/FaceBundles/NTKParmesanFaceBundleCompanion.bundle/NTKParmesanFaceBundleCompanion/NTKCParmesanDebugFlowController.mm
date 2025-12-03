@@ -1,18 +1,18 @@
 @interface NTKCParmesanDebugFlowController
-+ (id)debugViewControllerForFace:(id)a3;
++ (id)debugViewControllerForFace:(id)face;
 - (NTKCParmesanDebugFlowController)init;
 @end
 
 @implementation NTKCParmesanDebugFlowController
 
-+ (id)debugViewControllerForFace:(id)a3
++ (id)debugViewControllerForFace:(id)face
 {
   v4 = objc_allocWithZone(type metadata accessor for ParmesanDebugViewController());
-  v5 = a3;
+  faceCopy = face;
   v6 = sub_23BF8FEE0();
-  v7 = [objc_allocWithZone(MEMORY[0x277D757A0]) initWithRootViewController_];
+  initWithRootViewController_ = [objc_allocWithZone(MEMORY[0x277D757A0]) initWithRootViewController_];
 
-  return v7;
+  return initWithRootViewController_;
 }
 
 - (NTKCParmesanDebugFlowController)init

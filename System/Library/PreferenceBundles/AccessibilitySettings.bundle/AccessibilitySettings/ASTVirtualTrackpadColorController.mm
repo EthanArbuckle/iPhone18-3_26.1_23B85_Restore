@@ -1,20 +1,20 @@
 @interface ASTVirtualTrackpadColorController
-+ (id)localizedNameForColor:(int)a3;
++ (id)localizedNameForColor:(int)color;
 - (id)specifiers;
 @end
 
 @implementation ASTVirtualTrackpadColorController
 
-+ (id)localizedNameForColor:(int)a3
++ (id)localizedNameForColor:(int)color
 {
-  if (a3 > 6)
+  if (color > 6)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = settingsLocString(*(&off_2564E0 + a3), @"Accessibility-hello");
+    v4 = settingsLocString(*(&off_2564E0 + color), @"Accessibility-hello");
   }
 
   return v4;

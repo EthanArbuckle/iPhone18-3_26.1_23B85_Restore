@@ -1,10 +1,10 @@
 @interface WBSWebExtensionUtilities
-+ (BOOL)validateContentsOfDictionary:(id)a3 requiredKeys:(id)a4 optionalKeys:(id)a5 keyToExpectedValueType:(id)a6 outExceptionString:(id *)a7;
++ (BOOL)validateContentsOfDictionary:(id)dictionary requiredKeys:(id)keys optionalKeys:(id)optionalKeys keyToExpectedValueType:(id)type outExceptionString:(id *)string;
 + (double)nextTabID;
 + (double)nextWindowID;
-+ (double)storageSizeForKeysAndValues:(id)a3;
-+ (id)serializeObjectToJSON:(id)a3;
-+ (id)tabIDToTabPositionDictionaryForTabs:(id)a3;
++ (double)storageSizeForKeysAndValues:(id)values;
++ (id)serializeObjectToJSON:(id)n;
++ (id)tabIDToTabPositionDictionaryForTabs:(id)tabs;
 @end
 
 @implementation WBSWebExtensionUtilities
@@ -35,15 +35,15 @@
   return result;
 }
 
-+ (BOOL)validateContentsOfDictionary:(id)a3 requiredKeys:(id)a4 optionalKeys:(id)a5 keyToExpectedValueType:(id)a6 outExceptionString:(id *)a7
++ (BOOL)validateContentsOfDictionary:(id)dictionary requiredKeys:(id)keys optionalKeys:(id)optionalKeys keyToExpectedValueType:(id)type outExceptionString:(id *)string
 {
-  v30 = a3;
-  v11 = a4;
-  v12 = a5;
-  v28 = a6;
-  v29 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v11];
-  v13 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v11];
-  v14 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v12];
+  dictionaryCopy = dictionary;
+  keysCopy = keys;
+  optionalKeysCopy = optionalKeys;
+  typeCopy = type;
+  v29 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:keysCopy];
+  v13 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:keysCopy];
+  v14 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:optionalKeysCopy];
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -58,22 +58,22 @@
   v32 = v15;
   v16 = v14;
   v33 = v16;
-  v17 = v28;
+  v17 = typeCopy;
   v34 = v17;
   v36 = &v37;
   v18 = v29;
   v35 = v18;
-  [v30 enumerateKeysAndObjectsUsingBlock:v31];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v31];
   v19 = [v18 count];
   v20 = v38;
   if (v19 && !v38[5])
   {
-    v21 = [v18 allObjects];
-    v22 = [v21 componentsJoinedByString:{@", "}];
+    allObjects = [v18 allObjects];
+    v22 = [allObjects componentsJoinedByString:{@", "}];
 
-    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing required keys: %@.", v22, v28];
+    typeCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing required keys: %@.", v22, typeCopy];
     v24 = v38[5];
-    v38[5] = v23;
+    v38[5] = typeCopy;
 
     v20 = v38;
   }
@@ -81,7 +81,7 @@
   v25 = v20[5];
   if (v25)
   {
-    *a7 = v25;
+    *string = v25;
     v26 = v38[5] == 0;
   }
 
@@ -232,22 +232,22 @@ LABEL_28:
 LABEL_29:
 }
 
-+ (id)serializeObjectToJSON:(id)a3
++ (id)serializeObjectToJSON:(id)n
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  nCopy = n;
+  if (nCopy)
   {
     v10 = 0;
-    v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:0 error:&v10];
+    v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:nCopy options:0 error:&v10];
     v5 = v10;
     if (v5)
     {
       v6 = WBS_LOG_CHANNEL_PREFIXWebExtensions();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        v7 = [v5 safari_privacyPreservingDescription];
-        [(WBSWebExtensionUtilities *)v3 serializeObjectToJSON:v7, buf, v6];
+        safari_privacyPreservingDescription = [v5 safari_privacyPreservingDescription];
+        [(WBSWebExtensionUtilities *)nCopy serializeObjectToJSON:safari_privacyPreservingDescription, buf, v6];
       }
 
       v8 = 0;
@@ -267,7 +267,7 @@ LABEL_29:
   return v8;
 }
 
-+ (double)storageSizeForKeysAndValues:(id)a3
++ (double)storageSizeForKeysAndValues:(id)values
 {
   v6 = 0;
   v7 = &v6;
@@ -278,8 +278,8 @@ LABEL_29:
   v5[2] = __56__WBSWebExtensionUtilities_storageSizeForKeysAndValues___block_invoke;
   v5[3] = &unk_1E8289778;
   v5[4] = &v6;
-  v5[5] = a1;
-  [a3 enumerateKeysAndObjectsUsingBlock:v5];
+  v5[5] = self;
+  [values enumerateKeysAndObjectsUsingBlock:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -295,16 +295,16 @@ void __56__WBSWebExtensionUtilities_storageSizeForKeysAndValues___block_invoke(u
   *(*(*(a1 + 32) + 8) + 24) = v7 + v8 + *(*(*(a1 + 32) + 8) + 24);
 }
 
-+ (id)tabIDToTabPositionDictionaryForTabs:(id)a3
++ (id)tabIDToTabPositionDictionaryForTabs:(id)tabs
 {
   v20 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  tabsCopy = tabs;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v14;
+  v4 = tabsCopy;
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -323,7 +323,7 @@ void __56__WBSWebExtensionUtilities_storageSizeForKeysAndValues___block_invoke(u
         v10 = MEMORY[0x1E696AD98];
         [v8 idForWebExtensions];
         v11 = [v10 numberWithDouble:?];
-        [v3 setObject:v9 forKeyedSubscript:v11];
+        [dictionary setObject:v9 forKeyedSubscript:v11];
       }
 
       v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -332,7 +332,7 @@ void __56__WBSWebExtensionUtilities_storageSizeForKeysAndValues___block_invoke(u
     while (v5);
   }
 
-  v12 = [v3 copy];
+  v12 = [dictionary copy];
 
   return v12;
 }

@@ -1,29 +1,29 @@
 @interface TSWPSectionPlaceholder
-- (TSWPSectionPlaceholder)initWithContext:(id)a3;
+- (TSWPSectionPlaceholder)initWithContext:(id)context;
 - (TSWPStorage)parentStorage;
-- (id)copyWithContext:(id)a3;
-- (void)i_ensureHeaderFooterStoragesExistWithStylesheet:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (id)copyWithContext:(id)context;
+- (void)i_ensureHeaderFooterStoragesExistWithStylesheet:(id)stylesheet;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation TSWPSectionPlaceholder
 
-- (TSWPSectionPlaceholder)initWithContext:(id)a3
+- (TSWPSectionPlaceholder)initWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = TSWPSectionPlaceholder;
-  return [(TSWPSectionPlaceholder *)&v4 initWithContext:a3];
+  return [(TSWPSectionPlaceholder *)&v4 initWithContext:context];
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812DC408[172]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812DC408[172]);
 
   if (*(v6 + 16))
   {
@@ -33,17 +33,17 @@
     v11[2] = sub_276F32690;
     v11[3] = &unk_27A6F46C0;
     v11[4] = self;
-    v8 = v4;
+    v8 = unarchiverCopy;
     v9 = objc_opt_class();
     objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(v8, v10, v7, v9, 0, v11);
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_276F32C3C, off_2812DC408[172]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_276F32C3C, off_2812DC408[172]);
 
   v9 = objc_msgSend_parentStorage(self, v7, v8);
 
@@ -64,7 +64,7 @@
       *(v6 + 24) = v20;
     }
 
-    objc_msgSend_setWeakReference_message_(v4, v18, v19, v20);
+    objc_msgSend_setWeakReference_message_(archiverCopy, v18, v19, v20);
   }
 
   TSUSetCrashReporterInfo();
@@ -77,19 +77,19 @@
   abort();
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc(objc_opt_class());
-  v6 = objc_msgSend_initWithContext_(v4, v5, v3);
+  v6 = objc_msgSend_initWithContext_(v4, v5, contextCopy);
 
   return v6;
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v4 = a3;
-  if (!v4)
+  rootCopy = root;
+  if (!rootCopy)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPSectionPlaceholder willBeAddedToDocumentRoot:dolcContext:]");
@@ -97,20 +97,20 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v10, v7, v9, 76, 0, "invalid nil value for '%{public}s'", "documentRoot");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v11, v12);
-    v4 = 0;
+    rootCopy = 0;
   }
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v6 = objc_msgSend_context(a3, a2, a3, a4);
+  v6 = objc_msgSend_context(root, a2, root, context);
   objc_msgSend_wasAddedToDocumentWithContext_(self, v5, v6);
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
-  v15 = a3;
-  if (!v15)
+  rootCopy = root;
+  if (!rootCopy)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSWPSectionPlaceholder willBeRemovedFromDocumentRoot:]");
@@ -120,11 +120,11 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v11, v12);
   }
 
-  v13 = objc_msgSend_context(v15, v4, v5);
+  v13 = objc_msgSend_context(rootCopy, v4, v5);
   objc_msgSend_willBeRemovedFromDocumentWithContext_(self, v14, v13);
 }
 
-- (void)i_ensureHeaderFooterStoragesExistWithStylesheet:(id)a3
+- (void)i_ensureHeaderFooterStoragesExistWithStylesheet:(id)stylesheet
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPSectionPlaceholder i_ensureHeaderFooterStoragesExistWithStylesheet:]");

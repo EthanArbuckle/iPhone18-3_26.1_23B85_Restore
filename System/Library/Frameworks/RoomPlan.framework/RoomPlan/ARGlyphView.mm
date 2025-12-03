@@ -1,5 +1,5 @@
 @interface ARGlyphView
-- (_TtC8RoomPlan11ARGlyphView)initWithCoder:(id)a3;
+- (_TtC8RoomPlan11ARGlyphView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_23A8CB990();
 }
 
-- (_TtC8RoomPlan11ARGlyphView)initWithCoder:(id)a3
+- (_TtC8RoomPlan11ARGlyphView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8RoomPlan11ARGlyphView_renderer) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8RoomPlan11ARGlyphView_previousAngle) = 0;

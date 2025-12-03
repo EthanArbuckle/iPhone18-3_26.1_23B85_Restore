@@ -1,39 +1,39 @@
 @interface IXSCoordinatorManager
 + (NSURL)saveDir;
 + (id)prioritySaveURL;
-+ (id)savePathForCoordinator:(id)a3;
++ (id)savePathForCoordinator:(id)coordinator;
 + (id)sharedInstance;
-- (BOOL)_coordinator:(id)a3 isApplicableToConnection:(id)a4;
-- (BOOL)_onMapQueue_removeCoordinatorFromMaps:(id)a3;
-- (BOOL)prioritizeCoordinator:(id)a3;
-- (BOOL)prioritizeCoordinatorWithIdentity:(id)a3;
+- (BOOL)_coordinator:(id)_coordinator isApplicableToConnection:(id)connection;
+- (BOOL)_onMapQueue_removeCoordinatorFromMaps:(id)maps;
+- (BOOL)prioritizeCoordinator:(id)coordinator;
+- (BOOL)prioritizeCoordinatorWithIdentity:(id)identity;
 - (IXSCoordinatorManager)init;
-- (id)_lookupCoordinatorForIdentity:(id)a3;
-- (id)_lookupCoordinatorForIdentity:(id)a3 checkingScopeForConnection:(id)a4 error:(id *)a5;
-- (id)coordinatorForIdentity:(id)a3 connection:(id)a4 error:(id *)a5 creatingIfNotExisting:(id)a6;
-- (id)coordinatorForUUID:(id)a3;
-- (id)coordinatorsForBundleIdentifier:(id)a3;
+- (id)_lookupCoordinatorForIdentity:(id)identity;
+- (id)_lookupCoordinatorForIdentity:(id)identity checkingScopeForConnection:(id)connection error:(id *)error;
+- (id)coordinatorForIdentity:(id)identity connection:(id)connection error:(id *)error creatingIfNotExisting:(id)existing;
+- (id)coordinatorForUUID:(id)d;
+- (id)coordinatorsForBundleIdentifier:(id)identifier;
 - (unint64_t)coordinatorCount;
-- (void)_enumerateCoordinatorsForConnection:(id)a3 usingBlock:(id)a4;
+- (void)_enumerateCoordinatorsForConnection:(id)connection usingBlock:(id)block;
 - (void)_onMapQueue_saveIdentityPriority;
-- (void)clearAllCoordinatorsForCreator:(unint64_t)a3;
-- (void)connectionInvalidated:(id)a3;
-- (void)convertProcessScopedCoordinatorToGlobalScoped:(id)a3;
-- (void)performCreationBlockingOperation:(id)a3;
-- (void)unregisterCoordinator:(id)a3;
+- (void)clearAllCoordinatorsForCreator:(unint64_t)creator;
+- (void)connectionInvalidated:(id)invalidated;
+- (void)convertProcessScopedCoordinatorToGlobalScoped:(id)scoped;
+- (void)performCreationBlockingOperation:(id)operation;
+- (void)unregisterCoordinator:(id)coordinator;
 @end
 
 @implementation IXSCoordinatorManager
 
-+ (id)savePathForCoordinator:(id)a3
++ (id)savePathForCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [a1 saveDir];
-  v6 = [v4 identity];
+  coordinatorCopy = coordinator;
+  saveDir = [self saveDir];
+  identity = [coordinatorCopy identity];
 
-  v7 = [v6 uniqueIdentifier];
-  v8 = [NSString stringWithFormat:@"%@.plist", v7];
-  v9 = [v5 URLByAppendingPathComponent:v8 isDirectory:0];
+  uniqueIdentifier = [identity uniqueIdentifier];
+  v8 = [NSString stringWithFormat:@"%@.plist", uniqueIdentifier];
+  v9 = [saveDir URLByAppendingPathComponent:v8 isDirectory:0];
 
   return v9;
 }
@@ -41,9 +41,9 @@
 + (NSURL)saveDir
 {
   v2 = +[IXGlobalConfiguration sharedInstance];
-  v3 = [v2 dataDirectoryAbortingOnError];
+  dataDirectoryAbortingOnError = [v2 dataDirectoryAbortingOnError];
 
-  v4 = [v3 URLByAppendingPathComponent:@"Coordinators" isDirectory:1];
+  v4 = [dataDirectoryAbortingOnError URLByAppendingPathComponent:@"Coordinators" isDirectory:1];
 
   return v4;
 }
@@ -51,9 +51,9 @@
 + (id)prioritySaveURL
 {
   v2 = +[IXGlobalConfiguration sharedInstance];
-  v3 = [v2 dataDirectoryAbortingOnError];
+  dataDirectoryAbortingOnError = [v2 dataDirectoryAbortingOnError];
 
-  v4 = [v3 URLByAppendingPathComponent:@"CoordinatorPriority.plist" isDirectory:0];
+  v4 = [dataDirectoryAbortingOnError URLByAppendingPathComponent:@"CoordinatorPriority.plist" isDirectory:0];
 
   return v4;
 }
@@ -64,7 +64,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000DFCC;
   block[3] = &unk_100100D40;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100121C90 != -1)
   {
     dispatch_once(&qword_100121C90, block);
@@ -77,8 +77,8 @@
 
 - (unint64_t)coordinatorCount
 {
-  v3 = [(IXSCoordinatorManager *)self mapQueue];
-  dispatch_assert_queue_not_V2(v3);
+  mapQueue = [(IXSCoordinatorManager *)self mapQueue];
+  dispatch_assert_queue_not_V2(mapQueue);
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -89,7 +89,7 @@
   v6[3] = &unk_100101268;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(mapQueue, v6);
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
 
@@ -121,11 +121,11 @@
   connectionToProcessScopedCoordinatorMap = v2->_connectionToProcessScopedCoordinatorMap;
   v2->_connectionToProcessScopedCoordinatorMap = v10;
 
-  v12 = [objc_opt_class() saveDir];
+  saveDir = [objc_opt_class() saveDir];
   v13 = +[IXFileManager defaultManager];
   v159 = 0;
-  v119 = v12;
-  v14 = [v13 urlsForItemsInDirectoryAtURL:v12 ignoringSymlinks:1 error:&v159];
+  v119 = saveDir;
+  v14 = [v13 urlsForItemsInDirectoryAtURL:saveDir ignoringSymlinks:1 error:&v159];
   v15 = v159;
 
   v118 = v14;
@@ -169,8 +169,8 @@
 
         v25 = *(*(&v155 + 1) + 8 * v24);
         v26 = objc_autoreleasePoolPush();
-        v27 = [v25 lastPathComponent];
-        v28 = [v27 hasPrefix:@"."];
+        lastPathComponent = [v25 lastPathComponent];
+        v28 = [lastPathComponent hasPrefix:@"."];
 
         if ((v28 & 1) == 0)
         {
@@ -194,9 +194,9 @@
                 v35 = v34;
                 [v32 finishDecoding];
 
-                v36 = [v35 identity];
+                identity = [v35 identity];
 
-                if (v36)
+                if (identity)
                 {
                   [v35 setIsTracked:1];
                   v152 = 0;
@@ -209,15 +209,15 @@
                   }
 
                   v125 = v38;
-                  v40 = [v35 identity];
-                  v41 = [v35 uniqueIdentifier];
-                  v42 = [(NSMutableDictionary *)v2->_identityToCoordinatorMap objectForKeyedSubscript:v40];
-                  v43 = [(NSMutableDictionary *)v2->_uuidToCoordinatorMap objectForKeyedSubscript:v41];
-                  v123 = v41;
+                  identity2 = [v35 identity];
+                  uniqueIdentifier = [v35 uniqueIdentifier];
+                  v42 = [(NSMutableDictionary *)v2->_identityToCoordinatorMap objectForKeyedSubscript:identity2];
+                  v43 = [(NSMutableDictionary *)v2->_uuidToCoordinatorMap objectForKeyedSubscript:uniqueIdentifier];
+                  v123 = uniqueIdentifier;
                   v124 = v43;
                   if (v42)
                   {
-                    v121 = v40;
+                    v121 = identity2;
                     v44 = sub_1000031B0(off_100121958);
                     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
                     {
@@ -236,14 +236,14 @@
                     v47 = sub_1000405FC("[IXSCoordinatorManager init]", 150, @"IXErrorDomain", 1uLL, 0, 0, @"Discovered already registered coordinator %@ canceling deserialized coordinator with the same identity %@", v46, v42);;
 
                     v125 = v47;
-                    v40 = v121;
+                    identity2 = v121;
                   }
 
                   else
                   {
                     if (v43)
                     {
-                      v122 = v40;
+                      v122 = identity2;
                       v53 = sub_1000031B0(off_100121958);
                       if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
                       {
@@ -262,13 +262,13 @@
                       v55 = sub_1000405FC("[IXSCoordinatorManager init]", 153, @"IXErrorDomain", 1uLL, 0, 0, @"Discovered already registered coordinator %@ canceling deserialized coordinator with the same UUID %@", v54, v124);;
 
                       v125 = v55;
-                      v40 = v122;
+                      identity2 = v122;
                     }
 
                     else
                     {
-                      [(NSMutableDictionary *)v2->_identityToCoordinatorMap setObject:v35 forKeyedSubscript:v40];
-                      [(NSMutableDictionary *)v2->_uuidToCoordinatorMap setObject:v35 forKeyedSubscript:v41];
+                      [(NSMutableDictionary *)v2->_identityToCoordinatorMap setObject:v35 forKeyedSubscript:identity2];
+                      [(NSMutableDictionary *)v2->_uuidToCoordinatorMap setObject:v35 forKeyedSubscript:uniqueIdentifier];
                       v45 = 0;
                     }
 
@@ -294,14 +294,14 @@ LABEL_44:
                   goto LABEL_32;
                 }
 
-                v50 = sub_1000031B0(off_100121958);
-                if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
+                path3 = sub_1000031B0(off_100121958);
+                if (os_log_type_enabled(path3, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 136315394;
                   v165 = "[IXSCoordinatorManager init]";
                   v166 = 2112;
                   v167 = v35;
-                  v51 = v50;
+                  v51 = path3;
                   v52 = "%s: Somehow got coordinator without identity : %@";
 LABEL_28:
                   _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, v52, buf, 0x16u);
@@ -313,15 +313,15 @@ LABEL_28:
               v49 = sub_1000031B0(off_100121958);
               if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
               {
-                v126 = [v25 path];
-                v57 = [v32 error];
+                path = [v25 path];
+                error = [v32 error];
                 *buf = 136315650;
                 v165 = "[IXSCoordinatorManager init]";
                 v166 = 2112;
-                v167 = v126;
+                v167 = path;
                 v168 = 2112;
-                v169 = v57;
-                v58 = v57;
+                v169 = error;
+                v58 = error;
                 _os_log_error_impl(&_mh_execute_header, v49, OS_LOG_TYPE_ERROR, "%s: Failed to decode coordinator from data at %@ : %@", buf, 0x20u);
               }
 
@@ -333,11 +333,11 @@ LABEL_28:
               v33 = sub_1000031B0(off_100121958);
               if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
               {
-                v48 = [v25 path];
+                path2 = [v25 path];
                 *buf = 136315650;
                 v165 = "[IXSCoordinatorManager init]";
                 v166 = 2112;
-                v167 = v48;
+                v167 = path2;
                 v168 = 2112;
                 v169 = v15;
                 _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "%s: Failed to create unarchiver to deserialize coordinator at %@ : %@", buf, 0x20u);
@@ -347,11 +347,11 @@ LABEL_28:
             v35 = sub_1000031B0(off_100121958);
             if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
             {
-              v50 = [v25 path];
+              path3 = [v25 path];
               *buf = 136315394;
               v165 = "[IXSCoordinatorManager init]";
               v166 = 2112;
-              v167 = v50;
+              v167 = path3;
               v51 = v35;
               v52 = "%s: Failed to decode coordinator from %@";
               goto LABEL_28;
@@ -366,11 +366,11 @@ LABEL_30:
             v32 = sub_1000031B0(off_100121958);
             if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
             {
-              v56 = [v25 path];
+              path4 = [v25 path];
               *buf = 136315650;
               v165 = "[IXSCoordinatorManager init]";
               v166 = 2112;
-              v167 = v56;
+              v167 = path4;
               v168 = 2112;
               v169 = v30;
               _os_log_error_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "%s: Failed to deserialize coordinator at %@ : %@", buf, 0x20u);
@@ -406,16 +406,16 @@ LABEL_47:
     }
   }
 
-  v62 = [v15 domain];
-  if (![v62 isEqualToString:NSPOSIXErrorDomain])
+  domain = [v15 domain];
+  if (![domain isEqualToString:NSPOSIXErrorDomain])
   {
 
     goto LABEL_54;
   }
 
-  v63 = [v15 code];
+  code = [v15 code];
 
-  if (v63 != 2)
+  if (code != 2)
   {
 LABEL_54:
     v61 = sub_1000031B0(off_100121958);
@@ -444,11 +444,11 @@ LABEL_54:
     v61 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
     {
-      v66 = [v119 path];
+      path5 = [v119 path];
       *buf = 136315650;
       v165 = "[IXSCoordinatorManager init]";
       v166 = 2112;
-      v167 = v66;
+      v167 = path5;
       v168 = 2112;
       v169 = v60;
       _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_DEFAULT, "%s: Failed to create coordinator save directory at %@: %@", buf, 0x20u);
@@ -524,11 +524,11 @@ LABEL_57:
               v87 = sub_1000031B0(off_100121958);
               if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
               {
-                v88 = [v85 bundleID];
+                bundleID = [v85 bundleID];
                 *buf = 136315650;
                 v165 = "[IXSCoordinatorManager init]";
                 v166 = 2112;
-                v167 = v88;
+                v167 = bundleID;
                 v168 = 2112;
                 v169 = v81;
                 _os_log_impl(&_mh_execute_header, v87, OS_LOG_TYPE_DEFAULT, "%s: Failed to resolve persona %@ : %@", buf, 0x20u);
@@ -574,12 +574,12 @@ LABEL_57:
 
   else
   {
-    v89 = [v74 domain];
-    if ([v89 isEqualToString:NSCocoaErrorDomain])
+    domain2 = [v74 domain];
+    if ([domain2 isEqualToString:NSCocoaErrorDomain])
     {
-      v90 = [v74 code];
+      code2 = [v74 code];
 
-      if (v90 == 260)
+      if (code2 == 260)
       {
         goto LABEL_89;
       }
@@ -592,11 +592,11 @@ LABEL_57:
     v75 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
     {
-      v91 = [v132 path];
+      path6 = [v132 path];
       *buf = 136315650;
       v165 = "[IXSCoordinatorManager init]";
       v166 = 2112;
-      v167 = v91;
+      v167 = path6;
       v168 = 2112;
       v169 = v74;
       _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_DEFAULT, "%s: Failed to read identity priority serialization from %@ : %@", buf, 0x20u);
@@ -609,9 +609,9 @@ LABEL_57:
 LABEL_89:
   if (!v2->_identityPriority)
   {
-    v93 = [(IXSCoordinatorManager *)v2 identityToCoordinatorMap];
-    v94 = [v93 allKeys];
-    v95 = [v94 mutableCopy];
+    identityToCoordinatorMap = [(IXSCoordinatorManager *)v2 identityToCoordinatorMap];
+    allKeys = [identityToCoordinatorMap allKeys];
+    v95 = [allKeys mutableCopy];
     v96 = v2->_identityPriority;
     v2->_identityPriority = v95;
 
@@ -624,8 +624,8 @@ LABEL_89:
   v139 = 0u;
   v140 = 0u;
   v141 = 0u;
-  v99 = [(IXSCoordinatorManager *)v2 identityPriority];
-  v100 = [v99 countByEnumeratingWithState:&v138 objects:v162 count:16];
+  identityPriority = [(IXSCoordinatorManager *)v2 identityPriority];
+  v100 = [identityPriority countByEnumeratingWithState:&v138 objects:v162 count:16];
   if (v100)
   {
     v101 = v100;
@@ -636,12 +636,12 @@ LABEL_89:
       {
         if (*v139 != v102)
         {
-          objc_enumerationMutation(v99);
+          objc_enumerationMutation(identityPriority);
         }
 
         v104 = *(*(&v138 + 1) + 8 * i);
-        v105 = [(IXSCoordinatorManager *)v2 identityToCoordinatorMap];
-        v106 = [v105 objectForKeyedSubscript:v104];
+        identityToCoordinatorMap2 = [(IXSCoordinatorManager *)v2 identityToCoordinatorMap];
+        v106 = [identityToCoordinatorMap2 objectForKeyedSubscript:v104];
 
         if (!v106)
         {
@@ -649,21 +649,21 @@ LABEL_89:
         }
       }
 
-      v101 = [v99 countByEnumeratingWithState:&v138 objects:v162 count:16];
+      v101 = [identityPriority countByEnumeratingWithState:&v138 objects:v162 count:16];
     }
 
     while (v101);
   }
 
-  v107 = [(IXSCoordinatorManager *)v2 identityPriority];
-  [v107 removeObjectsInArray:v98];
+  identityPriority2 = [(IXSCoordinatorManager *)v2 identityPriority];
+  [identityPriority2 removeObjectsInArray:v98];
 
   v136 = 0u;
   v137 = 0u;
   v134 = 0u;
   v135 = 0u;
-  v108 = [(IXSCoordinatorManager *)v2 identityToCoordinatorMap];
-  v109 = [v108 countByEnumeratingWithState:&v134 objects:v161 count:16];
+  identityToCoordinatorMap3 = [(IXSCoordinatorManager *)v2 identityToCoordinatorMap];
+  v109 = [identityToCoordinatorMap3 countByEnumeratingWithState:&v134 objects:v161 count:16];
   if (v109)
   {
     v110 = v109;
@@ -674,21 +674,21 @@ LABEL_89:
       {
         if (*v135 != v111)
         {
-          objc_enumerationMutation(v108);
+          objc_enumerationMutation(identityToCoordinatorMap3);
         }
 
         v113 = *(*(&v134 + 1) + 8 * j);
-        v114 = [(IXSCoordinatorManager *)v2 identityPriority];
-        v115 = [v114 containsObject:v113];
+        identityPriority3 = [(IXSCoordinatorManager *)v2 identityPriority];
+        v115 = [identityPriority3 containsObject:v113];
 
         if ((v115 & 1) == 0)
         {
-          v116 = [(IXSCoordinatorManager *)v2 identityPriority];
-          [v116 addObject:v113];
+          identityPriority4 = [(IXSCoordinatorManager *)v2 identityPriority];
+          [identityPriority4 addObject:v113];
         }
       }
 
-      v110 = [v108 countByEnumeratingWithState:&v134 objects:v161 count:16];
+      v110 = [identityToCoordinatorMap3 countByEnumeratingWithState:&v134 objects:v161 count:16];
     }
 
     while (v110);
@@ -697,49 +697,49 @@ LABEL_89:
   return v2;
 }
 
-- (BOOL)_onMapQueue_removeCoordinatorFromMaps:(id)a3
+- (BOOL)_onMapQueue_removeCoordinatorFromMaps:(id)maps
 {
-  v4 = a3;
-  v5 = [(IXSCoordinatorManager *)self mapQueue];
-  dispatch_assert_queue_V2(v5);
+  mapsCopy = maps;
+  mapQueue = [(IXSCoordinatorManager *)self mapQueue];
+  dispatch_assert_queue_V2(mapQueue);
 
-  if ([v4 isTracked])
+  if ([mapsCopy isTracked])
   {
-    v6 = [v4 uniqueIdentifier];
-    if (v6)
+    uniqueIdentifier = [mapsCopy uniqueIdentifier];
+    if (uniqueIdentifier)
     {
-      v7 = [(IXSCoordinatorManager *)self uuidToCoordinatorMap];
-      v8 = [v7 objectForKeyedSubscript:v6];
+      uuidToCoordinatorMap = [(IXSCoordinatorManager *)self uuidToCoordinatorMap];
+      v8 = [uuidToCoordinatorMap objectForKeyedSubscript:uniqueIdentifier];
 
       if (v8)
       {
-        v9 = [v4 identity];
-        v10 = v9 != 0;
-        if (v9)
+        identity = [mapsCopy identity];
+        v10 = identity != 0;
+        if (identity)
         {
-          [v4 setIsTracked:0];
-          v11 = [(IXSCoordinatorManager *)self identityToCoordinatorMap];
-          [v11 removeObjectForKey:v9];
+          [mapsCopy setIsTracked:0];
+          identityToCoordinatorMap = [(IXSCoordinatorManager *)self identityToCoordinatorMap];
+          [identityToCoordinatorMap removeObjectForKey:identity];
 
-          v12 = [(IXSCoordinatorManager *)self uuidToCoordinatorMap];
-          [v12 removeObjectForKey:v6];
+          uuidToCoordinatorMap2 = [(IXSCoordinatorManager *)self uuidToCoordinatorMap];
+          [uuidToCoordinatorMap2 removeObjectForKey:uniqueIdentifier];
 
-          v13 = [(IXSCoordinatorManager *)self identityPriority];
-          [v13 removeObject:v9];
+          identityPriority = [(IXSCoordinatorManager *)self identityPriority];
+          [identityPriority removeObject:identity];
 
-          v14 = [v4 scopedToConnection];
-          v15 = [v14 connectionUUID];
+          scopedToConnection = [mapsCopy scopedToConnection];
+          connectionUUID = [scopedToConnection connectionUUID];
 
-          if (v15)
+          if (connectionUUID)
           {
-            v16 = [(IXSCoordinatorManager *)self connectionToProcessScopedCoordinatorMap];
-            v17 = [v16 objectForKeyedSubscript:v15];
+            connectionToProcessScopedCoordinatorMap = [(IXSCoordinatorManager *)self connectionToProcessScopedCoordinatorMap];
+            v17 = [connectionToProcessScopedCoordinatorMap objectForKeyedSubscript:connectionUUID];
 
-            [v17 removeObject:v4];
+            [v17 removeObject:mapsCopy];
             if (![v17 count])
             {
-              v18 = [(IXSCoordinatorManager *)self connectionToProcessScopedCoordinatorMap];
-              [v18 removeObjectForKey:v15];
+              connectionToProcessScopedCoordinatorMap2 = [(IXSCoordinatorManager *)self connectionToProcessScopedCoordinatorMap];
+              [connectionToProcessScopedCoordinatorMap2 removeObjectForKey:connectionUUID];
             }
           }
         }
@@ -747,7 +747,7 @@ LABEL_89:
         goto LABEL_14;
       }
 
-      [v4 setIsTracked:0];
+      [mapsCopy setIsTracked:0];
     }
 
     v10 = 0;
@@ -764,13 +764,13 @@ LABEL_15:
 
 - (void)_onMapQueue_saveIdentityPriority
 {
-  v3 = [(IXSCoordinatorManager *)self mapQueue];
-  dispatch_assert_queue_V2(v3);
+  mapQueue = [(IXSCoordinatorManager *)self mapQueue];
+  dispatch_assert_queue_V2(mapQueue);
 
-  v4 = [objc_opt_class() prioritySaveURL];
-  v5 = [(IXSCoordinatorManager *)self identityPriority];
+  prioritySaveURL = [objc_opt_class() prioritySaveURL];
+  identityPriority = [(IXSCoordinatorManager *)self identityPriority];
   v12 = 0;
-  v6 = [NSKeyedArchiver archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v12];
+  v6 = [NSKeyedArchiver archivedDataWithRootObject:identityPriority requiringSecureCoding:1 error:&v12];
   v7 = v12;
 
   if (!v6)
@@ -789,7 +789,7 @@ LABEL_15:
   }
 
   v11 = v7;
-  v8 = [v6 writeToURL:v4 options:1 error:&v11];
+  v8 = [v6 writeToURL:prioritySaveURL options:1 error:&v11];
   v9 = v11;
 
   if ((v8 & 1) == 0)
@@ -800,7 +800,7 @@ LABEL_15:
       *buf = 136315650;
       v14 = "[IXSCoordinatorManager _onMapQueue_saveIdentityPriority]";
       v15 = 2112;
-      v16 = v4;
+      v16 = prioritySaveURL;
       v17 = 2112;
       v18 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Failed to save coordinator priority array to %@ : %@", buf, 0x20u);
@@ -813,30 +813,30 @@ LABEL_8:
   }
 }
 
-- (BOOL)_coordinator:(id)a3 isApplicableToConnection:(id)a4
+- (BOOL)_coordinator:(id)_coordinator isApplicableToConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  _coordinatorCopy = _coordinator;
+  connectionCopy = connection;
+  if (!_coordinatorCopy)
   {
     goto LABEL_5;
   }
 
-  if ([v5 coordinatorScope] != 1)
+  if ([_coordinatorCopy coordinatorScope] != 1)
   {
     goto LABEL_5;
   }
 
-  v7 = [v5 scopedToConnection];
-  v8 = [v7 connectionUUID];
+  scopedToConnection = [_coordinatorCopy scopedToConnection];
+  connectionUUID = [scopedToConnection connectionUUID];
 
-  if (!v8)
+  if (!connectionUUID)
   {
     goto LABEL_5;
   }
 
-  v9 = [v6 connectionUUID];
-  v10 = [v9 isEqual:v8];
+  connectionUUID2 = [connectionCopy connectionUUID];
+  v10 = [connectionUUID2 isEqual:connectionUUID];
 
   if (!v10)
   {
@@ -852,25 +852,25 @@ LABEL_5:
   return v11;
 }
 
-- (id)coordinatorForUUID:(id)a3
+- (id)coordinatorForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_10000F898;
   v16 = sub_10000F8A8;
   v17 = 0;
-  v5 = [(IXSCoordinatorManager *)self mapQueue];
+  mapQueue = [(IXSCoordinatorManager *)self mapQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000F8B0;
   block[3] = &unk_1001012B0;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(mapQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -878,46 +878,46 @@ LABEL_5:
   return v7;
 }
 
-- (id)coordinatorsForBundleIdentifier:(id)a3
+- (id)coordinatorsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_opt_new();
-  v6 = [(IXSCoordinatorManager *)self mapQueue];
+  mapQueue = [(IXSCoordinatorManager *)self mapQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000FA1C;
   block[3] = &unk_100101300;
   block[4] = self;
-  v12 = v4;
+  v12 = identifierCopy;
   v13 = v5;
   v7 = v5;
-  v8 = v4;
-  dispatch_sync(v6, block);
+  v8 = identifierCopy;
+  dispatch_sync(mapQueue, block);
 
   v9 = [v7 copy];
 
   return v9;
 }
 
-- (id)_lookupCoordinatorForIdentity:(id)a3
+- (id)_lookupCoordinatorForIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_10000F898;
   v16 = sub_10000F8A8;
   v17 = 0;
-  v5 = [(IXSCoordinatorManager *)self mapQueue];
+  mapQueue = [(IXSCoordinatorManager *)self mapQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000FC9C;
   block[3] = &unk_1001012B0;
-  v10 = v4;
+  v10 = identityCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identityCopy;
+  dispatch_sync(mapQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -925,10 +925,10 @@ LABEL_5:
   return v7;
 }
 
-- (id)_lookupCoordinatorForIdentity:(id)a3 checkingScopeForConnection:(id)a4 error:(id *)a5
+- (id)_lookupCoordinatorForIdentity:(id)identity checkingScopeForConnection:(id)connection error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identityCopy = identity;
+  connectionCopy = connection;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -939,17 +939,17 @@ LABEL_5:
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 0;
-  v10 = [(IXSCoordinatorManager *)self mapQueue];
+  mapQueue = [(IXSCoordinatorManager *)self mapQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100010070;
   block[3] = &unk_100101328;
   v29 = &v35;
   block[4] = self;
-  v11 = v8;
+  v11 = identityCopy;
   v28 = v11;
   v30 = &v31;
-  dispatch_sync(v10, block);
+  dispatch_sync(mapQueue, block);
 
   if (!v36[5])
   {
@@ -958,8 +958,8 @@ LABEL_5:
 
   if (*(v32 + 24) == 1)
   {
-    v12 = [v9 clientName];
-    v14 = sub_1000405FC("[IXSCoordinatorManager _lookupCoordinatorForIdentity:checkingScopeForConnection:error:]", 399, @"IXErrorDomain", 0x2FuLL, 0, 0, @"Creator of this process-scoped coordinator, %@, has gone away canceling coordinator.", v13, v12);;
+    clientName = [connectionCopy clientName];
+    v14 = sub_1000405FC("[IXSCoordinatorManager _lookupCoordinatorForIdentity:checkingScopeForConnection:error:]", 399, @"IXErrorDomain", 0x2FuLL, 0, 0, @"Creator of this process-scoped coordinator, %@, has gone away canceling coordinator.", v13, clientName);;
     [v36[5] cancelForReason:v14 client:15 error:0];
     v15 = v36[5];
     v36[5] = 0;
@@ -967,7 +967,7 @@ LABEL_5:
     if (!v36[5])
     {
 LABEL_6:
-      v17 = [v9 clientName];
+      clientName2 = [connectionCopy clientName];
       v16 = sub_1000405FC("[IXSCoordinatorManager _lookupCoordinatorForIdentity:checkingScopeForConnection:error:]", 411, @"IXErrorDomain", 6uLL, 0, 0, @"Failed to locate an existing coordinated app install with bundle ID %@ for client %@", v18, v11);
 LABEL_8:
 
@@ -977,12 +977,12 @@ LABEL_8:
 
   if (![IXSCoordinatorManager _coordinator:"_coordinator:isApplicableToConnection:" isApplicableToConnection:?])
   {
-    v19 = [v36[5] identity];
-    v20 = [v36[5] uniqueIdentifier];
-    v26 = [v9 clientName];
-    v16 = sub_1000405FC("[IXSCoordinatorManager _lookupCoordinatorForIdentity:checkingScopeForConnection:error:]", 407, @"IXErrorDomain", 0x30uLL, 0, 0, @"Coordinator found for %@ with UUID %@ was process-scoped, but not for client %@.", v21, v19);
+    identity = [v36[5] identity];
+    uniqueIdentifier = [v36[5] uniqueIdentifier];
+    clientName3 = [connectionCopy clientName];
+    v16 = sub_1000405FC("[IXSCoordinatorManager _lookupCoordinatorForIdentity:checkingScopeForConnection:error:]", 407, @"IXErrorDomain", 0x30uLL, 0, 0, @"Coordinator found for %@ with UUID %@ was process-scoped, but not for client %@.", v21, identity);
 
-    v17 = v36[5];
+    clientName2 = v36[5];
     v36[5] = 0;
     goto LABEL_8;
   }
@@ -990,10 +990,10 @@ LABEL_8:
   v16 = 0;
 LABEL_9:
   v22 = v36[5];
-  if (a5 && !v22)
+  if (error && !v22)
   {
     v23 = v16;
-    *a5 = v16;
+    *error = v16;
     v22 = v36[5];
   }
 
@@ -1005,11 +1005,11 @@ LABEL_9:
   return v24;
 }
 
-- (id)coordinatorForIdentity:(id)a3 connection:(id)a4 error:(id *)a5 creatingIfNotExisting:(id)a6
+- (id)coordinatorForIdentity:(id)identity connection:(id)connection error:(id *)error creatingIfNotExisting:(id)existing
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identityCopy = identity;
+  connectionCopy = connection;
+  existingCopy = existing;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -1022,33 +1022,33 @@ LABEL_9:
   v31 = sub_10000F898;
   v32 = sub_10000F8A8;
   obj = 0;
-  v13 = [(IXSCoordinatorManager *)self _lookupCoordinatorForIdentity:v10 checkingScopeForConnection:v11 error:&obj];
+  v13 = [(IXSCoordinatorManager *)self _lookupCoordinatorForIdentity:identityCopy checkingScopeForConnection:connectionCopy error:&obj];
   objc_storeStrong(&v39, obj);
   v33 = v13;
   if (!v29[5])
   {
-    v14 = [v35[5] domain];
-    if ([v14 isEqualToString:@"IXErrorDomain"])
+    domain = [v35[5] domain];
+    if ([domain isEqualToString:@"IXErrorDomain"])
     {
-      v15 = [v35[5] code];
+      code = [v35[5] code];
 
-      if (v12 && v15 == 6)
+      if (existingCopy && code == 6)
       {
         v16 = v35[5];
         v35[5] = 0;
 
-        v17 = [(IXSCoordinatorManager *)self createQueue];
+        createQueue = [(IXSCoordinatorManager *)self createQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_100010414;
         block[3] = &unk_100101378;
         v25 = &v28;
         block[4] = self;
-        v22 = v10;
-        v23 = v11;
-        v24 = v12;
+        v22 = identityCopy;
+        v23 = connectionCopy;
+        v24 = existingCopy;
         v26 = &v34;
-        dispatch_sync(v17, block);
+        dispatch_sync(createQueue, block);
       }
     }
 
@@ -1058,9 +1058,9 @@ LABEL_9:
   }
 
   v18 = v29[5];
-  if (a5 && !v18)
+  if (error && !v18)
   {
-    *a5 = v35[5];
+    *error = v35[5];
     v18 = v29[5];
   }
 
@@ -1072,36 +1072,36 @@ LABEL_9:
   return v19;
 }
 
-- (void)performCreationBlockingOperation:(id)a3
+- (void)performCreationBlockingOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(IXSCoordinatorManager *)self createQueue];
+  operationCopy = operation;
+  createQueue = [(IXSCoordinatorManager *)self createQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000109E8;
   v7[3] = &unk_1001013A0;
-  v8 = v4;
-  v6 = v4;
-  sub_100071134(v5, v7);
+  v8 = operationCopy;
+  v6 = operationCopy;
+  sub_100071134(createQueue, v7);
 }
 
-- (void)unregisterCoordinator:(id)a3
+- (void)unregisterCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(IXSCoordinatorManager *)self mapQueue];
+  mapQueue = [(IXSCoordinatorManager *)self mapQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100010BA8;
   block[3] = &unk_1001012B0;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = coordinatorCopy;
   v9 = v6;
-  dispatch_sync(v5, block);
+  dispatch_sync(mapQueue, block);
 
   if (*(v12 + 24) == 1)
   {
@@ -1119,23 +1119,23 @@ LABEL_9:
   _Block_object_dispose(&v11, 8);
 }
 
-- (BOOL)prioritizeCoordinatorWithIdentity:(id)a3
+- (BOOL)prioritizeCoordinatorWithIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v5 = [(IXSCoordinatorManager *)self mapQueue];
+  mapQueue = [(IXSCoordinatorManager *)self mapQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100010DD4;
   block[3] = &unk_1001011C8;
   block[4] = self;
-  v6 = v4;
+  v6 = identityCopy;
   v11 = v6;
   v12 = &v13;
-  dispatch_sync(v5, block);
+  dispatch_sync(mapQueue, block);
 
   if (*(v14 + 24) == 1)
   {
@@ -1161,12 +1161,12 @@ LABEL_9:
   return v8 & 1;
 }
 
-- (BOOL)prioritizeCoordinator:(id)a3
+- (BOOL)prioritizeCoordinator:(id)coordinator
 {
-  v4 = [a3 identity];
-  if (v4)
+  identity = [coordinator identity];
+  if (identity)
   {
-    v5 = [(IXSCoordinatorManager *)self prioritizeCoordinatorWithIdentity:v4];
+    v5 = [(IXSCoordinatorManager *)self prioritizeCoordinatorWithIdentity:identity];
   }
 
   else
@@ -1177,24 +1177,24 @@ LABEL_9:
   return v5;
 }
 
-- (void)_enumerateCoordinatorsForConnection:(id)a3 usingBlock:(id)a4
+- (void)_enumerateCoordinatorsForConnection:(id)connection usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  blockCopy = block;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = sub_10000F898;
   v23 = sub_10000F8A8;
   v24 = objc_opt_new();
-  v8 = [(IXSCoordinatorManager *)self mapQueue];
+  mapQueue = [(IXSCoordinatorManager *)self mapQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100011118;
   block[3] = &unk_1001013C8;
   block[4] = self;
   block[5] = &v19;
-  dispatch_sync(v8, block);
+  dispatch_sync(mapQueue, block);
 
   v16 = 0u;
   v17 = 0u;
@@ -1215,7 +1215,7 @@ LABEL_3:
       }
 
       v13 = *(*(&v14 + 1) + 8 * v12);
-      if ((!v6 || [(IXSCoordinatorManager *)self _coordinator:*(*(&v14 + 1) + 8 * v12) isApplicableToConnection:v6, v14]) && !v7[2](v7, v13))
+      if ((!connectionCopy || [(IXSCoordinatorManager *)self _coordinator:*(*(&v14 + 1) + 8 * v12) isApplicableToConnection:connectionCopy, v14]) && !blockCopy[2](blockCopy, v13))
       {
         break;
       }
@@ -1236,12 +1236,12 @@ LABEL_3:
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)clearAllCoordinatorsForCreator:(unint64_t)a3
+- (void)clearAllCoordinatorsForCreator:(unint64_t)creator
 {
   v5 = sub_1000031B0(off_100121958);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = IXStringForClientID(a3);
+    v6 = IXStringForClientID(creator);
     *buf = 136315394;
     *&buf[4] = "[IXSCoordinatorManager clearAllCoordinatorsForCreator:]";
     *&buf[12] = 2112;
@@ -1255,14 +1255,14 @@ LABEL_3:
   v22 = sub_10000F898;
   v23 = sub_10000F8A8;
   v24 = 0;
-  v7 = [(IXSCoordinatorManager *)self mapQueue];
+  mapQueue = [(IXSCoordinatorManager *)self mapQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000115BC;
   block[3] = &unk_100101268;
   block[4] = self;
   block[5] = buf;
-  dispatch_sync(v7, block);
+  dispatch_sync(mapQueue, block);
 
   v17 = 0u;
   v18 = 0u;
@@ -1284,7 +1284,7 @@ LABEL_3:
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
-        if (!a3 || [*(*(&v15 + 1) + 8 * v12) creator] == a3)
+        if (!creator || [*(*(&v15 + 1) + 8 * v12) creator] == creator)
         {
           v14 = sub_1000405FC("[IXSCoordinatorManager clearAllCoordinatorsForCreator:]", 579, @"IXErrorDomain", 1uLL, 0, 0, @"Clearing all coordinators", v9, v15);
           [v13 cancelForReason:v14 client:15 error:0];
@@ -1303,31 +1303,31 @@ LABEL_3:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)connectionInvalidated:(id)a3
+- (void)connectionInvalidated:(id)invalidated
 {
-  v4 = a3;
-  v5 = [v4 connectionUUID];
+  invalidatedCopy = invalidated;
+  connectionUUID = [invalidatedCopy connectionUUID];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = sub_10000F898;
   v26 = sub_10000F8A8;
   v27 = 0;
-  v6 = [(IXSCoordinatorManager *)self mapQueue];
+  mapQueue = [(IXSCoordinatorManager *)self mapQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000118B4;
   block[3] = &unk_1001012B0;
   v21 = &v22;
   block[4] = self;
-  v7 = v5;
+  v7 = connectionUUID;
   v20 = v7;
-  dispatch_sync(v6, block);
+  dispatch_sync(mapQueue, block);
 
   if (v23[5])
   {
-    v8 = [v4 clientName];
-    v10 = sub_1000405FC("[IXSCoordinatorManager connectionInvalidated:]", 609, @"IXErrorDomain", 0x2FuLL, 0, 0, @"Creator of this process-scoped coordinator, %@, has gone away canceling coordinator.", v9, v8);;
+    clientName = [invalidatedCopy clientName];
+    v10 = sub_1000405FC("[IXSCoordinatorManager connectionInvalidated:]", 609, @"IXErrorDomain", 0x2FuLL, 0, 0, @"Creator of this process-scoped coordinator, %@, has gone away canceling coordinator.", v9, clientName);;
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
@@ -1362,23 +1362,23 @@ LABEL_3:
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)convertProcessScopedCoordinatorToGlobalScoped:(id)a3
+- (void)convertProcessScopedCoordinatorToGlobalScoped:(id)scoped
 {
-  v4 = a3;
-  v5 = [v4 scopedToConnection];
-  v6 = [v5 connectionUUID];
+  scopedCopy = scoped;
+  scopedToConnection = [scopedCopy scopedToConnection];
+  connectionUUID = [scopedToConnection connectionUUID];
 
-  v7 = [(IXSCoordinatorManager *)self mapQueue];
+  mapQueue = [(IXSCoordinatorManager *)self mapQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100011B1C;
   block[3] = &unk_100101300;
   block[4] = self;
-  v11 = v6;
-  v12 = v4;
-  v8 = v4;
-  v9 = v6;
-  dispatch_sync(v7, block);
+  v11 = connectionUUID;
+  v12 = scopedCopy;
+  v8 = scopedCopy;
+  v9 = connectionUUID;
+  dispatch_sync(mapQueue, block);
 }
 
 @end

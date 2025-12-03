@@ -1,33 +1,33 @@
 @interface SBSystemApertureSceneElement
 + (FBSceneWorkspace)sceneWorkspace;
 + (NSSet)scenesForBacklightSession;
-+ (id)activePlaceholderElementPassingTest:(id)a3;
++ (id)activePlaceholderElementPassingTest:(id)test;
 + (id)defaultAnimationParameters;
-+ (void)addActiveElement:(id)a3;
-+ (void)addElementReadyForPresentation:(id)a3;
++ (void)addActiveElement:(id)element;
++ (void)addElementReadyForPresentation:(id)presentation;
 + (void)hostedScenesDidChange;
-+ (void)removeActiveElement:(id)a3;
-+ (void)removeElementReadyForPresentation:(id)a3;
-- (BOOL)_activateCorrespondingAppSceneIfPossible:(int64_t)a3;
++ (void)removeActiveElement:(id)element;
++ (void)removeElementReadyForPresentation:(id)presentation;
+- (BOOL)_activateCorrespondingAppSceneIfPossible:(int64_t)possible;
 - (BOOL)_calculateRequiresSuppressionFromSystemAperture;
-- (BOOL)_handleAction:(id)a3;
+- (BOOL)_handleAction:(id)action;
 - (BOOL)_handleLaunchAction;
-- (BOOL)_hasPresentationBehavior:(unint64_t)a3;
-- (BOOL)_isAssociatedWithBundleIdentifier:(id)a3;
-- (BOOL)_isAssociatedWithSceneWithPersistenceIdentifier:(id)a3;
+- (BOOL)_hasPresentationBehavior:(unint64_t)behavior;
+- (BOOL)_isAssociatedWithBundleIdentifier:(id)identifier;
+- (BOOL)_isAssociatedWithSceneWithPersistenceIdentifier:(id)identifier;
 - (BOOL)_isPresentedAsBannerInsteadOfSystemAperture;
-- (BOOL)_isValidAlertingSource:(int64_t)a3;
+- (BOOL)_isValidAlertingSource:(int64_t)source;
 - (BOOL)_ownsScene;
 - (BOOL)_requiresForegroundScene;
 - (BOOL)_sceneDisplayConfigurationValid;
 - (BOOL)_shouldHandleLaunchAction;
 - (BOOL)_shouldSuppressBackgroundActivities;
 - (BOOL)_supportsMenuPresentations;
-- (BOOL)_tryMovingToPlaceholderElementWithClientSettingsDiff:(id)a3 forScene:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6;
+- (BOOL)_tryMovingToPlaceholderElementWithClientSettingsDiff:(id)diff forScene:(id)scene oldClientSettings:(id)settings transitionContext:(id)context;
 - (BOOL)_updateRequiresSuppressionFromSystemAperture;
-- (BOOL)acceptsFullScreenTransitionFromSceneWithIdentifier:(id)a3 ofBundleId:(id)a4;
-- (BOOL)handleElementViewEvent:(int64_t)a3;
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3;
+- (BOOL)acceptsFullScreenTransitionFromSceneWithIdentifier:(id)identifier ofBundleId:(id)id;
+- (BOOL)handleElementViewEvent:(int64_t)event;
+- (BOOL)handleHeadsetButtonPress:(BOOL)press;
 - (BOOL)handleVolumeDownButtonPress;
 - (BOOL)handleVolumeUpButtonPress;
 - (BOOL)hasActivityBehavior;
@@ -43,22 +43,22 @@
 - (BOOL)isRegisteredForCapture;
 - (BOOL)isRequestingMenuPresentation;
 - (BOOL)isSecureFlipBookElement;
-- (BOOL)isSymmetricalForUILayoutDirectionInConfiguration:(id)a3 orientation:(int64_t)a4;
-- (BOOL)overridesConcentricPaddingForView:(id)a3 inLayoutMode:(int64_t)a4;
+- (BOOL)isSymmetricalForUILayoutDirectionInConfiguration:(id)configuration orientation:(int64_t)orientation;
+- (BOOL)overridesConcentricPaddingForView:(id)view inLayoutMode:(int64_t)mode;
 - (BOOL)preventsInteractiveGestures;
-- (BOOL)shouldIgnoreSystemChromeSuppressionWhilePresentingAppWithBundleId:(id)a3;
+- (BOOL)shouldIgnoreSystemChromeSuppressionWhilePresentingAppWithBundleId:(id)id;
 - (BOOL)shouldSuppressElementWhileOnContinuityDisplay;
-- (BOOL)shouldSuppressElementWhilePresentingAppWithBundleId:(id)a3;
-- (BOOL)shouldSuppressElementWhilePresentingSceneWithIdentifier:(id)a3;
+- (BOOL)shouldSuppressElementWhilePresentingAppWithBundleId:(id)id;
+- (BOOL)shouldSuppressElementWhilePresentingSceneWithIdentifier:(id)identifier;
 - (BOOL)shouldSuppressElementWhileProximityReaderPresent;
-- (CGRect)_frameForSceneViewInContainerView:(id)a3;
-- (CGRect)_frameInSceneContainerForView:(id)a3;
+- (CGRect)_frameForSceneViewInContainerView:(id)view;
+- (CGRect)_frameInSceneContainerForView:(id)view;
 - (CGRect)_obstructedAreaFrame;
 - (CGSize)_sizeForSceneView;
-- (CGSize)sizeThatFitsSize:(CGSize)a3 forProvidedView:(id)a4 inLayoutMode:(int64_t)a5;
+- (CGSize)sizeThatFitsSize:(CGSize)size forProvidedView:(id)view inLayoutMode:(int64_t)mode;
 - (NSArray)recordableConfigurations;
 - (NSDictionary)preferredComponentStates;
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)a4 maximumOutsets:(NSDirectionalEdgeInsets)a5;
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets;
 - (NSMutableDictionary)userInfo;
 - (NSSet)representedBackgroundActivityIdentifiers;
 - (NSString)clientIdentifier;
@@ -72,9 +72,9 @@
 - (SBSystemApertureBackgroundActivitiesSuppressing)statusBarBackgroundActivitiesSuppresser;
 - (SBSystemApertureGestureHandling)gestureHandler;
 - (SBSystemAperturePlatformElementHosting)platformElementHost;
-- (SBSystemApertureSceneElement)initWithScene:(id)a3 placeholderContentProvider:(id)a4 statusBarBackgroundActivitiesSuppresser:(id)a5 readyForPresentationHandler:(id)a6;
-- (SBSystemApertureSceneElement)initWithScene:(id)a3 statusBarBackgroundActivitiesSuppresser:(id)a4 readyForPresentationHandler:(id)a5;
-- (SBSystemApertureSceneElement)initWithSceneSpecification:(id)a3 sceneClientIdentity:(id)a4 statusBarBackgroundActivitiesSuppresser:(id)a5 readyForPresentationHandler:(id)a6;
+- (SBSystemApertureSceneElement)initWithScene:(id)scene placeholderContentProvider:(id)provider statusBarBackgroundActivitiesSuppresser:(id)suppresser readyForPresentationHandler:(id)handler;
+- (SBSystemApertureSceneElement)initWithScene:(id)scene statusBarBackgroundActivitiesSuppresser:(id)suppresser readyForPresentationHandler:(id)handler;
+- (SBSystemApertureSceneElement)initWithSceneSpecification:(id)specification sceneClientIdentity:(id)identity statusBarBackgroundActivitiesSuppresser:(id)suppresser readyForPresentationHandler:(id)handler;
 - (SBSystemApertureSceneElementAccessoryView)leadingView;
 - (SBSystemApertureSceneElementAccessoryView)minimalView;
 - (SBSystemApertureSceneElementAccessoryView)trailingView;
@@ -82,98 +82,98 @@
 - (SBSystemApertureSceneElementLaunchActionHandling)launchActionHandler;
 - (SBSystemApertureSceneElementPlaceholderContentProviding)placeholderContentProvider;
 - (UIColor)keyColor;
-- (double)concentricPaddingOverrideForView:(id)a3 inLayoutMode:(int64_t)a4;
-- (id)_bundleIdForLaunchTargetWithScenePersistenceIdentifier:(id)a3;
+- (double)concentricPaddingOverrideForView:(id)view inLayoutMode:(int64_t)mode;
+- (id)_bundleIdForLaunchTargetWithScenePersistenceIdentifier:(id)identifier;
 - (id)_existingAlertingAssertion;
 - (id)_inferredElementIdentifier;
-- (id)_proposeTransitionParametersForTransitionToFrameInSceneView:(CGRect)a3 excludingParametersAssociatedWithReasons:(unint64_t)a4 usingCurrentAnimationParameters:(BOOL)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)requestAlertingAssertionImplicitlyDismissable:(BOOL)a3;
+- (id)_proposeTransitionParametersForTransitionToFrameInSceneView:(CGRect)view excludingParametersAssociatedWithReasons:(unint64_t)reasons usingCurrentAnimationParameters:(BOOL)parameters;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)requestAlertingAssertionImplicitlyDismissable:(BOOL)dismissable;
 - (id)sceneClientSettings;
 - (id)sceneSettings;
 - (id)succinctDescription;
-- (int64_t)_clientLayoutModeForLayoutMode:(int64_t)a3;
-- (int64_t)_layoutModeForClientLayoutMode:(int64_t)a3;
+- (int64_t)_clientLayoutModeForLayoutMode:(int64_t)mode;
+- (int64_t)_layoutModeForClientLayoutMode:(int64_t)mode;
 - (int64_t)customLayoutRequestingSpecialFlowerBoundsResizingAnimation;
 - (int64_t)maximumSupportedLayoutMode;
 - (int64_t)minimumSupportedLayoutMode;
 - (int64_t)preferredLayoutMode;
 - (int64_t)systemApertureLayoutCustomizingOptions;
 - (unint64_t)_effectivePresentationBehaviors;
-- (unint64_t)_updateReasonsForTransitionWithProposedParameters:(id)a3 excludingReasons:(unint64_t)a4;
+- (unint64_t)_updateReasonsForTransitionWithProposedParameters:(id)parameters excludingReasons:(unint64_t)reasons;
 - (void)_acquireOrUpdateAppStatusBarSessionsAssertionIfNeeded;
-- (void)_activateSceneWithInitialOtherSettings:(id)a3 clientSettings:(id)a4 initialLayoutMode:(int64_t)a5;
-- (void)_applyTransitionParameters:(id)a3;
-- (void)_commonInitWithScene:(id)a3 placeholderContentProvider:(id)a4 statusBarBackgroundActivitiesSuppresser:(id)a5 readyForPresentationHandler:(id)a6;
+- (void)_activateSceneWithInitialOtherSettings:(id)settings clientSettings:(id)clientSettings initialLayoutMode:(int64_t)mode;
+- (void)_applyTransitionParameters:(id)parameters;
+- (void)_commonInitWithScene:(id)scene placeholderContentProvider:(id)provider statusBarBackgroundActivitiesSuppresser:(id)suppresser readyForPresentationHandler:(id)handler;
 - (void)_finishDeactivationIfNeeded;
-- (void)_handleAlertingAssertionRequestForReason:(id)a3 implicitlyDismissable:(BOOL)a4;
-- (void)_layoutHostMayNotPerformLayoutUpdateWithReasonsToExclude:(unint64_t)a3;
-- (void)_layoutSceneViewInContainerView:(id)a3;
-- (void)_scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6;
-- (void)_setupSceneViewInContainerView:(id)a3;
+- (void)_handleAlertingAssertionRequestForReason:(id)reason implicitlyDismissable:(BOOL)dismissable;
+- (void)_layoutHostMayNotPerformLayoutUpdateWithReasonsToExclude:(unint64_t)exclude;
+- (void)_layoutSceneViewInContainerView:(id)view;
+- (void)_scene:(id)_scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context;
+- (void)_setupSceneViewInContainerView:(id)view;
 - (void)_updateActiveElementsAndAssociatedApplication;
 - (void)_updateAlertAssertionIfNecessary;
-- (void)_updateMutableSceneSettings:(id)a3 withParameters:(id)a4;
+- (void)_updateMutableSceneSettings:(id)settings withParameters:(id)parameters;
 - (void)_updatePortalViews;
 - (void)_updateReadyForPresentationIfNeeded;
 - (void)_updateRecordingMode;
 - (void)_updateRequiredPriorityAssertion;
-- (void)_updateScene:(id)a3 activatingIfNeeded:(BOOL)a4 settingsWithTransitionBlock:(id)a5;
+- (void)_updateScene:(id)scene activatingIfNeeded:(BOOL)needed settingsWithTransitionBlock:(id)block;
 - (void)_updateSceneBackgroundStateIfNeeded;
-- (void)_updateSceneWithTransitionParameters:(id)a3;
-- (void)activateWithInitialOtherSceneSettings:(id)a3 clientSettings:(id)a4 transitionRequestHandler:(id)a5;
-- (void)activateWithPostActivationPlaceholderTest:(id)a3 foundPlaceholderHandler:(id)a4;
-- (void)addElementLayoutSpecifierObserver:(id)a3;
-- (void)backlightController:(id)a3 willTransitionToBacklightState:(int64_t)a4 source:(int64_t)a5;
-- (void)contentProviderWillTransitionToSize:(CGSize)a3 inContainerView:(id)a4 transitionCoordinator:(id)a5;
-- (void)deactivateWhenRemovedWithHandler:(id)a3;
+- (void)_updateSceneWithTransitionParameters:(id)parameters;
+- (void)activateWithInitialOtherSceneSettings:(id)settings clientSettings:(id)clientSettings transitionRequestHandler:(id)handler;
+- (void)activateWithPostActivationPlaceholderTest:(id)test foundPlaceholderHandler:(id)handler;
+- (void)addElementLayoutSpecifierObserver:(id)observer;
+- (void)backlightController:(id)controller willTransitionToBacklightState:(int64_t)state source:(int64_t)source;
+- (void)contentProviderWillTransitionToSize:(CGSize)size inContainerView:(id)view transitionCoordinator:(id)coordinator;
+- (void)deactivateWhenRemovedWithHandler:(id)handler;
 - (void)dealloc;
-- (void)element:(id)a3 visibilityDidChange:(BOOL)a4;
-- (void)element:(id)a3 visibilityWillChange:(BOOL)a4;
+- (void)element:(id)element visibilityDidChange:(BOOL)change;
+- (void)element:(id)element visibilityWillChange:(BOOL)change;
 - (void)invalidate;
-- (void)placeholderWrapperViewDidChangeContentView:(id)a3;
-- (void)removeElementLayoutSpecifierObserver:(id)a3;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)sceneContentStateDidChange:(id)a3;
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4;
-- (void)setActivated:(BOOL)a3;
-- (void)setActiveComponentStates:(id)a3;
-- (void)setActiveConfiguration:(id)a3;
-- (void)setActivityHost:(id)a3;
-- (void)setAffiliatedWithSessionMonitor:(BOOL)a3;
-- (void)setAlertHost:(id)a3;
-- (void)setBacklightIsOrWillBecomeActive:(BOOL)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setElementAppearState:(int)a3;
-- (void)setElementProviderPrefersSuppression:(BOOL)a3;
-- (void)setExpanding:(BOOL)a3;
-- (void)setHasBeenRemoved:(BOOL)a3;
-- (void)setLayoutHost:(id)a3;
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4;
-- (void)setPreviewing:(BOOL)a3;
-- (void)setProminent:(BOOL)a3;
-- (void)setReadyForPresentation:(BOOL)a3;
-- (void)setSecureElementHost:(id)a3;
-- (void)setSuppressed:(BOOL)a3;
-- (void)setSuppressedByProximityReader:(BOOL)a3;
-- (void)setUrgent:(BOOL)a3;
-- (void)updateWithConnectedScene:(id)a3 configuration:(id)a4 elementAssertionAcquisitionHandler:(id)a5;
+- (void)placeholderWrapperViewDidChangeContentView:(id)view;
+- (void)removeElementLayoutSpecifierObserver:(id)observer;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)sceneContentStateDidChange:(id)change;
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context;
+- (void)setActivated:(BOOL)activated;
+- (void)setActiveComponentStates:(id)states;
+- (void)setActiveConfiguration:(id)configuration;
+- (void)setActivityHost:(id)host;
+- (void)setAffiliatedWithSessionMonitor:(BOOL)monitor;
+- (void)setAlertHost:(id)host;
+- (void)setBacklightIsOrWillBecomeActive:(BOOL)active;
+- (void)setConfiguration:(id)configuration;
+- (void)setElementAppearState:(int)state;
+- (void)setElementProviderPrefersSuppression:(BOOL)suppression;
+- (void)setExpanding:(BOOL)expanding;
+- (void)setHasBeenRemoved:(BOOL)removed;
+- (void)setLayoutHost:(id)host;
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason;
+- (void)setPreviewing:(BOOL)previewing;
+- (void)setProminent:(BOOL)prominent;
+- (void)setReadyForPresentation:(BOOL)presentation;
+- (void)setSecureElementHost:(id)host;
+- (void)setSuppressed:(BOOL)suppressed;
+- (void)setSuppressedByProximityReader:(BOOL)reader;
+- (void)setUrgent:(BOOL)urgent;
+- (void)updateWithConnectedScene:(id)scene configuration:(id)configuration elementAssertionAcquisitionHandler:(id)handler;
 @end
 
 @implementation SBSystemApertureSceneElement
 
-+ (id)activePlaceholderElementPassingTest:(id)a3
++ (id)activePlaceholderElementPassingTest:(id)test
 {
-  v4 = a3;
-  v5 = [a1 activeElements];
+  testCopy = test;
+  activeElements = [self activeElements];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__SBSystemApertureSceneElement_activePlaceholderElementPassingTest___block_invoke;
   v9[3] = &unk_2783C2898;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 bs_firstObjectPassingTest:v9];
+  v10 = testCopy;
+  v6 = testCopy;
+  v7 = [activeElements bs_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -206,8 +206,8 @@ uint64_t __68__SBSystemApertureSceneElement_activePlaceholderElementPassingTest_
 
 + (NSSet)scenesForBacklightSession
 {
-  v2 = [a1 activeElements];
-  v3 = [v2 bs_mapNoNulls:&__block_literal_global_411];
+  activeElements = [self activeElements];
+  v3 = [activeElements bs_mapNoNulls:&__block_literal_global_411];
 
   if (v3)
   {
@@ -223,33 +223,33 @@ uint64_t __68__SBSystemApertureSceneElement_activePlaceholderElementPassingTest_
   return v4;
 }
 
-+ (void)addActiveElement:(id)a3
++ (void)addActiveElement:(id)element
 {
-  v7 = a3;
-  if (v7)
+  elementCopy = element;
+  if (elementCopy)
   {
     v4 = SBSystemApertureSceneElementActiveElements;
     if (!SBSystemApertureSceneElementActiveElements)
     {
-      v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v6 = SBSystemApertureSceneElementActiveElements;
-      SBSystemApertureSceneElementActiveElements = v5;
+      SBSystemApertureSceneElementActiveElements = weakObjectsHashTable;
 
       v4 = SBSystemApertureSceneElementActiveElements;
     }
 
-    [v4 addObject:v7];
+    [v4 addObject:elementCopy];
   }
 
-  [a1 hostedScenesDidChange];
+  [self hostedScenesDidChange];
 }
 
-+ (void)removeActiveElement:(id)a3
++ (void)removeActiveElement:(id)element
 {
-  v5 = a3;
-  if (v5)
+  elementCopy = element;
+  if (elementCopy)
   {
-    [SBSystemApertureSceneElementActiveElements removeObject:v5];
+    [SBSystemApertureSceneElementActiveElements removeObject:elementCopy];
   }
 
   if (![SBSystemApertureSceneElementActiveElements count])
@@ -258,36 +258,36 @@ uint64_t __68__SBSystemApertureSceneElement_activePlaceholderElementPassingTest_
     SBSystemApertureSceneElementActiveElements = 0;
   }
 
-  [a1 hostedScenesDidChange];
+  [self hostedScenesDidChange];
 }
 
-+ (void)addElementReadyForPresentation:(id)a3
++ (void)addElementReadyForPresentation:(id)presentation
 {
-  v3 = a3;
-  if (v3)
+  presentationCopy = presentation;
+  if (presentationCopy)
   {
     v4 = SBSystemApertureSceneElementsReadyForPresentation;
-    v7 = v3;
+    v7 = presentationCopy;
     if (!SBSystemApertureSceneElementsReadyForPresentation)
     {
-      v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v6 = SBSystemApertureSceneElementsReadyForPresentation;
-      SBSystemApertureSceneElementsReadyForPresentation = v5;
+      SBSystemApertureSceneElementsReadyForPresentation = weakObjectsHashTable;
 
       v4 = SBSystemApertureSceneElementsReadyForPresentation;
     }
 
     [v4 addObject:v7];
-    v3 = v7;
+    presentationCopy = v7;
   }
 }
 
-+ (void)removeElementReadyForPresentation:(id)a3
++ (void)removeElementReadyForPresentation:(id)presentation
 {
-  v4 = a3;
-  if (v4)
+  presentationCopy = presentation;
+  if (presentationCopy)
   {
-    [SBSystemApertureSceneElementsReadyForPresentation removeObject:v4];
+    [SBSystemApertureSceneElementsReadyForPresentation removeObject:presentationCopy];
   }
 
   if (![SBSystemApertureSceneElementsReadyForPresentation count])
@@ -299,10 +299,10 @@ uint64_t __68__SBSystemApertureSceneElement_activePlaceholderElementPassingTest_
 
 + (void)hostedScenesDidChange
 {
-  v2 = [SBApp systemApertureControllerForMainDisplay];
+  systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
   if (objc_opt_respondsToSelector())
   {
-    [v2 hostedScenesDidChange];
+    [systemApertureControllerForMainDisplay hostedScenesDidChange];
   }
 }
 
@@ -312,7 +312,7 @@ uint64_t __68__SBSystemApertureSceneElement_activePlaceholderElementPassingTest_
   block[1] = 3221225472;
   block[2] = __46__SBSystemApertureSceneElement_sceneWorkspace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sceneWorkspace_onceToken_0 != -1)
   {
     dispatch_once(&sceneWorkspace_onceToken_0, block);
@@ -355,26 +355,26 @@ void __58__SBSystemApertureSceneElement_defaultAnimationParameters__block_invoke
   defaultAnimationParameters_params = v3;
 }
 
-- (SBSystemApertureSceneElement)initWithSceneSpecification:(id)a3 sceneClientIdentity:(id)a4 statusBarBackgroundActivitiesSuppresser:(id)a5 readyForPresentationHandler:(id)a6
+- (SBSystemApertureSceneElement)initWithSceneSpecification:(id)specification sceneClientIdentity:(id)identity statusBarBackgroundActivitiesSuppresser:(id)suppresser readyForPresentationHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = [objc_opt_class() sceneWorkspace];
+  specificationCopy = specification;
+  identityCopy = identity;
+  handlerCopy = handler;
+  suppresserCopy = suppresser;
+  sceneWorkspace = [objc_opt_class() sceneWorkspace];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __147__SBSystemApertureSceneElement_initWithSceneSpecification_sceneClientIdentity_statusBarBackgroundActivitiesSuppresser_readyForPresentationHandler___block_invoke;
   v21[3] = &unk_2783C28E0;
-  v22 = v10;
-  v23 = v11;
-  v15 = self;
-  v24 = v15;
-  v16 = v11;
-  v17 = v10;
-  v18 = [v14 createScene:v21];
+  v22 = specificationCopy;
+  v23 = identityCopy;
+  selfCopy = self;
+  v24 = selfCopy;
+  v16 = identityCopy;
+  v17 = specificationCopy;
+  v18 = [sceneWorkspace createScene:v21];
 
-  v19 = [(SBSystemApertureSceneElement *)v15 initWithScene:v18 statusBarBackgroundActivitiesSuppresser:v13 readyForPresentationHandler:v12];
+  v19 = [(SBSystemApertureSceneElement *)selfCopy initWithScene:v18 statusBarBackgroundActivitiesSuppresser:suppresserCopy readyForPresentationHandler:handlerCopy];
   return v19;
 }
 
@@ -394,55 +394,55 @@ void __147__SBSystemApertureSceneElement_initWithSceneSpecification_sceneClientI
   [v4 setIdentifier:v8];
 }
 
-- (SBSystemApertureSceneElement)initWithScene:(id)a3 statusBarBackgroundActivitiesSuppresser:(id)a4 readyForPresentationHandler:(id)a5
+- (SBSystemApertureSceneElement)initWithScene:(id)scene statusBarBackgroundActivitiesSuppresser:(id)suppresser readyForPresentationHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  suppresserCopy = suppresser;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = SBSystemApertureSceneElement;
   v11 = [(SBSystemApertureSceneElement *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(SBSystemApertureSceneElement *)v11 _commonInitWithScene:v8 placeholderContentProvider:0 statusBarBackgroundActivitiesSuppresser:v9 readyForPresentationHandler:v10];
+    [(SBSystemApertureSceneElement *)v11 _commonInitWithScene:sceneCopy placeholderContentProvider:0 statusBarBackgroundActivitiesSuppresser:suppresserCopy readyForPresentationHandler:handlerCopy];
   }
 
   return v12;
 }
 
-- (SBSystemApertureSceneElement)initWithScene:(id)a3 placeholderContentProvider:(id)a4 statusBarBackgroundActivitiesSuppresser:(id)a5 readyForPresentationHandler:(id)a6
+- (SBSystemApertureSceneElement)initWithScene:(id)scene placeholderContentProvider:(id)provider statusBarBackgroundActivitiesSuppresser:(id)suppresser readyForPresentationHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sceneCopy = scene;
+  providerCopy = provider;
+  suppresserCopy = suppresser;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = SBSystemApertureSceneElement;
   v14 = [(SBSystemApertureSceneElement *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    [(SBSystemApertureSceneElement *)v14 _commonInitWithScene:v10 placeholderContentProvider:v11 statusBarBackgroundActivitiesSuppresser:v12 readyForPresentationHandler:v13];
+    [(SBSystemApertureSceneElement *)v14 _commonInitWithScene:sceneCopy placeholderContentProvider:providerCopy statusBarBackgroundActivitiesSuppresser:suppresserCopy readyForPresentationHandler:handlerCopy];
   }
 
   return v15;
 }
 
-- (void)_commonInitWithScene:(id)a3 placeholderContentProvider:(id)a4 statusBarBackgroundActivitiesSuppresser:(id)a5 readyForPresentationHandler:(id)a6
+- (void)_commonInitWithScene:(id)scene placeholderContentProvider:(id)provider statusBarBackgroundActivitiesSuppresser:(id)suppresser readyForPresentationHandler:(id)handler
 {
-  v37 = a3;
-  v11 = a4;
-  objc_storeStrong(&self->_scene, a3);
-  v12 = a6;
-  v13 = a5;
-  objc_storeWeak(&self->_placeholderContentProvider, v11);
-  v14 = [v12 copy];
+  sceneCopy = scene;
+  providerCopy = provider;
+  objc_storeStrong(&self->_scene, scene);
+  handlerCopy = handler;
+  suppresserCopy = suppresser;
+  objc_storeWeak(&self->_placeholderContentProvider, providerCopy);
+  v14 = [handlerCopy copy];
 
   readyHandler = self->_readyHandler;
   self->_readyHandler = v14;
 
-  objc_storeWeak(&self->_statusBarBackgroundActivitiesSuppresser, v13);
+  objc_storeWeak(&self->_statusBarBackgroundActivitiesSuppresser, suppresserCopy);
   v16 = objc_alloc_init(MEMORY[0x277D67988]);
   leadingView = self->_leadingView;
   self->_leadingView = v16;
@@ -455,45 +455,45 @@ void __147__SBSystemApertureSceneElement_initWithSceneSpecification_sceneClientI
   minimalView = self->_minimalView;
   self->_minimalView = v20;
 
-  if (v11)
+  if (providerCopy)
   {
-    v22 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     deferredSceneActions = self->_deferredSceneActions;
-    self->_deferredSceneActions = v22;
+    self->_deferredSceneActions = array;
   }
 
-  v24 = [v11 leadingView];
-  if (v24)
+  leadingView = [providerCopy leadingView];
+  if (leadingView)
   {
-    v25 = [[SBSystemApertureSceneElementPlaceholderWrapperView alloc] initWithContentView:v24];
+    v25 = [[SBSystemApertureSceneElementPlaceholderWrapperView alloc] initWithContentView:leadingView];
     leadingWrapperView = self->_leadingWrapperView;
     self->_leadingWrapperView = v25;
 
     [(SBSystemApertureSceneElementPlaceholderWrapperView *)self->_leadingWrapperView setDelegate:self];
   }
 
-  v27 = [v11 trailingView];
-  if (v27)
+  trailingView = [providerCopy trailingView];
+  if (trailingView)
   {
-    v28 = [[SBSystemApertureSceneElementPlaceholderWrapperView alloc] initWithContentView:v27];
+    v28 = [[SBSystemApertureSceneElementPlaceholderWrapperView alloc] initWithContentView:trailingView];
     trailingWrapperView = self->_trailingWrapperView;
     self->_trailingWrapperView = v28;
 
     [(SBSystemApertureSceneElementPlaceholderWrapperView *)self->_trailingWrapperView setDelegate:self];
   }
 
-  v30 = [v11 minimalView];
-  if (v30)
+  minimalView = [providerCopy minimalView];
+  if (minimalView)
   {
     v31 = [SBSystemApertureSceneElementPlaceholderWrapperView alloc];
-    if (v30 == v24)
+    if (minimalView == leadingView)
     {
       v32 = 0;
     }
 
     else
     {
-      v32 = v30;
+      v32 = minimalView;
     }
 
     v33 = [(SBSystemApertureSceneElementPlaceholderWrapperView *)v31 initWithContentView:v32];
@@ -509,9 +509,9 @@ void __147__SBSystemApertureSceneElement_initWithSceneSpecification_sceneClientI
   self->_previewingCoordinator = v35;
 }
 
-- (void)deactivateWhenRemovedWithHandler:(id)a3
+- (void)deactivateWhenRemovedWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   BSDispatchQueueAssertMain();
   if ([(SBSystemApertureSceneElement *)self isDeactivating])
   {
@@ -524,22 +524,22 @@ void __147__SBSystemApertureSceneElement_initWithSceneSpecification_sceneClientI
   }
 
   [(SBSystemApertureSceneElement *)self _addActivationAttribute:8];
-  v5 = [(SBSystemApertureSceneElement *)self scene];
-  if (![v5 isActive])
+  scene = [(SBSystemApertureSceneElement *)self scene];
+  if (![scene isActive])
   {
     goto LABEL_8;
   }
 
-  v6 = [(SBSystemApertureSceneElement *)self scene];
-  v7 = [v6 clientHandle];
-  v8 = [v7 processHandle];
-  v9 = [v8 currentState];
-  v10 = [v9 isRunning];
+  scene2 = [(SBSystemApertureSceneElement *)self scene];
+  clientHandle = [scene2 clientHandle];
+  processHandle = [clientHandle processHandle];
+  currentState = [processHandle currentState];
+  isRunning = [currentState isRunning];
 
-  if (v10)
+  if (isRunning)
   {
-    v5 = [(SBSystemApertureSceneElement *)self scene];
-    [v5 performUpdate:&__block_literal_global_68_1];
+    scene = [(SBSystemApertureSceneElement *)self scene];
+    [scene performUpdate:&__block_literal_global_68_1];
 LABEL_8:
   }
 
@@ -547,8 +547,8 @@ LABEL_8:
   v15[1] = 3221225472;
   v15[2] = __65__SBSystemApertureSceneElement_deactivateWhenRemovedWithHandler___block_invoke_2;
   v15[3] = &unk_2783C2908;
-  v16 = v4;
-  v11 = v4;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
   [(SBSystemApertureSceneElement *)self setDeactivationHandler:v15];
   [(SBSystemApertureSceneElement *)self _finishDeactivationIfNeeded];
   objc_initWeak(&location, self);
@@ -615,7 +615,7 @@ void __65__SBSystemApertureSceneElement_deactivateWhenRemovedWithHandler___block
 
 - (void)_finishDeactivationIfNeeded
 {
-  v3 = [(SBSystemApertureSceneElement *)self isDeactivating];
+  isDeactivating = [(SBSystemApertureSceneElement *)self isDeactivating];
   v4 = [(SBSystemApertureSceneElement *)self _hasActivationAttribute:1];
   v5 = [(SBSystemApertureSceneElement *)self _hasActivationAttribute:2];
   v6 = [(SBSystemApertureSceneElement *)self _hasActivationAttribute:4];
@@ -625,15 +625,15 @@ void __65__SBSystemApertureSceneElement_deactivateWhenRemovedWithHandler___block
     v7 = 1;
   }
 
-  if ((v3 & v7) == 1)
+  if ((isDeactivating & v7) == 1)
   {
-    v9 = [(SBSystemApertureSceneElement *)self deactivationHandler];
+    deactivationHandler = [(SBSystemApertureSceneElement *)self deactivationHandler];
     [(SBSystemApertureSceneElement *)self setDeactivationHandler:0];
-    v8 = v9;
-    if (v9)
+    v8 = deactivationHandler;
+    if (deactivationHandler)
     {
-      (*(v9 + 16))(v9, self);
-      v8 = v9;
+      (*(deactivationHandler + 16))(deactivationHandler, self);
+      v8 = deactivationHandler;
     }
   }
 }
@@ -653,7 +653,7 @@ void __65__SBSystemApertureSceneElement_deactivateWhenRemovedWithHandler___block
 - (void)invalidate
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -721,7 +721,7 @@ void __42__SBSystemApertureSceneElement_invalidate__block_invoke_2(uint64_t a1, 
 - (void)dealloc
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -741,24 +741,24 @@ void __42__SBSystemApertureSceneElement_invalidate__block_invoke_2(uint64_t a1, 
   return configuration;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v6 = a3;
+  configurationCopy = configuration;
   if ([(SBSystemApertureSceneElement *)self isActivated])
   {
     [SBSystemApertureSceneElement setConfiguration:];
   }
 
-  v4 = [v6 copy];
+  v4 = [configurationCopy copy];
   configuration = self->_configuration;
   self->_configuration = v4;
 }
 
-- (void)activateWithInitialOtherSceneSettings:(id)a3 clientSettings:(id)a4 transitionRequestHandler:(id)a5
+- (void)activateWithInitialOtherSceneSettings:(id)settings clientSettings:(id)clientSettings transitionRequestHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  clientSettingsCopy = clientSettings;
+  settingsCopy = settings;
   if ([(SBSystemApertureSceneElement *)self isActivated])
   {
     [SBSystemApertureSceneElement activateWithInitialOtherSceneSettings:clientSettings:transitionRequestHandler:];
@@ -766,46 +766,46 @@ void __42__SBSystemApertureSceneElement_invalidate__block_invoke_2(uint64_t a1, 
 
   [(SBSystemApertureSceneElement *)self setActivated:1];
   [(SBSystemApertureSceneElement *)self _acquireOrUpdateAppStatusBarSessionsAssertionIfNeeded];
-  v11 = MEMORY[0x223D6F7F0](v8);
+  v11 = MEMORY[0x223D6F7F0](handlerCopy);
 
   transitionRequestHandler = self->_transitionRequestHandler;
   self->_transitionRequestHandler = v11;
 
-  [(SBSystemApertureSceneElement *)self _activateSceneWithInitialOtherSettings:v10 clientSettings:v9 initialLayoutMode:1];
+  [(SBSystemApertureSceneElement *)self _activateSceneWithInitialOtherSettings:settingsCopy clientSettings:clientSettingsCopy initialLayoutMode:1];
 
   [(SBSystemApertureSceneElement *)self _updateReadyForPresentationIfNeeded];
 }
 
-- (void)activateWithPostActivationPlaceholderTest:(id)a3 foundPlaceholderHandler:(id)a4
+- (void)activateWithPostActivationPlaceholderTest:(id)test foundPlaceholderHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  handlerCopy = handler;
+  v7 = [test copy];
   postSceneActivationPlaceholderTest = self->_postSceneActivationPlaceholderTest;
   self->_postSceneActivationPlaceholderTest = v7;
 
-  v9 = [v6 copy];
+  v9 = [handlerCopy copy];
   postSceneActivationPlaceholderElementFoundHandler = self->_postSceneActivationPlaceholderElementFoundHandler;
   self->_postSceneActivationPlaceholderElementFoundHandler = v9;
 
   [(SBSystemApertureSceneElement *)self activate];
 }
 
-- (void)updateWithConnectedScene:(id)a3 configuration:(id)a4 elementAssertionAcquisitionHandler:(id)a5
+- (void)updateWithConnectedScene:(id)scene configuration:(id)configuration elementAssertionAcquisitionHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sceneCopy = scene;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_placeholderContentProvider);
   if (![(SBSystemApertureSceneElement *)self isActivated]|| !WeakRetained)
   {
     [SBSystemApertureSceneElement updateWithConnectedScene:configuration:elementAssertionAcquisitionHandler:];
   }
 
-  objc_storeStrong(&self->_scene, a3);
-  if (v10)
+  objc_storeStrong(&self->_scene, scene);
+  if (configurationCopy)
   {
-    v13 = [v10 copy];
+    v13 = [configurationCopy copy];
     configuration = self->_configuration;
     self->_configuration = v13;
   }
@@ -845,29 +845,29 @@ void __42__SBSystemApertureSceneElement_invalidate__block_invoke_2(uint64_t a1, 
   deferredSceneActions = self->_deferredSceneActions;
   self->_deferredSceneActions = 0;
 
-  [WeakRetained noteSceneClientWantsControlOfElementWithAssertionTransferBlock:{v11, v25}];
-  v21 = [(SBSystemApertureSceneElement *)self sceneSettings];
-  [v21 SBUISA_containerViewFrame];
+  [WeakRetained noteSceneClientWantsControlOfElementWithAssertionTransferBlock:{handlerCopy, v25}];
+  sceneSettings = [(SBSystemApertureSceneElement *)self sceneSettings];
+  [sceneSettings SBUISA_containerViewFrame];
   v22 = [(SBSystemApertureSceneElement *)self _proposeTransitionParametersForTransitionToFrameInSceneView:128 excludingParametersAssociatedWithReasons:0 usingCurrentAnimationParameters:?];
 
   [(SBSystemApertureSceneElement *)self _applyTransitionParameters:v22];
-  v23 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v29 = @"SBSystemApertureNotificationUserInfoElementKey";
-  v30 = self;
-  v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-  [v23 postNotificationName:@"SBSystemApertureElementKeyColorDidInvalidateNotification" object:0 userInfo:v24];
+  selfCopy = self;
+  v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&selfCopy forKeys:&v29 count:1];
+  [defaultCenter postNotificationName:@"SBSystemApertureElementKeyColorDidInvalidateNotification" object:0 userInfo:v24];
 }
 
-- (void)_activateSceneWithInitialOtherSettings:(id)a3 clientSettings:(id)a4 initialLayoutMode:(int64_t)a5
+- (void)_activateSceneWithInitialOtherSettings:(id)settings clientSettings:(id)clientSettings initialLayoutMode:(int64_t)mode
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SBSystemApertureSceneElement *)self scene];
-  [v10 addObserver:self];
+  settingsCopy = settings;
+  clientSettingsCopy = clientSettings;
+  scene = [(SBSystemApertureSceneElement *)self scene];
+  [scene addObserver:self];
 
-  v11 = [(SBSystemApertureSceneElement *)self scene];
-  v12 = [v11 layerManager];
-  [v12 addObserver:self];
+  scene2 = [(SBSystemApertureSceneElement *)self scene];
+  layerManager = [scene2 layerManager];
+  [layerManager addObserver:self];
 
   v13 = objc_alloc_init(SBSystemApertureSceneElementTransitionParameters);
   if ([(SBSystemApertureSceneElement *)self _requiresForegroundScene])
@@ -877,46 +877,46 @@ void __42__SBSystemApertureSceneElement_invalidate__block_invoke_2(uint64_t a1, 
 
   else
   {
-    v14 = [(SBSystemApertureSceneElement *)self scene];
-    v15 = [v14 settings];
-    -[SBSystemApertureSceneElementTransitionParameters setWantsForeground:](v13, "setWantsForeground:", [v15 isForeground]);
+    scene3 = [(SBSystemApertureSceneElement *)self scene];
+    settings = [scene3 settings];
+    -[SBSystemApertureSceneElementTransitionParameters setWantsForeground:](v13, "setWantsForeground:", [settings isForeground]);
   }
 
   [(SBSystemApertureSceneElementTransitionParameters *)v13 setShouldSetForeground:[(SBSystemApertureSceneElementTransitionParameters *)v13 wantsForeground]];
   v16 = objc_alloc_init(MEMORY[0x277CF0C80]);
-  [v16 SBUISA_setLayoutMode:a5 forSetting:3213009];
+  [v16 SBUISA_setLayoutMode:mode forSetting:3213009];
   [(SBSystemApertureSceneElement *)self _obstructedAreaFrame];
   [v16 SBUISA_setCGRect:3213015 forSetting:?];
-  if (v8)
+  if (settingsCopy)
   {
-    [v16 applySettings:v8];
+    [v16 applySettings:settingsCopy];
   }
 
-  v39 = v8;
-  v17 = v9;
+  v39 = settingsCopy;
+  v17 = clientSettingsCopy;
   [(SBSystemApertureSceneElement *)self _sizeForSceneView];
   [(SBSystemApertureSceneElementTransitionParameters *)v13 setSceneSize:?];
   [(SBSystemApertureSceneElementTransitionParameters *)v13 setOtherSystemApertureSceneSettingsToApply:v16];
-  v18 = [MEMORY[0x277D75188] transitionContext];
+  transitionContext = [MEMORY[0x277D75188] transitionContext];
   v19 = MEMORY[0x277CBEB98];
   v20 = MEMORY[0x277D67E38];
-  v21 = [objc_opt_class() defaultAnimationParameters];
-  v22 = [v20 transientLocalResizeSceneActionWithAnimationParameters:v21];
+  defaultAnimationParameters = [objc_opt_class() defaultAnimationParameters];
+  v22 = [v20 transientLocalResizeSceneActionWithAnimationParameters:defaultAnimationParameters];
   v23 = [v19 setWithObject:v22];
 
-  [v18 setActions:v23];
+  [transitionContext setActions:v23];
   WeakRetained = objc_loadWeakRetained(&self->_placeholderContentProvider);
   if (-[SBSystemApertureSceneElement _ownsScene](self, "_ownsScene") || (-[SBSystemApertureSceneElement scene](self, "scene"), (v25 = objc_claimAutoreleasedReturnValue()) != 0) && (v26 = v25, -[SBSystemApertureSceneElement scene](self, "scene"), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v27 isActive], v27, v26, (v28 & 1) == 0))
   {
-    v31 = [(SBSystemApertureSceneElement *)self scene];
-    v32 = [v31 isActive];
+    scene4 = [(SBSystemApertureSceneElement *)self scene];
+    isActive = [scene4 isActive];
 
-    if (v32)
+    if (isActive)
     {
       [SBSystemApertureSceneElement _activateSceneWithInitialOtherSettings:clientSettings:initialLayoutMode:];
     }
 
-    v33 = [(SBSystemApertureSceneElement *)self scene];
+    scene5 = [(SBSystemApertureSceneElement *)self scene];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __104__SBSystemApertureSceneElement__activateSceneWithInitialOtherSettings_clientSettings_initialLayoutMode___block_invoke;
@@ -925,33 +925,33 @@ void __42__SBSystemApertureSceneElement_invalidate__block_invoke_2(uint64_t a1, 
     v41 = v13;
     v42 = v17;
     v43 = WeakRetained;
-    [v33 configureParameters:v40];
+    [scene5 configureParameters:v40];
 
-    v34 = [(SBSystemApertureSceneElement *)self scene];
-    [v34 activateWithTransitionContext:v18];
+    scene6 = [(SBSystemApertureSceneElement *)self scene];
+    [scene6 activateWithTransitionContext:transitionContext];
   }
 
   else
   {
-    v29 = [(SBSystemApertureSceneElement *)self scene];
-    v30 = [v29 isActive];
+    scene7 = [(SBSystemApertureSceneElement *)self scene];
+    isActive2 = [scene7 isActive];
 
-    if ((v30 & 1) == 0 && !WeakRetained)
+    if ((isActive2 & 1) == 0 && !WeakRetained)
     {
       [SBSystemApertureSceneElement _activateSceneWithInitialOtherSettings:clientSettings:initialLayoutMode:];
     }
 
-    [(SBSystemApertureSceneElementTransitionParameters *)v13 setTransitionContext:v18];
+    [(SBSystemApertureSceneElementTransitionParameters *)v13 setTransitionContext:transitionContext];
     [(SBSystemApertureSceneElement *)self _updateSceneWithTransitionParameters:v13];
   }
 
-  v35 = [(SBSystemApertureSceneElement *)self scene];
-  if (v35)
+  scene8 = [(SBSystemApertureSceneElement *)self scene];
+  if (scene8)
   {
-    v36 = v35;
-    v37 = [(SBSystemApertureSceneElement *)self _sceneDisplayConfigurationValid];
+    v36 = scene8;
+    _sceneDisplayConfigurationValid = [(SBSystemApertureSceneElement *)self _sceneDisplayConfigurationValid];
 
-    if (!v37)
+    if (!_sceneDisplayConfigurationValid)
     {
       [SBSystemApertureSceneElement _activateSceneWithInitialOtherSettings:clientSettings:initialLayoutMode:];
     }
@@ -1036,22 +1036,22 @@ void __104__SBSystemApertureSceneElement__activateSceneWithInitialOtherSettings_
 
 - (BOOL)_sceneDisplayConfigurationValid
 {
-  v2 = [(SBSystemApertureSceneElement *)self scene];
-  v3 = [v2 settings];
-  v4 = [v3 displayConfiguration];
-  v5 = [v4 identity];
+  scene = [(SBSystemApertureSceneElement *)self scene];
+  settings = [scene settings];
+  displayConfiguration = [settings displayConfiguration];
+  identity = [displayConfiguration identity];
 
-  if ([v5 isMainDisplay])
+  if ([identity isMainDisplay])
   {
-    v6 = 1;
+    isContinuityDisplay = 1;
   }
 
   else
   {
-    v6 = [v5 isContinuityDisplay];
+    isContinuityDisplay = [identity isContinuityDisplay];
   }
 
-  return v6;
+  return isContinuityDisplay;
 }
 
 - (id)_existingAlertingAssertion
@@ -1060,28 +1060,28 @@ void __104__SBSystemApertureSceneElement__activateSceneWithInitialOtherSettings_
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = [WeakRetained alertingActivityAssertion];
+    alertingActivityAssertion = [WeakRetained alertingActivityAssertion];
   }
 
   else
   {
     v6 = objc_loadWeakRetained(&self->_alertHost);
-    v5 = [v6 alertAssertion];
+    alertingActivityAssertion = [v6 alertAssertion];
   }
 
-  return v5;
+  return alertingActivityAssertion;
 }
 
-- (BOOL)_isValidAlertingSource:(int64_t)a3
+- (BOOL)_isValidAlertingSource:(int64_t)source
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!source)
   {
     [(SBSystemApertureSceneElement *)a2 _isValidAlertingSource:?];
   }
 
   alertingSource = self->_alertingSource;
-  if (alertingSource != a3)
+  if (alertingSource != source)
   {
     v6 = alertingSource == 0;
     if (alertingSource)
@@ -1089,7 +1089,7 @@ void __104__SBSystemApertureSceneElement__activateSceneWithInitialOtherSettings_
       v7 = SBLogSystemApertureHosting();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = [(SBSystemApertureSceneElement *)self succinctDescription];
+        succinctDescription = [(SBSystemApertureSceneElement *)self succinctDescription];
         v9 = self->_alertingSource;
         v10 = @"[invalid]";
         v11 = @"[invalid]";
@@ -1098,19 +1098,19 @@ void __104__SBSystemApertureSceneElement__activateSceneWithInitialOtherSettings_
           v11 = off_2783C2B88[v9];
         }
 
-        if (a3 == 1)
+        if (source == 1)
         {
           v10 = @"SAUIAlertingSourceHost";
         }
 
-        if (a3 == 2)
+        if (source == 2)
         {
           v10 = @"SAUIAlertingSourceClient";
         }
 
         v12 = v10;
         v15 = 138543874;
-        v16 = v8;
+        v16 = succinctDescription;
         v17 = 2114;
         v18 = v11;
         v19 = 2114;
@@ -1122,25 +1122,25 @@ LABEL_19:
 
     else
     {
-      self->_alertingSource = a3;
+      self->_alertingSource = source;
       v7 = SBLogSystemApertureHosting();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(SBSystemApertureSceneElement *)self succinctDescription];
+        succinctDescription = [(SBSystemApertureSceneElement *)self succinctDescription];
         v13 = @"[invalid]";
-        if (a3 == 1)
+        if (source == 1)
         {
           v13 = @"SAUIAlertingSourceHost";
         }
 
-        if (a3 == 2)
+        if (source == 2)
         {
           v13 = @"SAUIAlertingSourceClient";
         }
 
         v12 = v13;
         v15 = 138543618;
-        v16 = v8;
+        v16 = succinctDescription;
         v17 = 2114;
         v18 = v12;
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Setting alerting to %{public}@", &v15, 0x16u);
@@ -1154,17 +1154,17 @@ LABEL_19:
   return 1;
 }
 
-- (void)_handleAlertingAssertionRequestForReason:(id)a3 implicitlyDismissable:(BOOL)a4
+- (void)_handleAlertingAssertionRequestForReason:(id)reason implicitlyDismissable:(BOOL)dismissable
 {
-  v4 = a4;
-  v6 = a3;
+  dismissableCopy = dismissable;
+  reasonCopy = reason;
   if (([(SBUISystemApertureAlertingAction *)self->_alertingAction isValid]& 1) == 0)
   {
-    v7 = [(SBSystemApertureSceneElement *)self _existingAlertingAssertion];
-    if (([v7 isValid] & 1) == 0 && -[SBSystemApertureSceneElement hasActivityBehavior](self, "hasActivityBehavior"))
+    _existingAlertingAssertion = [(SBSystemApertureSceneElement *)self _existingAlertingAssertion];
+    if (([_existingAlertingAssertion isValid] & 1) == 0 && -[SBSystemApertureSceneElement hasActivityBehavior](self, "hasActivityBehavior"))
     {
       WeakRetained = objc_loadWeakRetained(&self->_activityHost);
-      v9 = [WeakRetained alertWithReason:v6 implicitlyDismissable:v4];
+      v9 = [WeakRetained alertWithReason:reasonCopy implicitlyDismissable:dismissableCopy];
       alertingActivityAssertion = self->_alertingActivityAssertion;
       self->_alertingActivityAssertion = v9;
 
@@ -1210,7 +1210,7 @@ LABEL_19:
     self->_alertingAction = v14;
 
     objc_storeWeak(p_location + 5, self->_alertingAction);
-    v16 = [(SBSystemApertureSceneElement *)self _existingAlertingAssertion];
+    _existingAlertingAssertion2 = [(SBSystemApertureSceneElement *)self _existingAlertingAssertion];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __95__SBSystemApertureSceneElement__handleAlertingAssertionRequestForReason_implicitlyDismissable___block_invoke_3;
@@ -1218,7 +1218,7 @@ LABEL_19:
     v19[4] = &location;
     v19[5] = &from;
     objc_copyWeak(&v20, &v35);
-    [v16 addInvalidationBlock:v19];
+    [_existingAlertingAssertion2 addInvalidationBlock:v19];
 
     if (self->_alertingSource == 2)
     {
@@ -1323,10 +1323,10 @@ void __95__SBSystemApertureSceneElement__handleAlertingAssertionRequestForReason
 
 - (id)sceneSettings
 {
-  v2 = [(SBSystemApertureSceneElement *)self scene];
-  v3 = [v2 settings];
+  scene = [(SBSystemApertureSceneElement *)self scene];
+  settings = [scene settings];
   v4 = objc_opt_self();
-  v5 = v3;
+  v5 = settings;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -1352,10 +1352,10 @@ void __95__SBSystemApertureSceneElement__handleAlertingAssertionRequestForReason
 
 - (id)sceneClientSettings
 {
-  v2 = [(SBSystemApertureSceneElement *)self scene];
-  v3 = [v2 clientSettings];
+  scene = [(SBSystemApertureSceneElement *)self scene];
+  clientSettings = [scene clientSettings];
   v4 = objc_opt_self();
-  v5 = v3;
+  v5 = clientSettings;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -1379,19 +1379,19 @@ void __95__SBSystemApertureSceneElement__handleAlertingAssertionRequestForReason
   return v6;
 }
 
-- (void)setActivated:(BOOL)a3
+- (void)setActivated:(BOOL)activated
 {
-  if (self->_activated != a3)
+  if (self->_activated != activated)
   {
-    v4 = a3;
-    self->_activated = a3;
+    activatedCopy = activated;
+    self->_activated = activated;
     v6 = +[SBBacklightController sharedInstanceIfExists];
     self->_backlightIsOrWillBecomeActive = [v6 backlightState] != 4;
 
     [(SBSystemApertureSceneElement *)self _updateActiveElementsAndAssociatedApplication];
     v7 = +[SBBacklightController sharedInstanceIfExists];
     v8 = v7;
-    if (v4)
+    if (activatedCopy)
     {
       [v7 addObserver:self];
     }
@@ -1403,11 +1403,11 @@ void __95__SBSystemApertureSceneElement__handleAlertingAssertionRequestForReason
   }
 }
 
-- (void)setBacklightIsOrWillBecomeActive:(BOOL)a3
+- (void)setBacklightIsOrWillBecomeActive:(BOOL)active
 {
-  if (self->_backlightIsOrWillBecomeActive != a3)
+  if (self->_backlightIsOrWillBecomeActive != active)
   {
-    self->_backlightIsOrWillBecomeActive = a3;
+    self->_backlightIsOrWillBecomeActive = active;
     [(SBSystemApertureSceneElement *)self _updateSceneBackgroundStateIfNeeded];
   }
 }
@@ -1427,9 +1427,9 @@ void __95__SBSystemApertureSceneElement__handleAlertingAssertionRequestForReason
   return userInfo;
 }
 
-- (BOOL)handleElementViewEvent:(int64_t)a3
+- (BOOL)handleElementViewEvent:(int64_t)event
 {
-  if (a3 < 4)
+  if (event < 4)
   {
     if ([(SBSystemApertureSceneElement *)self _shouldHandleLaunchAction])
     {
@@ -1448,7 +1448,7 @@ LABEL_12:
     return v4;
   }
 
-  if (a3 != 4)
+  if (event != 4)
   {
     goto LABEL_12;
   }
@@ -1503,19 +1503,19 @@ id __55__SBSystemApertureSceneElement_handleElementViewEvent___block_invoke_2()
 
 - (BOOL)_handleLaunchAction
 {
-  v3 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v4 = [v3 SBUISA_associatedAppBundleIdentifier];
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_associatedAppBundleIdentifier = [sceneClientSettings SBUISA_associatedAppBundleIdentifier];
 
-  v5 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v6 = [v5 SBUISA_associatedScenePersistenceIdentifier];
+  sceneClientSettings2 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_associatedScenePersistenceIdentifier = [sceneClientSettings2 SBUISA_associatedScenePersistenceIdentifier];
 
-  if (!(v4 | v6))
+  if (!(sBUISA_associatedAppBundleIdentifier | sBUISA_associatedScenePersistenceIdentifier))
   {
-    v6 = [(SBApplicationSceneHandle *)self->_associatedApplicationSceneHandle persistenceIdentifier];
+    sBUISA_associatedScenePersistenceIdentifier = [(SBApplicationSceneHandle *)self->_associatedApplicationSceneHandle persistenceIdentifier];
   }
 
-  v7 = [(SBSystemApertureSceneElement *)self launchActionHandler];
-  v8 = [v7 sceneElement:self decisionForLaunchActionOfAppWithBundleIdentifier:v4 persistenceIdentifier:v6];
+  launchActionHandler = [(SBSystemApertureSceneElement *)self launchActionHandler];
+  v8 = [launchActionHandler sceneElement:self decisionForLaunchActionOfAppWithBundleIdentifier:sBUISA_associatedAppBundleIdentifier persistenceIdentifier:sBUISA_associatedScenePersistenceIdentifier];
 
   v9 = v8 != 1 && [(SBSystemApertureSceneElement *)self _activateCorrespondingAppSceneIfPossible:v8];
   v10 = v8 == 1 || v9;
@@ -1523,25 +1523,25 @@ id __55__SBSystemApertureSceneElement_handleElementViewEvent___block_invoke_2()
   return v10;
 }
 
-- (id)_bundleIdForLaunchTargetWithScenePersistenceIdentifier:(id)a3
+- (id)_bundleIdForLaunchTargetWithScenePersistenceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__123;
   v22 = __Block_byref_object_dispose__124;
-  v5 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v23 = [v5 SBUISA_associatedAppBundleIdentifier];
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_associatedAppBundleIdentifier = [sceneClientSettings SBUISA_associatedAppBundleIdentifier];
 
-  if (v4)
+  if (identifierCopy)
   {
     v6 = +[SBSceneManagerCoordinator sharedInstance];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __87__SBSystemApertureSceneElement__bundleIdForLaunchTargetWithScenePersistenceIdentifier___block_invoke;
     v15[3] = &unk_2783B7178;
-    v16 = v4;
+    v16 = identifierCopy;
     v17 = &v18;
     [v6 enumerateSceneManagersWithBlock:v15];
   }
@@ -1549,15 +1549,15 @@ id __55__SBSystemApertureSceneElement_handleElementViewEvent___block_invoke_2()
   v7 = v19[5];
   if (!v7)
   {
-    v8 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-    v9 = [v8 SBUISA_launchURL];
+    sceneClientSettings2 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+    sBUISA_launchURL = [sceneClientSettings2 SBUISA_launchURL];
 
-    if (v9)
+    if (sBUISA_launchURL)
     {
-      v10 = SBWorkspaceApplicationForURLWithError(v9, 0, 0);
-      v11 = [v10 bundleIdentifier];
+      v10 = SBWorkspaceApplicationForURLWithError(sBUISA_launchURL, 0, 0);
+      bundleIdentifier = [v10 bundleIdentifier];
       v12 = v19[5];
-      v19[5] = v11;
+      v19[5] = bundleIdentifier;
     }
 
     v7 = v19[5];
@@ -1580,25 +1580,25 @@ void __87__SBSystemApertureSceneElement__bundleIdForLaunchTargetWithScenePersist
   }
 }
 
-- (BOOL)_activateCorrespondingAppSceneIfPossible:(int64_t)a3
+- (BOOL)_activateCorrespondingAppSceneIfPossible:(int64_t)possible
 {
-  if (a3 == 2)
+  if (possible == 2)
   {
-    v4 = 0;
+    sBUISA_associatedScenePersistenceIdentifier = 0;
   }
 
   else
   {
-    v5 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-    v4 = [v5 SBUISA_associatedScenePersistenceIdentifier];
+    sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+    sBUISA_associatedScenePersistenceIdentifier = [sceneClientSettings SBUISA_associatedScenePersistenceIdentifier];
   }
 
-  v6 = [(SBSystemApertureSceneElement *)self _bundleIdForLaunchTargetWithScenePersistenceIdentifier:v4];
-  v7 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v8 = [v7 SBUISA_launchURL];
+  v6 = [(SBSystemApertureSceneElement *)self _bundleIdForLaunchTargetWithScenePersistenceIdentifier:sBUISA_associatedScenePersistenceIdentifier];
+  sceneClientSettings2 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_launchURL = [sceneClientSettings2 SBUISA_launchURL];
 
-  v9 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v10 = [v9 SBUISA_launchAction];
+  sceneClientSettings3 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_launchAction = [sceneClientSettings3 SBUISA_launchAction];
 
   if (v6 && (+[SBApplicationController sharedInstanceIfExists](SBApplicationController, "sharedInstanceIfExists"), v11 = objc_claimAutoreleasedReturnValue(), [v11 applicationWithBundleIdentifier:v6], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12))
   {
@@ -1607,8 +1607,8 @@ void __87__SBSystemApertureSceneElement__bundleIdForLaunchTargetWithScenePersist
     [(SBLockScreenUnlockRequest *)v13 setIntent:3];
     [(SBLockScreenUnlockRequest *)v13 setName:@"Launch App from System Aperture Unlock"];
     [(SBLockScreenUnlockRequest *)v13 setWantsBiometricPresentation:1];
-    v14 = [(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView _sbWindowScene];
-    [(SBLockScreenUnlockRequest *)v13 setWindowScene:v14];
+    _sbWindowScene = [(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView _sbWindowScene];
+    [(SBLockScreenUnlockRequest *)v13 setWindowScene:_sbWindowScene];
     objc_initWeak(&location, self);
     v15 = +[SBLockScreenManager sharedInstance];
     v19 = MEMORY[0x277D85DD0];
@@ -1617,12 +1617,12 @@ void __87__SBSystemApertureSceneElement__bundleIdForLaunchTargetWithScenePersist
     v22 = &unk_2783C2A38;
     v23 = v6;
     objc_copyWeak(&v29, &location);
-    v16 = v14;
+    v16 = _sbWindowScene;
     v24 = v16;
-    v25 = v4;
-    v26 = v8;
-    v27 = v10;
-    v28 = self;
+    v25 = sBUISA_associatedScenePersistenceIdentifier;
+    v26 = sBUISA_launchURL;
+    v27 = sBUISA_launchAction;
+    selfCopy = self;
     [v15 unlockWithRequest:v13 completion:&v19];
 
     [(SBSystemApertureSceneElement *)self setHasHandledLaunchAction:1, v19, v20, v21, v22];
@@ -1757,10 +1757,10 @@ void __73__SBSystemApertureSceneElement__activateCorrespondingAppSceneIfPossible
 - (id)_inferredElementIdentifier
 {
   v3 = *MEMORY[0x277D68038];
-  v4 = [(FBScene *)self->_scene clientHandle];
-  v5 = [v4 bundleIdentifier];
+  clientHandle = [(FBScene *)self->_scene clientHandle];
+  bundleIdentifier = [clientHandle bundleIdentifier];
 
-  if ([v5 isEqualToString:@"com.apple.MusicUIService"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"com.apple.MediaRemoteUI"))
+  if ([bundleIdentifier isEqualToString:@"com.apple.MusicUIService"] & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.MediaRemoteUI"))
   {
     v6 = MEMORY[0x277D68008];
 LABEL_4:
@@ -1770,31 +1770,31 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if ([v5 isEqualToString:@"com.apple.VoiceMemos"])
+  if ([bundleIdentifier isEqualToString:@"com.apple.VoiceMemos"])
   {
     v6 = MEMORY[0x277D68040];
     goto LABEL_4;
   }
 
-  if ([v5 isEqualToString:@"com.apple.ReplayKit.ReplayKitAngel"])
+  if ([bundleIdentifier isEqualToString:@"com.apple.ReplayKit.ReplayKitAngel"])
   {
     v6 = MEMORY[0x277D68018];
     goto LABEL_4;
   }
 
-  if ([v5 isEqualToString:@"com.apple.InCallService"])
+  if ([bundleIdentifier isEqualToString:@"com.apple.InCallService"])
   {
     v6 = MEMORY[0x277D67FD0];
     goto LABEL_4;
   }
 
-  if ([v5 isEqualToString:@"com.apple.Sharing.AirDropUI"])
+  if ([bundleIdentifier isEqualToString:@"com.apple.Sharing.AirDropUI"])
   {
     v6 = MEMORY[0x277D67FC8];
     goto LABEL_4;
   }
 
-  if ([v5 isEqualToString:@"com.apple.Maps"])
+  if ([bundleIdentifier isEqualToString:@"com.apple.Maps"])
   {
     v6 = MEMORY[0x277D68030];
     goto LABEL_4;
@@ -1813,10 +1813,10 @@ LABEL_5:
 
 - (NSString)elementIdentifier
 {
-  v3 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v4 = [v3 SBUISA_elementIdentifier];
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_elementIdentifier = [sceneClientSettings SBUISA_elementIdentifier];
 
-  if (!v4)
+  if (!sBUISA_elementIdentifier)
   {
     WeakRetained = objc_loadWeakRetained(&self->_placeholderContentProvider);
     v6 = WeakRetained;
@@ -1829,10 +1829,10 @@ LABEL_5:
     {
       [(SBSystemApertureSceneElement *)self _inferredElementIdentifier];
     }
-    v4 = ;
+    sBUISA_elementIdentifier = ;
   }
 
-  return v4;
+  return sBUISA_elementIdentifier;
 }
 
 - (NSString)clientIdentifier
@@ -1841,7 +1841,7 @@ LABEL_5:
   v4 = WeakRetained;
   if (WeakRetained && !self->_scene)
   {
-    v9 = [WeakRetained clientIdentifier];
+    clientIdentifier = [WeakRetained clientIdentifier];
   }
 
   else
@@ -1849,30 +1849,30 @@ LABEL_5:
     clientIdentifier = self->_clientIdentifier;
     if (!clientIdentifier)
     {
-      v6 = [(FBScene *)self->_scene clientHandle];
-      v7 = [v6 bundleIdentifier];
+      clientHandle = [(FBScene *)self->_scene clientHandle];
+      bundleIdentifier = [clientHandle bundleIdentifier];
       v8 = self->_clientIdentifier;
-      self->_clientIdentifier = v7;
+      self->_clientIdentifier = bundleIdentifier;
 
       clientIdentifier = self->_clientIdentifier;
     }
 
-    v9 = clientIdentifier;
+    clientIdentifier = clientIdentifier;
   }
 
-  v10 = v9;
+  v10 = clientIdentifier;
 
   return v10;
 }
 
-- (void)setReadyForPresentation:(BOOL)a3
+- (void)setReadyForPresentation:(BOOL)presentation
 {
-  if (self->_readyForPresentation != a3)
+  if (self->_readyForPresentation != presentation)
   {
-    v3 = a3;
-    self->_readyForPresentation = a3;
+    presentationCopy = presentation;
+    self->_readyForPresentation = presentation;
     [(SBSystemApertureSceneElement *)self _updateActiveElementsAndAssociatedApplication];
-    if (v3)
+    if (presentationCopy)
     {
       [(SBSystemApertureSceneElement *)self _addActivationAttribute:16];
     }
@@ -1889,9 +1889,9 @@ LABEL_5:
   }
 }
 
-- (void)setLayoutHost:(id)a3
+- (void)setLayoutHost:(id)host
 {
-  obj = a3;
+  obj = host;
   WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
 
   v5 = obj;
@@ -1904,30 +1904,30 @@ LABEL_5:
   }
 }
 
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason
 {
   v44 = *MEMORY[0x277D85DE8];
   layoutMode = self->_layoutMode;
-  if (layoutMode == a3)
+  if (layoutMode == mode)
   {
     return;
   }
 
-  if (a3 == -1)
+  if (mode == -1)
   {
     [(SBSystemApertureSceneElement *)self setHasBeenRemoved:1];
     layoutMode = self->_layoutMode;
   }
 
-  self->_mostRecentLayoutModeChangeReason = a4;
+  self->_mostRecentLayoutModeChangeReason = reason;
   v8 = SBLogSystemApertureHosting();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(SBSystemApertureSceneElement *)self succinctDescription];
+    succinctDescription = [(SBSystemApertureSceneElement *)self succinctDescription];
     v10 = SAUIStringFromElementViewLayoutMode();
     v11 = SAUIStringFromElementViewLayoutMode();
     *buf = 138543874;
-    v39 = v9;
+    v39 = succinctDescription;
     v40 = 2114;
     v41 = v10;
     v42 = 2114;
@@ -1935,13 +1935,13 @@ LABEL_5:
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ layoutMode: %{public}@ -> %{public}@", buf, 0x20u);
   }
 
-  self->_layoutMode = a3;
+  self->_layoutMode = mode;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v12 = [(SBSystemApertureSceneElement *)self _layoutObservers];
-  v13 = [v12 copy];
+  _layoutObservers = [(SBSystemApertureSceneElement *)self _layoutObservers];
+  v13 = [_layoutObservers copy];
 
   v14 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v14)
@@ -1957,7 +1957,7 @@ LABEL_5:
           objc_enumerationMutation(v13);
         }
 
-        [*(*(&v33 + 1) + 8 * i) elementLayoutSpecifier:self layoutModeDidChange:layoutMode reason:a4];
+        [*(*(&v33 + 1) + 8 * i) elementLayoutSpecifier:self layoutModeDidChange:layoutMode reason:reason];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -1966,9 +1966,9 @@ LABEL_5:
     while (v15);
   }
 
-  if (a3 < 1)
+  if (mode < 1)
   {
-    if (a3 == -1)
+    if (mode == -1)
     {
       [(SBSystemApertureSceneElement *)self _finishDeactivationIfNeeded];
     }
@@ -1978,7 +1978,7 @@ LABEL_5:
 
   [(SBSystemApertureSceneElement *)self _addActivationAttribute:1];
   WeakRetained = objc_loadWeakRetained(&self->_placeholderContentProvider);
-  if (a3 == 2)
+  if (mode == 2)
   {
     leadingWrapperView = self->_leadingWrapperView;
     if (!leadingWrapperView)
@@ -1986,24 +1986,24 @@ LABEL_5:
       goto LABEL_30;
     }
 
-    v27 = [(SBSystemApertureSceneElementPlaceholderWrapperView *)leadingWrapperView contentView];
+    contentView = [(SBSystemApertureSceneElementPlaceholderWrapperView *)leadingWrapperView contentView];
     leadingView = self->_leadingView;
 
-    if (v27 == leadingView)
+    if (contentView == leadingView)
     {
       goto LABEL_30;
     }
 
     p_leadingWrapperView = &self->_leadingWrapperView;
-    v23 = [WeakRetained leadingView];
-    if (!v23)
+    leadingView = [WeakRetained leadingView];
+    if (!leadingView)
     {
       goto LABEL_29;
     }
 
-    v29 = [WeakRetained minimalView];
+    minimalView = [WeakRetained minimalView];
 
-    if (v29 != v23)
+    if (minimalView != leadingView)
     {
       goto LABEL_29;
     }
@@ -2012,7 +2012,7 @@ LABEL_5:
     goto LABEL_28;
   }
 
-  if (a3 != 1)
+  if (mode != 1)
   {
     goto LABEL_30;
   }
@@ -2023,21 +2023,21 @@ LABEL_5:
     goto LABEL_30;
   }
 
-  v20 = [(SBSystemApertureSceneElementPlaceholderWrapperView *)minimalWrapperView contentView];
+  contentView2 = [(SBSystemApertureSceneElementPlaceholderWrapperView *)minimalWrapperView contentView];
   minimalView = self->_minimalView;
 
-  if (v20 == minimalView)
+  if (contentView2 == minimalView)
   {
     goto LABEL_30;
   }
 
   p_leadingWrapperView = &self->_minimalWrapperView;
-  v23 = [WeakRetained minimalView];
-  if (v23)
+  leadingView = [WeakRetained minimalView];
+  if (leadingView)
   {
-    v24 = [WeakRetained leadingView];
+    leadingView2 = [WeakRetained leadingView];
 
-    if (v24 == v23)
+    if (leadingView2 == leadingView)
     {
       v25 = 272;
 LABEL_28:
@@ -2046,19 +2046,19 @@ LABEL_28:
   }
 
 LABEL_29:
-  [(SBSystemApertureSceneElementPlaceholderWrapperView *)*p_leadingWrapperView setContentView:v23];
+  [(SBSystemApertureSceneElementPlaceholderWrapperView *)*p_leadingWrapperView setContentView:leadingView];
 
 LABEL_30:
 LABEL_31:
   if (layoutMode == 3)
   {
-    v30 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-    v31 = [v30 SBUISA_hasMenuPresentation];
+    sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+    sBUISA_hasMenuPresentation = [sceneClientSettings SBUISA_hasMenuPresentation];
 
-    if (v31)
+    if (sBUISA_hasMenuPresentation)
     {
-      v32 = [(SBSystemApertureSceneElement *)self layoutHost];
-      [v32 menuPresentationRequestDidChangeForLayoutSpecifier:self];
+      layoutHost = [(SBSystemApertureSceneElement *)self layoutHost];
+      [layoutHost menuPresentationRequestDidChangeForLayoutSpecifier:self];
     }
   }
 
@@ -2067,11 +2067,11 @@ LABEL_31:
   [(SBSystemActionElementPreviewingCoordinator *)self->_previewingCoordinator elementInvalidatedProperties];
 }
 
-- (int64_t)_layoutModeForClientLayoutMode:(int64_t)a3
+- (int64_t)_layoutModeForClientLayoutMode:(int64_t)mode
 {
-  if (a3 > 1)
+  if (mode > 1)
   {
-    switch(a3)
+    switch(mode)
     {
       case 4:
         return 3;
@@ -2084,12 +2084,12 @@ LABEL_31:
     return 0;
   }
 
-  if (a3 == -1)
+  if (mode == -1)
   {
-    return a3;
+    return mode;
   }
 
-  if (a3)
+  if (mode)
   {
     return 0;
   }
@@ -2105,28 +2105,28 @@ LABEL_31:
   }
 }
 
-- (int64_t)_clientLayoutModeForLayoutMode:(int64_t)a3
+- (int64_t)_clientLayoutModeForLayoutMode:(int64_t)mode
 {
-  if ((a3 + 1) > 4)
+  if ((mode + 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_21F8A8818[a3 + 1];
+    return qword_21F8A8818[mode + 1];
   }
 }
 
 - (int64_t)preferredLayoutMode
 {
-  v3 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v4 = -[SBSystemApertureSceneElement _layoutModeForClientLayoutMode:](self, "_layoutModeForClientLayoutMode:", [v3 SBUISA_preferredLayoutMode]);
-  v5 = [(SBSystemApertureSceneElement *)self maximumSupportedLayoutMode];
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  v4 = -[SBSystemApertureSceneElement _layoutModeForClientLayoutMode:](self, "_layoutModeForClientLayoutMode:", [sceneClientSettings SBUISA_preferredLayoutMode]);
+  maximumSupportedLayoutMode = [(SBSystemApertureSceneElement *)self maximumSupportedLayoutMode];
 
-  if (v4 >= v5)
+  if (v4 >= maximumSupportedLayoutMode)
   {
-    return v5;
+    return maximumSupportedLayoutMode;
   }
 
   else
@@ -2137,13 +2137,13 @@ LABEL_31:
 
 - (int64_t)minimumSupportedLayoutMode
 {
-  v3 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v4 = -[SBSystemApertureSceneElement _layoutModeForClientLayoutMode:](self, "_layoutModeForClientLayoutMode:", [v3 SBUISA_minimumLayoutMode]);
-  v5 = [(SBSystemApertureSceneElement *)self maximumSupportedLayoutMode];
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  v4 = -[SBSystemApertureSceneElement _layoutModeForClientLayoutMode:](self, "_layoutModeForClientLayoutMode:", [sceneClientSettings SBUISA_minimumLayoutMode]);
+  maximumSupportedLayoutMode = [(SBSystemApertureSceneElement *)self maximumSupportedLayoutMode];
 
-  if (v4 >= v5)
+  if (v4 >= maximumSupportedLayoutMode)
   {
-    return v5;
+    return maximumSupportedLayoutMode;
   }
 
   else
@@ -2154,11 +2154,11 @@ LABEL_31:
 
 - (int64_t)maximumSupportedLayoutMode
 {
-  v3 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v4 = -[SBSystemApertureSceneElement _layoutModeForClientLayoutMode:](self, "_layoutModeForClientLayoutMode:", [v3 SBUISA_maximumLayoutMode]);
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  v4 = -[SBSystemApertureSceneElement _layoutModeForClientLayoutMode:](self, "_layoutModeForClientLayoutMode:", [sceneClientSettings SBUISA_maximumLayoutMode]);
 
-  v5 = [(SBSystemApertureSceneElement *)self elementIdentifier];
-  v6 = [v5 isEqualToString:*MEMORY[0x277D68008]];
+  elementIdentifier = [(SBSystemApertureSceneElement *)self elementIdentifier];
+  v6 = [elementIdentifier isEqualToString:*MEMORY[0x277D68008]];
 
   if (v6)
   {
@@ -2188,38 +2188,38 @@ LABEL_31:
     return 0;
   }
 
-  v3 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  if ([v3 SBUISA_hasMenuPresentation])
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  if ([sceneClientSettings SBUISA_hasMenuPresentation])
   {
-    v4 = [(SBSystemApertureSceneElement *)self _supportsMenuPresentations];
+    _supportsMenuPresentations = [(SBSystemApertureSceneElement *)self _supportsMenuPresentations];
   }
 
   else
   {
-    v4 = 0;
+    _supportsMenuPresentations = 0;
   }
 
-  return v4;
+  return _supportsMenuPresentations;
 }
 
-- (void)setHasBeenRemoved:(BOOL)a3
+- (void)setHasBeenRemoved:(BOOL)removed
 {
-  if (self->_hasBeenRemoved != a3)
+  if (self->_hasBeenRemoved != removed)
   {
-    self->_hasBeenRemoved = a3;
+    self->_hasBeenRemoved = removed;
     if ([(SBSystemApertureSceneElement *)self _updateRequiresSuppressionFromSystemAperture])
     {
-      v4 = [(SBSystemApertureSceneElement *)self layoutHost];
-      [v4 preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
+      layoutHost = [(SBSystemApertureSceneElement *)self layoutHost];
+      [layoutHost preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
     }
   }
 }
 
-- (void)setSuppressedByProximityReader:(BOOL)a3
+- (void)setSuppressedByProximityReader:(BOOL)reader
 {
-  if (self->_suppressedByProximityReader != a3)
+  if (self->_suppressedByProximityReader != reader)
   {
-    self->_suppressedByProximityReader = a3;
+    self->_suppressedByProximityReader = reader;
     [(SBSystemApertureSceneElement *)self _acquireOrUpdateAppStatusBarSessionsAssertionIfNeeded];
   }
 }
@@ -2241,57 +2241,57 @@ LABEL_31:
   return v4;
 }
 
-- (void)setPreviewing:(BOOL)a3
+- (void)setPreviewing:(BOOL)previewing
 {
-  if (self->_previewing != a3)
+  if (self->_previewing != previewing)
   {
-    self->_previewing = a3;
+    self->_previewing = previewing;
     [(SBSystemActionElementPreviewingCoordinator *)self->_previewingCoordinator elementInvalidatedProperties];
   }
 }
 
-- (void)setUrgent:(BOOL)a3
+- (void)setUrgent:(BOOL)urgent
 {
-  if (self->_urgent != a3)
+  if (self->_urgent != urgent)
   {
-    self->_urgent = a3;
+    self->_urgent = urgent;
     [(SBSystemActionElementPreviewingCoordinator *)self->_previewingCoordinator elementInvalidatedProperties];
   }
 }
 
-- (void)setExpanding:(BOOL)a3
+- (void)setExpanding:(BOOL)expanding
 {
-  if (self->_expanding != a3)
+  if (self->_expanding != expanding)
   {
-    self->_expanding = a3;
+    self->_expanding = expanding;
     [(SBSystemActionElementPreviewingCoordinator *)self->_previewingCoordinator elementInvalidatedProperties];
   }
 }
 
-- (void)setProminent:(BOOL)a3
+- (void)setProminent:(BOOL)prominent
 {
-  if (self->_prominent != a3)
+  if (self->_prominent != prominent)
   {
-    self->_prominent = a3;
+    self->_prominent = prominent;
     WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
     [WeakRetained preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:self];
   }
 }
 
-- (void)setSuppressed:(BOOL)a3
+- (void)setSuppressed:(BOOL)suppressed
 {
-  if (!a3)
+  if (!suppressed)
   {
     [(SBSystemApertureSceneElement *)self setSuppressedByProximityReader:0];
   }
 }
 
-- (BOOL)_isAssociatedWithBundleIdentifier:(id)a3
+- (BOOL)_isAssociatedWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v6 = [v5 SBUISA_associatedAppBundleIdentifier];
-  v7 = [v6 isEqualToString:v4];
+  identifierCopy = identifier;
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_associatedAppBundleIdentifier = [sceneClientSettings SBUISA_associatedAppBundleIdentifier];
+  v7 = [sBUISA_associatedAppBundleIdentifier isEqualToString:identifierCopy];
 
   if ([(SBSystemApertureSceneElement *)self _hasPresentationBehavior:4096])
   {
@@ -2300,9 +2300,9 @@ LABEL_31:
 
   else
   {
-    v9 = [(SBApplicationSceneHandle *)self->_associatedApplicationSceneHandle application];
-    v10 = [v9 bundleIdentifier];
-    v8 = [v10 isEqualToString:v4];
+    application = [(SBApplicationSceneHandle *)self->_associatedApplicationSceneHandle application];
+    bundleIdentifier = [application bundleIdentifier];
+    v8 = [bundleIdentifier isEqualToString:identifierCopy];
   }
 
   if ([(SBSystemApertureSceneElement *)self _hasPresentationBehavior:4096])
@@ -2313,8 +2313,8 @@ LABEL_31:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_placeholderContentProvider);
-    v13 = [WeakRetained clientIdentifier];
-    v11 = [v13 isEqualToString:v4];
+    clientIdentifier = [WeakRetained clientIdentifier];
+    v11 = [clientIdentifier isEqualToString:identifierCopy];
   }
 
   if ([(SBSystemApertureSceneElement *)self _hasPresentationBehavior:4096])
@@ -2324,30 +2324,30 @@ LABEL_31:
 
   else
   {
-    v15 = [(FBScene *)self->_scene clientHandle];
-    v16 = [v15 bundleIdentifier];
-    v14 = [v16 isEqualToString:v4];
+    clientHandle = [(FBScene *)self->_scene clientHandle];
+    bundleIdentifier2 = [clientHandle bundleIdentifier];
+    v14 = [bundleIdentifier2 isEqualToString:identifierCopy];
   }
 
   return v8 | v7 | v11 | v14;
 }
 
-- (BOOL)_isAssociatedWithSceneWithPersistenceIdentifier:(id)a3
+- (BOOL)_isAssociatedWithSceneWithPersistenceIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (-[SBSystemApertureSceneElement _isAssociatedWithBundleIdentifier:](self, "_isAssociatedWithBundleIdentifier:", @"com.apple.InCallService") && ([v4 isEqualToString:@"SBAmbientFullScreenPresentationInCallSceneIdentifier"] & 1) != 0)
+  identifierCopy = identifier;
+  if (-[SBSystemApertureSceneElement _isAssociatedWithBundleIdentifier:](self, "_isAssociatedWithBundleIdentifier:", @"com.apple.InCallService") && ([identifierCopy isEqualToString:@"SBAmbientFullScreenPresentationInCallSceneIdentifier"] & 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D0AAD8] sharedInstance];
-    v7 = [v6 sceneWithIdentifier:v4];
+    mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+    v7 = [mEMORY[0x277D0AAD8] sceneWithIdentifier:identifierCopy];
 
-    v8 = [v7 settings];
+    settings = [v7 settings];
     v9 = objc_opt_class();
-    v10 = v8;
+    v10 = settings;
     if (v9)
     {
       if (objc_opt_isKindOfClass())
@@ -2368,29 +2368,29 @@ LABEL_31:
 
     v12 = v11;
 
-    v13 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-    v14 = [v13 SBUISA_associatedScenePersistenceIdentifier];
-    v15 = [v12 persistenceIdentifier];
-    if ([v14 isEqualToString:v15])
+    sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+    sBUISA_associatedScenePersistenceIdentifier = [sceneClientSettings SBUISA_associatedScenePersistenceIdentifier];
+    persistenceIdentifier = [v12 persistenceIdentifier];
+    if ([sBUISA_associatedScenePersistenceIdentifier isEqualToString:persistenceIdentifier])
     {
       v5 = 1;
     }
 
     else
     {
-      v16 = [(SBApplicationSceneHandle *)self->_associatedApplicationSceneHandle persistenceIdentifier];
-      v17 = [v12 persistenceIdentifier];
-      v5 = [v16 isEqualToString:v17];
+      persistenceIdentifier2 = [(SBApplicationSceneHandle *)self->_associatedApplicationSceneHandle persistenceIdentifier];
+      persistenceIdentifier3 = [v12 persistenceIdentifier];
+      v5 = [persistenceIdentifier2 isEqualToString:persistenceIdentifier3];
     }
   }
 
   return v5;
 }
 
-- (BOOL)acceptsFullScreenTransitionFromSceneWithIdentifier:(id)a3 ofBundleId:(id)a4
+- (BOOL)acceptsFullScreenTransitionFromSceneWithIdentifier:(id)identifier ofBundleId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  idCopy = id;
   if ([(SBSystemApertureSceneElement *)self requiresSuppressionFromSystemAperture]|| [(SBSystemApertureSceneElement *)self _hasPresentationBehavior:1024])
   {
     v8 = 0;
@@ -2398,40 +2398,40 @@ LABEL_31:
 
   else
   {
-    v8 = [(SBSystemApertureSceneElement *)self _isAssociatedWithBundleIdentifier:v7]|| [(SBSystemApertureSceneElement *)self _isAssociatedWithSceneWithPersistenceIdentifier:v6];
+    v8 = [(SBSystemApertureSceneElement *)self _isAssociatedWithBundleIdentifier:idCopy]|| [(SBSystemApertureSceneElement *)self _isAssociatedWithSceneWithPersistenceIdentifier:identifierCopy];
   }
 
   return v8;
 }
 
-- (BOOL)shouldSuppressElementWhilePresentingSceneWithIdentifier:(id)a3
+- (BOOL)shouldSuppressElementWhilePresentingSceneWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  LOBYTE(v5) = ![(SBSystemApertureSceneElement *)self _hasPresentationBehavior:4]&& [(SBSystemApertureSceneElement *)self _isAssociatedWithSceneWithPersistenceIdentifier:v4];
+  identifierCopy = identifier;
+  LOBYTE(v5) = ![(SBSystemApertureSceneElement *)self _hasPresentationBehavior:4]&& [(SBSystemApertureSceneElement *)self _isAssociatedWithSceneWithPersistenceIdentifier:identifierCopy];
   if ([(SBSystemApertureSceneElement *)self _hasPresentationBehavior:1024])
   {
-    v6 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-    v7 = [v6 SBUISA_associatedScenePersistenceIdentifier];
+    sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+    sBUISA_associatedScenePersistenceIdentifier = [sceneClientSettings SBUISA_associatedScenePersistenceIdentifier];
 
-    if (v7)
+    if (sBUISA_associatedScenePersistenceIdentifier)
     {
-      v5 = ![(SBSystemApertureSceneElement *)self _isAssociatedWithSceneWithPersistenceIdentifier:v4];
+      v5 = ![(SBSystemApertureSceneElement *)self _isAssociatedWithSceneWithPersistenceIdentifier:identifierCopy];
     }
   }
 
   return v5;
 }
 
-- (BOOL)shouldSuppressElementWhilePresentingAppWithBundleId:(id)a3
+- (BOOL)shouldSuppressElementWhilePresentingAppWithBundleId:(id)id
 {
-  v4 = a3;
-  v5 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v6 = [v5 SBUISA_associatedAppBundleIdentifier];
+  idCopy = id;
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_associatedAppBundleIdentifier = [sceneClientSettings SBUISA_associatedAppBundleIdentifier];
 
-  v7 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v8 = [v7 SBUISA_associatedScenePersistenceIdentifier];
+  sceneClientSettings2 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_associatedScenePersistenceIdentifier = [sceneClientSettings2 SBUISA_associatedScenePersistenceIdentifier];
 
-  if (v6 | v8)
+  if (sBUISA_associatedAppBundleIdentifier | sBUISA_associatedScenePersistenceIdentifier)
   {
     v11 = 0;
   }
@@ -2439,19 +2439,19 @@ LABEL_31:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_placeholderContentProvider);
-    v10 = [WeakRetained clientIdentifier];
-    v11 = v10 == 0;
+    clientIdentifier = [WeakRetained clientIdentifier];
+    v11 = clientIdentifier == 0;
   }
 
   LOBYTE(v12) = 0;
   if (![(SBSystemApertureSceneElement *)self _hasPresentationBehavior:2]&& !v11)
   {
-    LOBYTE(v12) = (BSEqualStrings() & 1) == 0 && [(SBSystemApertureSceneElement *)self _isAssociatedWithBundleIdentifier:v4];
+    LOBYTE(v12) = (BSEqualStrings() & 1) == 0 && [(SBSystemApertureSceneElement *)self _isAssociatedWithBundleIdentifier:idCopy];
   }
 
   if ([(SBSystemApertureSceneElement *)self _hasPresentationBehavior:1024])
   {
-    v12 = ![(SBSystemApertureSceneElement *)self _isAssociatedWithBundleIdentifier:v4];
+    v12 = ![(SBSystemApertureSceneElement *)self _isAssociatedWithBundleIdentifier:idCopy];
   }
 
   return v12;
@@ -2464,10 +2464,10 @@ LABEL_31:
     return 1;
   }
 
-  v4 = [(SBSystemApertureSceneElement *)self associatedApplicationSceneHandle];
-  v5 = [v4 application];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v6 isEqualToString:@"com.apple.InCallService"];
+  associatedApplicationSceneHandle = [(SBSystemApertureSceneElement *)self associatedApplicationSceneHandle];
+  application = [associatedApplicationSceneHandle application];
+  bundleIdentifier = [application bundleIdentifier];
+  v7 = [bundleIdentifier isEqualToString:@"com.apple.InCallService"];
 
   return v7;
 }
@@ -2485,12 +2485,12 @@ LABEL_31:
   }
 }
 
-- (BOOL)shouldIgnoreSystemChromeSuppressionWhilePresentingAppWithBundleId:(id)a3
+- (BOOL)shouldIgnoreSystemChromeSuppressionWhilePresentingAppWithBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   if ([(SBSystemApertureSceneElement *)self _hasPresentationBehavior:2])
   {
-    v5 = [(SBSystemApertureSceneElement *)self _isAssociatedWithBundleIdentifier:v4];
+    v5 = [(SBSystemApertureSceneElement *)self _isAssociatedWithBundleIdentifier:idCopy];
   }
 
   else
@@ -2503,29 +2503,29 @@ LABEL_31:
 
 - (BOOL)_updateRequiresSuppressionFromSystemAperture
 {
-  v3 = [(SBSystemApertureSceneElement *)self requiresSuppressionFromSystemAperture];
-  v4 = [(SBSystemApertureSceneElement *)self _calculateRequiresSuppressionFromSystemAperture];
-  self->_requiresSuppressionFromSystemAperture = v4;
-  return v3 ^ v4;
+  requiresSuppressionFromSystemAperture = [(SBSystemApertureSceneElement *)self requiresSuppressionFromSystemAperture];
+  _calculateRequiresSuppressionFromSystemAperture = [(SBSystemApertureSceneElement *)self _calculateRequiresSuppressionFromSystemAperture];
+  self->_requiresSuppressionFromSystemAperture = _calculateRequiresSuppressionFromSystemAperture;
+  return requiresSuppressionFromSystemAperture ^ _calculateRequiresSuppressionFromSystemAperture;
 }
 
 - (BOOL)_calculateRequiresSuppressionFromSystemAperture
 {
   if ([(SBSystemApertureSceneElement *)self isAffiliatedWithSessionMonitor])
   {
-    v3 = [(SBSystemApertureSceneElement *)self hasBeenRemoved];
-    if (!v3)
+    hasBeenRemoved = [(SBSystemApertureSceneElement *)self hasBeenRemoved];
+    if (!hasBeenRemoved)
     {
-      return v3;
+      return hasBeenRemoved;
     }
   }
 
   v4 = [(SBSystemApertureSceneElement *)self preferredLayoutMode]<= 0 && ![(SBSystemApertureSceneElement *)self requiresSuppressionFromSystemAperture]|| [(SBSystemApertureSceneElement *)self maximumSupportedLayoutMode]< 1;
-  v5 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v6 = [v5 SBUISA_associatedAppBundleIdentifier];
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_associatedAppBundleIdentifier = [sceneClientSettings SBUISA_associatedAppBundleIdentifier];
 
   v7 = [(SBSystemApertureSceneElement *)self _hasPresentationBehavior:256];
-  if (v6)
+  if (sBUISA_associatedAppBundleIdentifier)
   {
     v8 = 0;
   }
@@ -2536,18 +2536,18 @@ LABEL_31:
   }
 
   v9 = v4 || v8;
-  v10 = [(SBSystemApertureSceneElement *)self elementIdentifier];
-  if (![v10 isEqualToString:*MEMORY[0x277D68008]])
+  elementIdentifier = [(SBSystemApertureSceneElement *)self elementIdentifier];
+  if (![elementIdentifier isEqualToString:*MEMORY[0x277D68008]])
   {
     goto LABEL_12;
   }
 
-  v11 = [v6 isEqualToString:@"com.apple.VoiceMemos"];
+  v11 = [sBUISA_associatedAppBundleIdentifier isEqualToString:@"com.apple.VoiceMemos"];
 
   if (v11)
   {
-    v10 = +[SBSystemApertureSceneElement activeElements];
-    v9 |= [v10 bs_containsObjectPassingTest:&__block_literal_global_188_0];
+    elementIdentifier = +[SBSystemApertureSceneElement activeElements];
+    v9 |= [elementIdentifier bs_containsObjectPassingTest:&__block_literal_global_188_0];
 LABEL_12:
   }
 
@@ -2566,10 +2566,10 @@ LABEL_12:
     v12 = 0;
   }
 
-  v13 = [(SBSystemApertureSceneElement *)self hasBeenRemoved];
+  hasBeenRemoved2 = [(SBSystemApertureSceneElement *)self hasBeenRemoved];
 
-  LOBYTE(v3) = (v13 || v12) | v9;
-  return v3;
+  LOBYTE(hasBeenRemoved) = (hasBeenRemoved2 || v12) | v9;
+  return hasBeenRemoved;
 }
 
 uint64_t __79__SBSystemApertureSceneElement__calculateRequiresSuppressionFromSystemAperture__block_invoke(uint64_t a1, void *a2)
@@ -2582,11 +2582,11 @@ uint64_t __79__SBSystemApertureSceneElement__calculateRequiresSuppressionFromSys
 
 - (BOOL)isInteractiveDismissalEnabled
 {
-  v3 = [(SBSystemApertureSceneElement *)self scene];
-  if (v3)
+  scene = [(SBSystemApertureSceneElement *)self scene];
+  if (scene)
   {
-    v4 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-    v5 = [v4 SBUISA_preventsInteractiveDismissal] ^ 1;
+    sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+    v5 = [sceneClientSettings SBUISA_preventsInteractiveDismissal] ^ 1;
   }
 
   else
@@ -2604,8 +2604,8 @@ uint64_t __79__SBSystemApertureSceneElement__calculateRequiresSuppressionFromSys
     return self->_minimalView != 0;
   }
 
-  v4 = [(SBSystemApertureSceneElement *)self configuration];
-  if ([v4 isMinimalPresentationPossible])
+  configuration = [(SBSystemApertureSceneElement *)self configuration];
+  if ([configuration isMinimalPresentationPossible])
   {
     v3 = self->_minimalView != 0;
   }
@@ -2620,8 +2620,8 @@ uint64_t __79__SBSystemApertureSceneElement__calculateRequiresSuppressionFromSys
 
 - (unint64_t)_effectivePresentationBehaviors
 {
-  v3 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v4 = [v3 SBUISA_presentationBehaviors];
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_presentationBehaviors = [sceneClientSettings SBUISA_presentationBehaviors];
 
   WeakRetained = objc_loadWeakRetained(&self->_placeholderContentProvider);
   v6 = WeakRetained;
@@ -2637,26 +2637,26 @@ uint64_t __79__SBSystemApertureSceneElement__calculateRequiresSuppressionFromSys
 
   if (!v7)
   {
-    v4 = [WeakRetained presentationBehaviors];
+    sBUISA_presentationBehaviors = [WeakRetained presentationBehaviors];
   }
 
-  return v4;
+  return sBUISA_presentationBehaviors;
 }
 
-- (BOOL)_hasPresentationBehavior:(unint64_t)a3
+- (BOOL)_hasPresentationBehavior:(unint64_t)behavior
 {
-  LOBYTE(v5) = (a3 & ~[(SBSystemApertureSceneElement *)self _effectivePresentationBehaviors]) == 0;
+  LOBYTE(v5) = (behavior & ~[(SBSystemApertureSceneElement *)self _effectivePresentationBehaviors]) == 0;
   if ([(SBSystemApertureSceneElement *)self alwaysAllowTapToAppForBodyTaps])
   {
-    if (a3 == 16)
+    if (behavior == 16)
     {
       LOBYTE(v5) = 0;
     }
 
-    else if (a3 == 32)
+    else if (behavior == 32)
     {
-      v6 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-      v5 = ([v6 SBUISA_presentationBehaviors] >> 4) & 1;
+      sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+      v5 = ([sceneClientSettings SBUISA_presentationBehaviors] >> 4) & 1;
     }
   }
 
@@ -2668,16 +2668,16 @@ uint64_t __79__SBSystemApertureSceneElement__calculateRequiresSuppressionFromSys
   WeakRetained = objc_loadWeakRetained(&self->_placeholderContentProvider);
   if (WeakRetained && !self->_scene && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [WeakRetained keyColor];
+    keyColor = [WeakRetained keyColor];
   }
 
   else
   {
-    v5 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-    v4 = [v5 SBUISA_keyColor];
+    sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+    keyColor = [sceneClientSettings SBUISA_keyColor];
   }
 
-  return v4;
+  return keyColor;
 }
 
 - (BOOL)preventsInteractiveGestures
@@ -2690,17 +2690,17 @@ uint64_t __79__SBSystemApertureSceneElement__calculateRequiresSuppressionFromSys
   return [(SBSystemApertureSceneElement *)self isPassbookWallet];
 }
 
-- (void)setAffiliatedWithSessionMonitor:(BOOL)a3
+- (void)setAffiliatedWithSessionMonitor:(BOOL)monitor
 {
-  v3 = a3;
+  monitorCopy = monitor;
   if ([(SBSystemApertureSceneElement *)self hasHandledLaunchAction])
   {
-    v3 &= ~[(SBSystemApertureSceneElement *)self _hasPresentationBehavior:512];
+    monitorCopy &= ~[(SBSystemApertureSceneElement *)self _hasPresentationBehavior:512];
   }
 
-  if (v3 != [(SBSystemApertureSceneElement *)self isAffiliatedWithSessionMonitor])
+  if (monitorCopy != [(SBSystemApertureSceneElement *)self isAffiliatedWithSessionMonitor])
   {
-    if (v3)
+    if (monitorCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_activityHost);
       if (objc_opt_respondsToSelector())
@@ -2718,8 +2718,8 @@ uint64_t __79__SBSystemApertureSceneElement__calculateRequiresSuppressionFromSys
 
     if ([(SBSystemApertureSceneElement *)self _updateRequiresSuppressionFromSystemAperture])
     {
-      v8 = [(SBSystemApertureSceneElement *)self layoutHost];
-      [v8 preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
+      layoutHost = [(SBSystemApertureSceneElement *)self layoutHost];
+      [layoutHost preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
     }
   }
 }
@@ -2727,38 +2727,38 @@ uint64_t __79__SBSystemApertureSceneElement__calculateRequiresSuppressionFromSys
 - (BOOL)isAlerting
 {
   WeakRetained = objc_loadWeakRetained(&self->_activityHost);
-  v3 = [WeakRetained alertingActivityAssertion];
-  v4 = [v3 isValid];
+  alertingActivityAssertion = [WeakRetained alertingActivityAssertion];
+  isValid = [alertingActivityAssertion isValid];
 
-  return v4;
+  return isValid;
 }
 
-- (id)requestAlertingAssertionImplicitlyDismissable:(BOOL)a3
+- (id)requestAlertingAssertionImplicitlyDismissable:(BOOL)dismissable
 {
-  v3 = a3;
+  dismissableCopy = dismissable;
   if ([(SBSystemApertureSceneElement *)self _isValidAlertingSource:1])
   {
-    [(SBSystemApertureSceneElement *)self _handleAlertingAssertionRequestForReason:@"Scene Element - SBSystemApertureContextAccepting Request" implicitlyDismissable:v3];
-    v5 = [(SBSystemApertureSceneElement *)self _existingAlertingAssertion];
+    [(SBSystemApertureSceneElement *)self _handleAlertingAssertionRequestForReason:@"Scene Element - SBSystemApertureContextAccepting Request" implicitlyDismissable:dismissableCopy];
+    _existingAlertingAssertion = [(SBSystemApertureSceneElement *)self _existingAlertingAssertion];
     if ([(SBSystemApertureSceneElement *)self _updateRequiresSuppressionFromSystemAperture])
     {
-      v6 = [(SBSystemApertureSceneElement *)self layoutHost];
-      [v6 preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
+      layoutHost = [(SBSystemApertureSceneElement *)self layoutHost];
+      [layoutHost preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
     }
   }
 
   else
   {
-    v5 = 0;
+    _existingAlertingAssertion = 0;
   }
 
-  return v5;
+  return _existingAlertingAssertion;
 }
 
-- (void)setElementProviderPrefersSuppression:(BOOL)a3
+- (void)setElementProviderPrefersSuppression:(BOOL)suppression
 {
   elementHostPrefersSuppressionAssertion = self->_elementHostPrefersSuppressionAssertion;
-  if (a3)
+  if (suppression)
   {
     if (![(SAAssertion *)elementHostPrefersSuppressionAssertion isValid])
     {
@@ -2778,8 +2778,8 @@ uint64_t __79__SBSystemApertureSceneElement__calculateRequiresSuppressionFromSys
       [(SAAssertion *)v7 addInvalidationBlock:&v9];
       if ([(SBSystemApertureSceneElement *)self _updateRequiresSuppressionFromSystemAperture:v9])
       {
-        v8 = [(SBSystemApertureSceneElement *)self layoutHost];
-        [v8 preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
+        layoutHost = [(SBSystemApertureSceneElement *)self layoutHost];
+        [layoutHost preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
       }
 
       objc_destroyWeak(&v14);
@@ -2827,14 +2827,14 @@ void __69__SBSystemApertureSceneElement_setElementProviderPrefersSuppression___b
 
 - (int64_t)systemApertureLayoutCustomizingOptions
 {
-  v3 = [(SBSystemApertureSceneElement *)self isProminent];
+  isProminent = [(SBSystemApertureSceneElement *)self isProminent];
   trailingWrapperView = self->_trailingWrapperView;
   if (trailingWrapperView)
   {
-    v5 = [(SBSystemApertureSceneElementPlaceholderWrapperView *)trailingWrapperView contentView];
+    contentView = [(SBSystemApertureSceneElementPlaceholderWrapperView *)trailingWrapperView contentView];
     WeakRetained = objc_loadWeakRetained(&self->_placeholderContentProvider);
-    v7 = [WeakRetained trailingView];
-    if (v5 == v7)
+    trailingView = [WeakRetained trailingView];
+    if (contentView == trailingView)
     {
       [(SBSystemApertureSceneElementPlaceholderWrapperView *)self->_trailingWrapperView bounds];
       v8 = v10 == 0.0 && v9 == 0.0;
@@ -2847,42 +2847,42 @@ void __69__SBSystemApertureSceneElement_setElementProviderPrefersSuppression___b
 
     if (v8)
     {
-      return v3 | 2;
+      return isProminent | 2;
     }
   }
 
-  return v3;
+  return isProminent;
 }
 
-- (BOOL)overridesConcentricPaddingForView:(id)a3 inLayoutMode:(int64_t)a4
+- (BOOL)overridesConcentricPaddingForView:(id)view inLayoutMode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v8 = v7;
-  if (a4 == 2)
+  viewCopy = view;
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  v8 = sceneClientSettings;
+  if (mode == 2)
   {
-    if ([v7 SBUISA_specifiesPreferredPaddingForCompactLayout])
+    if ([sceneClientSettings SBUISA_specifiesPreferredPaddingForCompactLayout])
     {
-      v9 = [(SBSystemApertureSceneElement *)self leadingView];
-      if (v9 == v6)
+      leadingView = [(SBSystemApertureSceneElement *)self leadingView];
+      if (leadingView == viewCopy)
       {
         v10 = 1;
       }
 
       else
       {
-        v11 = [(SBSystemApertureSceneElement *)self trailingView];
-        v10 = v11 == v6;
+        trailingView = [(SBSystemApertureSceneElement *)self trailingView];
+        v10 = trailingView == viewCopy;
       }
 
       goto LABEL_10;
     }
   }
 
-  else if (a4 == 1 && [v7 SBUISA_attachedMinimalViewRequiresZeroPadding])
+  else if (mode == 1 && [sceneClientSettings SBUISA_attachedMinimalViewRequiresZeroPadding])
   {
-    v9 = [(SBSystemApertureSceneElement *)self minimalView];
-    v10 = v9 == v6;
+    leadingView = [(SBSystemApertureSceneElement *)self minimalView];
+    v10 = leadingView == viewCopy;
 LABEL_10:
 
     goto LABEL_11;
@@ -2894,25 +2894,25 @@ LABEL_11:
   return v10;
 }
 
-- (double)concentricPaddingOverrideForView:(id)a3 inLayoutMode:(int64_t)a4
+- (double)concentricPaddingOverrideForView:(id)view inLayoutMode:(int64_t)mode
 {
-  v5 = a3;
-  v6 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v7 = [(SBSystemApertureSceneElement *)self leadingView];
+  viewCopy = view;
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  leadingView = [(SBSystemApertureSceneElement *)self leadingView];
 
-  if (v7 == v5)
+  if (leadingView == viewCopy)
   {
-    [v6 SBUISA_preferredPaddingForCompactLayout];
+    [sceneClientSettings SBUISA_preferredPaddingForCompactLayout];
     v9 = v10;
   }
 
   else
   {
-    v8 = [(SBSystemApertureSceneElement *)self trailingView];
+    trailingView = [(SBSystemApertureSceneElement *)self trailingView];
 
-    if (v8 == v5)
+    if (trailingView == viewCopy)
     {
-      [v6 SBUISA_preferredPaddingForCompactLayout];
+      [sceneClientSettings SBUISA_preferredPaddingForCompactLayout];
       v9 = v11;
     }
 
@@ -2934,19 +2934,19 @@ LABEL_11:
     return 1;
   }
 
-  v4 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v5 = [v4 SBUISA_prefersFixedPortraitOrientation];
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_prefersFixedPortraitOrientation = [sceneClientSettings SBUISA_prefersFixedPortraitOrientation];
 
-  return v5;
+  return sBUISA_prefersFixedPortraitOrientation;
 }
 
-- (void)_layoutHostMayNotPerformLayoutUpdateWithReasonsToExclude:(unint64_t)a3
+- (void)_layoutHostMayNotPerformLayoutUpdateWithReasonsToExclude:(unint64_t)exclude
 {
-  v5 = [(SBSystemApertureSceneElement *)self sceneSettings];
-  [v5 SBUISA_containerViewFrame];
-  v6 = [(SBSystemApertureSceneElement *)self _proposeTransitionParametersForTransitionToFrameInSceneView:a3 excludingParametersAssociatedWithReasons:0 usingCurrentAnimationParameters:?];
+  sceneSettings = [(SBSystemApertureSceneElement *)self sceneSettings];
+  [sceneSettings SBUISA_containerViewFrame];
+  v6 = [(SBSystemApertureSceneElement *)self _proposeTransitionParametersForTransitionToFrameInSceneView:exclude excludingParametersAssociatedWithReasons:0 usingCurrentAnimationParameters:?];
 
-  if ([(SBSystemApertureSceneElement *)self _updateReasonsForTransitionWithProposedParameters:v6 excludingReasons:a3])
+  if ([(SBSystemApertureSceneElement *)self _updateReasonsForTransitionWithProposedParameters:v6 excludingReasons:exclude])
   {
     self->_wantsLayoutPassForClientUpdate = 0;
     [(SBSystemApertureSceneElement *)self _applyTransitionParameters:v6];
@@ -2962,8 +2962,8 @@ LABEL_11:
 
   else
   {
-    v4 = [(SBSystemApertureSceneElement *)self configuration];
-    if ([v4 entersBackgroundWhenBacklightIsOff])
+    configuration = [(SBSystemApertureSceneElement *)self configuration];
+    if ([configuration entersBackgroundWhenBacklightIsOff])
     {
       v3 = 0;
     }
@@ -2985,8 +2985,8 @@ LABEL_11:
 - (void)_updateSceneBackgroundStateIfNeeded
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(SBSystemApertureSceneElement *)self sceneSettings];
-  [v3 SBUISA_containerViewFrame];
+  sceneSettings = [(SBSystemApertureSceneElement *)self sceneSettings];
+  [sceneSettings SBUISA_containerViewFrame];
   v4 = [(SBSystemApertureSceneElement *)self _proposeTransitionParametersForTransitionToFrameInSceneView:-129 excludingParametersAssociatedWithReasons:0 usingCurrentAnimationParameters:?];
 
   if ([(SBSystemApertureSceneElement *)self _updateReasonsForTransitionWithProposedParameters:v4 excludingReasons:-129])
@@ -2994,11 +2994,11 @@ LABEL_11:
     v5 = SBLogSystemApertureHosting();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(SBSystemApertureSceneElement *)self succinctDescription];
+      succinctDescription = [(SBSystemApertureSceneElement *)self succinctDescription];
       v7 = 138543618;
-      v8 = v6;
+      v8 = succinctDescription;
       v9 = 1024;
-      v10 = [v4 wantsForeground];
+      wantsForeground = [v4 wantsForeground];
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ updating to foreground %{BOOL}u", &v7, 0x12u);
     }
 
@@ -3008,27 +3008,27 @@ LABEL_11:
 
 - (BOOL)isBiometricKit
 {
-  v2 = [(SBSystemApertureSceneElement *)self presentable];
-  v3 = [v2 requesterIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.BiometricKitUI"];
+  presentable = [(SBSystemApertureSceneElement *)self presentable];
+  requesterIdentifier = [presentable requesterIdentifier];
+  v4 = [requesterIdentifier isEqualToString:@"com.apple.BiometricKitUI"];
 
   return v4;
 }
 
 - (BOOL)isFaceIDLocalAuth
 {
-  v2 = [(FBScene *)self->_scene clientHandle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.CoreAuthUI"];
+  clientHandle = [(FBScene *)self->_scene clientHandle];
+  bundleIdentifier = [clientHandle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.CoreAuthUI"];
 
   return v4;
 }
 
 - (BOOL)isPassbookWallet
 {
-  v2 = [(FBScene *)self->_scene clientHandle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.PassbookUISceneService"];
+  clientHandle = [(FBScene *)self->_scene clientHandle];
+  bundleIdentifier = [clientHandle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.PassbookUISceneService"];
 
   return v4;
 }
@@ -3050,26 +3050,26 @@ LABEL_11:
 
 - (NSSet)representedBackgroundActivityIdentifiers
 {
-  v3 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v4 = [v3 SBUISA_backgroundActivitiesToSuppress];
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_backgroundActivitiesToSuppress = [sceneClientSettings SBUISA_backgroundActivitiesToSuppress];
 
-  v5 = [(SBSystemApertureSceneElement *)self associatedApplication];
-  if (v5)
+  associatedApplication = [(SBSystemApertureSceneElement *)self associatedApplication];
+  if (associatedApplication)
   {
-    v6 = v5;
-    v7 = [SBApp nowLocatingApps];
-    v8 = [(SBSystemApertureSceneElement *)self associatedApplication];
-    v9 = [v7 containsObject:v8];
+    v6 = associatedApplication;
+    nowLocatingApps = [SBApp nowLocatingApps];
+    associatedApplication2 = [(SBSystemApertureSceneElement *)self associatedApplication];
+    v9 = [nowLocatingApps containsObject:associatedApplication2];
 
     if (v9)
     {
-      v10 = [v4 setByAddingObject:*MEMORY[0x277D6BC00]];
+      v10 = [sBUISA_backgroundActivitiesToSuppress setByAddingObject:*MEMORY[0x277D6BC00]];
 
-      v4 = v10;
+      sBUISA_backgroundActivitiesToSuppress = v10;
     }
   }
 
-  return v4;
+  return sBUISA_backgroundActivitiesToSuppress;
 }
 
 - (BOOL)handleVolumeUpButtonPress
@@ -3096,13 +3096,13 @@ LABEL_11:
   return [(SBDeviceApplicationSceneHandle *)associatedApplicationSceneHandle handleHardwareButtonEventType:2];
 }
 
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3
+- (BOOL)handleHeadsetButtonPress:(BOOL)press
 {
-  v3 = a3;
-  v5 = [(SBDeviceApplicationSceneHandle *)self->_associatedApplicationSceneHandle preferredHardwareButtonEventTypes];
-  if (!v3)
+  pressCopy = press;
+  preferredHardwareButtonEventTypes = [(SBDeviceApplicationSceneHandle *)self->_associatedApplicationSceneHandle preferredHardwareButtonEventTypes];
+  if (!pressCopy)
   {
-    if ((v5 & 8) != 0)
+    if ((preferredHardwareButtonEventTypes & 8) != 0)
     {
       v6 = 3;
       goto LABEL_7;
@@ -3111,7 +3111,7 @@ LABEL_11:
     return 0;
   }
 
-  if ((v5 & 0x10) == 0)
+  if ((preferredHardwareButtonEventTypes & 0x10) == 0)
   {
     return 0;
   }
@@ -3123,66 +3123,66 @@ LABEL_7:
   return [(SBDeviceApplicationSceneHandle *)associatedApplicationSceneHandle handleHardwareButtonEventType:v6];
 }
 
-- (void)backlightController:(id)a3 willTransitionToBacklightState:(int64_t)a4 source:(int64_t)a5
+- (void)backlightController:(id)controller willTransitionToBacklightState:(int64_t)state source:(int64_t)source
 {
-  if (a4 != 4)
+  if (state != 4)
   {
-    [(SBSystemApertureSceneElement *)self setBacklightIsOrWillBecomeActive:1, a4, a5];
+    [(SBSystemApertureSceneElement *)self setBacklightIsOrWillBecomeActive:1, state, source];
   }
 }
 
 - (void)_updatePortalViews
 {
-  v3 = [(SBSystemApertureSceneElement *)self scene];
-  v4 = [v3 clientSettings];
-  v5 = [v4 SBUISA_contextId];
-  if ([v3 contentState] == 2)
+  scene = [(SBSystemApertureSceneElement *)self scene];
+  clientSettings = [scene clientSettings];
+  sBUISA_contextId = [clientSettings SBUISA_contextId];
+  if ([scene contentState] == 2)
   {
-    v6 = [v3 layerManager];
-    v7 = [v6 layers];
+    layerManager = [scene layerManager];
+    layers = [layerManager layers];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __50__SBSystemApertureSceneElement__updatePortalViews__block_invoke;
     v28[3] = &__block_descriptor_36_e22_B16__0__FBSceneLayer_8l;
-    v29 = v5;
-    v8 = [v7 bs_firstObjectPassingTest:v28];
-    v9 = [v8 contextID];
+    v29 = sBUISA_contextId;
+    v8 = [layers bs_firstObjectPassingTest:v28];
+    contextID = [v8 contextID];
   }
 
   else
   {
-    v9 = 0;
+    contextID = 0;
   }
 
-  v10 = [v4 SBUISA_leadingViewRenderingId];
+  sBUISA_leadingViewRenderingId = [clientSettings SBUISA_leadingViewRenderingId];
   leadingView = self->_leadingView;
-  [v4 SBUISA_preferredLeadingViewSize];
+  [clientSettings SBUISA_preferredLeadingViewSize];
   [(SBSystemApertureSceneElementAccessoryView *)leadingView setPreferredSize:?];
-  [(SBSystemApertureSceneElementAccessoryView *)self->_leadingView setSourceLayerRenderingId:v10 contextId:v9];
+  [(SBSystemApertureSceneElementAccessoryView *)self->_leadingView setSourceLayerRenderingId:sBUISA_leadingViewRenderingId contextId:contextID];
   v12 = self->_leadingView;
-  v13 = [v4 SBUISA_leadingViewAccessibilityLabel];
-  [(SBSystemApertureSceneElementAccessoryView *)v12 setAccessibilityLabel:v13];
+  sBUISA_leadingViewAccessibilityLabel = [clientSettings SBUISA_leadingViewAccessibilityLabel];
+  [(SBSystemApertureSceneElementAccessoryView *)v12 setAccessibilityLabel:sBUISA_leadingViewAccessibilityLabel];
 
-  v14 = [v4 SBUISA_trailingViewRenderingId];
+  sBUISA_trailingViewRenderingId = [clientSettings SBUISA_trailingViewRenderingId];
   trailingView = self->_trailingView;
-  [v4 SBUISA_preferredTrailingViewSize];
+  [clientSettings SBUISA_preferredTrailingViewSize];
   [(SBSystemApertureSceneElementAccessoryView *)trailingView setPreferredSize:?];
-  [(SBSystemApertureSceneElementAccessoryView *)self->_trailingView setSourceLayerRenderingId:v14 contextId:v9];
+  [(SBSystemApertureSceneElementAccessoryView *)self->_trailingView setSourceLayerRenderingId:sBUISA_trailingViewRenderingId contextId:contextID];
   v16 = self->_trailingView;
-  v17 = [v4 SBUISA_trailingViewAccessibilityLabel];
-  [(SBSystemApertureSceneElementAccessoryView *)v16 setAccessibilityLabel:v17];
+  sBUISA_trailingViewAccessibilityLabel = [clientSettings SBUISA_trailingViewAccessibilityLabel];
+  [(SBSystemApertureSceneElementAccessoryView *)v16 setAccessibilityLabel:sBUISA_trailingViewAccessibilityLabel];
 
-  v18 = [v4 SBUISA_minimalViewRenderingId];
+  sBUISA_minimalViewRenderingId = [clientSettings SBUISA_minimalViewRenderingId];
   minimalView = self->_minimalView;
-  [v4 SBUISA_preferredMinimalViewSize];
+  [clientSettings SBUISA_preferredMinimalViewSize];
   [(SBSystemApertureSceneElementAccessoryView *)minimalView setPreferredSize:?];
-  [(SBSystemApertureSceneElementAccessoryView *)self->_minimalView setSourceLayerRenderingId:v18 contextId:v9];
+  [(SBSystemApertureSceneElementAccessoryView *)self->_minimalView setSourceLayerRenderingId:sBUISA_minimalViewRenderingId contextId:contextID];
   v20 = self->_minimalView;
-  v21 = [v4 SBUISA_minimalViewAccessibilityLabel];
-  [(SBSystemApertureSceneElementAccessoryView *)v20 setAccessibilityLabel:v21];
+  sBUISA_minimalViewAccessibilityLabel = [clientSettings SBUISA_minimalViewAccessibilityLabel];
+  [(SBSystemApertureSceneElementAccessoryView *)v20 setAccessibilityLabel:sBUISA_minimalViewAccessibilityLabel];
 
-  v22 = [v4 SBUISA_detachedMinimalViewRenderingId];
-  if (v22 && !self->_detachedMinimalView)
+  sBUISA_detachedMinimalViewRenderingId = [clientSettings SBUISA_detachedMinimalViewRenderingId];
+  if (sBUISA_detachedMinimalViewRenderingId && !self->_detachedMinimalView)
   {
     v23 = objc_alloc_init(MEMORY[0x277D67988]);
     detachedMinimalView = self->_detachedMinimalView;
@@ -3190,12 +3190,12 @@ LABEL_7:
   }
 
   v25 = self->_detachedMinimalView;
-  [v4 SBUISA_preferredDetachedMinimalViewSize];
+  [clientSettings SBUISA_preferredDetachedMinimalViewSize];
   [(SBSystemApertureSceneElementAccessoryView *)v25 setPreferredSize:?];
-  [(SBSystemApertureSceneElementAccessoryView *)self->_detachedMinimalView setSourceLayerRenderingId:v22 contextId:v9];
+  [(SBSystemApertureSceneElementAccessoryView *)self->_detachedMinimalView setSourceLayerRenderingId:sBUISA_detachedMinimalViewRenderingId contextId:contextID];
   v26 = self->_detachedMinimalView;
-  v27 = [v4 SBUISA_detachedMinimalViewAccessibilityLabel];
-  [(SBSystemApertureSceneElementAccessoryView *)v26 setAccessibilityLabel:v27];
+  sBUISA_detachedMinimalViewAccessibilityLabel = [clientSettings SBUISA_detachedMinimalViewAccessibilityLabel];
+  [(SBSystemApertureSceneElementAccessoryView *)v26 setAccessibilityLabel:sBUISA_detachedMinimalViewAccessibilityLabel];
 }
 
 BOOL __50__SBSystemApertureSceneElement__updatePortalViews__block_invoke(uint64_t a1, void *a2)
@@ -3206,12 +3206,12 @@ BOOL __50__SBSystemApertureSceneElement__updatePortalViews__block_invoke(uint64_
   return v4;
 }
 
-- (BOOL)_tryMovingToPlaceholderElementWithClientSettingsDiff:(id)a3 forScene:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6
+- (BOOL)_tryMovingToPlaceholderElementWithClientSettingsDiff:(id)diff forScene:(id)scene oldClientSettings:(id)settings transitionContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  diffCopy = diff;
+  sceneCopy = scene;
+  settingsCopy = settings;
+  contextCopy = context;
   if (self->_postSceneActivationPlaceholderTest)
   {
     v14 = [objc_opt_class() activePlaceholderElementPassingTest:self->_postSceneActivationPlaceholderTest];
@@ -3232,7 +3232,7 @@ BOOL __50__SBSystemApertureSceneElement__updatePortalViews__block_invoke(uint64_
 
         self->_invalidatingForMoveToPlaceholderElement = 1;
         (v16)[2](v16, v14);
-        [v14 _scene:v11 didUpdateClientSettingsWithDiff:v10 oldClientSettings:v12 transitionContext:v13];
+        [v14 _scene:sceneCopy didUpdateClientSettingsWithDiff:diffCopy oldClientSettings:settingsCopy transitionContext:contextCopy];
       }
     }
 
@@ -3250,75 +3250,75 @@ BOOL __50__SBSystemApertureSceneElement__updatePortalViews__block_invoke(uint64_
   return v18;
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [v6 settingsDiff];
-  v8 = [v6 previousSettings];
-  v9 = [v6 transitionContext];
+  settingsCopy = settings;
+  sceneCopy = scene;
+  settingsDiff = [settingsCopy settingsDiff];
+  previousSettings = [settingsCopy previousSettings];
+  transitionContext = [settingsCopy transitionContext];
 
-  [(SBSystemApertureSceneElement *)self _scene:v7 didUpdateClientSettingsWithDiff:v10 oldClientSettings:v8 transitionContext:v9];
+  [(SBSystemApertureSceneElement *)self _scene:sceneCopy didUpdateClientSettingsWithDiff:settingsDiff oldClientSettings:previousSettings transitionContext:transitionContext];
 }
 
-- (void)_scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6
+- (void)_scene:(id)_scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context
 {
   v169 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 clientSettings];
-  v15 = [v14 SBUI_systemApertureDescriptionOfDiffFromSettings:v12];
+  _sceneCopy = _scene;
+  diffCopy = diff;
+  settingsCopy = settings;
+  contextCopy = context;
+  clientSettings = [_sceneCopy clientSettings];
+  v15 = [clientSettings SBUI_systemApertureDescriptionOfDiffFromSettings:settingsCopy];
 
   if (!v15)
   {
-    v18 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+    sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
     goto LABEL_7;
   }
 
   v16 = SBLogSystemApertureHosting();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(SBSystemApertureSceneElement *)self succinctDescription];
+    succinctDescription = [(SBSystemApertureSceneElement *)self succinctDescription];
     *buf = 138543618;
-    v166 = v17;
+    v166 = succinctDescription;
     v167 = 2114;
     v168 = v15;
     _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ received clientSettings update with changes: %{public}@", buf, 0x16u);
   }
 
-  v18 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  if (![(SBSystemApertureSceneElement *)self _tryMovingToPlaceholderElementWithClientSettingsDiff:v11 forScene:v10 oldClientSettings:v12 transitionContext:v13])
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  if (![(SBSystemApertureSceneElement *)self _tryMovingToPlaceholderElementWithClientSettingsDiff:diffCopy forScene:_sceneCopy oldClientSettings:settingsCopy transitionContext:contextCopy])
   {
 LABEL_7:
     v151 = v15;
-    v152 = v11;
-    v157 = v13;
-    v19 = [(SBSystemApertureSceneElement *)self layoutMode];
+    v152 = diffCopy;
+    v157 = contextCopy;
+    layoutMode = [(SBSystemApertureSceneElement *)self layoutMode];
     [(SBSystemApertureSceneElement *)self _updatePortalViews];
     [(SBSystemApertureSceneElement *)self _updateReadyForPresentationIfNeeded];
-    v20 = [(SBSystemApertureSceneElement *)self layoutHost];
-    v21 = [v12 SBUISA_preferredLayoutMode];
-    v22 = [v18 SBUISA_preferredLayoutMode];
-    v23 = v21 != v22;
+    layoutHost = [(SBSystemApertureSceneElement *)self layoutHost];
+    sBUISA_preferredLayoutMode = [settingsCopy SBUISA_preferredLayoutMode];
+    sBUISA_preferredLayoutMode2 = [sceneClientSettings SBUISA_preferredLayoutMode];
+    v23 = sBUISA_preferredLayoutMode != sBUISA_preferredLayoutMode2;
     if (([(SBSystemApertureSceneElement *)self layoutMode]& 0x8000000000000000) == 0)
     {
-      v24 = [(SBSystemApertureSceneElement *)self maximumSupportedLayoutMode];
-      v25 = [(SBSystemApertureSceneElement *)self layoutMode];
-      v23 = v21 != v22 || v24 < v25;
+      maximumSupportedLayoutMode = [(SBSystemApertureSceneElement *)self maximumSupportedLayoutMode];
+      layoutMode2 = [(SBSystemApertureSceneElement *)self layoutMode];
+      v23 = sBUISA_preferredLayoutMode != sBUISA_preferredLayoutMode2 || maximumSupportedLayoutMode < layoutMode2;
     }
 
-    v27 = [v12 SBUISA_associatedAppBundleIdentifier];
-    v28 = [v18 SBUISA_associatedAppBundleIdentifier];
+    sBUISA_associatedAppBundleIdentifier = [settingsCopy SBUISA_associatedAppBundleIdentifier];
+    sBUISA_associatedAppBundleIdentifier2 = [sceneClientSettings SBUISA_associatedAppBundleIdentifier];
     v29 = BSEqualStrings();
 
-    v30 = [v12 SBUISA_associatedScenePersistenceIdentifier];
-    v31 = [v18 SBUISA_associatedScenePersistenceIdentifier];
+    sBUISA_associatedScenePersistenceIdentifier = [settingsCopy SBUISA_associatedScenePersistenceIdentifier];
+    sBUISA_associatedScenePersistenceIdentifier2 = [sceneClientSettings SBUISA_associatedScenePersistenceIdentifier];
     v148 = BSEqualStrings();
 
-    LODWORD(v30) = [v12 SBUISA_presentationBehaviors];
-    if ((([v18 SBUISA_presentationBehaviors] ^ v30) & 0x40ELL) != 0)
+    LODWORD(sBUISA_associatedScenePersistenceIdentifier) = [settingsCopy SBUISA_presentationBehaviors];
+    if ((([sceneClientSettings SBUISA_presentationBehaviors] ^ sBUISA_associatedScenePersistenceIdentifier) & 0x40ELL) != 0)
     {
       v23 = 1;
     }
@@ -3329,12 +3329,12 @@ LABEL_7:
       [(SBSystemApertureSceneElement *)self _updateActiveElementsAndAssociatedApplication];
     }
 
-    [v12 SBUISA_customLayoutPreferredOutsetsFromUnsafeArea];
+    [settingsCopy SBUISA_customLayoutPreferredOutsetsFromUnsafeArea];
     v33 = v32;
     v35 = v34;
     v37 = v36;
     v39 = v38;
-    [v18 SBUISA_customLayoutPreferredOutsetsFromUnsafeArea];
+    [sceneClientSettings SBUISA_customLayoutPreferredOutsetsFromUnsafeArea];
     v43 = v35 != v42;
     if (v33 != v44)
     {
@@ -3347,26 +3347,26 @@ LABEL_7:
     }
 
     v45 = v37 != v40 || v43;
-    v46 = [v12 SBUISA_preferredCustomLayout];
-    v47 = [v18 SBUISA_preferredCustomLayout];
-    v153 = v10;
+    sBUISA_preferredCustomLayout = [settingsCopy SBUISA_preferredCustomLayout];
+    sBUISA_preferredCustomLayout2 = [sceneClientSettings SBUISA_preferredCustomLayout];
+    v153 = _sceneCopy;
     v150 = v23;
-    if (v47 == 3)
+    if (sBUISA_preferredCustomLayout2 == 3)
     {
       [(SBSystemApertureSceneElement *)self setWantsSpecialFlowerBoundsResizingAnimationForWallet:1];
-      v48 = v46 != 3;
+      v48 = sBUISA_preferredCustomLayout != 3;
       v49 = 3;
       goto LABEL_41;
     }
 
-    v50 = v46 == v47;
-    v48 = v46 != v47;
-    if (!v47 && v50)
+    v50 = sBUISA_preferredCustomLayout == sBUISA_preferredCustomLayout2;
+    v48 = sBUISA_preferredCustomLayout != sBUISA_preferredCustomLayout2;
+    if (!sBUISA_preferredCustomLayout2 && v50)
     {
-      [v12 SBUISA_preferredCustomAspectRatio];
+      [settingsCopy SBUISA_preferredCustomAspectRatio];
       v52 = v51;
       v54 = v53;
-      [v18 SBUISA_preferredCustomAspectRatio];
+      [sceneClientSettings SBUISA_preferredCustomAspectRatio];
       v49 = 0;
       v48 = v54 != v56 || v52 != v55;
       if (v55 == 1.0 && v56 == 1.0)
@@ -3375,14 +3375,14 @@ LABEL_7:
       }
     }
 
-    else if (v47 == 2)
+    else if (sBUISA_preferredCustomLayout2 == 2)
     {
       v49 = 2;
     }
 
     else
     {
-      if (v47 == 1)
+      if (sBUISA_preferredCustomLayout2 == 1)
       {
 LABEL_38:
         v49 = 1;
@@ -3394,22 +3394,22 @@ LABEL_38:
 
 LABEL_41:
     self->_systemApertureCustomLayout = v49;
-    [v12 SBUISA_preferredLeadingViewSize];
+    [settingsCopy SBUISA_preferredLeadingViewSize];
     v154 = v58;
     v155 = v57;
-    [v18 SBUISA_preferredLeadingViewSize];
+    [sceneClientSettings SBUISA_preferredLeadingViewSize];
     v60 = v59;
     v62 = v61;
-    [v12 SBUISA_preferredTrailingViewSize];
+    [settingsCopy SBUISA_preferredTrailingViewSize];
     v64 = v63;
     v66 = v65;
-    [v18 SBUISA_preferredTrailingViewSize];
+    [sceneClientSettings SBUISA_preferredTrailingViewSize];
     v68 = v67;
     v70 = v69;
-    [v12 SBUISA_preferredMinimalViewSize];
+    [settingsCopy SBUISA_preferredMinimalViewSize];
     v72 = v71;
     v74 = v73;
-    [v18 SBUISA_preferredMinimalViewSize];
+    [sceneClientSettings SBUISA_preferredMinimalViewSize];
     v77 = v154 == v62 && v155 == v60;
     v142 = v70;
     v143 = v76;
@@ -3419,19 +3419,19 @@ LABEL_41:
     v146 = v74;
     v147 = v75;
     v79 = v74 != v76 || v72 != v75;
-    if (v19 == 3 && ((v45 | v48) & 1) != 0)
+    if (layoutMode == 3 && ((v45 | v48) & 1) != 0)
     {
       goto LABEL_67;
     }
 
     if ([(SBSystemApertureSceneElement *)self layoutMode]== 2)
     {
-      [v12 SBUISA_preferredPaddingForCompactLayout];
+      [settingsCopy SBUISA_preferredPaddingForCompactLayout];
       v81 = v80;
       v83 = v82;
       v85 = v84;
       v87 = v86;
-      [v18 SBUISA_preferredPaddingForCompactLayout];
+      [sceneClientSettings SBUISA_preferredPaddingForCompactLayout];
       if (v83 != v91 || v81 != v88 || v87 != v90 || !v77 || !v78 || v85 != v89)
       {
 LABEL_60:
@@ -3458,7 +3458,7 @@ LABEL_60:
         }
 
 LABEL_67:
-        [v20 preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:{self, *&v142}];
+        [layoutHost preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:{self, *&v142}];
       }
     }
 
@@ -3467,19 +3467,19 @@ LABEL_67:
       goto LABEL_60;
     }
 
-    v95 = [v12 SBUISA_contextId];
-    v97 = v95 != [v18 SBUISA_contextId] && objc_msgSend(v12, "SBUISA_contextId") == 0;
+    sBUISA_contextId = [settingsCopy SBUISA_contextId];
+    v97 = sBUISA_contextId != [sceneClientSettings SBUISA_contextId] && objc_msgSend(settingsCopy, "SBUISA_contextId") == 0;
     if (self->_leadingWrapperView)
     {
       v98 = !v77 && v154 == *(MEMORY[0x277CBF3A8] + 8) && v155 == *MEMORY[0x277CBF3A8];
-      v99 = [v12 SBUISA_leadingViewRenderingId];
-      v100 = v99 != [v18 SBUISA_leadingViewRenderingId] && objc_msgSend(v12, "SBUISA_leadingViewRenderingId") == 0;
+      sBUISA_leadingViewRenderingId = [settingsCopy SBUISA_leadingViewRenderingId];
+      v100 = sBUISA_leadingViewRenderingId != [sceneClientSettings SBUISA_leadingViewRenderingId] && objc_msgSend(settingsCopy, "SBUISA_leadingViewRenderingId") == 0;
       if (v98 || v100 || v97)
       {
         v96 = *MEMORY[0x277CBF3A8];
         if (v60 != *MEMORY[0x277CBF3A8] || (v96 = *(MEMORY[0x277CBF3A8] + 8), v62 != v96))
         {
-          if ([v18 SBUISA_leadingViewRenderingId] && objc_msgSend(v18, "SBUISA_contextId"))
+          if ([sceneClientSettings SBUISA_leadingViewRenderingId] && objc_msgSend(sceneClientSettings, "SBUISA_contextId"))
           {
             [(SBSystemApertureSceneElementPlaceholderWrapperView *)self->_leadingWrapperView setContentView:self->_leadingView];
           }
@@ -3490,15 +3490,15 @@ LABEL_67:
     if (self->_trailingWrapperView)
     {
       v101 = !v78 && v144 == *(MEMORY[0x277CBF3A8] + 8) && v64 == *MEMORY[0x277CBF3A8];
-      v102 = [v12 SBUISA_trailingViewRenderingId];
-      v103 = v102 != [v18 SBUISA_trailingViewRenderingId] && objc_msgSend(v12, "SBUISA_trailingViewRenderingId") == 0;
+      sBUISA_trailingViewRenderingId = [settingsCopy SBUISA_trailingViewRenderingId];
+      v103 = sBUISA_trailingViewRenderingId != [sceneClientSettings SBUISA_trailingViewRenderingId] && objc_msgSend(settingsCopy, "SBUISA_trailingViewRenderingId") == 0;
       if (v101 || v103 || v97)
       {
         v96 = *MEMORY[0x277CBF3A8];
         v104 = v68;
         if (v68 != *MEMORY[0x277CBF3A8] || (v96 = *(MEMORY[0x277CBF3A8] + 8), v104 = v142, v142 != v96))
         {
-          if ([v18 SBUISA_trailingViewRenderingId] && objc_msgSend(v18, "SBUISA_contextId"))
+          if ([sceneClientSettings SBUISA_trailingViewRenderingId] && objc_msgSend(sceneClientSettings, "SBUISA_contextId"))
           {
             [(SBSystemApertureSceneElementPlaceholderWrapperView *)self->_trailingWrapperView setContentView:self->_trailingView];
           }
@@ -3519,15 +3519,15 @@ LABEL_67:
         v105 = 0;
       }
 
-      v106 = [v12 SBUISA_minimalViewRenderingId];
-      v107 = v106 != [v18 SBUISA_minimalViewRenderingId] && objc_msgSend(v12, "SBUISA_minimalViewRenderingId") == 0;
+      sBUISA_minimalViewRenderingId = [settingsCopy SBUISA_minimalViewRenderingId];
+      v107 = sBUISA_minimalViewRenderingId != [sceneClientSettings SBUISA_minimalViewRenderingId] && objc_msgSend(settingsCopy, "SBUISA_minimalViewRenderingId") == 0;
       if (v105 || v107 || v97)
       {
         v108 = *MEMORY[0x277CBF3A8];
         v109 = v147;
         if (v147 != *MEMORY[0x277CBF3A8] || (v108 = *(MEMORY[0x277CBF3A8] + 8), v109 = v143, v143 != v108))
         {
-          if ([v18 SBUISA_minimalViewRenderingId] && objc_msgSend(v18, "SBUISA_contextId"))
+          if ([sceneClientSettings SBUISA_minimalViewRenderingId] && objc_msgSend(sceneClientSettings, "SBUISA_contextId"))
           {
             [(SBSystemApertureSceneElementPlaceholderWrapperView *)self->_minimalWrapperView setContentView:self->_minimalView];
           }
@@ -3535,8 +3535,8 @@ LABEL_67:
       }
     }
 
-    v110 = [v12 SBUISA_backgroundActivitiesToSuppress];
-    v111 = [v18 SBUISA_backgroundActivitiesToSuppress];
+    sBUISA_backgroundActivitiesToSuppress = [settingsCopy SBUISA_backgroundActivitiesToSuppress];
+    sBUISA_backgroundActivitiesToSuppress2 = [sceneClientSettings SBUISA_backgroundActivitiesToSuppress];
     v112 = BSEqualSets();
 
     if ((v112 & 1) == 0)
@@ -3544,35 +3544,35 @@ LABEL_67:
       [(SBSystemApertureSceneElement *)self _acquireOrUpdateAppStatusBarSessionsAssertionIfNeeded];
     }
 
-    v113 = [v12 SBUISA_hasMenuPresentation];
-    if (v113 != [(SBSystemApertureSceneElement *)self isRequestingMenuPresentation])
+    sBUISA_hasMenuPresentation = [settingsCopy SBUISA_hasMenuPresentation];
+    if (sBUISA_hasMenuPresentation != [(SBSystemApertureSceneElement *)self isRequestingMenuPresentation])
     {
-      [v20 menuPresentationRequestDidChangeForLayoutSpecifier:self];
+      [layoutHost menuPresentationRequestDidChangeForLayoutSpecifier:self];
     }
 
-    v156 = v20;
-    v114 = [v12 SBUISA_preventsAutomaticDismissal];
-    if (v114 != [v18 SBUISA_preventsAutomaticDismissal])
+    v156 = layoutHost;
+    sBUISA_preventsAutomaticDismissal = [settingsCopy SBUISA_preventsAutomaticDismissal];
+    if (sBUISA_preventsAutomaticDismissal != [sceneClientSettings SBUISA_preventsAutomaticDismissal])
     {
       [(SBSystemApertureSceneElement *)self _updateAlertAssertionIfNecessary];
     }
 
-    v115 = [v12 SBUISA_keyColor];
-    v116 = [v18 SBUISA_keyColor];
+    sBUISA_keyColor = [settingsCopy SBUISA_keyColor];
+    sBUISA_keyColor2 = [sceneClientSettings SBUISA_keyColor];
     v117 = BSEqualObjects();
 
     if ((v117 & 1) == 0)
     {
-      v118 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v163 = @"SBSystemApertureNotificationUserInfoElementKey";
-      v164 = self;
-      v119 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v164 forKeys:&v163 count:1];
-      [v118 postNotificationName:@"SBSystemApertureElementKeyColorDidInvalidateNotification" object:0 userInfo:v119];
+      selfCopy = self;
+      v119 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&selfCopy forKeys:&v163 count:1];
+      [defaultCenter postNotificationName:@"SBSystemApertureElementKeyColorDidInvalidateNotification" object:0 userInfo:v119];
     }
 
     v120 = v149 & v148 ^ 1;
-    v121 = [v157 actions];
-    v122 = [v121 count];
+    actions = [v157 actions];
+    v122 = [actions count];
 
     if (v122)
     {
@@ -3580,8 +3580,8 @@ LABEL_67:
       v161 = 0u;
       v158 = 0u;
       v159 = 0u;
-      v123 = [v157 actions];
-      v124 = [v123 countByEnumeratingWithState:&v158 objects:v162 count:16];
+      actions2 = [v157 actions];
+      v124 = [actions2 countByEnumeratingWithState:&v158 objects:v162 count:16];
       if (v124)
       {
         v125 = v124;
@@ -3593,7 +3593,7 @@ LABEL_67:
           {
             if (*v159 != v127)
             {
-              objc_enumerationMutation(v123);
+              objc_enumerationMutation(actions2);
             }
 
             v129 = *(*(&v158 + 1) + 8 * i);
@@ -3611,7 +3611,7 @@ LABEL_67:
             }
           }
 
-          v125 = [v123 countByEnumeratingWithState:&v158 objects:v162 count:16];
+          v125 = [actions2 countByEnumeratingWithState:&v158 objects:v162 count:16];
         }
 
         while (v125);
@@ -3624,8 +3624,8 @@ LABEL_67:
 
       if ([v126 count])
       {
-        v130 = [v157 actions];
-        v131 = [v130 mutableCopy];
+        actions3 = [v157 actions];
+        v131 = [actions3 mutableCopy];
 
         [v131 minusSet:v126];
         [v157 setActions:v131];
@@ -3635,16 +3635,16 @@ LABEL_67:
     }
 
     v132 = v150 | v120;
-    v133 = [v12 SBUISA_secureFlipBookPreferredComponentStates];
-    v134 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-    v135 = [v134 SBUISA_secureFlipBookPreferredComponentStates];
+    sBUISA_secureFlipBookPreferredComponentStates = [settingsCopy SBUISA_secureFlipBookPreferredComponentStates];
+    sceneClientSettings2 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+    sBUISA_secureFlipBookPreferredComponentStates2 = [sceneClientSettings2 SBUISA_secureFlipBookPreferredComponentStates];
 
-    v136 = [v133 isEqualToDictionary:v135];
-    v137 = [v12 SBUISA_secureFlipBookPreferredConfiguration];
-    v138 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-    v139 = [v138 SBUISA_secureFlipBookPreferredConfiguration];
+    v136 = [sBUISA_secureFlipBookPreferredComponentStates isEqualToDictionary:sBUISA_secureFlipBookPreferredComponentStates2];
+    sBUISA_secureFlipBookPreferredConfiguration = [settingsCopy SBUISA_secureFlipBookPreferredConfiguration];
+    sceneClientSettings3 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+    sBUISA_secureFlipBookPreferredConfiguration2 = [sceneClientSettings3 SBUISA_secureFlipBookPreferredConfiguration];
 
-    v140 = [v137 isEqualToString:v139];
+    v140 = [sBUISA_secureFlipBookPreferredConfiguration isEqualToString:sBUISA_secureFlipBookPreferredConfiguration2];
     if (!v136 || (v140 & 1) == 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_secureElementHost);
@@ -3658,23 +3658,23 @@ LABEL_67:
       [v156 preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
     }
 
-    v11 = v152;
-    v10 = v153;
-    v13 = v157;
+    diffCopy = v152;
+    _sceneCopy = v153;
+    contextCopy = v157;
     v15 = v151;
   }
 }
 
-- (void)sceneContentStateDidChange:(id)a3
+- (void)sceneContentStateDidChange:(id)change
 {
   [(SBSystemApertureSceneElement *)self _updateReadyForPresentationIfNeeded];
 
   [(SBSystemApertureSceneElement *)self _updatePortalViews];
 }
 
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context
 {
-  v6 = [(SBSystemApertureSceneElement *)self sceneInvalidationHandler:a3];
+  v6 = [(SBSystemApertureSceneElement *)self sceneInvalidationHandler:invalidate];
   [(SBSystemApertureSceneElement *)self setSceneInvalidationHandler:0];
   v5 = v6;
   if (v6)
@@ -3686,19 +3686,19 @@ LABEL_67:
 
 - (BOOL)_supportsMenuPresentations
 {
-  v2 = [(FBScene *)self->_scene clientHandle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.InCallService"];
+  clientHandle = [(FBScene *)self->_scene clientHandle];
+  bundleIdentifier = [clientHandle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.InCallService"];
 
   return v4;
 }
 
-- (BOOL)_handleAction:(id)a3
+- (BOOL)_handleAction:(id)action
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = actionCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -3719,8 +3719,8 @@ LABEL_67:
 
   v8 = v7;
 
-  v9 = [(SBSystemApertureSceneElement *)self layoutHost];
-  v10 = [(SBSystemApertureSceneElement *)self elementHost];
+  layoutHost = [(SBSystemApertureSceneElement *)self layoutHost];
+  elementHost = [(SBSystemApertureSceneElement *)self elementHost];
   if (!v8)
   {
     goto LABEL_48;
@@ -3729,28 +3729,28 @@ LABEL_67:
   v11 = SBLogSystemApertureHosting();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(SBSystemApertureSceneElement *)self succinctDescription];
+    succinctDescription = [(SBSystemApertureSceneElement *)self succinctDescription];
     v13 = [v8 description];
     v30 = 138543618;
-    v31 = v12;
+    v31 = succinctDescription;
     v32 = 2114;
     v33 = v13;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ received command %{public}@", &v30, 0x16u);
   }
 
-  v14 = [v8 command];
-  if (v14 > 5)
+  command = [v8 command];
+  if (command > 5)
   {
-    if (v14 <= 7)
+    if (command <= 7)
     {
-      if (v14 == 6)
+      if (command == 6)
       {
         if (![(SBSystemApertureSceneElement *)self _isValidAlertingSource:2])
         {
           goto LABEL_48;
         }
 
-        v19 = self;
+        selfCopy2 = self;
         v20 = 0;
       }
 
@@ -3761,18 +3761,18 @@ LABEL_67:
           goto LABEL_48;
         }
 
-        v19 = self;
+        selfCopy2 = self;
         v20 = 1;
       }
 
-      [(SBSystemApertureSceneElement *)v19 _handleAlertingAssertionRequestForReason:@"Scene Element - Client SBUISystemApertureCommandRequest" implicitlyDismissable:v20];
+      [(SBSystemApertureSceneElement *)selfCopy2 _handleAlertingAssertionRequestForReason:@"Scene Element - Client SBUISystemApertureCommandRequest" implicitlyDismissable:v20];
       goto LABEL_48;
     }
 
-    if (v14 == 8)
+    if (command == 8)
     {
       WeakRetained = [(SBSystemApertureSceneElement *)self _existingAlertingAssertion];
-      v25 = [(SBSystemApertureSceneElement *)self clientIdentifier];
+      clientIdentifier = [(SBSystemApertureSceneElement *)self clientIdentifier];
       v26 = @"client requests disable automatic invalidation";
       v27 = WeakRetained;
       v28 = 0;
@@ -3780,44 +3780,44 @@ LABEL_67:
 
     else
     {
-      if (v14 != 9)
+      if (command != 9)
       {
-        if (v14 == 10)
+        if (command == 10)
         {
-          v18 = [(SBSystemApertureSceneElement *)self _existingAlertingAssertion];
-          [v18 resetAutomaticInvalidationTimer];
+          _existingAlertingAssertion = [(SBSystemApertureSceneElement *)self _existingAlertingAssertion];
+          [_existingAlertingAssertion resetAutomaticInvalidationTimer];
         }
 
         goto LABEL_48;
       }
 
       WeakRetained = [(SBSystemApertureSceneElement *)self _existingAlertingAssertion];
-      v25 = [(SBSystemApertureSceneElement *)self clientIdentifier];
+      clientIdentifier = [(SBSystemApertureSceneElement *)self clientIdentifier];
       v26 = @"client requests enable automatic invalidation";
       v27 = WeakRetained;
       v28 = 1;
     }
 
-    [v27 setAutomaticallyInvalidatable:v28 lockingWithKey:v25 reason:v26];
+    [v27 setAutomaticallyInvalidatable:v28 lockingWithKey:clientIdentifier reason:v26];
 LABEL_46:
 
     goto LABEL_47;
   }
 
-  if (v14 <= 2)
+  if (command <= 2)
   {
-    if (v14 == 1)
+    if (command == 1)
     {
-      v21 = [(SBSystemApertureSceneElement *)self preferredLayoutMode];
-      v22 = [(SBSystemApertureSceneElement *)self layoutMode];
+      preferredLayoutMode = [(SBSystemApertureSceneElement *)self preferredLayoutMode];
+      layoutMode = [(SBSystemApertureSceneElement *)self layoutMode];
       v23 = [(SBSystemApertureSceneElement *)self _hasActivationAttribute:1];
       v24 = 0;
-      if (v21 != v22 && !v23)
+      if (preferredLayoutMode != layoutMode && !v23)
       {
         v24 = self->_initialPreferredLayoutMode != 0;
       }
 
-      if (v21 != v22 && !v24)
+      if (preferredLayoutMode != layoutMode && !v24)
       {
         if ([(SAAutomaticallyInvalidatable *)self->_alertingActivityAssertion isValid])
         {
@@ -3826,20 +3826,20 @@ LABEL_46:
 
         else
         {
-          [v9 preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
+          [layoutHost preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
         }
       }
     }
 
-    else if (v14 == 2)
+    else if (command == 2)
     {
-      [v10 elementRequestsNegativeResponse:self];
+      [elementHost elementRequestsNegativeResponse:self];
     }
 
     goto LABEL_48;
   }
 
-  if (v14 == 3)
+  if (command == 3)
   {
     WeakRetained = [(SBSystemApertureSceneElement *)self clientInvalidationRequestHandler];
     [(SBSystemApertureSceneElement *)self setClientInvalidationRequestHandler:0];
@@ -3851,16 +3851,16 @@ LABEL_47:
       goto LABEL_48;
     }
 
-    v25 = SBLogSystemApertureHosting();
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    clientIdentifier = SBLogSystemApertureHosting();
+    if (os_log_type_enabled(clientIdentifier, OS_LOG_TYPE_ERROR))
     {
-      [SBSystemApertureSceneElement _handleAction:v25];
+      [SBSystemApertureSceneElement _handleAction:clientIdentifier];
     }
 
     goto LABEL_46;
   }
 
-  if (v14 != 4)
+  if (command != 4)
   {
     WeakRetained = objc_loadWeakRetained(&self->_gestureHandler);
     if (objc_opt_respondsToSelector())
@@ -3868,9 +3868,9 @@ LABEL_47:
       v16 = SBLogSystemApertureHosting();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(SBSystemApertureSceneElement *)self succinctDescription];
+        succinctDescription2 = [(SBSystemApertureSceneElement *)self succinctDescription];
         v30 = 138543362;
-        v31 = v17;
+        v31 = succinctDescription2;
         _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "Requesting cancellation of resize gesture for %{public}@.", &v30, 0xCu);
       }
 
@@ -3882,8 +3882,8 @@ LABEL_47:
 
   if ([(SBSystemApertureSceneElement *)self layoutMode]== 3 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v10 elementRequestsSignificantUpdateTransition:self];
-    [v9 preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
+    [elementHost elementRequestsSignificantUpdateTransition:self];
+    [layoutHost preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
     WeakRetained = [objc_alloc(MEMORY[0x277D67E30]) initWithCommand:5];
     [(SBSystemApertureSceneElement *)self _handleAction:WeakRetained];
     goto LABEL_47;
@@ -3896,18 +3896,18 @@ LABEL_48:
 
 - (BOOL)_ownsScene
 {
-  v2 = [(SBSystemApertureSceneElement *)self scene];
-  v3 = [v2 workspaceIdentifier];
-  v4 = [objc_opt_class() sceneWorkspaceIdentifier];
-  v5 = [v3 isEqualToString:v4];
+  scene = [(SBSystemApertureSceneElement *)self scene];
+  workspaceIdentifier = [scene workspaceIdentifier];
+  sceneWorkspaceIdentifier = [objc_opt_class() sceneWorkspaceIdentifier];
+  v5 = [workspaceIdentifier isEqualToString:sceneWorkspaceIdentifier];
 
   return v5;
 }
 
 - (CGRect)_obstructedAreaFrame
 {
-  v3 = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
-  [v3 sensorRegionSize];
+  mEMORY[0x277D67E28] = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
+  [mEMORY[0x277D67E28] sensorRegionSize];
 
   [(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView bounds];
   v5 = v4;
@@ -3919,21 +3919,21 @@ LABEL_48:
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView window];
-  v19 = [v18 screen];
-  v20 = [v19 fixedCoordinateSpace];
-  [v20 convertRect:self->_sceneView fromCoordinateSpace:{v5, v7, v9, v11}];
+  window = [(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView window];
+  screen = [window screen];
+  fixedCoordinateSpace = [screen fixedCoordinateSpace];
+  [fixedCoordinateSpace convertRect:self->_sceneView fromCoordinateSpace:{v5, v7, v9, v11}];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
 
-  v29 = [(SBSystemApertureSceneElement *)self systemApertureCustomLayout];
-  if ((v29 | 2) == 3)
+  systemApertureCustomLayout = [(SBSystemApertureSceneElement *)self systemApertureCustomLayout];
+  if ((systemApertureCustomLayout | 2) == 3)
   {
-    v30 = v29;
-    v31 = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
-    [v31 minimumScreenEdgeInsets];
+    v30 = systemApertureCustomLayout;
+    mEMORY[0x277D67E28]2 = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
+    [mEMORY[0x277D67E28]2 minimumScreenEdgeInsets];
     v33 = v32;
     v71.origin.x = v22;
     v71.origin.y = v24;
@@ -3944,24 +3944,24 @@ LABEL_48:
     v35 = fmax(v34, 0.0);
     if (v30 == 1 && (![(SBSystemApertureSceneElement *)self obstructionEdge]|| [(SBSystemApertureSceneElement *)self obstructionEdge]== 2))
     {
-      v36 = [(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView superview];
-      v37 = [(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView superview];
-      [v37 bounds];
-      [v36 convertRect:self->_sceneView toView:?];
+      superview = [(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView superview];
+      superview2 = [(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView superview];
+      [superview2 bounds];
+      [superview convertRect:self->_sceneView toView:?];
       rect_24 = v39;
       v69 = v38;
       rect_8 = v41;
       rect_16 = v40;
 
-      v42 = [(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView superview];
-      v43 = [(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView superview];
-      [v43 bounds];
+      superview3 = [(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView superview];
+      superview4 = [(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView superview];
+      [superview4 bounds];
       v45 = v44;
       v47 = v46;
       v49 = v48;
       v51 = v50;
-      v52 = [(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView window];
-      [v42 convertRect:v52 toView:{v45, v47, v49, v51}];
+      window2 = [(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView window];
+      [superview3 convertRect:window2 toView:{v45, v47, v49, v51}];
       rect = v53;
       v55 = v54;
       v57 = v56;
@@ -3995,8 +3995,8 @@ LABEL_48:
         CGRectGetMinX(v76);
       }
 
-      v60 = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
-      [v60 interSensorRegionInWindowSpace];
+      mEMORY[0x277D67E28]3 = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
+      [mEMORY[0x277D67E28]3 interSensorRegionInWindowSpace];
       v75.origin.x = rect;
       v75.origin.y = v55;
       v75.size.width = v57;
@@ -4026,27 +4026,27 @@ LABEL_48:
 
 - (BOOL)hasAlertBehavior
 {
-  v3 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v4 = [v3 SBUISA_contentRole];
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_contentRole = [sceneClientSettings SBUISA_contentRole];
 
-  if (!v4)
+  if (!sBUISA_contentRole)
   {
     WeakRetained = objc_loadWeakRetained(&self->_placeholderContentProvider);
-    v4 = [WeakRetained contentRole];
+    sBUISA_contentRole = [WeakRetained contentRole];
   }
 
-  return v4 == 1;
+  return sBUISA_contentRole == 1;
 }
 
-- (void)setAlertHost:(id)a3
+- (void)setAlertHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   WeakRetained = objc_loadWeakRetained(&self->_alertHost);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != hostCopy)
   {
-    objc_storeWeak(&self->_alertHost, v4);
-    if (v4)
+    objc_storeWeak(&self->_alertHost, hostCopy);
+    if (hostCopy)
     {
       objc_initWeak(&location, self);
       v11 = MEMORY[0x277D85DD0];
@@ -4094,27 +4094,27 @@ void __45__SBSystemApertureSceneElement_setAlertHost___block_invoke(uint64_t a1)
 
 - (BOOL)hasActivityBehavior
 {
-  v3 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v4 = [v3 SBUISA_contentRole];
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_contentRole = [sceneClientSettings SBUISA_contentRole];
 
-  if (!v4)
+  if (!sBUISA_contentRole)
   {
     WeakRetained = objc_loadWeakRetained(&self->_placeholderContentProvider);
-    v4 = [WeakRetained contentRole];
+    sBUISA_contentRole = [WeakRetained contentRole];
   }
 
-  return v4 == 2;
+  return sBUISA_contentRole == 2;
 }
 
-- (void)setActivityHost:(id)a3
+- (void)setActivityHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   WeakRetained = objc_loadWeakRetained(&self->_activityHost);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != hostCopy)
   {
-    objc_storeWeak(&self->_activityHost, v4);
-    if (v4)
+    objc_storeWeak(&self->_activityHost, hostCopy);
+    if (hostCopy)
     {
       objc_initWeak(&location, self);
       v11 = MEMORY[0x277D85DD0];
@@ -4160,17 +4160,17 @@ void __48__SBSystemApertureSceneElement_setActivityHost___block_invoke(uint64_t 
   }
 }
 
-- (CGRect)_frameInSceneContainerForView:(id)a3
+- (CGRect)_frameInSceneContainerForView:(id)view
 {
-  v4 = a3;
-  [(SBSystemApertureSceneElementAccessoryView *)v4 bounds];
-  [(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView convertRect:v4 fromView:?];
+  viewCopy = view;
+  [(SBSystemApertureSceneElementAccessoryView *)viewCopy bounds];
+  [(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView convertRect:viewCopy fromView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SBSystemApertureSceneElement *)self leadingView];
-  if (v13 == v4 || self->_minimalView == v4 && [(SBSystemApertureSceneElement *)self layoutAxis]== 1)
+  leadingView = [(SBSystemApertureSceneElement *)self leadingView];
+  if (leadingView == viewCopy || self->_minimalView == viewCopy && [(SBSystemApertureSceneElement *)self layoutAxis]== 1)
   {
 
 LABEL_6:
@@ -4186,9 +4186,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v14 = [(SBSystemApertureSceneElement *)self trailingView];
+  trailingView = [(SBSystemApertureSceneElement *)self trailingView];
 
-  if (v14 == v4)
+  if (trailingView == viewCopy)
   {
     goto LABEL_6;
   }
@@ -4206,13 +4206,13 @@ LABEL_7:
   return result;
 }
 
-- (void)contentProviderWillTransitionToSize:(CGSize)a3 inContainerView:(id)a4 transitionCoordinator:(id)a5
+- (void)contentProviderWillTransitionToSize:(CGSize)size inContainerView:(id)view transitionCoordinator:(id)coordinator
 {
-  v7 = a4;
-  v8 = a5;
+  viewCopy = view;
+  coordinatorCopy = coordinator;
   self->_wantsLayoutPassForClientUpdate = 0;
-  v9 = [(SBSystemApertureSceneElement *)self sceneSettings];
-  v10 = [v9 SBUISA_layoutMode] > 1 || -[SBSystemApertureSceneElement layoutMode](self, "layoutMode") < 1;
+  sceneSettings = [(SBSystemApertureSceneElement *)self sceneSettings];
+  v10 = [sceneSettings SBUISA_layoutMode] > 1 || -[SBSystemApertureSceneElement layoutMode](self, "layoutMode") < 1;
 
   v11 = [(SBSystemApertureSceneElement *)self _hasPresentationBehavior:64];
   if (!v10 && v11)
@@ -4238,7 +4238,7 @@ LABEL_7:
   v41[2] = __106__SBSystemApertureSceneElement_contentProviderWillTransitionToSize_inContainerView_transitionCoordinator___block_invoke;
   v41[3] = &unk_2783A92D8;
   v41[4] = self;
-  v16 = v7;
+  v16 = viewCopy;
   v42 = v16;
   [v15 _performWithoutRetargetingAnimations:v41];
   [(SBSystemApertureSceneElement *)self _frameInSceneContainerForView:v16];
@@ -4248,8 +4248,8 @@ LABEL_7:
   v24 = v23;
   if ([(SBSystemApertureSceneElement *)self wantsSpecialFlowerBoundsResizingAnimationForWallet])
   {
-    v25 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-    v26 = [v25 SBUISA_appliedLayoutMode] == 4;
+    sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+    v26 = [sceneClientSettings SBUISA_appliedLayoutMode] == 4;
   }
 
   else
@@ -4257,11 +4257,11 @@ LABEL_7:
     v26 = 0;
   }
 
-  v27 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  if ([v27 SBUISA_appliedLayoutMode] == 3)
+  sceneClientSettings2 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  if ([sceneClientSettings2 SBUISA_appliedLayoutMode] == 3)
   {
-    v28 = [(SBSystemApertureSceneElement *)self sceneSettings];
-    v29 = [v28 SBUISA_layoutMode] == 3 && -[SBSystemApertureSceneElement layoutMode](self, "layoutMode") == 2;
+    sceneSettings2 = [(SBSystemApertureSceneElement *)self sceneSettings];
+    v29 = [sceneSettings2 SBUISA_layoutMode] == 3 && -[SBSystemApertureSceneElement layoutMode](self, "layoutMode") == 2;
   }
 
   else
@@ -4269,10 +4269,10 @@ LABEL_7:
     v29 = 0;
   }
 
-  v30 = [(SBSystemApertureSceneElement *)self hasCompletedInitialPresentation];
+  hasCompletedInitialPresentation = [(SBSystemApertureSceneElement *)self hasCompletedInitialPresentation];
   if (objc_opt_respondsToSelector())
   {
-    v31 = [v8 isPerformingSystemApertureCustomContentTransition] ^ 1 | (v26 || v30 && v29);
+    v31 = [coordinatorCopy isPerformingSystemApertureCustomContentTransition] ^ 1 | (v26 || hasCompletedInitialPresentation && v29);
   }
 
   else
@@ -4297,7 +4297,7 @@ LABEL_7:
   v33[3] = &unk_2783A9488;
   v33[4] = self;
   v32 = v16;
-  [v8 animateAlongsideTransition:v34 completion:v33];
+  [coordinatorCopy animateAlongsideTransition:v34 completion:v33];
 }
 
 uint64_t __106__SBSystemApertureSceneElement_contentProviderWillTransitionToSize_inContainerView_transitionCoordinator___block_invoke(uint64_t a1)
@@ -4426,13 +4426,13 @@ void __106__SBSystemApertureSceneElement_contentProviderWillTransitionToSize_inC
   }
 }
 
-- (void)_setupSceneViewInContainerView:(id)a3
+- (void)_setupSceneViewInContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (!self->_sceneView)
   {
     v5 = objc_alloc(MEMORY[0x277D67990]);
-    [(SBSystemApertureSceneElement *)self _frameForSceneViewInContainerView:v4];
+    [(SBSystemApertureSceneElement *)self _frameForSceneViewInContainerView:viewCopy];
     v6 = [v5 initWithFrame:?];
     sceneView = self->_sceneView;
     self->_sceneView = v6;
@@ -4464,9 +4464,9 @@ void __106__SBSystemApertureSceneElement_contentProviderWillTransitionToSize_inC
     objc_destroyWeak(&location);
   }
 
-  if (v4 && ([(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView isDescendantOfView:v4]& 1) == 0)
+  if (viewCopy && ([(SBSystemApertureSceneElementScenePresenterView *)self->_sceneView isDescendantOfView:viewCopy]& 1) == 0)
   {
-    [v4 insertSubview:self->_sceneView atIndex:0];
+    [viewCopy insertSubview:self->_sceneView atIndex:0];
   }
 }
 
@@ -4484,30 +4484,30 @@ void __63__SBSystemApertureSceneElement__setupSceneViewInContainerView___block_i
   }
 }
 
-- (void)_layoutSceneViewInContainerView:(id)a3
+- (void)_layoutSceneViewInContainerView:(id)view
 {
-  v4 = a3;
-  v13 = [(SBSystemApertureSceneElement *)self sceneView];
-  [(SBSystemApertureSceneElement *)self _frameForSceneViewInContainerView:v4];
+  viewCopy = view;
+  sceneView = [(SBSystemApertureSceneElement *)self sceneView];
+  [(SBSystemApertureSceneElement *)self _frameForSceneViewInContainerView:viewCopy];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  [v13 setFrame:{v6, v8, v10, v12}];
+  [sceneView setFrame:{v6, v8, v10, v12}];
 }
 
-- (CGRect)_frameForSceneViewInContainerView:(id)a3
+- (CGRect)_frameForSceneViewInContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = *MEMORY[0x277CBF348];
   v6 = *(MEMORY[0x277CBF348] + 8);
   [(SBSystemApertureSceneElement *)self _sizeForSceneView];
   v8 = v7;
   v10 = v9;
-  if (v4)
+  if (viewCopy)
   {
-    [v4 bounds];
+    [viewCopy bounds];
     UIRectCenteredIntegralRectScale();
     v5 = v11;
     v8 = v12;
@@ -4528,15 +4528,15 @@ void __63__SBSystemApertureSceneElement__setupSceneViewInContainerView___block_i
 
 - (CGSize)_sizeForSceneView
 {
-  v3 = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
+  mEMORY[0x277D67E28] = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
   if ([(SBSystemApertureSceneElement *)self _supportsMenuPresentations])
   {
-    [v3 maximumPossibleSizeWhilePresentingMenu];
+    [mEMORY[0x277D67E28] maximumPossibleSizeWhilePresentingMenu];
   }
 
   else
   {
-    [v3 maximumExpandedSize];
+    [mEMORY[0x277D67E28] maximumExpandedSize];
   }
 
   v6 = v4;
@@ -4564,15 +4564,15 @@ void __63__SBSystemApertureSceneElement__setupSceneViewInContainerView___block_i
   return result;
 }
 
-- (unint64_t)_updateReasonsForTransitionWithProposedParameters:(id)a3 excludingReasons:(unint64_t)a4
+- (unint64_t)_updateReasonsForTransitionWithProposedParameters:(id)parameters excludingReasons:(unint64_t)reasons
 {
-  v6 = a3;
+  parametersCopy = parameters;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
   v38 = 0;
-  v7 = [(SBSystemApertureSceneElement *)self sceneSettings];
-  v8 = [v6 otherSystemApertureSceneSettingsToApply];
+  sceneSettings = [(SBSystemApertureSceneElement *)self sceneSettings];
+  otherSystemApertureSceneSettingsToApply = [parametersCopy otherSystemApertureSceneSettingsToApply];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __99__SBSystemApertureSceneElement__updateReasonsForTransitionWithProposedParameters_excludingReasons___block_invoke;
@@ -4585,18 +4585,18 @@ void __63__SBSystemApertureSceneElement__setupSceneViewInContainerView___block_i
   v30[3] = &unk_2783C2AF0;
   v10 = v9;
   v33 = v10;
-  v11 = v8;
+  v11 = otherSystemApertureSceneSettingsToApply;
   v31 = v11;
-  v12 = v7;
+  v12 = sceneSettings;
   v32 = v12;
   v13 = MEMORY[0x223D6F7F0](v30);
-  (*(v10 + 2))(v10, 128, [v12 isForeground] ^ objc_msgSend(v6, "wantsForeground"));
-  v14 = [v11 objectForSetting:3213016];
-  if (v14)
+  (*(v10 + 2))(v10, 128, [v12 isForeground] ^ objc_msgSend(parametersCopy, "wantsForeground"));
+  settings = [v11 objectForSetting:3213016];
+  if (settings)
   {
     v4 = [v11 objectForSetting:3213016];
-    v15 = [v4 unsignedIntegerValue];
-    v16 = v15 != [v12 SBUISA_minimalViewLayoutAxis];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
+    v16 = unsignedIntegerValue != [v12 SBUISA_minimalViewLayoutAxis];
   }
 
   else
@@ -4605,12 +4605,12 @@ void __63__SBSystemApertureSceneElement__setupSceneViewInContainerView___block_i
   }
 
   (*(v10 + 2))(v10, 256, v16);
-  if (v14)
+  if (settings)
   {
   }
 
   v13[2](v13, 2, 3213010);
-  if (a4)
+  if (reasons)
   {
     v23 = 0;
   }
@@ -4621,13 +4621,13 @@ void __63__SBSystemApertureSceneElement__setupSceneViewInContainerView___block_i
     v18 = v17;
     v20 = v19;
     self = [(SBSystemApertureSceneElement *)self scene];
-    v14 = [(SBSystemApertureSceneElement *)self settings];
-    [v14 frame];
+    settings = [(SBSystemApertureSceneElement *)self settings];
+    [settings frame];
     v23 = v20 != v22 || v18 != v21;
   }
 
   (*(v10 + 2))(v10, 1, v23);
-  if ((a4 & 1) == 0)
+  if ((reasons & 1) == 0)
   {
   }
 
@@ -4639,8 +4639,8 @@ void __63__SBSystemApertureSceneElement__setupSceneViewInContainerView___block_i
   v24 = [v11 objectForSetting:3213009];
   if (v24)
   {
-    v25 = [v12 SBUISA_layoutMode];
-    v26 = v25 != [v11 SBUISA_layoutModeforSetting:3213009];
+    sBUISA_layoutMode = [v12 SBUISA_layoutMode];
+    v26 = sBUISA_layoutMode != [v11 SBUISA_layoutModeforSetting:3213009];
   }
 
   else
@@ -4653,7 +4653,7 @@ void __63__SBSystemApertureSceneElement__setupSceneViewInContainerView___block_i
   v27 = v36[3];
   _Block_object_dispose(&v35, 8);
 
-  return v27 & ~a4;
+  return v27 & ~reasons;
 }
 
 uint64_t __99__SBSystemApertureSceneElement__updateReasonsForTransitionWithProposedParameters_excludingReasons___block_invoke(uint64_t result, uint64_t a2, int a3)
@@ -4685,17 +4685,17 @@ void __99__SBSystemApertureSceneElement__updateReasonsForTransitionWithProposedP
   }
 }
 
-- (id)_proposeTransitionParametersForTransitionToFrameInSceneView:(CGRect)a3 excludingParametersAssociatedWithReasons:(unint64_t)a4 usingCurrentAnimationParameters:(BOOL)a5
+- (id)_proposeTransitionParametersForTransitionToFrameInSceneView:(CGRect)view excludingParametersAssociatedWithReasons:(unint64_t)reasons usingCurrentAnimationParameters:(BOOL)parameters
 {
-  v6 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  reasonsCopy = reasons;
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
   v12 = objc_alloc_init(SBSystemApertureSceneElementTransitionParameters);
-  if ((v6 & 0x40) != 0)
+  if ((reasonsCopy & 0x40) != 0)
   {
-    if ((v6 & 0x80) != 0)
+    if ((reasonsCopy & 0x80) != 0)
     {
       goto LABEL_9;
     }
@@ -4705,20 +4705,20 @@ void __99__SBSystemApertureSceneElement__updateReasonsForTransitionWithProposedP
   }
 
   v13 = [(SBSystemApertureSceneElement *)self _clientLayoutModeForLayoutMode:[(SBSystemApertureSceneElement *)self layoutMode]];
-  v14 = [(SBSystemApertureSceneElement *)self sceneSettings];
-  v15 = [v14 SBUISA_layoutMode];
-  v16 = v13 != v15;
+  sceneSettings = [(SBSystemApertureSceneElement *)self sceneSettings];
+  sBUISA_layoutMode = [sceneSettings SBUISA_layoutMode];
+  v16 = v13 != sBUISA_layoutMode;
 
-  if ((v6 & 0x80) == 0)
+  if ((reasonsCopy & 0x80) == 0)
   {
 LABEL_7:
-    v18 = [(SBSystemApertureSceneElement *)self _requiresForegroundScene];
-    v19 = [(SBSystemApertureSceneElement *)self sceneSettings];
-    v20 = v18 ^ [v19 isForeground];
+    _requiresForegroundScene = [(SBSystemApertureSceneElement *)self _requiresForegroundScene];
+    sceneSettings2 = [(SBSystemApertureSceneElement *)self sceneSettings];
+    v20 = _requiresForegroundScene ^ [sceneSettings2 isForeground];
 
     if (v16 || (v20 & 1) != 0)
     {
-      v17 = v6 & 0xFF1E;
+      v17 = reasonsCopy & 0xFF1E;
       if (v20)
       {
         goto LABEL_13;
@@ -4728,24 +4728,24 @@ LABEL_7:
     }
 
 LABEL_9:
-    v17 = v6;
+    v17 = reasonsCopy;
     goto LABEL_13;
   }
 
-  if (v13 == v15)
+  if (v13 == sBUISA_layoutMode)
   {
     goto LABEL_9;
   }
 
-  v17 = v6 & 0xFF1E;
+  v17 = reasonsCopy & 0xFF1E;
 LABEL_11:
   if ([(SBSystemApertureSceneElement *)self _requiresForegroundScene])
   {
-    v17 = v6 & 0xFB1E;
+    v17 = reasonsCopy & 0xFB1E;
   }
 
 LABEL_13:
-  if ((v17 & 0x40) != 0 || !a5)
+  if ((v17 & 0x40) != 0 || !parameters)
   {
     v21 = [objc_alloc(MEMORY[0x277D67DC0]) initWithFluidBehaviorSettings:0 tracking:0 retargeted:0];
   }
@@ -4758,16 +4758,16 @@ LABEL_13:
   v22 = v21;
   if ((v17 & 0x400) != 0)
   {
-    v23 = 0;
+    transitionContext = 0;
   }
 
   else
   {
-    v23 = [MEMORY[0x277D75188] transitionContext];
+    transitionContext = [MEMORY[0x277D75188] transitionContext];
   }
 
-  v24 = [(SBSystemApertureSceneElement *)self sceneSettings];
-  if ([v24 SBUISA_layoutMode] != 4)
+  sceneSettings3 = [(SBSystemApertureSceneElement *)self sceneSettings];
+  if ([sceneSettings3 SBUISA_layoutMode] != 4)
   {
 
     goto LABEL_26;
@@ -4775,11 +4775,11 @@ LABEL_13:
 
   v25 = [(SBSystemApertureSceneElement *)self _clientLayoutModeForLayoutMode:[(SBSystemApertureSceneElement *)self layoutMode]];
 
-  if ((v17 & 0x400) != 0 || a5 || v25 >= 4)
+  if ((v17 & 0x400) != 0 || parameters || v25 >= 4)
   {
 LABEL_26:
-    v26 = [(SBSystemApertureSceneElement *)self clientIdentifier];
-    v27 = [v26 isEqualToString:@"com.apple.ShortcutsUI"];
+    clientIdentifier = [(SBSystemApertureSceneElement *)self clientIdentifier];
+    v27 = [clientIdentifier isEqualToString:@"com.apple.ShortcutsUI"];
 
     if (!v27)
     {
@@ -4787,8 +4787,8 @@ LABEL_26:
     }
   }
 
-  v28 = [MEMORY[0x277D75940] _synchronizedDrawingFence];
-  [v23 setAnimationFence:v28];
+  _synchronizedDrawingFence = [MEMORY[0x277D75940] _synchronizedDrawingFence];
+  [transitionContext setAnimationFence:_synchronizedDrawingFence];
 
 LABEL_28:
   if ([(SBSystemApertureSceneElement *)self mostRecentLayoutModeChangeReason]== 3)
@@ -4802,9 +4802,9 @@ LABEL_28:
   }
   v29 = ;
   v30 = [MEMORY[0x277CBEB98] setWithObject:v29];
-  [v23 setActions:v30];
+  [transitionContext setActions:v30];
 
-  [(SBSystemApertureSceneElementTransitionParameters *)v12 setTransitionContext:v23];
+  [(SBSystemApertureSceneElementTransitionParameters *)v12 setTransitionContext:transitionContext];
   v31 = objc_alloc_init(MEMORY[0x277CF0C80]);
   if ((v17 & 0x40) != 0)
   {
@@ -4857,8 +4857,8 @@ LABEL_35:
   }
 
 LABEL_48:
-  v34 = [(SBSystemApertureSceneElement *)self leadingView];
-  [(SBSystemApertureSceneElement *)self _frameInSceneContainerForView:v34];
+  leadingView = [(SBSystemApertureSceneElement *)self leadingView];
+  [(SBSystemApertureSceneElement *)self _frameInSceneContainerForView:leadingView];
   v36 = v35;
   v38 = v37;
   v40 = v39;
@@ -4877,8 +4877,8 @@ LABEL_36:
   }
 
 LABEL_49:
-  v43 = [(SBSystemApertureSceneElement *)self trailingView];
-  [(SBSystemApertureSceneElement *)self _frameInSceneContainerForView:v43];
+  trailingView = [(SBSystemApertureSceneElement *)self trailingView];
+  [(SBSystemApertureSceneElement *)self _frameInSceneContainerForView:trailingView];
   v45 = v44;
   v47 = v46;
   v49 = v48;
@@ -4910,8 +4910,8 @@ LABEL_38:
   }
 
 LABEL_51:
-  v52 = [(SBSystemApertureSceneElement *)self sceneView];
-  [v52 frame];
+  sceneView = [(SBSystemApertureSceneElement *)self sceneView];
+  [sceneView frame];
   v54 = v53;
   v56 = v55;
 
@@ -4957,24 +4957,24 @@ LABEL_42:
   return v12;
 }
 
-- (void)_applyTransitionParameters:(id)a3
+- (void)_applyTransitionParameters:(id)parameters
 {
   transitionRequestHandler = self->_transitionRequestHandler;
   if (transitionRequestHandler)
   {
-    transitionRequestHandler[2](transitionRequestHandler, self, a3);
+    transitionRequestHandler[2](transitionRequestHandler, self, parameters);
   }
 }
 
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)a4 maximumOutsets:(NSDirectionalEdgeInsets)a5
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets
 {
-  trailing = a4.trailing;
-  bottom = a4.bottom;
-  leading = a4.leading;
-  top = a4.top;
-  v11 = [(SBSystemApertureSceneElement *)self sceneClientSettings:a4.top];
+  trailing = outsets.trailing;
+  bottom = outsets.bottom;
+  leading = outsets.leading;
+  top = outsets.top;
+  v11 = [(SBSystemApertureSceneElement *)self sceneClientSettings:outsets.top];
   v12 = v11;
-  if (a3 == 3)
+  if (mode == 3)
   {
     [v11 SBUISA_customLayoutPreferredOutsetsFromUnsafeArea];
     top = v24;
@@ -4983,15 +4983,15 @@ LABEL_42:
     trailing = v27;
   }
 
-  else if (a3 == 2)
+  else if (mode == 2)
   {
-    v13 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-    v14 = [v13 SBUISA_specifiesPreferredPaddingForCompactLayout];
+    sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+    sBUISA_specifiesPreferredPaddingForCompactLayout = [sceneClientSettings SBUISA_specifiesPreferredPaddingForCompactLayout];
 
-    if (v14)
+    if (sBUISA_specifiesPreferredPaddingForCompactLayout)
     {
-      v15 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-      [v15 SBUISA_preferredPaddingForCompactLayout];
+      sceneClientSettings2 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+      [sceneClientSettings2 SBUISA_preferredPaddingForCompactLayout];
       v17 = v16;
       v19 = v18;
 
@@ -5015,23 +5015,23 @@ LABEL_42:
   return result;
 }
 
-- (CGSize)sizeThatFitsSize:(CGSize)a3 forProvidedView:(id)a4 inLayoutMode:(int64_t)a5
+- (CGSize)sizeThatFitsSize:(CGSize)size forProvidedView:(id)view inLayoutMode:(int64_t)mode
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a4;
-  v10 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
   WeakRetained = objc_loadWeakRetained(&self->_placeholderContentProvider);
-  if (a5 != 1 || self->_minimalView != v9)
+  if (mode != 1 || self->_minimalView != viewCopy)
   {
-    v12 = [(SBSystemApertureSceneElement *)self leadingView];
+    leadingView = [(SBSystemApertureSceneElement *)self leadingView];
 
-    if (v12 == v9)
+    if (leadingView == viewCopy)
     {
-      v16 = [WeakRetained leadingView];
-      if (v16 != v9)
+      leadingView2 = [WeakRetained leadingView];
+      if (leadingView2 != viewCopy)
       {
-        [v10 SBUISA_preferredLeadingViewSize];
+        [sceneClientSettings SBUISA_preferredLeadingViewSize];
 LABEL_13:
         v14 = v17;
         v15 = v18;
@@ -5042,34 +5042,34 @@ LABEL_13:
 
     else
     {
-      v13 = [(SBSystemApertureSceneElement *)self trailingView];
+      trailingView = [(SBSystemApertureSceneElement *)self trailingView];
 
-      if (v13 != v9)
+      if (trailingView != viewCopy)
       {
-        if (self->_detachedMinimalView != v9)
+        if (self->_detachedMinimalView != viewCopy)
         {
           v14 = *MEMORY[0x277CBF3A8];
           v15 = *(MEMORY[0x277CBF3A8] + 8);
           goto LABEL_16;
         }
 
-        [v10 SBUISA_preferredDetachedMinimalViewSize];
+        [sceneClientSettings SBUISA_preferredDetachedMinimalViewSize];
         goto LABEL_15;
       }
 
-      v16 = [WeakRetained trailingView];
-      if (v16 != v9)
+      leadingView2 = [WeakRetained trailingView];
+      if (leadingView2 != viewCopy)
       {
-        [v10 SBUISA_preferredTrailingViewSize];
+        [sceneClientSettings SBUISA_preferredTrailingViewSize];
         goto LABEL_13;
       }
     }
 
-    [(SBSystemApertureSceneElementAccessoryView *)v9 sizeThatFits:width, height];
+    [(SBSystemApertureSceneElementAccessoryView *)viewCopy sizeThatFits:width, height];
     goto LABEL_13;
   }
 
-  [v10 SBUISA_preferredMinimalViewSize];
+  [sceneClientSettings SBUISA_preferredMinimalViewSize];
 LABEL_15:
   v14 = v19;
   v15 = v20;
@@ -5093,18 +5093,18 @@ LABEL_16:
   return result;
 }
 
-- (void)_updateSceneWithTransitionParameters:(id)a3
+- (void)_updateSceneWithTransitionParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   scene = self->_scene;
-  if ([v4 wantsForeground])
+  if ([parametersCopy wantsForeground])
   {
-    v6 = [v4 shouldSetForeground];
+    shouldSetForeground = [parametersCopy shouldSetForeground];
   }
 
   else
   {
-    v6 = 0;
+    shouldSetForeground = 0;
   }
 
   v8[0] = MEMORY[0x277D85DD0];
@@ -5112,9 +5112,9 @@ LABEL_16:
   v8[2] = __69__SBSystemApertureSceneElement__updateSceneWithTransitionParameters___block_invoke;
   v8[3] = &unk_2783C2B18;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [(SBSystemApertureSceneElement *)self _updateScene:scene activatingIfNeeded:v6 settingsWithTransitionBlock:v8];
+  v9 = parametersCopy;
+  v7 = parametersCopy;
+  [(SBSystemApertureSceneElement *)self _updateScene:scene activatingIfNeeded:shouldSetForeground settingsWithTransitionBlock:v8];
 }
 
 uint64_t __69__SBSystemApertureSceneElement__updateSceneWithTransitionParameters___block_invoke(uint64_t a1, uint64_t a2)
@@ -5125,40 +5125,40 @@ uint64_t __69__SBSystemApertureSceneElement__updateSceneWithTransitionParameters
   return [v3 transitionContext];
 }
 
-- (void)_updateScene:(id)a3 activatingIfNeeded:(BOOL)a4 settingsWithTransitionBlock:(id)a5
+- (void)_updateScene:(id)scene activatingIfNeeded:(BOOL)needed settingsWithTransitionBlock:(id)block
 {
-  v6 = a4;
+  neededCopy = needed;
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SBSystemApertureSceneElementConfiguration *)self->_configuration allowsSceneReactivation];
-  v11 = [v8 isActive];
-  v12 = v11;
-  if (!v10)
+  sceneCopy = scene;
+  blockCopy = block;
+  allowsSceneReactivation = [(SBSystemApertureSceneElementConfiguration *)self->_configuration allowsSceneReactivation];
+  isActive = [sceneCopy isActive];
+  v12 = isActive;
+  if (!allowsSceneReactivation)
   {
-    if (!v11)
+    if (!isActive)
     {
       goto LABEL_10;
     }
 
 LABEL_9:
-    [v8 updateSettingsWithTransitionBlock:v9];
+    [sceneCopy updateSettingsWithTransitionBlock:blockCopy];
     goto LABEL_13;
   }
 
-  if ([v8 isActive])
+  if ([sceneCopy isActive])
   {
     goto LABEL_9;
   }
 
-  if ((v12 & 1) == 0 && v6)
+  if ((v12 & 1) == 0 && neededCopy)
   {
     v13 = SBLogSystemApertureHosting();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(SBSystemApertureSceneElement *)self succinctDescription];
+      succinctDescription = [(SBSystemApertureSceneElement *)self succinctDescription];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v14;
+      *(&buf + 4) = succinctDescription;
       _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Activating scene because it's foreground and isn't active and client allows it", &buf, 0xCu);
     }
 
@@ -5173,9 +5173,9 @@ LABEL_9:
     v19 = __92__SBSystemApertureSceneElement__updateScene_activatingIfNeeded_settingsWithTransitionBlock___block_invoke;
     v20 = &unk_2783C2B68;
     p_buf = &buf;
-    v21 = v9;
-    [v8 configureParameters:&v17];
-    [v8 activateWithTransitionContext:{*(*(&buf + 1) + 40), v17, v18, v19, v20}];
+    v21 = blockCopy;
+    [sceneCopy configureParameters:&v17];
+    [sceneCopy activateWithTransitionContext:{*(*(&buf + 1) + 40), v17, v18, v19, v20}];
 
     _Block_object_dispose(&buf, 8);
     goto LABEL_13;
@@ -5185,9 +5185,9 @@ LABEL_10:
   v15 = SBLogSystemApertureHosting();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(SBSystemApertureSceneElement *)self succinctDescription];
+    succinctDescription2 = [(SBSystemApertureSceneElement *)self succinctDescription];
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v16;
+    *(&buf + 4) = succinctDescription2;
     _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Skipping scene settings update because it's not active and client doesn't allow us to", &buf, 0xCu);
   }
 
@@ -5214,23 +5214,23 @@ void __92__SBSystemApertureSceneElement__updateScene_activatingIfNeeded_settings
   *(v3 + 40) = v2;
 }
 
-- (void)_updateMutableSceneSettings:(id)a3 withParameters:(id)a4
+- (void)_updateMutableSceneSettings:(id)settings withParameters:(id)parameters
 {
-  v16 = a3;
-  v5 = a4;
-  if ([v5 shouldSetForeground])
+  settingsCopy = settings;
+  parametersCopy = parameters;
+  if ([parametersCopy shouldSetForeground])
   {
-    [v16 setForeground:{objc_msgSend(v5, "wantsForeground")}];
+    [settingsCopy setForeground:{objc_msgSend(parametersCopy, "wantsForeground")}];
     v6 = *MEMORY[0x277CBF348];
     v7 = *(MEMORY[0x277CBF348] + 8);
-    [v5 sceneSize];
-    [v16 setFrame:{v6, v7, v8, v9}];
-    [v16 setInterfaceOrientation:1];
+    [parametersCopy sceneSize];
+    [settingsCopy setFrame:{v6, v7, v8, v9}];
+    [settingsCopy setInterfaceOrientation:1];
   }
 
-  v10 = [v16 otherSettings];
+  otherSettings = [settingsCopy otherSettings];
   v11 = objc_opt_class();
-  v12 = v10;
+  v12 = otherSettings;
   if (v11)
   {
     if (objc_opt_isKindOfClass())
@@ -5251,15 +5251,15 @@ void __92__SBSystemApertureSceneElement__updateScene_activatingIfNeeded_settings
 
   v14 = v13;
 
-  v15 = [v5 otherSystemApertureSceneSettingsToApply];
-  [v14 applySettings:v15];
+  otherSystemApertureSceneSettingsToApply = [parametersCopy otherSystemApertureSceneSettingsToApply];
+  [v14 applySettings:otherSystemApertureSceneSettingsToApply];
 }
 
 - (void)_updateReadyForPresentationIfNeeded
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_21ED4E000, a2, OS_LOG_TYPE_ERROR, "*** Client SPI Misuse: Invalid attempt to post two elements in jindo with the same elementIdentifier, << %{public}@ >> ***", &v2, 0xCu);
 }
 
@@ -5293,8 +5293,8 @@ uint64_t __67__SBSystemApertureSceneElement__updateReadyForPresentationIfNeeded_
 {
   if ([(SBSystemApertureSceneElement *)self isSuppressedByProximityReader])
   {
-    v3 = [(SBSystemApertureSceneElement *)self elementIdentifier];
-    v4 = [v3 isEqual:*MEMORY[0x277D67FD0]] ^ 1;
+    elementIdentifier = [(SBSystemApertureSceneElement *)self elementIdentifier];
+    v4 = [elementIdentifier isEqual:*MEMORY[0x277D67FD0]] ^ 1;
   }
 
   else
@@ -5304,8 +5304,8 @@ uint64_t __67__SBSystemApertureSceneElement__updateReadyForPresentationIfNeeded_
 
   if ([(SBSystemApertureSceneElement *)self isActivated])
   {
-    v5 = [(SBSystemApertureSceneElement *)self layoutHost];
-    v6 = (v5 != 0) & v4;
+    layoutHost = [(SBSystemApertureSceneElement *)self layoutHost];
+    v6 = (layoutHost != 0) & v4;
   }
 
   else
@@ -5325,22 +5325,22 @@ uint64_t __67__SBSystemApertureSceneElement__updateReadyForPresentationIfNeeded_
 {
   if ([(SBSystemApertureSceneElement *)self _shouldSuppressBackgroundActivities])
   {
-    v3 = [(SBSystemApertureSceneElement *)self representedBackgroundActivityIdentifiers];
+    representedBackgroundActivityIdentifiers = [(SBSystemApertureSceneElement *)self representedBackgroundActivityIdentifiers];
   }
 
   else
   {
-    v3 = 0;
+    representedBackgroundActivityIdentifiers = 0;
   }
 
-  v11 = v3;
-  if ([v3 count])
+  v11 = representedBackgroundActivityIdentifiers;
+  if ([representedBackgroundActivityIdentifiers count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_statusBarBackgroundActivitiesSuppresser);
     v5 = MEMORY[0x277CCACA8];
-    v6 = [(FBScene *)self->_scene clientHandle];
-    v7 = [v6 bundleIdentifier];
-    v8 = [v5 stringWithFormat:@"%@", v7];
+    clientHandle = [(FBScene *)self->_scene clientHandle];
+    bundleIdentifier = [clientHandle bundleIdentifier];
+    v8 = [v5 stringWithFormat:@"%@", bundleIdentifier];
     v9 = [WeakRetained acquireSuppressionAssertionForBackgroundActivities:v11 reason:v8];
   }
 
@@ -5349,8 +5349,8 @@ uint64_t __67__SBSystemApertureSceneElement__updateReadyForPresentationIfNeeded_
     v9 = 0;
   }
 
-  v10 = [(SBSystemApertureSceneElement *)self statusBarStyleOverridesSuppressionAssertion];
-  [v10 invalidate];
+  statusBarStyleOverridesSuppressionAssertion = [(SBSystemApertureSceneElement *)self statusBarStyleOverridesSuppressionAssertion];
+  [statusBarStyleOverridesSuppressionAssertion invalidate];
 
   [(SBSystemApertureSceneElement *)self setStatusBarStyleOverridesSuppressionAssertion:v9];
 }
@@ -5370,13 +5370,13 @@ uint64_t __67__SBSystemApertureSceneElement__updateReadyForPresentationIfNeeded_
   }
   v7 = ;
 
-  v4 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v5 = [v4 SBUISA_preventsAutomaticDismissal];
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_preventsAutomaticDismissal = [sceneClientSettings SBUISA_preventsAutomaticDismissal];
 
-  if (v5)
+  if (sBUISA_preventsAutomaticDismissal)
   {
-    v6 = [(SBSystemApertureSceneElement *)self clientIdentifier];
-    [v7 setAutomaticallyInvalidatable:0 lockingWithKey:v6 reason:@"client prevents automatic dismissal"];
+    clientIdentifier = [(SBSystemApertureSceneElement *)self clientIdentifier];
+    [v7 setAutomaticallyInvalidatable:0 lockingWithKey:clientIdentifier reason:@"client prevents automatic dismissal"];
   }
 }
 
@@ -5394,39 +5394,39 @@ uint64_t __67__SBSystemApertureSceneElement__updateReadyForPresentationIfNeeded_
     v3 = 0;
   }
 
-  v4 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v5 = [v4 SBUISA_associatedAppBundleIdentifier];
-  v6 = v5;
-  if (v5)
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_associatedAppBundleIdentifier = [sceneClientSettings SBUISA_associatedAppBundleIdentifier];
+  v6 = sBUISA_associatedAppBundleIdentifier;
+  if (sBUISA_associatedAppBundleIdentifier)
   {
-    v25 = v5;
+    bundleIdentifier2 = sBUISA_associatedAppBundleIdentifier;
   }
 
   else
   {
-    v7 = [(SBApplicationSceneHandle *)self->_associatedApplicationSceneHandle application];
-    v8 = [v7 bundleIdentifier];
-    v9 = v8;
-    if (v8)
+    application = [(SBApplicationSceneHandle *)self->_associatedApplicationSceneHandle application];
+    bundleIdentifier = [application bundleIdentifier];
+    v9 = bundleIdentifier;
+    if (bundleIdentifier)
     {
-      v25 = v8;
+      bundleIdentifier2 = bundleIdentifier;
     }
 
     else
     {
-      v10 = [(FBScene *)self->_scene clientHandle];
-      v25 = [v10 bundleIdentifier];
+      clientHandle = [(FBScene *)self->_scene clientHandle];
+      bundleIdentifier2 = [clientHandle bundleIdentifier];
     }
   }
 
-  v11 = [(SBSystemApertureSceneElement *)self associatedApplication];
-  v12 = [v11 bundleIdentifier];
+  associatedApplication = [(SBSystemApertureSceneElement *)self associatedApplication];
+  bundleIdentifier3 = [associatedApplication bundleIdentifier];
   v13 = BSEqualStrings();
 
   if ((v13 & 1) == 0)
   {
     v14 = +[SBApplicationController sharedInstanceIfExists];
-    v15 = [v14 applicationWithBundleIdentifier:v25];
+    v15 = [v14 applicationWithBundleIdentifier:bundleIdentifier2];
     associatedApplication = self->_associatedApplication;
     self->_associatedApplication = v15;
   }
@@ -5434,7 +5434,7 @@ uint64_t __67__SBSystemApertureSceneElement__updateReadyForPresentationIfNeeded_
   v17 = self->_associatedApplication;
   if (!v3)
   {
-    v19 = v25;
+    v19 = bundleIdentifier2;
     if (v17)
     {
       goto LABEL_28;
@@ -5449,7 +5449,7 @@ uint64_t __67__SBSystemApertureSceneElement__updateReadyForPresentationIfNeeded_
     v18 = 1;
   }
 
-  v19 = v25;
+  v19 = bundleIdentifier2;
   if ((v18 & 1) == 0)
   {
     if (self->_activeApplicationElementAssertion)
@@ -5482,16 +5482,16 @@ LABEL_25:
   self->_activeApplicationElementAssertion = v23;
 
 LABEL_27:
-  v19 = v25;
+  v19 = bundleIdentifier2;
 LABEL_28:
 }
 
 - (void)_updateRequiredPriorityAssertion
 {
-  v3 = [(SBSystemApertureSceneElement *)self preferredConfiguration];
-  v4 = [v3 length];
+  preferredConfiguration = [(SBSystemApertureSceneElement *)self preferredConfiguration];
+  v4 = [preferredConfiguration length];
 
-  v5 = [(SBSystemApertureSceneElement *)self platformElementHost];
+  platformElementHost = [(SBSystemApertureSceneElement *)self platformElementHost];
   requiredPriorityAssertion = self->_requiredPriorityAssertion;
   if (v4)
   {
@@ -5500,13 +5500,13 @@ LABEL_28:
       goto LABEL_6;
     }
 
-    v9 = v5;
-    v7 = [v5 requestRequiredPriorityAssertionWithReason:@"Scene Element Secure State"];
+    v9 = platformElementHost;
+    v7 = [platformElementHost requestRequiredPriorityAssertionWithReason:@"Scene Element Secure State"];
   }
 
   else
   {
-    v9 = v5;
+    v9 = platformElementHost;
     [(SAInvalidatable *)requiredPriorityAssertion invalidateWithReason:@"Scene Element no longer Secure State"];
     v7 = 0;
   }
@@ -5514,7 +5514,7 @@ LABEL_28:
   v8 = self->_requiredPriorityAssertion;
   self->_requiredPriorityAssertion = v7;
 
-  v5 = v9;
+  platformElementHost = v9;
 LABEL_6:
 }
 
@@ -5551,35 +5551,35 @@ LABEL_6:
   return minimalWrapperView;
 }
 
-- (void)addElementLayoutSpecifierObserver:(id)a3
+- (void)addElementLayoutSpecifierObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     layoutObservers = self->__layoutObservers;
-    v8 = v4;
+    v8 = observerCopy;
     if (!layoutObservers)
     {
-      v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v7 = self->__layoutObservers;
-      self->__layoutObservers = v6;
+      self->__layoutObservers = weakObjectsHashTable;
 
       layoutObservers = self->__layoutObservers;
     }
 
     [(NSHashTable *)layoutObservers addObject:v8];
-    v4 = v8;
+    observerCopy = v8;
   }
 }
 
-- (void)removeElementLayoutSpecifierObserver:(id)a3
+- (void)removeElementLayoutSpecifierObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   layoutObservers = self->__layoutObservers;
-  v7 = v4;
-  if (v4 && layoutObservers)
+  v7 = observerCopy;
+  if (observerCopy && layoutObservers)
   {
-    [(NSHashTable *)layoutObservers removeObject:v4];
+    [(NSHashTable *)layoutObservers removeObject:observerCopy];
     layoutObservers = self->__layoutObservers;
   }
 
@@ -5590,9 +5590,9 @@ LABEL_6:
   }
 }
 
-- (void)element:(id)a3 visibilityWillChange:(BOOL)a4
+- (void)element:(id)element visibilityWillChange:(BOOL)change
 {
-  if (a4)
+  if (change)
   {
     v4 = 1;
   }
@@ -5605,9 +5605,9 @@ LABEL_6:
   [(SBSystemApertureSceneElement *)self setElementAppearState:v4];
 }
 
-- (void)element:(id)a3 visibilityDidChange:(BOOL)a4
+- (void)element:(id)element visibilityDidChange:(BOOL)change
 {
-  if (a4)
+  if (change)
   {
     v4 = 2;
   }
@@ -5620,11 +5620,11 @@ LABEL_6:
   [(SBSystemApertureSceneElement *)self setElementAppearState:v4];
 }
 
-- (void)setElementAppearState:(int)a3
+- (void)setElementAppearState:(int)state
 {
-  if (self->_elementAppearState != a3)
+  if (self->_elementAppearState != state)
   {
-    self->_elementAppearState = a3;
+    self->_elementAppearState = state;
     [(SBSystemApertureSceneElement *)self _updateSceneBackgroundStateIfNeeded];
     [(SBSystemApertureSceneElement *)self _updateActiveElementsAndAssociatedApplication];
 
@@ -5632,36 +5632,36 @@ LABEL_6:
   }
 }
 
-- (void)placeholderWrapperViewDidChangeContentView:(id)a3
+- (void)placeholderWrapperViewDidChangeContentView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
   [WeakRetained preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:self];
 }
 
-- (void)setSecureElementHost:(id)a3
+- (void)setSecureElementHost:(id)host
 {
-  objc_storeWeak(&self->_secureElementHost, a3);
+  objc_storeWeak(&self->_secureElementHost, host);
 
   [(SBSystemApertureSceneElement *)self _updateRecordingMode];
 }
 
 - (BOOL)isSecureFlipBookElement
 {
-  v2 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v3 = [v2 SBUISA_isSecureFlipBookElement];
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_isSecureFlipBookElement = [sceneClientSettings SBUISA_isSecureFlipBookElement];
 
-  return v3;
+  return sBUISA_isSecureFlipBookElement;
 }
 
 - (void)_updateRecordingMode
 {
-  v3 = [(SBSystemApertureSceneElement *)self scene];
+  scene = [(SBSystemApertureSceneElement *)self scene];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __52__SBSystemApertureSceneElement__updateRecordingMode__block_invoke;
   v4[3] = &unk_2783ACB10;
   v4[4] = self;
-  [v3 updateSettings:v4];
+  [scene updateSettings:v4];
 }
 
 void __52__SBSystemApertureSceneElement__updateRecordingMode__block_invoke(uint64_t a1, void *a2)
@@ -5697,24 +5697,24 @@ void __52__SBSystemApertureSceneElement__updateRecordingMode__block_invoke(uint6
 
 - (BOOL)isRegisteredForCapture
 {
-  v2 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v3 = [v2 SBUISA_isSecureFlipBookElementRegisteredForCapture];
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_isSecureFlipBookElementRegisteredForCapture = [sceneClientSettings SBUISA_isSecureFlipBookElementRegisteredForCapture];
 
-  return v3;
+  return sBUISA_isSecureFlipBookElementRegisteredForCapture;
 }
 
 - (NSArray)recordableConfigurations
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v4 = [v3 SBUISA_secureFlipBookRecordableConfigurations];
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_secureFlipBookRecordableConfigurations = [sceneClientSettings SBUISA_secureFlipBookRecordableConfigurations];
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = sBUISA_secureFlipBookRecordableConfigurations;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -5732,7 +5732,7 @@ void __52__SBSystemApertureSceneElement__updateRecordingMode__block_invoke(uint6
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [SBSystemApertureSceneElementSecureFlipBookConfiguration alloc];
         v13 = [(SBSystemApertureSceneElementSecureFlipBookConfiguration *)v12 initWithConfiguration:v11 scene:self->_scene delegate:self, v16];
-        [v5 addObject:v13];
+        [array addObject:v13];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -5741,31 +5741,31 @@ void __52__SBSystemApertureSceneElement__updateRecordingMode__block_invoke(uint6
     while (v8);
   }
 
-  v14 = [v5 copy];
+  v14 = [array copy];
 
   return v14;
 }
 
-- (BOOL)isSymmetricalForUILayoutDirectionInConfiguration:(id)a3 orientation:(int64_t)a4
+- (BOOL)isSymmetricalForUILayoutDirectionInConfiguration:(id)configuration orientation:(int64_t)orientation
 {
-  v6 = a3;
-  v7 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v8 = [v7 SBUISA_secureFlipBookSymmetricalConfigurations];
+  configurationCopy = configuration;
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_secureFlipBookSymmetricalConfigurations = [sceneClientSettings SBUISA_secureFlipBookSymmetricalConfigurations];
 
-  v9 = [v8 objectForKey:v6];
+  v9 = [sBUISA_secureFlipBookSymmetricalConfigurations objectForKey:configurationCopy];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  LOBYTE(v6) = [v9 containsObject:v10];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:orientation];
+  LOBYTE(configurationCopy) = [v9 containsObject:v10];
 
-  return v6;
+  return configurationCopy;
 }
 
 - (NSString)preferredConfiguration
 {
-  v2 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v3 = [v2 SBUISA_secureFlipBookPreferredConfiguration];
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_secureFlipBookPreferredConfiguration = [sceneClientSettings SBUISA_secureFlipBookPreferredConfiguration];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = sBUISA_secureFlipBookPreferredConfiguration;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -5784,31 +5784,31 @@ void __52__SBSystemApertureSceneElement__updateRecordingMode__block_invoke(uint6
   return v4;
 }
 
-- (void)setActiveConfiguration:(id)a3
+- (void)setActiveConfiguration:(id)configuration
 {
-  v5 = a3;
-  objc_storeStrong(&self->_activeConfiguration, a3);
-  v6 = [(SBSystemApertureSceneElement *)self scene];
-  if (([v6 isActive] & 1) == 0)
+  configurationCopy = configuration;
+  objc_storeStrong(&self->_activeConfiguration, configuration);
+  scene = [(SBSystemApertureSceneElement *)self scene];
+  if (([scene isActive] & 1) == 0)
   {
     goto LABEL_4;
   }
 
-  v7 = [(SBSystemApertureSceneElement *)self scene];
-  v8 = [v7 clientHandle];
-  v9 = [v8 processHandle];
-  v10 = [v9 currentState];
-  v11 = [v10 isRunning];
+  scene2 = [(SBSystemApertureSceneElement *)self scene];
+  clientHandle = [scene2 clientHandle];
+  processHandle = [clientHandle processHandle];
+  currentState = [processHandle currentState];
+  isRunning = [currentState isRunning];
 
-  if (v11)
+  if (isRunning)
   {
-    v6 = [(SBSystemApertureSceneElement *)self scene];
+    scene = [(SBSystemApertureSceneElement *)self scene];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __55__SBSystemApertureSceneElement_setActiveConfiguration___block_invoke;
     v12[3] = &unk_2783C1638;
     v12[4] = self;
-    [v6 performUpdate:v12];
+    [scene performUpdate:v12];
 LABEL_4:
   }
 }
@@ -5847,18 +5847,18 @@ void __55__SBSystemApertureSceneElement_setActiveConfiguration___block_invoke(ui
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 1;
-  v2 = [(SBSystemApertureSceneElement *)self sceneClientSettings];
-  v3 = [v2 SBUISA_secureFlipBookPreferredComponentStates];
+  sceneClientSettings = [(SBSystemApertureSceneElement *)self sceneClientSettings];
+  sBUISA_secureFlipBookPreferredComponentStates = [sceneClientSettings SBUISA_secureFlipBookPreferredComponentStates];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__SBSystemApertureSceneElement_preferredComponentStates__block_invoke;
   v7[3] = &unk_2783AD0C0;
   v7[4] = &v8;
-  [v3 enumerateKeysAndObjectsUsingBlock:v7];
+  [sBUISA_secureFlipBookPreferredComponentStates enumerateKeysAndObjectsUsingBlock:v7];
   if (*(v9 + 24))
   {
-    v4 = v3;
+    v4 = sBUISA_secureFlipBookPreferredComponentStates;
   }
 
   else
@@ -5927,31 +5927,31 @@ LABEL_12:
   }
 }
 
-- (void)setActiveComponentStates:(id)a3
+- (void)setActiveComponentStates:(id)states
 {
-  v5 = a3;
-  objc_storeStrong(&self->_activeComponentStates, a3);
-  v6 = [(SBSystemApertureSceneElement *)self scene];
-  if (([v6 isActive] & 1) == 0)
+  statesCopy = states;
+  objc_storeStrong(&self->_activeComponentStates, states);
+  scene = [(SBSystemApertureSceneElement *)self scene];
+  if (([scene isActive] & 1) == 0)
   {
     goto LABEL_4;
   }
 
-  v7 = [(SBSystemApertureSceneElement *)self scene];
-  v8 = [v7 clientHandle];
-  v9 = [v8 processHandle];
-  v10 = [v9 currentState];
-  v11 = [v10 isRunning];
+  scene2 = [(SBSystemApertureSceneElement *)self scene];
+  clientHandle = [scene2 clientHandle];
+  processHandle = [clientHandle processHandle];
+  currentState = [processHandle currentState];
+  isRunning = [currentState isRunning];
 
-  if (v11)
+  if (isRunning)
   {
-    v6 = [(SBSystemApertureSceneElement *)self scene];
+    scene = [(SBSystemApertureSceneElement *)self scene];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __57__SBSystemApertureSceneElement_setActiveComponentStates___block_invoke;
     v12[3] = &unk_2783C1638;
     v12[4] = self;
-    [v6 performUpdate:v12];
+    [scene performUpdate:v12];
 LABEL_4:
   }
 }
@@ -5986,36 +5986,36 @@ void __57__SBSystemApertureSceneElement_setActiveComponentStates___block_invoke(
 
 - (id)succinctDescription
 {
-  v3 = [(SBSystemApertureSceneElement *)self succinctDescriptionBuilder];
-  v4 = [(FBScene *)self->_scene clientHandle];
-  v5 = [v4 bundleIdentifier];
-  [v3 appendString:v5 withName:@"client"];
+  succinctDescriptionBuilder = [(SBSystemApertureSceneElement *)self succinctDescriptionBuilder];
+  clientHandle = [(FBScene *)self->_scene clientHandle];
+  bundleIdentifier = [clientHandle bundleIdentifier];
+  [succinctDescriptionBuilder appendString:bundleIdentifier withName:@"client"];
 
-  v6 = [v3 build];
+  build = [succinctDescriptionBuilder build];
 
-  return v6;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSystemApertureSceneElement *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSystemApertureSceneElement *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBSystemApertureSceneElement *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBSystemApertureSceneElement *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__SBSystemApertureSceneElement_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

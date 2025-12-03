@@ -1,35 +1,35 @@
 @interface TLKImageViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation TLKImageViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TLKImageView" hasInstanceMethod:@"tlkImage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKImage" hasInstanceMethod:@"uiImage" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TLKImageView" hasInstanceMethod:@"tlkImage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKImage" hasInstanceMethod:@"uiImage" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(TLKImageViewAccessibility *)self safeValueForKeyPath:@"tlkImage.uiImage"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  if ([v4 length])
+  if ([accessibilityLabel length])
   {
-    v5 = v4;
+    accessibilityLabel2 = accessibilityLabel;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = TLKImageViewAccessibility;
-    v5 = [(TLKImageViewAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel2 = [(TLKImageViewAccessibility *)&v8 accessibilityLabel];
   }
 
-  v6 = v5;
+  v6 = accessibilityLabel2;
 
   return v6;
 }

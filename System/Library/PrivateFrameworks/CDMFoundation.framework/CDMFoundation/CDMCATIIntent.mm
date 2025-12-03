@@ -1,6 +1,6 @@
 @interface CDMCATIIntent
 - (CDMCATIIntent)init;
-- (CDMCATIIntent)initWithGuid:(id)a3 intentName:(id)a4 ensemble:(id)a5;
+- (CDMCATIIntent)initWithGuid:(id)guid intentName:(id)name ensemble:(id)ensemble;
 @end
 
 @implementation CDMCATIIntent
@@ -12,22 +12,22 @@
   return [(CDMCATIIntent *)&v3 init];
 }
 
-- (CDMCATIIntent)initWithGuid:(id)a3 intentName:(id)a4 ensemble:(id)a5
+- (CDMCATIIntent)initWithGuid:(id)guid intentName:(id)name ensemble:(id)ensemble
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  guidCopy = guid;
+  nameCopy = name;
+  ensembleCopy = ensemble;
   v11 = [(CDMCATIIntent *)self init];
   guid = v11->_guid;
-  v11->_guid = v8;
-  v13 = v8;
+  v11->_guid = guidCopy;
+  v13 = guidCopy;
 
   intentName = v11->_intentName;
-  v11->_intentName = v9;
-  v15 = v9;
+  v11->_intentName = nameCopy;
+  v15 = nameCopy;
 
   ensemble = v11->_ensemble;
-  v11->_ensemble = v10;
+  v11->_ensemble = ensembleCopy;
 
   return v11;
 }

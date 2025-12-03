@@ -1,10 +1,10 @@
 @interface MobileCalDAVCalendarAvailabilityRequest
-+ (id)_availabilitySpansForFreeBusyComponent:(id)a3 usingCalendar:(id)a4;
-+ (id)_availabilitySpansForFreeBusyProperties:(id)a3 usingCalendar:(id)a4;
-+ (id)_parseResponse:(id)a3 withAddresses:(id)a4;
-- (MobileCalDAVCalendarAvailabilityRequest)initWithStartDate:(id)a3 endDate:(id)a4 ignoredEventID:(id)a5 addresses:(id)a6 consumer:(id)a7 account:(id)a8;
++ (id)_availabilitySpansForFreeBusyComponent:(id)component usingCalendar:(id)calendar;
++ (id)_availabilitySpansForFreeBusyProperties:(id)properties usingCalendar:(id)calendar;
++ (id)_parseResponse:(id)response withAddresses:(id)addresses;
+- (MobileCalDAVCalendarAvailabilityRequest)initWithStartDate:(id)date endDate:(id)endDate ignoredEventID:(id)d addresses:(id)addresses consumer:(id)consumer account:(id)account;
 - (NSString)description;
-- (void)_finishWithError:(id)a3;
+- (void)_finishWithError:(id)error;
 - (void)_reallyPerformRequest;
 - (void)cancel;
 - (void)dealloc;
@@ -13,27 +13,27 @@
 
 @implementation MobileCalDAVCalendarAvailabilityRequest
 
-- (MobileCalDAVCalendarAvailabilityRequest)initWithStartDate:(id)a3 endDate:(id)a4 ignoredEventID:(id)a5 addresses:(id)a6 consumer:(id)a7 account:(id)a8
+- (MobileCalDAVCalendarAvailabilityRequest)initWithStartDate:(id)date endDate:(id)endDate ignoredEventID:(id)d addresses:(id)addresses consumer:(id)consumer account:(id)account
 {
-  v27 = a3;
-  v26 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  dateCopy = date;
+  endDateCopy = endDate;
+  dCopy = d;
+  addressesCopy = addresses;
+  consumerCopy = consumer;
+  accountCopy = account;
   v28.receiver = self;
   v28.super_class = MobileCalDAVCalendarAvailabilityRequest;
   v19 = [(MobileCalDAVCalendarAvailabilityRequest *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_startDate, a3);
-    objc_storeStrong(&v20->_endDate, a4);
-    objc_storeStrong(&v20->_ignoredEventID, a5);
-    objc_storeStrong(&v20->_addresses, a6);
-    objc_storeWeak(&v20->_consumer, v17);
-    objc_storeStrong(&v20->_account, a8);
-    v21 = [NSString da_newGUID:v26];
+    objc_storeStrong(&v19->_startDate, date);
+    objc_storeStrong(&v20->_endDate, endDate);
+    objc_storeStrong(&v20->_ignoredEventID, d);
+    objc_storeStrong(&v20->_addresses, addresses);
+    objc_storeWeak(&v20->_consumer, consumerCopy);
+    objc_storeStrong(&v20->_account, account);
+    v21 = [NSString da_newGUID:endDateCopy];
     freeBusyLookupID = v20->_freeBusyLookupID;
     v20->_freeBusyLookupID = v21;
 
@@ -77,9 +77,9 @@
   v5 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v4, v5))
   {
-    v6 = [v3 transactionId];
+    transactionId = [v3 transactionId];
     v7 = 138543362;
-    v8 = v6;
+    v8 = transactionId;
     _os_log_impl(&dword_0, v4, v5, "DATransaction starting, ID: %{public}@", &v7, 0xCu);
   }
 
@@ -101,10 +101,10 @@
   [(MobileCalDAVCalendarAvailabilityRequest *)self _finishWithError:v3];
 }
 
-+ (id)_parseResponse:(id)a3 withAddresses:(id)a4
++ (id)_parseResponse:(id)response withAddresses:(id)addresses
 {
-  v5 = a3;
-  v48 = [NSSet setWithArray:a4];
+  responseCopy = response;
+  v48 = [NSSet setWithArray:addresses];
   v47 = objc_alloc_init(NSMutableDictionary);
   v6 = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
   v38 = [NSTimeZone timeZoneWithName:@"UTC"];
@@ -113,8 +113,8 @@
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v39 = v5;
-  obj = [v5 successfulICS];
+  v39 = responseCopy;
+  obj = [responseCopy successfulICS];
   v7 = [obj countByEnumeratingWithState:&v55 objects:v64 count:16];
   if (v7)
   {
@@ -136,17 +136,17 @@
         }
 
         v12 = *(*(&v55 + 1) + 8 * v11);
-        v13 = [v12 calendar];
-        v14 = [v13 calscale];
+        calendar = [v12 calendar];
+        calscale = [calendar calscale];
 
-        if (v14 && ([v14 isEqualToString:@"GREGORIAN"] & 1) == 0)
+        if (calscale && ([calscale isEqualToString:@"GREGORIAN"] & 1) == 0)
         {
           v36 = DALoggingwithCategory();
           v50 = v36;
           if (os_log_type_enabled(v36, v10))
           {
             *buf = 138412546;
-            v61 = v14;
+            v61 = calscale;
             v62 = 2112;
             v63 = v12;
             _os_log_impl(&dword_0, v36, v10, "Calendar scale unsupported: [%@].  Will not use iCalendar document in free/busy response: [%@]", buf, 0x16u);
@@ -159,15 +159,15 @@
           v54 = 0u;
           v51 = 0u;
           v52 = 0u;
-          v15 = [v12 calendar];
-          v16 = [v15 components];
+          calendar2 = [v12 calendar];
+          components = [calendar2 components];
 
-          v50 = v16;
-          v17 = [v16 countByEnumeratingWithState:&v51 objects:v59 count:16];
+          v50 = components;
+          v17 = [components countByEnumeratingWithState:&v51 objects:v59 count:16];
           if (v17)
           {
             v18 = v17;
-            v44 = v14;
+            v44 = calscale;
             v45 = v11;
             v19 = *v52;
             v20 = type;
@@ -193,25 +193,25 @@
                   if (v27 && [v27 count])
                   {
                     v29 = v6;
-                    v30 = [v26 attendee];
-                    v31 = [v30 firstObject];
+                    attendee = [v26 attendee];
+                    firstObject = [attendee firstObject];
 
-                    v32 = [v31 value];
-                    v33 = [v32 absoluteString];
-                    if (([v48 containsObject:v33] & 1) == 0 && objc_msgSend(v33, "hasMailto"))
+                    value = [firstObject value];
+                    absoluteString = [value absoluteString];
+                    if (([v48 containsObject:absoluteString] & 1) == 0 && objc_msgSend(absoluteString, "hasMailto"))
                     {
-                      v34 = [v33 stringRemovingMailto];
-                      if ([v48 containsObject:v34])
+                      stringRemovingMailto = [absoluteString stringRemovingMailto];
+                      if ([v48 containsObject:stringRemovingMailto])
                       {
-                        v46 = v34;
+                        v46 = stringRemovingMailto;
 
-                        v33 = v46;
+                        absoluteString = v46;
                       }
                     }
 
-                    if (v33)
+                    if (absoluteString)
                     {
-                      [v47 setObject:v28 forKey:v33];
+                      [v47 setObject:v28 forKey:absoluteString];
                     }
 
                     else
@@ -232,12 +232,12 @@
 
                   else
                   {
-                    v31 = DALoggingwithCategory();
-                    if (os_log_type_enabled(v31, v20))
+                    firstObject = DALoggingwithCategory();
+                    if (os_log_type_enabled(firstObject, v20))
                     {
                       *buf = 138412290;
                       v61 = v26;
-                      _os_log_impl(&dword_0, v31, v20, "No availability spans generated for component: [%@]", buf, 0xCu);
+                      _os_log_impl(&dword_0, firstObject, v20, "No availability spans generated for component: [%@]", buf, 0xCu);
                     }
                   }
 
@@ -252,7 +252,7 @@
             v9 = v41;
             v8 = v42;
             v10 = v40;
-            v14 = v44;
+            calscale = v44;
             v11 = v45;
           }
         }
@@ -270,16 +270,16 @@
   return v47;
 }
 
-+ (id)_availabilitySpansForFreeBusyComponent:(id)a3 usingCalendar:(id)a4
++ (id)_availabilitySpansForFreeBusyComponent:(id)component usingCalendar:(id)calendar
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 dtstart];
-  v8 = [v7 components];
-  v9 = [v6 dateFromComponents:v8];
-  v10 = [v5 dtend];
-  v11 = [v10 components];
-  v32 = [v6 dateFromComponents:v11];
+  componentCopy = component;
+  calendarCopy = calendar;
+  dtstart = [componentCopy dtstart];
+  components = [dtstart components];
+  v9 = [calendarCopy dateFromComponents:components];
+  dtend = [componentCopy dtend];
+  components2 = [dtend components];
+  v32 = [calendarCopy dateFromComponents:components2];
   v12 = DALoggingwithCategory();
   v13 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v12, v13))
@@ -289,14 +289,14 @@
     v37 = 2112;
     v38 = v32;
     v39 = 2112;
-    v40 = v5;
+    v40 = componentCopy;
     _os_log_impl(&dword_0, v12, v13, "Free/busy window start date: [%@] end date: [%@].  Component: [%@]", buf, 0x20u);
   }
 
-  v14 = [v5 freebusy];
-  if ([v14 count])
+  freebusy = [componentCopy freebusy];
+  if ([freebusy count])
   {
-    v15 = [objc_opt_class() _availabilitySpansForFreeBusyProperties:v14 usingCalendar:v6];
+    v15 = [objc_opt_class() _availabilitySpansForFreeBusyProperties:freebusy usingCalendar:calendarCopy];
     v16 = v15;
     if (v15 && [v15 count])
     {
@@ -310,21 +310,21 @@ LABEL_13:
     }
 
     v30 = v9;
-    v17 = v10;
-    v18 = v8;
-    v19 = v7;
+    v17 = dtend;
+    v18 = components;
+    v19 = dtstart;
     v20 = DALoggingwithCategory();
     v21 = _CPLog_to_os_log_type[4];
     if (os_log_type_enabled(v20, v21))
     {
       *buf = 138412290;
-      v36 = v14;
+      v36 = freebusy;
       _os_log_impl(&dword_0, v20, v21, "No spans found in properties: [%@]", buf, 0xCu);
     }
 
-    v7 = v19;
-    v8 = v18;
-    v10 = v17;
+    dtstart = v19;
+    components = v18;
+    dtend = v17;
     v9 = v30;
   }
 
@@ -334,7 +334,7 @@ LABEL_13:
     if (os_log_type_enabled(v22, v13))
     {
       *buf = 138412290;
-      v36 = v5;
+      v36 = componentCopy;
       _os_log_impl(&dword_0, v22, v13, "No free/busy properties found.  Counting entire period as free.  Component: [%@]", buf, 0xCu);
     }
 
@@ -349,9 +349,9 @@ LABEL_13:
   }
 
 LABEL_14:
-  v31 = v10;
-  v23 = v8;
-  v24 = v7;
+  v31 = dtend;
+  v23 = components;
+  v24 = dtstart;
   v25 = DALoggingwithCategory();
   v26 = _CPLog_to_os_log_type[4];
   if (os_log_type_enabled(v25, v26))
@@ -368,25 +368,25 @@ LABEL_14:
   v28 = [NSArray arrayWithObjects:&v33 count:1];
 
   v16 = v28;
-  v7 = v24;
-  v8 = v23;
-  v10 = v31;
+  dtstart = v24;
+  components = v23;
+  dtend = v31;
 LABEL_17:
 
   return v16;
 }
 
-+ (id)_availabilitySpansForFreeBusyProperties:(id)a3 usingCalendar:(id)a4
++ (id)_availabilitySpansForFreeBusyProperties:(id)properties usingCalendar:(id)calendar
 {
-  v5 = a3;
-  v6 = a4;
+  propertiesCopy = properties;
+  calendarCopy = calendar;
   v37 = objc_alloc_init(NSMutableArray);
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v7 = v5;
-  v8 = v6;
+  v7 = propertiesCopy;
+  v8 = calendarCopy;
   obj = v7;
   v9 = [v7 countByEnumeratingWithState:&v46 objects:v58 count:16];
   if (v9)
@@ -395,7 +395,7 @@ LABEL_17:
     v45 = *v47;
     *&v10 = 138412290;
     v36 = v10;
-    v38 = v6;
+    v38 = calendarCopy;
     type = _CPLog_to_os_log_type[4];
     do
     {
@@ -411,14 +411,14 @@ LABEL_17:
         }
 
         v15 = *(*(&v46 + 1) + 8 * v12);
-        v16 = [v15 fbtype];
-        v17 = [v15 value];
-        v18 = [v17 start];
-        v19 = [v17 end];
-        v20 = [v17 duration];
-        if (v18)
+        fbtype = [v15 fbtype];
+        value = [v15 value];
+        start = [value start];
+        v19 = [value end];
+        duration = [value duration];
+        if (start)
         {
-          v21 = (v19 | v20) == 0;
+          v21 = (v19 | duration) == 0;
         }
 
         else
@@ -428,10 +428,10 @@ LABEL_17:
 
         if (!v21)
         {
-          v39 = v16;
-          v22 = [v18 components];
+          v39 = fbtype;
+          components = [start components];
           v23 = v14;
-          v24 = [v14 dateFromComponents:v22];
+          v24 = [v14 dateFromComponents:components];
           if (v19)
           {
             [v19 components];
@@ -444,7 +444,7 @@ LABEL_17:
 
           else
           {
-            [v20 timeInterval];
+            [duration timeInterval];
             [v24 dateByAddingTimeInterval:?];
             v27 = v24;
             v26 = v11 = v13;
@@ -467,7 +467,7 @@ LABEL_17:
             if (os_log_type_enabled(v29, type))
             {
               *buf = 138412546;
-              v51 = v17;
+              v51 = value;
               v52 = 2112;
               v53 = v15;
               v30 = v29;
@@ -519,18 +519,18 @@ LABEL_27:
           goto LABEL_34;
         }
 
-        v22 = DALoggingwithCategory();
-        if (os_log_type_enabled(v22, type))
+        components = DALoggingwithCategory();
+        if (os_log_type_enabled(components, type))
         {
           *buf = 138413058;
-          v51 = v18;
+          v51 = start;
           v52 = 2112;
           v53 = v19;
           v54 = 2112;
-          v55 = v20;
+          v55 = duration;
           v56 = 2112;
           v57 = v15;
-          _os_log_impl(&dword_0, v22, type, "Period not valid.  Start: [%@]  End: [%@] Duration: [%@].  Property: [%@]", buf, 0x2Au);
+          _os_log_impl(&dword_0, components, type, "Period not valid.  Start: [%@]  End: [%@] Duration: [%@].  Property: [%@]", buf, 0x2Au);
         }
 
         v8 = v14;
@@ -552,19 +552,19 @@ LABEL_34:
 
 - (void)_reallyPerformRequest
 {
-  v3 = [(MobileCalDAVDADaemonAccount *)self->_account mobileCalDAVAccount];
-  v4 = [v3 mainPrincipal];
+  mobileCalDAVAccount = [(MobileCalDAVDADaemonAccount *)self->_account mobileCalDAVAccount];
+  mainPrincipal = [mobileCalDAVAccount mainPrincipal];
 
-  if ([v4 supportsFreebusy])
+  if ([mainPrincipal supportsFreebusy])
   {
-    v5 = [v4 preferredCalendarUserAddress];
-    v6 = [v5 absoluteString];
+    preferredCalendarUserAddress = [mainPrincipal preferredCalendarUserAddress];
+    absoluteString = [preferredCalendarUserAddress absoluteString];
 
-    v7 = [v4 outboxURL];
+    outboxURL = [mainPrincipal outboxURL];
     v8 = mobileCalDAVProdID();
     LOBYTE(v14) = 0;
-    v9 = [[CalDAVFreeBusyLookupTask alloc] initWithOrganizer:v6 originator:v6 attendees:self->_addresses start:self->_startDate end:self->_endDate outboxURL:v7 maskedUID:self->_ignoredEventID extendedFreeBusy:v14 prodID:v8];
-    [v9 setAccountInfoProvider:v4];
+    v9 = [[CalDAVFreeBusyLookupTask alloc] initWithOrganizer:absoluteString originator:absoluteString attendees:self->_addresses start:self->_startDate end:self->_endDate outboxURL:outboxURL maskedUID:self->_ignoredEventID extendedFreeBusy:v14 prodID:v8];
+    [v9 setAccountInfoProvider:mainPrincipal];
     objc_initWeak(&location, v9);
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
@@ -594,18 +594,18 @@ LABEL_34:
     if (os_log_type_enabled(v12, v13))
     {
       *buf = 138412290;
-      v19 = v4;
+      v19 = mainPrincipal;
       _os_log_impl(&dword_0, v12, v13, "The following principal indicates that free/busy is not supported, so no request will be sent: [%@]", buf, 0xCu);
     }
 
-    v6 = [NSError errorWithDomain:DAErrorDomain code:81 userInfo:0];
-    [(MobileCalDAVCalendarAvailabilityRequest *)self _finishWithError:v6];
+    absoluteString = [NSError errorWithDomain:DAErrorDomain code:81 userInfo:0];
+    [(MobileCalDAVCalendarAvailabilityRequest *)self _finishWithError:absoluteString];
   }
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (!self->_finished)
   {
     v5 = DALoggingwithCategory();
@@ -613,15 +613,15 @@ LABEL_34:
     if (os_log_type_enabled(v5, v6))
     {
       v8 = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
-      v11 = v4;
+      v11 = errorCopy;
       _os_log_impl(&dword_0, v5, v6, "[%@] finished with error %@", &v8, 0x16u);
     }
 
     self->_finished = 1;
     WeakRetained = objc_loadWeakRetained(&self->_consumer);
-    [WeakRetained calendarAvailabilityRequestFinishedWithError:v4];
+    [WeakRetained calendarAvailabilityRequestFinishedWithError:errorCopy];
 
     [(MobileCalDAVDADaemonAccount *)self->_account calendarAvailabilityRequestIsGoingAway:self];
   }

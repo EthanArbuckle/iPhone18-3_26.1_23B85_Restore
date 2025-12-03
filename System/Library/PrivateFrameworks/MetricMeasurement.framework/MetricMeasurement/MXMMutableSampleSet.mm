@@ -1,94 +1,94 @@
 @interface MXMMutableSampleSet
-- (void)appendAttribute:(id)a3;
-- (void)appendDoubleValue:(double)a3 timestamp:(unint64_t)a4;
-- (void)appendFloatValue:(float)a3 timestamp:(unint64_t)a4;
-- (void)appendIntValue:(int)a3 timestamp:(unint64_t)a4;
-- (void)appendIntegerValue:(int64_t)a3 timestamp:(unint64_t)a4;
-- (void)appendSample:(id)a3;
-- (void)appendSet:(id)a3;
-- (void)appendUnsignedIntValue:(unsigned int)a3 timestamp:(unint64_t)a4;
-- (void)appendUnsignedIntegerValue:(unint64_t)a3 timestamp:(unint64_t)a4;
+- (void)appendAttribute:(id)attribute;
+- (void)appendDoubleValue:(double)value timestamp:(unint64_t)timestamp;
+- (void)appendFloatValue:(float)value timestamp:(unint64_t)timestamp;
+- (void)appendIntValue:(int)value timestamp:(unint64_t)timestamp;
+- (void)appendIntegerValue:(int64_t)value timestamp:(unint64_t)timestamp;
+- (void)appendSample:(id)sample;
+- (void)appendSet:(id)set;
+- (void)appendUnsignedIntValue:(unsigned int)value timestamp:(unint64_t)timestamp;
+- (void)appendUnsignedIntegerValue:(unint64_t)value timestamp:(unint64_t)timestamp;
 @end
 
 @implementation MXMMutableSampleSet
 
-- (void)appendSet:(id)a3
+- (void)appendSet:(id)set
 {
-  v8 = a3;
-  v5 = [(MXMSampleSet *)self attributes];
-  v6 = [v8 attributes];
-  v7 = [v5 isEqualToSet:v6];
+  setCopy = set;
+  attributes = [(MXMSampleSet *)self attributes];
+  attributes2 = [setCopy attributes];
+  v7 = [attributes isEqualToSet:attributes2];
 
   if ((v7 & 1) == 0)
   {
     [(MXMMutableSampleSet *)a2 appendSet:?];
   }
 
-  [(MXMSampleSet *)self _appendSet:v8];
+  [(MXMSampleSet *)self _appendSet:setCopy];
 }
 
-- (void)appendSample:(id)a3
+- (void)appendSample:(id)sample
 {
-  v8 = a3;
-  v5 = [(MXMSampleSet *)self attributes];
-  v6 = [v8 attributes];
-  v7 = [v5 isEqualToSet:v6];
+  sampleCopy = sample;
+  attributes = [(MXMSampleSet *)self attributes];
+  attributes2 = [sampleCopy attributes];
+  v7 = [attributes isEqualToSet:attributes2];
 
   if ((v7 & 1) == 0)
   {
     [(MXMMutableSampleSet *)a2 appendSample:?];
   }
 
-  [(MXMSampleSet *)self _appendSample:v8];
+  [(MXMSampleSet *)self _appendSample:sampleCopy];
 }
 
-- (void)appendAttribute:(id)a3
+- (void)appendAttribute:(id)attribute
 {
   v3.receiver = self;
   v3.super_class = MXMMutableSampleSet;
-  [(MXMSampleSet *)&v3 _appendAttribute:a3];
+  [(MXMSampleSet *)&v3 _appendAttribute:attribute];
 }
 
-- (void)appendIntValue:(int)a3 timestamp:(unint64_t)a4
+- (void)appendIntValue:(int)value timestamp:(unint64_t)timestamp
 {
   v4.receiver = self;
   v4.super_class = MXMMutableSampleSet;
-  [(MXMSampleSet *)&v4 _appendDoubleValue:a4 timestamp:a3];
+  [(MXMSampleSet *)&v4 _appendDoubleValue:timestamp timestamp:value];
 }
 
-- (void)appendIntegerValue:(int64_t)a3 timestamp:(unint64_t)a4
+- (void)appendIntegerValue:(int64_t)value timestamp:(unint64_t)timestamp
 {
   v4.receiver = self;
   v4.super_class = MXMMutableSampleSet;
-  [(MXMSampleSet *)&v4 _appendDoubleValue:a4 timestamp:a3];
+  [(MXMSampleSet *)&v4 _appendDoubleValue:timestamp timestamp:value];
 }
 
-- (void)appendUnsignedIntValue:(unsigned int)a3 timestamp:(unint64_t)a4
+- (void)appendUnsignedIntValue:(unsigned int)value timestamp:(unint64_t)timestamp
 {
   v4.receiver = self;
   v4.super_class = MXMMutableSampleSet;
-  [(MXMSampleSet *)&v4 _appendDoubleValue:a4 timestamp:a3];
+  [(MXMSampleSet *)&v4 _appendDoubleValue:timestamp timestamp:value];
 }
 
-- (void)appendUnsignedIntegerValue:(unint64_t)a3 timestamp:(unint64_t)a4
+- (void)appendUnsignedIntegerValue:(unint64_t)value timestamp:(unint64_t)timestamp
 {
   v4.receiver = self;
   v4.super_class = MXMMutableSampleSet;
-  [(MXMSampleSet *)&v4 _appendDoubleValue:a4 timestamp:a3];
+  [(MXMSampleSet *)&v4 _appendDoubleValue:timestamp timestamp:value];
 }
 
-- (void)appendDoubleValue:(double)a3 timestamp:(unint64_t)a4
+- (void)appendDoubleValue:(double)value timestamp:(unint64_t)timestamp
 {
   v4.receiver = self;
   v4.super_class = MXMMutableSampleSet;
-  [(MXMSampleSet *)&v4 _appendDoubleValue:a4 timestamp:a3];
+  [(MXMSampleSet *)&v4 _appendDoubleValue:timestamp timestamp:value];
 }
 
-- (void)appendFloatValue:(float)a3 timestamp:(unint64_t)a4
+- (void)appendFloatValue:(float)value timestamp:(unint64_t)timestamp
 {
   v4.receiver = self;
   v4.super_class = MXMMutableSampleSet;
-  [(MXMSampleSet *)&v4 _appendDoubleValue:a4 timestamp:a3];
+  [(MXMSampleSet *)&v4 _appendDoubleValue:timestamp timestamp:value];
 }
 
 - (void)appendSet:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

@@ -1,26 +1,26 @@
 @interface PESaveRequest
 - (BOOL)supportsProgress;
 - (PESaveRequest)init;
-- (PESaveRequest)initWithPhoto:(id)a3 compositionController:(id)a4 contentEditingOutput:(id)a5 livePhotoState:(unsigned __int16)a6 applyVideoOrientationAsMetadata:(BOOL)a7;
-- (PESaveRequest)initWithPhoto:(id)a3 contentEditingOutput:(id)a4 livePhotoState:(unsigned __int16)a5 applyVideoOrientationAsMetadata:(BOOL)a6;
+- (PESaveRequest)initWithPhoto:(id)photo compositionController:(id)controller contentEditingOutput:(id)output livePhotoState:(unsigned __int16)state applyVideoOrientationAsMetadata:(BOOL)metadata;
+- (PESaveRequest)initWithPhoto:(id)photo contentEditingOutput:(id)output livePhotoState:(unsigned __int16)state applyVideoOrientationAsMetadata:(BOOL)metadata;
 - (double)progress;
-- (void)_finishWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)_finishWithSuccess:(BOOL)success error:(id)error;
 - (void)_performRevertToOriginalOperation;
 - (void)_performSaveContentEditingOutput;
 - (void)_performSaveEditsOperation;
-- (void)_transitionToState:(int64_t)a3;
-- (void)beginSaveOperationWithCompletionHandler:(id)a3;
+- (void)_transitionToState:(int64_t)state;
+- (void)beginSaveOperationWithCompletionHandler:(id)handler;
 - (void)cancelSaveOperation;
 @end
 
 @implementation PESaveRequest
 
-- (void)_transitionToState:(int64_t)a3
+- (void)_transitionToState:(int64_t)state
 {
   currentState = self->_currentState;
   if (!currentState)
   {
-    if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+    if ((state & 0xFFFFFFFFFFFFFFFDLL) == 1)
     {
       goto LABEL_7;
     }
@@ -28,15 +28,15 @@
     goto LABEL_6;
   }
 
-  if (currentState != 1 || (a3 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  if (currentState != 1 || (state & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
 LABEL_6:
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PESaveRequest.m" lineNumber:305 description:{@"Invalid transition %ld %ld", self->_currentState, a3}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PESaveRequest.m" lineNumber:305 description:{@"Invalid transition %ld %ld", self->_currentState, state}];
   }
 
 LABEL_7:
-  self->_currentState = a3;
+  self->_currentState = state;
 }
 
 - (double)progress
@@ -44,9 +44,9 @@ LABEL_7:
   result = 1.0;
   if (self->_currentState != 2)
   {
-    v4 = [(PESaveRequest *)self supportsProgress];
+    supportsProgress = [(PESaveRequest *)self supportsProgress];
     result = 0.0;
-    if (v4)
+    if (supportsProgress)
     {
       videoExportProgress = self->_videoExportProgress;
       if (videoExportProgress)
@@ -62,23 +62,23 @@ LABEL_7:
 
 - (BOOL)supportsProgress
 {
-  v3 = [(PESaveRequest *)self compositionController];
+  compositionController = [(PESaveRequest *)self compositionController];
 
-  if (!v3)
+  if (!compositionController)
   {
     return 0;
   }
 
-  v4 = [(PESaveRequest *)self photo];
-  if ([v4 isVideo])
+  photo = [(PESaveRequest *)self photo];
+  if ([photo isVideo])
   {
     IsPlayable = 1;
   }
 
-  else if ([v4 isPhotoIris])
+  else if ([photo isPhotoIris])
   {
     [(PESaveRequest *)self videoComplementState];
-    [v4 hasAdjustments];
+    [photo hasAdjustments];
     IsPlayable = PHVideoComplementVisibilityStateIsPlayable();
   }
 
@@ -90,11 +90,11 @@ LABEL_7:
   return IsPlayable;
 }
 
-- (void)_finishWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_finishWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
+  successCopy = success;
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   v7 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -102,13 +102,13 @@ LABEL_7:
     v17 = 134218242;
     v18 = *&currentState;
     v19 = 2112;
-    v20 = v6;
+    v20 = errorCopy;
     _os_log_impl(&dword_25E6E9000, v7, OS_LOG_TYPE_DEFAULT, "[PESaveRequest _finishWithSuccess:error:] - current state: %ld; error: %@", &v17, 0x16u);
   }
 
   if ((self->_currentState & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
-    if (v4)
+    if (successCopy)
     {
       v9 = 2;
     }
@@ -133,7 +133,7 @@ LABEL_7:
     completionHandler = self->_completionHandler;
     if (completionHandler)
     {
-      completionHandler[2](completionHandler, v4, v6);
+      completionHandler[2](completionHandler, successCopy, errorCopy);
       v15 = self->_completionHandler;
       self->_completionHandler = 0;
     }
@@ -183,13 +183,13 @@ LABEL_7:
     [v9 sendEvent:@"com.apple.photos.CPAnalytics.userChoices.livePhotoEffectRevertedToOriginal" withPayload:v12];
   }
 
-  v13 = [(PHAsset *)self->_photo photoLibrary];
+  photoLibrary = [(PHAsset *)self->_photo photoLibrary];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __50__PESaveRequest__performRevertToOriginalOperation__block_invoke;
   v18[3] = &unk_279A31000;
   v19 = v6;
-  v20 = self;
+  selfCopy = self;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __50__PESaveRequest__performRevertToOriginalOperation__block_invoke_60;
@@ -198,7 +198,7 @@ LABEL_7:
   v17 = v8;
   v14 = v8;
   v15 = v6;
-  [v13 performChanges:v18 completionHandler:v16];
+  [photoLibrary performChanges:v18 completionHandler:v16];
 }
 
 void __50__PESaveRequest__performRevertToOriginalOperation__block_invoke(uint64_t a1)
@@ -276,13 +276,13 @@ void __50__PESaveRequest__performRevertToOriginalOperation__block_invoke_60(uint
   }
 
   v8 = [MEMORY[0x277CBEAA8] now];
-  v9 = [(PHAsset *)self->_photo photoLibrary];
+  photoLibrary = [(PHAsset *)self->_photo photoLibrary];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __49__PESaveRequest__performSaveContentEditingOutput__block_invoke;
   v14[3] = &unk_279A31000;
   v15 = v6;
-  v16 = self;
+  selfCopy = self;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __49__PESaveRequest__performSaveContentEditingOutput__block_invoke_53;
@@ -291,7 +291,7 @@ void __50__PESaveRequest__performRevertToOriginalOperation__block_invoke_60(uint
   v13 = v8;
   v10 = v8;
   v11 = v6;
-  [v9 performChanges:v14 completionHandler:v12];
+  [photoLibrary performChanges:v14 completionHandler:v12];
 }
 
 void __49__PESaveRequest__performSaveContentEditingOutput__block_invoke(uint64_t a1)
@@ -381,16 +381,16 @@ void __49__PESaveRequest__performSaveContentEditingOutput__block_invoke_53(uint6
   [(PESerializationUtilityExportSettings *)v5 setScalePolicy:v6];
 
   [(PESerializationUtilityExportSettings *)v5 setApplyVideoOrientationAsMetadata:[(PESaveRequest *)self applyVideoOrientationAsMetadata]];
-  v7 = [(PESaveRequest *)self compositionController];
-  v8 = [(PESaveRequest *)self contentEditingOutput];
+  compositionController = [(PESaveRequest *)self compositionController];
+  contentEditingOutput = [(PESaveRequest *)self contentEditingOutput];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __43__PESaveRequest__performSaveEditsOperation__block_invoke;
   v12[3] = &unk_279A2FFD8;
   v13 = v4;
-  v14 = self;
+  selfCopy = self;
   v9 = v4;
-  v10 = [PESerializationUtility exportCompositionController:v7 forContentEditingOutput:v8 settings:v5 completionQueue:MEMORY[0x277D85CD0] completion:v12];
+  v10 = [PESerializationUtility exportCompositionController:compositionController forContentEditingOutput:contentEditingOutput settings:v5 completionQueue:MEMORY[0x277D85CD0] completion:v12];
   videoExportProgress = self->_videoExportProgress;
   self->_videoExportProgress = v10;
 }
@@ -431,20 +431,20 @@ void __43__PESaveRequest__performSaveEditsOperation__block_invoke(uint64_t a1, i
   }
 }
 
-- (void)beginSaveOperationWithCompletionHandler:(id)a3
+- (void)beginSaveOperationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(PESaveRequest *)self _transitionToState:1];
-  v5 = [v4 copy];
+  v5 = [handlerCopy copy];
 
   completionHandler = self->_completionHandler;
   self->_completionHandler = v5;
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   self->_beginTimestamp = v7;
-  v8 = [(PESaveRequest *)self compositionController];
+  compositionController = [(PESaveRequest *)self compositionController];
 
-  if (v8)
+  if (compositionController)
   {
 
     [(PESaveRequest *)self _performSaveEditsOperation];
@@ -463,11 +463,11 @@ void __43__PESaveRequest__performSaveEditsOperation__block_invoke(uint64_t a1, i
   }
 }
 
-- (PESaveRequest)initWithPhoto:(id)a3 compositionController:(id)a4 contentEditingOutput:(id)a5 livePhotoState:(unsigned __int16)a6 applyVideoOrientationAsMetadata:(BOOL)a7
+- (PESaveRequest)initWithPhoto:(id)photo compositionController:(id)controller contentEditingOutput:(id)output livePhotoState:(unsigned __int16)state applyVideoOrientationAsMetadata:(BOOL)metadata
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  photoCopy = photo;
+  controllerCopy = controller;
+  outputCopy = output;
   v19.receiver = self;
   v19.super_class = PESaveRequest;
   v16 = [(PESaveRequest *)&v19 init];
@@ -475,38 +475,38 @@ void __43__PESaveRequest__performSaveEditsOperation__block_invoke(uint64_t a1, i
   if (v16)
   {
     v16->_identifier = atomic_fetch_add(_mediaDestinationRequestIdentifier, 1u) + 1;
-    objc_storeStrong(&v16->_photo, a3);
-    objc_storeStrong(&v17->_compositionController, a4);
-    objc_storeStrong(&v17->_contentEditingOutput, a5);
+    objc_storeStrong(&v16->_photo, photo);
+    objc_storeStrong(&v17->_compositionController, controller);
+    objc_storeStrong(&v17->_contentEditingOutput, output);
     v17->_currentState = 0;
-    v17->_videoComplementState = a6;
-    v17->_applyVideoOrientationAsMetadata = a7;
+    v17->_videoComplementState = state;
+    v17->_applyVideoOrientationAsMetadata = metadata;
   }
 
   return v17;
 }
 
-- (PESaveRequest)initWithPhoto:(id)a3 contentEditingOutput:(id)a4 livePhotoState:(unsigned __int16)a5 applyVideoOrientationAsMetadata:(BOOL)a6
+- (PESaveRequest)initWithPhoto:(id)photo contentEditingOutput:(id)output livePhotoState:(unsigned __int16)state applyVideoOrientationAsMetadata:(BOOL)metadata
 {
-  v6 = a6;
-  v7 = a5;
-  v11 = a3;
-  v12 = a4;
-  if (!v12)
+  metadataCopy = metadata;
+  stateCopy = state;
+  photoCopy = photo;
+  outputCopy = output;
+  if (!outputCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PESaveRequest.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"contentEditingOutput"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PESaveRequest.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"contentEditingOutput"}];
   }
 
-  v13 = [(PESaveRequest *)self initWithPhoto:v11 compositionController:0 contentEditingOutput:v12 livePhotoState:v7 applyVideoOrientationAsMetadata:v6];
+  v13 = [(PESaveRequest *)self initWithPhoto:photoCopy compositionController:0 contentEditingOutput:outputCopy livePhotoState:stateCopy applyVideoOrientationAsMetadata:metadataCopy];
 
   return v13;
 }
 
 - (PESaveRequest)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PESaveRequest.m" lineNumber:85 description:@"use the designated initializer"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PESaveRequest.m" lineNumber:85 description:@"use the designated initializer"];
 
   return 0;
 }

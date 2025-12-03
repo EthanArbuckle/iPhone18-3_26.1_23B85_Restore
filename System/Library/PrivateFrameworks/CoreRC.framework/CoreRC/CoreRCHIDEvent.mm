@@ -1,17 +1,17 @@
 @interface CoreRCHIDEvent
-- (BOOL)getCECUserControl:(CECUserControl *)a3 pressed:(BOOL *)a4;
-- (BOOL)isEqualToRCHIDEvent:(id)a3;
+- (BOOL)getCECUserControl:(CECUserControl *)control pressed:(BOOL *)pressed;
+- (BOOL)isEqualToRCHIDEvent:(id)event;
 - (BOOL)isRepeat;
-- (CoreRCHIDEvent)initWithCECAudioVolumeLevel:(unsigned __int8)a3;
-- (CoreRCHIDEvent)initWithCoder:(id)a3;
-- (CoreRCHIDEvent)initWithIOHIDEvent:(__IOHIDEvent *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CoreRCHIDEvent)initWithCECAudioVolumeLevel:(unsigned __int8)level;
+- (CoreRCHIDEvent)initWithCoder:(id)coder;
+- (CoreRCHIDEvent)initWithIOHIDEvent:(__IOHIDEvent *)event;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (id)initKeyboardEventWithUsagePage:(unsigned int)a3 usageID:(unsigned int)a4 pressed:(BOOL)a5 timestamp:(unint64_t)a6;
+- (id)initKeyboardEventWithUsagePage:(unsigned int)page usageID:(unsigned int)d pressed:(BOOL)pressed timestamp:(unint64_t)timestamp;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)getCommand:(unint64_t *)a3 pressed:(BOOL *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)getCommand:(unint64_t *)command pressed:(BOOL *)pressed;
 @end
 
 @implementation CoreRCHIDEvent
@@ -29,7 +29,7 @@
   [(CoreRCHIDEvent *)&v4 dealloc];
 }
 
-- (CoreRCHIDEvent)initWithIOHIDEvent:(__IOHIDEvent *)a3
+- (CoreRCHIDEvent)initWithIOHIDEvent:(__IOHIDEvent *)event
 {
   v7.receiver = self;
   v7.super_class = CoreRCHIDEvent;
@@ -37,10 +37,10 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (event)
     {
-      v4->_event = a3;
-      CFRetain(a3);
+      v4->_event = event;
+      CFRetain(event);
     }
 
     else
@@ -54,14 +54,14 @@
   return v5;
 }
 
-- (CoreRCHIDEvent)initWithCoder:(id)a3
+- (CoreRCHIDEvent)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CoreRCHIDEvent;
   v4 = [(CoreRCHIDEvent *)&v8 init];
   if (v4)
   {
-    [a3 decodeObjectOfClass:objc_opt_class() forKey:@"IOHIDEvent"];
+    [coder decodeObjectOfClass:objc_opt_class() forKey:@"IOHIDEvent"];
     v5 = *MEMORY[0x277CBECE8];
     v6 = IOHIDEventCreateWithData();
     if (v6)
@@ -80,15 +80,15 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *MEMORY[0x277CBECE8];
   [(CoreRCHIDEvent *)self event];
   Data = IOHIDEventCreateData();
-  [a3 encodeObject:Data forKey:@"IOHIDEvent"];
+  [coder encodeObject:Data forKey:@"IOHIDEvent"];
 }
 
-- (id)initKeyboardEventWithUsagePage:(unsigned int)a3 usageID:(unsigned int)a4 pressed:(BOOL)a5 timestamp:(unint64_t)a6
+- (id)initKeyboardEventWithUsagePage:(unsigned int)page usageID:(unsigned int)d pressed:(BOOL)pressed timestamp:(unint64_t)timestamp
 {
   v7 = *MEMORY[0x277CBECE8];
   KeyboardEvent = IOHIDEventCreateKeyboardEvent();
@@ -161,12 +161,12 @@
   return v3;
 }
 
-- (BOOL)isEqualToRCHIDEvent:(id)a3
+- (BOOL)isEqualToRCHIDEvent:(id)event
 {
-  v4 = [a3 event];
+  event = [event event];
   if (self->_event)
   {
-    v5 = v4 == 0;
+    v5 = event == 0;
   }
 
   else
@@ -223,36 +223,36 @@
   return event;
 }
 
-- (void)getCommand:(unint64_t *)a3 pressed:(BOOL *)a4
+- (void)getCommand:(unint64_t *)command pressed:(BOOL *)pressed
 {
-  if (self->_event && IOHIDEventGetType() == 3 && (v7 = self->_event, IntegerValue = IOHIDEventGetIntegerValue(), v9 = self->_event, v10 = IOHIDEventGetIntegerValue(), CoreRCCommandFromHIDUsage(a3, IntegerValue, v10)))
+  if (self->_event && IOHIDEventGetType() == 3 && (v7 = self->_event, IntegerValue = IOHIDEventGetIntegerValue(), v9 = self->_event, v10 = IOHIDEventGetIntegerValue(), CoreRCCommandFromHIDUsage(command, IntegerValue, v10)))
   {
     event = self->_event;
-    *a4 = IOHIDEventGetIntegerValue() != 0;
+    *pressed = IOHIDEventGetIntegerValue() != 0;
   }
 
   else
   {
-    *a3 = 0;
+    *command = 0;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(CoreRCHIDEvent *)self event];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  event = [(CoreRCHIDEvent *)self event];
 
-  return [v4 initWithIOHIDEvent:v5];
+  return [v4 initWithIOHIDEvent:event];
 }
 
-- (BOOL)getCECUserControl:(CECUserControl *)a3 pressed:(BOOL *)a4
+- (BOOL)getCECUserControl:(CECUserControl *)control pressed:(BOOL *)pressed
 {
   v6 = 0;
-  [(CoreRCHIDEvent *)self getCommand:&v6 pressed:a4];
-  return CECUserControlForCoreRCCommand(a3, v6);
+  [(CoreRCHIDEvent *)self getCommand:&v6 pressed:pressed];
+  return CECUserControlForCoreRCCommand(control, v6);
 }
 
-- (CoreRCHIDEvent)initWithCECAudioVolumeLevel:(unsigned __int8)a3
+- (CoreRCHIDEvent)initWithCECAudioVolumeLevel:(unsigned __int8)level
 {
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {

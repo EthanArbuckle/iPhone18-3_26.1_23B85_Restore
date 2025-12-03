@@ -2,19 +2,19 @@
 + (NSArray)availableLocaleNames;
 + (NSArray)systemLocales;
 + (NSBundle)mainBundle;
-+ (id)cachedLocalizedStringForKey:(id)a3 value:(id)a4 table:(id)a5 localization:(id)a6;
-+ (id)keyForLocales:(id)a3;
-+ (id)locales:(id)a3 withDefault:(id)a4;
-+ (id)localizationForLocale:(id)a3;
-+ (id)localizeString:(id)a3 withNumberingSystem:(id)a4 locale:(id)a5;
-+ (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5 localization:(id)a6;
-+ (id)localizedStringsForTable:(id)a3 localization:(id)a4;
++ (id)cachedLocalizedStringForKey:(id)key value:(id)value table:(id)table localization:(id)localization;
++ (id)keyForLocales:(id)locales;
++ (id)locales:(id)locales withDefault:(id)default;
++ (id)localizationForLocale:(id)locale;
++ (id)localizeString:(id)string withNumberingSystem:(id)system locale:(id)locale;
++ (id)localizedStringForKey:(id)key value:(id)value table:(id)table localization:(id)localization;
++ (id)localizedStringsForTable:(id)table localization:(id)localization;
 + (id)numberingSystemCharacterSet;
-+ (id)numberingSystemForDigit:(id)a3;
++ (id)numberingSystemForDigit:(id)digit;
 + (id)numberingSystemOutputCharacterSet;
 + (id)numberingSystems;
-+ (void)enumerateLocales:(id)a3 withBlock:(id)a4;
-+ (void)initNumberingSystems:(id)a3;
++ (void)enumerateLocales:(id)locales withBlock:(id)block;
++ (void)initNumberingSystems:(id)systems;
 @end
 
 @implementation Localize
@@ -27,8 +27,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  v4 = [preferredLanguages countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -39,29 +39,29 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(preferredLanguages);
         }
 
         v8 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:*(*(&v14 + 1) + 8 * i)];
         [v2 addObject:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [preferredLanguages countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
   }
 
   v9 = [v2 count];
-  v10 = [MEMORY[0x1E695DF58] currentLocale];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
   if (v9)
   {
-    [v2 setObject:v10 atIndexedSubscript:0];
+    [v2 setObject:currentLocale atIndexedSubscript:0];
   }
 
   else
   {
-    [v2 addObject:v10];
+    [v2 addObject:currentLocale];
   }
 
   v11 = [v2 copy];
@@ -76,7 +76,7 @@
   block[1] = 3221225472;
   block[2] = __28__Localize_numberingSystems__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (numberingSystems_onceToken != -1)
   {
     dispatch_once(&numberingSystems_onceToken, block);
@@ -99,9 +99,9 @@ void __28__Localize_numberingSystems__block_invoke(uint64_t a1)
 + (NSArray)availableLocaleNames
 {
   v2 = +[Localize mainBundle];
-  v3 = [v2 localizations];
+  localizations = [v2 localizations];
 
-  return v3;
+  return localizations;
 }
 
 + (NSBundle)mainBundle
@@ -112,20 +112,20 @@ void __28__Localize_numberingSystems__block_invoke(uint64_t a1)
   return [v2 bundleForClass:v3];
 }
 
-+ (void)enumerateLocales:(id)a3 withBlock:(id)a4
++ (void)enumerateLocales:(id)locales withBlock:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  localesCopy = locales;
+  blockCopy = block;
+  if (blockCopy)
   {
     v7 = objc_opt_new();
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v16 = v5;
-    v8 = v5;
+    v16 = localesCopy;
+    v8 = localesCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -151,7 +151,7 @@ void __28__Localize_numberingSystems__block_invoke(uint64_t a1)
             }
 
             [v7 addObject:v14];
-            v6[2](v6, v13, v14);
+            blockCopy[2](blockCopy, v13, v14);
           }
         }
 
@@ -167,22 +167,22 @@ void __28__Localize_numberingSystems__block_invoke(uint64_t a1)
 
 LABEL_14:
 
-    v5 = v16;
+    localesCopy = v16;
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)keyForLocales:(id)a3
++ (id)keyForLocales:(id)locales
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  localesCopy = locales;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = localesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -197,8 +197,8 @@ LABEL_14:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) localeIdentifier];
-        [v4 addObject:v10];
+        localeIdentifier = [*(*(&v14 + 1) + 8 * i) localeIdentifier];
+        [v4 addObject:localeIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -214,40 +214,40 @@ LABEL_14:
   return v11;
 }
 
-+ (id)localizeString:(id)a3 withNumberingSystem:(id)a4 locale:(id)a5
++ (id)localizeString:(id)string withNumberingSystem:(id)system locale:(id)locale
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![v8 allowForOutput])
+  stringCopy = string;
+  systemCopy = system;
+  localeCopy = locale;
+  if (![systemCopy allowForOutput])
   {
     goto LABEL_6;
   }
 
   v10 = +[Localize numberingSystemCharacterSet];
-  v11 = [v7 rangeOfCharacterFromSet:v10];
+  v11 = [stringCopy rangeOfCharacterFromSet:v10];
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_5:
 
 LABEL_6:
-    v15 = v7;
+    v15 = stringCopy;
     goto LABEL_7;
   }
 
-  v13 = [v7 substringWithRange:{v11, v12}];
+  v13 = [stringCopy substringWithRange:{v11, v12}];
   v14 = [Localize numberingSystemForDigit:v13];
 
-  if ([v14 isEqual:v8])
+  if ([v14 isEqual:systemCopy])
   {
 
     goto LABEL_5;
   }
 
-  v17 = [v7 lengthOfBytesUsingEncoding:2483028224];
+  v17 = [stringCopy lengthOfBytesUsingEncoding:2483028224];
   v46 = malloc_type_calloc(v17 >> 1, 2uLL, 0x1000040BDFB0063uLL);
-  [v7 getBytes:v46 maxLength:v17 usedLength:0 encoding:2483028224 options:0 range:0 remainingRange:{objc_msgSend(v7, "length"), 0}];
-  v18 = v8;
+  [stringCopy getBytes:v46 maxLength:v17 usedLength:0 encoding:2483028224 options:0 range:0 remainingRange:{objc_msgSend(stringCopy, "length"), 0}];
+  v18 = systemCopy;
   v19 = v18;
   v45 = v17;
   if ((v17 >> 1) < 1)
@@ -324,26 +324,26 @@ LABEL_40:
 
   while (v20 != v22);
 LABEL_25:
-  v31 = [v9 groupingSeparator];
-  if ([v31 length] != 1)
+  groupingSeparator = [localeCopy groupingSeparator];
+  if ([groupingSeparator length] != 1)
   {
 
     goto LABEL_37;
   }
 
-  v32 = [v9 decimalSeparator];
-  v33 = [v32 length];
+  decimalSeparator = [localeCopy decimalSeparator];
+  v33 = [decimalSeparator length];
 
   if (v33 == 1)
   {
-    v34 = [v47 usesEastArabicDigits];
-    if (v34 != [v14 usesEastArabicDigits])
+    usesEastArabicDigits = [v47 usesEastArabicDigits];
+    if (usesEastArabicDigits != [v14 usesEastArabicDigits])
     {
-      v35 = [v9 groupingSeparator];
-      v36 = [v35 characterAtIndex:0];
+      groupingSeparator2 = [localeCopy groupingSeparator];
+      v36 = [groupingSeparator2 characterAtIndex:0];
 
-      v37 = [v9 decimalSeparator];
-      v38 = [v37 characterAtIndex:0];
+      decimalSeparator2 = [localeCopy decimalSeparator];
+      v38 = [decimalSeparator2 characterAtIndex:0];
 
       v39 = v38;
       v40 = v46;
@@ -357,7 +357,7 @@ LABEL_25:
 
         if (v41 == v39)
         {
-          v42 = [v47 suggestedDecimalSeparator];
+          suggestedDecimalSeparator = [v47 suggestedDecimalSeparator];
           goto LABEL_33;
         }
 
@@ -369,9 +369,9 @@ LABEL_34:
         }
       }
 
-      v42 = [v47 suggestedGroupingSeparator];
+      suggestedDecimalSeparator = [v47 suggestedGroupingSeparator];
 LABEL_33:
-      *v40 = v42;
+      *v40 = suggestedDecimalSeparator;
       goto LABEL_34;
     }
   }
@@ -502,16 +502,16 @@ void __39__Localize_numberingSystemCharacterSet__block_invoke()
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)numberingSystemForDigit:(id)a3
++ (id)numberingSystemForDigit:(id)digit
 {
   v3 = numberingSystemForDigit__onceToken;
-  v4 = a3;
+  digitCopy = digit;
   if (v3 != -1)
   {
     dispatch_once(&numberingSystemForDigit__onceToken, &__block_literal_global_84);
   }
 
-  v5 = [numberingSystemForDigit__digitToNumberingSystem objectForKeyedSubscript:v4];
+  v5 = [numberingSystemForDigit__digitToNumberingSystem objectForKeyedSubscript:digitCopy];
 
   return v5;
 }
@@ -587,15 +587,15 @@ void __36__Localize_numberingSystemForDigit___block_invoke()
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)initNumberingSystems:(id)a3
++ (void)initNumberingSystems:(id)systems
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  systemsCopy = systems;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __33__Localize_initNumberingSystems___block_invoke;
   aBlock[3] = &unk_1E815C1A0;
-  v4 = v3;
+  v4 = systemsCopy;
   v12 = v4;
   v5 = _Block_copy(aBlock);
   v5[2](v5, @"0123456789", @"latn");
@@ -638,26 +638,26 @@ void __33__Localize_initNumberingSystems___block_invoke(uint64_t a1, void *a2, v
   [v4 addObject:v7];
 }
 
-+ (id)cachedLocalizedStringForKey:(id)a3 value:(id)a4 table:(id)a5 localization:(id)a6
++ (id)cachedLocalizedStringForKey:(id)key value:(id)value table:(id)table localization:(id)localization
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  keyCopy = key;
+  valueCopy = value;
+  tableCopy = table;
+  localizationCopy = localization;
   if (cachedLocalizedStringForKey_value_table_localization__onceToken != -1)
   {
     dispatch_once(&cachedLocalizedStringForKey_value_table_localization__onceToken, &__block_literal_global_83);
   }
 
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", v12, v11];
-  v14 = [cachedLocalizedStringForKey_value_table_localization__tableCache objectForKey:v13];
+  tableCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", localizationCopy, tableCopy];
+  v14 = [cachedLocalizedStringForKey_value_table_localization__tableCache objectForKey:tableCopy];
   if (!v14)
   {
-    v14 = [Localize localizedStringsForTable:v11 localization:v12];
-    [cachedLocalizedStringForKey_value_table_localization__tableCache setObject:v14 forKey:v13];
+    v14 = [Localize localizedStringsForTable:tableCopy localization:localizationCopy];
+    [cachedLocalizedStringForKey_value_table_localization__tableCache setObject:v14 forKey:tableCopy];
   }
 
-  v15 = [v14 objectForKeyedSubscript:v9];
+  v15 = [v14 objectForKeyedSubscript:keyCopy];
   v16 = v15;
   if (v15)
   {
@@ -666,7 +666,7 @@ void __33__Localize_initNumberingSystems___block_invoke(uint64_t a1, void *a2, v
 
   else
   {
-    v17 = v9;
+    v17 = keyCopy;
   }
 
   v18 = v17;
@@ -685,37 +685,37 @@ uint64_t __65__Localize_cachedLocalizedStringForKey_value_table_localization___b
   return [v2 setCountLimit:5];
 }
 
-+ (id)localizedStringsForTable:(id)a3 localization:(id)a4
++ (id)localizedStringsForTable:(id)table localization:(id)localization
 {
-  v5 = a4;
-  v6 = a3;
+  localizationCopy = localization;
+  tableCopy = table;
   v7 = +[Localize mainBundle];
-  v8 = [v7 localizedStringsForTable:v6 localization:v5];
+  v8 = [v7 localizedStringsForTable:tableCopy localization:localizationCopy];
 
   return v8;
 }
 
-+ (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5 localization:(id)a6
++ (id)localizedStringForKey:(id)key value:(id)value table:(id)table localization:(id)localization
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  localizationCopy = localization;
+  tableCopy = table;
+  valueCopy = value;
+  keyCopy = key;
   v13 = +[Localize mainBundle];
-  v14 = [v13 localizedStringForKey:v12 value:v11 table:v10 localization:v9];
+  v14 = [v13 localizedStringForKey:keyCopy value:valueCopy table:tableCopy localization:localizationCopy];
 
   return v14;
 }
 
-+ (id)localizationForLocale:(id)a3
++ (id)localizationForLocale:(id)locale
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AAE8];
-  v4 = a3;
+  localeCopy = locale;
   v5 = +[Localize availableLocaleNames];
-  v6 = [v4 localeIdentifier];
+  localeIdentifier = [localeCopy localeIdentifier];
 
-  v12[0] = v6;
+  v12[0] = localeIdentifier;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v8 = [v3 preferredLocalizationsFromArray:v5 forPreferences:v7];
 
@@ -726,38 +726,38 @@ uint64_t __65__Localize_cachedLocalizedStringForKey_value_table_localization___b
   return v9;
 }
 
-+ (id)locales:(id)a3 withDefault:(id)a4
++ (id)locales:(id)locales withDefault:(id)default
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  localesCopy = locales;
+  defaultCopy = default;
+  if (defaultCopy)
   {
-    if (!v5)
+    if (!localesCopy)
     {
       goto LABEL_5;
     }
 
-    if (![v5 count])
+    if (![localesCopy count])
     {
       goto LABEL_5;
     }
 
-    v7 = [v5 objectAtIndexedSubscript:0];
-    v8 = [v7 localeIdentifier];
-    v9 = [v6 localeIdentifier];
-    v10 = [v8 isEqualToString:v9];
+    v7 = [localesCopy objectAtIndexedSubscript:0];
+    localeIdentifier = [v7 localeIdentifier];
+    localeIdentifier2 = [defaultCopy localeIdentifier];
+    v10 = [localeIdentifier isEqualToString:localeIdentifier2];
 
     if ((v10 & 1) == 0)
     {
 LABEL_5:
       v11 = objc_opt_new();
-      [v11 addObject:v6];
+      [v11 addObject:defaultCopy];
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v12 = v5;
+      v12 = localesCopy;
       v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v13)
       {
@@ -773,9 +773,9 @@ LABEL_5:
             }
 
             v17 = *(*(&v23 + 1) + 8 * i);
-            v18 = [v17 localeIdentifier];
-            v19 = [v6 localeIdentifier];
-            v20 = [v18 isEqualToString:v19];
+            localeIdentifier3 = [v17 localeIdentifier];
+            localeIdentifier4 = [defaultCopy localeIdentifier];
+            v20 = [localeIdentifier3 isEqualToString:localeIdentifier4];
 
             if ((v20 & 1) == 0)
             {
@@ -789,13 +789,13 @@ LABEL_5:
         while (v14);
       }
 
-      v5 = [v11 copy];
+      localesCopy = [v11 copy];
     }
   }
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return localesCopy;
 }
 
 @end

@@ -1,43 +1,43 @@
 @interface SBSystemApertureController
-- (BOOL)containsHostSceneWithIdentityToken:(id)a3;
-- (BOOL)systemApertureProximityBacklightPolicyShouldDisableGracePeriod:(id)a3;
-- (CGRect)defaultIslandFrameInCoordinateSpace:(id)a3;
+- (BOOL)containsHostSceneWithIdentityToken:(id)token;
+- (BOOL)systemApertureProximityBacklightPolicyShouldDisableGracePeriod:(id)period;
+- (CGRect)defaultIslandFrameInCoordinateSpace:(id)space;
 - (SBSystemApertureController)init;
 - (SBSystemApertureWindowScene)activeWindowScene;
-- (id)_createHighLevelSystemApertureSceneWithIdentifier:(id)a3 sceneSpecification:(id)a4 displayConfiguration:(id)a5 continuitySession:(id)a6 atLevel:(float)a7;
-- (id)_traParticipantForWindowScene:(id)a3;
-- (id)participantAssociatedWindows:(id)a3;
-- (id)requireUserInterfaceOrientation:(int64_t)a3 reason:(id)a4;
+- (id)_createHighLevelSystemApertureSceneWithIdentifier:(id)identifier sceneSpecification:(id)specification displayConfiguration:(id)configuration continuitySession:(id)session atLevel:(float)level;
+- (id)_traParticipantForWindowScene:(id)scene;
+- (id)participantAssociatedWindows:(id)windows;
+- (id)requireUserInterfaceOrientation:(int64_t)orientation reason:(id)reason;
 - (id)scenesForBacklightSession;
-- (id)suppressHidingOfEmptySystemApertureOnClonedDisplaysWithReason:(id)a3;
-- (id)suppressSystemApertureCompletelyWithReason:(id)a3;
+- (id)suppressHidingOfEmptySystemApertureOnClonedDisplaysWithReason:(id)reason;
+- (id)suppressSystemApertureCompletelyWithReason:(id)reason;
 - (void)_configureBacklightEnvironmentSceneProviderIfNecessary;
 - (void)_configureLegacyStatusBarPillElementProviderIfNecessary;
 - (void)_configureNoticeManagerIfNecessary;
 - (void)_ensureSystemAperturesOnCorrectDisplays;
 - (void)_reevaluateSystemApertureCompleteSuppression;
-- (void)_updateActiveWindowSceneWithSpringBoardWindowScene:(id)a3;
-- (void)_updateOrientationFromOldWindowScene:(id)a3 activeWindowScene:(id)a4;
+- (void)_updateActiveWindowSceneWithSpringBoardWindowScene:(id)scene;
+- (void)_updateOrientationFromOldWindowScene:(id)scene activeWindowScene:(id)windowScene;
 - (void)_updateSuppressionForDefaults;
 - (void)_updateVisibilityForCloningAndSnapshots;
-- (void)appendDescriptionForParticipant:(id)a3 withBuilder:(id)a4 multilinePrefix:(id)a5;
-- (void)backlightController:(id)a3 willTransitionToBacklightState:(int64_t)a4 source:(int64_t)a5;
-- (void)createHighLevelSystemApertureWindowWithWindowScene:(id)a3;
-- (void)createHighLevelWindowSceneWithDisplayConfiguration:(id)a3;
-- (void)createSuperHighLevelCurtainWindowSceneWithDisplayConfiguration:(id)a3;
-- (void)createSuperHighLevelCurtainWithWindowScene:(id)a3;
+- (void)appendDescriptionForParticipant:(id)participant withBuilder:(id)builder multilinePrefix:(id)prefix;
+- (void)backlightController:(id)controller willTransitionToBacklightState:(int64_t)state source:(int64_t)source;
+- (void)createHighLevelSystemApertureWindowWithWindowScene:(id)scene;
+- (void)createHighLevelWindowSceneWithDisplayConfiguration:(id)configuration;
+- (void)createSuperHighLevelCurtainWindowSceneWithDisplayConfiguration:(id)configuration;
+- (void)createSuperHighLevelCurtainWithWindowScene:(id)scene;
 - (void)dealloc;
-- (void)didChangeSettingsForParticipant:(id)a3 context:(id)a4;
-- (void)highLevelContinuitySystemApertureWindowSceneDidConnect:(id)a3;
-- (void)highLevelContinuitySystemApertureWindowSceneDidDisconnect:(id)a3;
+- (void)didChangeSettingsForParticipant:(id)participant context:(id)context;
+- (void)highLevelContinuitySystemApertureWindowSceneDidConnect:(id)connect;
+- (void)highLevelContinuitySystemApertureWindowSceneDidDisconnect:(id)disconnect;
 - (void)hostedScenesDidChange;
-- (void)setActiveWindowScene:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)superHighLevelContinuityCurtainWindowSceneDidConnect:(id)a3;
-- (void)superHighLevelContinuityCurtainWindowSceneDidDisconnect:(id)a3;
-- (void)systemApertureViewController:(id)a3 containsAnyContent:(BOOL)a4;
-- (void)systemApertureViewController:(id)a3 isDisplayingAnyRequiredPriorityElements:(BOOL)a4;
-- (void)updatePreferencesForParticipant:(id)a3 updater:(id)a4;
+- (void)setActiveWindowScene:(id)scene;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)superHighLevelContinuityCurtainWindowSceneDidConnect:(id)connect;
+- (void)superHighLevelContinuityCurtainWindowSceneDidDisconnect:(id)disconnect;
+- (void)systemApertureViewController:(id)controller containsAnyContent:(BOOL)content;
+- (void)systemApertureViewController:(id)controller isDisplayingAnyRequiredPriorityElements:(BOOL)elements;
+- (void)updatePreferencesForParticipant:(id)participant updater:(id)updater;
 @end
 
 @implementation SBSystemApertureController
@@ -47,25 +47,25 @@
   v3 = self->_containsAnyContent || [(SBSystemApertureSettings *)self->_settings suppressHidingOnClonedDisplayWhileEmpty]|| ([(SBSystemApertureDefaults *)self->_systemApertureDefaults alwaysShowSystemApertureOnClonedDisplays]& 1) != 0 || [(NSMutableArray *)self->_systemApertureSuppressEmptyHidingOnClonedDisplayAssertions count]!= 0;
   if (self->_containsAnyContent || [(SBSystemApertureSettings *)self->_settings suppressHidingInSnapshotsWhileEmpty])
   {
-    v4 = 1;
+    alwaysShowSystemApertureInSnapshots = 1;
   }
 
   else
   {
-    v4 = [(SBSystemApertureDefaults *)self->_systemApertureDefaults alwaysShowSystemApertureInSnapshots];
+    alwaysShowSystemApertureInSnapshots = [(SBSystemApertureDefaults *)self->_systemApertureDefaults alwaysShowSystemApertureInSnapshots];
   }
 
   p_mainCloningShimViewController = &self->_mainCloningShimViewController;
-  [(SBSystemApertureCaptureVisibilityShimViewController *)self->_mainCloningShimViewController setVisibleInSnapshots:v4];
+  [(SBSystemApertureCaptureVisibilityShimViewController *)self->_mainCloningShimViewController setVisibleInSnapshots:alwaysShowSystemApertureInSnapshots];
   p_curtainCloningShimViewController = &self->_curtainCloningShimViewController;
-  [(SBSystemApertureCaptureVisibilityShimViewController *)self->_curtainCloningShimViewController setVisibleInSnapshots:v4];
+  [(SBSystemApertureCaptureVisibilityShimViewController *)self->_curtainCloningShimViewController setVisibleInSnapshots:alwaysShowSystemApertureInSnapshots];
   [(SBSystemApertureCaptureVisibilityShimViewController *)self->_mainCloningShimViewController setContentsDifferOnClonedDisplay:0];
   [(SBSystemApertureCaptureVisibilityShimViewController *)self->_curtainCloningShimViewController setContentsDifferOnClonedDisplay:0];
-  v7 = [(SBSystemApertureCaptureVisibilityShimViewController *)self->_mainCloningShimViewController newDefaultVisibilityAnimator];
-  v8 = v7;
+  newDefaultVisibilityAnimator = [(SBSystemApertureCaptureVisibilityShimViewController *)self->_mainCloningShimViewController newDefaultVisibilityAnimator];
+  v8 = newDefaultVisibilityAnimator;
   if (v3)
   {
-    if (!v7)
+    if (!newDefaultVisibilityAnimator)
     {
       [(SBSystemApertureCaptureVisibilityShimViewController *)*p_mainCloningShimViewController setVisibleOnClonedDisplay:1];
       v9 = 2;
@@ -147,8 +147,8 @@ void __51__SBSystemApertureController_hostedScenesDidChange__block_invoke(uint64
     [v4 addObject:?];
   }
 
-  v5 = [(SBSystemApertureViewController *)self->_systemApertureViewController scenesForBacklightSession];
-  [v4 unionSet:v5];
+  scenesForBacklightSession = [(SBSystemApertureViewController *)self->_systemApertureViewController scenesForBacklightSession];
+  [v4 unionSet:scenesForBacklightSession];
 
   return v4;
 }
@@ -167,9 +167,9 @@ void __51__SBSystemApertureController_hostedScenesDidChange__block_invoke(uint64
 
     [(PTSettings *)v2->_settings addKeyObserver:v2];
     v5 = +[SBDefaults localDefaults];
-    v6 = [v5 systemApertureDefaults];
+    systemApertureDefaults = [v5 systemApertureDefaults];
     systemApertureDefaults = v2->_systemApertureDefaults;
-    v2->_systemApertureDefaults = v6;
+    v2->_systemApertureDefaults = systemApertureDefaults;
 
     objc_initWeak(&location, v2);
     v8 = v2->_systemApertureDefaults;
@@ -244,9 +244,9 @@ void __34__SBSystemApertureController_init__block_invoke_2(uint64_t a1)
   [(SBSystemApertureController *)&v4 dealloc];
 }
 
-- (void)setActiveWindowScene:(id)a3
+- (void)setActiveWindowScene:(id)scene
 {
-  obj = a3;
+  obj = scene;
   WeakRetained = objc_loadWeakRetained(&self->_activeWindowScene);
   if (obj && WeakRetained != obj)
   {
@@ -275,19 +275,19 @@ void __34__SBSystemApertureController_init__block_invoke_2(uint64_t a1)
   }
 }
 
-- (BOOL)containsHostSceneWithIdentityToken:(id)a3
+- (BOOL)containsHostSceneWithIdentityToken:(id)token
 {
-  v5 = a3;
-  if (!v5)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
     [(SBSystemApertureController *)a2 containsHostSceneWithIdentityToken:?];
   }
 
-  v6 = v5;
+  v6 = tokenCopy;
   WeakRetained = objc_loadWeakRetained(&self->_activeWindowScene);
-  v8 = [WeakRetained _FBSScene];
-  v9 = [v8 identityToken];
-  v10 = [v9 isEqual:v6];
+  _FBSScene = [WeakRetained _FBSScene];
+  identityToken = [_FBSScene identityToken];
+  v10 = [identityToken isEqual:v6];
 
   return v10;
 }
@@ -295,17 +295,17 @@ void __34__SBSystemApertureController_init__block_invoke_2(uint64_t a1)
 - (void)_ensureSystemAperturesOnCorrectDisplays
 {
   WeakRetained = objc_loadWeakRetained(&self->_activeWindowScene);
-  v4 = [WeakRetained associatedWindowScene];
-  v5 = [v4 isMainDisplayWindowScene];
+  associatedWindowScene = [WeakRetained associatedWindowScene];
+  isMainDisplayWindowScene = [associatedWindowScene isMainDisplayWindowScene];
 
-  if (v5)
+  if (isMainDisplayWindowScene)
   {
     auxillarySuperHighLevelContinuityWindow = self->_auxillarySuperHighLevelContinuityWindow;
     if (auxillarySuperHighLevelContinuityWindow)
     {
-      v7 = [(UIWindow *)auxillarySuperHighLevelContinuityWindow rootViewController];
+      rootViewController = [(UIWindow *)auxillarySuperHighLevelContinuityWindow rootViewController];
 
-      if (v7)
+      if (rootViewController)
       {
         v8 = SBLogSystemApertureController();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -313,9 +313,9 @@ void __34__SBSystemApertureController_init__block_invoke_2(uint64_t a1)
           [SBSystemApertureController _ensureSystemAperturesOnCorrectDisplays];
         }
 
-        v9 = [(UIWindow *)self->_auxillarySuperHighLevelContinuityWindow rootViewController];
-        v10 = [v9 view];
-        [v10 removeFromSuperview];
+        rootViewController2 = [(UIWindow *)self->_auxillarySuperHighLevelContinuityWindow rootViewController];
+        view = [rootViewController2 view];
+        [view removeFromSuperview];
 
         [(UIWindow *)self->_auxillarySuperHighLevelContinuityWindow setRootViewController:0];
       }
@@ -324,10 +324,10 @@ void __34__SBSystemApertureController_init__block_invoke_2(uint64_t a1)
     auxillarySuperHighLevelWindow = self->_auxillarySuperHighLevelWindow;
     if (auxillarySuperHighLevelWindow)
     {
-      v12 = [(UIWindow *)auxillarySuperHighLevelWindow rootViewController];
+      rootViewController3 = [(UIWindow *)auxillarySuperHighLevelWindow rootViewController];
       curtainCloningShimViewController = self->_curtainCloningShimViewController;
 
-      if (v12 != curtainCloningShimViewController)
+      if (rootViewController3 != curtainCloningShimViewController)
       {
         v14 = SBLogSystemApertureController();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -335,8 +335,8 @@ void __34__SBSystemApertureController_init__block_invoke_2(uint64_t a1)
           [SBSystemApertureController _ensureSystemAperturesOnCorrectDisplays];
         }
 
-        v15 = [(SBSystemApertureCaptureVisibilityShimViewController *)self->_curtainCloningShimViewController view];
-        [v15 removeFromSuperview];
+        view2 = [(SBSystemApertureCaptureVisibilityShimViewController *)self->_curtainCloningShimViewController view];
+        [view2 removeFromSuperview];
 
         [(UIWindow *)self->_auxillarySuperHighLevelWindow setRootViewController:self->_curtainCloningShimViewController];
       }
@@ -347,10 +347,10 @@ void __34__SBSystemApertureController_init__block_invoke_2(uint64_t a1)
     {
       if (self->_substituteSystemApertureViewController)
       {
-        v17 = [(UIWindow *)continuityWindow rootViewController];
+        rootViewController4 = [(UIWindow *)continuityWindow rootViewController];
         substituteSystemApertureViewController = self->_substituteSystemApertureViewController;
 
-        if (v17 != substituteSystemApertureViewController)
+        if (rootViewController4 != substituteSystemApertureViewController)
         {
           v19 = SBLogSystemApertureController();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -358,8 +358,8 @@ void __34__SBSystemApertureController_init__block_invoke_2(uint64_t a1)
             [SBSystemApertureController _ensureSystemAperturesOnCorrectDisplays];
           }
 
-          v20 = [(SBSubstituteSystemApertureViewController *)self->_substituteSystemApertureViewController view];
-          [v20 removeFromSuperview];
+          view3 = [(SBSubstituteSystemApertureViewController *)self->_substituteSystemApertureViewController view];
+          [view3 removeFromSuperview];
 
           [(UIWindow *)self->_continuityWindow setRootViewController:self->_substituteSystemApertureViewController];
         }
@@ -370,11 +370,11 @@ void __34__SBSystemApertureController_init__block_invoke_2(uint64_t a1)
     window = self->_window;
     if (window)
     {
-      v23 = [(UIWindow *)window rootViewController];
+      rootViewController5 = [(UIWindow *)window rootViewController];
       mainCloningShimViewController = self->_mainCloningShimViewController;
       p_mainCloningShimViewController = &self->_mainCloningShimViewController;
 
-      if (v23 != mainCloningShimViewController)
+      if (rootViewController5 != mainCloningShimViewController)
       {
         v26 = SBLogSystemApertureController();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -384,8 +384,8 @@ void __34__SBSystemApertureController_init__block_invoke_2(uint64_t a1)
 
 LABEL_42:
 
-        v46 = [*p_mainCloningShimViewController view];
-        [v46 removeFromSuperview];
+        view4 = [*p_mainCloningShimViewController view];
+        [view4 removeFromSuperview];
 
         [(UIWindow *)*p_window setRootViewController:*p_mainCloningShimViewController];
       }
@@ -397,9 +397,9 @@ LABEL_42:
     v27 = self->_auxillarySuperHighLevelWindow;
     if (v27)
     {
-      v28 = [(UIWindow *)v27 rootViewController];
+      rootViewController6 = [(UIWindow *)v27 rootViewController];
 
-      if (v28)
+      if (rootViewController6)
       {
         v29 = SBLogSystemApertureController();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -407,9 +407,9 @@ LABEL_42:
           [SBSystemApertureController _ensureSystemAperturesOnCorrectDisplays];
         }
 
-        v30 = [(UIWindow *)self->_auxillarySuperHighLevelWindow rootViewController];
-        v31 = [v30 view];
-        [v31 removeFromSuperview];
+        rootViewController7 = [(UIWindow *)self->_auxillarySuperHighLevelWindow rootViewController];
+        view5 = [rootViewController7 view];
+        [view5 removeFromSuperview];
 
         [(UIWindow *)self->_auxillarySuperHighLevelWindow setRootViewController:0];
       }
@@ -418,10 +418,10 @@ LABEL_42:
     v32 = self->_auxillarySuperHighLevelContinuityWindow;
     if (v32)
     {
-      v33 = [(UIWindow *)v32 rootViewController];
+      rootViewController8 = [(UIWindow *)v32 rootViewController];
       v34 = self->_curtainCloningShimViewController;
 
-      if (v33 != v34)
+      if (rootViewController8 != v34)
       {
         v35 = SBLogSystemApertureController();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -429,8 +429,8 @@ LABEL_42:
           [SBSystemApertureController _ensureSystemAperturesOnCorrectDisplays];
         }
 
-        v36 = [(SBSystemApertureCaptureVisibilityShimViewController *)self->_curtainCloningShimViewController view];
-        [v36 removeFromSuperview];
+        view6 = [(SBSystemApertureCaptureVisibilityShimViewController *)self->_curtainCloningShimViewController view];
+        [view6 removeFromSuperview];
 
         [(UIWindow *)self->_auxillarySuperHighLevelContinuityWindow setRootViewController:self->_curtainCloningShimViewController];
       }
@@ -439,10 +439,10 @@ LABEL_42:
     v37 = self->_continuityWindow;
     if (v37)
     {
-      v38 = [(UIWindow *)v37 rootViewController];
+      rootViewController9 = [(UIWindow *)v37 rootViewController];
       v39 = self->_mainCloningShimViewController;
 
-      if (v38 != v39)
+      if (rootViewController9 != v39)
       {
         v40 = SBLogSystemApertureController();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
@@ -450,8 +450,8 @@ LABEL_42:
           [SBSystemApertureController _ensureSystemAperturesOnCorrectDisplays];
         }
 
-        v41 = [(SBSystemApertureCaptureVisibilityShimViewController *)self->_mainCloningShimViewController view];
-        [v41 removeFromSuperview];
+        view7 = [(SBSystemApertureCaptureVisibilityShimViewController *)self->_mainCloningShimViewController view];
+        [view7 removeFromSuperview];
 
         [(UIWindow *)self->_continuityWindow setRootViewController:self->_mainCloningShimViewController];
       }
@@ -465,10 +465,10 @@ LABEL_42:
       p_mainCloningShimViewController = &self->_substituteSystemApertureViewController;
       if (v43)
       {
-        v44 = [(UIWindow *)v42 rootViewController];
+        rootViewController10 = [(UIWindow *)v42 rootViewController];
         v45 = *p_mainCloningShimViewController;
 
-        if (v44 != v45)
+        if (rootViewController10 != v45)
         {
           v26 = SBLogSystemApertureController();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -483,29 +483,29 @@ LABEL_42:
   }
 }
 
-- (void)_updateOrientationFromOldWindowScene:(id)a3 activeWindowScene:(id)a4
+- (void)_updateOrientationFromOldWindowScene:(id)scene activeWindowScene:(id)windowScene
 {
-  v6 = a4;
-  v7 = [(SBSystemApertureController *)self _traParticipantForWindowScene:a3];
-  v8 = [v7 sbf_currentOrientation];
+  windowSceneCopy = windowScene;
+  v7 = [(SBSystemApertureController *)self _traParticipantForWindowScene:scene];
+  sbf_currentOrientation = [v7 sbf_currentOrientation];
 
-  v9 = [(SBSystemApertureController *)self _traParticipantForWindowScene:v6];
+  v9 = [(SBSystemApertureController *)self _traParticipantForWindowScene:windowSceneCopy];
 
-  v10 = [v9 sbf_currentOrientation];
-  if (v8 != v10)
+  sbf_currentOrientation2 = [v9 sbf_currentOrientation];
+  if (sbf_currentOrientation != sbf_currentOrientation2)
   {
     systemApertureViewController = self->_systemApertureViewController;
 
-    [(SBSystemApertureViewController *)systemApertureViewController hostOrientationDidChangeTo:v10 withPreviousOrientation:v8 context:0];
+    [(SBSystemApertureViewController *)systemApertureViewController hostOrientationDidChangeTo:sbf_currentOrientation2 withPreviousOrientation:sbf_currentOrientation context:0];
   }
 }
 
-- (id)_traParticipantForWindowScene:(id)a3
+- (id)_traParticipantForWindowScene:(id)scene
 {
-  v4 = [a3 associatedWindowScene];
-  v5 = [v4 isContinuityDisplayWindowScene];
+  associatedWindowScene = [scene associatedWindowScene];
+  isContinuityDisplayWindowScene = [associatedWindowScene isContinuityDisplayWindowScene];
   v6 = 104;
-  if (v5)
+  if (isContinuityDisplayWindowScene)
   {
     v6 = 112;
   }
@@ -516,57 +516,57 @@ LABEL_42:
   return v7;
 }
 
-- (void)createHighLevelWindowSceneWithDisplayConfiguration:(id)a3
+- (void)createHighLevelWindowSceneWithDisplayConfiguration:(id)configuration
 {
-  v8 = a3;
+  configurationCopy = configuration;
   if (SBSIsSystemApertureAvailable())
   {
     v4 = +[(FBSSceneSpecification *)SBSystemApertureSceneSpecification];
     LODWORD(v5) = 1259902594;
-    v6 = [(SBSystemApertureController *)self _createHighLevelSystemApertureSceneWithIdentifier:@"SystemAperture" sceneSpecification:v4 displayConfiguration:v8 continuitySession:0 atLevel:v5];
+    v6 = [(SBSystemApertureController *)self _createHighLevelSystemApertureSceneWithIdentifier:@"SystemAperture" sceneSpecification:v4 displayConfiguration:configurationCopy continuitySession:0 atLevel:v5];
     highLevelWindowScene = self->_highLevelWindowScene;
     self->_highLevelWindowScene = v6;
   }
 }
 
-- (void)createSuperHighLevelCurtainWindowSceneWithDisplayConfiguration:(id)a3
+- (void)createSuperHighLevelCurtainWindowSceneWithDisplayConfiguration:(id)configuration
 {
-  v8 = a3;
+  configurationCopy = configuration;
   if (SBSIsSystemApertureAvailable())
   {
     v4 = +[(FBSSceneSpecification *)SBSystemApertureCurtainSceneSpecification];
     LODWORD(v5) = 1260902594;
-    v6 = [(SBSystemApertureController *)self _createHighLevelSystemApertureSceneWithIdentifier:@"SuperHighLevelSystemAperture" sceneSpecification:v4 displayConfiguration:v8 continuitySession:0 atLevel:v5];
+    v6 = [(SBSystemApertureController *)self _createHighLevelSystemApertureSceneWithIdentifier:@"SuperHighLevelSystemAperture" sceneSpecification:v4 displayConfiguration:configurationCopy continuitySession:0 atLevel:v5];
     superHighLevelWindowScene = self->_superHighLevelWindowScene;
     self->_superHighLevelWindowScene = v6;
   }
 }
 
-- (id)_createHighLevelSystemApertureSceneWithIdentifier:(id)a3 sceneSpecification:(id)a4 displayConfiguration:(id)a5 continuitySession:(id)a6 atLevel:(float)a7
+- (id)_createHighLevelSystemApertureSceneWithIdentifier:(id)identifier sceneSpecification:(id)specification displayConfiguration:(id)configuration continuitySession:(id)session atLevel:(float)level
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [MEMORY[0x277D0AAD8] sharedInstance];
+  identifierCopy = identifier;
+  specificationCopy = specification;
+  configurationCopy = configuration;
+  sessionCopy = session;
+  mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __146__SBSystemApertureController__createHighLevelSystemApertureSceneWithIdentifier_sceneSpecification_displayConfiguration_continuitySession_atLevel___block_invoke;
   v24[3] = &unk_2783C54D8;
-  v25 = v11;
-  v26 = v12;
-  v29 = a7;
-  v27 = v13;
-  v28 = v14;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  v19 = v11;
-  v20 = [v15 createScene:v24];
+  v25 = identifierCopy;
+  v26 = specificationCopy;
+  levelCopy = level;
+  v27 = configurationCopy;
+  v28 = sessionCopy;
+  v16 = sessionCopy;
+  v17 = configurationCopy;
+  v18 = specificationCopy;
+  v19 = identifierCopy;
+  v20 = [mEMORY[0x277D0AAD8] createScene:v24];
 
-  v21 = [v20 systemShellHostingEnvironment];
+  systemShellHostingEnvironment = [v20 systemShellHostingEnvironment];
   v22 = SBUISystemShellHostingSpaceIdentifierForDisplayConfiguration();
-  [v21 setSystemShellHostingSpaceIdentifier:v22];
+  [systemShellHostingEnvironment setSystemShellHostingSpaceIdentifier:v22];
 
   [v20 activate:0];
 
@@ -655,9 +655,9 @@ void __146__SBSystemApertureController__createHighLevelSystemApertureSceneWithId
   }
 }
 
-- (void)createHighLevelSystemApertureWindowWithWindowScene:(id)a3
+- (void)createHighLevelSystemApertureWindowWithWindowScene:(id)scene
 {
-  v31 = a3;
+  sceneCopy = scene;
   if (SBSIsSystemApertureAvailable())
   {
     if (self->_window)
@@ -666,7 +666,7 @@ void __146__SBSystemApertureController__createHighLevelSystemApertureSceneWithId
     }
 
     v4 = objc_opt_class();
-    v5 = v31;
+    v5 = sceneCopy;
     if (v4)
     {
       if (objc_opt_isKindOfClass())
@@ -705,15 +705,15 @@ void __146__SBSystemApertureController__createHighLevelSystemApertureSceneWithId
     [(UIWindow *)self->_window setRootViewController:self->_mainCloningShimViewController];
     [(UIWindow *)self->_window _legacySetRotatableViewOrientation:1 updateStatusBar:0 duration:0 force:0.0];
     SBSystemApertureApplyUnDisplayZoomScaleToWindowInWindowSceneIfNecessary(self->_window, v5);
-    v14 = [v7 associatedWindowScene];
-    v15 = [v14 traitsArbiter];
+    associatedWindowScene = [v7 associatedWindowScene];
+    traitsArbiter = [associatedWindowScene traitsArbiter];
 
-    if (!v15)
+    if (!traitsArbiter)
     {
       [SBSystemApertureController createHighLevelSystemApertureWindowWithWindowScene:];
     }
 
-    v16 = [v15 acquireParticipantWithRole:@"SBTraitsParticipantRoleSystemAperture" delegate:self];
+    v16 = [traitsArbiter acquireParticipantWithRole:@"SBTraitsParticipantRoleSystemAperture" delegate:self];
     traitsParticipant = self->_traitsParticipant;
     self->_traitsParticipant = v16;
 
@@ -737,9 +737,9 @@ void __146__SBSystemApertureController__createHighLevelSystemApertureSceneWithId
     self->_systemApertureRestrictionServer = v22;
 
     v24 = objc_alloc(MEMORY[0x277D66B98]);
-    v25 = [(UIWindow *)self->_window _contextId];
-    v26 = [(UIWindow *)self->_window layer];
-    v27 = [v24 initWithSourceContextID:v25 sourceLayerRenderID:CALayerGetRenderId()];
+    _contextId = [(UIWindow *)self->_window _contextId];
+    layer = [(UIWindow *)self->_window layer];
+    v27 = [v24 initWithSourceContextID:_contextId sourceLayerRenderID:CALayerGetRenderId()];
 
     v28 = [[SBSystemAperturePortalSourceInfoRequestServer alloc] initWithPortalSource:v27];
     systemAperturePortalSourceRequestServer = self->_systemAperturePortalSourceRequestServer;
@@ -752,35 +752,35 @@ void __146__SBSystemApertureController__createHighLevelSystemApertureSceneWithId
   }
 }
 
-- (void)highLevelContinuitySystemApertureWindowSceneDidConnect:(id)a3
+- (void)highLevelContinuitySystemApertureWindowSceneDidConnect:(id)connect
 {
-  v11 = a3;
+  connectCopy = connect;
   if (SBSIsSystemApertureAvailable())
   {
-    v4 = [SBApp multiDisplayUserInteractionCoordinator];
-    [v4 addActiveDisplayWindowSceneObserver:self];
+    multiDisplayUserInteractionCoordinator = [SBApp multiDisplayUserInteractionCoordinator];
+    [multiDisplayUserInteractionCoordinator addActiveDisplayWindowSceneObserver:self];
 
     if (self->_continuityWindow)
     {
       [SBSystemApertureController highLevelContinuitySystemApertureWindowSceneDidConnect:];
     }
 
-    v5 = [(SBFTouchPassThroughWindow *)[SBSystemApertureWindow alloc] initWithWindowScene:v11 role:@"SBTraitsParticipantRoleSystemAperture" debugName:@"Jindo Continuity Window"];
+    v5 = [(SBFTouchPassThroughWindow *)[SBSystemApertureWindow alloc] initWithWindowScene:connectCopy role:@"SBTraitsParticipantRoleSystemAperture" debugName:@"Jindo Continuity Window"];
     continuityWindow = self->_continuityWindow;
     self->_continuityWindow = &v5->super.super.super;
 
     [(UIWindow *)self->_continuityWindow _legacySetRotatableViewOrientation:1 updateStatusBar:0 duration:0 force:0.0];
-    SBSystemApertureApplyUnDisplayZoomScaleToWindowInWindowSceneIfNecessary(self->_continuityWindow, v11);
+    SBSystemApertureApplyUnDisplayZoomScaleToWindowInWindowSceneIfNecessary(self->_continuityWindow, connectCopy);
     [(UIWindow *)self->_continuityWindow setHidden:[(NSMutableArray *)self->_systemApertureSuppressionAssertions count]!= 0];
-    v7 = [v11 associatedWindowScene];
-    v8 = [v7 traitsArbiter];
+    associatedWindowScene = [connectCopy associatedWindowScene];
+    traitsArbiter = [associatedWindowScene traitsArbiter];
 
-    if (!v8)
+    if (!traitsArbiter)
     {
       [SBSystemApertureController highLevelContinuitySystemApertureWindowSceneDidConnect:];
     }
 
-    v9 = [v8 acquireParticipantWithRole:@"SBTraitsParticipantRoleSystemAperture" delegate:self];
+    v9 = [traitsArbiter acquireParticipantWithRole:@"SBTraitsParticipantRoleSystemAperture" delegate:self];
     continuityTraitsParticipant = self->_continuityTraitsParticipant;
     self->_continuityTraitsParticipant = v9;
 
@@ -789,7 +789,7 @@ void __146__SBSystemApertureController__createHighLevelSystemApertureSceneWithId
   }
 }
 
-- (void)highLevelContinuitySystemApertureWindowSceneDidDisconnect:(id)a3
+- (void)highLevelContinuitySystemApertureWindowSceneDidDisconnect:(id)disconnect
 {
   [(TRAParticipant *)self->_continuityTraitsParticipant invalidate];
   continuityTraitsParticipant = self->_continuityTraitsParticipant;
@@ -799,16 +799,16 @@ void __146__SBSystemApertureController__createHighLevelSystemApertureSceneWithId
   continuityWindow = self->_continuityWindow;
   self->_continuityWindow = 0;
 
-  v6 = [SBApp multiDisplayUserInteractionCoordinator];
-  [v6 removeActiveDisplayWindowSceneObserver:self];
+  multiDisplayUserInteractionCoordinator = [SBApp multiDisplayUserInteractionCoordinator];
+  [multiDisplayUserInteractionCoordinator removeActiveDisplayWindowSceneObserver:self];
 
-  v7 = [(UIWindow *)self->_window _sbWindowScene];
-  [(SBSystemApertureController *)self _updateActiveWindowSceneWithSpringBoardWindowScene:v7];
+  _sbWindowScene = [(UIWindow *)self->_window _sbWindowScene];
+  [(SBSystemApertureController *)self _updateActiveWindowSceneWithSpringBoardWindowScene:_sbWindowScene];
 }
 
-- (void)createSuperHighLevelCurtainWithWindowScene:(id)a3
+- (void)createSuperHighLevelCurtainWithWindowScene:(id)scene
 {
-  v11 = a3;
+  sceneCopy = scene;
   if (SBSIsSystemApertureAvailable())
   {
     if (self->_auxillarySuperHighLevelWindow)
@@ -816,11 +816,11 @@ void __146__SBSystemApertureController__createHighLevelSystemApertureSceneWithId
       [SBSystemApertureController createSuperHighLevelCurtainWithWindowScene:];
     }
 
-    v4 = [(SBFTouchPassThroughWindow *)[SBSystemApertureWindow alloc] initWithWindowScene:v11 role:@"SBTraitsParticipantRoleSystemAperture" debugName:@"Jindo Super High Level Window"];
+    v4 = [(SBFTouchPassThroughWindow *)[SBSystemApertureWindow alloc] initWithWindowScene:sceneCopy role:@"SBTraitsParticipantRoleSystemAperture" debugName:@"Jindo Super High Level Window"];
     auxillarySuperHighLevelWindow = self->_auxillarySuperHighLevelWindow;
     self->_auxillarySuperHighLevelWindow = &v4->super.super.super;
 
-    SBSystemApertureApplyUnDisplayZoomScaleToWindowInWindowSceneIfNecessary(self->_auxillarySuperHighLevelWindow, v11);
+    SBSystemApertureApplyUnDisplayZoomScaleToWindowInWindowSceneIfNecessary(self->_auxillarySuperHighLevelWindow, sceneCopy);
     [(UIWindow *)self->_auxillarySuperHighLevelWindow setUserInteractionEnabled:0];
     v6 = objc_alloc_init(SBSystemApertureCurtainViewController);
     systemApertureCurtainViewController = self->_systemApertureCurtainViewController;
@@ -841,9 +841,9 @@ void __146__SBSystemApertureController__createHighLevelSystemApertureSceneWithId
   }
 }
 
-- (void)superHighLevelContinuityCurtainWindowSceneDidConnect:(id)a3
+- (void)superHighLevelContinuityCurtainWindowSceneDidConnect:(id)connect
 {
-  v7 = a3;
+  connectCopy = connect;
   if (SBSIsSystemApertureAvailable())
   {
     if (self->_auxillarySuperHighLevelContinuityWindow)
@@ -851,11 +851,11 @@ void __146__SBSystemApertureController__createHighLevelSystemApertureSceneWithId
       [SBSystemApertureController superHighLevelContinuityCurtainWindowSceneDidConnect:];
     }
 
-    v4 = [(SBFTouchPassThroughWindow *)[SBSystemApertureWindow alloc] initWithWindowScene:v7 role:@"SBTraitsParticipantRoleSystemAperture" debugName:@"Jindo Super High Level Continuity Window"];
+    v4 = [(SBFTouchPassThroughWindow *)[SBSystemApertureWindow alloc] initWithWindowScene:connectCopy role:@"SBTraitsParticipantRoleSystemAperture" debugName:@"Jindo Super High Level Continuity Window"];
     auxillarySuperHighLevelContinuityWindow = self->_auxillarySuperHighLevelContinuityWindow;
     self->_auxillarySuperHighLevelContinuityWindow = &v4->super.super.super;
 
-    SBSystemApertureApplyUnDisplayZoomScaleToWindowInWindowSceneIfNecessary(self->_auxillarySuperHighLevelContinuityWindow, v7);
+    SBSystemApertureApplyUnDisplayZoomScaleToWindowInWindowSceneIfNecessary(self->_auxillarySuperHighLevelContinuityWindow, connectCopy);
     [(UIWindow *)self->_auxillarySuperHighLevelContinuityWindow _legacySetRotatableViewOrientation:1 updateStatusBar:0 duration:0 force:0.0];
     [(UIWindow *)self->_auxillarySuperHighLevelContinuityWindow setUserInteractionEnabled:0];
     [(UIWindow *)self->_auxillarySuperHighLevelContinuityWindow setHidden:[(NSMutableArray *)self->_systemApertureSuppressionAssertions count]!= 0];
@@ -866,24 +866,24 @@ void __146__SBSystemApertureController__createHighLevelSystemApertureSceneWithId
   }
 }
 
-- (void)superHighLevelContinuityCurtainWindowSceneDidDisconnect:(id)a3
+- (void)superHighLevelContinuityCurtainWindowSceneDidDisconnect:(id)disconnect
 {
   [(UIWindow *)self->_auxillarySuperHighLevelContinuityWindow removeFromSuperview];
   auxillarySuperHighLevelContinuityWindow = self->_auxillarySuperHighLevelContinuityWindow;
   self->_auxillarySuperHighLevelContinuityWindow = 0;
 }
 
-- (CGRect)defaultIslandFrameInCoordinateSpace:(id)a3
+- (CGRect)defaultIslandFrameInCoordinateSpace:(id)space
 {
   systemApertureViewController = self->_systemApertureViewController;
-  v5 = a3;
+  spaceCopy = space;
   [(SBSystemApertureViewController *)systemApertureViewController minimumSensorRegionFrame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(SBSystemApertureViewController *)self->_systemApertureViewController view];
-  [v14 convertRect:v5 toCoordinateSpace:{v7, v9, v11, v13}];
+  view = [(SBSystemApertureViewController *)self->_systemApertureViewController view];
+  [view convertRect:spaceCopy toCoordinateSpace:{v7, v9, v11, v13}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -900,7 +900,7 @@ void __146__SBSystemApertureController__createHighLevelSystemApertureSceneWithId
   return result;
 }
 
-- (id)suppressSystemApertureCompletelyWithReason:(id)a3
+- (id)suppressSystemApertureCompletelyWithReason:(id)reason
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277D6B898]);
@@ -913,9 +913,9 @@ void __146__SBSystemApertureController__createHighLevelSystemApertureSceneWithId
   systemApertureSuppressionAssertions = self->_systemApertureSuppressionAssertions;
   if (!systemApertureSuppressionAssertions)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v7 = self->_systemApertureSuppressionAssertions;
-    self->_systemApertureSuppressionAssertions = v6;
+    self->_systemApertureSuppressionAssertions = array;
 
     systemApertureSuppressionAssertions = self->_systemApertureSuppressionAssertions;
   }
@@ -950,7 +950,7 @@ void __73__SBSystemApertureController_suppressSystemApertureCompletelyWithReason
   [*(a1 + 32) _reevaluateSystemApertureCompleteSuppression];
 }
 
-- (id)suppressHidingOfEmptySystemApertureOnClonedDisplaysWithReason:(id)a3
+- (id)suppressHidingOfEmptySystemApertureOnClonedDisplaysWithReason:(id)reason
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277D6B898]);
@@ -963,9 +963,9 @@ void __73__SBSystemApertureController_suppressSystemApertureCompletelyWithReason
   systemApertureSuppressEmptyHidingOnClonedDisplayAssertions = self->_systemApertureSuppressEmptyHidingOnClonedDisplayAssertions;
   if (!systemApertureSuppressEmptyHidingOnClonedDisplayAssertions)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v7 = self->_systemApertureSuppressEmptyHidingOnClonedDisplayAssertions;
-    self->_systemApertureSuppressEmptyHidingOnClonedDisplayAssertions = v6;
+    self->_systemApertureSuppressEmptyHidingOnClonedDisplayAssertions = array;
 
     systemApertureSuppressEmptyHidingOnClonedDisplayAssertions = self->_systemApertureSuppressEmptyHidingOnClonedDisplayAssertions;
   }
@@ -1046,11 +1046,11 @@ uint64_t __69__SBSystemApertureController__updateVisibilityForCloningAndSnapshot
       self->_overrideRenderingStyleAssertion = v8;
     }
 
-    v10 = [(SBSystemApertureCaptureVisibilityShimViewController *)self->_mainCloningShimViewController view];
-    [v10 setHidden:1];
+    view = [(SBSystemApertureCaptureVisibilityShimViewController *)self->_mainCloningShimViewController view];
+    [view setHidden:1];
 
-    v11 = [(SBSystemApertureCaptureVisibilityShimViewController *)self->_curtainCloningShimViewController view];
-    [v11 setHidden:1];
+    view2 = [(SBSystemApertureCaptureVisibilityShimViewController *)self->_curtainCloningShimViewController view];
+    [view2 setHidden:1];
 
     prototypingDefaultGainMapDefeatingLayer = self->_prototypingDefaultGainMapDefeatingLayer;
     if (!prototypingDefaultGainMapDefeatingLayer)
@@ -1059,8 +1059,8 @@ uint64_t __69__SBSystemApertureController__updateVisibilityForCloningAndSnapshot
       v14 = self->_prototypingDefaultGainMapDefeatingLayer;
       self->_prototypingDefaultGainMapDefeatingLayer = v13;
 
-      v15 = [(UIWindow *)self->_auxillarySuperHighLevelWindow layer];
-      [v15 addSublayer:self->_prototypingDefaultGainMapDefeatingLayer];
+      layer = [(UIWindow *)self->_auxillarySuperHighLevelWindow layer];
+      [layer addSublayer:self->_prototypingDefaultGainMapDefeatingLayer];
 
       prototypingDefaultGainMapDefeatingLayer = self->_prototypingDefaultGainMapDefeatingLayer;
     }
@@ -1084,11 +1084,11 @@ uint64_t __69__SBSystemApertureController__updateVisibilityForCloningAndSnapshot
     v4 = self->_overrideRenderingStyleAssertion;
     self->_overrideRenderingStyleAssertion = 0;
 
-    v5 = [(SBSystemApertureCaptureVisibilityShimViewController *)self->_mainCloningShimViewController view];
-    [v5 setHidden:0];
+    view3 = [(SBSystemApertureCaptureVisibilityShimViewController *)self->_mainCloningShimViewController view];
+    [view3 setHidden:0];
 
-    v6 = [(SBSystemApertureCaptureVisibilityShimViewController *)self->_curtainCloningShimViewController view];
-    [v6 setHidden:0];
+    view4 = [(SBSystemApertureCaptureVisibilityShimViewController *)self->_curtainCloningShimViewController view];
+    [view4 setHidden:0];
 
     [(CAGainMapLayer *)self->_prototypingDefaultGainMapDefeatingLayer removeFromSuperlayer];
     v7 = self->_prototypingDefaultGainMapDefeatingLayer;
@@ -1098,9 +1098,9 @@ uint64_t __69__SBSystemApertureController__updateVisibilityForCloningAndSnapshot
 
 - (void)_updateSuppressionForDefaults
 {
-  v3 = [(SBSystemApertureDefaults *)self->_systemApertureDefaults suppressDynamicIslandCompletely];
+  suppressDynamicIslandCompletely = [(SBSystemApertureDefaults *)self->_systemApertureDefaults suppressDynamicIslandCompletely];
   jindoDefaultsSuppressionAssertion = self->_jindoDefaultsSuppressionAssertion;
-  if (v3)
+  if (suppressDynamicIslandCompletely)
   {
     if (jindoDefaultsSuppressionAssertion)
     {
@@ -1120,35 +1120,35 @@ uint64_t __69__SBSystemApertureController__updateVisibilityForCloningAndSnapshot
   self->_jindoDefaultsSuppressionAssertion = v5;
 }
 
-- (void)systemApertureViewController:(id)a3 containsAnyContent:(BOOL)a4
+- (void)systemApertureViewController:(id)controller containsAnyContent:(BOOL)content
 {
-  if (self->_containsAnyContent != a4)
+  if (self->_containsAnyContent != content)
   {
-    self->_containsAnyContent = a4;
+    self->_containsAnyContent = content;
     [(SBSystemApertureController *)self _updateVisibilityForCloningAndSnapshots];
   }
 }
 
-- (void)systemApertureViewController:(id)a3 isDisplayingAnyRequiredPriorityElements:(BOOL)a4
+- (void)systemApertureViewController:(id)controller isDisplayingAnyRequiredPriorityElements:(BOOL)elements
 {
-  if (self->_isDisplayingAnyRequiredPriorityElements != a4)
+  if (self->_isDisplayingAnyRequiredPriorityElements != elements)
   {
-    self->_isDisplayingAnyRequiredPriorityElements = a4;
+    self->_isDisplayingAnyRequiredPriorityElements = elements;
     [(SBSystemApertureController *)self _reevaluateSystemApertureCompleteSuppression];
   }
 }
 
-- (id)requireUserInterfaceOrientation:(int64_t)a3 reason:(id)a4
+- (id)requireUserInterfaceOrientation:(int64_t)orientation reason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   if (!self->_orientationOverrideAssertions)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     orientationOverrideAssertions = self->_orientationOverrideAssertions;
-    self->_orientationOverrideAssertions = v7;
+    self->_orientationOverrideAssertions = array;
   }
 
-  v9 = SBSAStringFromUIInterfaceOrientation(a3);
+  v9 = SBSAStringFromUIInterfaceOrientation(orientation);
   objc_initWeak(&location, self);
   v10 = objc_alloc(MEMORY[0x277CF0CE8]);
   v11 = MEMORY[0x277D85CD0];
@@ -1158,7 +1158,7 @@ uint64_t __69__SBSystemApertureController__updateVisibilityForCloningAndSnapshot
   v17 = __69__SBSystemApertureController_requireUserInterfaceOrientation_reason___block_invoke;
   v18 = &unk_2783B8970;
   objc_copyWeak(&v19, &location);
-  v13 = [v10 initWithReason:v6 identifier:v9 requiredInvalidationQueue:v11 deallocPolicy:0 invalidatedWithContextBlock:&v15];
+  v13 = [v10 initWithReason:reasonCopy identifier:v9 requiredInvalidationQueue:v11 deallocPolicy:0 invalidatedWithContextBlock:&v15];
 
   [(NSMutableArray *)self->_orientationOverrideAssertions addObject:v13, v15, v16, v17, v18];
   [(TRAParticipant *)self->_traitsParticipant setNeedsUpdatePreferencesWithReason:@"System Aperture Orientation Override Addition"];
@@ -1179,14 +1179,14 @@ void __69__SBSystemApertureController_requireUserInterfaceOrientation_reason___b
   [*(WeakRetained + 13) setNeedsUpdatePreferencesWithReason:@"System Aperture Orientation Override Removal"];
 }
 
-- (void)updatePreferencesForParticipant:(id)a3 updater:(id)a4
+- (void)updatePreferencesForParticipant:(id)participant updater:(id)updater
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  participantCopy = participant;
+  updaterCopy = updater;
+  v8 = updaterCopy;
+  if (participantCopy)
   {
-    if (v7)
+    if (updaterCopy)
     {
       goto LABEL_3;
     }
@@ -1204,13 +1204,13 @@ void __69__SBSystemApertureController_requireUserInterfaceOrientation_reason___b
   [SBSystemApertureController updatePreferencesForParticipant:updater:];
 LABEL_3:
   [v8 updateZOrderLevelPreferencesWithBlock:&__block_literal_global_199_0];
-  v9 = [(NSMutableArray *)self->_orientationOverrideAssertions lastObject];
-  v10 = v9;
-  if (v9)
+  lastObject = [(NSMutableArray *)self->_orientationOverrideAssertions lastObject];
+  v10 = lastObject;
+  if (lastObject)
   {
-    v11 = [v9 identifier];
+    identifier = [lastObject identifier];
     v12 = SBSAStringFromUIInterfaceOrientation(1uLL);
-    v13 = [v11 isEqualToString:v12];
+    v13 = [identifier isEqualToString:v12];
 
     if (v13)
     {
@@ -1220,7 +1220,7 @@ LABEL_3:
     else
     {
       v15 = SBSAStringFromUIInterfaceOrientation(2uLL);
-      v16 = [v11 isEqualToString:v15];
+      v16 = [identifier isEqualToString:v15];
 
       if (v16)
       {
@@ -1230,7 +1230,7 @@ LABEL_3:
       else
       {
         v17 = SBSAStringFromUIInterfaceOrientation(4uLL);
-        v18 = [v11 isEqualToString:v17];
+        v18 = [identifier isEqualToString:v17];
 
         if (v18)
         {
@@ -1240,7 +1240,7 @@ LABEL_3:
         else
         {
           v19 = SBSAStringFromUIInterfaceOrientation(3uLL);
-          v20 = [v11 isEqualToString:v19];
+          v20 = [identifier isEqualToString:v19];
 
           if (v20)
           {
@@ -1269,14 +1269,14 @@ LABEL_3:
   [v8 updateOrientationPreferencesWithBlock:v21];
 }
 
-- (void)didChangeSettingsForParticipant:(id)a3 context:(id)a4
+- (void)didChangeSettingsForParticipant:(id)participant context:(id)context
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = v16;
-  if (v16)
+  participantCopy = participant;
+  contextCopy = context;
+  v7 = participantCopy;
+  if (participantCopy)
   {
-    if (v6)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -1286,48 +1286,48 @@ LABEL_3:
   {
     [SBSystemApertureController didChangeSettingsForParticipant:context:];
     v7 = 0;
-    if (v6)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
   }
 
   [SBSystemApertureController didChangeSettingsForParticipant:context:];
-  v7 = v16;
+  v7 = participantCopy;
 LABEL_3:
-  v8 = [(TRAParticipant *)v7 role];
-  v9 = SBTraitsArbiterOrientationActuationEnabledForRole(v8);
+  role = [(TRAParticipant *)v7 role];
+  v9 = SBTraitsArbiterOrientationActuationEnabledForRole(role);
 
   if (v9)
   {
-    v10 = [(TRAParticipant *)v16 sbf_currentOrientation];
-    v11 = [(TRAParticipant *)v16 sbf_previousOrientation];
-    v12 = [(SBSystemApertureViewController *)self->_systemApertureViewController activeWindowScene];
-    v13 = [v12 associatedWindowScene];
+    sbf_currentOrientation = [(TRAParticipant *)participantCopy sbf_currentOrientation];
+    sbf_previousOrientation = [(TRAParticipant *)participantCopy sbf_previousOrientation];
+    activeWindowScene = [(SBSystemApertureViewController *)self->_systemApertureViewController activeWindowScene];
+    associatedWindowScene = [activeWindowScene associatedWindowScene];
 
-    if (self->_traitsParticipant == v16 && ([v13 isMainDisplayWindowScene] & 1) != 0 || self->_continuityTraitsParticipant == v16 && objc_msgSend(v13, "isExtendedDisplayWindowScene"))
+    if (self->_traitsParticipant == participantCopy && ([associatedWindowScene isMainDisplayWindowScene] & 1) != 0 || self->_continuityTraitsParticipant == participantCopy && objc_msgSend(associatedWindowScene, "isExtendedDisplayWindowScene"))
     {
       systemApertureViewController = self->_systemApertureViewController;
-      v15 = [v6 orientationActuationContext];
-      [(SBSystemApertureViewController *)systemApertureViewController hostOrientationDidChangeTo:v10 withPreviousOrientation:v11 context:v15];
+      orientationActuationContext = [contextCopy orientationActuationContext];
+      [(SBSystemApertureViewController *)systemApertureViewController hostOrientationDidChangeTo:sbf_currentOrientation withPreviousOrientation:sbf_previousOrientation context:orientationActuationContext];
     }
   }
 }
 
-- (void)appendDescriptionForParticipant:(id)a3 withBuilder:(id)a4 multilinePrefix:(id)a5
+- (void)appendDescriptionForParticipant:(id)participant withBuilder:(id)builder multilinePrefix:(id)prefix
 {
-  v8 = a3;
-  v9 = a4;
+  participantCopy = participant;
+  builderCopy = builder;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __90__SBSystemApertureController_appendDescriptionForParticipant_withBuilder_multilinePrefix___block_invoke;
   v12[3] = &unk_2783A8ED8;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [v10 appendBodySectionWithName:@"Associated Windows" multilinePrefix:a5 block:v12];
+  v13 = participantCopy;
+  v14 = builderCopy;
+  v10 = builderCopy;
+  v11 = participantCopy;
+  [v10 appendBodySectionWithName:@"Associated Windows" multilinePrefix:prefix block:v12];
 }
 
 void __90__SBSystemApertureController_appendDescriptionForParticipant_withBuilder_multilinePrefix___block_invoke(uint64_t a1)
@@ -1386,18 +1386,18 @@ void __90__SBSystemApertureController_appendDescriptionForParticipant_withBuilde
   }
 }
 
-- (id)participantAssociatedWindows:(id)a3
+- (id)participantAssociatedWindows:(id)windows
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  windowsCopy = windows;
+  v6 = windowsCopy;
   traitsParticipant = self->_traitsParticipant;
-  if (traitsParticipant == v5)
+  if (traitsParticipant == windowsCopy)
   {
     goto LABEL_7;
   }
 
-  if (self->_continuityTraitsParticipant != v5)
+  if (self->_continuityTraitsParticipant != windowsCopy)
   {
     [(SBSystemApertureController *)a2 participantAssociatedWindows:&self->_traitsParticipant, &v11];
     traitsParticipant = v11;
@@ -1428,14 +1428,14 @@ LABEL_9:
   return v8;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_settings == a3)
+  keyCopy = key;
+  v7 = keyCopy;
+  if (self->_settings == settings)
   {
-    v9 = v6;
-    if (([v6 isEqual:@"suppressHidingOnClonedDisplayWhileEmpty"] & 1) != 0 || (v8 = objc_msgSend(v9, "isEqual:", @"suppressHidingInSnapshotsWhileEmpty"), v7 = v9, v8))
+    v9 = keyCopy;
+    if (([keyCopy isEqual:@"suppressHidingOnClonedDisplayWhileEmpty"] & 1) != 0 || (v8 = objc_msgSend(v9, "isEqual:", @"suppressHidingInSnapshotsWhileEmpty"), v7 = v9, v8))
     {
       [(SBSystemApertureController *)self _updateVisibilityForCloningAndSnapshots];
       v7 = v9;
@@ -1443,20 +1443,20 @@ LABEL_9:
   }
 }
 
-- (BOOL)systemApertureProximityBacklightPolicyShouldDisableGracePeriod:(id)a3
+- (BOOL)systemApertureProximityBacklightPolicyShouldDisableGracePeriod:(id)period
 {
-  v3 = [SBApp proximitySensorManager];
-  v4 = [v3 isGracePeriodDisabled];
+  proximitySensorManager = [SBApp proximitySensorManager];
+  isGracePeriodDisabled = [proximitySensorManager isGracePeriodDisabled];
 
-  return v4;
+  return isGracePeriodDisabled;
 }
 
-- (void)backlightController:(id)a3 willTransitionToBacklightState:(int64_t)a4 source:(int64_t)a5
+- (void)backlightController:(id)controller willTransitionToBacklightState:(int64_t)state source:(int64_t)source
 {
-  if (SBBacklightStateIsActive([a3 backlightState]))
+  if (SBBacklightStateIsActive([controller backlightState]))
   {
-    IsActive = SBBacklightStateIsActive(a4);
-    if (a5 != 13 && !IsActive)
+    IsActive = SBBacklightStateIsActive(state);
+    if (source != 13 && !IsActive)
     {
       v9 = [(SBSystemApertureController *)self restrictSystemApertureToDefaultLayoutWithReason:@"Backlight no longer active"];
       [v9 invalidateWithReason:@"transient transition to default layout"];
@@ -1464,9 +1464,9 @@ LABEL_9:
   }
 }
 
-- (void)_updateActiveWindowSceneWithSpringBoardWindowScene:(id)a3
+- (void)_updateActiveWindowSceneWithSpringBoardWindowScene:(id)scene
 {
-  if ([a3 isMainDisplayWindowScene])
+  if ([scene isMainDisplayWindowScene])
   {
     window = self->_window;
   }
@@ -1476,9 +1476,9 @@ LABEL_9:
     window = self->_continuityWindow;
   }
 
-  v5 = [(UIWindow *)window windowScene];
+  windowScene = [(UIWindow *)window windowScene];
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = windowScene;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -1517,8 +1517,8 @@ LABEL_9:
     systemAperturePresentableManager = self->_systemAperturePresentableManager;
     self->_systemAperturePresentableManager = v4;
 
-    v6 = [SBApp bannerManager];
-    [v6 setPresentableInterceptor:self->_systemAperturePresentableManager];
+    bannerManager = [SBApp bannerManager];
+    [bannerManager setPresentableInterceptor:self->_systemAperturePresentableManager];
   }
 }
 
@@ -1538,8 +1538,8 @@ LABEL_9:
 {
   if (!self->_registeredBacklightSceneProvider)
   {
-    v3 = [SBApp backlightEnvironmentSessionProvider];
-    [v3 registerBacklightEnvironmentSceneProvider:self];
+    backlightEnvironmentSessionProvider = [SBApp backlightEnvironmentSessionProvider];
+    [backlightEnvironmentSessionProvider registerBacklightEnvironmentSceneProvider:self];
 
     self->_registeredBacklightSceneProvider = 1;
   }

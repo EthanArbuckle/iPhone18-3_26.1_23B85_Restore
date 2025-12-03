@@ -1,29 +1,29 @@
 @interface MTSyncedEpisodeObserver
-+ (id)observerWithBlock:(id)a3;
-- (MTSyncedEpisodeObserver)initWithBlock:(id)a3;
++ (id)observerWithBlock:(id)block;
+- (MTSyncedEpisodeObserver)initWithBlock:(id)block;
 @end
 
 @implementation MTSyncedEpisodeObserver
 
-- (MTSyncedEpisodeObserver)initWithBlock:(id)a3
+- (MTSyncedEpisodeObserver)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8.receiver = self;
   v8.super_class = MTSyncedEpisodeObserver;
   v5 = [(MTSyncedEpisodeObserver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MTSyncedEpisodeObserver *)v5 setBlock:v4];
+    [(MTSyncedEpisodeObserver *)v5 setBlock:blockCopy];
   }
 
   return v6;
 }
 
-+ (id)observerWithBlock:(id)a3
++ (id)observerWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithBlock:v4];
+  blockCopy = block;
+  v5 = [[self alloc] initWithBlock:blockCopy];
 
   return v5;
 }

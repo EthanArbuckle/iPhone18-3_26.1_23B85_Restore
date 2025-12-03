@@ -1,6 +1,6 @@
 @interface DMDSetAppExtensionUUIDsOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3 bundleIdentifier:(id)a4;
+- (void)runWithRequest:(id)request bundleIdentifier:(id)identifier;
 - (void)waitUntilFinished;
 @end
 
@@ -20,14 +20,14 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3 bundleIdentifier:(id)a4
+- (void)runWithRequest:(id)request bundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  identifierCopy = identifier;
   v8 = +[DMDAppController sharedController];
-  v9 = [v6 VPNUUIDString];
+  vPNUUIDString = [requestCopy VPNUUIDString];
   v31 = 0;
-  v10 = [v8 setVPNUUIDString:v9 forBundleIdentifier:v7 error:&v31];
+  v10 = [v8 setVPNUUIDString:vPNUUIDString forBundleIdentifier:identifierCopy error:&v31];
   v11 = v31;
   if ((v10 & 1) == 0)
   {
@@ -39,15 +39,15 @@ LABEL_13:
   }
 
   v12 = +[DMDAppController sharedController];
-  v13 = [v6 cellularSliceUUIDString];
+  cellularSliceUUIDString = [requestCopy cellularSliceUUIDString];
   v30 = v11;
-  v14 = [v12 setCellularSliceUUIDString:v13 forBundleIdentifier:v7 error:&v30];
+  v14 = [v12 setCellularSliceUUIDString:cellularSliceUUIDString forBundleIdentifier:identifierCopy error:&v30];
   v15 = v30;
 
   if (v14)
   {
     v16 = +[DMDAppController sharedController];
-    [v6 contentFilterUUIDString];
+    [requestCopy contentFilterUUIDString];
     v27 = v29[2] = v15;
     v28 = v16;
     v17 = [v16 setContentFilterUUIDString:? forBundleIdentifier:? error:?];
@@ -56,7 +56,7 @@ LABEL_13:
     if (v17)
     {
       v19 = +[DMDAppController sharedController];
-      [v6 DNSProxyUUIDString];
+      [requestCopy DNSProxyUUIDString];
       v25 = v29[1] = v18;
       v26 = v19;
       v17 = [v19 setDNSProxyUUIDString:? forBundleIdentifier:? error:?];
@@ -65,9 +65,9 @@ LABEL_13:
       if (v17)
       {
         v24 = +[DMDAppController sharedController];
-        v21 = [v6 relayUUIDString];
+        relayUUIDString = [requestCopy relayUUIDString];
         v29[0] = v20;
-        v17 = [v24 setRelayUUIDString:v21 forBundleIdentifier:v7 error:v29];
+        v17 = [v24 setRelayUUIDString:relayUUIDString forBundleIdentifier:identifierCopy error:v29];
         v23 = v29[0];
 
         v20 = v23;

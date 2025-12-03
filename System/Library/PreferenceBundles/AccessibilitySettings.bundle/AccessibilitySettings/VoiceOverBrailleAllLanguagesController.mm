@@ -15,32 +15,32 @@
   v3 = objc_alloc_init(UISearchController);
   [(VoiceOverBrailleAllLanguagesController *)self setSearchController:v3];
 
-  v4 = [(VoiceOverBrailleAllLanguagesController *)self searchController];
-  [v4 setSearchResultsUpdater:self];
+  searchController = [(VoiceOverBrailleAllLanguagesController *)self searchController];
+  [searchController setSearchResultsUpdater:self];
 
-  v5 = [(VoiceOverBrailleAllLanguagesController *)self searchController];
-  [v5 setHidesNavigationBarDuringPresentation:1];
+  searchController2 = [(VoiceOverBrailleAllLanguagesController *)self searchController];
+  [searchController2 setHidesNavigationBarDuringPresentation:1];
 
-  v6 = [(VoiceOverBrailleAllLanguagesController *)self searchController];
-  [v6 setObscuresBackgroundDuringPresentation:0];
+  searchController3 = [(VoiceOverBrailleAllLanguagesController *)self searchController];
+  [searchController3 setObscuresBackgroundDuringPresentation:0];
 
-  v7 = [(VoiceOverBrailleAllLanguagesController *)self searchController];
-  [v7 setAutomaticallyShowsCancelButton:1];
+  searchController4 = [(VoiceOverBrailleAllLanguagesController *)self searchController];
+  [searchController4 setAutomaticallyShowsCancelButton:1];
 
-  v8 = [(VoiceOverBrailleAllLanguagesController *)self searchController];
-  v9 = [(VoiceOverBrailleAllLanguagesController *)self navigationItem];
-  [v9 setSearchController:v8];
+  searchController5 = [(VoiceOverBrailleAllLanguagesController *)self searchController];
+  navigationItem = [(VoiceOverBrailleAllLanguagesController *)self navigationItem];
+  [navigationItem setSearchController:searchController5];
 
-  v10 = [(VoiceOverBrailleAllLanguagesController *)self navigationItem];
-  [v10 setHidesSearchBarWhenScrolling:0];
+  navigationItem2 = [(VoiceOverBrailleAllLanguagesController *)self navigationItem];
+  [navigationItem2 setHidesSearchBarWhenScrolling:0];
 
   v11 = settingsLocString(@"ADD_NEW_BRAILLE_LANGUAGE_TITLE", @"VoiceOverSettings");
-  v12 = [(VoiceOverBrailleAllLanguagesController *)self navigationItem];
-  [v12 setTitle:v11];
+  navigationItem3 = [(VoiceOverBrailleAllLanguagesController *)self navigationItem];
+  [navigationItem3 setTitle:v11];
 
   v13 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_dismiss"];
-  v14 = [(VoiceOverBrailleAllLanguagesController *)self navigationItem];
-  [v14 setLeftBarButtonItem:v13];
+  navigationItem4 = [(VoiceOverBrailleAllLanguagesController *)self navigationItem];
+  [navigationItem4 setLeftBarButtonItem:v13];
 }
 
 - (id)specifiers
@@ -50,26 +50,26 @@
   {
     v75 = OBJC_IVAR___PSListController__specifiers;
     v76 = +[NSMutableArray array];
-    v85 = [(VoiceOverBrailleAllLanguagesController *)self keyboardLanguageCodes];
-    v4 = [(VoiceOverBrailleAllLanguagesController *)self searchController];
-    v5 = [v4 searchBar];
-    v87 = [v5 text];
+    keyboardLanguageCodes = [(VoiceOverBrailleAllLanguagesController *)self keyboardLanguageCodes];
+    searchController = [(VoiceOverBrailleAllLanguagesController *)self searchController];
+    searchBar = [searchController searchBar];
+    text = [searchBar text];
 
-    v6 = [(VoiceOverBrailleAllLanguagesController *)self specifier];
-    v7 = [v6 propertyForKey:?];
+    specifier = [(VoiceOverBrailleAllLanguagesController *)self specifier];
+    v7 = [specifier propertyForKey:?];
 
-    v8 = [(VoiceOverBrailleAllLanguagesController *)self specifier];
-    v9 = [v8 propertyForKey:?];
-    v10 = [v9 BOOLValue];
+    specifier2 = [(VoiceOverBrailleAllLanguagesController *)self specifier];
+    v9 = [specifier2 propertyForKey:?];
+    bOOLValue = [v9 BOOLValue];
 
-    v11 = [(VoiceOverBrailleAllLanguagesController *)self specifier];
-    v12 = [v11 propertyForKey:?];
+    specifier3 = [(VoiceOverBrailleAllLanguagesController *)self specifier];
+    v12 = [specifier3 propertyForKey:?];
 
-    v13 = [(VoiceOverBrailleAllLanguagesController *)self specifier];
-    v14 = [v13 propertyForKey:@"TableSelectionBlockKey"];
+    specifier4 = [(VoiceOverBrailleAllLanguagesController *)self specifier];
+    v14 = [specifier4 propertyForKey:@"TableSelectionBlockKey"];
 
-    v15 = [(VoiceOverBrailleAllLanguagesController *)self specifier];
-    v16 = [v15 propertyForKey:?];
+    specifier5 = [(VoiceOverBrailleAllLanguagesController *)self specifier];
+    v16 = [specifier5 propertyForKey:?];
     v17 = v16 != 0;
     v80 = v16;
 
@@ -80,8 +80,8 @@
     v100[4] = self;
     v18 = v7;
     v101 = v18;
-    v81 = v10;
-    v104 = v10;
+    v81 = bOOLValue;
+    v104 = bOOLValue;
     v82 = v12;
     v103 = v82;
     v74 = v14;
@@ -89,13 +89,13 @@
     v105 = v17;
     v84 = objc_retainBlock(v100);
     v86 = v18;
-    v19 = [v18 supportedLanguageLocales];
+    supportedLanguageLocales = [v18 supportedLanguageLocales];
     v77 = +[NSMutableArray array];
     v96 = 0u;
     v97 = 0u;
     v98 = 0u;
     v99 = 0u;
-    v20 = v19;
+    v20 = supportedLanguageLocales;
     v21 = [v20 countByEnumeratingWithState:&v96 objects:v108 count:16];
     if (v21)
     {
@@ -111,26 +111,26 @@
           }
 
           v25 = *(*(&v96 + 1) + 8 * i);
-          v26 = [v25 languageCode];
-          v27 = [v85 containsObject:v26];
+          languageCode = [v25 languageCode];
+          v27 = [keyboardLanguageCodes containsObject:languageCode];
 
           if (v27)
           {
             v28 = +[AXLanguageManager sharedInstance];
-            v29 = [v28 userLocale];
-            v30 = [v25 localeIdentifier];
-            v31 = [v29 localizedStringForLanguage:v30 context:3];
+            userLocale = [v28 userLocale];
+            localeIdentifier = [v25 localeIdentifier];
+            v31 = [userLocale localizedStringForLanguage:localeIdentifier context:3];
 
             if (![v31 length])
             {
               v32 = objc_opt_class();
-              v33 = [v25 localeIdentifier];
-              v34 = [v32 localizedNameForLanguageAgnosticTableIdentifier:v33];
+              localeIdentifier2 = [v25 localeIdentifier];
+              v34 = [v32 localizedNameForLanguageAgnosticTableIdentifier:localeIdentifier2];
 
               v31 = v34;
             }
 
-            if (![v87 length] || objc_msgSend(v31, "localizedCaseInsensitiveContainsString:", v87))
+            if (![text length] || objc_msgSend(v31, "localizedCaseInsensitiveContainsString:", text))
             {
               v35 = (v84[2])(v84, v31, v25);
               [v77 addObject:v35];
@@ -144,7 +144,7 @@
       while (v22);
     }
 
-    v83 = self;
+    selfCopy = self;
 
     if ([v77 count])
     {
@@ -176,26 +176,26 @@
           }
 
           v42 = *(*(&v92 + 1) + 8 * j);
-          v43 = [v42 languageCode];
-          v44 = [v85 containsObject:v43];
+          languageCode2 = [v42 languageCode];
+          v44 = [keyboardLanguageCodes containsObject:languageCode2];
 
           if ((v44 & 1) == 0)
           {
             v45 = +[AXLanguageManager sharedInstance];
-            v46 = [v45 userLocale];
-            v47 = [v42 localeIdentifier];
-            v48 = [v46 localizedStringForLanguage:v47 context:3];
+            userLocale2 = [v45 userLocale];
+            localeIdentifier3 = [v42 localeIdentifier];
+            v48 = [userLocale2 localizedStringForLanguage:localeIdentifier3 context:3];
 
             if (![v48 length] || (objc_msgSend(v42, "localeIdentifier"), v49 = objc_claimAutoreleasedReturnValue(), v50 = objc_msgSend(v48, "isEqualToString:", v49), v49, v50))
             {
               v51 = objc_opt_class();
-              v52 = [v42 localeIdentifier];
-              v53 = [v51 localizedNameForLanguageAgnosticTableIdentifier:v52];
+              localeIdentifier4 = [v42 localeIdentifier];
+              v53 = [v51 localizedNameForLanguageAgnosticTableIdentifier:localeIdentifier4];
 
               v48 = v53;
             }
 
-            if (![v87 length] || objc_msgSend(v48, "localizedCaseInsensitiveContainsString:", v87))
+            if (![text length] || objc_msgSend(v48, "localizedCaseInsensitiveContainsString:", text))
             {
               v54 = (v84[2])(v84, v48, v42);
               [v37 addObject:v54];
@@ -224,8 +224,8 @@
     v89 = 0u;
     v90 = 0u;
     v91 = 0u;
-    v78 = [v86 languageAgnosticTableIdentifiers];
-    v57 = [v78 countByEnumeratingWithState:&v88 objects:v106 count:16];
+    languageAgnosticTableIdentifiers = [v86 languageAgnosticTableIdentifiers];
+    v57 = [languageAgnosticTableIdentifiers countByEnumeratingWithState:&v88 objects:v106 count:16];
     if (v57)
     {
       v58 = v57;
@@ -236,15 +236,15 @@
         {
           if (*v89 != v59)
           {
-            objc_enumerationMutation(v78);
+            objc_enumerationMutation(languageAgnosticTableIdentifiers);
           }
 
           v61 = *(*(&v88 + 1) + 8 * k);
           v62 = [objc_opt_class() localizedNameForLanguageAgnosticTableIdentifier:v61];
-          if (![v87 length] || objc_msgSend(v62, "localizedCaseInsensitiveContainsString:", v87))
+          if (![text length] || objc_msgSend(v62, "localizedCaseInsensitiveContainsString:", text))
           {
             v63 = v56;
-            v64 = [PSSpecifier preferenceSpecifierNamed:v62 target:v83 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+            v64 = [PSSpecifier preferenceSpecifierNamed:v62 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
             [v64 setProperty:v61 forKey:@"TableIdentifier"];
             [v64 setProperty:v86 forKey:@"TableEnumerator"];
             v65 = [NSNumber numberWithBool:v81];
@@ -262,7 +262,7 @@
           }
         }
 
-        v58 = [v78 countByEnumeratingWithState:&v88 objects:v106 count:16];
+        v58 = [languageAgnosticTableIdentifiers countByEnumeratingWithState:&v88 objects:v106 count:16];
       }
 
       while (v58);
@@ -278,11 +278,11 @@
     }
 
     v69 = v56;
-    v70 = *&v83->AXUISettingsBaseListController_opaque[v75];
-    *&v83->AXUISettingsBaseListController_opaque[v75] = v76;
+    v70 = *&selfCopy->AXUISettingsBaseListController_opaque[v75];
+    *&selfCopy->AXUISettingsBaseListController_opaque[v75] = v76;
     v71 = v76;
 
-    v3 = *&v83->AXUISettingsBaseListController_opaque[v75];
+    v3 = *&selfCopy->AXUISettingsBaseListController_opaque[v75];
   }
 
   return v3;
@@ -342,21 +342,21 @@ int64_t __52__VoiceOverBrailleAllLanguagesController_specifiers__block_invoke_4(
 
 - (void)_dismiss
 {
-  v2 = [(VoiceOverBrailleAllLanguagesController *)self navigationController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(VoiceOverBrailleAllLanguagesController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (id)keyboardLanguageCodes
 {
   v2 = +[AXLanguageManager sharedInstance];
-  v3 = [v2 preferredLanguageIDsFromUserSelectedKeyboards];
+  preferredLanguageIDsFromUserSelectedKeyboards = [v2 preferredLanguageIDsFromUserSelectedKeyboards];
 
   v4 = +[NSMutableSet set];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = preferredLanguageIDsFromUserSelectedKeyboards;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -375,8 +375,8 @@ int64_t __52__VoiceOverBrailleAllLanguagesController_specifiers__block_invoke_4(
         v11 = v10;
         if (v10)
         {
-          v12 = [v10 languageCode];
-          [v4 addObject:v12];
+          languageCode = [v10 languageCode];
+          [v4 addObject:languageCode];
         }
       }
 

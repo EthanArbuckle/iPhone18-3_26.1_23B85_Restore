@@ -8,9 +8,9 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 isUserInteractionEnabled];
+  isUserInteractionEnabled = [v2 isUserInteractionEnabled];
   v4 = MEMORY[0x29EDC7F70];
-  if (!v3)
+  if (!isUserInteractionEnabled)
   {
     v4 = MEMORY[0x29EDC7FA0];
   }

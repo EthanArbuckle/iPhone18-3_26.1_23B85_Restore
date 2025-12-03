@@ -1,10 +1,10 @@
 @interface DNDSModeAssertionManager
-- (BOOL)_saveDataToBackingStoreWithError:(id *)a3;
-- (DNDSModeAssertionManager)initWithBackingStore:(id)a3 clientDetailsProvider:(id)a4;
-- (DNDSModeAssertionManager)initWithBackingStoreURL:(id)a3 clientDetailsProvider:(id)a4;
-- (id)modeAssertionInvalidationsMatchingPredicate:(id)a3;
-- (id)modeAssertionsMatchingPredicate:(id)a3;
-- (id)updateModeAssertionsWithContextHandler:(id)a3 error:(id *)a4;
+- (BOOL)_saveDataToBackingStoreWithError:(id *)error;
+- (DNDSModeAssertionManager)initWithBackingStore:(id)store clientDetailsProvider:(id)provider;
+- (DNDSModeAssertionManager)initWithBackingStoreURL:(id)l clientDetailsProvider:(id)provider;
+- (id)modeAssertionInvalidationsMatchingPredicate:(id)predicate;
+- (id)modeAssertionsMatchingPredicate:(id)predicate;
+- (id)updateModeAssertionsWithContextHandler:(id)handler error:(id *)error;
 - (void)_loadDataFromBackingStore;
 - (void)_resolveTransactionForModeAssertionStore;
 - (void)dealloc;
@@ -12,29 +12,29 @@
 
 @implementation DNDSModeAssertionManager
 
-- (DNDSModeAssertionManager)initWithBackingStoreURL:(id)a3 clientDetailsProvider:(id)a4
+- (DNDSModeAssertionManager)initWithBackingStoreURL:(id)l clientDetailsProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[DNDSJSONBackingStore alloc] initWithRecordClass:objc_opt_class() fileURL:v7 versionNumber:8];
+  providerCopy = provider;
+  lCopy = l;
+  v8 = [[DNDSJSONBackingStore alloc] initWithRecordClass:objc_opt_class() fileURL:lCopy versionNumber:8];
 
-  v9 = [(DNDSModeAssertionManager *)self initWithBackingStore:v8 clientDetailsProvider:v6];
+  v9 = [(DNDSModeAssertionManager *)self initWithBackingStore:v8 clientDetailsProvider:providerCopy];
   return v9;
 }
 
-- (DNDSModeAssertionManager)initWithBackingStore:(id)a3 clientDetailsProvider:(id)a4
+- (DNDSModeAssertionManager)initWithBackingStore:(id)store clientDetailsProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = DNDSModeAssertionManager;
   v9 = [(DNDSModeAssertionManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_backingStore, a3);
+    objc_storeStrong(&v9->_backingStore, store);
     [(DNDSBackingStore *)v10->_backingStore setDelegate:v10];
-    objc_storeStrong(&v10->_clientDetailsProvider, a4);
+    objc_storeStrong(&v10->_clientDetailsProvider, provider);
     v10->_storeLock._os_unfair_lock_opaque = 0;
     [(DNDSModeAssertionManager *)v10 _loadDataFromBackingStore];
     DNDSRegisterSysdiagnoseDataProvider(v10);
@@ -51,9 +51,9 @@
   [(DNDSModeAssertionManager *)&v3 dealloc];
 }
 
-- (id)modeAssertionsMatchingPredicate:(id)a3
+- (id)modeAssertionsMatchingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -65,7 +65,7 @@
   v12[2] = __60__DNDSModeAssertionManager_modeAssertionsMatchingPredicate___block_invoke;
   v12[3] = &unk_278F8AD90;
   v14 = &v15;
-  v5 = v4;
+  v5 = predicateCopy;
   v13 = v5;
   v11 = 0;
   v6 = [(DNDSModeAssertionManager *)self updateModeAssertionsWithContextHandler:v12 error:&v11];
@@ -98,9 +98,9 @@ uint64_t __60__DNDSModeAssertionManager_modeAssertionsMatchingPredicate___block_
   return 0;
 }
 
-- (id)modeAssertionInvalidationsMatchingPredicate:(id)a3
+- (id)modeAssertionInvalidationsMatchingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -112,7 +112,7 @@ uint64_t __60__DNDSModeAssertionManager_modeAssertionsMatchingPredicate___block_
   v12[2] = __72__DNDSModeAssertionManager_modeAssertionInvalidationsMatchingPredicate___block_invoke;
   v12[3] = &unk_278F8AD90;
   v14 = &v15;
-  v5 = v4;
+  v5 = predicateCopy;
   v13 = v5;
   v11 = 0;
   v6 = [(DNDSModeAssertionManager *)self updateModeAssertionsWithContextHandler:v12 error:&v11];
@@ -145,10 +145,10 @@ uint64_t __72__DNDSModeAssertionManager_modeAssertionInvalidationsMatchingPredic
   return 0;
 }
 
-- (id)updateModeAssertionsWithContextHandler:(id)a3 error:(id *)a4
+- (id)updateModeAssertionsWithContextHandler:(id)handler error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  handlerCopy = handler;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v7 = _os_activity_create(&dword_24912E000, "com.apple.donotdisturb.ModeAssertionManager.updateModeAssertions", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -156,7 +156,7 @@ uint64_t __72__DNDSModeAssertionManager_modeAssertionInvalidationsMatchingPredic
   os_unfair_lock_lock(&self->_storeLock);
   v8 = objc_autoreleasePoolPush();
   v9 = [[DNDSModeAssertionManagerUpdateContext alloc] initWithStore:self->_store clientDetailsProvider:self->_clientDetailsProvider];
-  v10 = v6[2](v6, v9);
+  v10 = handlerCopy[2](handlerCopy, v9);
   v11 = DNDSLogAssertionManager;
   if (os_log_type_enabled(DNDSLogAssertionManager, OS_LOG_TYPE_DEFAULT))
   {
@@ -167,15 +167,15 @@ uint64_t __72__DNDSModeAssertionManager_modeAssertionInvalidationsMatchingPredic
 
   if (v10)
   {
-    v12 = [(DNDSModeAssertionManagerUpdateContext *)v9 store];
-    if ([(DNDSModeAssertionStore *)self->_store isEqual:v12])
+    store = [(DNDSModeAssertionManagerUpdateContext *)v9 store];
+    if ([(DNDSModeAssertionStore *)self->_store isEqual:store])
     {
       v13 = 0;
     }
 
     else
     {
-      v15 = [v12 copy];
+      v15 = [store copy];
       store = self->_store;
       self->_store = v15;
 
@@ -185,28 +185,28 @@ uint64_t __72__DNDSModeAssertionManager_modeAssertionInvalidationsMatchingPredic
       [(DNDSModeAssertionManager *)self _resolveTransactionForModeAssertionStore];
     }
 
-    v14 = [(DNDSModeAssertionManagerUpdateContext *)v9 updateResult];
+    updateResult = [(DNDSModeAssertionManagerUpdateContext *)v9 updateResult];
   }
 
   else
   {
-    v14 = +[DNDSModeAssertionUpdateResult emptyResult];
+    updateResult = +[DNDSModeAssertionUpdateResult emptyResult];
     v13 = 0;
   }
 
   objc_autoreleasePoolPop(v8);
   os_unfair_lock_unlock(&self->_storeLock);
-  if (a4 && v13)
+  if (error && v13)
   {
     v17 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
   os_activity_scope_leave(&state);
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return updateResult;
 }
 
 - (void)_loadDataFromBackingStore
@@ -239,21 +239,21 @@ BOOL __53__DNDSModeAssertionManager__loadDataFromBackingStore__block_invoke_15(u
 
 - (void)_resolveTransactionForModeAssertionStore
 {
-  v3 = [(DNDSModeAssertionStore *)self->_store assertions];
+  assertions = [(DNDSModeAssertionStore *)self->_store assertions];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__DNDSModeAssertionManager__resolveTransactionForModeAssertionStore__block_invoke;
   v10[3] = &unk_278F8A0B0;
   v10[4] = self;
-  v4 = [v3 bs_filter:v10];
+  v4 = [assertions bs_filter:v10];
 
-  v5 = [(DNDSModeAssertionStore *)self->_store invalidations];
+  invalidations = [(DNDSModeAssertionStore *)self->_store invalidations];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__DNDSModeAssertionManager__resolveTransactionForModeAssertionStore__block_invoke_2;
   v9[3] = &unk_278F8A950;
   v9[4] = self;
-  v6 = [v5 bs_filter:v9];
+  v6 = [invalidations bs_filter:v9];
 
   if (![v4 count] && !objc_msgSend(v6, "count"))
   {
@@ -320,35 +320,35 @@ uint64_t __68__DNDSModeAssertionManager__resolveTransactionForModeAssertionStore
   return v7;
 }
 
-- (BOOL)_saveDataToBackingStoreWithError:(id *)a3
+- (BOOL)_saveDataToBackingStoreWithError:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
   v5 = [(DNDSModeAssertionStore *)self->_store mutableCopy];
-  v6 = [v5 assertions];
+  assertions = [v5 assertions];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __61__DNDSModeAssertionManager__saveDataToBackingStoreWithError___block_invoke;
   v26[3] = &unk_278F8A0B0;
   v26[4] = self;
-  v7 = [v6 bs_filter:v26];
+  v7 = [assertions bs_filter:v26];
 
   [v5 setAssertions:v7];
-  v8 = [v5 invalidations];
+  invalidations = [v5 invalidations];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __61__DNDSModeAssertionManager__saveDataToBackingStoreWithError___block_invoke_2;
   v25[3] = &unk_278F8A950;
   v25[4] = self;
-  v9 = [v8 bs_filter:v25];
+  v9 = [invalidations bs_filter:v25];
 
   [v5 setInvalidations:v9];
-  v10 = [v5 invalidationRequests];
+  invalidationRequests = [v5 invalidationRequests];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __61__DNDSModeAssertionManager__saveDataToBackingStoreWithError___block_invoke_3;
   v24[3] = &unk_278F8A9B8;
   v24[4] = self;
-  v11 = [v10 bs_filter:v24];
+  v11 = [invalidationRequests bs_filter:v24];
 
   [v5 setInvalidationRequests:v11];
   backingStore = self->_backingStore;
@@ -377,7 +377,7 @@ uint64_t __68__DNDSModeAssertionManager__resolveTransactionForModeAssertionStore
       if (v13 != 2 || (v15 = DNDSLogAssertionManager, !os_log_type_enabled(DNDSLogAssertionManager, OS_LOG_TYPE_DEFAULT)))
       {
 LABEL_9:
-        if (!a3)
+        if (!error)
         {
           goto LABEL_12;
         }
@@ -401,13 +401,13 @@ LABEL_9:
   }
 
   _DNDSRequestRadar(@"Failed to write store", v14, 0, @"/Library/Caches/com.apple.xbs/Sources/DoNotDisturbServer/DoNotDisturbServer/DNDSModeAssertionManager.m", 290);
-  if (a3)
+  if (error)
   {
 LABEL_10:
     if (v14)
     {
       v20 = v14;
-      *a3 = v14;
+      *error = v14;
     }
   }
 

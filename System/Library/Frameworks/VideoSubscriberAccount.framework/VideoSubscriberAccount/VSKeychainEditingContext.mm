@@ -1,18 +1,18 @@
 @interface VSKeychainEditingContext
-- (BOOL)save:(id *)a3;
+- (BOOL)save:(id *)save;
 - (VSKeychainEditingContext)init;
 - (VSKeychainStore)keychainStore;
-- (id)_deleteQueryForItemValues:(id)a3 withItemKind:(id)a4;
-- (id)_findOrCreateItemForCommittedValues:(id)a3 withItemKind:(id)a4;
-- (id)_queryForItemValues:(id)a3 withItemKind:(id)a4;
-- (id)_subsetOfRegisteredItemsWithKeyPath:(id)a3;
-- (id)executeFetchRequest:(id)a3 error:(id *)a4;
-- (void)_populateErrors:(id)a3 withError:(id)a4 affectingItem:(id)a5;
-- (void)_populateQuery:(__CFDictionary *)a3 usingPredicate:(id)a4 withItemKind:(id)a5;
-- (void)_populateResult:(id)a3 forRequest:(id)a4 fromMatch:(id)a5;
-- (void)deleteItem:(id)a3;
-- (void)fulfillFault:(id)a3;
-- (void)insertItem:(id)a3;
+- (id)_deleteQueryForItemValues:(id)values withItemKind:(id)kind;
+- (id)_findOrCreateItemForCommittedValues:(id)values withItemKind:(id)kind;
+- (id)_queryForItemValues:(id)values withItemKind:(id)kind;
+- (id)_subsetOfRegisteredItemsWithKeyPath:(id)path;
+- (id)executeFetchRequest:(id)request error:(id *)error;
+- (void)_populateErrors:(id)errors withError:(id)error affectingItem:(id)item;
+- (void)_populateQuery:(__CFDictionary *)query usingPredicate:(id)predicate withItemKind:(id)kind;
+- (void)_populateResult:(id)result forRequest:(id)request fromMatch:(id)match;
+- (void)deleteItem:(id)item;
+- (void)fulfillFault:(id)fault;
+- (void)insertItem:(id)item;
 @end
 
 @implementation VSKeychainEditingContext
@@ -32,11 +32,11 @@
   return v2;
 }
 
-- (void)_populateQuery:(__CFDictionary *)a3 usingPredicate:(id)a4 withItemKind:(id)a5
+- (void)_populateQuery:(__CFDictionary *)query usingPredicate:(id)predicate withItemKind:(id)kind
 {
   v79 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  predicateCopy = predicate;
+  kindCopy = kind;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -50,7 +50,7 @@
       [v10 raise:v11 format:{@"Unexpectedly, predicate was %@, instead of NSCompoundPredicate.", v13}];
     }
 
-    v14 = v8;
+    v14 = predicateCopy;
     if ([v14 compoundPredicateType] != 1)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unsupported compound predicate: %@", v14}];
@@ -60,8 +60,8 @@
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v15 = [v14 subpredicates];
-    v16 = [v15 countByEnumeratingWithState:&v73 objects:v78 count:16];
+    subpredicates = [v14 subpredicates];
+    v16 = [subpredicates countByEnumeratingWithState:&v73 objects:v78 count:16];
     if (v16)
     {
       v17 = v16;
@@ -72,13 +72,13 @@
         {
           if (*v74 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(subpredicates);
           }
 
-          [(VSKeychainEditingContext *)self _populateQuery:a3 usingPredicate:*(*(&v73 + 1) + 8 * i) withItemKind:v9];
+          [(VSKeychainEditingContext *)self _populateQuery:query usingPredicate:*(*(&v73 + 1) + 8 * i) withItemKind:kindCopy];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v73 objects:v78 count:16];
+        v17 = [subpredicates countByEnumeratingWithState:&v73 objects:v78 count:16];
       }
 
       while (v17);
@@ -100,13 +100,13 @@
       [v20 raise:v21 format:{@"Unexpectedly, predicate was %@, instead of NSComparisonPredicate.", v23}];
     }
 
-    v24 = v8;
-    v25 = [v24 leftExpression];
-    v26 = [v24 rightExpression];
-    v27 = [v25 expressionType];
-    v28 = [v26 expressionType];
-    v66 = v26;
-    if ((v27 != 3 || (v29 = v26, v30 = v25, v28)) && (v27 || (v29 = v25, v30 = v26, v28 != 3)))
+    v24 = predicateCopy;
+    leftExpression = [v24 leftExpression];
+    rightExpression = [v24 rightExpression];
+    expressionType = [leftExpression expressionType];
+    expressionType2 = [rightExpression expressionType];
+    v66 = rightExpression;
+    if ((expressionType != 3 || (v29 = rightExpression, v30 = leftExpression, expressionType2)) && (expressionType || (v29 = leftExpression, v30 = rightExpression, expressionType2 != 3)))
     {
       v33 = *MEMORY[0x277CBE660];
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unsupported expressions in comparison predicate: %@", v24}];
@@ -115,8 +115,8 @@
 
     else
     {
-      v31 = v25;
-      v32 = v26;
+      v31 = leftExpression;
+      v32 = rightExpression;
       if (v30)
       {
         goto LABEL_28;
@@ -128,7 +128,7 @@
     [MEMORY[0x277CBEAD8] raise:v33 format:@"The keyPathExpressionOrNil parameter must not be nil."];
     v30 = 0;
 LABEL_28:
-    v36 = v25;
+    v36 = leftExpression;
     v37 = v30;
     if (!v29)
     {
@@ -136,34 +136,34 @@ LABEL_28:
     }
 
     v38 = v29;
-    v39 = [v37 keyPath];
-    if (!v39 || ([v9 attributesByName], v40 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v40, "objectForKey:", v39), v41 = objc_claimAutoreleasedReturnValue(), v40, !v41))
+    keyPath = [v37 keyPath];
+    if (!keyPath || ([kindCopy attributesByName], v40 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v40, "objectForKey:", keyPath), v41 = objc_claimAutoreleasedReturnValue(), v40, !v41))
     {
       v42 = *MEMORY[0x277CBE660];
-      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unknown keypath %@ for item kind %@", v39, v9}];
+      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unknown keypath %@ for item kind %@", keyPath, kindCopy}];
       [MEMORY[0x277CBEAD8] raise:v42 format:@"The attributeOrNil parameter must not be nil."];
       v41 = 0;
     }
 
-    v65 = v39;
+    v65 = keyPath;
     v43 = v41;
-    v67 = [v38 constantValue];
+    constantValue = [v38 constantValue];
     v68 = v43;
-    v44 = [v43 attributeValueClassName];
-    NSClassFromString(v44);
+    attributeValueClassName = [v43 attributeValueClassName];
+    NSClassFromString(attributeValueClassName);
 
-    v45 = [v24 predicateOperatorType];
-    if (v45 == 10)
+    predicateOperatorType = [v24 predicateOperatorType];
+    if (predicateOperatorType == 10)
     {
       v46 = v36;
       v52 = v36 == v37;
       v47 = v66;
       if (v52 && v66 == v38)
       {
-        v53 = v67;
-        if (![v67 conformsToProtocol:&unk_284E09B08])
+        v53 = constantValue;
+        if (![constantValue conformsToProtocol:&unk_284E09B08])
         {
-          [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unable to enumerate constant value: %@", v67}];
+          [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unable to enumerate constant value: %@", constantValue}];
           v51 = v65;
           goto LABEL_60;
         }
@@ -171,12 +171,12 @@ LABEL_28:
         v61 = v37;
         v62 = v46;
         v63 = v24;
-        v64 = v8;
+        v64 = predicateCopy;
         v71 = 0u;
         v72 = 0u;
         v69 = 0u;
         v70 = 0u;
-        v54 = v67;
+        v54 = constantValue;
         v55 = [v54 countByEnumeratingWithState:&v69 objects:v77 count:16];
         if (v55)
         {
@@ -206,7 +206,7 @@ LABEL_28:
         }
 
         v24 = v63;
-        v8 = v64;
+        predicateCopy = v64;
         v37 = v61;
         v46 = v62;
         v47 = v66;
@@ -223,19 +223,19 @@ LABEL_28:
     else
     {
       v46 = v36;
-      if (v45 == 4)
+      if (predicateOperatorType == 4)
       {
         v47 = v66;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unexpected value %@ for attribute %@", v67, v68}];
+          [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unexpected value %@ for attribute %@", constantValue, v68}];
         }
 
-        v48 = [v68 secItemAttributeKey];
-        v49 = v67;
-        if (CFDictionaryContainsKey(a3, v48))
+        secItemAttributeKey = [v68 secItemAttributeKey];
+        v49 = constantValue;
+        if (CFDictionaryContainsKey(query, secItemAttributeKey))
         {
-          Value = CFDictionaryGetValue(a3, v48);
+          Value = CFDictionaryGetValue(query, secItemAttributeKey);
           v51 = v65;
           if (!CFEqual(Value, v49))
           {
@@ -246,7 +246,7 @@ LABEL_28:
 
         else
         {
-          CFDictionarySetValue(a3, v48, v49);
+          CFDictionarySetValue(query, secItemAttributeKey, v49);
           v51 = v65;
         }
 
@@ -255,40 +255,40 @@ LABEL_28:
 
       else
       {
-        [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unsupported operator type (%lu) in comparison predicate: %@", v45, v24}];
+        [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unsupported operator type (%lu) in comparison predicate: %@", predicateOperatorType, v24}];
         v51 = v65;
         v47 = v66;
       }
     }
 
-    v53 = v67;
+    v53 = constantValue;
 LABEL_60:
 
     goto LABEL_61;
   }
 
   v34 = [MEMORY[0x277CCAC30] predicateWithValue:1];
-  v35 = [v8 isEqual:v34];
+  v35 = [predicateCopy isEqual:v34];
 
-  if (v8 && (v35 & 1) == 0)
+  if (predicateCopy && (v35 & 1) == 0)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unsupported predicate: %@", v8}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unsupported predicate: %@", predicateCopy}];
   }
 
 LABEL_61:
 }
 
-- (id)_findOrCreateItemForCommittedValues:(id)a3 withItemKind:(id)a4
+- (id)_findOrCreateItemForCommittedValues:(id)values withItemKind:(id)kind
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valuesCopy = values;
+  kindCopy = kind;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [(VSKeychainEditingContext *)self items];
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  items = [(VSKeychainEditingContext *)self items];
+  v9 = [items countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
@@ -299,12 +299,12 @@ LABEL_3:
     {
       if (*v23 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(items);
       }
 
       v13 = *(*(&v22 + 1) + 8 * v12);
-      v14 = [v13 committedValues];
-      v15 = [v14 isEqual:v6];
+      committedValues = [v13 committedValues];
+      v15 = [committedValues isEqual:valuesCopy];
 
       if (v15)
       {
@@ -313,7 +313,7 @@ LABEL_3:
 
       if (v10 == ++v12)
       {
-        v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v10 = [items countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v10)
         {
           goto LABEL_3;
@@ -336,17 +336,17 @@ LABEL_3:
 LABEL_9:
   }
 
-  v17 = [v7 itemClassName];
-  v18 = NSClassFromString(v17);
+  itemClassName = [kindCopy itemClassName];
+  v18 = NSClassFromString(itemClassName);
 
-  v16 = [[v18 alloc] initWithItemKind:v7 insertIntoEditingContext:0];
+  v16 = [[v18 alloc] initWithItemKind:kindCopy insertIntoEditingContext:0];
   [v16 setEditingContext:self];
   [v16 setHasFaultForData:1];
-  v19 = [(VSKeychainEditingContext *)self items];
-  [v19 addObject:v16];
+  items2 = [(VSKeychainEditingContext *)self items];
+  [items2 addObject:v16];
 
-  [v16 _setCommittedValues:v6 registeringUndo:0];
-  v20 = [v6 mutableCopy];
+  [v16 _setCommittedValues:valuesCopy registeringUndo:0];
+  v20 = [valuesCopy mutableCopy];
   [v16 setPrimitiveValues:v20];
 
   if (!v16)
@@ -359,25 +359,25 @@ LABEL_13:
   return v16;
 }
 
-- (void)_populateResult:(id)a3 forRequest:(id)a4 fromMatch:(id)a5
+- (void)_populateResult:(id)result forRequest:(id)request fromMatch:(id)match
 {
-  v23 = self;
+  selfCopy = self;
   v32 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v7 = a4;
-  v8 = a5;
-  v24 = [v7 predicate];
-  v25 = v7;
-  v9 = [v7 itemKind];
-  v10 = [v9 forceUnwrapObject];
+  resultCopy = result;
+  requestCopy = request;
+  matchCopy = match;
+  predicate = [requestCopy predicate];
+  v25 = requestCopy;
+  itemKind = [requestCopy itemKind];
+  forceUnwrapObject = [itemKind forceUnwrapObject];
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v12 = [v10 properties];
-  v13 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  properties = [forceUnwrapObject properties];
+  v13 = [properties countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v13)
   {
     v14 = v13;
@@ -388,45 +388,45 @@ LABEL_13:
       {
         if (*v28 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(properties);
         }
 
         v17 = *(*(&v27 + 1) + 8 * i);
-        v18 = [v17 name];
-        v19 = [v17 defaultValue];
-        v20 = [v8 objectForKey:{objc_msgSend(v17, "secItemAttributeKey")}];
+        name = [v17 name];
+        defaultValue = [v17 defaultValue];
+        v20 = [matchCopy objectForKey:{objc_msgSend(v17, "secItemAttributeKey")}];
         v21 = v20;
-        if (v20 || (v21 = v19) != 0)
+        if (v20 || (v21 = defaultValue) != 0)
         {
-          [v11 setObject:v21 forKey:v18];
+          [v11 setObject:v21 forKey:name];
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v14 = [properties countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v14);
   }
 
-  v22 = [(VSKeychainEditingContext *)v23 _findOrCreateItemForCommittedValues:v11 withItemKind:v10];
-  if ([v24 evaluateWithObject:v22])
+  v22 = [(VSKeychainEditingContext *)selfCopy _findOrCreateItemForCommittedValues:v11 withItemKind:forceUnwrapObject];
+  if ([predicate evaluateWithObject:v22])
   {
-    [v26 addObject:v22];
+    [resultCopy addObject:v22];
   }
 }
 
-- (id)_queryForItemValues:(id)a3 withItemKind:(id)a4
+- (id)_queryForItemValues:(id)values withItemKind:(id)kind
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  valuesCopy = values;
+  kindCopy = kind;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [v6 properties];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  properties = [kindCopy properties];
+  v9 = [properties countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -437,20 +437,20 @@ LABEL_13:
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(properties);
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 secItemAttributeKey];
-        v15 = [v13 name];
-        v16 = [v5 objectForKey:v15];
+        secItemAttributeKey = [v13 secItemAttributeKey];
+        name = [v13 name];
+        v16 = [valuesCopy objectForKey:name];
         if (v16)
         {
-          [v7 setObject:v16 forKey:v14];
+          [v7 setObject:v16 forKey:secItemAttributeKey];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [properties countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v10);
@@ -459,11 +459,11 @@ LABEL_13:
   return v7;
 }
 
-- (id)_deleteQueryForItemValues:(id)a3 withItemKind:(id)a4
+- (id)_deleteQueryForItemValues:(id)values withItemKind:(id)kind
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  valuesCopy = values;
+  kindCopy = kind;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v8 = objc_alloc(MEMORY[0x277CBEB98]);
   v26[0] = @"accessGroup";
@@ -476,9 +476,9 @@ LABEL_13:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v20 = v6;
-  v11 = [v6 properties];
-  v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v20 = kindCopy;
+  properties = [kindCopy properties];
+  v12 = [properties countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
     v13 = v12;
@@ -489,14 +489,14 @@ LABEL_13:
       {
         if (*v22 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(properties);
         }
 
         v16 = *(*(&v21 + 1) + 8 * i);
-        v17 = [v16 name];
-        if ([v10 containsObject:v17])
+        name = [v16 name];
+        if ([v10 containsObject:name])
         {
-          v18 = [v5 objectForKey:v17];
+          v18 = [valuesCopy objectForKey:name];
           if (v18)
           {
             [v7 setObject:v18 forKey:{objc_msgSend(v16, "secItemAttributeKey")}];
@@ -504,7 +504,7 @@ LABEL_13:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v13 = [properties countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v13);
@@ -515,41 +515,41 @@ LABEL_13:
   return v7;
 }
 
-- (void)_populateErrors:(id)a3 withError:(id)a4 affectingItem:(id)a5
+- (void)_populateErrors:(id)errors withError:(id)error affectingItem:(id)item
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v8 userInfo];
-  v15 = [v10 mutableCopy];
+  itemCopy = item;
+  errorCopy = error;
+  errorsCopy = errors;
+  userInfo = [errorCopy userInfo];
+  v15 = [userInfo mutableCopy];
 
-  [v15 setObject:v7 forKey:@"VSKeychainAffectedItemsKey"];
+  [v15 setObject:itemCopy forKey:@"VSKeychainAffectedItemsKey"];
   v11 = MEMORY[0x277CCA9B8];
-  v12 = [v8 domain];
-  v13 = [v8 code];
+  domain = [errorCopy domain];
+  code = [errorCopy code];
 
-  v14 = [v11 errorWithDomain:v12 code:v13 userInfo:v15];
-  [v9 addObject:v14];
+  v14 = [v11 errorWithDomain:domain code:code userInfo:v15];
+  [errorsCopy addObject:v14];
 }
 
-- (void)fulfillFault:(id)a3
+- (void)fulfillFault:(id)fault
 {
-  v4 = a3;
-  if (([v4 hasFaultForData] & 1) == 0)
+  faultCopy = fault;
+  if (([faultCopy hasFaultForData] & 1) == 0)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Item must have a fault for its data."];
   }
 
-  v5 = [v4 itemKind];
-  v6 = [v4 committedValues];
-  v7 = [(VSKeychainEditingContext *)self _queryForItemValues:v6 withItemKind:v5];
+  itemKind = [faultCopy itemKind];
+  committedValues = [faultCopy committedValues];
+  v7 = [(VSKeychainEditingContext *)self _queryForItemValues:committedValues withItemKind:itemKind];
 
-  v8 = [v5 secItemClass];
-  [v7 setObject:v8 forKey:*MEMORY[0x277CDC228]];
+  secItemClass = [itemKind secItemClass];
+  [v7 setObject:secItemClass forKey:*MEMORY[0x277CDC228]];
   [v7 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CDC558]];
-  v9 = [(VSKeychainEditingContext *)self keychainStore];
+  keychainStore = [(VSKeychainEditingContext *)self keychainStore];
   v19 = 0;
-  v10 = [v9 findItemsMatchingQuery:v7 error:&v19];
+  v10 = [keychainStore findItemsMatchingQuery:v7 error:&v19];
   v11 = v19;
 
   if (v10)
@@ -571,15 +571,15 @@ LABEL_13:
       if (objc_opt_isKindOfClass())
       {
         v13 = v12;
-        v14 = [v4 primitiveValues];
+        primitiveValues = [faultCopy primitiveValues];
         v15 = [v13 copy];
-        [v14 setObject:v15 forKey:@"data"];
+        [primitiveValues setObject:v15 forKey:@"data"];
 
-        v16 = [v4 committedValues];
+        committedValues2 = [faultCopy committedValues];
         v17 = [v13 copy];
 
-        [v16 setObject:v17 forKey:@"data"];
-        [v4 setHasFaultForData:0];
+        [committedValues2 setObject:v17 forKey:@"data"];
+        [faultCopy setHasFaultForData:0];
       }
 
       else
@@ -599,34 +599,34 @@ LABEL_13:
   }
 }
 
-- (id)executeFetchRequest:(id)a3 error:(id *)a4
+- (id)executeFetchRequest:(id)request error:(id *)error
 {
   v68 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  requestCopy = request;
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBED60], MEMORY[0x277CBF150]);
-  v8 = [v6 itemKind];
-  v9 = [v8 forceUnwrapObject];
+  itemKind = [requestCopy itemKind];
+  forceUnwrapObject = [itemKind forceUnwrapObject];
 
-  CFDictionarySetValue(Mutable, *MEMORY[0x277CDC228], [v9 secItemClass]);
-  v10 = [v6 predicate];
-  [(VSKeychainEditingContext *)self _populateQuery:Mutable usingPredicate:v10 withItemKind:v9];
+  CFDictionarySetValue(Mutable, *MEMORY[0x277CDC228], [forceUnwrapObject secItemClass]);
+  predicate = [requestCopy predicate];
+  [(VSKeychainEditingContext *)self _populateQuery:Mutable usingPredicate:predicate withItemKind:forceUnwrapObject];
   v11 = *MEMORY[0x277CDC140];
   if (!CFDictionaryContainsKey(Mutable, *MEMORY[0x277CDC140]))
   {
     CFDictionarySetValue(Mutable, v11, *MEMORY[0x277CDC148]);
   }
 
-  v52 = [v6 fetchLimit];
+  fetchLimit = [requestCopy fetchLimit];
   CFDictionarySetValue(Mutable, *MEMORY[0x277CDC428], *MEMORY[0x277CDC430]);
   CFDictionarySetValue(Mutable, *MEMORY[0x277CDC550], *MEMORY[0x277CBED28]);
-  v12 = [(VSKeychainEditingContext *)self keychainStore];
+  keychainStore = [(VSKeychainEditingContext *)self keychainStore];
   v65 = 0;
-  v13 = [v12 findItemsMatchingQuery:Mutable error:&v65];
+  v13 = [keychainStore findItemsMatchingQuery:Mutable error:&v65];
   v14 = v65;
 
   if (v13)
   {
-    v55 = v6;
+    v55 = requestCopy;
     v15 = v13;
     v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
     objc_opt_class();
@@ -635,8 +635,8 @@ LABEL_13:
     v51 = v14;
     if (objc_opt_isKindOfClass())
     {
-      v56 = self;
-      v49 = v9;
+      selfCopy = self;
+      v49 = forceUnwrapObject;
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -681,13 +681,13 @@ LABEL_13:
                 v30 = objc_opt_class();
                 v31 = NSStringFromClass(v30);
                 v32 = v29;
-                v6 = v55;
+                requestCopy = v55;
                 [v32 raise:v53 format:{@"Unexpectedly, matchingValue was %@, instead of NSDictionary.", v31}];
 
                 v16 = v54;
               }
 
-              [(VSKeychainEditingContext *)v56 _populateResult:v16 forRequest:v6 fromMatch:v28];
+              [(VSKeychainEditingContext *)selfCopy _populateResult:v16 forRequest:requestCopy fromMatch:v28];
             }
 
             else
@@ -702,8 +702,8 @@ LABEL_13:
         while (v24);
       }
 
-      v9 = v49;
-      self = v56;
+      forceUnwrapObject = v49;
+      self = selfCopy;
       v14 = v51;
     }
 
@@ -724,7 +724,7 @@ LABEL_13:
           [v34 raise:v38 format:{@"Unexpectedly, result was %@, instead of NSDictionary.", v37}];
         }
 
-        v6 = v55;
+        requestCopy = v55;
         [(VSKeychainEditingContext *)self _populateResult:v16 forRequest:v55 fromMatch:v15];
       }
 
@@ -734,19 +734,19 @@ LABEL_13:
       }
     }
 
-    v39 = [v6 sortDescriptors];
-    if (v39)
+    sortDescriptors = [requestCopy sortDescriptors];
+    if (sortDescriptors)
     {
-      [v16 sortUsingDescriptors:v39];
+      [v16 sortUsingDescriptors:sortDescriptors];
     }
 
     v40 = [v16 count];
-    if (v52 && v40 > v52)
+    if (fetchLimit && v40 > fetchLimit)
     {
-      [v16 removeObjectsInRange:{v52, v40 - v52}];
+      [v16 removeObjectsInRange:{fetchLimit, v40 - fetchLimit}];
     }
 
-    if ([v6 includesDataValues])
+    if ([requestCopy includesDataValues])
     {
       v41 = v13;
       v59 = 0u;
@@ -782,17 +782,17 @@ LABEL_13:
       }
 
       v16 = v54;
-      v6 = v55;
+      requestCopy = v55;
       v13 = v41;
       v14 = v51;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v33 = v14;
     v16 = 0;
-    *a4 = v14;
+    *error = v14;
   }
 
   else
@@ -803,20 +803,20 @@ LABEL_13:
   return v16;
 }
 
-- (void)insertItem:(id)a3
+- (void)insertItem:(id)item
 {
-  v10 = a3;
-  if ([v10 hasChanges])
+  itemCopy = item;
+  if ([itemCopy hasChanges])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Attempting to insert an item that has changes."];
   }
 
-  v4 = [(VSKeychainEditingContext *)self undoManager];
-  v5 = [v10 editingContext];
-  v6 = v5;
-  if (v5)
+  undoManager = [(VSKeychainEditingContext *)self undoManager];
+  editingContext = [itemCopy editingContext];
+  v6 = editingContext;
+  if (editingContext)
   {
-    if (v5 != self)
+    if (editingContext != self)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Item already has another context."];
     }
@@ -824,58 +824,58 @@ LABEL_13:
 
   else
   {
-    [v10 setEditingContext:self];
-    v7 = [v4 prepareWithInvocationTarget:v10];
+    [itemCopy setEditingContext:self];
+    v7 = [undoManager prepareWithInvocationTarget:itemCopy];
     [v7 setEditingContext:0];
   }
 
-  v8 = [(VSKeychainEditingContext *)self items];
-  [v8 addObject:v10];
-  v9 = [v4 prepareWithInvocationTarget:v8];
-  [v9 removeObject:v10];
+  items = [(VSKeychainEditingContext *)self items];
+  [items addObject:itemCopy];
+  v9 = [undoManager prepareWithInvocationTarget:items];
+  [v9 removeObject:itemCopy];
 
-  [v10 setInserted:1];
+  [itemCopy setInserted:1];
 }
 
-- (void)deleteItem:(id)a3
+- (void)deleteItem:(id)item
 {
-  v6 = a3;
-  v4 = [v6 editingContext];
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  editingContext = [itemCopy editingContext];
+  v5 = editingContext;
+  if (editingContext)
   {
-    if (v4 != self)
+    if (editingContext != self)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Item does not belong to this context."];
     }
 
-    [v6 setDeleted:1];
+    [itemCopy setDeleted:1];
   }
 }
 
-- (id)_subsetOfRegisteredItemsWithKeyPath:(id)a3
+- (id)_subsetOfRegisteredItemsWithKeyPath:(id)path
 {
-  v4 = [MEMORY[0x277CCA9C0] expressionForKeyPath:a3];
+  v4 = [MEMORY[0x277CCA9C0] expressionForKeyPath:path];
   v5 = [MEMORY[0x277CCA9C0] expressionForConstantValue:MEMORY[0x277CBEC38]];
   v6 = [MEMORY[0x277CCA918] predicateWithLeftExpression:v4 rightExpression:v5 modifier:0 type:4 options:0];
-  v7 = [(VSKeychainEditingContext *)self items];
-  v8 = [v7 filteredSetUsingPredicate:v6];
+  items = [(VSKeychainEditingContext *)self items];
+  v8 = [items filteredSetUsingPredicate:v6];
 
   return v8;
 }
 
 - (VSKeychainStore)keychainStore
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_keychainStore;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_keychainStore;
   if (!v3)
   {
     v3 = objc_alloc_init(VSKeychainStore);
-    objc_storeStrong(&v2->_keychainStore, v3);
+    objc_storeStrong(&selfCopy->_keychainStore, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -885,7 +885,7 @@ LABEL_13:
   return v3;
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
   v124 = *MEMORY[0x277D85DE8];
   v4 = VSDefaultLogObject();
@@ -897,14 +897,14 @@ LABEL_13:
   }
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(VSKeychainEditingContext *)self deletedItems];
-  v7 = [v6 copy];
+  deletedItems = [(VSKeychainEditingContext *)self deletedItems];
+  v7 = [deletedItems copy];
 
-  v8 = [(VSKeychainEditingContext *)self updatedItems];
-  v9 = [v8 copy];
+  updatedItems = [(VSKeychainEditingContext *)self updatedItems];
+  v9 = [updatedItems copy];
 
-  v10 = [(VSKeychainEditingContext *)self insertedItems];
-  v11 = [v10 copy];
+  insertedItems = [(VSKeychainEditingContext *)self insertedItems];
+  v11 = [insertedItems copy];
 
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v77 = v11;
@@ -912,11 +912,11 @@ LABEL_13:
   v71 = v9;
   [v12 setObject:v9 forKey:@"VSUpdatedKeychainItemsKey"];
   [v12 setObject:v7 forKey:@"VSDeletedKeychainItemsKey"];
-  v72 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v73 = v12;
-  [v72 postNotificationName:@"VSKeychainEditingContextWillSaveNotification" object:self userInfo:v12];
-  v76 = [(VSKeychainEditingContext *)self undoManager];
-  v95 = [(VSKeychainEditingContext *)self keychainStore];
+  [defaultCenter postNotificationName:@"VSKeychainEditingContextWillSaveNotification" object:self userInfo:v12];
+  undoManager = [(VSKeychainEditingContext *)self undoManager];
+  keychainStore = [(VSKeychainEditingContext *)self keychainStore];
   v115 = 0u;
   v116 = 0u;
   v117 = 0u;
@@ -924,7 +924,7 @@ LABEL_13:
   obj = v7;
   v89 = [obj countByEnumeratingWithState:&v115 objects:v121 count:16];
   v92 = v5;
-  v94 = self;
+  selfCopy = self;
   if (v89)
   {
     v87 = *v116;
@@ -941,40 +941,40 @@ LABEL_13:
         }
 
         v14 = *(*(&v115 + 1) + 8 * i);
-        v15 = [v14 itemKind];
-        v16 = [v14 committedValues];
-        v17 = [(VSKeychainEditingContext *)self _deleteQueryForItemValues:v16 withItemKind:v15];
-        [v17 setObject:objc_msgSend(v15 forKey:{"secItemClass"), v84}];
+        itemKind = [v14 itemKind];
+        committedValues = [v14 committedValues];
+        v17 = [(VSKeychainEditingContext *)self _deleteQueryForItemValues:committedValues withItemKind:itemKind];
+        [v17 setObject:objc_msgSend(itemKind forKey:{"secItemClass"), v84}];
         v114 = 0;
-        v18 = self;
-        v19 = [v95 deleteItemsMatchingQuery:v17 error:&v114];
+        selfCopy2 = self;
+        v19 = [keychainStore deleteItemsMatchingQuery:v17 error:&v114];
         v20 = v114;
         if (v19)
         {
-          v21 = [(VSKeychainEditingContext *)v18 undoManager];
+          undoManager2 = [(VSKeychainEditingContext *)selfCopy2 undoManager];
           v110[0] = MEMORY[0x277D85DD0];
           v110[1] = 3221225472;
           v110[2] = __33__VSKeychainEditingContext_save___block_invoke;
           v110[3] = &unk_278B753E8;
-          v110[4] = v18;
-          v111 = v16;
-          v112 = v15;
-          v113 = v95;
-          [v21 registerUndoWithTarget:v18 handler:v110];
+          v110[4] = selfCopy2;
+          v111 = committedValues;
+          v112 = itemKind;
+          v113 = keychainStore;
+          [undoManager2 registerUndoWithTarget:selfCopy2 handler:v110];
 
           [v14 setDeleted:0];
-          v22 = [(VSKeychainEditingContext *)v18 items];
-          v23 = [v76 prepareWithInvocationTarget:v22];
+          items = [(VSKeychainEditingContext *)selfCopy2 items];
+          v23 = [undoManager prepareWithInvocationTarget:items];
           [v23 addObject:v14];
 
-          [v22 removeObject:v14];
-          v24 = [v76 prepareWithInvocationTarget:v14];
-          [v24 setEditingContext:v18];
+          [items removeObject:v14];
+          v24 = [undoManager prepareWithInvocationTarget:v14];
+          [v24 setEditingContext:selfCopy2];
 
           v5 = v92;
           [v14 setEditingContext:0];
 
-          self = v18;
+          self = selfCopy2;
         }
 
         else
@@ -992,8 +992,8 @@ LABEL_13:
             [MEMORY[0x277CBEAD8] raise:v79 format:@"The deletionError parameter must not be nil."];
           }
 
-          self = v94;
-          [(VSKeychainEditingContext *)v94 _populateErrors:v5 withError:v20 affectingItem:v14];
+          self = selfCopy;
+          [(VSKeychainEditingContext *)selfCopy _populateErrors:v5 withError:v20 affectingItem:v14];
           v93 = 0;
         }
       }
@@ -1023,7 +1023,7 @@ LABEL_13:
     v75 = *MEMORY[0x277CBE658];
     v78 = *MEMORY[0x277CDBF90];
     v74 = *MEMORY[0x277CBE660];
-    v27 = v95;
+    v27 = keychainStore;
     v83 = *v107;
     do
     {
@@ -1035,12 +1035,12 @@ LABEL_13:
         }
 
         v29 = *(*(&v106 + 1) + 8 * j);
-        v30 = [v29 itemKind];
-        v31 = [v29 primitiveValues];
-        v32 = [(VSKeychainEditingContext *)self _queryForItemValues:v31 withItemKind:v30];
+        itemKind2 = [v29 itemKind];
+        primitiveValues = [v29 primitiveValues];
+        v32 = [(VSKeychainEditingContext *)self _queryForItemValues:primitiveValues withItemKind:itemKind2];
 
         [v32 setObject:MEMORY[0x277CBEC38] forKey:v88];
-        [v32 setObject:objc_msgSend(v30 forKey:{"secItemClass"), v85}];
+        [v32 setObject:objc_msgSend(itemKind2 forKey:{"secItemClass"), v85}];
         v105 = 0;
         v33 = [v27 addItem:v32 error:&v105];
         v34 = v105;
@@ -1051,39 +1051,39 @@ LABEL_13:
           if (objc_opt_isKindOfClass())
           {
             v82 = v35;
-            v36 = [v29 primitiveValues];
-            v37 = [v29 itemKind];
-            v38 = [v37 attributesBySecItemAttributeKey];
-            v39 = [v38 objectForKey:v78];
-            v40 = [v39 name];
+            primitiveValues2 = [v29 primitiveValues];
+            itemKind3 = [v29 itemKind];
+            attributesBySecItemAttributeKey = [itemKind3 attributesBySecItemAttributeKey];
+            v39 = [attributesBySecItemAttributeKey objectForKey:v78];
+            name = [v39 name];
 
-            if (v40)
+            if (name)
             {
-              v41 = v40;
+              v41 = name;
               v42 = [v33 objectForKey:v78];
               if (v42)
               {
-                v43 = [v29 primitiveValues];
-                [v43 setObject:v42 forKey:v41];
+                primitiveValues3 = [v29 primitiveValues];
+                [primitiveValues3 setObject:v42 forKey:v41];
               }
             }
 
-            v44 = [(VSKeychainEditingContext *)v94 undoManager];
+            undoManager3 = [(VSKeychainEditingContext *)selfCopy undoManager];
             v101[0] = MEMORY[0x277D85DD0];
             v101[1] = 3221225472;
             v101[2] = __33__VSKeychainEditingContext_save___block_invoke_158;
             v101[3] = &unk_278B75410;
-            v102 = v36;
-            v103 = v30;
-            v27 = v95;
-            v104 = v95;
-            v45 = v36;
-            [v44 registerUndoWithTarget:v94 handler:v101];
+            v102 = primitiveValues2;
+            v103 = itemKind2;
+            v27 = keychainStore;
+            v104 = keychainStore;
+            v45 = primitiveValues2;
+            [undoManager3 registerUndoWithTarget:selfCopy handler:v101];
 
             [v29 _setCommittedValues:v45 registeringUndo:1];
             [v29 setInserted:0];
 
-            self = v94;
+            self = selfCopy;
             v5 = v92;
             v26 = v83;
             v35 = v82;
@@ -1150,21 +1150,21 @@ LABEL_13:
         }
 
         v55 = *(*(&v97 + 1) + 8 * k);
-        v56 = [v55 itemKind];
-        v57 = [v55 committedValues];
-        v58 = [(VSKeychainEditingContext *)v94 _queryForItemValues:v57 withItemKind:v56];
+        itemKind4 = [v55 itemKind];
+        committedValues2 = [v55 committedValues];
+        v58 = [(VSKeychainEditingContext *)selfCopy _queryForItemValues:committedValues2 withItemKind:itemKind4];
 
-        [v58 setObject:objc_msgSend(v56 forKey:{"secItemClass"), v53}];
-        v59 = [v55 changedValues];
-        v60 = [(VSKeychainEditingContext *)v94 _queryForItemValues:v59 withItemKind:v56];
+        [v58 setObject:objc_msgSend(itemKind4 forKey:{"secItemClass"), v53}];
+        changedValues = [v55 changedValues];
+        v60 = [(VSKeychainEditingContext *)selfCopy _queryForItemValues:changedValues withItemKind:itemKind4];
 
         v96 = 0;
-        LODWORD(v59) = [v95 updateAttributes:v60 ofItemsMatchingQuery:v58 error:&v96];
+        LODWORD(changedValues) = [keychainStore updateAttributes:v60 ofItemsMatchingQuery:v58 error:&v96];
         v61 = v96;
-        if (v59)
+        if (changedValues)
         {
-          v62 = [v55 primitiveValues];
-          [v55 _setCommittedValues:v62 registeringUndo:1];
+          primitiveValues4 = [v55 primitiveValues];
+          [v55 _setCommittedValues:primitiveValues4 registeringUndo:1];
 
           [v55 setUpdated:0];
         }
@@ -1184,7 +1184,7 @@ LABEL_13:
             [MEMORY[0x277CBEAD8] raise:v86 format:@"The updateError parameter must not be nil."];
           }
 
-          [(VSKeychainEditingContext *)v94 _populateErrors:v92 withError:v61 affectingItem:v55];
+          [(VSKeychainEditingContext *)selfCopy _populateErrors:v92 withError:v61 affectingItem:v55];
           v93 = 0;
         }
       }
@@ -1197,31 +1197,31 @@ LABEL_13:
 
   if (v93)
   {
-    v65 = v72;
+    v65 = defaultCenter;
     v64 = v73;
-    [v72 postNotificationName:@"VSKeychainEditingContextDidSaveNotification" object:v94 userInfo:v73];
+    [defaultCenter postNotificationName:@"VSKeychainEditingContextDidSaveNotification" object:selfCopy userInfo:v73];
     v66 = v92;
-    v67 = v95;
+    v67 = keychainStore;
   }
 
   else
   {
     v66 = v92;
-    v65 = v72;
+    v65 = defaultCenter;
     v64 = v73;
-    v67 = v95;
-    if (a3)
+    v67 = keychainStore;
+    if (save)
     {
       if ([v92 count] < 2)
       {
-        *a3 = [v92 firstObject];
+        *save = [v92 firstObject];
       }
 
       else
       {
         v68 = objc_alloc_init(MEMORY[0x277CBEB38]);
         [v68 setObject:v92 forKey:@"VSKeychainDetailedErrorsKey"];
-        *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:@"VSKeychainErrorDomain" code:0 userInfo:v68];
+        *save = [MEMORY[0x277CCA9B8] errorWithDomain:@"VSKeychainErrorDomain" code:0 userInfo:v68];
       }
     }
   }

@@ -1,22 +1,22 @@
 @interface TLKProminenceView
-+ (TLKProminenceView)viewWithProminence:(unint64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TLKProminenceView)initWithProminence:(unint64_t)a3;
++ (TLKProminenceView)viewWithProminence:(unint64_t)prominence;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TLKProminenceView)initWithProminence:(unint64_t)prominence;
 - (double)borderWidth;
 - (void)didMoveToWindow;
-- (void)setBorderWidth:(double)a3;
-- (void)setCustomColorAlpha:(double)a3;
-- (void)setProminence:(unint64_t)a3;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBorderWidth:(double)width;
+- (void)setCustomColorAlpha:(double)alpha;
+- (void)setProminence:(unint64_t)prominence;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TLKProminenceView
 
 - (double)borderWidth
 {
-  v2 = [(TLKProminenceView *)self layer];
-  [v2 borderWidth];
+  layer = [(TLKProminenceView *)self layer];
+  [layer borderWidth];
   v4 = v3;
 
   return v4;
@@ -30,60 +30,60 @@
   [(UIView *)self tlk_updateWithCurrentAppearance];
 }
 
-+ (TLKProminenceView)viewWithProminence:(unint64_t)a3
++ (TLKProminenceView)viewWithProminence:(unint64_t)prominence
 {
-  v3 = [[a1 alloc] initWithProminence:a3];
+  v3 = [[self alloc] initWithProminence:prominence];
 
   return v3;
 }
 
-- (TLKProminenceView)initWithProminence:(unint64_t)a3
+- (TLKProminenceView)initWithProminence:(unint64_t)prominence
 {
   v5.receiver = self;
   v5.super_class = TLKProminenceView;
   result = [(TLKProminenceView *)&v5 init];
   if (result)
   {
-    result->_prominence = a3;
+    result->_prominence = prominence;
   }
 
   return result;
 }
 
-- (void)setBorderWidth:(double)a3
+- (void)setBorderWidth:(double)width
 {
-  v5 = [(TLKProminenceView *)self layer];
-  [v5 setBorderWidth:a3];
+  layer = [(TLKProminenceView *)self layer];
+  [layer setBorderWidth:width];
 
   [(UIView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)setProminence:(unint64_t)a3
+- (void)setProminence:(unint64_t)prominence
 {
-  if (self->_prominence != a3)
+  if (self->_prominence != prominence)
   {
-    self->_prominence = a3;
+    self->_prominence = prominence;
     [(UIView *)self tlk_updateWithCurrentAppearance];
   }
 }
 
-- (void)setCustomColorAlpha:(double)a3
+- (void)setCustomColorAlpha:(double)alpha
 {
-  if (self->_customColorAlpha != a3)
+  if (self->_customColorAlpha != alpha)
   {
-    self->_customColorAlpha = a3;
+    self->_customColorAlpha = alpha;
     [(UIView *)self tlk_updateWithCurrentAppearance];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = TLKProminenceView;
-  [(TLKProminenceView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(TLKProminenceView *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(TLKProminenceView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(TLKProminenceView *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -91,11 +91,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(TLKProminenceView *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(TLKProminenceView *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -103,13 +103,13 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v13.receiver = self;
   v13.super_class = TLKProminenceView;
-  [(UIView *)&v13 tlk_updateForAppearance:v4];
-  v5 = [v4 colorForProminence:{-[TLKProminenceView prominence](self, "prominence")}];
+  [(UIView *)&v13 tlk_updateForAppearance:appearanceCopy];
+  v5 = [appearanceCopy colorForProminence:{-[TLKProminenceView prominence](self, "prominence")}];
   [(TLKProminenceView *)self customColorAlpha];
   if (v6 != 0.0)
   {
@@ -134,21 +134,21 @@ LABEL_5:
   [(TLKProminenceView *)self setBackgroundColor:v10];
   if (v9 == 0.0)
   {
-    v11 = 0;
+    cGColor = 0;
   }
 
   else
   {
-    v11 = [v5 CGColor];
+    cGColor = [v5 CGColor];
   }
 
-  v12 = [(TLKProminenceView *)self layer];
-  [v12 setBorderColor:v11];
+  layer = [(TLKProminenceView *)self layer];
+  [layer setBorderColor:cGColor];
 
-  [v4 enableAppearanceForView:self];
+  [appearanceCopy enableAppearanceForView:self];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = *MEMORY[0x1E695F060];
   v4 = *(MEMORY[0x1E695F060] + 8);

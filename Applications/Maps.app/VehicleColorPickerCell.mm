@@ -1,6 +1,6 @@
 @interface VehicleColorPickerCell
 - (VehicleColorPicker)colorPicker;
-- (double)cellHeightWithWidth:(double)a3;
+- (double)cellHeightWithWidth:(double)width;
 @end
 
 @implementation VehicleColorPickerCell
@@ -12,7 +12,7 @@
   return WeakRetained;
 }
 
-- (double)cellHeightWithWidth:(double)a3
+- (double)cellHeightWithWidth:(double)width
 {
   WeakRetained = objc_loadWeakRetained(&self->_colorPicker);
   [WeakRetained layoutIfNeeded];

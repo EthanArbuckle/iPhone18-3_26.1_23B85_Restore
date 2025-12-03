@@ -1,16 +1,16 @@
 @interface TKSmartCardTokenRegistrationRegistry
-- (TKSmartCardTokenRegistrationRegistry)initWithHostTokenRegistry:(id)a3;
-- (TKSmartCardTokenRegistrationRegistry)initWithHostTokenRegistry:(id)a3 slotServerConnectionProvider:(id)a4 tokenWatcherProvider:(id)a5;
-- (id)_collectAppIdentifiersForToken:(id)a3;
-- (void)createNFCSlotForTokenID:(id)a3 tokenRegistration:(id)a4 completion:(id)a5;
+- (TKSmartCardTokenRegistrationRegistry)initWithHostTokenRegistry:(id)registry;
+- (TKSmartCardTokenRegistrationRegistry)initWithHostTokenRegistry:(id)registry slotServerConnectionProvider:(id)provider tokenWatcherProvider:(id)watcherProvider;
+- (id)_collectAppIdentifiersForToken:(id)token;
+- (void)createNFCSlotForTokenID:(id)d tokenRegistration:(id)registration completion:(id)completion;
 - (void)dealloc;
 @end
 
 @implementation TKSmartCardTokenRegistrationRegistry
 
-- (TKSmartCardTokenRegistrationRegistry)initWithHostTokenRegistry:(id)a3
+- (TKSmartCardTokenRegistrationRegistry)initWithHostTokenRegistry:(id)registry
 {
-  v4 = a3;
+  registryCopy = registry;
   v5 = [[TKSlotServerConnectionProvider alloc] initWithReplyQueue:0];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -18,26 +18,26 @@
   v9[3] = &unk_100038950;
   v10 = [[TKTokenWatcher alloc] initWithCTKDConnection:0];
   v6 = v10;
-  v7 = [(TKSmartCardTokenRegistrationRegistry *)self initWithHostTokenRegistry:v4 slotServerConnectionProvider:v5 tokenWatcherProvider:v9];
+  v7 = [(TKSmartCardTokenRegistrationRegistry *)self initWithHostTokenRegistry:registryCopy slotServerConnectionProvider:v5 tokenWatcherProvider:v9];
 
   return v7;
 }
 
-- (TKSmartCardTokenRegistrationRegistry)initWithHostTokenRegistry:(id)a3 slotServerConnectionProvider:(id)a4 tokenWatcherProvider:(id)a5
+- (TKSmartCardTokenRegistrationRegistry)initWithHostTokenRegistry:(id)registry slotServerConnectionProvider:(id)provider tokenWatcherProvider:(id)watcherProvider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  registryCopy = registry;
+  providerCopy = provider;
+  watcherProviderCopy = watcherProvider;
   v21.receiver = self;
   v21.super_class = TKSmartCardTokenRegistrationRegistry;
   v12 = [(TKSmartCardTokenRegistrationRegistry *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_tokenRegistry, a3);
-    if (v10)
+    objc_storeStrong(&v12->_tokenRegistry, registry);
+    if (providerCopy)
     {
-      v14 = v10;
+      v14 = providerCopy;
     }
 
     else
@@ -46,7 +46,7 @@
     }
 
     v15 = v14;
-    v16 = [[TKNFCSlotManager alloc] initWithSlotServerConnectionProvider:v14 tokenWatcherProvider:v11 queue:0 slotTimeoutLimit:25.0];
+    v16 = [[TKNFCSlotManager alloc] initWithSlotServerConnectionProvider:v14 tokenWatcherProvider:watcherProviderCopy queue:0 slotTimeoutLimit:25.0];
     nfcSlotManager = v13->_nfcSlotManager;
     v13->_nfcSlotManager = v16;
 
@@ -66,31 +66,31 @@
   [(TKSmartCardTokenRegistrationRegistry *)&v3 dealloc];
 }
 
-- (void)createNFCSlotForTokenID:(id)a3 tokenRegistration:(id)a4 completion:(id)a5
+- (void)createNFCSlotForTokenID:(id)d tokenRegistration:(id)registration completion:(id)completion
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(TKHostTokenRegistry *)self->_tokenRegistry tokenWithTokenID:v17];
+  dCopy = d;
+  registrationCopy = registration;
+  completionCopy = completion;
+  v10 = [(TKHostTokenRegistry *)self->_tokenRegistry tokenWithTokenID:dCopy];
   v11 = v10;
   if (v10 && ([v10 tokenRegistration], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
     nfcSlotManager = self->_nfcSlotManager;
-    v14 = [(TKSmartCardTokenRegistrationRegistry *)self _collectAppIdentifiersForToken:v17];
-    [(TKNFCSlotManager *)nfcSlotManager createNFCSlotForTokenID:v17 tokenRegistration:v8 appIdentifiers:v14 completion:v9];
+    v14 = [(TKSmartCardTokenRegistrationRegistry *)self _collectAppIdentifiersForToken:dCopy];
+    [(TKNFCSlotManager *)nfcSlotManager createNFCSlotForTokenID:dCopy tokenRegistration:registrationCopy appIdentifiers:v14 completion:completionCopy];
   }
 
   else
   {
-    v15 = [v17 stringRepresentation];
-    v14 = [NSString stringWithFormat:@"Registered token for ID: %@ wasn't found", v15];
+    stringRepresentation = [dCopy stringRepresentation];
+    v14 = [NSString stringWithFormat:@"Registered token for ID: %@ wasn't found", stringRepresentation];
 
     v16 = [NSError errorWithCode:-6 debugDescription:v14];
-    v9[2](v9, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
   }
 }
 
-- (id)_collectAppIdentifiersForToken:(id)a3
+- (id)_collectAppIdentifiersForToken:(id)token
 {
   v20 = +[NSMutableSet set];
   [(TKHostTokenRegistry *)self->_tokenRegistry tokenExtensions];
@@ -116,14 +116,14 @@
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 attributes];
-        v12 = [v11 objectForKeyedSubscript:v7];
+        attributes = [v10 attributes];
+        v12 = [attributes objectForKeyedSubscript:v7];
         v13 = [v12 isEqualToString:@"smartcard"];
 
         if (v13)
         {
-          v14 = [v10 attributes];
-          v15 = [v14 objectForKeyedSubscript:v8];
+          attributes2 = [v10 attributes];
+          v15 = [attributes2 objectForKeyedSubscript:v8];
 
           if (v15)
           {
@@ -142,9 +142,9 @@
     while (v5);
   }
 
-  v17 = [v20 allObjects];
+  allObjects = [v20 allObjects];
 
-  return v17;
+  return allObjects;
 }
 
 @end

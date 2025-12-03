@@ -1,33 +1,33 @@
 @interface MPCMediaRemoteControllerPlaybackQueue
-- (MPCMediaRemoteControllerPlaybackQueue)initWithIdentifiers:(id)a3 playingIdentifier:(id)a4 queueIdentifier:(id)a5 queueProperties:(id)a6;
+- (MPCMediaRemoteControllerPlaybackQueue)initWithIdentifiers:(id)identifiers playingIdentifier:(id)identifier queueIdentifier:(id)queueIdentifier queueProperties:(id)properties;
 @end
 
 @implementation MPCMediaRemoteControllerPlaybackQueue
 
-- (MPCMediaRemoteControllerPlaybackQueue)initWithIdentifiers:(id)a3 playingIdentifier:(id)a4 queueIdentifier:(id)a5 queueProperties:(id)a6
+- (MPCMediaRemoteControllerPlaybackQueue)initWithIdentifiers:(id)identifiers playingIdentifier:(id)identifier queueIdentifier:(id)queueIdentifier queueProperties:(id)properties
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  queueIdentifierCopy = queueIdentifier;
+  propertiesCopy = properties;
   v24.receiver = self;
   v24.super_class = MPCMediaRemoteControllerPlaybackQueue;
   v14 = [(MPCMediaRemoteControllerPlaybackQueue *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifiersCopy copy];
     identifiers = v14->_identifiers;
     v14->_identifiers = v15;
 
-    v17 = [v11 copy];
+    v17 = [identifierCopy copy];
     playingIdentifier = v14->_playingIdentifier;
     v14->_playingIdentifier = v17;
 
-    v19 = [v12 copy];
+    v19 = [queueIdentifierCopy copy];
     queueIdentifier = v14->_queueIdentifier;
     v14->_queueIdentifier = v19;
 
-    v21 = [v13 copy];
+    v21 = [propertiesCopy copy];
     queueProperties = v14->_queueProperties;
     v14->_queueProperties = v21;
   }

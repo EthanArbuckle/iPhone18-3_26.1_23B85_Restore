@@ -1,9 +1,9 @@
 @interface ShowHomeIntentResponse
 - (ShowHomeIntentResponse)init;
-- (ShowHomeIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (ShowHomeIntentResponse)initWithPropertiesByName:(id)a3;
+- (ShowHomeIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
+- (ShowHomeIntentResponse)initWithPropertiesByName:(id)name;
 - (int64_t)code;
-- (void)setCode:(int64_t)a3;
+- (void)setCode:(int64_t)code;
 @end
 
 @implementation ShowHomeIntentResponse
@@ -15,22 +15,22 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setCode:(int64_t)a3
+- (void)setCode:(int64_t)code
 {
   v5 = OBJC_IVAR___ShowHomeIntentResponse_code;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = code;
 }
 
-- (ShowHomeIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (ShowHomeIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
-  v6 = a4;
+  activityCopy = activity;
   v7 = [(ShowHomeIntentResponse *)self init];
   v8 = OBJC_IVAR___ShowHomeIntentResponse_code;
   swift_beginAccess();
-  *(&v7->super.super.isa + v8) = a3;
+  *(&v7->super.super.isa + v8) = code;
   v9 = v7;
-  [(ShowHomeIntentResponse *)v9 setUserActivity:v6];
+  [(ShowHomeIntentResponse *)v9 setUserActivity:activityCopy];
 
   return v9;
 }
@@ -43,9 +43,9 @@
   return [(ShowHomeIntentResponse *)&v3 init];
 }
 
-- (ShowHomeIntentResponse)initWithPropertiesByName:(id)a3
+- (ShowHomeIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_252E36E44();
   }

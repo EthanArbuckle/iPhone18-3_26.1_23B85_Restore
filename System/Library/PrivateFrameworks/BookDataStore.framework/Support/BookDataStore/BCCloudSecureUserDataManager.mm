@@ -1,35 +1,35 @@
 @interface BCCloudSecureUserDataManager
-+ (void)deleteCloudDataWithCompletion:(id)a3;
-- (BCCloudSecureUserDataManager)initWithCloudDataSource:(id)a3 cloudKitController:(id)a4;
-- (void)currentCloudSyncVersions:(id)a3;
-- (void)deleteUserDatumForKey:(id)a3 completion:(id)a4;
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3;
-- (void)getUserDataChangesSince:(id)a3 completion:(id)a4;
-- (void)hasSaltChangedWithCompletion:(id)a3;
-- (void)removeUserDataForSaltedHashedRecordIDs:(id)a3 completion:(id)a4;
-- (void)resolvedUserDataValueForKey:(id)a3 completion:(id)a4;
-- (void)setEnableCloudSync:(BOOL)a3;
-- (void)setUserData:(id)a3 completion:(id)a4;
-- (void)setUserDataValue:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setUserDatum:(id)a3 completion:(id)a4;
-- (void)signalSyncToCKForSyncManager:(id)a3;
-- (void)syncManager:(id)a3 failedRecordIDs:(id)a4 completion:(id)a5;
-- (void)syncManager:(id)a3 removeCloudDataForIDs:(id)a4 completion:(id)a5;
-- (void)syncManager:(id)a3 resolveConflictsForRecords:(id)a4 completion:(id)a5;
-- (void)syncManager:(id)a3 startSyncToCKWithCompletion:(id)a4;
-- (void)syncManager:(id)a3 updateSyncGenerationFromCloudData:(id)a4 completion:(id)a5;
-- (void)updateSyncGenerationFromCloudData:(id)a3 completion:(id)a4;
-- (void)userDataValueForKey:(id)a3 completion:(id)a4;
-- (void)userDatumForKey:(id)a3 completion:(id)a4;
-- (void)userDatumIncludingDeleted:(BOOL)a3 forKey:(id)a4 completion:(id)a5;
++ (void)deleteCloudDataWithCompletion:(id)completion;
+- (BCCloudSecureUserDataManager)initWithCloudDataSource:(id)source cloudKitController:(id)controller;
+- (void)currentCloudSyncVersions:(id)versions;
+- (void)deleteUserDatumForKey:(id)key completion:(id)completion;
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion;
+- (void)getUserDataChangesSince:(id)since completion:(id)completion;
+- (void)hasSaltChangedWithCompletion:(id)completion;
+- (void)removeUserDataForSaltedHashedRecordIDs:(id)ds completion:(id)completion;
+- (void)resolvedUserDataValueForKey:(id)key completion:(id)completion;
+- (void)setEnableCloudSync:(BOOL)sync;
+- (void)setUserData:(id)data completion:(id)completion;
+- (void)setUserDataValue:(id)value forKey:(id)key completion:(id)completion;
+- (void)setUserDatum:(id)datum completion:(id)completion;
+- (void)signalSyncToCKForSyncManager:(id)manager;
+- (void)syncManager:(id)manager failedRecordIDs:(id)ds completion:(id)completion;
+- (void)syncManager:(id)manager removeCloudDataForIDs:(id)ds completion:(id)completion;
+- (void)syncManager:(id)manager resolveConflictsForRecords:(id)records completion:(id)completion;
+- (void)syncManager:(id)manager startSyncToCKWithCompletion:(id)completion;
+- (void)syncManager:(id)manager updateSyncGenerationFromCloudData:(id)data completion:(id)completion;
+- (void)updateSyncGenerationFromCloudData:(id)data completion:(id)completion;
+- (void)userDataValueForKey:(id)key completion:(id)completion;
+- (void)userDatumForKey:(id)key completion:(id)completion;
+- (void)userDatumIncludingDeleted:(BOOL)deleted forKey:(id)key completion:(id)completion;
 @end
 
 @implementation BCCloudSecureUserDataManager
 
-- (BCCloudSecureUserDataManager)initWithCloudDataSource:(id)a3 cloudKitController:(id)a4
+- (BCCloudSecureUserDataManager)initWithCloudDataSource:(id)source cloudKitController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  controllerCopy = controller;
   v21.receiver = self;
   v21.super_class = BCCloudSecureUserDataManager;
   v9 = [(BCCloudSecureUserDataManager *)&v21 init];
@@ -42,17 +42,17 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Initializing BCCloudAssetManager - Service mode", buf, 2u);
     }
 
-    objc_storeStrong(&v9->_secureDataSource, a3);
-    v11 = [[BCCloudDataSyncManager alloc] initWithCloudKitController:v8];
+    objc_storeStrong(&v9->_secureDataSource, source);
+    v11 = [[BCCloudDataSyncManager alloc] initWithCloudKitController:controllerCopy];
     syncManager = v9->_syncManager;
     v9->_syncManager = v11;
 
     [(BCCloudDataSyncManager *)v9->_syncManager setDelegate:v9];
     v13 = [BCCloudDataManager alloc];
-    v14 = [(BCCloudSecureUserDataManager *)v9 secureDataSource];
-    v15 = [(BCCloudSecureUserDataManager *)v9 entityName];
+    secureDataSource = [(BCCloudSecureUserDataManager *)v9 secureDataSource];
+    entityName = [(BCCloudSecureUserDataManager *)v9 entityName];
     v16 = objc_opt_class();
-    v17 = [(BCCloudDataManager *)v13 initWithCloudDataSource:v14 entityName:v15 notificationName:@"BCCloudSecureUserDataManagerChanged" immutableClass:v16 mutableClass:objc_opt_class() syncManager:v9->_syncManager cloudKitController:v8];
+    v17 = [(BCCloudDataManager *)v13 initWithCloudDataSource:secureDataSource entityName:entityName notificationName:@"BCCloudSecureUserDataManagerChanged" immutableClass:v16 mutableClass:objc_opt_class() syncManager:v9->_syncManager cloudKitController:controllerCopy];
     dataManager = v9->_dataManager;
     v9->_dataManager = v17;
   }
@@ -60,27 +60,27 @@
   return v9;
 }
 
-- (void)hasSaltChangedWithCompletion:(id)a3
+- (void)hasSaltChangedWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BCCloudSecureUserDataManager *)self dataManager];
-  [v5 hasSaltChangedWithCompletion:v4];
+  completionCopy = completion;
+  dataManager = [(BCCloudSecureUserDataManager *)self dataManager];
+  [dataManager hasSaltChangedWithCompletion:completionCopy];
 }
 
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BCCloudSecureUserDataManager *)self dataManager];
-  [v5 dissociateCloudDataFromSyncWithCompletion:v4];
+  completionCopy = completion;
+  dataManager = [(BCCloudSecureUserDataManager *)self dataManager];
+  [dataManager dissociateCloudDataFromSyncWithCompletion:completionCopy];
 }
 
-+ (void)deleteCloudDataWithCompletion:(id)a3
++ (void)deleteCloudDataWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[BULogUtilities shared];
-  v5 = [v4 verboseLoggingEnabled];
+  verboseLoggingEnabled = [v4 verboseLoggingEnabled];
 
-  if (v5)
+  if (verboseLoggingEnabled)
   {
     v6 = sub_10000DB80();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -90,23 +90,23 @@
     }
   }
 
-  [BCCloudDataSource deleteCloudDataWithCompletion:v3];
+  [BCCloudDataSource deleteCloudDataWithCompletion:completionCopy];
 }
 
-- (void)syncManager:(id)a3 startSyncToCKWithCompletion:(id)a4
+- (void)syncManager:(id)manager startSyncToCKWithCompletion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  completionCopy = completion;
   if ([(BCCloudSecureUserDataManager *)self enableCloudSync])
   {
-    v7 = [(BCCloudSecureUserDataManager *)self dataManager];
-    [v7 startSyncToCKWithSyncManager:v9 completion:v6];
+    dataManager = [(BCCloudSecureUserDataManager *)self dataManager];
+    [dataManager startSyncToCKWithSyncManager:managerCopy completion:completionCopy];
   }
 
   else
   {
-    v8 = objc_retainBlock(v6);
-    v7 = v8;
+    v8 = objc_retainBlock(completionCopy);
+    dataManager = v8;
     if (v8)
     {
       (*(v8 + 2))(v8);
@@ -114,30 +114,30 @@
   }
 }
 
-- (void)signalSyncToCKForSyncManager:(id)a3
+- (void)signalSyncToCKForSyncManager:(id)manager
 {
   if ([(BCCloudSecureUserDataManager *)self enableCloudSync])
   {
     v7 = +[BCCloudKitController secureSharedInstance];
-    v4 = [v7 transactionManager];
-    v5 = [(BCCloudSecureUserDataManager *)self entityName];
-    v6 = [(BCCloudSecureUserDataManager *)self syncManager];
-    [v4 signalSyncToCKTransactionForEntityName:v5 syncManager:v6];
+    transactionManager = [v7 transactionManager];
+    entityName = [(BCCloudSecureUserDataManager *)self entityName];
+    syncManager = [(BCCloudSecureUserDataManager *)self syncManager];
+    [transactionManager signalSyncToCKTransactionForEntityName:entityName syncManager:syncManager];
   }
 }
 
-- (void)syncManager:(id)a3 removeCloudDataForIDs:(id)a4 completion:(id)a5
+- (void)syncManager:(id)manager removeCloudDataForIDs:(id)ds completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  dsCopy = ds;
+  completionCopy = completion;
   if ([(BCCloudSecureUserDataManager *)self enableCloudSync])
   {
-    v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
+    v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dsCopy count]);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = v7;
+    v10 = dsCopy;
     v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
@@ -153,8 +153,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * v14) recordName];
-          [v9 addObject:v15];
+          recordName = [*(*(&v18 + 1) + 8 * v14) recordName];
+          [v9 addObject:recordName];
 
           v14 = v14 + 1;
         }
@@ -166,12 +166,12 @@
       while (v12);
     }
 
-    [(BCCloudSecureUserDataManager *)self removeUserDataForSaltedHashedRecordIDs:v9 completion:v8];
+    [(BCCloudSecureUserDataManager *)self removeUserDataForSaltedHashedRecordIDs:v9 completion:completionCopy];
   }
 
   else
   {
-    v16 = objc_retainBlock(v8);
+    v16 = objc_retainBlock(completionCopy);
     v17 = v16;
     if (v16)
     {
@@ -180,18 +180,18 @@
   }
 }
 
-- (void)syncManager:(id)a3 updateSyncGenerationFromCloudData:(id)a4 completion:(id)a5
+- (void)syncManager:(id)manager updateSyncGenerationFromCloudData:(id)data completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   if ([(BCCloudSecureUserDataManager *)self enableCloudSync])
   {
-    v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v7 count]);
+    v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [dataCopy count]);
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = v7;
+    v10 = dataCopy;
     v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v11)
     {
@@ -217,12 +217,12 @@
       while (v12);
     }
 
-    [(BCCloudSecureUserDataManager *)self updateSyncGenerationFromCloudData:v9 completion:v8];
+    [(BCCloudSecureUserDataManager *)self updateSyncGenerationFromCloudData:v9 completion:completionCopy];
   }
 
   else
   {
-    v17 = objc_retainBlock(v8);
+    v17 = objc_retainBlock(completionCopy);
     v18 = v17;
     if (v17)
     {
@@ -231,24 +231,24 @@
   }
 }
 
-- (void)syncManager:(id)a3 resolveConflictsForRecords:(id)a4 completion:(id)a5
+- (void)syncManager:(id)manager resolveConflictsForRecords:(id)records completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  recordsCopy = records;
+  completionCopy = completion;
   if ([(BCCloudSecureUserDataManager *)self enableCloudSync])
   {
-    v9 = [(BCCloudSecureUserDataManager *)self dataManager];
+    dataManager = [(BCCloudSecureUserDataManager *)self dataManager];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10005D9D8;
     v12[3] = &unk_100241770;
-    v13 = v8;
-    [v9 resolveConflictsForRecords:v7 completion:v12];
+    v13 = completionCopy;
+    [dataManager resolveConflictsForRecords:recordsCopy completion:v12];
   }
 
   else
   {
-    v10 = objc_retainBlock(v8);
+    v10 = objc_retainBlock(completionCopy);
     v11 = v10;
     if (v10)
     {
@@ -257,24 +257,24 @@
   }
 }
 
-- (void)syncManager:(id)a3 failedRecordIDs:(id)a4 completion:(id)a5
+- (void)syncManager:(id)manager failedRecordIDs:(id)ds completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  dsCopy = ds;
+  completionCopy = completion;
   if ([(BCCloudSecureUserDataManager *)self enableCloudSync])
   {
-    v9 = [(BCCloudSecureUserDataManager *)self dataManager];
+    dataManager = [(BCCloudSecureUserDataManager *)self dataManager];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10005DB4C;
     v12[3] = &unk_100240D90;
-    v13 = v8;
-    [v9 failedRecordIDs:v7 completion:v12];
+    v13 = completionCopy;
+    [dataManager failedRecordIDs:dsCopy completion:v12];
   }
 
   else
   {
-    v10 = objc_retainBlock(v8);
+    v10 = objc_retainBlock(completionCopy);
     v11 = v10;
     if (v10)
     {
@@ -283,19 +283,19 @@
   }
 }
 
-- (void)setEnableCloudSync:(BOOL)a3
+- (void)setEnableCloudSync:(BOOL)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   v5 = +[BULogUtilities shared];
-  v6 = [v5 verboseLoggingEnabled];
+  verboseLoggingEnabled = [v5 verboseLoggingEnabled];
 
-  if (v6)
+  if (verboseLoggingEnabled)
   {
     v7 = sub_10000DB80();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"NO";
-      if (v3)
+      if (syncCopy)
       {
         v8 = @"YES";
       }
@@ -306,67 +306,67 @@
     }
   }
 
-  if (self->_enableCloudSync != v3)
+  if (self->_enableCloudSync != syncCopy)
   {
-    self->_enableCloudSync = v3;
+    self->_enableCloudSync = syncCopy;
     v9 = +[BCCloudKitController secureSharedInstance];
-    v10 = [v9 privateCloudDatabaseController];
-    v11 = v10;
+    privateCloudDatabaseController = [v9 privateCloudDatabaseController];
+    transactionManager = privateCloudDatabaseController;
     syncManager = self->_syncManager;
-    if (v3)
+    if (syncCopy)
     {
-      [v10 addObserver:syncManager recordType:@"SecureUserData"];
+      [privateCloudDatabaseController addObserver:syncManager recordType:@"SecureUserData"];
 
       v9 = +[BCCloudKitController secureSharedInstance];
-      v11 = [v9 transactionManager];
-      v13 = [(BCCloudSecureUserDataManager *)self entityName];
-      v14 = [(BCCloudSecureUserDataManager *)self syncManager];
-      [v11 signalSyncToCKTransactionForEntityName:v13 syncManager:v14];
+      transactionManager = [v9 transactionManager];
+      entityName = [(BCCloudSecureUserDataManager *)self entityName];
+      syncManager = [(BCCloudSecureUserDataManager *)self syncManager];
+      [transactionManager signalSyncToCKTransactionForEntityName:entityName syncManager:syncManager];
     }
 
     else
     {
-      [v10 removeObserver:syncManager recordType:@"SecureUserData"];
+      [privateCloudDatabaseController removeObserver:syncManager recordType:@"SecureUserData"];
     }
   }
 }
 
-- (void)currentCloudSyncVersions:(id)a3
+- (void)currentCloudSyncVersions:(id)versions
 {
-  v4 = a3;
-  v5 = [(BCCloudSecureUserDataManager *)self dataManager];
-  [v5 currentCloudSyncVersions:v4];
+  versionsCopy = versions;
+  dataManager = [(BCCloudSecureUserDataManager *)self dataManager];
+  [dataManager currentCloudSyncVersions:versionsCopy];
 }
 
-- (void)setUserDatum:(id)a3 completion:(id)a4
+- (void)setUserDatum:(id)datum completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(BCCloudSecureUserDataManager *)self dataManager];
-  v8 = [v7 key];
+  completionCopy = completion;
+  datumCopy = datum;
+  dataManager = [(BCCloudSecureUserDataManager *)self dataManager];
+  v8 = [datumCopy key];
   v9 = [NSPredicate predicateWithFormat:@"key = %@", v8];
-  [v10 setCloudData:v7 predicate:v9 completion:v6];
+  [dataManager setCloudData:datumCopy predicate:v9 completion:completionCopy];
 }
 
-- (void)setUserData:(id)a3 completion:(id)a4
+- (void)setUserData:(id)data completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(BCCloudSecureUserDataManager *)self dataManager];
-  v8 = [v7 allKeys];
-  v9 = [NSPredicate predicateWithFormat:@"key IN %@", v8];
-  [v10 setCloudData:v7 predicate:v9 propertyIDKey:@"key" completion:v6];
+  completionCopy = completion;
+  dataCopy = data;
+  dataManager = [(BCCloudSecureUserDataManager *)self dataManager];
+  allKeys = [dataCopy allKeys];
+  v9 = [NSPredicate predicateWithFormat:@"key IN %@", allKeys];
+  [dataManager setCloudData:dataCopy predicate:v9 propertyIDKey:@"key" completion:completionCopy];
 }
 
-- (void)removeUserDataForSaltedHashedRecordIDs:(id)a3 completion:(id)a4
+- (void)removeUserDataForSaltedHashedRecordIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  dsCopy = ds;
+  completionCopy = completion;
+  if ([dsCopy count])
   {
-    v8 = [(BCCloudSecureUserDataManager *)self dataManager];
-    v9 = [NSPredicate predicateWithFormat:@"saltedHashedID IN %@", v6];
-    [v8 removeCloudDataForPredicate:v9 completion:v7];
+    dataManager = [(BCCloudSecureUserDataManager *)self dataManager];
+    dsCopy = [NSPredicate predicateWithFormat:@"saltedHashedID IN %@", dsCopy];
+    [dataManager removeCloudDataForPredicate:dsCopy completion:completionCopy];
   }
 
   else
@@ -377,126 +377,126 @@
       sub_1001C2074(v10);
     }
 
-    v8 = objc_retainBlock(v7);
-    if (v8)
+    dataManager = objc_retainBlock(completionCopy);
+    if (dataManager)
     {
-      v8[2](v8, 1, 0);
+      dataManager[2](dataManager, 1, 0);
     }
   }
 }
 
-- (void)updateSyncGenerationFromCloudData:(id)a3 completion:(id)a4
+- (void)updateSyncGenerationFromCloudData:(id)data completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(BCCloudSecureUserDataManager *)self dataManager];
-  v8 = [v7 allKeys];
-  v9 = [NSPredicate predicateWithFormat:@"key IN %@", v8];
-  [v10 updateSyncGenerationFromCloudData:v7 predicate:v9 propertyIDKey:@"key" completion:v6];
+  completionCopy = completion;
+  dataCopy = data;
+  dataManager = [(BCCloudSecureUserDataManager *)self dataManager];
+  allKeys = [dataCopy allKeys];
+  v9 = [NSPredicate predicateWithFormat:@"key IN %@", allKeys];
+  [dataManager updateSyncGenerationFromCloudData:dataCopy predicate:v9 propertyIDKey:@"key" completion:completionCopy];
 }
 
-- (void)deleteUserDatumForKey:(id)a3 completion:(id)a4
+- (void)deleteUserDatumForKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BCCloudSecureUserDataManager *)self dataManager];
-  v8 = [NSPredicate predicateWithFormat:@"key = %@", v7];
+  completionCopy = completion;
+  keyCopy = key;
+  dataManager = [(BCCloudSecureUserDataManager *)self dataManager];
+  keyCopy = [NSPredicate predicateWithFormat:@"key = %@", keyCopy];
 
-  [v9 deleteCloudDataForPredicate:v8 completion:v6];
+  [dataManager deleteCloudDataForPredicate:keyCopy completion:completionCopy];
 }
 
-- (void)userDatumForKey:(id)a3 completion:(id)a4
+- (void)userDatumForKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BCCloudSecureUserDataManager *)self dataManager];
-  v9 = [NSPredicate predicateWithFormat:@"key = %@ AND (deletedFlag == NULL OR deletedFlag == NO)", v7];
+  completionCopy = completion;
+  keyCopy = key;
+  dataManager = [(BCCloudSecureUserDataManager *)self dataManager];
+  keyCopy = [NSPredicate predicateWithFormat:@"key = %@ AND (deletedFlag == NULL OR deletedFlag == NO)", keyCopy];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10005E2B4;
   v11[3] = &unk_100241798;
-  v12 = v6;
-  v10 = v6;
-  [v8 cloudDataWithPredicate:v9 sortDescriptors:0 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [dataManager cloudDataWithPredicate:keyCopy sortDescriptors:0 completion:v11];
 }
 
-- (void)userDatumIncludingDeleted:(BOOL)a3 forKey:(id)a4 completion:(id)a5
+- (void)userDatumIncludingDeleted:(BOOL)deleted forKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = a4;
-  if (v6)
+  deletedCopy = deleted;
+  completionCopy = completion;
+  keyCopy = key;
+  if (deletedCopy)
   {
-    v10 = [(BCCloudSecureUserDataManager *)self dataManager];
-    v11 = [NSPredicate predicateWithFormat:@"key = %@", v9];
+    dataManager = [(BCCloudSecureUserDataManager *)self dataManager];
+    keyCopy = [NSPredicate predicateWithFormat:@"key = %@", keyCopy];
 
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10005E464;
     v12[3] = &unk_100241798;
-    v13 = v8;
-    [v10 cloudDataWithPredicate:v11 sortDescriptors:0 completion:v12];
+    v13 = completionCopy;
+    [dataManager cloudDataWithPredicate:keyCopy sortDescriptors:0 completion:v12];
 
-    v9 = v13;
+    keyCopy = v13;
   }
 
   else
   {
-    [(BCCloudSecureUserDataManager *)self userDatumForKey:v9 completion:v8];
+    [(BCCloudSecureUserDataManager *)self userDatumForKey:keyCopy completion:completionCopy];
   }
 }
 
-- (void)getUserDataChangesSince:(id)a3 completion:(id)a4
+- (void)getUserDataChangesSince:(id)since completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BCCloudSecureUserDataManager *)self dataManager];
-  [v8 getChangesSince:v7 forEntityClass:objc_opt_class() completion:v6];
+  completionCopy = completion;
+  sinceCopy = since;
+  dataManager = [(BCCloudSecureUserDataManager *)self dataManager];
+  [dataManager getChangesSince:sinceCopy forEntityClass:objc_opt_class() completion:completionCopy];
 }
 
-- (void)resolvedUserDataValueForKey:(id)a3 completion:(id)a4
+- (void)resolvedUserDataValueForKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[BCMutableSecureUserDatum alloc] initWithKey:v7];
-  v9 = [(BCCloudSecureUserDataManager *)self dataManager];
-  v10 = [NSPredicate predicateWithFormat:@"key = %@", v7];
+  completionCopy = completion;
+  keyCopy = key;
+  v8 = [[BCMutableSecureUserDatum alloc] initWithKey:keyCopy];
+  dataManager = [(BCCloudSecureUserDataManager *)self dataManager];
+  keyCopy = [NSPredicate predicateWithFormat:@"key = %@", keyCopy];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10005E728;
   v12[3] = &unk_100241798;
-  v13 = v6;
-  v11 = v6;
-  [v9 resolvedCloudDataForCloudData:v8 predicate:v10 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [dataManager resolvedCloudDataForCloudData:v8 predicate:keyCopy completion:v12];
 }
 
-- (void)userDataValueForKey:(id)a3 completion:(id)a4
+- (void)userDataValueForKey:(id)key completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005E88C;
   v7[3] = &unk_1002417C0;
-  v8 = a4;
-  v6 = v8;
-  [(BCCloudSecureUserDataManager *)self userDatumForKey:a3 completion:v7];
+  completionCopy = completion;
+  v6 = completionCopy;
+  [(BCCloudSecureUserDataManager *)self userDatumForKey:key completion:v7];
 }
 
-- (void)setUserDataValue:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setUserDataValue:(id)value forKey:(id)key completion:(id)completion
 {
-  v8 = a3;
+  valueCopy = value;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10005EA0C;
   v12[3] = &unk_100241810;
-  v13 = a4;
-  v14 = v8;
-  v15 = self;
-  v16 = a5;
-  v9 = v16;
-  v10 = v8;
-  v11 = v13;
+  keyCopy = key;
+  v14 = valueCopy;
+  selfCopy = self;
+  completionCopy = completion;
+  v9 = completionCopy;
+  v10 = valueCopy;
+  v11 = keyCopy;
   [(BCCloudSecureUserDataManager *)self userDatumForKey:v11 completion:v12];
 }
 

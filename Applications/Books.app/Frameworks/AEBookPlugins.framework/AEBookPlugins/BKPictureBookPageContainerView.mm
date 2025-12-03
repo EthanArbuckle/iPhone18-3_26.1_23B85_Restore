@@ -27,25 +27,25 @@
   [(BKPictureBookPageContainerView *)&v10 layoutSubviews];
   if ([(BKPictureBookPageContainerView *)self useRoundedCornerRadius])
   {
-    v3 = [(BKPictureBookPageContainerView *)self layer];
-    [v3 setCornerRadius:6.0];
+    layer = [(BKPictureBookPageContainerView *)self layer];
+    [layer setCornerRadius:6.0];
 
-    v4 = [(BKPictureBookPageContainerView *)self layer];
-    [v4 setMasksToBounds:1];
+    layer2 = [(BKPictureBookPageContainerView *)self layer];
+    [layer2 setMasksToBounds:1];
 
     if ([(BKPictureBookPageContainerView *)self isLeftPage])
     {
-      v5 = [(BKPictureBookPageContainerView *)self layer];
-      v6 = v5;
+      layer3 = [(BKPictureBookPageContainerView *)self layer];
+      v6 = layer3;
       v7 = 5;
     }
 
     else
     {
-      v8 = [(BKPictureBookPageContainerView *)self isRightPage];
-      v5 = [(BKPictureBookPageContainerView *)self layer];
-      v6 = v5;
-      if (v8)
+      isRightPage = [(BKPictureBookPageContainerView *)self isRightPage];
+      layer3 = [(BKPictureBookPageContainerView *)self layer];
+      v6 = layer3;
+      if (isRightPage)
       {
         v7 = 10;
       }
@@ -56,7 +56,7 @@
       }
     }
 
-    [v5 setMaskedCorners:v7];
+    [layer3 setMaskedCorners:v7];
   }
 
   v9 = +[UIColor whiteColor];

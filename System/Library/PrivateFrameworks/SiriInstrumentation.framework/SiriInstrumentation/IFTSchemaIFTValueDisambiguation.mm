@@ -1,35 +1,35 @@
 @interface IFTSchemaIFTValueDisambiguation
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTValueDisambiguation)initWithDictionary:(id)a3;
-- (IFTSchemaIFTValueDisambiguation)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTValueDisambiguation)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTValueDisambiguation)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addItems:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addItems:(id)items;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTValueDisambiguation
 
-- (IFTSchemaIFTValueDisambiguation)initWithDictionary:(id)a3
+- (IFTSchemaIFTValueDisambiguation)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = IFTSchemaIFTValueDisambiguation;
   v5 = [(IFTSchemaIFTValueDisambiguation *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTValueDisambiguation setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"items"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"items"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTValueDisambiguation)initWithJSON:(id)a3
+- (IFTSchemaIFTValueDisambiguation)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTValueDisambiguation *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTValueDisambiguation *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTValueDisambiguation *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,16 +118,16 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTValueDisambiguation exists](self, "exists")}];
-    [v3 setObject:v4 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v4 forKeyedSubscript:@"exists"];
   }
 
   if ([(NSArray *)self->_items count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -147,16 +147,16 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          if (v11)
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v5 addObject:v11];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v12 = [MEMORY[0x1E695DFB0] null];
-            [v5 addObject:v12];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -166,12 +166,12 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"items"];
+    [dictionary setObject:array forKeyedSubscript:@"items"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v14];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v14];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -189,22 +189,22 @@
   return [(NSArray *)self->_items hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (exists = self->_exists, exists == [v4 exists]))
+      if ((*&self->_has & 1) == 0 || (exists = self->_exists, exists == [equalCopy exists]))
       {
-        v6 = [(IFTSchemaIFTValueDisambiguation *)self items];
-        v7 = [v4 items];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        items = [(IFTSchemaIFTValueDisambiguation *)self items];
+        items2 = [equalCopy items];
+        v8 = items2;
+        if ((items != 0) != (items2 == 0))
         {
-          v9 = [(IFTSchemaIFTValueDisambiguation *)self items];
-          if (!v9)
+          items3 = [(IFTSchemaIFTValueDisambiguation *)self items];
+          if (!items3)
           {
 
 LABEL_13:
@@ -212,10 +212,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(IFTSchemaIFTValueDisambiguation *)self items];
-          v12 = [v4 items];
-          v13 = [v11 isEqual:v12];
+          v10 = items3;
+          items4 = [(IFTSchemaIFTValueDisambiguation *)self items];
+          items5 = [equalCopy items];
+          v13 = [items4 isEqual:items5];
 
           if (v13)
           {
@@ -236,10 +236,10 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
@@ -277,32 +277,32 @@ LABEL_11:
   }
 }
 
-- (void)addItems:(id)a3
+- (void)addItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   items = self->_items;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!items)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_items;
-    self->_items = v6;
+    self->_items = array;
 
-    v4 = v8;
+    itemsCopy = v8;
     items = self->_items;
   }
 
-  [(NSArray *)items addObject:v4];
+  [(NSArray *)items addObject:itemsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = IFTSchemaIFTValueDisambiguation;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(IFTSchemaIFTValueDisambiguation *)self items:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(IFTSchemaIFTValueDisambiguation *)self setItems:v7];
 

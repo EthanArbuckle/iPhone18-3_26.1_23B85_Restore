@@ -1,25 +1,25 @@
 @interface CBSParseNCXTableOfContentsOperation
-- (CBSParseNCXTableOfContentsOperation)initWithFilePath:(id)a3 packageContents:(id)a4;
+- (CBSParseNCXTableOfContentsOperation)initWithFilePath:(id)path packageContents:(id)contents;
 - (void)main;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
 @end
 
 @implementation CBSParseNCXTableOfContentsOperation
 
-- (CBSParseNCXTableOfContentsOperation)initWithFilePath:(id)a3 packageContents:(id)a4
+- (CBSParseNCXTableOfContentsOperation)initWithFilePath:(id)path packageContents:(id)contents
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  contentsCopy = contents;
   v16.receiver = self;
   v16.super_class = CBSParseNCXTableOfContentsOperation;
   v9 = [(CBSParseNCXTableOfContentsOperation *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mNCXFilePath, a3);
-    objc_storeStrong(&v10->mPackageContents, a4);
+    objc_storeStrong(&v9->mNCXFilePath, path);
+    objc_storeStrong(&v10->mPackageContents, contents);
     v11 = objc_opt_new();
     mChapters = v10->mChapters;
     v10->mChapters = v11;
@@ -58,11 +58,11 @@
   }
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v9 = a4;
-  v10 = a7;
-  if ([v9 isEqualToString:@"navPoint"])
+  elementCopy = element;
+  attributesCopy = attributes;
+  if ([elementCopy isEqualToString:@"navPoint"])
   {
     if (self->mCurrentChapter)
     {
@@ -74,17 +74,17 @@
     self->mCurrentChapter = v11;
   }
 
-  else if ([v9 isEqualToString:@"navLabel"])
+  else if ([elementCopy isEqualToString:@"navLabel"])
   {
     v13 = objc_opt_new();
     mCurrentText = self->mCurrentText;
     self->mCurrentText = v13;
   }
 
-  else if ([v9 isEqualToString:@"content"])
+  else if ([elementCopy isEqualToString:@"content"])
   {
     mPackageContents = self->mPackageContents;
-    v16 = [v10 objectForKeyedSubscript:@"src"];
+    v16 = [attributesCopy objectForKeyedSubscript:@"src"];
     v21 = 0;
     v17 = [(CBSOPFPackageContents *)mPackageContents itemIdentifierForHref:v16 fragment:&v21];
     v18 = v21;
@@ -94,36 +94,36 @@
   }
 
   mCurrentElementName = self->mCurrentElementName;
-  self->mCurrentElementName = v9;
+  self->mCurrentElementName = elementCopy;
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v19 = a4;
-  if ([v19 isEqualToString:@"navPoint"])
+  elementCopy = element;
+  if ([elementCopy isEqualToString:@"navPoint"])
   {
     if ([(NSMutableArray *)self->mParentChapters count])
     {
-      v7 = [(NSMutableArray *)self->mParentChapters lastObject];
+      lastObject = [(NSMutableArray *)self->mParentChapters lastObject];
       [(NSMutableArray *)self->mParentChapters removeLastObject];
-      v8 = [(CRKChapter *)self->mCurrentChapter title];
-      v9 = [v8 length];
+      title = [(CRKChapter *)self->mCurrentChapter title];
+      v9 = [title length];
 
       if (v9)
       {
-        v10 = [v7 subchapters];
-        v11 = [v10 arrayByAddingObject:self->mCurrentChapter];
-        [v7 setSubchapters:v11];
+        subchapters = [lastObject subchapters];
+        v11 = [subchapters arrayByAddingObject:self->mCurrentChapter];
+        [lastObject setSubchapters:v11];
       }
 
       mCurrentChapter = self->mCurrentChapter;
-      self->mCurrentChapter = v7;
+      self->mCurrentChapter = lastObject;
       goto LABEL_11;
     }
 
     v13 = 40;
-    v17 = [(CRKChapter *)self->mCurrentChapter title];
-    v18 = [v17 length];
+    title2 = [(CRKChapter *)self->mCurrentChapter title];
+    v18 = [title2 length];
 
     if (v18)
     {
@@ -133,7 +133,7 @@
 
   else
   {
-    if (![v19 isEqualToString:@"navLabel"])
+    if (![elementCopy isEqualToString:@"navLabel"])
     {
       goto LABEL_12;
     }
@@ -152,12 +152,12 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
-  v5 = a4;
+  charactersCopy = characters;
   if ([(NSString *)self->mCurrentElementName isEqualToString:@"text"])
   {
-    [(NSMutableString *)self->mCurrentText appendString:v5];
+    [(NSMutableString *)self->mCurrentText appendString:charactersCopy];
   }
 }
 

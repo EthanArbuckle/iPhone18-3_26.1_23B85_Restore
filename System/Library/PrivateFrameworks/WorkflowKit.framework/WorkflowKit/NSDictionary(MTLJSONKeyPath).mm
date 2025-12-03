@@ -112,7 +112,7 @@
   v22 = 0;
 LABEL_27:
 
-  v24 = a1;
+  selfCopy = self;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -123,11 +123,11 @@ LABEL_27:
   {
     v27 = v26;
     v28 = *v47;
-    v43 = v24;
+    v43 = selfCopy;
     while (2)
     {
       v29 = 0;
-      v30 = v24;
+      v30 = selfCopy;
       do
       {
         if (*v47 != v28)
@@ -137,16 +137,16 @@ LABEL_27:
 
         if (!v30)
         {
-          v24 = 0;
+          selfCopy = 0;
           goto LABEL_40;
         }
 
         v31 = *(*(&v46 + 1) + 8 * v29);
-        v32 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
 
-        if (v30 == v32)
+        if (v30 == null)
         {
-          v24 = v30;
+          selfCopy = v30;
           goto LABEL_40;
         }
 
@@ -156,13 +156,13 @@ LABEL_27:
           if (a5)
           {
             v50[0] = *MEMORY[0x1E696A578];
-            v36 = [MEMORY[0x1E696AAE8] mainBundle];
-            v37 = [v36 localizedStringForKey:@"Invalid JSON dictionary" value:&stru_1F4A1C408 table:0];
+            mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+            v37 = [mainBundle localizedStringForKey:@"Invalid JSON dictionary" value:&stru_1F4A1C408 table:0];
             v50[1] = *MEMORY[0x1E696A588];
             v51[0] = v37;
             v38 = MEMORY[0x1E696AEC0];
-            v39 = [MEMORY[0x1E696AAE8] mainBundle];
-            v40 = [v39 localizedStringForKey:@"JSON key path %1$@ could not resolved because an incompatible JSON dictionary was supplied: %2$@" value:&stru_1F4A1C408 table:0];
+            mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+            v40 = [mainBundle2 localizedStringForKey:@"JSON key path %1$@ could not resolved because an incompatible JSON dictionary was supplied: %2$@" value:&stru_1F4A1C408 table:0];
             v41 = [v38 stringWithFormat:v40, v6, v43];
             v51[1] = v41;
             v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:v50 count:2];
@@ -179,10 +179,10 @@ LABEL_27:
           goto LABEL_43;
         }
 
-        v24 = [v30 objectForKeyedSubscript:v31];
+        selfCopy = [v30 objectForKeyedSubscript:v31];
 
         ++v29;
-        v30 = v24;
+        v30 = selfCopy;
       }
 
       while (v27 != v29);
@@ -203,7 +203,7 @@ LABEL_40:
     *a4 = 1;
   }
 
-  v30 = v24;
+  v30 = selfCopy;
   v33 = v30;
 LABEL_43:
 

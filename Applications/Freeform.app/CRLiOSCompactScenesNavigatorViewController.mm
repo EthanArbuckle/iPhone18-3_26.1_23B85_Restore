@@ -1,9 +1,9 @@
 @interface CRLiOSCompactScenesNavigatorViewController
-+ (BOOL)scenesNavigatorHasFixedPositionWith:(id)a3;
-- (_TtC8Freeform42CRLiOSCompactScenesNavigatorViewController)initWithCoder:(id)a3;
-- (_TtC8Freeform42CRLiOSCompactScenesNavigatorViewController)initWithNibName:(id)a3 bundle:(id)a4;
++ (BOOL)scenesNavigatorHasFixedPositionWith:(id)with;
+- (_TtC8Freeform42CRLiOSCompactScenesNavigatorViewController)initWithCoder:(id)coder;
+- (_TtC8Freeform42CRLiOSCompactScenesNavigatorViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dismiss;
-- (void)selectionPathDidChangeWithNotification:(id)a3;
+- (void)selectionPathDidChangeWithNotification:(id)notification;
 - (void)teardown;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -11,7 +11,7 @@
 
 @implementation CRLiOSCompactScenesNavigatorViewController
 
-- (_TtC8Freeform42CRLiOSCompactScenesNavigatorViewController)initWithCoder:(id)a3
+- (_TtC8Freeform42CRLiOSCompactScenesNavigatorViewController)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform42CRLiOSCompactScenesNavigatorViewController_contentViewSize);
   *v3 = 0;
@@ -24,14 +24,14 @@
 - (void)teardown
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1009FFBB8();
 }
 
@@ -44,33 +44,33 @@
   sub_100A00500();
 }
 
-+ (BOOL)scenesNavigatorHasFixedPositionWith:(id)a3
++ (BOOL)scenesNavigatorHasFixedPositionWith:(id)with
 {
   v4 = objc_opt_self();
-  v5 = a3;
+  withCopy = with;
   if ([v4 crl_phoneUI])
   {
-    v6 = 1;
+    crl_isCompactWidth = 1;
   }
 
   else
   {
-    v6 = [v5 crl_isCompactWidth];
+    crl_isCompactWidth = [withCopy crl_isCompactWidth];
   }
 
-  return v6;
+  return crl_isCompactWidth;
 }
 
 - (void)dismiss
 {
-  v4 = self;
-  v2 = [(CRLiOSCompactScenesNavigatorViewController *)v4 view];
-  if (v2)
+  selfCopy = self;
+  view = [(CRLiOSCompactScenesNavigatorViewController *)selfCopy view];
+  if (view)
   {
-    v3 = v2;
-    [v2 removeFromSuperview];
+    v3 = view;
+    [view removeFromSuperview];
 
-    [(CRLiOSCompactScenesNavigatorViewController *)v4 removeFromParentViewController];
+    [(CRLiOSCompactScenesNavigatorViewController *)selfCopy removeFromParentViewController];
   }
 
   else
@@ -79,18 +79,18 @@
   }
 }
 
-- (_TtC8Freeform42CRLiOSCompactScenesNavigatorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8Freeform42CRLiOSCompactScenesNavigatorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)selectionPathDidChangeWithNotification:(id)a3
+- (void)selectionPathDidChangeWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_100A00908(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_100A00908(notificationCopy);
 }
 
 @end

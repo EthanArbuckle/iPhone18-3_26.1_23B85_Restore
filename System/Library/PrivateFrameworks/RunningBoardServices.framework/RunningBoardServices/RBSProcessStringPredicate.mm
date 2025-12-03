@@ -1,8 +1,8 @@
 @interface RBSProcessStringPredicate
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesProcess:(id)a3;
-- (RBSProcessStringPredicate)initWithIdentifier:(id)a3;
-- (RBSProcessStringPredicate)initWithRBSXPCCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesProcess:(id)process;
+- (RBSProcessStringPredicate)initWithIdentifier:(id)identifier;
+- (RBSProcessStringPredicate)initWithRBSXPCCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -26,10 +26,10 @@
   return v5;
 }
 
-- (RBSProcessStringPredicate)initWithIdentifier:(id)a3
+- (RBSProcessStringPredicate)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [RBSProcessStringPredicate initWithIdentifier:];
   }
@@ -39,7 +39,7 @@
   v5 = [(RBSProcessStringPredicate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -47,10 +47,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -61,9 +61,9 @@
     if (v5 == objc_opt_class())
     {
       identifier = self->_identifier;
-      v8 = [(RBSProcessStringPredicate *)v4 identifier];
-      v9 = v8;
-      if (identifier == v8)
+      identifier = [(RBSProcessStringPredicate *)equalCopy identifier];
+      v9 = identifier;
+      if (identifier == identifier)
       {
         v6 = 1;
       }
@@ -72,7 +72,7 @@
       {
         if (identifier)
         {
-          v10 = v8 == 0;
+          v10 = identifier == 0;
         }
 
         else
@@ -87,7 +87,7 @@
 
         else
         {
-          v6 = [(NSString *)identifier isEqual:v8];
+          v6 = [(NSString *)identifier isEqual:identifier];
         }
       }
     }
@@ -101,15 +101,15 @@
   return v6;
 }
 
-- (RBSProcessStringPredicate)initWithRBSXPCCoder:(id)a3
+- (RBSProcessStringPredicate)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = RBSProcessStringPredicate;
   v5 = [(RBSProcessStringPredicate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -117,7 +117,7 @@
   return v5;
 }
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
   OUTLINED_FUNCTION_1();
   v3 = objc_opt_class();

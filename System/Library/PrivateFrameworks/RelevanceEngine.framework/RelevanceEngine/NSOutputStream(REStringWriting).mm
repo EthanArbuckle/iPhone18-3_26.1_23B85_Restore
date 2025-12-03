@@ -14,21 +14,21 @@
     if (v5 == 1)
     {
       v9 = [v4 characterAtIndex:0];
-      [a1 write:&v9 maxLength:1];
+      [self write:&v9 maxLength:1];
     }
 
     else
     {
-      v7 = [v4 UTF8String];
-      if (v7)
+      uTF8String = [v4 UTF8String];
+      if (uTF8String)
       {
-        v8 = v7;
+        v8 = uTF8String;
         do
         {
-          v6 -= [a1 write:v8 maxLength:v6];
+          v6 -= [self write:v8 maxLength:v6];
         }
 
-        while (v6 && ([a1 hasSpaceAvailable] & 1) != 0);
+        while (v6 && ([self hasSpaceAvailable] & 1) != 0);
       }
     }
   }

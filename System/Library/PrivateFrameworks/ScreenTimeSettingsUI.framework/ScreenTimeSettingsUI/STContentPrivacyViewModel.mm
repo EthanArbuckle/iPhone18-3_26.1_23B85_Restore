@@ -1,11 +1,11 @@
 @interface STContentPrivacyViewModel
-+ (id)defaultValueForRestriction:(id)a3;
-+ (id)visibleRestrictionWithConfiguration:(id)a3 key:(id)a4 isLocalDevice:(BOOL)a5;
++ (id)defaultValueForRestriction:(id)restriction;
++ (id)visibleRestrictionWithConfiguration:(id)configuration key:(id)key isLocalDevice:(BOOL)device;
 - (BOOL)isEligibleForAppDistribution;
-- (BOOL)shouldEnableRestriction:(id)a3;
+- (BOOL)shouldEnableRestriction:(id)restriction;
 - (STContentPrivacyViewModel)init;
-- (id)defaultValueForRestriction:(id)a3;
-- (id)visibleRestrictionWithConfiguration:(id)a3 key:(id)a4;
+- (id)defaultValueForRestriction:(id)restriction;
+- (id)visibleRestrictionWithConfiguration:(id)configuration key:(id)key;
 @end
 
 @implementation STContentPrivacyViewModel
@@ -34,116 +34,116 @@
   return v3;
 }
 
-- (id)visibleRestrictionWithConfiguration:(id)a3 key:(id)a4
+- (id)visibleRestrictionWithConfiguration:(id)configuration key:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() visibleRestrictionWithConfiguration:v7 key:v6 isLocalDevice:{-[STContentPrivacyViewModel isLocalDevice](self, "isLocalDevice")}];
+  keyCopy = key;
+  configurationCopy = configuration;
+  v8 = [objc_opt_class() visibleRestrictionWithConfiguration:configurationCopy key:keyCopy isLocalDevice:{-[STContentPrivacyViewModel isLocalDevice](self, "isLocalDevice")}];
 
   return v8;
 }
 
-+ (id)visibleRestrictionWithConfiguration:(id)a3 key:(id)a4 isLocalDevice:(BOOL)a5
++ (id)visibleRestrictionWithConfiguration:(id)configuration key:(id)key isLocalDevice:(BOOL)device
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  configurationCopy = configuration;
+  keyCopy = key;
   v9 = STSupportedConfigurations();
-  v10 = [v9 objectForKeyedSubscript:v7];
+  v10 = [v9 objectForKeyedSubscript:configurationCopy];
 
   if (!v10)
   {
     +[STContentPrivacyViewModel visibleRestrictionWithConfiguration:key:isLocalDevice:];
   }
 
-  v11 = [STContentPrivacyViewModelCoordinator visibleRestrictionsForIsLocalDevice:v5];
-  v12 = [[STRestrictionItem alloc] initWithConfiguration:v7 restrictionKey:v8 labelName:&stru_28766E5A8 type:3 restrictionValue:0];
+  v11 = [STContentPrivacyViewModelCoordinator visibleRestrictionsForIsLocalDevice:deviceCopy];
+  v12 = [[STRestrictionItem alloc] initWithConfiguration:configurationCopy restrictionKey:keyCopy labelName:&stru_28766E5A8 type:3 restrictionValue:0];
 
   v13 = [v11 member:v12];
 
   return v13;
 }
 
-- (id)defaultValueForRestriction:(id)a3
+- (id)defaultValueForRestriction:(id)restriction
 {
-  v3 = a3;
-  v4 = [objc_opt_class() defaultValueForRestriction:v3];
+  restrictionCopy = restriction;
+  v4 = [objc_opt_class() defaultValueForRestriction:restrictionCopy];
 
   return v4;
 }
 
-+ (id)defaultValueForRestriction:(id)a3
++ (id)defaultValueForRestriction:(id)restriction
 {
-  v5 = a3;
-  v6 = [v5 restrictionType];
-  v7 = v6;
-  if (v6 > 1)
+  restrictionCopy = restriction;
+  restrictionType = [restrictionCopy restrictionType];
+  v7 = restrictionType;
+  if (restrictionType > 1)
   {
-    if (v6 != 2)
+    if (restrictionType != 2)
     {
-      if (v6 == 3)
+      if (restrictionType == 3)
       {
-        v8 = [v5 otherInfo];
+        otherInfo = [restrictionCopy otherInfo];
         goto LABEL_11;
       }
 
       goto LABEL_8;
     }
 
-    v8 = MEMORY[0x277CBEBF8];
+    otherInfo = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    if (v6)
+    if (restrictionType)
     {
-      if (v6 == 1)
+      if (restrictionType == 1)
       {
-        v8 = MEMORY[0x277CBEC28];
+        otherInfo = MEMORY[0x277CBEC28];
         goto LABEL_11;
       }
 
 LABEL_8:
-      v9 = [MEMORY[0x277CCA890] currentHandler];
-      [v9 handleFailureInMethod:a2 object:a1 file:@"STContentPrivacyViewModel.m" lineNumber:279 description:{@"Unimplemented type %d", v7}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"STContentPrivacyViewModel.m" lineNumber:279 description:{@"Unimplemented type %d", v7}];
 
-      v8 = 0;
+      otherInfo = 0;
       goto LABEL_11;
     }
 
-    v8 = MEMORY[0x277CBEC38];
+    otherInfo = MEMORY[0x277CBEC38];
   }
 
 LABEL_11:
 
-  return v8;
+  return otherInfo;
 }
 
-- (BOOL)shouldEnableRestriction:(id)a3
+- (BOOL)shouldEnableRestriction:(id)restriction
 {
-  v4 = [a3 payloadKey];
-  v5 = [v4 isEqualToString:@"allowGameCenterNearbyMultiplayer"];
+  payloadKey = [restriction payloadKey];
+  v5 = [payloadKey isEqualToString:@"allowGameCenterNearbyMultiplayer"];
 
   if (v5)
   {
     v6 = [[STRestrictionItem alloc] initWithConfiguration:@"system.gamecenter" restrictionKey:@"allowedGameCenterOtherPlayerTypes" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
-    v7 = [(STContentPrivacyViewModel *)self valuesByRestriction];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    valuesByRestriction = [(STContentPrivacyViewModel *)self valuesByRestriction];
+    v8 = [valuesByRestriction objectForKeyedSubscript:v6];
 
     if (v8)
     {
-      v9 = [v8 integerValue];
-      v10 = [&unk_28769D1A8 integerValue];
-      v11 = [(STContentPrivacyViewModel *)self restrictionsEnabled];
-      v12 = v9 != v10 && v11;
+      integerValue = [v8 integerValue];
+      integerValue2 = [&unk_28769D1A8 integerValue];
+      restrictionsEnabled = [(STContentPrivacyViewModel *)self restrictionsEnabled];
+      restrictionsEnabled2 = integerValue != integerValue2 && restrictionsEnabled;
     }
 
     else
     {
-      v12 = [(STContentPrivacyViewModel *)self restrictionsEnabled];
+      restrictionsEnabled2 = [(STContentPrivacyViewModel *)self restrictionsEnabled];
     }
 
-    return v12;
+    return restrictionsEnabled2;
   }
 
   else
@@ -156,12 +156,12 @@ LABEL_11:
 - (BOOL)isEligibleForAppDistribution
 {
   v3 = +[STContentPrivacyViewModelCoordinator appRatingsRestrictionItem];
-  v4 = [(STContentPrivacyViewModel *)self valuesByRestriction];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  valuesByRestriction = [(STContentPrivacyViewModel *)self valuesByRestriction];
+  v5 = [valuesByRestriction objectForKeyedSubscript:v3];
   v6 = [v5 isEqualToNumber:&unk_28769D1C0];
 
-  LOBYTE(v4) = v6 | +[STDistributionEligibility evaluateEligibilityForAppDistribution];
-  return v4 & 1;
+  LOBYTE(valuesByRestriction) = v6 | +[STDistributionEligibility evaluateEligibilityForAppDistribution];
+  return valuesByRestriction & 1;
 }
 
 + (void)visibleRestrictionWithConfiguration:key:isLocalDevice:.cold.1()

@@ -1,40 +1,40 @@
 @interface CKKSIncomingQueueOperation
-+ (id)decryptCKKSItemToAttributes:(id)a3 keyCache:(id)a4 ckksOperationalDependencies:(id)a5 error:(id *)a6;
-- (BOOL)_onqueueHandleIQEChange:(id)a3 item:(SecDbItem *)a4 viewState:(id)a5 sortedForThisView:(BOOL)a6 keyCache:(id)a7;
-- (BOOL)_onqueueUpdateIQE:(id)a3 withState:(id)a4 error:(id *)a5;
-- (BOOL)fixMismatchedViewItems:(id)a3;
-- (BOOL)intransaction:(id)a3 processQueueEntries:(id)a4;
-- (BOOL)loadAndProcessEntries:(id)a3 withActionFilter:(id)a4 totalQueueEntries:(int64_t *)a5;
-- (BOOL)processNewCurrentItemPointers:(id)a3 viewState:(id)a4;
-- (CKKSIncomingQueueOperation)initWithDependencies:(id)a3 intending:(id)a4 pendingClassAItemsRemainingState:(id)a5 errorState:(id)a6 handleMismatchedViewItems:(BOOL)a7;
-- (void)_onqueueGenerateNewUUIDPersistentRefOnSecItem:(SecDbItem *)a3 viewState:(id)a4;
-- (void)_onqueueHandleIQEDelete:(id)a3 class:(const SecDbClass *)a4 viewState:(id)a5;
-- (void)_onqueueHandleMismatchedViewItem:(id)a3 secDbClass:(const SecDbClass *)a4 attributes:(id)a5 intendedView:(id)a6 viewState:(id)a7 keyCache:(id)a8;
++ (id)decryptCKKSItemToAttributes:(id)attributes keyCache:(id)cache ckksOperationalDependencies:(id)dependencies error:(id *)error;
+- (BOOL)_onqueueHandleIQEChange:(id)change item:(SecDbItem *)item viewState:(id)state sortedForThisView:(BOOL)view keyCache:(id)cache;
+- (BOOL)_onqueueUpdateIQE:(id)e withState:(id)state error:(id *)error;
+- (BOOL)fixMismatchedViewItems:(id)items;
+- (BOOL)intransaction:(id)intransaction processQueueEntries:(id)entries;
+- (BOOL)loadAndProcessEntries:(id)entries withActionFilter:(id)filter totalQueueEntries:(int64_t *)queueEntries;
+- (BOOL)processNewCurrentItemPointers:(id)pointers viewState:(id)state;
+- (CKKSIncomingQueueOperation)initWithDependencies:(id)dependencies intending:(id)intending pendingClassAItemsRemainingState:(id)state errorState:(id)errorState handleMismatchedViewItems:(BOOL)items;
+- (void)_onqueueGenerateNewUUIDPersistentRefOnSecItem:(SecDbItem *)item viewState:(id)state;
+- (void)_onqueueHandleIQEDelete:(id)delete class:(const SecDbClass *)class viewState:(id)state;
+- (void)_onqueueHandleMismatchedViewItem:(id)item secDbClass:(const SecDbClass *)class attributes:(id)attributes intendedView:(id)view viewState:(id)state keyCache:(id)cache;
 - (void)main;
 @end
 
 @implementation CKKSIncomingQueueOperation
 
-- (void)_onqueueHandleIQEDelete:(id)a3 class:(const SecDbClass *)a4 viewState:(id)a5
+- (void)_onqueueHandleIQEDelete:(id)delete class:(const SecDbClass *)class viewState:(id)state
 {
-  v8 = a3;
-  v9 = a5;
+  deleteCopy = delete;
+  stateCopy = state;
   v49 = 0;
   v50 = &v49;
   v51 = 0x2020000000;
   v52 = 0;
-  v58[0] = a4->var0;
+  v58[0] = class->var0;
   v57[0] = kSecClass;
   v57[1] = kSecAttrUUID;
-  v10 = [v8 uuid];
+  uuid = [deleteCopy uuid];
   v57[2] = kSecAttrSynchronizable;
-  v58[1] = v10;
+  v58[1] = uuid;
   v58[2] = &__kCFBooleanTrue;
   v11 = [NSDictionary dictionaryWithObjects:v58 forKeys:v57 count:3];
 
-  v12 = [v9 zoneID];
-  v13 = [v12 zoneName];
-  v14 = sub_100019104(@"ckksincoming", v13);
+  zoneID = [stateCopy zoneID];
+  zoneName = [zoneID zoneName];
+  v14 = sub_100019104(@"ckksincoming", zoneName);
 
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -47,9 +47,9 @@
   *(v15 + 156) = 1;
   if (v50[3])
   {
-    v16 = [v9 zoneID];
-    v17 = [v16 zoneName];
-    v18 = sub_100019104(@"ckksincoming", v17);
+    zoneID2 = [stateCopy zoneID];
+    zoneName2 = [zoneID2 zoneName];
+    v18 = sub_100019104(@"ckksincoming", zoneName2);
 
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -78,9 +78,9 @@
   {
     if (CFErrorGetCode(v24) != -25300)
     {
-      v30 = [v9 zoneID];
-      v31 = [v30 zoneName];
-      v32 = sub_100019104(@"ckksincoming", v31);
+      zoneID3 = [stateCopy zoneID];
+      zoneName3 = [zoneID3 zoneName];
+      v32 = sub_100019104(@"ckksincoming", zoneName3);
 
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
@@ -97,9 +97,9 @@
       goto LABEL_7;
     }
 
-    v25 = [v9 zoneID];
-    v26 = [v25 zoneName];
-    v27 = sub_100019104(@"ckksincoming", v26);
+    zoneID4 = [stateCopy zoneID];
+    zoneName4 = [zoneID4 zoneName];
+    v27 = sub_100019104(@"ckksincoming", zoneName4);
 
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -127,9 +127,9 @@
 
   if (!sub_100019700(v21, v22, v23 + 3) || v50[3])
   {
-    v34 = [v9 zoneID];
-    v35 = [v34 zoneName];
-    v36 = sub_100019104(@"ckksincoming", v35);
+    zoneID5 = [stateCopy zoneID];
+    zoneName5 = [zoneID5 zoneName];
+    v36 = sub_100019104(@"ckksincoming", zoneName5);
 
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
@@ -157,9 +157,9 @@ LABEL_25:
     goto LABEL_7;
   }
 
-  v40 = [v9 zoneID];
-  v41 = [v40 zoneName];
-  v42 = sub_100019104(@"ckksincoming", v41);
+  zoneID6 = [stateCopy zoneID];
+  zoneName6 = [zoneID6 zoneName];
+  v42 = sub_100019104(@"ckksincoming", zoneName6);
 
   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
   {
@@ -168,7 +168,7 @@ LABEL_25:
   }
 
   v47 = 0;
-  [v8 deleteFromDatabase:&v47];
+  [deleteCopy deleteFromDatabase:&v47];
   v43 = v47;
   if (!v43)
   {
@@ -177,9 +177,9 @@ LABEL_25:
   }
 
   v20 = v43;
-  v44 = [v9 zoneID];
-  v45 = [v44 zoneName];
-  v46 = sub_100019104(@"ckksincoming", v45);
+  zoneID7 = [stateCopy zoneID];
+  zoneName7 = [zoneID7 zoneName];
+  v46 = sub_100019104(@"ckksincoming", zoneName7);
 
   if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
   {
@@ -195,11 +195,11 @@ LABEL_7:
   _Block_object_dispose(&v49, 8);
 }
 
-- (BOOL)_onqueueHandleIQEChange:(id)a3 item:(SecDbItem *)a4 viewState:(id)a5 sortedForThisView:(BOOL)a6 keyCache:(id)a7
+- (BOOL)_onqueueHandleIQEChange:(id)change item:(SecDbItem *)item viewState:(id)state sortedForThisView:(BOOL)view keyCache:(id)cache
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  changeCopy = change;
+  stateCopy = state;
+  cacheCopy = cache;
   v127 = 0;
   v128 = &v127;
   v129 = 0x2020000000;
@@ -210,27 +210,27 @@ LABEL_7:
   v124 = sub_1000D5324;
   v125 = sub_1000D5334;
   v126 = 0;
-  if (sub_10001A700(a4))
+  if (sub_10001A700(item))
   {
-    v15 = [v13 zoneID];
-    v16 = [v15 zoneName];
-    v17 = sub_100019104(@"ckksincoming", v16);
+    zoneID = [stateCopy zoneID];
+    zoneName = [zoneID zoneName];
+    v17 = sub_100019104(@"ckksincoming", zoneName);
 
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v12 uuid];
+      uuid = [changeCopy uuid];
       *buf = 138412547;
-      *&buf[4] = v18;
+      *&buf[4] = uuid;
       *&buf[12] = 2113;
-      *&buf[14] = a4;
+      *&buf[14] = item;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Rejecting a tombstone item addition from CKKS(%@): %{private}@", buf, 0x16u);
     }
 
-    v19 = [(CKKSIncomingQueueOperation *)self deps];
-    v20 = [v19 contextID];
-    v21 = [v13 zoneID];
+    deps = [(CKKSIncomingQueueOperation *)self deps];
+    contextID = [deps contextID];
+    zoneID2 = [stateCopy zoneID];
     v120 = 0;
-    v22 = [CKKSOutgoingQueueEntry withItem:a4 action:@"delete" contextID:v20 zoneID:v21 keyCache:v14 error:&v120];
+    v22 = [CKKSOutgoingQueueEntry withItem:item action:@"delete" contextID:contextID zoneID:zoneID2 keyCache:cacheCopy error:&v120];
     v23 = v120;
 
     v119 = v23;
@@ -239,9 +239,9 @@ LABEL_7:
 
     if (v24)
     {
-      v25 = [v13 zoneID];
-      v26 = [v25 zoneName];
-      v27 = sub_100019104(@"ckksincoming", v26);
+      zoneID3 = [stateCopy zoneID];
+      zoneName2 = [zoneID3 zoneName];
+      v27 = sub_100019104(@"ckksincoming", zoneName2);
 
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
@@ -254,14 +254,14 @@ LABEL_7:
     else
     {
       v118 = 0;
-      [v12 deleteFromDatabase:&v118];
+      [changeCopy deleteFromDatabase:&v118];
       v54 = v118;
       if (v54)
       {
         v24 = v54;
-        v55 = [v13 zoneID];
-        v56 = [v55 zoneName];
-        v57 = sub_100019104(@"ckksincoming", v56);
+        zoneID4 = [stateCopy zoneID];
+        zoneName3 = [zoneID4 zoneName];
+        v57 = sub_100019104(@"ckksincoming", zoneName3);
 
         if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
         {
@@ -288,27 +288,27 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  if (!sub_1001636C4(a4))
+  if (!sub_1001636C4(item))
   {
-    v41 = [v13 zoneID];
-    v42 = [v41 zoneName];
-    v43 = sub_100019104(@"ckksincoming", v42);
+    zoneID5 = [stateCopy zoneID];
+    zoneName4 = [zoneID5 zoneName];
+    v43 = sub_100019104(@"ckksincoming", zoneName4);
 
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
-      v44 = [v12 uuid];
+      uuid2 = [changeCopy uuid];
       *buf = 138412547;
-      *&buf[4] = v44;
+      *&buf[4] = uuid2;
       *&buf[12] = 2113;
-      *&buf[14] = a4;
+      *&buf[14] = item;
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "Rejecting a multiuser item addition from CKKS(%@): %{private}@", buf, 0x16u);
     }
 
-    v45 = [(CKKSIncomingQueueOperation *)self deps];
-    v46 = [v45 contextID];
-    v47 = [v13 zoneID];
+    deps2 = [(CKKSIncomingQueueOperation *)self deps];
+    contextID2 = [deps2 contextID];
+    zoneID6 = [stateCopy zoneID];
     v117 = 0;
-    v48 = [CKKSOutgoingQueueEntry withItem:a4 action:@"delete" contextID:v46 zoneID:v47 keyCache:v14 error:&v117];
+    v48 = [CKKSOutgoingQueueEntry withItem:item action:@"delete" contextID:contextID2 zoneID:zoneID6 keyCache:cacheCopy error:&v117];
     v49 = v117;
 
     v116 = v49;
@@ -317,9 +317,9 @@ LABEL_44:
 
     if (v50)
     {
-      v51 = [v13 zoneID];
-      v52 = [v51 zoneName];
-      v53 = sub_100019104(@"ckksincoming", v52);
+      zoneID7 = [stateCopy zoneID];
+      zoneName5 = [zoneID7 zoneName];
+      v53 = sub_100019104(@"ckksincoming", zoneName5);
 
       if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
       {
@@ -332,14 +332,14 @@ LABEL_44:
     else
     {
       v115 = 0;
-      [v12 deleteFromDatabase:&v115];
+      [changeCopy deleteFromDatabase:&v115];
       v58 = v115;
       if (v58)
       {
         v50 = v58;
-        v59 = [v13 zoneID];
-        v60 = [v59 zoneName];
-        v61 = sub_100019104(@"ckksincoming", v60);
+        zoneID8 = [stateCopy zoneID];
+        zoneName6 = [zoneID8 zoneName];
+        v61 = sub_100019104(@"ckksincoming", zoneName6);
 
         if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
         {
@@ -364,10 +364,10 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  v28 = self;
-  v29 = v13;
-  v30 = v14;
-  v31 = v12;
+  selfCopy = self;
+  v29 = stateCopy;
+  v30 = cacheCopy;
+  v31 = changeCopy;
   v111 = 0;
   v112 = &v111;
   v113 = 0x2020000000;
@@ -381,35 +381,35 @@ LABEL_44:
   *&buf[16] = 0x3032000000;
   v138 = sub_1000D5324;
   v139 = sub_1000D5334;
-  v140 = CFDictionaryGetValue(a4->var6, kSecAttrModificationDate);
+  v140 = CFDictionaryGetValue(item->var6, kSecAttrModificationDate);
   v32 = v128;
   v95[0] = _NSConcreteStackBlock;
   v95[1] = 3221225472;
   v95[2] = sub_1000D533C;
   v95[3] = &unk_100336AC0;
-  v105 = a4;
+  itemCopy = item;
   v100 = &v127;
   v91 = v29;
   v96 = v91;
   v33 = v31;
-  v106 = a6;
+  viewCopy = view;
   v101 = &v111;
   v97 = v33;
-  v98 = v28;
+  v98 = selfCopy;
   v99 = v30;
   v102 = &v121;
   v103 = buf;
   v104 = &v107;
   if (!sub_100008A70(1, 1, 0, (v32 + 3), v95) || v128[3])
   {
-    v34 = [v91 zoneID];
-    v35 = [v34 zoneName];
-    v36 = sub_100019104(@"ckksincoming", v35);
+    zoneID9 = [v91 zoneID];
+    zoneName7 = [zoneID9 zoneName];
+    v36 = sub_100019104(@"ckksincoming", zoneName7);
 
-    v12 = v31;
-    v14 = v30;
-    v13 = v29;
-    v37 = v28;
+    changeCopy = v31;
+    cacheCopy = v30;
+    stateCopy = v29;
+    v37 = selfCopy;
 
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
@@ -425,7 +425,7 @@ LABEL_44:
       v40 = v122[5];
       v122[5] = v39;
 
-      [(CKKSResultOperation *)v28 setError:v122[5]];
+      [(CKKSResultOperation *)selfCopy setError:v122[5]];
     }
 
     else
@@ -434,7 +434,7 @@ LABEL_44:
       v134 = @"kc_with_dbt failed without error";
       v62 = [NSDictionary dictionaryWithObjects:&v134 forKeys:&v133 count:1];
       v63 = [NSError errorWithDomain:@"securityd" code:-67671 userInfo:v62];
-      [(CKKSResultOperation *)v28 setError:v63];
+      [(CKKSResultOperation *)selfCopy setError:v63];
     }
 
     [v33 setState:@"error"];
@@ -447,9 +447,9 @@ LABEL_44:
       goto LABEL_35;
     }
 
-    v65 = [v92 zoneID];
-    v66 = [v65 zoneName];
-    v67 = sub_100019104(@"ckksincoming", v66);
+    zoneID10 = [v92 zoneID];
+    zoneName8 = [zoneID10 zoneName];
+    v67 = sub_100019104(@"ckksincoming", zoneName8);
 
     if (!os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
     {
@@ -465,13 +465,13 @@ LABEL_44:
 
   if (v122[5])
   {
-    v71 = [v91 zoneID];
-    v12 = v31;
-    v14 = v30;
-    v13 = v29;
-    v37 = v28;
-    v72 = [v71 zoneName];
-    v67 = sub_100019104(@"ckksincoming", v72);
+    zoneID11 = [v91 zoneID];
+    changeCopy = v31;
+    cacheCopy = v30;
+    stateCopy = v29;
+    v37 = selfCopy;
+    zoneName9 = [zoneID11 zoneName];
+    v67 = sub_100019104(@"ckksincoming", zoneName9);
 
     if (!os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
     {
@@ -490,13 +490,13 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  v75 = [v91 zoneID];
-  v12 = v31;
-  v14 = v30;
-  v13 = v29;
-  v76 = v28;
-  v77 = [v75 zoneName];
-  v78 = sub_100019104(@"ckksincoming", v77);
+  zoneID12 = [v91 zoneID];
+  changeCopy = v31;
+  cacheCopy = v30;
+  stateCopy = v29;
+  v76 = selfCopy;
+  zoneName10 = [zoneID12 zoneName];
+  v78 = sub_100019104(@"ckksincoming", zoneName10);
 
   if (os_log_type_enabled(v78, OS_LOG_TYPE_DEBUG))
   {
@@ -510,9 +510,9 @@ LABEL_34:
   objc_storeStrong(v79, v93);
   if (v122[5])
   {
-    v80 = [v91 zoneID];
-    v81 = [v80 zoneName];
-    v82 = sub_100019104(@"ckksincoming", v81);
+    zoneID13 = [v91 zoneID];
+    zoneName11 = [zoneID13 zoneName];
+    v82 = sub_100019104(@"ckksincoming", zoneName11);
 
     if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
     {
@@ -528,7 +528,7 @@ LABEL_34:
 
   else
   {
-    [(CKKSIncomingQueueOperation *)v28 setSuccessfulItemsProcessed:[(CKKSIncomingQueueOperation *)v28 successfulItemsProcessed]+ 1];
+    [(CKKSIncomingQueueOperation *)selfCopy setSuccessfulItemsProcessed:[(CKKSIncomingQueueOperation *)selfCopy successfulItemsProcessed]+ 1];
   }
 
   if (*(*&buf[8] + 40))
@@ -541,9 +541,9 @@ LABEL_34:
     v87 = [NSNumber numberWithUnsignedLongLong:(v86 * 1000.0)];
     v131[1] = @"view";
     v132[0] = v87;
-    v88 = [v91 zoneID];
-    v89 = [v88 zoneName];
-    v132[1] = v89;
+    zoneID14 = [v91 zoneID];
+    zoneName12 = [zoneID14 zoneName];
+    v132[1] = zoneName12;
     v90 = [NSDictionary dictionaryWithObjects:v132 forKeys:v131 count:2];
     [SecCoreAnalytics sendEvent:@"com.apple.ckks.item.propagation" event:v90];
   }
@@ -568,23 +568,23 @@ LABEL_45:
   return v70 & 1;
 }
 
-- (void)_onqueueGenerateNewUUIDPersistentRefOnSecItem:(SecDbItem *)a3 viewState:(id)a4
+- (void)_onqueueGenerateNewUUIDPersistentRefOnSecItem:(SecDbItem *)item viewState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v6 = CFUUIDCreate(kCFAllocatorDefault);
   bytes = CFUUIDGetUUIDBytes(v6);
   v7 = CFDataCreate(kCFAllocatorDefault, &bytes.byte0, 16);
   cf = 0;
-  sub_10001A804(a3, v7, &cf);
-  v8 = [v5 zoneID];
+  sub_10001A804(item, v7, &cf);
+  zoneID = [stateCopy zoneID];
 
-  v9 = [v8 zoneName];
-  v10 = sub_100019104(@"ckksincoming", v9);
+  zoneName = [zoneID zoneName];
+  v10 = sub_100019104(@"ckksincoming", zoneName);
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138478083;
-    v15 = a3;
+    itemCopy = item;
     v16 = 2112;
     v17 = cf;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "set a new persistentref UUID for item %{private}@, error:%@", buf, 0x16u);
@@ -608,20 +608,20 @@ LABEL_45:
   }
 }
 
-- (BOOL)fixMismatchedViewItems:(id)a3
+- (BOOL)fixMismatchedViewItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   if ([(CKKSIncomingQueueOperation *)self handleMismatchedViewItems])
   {
     v5 = [AAFAnalyticsEventSecurity alloc];
-    v6 = [(CKKSIncomingQueueOperation *)self deps];
-    v7 = [v6 activeAccount];
-    v8 = [v7 altDSID];
-    v9 = [(CKKSIncomingQueueOperation *)self deps];
-    v21 = [v5 initWithCKKSMetrics:&__NSDictionary0__struct altDSID:v8 eventName:kSecurityRTCEventNameFixMismatchedViewItems testsAreEnabled:0 category:kSecurityRTCEventCategoryAccountDataAccessRecovery sendMetric:{objc_msgSend(v9, "sendMetric")}];
+    deps = [(CKKSIncomingQueueOperation *)self deps];
+    activeAccount = [deps activeAccount];
+    altDSID = [activeAccount altDSID];
+    deps2 = [(CKKSIncomingQueueOperation *)self deps];
+    v21 = [v5 initWithCKKSMetrics:&__NSDictionary0__struct altDSID:altDSID eventName:kSecurityRTCEventNameFixMismatchedViewItems testsAreEnabled:0 category:kSecurityRTCEventCategoryAccountDataAccessRecovery sendMetric:{objc_msgSend(deps2, "sendMetric")}];
 
-    v10 = [v4 zoneName];
-    v11 = sub_100019104(@"ckksincoming", v10);
+    zoneName = [itemsCopy zoneName];
+    v11 = sub_100019104(@"ckksincoming", zoneName);
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -647,8 +647,8 @@ LABEL_45:
     v29 = &v28;
     v30 = 0x2020000000;
     v31 = 0;
-    v12 = [(CKKSIncomingQueueOperation *)self deps];
-    v13 = [v12 databaseProvider];
+    deps3 = [(CKKSIncomingQueueOperation *)self deps];
+    databaseProvider = [deps3 databaseProvider];
 
     while (v43[3] == 50)
     {
@@ -658,11 +658,11 @@ LABEL_45:
       v22[3] = &unk_100336A70;
       v24 = buf;
       v22[4] = self;
-      v23 = v4;
+      v23 = itemsCopy;
       v25 = &v32;
       v26 = &v42;
       v27 = &v28;
-      [v13 dispatchSyncWithSQLTransaction:v22];
+      [databaseProvider dispatchSyncWithSQLTransaction:v22];
     }
 
     if (v29[3] < 1)
@@ -679,8 +679,8 @@ LABEL_45:
       [v21 addMetrics:v15];
 
       v16 = *(v33 + 24);
-      v17 = [(CKKSResultOperation *)self error];
-      [v21 sendMetricWithResult:v16 ^ 1u error:v17];
+      error = [(CKKSResultOperation *)self error];
+      [v21 sendMetricWithResult:v16 ^ 1u error:error];
     }
 
     v19 = *(v33 + 24);
@@ -701,10 +701,10 @@ LABEL_45:
   return v18 & 1;
 }
 
-- (BOOL)loadAndProcessEntries:(id)a3 withActionFilter:(id)a4 totalQueueEntries:(int64_t *)a5
+- (BOOL)loadAndProcessEntries:(id)entries withActionFilter:(id)filter totalQueueEntries:(int64_t *)queueEntries
 {
-  v17 = a3;
-  v16 = a4;
+  entriesCopy = entries;
+  filterCopy = filter;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -719,8 +719,8 @@ LABEL_45:
   v30[3] = sub_1000D5324;
   v30[4] = sub_1000D5334;
   v31 = 0;
-  v8 = [(CKKSIncomingQueueOperation *)self deps];
-  v9 = [v8 databaseProvider];
+  deps = [(CKKSIncomingQueueOperation *)self deps];
+  databaseProvider = [deps databaseProvider];
 
   v10 = 0;
   v26 = 0;
@@ -736,14 +736,14 @@ LABEL_45:
       v19[2] = sub_1000D6CF0;
       v19[3] = &unk_100336A48;
       v19[4] = self;
-      v11 = v17;
+      v11 = entriesCopy;
       v20 = v11;
       v22 = &v36;
       v23 = v30;
-      v21 = v16;
+      v21 = filterCopy;
       v24 = &v32;
       v25 = &v26;
-      [v9 dispatchSyncWithSQLTransaction:v19];
+      [databaseProvider dispatchSyncWithSQLTransaction:v19];
       if (*(v37 + 24) == 1)
       {
         break;
@@ -756,8 +756,8 @@ LABEL_45:
       }
     }
 
-    v13 = [v11 zoneName];
-    v14 = sub_100019104(@"ckksincoming", v13);
+    zoneName = [v11 zoneName];
+    v14 = sub_100019104(@"ckksincoming", zoneName);
 
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -765,14 +765,14 @@ LABEL_45:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Early-exiting from IncomingQueueOperation", buf, 2u);
     }
 
-    *a5 = v27[3];
+    *queueEntries = v27[3];
     v12 = 0;
   }
 
   else
   {
 LABEL_5:
-    *a5 = v10;
+    *queueEntries = v10;
     v12 = 1;
   }
 
@@ -787,17 +787,17 @@ LABEL_5:
 
 - (void)main
 {
-  v3 = [(CKKSIncomingQueueOperation *)self deps];
-  v123 = [v3 databaseProvider];
+  deps = [(CKKSIncomingQueueOperation *)self deps];
+  databaseProvider = [deps databaseProvider];
 
-  v4 = [(CKKSIncomingQueueOperation *)self deps];
-  v5 = [v4 readyAndSyncingViews];
+  deps2 = [(CKKSIncomingQueueOperation *)self deps];
+  readyAndSyncingViews = [deps2 readyAndSyncingViews];
 
   v6 = sub_100019104(@"ckksincoming", 0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v144 = v5;
+    v144 = readyAndSyncingViews;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Going to process the incoming queues for %@", buf, 0xCu);
   }
 
@@ -820,35 +820,35 @@ LABEL_5:
   v151[1] = &__kCFBooleanFalse;
   v120 = kSecurityRTCFieldNumViews;
   v150[2] = kSecurityRTCFieldNumViews;
-  +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 count]);
-  v8 = v5;
-  v9 = v124 = v5;
+  +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [readyAndSyncingViews count]);
+  v8 = readyAndSyncingViews;
+  v9 = v124 = readyAndSyncingViews;
   v151[2] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v151 forKeys:v150 count:3];
-  v11 = [(CKKSIncomingQueueOperation *)self deps];
-  v12 = [v11 activeAccount];
-  v13 = [v12 altDSID];
+  deps3 = [(CKKSIncomingQueueOperation *)self deps];
+  activeAccount = [deps3 activeAccount];
+  altDSID = [activeAccount altDSID];
   v14 = kSecurityRTCEventNameProcessIncomingQueue;
   v15 = kSecurityRTCEventCategoryAccountDataAccessRecovery;
   v118 = kSecurityRTCEventCategoryAccountDataAccessRecovery;
-  v16 = [(CKKSIncomingQueueOperation *)self deps];
-  v115 = [obja initWithCKKSMetrics:v10 altDSID:v13 eventName:v14 testsAreEnabled:0 category:v15 sendMetric:{objc_msgSend(v16, "sendMetric")}];
+  deps4 = [(CKKSIncomingQueueOperation *)self deps];
+  v115 = [obja initWithCKKSMetrics:v10 altDSID:altDSID eventName:v14 testsAreEnabled:0 category:v15 sendMetric:{objc_msgSend(deps4, "sendMetric")}];
 
   v17 = [AAFAnalyticsEventSecurity alloc];
   v148 = v120;
   v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 count]);
   v149 = v18;
   v19 = [NSDictionary dictionaryWithObjects:&v149 forKeys:&v148 count:1];
-  v20 = [(CKKSIncomingQueueOperation *)self deps];
-  v21 = [v20 activeAccount];
-  v22 = [v21 altDSID];
+  deps5 = [(CKKSIncomingQueueOperation *)self deps];
+  activeAccount2 = [deps5 activeAccount];
+  altDSID2 = [activeAccount2 altDSID];
   v23 = kSecurityRTCEventNameLoadAndProcessIQEs;
-  v24 = [(CKKSIncomingQueueOperation *)self deps];
-  v114 = [v17 initWithCKKSMetrics:v19 altDSID:v22 eventName:v23 testsAreEnabled:0 category:v118 sendMetric:{objc_msgSend(v24, "sendMetric")}];
+  deps6 = [(CKKSIncomingQueueOperation *)self deps];
+  v114 = [v17 initWithCKKSMetrics:v19 altDSID:altDSID2 eventName:v23 testsAreEnabled:0 category:v118 sendMetric:{objc_msgSend(deps6, "sendMetric")}];
 
-  v25 = [(CKKSIncomingQueueOperation *)self deps];
-  v26 = [v25 overallLaunch];
-  [v26 addEvent:@"incoming-processing-begin"];
+  deps7 = [(CKKSIncomingQueueOperation *)self deps];
+  overallLaunch = [deps7 overallLaunch];
+  [overallLaunch addEvent:@"incoming-processing-begin"];
 
   v136 = 0u;
   v137 = 0u;
@@ -889,12 +889,12 @@ LABEL_22:
     if ([(CKKSIncomingQueueOperation *)self newOutgoingEntries])
     {
       v57 = [CKOperationGroup CKKSGroupWithName:@"incoming-queue-response"];
-      v58 = [(CKKSIncomingQueueOperation *)self deps];
-      [v58 setCurrentOutgoingQueueOperationGroup:v57];
+      deps8 = [(CKKSIncomingQueueOperation *)self deps];
+      [deps8 setCurrentOutgoingQueueOperationGroup:v57];
 
-      v59 = [(CKKSIncomingQueueOperation *)self deps];
-      v60 = [v59 flagHandler];
-      [v60 handleFlag:@"process_outgoing_queue"];
+      deps9 = [(CKKSIncomingQueueOperation *)self deps];
+      flagHandler = [deps9 flagHandler];
+      [flagHandler handleFlag:@"process_outgoing_queue"];
     }
 
     if ([(CKKSIncomingQueueOperation *)self missingKey])
@@ -906,42 +906,42 @@ LABEL_22:
     {
       if ([(CKKSIncomingQueueOperation *)self pendingClassAEntries])
       {
-        v61 = [[OctagonPendingFlag alloc] initWithFlag:@"process_incoming_queue" conditions:1];
-        v62 = [(CKKSIncomingQueueOperation *)self deps];
-        v63 = [v62 flagHandler];
-        [v63 handlePendingFlag:v61];
+        intendedState = [[OctagonPendingFlag alloc] initWithFlag:@"process_incoming_queue" conditions:1];
+        deps10 = [(CKKSIncomingQueueOperation *)self deps];
+        flagHandler2 = [deps10 flagHandler];
+        [flagHandler2 handlePendingFlag:intendedState];
 
-        v64 = [(CKKSIncomingQueueOperation *)self pendingClassAEntriesError];
-        [(CKKSResultOperation *)self setError:v64];
+        pendingClassAEntriesError = [(CKKSIncomingQueueOperation *)self pendingClassAEntriesError];
+        [(CKKSResultOperation *)self setError:pendingClassAEntriesError];
 
-        v65 = [(CKKSIncomingQueueOperation *)self stateIfClassAItemsRemaining];
-        [(CKKSIncomingQueueOperation *)self setNextState:v65];
+        stateIfClassAItemsRemaining = [(CKKSIncomingQueueOperation *)self stateIfClassAItemsRemaining];
+        [(CKKSIncomingQueueOperation *)self setNextState:stateIfClassAItemsRemaining];
       }
 
       else
       {
-        v61 = [(CKKSIncomingQueueOperation *)self intendedState];
-        [(CKKSIncomingQueueOperation *)self setNextState:v61];
+        intendedState = [(CKKSIncomingQueueOperation *)self intendedState];
+        [(CKKSIncomingQueueOperation *)self setNextState:intendedState];
       }
     }
 
-    v66 = [(CKKSIncomingQueueOperation *)self viewsToScan];
-    v67 = [v66 count];
+    viewsToScan = [(CKKSIncomingQueueOperation *)self viewsToScan];
+    v67 = [viewsToScan count];
 
     if (v67)
     {
       v68 = sub_100019104(@"ckksincoming", 0);
       if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
       {
-        v69 = [(CKKSIncomingQueueOperation *)self viewsToScan];
+        viewsToScan2 = [(CKKSIncomingQueueOperation *)self viewsToScan];
         *buf = 138412290;
-        v144 = v69;
+        v144 = viewsToScan2;
         _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_DEFAULT, "Requesting scan for %@", buf, 0xCu);
       }
 
-      v70 = [(CKKSIncomingQueueOperation *)self deps];
-      v71 = [v70 flagHandler];
-      [v71 handleFlag:@"dropped_items"];
+      deps11 = [(CKKSIncomingQueueOperation *)self deps];
+      flagHandler3 = [deps11 flagHandler];
+      [flagHandler3 handleFlag:@"dropped_items"];
     }
 
     v53 = +[CKKSAnalytics logger];
@@ -955,13 +955,13 @@ LABEL_22:
     {
 LABEL_60:
 
-      v91 = [(CKKSIncomingQueueOperation *)self deps];
-      v92 = [v91 activeManagedViews];
-      if ([v92 count])
+      deps12 = [(CKKSIncomingQueueOperation *)self deps];
+      activeManagedViews = [deps12 activeManagedViews];
+      if ([activeManagedViews count])
       {
-        v93 = [(CKKSIncomingQueueOperation *)self deps];
-        v94 = [v93 activeManagedViews];
-        v95 = v122 / [v94 count];
+        deps13 = [(CKKSIncomingQueueOperation *)self deps];
+        activeManagedViews2 = [deps13 activeManagedViews];
+        v95 = v122 / [activeManagedViews2 count];
       }
 
       else
@@ -971,13 +971,13 @@ LABEL_60:
 
       v51 = obj;
 
-      v96 = [(CKKSIncomingQueueOperation *)self deps];
-      v97 = [v96 activeManagedViews];
-      if ([v97 count])
+      deps14 = [(CKKSIncomingQueueOperation *)self deps];
+      activeManagedViews3 = [deps14 activeManagedViews];
+      if ([activeManagedViews3 count])
       {
-        v98 = [(CKKSIncomingQueueOperation *)self deps];
-        v99 = [v98 activeManagedViews];
-        v100 = v119 / [v99 count];
+        deps15 = [(CKKSIncomingQueueOperation *)self deps];
+        activeManagedViews4 = [deps15 activeManagedViews];
+        v100 = v119 / [activeManagedViews4 count];
       }
 
       else
@@ -1017,13 +1017,13 @@ LABEL_60:
       }
 
       v47 = v114;
-      v109 = [(CKKSResultOperation *)self error];
+      error = [(CKKSResultOperation *)self error];
       v50 = v115;
-      [v115 sendMetricWithResult:v108 error:v109];
+      [v115 sendMetricWithResult:v108 error:error];
 
-      v110 = [(CKKSIncomingQueueOperation *)self deps];
-      v111 = [v110 overallLaunch];
-      [v111 addEvent:@"incoming-processing-complete"];
+      deps16 = [(CKKSIncomingQueueOperation *)self deps];
+      overallLaunch2 = [deps16 overallLaunch];
+      [overallLaunch2 addEvent:@"incoming-processing-complete"];
 
       goto LABEL_70;
     }
@@ -1040,29 +1040,29 @@ LABEL_49:
       }
 
       v76 = *(*(&v127 + 1) + 8 * v75);
-      v77 = [v76 launch];
-      [v77 addEvent:@"incoming-processed"];
+      launch = [v76 launch];
+      [launch addEvent:@"incoming-processed"];
 
-      v78 = [(CKKSResultOperation *)self error];
+      error2 = [(CKKSResultOperation *)self error];
 
-      if (v78)
+      if (error2)
       {
-        v79 = [(CKKSIncomingQueueOperation *)self deps];
-        v80 = [v79 lockStateTracker];
-        v81 = [(CKKSResultOperation *)self error];
-        v82 = [v80 isLockedError:v81];
+        deps17 = [(CKKSIncomingQueueOperation *)self deps];
+        lockStateTracker = [deps17 lockStateTracker];
+        error3 = [(CKKSResultOperation *)self error];
+        v82 = [lockStateTracker isLockedError:error3];
 
         if ((v82 & 1) == 0)
         {
-          v83 = [(CKKSResultOperation *)self error];
-          v84 = [v76 zoneID];
-          v85 = [v84 zoneName];
-          [v53 logRecoverableError:v83 forEvent:@"CKKSEventProcessIncomingQueueClassC" zoneName:v85 withAttributes:0];
+          error4 = [(CKKSResultOperation *)self error];
+          zoneID = [v76 zoneID];
+          zoneName = [zoneID zoneName];
+          [v53 logRecoverableError:error4 forEvent:@"CKKSEventProcessIncomingQueueClassC" zoneName:zoneName withAttributes:0];
 
-          v86 = [(CKKSResultOperation *)self error];
-          v87 = [v76 zoneID];
-          v88 = [v87 zoneName];
-          [v53 logRecoverableError:v86 forEvent:@"CKKSEventProcessIncomingQueueClassA" zoneName:v88 withAttributes:0];
+          error5 = [(CKKSResultOperation *)self error];
+          zoneID2 = [v76 zoneID];
+          zoneName2 = [zoneID2 zoneName];
+          [v53 logRecoverableError:error5 forEvent:@"CKKSEventProcessIncomingQueueClassA" zoneName:zoneName2 withAttributes:0];
 
 LABEL_57:
         }
@@ -1070,15 +1070,15 @@ LABEL_57:
 
       else
       {
-        v89 = [v76 zoneID];
-        v90 = [v89 zoneName];
-        [v53 logSuccessForEvent:@"CKKSEventProcessIncomingQueueClassC" zoneName:v90];
+        zoneID3 = [v76 zoneID];
+        zoneName3 = [zoneID3 zoneName];
+        [v53 logSuccessForEvent:@"CKKSEventProcessIncomingQueueClassC" zoneName:zoneName3];
 
         if (![(CKKSIncomingQueueOperation *)self pendingClassAEntries])
         {
-          v86 = [v76 zoneID];
-          v87 = [v86 zoneName];
-          [v53 logSuccessForEvent:@"CKKSEventProcessIncomingQueueClassA" zoneName:v87];
+          error5 = [v76 zoneID];
+          zoneID2 = [error5 zoneName];
+          [v53 logSuccessForEvent:@"CKKSEventProcessIncomingQueueClassA" zoneName:zoneID2];
           goto LABEL_57;
         }
       }
@@ -1107,8 +1107,8 @@ LABEL_9:
     }
 
     v32 = *(*(&v134 + 1) + 8 * v31);
-    v33 = [v32 launch];
-    [v33 addEvent:@"incoming-processing-begin"];
+    launch2 = [v32 launch];
+    [launch2 addEvent:@"incoming-processing-begin"];
 
     [(CKKSIncomingQueueOperation *)self setSuccessfulItemsProcessed:0];
     [(CKKSIncomingQueueOperation *)self setErrorItemsProcessed:0];
@@ -1116,23 +1116,23 @@ LABEL_9:
     v133 = 0;
     if (![(CKKSIncomingQueueOperation *)self loadAndProcessEntries:v32 withActionFilter:@"delete" totalQueueEntries:&v133])
     {
-      v41 = [v32 zoneName];
-      v42 = sub_100019104(@"ckksincoming", v41);
+      zoneName4 = [v32 zoneName];
+      v42 = sub_100019104(@"ckksincoming", zoneName4);
 
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
-        v43 = [(CKKSResultOperation *)self error];
+        error6 = [(CKKSResultOperation *)self error];
         *buf = 138412290;
-        v144 = v43;
+        v144 = error6;
         v44 = "Early-exiting from IncomingQueueOperation (after processing deletes): %@";
         goto LABEL_28;
       }
 
 LABEL_29:
 
-      v46 = [(CKKSResultOperation *)self error];
+      error7 = [(CKKSResultOperation *)self error];
       v47 = v114;
-      [v114 sendMetricWithResult:0 error:v46];
+      [v114 sendMetricWithResult:0 error:error7];
 
       goto LABEL_33;
     }
@@ -1140,14 +1140,14 @@ LABEL_29:
     v34 = v133;
     if (![(CKKSIncomingQueueOperation *)self loadAndProcessEntries:v32 withActionFilter:0 totalQueueEntries:&v132])
     {
-      v45 = [v32 zoneName];
-      v42 = sub_100019104(@"ckksincoming", v45);
+      zoneName5 = [v32 zoneName];
+      v42 = sub_100019104(@"ckksincoming", zoneName5);
 
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
-        v43 = [(CKKSResultOperation *)self error];
+        error6 = [(CKKSResultOperation *)self error];
         *buf = 138412290;
-        v144 = v43;
+        v144 = error6;
         v44 = "Early-exiting from IncomingQueueOperation (after processing all incoming entries): %@";
 LABEL_28:
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, v44, buf, 0xCu);
@@ -1159,17 +1159,17 @@ LABEL_28:
     v35 = v132;
     if ([(CKKSIncomingQueueOperation *)self successfulItemsProcessed]|| [(CKKSIncomingQueueOperation *)self errorItemsProcessed])
     {
-      v36 = [v32 zoneName];
-      v37 = sub_100019104(@"ckksincoming", v36);
+      zoneName6 = [v32 zoneName];
+      v37 = sub_100019104(@"ckksincoming", zoneName6);
 
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
-        v38 = [(CKKSIncomingQueueOperation *)self successfulItemsProcessed];
-        v39 = [(CKKSIncomingQueueOperation *)self errorItemsProcessed];
+        successfulItemsProcessed = [(CKKSIncomingQueueOperation *)self successfulItemsProcessed];
+        errorItemsProcessed = [(CKKSIncomingQueueOperation *)self errorItemsProcessed];
         *buf = 134218240;
-        v144 = v38;
+        v144 = successfulItemsProcessed;
         v145 = 2048;
-        v146 = v39;
+        v146 = errorItemsProcessed;
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Processed %lu items in incoming queue (%lu errors)", buf, 0x16u);
       }
     }
@@ -1186,7 +1186,7 @@ LABEL_28:
     v131[3] = &unk_100343B50;
     v131[4] = v32;
     v131[5] = self;
-    [v123 dispatchSyncWithSQLTransaction:v131];
+    [databaseProvider dispatchSyncWithSQLTransaction:v131];
     v28 += [(CKKSIncomingQueueOperation *)self errorItemsProcessed];
     v29 += [(CKKSIncomingQueueOperation *)self successfulItemsProcessed];
     if (v121 == ++v31)
@@ -1202,8 +1202,8 @@ LABEL_28:
     }
   }
 
-  v48 = [v32 zoneName];
-  v49 = sub_100019104(@"ckksincoming", v48);
+  zoneName7 = [v32 zoneName];
+  v49 = sub_100019104(@"ckksincoming", zoneName7);
 
   if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
   {
@@ -1216,38 +1216,38 @@ LABEL_28:
 LABEL_33:
   v50 = v115;
   v51 = obj;
-  v52 = [(CKKSResultOperation *)self error];
-  [v115 sendMetricWithResult:0 error:v52];
+  error8 = [(CKKSResultOperation *)self error];
+  [v115 sendMetricWithResult:0 error:error8];
 
   v53 = obj;
 LABEL_70:
 }
 
-- (BOOL)_onqueueUpdateIQE:(id)a3 withState:(id)a4 error:(id *)a5
+- (BOOL)_onqueueUpdateIQE:(id)e withState:(id)state error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 state];
-  v10 = [v9 isEqualToString:v8];
+  eCopy = e;
+  stateCopy = state;
+  state = [eCopy state];
+  v10 = [state isEqualToString:stateCopy];
 
   if ((v10 & 1) == 0)
   {
-    v12 = [v7 whereClauseToFindSelf];
-    v13 = [v12 mutableCopy];
+    whereClauseToFindSelf = [eCopy whereClauseToFindSelf];
+    v13 = [whereClauseToFindSelf mutableCopy];
 
-    v14 = [v7 state];
-    [v13 setObject:v14 forKeyedSubscript:@"state"];
+    state2 = [eCopy state];
+    [v13 setObject:state2 forKeyedSubscript:@"state"];
 
-    [v7 setState:v8];
-    if (![v7 saveToDatabase:a5])
+    [eCopy setState:stateCopy];
+    if (![eCopy saveToDatabase:error])
     {
 
       LOBYTE(v11) = 0;
       goto LABEL_7;
     }
 
-    v15 = [objc_opt_class() sqlTable];
-    v11 = [CKKSSQLDatabaseObject deleteFromTable:v15 where:v13 connection:0 error:a5];
+    sqlTable = [objc_opt_class() sqlTable];
+    v11 = [CKKSSQLDatabaseObject deleteFromTable:sqlTable where:v13 connection:0 error:error];
 
     if (!v11)
     {
@@ -1261,58 +1261,58 @@ LABEL_7:
   return v11;
 }
 
-- (void)_onqueueHandleMismatchedViewItem:(id)a3 secDbClass:(const SecDbClass *)a4 attributes:(id)a5 intendedView:(id)a6 viewState:(id)a7 keyCache:(id)a8
+- (void)_onqueueHandleMismatchedViewItem:(id)item secDbClass:(const SecDbClass *)class attributes:(id)attributes intendedView:(id)view viewState:(id)state keyCache:(id)cache
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [v17 zoneID];
-  v20 = [v19 zoneName];
-  v21 = sub_100019104(@"ckksincoming", v20);
+  itemCopy = item;
+  attributesCopy = attributes;
+  viewCopy = view;
+  stateCopy = state;
+  cacheCopy = cache;
+  zoneID = [stateCopy zoneID];
+  zoneName = [zoneID zoneName];
+  v21 = sub_100019104(@"ckksincoming", zoneName);
 
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [v14 uuid];
+    uuid = [itemCopy uuid];
     *buf = 138412546;
-    v59 = v22;
+    v59 = uuid;
     v60 = 2112;
-    v61 = v16;
+    v61 = viewCopy;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Received an item (%@), which should be in view %@", buf, 0x16u);
   }
 
-  v23 = [v14 action];
-  if ([v23 isEqualToString:@"add"])
+  action = [itemCopy action];
+  if ([action isEqualToString:@"add"])
   {
   }
 
   else
   {
-    v24 = [v14 action];
-    v25 = [v24 isEqualToString:@"modify"];
+    action2 = [itemCopy action];
+    v25 = [action2 isEqualToString:@"modify"];
 
     if (!v25)
     {
-      v35 = [v14 action];
-      v36 = [v35 isEqualToString:@"delete"];
+      action3 = [itemCopy action];
+      v36 = [action3 isEqualToString:@"delete"];
 
       if (v36)
       {
-        v37 = [[CKRecordZoneID alloc] initWithZoneName:v16 ownerName:CKCurrentUserDefaultName];
-        v38 = [v14 uuid];
-        v39 = self;
+        v37 = [[CKRecordZoneID alloc] initWithZoneName:viewCopy ownerName:CKCurrentUserDefaultName];
+        uuid2 = [itemCopy uuid];
+        selfCopy = self;
         v40 = v37;
-        v41 = [(CKKSIncomingQueueOperation *)v39 deps];
-        v42 = [v41 contextID];
+        deps = [(CKKSIncomingQueueOperation *)selfCopy deps];
+        contextID = [deps contextID];
         v56 = 0;
         v54 = v40;
-        v43 = [CKKSMirrorEntry tryFromDatabase:v38 contextID:v42 zoneID:v40 error:&v56];
+        v43 = [CKKSMirrorEntry tryFromDatabase:uuid2 contextID:contextID zoneID:v40 error:&v56];
         v44 = v56;
 
-        v45 = [v17 zoneID];
-        v46 = [v45 zoneName];
-        v47 = sub_100019104(@"ckksincoming", v46);
+        zoneID2 = [stateCopy zoneID];
+        zoneName2 = [zoneID2 zoneName];
+        v47 = sub_100019104(@"ckksincoming", zoneName2);
 
         v48 = os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT);
         if (!v43 || v44)
@@ -1332,22 +1332,22 @@ LABEL_7:
           if (v48)
           {
             *buf = 138412546;
-            v59 = v16;
+            v59 = viewCopy;
             v60 = 2112;
             v61 = v43;
             _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "Other view (%@) already knows about this item, dropping incoming queue entry: %@", buf, 0x16u);
           }
 
           v55 = 0;
-          [v14 deleteFromDatabase:&v55];
+          [itemCopy deleteFromDatabase:&v55];
           v47 = v55;
           v49 = v54;
           if (v47)
           {
             v53 = v43;
-            v50 = [v17 zoneID];
-            v51 = [v50 zoneName];
-            v52 = sub_100019104(@"ckksincoming", v51);
+            zoneID3 = [stateCopy zoneID];
+            zoneName3 = [zoneID3 zoneName];
+            v52 = sub_100019104(@"ckksincoming", zoneName3);
 
             if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
             {
@@ -1367,33 +1367,33 @@ LABEL_7:
   }
 
   v57 = 0;
-  v26 = sub_10001A690(a4, v15, dword_10039E2F8, &v57);
+  v26 = sub_10001A690(class, attributesCopy, dword_10039E2F8, &v57);
   if (v26 && !v57)
   {
     v27 = v26;
-    if ([(CKKSIncomingQueueOperation *)self _onqueueHandleIQEChange:v14 item:v26 viewState:v17 sortedForThisView:0 keyCache:v18])
+    if ([(CKKSIncomingQueueOperation *)self _onqueueHandleIQEChange:itemCopy item:v26 viewState:stateCopy sortedForThisView:0 keyCache:cacheCopy])
     {
-      v28 = [v17 zoneID];
-      v29 = [v28 zoneName];
-      v30 = sub_100019104(@"ckksincoming", v29);
+      zoneID4 = [stateCopy zoneID];
+      zoneName4 = [zoneID4 zoneName];
+      v30 = sub_100019104(@"ckksincoming", zoneName4);
 
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v59 = v16;
+        v59 = viewCopy;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Wrote a keychain item that is actually for %@; requesting scan", buf, 0xCu);
       }
 
-      v31 = [(CKKSIncomingQueueOperation *)self viewsToScan];
-      [v31 addObject:v16];
+      viewsToScan = [(CKKSIncomingQueueOperation *)self viewsToScan];
+      [viewsToScan addObject:viewCopy];
     }
 
     goto LABEL_16;
   }
 
-  v32 = [v17 zoneID];
-  v33 = [v32 zoneName];
-  v34 = sub_100019104(@"ckksincoming", v33);
+  zoneID5 = [stateCopy zoneID];
+  zoneName5 = [zoneID5 zoneName];
+  v34 = sub_100019104(@"ckksincoming", zoneName5);
 
   if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
   {
@@ -1413,10 +1413,10 @@ LABEL_16:
 LABEL_17:
 }
 
-- (BOOL)intransaction:(id)a3 processQueueEntries:(id)a4
+- (BOOL)intransaction:(id)intransaction processQueueEntries:(id)entries
 {
-  v6 = a3;
-  v7 = a4;
+  intransactionCopy = intransaction;
+  entriesCopy = entries;
   v101 = objc_alloc_init(NSMutableArray);
   v100 = objc_alloc_init(NSMutableArray);
   v105 = objc_alloc_init(CKKSMemoryKeyCache);
@@ -1424,7 +1424,7 @@ LABEL_17:
   v115 = 0u;
   v116 = 0u;
   v117 = 0u;
-  obj = v7;
+  obj = entriesCopy;
   v104 = [obj countByEnumeratingWithState:&v114 objects:v126 count:16];
   if (v104)
   {
@@ -1434,7 +1434,7 @@ LABEL_17:
     {
       for (i = 0; i != v104; i = i + 1)
       {
-        v10 = self;
+        selfCopy = self;
         if (*v115 != v103)
         {
           objc_enumerationMutation(obj);
@@ -1443,43 +1443,43 @@ LABEL_17:
         v11 = *(*(&v114 + 1) + 8 * i);
         context = objc_autoreleasePoolPush();
         v12 = v11;
-        v13 = [v6 zoneID];
-        v14 = [v13 zoneName];
-        v15 = sub_100019104(@"ckksincoming", v14);
+        zoneID = [intransactionCopy zoneID];
+        zoneName = [zoneID zoneName];
+        v15 = sub_100019104(@"ckksincoming", zoneName);
 
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [v12 uuid];
-          v17 = [v12 action];
+          uuid = [v12 uuid];
+          action = [v12 action];
           *buf = 138412802;
           v121 = v12;
           v122 = 2112;
-          v123 = v16;
+          v123 = uuid;
           v124 = 2112;
-          v125 = v17;
+          v125 = action;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "ready to process an incoming queue entry: %@ %@ %@", buf, 0x20u);
         }
 
-        v18 = [v12 item];
-        self = v10;
-        v19 = [(CKKSIncomingQueueOperation *)v10 deps];
+        item = [v12 item];
+        self = selfCopy;
+        deps = [(CKKSIncomingQueueOperation *)selfCopy deps];
         v113 = 0;
-        v20 = [CKKSIncomingQueueOperation decryptCKKSItemToAttributes:v18 keyCache:v105 ckksOperationalDependencies:v19 error:&v113];
+        v20 = [CKKSIncomingQueueOperation decryptCKKSItemToAttributes:item keyCache:v105 ckksOperationalDependencies:deps error:&v113];
         v21 = v113;
 
         v107 = v20;
         v108 = v12;
         if (!v20 || v21)
         {
-          v35 = [(CKKSIncomingQueueOperation *)v10 deps];
-          v36 = [v35 lockStateTracker];
-          v37 = [v36 isLockedError:v21];
+          deps2 = [(CKKSIncomingQueueOperation *)selfCopy deps];
+          lockStateTracker = [deps2 lockStateTracker];
+          v37 = [lockStateTracker isLockedError:v21];
 
           if (v37)
           {
-            v38 = [v6 zoneID];
-            v39 = [v38 zoneName];
-            v40 = sub_100019104(@"ckksincoming", v39);
+            zoneID2 = [intransactionCopy zoneID];
+            zoneName2 = [zoneID2 zoneName];
+            v40 = sub_100019104(@"ckksincoming", zoneName2);
 
             if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
             {
@@ -1488,28 +1488,28 @@ LABEL_17:
               _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "Keychain is locked; can't decrypt IQE %@", buf, 0xCu);
             }
 
-            v41 = [v12 item];
-            v42 = [v41 parentKeyUUID];
-            v43 = [v6 contextID];
-            v44 = v6;
-            v45 = v43;
+            item2 = [v12 item];
+            parentKeyUUID = [item2 parentKeyUUID];
+            contextID = [intransactionCopy contextID];
+            v44 = intransactionCopy;
+            v45 = contextID;
             v46 = v44;
-            v47 = [v44 zoneID];
+            zoneID3 = [v44 zoneID];
             v112 = 0;
-            v48 = [CKKSKey tryFromDatabase:v42 contextID:v45 zoneID:v47 error:&v112];
+            v48 = [CKKSKey tryFromDatabase:parentKeyUUID contextID:v45 zoneID:zoneID3 error:&v112];
             v49 = v112;
 
-            v50 = [v48 keyclass];
-            LODWORD(v42) = [v50 isEqualToString:@"classA"];
+            keyclass = [v48 keyclass];
+            LODWORD(parentKeyUUID) = [keyclass isEqualToString:@"classA"];
 
-            if (v42)
+            if (parentKeyUUID)
             {
-              [(CKKSIncomingQueueOperation *)v10 setPendingClassAEntries:1];
-              [(CKKSIncomingQueueOperation *)v10 setPendingClassAEntriesError:v21];
+              [(CKKSIncomingQueueOperation *)selfCopy setPendingClassAEntries:1];
+              [(CKKSIncomingQueueOperation *)selfCopy setPendingClassAEntriesError:v21];
             }
 
-            v6 = v46;
-            self = v10;
+            intransactionCopy = v46;
+            self = selfCopy;
             v8 = &swift_errorRelease_ptr;
             v22 = v107;
             v51 = v108;
@@ -1518,17 +1518,17 @@ LABEL_45:
             goto LABEL_63;
           }
 
-          v52 = [v21 domain];
-          if ([v52 isEqualToString:@"securityd"])
+          domain = [v21 domain];
+          if ([domain isEqualToString:@"securityd"])
           {
-            v53 = [v21 code];
+            code = [v21 code];
 
             v22 = v107;
-            if (v53 == -25300)
+            if (code == -25300)
             {
-              v54 = [v6 zoneID];
-              v55 = [v54 zoneName];
-              v56 = sub_100019104(@"ckksincoming", v55);
+              zoneID4 = [intransactionCopy zoneID];
+              zoneName3 = [zoneID4 zoneName];
+              v56 = sub_100019104(@"ckksincoming", zoneName3);
 
               if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
               {
@@ -1550,9 +1550,9 @@ LABEL_45:
             v22 = v107;
           }
 
-          v70 = [v6 zoneID];
-          v71 = [v70 zoneName];
-          v72 = sub_100019104(@"ckksincoming", v71);
+          zoneID5 = [intransactionCopy zoneID];
+          zoneName4 = [zoneID5 zoneName];
+          v72 = sub_100019104(@"ckksincoming", zoneName4);
 
           v51 = v108;
           if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
@@ -1570,9 +1570,9 @@ LABEL_45:
           v73 = v111;
           if (v73)
           {
-            v74 = [v6 zoneID];
-            v75 = [v74 zoneName];
-            v76 = sub_100019104(@"ckksincoming", v75);
+            zoneID6 = [intransactionCopy zoneID];
+            zoneName5 = [zoneID6 zoneName];
+            v76 = sub_100019104(@"ckksincoming", zoneName5);
 
             v51 = v108;
             if (os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
@@ -1605,15 +1605,15 @@ LABEL_45:
           v59 = [NSError errorWithDomain:@"securityd" code:-67671 userInfo:v58];
           [(CKKSResultOperation *)self setError:v59];
 
-          v60 = [v6 zoneID];
-          v61 = [v60 zoneName];
-          v62 = sub_100019104(@"ckksincoming", v61);
+          zoneID7 = [intransactionCopy zoneID];
+          zoneName6 = [zoneID7 zoneName];
+          v62 = sub_100019104(@"ckksincoming", zoneName6);
 
           if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
           {
-            v63 = [(CKKSResultOperation *)self error];
+            error = [(CKKSResultOperation *)self error];
             *buf = 138412290;
-            v121 = v63;
+            v121 = error;
             _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_ERROR, "Synced item seems wrong: %@", buf, 0xCu);
           }
 
@@ -1626,9 +1626,9 @@ LABEL_45:
 
         if (!v23 || (v25 = sub_1000074BC(v23)) == 0)
         {
-          v64 = [v6 zoneID];
-          v65 = [v64 zoneName];
-          v66 = sub_100019104(@"ckksincoming", v65);
+          zoneID8 = [intransactionCopy zoneID];
+          zoneName7 = [zoneID8 zoneName];
+          v66 = sub_100019104(@"ckksincoming", zoneName7);
 
           v51 = v108;
           if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
@@ -1646,9 +1646,9 @@ LABEL_45:
           v21 = v110;
           if (v21)
           {
-            v67 = [v6 zoneID];
-            v68 = [v67 zoneName];
-            v69 = sub_100019104(@"ckksincoming", v68);
+            zoneID9 = [intransactionCopy zoneID];
+            zoneName8 = [zoneID9 zoneName];
+            v69 = sub_100019104(@"ckksincoming", zoneName8);
 
             if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
             {
@@ -1667,40 +1667,40 @@ LABEL_45:
         }
 
         v26 = v25;
-        v27 = [(CKKSIncomingQueueOperation *)self deps];
-        v28 = [v27 syncingPolicy];
-        v29 = [v28 mapDictionaryToView:v107];
+        deps3 = [(CKKSIncomingQueueOperation *)self deps];
+        syncingPolicy = [deps3 syncingPolicy];
+        v29 = [syncingPolicy mapDictionaryToView:v107];
 
-        v30 = [v6 zoneID];
-        v31 = [v30 zoneName];
-        v32 = [v31 isEqualToString:v29];
+        zoneID10 = [intransactionCopy zoneID];
+        zoneName9 = [zoneID10 zoneName];
+        v32 = [zoneName9 isEqualToString:v29];
 
         if (v32)
         {
           v33 = v108;
-          v34 = [v108 action];
-          if ([v34 isEqualToString:@"add"])
+          action2 = [v108 action];
+          if ([action2 isEqualToString:@"add"])
           {
           }
 
           else
           {
-            v77 = [v108 action];
-            v78 = [v77 isEqualToString:@"modify"];
+            action3 = [v108 action];
+            v78 = [action3 isEqualToString:@"modify"];
 
             v33 = v108;
             if (!v78)
             {
-              v92 = [v108 action];
-              v93 = [v92 isEqualToString:@"delete"];
+              action4 = [v108 action];
+              v93 = [action4 isEqualToString:@"delete"];
 
               if (v93)
               {
-                [(CKKSIncomingQueueOperation *)self _onqueueHandleIQEDelete:v108 class:v26 viewState:v6];
+                [(CKKSIncomingQueueOperation *)self _onqueueHandleIQEDelete:v108 class:v26 viewState:intransactionCopy];
                 v94 = [CKRecordID alloc];
-                v95 = [v108 uuid];
-                v96 = [v6 zoneID];
-                v97 = [v94 initWithRecordName:v95 zoneID:v96];
+                uuid2 = [v108 uuid];
+                zoneID11 = [intransactionCopy zoneID];
+                v97 = [v94 initWithRecordName:uuid2 zoneID:zoneID11];
                 [v100 addObject:v97];
               }
 
@@ -1712,12 +1712,12 @@ LABEL_45:
             }
           }
 
-          [(CKKSIncomingQueueOperation *)self _onqueueHandleIQEChange:v33 attributes:v107 class:v26 viewState:v6 sortedForThisView:1 keyCache:v105];
+          [(CKKSIncomingQueueOperation *)self _onqueueHandleIQEChange:v33 attributes:v107 class:v26 viewState:intransactionCopy sortedForThisView:1 keyCache:v105];
           v79 = v33;
           v22 = v107;
-          v80 = [v79 item];
-          v81 = [v6 zoneID];
-          v82 = [v80 CKRecordWithZoneID:v81];
+          item3 = [v79 item];
+          zoneID12 = [intransactionCopy zoneID];
+          v82 = [item3 CKRecordWithZoneID:zoneID12];
           [v101 addObject:v82];
 
           v51 = v108;
@@ -1727,15 +1727,15 @@ LABEL_45:
         {
           if (![(CKKSIncomingQueueOperation *)self handleMismatchedViewItems])
           {
-            v83 = [v6 zoneID];
-            v84 = [v83 zoneName];
-            v85 = sub_100019104(@"ckksincoming", v84);
+            zoneID13 = [intransactionCopy zoneID];
+            zoneName10 = [zoneID13 zoneName];
+            v85 = sub_100019104(@"ckksincoming", zoneName10);
 
             if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
             {
-              v86 = [v108 uuid];
+              uuid3 = [v108 uuid];
               *buf = 138412546;
-              v121 = v86;
+              v121 = uuid3;
               v122 = 2112;
               v123 = v29;
               _os_log_impl(&_mh_execute_header, v85, OS_LOG_TYPE_DEFAULT, "Received an item (%@), but our current policy claims it should be in view %@", buf, 0x16u);
@@ -1746,9 +1746,9 @@ LABEL_45:
             v21 = v109;
             if (v21)
             {
-              v87 = [v6 zoneID];
-              v88 = [v87 zoneName];
-              v89 = sub_100019104(@"ckksincoming", v88);
+              zoneID14 = [intransactionCopy zoneID];
+              zoneName11 = [zoneID14 zoneName];
+              v89 = sub_100019104(@"ckksincoming", zoneName11);
 
               if (os_log_type_enabled(v89, OS_LOG_TYPE_ERROR))
               {
@@ -1761,9 +1761,9 @@ LABEL_45:
               [(CKKSResultOperation *)self setError:v21];
             }
 
-            v90 = [(CKKSIncomingQueueOperation *)self deps];
-            v91 = [v90 requestPolicyCheck];
-            [v91 trigger];
+            deps4 = [(CKKSIncomingQueueOperation *)self deps];
+            requestPolicyCheck = [deps4 requestPolicyCheck];
+            [requestPolicyCheck trigger];
 
             v8 = &swift_errorRelease_ptr;
             v51 = v108;
@@ -1771,7 +1771,7 @@ LABEL_45:
           }
 
           v51 = v108;
-          [(CKKSIncomingQueueOperation *)self _onqueueHandleMismatchedViewItem:v108 secDbClass:v26 attributes:v107 intendedView:v29 viewState:v6 keyCache:v105];
+          [(CKKSIncomingQueueOperation *)self _onqueueHandleMismatchedViewItem:v108 secDbClass:v26 attributes:v107 intendedView:v29 viewState:intransactionCopy keyCache:v105];
         }
 
         v21 = 0;
@@ -1792,8 +1792,8 @@ LABEL_63:
 
   if ([v101 count] || objc_msgSend(v100, "count"))
   {
-    v98 = [v6 notifyViewChangedScheduler];
-    [v98 trigger];
+    notifyViewChangedScheduler = [intransactionCopy notifyViewChangedScheduler];
+    [notifyViewChangedScheduler trigger];
   }
 
   -[CKKSIncomingQueueOperation setDeletedRecordCount:](self, "setDeletedRecordCount:", [v100 count] + -[CKKSIncomingQueueOperation deletedRecordCount](self, "deletedRecordCount"));
@@ -1801,15 +1801,15 @@ LABEL_63:
   return 1;
 }
 
-- (BOOL)processNewCurrentItemPointers:(id)a3 viewState:(id)a4
+- (BOOL)processNewCurrentItemPointers:(id)pointers viewState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
+  pointersCopy = pointers;
+  stateCopy = state;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v5;
+  obj = pointersCopy;
   v7 = [obj countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v7)
   {
@@ -1834,8 +1834,8 @@ LABEL_63:
         [v13 saveToDatabase:&v23];
         v9 = v23;
 
-        v15 = [v6 zoneName];
-        v16 = sub_100019104(@"ckkspointer", v15);
+        zoneName = [stateCopy zoneName];
+        v16 = sub_100019104(@"ckkspointer", zoneName);
 
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
@@ -1847,8 +1847,8 @@ LABEL_63:
         v17 = v9 == 0;
         if (v9)
         {
-          v18 = [v6 zoneName];
-          v19 = sub_100019104(@"ckksincoming", v18);
+          zoneName2 = [stateCopy zoneName];
+          v19 = sub_100019104(@"ckksincoming", zoneName2);
 
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
@@ -1879,31 +1879,31 @@ LABEL_63:
 
   if ([obj count])
   {
-    v20 = [v6 notifyViewChangedScheduler];
-    [v20 trigger];
+    notifyViewChangedScheduler = [stateCopy notifyViewChangedScheduler];
+    [notifyViewChangedScheduler trigger];
   }
 
   return v17;
 }
 
-- (CKKSIncomingQueueOperation)initWithDependencies:(id)a3 intending:(id)a4 pendingClassAItemsRemainingState:(id)a5 errorState:(id)a6 handleMismatchedViewItems:(BOOL)a7
+- (CKKSIncomingQueueOperation)initWithDependencies:(id)dependencies intending:(id)intending pendingClassAItemsRemainingState:(id)state errorState:(id)errorState handleMismatchedViewItems:(BOOL)items
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  dependenciesCopy = dependencies;
+  intendingCopy = intending;
+  stateCopy = state;
+  errorStateCopy = errorState;
   v22.receiver = self;
   v22.super_class = CKKSIncomingQueueOperation;
   v17 = [(CKKSResultOperation *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_deps, a3);
-    objc_storeStrong(&v18->_intendedState, a4);
-    objc_storeStrong(&v18->_nextState, a6);
-    objc_storeStrong(&v18->_stateIfClassAItemsRemaining, a5);
+    objc_storeStrong(&v17->_deps, dependencies);
+    objc_storeStrong(&v18->_intendedState, intending);
+    objc_storeStrong(&v18->_nextState, errorState);
+    objc_storeStrong(&v18->_stateIfClassAItemsRemaining, state);
     v18->_pendingClassAEntries = 0;
-    v18->_handleMismatchedViewItems = a7;
+    v18->_handleMismatchedViewItems = items;
     v19 = +[NSMutableSet set];
     viewsToScan = v18->_viewsToScan;
     v18->_viewsToScan = v19;
@@ -1915,39 +1915,39 @@ LABEL_63:
   return v18;
 }
 
-+ (id)decryptCKKSItemToAttributes:(id)a3 keyCache:(id)a4 ckksOperationalDependencies:(id)a5 error:(id *)a6
++ (id)decryptCKKSItemToAttributes:(id)attributes keyCache:(id)cache ckksOperationalDependencies:(id)dependencies error:(id *)error
 {
-  v8 = a3;
-  v9 = [CKKSItemEncrypter decryptItemToDictionary:v8 keyCache:a4 error:a6];
+  attributesCopy = attributes;
+  v9 = [CKKSItemEncrypter decryptItemToDictionary:attributesCopy keyCache:cache error:error];
   v10 = [v9 mutableCopy];
 
   if (v10)
   {
-    v11 = [v8 uuid];
-    [v10 setObject:v11 forKeyedSubscript:kSecAttrUUID];
+    uuid = [attributesCopy uuid];
+    [v10 setObject:uuid forKeyedSubscript:kSecAttrUUID];
 
-    v12 = [v8 plaintextPCSServiceIdentifier];
+    plaintextPCSServiceIdentifier = [attributesCopy plaintextPCSServiceIdentifier];
 
-    if (v12)
+    if (plaintextPCSServiceIdentifier)
     {
-      v13 = [v8 plaintextPCSServiceIdentifier];
-      [v10 setObject:v13 forKeyedSubscript:kSecAttrPCSPlaintextServiceIdentifier];
+      plaintextPCSServiceIdentifier2 = [attributesCopy plaintextPCSServiceIdentifier];
+      [v10 setObject:plaintextPCSServiceIdentifier2 forKeyedSubscript:kSecAttrPCSPlaintextServiceIdentifier];
     }
 
-    v14 = [v8 plaintextPCSPublicKey];
+    plaintextPCSPublicKey = [attributesCopy plaintextPCSPublicKey];
 
-    if (v14)
+    if (plaintextPCSPublicKey)
     {
-      v15 = [v8 plaintextPCSPublicKey];
-      [v10 setObject:v15 forKeyedSubscript:kSecAttrPCSPlaintextPublicKey];
+      plaintextPCSPublicKey2 = [attributesCopy plaintextPCSPublicKey];
+      [v10 setObject:plaintextPCSPublicKey2 forKeyedSubscript:kSecAttrPCSPlaintextPublicKey];
     }
 
-    v16 = [v8 plaintextPCSPublicIdentity];
+    plaintextPCSPublicIdentity = [attributesCopy plaintextPCSPublicIdentity];
 
-    if (v16)
+    if (plaintextPCSPublicIdentity)
     {
-      v17 = [v8 plaintextPCSPublicIdentity];
-      [v10 setObject:v17 forKeyedSubscript:kSecAttrPCSPlaintextPublicIdentity];
+      plaintextPCSPublicIdentity2 = [attributesCopy plaintextPCSPublicIdentity];
+      [v10 setObject:plaintextPCSPublicIdentity2 forKeyedSubscript:kSecAttrPCSPlaintextPublicIdentity];
     }
 
     [v10 setValue:&__kCFBooleanTrue forKey:kSecAttrSynchronizable];

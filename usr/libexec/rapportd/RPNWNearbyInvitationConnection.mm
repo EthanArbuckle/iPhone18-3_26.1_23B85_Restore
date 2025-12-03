@@ -1,8 +1,8 @@
 @interface RPNWNearbyInvitationConnection
-+ (void)addConnection:(id)a3;
++ (void)addConnection:(id)connection;
 + (void)initialize;
-+ (void)listConnections:(id)a3;
-+ (void)removeConnection:(id)a3;
++ (void)listConnections:(id)connections;
++ (void)removeConnection:(id)connection;
 - (RPNWNearbyInvitationConnection)init;
 - (id)description;
 - (void)dealloc;
@@ -14,7 +14,7 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v4 = [[NSMapTable alloc] initWithKeyOptions:5 valueOptions:5 capacity:10];
     v5 = qword_1001D6348;
@@ -80,46 +80,46 @@
   [(RPNWNearbyInvitationConnection *)&v3 dealloc];
 }
 
-+ (void)addConnection:(id)a3
++ (void)addConnection:(id)connection
 {
-  v3 = a3;
-  v7 = v3;
+  connectionCopy = connection;
+  v7 = connectionCopy;
   if (dword_1001D4248 <= 30)
   {
-    if (dword_1001D4248 != -1 || (v4 = _LogCategory_Initialize(), v3 = v7, v4))
+    if (dword_1001D4248 != -1 || (v4 = _LogCategory_Initialize(), connectionCopy = v7, v4))
     {
-      sub_10011DF38(v3);
-      v3 = v7;
+      sub_10011DF38(connectionCopy);
+      connectionCopy = v7;
     }
   }
 
   v5 = qword_1001D6348;
-  v6 = [v3 connectionUUID];
-  [v5 setObject:v7 forKey:v6];
+  connectionUUID = [connectionCopy connectionUUID];
+  [v5 setObject:v7 forKey:connectionUUID];
 }
 
-+ (void)removeConnection:(id)a3
++ (void)removeConnection:(id)connection
 {
-  v3 = a3;
-  v7 = v3;
+  connectionCopy = connection;
+  v7 = connectionCopy;
   if (dword_1001D4248 <= 30)
   {
-    if (dword_1001D4248 != -1 || (v4 = _LogCategory_Initialize(), v3 = v7, v4))
+    if (dword_1001D4248 != -1 || (v4 = _LogCategory_Initialize(), connectionCopy = v7, v4))
     {
-      sub_10011DF94(v3);
-      v3 = v7;
+      sub_10011DF94(connectionCopy);
+      connectionCopy = v7;
     }
   }
 
   v5 = qword_1001D6348;
-  v6 = [v3 connectionUUID];
-  [v5 removeObjectForKey:v6];
+  connectionUUID = [connectionCopy connectionUUID];
+  [v5 removeObjectForKey:connectionUUID];
 }
 
-+ (void)listConnections:(id)a3
++ (void)listConnections:(id)connections
 {
-  v3 = a3;
-  [v3 appendString:@"Connections\n"];
+  connectionsCopy = connections;
+  [connectionsCopy appendString:@"Connections\n"];
   if ([qword_1001D6348 count])
   {
     v14 = 0u;
@@ -147,7 +147,7 @@
           if (v9)
           {
             v11 = [v9 description];
-            [v3 appendFormat:@"  %@\n", v11];
+            [connectionsCopy appendFormat:@"  %@\n", v11];
           }
 
           v8 = v8 + 1;
@@ -163,7 +163,7 @@
 
   else
   {
-    [v3 appendString:@"  <empty>\n"];
+    [connectionsCopy appendString:@"  <empty>\n"];
   }
 }
 

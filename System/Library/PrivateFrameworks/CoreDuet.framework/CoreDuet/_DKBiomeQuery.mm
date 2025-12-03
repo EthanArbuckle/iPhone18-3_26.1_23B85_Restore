@@ -1,23 +1,23 @@
 @interface _DKBiomeQuery
-+ (BOOL)canShimDuetStreamNamed:(id)a3;
-+ (id)biomeExclusiveStreamsFromEventStreams:(id)a3;
-+ (id)deletionPredicateFromArray:(id)a3;
-+ (id)duetExclusiveStreamsFromEventStreams:(id)a3;
-+ (id)eventStreamsFromArray:(id)a3;
-+ (id)eventStreamsFromPredicate:(id)a3;
-- (BOOL)prepareQuery:(id *)a3;
-- (_DKBiomeQuery)initWithDKEventQuery:(id)a3;
-- (_DKBiomeQuery)initWithDeletionArray:(id)a3;
-- (_DKBiomeQuery)initWithDeletionPredicate:(id)a3;
-- (_DKBiomeQuery)initWithEventStreams:(id)a3 predicate:(id)a4 limit:(unint64_t)a5 offset:(unint64_t)a6 sortDescriptors:(id)a7 resultType:(int64_t)a8 groupByProperties:(id)a9 returnDistinctResults:(BOOL)a10 readMetadata:(BOOL)a11 excludedMetadataKeys:(id)a12;
-- (id)_getCachedStreamForBiomeStreamIdentifier:(id)a3;
-- (id)_publisherForQueryReturningIndividualResults:(BOOL)a3 error:(id *)a4;
-- (id)_publisherForStreams:(id)a3;
++ (BOOL)canShimDuetStreamNamed:(id)named;
++ (id)biomeExclusiveStreamsFromEventStreams:(id)streams;
++ (id)deletionPredicateFromArray:(id)array;
++ (id)duetExclusiveStreamsFromEventStreams:(id)streams;
++ (id)eventStreamsFromArray:(id)array;
++ (id)eventStreamsFromPredicate:(id)predicate;
+- (BOOL)prepareQuery:(id *)query;
+- (_DKBiomeQuery)initWithDKEventQuery:(id)query;
+- (_DKBiomeQuery)initWithDeletionArray:(id)array;
+- (_DKBiomeQuery)initWithDeletionPredicate:(id)predicate;
+- (_DKBiomeQuery)initWithEventStreams:(id)streams predicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset sortDescriptors:(id)descriptors resultType:(int64_t)type groupByProperties:(id)properties returnDistinctResults:(BOOL)self0 readMetadata:(BOOL)self1 excludedMetadataKeys:(id)self2;
+- (id)_getCachedStreamForBiomeStreamIdentifier:(id)identifier;
+- (id)_publisherForQueryReturningIndividualResults:(BOOL)results error:(id *)error;
+- (id)_publisherForStreams:(id)streams;
 - (id)bmdkEventStreams;
-- (id)executeBiomeQueryError:(id *)a3;
-- (id)filterExcludedMetadataWithDKEvent:(id)a3;
-- (unint64_t)executeDeletionQuery:(id *)a3;
-- (void)_setBiomeStreamWithBlock:(id)a3;
+- (id)executeBiomeQueryError:(id *)error;
+- (id)filterExcludedMetadataWithDKEvent:(id)event;
+- (unint64_t)executeDeletionQuery:(id *)query;
+- (void)_setBiomeStreamWithBlock:(id)block;
 @end
 
 @implementation _DKBiomeQuery
@@ -90,50 +90,50 @@
   return v3;
 }
 
-- (_DKBiomeQuery)initWithDKEventQuery:(id)a3
+- (_DKBiomeQuery)initWithDKEventQuery:(id)query
 {
-  v3 = a3;
-  v4 = [v3 explicitEventStreamsOrEventStreamsInPredicate];
-  v19 = [_DKBiomeQuery biomeExclusiveStreamsFromEventStreams:v4];
+  queryCopy = query;
+  explicitEventStreamsOrEventStreamsInPredicate = [queryCopy explicitEventStreamsOrEventStreamsInPredicate];
+  v19 = [_DKBiomeQuery biomeExclusiveStreamsFromEventStreams:explicitEventStreamsOrEventStreamsInPredicate];
 
-  v5 = [v3 predicate];
-  v18 = [v3 limit];
-  v6 = [v3 offset];
-  v7 = [v3 sortDescriptors];
-  v8 = [v3 resultType];
-  v9 = [v3 groupByProperties];
-  v10 = [v3 returnsDistinctResults];
-  v11 = [v3 readMetadata];
+  predicate = [queryCopy predicate];
+  limit = [queryCopy limit];
+  offset = [queryCopy offset];
+  sortDescriptors = [queryCopy sortDescriptors];
+  resultType = [queryCopy resultType];
+  groupByProperties = [queryCopy groupByProperties];
+  returnsDistinctResults = [queryCopy returnsDistinctResults];
+  readMetadata = [queryCopy readMetadata];
   v12 = MEMORY[0x1E695DFD8];
-  v13 = [v3 excludedMetadataKeys];
+  excludedMetadataKeys = [queryCopy excludedMetadataKeys];
 
-  v14 = [v12 setWithArray:v13];
-  BYTE1(v17) = v11;
-  LOBYTE(v17) = v10;
-  v15 = [(_DKBiomeQuery *)self initWithEventStreams:v19 predicate:v5 limit:v18 offset:v6 sortDescriptors:v7 resultType:v8 groupByProperties:v9 returnDistinctResults:v17 readMetadata:v14 excludedMetadataKeys:?];
+  v14 = [v12 setWithArray:excludedMetadataKeys];
+  BYTE1(v17) = readMetadata;
+  LOBYTE(v17) = returnsDistinctResults;
+  v15 = [(_DKBiomeQuery *)self initWithEventStreams:v19 predicate:predicate limit:limit offset:offset sortDescriptors:sortDescriptors resultType:resultType groupByProperties:groupByProperties returnDistinctResults:v17 readMetadata:v14 excludedMetadataKeys:?];
 
   return v15;
 }
 
-- (_DKBiomeQuery)initWithEventStreams:(id)a3 predicate:(id)a4 limit:(unint64_t)a5 offset:(unint64_t)a6 sortDescriptors:(id)a7 resultType:(int64_t)a8 groupByProperties:(id)a9 returnDistinctResults:(BOOL)a10 readMetadata:(BOOL)a11 excludedMetadataKeys:(id)a12
+- (_DKBiomeQuery)initWithEventStreams:(id)streams predicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset sortDescriptors:(id)descriptors resultType:(int64_t)type groupByProperties:(id)properties returnDistinctResults:(BOOL)self0 readMetadata:(BOOL)self1 excludedMetadataKeys:(id)self2
 {
-  v17 = a12;
-  v18 = a9;
+  keysCopy4 = keys;
+  propertiesCopy3 = properties;
   v67 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v20 = a4;
-  v21 = a7;
-  v22 = a9;
-  v58 = a12;
-  if (![v19 count])
+  streamsCopy = streams;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  propertiesCopy2 = properties;
+  keysCopy2 = keys;
+  if (![streamsCopy count])
   {
     v23 = +[_CDLogging knowledgeChannel];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
-      [_DKBiomeQuery initWithEventStreams:v20 predicate:v23 limit:? offset:? sortDescriptors:? resultType:? groupByProperties:? returnDistinctResults:? readMetadata:? excludedMetadataKeys:?];
+      [_DKBiomeQuery initWithEventStreams:predicateCopy predicate:v23 limit:? offset:? sortDescriptors:? resultType:? groupByProperties:? returnDistinctResults:? readMetadata:? excludedMetadataKeys:?];
     }
 
-    v18 = a9;
+    propertiesCopy3 = properties;
   }
 
   v63.receiver = self;
@@ -141,20 +141,20 @@
   v24 = [(_DKBiomeQuery *)&v63 init];
   if (v24)
   {
-    obj = a7;
-    v25 = [v19 valueForKeyPath:@"@distinctUnionOfObjects.name"];
+    obj = descriptors;
+    v25 = [streamsCopy valueForKeyPath:@"@distinctUnionOfObjects.name"];
     eventStreamNames = v24->_eventStreamNames;
     v56 = v24;
     v24->_eventStreamNames = v25;
 
     if (AnalyticsIsEventUsed())
     {
-      v49 = v22;
-      v50 = a5;
-      v51 = a6;
-      v52 = v18;
-      v53 = v20;
-      v54 = v19;
+      v49 = propertiesCopy2;
+      limitCopy = limit;
+      offsetCopy = offset;
+      v52 = propertiesCopy3;
+      v53 = predicateCopy;
+      v54 = streamsCopy;
       v27 = _CDCurrentOrXPCProcessName();
       v28 = v27;
       v29 = @"unknown";
@@ -189,7 +189,7 @@
             v64[1] = @"stream";
             v65[0] = v30;
             v65[1] = v36;
-            v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v65 forKeys:v64 count:{2, v49, v50, v51, v52, v53, v54}];
+            v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v65 forKeys:v64 count:{2, v49, limitCopy, offsetCopy, v52, v53, v54}];
             AnalyticsSendEvent();
           }
 
@@ -199,35 +199,35 @@
         while (v33);
       }
 
-      v20 = v53;
-      v19 = v54;
-      v17 = a12;
-      a6 = v51;
-      v18 = v52;
-      v22 = v49;
-      a5 = v50;
+      predicateCopy = v53;
+      streamsCopy = v54;
+      keysCopy4 = keys;
+      offset = offsetCopy;
+      propertiesCopy3 = v52;
+      propertiesCopy2 = v49;
+      limit = limitCopy;
     }
 
-    v38 = a10;
-    if (!v20)
+    resultsCopy2 = results;
+    if (!predicateCopy)
     {
       goto LABEL_19;
     }
 
     [MEMORY[0x1E696AE18] predicateWithValue:1];
-    v39 = v22;
-    v40 = a5;
-    v42 = v41 = a6;
-    v43 = [v20 isEqual:v42];
+    v39 = propertiesCopy2;
+    limitCopy2 = limit;
+    v42 = v41 = offset;
+    v43 = [predicateCopy isEqual:v42];
 
-    a6 = v41;
-    a5 = v40;
-    v22 = v39;
-    v38 = a10;
-    v17 = a12;
+    offset = v41;
+    limit = limitCopy2;
+    propertiesCopy2 = v39;
+    resultsCopy2 = results;
+    keysCopy4 = keys;
     if ((v43 & 1) == 0)
     {
-      v45 = v20;
+      v45 = predicateCopy;
       v24 = v56;
       predicate = v56->_predicate;
       v56->_predicate = v45;
@@ -241,51 +241,51 @@ LABEL_19:
       v56->_predicate = 0;
     }
 
-    if (a5 <= 0x7FFFFFFE)
+    if (limit <= 0x7FFFFFFE)
     {
-      v46 = a5;
+      limitCopy3 = limit;
     }
 
     else
     {
-      v46 = 0;
+      limitCopy3 = 0;
     }
 
-    v24->_limit = v46;
-    v24->_offset = a6;
+    v24->_limit = limitCopy3;
+    v24->_offset = offset;
     objc_storeStrong(&v24->_sortDescriptors, obj);
-    v24->_resultType = a8;
-    objc_storeStrong(&v24->_groupByProperties, v18);
-    v24->_returnDistinctResults = v38;
-    v24->_readMetadata = a11;
-    objc_storeStrong(&v24->_excludedMetadataKeys, v17);
+    v24->_resultType = type;
+    objc_storeStrong(&v24->_groupByProperties, propertiesCopy3);
+    v24->_returnDistinctResults = resultsCopy2;
+    v24->_readMetadata = metadata;
+    objc_storeStrong(&v24->_excludedMetadataKeys, keysCopy4);
   }
 
   v47 = *MEMORY[0x1E69E9840];
   return v24;
 }
 
-- (_DKBiomeQuery)initWithDeletionArray:(id)a3
+- (_DKBiomeQuery)initWithDeletionArray:(id)array
 {
-  v4 = a3;
-  v5 = [_DKBiomeQuery eventStreamsFromArray:v4];
+  arrayCopy = array;
+  v5 = [_DKBiomeQuery eventStreamsFromArray:arrayCopy];
   if ([v5 count])
   {
     v6 = [_DKBiomeQuery biomeExclusiveStreamsFromEventStreams:v5];
 
     if ([v6 count])
     {
-      v7 = [_DKBiomeQuery deletionPredicateFromArray:v4];
+      v7 = [_DKBiomeQuery deletionPredicateFromArray:arrayCopy];
       LOWORD(v12) = 0;
-      self = -[_DKBiomeQuery initWithEventStreams:predicate:limit:offset:sortDescriptors:resultType:groupByProperties:returnDistinctResults:readMetadata:excludedMetadataKeys:](self, "initWithEventStreams:predicate:limit:offset:sortDescriptors:resultType:groupByProperties:returnDistinctResults:readMetadata:excludedMetadataKeys:", v6, v7, [v4 count], 0, 0, 0, 0, v12, 0);
+      self = -[_DKBiomeQuery initWithEventStreams:predicate:limit:offset:sortDescriptors:resultType:groupByProperties:returnDistinctResults:readMetadata:excludedMetadataKeys:](self, "initWithEventStreams:predicate:limit:offset:sortDescriptors:resultType:groupByProperties:returnDistinctResults:readMetadata:excludedMetadataKeys:", v6, v7, [arrayCopy count], 0, 0, 0, 0, v12, 0);
 
       v5 = v6;
-      v8 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
       v5 = v6;
     }
   }
@@ -296,21 +296,21 @@ LABEL_19:
     v10 = +[_CDLogging knowledgeChannel];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
-      [(_DKBiomeQuery *)v9 initWithDeletionArray:v4];
+      [(_DKBiomeQuery *)v9 initWithDeletionArray:arrayCopy];
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (_DKBiomeQuery)initWithDeletionPredicate:(id)a3
+- (_DKBiomeQuery)initWithDeletionPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [_DKBiomePredicateScanner searchForKeys:&unk_1F05EF608 inPredicate:v4];
+  predicateCopy = predicate;
+  v5 = [_DKBiomePredicateScanner searchForKeys:&unk_1F05EF608 inPredicate:predicateCopy];
 
-  v6 = [_DKBiomeQuery eventStreamsFromPredicate:v4];
+  v6 = [_DKBiomeQuery eventStreamsFromPredicate:predicateCopy];
   if ([v6 count])
   {
     v7 = [_DKBiomeQuery biomeExclusiveStreamsFromEventStreams:v6];
@@ -319,14 +319,14 @@ LABEL_19:
     {
       LOBYTE(v12) = 0;
       BYTE1(v12) = v5 != 0;
-      self = [(_DKBiomeQuery *)self initWithEventStreams:v7 predicate:v4 limit:0 offset:0 sortDescriptors:0 resultType:0 groupByProperties:0 returnDistinctResults:v12 readMetadata:0 excludedMetadataKeys:?];
+      self = [(_DKBiomeQuery *)self initWithEventStreams:v7 predicate:predicateCopy limit:0 offset:0 sortDescriptors:0 resultType:0 groupByProperties:0 returnDistinctResults:v12 readMetadata:0 excludedMetadataKeys:?];
       v6 = v7;
-      v8 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
       v6 = v7;
     }
   }
@@ -337,21 +337,21 @@ LABEL_19:
     v10 = +[_CDLogging knowledgeChannel];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
-      [(_DKBiomeQuery *)v9 initWithDeletionPredicate:v4];
+      [(_DKBiomeQuery *)v9 initWithDeletionPredicate:predicateCopy];
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-+ (BOOL)canShimDuetStreamNamed:(id)a3
++ (BOOL)canShimDuetStreamNamed:(id)named
 {
-  v3 = a3;
-  if (v3 && ([&unk_1F05EF620 containsObject:v3] & 1) == 0)
+  namedCopy = named;
+  if (namedCopy && ([&unk_1F05EF620 containsObject:namedCopy] & 1) == 0)
   {
-    v4 = [v3 containsString:@"knowledge-sync"] ^ 1;
+    v4 = [namedCopy containsString:@"knowledge-sync"] ^ 1;
   }
 
   else
@@ -362,38 +362,38 @@ LABEL_19:
   return v4;
 }
 
-+ (id)biomeExclusiveStreamsFromEventStreams:(id)a3
++ (id)biomeExclusiveStreamsFromEventStreams:(id)streams
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __55___DKBiomeQuery_biomeExclusiveStreamsFromEventStreams___block_invoke;
   v5[3] = &__block_descriptor_40_e24_B16__0___DKEventStream_8l;
-  v5[4] = a1;
-  v3 = [a3 _pas_filteredArrayWithTest:v5];
+  v5[4] = self;
+  v3 = [streams _pas_filteredArrayWithTest:v5];
 
   return v3;
 }
 
-+ (id)duetExclusiveStreamsFromEventStreams:(id)a3
++ (id)duetExclusiveStreamsFromEventStreams:(id)streams
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __54___DKBiomeQuery_duetExclusiveStreamsFromEventStreams___block_invoke;
   v5[3] = &__block_descriptor_40_e24_B16__0___DKEventStream_8l;
-  v5[4] = a1;
-  v3 = [a3 _pas_filteredArrayWithTest:v5];
+  v5[4] = self;
+  v3 = [streams _pas_filteredArrayWithTest:v5];
 
   return v3;
 }
 
-+ (id)eventStreamsFromArray:(id)a3
++ (id)eventStreamsFromArray:(id)array
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  arrayCopy = array;
+  v4 = arrayCopy;
+  if (arrayCopy)
   {
-    if ([v3 count])
+    if ([arrayCopy count])
     {
       v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v22 = 0u;
@@ -422,13 +422,13 @@ LABEL_19:
             if (objc_opt_isKindOfClass())
             {
               v13 = v12;
-              v14 = [v13 stream];
-              v15 = [v14 name];
+              stream = [v13 stream];
+              name = [stream name];
 
-              if (v15)
+              if (name)
               {
-                v16 = [v13 stream];
-                [v5 setObject:v16 forKeyedSubscript:v15];
+                stream2 = [v13 stream];
+                [v5 setObject:stream2 forKeyedSubscript:name];
               }
             }
 
@@ -457,7 +457,7 @@ LABEL_19:
       }
 
 LABEL_19:
-      v17 = [v5 allValues];
+      allValues = [v5 allValues];
       goto LABEL_26;
     }
 
@@ -482,19 +482,19 @@ LABEL_24:
     }
   }
 
-  v17 = 0;
+  allValues = 0;
 LABEL_26:
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return allValues;
 }
 
-+ (id)deletionPredicateFromArray:(id)a3
++ (id)deletionPredicateFromArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 valueForKey:@"UUID"];
+  v5 = [arrayCopy valueForKey:@"UUID"];
   v6 = [v5 copy];
 
   v7 = [v6 _pas_mappedArrayWithTransform:&__block_literal_global_65];
@@ -505,12 +505,12 @@ LABEL_26:
   return v8;
 }
 
-+ (id)eventStreamsFromPredicate:(id)a3
++ (id)eventStreamsFromPredicate:(id)predicate
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (predicate)
   {
-    v3 = [_DKBiomePredicateValueScanner searchForValuesForKey:@"streamName" inPredicate:a3];
+    v3 = [_DKBiomePredicateValueScanner searchForValuesForKey:@"streamName" inPredicate:predicate];
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
     v13 = 0u;
     v14 = 0u;
@@ -555,7 +555,7 @@ LABEL_26:
   return v4;
 }
 
-- (BOOL)prepareQuery:(id *)a3
+- (BOOL)prepareQuery:(id *)query
 {
   v54[1] = *MEMORY[0x1E69E9840];
   predicate = self->_predicate;
@@ -573,7 +573,7 @@ LABEL_26:
     v9 = v6;
   }
 
-  if (!a3 || v9)
+  if (!query || v9)
   {
     if (self->_resultType == 6)
     {
@@ -615,29 +615,29 @@ LABEL_26:
 
             if (v22 && ([v20 key], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v22, "isEqual:", v23), v23, !v24))
             {
-              v25 = [v20 comparator];
+              comparator = [v20 comparator];
 
-              if (v25)
+              if (comparator)
               {
                 v26 = MEMORY[0x1E696AEB0];
-                v27 = [v20 ascending];
-                v28 = [v20 comparator];
-                v29 = [v26 sortDescriptorWithKey:v22 ascending:v27 comparator:v28];
+                ascending = [v20 ascending];
+                comparator2 = [v20 comparator];
+                v29 = [v26 sortDescriptorWithKey:v22 ascending:ascending comparator:comparator2];
               }
 
               else
               {
-                v30 = [v20 selector];
+                selector = [v20 selector];
                 v31 = MEMORY[0x1E696AEB0];
-                v32 = [v20 ascending];
-                if (v30)
+                ascending2 = [v20 ascending];
+                if (selector)
                 {
-                  [v31 sortDescriptorWithKey:v22 ascending:v32 selector:{objc_msgSend(v20, "selector")}];
+                  [v31 sortDescriptorWithKey:v22 ascending:ascending2 selector:{objc_msgSend(v20, "selector")}];
                 }
 
                 else
                 {
-                  [v31 sortDescriptorWithKey:v22 ascending:v32];
+                  [v31 sortDescriptorWithKey:v22 ascending:ascending2];
                 }
                 v29 = ;
               }
@@ -677,10 +677,10 @@ LABEL_26:
       v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
       v39 = [v34 errorWithDomain:@"BMQueryErrorDomain" code:3 userInfo:v38];
 
-      if (a3)
+      if (query)
       {
         v40 = v39;
-        *a3 = v39;
+        *query = v39;
       }
 
       v11 = 0;
@@ -693,18 +693,18 @@ LABEL_26:
   {
     v10 = v7;
     v11 = 0;
-    *a3 = v8;
+    *query = v8;
   }
 
   v41 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (id)_publisherForStreams:(id)a3
+- (id)_publisherForStreams:(id)streams
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] < 2)
+  streamsCopy = streams;
+  if ([streamsCopy count] < 2)
   {
     if (self->_offset || self->_limit - 1 > 0x7FFFFFFD || self->_predicate || -[NSArray count](self->_sortDescriptors, "count") && (-[NSArray count](self->_sortDescriptors, "count") != 1 || (-[NSArray firstObject](self->_sortDescriptors, "firstObject"), v36 = objc_claimAutoreleasedReturnValue(), [v36 key], v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v37, "isEqualToString:", @"creationDate"), v37, v36, !v38)))
     {
@@ -714,8 +714,8 @@ LABEL_26:
 
     else
     {
-      v39 = [(NSArray *)self->_sortDescriptors firstObject];
-      if (v39 && (v40 = v39, -[NSArray firstObject](self->_sortDescriptors, "firstObject"), v41 = objc_claimAutoreleasedReturnValue(), v42 = [v41 ascending], v41, v40, !v42))
+      firstObject = [(NSArray *)self->_sortDescriptors firstObject];
+      if (firstObject && (v40 = firstObject, -[NSArray firstObject](self->_sortDescriptors, "firstObject"), v41 = objc_claimAutoreleasedReturnValue(), v42 = [v41 ascending], v41, v40, !v42))
       {
         v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_limit];
         v16 = 0;
@@ -733,8 +733,8 @@ LABEL_26:
       self->_limit = 0;
     }
 
-    v17 = [v4 firstObject];
-    v14 = [v17 publisherWithStartTime:0 endTime:0 maxEvents:v16 lastN:v15 reversed:0];
+    firstObject2 = [streamsCopy firstObject];
+    v14 = [firstObject2 publisherWithStartTime:0 endTime:0 maxEvents:v16 lastN:v15 reversed:0];
   }
 
   else
@@ -744,7 +744,7 @@ LABEL_26:
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v6 = v4;
+    v6 = streamsCopy;
     v7 = [v6 countByEnumeratingWithState:&v50 objects:v54 count:16];
     if (v7)
     {
@@ -846,7 +846,7 @@ LABEL_34:
   v45[3] = &unk_1E736A168;
   v26 = v25;
   v46 = v26;
-  v47 = self;
+  selfCopy = self;
   v27 = [v18 mapWithTransform:v45];
 
   if (self->_resultType == 5)
@@ -883,27 +883,27 @@ LABEL_35:
   return v27;
 }
 
-- (id)filterExcludedMetadataWithDKEvent:(id)a3
+- (id)filterExcludedMetadataWithDKEvent:(id)event
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 metadata];
-  if (v5)
+  eventCopy = event;
+  metadata = [eventCopy metadata];
+  if (metadata)
   {
-    v6 = v5;
-    v7 = [v4 metadata];
+    v6 = metadata;
+    metadata2 = [eventCopy metadata];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [v4 metadata];
-      v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v9, "count")}];
+      metadata3 = [eventCopy metadata];
+      v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(metadata3, "count")}];
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v11 = v9;
+      v11 = metadata3;
       v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v12)
       {
@@ -932,52 +932,52 @@ LABEL_35:
         while (v13);
       }
 
-      [v4 setMetadata:v10];
+      [eventCopy setMetadata:v10];
     }
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return eventCopy;
 }
 
-- (void)_setBiomeStreamWithBlock:(id)a3
+- (void)_setBiomeStreamWithBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    v3 = (*(a3 + 2))(a3, a2);
+    v3 = (*(block + 2))(block, a2);
     if (v3)
     {
       v6 = v3;
       v4 = +[_DKBiomeStreamCache sharedCache];
-      v5 = [v6 identifier];
-      [v4 setObject:v6 forKey:v5];
+      identifier = [v6 identifier];
+      [v4 setObject:v6 forKey:identifier];
 
       v3 = v6;
     }
   }
 }
 
-- (id)_getCachedStreamForBiomeStreamIdentifier:(id)a3
+- (id)_getCachedStreamForBiomeStreamIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[_DKBiomeStreamCache sharedCache];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:identifierCopy];
 
   return v5;
 }
 
-- (id)_publisherForQueryReturningIndividualResults:(BOOL)a3 error:(id *)a4
+- (id)_publisherForQueryReturningIndividualResults:(BOOL)results error:(id *)error
 {
-  v4 = a3;
-  if (![(_DKBiomeQuery *)self prepareQuery:a4])
+  resultsCopy = results;
+  if (![(_DKBiomeQuery *)self prepareQuery:error])
   {
     v7 = 0;
     goto LABEL_16;
   }
 
-  v6 = [(_DKBiomeQuery *)self bmdkEventStreams];
-  v7 = [(_DKBiomeQuery *)self _publisherForStreams:v6];
+  bmdkEventStreams = [(_DKBiomeQuery *)self bmdkEventStreams];
+  v7 = [(_DKBiomeQuery *)self _publisherForStreams:bmdkEventStreams];
 
   if ([(NSArray *)self->_sortDescriptors count])
   {
@@ -991,7 +991,7 @@ LABEL_35:
     v20[4] = self;
     v7 = [v9 mapWithTransform:v20];
 
-    if (v4)
+    if (resultsCopy)
     {
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
@@ -1043,7 +1043,7 @@ LABEL_35:
       v7 = v12;
     }
 
-    if (!v4)
+    if (!resultsCopy)
     {
       v13 = objc_opt_new();
       v14 = [v7 reduceWithInitial:v13 nextPartialResult:&__block_literal_global_684];
@@ -1057,11 +1057,11 @@ LABEL_16:
   return v7;
 }
 
-- (id)executeBiomeQueryError:(id *)a3
+- (id)executeBiomeQueryError:(id *)error
 {
   if ([(_DKBiomeQuery *)self prepareQuery:?])
   {
-    v5 = [(_DKBiomeQuery *)self _publisherForQueryReturningIndividualResults:0 error:a3];
+    v5 = [(_DKBiomeQuery *)self _publisherForQueryReturningIndividualResults:0 error:error];
     v6 = v5;
     if (v5)
     {
@@ -1095,7 +1095,7 @@ LABEL_16:
   return v8;
 }
 
-- (unint64_t)executeDeletionQuery:(id *)a3
+- (unint64_t)executeDeletionQuery:(id *)query
 {
   v47 = *MEMORY[0x1E69E9840];
   if ([(_DKBiomeQuery *)self prepareQuery:?])
@@ -1112,7 +1112,7 @@ LABEL_16:
     v4 = [(NSArray *)obj countByEnumeratingWithState:&v32 objects:v46 count:16];
     if (v4)
     {
-      v25 = self;
+      selfCopy = self;
       v24 = 0;
       v5 = *v33;
       v6 = *MEMORY[0x1E696A388];
@@ -1139,7 +1139,7 @@ LABEL_16:
             v26[1] = 3221225472;
             v26[2] = __38___DKBiomeQuery_executeDeletionQuery___block_invoke;
             v26[3] = &unk_1E736A300;
-            v26[4] = v25;
+            v26[4] = selfCopy;
             v26[5] = &v28;
             v26[6] = &v36;
             v27 = 0;
@@ -1199,14 +1199,14 @@ LABEL_16:
 
       while (v4);
 
-      if (a3)
+      if (query)
       {
         v17 = v24;
         if (v24)
         {
           v18 = v24;
           v17 = v24;
-          *a3 = v24;
+          *query = v24;
         }
       }
 

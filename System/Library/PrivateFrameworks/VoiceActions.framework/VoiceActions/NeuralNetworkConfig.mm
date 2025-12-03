@@ -4,9 +4,9 @@
 - (NeuralNetworkConfig)init;
 - (float)logMinimum;
 - (float)logThreshold;
-- (void)setLogMinimum:(float)a3;
-- (void)setLogThreshold:(float)a3;
-- (void)setModelPath:(id)a3;
+- (void)setLogMinimum:(float)minimum;
+- (void)setLogThreshold:(float)threshold;
+- (void)setModelPath:(id)path;
 @end
 
 @implementation NeuralNetworkConfig
@@ -23,7 +23,7 @@
   return v5;
 }
 
-- (void)setModelPath:(id)a3
+- (void)setModelPath:(id)path
 {
   v4 = sub_27237782C();
   v6 = v5;
@@ -41,11 +41,11 @@
   return *v2;
 }
 
-- (void)setLogThreshold:(float)a3
+- (void)setLogThreshold:(float)threshold
 {
   v4 = (self + OBJC_IVAR___NeuralNetworkConfig_logThreshold);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = threshold;
 }
 
 - (float)logMinimum
@@ -55,11 +55,11 @@
   return *v2;
 }
 
-- (void)setLogMinimum:(float)a3
+- (void)setLogMinimum:(float)minimum
 {
   v4 = (self + OBJC_IVAR___NeuralNetworkConfig_logMinimum);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = minimum;
 }
 
 - (NeuralNetworkConfig)init
@@ -83,7 +83,7 @@
   v6 = *(v5 + 48);
   v7 = *(v5 + 52);
   swift_allocObject();
-  v8 = self;
+  selfCopy = self;
   sub_272376B2C();
   type metadata accessor for NeuralNetworkConfig();
   sub_27227DA80(&qword_2808823A8, v9, type metadata accessor for NeuralNetworkConfig);

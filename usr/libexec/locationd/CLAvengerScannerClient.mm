@@ -23,9 +23,9 @@
   [(CLAvengerScannerClient *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(CLAvengerScannerClient *)self delegate];
+    delegate = [(CLAvengerScannerClient *)self delegate];
 
-    [(CLAvengerScannerClientDelegateProtocol *)v3 onAggressiveScanStarted];
+    [(CLAvengerScannerClientDelegateProtocol *)delegate onAggressiveScanStarted];
   }
 }
 

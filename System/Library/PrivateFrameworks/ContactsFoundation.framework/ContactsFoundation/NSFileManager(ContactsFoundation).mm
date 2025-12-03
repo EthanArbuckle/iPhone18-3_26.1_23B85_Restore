@@ -13,8 +13,8 @@
 {
   v10 = a4;
   v11 = a3;
-  v12 = [a5 path];
-  v13 = [a1 _cn_setValue:v11 forExtendedAttribute:v10 path:v12 error:a6];
+  path = [a5 path];
+  v13 = [self _cn_setValue:v11 forExtendedAttribute:v10 path:path error:a6];
 
   return v13;
 }
@@ -22,8 +22,8 @@
 - (uint64_t)_cn_getValue:()ContactsFoundation forExtendendAttribute:url:error:
 {
   v10 = a4;
-  v11 = [a5 path];
-  v12 = [a1 _cn_getValue:a3 forExtendendAttribute:v10 path:v11 error:a6];
+  path = [a5 path];
+  v12 = [self _cn_getValue:a3 forExtendendAttribute:v10 path:path error:a6];
 
   return v12;
 }
@@ -69,7 +69,7 @@ LABEL_5:
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v15 = 0;
-  v6 = [a1 _cn_getValue:&v15 forExtendendAttribute:a3 path:a4 error:a5];
+  v6 = [self _cn_getValue:&v15 forExtendendAttribute:a3 path:a4 error:a5];
   v7 = v15;
   v8 = v7;
   if (v6)
@@ -124,7 +124,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (([a1 fileExistsAtPath:v11] & 1) == 0)
+  if (([self fileExistsAtPath:v11] & 1) == 0)
   {
     v12 = MEMORY[0x1E696ABC0];
     v13 = *MEMORY[0x1E696A250];
@@ -195,7 +195,7 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (([a1 fileExistsAtPath:v9] & 1) == 0)
+  if (([self fileExistsAtPath:v9] & 1) == 0)
   {
     v10 = MEMORY[0x1E696ABC0];
     v11 = *MEMORY[0x1E696A250];

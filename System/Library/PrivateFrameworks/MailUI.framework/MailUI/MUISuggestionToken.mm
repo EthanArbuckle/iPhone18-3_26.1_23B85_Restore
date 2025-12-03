@@ -1,8 +1,8 @@
 @interface MUISuggestionToken
-+ (id)suggestionTokenWithTitle:(id)a3;
++ (id)suggestionTokenWithTitle:(id)title;
 - (BOOL)hasMultipleScopes;
-- (MUISuggestionToken)initWithCSToken:(id)a3;
-- (MUISuggestionToken)initWithTitle:(id)a3;
+- (MUISuggestionToken)initWithCSToken:(id)token;
+- (MUISuggestionToken)initWithTitle:(id)title;
 - (NSString)scopeName;
 - (UIImage)image;
 - (_NSRange)replacementRange;
@@ -10,16 +10,16 @@
 
 @implementation MUISuggestionToken
 
-- (MUISuggestionToken)initWithTitle:(id)a3
+- (MUISuggestionToken)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v13.receiver = self;
   v13.super_class = MUISuggestionToken;
   v5 = [(MUISuggestionToken *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v7 = [v4 stringByTrimmingCharactersInSet:v6];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v7 = [titleCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
     v8 = *(v5 + 2);
     *(v5 + 2) = v7;
 
@@ -36,60 +36,60 @@
   return v5;
 }
 
-- (MUISuggestionToken)initWithCSToken:(id)a3
+- (MUISuggestionToken)initWithCSToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   v14.receiver = self;
   v14.super_class = MUISuggestionToken;
   v6 = [(MUISuggestionToken *)&v14 init];
   if (v6)
   {
-    v7 = [v5 displayText];
-    v8 = [v7 string];
+    displayText = [tokenCopy displayText];
+    string = [displayText string];
     title = v6->_title;
-    v6->_title = v8;
+    v6->_title = string;
 
-    v6->_replacementRange.location = [v5 replacementRange];
+    v6->_replacementRange.location = [tokenCopy replacementRange];
     v6->_replacementRange.length = v10;
-    v11 = [v5 scopes];
+    scopes = [tokenCopy scopes];
     scopeNames = v6->_scopeNames;
-    v6->_scopeNames = v11;
+    v6->_scopeNames = scopes;
 
-    v6->_selectedScopeIndex = [v5 selectedScope];
-    objc_storeStrong(&v6->_csToken, a3);
+    v6->_selectedScopeIndex = [tokenCopy selectedScope];
+    objc_storeStrong(&v6->_csToken, token);
   }
 
   return v6;
 }
 
-+ (id)suggestionTokenWithTitle:(id)a3
++ (id)suggestionTokenWithTitle:(id)title
 {
-  v3 = a3;
-  v4 = [[MUISuggestionToken alloc] initWithTitle:v3];
+  titleCopy = title;
+  v4 = [[MUISuggestionToken alloc] initWithTitle:titleCopy];
 
   return v4;
 }
 
 - (BOOL)hasMultipleScopes
 {
-  v2 = [(MUISuggestionToken *)self scopeNames];
-  v3 = [v2 count] > 1;
+  scopeNames = [(MUISuggestionToken *)self scopeNames];
+  v3 = [scopeNames count] > 1;
 
   return v3;
 }
 
 - (NSString)scopeName
 {
-  v3 = [(MUISuggestionToken *)self scopeNames];
-  v4 = [(MUISuggestionToken *)self selectedScopeIndex];
-  if (v4 >= [v3 count])
+  scopeNames = [(MUISuggestionToken *)self scopeNames];
+  selectedScopeIndex = [(MUISuggestionToken *)self selectedScopeIndex];
+  if (selectedScopeIndex >= [scopeNames count])
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v3 objectAtIndexedSubscript:v4];
+    v5 = [scopeNames objectAtIndexedSubscript:selectedScopeIndex];
   }
 
   return v5;
@@ -98,8 +98,8 @@
 - (UIImage)image
 {
   v2 = MEMORY[0x277D755B8];
-  v3 = [(MUISuggestionToken *)self csToken];
-  v4 = [v2 mui_imageFromSuggestionToken:v3];
+  csToken = [(MUISuggestionToken *)self csToken];
+  v4 = [v2 mui_imageFromSuggestionToken:csToken];
 
   return v4;
 }

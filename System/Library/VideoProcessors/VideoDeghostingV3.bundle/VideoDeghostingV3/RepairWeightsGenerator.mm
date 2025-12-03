@@ -1,35 +1,35 @@
 @interface RepairWeightsGenerator
 - ($43C834F0531B50B92CAF4577069D180C)configuration;
-- (RepairWeightsGenerator)initWithConfiguration:(id *)a3 withToolBox:(id)a4 homographyHandle:(id)a5 imageDimensions:(id)a6 tuningParameters:(id)a7;
-- (__CVBuffer)temporalBufferForInput:(__CVBuffer *)a3 frameIndex:(int64_t)a4;
-- (float)gradMaxtoBaseWeight:(id *)a3 GG_Index:(float)a4 Gradient:;
-- (id)computeBlendingWeightsYUVInputBuf:(int32x4_t)a3 frRef0Buf:(__n128)a4 frRef1Buf:(int32x4_t)a5 hmgrphy0:(int32x4_t)a6 hmgrphy1:(__n128)a7 frmIdx:(uint64_t)a8 metadataBuf:(__CVBuffer *)a9 meta_HW:(id)a10 metaTPlusOrMinus1_HW:(id)a11 metaTPlusOrMinus2_HW:(uint64_t)a12;
-- (int)createStatisticsSessionWithImageDimension:(id)a3 configuration:(id *)a4;
-- (int)createTemporalBuffersWithImageDimension:(id)a3;
-- (int64_t)process:(__CVBuffer *)a3 info:(id)a4 metaContainerBuffer:(id)a5 computeBlendingWeights:(BOOL)a6 futureFrames:(id *)a7 metaContainerBuffer_HW:(id *)a8;
-- (int64_t)updateQueuesWithInputFrame:(__CVBuffer *)a3 info:(id)a4 meta:(id)a5 meta_HW:(id *)a6 index:(signed __int16)a7;
-- (int64_t)updateQueuesWithTwoFutureFrames:(id *)a3 atBaseIndex:(signed __int16)a4;
-- (void)_computeBlendingWeightsYUVInputBuf:(__CVBuffer *)a3 frRefTPlusOrMinus1Buf:(__CVBuffer *)a4 frRefTPlusOrMinus2Buf:(__CVBuffer *)a5 meta:(id)a6 metaTPlusOrMinus1:(id)a7 metaTPlusOrMinus2:(id)a8 meta_HW:(id *)a9 metaTPlusOrMinus1_HW:(id *)a10 metaTPlusOrMinus2_HW:(id *)a11 info:(id)a12 infoTPlusOrMinus1:(id)a13 infoTPlusOrMinus2:(id)a14 config:(id *)a15 usePastAsRef:(BOOL)a16;
-- (void)cleanTwoFutureFramesInQueuesAtBaseIndex:(signed __int16)a3;
+- (RepairWeightsGenerator)initWithConfiguration:(id *)configuration withToolBox:(id)box homographyHandle:(id)handle imageDimensions:(id)dimensions tuningParameters:(id)parameters;
+- (__CVBuffer)temporalBufferForInput:(__CVBuffer *)input frameIndex:(int64_t)index;
+- (float)gradMaxtoBaseWeight:(id *)weight GG_Index:(float)index Gradient:;
+- (id)computeBlendingWeightsYUVInputBuf:(int32x4_t)buf frRef0Buf:(__n128)ref0Buf frRef1Buf:(int32x4_t)ref1Buf hmgrphy0:(int32x4_t)hmgrphy0 hmgrphy1:(__n128)hmgrphy1 frmIdx:(uint64_t)idx metadataBuf:(__CVBuffer *)metadataBuf meta_HW:(id)self0 metaTPlusOrMinus1_HW:(id)self1 metaTPlusOrMinus2_HW:(uint64_t)self2;
+- (int)createStatisticsSessionWithImageDimension:(id)dimension configuration:(id *)configuration;
+- (int)createTemporalBuffersWithImageDimension:(id)dimension;
+- (int64_t)process:(__CVBuffer *)process info:(id)info metaContainerBuffer:(id)buffer computeBlendingWeights:(BOOL)weights futureFrames:(id *)frames metaContainerBuffer_HW:(id *)w;
+- (int64_t)updateQueuesWithInputFrame:(__CVBuffer *)frame info:(id)info meta:(id)meta meta_HW:(id *)w index:(signed __int16)index;
+- (int64_t)updateQueuesWithTwoFutureFrames:(id *)frames atBaseIndex:(signed __int16)index;
+- (void)_computeBlendingWeightsYUVInputBuf:(__CVBuffer *)buf frRefTPlusOrMinus1Buf:(__CVBuffer *)minus1Buf frRefTPlusOrMinus2Buf:(__CVBuffer *)minus2Buf meta:(id)meta metaTPlusOrMinus1:(id)minus1 metaTPlusOrMinus2:(id)minus2 meta_HW:(id *)w metaTPlusOrMinus1_HW:(id *)self0 metaTPlusOrMinus2_HW:(id *)self1 info:(id)self2 infoTPlusOrMinus1:(id)self3 infoTPlusOrMinus2:(id)self4 config:(id *)self5 usePastAsRef:(BOOL)self6;
+- (void)cleanTwoFutureFramesInQueuesAtBaseIndex:(signed __int16)index;
 - (void)computeBlendingWeights;
 - (void)computeBlendingWeightsWithFuture;
 - (void)dealloc;
 - (void)reset;
-- (void)setConfiguration:(id *)a3;
+- (void)setConfiguration:(id *)configuration;
 @end
 
 @implementation RepairWeightsGenerator
 
-- (int)createStatisticsSessionWithImageDimension:(id)a3 configuration:(id *)a4
+- (int)createStatisticsSessionWithImageDimension:(id)dimension configuration:(id *)configuration
 {
-  var1 = a3.var1;
+  var1 = dimension.var1;
   v7 = [[NSMutableDictionary alloc] initWithCapacity:2];
   [v7 setObject:&off_49FE8 forKey:kVTDeghostingSessionCreationOption_MaximumReferenceFrameDistance];
   if (self->_useGPUHWModel)
   {
     v8 = [NSNumber numberWithBool:1];
     [v7 setObject:v8 forKey:@"FlagHW_GPU"];
-    v9 = __VTDeghostingSessionCreateForGeneratingStatistics(kCFAllocatorDefault, v7, *&a3, var1, &self->_statisticsSession);
+    v9 = __VTDeghostingSessionCreateForGeneratingStatistics(kCFAllocatorDefault, v7, *&dimension, var1, &self->_statisticsSession);
   }
 
   else
@@ -89,11 +89,11 @@
   return v9;
 }
 
-- (RepairWeightsGenerator)initWithConfiguration:(id *)a3 withToolBox:(id)a4 homographyHandle:(id)a5 imageDimensions:(id)a6 tuningParameters:(id)a7
+- (RepairWeightsGenerator)initWithConfiguration:(id *)configuration withToolBox:(id)box homographyHandle:(id)handle imageDimensions:(id)dimensions tuningParameters:(id)parameters
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  boxCopy = box;
+  handleCopy = handle;
+  parametersCopy = parameters;
   v36.receiver = self;
   v36.super_class = RepairWeightsGenerator;
   v15 = [(RepairWeightsGenerator *)&v36 init];
@@ -106,16 +106,16 @@ LABEL_22:
     goto LABEL_16;
   }
 
-  v17 = *&a3->var0.var0;
-  v18 = *&a3->var0.var7;
-  v19 = *&a3->var1.var4;
-  *(v15 + 392) = *&a3->var1.var0;
+  v17 = *&configuration->var0.var0;
+  v18 = *&configuration->var0.var7;
+  v19 = *&configuration->var1.var4;
+  *(v15 + 392) = *&configuration->var1.var0;
   *(v15 + 408) = v19;
   *(v15 + 360) = v17;
   *(v15 + 376) = v18;
-  if (v12)
+  if (boxCopy)
   {
-    v20 = v12;
+    v20 = boxCopy;
   }
 
   else
@@ -126,9 +126,9 @@ LABEL_22:
   v21 = *(v16 + 1);
   *(v16 + 1) = v20;
 
-  if (v13)
+  if (handleCopy)
   {
-    v22 = v13;
+    v22 = handleCopy;
   }
 
   else
@@ -139,7 +139,7 @@ LABEL_22:
   v23 = *(v16 + 2);
   *(v16 + 2) = v22;
 
-  v24 = [v14 objectForKeyedSubscript:@"hwMode"];
+  v24 = [parametersCopy objectForKeyedSubscript:@"hwMode"];
 
   if (!v24)
   {
@@ -147,23 +147,23 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  *(v16 + 232) = a3->var1.var11 == 0;
-  v25 = [v14 objectForKeyedSubscript:@"WaitForRepairCompletion"];
+  *(v16 + 232) = configuration->var1.var11 == 0;
+  v25 = [parametersCopy objectForKeyedSubscript:@"WaitForRepairCompletion"];
   *(v16 + 248) = [v25 BOOLValue];
 
   v26 = dispatch_queue_create("AVE Scheduling Queue", 0);
   v27 = *(v16 + 42);
   *(v16 + 42) = v26;
 
-  if ([v16 createStatisticsSessionWithImageDimension:a6 configuration:a3])
+  if ([v16 createStatisticsSessionWithImageDimension:dimensions configuration:configuration])
   {
     [RepairWeightsGenerator initWithConfiguration:withToolBox:homographyHandle:imageDimensions:tuningParameters:];
     goto LABEL_22;
   }
 
   [v16 reset];
-  v28 = [*(v16 + 1) getDevice];
-  v29 = [v28 newBufferWithLength:10192 options:0];
+  getDevice = [*(v16 + 1) getDevice];
+  v29 = [getDevice newBufferWithLength:10192 options:0];
   v30 = *(v16 + 25);
   *(v16 + 25) = v29;
 
@@ -174,10 +174,10 @@ LABEL_22:
   }
 
   *(v16 + 208) = 0;
-  v31 = [v14 objectForKeyedSubscript:@"ForceLosslessFormat"];
+  v31 = [parametersCopy objectForKeyedSubscript:@"ForceLosslessFormat"];
   *(v16 + 272) = [v31 BOOLValue];
 
-  if (*(v16 + 272) == 1 && [v16 createTemporalBuffersWithImageDimension:a6])
+  if (*(v16 + 272) == 1 && [v16 createTemporalBuffersWithImageDimension:dimensions])
   {
     [RepairWeightsGenerator initWithConfiguration:withToolBox:homographyHandle:imageDimensions:tuningParameters:];
     goto LABEL_22;
@@ -191,14 +191,14 @@ LABEL_22:
   }
 
   *(v16 + 16) = xmmword_43720;
-  [v16 setupProcessingTimeReport:v14];
+  [v16 setupProcessingTimeReport:parametersCopy];
   v34 = v16;
 LABEL_16:
 
   return v34;
 }
 
-- (int)createTemporalBuffersWithImageDimension:(id)a3
+- (int)createTemporalBuffersWithImageDimension:(id)dimension
 {
   if (VTPixelTransferSessionCreate(kCFAllocatorDefault, &self->_pixelTransferSession))
   {
@@ -296,9 +296,9 @@ LABEL_16:
   [(RepairWeightsGenerator *)&v9 dealloc];
 }
 
-- (float)gradMaxtoBaseWeight:(id *)a3 GG_Index:(float)a4 Gradient:
+- (float)gradMaxtoBaseWeight:(id *)weight GG_Index:(float)index Gradient:
 {
-  v6 = (&a3->var0 + 16 * v4);
+  v6 = (&weight->var0 + 16 * v4);
   v7 = v6[12] - v6[10];
   v8 = v6[13] - v6[11];
   result = 0.0;
@@ -318,84 +318,84 @@ LABEL_16:
   return result;
 }
 
-- (__CVBuffer)temporalBufferForInput:(__CVBuffer *)a3 frameIndex:(int64_t)a4
+- (__CVBuffer)temporalBufferForInput:(__CVBuffer *)input frameIndex:(int64_t)index
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(input);
   v7 = CVPixelFormatDescriptionCreateWithPixelFormatType(kCFAllocatorDefault, PixelFormatType);
   v8 = [(__CFDictionary *)v7 objectForKeyedSubscript:kCVPixelFormatBitsPerComponent];
-  v9 = [v8 intValue];
+  intValue = [v8 intValue];
 
   v10 = 288;
-  if (v9 == 8)
+  if (intValue == 8)
   {
     v10 = 312;
   }
 
-  v11 = *(&self->super.isa + 8 * (a4 % 3) + v10);
+  v11 = *(&self->super.isa + 8 * (index % 3) + v10);
 
   return v11;
 }
 
-- (id)computeBlendingWeightsYUVInputBuf:(int32x4_t)a3 frRef0Buf:(__n128)a4 frRef1Buf:(int32x4_t)a5 hmgrphy0:(int32x4_t)a6 hmgrphy1:(__n128)a7 frmIdx:(uint64_t)a8 metadataBuf:(__CVBuffer *)a9 meta_HW:(id)a10 metaTPlusOrMinus1_HW:(id)a11 metaTPlusOrMinus2_HW:(uint64_t)a12
+- (id)computeBlendingWeightsYUVInputBuf:(int32x4_t)buf frRef0Buf:(__n128)ref0Buf frRef1Buf:(int32x4_t)ref1Buf hmgrphy0:(int32x4_t)hmgrphy0 hmgrphy1:(__n128)hmgrphy1 frmIdx:(uint64_t)idx metadataBuf:(__CVBuffer *)metadataBuf meta_HW:(id)self0 metaTPlusOrMinus1_HW:(id)self1 metaTPlusOrMinus2_HW:(uint64_t)self2
 {
-  v43 = a3;
-  v44 = a4;
-  v39 = a5;
-  v40 = a6;
-  v41 = a7;
+  bufCopy = buf;
+  ref0BufCopy = ref0Buf;
+  ref1BufCopy = ref1Buf;
+  hmgrphy0Copy = hmgrphy0;
+  hmgrphy1Copy = hmgrphy1;
   v42 = a2;
   v21 = a13;
   kdebug_trace();
   kdebug_trace();
-  [a1 startTimer];
-  v22 = [v21 contents];
+  [self startTimer];
+  contents = [v21 contents];
 
-  if (*(a1 + 184) != *(a1 + 264) + 1)
+  if (*(self + 184) != *(self + 264) + 1)
   {
-    *(a1 + 256) = 0;
+    *(self + 256) = 0;
   }
 
-  if (*(a1 + 272) == 1)
+  if (*(self + 272) == 1)
   {
-    v23 = [a1 temporalBufferForInput:a9 frameIndex:*(a1 + 256)];
-    VTPixelTransferSessionTransferImage(*(a1 + 280), a9, v23);
-    a9 = v23;
+    v23 = [self temporalBufferForInput:metadataBuf frameIndex:*(self + 256)];
+    VTPixelTransferSessionTransferImage(*(self + 280), metadataBuf, v23);
+    metadataBuf = v23;
   }
 
-  VTDeghostingFrame = createVTDeghostingFrame(a9, (v22 + 20), *v22, 0, a14[321], 0);
+  VTDeghostingFrame = createVTDeghostingFrame(metadataBuf, (contents + 20), *contents, 0, a14[321], 0);
   ReferenceFrameArray = createReferenceFrameArray();
-  v26 = *(a1 + 256);
+  v26 = *(self + 256);
   if (v26 >= 2)
   {
-    if ((*(a1 + 232) & 1) == 0)
+    if ((*(self + 232) & 1) == 0)
     {
-      v43.i32[2] = a4.n128_i32[1];
-      v42.i32[2] = a4.n128_u32[0];
-      v42.i64[0] = vzip1q_s32(a2, a3).u64[0];
-      v44.n128_u32[2] = a4.n128_u32[2];
-      v43.i64[0] = vtrn2q_s32(a2, a3).u64[0];
-      v44.n128_u64[0] = vzip1q_s32(vdupq_laneq_s32(a2, 2), vdupq_laneq_s32(a3, 2)).u64[0];
-      v40.i32[2] = a7.n128_i32[1];
-      v39.i32[2] = a7.n128_u32[0];
-      v39.i64[0] = vzip1q_s32(a5, a6).u64[0];
-      v41.n128_u32[2] = a7.n128_u32[2];
-      v40.i64[0] = vtrn2q_s32(a5, a6).u64[0];
-      v41.n128_u64[0] = vzip1q_s32(vdupq_laneq_s32(a5, 2), vdupq_laneq_s32(a6, 2)).u64[0];
+      bufCopy.i32[2] = ref0Buf.n128_i32[1];
+      v42.i32[2] = ref0Buf.n128_u32[0];
+      v42.i64[0] = vzip1q_s32(a2, buf).u64[0];
+      ref0BufCopy.n128_u32[2] = ref0Buf.n128_u32[2];
+      bufCopy.i64[0] = vtrn2q_s32(a2, buf).u64[0];
+      ref0BufCopy.n128_u64[0] = vzip1q_s32(vdupq_laneq_s32(a2, 2), vdupq_laneq_s32(buf, 2)).u64[0];
+      hmgrphy0Copy.i32[2] = hmgrphy1.n128_i32[1];
+      ref1BufCopy.i32[2] = hmgrphy1.n128_u32[0];
+      ref1BufCopy.i64[0] = vzip1q_s32(ref1Buf, hmgrphy0).u64[0];
+      hmgrphy1Copy.n128_u32[2] = hmgrphy1.n128_u32[2];
+      hmgrphy0Copy.i64[0] = vtrn2q_s32(ref1Buf, hmgrphy0).u64[0];
+      hmgrphy1Copy.n128_u64[0] = vzip1q_s32(vdupq_laneq_s32(ref1Buf, 2), vdupq_laneq_s32(hmgrphy0, 2)).u64[0];
     }
 
-    if (*(a1 + 272) == 1)
+    if (*(self + 272) == 1)
     {
-      a10 = [a1 temporalBufferForInput:a10 frameIndex:v26 - 1];
-      a11 = [a1 temporalBufferForInput:a11 frameIndex:*(a1 + 256) - 2];
+      w = [self temporalBufferForInput:w frameIndex:v26 - 1];
+      hW = [self temporalBufferForInput:hW frameIndex:*(self + 256) - 2];
     }
 
-    v27 = createVTDeghostingFrame(a10, a14 + 4, *a14, v42.i8, 0, 0);
+    v27 = createVTDeghostingFrame(w, a14 + 4, *a14, v42.i8, 0, 0);
     CFArrayAppendValue(ReferenceFrameArray, v27);
     CFRelease(v27);
-    v28 = createVTDeghostingFrame(a11, a14 + 1028, *(a14 + 1), v39.i8, 0, 0);
+    v28 = createVTDeghostingFrame(hW, a14 + 1028, *(a14 + 1), ref1BufCopy.i8, 0, 0);
     CFArrayAppendValue(ReferenceFrameArray, v28);
     CFRelease(v28);
-    v26 = *(a1 + 256);
+    v26 = *(self + 256);
   }
 
   Mutable = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
@@ -406,20 +406,20 @@ LABEL_16:
   v38[3] = &unk_489C0;
   v38[6] = ReferenceFrameArray;
   v38[7] = Mutable;
-  v38[4] = a1;
+  v38[4] = self;
   v38[5] = VTDeghostingFrame;
   v38[8] = a14;
-  v38[9] = v22;
+  v38[9] = contents;
   v38[10] = v26;
   v38[11] = a15;
   v38[12] = a16;
-  result = [a1 requestStatisticsForCurrentFrame:VTDeghostingFrame referenceFrames:ReferenceFrameArray deghostingFrameFlags:2 * (v26 == 0) options:Mutable outputHandler:v38];
-  v31 = *(a1 + 184);
-  ++*(a1 + 256);
-  *(a1 + 264) = v31;
-  if (*(a1 + 248) == 1)
+  result = [self requestStatisticsForCurrentFrame:VTDeghostingFrame referenceFrames:ReferenceFrameArray deghostingFrameFlags:2 * (v26 == 0) options:Mutable outputHandler:v38];
+  v31 = *(self + 184);
+  ++*(self + 256);
+  *(self + 264) = v31;
+  if (*(self + 248) == 1)
   {
-    return dispatch_semaphore_wait(*(a1 + 240), 0xFFFFFFFFFFFFFFFFLL);
+    return dispatch_semaphore_wait(*(self + 240), 0xFFFFFFFFFFFFFFFFLL);
   }
 
   return result;
@@ -516,15 +516,15 @@ void __167__RepairWeightsGenerator_computeBlendingWeightsYUVInputBuf_frRef0Buf_f
   }
 }
 
-- (void)_computeBlendingWeightsYUVInputBuf:(__CVBuffer *)a3 frRefTPlusOrMinus1Buf:(__CVBuffer *)a4 frRefTPlusOrMinus2Buf:(__CVBuffer *)a5 meta:(id)a6 metaTPlusOrMinus1:(id)a7 metaTPlusOrMinus2:(id)a8 meta_HW:(id *)a9 metaTPlusOrMinus1_HW:(id *)a10 metaTPlusOrMinus2_HW:(id *)a11 info:(id)a12 infoTPlusOrMinus1:(id)a13 infoTPlusOrMinus2:(id)a14 config:(id *)a15 usePastAsRef:(BOOL)a16
+- (void)_computeBlendingWeightsYUVInputBuf:(__CVBuffer *)buf frRefTPlusOrMinus1Buf:(__CVBuffer *)minus1Buf frRefTPlusOrMinus2Buf:(__CVBuffer *)minus2Buf meta:(id)meta metaTPlusOrMinus1:(id)minus1 metaTPlusOrMinus2:(id)minus2 meta_HW:(id *)w metaTPlusOrMinus1_HW:(id *)self0 metaTPlusOrMinus2_HW:(id *)self1 info:(id)self2 infoTPlusOrMinus1:(id)self3 infoTPlusOrMinus2:(id)self4 config:(id *)self5 usePastAsRef:(BOOL)self6
 {
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a12;
-  v23 = a13;
-  v24 = a14;
-  if (a15->var1.var1)
+  metaCopy = meta;
+  minus1Copy = minus1;
+  minus2Copy = minus2;
+  infoCopy = info;
+  orMinus1Copy = orMinus1;
+  orMinus2Copy = orMinus2;
+  if (config->var1.var1)
   {
     v25 = matrix_identity_float3x3;
     v48 = matrix_identity_float3x3.columns[1];
@@ -533,25 +533,25 @@ void __167__RepairWeightsGenerator_computeBlendingWeightsYUVInputBuf_frRef0Buf_f
     goto LABEL_13;
   }
 
-  if (a16)
+  if (ref)
   {
-    v26 = [v19 contents];
-    v25 = *(v26 + 9520);
-    v48 = *(v26 + 599);
-    v50 = *(v26 + 598);
-    v46 = *(v26 + 600);
+    contents = [metaCopy contents];
+    v25 = *(contents + 9520);
+    v48 = *(contents + 599);
+    v50 = *(contents + 598);
+    v46 = *(contents + 600);
     goto LABEL_13;
   }
 
   calcTransform = self->_calcTransform;
   if (calcTransform)
   {
-    [(CalcHomography *)calcTransform ispHomographyFromMetaInfo:v23];
+    [(CalcHomography *)calcTransform ispHomographyFromMetaInfo:orMinus1Copy];
     v28 = self->_calcTransform;
     v29 = v55;
     if (v28)
     {
-      [(CalcHomography *)v28 ispHomographyFromMetaInfo:v24];
+      [(CalcHomography *)v28 ispHomographyFromMetaInfo:orMinus2Copy];
       v29 = v55;
       v30 = v52;
       v31 = v53;
@@ -613,24 +613,24 @@ LABEL_13:
   v45 = *v25.columns[0].i64;
   v41 = *v25.columns[2].i64;
   v62 = __invert_f3(v25);
-  warpPrevMetaBuffer(v20, a9, 0, v62.columns[0], v62.columns[1], v62.columns[2]);
+  warpPrevMetaBuffer(minus1Copy, w, 0, v62.columns[0], v62.columns[1], v62.columns[2]);
   v63.columns[1] = v48;
   v63.columns[0] = v50;
   v63.columns[2] = v46;
   v64 = __invert_f3(v63);
-  warpPrevMetaBuffer(v21, a9, 1, v64.columns[0], v64.columns[1], v64.columns[2]);
-  [(RepairWeightsGenerator *)self computeBlendingWeightsYUVInputBuf:a3 frRef0Buf:a4 frRef1Buf:a5 hmgrphy0:self->_frameIndexInVideo hmgrphy1:v19 frmIdx:a9 metadataBuf:v45 meta_HW:v43 metaTPlusOrMinus1_HW:v41 metaTPlusOrMinus2_HW:*v50.i64, *v48.i64, *v46.i64, a10, a11];
+  warpPrevMetaBuffer(minus2Copy, w, 1, v64.columns[0], v64.columns[1], v64.columns[2]);
+  [(RepairWeightsGenerator *)self computeBlendingWeightsYUVInputBuf:buf frRef0Buf:minus1Buf frRef1Buf:minus2Buf hmgrphy0:self->_frameIndexInVideo hmgrphy1:metaCopy frmIdx:w metadataBuf:v45 meta_HW:v43 metaTPlusOrMinus1_HW:v41 metaTPlusOrMinus2_HW:*v50.i64, *v48.i64, *v46.i64, hW, minus2_HW];
 }
 
-- (int64_t)updateQueuesWithTwoFutureFrames:(id *)a3 atBaseIndex:(signed __int16)a4
+- (int64_t)updateQueuesWithTwoFutureFrames:(id *)frames atBaseIndex:(signed __int16)index
 {
-  v4 = a4;
+  indexCopy = index;
   v7 = 0;
   for (i = 1; ; i = 0)
   {
     v9 = i;
-    v10 = v7 + v4 + 1 < 5 ? v7 + v4 + 1 : v7 + v4 - 4;
-    v11 = (a3->var0 + 48 * v7);
+    v10 = v7 + indexCopy + 1 < 5 ? v7 + indexCopy + 1 : v7 + indexCopy - 4;
+    v11 = (frames->var0 + 48 * v7);
     v12 = *v11;
     v13 = v11[1];
     v14 = [(RepairWeightsGenerator *)self updateQueuesWithInputFrame:v12 info:v13 meta:self->_dummyMetaBuf meta_HW:self->_dummyMetaBuf_HW index:v10];
@@ -651,9 +651,9 @@ LABEL_13:
   return v15;
 }
 
-- (void)cleanTwoFutureFramesInQueuesAtBaseIndex:(signed __int16)a3
+- (void)cleanTwoFutureFramesInQueuesAtBaseIndex:(signed __int16)index
 {
-  v3 = a3;
+  indexCopy = index;
   inputInfoQueue = self->_inputInfoQueue;
   inputMetaQueue = self->_inputMetaQueue;
   inputFrameQueue = self->_inputFrameQueue;
@@ -662,8 +662,8 @@ LABEL_13:
   do
   {
     v9 = v7;
-    v10 = v8 + v3;
-    v11 = v8 + v3 - 5;
+    v10 = v8 + indexCopy;
+    v11 = v8 + indexCopy - 5;
     if (v10 >= 5)
     {
       LOWORD(v10) = v11;
@@ -692,10 +692,10 @@ LABEL_13:
 
 - (void)computeBlendingWeights
 {
-  v3 = [(RepairWeightsGenerator *)self getFrameIndexInQueue];
+  getFrameIndexInQueue = [(RepairWeightsGenerator *)self getFrameIndexInQueue];
   inputFrameQueue = self->_inputFrameQueue;
-  v5 = self->_inputFrameQueue[v3];
-  if (v3 > 0)
+  v5 = self->_inputFrameQueue[getFrameIndexInQueue];
+  if (getFrameIndexInQueue > 0)
   {
     v6 = -1;
   }
@@ -705,9 +705,9 @@ LABEL_13:
     v6 = 4;
   }
 
-  v7 = (v6 + v3);
+  v7 = (v6 + getFrameIndexInQueue);
   v8 = inputFrameQueue[v7];
-  if (v3 <= 1)
+  if (getFrameIndexInQueue <= 1)
   {
     v9 = 3;
   }
@@ -717,15 +717,15 @@ LABEL_13:
     v9 = -2;
   }
 
-  v10 = (v9 + v3);
+  v10 = (v9 + getFrameIndexInQueue);
   v11 = inputFrameQueue[v10];
-  v12 = self->_inputMetaQueue[v3];
+  v12 = self->_inputMetaQueue[getFrameIndexInQueue];
   v13 = self->_inputMetaQueue[v7];
   v14 = self->_inputMetaQueue[v10];
-  v15 = self->_inputMetaQueue_HW[v3];
+  v15 = self->_inputMetaQueue_HW[getFrameIndexInQueue];
   v16 = self->_inputMetaQueue_HW[v7];
   v17 = self->_inputMetaQueue_HW[v10];
-  v18 = self->_inputInfoQueue[v3];
+  v18 = self->_inputInfoQueue[getFrameIndexInQueue];
   v19 = self->_inputInfoQueue[v7];
   v20 = self->_inputInfoQueue[v10];
   v21 = *&self->_configuration.internalCfg.enableColorMask;
@@ -740,17 +740,17 @@ LABEL_13:
 
 - (void)computeBlendingWeightsWithFuture
 {
-  v3 = [(RepairWeightsGenerator *)self getFrameIndexInQueue];
+  getFrameIndexInQueue = [(RepairWeightsGenerator *)self getFrameIndexInQueue];
   inputFrameQueue = self->_inputFrameQueue;
-  v5 = self->_inputFrameQueue[v3];
-  v6 = v3 - 4;
-  if (v3 < 4)
+  v5 = self->_inputFrameQueue[getFrameIndexInQueue];
+  v6 = getFrameIndexInQueue - 4;
+  if (getFrameIndexInQueue < 4)
   {
-    v6 = v3 + 1;
+    v6 = getFrameIndexInQueue + 1;
   }
 
   v7 = inputFrameQueue[v6];
-  if (v3 > 2)
+  if (getFrameIndexInQueue > 2)
   {
     v8 = -3;
   }
@@ -760,15 +760,15 @@ LABEL_13:
     v8 = 2;
   }
 
-  v9 = (v8 + v3);
+  v9 = (v8 + getFrameIndexInQueue);
   v10 = inputFrameQueue[v9];
-  v11 = self->_inputMetaQueue[v3];
+  v11 = self->_inputMetaQueue[getFrameIndexInQueue];
   v12 = self->_inputMetaQueue[v6];
   v13 = self->_inputMetaQueue[v9];
-  v14 = self->_inputMetaQueue_HW[v3];
+  v14 = self->_inputMetaQueue_HW[getFrameIndexInQueue];
   v15 = self->_inputMetaQueue_HW[v6];
   v16 = self->_inputMetaQueue_HW[v9];
-  v17 = self->_inputInfoQueue[v3];
+  v17 = self->_inputInfoQueue[getFrameIndexInQueue];
   v18 = self->_inputInfoQueue[v6];
   v19 = self->_inputInfoQueue[v9];
   v20 = *&self->_configuration.internalCfg.enableColorMask;
@@ -781,17 +781,17 @@ LABEL_13:
   [(RepairWeightsGenerator *)self _computeBlendingWeightsYUVInputBuf:v5 frRefTPlusOrMinus1Buf:v7 frRefTPlusOrMinus2Buf:v10 meta:v11 metaTPlusOrMinus1:v12 metaTPlusOrMinus2:v13 meta_HW:v14 metaTPlusOrMinus1_HW:v15 metaTPlusOrMinus2_HW:v16 info:v17 infoTPlusOrMinus1:v18 infoTPlusOrMinus2:v19 config:v23 usePastAsRef:v22];
 }
 
-- (int64_t)process:(__CVBuffer *)a3 info:(id)a4 metaContainerBuffer:(id)a5 computeBlendingWeights:(BOOL)a6 futureFrames:(id *)a7 metaContainerBuffer_HW:(id *)a8
+- (int64_t)process:(__CVBuffer *)process info:(id)info metaContainerBuffer:(id)buffer computeBlendingWeights:(BOOL)weights futureFrames:(id *)frames metaContainerBuffer_HW:(id *)w
 {
-  v13 = a4;
-  v14 = a5;
+  infoCopy = info;
+  bufferCopy = buffer;
   frameIndexInVideo = self->_frameIndexInVideo;
-  var2 = a7->var2;
+  var2 = frames->var2;
   v18 = frameIndexInVideo < 2 && var2 > 1;
-  v19 = [(RepairWeightsGenerator *)self getFrameIndexInQueue];
+  getFrameIndexInQueue = [(RepairWeightsGenerator *)self getFrameIndexInQueue];
   if (v18)
   {
-    v20 = [(RepairWeightsGenerator *)self updateQueuesWithTwoFutureFrames:a7 atBaseIndex:v19];
+    v20 = [(RepairWeightsGenerator *)self updateQueuesWithTwoFutureFrames:frames atBaseIndex:getFrameIndexInQueue];
     if (v20)
     {
       v22 = v20;
@@ -800,7 +800,7 @@ LABEL_13:
     }
   }
 
-  v21 = [(RepairWeightsGenerator *)self updateQueuesWithInputFrame:a3 info:v13 meta:v14 meta_HW:a8 index:v19];
+  v21 = [(RepairWeightsGenerator *)self updateQueuesWithInputFrame:process info:infoCopy meta:bufferCopy meta_HW:w index:getFrameIndexInQueue];
   if (v21)
   {
     v22 = v21;
@@ -808,7 +808,7 @@ LABEL_13:
     goto LABEL_22;
   }
 
-  if (a6)
+  if (weights)
   {
     if (var2 > 1 || frameIndexInVideo >= 2)
     {
@@ -838,7 +838,7 @@ LABEL_13:
       }
     }
 
-    [(RepairWeightsGenerator *)self cleanTwoFutureFramesInQueuesAtBaseIndex:v19];
+    [(RepairWeightsGenerator *)self cleanTwoFutureFramesInQueuesAtBaseIndex:getFrameIndexInQueue];
 LABEL_21:
     v22 = 0;
     goto LABEL_22;
@@ -846,7 +846,7 @@ LABEL_21:
 
   self->_consecutiveTemporalRepairFrameCnt = 0;
   v22 = 0;
-  *([v14 contents] + 2168) = 1;
+  *([bufferCopy contents] + 2168) = 1;
 LABEL_22:
   ++self->_frameIndexInVideo;
 
@@ -881,41 +881,41 @@ uint64_t __118__RepairWeightsGenerator_requestStatisticsForCurrentFrame_referenc
   return self;
 }
 
-- (void)setConfiguration:(id *)a3
+- (void)setConfiguration:(id *)configuration
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var7;
-  v5 = *&a3->var1.var4;
-  *&self->_configuration.externalCfg.lightMode = *&a3->var1.var0;
+  v3 = *&configuration->var0.var0;
+  v4 = *&configuration->var0.var7;
+  v5 = *&configuration->var1.var4;
+  *&self->_configuration.externalCfg.lightMode = *&configuration->var1.var0;
   *&self->_configuration.externalCfg.frameDelay = v5;
   *&self->_configuration.internalCfg.clipThreshold = v3;
   *&self->_configuration.internalCfg.enableColorMask = v4;
 }
 
-- (int64_t)updateQueuesWithInputFrame:(__CVBuffer *)a3 info:(id)a4 meta:(id)a5 meta_HW:(id *)a6 index:(signed __int16)a7
+- (int64_t)updateQueuesWithInputFrame:(__CVBuffer *)frame info:(id)info meta:(id)meta meta_HW:(id *)w index:(signed __int16)index
 {
-  v7 = a7;
-  v13 = a4;
-  v14 = a5;
-  v15 = v14;
+  indexCopy = index;
+  infoCopy = info;
+  metaCopy = meta;
+  v15 = metaCopy;
   v16 = 5;
-  if (a3 && v14)
+  if (frame && metaCopy)
   {
-    v17 = &self->super.isa + v7;
-    v18 = v7;
+    v17 = &self->super.isa + indexCopy;
+    v18 = indexCopy;
     v19 = v17[3];
-    v17[3] = a3;
-    CFRetain(a3);
+    v17[3] = frame;
+    CFRetain(frame);
     if (v19)
     {
       CFRelease(v19);
     }
 
     v20 = (&self->super.isa + v18);
-    objc_storeStrong(v20 + 13, a4);
-    objc_storeStrong(v20 + 8, a5);
+    objc_storeStrong(v20 + 13, info);
+    objc_storeStrong(v20 + 8, meta);
     v16 = 0;
-    v20[18] = a6;
+    v20[18] = w;
   }
 
   return v16;

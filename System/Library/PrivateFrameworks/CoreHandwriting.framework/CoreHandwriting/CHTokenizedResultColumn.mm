@@ -1,27 +1,27 @@
 @interface CHTokenizedResultColumn
-- (BOOL)containsStartingTokenEquivalentToToken:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CHTokenizedResultColumn)initWithCoder:(id)a3;
-- (CHTokenizedResultColumn)initWithTokenRows:(id)a3;
+- (BOOL)containsStartingTokenEquivalentToToken:(id)token;
+- (BOOL)isEqual:(id)equal;
+- (CHTokenizedResultColumn)initWithCoder:(id)coder;
+- (CHTokenizedResultColumn)initWithTokenRows:(id)rows;
 - (NSArray)mathTokenRows;
 - (NSArray)textTokenRows;
 - (NSIndexSet)strokeIndexes;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (int64_t)indexOfEquivalentTokenRow:(id)a3 tokenRange:(_NSRange)a4;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (int64_t)indexOfEquivalentTokenRow:(id)row tokenRange:(_NSRange)range;
 @end
 
 @implementation CHTokenizedResultColumn
 
-- (CHTokenizedResultColumn)initWithTokenRows:(id)a3
+- (CHTokenizedResultColumn)initWithTokenRows:(id)rows
 {
-  v4 = a3;
+  rowsCopy = rows;
   v14.receiver = self;
   v14.super_class = CHTokenizedResultColumn;
   v10 = [(CHTokenizedResultColumn *)&v14 init];
   if (v10)
   {
-    v11 = objc_msgSend_copy(v4, v5, v6, v7, v8, v9);
+    v11 = objc_msgSend_copy(rowsCopy, v5, v6, v7, v8, v9);
     tokenRows = v10->_tokenRows;
     v10->_tokenRows = v11;
   }
@@ -29,17 +29,17 @@
   return v10;
 }
 
-- (CHTokenizedResultColumn)initWithCoder:(id)a3
+- (CHTokenizedResultColumn)initWithCoder:(id)coder
 {
   v29 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v14 = objc_msgSend_setWithObjects_(v4, v10, v6, v11, v12, v13, v7, v8, v9, 0);
-  v18 = objc_msgSend_decodeObjectOfClasses_forKey_(v5, v15, v14, @"tokenRows", v16, v17);
+  v18 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v15, v14, @"tokenRows", v16, v17);
 
   if (v18)
   {
@@ -68,7 +68,7 @@
   return v23;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CHMutableTokenizedResultColumn alloc];
   tokenRows = self->_tokenRows;
@@ -96,11 +96,11 @@
   return v29;
 }
 
-- (int64_t)indexOfEquivalentTokenRow:(id)a3 tokenRange:(_NSRange)a4
+- (int64_t)indexOfEquivalentTokenRow:(id)row tokenRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  rowCopy = row;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -112,7 +112,7 @@
   v16[3] = &unk_1E6DDD750;
   v19 = location;
   v20 = length;
-  v9 = v7;
+  v9 = rowCopy;
   v17 = v9;
   v18 = &v21;
   objc_msgSend_enumerateObjectsUsingBlock_(tokenRows, v10, v16, v11, v12, v13);
@@ -122,9 +122,9 @@
   return v14;
 }
 
-- (BOOL)containsStartingTokenEquivalentToToken:(id)a3
+- (BOOL)containsStartingTokenEquivalentToToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -134,7 +134,7 @@
   v12[1] = 3221225472;
   v12[2] = sub_1837644C0;
   v12[3] = &unk_1E6DDD778;
-  v6 = v4;
+  v6 = tokenCopy;
   v13 = v6;
   v14 = &v15;
   objc_msgSend_enumerateObjectsUsingBlock_(tokenRows, v7, v12, v8, v9, v10);
@@ -183,13 +183,13 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v11 = v5;
     if (self)
     {

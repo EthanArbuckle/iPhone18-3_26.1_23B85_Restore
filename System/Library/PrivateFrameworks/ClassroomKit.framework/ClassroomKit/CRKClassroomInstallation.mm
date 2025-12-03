@@ -1,21 +1,21 @@
 @interface CRKClassroomInstallation
 + (BOOL)anyInstallationExists;
-+ (CRKClassroomInstallation)installationWithClassroomBundleIdentifier:(id)a3 bundleHasContentsFolder:(BOOL)a4 instructordBundleIdentifier:(id)a5;
++ (CRKClassroomInstallation)installationWithClassroomBundleIdentifier:(id)identifier bundleHasContentsFolder:(BOOL)folder instructordBundleIdentifier:(id)bundleIdentifier;
 + (CRKClassroomInstallation)preferredInstallation;
-+ (id)instructorKitImagePathInBundle:(id)a3 hasContentsFolder:(BOOL)a4;
-- (CRKClassroomInstallation)initWithClassroomURL:(id)a3 classroomBundleIdentifier:(id)a4 instructorKitImagePath:(id)a5 instructordBundleIdentifier:(id)a6;
++ (id)instructorKitImagePathInBundle:(id)bundle hasContentsFolder:(BOOL)folder;
+- (CRKClassroomInstallation)initWithClassroomURL:(id)l classroomBundleIdentifier:(id)identifier instructorKitImagePath:(id)path instructordBundleIdentifier:(id)bundleIdentifier;
 - (id)description;
 @end
 
 @implementation CRKClassroomInstallation
 
-+ (CRKClassroomInstallation)installationWithClassroomBundleIdentifier:(id)a3 bundleHasContentsFolder:(BOOL)a4 instructordBundleIdentifier:(id)a5
++ (CRKClassroomInstallation)installationWithClassroomBundleIdentifier:(id)identifier bundleHasContentsFolder:(BOOL)folder instructordBundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  folderCopy = folder;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v17 = 0;
-  v10 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v8 allowPlaceholder:0 error:&v17];
+  v10 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v17];
   v11 = v17;
   if (!v10)
   {
@@ -27,15 +27,15 @@
     v12 = _CRKLogGeneral_logObj_42;
     if (os_log_type_enabled(_CRKLogGeneral_logObj_42, OS_LOG_TYPE_ERROR))
     {
-      [CRKClassroomInstallation installationWithClassroomBundleIdentifier:v8 bundleHasContentsFolder:v12 instructordBundleIdentifier:v11];
+      [CRKClassroomInstallation installationWithClassroomBundleIdentifier:identifierCopy bundleHasContentsFolder:v12 instructordBundleIdentifier:v11];
     }
   }
 
   v13 = [v10 URL];
   if (v13)
   {
-    v14 = [a1 instructorKitImagePathInBundle:v13 hasContentsFolder:v6];
-    v15 = [[a1 alloc] initWithClassroomURL:v13 classroomBundleIdentifier:v8 instructorKitImagePath:v14 instructordBundleIdentifier:v9];
+    v14 = [self instructorKitImagePathInBundle:v13 hasContentsFolder:folderCopy];
+    v15 = [[self alloc] initWithClassroomURL:v13 classroomBundleIdentifier:identifierCopy instructorKitImagePath:v14 instructordBundleIdentifier:bundleIdentifierCopy];
   }
 
   else
@@ -50,12 +50,12 @@
 {
   if (CRKIsiOS())
   {
-    [a1 iOSInstallation];
+    [self iOSInstallation];
   }
 
   else
   {
-    [a1 macOSInstallation];
+    [self macOSInstallation];
   }
   v3 = ;
 
@@ -64,34 +64,34 @@
 
 + (BOOL)anyInstallationExists
 {
-  v2 = [a1 preferredInstallation];
-  v3 = v2 != 0;
+  preferredInstallation = [self preferredInstallation];
+  v3 = preferredInstallation != 0;
 
   return v3;
 }
 
-- (CRKClassroomInstallation)initWithClassroomURL:(id)a3 classroomBundleIdentifier:(id)a4 instructorKitImagePath:(id)a5 instructordBundleIdentifier:(id)a6
+- (CRKClassroomInstallation)initWithClassroomURL:(id)l classroomBundleIdentifier:(id)identifier instructorKitImagePath:(id)path instructordBundleIdentifier:(id)bundleIdentifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lCopy = l;
+  identifierCopy = identifier;
+  pathCopy = path;
+  bundleIdentifierCopy = bundleIdentifier;
   v24.receiver = self;
   v24.super_class = CRKClassroomInstallation;
   v15 = [(CRKClassroomInstallation *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_classroomURL, a3);
-    v17 = [v12 copy];
+    objc_storeStrong(&v15->_classroomURL, l);
+    v17 = [identifierCopy copy];
     classroomBundleIdentifier = v16->_classroomBundleIdentifier;
     v16->_classroomBundleIdentifier = v17;
 
-    v19 = [v13 copy];
+    v19 = [pathCopy copy];
     instructorKitImagePath = v16->_instructorKitImagePath;
     v16->_instructorKitImagePath = v19;
 
-    v21 = [v14 copy];
+    v21 = [bundleIdentifierCopy copy];
     instructordBundleIdentifier = v16->_instructordBundleIdentifier;
     v16->_instructordBundleIdentifier = v21;
   }
@@ -103,25 +103,25 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKClassroomInstallation *)self classroomURL];
-  v6 = [v5 absoluteString];
-  v7 = [(CRKClassroomInstallation *)self classroomBundleIdentifier];
-  v8 = [(CRKClassroomInstallation *)self instructorKitImagePath];
-  v9 = [(CRKClassroomInstallation *)self instructordBundleIdentifier];
-  v10 = [v3 stringWithFormat:@"<%@: %p { classroomURL = %@, classroomBundleIdentifier = %@, instructorKitImagePath = %@, instructordBundleIdentifier = %@ }>", v4, self, v6, v7, v8, v9];
+  classroomURL = [(CRKClassroomInstallation *)self classroomURL];
+  absoluteString = [classroomURL absoluteString];
+  classroomBundleIdentifier = [(CRKClassroomInstallation *)self classroomBundleIdentifier];
+  instructorKitImagePath = [(CRKClassroomInstallation *)self instructorKitImagePath];
+  instructordBundleIdentifier = [(CRKClassroomInstallation *)self instructordBundleIdentifier];
+  v10 = [v3 stringWithFormat:@"<%@: %p { classroomURL = %@, classroomBundleIdentifier = %@, instructorKitImagePath = %@, instructordBundleIdentifier = %@ }>", v4, self, absoluteString, classroomBundleIdentifier, instructorKitImagePath, instructordBundleIdentifier];
 
   return v10;
 }
 
-+ (id)instructorKitImagePathInBundle:(id)a3 hasContentsFolder:(BOOL)a4
++ (id)instructorKitImagePathInBundle:(id)bundle hasContentsFolder:(BOOL)folder
 {
-  v4 = a4;
-  v5 = a3;
+  folderCopy = folder;
+  bundleCopy = bundle;
   v6 = objc_opt_new();
-  v7 = [v5 path];
+  path = [bundleCopy path];
 
-  [v6 addObject:v7];
-  if (v4)
+  [v6 addObject:path];
+  if (folderCopy)
   {
     [v6 addObject:@"Contents"];
   }

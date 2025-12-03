@@ -1,28 +1,28 @@
 @interface RBInheritanceCollection
-+ (RBInheritanceCollection)collectionWithInheritances:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithCollection:(id)a3;
-- (id)_initWithInheritances:(id)a3;
++ (RBInheritanceCollection)collectionWithInheritances:(id)inheritances;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithCollection:(id)collection;
+- (id)_initWithInheritances:(id)inheritances;
 - (id)allEnvironments;
 - (id)description;
-- (id)inheritancesForEnvironment:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)inheritancesForEnvironment:(id)environment;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RBInheritanceCollection
 
-+ (RBInheritanceCollection)collectionWithInheritances:(id)a3
++ (RBInheritanceCollection)collectionWithInheritances:(id)inheritances
 {
-  v3 = a3;
-  v4 = [[RBInheritanceCollection alloc] _initWithInheritances:v3];
+  inheritancesCopy = inheritances;
+  v4 = [[RBInheritanceCollection alloc] _initWithInheritances:inheritancesCopy];
 
   return v4;
 }
 
-- (id)_initWithInheritances:(id)a3
+- (id)_initWithInheritances:(id)inheritances
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inheritancesCopy = inheritances;
   v5 = [(RBInheritanceCollection *)self init];
   v6 = v5;
   if (v5)
@@ -34,8 +34,8 @@
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v26 = v4;
-    v9 = v4;
+    v26 = inheritancesCopy;
+    v9 = inheritancesCopy;
     v10 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v10)
     {
@@ -51,21 +51,21 @@
           }
 
           v14 = *(*(&v28 + 1) + 8 * i);
-          v15 = [v14 environment];
-          if (v15)
+          environment = [v14 environment];
+          if (environment)
           {
-            v16 = [v7 objectForKey:v15];
+            v16 = [v7 objectForKey:environment];
             if (!v16)
             {
               v16 = [MEMORY[0x277CBEB58] set];
-              [v7 setObject:v16 forKey:v15];
+              [v7 setObject:v16 forKey:environment];
             }
 
             [v16 addObject:v14];
           }
 
-          v17 = [v14 endowmentNamespace];
-          [v8 addObject:v17];
+          endowmentNamespace = [v14 endowmentNamespace];
+          [v8 addObject:endowmentNamespace];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -87,31 +87,31 @@
     inheritances = v27->_inheritances;
     v27->_inheritances = v22;
 
-    v4 = v26;
+    inheritancesCopy = v26;
   }
 
   v24 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (id)_initWithCollection:(id)a3
+- (id)_initWithCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = [(RBInheritanceCollection *)self init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:*(v4 + 1) copyItems:1];
+    v6 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:*(collectionCopy + 1) copyItems:1];
     inheritancesByEnvironment = v5->_inheritancesByEnvironment;
     v5->_inheritancesByEnvironment = v6;
 
-    v8 = [*(v4 + 2) copy];
+    v8 = [*(collectionCopy + 2) copy];
     inheritances = v5->_inheritances;
     v5->_inheritances = v8;
 
-    v10 = [v4 allNamespaces];
-    if ([v10 count])
+    allNamespaces = [collectionCopy allNamespaces];
+    if ([allNamespaces count])
     {
-      v11 = [MEMORY[0x277CBEB98] setWithSet:v10];
+      v11 = [MEMORY[0x277CBEB98] setWithSet:allNamespaces];
       namespaces = v5->_namespaces;
       v5->_namespaces = v11;
     }
@@ -123,15 +123,15 @@
 - (id)allEnvironments
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(NSDictionary *)self->_inheritancesByEnvironment allKeys];
-  v4 = [v2 setWithArray:v3];
+  allKeys = [(NSDictionary *)self->_inheritancesByEnvironment allKeys];
+  v4 = [v2 setWithArray:allKeys];
 
   return v4;
 }
 
-- (id)inheritancesForEnvironment:(id)a3
+- (id)inheritancesForEnvironment:(id)environment
 {
-  if (a3)
+  if (environment)
   {
     v4 = [(NSDictionary *)self->_inheritancesByEnvironment objectForKey:?];
   }
@@ -144,7 +144,7 @@
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [RBMutableInheritanceCollection alloc];
 
@@ -178,11 +178,11 @@ void __38__RBInheritanceCollection_description__block_invoke(uint64_t a1, void *
   [v4 appendFormat:@"%@=[\n\t\t%@\n\t\t]\n\t\t", v5, v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4 || (inheritances = self->_inheritances, v7 = v4->_inheritances, inheritances == v7))
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy || (inheritances = self->_inheritances, v7 = equalCopy->_inheritances, inheritances == v7))
   {
     v8 = 1;
   }

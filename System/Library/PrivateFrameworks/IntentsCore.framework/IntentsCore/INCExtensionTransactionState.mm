@@ -1,5 +1,5 @@
 @interface INCExtensionTransactionState
-- (INCExtensionTransactionState)initWithType:(int64_t)a3 intent:(id)a4 intentResponse:(id)a5 userActivities:(id)a6;
+- (INCExtensionTransactionState)initWithType:(int64_t)type intent:(id)intent intentResponse:(id)response userActivities:(id)activities;
 - (id)description;
 @end
 
@@ -34,21 +34,21 @@
   return v14;
 }
 
-- (INCExtensionTransactionState)initWithType:(int64_t)a3 intent:(id)a4 intentResponse:(id)a5 userActivities:(id)a6
+- (INCExtensionTransactionState)initWithType:(int64_t)type intent:(id)intent intentResponse:(id)response userActivities:(id)activities
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  intentCopy = intent;
+  responseCopy = response;
+  activitiesCopy = activities;
   v17.receiver = self;
   v17.super_class = INCExtensionTransactionState;
   v14 = [(INCExtensionTransactionState *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_type = a3;
-    objc_storeStrong(&v14->_intent, a4);
-    objc_storeStrong(&v15->_intentResponse, a5);
-    objc_storeStrong(&v15->_userActivities, a6);
+    v14->_type = type;
+    objc_storeStrong(&v14->_intent, intent);
+    objc_storeStrong(&v15->_intentResponse, response);
+    objc_storeStrong(&v15->_userActivities, activities);
   }
 
   return v15;

@@ -1,9 +1,9 @@
 @interface DSContinuityStore
 + (void)nullifyReplicatorAllowlist;
 - (DSContinuityStore)init;
-- (void)fetchPairedDevicesWithCompletion:(id)a3;
-- (void)unpairAllDevicesWithCompletion:(id)a3;
-- (void)unpairDevicesWithIDs:(id)a3 completion:(id)a4;
+- (void)fetchPairedDevicesWithCompletion:(id)completion;
+- (void)unpairAllDevicesWithCompletion:(id)completion;
+- (void)unpairDevicesWithIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation DSContinuityStore
@@ -29,19 +29,19 @@
   return v2;
 }
 
-- (void)fetchPairedDevicesWithCompletion:(id)a3
+- (void)fetchPairedDevicesWithCompletion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  completionCopy = completion;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [(DSContinuityStore *)self replicatorProxy];
-  v7 = [v6 devices];
+  replicatorProxy = [(DSContinuityStore *)self replicatorProxy];
+  devices = [replicatorProxy devices];
 
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v8 = [devices countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -52,31 +52,31 @@
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(devices);
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        v13 = [v12 deviceID];
-        [v5 setObject:v12 forKeyedSubscript:v13];
+        deviceID = [v12 deviceID];
+        [dictionary setObject:v12 forKeyedSubscript:deviceID];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [devices countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v9);
   }
 
-  v14 = [(DSContinuityStore *)self continuityPairing];
+  continuityPairing = [(DSContinuityStore *)self continuityPairing];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __54__DSContinuityStore_fetchPairedDevicesWithCompletion___block_invoke;
   v18[3] = &unk_278F72DB8;
-  v19 = v5;
-  v20 = self;
-  v21 = v4;
-  v15 = v4;
-  v16 = v5;
-  [v14 fetchContinuityEligibleDevicesWithCompletion:v18];
+  v19 = dictionary;
+  selfCopy = self;
+  v21 = completionCopy;
+  v15 = completionCopy;
+  v16 = dictionary;
+  [continuityPairing fetchContinuityEligibleDevicesWithCompletion:v18];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -144,16 +144,16 @@ void __54__DSContinuityStore_fetchPairedDevicesWithCompletion___block_invoke(uin
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unpairAllDevicesWithCompletion:(id)a3
+- (void)unpairAllDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__DSContinuityStore_unpairAllDevicesWithCompletion___block_invoke;
   v6[3] = &unk_278F72DE0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(DSContinuityStore *)self fetchPairedDevicesWithCompletion:v6];
 }
 
@@ -192,18 +192,18 @@ void __52__DSContinuityStore_unpairAllDevicesWithCompletion___block_invoke(uint6
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unpairDevicesWithIDs:(id)a3 completion:(id)a4
+- (void)unpairDevicesWithIDs:(id)ds completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v18 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  dsCopy = ds;
+  completionCopy = completion;
+  array = [MEMORY[0x277CBEB18] array];
   v8 = dispatch_group_create();
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v6;
+  obj = dsCopy;
   v9 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v9)
   {
@@ -221,15 +221,15 @@ void __52__DSContinuityStore_unpairAllDevicesWithCompletion___block_invoke(uint6
 
         v13 = *(*(&v26 + 1) + 8 * v12);
         dispatch_group_enter(v8);
-        v14 = [(DSContinuityStore *)self continuityPairing];
+        continuityPairing = [(DSContinuityStore *)self continuityPairing];
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __53__DSContinuityStore_unpairDevicesWithIDs_completion___block_invoke;
         v23[3] = &unk_278F72E08;
         v23[4] = v13;
-        v24 = v7;
+        v24 = array;
         v25 = v8;
-        [v14 unpairHostWithDeviceID:v13 completion:v23];
+        [continuityPairing unpairHostWithDeviceID:v13 completion:v23];
 
         ++v12;
       }
@@ -245,10 +245,10 @@ void __52__DSContinuityStore_unpairAllDevicesWithCompletion___block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __53__DSContinuityStore_unpairDevicesWithIDs_completion___block_invoke_12;
   block[3] = &unk_278F726C8;
-  v21 = v7;
-  v22 = v18;
-  v15 = v18;
-  v16 = v7;
+  v21 = array;
+  v22 = completionCopy;
+  v15 = completionCopy;
+  v16 = array;
   dispatch_group_notify(v8, MEMORY[0x277D85CD0], block);
 
   v17 = *MEMORY[0x277D85DE8];

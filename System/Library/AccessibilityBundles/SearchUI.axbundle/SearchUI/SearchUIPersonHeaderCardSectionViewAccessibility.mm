@@ -1,19 +1,19 @@
 @interface SearchUIPersonHeaderCardSectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation SearchUIPersonHeaderCardSectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SearchUIPersonHeaderCardSectionView" hasProperty:@"section" withType:"@"];
-  [v3 validateClass:@"SFPersonHeaderCardSection" hasInstanceMethod:@"person" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFPerson" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIPersonHeaderCardSectionView" hasInstanceMethod:@"viewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIPersonHeaderViewController" hasInstanceMethod:@"userIsUnavailable" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchUIPersonHeaderCardSectionView" hasProperty:@"section" withType:"@"];
+  [validationsCopy validateClass:@"SFPersonHeaderCardSection" hasInstanceMethod:@"person" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFPerson" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIPersonHeaderCardSectionView" hasInstanceMethod:@"viewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIPersonHeaderViewController" hasInstanceMethod:@"userIsUnavailable" withFullSignature:{"B", 0}];
 }
 
 - (unint64_t)accessibilityTraits

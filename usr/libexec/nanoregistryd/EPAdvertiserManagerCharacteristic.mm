@@ -1,7 +1,7 @@
 @interface EPAdvertiserManagerCharacteristic
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CBCharacteristic)characteristic;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -62,10 +62,10 @@
   return [self->_writeHandler hash] - v5 + 32 * v5 + 923521;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -75,7 +75,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(CBUUID *)self->_characteristicUUID isEqual:v5->_characteristicUUID]&& self->_encryptionRequired == v5->_encryptionRequired)
       {
         readHandler = self->_readHandler;
@@ -110,8 +110,8 @@
 
 - (id)description
 {
-  v3 = [(CBUUID *)self->_characteristicUUID UUIDString];
-  v4 = v3;
+  uUIDString = [(CBUUID *)self->_characteristicUUID UUIDString];
+  v4 = uUIDString;
   v5 = @"NO";
   if (self->_encryptionRequired)
   {
@@ -138,12 +138,12 @@
     v5 = @"YES";
   }
 
-  v8 = [NSString stringWithFormat:@"Characteristic: %@ encryptionRequired: %@ readable:%@ writeable:%@", v3, v6, v7, v5];
+  v8 = [NSString stringWithFormat:@"Characteristic: %@ encryptionRequired: %@ readable:%@ writeable:%@", uUIDString, v6, v7, v5];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[EPAdvertiserManagerCharacteristic allocWithZone:?]];
   objc_storeStrong(&v4->_characteristicUUID, self->_characteristicUUID);

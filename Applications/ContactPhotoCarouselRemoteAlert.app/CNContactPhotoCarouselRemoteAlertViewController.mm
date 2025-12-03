@@ -1,22 +1,22 @@
 @interface CNContactPhotoCarouselRemoteAlertViewController
 - (void)_flowDidDismiss;
-- (void)avatarPosterEditorFromFlowManager:(id)a3 didUpdateContact:(id)a4 withVisualIdentity:(id)a5;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
-- (void)sender:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5;
-- (void)sender:(id)a3 presentViewController:(id)a4;
+- (void)avatarPosterEditorFromFlowManager:(id)manager didUpdateContact:(id)contact withVisualIdentity:(id)identity;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
+- (void)sender:(id)sender dismissViewController:(id)controller completionHandler:(id)handler;
+- (void)sender:(id)sender presentViewController:(id)controller;
 @end
 
 @implementation CNContactPhotoCarouselRemoteAlertViewController
 
-- (void)avatarPosterEditorFromFlowManager:(id)a3 didUpdateContact:(id)a4 withVisualIdentity:(id)a5
+- (void)avatarPosterEditorFromFlowManager:(id)manager didUpdateContact:(id)contact withVisualIdentity:(id)identity
 {
-  v6 = a4;
-  v7 = [(BSAction *)self->_action canSendResponse];
-  if (v6 && v7)
+  contactCopy = contact;
+  canSendResponse = [(BSAction *)self->_action canSendResponse];
+  if (contactCopy && canSendResponse)
   {
     v14 = 0;
-    v8 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v14];
+    v8 = [NSKeyedArchiver archivedDataWithRootObject:contactCopy requiringSecureCoding:1 error:&v14];
     v9 = v14;
     if (v8)
     {
@@ -32,58 +32,58 @@
       v10 = CNUILogRemoteAlert();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v9 localizedDescription];
+        localizedDescription = [v9 localizedDescription];
         *buf = 138412290;
-        v16 = v13;
+        v16 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Could not encode response contact: %@", buf, 0xCu);
       }
     }
   }
 }
 
-- (void)sender:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5
+- (void)sender:(id)sender dismissViewController:(id)controller completionHandler:(id)handler
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100001628;
   v7[3] = &unk_1000081E8;
   v7[4] = self;
-  v8 = a5;
-  v6 = v8;
-  [a4 dismissViewControllerAnimated:1 completion:v7];
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  [controller dismissViewControllerAnimated:1 completion:v7];
 }
 
-- (void)sender:(id)a3 presentViewController:(id)a4
+- (void)sender:(id)sender presentViewController:(id)controller
 {
-  v5 = a4;
-  [v5 setModalPresentationStyle:0];
-  [(CNContactPhotoCarouselRemoteAlertViewController *)self presentViewController:v5 animated:1 completion:0];
+  controllerCopy = controller;
+  [controllerCopy setModalPresentationStyle:0];
+  [(CNContactPhotoCarouselRemoteAlertViewController *)self presentViewController:controllerCopy animated:1 completion:0];
 }
 
 - (void)_flowDidDismiss
 {
-  v2 = [(CNContactPhotoCarouselRemoteAlertViewController *)self _remoteViewControllerProxy];
-  [v2 dismiss];
+  _remoteViewControllerProxy = [(CNContactPhotoCarouselRemoteAlertViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy dismiss];
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = CNUILogRemoteAlert();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v32 = v6;
+    v32 = contextCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Preparing for activation with context: %p", buf, 0xCu);
   }
 
-  v9 = [v6 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"mode"];
-  v11 = [v10 integerValue];
+  userInfo = [contextCopy userInfo];
+  v10 = [userInfo objectForKeyedSubscript:@"mode"];
+  integerValue = [v10 integerValue];
 
-  v12 = [v6 userInfo];
-  v13 = [v12 objectForKeyedSubscript:@"contactData"];
+  userInfo2 = [contextCopy userInfo];
+  v13 = [userInfo2 objectForKeyedSubscript:@"contactData"];
 
   if ((*(CNIsDataEmpty + 16))(CNIsDataEmpty, v13))
   {
@@ -94,9 +94,9 @@
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Contact data is missing for a request", buf, 2u);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -111,16 +111,16 @@
     if (self->_requestContact)
     {
       v18 = +[CNUIContactsEnvironment currentEnvironment];
-      v19 = [v18 inProcessContactStore];
+      inProcessContactStore = [v18 inProcessContactStore];
 
-      v20 = [[CNSNaPSetupFlowManager alloc] initWithPresenterDelegate:self contactStore:v19 mode:v11];
+      v20 = [[CNSNaPSetupFlowManager alloc] initWithPresenterDelegate:self contactStore:inProcessContactStore mode:integerValue];
       flowManager = self->_flowManager;
       self->_flowManager = v20;
 
       [(CNSNaPSetupFlowManager *)self->_flowManager setDelegate:self];
-      v22 = [v6 userInfo];
-      v23 = [v22 objectForKeyedSubscript:@"isEditing"];
-      v24 = [v23 BOOLValue];
+      userInfo3 = [contextCopy userInfo];
+      v23 = [userInfo3 objectForKeyedSubscript:@"isEditing"];
+      bOOLValue = [v23 BOOLValue];
 
       v25 = dispatch_time(0, 100000000);
       block[0] = _NSConcreteStackBlock;
@@ -128,11 +128,11 @@
       block[2] = sub_100001ADC;
       block[3] = &unk_1000081C0;
       block[4] = self;
-      v29 = v24;
+      v29 = bOOLValue;
       dispatch_after(v25, &_dispatch_main_q, block);
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7);
+        completionCopy[2](completionCopy);
       }
     }
 
@@ -141,38 +141,38 @@
       v26 = CNUILogRemoteAlert();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        v27 = [v16 localizedDescription];
+        localizedDescription = [v16 localizedDescription];
         *buf = 138412290;
-        v32 = v27;
+        v32 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Could not unarchive contact for a request: %@", buf, 0xCu);
       }
 
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7);
+        completionCopy[2](completionCopy);
       }
     }
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = CNUILogRemoteAlert();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v14 = 134217984;
-    v15 = v6;
+    v15 = contextCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Configuring with context: %p", &v14, 0xCu);
   }
 
   v9 = [(CNContactPhotoCarouselRemoteAlertViewController *)self _remoteViewControllerProxyWithErrorHandler:&stru_100008198];
   [v9 setAllowsAlertStacking:1];
-  v10 = [v6 actions];
-  v11 = [v10 anyObject];
+  actions = [contextCopy actions];
+  anyObject = [actions anyObject];
   action = self->_action;
-  self->_action = v11;
+  self->_action = anyObject;
 
   if (!self->_action)
   {
@@ -184,9 +184,9 @@
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 

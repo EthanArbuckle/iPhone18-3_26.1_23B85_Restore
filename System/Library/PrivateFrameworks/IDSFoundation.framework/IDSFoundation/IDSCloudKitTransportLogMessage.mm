@@ -12,8 +12,8 @@
 - (ENGroupID)groupID
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(IDSCloudKitTransportLogMessage *)self payload];
-  v4 = [v3 objectForKeyedSubscript:@"gI"];
+  payload = [(IDSCloudKitTransportLogMessage *)self payload];
+  v4 = [payload objectForKeyedSubscript:@"gI"];
 
   if (v4)
   {
@@ -27,7 +27,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138478083;
-      v9 = self;
+      selfCopy = self;
       v10 = 2114;
       v11 = v4;
       _os_log_impl(&dword_1A7AD9000, v6, OS_LOG_TYPE_DEFAULT, "Failed to create groupID from transportMessage {groupMessage: %{private}@, groupIDString: %{public}@", &v8, 0x16u);
@@ -42,8 +42,8 @@ LABEL_7:
 
 - (NSString)recipientAlias
 {
-  v3 = [(IDSCloudKitTransportLogMessage *)self payload];
-  v4 = [v3 objectForKeyedSubscript:@"tP"];
+  payload = [(IDSCloudKitTransportLogMessage *)self payload];
+  v4 = [payload objectForKeyedSubscript:@"tP"];
 
   if (!v4)
   {
@@ -59,8 +59,8 @@ LABEL_7:
 
 - (NSString)senderAlias
 {
-  v3 = [(IDSCloudKitTransportLogMessage *)self payload];
-  v4 = [v3 objectForKeyedSubscript:@"sP"];
+  payload = [(IDSCloudKitTransportLogMessage *)self payload];
+  v4 = [payload objectForKeyedSubscript:@"sP"];
 
   if (!v4)
   {
@@ -76,13 +76,13 @@ LABEL_7:
 
 - (IDSDestinationPushToken)destination
 {
-  v3 = [(IDSCloudKitTransportLogMessage *)self payload];
-  v4 = [v3 objectForKeyedSubscript:@"t"];
+  payload = [(IDSCloudKitTransportLogMessage *)self payload];
+  v4 = [payload objectForKeyedSubscript:@"t"];
 
   if (v4)
   {
-    v5 = [(IDSCloudKitTransportLogMessage *)self payload];
-    v6 = [v5 objectForKeyedSubscript:@"sP"];
+    payload2 = [(IDSCloudKitTransportLogMessage *)self payload];
+    v6 = [payload2 objectForKeyedSubscript:@"sP"];
 
     if (v6)
     {
@@ -114,16 +114,16 @@ LABEL_10:
 
 - (NSData)encryptedPayload
 {
-  v2 = [(IDSCloudKitTransportLogMessage *)self payload];
-  v3 = [v2 objectForKeyedSubscript:@"P"];
+  payload = [(IDSCloudKitTransportLogMessage *)self payload];
+  v3 = [payload objectForKeyedSubscript:@"P"];
 
   return v3;
 }
 
 - (NSString)cypherIdentifier
 {
-  v2 = [(IDSCloudKitTransportLogMessage *)self payload];
-  v3 = [v2 objectForKeyedSubscript:@"E"];
+  payload = [(IDSCloudKitTransportLogMessage *)self payload];
+  v3 = [payload objectForKeyedSubscript:@"E"];
 
   return v3;
 }

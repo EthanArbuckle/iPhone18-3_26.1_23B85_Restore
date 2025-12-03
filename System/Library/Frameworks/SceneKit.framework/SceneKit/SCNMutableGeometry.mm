@@ -1,18 +1,18 @@
 @interface SCNMutableGeometry
-- (id)mutableGeometrySourcesForSemantic:(id)a3;
-- (void)mutateGeometrySourcesWithSemantics:(id)a3 usingBlock:(id)a4;
+- (id)mutableGeometrySourcesForSemantic:(id)semantic;
+- (void)mutateGeometrySourcesWithSemantics:(id)semantics usingBlock:(id)block;
 @end
 
 @implementation SCNMutableGeometry
 
-- (id)mutableGeometrySourcesForSemantic:(id)a3
+- (id)mutableGeometrySourcesForSemantic:(id)semantic
 {
-  v4 = SCNGeometrySourceSemanticToMeshSourceSemantic(a3);
-  v5 = [(SCNGeometry *)self sceneRef];
-  v6 = v5;
-  if (v5)
+  v4 = SCNGeometrySourceSemanticToMeshSourceSemantic(semantic);
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v6 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v5);
+    C3DSceneLock(sceneRef);
   }
 
   Mesh = C3DGeometryGetMesh([(SCNGeometry *)self geometryRef]);
@@ -61,15 +61,15 @@ void __56__SCNMutableGeometry_mutableGeometrySourcesForSemantic___block_invoke(u
   }
 }
 
-- (void)mutateGeometrySourcesWithSemantics:(id)a3 usingBlock:(id)a4
+- (void)mutateGeometrySourcesWithSemantics:(id)semantics usingBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [semantics countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -81,33 +81,33 @@ void __56__SCNMutableGeometry_mutableGeometrySourcesForSemantic___block_invoke(u
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(semantics);
         }
 
         v12 = [(SCNMutableGeometry *)self mutableGeometrySourcesForSemantic:*(*(&v16 + 1) + 8 * v11)];
         if (v12)
         {
-          [v7 addObjectsFromArray:v12];
+          [array addObjectsFromArray:v12];
         }
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [semantics countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
   }
 
-  v13 = [(SCNGeometry *)self sceneRef];
-  v14 = v13;
-  if (v13)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v14 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v13);
+    C3DSceneLock(sceneRef);
   }
 
-  if ((*(a4 + 2))(a4, v7))
+  if ((*(block + 2))(block, array))
   {
     Mesh = C3DGeometryGetMesh([(SCNGeometry *)self geometryRef]);
     C3DMeshDidMutate(Mesh);

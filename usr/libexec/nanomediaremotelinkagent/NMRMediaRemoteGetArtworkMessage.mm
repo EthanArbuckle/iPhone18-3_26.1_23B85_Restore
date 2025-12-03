@@ -1,25 +1,25 @@
 @interface NMRMediaRemoteGetArtworkMessage
-+ (id)messageWithOriginIdentifier:(id)a3;
-- (NMRMediaRemoteGetArtworkMessage)initWithProtobufData:(id)a3;
++ (id)messageWithOriginIdentifier:(id)identifier;
+- (NMRMediaRemoteGetArtworkMessage)initWithProtobufData:(id)data;
 - (NSDate)serializationDate;
 - (NSNumber)originIdentifier;
-- (id)_initWithOriginIdentifier:(id)a3;
+- (id)_initWithOriginIdentifier:(id)identifier;
 - (id)protobufData;
 @end
 
 @implementation NMRMediaRemoteGetArtworkMessage
 
-+ (id)messageWithOriginIdentifier:(id)a3
++ (id)messageWithOriginIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithOriginIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] _initWithOriginIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)_initWithOriginIdentifier:(id)a3
+- (id)_initWithOriginIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = NMRMediaRemoteGetArtworkMessage;
   v5 = [(NMRMediaRemoteGetArtworkMessage *)&v9 init];
@@ -29,7 +29,7 @@
     protobuf = v5->_protobuf;
     v5->_protobuf = v6;
 
-    -[_NMRMediaRemoteGetArtworkMessage setOriginIdentifier:](v5->_protobuf, "setOriginIdentifier:", [v4 intValue]);
+    -[_NMRMediaRemoteGetArtworkMessage setOriginIdentifier:](v5->_protobuf, "setOriginIdentifier:", [identifierCopy intValue]);
   }
 
   return v5;
@@ -66,15 +66,15 @@
   return v3;
 }
 
-- (NMRMediaRemoteGetArtworkMessage)initWithProtobufData:(id)a3
+- (NMRMediaRemoteGetArtworkMessage)initWithProtobufData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = NMRMediaRemoteGetArtworkMessage;
   v5 = [(NMRMediaRemoteGetArtworkMessage *)&v10 init];
   if (v5)
   {
-    v6 = [[_NMRMediaRemoteGetArtworkMessage alloc] initWithData:v4];
+    v6 = [[_NMRMediaRemoteGetArtworkMessage alloc] initWithData:dataCopy];
     protobuf = v5->_protobuf;
     v5->_protobuf = v6;
 

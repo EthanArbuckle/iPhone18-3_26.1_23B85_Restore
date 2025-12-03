@@ -1,6 +1,6 @@
 @interface FCCKPrivateSaveRecordsOperation
 - (BOOL)validateOperation;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -11,9 +11,9 @@
   v18 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = FCCKPrivateSaveRecordsOperation;
-  v3 = [(FCCKPrivateDatabaseOperation *)&v9 validateOperation];
-  v4 = [(FCCKPrivateSaveRecordsOperation *)self recordsToSave];
-  v5 = [v4 count];
+  validateOperation = [(FCCKPrivateDatabaseOperation *)&v9 validateOperation];
+  recordsToSave = [(FCCKPrivateSaveRecordsOperation *)self recordsToSave];
+  v5 = [recordsToSave count];
 
   if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -31,7 +31,7 @@
 
   if (v5)
   {
-    result = v3;
+    result = validateOperation;
   }
 
   else
@@ -56,24 +56,24 @@
     v4 = 2;
   }
 
-  v5 = [(FCCKPrivateDatabaseOperation *)self database];
-  v6 = [(FCCKPrivateSaveRecordsOperation *)self recordsToSave];
+  database = [(FCCKPrivateDatabaseOperation *)self database];
+  recordsToSave = [(FCCKPrivateSaveRecordsOperation *)self recordsToSave];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __51__FCCKPrivateSaveRecordsOperation_performOperation__block_invoke;
   v10[3] = &unk_1E7C39678;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v7 = v3;
-  [(FCCKPrivateDatabase *)v5 enumeratePayloadsWithRecordIDs:v6 records:0 zoneIDs:0 zones:v4 options:v10 payloadHandler:?];
+  [(FCCKPrivateDatabase *)database enumeratePayloadsWithRecordIDs:recordsToSave records:0 zoneIDs:0 zones:v4 options:v10 payloadHandler:?];
 
-  v8 = [(FCCKPrivateSaveRecordsOperation *)self qualityOfService];
+  qualityOfService = [(FCCKPrivateSaveRecordsOperation *)self qualityOfService];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__FCCKPrivateSaveRecordsOperation_performOperation__block_invoke_4;
   v9[3] = &unk_1E7C37750;
   v9[4] = self;
-  [(FCCKPrivateDatabaseCKOperationResults *)v7 notifyWhenFinishWithQoS:v8 completionHandler:v9];
+  [(FCCKPrivateDatabaseCKOperationResults *)v7 notifyWhenFinishWithQoS:qualityOfService completionHandler:v9];
 }
 
 void __51__FCCKPrivateSaveRecordsOperation_performOperation__block_invoke(uint64_t a1, void *a2)
@@ -147,16 +147,16 @@ void __51__FCCKPrivateSaveRecordsOperation_performOperation__block_invoke_4(uint
   [*(a1 + 32) finishedPerformingOperationWithError:v6];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(FCCKPrivateSaveRecordsOperation *)self saveRecordsCompletionBlock];
+  errorCopy = error;
+  saveRecordsCompletionBlock = [(FCCKPrivateSaveRecordsOperation *)self saveRecordsCompletionBlock];
 
-  if (v4)
+  if (saveRecordsCompletionBlock)
   {
-    v5 = [(FCCKPrivateSaveRecordsOperation *)self saveRecordsCompletionBlock];
-    v6 = [(FCCKPrivateSaveRecordsOperation *)self resultSavedRecords];
-    (v5)[2](v5, v6, v7);
+    saveRecordsCompletionBlock2 = [(FCCKPrivateSaveRecordsOperation *)self saveRecordsCompletionBlock];
+    resultSavedRecords = [(FCCKPrivateSaveRecordsOperation *)self resultSavedRecords];
+    (saveRecordsCompletionBlock2)[2](saveRecordsCompletionBlock2, resultSavedRecords, errorCopy);
   }
 }
 

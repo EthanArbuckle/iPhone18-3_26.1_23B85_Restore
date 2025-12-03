@@ -1,30 +1,30 @@
 @interface OFUIGridViewController
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
-- (CGPoint)draggingSource:(id)a3 badgeCenterForItem:(id)a4;
-- (CGRect)draggingSource:(id)a3 originalFrameForItem:(id)a4;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
+- (CGPoint)draggingSource:(id)source badgeCenterForItem:(id)item;
+- (CGRect)draggingSource:(id)source originalFrameForItem:(id)item;
 - (OFUIGridView)gridView;
-- (OFUIGridViewController)initWithStyle:(unint64_t)a3;
-- (void)cancelAllOperations:(BOOL)a3;
+- (OFUIGridViewController)initWithStyle:(unint64_t)style;
+- (void)cancelAllOperations:(BOOL)operations;
 - (void)commonInit;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
-- (void)draggingSource:(id)a3 cleanupItem:(id)a4;
-- (void)draggingSource:(id)a3 prepareItem:(id)a4;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)draggingSource:(id)source cleanupItem:(id)item;
+- (void)draggingSource:(id)source prepareItem:(id)item;
 - (void)loadView;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setGridView:(id)a3;
-- (void)updateDisplayedCellOperationsPriority:(id)a3;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setGridView:(id)view;
+- (void)updateDisplayedCellOperationsPriority:(id)priority;
 - (void)updateDisplayedCellsOperationsPriority;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewDidUnload;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillUnload;
-- (void)willMoveToParentViewController:(id)a3;
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)willMoveToParentViewController:(id)controller;
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation OFUIGridViewController
@@ -42,7 +42,7 @@
   self->_maintainPercentageScrolledWhenDeviceRotates = 0;
 }
 
-- (OFUIGridViewController)initWithStyle:(unint64_t)a3
+- (OFUIGridViewController)initWithStyle:(unint64_t)style
 {
   v7.receiver = self;
   v7.super_class = OFUIGridViewController;
@@ -51,7 +51,7 @@
   if (v4)
   {
     [(OFUIGridViewController *)v4 commonInit];
-    v5->_gridViewStyle = a3;
+    v5->_gridViewStyle = style;
   }
 
   return v5;
@@ -86,8 +86,8 @@
     v10.receiver = self;
     v10.super_class = OFUIGridViewController;
     [(OFUIViewController *)&v10 loadView];
-    v4 = [(OFUIGridViewController *)self gridView];
-    if (!v4)
+    gridView = [(OFUIGridViewController *)self gridView];
+    if (!gridView)
     {
       v5 = MEMORY[0x277CCACA8];
       v6 = objc_opt_class();
@@ -95,17 +95,17 @@
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"%@ loaded the %@ nib but didn't get a OFUIGridView.", objc_msgSend(v5, "stringWithFormat:", @"-[%@ %@]", v7, NSStringFromSelector(a2)), -[OFUIGridViewController nibName](self, "nibName")}];
     }
 
-    if (![(OFUIGridView *)v4 delegate])
+    if (![(OFUIGridView *)gridView delegate])
     {
-      [(OFUIGridView *)v4 setDelegate:self];
+      [(OFUIGridView *)gridView setDelegate:self];
     }
 
-    if (![(OFUIGridView *)v4 dataSource])
+    if (![(OFUIGridView *)gridView dataSource])
     {
-      [(OFUIGridView *)v4 setDataSource:self];
+      [(OFUIGridView *)gridView setDataSource:self];
     }
 
-    [(OFUIGridView *)v4 setGridViewController:self];
+    [(OFUIGridView *)gridView setGridViewController:self];
   }
 
   else
@@ -156,69 +156,69 @@
   [(OFUIViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = OFUIGridViewController;
-  [(OFUIViewController *)&v4 viewWillAppear:a3];
+  [(OFUIViewController *)&v4 viewWillAppear:appear];
   [[(OFUIGridViewController *)self gridView] updateLayout:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = OFUIGridViewController;
-  [(OFUIViewController *)&v3 viewDidAppear:a3];
+  [(OFUIViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = OFUIGridViewController;
-  [(OFUIViewController *)&v4 viewWillDisappear:a3];
+  [(OFUIViewController *)&v4 viewWillDisappear:disappear];
   [(NSOperationQueue *)self->_operationQueue cancelAllOperations];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = OFUIGridViewController;
-  [(OFUIViewController *)&v3 viewDidDisappear:a3];
+  [(OFUIViewController *)&v3 viewDidDisappear:disappear];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = OFUIGridViewController;
   [(OFUIGridViewController *)&v5 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     [(NSOperationQueue *)self->_operationQueue cancelAllOperations];
   }
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   v4.receiver = self;
   v4.super_class = OFUIGridViewController;
-  return [(OFUIGridViewController *)&v4 shouldAutorotateToInterfaceOrientation:a3];
+  return [(OFUIGridViewController *)&v4 shouldAutorotateToInterfaceOrientation:orientation];
 }
 
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v25.receiver = self;
   v25.super_class = OFUIGridViewController;
-  [(OFUIGridViewController *)&v25 willRotateToInterfaceOrientation:a3 duration:?];
+  [(OFUIGridViewController *)&v25 willRotateToInterfaceOrientation:orientation duration:?];
   if (self->_maintainPercentageScrolledWhenDeviceRotates)
   {
     [[(OFUIGridViewController *)self gridView] setCanUpdateCells:0];
-    v6 = [[(OFUIGridViewController *)self gridView] orientation];
+    orientation = [[(OFUIGridViewController *)self gridView] orientation];
     [[(OFUIGridViewController *)self gridView] contentSize];
     v8 = v7;
     v10 = v9;
     [[(OFUIGridViewController *)self gridView] bounds];
     v13 = 0.0;
-    if (v6)
+    if (orientation)
     {
       if (v10 > v12)
       {
@@ -251,7 +251,7 @@
     v24[2] = __68__OFUIGridViewController_willRotateToInterfaceOrientation_duration___block_invoke;
     v24[3] = &unk_279C89F90;
     v24[4] = self;
-    [MEMORY[0x277D75D18] animateWithDuration:196608 delay:v24 options:&__block_literal_global_6 animations:a4 * 0.25 completion:0.0];
+    [MEMORY[0x277D75D18] animateWithDuration:196608 delay:v24 options:&__block_literal_global_6 animations:duration * 0.25 completion:0.0];
   }
 }
 
@@ -262,11 +262,11 @@ uint64_t __68__OFUIGridViewController_willRotateToInterfaceOrientation_duration_
   return [v1 setAlpha:0.0];
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   v5.receiver = self;
   v5.super_class = OFUIGridViewController;
-  [(OFUIGridViewController *)&v5 didRotateFromInterfaceOrientation:a3];
+  [(OFUIGridViewController *)&v5 didRotateFromInterfaceOrientation:orientation];
   if (self->_maintainPercentageScrolledWhenDeviceRotates)
   {
     [[(OFUIGridViewController *)self gridView] setCanUpdateCells:1];
@@ -291,23 +291,23 @@ uint64_t __60__OFUIGridViewController_didRotateFromInterfaceOrientation___block_
   return [v1 setAlpha:1.0];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v7.receiver = self;
   v7.super_class = OFUIGridViewController;
   [OFUIGridViewController setEditing:sel_setEditing_animated_ animated:?];
-  [[(OFUIGridViewController *)self gridView] setEditing:v5 animated:v4];
+  [[(OFUIGridViewController *)self gridView] setEditing:editingCopy animated:animatedCopy];
 }
 
 - (OFUIGridView)gridView
 {
-  v2 = [(OFUIGridViewController *)self view];
+  view = [(OFUIGridViewController *)self view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v2;
+    return view;
   }
 
   else
@@ -316,13 +316,13 @@ uint64_t __60__OFUIGridViewController_didRotateFromInterfaceOrientation___block_
   }
 }
 
-- (void)setGridView:(id)a3
+- (void)setGridView:(id)view
 {
-  v5 = [(OFUIGridViewController *)self gridView];
-  if (v5 != a3)
+  gridView = [(OFUIGridViewController *)self gridView];
+  if (gridView != view)
   {
-    v6 = v5;
-    if ([(OFUIGridView *)v5 dataSource]== self)
+    v6 = gridView;
+    if ([(OFUIGridView *)gridView dataSource]== self)
     {
       [(OFUIGridView *)v6 setDataSource:0];
     }
@@ -332,16 +332,16 @@ uint64_t __60__OFUIGridViewController_didRotateFromInterfaceOrientation___block_
       [(OFUIGridView *)v6 setDelegate:0];
     }
 
-    [(OFUIGridViewController *)self setView:a3];
-    if (![a3 dataSource])
+    [(OFUIGridViewController *)self setView:view];
+    if (![view dataSource])
     {
-      [a3 setDataSource:self];
+      [view setDataSource:self];
     }
 
-    if (![a3 delegate])
+    if (![view delegate])
     {
 
-      [a3 setDelegate:self];
+      [view setDelegate:self];
     }
   }
 }
@@ -353,8 +353,8 @@ uint64_t __60__OFUIGridViewController_didRotateFromInterfaceOrientation___block_
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [[(OFUIGridViewController *)self gridView] displayedCells];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  displayedCells = [[(OFUIGridViewController *)self gridView] displayedCells];
+  v4 = [displayedCells countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -366,25 +366,25 @@ uint64_t __60__OFUIGridViewController_didRotateFromInterfaceOrientation___block_
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(displayedCells);
         }
 
         [(OFUIGridViewController *)self updateDisplayedCellOperationsPriority:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [displayedCells countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)updateDisplayedCellOperationsPriority:(id)a3
+- (void)updateDisplayedCellOperationsPriority:(id)priority
 {
-  if (a3 && [a3 hasOperations])
+  if (priority && [priority hasOperations])
   {
-    if ([[(OFUIGridViewController *)self gridView] isCellVisible:a3])
+    if ([[(OFUIGridViewController *)self gridView] isCellVisible:priority])
     {
       v5 = 4;
     }
@@ -394,41 +394,41 @@ uint64_t __60__OFUIGridViewController_didRotateFromInterfaceOrientation___block_
       v5 = 0;
     }
 
-    [a3 setOperationsPriority:v5];
+    [priority setOperationsPriority:v5];
   }
 }
 
-- (void)cancelAllOperations:(BOOL)a3
+- (void)cancelAllOperations:(BOOL)operations
 {
-  v3 = a3;
+  operationsCopy = operations;
   [(NSOperationQueue *)[(OFUIGridViewController *)self operationQueue] cancelAllOperations];
-  if (v3)
+  if (operationsCopy)
   {
-    v5 = [(OFUIGridViewController *)self operationQueue];
+    operationQueue = [(OFUIGridViewController *)self operationQueue];
 
-    [(NSOperationQueue *)v5 waitUntilAllOperationsAreFinished];
+    [(NSOperationQueue *)operationQueue waitUntilAllOperationsAreFinished];
   }
 }
 
-- (void)draggingSource:(id)a3 prepareItem:(id)a4
+- (void)draggingSource:(id)source prepareItem:(id)item
 {
-  v6 = [(OFUIGridViewController *)self gridView];
+  gridView = [(OFUIGridViewController *)self gridView];
 
-  [(OFUIGridView *)v6 draggingSource:a3 prepareItem:a4];
+  [(OFUIGridView *)gridView draggingSource:source prepareItem:item];
 }
 
-- (void)draggingSource:(id)a3 cleanupItem:(id)a4
+- (void)draggingSource:(id)source cleanupItem:(id)item
 {
-  v6 = [(OFUIGridViewController *)self gridView];
+  gridView = [(OFUIGridViewController *)self gridView];
 
-  [(OFUIGridView *)v6 draggingSource:a3 cleanupItem:a4];
+  [(OFUIGridView *)gridView draggingSource:source cleanupItem:item];
 }
 
-- (CGRect)draggingSource:(id)a3 originalFrameForItem:(id)a4
+- (CGRect)draggingSource:(id)source originalFrameForItem:(id)item
 {
-  v6 = [(OFUIGridViewController *)self gridView];
+  gridView = [(OFUIGridViewController *)self gridView];
 
-  [(OFUIGridView *)v6 draggingSource:a3 originalFrameForItem:a4];
+  [(OFUIGridView *)gridView draggingSource:source originalFrameForItem:item];
   result.size.height = v10;
   result.size.width = v9;
   result.origin.y = v8;
@@ -436,11 +436,11 @@ uint64_t __60__OFUIGridViewController_didRotateFromInterfaceOrientation___block_
   return result;
 }
 
-- (CGPoint)draggingSource:(id)a3 badgeCenterForItem:(id)a4
+- (CGPoint)draggingSource:(id)source badgeCenterForItem:(id)item
 {
-  v6 = [(OFUIGridViewController *)self gridView];
+  gridView = [(OFUIGridViewController *)self gridView];
 
-  [(OFUIGridView *)v6 draggingSource:a3 badgeCenterForItem:a4];
+  [(OFUIGridView *)gridView draggingSource:source badgeCenterForItem:item];
   result.y = v8;
   result.x = v7;
   return result;

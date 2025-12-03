@@ -1,34 +1,34 @@
 @interface NTKZeusAnalogFaceBundle
 + (id)identifier;
-- (id)_fall2020DefaultFacesForDevice:(id)a3;
-- (id)_gloryEDefaultFacesForDevice:(id)a3;
-- (id)_graceDefaultFacesForDevice:(id)a3;
-- (id)_legacyDefaultFacesForDevice:(id)a3;
-- (id)_spring2020DefaultFacesForDevice:(id)a3;
+- (id)_fall2020DefaultFacesForDevice:(id)device;
+- (id)_gloryEDefaultFacesForDevice:(id)device;
+- (id)_graceDefaultFacesForDevice:(id)device;
+- (id)_legacyDefaultFacesForDevice:(id)device;
+- (id)_spring2020DefaultFacesForDevice:(id)device;
 - (id)complicationTypesBySlot;
-- (id)galleryEditOptionsForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (id)galleryRowPrioritiesForDevice:(id)a3;
-- (id)heroGloryEDefaultFacesForDevice:(id)a3;
-- (id)heroGraceDefaultFacesForDevice:(id)a3;
-- (id)heroLegacyDefaultFacesForDevice:(id)a3;
-- (id)heroSpring2020DefaultFacesForDevice:(id)a3;
+- (id)galleryEditOptionsForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (id)galleryRowPrioritiesForDevice:(id)device;
+- (id)heroGloryEDefaultFacesForDevice:(id)device;
+- (id)heroGraceDefaultFacesForDevice:(id)device;
+- (id)heroLegacyDefaultFacesForDevice:(id)device;
+- (id)heroSpring2020DefaultFacesForDevice:(id)device;
 @end
 
 @implementation NTKZeusAnalogFaceBundle
 
 + (id)identifier
 {
-  v3 = [NSBundle bundleForClass:a1];
-  v4 = [v3 bundleIdentifier];
-  v5 = NSStringFromClass(a1);
-  v6 = [NSString stringWithFormat:@"%@.%@", v4, v5];
+  v3 = [NSBundle bundleForClass:self];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v5 = NSStringFromClass(self);
+  v6 = [NSString stringWithFormat:@"%@.%@", bundleIdentifier, v5];
 
   return v6;
 }
 
-- (id)galleryRowPrioritiesForDevice:(id)a3
+- (id)galleryRowPrioritiesForDevice:(id)device
 {
   v5 = &off_46CE0;
   v6 = &off_46CF8;
@@ -37,45 +37,45 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
-  [NTKZeusAnalogFace isRestrictedForDevice:v4];
-  if ([v4 isRunningNapiliGMOrLater])
+  deviceCopy = device;
+  [NTKZeusAnalogFace isRestrictedForDevice:deviceCopy];
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     v8.receiver = self;
     v8.super_class = NTKZeusAnalogFaceBundle;
-    v5 = [(NTKZeusAnalogFaceBundle *)&v8 galleryFacesForDevice:v4];
+    v5 = [(NTKZeusAnalogFaceBundle *)&v8 galleryFacesForDevice:deviceCopy];
     [v5 enumerateObjectsUsingBlock:&stru_44968];
   }
 
   else
   {
-    if ([v4 supportsPDRCapability:2919474315])
+    if ([deviceCopy supportsPDRCapability:2919474315])
     {
-      v6 = [(NTKZeusAnalogFaceBundle *)self _fall2020DefaultFacesForDevice:v4];
+      v6 = [(NTKZeusAnalogFaceBundle *)self _fall2020DefaultFacesForDevice:deviceCopy];
     }
 
-    else if ([v4 supportsPDRCapability:753405533])
+    else if ([deviceCopy supportsPDRCapability:753405533])
     {
-      v6 = [(NTKZeusAnalogFaceBundle *)self _spring2020DefaultFacesForDevice:v4];
+      v6 = [(NTKZeusAnalogFaceBundle *)self _spring2020DefaultFacesForDevice:deviceCopy];
     }
 
-    else if ([v4 isRunningGraceOrLater])
+    else if ([deviceCopy isRunningGraceOrLater])
     {
-      v6 = [(NTKZeusAnalogFaceBundle *)self _graceDefaultFacesForDevice:v4];
+      v6 = [(NTKZeusAnalogFaceBundle *)self _graceDefaultFacesForDevice:deviceCopy];
     }
 
     else
     {
-      if ([v4 isRunningGloryEOrLater])
+      if ([deviceCopy isRunningGloryEOrLater])
       {
-        [(NTKZeusAnalogFaceBundle *)self _gloryEDefaultFacesForDevice:v4];
+        [(NTKZeusAnalogFaceBundle *)self _gloryEDefaultFacesForDevice:deviceCopy];
       }
 
       else
       {
-        [(NTKZeusAnalogFaceBundle *)self _legacyDefaultFacesForDevice:v4];
+        [(NTKZeusAnalogFaceBundle *)self _legacyDefaultFacesForDevice:deviceCopy];
       }
       v6 = ;
     }
@@ -86,9 +86,9 @@
   return v5;
 }
 
-- (id)galleryEditOptionsForDevice:(id)a3
+- (id)galleryEditOptionsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5[0] = &off_46D10;
     v5[1] = &off_46D70;
@@ -105,9 +105,9 @@
   return v3;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v7[0] = ntk_zeus_blanc;
     v7[1] = ntk_zeus_orange;
@@ -128,29 +128,29 @@
   return v5;
 }
 
-- (id)_legacyDefaultFacesForDevice:(id)a3
+- (id)_legacyDefaultFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_opt_new();
-  if ([v4 deviceCategory] != &dword_0 + 1)
+  if ([deviceCopy deviceCategory] != &dword_0 + 1)
   {
     v6 = 3000;
     do
     {
-      v7 = [NTKFace defaultFaceOfStyle:14 forDevice:v4];
+      v7 = [NTKFace defaultFaceOfStyle:14 forDevice:deviceCopy];
       if (v7)
       {
-        v8 = [NTKZeusAnalogDensityEditOption optionWithDensity:3 forDevice:v4];
+        v8 = [NTKZeusAnalogDensityEditOption optionWithDensity:3 forDevice:deviceCopy];
         [v7 selectOption:v8 forCustomEditMode:11 slot:0];
 
-        v9 = [NTKZeusColorEditOption optionWithColor:v6 forDevice:v4];
+        v9 = [NTKZeusColorEditOption optionWithColor:v6 forDevice:deviceCopy];
         [v7 selectOption:v9 forCustomEditMode:10 slot:0];
 
-        v10 = [NTKZeusAnalogStyleEditOption optionWithStyle:1 forDevice:v4];
+        v10 = [NTKZeusAnalogStyleEditOption optionWithStyle:1 forDevice:deviceCopy];
         [v7 selectOption:v10 forCustomEditMode:13 slot:0];
 
-        v11 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
-        [v7 _setFaceGalleryComplicationTypesForSlots:v11];
+        complicationTypesBySlot = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
+        [v7 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot];
 
         [v5 addObject:v7];
       }
@@ -161,18 +161,18 @@
     while (v6 != 3003);
   }
 
-  v12 = [NTKFace defaultFaceOfStyle:14 forDevice:v4];
-  v13 = [NTKZeusAnalogDensityEditOption optionWithDensity:3 forDevice:v4];
+  v12 = [NTKFace defaultFaceOfStyle:14 forDevice:deviceCopy];
+  v13 = [NTKZeusAnalogDensityEditOption optionWithDensity:3 forDevice:deviceCopy];
   [v12 selectOption:v13 forCustomEditMode:11 slot:0];
 
-  v14 = [NTKZeusColorEditOption optionWithColor:102 forDevice:v4];
+  v14 = [NTKZeusColorEditOption optionWithColor:102 forDevice:deviceCopy];
   [v12 selectOption:v14 forCustomEditMode:10 slot:0];
 
-  v15 = [NTKZeusAnalogStyleEditOption optionWithStyle:1 forDevice:v4];
+  v15 = [NTKZeusAnalogStyleEditOption optionWithStyle:1 forDevice:deviceCopy];
   [v12 selectOption:v15 forCustomEditMode:13 slot:0];
 
-  v16 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
-  [v12 _setFaceGalleryComplicationTypesForSlots:v16];
+  complicationTypesBySlot2 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
+  [v12 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot2];
 
   if (v12)
   {
@@ -180,20 +180,20 @@
   }
 
   v31 = v12;
-  if ([v4 isExplorer])
+  if ([deviceCopy isExplorer])
   {
-    v17 = [NTKFace defaultFaceOfStyle:14 forDevice:v4];
-    v18 = [NTKZeusAnalogDensityEditOption optionWithDensity:3 forDevice:v4];
+    v17 = [NTKFace defaultFaceOfStyle:14 forDevice:deviceCopy];
+    v18 = [NTKZeusAnalogDensityEditOption optionWithDensity:3 forDevice:deviceCopy];
     [v17 selectOption:v18 forCustomEditMode:11 slot:0];
 
-    v19 = [NTKZeusColorEditOption optionWithColor:104 forDevice:v4];
+    v19 = [NTKZeusColorEditOption optionWithColor:104 forDevice:deviceCopy];
     [v17 selectOption:v19 forCustomEditMode:10 slot:0];
 
-    v20 = [NTKZeusAnalogStyleEditOption optionWithStyle:1 forDevice:v4];
+    v20 = [NTKZeusAnalogStyleEditOption optionWithStyle:1 forDevice:deviceCopy];
     [v17 selectOption:v20 forCustomEditMode:13 slot:0];
 
-    v21 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
-    [v17 _setFaceGalleryComplicationTypesForSlots:v21];
+    complicationTypesBySlot3 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
+    [v17 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot3];
 
     if (v17)
     {
@@ -203,10 +203,10 @@
 
   for (i = -1; i != 3; ++i)
   {
-    v23 = [NTKFace defaultFaceOfStyle:14 forDevice:v4];
+    v23 = [NTKFace defaultFaceOfStyle:14 forDevice:deviceCopy];
     if (v23)
     {
-      v24 = [NTKZeusAnalogDensityEditOption optionWithDensity:3 forDevice:v4];
+      v24 = [NTKZeusAnalogDensityEditOption optionWithDensity:3 forDevice:deviceCopy];
       [v23 selectOption:v24 forCustomEditMode:11 slot:0];
 
       if (i > 2)
@@ -219,14 +219,14 @@
         v25 = qword_37438[i];
       }
 
-      v26 = [NTKZeusColorEditOption optionWithColor:7 forDevice:v4];
+      v26 = [NTKZeusColorEditOption optionWithColor:7 forDevice:deviceCopy];
       [v23 selectOption:v26 forCustomEditMode:10 slot:0];
 
-      v27 = [NTKZeusAnalogStyleEditOption optionWithStyle:v25 forDevice:v4];
+      v27 = [NTKZeusAnalogStyleEditOption optionWithStyle:v25 forDevice:deviceCopy];
       [v23 selectOption:v27 forCustomEditMode:13 slot:0];
 
-      v28 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
-      [v23 _setFaceGalleryComplicationTypesForSlots:v28];
+      complicationTypesBySlot4 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
+      [v23 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot4];
 
       [v5 addObject:v23];
     }
@@ -237,24 +237,24 @@
   return v29;
 }
 
-- (id)_gloryEDefaultFacesForDevice:(id)a3
+- (id)_gloryEDefaultFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_opt_new();
-  v6 = [(NTKZeusAnalogFaceBundle *)self _legacyDefaultFacesForDevice:v4];
+  v6 = [(NTKZeusAnalogFaceBundle *)self _legacyDefaultFacesForDevice:deviceCopy];
   [v5 addObjectsFromArray:v6];
 
-  if ([v4 deviceCategory] != &dword_0 + 1)
+  if ([deviceCopy deviceCategory] != &dword_0 + 1)
   {
     v7 = 0;
     v8 = 1;
     do
     {
       v9 = v8;
-      v10 = [NTKFace defaultFaceOfStyle:14 forDevice:v4];
+      v10 = [NTKFace defaultFaceOfStyle:14 forDevice:deviceCopy];
       if (v10)
       {
-        v11 = [NTKZeusAnalogDensityEditOption optionWithDensity:3 forDevice:v4];
+        v11 = [NTKZeusAnalogDensityEditOption optionWithDensity:3 forDevice:deviceCopy];
         [v10 selectOption:v11 forCustomEditMode:11 slot:0];
 
         if (v7)
@@ -267,14 +267,14 @@
           v12 = 3003;
         }
 
-        v13 = [NTKZeusColorEditOption optionWithColor:v12 forDevice:v4];
+        v13 = [NTKZeusColorEditOption optionWithColor:v12 forDevice:deviceCopy];
         [v10 selectOption:v13 forCustomEditMode:10 slot:0];
 
-        v14 = [NTKZeusAnalogStyleEditOption optionWithStyle:1 forDevice:v4];
+        v14 = [NTKZeusAnalogStyleEditOption optionWithStyle:1 forDevice:deviceCopy];
         [v10 selectOption:v14 forCustomEditMode:13 slot:0];
 
-        v15 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
-        [v10 _setFaceGalleryComplicationTypesForSlots:v15];
+        complicationTypesBySlot = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
+        [v10 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot];
 
         [v5 insertObject:v10 atIndex:v7];
       }
@@ -291,23 +291,23 @@
   return v16;
 }
 
-- (id)_graceDefaultFacesForDevice:(id)a3
+- (id)_graceDefaultFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_opt_new();
   v6 = +[NSMutableArray array];
-  if ([v4 isZeusBlack])
+  if ([deviceCopy isZeusBlack])
   {
     [v6 addObject:&off_46DA0];
   }
 
-  if ([v4 isExplorer])
+  if ([deviceCopy isExplorer])
   {
     [v6 addObject:&off_46DB8];
   }
 
   [v6 addObjectsFromArray:&off_47D40];
-  if ([v4 deviceCategory] != &dword_0 + 1)
+  if ([deviceCopy deviceCategory] != &dword_0 + 1)
   {
     [v6 addObjectsFromArray:&off_47D58];
   }
@@ -317,21 +317,21 @@
     v7 = 0;
     do
     {
-      v8 = [NTKFace defaultFaceOfStyle:14 forDevice:v4];
+      v8 = [NTKFace defaultFaceOfStyle:14 forDevice:deviceCopy];
       if (v8)
       {
-        v9 = [NTKZeusAnalogDensityEditOption optionWithDensity:3 forDevice:v4];
+        v9 = [NTKZeusAnalogDensityEditOption optionWithDensity:3 forDevice:deviceCopy];
         [v8 selectOption:v9 forCustomEditMode:11 slot:0];
 
-        v10 = [NTKZeusAnalogStyleEditOption optionWithStyle:1 forDevice:v4];
+        v10 = [NTKZeusAnalogStyleEditOption optionWithStyle:1 forDevice:deviceCopy];
         [v8 selectOption:v10 forCustomEditMode:13 slot:0];
 
         v11 = [v6 objectAtIndexedSubscript:v7];
-        v12 = +[NTKZeusColorEditOption optionWithColor:forDevice:](NTKZeusColorEditOption, "optionWithColor:forDevice:", [v11 integerValue], v4);
+        v12 = +[NTKZeusColorEditOption optionWithColor:forDevice:](NTKZeusColorEditOption, "optionWithColor:forDevice:", [v11 integerValue], deviceCopy);
         [v8 selectOption:v12 forCustomEditMode:10 slot:0];
 
-        v13 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
-        [v8 _setFaceGalleryComplicationTypesForSlots:v13];
+        complicationTypesBySlot = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
+        [v8 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot];
 
         [v5 addObject:v8];
       }
@@ -347,17 +347,17 @@
   return v14;
 }
 
-- (id)_spring2020DefaultFacesForDevice:(id)a3
+- (id)_spring2020DefaultFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[NSMutableArray array];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_242C;
   v11[3] = &unk_44990;
-  v6 = v4;
+  v6 = deviceCopy;
   v12 = v6;
-  v13 = self;
+  selfCopy = self;
   v14 = v5;
   v7 = v5;
   v8 = objc_retainBlock(v11);
@@ -379,18 +379,18 @@
   return v9;
 }
 
-- (id)_fall2020DefaultFacesForDevice:(id)a3
+- (id)_fall2020DefaultFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   +[NSMutableArray array];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_26B8;
   v10[3] = &unk_44990;
-  v11 = v4;
+  v11 = deviceCopy;
   v13 = v12 = self;
   v5 = v13;
-  v6 = v4;
+  v6 = deviceCopy;
   v7 = objc_retainBlock(v10);
   (v7[2])(v7, 7);
   (v7[2])(v7, 3013);
@@ -415,24 +415,24 @@
   return v2;
 }
 
-- (id)heroSpring2020DefaultFacesForDevice:(id)a3
+- (id)heroSpring2020DefaultFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[NSMutableArray array];
-  if ([v4 deviceCategory] != &dword_0 + 1)
+  if ([deviceCopy deviceCategory] != &dword_0 + 1)
   {
-    v6 = [NTKFace defaultFaceOfStyle:14 forDevice:v4];
-    v7 = [NTKZeusAnalogDensityEditOption optionWithDensity:3 forDevice:v4];
+    v6 = [NTKFace defaultFaceOfStyle:14 forDevice:deviceCopy];
+    v7 = [NTKZeusAnalogDensityEditOption optionWithDensity:3 forDevice:deviceCopy];
     [v6 selectOption:v7 forCustomEditMode:11 slot:0];
 
-    v8 = [NTKZeusAnalogStyleEditOption optionWithStyle:1 forDevice:v4];
+    v8 = [NTKZeusAnalogStyleEditOption optionWithStyle:1 forDevice:deviceCopy];
     [v6 selectOption:v8 forCustomEditMode:13 slot:0];
 
-    v9 = [NTKZeusColorEditOption optionWithColor:3010 forDevice:v4];
+    v9 = [NTKZeusColorEditOption optionWithColor:3010 forDevice:deviceCopy];
     [v6 selectOption:v9 forCustomEditMode:10 slot:0];
 
-    v10 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
-    [v6 _setFaceGalleryComplicationTypesForSlots:v10];
+    complicationTypesBySlot = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
+    [v6 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot];
 
     if (v6)
     {
@@ -440,7 +440,7 @@
     }
 
     v11 = [v6 copy];
-    v12 = [NTKZeusColorEditOption optionWithColor:3011 forDevice:v4];
+    v12 = [NTKZeusColorEditOption optionWithColor:3011 forDevice:deviceCopy];
     [v11 selectOption:v12 forCustomEditMode:10 slot:0];
 
     if (v11)
@@ -454,24 +454,24 @@
   return v13;
 }
 
-- (id)heroGraceDefaultFacesForDevice:(id)a3
+- (id)heroGraceDefaultFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 deviceCategory] == &dword_0 + 1)
+  deviceCopy = device;
+  if ([deviceCopy deviceCategory] == &dword_0 + 1)
   {
     v5 = 0;
   }
 
   else
   {
-    if ([v4 isZeusBlack])
+    if ([deviceCopy isZeusBlack])
     {
-      v6 = [NTKFace defaultFaceOfStyle:14 forDevice:v4];
-      v7 = [NTKZeusColorEditOption optionWithColor:3009 forDevice:v4];
+      v6 = [NTKFace defaultFaceOfStyle:14 forDevice:deviceCopy];
+      v7 = [NTKZeusColorEditOption optionWithColor:3009 forDevice:deviceCopy];
       [v6 selectOption:v7 forCustomEditMode:10 slot:0];
 
-      v8 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
-      [v6 _setFaceGalleryComplicationTypesForSlots:v8];
+      complicationTypesBySlot = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
+      [v6 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot];
 
       if (v6)
       {
@@ -494,28 +494,28 @@
       v21 = v20[3] = &unk_449B8;
       v6 = v21;
       v9 = objc_retainBlock(v20);
-      v10 = [NTKFace defaultFaceOfStyle:14 forDevice:v4];
-      v11 = [NTKZeusColorEditOption optionWithColor:3006 forDevice:v4];
+      v10 = [NTKFace defaultFaceOfStyle:14 forDevice:deviceCopy];
+      v11 = [NTKZeusColorEditOption optionWithColor:3006 forDevice:deviceCopy];
       [v10 selectOption:v11 forCustomEditMode:10 slot:0];
 
-      v12 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
-      [v10 _setFaceGalleryComplicationTypesForSlots:v12];
+      complicationTypesBySlot2 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
+      [v10 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot2];
 
       (v9[2])(v9, v10);
-      v13 = [NTKFace defaultFaceOfStyle:14 forDevice:v4];
-      v14 = [NTKZeusColorEditOption optionWithColor:3007 forDevice:v4];
+      v13 = [NTKFace defaultFaceOfStyle:14 forDevice:deviceCopy];
+      v14 = [NTKZeusColorEditOption optionWithColor:3007 forDevice:deviceCopy];
       [v13 selectOption:v14 forCustomEditMode:10 slot:0];
 
-      v15 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
-      [v13 _setFaceGalleryComplicationTypesForSlots:v15];
+      complicationTypesBySlot3 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
+      [v13 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot3];
 
       (v9[2])(v9, v13);
-      v16 = [NTKFace defaultFaceOfStyle:14 forDevice:v4];
-      v17 = [NTKZeusColorEditOption optionWithColor:3008 forDevice:v4];
+      v16 = [NTKFace defaultFaceOfStyle:14 forDevice:deviceCopy];
+      v17 = [NTKZeusColorEditOption optionWithColor:3008 forDevice:deviceCopy];
       [v16 selectOption:v17 forCustomEditMode:10 slot:0];
 
-      v18 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
-      [v16 _setFaceGalleryComplicationTypesForSlots:v18];
+      complicationTypesBySlot4 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
+      [v16 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot4];
 
       (v9[2])(v9, v16);
       v5 = [v6 copy];
@@ -525,10 +525,10 @@
   return v5;
 }
 
-- (id)heroGloryEDefaultFacesForDevice:(id)a3
+- (id)heroGloryEDefaultFacesForDevice:(id)device
 {
-  v4 = a3;
-  [(NTKZeusAnalogFaceBundle *)self heroLegacyDefaultFacesForDevice:v4];
+  deviceCopy = device;
+  [(NTKZeusAnalogFaceBundle *)self heroLegacyDefaultFacesForDevice:deviceCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -550,7 +550,7 @@
         v10 = *(*(&v14 + 1) + 8 * i);
         if ([v10 faceStyle] == &dword_C + 2)
         {
-          v11 = [NTKZeusColorEditOption optionWithColor:3003 forDevice:v4];
+          v11 = [NTKZeusColorEditOption optionWithColor:3003 forDevice:deviceCopy];
           [v10 selectOption:v11 forCustomEditMode:10 slot:0];
 
           goto LABEL_11;
@@ -574,25 +574,25 @@ LABEL_11:
   return v12;
 }
 
-- (id)heroLegacyDefaultFacesForDevice:(id)a3
+- (id)heroLegacyDefaultFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 deviceCategory] == &dword_0 + 1)
+  deviceCopy = device;
+  if ([deviceCopy deviceCategory] == &dword_0 + 1)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [NTKFace defaultFaceOfStyle:14 forDevice:v4];
-    v7 = [NTKZeusColorEditOption optionWithColor:3000 forDevice:v4];
+    v6 = [NTKFace defaultFaceOfStyle:14 forDevice:deviceCopy];
+    v7 = [NTKZeusColorEditOption optionWithColor:3000 forDevice:deviceCopy];
     [v6 selectOption:v7 forCustomEditMode:10 slot:0];
 
-    v8 = [NTKZeusAnalogStyleEditOption optionWithStyle:1 forDevice:v4];
+    v8 = [NTKZeusAnalogStyleEditOption optionWithStyle:1 forDevice:deviceCopy];
     [v6 selectOption:v8 forCustomEditMode:13 slot:0];
 
-    v9 = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
-    [v6 _setFaceGalleryComplicationTypesForSlots:v9];
+    complicationTypesBySlot = [(NTKZeusAnalogFaceBundle *)self complicationTypesBySlot];
+    [v6 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot];
 
     if (v6)
     {

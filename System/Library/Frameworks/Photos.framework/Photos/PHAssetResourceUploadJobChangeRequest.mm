@@ -1,171 +1,171 @@
 @interface PHAssetResourceUploadJobChangeRequest
-+ (id)changeRequestForUploadJob:(id)a3;
-+ (id)creationRequestForAssetResourceUploadJobWithDestination:(id)a3 resource:(id)a4;
-+ (int64_t)_countOfCancellableAcknowledgeableJobsWithConfiguration:(id)a3 library:(id)a4 error:(id *)a5;
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-- (BOOL)validateInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
-- (BOOL)validateMutationsToManagedObject:(id)a3 error:(id *)a4;
-- (PHAssetResourceUploadJobChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHAssetResourceUploadJobChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
++ (id)changeRequestForUploadJob:(id)job;
++ (id)creationRequestForAssetResourceUploadJobWithDestination:(id)destination resource:(id)resource;
++ (int64_t)_countOfCancellableAcknowledgeableJobsWithConfiguration:(id)configuration library:(id)library error:(id *)error;
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error;
+- (BOOL)validateInsertIntoPhotoLibrary:(id)library error:(id *)error;
+- (BOOL)validateMutationsToManagedObject:(id)object error:(id *)error;
+- (PHAssetResourceUploadJobChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHAssetResourceUploadJobChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
 - (id)_getAcknowledgement;
-- (id)_getConfigurationFromLibrary:(id)a3 error:(id *)a4;
+- (id)_getConfigurationFromLibrary:(id)library error:(id *)error;
 - (id)_getState;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)initForNewObject;
 - (id)lastModifiedDate;
 - (int64_t)clientStatus;
 - (int64_t)state;
 - (signed)attemptCount;
 - (void)_commonInitializer;
-- (void)encodeToXPCDict:(id)a3;
-- (void)retryWithDestination:(id)a3;
-- (void)setAttemptCount:(signed __int16)a3;
-- (void)setDestinationData:(id)a3;
-- (void)setInternalResourceObjectID:(id)a3;
-- (void)setLastModifiedDate:(id)a3;
-- (void)setOnlyClientStatus:(int64_t)a3;
-- (void)setOnlyState:(int64_t)a3;
-- (void)setState:(int64_t)a3 clientStatus:(int64_t)a4;
-- (void)setUploadJobConfiguration:(id)a3;
-- (void)updateClientStatus:(int64_t)a3;
-- (void)updateState:(int64_t)a3;
+- (void)encodeToXPCDict:(id)dict;
+- (void)retryWithDestination:(id)destination;
+- (void)setAttemptCount:(signed __int16)count;
+- (void)setDestinationData:(id)data;
+- (void)setInternalResourceObjectID:(id)d;
+- (void)setLastModifiedDate:(id)date;
+- (void)setOnlyClientStatus:(int64_t)status;
+- (void)setOnlyState:(int64_t)state;
+- (void)setState:(int64_t)state clientStatus:(int64_t)status;
+- (void)setUploadJobConfiguration:(id)configuration;
+- (void)updateClientStatus:(int64_t)status;
+- (void)updateState:(int64_t)state;
 @end
 
 @implementation PHAssetResourceUploadJobChangeRequest
 
-- (void)setOnlyClientStatus:(int64_t)a3
+- (void)setOnlyClientStatus:(int64_t)status
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"clientStatus"];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:status];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"clientStatus"];
 }
 
 - (int64_t)clientStatus
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"clientStatus"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"clientStatus"];
 
-  v6 = [v5 shortValue];
-  return v6;
+  shortValue = [v5 shortValue];
+  return shortValue;
 }
 
-- (void)setOnlyState:(int64_t)a3
+- (void)setOnlyState:(int64_t)state
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"state"];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:state];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"state"];
 }
 
 - (int64_t)state
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"state"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"state"];
 
-  v6 = [v5 shortValue];
-  return v6;
+  shortValue = [v5 shortValue];
+  return shortValue;
 }
 
-- (void)setAttemptCount:(signed __int16)a3
+- (void)setAttemptCount:(signed __int16)count
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  countCopy = count;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"attemptCount"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:countCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"attemptCount"];
 }
 
 - (signed)attemptCount
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"attemptCount"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"attemptCount"];
 
-  LOWORD(v3) = [v5 shortValue];
-  return v3;
+  LOWORD(helper) = [v5 shortValue];
+  return helper;
 }
 
-- (void)setLastModifiedDate:(id)a3
+- (void)setLastModifiedDate:(id)date
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  dateCopy = date;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (dateCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"lastModifiedDate"];
+    [mutations setObject:dateCopy forKeyedSubscript:@"lastModifiedDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"lastModifiedDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"lastModifiedDate"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"lastModifiedDate"];
+    [mutations removeObjectForKey:@"lastModifiedDate"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"lastModifiedDate"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"lastModifiedDate"];
   }
 }
 
 - (id)lastModifiedDate
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"lastModifiedDate"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"lastModifiedDate"];
 
   return v5;
 }
 
-- (void)setState:(int64_t)a3 clientStatus:(int64_t)a4
+- (void)setState:(int64_t)state clientStatus:(int64_t)status
 {
   self->_shouldBypassValidateMutations = 1;
-  [(PHAssetResourceUploadJobChangeRequest *)self setOnlyState:a3];
-  [(PHAssetResourceUploadJobChangeRequest *)self setOnlyClientStatus:a4];
-  v6 = [MEMORY[0x1E695DF00] date];
-  [(PHAssetResourceUploadJobChangeRequest *)self setLastModifiedDate:v6];
+  [(PHAssetResourceUploadJobChangeRequest *)self setOnlyState:state];
+  [(PHAssetResourceUploadJobChangeRequest *)self setOnlyClientStatus:status];
+  date = [MEMORY[0x1E695DF00] date];
+  [(PHAssetResourceUploadJobChangeRequest *)self setLastModifiedDate:date];
 }
 
-- (void)updateClientStatus:(int64_t)a3
+- (void)updateClientStatus:(int64_t)status
 {
-  [(PHAssetResourceUploadJobChangeRequest *)self setOnlyClientStatus:a3];
-  v4 = [MEMORY[0x1E695DF00] date];
-  [(PHAssetResourceUploadJobChangeRequest *)self setLastModifiedDate:v4];
+  [(PHAssetResourceUploadJobChangeRequest *)self setOnlyClientStatus:status];
+  date = [MEMORY[0x1E695DF00] date];
+  [(PHAssetResourceUploadJobChangeRequest *)self setLastModifiedDate:date];
 }
 
-- (void)updateState:(int64_t)a3
+- (void)updateState:(int64_t)state
 {
-  [(PHAssetResourceUploadJobChangeRequest *)self setOnlyState:a3];
-  v4 = [MEMORY[0x1E695DF00] date];
-  [(PHAssetResourceUploadJobChangeRequest *)self setLastModifiedDate:v4];
+  [(PHAssetResourceUploadJobChangeRequest *)self setOnlyState:state];
+  date = [MEMORY[0x1E695DF00] date];
+  [(PHAssetResourceUploadJobChangeRequest *)self setLastModifiedDate:date];
 }
 
-- (void)setInternalResourceObjectID:(id)a3
+- (void)setInternalResourceObjectID:(id)d
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v8[0] = v4;
+  dCopy = d;
+  v8[0] = dCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   if (v5)
   {
@@ -176,11 +176,11 @@
   }
 }
 
-- (void)setUploadJobConfiguration:(id)a3
+- (void)setUploadJobConfiguration:(id)configuration
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v9[0] = v4;
+  configurationCopy = configuration;
+  v9[0] = configurationCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v6 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:v5];
 
@@ -193,25 +193,25 @@
   }
 }
 
-- (void)setDestinationData:(id)a3
+- (void)setDestinationData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   [(PHChangeRequest *)self didMutate];
-  v5 = [v4 copy];
+  v5 = [dataCopy copy];
 
   destinationData = self->_destinationData;
   self->_destinationData = v5;
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69BE270];
-  v7 = [a3 managedObjectContext];
-  v8 = [(PHChangeRequest *)self uuid];
-  v9 = [v6 insertInManagedObjectContext:v7 withUUID:v8];
+  managedObjectContext = [library managedObjectContext];
+  uuid = [(PHChangeRequest *)self uuid];
+  v9 = [v6 insertInManagedObjectContext:managedObjectContext withUUID:uuid];
 
-  if (!a4 || v9)
+  if (!error || v9)
   {
     v14 = v9;
   }
@@ -224,7 +224,7 @@
     v17[0] = v11;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v13 = [v10 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v12];
-    *a4 = v13;
+    *error = v13;
 
     v14 = 0;
   }
@@ -232,12 +232,12 @@
   return v14;
 }
 
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  objectCopy = object;
   objc_opt_class();
-  v8 = v7;
+  v8 = objectCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -250,25 +250,25 @@
 
   v10 = v9;
 
-  v11 = [(PHAssetResourceUploadJobChangeRequest *)self destinationData];
-  [v10 setUrlRequestData:v11];
+  destinationData = [(PHAssetResourceUploadJobChangeRequest *)self destinationData];
+  [v10 setUrlRequestData:destinationData];
 
   if (self->_incrementAttemptCount)
   {
-    v12 = [v10 attemptCount];
-    v13 = [MEMORY[0x1E696AD98] numberWithShort:(v12 + 1)];
-    v14 = [(PHChangeRequest *)self helper];
-    v15 = [v14 mutations];
-    [v15 setObject:v13 forKeyedSubscript:@"attemptCount"];
+    attemptCount = [v10 attemptCount];
+    v13 = [MEMORY[0x1E696AD98] numberWithShort:(attemptCount + 1)];
+    helper = [(PHChangeRequest *)self helper];
+    mutations = [helper mutations];
+    [mutations setObject:v13 forKeyedSubscript:@"attemptCount"];
   }
 
-  v16 = [(PHChangeRequest *)self helper];
+  helper2 = [(PHChangeRequest *)self helper];
   v39 = 0;
-  v17 = [v16 applyMutationsToManagedObject:v8 error:&v39];
+  v17 = [helper2 applyMutationsToManagedObject:v8 error:&v39];
   v18 = v39;
 
-  v19 = [(PHChangeRequest *)self helper];
-  v20 = [v19 mutations];
+  helper3 = [(PHChangeRequest *)self helper];
+  mutations2 = [helper3 mutations];
 
   if (!v17)
   {
@@ -279,30 +279,30 @@
   v21 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    v22 = [(PHChangeRequest *)self isMutated];
+    isMutated = [(PHChangeRequest *)self isMutated];
     *buf = 67109378;
-    v41 = v22;
+    v41 = isMutated;
     v42 = 2112;
-    v43 = v20;
+    v43 = mutations2;
     _os_log_impl(&dword_19C86F000, v21, OS_LOG_TYPE_DEBUG, "##### isMutated %d mutations %@ will update", buf, 0x12u);
   }
 
-  v23 = [(PHAssetResourceUploadJobChangeRequest *)self configurationHelper];
-  v24 = [v23 mutableObjectIDsAndUUIDs];
+  configurationHelper = [(PHAssetResourceUploadJobChangeRequest *)self configurationHelper];
+  mutableObjectIDsAndUUIDs = [configurationHelper mutableObjectIDsAndUUIDs];
 
-  if (v24)
+  if (mutableObjectIDsAndUUIDs)
   {
-    [v23 setAllowsInsert:1];
-    [v23 setAllowsRemove:1];
-    v25 = [MEMORY[0x1E69BE278] entityName];
-    [v23 setDestinationEntityName:v25];
+    [configurationHelper setAllowsInsert:1];
+    [configurationHelper setAllowsRemove:1];
+    entityName = [MEMORY[0x1E69BE278] entityName];
+    [configurationHelper setDestinationEntityName:entityName];
 
     v38 = v18;
-    v26 = [v23 applyMutationsToManagedObjectToOneRelationship:v8 error:&v38];
+    v26 = [configurationHelper applyMutationsToManagedObjectToOneRelationship:v8 error:&v38];
     v27 = v38;
 
-    v28 = [(PHAssetResourceUploadJobChangeRequest *)self internalResourceObjectIDHelper];
-    v29 = v28;
+    internalResourceObjectIDHelper = [(PHAssetResourceUploadJobChangeRequest *)self internalResourceObjectIDHelper];
+    internalResourceObjectIDHelper2 = internalResourceObjectIDHelper;
     if (v26)
     {
       v18 = v27;
@@ -311,7 +311,7 @@
 
 LABEL_19:
     v34 = v27;
-    if (a5)
+    if (error)
     {
       goto LABEL_17;
     }
@@ -319,11 +319,11 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v29 = [(PHAssetResourceUploadJobChangeRequest *)self internalResourceObjectIDHelper];
+  internalResourceObjectIDHelper2 = [(PHAssetResourceUploadJobChangeRequest *)self internalResourceObjectIDHelper];
 LABEL_14:
-  v30 = [v29 mutableObjectIDsAndUUIDs];
+  mutableObjectIDsAndUUIDs2 = [internalResourceObjectIDHelper2 mutableObjectIDsAndUUIDs];
 
-  if (!v30)
+  if (!mutableObjectIDsAndUUIDs2)
   {
 
     v34 = v18;
@@ -332,24 +332,24 @@ LABEL_14:
   }
 
   v31 = 1;
-  [v29 setAllowsInsert:1];
-  [v29 setAllowsRemove:1];
-  v32 = [MEMORY[0x1E69BE4D0] entityName];
-  [v29 setDestinationEntityName:v32];
+  [internalResourceObjectIDHelper2 setAllowsInsert:1];
+  [internalResourceObjectIDHelper2 setAllowsRemove:1];
+  entityName2 = [MEMORY[0x1E69BE4D0] entityName];
+  [internalResourceObjectIDHelper2 setDestinationEntityName:entityName2];
 
   v37 = v18;
-  LOBYTE(v32) = [v29 applyMutationsToManagedObjectToOneRelationship:v8 error:&v37];
+  LOBYTE(entityName2) = [internalResourceObjectIDHelper2 applyMutationsToManagedObjectToOneRelationship:v8 error:&v37];
   v33 = v37;
 
   v34 = v33;
-  if ((v32 & 1) == 0)
+  if ((entityName2 & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
 LABEL_17:
       v35 = v34;
       v31 = 0;
-      *a5 = v34;
+      *error = v34;
       goto LABEL_22;
     }
 
@@ -362,13 +362,13 @@ LABEL_22:
   return v31;
 }
 
-- (BOOL)validateMutationsToManagedObject:(id)a3 error:(id *)a4
+- (BOOL)validateMutationsToManagedObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   if (!self->_shouldBypassValidateMutations)
   {
     objc_opt_class();
-    v8 = v6;
+    v8 = objectCopy;
     if (objc_opt_isKindOfClass())
     {
       v9 = v8;
@@ -381,19 +381,19 @@ LABEL_22:
 
     v10 = v9;
 
-    LODWORD(v11) = [v10 state];
-    v12 = [v10 clientStatus];
-    if (v12 == 1)
+    LODWORD(integerValue) = [v10 state];
+    clientStatus = [v10 clientStatus];
+    if (clientStatus == 1)
     {
       v13 = MEMORY[0x1E696ABC0];
-      v14 = [v10 uuid];
-      v15 = [v13 ph_errorWithCode:3300 localizedDescription:{@"Cannot modify acknowledged job with uuid %@", v14}];
+      uuid = [v10 uuid];
+      v15 = [v13 ph_errorWithCode:3300 localizedDescription:{@"Cannot modify acknowledged job with uuid %@", uuid}];
       v16 = v15;
-      if (a4)
+      if (error)
       {
         v17 = v15;
         v7 = 0;
-        *a4 = v16;
+        *error = v16;
       }
 
       else
@@ -404,46 +404,46 @@ LABEL_22:
       goto LABEL_50;
     }
 
-    LODWORD(v18) = v12;
-    v14 = [(PHAssetResourceUploadJobChangeRequest *)self _getState];
-    v19 = [(PHAssetResourceUploadJobChangeRequest *)self _getAcknowledgement];
-    if (!(v14 | v19))
+    LODWORD(integerValue2) = clientStatus;
+    uuid = [(PHAssetResourceUploadJobChangeRequest *)self _getState];
+    _getAcknowledgement = [(PHAssetResourceUploadJobChangeRequest *)self _getAcknowledgement];
+    if (!(uuid | _getAcknowledgement))
     {
       v16 = 0;
-      v14 = 0;
+      uuid = 0;
       v7 = 1;
 LABEL_50:
 
       goto LABEL_51;
     }
 
-    v16 = v19;
-    v20 = v11;
-    v11 = v11;
-    if (v14)
+    v16 = _getAcknowledgement;
+    v20 = integerValue;
+    integerValue = integerValue;
+    if (uuid)
     {
-      v11 = [v14 integerValue];
+      integerValue = [uuid integerValue];
     }
 
     if (v16)
     {
-      v18 = [v16 integerValue];
+      integerValue2 = [v16 integerValue];
     }
 
     else
     {
-      v18 = v18;
+      integerValue2 = integerValue2;
     }
 
     if ([v10 attemptCount] >= 1 && self->_incrementAttemptCount)
     {
       v21 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3300 localizedDescription:{@"Cannot increment attemptCount more than its current value: %d", objc_msgSend(v10, "attemptCount")}];
       v22 = v21;
-      if (a4)
+      if (error)
       {
         v23 = v21;
         v7 = 0;
-        *a4 = v22;
+        *error = v22;
 LABEL_49:
 
         goto LABEL_50;
@@ -454,16 +454,16 @@ LABEL_48:
       goto LABEL_49;
     }
 
-    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Current state:%ld and acknowledgement:%ldcurrentAcknowledgement", v11, v18];
+    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Current state:%ld and acknowledgement:%ldcurrentAcknowledgement", integerValue, integerValue2];
     if (v20 > 1u)
     {
       if (v20 != 2)
       {
         if (v20 == 3)
         {
-          if (v11 != 3)
+          if (integerValue != 3)
           {
-            if (v18 > 0 || v11 != 1)
+            if (integerValue2 > 0 || integerValue != 1)
             {
               goto LABEL_44;
             }
@@ -472,10 +472,10 @@ LABEL_48:
             {
               [MEMORY[0x1E696ABC0] ph_errorWithCode:3307 localizedDescription:{@"Cannot reregister a job when attemptCount is %d", objc_msgSend(v10, "attemptCount")}];
               v24 = LABEL_45:;
-              if (a4)
+              if (error)
               {
                 v24 = v24;
-                *a4 = v24;
+                *error = v24;
               }
 
               goto LABEL_48;
@@ -483,7 +483,7 @@ LABEL_48:
           }
         }
 
-        else if (v20 != 4 || v11 != 4)
+        else if (v20 != 4 || integerValue != 4)
         {
           goto LABEL_44;
         }
@@ -493,13 +493,13 @@ LABEL_43:
         goto LABEL_49;
       }
 
-      if (v18 <= 0 && (v11 - 2) < 3)
+      if (integerValue2 <= 0 && (integerValue - 2) < 3)
       {
         goto LABEL_43;
       }
 
 LABEL_34:
-      if (v11 != 100 || v18 != 1)
+      if (integerValue != 100 || integerValue2 != 1)
       {
         goto LABEL_44;
       }
@@ -511,7 +511,7 @@ LABEL_34:
     {
       if (v20 == 1)
       {
-        if (v18 <= 0 && (v11 - 1) < 2)
+        if (integerValue2 <= 0 && (integerValue - 1) < 2)
         {
           goto LABEL_43;
         }
@@ -520,7 +520,7 @@ LABEL_34:
       }
     }
 
-    else if (v11 == 2)
+    else if (integerValue == 2)
     {
       goto LABEL_43;
     }
@@ -538,9 +538,9 @@ LABEL_51:
 
 - (id)_getAcknowledgement
 {
-  v2 = [(PHChangeRequest *)self helper];
-  v3 = [v2 mutations];
-  v4 = [v3 objectForKey:@"clientStatus"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v4 = [mutations objectForKey:@"clientStatus"];
 
   if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -557,9 +557,9 @@ LABEL_51:
 
 - (id)_getState
 {
-  v2 = [(PHChangeRequest *)self helper];
-  v3 = [v2 mutations];
-  v4 = [v3 objectForKey:@"state"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v4 = [mutations objectForKey:@"state"];
 
   if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -574,17 +574,17 @@ LABEL_51:
   return v5;
 }
 
-- (BOOL)validateInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (BOOL)validateInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHAssetResourceUploadJobChangeRequest *)self internalResourceObjectIDHelper];
-  v8 = [v7 mutableObjectIDsAndUUIDs];
-  v9 = [v8 firstObject];
+  libraryCopy = library;
+  internalResourceObjectIDHelper = [(PHAssetResourceUploadJobChangeRequest *)self internalResourceObjectIDHelper];
+  mutableObjectIDsAndUUIDs = [internalResourceObjectIDHelper mutableObjectIDsAndUUIDs];
+  firstObject = [mutableObjectIDsAndUUIDs firstObject];
 
-  v10 = [(PHAssetResourceUploadJobChangeRequest *)self _getConfigurationFromLibrary:v6 error:a4];
+  v10 = [(PHAssetResourceUploadJobChangeRequest *)self _getConfigurationFromLibrary:libraryCopy error:error];
   if (v10)
   {
-    v11 = [PHAssetResourceUploadJobChangeRequest _countOfCancellableAcknowledgeableJobsWithConfiguration:v10 library:v6 error:a4];
+    v11 = [PHAssetResourceUploadJobChangeRequest _countOfCancellableAcknowledgeableJobsWithConfiguration:v10 library:libraryCopy error:error];
     if (v11 != -1)
     {
       if (v11 >= +[PHAssetResourceUploadJob jobLimit])
@@ -608,7 +608,7 @@ LABEL_51:
         v21[3] = &unk_1E75AADC0;
         v23 = &v24;
         v22 = v10;
-        [v6 performBlockAndWait:v21];
+        [libraryCopy performBlockAndWait:v21];
         if (isKindOfClass)
         {
           v13 = 0;
@@ -643,10 +643,10 @@ LABEL_51:
       }
 
       v17 = [v14 ph_errorWithCode:v16 localizedDescription:{v15, v20}];
-      if (a4)
+      if (error)
       {
         v17 = v17;
-        *a4 = v17;
+        *error = v17;
       }
     }
   }
@@ -664,21 +664,21 @@ uint64_t __78__PHAssetResourceUploadJobChangeRequest_validateInsertIntoPhotoLibr
   return result;
 }
 
-- (id)_getConfigurationFromLibrary:(id)a3 error:(id *)a4
+- (id)_getConfigurationFromLibrary:(id)library error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PHAssetResourceUploadJobChangeRequest *)self configurationHelper];
-  v8 = [v7 mutableObjectIDsAndUUIDs];
-  v9 = [v8 firstObject];
+  libraryCopy = library;
+  configurationHelper = [(PHAssetResourceUploadJobChangeRequest *)self configurationHelper];
+  mutableObjectIDsAndUUIDs = [configurationHelper mutableObjectIDsAndUUIDs];
+  firstObject = [mutableObjectIDsAndUUIDs firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v10 = MEMORY[0x1E69BE278];
-    v11 = v9;
-    v12 = [v6 managedObjectContext];
-    v13 = [v10 configurationWithObjectID:v11 managedObjectContext:v12 error:a4];
+    v11 = firstObject;
+    managedObjectContext = [libraryCopy managedObjectContext];
+    v13 = [v10 configurationWithObjectID:v11 managedObjectContext:managedObjectContext error:error];
 
 LABEL_7:
     v18 = v13;
@@ -689,7 +689,7 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v9;
+    v14 = firstObject;
     v15 = PLBackendGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -699,17 +699,17 @@ LABEL_7:
     }
 
     v16 = MEMORY[0x1E69BE278];
-    v17 = [v6 managedObjectContext];
-    v13 = [v16 configurationWithUUID:v14 managedObjectContext:v17 error:a4];
+    managedObjectContext2 = [libraryCopy managedObjectContext];
+    v13 = [v16 configurationWithUUID:v14 managedObjectContext:managedObjectContext2 error:error];
 
     goto LABEL_7;
   }
 
   v19 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3201 localizedDescription:@"Invalid configuration identifier"];
-  if (a4)
+  if (error)
   {
     v19 = v19;
-    *a4 = v19;
+    *error = v19;
   }
 
   v18 = 0;
@@ -718,24 +718,24 @@ LABEL_11:
   return v18;
 }
 
-- (void)retryWithDestination:(id)a3
+- (void)retryWithDestination:(id)destination
 {
-  v5 = a3;
+  destinationCopy = destination;
   [(PHAssetResourceUploadJobChangeRequest *)self updateState:1];
-  if (v5)
+  if (destinationCopy)
   {
-    v4 = [MEMORY[0x1E69BE280] dataForURLRequest:v5];
+    v4 = [MEMORY[0x1E69BE280] dataForURLRequest:destinationCopy];
     [(PHAssetResourceUploadJobChangeRequest *)self setDestinationData:v4];
   }
 
   [(PHAssetResourceUploadJobChangeRequest *)self incrementAttemptCount];
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  xdict = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 encodeToXPCDict:xdict];
+  xdict = dict;
+  helper = [(PHChangeRequest *)self helper];
+  [helper encodeToXPCDict:xdict];
 
   [(PHRelationshipChangeRequestHelper *)self->_configurationHelper encodeToXPCDict:xdict];
   [(PHRelationshipChangeRequestHelper *)self->_internalResourceObjectIDHelper encodeToXPCDict:xdict];
@@ -758,39 +758,39 @@ LABEL_11:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (PHAssetResourceUploadJobChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHAssetResourceUploadJobChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v24.receiver = self;
   v24.super_class = PHAssetResourceUploadJobChangeRequest;
   v11 = [(PHChangeRequest *)&v24 init];
   if (v11)
   {
-    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:v8 changeRequest:v11 request:v9 clientAuthorization:v10];
+    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:dictCopy changeRequest:v11 request:requestCopy clientAuthorization:authorizationCopy];
     helper = v11->super._helper;
     v11->super._helper = v12;
 
-    v14 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"configuration" xpcDict:v8 changeRequestHelper:v11->super._helper];
+    v14 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"configuration" xpcDict:dictCopy changeRequestHelper:v11->super._helper];
     configurationHelper = v11->_configurationHelper;
     v11->_configurationHelper = v14;
 
-    v16 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"assetResource" xpcDict:v8 changeRequestHelper:v11->super._helper];
+    v16 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"assetResource" xpcDict:dictCopy changeRequestHelper:v11->super._helper];
     internalResourceObjectIDHelper = v11->_internalResourceObjectIDHelper;
     v11->_internalResourceObjectIDHelper = v16;
 
-    v11->_shouldBypassValidateMutations = xpc_dictionary_get_BOOL(v8, "PHResourceUploadShouldBypassValidateMutationsKey");
-    v18 = xpc_dictionary_get_BOOL(v8, "PHIncrementAttemptCountKey");
+    v11->_shouldBypassValidateMutations = xpc_dictionary_get_BOOL(dictCopy, "PHResourceUploadShouldBypassValidateMutationsKey");
+    v18 = xpc_dictionary_get_BOOL(dictCopy, "PHIncrementAttemptCountKey");
     v11->_incrementAttemptCount = v18;
     if (v18 || v11->_shouldBypassValidateMutations)
     {
       [(PHChangeRequestHelper *)v11->super._helper setMutated:1];
-      [v9 recordUpdateRequest:v11];
+      [requestCopy recordUpdateRequest:v11];
     }
 
     length = 0;
-    data = xpc_dictionary_get_data(v8, "PHDestinationDataKey", &length);
+    data = xpc_dictionary_get_data(dictCopy, "PHDestinationDataKey", &length);
     if (data)
     {
       v20 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:data length:length freeWhenDone:0];
@@ -813,16 +813,16 @@ LABEL_11:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (PHAssetResourceUploadJobChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHAssetResourceUploadJobChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = PHAssetResourceUploadJobChangeRequest;
   v8 = [(PHChangeRequest *)&v12 init];
   if (v8)
   {
-    v9 = [[PHChangeRequestHelper alloc] initWithUUID:v6 objectID:v7 changeRequest:v8];
+    v9 = [[PHChangeRequestHelper alloc] initWithUUID:dCopy objectID:iDCopy changeRequest:v8];
     helper = v8->super._helper;
     v8->super._helper = v9;
 
@@ -849,20 +849,20 @@ LABEL_11:
   return v2;
 }
 
-+ (int64_t)_countOfCancellableAcknowledgeableJobsWithConfiguration:(id)a3 library:(id)a4 error:(id *)a5
++ (int64_t)_countOfCancellableAcknowledgeableJobsWithConfiguration:(id)configuration library:(id)library error:(id *)error
 {
   v37[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  libraryCopy = library;
   v9 = MEMORY[0x1E696AE18];
-  v10 = [v7 objectID];
-  v11 = [v9 predicateWithFormat:@"configuration = %@", v10];
+  objectID = [configurationCopy objectID];
+  v11 = [v9 predicateWithFormat:@"configuration = %@", objectID];
 
   v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %hu", @"clientStatus", 1];
   v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"state", &unk_1F102DE68];
   v14 = MEMORY[0x1E695D5E0];
-  v15 = [MEMORY[0x1E69BE270] entityName];
-  v16 = [v14 fetchRequestWithEntityName:v15];
+  entityName = [MEMORY[0x1E69BE270] entityName];
+  v16 = [v14 fetchRequestWithEntityName:entityName];
 
   v17 = MEMORY[0x1E696AB28];
   v37[0] = v11;
@@ -879,18 +879,18 @@ LABEL_11:
   v34 = __Block_byref_object_copy__8525;
   v35 = __Block_byref_object_dispose__8526;
   v36 = 0;
-  v20 = [v8 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __111__PHAssetResourceUploadJobChangeRequest__countOfCancellableAcknowledgeableJobsWithConfiguration_library_error___block_invoke;
   v26[3] = &unk_1E75A4898;
   v29 = &v31;
-  v21 = v20;
+  v21 = managedObjectContext;
   v27 = v21;
   v22 = v16;
   v28 = v22;
-  v30 = a5;
-  [v8 performBlockAndWait:v26];
+  errorCopy = error;
+  [libraryCopy performBlockAndWait:v26];
   v23 = v32[5];
   if (v23)
   {
@@ -913,45 +913,45 @@ uint64_t __111__PHAssetResourceUploadJobChangeRequest__countOfCancellableAcknowl
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)creationRequestForAssetResourceUploadJobWithDestination:(id)a3 resource:(id)a4
++ (id)creationRequestForAssetResourceUploadJobWithDestination:(id)destination resource:(id)resource
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PHAssetResourceUploadJobChangeRequest alloc] initForNewObject];
-  v8 = [MEMORY[0x1E69BE280] dataForURLRequest:v6];
+  resourceCopy = resource;
+  destinationCopy = destination;
+  initForNewObject = [[PHAssetResourceUploadJobChangeRequest alloc] initForNewObject];
+  v8 = [MEMORY[0x1E69BE280] dataForURLRequest:destinationCopy];
 
   v9 = objc_alloc_init(PHFetchOptions);
-  v10 = [v7 photoLibrary];
-  [(PHFetchOptions *)v9 setPhotoLibrary:v10];
+  photoLibrary = [initForNewObject photoLibrary];
+  [(PHFetchOptions *)v9 setPhotoLibrary:photoLibrary];
 
   v11 = [PHAssetResourceUploadJobConfiguration fetchAssetResourceUploadJobConfigurationsWithOptions:v9];
-  v12 = [v5 internalResourceObjectID];
+  internalResourceObjectID = [resourceCopy internalResourceObjectID];
 
-  [v7 setInternalResourceObjectID:v12];
-  [v7 setDestinationData:v8];
-  [v7 setAttemptCount:0];
-  v13 = [v11 firstObject];
-  [v7 setUploadJobConfiguration:v13];
+  [initForNewObject setInternalResourceObjectID:internalResourceObjectID];
+  [initForNewObject setDestinationData:v8];
+  [initForNewObject setAttemptCount:0];
+  firstObject = [v11 firstObject];
+  [initForNewObject setUploadJobConfiguration:firstObject];
 
-  v14 = [MEMORY[0x1E695DF00] date];
-  [v7 setLastModifiedDate:v14];
+  date = [MEMORY[0x1E695DF00] date];
+  [initForNewObject setLastModifiedDate:date];
 
-  [v7 updateState:1];
-  [v7 updateClientStatus:0];
+  [initForNewObject updateState:1];
+  [initForNewObject updateClientStatus:0];
 
-  return v7;
+  return initForNewObject;
 }
 
-+ (id)changeRequestForUploadJob:(id)a3
++ (id)changeRequestForUploadJob:(id)job
 {
-  v3 = a3;
+  jobCopy = job;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = [PHAssetResourceUploadJobChangeRequest alloc];
-    v5 = [v3 uuid];
-    v6 = [v3 objectID];
-    v7 = [(PHAssetResourceUploadJobChangeRequest *)v4 initWithUUID:v5 objectID:v6];
+    uuid = [jobCopy uuid];
+    objectID = [jobCopy objectID];
+    v7 = [(PHAssetResourceUploadJobChangeRequest *)v4 initWithUUID:uuid objectID:objectID];
   }
 
   else

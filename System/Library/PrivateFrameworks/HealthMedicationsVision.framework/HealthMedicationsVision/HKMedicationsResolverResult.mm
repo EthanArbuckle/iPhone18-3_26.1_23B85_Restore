@@ -6,9 +6,9 @@
 
 - (id)description
 {
-  v3 = [(HKMedicationsResolverResult *)self looksGeneric];
+  looksGeneric = [(HKMedicationsResolverResult *)self looksGeneric];
   v4 = @"Not Generic";
-  if (v3)
+  if (looksGeneric)
   {
     v4 = @"Generic";
   }
@@ -17,9 +17,9 @@
   v11.super_class = HKMedicationsResolverResult;
   v5 = v4;
   v6 = [(HKMedicationsResolverResult *)&v11 description];
-  v7 = [(HKMedicationsResolverResult *)self resolvedIds];
-  v8 = [(HKMedicationsResolverResult *)self usedNgrams];
-  v9 = [v6 stringByAppendingFormat:@" %@ %@ %@", v5, v7, v8];
+  resolvedIds = [(HKMedicationsResolverResult *)self resolvedIds];
+  usedNgrams = [(HKMedicationsResolverResult *)self usedNgrams];
+  v9 = [v6 stringByAppendingFormat:@" %@ %@ %@", v5, resolvedIds, usedNgrams];
 
   return v9;
 }

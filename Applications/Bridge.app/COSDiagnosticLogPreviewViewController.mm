@@ -1,7 +1,7 @@
 @interface COSDiagnosticLogPreviewViewController
 - (COSDiagnosticLogPreviewDelegate)logPreviewDelegate;
-- (COSDiagnosticLogPreviewViewController)initWithFilePath:(id)a3 andQueue:(id)a4;
-- (id)shrinkScreenshotImage:(id)a3;
+- (COSDiagnosticLogPreviewViewController)initWithFilePath:(id)path andQueue:(id)queue;
+- (id)shrinkScreenshotImage:(id)image;
 - (void)loadViewFromLogPath;
 - (void)shareLog;
 - (void)viewDidLoad;
@@ -10,18 +10,18 @@
 
 @implementation COSDiagnosticLogPreviewViewController
 
-- (COSDiagnosticLogPreviewViewController)initWithFilePath:(id)a3 andQueue:(id)a4
+- (COSDiagnosticLogPreviewViewController)initWithFilePath:(id)path andQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = COSDiagnosticLogPreviewViewController;
   v9 = [(COSDiagnosticLogPreviewViewController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_localSavePath, a3);
-    [(COSDiagnosticLogPreviewViewController *)v10 setQueue:v8];
+    objc_storeStrong(&v9->_localSavePath, path);
+    [(COSDiagnosticLogPreviewViewController *)v10 setQueue:queueCopy];
     v11 = [[NSSManager alloc] initWithQueue:v10->_queue];
     nssManager = v10->_nssManager;
     v10->_nssManager = v11;
@@ -35,8 +35,8 @@
   v25.receiver = self;
   v25.super_class = COSDiagnosticLogPreviewViewController;
   [(COSDiagnosticLogPreviewViewController *)&v25 viewDidLoad];
-  v3 = [(NSString *)self->_localSavePath lastPathComponent];
-  [(COSDiagnosticLogPreviewViewController *)self setTitle:v3];
+  lastPathComponent = [(NSString *)self->_localSavePath lastPathComponent];
+  [(COSDiagnosticLogPreviewViewController *)self setTitle:lastPathComponent];
 
   v4 = [UITextView alloc];
   y = CGRectZero.origin.y;
@@ -52,11 +52,11 @@
   self->_imageView = v10;
 
   [(UIImageView *)self->_imageView setHidden:1];
-  v12 = [(COSDiagnosticLogPreviewViewController *)self view];
-  [v12 addSubview:self->_textView];
+  view = [(COSDiagnosticLogPreviewViewController *)self view];
+  [view addSubview:self->_textView];
 
-  v13 = [(COSDiagnosticLogPreviewViewController *)self view];
-  [v13 addSubview:self->_imageView];
+  view2 = [(COSDiagnosticLogPreviewViewController *)self view];
+  [view2 addSubview:self->_imageView];
 
   v14 = [UIBarButtonItem alloc];
   v15 = [UIImage systemImageNamed:@"square.and.arrow.up"];
@@ -78,21 +78,21 @@
   v23 = BPSSetupTintColor();
   [(UIToolbar *)v22 setTintColor:v23];
 
-  v24 = [(COSDiagnosticLogPreviewViewController *)self view];
-  [v24 addSubview:self->_toolBar];
+  view3 = [(COSDiagnosticLogPreviewViewController *)self view];
+  [view3 addSubview:self->_toolBar];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(COSDiagnosticLogPreviewViewController *)self view];
-  [v3 frame];
+  view = [(COSDiagnosticLogPreviewViewController *)self view];
+  [view frame];
   v29 = v5;
   v30 = v4;
   v28 = v6;
   v8 = v7;
 
-  v9 = [(COSDiagnosticLogPreviewViewController *)self view];
-  [v9 frame];
+  view2 = [(COSDiagnosticLogPreviewViewController *)self view];
+  [view2 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -101,15 +101,15 @@
   [(UIToolbar *)self->_toolBar sizeToFit];
   [(UIToolbar *)self->_toolBar frame];
   v19 = v18;
-  v20 = [(COSDiagnosticLogPreviewViewController *)self view];
-  [v20 safeAreaInsets];
+  view3 = [(COSDiagnosticLogPreviewViewController *)self view];
+  [view3 safeAreaInsets];
   v22 = v21;
 
-  v23 = [(COSDiagnosticLogPreviewViewController *)self view];
-  [v23 frame];
+  view4 = [(COSDiagnosticLogPreviewViewController *)self view];
+  [view4 frame];
   v25 = v24 - v19 - v22;
-  v26 = [(COSDiagnosticLogPreviewViewController *)self view];
-  [v26 frame];
+  view5 = [(COSDiagnosticLogPreviewViewController *)self view];
+  [view5 frame];
   [(UIToolbar *)self->_toolBar setFrame:0.0, v25];
 
   [(UITextView *)self->_textView setFrame:v30, v29, v28, v8 - (v19 + v22)];
@@ -150,7 +150,7 @@ LABEL_15:
       v23 = +[UIColor systemBlackColor];
       [(UITextView *)textView setBackgroundColor:v23];
 
-      v24 = [(NSString *)self->_localSavePath lastPathComponent];
+      lastPathComponent = [(NSString *)self->_localSavePath lastPathComponent];
       v25 = self->_textView;
       v26 = +[UIColor systemWhiteColor];
       [(UITextView *)v25 setTextColor:v26];
@@ -163,7 +163,7 @@ LABEL_15:
       v29 = self->_textView;
       [(UITextView *)v29 bounds];
       [(UITextView *)v29 setTextContainerInset:v30 * 0.5 + -60.0, 0.0, 0.0, 0.0];
-      [(UITextView *)self->_textView setText:v24];
+      [(UITextView *)self->_textView setText:lastPathComponent];
       [(UITextView *)self->_textView setEditable:0];
 
       goto LABEL_16;
@@ -181,8 +181,8 @@ LABEL_15:
     [v8 setTimingFunction:v9];
 
     [v8 setType:kCATransitionReveal];
-    v10 = [(UIImageView *)self->_imageView layer];
-    [v10 addAnimation:v8 forKey:kCATransition];
+    layer = [(UIImageView *)self->_imageView layer];
+    [layer addAnimation:v8 forKey:kCATransition];
 
     v11 = 0;
     v12 = 0;
@@ -202,9 +202,9 @@ LABEL_15:
     if (v16)
     {
       [(UITextView *)self->_textView setHidden:0];
-      v17 = [(UITextView *)self->_textView layer];
+      layer2 = [(UITextView *)self->_textView layer];
       v18 = +[CATransition animation];
-      [v17 addAnimation:v18 forKey:kCATransition];
+      [layer2 addAnimation:v18 forKey:kCATransition];
 
       [(UITextView *)self->_textView setText:v12];
       v19 = self->_textView;
@@ -236,9 +236,9 @@ LABEL_15:
 LABEL_16:
 }
 
-- (id)shrinkScreenshotImage:(id)a3
+- (id)shrinkScreenshotImage:(id)image
 {
-  v3 = [NSData dataWithContentsOfFile:a3];
+  v3 = [NSData dataWithContentsOfFile:image];
   v4 = [UIImage imageWithData:v3 scale:2.0];
 
   return v4;

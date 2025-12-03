@@ -1,26 +1,26 @@
 @interface CRLCanvasCenterAlignmentGuide
-- (BOOL)canBeSnappedToByEdge:(int)a3 ofFrame:(CGRect)a4 inVisibleUnscaledRect:(CGRect)a5;
-- (BOOL)isAssociatedContentVisibleInUnscaledRect:(CGRect)a3;
+- (BOOL)canBeSnappedToByEdge:(int)edge ofFrame:(CGRect)frame inVisibleUnscaledRect:(CGRect)rect;
+- (BOOL)isAssociatedContentVisibleInUnscaledRect:(CGRect)rect;
 - (double)exactOffset;
 - (id)description;
-- (id)initBetweenRect:(CGRect)a3 andRect:(CGRect)a4 withGuideType:(int64_t)a5;
-- (id)renderableWithICC:(id)a3;
-- (int64_t)compare:(id)a3;
+- (id)initBetweenRect:(CGRect)rect andRect:(CGRect)andRect withGuideType:(int64_t)type;
+- (id)renderableWithICC:(id)c;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation CRLCanvasCenterAlignmentGuide
 
-- (id)initBetweenRect:(CGRect)a3 andRect:(CGRect)a4 withGuideType:(int64_t)a5
+- (id)initBetweenRect:(CGRect)rect andRect:(CGRect)andRect withGuideType:(int64_t)type
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.origin.x;
-  if (a5 == 1)
+  height = andRect.size.height;
+  width = andRect.size.width;
+  y = andRect.origin.y;
+  x = andRect.origin.x;
+  v9 = rect.size.height;
+  v10 = rect.size.width;
+  v11 = rect.origin.y;
+  v12 = rect.origin.x;
+  if (type == 1)
   {
     +[CRLSwappableAxesGeometry standardAxesGeometry];
   }
@@ -77,13 +77,13 @@
   return p_isa;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(CRLCanvasCenterAlignmentGuide *)self integerOffset];
-  v6 = [v4 integerOffset];
+  compareCopy = compare;
+  integerOffset = [(CRLCanvasCenterAlignmentGuide *)self integerOffset];
+  integerOffset2 = [compareCopy integerOffset];
 
-  if (v6 <= v5)
+  if (integerOffset2 <= integerOffset)
   {
     v7 = 0;
   }
@@ -93,7 +93,7 @@
     v7 = -1;
   }
 
-  if (v5 > v6)
+  if (integerOffset > integerOffset2)
   {
     return 1;
   }
@@ -115,15 +115,15 @@
   return result;
 }
 
-- (BOOL)canBeSnappedToByEdge:(int)a3 ofFrame:(CGRect)a4 inVisibleUnscaledRect:(CGRect)a5
+- (BOOL)canBeSnappedToByEdge:(int)edge ofFrame:(CGRect)frame inVisibleUnscaledRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v16.receiver = self;
   v16.super_class = CRLCanvasCenterAlignmentGuide;
-  v10 = [(CRLCanvasAlignmentGuide *)&v16 canBeSnappedToByEdge:*&a3 ofFrame:a4.origin.x inVisibleUnscaledRect:a4.origin.y, a4.size.width, a4.size.height, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  v10 = [(CRLCanvasAlignmentGuide *)&v16 canBeSnappedToByEdge:*&edge ofFrame:frame.origin.x inVisibleUnscaledRect:frame.origin.y, frame.size.width, frame.size.height, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   if (v10)
   {
     [(CRLSwappableAxesGeometry *)self->mVerticalGeom makeHorizontalSpacingRectBetweenRect:self->mLeftGeneratingObjectRect.origin.x andRect:self->mLeftGeneratingObjectRect.origin.y, self->mLeftGeneratingObjectRect.size.width, self->mLeftGeneratingObjectRect.size.height, self->mRightGeneratingObjectRect.origin.x, self->mRightGeneratingObjectRect.origin.y, self->mRightGeneratingObjectRect.size.width, self->mRightGeneratingObjectRect.size.height];
@@ -151,13 +151,13 @@
   return v10;
 }
 
-- (BOOL)isAssociatedContentVisibleInUnscaledRect:(CGRect)a3
+- (BOOL)isAssociatedContentVisibleInUnscaledRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = sub_10011FF38(self->mLeftGeneratingObjectRect.origin.x, self->mLeftGeneratingObjectRect.origin.y, self->mLeftGeneratingObjectRect.size.width, self->mLeftGeneratingObjectRect.size.height, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = sub_10011FF38(self->mLeftGeneratingObjectRect.origin.x, self->mLeftGeneratingObjectRect.origin.y, self->mLeftGeneratingObjectRect.size.width, self->mLeftGeneratingObjectRect.size.height, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
   if (v8)
   {
     v9 = self->mRightGeneratingObjectRect.origin.x;
@@ -171,9 +171,9 @@
   return v8;
 }
 
-- (id)renderableWithICC:(id)a3
+- (id)renderableWithICC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   mVerticalGeom = self->mVerticalGeom;
   [(CRLCanvasAbstractGuide *)self snappingObjectFrame];
   [(CRLSwappableAxesGeometry *)mVerticalGeom makeHorizontalSpacingRectBetweenRect:self->mLeftGeneratingObjectRect.origin.x andRect:self->mLeftGeneratingObjectRect.origin.y, self->mLeftGeneratingObjectRect.size.width, self->mLeftGeneratingObjectRect.size.height, v6, v7, v8, v9];
@@ -206,7 +206,7 @@
     v33 = [CRLColor colorWithRed:0.0 green:0.0 blue:1.0 alpha:0.0];
     -[CRLCanvasRenderable setBackgroundColor:](self->super.mRenderable, "setBackgroundColor:", [v33 CGColor]);
 
-    v34 = [[CRLCanvasSpacingGuideUILayer alloc] initWithSpacingRect:[(CRLSwappableAxesGeometry *)self->mVerticalGeom horizontalOrientation] ofOrientation:v4 icc:1 useVisibleRect:v11, v13, v15, v17];
+    v34 = [[CRLCanvasSpacingGuideUILayer alloc] initWithSpacingRect:[(CRLSwappableAxesGeometry *)self->mVerticalGeom horizontalOrientation] ofOrientation:cCopy icc:1 useVisibleRect:v11, v13, v15, v17];
     mLeftSpacingUILayer = self->mLeftSpacingUILayer;
     self->mLeftSpacingUILayer = v34;
 
@@ -214,7 +214,7 @@
     v37 = [CRLCanvasRenderable renderableFromLayer:self->mLeftSpacingUILayer];
     [(CRLCanvasRenderable *)v36 addSubrenderable:v37];
 
-    v38 = [[CRLCanvasSpacingGuideUILayer alloc] initWithSpacingRect:[(CRLSwappableAxesGeometry *)self->mVerticalGeom horizontalOrientation] ofOrientation:v4 icc:1 useVisibleRect:v24, v26, v28, v30];
+    v38 = [[CRLCanvasSpacingGuideUILayer alloc] initWithSpacingRect:[(CRLSwappableAxesGeometry *)self->mVerticalGeom horizontalOrientation] ofOrientation:cCopy icc:1 useVisibleRect:v24, v26, v28, v30];
     mRightSpacingUILayer = self->mRightSpacingUILayer;
     self->mRightSpacingUILayer = v38;
 
@@ -225,8 +225,8 @@
     self->super.super.mLocationInvalidated = 1;
   }
 
-  [(CRLCanvasSpacingGuideUILayer *)self->mLeftSpacingUILayer setFrameFromSpacingRect:v4 icc:v11, v13, v15, v17];
-  [(CRLCanvasSpacingGuideUILayer *)self->mRightSpacingUILayer setFrameFromSpacingRect:v4 icc:v24, v26, v28, v30];
+  [(CRLCanvasSpacingGuideUILayer *)self->mLeftSpacingUILayer setFrameFromSpacingRect:cCopy icc:v11, v13, v15, v17];
+  [(CRLCanvasSpacingGuideUILayer *)self->mRightSpacingUILayer setFrameFromSpacingRect:cCopy icc:v24, v26, v28, v30];
   self->super.super.mLocationInvalidated = 0;
 LABEL_6:
   v42 = self->super.mRenderable;

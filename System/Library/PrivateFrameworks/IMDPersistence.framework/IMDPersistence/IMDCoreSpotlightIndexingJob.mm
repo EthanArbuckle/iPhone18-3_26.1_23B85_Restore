@@ -2,8 +2,8 @@
 + (id)_timeoutError;
 - (BOOL)_contextHasEffectsOnClientState;
 - (BOOL)_shouldWithdrawRejectionsFromSpotlight;
-- (IMDCoreSpotlightIndexingJob)initWithContext:(id)a3;
-- (IMDCoreSpotlightIndexingJob)initWithIndex:(id)a3 context:(id)a4;
+- (IMDCoreSpotlightIndexingJob)initWithContext:(id)context;
+- (IMDCoreSpotlightIndexingJob)initWithIndex:(id)index context:(id)context;
 - (void)_applyContextToClientState;
 - (void)_beginIndexing;
 - (void)_donateToSuggestions;
@@ -12,7 +12,7 @@
 - (void)_loadClientStateIfNeeded;
 - (void)_startJob;
 - (void)_withdrawRejectionsFromSpotlight;
-- (void)runWithCompletion:(id)a3;
+- (void)runWithCompletion:(id)completion;
 @end
 
 @implementation IMDCoreSpotlightIndexingJob
@@ -67,11 +67,11 @@
   objc_msgSend_indexSearchableItems_completionHandler_(v4, v8, v7, v9);
 }
 
-- (IMDCoreSpotlightIndexingJob)initWithIndex:(id)a3 context:(id)a4
+- (IMDCoreSpotlightIndexingJob)initWithIndex:(id)index context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  indexCopy = index;
+  contextCopy = context;
+  if (indexCopy)
   {
     v19.receiver = self;
     v19.super_class = IMDCoreSpotlightIndexingJob;
@@ -79,8 +79,8 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_index, a3);
-      objc_storeStrong(&v10->_context, a4);
+      objc_storeStrong(&v9->_index, index);
+      objc_storeStrong(&v10->_context, context);
       v13 = objc_msgSend_stringGUID(MEMORY[0x1E696AEC0], v11, v12);
       transactionID = v10->_transactionID;
       v10->_transactionID = v13;
@@ -91,23 +91,23 @@
     }
 
     self = v10;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (IMDCoreSpotlightIndexingJob)initWithContext:(id)a3
+- (IMDCoreSpotlightIndexingJob)initWithContext:(id)context
 {
-  v4 = a3;
-  objc_msgSend_reason(v4, v5, v6);
+  contextCopy = context;
+  objc_msgSend_reason(contextCopy, v5, v6);
   v7 = _IMDSpotlightIndexForIndexingReason();
-  v9 = objc_msgSend_initWithIndex_context_(self, v8, v7, v4);
+  v9 = objc_msgSend_initWithIndex_context_(self, v8, v7, contextCopy);
 
   return v9;
 }
@@ -127,18 +127,18 @@
   return v7;
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (IMDCoreSpotlightDisabled(v4, v5, v6))
+  completionCopy = completion;
+  if (IMDCoreSpotlightDisabled(completionCopy, v5, v6))
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else if (objc_msgSend_forceSpotlightIndexingErrors(MEMORY[0x1E69A7FF8], v7, v8))
   {
     v11 = objc_msgSend__timeoutError(IMDCoreSpotlightIndexingJob, v9, v10);
-    (v4)[2](v4, v11);
+    (completionCopy)[2](completionCopy, v11);
   }
 
   else
@@ -147,7 +147,7 @@
     v14 = objc_msgSend_group(self, v12, v13);
     v15 = IMDIndexingClientRequestQueue();
     dispatch_time(0, 60000000000);
-    v16 = v4;
+    v16 = completionCopy;
     IMDispatchGroupNotifyWithTimeout();
   }
 }
@@ -209,7 +209,7 @@ LABEL_7:
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v29 = self;
+    selfCopy = self;
     v7 = objc_msgSend_rejectedItems(self, v5, v6);
     v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v31, v35, 16);
     if (v9)
@@ -250,7 +250,7 @@ LABEL_7:
     v30[1] = 3221225472;
     v30[2] = sub_1B7BBACF8;
     v30[3] = &unk_1E7CBC1B0;
-    v30[4] = v29;
+    v30[4] = selfCopy;
     objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v4, v27, v30);
   }
 

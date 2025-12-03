@@ -1,19 +1,19 @@
 @interface NLPLearnerTextData
-+ (id)dataForPFL:(int64_t)a3 andLocale:(id)a4;
-+ (id)dataForTask:(int64_t)a3 andLocale:(id)a4;
++ (id)dataForPFL:(int64_t)l andLocale:(id)locale;
++ (id)dataForTask:(int64_t)task andLocale:(id)locale;
 + (void)initialize;
-- (BOOL)addExamples:(id)a3;
-- (BOOL)loadFromCoreDuet:(id)a3 limitSamplesTo:(unint64_t)a4;
-- (BOOL)loadFromCoreDuet:(id)a3 limitSamplesTo:(unint64_t)a4 withLocale:(id)a5 andLMStreamTokenizationBlock:(id)a6;
-- (NLPLearnerTextData)initWithLocale:(id)a3;
-- (void)addResource:(id)a3;
+- (BOOL)addExamples:(id)examples;
+- (BOOL)loadFromCoreDuet:(id)duet limitSamplesTo:(unint64_t)to;
+- (BOOL)loadFromCoreDuet:(id)duet limitSamplesTo:(unint64_t)to withLocale:(id)locale andLMStreamTokenizationBlock:(id)block;
+- (NLPLearnerTextData)initWithLocale:(id)locale;
+- (void)addResource:(id)resource;
 @end
 
 @implementation NLPLearnerTextData
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sLog = os_log_create("com.apple.NLP", "NLPLearnerTextData");
 
@@ -21,9 +21,9 @@
   }
 }
 
-- (NLPLearnerTextData)initWithLocale:(id)a3
+- (NLPLearnerTextData)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v8.receiver = self;
   v8.super_class = NLPLearnerTextData;
   v5 = [(NLPLearnerTextData *)&v8 init];
@@ -33,21 +33,21 @@
     [(NLPLearnerTextData *)v5 setSentences:v6];
 
     [(NLPLearnerTextData *)v5 setIterator:0];
-    [(NLPLearnerTextData *)v5 setLocale:v4];
+    [(NLPLearnerTextData *)v5 setLocale:localeCopy];
   }
 
   return v5;
 }
 
-+ (id)dataForTask:(int64_t)a3 andLocale:(id)a4
++ (id)dataForTask:(int64_t)task andLocale:(id)locale
 {
-  v5 = a4;
+  localeCopy = locale;
   if (os_log_type_enabled(sLog, OS_LOG_TYPE_DEBUG))
   {
     +[NLPLearnerTextData dataForTask:andLocale:];
   }
 
-  if ((a3 - 1) >= 7)
+  if ((task - 1) >= 7)
   {
     if (os_log_type_enabled(sLog, OS_LOG_TYPE_ERROR))
     {
@@ -59,16 +59,16 @@
 
   else
   {
-    v6 = [objc_alloc(*off_279928A08[a3 - 1]) initWithLocale:v5];
+    v6 = [objc_alloc(*off_279928A08[task - 1]) initWithLocale:localeCopy];
   }
 
   return v6;
 }
 
-+ (id)dataForPFL:(int64_t)a3 andLocale:(id)a4
++ (id)dataForPFL:(int64_t)l andLocale:(id)locale
 {
-  v5 = a4;
-  if ((a3 - 1) >= 4)
+  localeCopy = locale;
+  if ((l - 1) >= 4)
   {
     if (os_log_type_enabled(sLog, OS_LOG_TYPE_ERROR))
     {
@@ -80,27 +80,27 @@
 
   else
   {
-    v6 = [objc_alloc(*off_279928A40[a3 - 1]) initWithLocale:v5];
+    v6 = [objc_alloc(*off_279928A40[l - 1]) initWithLocale:localeCopy];
   }
 
   return v6;
 }
 
-- (BOOL)loadFromCoreDuet:(id)a3 limitSamplesTo:(unint64_t)a4
+- (BOOL)loadFromCoreDuet:(id)duet limitSamplesTo:(unint64_t)to
 {
   v27 = *MEMORY[0x277D85DE8];
-  v19 = a3;
+  duetCopy = duet;
   v6 = sLog;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    -[NLPLearnerTextData loadFromCoreDuet:limitSamplesTo:].cold.1(buf, [v19 count], v6);
+    -[NLPLearnerTextData loadFromCoreDuet:limitSamplesTo:].cold.1(buf, [duetCopy count], v6);
   }
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v19;
+  obj = duetCopy;
   v7 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -116,21 +116,21 @@ LABEL_5:
 
       v10 = *(*(&v21 + 1) + 8 * v9);
       v11 = objc_autoreleasePoolPush();
-      if (a4 && [(NLPLearnerTextData *)self numSamples]>= a4)
+      if (to && [(NLPLearnerTextData *)self numSamples]>= to)
       {
         v16 = 2;
       }
 
       else
       {
-        v12 = [(NLPLearnerTextData *)self locale];
-        v13 = [v12 languageCode];
-        v14 = [NLPLearnerUtils messageContentForEvent:v10 andLanguage:v13];
+        locale = [(NLPLearnerTextData *)self locale];
+        languageCode = [locale languageCode];
+        v14 = [NLPLearnerUtils messageContentForEvent:v10 andLanguage:languageCode];
 
         if (v14)
         {
-          v15 = [(NLPLearnerTextData *)self sentences];
-          [v15 addObject:v14];
+          sentences = [(NLPLearnerTextData *)self sentences];
+          [sentences addObject:v14];
 
           v16 = 0;
         }
@@ -167,26 +167,26 @@ LABEL_5:
   return 1;
 }
 
-- (BOOL)loadFromCoreDuet:(id)a3 limitSamplesTo:(unint64_t)a4 withLocale:(id)a5 andLMStreamTokenizationBlock:(id)a6
+- (BOOL)loadFromCoreDuet:(id)duet limitSamplesTo:(unint64_t)to withLocale:(id)locale andLMStreamTokenizationBlock:(id)block
 {
   v36 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v10 = a5;
-  v27 = a6;
-  v28 = v10;
+  duetCopy = duet;
+  localeCopy = locale;
+  blockCopy = block;
+  v28 = localeCopy;
   cf = LMStreamTokenizerCreate();
   v33 = cf;
   v11 = sLog;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    -[NLPLearnerTextData loadFromCoreDuet:limitSamplesTo:].cold.1(buf, [v25 count], v11);
+    -[NLPLearnerTextData loadFromCoreDuet:limitSamplesTo:].cold.1(buf, [duetCopy count], v11);
   }
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v12 = v25;
+  v12 = duetCopy;
   v13 = [v12 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v13)
   {
@@ -202,22 +202,22 @@ LABEL_5:
 
       v16 = *(*(&v29 + 1) + 8 * v15);
       v17 = objc_autoreleasePoolPush();
-      if (a4 && [(NLPLearnerTextData *)self numSamples]>= a4)
+      if (to && [(NLPLearnerTextData *)self numSamples]>= to)
       {
         v22 = 2;
       }
 
       else
       {
-        v18 = [v28 languageCode];
-        v19 = [NLPLearnerUtils messageContentForEvent:v16 andLanguage:v18];
+        languageCode = [v28 languageCode];
+        v19 = [NLPLearnerUtils messageContentForEvent:v16 andLanguage:languageCode];
 
         if (v19)
         {
           v20 = v19;
-          v21 = [v19 UTF8String];
+          uTF8String = [v19 UTF8String];
           [(NLPLearnerTextData *)self setProcessingNewRecord:1];
-          strlen(v21);
+          strlen(uTF8String);
           LMStreamTokenizerPushBytes();
           v22 = 0;
         }
@@ -260,20 +260,20 @@ LABEL_5:
   return 1;
 }
 
-- (void)addResource:(id)a3
+- (void)addResource:(id)resource
 {
-  v3 = a3;
+  resourceCopy = resource;
   if (os_log_type_enabled(sLog, OS_LOG_TYPE_ERROR))
   {
     [NLPLearnerTextData addResource:];
   }
 }
 
-- (BOOL)addExamples:(id)a3
+- (BOOL)addExamples:(id)examples
 {
-  v4 = a3;
-  v5 = [(NLPLearnerTextData *)self sentences];
-  [v5 addObjectsFromArray:v4];
+  examplesCopy = examples;
+  sentences = [(NLPLearnerTextData *)self sentences];
+  [sentences addObjectsFromArray:examplesCopy];
 
   return 1;
 }

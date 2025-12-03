@@ -5,8 +5,8 @@
 - (id)ensureFileAssets;
 - (id)propertiesForEventLogging;
 - (id)sharingURL;
-- (void)setCreatedAt:(id)a3 modifiedAt:(id)a4 createdBy:(id)a5;
-- (void)setIcon:(id)a3;
+- (void)setCreatedAt:(id)at modifiedAt:(id)modifiedAt createdBy:(id)by;
+- (void)setIcon:(id)icon;
 @end
 
 @implementation WFSharedShortcut
@@ -49,15 +49,15 @@
 {
   v11[3] = *MEMORY[0x1E69E9840];
   v10[0] = @"workflow_identifier";
-  v3 = [(WFSharedShortcut *)self identifier];
-  v4 = [v3 recordName];
-  v11[0] = v4;
+  identifier = [(WFSharedShortcut *)self identifier];
+  recordName = [identifier recordName];
+  v11[0] = recordName;
   v10[1] = @"workflow_name";
-  v5 = [(WFSharedShortcut *)self name];
-  v11[1] = v5;
+  name = [(WFSharedShortcut *)self name];
+  v11[1] = name;
   v10[2] = @"workflow_record_type";
-  v6 = [objc_opt_class() recordType];
-  v11[2] = v6;
+  recordType = [objc_opt_class() recordType];
+  v11[2] = recordType;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:3];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -67,19 +67,19 @@
 
 - (id)sharingURL
 {
-  v2 = [(WFSharedShortcut *)self identifier];
-  v3 = [v2 recordName];
-  v4 = WFGallerySharingURLForIdentifier(v3);
+  identifier = [(WFSharedShortcut *)self identifier];
+  recordName = [identifier recordName];
+  v4 = WFGallerySharingURLForIdentifier(recordName);
 
   return v4;
 }
 
-- (void)setCreatedAt:(id)a3 modifiedAt:(id)a4 createdBy:(id)a5
+- (void)setCreatedAt:(id)at modifiedAt:(id)modifiedAt createdBy:(id)by
 {
-  objc_storeStrong(&self->_createdAt, a3);
-  v11 = a3;
-  v8 = a5;
-  v9 = [v8 copy];
+  objc_storeStrong(&self->_createdAt, at);
+  atCopy = at;
+  byCopy = by;
+  v9 = [byCopy copy];
 
   createdBy = self->_createdBy;
   self->_createdBy = v9;
@@ -89,31 +89,31 @@
 {
   if (self->_workflowRecord)
   {
-    v3 = [(WFSharedShortcut *)self workflowRecord];
-    v4 = [v3 fileRepresentation];
+    workflowRecord = [(WFSharedShortcut *)self workflowRecord];
+    fileRepresentation = [workflowRecord fileRepresentation];
 
-    v5 = [(WFSharedShortcut *)self identifier];
-    v6 = [v5 recordName];
-    [v4 setName:v6];
+    identifier = [(WFSharedShortcut *)self identifier];
+    recordName = [identifier recordName];
+    [fileRepresentation setName:recordName];
 
-    v7 = [v4 writeToDiskWithError:0];
+    v7 = [fileRepresentation writeToDiskWithError:0];
     [(WFSharedShortcut *)self setShortcutFile:v7];
   }
 
-  v8 = [(WFSharedShortcut *)self icon];
+  icon = [(WFSharedShortcut *)self icon];
 
-  if (v8)
+  if (icon)
   {
     v9 = objc_alloc(MEMORY[0x1E69E0E08]);
-    v10 = [(WFSharedShortcut *)self icon];
-    v11 = [v9 initWithIcon:v10];
+    icon2 = [(WFSharedShortcut *)self icon];
+    v11 = [v9 initWithIcon:icon2];
 
     [v11 setCornerRadius:8.0];
     v12 = [v11 imageWithSize:{150.0, 150.0}];
     v13 = MEMORY[0x1E6996E20];
-    v14 = [v12 PNGRepresentation];
+    pNGRepresentation = [v12 PNGRepresentation];
     v15 = [MEMORY[0x1E69E0AF8] typeWithUTType:*MEMORY[0x1E6982F28]];
-    v16 = [v13 fileWithData:v14 ofType:v15 proposedFilename:0];
+    v16 = [v13 fileWithData:pNGRepresentation ofType:v15 proposedFilename:0];
     [(WFSharedShortcut *)self setIconFile:v16];
   }
 
@@ -125,17 +125,17 @@
   return 0;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
-  v6 = [v4 numberWithInteger:{objc_msgSend(v5, "backgroundColorValue")}];
+  iconCopy = icon;
+  v6 = [v4 numberWithInteger:{objc_msgSend(iconCopy, "backgroundColorValue")}];
   [(WFSharedShortcut *)self setIconColor:v6];
 
   v7 = MEMORY[0x1E696AD98];
-  v8 = [v5 glyphCharacter];
+  glyphCharacter = [iconCopy glyphCharacter];
 
-  v9 = [v7 numberWithUnsignedShort:v8];
+  v9 = [v7 numberWithUnsignedShort:glyphCharacter];
   [(WFSharedShortcut *)self setIconGlyph:v9];
 }
 
@@ -147,16 +147,16 @@
     goto LABEL_2;
   }
 
-  v4 = [(WFSharedShortcut *)self signedShortcutFile];
+  signedShortcutFile = [(WFSharedShortcut *)self signedShortcutFile];
 
-  if (!v4)
+  if (!signedShortcutFile)
   {
     goto LABEL_2;
   }
 
-  v5 = [(WFSharedShortcut *)self signedShortcutFile];
+  signedShortcutFile2 = [(WFSharedShortcut *)self signedShortcutFile];
 
-  if (!v5)
+  if (!signedShortcutFile2)
   {
     v25 = getWFGeneralLogObject();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -170,10 +170,10 @@
   }
 
   v6 = [WFShortcutPackageFile alloc];
-  v7 = [(WFSharedShortcut *)self signedShortcutFile];
-  v8 = [v7 data];
-  v9 = [(WFSharedShortcut *)self name];
-  v10 = [(WFShortcutPackageFile *)v6 initWithSignedShortcutData:v8 shortcutName:v9];
+  signedShortcutFile3 = [(WFSharedShortcut *)self signedShortcutFile];
+  data = [signedShortcutFile3 data];
+  name = [(WFSharedShortcut *)self name];
+  v10 = [(WFShortcutPackageFile *)v6 initWithSignedShortcutData:data shortcutName:name];
 
   v30 = 0;
   v11 = [(WFShortcutPackageFile *)v10 extractShortcutFileRepresentationWithError:&v30];
@@ -194,8 +194,8 @@
   }
 
   v15 = [WFWorkflowFileDescriptor alloc];
-  v16 = [(WFSharedShortcut *)self name];
-  v17 = [(WFWorkflowFileDescriptor *)v15 initWithFile:v11 name:v16];
+  name2 = [(WFSharedShortcut *)self name];
+  v17 = [(WFWorkflowFileDescriptor *)v15 initWithFile:v11 name:name2];
 
   v29 = 0;
   v18 = [[WFWorkflowFile alloc] initWithDescriptor:v17 error:&v29];
@@ -242,16 +242,16 @@ LABEL_16:
 
 - (WFWorkflowIcon)icon
 {
-  v3 = [(WFSharedShortcut *)self iconGlyph];
-  v4 = [(WFSharedShortcut *)self iconColor];
-  if (!v3)
+  iconGlyph = [(WFSharedShortcut *)self iconGlyph];
+  iconColor = [(WFSharedShortcut *)self iconColor];
+  if (!iconGlyph)
   {
-    v3 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(MEMORY[0x1E69E0E00], "defaultGlyphCharacter")}];
+    iconGlyph = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(MEMORY[0x1E69E0E00], "defaultGlyphCharacter")}];
   }
 
-  if (v4)
+  if (iconColor)
   {
-    v5 = v4;
+    v5 = iconColor;
   }
 
   else
@@ -260,10 +260,10 @@ LABEL_16:
   }
 
   v6 = objc_alloc(MEMORY[0x1E69E0E00]);
-  v7 = [(WFSharedShortcut *)self iconColor];
-  v8 = [v7 integerValue];
-  v9 = [(WFSharedShortcut *)self iconGlyph];
-  v10 = [v6 initWithBackgroundColorValue:v8 glyphCharacter:objc_msgSend(v9 customImageData:{"unsignedIntegerValue"), 0}];
+  iconColor2 = [(WFSharedShortcut *)self iconColor];
+  integerValue = [iconColor2 integerValue];
+  iconGlyph2 = [(WFSharedShortcut *)self iconGlyph];
+  v10 = [v6 initWithBackgroundColorValue:integerValue glyphCharacter:objc_msgSend(iconGlyph2 customImageData:{"unsignedIntegerValue"), 0}];
 
   return v10;
 }

@@ -10,16 +10,16 @@
 - (void)loadImageWithCompletionHandler:()UI
 {
   v4 = a3;
-  v5 = [a1 imageNameForIcon];
-  if (v5)
+  imageNameForIcon = [self imageNameForIcon];
+  if (imageNameForIcon)
   {
     v6 = MEMORY[0x277D755B8];
     v7 = MEMORY[0x277CCA8D8];
-    v8 = [a1 game];
-    v9 = [v8 gameDescriptor];
-    v10 = [v9 bundleIdentifier];
-    v11 = [v7 bundleWithIdentifier:v10];
-    v12 = [v6 imageNamed:v5 inBundle:v11 compatibleWithTraitCollection:0];
+    game = [self game];
+    gameDescriptor = [game gameDescriptor];
+    bundleIdentifier = [gameDescriptor bundleIdentifier];
+    v11 = [v7 bundleWithIdentifier:bundleIdentifier];
+    v12 = [v6 imageNamed:imageNameForIcon inBundle:v11 compatibleWithTraitCollection:0];
 
     if (v12)
     {
@@ -37,19 +37,19 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v13 = [a1 imageURL];
+  imageURL = [self imageURL];
 
-  if (v13)
+  if (imageURL)
   {
     v14 = MEMORY[0x277D755B8];
     v15 = MEMORY[0x277CBEBC0];
-    v16 = [a1 imageURL];
-    v17 = [v15 URLWithString:v16];
+    imageURL2 = [self imageURL];
+    v17 = [v15 URLWithString:imageURL2];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __63__GKAchievementDescription_UI__loadImageWithCompletionHandler___block_invoke;
     v19[3] = &unk_27966B008;
-    v19[4] = a1;
+    v19[4] = self;
     v20 = v4;
     [v14 _gkloadRemoteImageForURL:v17 queue:MEMORY[0x277D85CD0] withCompletionHandler:v19];
   }
@@ -87,7 +87,7 @@ LABEL_13:
   v15 = v16;
   v7 = v6;
   v14 = v7;
-  [a1 loadImageWithCompletionHandler:v13];
+  [self loadImageWithCompletionHandler:v13];
   v8 = dispatch_time(0, (a2 * 1000000000.0));
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -103,18 +103,18 @@ LABEL_13:
 
 + (id)incompleteAchievementImage
 {
-  v0 = [MEMORY[0x277D0C8C8] sharedTheme];
-  v1 = [v0 achievementsNotStartedIcon];
+  mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+  achievementsNotStartedIcon = [mEMORY[0x277D0C8C8] achievementsNotStartedIcon];
 
-  return v1;
+  return achievementsNotStartedIcon;
 }
 
 + (id)placeholderCompletedAchievementImage
 {
-  v0 = [MEMORY[0x277D0C8C8] sharedTheme];
-  v1 = [v0 achievementsDefaultIcon];
+  mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+  achievementsDefaultIcon = [mEMORY[0x277D0C8C8] achievementsDefaultIcon];
 
-  return v1;
+  return achievementsDefaultIcon;
 }
 
 @end

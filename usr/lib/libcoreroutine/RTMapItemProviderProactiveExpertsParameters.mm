@@ -1,11 +1,11 @@
 @interface RTMapItemProviderProactiveExpertsParameters
-- (RTMapItemProviderProactiveExpertsParameters)initWithConfidence:(double)a3;
-- (RTMapItemProviderProactiveExpertsParameters)initWithDefaultsManager:(id)a3;
+- (RTMapItemProviderProactiveExpertsParameters)initWithConfidence:(double)confidence;
+- (RTMapItemProviderProactiveExpertsParameters)initWithDefaultsManager:(id)manager;
 @end
 
 @implementation RTMapItemProviderProactiveExpertsParameters
 
-- (RTMapItemProviderProactiveExpertsParameters)initWithConfidence:(double)a3
+- (RTMapItemProviderProactiveExpertsParameters)initWithConfidence:(double)confidence
 {
   if (RTCommonValidConfidence())
   {
@@ -14,11 +14,11 @@
     v5 = [(RTMapItemProviderProactiveExpertsParameters *)&v9 init];
     if (v5)
     {
-      v5->_confidence = a3;
+      v5->_confidence = confidence;
     }
 
     self = v5;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
@@ -30,17 +30,17 @@
       _os_log_error_impl(&dword_2304B3000, v7, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: RTCommonValidConfidence(confidence)", buf, 2u);
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (RTMapItemProviderProactiveExpertsParameters)initWithDefaultsManager:(id)a3
+- (RTMapItemProviderProactiveExpertsParameters)initWithDefaultsManager:(id)manager
 {
-  if (a3)
+  if (manager)
   {
-    v4 = [a3 objectForKey:@"RTDefaultsMapItemProviderProactiveExpertsConfidenceKey"];
+    v4 = [manager objectForKey:@"RTDefaultsMapItemProviderProactiveExpertsConfidenceKey"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v6 = 0.5;
@@ -51,7 +51,7 @@
 
     self = [(RTMapItemProviderProactiveExpertsParameters *)self initWithConfidence:v6];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -63,10 +63,10 @@
       _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", v10, 2u);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

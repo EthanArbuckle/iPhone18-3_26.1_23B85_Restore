@@ -1,8 +1,8 @@
 @interface BAASupport
-+ (int)getCertificateExpirationDate:(double *)a3;
-+ (int)getCertificates:(id *)a3;
++ (int)getCertificateExpirationDate:(double *)date;
++ (int)getCertificates:(id *)certificates;
 + (int)issueNewCertificate;
-+ (int)prepareLazily:(BOOL)a3;
++ (int)prepareLazily:(BOOL)lazily;
 + (void)initialize;
 + (void)issueNewCertificate;
 @end
@@ -13,7 +13,7 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v4 = objc_alloc_init(MEMORY[0x29EDBA020]);
     v5 = qword_2A18BD330;
@@ -296,9 +296,9 @@ LABEL_46:
   v28 = *MEMORY[0x29EDCA608];
 }
 
-+ (int)getCertificateExpirationDate:(double *)a3
++ (int)getCertificateExpirationDate:(double *)date
 {
-  if (a3)
+  if (date)
   {
     if (+[BAASupport prepare])
     {
@@ -319,7 +319,7 @@ LABEL_46:
       }
 
       result = 0;
-      *a3 = v4;
+      *date = v4;
     }
   }
 
@@ -332,9 +332,9 @@ LABEL_46:
   return result;
 }
 
-+ (int)getCertificates:(id *)a3
++ (int)getCertificates:(id *)certificates
 {
-  if (a3)
+  if (certificates)
   {
     if (+[BAASupport prepare])
     {
@@ -344,7 +344,7 @@ LABEL_46:
 
     else
     {
-      result = [qword_2A18BD348 getSigKeyCertificates:3 certificates:a3];
+      result = [qword_2A18BD348 getSigKeyCertificates:3 certificates:certificates];
       if (result)
       {
         +[BAASupport getCertificates:];
@@ -375,9 +375,9 @@ LABEL_46:
   return v2;
 }
 
-+ (int)prepareLazily:(BOOL)a3
++ (int)prepareLazily:(BOOL)lazily
 {
-  v3 = a3;
+  lazilyCopy = lazily;
   v38 = *MEMORY[0x29EDCA608];
   v31 = 0;
   if (qword_2A18BD350 != -1)
@@ -386,7 +386,7 @@ LABEL_46:
   }
 
   [qword_2A18BD330 lock];
-  if (v3 && _MergedGlobals && ([qword_2A18BD340 isActive] & 1) != 0)
+  if (lazilyCopy && _MergedGlobals && ([qword_2A18BD340 isActive] & 1) != 0)
   {
     v9 = -15;
   }

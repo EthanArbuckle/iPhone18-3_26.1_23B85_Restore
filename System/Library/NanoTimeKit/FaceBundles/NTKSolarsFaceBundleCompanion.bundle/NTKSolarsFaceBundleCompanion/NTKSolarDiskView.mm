@@ -1,31 +1,31 @@
 @interface NTKSolarDiskView
-- (NTKSolarDiskView)initWithSize:(double)a3 forDevice:(id)a4;
+- (NTKSolarDiskView)initWithSize:(double)size forDevice:(id)device;
 - (void)layoutSubviews;
-- (void)setCenter:(CGPoint)a3;
+- (void)setCenter:(CGPoint)center;
 @end
 
 @implementation NTKSolarDiskView
 
-- (NTKSolarDiskView)initWithSize:(double)a3 forDevice:(id)a4
+- (NTKSolarDiskView)initWithSize:(double)size forDevice:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   v42.receiver = self;
   v42.super_class = NTKSolarDiskView;
-  v7 = [(NTKSolarDiskView *)&v42 initWithFrame:0.0, 0.0, a3, a3];
+  v7 = [(NTKSolarDiskView *)&v42 initWithFrame:0.0, 0.0, size, size];
   v8 = v7;
   if (v7)
   {
-    v9 = [(NTKSolarDiskView *)v7 layer];
-    [v9 setAllowsGroupBlending:0];
+    layer = [(NTKSolarDiskView *)v7 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v10 = [(NTKSolarDiskView *)v8 layer];
-    [v10 setAllowsGroupOpacity:0];
+    layer2 = [(NTKSolarDiskView *)v8 layer];
+    [layer2 setAllowsGroupOpacity:0];
 
-    [(NTKSolarDiskView *)v8 setDevice:v6];
+    [(NTKSolarDiskView *)v8 setDevice:deviceCopy];
     [(NTKSolarDiskView *)v8 frame];
     v12 = v11;
     v14 = v13;
-    [v6 screenScale];
+    [deviceCopy screenScale];
     v16 = v15;
     v43.width = v12;
     v43.height = v14;
@@ -34,12 +34,12 @@
     v18 = +[UIColor whiteColor];
     [v18 setFill];
 
-    v19 = a3 * 0.243243243;
+    v19 = size * 0.243243243;
     v20 = +[UIColor whiteColor];
-    v21 = [v20 CGColor];
+    cGColor = [v20 CGColor];
     v44.width = CGSizeZero.width;
     v44.height = CGSizeZero.height;
-    CGContextSetShadowWithColor(CurrentContext, v44, v19, v21);
+    CGContextSetShadowWithColor(CurrentContext, v44, v19, cGColor);
 
     [(NTKSolarDiskView *)v8 bounds];
     v47 = CGRectInset(v46, v19, v19);
@@ -56,7 +56,7 @@
     [(NTKSolarDiskView *)v8 frame];
     v26 = v25;
     v28 = v27;
-    [v6 screenScale];
+    [deviceCopy screenScale];
     v30 = v29;
     v45.width = v26;
     v45.height = v28;
@@ -99,11 +99,11 @@
   return v8;
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
   v4.receiver = self;
   v4.super_class = NTKSolarDiskView;
-  [(NTKSolarDiskView *)&v4 setCenter:a3.x, a3.y];
+  [(NTKSolarDiskView *)&v4 setCenter:center.x, center.y];
   [(NTKSolarDiskView *)self setNeedsLayout];
 }
 
@@ -117,10 +117,10 @@
   [(NTKSolarDiskView *)self frame];
   v29 = v4 - v5;
   [(NTKSolarDiskView *)self bounds];
-  v6 = [(NTKSolarDiskView *)self sunUpView];
+  sunUpView = [(NTKSolarDiskView *)self sunUpView];
   height = CGSizeZero.height;
-  [v6 sizeThatFits:{CGSizeZero.width, height}];
-  v8 = [(NTKSolarDiskView *)self device];
+  [sunUpView sizeThatFits:{CGSizeZero.width, height}];
+  device = [(NTKSolarDiskView *)self device];
   CLKSizeCenteredInRectForDevice();
   v10 = v9;
   v12 = v11;
@@ -136,12 +136,12 @@
     v15 = 0.0;
   }
 
-  v16 = [(NTKSolarDiskView *)self sunUpView];
-  [v16 setFrame:{v10, v12, v14, v15}];
+  sunUpView2 = [(NTKSolarDiskView *)self sunUpView];
+  [sunUpView2 setFrame:{v10, v12, v14, v15}];
 
-  v17 = [(NTKSolarDiskView *)self sunDownView];
-  [v17 sizeThatFits:{CGSizeZero.width, height}];
-  v18 = [(NTKSolarDiskView *)self device];
+  sunDownView = [(NTKSolarDiskView *)self sunDownView];
+  [sunDownView sizeThatFits:{CGSizeZero.width, height}];
+  device2 = [(NTKSolarDiskView *)self device];
   CLKSizeCenteredInRectForDevice();
   v20 = v19;
   v22 = v21;
@@ -158,8 +158,8 @@
     v27 = 0.0;
   }
 
-  v28 = [(NTKSolarDiskView *)self sunDownView];
-  [v28 setFrame:{v20, v29, v24, v27}];
+  sunDownView2 = [(NTKSolarDiskView *)self sunDownView];
+  [sunDownView2 setFrame:{v20, v29, v24, v27}];
 }
 
 @end

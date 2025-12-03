@@ -6,17 +6,17 @@
 
 - (id)systemApertureElementContext
 {
-  v2 = [a1 windowScene];
-  v3 = [v2 systemApertureElementContext];
-  v4 = v3;
-  if (v3)
+  windowScene = [self windowScene];
+  systemApertureElementContext = [windowScene systemApertureElementContext];
+  v4 = systemApertureElementContext;
+  if (systemApertureElementContext)
   {
-    v5 = v3;
+    v5 = systemApertureElementContext;
   }
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = UIWindow_0;
     v5 = objc_msgSendSuper2(&v8, sel_systemApertureElementContext);
   }

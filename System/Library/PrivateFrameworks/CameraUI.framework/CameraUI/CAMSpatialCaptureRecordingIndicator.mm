@@ -1,16 +1,16 @@
 @interface CAMSpatialCaptureRecordingIndicator
-- (CAMSpatialCaptureRecordingIndicator)initWithFrame:(CGRect)a3;
+- (CAMSpatialCaptureRecordingIndicator)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
 @end
 
 @implementation CAMSpatialCaptureRecordingIndicator
 
-- (CAMSpatialCaptureRecordingIndicator)initWithFrame:(CGRect)a3
+- (CAMSpatialCaptureRecordingIndicator)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = CAMSpatialCaptureRecordingIndicator;
-  v3 = [(CAMSpatialCaptureRecordingIndicator *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMSpatialCaptureRecordingIndicator *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -24,8 +24,8 @@
     v8 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"visionpro" withConfiguration:v7];
     [(UIImageView *)v3->__imageView setImage:v8];
 
-    v9 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIImageView *)v3->__imageView setTintColor:v9];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIImageView *)v3->__imageView setTintColor:whiteColor];
 
     [(CAMSpatialCaptureRecordingIndicator *)v3 addSubview:v3->__imageView];
   }
@@ -40,13 +40,13 @@
   [(CAMSpatialCaptureRecordingIndicator *)&v15 layoutSubviews];
   [(CAMSpatialCaptureRecordingIndicator *)self bounds];
   v4 = v3 * 0.5;
-  v5 = [(CAMSpatialCaptureRecordingIndicator *)self layer];
-  [v5 setCornerRadius:v4];
+  layer = [(CAMSpatialCaptureRecordingIndicator *)self layer];
+  [layer setCornerRadius:v4];
 
   [(CAMSpatialCaptureRecordingIndicator *)self bounds];
   UIRectGetCenter();
-  v6 = [(CAMSpatialCaptureRecordingIndicator *)self _imageView];
-  CAMViewAlignmentSize(v6);
+  _imageView = [(CAMSpatialCaptureRecordingIndicator *)self _imageView];
+  CAMViewAlignmentSize(_imageView);
   CEKRectWithSize();
   v8 = v7;
   v10 = v9;
@@ -54,18 +54,18 @@
   v14 = v13;
   UIRectCenteredAboutPointScale();
   UIRectGetCenter();
-  [v6 setCenter:?];
-  [v6 setBounds:{v8, v10, v12, v14}];
+  [_imageView setCenter:?];
+  [_imageView setBounds:{v8, v10, v12, v14}];
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    v5 = a4;
-    self->_orientation = a3;
-    v7 = [(CAMSpatialCaptureRecordingIndicator *)self _imageView];
-    [CAMView rotateView:v7 toInterfaceOrientation:[(CAMSpatialCaptureRecordingIndicator *)self orientation] animated:v5];
+    animatedCopy = animated;
+    self->_orientation = orientation;
+    _imageView = [(CAMSpatialCaptureRecordingIndicator *)self _imageView];
+    [CAMView rotateView:_imageView toInterfaceOrientation:[(CAMSpatialCaptureRecordingIndicator *)self orientation] animated:animatedCopy];
   }
 }
 

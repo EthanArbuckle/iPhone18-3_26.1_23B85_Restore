@@ -1,8 +1,8 @@
 @interface _CDMDSearchQueryDelegate
 - (_CDMDSearchQueryDelegate)init;
-- (void)searchQuery:(id)a3 didFailWithError:(id)a4;
-- (void)searchQuery:(id)a3 didReturnItems:(id)a4;
-- (void)searchQuery:(id)a3 statusChanged:(unint64_t)a4;
+- (void)searchQuery:(id)query didFailWithError:(id)error;
+- (void)searchQuery:(id)query didReturnItems:(id)items;
+- (void)searchQuery:(id)query statusChanged:(unint64_t)changed;
 @end
 
 @implementation _CDMDSearchQueryDelegate
@@ -22,32 +22,32 @@
   return v2;
 }
 
-- (void)searchQuery:(id)a3 didReturnItems:(id)a4
+- (void)searchQuery:(id)query didReturnItems:(id)items
 {
-  if (a4)
+  if (items)
   {
-    [_CDMDSearchQueryDelegate searchQuery:a4 didReturnItems:?];
+    [_CDMDSearchQueryDelegate searchQuery:items didReturnItems:?];
   }
 }
 
-- (void)searchQuery:(id)a3 didFailWithError:(id)a4
+- (void)searchQuery:(id)query didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = +[_CDLogging interactionChannel];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [_CDMDSearchQueryDelegate searchQuery:v5 didFailWithError:v6];
+    [_CDMDSearchQueryDelegate searchQuery:errorCopy didFailWithError:v6];
   }
 
-  if (v5)
+  if (errorCopy)
   {
     [_CDMDSearchQueryDelegate searchQuery:? didFailWithError:?];
   }
 }
 
-- (void)searchQuery:(id)a3 statusChanged:(unint64_t)a4
+- (void)searchQuery:(id)query statusChanged:(unint64_t)changed
 {
-  if (a4 == 3)
+  if (changed == 3)
   {
     [_CDMDSearchQueryDelegate searchQuery:? statusChanged:?];
   }

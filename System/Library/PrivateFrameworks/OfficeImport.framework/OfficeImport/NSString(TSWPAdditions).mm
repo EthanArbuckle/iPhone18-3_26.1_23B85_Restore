@@ -18,12 +18,12 @@
 
 - (__CFString)tswp_stringByNormalizingParagraphBreaks
 {
-  v1 = a1;
-  v2 = [(__CFString *)v1 length];
-  v30 = v1;
+  selfCopy = self;
+  v2 = [(__CFString *)selfCopy length];
+  v30 = selfCopy;
   v33 = 0;
   v34 = v2;
-  CharactersPtr = CFStringGetCharactersPtr(v1);
+  CharactersPtr = CFStringGetCharactersPtr(selfCopy);
   if (CharactersPtr)
   {
     CStringPtr = 0;
@@ -31,7 +31,7 @@
 
   else
   {
-    CStringPtr = CFStringGetCStringPtr(v1, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(selfCopy, 0x600u);
   }
 
   v32 = CStringPtr;
@@ -183,9 +183,9 @@ LABEL_24:
           if (!v7)
           {
 LABEL_42:
-            v7 = [(__CFString *)v1 mutableCopyWithZone:0];
+            v7 = [(__CFString *)selfCopy mutableCopyWithZone:0];
 
-            v1 = v7;
+            selfCopy = v7;
             if (!v6)
             {
               goto LABEL_43;
@@ -204,11 +204,11 @@ LABEL_43:
 
 LABEL_44:
         [(__CFString *)v7 replaceCharactersInRange:v8 withString:v19, v6];
-        v2 = [(__CFString *)v1 length];
-        v30 = v1;
+        v2 = [(__CFString *)selfCopy length];
+        v30 = selfCopy;
         v33 = 0;
         v34 = v2;
-        CharactersPtr = CFStringGetCharactersPtr(v1);
+        CharactersPtr = CFStringGetCharactersPtr(selfCopy);
         if (CharactersPtr)
         {
           v25 = 0;
@@ -216,7 +216,7 @@ LABEL_44:
 
         else
         {
-          v25 = CFStringGetCStringPtr(v1, 0x600u);
+          v25 = CFStringGetCStringPtr(selfCopy, 0x600u);
         }
 
         v5 = 0;
@@ -244,12 +244,12 @@ LABEL_15:
 
 LABEL_58:
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)tswp_findIndexOfCharacter:()TSWPAdditions range:
 {
-  v36.length = [(__CFString *)a1 length];
+  v36.length = [(__CFString *)self length];
   v34.location = a4;
   v34.length = a5;
   v36.location = 0;
@@ -257,10 +257,10 @@ LABEL_58:
   if (v9.length)
   {
     location = v9.location;
-    theString = a1;
+    theString = self;
     v31 = v9;
-    CharactersPtr = CFStringGetCharactersPtr(a1);
-    v11 = CharactersPtr ? 0 : CFStringGetCStringPtr(a1, 0x600u);
+    CharactersPtr = CFStringGetCharactersPtr(self);
+    v11 = CharactersPtr ? 0 : CFStringGetCStringPtr(self, 0x600u);
     v32 = 0;
     v33 = 0;
     v30 = v11;
@@ -356,8 +356,8 @@ LABEL_15:
 - (uint64_t)tswp_rangeOfCharactersFromSet:()TSWPAdditions index:
 {
   v6 = a3;
-  v7 = [a1 length];
-  v8 = [a1 rangeOfCharacterFromSet:v6 options:0 range:{a4, v7 - a4}];
+  v7 = [self length];
+  v8 = [self rangeOfCharacterFromSet:v6 options:0 range:{a4, v7 - a4}];
   v10 = v9;
   if (v9)
   {
@@ -366,7 +366,7 @@ LABEL_15:
     {
       do
       {
-        if (![v6 characterIsMember:{objc_msgSend(a1, "characterAtIndex:", v11)}])
+        if (![v6 characterIsMember:{objc_msgSend(self, "characterAtIndex:", v11)}])
         {
           break;
         }
@@ -399,11 +399,11 @@ LABEL_15:
   v60 = 0;
   v61 = 0;
   v62 = 0;
-  v11 = [(__CFString *)a1 length];
-  theString = a1;
+  v11 = [(__CFString *)self length];
+  theString = self;
   range.location = 0;
   range.length = v11;
-  CharactersPtr = CFStringGetCharactersPtr(a1);
+  CharactersPtr = CFStringGetCharactersPtr(self);
   if (CharactersPtr)
   {
     CStringPtr = 0;
@@ -411,13 +411,13 @@ LABEL_15:
 
   else
   {
-    CStringPtr = CFStringGetCStringPtr(a1, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(self, 0x600u);
   }
 
   v58 = 0;
   length = 0;
   v56 = CStringPtr;
-  v50 = a1;
+  selfCopy = self;
   if (v11 && range.length >= 1)
   {
     if (CharactersPtr)
@@ -657,12 +657,12 @@ LABEL_46:
 LABEL_59:
   if (v61 == v60)
   {
-    v42 = v50;
+    v42 = selfCopy;
   }
 
   else
   {
-    v42 = [(__CFString *)v50 mutableCopy];
+    v42 = [(__CFString *)selfCopy mutableCopy];
     for (i = v61; i != v60; i -= 16)
     {
       v44 = *(i - 2);
@@ -685,8 +685,8 @@ LABEL_59:
   v5 = a3;
   if ([v5 length])
   {
-    v6 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v7 = [v5 stringByTrimmingCharactersInSet:v6];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v7 = [v5 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     if (!+[NSString(TSWPAdditions) tswp_numberForString:withListNumberFormat:]::sformattingCharacterSet)
     {
@@ -771,8 +771,8 @@ LABEL_22:
   v5 = a3;
   if ([v5 length])
   {
-    v6 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v7 = [v5 stringByTrimmingCharactersInSet:v6];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v7 = [v5 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     if ([v7 length] >= 0x65)
     {
@@ -1131,24 +1131,24 @@ LABEL_75:
 - (uint64_t)tswp_NSDetectorMatchStringIsStrictPhoneNumber
 {
   v21 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCA900] letterCharacterSet];
-  v3 = [a1 rangeOfCharacterFromSet:v2];
+  letterCharacterSet = [MEMORY[0x277CCA900] letterCharacterSet];
+  v3 = [self rangeOfCharacterFromSet:letterCharacterSet];
 
   if (v3 != 0x7FFFFFFFFFFFFFFFLL)
   {
     return 1;
   }
 
-  v4 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-  v5 = [a1 rangeOfCharacterFromSet:v4];
+  punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+  v5 = [self rangeOfCharacterFromSet:punctuationCharacterSet];
 
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL || [a1 length] && !u_charDigitValue(objc_msgSend(a1, "tswp_utf32CharacterAtIndex:", 0)))
+  if (v5 != 0x7FFFFFFFFFFFFFFFLL || [self length] && !u_charDigitValue(objc_msgSend(self, "tswp_utf32CharacterAtIndex:", 0)))
   {
     return 1;
   }
 
-  v6 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v7 = [a1 componentsSeparatedByCharactersInSet:v6];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v7 = [self componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
   if ([v7 count] < 2)
   {
@@ -1248,7 +1248,7 @@ LABEL_22:
 
 - (uint64_t)tswp_utf32CharacterAtIndex:()TSWPAdditions
 {
-  v5 = [a1 length];
+  v5 = [self length];
   if (v5 <= a3)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSWPAdditions) tswp_utf32CharacterAtIndex:]"];
@@ -1262,12 +1262,12 @@ LABEL_22:
   else
   {
     v6 = v5;
-    v7 = [a1 characterAtIndex:a3];
+    v7 = [self characterAtIndex:a3];
     if ((v7 & 0xFC00) == 0xDC00)
     {
       if (a3)
       {
-        v8 = [a1 characterAtIndex:a3 - 1];
+        v8 = [self characterAtIndex:a3 - 1];
       }
 
       else
@@ -1275,17 +1275,17 @@ LABEL_22:
         v8 = 0;
       }
 
-      if (a3 + 1 >= [a1 length])
+      if (a3 + 1 >= [self length])
       {
         v12 = 0;
       }
 
       else
       {
-        v12 = [a1 characterAtIndex:a3 + 1];
+        v12 = [self characterAtIndex:a3 + 1];
       }
 
-      v13 = [a1 rangeOfComposedCharacterSequenceAtIndex:a3];
+      v13 = [self rangeOfComposedCharacterSequenceAtIndex:a3];
       v15 = v14;
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSWPAdditions) tswp_utf32CharacterAtIndex:]"];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/TSNSStringAdditions.mm"];
@@ -1303,7 +1303,7 @@ LABEL_22:
 
     if (a3 + 1 < v6 && (v7 & 0xFC00) == 0xD800)
     {
-      v11 = [a1 characterAtIndex:?];
+      v11 = [self characterAtIndex:?];
       if ((v11 & 0xFC00) != 0xDC00)
       {
         v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSWPAdditions) tswp_utf32CharacterAtIndex:]"];
@@ -1322,8 +1322,8 @@ LABEL_22:
 
 - (uint64_t)tswp_utf32CharacterAtIndex:()TSWPAdditions planeClassification:
 {
-  v7 = [a1 length];
-  v8 = [a1 characterAtIndex:a3];
+  v7 = [self length];
+  v8 = [self characterAtIndex:a3];
   if ((v8 & 0xFC00) == 0xD800)
   {
     if (a4)
@@ -1340,7 +1340,7 @@ LABEL_22:
 
     else
     {
-      v13 = [a1 characterAtIndex:a3 + 1];
+      v13 = [self characterAtIndex:a3 + 1];
       if ((v13 & 0xFC00) == 0xDC00)
       {
         v10 = v13 + (v8 << 10);
@@ -1373,7 +1373,7 @@ LABEL_21:
       return v8;
     }
 
-    v9 = [a1 characterAtIndex:a3 - 1];
+    v9 = [self characterAtIndex:a3 - 1];
     if ((v9 & 0xFC00) == 0xD800)
     {
       v10 = v8 + (v9 << 10);
@@ -1398,7 +1398,7 @@ LABEL_20:
 
 - (uint64_t)tswp_isLowerCaseFromIndex:()TSWPAdditions
 {
-  v5 = [a1 length];
+  v5 = [self length];
   v6 = v5 - a3;
   if (v5 <= a3)
   {
@@ -1412,8 +1412,8 @@ LABEL_20:
 
   else
   {
-    v7 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
-    v8 = [a1 rangeOfCharacterFromSet:v7 options:2 range:{a3, v6}] == 0x7FFFFFFFFFFFFFFFLL;
+    uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+    v8 = [self rangeOfCharacterFromSet:uppercaseLetterCharacterSet options:2 range:{a3, v6}] == 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v8;
@@ -1421,11 +1421,11 @@ LABEL_20:
 
 - (id)tswp_stringWithoutControlCharacters
 {
-  v1 = [a1 mutableCopy];
-  v2 = [MEMORY[0x277CCA900] controlCharacterSet];
+  v1 = [self mutableCopy];
+  controlCharacterSet = [MEMORY[0x277CCA900] controlCharacterSet];
   while (1)
   {
-    v4 = [v1 rangeOfCharacterFromSet:v2];
+    v4 = [v1 rangeOfCharacterFromSet:controlCharacterSet];
     if (v4 == 0x7FFFFFFFFFFFFFFFLL)
     {
       break;

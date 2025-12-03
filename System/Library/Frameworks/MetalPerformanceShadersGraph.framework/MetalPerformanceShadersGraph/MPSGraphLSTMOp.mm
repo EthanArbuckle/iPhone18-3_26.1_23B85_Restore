@@ -1,42 +1,42 @@
 @interface MPSGraphLSTMOp
-- (MPSGraphLSTMOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 descriptor:(id)a6 name:(id)a7;
-- (id)partialDerivativesForInputTensors:(id)a3 incomingGradients:(id)a4 name:(id)a5;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphLSTMOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies descriptor:(id)descriptor name:(id)name;
+- (id)partialDerivativesForInputTensors:(id)tensors incomingGradients:(id)gradients name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphLSTMOp
 
-- (MPSGraphLSTMOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 descriptor:(id)a6 name:(id)a7
+- (MPSGraphLSTMOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies descriptor:(id)descriptor name:(id)name
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v15 copy];
+  graphCopy = graph;
+  tensorsCopy = tensors;
+  dependenciesCopy = dependencies;
+  descriptorCopy = descriptor;
+  nameCopy = name;
+  v17 = [descriptorCopy copy];
   desc = self->super._desc;
   self->super._desc = v17;
 
-  v19 = [(MPSGraphOperation *)self initWithGraph:v12 inputTensors:v13 controlDependencies:v14 name:v16];
+  v19 = [(MPSGraphOperation *)self initWithGraph:graphCopy inputTensors:tensorsCopy controlDependencies:dependenciesCopy name:nameCopy];
   return v19;
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v75 = *MEMORY[0x1E69E9840];
-  v55 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphLSTMOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphRNNOps.mm", __p);
-  v11 = v55;
+  v11 = nameCopy;
   v74 = 260;
   v73[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v73);
+  StringAttr = mlir::Builder::getStringAttr(builder, v73);
   v14 = mlir::FileLineColLoc::get(StringAttr, 0x1BDu, 0);
   if (v11)
   {
     v15 = v11;
     v16 = v11;
-    v17 = [v11 UTF8String];
-    v18 = strlen(v17);
+    uTF8String = [v11 UTF8String];
+    v18 = strlen(uTF8String);
     if (v18 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -51,7 +51,7 @@
     v72 = v18;
     if (v18)
     {
-      memmove(&__dst, v17, v18);
+      memmove(&__dst, uTF8String, v18);
     }
 
     v11 = v16;
@@ -66,7 +66,7 @@
   }
 
   *v20 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v13, &v67);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v13, &v67);
   v21 = v67.__r_.__value_.__r.__words[0];
   if ((v67.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -82,7 +82,7 @@
   }
 
   LOBYTE(v74) = v22;
-  v23 = mlir::Builder::getStringAttr(a3, v73);
+  v23 = mlir::Builder::getStringAttr(builder, v73);
   v24 = mlir::NameLoc::get(v23, v14);
   if (SHIBYTE(v67.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -106,56 +106,56 @@ LABEL_16:
     operator delete(__p[0]);
   }
 
-  v25 = [(MPSGraphLSTMDescriptor *)self->super._desc training];
-  v26 = [(MPSGraphLSTMDescriptor *)self->super._desc inputGateActivation];
-  if (v26 >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu))
+  training = [(MPSGraphLSTMDescriptor *)self->super._desc training];
+  inputGateActivation = [(MPSGraphLSTMDescriptor *)self->super._desc inputGateActivation];
+  if (inputGateActivation >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu))
   {
     v27 = 1;
   }
 
   else
   {
-    v27 = v26;
+    v27 = inputGateActivation;
   }
 
-  v28 = [(MPSGraphLSTMDescriptor *)self->super._desc forgetGateActivation];
-  if (v28 >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu))
+  forgetGateActivation = [(MPSGraphLSTMDescriptor *)self->super._desc forgetGateActivation];
+  if (forgetGateActivation >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu))
   {
     v29 = 1;
   }
 
   else
   {
-    v29 = v28;
+    v29 = forgetGateActivation;
   }
 
-  v30 = [(MPSGraphLSTMDescriptor *)self->super._desc cellGateActivation];
-  if (v30 >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu))
+  cellGateActivation = [(MPSGraphLSTMDescriptor *)self->super._desc cellGateActivation];
+  if (cellGateActivation >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu))
   {
     v31 = 1;
   }
 
   else
   {
-    v31 = v30;
+    v31 = cellGateActivation;
   }
 
-  v32 = [(MPSGraphLSTMDescriptor *)self->super._desc outputGateActivation];
-  if (v32 >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu))
+  outputGateActivation = [(MPSGraphLSTMDescriptor *)self->super._desc outputGateActivation];
+  if (outputGateActivation >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu))
   {
     v33 = 1;
   }
 
   else
   {
-    v33 = v32;
+    v33 = outputGateActivation;
   }
 
   v61 = v33;
-  v34 = [(MPSGraphLSTMDescriptor *)self->super._desc activation];
-  v35 = v34;
+  activation = [(MPSGraphLSTMDescriptor *)self->super._desc activation];
+  v35 = activation;
   v56 = v11;
-  v36 = v34 >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu);
+  v36 = activation >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu);
   desc = self->super._desc;
   if (v36)
   {
@@ -167,7 +167,7 @@ LABEL_16:
     v38 = v35;
   }
 
-  v60 = a3;
+  builderCopy = builder;
   v58 = v31;
   v59 = v29;
   v57 = v27;
@@ -181,12 +181,12 @@ LABEL_16:
     }
 
 LABEL_41:
-    if (v40 >= (*(a5 + 1) - *a5) >> 3)
+    if (v40 >= (*(values + 1) - *values) >> 3)
     {
       goto LABEL_54;
     }
 
-    v41 = *(*a5 + 8 * v40++);
+    v41 = *(*values + 8 * v40++);
     if (desc->_hasMask)
     {
       goto LABEL_37;
@@ -202,12 +202,12 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  if (*(a5 + 1) - *a5 < 0x11uLL)
+  if (*(values + 1) - *values < 0x11uLL)
   {
     goto LABEL_54;
   }
 
-  v39 = *(*a5 + 16);
+  v39 = *(*values + 16);
   v40 = 3;
   if (desc->_hasInitCell)
   {
@@ -222,12 +222,12 @@ LABEL_36:
   }
 
 LABEL_37:
-  if (v40 >= (*(a5 + 1) - *a5) >> 3)
+  if (v40 >= (*(values + 1) - *values) >> 3)
   {
     goto LABEL_54;
   }
 
-  v42 = *(*a5 + 8 * v40++);
+  v42 = *(*values + 8 * v40++);
   if (!desc->_hasPeephole)
   {
 LABEL_39:
@@ -237,24 +237,24 @@ LABEL_39:
   }
 
 LABEL_44:
-  if (v40 >= (*(a5 + 1) - *a5) >> 3)
+  if (v40 >= (*(values + 1) - *values) >> 3)
   {
 LABEL_54:
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
 
   v43 = v38;
-  v44 = *(*a5 + 8 * v40);
+  v44 = *(*values + 8 * v40);
 LABEL_46:
-  v45 = v25;
-  v46 = [(MPSGraphLSTMDescriptor *)desc forgetGateLast];
-  v47 = *a5;
-  if (*(a5 + 1) - *a5 <= 8uLL)
+  v45 = training;
+  forgetGateLast = [(MPSGraphLSTMDescriptor *)desc forgetGateLast];
+  v47 = *values;
+  if (*(values + 1) - *values <= 8uLL)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
 
-  v48 = v46;
+  v48 = forgetGateLast;
   v64 = v24;
   Context = mlir::Attribute::getContext(&v64);
   v50 = mlir::RegisteredOperationName::lookup(&mlir::detail::TypeIDResolver<mlir::mps::LSTMOp,void>::id, Context);
@@ -269,8 +269,8 @@ LABEL_46:
   }
 
   mlir::OperationState::OperationState(v73, v24, v50);
-  mlir::mps::LSTMOp::build(v60, v73, *v47, v47[1], v57, v59, v58, v61, v43, v48, v45, v39, v41, v42, v44, 0);
-  v52 = mlir::OpBuilder::create(v60, v73);
+  mlir::mps::LSTMOp::build(builderCopy, v73, *v47, v47[1], v57, v59, v58, v61, v43, v48, v45, v39, v41, v42, v44, 0);
+  v52 = mlir::OpBuilder::create(builderCopy, v73);
   v53 = *(v52[6] + 16);
   mlir::OperationState::~OperationState(v73);
   if (v53 != &mlir::detail::TypeIDResolver<mlir::mps::LSTMOp,void>::id)
@@ -281,12 +281,12 @@ LABEL_46:
   return v52;
 }
 
-- (id)partialDerivativesForInputTensors:(id)a3 incomingGradients:(id)a4 name:(id)a5
+- (id)partialDerivativesForInputTensors:(id)tensors incomingGradients:(id)gradients name:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 count])
+  tensorsCopy = tensors;
+  gradientsCopy = gradients;
+  nameCopy = name;
+  if ([gradientsCopy count])
   {
     v44 = self->super._desc;
     if (![(MPSGraphLSTMDescriptor *)v44 training])
@@ -345,37 +345,37 @@ LABEL_8:
 LABEL_15:
       v41 = [(NSArray *)self->super.super._inputTensors objectAtIndexedSubscript:v14];
 LABEL_16:
-      v39 = v10;
+      v39 = nameCopy;
       WeakRetained = objc_loadWeakRetained(&self->super.super._graph);
       v40 = v15;
       v19 = [(NSArray *)self->super.super._inputTensors objectAtIndexedSubscript:0];
       v20 = [(NSArray *)self->super.super._inputTensors objectAtIndexedSubscript:1];
       v21 = [WeakRetained LSTMWithSourceTensor:v19 recurrentWeight:v20 inputWeight:0 bias:0 initState:v42 initCell:v43 mask:v15 peephole:v41 descriptor:v44 name:@"fwd"];
 
-      if ([v9 count] < 2 || (objc_msgSend(v9, "objectAtIndexedSubscript:", 1), v22 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v22, (isKindOfClass & 1) != 0))
+      if ([gradientsCopy count] < 2 || (objc_msgSend(gradientsCopy, "objectAtIndexedSubscript:", 1), v22 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v22, (isKindOfClass & 1) != 0))
       {
         v38 = 0;
       }
 
       else
       {
-        v38 = [v9 objectAtIndexedSubscript:1];
+        v38 = [gradientsCopy objectAtIndexedSubscript:1];
       }
 
       v24 = objc_loadWeakRetained(&self->super.super._graph);
       v25 = [(NSArray *)self->super.super._inputTensors objectAtIndexedSubscript:0];
       v26 = [(NSArray *)self->super.super._inputTensors objectAtIndexedSubscript:1];
-      v27 = [v9 objectAtIndexedSubscript:0];
+      v27 = [gradientsCopy objectAtIndexedSubscript:0];
       v28 = [v21 objectAtIndexedSubscript:2];
       v29 = v21;
       v30 = [v21 objectAtIndexedSubscript:1];
       v31 = [v24 LSTMGradientsWithSourceTensor:v25 recurrentWeight:v26 sourceGradient:v27 zState:v28 cellOutputFwd:v30 stateGradient:0 cellGradient:v38 inputWeight:0 bias:0 initState:v42 initCell:v43 mask:v40 peephole:v41 descriptor:v44 name:v39];
 
-      v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
-      for (i = 0; i < [v8 count]; ++i)
+      v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(tensorsCopy, "count")}];
+      for (i = 0; i < [tensorsCopy count]; ++i)
       {
-        v33 = [MEMORY[0x1E695DFB0] null];
-        v34 = [v8 objectAtIndexedSubscript:i];
+        null = [MEMORY[0x1E695DFB0] null];
+        v34 = [tensorsCopy objectAtIndexedSubscript:i];
         objc_opt_class();
         v35 = objc_opt_isKindOfClass();
 
@@ -383,13 +383,13 @@ LABEL_16:
         {
           v36 = [v31 objectAtIndexedSubscript:i];
 
-          v33 = v36;
+          null = v36;
         }
 
-        [v16 addObject:v33];
+        [v16 addObject:null];
       }
 
-      v10 = v39;
+      nameCopy = v39;
       goto LABEL_26;
     }
 

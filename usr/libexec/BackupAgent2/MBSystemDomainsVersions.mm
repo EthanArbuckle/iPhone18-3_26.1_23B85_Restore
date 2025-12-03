@@ -2,7 +2,7 @@
 + (id)defaultSystemDomainsVersions;
 - (MBSystemDomainsVersions)init;
 - (MBSystemDomainsVersions)initWithDefaultSystemDomainsPlist;
-- (MBSystemDomainsVersions)initWithVersion:(double)a3 minSupportedVersion:(double)a4 maxSupportedVersion:(double)a5;
+- (MBSystemDomainsVersions)initWithVersion:(double)version minSupportedVersion:(double)supportedVersion maxSupportedVersion:(double)maxSupportedVersion;
 @end
 
 @implementation MBSystemDomainsVersions
@@ -23,14 +23,14 @@
   return result;
 }
 
-- (MBSystemDomainsVersions)initWithVersion:(double)a3 minSupportedVersion:(double)a4 maxSupportedVersion:(double)a5
+- (MBSystemDomainsVersions)initWithVersion:(double)version minSupportedVersion:(double)supportedVersion maxSupportedVersion:(double)maxSupportedVersion
 {
   result = [(MBSystemDomainsVersions *)self init];
   if (result)
   {
-    result->_version = a3;
-    result->_minSupportedVersion = a4;
-    result->_maxSupportedVersion = a5;
+    result->_version = version;
+    result->_minSupportedVersion = supportedVersion;
+    result->_maxSupportedVersion = maxSupportedVersion;
   }
 
   return result;

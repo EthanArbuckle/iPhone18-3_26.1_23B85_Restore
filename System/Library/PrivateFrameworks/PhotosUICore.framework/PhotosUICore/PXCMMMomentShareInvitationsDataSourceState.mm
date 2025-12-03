@@ -1,19 +1,19 @@
 @interface PXCMMMomentShareInvitationsDataSourceState
 + (PXCMMMomentShareInvitationsDataSourceState)new;
 - (PXCMMMomentShareInvitationsDataSourceState)init;
-- (PXCMMMomentShareInvitationsDataSourceState)initWithMomentShares:(id)a3 invitationsByMomentShareObjectID:(id)a4;
-- (id)stateUpdatedWithChange:(id)a3 changeDetails:(id *)a4;
+- (PXCMMMomentShareInvitationsDataSourceState)initWithMomentShares:(id)shares invitationsByMomentShareObjectID:(id)d;
+- (id)stateUpdatedWithChange:(id)change changeDetails:(id *)details;
 @end
 
 @implementation PXCMMMomentShareInvitationsDataSourceState
 
-- (id)stateUpdatedWithChange:(id)a3 changeDetails:(id *)a4
+- (id)stateUpdatedWithChange:(id)change changeDetails:(id *)details
 {
   v71 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  changeCopy = change;
   v6 = self->_momentShares;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  v8 = [v5 changeDetailsForFetchResult:v6];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v8 = [changeCopy changeDetailsForFetchResult:v6];
   v52 = v6;
   if (v8)
   {
@@ -21,14 +21,14 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __83__PXCMMMomentShareInvitationsDataSourceState_stateUpdatedWithChange_changeDetails___block_invoke;
     aBlock[3] = &unk_1E772E8C0;
-    v68 = v7;
+    v68 = dictionary;
     v9 = _Block_copy(aBlock);
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v10 = [v8 insertedObjects];
-    v11 = [v10 countByEnumeratingWithState:&v63 objects:v70 count:16];
+    insertedObjects = [v8 insertedObjects];
+    v11 = [insertedObjects countByEnumeratingWithState:&v63 objects:v70 count:16];
     if (v11)
     {
       v12 = v11;
@@ -39,13 +39,13 @@
         {
           if (*v64 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(insertedObjects);
           }
 
           v9[2](v9, *(*(&v63 + 1) + 8 * i));
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v63 objects:v70 count:16];
+        v12 = [insertedObjects countByEnumeratingWithState:&v63 objects:v70 count:16];
       }
 
       while (v12);
@@ -55,8 +55,8 @@
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v15 = [v8 changedObjects];
-    v16 = [v15 countByEnumeratingWithState:&v59 objects:v69 count:16];
+    changedObjects = [v8 changedObjects];
+    v16 = [changedObjects countByEnumeratingWithState:&v59 objects:v69 count:16];
     if (v16)
     {
       v17 = v16;
@@ -67,60 +67,60 @@
         {
           if (*v60 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(changedObjects);
           }
 
           v9[2](v9, *(*(&v59 + 1) + 8 * j));
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v59 objects:v69 count:16];
+        v17 = [changedObjects countByEnumeratingWithState:&v59 objects:v69 count:16];
       }
 
       while (v17);
     }
 
-    v20 = [v8 fetchResultAfterChanges];
+    fetchResultAfterChanges = [v8 fetchResultAfterChanges];
   }
 
   else
   {
-    v20 = v6;
+    fetchResultAfterChanges = v6;
   }
 
-  v21 = v20;
-  v22 = [(PHFetchResult *)v20 fetchedObjectIDs];
-  v23 = [v8 changedIndexes];
-  v24 = [v23 mutableCopy];
+  v21 = fetchResultAfterChanges;
+  fetchedObjectIDs = [(PHFetchResult *)fetchResultAfterChanges fetchedObjectIDs];
+  changedIndexes = [v8 changedIndexes];
+  v24 = [changedIndexes mutableCopy];
   v25 = v24;
   if (v24)
   {
-    v26 = v24;
+    indexSet = v24;
   }
 
   else
   {
-    v26 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
   }
 
-  v27 = v26;
+  v27 = indexSet;
 
-  v28 = [(PXCMMMomentShareInvitationsDataSourceState *)self invitationsByMomentShareObjectID];
+  invitationsByMomentShareObjectID = [(PXCMMMomentShareInvitationsDataSourceState *)self invitationsByMomentShareObjectID];
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __83__PXCMMMomentShareInvitationsDataSourceState_stateUpdatedWithChange_changeDetails___block_invoke_2;
   v53[3] = &unk_1E772E8E8;
-  v29 = v7;
+  v29 = dictionary;
   v54 = v29;
-  v50 = v22;
+  v50 = fetchedObjectIDs;
   v55 = v50;
-  v30 = v5;
+  v30 = changeCopy;
   v56 = v30;
-  v57 = self;
+  selfCopy = self;
   v31 = v27;
   v58 = v31;
-  [v28 enumerateKeysAndObjectsUsingBlock:v53];
-  v32 = [v8 removedObjects];
-  if (v32)
+  [invitationsByMomentShareObjectID enumerateKeysAndObjectsUsingBlock:v53];
+  removedObjects = [v8 removedObjects];
+  if (removedObjects)
   {
 
     v33 = v52;
@@ -131,50 +131,50 @@
     v33 = v52;
     if (![v29 count])
     {
-      v34 = v28;
+      v34 = invitationsByMomentShareObjectID;
       goto LABEL_27;
     }
   }
 
-  v34 = [v28 mutableCopy];
-  v35 = [v8 removedObjects];
+  v34 = [invitationsByMomentShareObjectID mutableCopy];
+  removedObjects2 = [v8 removedObjects];
 
-  if (v35)
+  if (removedObjects2)
   {
-    v36 = [v8 removedObjects];
-    [v34 removeObjectsForKeys:v36];
+    removedObjects3 = [v8 removedObjects];
+    [v34 removeObjectsForKeys:removedObjects3];
   }
 
   [v34 addEntriesFromDictionary:v29];
 LABEL_27:
-  if (v21 == v33 && v34 == v28)
+  if (v21 == v33 && v34 == invitationsByMomentShareObjectID)
   {
-    v37 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v37 = [[PXCMMMomentShareInvitationsDataSourceState alloc] initWithMomentShares:v21 invitationsByMomentShareObjectID:v34];
+    selfCopy2 = [[PXCMMMomentShareInvitationsDataSourceState alloc] initWithMomentShares:v21 invitationsByMomentShareObjectID:v34];
   }
 
-  v38 = v37;
-  if (a4)
+  v38 = selfCopy2;
+  if (details)
   {
     v49 = v21;
-    v48 = v37;
+    v48 = selfCopy2;
     v39 = [off_1E7721450 alloc];
     [v8 removedIndexes];
     v40 = v29;
     v42 = v41 = v30;
-    v43 = [v8 insertedIndexes];
-    v44 = [v8 movedIndexes];
-    v45 = [v39 initWithIncrementalChangeDetailsRemovedIndexes:v42 insertedIndexes:v43 movesToIndexes:v44 movesFromIndexes:objc_msgSend(v8 changedIndexes:{"movedFromIndexes"), v31}];
+    insertedIndexes = [v8 insertedIndexes];
+    movedIndexes = [v8 movedIndexes];
+    v45 = [v39 initWithIncrementalChangeDetailsRemovedIndexes:v42 insertedIndexes:insertedIndexes movesToIndexes:movedIndexes movesFromIndexes:objc_msgSend(v8 changedIndexes:{"movedFromIndexes"), v31}];
 
     v33 = v52;
     v30 = v41;
     v29 = v40;
     v46 = v45;
-    *a4 = v45;
+    *details = v45;
     v21 = v49;
 
     v38 = v48;
@@ -295,24 +295,24 @@ LABEL_4:
 
 - (PXCMMMomentShareInvitationsDataSourceState)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCMMMomentShareInvitationsDataSourceManager.m" lineNumber:344 description:{@"%s is not available as initializer", "-[PXCMMMomentShareInvitationsDataSourceState init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMMomentShareInvitationsDataSourceManager.m" lineNumber:344 description:{@"%s is not available as initializer", "-[PXCMMMomentShareInvitationsDataSourceState init]"}];
 
   abort();
 }
 
-- (PXCMMMomentShareInvitationsDataSourceState)initWithMomentShares:(id)a3 invitationsByMomentShareObjectID:(id)a4
+- (PXCMMMomentShareInvitationsDataSourceState)initWithMomentShares:(id)shares invitationsByMomentShareObjectID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  sharesCopy = shares;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = PXCMMMomentShareInvitationsDataSourceState;
   v9 = [(PXCMMMomentShareInvitationsDataSourceState *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_momentShares, a3);
-    objc_storeStrong(&v10->_invitationsByMomentShareObjectID, a4);
+    objc_storeStrong(&v9->_momentShares, shares);
+    objc_storeStrong(&v10->_invitationsByMomentShareObjectID, d);
   }
 
   return v10;
@@ -320,8 +320,8 @@ LABEL_4:
 
 + (PXCMMMomentShareInvitationsDataSourceState)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PXCMMMomentShareInvitationsDataSourceManager.m" lineNumber:348 description:{@"%s is not available as initializer", "+[PXCMMMomentShareInvitationsDataSourceState new]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMMomentShareInvitationsDataSourceManager.m" lineNumber:348 description:{@"%s is not available as initializer", "+[PXCMMMomentShareInvitationsDataSourceState new]"}];
 
   abort();
 }

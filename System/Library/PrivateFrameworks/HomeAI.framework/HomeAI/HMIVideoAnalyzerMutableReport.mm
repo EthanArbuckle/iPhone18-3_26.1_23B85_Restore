@@ -1,112 +1,112 @@
 @interface HMIVideoAnalyzerMutableReport
 + (NSDictionary)systemDeviceInformation;
-+ (id)chartSpecWithRange:(CGRect)a3 colors:(id)a4 labels:(id)a5;
-+ (id)greedyMatchBetweenPredictionEvents:(id)a3 truthEvents:(id)a4 falsePositiveIndices:(id)a5 falseNegativeIndices:(id)a6 eventClass:(Class)a7 regionOfInterest:(CGRect)a8 confidenceThreshold:(float)a9 scoreThreshold:(float)a10 scoreFunction:(id)a11;
-+ (void)sihouetteScoreForMatches:(id)a3 previousMatches:(id)a4 truePositiveScores:(id)a5 falsePositiveScores:(id)a6 falseNegativeScores:(id)a7;
-+ (void)writeImageCropFromFrame:(id)a3 events:(id)a4 outputPath:(id)a5 source:(id)a6;
-+ (void)writeJSONChartData:(id)a3 outputPath:(id)a4;
-- (HMIVideoAnalyzerMutableReport)initWithCoder:(id)a3;
-- (HMIVideoAnalyzerMutableReport)initWithData:(id)a3 error:(id *)a4;
-- (HMIVideoAnalyzerMutableReport)initWithName:(id)a3;
++ (id)chartSpecWithRange:(CGRect)range colors:(id)colors labels:(id)labels;
++ (id)greedyMatchBetweenPredictionEvents:(id)events truthEvents:(id)truthEvents falsePositiveIndices:(id)indices falseNegativeIndices:(id)negativeIndices eventClass:(Class)class regionOfInterest:(CGRect)interest confidenceThreshold:(float)threshold scoreThreshold:(float)self0 scoreFunction:(id)self1;
++ (void)sihouetteScoreForMatches:(id)matches previousMatches:(id)previousMatches truePositiveScores:(id)scores falsePositiveScores:(id)positiveScores falseNegativeScores:(id)negativeScores;
++ (void)writeImageCropFromFrame:(id)frame events:(id)events outputPath:(id)path source:(id)source;
++ (void)writeJSONChartData:(id)data outputPath:(id)path;
+- (HMIVideoAnalyzerMutableReport)initWithCoder:(id)coder;
+- (HMIVideoAnalyzerMutableReport)initWithData:(id)data error:(id *)error;
+- (HMIVideoAnalyzerMutableReport)initWithName:(id)name;
 - (NSData)data;
 - (NSSet)eventClasses;
-- (id)averagePrecisionForMinPrecision:(float)a3 comparator:(id)a4;
-- (id)averagePrecisionWithClassificationTruth:(id)a3 minPrecision:(float)a4;
-- (id)averagePrecisionWithDetectionTruth:(id)a3 minPrecision:(float)a4 iouThreshold:(float)a5 videoMetric:(BOOL)a6;
-- (id)chartDataWithBaseline:(BOOL)a3 comparator:(id)a4;
-- (id)chartDataWithClassificationTruth:(id)a3 isBaseline:(BOOL)a4;
-- (id)chartDataWithDetectionTruth:(id)a3 isBaseline:(BOOL)a4 iouThreshold:(float)a5 videoMetric:(BOOL)a6;
-- (id)compareWithClassificationTruth:(id)a3 eventClass:(Class)a4 confidenceThreshold:(float)a5;
-- (id)compareWithDetectionTruth:(id)a3 eventClass:(Class)a4 confidenceThreshold:(float)a5 iouThreshold:(float)a6 videoMetric:(BOOL)a7;
-- (id)compareWithTrackingTruth:(id)a3 eventClass:(Class)a4 confidenceThreshold:(float)a5 ioaThreshold:(float)a6;
-- (id)selectFramesWithRecord:(id)a3 truth:(id)a4 frameResults:(id)a5;
-- (id)truthReportFromLegacyClassificationFormat:(id)a3;
-- (id)truthReportFromLegacyDetectionFormat:(id)a3;
-- (void)appendFragmentResult:(id)a3 forKey:(id)a4 source:(id)a5 redactFrames:(BOOL)a6;
-- (void)appendFragmentResultsFromReport:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeFragmentFileComparison:(id)a3 eventClass:(Class)a4 outputPath:(id)a5;
-- (void)writeHTMLReportComparison:(id)a3 truth:(id)a4 eventClass:(Class)a5 comparisonType:(id)a6 assetPath:(id)a7 outputPath:(id)a8 limit:(unint64_t)a9 shuffle:(BOOL)a10;
-- (void)writeImageCropForEventClass:(Class)a3 outputPath:(id)a4 assetPath:(id)a5;
+- (id)averagePrecisionForMinPrecision:(float)precision comparator:(id)comparator;
+- (id)averagePrecisionWithClassificationTruth:(id)truth minPrecision:(float)precision;
+- (id)averagePrecisionWithDetectionTruth:(id)truth minPrecision:(float)precision iouThreshold:(float)threshold videoMetric:(BOOL)metric;
+- (id)chartDataWithBaseline:(BOOL)baseline comparator:(id)comparator;
+- (id)chartDataWithClassificationTruth:(id)truth isBaseline:(BOOL)baseline;
+- (id)chartDataWithDetectionTruth:(id)truth isBaseline:(BOOL)baseline iouThreshold:(float)threshold videoMetric:(BOOL)metric;
+- (id)compareWithClassificationTruth:(id)truth eventClass:(Class)class confidenceThreshold:(float)threshold;
+- (id)compareWithDetectionTruth:(id)truth eventClass:(Class)class confidenceThreshold:(float)threshold iouThreshold:(float)iouThreshold videoMetric:(BOOL)metric;
+- (id)compareWithTrackingTruth:(id)truth eventClass:(Class)class confidenceThreshold:(float)threshold ioaThreshold:(float)ioaThreshold;
+- (id)selectFramesWithRecord:(id)record truth:(id)truth frameResults:(id)results;
+- (id)truthReportFromLegacyClassificationFormat:(id)format;
+- (id)truthReportFromLegacyDetectionFormat:(id)format;
+- (void)appendFragmentResult:(id)result forKey:(id)key source:(id)source redactFrames:(BOOL)frames;
+- (void)appendFragmentResultsFromReport:(id)report;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeFragmentFileComparison:(id)comparison eventClass:(Class)class outputPath:(id)path;
+- (void)writeHTMLReportComparison:(id)comparison truth:(id)truth eventClass:(Class)class comparisonType:(id)type assetPath:(id)path outputPath:(id)outputPath limit:(unint64_t)limit shuffle:(BOOL)self0;
+- (void)writeImageCropForEventClass:(Class)class outputPath:(id)path assetPath:(id)assetPath;
 @end
 
 @implementation HMIVideoAnalyzerMutableReport
 
-- (HMIVideoAnalyzerMutableReport)initWithName:(id)a3
+- (HMIVideoAnalyzerMutableReport)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = HMIVideoAnalyzerMutableReport;
   v5 = [(HMIVideoAnalyzerMutableReport *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
 
     v5->_version = 2;
-    v8 = [objc_opt_class() systemDeviceInformation];
+    systemDeviceInformation = [objc_opt_class() systemDeviceInformation];
     deviceInformation = v5->_deviceInformation;
-    v5->_deviceInformation = v8;
+    v5->_deviceInformation = systemDeviceInformation;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sessions = v5->_sessions;
-    v5->_sessions = v10;
+    v5->_sessions = dictionary;
   }
 
   return v5;
 }
 
-- (HMIVideoAnalyzerMutableReport)initWithData:(id)a3 error:(id *)a4
+- (HMIVideoAnalyzerMutableReport)initWithData:(id)data error:(id *)error
 {
   v6 = MEMORY[0x277CCAAC8];
-  v7 = a3;
-  v8 = [v6 unarchivedObjectOfClass:objc_opt_class() fromData:v7 error:a4];
+  dataCopy = data;
+  v8 = [v6 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:error];
 
   return v8;
 }
 
-- (void)appendFragmentResult:(id)a3 forKey:(id)a4 source:(id)a5 redactFrames:(BOOL)a6
+- (void)appendFragmentResult:(id)result forKey:(id)key source:(id)source redactFrames:(BOOL)frames
 {
-  v6 = a6;
-  v18 = a4;
-  v10 = a5;
-  v11 = a3;
-  v12 = [(HMIVideoAnalyzerMutableReport *)self sessions];
-  v13 = [v12 objectForKeyedSubscript:v18];
+  framesCopy = frames;
+  keyCopy = key;
+  sourceCopy = source;
+  resultCopy = result;
+  sessions = [(HMIVideoAnalyzerMutableReport *)self sessions];
+  v13 = [sessions objectForKeyedSubscript:keyCopy];
 
   if (!v13)
   {
-    v14 = [[HMIVideoAnalyzerMutableReportSession alloc] initWithSource:v10];
-    v15 = [(HMIVideoAnalyzerMutableReport *)self sessions];
-    [v15 setObject:v14 forKeyedSubscript:v18];
+    v14 = [[HMIVideoAnalyzerMutableReportSession alloc] initWithSource:sourceCopy];
+    sessions2 = [(HMIVideoAnalyzerMutableReport *)self sessions];
+    [sessions2 setObject:v14 forKeyedSubscript:keyCopy];
   }
 
-  v16 = [(HMIVideoAnalyzerMutableReport *)self sessions];
-  v17 = [v16 objectForKeyedSubscript:v18];
-  [v17 appendFragmentResult:v11 redactFrames:v6];
+  sessions3 = [(HMIVideoAnalyzerMutableReport *)self sessions];
+  v17 = [sessions3 objectForKeyedSubscript:keyCopy];
+  [v17 appendFragmentResult:resultCopy redactFrames:framesCopy];
 }
 
-- (void)appendFragmentResultsFromReport:(id)a3
+- (void)appendFragmentResultsFromReport:(id)report
 {
-  v4 = a3;
-  v6 = [(HMIVideoAnalyzerMutableReport *)self sessions];
-  v5 = [v4 sessions];
+  reportCopy = report;
+  sessions = [(HMIVideoAnalyzerMutableReport *)self sessions];
+  sessions2 = [reportCopy sessions];
 
-  [v6 addEntriesFromDictionary:v5];
+  [sessions addEntriesFromDictionary:sessions2];
 }
 
 - (NSSet)eventClasses
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(HMIVideoAnalyzerMutableReport *)self sessions];
+  sessions = [(HMIVideoAnalyzerMutableReport *)self sessions];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__HMIVideoAnalyzerMutableReport_eventClasses__block_invoke;
   v8[3] = &unk_2787535C8;
   v9 = v3;
   v5 = v3;
-  [v4 na_each:v8];
+  [sessions na_each:v8];
 
   v6 = [v5 copy];
 
@@ -154,20 +154,20 @@ uint64_t __45__HMIVideoAnalyzerMutableReport_eventClasses__block_invoke_4(uint64
   return [v1 addObject:v2];
 }
 
-- (id)averagePrecisionForMinPrecision:(float)a3 comparator:(id)a4
+- (id)averagePrecisionForMinPrecision:(float)precision comparator:(id)comparator
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  comparatorCopy = comparator;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v7 = +[HMIVideoAnalyzerEvent eventClassesArray];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __76__HMIVideoAnalyzerMutableReport_averagePrecisionForMinPrecision_comparator___block_invoke;
   v13[3] = &unk_2787535F0;
-  v15 = v5;
-  v16 = a3;
-  v8 = v6;
+  v15 = comparatorCopy;
+  precisionCopy = precision;
+  v8 = dictionary;
   v14 = v8;
-  v9 = v5;
+  v9 = comparatorCopy;
   [v7 na_each:v13];
 
   v10 = v14;
@@ -219,46 +219,46 @@ void __76__HMIVideoAnalyzerMutableReport_averagePrecisionForMinPrecision_compara
   [*(a1 + 32) setObject:v20 forKeyedSubscript:a2];
 }
 
-- (id)averagePrecisionWithClassificationTruth:(id)a3 minPrecision:(float)a4
+- (id)averagePrecisionWithClassificationTruth:(id)truth minPrecision:(float)precision
 {
-  v6 = a3;
+  truthCopy = truth;
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __86__HMIVideoAnalyzerMutableReport_averagePrecisionWithClassificationTruth_minPrecision___block_invoke;
   v15 = &unk_278753618;
-  v16 = self;
-  v17 = v6;
-  v7 = v6;
+  selfCopy = self;
+  v17 = truthCopy;
+  v7 = truthCopy;
   v8 = MEMORY[0x2318CB8E0](&v12);
-  *&v9 = a4;
-  v10 = [(HMIVideoAnalyzerMutableReport *)self averagePrecisionForMinPrecision:v8 comparator:v9, v12, v13, v14, v15, v16];
+  *&v9 = precision;
+  selfCopy = [(HMIVideoAnalyzerMutableReport *)self averagePrecisionForMinPrecision:v8 comparator:v9, v12, v13, v14, v15, selfCopy];
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)averagePrecisionWithDetectionTruth:(id)a3 minPrecision:(float)a4 iouThreshold:(float)a5 videoMetric:(BOOL)a6
+- (id)averagePrecisionWithDetectionTruth:(id)truth minPrecision:(float)precision iouThreshold:(float)threshold videoMetric:(BOOL)metric
 {
-  v10 = a3;
+  truthCopy = truth;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __106__HMIVideoAnalyzerMutableReport_averagePrecisionWithDetectionTruth_minPrecision_iouThreshold_videoMetric___block_invoke;
   v16[3] = &unk_278753640;
   v16[4] = self;
-  v17 = v10;
-  v18 = a5;
-  v19 = a6;
-  v11 = v10;
+  v17 = truthCopy;
+  thresholdCopy = threshold;
+  metricCopy = metric;
+  v11 = truthCopy;
   v12 = MEMORY[0x2318CB8E0](v16);
-  *&v13 = a4;
+  *&v13 = precision;
   v14 = [(HMIVideoAnalyzerMutableReport *)self averagePrecisionForMinPrecision:v12 comparator:v13];
 
   return v14;
 }
 
-- (id)chartDataWithBaseline:(BOOL)a3 comparator:(id)a4
+- (id)chartDataWithBaseline:(BOOL)baseline comparator:(id)comparator
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
+  comparatorCopy = comparator;
+  array = [MEMORY[0x277CBEB18] array];
   v7 = 1.0;
   do
   {
@@ -267,12 +267,12 @@ void __76__HMIVideoAnalyzerMutableReport_averagePrecisionForMinPrecision_compara
     v12[1] = 3221225472;
     v12[2] = __66__HMIVideoAnalyzerMutableReport_chartDataWithBaseline_comparator___block_invoke;
     v12[3] = &unk_278753668;
-    v9 = v5;
+    v9 = comparatorCopy;
     v14 = v9;
     v15 = v7;
-    v10 = v6;
+    v10 = array;
     v13 = v10;
-    v16 = a3;
+    baselineCopy = baseline;
     [v8 na_each:v12];
 
     v7 = v7 + -0.01;
@@ -343,38 +343,38 @@ void __66__HMIVideoAnalyzerMutableReport_chartDataWithBaseline_comparator___bloc
   }
 }
 
-- (id)chartDataWithClassificationTruth:(id)a3 isBaseline:(BOOL)a4
+- (id)chartDataWithClassificationTruth:(id)truth isBaseline:(BOOL)baseline
 {
-  v4 = a4;
-  v6 = a3;
+  baselineCopy = baseline;
+  truthCopy = truth;
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __77__HMIVideoAnalyzerMutableReport_chartDataWithClassificationTruth_isBaseline___block_invoke;
   v14 = &unk_278753618;
-  v15 = self;
-  v16 = v6;
-  v7 = v6;
+  selfCopy = self;
+  v16 = truthCopy;
+  v7 = truthCopy;
   v8 = MEMORY[0x2318CB8E0](&v11);
-  v9 = [(HMIVideoAnalyzerMutableReport *)self chartDataWithBaseline:v4 comparator:v8, v11, v12, v13, v14, v15];
+  selfCopy = [(HMIVideoAnalyzerMutableReport *)self chartDataWithBaseline:baselineCopy comparator:v8, v11, v12, v13, v14, selfCopy];
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)chartDataWithDetectionTruth:(id)a3 isBaseline:(BOOL)a4 iouThreshold:(float)a5 videoMetric:(BOOL)a6
+- (id)chartDataWithDetectionTruth:(id)truth isBaseline:(BOOL)baseline iouThreshold:(float)threshold videoMetric:(BOOL)metric
 {
-  v8 = a4;
-  v10 = a3;
+  baselineCopy = baseline;
+  truthCopy = truth;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __97__HMIVideoAnalyzerMutableReport_chartDataWithDetectionTruth_isBaseline_iouThreshold_videoMetric___block_invoke;
   v15[3] = &unk_278753640;
   v15[4] = self;
-  v16 = v10;
-  v17 = a5;
-  v18 = a6;
-  v11 = v10;
+  v16 = truthCopy;
+  thresholdCopy = threshold;
+  metricCopy = metric;
+  v11 = truthCopy;
   v12 = MEMORY[0x2318CB8E0](v15);
-  v13 = [(HMIVideoAnalyzerMutableReport *)self chartDataWithBaseline:v8 comparator:v12];
+  v13 = [(HMIVideoAnalyzerMutableReport *)self chartDataWithBaseline:baselineCopy comparator:v12];
 
   return v13;
 }
@@ -394,9 +394,9 @@ void __66__HMIVideoAnalyzerMutableReport_chartDataWithBaseline_comparator___bloc
   [v2 setObject:v3 forKeyedSubscript:@"HardwareModel"];
 
   v4 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.HomeAI"];
-  v5 = [v4 infoDictionary];
+  infoDictionary = [v4 infoDictionary];
   v6 = *MEMORY[0x277CBED58];
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277CBED58]];
+  v7 = [infoDictionary objectForKeyedSubscript:*MEMORY[0x277CBED58]];
   [v2 setObject:v7 forKeyedSubscript:@"HomeAIBundleVersion"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:HMIIsDebug()];
@@ -405,19 +405,19 @@ void __66__HMIVideoAnalyzerMutableReport_chartDataWithBaseline_comparator___bloc
   return v2;
 }
 
-- (id)truthReportFromLegacyClassificationFormat:(id)a3
+- (id)truthReportFromLegacyClassificationFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   v5 = [[HMIVideoAnalyzerMutableReport alloc] initWithName:@"Truth"];
-  v6 = [(HMIVideoAnalyzerMutableReport *)self sessions];
+  sessions = [(HMIVideoAnalyzerMutableReport *)self sessions];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __75__HMIVideoAnalyzerMutableReport_truthReportFromLegacyClassificationFormat___block_invoke;
   v14 = &unk_2787536D8;
-  v15 = v4;
-  v16 = self;
-  v7 = v4;
-  v8 = [v6 na_dictionaryByMappingValues:&v11];
+  v15 = formatCopy;
+  selfCopy = self;
+  v7 = formatCopy;
+  v8 = [sessions na_dictionaryByMappingValues:&v11];
 
   v9 = [(HMIVideoAnalyzerMutableReport *)v5 sessions:v11];
   [v9 addEntriesFromDictionary:v8];
@@ -505,19 +505,19 @@ id __75__HMIVideoAnalyzerMutableReport_truthReportFromLegacyClassificationFormat
   return v4;
 }
 
-- (id)truthReportFromLegacyDetectionFormat:(id)a3
+- (id)truthReportFromLegacyDetectionFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   v5 = [[HMIVideoAnalyzerMutableReport alloc] initWithName:@"Truth"];
-  v6 = [(HMIVideoAnalyzerMutableReport *)self sessions];
+  sessions = [(HMIVideoAnalyzerMutableReport *)self sessions];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __70__HMIVideoAnalyzerMutableReport_truthReportFromLegacyDetectionFormat___block_invoke;
   v14 = &unk_2787536D8;
-  v15 = v4;
-  v16 = self;
-  v7 = v4;
-  v8 = [v6 na_dictionaryByMappingValues:&v11];
+  v15 = formatCopy;
+  selfCopy = self;
+  v7 = formatCopy;
+  v8 = [sessions na_dictionaryByMappingValues:&v11];
 
   v9 = [(HMIVideoAnalyzerMutableReport *)v5 sessions:v11];
   [v9 addEntriesFromDictionary:v8];
@@ -635,28 +635,28 @@ HMIVideoAnalyzerMutableReportSession *__70__HMIVideoAnalyzerMutableReport_truthR
   return v32;
 }
 
-- (id)compareWithClassificationTruth:(id)a3 eventClass:(Class)a4 confidenceThreshold:(float)a5
+- (id)compareWithClassificationTruth:(id)truth eventClass:(Class)class confidenceThreshold:(float)threshold
 {
-  v8 = a3;
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [MEMORY[0x277CBEB18] array];
-  v12 = [(HMIVideoAnalyzerMutableReport *)self sessions];
+  truthCopy = truth;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  sessions = [(HMIVideoAnalyzerMutableReport *)self sessions];
   v23 = MEMORY[0x277D85DD0];
   v24 = 3221225472;
   v25 = __95__HMIVideoAnalyzerMutableReport_compareWithClassificationTruth_eventClass_confidenceThreshold___block_invoke;
   v26 = &unk_278753700;
-  v30 = v10;
-  v31 = a4;
-  v32 = a5;
-  v27 = v8;
-  v28 = v9;
-  v29 = v11;
-  v13 = v10;
-  v14 = v11;
-  v15 = v9;
-  v16 = v8;
-  [v12 na_each:&v23];
+  v30 = array2;
+  classCopy = class;
+  thresholdCopy = threshold;
+  v27 = truthCopy;
+  v28 = array;
+  v29 = array3;
+  v13 = array2;
+  v14 = array3;
+  v15 = array;
+  v16 = truthCopy;
+  [sessions na_each:&v23];
 
   v17 = [HMIVideoAnalyzerMutableReportComparison alloc];
   v18 = [v15 copy];
@@ -725,59 +725,59 @@ void __95__HMIVideoAnalyzerMutableReport_compareWithClassificationTruth_eventCla
   }
 }
 
-- (id)compareWithDetectionTruth:(id)a3 eventClass:(Class)a4 confidenceThreshold:(float)a5 iouThreshold:(float)a6 videoMetric:(BOOL)a7
+- (id)compareWithDetectionTruth:(id)truth eventClass:(Class)class confidenceThreshold:(float)threshold iouThreshold:(float)iouThreshold videoMetric:(BOOL)metric
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = [MEMORY[0x277CBEB18] array];
-  v14 = [MEMORY[0x277CBEB18] array];
-  v15 = [MEMORY[0x277CBEB18] array];
-  if (v7)
+  metricCopy = metric;
+  truthCopy = truth;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  if (metricCopy)
   {
-    v16 = [MEMORY[0x277CBEB18] array];
-    v17 = [MEMORY[0x277CBEB18] array];
-    v18 = [MEMORY[0x277CBEB18] array];
+    array4 = [MEMORY[0x277CBEB18] array];
+    array5 = [MEMORY[0x277CBEB18] array];
+    array6 = [MEMORY[0x277CBEB18] array];
   }
 
   else
   {
-    v16 = v13;
-    v17 = v14;
-    v18 = v15;
+    array4 = array;
+    array5 = array2;
+    array6 = array3;
   }
 
-  v19 = v18;
-  v20 = [(HMIVideoAnalyzerMutableReport *)self sessions];
+  v19 = array6;
+  sessions = [(HMIVideoAnalyzerMutableReport *)self sessions];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __115__HMIVideoAnalyzerMutableReport_compareWithDetectionTruth_eventClass_confidenceThreshold_iouThreshold_videoMetric___block_invoke_2;
   v34[3] = &unk_2787537E0;
-  v44 = a5;
-  v45 = a6;
-  v35 = v12;
-  v36 = v16;
-  v37 = v17;
+  thresholdCopy = threshold;
+  iouThresholdCopy = iouThreshold;
+  v35 = truthCopy;
+  v36 = array4;
+  v37 = array5;
   v38 = v19;
-  v46 = v7;
-  v39 = v13;
-  v40 = v15;
+  v46 = metricCopy;
+  v39 = array;
+  v40 = array3;
   v42 = &__block_literal_global_247;
-  v43 = a4;
-  v41 = v14;
-  v21 = v14;
-  v22 = v15;
-  v23 = v13;
+  classCopy = class;
+  v41 = array2;
+  v21 = array2;
+  v22 = array3;
+  v23 = array;
   v33 = v19;
-  v32 = v17;
-  v24 = v16;
-  v25 = v12;
-  [v20 na_each:v34];
+  v32 = array5;
+  v24 = array4;
+  v25 = truthCopy;
+  [sessions na_each:v34];
 
   v26 = [HMIVideoAnalyzerMutableReportComparison alloc];
   v27 = [v23 copy];
   v28 = [v22 copy];
   v29 = [v21 copy];
-  v30 = [(HMIVideoAnalyzerMutableReportComparison *)v26 initWithTruePositiveKeys:v27 falseNegativeKeys:v28 falsePositiveKeys:v29 groupByKey:v7];
+  v30 = [(HMIVideoAnalyzerMutableReportComparison *)v26 initWithTruePositiveKeys:v27 falseNegativeKeys:v28 falsePositiveKeys:v29 groupByKey:metricCopy];
 
   return v30;
 }
@@ -1014,30 +1014,30 @@ BOOL __115__HMIVideoAnalyzerMutableReport_compareWithDetectionTruth_eventClass_c
   return v4;
 }
 
-- (id)compareWithTrackingTruth:(id)a3 eventClass:(Class)a4 confidenceThreshold:(float)a5 ioaThreshold:(float)a6
+- (id)compareWithTrackingTruth:(id)truth eventClass:(Class)class confidenceThreshold:(float)threshold ioaThreshold:(float)ioaThreshold
 {
-  v10 = a3;
-  v11 = [MEMORY[0x277CBEB18] array];
-  v12 = [MEMORY[0x277CBEB18] array];
-  v13 = [MEMORY[0x277CBEB18] array];
-  v14 = [(HMIVideoAnalyzerMutableReport *)self sessions];
+  truthCopy = truth;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  sessions = [(HMIVideoAnalyzerMutableReport *)self sessions];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __102__HMIVideoAnalyzerMutableReport_compareWithTrackingTruth_eventClass_confidenceThreshold_ioaThreshold___block_invoke_2;
   v25[3] = &unk_278753830;
-  v32 = a5;
-  v33 = a6;
+  thresholdCopy = threshold;
+  ioaThresholdCopy = ioaThreshold;
   v30 = &__block_literal_global_266;
-  v31 = a4;
-  v26 = v10;
-  v27 = v11;
-  v28 = v12;
-  v29 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  [v14 na_each:v25];
+  classCopy = class;
+  v26 = truthCopy;
+  v27 = array;
+  v28 = array2;
+  v29 = array3;
+  v15 = array3;
+  v16 = array2;
+  v17 = array;
+  v18 = truthCopy;
+  [sessions na_each:v25];
 
   v19 = [HMIVideoAnalyzerMutableReportComparison alloc];
   v20 = [v17 copy];
@@ -1295,23 +1295,23 @@ void __102__HMIVideoAnalyzerMutableReport_compareWithTrackingTruth_eventClass_co
   }
 }
 
-- (id)selectFramesWithRecord:(id)a3 truth:(id)a4 frameResults:(id)a5
+- (id)selectFramesWithRecord:(id)record truth:(id)truth frameResults:(id)results
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [v6 frameResultIndices];
-  v10 = [v9 count];
+  recordCopy = record;
+  resultsCopy = results;
+  array = [MEMORY[0x277CBEB18] array];
+  frameResultIndices = [recordCopy frameResultIndices];
+  v10 = [frameResultIndices count];
 
   if (v10)
   {
-    v11 = [v6 frameResultIndices];
+    frameResultIndices2 = [recordCopy frameResultIndices];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __75__HMIVideoAnalyzerMutableReport_selectFramesWithRecord_truth_frameResults___block_invoke;
     v20[3] = &unk_278753858;
-    v21 = v8;
-    [v11 na_each:v20];
+    v21 = array;
+    [frameResultIndices2 na_each:v20];
 
     v12 = v21;
 LABEL_5:
@@ -1319,21 +1319,21 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v7 count])
+  if ([resultsCopy count])
   {
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __75__HMIVideoAnalyzerMutableReport_selectFramesWithRecord_truth_frameResults___block_invoke_2;
     v18 = &unk_278753880;
-    v19 = v8;
-    [v7 enumerateObjectsUsingBlock:&v15];
+    v19 = array;
+    [resultsCopy enumerateObjectsUsingBlock:&v15];
     v12 = v19;
     goto LABEL_5;
   }
 
-  [v8 addObject:&unk_284075090];
+  [array addObject:&unk_284075090];
 LABEL_6:
-  v13 = [v8 copy];
+  v13 = [array copy];
 
   return v13;
 }
@@ -1345,49 +1345,49 @@ void __75__HMIVideoAnalyzerMutableReport_selectFramesWithRecord_truth_frameResul
   [v1 addObject:v2];
 }
 
-- (void)writeHTMLReportComparison:(id)a3 truth:(id)a4 eventClass:(Class)a5 comparisonType:(id)a6 assetPath:(id)a7 outputPath:(id)a8 limit:(unint64_t)a9 shuffle:(BOOL)a10
+- (void)writeHTMLReportComparison:(id)comparison truth:(id)truth eventClass:(Class)class comparisonType:(id)type assetPath:(id)path outputPath:(id)outputPath limit:(unint64_t)limit shuffle:(BOOL)self0
 {
   v56[3] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v48 = a4;
-  v15 = a6;
-  v46 = a7;
-  v49 = a8;
+  comparisonCopy = comparison;
+  truthCopy = truth;
+  typeCopy = type;
+  pathCopy = path;
+  outputPathCopy = outputPath;
   v55[0] = @"TP";
-  v16 = [v14 truePositiveKeys];
-  v56[0] = v16;
+  truePositiveKeys = [comparisonCopy truePositiveKeys];
+  v56[0] = truePositiveKeys;
   v55[1] = @"FP";
-  v17 = [v14 falsePositiveKeys];
-  v56[1] = v17;
+  falsePositiveKeys = [comparisonCopy falsePositiveKeys];
+  v56[1] = falsePositiveKeys;
   v55[2] = @"FN";
-  v18 = [v14 falseNegativeKeys];
-  v56[2] = v18;
+  falseNegativeKeys = [comparisonCopy falseNegativeKeys];
+  v56[2] = falseNegativeKeys;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:3];
-  v20 = [v19 objectForKeyedSubscript:v15];
+  v20 = [v19 objectForKeyedSubscript:typeCopy];
 
   v21 = [v20 count];
-  if (v21 >= a9)
+  if (v21 >= limit)
   {
-    v22 = a9;
+    limitCopy = limit;
   }
 
   else
   {
-    v22 = v21;
+    limitCopy = v21;
   }
 
-  if (a10)
+  if (shuffle)
   {
     v23 = [v20 mutableCopy];
-    if (v22)
+    if (limitCopy)
     {
-      for (i = 0; i != v22; ++i)
+      for (i = 0; i != limitCopy; ++i)
       {
         [v23 exchangeObjectAtIndex:i withObjectAtIndex:{arc4random_uniform(objc_msgSend(v20, "count"))}];
       }
     }
 
-    v25 = [v23 subarrayWithRange:{0, v22}];
+    v25 = [v23 subarrayWithRange:{0, limitCopy}];
     v44 = [v25 copy];
   }
 
@@ -1397,24 +1397,24 @@ void __75__HMIVideoAnalyzerMutableReport_selectFramesWithRecord_truth_frameResul
     v54 = v23;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v54 count:1];
     v26 = [v20 sortedArrayUsingDescriptors:v25];
-    v44 = [v26 subarrayWithRange:{0, v22}];
+    v44 = [v26 subarrayWithRange:{0, limitCopy}];
   }
 
   v27 = MEMORY[0x277CCACA8];
-  v28 = [HMIVideoAnalyzerEvent shortNameForEventClass:a5];
-  v43 = v15;
-  v29 = [v27 stringWithFormat:@"%@%@", v28, v15];
+  v28 = [HMIVideoAnalyzerEvent shortNameForEventClass:class];
+  v43 = typeCopy;
+  typeCopy = [v27 stringWithFormat:@"%@%@", v28, typeCopy];
 
-  v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"Object detection (%@)", v29];
-  v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"Visualize%@.html", v29];
-  v32 = [v49 stringByAppendingPathComponent:v31];
+  v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"Object detection (%@)", typeCopy];
+  v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"Visualize%@.html", typeCopy];
+  v32 = [outputPathCopy stringByAppendingPathComponent:v31];
   v33 = [[HMIHTMLReport alloc] initWithTitle:v30 outputPath:v32];
   v34 = MEMORY[0x277CCACA8];
   v35 = [v20 count];
-  [v14 precision];
+  [comparisonCopy precision];
   v37 = v36;
-  [v14 recall];
-  v39 = [v34 stringWithFormat:@"%lu %@s (Precision: %.3f, Recall: %.3f)", v35, v29, *&v37, v38];
+  [comparisonCopy recall];
+  v39 = [v34 stringWithFormat:@"%lu %@s (Precision: %.3f, Recall: %.3f)", v35, typeCopy, *&v37, v38];
   [(HMIHTMLReport *)v33 appendText:v39];
 
   v50[0] = MEMORY[0x277D85DD0];
@@ -1422,12 +1422,12 @@ void __75__HMIVideoAnalyzerMutableReport_selectFramesWithRecord_truth_frameResul
   v50[2] = __126__HMIVideoAnalyzerMutableReport_writeHTMLReportComparison_truth_eventClass_comparisonType_assetPath_outputPath_limit_shuffle___block_invoke;
   v50[3] = &unk_278753920;
   v50[4] = self;
-  v51 = v48;
-  v52 = v46;
+  v51 = truthCopy;
+  v52 = pathCopy;
   v53 = v33;
   v40 = v33;
-  v41 = v46;
-  v42 = v48;
+  v41 = pathCopy;
+  v42 = truthCopy;
   [v44 na_each:v50];
 }
 
@@ -1629,21 +1629,21 @@ void __126__HMIVideoAnalyzerMutableReport_writeHTMLReportComparison_truth_eventC
   }
 }
 
-- (void)writeImageCropForEventClass:(Class)a3 outputPath:(id)a4 assetPath:(id)a5
+- (void)writeImageCropForEventClass:(Class)class outputPath:(id)path assetPath:(id)assetPath
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HMIVideoAnalyzerMutableReport *)self sessions];
+  pathCopy = path;
+  assetPathCopy = assetPath;
+  sessions = [(HMIVideoAnalyzerMutableReport *)self sessions];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __82__HMIVideoAnalyzerMutableReport_writeImageCropForEventClass_outputPath_assetPath___block_invoke;
   v13[3] = &unk_278753A20;
-  v15 = v9;
-  v16 = a3;
-  v14 = v8;
-  v11 = v9;
-  v12 = v8;
-  [v10 na_each:v13];
+  v15 = assetPathCopy;
+  classCopy = class;
+  v14 = pathCopy;
+  v11 = assetPathCopy;
+  v12 = pathCopy;
+  [sessions na_each:v13];
 }
 
 void __82__HMIVideoAnalyzerMutableReport_writeImageCropForEventClass_outputPath_assetPath___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1811,31 +1811,31 @@ id __82__HMIVideoAnalyzerMutableReport_writeImageCropForEventClass_outputPath_as
   return v2;
 }
 
-- (void)writeFragmentFileComparison:(id)a3 eventClass:(Class)a4 outputPath:(id)a5
+- (void)writeFragmentFileComparison:(id)comparison eventClass:(Class)class outputPath:(id)path
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  pathCopy = path;
   v18[0] = @"TP";
-  v9 = a3;
-  v10 = [v9 truePositiveKeys];
-  v19[0] = v10;
+  comparisonCopy = comparison;
+  truePositiveKeys = [comparisonCopy truePositiveKeys];
+  v19[0] = truePositiveKeys;
   v18[1] = @"FP";
-  v11 = [v9 falsePositiveKeys];
-  v19[1] = v11;
+  falsePositiveKeys = [comparisonCopy falsePositiveKeys];
+  v19[1] = falsePositiveKeys;
   v18[2] = @"FN";
-  v12 = [v9 falseNegativeKeys];
+  falseNegativeKeys = [comparisonCopy falseNegativeKeys];
 
-  v19[2] = v12;
+  v19[2] = falseNegativeKeys;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __83__HMIVideoAnalyzerMutableReport_writeFragmentFileComparison_eventClass_outputPath___block_invoke;
   v15[3] = &unk_278753A90;
-  v16 = v8;
-  v17 = a4;
+  v16 = pathCopy;
+  classCopy = class;
   v15[4] = self;
-  v14 = v8;
+  v14 = pathCopy;
   [v13 na_each:v15];
 }
 
@@ -1877,21 +1877,21 @@ id __83__HMIVideoAnalyzerMutableReport_writeFragmentFileComparison_eventClass_ou
   return v7;
 }
 
-+ (void)writeJSONChartData:(id)a3 outputPath:(id)a4
++ (void)writeJSONChartData:(id)data outputPath:(id)path
 {
   v5 = MEMORY[0x277CBEB38];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 dictionary];
+  pathCopy = path;
+  dataCopy = data;
+  dictionary = [v5 dictionary];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __63__HMIVideoAnalyzerMutableReport_writeJSONChartData_outputPath___block_invoke;
   v17[3] = &unk_278752CF0;
-  v18 = v8;
-  v9 = v8;
-  [v7 na_each:v17];
+  v18 = dictionary;
+  v9 = dictionary;
+  [dataCopy na_each:v17];
 
-  v10 = [v6 stringByAppendingPathComponent:@"PRArray.json"];
+  v10 = [pathCopy stringByAppendingPathComponent:@"PRArray.json"];
 
   v16 = 0;
   v11 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v9 options:1 error:&v16];
@@ -1932,41 +1932,41 @@ void __63__HMIVideoAnalyzerMutableReport_writeJSONChartData_outputPath___block_i
   }
 }
 
-+ (id)chartSpecWithRange:(CGRect)a3 colors:(id)a4 labels:(id)a5
++ (id)chartSpecWithRange:(CGRect)range colors:(id)colors labels:(id)labels
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = range.size.height;
+  width = range.size.width;
+  y = range.origin.y;
+  x = range.origin.x;
   v92[7] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x277CBEB38] dictionary];
-  if ([v10 count])
+  colorsCopy = colors;
+  labelsCopy = labels;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if ([colorsCopy count])
   {
-    v13 = [v10 allKeys];
-    v14 = [v13 sortedArrayUsingSelector:sel_localizedStandardCompare_];
+    allKeys = [colorsCopy allKeys];
+    v14 = [allKeys sortedArrayUsingSelector:sel_localizedStandardCompare_];
 
-    [v12 setObject:v14 forKeyedSubscript:@"domain"];
+    [dictionary setObject:v14 forKeyedSubscript:@"domain"];
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
     v56[2] = __66__HMIVideoAnalyzerMutableReport_chartSpecWithRange_colors_labels___block_invoke;
     v56[3] = &unk_278753AB8;
-    v57 = v10;
+    v57 = colorsCopy;
     v15 = [v14 na_map:v56];
-    [v12 setObject:v15 forKeyedSubscript:@"range"];
+    [dictionary setObject:v15 forKeyedSubscript:@"range"];
   }
 
-  v54 = v10;
-  v55 = v12;
-  v16 = [MEMORY[0x277CBEB38] dictionary];
-  if ([v11 count])
+  v54 = colorsCopy;
+  v55 = dictionary;
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  if ([labelsCopy count])
   {
-    v17 = [v11 na_map:&__block_literal_global_347];
+    v17 = [labelsCopy na_map:&__block_literal_global_347];
     v18 = [v17 componentsJoinedByString:{@", "}];
 
     v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"{%@}[datum.label]", v18];
-    [v16 setObject:v19 forKeyedSubscript:@"labelExpr"];
+    [dictionary2 setObject:v19 forKeyedSubscript:@"labelExpr"];
   }
 
   v91[0] = @"$schema";
@@ -1986,7 +1986,7 @@ void __63__HMIVideoAnalyzerMutableReport_writeJSONChartData_outputPath___block_i
   v88[0] = @"mark";
   v88[1] = @"encoding";
   v86[0] = @"x";
-  v53 = v11;
+  v53 = labelsCopy;
   v84[0] = @"field";
   v84[1] = @"type";
   v85[0] = @"recall";
@@ -2007,7 +2007,7 @@ void __63__HMIVideoAnalyzerMutableReport_writeJSONChartData_outputPath___block_i
   v81[1] = v51;
   v50 = [MEMORY[0x277CBEA60] arrayWithObjects:v81 count:2];
   v83 = v50;
-  v42 = v16;
+  v42 = dictionary2;
   v49 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
   v85[2] = v49;
   v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v85 forKeys:v84 count:3];
@@ -2044,8 +2044,8 @@ void __63__HMIVideoAnalyzerMutableReport_writeJSONChartData_outputPath___block_i
   v75[1] = @"nominal";
   v74[2] = @"scale";
   v74[3] = @"legend";
-  v75[2] = v12;
-  v75[3] = v16;
+  v75[2] = dictionary;
+  v75[3] = dictionary2;
   v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v75 forKeys:v74 count:4];
   v87[2] = v41;
   v86[3] = @"opacity";
@@ -2054,8 +2054,8 @@ void __63__HMIVideoAnalyzerMutableReport_writeJSONChartData_outputPath___block_i
   v73[0] = @"opacity";
   v73[1] = @"nominal";
   v72[2] = @"legend";
-  v40 = [MEMORY[0x277CBEB68] null];
-  v73[2] = v40;
+  null = [MEMORY[0x277CBEB68] null];
+  v73[2] = null;
   v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v73 forKeys:v72 count:3];
   v87[3] = v39;
   v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v87 forKeys:v86 count:4];
@@ -2131,24 +2131,24 @@ void __63__HMIVideoAnalyzerMutableReport_writeJSONChartData_outputPath___block_i
   return v31;
 }
 
-+ (void)writeImageCropFromFrame:(id)a3 events:(id)a4 outputPath:(id)a5 source:(id)a6
++ (void)writeImageCropFromFrame:(id)frame events:(id)events outputPath:(id)path source:(id)source
 {
-  v9 = a3;
-  v10 = a6;
+  frameCopy = frame;
+  sourceCopy = source;
   v11 = MEMORY[0x277CBEBC0];
-  v12 = a4;
-  v13 = [v11 fileURLWithPath:a5];
+  eventsCopy = events;
+  v13 = [v11 fileURLWithPath:path];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __82__HMIVideoAnalyzerMutableReport_writeImageCropFromFrame_events_outputPath_source___block_invoke;
   v17[3] = &unk_278753B00;
-  v18 = v9;
-  v19 = v10;
+  v18 = frameCopy;
+  v19 = sourceCopy;
   v20 = v13;
   v14 = v13;
-  v15 = v10;
-  v16 = v9;
-  [v12 enumerateObjectsUsingBlock:v17];
+  v15 = sourceCopy;
+  v16 = frameCopy;
+  [eventsCopy enumerateObjectsUsingBlock:v17];
 }
 
 void __82__HMIVideoAnalyzerMutableReport_writeImageCropFromFrame_events_outputPath_source___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -2248,74 +2248,74 @@ void __82__HMIVideoAnalyzerMutableReport_writeImageCropFromFrame_events_outputPa
   v39 = v41;
 }
 
-+ (id)greedyMatchBetweenPredictionEvents:(id)a3 truthEvents:(id)a4 falsePositiveIndices:(id)a5 falseNegativeIndices:(id)a6 eventClass:(Class)a7 regionOfInterest:(CGRect)a8 confidenceThreshold:(float)a9 scoreThreshold:(float)a10 scoreFunction:(id)a11
++ (id)greedyMatchBetweenPredictionEvents:(id)events truthEvents:(id)truthEvents falsePositiveIndices:(id)indices falseNegativeIndices:(id)negativeIndices eventClass:(Class)class regionOfInterest:(CGRect)interest confidenceThreshold:(float)threshold scoreThreshold:(float)self0 scoreFunction:(id)self1
 {
-  height = a8.size.height;
-  width = a8.size.width;
-  y = a8.origin.y;
-  x = a8.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v70[1] = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = a6;
-  v26 = a11;
+  eventsCopy = events;
+  truthEventsCopy = truthEvents;
+  indicesCopy = indices;
+  negativeIndicesCopy = negativeIndices;
+  functionCopy = function;
   v66[0] = MEMORY[0x277D85DD0];
   v66[1] = 3221225472;
   v66[2] = __199__HMIVideoAnalyzerMutableReport_greedyMatchBetweenPredictionEvents_truthEvents_falsePositiveIndices_falseNegativeIndices_eventClass_regionOfInterest_confidenceThreshold_scoreThreshold_scoreFunction___block_invoke;
   v66[3] = &unk_278753B28;
-  v68 = a7;
-  v69 = a9;
-  v27 = v24;
+  classCopy = class;
+  thresholdCopy = threshold;
+  v27 = indicesCopy;
   v67 = v27;
-  [v22 enumerateObjectsUsingBlock:v66];
+  [eventsCopy enumerateObjectsUsingBlock:v66];
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
   v59[2] = __199__HMIVideoAnalyzerMutableReport_greedyMatchBetweenPredictionEvents_truthEvents_falsePositiveIndices_falseNegativeIndices_eventClass_regionOfInterest_confidenceThreshold_scoreThreshold_scoreFunction___block_invoke_2;
   v59[3] = &unk_278753B50;
-  v61 = a7;
+  classCopy2 = class;
   v62 = x;
   v63 = y;
   v64 = width;
   v65 = height;
-  v28 = v25;
+  v28 = negativeIndicesCopy;
   v60 = v28;
-  [v23 enumerateObjectsUsingBlock:v59];
-  v29 = [MEMORY[0x277CBEB18] array];
+  [truthEventsCopy enumerateObjectsUsingBlock:v59];
+  array = [MEMORY[0x277CBEB18] array];
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __199__HMIVideoAnalyzerMutableReport_greedyMatchBetweenPredictionEvents_truthEvents_falsePositiveIndices_falseNegativeIndices_eventClass_regionOfInterest_confidenceThreshold_scoreThreshold_scoreFunction___block_invoke_3;
   v48[3] = &unk_278753BA0;
   v30 = v28;
-  v52 = v29;
-  v53 = v26;
+  v52 = array;
+  v53 = functionCopy;
   v49 = v30;
-  v50 = v22;
+  v50 = eventsCopy;
   v54 = x;
   v55 = y;
   v56 = width;
   v57 = height;
-  v58 = a10;
-  v51 = v23;
-  v31 = v29;
-  v32 = v23;
-  v33 = v22;
-  v34 = v26;
+  scoreThresholdCopy = scoreThreshold;
+  v51 = truthEventsCopy;
+  v31 = array;
+  v32 = truthEventsCopy;
+  v33 = eventsCopy;
+  v34 = functionCopy;
   [v27 na_each:v48];
   v35 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"score" ascending:0];
   v70[0] = v35;
   v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v70 count:1];
   v37 = [v31 sortedArrayUsingDescriptors:v36];
 
-  v38 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __199__HMIVideoAnalyzerMutableReport_greedyMatchBetweenPredictionEvents_truthEvents_falsePositiveIndices_falseNegativeIndices_eventClass_regionOfInterest_confidenceThreshold_scoreThreshold_scoreFunction___block_invoke_5;
   v44[3] = &unk_278753BC8;
   v45 = v30;
   v46 = v27;
-  v47 = v38;
-  v39 = v38;
+  v47 = dictionary;
+  v39 = dictionary;
   v40 = v27;
   v41 = v30;
   [v37 na_each:v44];
@@ -2434,25 +2434,25 @@ void __199__HMIVideoAnalyzerMutableReport_greedyMatchBetweenPredictionEvents_tru
 LABEL_5:
 }
 
-+ (void)sihouetteScoreForMatches:(id)a3 previousMatches:(id)a4 truePositiveScores:(id)a5 falsePositiveScores:(id)a6 falseNegativeScores:(id)a7
++ (void)sihouetteScoreForMatches:(id)matches previousMatches:(id)previousMatches truePositiveScores:(id)scores falsePositiveScores:(id)positiveScores falseNegativeScores:(id)negativeScores
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  matchesCopy = matches;
+  scoresCopy = scores;
+  positiveScoresCopy = positiveScores;
+  negativeScoresCopy = negativeScores;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __133__HMIVideoAnalyzerMutableReport_sihouetteScoreForMatches_previousMatches_truePositiveScores_falsePositiveScores_falseNegativeScores___block_invoke;
   v19[3] = &unk_278753C18;
-  v20 = v11;
-  v21 = v12;
-  v22 = v13;
-  v23 = v14;
-  v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
-  [a4 enumerateKeysAndObjectsUsingBlock:v19];
+  v20 = matchesCopy;
+  v21 = scoresCopy;
+  v22 = positiveScoresCopy;
+  v23 = negativeScoresCopy;
+  v15 = negativeScoresCopy;
+  v16 = positiveScoresCopy;
+  v17 = scoresCopy;
+  v18 = matchesCopy;
+  [previousMatches enumerateKeysAndObjectsUsingBlock:v19];
 }
 
 void __133__HMIVideoAnalyzerMutableReport_sihouetteScoreForMatches_previousMatches_truePositiveScores_falsePositiveScores_falseNegativeScores___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2515,37 +2515,37 @@ void __133__HMIVideoAnalyzerMutableReport_sihouetteScoreForMatches_previousMatch
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMIVideoAnalyzerMutableReport *)self name];
+  coderCopy = coder;
+  name = [(HMIVideoAnalyzerMutableReport *)self name];
   v6 = NSStringFromSelector(sel_name);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:name forKey:v6];
 
-  v7 = [(HMIVideoAnalyzerMutableReport *)self version];
+  version = [(HMIVideoAnalyzerMutableReport *)self version];
   v8 = NSStringFromSelector(sel_version);
-  [v4 encodeInteger:v7 forKey:v8];
+  [coderCopy encodeInteger:version forKey:v8];
 
-  v9 = [(HMIVideoAnalyzerMutableReport *)self deviceInformation];
+  deviceInformation = [(HMIVideoAnalyzerMutableReport *)self deviceInformation];
   v10 = NSStringFromSelector(sel_deviceInformation);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:deviceInformation forKey:v10];
 
-  v13 = [(HMIVideoAnalyzerMutableReport *)self sessions];
-  v11 = [v13 copy];
+  sessions = [(HMIVideoAnalyzerMutableReport *)self sessions];
+  v11 = [sessions copy];
   v12 = NSStringFromSelector(sel_sessions);
-  [v4 encodeObject:v11 forKey:v12];
+  [coderCopy encodeObject:v11 forKey:v12];
 }
 
-- (HMIVideoAnalyzerMutableReport)initWithCoder:(id)a3
+- (HMIVideoAnalyzerMutableReport)initWithCoder:(id)coder
 {
   v27[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  coderCopy = coder;
   v4 = objc_opt_class();
   v5 = NSStringFromSelector(sel_name);
-  v6 = [v3 decodeObjectOfClass:v4 forKey:v5];
+  v6 = [coderCopy decodeObjectOfClass:v4 forKey:v5];
 
   v7 = NSStringFromSelector(sel_version);
-  v23 = [v3 decodeIntegerForKey:v7];
+  v23 = [coderCopy decodeIntegerForKey:v7];
 
   v8 = MEMORY[0x277CBEB98];
   v27[0] = objc_opt_class();
@@ -2554,7 +2554,7 @@ void __133__HMIVideoAnalyzerMutableReport_sihouetteScoreForMatches_previousMatch
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:3];
   v10 = [v8 setWithArray:v9];
   v11 = NSStringFromSelector(sel_deviceInformation);
-  v12 = [v3 decodeObjectOfClasses:v10 forKey:v11];
+  v12 = [coderCopy decodeObjectOfClasses:v10 forKey:v11];
 
   v13 = MEMORY[0x277CBEB98];
   v26[0] = objc_opt_class();
@@ -2563,7 +2563,7 @@ void __133__HMIVideoAnalyzerMutableReport_sihouetteScoreForMatches_previousMatch
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:3];
   v15 = [v13 setWithArray:v14];
   v16 = NSStringFromSelector(sel_sessions);
-  v17 = [v3 decodeObjectOfClasses:v15 forKey:v16];
+  v17 = [coderCopy decodeObjectOfClasses:v15 forKey:v16];
 
   v25.receiver = self;
   v25.super_class = HMIVideoAnalyzerMutableReport;

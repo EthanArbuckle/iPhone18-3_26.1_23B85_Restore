@@ -1,28 +1,28 @@
 @interface STRPPropertyListTypeDecoder
 + (id)_supportedCoreTypesForEncoding;
-- (BOOL)containsValueForKey:(id)a3;
-- (BOOL)decodeBoolForKey:(id)a3;
-- (STRPPropertyListTypeDecoder)initWithDictionary:(id)a3;
-- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4;
-- (double)decodeDoubleForKey:(id)a3;
-- (float)decodeFloatForKey:(id)a3;
-- (id)_decodeObjectOfClasses:(id)a3 fromObject:(id)a4;
-- (id)_errorWithCode:(int64_t)a3 message:(id)a4;
-- (id)_failWithCode:(int64_t)a3 message:(id)a4;
-- (id)_numberForKey:(id)a3;
-- (id)decodeArrayOfObjectsOfClass:(Class)a3 forKey:(id)a4;
-- (id)decodeArrayOfObjectsOfClasses:(id)a3 forKey:(id)a4;
-- (id)decodeDictionaryWithKeysOfClass:(Class)a3 objectsOfClass:(Class)a4 forKey:(id)a5;
-- (id)decodeDictionaryWithKeysOfClasses:(id)a3 objectsOfClasses:(id)a4 forKey:(id)a5;
-- (id)decodeObjectForKey:(id)a3;
-- (id)decodeObjectOfClass:(Class)a3 forKey:(id)a4;
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4;
-- (id)decodeRootObjectOfClass:(Class)a3 fromEncoded:(id)a4 error:(id *)a5;
-- (id)decodeTopLevelObjectForKey:(id)a3 error:(id *)a4;
-- (int)decodeInt32ForKey:(id)a3;
-- (int)decodeIntForKey:(id)a3;
-- (int64_t)decodeInt64ForKey:(id)a3;
-- (int64_t)decodeIntegerForKey:(id)a3;
+- (BOOL)containsValueForKey:(id)key;
+- (BOOL)decodeBoolForKey:(id)key;
+- (STRPPropertyListTypeDecoder)initWithDictionary:(id)dictionary;
+- (const)decodeBytesForKey:(id)key returnedLength:(unint64_t *)length;
+- (double)decodeDoubleForKey:(id)key;
+- (float)decodeFloatForKey:(id)key;
+- (id)_decodeObjectOfClasses:(id)classes fromObject:(id)object;
+- (id)_errorWithCode:(int64_t)code message:(id)message;
+- (id)_failWithCode:(int64_t)code message:(id)message;
+- (id)_numberForKey:(id)key;
+- (id)decodeArrayOfObjectsOfClass:(Class)class forKey:(id)key;
+- (id)decodeArrayOfObjectsOfClasses:(id)classes forKey:(id)key;
+- (id)decodeDictionaryWithKeysOfClass:(Class)class objectsOfClass:(Class)ofClass forKey:(id)key;
+- (id)decodeDictionaryWithKeysOfClasses:(id)classes objectsOfClasses:(id)ofClasses forKey:(id)key;
+- (id)decodeObjectForKey:(id)key;
+- (id)decodeObjectOfClass:(Class)class forKey:(id)key;
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key;
+- (id)decodeRootObjectOfClass:(Class)class fromEncoded:(id)encoded error:(id *)error;
+- (id)decodeTopLevelObjectForKey:(id)key error:(id *)error;
+- (int)decodeInt32ForKey:(id)key;
+- (int)decodeIntForKey:(id)key;
+- (int64_t)decodeInt64ForKey:(id)key;
+- (int64_t)decodeIntegerForKey:(id)key;
 @end
 
 @implementation STRPPropertyListTypeDecoder
@@ -41,15 +41,15 @@
   return [v2 setWithObjects:{v3, v4, v5, v6, v7, v8, v9, v10, objc_opt_class(), 0}];
 }
 
-- (STRPPropertyListTypeDecoder)initWithDictionary:(id)a3
+- (STRPPropertyListTypeDecoder)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = STRPPropertyListTypeDecoder;
   v5 = [(STRPPropertyListTypeDecoder *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     storage = v5->_storage;
     v5->_storage = v6;
   }
@@ -57,11 +57,11 @@
   return v5;
 }
 
-- (id)decodeRootObjectOfClass:(Class)a3 fromEncoded:(id)a4 error:(id *)a5
+- (id)decodeRootObjectOfClass:(Class)class fromEncoded:(id)encoded error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  if (objc_opt_class() == a3)
+  encodedCopy = encoded;
+  if (objc_opt_class() == class)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -70,19 +70,19 @@
     }
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v9];
+      v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:encodedCopy];
 LABEL_19:
       v11 = v10;
       goto LABEL_20;
     }
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -91,7 +91,7 @@ LABEL_19:
     }
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -100,7 +100,7 @@ LABEL_19:
     }
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -110,24 +110,24 @@ LABEL_19:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && objc_opt_class() == a3)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && objc_opt_class() == class)
   {
     v16 = MEMORY[0x1E695DF00];
-    [v9 doubleValue];
+    [encodedCopy doubleValue];
     v10 = [v16 dateWithTimeIntervalSinceReferenceDate:?];
     goto LABEL_19;
   }
 
-  if (objc_opt_class() == a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_opt_class() == a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (objc_opt_class() == class && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_opt_class() == class && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
 LABEL_18:
-    v10 = v9;
+    v10 = encodedCopy;
     goto LABEL_19;
   }
 
-  if (objc_opt_class() == a3 || objc_opt_class() == a3)
+  if (objc_opt_class() == class || objc_opt_class() == class)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_37;
     }
@@ -135,14 +135,14 @@ LABEL_18:
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Top level array representations are unsupported, a boxing type must be provided."];
     v15 = [(STRPPropertyListTypeDecoder *)self _errorWithCode:1 message:v14];
 LABEL_36:
-    *a5 = v15;
+    *error = v15;
 
     goto LABEL_37;
   }
 
-  if (objc_opt_class() == a3 || objc_opt_class() == a3)
+  if (objc_opt_class() == class || objc_opt_class() == class)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_37;
     }
@@ -155,12 +155,12 @@ LABEL_36:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_storage, a4);
-    v10 = [[a3 alloc] initWithCoder:self];
+    objc_storeStrong(&self->_storage, encoded);
+    v10 = [[class alloc] initWithCoder:self];
     goto LABEL_19;
   }
 
-  if (a5)
+  if (error)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Type must be a dictionary representation of a non-primitive type."];
     v15 = [(STRPPropertyListTypeDecoder *)self _errorWithCode:1 message:v14];
@@ -176,19 +176,19 @@ LABEL_20:
   return v11;
 }
 
-- (BOOL)containsValueForKey:(id)a3
+- (BOOL)containsValueForKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_storage objectForKey:a3];
+  v3 = [(NSDictionary *)self->_storage objectForKey:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)_decodeObjectOfClasses:(id)a3 fromObject:(id)a4
+- (id)_decodeObjectOfClasses:(id)classes fromObject:(id)object
 {
   v84 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  classesCopy = classes;
+  objectCopy = object;
   v79 = 0;
   v80 = &v79;
   v81 = 0x2050000000;
@@ -197,12 +197,12 @@ LABEL_20:
   v76[1] = 3221225472;
   v76[2] = __65__STRPPropertyListTypeDecoder__decodeObjectOfClasses_fromObject___block_invoke;
   v76[3] = &unk_1E86A2980;
-  v7 = v6;
+  v7 = objectCopy;
   v77 = v7;
   v78 = &v79;
-  [v5 enumerateObjectsUsingBlock:v76];
+  [classesCopy enumerateObjectsUsingBlock:v76];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 containsObject:objc_opt_class()] && objc_msgSend(v5, "count") == 1)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [classesCopy containsObject:objc_opt_class()] && objc_msgSend(classesCopy, "count") == 1)
   {
     v8 = MEMORY[0x1E695DF00];
     [v7 doubleValue];
@@ -213,7 +213,7 @@ LABEL_22:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 containsObject:objc_opt_class()] && objc_msgSend(v5, "count") == 1)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [classesCopy containsObject:objc_opt_class()] && objc_msgSend(classesCopy, "count") == 1)
   {
     v9 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v7];
     goto LABEL_22;
@@ -222,9 +222,9 @@ LABEL_22:
   v10 = v80[3];
   if (!v10)
   {
-    v28 = [v5 mutableCopy];
-    v29 = [objc_opt_class() _supportedCoreTypesForEncoding];
-    [v28 minusSet:v29];
+    v28 = [classesCopy mutableCopy];
+    _supportedCoreTypesForEncoding = [objc_opt_class() _supportedCoreTypesForEncoding];
+    [v28 minusSet:_supportedCoreTypesForEncoding];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v28 count])
@@ -271,7 +271,7 @@ LABEL_27:
     v35 = MEMORY[0x1E696AEC0];
     v36 = objc_opt_class();
     v30 = NSStringFromClass(v36);
-    v31 = [v35 stringWithFormat:@"No matching class found from candidates: %@, but found: %@", v5, v30];
+    v31 = [v35 stringWithFormat:@"No matching class found from candidates: %@, but found: %@", classesCopy, v30];
     v37 = [(STRPPropertyListTypeDecoder *)self _failWithCode:1 message:v31];
     v27 = 0;
 LABEL_35:
@@ -291,7 +291,7 @@ LABEL_35:
     v40 = v7;
     v41 = [v40 count];
     v42 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v41];
-    v43 = [v5 mutableCopy];
+    v43 = [classesCopy mutableCopy];
     v44 = MEMORY[0x1E695DFD8];
     v45 = objc_opt_class();
     v46 = [v44 setWithObjects:{v45, objc_opt_class(), 0}];
@@ -299,9 +299,9 @@ LABEL_35:
 
     if ([v43 count] == 1)
     {
-      v47 = [v43 anyObject];
-      v48 = [objc_opt_class() _supportedCoreTypesForEncoding];
-      v49 = [v48 containsObject:v47];
+      anyObject = [v43 anyObject];
+      _supportedCoreTypesForEncoding2 = [objc_opt_class() _supportedCoreTypesForEncoding];
+      v49 = [_supportedCoreTypesForEncoding2 containsObject:anyObject];
 
       v68 = 0;
       v69 = &v68;
@@ -315,7 +315,7 @@ LABEL_35:
       v62[4] = self;
       v63 = v43;
       v65 = &v68;
-      v66 = v47;
+      v66 = anyObject;
       v50 = v42;
       v64 = v50;
       [v40 enumerateObjectsUsingBlock:v62];
@@ -347,7 +347,7 @@ LABEL_35:
       v56 = v7;
       v16 = [v56 count];
       v55 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v16];
-      v17 = [v5 mutableCopy];
+      v17 = [classesCopy mutableCopy];
       v18 = MEMORY[0x1E695DFD8];
       v19 = objc_opt_class();
       v20 = objc_opt_class();
@@ -584,23 +584,23 @@ LABEL_17:
 LABEL_19:
 }
 
-- (id)decodeObjectOfClass:(Class)a3 forKey:(id)a4
+- (id)decodeObjectOfClass:(Class)class forKey:(id)key
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a4;
-  v8 = [v6 setWithObject:a3];
-  v9 = [(STRPPropertyListTypeDecoder *)self decodeObjectOfClasses:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 setWithObject:class];
+  v9 = [(STRPPropertyListTypeDecoder *)self decodeObjectOfClasses:v8 forKey:keyCopy];
 
   return v9;
 }
 
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key
 {
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_storage objectForKey:a4];
+  classesCopy = classes;
+  v7 = [(NSDictionary *)self->_storage objectForKey:key];
   if (v7)
   {
-    v8 = [(STRPPropertyListTypeDecoder *)self _decodeObjectOfClasses:v6 fromObject:v7];
+    v8 = [(STRPPropertyListTypeDecoder *)self _decodeObjectOfClasses:classesCopy fromObject:v7];
   }
 
   else
@@ -611,85 +611,85 @@ LABEL_19:
   return v8;
 }
 
-- (id)decodeObjectForKey:(id)a3
+- (id)decodeObjectForKey:(id)key
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Not supported. Must be secure coding compliant. key='%@'", a3];
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Not supported. Must be secure coding compliant. key='%@'", key];
   v5 = [(STRPPropertyListTypeDecoder *)self _failWithCode:3 message:v4];
 
   return 0;
 }
 
-- (id)decodeTopLevelObjectForKey:(id)a3 error:(id *)a4
+- (id)decodeTopLevelObjectForKey:(id)key error:(id *)error
 {
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Not supported. key='%@'", a4, a3];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Not supported. key='%@'", error, key];
   v6 = [(STRPPropertyListTypeDecoder *)self _failWithCode:3 message:v5];
 
   return 0;
 }
 
-- (BOOL)decodeBoolForKey:(id)a3
+- (BOOL)decodeBoolForKey:(id)key
 {
-  v3 = [(STRPPropertyListTypeDecoder *)self _numberForKey:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(STRPPropertyListTypeDecoder *)self _numberForKey:key];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (int)decodeIntForKey:(id)a3
+- (int)decodeIntForKey:(id)key
 {
-  v3 = [(STRPPropertyListTypeDecoder *)self _numberForKey:a3];
-  v4 = [v3 intValue];
+  v3 = [(STRPPropertyListTypeDecoder *)self _numberForKey:key];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (int)decodeInt32ForKey:(id)a3
+- (int)decodeInt32ForKey:(id)key
 {
-  v3 = [(STRPPropertyListTypeDecoder *)self _numberForKey:a3];
-  v4 = [v3 intValue];
+  v3 = [(STRPPropertyListTypeDecoder *)self _numberForKey:key];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (int64_t)decodeInt64ForKey:(id)a3
+- (int64_t)decodeInt64ForKey:(id)key
 {
-  v3 = [(STRPPropertyListTypeDecoder *)self _numberForKey:a3];
-  v4 = [v3 longLongValue];
+  v3 = [(STRPPropertyListTypeDecoder *)self _numberForKey:key];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
-- (float)decodeFloatForKey:(id)a3
+- (float)decodeFloatForKey:(id)key
 {
-  v3 = [(STRPPropertyListTypeDecoder *)self _numberForKey:a3];
+  v3 = [(STRPPropertyListTypeDecoder *)self _numberForKey:key];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (double)decodeDoubleForKey:(id)a3
+- (double)decodeDoubleForKey:(id)key
 {
-  v3 = [(STRPPropertyListTypeDecoder *)self _numberForKey:a3];
+  v3 = [(STRPPropertyListTypeDecoder *)self _numberForKey:key];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4
+- (const)decodeBytesForKey:(id)key returnedLength:(unint64_t *)length
 {
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_storage objectForKey:v6];
+  keyCopy = key;
+  v7 = [(NSDictionary *)self->_storage objectForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a4)
+    if (length)
     {
-      *a4 = [v7 length];
+      *length = [v7 length];
     }
 
-    v8 = [v7 bytes];
+    bytes = [v7 bytes];
   }
 
   else
@@ -697,96 +697,96 @@ LABEL_19:
     v9 = STRPLogCoding();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [(STRPPropertyListTypeDecoder *)v7 decodeBytesForKey:v6 returnedLength:v9];
+      [(STRPPropertyListTypeDecoder *)v7 decodeBytesForKey:keyCopy returnedLength:v9];
     }
 
-    v8 = 0;
+    bytes = 0;
   }
 
-  return v8;
+  return bytes;
 }
 
-- (int64_t)decodeIntegerForKey:(id)a3
+- (int64_t)decodeIntegerForKey:(id)key
 {
-  v3 = [(STRPPropertyListTypeDecoder *)self _numberForKey:a3];
-  v4 = [v3 integerValue];
+  v3 = [(STRPPropertyListTypeDecoder *)self _numberForKey:key];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (id)decodeArrayOfObjectsOfClass:(Class)a3 forKey:(id)a4
+- (id)decodeArrayOfObjectsOfClass:(Class)class forKey:(id)key
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a4;
-  v8 = [v6 setWithObject:a3];
-  v9 = [(STRPPropertyListTypeDecoder *)self decodeArrayOfObjectsOfClasses:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 setWithObject:class];
+  v9 = [(STRPPropertyListTypeDecoder *)self decodeArrayOfObjectsOfClasses:v8 forKey:keyCopy];
 
   return v9;
 }
 
-- (id)decodeArrayOfObjectsOfClasses:(id)a3 forKey:(id)a4
+- (id)decodeArrayOfObjectsOfClasses:(id)classes forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 setByAddingObject:objc_opt_class()];
+  keyCopy = key;
+  classesCopy = classes;
+  v8 = [classesCopy setByAddingObject:objc_opt_class()];
 
-  v9 = [(STRPPropertyListTypeDecoder *)self decodeObjectOfClasses:v8 forKey:v6];
+  v9 = [(STRPPropertyListTypeDecoder *)self decodeObjectOfClasses:v8 forKey:keyCopy];
 
   return v9;
 }
 
-- (id)decodeDictionaryWithKeysOfClass:(Class)a3 objectsOfClass:(Class)a4 forKey:(id)a5
+- (id)decodeDictionaryWithKeysOfClass:(Class)class objectsOfClass:(Class)ofClass forKey:(id)key
 {
   v8 = MEMORY[0x1E695DFD8];
-  v9 = a5;
-  v10 = [v8 setWithObject:a3];
-  v11 = [MEMORY[0x1E695DFD8] setWithObject:a4];
-  v12 = [(STRPPropertyListTypeDecoder *)self decodeDictionaryWithKeysOfClasses:v10 objectsOfClasses:v11 forKey:v9];
+  keyCopy = key;
+  v10 = [v8 setWithObject:class];
+  v11 = [MEMORY[0x1E695DFD8] setWithObject:ofClass];
+  v12 = [(STRPPropertyListTypeDecoder *)self decodeDictionaryWithKeysOfClasses:v10 objectsOfClasses:v11 forKey:keyCopy];
 
   return v12;
 }
 
-- (id)decodeDictionaryWithKeysOfClasses:(id)a3 objectsOfClasses:(id)a4 forKey:(id)a5
+- (id)decodeDictionaryWithKeysOfClasses:(id)classes objectsOfClasses:(id)ofClasses forKey:(id)key
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 mutableCopy];
-  [v10 unionSet:v9];
+  keyCopy = key;
+  classesCopy = classes;
+  v10 = [ofClasses mutableCopy];
+  [v10 unionSet:classesCopy];
 
   [v10 addObject:objc_opt_class()];
-  v11 = [(STRPPropertyListTypeDecoder *)self decodeObjectOfClasses:v10 forKey:v8];
+  v11 = [(STRPPropertyListTypeDecoder *)self decodeObjectOfClasses:v10 forKey:keyCopy];
 
   return v11;
 }
 
-- (id)_numberForKey:(id)a3
+- (id)_numberForKey:(id)key
 {
   storage = self->_storage;
-  v4 = a3;
-  v5 = [(NSDictionary *)storage bs_safeObjectForKey:v4 ofType:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(NSDictionary *)storage bs_safeObjectForKey:keyCopy ofType:objc_opt_class()];
 
   return v5;
 }
 
-- (id)_errorWithCode:(int64_t)a3 message:(id)a4
+- (id)_errorWithCode:(int64_t)code message:(id)message
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696ABC0];
   v12 = *MEMORY[0x1E695E650];
-  v13[0] = a4;
+  v13[0] = message;
   v6 = MEMORY[0x1E695DF20];
-  v7 = a4;
+  messageCopy = message;
   v8 = [v6 dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v9 = [v5 errorWithDomain:@"STRPCodingErrorDomain" code:a3 userInfo:v8];
+  v9 = [v5 errorWithDomain:@"STRPCodingErrorDomain" code:code userInfo:v8];
 
   v10 = *MEMORY[0x1E69E9840];
 
   return v9;
 }
 
-- (id)_failWithCode:(int64_t)a3 message:(id)a4
+- (id)_failWithCode:(int64_t)code message:(id)message
 {
-  v5 = [(STRPPropertyListTypeDecoder *)self _errorWithCode:a3 message:a4];
+  v5 = [(STRPPropertyListTypeDecoder *)self _errorWithCode:code message:message];
   [(STRPPropertyListTypeDecoder *)self failWithError:v5];
 
   return 0;

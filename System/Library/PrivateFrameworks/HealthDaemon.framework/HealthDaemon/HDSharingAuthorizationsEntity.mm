@@ -1,15 +1,15 @@
 @interface HDSharingAuthorizationsEntity
-+ (BOOL)addSharingAuthorizations:(id)a3 forRecipientIdentifier:(id)a4 databaseTransaction:(id)a5 error:(id *)a6;
-+ (BOOL)deleteAllMarkedSharingAuthorizationsWithTransaction:(id)a3 error:(id *)a4;
-+ (BOOL)insertOrReplaceWithRecipientIdentifier:(id)a3 sharingAuthorizations:(id)a4 databaseTransaction:(id)a5 error:(id *)a6;
-+ (BOOL)markSharingAuthorizationsForDeletion:(id)a3 recipientIdentifier:(id)a4 databaseTransaction:(id)a5 error:(id *)a6;
-+ (id)_predicateForSharingAuthorizations:(uint64_t)a1;
-+ (id)recipientIdentifiersForSharingAuthorization:(id)a3 databaseTransaction:(id)a4 error:(id *)a5;
-+ (id)sharingAuthorizationsForRecipientIdentifier:(id)a3 databaseTransaction:(id)a4 includeMarkedForDeletion:(BOOL)a5 error:(id *)a6;
-+ (id)sharingAuthorizationsMarkedForDeletionForRecipientIdentifier:(id)a3 databaseTransaction:(id)a4 error:(id *)a5;
++ (BOOL)addSharingAuthorizations:(id)authorizations forRecipientIdentifier:(id)identifier databaseTransaction:(id)transaction error:(id *)error;
++ (BOOL)deleteAllMarkedSharingAuthorizationsWithTransaction:(id)transaction error:(id *)error;
++ (BOOL)insertOrReplaceWithRecipientIdentifier:(id)identifier sharingAuthorizations:(id)authorizations databaseTransaction:(id)transaction error:(id *)error;
++ (BOOL)markSharingAuthorizationsForDeletion:(id)deletion recipientIdentifier:(id)identifier databaseTransaction:(id)transaction error:(id *)error;
++ (id)_predicateForSharingAuthorizations:(uint64_t)authorizations;
++ (id)recipientIdentifiersForSharingAuthorization:(id)authorization databaseTransaction:(id)transaction error:(id *)error;
++ (id)sharingAuthorizationsForRecipientIdentifier:(id)identifier databaseTransaction:(id)transaction includeMarkedForDeletion:(BOOL)deletion error:(id *)error;
++ (id)sharingAuthorizationsMarkedForDeletionForRecipientIdentifier:(id)identifier databaseTransaction:(id)transaction error:(id *)error;
 + (id)uniquedColumns;
-+ (uint64_t)_deleteSharingAuthorizations:(void *)a3 recipientIdentifier:(void *)a4 databaseTransaction:(uint64_t)a5 error:;
-+ (void)_sharingAuthorizationsForRecipientIdentifier:(uint64_t)a1 databaseTransaction:(void *)a2 predicate:(void *)a3 error:(uint64_t)a4;
++ (uint64_t)_deleteSharingAuthorizations:(void *)authorizations recipientIdentifier:(void *)identifier databaseTransaction:(uint64_t)transaction error:;
++ (void)_sharingAuthorizationsForRecipientIdentifier:(uint64_t)identifier databaseTransaction:(void *)transaction predicate:(void *)predicate error:(uint64_t)error;
 @end
 
 @implementation HDSharingAuthorizationsEntity
@@ -25,13 +25,13 @@
   return v2;
 }
 
-+ (BOOL)insertOrReplaceWithRecipientIdentifier:(id)a3 sharingAuthorizations:(id)a4 databaseTransaction:(id)a5 error:(id *)a6
++ (BOOL)insertOrReplaceWithRecipientIdentifier:(id)identifier sharingAuthorizations:(id)authorizations databaseTransaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  authorizationsCopy = authorizations;
+  transactionCopy = transaction;
   v26 = 0;
-  v13 = [a1 sharingAuthorizationsForRecipientIdentifier:v10 databaseTransaction:v12 error:&v26];
+  v13 = [self sharingAuthorizationsForRecipientIdentifier:identifierCopy databaseTransaction:transactionCopy error:&v26];
   v14 = v26;
   v15 = v14;
   if (!v13)
@@ -39,10 +39,10 @@
     v15 = v14;
     if (v15)
     {
-      if (a6)
+      if (error)
       {
         v20 = v15;
-        *a6 = v15;
+        *error = v15;
       }
 
       else
@@ -60,7 +60,7 @@
     v24[1] = 3221225472;
     v24[2] = __120__HDSharingAuthorizationsEntity_insertOrReplaceWithRecipientIdentifier_sharingAuthorizations_databaseTransaction_error___block_invoke;
     v24[3] = &unk_278613BA8;
-    v25 = v11;
+    v25 = authorizationsCopy;
     v16 = [v13 hk_filter:v24];
     if (![v16 count])
     {
@@ -70,7 +70,7 @@ LABEL_6:
     }
 
     v23 = v15;
-    v17 = [a1 deleteSharingAuthorizations:v16 recipientIdentifier:v10 databaseTransaction:v12 error:&v23];
+    v17 = [self deleteSharingAuthorizations:v16 recipientIdentifier:identifierCopy databaseTransaction:transactionCopy error:&v23];
     v18 = v23;
 
     if (v17)
@@ -82,10 +82,10 @@ LABEL_6:
     v15 = v18;
     if (v15)
     {
-      if (a6)
+      if (error)
       {
         v21 = v15;
-        *a6 = v15;
+        *error = v15;
       }
 
       else
@@ -100,23 +100,23 @@ LABEL_18:
   }
 
 LABEL_7:
-  v19 = [a1 addSharingAuthorizations:v11 forRecipientIdentifier:v10 databaseTransaction:v12 error:a6];
+  v19 = [self addSharingAuthorizations:authorizationsCopy forRecipientIdentifier:identifierCopy databaseTransaction:transactionCopy error:error];
 LABEL_19:
 
   return v19;
 }
 
-+ (BOOL)addSharingAuthorizations:(id)a3 forRecipientIdentifier:(id)a4 databaseTransaction:(id)a5 error:(id *)a6
++ (BOOL)addSharingAuthorizations:(id)authorizations forRecipientIdentifier:(id)identifier databaseTransaction:(id)transaction error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = [a5 databaseForEntityClass:a1];
+  authorizationsCopy = authorizations;
+  identifierCopy = identifier;
+  v13 = [transaction databaseForEntityClass:self];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v11;
+  obj = authorizationsCopy;
   v14 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v14)
   {
@@ -140,7 +140,7 @@ LABEL_19:
         v27[1] = 3221225472;
         v27[2] = __107__HDSharingAuthorizationsEntity_addSharingAuthorizations_forRecipientIdentifier_databaseTransaction_error___block_invoke;
         v27[3] = &unk_278613038;
-        v28 = v12;
+        v28 = identifierCopy;
         v29 = v19;
         v20 = [v13 executeSQL:@"INSERT OR IGNORE INTO sharing_authorizations (recipient error:authorization_identifier bindingHandler:display_name enumerationHandler:{display_subtitle) VALUES (?, ?, ?, ?)", &v30, v27, 0}];
         v16 = v30;
@@ -152,10 +152,10 @@ LABEL_19:
           LOBYTE(v6) = v21 == 0;
           if (v21)
           {
-            if (a6)
+            if (error)
             {
               v23 = v21;
-              *a6 = v22;
+              *error = v22;
             }
 
             else
@@ -230,16 +230,16 @@ void __107__HDSharingAuthorizationsEntity_addSharingAuthorizations_forRecipientI
   }
 }
 
-+ (id)sharingAuthorizationsForRecipientIdentifier:(id)a3 databaseTransaction:(id)a4 includeMarkedForDeletion:(BOOL)a5 error:(id *)a6
++ (id)sharingAuthorizationsForRecipientIdentifier:(id)identifier databaseTransaction:(id)transaction includeMarkedForDeletion:(BOOL)deletion error:(id *)error
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  transactionCopy = transaction;
   v12 = MEMORY[0x277D10B18];
   v13 = HDStringRepresentationForRecipientIdentifier();
   v14 = [v12 predicateWithProperty:@"recipient" equalToValue:v13];
 
-  if (!a5)
+  if (!deletion)
   {
     v15 = [MEMORY[0x277D10B18] predicateWithProperty:@"delete_on_commit" equalToValue:MEMORY[0x277CBEC28]];
     v16 = MEMORY[0x277D10B20];
@@ -251,23 +251,23 @@ void __107__HDSharingAuthorizationsEntity_addSharingAuthorizations_forRecipientI
     v14 = v18;
   }
 
-  v19 = [HDSharingAuthorizationsEntity _sharingAuthorizationsForRecipientIdentifier:a1 databaseTransaction:v11 predicate:v14 error:a6];
+  v19 = [HDSharingAuthorizationsEntity _sharingAuthorizationsForRecipientIdentifier:self databaseTransaction:transactionCopy predicate:v14 error:error];
 
   v20 = *MEMORY[0x277D85DE8];
 
   return v19;
 }
 
-+ (void)_sharingAuthorizationsForRecipientIdentifier:(uint64_t)a1 databaseTransaction:(void *)a2 predicate:(void *)a3 error:(uint64_t)a4
++ (void)_sharingAuthorizationsForRecipientIdentifier:(uint64_t)identifier databaseTransaction:(void *)transaction predicate:(void *)predicate error:(uint64_t)error
 {
   v20[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a2;
+  predicateCopy = predicate;
+  transactionCopy = transaction;
   v8 = objc_opt_self();
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [v7 databaseForEntityClass:v8];
+  v10 = [transactionCopy databaseForEntityClass:v8];
 
-  v11 = [v8 queryWithDatabase:v10 predicate:v6];
+  v11 = [v8 queryWithDatabase:v10 predicate:predicateCopy];
 
   v20[0] = @"authorization_identifier";
   v20[1] = @"display_name";
@@ -279,7 +279,7 @@ void __107__HDSharingAuthorizationsEntity_addSharingAuthorizations_forRecipientI
   v18[3] = &unk_27861E4C0;
   v19 = v9;
   v13 = v9;
-  if ([v11 enumerateProperties:v12 error:a4 enumerationHandler:v18])
+  if ([v11 enumerateProperties:v12 error:error enumerationHandler:v18])
   {
     v14 = v13;
   }
@@ -295,12 +295,12 @@ void __107__HDSharingAuthorizationsEntity_addSharingAuthorizations_forRecipientI
   return v14;
 }
 
-+ (id)sharingAuthorizationsMarkedForDeletionForRecipientIdentifier:(id)a3 databaseTransaction:(id)a4 error:(id *)a5
++ (id)sharingAuthorizationsMarkedForDeletionForRecipientIdentifier:(id)identifier databaseTransaction:(id)transaction error:(id *)error
 {
   v20[2] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277D10B18];
-  v9 = a4;
-  v10 = a3;
+  transactionCopy = transaction;
+  identifierCopy = identifier;
   v11 = HDStringRepresentationForRecipientIdentifier();
   v12 = [v8 predicateWithProperty:@"recipient" equalToValue:v11];
 
@@ -311,31 +311,31 @@ void __107__HDSharingAuthorizationsEntity_addSharingAuthorizations_forRecipientI
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
   v16 = [v14 predicateMatchingAllPredicates:v15];
 
-  v17 = [HDSharingAuthorizationsEntity _sharingAuthorizationsForRecipientIdentifier:a1 databaseTransaction:v9 predicate:v16 error:a5];
+  v17 = [HDSharingAuthorizationsEntity _sharingAuthorizationsForRecipientIdentifier:self databaseTransaction:transactionCopy predicate:v16 error:error];
 
   v18 = *MEMORY[0x277D85DE8];
 
   return v17;
 }
 
-+ (id)recipientIdentifiersForSharingAuthorization:(id)a3 databaseTransaction:(id)a4 error:(id *)a5
++ (id)recipientIdentifiersForSharingAuthorization:(id)authorization databaseTransaction:(id)transaction error:(id *)error
 {
   v33[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  authorizationCopy = authorization;
   v9 = MEMORY[0x277CBEB18];
-  v10 = a4;
+  transactionCopy = transaction;
   v11 = objc_alloc_init(v9);
   v12 = MEMORY[0x277D10B18];
-  v13 = [v8 authorizationIdentifier];
-  v14 = [v12 predicateWithProperty:@"authorization_identifier" equalToValue:v13];
+  authorizationIdentifier = [authorizationCopy authorizationIdentifier];
+  v14 = [v12 predicateWithProperty:@"authorization_identifier" equalToValue:authorizationIdentifier];
 
-  v15 = [v8 displayName];
+  displayName = [authorizationCopy displayName];
 
-  if (v15)
+  if (displayName)
   {
     v16 = MEMORY[0x277D10B18];
-    v17 = [v8 displayName];
-    v18 = [v16 predicateWithProperty:@"display_name" equalToValue:v17];
+    displayName2 = [authorizationCopy displayName];
+    v18 = [v16 predicateWithProperty:@"display_name" equalToValue:displayName2];
   }
 
   else
@@ -349,9 +349,9 @@ void __107__HDSharingAuthorizationsEntity_addSharingAuthorizations_forRecipientI
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
   v21 = [v19 predicateMatchingAllPredicates:v20];
 
-  v22 = [v10 databaseForEntityClass:a1];
+  v22 = [transactionCopy databaseForEntityClass:self];
 
-  v23 = [a1 queryWithDatabase:v22 predicate:v21];
+  v23 = [self queryWithDatabase:v22 predicate:v21];
 
   v32 = @"recipient";
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
@@ -361,7 +361,7 @@ void __107__HDSharingAuthorizationsEntity_addSharingAuthorizations_forRecipientI
   v30[3] = &unk_27861E4C0;
   v31 = v11;
   v25 = v11;
-  if ([v23 enumerateProperties:v24 error:a5 enumerationHandler:v30])
+  if ([v23 enumerateProperties:v24 error:error enumerationHandler:v30])
   {
     v26 = v25;
   }
@@ -392,13 +392,13 @@ uint64_t __103__HDSharingAuthorizationsEntity_recipientIdentifiersForSharingAuth
   return 1;
 }
 
-+ (uint64_t)_deleteSharingAuthorizations:(void *)a3 recipientIdentifier:(void *)a4 databaseTransaction:(uint64_t)a5 error:
++ (uint64_t)_deleteSharingAuthorizations:(void *)authorizations recipientIdentifier:(void *)identifier databaseTransaction:(uint64_t)transaction error:
 {
   v8 = a2;
-  v9 = a4;
-  v10 = a3;
+  identifierCopy = identifier;
+  authorizationsCopy = authorizations;
   v11 = objc_opt_self();
-  v12 = [v9 databaseForEntityClass:v11];
+  v12 = [identifierCopy databaseForEntityClass:v11];
 
   v13 = MEMORY[0x277D10B18];
   v14 = HDStringRepresentationForRecipientIdentifier();
@@ -420,31 +420,31 @@ uint64_t __103__HDSharingAuthorizationsEntity_recipientIdentifiersForSharingAuth
     v15 = v18;
   }
 
-  v19 = [v11 deleteEntitiesInDatabase:v12 predicate:v15 error:a5];
+  v19 = [v11 deleteEntitiesInDatabase:v12 predicate:v15 error:transaction];
 LABEL_6:
 
   return v19;
 }
 
-+ (BOOL)markSharingAuthorizationsForDeletion:(id)a3 recipientIdentifier:(id)a4 databaseTransaction:(id)a5 error:(id *)a6
++ (BOOL)markSharingAuthorizationsForDeletion:(id)deletion recipientIdentifier:(id)identifier databaseTransaction:(id)transaction error:(id *)error
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a3;
-  v12 = [a5 databaseForEntityClass:a1];
+  identifierCopy = identifier;
+  deletionCopy = deletion;
+  v12 = [transaction databaseForEntityClass:self];
   v13 = MEMORY[0x277D10B18];
   v14 = HDStringRepresentationForRecipientIdentifier();
 
   v15 = [v13 predicateWithProperty:@"recipient" equalToValue:v14];
 
-  v16 = [(HDSharingAuthorizationsEntity *)a1 _predicateForSharingAuthorizations:v11];
+  v16 = [(HDSharingAuthorizationsEntity *)self _predicateForSharingAuthorizations:deletionCopy];
 
   if (v16)
   {
     v17 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:v15 otherPredicate:v16];
     v22[0] = @"delete_on_commit";
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-    v19 = [a1 updateProperties:v18 predicate:v17 database:v12 error:a6 bindingHandler:&__block_literal_global_193];
+    v19 = [self updateProperties:v18 predicate:v17 database:v12 error:error bindingHandler:&__block_literal_global_193];
   }
 
   else
@@ -456,7 +456,7 @@ LABEL_6:
   return v19;
 }
 
-+ (id)_predicateForSharingAuthorizations:(uint64_t)a1
++ (id)_predicateForSharingAuthorizations:(uint64_t)authorizations
 {
   v2 = a2;
   objc_opt_self();
@@ -474,13 +474,13 @@ LABEL_6:
   return v4;
 }
 
-+ (BOOL)deleteAllMarkedSharingAuthorizationsWithTransaction:(id)a3 error:(id *)a4
++ (BOOL)deleteAllMarkedSharingAuthorizationsWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = [a3 databaseForEntityClass:a1];
+  v6 = [transaction databaseForEntityClass:self];
   v7 = [MEMORY[0x277D10B18] predicateWithProperty:@"delete_on_commit" equalToValue:MEMORY[0x277CBEC38]];
-  LOBYTE(a4) = [a1 deleteEntitiesInDatabase:v6 predicate:v7 error:a4];
+  LOBYTE(error) = [self deleteEntitiesInDatabase:v6 predicate:v7 error:error];
 
-  return a4;
+  return error;
 }
 
 id __68__HDSharingAuthorizationsEntity__predicateForSharingAuthorizations___block_invoke(uint64_t a1, void *a2)

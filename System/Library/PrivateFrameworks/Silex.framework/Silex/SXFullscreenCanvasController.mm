@@ -1,89 +1,89 @@
 @interface SXFullscreenCanvasController
-- (BOOL)captionView:(id)a3 tapGestureRecognizerShouldBegin:(id)a4;
-- (BOOL)comparePoint:(CGPoint)a3 withPoint:(CGPoint)a4 maxDelta:(double)a5;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGPoint)calculateAnchorPointFromBounds:(CGRect)a3 andPoint:(CGPoint)a4;
+- (BOOL)captionView:(id)view tapGestureRecognizerShouldBegin:(id)begin;
+- (BOOL)comparePoint:(CGPoint)point withPoint:(CGPoint)withPoint maxDelta:(double)delta;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGPoint)calculateAnchorPointFromBounds:(CGRect)bounds andPoint:(CGPoint)point;
 - (CGPoint)currentTranslation;
 - (CGPoint)startingAnchorPoint;
 - (CGRect)currentDestinationFrame;
 - (CGRect)currentOriginFrame;
-- (CGRect)itemizedScrollView:(id)a3 frameForViewAtIndex:(unint64_t)a4;
-- (CGSize)fitSizeForRect:(CGRect)a3;
-- (SXFullscreenCanvasController)initWithShowable:(id)a3 captionViewFactory:(id)a4 sharingPolicy:(unint64_t)a5;
+- (CGRect)itemizedScrollView:(id)view frameForViewAtIndex:(unint64_t)index;
+- (CGSize)fitSizeForRect:(CGRect)rect;
+- (SXFullscreenCanvasController)initWithShowable:(id)showable captionViewFactory:(id)factory sharingPolicy:(unint64_t)policy;
 - (SXFullscreenCanvasShowable)showable;
 - (UIColor)backgroundColor;
-- (id)dragManager:(id)a3 dragableAtLocation:(CGPoint)a4;
-- (id)itemizedScrollView:(id)a3 viewAtIndex:(unint64_t)a4;
-- (int64_t)viewIndexForPoint:(CGPoint)a3;
+- (id)dragManager:(id)manager dragableAtLocation:(CGPoint)location;
+- (id)itemizedScrollView:(id)view viewAtIndex:(unint64_t)index;
+- (int64_t)viewIndexForPoint:(CGPoint)point;
 - (unint64_t)activeViewIndex;
-- (unint64_t)numberOfViewsInItemizedScrollView:(id)a3;
-- (void)changeCaptionViewForViewWithIndex:(unint64_t)a3 expanded:(BOOL)a4 animated:(BOOL)a5;
+- (unint64_t)numberOfViewsInItemizedScrollView:(id)view;
+- (void)changeCaptionViewForViewWithIndex:(unint64_t)index expanded:(BOOL)expanded animated:(BOOL)animated;
 - (void)dealloc;
-- (void)didEndTransitionFromFullScreen:(BOOL)a3 toFullScreen:(BOOL)a4;
-- (void)didFinishFullscreenActiveIndex:(unint64_t)a3;
+- (void)didEndTransitionFromFullScreen:(BOOL)screen toFullScreen:(BOOL)fullScreen;
+- (void)didFinishFullscreenActiveIndex:(unint64_t)index;
 - (void)dismiss;
-- (void)fullScreenImageViewDidStartZooming:(id)a3;
-- (void)fullScreenImageViewDidStopZooming:(id)a3;
-- (void)fullscreenCanvasViewController:(id)a3 willTransitionToSize:(CGSize)a4 withTransitionCoordinator:(id)a5;
-- (void)goToFullScreenFromFullScreenAnimated:(BOOL)a3 completionBlock:(id)a4;
-- (void)goToFullScreenFromOriginalAnimated:(BOOL)a3 completionBlock:(id)a4;
-- (void)goToOriginalFromFullScreenAnimated:(BOOL)a3 completionBlock:(id)a4;
-- (void)goToOriginalFromOriginalAnimated:(BOOL)a3 completionBlock:(id)a4;
-- (void)goToOriginalFromVerticalSwipingWithVelocity:(CGPoint)a3 completionBlock:(id)a4;
-- (void)handleGestureRecognizer:(id)a3;
+- (void)fullScreenImageViewDidStartZooming:(id)zooming;
+- (void)fullScreenImageViewDidStopZooming:(id)zooming;
+- (void)fullscreenCanvasViewController:(id)controller willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)goToFullScreenFromFullScreenAnimated:(BOOL)animated completionBlock:(id)block;
+- (void)goToFullScreenFromOriginalAnimated:(BOOL)animated completionBlock:(id)block;
+- (void)goToOriginalFromFullScreenAnimated:(BOOL)animated completionBlock:(id)block;
+- (void)goToOriginalFromOriginalAnimated:(BOOL)animated completionBlock:(id)block;
+- (void)goToOriginalFromVerticalSwipingWithVelocity:(CGPoint)velocity completionBlock:(id)block;
+- (void)handleGestureRecognizer:(id)recognizer;
 - (void)handleNextCommand;
-- (void)handleOpenTapGesture:(id)a3;
-- (void)handlePanGestureRecognizer:(id)a3;
-- (void)handlePinchGestureRecognizer:(id)a3;
+- (void)handleOpenTapGesture:(id)gesture;
+- (void)handlePanGestureRecognizer:(id)recognizer;
+- (void)handlePinchGestureRecognizer:(id)recognizer;
 - (void)handlePreviousCommand;
-- (void)handleRotationGestureRecognizer:(id)a3;
-- (void)handleTap:(id)a3;
-- (void)itemizedScrollView:(id)a3 didChangeToActiveViewIndex:(unint64_t)a4;
-- (void)itemizedScrollView:(id)a3 didHideViewWithIndex:(unint64_t)a4;
-- (void)itemizedScrollView:(id)a3 willShowViewWithIndex:(unint64_t)a4;
-- (void)presentFullscreenWithIndex:(unint64_t)a3;
+- (void)handleRotationGestureRecognizer:(id)recognizer;
+- (void)handleTap:(id)tap;
+- (void)itemizedScrollView:(id)view didChangeToActiveViewIndex:(unint64_t)index;
+- (void)itemizedScrollView:(id)view didHideViewWithIndex:(unint64_t)index;
+- (void)itemizedScrollView:(id)view willShowViewWithIndex:(unint64_t)index;
+- (void)presentFullscreenWithIndex:(unint64_t)index;
 - (void)removeScaleAndTranslationFromCurrentView;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)setBackgroundColor:(id)a3;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)setBackgroundColor:(id)color;
 - (void)setup;
-- (void)setupGestureRecognizersInView:(id)a3;
-- (void)setupScrollViewIfNeededWithActiveIndex:(unint64_t)a3;
+- (void)setupGestureRecognizersInView:(id)view;
+- (void)setupScrollViewIfNeededWithActiveIndex:(unint64_t)index;
 - (void)startSupressingColorSettings;
-- (void)startTransitionToFullScreen:(BOOL)a3 controllable:(BOOL)a4;
+- (void)startTransitionToFullScreen:(BOOL)screen controllable:(BOOL)controllable;
 - (void)startVerticalSwiping;
 - (void)stopSupressingColorSettings;
-- (void)stopTransformingCancelled:(BOOL)a3;
-- (void)stopVerticalSwipingDismissed:(BOOL)a3 lastVelocity:(CGPoint)a4;
+- (void)stopTransformingCancelled:(BOOL)cancelled;
+- (void)stopVerticalSwipingDismissed:(BOOL)dismissed lastVelocity:(CGPoint)velocity;
 - (void)transferCurrentViewToCanvas;
 - (void)transferCurrentViewToOriginalView;
-- (void)transferGestureViewToView:(id)a3;
-- (void)transformViewToSize:(CGSize)a3;
+- (void)transferGestureViewToView:(id)view;
+- (void)transformViewToSize:(CGSize)size;
 - (void)updateTransform;
-- (void)willStartTransformingWithGestureRecognizer:(id)a3 completionBlock:(id)a4;
+- (void)willStartTransformingWithGestureRecognizer:(id)recognizer completionBlock:(id)block;
 @end
 
 @implementation SXFullscreenCanvasController
 
-- (SXFullscreenCanvasController)initWithShowable:(id)a3 captionViewFactory:(id)a4 sharingPolicy:(unint64_t)a5
+- (SXFullscreenCanvasController)initWithShowable:(id)showable captionViewFactory:(id)factory sharingPolicy:(unint64_t)policy
 {
-  v8 = a3;
-  v9 = a4;
+  showableCopy = showable;
+  factoryCopy = factory;
   v16.receiver = self;
   v16.super_class = SXFullscreenCanvasController;
   v10 = [(SXFullscreenCanvasController *)&v16 init];
   v11 = v10;
   if (v10)
   {
-    v10->_sharingPolicy = a5;
-    objc_storeStrong(&v10->_captionViewFactory, a4);
-    objc_storeWeak(&v11->_showable, v8);
+    v10->_sharingPolicy = policy;
+    objc_storeStrong(&v10->_captionViewFactory, factory);
+    objc_storeWeak(&v11->_showable, showableCopy);
     v12 = objc_alloc_init(MEMORY[0x1E69DD250]);
     backgroundView = v11->_backgroundView;
     v11->_backgroundView = v12;
 
     [(UIView *)v11->_backgroundView setAutoresizingMask:18];
-    v14 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v11->_backgroundView setBackgroundColor:v14];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v11->_backgroundView setBackgroundColor:blackColor];
 
     [(SXFullscreenCanvasController *)v11 setup];
   }
@@ -101,8 +101,8 @@
 
 - (void)dismiss
 {
-  v3 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-  self->_currentViewIndex = [v3 activeViewIndex];
+  itemizedScrollView = [(SXFullscreenCanvasController *)self itemizedScrollView];
+  self->_currentViewIndex = [itemizedScrollView activeViewIndex];
 
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
@@ -137,11 +137,11 @@ uint64_t __39__SXFullscreenCanvasController_dismiss__block_invoke_2(uint64_t a1)
   return [v1 goToOriginalFromFullScreenAnimated:1 completionBlock:v3];
 }
 
-- (void)setupScrollViewIfNeededWithActiveIndex:(unint64_t)a3
+- (void)setupScrollViewIfNeededWithActiveIndex:(unint64_t)index
 {
-  v5 = [(SXFullscreenCanvasController *)self itemizedScrollView];
+  itemizedScrollView = [(SXFullscreenCanvasController *)self itemizedScrollView];
 
-  if (!v5)
+  if (!itemizedScrollView)
   {
     v6 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_handleTap_];
     [(SXFullscreenCanvasController *)self setTapGestureRecognizer:v6];
@@ -150,24 +150,24 @@ uint64_t __39__SXFullscreenCanvasController_dismiss__block_invoke_2(uint64_t a1)
     v8 = [(SXItemizedScrollView *)v7 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(SXFullscreenCanvasController *)self setItemizedScrollView:v8];
 
-    v9 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-    [v9 setContentInsetAdjustmentBehavior:2];
+    itemizedScrollView2 = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    [itemizedScrollView2 setContentInsetAdjustmentBehavior:2];
 
-    v10 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-    [v10 setDataSource:self];
+    itemizedScrollView3 = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    [itemizedScrollView3 setDataSource:self];
 
-    v11 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-    [v11 setDelegate:self];
+    itemizedScrollView4 = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    [itemizedScrollView4 setDelegate:self];
 
-    v12 = [(SXFullscreenCanvasController *)self canvasViewController];
-    v13 = [v12 view];
-    [v13 bounds];
+    canvasViewController = [(SXFullscreenCanvasController *)self canvasViewController];
+    view = [canvasViewController view];
+    [view bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
 
-    v22 = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    itemizedScrollView5 = [(SXFullscreenCanvasController *)self itemizedScrollView];
     v32.origin.x = v15;
     v32.origin.y = v17;
     v32.size.width = v19;
@@ -177,61 +177,61 @@ uint64_t __39__SXFullscreenCanvasController_dismiss__block_invoke_2(uint64_t a1)
     v33.origin.y = v17;
     v33.size.width = v19;
     v33.size.height = v21;
-    [v22 setFrame:{-10.0, 0.0, v23, CGRectGetHeight(v33)}];
+    [itemizedScrollView5 setFrame:{-10.0, 0.0, v23, CGRectGetHeight(v33)}];
 
-    v24 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-    [v24 setActiveViewIndex:a3 animated:0];
+    itemizedScrollView6 = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    [itemizedScrollView6 setActiveViewIndex:index animated:0];
 
-    v25 = [(SXFullscreenCanvasController *)self canvasViewController];
-    v26 = [v25 view];
-    v27 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-    [v26 addSubview:v27];
+    canvasViewController2 = [(SXFullscreenCanvasController *)self canvasViewController];
+    view2 = [canvasViewController2 view];
+    itemizedScrollView7 = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    [view2 addSubview:itemizedScrollView7];
 
-    v30 = [(SXFullscreenCanvasController *)self canvasViewController];
-    v28 = [v30 view];
-    v29 = [(SXFullscreenCanvasController *)self tapGestureRecognizer];
-    [v28 addGestureRecognizer:v29];
+    canvasViewController3 = [(SXFullscreenCanvasController *)self canvasViewController];
+    view3 = [canvasViewController3 view];
+    tapGestureRecognizer = [(SXFullscreenCanvasController *)self tapGestureRecognizer];
+    [view3 addGestureRecognizer:tapGestureRecognizer];
   }
 }
 
-- (void)didFinishFullscreenActiveIndex:(unint64_t)a3
+- (void)didFinishFullscreenActiveIndex:(unint64_t)index
 {
   [(SXFullscreenCanvasController *)self setupScrollViewIfNeededWithActiveIndex:?];
-  v5 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-  v9 = [v5 activeView];
+  itemizedScrollView = [(SXFullscreenCanvasController *)self itemizedScrollView];
+  activeView = [itemizedScrollView activeView];
 
-  v6 = [v9 scrollView];
-  [(SXFullscreenCanvasController *)self transferGestureViewToView:v6];
+  scrollView = [activeView scrollView];
+  [(SXFullscreenCanvasController *)self transferGestureViewToView:scrollView];
 
-  v7 = [(SXFullscreenCanvasController *)self captionView];
-  if (v7)
+  captionView = [(SXFullscreenCanvasController *)self captionView];
+  if (captionView)
   {
-    v8 = [(SXFullscreenCanvasController *)self captionView];
-    -[SXFullscreenCanvasController changeCaptionViewForViewWithIndex:expanded:animated:](self, "changeCaptionViewForViewWithIndex:expanded:animated:", a3, [v8 expanded], 1);
+    captionView2 = [(SXFullscreenCanvasController *)self captionView];
+    -[SXFullscreenCanvasController changeCaptionViewForViewWithIndex:expanded:animated:](self, "changeCaptionViewForViewWithIndex:expanded:animated:", index, [captionView2 expanded], 1);
   }
 
   else
   {
-    [(SXFullscreenCanvasController *)self changeCaptionViewForViewWithIndex:a3 expanded:1 animated:1];
+    [(SXFullscreenCanvasController *)self changeCaptionViewForViewWithIndex:index expanded:1 animated:1];
   }
 }
 
-- (void)changeCaptionViewForViewWithIndex:(unint64_t)a3 expanded:(BOOL)a4 animated:(BOOL)a5
+- (void)changeCaptionViewForViewWithIndex:(unint64_t)index expanded:(BOOL)expanded animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = [(SXFullscreenCanvasController *)self showable];
-  v10 = [(SXFullscreenCanvasController *)self showable];
-  v44 = [v9 fullScreenCanvasController:self captionForShowable:v10 viewIndex:a3];
+  animatedCopy = animated;
+  expandedCopy = expanded;
+  showable = [(SXFullscreenCanvasController *)self showable];
+  showable2 = [(SXFullscreenCanvasController *)self showable];
+  v44 = [showable fullScreenCanvasController:self captionForShowable:showable2 viewIndex:index];
 
-  v11 = [(SXFullscreenCanvasController *)self captionView];
+  captionView = [(SXFullscreenCanvasController *)self captionView];
 
-  if (v11)
+  if (captionView)
   {
-    v12 = [(SXFullscreenCanvasController *)self captionView];
-    v13 = [v12 viewIndex];
+    captionView2 = [(SXFullscreenCanvasController *)self captionView];
+    viewIndex = [captionView2 viewIndex];
 
-    if (v13 == a3)
+    if (viewIndex == index)
     {
       goto LABEL_8;
     }
@@ -239,153 +239,153 @@ uint64_t __39__SXFullscreenCanvasController_dismiss__block_invoke_2(uint64_t a1)
 
   else
   {
-    v14 = [(SXFullscreenCanvasController *)self captionViewFactory];
-    v15 = [v14 createCaptionView];
+    captionViewFactory = [(SXFullscreenCanvasController *)self captionViewFactory];
+    createCaptionView = [captionViewFactory createCaptionView];
     captionView = self->_captionView;
-    self->_captionView = v15;
+    self->_captionView = createCaptionView;
 
-    v17 = [(SXFullscreenCanvasController *)self captionView];
-    [v17 setDelegate:self];
+    captionView3 = [(SXFullscreenCanvasController *)self captionView];
+    [captionView3 setDelegate:self];
 
-    v18 = [(SXFullscreenCanvasController *)self canvasViewController];
-    v19 = [v18 view];
-    v20 = [(SXFullscreenCanvasController *)self captionView];
-    [v19 addSubview:v20];
+    canvasViewController = [(SXFullscreenCanvasController *)self canvasViewController];
+    view = [canvasViewController view];
+    captionView4 = [(SXFullscreenCanvasController *)self captionView];
+    [view addSubview:captionView4];
 
     if (_UISolariumFeatureFlagEnabled())
     {
-      v21 = [(SXFullscreenCanvasController *)self captionView];
+      captionView5 = [(SXFullscreenCanvasController *)self captionView];
       v22 = objc_alloc(MEMORY[0x1E69DD6C8]);
-      v23 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-      v24 = [v22 initWithScrollView:v23 edge:4 style:0];
-      [v21 addInteraction:v24];
+      itemizedScrollView = [(SXFullscreenCanvasController *)self itemizedScrollView];
+      v24 = [v22 initWithScrollView:itemizedScrollView edge:4 style:0];
+      [captionView5 addInteraction:v24];
     }
 
     self->_previousExpansionMode = 1;
   }
 
-  v25 = [(SXFullscreenCanvasController *)self captionView];
-  [v25 updateWithCaption:v44 forViewIndex:a3 animated:v5];
+  captionView6 = [(SXFullscreenCanvasController *)self captionView];
+  [captionView6 updateWithCaption:v44 forViewIndex:index animated:animatedCopy];
 
 LABEL_8:
   if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
   {
-    v26 = [(SXFullscreenCanvasController *)self navigationBarView];
+    navigationBarView = [(SXFullscreenCanvasController *)self navigationBarView];
 
-    if (!v26)
+    if (!navigationBarView)
     {
       v27 = objc_alloc_init(SXFullscreenNavigationBarView);
       navigationBarView = self->_navigationBarView;
       self->_navigationBarView = v27;
 
-      v29 = [(SXFullscreenCanvasController *)self navigationBarView];
-      [v29 setDelegate:self];
+      navigationBarView2 = [(SXFullscreenCanvasController *)self navigationBarView];
+      [navigationBarView2 setDelegate:self];
 
-      v30 = [(SXFullscreenCanvasController *)self canvasViewController];
-      v31 = [v30 view];
-      v32 = [(SXFullscreenCanvasController *)self navigationBarView];
-      [v31 addSubview:v32];
+      canvasViewController2 = [(SXFullscreenCanvasController *)self canvasViewController];
+      view2 = [canvasViewController2 view];
+      navigationBarView3 = [(SXFullscreenCanvasController *)self navigationBarView];
+      [view2 addSubview:navigationBarView3];
     }
   }
 
-  v33 = [(SXFullscreenCanvasController *)self captionView];
-  v34 = [v33 expanded];
+  captionView7 = [(SXFullscreenCanvasController *)self captionView];
+  expanded = [captionView7 expanded];
 
-  if (v34 != v6)
+  if (expanded != expandedCopy)
   {
-    if (!v6 || (previousExpansionMode = self->_previousExpansionMode, !previousExpansionMode))
+    if (!expandedCopy || (previousExpansionMode = self->_previousExpansionMode, !previousExpansionMode))
     {
-      v36 = [(SXFullscreenCanvasController *)self captionView];
-      self->_previousExpansionMode = [v36 expansionMode];
+      captionView8 = [(SXFullscreenCanvasController *)self captionView];
+      self->_previousExpansionMode = [captionView8 expansionMode];
 
       previousExpansionMode = 0;
     }
 
-    v37 = [(SXFullscreenCanvasController *)self captionView];
-    [v37 setExpansionMode:previousExpansionMode animated:v5];
+    captionView9 = [(SXFullscreenCanvasController *)self captionView];
+    [captionView9 setExpansionMode:previousExpansionMode animated:animatedCopy];
   }
 
-  v38 = [(SXFullscreenCanvasController *)self canvasViewController];
-  v39 = [v38 navigationController];
-  v40 = [v39 isNavigationBarHidden];
+  canvasViewController3 = [(SXFullscreenCanvasController *)self canvasViewController];
+  navigationController = [canvasViewController3 navigationController];
+  isNavigationBarHidden = [navigationController isNavigationBarHidden];
 
-  if (v40 == v6)
+  if (isNavigationBarHidden == expandedCopy)
   {
     isTransitioning = self->_isTransitioning;
-    v42 = [(SXFullscreenCanvasController *)self canvasViewController];
-    v43 = [v42 navigationController];
-    [v43 setNavigationBarHidden:v6 ^ 1u animated:v5 & ~isTransitioning];
+    canvasViewController4 = [(SXFullscreenCanvasController *)self canvasViewController];
+    navigationController2 = [canvasViewController4 navigationController];
+    [navigationController2 setNavigationBarHidden:expandedCopy ^ 1u animated:animatedCopy & ~isTransitioning];
   }
 }
 
-- (void)transformViewToSize:(CGSize)a3
+- (void)transformViewToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(SXFullscreenCanvasController *)self isFullscreen])
   {
-    v6 = [(SXFullscreenCanvasController *)self canvasViewController];
-    v7 = [v6 view];
-    [v7 frame];
+    canvasViewController = [(SXFullscreenCanvasController *)self canvasViewController];
+    view = [canvasViewController view];
+    [view frame];
     v9 = v8;
     v11 = v10;
 
-    v12 = [(SXFullscreenCanvasController *)self canvasViewController];
-    v13 = [v12 view];
-    [v13 setFrame:{v9, v11, width, height}];
+    canvasViewController2 = [(SXFullscreenCanvasController *)self canvasViewController];
+    view2 = [canvasViewController2 view];
+    [view2 setFrame:{v9, v11, width, height}];
 
-    v14 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-    [v14 setFrame:{-10.0, 0.0, width + 20.0, height}];
+    itemizedScrollView = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    [itemizedScrollView setFrame:{-10.0, 0.0, width + 20.0, height}];
 
-    v15 = [(SXFullscreenCanvasController *)self showable];
-    v16 = [(SXFullscreenCanvasController *)self showable];
-    v17 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-    v18 = [v17 activeViewIndex];
-    v19 = [(SXFullscreenCanvasController *)self canvasViewController];
-    v20 = [v19 view];
-    [v20 bounds];
-    [v15 fullScreenCanvasController:self fullScreenFrameForShowable:v16 viewIndex:v18 withinRect:?];
+    showable = [(SXFullscreenCanvasController *)self showable];
+    showable2 = [(SXFullscreenCanvasController *)self showable];
+    itemizedScrollView2 = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    activeViewIndex = [itemizedScrollView2 activeViewIndex];
+    canvasViewController3 = [(SXFullscreenCanvasController *)self canvasViewController];
+    view3 = [canvasViewController3 view];
+    [view3 bounds];
+    [showable fullScreenCanvasController:self fullScreenFrameForShowable:showable2 viewIndex:activeViewIndex withinRect:?];
     v22 = v21;
     v24 = v23;
     v26 = v25;
     v28 = v27;
 
-    v29 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-    v39 = [v29 activeView];
+    itemizedScrollView3 = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    activeView = [itemizedScrollView3 activeView];
 
-    [v39 setContentViewFrame:{v22, v24, v26, v28}];
-    v30 = [(SXFullscreenCanvasController *)self captionView];
-    [v30 updateFrameAnimated:0];
+    [activeView setContentViewFrame:{v22, v24, v26, v28}];
+    captionView = [(SXFullscreenCanvasController *)self captionView];
+    [captionView updateFrameAnimated:0];
 
-    v31 = [(SXFullscreenCanvasController *)self navigationBarView];
-    [v31 updateFrameAnimated:0];
+    navigationBarView = [(SXFullscreenCanvasController *)self navigationBarView];
+    [navigationBarView updateFrameAnimated:0];
 
-    v32 = [(SXFullscreenCanvasController *)self gestureView];
-    v33 = [v32 superview];
-    [v33 bounds];
+    gestureView = [(SXFullscreenCanvasController *)self gestureView];
+    superview = [gestureView superview];
+    [superview bounds];
     v34 = CGRectGetWidth(v41);
-    v35 = [(SXFullscreenCanvasController *)self gestureView];
-    v36 = [v35 superview];
-    [v36 bounds];
+    gestureView2 = [(SXFullscreenCanvasController *)self gestureView];
+    superview2 = [gestureView2 superview];
+    [superview2 bounds];
     v37 = CGRectGetHeight(v42);
-    v38 = [(SXFullscreenCanvasController *)self gestureView];
-    [v38 setFrame:{0.0, 0.0, v34, v37}];
+    gestureView3 = [(SXFullscreenCanvasController *)self gestureView];
+    [gestureView3 setFrame:{0.0, 0.0, v34, v37}];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(SXFullscreenCanvasController *)self backgroundView];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  backgroundView = [(SXFullscreenCanvasController *)self backgroundView];
+  [backgroundView setBackgroundColor:colorCopy];
 }
 
 - (UIColor)backgroundColor
 {
-  v2 = [(SXFullscreenCanvasController *)self backgroundView];
-  v3 = [v2 backgroundColor];
+  backgroundView = [(SXFullscreenCanvasController *)self backgroundView];
+  backgroundColor = [backgroundView backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
 - (unint64_t)activeViewIndex
@@ -395,14 +395,14 @@ LABEL_8:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v3 = [(SXFullscreenCanvasController *)self itemizedScrollView];
+  itemizedScrollView = [(SXFullscreenCanvasController *)self itemizedScrollView];
 
-  if (v3)
+  if (itemizedScrollView)
   {
-    v4 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-    v5 = [v4 activeViewIndex];
+    itemizedScrollView2 = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    activeViewIndex = [itemizedScrollView2 activeViewIndex];
 
-    return v5;
+    return activeViewIndex;
   }
 
   else
@@ -419,25 +419,25 @@ LABEL_8:
   gestureView = self->_gestureView;
   self->_gestureView = v4;
 
-  v6 = [(SXFullscreenCanvasController *)self gestureView];
-  [v6 setAutoresizingMask:18];
+  gestureView = [(SXFullscreenCanvasController *)self gestureView];
+  [gestureView setAutoresizingMask:18];
 
-  v7 = [(SXFullscreenCanvasController *)self gestureView];
-  [(SXFullscreenCanvasController *)self setupGestureRecognizersInView:v7];
+  gestureView2 = [(SXFullscreenCanvasController *)self gestureView];
+  [(SXFullscreenCanvasController *)self setupGestureRecognizersInView:gestureView2];
 
-  v8 = [(SXFullscreenCanvasController *)self showable];
-  v9 = [(SXFullscreenCanvasController *)self gestureView];
-  v10 = [(SXFullscreenCanvasController *)self showable];
-  [v8 fullScreenCanvasController:self shouldAddGestureView:v9 forShowable:v10];
+  showable = [(SXFullscreenCanvasController *)self showable];
+  gestureView3 = [(SXFullscreenCanvasController *)self gestureView];
+  showable2 = [(SXFullscreenCanvasController *)self showable];
+  [showable fullScreenCanvasController:self shouldAddGestureView:gestureView3 forShowable:showable2];
 
-  v12 = [(SXFullscreenCanvasController *)self gestureView];
-  v11 = [v12 superview];
-  [v11 setUserInteractionEnabled:1];
+  gestureView4 = [(SXFullscreenCanvasController *)self gestureView];
+  superview = [gestureView4 superview];
+  [superview setUserInteractionEnabled:1];
 }
 
-- (void)setupGestureRecognizersInView:(id)a3
+- (void)setupGestureRecognizersInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v21 = [[SXDragManager alloc] initWithSharingPolicy:[(SXFullscreenCanvasController *)self sharingPolicy] dataSource:self];
   [(SXDragManager *)v21 setEnabled:0];
   [(SXFullscreenCanvasController *)self setDragManager:v21];
@@ -445,52 +445,52 @@ LABEL_8:
   openTapGestureRecognizer = self->_openTapGestureRecognizer;
   self->_openTapGestureRecognizer = v5;
 
-  v7 = [(SXFullscreenCanvasController *)self openTapGestureRecognizer];
-  [v7 setDelegate:self];
+  openTapGestureRecognizer = [(SXFullscreenCanvasController *)self openTapGestureRecognizer];
+  [openTapGestureRecognizer setDelegate:self];
 
-  v8 = [(SXFullscreenCanvasController *)self openTapGestureRecognizer];
-  [v4 addGestureRecognizer:v8];
+  openTapGestureRecognizer2 = [(SXFullscreenCanvasController *)self openTapGestureRecognizer];
+  [viewCopy addGestureRecognizer:openTapGestureRecognizer2];
 
   v9 = [objc_alloc(MEMORY[0x1E69DCD80]) initWithTarget:self action:sel_handlePinchGestureRecognizer_];
   pinchGestureRecognizer = self->_pinchGestureRecognizer;
   self->_pinchGestureRecognizer = v9;
 
-  v11 = [(SXFullscreenCanvasController *)self pinchGestureRecognizer];
-  [v11 setDelegate:self];
+  pinchGestureRecognizer = [(SXFullscreenCanvasController *)self pinchGestureRecognizer];
+  [pinchGestureRecognizer setDelegate:self];
 
-  v12 = [(SXFullscreenCanvasController *)self pinchGestureRecognizer];
-  [v4 addGestureRecognizer:v12];
+  pinchGestureRecognizer2 = [(SXFullscreenCanvasController *)self pinchGestureRecognizer];
+  [viewCopy addGestureRecognizer:pinchGestureRecognizer2];
 
   v13 = [objc_alloc(MEMORY[0x1E69DCE68]) initWithTarget:self action:sel_handleRotationGestureRecognizer_];
   rotationGestureRecognizer = self->_rotationGestureRecognizer;
   self->_rotationGestureRecognizer = v13;
 
-  v15 = [(SXFullscreenCanvasController *)self rotationGestureRecognizer];
-  [v15 setDelegate:self];
+  rotationGestureRecognizer = [(SXFullscreenCanvasController *)self rotationGestureRecognizer];
+  [rotationGestureRecognizer setDelegate:self];
 
-  v16 = [(SXFullscreenCanvasController *)self rotationGestureRecognizer];
-  [v4 addGestureRecognizer:v16];
+  rotationGestureRecognizer2 = [(SXFullscreenCanvasController *)self rotationGestureRecognizer];
+  [viewCopy addGestureRecognizer:rotationGestureRecognizer2];
 
   v17 = [objc_alloc(MEMORY[0x1E69DCD28]) initWithTarget:self action:sel_handlePanGestureRecognizer_];
   panGestureRecognizer = self->_panGestureRecognizer;
   self->_panGestureRecognizer = v17;
 
-  v19 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
-  [v19 setDelegate:self];
+  panGestureRecognizer = [(SXFullscreenCanvasController *)self panGestureRecognizer];
+  [panGestureRecognizer setDelegate:self];
 
-  v20 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
-  [v4 addGestureRecognizer:v20];
+  panGestureRecognizer2 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
+  [viewCopy addGestureRecognizer:panGestureRecognizer2];
 }
 
-- (CGSize)fitSizeForRect:(CGRect)a3
+- (CGSize)fitSizeForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(SXFullscreenCanvasController *)self canvasViewController];
-  v8 = [v7 view];
-  [v8 bounds];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  canvasViewController = [(SXFullscreenCanvasController *)self canvasViewController];
+  view = [canvasViewController view];
+  [view bounds];
   v10 = v9;
   v24 = v11;
   v25 = v9;
@@ -544,16 +544,16 @@ LABEL_8:
   return result;
 }
 
-- (void)handleGestureRecognizer:(id)a3
+- (void)handleGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   totalActiveGestureRecognizers = self->_totalActiveGestureRecognizers;
-  if ([v4 state] == 1)
+  if ([recognizerCopy state] == 1)
   {
     ++self->_totalActiveGestureRecognizers;
   }
 
-  if ([v4 state] == 4 || objc_msgSend(v4, "state") == 3 || objc_msgSend(v4, "state") == 5)
+  if ([recognizerCopy state] == 4 || objc_msgSend(recognizerCopy, "state") == 3 || objc_msgSend(recognizerCopy, "state") == 5)
   {
     --self->_totalActiveGestureRecognizers;
   }
@@ -575,7 +575,7 @@ LABEL_8:
     {
       if (![(SXFullscreenCanvasController *)self isStoppingVerticalSwiping])
       {
-        -[SXFullscreenCanvasController stopTransformingCancelled:](self, "stopTransformingCancelled:", [v4 state] == 4);
+        -[SXFullscreenCanvasController stopTransformingCancelled:](self, "stopTransformingCancelled:", [recognizerCopy state] == 4);
         [(SXFullscreenCanvasController *)self setLessTouchesAreInterupting:0];
         [(SXFullscreenCanvasController *)self setOrientationChangeIsInterupting:0];
       }
@@ -585,7 +585,7 @@ LABEL_8:
     }
 
 LABEL_21:
-    if ([v4 state] != 2)
+    if ([recognizerCopy state] != 2)
     {
       goto LABEL_23;
     }
@@ -617,7 +617,7 @@ LABEL_22:
       v8[2] = __56__SXFullscreenCanvasController_handleGestureRecognizer___block_invoke;
       v8[3] = &unk_1E84FFD40;
       v8[4] = self;
-      [(SXFullscreenCanvasController *)self willStartTransformingWithGestureRecognizer:v4 completionBlock:v8];
+      [(SXFullscreenCanvasController *)self willStartTransformingWithGestureRecognizer:recognizerCopy completionBlock:v8];
       goto LABEL_23;
     }
 
@@ -650,16 +650,16 @@ void __56__SXFullscreenCanvasController_handleGestureRecognizer___block_invoke(u
   }
 }
 
-- (void)handlePanGestureRecognizer:(id)a3
+- (void)handlePanGestureRecognizer:(id)recognizer
 {
-  v20 = a3;
-  if ([v20 state] == 1)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] == 1)
   {
     self->_panIsActive = 1;
     self->_currentTranslation = *MEMORY[0x1E695EFF8];
     if ([(SXFullscreenCanvasController *)self isFullscreen])
     {
-      if ([v20 numberOfTouches] == 1 && !-[SXFullscreenCanvasController pinchIsActive](self, "pinchIsActive") && !-[SXFullscreenCanvasController rotationIsActive](self, "rotationIsActive"))
+      if ([recognizerCopy numberOfTouches] == 1 && !-[SXFullscreenCanvasController pinchIsActive](self, "pinchIsActive") && !-[SXFullscreenCanvasController rotationIsActive](self, "rotationIsActive"))
       {
         self->_verticalSwipingIsActive = 1;
         [(SXFullscreenCanvasController *)self startVerticalSwiping];
@@ -667,13 +667,13 @@ void __56__SXFullscreenCanvasController_handleGestureRecognizer___block_invoke(u
     }
   }
 
-  if ([v20 state] == 2)
+  if ([recognizerCopy state] == 2)
   {
     if ([(SXFullscreenCanvasController *)self pinchIsActive]|| [(SXFullscreenCanvasController *)self isFullscreen])
     {
-      v4 = [(SXFullscreenCanvasController *)self canvasViewController];
-      v5 = [v4 view];
-      [v20 translationInView:v5];
+      canvasViewController = [(SXFullscreenCanvasController *)self canvasViewController];
+      view = [canvasViewController view];
+      [recognizerCopy translationInView:view];
       self->_currentTranslation.x = v6;
       self->_currentTranslation.y = v7;
 
@@ -686,15 +686,15 @@ void __56__SXFullscreenCanvasController_handleGestureRecognizer___block_invoke(u
       }
     }
 
-    if ([v20 numberOfTouches] == 1 && !-[SXFullscreenCanvasController verticalSwipingIsActive](self, "verticalSwipingIsActive"))
+    if ([recognizerCopy numberOfTouches] == 1 && !-[SXFullscreenCanvasController verticalSwipingIsActive](self, "verticalSwipingIsActive"))
     {
       [(SXFullscreenCanvasController *)self setLessTouchesAreInterupting:1];
-      [v20 cancel];
+      [recognizerCopy cancel];
       goto LABEL_34;
     }
   }
 
-  if ([v20 state] == 4 || objc_msgSend(v20, "state") == 3 || objc_msgSend(v20, "state") == 5)
+  if ([recognizerCopy state] == 4 || objc_msgSend(recognizerCopy, "state") == 3 || objc_msgSend(recognizerCopy, "state") == 5)
   {
     self->_panIsActive = 0;
     if ([(SXFullscreenCanvasController *)self isFullscreen])
@@ -702,8 +702,8 @@ void __56__SXFullscreenCanvasController_handleGestureRecognizer___block_invoke(u
       if ([(SXFullscreenCanvasController *)self verticalSwipingIsActive])
       {
         self->_isStoppingVerticalSwiping = 1;
-        v8 = [v20 view];
-        [v20 velocityInView:v8];
+        view2 = [recognizerCopy view];
+        [recognizerCopy velocityInView:view2];
         v10 = v9;
         v12 = v11;
 
@@ -718,9 +718,9 @@ void __56__SXFullscreenCanvasController_handleGestureRecognizer___block_invoke(u
           v14 = -v13;
         }
 
-        v15 = [(SXFullscreenCanvasController *)self canvasViewController];
-        v16 = [v15 view];
-        [v16 bounds];
+        canvasViewController2 = [(SXFullscreenCanvasController *)self canvasViewController];
+        view3 = [canvasViewController2 view];
+        [view3 bounds];
         if (v14 / v17 <= 0.25)
         {
           if (v12 >= 0.0)
@@ -751,57 +751,57 @@ LABEL_32:
     }
   }
 
-  [(SXFullscreenCanvasController *)self handleGestureRecognizer:v20];
+  [(SXFullscreenCanvasController *)self handleGestureRecognizer:recognizerCopy];
 LABEL_34:
 }
 
-- (void)handleRotationGestureRecognizer:(id)a3
+- (void)handleRotationGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  if ([v5 state] == 1)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] == 1)
   {
     self->_rotationIsActive = 1;
     self->_currentRotation = 0.0;
   }
 
-  if ([v5 state] != 2)
+  if ([recognizerCopy state] != 2)
   {
     goto LABEL_10;
   }
 
   if ([(SXFullscreenCanvasController *)self pinchIsActive])
   {
-    [v5 rotation];
+    [recognizerCopy rotation];
     self->_currentRotation = v4;
   }
 
-  if ([v5 numberOfTouches] == 1)
+  if ([recognizerCopy numberOfTouches] == 1)
   {
     [(SXFullscreenCanvasController *)self setLessTouchesAreInterupting:1];
-    [v5 cancel];
+    [recognizerCopy cancel];
   }
 
   else
   {
 LABEL_10:
-    if ([v5 state] == 4 || objc_msgSend(v5, "state") == 3 || objc_msgSend(v5, "state") == 5)
+    if ([recognizerCopy state] == 4 || objc_msgSend(recognizerCopy, "state") == 3 || objc_msgSend(recognizerCopy, "state") == 5)
     {
       self->_rotationIsActive = 0;
     }
 
-    [(SXFullscreenCanvasController *)self handleGestureRecognizer:v5];
+    [(SXFullscreenCanvasController *)self handleGestureRecognizer:recognizerCopy];
   }
 }
 
-- (void)handleOpenTapGesture:(id)a3
+- (void)handleOpenTapGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(SXFullscreenCanvasController *)self showable];
-  v6 = [v5 requestInteractivityFocusForFullScreenCanvasController:self];
+  gestureCopy = gesture;
+  showable = [(SXFullscreenCanvasController *)self showable];
+  v6 = [showable requestInteractivityFocusForFullScreenCanvasController:self];
 
   if (v6)
   {
-    if ([v4 state] != 4 && objc_msgSend(v4, "state") != 5 && objc_msgSend(v4, "state") == 3)
+    if ([gestureCopy state] != 4 && objc_msgSend(gestureCopy, "state") != 5 && objc_msgSend(gestureCopy, "state") == 3)
     {
       __asm { FMOV            V0.2D, #0.5 }
 
@@ -814,14 +814,14 @@ LABEL_10:
       v13[2] = __53__SXFullscreenCanvasController_handleOpenTapGesture___block_invoke;
       v13[3] = &unk_1E85007C0;
       v13[4] = self;
-      v14 = v4;
+      v14 = gestureCopy;
       [(SXFullscreenCanvasController *)self willStartTransformingWithGestureRecognizer:v14 completionBlock:v13];
     }
   }
 
   else
   {
-    [v4 cancel];
+    [gestureCopy cancel];
   }
 }
 
@@ -847,10 +847,10 @@ uint64_t __53__SXFullscreenCanvasController_handleOpenTapGesture___block_invoke(
   }
 }
 
-- (void)presentFullscreenWithIndex:(unint64_t)a3
+- (void)presentFullscreenWithIndex:(unint64_t)index
 {
   self->_currentScale = 1.0;
-  [(SXFullscreenCanvasController *)self setCurrentViewIndex:a3];
+  [(SXFullscreenCanvasController *)self setCurrentViewIndex:index];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __59__SXFullscreenCanvasController_presentFullscreenWithIndex___block_invoke;
@@ -879,53 +879,53 @@ uint64_t __59__SXFullscreenCanvasController_presentFullscreenWithIndex___block_i
   return result;
 }
 
-- (void)handlePinchGestureRecognizer:(id)a3
+- (void)handlePinchGestureRecognizer:(id)recognizer
 {
-  v11 = a3;
-  if ([v11 state] == 1)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] == 1)
   {
     self->_pinchIsActive = 1;
-    [v11 scale];
+    [recognizerCopy scale];
     self->_currentScale = v4;
     self->_currentRotation = 0.0;
     v5 = MEMORY[0x1E695EFF8];
     self->_currentTranslation = *MEMORY[0x1E695EFF8];
-    v6 = [(SXFullscreenCanvasController *)self rotationGestureRecognizer];
-    [v6 setRotation:0.0];
+    rotationGestureRecognizer = [(SXFullscreenCanvasController *)self rotationGestureRecognizer];
+    [rotationGestureRecognizer setRotation:0.0];
 
-    v7 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
-    v8 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
-    v9 = [v8 view];
-    [v7 setTranslation:v9 inView:{*v5, v5[1]}];
+    panGestureRecognizer = [(SXFullscreenCanvasController *)self panGestureRecognizer];
+    panGestureRecognizer2 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
+    view = [panGestureRecognizer2 view];
+    [panGestureRecognizer setTranslation:view inView:{*v5, v5[1]}];
   }
 
-  if ([v11 state] == 2 && (objc_msgSend(v11, "scale"), self->_currentScale = v10, objc_msgSend(v11, "numberOfTouches") == 1))
+  if ([recognizerCopy state] == 2 && (objc_msgSend(recognizerCopy, "scale"), self->_currentScale = v10, objc_msgSend(recognizerCopy, "numberOfTouches") == 1))
   {
     [(SXFullscreenCanvasController *)self setLessTouchesAreInterupting:1];
-    [v11 cancel];
+    [recognizerCopy cancel];
   }
 
   else
   {
-    if ([v11 state] == 4 || objc_msgSend(v11, "state") == 3 || objc_msgSend(v11, "state") == 5)
+    if ([recognizerCopy state] == 4 || objc_msgSend(recognizerCopy, "state") == 3 || objc_msgSend(recognizerCopy, "state") == 5)
     {
       self->_pinchIsActive = 0;
     }
 
-    [(SXFullscreenCanvasController *)self handleGestureRecognizer:v11];
+    [(SXFullscreenCanvasController *)self handleGestureRecognizer:recognizerCopy];
   }
 }
 
-- (void)willStartTransformingWithGestureRecognizer:(id)a3 completionBlock:(id)a4
+- (void)willStartTransformingWithGestureRecognizer:(id)recognizer completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  blockCopy = block;
   if (!self->_isTransitioning)
   {
-    if (v6)
+    if (recognizerCopy)
     {
-      v8 = [v6 view];
-      [v6 locationInView:v8];
+      view = [recognizerCopy view];
+      [recognizerCopy locationInView:view];
       v10 = v9;
       v12 = v11;
 
@@ -940,36 +940,36 @@ uint64_t __59__SXFullscreenCanvasController_presentFullscreenWithIndex___block_i
       currentViewIndex = self->_currentViewIndex;
     }
 
-    v14 = [(SXFullscreenCanvasController *)self showable];
-    v15 = [(SXFullscreenCanvasController *)self showable];
-    v16 = [v14 fullScreenCanvasController:self numberOfViewsForShowable:v15];
+    showable = [(SXFullscreenCanvasController *)self showable];
+    showable2 = [(SXFullscreenCanvasController *)self showable];
+    v16 = [showable fullScreenCanvasController:self numberOfViewsForShowable:showable2];
 
     if (currentViewIndex < v16)
     {
       if ([(SXFullscreenCanvasController *)self isFullscreen])
       {
         self->_isTransitioning = 1;
-        v17 = [(SXFullscreenCanvasController *)self canvasViewController];
-        [v17 setIsTransitioning:1];
+        canvasViewController = [(SXFullscreenCanvasController *)self canvasViewController];
+        [canvasViewController setIsTransitioning:1];
 
-        v18 = [(SXFullscreenCanvasController *)self captionView];
+        captionView = [(SXFullscreenCanvasController *)self captionView];
 
-        if (v18)
+        if (captionView)
         {
-          v19 = [(SXFullscreenCanvasController *)self captionView];
-          -[SXFullscreenCanvasController changeCaptionViewForViewWithIndex:expanded:animated:](self, "changeCaptionViewForViewWithIndex:expanded:animated:", [v19 viewIndex], 0, 1);
+          captionView2 = [(SXFullscreenCanvasController *)self captionView];
+          -[SXFullscreenCanvasController changeCaptionViewForViewWithIndex:expanded:animated:](self, "changeCaptionViewForViewWithIndex:expanded:animated:", [captionView2 viewIndex], 0, 1);
         }
 
-        v20 = [(SXFullscreenCanvasController *)self showable];
-        v21 = [(SXFullscreenCanvasController *)self showable];
-        v22 = [v20 fullScreenCanvasController:self originalViewForShowable:v21 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
+        showable3 = [(SXFullscreenCanvasController *)self showable];
+        showable4 = [(SXFullscreenCanvasController *)self showable];
+        v22 = [showable3 fullScreenCanvasController:self originalViewForShowable:showable4 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
         currentView = self->_currentView;
         self->_currentView = v22;
 
-        if (v6)
+        if (recognizerCopy)
         {
-          v24 = [v6 view];
-          [v24 convertPoint:self->_currentView toView:{v10, v12}];
+          view2 = [recognizerCopy view];
+          [view2 convertPoint:self->_currentView toView:{v10, v12}];
 
           [(UIView *)self->_currentView bounds];
           [SXFullscreenCanvasController calculateAnchorPointFromBounds:"calculateAnchorPointFromBounds:andPoint:" andPoint:?];
@@ -977,101 +977,101 @@ uint64_t __59__SXFullscreenCanvasController_presentFullscreenWithIndex___block_i
           self->_startingAnchorPoint.y = v26;
         }
 
-        v27 = [(SXFullscreenCanvasController *)self showable];
+        showable5 = [(SXFullscreenCanvasController *)self showable];
         v28 = objc_opt_respondsToSelector();
 
         if (v28)
         {
-          v29 = [(SXFullscreenCanvasController *)self showable];
-          v30 = [(SXFullscreenCanvasController *)self showable];
-          [v29 fullScreenCanvasController:self willHideShowable:v30 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
+          showable6 = [(SXFullscreenCanvasController *)self showable];
+          showable7 = [(SXFullscreenCanvasController *)self showable];
+          [showable6 fullScreenCanvasController:self willHideShowable:showable7 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
         }
 
-        v31 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-        [v31 setScrollEnabled:0];
+        itemizedScrollView = [(SXFullscreenCanvasController *)self itemizedScrollView];
+        [itemizedScrollView setScrollEnabled:0];
 
-        v32 = [(SXFullscreenCanvasController *)self showable];
-        v33 = [(SXFullscreenCanvasController *)self showable];
-        v34 = [(SXFullscreenCanvasController *)self canvasViewController];
-        v35 = [v34 view];
-        [v32 fullScreenCanvasController:self originalFrameForShowable:v33 onCanvasView:v35 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
+        showable8 = [(SXFullscreenCanvasController *)self showable];
+        showable9 = [(SXFullscreenCanvasController *)self showable];
+        canvasViewController2 = [(SXFullscreenCanvasController *)self canvasViewController];
+        view3 = [canvasViewController2 view];
+        [showable8 fullScreenCanvasController:self originalFrameForShowable:showable9 onCanvasView:view3 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
         self->_currentDestinationFrame.origin.x = v36;
         self->_currentDestinationFrame.origin.y = v37;
         self->_currentDestinationFrame.size.width = v38;
         self->_currentDestinationFrame.size.height = v39;
 
-        v40 = [(SXFullscreenCanvasController *)self showable];
-        v41 = [(SXFullscreenCanvasController *)self showable];
-        v42 = [(SXFullscreenCanvasController *)self currentViewIndex];
-        v43 = [(SXFullscreenCanvasController *)self canvasViewController];
-        v44 = [v43 view];
-        [v44 bounds];
-        [v40 fullScreenCanvasController:self fullScreenFrameForShowable:v41 viewIndex:v42 withinRect:?];
+        showable10 = [(SXFullscreenCanvasController *)self showable];
+        showable11 = [(SXFullscreenCanvasController *)self showable];
+        currentViewIndex = [(SXFullscreenCanvasController *)self currentViewIndex];
+        canvasViewController3 = [(SXFullscreenCanvasController *)self canvasViewController];
+        view4 = [canvasViewController3 view];
+        [view4 bounds];
+        [showable10 fullScreenCanvasController:self fullScreenFrameForShowable:showable11 viewIndex:currentViewIndex withinRect:?];
         self->_currentOriginFrame.origin.x = v45;
         self->_currentOriginFrame.origin.y = v46;
         self->_currentOriginFrame.size.width = v47;
         self->_currentOriginFrame.size.height = v48;
 
-        v49 = [(SXFullscreenCanvasController *)self currentView];
-        v50 = [v49 superview];
-        v51 = [(SXFullscreenCanvasController *)self currentView];
-        [v51 frame];
+        currentView = [(SXFullscreenCanvasController *)self currentView];
+        superview = [currentView superview];
+        currentView2 = [(SXFullscreenCanvasController *)self currentView];
+        [currentView2 frame];
         v53 = v52;
         v55 = v54;
         v57 = v56;
         v59 = v58;
-        v60 = [(SXFullscreenCanvasController *)self canvasViewController];
-        v61 = [v60 view];
-        [v50 convertRect:v61 toView:{v53, v55, v57, v59}];
+        canvasViewController4 = [(SXFullscreenCanvasController *)self canvasViewController];
+        view5 = [canvasViewController4 view];
+        [superview convertRect:view5 toView:{v53, v55, v57, v59}];
         v63 = v62;
         v65 = v64;
         v67 = v66;
         v69 = v68;
 
-        v70 = [(SXFullscreenCanvasController *)self currentView];
-        [v70 setFrame:{v63, v65, v67, v69}];
+        currentView3 = [(SXFullscreenCanvasController *)self currentView];
+        [currentView3 setFrame:{v63, v65, v67, v69}];
 
-        v71 = [(SXFullscreenCanvasController *)self canvasViewController];
-        v72 = [v71 view];
-        v73 = [(SXFullscreenCanvasController *)self currentView];
-        v74 = [(SXFullscreenCanvasController *)self captionView];
-        [v72 insertSubview:v73 belowSubview:v74];
+        canvasViewController5 = [(SXFullscreenCanvasController *)self canvasViewController];
+        view6 = [canvasViewController5 view];
+        currentView4 = [(SXFullscreenCanvasController *)self currentView];
+        captionView3 = [(SXFullscreenCanvasController *)self captionView];
+        [view6 insertSubview:currentView4 belowSubview:captionView3];
 
         [(SXFullscreenCanvasController *)self transferCurrentViewToCanvas];
-        v75 = [(SXFullscreenCanvasController *)self currentView];
-        [(SXFullscreenCanvasController *)self transferGestureViewToView:v75];
+        currentView5 = [(SXFullscreenCanvasController *)self currentView];
+        [(SXFullscreenCanvasController *)self transferGestureViewToView:currentView5];
 
-        v76 = [(SXFullscreenCanvasController *)self currentView];
-        v77 = [v76 layer];
+        currentView6 = [(SXFullscreenCanvasController *)self currentView];
+        layer = [currentView6 layer];
         [(SXFullscreenCanvasController *)self startingAnchorPoint];
-        [v77 setAnchorPointWithoutChangingPosition:?];
+        [layer setAnchorPointWithoutChangingPosition:?];
 
-        v78 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-        [v78 removeFromSuperview];
+        itemizedScrollView2 = [(SXFullscreenCanvasController *)self itemizedScrollView];
+        [itemizedScrollView2 removeFromSuperview];
 
         [(SXFullscreenCanvasController *)self setItemizedScrollView:0];
-        v79 = [(SXFullscreenCanvasController *)self captionView];
-        [v79 removeFromSuperview];
+        captionView4 = [(SXFullscreenCanvasController *)self captionView];
+        [captionView4 removeFromSuperview];
 
         [(SXFullscreenCanvasController *)self setCaptionView:0];
-        v80 = [(SXFullscreenCanvasController *)self navigationBarView];
-        [v80 removeFromSuperview];
+        navigationBarView = [(SXFullscreenCanvasController *)self navigationBarView];
+        [navigationBarView removeFromSuperview];
 
         [(SXFullscreenCanvasController *)self setNavigationBarView:0];
-        if (v7)
+        if (blockCopy)
         {
-          v7[2](v7, 1);
+          blockCopy[2](blockCopy, 1);
         }
 
         goto LABEL_19;
       }
 
-      v81 = [(SXFullscreenCanvasController *)self showable];
+      showable12 = [(SXFullscreenCanvasController *)self showable];
       if (objc_opt_respondsToSelector())
       {
-        v82 = [(SXFullscreenCanvasController *)self showable];
-        v83 = [(SXFullscreenCanvasController *)self showable];
-        v84 = [v82 fullScreenCanvasController:self willShowShowable:v83 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
+        showable13 = [(SXFullscreenCanvasController *)self showable];
+        showable14 = [(SXFullscreenCanvasController *)self showable];
+        v84 = [showable13 fullScreenCanvasController:self willShowShowable:showable14 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
 
         if ((v84 & 1) == 0)
         {
@@ -1084,32 +1084,32 @@ uint64_t __59__SXFullscreenCanvasController_presentFullscreenWithIndex___block_i
       }
 
       self->_isTransitioning = 1;
-      v85 = [(SXFullscreenCanvasController *)self showable];
-      v86 = [(SXFullscreenCanvasController *)self showable];
+      showable15 = [(SXFullscreenCanvasController *)self showable];
+      showable16 = [(SXFullscreenCanvasController *)self showable];
       v90[0] = MEMORY[0x1E69E9820];
       v90[1] = 3221225472;
       v90[2] = __91__SXFullscreenCanvasController_willStartTransformingWithGestureRecognizer_completionBlock___block_invoke;
       v90[3] = &unk_1E85007E8;
       v90[4] = self;
-      v91 = v6;
+      v91 = recognizerCopy;
       v93 = v10;
       v94 = v12;
-      v92 = v7;
-      v87 = [v85 fullScreenCanvasController:self canvasViewControllerForShowable:v86 completionBlock:v90];
+      v92 = blockCopy;
+      v87 = [showable15 fullScreenCanvasController:self canvasViewControllerForShowable:showable16 completionBlock:v90];
       canvasViewController = self->_canvasViewController;
       self->_canvasViewController = v87;
 
-      v89 = [(SXFullscreenCanvasController *)self canvasViewController];
-      [v89 setIsTransitioning:1];
+      canvasViewController6 = [(SXFullscreenCanvasController *)self canvasViewController];
+      [canvasViewController6 setIsTransitioning:1];
 
       goto LABEL_19;
     }
   }
 
 LABEL_17:
-  if (v7)
+  if (blockCopy)
   {
-    v7[2](v7, 0);
+    blockCopy[2](blockCopy, 0);
   }
 
 LABEL_19:
@@ -1260,9 +1260,9 @@ uint64_t __91__SXFullscreenCanvasController_willStartTransformingWithGestureReco
   CGAffineTransformScale(&v22, &v21, currentScale, currentScale);
   v23 = v22;
   v20 = v22;
-  v8 = [(SXFullscreenCanvasController *)self currentView];
+  currentView = [(SXFullscreenCanvasController *)self currentView];
   v22 = v20;
-  [v8 setTransform:&v22];
+  [currentView setTransform:&v22];
 
   if ([(SXFullscreenCanvasController *)self verticalSwipingIsActive])
   {
@@ -1277,17 +1277,17 @@ uint64_t __91__SXFullscreenCanvasController_willStartTransformingWithGestureReco
       v10 = -v9;
     }
 
-    v11 = [(SXFullscreenCanvasController *)self canvasViewController];
-    v12 = [v11 view];
-    [v12 bounds];
+    canvasViewController = [(SXFullscreenCanvasController *)self canvasViewController];
+    view = [canvasViewController view];
+    [view bounds];
     v14 = v10 / (v13 * -0.5) + 1.0;
   }
 
   else
   {
-    v15 = [(SXFullscreenCanvasController *)self isFullscreen];
+    isFullscreen = [(SXFullscreenCanvasController *)self isFullscreen];
     [(SXFullscreenCanvasController *)self currentScale];
-    if (v15)
+    if (isFullscreen)
     {
       v14 = (v16 + -0.6) / 0.4;
     }
@@ -1309,11 +1309,11 @@ uint64_t __91__SXFullscreenCanvasController_willStartTransformingWithGestureReco
     v18 = 1.0;
   }
 
-  v19 = [(SXFullscreenCanvasController *)self backgroundView];
-  [v19 setAlpha:v18];
+  backgroundView = [(SXFullscreenCanvasController *)self backgroundView];
+  [backgroundView setAlpha:v18];
 }
 
-- (void)stopTransformingCancelled:(BOOL)a3
+- (void)stopTransformingCancelled:(BOOL)cancelled
 {
   currentScale = self->_currentScale;
   if (currentScale > 1.5)
@@ -1384,36 +1384,36 @@ uint64_t __58__SXFullscreenCanvasController_stopTransformingCancelled___block_in
   return [v2 didEndTransitionFromFullScreen:0 toFullScreen:1];
 }
 
-- (void)startTransitionToFullScreen:(BOOL)a3 controllable:(BOOL)a4
+- (void)startTransitionToFullScreen:(BOOL)screen controllable:(BOOL)controllable
 {
-  if (!a3)
+  if (!screen)
   {
-    v4 = a4;
+    controllableCopy = controllable;
     if ([(SXFullscreenCanvasController *)self isFullscreen])
     {
-      if (v4)
+      if (controllableCopy)
       {
-        v7 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-        v6 = [v7 activeView];
-        [v6 removeFromSuperview];
+        itemizedScrollView = [(SXFullscreenCanvasController *)self itemizedScrollView];
+        activeView = [itemizedScrollView activeView];
+        [activeView removeFromSuperview];
       }
     }
   }
 }
 
-- (void)didEndTransitionFromFullScreen:(BOOL)a3 toFullScreen:(BOOL)a4
+- (void)didEndTransitionFromFullScreen:(BOOL)screen toFullScreen:(BOOL)fullScreen
 {
-  [(SXFullscreenCanvasController *)self setIsFullscreen:a4];
+  [(SXFullscreenCanvasController *)self setIsFullscreen:fullScreen];
   self->_isTransitioning = 0;
-  v5 = [(SXFullscreenCanvasController *)self isFullscreen];
-  if (v5)
+  isFullscreen = [(SXFullscreenCanvasController *)self isFullscreen];
+  if (isFullscreen)
   {
-    v6 = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    itemizedScrollView = [(SXFullscreenCanvasController *)self itemizedScrollView];
     v7 = 1;
-    [v6 setScrollEnabled:1];
+    [itemizedScrollView setScrollEnabled:1];
 
     [(SXFullscreenCanvasController *)self didFinishFullscreenActiveIndex:[(SXFullscreenCanvasController *)self currentViewIndex]];
-    v8 = [(SXFullscreenCanvasController *)self showable];
+    showable = [(SXFullscreenCanvasController *)self showable];
     v9 = objc_opt_respondsToSelector();
 
     if ((v9 & 1) == 0)
@@ -1421,57 +1421,57 @@ uint64_t __58__SXFullscreenCanvasController_stopTransformingCancelled___block_in
       goto LABEL_8;
     }
 
-    v10 = [(SXFullscreenCanvasController *)self showable];
-    v11 = [(SXFullscreenCanvasController *)self showable];
-    [v10 fullScreenCanvasController:self didShowShowable:v11 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
+    showable2 = [(SXFullscreenCanvasController *)self showable];
+    showable3 = [(SXFullscreenCanvasController *)self showable];
+    [showable2 fullScreenCanvasController:self didShowShowable:showable3 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
   }
 
   else
   {
-    v12 = [(SXFullscreenCanvasController *)self showable];
+    showable4 = [(SXFullscreenCanvasController *)self showable];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(SXFullscreenCanvasController *)self showable];
-      v15 = [(SXFullscreenCanvasController *)self showable];
-      [v14 fullScreenCanvasController:self didHideShowable:v15 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
+      showable5 = [(SXFullscreenCanvasController *)self showable];
+      showable6 = [(SXFullscreenCanvasController *)self showable];
+      [showable5 fullScreenCanvasController:self didHideShowable:showable6 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
     }
 
-    v16 = [(SXFullscreenCanvasController *)self showable];
-    v17 = [(SXFullscreenCanvasController *)self gestureView];
-    v18 = [(SXFullscreenCanvasController *)self showable];
-    [v16 fullScreenCanvasController:self shouldAddGestureView:v17 forShowable:v18];
+    showable7 = [(SXFullscreenCanvasController *)self showable];
+    gestureView = [(SXFullscreenCanvasController *)self gestureView];
+    showable8 = [(SXFullscreenCanvasController *)self showable];
+    [showable7 fullScreenCanvasController:self shouldAddGestureView:gestureView forShowable:showable8];
 
-    v10 = [(SXFullscreenCanvasController *)self canvasViewController];
-    [v10 setView:0];
+    showable2 = [(SXFullscreenCanvasController *)self canvasViewController];
+    [showable2 setView:0];
   }
 
-  v7 = v5;
+  v7 = isFullscreen;
 LABEL_8:
-  v19 = [(SXFullscreenCanvasController *)self dragManager];
-  [v19 setEnabled:v7];
+  dragManager = [(SXFullscreenCanvasController *)self dragManager];
+  [dragManager setEnabled:v7];
 
-  v20 = [(SXFullscreenCanvasController *)self canvasViewController];
-  [v20 setIsTransitioning:0];
+  canvasViewController = [(SXFullscreenCanvasController *)self canvasViewController];
+  [canvasViewController setIsTransitioning:0];
 }
 
 - (void)startVerticalSwiping
 {
-  v3 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-  [v3 setScrollEnabled:0];
+  itemizedScrollView = [(SXFullscreenCanvasController *)self itemizedScrollView];
+  [itemizedScrollView setScrollEnabled:0];
 
   *&self->_currentRotation = xmmword_1D8392250;
-  v4 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
-  [(SXFullscreenCanvasController *)self willStartTransformingWithGestureRecognizer:v4 completionBlock:0];
+  panGestureRecognizer = [(SXFullscreenCanvasController *)self panGestureRecognizer];
+  [(SXFullscreenCanvasController *)self willStartTransformingWithGestureRecognizer:panGestureRecognizer completionBlock:0];
 }
 
-- (void)stopVerticalSwipingDismissed:(BOOL)a3 lastVelocity:(CGPoint)a4
+- (void)stopVerticalSwipingDismissed:(BOOL)dismissed lastVelocity:(CGPoint)velocity
 {
-  if (a3)
+  if (dismissed)
   {
-    y = a4.y;
-    x = a4.x;
+    y = velocity.y;
+    x = velocity.x;
     [(SXFullscreenCanvasController *)self setIsFullscreen:0];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -1511,15 +1511,15 @@ uint64_t __74__SXFullscreenCanvasController_stopVerticalSwipingDismissed_lastVel
   return [v2 didEndTransitionFromFullScreen:1 toFullScreen:0];
 }
 
-- (void)goToFullScreenFromOriginalAnimated:(BOOL)a3 completionBlock:(id)a4
+- (void)goToFullScreenFromOriginalAnimated:(BOOL)animated completionBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(SXFullscreenCanvasController *)self currentView];
-  v8 = v7;
-  if (v4)
+  animatedCopy = animated;
+  blockCopy = block;
+  currentView = [(SXFullscreenCanvasController *)self currentView];
+  v8 = currentView;
+  if (animatedCopy)
   {
-    [v7 setUserInteractionEnabled:0];
+    [currentView setUserInteractionEnabled:0];
 
     v9 = MEMORY[0x1E69DD250];
     v16[0] = MEMORY[0x1E69E9820];
@@ -1532,7 +1532,7 @@ uint64_t __74__SXFullscreenCanvasController_stopVerticalSwipingDismissed_lastVel
     v14[2] = __83__SXFullscreenCanvasController_goToFullScreenFromOriginalAnimated_completionBlock___block_invoke_2;
     v14[3] = &unk_1E8500810;
     v14[4] = self;
-    v15 = v6;
+    v15 = blockCopy;
     [v9 animateWithDuration:0 delay:v16 usingSpringWithDamping:v14 initialSpringVelocity:0.6 options:0.0 animations:0.6 completion:0.8];
   }
 
@@ -1542,15 +1542,15 @@ uint64_t __74__SXFullscreenCanvasController_stopVerticalSwipingDismissed_lastVel
     v13[0] = *MEMORY[0x1E695EFD0];
     v13[1] = v10;
     v13[2] = *(MEMORY[0x1E695EFD0] + 32);
-    [v7 setTransform:v13];
+    [currentView setTransform:v13];
 
-    v11 = [(SXFullscreenCanvasController *)self currentView];
-    v12 = [v11 layer];
-    [v12 setAnchorPointWithoutChangingPosition:{0.5, 0.5}];
+    currentView2 = [(SXFullscreenCanvasController *)self currentView];
+    layer = [currentView2 layer];
+    [layer setAnchorPointWithoutChangingPosition:{0.5, 0.5}];
 
-    if (v6)
+    if (blockCopy)
     {
-      v6[2](v6);
+      blockCopy[2](blockCopy);
     }
   }
 }
@@ -1604,25 +1604,25 @@ uint64_t __83__SXFullscreenCanvasController_goToFullScreenFromOriginalAnimated_c
   return result;
 }
 
-- (void)goToFullScreenFromFullScreenAnimated:(BOOL)a3 completionBlock:(id)a4
+- (void)goToFullScreenFromFullScreenAnimated:(BOOL)animated completionBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(SXFullscreenCanvasController *)self showable];
+  animatedCopy = animated;
+  blockCopy = block;
+  showable = [(SXFullscreenCanvasController *)self showable];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SXFullscreenCanvasController *)self showable];
-    v10 = [(SXFullscreenCanvasController *)self showable];
-    [v9 fullScreenCanvasController:self willReturnToFullscreenForShowable:v10 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
+    showable2 = [(SXFullscreenCanvasController *)self showable];
+    showable3 = [(SXFullscreenCanvasController *)self showable];
+    [showable2 fullScreenCanvasController:self willReturnToFullscreenForShowable:showable3 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
   }
 
-  v11 = [(SXFullscreenCanvasController *)self currentView];
-  v12 = v11;
-  if (v4)
+  currentView = [(SXFullscreenCanvasController *)self currentView];
+  v12 = currentView;
+  if (animatedCopy)
   {
-    [v11 setUserInteractionEnabled:1];
+    [currentView setUserInteractionEnabled:1];
 
     v13 = MEMORY[0x1E69DD250];
     v20[0] = MEMORY[0x1E69E9820];
@@ -1635,7 +1635,7 @@ uint64_t __83__SXFullscreenCanvasController_goToFullScreenFromOriginalAnimated_c
     v18[2] = __85__SXFullscreenCanvasController_goToFullScreenFromFullScreenAnimated_completionBlock___block_invoke_2;
     v18[3] = &unk_1E8500810;
     v18[4] = self;
-    v19 = v6;
+    v19 = blockCopy;
     [v13 animateWithDuration:0 delay:v20 usingSpringWithDamping:v18 initialSpringVelocity:0.6 options:0.0 animations:0.6 completion:0.8];
   }
 
@@ -1645,15 +1645,15 @@ uint64_t __83__SXFullscreenCanvasController_goToFullScreenFromOriginalAnimated_c
     v17[0] = *MEMORY[0x1E695EFD0];
     v17[1] = v14;
     v17[2] = *(MEMORY[0x1E695EFD0] + 32);
-    [v11 setTransform:v17];
+    [currentView setTransform:v17];
 
-    v15 = [(SXFullscreenCanvasController *)self currentView];
-    v16 = [v15 layer];
-    [v16 setAnchorPointWithoutChangingPosition:{0.5, 0.5}];
+    currentView2 = [(SXFullscreenCanvasController *)self currentView];
+    layer = [currentView2 layer];
+    [layer setAnchorPointWithoutChangingPosition:{0.5, 0.5}];
 
-    if (v6)
+    if (blockCopy)
     {
-      v6[2](v6);
+      blockCopy[2](blockCopy);
     }
   }
 }
@@ -1691,29 +1691,29 @@ uint64_t __85__SXFullscreenCanvasController_goToFullScreenFromFullScreenAnimated
   return result;
 }
 
-- (void)goToOriginalFromFullScreenAnimated:(BOOL)a3 completionBlock:(id)a4
+- (void)goToOriginalFromFullScreenAnimated:(BOOL)animated completionBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(SXFullscreenCanvasController *)self canvasViewController];
-  v8 = [v7 view];
-  v9 = [v8 window];
-  [v9 layoutIfNeeded];
+  animatedCopy = animated;
+  blockCopy = block;
+  canvasViewController = [(SXFullscreenCanvasController *)self canvasViewController];
+  view = [canvasViewController view];
+  window = [view window];
+  [window layoutIfNeeded];
 
-  v10 = [(SXFullscreenCanvasController *)self showable];
-  v11 = [(SXFullscreenCanvasController *)self showable];
-  v12 = [(SXFullscreenCanvasController *)self canvasViewController];
-  v13 = [v12 view];
-  [v10 fullScreenCanvasController:self originalFrameForShowable:v11 onCanvasView:v13 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
+  showable = [(SXFullscreenCanvasController *)self showable];
+  showable2 = [(SXFullscreenCanvasController *)self showable];
+  canvasViewController2 = [(SXFullscreenCanvasController *)self canvasViewController];
+  view2 = [canvasViewController2 view];
+  [showable fullScreenCanvasController:self originalFrameForShowable:showable2 onCanvasView:view2 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  if (v4)
+  if (animatedCopy)
   {
-    v22 = [(SXFullscreenCanvasController *)self currentView];
-    [v22 setUserInteractionEnabled:0];
+    currentView = [(SXFullscreenCanvasController *)self currentView];
+    [currentView setUserInteractionEnabled:0];
 
     v23 = MEMORY[0x1E69DD250];
     v31[0] = MEMORY[0x1E69E9820];
@@ -1730,27 +1730,27 @@ uint64_t __85__SXFullscreenCanvasController_goToFullScreenFromFullScreenAnimated
     v29[2] = __83__SXFullscreenCanvasController_goToOriginalFromFullScreenAnimated_completionBlock___block_invoke_2;
     v29[3] = &unk_1E8500810;
     v29[4] = self;
-    v30 = v6;
+    v30 = blockCopy;
     [v23 animateWithDuration:0 delay:v31 usingSpringWithDamping:v29 initialSpringVelocity:0.6 options:0.0 animations:0.6 completion:0.8];
   }
 
   else
   {
-    v24 = [(SXFullscreenCanvasController *)self currentView];
+    currentView2 = [(SXFullscreenCanvasController *)self currentView];
     v25 = *(MEMORY[0x1E695EFD0] + 16);
     v28[0] = *MEMORY[0x1E695EFD0];
     v28[1] = v25;
     v28[2] = *(MEMORY[0x1E695EFD0] + 32);
-    [v24 setTransform:v28];
+    [currentView2 setTransform:v28];
 
-    v26 = [(SXFullscreenCanvasController *)self currentView];
-    v27 = [v26 layer];
-    [v27 setAnchorPointWithoutChangingPosition:{0.5, 0.5}];
+    currentView3 = [(SXFullscreenCanvasController *)self currentView];
+    layer = [currentView3 layer];
+    [layer setAnchorPointWithoutChangingPosition:{0.5, 0.5}];
 
     [(SXFullscreenCanvasController *)self transferCurrentViewToOriginalView];
-    if (v6)
+    if (blockCopy)
     {
-      v6[2](v6);
+      blockCopy[2](blockCopy);
     }
   }
 }
@@ -1801,14 +1801,14 @@ uint64_t __83__SXFullscreenCanvasController_goToOriginalFromFullScreenAnimated_c
   return result;
 }
 
-- (void)goToOriginalFromOriginalAnimated:(BOOL)a3 completionBlock:(id)a4
+- (void)goToOriginalFromOriginalAnimated:(BOOL)animated completionBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4)
+  animatedCopy = animated;
+  blockCopy = block;
+  if (animatedCopy)
   {
-    v7 = [(SXFullscreenCanvasController *)self currentView];
-    [v7 setUserInteractionEnabled:1];
+    currentView = [(SXFullscreenCanvasController *)self currentView];
+    [currentView setUserInteractionEnabled:1];
 
     v8 = MEMORY[0x1E69DD250];
     v17[0] = MEMORY[0x1E69E9820];
@@ -1821,30 +1821,30 @@ uint64_t __83__SXFullscreenCanvasController_goToOriginalFromFullScreenAnimated_c
     v15[2] = __81__SXFullscreenCanvasController_goToOriginalFromOriginalAnimated_completionBlock___block_invoke_2;
     v15[3] = &unk_1E8500810;
     v15[4] = self;
-    v16 = v6;
+    v16 = blockCopy;
     [v8 animateWithDuration:0 delay:v17 usingSpringWithDamping:v15 initialSpringVelocity:0.6 options:0.0 animations:0.6 completion:0.8];
   }
 
   else
   {
-    v9 = [(SXFullscreenCanvasController *)self backgroundView];
-    [v9 setAlpha:0.0];
+    backgroundView = [(SXFullscreenCanvasController *)self backgroundView];
+    [backgroundView setAlpha:0.0];
 
-    v10 = [(SXFullscreenCanvasController *)self currentView];
+    currentView2 = [(SXFullscreenCanvasController *)self currentView];
     v11 = *(MEMORY[0x1E695EFD0] + 16);
     v14[0] = *MEMORY[0x1E695EFD0];
     v14[1] = v11;
     v14[2] = *(MEMORY[0x1E695EFD0] + 32);
-    [v10 setTransform:v14];
+    [currentView2 setTransform:v14];
 
-    v12 = [(SXFullscreenCanvasController *)self currentView];
-    v13 = [v12 layer];
-    [v13 setAnchorPointWithoutChangingPosition:{0.5, 0.5}];
+    currentView3 = [(SXFullscreenCanvasController *)self currentView];
+    layer = [currentView3 layer];
+    [layer setAnchorPointWithoutChangingPosition:{0.5, 0.5}];
 
     [(SXFullscreenCanvasController *)self transferCurrentViewToOriginalView];
-    if (v6)
+    if (blockCopy)
     {
-      v6[2](v6);
+      blockCopy[2](blockCopy);
     }
   }
 }
@@ -1883,22 +1883,22 @@ uint64_t __81__SXFullscreenCanvasController_goToOriginalFromOriginalAnimated_com
   return result;
 }
 
-- (void)goToOriginalFromVerticalSwipingWithVelocity:(CGPoint)a3 completionBlock:(id)a4
+- (void)goToOriginalFromVerticalSwipingWithVelocity:(CGPoint)velocity completionBlock:(id)block
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = velocity.y;
+  x = velocity.x;
+  blockCopy = block;
   [(SXFullscreenCanvasController *)self removeScaleAndTranslationFromCurrentView];
-  v8 = [(SXFullscreenCanvasController *)self canvasViewController];
-  v9 = [v8 view];
-  v10 = [v9 window];
-  [v10 layoutIfNeeded];
+  canvasViewController = [(SXFullscreenCanvasController *)self canvasViewController];
+  view = [canvasViewController view];
+  window = [view window];
+  [window layoutIfNeeded];
 
-  v11 = [(SXFullscreenCanvasController *)self showable];
-  v12 = [(SXFullscreenCanvasController *)self showable];
-  v13 = [(SXFullscreenCanvasController *)self canvasViewController];
-  v14 = [v13 view];
-  [v11 fullScreenCanvasController:self originalFrameForShowable:v12 onCanvasView:v14 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
+  showable = [(SXFullscreenCanvasController *)self showable];
+  showable2 = [(SXFullscreenCanvasController *)self showable];
+  canvasViewController2 = [(SXFullscreenCanvasController *)self canvasViewController];
+  view2 = [canvasViewController2 view];
+  [showable fullScreenCanvasController:self originalFrameForShowable:showable2 onCanvasView:view2 viewIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -1927,8 +1927,8 @@ uint64_t __81__SXFullscreenCanvasController_goToOriginalFromOriginalAnimated_com
   v25[2] = __92__SXFullscreenCanvasController_goToOriginalFromVerticalSwipingWithVelocity_completionBlock___block_invoke_3;
   v25[3] = &unk_1E8500810;
   v25[4] = self;
-  v26 = v7;
-  v24 = v7;
+  v26 = blockCopy;
+  v24 = blockCopy;
   [v23 animateWithDuration:0 delay:v27 usingSpringWithDamping:v25 initialSpringVelocity:0.44 options:0.08 animations:0.85 completion:0.18];
 }
 
@@ -1976,24 +1976,24 @@ uint64_t __92__SXFullscreenCanvasController_goToOriginalFromVerticalSwipingWithV
   return result;
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-  v5 = [v4 activeView];
-  v6 = [v5 superview];
+  itemizedScrollView = [(SXFullscreenCanvasController *)self itemizedScrollView];
+  activeView = [itemizedScrollView activeView];
+  superview = [activeView superview];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [(SXFullscreenCanvasController *)self captionView];
+    captionView = [(SXFullscreenCanvasController *)self captionView];
 
-    if (v8)
+    if (captionView)
     {
-      v11 = [(SXFullscreenCanvasController *)self captionView];
-      v9 = [v11 viewIndex];
-      v10 = [(SXFullscreenCanvasController *)self captionView];
-      -[SXFullscreenCanvasController changeCaptionViewForViewWithIndex:expanded:animated:](self, "changeCaptionViewForViewWithIndex:expanded:animated:", v9, [v10 expanded] ^ 1, 1);
+      captionView2 = [(SXFullscreenCanvasController *)self captionView];
+      viewIndex = [captionView2 viewIndex];
+      captionView3 = [(SXFullscreenCanvasController *)self captionView];
+      -[SXFullscreenCanvasController changeCaptionViewForViewWithIndex:expanded:animated:](self, "changeCaptionViewForViewWithIndex:expanded:animated:", viewIndex, [captionView3 expanded] ^ 1, 1);
     }
   }
 }
@@ -2018,30 +2018,30 @@ uint64_t __92__SXFullscreenCanvasController_goToOriginalFromVerticalSwipingWithV
   }
 }
 
-- (int64_t)viewIndexForPoint:(CGPoint)a3
+- (int64_t)viewIndexForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(SXFullscreenCanvasController *)self isFullscreen])
   {
-    v6 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-    v7 = [v6 activeViewIndex];
+    itemizedScrollView = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    activeViewIndex = [itemizedScrollView activeViewIndex];
   }
 
   else
   {
-    v6 = [(SXFullscreenCanvasController *)self showable];
-    v8 = [(SXFullscreenCanvasController *)self showable];
-    v7 = [v6 fullScreenCanvasController:self viewIndexForPoint:v8 inShowable:{x, y}];
+    itemizedScrollView = [(SXFullscreenCanvasController *)self showable];
+    showable = [(SXFullscreenCanvasController *)self showable];
+    activeViewIndex = [itemizedScrollView fullScreenCanvasController:self viewIndexForPoint:showable inShowable:{x, y}];
   }
 
-  return v7;
+  return activeViewIndex;
 }
 
-- (CGPoint)calculateAnchorPointFromBounds:(CGRect)a3 andPoint:(CGPoint)a4
+- (CGPoint)calculateAnchorPointFromBounds:(CGRect)bounds andPoint:(CGPoint)point
 {
-  v4 = a4.x / a3.size.width;
-  v5 = a4.y / a3.size.height;
+  v4 = point.x / bounds.size.width;
+  v5 = point.y / bounds.size.height;
   result.y = v5;
   result.x = v4;
   return result;
@@ -2049,59 +2049,59 @@ uint64_t __92__SXFullscreenCanvasController_goToOriginalFromVerticalSwipingWithV
 
 - (void)transferCurrentViewToCanvas
 {
-  v3 = [(SXFullscreenCanvasController *)self canvasViewController];
-  v4 = [v3 view];
-  v5 = [(SXFullscreenCanvasController *)self currentView];
-  [v4 addSubview:v5];
+  canvasViewController = [(SXFullscreenCanvasController *)self canvasViewController];
+  view = [canvasViewController view];
+  currentView = [(SXFullscreenCanvasController *)self currentView];
+  [view addSubview:currentView];
 
   [(SXFullscreenCanvasController *)self currentOriginFrame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(SXFullscreenCanvasController *)self currentView];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  currentView2 = [(SXFullscreenCanvasController *)self currentView];
+  [currentView2 setFrame:{v7, v9, v11, v13}];
 }
 
 - (void)transferCurrentViewToOriginalView
 {
-  v4 = [(SXFullscreenCanvasController *)self showable];
-  v3 = [(SXFullscreenCanvasController *)self showable];
-  [v4 fullScreenCanvasController:self showable:v3 shouldTransferToOriginalViewWithIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
+  showable = [(SXFullscreenCanvasController *)self showable];
+  showable2 = [(SXFullscreenCanvasController *)self showable];
+  [showable fullScreenCanvasController:self showable:showable2 shouldTransferToOriginalViewWithIndex:{-[SXFullscreenCanvasController currentViewIndex](self, "currentViewIndex")}];
 }
 
-- (void)transferGestureViewToView:(id)a3
+- (void)transferGestureViewToView:(id)view
 {
-  v9 = a3;
-  v4 = [(SXFullscreenCanvasController *)self gestureView];
-  [v9 addSubview:v4];
+  viewCopy = view;
+  gestureView = [(SXFullscreenCanvasController *)self gestureView];
+  [viewCopy addSubview:gestureView];
 
-  v5 = [(SXFullscreenCanvasController *)self gestureView];
-  v6 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-  [v6 bounds];
+  gestureView2 = [(SXFullscreenCanvasController *)self gestureView];
+  itemizedScrollView = [(SXFullscreenCanvasController *)self itemizedScrollView];
+  [itemizedScrollView bounds];
   Width = CGRectGetWidth(v11);
-  v8 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-  [v8 bounds];
-  [v5 setFrame:{0.0, 0.0, Width, CGRectGetHeight(v12)}];
+  itemizedScrollView2 = [(SXFullscreenCanvasController *)self itemizedScrollView];
+  [itemizedScrollView2 bounds];
+  [gestureView2 setFrame:{0.0, 0.0, Width, CGRectGetHeight(v12)}];
 
-  [v9 setUserInteractionEnabled:1];
+  [viewCopy setUserInteractionEnabled:1];
 }
 
-- (BOOL)comparePoint:(CGPoint)a3 withPoint:(CGPoint)a4 maxDelta:(double)a5
+- (BOOL)comparePoint:(CGPoint)point withPoint:(CGPoint)withPoint maxDelta:(double)delta
 {
-  v5 = a3.x - a4.x;
+  v5 = point.x - withPoint.x;
   if (v5 < 0.0)
   {
     v5 = -v5;
   }
 
-  v6 = a3.y - a4.y;
+  v6 = point.y - withPoint.y;
   if (v6 < 0.0)
   {
     v6 = -v6;
   }
 
-  return v6 <= a5 && v5 <= a5;
+  return v6 <= delta && v5 <= delta;
 }
 
 - (void)removeScaleAndTranslationFromCurrentView
@@ -2129,70 +2129,70 @@ uint64_t __92__SXFullscreenCanvasController_goToOriginalFromVerticalSwipingWithV
   v26 = v10 * v25;
   self->_currentTranslation = *MEMORY[0x1E695EFF8];
   self->_currentScale = 1.0;
-  v27 = [(SXFullscreenCanvasController *)self backgroundView];
-  [v27 alpha];
+  backgroundView = [(SXFullscreenCanvasController *)self backgroundView];
+  [backgroundView alpha];
   v29 = v28;
 
   [(SXFullscreenCanvasController *)self updateTransform];
-  v30 = [(SXFullscreenCanvasController *)self backgroundView];
-  [v30 setAlpha:v29];
+  backgroundView2 = [(SXFullscreenCanvasController *)self backgroundView];
+  [backgroundView2 setAlpha:v29];
 
-  v31 = [(SXFullscreenCanvasController *)self currentView];
-  [v31 setFrameUsingCenterAndBounds:{v16, v22, v24, v26}];
+  currentView = [(SXFullscreenCanvasController *)self currentView];
+  [currentView setFrameUsingCenterAndBounds:{v16, v22, v24, v26}];
 }
 
-- (void)fullScreenImageViewDidStartZooming:(id)a3
+- (void)fullScreenImageViewDidStartZooming:(id)zooming
 {
-  v4 = [(SXFullscreenCanvasController *)self captionView];
+  captionView = [(SXFullscreenCanvasController *)self captionView];
 
-  if (v4)
+  if (captionView)
   {
-    v5 = [(SXFullscreenCanvasController *)self captionView];
-    -[SXFullscreenCanvasController changeCaptionViewForViewWithIndex:expanded:animated:](self, "changeCaptionViewForViewWithIndex:expanded:animated:", [v5 viewIndex], 0, 1);
+    captionView2 = [(SXFullscreenCanvasController *)self captionView];
+    -[SXFullscreenCanvasController changeCaptionViewForViewWithIndex:expanded:animated:](self, "changeCaptionViewForViewWithIndex:expanded:animated:", [captionView2 viewIndex], 0, 1);
   }
 
-  v6 = [(SXFullscreenCanvasController *)self pinchGestureRecognizer];
-  [v6 cancel];
+  pinchGestureRecognizer = [(SXFullscreenCanvasController *)self pinchGestureRecognizer];
+  [pinchGestureRecognizer cancel];
 
-  v7 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
-  [v7 cancel];
+  panGestureRecognizer = [(SXFullscreenCanvasController *)self panGestureRecognizer];
+  [panGestureRecognizer cancel];
 
-  v8 = [(SXFullscreenCanvasController *)self rotationGestureRecognizer];
-  [v8 cancel];
+  rotationGestureRecognizer = [(SXFullscreenCanvasController *)self rotationGestureRecognizer];
+  [rotationGestureRecognizer cancel];
 }
 
-- (void)fullScreenImageViewDidStopZooming:(id)a3
+- (void)fullScreenImageViewDidStopZooming:(id)zooming
 {
-  v4 = [(SXFullscreenCanvasController *)self captionView];
+  captionView = [(SXFullscreenCanvasController *)self captionView];
 
-  if (v4)
+  if (captionView)
   {
-    v5 = [(SXFullscreenCanvasController *)self captionView];
-    -[SXFullscreenCanvasController changeCaptionViewForViewWithIndex:expanded:animated:](self, "changeCaptionViewForViewWithIndex:expanded:animated:", [v5 viewIndex], 1, 1);
+    captionView2 = [(SXFullscreenCanvasController *)self captionView];
+    -[SXFullscreenCanvasController changeCaptionViewForViewWithIndex:expanded:animated:](self, "changeCaptionViewForViewWithIndex:expanded:animated:", [captionView2 viewIndex], 1, 1);
   }
 }
 
-- (unint64_t)numberOfViewsInItemizedScrollView:(id)a3
+- (unint64_t)numberOfViewsInItemizedScrollView:(id)view
 {
-  v4 = [(SXFullscreenCanvasController *)self showable];
-  v5 = [(SXFullscreenCanvasController *)self showable];
-  v6 = [v4 fullScreenCanvasController:self numberOfViewsForShowable:v5];
+  showable = [(SXFullscreenCanvasController *)self showable];
+  showable2 = [(SXFullscreenCanvasController *)self showable];
+  v6 = [showable fullScreenCanvasController:self numberOfViewsForShowable:showable2];
 
   return v6;
 }
 
-- (CGRect)itemizedScrollView:(id)a3 frameForViewAtIndex:(unint64_t)a4
+- (CGRect)itemizedScrollView:(id)view frameForViewAtIndex:(unint64_t)index
 {
-  v5 = a3;
-  v6 = [(SXFullscreenCanvasController *)self canvasViewController];
-  v7 = [v6 view];
-  [v7 bounds];
+  viewCopy = view;
+  canvasViewController = [(SXFullscreenCanvasController *)self canvasViewController];
+  view = [canvasViewController view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
 
-  [v5 frame];
+  [viewCopy frame];
   v13 = -v12;
-  [v5 frame];
+  [viewCopy frame];
   v15 = v14;
 
   v16 = -v15;
@@ -2206,108 +2206,108 @@ uint64_t __92__SXFullscreenCanvasController_goToOriginalFromVerticalSwipingWithV
   return result;
 }
 
-- (id)itemizedScrollView:(id)a3 viewAtIndex:(unint64_t)a4
+- (id)itemizedScrollView:(id)view viewAtIndex:(unint64_t)index
 {
-  v6 = [(SXFullscreenCanvasController *)self showable];
-  v7 = [(SXFullscreenCanvasController *)self showable];
-  v8 = [v6 fullScreenCanvasController:self originalViewForShowable:v7 viewIndex:a4];
+  showable = [(SXFullscreenCanvasController *)self showable];
+  showable2 = [(SXFullscreenCanvasController *)self showable];
+  v8 = [showable fullScreenCanvasController:self originalViewForShowable:showable2 viewIndex:index];
 
-  v9 = [(SXFullscreenCanvasController *)self showable];
-  v10 = [(SXFullscreenCanvasController *)self showable];
-  v11 = [(SXFullscreenCanvasController *)self canvasViewController];
-  v12 = [v11 view];
-  [v12 bounds];
-  [v9 fullScreenCanvasController:self fullScreenFrameForShowable:v10 viewIndex:a4 withinRect:?];
+  showable3 = [(SXFullscreenCanvasController *)self showable];
+  showable4 = [(SXFullscreenCanvasController *)self showable];
+  canvasViewController = [(SXFullscreenCanvasController *)self canvasViewController];
+  view = [canvasViewController view];
+  [view bounds];
+  [showable3 fullScreenCanvasController:self fullScreenFrameForShowable:showable4 viewIndex:index withinRect:?];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  v21 = [[SXFullscreenImageView alloc] initWithContentView:v8 viewIndex:a4];
+  v21 = [[SXFullscreenImageView alloc] initWithContentView:v8 viewIndex:index];
   [(SXFullscreenImageView *)v21 setContentViewFrame:v14, v16, v18, v20];
   [(SXFullscreenImageView *)v21 setDelegate:self];
-  v22 = [(SXFullscreenCanvasController *)self tapGestureRecognizer];
-  v23 = [(SXFullscreenImageView *)v21 doubleTapGestureRecognizer];
-  [v22 requireGestureRecognizerToFail:v23];
+  tapGestureRecognizer = [(SXFullscreenCanvasController *)self tapGestureRecognizer];
+  doubleTapGestureRecognizer = [(SXFullscreenImageView *)v21 doubleTapGestureRecognizer];
+  [tapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
 
-  v24 = [(SXFullscreenImageView *)v21 scrollView];
-  v25 = [v24 pinchGestureRecognizer];
-  v26 = [(SXFullscreenCanvasController *)self pinchGestureRecognizer];
-  [v25 requireGestureRecognizerToFail:v26];
+  scrollView = [(SXFullscreenImageView *)v21 scrollView];
+  pinchGestureRecognizer = [scrollView pinchGestureRecognizer];
+  pinchGestureRecognizer2 = [(SXFullscreenCanvasController *)self pinchGestureRecognizer];
+  [pinchGestureRecognizer requireGestureRecognizerToFail:pinchGestureRecognizer2];
 
   return v21;
 }
 
-- (void)itemizedScrollView:(id)a3 didChangeToActiveViewIndex:(unint64_t)a4
+- (void)itemizedScrollView:(id)view didChangeToActiveViewIndex:(unint64_t)index
 {
-  v12 = [a3 activeView];
-  v6 = [v12 scrollView];
-  [(SXFullscreenCanvasController *)self transferGestureViewToView:v6];
+  activeView = [view activeView];
+  scrollView = [activeView scrollView];
+  [(SXFullscreenCanvasController *)self transferGestureViewToView:scrollView];
 
-  v7 = [(SXFullscreenCanvasController *)self captionView];
-  -[SXFullscreenCanvasController changeCaptionViewForViewWithIndex:expanded:animated:](self, "changeCaptionViewForViewWithIndex:expanded:animated:", a4, [v7 expanded], 1);
+  captionView = [(SXFullscreenCanvasController *)self captionView];
+  -[SXFullscreenCanvasController changeCaptionViewForViewWithIndex:expanded:animated:](self, "changeCaptionViewForViewWithIndex:expanded:animated:", index, [captionView expanded], 1);
 
-  v8 = [(SXFullscreenCanvasController *)self showable];
+  showable = [(SXFullscreenCanvasController *)self showable];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(SXFullscreenCanvasController *)self showable];
-    v11 = [(SXFullscreenCanvasController *)self showable];
-    [v10 fullScreenCanvasController:self showable:v11 didShowViewWithIndex:a4];
+    showable2 = [(SXFullscreenCanvasController *)self showable];
+    showable3 = [(SXFullscreenCanvasController *)self showable];
+    [showable2 fullScreenCanvasController:self showable:showable3 didShowViewWithIndex:index];
   }
 }
 
-- (void)itemizedScrollView:(id)a3 willShowViewWithIndex:(unint64_t)a4
+- (void)itemizedScrollView:(id)view willShowViewWithIndex:(unint64_t)index
 {
-  v6 = [(SXFullscreenCanvasController *)self showable];
+  showable = [(SXFullscreenCanvasController *)self showable];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v9 = [(SXFullscreenCanvasController *)self showable];
-    v8 = [(SXFullscreenCanvasController *)self showable];
-    [v9 fullScreenCanvasController:self showable:v8 willShowViewWithIndex:a4];
+    showable2 = [(SXFullscreenCanvasController *)self showable];
+    showable3 = [(SXFullscreenCanvasController *)self showable];
+    [showable2 fullScreenCanvasController:self showable:showable3 willShowViewWithIndex:index];
   }
 }
 
-- (void)itemizedScrollView:(id)a3 didHideViewWithIndex:(unint64_t)a4
+- (void)itemizedScrollView:(id)view didHideViewWithIndex:(unint64_t)index
 {
-  v6 = [(SXFullscreenCanvasController *)self showable];
+  showable = [(SXFullscreenCanvasController *)self showable];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SXFullscreenCanvasController *)self showable];
-    v9 = [(SXFullscreenCanvasController *)self showable];
-    [v8 fullScreenCanvasController:self showable:v9 didHideViewWithIndex:a4];
+    showable2 = [(SXFullscreenCanvasController *)self showable];
+    showable3 = [(SXFullscreenCanvasController *)self showable];
+    [showable2 fullScreenCanvasController:self showable:showable3 didHideViewWithIndex:index];
   }
 
-  v11 = [(SXFullscreenCanvasController *)self showable];
-  v10 = [(SXFullscreenCanvasController *)self showable];
-  [v11 fullScreenCanvasController:self showable:v10 shouldTransferToOriginalViewWithIndex:a4];
+  showable4 = [(SXFullscreenCanvasController *)self showable];
+  showable5 = [(SXFullscreenCanvasController *)self showable];
+  [showable4 fullScreenCanvasController:self showable:showable5 shouldTransferToOriginalViewWithIndex:index];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(SXFullscreenCanvasController *)self stopSupressingColorSettings];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v71 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(SXFullscreenCanvasController *)self showable];
+  beginCopy = begin;
+  showable = [(SXFullscreenCanvasController *)self showable];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SXFullscreenCanvasController *)self showable];
-    v3 = [(SXFullscreenCanvasController *)self showable];
-    v9 = [v8 fullScreenCanvasController:self showable:v3 gestureRecognizerShouldBegin:v5];
+    showable2 = [(SXFullscreenCanvasController *)self showable];
+    showable3 = [(SXFullscreenCanvasController *)self showable];
+    v9 = [showable2 fullScreenCanvasController:self showable:showable3 gestureRecognizerShouldBegin:beginCopy];
 
     if (!v9)
     {
@@ -2317,11 +2317,11 @@ uint64_t __92__SXFullscreenCanvasController_goToOriginalFromVerticalSwipingWithV
 
   if ([(SXFullscreenCanvasController *)self isFullscreen]&& ![(SXFullscreenCanvasController *)self totalActiveGestureRecognizers])
   {
-    v35 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-    v22 = [v35 activeView];
+    itemizedScrollView = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    activeView = [itemizedScrollView activeView];
 
-    v3 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-    if ([v3 isDragging])
+    showable3 = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    if ([showable3 isDragging])
     {
 LABEL_31:
 
@@ -2329,32 +2329,32 @@ LABEL_40:
       goto LABEL_49;
     }
 
-    v36 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-    v37 = [v36 isDecelerating];
+    itemizedScrollView2 = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    isDecelerating = [itemizedScrollView2 isDecelerating];
 
-    if ((v37 & 1) != 0 || v22 && ![v22 allowsDismissal])
+    if ((isDecelerating & 1) != 0 || activeView && ![activeView allowsDismissal])
     {
       goto LABEL_40;
     }
   }
 
-  v10 = [(SXFullscreenCanvasController *)self tapGestureRecognizer];
-  v11 = v10;
-  if (v10 == v5)
+  tapGestureRecognizer = [(SXFullscreenCanvasController *)self tapGestureRecognizer];
+  v11 = tapGestureRecognizer;
+  if (tapGestureRecognizer == beginCopy)
   {
-    v3 = [(SXFullscreenCanvasController *)self isFullscreen];
+    showable3 = [(SXFullscreenCanvasController *)self isFullscreen];
 
-    if (v3)
+    if (showable3)
     {
-      v12 = [(SXFullscreenCanvasController *)self tapGestureRecognizer];
-      v13 = [(SXFullscreenCanvasController *)self tapGestureRecognizer];
-      v14 = [v13 view];
-      [v12 locationInView:v14];
+      tapGestureRecognizer2 = [(SXFullscreenCanvasController *)self tapGestureRecognizer];
+      tapGestureRecognizer3 = [(SXFullscreenCanvasController *)self tapGestureRecognizer];
+      view = [tapGestureRecognizer3 view];
+      [tapGestureRecognizer2 locationInView:view];
       v16 = v15;
       v18 = v17;
 
-      v19 = [(SXFullscreenCanvasController *)self captionView];
-      [v19 frame];
+      captionView = [(SXFullscreenCanvasController *)self captionView];
+      [captionView frame];
       v72.x = v16;
       v72.y = v18;
       if (CGRectContainsPoint(v74, v72))
@@ -2364,8 +2364,8 @@ LABEL_40:
 
       else
       {
-        v38 = [(SXFullscreenCanvasController *)self navigationBarView];
-        [v38 frame];
+        navigationBarView = [(SXFullscreenCanvasController *)self navigationBarView];
+        [navigationBarView frame];
         v73.x = v16;
         v73.y = v18;
         v20 = !CGRectContainsPoint(v75, v73);
@@ -2379,15 +2379,15 @@ LABEL_40:
   {
   }
 
-  v21 = [(SXFullscreenCanvasController *)self pinchGestureRecognizer];
+  pinchGestureRecognizer = [(SXFullscreenCanvasController *)self pinchGestureRecognizer];
 
-  if (v21 == v5)
+  if (pinchGestureRecognizer == beginCopy)
   {
-    v23 = [(SXFullscreenCanvasController *)self isFullscreen];
-    if (v23)
+    isFullscreen = [(SXFullscreenCanvasController *)self isFullscreen];
+    if (isFullscreen)
     {
-      v3 = [(SXFullscreenCanvasController *)self pinchGestureRecognizer];
-      [v3 scale];
+      showable3 = [(SXFullscreenCanvasController *)self pinchGestureRecognizer];
+      [showable3 scale];
       if (v24 > 1.0)
       {
 
@@ -2406,11 +2406,11 @@ LABEL_40:
       goto LABEL_11;
     }
 
-    v39 = [(SXFullscreenCanvasController *)self pinchGestureRecognizer];
-    [v39 scale];
+    pinchGestureRecognizer2 = [(SXFullscreenCanvasController *)self pinchGestureRecognizer];
+    [pinchGestureRecognizer2 scale];
     v41 = v40;
 
-    if (v23)
+    if (isFullscreen)
     {
     }
 
@@ -2420,39 +2420,39 @@ LABEL_40:
     }
 
 LABEL_48:
-    v42 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
-    [v42 cancel];
+    panGestureRecognizer = [(SXFullscreenCanvasController *)self panGestureRecognizer];
+    [panGestureRecognizer cancel];
 
-    v43 = [(SXFullscreenCanvasController *)self rotationGestureRecognizer];
-    [v43 cancel];
+    rotationGestureRecognizer = [(SXFullscreenCanvasController *)self rotationGestureRecognizer];
+    [rotationGestureRecognizer cancel];
 
     goto LABEL_49;
   }
 
 LABEL_11:
-  v22 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
-  if (v22 != v5)
+  activeView = [(SXFullscreenCanvasController *)self panGestureRecognizer];
+  if (activeView != beginCopy)
   {
 LABEL_12:
 
     goto LABEL_26;
   }
 
-  v25 = [(SXFullscreenCanvasController *)self isFullscreen];
+  isFullscreen2 = [(SXFullscreenCanvasController *)self isFullscreen];
 
-  if (v25)
+  if (isFullscreen2)
   {
-    v26 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-    v22 = [v26 activeView];
+    itemizedScrollView3 = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    activeView = [itemizedScrollView3 activeView];
 
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v27 = [v22 scrollView];
-    v3 = [v27 gestureRecognizers];
+    scrollView = [activeView scrollView];
+    showable3 = [scrollView gestureRecognizers];
 
-    v28 = [v3 countByEnumeratingWithState:&v66 objects:v70 count:16];
+    v28 = [showable3 countByEnumeratingWithState:&v66 objects:v70 count:16];
     if (!v28)
     {
 LABEL_25:
@@ -2468,7 +2468,7 @@ LABEL_19:
     {
       if (*v67 != v30)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(showable3);
       }
 
       if ([*(*(&v66 + 1) + 8 * v31) state])
@@ -2478,7 +2478,7 @@ LABEL_19:
 
       if (v29 == ++v31)
       {
-        v29 = [v3 countByEnumeratingWithState:&v66 objects:v70 count:16];
+        v29 = [showable3 countByEnumeratingWithState:&v66 objects:v70 count:16];
         if (v29)
         {
           goto LABEL_19;
@@ -2495,9 +2495,9 @@ LABEL_26:
     goto LABEL_49;
   }
 
-  v32 = [(SXFullscreenCanvasController *)self openTapGestureRecognizer];
+  openTapGestureRecognizer = [(SXFullscreenCanvasController *)self openTapGestureRecognizer];
 
-  if (v32 == v5)
+  if (openTapGestureRecognizer == beginCopy)
   {
     if (![(SXFullscreenCanvasController *)self isFullscreen])
     {
@@ -2510,17 +2510,17 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  v33 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
-  v34 = v33;
-  if (v33 != v5)
+  panGestureRecognizer2 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
+  v34 = panGestureRecognizer2;
+  if (panGestureRecognizer2 != beginCopy)
   {
 
     goto LABEL_58;
   }
 
-  v45 = [(SXFullscreenCanvasController *)self isFullscreen];
+  isFullscreen3 = [(SXFullscreenCanvasController *)self isFullscreen];
 
-  if (!v45)
+  if (!isFullscreen3)
   {
 LABEL_58:
     if ([(SXFullscreenCanvasController *)self totalActiveGestureRecognizers])
@@ -2530,8 +2530,8 @@ LABEL_58:
 
     else
     {
-      v58 = [v5 view];
-      [v5 locationInView:v58];
+      view2 = [beginCopy view];
+      [beginCopy locationInView:view2];
       v60 = v59;
       v62 = v61;
 
@@ -2540,23 +2540,23 @@ LABEL_58:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v20 = [v5 numberOfTouches] == 2 && v63 != 0x7FFFFFFFFFFFFFFFLL;
+        v20 = [beginCopy numberOfTouches] == 2 && v63 != 0x7FFFFFFFFFFFFFFFLL;
       }
     }
 
     goto LABEL_50;
   }
 
-  v46 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
-  v47 = [v46 numberOfTouches];
+  panGestureRecognizer3 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
+  numberOfTouches = [panGestureRecognizer3 numberOfTouches];
 
-  v48 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
-  v49 = v48;
-  if (v47 == 1)
+  panGestureRecognizer4 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
+  v49 = panGestureRecognizer4;
+  if (numberOfTouches == 1)
   {
-    v50 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
-    v51 = [v50 view];
-    [v49 translationInView:v51];
+    panGestureRecognizer5 = [(SXFullscreenCanvasController *)self panGestureRecognizer];
+    view3 = [panGestureRecognizer5 view];
+    [v49 translationInView:view3];
     v53 = v52;
     v55 = v54;
 
@@ -2577,7 +2577,7 @@ LABEL_58:
 
   else
   {
-    v65 = [v48 numberOfTouches] == 2;
+    v65 = [panGestureRecognizer4 numberOfTouches] == 2;
 
     v20 = v65 | v7;
   }
@@ -2587,38 +2587,38 @@ LABEL_50:
   return v20 & 1;
 }
 
-- (id)dragManager:(id)a3 dragableAtLocation:(CGPoint)a4
+- (id)dragManager:(id)manager dragableAtLocation:(CGPoint)location
 {
-  v5 = [(SXFullscreenCanvasController *)self itemizedScrollView:a3];
-  v6 = [v5 activeView];
+  v5 = [(SXFullscreenCanvasController *)self itemizedScrollView:manager];
+  activeView = [v5 activeView];
 
-  if (v6)
+  if (activeView)
   {
-    v7 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-    v8 = [v7 activeView];
-    v9 = [v8 contentView];
+    itemizedScrollView = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    activeView2 = [itemizedScrollView activeView];
+    contentView = [activeView2 contentView];
   }
 
   else
   {
-    v9 = 0;
+    contentView = 0;
   }
 
-  return v9;
+  return contentView;
 }
 
-- (BOOL)captionView:(id)a3 tapGestureRecognizerShouldBegin:(id)a4
+- (BOOL)captionView:(id)view tapGestureRecognizerShouldBegin:(id)begin
 {
-  v5 = a4;
+  beginCopy = begin;
   if ([(SXFullscreenCanvasController *)self isFullscreen])
   {
-    v6 = [v5 view];
-    [v5 locationInView:v6];
+    view = [beginCopy view];
+    [beginCopy locationInView:view];
     v8 = v7;
     v10 = v9;
 
-    v11 = [(SXFullscreenCanvasController *)self captionView];
-    [v11 bounds];
+    captionView = [(SXFullscreenCanvasController *)self captionView];
+    [captionView bounds];
     v14.x = v8;
     v14.y = v10;
     v12 = CGRectContainsPoint(v15, v14);
@@ -2634,39 +2634,39 @@ LABEL_50:
 
 - (void)handleNextCommand
 {
-  v3 = [(SXFullscreenCanvasController *)self showable];
-  v4 = [(SXFullscreenCanvasController *)self showable];
-  v5 = [v3 fullScreenCanvasController:self numberOfViewsForShowable:v4];
+  showable = [(SXFullscreenCanvasController *)self showable];
+  showable2 = [(SXFullscreenCanvasController *)self showable];
+  v5 = [showable fullScreenCanvasController:self numberOfViewsForShowable:showable2];
 
   if (v5 >= 2)
   {
-    v6 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-    [v6 scrollToNext];
+    itemizedScrollView = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    [itemizedScrollView scrollToNext];
   }
 }
 
 - (void)handlePreviousCommand
 {
-  v3 = [(SXFullscreenCanvasController *)self showable];
-  v4 = [(SXFullscreenCanvasController *)self showable];
-  v5 = [v3 fullScreenCanvasController:self numberOfViewsForShowable:v4];
+  showable = [(SXFullscreenCanvasController *)self showable];
+  showable2 = [(SXFullscreenCanvasController *)self showable];
+  v5 = [showable fullScreenCanvasController:self numberOfViewsForShowable:showable2];
 
   if (v5 >= 2)
   {
-    v6 = [(SXFullscreenCanvasController *)self itemizedScrollView];
-    [v6 scrollToPrevious];
+    itemizedScrollView = [(SXFullscreenCanvasController *)self itemizedScrollView];
+    [itemizedScrollView scrollToPrevious];
   }
 }
 
-- (void)fullscreenCanvasViewController:(id)a3 willTransitionToSize:(CGSize)a4 withTransitionCoordinator:(id)a5
+- (void)fullscreenCanvasViewController:(id)controller willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __110__SXFullscreenCanvasController_fullscreenCanvasViewController_willTransitionToSize_withTransitionCoordinator___block_invoke;
   v5[3] = &unk_1E84FEC50;
   v5[4] = self;
-  v6 = a4;
-  [a5 animateAlongsideTransition:v5 completion:0];
+  sizeCopy = size;
+  [coordinator animateAlongsideTransition:v5 completion:0];
 }
 
 - (SXFullscreenCanvasShowable)showable

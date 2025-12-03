@@ -12,8 +12,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -23,12 +23,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 masterAssetHash];
-        v11 = [v10 isEqualToData:v4];
+        masterAssetHash = [v9 masterAssetHash];
+        v11 = [masterAssetHash isEqualToData:v4];
 
         if (v11)
         {
@@ -37,7 +37,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;

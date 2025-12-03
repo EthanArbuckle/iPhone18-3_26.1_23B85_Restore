@@ -2,34 +2,34 @@
 - (BOOL)_needsVisibilityView;
 - (BOOL)_useRightHandDriveFocusGuide;
 - (BOOL)restoresFocusAfterTransition;
-- (BOOL)shouldHideNavigationBarForViewController:(id)a3;
+- (BOOL)shouldHideNavigationBarForViewController:(id)controller;
 - (CPSVisibilityEnvironmentProviding)environmentProvider;
 - (UIFocusGuide)rightHandDriveGuide;
 - (UIFocusItem)preferredFocusItem;
-- (id)_firstFocusProvidingForViewController:(id)a3;
+- (id)_firstFocusProvidingForViewController:(id)controller;
 - (id)_linearFocusMovementSequences;
-- (id)popToRootViewControllerAnimated:(BOOL)a3;
-- (id)popToViewController:(id)a3 animated:(BOOL)a4;
-- (id)popViewControllerAnimated:(BOOL)a3;
+- (id)popToRootViewControllerAnimated:(BOOL)animated;
+- (id)popToViewController:(id)controller animated:(BOOL)animated;
+- (id)popViewControllerAnimated:(BOOL)animated;
 - (id)preferredFocusEnvironments;
 - (id)presentedTemplateViewController;
 - (id)templates;
 - (id)topTemplate;
-- (id)viewControllerForTemplate:(id)a3;
-- (unint64_t)indexOfTemplate:(id)a3;
+- (id)viewControllerForTemplate:(id)template;
+- (unint64_t)indexOfTemplate:(id)template;
 - (void)_resetRightHandDriveGuide;
 - (void)_updateVisibilityView;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)dismissTemplateAnimated:(BOOL)a3 completion:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)dismissTemplateAnimated:(BOOL)animated completion:(id)completion;
 - (void)invalidate;
-- (void)popTemplateAnimated:(BOOL)a3 completion:(id)a4;
-- (void)popToRootTemplateAnimated:(BOOL)a3 completion:(id)a4;
-- (void)popToTemplate:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentActionSheetTemplate:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentTemplateViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)pushTemplateViewController:(id)a3 animated:(BOOL)a4 presentationStyle:(unint64_t)a5 completion:(id)a6;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)popTemplateAnimated:(BOOL)animated completion:(id)completion;
+- (void)popToRootTemplateAnimated:(BOOL)animated completion:(id)completion;
+- (void)popToTemplate:(id)template animated:(BOOL)animated completion:(id)completion;
+- (void)presentActionSheetTemplate:(id)template animated:(BOOL)animated completion:(id)completion;
+- (void)presentTemplateViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)pushTemplateViewController:(id)controller animated:(BOOL)animated presentationStyle:(unint64_t)style completion:(id)completion;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -37,32 +37,32 @@
 
 - (BOOL)_useRightHandDriveFocusGuide
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v13[0] = 0;
   v8 = objc_opt_class();
-  v9 = [(CPSOverlayViewController *)v14 topViewController];
-  location = CPSSafeCast_2(v8, v9);
-  MEMORY[0x277D82BD8](v9);
-  v10 = [(CPSOverlayViewController *)v14 topViewController];
-  v11 = [v10 conformsToProtocol:&unk_2855E1980];
-  MEMORY[0x277D82BD8](v10);
+  topViewController = [(CPSOverlayViewController *)selfCopy topViewController];
+  location = CPSSafeCast_2(v8, topViewController);
+  MEMORY[0x277D82BD8](topViewController);
+  topViewController2 = [(CPSOverlayViewController *)selfCopy topViewController];
+  v11 = [topViewController2 conformsToProtocol:&unk_2855E1980];
+  MEMORY[0x277D82BD8](topViewController2);
   if (v11)
   {
-    v2 = [(CPSOverlayViewController *)v14 topViewController];
+    topViewController3 = [(CPSOverlayViewController *)selfCopy topViewController];
     v3 = v13[0];
-    v13[0] = v2;
+    v13[0] = topViewController3;
     MEMORY[0x277D82BD8](v3);
   }
 
   else if (location)
   {
-    v7 = [location selectedViewController];
-    v4 = [(CPSOverlayViewController *)v14 _firstFocusProvidingForViewController:?];
+    selectedViewController = [location selectedViewController];
+    v4 = [(CPSOverlayViewController *)selfCopy _firstFocusProvidingForViewController:?];
     v5 = v13[0];
     v13[0] = v4;
     MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](selectedViewController);
   }
 
   v15 = (objc_opt_respondsToSelector() & 1) != 0 && ([v13[0] useRightHandDriveFocusGuide] & 1) != 0;
@@ -74,9 +74,9 @@
 - (void)invalidate
 {
   [(CPSOverlayViewController *)self _invalidateVisibilityView];
-  v2 = [(CPSOverlayViewController *)self viewControllers];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_0];
-  MEMORY[0x277D82BD8](v2);
+  viewControllers = [(CPSOverlayViewController *)self viewControllers];
+  [viewControllers enumerateObjectsUsingBlock:&__block_literal_global_0];
+  MEMORY[0x277D82BD8](viewControllers);
 }
 
 void __38__CPSOverlayViewController_invalidate__block_invoke(void *a1, void *a2, void *a3, void *a4)
@@ -93,71 +93,71 @@ void __38__CPSOverlayViewController_invalidate__block_invoke(void *a1, void *a2,
   objc_storeStrong(location, 0);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = CPSOverlayViewController;
-  [(CPSOverlayViewController *)&v3 viewDidAppear:a3];
-  [(CPSOverlayViewController *)v6 _updateVisibilityView];
+  [(CPSOverlayViewController *)&v3 viewDidAppear:appear];
+  [(CPSOverlayViewController *)selfCopy _updateVisibilityView];
 }
 
 - (void)viewDidLoad
 {
   v23[4] = *MEMORY[0x277D85DE8];
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
   v20.receiver = self;
   v20.super_class = CPSOverlayViewController;
   [(CPSOverlayViewController *)&v20 viewDidLoad];
-  v19 = [(CPSOverlayViewController *)v22 view];
+  view = [(CPSOverlayViewController *)selfCopy view];
   v2 = [_CPSOverlayTouchBlockingView alloc];
   v18 = [(_CPSOverlayTouchBlockingView *)v2 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [(_CPSOverlayTouchBlockingView *)v18 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(_CPSOverlayTouchBlockingView *)v18 setUserInteractionEnabled:1];
   if (_UISolariumEnabled())
   {
-    v16 = [MEMORY[0x277D75348] clearColor];
-    [v19 setBackgroundColor:?];
-    MEMORY[0x277D82BD8](v16);
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [view setBackgroundColor:?];
+    MEMORY[0x277D82BD8](clearColor);
   }
 
-  [v19 insertSubview:v18 atIndex:0];
-  v15 = [v19 topAnchor];
-  v14 = [(_CPSOverlayTouchBlockingView *)v18 topAnchor];
-  v13 = [v15 constraintEqualToAnchor:?];
+  [view insertSubview:v18 atIndex:0];
+  topAnchor = [view topAnchor];
+  topAnchor2 = [(_CPSOverlayTouchBlockingView *)v18 topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:?];
   v23[0] = v13;
-  v12 = [v19 leftAnchor];
-  v11 = [(_CPSOverlayTouchBlockingView *)v18 leftAnchor];
-  v10 = [v12 constraintEqualToAnchor:?];
+  leftAnchor = [view leftAnchor];
+  leftAnchor2 = [(_CPSOverlayTouchBlockingView *)v18 leftAnchor];
+  v10 = [leftAnchor constraintEqualToAnchor:?];
   v23[1] = v10;
-  v9 = [v19 rightAnchor];
-  v8 = [(_CPSOverlayTouchBlockingView *)v18 rightAnchor];
-  v7 = [v9 constraintEqualToAnchor:?];
+  rightAnchor = [view rightAnchor];
+  rightAnchor2 = [(_CPSOverlayTouchBlockingView *)v18 rightAnchor];
+  v7 = [rightAnchor constraintEqualToAnchor:?];
   v23[2] = v7;
-  v6 = [v19 bottomAnchor];
-  v5 = [(_CPSOverlayTouchBlockingView *)v18 bottomAnchor];
-  v4 = [v6 constraintEqualToAnchor:?];
+  bottomAnchor = [view bottomAnchor];
+  bottomAnchor2 = [(_CPSOverlayTouchBlockingView *)v18 bottomAnchor];
+  v4 = [bottomAnchor constraintEqualToAnchor:?];
   v23[3] = v4;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:4];
   MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](bottomAnchor);
   MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](rightAnchor2);
+  MEMORY[0x277D82BD8](rightAnchor);
   MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
+  MEMORY[0x277D82BD8](leftAnchor2);
+  MEMORY[0x277D82BD8](leftAnchor);
   MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
-  *&v3 = MEMORY[0x277D82BD8](v15).n128_u64[0];
+  MEMORY[0x277D82BD8](topAnchor2);
+  *&v3 = MEMORY[0x277D82BD8](topAnchor).n128_u64[0];
   [MEMORY[0x277CCAAD0] activateConstraints:{v17, v3}];
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&view, 0);
 }
 
 - (UIFocusGuide)rightHandDriveGuide
@@ -168,51 +168,51 @@ void __38__CPSOverlayViewController_invalidate__block_invoke(void *a1, void *a2,
     v2 = objc_alloc_init(MEMORY[0x277D75500]);
     rightHandDriveGuide = self->_rightHandDriveGuide;
     self->_rightHandDriveGuide = v2;
-    v8 = [(CPSOverlayViewController *)self view];
-    v7 = [(CPSOverlayViewController *)self rightHandDriveGuide];
-    [v8 addLayoutGuide:?];
-    MEMORY[0x277D82BD8](v7);
-    *&v4 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+    view = [(CPSOverlayViewController *)self view];
+    rightHandDriveGuide = [(CPSOverlayViewController *)self rightHandDriveGuide];
+    [view addLayoutGuide:?];
+    MEMORY[0x277D82BD8](rightHandDriveGuide);
+    *&v4 = MEMORY[0x277D82BD8](view).n128_u64[0];
     v9 = MEMORY[0x277CCAAD0];
-    v26 = [(CPSOverlayViewController *)self rightHandDriveGuide];
-    v25 = [(UIFocusGuide *)v26 rightAnchor];
-    v24 = [(CPSOverlayViewController *)self view];
-    v23 = [v24 rightAnchor];
-    v22 = [v25 constraintEqualToAnchor:?];
+    rightHandDriveGuide2 = [(CPSOverlayViewController *)self rightHandDriveGuide];
+    rightAnchor = [(UIFocusGuide *)rightHandDriveGuide2 rightAnchor];
+    view2 = [(CPSOverlayViewController *)self view];
+    rightAnchor2 = [view2 rightAnchor];
+    v22 = [rightAnchor constraintEqualToAnchor:?];
     v28[0] = v22;
-    v21 = [(CPSOverlayViewController *)self rightHandDriveGuide];
-    v20 = [(UIFocusGuide *)v21 bottomAnchor];
-    v19 = [(CPSOverlayViewController *)self view];
-    v18 = [v19 bottomAnchor];
-    v17 = [v20 constraintEqualToAnchor:?];
+    rightHandDriveGuide3 = [(CPSOverlayViewController *)self rightHandDriveGuide];
+    bottomAnchor = [(UIFocusGuide *)rightHandDriveGuide3 bottomAnchor];
+    view3 = [(CPSOverlayViewController *)self view];
+    bottomAnchor2 = [view3 bottomAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:?];
     v28[1] = v17;
-    v16 = [(CPSOverlayViewController *)self rightHandDriveGuide];
-    v15 = [(UIFocusGuide *)v16 heightAnchor];
-    v14 = [v15 constraintEqualToConstant:?];
+    rightHandDriveGuide4 = [(CPSOverlayViewController *)self rightHandDriveGuide];
+    heightAnchor = [(UIFocusGuide *)rightHandDriveGuide4 heightAnchor];
+    v14 = [heightAnchor constraintEqualToConstant:?];
     v28[2] = v14;
-    v13 = [(CPSOverlayViewController *)self rightHandDriveGuide];
-    v12 = [(UIFocusGuide *)v13 widthAnchor];
-    v11 = [v12 constraintEqualToConstant:1.0];
+    rightHandDriveGuide5 = [(CPSOverlayViewController *)self rightHandDriveGuide];
+    widthAnchor = [(UIFocusGuide *)rightHandDriveGuide5 widthAnchor];
+    v11 = [widthAnchor constraintEqualToConstant:1.0];
     v28[3] = v11;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:4];
     [v9 activateConstraints:?];
     MEMORY[0x277D82BD8](v10);
     MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](widthAnchor);
+    MEMORY[0x277D82BD8](rightHandDriveGuide5);
     MEMORY[0x277D82BD8](v14);
-    MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v16);
+    MEMORY[0x277D82BD8](heightAnchor);
+    MEMORY[0x277D82BD8](rightHandDriveGuide4);
     MEMORY[0x277D82BD8](v17);
-    MEMORY[0x277D82BD8](v18);
-    MEMORY[0x277D82BD8](v19);
-    MEMORY[0x277D82BD8](v20);
-    MEMORY[0x277D82BD8](v21);
+    MEMORY[0x277D82BD8](bottomAnchor2);
+    MEMORY[0x277D82BD8](view3);
+    MEMORY[0x277D82BD8](bottomAnchor);
+    MEMORY[0x277D82BD8](rightHandDriveGuide3);
     MEMORY[0x277D82BD8](v22);
-    MEMORY[0x277D82BD8](v23);
-    MEMORY[0x277D82BD8](v24);
-    MEMORY[0x277D82BD8](v25);
-    MEMORY[0x277D82BD8](v26);
+    MEMORY[0x277D82BD8](rightAnchor2);
+    MEMORY[0x277D82BD8](view2);
+    MEMORY[0x277D82BD8](rightAnchor);
+    MEMORY[0x277D82BD8](rightHandDriveGuide2);
   }
 
   v5 = self->_rightHandDriveGuide;
@@ -228,12 +228,12 @@ void __38__CPSOverlayViewController_invalidate__block_invoke(void *a1, void *a2,
   }
 }
 
-- (BOOL)shouldHideNavigationBarForViewController:(id)a3
+- (BOOL)shouldHideNavigationBarForViewController:(id)controller
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -243,19 +243,19 @@ void __38__CPSOverlayViewController_invalidate__block_invoke(void *a1, void *a2,
 
   else
   {
-    v11 = [(CPSOverlayViewController *)v18 viewControllers];
-    v10 = [v11 firstObject];
-    v12 = [v10 isEqual:location[0]];
-    MEMORY[0x277D82BD8](v10);
-    MEMORY[0x277D82BD8](v11);
+    viewControllers = [(CPSOverlayViewController *)selfCopy viewControllers];
+    firstObject = [viewControllers firstObject];
+    v12 = [firstObject isEqual:location[0]];
+    MEMORY[0x277D82BD8](firstObject);
+    MEMORY[0x277D82BD8](viewControllers);
     if (v12)
     {
       v3 = objc_opt_class();
       v15 = CPSSafeCast_2(v3, location[0]);
-      v9 = [v15 navigationItem];
-      v14 = [v9 title];
-      *&v4 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-      if (v14 && [v14 length])
+      navigationItem = [v15 navigationItem];
+      title = [navigationItem title];
+      *&v4 = MEMORY[0x277D82BD8](navigationItem).n128_u64[0];
+      if (title && [title length])
       {
         v19 = 0;
         v16 = 1;
@@ -264,9 +264,9 @@ void __38__CPSOverlayViewController_invalidate__block_invoke(void *a1, void *a2,
       else
       {
         v7 = objc_opt_class();
-        v8 = [v15 associatedTemplate];
-        v13 = CPSSafeCast_2(v7, v8);
-        *&v5 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+        associatedTemplate = [v15 associatedTemplate];
+        v13 = CPSSafeCast_2(v7, associatedTemplate);
+        *&v5 = MEMORY[0x277D82BD8](associatedTemplate).n128_u64[0];
         if (v13)
         {
           v19 = [v13 shouldHideNavigationBar] & 1;
@@ -281,7 +281,7 @@ void __38__CPSOverlayViewController_invalidate__block_invoke(void *a1, void *a2,
         objc_storeStrong(&v13, 0);
       }
 
-      objc_storeStrong(&v14, 0);
+      objc_storeStrong(&title, 0);
       objc_storeStrong(&v15, 0);
     }
 
@@ -296,14 +296,14 @@ void __38__CPSOverlayViewController_invalidate__block_invoke(void *a1, void *a2,
   return v19 & 1;
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  animatedCopy = animated;
   v5.receiver = self;
   v5.super_class = CPSOverlayViewController;
-  v6 = [(CPSOverlayViewController *)&v5 popViewControllerAnimated:a3];
+  v6 = [(CPSOverlayViewController *)&v5 popViewControllerAnimated:animated];
   [v6 _cps_viewControllerWasPopped];
   v4 = MEMORY[0x277D82BE0](v6);
   objc_storeStrong(&v6, 0);
@@ -311,16 +311,16 @@ void __38__CPSOverlayViewController_invalidate__block_invoke(void *a1, void *a2,
   return v4;
 }
 
-- (id)popToViewController:(id)a3 animated:(BOOL)a4
+- (id)popToViewController:(id)controller animated:(BOOL)animated
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
-  v7.receiver = v11;
+  objc_storeStrong(location, controller);
+  animatedCopy = animated;
+  v7.receiver = selfCopy;
   v7.super_class = CPSOverlayViewController;
-  v8 = [(CPSOverlayViewController *)&v7 popToViewController:location[0] animated:a4];
+  v8 = [(CPSOverlayViewController *)&v7 popToViewController:location[0] animated:animated];
   [v8 enumerateObjectsWithOptions:2 usingBlock:&__block_literal_global_168];
   v6 = MEMORY[0x277D82BE0](v8);
   objc_storeStrong(&v8, 0);
@@ -338,14 +338,14 @@ void __57__CPSOverlayViewController_popToViewController_animated___block_invoke(
   objc_storeStrong(location, 0);
 }
 
-- (id)popToRootViewControllerAnimated:(BOOL)a3
+- (id)popToRootViewControllerAnimated:(BOOL)animated
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  animatedCopy = animated;
   v5.receiver = self;
   v5.super_class = CPSOverlayViewController;
-  v6 = [(CPSOverlayViewController *)&v5 popToRootViewControllerAnimated:a3];
+  v6 = [(CPSOverlayViewController *)&v5 popToRootViewControllerAnimated:animated];
   [v6 enumerateObjectsWithOptions:2 usingBlock:&__block_literal_global_172];
   v4 = MEMORY[0x277D82BE0](v6);
   objc_storeStrong(&v6, 0);
@@ -362,16 +362,16 @@ void __60__CPSOverlayViewController_popToRootViewControllerAnimated___block_invo
   objc_storeStrong(location, 0);
 }
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
   v29 = *MEMORY[0x277D85DE8];
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
+  objc_storeStrong(location, controllers);
+  animatedCopy = animated;
   memset(__b, 0, sizeof(__b));
-  obj = [(CPSOverlayViewController *)v27 viewControllers];
+  obj = [(CPSOverlayViewController *)selfCopy viewControllers];
   v21 = [obj countByEnumeratingWithState:__b objects:v28 count:16];
   if (v21)
   {
@@ -387,14 +387,14 @@ void __60__CPSOverlayViewController_popToRootViewControllerAnimated___block_invo
       }
 
       v24 = *(__b[1] + 8 * v17);
-      v14 = [v24 parentViewController];
-      v13 = v27;
-      *&v4 = MEMORY[0x277D82BD8](v14).n128_u64[0];
-      if (v14 == v13)
+      parentViewController = [v24 parentViewController];
+      v13 = selfCopy;
+      *&v4 = MEMORY[0x277D82BD8](parentViewController).n128_u64[0];
+      if (parentViewController == v13)
       {
-        v12 = [v24 view];
-        [v12 removeFromSuperview];
-        *&v5 = MEMORY[0x277D82BD8](v12).n128_u64[0];
+        view = [v24 view];
+        [view removeFromSuperview];
+        *&v5 = MEMORY[0x277D82BD8](view).n128_u64[0];
         [v24 removeFromParentViewController];
       }
 
@@ -412,12 +412,12 @@ void __60__CPSOverlayViewController_popToRootViewControllerAnimated___block_invo
   }
 
   *&v6 = MEMORY[0x277D82BD8](obj).n128_u64[0];
-  v9 = v27;
+  v9 = selfCopy;
   v10 = location[0];
-  v11 = [(CPSOverlayViewController *)v27 viewControllers];
-  if ([v11 count])
+  viewControllers = [(CPSOverlayViewController *)selfCopy viewControllers];
+  if ([viewControllers count])
   {
-    v8 = v25;
+    v8 = animatedCopy;
   }
 
   else
@@ -428,27 +428,27 @@ void __60__CPSOverlayViewController_popToRootViewControllerAnimated___block_invo
   v22.receiver = v9;
   v22.super_class = CPSOverlayViewController;
   [(CPSOverlayViewController *)&v22 setViewControllers:v10 animated:v8 != 0];
-  *&v7 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-  [(CPSOverlayViewController *)v27 _updateVisibilityView];
+  *&v7 = MEMORY[0x277D82BD8](viewControllers).n128_u64[0];
+  [(CPSOverlayViewController *)selfCopy _updateVisibilityView];
   objc_storeStrong(location, 0);
 }
 
-- (unint64_t)indexOfTemplate:(id)a3
+- (unint64_t)indexOfTemplate:(id)template
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(CPSOverlayViewController *)v13 viewControllers];
+  objc_storeStrong(location, template);
+  viewControllers = [(CPSOverlayViewController *)selfCopy viewControllers];
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __44__CPSOverlayViewController_indexOfTemplate___block_invoke;
   v10 = &unk_278D91690;
   v11 = MEMORY[0x277D82BE0](location[0]);
-  v5 = [v4 indexOfObjectPassingTest:?];
+  v5 = [viewControllers indexOfObjectPassingTest:?];
   objc_storeStrong(&v11, 0);
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](viewControllers);
   objc_storeStrong(location, 0);
   return v5;
 }
@@ -474,13 +474,13 @@ uint64_t __44__CPSOverlayViewController_indexOfTemplate___block_invoke(id *a1, v
   return v10;
 }
 
-- (id)viewControllerForTemplate:(id)a3
+- (id)viewControllerForTemplate:(id)template
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(CPSOverlayViewController *)v8 indexOfTemplate:location[0]];
+  objc_storeStrong(location, template);
+  v6 = [(CPSOverlayViewController *)selfCopy indexOfTemplate:location[0]];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -488,9 +488,9 @@ uint64_t __44__CPSOverlayViewController_indexOfTemplate___block_invoke(id *a1, v
 
   else
   {
-    v5 = [(CPSOverlayViewController *)v8 viewControllers];
-    v9 = [v5 objectAtIndexedSubscript:v6];
-    MEMORY[0x277D82BD8](v5);
+    viewControllers = [(CPSOverlayViewController *)selfCopy viewControllers];
+    v9 = [viewControllers objectAtIndexedSubscript:v6];
+    MEMORY[0x277D82BD8](viewControllers);
   }
 
   objc_storeStrong(location, 0);
@@ -499,27 +499,27 @@ uint64_t __44__CPSOverlayViewController_indexOfTemplate___block_invoke(id *a1, v
   return v3;
 }
 
-- (void)popToTemplate:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)popToTemplate:(id)template animated:(BOOL)animated completion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = a4;
+  objc_storeStrong(location, template);
+  animatedCopy = animated;
   v12 = 0;
-  objc_storeStrong(&v12, a5);
-  v11 = [(CPSOverlayViewController *)v15 viewControllerForTemplate:location[0]];
+  objc_storeStrong(&v12, completion);
+  v11 = [(CPSOverlayViewController *)selfCopy viewControllerForTemplate:location[0]];
   if (v11)
   {
-    v5 = [(CPSOverlayViewController *)v15 popToViewController:v11 animated:v13];
-    if (v13)
+    v5 = [(CPSOverlayViewController *)selfCopy popToViewController:v11 animated:animatedCopy];
+    if (animatedCopy)
     {
-      v10 = [(CPSOverlayViewController *)v15 transitionCoordinator];
-      v6 = v10;
+      transitionCoordinator = [(CPSOverlayViewController *)selfCopy transitionCoordinator];
+      v6 = transitionCoordinator;
       v9 = MEMORY[0x277D82BE0](v12);
       [v6 animateAlongsideTransition:? completion:?];
       objc_storeStrong(&v9, 0);
-      objc_storeStrong(&v10, 0);
+      objc_storeStrong(&transitionCoordinator, 0);
     }
 
     else
@@ -547,21 +547,21 @@ void __62__CPSOverlayViewController_popToTemplate_animated_completion___block_in
   objc_storeStrong(location, 0);
 }
 
-- (void)popToRootTemplateAnimated:(BOOL)a3 completion:(id)a4
+- (void)popToRootTemplateAnimated:(BOOL)animated completion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  animatedCopy = animated;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v9 = [(CPSOverlayViewController *)v13 popToRootViewControllerAnimated:v11];
+  objc_storeStrong(&location, completion);
+  v9 = [(CPSOverlayViewController *)selfCopy popToRootViewControllerAnimated:animatedCopy];
   v8 = [v9 count] != 0;
   if (location)
   {
-    v7 = [(CPSOverlayViewController *)v13 transitionCoordinator];
-    if (v7)
+    transitionCoordinator = [(CPSOverlayViewController *)selfCopy transitionCoordinator];
+    if (transitionCoordinator)
     {
-      v4 = v7;
+      v4 = transitionCoordinator;
       v5 = MEMORY[0x277D82BE0](location);
       v6 = v8;
       [v4 animateAlongsideTransition:? completion:?];
@@ -573,7 +573,7 @@ void __62__CPSOverlayViewController_popToTemplate_animated_completion___block_in
       (*(location + 2))(location, v8);
     }
 
-    objc_storeStrong(&v7, 0);
+    objc_storeStrong(&transitionCoordinator, 0);
   }
 
   objc_storeStrong(&v9, 0);
@@ -589,19 +589,19 @@ void __65__CPSOverlayViewController_popToRootTemplateAnimated_completion___block
   objc_storeStrong(location, 0);
 }
 
-- (void)popTemplateAnimated:(BOOL)a3 completion:(id)a4
+- (void)popTemplateAnimated:(BOOL)animated completion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  animatedCopy = animated;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v9 = [(CPSOverlayViewController *)v13 popViewControllerAnimated:v11];
+  objc_storeStrong(&location, completion);
+  v9 = [(CPSOverlayViewController *)selfCopy popViewControllerAnimated:animatedCopy];
   v8 = v9 != 0;
-  v7 = [(CPSOverlayViewController *)v13 transitionCoordinator];
-  if (v7)
+  transitionCoordinator = [(CPSOverlayViewController *)selfCopy transitionCoordinator];
+  if (transitionCoordinator)
   {
-    v4 = v7;
+    v4 = transitionCoordinator;
     v5 = MEMORY[0x277D82BE0](location);
     v6 = v8;
     [v4 animateAlongsideTransition:? completion:?];
@@ -613,7 +613,7 @@ void __65__CPSOverlayViewController_popToRootTemplateAnimated_completion___block
     (*(location + 2))(location, v8);
   }
 
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&transitionCoordinator, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&location, 0);
 }
@@ -627,39 +627,39 @@ void __59__CPSOverlayViewController_popTemplateAnimated_completion___block_invok
   objc_storeStrong(location, 0);
 }
 
-- (void)pushTemplateViewController:(id)a3 animated:(BOOL)a4 presentationStyle:(unint64_t)a5 completion:(id)a6
+- (void)pushTemplateViewController:(id)controller animated:(BOOL)animated presentationStyle:(unint64_t)style completion:(id)completion
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v21 = a4;
-  v20 = a5;
+  objc_storeStrong(location, controller);
+  animatedCopy = animated;
+  styleCopy = style;
   v19 = 0;
-  objc_storeStrong(&v19, a6);
-  v14 = [(CPSOverlayViewController *)v23 view];
-  v15 = [v14 isHidden];
-  v6 = MEMORY[0x277D82BD8](v14);
-  if (v15)
+  objc_storeStrong(&v19, completion);
+  view = [(CPSOverlayViewController *)selfCopy view];
+  isHidden = [view isHidden];
+  v6 = MEMORY[0x277D82BD8](view);
+  if (isHidden)
   {
-    v10 = [(CPSOverlayViewController *)v23 view];
-    [v10 setHidden:0];
-    v6 = MEMORY[0x277D82BD8](v10);
+    view2 = [(CPSOverlayViewController *)selfCopy view];
+    [view2 setHidden:0];
+    v6 = MEMORY[0x277D82BD8](view2);
   }
 
-  if (v20)
+  if (styleCopy)
   {
-    if (v20 == 1)
+    if (styleCopy == 1)
     {
-      v8 = v23;
+      v8 = selfCopy;
       v24[0] = location[0];
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:{1, v6.n128_f64[0]}];
       [CPSOverlayViewController setViewControllers:v8 animated:"setViewControllers:animated:"];
       v6.n128_u64[0] = MEMORY[0x277D82BD8](v9).n128_u64[0];
     }
 
-    else if (v20 == 2)
+    else if (styleCopy == 2)
     {
       (*(v19 + 2))(v6);
       v18 = 1;
@@ -669,14 +669,14 @@ void __59__CPSOverlayViewController_popTemplateAnimated_completion___block_invok
 
   else
   {
-    [(CPSOverlayViewController *)v23 pushViewController:location[0] animated:v21, v6.n128_f64[0]];
+    [(CPSOverlayViewController *)selfCopy pushViewController:location[0] animated:animatedCopy, v6.n128_f64[0]];
   }
 
-  [(CPSOverlayViewController *)v23 setNavigationBarHidden:0 animated:1, v6.n128_f64[0]];
-  v17 = [(CPSOverlayViewController *)v23 transitionCoordinator];
-  if (v17)
+  [(CPSOverlayViewController *)selfCopy setNavigationBarHidden:0 animated:1, v6.n128_f64[0]];
+  transitionCoordinator = [(CPSOverlayViewController *)selfCopy transitionCoordinator];
+  if (transitionCoordinator)
   {
-    v7 = v17;
+    v7 = transitionCoordinator;
     v16 = MEMORY[0x277D82BE0](v19);
     [v7 animateAlongsideTransition:? completion:?];
     objc_storeStrong(&v16, 0);
@@ -687,8 +687,8 @@ void __59__CPSOverlayViewController_popTemplateAnimated_completion___block_invok
     (*(v19 + 2))();
   }
 
-  [(CPSOverlayViewController *)v23 _updateVisibilityView];
-  objc_storeStrong(&v17, 0);
+  [(CPSOverlayViewController *)selfCopy _updateVisibilityView];
+  objc_storeStrong(&transitionCoordinator, 0);
   v18 = 0;
 LABEL_14:
   objc_storeStrong(&v19, 0);
@@ -704,53 +704,53 @@ void __93__CPSOverlayViewController_pushTemplateViewController_animated_presenta
   objc_storeStrong(location, 0);
 }
 
-- (void)presentTemplateViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentTemplateViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
+  objc_storeStrong(location, controller);
+  animatedCopy = animated;
   v13 = 0;
-  objc_storeStrong(&v13, a5);
-  v10 = [(CPSOverlayViewController *)v16 view];
-  v11 = [v10 isHidden];
-  *&v5 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-  if (v11)
+  objc_storeStrong(&v13, completion);
+  view = [(CPSOverlayViewController *)selfCopy view];
+  isHidden = [view isHidden];
+  *&v5 = MEMORY[0x277D82BD8](view).n128_u64[0];
+  if (isHidden)
   {
-    v7 = [(CPSOverlayViewController *)v16 view];
-    [v7 setHidden:0];
-    MEMORY[0x277D82BD8](v7);
+    view2 = [(CPSOverlayViewController *)selfCopy view];
+    [view2 setHidden:0];
+    MEMORY[0x277D82BD8](view2);
   }
 
   v6 = objc_alloc(MEMORY[0x277D757A0]);
   v12 = [v6 initWithRootViewController:location[0]];
-  [v12 setOverrideUserInterfaceStyle:{-[CPSOverlayViewController overrideUserInterfaceStyle](v16, "overrideUserInterfaceStyle")}];
+  [v12 setOverrideUserInterfaceStyle:{-[CPSOverlayViewController overrideUserInterfaceStyle](selfCopy, "overrideUserInterfaceStyle")}];
   [v12 setModalPresentationStyle:0];
-  [(CPSOverlayViewController *)v16 presentViewController:v12 animated:v14 completion:v13];
+  [(CPSOverlayViewController *)selfCopy presentViewController:v12 animated:animatedCopy completion:v13];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)presentActionSheetTemplate:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentActionSheetTemplate:(id)template animated:(BOOL)animated completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
+  objc_storeStrong(location, template);
+  animatedCopy = animated;
   v13 = 0;
-  objc_storeStrong(&v13, a5);
-  v9 = [(CPSOverlayViewController *)v16 view];
-  v10 = [v9 isHidden];
-  v5 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-  if (v10)
+  objc_storeStrong(&v13, completion);
+  view = [(CPSOverlayViewController *)selfCopy view];
+  isHidden = [view isHidden];
+  v5 = MEMORY[0x277D82BD8](view).n128_u64[0];
+  if (isHidden)
   {
-    v6 = [(CPSOverlayViewController *)v16 view];
-    [v6 setHidden:0];
-    v5 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+    view2 = [(CPSOverlayViewController *)selfCopy view];
+    [view2 setHidden:0];
+    v5 = MEMORY[0x277D82BD8](view2).n128_u64[0];
   }
 
   v12 = [CPSActionSheetController actionSheetControllerWithActionSheet:location[0], *&v5];
@@ -764,7 +764,7 @@ void __93__CPSOverlayViewController_pushTemplateViewController_animated_presenta
     }
 
     objc_storeStrong(&oslog, 0);
-    [(CPSOverlayViewController *)v16 presentViewController:v12 animated:v14 completion:v13];
+    [(CPSOverlayViewController *)selfCopy presentViewController:v12 animated:animatedCopy completion:v13];
   }
 
   objc_storeStrong(&v12, 0);
@@ -774,20 +774,20 @@ void __93__CPSOverlayViewController_pushTemplateViewController_animated_presenta
 
 - (id)presentedTemplateViewController
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
-  v8 = [(CPSOverlayViewController *)self presentedViewController];
-  MEMORY[0x277D82BD8](v8);
-  if (v8)
+  presentedViewController = [(CPSOverlayViewController *)self presentedViewController];
+  MEMORY[0x277D82BD8](presentedViewController);
+  if (presentedViewController)
   {
     v4 = objc_opt_class();
-    v5 = [(CPSOverlayViewController *)v10 presentedViewController];
-    v9[0] = CPSSafeCast_2(v4, v5);
-    MEMORY[0x277D82BD8](v5);
+    presentedViewController2 = [(CPSOverlayViewController *)selfCopy presentedViewController];
+    v9[0] = CPSSafeCast_2(v4, presentedViewController2);
+    MEMORY[0x277D82BD8](presentedViewController2);
     v6 = objc_opt_class();
-    v7 = [v9[0] topViewController];
-    v11 = CPSSafeCast_2(v6, v7);
-    MEMORY[0x277D82BD8](v7);
+    topViewController = [v9[0] topViewController];
+    v11 = CPSSafeCast_2(v6, topViewController);
+    MEMORY[0x277D82BD8](topViewController);
     objc_storeStrong(v9, 0);
   }
 
@@ -801,20 +801,20 @@ void __93__CPSOverlayViewController_pushTemplateViewController_animated_presenta
   return v2;
 }
 
-- (void)dismissTemplateAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissTemplateAnimated:(BOOL)animated completion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  animatedCopy = animated;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v7 = [(CPSOverlayViewController *)v12 visibleViewController];
+  objc_storeStrong(&location, completion);
+  visibleViewController = [(CPSOverlayViewController *)selfCopy visibleViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v4 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  if (isKindOfClass & 1) != 0 || (v5 = [(CPSOverlayViewController *)v12 visibleViewController], objc_opt_class(), v6 = objc_opt_isKindOfClass(), v4 = MEMORY[0x277D82BD8](v5).n128_u64[0], (v6))
+  v4 = MEMORY[0x277D82BD8](visibleViewController).n128_u64[0];
+  if (isKindOfClass & 1) != 0 || (v5 = [(CPSOverlayViewController *)selfCopy visibleViewController], objc_opt_class(), v6 = objc_opt_isKindOfClass(), v4 = MEMORY[0x277D82BD8](v5).n128_u64[0], (v6))
   {
-    [(CPSOverlayViewController *)v12 dismissViewControllerAnimated:v10 completion:location, *&v4];
+    [(CPSOverlayViewController *)selfCopy dismissViewControllerAnimated:animatedCopy completion:location, *&v4];
   }
 
   objc_storeStrong(&location, 0);
@@ -824,20 +824,20 @@ void __93__CPSOverlayViewController_pushTemplateViewController_animated_presenta
 {
   v6[2] = self;
   v6[1] = a2;
-  v4 = [(CPSOverlayViewController *)self topViewController];
-  v6[0] = CPSSafeProtocolCast(&unk_2855D67D8, v4);
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  v5 = [v6[0] associatedTemplate];
+  topViewController = [(CPSOverlayViewController *)self topViewController];
+  v6[0] = CPSSafeProtocolCast(&unk_2855D67D8, topViewController);
+  *&v2 = MEMORY[0x277D82BD8](topViewController).n128_u64[0];
+  associatedTemplate = [v6[0] associatedTemplate];
   objc_storeStrong(v6, 0);
 
-  return v5;
+  return associatedTemplate;
 }
 
 - (id)templates
 {
-  v3 = [(CPSOverlayViewController *)self viewControllers];
-  v4 = [v3 cps_map:&__block_literal_global_183];
-  MEMORY[0x277D82BD8](v3);
+  viewControllers = [(CPSOverlayViewController *)self viewControllers];
+  v4 = [viewControllers cps_map:&__block_literal_global_183];
+  MEMORY[0x277D82BD8](viewControllers);
 
   return v4;
 }
@@ -858,40 +858,40 @@ id __37__CPSOverlayViewController_templates__block_invoke(void *a1, void *a2)
 
 - (BOOL)restoresFocusAfterTransition
 {
-  v3 = [(CPSOverlayViewController *)self topViewController];
-  v4 = [v3 restoresFocusAfterTransition];
-  MEMORY[0x277D82BD8](v3);
-  return v4;
+  topViewController = [(CPSOverlayViewController *)self topViewController];
+  restoresFocusAfterTransition = [topViewController restoresFocusAfterTransition];
+  MEMORY[0x277D82BD8](topViewController);
+  return restoresFocusAfterTransition;
 }
 
 - (id)preferredFocusEnvironments
 {
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
   v11[0] = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([(CPSOverlayViewController *)v12 usePreferredItemOnNextUpdate])
+  if ([(CPSOverlayViewController *)selfCopy usePreferredItemOnNextUpdate])
   {
-    [(CPSOverlayViewController *)v12 setUsePreferredItemOnNextUpdate:0];
-    [(CPSOverlayViewController *)v12 _resetRightHandDriveGuide];
-    v10 = [(CPSOverlayViewController *)v12 preferredFocusItem];
-    *&v2 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-    if (v10)
+    [(CPSOverlayViewController *)selfCopy setUsePreferredItemOnNextUpdate:0];
+    [(CPSOverlayViewController *)selfCopy _resetRightHandDriveGuide];
+    preferredFocusItem = [(CPSOverlayViewController *)selfCopy preferredFocusItem];
+    *&v2 = MEMORY[0x277D82BD8](preferredFocusItem).n128_u64[0];
+    if (preferredFocusItem)
     {
-      v9 = [(CPSOverlayViewController *)v12 preferredFocusItem];
+      preferredFocusItem2 = [(CPSOverlayViewController *)selfCopy preferredFocusItem];
       [v11[0] addObject:?];
-      MEMORY[0x277D82BD8](v9);
+      MEMORY[0x277D82BD8](preferredFocusItem2);
     }
   }
 
-  v8 = [(CPSOverlayViewController *)v12 topViewController];
-  *&v3 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-  if (v8)
+  topViewController = [(CPSOverlayViewController *)selfCopy topViewController];
+  *&v3 = MEMORY[0x277D82BD8](topViewController).n128_u64[0];
+  if (topViewController)
   {
-    v7 = [(CPSOverlayViewController *)v12 topViewController];
-    v6 = [v7 preferredFocusEnvironments];
+    topViewController2 = [(CPSOverlayViewController *)selfCopy topViewController];
+    preferredFocusEnvironments = [topViewController2 preferredFocusEnvironments];
     [v11[0] addObjectsFromArray:?];
-    MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](preferredFocusEnvironments);
+    MEMORY[0x277D82BD8](topViewController2);
   }
 
   v5 = MEMORY[0x277D82BE0](v11[0]);
@@ -900,81 +900,81 @@ id __37__CPSOverlayViewController_templates__block_invoke(void *a1, void *a2)
   return v5;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
-  v14 = [location[0] nextFocusedView];
-  v16 = [v14 _window];
-  v13 = [(CPSOverlayViewController *)v23 view];
-  v15 = [v13 _window];
-  MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v16);
-  *&v4 = MEMORY[0x277D82BD8](v14).n128_u64[0];
-  if (v16 != v15)
+  objc_storeStrong(&v21, coordinator);
+  nextFocusedView = [location[0] nextFocusedView];
+  _window = [nextFocusedView _window];
+  view = [(CPSOverlayViewController *)selfCopy view];
+  _window2 = [view _window];
+  MEMORY[0x277D82BD8](_window2);
+  MEMORY[0x277D82BD8](view);
+  MEMORY[0x277D82BD8](_window);
+  *&v4 = MEMORY[0x277D82BD8](nextFocusedView).n128_u64[0];
+  if (_window != _window2)
   {
-    [(CPSOverlayViewController *)v23 setUsePreferredItemOnNextUpdate:1, v4];
-    if ([(CPSOverlayViewController *)v23 _useRightHandDriveFocusGuide])
+    [(CPSOverlayViewController *)selfCopy setUsePreferredItemOnNextUpdate:1, v4];
+    if ([(CPSOverlayViewController *)selfCopy _useRightHandDriveFocusGuide])
     {
-      v11 = [(CPSOverlayViewController *)v23 preferredFocusItem];
-      v24[0] = v11;
+      preferredFocusItem = [(CPSOverlayViewController *)selfCopy preferredFocusItem];
+      v24[0] = preferredFocusItem;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
-      v9 = [(CPSOverlayViewController *)v23 rightHandDriveGuide];
-      [(UIFocusGuide *)v9 setPreferredFocusEnvironments:v10];
-      MEMORY[0x277D82BD8](v9);
+      rightHandDriveGuide = [(CPSOverlayViewController *)selfCopy rightHandDriveGuide];
+      [(UIFocusGuide *)rightHandDriveGuide setPreferredFocusEnvironments:v10];
+      MEMORY[0x277D82BD8](rightHandDriveGuide);
       MEMORY[0x277D82BD8](v10);
-      MEMORY[0x277D82BD8](v11);
+      MEMORY[0x277D82BD8](preferredFocusItem);
     }
   }
 
-  v7 = [location[0] nextFocusedView];
+  nextFocusedView2 = [location[0] nextFocusedView];
   v19 = 0;
   v17 = 0;
   v8 = 0;
-  if (v7)
+  if (nextFocusedView2)
   {
-    v20 = [location[0] nextFocusedView];
+    nextFocusedView3 = [location[0] nextFocusedView];
     v19 = 1;
-    v18 = [(CPSOverlayViewController *)v23 view];
+    view2 = [(CPSOverlayViewController *)selfCopy view];
     v17 = 1;
-    v8 = [v20 isDescendantOfView:?];
+    v8 = [nextFocusedView3 isDescendantOfView:?];
   }
 
   if (v17)
   {
-    MEMORY[0x277D82BD8](v18);
+    MEMORY[0x277D82BD8](view2);
   }
 
   if (v19)
   {
-    MEMORY[0x277D82BD8](v20);
+    MEMORY[0x277D82BD8](nextFocusedView3);
   }
 
-  *&v5 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+  *&v5 = MEMORY[0x277D82BD8](nextFocusedView2).n128_u64[0];
   if (v8)
   {
-    v6 = [location[0] nextFocusedItem];
-    [(CPSOverlayViewController *)v23 setPreferredFocusItem:?];
-    MEMORY[0x277D82BD8](v6);
+    nextFocusedItem = [location[0] nextFocusedItem];
+    [(CPSOverlayViewController *)selfCopy setPreferredFocusItem:?];
+    MEMORY[0x277D82BD8](nextFocusedItem);
   }
 
   objc_storeStrong(&v21, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)_firstFocusProvidingForViewController:(id)a3
+- (id)_firstFocusProvidingForViewController:(id)controller
 {
   v19 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   if ([location[0] conformsToProtocol:&unk_2855E1980])
   {
     v17 = MEMORY[0x277D82BE0](location[0]);
@@ -1000,7 +1000,7 @@ id __37__CPSOverlayViewController_templates__block_invoke(void *a1, void *a2)
         }
 
         v13 = *(__b[1] + 8 * v7);
-        v11 = [(CPSOverlayViewController *)v16 _firstFocusProvidingForViewController:v13];
+        v11 = [(CPSOverlayViewController *)selfCopy _firstFocusProvidingForViewController:v13];
         if (v11)
         {
           v17 = MEMORY[0x277D82BE0](v11);
@@ -1054,47 +1054,47 @@ LABEL_13:
 - (id)_linearFocusMovementSequences
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v26 = self;
+  selfCopy = self;
   v25[1] = a2;
   v11 = objc_opt_class();
-  v12 = [(CPSOverlayViewController *)v26 topViewController];
-  v25[0] = CPSSafeCast_2(v11, v12);
-  v13 = [(CPSOverlayViewController *)v26 topViewController];
-  v14 = [v13 conformsToProtocol:&unk_2855E1980];
-  *&v2 = MEMORY[0x277D82BD8](v13).n128_u64[0];
+  topViewController = [(CPSOverlayViewController *)selfCopy topViewController];
+  v25[0] = CPSSafeCast_2(v11, topViewController);
+  topViewController2 = [(CPSOverlayViewController *)selfCopy topViewController];
+  v14 = [topViewController2 conformsToProtocol:&unk_2855E1980];
+  *&v2 = MEMORY[0x277D82BD8](topViewController2).n128_u64[0];
   if (v14)
   {
     v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v9 = objc_opt_class();
-    v10 = [(CPSOverlayViewController *)v26 navigationBar];
-    v23 = CPSSafeCast_2(v9, v10);
-    v22 = [v23 _linearFocusItems];
-    if ([v22 count])
+    navigationBar = [(CPSOverlayViewController *)selfCopy navigationBar];
+    v23 = CPSSafeCast_2(v9, navigationBar);
+    _linearFocusItems = [v23 _linearFocusItems];
+    if ([_linearFocusItems count])
     {
-      [v24 addObjectsFromArray:v22];
+      [v24 addObjectsFromArray:_linearFocusItems];
     }
 
-    v8 = [(CPSOverlayViewController *)v26 topViewController];
-    v21 = CPSSafeProtocolCast(&unk_2855E1980, v8);
-    v20 = [v21 _linearFocusItems];
-    if ([v20 count])
+    topViewController3 = [(CPSOverlayViewController *)selfCopy topViewController];
+    v21 = CPSSafeProtocolCast(&unk_2855E1980, topViewController3);
+    _linearFocusItems2 = [v21 _linearFocusItems];
+    if ([_linearFocusItems2 count])
     {
-      [v24 addObjectsFromArray:v20];
+      [v24 addObjectsFromArray:_linearFocusItems2];
     }
 
     v19 = [objc_alloc(MEMORY[0x277D75F88]) initWithItems:v24 loops:0];
     if ((objc_opt_respondsToSelector() & 1) == 0 || ([v21 useRightHandDriveFocusGuide] & 1) == 0)
     {
-      [(CPSOverlayViewController *)v26 _resetRightHandDriveGuide];
+      [(CPSOverlayViewController *)selfCopy _resetRightHandDriveGuide];
     }
 
     v29[0] = v19;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
     v18 = 1;
     objc_storeStrong(&v19, 0);
-    objc_storeStrong(&v20, 0);
+    objc_storeStrong(&_linearFocusItems2, 0);
     objc_storeStrong(&v21, 0);
-    objc_storeStrong(&v22, 0);
+    objc_storeStrong(&_linearFocusItems, 0);
     objc_storeStrong(&v23, 0);
     objc_storeStrong(&v24, 0);
   }
@@ -1106,21 +1106,21 @@ LABEL_13:
       goto LABEL_18;
     }
 
-    v7 = [v25[0] selectedViewController];
-    v17 = [(CPSOverlayViewController *)v26 _firstFocusProvidingForViewController:?];
-    MEMORY[0x277D82BD8](v7);
+    selectedViewController = [v25[0] selectedViewController];
+    v17 = [(CPSOverlayViewController *)selfCopy _firstFocusProvidingForViewController:?];
+    MEMORY[0x277D82BD8](selectedViewController);
     if (v17)
     {
       v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v5 = [v25[0] tabBarButtons];
+      tabBarButtons = [v25[0] tabBarButtons];
       [v16 addObjectsFromArray:?];
-      v6 = [v17 _linearFocusItems];
+      _linearFocusItems3 = [v17 _linearFocusItems];
       [v16 addObjectsFromArray:?];
-      MEMORY[0x277D82BD8](v6);
+      MEMORY[0x277D82BD8](_linearFocusItems3);
       v15 = [objc_alloc(MEMORY[0x277D75F88]) initWithItems:v16 loops:0];
       if ((objc_opt_respondsToSelector() & 1) == 0 || ([v17 useRightHandDriveFocusGuide] & 1) == 0)
       {
-        [(CPSOverlayViewController *)v26 _resetRightHandDriveGuide];
+        [(CPSOverlayViewController *)selfCopy _resetRightHandDriveGuide];
       }
 
       v28 = v15;
@@ -1156,14 +1156,14 @@ LABEL_18:
   v3 = 0;
   if ([(CPSOverlayViewController *)self pid]> 0)
   {
-    v5 = [(CPSOverlayViewController *)self templates];
+    templates = [(CPSOverlayViewController *)self templates];
     v4 = 1;
-    v3 = [v5 count] != 0;
+    v3 = [templates count] != 0;
   }
 
   if (v4)
   {
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](templates);
   }
 
   return v3;
@@ -1172,33 +1172,33 @@ LABEL_18:
 - (void)_updateVisibilityView
 {
   v72 = *MEMORY[0x277D85DE8];
-  v67 = self;
+  selfCopy = self;
   v66 = a2;
-  v41 = [(CPSOverlayViewController *)self visibilityView];
-  v65 = [(_UINonHostingVisibilityPropagationView *)v41 pid];
-  v64 = [(CPSOverlayViewController *)v67 pid];
-  v2 = [(CPSOverlayViewController *)v67 visibilityView];
-  v63 = v2 != 0;
-  v62 = [(CPSOverlayViewController *)v67 _needsVisibilityView];
+  visibilityView = [(CPSOverlayViewController *)self visibilityView];
+  v65 = [(_UINonHostingVisibilityPropagationView *)visibilityView pid];
+  v64 = [(CPSOverlayViewController *)selfCopy pid];
+  visibilityView2 = [(CPSOverlayViewController *)selfCopy visibilityView];
+  v63 = visibilityView2 != 0;
+  _needsVisibilityView = [(CPSOverlayViewController *)selfCopy _needsVisibilityView];
   v61 = v65 != v64;
-  v42 = [(CPSOverlayViewController *)v67 environmentProvider];
-  v60 = [(CPSVisibilityEnvironmentProviding *)v42 visibilityEnvironmentIdentifier];
-  v3 = MEMORY[0x277D82BD8](v42).n128_u64[0];
-  if (!v60)
+  environmentProvider = [(CPSOverlayViewController *)selfCopy environmentProvider];
+  visibilityEnvironmentIdentifier = [(CPSVisibilityEnvironmentProviding *)environmentProvider visibilityEnvironmentIdentifier];
+  v3 = MEMORY[0x277D82BD8](environmentProvider).n128_u64[0];
+  if (!visibilityEnvironmentIdentifier)
   {
     v35 = MEMORY[0x277CCACA8];
-    v40 = [(CPSOverlayViewController *)v67 view];
-    v39 = [v40 window];
-    v38 = [v39 windowScene];
-    v37 = [v38 _FBSScene];
-    v36 = [v37 identifier];
-    v60 = [v35 stringWithFormat:@"CPTUIH-Overlay-%d-%@", v64, v36];
+    view = [(CPSOverlayViewController *)selfCopy view];
+    window = [view window];
+    windowScene = [window windowScene];
+    _FBSScene = [windowScene _FBSScene];
+    identifier = [_FBSScene identifier];
+    visibilityEnvironmentIdentifier = [v35 stringWithFormat:@"CPTUIH-Overlay-%d-%@", v64, identifier];
     MEMORY[0x277D82BD8](0);
-    MEMORY[0x277D82BD8](v36);
-    MEMORY[0x277D82BD8](v37);
-    MEMORY[0x277D82BD8](v38);
-    MEMORY[0x277D82BD8](v39);
-    v3 = MEMORY[0x277D82BD8](v40).n128_u64[0];
+    MEMORY[0x277D82BD8](identifier);
+    MEMORY[0x277D82BD8](_FBSScene);
+    MEMORY[0x277D82BD8](windowScene);
+    MEMORY[0x277D82BD8](window);
+    v3 = MEMORY[0x277D82BD8](view).n128_u64[0];
   }
 
   v57 = 0;
@@ -1206,21 +1206,21 @@ LABEL_18:
   v34 = 0;
   if (v63)
   {
-    v58 = [(CPSOverlayViewController *)v67 visibilityView];
+    visibilityView3 = [(CPSOverlayViewController *)selfCopy visibilityView];
     v57 = 1;
-    v56 = [(_UINonHostingVisibilityPropagationView *)v58 environmentIdentifier];
+    environmentIdentifier = [(_UINonHostingVisibilityPropagationView *)visibilityView3 environmentIdentifier];
     v55 = 1;
-    v34 = [v60 isEqualToString:?];
+    v34 = [visibilityEnvironmentIdentifier isEqualToString:?];
   }
 
   if (v55)
   {
-    MEMORY[0x277D82BD8](v56);
+    MEMORY[0x277D82BD8](environmentIdentifier);
   }
 
   if (v57)
   {
-    MEMORY[0x277D82BD8](v58);
+    MEMORY[0x277D82BD8](visibilityView3);
   }
 
   v59 = v34 & 1;
@@ -1235,7 +1235,7 @@ LABEL_18:
   }
 
   v54 = v33;
-  if (v62 || !v63)
+  if (_needsVisibilityView || !v63)
   {
     if (v61 && v63)
     {
@@ -1248,7 +1248,7 @@ LABEL_18:
       }
 
       objc_storeStrong(&v51, 0);
-      [(CPSOverlayViewController *)v67 _invalidateVisibilityView];
+      [(CPSOverlayViewController *)selfCopy _invalidateVisibilityView];
     }
   }
 
@@ -1263,10 +1263,10 @@ LABEL_18:
     }
 
     objc_storeStrong(&location, 0);
-    [(CPSOverlayViewController *)v67 _invalidateVisibilityView];
+    [(CPSOverlayViewController *)selfCopy _invalidateVisibilityView];
   }
 
-  if (v62 && (v54 & 1) == 0)
+  if (_needsVisibilityView && (v54 & 1) == 0)
   {
     v49 = CarPlaySupportGeneralLogging();
     v48 = OS_LOG_TYPE_DEFAULT;
@@ -1277,66 +1277,66 @@ LABEL_18:
     }
 
     objc_storeStrong(&v49, 0);
-    v31 = [(CPSOverlayViewController *)v67 view];
-    v32 = [v31 window];
-    MEMORY[0x277D82BD8](v32);
-    MEMORY[0x277D82BD8](v31);
-    if (v32)
+    view2 = [(CPSOverlayViewController *)selfCopy view];
+    window2 = [view2 window];
+    MEMORY[0x277D82BD8](window2);
+    MEMORY[0x277D82BD8](view2);
+    if (window2)
     {
       v4 = objc_alloc(MEMORY[0x277D76130]);
-      v47 = [v4 initWithFrame:v64 pid:v60 environmentIdentifier:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+      v47 = [v4 initWithFrame:v64 pid:visibilityEnvironmentIdentifier environmentIdentifier:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
       [v47 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [(CPSOverlayViewController *)v67 setVisibilityView:v47];
-      v10 = [(CPSOverlayViewController *)v67 view];
-      v9 = [v10 window];
-      [v9 insertSubview:v47 atIndex:0];
-      MEMORY[0x277D82BD8](v9);
-      *&v5 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-      v30 = [(CPSOverlayViewController *)v67 view];
-      v29 = [v30 window];
-      v28 = [v29 topAnchor];
-      v27 = [v47 topAnchor];
-      v26 = [v28 constraintEqualToAnchor:?];
+      [(CPSOverlayViewController *)selfCopy setVisibilityView:v47];
+      view3 = [(CPSOverlayViewController *)selfCopy view];
+      window3 = [view3 window];
+      [window3 insertSubview:v47 atIndex:0];
+      MEMORY[0x277D82BD8](window3);
+      *&v5 = MEMORY[0x277D82BD8](view3).n128_u64[0];
+      view4 = [(CPSOverlayViewController *)selfCopy view];
+      window4 = [view4 window];
+      topAnchor = [window4 topAnchor];
+      topAnchor2 = [v47 topAnchor];
+      v26 = [topAnchor constraintEqualToAnchor:?];
       v68[0] = v26;
-      v25 = [(CPSOverlayViewController *)v67 view];
-      v24 = [v25 window];
-      v23 = [v24 leftAnchor];
-      v22 = [v47 leftAnchor];
-      v21 = [v23 constraintEqualToAnchor:?];
+      view5 = [(CPSOverlayViewController *)selfCopy view];
+      window5 = [view5 window];
+      leftAnchor = [window5 leftAnchor];
+      leftAnchor2 = [v47 leftAnchor];
+      v21 = [leftAnchor constraintEqualToAnchor:?];
       v68[1] = v21;
-      v20 = [(CPSOverlayViewController *)v67 view];
-      v19 = [v20 window];
-      v18 = [v19 rightAnchor];
-      v17 = [v47 rightAnchor];
-      v16 = [v18 constraintEqualToAnchor:?];
+      view6 = [(CPSOverlayViewController *)selfCopy view];
+      window6 = [view6 window];
+      rightAnchor = [window6 rightAnchor];
+      rightAnchor2 = [v47 rightAnchor];
+      v16 = [rightAnchor constraintEqualToAnchor:?];
       v68[2] = v16;
-      v15 = [(CPSOverlayViewController *)v67 view];
-      v14 = [v15 window];
-      v13 = [v14 bottomAnchor];
-      v12 = [v47 bottomAnchor];
-      v11 = [v13 constraintEqualToAnchor:?];
+      view7 = [(CPSOverlayViewController *)selfCopy view];
+      window7 = [view7 window];
+      bottomAnchor = [window7 bottomAnchor];
+      bottomAnchor2 = [v47 bottomAnchor];
+      v11 = [bottomAnchor constraintEqualToAnchor:?];
       v68[3] = v11;
       v46 = [MEMORY[0x277CBEA60] arrayWithObjects:v68 count:4];
       MEMORY[0x277D82BD8](v11);
-      MEMORY[0x277D82BD8](v12);
-      MEMORY[0x277D82BD8](v13);
-      MEMORY[0x277D82BD8](v14);
-      MEMORY[0x277D82BD8](v15);
+      MEMORY[0x277D82BD8](bottomAnchor2);
+      MEMORY[0x277D82BD8](bottomAnchor);
+      MEMORY[0x277D82BD8](window7);
+      MEMORY[0x277D82BD8](view7);
       MEMORY[0x277D82BD8](v16);
-      MEMORY[0x277D82BD8](v17);
-      MEMORY[0x277D82BD8](v18);
-      MEMORY[0x277D82BD8](v19);
-      MEMORY[0x277D82BD8](v20);
+      MEMORY[0x277D82BD8](rightAnchor2);
+      MEMORY[0x277D82BD8](rightAnchor);
+      MEMORY[0x277D82BD8](window6);
+      MEMORY[0x277D82BD8](view6);
       MEMORY[0x277D82BD8](v21);
-      MEMORY[0x277D82BD8](v22);
-      MEMORY[0x277D82BD8](v23);
-      MEMORY[0x277D82BD8](v24);
-      MEMORY[0x277D82BD8](v25);
+      MEMORY[0x277D82BD8](leftAnchor2);
+      MEMORY[0x277D82BD8](leftAnchor);
+      MEMORY[0x277D82BD8](window5);
+      MEMORY[0x277D82BD8](view5);
       MEMORY[0x277D82BD8](v26);
-      MEMORY[0x277D82BD8](v27);
-      MEMORY[0x277D82BD8](v28);
-      MEMORY[0x277D82BD8](v29);
-      *&v6 = MEMORY[0x277D82BD8](v30).n128_u64[0];
+      MEMORY[0x277D82BD8](topAnchor2);
+      MEMORY[0x277D82BD8](topAnchor);
+      MEMORY[0x277D82BD8](window4);
+      *&v6 = MEMORY[0x277D82BD8](view4).n128_u64[0];
       [MEMORY[0x277CCAAD0] activateConstraints:{v46, v6}];
       objc_storeStrong(&v46, 0);
       objc_storeStrong(&v47, 0);
@@ -1358,7 +1358,7 @@ LABEL_18:
     }
   }
 
-  objc_storeStrong(&v60, 0);
+  objc_storeStrong(&visibilityEnvironmentIdentifier, 0);
 }
 
 - (UIFocusItem)preferredFocusItem

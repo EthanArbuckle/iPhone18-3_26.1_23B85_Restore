@@ -1,71 +1,71 @@
 @interface HMAccessorySetupRequest
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMAccessorySetupRequest)init;
-- (HMAccessorySetupRequest)initWithCoder:(id)a3;
+- (HMAccessorySetupRequest)initWithCoder:(id)coder;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMAccessorySetupRequest
 
 - (NSArray)attributeDescriptions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(HMAccessorySetupRequest *)self payload];
+  array = [MEMORY[0x1E695DF70] array];
+  payload = [(HMAccessorySetupRequest *)self payload];
 
-  if (v4)
+  if (payload)
   {
     v5 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v6 = [(HMAccessorySetupRequest *)self payload];
-    v7 = [v5 initWithName:@"Payload" value:v6];
-    [v3 addObject:v7];
+    payload2 = [(HMAccessorySetupRequest *)self payload];
+    v7 = [v5 initWithName:@"Payload" value:payload2];
+    [array addObject:v7];
   }
 
-  v8 = [(HMAccessorySetupRequest *)self matterPayload];
+  matterPayload = [(HMAccessorySetupRequest *)self matterPayload];
 
-  if (v8)
+  if (matterPayload)
   {
     v9 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v10 = [(HMAccessorySetupRequest *)self matterPayload];
-    v11 = [v9 initWithName:@"Matter Payload" value:v10];
-    [v3 addObject:v11];
+    matterPayload2 = [(HMAccessorySetupRequest *)self matterPayload];
+    v11 = [v9 initWithName:@"Matter Payload" value:matterPayload2];
+    [array addObject:v11];
   }
 
-  v12 = [(HMAccessorySetupRequest *)self homeUniqueIdentifier];
+  homeUniqueIdentifier = [(HMAccessorySetupRequest *)self homeUniqueIdentifier];
 
-  if (v12)
+  if (homeUniqueIdentifier)
   {
     v13 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v14 = [(HMAccessorySetupRequest *)self homeUniqueIdentifier];
-    v15 = [v13 initWithName:@"Home Unique Identifier" value:v14];
-    [v3 addObject:v15];
+    homeUniqueIdentifier2 = [(HMAccessorySetupRequest *)self homeUniqueIdentifier];
+    v15 = [v13 initWithName:@"Home Unique Identifier" value:homeUniqueIdentifier2];
+    [array addObject:v15];
   }
 
-  v16 = [(HMAccessorySetupRequest *)self suggestedRoomUniqueIdentifier];
+  suggestedRoomUniqueIdentifier = [(HMAccessorySetupRequest *)self suggestedRoomUniqueIdentifier];
 
-  if (v16)
+  if (suggestedRoomUniqueIdentifier)
   {
     v17 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v18 = [(HMAccessorySetupRequest *)self suggestedRoomUniqueIdentifier];
-    v19 = [v17 initWithName:@"Suggested Room Unique Identifier" value:v18];
-    [v3 addObject:v19];
+    suggestedRoomUniqueIdentifier2 = [(HMAccessorySetupRequest *)self suggestedRoomUniqueIdentifier];
+    v19 = [v17 initWithName:@"Suggested Room Unique Identifier" value:suggestedRoomUniqueIdentifier2];
+    [array addObject:v19];
   }
 
-  v20 = [(HMAccessorySetupRequest *)self suggestedAccessoryName];
+  suggestedAccessoryName = [(HMAccessorySetupRequest *)self suggestedAccessoryName];
 
-  if (v20)
+  if (suggestedAccessoryName)
   {
     v21 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v22 = [(HMAccessorySetupRequest *)self suggestedAccessoryName];
-    v23 = [v21 initWithName:@"Suggested Accessory Name" value:v22];
-    [v3 addObject:v23];
+    suggestedAccessoryName2 = [(HMAccessorySetupRequest *)self suggestedAccessoryName];
+    v23 = [v21 initWithName:@"Suggested Accessory Name" value:suggestedAccessoryName2];
+    [array addObject:v23];
   }
 
-  v24 = [v3 copy];
+  v24 = [array copy];
 
   return v24;
 }
@@ -77,10 +77,10 @@
   return [v2 shortDescription];
 }
 
-- (HMAccessorySetupRequest)initWithCoder:(id)a3
+- (HMAccessorySetupRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMASR.ck.payload"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMASR.ck.payload"];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -99,10 +99,10 @@
 
   v7 = v6;
   _Block_object_dispose(&v15, 8);
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMASR.ck.matterPayload"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMASR.ck.homeUniqueIdentifier"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMASR.ck.suggestedRoomUniqueIdentifier"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMASR.ck.suggestedAccessoryName"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMASR.ck.matterPayload"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMASR.ck.homeUniqueIdentifier"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMASR.ck.suggestedRoomUniqueIdentifier"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMASR.ck.suggestedAccessoryName"];
   v12 = [(HMAccessorySetupRequest *)self init];
   [(HMAccessorySetupRequest *)v12 setPayload:v5];
   [(HMAccessorySetupRequest *)v12 setMatterPayload:v8];
@@ -113,73 +113,73 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMAccessorySetupRequest *)self payload];
-  [v4 encodeObject:v5 forKey:@"HMASR.ck.payload"];
+  coderCopy = coder;
+  payload = [(HMAccessorySetupRequest *)self payload];
+  [coderCopy encodeObject:payload forKey:@"HMASR.ck.payload"];
 
-  v6 = [(HMAccessorySetupRequest *)self matterPayload];
-  [v4 encodeObject:v6 forKey:@"HMASR.ck.matterPayload"];
+  matterPayload = [(HMAccessorySetupRequest *)self matterPayload];
+  [coderCopy encodeObject:matterPayload forKey:@"HMASR.ck.matterPayload"];
 
-  v7 = [(HMAccessorySetupRequest *)self homeUniqueIdentifier];
-  [v4 encodeObject:v7 forKey:@"HMASR.ck.homeUniqueIdentifier"];
+  homeUniqueIdentifier = [(HMAccessorySetupRequest *)self homeUniqueIdentifier];
+  [coderCopy encodeObject:homeUniqueIdentifier forKey:@"HMASR.ck.homeUniqueIdentifier"];
 
-  v8 = [(HMAccessorySetupRequest *)self suggestedRoomUniqueIdentifier];
-  [v4 encodeObject:v8 forKey:@"HMASR.ck.suggestedRoomUniqueIdentifier"];
+  suggestedRoomUniqueIdentifier = [(HMAccessorySetupRequest *)self suggestedRoomUniqueIdentifier];
+  [coderCopy encodeObject:suggestedRoomUniqueIdentifier forKey:@"HMASR.ck.suggestedRoomUniqueIdentifier"];
 
-  v9 = [(HMAccessorySetupRequest *)self suggestedAccessoryName];
-  [v4 encodeObject:v9 forKey:@"HMASR.ck.suggestedAccessoryName"];
+  suggestedAccessoryName = [(HMAccessorySetupRequest *)self suggestedAccessoryName];
+  [coderCopy encodeObject:suggestedAccessoryName forKey:@"HMASR.ck.suggestedAccessoryName"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[HMAccessorySetupRequest allocWithZone:?]];
-  v5 = [(HMAccessorySetupRequest *)self payload];
-  [(HMAccessorySetupRequest *)v4 setPayload:v5];
+  payload = [(HMAccessorySetupRequest *)self payload];
+  [(HMAccessorySetupRequest *)v4 setPayload:payload];
 
-  v6 = [(HMAccessorySetupRequest *)self matterPayload];
-  [(HMAccessorySetupRequest *)v4 setMatterPayload:v6];
+  matterPayload = [(HMAccessorySetupRequest *)self matterPayload];
+  [(HMAccessorySetupRequest *)v4 setMatterPayload:matterPayload];
 
-  v7 = [(HMAccessorySetupRequest *)self homeUniqueIdentifier];
-  [(HMAccessorySetupRequest *)v4 setHomeUniqueIdentifier:v7];
+  homeUniqueIdentifier = [(HMAccessorySetupRequest *)self homeUniqueIdentifier];
+  [(HMAccessorySetupRequest *)v4 setHomeUniqueIdentifier:homeUniqueIdentifier];
 
-  v8 = [(HMAccessorySetupRequest *)self suggestedRoomUniqueIdentifier];
-  [(HMAccessorySetupRequest *)v4 setSuggestedRoomUniqueIdentifier:v8];
+  suggestedRoomUniqueIdentifier = [(HMAccessorySetupRequest *)self suggestedRoomUniqueIdentifier];
+  [(HMAccessorySetupRequest *)v4 setSuggestedRoomUniqueIdentifier:suggestedRoomUniqueIdentifier];
 
-  v9 = [(HMAccessorySetupRequest *)self suggestedAccessoryName];
-  [(HMAccessorySetupRequest *)v4 setSuggestedAccessoryName:v9];
+  suggestedAccessoryName = [(HMAccessorySetupRequest *)self suggestedAccessoryName];
+  [(HMAccessorySetupRequest *)v4 setSuggestedAccessoryName:suggestedAccessoryName];
 
   return v4;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMAccessorySetupRequest *)self payload];
-  v4 = [v3 hash];
+  payload = [(HMAccessorySetupRequest *)self payload];
+  v4 = [payload hash];
 
-  v5 = [(HMAccessorySetupRequest *)self matterPayload];
-  v6 = [v5 hash] ^ v4;
+  matterPayload = [(HMAccessorySetupRequest *)self matterPayload];
+  v6 = [matterPayload hash] ^ v4;
 
-  v7 = [(HMAccessorySetupRequest *)self homeUniqueIdentifier];
-  v8 = [v7 hash];
+  homeUniqueIdentifier = [(HMAccessorySetupRequest *)self homeUniqueIdentifier];
+  v8 = [homeUniqueIdentifier hash];
 
-  v9 = [(HMAccessorySetupRequest *)self suggestedRoomUniqueIdentifier];
-  v10 = v6 ^ v8 ^ [v9 hash];
+  suggestedRoomUniqueIdentifier = [(HMAccessorySetupRequest *)self suggestedRoomUniqueIdentifier];
+  v10 = v6 ^ v8 ^ [suggestedRoomUniqueIdentifier hash];
 
-  v11 = [(HMAccessorySetupRequest *)self suggestedAccessoryName];
-  v12 = [v11 hash];
+  suggestedAccessoryName = [(HMAccessorySetupRequest *)self suggestedAccessoryName];
+  v12 = [suggestedAccessoryName hash];
 
   return v10 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -193,8 +193,8 @@
     goto LABEL_10;
   }
 
-  v7 = [(HMAccessorySetupRequest *)self payload];
-  v8 = [v6 payload];
+  payload = [(HMAccessorySetupRequest *)self payload];
+  payload2 = [v6 payload];
   v9 = HMFEqualObjects();
 
   if (!v9)
@@ -202,8 +202,8 @@
     goto LABEL_10;
   }
 
-  v10 = [(HMAccessorySetupRequest *)self matterPayload];
-  v11 = [v6 matterPayload];
+  matterPayload = [(HMAccessorySetupRequest *)self matterPayload];
+  matterPayload2 = [v6 matterPayload];
   v12 = HMFEqualObjects();
 
   if (!v12)
@@ -211,8 +211,8 @@
     goto LABEL_10;
   }
 
-  v13 = [(HMAccessorySetupRequest *)self homeUniqueIdentifier];
-  v14 = [v6 homeUniqueIdentifier];
+  homeUniqueIdentifier = [(HMAccessorySetupRequest *)self homeUniqueIdentifier];
+  homeUniqueIdentifier2 = [v6 homeUniqueIdentifier];
   v15 = HMFEqualObjects();
 
   if (!v15)
@@ -220,14 +220,14 @@
     goto LABEL_10;
   }
 
-  v16 = [(HMAccessorySetupRequest *)self suggestedRoomUniqueIdentifier];
-  v17 = [v6 suggestedRoomUniqueIdentifier];
+  suggestedRoomUniqueIdentifier = [(HMAccessorySetupRequest *)self suggestedRoomUniqueIdentifier];
+  suggestedRoomUniqueIdentifier2 = [v6 suggestedRoomUniqueIdentifier];
   v18 = HMFEqualObjects();
 
   if (v18)
   {
-    v19 = [(HMAccessorySetupRequest *)self suggestedAccessoryName];
-    v20 = [v6 suggestedAccessoryName];
+    suggestedAccessoryName = [(HMAccessorySetupRequest *)self suggestedAccessoryName];
+    suggestedAccessoryName2 = [v6 suggestedAccessoryName];
     v21 = HMFEqualObjects();
   }
 

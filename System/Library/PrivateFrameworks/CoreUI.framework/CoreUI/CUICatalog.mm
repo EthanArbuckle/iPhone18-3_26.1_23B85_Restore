@@ -1,125 +1,125 @@
 @interface CUICatalog
-+ (id)bestMatchUsingImages:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(unint64_t)a7 layoutDirection:(unint64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10;
-+ (id)bestMatchUsingObjects:(id)a3 getAttributeValueUsing:(id)a4 scaleFactor:(double)a5 deviceIdiom:(int64_t)a6 deviceSubtype:(unint64_t)a7 displayGamut:(int64_t)a8 deploymentTarget:(int64_t)a9 layoutDirection:(int64_t)a10 sizeClassHorizontal:(int64_t)a11 sizeClassVertical:(int64_t)a12 memoryClass:(int64_t)a13 graphicsFeatureSetClass:(int64_t)a14 graphicsFallBackOrder:(id)a15 deviceSubtypeFallBackOrder:(id)a16 platform:(int64_t)a17;
-+ (id)defaultUICatalogForBundle:(id)a3;
-- ($01BB1521EC52D44A8E7628F5261DCEC8)styledInsetsForStylePresetName:(id)a3 styleConfiguration:(id)a4 foregroundColor:(CGColor *)a5 scale:(double)a6;
-- (BOOL)_doStyledQuartzDrawingInContext:(CGContext *)a3 inBounds:(CGRect)a4 stylePresetName:(id)a5 styleConfiguration:(id)a6 drawingHandler:(id)a7;
-- (BOOL)_effectStyle:(unint64_t *)a3 state:(int64_t *)a4 presentationState:(int64_t *)a5 value:(int64_t *)a6 resolution:(unint64_t *)a7 dimension1:(unint64_t *)a8 appearance:(int64_t *)a9 fromStyleConfiguration:(id)a10;
-- (BOOL)canGetShapeEffectRenditionWithKey:(id)a3;
-- (BOOL)containsLookupForName:(id)a3;
-- (BOOL)copyVectorGlyphsWithNames:(id)a3 toFile:(id)a4;
-- (BOOL)drawGlyphs:(const unsigned __int16 *)a3 atPositions:(const CGPoint *)a4 inContext:(CGContext *)a5 withFont:(__CTFont *)a6 count:(unint64_t)a7 stylePresetName:(id)a8 styleConfiguration:(id)a9 foregroundColor:(CGColor *)a10;
-- (BOOL)fillStyledPath:(CGPath *)a3 inContext:(CGContext *)a4 stylePresetName:(id)a5 styleConfiguration:(id)a6;
-- (BOOL)fillStyledRect:(CGRect)a3 inContext:(CGContext *)a4 stylePresetName:(id)a5 styleConfiguration:(id)a6;
-- (BOOL)hasStylePresetWithName:(id)a3 styleConfiguration:(id)a4;
-- (BOOL)strokeStyledPath:(CGPath *)a3 inContext:(CGContext *)a4 stylePresetName:(id)a5 styleConfiguration:(id)a6;
-- (CGColor)equivalentForegroundColorForStylePresetWithName:(id)a3 styleConfiguration:(id)a4;
-- (CGColor)equivalentForegroundColorForStylePresetWithName:(id)a3 styleConfiguration:(id)a4 baseForegroundColor:(CGColor *)a5;
-- (CGPDFDocument)pdfDocumentWithName:(id)a3 appearanceName:(id)a4;
++ (id)bestMatchUsingImages:(id)images scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(unint64_t)gamut layoutDirection:(unint64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0;
++ (id)bestMatchUsingObjects:(id)objects getAttributeValueUsing:(id)using scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut deploymentTarget:(int64_t)target layoutDirection:(int64_t)self0 sizeClassHorizontal:(int64_t)self1 sizeClassVertical:(int64_t)self2 memoryClass:(int64_t)self3 graphicsFeatureSetClass:(int64_t)self4 graphicsFallBackOrder:(id)self5 deviceSubtypeFallBackOrder:(id)self6 platform:(int64_t)self7;
++ (id)defaultUICatalogForBundle:(id)bundle;
+- ($01BB1521EC52D44A8E7628F5261DCEC8)styledInsetsForStylePresetName:(id)name styleConfiguration:(id)configuration foregroundColor:(CGColor *)color scale:(double)scale;
+- (BOOL)_doStyledQuartzDrawingInContext:(CGContext *)context inBounds:(CGRect)bounds stylePresetName:(id)name styleConfiguration:(id)configuration drawingHandler:(id)handler;
+- (BOOL)_effectStyle:(unint64_t *)style state:(int64_t *)state presentationState:(int64_t *)presentationState value:(int64_t *)value resolution:(unint64_t *)resolution dimension1:(unint64_t *)dimension1 appearance:(int64_t *)appearance fromStyleConfiguration:(id)self0;
+- (BOOL)canGetShapeEffectRenditionWithKey:(id)key;
+- (BOOL)containsLookupForName:(id)name;
+- (BOOL)copyVectorGlyphsWithNames:(id)names toFile:(id)file;
+- (BOOL)drawGlyphs:(const unsigned __int16 *)glyphs atPositions:(const CGPoint *)positions inContext:(CGContext *)context withFont:(__CTFont *)font count:(unint64_t)count stylePresetName:(id)name styleConfiguration:(id)configuration foregroundColor:(CGColor *)self0;
+- (BOOL)fillStyledPath:(CGPath *)path inContext:(CGContext *)context stylePresetName:(id)name styleConfiguration:(id)configuration;
+- (BOOL)fillStyledRect:(CGRect)rect inContext:(CGContext *)context stylePresetName:(id)name styleConfiguration:(id)configuration;
+- (BOOL)hasStylePresetWithName:(id)name styleConfiguration:(id)configuration;
+- (BOOL)strokeStyledPath:(CGPath *)path inContext:(CGContext *)context stylePresetName:(id)name styleConfiguration:(id)configuration;
+- (CGColor)equivalentForegroundColorForStylePresetWithName:(id)name styleConfiguration:(id)configuration;
+- (CGColor)equivalentForegroundColorForStylePresetWithName:(id)name styleConfiguration:(id)configuration baseForegroundColor:(CGColor *)color;
+- (CGPDFDocument)pdfDocumentWithName:(id)name appearanceName:(id)appearanceName;
 - (CUICatalog)init;
-- (CUICatalog)initWithBytes:(const void *)a3 length:(unint64_t)a4 error:(id *)a5;
-- (CUICatalog)initWithName:(id)a3 fromBundle:(id)a4 error:(id *)a5;
-- (CUICatalog)initWithURL:(id)a3 error:(id *)a4;
-- (id)_appearancefallback_colorWithName:(id)a3 displayGamut:(int64_t)a4 deviceIdiom:(int64_t)a5 appearanceName:(id)a6;
-- (id)_appearancefallback_gradientWithName:(id)a3 displayGamut:(int64_t)a4 deviceIdiom:(int64_t)a5 appearanceName:(id)a6;
-- (id)_baseAtlasContentsKeyForName:(id)a3;
-- (id)_baseAtlasKeyForName:(id)a3;
-- (id)_baseColorKeyForName:(id)a3;
-- (id)_baseGradientKeyForName:(id)a3;
-- (id)_baseImageKeyForName:(id)a3;
-- (id)_baseKeyForName:(id)a3;
-- (id)_baseLayeredIconKeyForName:(id)a3;
-- (id)_baseModelForKeyForName:(id)a3;
-- (id)_baseMultisizeImageSetKeyForName:(id)a3;
-- (id)_baseRecognitionGroupImageSetKeyForName:(id)a3;
-- (id)_baseRecognitionObjectKeyForName:(id)a3;
-- (id)_baseStackKeyForName:(id)a3;
-- (id)_baseTextureKeyForName:(id)a3;
-- (id)_baseVectorGlyphForName:(id)a3;
-- (id)_baseVectorRenditionKey:(id)a3;
-- (id)_dataWithName:(id)a3 deviceIdiom:(int64_t)a4 deviceSubtype:(unint64_t)a5 memoryClass:(unint64_t)a6 graphicsClass:(unint64_t)a7 appearanceIdentifier:(int64_t)a8 graphicsFallBackOrder:(id)a9 deviceSubtypeFallBackOrder:(id)a10;
-- (id)_defaultLayerStackWithScaleFactor:(double)a3 deviceIdiom:(int64_t)a4 deviceSubtype:(unint64_t)a5 sizeClassHorizontal:(int64_t)a6 sizeClassVertical:(int64_t)a7;
-- (id)_defaultNamedAssetWithScaleFactor:(double)a3 deviceIdiom:(int64_t)a4 deviceSubtype:(unint64_t)a5 sizeClassHorizontal:(int64_t)a6 sizeClassVertical:(int64_t)a7;
-- (id)_imageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 memoryClass:(unint64_t)a11 graphicsClass:(unint64_t)a12 appearanceIdentifier:(int64_t)a13 graphicsFallBackOrder:(id)a14 deviceSubtypeFallBackOrder:(id)a15 locale:(id)a16;
-- (id)_layerStackWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 sizeClassHorizontal:(int64_t)a7 sizeClassVertical:(int64_t)a8;
-- (id)_modelWithName:(id)a3;
-- (id)_nameForAppearanceIdentifier:(int64_t)a3;
-- (id)_nameForLocalizationIdentifier:(int64_t)a3;
-- (id)_namedImageAtlasWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 displayGamut:(int64_t)a6 deviceSubtype:(unint64_t)a7 memoryClass:(unint64_t)a8 graphicsClass:(unint64_t)a9 graphicsFallBackOrder:(id)a10 deviceSubtypeFallBackOrder:(id)a11;
-- (id)_namedLookupWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 appearanceName:(id)a11 locale:(id)a12;
-- (id)_namedTextureWithName:(id)a3 scaleFactor:(double)a4 appearanceName:(id)a5;
-- (id)_namedTextureWithName:(id)a3 scaleFactor:(double)a4 displayGamut:(int64_t)a5 appearanceName:(id)a6;
-- (id)_namedVectorImageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 appearanceIdentifier:(int64_t)a11 locale:(id)a12;
-- (id)_private_resolvedRenditionKeyFromThemeRef:(void *)a3 withBaseKey:(id)a4 scaleFactor:(uint64_t)a5 deviceIdiom:(void *)a6 deviceSubtype:(uint64_t)a7 displayGamut:(uint64_t)a8 layoutDirection:(double)a9 sizeClassHorizontal:(uint64_t)a10 sizeClassVertical:(uint64_t)a11 memoryClass:(uint64_t)a12 graphicsClass:(void *)a13 graphicsFallBackOrder:(void *)a14 deviceSubtypeFallBackOrder:(uint64_t)a15 localizationIdentifier:(uint64_t)a16 adjustRenditionKeyWithBlock:;
-- (id)_recognitionImageWithName:(id)a3;
-- (id)_recognitionObjectWithName:(id)a3;
-- (id)_resolvedRenditionKeyForName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 memoryClass:(unint64_t)a11 graphicsClass:(unint64_t)a12 graphicsFallBackOrder:(id)a13 deviceSubtypeFallBackOrder:(id)a14 locale:(id)a15 withBaseKeySelector:(SEL)a16 adjustRenditionKeyWithBlock:(id)a17;
-- (id)_resolvedRenditionKeyFromThemeRef:(unint64_t)a3 withBaseKey:(id)a4 scaleFactor:(double)a5 deviceIdiom:(int64_t)a6 deviceSubtype:(unint64_t)a7 displayGamut:(int64_t)a8 layoutDirection:(int64_t)a9 sizeClassHorizontal:(int64_t)a10 sizeClassVertical:(int64_t)a11 memoryClass:(unint64_t)a12 graphicsClass:(unint64_t)a13 graphicsFallBackOrder:(id)a14 deviceSubtypeFallBackOrder:(id)a15 locale:(id)a16 adjustRenditionKeyWithBlock:(id)a17;
+- (CUICatalog)initWithBytes:(const void *)bytes length:(unint64_t)length error:(id *)error;
+- (CUICatalog)initWithName:(id)name fromBundle:(id)bundle error:(id *)error;
+- (CUICatalog)initWithURL:(id)l error:(id *)error;
+- (id)_appearancefallback_colorWithName:(id)name displayGamut:(int64_t)gamut deviceIdiom:(int64_t)idiom appearanceName:(id)appearanceName;
+- (id)_appearancefallback_gradientWithName:(id)name displayGamut:(int64_t)gamut deviceIdiom:(int64_t)idiom appearanceName:(id)appearanceName;
+- (id)_baseAtlasContentsKeyForName:(id)name;
+- (id)_baseAtlasKeyForName:(id)name;
+- (id)_baseColorKeyForName:(id)name;
+- (id)_baseGradientKeyForName:(id)name;
+- (id)_baseImageKeyForName:(id)name;
+- (id)_baseKeyForName:(id)name;
+- (id)_baseLayeredIconKeyForName:(id)name;
+- (id)_baseModelForKeyForName:(id)name;
+- (id)_baseMultisizeImageSetKeyForName:(id)name;
+- (id)_baseRecognitionGroupImageSetKeyForName:(id)name;
+- (id)_baseRecognitionObjectKeyForName:(id)name;
+- (id)_baseStackKeyForName:(id)name;
+- (id)_baseTextureKeyForName:(id)name;
+- (id)_baseVectorGlyphForName:(id)name;
+- (id)_baseVectorRenditionKey:(id)key;
+- (id)_dataWithName:(id)name deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype memoryClass:(unint64_t)class graphicsClass:(unint64_t)graphicsClass appearanceIdentifier:(int64_t)identifier graphicsFallBackOrder:(id)order deviceSubtypeFallBackOrder:(id)self0;
+- (id)_defaultLayerStackWithScaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical;
+- (id)_defaultNamedAssetWithScaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical;
+- (id)_imageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 memoryClass:(unint64_t)self1 graphicsClass:(unint64_t)self2 appearanceIdentifier:(int64_t)self3 graphicsFallBackOrder:(id)self4 deviceSubtypeFallBackOrder:(id)self5 locale:(id)self6;
+- (id)_layerStackWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical;
+- (id)_modelWithName:(id)name;
+- (id)_nameForAppearanceIdentifier:(int64_t)identifier;
+- (id)_nameForLocalizationIdentifier:(int64_t)identifier;
+- (id)_namedImageAtlasWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom displayGamut:(int64_t)gamut deviceSubtype:(unint64_t)subtype memoryClass:(unint64_t)class graphicsClass:(unint64_t)graphicsClass graphicsFallBackOrder:(id)self0 deviceSubtypeFallBackOrder:(id)self1;
+- (id)_namedLookupWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 appearanceName:(id)self1 locale:(id)self2;
+- (id)_namedTextureWithName:(id)name scaleFactor:(double)factor appearanceName:(id)appearanceName;
+- (id)_namedTextureWithName:(id)name scaleFactor:(double)factor displayGamut:(int64_t)gamut appearanceName:(id)appearanceName;
+- (id)_namedVectorImageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 appearanceIdentifier:(int64_t)self1 locale:(id)self2;
+- (id)_private_resolvedRenditionKeyFromThemeRef:(void *)ref withBaseKey:(id)key scaleFactor:(uint64_t)factor deviceIdiom:(void *)idiom deviceSubtype:(uint64_t)subtype displayGamut:(uint64_t)gamut layoutDirection:(double)direction sizeClassHorizontal:(uint64_t)self0 sizeClassVertical:(uint64_t)self1 memoryClass:(uint64_t)self2 graphicsClass:(void *)self3 graphicsFallBackOrder:(void *)self4 deviceSubtypeFallBackOrder:(uint64_t)self5 localizationIdentifier:(uint64_t)self6 adjustRenditionKeyWithBlock:;
+- (id)_recognitionImageWithName:(id)name;
+- (id)_recognitionObjectWithName:(id)name;
+- (id)_resolvedRenditionKeyForName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 memoryClass:(unint64_t)self1 graphicsClass:(unint64_t)self2 graphicsFallBackOrder:(id)self3 deviceSubtypeFallBackOrder:(id)self4 locale:(id)self5 withBaseKeySelector:(SEL)self6 adjustRenditionKeyWithBlock:(id)self7;
+- (id)_resolvedRenditionKeyFromThemeRef:(unint64_t)ref withBaseKey:(id)key scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)self0 sizeClassVertical:(int64_t)self1 memoryClass:(unint64_t)self2 graphicsClass:(unint64_t)self3 graphicsFallBackOrder:(id)self4 deviceSubtypeFallBackOrder:(id)self5 locale:(id)self6 adjustRenditionKeyWithBlock:(id)self7;
 - (id)allImageNames;
 - (id)appearanceNames;
-- (id)colorWithName:(id)a3 displayGamut:(int64_t)a4 appearanceName:(id)a5;
-- (id)colorWithName:(id)a3 displayGamut:(int64_t)a4 deviceIdiom:(int64_t)a5 appearanceName:(id)a6;
-- (id)compositingFilterForStylePresetWithName:(id)a3 styleConfiguration:(id)a4 foregroundColor:(CGColor *)a5;
-- (id)copiedVectorGlyphsWithNames:(id)a3 outputFile:(id)a4;
-- (id)dataForVectorGlyphsWithNames:(id)a3;
-- (id)dataWithName:(id)a3 appearanceName:(id)a4;
-- (id)dataWithName:(id)a3 deviceIdiom:(int64_t)a4 deviceSubtype:(unint64_t)a5 memoryClass:(unint64_t)a6 graphicsClass:(unint64_t)a7 appearanceIdentifier:(int64_t)a8 graphicsFallBackOrder:(id)a9 deviceSubtypeFallBackOrder:(id)a10;
+- (id)colorWithName:(id)name displayGamut:(int64_t)gamut appearanceName:(id)appearanceName;
+- (id)colorWithName:(id)name displayGamut:(int64_t)gamut deviceIdiom:(int64_t)idiom appearanceName:(id)appearanceName;
+- (id)compositingFilterForStylePresetWithName:(id)name styleConfiguration:(id)configuration foregroundColor:(CGColor *)color;
+- (id)copiedVectorGlyphsWithNames:(id)names outputFile:(id)file;
+- (id)dataForVectorGlyphsWithNames:(id)names;
+- (id)dataWithName:(id)name appearanceName:(id)appearanceName;
+- (id)dataWithName:(id)name deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype memoryClass:(unint64_t)class graphicsClass:(unint64_t)graphicsClass appearanceIdentifier:(int64_t)identifier graphicsFallBackOrder:(id)order deviceSubtypeFallBackOrder:(id)self0;
 - (id)defaultIconLayerStack;
-- (id)defaultLayerStackWithScaleFactor:(double)a3 deviceIdiom:(int64_t)a4 deviceSubtype:(unint64_t)a5 sizeClassHorizontal:(int64_t)a6 sizeClassVertical:(int64_t)a7;
-- (id)defaultNamedAssetWithScaleFactor:(double)a3 deviceIdiom:(int64_t)a4 deviceSubtype:(unint64_t)a5 sizeClassHorizontal:(int64_t)a6 sizeClassVertical:(int64_t)a7;
-- (id)gradientWithName:(id)a3 displayGamut:(int64_t)a4 deviceIdiom:(int64_t)a5 appearanceName:(id)a6;
-- (id)iconImageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 desiredSize:(CGSize)a11 appearanceName:(id)a12;
-- (id)iconLayerStackWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(unint64_t)a7 appearanceName:(id)a8 locale:(id)a9;
-- (id)imageByStylingImage:(CGImage *)a3 stylePresetName:(id)a4 styleConfiguration:(id)a5 foregroundColor:(CGColor *)a6 scale:(double)a7;
-- (id)imageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 appearanceName:(id)a6;
-- (id)imageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 appearanceName:(id)a11 locale:(id)a12;
-- (id)imageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 memoryClass:(unint64_t)a11 graphicsClass:(unint64_t)a12 appearanceIdentifier:(int64_t)a13 graphicsFallBackOrder:(id)a14 deviceSubtypeFallBackOrder:(id)a15 locale:(id)a16;
-- (id)imageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 sizeClassHorizontal:(int64_t)a7 sizeClassVertical:(int64_t)a8;
-- (id)imageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 sizeClassHorizontal:(int64_t)a7 sizeClassVertical:(int64_t)a8 appearanceName:(id)a9;
-- (id)imageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 layoutDirection:(int64_t)a6 locale:(id)a7 adjustRenditionKeyWithBlock:(id)a8;
-- (id)imageWithName:(id)a3 scaleFactor:(double)a4 locale:(id)a5;
-- (id)imagesWithName:(id)a3;
-- (id)layerStackWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 sizeClassHorizontal:(int64_t)a7 sizeClassVertical:(int64_t)a8;
+- (id)defaultLayerStackWithScaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical;
+- (id)defaultNamedAssetWithScaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical;
+- (id)gradientWithName:(id)name displayGamut:(int64_t)gamut deviceIdiom:(int64_t)idiom appearanceName:(id)appearanceName;
+- (id)iconImageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 desiredSize:(CGSize)self1 appearanceName:(id)self2;
+- (id)iconLayerStackWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(unint64_t)gamut appearanceName:(id)appearanceName locale:(id)locale;
+- (id)imageByStylingImage:(CGImage *)image stylePresetName:(id)name styleConfiguration:(id)configuration foregroundColor:(CGColor *)color scale:(double)scale;
+- (id)imageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom appearanceName:(id)appearanceName;
+- (id)imageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 appearanceName:(id)self1 locale:(id)self2;
+- (id)imageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 memoryClass:(unint64_t)self1 graphicsClass:(unint64_t)self2 appearanceIdentifier:(int64_t)self3 graphicsFallBackOrder:(id)self4 deviceSubtypeFallBackOrder:(id)self5 locale:(id)self6;
+- (id)imageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical;
+- (id)imageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical appearanceName:(id)appearanceName;
+- (id)imageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom layoutDirection:(int64_t)direction locale:(id)locale adjustRenditionKeyWithBlock:(id)block;
+- (id)imageWithName:(id)name scaleFactor:(double)factor locale:(id)locale;
+- (id)imagesWithName:(id)name;
+- (id)layerStackWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical;
 - (id)localObjectCache;
 - (id)lookupCache;
-- (id)modelWithName:(id)a3;
-- (id)namedImageAtlasWithName:(id)a3 scaleFactor:(double)a4;
-- (id)namedImageAtlasWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5;
-- (id)namedImageAtlasWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 displayGamut:(int64_t)a6 deviceSubtype:(unint64_t)a7 memoryClass:(unint64_t)a8 graphicsClass:(unint64_t)a9 graphicsFallBackOrder:(id)a10 deviceSubtypeFallBackOrder:(id)a11;
-- (id)namedImageAtlasWithName:(id)a3 scaleFactor:(double)a4 displayGamut:(unint64_t)a5;
-- (id)namedLookupWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 appearanceName:(id)a11 locale:(id)a12;
-- (id)namedLookupWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 sizeClassHorizontal:(int64_t)a7 sizeClassVertical:(int64_t)a8;
-- (id)namedRecognitionGroupWithName:(id)a3;
-- (id)namedTextureWithName:(id)a3 scaleFactor:(double)a4 appearanceName:(id)a5;
-- (id)namedTextureWithName:(id)a3 scaleFactor:(double)a4 displayGamut:(int64_t)a5 appearanceName:(id)a6;
-- (id)namedVectorGlyphWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 layoutDirection:(int64_t)a6 glyphContinuousSize:(double)a7 glyphContinuousWeight:(double)a8 glyphPointSize:(double)a9 appearanceName:(id)a10 locale:(id)a11;
-- (id)namedVectorImageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 appearanceName:(id)a11 locale:(id)a12;
-- (id)namedVectorImageWithName:(id)a3 scaleFactor:(double)a4 displayGamut:(int64_t)a5 layoutDirection:(int64_t)a6 appearanceName:(id)a7 locale:(id)a8;
+- (id)modelWithName:(id)name;
+- (id)namedImageAtlasWithName:(id)name scaleFactor:(double)factor;
+- (id)namedImageAtlasWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom;
+- (id)namedImageAtlasWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom displayGamut:(int64_t)gamut deviceSubtype:(unint64_t)subtype memoryClass:(unint64_t)class graphicsClass:(unint64_t)graphicsClass graphicsFallBackOrder:(id)self0 deviceSubtypeFallBackOrder:(id)self1;
+- (id)namedImageAtlasWithName:(id)name scaleFactor:(double)factor displayGamut:(unint64_t)gamut;
+- (id)namedLookupWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 appearanceName:(id)self1 locale:(id)self2;
+- (id)namedLookupWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical;
+- (id)namedRecognitionGroupWithName:(id)name;
+- (id)namedTextureWithName:(id)name scaleFactor:(double)factor appearanceName:(id)appearanceName;
+- (id)namedTextureWithName:(id)name scaleFactor:(double)factor displayGamut:(int64_t)gamut appearanceName:(id)appearanceName;
+- (id)namedVectorGlyphWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom layoutDirection:(int64_t)direction glyphContinuousSize:(double)size glyphContinuousWeight:(double)weight glyphPointSize:(double)pointSize appearanceName:(id)self0 locale:(id)self1;
+- (id)namedVectorImageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 appearanceName:(id)self1 locale:(id)self2;
+- (id)namedVectorImageWithName:(id)name scaleFactor:(double)factor displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction appearanceName:(id)appearanceName locale:(id)locale;
 - (id)negativeCache;
-- (id)newShapeEffectPresetForStylePresetName:(id)a3 styleConfiguration:(id)a4;
-- (id)newShapeEffectPresetWithRenditionKey:(id)a3;
-- (id)newShapeEffectStackForStylePresetName:(id)a3 styleConfiguration:(id)a4 foregroundColor:(CGColor *)a5;
-- (id)newTextEffectStackForStylePresetName:(id)a3 styleConfiguration:(id)a4 foregroundColor:(CGColor *)a5;
-- (id)parentNamedImageAtlasForImageNamed:(id)a3 scaleFactor:(double)a4 displayGamut:(unint64_t)a5;
-- (id)parentNamedImageAtlastForImageNamed:(id)a3 scaleFactor:(double)a4;
-- (id)renditionKeyForShapeEffectPresetForStylePresetName:(id)a3 styleConfiguration:(id)a4;
-- (id)renditionKeyForShapeEffectPresetWithStyleID:(unint64_t)a3 state:(int64_t)a4 presentationState:(int64_t)a5 value:(int64_t)a6 resolution:(unint64_t)a7 dimension1:(unint64_t)a8;
-- (id)renditionKeyForShapeEffectPresetWithStylePresetName:(id)a3 state:(int64_t)a4 presentationState:(int64_t)a5 value:(int64_t)a6 resolution:(unint64_t)a7 dimension1:(unint64_t)a8 appearance:(int64_t)a9;
-- (id)textStyleWithName:(id)a3 deviceIdiom:(int64_t)a4 deviceSubtype:(unint64_t)a5 displayGamut:(int64_t)a6 sizeClassHorizontal:(int64_t)a7 sizeClassVertical:(int64_t)a8 appearanceName:(id)a9;
-- (id)textStyleWithName:(id)a3 displayGamut:(int64_t)a4 appearanceName:(id)a5;
-- (int)blendModeForStylePresetWithName:(id)a3 styleConfiguration:(id)a4;
+- (id)newShapeEffectPresetForStylePresetName:(id)name styleConfiguration:(id)configuration;
+- (id)newShapeEffectPresetWithRenditionKey:(id)key;
+- (id)newShapeEffectStackForStylePresetName:(id)name styleConfiguration:(id)configuration foregroundColor:(CGColor *)color;
+- (id)newTextEffectStackForStylePresetName:(id)name styleConfiguration:(id)configuration foregroundColor:(CGColor *)color;
+- (id)parentNamedImageAtlasForImageNamed:(id)named scaleFactor:(double)factor displayGamut:(unint64_t)gamut;
+- (id)parentNamedImageAtlastForImageNamed:(id)named scaleFactor:(double)factor;
+- (id)renditionKeyForShapeEffectPresetForStylePresetName:(id)name styleConfiguration:(id)configuration;
+- (id)renditionKeyForShapeEffectPresetWithStyleID:(unint64_t)d state:(int64_t)state presentationState:(int64_t)presentationState value:(int64_t)value resolution:(unint64_t)resolution dimension1:(unint64_t)dimension1;
+- (id)renditionKeyForShapeEffectPresetWithStylePresetName:(id)name state:(int64_t)state presentationState:(int64_t)presentationState value:(int64_t)value resolution:(unint64_t)resolution dimension1:(unint64_t)dimension1 appearance:(int64_t)appearance;
+- (id)textStyleWithName:(id)name deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical appearanceName:(id)appearanceName;
+- (id)textStyleWithName:(id)name displayGamut:(int64_t)gamut appearanceName:(id)appearanceName;
+- (int)blendModeForStylePresetWithName:(id)name styleConfiguration:(id)configuration;
 - (int64_t)platform;
-- (unint64_t)_storageRefForRendition:(id)a3 representsODRContent:(BOOL *)a4;
-- (void)_resolveInterpolationSourceRenditionKeysUltralight:(id *)a3 regular:(id *)a4 black:(id *)a5 forName:(id)a6 scaleFactor:(double)a7 deviceIdiom:(int64_t)a8 deviceSubtype:(unint64_t)a9 displayGamut:(int64_t)a10 layoutDirection:(int64_t)a11 sizeClassHorizontal:(int64_t)a12 sizeClassVertical:(int64_t)a13 memoryClass:(unint64_t)a14 graphicsClass:(unint64_t)a15 graphicsFallBackOrder:(id)a16 deviceSubtypeFallBackOrder:(id)a17 appearanceIdentifier:(int64_t)a18 locale:(id)a19;
-- (void)_resourceUnPinnedNotification:(id)a3;
-- (void)_setPreferredLocalization:(id)a3;
+- (unint64_t)_storageRefForRendition:(id)rendition representsODRContent:(BOOL *)content;
+- (void)_resolveInterpolationSourceRenditionKeysUltralight:(id *)ultralight regular:(id *)regular black:(id *)black forName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)self0 layoutDirection:(int64_t)self1 sizeClassHorizontal:(int64_t)self2 sizeClassVertical:(int64_t)self3 memoryClass:(unint64_t)self4 graphicsClass:(unint64_t)self5 graphicsFallBackOrder:(id)self6 deviceSubtypeFallBackOrder:(id)self7 appearanceIdentifier:(int64_t)self8 locale:(id)self9;
+- (void)_resourceUnPinnedNotification:(id)notification;
+- (void)_setPreferredLocalization:(id)localization;
 - (void)_sharedSetup;
-- (void)_vibrantColorMatrixBrightnessSaturationForColor:(CGColor *)a3 saturation:(double *)a4 brightness:(double *)a5;
+- (void)_vibrantColorMatrixBrightnessSaturationForColor:(CGColor *)color saturation:(double *)saturation brightness:(double *)brightness;
 - (void)clearCachedImageResources;
 - (void)dealloc;
-- (void)enumerateNamedLookupsUsingBlock:(id)a3;
-- (void)finalizeNamedVectorGlyphLookupWithResult:(id)a3 name:(id)a4 glyphContinuousSize:(double)a5 glyphContinuousWeight:(double)a6 pointSize:(double)a7;
-- (void)preloadNamedAtlasWithScaleFactor:(double)a3 andNames:(id)a4 completionHandler:(id)a5;
+- (void)enumerateNamedLookupsUsingBlock:(id)block;
+- (void)finalizeNamedVectorGlyphLookupWithResult:(id)result name:(id)name glyphContinuousSize:(double)size glyphContinuousWeight:(double)weight pointSize:(double)pointSize;
+- (void)preloadNamedAtlasWithScaleFactor:(double)factor andNames:(id)names completionHandler:(id)handler;
 @end
 
 @implementation CUICatalog
@@ -127,12 +127,12 @@
 - (id)appearanceNames
 {
   v2 = _LookupStructuredThemeProvider(self->_storageRef, a2);
-  v3 = [v2 appearances];
-  if (!v3 || (result = [v3 allKeys]) == 0)
+  appearances = [v2 appearances];
+  if (!appearances || (result = [appearances allKeys]) == 0)
   {
-    v5 = [v2 defaultAppearanceName];
+    defaultAppearanceName = [v2 defaultAppearanceName];
 
-    return [NSArray arrayWithObject:v5];
+    return [NSArray arrayWithObject:defaultAppearanceName];
   }
 
   return result;
@@ -273,9 +273,9 @@ id __35__CUICatalog_defaultIconLayerStack__block_invoke(uint64_t a1, uint64_t a2
 {
   if (self->_storageRef != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [(CUICatalog *)self _themeStore];
-    _CUILog(3, "[CUICatalog clearCachedImageResources] on themestore '%@'", v5, v6, v7, v8, v9, v10, v4);
-    [v4 clearRenditionCache];
+    _themeStore = [(CUICatalog *)self _themeStore];
+    _CUILog(3, "[CUICatalog clearCachedImageResources] on themestore '%@'", v5, v6, v7, v8, v9, v10, _themeStore);
+    [_themeStore clearRenditionCache];
     [(NSCache *)self->_lookupCache removeAllObjects];
     negativeCache = self->_negativeCache;
 
@@ -292,10 +292,10 @@ id __35__CUICatalog_defaultIconLayerStack__block_invoke(uint64_t a1, uint64_t a2
   return v2;
 }
 
-+ (id)defaultUICatalogForBundle:(id)a3
++ (id)defaultUICatalogForBundle:(id)bundle
 {
-  v3 = a3;
-  if (a3 || (v3 = +[NSBundle mainBundle]) != 0)
+  bundleCopy = bundle;
+  if (bundle || (bundleCopy = +[NSBundle mainBundle]) != 0)
   {
     if (__onceToken_1 != -1)
     {
@@ -312,14 +312,14 @@ id __35__CUICatalog_defaultIconLayerStack__block_invoke(uint64_t a1, uint64_t a2
     v5[1] = 3221225472;
     v5[2] = __40__CUICatalog_defaultUICatalogForBundle___block_invoke_5;
     v5[3] = &unk_1E7257CF8;
-    v5[4] = v3;
+    v5[4] = bundleCopy;
     v5[5] = &v6;
     dispatch_sync(__cacheQueue, v5);
-    v3 = v7[5];
+    bundleCopy = v7[5];
     _Block_object_dispose(&v6, 8);
   }
 
-  return v3;
+  return bundleCopy;
 }
 
 id __40__CUICatalog_defaultUICatalogForBundle___block_invoke()
@@ -349,16 +349,16 @@ CUICatalog *__40__CUICatalog_defaultUICatalogForBundle___block_invoke_5(uint64_t
   return result;
 }
 
-+ (id)bestMatchUsingObjects:(id)a3 getAttributeValueUsing:(id)a4 scaleFactor:(double)a5 deviceIdiom:(int64_t)a6 deviceSubtype:(unint64_t)a7 displayGamut:(int64_t)a8 deploymentTarget:(int64_t)a9 layoutDirection:(int64_t)a10 sizeClassHorizontal:(int64_t)a11 sizeClassVertical:(int64_t)a12 memoryClass:(int64_t)a13 graphicsFeatureSetClass:(int64_t)a14 graphicsFallBackOrder:(id)a15 deviceSubtypeFallBackOrder:(id)a16 platform:(int64_t)a17
++ (id)bestMatchUsingObjects:(id)objects getAttributeValueUsing:(id)using scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut deploymentTarget:(int64_t)target layoutDirection:(int64_t)self0 sizeClassHorizontal:(int64_t)self1 sizeClassVertical:(int64_t)self2 memoryClass:(int64_t)self3 graphicsFeatureSetClass:(int64_t)self4 graphicsFallBackOrder:(id)self5 deviceSubtypeFallBackOrder:(id)self6 platform:(int64_t)self7
 {
-  v21 = CUIMaxScaleForTargetPlatform(a17);
-  v65 = [a15 count];
-  v22 = [a16 count];
+  v21 = CUIMaxScaleForTargetPlatform(platform);
+  v65 = [order count];
+  v22 = [backOrder count];
   v23 = 0;
   v24 = 0;
   do
   {
-    if (__memorySearchValues[v23] == a13)
+    if (__memorySearchValues[v23] == class)
     {
       v24 = v23;
     }
@@ -371,9 +371,9 @@ CUICatalog *__40__CUICatalog_defaultUICatalogForBundle___block_invoke_5(uint64_t
   {
     v70 = v24;
     v57 = v22;
-    v68 = a8;
+    gamutCopy = gamut;
     v25 = 4;
-    if (__PAIR128__(a12, a11) == 0)
+    if (__PAIR128__(vertical, horizontal) == 0)
     {
       v26 = 4;
     }
@@ -385,7 +385,7 @@ CUICatalog *__40__CUICatalog_defaultUICatalogForBundle___block_invoke_5(uint64_t
 
     v67 = v26;
     v27 = v21;
-    if (a10 == 4)
+    if (direction == 4)
     {
       v25 = 5;
     }
@@ -395,16 +395,16 @@ CUICatalog *__40__CUICatalog_defaultUICatalogForBundle___block_invoke_5(uint64_t
     while (1)
     {
       v56 = 0x7FFFFFFFFFFFFFFFLL;
-      v28 = a7;
+      subtypeCopy = subtype;
       while (2)
       {
-        v29 = a14;
-        v30 = v68;
-        v31 = a6;
+        setClassCopy2 = setClass;
+        v30 = gamutCopy;
+        idiomCopy8 = idiom;
 LABEL_14:
-        v32 = v28;
-        v59 = v29;
-        if (v29)
+        v32 = subtypeCopy;
+        v59 = setClassCopy2;
+        if (setClassCopy2)
         {
           v33 = v65 == 0;
         }
@@ -422,13 +422,13 @@ LABEL_14:
 LABEL_21:
           v64 = 0;
           v61 = -1;
-          v75 = a10;
-          v36 = a12;
-          v35 = a11;
-          v76 = a9;
+          directionCopy5 = direction;
+          verticalCopy7 = vertical;
+          verticalCopy9 = horizontal;
+          targetCopy4 = target;
           v37 = v30;
-          v38 = v31;
-          v39 = a5;
+          idiomCopy6 = idiomCopy8;
+          factorCopy2 = factor;
 LABEL_22:
           v40 = v67;
           while (1)
@@ -442,13 +442,13 @@ LABEL_22:
                   do
                   {
                     v71 = v40;
-                    v73 = v36;
-                    v74 = v35;
+                    v73 = verticalCopy7;
+                    v74 = verticalCopy9;
                     v79 = 0u;
                     v80 = 0u;
                     v77 = 0u;
                     v78 = 0u;
-                    v41 = [a3 countByEnumeratingWithState:&v77 objects:v81 count:16];
+                    v41 = [objects countByEnumeratingWithState:&v77 objects:v81 count:16];
                     if (v41)
                     {
                       v42 = v41;
@@ -459,18 +459,18 @@ LABEL_25:
                       {
                         if (*v78 != v43)
                         {
-                          objc_enumerationMutation(a3);
+                          objc_enumerationMutation(objects);
                         }
 
                         v45 = *(*(&v77 + 1) + 8 * v44);
-                        if (v39 == (*(a4 + 2))(a4, v45, 12) && (*(a4 + 2))(a4, v45, 15) == v38 && (*(a4 + 2))(a4, v45, 16) == v32 && (*(a4 + 2))(a4, v45, 24) == v37 && (*(a4 + 2))(a4, v45, 25) == v76 && (*(a4 + 2))(a4, v45, 4) == v75 && (*(a4 + 2))(a4, v45, 20) == v74 && (*(a4 + 2))(a4, v45, 21) == v73 && (*(a4 + 2))(a4, v45, 23) == a14 && (*(a4 + 2))(a4, v45, 22) == __memorySearchValues[v70])
+                        if (factorCopy2 == (*(using + 2))(using, v45, 12) && (*(using + 2))(using, v45, 15) == idiomCopy6 && (*(using + 2))(using, v45, 16) == v32 && (*(using + 2))(using, v45, 24) == v37 && (*(using + 2))(using, v45, 25) == targetCopy4 && (*(using + 2))(using, v45, 4) == directionCopy5 && (*(using + 2))(using, v45, 20) == v74 && (*(using + 2))(using, v45, 21) == v73 && (*(using + 2))(using, v45, 23) == setClass && (*(using + 2))(using, v45, 22) == __memorySearchValues[v70])
                         {
                           return v45;
                         }
 
                         if (v42 == ++v44)
                         {
-                          v42 = [a3 countByEnumeratingWithState:&v77 objects:v81 count:16];
+                          v42 = [objects countByEnumeratingWithState:&v77 objects:v81 count:16];
                           if (v42)
                           {
                             goto LABEL_25;
@@ -481,15 +481,15 @@ LABEL_25:
                       }
                     }
 
-                    v35 = 0;
+                    verticalCopy9 = 0;
                     if (v71 == 1)
                     {
-                      v46 = a11;
+                      horizontalCopy9 = horizontal;
                       v40 = 2;
                       goto LABEL_45;
                     }
 
-                    v36 = a12;
+                    verticalCopy7 = vertical;
                     v40 = 3;
                   }
 
@@ -499,50 +499,50 @@ LABEL_25:
                     break;
                   }
 
-                  v35 = 0;
-                  v36 = 0;
+                  verticalCopy9 = 0;
+                  verticalCopy7 = 0;
                   v40 = 4;
                 }
 
-                v31 = a6;
-                if (!a6 || v38 != a6)
+                idiomCopy8 = idiom;
+                if (!idiom || idiomCopy6 != idiom)
                 {
                   break;
                 }
 
-                v38 = 0;
-                v36 = a12;
-                v35 = a11;
+                idiomCopy6 = 0;
+                verticalCopy7 = vertical;
+                verticalCopy9 = horizontal;
                 v40 = 1;
-                if (__PAIR128__(a12, a11) == 0)
+                if (__PAIR128__(vertical, horizontal) == 0)
                 {
-                  v35 = v73;
-                  v46 = v74;
+                  verticalCopy9 = v73;
+                  horizontalCopy9 = v74;
                   v40 = 4;
                   goto LABEL_45;
                 }
               }
 
-              v30 = v68;
-              if (v68 && v37 == v68)
+              v30 = gamutCopy;
+              if (gamutCopy && v37 == gamutCopy)
               {
                 v37 = 0;
-                v35 = a11;
-                if (__PAIR128__(a12, a11) == 0)
+                verticalCopy9 = horizontal;
+                if (__PAIR128__(vertical, horizontal) == 0)
                 {
-                  v35 = v74;
+                  verticalCopy9 = v74;
                 }
 
-                v36 = a12;
-                if (__PAIR128__(a12, a11) == 0)
+                verticalCopy7 = vertical;
+                if (__PAIR128__(vertical, horizontal) == 0)
                 {
-                  v36 = v73;
+                  verticalCopy7 = v73;
                 }
 
                 goto LABEL_76;
               }
 
-              if (a10 && v75)
+              if (direction && directionCopy5)
               {
                 v48 = v62;
                 if (v64)
@@ -550,62 +550,62 @@ LABEL_25:
                   v48 = 0;
                 }
 
-                v75 = v48;
-                v35 = a11;
-                if (__PAIR128__(a12, a11) == 0)
+                directionCopy5 = v48;
+                verticalCopy9 = horizontal;
+                if (__PAIR128__(vertical, horizontal) == 0)
                 {
-                  v35 = v74;
+                  verticalCopy9 = v74;
                 }
 
-                v36 = a12;
-                if (__PAIR128__(a12, a11) == 0)
+                verticalCopy7 = vertical;
+                if (__PAIR128__(vertical, horizontal) == 0)
                 {
-                  v36 = v73;
+                  verticalCopy7 = v73;
                 }
 
                 v64 = 1;
                 goto LABEL_75;
               }
 
-              if (a9 && v76)
+              if (target && targetCopy4)
               {
                 v64 = 0;
-                v75 = a10;
-                --v76;
-                v36 = a12;
-                v35 = a11;
+                directionCopy5 = direction;
+                --targetCopy4;
+                verticalCopy7 = vertical;
+                verticalCopy9 = horizontal;
 LABEL_75:
-                v37 = v68;
+                v37 = gamutCopy;
 LABEL_76:
-                v38 = a6;
+                idiomCopy6 = idiom;
                 goto LABEL_22;
               }
 
-              v47 = v39 + v61;
+              v47 = factorCopy2 + v61;
               if ((v61 & 0x8000000000000000) == 0)
               {
                 break;
               }
 
               v64 = 0;
-              v75 = a10;
-              v36 = a12;
-              v35 = a11;
-              v76 = a9;
-              v37 = v68;
-              v38 = a6;
-              v39 = a5;
+              directionCopy5 = direction;
+              verticalCopy7 = vertical;
+              verticalCopy9 = horizontal;
+              targetCopy4 = target;
+              v37 = gamutCopy;
+              idiomCopy6 = idiom;
+              factorCopy2 = factor;
               v61 = 1;
               v40 = v67;
               if (v47 > 0.0)
               {
                 v61 = -1;
-                v38 = a6;
-                v35 = a12;
-                v46 = a11;
-                v75 = a10;
-                v76 = a9;
-                v37 = v68;
+                idiomCopy6 = idiom;
+                verticalCopy9 = vertical;
+                horizontalCopy9 = horizontal;
+                directionCopy5 = direction;
+                targetCopy4 = target;
+                v37 = gamutCopy;
                 goto LABEL_61;
               }
             }
@@ -616,18 +616,18 @@ LABEL_76:
             }
 
             v64 = 0;
-            v75 = a10;
-            v35 = a12;
-            v46 = a11;
-            v76 = a9;
-            v37 = v68;
-            v38 = a6;
+            directionCopy5 = direction;
+            verticalCopy9 = vertical;
+            horizontalCopy9 = horizontal;
+            targetCopy4 = target;
+            v37 = gamutCopy;
+            idiomCopy6 = idiom;
 LABEL_61:
-            v39 = v47;
+            factorCopy2 = v47;
             v40 = v67;
 LABEL_45:
-            v36 = v35;
-            v35 = v46;
+            verticalCopy7 = verticalCopy9;
+            verticalCopy9 = horizontalCopy9;
           }
 
           if ((v60 & 1) == 0)
@@ -641,8 +641,8 @@ LABEL_45:
             {
               if (v58 >= v65 - 1)
               {
-                a14 = v59;
-                v31 = a6;
+                setClass = v59;
+                idiomCopy8 = idiom;
                 break;
               }
 
@@ -650,18 +650,18 @@ LABEL_45:
             }
 
             v58 = v51;
-            a14 = [objc_msgSend(a15 "objectAtIndex:"integerValue"")];
-            v31 = a6;
+            setClass = [objc_msgSend(order "objectAtIndex:"integerValue"")];
+            idiomCopy8 = idiom;
             goto LABEL_21;
           }
 
-          v49 = a14 | v65;
-          a14 = 0;
+          v49 = setClass | v65;
+          setClass = 0;
           v50 = v49 == 0;
         }
 
         while (v59 && !v50);
-        if (!a7)
+        if (!subtype)
         {
           goto LABEL_96;
         }
@@ -671,7 +671,7 @@ LABEL_45:
           if (v56 == 0x7FFFFFFFFFFFFFFFLL)
           {
             v56 = 0;
-            v52 = [a16 objectAtIndex:0];
+            v52 = [backOrder objectAtIndex:0];
           }
 
           else
@@ -681,18 +681,18 @@ LABEL_45:
               goto LABEL_96;
             }
 
-            v52 = [a16 objectAtIndex:++v56];
+            v52 = [backOrder objectAtIndex:++v56];
           }
 
-          v28 = [v52 integerValue];
+          subtypeCopy = [v52 integerValue];
           continue;
         }
 
         break;
       }
 
-      v28 = 0;
-      v29 = a14;
+      subtypeCopy = 0;
+      setClassCopy2 = setClass;
       if (v32)
       {
         goto LABEL_14;
@@ -710,16 +710,16 @@ LABEL_96:
   return 0;
 }
 
-+ (id)bestMatchUsingImages:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(unint64_t)a7 layoutDirection:(unint64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10
++ (id)bestMatchUsingImages:(id)images scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(unint64_t)gamut layoutDirection:(unint64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0
 {
   v18 = +[NSMutableArray array];
-  if (a5 == 5)
+  if (idiom == 5)
   {
-    CUIWatchSubTypeFallbackOrder(a6, v18);
+    CUIWatchSubTypeFallbackOrder(subtype, v18);
   }
 
   [v18 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", 0)}];
-  return [a1 bestMatchUsingObjects:a3 getAttributeValueUsing:&__block_literal_global_14 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:a7 displayGamut:0 deploymentTarget:a4 layoutDirection:a8 sizeClassHorizontal:a9 sizeClassVertical:a10 memoryClass:0 graphicsFeatureSetClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:v18];
+  return [self bestMatchUsingObjects:images getAttributeValueUsing:&__block_literal_global_14 scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamut displayGamut:0 deploymentTarget:factor layoutDirection:direction sizeClassHorizontal:horizontal sizeClassVertical:vertical memoryClass:0 graphicsFeatureSetClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:v18];
 }
 
 id __140__CUICatalog_bestMatchUsingImages_scaleFactor_deviceIdiom_deviceSubtype_displayGamut_layoutDirection_sizeClassHorizontal_sizeClassVertical___block_invoke(uint64_t a1, void *a2, int a3)
@@ -785,19 +785,19 @@ id __140__CUICatalog_bestMatchUsingImages_scaleFactor_deviceIdiom_deviceSubtype_
   return result;
 }
 
-- (void)_setPreferredLocalization:(id)a3
+- (void)_setPreferredLocalization:(id)localization
 {
   v5 = _LookupStructuredThemeProvider(self->_storageRef, a2);
-  v6 = [v5 keyFormat];
-  if (a3)
+  keyFormat = [v5 keyFormat];
+  if (localization)
   {
-    self->_preferredLocalization = [v5 localizationIdentifierForName:a3];
+    self->_preferredLocalization = [v5 localizationIdentifierForName:localization];
 LABEL_3:
-    _CUILog(3, "[CUICatalog _setPreferredLocalization:] set it to '%@'", v13, v14, v15, v16, v17, v18, a3);
+    _CUILog(3, "[CUICatalog _setPreferredLocalization:] set it to '%@'", v13, v14, v15, v16, v17, v18, localization);
     return;
   }
 
-  if (!v6 || !CUIRenditionKeyHasIdentifier(v6, 13))
+  if (!keyFormat || !CUIRenditionKeyHasIdentifier(keyFormat, 13))
   {
     self->_preferredLocalization = 0;
     v24 = "[CUICatalog _setPreferredLocalization:] set it to unlocalized/base because there is no localized content present";
@@ -807,12 +807,12 @@ LABEL_10:
     return;
   }
 
-  v19 = [v5 localizations];
+  localizations = [v5 localizations];
 
-  self->_assetCatalogLocalizations = [v19 allKeys];
-  v20 = [+[NSBundle mainBundle](NSBundle preferredLocalizations];
+  self->_assetCatalogLocalizations = [localizations allKeys];
+  preferredLocalizations = [+[NSBundle mainBundle](NSBundle preferredLocalizations];
   v21 = [(NSArray *)+[NSBundle preferredLocalizationsFromArray:forPreferences:](NSBundle firstObject:self->_assetCatalogLocalizations];
-  v22 = [NSLocale mostPreferredLanguageOf:self->_assetCatalogLocalizations withPreferredLanguages:v20 forUsage:1 options:0];
+  v22 = [NSLocale mostPreferredLanguageOf:self->_assetCatalogLocalizations withPreferredLanguages:preferredLocalizations forUsage:1 options:0];
   if (!v22)
   {
     self->_preferredLocalization = 0;
@@ -820,47 +820,47 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  a3 = v22;
+  localization = v22;
   v23 = [+[NSLocale baseLanguageFromLanguage:](NSLocale baseLanguageFromLanguage:{v21), "isEqualToString:", +[NSLocale baseLanguageFromLanguage:](NSLocale, "baseLanguageFromLanguage:", v22)}];
-  self->_preferredLocalization = [v5 localizationIdentifierForName:a3];
+  self->_preferredLocalization = [v5 localizationIdentifierForName:localization];
   if (v23)
   {
     goto LABEL_3;
   }
 
-  _CUILog(3, "[CUICatalog _setPreferredLocalization:] set it to *'%@'", v13, v14, v15, v16, v17, v18, a3);
+  _CUILog(3, "[CUICatalog _setPreferredLocalization:] set it to *'%@'", v13, v14, v15, v16, v17, v18, localization);
 }
 
-- (id)_nameForLocalizationIdentifier:(int64_t)a3
+- (id)_nameForLocalizationIdentifier:(int64_t)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = _LookupStructuredThemeProvider(self->_storageRef, a2);
 
-  return [v4 nameForLocalizationIdentifier:v3];
+  return [v4 nameForLocalizationIdentifier:identifierCopy];
 }
 
-- (CUICatalog)initWithName:(id)a3 fromBundle:(id)a4 error:(id *)a5
+- (CUICatalog)initWithName:(id)name fromBundle:(id)bundle error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = CUICatalog;
   v8 = [(CUICatalog *)&v12 init];
   if (v8)
   {
-    if (!a4)
+    if (!bundle)
     {
-      a4 = +[NSBundle mainBundle];
+      bundle = +[NSBundle mainBundle];
     }
 
-    v9 = +[CUIThemeFacet themeNamed:forBundleIdentifier:error:](CUIThemeFacet, "themeNamed:forBundleIdentifier:error:", a3, [a4 bundleIdentifier], a5);
+    v9 = +[CUIThemeFacet themeNamed:forBundleIdentifier:error:](CUIThemeFacet, "themeNamed:forBundleIdentifier:error:", name, [bundle bundleIdentifier], error);
     v8->_storageRef = v9;
     if (v9)
     {
       *(v8 + 21) &= 0xF8000000;
-      v8->_bundle = a4;
-      v8->_assetStoreName = [a3 copy];
+      v8->_bundle = bundle;
+      v8->_assetStoreName = [name copy];
       [(CUICatalog *)v8 _sharedSetup];
       v10 = +[NSNotificationCenter defaultCenter];
-      [(NSNotificationCenter *)v10 addObserver:v8 selector:sel__resourceUnPinnedNotification_ name:_NSBundleResourceRequestAssetPackUnpinnedNotification object:a4];
+      [(NSNotificationCenter *)v10 addObserver:v8 selector:sel__resourceUnPinnedNotification_ name:_NSBundleResourceRequestAssetPackUnpinnedNotification object:bundle];
     }
 
     else
@@ -874,14 +874,14 @@ LABEL_10:
   return v8;
 }
 
-- (CUICatalog)initWithURL:(id)a3 error:(id *)a4
+- (CUICatalog)initWithURL:(id)l error:(id *)error
 {
   v9.receiver = self;
   v9.super_class = CUICatalog;
   v6 = [(CUICatalog *)&v9 init];
   if (v6)
   {
-    if ([a3 checkResourceIsReachableAndReturnError:a4] && (*(v6 + 82) |= 1u, v6->_assetStoreName = objc_msgSend(objc_msgSend(objc_msgSend(a3, "URLByDeletingPathExtension"), "lastPathComponent"), "copy"), v7 = +[CUIThemeFacet themeWithContentsOfURL:error:](CUIThemeFacet, "themeWithContentsOfURL:error:", a3, a4), (v6->_storageRef = v7) != 0))
+    if ([l checkResourceIsReachableAndReturnError:error] && (*(v6 + 82) |= 1u, v6->_assetStoreName = objc_msgSend(objc_msgSend(objc_msgSend(l, "URLByDeletingPathExtension"), "lastPathComponent"), "copy"), v7 = +[CUIThemeFacet themeWithContentsOfURL:error:](CUIThemeFacet, "themeWithContentsOfURL:error:", l, error), (v6->_storageRef = v7) != 0))
     {
       [(CUICatalog *)v6 _sharedSetup];
     }
@@ -897,7 +897,7 @@ LABEL_10:
   return v6;
 }
 
-- (CUICatalog)initWithBytes:(const void *)a3 length:(unint64_t)a4 error:(id *)a5
+- (CUICatalog)initWithBytes:(const void *)bytes length:(unint64_t)length error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = CUICatalog;
@@ -906,7 +906,7 @@ LABEL_10:
   if (v8)
   {
     *(v8 + 82) |= 9u;
-    v10 = [CUIThemeFacet themeWithBytes:a3 length:a4 error:a5];
+    v10 = [CUIThemeFacet themeWithBytes:bytes length:length error:error];
     v9->_storageRef = v10;
     if (v10)
     {
@@ -924,24 +924,24 @@ LABEL_10:
   return v9;
 }
 
-- (void)_resourceUnPinnedNotification:(id)a3
+- (void)_resourceUnPinnedNotification:(id)notification
 {
   if (self->_storageMapTable)
   {
-    v5 = [a3 userInfo];
-    v6 = [v5 objectForKey:_NSBundleResourceRequestAssetPackNotificationAssetPackIDKey];
+    userInfo = [notification userInfo];
+    v6 = [userInfo objectForKey:_NSBundleResourceRequestAssetPackNotificationAssetPackIDKey];
     v7 = NSMapGet(self->_storageMapTable, v6);
     if (v7)
     {
       v8 = v7;
-      [objc_msgSend(a3 "object")];
+      [objc_msgSend(notification "object")];
       _CUILog(3, "CoreUI: [CUICatalog _resourceUnPinnedNotification:] for themeRef '%d' (for bundle identifier '%@' and asset pack identifier '%@').", v9, v10, v11, v12, v13, v14, v8);
       [CUIThemeFacet themeUnregisterThemeRef:v8];
     }
 
     else
     {
-      v15 = [objc_msgSend(a3 "object")];
+      v15 = [objc_msgSend(notification "object")];
       _CUILog(3, "CoreUI: [CUICatalog _resourceUnPinnedNotification:] did not find themeRef for for bundle identifier '%@' and asset pack identifier '%@'.", v16, v17, v18, v19, v20, v21, v15);
     }
 
@@ -951,7 +951,7 @@ LABEL_10:
   }
 }
 
-- (id)_recognitionImageWithName:(id)a3
+- (id)_recognitionImageWithName:(id)name
 {
   v21 = 0;
   if (__getDeviceTraits___getDeviceTraits_once != -1)
@@ -966,8 +966,8 @@ LABEL_10:
   v14 = __getDeviceTraits___deviceGraphicsClass;
   v15 = __getDeviceTraits___deviceGraphicsFallbackOrder;
   v16 = __getDeviceTraits___deviceSubtypeFallbackOrder;
-  _CUILog(3, "[CUICatalog _recognitionImageWithName:%@]", a3, v3, v4, v5, v6, v7, a3);
-  result = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:v10 deviceIdiom:v11 deviceSubtype:v12 displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:v13 graphicsClass:v14 graphicsFallBackOrder:v15 deviceSubtypeFallBackOrder:v16 locale:0 withBaseKeySelector:0 adjustRenditionKeyWithBlock:0];
+  _CUILog(3, "[CUICatalog _recognitionImageWithName:%@]", name, v3, v4, v5, v6, v7, name);
+  result = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:v10 deviceIdiom:v11 deviceSubtype:v12 displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:v13 graphicsClass:v14 graphicsFallBackOrder:v15 deviceSubtypeFallBackOrder:v16 locale:0 withBaseKeySelector:0 adjustRenditionKeyWithBlock:0];
   if (result)
   {
     v18 = result;
@@ -984,7 +984,7 @@ LABEL_10:
 
     else
     {
-      v20 = [[CUINamedRecognitionImage alloc] initWithName:a3 usingRenditionKey:v18 fromTheme:v19];
+      v20 = [[CUINamedRecognitionImage alloc] initWithName:name usingRenditionKey:v18 fromTheme:v19];
       [(CUINamedLookup *)v20 setRepresentsOnDemandContent:v21];
       return v20;
     }
@@ -993,17 +993,17 @@ LABEL_10:
   return result;
 }
 
-- (id)imageWithName:(id)a3 scaleFactor:(double)a4 locale:(id)a5
+- (id)imageWithName:(id)name scaleFactor:(double)factor locale:(id)locale
 {
   if (__getDeviceTraits___getDeviceTraits_once != -1)
   {
     [CUICatalog _recognitionImageWithName:];
   }
 
-  return [(CUICatalog *)self imageWithName:a3 scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:__getDeviceTraits___deviceSubtype deviceSubtype:__getDeviceTraits___deviceDisplayGamut displayGamut:0 layoutDirection:0 sizeClassHorizontal:a4 sizeClassVertical:0 appearanceName:0 locale:a5];
+  return [(CUICatalog *)self imageWithName:name scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:__getDeviceTraits___deviceSubtype deviceSubtype:__getDeviceTraits___deviceDisplayGamut displayGamut:0 layoutDirection:0 sizeClassHorizontal:factor sizeClassVertical:0 appearanceName:0 locale:locale];
 }
 
-- (id)imageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 appearanceName:(id)a6
+- (id)imageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom appearanceName:(id)appearanceName
 {
   if (__getDeviceTraits___getDeviceTraits_once != -1)
   {
@@ -1012,30 +1012,30 @@ LABEL_10:
 
   v11 = __getDeviceTraits___deviceSubtype;
 
-  return [(CUICatalog *)self imageWithName:a3 scaleFactor:a5 deviceIdiom:v11 deviceSubtype:a6 appearanceName:a4];
+  return [(CUICatalog *)self imageWithName:name scaleFactor:idiom deviceIdiom:v11 deviceSubtype:appearanceName appearanceName:factor];
 }
 
-- (id)imageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 sizeClassHorizontal:(int64_t)a7 sizeClassVertical:(int64_t)a8
+- (id)imageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical
 {
   if (__getDeviceTraits___getDeviceTraits_once != -1)
   {
     [CUICatalog _recognitionImageWithName:];
   }
 
-  return [(CUICatalog *)self imageWithName:a3 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:__getDeviceTraits___deviceDisplayGamut displayGamut:0 layoutDirection:a7 sizeClassHorizontal:a4 sizeClassVertical:a8];
+  return [(CUICatalog *)self imageWithName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:__getDeviceTraits___deviceDisplayGamut displayGamut:0 layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical];
 }
 
-- (id)imageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 sizeClassHorizontal:(int64_t)a7 sizeClassVertical:(int64_t)a8 appearanceName:(id)a9
+- (id)imageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical appearanceName:(id)appearanceName
 {
   if (__getDeviceTraits___getDeviceTraits_once != -1)
   {
     [CUICatalog _recognitionImageWithName:];
   }
 
-  return [(CUICatalog *)self imageWithName:a3 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:__getDeviceTraits___deviceDisplayGamut displayGamut:0 layoutDirection:a7 sizeClassHorizontal:a4 sizeClassVertical:a8 appearanceName:a9];
+  return [(CUICatalog *)self imageWithName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:__getDeviceTraits___deviceDisplayGamut displayGamut:0 layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical appearanceName:appearanceName];
 }
 
-- (id)imageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 appearanceName:(id)a11 locale:(id)a12
+- (id)imageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 appearanceName:(id)self1 locale:(id)self2
 {
   if (__getDeviceTraits___getDeviceTraits_once != -1)
   {
@@ -1049,7 +1049,7 @@ LABEL_10:
   v20 = __getDeviceTraits___deviceGraphicsClass;
   v21 = __getDeviceTraits___deviceGraphicsFallbackOrder;
   v22 = __getDeviceTraits___deviceSubtypeFallbackOrder;
-  if (self && a11)
+  if (self && appearanceName)
   {
     v23 = __getDeviceTraits___deviceMemoryClass;
     v24 = __getDeviceTraits___deviceGraphicsClass;
@@ -1061,18 +1061,18 @@ LABEL_10:
     v16 = v26;
   }
 
-  if (v17 == a5 && v18 == a6)
+  if (v17 == idiom && v18 == subtype)
   {
-    return [(CUICatalog *)self imageWithName:a3 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:a7 displayGamut:a8 layoutDirection:a9 sizeClassHorizontal:a4 sizeClassVertical:a10 memoryClass:v19 graphicsClass:v20 appearanceIdentifier:v16 graphicsFallBackOrder:v21 deviceSubtypeFallBackOrder:v22 locale:a12];
+    return [(CUICatalog *)self imageWithName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamut displayGamut:direction layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical memoryClass:v19 graphicsClass:v20 appearanceIdentifier:v16 graphicsFallBackOrder:v21 deviceSubtypeFallBackOrder:v22 locale:locale];
   }
 
   v28 = v21;
   v29 = v20;
   v30 = v19;
-  if (a5 == 5)
+  if (idiom == 5)
   {
     v31 = +[NSMutableArray array];
-    CUIWatchSubTypeFallbackOrder(a6, v31);
+    CUIWatchSubTypeFallbackOrder(subtype, v31);
     [(NSArray *)v31 addObject:[NSNumber numberWithInt:0]];
   }
 
@@ -1082,10 +1082,10 @@ LABEL_10:
     v31 = [NSArray arrayWithObjects:&v37 count:1];
   }
 
-  return [(CUICatalog *)self imageWithName:a3 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:a7 displayGamut:a8 layoutDirection:a9 sizeClassHorizontal:a4 sizeClassVertical:a10 memoryClass:v30 graphicsClass:v29 appearanceIdentifier:v16 graphicsFallBackOrder:v28 deviceSubtypeFallBackOrder:v31 locale:a12];
+  return [(CUICatalog *)self imageWithName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamut displayGamut:direction layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical memoryClass:v30 graphicsClass:v29 appearanceIdentifier:v16 graphicsFallBackOrder:v28 deviceSubtypeFallBackOrder:v31 locale:locale];
 }
 
-- (id)_baseImageKeyForName:(id)a3
+- (id)_baseImageKeyForName:(id)name
 {
   result = [-[CUICatalog _themeStore](self "_themeStore")];
   if (result)
@@ -1100,12 +1100,12 @@ LABEL_10:
   return result;
 }
 
-- (id)imageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 layoutDirection:(int64_t)a6 locale:(id)a7 adjustRenditionKeyWithBlock:(id)a8
+- (id)imageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom layoutDirection:(int64_t)direction locale:(id)locale adjustRenditionKeyWithBlock:(id)block
 {
   v33 = 0;
   CUIRenditionKeyValueForAttribute([-[CUICatalog _themeStore](self "_themeStore")], 17);
   kdebug_trace();
-  _CUILog(3, "[CUICatalog imageWithName:%@]", v15, v16, v17, v18, v19, v20, a3);
+  _CUILog(3, "[CUICatalog imageWithName:%@]", v15, v16, v17, v18, v19, v20, name);
   if (__getDeviceTraits___getDeviceTraits_once != -1)
   {
     [CUICatalog _recognitionImageWithName:];
@@ -1115,7 +1115,7 @@ LABEL_10:
   v22 = __getDeviceTraits___deviceMemoryClass;
   v23 = __getDeviceTraits___deviceGraphicsClass;
   v24 = __getDeviceTraits___deviceGraphicsFallbackOrder;
-  if (__getDeviceTraits___deviceIdiom == a5)
+  if (__getDeviceTraits___deviceIdiom == idiom)
   {
     v25 = __getDeviceTraits___deviceSubtype;
     v26 = __getDeviceTraits___deviceSubtypeFallbackOrder;
@@ -1128,7 +1128,7 @@ LABEL_10:
     v25 = 0;
   }
 
-  v27 = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:a5 deviceIdiom:v25 deviceSubtype:v21 displayGamut:a6 layoutDirection:0 sizeClassHorizontal:a4 sizeClassVertical:0 memoryClass:v22 graphicsClass:v23 graphicsFallBackOrder:v24 deviceSubtypeFallBackOrder:v26 locale:a7 withBaseKeySelector:sel__baseImageKeyForName_ adjustRenditionKeyWithBlock:a8];
+  v27 = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:idiom deviceIdiom:v25 deviceSubtype:v21 displayGamut:direction layoutDirection:0 sizeClassHorizontal:factor sizeClassVertical:0 memoryClass:v22 graphicsClass:v23 graphicsFallBackOrder:v24 deviceSubtypeFallBackOrder:v26 locale:locale withBaseKeySelector:sel__baseImageKeyForName_ adjustRenditionKeyWithBlock:block];
   if (!v27 || (v28 = v27, [v27 themePart] == 220) || (v29 = -[CUICatalog _storageRefForRendition:representsODRContent:](self, "_storageRefForRendition:representsODRContent:", v28, &v33), v29 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v30 = 0;
@@ -1136,7 +1136,7 @@ LABEL_10:
 
   else
   {
-    v32 = [[CUINamedImage alloc] initWithName:a3 usingRenditionKey:v28 fromTheme:v29];
+    v32 = [[CUINamedImage alloc] initWithName:name usingRenditionKey:v28 fromTheme:v29];
     [(CUINamedLookup *)v32 setRepresentsOnDemandContent:v33];
     v30 = v32;
   }
@@ -1145,16 +1145,16 @@ LABEL_10:
   return v30;
 }
 
-- (id)_imageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 memoryClass:(unint64_t)a11 graphicsClass:(unint64_t)a12 appearanceIdentifier:(int64_t)a13 graphicsFallBackOrder:(id)a14 deviceSubtypeFallBackOrder:(id)a15 locale:(id)a16
+- (id)_imageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 memoryClass:(unint64_t)self1 graphicsClass:(unint64_t)self2 appearanceIdentifier:(int64_t)self3 graphicsFallBackOrder:(id)self4 deviceSubtypeFallBackOrder:(id)self5 locale:(id)self6
 {
   v29[0] = 0;
-  _CUILog(3, "[CUICatalog _imageWithName:%@]", a3, a5, a6, a7, a8, a9, a3);
+  _CUILog(3, "[CUICatalog _imageWithName:%@]", name, idiom, subtype, gamut, direction, horizontal, name);
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = __237__CUICatalog__imageWithName_scaleFactor_deviceIdiom_deviceSubtype_displayGamut_layoutDirection_sizeClassHorizontal_sizeClassVertical_memoryClass_graphicsClass_appearanceIdentifier_graphicsFallBackOrder_deviceSubtypeFallBackOrder_locale___block_invoke;
   v28[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l;
-  v28[4] = a13;
-  result = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:a7 displayGamut:a8 layoutDirection:a9 sizeClassHorizontal:a4 sizeClassVertical:a10 memoryClass:a11 graphicsClass:a12 graphicsFallBackOrder:a14 deviceSubtypeFallBackOrder:a15 locale:a16 withBaseKeySelector:sel__baseImageKeyForName_ adjustRenditionKeyWithBlock:v28, a11, a12, a13, a14, a15, a16];
+  v28[4] = identifier;
+  result = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamut displayGamut:direction layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical memoryClass:class graphicsClass:graphicsClass graphicsFallBackOrder:order deviceSubtypeFallBackOrder:backOrder locale:locale withBaseKeySelector:sel__baseImageKeyForName_ adjustRenditionKeyWithBlock:v28, class, graphicsClass, identifier, order, backOrder, locale];
   if (result)
   {
     v21 = result;
@@ -1171,7 +1171,7 @@ LABEL_10:
 
     else
     {
-      v23 = [[CUINamedImage alloc] initWithName:a3 usingRenditionKey:v21 fromTheme:v22];
+      v23 = [[CUINamedImage alloc] initWithName:name usingRenditionKey:v21 fromTheme:v22];
       [(CUINamedLookup *)v23 setRepresentsOnDemandContent:v29[0]];
       return v23;
     }
@@ -1180,19 +1180,19 @@ LABEL_10:
   return result;
 }
 
-- (id)imageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 memoryClass:(unint64_t)a11 graphicsClass:(unint64_t)a12 appearanceIdentifier:(int64_t)a13 graphicsFallBackOrder:(id)a14 deviceSubtypeFallBackOrder:(id)a15 locale:(id)a16
+- (id)imageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 memoryClass:(unint64_t)self1 graphicsClass:(unint64_t)self2 appearanceIdentifier:(int64_t)self3 graphicsFallBackOrder:(id)self4 deviceSubtypeFallBackOrder:(id)self5 locale:(id)self6
 {
   CUIRenditionKeyValueForAttribute([-[CUICatalog _themeStore](self "_themeStore")], 17);
   kdebug_trace();
-  v24 = [(CUICatalog *)self _imageWithName:a3 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:a7 displayGamut:a8 layoutDirection:a9 sizeClassHorizontal:a4 sizeClassVertical:a10 memoryClass:a11 graphicsClass:a12 appearanceIdentifier:a13 graphicsFallBackOrder:a14 deviceSubtypeFallBackOrder:a15 locale:a16];
+  v24 = [(CUICatalog *)self _imageWithName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamut displayGamut:direction layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical memoryClass:class graphicsClass:graphicsClass appearanceIdentifier:identifier graphicsFallBackOrder:order deviceSubtypeFallBackOrder:backOrder locale:locale];
   kdebug_trace();
   return v24;
 }
 
-- (id)iconImageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 desiredSize:(CGSize)a11 appearanceName:(id)a12
+- (id)iconImageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 desiredSize:(CGSize)self1 appearanceName:(id)self2
 {
-  height = a11.height;
-  width = a11.width;
+  height = size.height;
+  width = size.width;
   if (__getDeviceTraits___getDeviceTraits_once != -1)
   {
     [CUICatalog _recognitionImageWithName:];
@@ -1202,17 +1202,17 @@ LABEL_10:
   v21 = __getDeviceTraits___deviceIdiom;
   v22 = __getDeviceTraits___deviceSubtype;
   obj = __getDeviceTraits___deviceSubtypeFallbackOrder;
-  if (self && a12)
+  if (self && appearanceName)
   {
     v97 = [_LookupStructuredThemeProvider(self->_storageRef a2)];
   }
 
-  if (v21 != a5 || v22 != a6)
+  if (v21 != idiom || v22 != subtype)
   {
-    if (a5 == 5)
+    if (idiom == 5)
     {
       v24 = +[NSMutableArray array];
-      CUIWatchSubTypeFallbackOrder(a6, v24);
+      CUIWatchSubTypeFallbackOrder(subtype, v24);
       obj = v24;
       [(NSArray *)v24 addObject:[NSNumber numberWithInt:0]];
     }
@@ -1224,17 +1224,17 @@ LABEL_10:
     }
   }
 
-  _CUILog(3, "[CUICatalog iconImageWithName:%@]", a3, a5, a6, a7, a8, a9, a3);
+  _CUILog(3, "[CUICatalog iconImageWithName:%@]", name, idiom, subtype, gamut, direction, horizontal, name);
   v25 = objc_alloc_init(NSMutableSet);
-  v26 = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:0 displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:obj locale:0 withBaseKeySelector:sel__baseMultisizeImageSetKeyForName_ adjustRenditionKeyWithBlock:0, *&width, *&height, a12];
-  if (!v26)
+  appearanceName = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:0 displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:obj locale:0 withBaseKeySelector:sel__baseMultisizeImageSetKeyForName_ adjustRenditionKeyWithBlock:0, *&width, *&height, appearanceName];
+  if (!appearanceName)
   {
     goto LABEL_60;
   }
 
-  v27 = v26;
+  v27 = appearanceName;
   v108 = 0;
-  v28 = [(CUICatalog *)self _storageRefForRendition:v26 representsODRContent:&v108];
+  v28 = [(CUICatalog *)self _storageRefForRendition:appearanceName representsODRContent:&v108];
   if (v28 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_60;
@@ -1242,14 +1242,14 @@ LABEL_10:
 
   v29 = v28;
   [v25 addObject:v27];
-  v90 = [[CUINamedMultisizeImageSet alloc] initWithName:a3 usingRenditionKey:v27 fromTheme:v29];
+  v90 = [[CUINamedMultisizeImageSet alloc] initWithName:name usingRenditionKey:v27 fromTheme:v29];
   if (!v90)
   {
     goto LABEL_60;
   }
 
-  v98 = self;
-  v96 = a5;
+  selfCopy = self;
+  idiomCopy = idiom;
   v93 = v27;
   if ([v27 themeSubtype])
   {
@@ -1258,11 +1258,11 @@ LABEL_10:
     v107[2] = __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_displayGamut_layoutDirection_sizeClassHorizontal_sizeClassVertical_desiredSize_appearanceName___block_invoke;
     v107[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l;
     v107[4] = v97;
-    v30 = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:a5 deviceIdiom:0 deviceSubtype:0 displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:obj locale:0 withBaseKeySelector:sel__baseMultisizeImageSetKeyForName_ adjustRenditionKeyWithBlock:v107];
+    v30 = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:idiom deviceIdiom:0 deviceSubtype:0 displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:obj locale:0 withBaseKeySelector:sel__baseMultisizeImageSetKeyForName_ adjustRenditionKeyWithBlock:v107];
     if (v30 && ([v25 containsObject:v30] & 1) == 0)
     {
       [v25 addObject:v30];
-      v89 = [[CUINamedMultisizeImageSet alloc] initWithName:a3 usingRenditionKey:v30 fromTheme:v29];
+      v89 = [[CUINamedMultisizeImageSet alloc] initWithName:name usingRenditionKey:v30 fromTheme:v29];
     }
 
     else
@@ -1277,16 +1277,16 @@ LABEL_10:
     v30 = 0;
   }
 
-  v91 = a7;
-  v87 = a8;
-  v31 = [v93 themeIdiom];
+  gamutCopy = gamut;
+  directionCopy = direction;
+  themeIdiom = [v93 themeIdiom];
   v32 = 0;
-  if (v30 && v31)
+  if (v30 && themeIdiom)
   {
-    if ([v30 themeIdiom] && (v106[0] = _NSConcreteStackBlock, v106[1] = 3221225472, v106[2] = __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_displayGamut_layoutDirection_sizeClassHorizontal_sizeClassVertical_desiredSize_appearanceName___block_invoke_2, v106[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l, v106[4] = v97, (v33 = -[CUICatalog _resolvedRenditionKeyForName:scaleFactor:deviceIdiom:deviceSubtype:displayGamut:layoutDirection:sizeClassHorizontal:sizeClassVertical:memoryClass:graphicsClass:graphicsFallBackOrder:deviceSubtypeFallBackOrder:locale:withBaseKeySelector:adjustRenditionKeyWithBlock:](self, "_resolvedRenditionKeyForName:scaleFactor:deviceIdiom:deviceSubtype:displayGamut:layoutDirection:sizeClassHorizontal:sizeClassVertical:memoryClass:graphicsClass:graphicsFallBackOrder:deviceSubtypeFallBackOrder:locale:withBaseKeySelector:adjustRenditionKeyWithBlock:", a3, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, sel__baseMultisizeImageSetKeyForName_, v106)) != 0) && (v34 = v33, (objc_msgSend(v25, "containsObject:", v33) & 1) == 0))
+    if ([v30 themeIdiom] && (v106[0] = _NSConcreteStackBlock, v106[1] = 3221225472, v106[2] = __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_displayGamut_layoutDirection_sizeClassHorizontal_sizeClassVertical_desiredSize_appearanceName___block_invoke_2, v106[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l, v106[4] = v97, (v33 = -[CUICatalog _resolvedRenditionKeyForName:scaleFactor:deviceIdiom:deviceSubtype:displayGamut:layoutDirection:sizeClassHorizontal:sizeClassVertical:memoryClass:graphicsClass:graphicsFallBackOrder:deviceSubtypeFallBackOrder:locale:withBaseKeySelector:adjustRenditionKeyWithBlock:](self, "_resolvedRenditionKeyForName:scaleFactor:deviceIdiom:deviceSubtype:displayGamut:layoutDirection:sizeClassHorizontal:sizeClassVertical:memoryClass:graphicsClass:graphicsFallBackOrder:deviceSubtypeFallBackOrder:locale:withBaseKeySelector:adjustRenditionKeyWithBlock:", name, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, sel__baseMultisizeImageSetKeyForName_, v106)) != 0) && (v34 = v33, (objc_msgSend(v25, "containsObject:", v33) & 1) == 0))
     {
       [v25 addObject:v34];
-      v32 = [[CUINamedMultisizeImageSet alloc] initWithName:a3 usingRenditionKey:v34 fromTheme:v29];
+      v32 = [[CUINamedMultisizeImageSet alloc] initWithName:name usingRenditionKey:v34 fromTheme:v29];
     }
 
     else
@@ -1297,7 +1297,7 @@ LABEL_10:
 
   v94 = v29;
   v35 = v25;
-  v92 = a6;
+  subtypeCopy = subtype;
   v36 = [NSMutableArray arrayWithArray:[(CUINamedMultisizeImageSet *)v90 sizeIndexes]];
   [(NSMutableArray *)v36 addObjectsFromArray:[(CUINamedMultisizeImageSet *)v89 sizeIndexes]];
   v88 = v32;
@@ -1320,20 +1320,20 @@ LABEL_10:
           objc_enumerationMutation(obj);
         }
 
-        v41 = [*(*(&v102 + 1) + 8 * i) integerValue];
+        integerValue = [*(*(&v102 + 1) + 8 * i) integerValue];
         v101[0] = _NSConcreteStackBlock;
         v101[1] = 3221225472;
         v101[2] = __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_displayGamut_layoutDirection_sizeClassHorizontal_sizeClassVertical_desiredSize_appearanceName___block_invoke_3;
         v101[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l;
         v101[4] = v97;
-        v42 = [(CUICatalog *)v98 _resolvedRenditionKeyForName:a3 scaleFactor:a5 deviceIdiom:v41 deviceSubtype:0 displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:0 locale:0 withBaseKeySelector:sel__baseMultisizeImageSetKeyForName_ adjustRenditionKeyWithBlock:v101];
+        v42 = [(CUICatalog *)selfCopy _resolvedRenditionKeyForName:name scaleFactor:idiom deviceIdiom:integerValue deviceSubtype:0 displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:0 locale:0 withBaseKeySelector:sel__baseMultisizeImageSetKeyForName_ adjustRenditionKeyWithBlock:v101];
         if (v42)
         {
           v43 = v42;
           if (([v35 containsObject:v42] & 1) == 0)
           {
             [v35 addObject:v43];
-            v44 = [[CUINamedMultisizeImageSet alloc] initWithName:a3 usingRenditionKey:v43 fromTheme:v94];
+            v44 = [[CUINamedMultisizeImageSet alloc] initWithName:name usingRenditionKey:v43 fromTheme:v94];
             [(NSMutableArray *)v36 addObjectsFromArray:[(CUINamedMultisizeImageSet *)v44 sizeIndexes]];
           }
         }
@@ -1352,9 +1352,9 @@ LABEL_10:
   if (v48)
   {
     v49 = v48;
-    v51 = v87;
-    v50 = a9;
-    v52 = v91;
+    v51 = directionCopy;
+    horizontalCopy = horizontal;
+    v52 = gamutCopy;
     while (1)
     {
       width = width;
@@ -1380,13 +1380,13 @@ LABEL_10:
         }
       }
 
-      v59 = [v56 index];
-      v53 = v59;
+      index = [v56 index];
+      v53 = index;
       if (v54)
       {
         v60 = v51;
-        v61 = v50;
-        v62 = v59;
+        v61 = horizontalCopy;
+        v62 = index;
         v63 = [v47 objectAtIndex:v54];
         while ((v55 & 0x80000000) == 0)
         {
@@ -1413,23 +1413,23 @@ LABEL_10:
         }
 
         v53 = v62;
-        v50 = v61;
+        horizontalCopy = v61;
         v51 = v60;
-        v52 = v91;
+        v52 = gamutCopy;
       }
 
 LABEL_51:
       v73 = v53;
       v74 = [v93 copy];
       [v74 setThemePart:220];
-      storageRef = v98->_storageRef;
+      storageRef = selfCopy->_storageRef;
       v100[0] = _NSConcreteStackBlock;
       v100[1] = 3221225472;
       v100[2] = __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_displayGamut_layoutDirection_sizeClassHorizontal_sizeClassVertical_desiredSize_appearanceName___block_invoke_5;
       v100[3] = &__block_descriptor_48_e25_v16__0__CUIRenditionKey_8l;
       v100[4] = v73;
       v100[5] = v97;
-      v76 = [(CUICatalog *)v98 _resolvedRenditionKeyFromThemeRef:storageRef withBaseKey:v74 scaleFactor:v96 deviceIdiom:v92 deviceSubtype:v52 displayGamut:v51 layoutDirection:a4 sizeClassHorizontal:v50 sizeClassVertical:a10 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:obj locale:0 adjustRenditionKeyWithBlock:v100];
+      v76 = [(CUICatalog *)selfCopy _resolvedRenditionKeyFromThemeRef:storageRef withBaseKey:v74 scaleFactor:idiomCopy deviceIdiom:subtypeCopy deviceSubtype:v52 displayGamut:v51 layoutDirection:factor sizeClassHorizontal:horizontalCopy sizeClassVertical:vertical memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:obj locale:0 adjustRenditionKeyWithBlock:v100];
 
       if (v58 < width || v76 || v49 == 1)
       {
@@ -1440,7 +1440,7 @@ LABEL_51:
       [v77 removeObjectAtIndex:v54];
       v47 = v77;
       v49 = [v47 count];
-      v78 = v98;
+      v78 = selfCopy;
       if (!v49)
       {
         goto LABEL_57;
@@ -1450,17 +1450,17 @@ LABEL_51:
 
   else
   {
-    v78 = v98;
+    v78 = selfCopy;
 LABEL_57:
     [objc_msgSend(-[CUICatalog _themeStore](v78 "_themeStore")];
-    _CUILog(4, "CoreUI: icon image with name '%@' has no sizes indexes at '%@'", v79, v80, v81, v82, v83, v84, a3);
+    _CUILog(4, "CoreUI: icon image with name '%@' has no sizes indexes at '%@'", v79, v80, v81, v82, v83, v84, name);
     v76 = 0;
   }
 
   v25 = v35;
   if (v76)
   {
-    v85 = [(CUINamedImage *)[CUINamedMultisizeImage alloc] initWithName:a3 usingRenditionKey:v76 fromTheme:v94];
+    v85 = [(CUINamedImage *)[CUINamedMultisizeImage alloc] initWithName:name usingRenditionKey:v76 fromTheme:v94];
     [(CUINamedLookup *)v85 setRepresentsOnDemandContent:v108];
     [(CUINamedMultisizeImage *)v85 setNextSizeSmaller:v45, v46];
   }
@@ -1531,16 +1531,16 @@ id __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_dis
   return [a2 setThemeAppearance:v4];
 }
 
-- (id)_dataWithName:(id)a3 deviceIdiom:(int64_t)a4 deviceSubtype:(unint64_t)a5 memoryClass:(unint64_t)a6 graphicsClass:(unint64_t)a7 appearanceIdentifier:(int64_t)a8 graphicsFallBackOrder:(id)a9 deviceSubtypeFallBackOrder:(id)a10
+- (id)_dataWithName:(id)name deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype memoryClass:(unint64_t)class graphicsClass:(unint64_t)graphicsClass appearanceIdentifier:(int64_t)identifier graphicsFallBackOrder:(id)order deviceSubtypeFallBackOrder:(id)self0
 {
   v23[0] = 0;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = __150__CUICatalog__dataWithName_deviceIdiom_deviceSubtype_memoryClass_graphicsClass_appearanceIdentifier_graphicsFallBackOrder_deviceSubtypeFallBackOrder___block_invoke;
   v22[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l;
-  v22[4] = a8;
-  result = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:a4 deviceIdiom:a5 deviceSubtype:0 displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:a6 graphicsClass:a7 graphicsFallBackOrder:a9 deviceSubtypeFallBackOrder:a10 locale:0 withBaseKeySelector:0 adjustRenditionKeyWithBlock:v22];
-  if (result || (v21[0] = _NSConcreteStackBlock, v21[1] = 3221225472, v21[2] = __150__CUICatalog__dataWithName_deviceIdiom_deviceSubtype_memoryClass_graphicsClass_appearanceIdentifier_graphicsFallBackOrder_deviceSubtypeFallBackOrder___block_invoke_2, v21[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l, v21[4] = a8, (result = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:a4 deviceIdiom:a5 deviceSubtype:0 displayGamut:0 layoutDirection:0 sizeClassHorizontal:0.0 sizeClassVertical:0 memoryClass:a6 graphicsClass:a7 graphicsFallBackOrder:a9 deviceSubtypeFallBackOrder:a10 locale:0 withBaseKeySelector:0 adjustRenditionKeyWithBlock:v21]) != 0))
+  v22[4] = identifier;
+  result = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:0 displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:class graphicsClass:graphicsClass graphicsFallBackOrder:order deviceSubtypeFallBackOrder:backOrder locale:0 withBaseKeySelector:0 adjustRenditionKeyWithBlock:v22];
+  if (result || (v21[0] = _NSConcreteStackBlock, v21[1] = 3221225472, v21[2] = __150__CUICatalog__dataWithName_deviceIdiom_deviceSubtype_memoryClass_graphicsClass_appearanceIdentifier_graphicsFallBackOrder_deviceSubtypeFallBackOrder___block_invoke_2, v21[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l, v21[4] = identifier, (result = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:0 displayGamut:0 layoutDirection:0 sizeClassHorizontal:0.0 sizeClassVertical:0 memoryClass:class graphicsClass:graphicsClass graphicsFallBackOrder:order deviceSubtypeFallBackOrder:backOrder locale:0 withBaseKeySelector:0 adjustRenditionKeyWithBlock:v21]) != 0))
   {
     v18 = result;
     v19 = [(CUICatalog *)self _storageRefForRendition:result representsODRContent:v23];
@@ -1551,7 +1551,7 @@ id __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_dis
 
     else
     {
-      v20 = [[CUINamedData alloc] initWithName:a3 usingRenditionKey:v18 fromTheme:v19];
+      v20 = [[CUINamedData alloc] initWithName:name usingRenditionKey:v18 fromTheme:v19];
       [(CUINamedLookup *)v20 setRepresentsOnDemandContent:v23[0]];
       return v20;
     }
@@ -1560,19 +1560,19 @@ id __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_dis
   return result;
 }
 
-- (id)dataWithName:(id)a3 deviceIdiom:(int64_t)a4 deviceSubtype:(unint64_t)a5 memoryClass:(unint64_t)a6 graphicsClass:(unint64_t)a7 appearanceIdentifier:(int64_t)a8 graphicsFallBackOrder:(id)a9 deviceSubtypeFallBackOrder:(id)a10
+- (id)dataWithName:(id)name deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype memoryClass:(unint64_t)class graphicsClass:(unint64_t)graphicsClass appearanceIdentifier:(int64_t)identifier graphicsFallBackOrder:(id)order deviceSubtypeFallBackOrder:(id)self0
 {
   CUIRenditionKeyValueForAttribute([-[CUICatalog _themeStore](self "_themeStore")], 17);
   kdebug_trace();
-  v17 = [(CUICatalog *)self _dataWithName:a3 deviceIdiom:a4 deviceSubtype:a5 memoryClass:a6 graphicsClass:a7 appearanceIdentifier:a8 graphicsFallBackOrder:a9 deviceSubtypeFallBackOrder:a10];
+  v17 = [(CUICatalog *)self _dataWithName:name deviceIdiom:idiom deviceSubtype:subtype memoryClass:class graphicsClass:graphicsClass appearanceIdentifier:identifier graphicsFallBackOrder:order deviceSubtypeFallBackOrder:backOrder];
   kdebug_trace();
   return v17;
 }
 
-- (id)dataWithName:(id)a3 appearanceName:(id)a4
+- (id)dataWithName:(id)name appearanceName:(id)appearanceName
 {
   v6 = 0;
-  if (self && a4)
+  if (self && appearanceName)
   {
     v6 = [_LookupStructuredThemeProvider(self->_storageRef a2)];
   }
@@ -1582,13 +1582,13 @@ id __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_dis
     [CUICatalog _recognitionImageWithName:];
   }
 
-  return [(CUICatalog *)self dataWithName:a3 deviceIdiom:__getDeviceTraits___deviceIdiom deviceSubtype:__getDeviceTraits___deviceSubtype memoryClass:__getDeviceTraits___deviceMemoryClass graphicsClass:__getDeviceTraits___deviceGraphicsClass appearanceIdentifier:v6 graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder];
+  return [(CUICatalog *)self dataWithName:name deviceIdiom:__getDeviceTraits___deviceIdiom deviceSubtype:__getDeviceTraits___deviceSubtype memoryClass:__getDeviceTraits___deviceMemoryClass graphicsClass:__getDeviceTraits___deviceGraphicsClass appearanceIdentifier:v6 graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder];
 }
 
-- (id)textStyleWithName:(id)a3 deviceIdiom:(int64_t)a4 deviceSubtype:(unint64_t)a5 displayGamut:(int64_t)a6 sizeClassHorizontal:(int64_t)a7 sizeClassVertical:(int64_t)a8 appearanceName:(id)a9
+- (id)textStyleWithName:(id)name deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical appearanceName:(id)appearanceName
 {
   v16 = 0;
-  if (self && a9)
+  if (self && appearanceName)
   {
     v16 = [_LookupStructuredThemeProvider(self->_storageRef a2)];
   }
@@ -1598,7 +1598,7 @@ id __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_dis
   v21[2] = __124__CUICatalog_textStyleWithName_deviceIdiom_deviceSubtype_displayGamut_sizeClassHorizontal_sizeClassVertical_appearanceName___block_invoke;
   v21[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l;
   v21[4] = v16;
-  result = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:a4 deviceIdiom:a5 deviceSubtype:a6 displayGamut:0 layoutDirection:a7 sizeClassHorizontal:1.0 sizeClassVertical:a8 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:0 locale:0 withBaseKeySelector:0 adjustRenditionKeyWithBlock:v21];
+  result = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamut displayGamut:0 layoutDirection:horizontal sizeClassHorizontal:1.0 sizeClassVertical:vertical memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:0 locale:0 withBaseKeySelector:0 adjustRenditionKeyWithBlock:v21];
   if (result)
   {
     v18 = result;
@@ -1611,14 +1611,14 @@ id __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_dis
 
     else
     {
-      return [[CUITextStyle alloc] initWithName:a3 usingRenditionKey:v18 fromTheme:v19];
+      return [[CUITextStyle alloc] initWithName:name usingRenditionKey:v18 fromTheme:v19];
     }
   }
 
   return result;
 }
 
-- (id)textStyleWithName:(id)a3 displayGamut:(int64_t)a4 appearanceName:(id)a5
+- (id)textStyleWithName:(id)name displayGamut:(int64_t)gamut appearanceName:(id)appearanceName
 {
   if (__getDeviceTraits___getDeviceTraits_once != -1)
   {
@@ -1628,18 +1628,18 @@ id __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_dis
   v8 = __getDeviceTraits___deviceIdiom;
   v9 = __getDeviceTraits___deviceSubtype;
 
-  return [(CUICatalog *)self textStyleWithName:a3 deviceIdiom:v8 deviceSubtype:v9 displayGamut:a4 sizeClassHorizontal:0 sizeClassVertical:0];
+  return [(CUICatalog *)self textStyleWithName:name deviceIdiom:v8 deviceSubtype:v9 displayGamut:gamut sizeClassHorizontal:0 sizeClassVertical:0];
 }
 
-- (id)_namedImageAtlasWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 displayGamut:(int64_t)a6 deviceSubtype:(unint64_t)a7 memoryClass:(unint64_t)a8 graphicsClass:(unint64_t)a9 graphicsFallBackOrder:(id)a10 deviceSubtypeFallBackOrder:(id)a11
+- (id)_namedImageAtlasWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom displayGamut:(int64_t)gamut deviceSubtype:(unint64_t)subtype memoryClass:(unint64_t)class graphicsClass:(unint64_t)graphicsClass graphicsFallBackOrder:(id)self0 deviceSubtypeFallBackOrder:(id)self1
 {
   v24 = 0;
-  result = [CUICatalog _resolvedRenditionKeyForName:"_resolvedRenditionKeyForName:scaleFactor:deviceIdiom:deviceSubtype:displayGamut:layoutDirection:sizeClassHorizontal:sizeClassVertical:memoryClass:graphicsClass:graphicsFallBackOrder:deviceSubtypeFallBackOrder:locale:withBaseKeySelector:adjustRenditionKeyWithBlock:" scaleFactor:a3 deviceIdiom:a5 deviceSubtype:a7 displayGamut:a4 layoutDirection:0 sizeClassHorizontal:a8 sizeClassVertical:a9 memoryClass:a10 graphicsClass:a11 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:sel__baseAtlasKeyForName_ locale:0 withBaseKeySelector:? adjustRenditionKeyWithBlock:?];
-  if (result || (result = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:a5 deviceIdiom:a7 deviceSubtype:a6 displayGamut:0 layoutDirection:0 sizeClassHorizontal:0.0 sizeClassVertical:0 memoryClass:a8 graphicsClass:a9 graphicsFallBackOrder:a10 deviceSubtypeFallBackOrder:a11 locale:0 withBaseKeySelector:sel__baseAtlasKeyForName_ adjustRenditionKeyWithBlock:0]) != 0)
+  result = [CUICatalog _resolvedRenditionKeyForName:"_resolvedRenditionKeyForName:scaleFactor:deviceIdiom:deviceSubtype:displayGamut:layoutDirection:sizeClassHorizontal:sizeClassVertical:memoryClass:graphicsClass:graphicsFallBackOrder:deviceSubtypeFallBackOrder:locale:withBaseKeySelector:adjustRenditionKeyWithBlock:" scaleFactor:name deviceIdiom:idiom deviceSubtype:subtype displayGamut:factor layoutDirection:0 sizeClassHorizontal:class sizeClassVertical:graphicsClass memoryClass:order graphicsClass:backOrder graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:sel__baseAtlasKeyForName_ locale:0 withBaseKeySelector:? adjustRenditionKeyWithBlock:?];
+  if (result || (result = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamut displayGamut:0 layoutDirection:0 sizeClassHorizontal:0.0 sizeClassVertical:0 memoryClass:class graphicsClass:graphicsClass graphicsFallBackOrder:order deviceSubtypeFallBackOrder:backOrder locale:0 withBaseKeySelector:sel__baseAtlasKeyForName_ adjustRenditionKeyWithBlock:0]) != 0)
   {
     v18 = result;
-    v19 = a3;
-    v20 = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:0 deviceIdiom:0 deviceSubtype:0 displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:0 locale:0 withBaseKeySelector:sel__baseAtlasContentsKeyForName_ adjustRenditionKeyWithBlock:0];
+    nameCopy = name;
+    v20 = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:0 deviceIdiom:0 deviceSubtype:0 displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:0 locale:0 withBaseKeySelector:sel__baseAtlasContentsKeyForName_ adjustRenditionKeyWithBlock:0];
     v21 = [(CUICatalog *)self _storageRefForRendition:v18 representsODRContent:&v24];
     if (v21 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1648,7 +1648,7 @@ id __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_dis
 
     else
     {
-      v22 = [[CUINamedImageAtlas alloc] initWithName:v19 usingRenditionKey:v18 withContents:v20 contentsFromCatalog:self fromTheme:v21 withSourceThemeRef:[(CUICatalog *)self _themeRef]];
+      v22 = [[CUINamedImageAtlas alloc] initWithName:nameCopy usingRenditionKey:v18 withContents:v20 contentsFromCatalog:self fromTheme:v21 withSourceThemeRef:[(CUICatalog *)self _themeRef]];
       [(CUINamedLookup *)v22 setRepresentsOnDemandContent:v24];
       return v22;
     }
@@ -1657,33 +1657,33 @@ id __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_dis
   return result;
 }
 
-- (id)namedImageAtlasWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 displayGamut:(int64_t)a6 deviceSubtype:(unint64_t)a7 memoryClass:(unint64_t)a8 graphicsClass:(unint64_t)a9 graphicsFallBackOrder:(id)a10 deviceSubtypeFallBackOrder:(id)a11
+- (id)namedImageAtlasWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom displayGamut:(int64_t)gamut deviceSubtype:(unint64_t)subtype memoryClass:(unint64_t)class graphicsClass:(unint64_t)graphicsClass graphicsFallBackOrder:(id)self0 deviceSubtypeFallBackOrder:(id)self1
 {
   CUIRenditionKeyValueForAttribute([-[CUICatalog _themeStore](self "_themeStore")], 17);
   kdebug_trace();
-  v19 = [(CUICatalog *)self _namedImageAtlasWithName:a3 scaleFactor:a5 deviceIdiom:a6 displayGamut:a7 deviceSubtype:a8 memoryClass:a9 graphicsClass:a4 graphicsFallBackOrder:a10 deviceSubtypeFallBackOrder:a11];
+  v19 = [(CUICatalog *)self _namedImageAtlasWithName:name scaleFactor:idiom deviceIdiom:gamut displayGamut:subtype deviceSubtype:class memoryClass:graphicsClass graphicsClass:factor graphicsFallBackOrder:order deviceSubtypeFallBackOrder:backOrder];
   kdebug_trace();
   return v19;
 }
 
-- (id)namedImageAtlasWithName:(id)a3 scaleFactor:(double)a4
+- (id)namedImageAtlasWithName:(id)name scaleFactor:(double)factor
 {
   if (__getDeviceTraits___getDeviceTraits_once != -1)
   {
     [CUICatalog _recognitionImageWithName:];
   }
 
-  return [(CUICatalog *)self namedImageAtlasWithName:a3 scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:__getDeviceTraits___deviceDisplayGamut displayGamut:__getDeviceTraits___deviceSubtype deviceSubtype:__getDeviceTraits___deviceMemoryClass memoryClass:__getDeviceTraits___deviceGraphicsClass graphicsClass:a4 graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder];
+  return [(CUICatalog *)self namedImageAtlasWithName:name scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:__getDeviceTraits___deviceDisplayGamut displayGamut:__getDeviceTraits___deviceSubtype deviceSubtype:__getDeviceTraits___deviceMemoryClass memoryClass:__getDeviceTraits___deviceGraphicsClass graphicsClass:factor graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder];
 }
 
-- (id)namedImageAtlasWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5
+- (id)namedImageAtlasWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom
 {
   if (__getDeviceTraits___getDeviceTraits_once != -1)
   {
     [CUICatalog _recognitionImageWithName:];
   }
 
-  if (__getDeviceTraits___deviceIdiom == a5)
+  if (__getDeviceTraits___deviceIdiom == idiom)
   {
     v9 = __getDeviceTraits___deviceSubtype;
   }
@@ -1693,20 +1693,20 @@ id __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_dis
     v9 = 0;
   }
 
-  return [(CUICatalog *)self namedImageAtlasWithName:a3 scaleFactor:a5 deviceIdiom:__getDeviceTraits___deviceDisplayGamut displayGamut:v9 deviceSubtype:__getDeviceTraits___deviceMemoryClass memoryClass:__getDeviceTraits___deviceGraphicsClass graphicsClass:a4 graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder];
+  return [(CUICatalog *)self namedImageAtlasWithName:name scaleFactor:idiom deviceIdiom:__getDeviceTraits___deviceDisplayGamut displayGamut:v9 deviceSubtype:__getDeviceTraits___deviceMemoryClass memoryClass:__getDeviceTraits___deviceGraphicsClass graphicsClass:factor graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder];
 }
 
-- (id)namedImageAtlasWithName:(id)a3 scaleFactor:(double)a4 displayGamut:(unint64_t)a5
+- (id)namedImageAtlasWithName:(id)name scaleFactor:(double)factor displayGamut:(unint64_t)gamut
 {
   if (__getDeviceTraits___getDeviceTraits_once != -1)
   {
     [CUICatalog _recognitionImageWithName:];
   }
 
-  return [(CUICatalog *)self namedImageAtlasWithName:a3 scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:a5 displayGamut:__getDeviceTraits___deviceSubtype deviceSubtype:__getDeviceTraits___deviceMemoryClass memoryClass:__getDeviceTraits___deviceGraphicsClass graphicsClass:a4 graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder];
+  return [(CUICatalog *)self namedImageAtlasWithName:name scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:gamut displayGamut:__getDeviceTraits___deviceSubtype deviceSubtype:__getDeviceTraits___deviceMemoryClass memoryClass:__getDeviceTraits___deviceGraphicsClass graphicsClass:factor graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder];
 }
 
-- (id)parentNamedImageAtlasForImageNamed:(id)a3 scaleFactor:(double)a4 displayGamut:(unint64_t)a5
+- (id)parentNamedImageAtlasForImageNamed:(id)named scaleFactor:(double)factor displayGamut:(unint64_t)gamut
 {
   v16 = 0;
   if (__getDeviceTraits___getDeviceTraits_once != -1)
@@ -1714,7 +1714,7 @@ id __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_dis
     [CUICatalog _recognitionImageWithName:];
   }
 
-  result = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:__getDeviceTraits___deviceSubtype deviceSubtype:a5 displayGamut:0 layoutDirection:0 sizeClassHorizontal:a4 sizeClassVertical:0 memoryClass:__getDeviceTraits___deviceMemoryClass graphicsClass:__getDeviceTraits___deviceGraphicsClass graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder locale:0 withBaseKeySelector:0 adjustRenditionKeyWithBlock:0];
+  result = [(CUICatalog *)self _resolvedRenditionKeyForName:named scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:__getDeviceTraits___deviceSubtype deviceSubtype:gamut displayGamut:0 layoutDirection:0 sizeClassHorizontal:factor sizeClassVertical:0 memoryClass:__getDeviceTraits___deviceMemoryClass graphicsClass:__getDeviceTraits___deviceGraphicsClass graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder locale:0 withBaseKeySelector:0 adjustRenditionKeyWithBlock:0];
   if (result)
   {
     v10 = result;
@@ -1733,7 +1733,7 @@ id __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_dis
   return result;
 }
 
-- (id)parentNamedImageAtlastForImageNamed:(id)a3 scaleFactor:(double)a4
+- (id)parentNamedImageAtlastForImageNamed:(id)named scaleFactor:(double)factor
 {
   if (__getDeviceTraits___getDeviceTraits_once != -1)
   {
@@ -1742,20 +1742,20 @@ id __164__CUICatalog_iconImageWithName_scaleFactor_deviceIdiom_deviceSubtype_dis
 
   v7 = __getDeviceTraits___deviceDisplayGamut;
 
-  return [(CUICatalog *)self parentNamedImageAtlasForImageNamed:a3 scaleFactor:v7 displayGamut:a4];
+  return [(CUICatalog *)self parentNamedImageAtlasForImageNamed:named scaleFactor:v7 displayGamut:factor];
 }
 
-- (void)preloadNamedAtlasWithScaleFactor:(double)a3 andNames:(id)a4 completionHandler:(id)a5
+- (void)preloadNamedAtlasWithScaleFactor:(double)factor andNames:(id)names completionHandler:(id)handler
 {
   global_queue = dispatch_get_global_queue(17, 0);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __74__CUICatalog_preloadNamedAtlasWithScaleFactor_andNames_completionHandler___block_invoke;
   v10[3] = &unk_1E7257DA0;
-  v10[4] = a4;
+  v10[4] = names;
   v10[5] = self;
-  *&v10[7] = a3;
-  v10[6] = a5;
+  *&v10[7] = factor;
+  v10[6] = handler;
   dispatch_async(global_queue, v10);
 }
 
@@ -1858,7 +1858,7 @@ void __74__CUICatalog_preloadNamedAtlasWithScaleFactor_andNames_completionHandle
   CFAutorelease(v4);
 }
 
-- (id)_baseVectorGlyphForName:(id)a3
+- (id)_baseVectorGlyphForName:(id)name
 {
   result = [-[CUICatalog _themeStore](self "_themeStore")];
   if (result)
@@ -1873,26 +1873,26 @@ void __74__CUICatalog_preloadNamedAtlasWithScaleFactor_andNames_completionHandle
   return result;
 }
 
-- (void)_resolveInterpolationSourceRenditionKeysUltralight:(id *)a3 regular:(id *)a4 black:(id *)a5 forName:(id)a6 scaleFactor:(double)a7 deviceIdiom:(int64_t)a8 deviceSubtype:(unint64_t)a9 displayGamut:(int64_t)a10 layoutDirection:(int64_t)a11 sizeClassHorizontal:(int64_t)a12 sizeClassVertical:(int64_t)a13 memoryClass:(unint64_t)a14 graphicsClass:(unint64_t)a15 graphicsFallBackOrder:(id)a16 deviceSubtypeFallBackOrder:(id)a17 appearanceIdentifier:(int64_t)a18 locale:(id)a19
+- (void)_resolveInterpolationSourceRenditionKeysUltralight:(id *)ultralight regular:(id *)regular black:(id *)black forName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)self0 layoutDirection:(int64_t)self1 sizeClassHorizontal:(int64_t)self2 sizeClassVertical:(int64_t)self3 memoryClass:(unint64_t)self4 graphicsClass:(unint64_t)self5 graphicsFallBackOrder:(id)self6 deviceSubtypeFallBackOrder:(id)self7 appearanceIdentifier:(int64_t)self8 locale:(id)self9
 {
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = __295__CUICatalog__resolveInterpolationSourceRenditionKeysUltralight_regular_black_forName_scaleFactor_deviceIdiom_deviceSubtype_displayGamut_layoutDirection_sizeClassHorizontal_sizeClassVertical_memoryClass_graphicsClass_graphicsFallBackOrder_deviceSubtypeFallBackOrder_appearanceIdentifier_locale___block_invoke;
   v29[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l;
-  v29[4] = a18;
-  *a3 = [CUICatalog _resolvedRenditionKeyForName:"_resolvedRenditionKeyForName:scaleFactor:deviceIdiom:deviceSubtype:displayGamut:layoutDirection:sizeClassHorizontal:sizeClassVertical:memoryClass:graphicsClass:graphicsFallBackOrder:deviceSubtypeFallBackOrder:locale:withBaseKeySelector:adjustRenditionKeyWithBlock:" scaleFactor:a6 deviceIdiom:a8 deviceSubtype:a9 displayGamut:a13 layoutDirection:a14 sizeClassHorizontal:a15 sizeClassVertical:a16 memoryClass:a17 graphicsClass:a19 graphicsFallBackOrder:sel__baseVectorGlyphForName_ deviceSubtypeFallBackOrder:v29 locale:? withBaseKeySelector:? adjustRenditionKeyWithBlock:?];
+  v29[4] = identifier;
+  *ultralight = [CUICatalog _resolvedRenditionKeyForName:"_resolvedRenditionKeyForName:scaleFactor:deviceIdiom:deviceSubtype:displayGamut:layoutDirection:sizeClassHorizontal:sizeClassVertical:memoryClass:graphicsClass:graphicsFallBackOrder:deviceSubtypeFallBackOrder:locale:withBaseKeySelector:adjustRenditionKeyWithBlock:" scaleFactor:name deviceIdiom:idiom deviceSubtype:subtype displayGamut:vertical layoutDirection:class sizeClassHorizontal:graphicsClass sizeClassVertical:order memoryClass:backOrder graphicsClass:locale graphicsFallBackOrder:sel__baseVectorGlyphForName_ deviceSubtypeFallBackOrder:v29 locale:? withBaseKeySelector:? adjustRenditionKeyWithBlock:?];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = __295__CUICatalog__resolveInterpolationSourceRenditionKeysUltralight_regular_black_forName_scaleFactor_deviceIdiom_deviceSubtype_displayGamut_layoutDirection_sizeClassHorizontal_sizeClassVertical_memoryClass_graphicsClass_graphicsFallBackOrder_deviceSubtypeFallBackOrder_appearanceIdentifier_locale___block_invoke_2;
   v28[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l;
-  v28[4] = a18;
-  *a4 = [(CUICatalog *)self _resolvedRenditionKeyForName:a6 scaleFactor:a8 deviceIdiom:a9 deviceSubtype:a10 displayGamut:a11 layoutDirection:a12 sizeClassHorizontal:a7 sizeClassVertical:a13 memoryClass:a14 graphicsClass:a15 graphicsFallBackOrder:a16 deviceSubtypeFallBackOrder:a17 locale:a19 withBaseKeySelector:sel__baseVectorGlyphForName_ adjustRenditionKeyWithBlock:v28];
+  v28[4] = identifier;
+  *regular = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamut displayGamut:direction layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical memoryClass:class graphicsClass:graphicsClass graphicsFallBackOrder:order deviceSubtypeFallBackOrder:backOrder locale:locale withBaseKeySelector:sel__baseVectorGlyphForName_ adjustRenditionKeyWithBlock:v28];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = __295__CUICatalog__resolveInterpolationSourceRenditionKeysUltralight_regular_black_forName_scaleFactor_deviceIdiom_deviceSubtype_displayGamut_layoutDirection_sizeClassHorizontal_sizeClassVertical_memoryClass_graphicsClass_graphicsFallBackOrder_deviceSubtypeFallBackOrder_appearanceIdentifier_locale___block_invoke_3;
   v27[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l;
-  v27[4] = a18;
-  *a5 = [(CUICatalog *)self _resolvedRenditionKeyForName:a6 scaleFactor:a8 deviceIdiom:a9 deviceSubtype:a10 displayGamut:a11 layoutDirection:a12 sizeClassHorizontal:a7 sizeClassVertical:a13 memoryClass:a14 graphicsClass:a15 graphicsFallBackOrder:a16 deviceSubtypeFallBackOrder:a17 locale:a19 withBaseKeySelector:sel__baseVectorGlyphForName_ adjustRenditionKeyWithBlock:v27];
+  v27[4] = identifier;
+  *black = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamut displayGamut:direction layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical memoryClass:class graphicsClass:graphicsClass graphicsFallBackOrder:order deviceSubtypeFallBackOrder:backOrder locale:locale withBaseKeySelector:sel__baseVectorGlyphForName_ adjustRenditionKeyWithBlock:v27];
 }
 
 id __295__CUICatalog__resolveInterpolationSourceRenditionKeysUltralight_regular_black_forName_scaleFactor_deviceIdiom_deviceSubtype_displayGamut_layoutDirection_sizeClassHorizontal_sizeClassVertical_memoryClass_graphicsClass_graphicsFallBackOrder_deviceSubtypeFallBackOrder_appearanceIdentifier_locale___block_invoke(uint64_t a1, void *a2)
@@ -1919,38 +1919,38 @@ id __295__CUICatalog__resolveInterpolationSourceRenditionKeysUltralight_regular_
   return [a2 setThemeGlyphWeight:9];
 }
 
-- (void)finalizeNamedVectorGlyphLookupWithResult:(id)a3 name:(id)a4 glyphContinuousSize:(double)a5 glyphContinuousWeight:(double)a6 pointSize:(double)a7
+- (void)finalizeNamedVectorGlyphLookupWithResult:(id)result name:(id)name glyphContinuousSize:(double)size glyphContinuousWeight:(double)weight pointSize:(double)pointSize
 {
-  if (!a3 && [a4 length] == 2)
+  if (!result && [name length] == 2)
   {
-    [a4 getCharacters:&v14];
+    [name getCharacters:&v14];
     if ((v14 & 0xFC00) == 0xD800 && (v15 & 0xFC00) == 0xDC00 && ((v15 + (v14 << 10) + 2106368) & 0x3F0000) == 0x100000)
     {
-      _CUILog(4, "CoreUI: Symbol asset lookup attempted with invalid name '%@'. Argument contains Unicode codepoint copied from SF Symbols app. Please use full symbol name instead!", v8, v9, v10, v11, v12, v13, a4);
+      _CUILog(4, "CoreUI: Symbol asset lookup attempted with invalid name '%@'. Argument contains Unicode codepoint copied from SF Symbols app. Please use full symbol name instead!", v8, v9, v10, v11, v12, v13, name);
     }
   }
 
   kdebug_trace();
 }
 
-- (id)namedVectorGlyphWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 layoutDirection:(int64_t)a6 glyphContinuousSize:(double)a7 glyphContinuousWeight:(double)a8 glyphPointSize:(double)a9 appearanceName:(id)a10 locale:(id)a11
+- (id)namedVectorGlyphWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom layoutDirection:(int64_t)direction glyphContinuousSize:(double)size glyphContinuousWeight:(double)weight glyphPointSize:(double)pointSize appearanceName:(id)self0 locale:(id)self1
 {
-  v17 = a3;
-  _CUILog(3, "[CUICatalog namedVectorGlyphWithName:%@]", a3, a5, a6, a10, a11, v11, a3);
+  nameCopy = name;
+  _CUILog(3, "[CUICatalog namedVectorGlyphWithName:%@]", name, idiom, direction, appearanceName, locale, v11, name);
   CUIRenditionKeyValueForAttribute([-[CUICatalog _themeStore](self "_themeStore")], 17);
   kdebug_trace();
   v20 = _LookupStructuredThemeProvider(self->_storageRef, v19);
-  v21 = [(CUICatalog *)self _baseVectorGlyphForName:v17];
+  v21 = [(CUICatalog *)self _baseVectorGlyphForName:nameCopy];
   if (v21)
   {
     v22 = v21;
   }
 
-  else if ((objc_opt_respondsToSelector() & 1) != 0 && (v23 = [v20 aliasForName:v17]) != 0)
+  else if ((objc_opt_respondsToSelector() & 1) != 0 && (v23 = [v20 aliasForName:nameCopy]) != 0)
   {
     v24 = v23;
     v22 = [(CUICatalog *)self _baseVectorGlyphForName:v23];
-    v17 = v24;
+    nameCopy = v24;
   }
 
   else
@@ -1959,7 +1959,7 @@ id __295__CUICatalog__resolveInterpolationSourceRenditionKeysUltralight_regular_
   }
 
   v26 = [objc_msgSend(v20 "themeStore")];
-  if (a10)
+  if (appearanceName)
   {
     v56 = [_LookupStructuredThemeProvider(self->_storageRef v25)];
   }
@@ -1970,11 +1970,11 @@ id __295__CUICatalog__resolveInterpolationSourceRenditionKeysUltralight_regular_
   }
 
   v64 = 0;
-  if (a4 <= 0.0 || a9 <= 0.0)
+  if (factor <= 0.0 || pointSize <= 0.0)
   {
     [objc_msgSend(-[CUICatalog _themeStore](self "_themeStore")];
-    _CUILog(4, "CoreUI: [CUICatalog namedVectorGlyphWithName:scaleFactor:deviceIdiom:layoutDirection:glyphSize:glyphWeight:glyphPointSize:appearanceName:] '%@' called with scaleFactor == %f glyphPointSize == %f at '%@'", v30, v31, v32, v33, v34, v35, v17);
-    [(CUICatalog *)self finalizeNamedVectorGlyphLookupWithResult:0 name:v17 glyphContinuousSize:a7 glyphContinuousWeight:a8 pointSize:a9];
+    _CUILog(4, "CoreUI: [CUICatalog namedVectorGlyphWithName:scaleFactor:deviceIdiom:layoutDirection:glyphSize:glyphWeight:glyphPointSize:appearanceName:] '%@' called with scaleFactor == %f glyphPointSize == %f at '%@'", v30, v31, v32, v33, v34, v35, nameCopy);
+    [(CUICatalog *)self finalizeNamedVectorGlyphLookupWithResult:0 name:nameCopy glyphContinuousSize:size glyphContinuousWeight:weight pointSize:pointSize];
     return 0;
   }
 
@@ -1989,7 +1989,7 @@ id __295__CUICatalog__resolveInterpolationSourceRenditionKeysUltralight_regular_
     v55 = __getDeviceTraits___deviceDisplayGamut;
     v53 = __getDeviceTraits___deviceGraphicsClass;
     v27 = __getDeviceTraits___deviceGraphicsFallbackOrder;
-    if (__getDeviceTraits___deviceIdiom == a5)
+    if (__getDeviceTraits___deviceIdiom == idiom)
     {
       v28 = __getDeviceTraits___deviceSubtype;
       v29 = __getDeviceTraits___deviceSubtypeFallbackOrder;
@@ -2003,7 +2003,7 @@ id __295__CUICatalog__resolveInterpolationSourceRenditionKeysUltralight_regular_
     }
 
     v37 = 0;
-    while (*&kCoreThemeContinuousGlyphSizes[v37] != a7)
+    while (*&kCoreThemeContinuousGlyphSizes[v37] != size)
     {
       if (++v37 == 3)
       {
@@ -2015,7 +2015,7 @@ id __295__CUICatalog__resolveInterpolationSourceRenditionKeysUltralight_regular_
     v38 = kCoreThemeDiscreteGlyphSizes[v37];
 LABEL_23:
     v39 = 0;
-    while (*&kCoreThemeContinuousGlyphWeights[v39] != a8)
+    while (*&kCoreThemeContinuousGlyphWeights[v39] != weight)
     {
       if (++v39 == 9)
       {
@@ -2053,7 +2053,7 @@ LABEL_35:
           v63[4] = v56;
           v63[5] = v38;
           v63[6] = v40;
-          v44 = [(CUICatalog *)self _resolvedRenditionKeyForName:v17 scaleFactor:a5 deviceIdiom:v28 deviceSubtype:v55 displayGamut:a6 layoutDirection:0 sizeClassHorizontal:a4 sizeClassVertical:0 memoryClass:v54 graphicsClass:v53 graphicsFallBackOrder:v27 deviceSubtypeFallBackOrder:v29 locale:a11 withBaseKeySelector:v52 adjustRenditionKeyWithBlock:v63];
+          v44 = [(CUICatalog *)self _resolvedRenditionKeyForName:nameCopy scaleFactor:idiom deviceIdiom:v28 deviceSubtype:v55 displayGamut:direction layoutDirection:0 sizeClassHorizontal:factor sizeClassVertical:0 memoryClass:v54 graphicsClass:v53 graphicsFallBackOrder:v27 deviceSubtypeFallBackOrder:v29 locale:locale withBaseKeySelector:v52 adjustRenditionKeyWithBlock:v63];
           if (v44)
           {
             break;
@@ -2067,7 +2067,7 @@ LABEL_35:
         v61 = 0;
         v62 = 0;
         v60 = 0;
-        [(CUICatalog *)self _resolveInterpolationSourceRenditionKeysUltralight:&v62 regular:&v61 black:&v60 forName:v17 scaleFactor:a5 deviceIdiom:v28 deviceSubtype:a4 displayGamut:v55 layoutDirection:a6 sizeClassHorizontal:0 sizeClassVertical:0 memoryClass:v54 graphicsClass:v53 graphicsFallBackOrder:v27 deviceSubtypeFallBackOrder:v29 appearanceIdentifier:v56 locale:a11];
+        [(CUICatalog *)self _resolveInterpolationSourceRenditionKeysUltralight:&v62 regular:&v61 black:&v60 forName:nameCopy scaleFactor:idiom deviceIdiom:v28 deviceSubtype:factor displayGamut:v55 layoutDirection:direction sizeClassHorizontal:0 sizeClassVertical:0 memoryClass:v54 graphicsClass:v53 graphicsFallBackOrder:v27 deviceSubtypeFallBackOrder:v29 appearanceIdentifier:v56 locale:locale];
         if (v62)
         {
           if (v61)
@@ -2075,7 +2075,7 @@ LABEL_35:
             if (v60)
             {
               v46 = [CUINamedVectorGlyph alloc];
-              v47 = [(CUINamedVectorGlyph *)v46 initWithName:v17 scaleFactor:a5 deviceIdiom:v61 pointSize:v62 continuousWeight:v60 continuousSize:self interpolatedFromRegular:a4 ultralight:a9 black:a8 fromCatalog:a7 themeRef:v45 locale:a11];
+              v47 = [(CUINamedVectorGlyph *)v46 initWithName:nameCopy scaleFactor:idiom deviceIdiom:v61 pointSize:v62 continuousWeight:v60 continuousSize:self interpolatedFromRegular:factor ultralight:pointSize black:weight fromCatalog:size themeRef:v45 locale:locale];
               if (v47)
               {
                 goto LABEL_52;
@@ -2086,8 +2086,8 @@ LABEL_35:
 
         if ((v42 & 1) == 0)
         {
-          v38 = _snapToDiscreteSizeForSize(a7);
-          v40 = _snapToDiscreteWeightForWeight(a8);
+          v38 = _snapToDiscreteSizeForSize(size);
+          v40 = _snapToDiscreteWeightForWeight(weight);
           v42 = 1;
           v43 = off_1E7258000;
           goto LABEL_35;
@@ -2111,13 +2111,13 @@ LABEL_50:
       goto LABEL_53;
     }
 
-    v47 = [[CUINamedVectorGlyph alloc] initWithName:v17 scaleFactor:a5 deviceIdiom:self pointSize:v48 fromCatalog:v49 usingRenditionKey:a11 themeRef:a4 locale:a9];
+    v47 = [[CUINamedVectorGlyph alloc] initWithName:nameCopy scaleFactor:idiom deviceIdiom:self pointSize:v48 fromCatalog:v49 usingRenditionKey:locale themeRef:factor locale:pointSize];
 LABEL_52:
     v36 = v47;
     [(CUINamedVectorGlyph *)v47 setRepresentsOnDemandContent:v64];
     v50 = v36;
 LABEL_53:
-    [(CUICatalog *)self finalizeNamedVectorGlyphLookupWithResult:v36 name:v17 glyphContinuousSize:a7 glyphContinuousWeight:a8 pointSize:a9];
+    [(CUICatalog *)self finalizeNamedVectorGlyphLookupWithResult:v36 name:nameCopy glyphContinuousSize:size glyphContinuousWeight:weight pointSize:pointSize];
   }
 
   return v36;
@@ -2134,19 +2134,19 @@ id __158__CUICatalog_namedVectorGlyphWithName_scaleFactor_deviceIdiom_layoutDire
 
 - (id)allImageNames
 {
-  v2 = [(CUICatalog *)self _themeStore];
+  _themeStore = [(CUICatalog *)self _themeStore];
 
-  return [v2 allImageNames];
+  return [_themeStore allImageNames];
 }
 
-- (id)imagesWithName:(id)a3
+- (id)imagesWithName:(id)name
 {
-  v4 = [(CUICatalog *)self _themeStore];
+  _themeStore = [(CUICatalog *)self _themeStore];
 
-  return [v4 imagesWithName:a3];
+  return [_themeStore imagesWithName:name];
 }
 
-- (BOOL)containsLookupForName:(id)a3
+- (BOOL)containsLookupForName:(id)name
 {
   if ([-[CUICatalog _themeStore](self "_themeStore")])
   {
@@ -2154,7 +2154,7 @@ id __158__CUICatalog_namedVectorGlyphWithName_scaleFactor_deviceIdiom_layoutDire
   }
 
   v6 = [-[CUICatalog _themeStore](self "_themeStore")];
-  v7 = [v6 indexOfObject:a3];
+  v7 = [v6 indexOfObject:name];
   if (v6)
   {
     v8 = v7 == 0x7FFFFFFFFFFFFFFFLL;
@@ -2168,7 +2168,7 @@ id __158__CUICatalog_namedVectorGlyphWithName_scaleFactor_deviceIdiom_layoutDire
   return !v8;
 }
 
-- (void)enumerateNamedLookupsUsingBlock:(id)a3
+- (void)enumerateNamedLookupsUsingBlock:(id)block
 {
   v5 = _LookupStructuredThemeProvider(self->_storageRef, a2);
   if (objc_opt_respondsToSelector())
@@ -2179,7 +2179,7 @@ id __158__CUICatalog_namedVectorGlyphWithName_scaleFactor_deviceIdiom_layoutDire
     v6[3] = &unk_1E7257E58;
     v6[4] = v5;
     v6[6] = self;
-    v6[7] = a3;
+    v6[7] = block;
     [objc_msgSend(v5 "themeStore")];
   }
 }
@@ -2387,11 +2387,11 @@ id __46__CUICatalog_enumerateNamedLookupsUsingBlock___block_invoke_5(uint64_t a1
   return [a2 setThemeAppearance:v3];
 }
 
-- (CGPDFDocument)pdfDocumentWithName:(id)a3 appearanceName:(id)a4
+- (CGPDFDocument)pdfDocumentWithName:(id)name appearanceName:(id)appearanceName
 {
   v6 = 0;
   v14 = 0;
-  if (self && a4)
+  if (self && appearanceName)
   {
     v6 = [_LookupStructuredThemeProvider(self->_storageRef a2)];
   }
@@ -2401,14 +2401,14 @@ id __46__CUICatalog_enumerateNamedLookupsUsingBlock___block_invoke_5(uint64_t a1
   v13[2] = __49__CUICatalog_pdfDocumentWithName_appearanceName___block_invoke;
   v13[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l;
   v13[4] = v6;
-  result = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:0 deviceIdiom:0 deviceSubtype:0 displayGamut:0 layoutDirection:0 sizeClassHorizontal:0.0 sizeClassVertical:0 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:0 locale:0 withBaseKeySelector:0 adjustRenditionKeyWithBlock:v13];
+  result = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:0 deviceIdiom:0 deviceSubtype:0 displayGamut:0 layoutDirection:0 sizeClassHorizontal:0.0 sizeClassVertical:0 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:0 locale:0 withBaseKeySelector:0 adjustRenditionKeyWithBlock:v13];
   if (result)
   {
     v8 = result;
     v9 = [(CUICatalog *)self _storageRefForRendition:result representsODRContent:&v14];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [(CUICatalog *)self namedVectorImageWithName:a3 scaleFactor:1 displayGamut:0 layoutDirection:CUIMaxScaleForTargetPlatform([(CUICatalog *)self platform])];
+      v11 = [(CUICatalog *)self namedVectorImageWithName:name scaleFactor:1 displayGamut:0 layoutDirection:CUIMaxScaleForTargetPlatform([(CUICatalog *)self platform])];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -2437,17 +2437,17 @@ id __46__CUICatalog_enumerateNamedLookupsUsingBlock___block_invoke_5(uint64_t a1
   return result;
 }
 
-- (id)namedVectorImageWithName:(id)a3 scaleFactor:(double)a4 displayGamut:(int64_t)a5 layoutDirection:(int64_t)a6 appearanceName:(id)a7 locale:(id)a8
+- (id)namedVectorImageWithName:(id)name scaleFactor:(double)factor displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction appearanceName:(id)appearanceName locale:(id)locale
 {
   if (__getDeviceTraits___getDeviceTraits_once != -1)
   {
     [CUICatalog _recognitionImageWithName:];
   }
 
-  return [(CUICatalog *)self namedVectorImageWithName:a3 scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:__getDeviceTraits___deviceSubtype deviceSubtype:a5 displayGamut:a6 layoutDirection:0 sizeClassHorizontal:a4 sizeClassVertical:0 appearanceName:a7 locale:a8];
+  return [(CUICatalog *)self namedVectorImageWithName:name scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:__getDeviceTraits___deviceSubtype deviceSubtype:gamut displayGamut:direction layoutDirection:0 sizeClassHorizontal:factor sizeClassVertical:0 appearanceName:appearanceName locale:locale];
 }
 
-- (id)_baseVectorRenditionKey:(id)a3
+- (id)_baseVectorRenditionKey:(id)key
 {
   result = [-[CUICatalog _themeStore](self "_themeStore")];
   if (result)
@@ -2462,16 +2462,16 @@ id __46__CUICatalog_enumerateNamedLookupsUsingBlock___block_invoke_5(uint64_t a1
   return result;
 }
 
-- (id)_namedVectorImageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 appearanceIdentifier:(int64_t)a11 locale:(id)a12
+- (id)_namedVectorImageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 appearanceIdentifier:(int64_t)self1 locale:(id)self2
 {
-  v18 = a3;
+  nameCopy = name;
   if (__getDeviceTraits___getDeviceTraits_once != -1)
   {
     [CUICatalog _recognitionImageWithName:];
   }
 
   v61 = 0;
-  if (__getDeviceTraits___deviceIdiom == a5 && __getDeviceTraits___deviceSubtype == a6)
+  if (__getDeviceTraits___deviceIdiom == idiom && __getDeviceTraits___deviceSubtype == subtype)
   {
     v21 = __getDeviceTraits___deviceSubtypeFallbackOrder;
   }
@@ -2482,37 +2482,37 @@ id __46__CUICatalog_enumerateNamedLookupsUsingBlock___block_invoke_5(uint64_t a1
     v21 = [NSArray arrayWithObjects:&v62 count:1];
   }
 
-  _CUILog(3, "[CUICatalog _namedVectorImageWithName:%@]", a3, a5, a6, a7, a8, a9, v18);
+  _CUILog(3, "[CUICatalog _namedVectorImageWithName:%@]", name, idiom, subtype, gamut, direction, horizontal, nameCopy);
   v60[0] = _NSConcreteStackBlock;
   v60[1] = 3221225472;
   v60[2] = __173__CUICatalog__namedVectorImageWithName_scaleFactor_deviceIdiom_deviceSubtype_displayGamut_layoutDirection_sizeClassHorizontal_sizeClassVertical_appearanceIdentifier_locale___block_invoke;
   v60[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l;
-  v60[4] = a11;
-  v58 = a8;
-  result = [(CUICatalog *)self _resolvedRenditionKeyForName:v18 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:a7 displayGamut:a8 layoutDirection:a9 sizeClassHorizontal:a4 sizeClassVertical:a10 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:v21 locale:a12 withBaseKeySelector:0 adjustRenditionKeyWithBlock:v60, a11, v21];
+  v60[4] = identifier;
+  directionCopy = direction;
+  result = [(CUICatalog *)self _resolvedRenditionKeyForName:nameCopy scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamut displayGamut:direction layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:v21 locale:locale withBaseKeySelector:0 adjustRenditionKeyWithBlock:v60, identifier, v21];
   if (result)
   {
     v23 = result;
-    v57 = a7;
+    gamutCopy = gamut;
     v24 = [(CUICatalog *)self _storageRefForRendition:result representsODRContent:&v61];
     if (v24 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v29 = v24;
-      v56 = v18;
+      v56 = nameCopy;
       v30 = _LookupStructuredThemeProvider(self->_storageRef, v25);
-      v55 = [v30 distilledInCoreUIVersion];
+      distilledInCoreUIVersion = [v30 distilledInCoreUIVersion];
       v31 = [v30 renditionWithKey:{objc_msgSend(v23, "keyList")}];
-      if (a4 == 0.0)
+      if (factor == 0.0)
       {
-        v32 = [v31 pixelFormat];
-        if (v32 == 1398163232)
+        pixelFormat = [v31 pixelFormat];
+        if (pixelFormat == 1398163232)
         {
           v33 = OBJC_CLASS___CUINamedVectorSVGImage_ptr;
         }
 
         else
         {
-          if (v32 != 1346651680)
+          if (pixelFormat != 1346651680)
           {
             goto LABEL_30;
           }
@@ -2531,8 +2531,8 @@ LABEL_31:
         return v48;
       }
 
-      v18 = v56;
-      if (v55 >= 0x1E5 && ([v31 preservedVectorRepresentation] & 1) == 0)
+      nameCopy = v56;
+      if (distilledInCoreUIVersion >= 0x1E5 && ([v31 preservedVectorRepresentation] & 1) == 0)
       {
         _CUILog(3, "[CUICatalog _namedVectorImageWithName:%@] stopped]", v38, v39, v40, v41, v42, v43, v56);
         return 0;
@@ -2543,8 +2543,8 @@ LABEL_31:
     v59[1] = 3221225472;
     v59[2] = __173__CUICatalog__namedVectorImageWithName_scaleFactor_deviceIdiom_deviceSubtype_displayGamut_layoutDirection_sizeClassHorizontal_sizeClassVertical_appearanceIdentifier_locale___block_invoke_2;
     v59[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l;
-    v59[4] = a11;
-    result = [(CUICatalog *)self _resolvedRenditionKeyForName:v18 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:v57 displayGamut:v58 layoutDirection:a9 sizeClassHorizontal:a4 sizeClassVertical:a10 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:v21 locale:a12 withBaseKeySelector:sel__baseVectorRenditionKey_ adjustRenditionKeyWithBlock:v59];
+    v59[4] = identifier;
+    result = [(CUICatalog *)self _resolvedRenditionKeyForName:nameCopy scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamutCopy displayGamut:directionCopy layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:v21 locale:locale withBaseKeySelector:sel__baseVectorRenditionKey_ adjustRenditionKeyWithBlock:v59];
     if (!result)
     {
       return result;
@@ -2559,26 +2559,26 @@ LABEL_31:
 
     v34 = v27;
     v35 = [_LookupStructuredThemeProvider(v27 v28)];
-    v36 = [v35 pixelFormat];
-    if (v36 == 1346651680)
+    pixelFormat2 = [v35 pixelFormat];
+    if (pixelFormat2 == 1346651680)
     {
       v37 = CUINamedVectorPDFImage;
       goto LABEL_27;
     }
 
-    if (v36 == 1398163232)
+    if (pixelFormat2 == 1398163232)
     {
       v37 = CUINamedVectorSVGImage;
 LABEL_27:
       v44 = [v37 alloc];
-      v45 = v18;
+      v45 = nameCopy;
       v46 = v26;
       v47 = v34;
       goto LABEL_28;
     }
 
     [v35 pixelFormat];
-    _CUILog(4, "CoreUI: namedVectorImage '%@' has unknown pixelformat '%d'", v49, v50, v51, v52, v53, v54, v18);
+    _CUILog(4, "CoreUI: namedVectorImage '%@' has unknown pixelformat '%d'", v49, v50, v51, v52, v53, v54, nameCopy);
 LABEL_30:
     v48 = 0;
     goto LABEL_31;
@@ -2587,22 +2587,22 @@ LABEL_30:
   return result;
 }
 
-- (id)namedVectorImageWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 appearanceName:(id)a11 locale:(id)a12
+- (id)namedVectorImageWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 appearanceName:(id)self1 locale:(id)self2
 {
   v19 = 0;
-  if (self && a11)
+  if (self && appearanceName)
   {
     v19 = [_LookupStructuredThemeProvider(self->_storageRef a2)];
   }
 
   CUIRenditionKeyValueForAttribute([-[CUICatalog _themeStore](self "_themeStore")], 17);
   kdebug_trace();
-  v20 = [(CUICatalog *)self _namedVectorImageWithName:a3 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:a7 displayGamut:a8 layoutDirection:a9 sizeClassHorizontal:a4 sizeClassVertical:a10 appearanceIdentifier:v19 locale:a12];
+  v20 = [(CUICatalog *)self _namedVectorImageWithName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamut displayGamut:direction layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical appearanceIdentifier:v19 locale:locale];
   kdebug_trace();
   return v20;
 }
 
-- (id)_baseStackKeyForName:(id)a3
+- (id)_baseStackKeyForName:(id)name
 {
   result = [-[CUICatalog _themeStore](self "_themeStore")];
   if (result)
@@ -2617,7 +2617,7 @@ LABEL_30:
   return result;
 }
 
-- (id)_layerStackWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 sizeClassHorizontal:(int64_t)a7 sizeClassVertical:(int64_t)a8
+- (id)_layerStackWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical
 {
   v26[0] = 0;
   if (__getDeviceTraits___getDeviceTraits_once != -1)
@@ -2626,7 +2626,7 @@ LABEL_30:
   }
 
   v15 = __getDeviceTraits___deviceDisplayGamut;
-  result = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:__getDeviceTraits___deviceDisplayGamut displayGamut:0 layoutDirection:a7 sizeClassHorizontal:a4 sizeClassVertical:a8 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:0 locale:0 withBaseKeySelector:sel__baseStackKeyForName_ adjustRenditionKeyWithBlock:0];
+  result = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:__getDeviceTraits___deviceDisplayGamut displayGamut:0 layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:0 locale:0 withBaseKeySelector:sel__baseStackKeyForName_ adjustRenditionKeyWithBlock:0];
   if (result)
   {
     v17 = result;
@@ -2648,12 +2648,12 @@ LABEL_30:
         v25[3] = &unk_1E7257E80;
         v25[4] = self;
         v25[5] = v20;
-        *&v25[6] = a4;
-        v25[7] = a5;
-        v25[8] = a6;
+        *&v25[6] = factor;
+        v25[7] = idiom;
+        v25[8] = subtype;
         v25[9] = v15;
-        v25[10] = a7;
-        v25[11] = a8;
+        v25[10] = horizontal;
+        v25[11] = vertical;
         v22 = v25;
       }
 
@@ -2666,16 +2666,16 @@ LABEL_30:
         v24[3] = &unk_1E7257E80;
         v24[4] = self;
         v24[5] = v20;
-        *&v24[6] = a4;
-        v24[7] = a5;
-        v24[8] = a6;
+        *&v24[6] = factor;
+        v24[7] = idiom;
+        v24[8] = subtype;
         v24[9] = v15;
-        v24[10] = a7;
-        v24[11] = a8;
+        v24[10] = horizontal;
+        v24[11] = vertical;
         v22 = v24;
       }
 
-      v23 = [(CUINamedLayerStack *)v21 initWithName:a3 usingRenditionKey:v17 fromTheme:v20 resolvingWithBlock:v22];
+      v23 = [(CUINamedLayerStack *)v21 initWithName:name usingRenditionKey:v17 fromTheme:v20 resolvingWithBlock:v22];
       [(CUINamedLookup *)v23 setRepresentsOnDemandContent:v26[0]];
       return v23;
     }
@@ -2684,16 +2684,16 @@ LABEL_30:
   return result;
 }
 
-- (id)layerStackWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 sizeClassHorizontal:(int64_t)a7 sizeClassVertical:(int64_t)a8
+- (id)layerStackWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical
 {
   CUIRenditionKeyValueForAttribute([-[CUICatalog _themeStore](self "_themeStore")], 17);
   kdebug_trace();
-  v15 = [(CUICatalog *)self _layerStackWithName:a3 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:a7 sizeClassHorizontal:a8 sizeClassVertical:a4];
+  v15 = [(CUICatalog *)self _layerStackWithName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:horizontal sizeClassHorizontal:vertical sizeClassVertical:factor];
   kdebug_trace();
   return v15;
 }
 
-- (id)_defaultLayerStackWithScaleFactor:(double)a3 deviceIdiom:(int64_t)a4 deviceSubtype:(unint64_t)a5 sizeClassHorizontal:(int64_t)a6 sizeClassVertical:(int64_t)a7
+- (id)_defaultLayerStackWithScaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical
 {
   v21 = 0;
   v13 = *(self + 82) & 6;
@@ -2714,7 +2714,7 @@ LABEL_30:
   }
 
   v15 = v13 == 4;
-  result = [(CUICatalog *)self _resolvedRenditionKeyForName:@"IGNORED_VALUE" scaleFactor:a4 deviceIdiom:a5 deviceSubtype:v15 displayGamut:0 layoutDirection:a6 sizeClassHorizontal:a3 sizeClassVertical:a7 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:0 locale:0 withBaseKeySelector:sel__defaultAssetRenditionKey_ adjustRenditionKeyWithBlock:0];
+  result = [(CUICatalog *)self _resolvedRenditionKeyForName:@"IGNORED_VALUE" scaleFactor:idiom deviceIdiom:subtype deviceSubtype:v15 displayGamut:0 layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:0 locale:0 withBaseKeySelector:sel__defaultAssetRenditionKey_ adjustRenditionKeyWithBlock:0];
   if (result)
   {
     v17 = result;
@@ -2732,12 +2732,12 @@ LABEL_30:
       v20[3] = &unk_1E7257E80;
       v20[4] = self;
       v20[5] = v18;
-      *&v20[6] = a3;
-      v20[7] = a4;
-      v20[8] = a5;
+      *&v20[6] = factor;
+      v20[7] = idiom;
+      v20[8] = subtype;
       v20[9] = v15;
-      v20[10] = a6;
-      v20[11] = a7;
+      v20[10] = horizontal;
+      v20[11] = vertical;
       v19 = [[CUINamedLayerStack alloc] initWithName:0 usingRenditionKey:v17 fromTheme:v18 resolvingWithBlock:v20];
       [(CUINamedLookup *)v19 setRepresentsOnDemandContent:v21];
       return v19;
@@ -2760,15 +2760,15 @@ id __112__CUICatalog__defaultLayerStackWithScaleFactor_deviceIdiom_deviceSubtype
   }
 }
 
-- (id)defaultLayerStackWithScaleFactor:(double)a3 deviceIdiom:(int64_t)a4 deviceSubtype:(unint64_t)a5 sizeClassHorizontal:(int64_t)a6 sizeClassVertical:(int64_t)a7
+- (id)defaultLayerStackWithScaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical
 {
   kdebug_trace();
-  v13 = [(CUICatalog *)self _defaultLayerStackWithScaleFactor:a4 deviceIdiom:a5 deviceSubtype:a6 sizeClassHorizontal:a7 sizeClassVertical:a3];
+  v13 = [(CUICatalog *)self _defaultLayerStackWithScaleFactor:idiom deviceIdiom:subtype deviceSubtype:horizontal sizeClassHorizontal:vertical sizeClassVertical:factor];
   kdebug_trace();
   return v13;
 }
 
-- (id)_baseLayeredIconKeyForName:(id)a3
+- (id)_baseLayeredIconKeyForName:(id)name
 {
   result = [-[CUICatalog _themeStore](self "_themeStore")];
   if (result)
@@ -2783,14 +2783,14 @@ id __112__CUICatalog__defaultLayerStackWithScaleFactor_deviceIdiom_deviceSubtype
   return result;
 }
 
-- (id)iconLayerStackWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(unint64_t)a7 appearanceName:(id)a8 locale:(id)a9
+- (id)iconLayerStackWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(unint64_t)gamut appearanceName:(id)appearanceName locale:(id)locale
 {
   v31 = 0;
   CUIRenditionKeyValueForAttribute([-[CUICatalog _themeStore](self "_themeStore")], 17);
   kdebug_trace();
-  _CUILog(3, "[CUICatalog iconLayerStackWithName:%@]", v17, v18, v19, v20, v21, v22, a3);
+  _CUILog(3, "[CUICatalog iconLayerStackWithName:%@]", v17, v18, v19, v20, v21, v22, name);
   v24 = 0;
-  if (self && a8)
+  if (self && appearanceName)
   {
     v24 = [_LookupStructuredThemeProvider(self->_storageRef v23)];
   }
@@ -2801,11 +2801,11 @@ id __112__CUICatalog__defaultLayerStackWithScaleFactor_deviceIdiom_deviceSubtype
   v30[2] = __110__CUICatalog_iconLayerStackWithName_scaleFactor_deviceIdiom_deviceSubtype_displayGamut_appearanceName_locale___block_invoke;
   v30[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l;
   v30[4] = v24;
-  v25 = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:a7 displayGamut:0 layoutDirection:0 sizeClassHorizontal:a4 sizeClassVertical:0 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:[NSArray arrayWithObjects:? count:?], a9, sel__baseLayeredIconKeyForName_, v30];
+  v25 = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamut displayGamut:0 layoutDirection:0 sizeClassHorizontal:factor sizeClassVertical:0 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:[NSArray arrayWithObjects:? count:?], locale, sel__baseLayeredIconKeyForName_, v30];
   if (!v25 && v24)
   {
     v32 = [NSNumber numberWithInt:0];
-    v25 = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:a7 displayGamut:0 layoutDirection:0 sizeClassHorizontal:a4 sizeClassVertical:0 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:[NSArray arrayWithObjects:? count:?], a9, sel__baseLayeredIconKeyForName_, 0];
+    v25 = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamut displayGamut:0 layoutDirection:0 sizeClassHorizontal:factor sizeClassVertical:0 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:[NSArray arrayWithObjects:? count:?], locale, sel__baseLayeredIconKeyForName_, 0];
   }
 
   if (!v25)
@@ -2823,18 +2823,18 @@ id __112__CUICatalog__defaultLayerStackWithScaleFactor_deviceIdiom_deviceSubtype
   v29[1] = 3221225472;
   v29[2] = __110__CUICatalog_iconLayerStackWithName_scaleFactor_deviceIdiom_deviceSubtype_displayGamut_appearanceName_locale___block_invoke_2;
   v29[3] = &unk_1E7257ED0;
-  v29[5] = a9;
+  v29[5] = locale;
   v29[6] = v26;
-  *&v29[7] = a4;
-  v29[8] = a5;
-  v29[9] = a6;
-  v29[10] = a7;
+  *&v29[7] = factor;
+  v29[8] = idiom;
+  v29[9] = subtype;
+  v29[10] = gamut;
   v29[11] = 5;
   v29[4] = self;
   v29[12] = v24;
-  v27 = [[CUINamedIconLayerStack alloc] initWithName:a3 usingRenditionKey:v25 fromTheme:v26 resolvingWithBlock:v29];
+  v27 = [[CUINamedIconLayerStack alloc] initWithName:name usingRenditionKey:v25 fromTheme:v26 resolvingWithBlock:v29];
   [(CUINamedLookup *)v27 setRepresentsOnDemandContent:v31];
-  if (![(CUINamedIconLayerStack *)v27 _updateFromCatalog:self displayGamut:a7 deviceIdiom:a5 appearanceName:a8])
+  if (![(CUINamedIconLayerStack *)v27 _updateFromCatalog:self displayGamut:gamut deviceIdiom:idiom appearanceName:appearanceName])
   {
 
 LABEL_11:
@@ -2889,11 +2889,11 @@ id __110__CUICatalog_iconLayerStackWithName_scaleFactor_deviceIdiom_deviceSubtyp
   return result;
 }
 
-- (id)_defaultNamedAssetWithScaleFactor:(double)a3 deviceIdiom:(int64_t)a4 deviceSubtype:(unint64_t)a5 sizeClassHorizontal:(int64_t)a6 sizeClassVertical:(int64_t)a7
+- (id)_defaultNamedAssetWithScaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical
 {
   v24 = 0;
   v25 = [NSNumber numberWithInt:0];
-  result = [(CUICatalog *)self _resolvedRenditionKeyForName:@"IGNORED_VALUE" scaleFactor:a4 deviceIdiom:a5 deviceSubtype:0 displayGamut:0 layoutDirection:a6 sizeClassHorizontal:a3 sizeClassVertical:a7 memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:[NSArray arrayWithObjects:? count:?], 0, sel__defaultAssetRenditionKey_, 0];
+  result = [(CUICatalog *)self _resolvedRenditionKeyForName:@"IGNORED_VALUE" scaleFactor:idiom deviceIdiom:subtype deviceSubtype:0 displayGamut:0 layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical memoryClass:0 graphicsClass:0 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:[NSArray arrayWithObjects:? count:?], 0, sel__defaultAssetRenditionKey_, 0];
   if (result)
   {
     v14 = result;
@@ -2907,10 +2907,10 @@ id __110__CUICatalog_iconLayerStackWithName_scaleFactor_deviceIdiom_deviceSubtyp
     {
       v16 = v15;
       v17 = [[CUINamedLookup alloc] initWithName:0 usingRenditionKey:v14 fromTheme:v15];
-      v18 = [(CUINamedLookup *)v17 _rendition];
-      v19 = [(CUIThemeRendition *)v18 type];
-      v20 = [(CUIThemeRendition *)v18 name];
-      if (v19 == 1002 || v19 == 1018)
+      _rendition = [(CUINamedLookup *)v17 _rendition];
+      type = [(CUIThemeRendition *)_rendition type];
+      name = [(CUIThemeRendition *)_rendition name];
+      if (type == 1002 || type == 1018)
       {
         v23[0] = _NSConcreteStackBlock;
         v23[1] = 3221225472;
@@ -2918,17 +2918,17 @@ id __110__CUICatalog_iconLayerStackWithName_scaleFactor_deviceIdiom_deviceSubtyp
         v23[3] = &unk_1E7257EF8;
         v23[4] = self;
         v23[5] = v16;
-        *&v23[6] = a3;
-        v23[7] = a4;
-        v23[8] = a5;
-        v23[9] = a6;
-        v23[10] = a7;
-        v21 = [objc_alloc(objc_opt_class()) initWithName:v20 usingRenditionKey:v14 fromTheme:v16 resolvingWithBlock:v23];
+        *&v23[6] = factor;
+        v23[7] = idiom;
+        v23[8] = subtype;
+        v23[9] = horizontal;
+        v23[10] = vertical;
+        v21 = [objc_alloc(objc_opt_class()) initWithName:name usingRenditionKey:v14 fromTheme:v16 resolvingWithBlock:v23];
       }
 
       else
       {
-        v21 = [[CUINamedImage alloc] initWithName:v20 usingRenditionKey:v14 fromTheme:v16];
+        v21 = [[CUINamedImage alloc] initWithName:name usingRenditionKey:v14 fromTheme:v16];
       }
 
       v22 = v21;
@@ -2941,28 +2941,28 @@ id __110__CUICatalog_iconLayerStackWithName_scaleFactor_deviceIdiom_deviceSubtyp
   return result;
 }
 
-- (id)defaultNamedAssetWithScaleFactor:(double)a3 deviceIdiom:(int64_t)a4 deviceSubtype:(unint64_t)a5 sizeClassHorizontal:(int64_t)a6 sizeClassVertical:(int64_t)a7
+- (id)defaultNamedAssetWithScaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical
 {
   kdebug_trace();
-  v13 = [(CUICatalog *)self _defaultNamedAssetWithScaleFactor:a4 deviceIdiom:a5 deviceSubtype:a6 sizeClassHorizontal:a7 sizeClassVertical:a3];
+  v13 = [(CUICatalog *)self _defaultNamedAssetWithScaleFactor:idiom deviceIdiom:subtype deviceSubtype:horizontal sizeClassHorizontal:vertical sizeClassVertical:factor];
   kdebug_trace();
   return v13;
 }
 
-- (id)namedLookupWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 sizeClassHorizontal:(int64_t)a7 sizeClassVertical:(int64_t)a8
+- (id)namedLookupWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)vertical
 {
   if (__getDeviceTraits___getDeviceTraits_once != -1)
   {
     [CUICatalog _recognitionImageWithName:];
   }
 
-  return [(CUICatalog *)self namedLookupWithName:a3 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:__getDeviceTraits___deviceDisplayGamut displayGamut:0 layoutDirection:a7 sizeClassHorizontal:a4 sizeClassVertical:a8];
+  return [(CUICatalog *)self namedLookupWithName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:__getDeviceTraits___deviceDisplayGamut displayGamut:0 layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical];
 }
 
-- (id)_namedLookupWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 appearanceName:(id)a11 locale:(id)a12
+- (id)_namedLookupWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 appearanceName:(id)self1 locale:(id)self2
 {
   v54 = 0;
-  _CUILog(3, "[CUICatalog _namedLookupWithName:%@]", a3, a5, a6, a7, a8, a9, a3);
+  _CUILog(3, "[CUICatalog _namedLookupWithName:%@]", name, idiom, subtype, gamut, direction, horizontal, name);
   if (__getDeviceTraits___getDeviceTraits_once != -1)
   {
     [CUICatalog _recognitionImageWithName:];
@@ -2971,7 +2971,7 @@ id __110__CUICatalog_iconLayerStackWithName_scaleFactor_deviceIdiom_deviceSubtyp
   v19 = __getDeviceTraits___deviceMemoryClass;
   v20 = __getDeviceTraits___deviceGraphicsClass;
   v21 = __getDeviceTraits___deviceGraphicsFallbackOrder;
-  if (__getDeviceTraits___deviceIdiom == a5)
+  if (__getDeviceTraits___deviceIdiom == idiom)
   {
     v49 = __getDeviceTraits___deviceSubtypeFallbackOrder;
   }
@@ -2980,11 +2980,11 @@ id __110__CUICatalog_iconLayerStackWithName_scaleFactor_deviceIdiom_deviceSubtyp
   {
     v55 = [NSNumber numberWithInt:0];
     v49 = [NSArray arrayWithObjects:&v55 count:1];
-    _CUILog(3, "[CUICatalog _namedLookupWithName]: '%@' using deviceSubtype=%lu and universal subtype fallback instead [%s:%d]", v22, v23, v24, v25, v26, v27, a3);
+    _CUILog(3, "[CUICatalog _namedLookupWithName]: '%@' using deviceSubtype=%lu and universal subtype fallback instead [%s:%d]", v22, v23, v24, v25, v26, v27, name);
   }
 
   v28 = 0;
-  if (self && a11)
+  if (self && appearanceName)
   {
     v28 = [_LookupStructuredThemeProvider(self->_storageRef v18)];
   }
@@ -2994,43 +2994,43 @@ id __110__CUICatalog_iconLayerStackWithName_scaleFactor_deviceIdiom_deviceSubtyp
   v53[2] = __162__CUICatalog__namedLookupWithName_scaleFactor_deviceIdiom_deviceSubtype_displayGamut_layoutDirection_sizeClassHorizontal_sizeClassVertical_appearanceName_locale___block_invoke;
   v53[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l;
   v53[4] = v28;
-  v29 = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:a7 displayGamut:a8 layoutDirection:a9 sizeClassHorizontal:a4 sizeClassVertical:a10 memoryClass:v19 graphicsClass:v20 graphicsFallBackOrder:v21 deviceSubtypeFallBackOrder:v49 locale:a12 withBaseKeySelector:0 adjustRenditionKeyWithBlock:v53, a11];
-  if (!v29)
+  appearanceName = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamut displayGamut:direction layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical memoryClass:v19 graphicsClass:v20 graphicsFallBackOrder:v21 deviceSubtypeFallBackOrder:v49 locale:locale withBaseKeySelector:0 adjustRenditionKeyWithBlock:v53, appearanceName];
+  if (!appearanceName)
   {
     goto LABEL_12;
   }
 
-  v36 = v29;
-  v37 = [(CUICatalog *)self _storageRefForRendition:v29 representsODRContent:&v54];
+  v36 = appearanceName;
+  v37 = [(CUICatalog *)self _storageRefForRendition:appearanceName representsODRContent:&v54];
   if (v37 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    _CUILog(4, "CoreUI: [CUICatalog _namedLookupWithName]: Cannot find themeRef while resolving key for name '%@' with subtype %u. [%s:%d]", v38, v39, v40, v41, v42, v43, a3);
+    _CUILog(4, "CoreUI: [CUICatalog _namedLookupWithName]: Cannot find themeRef while resolving key for name '%@' with subtype %u. [%s:%d]", v38, v39, v40, v41, v42, v43, name);
 LABEL_12:
-    _CUILog(3, "CoreUI: [CUICatalog _namedLookupWithName]: Cannot resolve key for name '%@' with subtype %u. [%s:%d]", v30, v31, v32, v33, v34, v35, a3);
+    _CUILog(3, "CoreUI: [CUICatalog _namedLookupWithName]: Cannot resolve key for name '%@' with subtype %u. [%s:%d]", v30, v31, v32, v33, v34, v35, name);
     return 0;
   }
 
   v45 = v37;
-  v46 = [[CUINamedImage alloc] initWithName:a3 usingRenditionKey:v36 fromTheme:v37];
-  v47 = [(CUIThemeRendition *)[(CUINamedLookup *)v46 _rendition] type];
-  if (v47 == 1002 || v47 == 1018)
+  v46 = [[CUINamedImage alloc] initWithName:name usingRenditionKey:v36 fromTheme:v37];
+  type = [(CUIThemeRendition *)[(CUINamedLookup *)v46 _rendition] type];
+  if (type == 1002 || type == 1018)
   {
     v52[0] = _NSConcreteStackBlock;
     v52[1] = 3221225472;
     v52[2] = __162__CUICatalog__namedLookupWithName_scaleFactor_deviceIdiom_deviceSubtype_displayGamut_layoutDirection_sizeClassHorizontal_sizeClassVertical_appearanceName_locale___block_invoke_3;
     v52[3] = &unk_1E7257F20;
-    *&v52[8] = a4;
-    v52[9] = a5;
-    v52[10] = a6;
-    v52[11] = a7;
-    v52[12] = a8;
-    v52[13] = a9;
-    v52[14] = a10;
+    *&v52[8] = factor;
+    v52[9] = idiom;
+    v52[10] = subtype;
+    v52[11] = gamut;
+    v52[12] = direction;
+    v52[13] = horizontal;
+    v52[14] = vertical;
     v52[4] = self;
     v52[5] = v49;
-    v52[6] = a12;
+    v52[6] = locale;
     v52[7] = v45;
-    v48 = [objc_alloc(objc_opt_class()) initWithName:a3 usingRenditionKey:v36 fromTheme:v45 resolvingWithBlock:v52];
+    v48 = [objc_alloc(objc_opt_class()) initWithName:name usingRenditionKey:v36 fromTheme:v45 resolvingWithBlock:v52];
 
     v46 = v48;
   }
@@ -3039,16 +3039,16 @@ LABEL_12:
   return v46;
 }
 
-- (id)namedLookupWithName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 appearanceName:(id)a11 locale:(id)a12
+- (id)namedLookupWithName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 appearanceName:(id)self1 locale:(id)self2
 {
   CUIRenditionKeyValueForAttribute([-[CUICatalog _themeStore](self "_themeStore")], 17);
   kdebug_trace();
-  v20 = [(CUICatalog *)self _namedLookupWithName:a3 scaleFactor:a5 deviceIdiom:a6 deviceSubtype:a7 displayGamut:a8 layoutDirection:a9 sizeClassHorizontal:a4 sizeClassVertical:a10 appearanceName:a11 locale:a12];
+  v20 = [(CUICatalog *)self _namedLookupWithName:name scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamut displayGamut:direction layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical appearanceName:appearanceName locale:locale];
   kdebug_trace();
   return v20;
 }
 
-- (id)_baseTextureKeyForName:(id)a3
+- (id)_baseTextureKeyForName:(id)name
 {
   result = [-[CUICatalog _themeStore](self "_themeStore")];
   if (result)
@@ -3063,12 +3063,12 @@ LABEL_12:
   return result;
 }
 
-- (id)_namedTextureWithName:(id)a3 scaleFactor:(double)a4 appearanceName:(id)a5
+- (id)_namedTextureWithName:(id)name scaleFactor:(double)factor appearanceName:(id)appearanceName
 {
   v20 = 0;
-  _CUILog(3, "[CUICatalog _namedTextureWithName:%@]", a3, a5, v5, v6, v7, v8, a3);
+  _CUILog(3, "[CUICatalog _namedTextureWithName:%@]", name, appearanceName, v5, v6, v7, v8, name);
   v14 = 0;
-  if (self && a5)
+  if (self && appearanceName)
   {
     v14 = [_LookupStructuredThemeProvider(self->_storageRef v13)];
   }
@@ -3083,7 +3083,7 @@ LABEL_12:
   v19[2] = __63__CUICatalog__namedTextureWithName_scaleFactor_appearanceName___block_invoke;
   v19[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l;
   v19[4] = v14;
-  result = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:__getDeviceTraits___deviceSubtype deviceSubtype:__getDeviceTraits___deviceDisplayGamut displayGamut:0 layoutDirection:0 sizeClassHorizontal:a4 sizeClassVertical:0 memoryClass:__getDeviceTraits___deviceMemoryClass graphicsClass:__getDeviceTraits___deviceGraphicsClass graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder locale:0 withBaseKeySelector:sel__baseTextureKeyForName_ adjustRenditionKeyWithBlock:v19];
+  result = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:__getDeviceTraits___deviceSubtype deviceSubtype:__getDeviceTraits___deviceDisplayGamut displayGamut:0 layoutDirection:0 sizeClassHorizontal:factor sizeClassVertical:0 memoryClass:__getDeviceTraits___deviceMemoryClass graphicsClass:__getDeviceTraits___deviceGraphicsClass graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder locale:0 withBaseKeySelector:sel__baseTextureKeyForName_ adjustRenditionKeyWithBlock:v19];
   if (result)
   {
     v16 = result;
@@ -3095,7 +3095,7 @@ LABEL_12:
 
     else
     {
-      v18 = [(CUINamedLookup *)[CUINamedTexture alloc] initWithName:a3 usingRenditionKey:v16 fromTheme:v17];
+      v18 = [(CUINamedLookup *)[CUINamedTexture alloc] initWithName:name usingRenditionKey:v16 fromTheme:v17];
       [(CUINamedLookup *)v18 setRepresentsOnDemandContent:v20];
       return v18;
     }
@@ -3104,21 +3104,21 @@ LABEL_12:
   return result;
 }
 
-- (id)namedTextureWithName:(id)a3 scaleFactor:(double)a4 appearanceName:(id)a5
+- (id)namedTextureWithName:(id)name scaleFactor:(double)factor appearanceName:(id)appearanceName
 {
   CUIRenditionKeyValueForAttribute([-[CUICatalog _themeStore](self "_themeStore")], 17);
   kdebug_trace();
-  v9 = [(CUICatalog *)self _namedTextureWithName:a3 scaleFactor:a5 appearanceName:a4];
+  v9 = [(CUICatalog *)self _namedTextureWithName:name scaleFactor:appearanceName appearanceName:factor];
   kdebug_trace();
   return v9;
 }
 
-- (id)_namedTextureWithName:(id)a3 scaleFactor:(double)a4 displayGamut:(int64_t)a5 appearanceName:(id)a6
+- (id)_namedTextureWithName:(id)name scaleFactor:(double)factor displayGamut:(int64_t)gamut appearanceName:(id)appearanceName
 {
   v21 = 0;
-  _CUILog(3, "[CUICatalog _namedTextureWithName:%@]", a3, a5, a6, v6, v7, v8, a3);
+  _CUILog(3, "[CUICatalog _namedTextureWithName:%@]", name, gamut, appearanceName, v6, v7, v8, name);
   v15 = 0;
-  if (self && a6)
+  if (self && appearanceName)
   {
     v15 = [_LookupStructuredThemeProvider(self->_storageRef v14)];
   }
@@ -3133,7 +3133,7 @@ LABEL_12:
   v20[2] = __76__CUICatalog__namedTextureWithName_scaleFactor_displayGamut_appearanceName___block_invoke;
   v20[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l;
   v20[4] = v15;
-  result = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:__getDeviceTraits___deviceSubtype deviceSubtype:a5 displayGamut:0 layoutDirection:0 sizeClassHorizontal:a4 sizeClassVertical:0 memoryClass:__getDeviceTraits___deviceMemoryClass graphicsClass:__getDeviceTraits___deviceGraphicsClass graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder locale:0 withBaseKeySelector:sel__baseTextureKeyForName_ adjustRenditionKeyWithBlock:v20];
+  result = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:__getDeviceTraits___deviceSubtype deviceSubtype:gamut displayGamut:0 layoutDirection:0 sizeClassHorizontal:factor sizeClassVertical:0 memoryClass:__getDeviceTraits___deviceMemoryClass graphicsClass:__getDeviceTraits___deviceGraphicsClass graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder locale:0 withBaseKeySelector:sel__baseTextureKeyForName_ adjustRenditionKeyWithBlock:v20];
   if (result)
   {
     v17 = result;
@@ -3145,7 +3145,7 @@ LABEL_12:
 
     else
     {
-      v19 = [(CUINamedLookup *)[CUINamedTexture alloc] initWithName:a3 usingRenditionKey:v17 fromTheme:v18];
+      v19 = [(CUINamedLookup *)[CUINamedTexture alloc] initWithName:name usingRenditionKey:v17 fromTheme:v18];
       [(CUINamedLookup *)v19 setRepresentsOnDemandContent:v21];
       return v19;
     }
@@ -3154,16 +3154,16 @@ LABEL_12:
   return result;
 }
 
-- (id)namedTextureWithName:(id)a3 scaleFactor:(double)a4 displayGamut:(int64_t)a5 appearanceName:(id)a6
+- (id)namedTextureWithName:(id)name scaleFactor:(double)factor displayGamut:(int64_t)gamut appearanceName:(id)appearanceName
 {
   CUIRenditionKeyValueForAttribute([-[CUICatalog _themeStore](self "_themeStore")], 17);
   kdebug_trace();
-  v11 = [(CUICatalog *)self _namedTextureWithName:a3 scaleFactor:a5 displayGamut:a6 appearanceName:a4];
+  v11 = [(CUICatalog *)self _namedTextureWithName:name scaleFactor:gamut displayGamut:appearanceName appearanceName:factor];
   kdebug_trace();
   return v11;
 }
 
-- (id)_baseColorKeyForName:(id)a3
+- (id)_baseColorKeyForName:(id)name
 {
   result = [-[CUICatalog _themeStore](self "_themeStore")];
   if (result)
@@ -3178,7 +3178,7 @@ LABEL_12:
   return result;
 }
 
-- (id)colorWithName:(id)a3 displayGamut:(int64_t)a4 deviceIdiom:(int64_t)a5 appearanceName:(id)a6
+- (id)colorWithName:(id)name displayGamut:(int64_t)gamut deviceIdiom:(int64_t)idiom appearanceName:(id)appearanceName
 {
   CUIRenditionKeyValueForAttribute([-[CUICatalog _themeStore](self "_themeStore")], 17);
   kdebug_trace();
@@ -3193,15 +3193,15 @@ LABEL_12:
   v35 = __getDeviceTraits___deviceMemoryClass;
   v19 = __getDeviceTraits___deviceGraphicsFallbackOrder;
   v20 = __getDeviceTraits___deviceSubtypeFallbackOrder;
-  _CUILog(3, "[CUICatalog colorWithName:%@]", v11, v12, v13, v14, v15, v16, a3);
+  _CUILog(3, "[CUICatalog colorWithName:%@]", v11, v12, v13, v14, v15, v16, name);
   v22 = 0;
   v37 = 0;
-  if (self && a6)
+  if (self && appearanceName)
   {
     v22 = [_LookupStructuredThemeProvider(self->_storageRef v21)];
   }
 
-  if (v17 != a5)
+  if (v17 != idiom)
   {
     v38 = [NSNumber numberWithInt:0];
     v20 = [NSArray arrayWithObjects:&v38 count:1];
@@ -3213,14 +3213,14 @@ LABEL_12:
   v36[2] = __68__CUICatalog_colorWithName_displayGamut_deviceIdiom_appearanceName___block_invoke;
   v36[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l;
   v36[4] = v22;
-  v23 = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:a5 deviceIdiom:v18 deviceSubtype:a4 displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:v35 graphicsClass:v34 graphicsFallBackOrder:v19 deviceSubtypeFallBackOrder:v20 locale:0 withBaseKeySelector:sel__baseColorKeyForName_ adjustRenditionKeyWithBlock:v36];
+  v23 = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:idiom deviceIdiom:v18 deviceSubtype:gamut displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:v35 graphicsClass:v34 graphicsFallBackOrder:v19 deviceSubtypeFallBackOrder:v20 locale:0 withBaseKeySelector:sel__baseColorKeyForName_ adjustRenditionKeyWithBlock:v36];
   if (v23)
   {
     v24 = v23;
-    v25 = [(CUICatalog *)self localObjectCache];
+    localObjectCache = [(CUICatalog *)self localObjectCache];
     v26 = [(CUICatalog *)self _storageRefForRendition:v24 representsODRContent:&v37];
     v28 = [_LookupStructuredThemeProvider(v26 v27)];
-    v29 = [v25 objectForKey:v28];
+    v29 = [localObjectCache objectForKey:v28];
     v30 = v29;
     if (colorWithName_displayGamut_deviceIdiom_appearanceName____onceToken == -1)
     {
@@ -3248,12 +3248,12 @@ LABEL_17:
     }
 
 LABEL_15:
-    v32 = [[CUINamedColor alloc] initWithName:a3 usingRenditionKey:v24 fromTheme:v26];
+    v32 = [[CUINamedColor alloc] initWithName:name usingRenditionKey:v24 fromTheme:v26];
     v30 = v32;
     if (v32)
     {
       [(CUINamedLookup *)v32 setRepresentsOnDemandContent:v37];
-      [v25 setObject:v30 forKey:v28];
+      [localObjectCache setObject:v30 forKey:v28];
     }
 
     goto LABEL_17;
@@ -3272,7 +3272,7 @@ uint64_t __68__CUICatalog_colorWithName_displayGamut_deviceIdiom_appearanceName_
   return result;
 }
 
-- (id)colorWithName:(id)a3 displayGamut:(int64_t)a4 appearanceName:(id)a5
+- (id)colorWithName:(id)name displayGamut:(int64_t)gamut appearanceName:(id)appearanceName
 {
   if (__getDeviceTraits___getDeviceTraits_once != -1)
   {
@@ -3281,10 +3281,10 @@ uint64_t __68__CUICatalog_colorWithName_displayGamut_deviceIdiom_appearanceName_
 
   v9 = __getDeviceTraits___deviceIdiom;
 
-  return [(CUICatalog *)self colorWithName:a3 displayGamut:a4 deviceIdiom:v9 appearanceName:a5];
+  return [(CUICatalog *)self colorWithName:name displayGamut:gamut deviceIdiom:v9 appearanceName:appearanceName];
 }
 
-- (id)_baseGradientKeyForName:(id)a3
+- (id)_baseGradientKeyForName:(id)name
 {
   result = [-[CUICatalog _themeStore](self "_themeStore")];
   if (result)
@@ -3299,7 +3299,7 @@ uint64_t __68__CUICatalog_colorWithName_displayGamut_deviceIdiom_appearanceName_
   return result;
 }
 
-- (id)gradientWithName:(id)a3 displayGamut:(int64_t)a4 deviceIdiom:(int64_t)a5 appearanceName:(id)a6
+- (id)gradientWithName:(id)name displayGamut:(int64_t)gamut deviceIdiom:(int64_t)idiom appearanceName:(id)appearanceName
 {
   CUIRenditionKeyValueForAttribute([-[CUICatalog _themeStore](self "_themeStore")], 17);
   kdebug_trace();
@@ -3314,15 +3314,15 @@ uint64_t __68__CUICatalog_colorWithName_displayGamut_deviceIdiom_appearanceName_
   v27 = __getDeviceTraits___deviceMemoryClass;
   v19 = __getDeviceTraits___deviceGraphicsFallbackOrder;
   v20 = __getDeviceTraits___deviceSubtypeFallbackOrder;
-  _CUILog(3, "[CUICatalog gradientithName:%@]", v11, v12, v13, v14, v15, v16, a3);
+  _CUILog(3, "[CUICatalog gradientithName:%@]", v11, v12, v13, v14, v15, v16, name);
   v22 = 0;
   v29 = 0;
-  if (self && a6)
+  if (self && appearanceName)
   {
     v22 = [_LookupStructuredThemeProvider(self->_storageRef v21)];
   }
 
-  if (v17 != a5)
+  if (v17 != idiom)
   {
     v30 = [NSNumber numberWithInt:0];
     v20 = [NSArray arrayWithObjects:&v30 count:1];
@@ -3334,15 +3334,15 @@ uint64_t __68__CUICatalog_colorWithName_displayGamut_deviceIdiom_appearanceName_
   v28[2] = __71__CUICatalog_gradientWithName_displayGamut_deviceIdiom_appearanceName___block_invoke;
   v28[3] = &__block_descriptor_40_e25_v16__0__CUIRenditionKey_8l;
   v28[4] = v22;
-  v23 = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:a5 deviceIdiom:v18 deviceSubtype:a4 displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:v27 graphicsClass:v26 graphicsFallBackOrder:v19 deviceSubtypeFallBackOrder:v20 locale:0 withBaseKeySelector:sel__baseGradientKeyForName_ adjustRenditionKeyWithBlock:v28];
+  v23 = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:idiom deviceIdiom:v18 deviceSubtype:gamut displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:v27 graphicsClass:v26 graphicsFallBackOrder:v19 deviceSubtypeFallBackOrder:v20 locale:0 withBaseKeySelector:sel__baseGradientKeyForName_ adjustRenditionKeyWithBlock:v28];
   if (!v23)
   {
     goto LABEL_11;
   }
 
-  v24 = [[CUINamedGradient alloc] initWithName:a3 usingRenditionKey:v23 fromTheme:[(CUICatalog *)self _storageRefForRendition:v23 representsODRContent:&v29]];
+  v24 = [[CUINamedGradient alloc] initWithName:name usingRenditionKey:v23 fromTheme:[(CUICatalog *)self _storageRefForRendition:v23 representsODRContent:&v29]];
   [(CUINamedLookup *)v24 setRepresentsOnDemandContent:v29];
-  if (![(CUINamedGradient *)v24 _updateFromCatalog:self displayGamut:a4 deviceIdiom:a5 appearanceName:a6])
+  if (![(CUINamedGradient *)v24 _updateFromCatalog:self displayGamut:gamut deviceIdiom:idiom appearanceName:appearanceName])
   {
 
 LABEL_11:
@@ -3353,7 +3353,7 @@ LABEL_11:
   return v24;
 }
 
-- (id)_baseModelForKeyForName:(id)a3
+- (id)_baseModelForKeyForName:(id)name
 {
   result = [-[CUICatalog _themeStore](self "_themeStore")];
   if (result)
@@ -3368,7 +3368,7 @@ LABEL_11:
   return result;
 }
 
-- (id)_modelWithName:(id)a3
+- (id)_modelWithName:(id)name
 {
   v9 = 0;
   if (__getDeviceTraits___getDeviceTraits_once != -1)
@@ -3376,7 +3376,7 @@ LABEL_11:
     [CUICatalog _recognitionImageWithName:];
   }
 
-  result = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:__getDeviceTraits___deviceSubtype deviceSubtype:__getDeviceTraits___deviceDisplayGamut displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:__getDeviceTraits___deviceMemoryClass graphicsClass:__getDeviceTraits___deviceGraphicsClass graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder locale:0 withBaseKeySelector:sel__baseModelForKeyForName_ adjustRenditionKeyWithBlock:0];
+  result = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:__getDeviceTraits___deviceSubtype deviceSubtype:__getDeviceTraits___deviceDisplayGamut displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:__getDeviceTraits___deviceMemoryClass graphicsClass:__getDeviceTraits___deviceGraphicsClass graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder locale:0 withBaseKeySelector:sel__baseModelForKeyForName_ adjustRenditionKeyWithBlock:0];
   if (result)
   {
     v6 = result;
@@ -3388,7 +3388,7 @@ LABEL_11:
 
     else
     {
-      v8 = [[CUINamedModel alloc] initWithName:a3 usingRenditionKey:v6 fromTheme:v7];
+      v8 = [[CUINamedModel alloc] initWithName:name usingRenditionKey:v6 fromTheme:v7];
     }
 
     return v8;
@@ -3397,16 +3397,16 @@ LABEL_11:
   return result;
 }
 
-- (id)modelWithName:(id)a3
+- (id)modelWithName:(id)name
 {
   CUIRenditionKeyValueForAttribute([-[CUICatalog _themeStore](self "_themeStore")], 17);
   kdebug_trace();
-  v5 = [(CUICatalog *)self _modelWithName:a3];
+  v5 = [(CUICatalog *)self _modelWithName:name];
   kdebug_trace();
   return v5;
 }
 
-- (id)_baseRecognitionGroupImageSetKeyForName:(id)a3
+- (id)_baseRecognitionGroupImageSetKeyForName:(id)name
 {
   result = [-[CUICatalog _themeStore](self "_themeStore")];
   if (result)
@@ -3421,7 +3421,7 @@ LABEL_11:
   return result;
 }
 
-- (id)namedRecognitionGroupWithName:(id)a3
+- (id)namedRecognitionGroupWithName:(id)name
 {
   v10 = 0;
   CUIRenditionKeyValueForAttribute([-[CUICatalog _themeStore](self "_themeStore")], 17);
@@ -3431,7 +3431,7 @@ LABEL_11:
     [CUICatalog _recognitionImageWithName:];
   }
 
-  v5 = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:__getDeviceTraits___deviceSubtype deviceSubtype:__getDeviceTraits___deviceDisplayGamut displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:__getDeviceTraits___deviceMemoryClass graphicsClass:__getDeviceTraits___deviceGraphicsClass graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder locale:0 withBaseKeySelector:sel__baseRecognitionGroupImageSetKeyForName_ adjustRenditionKeyWithBlock:0];
+  v5 = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:__getDeviceTraits___deviceIdiom deviceIdiom:__getDeviceTraits___deviceSubtype deviceSubtype:__getDeviceTraits___deviceDisplayGamut displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:__getDeviceTraits___deviceMemoryClass graphicsClass:__getDeviceTraits___deviceGraphicsClass graphicsFallBackOrder:__getDeviceTraits___deviceGraphicsFallbackOrder deviceSubtypeFallBackOrder:__getDeviceTraits___deviceSubtypeFallbackOrder locale:0 withBaseKeySelector:sel__baseRecognitionGroupImageSetKeyForName_ adjustRenditionKeyWithBlock:0];
   if (v5)
   {
     v6 = v5;
@@ -3443,7 +3443,7 @@ LABEL_11:
 
     else
     {
-      v8 = [[CUINamedRecognitionGroup alloc] initWithName:a3 contentsFromCatalog:self usingRenditionKey:v6 fromTheme:v7];
+      v8 = [[CUINamedRecognitionGroup alloc] initWithName:name contentsFromCatalog:self usingRenditionKey:v6 fromTheme:v7];
     }
 
     kdebug_trace();
@@ -3457,7 +3457,7 @@ LABEL_11:
   }
 }
 
-- (id)_baseRecognitionObjectKeyForName:(id)a3
+- (id)_baseRecognitionObjectKeyForName:(id)name
 {
   result = [-[CUICatalog _themeStore](self "_themeStore")];
   if (result)
@@ -3472,7 +3472,7 @@ LABEL_11:
   return result;
 }
 
-- (id)_recognitionObjectWithName:(id)a3
+- (id)_recognitionObjectWithName:(id)name
 {
   v23 = 0;
   CUIRenditionKeyValueForAttribute([-[CUICatalog _themeStore](self "_themeStore")], 17);
@@ -3489,8 +3489,8 @@ LABEL_11:
   v15 = __getDeviceTraits___deviceGraphicsClass;
   v16 = __getDeviceTraits___deviceGraphicsFallbackOrder;
   v17 = __getDeviceTraits___deviceSubtypeFallbackOrder;
-  _CUILog(3, "[CUICatalog _recognitionObjectWithName:%@]", v5, v6, v7, v8, v9, v10, a3);
-  v18 = [(CUICatalog *)self _resolvedRenditionKeyForName:a3 scaleFactor:v11 deviceIdiom:v12 deviceSubtype:v13 displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:v14 graphicsClass:v15 graphicsFallBackOrder:v16 deviceSubtypeFallBackOrder:v17 locale:0 withBaseKeySelector:sel__baseRecognitionObjectKeyForName_ adjustRenditionKeyWithBlock:0];
+  _CUILog(3, "[CUICatalog _recognitionObjectWithName:%@]", v5, v6, v7, v8, v9, v10, name);
+  v18 = [(CUICatalog *)self _resolvedRenditionKeyForName:name scaleFactor:v11 deviceIdiom:v12 deviceSubtype:v13 displayGamut:0 layoutDirection:0 sizeClassHorizontal:1.0 sizeClassVertical:0 memoryClass:v14 graphicsClass:v15 graphicsFallBackOrder:v16 deviceSubtypeFallBackOrder:v17 locale:0 withBaseKeySelector:sel__baseRecognitionObjectKeyForName_ adjustRenditionKeyWithBlock:0];
   if (v18)
   {
     v19 = v18;
@@ -3502,7 +3502,7 @@ LABEL_11:
 
     else
     {
-      v21 = [[CUINamedRecognitionObject alloc] initWithName:a3 usingRenditionKey:v19 fromTheme:v20];
+      v21 = [[CUINamedRecognitionObject alloc] initWithName:name usingRenditionKey:v19 fromTheme:v20];
     }
 
     kdebug_trace();
@@ -3516,10 +3516,10 @@ LABEL_11:
   }
 }
 
-- (unint64_t)_storageRefForRendition:(id)a3 representsODRContent:(BOOL *)a4
+- (unint64_t)_storageRefForRendition:(id)rendition representsODRContent:(BOOL *)content
 {
-  *a4 = 0;
-  if (!a3)
+  *content = 0;
+  if (!rendition)
   {
     return self->_storageRef;
   }
@@ -3531,8 +3531,8 @@ LABEL_11:
     return self->_storageRef;
   }
 
-  *a4 = 1;
-  v7 = [v6 assetPackIdentifier];
+  *content = 1;
+  assetPackIdentifier = [v6 assetPackIdentifier];
   storageMapTable = self->_storageMapTable;
   if (!storageMapTable)
   {
@@ -3545,14 +3545,14 @@ LABEL_11:
     self->_storageMapTable = storageMapTable;
   }
 
-  v10 = NSMapGet(storageMapTable, v7);
+  v10 = NSMapGet(storageMapTable, assetPackIdentifier);
   if (!v10)
   {
-    if (([v7 hasPrefix:@"/"] & 1) != 0 || objc_msgSend(v7, "hasPrefix:", @"./"))
+    if (([assetPackIdentifier hasPrefix:@"/"] & 1) != 0 || objc_msgSend(assetPackIdentifier, "hasPrefix:", @"./"))
     {
-      if ([v7 hasPrefix:@"./"])
+      if ([assetPackIdentifier hasPrefix:@"./"])
       {
-        v11 = +[CUIThemeFacet themeWithContentsOfURL:error:](CUIThemeFacet, "themeWithContentsOfURL:error:", -[NSBundle URLForResource:withExtension:](self->_bundle, "URLForResource:withExtension:", [objc_msgSend(v7 substringFromIndex:{2), "stringByDeletingPathExtension"}], @"car"), &v48);
+        v11 = +[CUIThemeFacet themeWithContentsOfURL:error:](CUIThemeFacet, "themeWithContentsOfURL:error:", -[NSBundle URLForResource:withExtension:](self->_bundle, "URLForResource:withExtension:", [objc_msgSend(assetPackIdentifier substringFromIndex:{2), "stringByDeletingPathExtension"}], @"car"), &v48);
         if (!v11)
         {
           goto LABEL_15;
@@ -3561,13 +3561,13 @@ LABEL_11:
 
       else
       {
-        v19 = [[NSURL alloc] initFileURLWithPath:v7 isDirectory:0];
+        v19 = [[NSURL alloc] initFileURLWithPath:assetPackIdentifier isDirectory:0];
         v11 = [CUIThemeFacet themeWithContentsOfURL:v19 error:&v48];
 
         if (!v11)
         {
 LABEL_15:
-          _CUILog(4, "CoreUI: can't open asset pack '%@' contents of asset pack will be ignored error:'%@'", v13, v14, v15, v16, v17, v18, v7);
+          _CUILog(4, "CoreUI: can't open asset pack '%@' contents of asset pack will be ignored error:'%@'", v13, v14, v15, v16, v17, v18, assetPackIdentifier);
           return 0x7FFFFFFFFFFFFFFFLL;
         }
       }
@@ -3575,18 +3575,18 @@ LABEL_15:
 
     else
     {
-      v20 = [NSBundleResourceRequest _assetPackBundleForBundle:self->_bundle withAssetPackID:v7];
+      v20 = [NSBundleResourceRequest _assetPackBundleForBundle:self->_bundle withAssetPackID:assetPackIdentifier];
       if (!v20)
       {
         if (self->_bundle)
         {
-          _CUILog(4, "CoreUI: can't locate asset pack '%@' for bundle '%@' contents of asset pack will be ignored", v21, v22, v23, v24, v25, v26, v7);
+          _CUILog(4, "CoreUI: can't locate asset pack '%@' for bundle '%@' contents of asset pack will be ignored", v21, v22, v23, v24, v25, v26, assetPackIdentifier);
         }
 
         else
         {
           [objc_msgSend(-[CUICatalog _themeStore](self "_themeStore")];
-          _CUILog(4, "CoreUI: can't locate asset pack '%@' because CUICatalog was initialized with a path of '%@' instead of a bundle contents of asset pack will be ignored", v40, v41, v42, v43, v44, v45, v7);
+          _CUILog(4, "CoreUI: can't locate asset pack '%@' because CUICatalog was initialized with a path of '%@' instead of a bundle contents of asset pack will be ignored", v40, v41, v42, v43, v44, v45, assetPackIdentifier);
         }
 
         return 0x7FFFFFFFFFFFFFFFLL;
@@ -3602,19 +3602,19 @@ LABEL_15:
       v11 = [CUIThemeFacet themeWithContentsOfURL:v27 error:&v48];
       if (!v11)
       {
-        _CUILog(4, "CoreUI: can't open asset pack '%@' for bundle '%@' contents of asset pack will be ignored error:'%@'", v34, v35, v36, v37, v38, v39, v7);
+        _CUILog(4, "CoreUI: can't open asset pack '%@' for bundle '%@' contents of asset pack will be ignored error:'%@'", v34, v35, v36, v37, v38, v39, assetPackIdentifier);
         return 0x7FFFFFFFFFFFFFFFLL;
       }
     }
 
-    NSMapInsert(self->_storageMapTable, v7, v11);
+    NSMapInsert(self->_storageMapTable, assetPackIdentifier, v11);
     return v11;
   }
 
   return v10;
 }
 
-- (id)_baseKeyForName:(id)a3
+- (id)_baseKeyForName:(id)name
 {
   result = [-[CUICatalog _themeStore](self "_themeStore")];
   if (result)
@@ -3627,7 +3627,7 @@ LABEL_15:
   return result;
 }
 
-- (id)_baseAtlasKeyForName:(id)a3
+- (id)_baseAtlasKeyForName:(id)name
 {
   result = [-[CUICatalog _themeStore](self "_themeStore")];
   if (result)
@@ -3642,7 +3642,7 @@ LABEL_15:
   return result;
 }
 
-- (id)_baseAtlasContentsKeyForName:(id)a3
+- (id)_baseAtlasContentsKeyForName:(id)name
 {
   result = [-[CUICatalog _themeStore](self "_themeStore")];
   if (result)
@@ -3657,7 +3657,7 @@ LABEL_15:
   return result;
 }
 
-- (id)_baseMultisizeImageSetKeyForName:(id)a3
+- (id)_baseMultisizeImageSetKeyForName:(id)name
 {
   result = [-[CUICatalog _themeStore](self "_themeStore")];
   if (result)
@@ -3672,70 +3672,70 @@ LABEL_15:
   return result;
 }
 
-- (id)_nameForAppearanceIdentifier:(int64_t)a3
+- (id)_nameForAppearanceIdentifier:(int64_t)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = _LookupStructuredThemeProvider(self->_storageRef, a2);
 
-  return [v4 nameForAppearanceIdentifier:v3];
+  return [v4 nameForAppearanceIdentifier:identifierCopy];
 }
 
-- (id)_resolvedRenditionKeyForName:(id)a3 scaleFactor:(double)a4 deviceIdiom:(int64_t)a5 deviceSubtype:(unint64_t)a6 displayGamut:(int64_t)a7 layoutDirection:(int64_t)a8 sizeClassHorizontal:(int64_t)a9 sizeClassVertical:(int64_t)a10 memoryClass:(unint64_t)a11 graphicsClass:(unint64_t)a12 graphicsFallBackOrder:(id)a13 deviceSubtypeFallBackOrder:(id)a14 locale:(id)a15 withBaseKeySelector:(SEL)a16 adjustRenditionKeyWithBlock:(id)a17
+- (id)_resolvedRenditionKeyForName:(id)name scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)horizontal sizeClassVertical:(int64_t)self0 memoryClass:(unint64_t)self1 graphicsClass:(unint64_t)self2 graphicsFallBackOrder:(id)self3 deviceSubtypeFallBackOrder:(id)self4 locale:(id)self5 withBaseKeySelector:(SEL)self6 adjustRenditionKeyWithBlock:(id)self7
 {
-  _CUILog(3, "[CUICatalog _resolvedRenditionKeyForName:%@] [%s:%d]", a3, a5, a6, a7, a8, a9, a3);
-  if (!a3 || ![a3 length])
+  _CUILog(3, "[CUICatalog _resolvedRenditionKeyForName:%@] [%s:%d]", name, idiom, subtype, gamut, direction, horizontal, name);
+  if (!name || ![name length])
   {
-    v39 = a3;
+    subtypeCopy = name;
     v29 = "CUICatalog: Invalid asset name supplied: '%@'";
     goto LABEL_7;
   }
 
-  if (!a5 && a6)
+  if (!idiom && subtype)
   {
-    v39 = a6;
+    subtypeCopy = subtype;
     v29 = "CUICatalog: Invalid Request: requesting subtype %d without specifying idiom for asset named: '%@'";
 LABEL_7:
-    _CUILog(4, v29, v23, v24, v25, v26, v27, v28, v39);
+    _CUILog(4, v29, v23, v24, v25, v26, v27, v28, subtypeCopy);
     return 0;
   }
 
-  if (a16)
+  if (selector)
   {
-    v31 = [(CUICatalog *)self performSelector:a16 withObject:a3];
+    v31 = [(CUICatalog *)self performSelector:selector withObject:name];
   }
 
   else
   {
-    v31 = [(CUICatalog *)self _baseKeyForName:a3];
+    v31 = [(CUICatalog *)self _baseKeyForName:name];
   }
 
   if (!v31)
   {
-    _CUILog(3, "[CUICatalog _resolvedRenditionKeyForName:] Cannot resolve base key for bogus name '%@'.", v32, 0, v33, v34, v35, v36, a3);
+    _CUILog(3, "[CUICatalog _resolvedRenditionKeyForName:] Cannot resolve base key for bogus name '%@'.", v32, 0, v33, v34, v35, v36, name);
     return 0;
   }
 
   storageRef = self->_storageRef;
-  v38 = 0.0;
-  if (a4 > 0.0)
+  factorCopy = 0.0;
+  if (factor > 0.0)
   {
-    v38 = a4;
+    factorCopy = factor;
   }
 
-  return [CUICatalog _resolvedRenditionKeyFromThemeRef:"_resolvedRenditionKeyFromThemeRef:withBaseKey:scaleFactor:deviceIdiom:deviceSubtype:displayGamut:layoutDirection:sizeClassHorizontal:sizeClassVertical:memoryClass:graphicsClass:graphicsFallBackOrder:deviceSubtypeFallBackOrder:locale:adjustRenditionKeyWithBlock:" withBaseKey:storageRef scaleFactor:v31 deviceIdiom:a5 deviceSubtype:a6 displayGamut:a7 layoutDirection:a8 sizeClassHorizontal:v38 sizeClassVertical:? memoryClass:? graphicsClass:? graphicsFallBackOrder:? deviceSubtypeFallBackOrder:? locale:? adjustRenditionKeyWithBlock:?];
+  return [CUICatalog _resolvedRenditionKeyFromThemeRef:"_resolvedRenditionKeyFromThemeRef:withBaseKey:scaleFactor:deviceIdiom:deviceSubtype:displayGamut:layoutDirection:sizeClassHorizontal:sizeClassVertical:memoryClass:graphicsClass:graphicsFallBackOrder:deviceSubtypeFallBackOrder:locale:adjustRenditionKeyWithBlock:" withBaseKey:storageRef scaleFactor:v31 deviceIdiom:idiom deviceSubtype:subtype displayGamut:gamut layoutDirection:direction sizeClassHorizontal:factorCopy sizeClassVertical:? memoryClass:? graphicsClass:? graphicsFallBackOrder:? deviceSubtypeFallBackOrder:? locale:? adjustRenditionKeyWithBlock:?];
 }
 
-- (id)_resolvedRenditionKeyFromThemeRef:(unint64_t)a3 withBaseKey:(id)a4 scaleFactor:(double)a5 deviceIdiom:(int64_t)a6 deviceSubtype:(unint64_t)a7 displayGamut:(int64_t)a8 layoutDirection:(int64_t)a9 sizeClassHorizontal:(int64_t)a10 sizeClassVertical:(int64_t)a11 memoryClass:(unint64_t)a12 graphicsClass:(unint64_t)a13 graphicsFallBackOrder:(id)a14 deviceSubtypeFallBackOrder:(id)a15 locale:(id)a16 adjustRenditionKeyWithBlock:(id)a17
+- (id)_resolvedRenditionKeyFromThemeRef:(unint64_t)ref withBaseKey:(id)key scaleFactor:(double)factor deviceIdiom:(int64_t)idiom deviceSubtype:(unint64_t)subtype displayGamut:(int64_t)gamut layoutDirection:(int64_t)direction sizeClassHorizontal:(int64_t)self0 sizeClassVertical:(int64_t)self1 memoryClass:(unint64_t)self2 graphicsClass:(unint64_t)self3 graphicsFallBackOrder:(id)self4 deviceSubtypeFallBackOrder:(id)self5 locale:(id)self6 adjustRenditionKeyWithBlock:(id)self7
 {
-  v25 = _LookupStructuredThemeProvider(a3, a2);
+  v25 = _LookupStructuredThemeProvider(ref, a2);
   v35 = [objc_msgSend(v25 "themeStore")];
-  v26 = [a16 languageCode];
-  if (!a16 || !v26)
+  languageCode = [locale languageCode];
+  if (!locale || !languageCode)
   {
     preferredLocalization = self->_preferredLocalization;
-    if (a16 && !v26)
+    if (locale && !languageCode)
     {
-      _CUILog(4, "CoreUI: passed in NSLocale %p has a language code of NULL assuming localization identifier %d", 0, v27, v28, v29, v30, v31, a16);
+      _CUILog(4, "CoreUI: passed in NSLocale %p has a language code of NULL assuming localization identifier %d", 0, v27, v28, v29, v30, v31, locale);
     }
 
 LABEL_10:
@@ -3746,7 +3746,7 @@ LABEL_12:
       {
         if (([v35 attributePresent:13 withValue:preferredLocalization] & 0x80000000) == 0)
         {
-          result = [(CUICatalog *)self _private_resolvedRenditionKeyFromThemeRef:a3 withBaseKey:a4 scaleFactor:a6 deviceIdiom:a7 deviceSubtype:a8 displayGamut:a9 layoutDirection:a10 sizeClassHorizontal:a5 sizeClassVertical:a11 memoryClass:a12 graphicsClass:a13 graphicsFallBackOrder:a14 deviceSubtypeFallBackOrder:a15 localizationIdentifier:preferredLocalization adjustRenditionKeyWithBlock:a17];
+          result = [(CUICatalog *)self _private_resolvedRenditionKeyFromThemeRef:ref withBaseKey:key scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamut displayGamut:direction layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical memoryClass:class graphicsClass:graphicsClass graphicsFallBackOrder:order deviceSubtypeFallBackOrder:backOrder localizationIdentifier:preferredLocalization adjustRenditionKeyWithBlock:block];
           if (result)
           {
             return result;
@@ -3760,7 +3760,7 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v32 = [NSLocale mostPreferredLanguageOf:self->_assetCatalogLocalizations withPreferredLanguages:[NSArray arrayWithObject:v26] forUsage:1 options:0];
+  v32 = [NSLocale mostPreferredLanguageOf:self->_assetCatalogLocalizations withPreferredLanguages:[NSArray arrayWithObject:languageCode] forUsage:1 options:0];
   if (v32)
   {
     preferredLocalization = [v25 localizationIdentifierForName:v32];
@@ -3774,39 +3774,39 @@ LABEL_12:
 
   preferredLocalization = 0;
 LABEL_11:
-  if (([v25 localizationWorkaroundForKeyList:objc_msgSend(a4 withLocale:{"keyList"), a16}] & 1) == 0)
+  if (([v25 localizationWorkaroundForKeyList:objc_msgSend(key withLocale:{"keyList"), locale}] & 1) == 0)
   {
     goto LABEL_12;
   }
 
 LABEL_15:
 
-  return [(CUICatalog *)self _private_resolvedRenditionKeyFromThemeRef:a3 withBaseKey:a4 scaleFactor:a6 deviceIdiom:a7 deviceSubtype:a8 displayGamut:a9 layoutDirection:a10 sizeClassHorizontal:a5 sizeClassVertical:a11 memoryClass:a12 graphicsClass:a13 graphicsFallBackOrder:a14 deviceSubtypeFallBackOrder:a15 localizationIdentifier:0 adjustRenditionKeyWithBlock:a17];
+  return [(CUICatalog *)self _private_resolvedRenditionKeyFromThemeRef:ref withBaseKey:key scaleFactor:idiom deviceIdiom:subtype deviceSubtype:gamut displayGamut:direction layoutDirection:horizontal sizeClassHorizontal:factor sizeClassVertical:vertical memoryClass:class graphicsClass:graphicsClass graphicsFallBackOrder:order deviceSubtypeFallBackOrder:backOrder localizationIdentifier:0 adjustRenditionKeyWithBlock:block];
 }
 
-- (id)newShapeEffectPresetWithRenditionKey:(id)a3
+- (id)newShapeEffectPresetWithRenditionKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
-  v5 = [(CUICatalog *)self _themeStore];
-  v6 = [a3 keyList];
-  v7 = [v5 copyLookupKeySignatureForKey:v6];
-  v8 = [(CUICatalog *)self localObjectCache];
-  v9 = [v8 objectForKey:v7];
+  _themeStore = [(CUICatalog *)self _themeStore];
+  keyList = [key keyList];
+  v7 = [_themeStore copyLookupKeySignatureForKey:keyList];
+  localObjectCache = [(CUICatalog *)self localObjectCache];
+  v9 = [localObjectCache objectForKey:v7];
   if (!v9)
   {
-    v9 = [v5 renditionWithKey:v6];
+    v9 = [_themeStore renditionWithKey:keyList];
     if (v9)
     {
       v11 = v9;
       if ([v9 type] == 7)
       {
-        v13 = [v11 effectPreset];
-        [v8 setObject:v13 forKey:v7];
-        v9 = v13;
+        effectPreset = [v11 effectPreset];
+        [localObjectCache setObject:effectPreset forKey:v7];
+        v9 = effectPreset;
       }
 
       else
@@ -3821,76 +3821,76 @@ LABEL_15:
   return v12;
 }
 
-- (BOOL)canGetShapeEffectRenditionWithKey:(id)a3
+- (BOOL)canGetShapeEffectRenditionWithKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
-  v4 = [(CUICatalog *)self _themeStore];
-  v5 = [a3 keyList];
+  _themeStore = [(CUICatalog *)self _themeStore];
+  keyList = [key keyList];
 
-  return [v4 canGetRenditionWithKey:v5];
+  return [_themeStore canGetRenditionWithKey:keyList];
 }
 
-- (id)renditionKeyForShapeEffectPresetWithStyleID:(unint64_t)a3 state:(int64_t)a4 presentationState:(int64_t)a5 value:(int64_t)a6 resolution:(unint64_t)a7 dimension1:(unint64_t)a8
+- (id)renditionKeyForShapeEffectPresetWithStyleID:(unint64_t)d state:(int64_t)state presentationState:(int64_t)presentationState value:(int64_t)value resolution:(unint64_t)resolution dimension1:(unint64_t)dimension1
 {
-  v8 = a8;
-  if (a6 == 1)
+  dimension1Copy = dimension1;
+  if (value == 1)
   {
     v13 = 1;
   }
 
   else
   {
-    v13 = 2 * (a6 == 2);
+    v13 = 2 * (value == 2);
   }
 
-  if (a3 == 4 && (a6 - 1) <= 1 && [_LookupStructuredThemeProvider(self->_storageRef a2)] < 0x1F2)
+  if (d == 4 && (value - 1) <= 1 && [_LookupStructuredThemeProvider(self->_storageRef a2)] < 0x1F2)
   {
     v13 = 0;
   }
 
-  if ((a4 - 1) > 4)
+  if ((state - 1) > 4)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = qword_18E024AE0[a4 - 1];
+    v14 = qword_18E024AE0[state - 1];
   }
 
-  if (a5 == 1)
+  if (presentationState == 1)
   {
     v15 = 1;
   }
 
   else
   {
-    v15 = 2 * (a5 == 2);
+    v15 = 2 * (presentationState == 2);
   }
 
-  v16 = CUICreateRenditionKeyWithShapeEffectState(a3, v14, v15, v13, a7, v8);
+  v16 = CUICreateRenditionKeyWithShapeEffectState(d, v14, v15, v13, resolution, dimension1Copy);
 
   return v16;
 }
 
-- (id)renditionKeyForShapeEffectPresetWithStylePresetName:(id)a3 state:(int64_t)a4 presentationState:(int64_t)a5 value:(int64_t)a6 resolution:(unint64_t)a7 dimension1:(unint64_t)a8 appearance:(int64_t)a9
+- (id)renditionKeyForShapeEffectPresetWithStylePresetName:(id)name state:(int64_t)state presentationState:(int64_t)presentationState value:(int64_t)value resolution:(unint64_t)resolution dimension1:(unint64_t)dimension1 appearance:(int64_t)appearance
 {
-  v16 = [(CUICatalog *)self _themeStore];
-  v17 = [v16 renditionKeyForName:a3];
+  _themeStore = [(CUICatalog *)self _themeStore];
+  v17 = [_themeStore renditionKeyForName:name];
   if (!v17)
   {
-    objc_exception_throw([NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"Unknown style preset name '%@'" userInfo:a3], 0]);
+    objc_exception_throw([NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"Unknown style preset name '%@'" userInfo:name], 0]);
   }
 
   v18 = v17;
   v19 = [[CUIRenditionKey alloc] initWithKeyList:v17];
-  if ([v16 authoredWithSchemaVersion] >= 2)
+  if ([_themeStore authoredWithSchemaVersion] >= 2)
   {
-    if (a7 == 1)
+    if (resolution == 1)
     {
       v20 = 179;
     }
@@ -3903,12 +3903,12 @@ LABEL_15:
     [(CUIRenditionKey *)v19 setThemePart:v20];
   }
 
-  [(CUIRenditionKey *)v19 setThemeState:a4];
-  [(CUIRenditionKey *)v19 setThemePresentationState:a5];
-  [(CUIRenditionKey *)v19 setThemeValue:a6];
-  [(CUIRenditionKey *)v19 setThemeDimension1:a8];
-  [(CUIRenditionKey *)v19 setThemeAppearance:a9];
-  if (a7 == 144)
+  [(CUIRenditionKey *)v19 setThemeState:state];
+  [(CUIRenditionKey *)v19 setThemePresentationState:presentationState];
+  [(CUIRenditionKey *)v19 setThemeValue:value];
+  [(CUIRenditionKey *)v19 setThemeDimension1:dimension1];
+  [(CUIRenditionKey *)v19 setThemeAppearance:appearance];
+  if (resolution == 144)
   {
     v21 = 2;
   }
@@ -3920,37 +3920,37 @@ LABEL_15:
 
   [(CUIRenditionKey *)v19 setThemeScale:v21];
   v22 = [(CUICatalog *)self canGetShapeEffectRenditionWithKey:v19];
-  if (a7 == 1 && (v22 & 1) == 0)
+  if (resolution == 1 && (v22 & 1) == 0)
   {
     [(CUIRenditionKey *)v19 setThemePart:178];
   }
 
   v23 = [(CUICatalog *)self canGetShapeEffectRenditionWithKey:v19];
-  if (a4 && (v23 & 1) == 0)
+  if (state && (v23 & 1) == 0)
   {
     [(CUIRenditionKey *)v19 setThemeState:0];
   }
 
   v24 = [(CUICatalog *)self canGetShapeEffectRenditionWithKey:v19];
-  if (a5 && (v24 & 1) == 0)
+  if (presentationState && (v24 & 1) == 0)
   {
     [(CUIRenditionKey *)v19 setThemePresentationState:0];
   }
 
   v25 = [(CUICatalog *)self canGetShapeEffectRenditionWithKey:v19];
-  if (a6 && (v25 & 1) == 0)
+  if (value && (v25 & 1) == 0)
   {
     [(CUIRenditionKey *)v19 setThemeValue:0];
   }
 
   v26 = [(CUICatalog *)self canGetShapeEffectRenditionWithKey:v19];
-  if (a8 && (v26 & 1) == 0)
+  if (dimension1 && (v26 & 1) == 0)
   {
     [(CUIRenditionKey *)v19 setThemeDimension1:0];
   }
 
   v27 = [(CUICatalog *)self canGetShapeEffectRenditionWithKey:v19];
-  if (a9 && (v27 & 1) == 0)
+  if (appearance && (v27 & 1) == 0)
   {
     [(CUIRenditionKey *)v19 setThemeAppearance:0];
   }
@@ -3973,42 +3973,42 @@ LABEL_15:
   return v19;
 }
 
-- (BOOL)_effectStyle:(unint64_t *)a3 state:(int64_t *)a4 presentationState:(int64_t *)a5 value:(int64_t *)a6 resolution:(unint64_t *)a7 dimension1:(unint64_t *)a8 appearance:(int64_t *)a9 fromStyleConfiguration:(id)a10
+- (BOOL)_effectStyle:(unint64_t *)style state:(int64_t *)state presentationState:(int64_t *)presentationState value:(int64_t *)value resolution:(unint64_t *)resolution dimension1:(unint64_t *)dimension1 appearance:(int64_t *)appearance fromStyleConfiguration:(id)self0
 {
-  if (a10)
+  if (configuration)
   {
-    *a4 = [a10 state];
-    *a5 = 0;
-    v16 = [a10 value];
+    *state = [configuration state];
+    *presentationState = 0;
+    value = [configuration value];
   }
 
   else
   {
-    v16 = 0;
-    *a4 = 0;
-    *a5 = 0;
+    value = 0;
+    *state = 0;
+    *presentationState = 0;
   }
 
-  *a6 = v16;
-  *a3 = 5;
-  *a8 = [a10 dimension1];
-  if (*a6 == 1)
+  *value = value;
+  *style = 5;
+  *dimension1 = [configuration dimension1];
+  if (*value == 1)
   {
-    v17 = *a3;
-    if (*a3)
+    v17 = *style;
+    if (*style)
     {
       goto LABEL_9;
     }
 
     if ([-[CUICatalog _themeStore](self "_themeStore")] <= 4)
     {
-      *a6 = 0;
+      *value = 0;
     }
   }
 
-  v17 = *a3;
+  v17 = *style;
 LABEL_9:
-  v18 = *a6;
+  v18 = *value;
   if (v17 == 4)
   {
     if (v18 != 2)
@@ -4023,23 +4023,23 @@ LABEL_9:
   if (v18 == 2 && v17 == 1)
   {
 LABEL_14:
-    *a6 = v17;
+    *value = v17;
   }
 
 LABEL_15:
-  v19 = [a10 useSimplifiedEffect];
+  useSimplifiedEffect = [configuration useSimplifiedEffect];
   v20 = 72;
-  if (v19)
+  if (useSimplifiedEffect)
   {
     v20 = 1;
   }
 
-  *a7 = v20;
-  if ([a10 appearanceName])
+  *resolution = v20;
+  if ([configuration appearanceName])
   {
-    v21 = [a10 appearanceName];
+    appearanceName = [configuration appearanceName];
     v23 = 0;
-    if (self && v21)
+    if (self && appearanceName)
     {
       v23 = [_LookupStructuredThemeProvider(self->_storageRef v22)];
     }
@@ -4050,11 +4050,11 @@ LABEL_15:
     v23 = 0;
   }
 
-  *a9 = v23;
+  *appearance = v23;
   return 1;
 }
 
-- (id)renditionKeyForShapeEffectPresetForStylePresetName:(id)a3 styleConfiguration:(id)a4
+- (id)renditionKeyForShapeEffectPresetForStylePresetName:(id)name styleConfiguration:(id)configuration
 {
   v12 = 0;
   v13 = 0;
@@ -4063,10 +4063,10 @@ LABEL_15:
   v10 = 0;
   v7 = 0;
   v8 = 0;
-  [(CUICatalog *)self _effectStyle:&v10 state:&v13 presentationState:&v12 value:&v11 resolution:&v9 dimension1:&v8 appearance:&v7 fromStyleConfiguration:a4];
-  if (a3)
+  [(CUICatalog *)self _effectStyle:&v10 state:&v13 presentationState:&v12 value:&v11 resolution:&v9 dimension1:&v8 appearance:&v7 fromStyleConfiguration:configuration];
+  if (name)
   {
-    return [(CUICatalog *)self renditionKeyForShapeEffectPresetWithStylePresetName:a3 state:v13 presentationState:v12 value:v11 resolution:v9 dimension1:v8 appearance:v7];
+    return [(CUICatalog *)self renditionKeyForShapeEffectPresetWithStylePresetName:name state:v13 presentationState:v12 value:v11 resolution:v9 dimension1:v8 appearance:v7];
   }
 
   else
@@ -4075,10 +4075,10 @@ LABEL_15:
   }
 }
 
-- (id)newShapeEffectPresetForStylePresetName:(id)a3 styleConfiguration:(id)a4
+- (id)newShapeEffectPresetForStylePresetName:(id)name styleConfiguration:(id)configuration
 {
-  _CUILog(3, "[CUICatalog newShapeEffectPresetForStylePresetName:%@]", a3, a4, v4, v5, v6, v7, a3);
-  result = [(CUICatalog *)self renditionKeyForShapeEffectPresetForStylePresetName:a3 styleConfiguration:a4];
+  _CUILog(3, "[CUICatalog newShapeEffectPresetForStylePresetName:%@]", name, configuration, v4, v5, v6, v7, name);
+  result = [(CUICatalog *)self renditionKeyForShapeEffectPresetForStylePresetName:name styleConfiguration:configuration];
   if (result)
   {
 
@@ -4088,9 +4088,9 @@ LABEL_15:
   return result;
 }
 
-- (id)newTextEffectStackForStylePresetName:(id)a3 styleConfiguration:(id)a4 foregroundColor:(CGColor *)a5
+- (id)newTextEffectStackForStylePresetName:(id)name styleConfiguration:(id)configuration foregroundColor:(CGColor *)color
 {
-  v7 = [(CUICatalog *)self newShapeEffectPresetForStylePresetName:a3 styleConfiguration:?];
+  v7 = [(CUICatalog *)self newShapeEffectPresetForStylePresetName:name styleConfiguration:?];
   if (!v7)
   {
     return 0;
@@ -4101,33 +4101,33 @@ LABEL_15:
 
   if (v9)
   {
-    [a4 effectScale];
+    [configuration effectScale];
     if (v10 > 0.0)
     {
-      [a4 effectScale];
+      [configuration effectScale];
       [(CUIShapeEffectStack *)v9 scaleEffectParametersBy:?];
     }
 
-    if (a5)
+    if (color)
     {
-      if (([a4 shouldIgnoreForegroundColor] & 1) == 0)
+      if (([configuration shouldIgnoreForegroundColor] & 1) == 0)
       {
-        -[CUIShapeEffectStack applyCustomForegroundColor:tintEffectColors:](v9, "applyCustomForegroundColor:tintEffectColors:", a5, [a4 foregroundColorShouldTintEffects]);
+        -[CUIShapeEffectStack applyCustomForegroundColor:tintEffectColors:](v9, "applyCustomForegroundColor:tintEffectColors:", color, [configuration foregroundColorShouldTintEffects]);
       }
 
-      [a4 brightnessMultiplier];
+      [configuration brightnessMultiplier];
       if (v11 > 0.0)
       {
-        [a4 brightnessMultiplier];
+        [configuration brightnessMultiplier];
         [(CUIShapeEffectStack *)v9 scaleBrightnessOfEffectColorsByAmount:0 onlyTintableColors:?];
       }
 
-      if ([a4 colorTemperature] >= 0x3E8 && objc_msgSend(a4, "colorTemperature") <= 0x9C40)
+      if ([configuration colorTemperature] >= 0x3E8 && objc_msgSend(configuration, "colorTemperature") <= 0x9C40)
       {
-        -[CUIShapeEffectStack adjustEffectColorsToTemperature:onlyTintableColors:](v9, "adjustEffectColorsToTemperature:onlyTintableColors:", [a4 colorTemperature], 0);
+        -[CUIShapeEffectStack adjustEffectColorsToTemperature:onlyTintableColors:](v9, "adjustEffectColorsToTemperature:onlyTintableColors:", [configuration colorTemperature], 0);
       }
 
-      if ([a4 shouldRespectOutputBlending])
+      if ([configuration shouldRespectOutputBlending])
       {
         [(CUIShapeEffectStack *)v9 updateOutputBlendingWithInteriorFillHeuristic];
       }
@@ -4137,29 +4137,29 @@ LABEL_15:
   return v9;
 }
 
-- (id)newShapeEffectStackForStylePresetName:(id)a3 styleConfiguration:(id)a4 foregroundColor:(CGColor *)a5
+- (id)newShapeEffectStackForStylePresetName:(id)name styleConfiguration:(id)configuration foregroundColor:(CGColor *)color
 {
-  v7 = [(CUICatalog *)self newShapeEffectPresetForStylePresetName:a3 styleConfiguration:?];
+  v7 = [(CUICatalog *)self newShapeEffectPresetForStylePresetName:name styleConfiguration:?];
   v8 = [[CUIShapeEffectStack alloc] initWithEffectPreset:v7];
 
-  [a4 effectScale];
+  [configuration effectScale];
   if (v9 > 0.0)
   {
-    [a4 effectScale];
+    [configuration effectScale];
     [(CUIShapeEffectStack *)v8 scaleEffectParametersBy:?];
   }
 
-  if (a5 && ([a4 shouldIgnoreForegroundColor] & 1) == 0)
+  if (color && ([configuration shouldIgnoreForegroundColor] & 1) == 0)
   {
-    -[CUIShapeEffectStack applyCustomForegroundColor:tintEffectColors:](v8, "applyCustomForegroundColor:tintEffectColors:", a5, [a4 foregroundColorShouldTintEffects]);
+    -[CUIShapeEffectStack applyCustomForegroundColor:tintEffectColors:](v8, "applyCustomForegroundColor:tintEffectColors:", color, [configuration foregroundColorShouldTintEffects]);
   }
 
   return v8;
 }
 
-- (BOOL)drawGlyphs:(const unsigned __int16 *)a3 atPositions:(const CGPoint *)a4 inContext:(CGContext *)a5 withFont:(__CTFont *)a6 count:(unint64_t)a7 stylePresetName:(id)a8 styleConfiguration:(id)a9 foregroundColor:(CGColor *)a10
+- (BOOL)drawGlyphs:(const unsigned __int16 *)glyphs atPositions:(const CGPoint *)positions inContext:(CGContext *)context withFont:(__CTFont *)font count:(unint64_t)count stylePresetName:(id)name styleConfiguration:(id)configuration foregroundColor:(CGColor *)self0
 {
-  v10 = off_1F00D3970(self, a2, a3, a4, a5, a6, a7, a8);
+  v10 = off_1F00D3970(self, a2, glyphs, positions, context, font, count, name);
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -4173,9 +4173,9 @@ LABEL_15:
     goto LABEL_11;
   }
 
-  if (a9)
+  if (configuration)
   {
-    v24 = [a9 copy];
+    v24 = [configuration copy];
   }
 
   else
@@ -4184,7 +4184,7 @@ LABEL_15:
   }
 
   v25 = v24;
-  -[CUIStyleEffectConfiguration setUseSimplifiedEffect:](v24, "setUseSimplifiedEffect:", [a9 useSimplifiedEffect]);
+  -[CUIStyleEffectConfiguration setUseSimplifiedEffect:](v24, "setUseSimplifiedEffect:", [configuration useSimplifiedEffect]);
   [(CUIStyleEffectConfiguration *)v25 setUseSimplifiedEffect:_CUIDebugUseSimplifiedTextEffects() & [(CUIStyleEffectConfiguration *)v25 useSimplifiedEffect]];
   if (![(CUIStyleEffectConfiguration *)v25 useSimplifiedEffect])
   {
@@ -4344,7 +4344,7 @@ LABEL_7:
   v32 = v66.origin.y;
   v33 = v66.size.height;
   v34 = _CUIEffectiveScaleForContext(v18);
-  v35 = [v23 newTextEffectStackForStylePresetName:v12 styleConfiguration:v25 foregroundColor:a10];
+  v35 = [v23 newTextEffectStackForStylePresetName:v12 styleConfiguration:v25 foregroundColor:color];
 
   if (!v35)
   {
@@ -4360,13 +4360,13 @@ LABEL_11:
   return v36;
 }
 
-- (BOOL)_doStyledQuartzDrawingInContext:(CGContext *)a3 inBounds:(CGRect)a4 stylePresetName:(id)a5 styleConfiguration:(id)a6 drawingHandler:(id)a7
+- (BOOL)_doStyledQuartzDrawingInContext:(CGContext *)context inBounds:(CGRect)bounds stylePresetName:(id)name styleConfiguration:(id)configuration drawingHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  ClipBoundingBox = CGContextGetClipBoundingBox(context);
   v25.origin.x = x;
   v25.origin.y = y;
   v25.size.width = width;
@@ -4381,10 +4381,10 @@ LABEL_11:
     return 1;
   }
 
-  v20 = _CUIEffectiveScaleForContext(a3);
-  if (a6)
+  v20 = _CUIEffectiveScaleForContext(context);
+  if (configuration)
   {
-    v21 = [a6 copy];
+    v21 = [configuration copy];
   }
 
   else
@@ -4393,13 +4393,13 @@ LABEL_11:
   }
 
   v22 = v21;
-  -[CUIStyleEffectConfiguration setUseSimplifiedEffect:](v21, "setUseSimplifiedEffect:", [a6 useSimplifiedEffect]);
+  -[CUIStyleEffectConfiguration setUseSimplifiedEffect:](v21, "setUseSimplifiedEffect:", [configuration useSimplifiedEffect]);
   [(CUIStyleEffectConfiguration *)v22 setUseSimplifiedEffect:_CUIDebugUseSimplifiedTextEffects() & [(CUIStyleEffectConfiguration *)v22 useSimplifiedEffect]];
-  v23 = [(CUICatalog *)self newTextEffectStackForStylePresetName:a5 styleConfiguration:v22 foregroundColor:CGContextGetFillColorAsColor()];
+  v23 = [(CUICatalog *)self newTextEffectStackForStylePresetName:name styleConfiguration:v22 foregroundColor:CGContextGetFillColorAsColor()];
 
   if (v23)
   {
-    [v23 drawUsingQuartz:a7 inContext:a3 inBounds:v16 atScale:{v17, v18, v19, v20}];
+    [v23 drawUsingQuartz:handler inContext:context inBounds:v16 atScale:{v17, v18, v19, v20}];
 
     return 1;
   }
@@ -4407,35 +4407,35 @@ LABEL_11:
   return 0;
 }
 
-- (BOOL)strokeStyledPath:(CGPath *)a3 inContext:(CGContext *)a4 stylePresetName:(id)a5 styleConfiguration:(id)a6
+- (BOOL)strokeStyledPath:(CGPath *)path inContext:(CGContext *)context stylePresetName:(id)name styleConfiguration:(id)configuration
 {
-  if (!a4)
+  if (!context)
   {
     return 0;
   }
 
-  if (a3)
+  if (path)
   {
-    CGContextBeginPath(a4);
-    CGContextAddPath(a4, a3);
+    CGContextBeginPath(context);
+    CGContextAddPath(context, path);
   }
 
-  CGContextReplacePathWithStrokedPath(a4);
+  CGContextReplacePathWithStrokedPath(context);
 
-  return [(CUICatalog *)self fillStyledPath:0 inContext:a4 stylePresetName:a5 styleConfiguration:a6];
+  return [(CUICatalog *)self fillStyledPath:0 inContext:context stylePresetName:name styleConfiguration:configuration];
 }
 
-- (BOOL)fillStyledPath:(CGPath *)a3 inContext:(CGContext *)a4 stylePresetName:(id)a5 styleConfiguration:(id)a6
+- (BOOL)fillStyledPath:(CGPath *)path inContext:(CGContext *)context stylePresetName:(id)name styleConfiguration:(id)configuration
 {
-  if (a4)
+  if (context)
   {
-    if (a3)
+    if (path)
     {
-      CGContextBeginPath(a4);
-      CGContextAddPath(a4, a3);
+      CGContextBeginPath(context);
+      CGContextAddPath(context, path);
     }
 
-    v11 = CGContextCopyPath(a4);
+    v11 = CGContextCopyPath(context);
     BoundingBox = CGPathGetBoundingBox(v11);
     if (v11)
     {
@@ -4449,16 +4449,16 @@ LABEL_11:
         v20.origin.y = y;
         v20.size.width = width;
         v20.size.height = height;
-        v21 = CGContextConvertRectToDeviceSpace(a4, v20);
+        v21 = CGContextConvertRectToDeviceSpace(context, v20);
         v22 = CGRectIntegral(v21);
-        v23 = CGContextConvertRectToUserSpace(a4, v22);
+        v23 = CGContextConvertRectToUserSpace(context, v22);
         v18[0] = _NSConcreteStackBlock;
         v18[1] = 3221225472;
         v18[2] = __74__CUICatalog_fillStyledPath_inContext_stylePresetName_styleConfiguration___block_invoke;
         v18[3] = &__block_descriptor_48_e20_v16__0__CGContext__8l;
         v18[4] = v11;
-        v18[5] = a4;
-        v16 = [(CUICatalog *)self _doStyledQuartzDrawingInContext:a4 inBounds:a5 stylePresetName:a6 styleConfiguration:v18 drawingHandler:v23.origin.x, v23.origin.y, v23.size.width, v23.size.height];
+        v18[5] = context;
+        v16 = [(CUICatalog *)self _doStyledQuartzDrawingInContext:context inBounds:name stylePresetName:configuration styleConfiguration:v18 drawingHandler:v23.origin.x, v23.origin.y, v23.size.width, v23.size.height];
         CGPathRelease(v11);
         return v16;
       }
@@ -4484,38 +4484,38 @@ void __74__CUICatalog_fillStyledPath_inContext_stylePresetName_styleConfiguratio
   CGPathRelease(v4);
 }
 
-- (BOOL)fillStyledRect:(CGRect)a3 inContext:(CGContext *)a4 stylePresetName:(id)a5 styleConfiguration:(id)a6
+- (BOOL)fillStyledRect:(CGRect)rect inContext:(CGContext *)context stylePresetName:(id)name styleConfiguration:(id)configuration
 {
-  if (!a4)
+  if (!context)
   {
     return 0;
   }
 
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsEmpty(rect))
   {
     return 0;
   }
 
-  CGContextBeginPath(a4);
+  CGContextBeginPath(context);
   v16.origin.x = x;
   v16.origin.y = y;
   v16.size.width = width;
   v16.size.height = height;
-  CGContextAddRect(a4, v16);
+  CGContextAddRect(context, v16);
 
-  return [(CUICatalog *)self fillStyledPath:0 inContext:a4 stylePresetName:a5 styleConfiguration:a6];
+  return [(CUICatalog *)self fillStyledPath:0 inContext:context stylePresetName:name styleConfiguration:configuration];
 }
 
-- (BOOL)hasStylePresetWithName:(id)a3 styleConfiguration:(id)a4
+- (BOOL)hasStylePresetWithName:(id)name styleConfiguration:(id)configuration
 {
-  if (a3)
+  if (name)
   {
-    v6 = [(CUICatalog *)self _themeStore:a3];
-    v7 = [v6 renditionKeyForName:a3];
+    v6 = [(CUICatalog *)self _themeStore:name];
+    v7 = [v6 renditionKeyForName:name];
     if (v7)
     {
       CUIRenditionKeyCopy(v9, v7, 0x16u);
@@ -4526,7 +4526,7 @@ void __74__CUICatalog_fillStyledPath_inContext_stylePresetName_styleConfiguratio
 
   else
   {
-    v7 = [(CUICatalog *)self renditionKeyForShapeEffectPresetForStylePresetName:0 styleConfiguration:a4];
+    v7 = [(CUICatalog *)self renditionKeyForShapeEffectPresetForStylePresetName:0 styleConfiguration:configuration];
     if (v7)
     {
 
@@ -4537,29 +4537,29 @@ void __74__CUICatalog_fillStyledPath_inContext_stylePresetName_styleConfiguratio
   return v7;
 }
 
-- (CGColor)equivalentForegroundColorForStylePresetWithName:(id)a3 styleConfiguration:(id)a4
+- (CGColor)equivalentForegroundColorForStylePresetWithName:(id)name styleConfiguration:(id)configuration
 {
-  v7 = [a4 foregroundColorShouldTintEffects];
-  [a4 setForegroundColorShouldTintEffects:0];
-  v8 = [(CUICatalog *)self equivalentForegroundColorForStylePresetWithName:a3 styleConfiguration:a4 baseForegroundColor:0];
-  [a4 setForegroundColorShouldTintEffects:v7];
+  foregroundColorShouldTintEffects = [configuration foregroundColorShouldTintEffects];
+  [configuration setForegroundColorShouldTintEffects:0];
+  v8 = [(CUICatalog *)self equivalentForegroundColorForStylePresetWithName:name styleConfiguration:configuration baseForegroundColor:0];
+  [configuration setForegroundColorShouldTintEffects:foregroundColorShouldTintEffects];
   return v8;
 }
 
-- (CGColor)equivalentForegroundColorForStylePresetWithName:(id)a3 styleConfiguration:(id)a4 baseForegroundColor:(CGColor *)a5
+- (CGColor)equivalentForegroundColorForStylePresetWithName:(id)name styleConfiguration:(id)configuration baseForegroundColor:(CGColor *)color
 {
-  if ([a4 useSimplifiedEffect])
+  if ([configuration useSimplifiedEffect])
   {
-    v9 = [(CUICatalog *)self newTextEffectStackForStylePresetName:a3 styleConfiguration:a4 foregroundColor:a5];
+    v9 = [(CUICatalog *)self newTextEffectStackForStylePresetName:name styleConfiguration:configuration foregroundColor:color];
   }
 
   else
   {
-    v9 = [(CUICatalog *)self newShapeEffectStackForStylePresetName:a3 styleConfiguration:a4 foregroundColor:a5];
+    v9 = [(CUICatalog *)self newShapeEffectStackForStylePresetName:name styleConfiguration:configuration foregroundColor:color];
   }
 
   v10 = v9;
-  if (([v9 expressableByColorFillCheckingOutputBlending:{objc_msgSend(a4, "shouldRespectOutputBlending")}] & 1) == 0)
+  if (([v9 expressableByColorFillCheckingOutputBlending:{objc_msgSend(configuration, "shouldRespectOutputBlending")}] & 1) == 0)
   {
 
     return 0;
@@ -4575,17 +4575,17 @@ void __74__CUICatalog_fillStyledPath_inContext_stylePresetName_styleConfiguratio
   return CFAutorelease(v11);
 }
 
-- (int)blendModeForStylePresetWithName:(id)a3 styleConfiguration:(id)a4
+- (int)blendModeForStylePresetWithName:(id)name styleConfiguration:(id)configuration
 {
-  v4 = [(CUICatalog *)self newShapeEffectPresetForStylePresetName:a3 styleConfiguration:a4];
+  v4 = [(CUICatalog *)self newShapeEffectPresetForStylePresetName:name styleConfiguration:configuration];
   if (v4)
   {
     v5 = v4;
     v6 = 1852797549;
-    v7 = [v4 effectCount];
-    if (v7)
+    effectCount = [v4 effectCount];
+    if (effectCount)
     {
-      v8 = v7;
+      v8 = effectCount;
       for (i = 0; i != v8; ++i)
       {
         v10 = [v5 effectTypeAtIndex:i];
@@ -4613,7 +4613,7 @@ void __74__CUICatalog_fillStyledPath_inContext_stylePresetName_styleConfiguratio
   return v4;
 }
 
-- (void)_vibrantColorMatrixBrightnessSaturationForColor:(CGColor *)a3 saturation:(double *)a4 brightness:(double *)a5
+- (void)_vibrantColorMatrixBrightnessSaturationForColor:(CGColor *)color saturation:(double *)saturation brightness:(double *)brightness
 {
   if (!self->_vibrantColorMatrixTints)
   {
@@ -4635,7 +4635,7 @@ void __74__CUICatalog_fillStyledPath_inContext_stylePresetName_styleConfiguratio
     self->_vibrantColorMatrixTints = v10;
   }
 
-  Components = CGColorGetComponents(a3);
+  Components = CGColorGetComponents(color);
   v34 = 0.0;
   v35 = 0.0;
   v33 = 0.0;
@@ -4649,7 +4649,7 @@ void __74__CUICatalog_fillStyledPath_inContext_stylePresetName_styleConfiguratio
   {
 LABEL_10:
     v27 = 1.0;
-    if (!a5)
+    if (!brightness)
     {
       goto LABEL_12;
     }
@@ -4664,9 +4664,9 @@ LABEL_10:
   while (1)
   {
     v24 = [(NSArray *)v14 objectAtIndex:v21];
-    v25 = [v24 intValue];
-    v26 = v25;
-    if (v23 == v21 || v25 > v22)
+    intValue = [v24 intValue];
+    v26 = intValue;
+    if (v23 == v21 || intValue > v22)
     {
       break;
     }
@@ -4681,17 +4681,17 @@ LABEL_10:
   if (v21)
   {
     v29 = [(NSArray *)v14 objectAtIndex:v21 - 1];
-    v30 = [v29 intValue];
+    intValue2 = [v29 intValue];
     v31 = [-[NSDictionary objectForKey:](self->_vibrantColorMatrixTints objectForKey:{v29), "intValue"}];
   }
 
   else
   {
     v31 = 0;
-    v30 = 0x7FFFFFFF;
+    intValue2 = 0x7FFFFFFF;
   }
 
-  if (v26 - v22 <= (v22 - v30))
+  if (v26 - v22 <= (v22 - intValue2))
   {
     v32 = v28;
   }
@@ -4708,16 +4708,16 @@ LABEL_10:
 
   v19 = HIBYTE(v32) / 255.0 + HIBYTE(v32) / 255.0;
   v27 = v32 / 255.0 + v32 / 255.0;
-  if (a5)
+  if (brightness)
   {
 LABEL_11:
-    *a5 = v27;
+    *brightness = v27;
   }
 
 LABEL_12:
-  if (a4)
+  if (saturation)
   {
-    *a4 = v19;
+    *saturation = v19;
   }
 }
 
@@ -4762,20 +4762,20 @@ id __84__CUICatalog__vibrantColorMatrixBrightnessSaturationForColor_saturation_b
   return result;
 }
 
-- (id)compositingFilterForStylePresetWithName:(id)a3 styleConfiguration:(id)a4 foregroundColor:(CGColor *)a5
+- (id)compositingFilterForStylePresetWithName:(id)name styleConfiguration:(id)configuration foregroundColor:(CGColor *)color
 {
-  v8 = [(CUICatalog *)self newShapeEffectPresetForStylePresetName:a3 styleConfiguration:?];
+  v8 = [(CUICatalog *)self newShapeEffectPresetForStylePresetName:name styleConfiguration:?];
   v9 = v8;
   if (v8)
   {
-    v27 = self;
+    selfCopy = self;
     v10 = 1852797549;
-    v11 = [v8 effectCount];
-    if (v11)
+    effectCount = [v8 effectCount];
+    if (effectCount)
     {
-      v12 = v11;
-      v28 = a4;
-      v29 = a5;
+      v12 = effectCount;
+      configurationCopy = configuration;
+      colorCopy = color;
       v13 = 0;
       LOBYTE(v14) = 0;
       LOBYTE(v15) = 0;
@@ -4806,8 +4806,8 @@ id __84__CUICatalog__vibrantColorMatrixBrightnessSaturationForColor_saturation_b
       v20 = v13;
       LODWORD(v14) = v14;
       LODWORD(v15) = v15;
-      a4 = v28;
-      a5 = v29;
+      configuration = configurationCopy;
+      color = colorCopy;
     }
 
     else
@@ -4827,25 +4827,25 @@ id __84__CUICatalog__vibrantColorMatrixBrightnessSaturationForColor_saturation_b
       v33 = 0u;
       v34 = 0u;
       v32 = 0u;
-      if (a5 && [a4 foregroundColorShouldTintEffects])
+      if (color && [configuration foregroundColorShouldTintEffects])
       {
         v21 = (v14 + v15 + v20) / 255.0 / 3.0;
         v22 = v21 + v21;
         SRGB = _CUIColorSpaceGetSRGB();
-        if (CGColorGetColorSpace(a5) == SRGB)
+        if (CGColorGetColorSpace(color) == SRGB)
         {
-          CopyByMatchingToColorSpace = CGColorRetain(a5);
+          CopyByMatchingToColorSpace = CGColorRetain(color);
         }
 
         else
         {
-          CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(SRGB, kCGRenderingIntentDefault, a5, 0);
+          CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(SRGB, kCGRenderingIntentDefault, color, 0);
         }
 
         v25 = CopyByMatchingToColorSpace;
         *&v30[0] = 0;
         v31 = 0.0;
-        [(CUICatalog *)v27 _vibrantColorMatrixBrightnessSaturationForColor:CopyByMatchingToColorSpace saturation:v30 brightness:&v31];
+        [(CUICatalog *)selfCopy _vibrantColorMatrixBrightnessSaturationForColor:CopyByMatchingToColorSpace saturation:v30 brightness:&v31];
         v31 = v22 * v31;
         [CUIShapeEffectPreset vibrantColorMatrixOptionsWithColor:v25 saturation:*v30 brightness:?];
         CGColorRelease(v25);
@@ -4870,13 +4870,13 @@ id __84__CUICatalog__vibrantColorMatrixBrightnessSaturationForColor_saturation_b
   return v9;
 }
 
-- ($01BB1521EC52D44A8E7628F5261DCEC8)styledInsetsForStylePresetName:(id)a3 styleConfiguration:(id)a4 foregroundColor:(CGColor *)a5 scale:(double)a6
+- ($01BB1521EC52D44A8E7628F5261DCEC8)styledInsetsForStylePresetName:(id)name styleConfiguration:(id)configuration foregroundColor:(CGColor *)color scale:(double)scale
 {
-  v7 = [(CUICatalog *)self newShapeEffectStackForStylePresetName:a3 styleConfiguration:a4 foregroundColor:a5];
+  v7 = [(CUICatalog *)self newShapeEffectStackForStylePresetName:name styleConfiguration:configuration foregroundColor:color];
   if (v7)
   {
     v8 = v7;
-    [v7 effectInsetsWithScale:a6];
+    [v7 effectInsetsWithScale:scale];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -4902,16 +4902,16 @@ id __84__CUICatalog__vibrantColorMatrixBrightnessSaturationForColor_saturation_b
   return result;
 }
 
-- (id)imageByStylingImage:(CGImage *)a3 stylePresetName:(id)a4 styleConfiguration:(id)a5 foregroundColor:(CGColor *)a6 scale:(double)a7
+- (id)imageByStylingImage:(CGImage *)image stylePresetName:(id)name styleConfiguration:(id)configuration foregroundColor:(CGColor *)color scale:(double)scale
 {
-  v9 = [(CUICatalog *)self newShapeEffectStackForStylePresetName:a4 styleConfiguration:a5 foregroundColor:a6];
+  v9 = [(CUICatalog *)self newShapeEffectStackForStylePresetName:name styleConfiguration:configuration foregroundColor:color];
   if (!v9)
   {
     return 0;
   }
 
   v10 = v9;
-  v11 = [v9 newFlattenedImageFromShapeCGImage:a3 withScale:objc_msgSend(objc_opt_class() ciContext:{"sharedCIContext"), a7}];
+  v11 = [v9 newFlattenedImageFromShapeCGImage:image withScale:objc_msgSend(objc_opt_class() ciContext:{"sharedCIContext"), scale}];
   if (v11)
   {
     v12 = v11;
@@ -4927,14 +4927,14 @@ id __84__CUICatalog__vibrantColorMatrixBrightnessSaturationForColor_saturation_b
   return v13;
 }
 
-- (id)dataForVectorGlyphsWithNames:(id)a3
+- (id)dataForVectorGlyphsWithNames:(id)names
 {
   v38 = 0;
   v39[0] = NSTemporaryDirectory();
-  v37 = [+[NSProcessInfo processInfo](NSProcessInfo globallyUniqueString];
+  globallyUniqueString = [+[NSProcessInfo processInfo](NSProcessInfo globallyUniqueString];
   v39[1] = [NSString stringWithFormat:@"coreui-vectorgylphs-%@"];
   v5 = [[NSURL fileURLWithPathComponents:?], "URLByAppendingPathExtension:", @"car"];
-  v6 = [(CUICatalog *)self copiedVectorGlyphsWithNames:a3 outputFile:v5];
+  v6 = [(CUICatalog *)self copiedVectorGlyphsWithNames:names outputFile:v5];
   if (!v6)
   {
     v28 = "-[CUICatalog copyVectorGlyphsWithNames:: failed";
@@ -4943,51 +4943,51 @@ id __84__CUICatalog__vibrantColorMatrixBrightnessSaturationForColor_saturation_b
 
   if (([v6 writeToDiskAndCompact:1] & 1) == 0)
   {
-    v29 = [(NSURL *)v5 path];
-    _CUILog(4, "failed to write copied vector images to file %@", v30, v31, v32, v33, v34, v35, v29);
+    path = [(NSURL *)v5 path];
+    _CUILog(4, "failed to write copied vector images to file %@", v30, v31, v32, v33, v34, v35, path);
     if ([+[NSFileManager removeItemAtURL:"removeItemAtURL:error:"]
     {
       return 0;
     }
 
-    v37 = [(NSURL *)v5 path];
+    globallyUniqueString = [(NSURL *)v5 path];
     v28 = "failed to delete tmp file at %@: %@";
 LABEL_10:
-    _CUILog(4, v28, v7, v8, v9, v10, v11, v12, v37);
+    _CUILog(4, v28, v7, v8, v9, v10, v11, v12, globallyUniqueString);
     return 0;
   }
 
   v13 = [NSData dataWithContentsOfURL:v5 options:0 error:&v38];
   if (!v13)
   {
-    v14 = [(NSURL *)v5 path];
-    _CUILog(4, "dataForVectorGlyphsWithNames: Got error reading from tmpFile %@: %@", v15, v16, v17, v18, v19, v20, v14);
+    path2 = [(NSURL *)v5 path];
+    _CUILog(4, "dataForVectorGlyphsWithNames: Got error reading from tmpFile %@: %@", v15, v16, v17, v18, v19, v20, path2);
   }
 
   if (![+[NSFileManager removeItemAtURL:"removeItemAtURL:error:"]
   {
-    v21 = [(NSURL *)v5 path];
-    _CUILog(4, "failed to delete tmp file at %@: %@", v22, v23, v24, v25, v26, v27, v21);
+    path3 = [(NSURL *)v5 path];
+    _CUILog(4, "failed to delete tmp file at %@: %@", v22, v23, v24, v25, v26, v27, path3);
   }
 
   return v13;
 }
 
-- (BOOL)copyVectorGlyphsWithNames:(id)a3 toFile:(id)a4
+- (BOOL)copyVectorGlyphsWithNames:(id)names toFile:(id)file
 {
-  v4 = [(CUICatalog *)self copiedVectorGlyphsWithNames:a3 outputFile:a4];
+  v4 = [(CUICatalog *)self copiedVectorGlyphsWithNames:names outputFile:file];
 
   return [v4 writeToDiskAndCompact:1];
 }
 
-- (id)copiedVectorGlyphsWithNames:(id)a3 outputFile:(id)a4
+- (id)copiedVectorGlyphsWithNames:(id)names outputFile:(id)file
 {
   v52 = 0;
   v53 = &v52;
   v54 = 0x2020000000;
   v55 = 0;
   v6 = _LookupStructuredThemeProvider(self->_storageRef, a2);
-  v7 = -[CUIMutableCommonAssetStorage initWithPath:]([CUIMutableCommonAssetStorage alloc], "initWithPath:", [a4 path]);
+  v7 = -[CUIMutableCommonAssetStorage initWithPath:]([CUIMutableCommonAssetStorage alloc], "initWithPath:", [file path]);
   v8 = objc_alloc_init(NSMutableString);
   [v8 appendString:@"-[CUICatalog copiedVectorGlyphsWithNames:outputFile: '"];
   [v8 appendString:{objc_msgSend(objc_msgSend(v6, "themeStore"), "path")}];
@@ -4996,20 +4996,20 @@ LABEL_10:
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v6 themeStore];
-    v16 = [v6 keyFormat];
+    themeStore = [v6 themeStore];
+    keyFormat = [v6 keyFormat];
     [(CUIMutableCommonAssetStorage *)v7 setThinningArguments:@"Copied VectorGlyphs"];
-    [(CUIMutableCommonAssetStorage *)v7 setKeyFormatData:[NSData dataWithBytes:v16 length:4 * (v16[2] + 3)]];
-    -[CUIMutableCommonAssetStorage setKeySemantics:](v7, "setKeySemantics:", [v15 keySemantics]);
-    -[CUIMutableCommonAssetStorage setDeploymentPlatform:](v7, "setDeploymentPlatform:", [v15 deploymentPlatformString]);
-    -[CUIMutableCommonAssetStorage setDeploymentPlatformVersion:](v7, "setDeploymentPlatformVersion:", [v15 deploymentPlatformVersion]);
-    -[CUIMutableCommonAssetStorage setSchemaVersion:](v7, "setSchemaVersion:", [v15 schemaVersion]);
-    -[CUIMutableCommonAssetStorage setStorageVersion:](v7, "setStorageVersion:", [v15 storageVersion]);
+    [(CUIMutableCommonAssetStorage *)v7 setKeyFormatData:[NSData dataWithBytes:keyFormat length:4 * (keyFormat[2] + 3)]];
+    -[CUIMutableCommonAssetStorage setKeySemantics:](v7, "setKeySemantics:", [themeStore keySemantics]);
+    -[CUIMutableCommonAssetStorage setDeploymentPlatform:](v7, "setDeploymentPlatform:", [themeStore deploymentPlatformString]);
+    -[CUIMutableCommonAssetStorage setDeploymentPlatformVersion:](v7, "setDeploymentPlatformVersion:", [themeStore deploymentPlatformVersion]);
+    -[CUIMutableCommonAssetStorage setSchemaVersion:](v7, "setSchemaVersion:", [themeStore schemaVersion]);
+    -[CUIMutableCommonAssetStorage setStorageVersion:](v7, "setStorageVersion:", [themeStore storageVersion]);
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v17 = [objc_msgSend(v15 "appearances")];
+    v17 = [objc_msgSend(themeStore "appearances")];
     v18 = [v17 countByEnumeratingWithState:&v48 objects:v58 count:16];
     if (v18)
     {
@@ -5023,7 +5023,7 @@ LABEL_10:
             objc_enumerationMutation(v17);
           }
 
-          -[CUIMutableCommonAssetStorage setAppearanceIdentifier:forName:](v7, "setAppearanceIdentifier:forName:", [v15 appearanceIdentifierForName:*(*(&v48 + 1) + 8 * i)], *(*(&v48 + 1) + 8 * i));
+          -[CUIMutableCommonAssetStorage setAppearanceIdentifier:forName:](v7, "setAppearanceIdentifier:forName:", [themeStore appearanceIdentifierForName:*(*(&v48 + 1) + 8 * i)], *(*(&v48 + 1) + 8 * i));
         }
 
         v18 = [v17 countByEnumeratingWithState:&v48 objects:v58 count:16];
@@ -5036,7 +5036,7 @@ LABEL_10:
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v21 = [objc_msgSend(v15 "localizations")];
+    v21 = [objc_msgSend(themeStore "localizations")];
     v22 = [v21 countByEnumeratingWithState:&v44 objects:v57 count:16];
     if (v22)
     {
@@ -5050,7 +5050,7 @@ LABEL_10:
             objc_enumerationMutation(v21);
           }
 
-          -[CUIMutableCommonAssetStorage setLocalizationIdentifier:forName:](v7, "setLocalizationIdentifier:forName:", [v15 localizationIdentifierForName:*(*(&v44 + 1) + 8 * j)], *(*(&v44 + 1) + 8 * j));
+          -[CUIMutableCommonAssetStorage setLocalizationIdentifier:forName:](v7, "setLocalizationIdentifier:forName:", [themeStore localizationIdentifierForName:*(*(&v44 + 1) + 8 * j)], *(*(&v44 + 1) + 8 * j));
         }
 
         v22 = [v21 countByEnumeratingWithState:&v44 objects:v57 count:16];
@@ -5059,12 +5059,12 @@ LABEL_10:
       while (v22);
     }
 
-    v38 = v16;
+    v38 = keyFormat;
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v25 = [a3 countByEnumeratingWithState:&v40 objects:v56 count:16];
+    v25 = [names countByEnumeratingWithState:&v40 objects:v56 count:16];
     if (v25)
     {
       v26 = *v41;
@@ -5074,7 +5074,7 @@ LABEL_10:
         {
           if (*v41 != v26)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(names);
           }
 
           v28 = *(*(&v40 + 1) + 8 * k);
@@ -5090,7 +5090,7 @@ LABEL_10:
           }
         }
 
-        v25 = [a3 countByEnumeratingWithState:&v40 objects:v56 count:16];
+        v25 = [names countByEnumeratingWithState:&v40 objects:v56 count:16];
       }
 
       while (v25);
@@ -5100,20 +5100,20 @@ LABEL_10:
     v39[1] = 3221225472;
     v39[2] = __53__CUICatalog_copiedVectorGlyphsWithNames_outputFile___block_invoke;
     v39[3] = &unk_1E7257F90;
-    v39[4] = v15;
-    v39[5] = a3;
+    v39[4] = themeStore;
+    v39[5] = names;
     v39[6] = v7;
     v39[7] = v6;
     v39[10] = 0;
     v39[11] = v38;
     v39[8] = &v52;
     v39[9] = 0;
-    [v15 enumerateKeysAndObjectsUsingBlock:v39];
+    [themeStore enumerateKeysAndObjectsUsingBlock:v39];
   }
 
   else
   {
-    _CUILog(4, "CoreUI: copiedVectorGlyphsWithNames:outputFile: failed to open store '%@'", v9, v10, v11, v12, v13, v14, a3);
+    _CUILog(4, "CoreUI: copiedVectorGlyphsWithNames:outputFile: failed to open store '%@'", v9, v10, v11, v12, v13, v14, names);
   }
 
   [(CUIMutableCommonAssetStorage *)v7 setRenditionCount:*(v53 + 6)];
@@ -5143,68 +5143,68 @@ unsigned __int16 *__53__CUICatalog_copiedVectorGlyphsWithNames_outputFile___bloc
   return result;
 }
 
-- (id)_appearancefallback_gradientWithName:(id)a3 displayGamut:(int64_t)a4 deviceIdiom:(int64_t)a5 appearanceName:(id)a6
+- (id)_appearancefallback_gradientWithName:(id)name displayGamut:(int64_t)gamut deviceIdiom:(int64_t)idiom appearanceName:(id)appearanceName
 {
   result = [CUICatalog gradientWithName:"gradientWithName:displayGamut:deviceIdiom:appearanceName:" displayGamut:? deviceIdiom:? appearanceName:?];
   if (!result)
   {
-    result = [a6 length];
+    result = [appearanceName length];
     if (result)
     {
 
-      return [(CUICatalog *)self gradientWithName:a3 displayGamut:a4 deviceIdiom:a5 appearanceName:0];
+      return [(CUICatalog *)self gradientWithName:name displayGamut:gamut deviceIdiom:idiom appearanceName:0];
     }
   }
 
   return result;
 }
 
-- (id)_appearancefallback_colorWithName:(id)a3 displayGamut:(int64_t)a4 deviceIdiom:(int64_t)a5 appearanceName:(id)a6
+- (id)_appearancefallback_colorWithName:(id)name displayGamut:(int64_t)gamut deviceIdiom:(int64_t)idiom appearanceName:(id)appearanceName
 {
   result = [CUICatalog colorWithName:"colorWithName:displayGamut:deviceIdiom:appearanceName:" displayGamut:? deviceIdiom:? appearanceName:?];
   if (!result)
   {
-    result = [a6 length];
+    result = [appearanceName length];
     if (result)
     {
 
-      return [(CUICatalog *)self colorWithName:a3 displayGamut:a4 deviceIdiom:a5 appearanceName:0];
+      return [(CUICatalog *)self colorWithName:name displayGamut:gamut deviceIdiom:idiom appearanceName:0];
     }
   }
 
   return result;
 }
 
-- (id)_private_resolvedRenditionKeyFromThemeRef:(void *)a3 withBaseKey:(id)a4 scaleFactor:(uint64_t)a5 deviceIdiom:(void *)a6 deviceSubtype:(uint64_t)a7 displayGamut:(uint64_t)a8 layoutDirection:(double)a9 sizeClassHorizontal:(uint64_t)a10 sizeClassVertical:(uint64_t)a11 memoryClass:(uint64_t)a12 graphicsClass:(void *)a13 graphicsFallBackOrder:(void *)a14 deviceSubtypeFallBackOrder:(uint64_t)a15 localizationIdentifier:(uint64_t)a16 adjustRenditionKeyWithBlock:
+- (id)_private_resolvedRenditionKeyFromThemeRef:(void *)ref withBaseKey:(id)key scaleFactor:(uint64_t)factor deviceIdiom:(void *)idiom deviceSubtype:(uint64_t)subtype displayGamut:(uint64_t)gamut layoutDirection:(double)direction sizeClassHorizontal:(uint64_t)self0 sizeClassVertical:(uint64_t)self1 memoryClass:(uint64_t)self2 graphicsClass:(void *)self3 graphicsFallBackOrder:(void *)self4 deviceSubtypeFallBackOrder:(uint64_t)self5 localizationIdentifier:(uint64_t)self6 adjustRenditionKeyWithBlock:
 {
-  v93 = a5;
-  if (!a1)
+  factorCopy = factor;
+  if (!self)
   {
     return 0;
   }
 
-  v22 = a10;
+  horizontalCopy = horizontal;
   v90 = 0;
   v91 = 0;
-  v73 = CUIMaxScaleForTargetPlatform([a1 platform]);
+  v73 = CUIMaxScaleForTargetPlatform([self platform]);
   v23 = CUICurrentDeploymentVersionForTargetPlatform();
-  v24 = [a13 count];
-  v74 = [a14 count];
+  v24 = [graphicsClass count];
+  v74 = [order count];
   [+[CUIRuntimeStatistics sharedRuntimeStatistics](CUIRuntimeStatistics "sharedRuntimeStatistics")];
-  v87 = a12;
+  classCopy = class;
   v83 = v24;
-  if (a12 && !v24)
+  if (class && !v24)
   {
-    _CUILog(4, "[CUICatalog _resolvedRenditionKeyFromThemeRef:...] got passed a graphicsClass '%d' but No graphicsFallbacks ignoring the graphicsClass", v25, v26, v27, v28, v29, v30, a12);
-    v87 = 0;
+    _CUILog(4, "[CUICatalog _resolvedRenditionKeyFromThemeRef:...] got passed a graphicsClass '%d' but No graphicsFallbacks ignoring the graphicsClass", v25, v26, v27, v28, v29, v30, class);
+    classCopy = 0;
   }
 
-  CUIValidateIdiomSubtypes(a4, &v93, v25, v26, v27, v28, v29, v30);
+  CUIValidateIdiomSubtypes(key, &factorCopy, v25, v26, v27, v28, v29, v30);
   v32 = 0;
-  v84 = a9;
-  v78 = v93;
+  directionCopy = direction;
+  v78 = factorCopy;
   v92 = v23;
-  while (__memorySearchValues[v32] != a11)
+  while (__memorySearchValues[v32] != vertical)
   {
     if (++v32 == 10)
     {
@@ -5214,29 +5214,29 @@ unsigned __int16 *__53__CUICatalog_copiedVectorGlyphsWithNames_outputFile___bloc
   }
 
   v33 = _LookupStructuredThemeProvider(a2, v31);
-  v34 = [a3 copy];
+  v34 = [ref copy];
   [v34 setThemeMemoryClass:__memorySearchValues[v32]];
-  [v34 setThemeScale:v84];
-  [v34 setThemeIdiom:a4];
+  [v34 setThemeScale:directionCopy];
+  [v34 setThemeIdiom:key];
   [v34 setThemeSubtype:v78];
-  [v34 setThemeDisplayGamut:a6];
+  [v34 setThemeDisplayGamut:idiom];
   [v34 setThemeDeploymentTarget:v92];
-  [v34 setThemeDirection:a7];
-  [v34 setThemeSizeClassHorizontal:a8];
-  [v34 setThemeSizeClassVertical:a10];
-  [v34 setThemeGraphicsClass:v87];
-  [v34 setThemeLocalization:a15];
-  if (a16)
+  [v34 setThemeDirection:subtype];
+  [v34 setThemeSizeClassHorizontal:gamut];
+  [v34 setThemeSizeClassVertical:horizontal];
+  [v34 setThemeGraphicsClass:classCopy];
+  [v34 setThemeLocalization:backOrder];
+  if (identifier)
   {
-    (*(a16 + 16))();
+    (*(identifier + 16))();
   }
 
   [v34 keyList];
   v35 = [OUTLINED_FUNCTION_3_3() copyLookupKeySignatureForKey:?];
 
-  v36 = [a1 lookupCache];
-  v37 = [a1 negativeCache];
-  v38 = [v36 objectForKey:v35];
+  lookupCache = [self lookupCache];
+  negativeCache = [self negativeCache];
+  v38 = [lookupCache objectForKey:v35];
   if (v38)
   {
     v39 = v38;
@@ -5244,22 +5244,22 @@ unsigned __int16 *__53__CUICatalog_copiedVectorGlyphsWithNames_outputFile___bloc
     return v39;
   }
 
-  v72 = v36;
-  if ([v37 objectForKey:v35])
+  v72 = lookupCache;
+  if ([negativeCache objectForKey:v35])
   {
 
     return 0;
   }
 
-  v69 = v37;
+  v69 = negativeCache;
   v71 = v35;
-  v77 = [v33 renditionInfoForIdentifier:{objc_msgSend(a3, "themeIdentifier")}];
+  v77 = [v33 renditionInfoForIdentifier:{objc_msgSend(ref, "themeIdentifier")}];
   if (!v77)
   {
-    v43 = a7;
-    v40 = v87;
+    subtypeCopy2 = subtype;
+    v40 = classCopy;
     v41 = v78;
-    v42 = a6;
+    idiomCopy2 = idiom;
     if (v32 < 0)
     {
       goto LABEL_139;
@@ -5268,27 +5268,27 @@ unsigned __int16 *__53__CUICatalog_copiedVectorGlyphsWithNames_outputFile___bloc
     goto LABEL_48;
   }
 
-  v40 = v87;
+  v40 = classCopy;
   v41 = v78;
-  v42 = a6;
+  idiomCopy2 = idiom;
   if (v78 && ![v77 diverseContentPresentForAttribute:16])
   {
     v41 = 0;
   }
 
-  if (a8 && ![v77 diverseContentPresentForAttribute:20])
+  if (gamut && ![v77 diverseContentPresentForAttribute:20])
   {
-    a8 = 0;
+    gamut = 0;
   }
 
-  if (a10 && ![v77 diverseContentPresentForAttribute:21])
+  if (horizontal && ![v77 diverseContentPresentForAttribute:21])
   {
-    v22 = 0;
+    horizontalCopy = 0;
   }
 
-  if (a6 && ![v77 diverseContentPresentForAttribute:24])
+  if (idiom && ![v77 diverseContentPresentForAttribute:24])
   {
-    v42 = 0;
+    idiomCopy2 = 0;
   }
 
   if (v92)
@@ -5313,14 +5313,14 @@ unsigned __int16 *__53__CUICatalog_copiedVectorGlyphsWithNames_outputFile___bloc
     v32 = 0;
   }
 
-  if (v87 && ![v77 diverseContentPresentForAttribute:23])
+  if (classCopy && ![v77 diverseContentPresentForAttribute:23])
   {
     v40 = 0;
   }
 
-  if (!a7)
+  if (!subtype)
   {
-    v43 = 0;
+    subtypeCopy2 = 0;
     if (v32 < 0)
     {
       goto LABEL_139;
@@ -5330,10 +5330,10 @@ unsigned __int16 *__53__CUICatalog_copiedVectorGlyphsWithNames_outputFile___bloc
   }
 
   v44 = [v77 diverseContentPresentForAttribute:4];
-  v43 = a7;
+  subtypeCopy2 = subtype;
   if (!v44)
   {
-    v43 = 0;
+    subtypeCopy2 = 0;
   }
 
   if ((v32 & 0x8000000000000000) == 0)
@@ -5342,9 +5342,9 @@ LABEL_48:
     v79 = v41;
     v88 = v40;
     v45 = 0;
-    v46 = v22 | a8;
+    v46 = horizontalCopy | gamut;
     v47 = 4;
-    if (v22 | a8)
+    if (horizontalCopy | gamut)
     {
       v48 = 1;
     }
@@ -5355,14 +5355,14 @@ LABEL_48:
     }
 
     v76 = v48;
-    v86 = v43;
-    if (v43 == 4)
+    v86 = subtypeCopy2;
+    if (subtypeCopy2 == 4)
     {
       v47 = 5;
     }
 
     v70 = v47;
-    v68 = a9;
+    directionCopy2 = direction;
     while (1)
     {
       v90 = 0x7FFFFFFFFFFFFFFFLL;
@@ -5372,39 +5372,39 @@ LABEL_48:
         v50 = v49;
         OUTLINED_FUNCTION_7_2();
         v80 = __memorySearchValues[v32];
-        [a3 setThemeMemoryClass:?];
+        [ref setThemeMemoryClass:?];
         v82 = v50;
-        [a3 setThemeSubtype:v50];
-        [a3 setThemeGraphicsClass:v88];
-        [a3 setThemeScale:v84];
+        [ref setThemeSubtype:v50];
+        [ref setThemeGraphicsClass:v88];
+        [ref setThemeScale:directionCopy];
         OUTLINED_FUNCTION_4_3();
         OUTLINED_FUNCTION_5_2();
         OUTLINED_FUNCTION_6_1();
         OUTLINED_FUNCTION_2_3();
         OUTLINED_FUNCTION_1_4();
-        [a3 setThemeLocalization:a15];
-        if (a16)
+        [ref setThemeLocalization:backOrder];
+        if (identifier)
         {
-          (*(a16 + 16))();
+          (*(identifier + 16))();
         }
 
         v91 = 0x7FFFFFFFFFFFFFFFLL;
         while (2)
         {
-          [a3 keyList];
+          [ref keyList];
           if ([OUTLINED_FUNCTION_3_3() canGetRenditionWithKey:?])
           {
 LABEL_59:
             v51 = v45;
 LABEL_60:
-            if (!a3)
+            if (!ref)
             {
               v52 = 1;
               v45 = v51;
               goto LABEL_62;
             }
 
-            v39 = [a3 copy];
+            v39 = [ref copy];
             [v72 setObject:v39 forKey:v71];
 
             v66 = v39;
@@ -5445,14 +5445,14 @@ LABEL_75:
                 OUTLINED_FUNCTION_2_3();
                 v55 = 2;
 LABEL_86:
-                [a3 keyList];
+                [ref keyList];
                 if ([OUTLINED_FUNCTION_3_3() canGetRenditionWithKey:?])
                 {
                   goto LABEL_59;
                 }
               }
 
-              if (a4 && [a3 themeIdiom] == a4)
+              if (key && [ref themeIdiom] == key)
               {
                 [OUTLINED_FUNCTION_0_5() setThemeIdiom:?];
                 if (v46)
@@ -5466,7 +5466,7 @@ LABEL_86:
                 goto LABEL_75;
               }
 
-              if (v42 && [a3 themeDisplayGamut] == v42)
+              if (idiomCopy2 && [ref themeDisplayGamut] == idiomCopy2)
               {
                 [OUTLINED_FUNCTION_0_5() setThemeDisplayGamut:?];
                 if (v46)
@@ -5485,7 +5485,7 @@ LABEL_86:
                 goto LABEL_86;
               }
 
-              if (!v86 || ![a3 themeDirection])
+              if (!v86 || ![ref themeDirection])
               {
                 break;
               }
@@ -5500,7 +5500,7 @@ LABEL_86:
                 v56 = v70;
               }
 
-              [a3 setThemeDirection:v56];
+              [ref setThemeDirection:v56];
               if (v46)
               {
                 OUTLINED_FUNCTION_1_4();
@@ -5517,16 +5517,16 @@ LABEL_86:
               OUTLINED_FUNCTION_5_2();
               v45 = 1;
 LABEL_103:
-              [a3 keyList];
+              [ref keyList];
               if ([OUTLINED_FUNCTION_3_3() canGetRenditionWithKey:?])
               {
                 goto LABEL_59;
               }
             }
 
-            if (v92 && [a3 themeDeploymentTarget])
+            if (v92 && [ref themeDeploymentTarget])
             {
-              v89 = [a3 themeDeploymentTarget];
+              themeDeploymentTarget = [ref themeDeploymentTarget];
               OUTLINED_FUNCTION_4_3();
               OUTLINED_FUNCTION_5_2();
               OUTLINED_FUNCTION_6_1();
@@ -5542,9 +5542,9 @@ LABEL_103:
                 v55 = 4;
               }
 
-              --v89;
-              [v77 decrementValue:&v89 forAttribute:25];
-              [a3 setThemeDeploymentTarget:v89];
+              --themeDeploymentTarget;
+              [v77 decrementValue:&themeDeploymentTarget forAttribute:25];
+              [ref setThemeDeploymentTarget:themeDeploymentTarget];
               v45 = 0;
               goto LABEL_103;
             }
@@ -5565,13 +5565,13 @@ LABEL_103:
             }
 
             OUTLINED_FUNCTION_7_2();
-            v57 = v75 + v68;
+            directionCopy3 = v75 + directionCopy2;
             if (v75 < 0)
             {
-              v58 = v57 < 1;
-              if (v57 < 1)
+              v58 = directionCopy3 < 1;
+              if (directionCopy3 < 1)
               {
-                v57 = a9;
+                directionCopy3 = direction;
               }
 
               v59 = 1;
@@ -5584,15 +5584,15 @@ LABEL_103:
               goto LABEL_116;
             }
 
-            if (v57 > v73)
+            if (directionCopy3 > v73)
             {
               break;
             }
 
 LABEL_116:
-            v68 = v57;
-            [a3 setThemeScale:?];
-            [a3 keyList];
+            directionCopy2 = directionCopy3;
+            [ref setThemeScale:?];
+            [ref keyList];
             v60 = [OUTLINED_FUNCTION_3_3() canGetRenditionWithKey:?];
             v45 = 0;
             v51 = 0;
@@ -5602,25 +5602,25 @@ LABEL_116:
             }
           }
 
-          v68 += v75;
+          directionCopy2 += v75;
           v52 = 0;
           v45 = 0;
 LABEL_62:
           OUTLINED_FUNCTION_7_2();
-          [a3 setThemeMemoryClass:v80];
-          [a3 setThemeSubtype:v82];
-          [a3 setThemeGraphicsClass:v88];
-          [a3 setThemeScale:v84];
+          [ref setThemeMemoryClass:v80];
+          [ref setThemeSubtype:v82];
+          [ref setThemeGraphicsClass:v88];
+          [ref setThemeScale:directionCopy];
           OUTLINED_FUNCTION_4_3();
           OUTLINED_FUNCTION_5_2();
           OUTLINED_FUNCTION_7_2();
           OUTLINED_FUNCTION_6_1();
           OUTLINED_FUNCTION_2_3();
           OUTLINED_FUNCTION_1_4();
-          [a3 setThemeLocalization:a15];
-          if (a16)
+          [ref setThemeLocalization:backOrder];
+          if (identifier)
           {
-            (*(a16 + 16))();
+            (*(identifier + 16))();
           }
 
           if (v88)
@@ -5631,25 +5631,25 @@ LABEL_62:
               {
                 v53 = 0;
                 v91 = 0;
-                v54 = a13;
+                graphicsClassCopy2 = graphicsClass;
                 goto LABEL_122;
               }
 
               if (v91 < (v83 - 1))
               {
                 ++v91;
-                v54 = a13;
-                [v77 incrementIndex:&v91 inValues:a13 forAttribute:23];
+                graphicsClassCopy2 = graphicsClass;
+                [v77 incrementIndex:&v91 inValues:graphicsClass forAttribute:23];
                 v53 = v91;
 LABEL_122:
-                v61 = [objc_msgSend(v54 objectAtIndex:{v53), "integerValue"}];
+                v61 = [objc_msgSend(graphicsClassCopy2 objectAtIndex:{v53), "integerValue"}];
 LABEL_123:
-                [a3 setThemeGraphicsClass:v61];
+                [ref setThemeGraphicsClass:v61];
                 continue;
               }
             }
 
-            else if ([a3 themeGraphicsClass])
+            else if ([ref themeGraphicsClass])
             {
               v61 = 0;
               goto LABEL_123;
@@ -5667,17 +5667,17 @@ LABEL_123:
             {
               v62 = 0;
               v90 = 0;
-              v63 = a14;
+              orderCopy2 = order;
 LABEL_132:
-              v49 = [objc_msgSend(v63 objectAtIndex:{v62), "integerValue"}];
+              v49 = [objc_msgSend(orderCopy2 objectAtIndex:{v62), "integerValue"}];
               continue;
             }
 
             if (v90 < (v74 - 1))
             {
               ++v90;
-              v63 = a14;
-              [v77 incrementIndex:&v90 inValues:a14 forAttribute:16];
+              orderCopy2 = order;
+              [v77 incrementIndex:&v90 inValues:order forAttribute:16];
               v62 = v90;
               goto LABEL_132;
             }
@@ -5700,14 +5700,14 @@ LABEL_132:
       if (v58)
       {
         v64 = v52 ^ 1;
-        if (!a3)
+        if (!ref)
         {
           v64 = 1;
         }
 
         if ((v64 & 1) == 0)
         {
-          v39 = [a3 copy];
+          v39 = [ref copy];
           [v72 setObject:v39 forKey:v71];
           v65 = v39;
           if (v39)

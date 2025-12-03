@@ -1,43 +1,43 @@
 @interface HorizontalLockupCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_axPerformCustomAction:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_axPerformCustomAction:(id)action;
 - (id)_accessibilityIndexPathForCell;
 - (id)_privateAccessibilityCustomActions;
 - (id)accessibilityCustomActions;
 - (id)automationElements;
-- (id)axCustomActionForContextualAction:(id)a3;
+- (id)axCustomActionForContextualAction:(id)action;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation HorizontalLockupCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasInstanceMethod:@"accessibilityLibraryStatusControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasInstanceMethod:@"contextMenuButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasInstanceMethod:@"showsContextMenu" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasProperty:@"collectionView" customGetter:@"_collectionView" customSetter:@"_setCollectionView:" withType:"@"];
-  [v3 validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" isKindOfClass:@"UICollectionViewTableCell"];
-  [v3 validateClass:@"UICollectionViewTableLayout" hasInstanceMethod:@"_delegateActual" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UICollectionViewTableCell" hasProperty:@"tableLayout" customGetter:@"_tableLayout" customSetter:0 withType:"@"];
-  [v3 validateClass:@"UICollectionViewTableLayout" hasInstanceMethod:@"contextualActionForDeletingRowAtIndexPath:" withFullSignature:{"@", "@", 0}];
-  [v3 validateProtocol:@"UICollectionViewDelegateTableLayout" hasOptionalInstanceMethod:@"collectionView:tableLayout:commitEditingStyle:forRowAtIndexPath:"];
-  [v3 validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasSwiftField:@"reactionsButton" withSwiftType:"Optional<Button>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasInstanceMethod:@"accessibilityLibraryStatusControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasInstanceMethod:@"contextMenuButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasInstanceMethod:@"showsContextMenu" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasProperty:@"collectionView" customGetter:@"_collectionView" customSetter:@"_setCollectionView:" withType:"@"];
+  [validationsCopy validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" isKindOfClass:@"UICollectionViewTableCell"];
+  [validationsCopy validateClass:@"UICollectionViewTableLayout" hasInstanceMethod:@"_delegateActual" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UICollectionViewTableCell" hasProperty:@"tableLayout" customGetter:@"_tableLayout" customSetter:0 withType:"@"];
+  [validationsCopy validateClass:@"UICollectionViewTableLayout" hasInstanceMethod:@"contextualActionForDeletingRowAtIndexPath:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateProtocol:@"UICollectionViewDelegateTableLayout" hasOptionalInstanceMethod:@"collectionView:tableLayout:commitEditingStyle:forRowAtIndexPath:"];
+  [validationsCopy validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasSwiftField:@"reactionsButton" withSwiftType:"Optional<Button>"];
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   LOBYTE(location[0]) = 0;
   objc_opt_class();
   v4 = [(HorizontalLockupCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityLibraryStatusControl"];
   v5 = __UIAccessibilityCastAsSafeCategory();
 
   [v5 setAccessibilityIsInCell:1];
-  v6 = [v5 accessibilityLabel];
-  v7 = v6;
-  if (v5 && [v6 length])
+  accessibilityLabel = [v5 accessibilityLabel];
+  v7 = accessibilityLabel;
+  if (v5 && [accessibilityLabel length])
   {
     objc_initWeak(location, v5);
     v8 = objc_alloc(MEMORY[0x29EDC78E0]);
@@ -47,7 +47,7 @@
     v31[3] = &unk_29F2DDB50;
     objc_copyWeak(&v32, location);
     v9 = [v8 initWithName:v7 actionHandler:v31];
-    [v3 addObject:v9];
+    [array addObject:v9];
 
     objc_destroyWeak(&v32);
     objc_destroyWeak(location);
@@ -67,17 +67,17 @@
   {
     objc_initWeak(location, v11);
     v12 = objc_alloc(MEMORY[0x29EDC78E0]);
-    v13 = [v11 accessibilityLabel];
-    v14 = [v11 accessibilityValue];
+    accessibilityLabel2 = [v11 accessibilityLabel];
+    accessibilityValue = [v11 accessibilityValue];
     v15 = __UIAXStringForVariables();
     v29[0] = MEMORY[0x29EDCA5F8];
     v29[1] = 3221225472;
     v29[2] = __77__HorizontalLockupCollectionViewCellAccessibility_accessibilityCustomActions__block_invoke_2;
     v29[3] = &unk_29F2DDB50;
     objc_copyWeak(&v30, location);
-    v16 = [v12 initWithName:v15 actionHandler:{v29, v14, @"__AXStringForVariablesSentinel"}];
+    v16 = [v12 initWithName:v15 actionHandler:{v29, accessibilityValue, @"__AXStringForVariablesSentinel"}];
 
-    [v3 addObject:v16];
+    [array addObject:v16];
     objc_destroyWeak(&v30);
     objc_destroyWeak(location);
   }
@@ -91,9 +91,9 @@
 
     if (LOBYTE(location[0]) != 1)
     {
-      v19 = [v18 accessibilityLabel];
-      v20 = v19;
-      if (v18 && [v19 length])
+      accessibilityLabel3 = [v18 accessibilityLabel];
+      v20 = accessibilityLabel3;
+      if (v18 && [accessibilityLabel3 length])
       {
         objc_initWeak(location, v18);
         v21 = objc_alloc(MEMORY[0x29EDC78E0]);
@@ -103,7 +103,7 @@
         v27[3] = &unk_29F2DDB50;
         objc_copyWeak(&v28, location);
         v22 = [v21 initWithName:v20 actionHandler:v27];
-        [v3 addObject:v22];
+        [array addObject:v22];
 
         objc_destroyWeak(&v28);
         objc_destroyWeak(location);
@@ -117,11 +117,11 @@ LABEL_17:
   }
 
 LABEL_14:
-  [(HorizontalLockupCollectionViewCellAccessibility *)self setLockupViewCustomActions:v3];
+  [(HorizontalLockupCollectionViewCellAccessibility *)self setLockupViewCustomActions:array];
   v26.receiver = self;
   v26.super_class = HorizontalLockupCollectionViewCellAccessibility;
-  v23 = [(HorizontalLockupCollectionViewCellAccessibility *)&v26 accessibilityCustomActions];
-  v24 = [v3 arrayByAddingObjectsFromArray:v23];
+  accessibilityCustomActions = [(HorizontalLockupCollectionViewCellAccessibility *)&v26 accessibilityCustomActions];
+  v24 = [array arrayByAddingObjectsFromArray:accessibilityCustomActions];
 
   return v24;
 }
@@ -154,20 +154,20 @@ uint64_t __77__HorizontalLockupCollectionViewCellAccessibility_accessibilityCust
 {
   v10.receiver = self;
   v10.super_class = HorizontalLockupCollectionViewCellAccessibility;
-  v3 = [(HorizontalLockupCollectionViewCellAccessibility *)&v10 automationElements];
-  v4 = [v3 mutableCopy];
+  automationElements = [(HorizontalLockupCollectionViewCellAccessibility *)&v10 automationElements];
+  v4 = [automationElements mutableCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    array = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v7 = v6;
+  v7 = array;
 
   v8 = [(HorizontalLockupCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityLibraryStatusControl"];
   [v7 axSafelyAddObject:v8];
@@ -197,20 +197,20 @@ uint64_t __77__HorizontalLockupCollectionViewCellAccessibility_accessibilityCust
 
 - (id)_privateAccessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v13.receiver = self;
   v13.super_class = HorizontalLockupCollectionViewCellAccessibility;
-  v4 = [(HorizontalLockupCollectionViewCellAccessibility *)&v13 _privateAccessibilityCustomActions];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  _privateAccessibilityCustomActions = [(HorizontalLockupCollectionViewCellAccessibility *)&v13 _privateAccessibilityCustomActions];
+  [array axSafelyAddObjectsFromArray:_privateAccessibilityCustomActions];
 
-  v5 = [(HorizontalLockupCollectionViewCellAccessibility *)self _accessibilityIndexPathForCell];
+  _accessibilityIndexPathForCell = [(HorizontalLockupCollectionViewCellAccessibility *)self _accessibilityIndexPathForCell];
   objc_opt_class();
   v6 = [(HorizontalLockupCollectionViewCellAccessibility *)self safeValueForKey:@"_tableLayout"];
   v7 = __UIAccessibilityCastAsClass();
 
   if (v7)
   {
-    if (v5)
+    if (_accessibilityIndexPathForCell)
     {
       if (objc_opt_respondsToSelector())
       {
@@ -219,22 +219,22 @@ uint64_t __77__HorizontalLockupCollectionViewCellAccessibility_accessibilityCust
 
         if (v9)
         {
-          v10 = [v7 contextualActionForDeletingRowAtIndexPath:v5];
+          v10 = [v7 contextualActionForDeletingRowAtIndexPath:_accessibilityIndexPathForCell];
           v11 = [(HorizontalLockupCollectionViewCellAccessibility *)self axCustomActionForContextualAction:v10];
-          [v3 axSafelyAddObject:v11];
+          [array axSafelyAddObject:v11];
         }
       }
     }
   }
 
-  return v3;
+  return array;
 }
 
-- (BOOL)_axPerformCustomAction:(id)a3
+- (BOOL)_axPerformCustomAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   objc_opt_class();
-  v4 = [v3 _accessibilityValueForKey:@"AXHorizontalLockupCollectionViewCellActionKey"];
+  v4 = [actionCopy _accessibilityValueForKey:@"AXHorizontalLockupCollectionViewCellActionKey"];
   v5 = __UIAccessibilityCastAsClass();
 
   if (v5)
@@ -257,15 +257,15 @@ void __74__HorizontalLockupCollectionViewCellAccessibility__axPerformCustomActio
   }
 }
 
-- (id)axCustomActionForContextualAction:(id)a3
+- (id)axCustomActionForContextualAction:(id)action
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 title], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
+  actionCopy = action;
+  v5 = actionCopy;
+  if (actionCopy && ([actionCopy title], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
   {
     v8 = objc_alloc(MEMORY[0x29EDC78E0]);
-    v9 = [v5 title];
-    v10 = [v8 initWithName:v9 target:self selector:sel__axPerformCustomAction_];
+    title = [v5 title];
+    v10 = [v8 initWithName:title target:self selector:sel__axPerformCustomAction_];
 
     [v10 _accessibilitySetRetainedValue:v5 forKey:@"AXHorizontalLockupCollectionViewCellActionKey"];
   }

@@ -1,17 +1,17 @@
 @interface RTAssetProcessor
-- (BOOL)_deviceSeed:(id)a3 belongsToGroupId:(id)a4 seedId:(id)a5 modValue:(id)a6 low:(id)a7 high:(id)a8;
-- (BOOL)processAssetsAtPath:(id)a3 intoPath:(id)a4 outError:(id *)a5;
-- (RTAssetProcessor)initWithDefaultsManager:(id)a3;
-- (id)_objectForKey:(id)a3 expectedClass:(Class)a4 inDictionary:(id)a5;
+- (BOOL)_deviceSeed:(id)seed belongsToGroupId:(id)id seedId:(id)seedId modValue:(id)value low:(id)low high:(id)high;
+- (BOOL)processAssetsAtPath:(id)path intoPath:(id)intoPath outError:(id *)error;
+- (RTAssetProcessor)initWithDefaultsManager:(id)manager;
+- (id)_objectForKey:(id)key expectedClass:(Class)class inDictionary:(id)dictionary;
 @end
 
 @implementation RTAssetProcessor
 
-- (RTAssetProcessor)initWithDefaultsManager:(id)a3
+- (RTAssetProcessor)initWithDefaultsManager:(id)manager
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v11.receiver = self;
     v11.super_class = RTAssetProcessor;
@@ -19,11 +19,11 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_defaultsManager, a3);
+      objc_storeStrong(&v6->_defaultsManager, manager);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -38,37 +38,37 @@
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager (in %s:%d)", buf, 0x12u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)processAssetsAtPath:(id)a3 intoPath:(id)a4 outError:(id *)a5
+- (BOOL)processAssetsAtPath:(id)path intoPath:(id)intoPath outError:(id *)error
 {
   v86[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  pathCopy = path;
+  intoPathCopy = intoPath;
+  v9 = intoPathCopy;
+  if (pathCopy)
   {
-    if (v8)
+    if (intoPathCopy)
     {
-      v10 = [MEMORY[0x277CCAA00] defaultManager];
-      if ([v10 fileExistsAtPath:v7])
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      if ([defaultManager fileExistsAtPath:pathCopy])
       {
-        v11 = [MEMORY[0x277CCAA00] defaultManager];
-        v12 = [v11 isReadableFileAtPath:v7];
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+        v12 = [defaultManager2 isReadableFileAtPath:pathCopy];
 
         if (v12)
         {
-          v13 = [(RTAssetProcessor *)self defaultsManager];
-          v14 = [v13 objectForKey:@"RTDefaultsABTestDeviceSeed"];
+          defaultsManager = [(RTAssetProcessor *)self defaultsManager];
+          v14 = [defaultsManager objectForKey:@"RTDefaultsABTestDeviceSeed"];
 
           v53 = v9;
           if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
-            v15 = self;
+            selfCopy3 = self;
           }
 
           else
@@ -83,19 +83,19 @@
               }
             }
 
-            v28 = [MEMORY[0x277CCAD78] UUID];
-            v29 = [v28 UUIDString];
+            uUID = [MEMORY[0x277CCAD78] UUID];
+            uUIDString = [uUID UUIDString];
 
-            v15 = self;
-            v30 = [(RTAssetProcessor *)self defaultsManager];
-            [v30 setObject:v29 forKey:@"RTDefaultsABTestDeviceSeed"];
+            selfCopy3 = self;
+            defaultsManager2 = [(RTAssetProcessor *)self defaultsManager];
+            [defaultsManager2 setObject:uUIDString forKey:@"RTDefaultsABTestDeviceSeed"];
 
-            v14 = v29;
+            v14 = uUIDString;
           }
 
-          v55 = v7;
-          v31 = [MEMORY[0x277CBEB38] dictionaryWithContentsOfFile:{v7, v53}];
-          v32 = [(RTAssetProcessor *)v15 _objectForKey:@"ABTestOverrides" expectedClass:objc_opt_class() inDictionary:v31];
+          v55 = pathCopy;
+          v31 = [MEMORY[0x277CBEB38] dictionaryWithContentsOfFile:{pathCopy, v53}];
+          v32 = [(RTAssetProcessor *)selfCopy3 _objectForKey:@"ABTestOverrides" expectedClass:objc_opt_class() inDictionary:v31];
           v33 = objc_opt_new();
           v71 = 0u;
           v72 = 0u;
@@ -118,13 +118,13 @@
                 }
 
                 v35 = *(*(&v71 + 1) + 8 * i);
-                v36 = [(RTAssetProcessor *)v15 _objectForKey:@"SeedId" expectedClass:objc_opt_class() inDictionary:v35];
-                v66 = [(RTAssetProcessor *)v15 _objectForKey:@"GroupId" expectedClass:objc_opt_class() inDictionary:v35];
-                v65 = [(RTAssetProcessor *)v15 _objectForKey:@"ModValue" expectedClass:objc_opt_class() inDictionary:v35];
-                v64 = [(RTAssetProcessor *)v15 _objectForKey:@"Low" expectedClass:objc_opt_class() inDictionary:v35];
-                v63 = [(RTAssetProcessor *)v15 _objectForKey:@"High" expectedClass:objc_opt_class() inDictionary:v35];
-                v37 = [(RTAssetProcessor *)v15 _objectForKey:@"ExpirationDate" expectedClass:objc_opt_class() inDictionary:v35];
-                v38 = [(RTAssetProcessor *)v15 _objectForKey:@"Overrides" expectedClass:objc_opt_class() inDictionary:v35];
+                v36 = [(RTAssetProcessor *)selfCopy3 _objectForKey:@"SeedId" expectedClass:objc_opt_class() inDictionary:v35];
+                v66 = [(RTAssetProcessor *)selfCopy3 _objectForKey:@"GroupId" expectedClass:objc_opt_class() inDictionary:v35];
+                v65 = [(RTAssetProcessor *)selfCopy3 _objectForKey:@"ModValue" expectedClass:objc_opt_class() inDictionary:v35];
+                v64 = [(RTAssetProcessor *)selfCopy3 _objectForKey:@"Low" expectedClass:objc_opt_class() inDictionary:v35];
+                v63 = [(RTAssetProcessor *)selfCopy3 _objectForKey:@"High" expectedClass:objc_opt_class() inDictionary:v35];
+                v37 = [(RTAssetProcessor *)selfCopy3 _objectForKey:@"ExpirationDate" expectedClass:objc_opt_class() inDictionary:v35];
+                v38 = [(RTAssetProcessor *)selfCopy3 _objectForKey:@"Overrides" expectedClass:objc_opt_class() inDictionary:v35];
                 v39 = v38;
                 v62 = v36;
                 if (!v36 || !v66 || !v65 || !v64 || !v63 || !v37 || !v38)
@@ -141,12 +141,12 @@
                   goto LABEL_58;
                 }
 
-                v40 = [MEMORY[0x277CBEAA8] date];
-                v41 = [v37 compare:v40];
+                date = [MEMORY[0x277CBEAA8] date];
+                v41 = [v37 compare:date];
 
                 v42 = v41 == -1;
                 v43 = v62;
-                if (!v42 && [(RTAssetProcessor *)v15 _deviceSeed:v14 belongsToGroupId:v66 seedId:v62 modValue:v65 low:v64 high:v63])
+                if (!v42 && [(RTAssetProcessor *)selfCopy3 _deviceSeed:v14 belongsToGroupId:v66 seedId:v62 modValue:v65 low:v64 high:v63])
                 {
                   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
                   {
@@ -200,7 +200,7 @@
                   v33 = v56;
                   [v56 addObject:v52];
                   v14 = v57;
-                  v15 = self;
+                  selfCopy3 = self;
 LABEL_58:
                 }
               }
@@ -220,7 +220,7 @@ LABEL_58:
           v9 = v54;
           v25 = [v31 writeToFile:v54 atomically:1];
 
-          v7 = v55;
+          pathCopy = v55;
           goto LABEL_21;
         }
       }
@@ -229,7 +229,7 @@ LABEL_58:
       {
       }
 
-      if (a5)
+      if (error)
       {
         v23 = MEMORY[0x277CCA9B8];
         v24 = *MEMORY[0x277D01448];
@@ -273,7 +273,7 @@ LABEL_13:
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsPath (in %s:%d)", buf, 0x12u);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -281,7 +281,7 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_22;
   }
@@ -297,16 +297,16 @@ LABEL_16:
   v22 = 7;
 LABEL_20:
   [v20 errorWithDomain:v21 code:v22 userInfo:v14];
-  *a5 = v25 = 0;
+  *error = v25 = 0;
 LABEL_21:
 
 LABEL_23:
   return v25;
 }
 
-- (id)_objectForKey:(id)a3 expectedClass:(Class)a4 inDictionary:(id)a5
+- (id)_objectForKey:(id)key expectedClass:(Class)class inDictionary:(id)dictionary
 {
-  v5 = [a5 objectForKeyedSubscript:a3];
+  v5 = [dictionary objectForKeyedSubscript:key];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -320,20 +320,20 @@ LABEL_23:
   return v6;
 }
 
-- (BOOL)_deviceSeed:(id)a3 belongsToGroupId:(id)a4 seedId:(id)a5 modValue:(id)a6 low:(id)a7 high:(id)a8
+- (BOOL)_deviceSeed:(id)seed belongsToGroupId:(id)id seedId:(id)seedId modValue:(id)value low:(id)low high:(id)high
 {
-  v12 = a8;
+  highCopy = high;
   v13 = MEMORY[0x277CCACA8];
-  v14 = a7;
-  v15 = a6;
-  v16 = [v13 stringWithFormat:@"%@%@", a3, a5];
-  v17 = [v16 hash];
+  lowCopy = low;
+  valueCopy = value;
+  seedId = [v13 stringWithFormat:@"%@%@", seed, seedId];
+  v17 = [seedId hash];
 
-  v18 = [v15 unsignedIntegerValue];
-  v19 = v17 % v18;
-  v20 = [v14 unsignedIntegerValue];
+  unsignedIntegerValue = [valueCopy unsignedIntegerValue];
+  v19 = v17 % unsignedIntegerValue;
+  unsignedIntegerValue2 = [lowCopy unsignedIntegerValue];
 
-  v21 = v20 <= v19 && v19 < [v12 unsignedIntegerValue];
+  v21 = unsignedIntegerValue2 <= v19 && v19 < [highCopy unsignedIntegerValue];
   return v21;
 }
 

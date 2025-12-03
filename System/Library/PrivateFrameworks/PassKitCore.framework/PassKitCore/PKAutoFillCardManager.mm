@@ -1,25 +1,25 @@
 @interface PKAutoFillCardManager
 + (CGImage)walletIcon;
 - (PKAutoFillCardManager)init;
-- (PKAutoFillCardManager)initWithPaymentService:(id)a3;
-- (id)_defaultSortForDescriptors:(id)a3;
-- (id)_managementSortForDescriptors:(id)a3;
-- (id)_sortDescriptors:(id)a3 withSort:(unint64_t)a4;
+- (PKAutoFillCardManager)initWithPaymentService:(id)service;
+- (id)_defaultSortForDescriptors:(id)descriptors;
+- (id)_managementSortForDescriptors:(id)descriptors;
+- (id)_sortDescriptors:(id)descriptors withSort:(unint64_t)sort;
 - (id)urlToListOfCards;
-- (int64_t)_typeOrderForType:(unint64_t)a3;
-- (void)activeFPANCardsWithOptions:(unint64_t)a3 allowedCardTypes:(id)a4 sortType:(unint64_t)a5 completion:(id)a6;
-- (void)cachedFPANCredentialsWithCompletion:(id)a3;
-- (void)canSaveFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)checkActiveFPANCardsForEligibilityWithCompletion:(id)a3;
-- (void)credentialForFPANCard:(id)a3 authorization:(id)a4 options:(unint64_t)a5 merchantHost:(id)a6 completion:(id)a7;
-- (void)deleteFPANCardWithDescriptor:(id)a3 completion:(id)a4;
-- (void)fpanCardAndCredentialForPrimaryAccountIdentifier:(id)a3 passUniqueID:(id)a4 authorization:(id)a5 completion:(id)a6;
-- (void)fpanCredentialForPrimaryAccountIdentifier:(id)a3 passUniqueID:(id)a4 credential:(id *)a5 error:(id *)a6;
-- (void)fpanDescriptorAndCredentialForFPAN:(id)a3 descriptor:(id *)a4 credential:(id *)a5 error:(id *)a6;
-- (void)insertFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)updateFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)userDidUseCardWithDescriptor:(id)a3 credential:(id)a4;
-- (void)userRejectedSavingFPANCardWithDescriptor:(id)a3 credential:(id)a4 options:(unint64_t)a5 permanent:(BOOL)a6;
+- (int64_t)_typeOrderForType:(unint64_t)type;
+- (void)activeFPANCardsWithOptions:(unint64_t)options allowedCardTypes:(id)types sortType:(unint64_t)type completion:(id)completion;
+- (void)cachedFPANCredentialsWithCompletion:(id)completion;
+- (void)canSaveFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion;
+- (void)checkActiveFPANCardsForEligibilityWithCompletion:(id)completion;
+- (void)credentialForFPANCard:(id)card authorization:(id)authorization options:(unint64_t)options merchantHost:(id)host completion:(id)completion;
+- (void)deleteFPANCardWithDescriptor:(id)descriptor completion:(id)completion;
+- (void)fpanCardAndCredentialForPrimaryAccountIdentifier:(id)identifier passUniqueID:(id)d authorization:(id)authorization completion:(id)completion;
+- (void)fpanCredentialForPrimaryAccountIdentifier:(id)identifier passUniqueID:(id)d credential:(id *)credential error:(id *)error;
+- (void)fpanDescriptorAndCredentialForFPAN:(id)n descriptor:(id *)descriptor credential:(id *)credential error:(id *)error;
+- (void)insertFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion;
+- (void)updateFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion;
+- (void)userDidUseCardWithDescriptor:(id)descriptor credential:(id)credential;
+- (void)userRejectedSavingFPANCardWithDescriptor:(id)descriptor credential:(id)credential options:(unint64_t)options permanent:(BOOL)permanent;
 @end
 
 @implementation PKAutoFillCardManager
@@ -32,10 +32,10 @@
   v5 = [v3 initWithType:v4];
 
   v6 = [v5 prepareImageForDescriptor:v2];
-  v7 = [v6 CGImage];
-  if (v7)
+  cGImage = [v6 CGImage];
+  if (cGImage)
   {
-    v8 = CFRetain(v7);
+    v8 = CFRetain(cGImage);
     v9 = CFAutorelease(v8);
   }
 
@@ -55,16 +55,16 @@
   return v4;
 }
 
-- (PKAutoFillCardManager)initWithPaymentService:(id)a3
+- (PKAutoFillCardManager)initWithPaymentService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v13.receiver = self;
   v13.super_class = PKAutoFillCardManager;
   v6 = [(PKAutoFillCardManager *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_paymentService, a3);
+    objc_storeStrong(&v6->_paymentService, service);
     v8 = objc_alloc_init(PKVirtualCardManager);
     virtualCardManager = v7->_virtualCardManager;
     v7->_virtualCardManager = v8;
@@ -86,21 +86,21 @@
   return v4;
 }
 
-- (void)activeFPANCardsWithOptions:(unint64_t)a3 allowedCardTypes:(id)a4 sortType:(unint64_t)a5 completion:(id)a6
+- (void)activeFPANCardsWithOptions:(unint64_t)options allowedCardTypes:(id)types sortType:(unint64_t)type completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
-  if (v11)
+  typesCopy = types;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v12 = PKLogFacilityTypeGetObject(0x30uLL);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = PKAutoFillCardCredentialRequestedFieldsToString(a3);
+      v13 = PKAutoFillCardCredentialRequestedFieldsToString(options);
       *buf = 138412546;
       v23 = v13;
       v24 = 2112;
-      v25 = v10;
+      v25 = typesCopy;
       _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "PKAutoFillCardManager: Fetching active autofill cards with options: %@ allowedDescriptors: %@", buf, 0x16u);
     }
 
@@ -113,11 +113,11 @@
         block[1] = 3221225472;
         block[2] = __89__PKAutoFillCardManager_activeFPANCardsWithOptions_allowedCardTypes_sortType_completion___block_invoke;
         block[3] = &unk_1E79D0278;
-        v17 = v10;
-        v18 = self;
-        v20 = a3;
-        v19 = v11;
-        v21 = a5;
+        v17 = typesCopy;
+        selfCopy = self;
+        optionsCopy = options;
+        v19 = completionCopy;
+        typeCopy = type;
         dispatch_async(queue, block);
 
         goto LABEL_13;
@@ -139,7 +139,7 @@ LABEL_11:
       _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, v15, buf, 2u);
     }
 
-    (*(v11 + 2))(v11, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_13:
@@ -459,22 +459,22 @@ void __89__PKAutoFillCardManager_activeFPANCardsWithOptions_allowedCardTypes_sor
   (*(v4 + 16))(v4, v5);
 }
 
-- (id)_sortDescriptors:(id)a3 withSort:(unint64_t)a4
+- (id)_sortDescriptors:(id)descriptors withSort:(unint64_t)sort
 {
-  v7 = a3;
-  if (a4 == 1)
+  descriptorsCopy = descriptors;
+  if (sort == 1)
   {
-    v8 = [(PKAutoFillCardManager *)self _managementSortForDescriptors:v7];
+    v8 = [(PKAutoFillCardManager *)self _managementSortForDescriptors:descriptorsCopy];
   }
 
   else
   {
-    if (a4)
+    if (sort)
     {
       goto LABEL_6;
     }
 
-    v8 = [(PKAutoFillCardManager *)self _defaultSortForDescriptors:v7];
+    v8 = [(PKAutoFillCardManager *)self _defaultSortForDescriptors:descriptorsCopy];
   }
 
   v4 = v8;
@@ -483,14 +483,14 @@ LABEL_6:
   return v4;
 }
 
-- (id)_defaultSortForDescriptors:(id)a3
+- (id)_defaultSortForDescriptors:(id)descriptors
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __52__PKAutoFillCardManager__defaultSortForDescriptors___block_invoke;
   v5[3] = &unk_1E79D02A0;
   v5[4] = self;
-  v3 = [a3 sortedArrayUsingComparator:v5];
+  v3 = [descriptors sortedArrayUsingComparator:v5];
 
   return v3;
 }
@@ -553,14 +553,14 @@ uint64_t __52__PKAutoFillCardManager__defaultSortForDescriptors___block_invoke(u
   return v10;
 }
 
-- (id)_managementSortForDescriptors:(id)a3
+- (id)_managementSortForDescriptors:(id)descriptors
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __55__PKAutoFillCardManager__managementSortForDescriptors___block_invoke;
   v5[3] = &unk_1E79D02A0;
   v5[4] = self;
-  v3 = [a3 sortedArrayUsingComparator:v5];
+  v3 = [descriptors sortedArrayUsingComparator:v5];
 
   return v3;
 }
@@ -595,31 +595,31 @@ uint64_t __55__PKAutoFillCardManager__managementSortForDescriptors___block_invok
   return v12;
 }
 
-- (int64_t)_typeOrderForType:(unint64_t)a3
+- (int64_t)_typeOrderForType:(unint64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return 3;
   }
 
   else
   {
-    return qword_1ADB9A5E8[a3];
+    return qword_1ADB9A5E8[type];
   }
 }
 
-- (void)credentialForFPANCard:(id)a3 authorization:(id)a4 options:(unint64_t)a5 merchantHost:(id)a6 completion:(id)a7
+- (void)credentialForFPANCard:(id)card authorization:(id)authorization options:(unint64_t)options merchantHost:(id)host completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  cardCopy = card;
+  authorizationCopy = authorization;
+  hostCopy = host;
+  completionCopy = completion;
   v16 = PKLogFacilityTypeGetObject(0x30uLL);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v12;
+    v26 = cardCopy;
     _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "PKAutoFillCardManager: credential requested descriptor: %@", buf, 0xCu);
   }
 
@@ -630,12 +630,12 @@ uint64_t __55__PKAutoFillCardManager__managementSortForDescriptors___block_invok
     v18[1] = 3221225472;
     v18[2] = __93__PKAutoFillCardManager_credentialForFPANCard_authorization_options_merchantHost_completion___block_invoke;
     v18[3] = &unk_1E79D02F0;
-    v19 = v12;
-    v23 = v15;
-    v20 = self;
-    v21 = v13;
-    v24 = a5;
-    v22 = v14;
+    v19 = cardCopy;
+    v23 = completionCopy;
+    selfCopy = self;
+    v21 = authorizationCopy;
+    optionsCopy = options;
+    v22 = hostCopy;
     dispatch_async(queue, v18);
   }
 
@@ -647,7 +647,7 @@ uint64_t __55__PKAutoFillCardManager__managementSortForDescriptors___block_invok
       _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "PKAutoFillCardManager: Feature disabled", buf, 2u);
     }
 
-    (*(v15 + 2))(v15, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -707,11 +707,11 @@ void __93__PKAutoFillCardManager_credentialForFPANCard_authorization_options_mer
   }
 }
 
-- (void)insertFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)insertFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptorCopy = descriptor;
+  credentialCopy = credential;
+  completionCopy = completion;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v12 = PKLogFacilityTypeGetObject(0x30uLL);
@@ -725,11 +725,11 @@ LABEL_8:
 
 LABEL_9:
 
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_10;
   }
 
-  if ([v8 type] != 1)
+  if ([descriptorCopy type] != 1)
   {
     v12 = PKLogFacilityTypeGetObject(0x30uLL);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -748,19 +748,19 @@ LABEL_9:
   v14[2] = __76__PKAutoFillCardManager_insertFPANCardWithDescriptor_credential_completion___block_invoke;
   v14[3] = &unk_1E79C4EF0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
+  v15 = descriptorCopy;
+  v16 = credentialCopy;
+  v17 = completionCopy;
   dispatch_async(queue, v14);
 
 LABEL_10:
 }
 
-- (void)updateFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)updateFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptorCopy = descriptor;
+  credentialCopy = credential;
+  completionCopy = completion;
   if (_os_feature_enabled_impl())
   {
     queue = self->_queue;
@@ -768,10 +768,10 @@ LABEL_10:
     v13[1] = 3221225472;
     v13[2] = __76__PKAutoFillCardManager_updateFPANCardWithDescriptor_credential_completion___block_invoke;
     v13[3] = &unk_1E79C4EF0;
-    v14 = v8;
-    v15 = self;
-    v16 = v9;
-    v17 = v10;
+    v14 = descriptorCopy;
+    selfCopy = self;
+    v16 = credentialCopy;
+    v17 = completionCopy;
     dispatch_async(queue, v13);
   }
 
@@ -784,7 +784,7 @@ LABEL_10:
       _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "PKAutoFillCardManager: Feature disabled", buf, 2u);
     }
 
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -856,10 +856,10 @@ LABEL_19:
   }
 }
 
-- (void)deleteFPANCardWithDescriptor:(id)a3 completion:(id)a4
+- (void)deleteFPANCardWithDescriptor:(id)descriptor completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v9 = PKLogFacilityTypeGetObject(0x30uLL);
@@ -873,11 +873,11 @@ LABEL_8:
 
 LABEL_9:
 
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_10;
   }
 
-  if ([v6 type] != 1)
+  if ([descriptorCopy type] != 1)
   {
     v9 = PKLogFacilityTypeGetObject(0x30uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -896,18 +896,18 @@ LABEL_9:
   block[2] = __65__PKAutoFillCardManager_deleteFPANCardWithDescriptor_completion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
+  v12 = descriptorCopy;
+  v13 = completionCopy;
   dispatch_async(queue, block);
 
 LABEL_10:
 }
 
-- (void)canSaveFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)canSaveFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptorCopy = descriptor;
+  credentialCopy = credential;
+  completionCopy = completion;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v12 = PKLogFacilityTypeGetObject(0x30uLL);
@@ -922,12 +922,12 @@ LABEL_8:
 LABEL_9:
 
     v14 = +[PKFPANCardCanSaveResult empty];
-    v10[2](v10, v14);
+    completionCopy[2](completionCopy, v14);
 
     goto LABEL_10;
   }
 
-  if ([v8 type] != 1)
+  if ([descriptorCopy type] != 1)
   {
     v12 = PKLogFacilityTypeGetObject(0x30uLL);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -946,9 +946,9 @@ LABEL_9:
   v15[2] = __77__PKAutoFillCardManager_canSaveFPANCardWithDescriptor_credential_completion___block_invoke;
   v15[3] = &unk_1E79CB4E8;
   v15[4] = self;
-  v16 = v9;
-  v18 = v10;
-  v17 = v8;
+  v16 = credentialCopy;
+  v18 = completionCopy;
+  v17 = descriptorCopy;
   dispatch_async(queue, v15);
 
 LABEL_10:
@@ -1049,10 +1049,10 @@ void __77__PKAutoFillCardManager_canSaveFPANCardWithDescriptor_credential_comple
 LABEL_16:
 }
 
-- (void)userRejectedSavingFPANCardWithDescriptor:(id)a3 credential:(id)a4 options:(unint64_t)a5 permanent:(BOOL)a6
+- (void)userRejectedSavingFPANCardWithDescriptor:(id)descriptor credential:(id)credential options:(unint64_t)options permanent:(BOOL)permanent
 {
-  v10 = a3;
-  v11 = a4;
+  descriptorCopy = descriptor;
+  credentialCopy = credential;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v13 = PKLogFacilityTypeGetObject(0x30uLL);
@@ -1069,7 +1069,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v10 type] != 1)
+  if ([descriptorCopy type] != 1)
   {
     v13 = PKLogFacilityTypeGetObject(0x30uLL);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1088,19 +1088,19 @@ LABEL_9:
   block[2] = __95__PKAutoFillCardManager_userRejectedSavingFPANCardWithDescriptor_credential_options_permanent___block_invoke;
   block[3] = &unk_1E79D0340;
   block[4] = self;
-  v16 = v10;
-  v17 = v11;
-  v18 = a5;
-  v19 = a6;
+  v16 = descriptorCopy;
+  v17 = credentialCopy;
+  optionsCopy = options;
+  permanentCopy = permanent;
   dispatch_async(queue, block);
 
 LABEL_10:
 }
 
-- (void)userDidUseCardWithDescriptor:(id)a3 credential:(id)a4
+- (void)userDidUseCardWithDescriptor:(id)descriptor credential:(id)credential
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  credentialCopy = credential;
   if (_os_feature_enabled_impl())
   {
     queue = self->_queue;
@@ -1108,9 +1108,9 @@ LABEL_10:
     block[1] = 3221225472;
     block[2] = __65__PKAutoFillCardManager_userDidUseCardWithDescriptor_credential___block_invoke;
     block[3] = &unk_1E79C4E00;
-    v11 = v6;
-    v12 = self;
-    v13 = v7;
+    v11 = descriptorCopy;
+    selfCopy = self;
+    v13 = credentialCopy;
     dispatch_async(queue, block);
 
     v9 = v11;
@@ -1215,16 +1215,16 @@ void __65__PKAutoFillCardManager_userDidUseCardWithDescriptor_credential___block
   }
 }
 
-- (void)fpanCardAndCredentialForPrimaryAccountIdentifier:(id)a3 passUniqueID:(id)a4 authorization:(id)a5 completion:(id)a6
+- (void)fpanCardAndCredentialForPrimaryAccountIdentifier:(id)identifier passUniqueID:(id)d authorization:(id)authorization completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v10)
+  identifierCopy = identifier;
+  dCopy = d;
+  authorizationCopy = authorization;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (!identifierCopy)
   {
-    (*(v13 + 2))(v13, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 
   queue = self->_queue;
@@ -1233,61 +1233,61 @@ void __65__PKAutoFillCardManager_userDidUseCardWithDescriptor_credential___block
   block[2] = __112__PKAutoFillCardManager_fpanCardAndCredentialForPrimaryAccountIdentifier_passUniqueID_authorization_completion___block_invoke;
   block[3] = &unk_1E79C4F68;
   block[4] = self;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
+  v21 = identifierCopy;
+  v22 = dCopy;
+  v23 = authorizationCopy;
   v24 = v14;
   v16 = v14;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
+  v17 = authorizationCopy;
+  v18 = dCopy;
+  v19 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (void)checkActiveFPANCardsForEligibilityWithCompletion:(id)a3
+- (void)checkActiveFPANCardsForEligibilityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__PKAutoFillCardManager_checkActiveFPANCardsForEligibilityWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)cachedFPANCredentialsWithCompletion:(id)a3
+- (void)cachedFPANCredentialsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__PKAutoFillCardManager_cachedFPANCredentialsWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)fpanCredentialForPrimaryAccountIdentifier:(id)a3 passUniqueID:(id)a4 credential:(id *)a5 error:(id *)a6
+- (void)fpanCredentialForPrimaryAccountIdentifier:(id)identifier passUniqueID:(id)d credential:(id *)credential error:(id *)error
 {
-  if (a3)
+  if (identifier)
   {
-    if (a4)
+    if (d)
     {
       [PKPaymentService fpanCredentialForPrimaryAccountIdentifier:"fpanCredentialForPrimaryAccountIdentifier:passUniqueID:credential:error:" passUniqueID:? credential:? error:?];
     }
   }
 }
 
-- (void)fpanDescriptorAndCredentialForFPAN:(id)a3 descriptor:(id *)a4 credential:(id *)a5 error:(id *)a6
+- (void)fpanDescriptorAndCredentialForFPAN:(id)n descriptor:(id *)descriptor credential:(id *)credential error:(id *)error
 {
-  if (a3)
+  if (n)
   {
-    [(PKPaymentService *)self->_paymentService fpanDescriptorAndCredentialForFPAN:a3 descriptor:a4 credential:a5 error:a6];
+    [(PKPaymentService *)self->_paymentService fpanDescriptorAndCredentialForFPAN:n descriptor:descriptor credential:credential error:error];
   }
 }
 

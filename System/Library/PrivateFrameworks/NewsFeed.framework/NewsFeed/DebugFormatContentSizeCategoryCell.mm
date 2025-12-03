@@ -1,16 +1,16 @@
 @interface DebugFormatContentSizeCategoryCell
-- (_TtC8NewsFeed34DebugFormatContentSizeCategoryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)onValueChangeWithSlider:(id)a3;
+- (_TtC8NewsFeed34DebugFormatContentSizeCategoryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)onValueChangeWithSlider:(id)slider;
 - (void)prepareForReuse;
 @end
 
 @implementation DebugFormatContentSizeCategoryCell
 
-- (_TtC8NewsFeed34DebugFormatContentSizeCategoryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8NewsFeed34DebugFormatContentSizeCategoryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1D726207C();
+    identifier = sub_1D726207C();
     v6 = v5;
   }
 
@@ -19,7 +19,7 @@
     v6 = 0;
   }
 
-  return sub_1D6E96D3C(a3, a4, v6);
+  return sub_1D6E96D3C(style, identifier, v6);
 }
 
 - (void)prepareForReuse
@@ -35,11 +35,11 @@
   sub_1D613694C(v4);
 }
 
-- (void)onValueChangeWithSlider:(id)a3
+- (void)onValueChangeWithSlider:(id)slider
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D6E97520(v4);
+  sliderCopy = slider;
+  selfCopy = self;
+  sub_1D6E97520(sliderCopy);
 }
 
 @end

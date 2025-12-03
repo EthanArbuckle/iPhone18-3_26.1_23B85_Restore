@@ -1,8 +1,8 @@
 @interface UIScreenMode
-+ (id)_screenModeForDisplayMode:(id)a3 mainScreen:(BOOL)a4 actualDisplayScale:(double)a5;
-- (CGSize)_sizeWithLevel:(unint64_t)a3;
++ (id)_screenModeForDisplayMode:(id)mode mainScreen:(BOOL)screen actualDisplayScale:(double)scale;
+- (CGSize)_sizeWithLevel:(unint64_t)level;
 - (CGSize)size;
-- (UIScreenMode)initWithDisplayMode:(id)a3 mainScreen:(BOOL)a4 actualDisplayScale:(double)a5;
+- (UIScreenMode)initWithDisplayMode:(id)mode mainScreen:(BOOL)screen actualDisplayScale:(double)scale;
 - (id)description;
 @end
 
@@ -16,10 +16,10 @@
   return result;
 }
 
-+ (id)_screenModeForDisplayMode:(id)a3 mainScreen:(BOOL)a4 actualDisplayScale:(double)a5
++ (id)_screenModeForDisplayMode:(id)mode mainScreen:(BOOL)screen actualDisplayScale:(double)scale
 {
-  v6 = a4;
-  v7 = a3;
+  screenCopy = screen;
+  modeCopy = mode;
   Mutable = sScreenModes;
   if (!sScreenModes)
   {
@@ -27,12 +27,12 @@
     sScreenModes = Mutable;
   }
 
-  v9 = CFDictionaryGetValue(Mutable, v7);
+  v9 = CFDictionaryGetValue(Mutable, modeCopy);
   if (!v9)
   {
-    v9 = [[UIScreenMode alloc] initWithDisplayMode:v7 mainScreen:v6 actualDisplayScale:a5];
+    v9 = [[UIScreenMode alloc] initWithDisplayMode:modeCopy mainScreen:screenCopy actualDisplayScale:scale];
     v10 = v9;
-    CFDictionarySetValue(sScreenModes, v7, v9);
+    CFDictionarySetValue(sScreenModes, modeCopy, v9);
   }
 
   v11 = v9;
@@ -40,24 +40,24 @@
   return v9;
 }
 
-- (UIScreenMode)initWithDisplayMode:(id)a3 mainScreen:(BOOL)a4 actualDisplayScale:(double)a5
+- (UIScreenMode)initWithDisplayMode:(id)mode mainScreen:(BOOL)screen actualDisplayScale:(double)scale
 {
-  v9 = a3;
+  modeCopy = mode;
   v13.receiver = self;
   v13.super_class = UIScreenMode;
   v10 = [(UIScreenMode *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_mode, a3);
-    v11->_isMainScreen = a4;
-    v11->_scale = a5;
+    objc_storeStrong(&v10->_mode, mode);
+    v11->_isMainScreen = screen;
+    v11->_scale = scale;
   }
 
   return v11;
 }
 
-- (CGSize)_sizeWithLevel:(unint64_t)a3
+- (CGSize)_sizeWithLevel:(unint64_t)level
 {
   [(FBSDisplayMode *)self->_mode pixelSize];
   v6 = v5;
@@ -65,7 +65,7 @@
   v9 = 1.0;
   if (self->_isMainScreen)
   {
-    v9 = _UIScreenForcedMainScreenScale(a3) / self->_scale;
+    v9 = _UIScreenForcedMainScreenScale(level) / self->_scale;
   }
 
   v10 = v6 * v9;
@@ -77,15 +77,15 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_autoreleasePoolPush();
-  [v3 appendFormat:@"<%@: %p", objc_opt_class(), self];
+  [string appendFormat:@"<%@: %p", objc_opt_class(), self];
   [(UIScreenMode *)self _sizeWithLevel:0];
-  [v3 appendFormat:@"; size = %f x %f", v5, v6];
-  [v3 appendFormat:@">"];
+  [string appendFormat:@"; size = %f x %f", v5, v6];
+  [string appendFormat:@">"];
   objc_autoreleasePoolPop(v4);
 
-  return v3;
+  return string;
 }
 
 @end

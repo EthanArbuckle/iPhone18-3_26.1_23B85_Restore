@@ -1,8 +1,8 @@
 @interface Configuration
 + (CKContainerID)containerID;
-+ (id)zoneNameForZoneUUID:(id)a3;
-+ (id)zoneUUIDForHomeIdentifier:(id)a3;
-+ (void)resetWithCompletion:(id)a3;
++ (id)zoneNameForZoneUUID:(id)d;
++ (id)zoneUUIDForHomeIdentifier:(id)identifier;
++ (void)resetWithCompletion:(id)completion;
 - (_TtC13HomeKitEvents13Configuration)init;
 @end
 
@@ -26,7 +26,7 @@
   return v5;
 }
 
-+ (id)zoneUUIDForHomeIdentifier:(id)a3
++ (id)zoneUUIDForHomeIdentifier:(id)identifier
 {
   v3 = sub_25424D948();
   v4 = *(v3 - 8);
@@ -45,7 +45,7 @@
   return v12;
 }
 
-+ (id)zoneNameForZoneUUID:(id)a3
++ (id)zoneNameForZoneUUID:(id)d
 {
   v3 = sub_25424D948();
   v4 = *(v3 - 8);
@@ -67,9 +67,9 @@
   return v10;
 }
 
-+ (void)resetWithCompletion:(id)a3
++ (void)resetWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   swift_getObjCClassMetadata();

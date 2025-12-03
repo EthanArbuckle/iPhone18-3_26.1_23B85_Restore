@@ -12,24 +12,24 @@
 - (BOOL)_isSpeakerActive
 {
   v2 = +[CSPlaybackVolumeStatusMonitor sharedInstance];
-  v3 = [v2 playbackVolumeStatus];
+  playbackVolumeStatus = [v2 playbackVolumeStatus];
 
   v4 = +[CSBuiltinSpeakerStateMonitor sharedInstance];
-  v6 = [v4 currentBuiltinSpeakerState] == 1 && v3 == 0;
+  v6 = [v4 currentBuiltinSpeakerState] == 1 && playbackVolumeStatus == 0;
 
   v7 = +[CSBluetoothSpeakerStateMonitor sharedInstance];
-  v8 = [v7 isActive];
+  isActive = [v7 isActive];
 
   if ((+[CSUtils isExclaveHardware]& 1) == 0)
   {
     if (+[CSUtils isIOSDeviceSupportingBargeIn])
     {
-      v6 = v8;
+      v6 = isActive;
     }
 
     else
     {
-      v6 |= v8;
+      v6 |= isActive;
     }
   }
 
@@ -65,27 +65,27 @@
       if ([v5 isSystemShellStarted])
       {
         v6 = +[CSFirstUnlockMonitor sharedInstance];
-        v7 = [v6 isFirstUnlocked];
+        isFirstUnlocked = [v6 isFirstUnlocked];
       }
 
       else
       {
-        v7 = 0;
+        isFirstUnlocked = 0;
       }
     }
 
     else
     {
-      v7 = 0;
+      isFirstUnlocked = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    isFirstUnlocked = 0;
   }
 
-  return v7;
+  return isFirstUnlocked;
 }
 
 - (void)_addSelfTriggerDetectorEnabledConditions

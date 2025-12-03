@@ -1,24 +1,24 @@
 @interface UITabBarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilitySupportsContentSizeCategory:(id)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilitySupportsContentSizeCategory:(id)category;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_dismissCustomizeSheet:(BOOL)a3;
-- (void)beginCustomizingItems:(id)a3;
-- (void)setItems:(id)a3 animated:(BOOL)a4;
+- (void)_dismissCustomizeSheet:(BOOL)sheet;
+- (void)beginCustomizingItems:(id)items;
+- (void)setItems:(id)items animated:(BOOL)animated;
 @end
 
 @implementation UITabBarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v5 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UITabBar";
   [location[0] validateClass:? hasInstanceVariable:? withType:?];
   [location[0] validateClass:@"UITabBar" hasInstanceVariable:@"_visualProvider" withType:"_UITabBarVisualProvider"];
@@ -30,14 +30,14 @@
 - (void)_accessibilityLoadAccessibilityInformation
 {
   v27 = *MEMORY[0x29EDCA608];
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
   v23.receiver = self;
   v23.super_class = UITabBarAccessibility;
   [(UITabBarAccessibility *)&v23 _accessibilityLoadAccessibilityInformation];
   v21 = 0;
   objc_opt_class();
-  v9 = [(UITabBarAccessibility *)v25 safeValueForKey:@"_items"];
+  v9 = [(UITabBarAccessibility *)selfCopy safeValueForKey:@"_items"];
   v20 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v9);
   v19 = MEMORY[0x29EDC9748](v20);
@@ -108,14 +108,14 @@
   objc_storeStrong(&v22, 0);
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  v23 = a3;
-  v22 = self;
+  testCopy = test;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v20 = [(UITabBarAccessibility *)v22 _accessibilityBoolValueForKey:@"AXInHitTestOverride"];
+  objc_storeStrong(location, event);
+  v20 = [(UITabBarAccessibility *)selfCopy _accessibilityBoolValueForKey:@"AXInHitTestOverride"];
   v12 = 0;
   v6 = 0;
   if ((v20 & 1) == 0)
@@ -125,7 +125,7 @@
     v16 = 0;
     v17 = __57__UITabBarAccessibility__accessibilityHitTest_withEvent___block_invoke;
     v18 = &unk_29F30CEB0;
-    v19 = MEMORY[0x29EDC9748](v22);
+    v19 = MEMORY[0x29EDC9748](selfCopy);
     v13 = &v19;
     v12 = 1;
     v6 = (__57__UITabBarAccessibility__accessibilityHitTest_withEvent___block_invoke)();
@@ -133,9 +133,9 @@
 
   if (v6)
   {
-    [(UITabBarAccessibility *)v22 _accessibilitySetBoolValue:1 forKey:?];
-    v11 = [(UITabBarAccessibility *)v22 accessibilityHitTest:location[0] withEvent:v23.x, v23.y];
-    [(UITabBarAccessibility *)v22 _accessibilitySetBoolValue:0 forKey:@"AXInHitTestOverride"];
+    [(UITabBarAccessibility *)selfCopy _accessibilitySetBoolValue:1 forKey:?];
+    v11 = [(UITabBarAccessibility *)selfCopy accessibilityHitTest:location[0] withEvent:testCopy.x, testCopy.y];
+    [(UITabBarAccessibility *)selfCopy _accessibilitySetBoolValue:0 forKey:@"AXInHitTestOverride"];
     v24 = MEMORY[0x29EDC9748](v11);
     v10 = 1;
     objc_storeStrong(&v11, 0);
@@ -153,14 +153,14 @@
 
   if (!v10)
   {
-    v9 = [(UITabBarAccessibility *)v22 safeValueForKey:@"_customizeView"];
+    v9 = [(UITabBarAccessibility *)selfCopy safeValueForKey:@"_customizeView"];
     if (v9)
     {
-      if (([(UITabBarAccessibility *)v22 pointInside:location[0] withEvent:v23.x, v23.y]& 1) != 0)
+      if (([(UITabBarAccessibility *)selfCopy pointInside:location[0] withEvent:testCopy.x, testCopy.y]& 1) != 0)
       {
-        v8.receiver = v22;
+        v8.receiver = selfCopy;
         v8.super_class = UITabBarAccessibility;
-        v24 = [(UITabBarAccessibility *)&v8 _accessibilityHitTest:location[0] withEvent:v23.x, v23.y];
+        v24 = [(UITabBarAccessibility *)&v8 _accessibilityHitTest:location[0] withEvent:testCopy.x, testCopy.y];
       }
 
       else
@@ -173,9 +173,9 @@
 
     else
     {
-      v7.receiver = v22;
+      v7.receiver = selfCopy;
       v7.super_class = UITabBarAccessibility;
-      v24 = [(UITabBarAccessibility *)&v7 _accessibilityHitTest:location[0] withEvent:v23.x, v23.y];
+      v24 = [(UITabBarAccessibility *)&v7 _accessibilityHitTest:location[0] withEvent:testCopy.x, testCopy.y];
       v10 = 1;
     }
 
@@ -276,40 +276,40 @@ void __57__UITabBarAccessibility__accessibilityHitTest_withEvent___block_invoke_
   }
 }
 
-- (void)setItems:(id)a3 animated:(BOOL)a4
+- (void)setItems:(id)items animated:(BOOL)animated
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = a4;
-  v6.receiver = v9;
+  objc_storeStrong(location, items);
+  animatedCopy = animated;
+  v6.receiver = selfCopy;
   v6.super_class = UITabBarAccessibility;
-  [(UITabBarAccessibility *)&v6 setItems:location[0] animated:a4];
-  v5 = [(UITabBarAccessibility *)v9 safeValueForKey:@"_visualProvider"];
+  [(UITabBarAccessibility *)&v6 setItems:location[0] animated:animated];
+  v5 = [(UITabBarAccessibility *)selfCopy safeValueForKey:@"_visualProvider"];
   [v5 _accessibilityLoadAccessibilityInformation];
   MEMORY[0x29EDC9740](v5);
   objc_storeStrong(location, 0);
 }
 
-- (void)_dismissCustomizeSheet:(BOOL)a3
+- (void)_dismissCustomizeSheet:(BOOL)sheet
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  sheetCopy = sheet;
   v3.receiver = self;
   v3.super_class = UITabBarAccessibility;
-  [(UITabBarAccessibility *)&v3 _dismissCustomizeSheet:a3];
+  [(UITabBarAccessibility *)&v3 _dismissCustomizeSheet:sheet];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
 }
 
-- (void)beginCustomizingItems:(id)a3
+- (void)beginCustomizingItems:(id)items
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, items);
+  v3.receiver = selfCopy;
   v3.super_class = UITabBarAccessibility;
   [(UITabBarAccessibility *)&v3 beginCustomizingItems:location[0]];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
@@ -337,12 +337,12 @@ void __57__UITabBarAccessibility__accessibilityHitTest_withEvent___block_invoke_
   return v2;
 }
 
-- (BOOL)_accessibilitySupportsContentSizeCategory:(id)a3
+- (BOOL)_accessibilitySupportsContentSizeCategory:(id)category
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, category);
   v4 = [location[0] isEqual:*MEMORY[0x29EDC80A0]];
   objc_storeStrong(location, 0);
   return v4;

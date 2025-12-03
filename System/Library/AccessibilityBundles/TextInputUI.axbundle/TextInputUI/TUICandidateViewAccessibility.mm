@@ -1,17 +1,17 @@
 @interface TUICandidateViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityScannerGroupElements;
 - (void)finalizeLayoutChange;
 @end
 
 @implementation TUICandidateViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TUICandidateCell"];
-  [v3 validateClass:@"TUICandidateArrowButton"];
-  [v3 validateClass:@"TUICandidateView" hasInstanceMethod:@"finalizeLayoutChange" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TUICandidateCell"];
+  [validationsCopy validateClass:@"TUICandidateArrowButton"];
+  [validationsCopy validateClass:@"TUICandidateView" hasInstanceMethod:@"finalizeLayoutChange" withFullSignature:{"v", 0}];
 }
 
 - (void)finalizeLayoutChange
@@ -25,7 +25,7 @@
 - (id)_accessibilityScannerGroupElements
 {
   v46 = *MEMORY[0x29EDCA608];
-  v2 = [MEMORY[0x29EDC7328] defaultSwitchControlOptions];
+  defaultSwitchControlOptions = [MEMORY[0x29EDC7328] defaultSwitchControlOptions];
   v3 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   v40 = 0u;
   v41 = 0u;
@@ -35,9 +35,9 @@
   objc_opt_class();
   v4 = __UIAccessibilityCastAsClass();
   v5 = v4;
-  v6 = [v4 subviews];
+  subviews = [v4 subviews];
 
-  v7 = [v6 countByEnumeratingWithState:&v40 objects:v45 count:16];
+  v7 = [subviews countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v7)
   {
     v8 = v7;
@@ -48,14 +48,14 @@
       {
         if (*v41 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
-        v11 = [*(*(&v40 + 1) + 8 * i) _accessibilityLeafDescendantsWithOptions:v2];
+        v11 = [*(*(&v40 + 1) + 8 * i) _accessibilityLeafDescendantsWithOptions:defaultSwitchControlOptions];
         [v3 axSafelyAddObjectsFromArray:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v40 objects:v45 count:16];
+      v8 = [subviews countByEnumeratingWithState:&v40 objects:v45 count:16];
     }
 
     while (v8);
@@ -63,7 +63,7 @@
 
   if ([v3 count] == 2)
   {
-    v12 = [v3 firstObject];
+    firstObject = [v3 firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -118,8 +118,8 @@ LABEL_19:
       {
         v39 = 0;
         objc_opt_class();
-        v21 = [v14 firstObject];
-        v22 = [v21 objectForKeyedSubscript:@"GroupElements"];
+        firstObject2 = [v14 firstObject];
+        v22 = [firstObject2 objectForKeyedSubscript:@"GroupElements"];
         v23 = __UIAccessibilityCastAsClass();
 
         if (v39 != 1)
@@ -129,7 +129,7 @@ LABEL_19:
             goto LABEL_28;
           }
 
-          v24 = [v23 firstObject];
+          firstObject3 = [v23 firstObject];
           objc_opt_class();
           v25 = objc_opt_isKindOfClass();
 
@@ -140,15 +140,15 @@ LABEL_19:
 
           v39 = 0;
           objc_opt_class();
-          v26 = [v23 firstObject];
-          v27 = [v26 objectForKeyedSubscript:@"GroupElements"];
+          firstObject4 = [v23 firstObject];
+          v27 = [firstObject4 objectForKeyedSubscript:@"GroupElements"];
           v28 = __UIAccessibilityCastAsClass();
 
           if (v39 != 1)
           {
             v29 = [v28 mutableCopy];
 
-            v30 = [v29 firstObject];
+            firstObject5 = [v29 firstObject];
             MEMORY[0x29ED3C2C0](@"TUICandidateCell");
             v31 = objc_opt_isKindOfClass();
 
@@ -156,8 +156,8 @@ LABEL_19:
             {
               [v14 removeObject:v20];
               [v29 addObject:v20];
-              v32 = [v23 firstObject];
-              [v32 setObject:v29 forKeyedSubscript:@"GroupElements"];
+              firstObject6 = [v23 firstObject];
+              [firstObject6 setObject:v29 forKeyedSubscript:@"GroupElements"];
             }
 
 LABEL_28:

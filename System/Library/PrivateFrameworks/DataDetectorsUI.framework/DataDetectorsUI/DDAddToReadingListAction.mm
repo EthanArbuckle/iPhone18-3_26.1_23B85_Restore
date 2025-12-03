@@ -1,6 +1,6 @@
 @interface DDAddToReadingListAction
 + (BOOL)isAvailable;
-- (void)performFromView:(id)a3;
+- (void)performFromView:(id)view;
 @end
 
 @implementation DDAddToReadingListAction
@@ -10,12 +10,12 @@
   v2 = objc_alloc(MEMORY[0x277CC1E98]);
   v3 = [MEMORY[0x277CBEBC0] URLWithString:@"http://"];
   v4 = [v2 initWithURL:v3 error:0];
-  v5 = [v4 bundleRecord];
-  v6 = [v5 bundleIdentifier];
+  bundleRecord = [v4 bundleRecord];
+  bundleIdentifier = [bundleRecord bundleIdentifier];
 
-  if (v6)
+  if (bundleIdentifier)
   {
-    v7 = [v6 isEqualToString:@"com.apple.mobilesafari"];
+    v7 = [bundleIdentifier isEqualToString:@"com.apple.mobilesafari"];
 
     return v7;
   }
@@ -27,10 +27,10 @@
   }
 }
 
-- (void)performFromView:(id)a3
+- (void)performFromView:(id)view
 {
-  v4 = [MEMORY[0x277CDB710] defaultReadingList];
-  [v4 addReadingListItemWithURL:self->super._url title:0 previewText:0 error:0];
+  defaultReadingList = [MEMORY[0x277CDB710] defaultReadingList];
+  [defaultReadingList addReadingListItemWithURL:self->super._url title:0 previewText:0 error:0];
 }
 
 @end

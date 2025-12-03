@@ -1,16 +1,16 @@
 @interface SUScriptComposeReviewViewController
-+ (id)webScriptNameForKey:(const char *)a3;
-- (SUScriptComposeReviewViewController)initWithScriptReview:(id)a3 clientInterface:(id)a4;
++ (id)webScriptNameForKey:(const char *)key;
+- (SUScriptComposeReviewViewController)initWithScriptReview:(id)review clientInterface:(id)interface;
 - (id)newNativeViewController;
 - (id)scriptAttributeKeys;
-- (void)setReview:(id)a3;
+- (void)setReview:(id)review;
 @end
 
 @implementation SUScriptComposeReviewViewController
 
-- (SUScriptComposeReviewViewController)initWithScriptReview:(id)a3 clientInterface:(id)a4
+- (SUScriptComposeReviewViewController)initWithScriptReview:(id)review clientInterface:(id)interface
 {
-  [a3 infoURL];
+  [review infoURL];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -48,18 +48,18 @@ void __76__SUScriptComposeReviewViewController_initWithScriptReview_clientInterf
 
 - (id)newNativeViewController
 {
-  v2 = [(SUScriptObject *)self clientInterface];
-  v3 = [(SUViewControllerFactory *)[(SUClientInterface *)v2 viewControllerFactory] newComposeReviewViewControllerWithCompositionURL:0];
+  clientInterface = [(SUScriptObject *)self clientInterface];
+  v3 = [(SUViewControllerFactory *)[(SUClientInterface *)clientInterface viewControllerFactory] newComposeReviewViewControllerWithCompositionURL:0];
   if (!v3)
   {
     v3 = [[SUComposeReviewViewController alloc] initWithCompositionURL:0];
   }
 
-  [(SUViewController *)v3 setClientInterface:v2];
+  [(SUViewController *)v3 setClientInterface:clientInterface];
   return v3;
 }
 
-- (void)setReview:(id)a3
+- (void)setReview:(id)review
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"review"];
@@ -67,14 +67,14 @@ void __76__SUScriptComposeReviewViewController_initWithScriptReview_clientInterf
   [v3 throwException:v4];
 }
 
-+ (id)webScriptNameForKey:(const char *)a3
++ (id)webScriptNameForKey:(const char *)key
 {
-  result = SUWebScriptNameForKey(a3, &__KeyMapping, 1);
+  result = SUWebScriptNameForKey(key, &__KeyMapping, 1);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptComposeReviewViewController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKey_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKey_, key);
   }
 
   return result;
@@ -84,9 +84,9 @@ void __76__SUScriptComposeReviewViewController_initWithScriptReview_clientInterf
 {
   v4.receiver = self;
   v4.super_class = SUScriptComposeReviewViewController;
-  v2 = [(SUScriptViewController *)&v4 scriptAttributeKeys];
-  SUWebScriptAddPropertyKeysToArray(v2, &__KeyMapping, 1);
-  return v2;
+  scriptAttributeKeys = [(SUScriptViewController *)&v4 scriptAttributeKeys];
+  SUWebScriptAddPropertyKeysToArray(scriptAttributeKeys, &__KeyMapping, 1);
+  return scriptAttributeKeys;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface CMStepCounterProxy
 - (CMStepCounterProxy)init;
-- (void)_handleQueryResponse:(shared_ptr<CLConnectionMessage>)a3 onQueue:(id)a4 withHandler:(id)a5;
-- (void)_queryStepCountStartingFromInternal:(id)a3 to:(id)a4 toQueue:(id)a5 withHandler:(id)a6;
-- (void)_startStepCountingUpdatesToQueue:(id)a3 updateOn:(int64_t)a4 withHandler:(id)a5;
+- (void)_handleQueryResponse:(shared_ptr<CLConnectionMessage>)response onQueue:(id)queue withHandler:(id)handler;
+- (void)_queryStepCountStartingFromInternal:(id)internal to:(id)to toQueue:(id)queue withHandler:(id)handler;
+- (void)_startStepCountingUpdatesToQueue:(id)queue updateOn:(int64_t)on withHandler:(id)handler;
 - (void)_teardown;
 - (void)dealloc;
 @end
@@ -42,22 +42,22 @@
   }
 }
 
-- (void)_queryStepCountStartingFromInternal:(id)a3 to:(id)a4 toQueue:(id)a5 withHandler:(id)a6
+- (void)_queryStepCountStartingFromInternal:(id)internal to:(id)to toQueue:(id)queue withHandler:(id)handler
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v16[0] = @"CMPedometerStartTime";
   v7 = MEMORY[0x1E696AD98];
-  objc_msgSend_timeIntervalSinceReferenceDate(a3, a2, a3);
+  objc_msgSend_timeIntervalSinceReferenceDate(internal, a2, internal);
   v17[0] = objc_msgSend_numberWithDouble_(v7, v8, v9);
   v16[1] = @"CMPedometerStopTime";
   v10 = MEMORY[0x1E696AD98];
-  objc_msgSend_timeIntervalSinceReferenceDate(a4, v11, v12);
+  objc_msgSend_timeIntervalSinceReferenceDate(to, v11, v12);
   v17[1] = objc_msgSend_numberWithDouble_(v10, v13, v14);
   objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v15, v17, v16, 2);
   sub_19B6C0F30();
 }
 
-- (void)_startStepCountingUpdatesToQueue:(id)a3 updateOn:(int64_t)a4 withHandler:(id)a5
+- (void)_startStepCountingUpdatesToQueue:(id)queue updateOn:(int64_t)on withHandler:(id)handler
 {
   v10[1] = *MEMORY[0x1E69E9840];
   self->fStepCountFromStart = -1;
@@ -76,10 +76,10 @@
   sub_19B6CA5DC();
 }
 
-- (void)_handleQueryResponse:(shared_ptr<CLConnectionMessage>)a3 onQueue:(id)a4 withHandler:(id)a5
+- (void)_handleQueryResponse:(shared_ptr<CLConnectionMessage>)response onQueue:(id)queue withHandler:(id)handler
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = response.var1;
+  var0 = response.var0;
   v42 = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
@@ -100,7 +100,7 @@
       v37[2] = sub_19B75E758;
       v37[3] = &unk_1E7532B90;
       v37[4] = v17;
-      v37[5] = a4;
+      v37[5] = queue;
       objc_msgSend_addOperationWithBlock_(var1, v26, v37);
     }
 
@@ -110,7 +110,7 @@
       v36[1] = 3221225472;
       v36[2] = sub_19B75E7D0;
       v36[3] = &unk_1E7532AD8;
-      v36[4] = a4;
+      v36[4] = queue;
       v36[5] = v25;
       objc_msgSend_addOperationWithBlock_(var1, v26, v36);
     }
@@ -187,7 +187,7 @@
     v35[1] = 3221225472;
     v35[2] = sub_19B75E7E8;
     v35[3] = &unk_1E7532B40;
-    v35[4] = a4;
+    v35[4] = queue;
     objc_msgSend_addOperationWithBlock_(var1, v29, v35);
   }
 

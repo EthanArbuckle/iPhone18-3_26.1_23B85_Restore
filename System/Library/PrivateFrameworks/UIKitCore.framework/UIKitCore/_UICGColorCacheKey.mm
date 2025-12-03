@@ -1,7 +1,7 @@
 @interface _UICGColorCacheKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCacheKey:(id)a3;
-- (_UICGColorCacheKey)initWithColors:(CGColor *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCacheKey:(id)key;
+- (_UICGColorCacheKey)initWithColors:(CGColor *)colors;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -47,21 +47,21 @@
   [(_UICGColorCacheKey *)&v4 dealloc];
 }
 
-- (_UICGColorCacheKey)initWithColors:(CGColor *)a3
+- (_UICGColorCacheKey)initWithColors:(CGColor *)colors
 {
   v9.receiver = self;
   v9.super_class = _UICGColorCacheKey;
   v4 = [(_UICGColorCacheKey *)&v9 init];
   v5 = v4;
-  if (a3 && v4)
+  if (colors && v4)
   {
     v4->_colors = CFArrayCreateMutable(0, 0, MEMORY[0x1E695E9C0]);
     v8 = &v10;
     do
     {
-      CFArrayAppendValue(v5->_colors, a3);
+      CFArrayAppendValue(v5->_colors, colors);
       v6 = v8++;
-      a3 = *v6;
+      colors = *v6;
     }
 
     while (*v6);
@@ -70,10 +70,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -81,20 +81,20 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_UICGColorCacheKey *)self isEqualToCacheKey:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_UICGColorCacheKey *)self isEqualToCacheKey:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToCacheKey:(id)a3
+- (BOOL)isEqualToCacheKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   colors = self->_colors;
   if (colors)
   {
     Count = CFArrayGetCount(colors);
-    v7 = v4[1];
+    v7 = keyCopy[1];
     if (v7 && Count == CFArrayGetCount(v7))
     {
       v8 = Count - 1;
@@ -109,7 +109,7 @@
         do
         {
           ValueAtIndex = CFArrayGetValueAtIndex(self->_colors, v9);
-          v11 = CFArrayGetValueAtIndex(v4[1], v9);
+          v11 = CFArrayGetValueAtIndex(keyCopy[1], v9);
           v12 = CGColorEqualToColor(ValueAtIndex, v11);
         }
 
@@ -126,7 +126,7 @@
 
   else
   {
-    v14 = v4[1] == 0;
+    v14 = keyCopy[1] == 0;
   }
 
   return v14;

@@ -1,11 +1,11 @@
 @interface CSLPRFWorkoutCompanionSettingsListController
 - (CSLPRFWorkoutCompanionSettingsListController)init;
-- (id)_makeActionItemSpecifier:(id)a3 actionType:(unint64_t)a4;
-- (id)_makeListItemSpecifier:(id)a3 actionType:(unint64_t)a4;
+- (id)_makeActionItemSpecifier:(id)specifier actionType:(unint64_t)type;
+- (id)_makeListItemSpecifier:(id)specifier actionType:(unint64_t)type;
 - (id)_settingsModel;
 - (id)specifiers;
 - (void)reloadSpecifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -31,10 +31,10 @@
   v8.receiver = self;
   v8.super_class = CSLPRFWorkoutCompanionSettingsListController;
   [(CSLPRFWorkoutCompanionSettingsListController *)&v8 viewDidLoad];
-  v3 = [(CSLPRFWorkoutCompanionSettingsListController *)self table];
+  table = [(CSLPRFWorkoutCompanionSettingsListController *)self table];
   v4 = objc_opt_class();
   v5 = +[CSLPRFStingTitleSubtitleCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"FIRST_PRESS" value:&stru_C380 table:@"LocalizableSettings-N199"];
@@ -48,10 +48,10 @@
   if (!v4)
   {
     v5 = +[NSMutableArray array];
-    v53 = [(CSLPRFWorkoutCompanionSettingsListController *)self _settingsModel];
-    v6 = [(CSLPRFStingConfiguration *)self->_stingConfiguration bundleID];
-    v56 = [(CSLPRFStingConfiguration *)self->_stingConfiguration workoutIdentifier];
-    v55 = [(CSLPRFStingConfiguration *)self->_stingConfiguration actionType];
+    _settingsModel = [(CSLPRFWorkoutCompanionSettingsListController *)self _settingsModel];
+    bundleID = [(CSLPRFStingConfiguration *)self->_stingConfiguration bundleID];
+    workoutIdentifier = [(CSLPRFStingConfiguration *)self->_stingConfiguration workoutIdentifier];
+    actionType = [(CSLPRFStingConfiguration *)self->_stingConfiguration actionType];
     v7 = [PSSpecifier groupSpecifierWithID:@"StingWorkoutAppActionTypeGroupID"];
     v48 = PSIsRadioGroupKey;
     [v7 setProperty:&__kCFBooleanTrue forKey:?];
@@ -59,32 +59,32 @@
     [v7 setProperty:v8 forKey:PSValueKey];
 
     [v5 addObject:v7];
-    v57 = self;
+    selfCopy = self;
     v51 = v7;
     objc_storeStrong(&self->_selectedActionGroupSpecifier, v7);
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v54 = [v9 localizedStringForKey:@"OPEN_APP" value:&stru_C380 table:@"LocalizableSettings-N199"];
 
-    if (!v6)
+    if (!bundleID)
     {
       goto LABEL_6;
     }
 
     v10 = [CSLPRFApplicationLibrary sharedLibraryForLocation:0];
-    v11 = [v10 applicationWithBundleIdentifier:v6];
-    v12 = [v11 localizedName];
+    v11 = [v10 applicationWithBundleIdentifier:bundleID];
+    localizedName = [v11 localizedName];
 
-    if (v12)
+    if (localizedName)
     {
-      v50 = v12;
-      if ([v12 length])
+      v50 = localizedName;
+      if ([localizedName length])
       {
         v13 = [NSBundle bundleForClass:objc_opt_class()];
         [v13 localizedStringForKey:@"OPEN_APP_NAME" value:&stru_C380 table:@"LocalizableSettings-N199"];
-        v15 = v14 = v6;
-        v16 = [NSString stringWithFormat:v15, v12];
+        v15 = v14 = bundleID;
+        v16 = [NSString stringWithFormat:v15, localizedName];
 
-        v6 = v14;
+        bundleID = v14;
         v54 = v16;
       }
     }
@@ -95,15 +95,15 @@ LABEL_6:
       v50 = 0;
     }
 
-    v17 = [(CSLPRFWorkoutCompanionSettingsListController *)v57 _makeActionItemSpecifier:v54 actionType:9];
+    v17 = [(CSLPRFWorkoutCompanionSettingsListController *)selfCopy _makeActionItemSpecifier:v54 actionType:9];
     [v5 addObject:v17];
-    v52 = [v53 startWorkoutsListForBundleID:v6];
+    v52 = [_settingsModel startWorkoutsListForBundleID:bundleID];
     if ([v52 count])
     {
       v18 = [NSBundle bundleForClass:objc_opt_class()];
       v19 = [v18 localizedStringForKey:@"START_WORKOUT" value:&stru_C380 table:@"LocalizableSettings-N199"];
 
-      v20 = [(CSLPRFWorkoutCompanionSettingsListController *)v57 _makeActionItemSpecifier:v19 actionType:6];
+      v20 = [(CSLPRFWorkoutCompanionSettingsListController *)selfCopy _makeActionItemSpecifier:v19 actionType:6];
       [v5 addObject:v20];
     }
 
@@ -112,15 +112,15 @@ LABEL_6:
       v20 = 0;
     }
 
-    if ([(CSLPRFStingConfiguration *)v57->_stingConfiguration actionType]== &dword_4 + 2)
+    if ([(CSLPRFStingConfiguration *)selfCopy->_stingConfiguration actionType]== &dword_4 + 2)
     {
       v21 = v52;
       if (v20)
       {
-        [(PSSpecifier *)v57->_selectedActionGroupSpecifier setProperty:v20 forKey:PSRadioGroupCheckedSpecifierKey];
+        [(PSSpecifier *)selfCopy->_selectedActionGroupSpecifier setProperty:v20 forKey:PSRadioGroupCheckedSpecifierKey];
       }
 
-      v22 = v57;
+      v22 = selfCopy;
       if (![v52 count])
       {
         goto LABEL_34;
@@ -130,7 +130,7 @@ LABEL_6:
       v47 = v17;
       v23 = [NSBundle bundleForClass:objc_opt_class()];
       [v23 localizedStringForKey:@"WORKOUT" value:&stru_C380 table:@"LocalizableSettings-N199"];
-      v25 = v24 = v6;
+      v25 = v24 = bundleID;
       v26 = [PSSpecifier groupSpecifierWithID:@"StingStartWorkoutGroupID" name:v25];
 
       [v26 setProperty:&__kCFBooleanTrue forKey:v48];
@@ -142,7 +142,7 @@ LABEL_6:
         [v26 setProperty:v28 forKey:PSFooterTextGroupKey];
       }
 
-      objc_storeStrong(&v57->_selectedStartWorkoutsGroupSpecifier, v26);
+      objc_storeStrong(&selfCopy->_selectedStartWorkoutsGroupSpecifier, v26);
       v29 = v5;
       v45 = v26;
       [v5 addObject:v26];
@@ -167,20 +167,20 @@ LABEL_6:
             }
 
             v36 = *(*(&v58 + 1) + 8 * i);
-            v37 = [v36 title];
+            title = [v36 title];
 
-            if (v37)
+            if (title)
             {
               v38 = [(CSLPRFWorkoutCompanionSettingsListController *)v22 _makeListItemSpecifier:v36 actionType:6];
-              v39 = [v36 workoutIdentifier];
-              v40 = [v39 isEqualToString:v56];
+              workoutIdentifier2 = [v36 workoutIdentifier];
+              v40 = [workoutIdentifier2 isEqualToString:workoutIdentifier];
 
               v41 = v40 == 0;
-              v22 = v57;
-              v41 = !v41 && v55 == &dword_4 + 2;
+              v22 = selfCopy;
+              v41 = !v41 && actionType == &dword_4 + 2;
               if (v41)
               {
-                [(PSSpecifier *)v57->_selectedStartWorkoutsGroupSpecifier setProperty:v38 forKey:v34];
+                [(PSSpecifier *)selfCopy->_selectedStartWorkoutsGroupSpecifier setProperty:v38 forKey:v34];
               }
 
               [v29 addObject:v38];
@@ -193,7 +193,7 @@ LABEL_6:
         while (v32);
       }
 
-      v6 = v49;
+      bundleID = v49;
       v5 = v29;
       v20 = v46;
       v17 = v47;
@@ -201,8 +201,8 @@ LABEL_6:
 
     else
     {
-      [(PSSpecifier *)v57->_selectedActionGroupSpecifier setProperty:v17 forKey:PSRadioGroupCheckedSpecifierKey];
-      v22 = v57;
+      [(PSSpecifier *)selfCopy->_selectedActionGroupSpecifier setProperty:v17 forKey:PSRadioGroupCheckedSpecifierKey];
+      v22 = selfCopy;
     }
 
     v21 = v52;
@@ -217,29 +217,29 @@ LABEL_34:
   return v4;
 }
 
-- (id)_makeListItemSpecifier:(id)a3 actionType:(unint64_t)a4
+- (id)_makeListItemSpecifier:(id)specifier actionType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [v6 title];
-  v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:0 cell:3 edit:0];
+  specifierCopy = specifier;
+  title = [specifierCopy title];
+  v8 = [PSSpecifier preferenceSpecifierNamed:title target:self set:0 get:0 detail:0 cell:3 edit:0];
 
-  v9 = [v6 subtitle];
+  subtitle = [specifierCopy subtitle];
 
-  if (v9)
+  if (subtitle)
   {
-    v10 = [v6 subtitle];
-    [v8 setProperty:v10 forKey:PSTableCellSubtitleTextKey];
+    subtitle2 = [specifierCopy subtitle];
+    [v8 setProperty:subtitle2 forKey:PSTableCellSubtitleTextKey];
   }
 
-  v11 = [v6 workoutIdentifier];
+  workoutIdentifier = [specifierCopy workoutIdentifier];
 
-  if (v11)
+  if (workoutIdentifier)
   {
-    v12 = [v6 workoutIdentifier];
-    [v8 setProperty:v12 forKey:@"CSLPRFWorkoutIdentifier"];
+    workoutIdentifier2 = [specifierCopy workoutIdentifier];
+    [v8 setProperty:workoutIdentifier2 forKey:@"CSLPRFWorkoutIdentifier"];
   }
 
-  v13 = [NSNumber numberWithUnsignedInteger:a4];
+  v13 = [NSNumber numberWithUnsignedInteger:type];
   [v8 setProperty:v13 forKey:@"CSLPRFActionType"];
 
   [v8 setProperty:&off_CF48 forKey:@"CSLPRFCellTypeKey"];
@@ -248,10 +248,10 @@ LABEL_34:
   return v8;
 }
 
-- (id)_makeActionItemSpecifier:(id)a3 actionType:(unint64_t)a4
+- (id)_makeActionItemSpecifier:(id)specifier actionType:(unint64_t)type
 {
-  v5 = [PSSpecifier preferenceSpecifierNamed:a3 target:self set:0 get:0 detail:0 cell:3 edit:0];
-  v6 = [NSNumber numberWithUnsignedInteger:a4];
+  v5 = [PSSpecifier preferenceSpecifierNamed:specifier target:self set:0 get:0 detail:0 cell:3 edit:0];
+  v6 = [NSNumber numberWithUnsignedInteger:type];
   [v5 setProperty:v6 forKey:@"CSLPRFActionType"];
 
   [v5 setProperty:&off_CF60 forKey:@"CSLPRFCellTypeKey"];
@@ -274,8 +274,8 @@ LABEL_34:
   model = self->_model;
   if (!model)
   {
-    v4 = [(CSLPRFWorkoutCompanionSettingsListController *)self specifier];
-    v5 = [v4 propertyForKey:@"StingSettingsModel"];
+    specifier = [(CSLPRFWorkoutCompanionSettingsListController *)self specifier];
+    v5 = [specifier propertyForKey:@"StingSettingsModel"];
     v6 = self->_model;
     self->_model = v5;
 
@@ -285,44 +285,44 @@ LABEL_34:
   return model;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSLPRFWorkoutCompanionSettingsListController *)self indexForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(CSLPRFWorkoutCompanionSettingsListController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
   v10 = [v9 propertyForKey:@"CSLPRFCellTypeKey"];
   v11 = [v9 propertyForKey:@"CSLPRFActionType"];
-  v12 = [v11 integerValue];
-  v13 = [(CSLPRFStingConfiguration *)self->_stingConfiguration bundleID];
+  integerValue = [v11 integerValue];
+  bundleID = [(CSLPRFStingConfiguration *)self->_stingConfiguration bundleID];
   if ([v10 integerValue] == &dword_0 + 1)
   {
-    if (v12 == &dword_4 + 2)
+    if (integerValue == &dword_4 + 2)
     {
-      v19 = [(CSLPRFWorkoutCompanionSettingsListController *)self _settingsModel];
-      v18 = [v19 startWorkoutsListForBundleID:v13];
-      v14 = [v18 firstObject];
+      _settingsModel = [(CSLPRFWorkoutCompanionSettingsListController *)self _settingsModel];
+      v18 = [_settingsModel startWorkoutsListForBundleID:bundleID];
+      firstObject = [v18 firstObject];
       stingConfiguration = self->_stingConfiguration;
-      v16 = [v14 workoutIdentifier];
-      [(CSLPRFStingConfiguration *)stingConfiguration setConfigurationForBundleID:v13 actionType:6 identifier:v16 source:1];
+      workoutIdentifier = [firstObject workoutIdentifier];
+      [(CSLPRFStingConfiguration *)stingConfiguration setConfigurationForBundleID:bundleID actionType:6 identifier:workoutIdentifier source:1];
     }
 
     else
     {
-      [(CSLPRFStingConfiguration *)self->_stingConfiguration setConfigurationForBundleID:v13 actionType:9 identifier:0 source:1];
+      [(CSLPRFStingConfiguration *)self->_stingConfiguration setConfigurationForBundleID:bundleID actionType:9 identifier:0 source:1];
     }
   }
 
   else
   {
     v17 = [v9 propertyForKey:@"CSLPRFWorkoutIdentifier"];
-    [(CSLPRFStingConfiguration *)self->_stingConfiguration setConfigurationForBundleID:v13 actionType:6 identifier:v17 source:1];
+    [(CSLPRFStingConfiguration *)self->_stingConfiguration setConfigurationForBundleID:bundleID actionType:6 identifier:v17 source:1];
     [(PSSpecifier *)self->_selectedStartWorkoutsGroupSpecifier setProperty:v9 forKey:PSRadioGroupCheckedSpecifierKey];
   }
 
   v20.receiver = self;
   v20.super_class = CSLPRFWorkoutCompanionSettingsListController;
-  [(CSLPRFWorkoutCompanionSettingsListController *)&v20 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(CSLPRFWorkoutCompanionSettingsListController *)&v20 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 @end

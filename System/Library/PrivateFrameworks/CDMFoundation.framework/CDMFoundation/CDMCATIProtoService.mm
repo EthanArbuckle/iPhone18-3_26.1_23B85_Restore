@@ -1,10 +1,10 @@
 @interface CDMCATIProtoService
 + (id)getCDMServiceAssetConfig;
 - (id)getChildServices;
-- (id)handle:(id)a3;
+- (id)handle:(id)handle;
 - (id)handleRequestCommandTypeNames;
-- (id)setup:(id)a3;
-- (id)setupErrorResponse:(id)a3 serviceState:(int64_t)a4;
+- (id)setup:(id)setup;
+- (id)setupErrorResponse:(id)response serviceState:(int64_t)state;
 @end
 
 @implementation CDMCATIProtoService
@@ -46,10 +46,10 @@
   return v2;
 }
 
-- (id)handle:(id)a3
+- (id)handle:(id)handle
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -65,8 +65,8 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [(CDMCATIProtoService *)self getChildServices];
-    v8 = [v7 countByEnumeratingWithState:&v20 objects:v30 count:16];
+    getChildServices = [(CDMCATIProtoService *)self getChildServices];
+    v8 = [getChildServices countByEnumeratingWithState:&v20 objects:v30 count:16];
     if (v8)
     {
       v9 = *v21;
@@ -76,17 +76,17 @@
         {
           if (*v21 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(getChildServices);
           }
 
-          v11 = [*(*(&v20 + 1) + 8 * i) handle:v4 assetVersion:self->_assetVersion];
+          v11 = [*(*(&v20 + 1) + 8 * i) handle:handleCopy assetVersion:self->_assetVersion];
           if (v11)
           {
             [v6 addObject:v11];
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v20 objects:v30 count:16];
+        v8 = [getChildServices countByEnumeratingWithState:&v20 objects:v30 count:16];
       }
 
       while (v8);
@@ -126,11 +126,11 @@
     v16 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [(CDMCATIProtoService *)self getServiceState];
+      getServiceState = [(CDMCATIProtoService *)self getServiceState];
       *buf = 136315394;
       v25 = "[CDMCATIProtoService handle:]";
       v26 = 2048;
-      v27 = v17;
+      v27 = getServiceState;
       _os_log_impl(&dword_1DC287000, v16, OS_LOG_TYPE_INFO, "%s Not Ready! State: %tu", buf, 0x16u);
     }
 
@@ -144,36 +144,36 @@
   return v15;
 }
 
-- (id)setupErrorResponse:(id)a3 serviceState:(int64_t)a4
+- (id)setupErrorResponse:(id)response serviceState:(int64_t)state
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  self->super.super._serviceState = a4;
-  v7 = [(CDMBaseService *)self createSetupResponseCommand];
+  responseCopy = response;
+  self->super.super._serviceState = state;
+  createSetupResponseCommand = [(CDMBaseService *)self createSetupResponseCommand];
   v8 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     v12 = 136315394;
     v13 = "[CDMCATIProtoService setupErrorResponse:serviceState:]";
     v14 = 2112;
-    v15 = v6;
+    v15 = responseCopy;
     _os_log_error_impl(&dword_1DC287000, v8, OS_LOG_TYPE_ERROR, "%s [ERR]: %@", &v12, 0x16u);
   }
 
-  v9 = [(CDMBaseService *)self createErrorWithCode:1 description:v6];
-  [v7 setCmdError:v9];
+  v9 = [(CDMBaseService *)self createErrorWithCode:1 description:responseCopy];
+  [createSetupResponseCommand setCmdError:v9];
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return createSetupResponseCommand;
 }
 
-- (id)setup:(id)a3
+- (id)setup:(id)setup
 {
   v81 = *MEMORY[0x1E69E9840];
-  v57 = a3;
+  setupCopy = setup;
   v4 = CDMOSLoggerForCategory(0);
-  v58 = self;
+  selfCopy = self;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315138;
@@ -181,13 +181,13 @@
     _os_log_debug_impl(&dword_1DC287000, v4, OS_LOG_TYPE_DEBUG, "%s Begin CATI setup", buf, 0xCu);
   }
 
-  v5 = [v57 dynamicConfig];
-  v6 = [v5 getAssetForFactorName:@"com.apple.siri.nl.cati"];
+  dynamicConfig = [setupCopy dynamicConfig];
+  v6 = [dynamicConfig getAssetForFactorName:@"com.apple.siri.nl.cati"];
   nlAsset = self->_nlAsset;
   self->_nlAsset = v6;
 
-  v8 = [v57 dynamicConfig];
-  v55 = [v8 getAssetForFactorName:@"com.apple.siri.nl.cati"];
+  dynamicConfig2 = [setupCopy dynamicConfig];
+  v55 = [dynamicConfig2 getAssetForFactorName:@"com.apple.siri.nl.cati"];
 
   if (!v55 || ![(__CFString *)v55 getAssetType])
   {
@@ -207,15 +207,15 @@
     _os_log_debug_impl(&dword_1DC287000, v9, OS_LOG_TYPE_DEBUG, "%s Asset is: [%@] for factor: %@.", buf, 0x20u);
   }
 
-  v10 = [v57 dynamicConfig];
-  v11 = [v10 getAssetBundlePathForFactorName:@"com.apple.siri.nl.cati"];
+  dynamicConfig3 = [setupCopy dynamicConfig];
+  v11 = [dynamicConfig3 getAssetBundlePathForFactorName:@"com.apple.siri.nl.cati"];
   catiBundle = self->_catiBundle;
   self->_catiBundle = v11;
 
-  v54 = [(__CFString *)v55 getAssetVersion];
-  v13 = [v54 componentsSeparatedByString:@"."];
-  v14 = [v13 firstObject];
-  self->_assetVersion = [v14 integerValue];
+  getAssetVersion = [(__CFString *)v55 getAssetVersion];
+  v13 = [getAssetVersion componentsSeparatedByString:@"."];
+  firstObject = [v13 firstObject];
+  self->_assetVersion = [firstObject integerValue];
 
   if (self->_catiBundle)
   {
@@ -223,9 +223,9 @@
     childServices = self->_childServices;
     self->_childServices = v15;
 
-    v17 = [MEMORY[0x1E696AC08] defaultManager];
-    v18 = [(NSBundle *)self->_catiBundle resourcePath];
-    v53 = [v17 contentsOfDirectoryAtPath:v18 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    resourcePath = [(NSBundle *)self->_catiBundle resourcePath];
+    v53 = [defaultManager contentsOfDirectoryAtPath:resourcePath error:0];
 
     v56 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (self->_assetVersion > 3103)
@@ -242,7 +242,7 @@
           _os_log_debug_impl(&dword_1DC287000, v37, OS_LOG_TYPE_DEBUG, "%s %@", buf, 0x16u);
         }
 
-        v38 = [(CDMCATIProtoService *)self setupErrorResponse:@"The cati_models directory is empty" serviceState:3];
+        createSetupResponseCommand = [(CDMCATIProtoService *)self setupErrorResponse:@"The cati_models directory is empty" serviceState:3];
         goto LABEL_62;
       }
 
@@ -266,20 +266,20 @@
 
             v26 = *(*(&v68 + 1) + 8 * i);
             v27 = MEMORY[0x1E696AAE8];
-            v28 = [(NSBundle *)v58->_catiBundle resourcePath];
-            v29 = [v28 stringByAppendingPathComponent:v26];
+            resourcePath2 = [(NSBundle *)selfCopy->_catiBundle resourcePath];
+            v29 = [resourcePath2 stringByAppendingPathComponent:v26];
             v30 = [v27 bundleWithPath:v29];
 
             v67 = 0;
-            v31 = [MEMORY[0x1E696AC08] defaultManager];
-            v32 = [v30 resourcePath];
-            LODWORD(v29) = [v31 fileExistsAtPath:v32 isDirectory:&v67];
+            defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+            resourcePath3 = [v30 resourcePath];
+            LODWORD(v29) = [defaultManager2 fileExistsAtPath:resourcePath3 isDirectory:&v67];
             v33 = v67;
 
             if (v29 & v33)
             {
               v34 = [[CDMCATIChildService alloc] initWithAssetBundle:v30];
-              v35 = [(CDMCATIChildService *)v34 setup:v57 assetVersion:v58->_assetVersion];
+              v35 = [(CDMCATIChildService *)v34 setup:setupCopy assetVersion:selfCopy->_assetVersion];
               if (v35)
               {
                 v36 = CDMOSLoggerForCategory(0);
@@ -297,7 +297,7 @@
 
               else
               {
-                [(NSMutableArray *)v58->_childServices addObject:v34];
+                [(NSMutableArray *)selfCopy->_childServices addObject:v34];
               }
             }
 
@@ -325,7 +325,7 @@
     else
     {
       v19 = [[CDMCATIChildService alloc] initWithAssetBundle:self->_catiBundle];
-      v20 = [(CDMCATIChildService *)v19 setup:v57 assetVersion:self->_assetVersion];
+      v20 = [(CDMCATIChildService *)v19 setup:setupCopy assetVersion:self->_assetVersion];
       if (v20)
       {
         v21 = CDMOSLoggerForCategory(0);
@@ -347,7 +347,7 @@ LABEL_65:
       [(NSMutableArray *)self->_childServices addObject:v19];
     }
 
-    if (![(NSMutableArray *)v58->_childServices count])
+    if (![(NSMutableArray *)selfCopy->_childServices count])
     {
       v65 = 0u;
       v66 = 0u;
@@ -388,7 +388,7 @@ LABEL_65:
         v19 = @"No CATI child services were made, the following errors occurred:";
       }
 
-      v22 = [(CDMCATIProtoService *)v58 setupErrorResponse:v19 serviceState:3];
+      v22 = [(CDMCATIProtoService *)selfCopy setupErrorResponse:v19 serviceState:3];
       goto LABEL_65;
     }
 
@@ -455,10 +455,10 @@ LABEL_65:
       }
     }
 
-    v58->super.super._serviceState = 2;
-    v38 = [(CDMBaseService *)v58 createSetupResponseCommand];
+    selfCopy->super.super._serviceState = 2;
+    createSetupResponseCommand = [(CDMBaseService *)selfCopy createSetupResponseCommand];
 LABEL_62:
-    v22 = v38;
+    v22 = createSetupResponseCommand;
 LABEL_66:
 
     goto LABEL_67;

@@ -1,13 +1,13 @@
 @interface BadgedHeroView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC9PassKitUI14BadgedHeroView)initWithCoder:(id)a3;
-- (_TtC9PassKitUI14BadgedHeroView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC9PassKitUI14BadgedHeroView)initWithCoder:(id)coder;
+- (_TtC9PassKitUI14BadgedHeroView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation BadgedHeroView
 
-- (_TtC9PassKitUI14BadgedHeroView)initWithCoder:(id)a3
+- (_TtC9PassKitUI14BadgedHeroView)initWithCoder:(id)coder
 {
   result = sub_1BE053994();
   __break(1u);
@@ -16,11 +16,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD956E0C();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [*(&self->super.super.super.isa + OBJC_IVAR____TtC9PassKitUI14BadgedHeroView_heroView) sizeThatFits_];
   result.height = v4;
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (_TtC9PassKitUI14BadgedHeroView)initWithFrame:(CGRect)a3
+- (_TtC9PassKitUI14BadgedHeroView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

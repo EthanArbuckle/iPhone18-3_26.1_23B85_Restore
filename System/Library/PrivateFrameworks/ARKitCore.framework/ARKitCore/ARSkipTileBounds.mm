@@ -1,7 +1,7 @@
 @interface ARSkipTileBounds
 + (double)_normalizeLongitude:(double)result;
-- (ARSkipTileBounds)initWithCoordinate:(CLLocationCoordinate2D)a3;
-- (BOOL)isInside:(CLLocationCoordinate2D)a3;
+- (ARSkipTileBounds)initWithCoordinate:(CLLocationCoordinate2D)coordinate;
+- (BOOL)isInside:(CLLocationCoordinate2D)inside;
 @end
 
 @implementation ARSkipTileBounds
@@ -16,10 +16,10 @@
   return result;
 }
 
-- (ARSkipTileBounds)initWithCoordinate:(CLLocationCoordinate2D)a3
+- (ARSkipTileBounds)initWithCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v10.receiver = self;
   v10.super_class = ARSkipTileBounds;
   v5 = [(ARSkipTileBounds *)&v10 init];
@@ -39,10 +39,10 @@
   return v5;
 }
 
-- (BOOL)isInside:(CLLocationCoordinate2D)a3
+- (BOOL)isInside:(CLLocationCoordinate2D)inside
 {
-  latitude = a3.latitude;
-  [objc_opt_class() _normalizeLongitude:a3.longitude];
+  latitude = inside.latitude;
+  [objc_opt_class() _normalizeLongitude:inside.longitude];
   return self->_minLatitude <= latitude && latitude < self->_maxLatitude && self->_minLongitude <= v5 && v5 < self->_maxLongitude;
 }
 

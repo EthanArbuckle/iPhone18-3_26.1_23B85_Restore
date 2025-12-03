@@ -1,50 +1,50 @@
 @interface NTKBigNumeralsTimeComponentLabel
-+ (id)localeForTypeface:(unint64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NTKBigNumeralsTimeComponentLabel)initWithDevice:(id)a3 timeComponent:(unint64_t)a4 fontVariant:(unint64_t)a5 filledFontSectName:(id)a6 outlineFontSectName:(id)a7 dsoHandle:(const mach_header_64 *)a8 fontSize:(double)a9 useLigatures:(BOOL)a10;
-- (id)_attributedStringForTypeface:(unint64_t)a3;
-- (id)_fontForStyle:(unint64_t)a3;
++ (id)localeForTypeface:(unint64_t)typeface;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NTKBigNumeralsTimeComponentLabel)initWithDevice:(id)device timeComponent:(unint64_t)component fontVariant:(unint64_t)variant filledFontSectName:(id)name outlineFontSectName:(id)sectName dsoHandle:(const mach_header_64 *)handle fontSize:(double)size useLigatures:(BOOL)self0;
+- (id)_attributedStringForTypeface:(unint64_t)typeface;
+- (id)_fontForStyle:(unint64_t)style;
 - (void)_updateLabelText;
 - (void)_updateLocale;
-- (void)applyTransitionFraction:(double)a3 fromColor:(id)a4 toColor:(id)a5;
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
-- (void)applyTransitionFraction:(double)a3 fromTypeface:(unint64_t)a4 toTypeface:(unint64_t)a5;
+- (void)applyTransitionFraction:(double)fraction fromColor:(id)color toColor:(id)toColor;
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
+- (void)applyTransitionFraction:(double)fraction fromTypeface:(unint64_t)typeface toTypeface:(unint64_t)toTypeface;
 - (void)cleanupTransition;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setColor:(id)a3;
-- (void)setDate:(id)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTypeface:(unint64_t)a3;
-- (void)setupFontsForSize:(double)a3;
+- (void)setColor:(id)color;
+- (void)setDate:(id)date;
+- (void)setStyle:(unint64_t)style;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTypeface:(unint64_t)typeface;
+- (void)setupFontsForSize:(double)size;
 @end
 
 @implementation NTKBigNumeralsTimeComponentLabel
 
-- (NTKBigNumeralsTimeComponentLabel)initWithDevice:(id)a3 timeComponent:(unint64_t)a4 fontVariant:(unint64_t)a5 filledFontSectName:(id)a6 outlineFontSectName:(id)a7 dsoHandle:(const mach_header_64 *)a8 fontSize:(double)a9 useLigatures:(BOOL)a10
+- (NTKBigNumeralsTimeComponentLabel)initWithDevice:(id)device timeComponent:(unint64_t)component fontVariant:(unint64_t)variant filledFontSectName:(id)name outlineFontSectName:(id)sectName dsoHandle:(const mach_header_64 *)handle fontSize:(double)size useLigatures:(BOOL)self0
 {
-  v18 = a3;
-  v19 = a6;
-  v20 = a7;
+  deviceCopy = device;
+  nameCopy = name;
+  sectNameCopy = sectName;
   v39.receiver = self;
   v39.super_class = NTKBigNumeralsTimeComponentLabel;
   v21 = [(NTKBigNumeralsTimeComponentLabel *)&v39 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_device, a3);
-    v22->_useLigatures = a10;
+    objc_storeStrong(&v21->_device, device);
+    v22->_useLigatures = ligatures;
     v22->_typeface = 0;
     v22->_style = 0;
-    v23 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     color = v22->_color;
-    v22->_color = v23;
+    v22->_color = whiteColor;
 
-    objc_storeStrong(&v22->_filledFontSectName, a6);
-    objc_storeStrong(&v22->_outlinedFontSectName, a7);
-    v22->_dsoHandle = a8;
-    [(NTKBigNumeralsTimeComponentLabel *)v22 setupFontsForSize:a9];
+    objc_storeStrong(&v22->_filledFontSectName, name);
+    objc_storeStrong(&v22->_outlinedFontSectName, sectName);
+    v22->_dsoHandle = handle;
+    [(NTKBigNumeralsTimeComponentLabel *)v22 setupFontsForSize:size];
     v25 = [off_27877BEF8 labelWithOptions:0];
     transitioningLabel = v22->_transitioningLabel;
     v22->_transitioningLabel = v25;
@@ -75,11 +75,11 @@
     v36 = [NTKBigNumeralsTimeComponentLabel localeForTypeface:v22->_typeface];
     [(NSDateFormatter *)v35 setLocale:v36];
 
-    v37 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v37 addObserver:v22 selector:sel__updateLocale name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v22 selector:sel__updateLocale name:*MEMORY[0x277CBE620] object:0];
 
-    v22->_timeComponent = a4;
-    v22->_fontVariant = a5;
+    v22->_timeComponent = component;
+    v22->_fontVariant = variant;
     [(NTKBigNumeralsTimeComponentLabel *)v22 _updateLocale];
   }
 
@@ -88,8 +88,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE620] object:0];
 
   v4.receiver = self;
   v4.super_class = NTKBigNumeralsTimeComponentLabel;
@@ -109,23 +109,23 @@
   [(CLKUIColoringLabel *)transitioningLabel setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(CLKUIColoringLabel *)self->_label sizeThatFits:a3.width, a3.height];
+  [(CLKUIColoringLabel *)self->_label sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setupFontsForSize:(double)a3
+- (void)setupFontsForSize:(double)size
 {
   v14 = [NTKFontLoader fontDescriptorForSectName:self->_filledFontSectName fromMachO:self->_dsoHandle];
   v5 = [NTKFontLoader fontDescriptorForSectName:self->_outlinedFontSectName fromMachO:self->_dsoHandle];
-  v6 = [MEMORY[0x277CBBB08] fontWithDescriptor:v14 size:a3];
+  v6 = [MEMORY[0x277CBBB08] fontWithDescriptor:v14 size:size];
   filledFont = self->_filledFont;
   self->_filledFont = v6;
 
-  v8 = [MEMORY[0x277CBBB08] fontWithDescriptor:v5 size:a3];
+  v8 = [MEMORY[0x277CBBB08] fontWithDescriptor:v5 size:size];
   outlinedFont = self->_outlinedFont;
   self->_outlinedFont = v8;
 
@@ -138,19 +138,19 @@
   [(CLKUIColoringLabel *)label setFont:v13];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
   [(CLKUIColoringLabel *)self->_label setTextAlignment:?];
   transitioningLabel = self->_transitioningLabel;
 
-  [(CLKUIColoringLabel *)transitioningLabel setTextAlignment:a3];
+  [(CLKUIColoringLabel *)transitioningLabel setTextAlignment:alignment];
 }
 
-- (void)setTypeface:(unint64_t)a3
+- (void)setTypeface:(unint64_t)typeface
 {
-  if (self->_typeface != a3)
+  if (self->_typeface != typeface)
   {
-    self->_typeface = a3;
+    self->_typeface = typeface;
     formatter = self->_formatter;
     v6 = [NTKBigNumeralsTimeComponentLabel localeForTypeface:?];
     [(NSDateFormatter *)formatter setLocale:v6];
@@ -161,85 +161,85 @@
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(NTKBigNumeralsTimeComponentLabel *)self cleanupTransition];
-    v6 = [(NTKBigNumeralsTimeComponentLabel *)self _fontForStyle:a3];
+    v6 = [(NTKBigNumeralsTimeComponentLabel *)self _fontForStyle:style];
     [(CLKUIColoringLabel *)self->_label setFont:v6];
     [(CLKUIColoringLabel *)self->_transitioningLabel setFont:v6];
   }
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_color isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_color, a3);
+    objc_storeStrong(&self->_color, color);
     [(NTKBigNumeralsTimeComponentLabel *)self cleanupTransition];
-    [(CLKUIColoringLabel *)self->_label setTextColor:v5];
-    [(CLKUIColoringLabel *)self->_transitioningLabel setTextColor:v5];
+    [(CLKUIColoringLabel *)self->_label setTextColor:colorCopy];
+    [(CLKUIColoringLabel *)self->_transitioningLabel setTextColor:colorCopy];
   }
 }
 
-- (void)applyTransitionFraction:(double)a3 fromTypeface:(unint64_t)a4 toTypeface:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromTypeface:(unint64_t)typeface toTypeface:(unint64_t)toTypeface
 {
   label = self->_label;
   v10 = [(NTKBigNumeralsTimeComponentLabel *)self _attributedStringForTypeface:?];
   [(CLKUIColoringLabel *)label setAttributedText:v10];
 
   transitioningLabel = self->_transitioningLabel;
-  v12 = [(NTKBigNumeralsTimeComponentLabel *)self _attributedStringForTypeface:a5];
+  v12 = [(NTKBigNumeralsTimeComponentLabel *)self _attributedStringForTypeface:toTypeface];
   [(CLKUIColoringLabel *)transitioningLabel setAttributedText:v12];
 
   v13 = 1.0;
-  if (a4 == a5)
+  if (typeface == toTypeface)
   {
-    a3 = 0.0;
+    fraction = 0.0;
   }
 
   else
   {
-    v13 = 1.0 - a3;
+    v13 = 1.0 - fraction;
   }
 
   [(CLKUIColoringLabel *)self->_label setAlpha:v13];
   v14 = self->_transitioningLabel;
 
-  [(CLKUIColoringLabel *)v14 setAlpha:a3];
+  [(CLKUIColoringLabel *)v14 setAlpha:fraction];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
   label = self->_label;
   v10 = [(NTKBigNumeralsTimeComponentLabel *)self _fontForStyle:?];
   [(CLKUIColoringLabel *)label setFont:v10];
 
   transitioningLabel = self->_transitioningLabel;
-  v12 = [(NTKBigNumeralsTimeComponentLabel *)self _fontForStyle:a5];
+  v12 = [(NTKBigNumeralsTimeComponentLabel *)self _fontForStyle:toStyle];
   [(CLKUIColoringLabel *)transitioningLabel setFont:v12];
 
   v13 = 1.0;
-  if (a4 == a5)
+  if (style == toStyle)
   {
-    a3 = 0.0;
+    fraction = 0.0;
   }
 
   else
   {
-    v13 = 1.0 - a3;
+    v13 = 1.0 - fraction;
   }
 
   [(CLKUIColoringLabel *)self->_label setAlpha:v13];
   v14 = self->_transitioningLabel;
 
-  [(CLKUIColoringLabel *)v14 setAlpha:a3];
+  [(CLKUIColoringLabel *)v14 setAlpha:fraction];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromColor:(id)a4 toColor:(id)a5
+- (void)applyTransitionFraction:(double)fraction fromColor:(id)color toColor:(id)toColor
 {
   v6 = NTKInterpolateBetweenColors();
   [(CLKUIColoringLabel *)self->_label setTextColor:v6];
@@ -273,16 +273,16 @@
   [(CLKUIColoringLabel *)v11 setTextColor:color];
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  objc_storeStrong(&self->_date, a3);
+  objc_storeStrong(&self->_date, date);
 
   [(NTKBigNumeralsTimeComponentLabel *)self _updateLabelText];
 }
 
 - (void)_updateLocale
 {
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v3 = @"h";
   if (self->_fontVariant == 1 && CLKLocaleIs24HourMode())
   {
@@ -305,17 +305,17 @@ LABEL_8:
   [(NTKBigNumeralsTimeComponentLabel *)self _updateLabelText];
 }
 
-+ (id)localeForTypeface:(unint64_t)a3
++ (id)localeForTypeface:(unint64_t)typeface
 {
-  if (a3 <= 3)
+  if (typeface <= 3)
   {
-    a1 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:{off_27877DB80[a3], v3}];
+    self = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:{off_27877DB80[typeface], v3}];
   }
 
-  return a1;
+  return self;
 }
 
-- (id)_attributedStringForTypeface:(unint64_t)a3
+- (id)_attributedStringForTypeface:(unint64_t)typeface
 {
   v20[1] = *MEMORY[0x277D85DE8];
   formatter = self->_formatter;
@@ -324,7 +324,7 @@ LABEL_8:
 
   v7 = [(NSDateFormatter *)self->_formatter stringFromDate:self->_date];
   v8 = v7;
-  if (a3 == 3)
+  if (typeface == 3)
   {
     v18 = [(__CFString *)v7 integerValue]+ 8559;
     v9 = [MEMORY[0x277CCACA8] stringWithCharacters:&v18 length:1];
@@ -369,11 +369,11 @@ LABEL_8:
   [(NTKBigNumeralsTimeComponentLabel *)self setNeedsLayout];
 }
 
-- (id)_fontForStyle:(unint64_t)a3
+- (id)_fontForStyle:(unint64_t)style
 {
-  if (a3)
+  if (style)
   {
-    if (a3 != 1)
+    if (style != 1)
     {
       goto LABEL_6;
     }

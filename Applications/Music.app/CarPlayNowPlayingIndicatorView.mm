@@ -1,17 +1,17 @@
 @interface CarPlayNowPlayingIndicatorView
 - (BOOL)isHighlighted;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC5Music30CarPlayNowPlayingIndicatorView)initWithCoder:(id)a3;
-- (_TtC5Music30CarPlayNowPlayingIndicatorView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC5Music30CarPlayNowPlayingIndicatorView)initWithCoder:(id)coder;
+- (_TtC5Music30CarPlayNowPlayingIndicatorView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setIsHighlighted:(BOOL)a3;
-- (void)setIsPlaying:(BOOL)a3;
+- (void)setIsHighlighted:(BOOL)highlighted;
+- (void)setIsPlaying:(BOOL)playing;
 @end
 
 @implementation CarPlayNowPlayingIndicatorView
 
-- (_TtC5Music30CarPlayNowPlayingIndicatorView)initWithCoder:(id)a3
+- (_TtC5Music30CarPlayNowPlayingIndicatorView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC5Music30CarPlayNowPlayingIndicatorView_isPlaying) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC5Music30CarPlayNowPlayingIndicatorView_isHighlighted) = 0;
@@ -29,12 +29,12 @@
   return result;
 }
 
-- (void)setIsPlaying:(BOOL)a3
+- (void)setIsPlaying:(BOOL)playing
 {
-  v3 = a3;
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC5Music30CarPlayNowPlayingIndicatorView_isPlaying) = a3;
-  v5 = self;
-  if (v3)
+  playingCopy = playing;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC5Music30CarPlayNowPlayingIndicatorView_isPlaying) = playing;
+  selfCopy = self;
+  if (playingCopy)
   {
     v4 = 3;
   }
@@ -54,10 +54,10 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setIsHighlighted:(BOOL)a3
+- (void)setIsHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_100260204(a3);
+  selfCopy = self;
+  sub_100260204(highlighted);
 }
 
 - (CGSize)intrinsicContentSize
@@ -80,7 +80,7 @@
   [v3 setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 24.0;
   v4 = 24.0;
@@ -89,7 +89,7 @@
   return result;
 }
 
-- (_TtC5Music30CarPlayNowPlayingIndicatorView)initWithFrame:(CGRect)a3
+- (_TtC5Music30CarPlayNowPlayingIndicatorView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

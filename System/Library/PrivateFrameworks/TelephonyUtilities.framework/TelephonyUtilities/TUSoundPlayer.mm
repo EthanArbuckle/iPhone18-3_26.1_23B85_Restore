@@ -3,9 +3,9 @@
 - (BOOL)isRepeatingActorPlaying;
 - (TUSoundPlayer)init;
 - (unsigned)soundID;
-- (void)playSound:(unsigned int)a3 iterations:(unint64_t)a4 pauseDurationBetweenIterations:(double)a5 completion:(id)a6;
-- (void)setIsCurrentPlaying:(BOOL)a3;
-- (void)setSoundID:(unsigned int)a3;
+- (void)playSound:(unsigned int)sound iterations:(unint64_t)iterations pauseDurationBetweenIterations:(double)betweenIterations completion:(id)completion;
+- (void)setIsCurrentPlaying:(BOOL)playing;
+- (void)setSoundID:(unsigned int)d;
 - (void)stopPlaying;
 @end
 
@@ -15,8 +15,8 @@
 {
   if ([(TUSoundPlayer *)self isRepeatingActorPlaying])
   {
-    v3 = [(TUSoundPlayer *)self repeatingActor];
-    [v3 stop];
+    repeatingActor = [(TUSoundPlayer *)self repeatingActor];
+    [repeatingActor stop];
 
     v4 = TUDefaultLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -25,36 +25,36 @@
       _os_log_impl(&dword_1956FD000, v4, OS_LOG_TYPE_DEFAULT, "TUSoundPlayer: stop playing", buf, 2u);
     }
 
-    v5 = [(TUSoundPlayer *)self queue];
+    queue = [(TUSoundPlayer *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __28__TUSoundPlayer_stopPlaying__block_invoke;
     block[3] = &unk_1E7424950;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(queue, block);
   }
 
-  v6 = [(TUSoundPlayer *)self queue];
+  queue2 = [(TUSoundPlayer *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __28__TUSoundPlayer_stopPlaying__block_invoke_30;
   v7[3] = &unk_1E7424950;
   v7[4] = self;
-  dispatch_async(v6, v7);
+  dispatch_async(queue2, v7);
 }
 
 - (BOOL)isRepeatingActorPlaying
 {
-  v2 = [(TUSoundPlayer *)self repeatingActor];
-  v3 = [v2 isRunning];
+  repeatingActor = [(TUSoundPlayer *)self repeatingActor];
+  isRunning = [repeatingActor isRunning];
 
-  return v3;
+  return isRunning;
 }
 
 - (BOOL)isCurrentPlaying
 {
-  v3 = [(TUSoundPlayer *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUSoundPlayer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   return self->_currentPlaying;
 }
@@ -85,66 +85,66 @@
 
 - (unsigned)soundID
 {
-  v3 = [(TUSoundPlayer *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUSoundPlayer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   return self->_soundID;
 }
 
-- (void)setSoundID:(unsigned int)a3
+- (void)setSoundID:(unsigned int)d
 {
-  v5 = [(TUSoundPlayer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(TUSoundPlayer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  self->_soundID = a3;
+  self->_soundID = d;
 }
 
-- (void)setIsCurrentPlaying:(BOOL)a3
+- (void)setIsCurrentPlaying:(BOOL)playing
 {
-  v5 = [(TUSoundPlayer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(TUSoundPlayer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  self->_currentPlaying = a3;
+  self->_currentPlaying = playing;
 }
 
-- (void)playSound:(unsigned int)a3 iterations:(unint64_t)a4 pauseDurationBetweenIterations:(double)a5 completion:(id)a6
+- (void)playSound:(unsigned int)sound iterations:(unint64_t)iterations pauseDurationBetweenIterations:(double)betweenIterations completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v11 = a6;
+  completionCopy = completion;
   v12 = TUDefaultLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 == -1)
+    if (iterations == -1)
     {
       v13 = @"Infinite";
     }
 
     else
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+      v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:iterations];
     }
 
     *buf = 67109634;
-    v23 = a3;
+    soundCopy = sound;
     v24 = 2112;
     v25 = v13;
     v26 = 2048;
-    v27 = a5;
+    betweenIterationsCopy = betweenIterations;
     _os_log_impl(&dword_1956FD000, v12, OS_LOG_TYPE_DEFAULT, "Asked to play sound with soundID: %d iterations: %@ pauseDurationBetweenIterations: %f", buf, 0x1Cu);
-    if (a4 != -1)
+    if (iterations != -1)
     {
     }
   }
 
   [(TUSoundPlayer *)self stopPlaying];
-  v14 = [(TUSoundPlayer *)self queue];
+  queue = [(TUSoundPlayer *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__TUSoundPlayer_playSound_iterations_pauseDurationBetweenIterations_completion___block_invoke;
   block[3] = &unk_1E74256D0;
   block[4] = self;
-  v21 = a3;
-  dispatch_async(v14, block);
+  soundCopy2 = sound;
+  dispatch_async(queue, block);
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -152,12 +152,12 @@
   aBlock[3] = &unk_1E7425720;
   aBlock[4] = self;
   aBlock[5] = a2;
-  aBlock[6] = a4;
-  *&aBlock[7] = a5;
-  v19 = a3;
+  aBlock[6] = iterations;
+  *&aBlock[7] = betweenIterations;
+  soundCopy3 = sound;
   v15 = _Block_copy(aBlock);
-  v16 = [(TUSoundPlayer *)self repeatingActor];
-  [v16 beginRepeatingAction:v15 iterations:a4 pauseDurationBetweenIterations:v11 completion:a5];
+  repeatingActor = [(TUSoundPlayer *)self repeatingActor];
+  [repeatingActor beginRepeatingAction:v15 iterations:iterations pauseDurationBetweenIterations:completionCopy completion:betweenIterations];
 
   v17 = *MEMORY[0x1E69E9840];
 }

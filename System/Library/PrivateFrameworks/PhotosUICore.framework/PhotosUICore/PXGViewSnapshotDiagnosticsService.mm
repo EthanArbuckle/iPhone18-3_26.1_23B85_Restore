@@ -1,6 +1,6 @@
 @interface PXGViewSnapshotDiagnosticsService
 - (BOOL)canPerformAction;
-- (PXGViewSnapshotDiagnosticsService)initWithItemProviders:(id)a3;
+- (PXGViewSnapshotDiagnosticsService)initWithItemProviders:(id)providers;
 - (void)performAction;
 @end
 
@@ -8,35 +8,35 @@
 
 - (void)performAction
 {
-  v5 = [(PXGViewSnapshotDiagnosticsService *)self tungstenView];
-  v3 = [v5 visualDiagnosticsConfigurationForFullPageSnapshot];
-  v4 = [(PXGViewSnapshotDiagnosticsService *)self viewController];
-  [PXVisualDiagnosticsFactory showVisualDiagnosticsWithConfiguration:v3 fromViewController:v4 completionHandler:0];
+  tungstenView = [(PXGViewSnapshotDiagnosticsService *)self tungstenView];
+  visualDiagnosticsConfigurationForFullPageSnapshot = [tungstenView visualDiagnosticsConfigurationForFullPageSnapshot];
+  viewController = [(PXGViewSnapshotDiagnosticsService *)self viewController];
+  [PXVisualDiagnosticsFactory showVisualDiagnosticsWithConfiguration:visualDiagnosticsConfigurationForFullPageSnapshot fromViewController:viewController completionHandler:0];
 }
 
 - (BOOL)canPerformAction
 {
-  v2 = [(PXGViewSnapshotDiagnosticsService *)self tungstenView];
-  v3 = v2 != 0;
+  tungstenView = [(PXGViewSnapshotDiagnosticsService *)self tungstenView];
+  v3 = tungstenView != 0;
 
   return v3;
 }
 
-- (PXGViewSnapshotDiagnosticsService)initWithItemProviders:(id)a3
+- (PXGViewSnapshotDiagnosticsService)initWithItemProviders:(id)providers
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  providersCopy = providers;
   v20.receiver = self;
   v20.super_class = PXGViewSnapshotDiagnosticsService;
-  v5 = [(PXDiagnosticsService *)&v20 initWithItemProviders:v4];
+  v5 = [(PXDiagnosticsService *)&v20 initWithItemProviders:providersCopy];
   if (v5)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v14 = v4;
-    obj = v4;
+    v14 = providersCopy;
+    obj = providersCopy;
     v6 = [obj countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v6)
     {
@@ -83,7 +83,7 @@
 
 LABEL_17:
 
-    v4 = v14;
+    providersCopy = v14;
   }
 
   return v5;

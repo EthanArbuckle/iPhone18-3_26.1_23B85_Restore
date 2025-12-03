@@ -26,9 +26,9 @@
   v18 = v7;
   v8 = v7;
   v9 = _Block_copy(aBlock);
-  v10 = [v6 urlForContext];
+  urlForContext = [v6 urlForContext];
 
-  if (v10)
+  if (urlForContext)
   {
     v11 = _FALogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -37,15 +37,15 @@
       _os_log_impl(&dword_21BB35000, v11, OS_LOG_TYPE_DEFAULT, "Context has url override", v16, 2u);
     }
 
-    v12 = [v6 urlForContext];
-    v9[2](v9, v12, 0);
+    urlForContext2 = [v6 urlForContext];
+    v9[2](v9, urlForContext2, 0);
   }
 
   else
   {
-    v13 = [v6 urlEndpoint];
+    urlEndpoint = [v6 urlEndpoint];
 
-    if (v13)
+    if (urlEndpoint)
     {
       v14 = _FALogSystem();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -54,15 +54,15 @@
         _os_log_impl(&dword_21BB35000, v14, OS_LOG_TYPE_DEFAULT, "Context has urlEndpoint override.", v16, 2u);
       }
 
-      v12 = [a1 urlProvider];
-      v15 = [v6 urlEndpoint];
-      [v12 URLForEndpoint:v15 withCompletion:v9];
+      urlForContext2 = [self urlProvider];
+      urlEndpoint2 = [v6 urlEndpoint];
+      [urlForContext2 URLForEndpoint:urlEndpoint2 withCompletion:v9];
     }
 
     else
     {
-      v12 = [v6 eventType];
-      [a1 _urlForEventType:v12 withCompletion:v9];
+      urlForContext2 = [v6 eventType];
+      [self _urlForEventType:urlForContext2 withCompletion:v9];
     }
   }
 }
@@ -72,7 +72,7 @@
   v16 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v8 = [a1 _urlEndpointForEventType:v6];
+  v8 = [self _urlEndpointForEventType:v6];
   v9 = _FALogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -85,14 +85,14 @@
 
   if (v8)
   {
-    v10 = [a1 urlProvider];
-    [v10 URLForEndpoint:v8 withCompletion:v7];
+    urlProvider = [self urlProvider];
+    [urlProvider URLForEndpoint:v8 withCompletion:v7];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CCA9B8] fa_familyErrorWithCode:-1008];
-    v7[2](v7, 0, v10);
+    urlProvider = [MEMORY[0x277CCA9B8] fa_familyErrorWithCode:-1008];
+    v7[2](v7, 0, urlProvider);
   }
 
   v11 = *MEMORY[0x277D85DE8];

@@ -1,12 +1,12 @@
 @interface MTRecommendationModuleContentRequest
 - (MTRecommendationModuleContentRequest)init;
-- (MTRecommendationModuleContentRequest)initWithModuleID:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (MTRecommendationModuleContentRequest)initWithModuleID:(id)d;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MTRecommendationModuleContentRequest
 
-- (MTRecommendationModuleContentRequest)initWithModuleID:(id)a3
+- (MTRecommendationModuleContentRequest)initWithModuleID:(id)d
 {
   v4 = sub_1D917820C();
   v5 = (self + OBJC_IVAR___MTRecommendationModuleContentRequest_moduleID);
@@ -17,12 +17,12 @@
   return [(MTBaseMAPIRequest *)&v8 init];
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_1D901B998(v5, v4);
+  selfCopy = self;
+  sub_1D901B998(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }

@@ -1,21 +1,21 @@
 @interface APActivationPayload
-- (APActivationPayload)initWithCoder:(id)a3;
-- (APActivationPayload)initWithURL:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (APActivationPayload)initWithCoder:(id)coder;
+- (APActivationPayload)initWithURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)confirmAcquiredInRegion:(CLRegion *)region completionHandler:(void *)completionHandler;
 @end
 
 @implementation APActivationPayload
 
-- (APActivationPayload)initWithURL:(id)a3
+- (APActivationPayload)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = APActivationPayload;
   v5 = [(APActivationPayload *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     URL = v5->_URL;
     v5->_URL = v6;
 
@@ -79,15 +79,15 @@ void __65__APActivationPayload_confirmAcquiredInRegion_completionHandler___block
   (*(v6 + 16))(v6, a2, v10);
 }
 
-- (APActivationPayload)initWithCoder:(id)a3
+- (APActivationPayload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = APActivationPayload;
   v5 = [(APActivationPayload *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
     URL = v5->_URL;
     v5->_URL = v6;
 
@@ -97,9 +97,9 @@ void __65__APActivationPayload_confirmAcquiredInRegion_completionHandler___block
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSURL *)self->_URL copy];
   v6 = v4[1];
   v4[1] = v5;

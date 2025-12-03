@@ -1,7 +1,7 @@
 @interface APContext
 + (id)contextForSponsorshipAdRequest;
-- (id)contextJSONDictionaryForRequest:(id)a3 andPlacementType:(int64_t)a4;
-- (id)contextJSONForRequest:(id)a3 andPlacementType:(int64_t)a4;
+- (id)contextJSONDictionaryForRequest:(id)request andPlacementType:(int64_t)type;
+- (id)contextJSONForRequest:(id)request andPlacementType:(int64_t)type;
 - (unint64_t)adPosition;
 @end
 
@@ -14,19 +14,19 @@
   return v2;
 }
 
-- (id)contextJSONDictionaryForRequest:(id)a3 andPlacementType:(int64_t)a4
+- (id)contextJSONDictionaryForRequest:(id)request andPlacementType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [[APContextTransformer alloc] initWithContext:self contentIdentifier:v6 placementType:a4];
+  requestCopy = request;
+  v7 = [[APContextTransformer alloc] initWithContext:self contentIdentifier:requestCopy placementType:type];
 
-  v8 = [(APContextTransformer *)v7 transformedContext];
+  transformedContext = [(APContextTransformer *)v7 transformedContext];
 
-  return v8;
+  return transformedContext;
 }
 
-- (id)contextJSONForRequest:(id)a3 andPlacementType:(int64_t)a4
+- (id)contextJSONForRequest:(id)request andPlacementType:(int64_t)type
 {
-  v4 = [(APContext *)self contextJSONDictionaryForRequest:a3 andPlacementType:a4];
+  v4 = [(APContext *)self contextJSONDictionaryForRequest:request andPlacementType:type];
   v5 = APLegacyNewsContextKey;
   v6 = [v4 jsonStringWithOptions:0];
   v7 = [v5 stringByAppendingString:v6];
@@ -36,9 +36,9 @@
 
 - (unint64_t)adPosition
 {
-  v3 = [(APContext *)self supplementalContext];
+  supplementalContext = [(APContext *)self supplementalContext];
 
-  if (!v3)
+  if (!supplementalContext)
   {
     v5 = APLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -50,8 +50,8 @@
     goto LABEL_11;
   }
 
-  v4 = [(APContext *)self supplementalContext];
-  v5 = [v4 objectForKey:APSupplementalContextPlacementKey];
+  supplementalContext2 = [(APContext *)self supplementalContext];
+  v5 = [supplementalContext2 objectForKey:APSupplementalContextPlacementKey];
 
   if (![v5 length])
   {

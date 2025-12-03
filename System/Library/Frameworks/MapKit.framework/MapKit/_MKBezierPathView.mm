@@ -1,95 +1,95 @@
 @interface _MKBezierPathView
-+ (CGPath)_createPathForBalloonRadius:(double)a3 tailLength:(double)a4;
-+ (CGPath)_createSmoothTransitionPathForBalloonRadius:(double)a3 tailLength:(double)a4;
-- (BOOL)containsPoint:(CGPoint)a3;
-- (_MKBezierPathView)initWithBalloonRadius:(double)a3 tailLength:(double)a4 smoothTailTransition:(BOOL)a5;
-- (_MKBezierPathView)initWithFrame:(CGRect)a3;
-- (_MKBezierPathView)initWithOvalInSize:(CGSize)a3;
++ (CGPath)_createPathForBalloonRadius:(double)radius tailLength:(double)length;
++ (CGPath)_createSmoothTransitionPathForBalloonRadius:(double)radius tailLength:(double)length;
+- (BOOL)containsPoint:(CGPoint)point;
+- (_MKBezierPathView)initWithBalloonRadius:(double)radius tailLength:(double)length smoothTailTransition:(BOOL)transition;
+- (_MKBezierPathView)initWithFrame:(CGRect)frame;
+- (_MKBezierPathView)initWithOvalInSize:(CGSize)size;
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)setFillColor:(id)a3;
-- (void)setPath:(CGPath *)a3 duration:(double)a4;
-- (void)setStrokeColor:(id)a3 width:(double)a4;
+- (void)setFillColor:(id)color;
+- (void)setPath:(CGPath *)path duration:(double)duration;
+- (void)setStrokeColor:(id)color width:(double)width;
 @end
 
 @implementation _MKBezierPathView
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(_MKBezierPathView *)self layer];
-  v6 = [v5 path];
+  y = point.y;
+  x = point.x;
+  layer = [(_MKBezierPathView *)self layer];
+  path = [layer path];
   v9.x = x;
   v9.y = y;
-  v7 = CGPathContainsPoint(v6, 0, v9, 0);
+  v7 = CGPathContainsPoint(path, 0, v9, 0);
 
   return v7;
 }
 
 - (void)_dynamicUserInterfaceTraitDidChange
 {
-  v3 = [(_MKBezierPathView *)self layer];
-  [v3 setFillColor:{-[UIColor CGColor](self->_fillColor, "CGColor")}];
-  [v3 setStrokeColor:{-[UIColor CGColor](self->_strokeColor, "CGColor")}];
+  layer = [(_MKBezierPathView *)self layer];
+  [layer setFillColor:{-[UIColor CGColor](self->_fillColor, "CGColor")}];
+  [layer setStrokeColor:{-[UIColor CGColor](self->_strokeColor, "CGColor")}];
   v4.receiver = self;
   v4.super_class = _MKBezierPathView;
   [(_MKBezierPathView *)&v4 _dynamicUserInterfaceTraitDidChange];
 }
 
-- (void)setStrokeColor:(id)a3 width:(double)a4
+- (void)setStrokeColor:(id)color width:(double)width
 {
-  objc_storeStrong(&self->_strokeColor, a3);
-  v7 = a3;
-  v11 = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
+  objc_storeStrong(&self->_strokeColor, color);
+  colorCopy = color;
+  _currentTraitCollection = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
   v8 = MEMORY[0x1E69DD1B8];
-  v9 = [(_MKBezierPathView *)self traitCollection];
-  [v8 _setCurrentTraitCollection:v9];
+  traitCollection = [(_MKBezierPathView *)self traitCollection];
+  [v8 _setCurrentTraitCollection:traitCollection];
 
-  v10 = [(_MKBezierPathView *)self layer];
-  [v10 setStrokeColor:{objc_msgSend(v7, "CGColor")}];
-  [v10 setLineWidth:a4];
-  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:v11];
+  layer = [(_MKBezierPathView *)self layer];
+  [layer setStrokeColor:{objc_msgSend(colorCopy, "CGColor")}];
+  [layer setLineWidth:width];
+  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:_currentTraitCollection];
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  objc_storeStrong(&self->_fillColor, a3);
-  v5 = a3;
-  v9 = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
+  objc_storeStrong(&self->_fillColor, color);
+  colorCopy = color;
+  _currentTraitCollection = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
   v6 = MEMORY[0x1E69DD1B8];
-  v7 = [(_MKBezierPathView *)self traitCollection];
-  [v6 _setCurrentTraitCollection:v7];
+  traitCollection = [(_MKBezierPathView *)self traitCollection];
+  [v6 _setCurrentTraitCollection:traitCollection];
 
-  v8 = [(_MKBezierPathView *)self layer];
-  [v8 setFillColor:{objc_msgSend(v5, "CGColor")}];
+  layer = [(_MKBezierPathView *)self layer];
+  [layer setFillColor:{objc_msgSend(colorCopy, "CGColor")}];
 
-  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:v9];
+  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:_currentTraitCollection];
 }
 
-- (void)setPath:(CGPath *)a3 duration:(double)a4
+- (void)setPath:(CGPath *)path duration:(double)duration
 {
-  v6 = [(_MKBezierPathView *)self layer];
-  v10 = v6;
-  if (a4 <= 0.0)
+  layer = [(_MKBezierPathView *)self layer];
+  v10 = layer;
+  if (duration <= 0.0)
   {
-    [v6 removeAnimationForKey:@"path"];
-    [v10 setPath:a3];
+    [layer removeAnimationForKey:@"path"];
+    [v10 setPath:path];
   }
 
   else
   {
-    v7 = [v6 currentLayer];
-    v8 = CGPathRetain([v7 path]);
+    currentLayer = [layer currentLayer];
+    v8 = CGPathRetain([currentLayer path]);
 
     [v10 removeAnimationForKey:@"path"];
     v9 = [MEMORY[0x1E6979318] animationWithKeyPath:@"path"];
     [v9 setFromValue:v8];
-    [v9 setToValue:a3];
-    [v9 setDuration:a4];
+    [v9 setToValue:path];
+    [v9 setDuration:duration];
     [v9 setRemovedOnCompletion:1];
     [v10 addAnimation:v9 forKey:@"path"];
 
-    [v10 setPath:a3];
+    [v10 setPath:path];
     if (v8)
     {
       CGPathRelease(v8);
@@ -97,11 +97,11 @@
   }
 }
 
-- (_MKBezierPathView)initWithOvalInSize:(CGSize)a3
+- (_MKBezierPathView)initWithOvalInSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(_MKBezierPathView *)self initWithFrame:0.0, 0.0, a3.width, a3.height];
+  height = size.height;
+  width = size.width;
+  v5 = [(_MKBezierPathView *)self initWithFrame:0.0, 0.0, size.width, size.height];
   if (v5)
   {
     v8.origin.x = 0.0;
@@ -116,40 +116,40 @@
   return v5;
 }
 
-- (_MKBezierPathView)initWithBalloonRadius:(double)a3 tailLength:(double)a4 smoothTailTransition:(BOOL)a5
+- (_MKBezierPathView)initWithBalloonRadius:(double)radius tailLength:(double)length smoothTailTransition:(BOOL)transition
 {
-  v5 = a5;
-  v8 = [(_MKBezierPathView *)self initWithFrame:0.0, 0.0, a3 + a3, a4 + a3 * 2.0];
+  transitionCopy = transition;
+  v8 = [(_MKBezierPathView *)self initWithFrame:0.0, 0.0, radius + radius, length + radius * 2.0];
   if (v8)
   {
     v9 = objc_opt_class();
-    if (v5)
+    if (transitionCopy)
     {
-      v10 = [v9 _createSmoothTransitionPathForBalloonRadius:a3 tailLength:a4];
+      v10 = [v9 _createSmoothTransitionPathForBalloonRadius:radius tailLength:length];
     }
 
     else
     {
-      v10 = [v9 _createPathForBalloonRadius:a3 tailLength:a4];
+      v10 = [v9 _createPathForBalloonRadius:radius tailLength:length];
     }
 
     v11 = v10;
     [(_MKBezierPathView *)v8 setPath:v10];
     CGPathRelease(v11);
     [(_MKBezierPathView *)v8 bounds];
-    v13 = 1.0 - a4 / v12;
-    v14 = [(_MKBezierPathView *)v8 layer];
-    [v14 setContentsCenter:{0.0, 0.0, 1.0, v13}];
+    v13 = 1.0 - length / v12;
+    layer = [(_MKBezierPathView *)v8 layer];
+    [layer setContentsCenter:{0.0, 0.0, 1.0, v13}];
   }
 
   return v8;
 }
 
-- (_MKBezierPathView)initWithFrame:(CGRect)a3
+- (_MKBezierPathView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _MKBezierPathView;
-  v3 = [(_MKBezierPathView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_MKBezierPathView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -159,39 +159,39 @@
   return v4;
 }
 
-+ (CGPath)_createSmoothTransitionPathForBalloonRadius:(double)a3 tailLength:(double)a4
++ (CGPath)_createSmoothTransitionPathForBalloonRadius:(double)radius tailLength:(double)length
 {
-  v5 = a3 + a3;
+  v5 = radius + radius;
   Mutable = CGPathCreateMutable();
-  CGPathMoveToPoint(Mutable, 0, a3 * 1.27900004, a3 * 1.96010005);
-  CGPathAddLineToPoint(Mutable, 0, a3 * 1.27900004, a3 * 1.96010005);
-  CGPathAddCurveToPoint(Mutable, 0, a3 * 1.17630005, a3 * 1.98930001, a3 * 1.09080005, a3 * 2.05649996, a3 * 1.04250002, a3 * 2.14980006);
-  CGPathAddCurveToPoint(Mutable, 0, a3 * 1.02999997, a3 * 2.17359996, a3 * 1.02199996, a3 * 2.19840002, a3 * 0.999800026, a3 * 2.19840002);
-  CGPathAddCurveToPoint(Mutable, 0, a3 * 0.977599978, a3 * 2.19849992, a3 * 0.969600022, a3 * 2.1730001, a3 * 0.957099974, a3 * 2.14980006);
-  CGPathAddCurveToPoint(Mutable, 0, a3 * 0.908699989, a3 * 2.05699992, a3 * 0.823000014, a3 * 1.98930001, a3 * 0.720200002, a3 * 1.96010005);
-  CGPathAddCurveToPoint(Mutable, 0, a3 * 0.304399997, a3 * 1.83920002, 0.0, a3 * 1.45510006, 0.0, a3 * 0.999800026);
-  CGPathAddCurveToPoint(Mutable, 0, 0.0, a3 * 0.447600007, a3 * 0.447600007, 0.0, a3, 0.0);
-  CGPathAddCurveToPoint(Mutable, 0, a3 * 1.55219996, 0.0, v5, a3 * 0.447600007, v5, a3 * 0.999800026);
-  CGPathAddCurveToPoint(Mutable, 0, v5, a3 * 1.45510006, a3 * 1.69550002, a3 * 1.83920002, a3 * 1.27900004, a3 * 1.96000004);
+  CGPathMoveToPoint(Mutable, 0, radius * 1.27900004, radius * 1.96010005);
+  CGPathAddLineToPoint(Mutable, 0, radius * 1.27900004, radius * 1.96010005);
+  CGPathAddCurveToPoint(Mutable, 0, radius * 1.17630005, radius * 1.98930001, radius * 1.09080005, radius * 2.05649996, radius * 1.04250002, radius * 2.14980006);
+  CGPathAddCurveToPoint(Mutable, 0, radius * 1.02999997, radius * 2.17359996, radius * 1.02199996, radius * 2.19840002, radius * 0.999800026, radius * 2.19840002);
+  CGPathAddCurveToPoint(Mutable, 0, radius * 0.977599978, radius * 2.19849992, radius * 0.969600022, radius * 2.1730001, radius * 0.957099974, radius * 2.14980006);
+  CGPathAddCurveToPoint(Mutable, 0, radius * 0.908699989, radius * 2.05699992, radius * 0.823000014, radius * 1.98930001, radius * 0.720200002, radius * 1.96010005);
+  CGPathAddCurveToPoint(Mutable, 0, radius * 0.304399997, radius * 1.83920002, 0.0, radius * 1.45510006, 0.0, radius * 0.999800026);
+  CGPathAddCurveToPoint(Mutable, 0, 0.0, radius * 0.447600007, radius * 0.447600007, 0.0, radius, 0.0);
+  CGPathAddCurveToPoint(Mutable, 0, radius * 1.55219996, 0.0, v5, radius * 0.447600007, v5, radius * 0.999800026);
+  CGPathAddCurveToPoint(Mutable, 0, v5, radius * 1.45510006, radius * 1.69550002, radius * 1.83920002, radius * 1.27900004, radius * 1.96000004);
   CGPathCloseSubpath(Mutable);
   return Mutable;
 }
 
-+ (CGPath)_createPathForBalloonRadius:(double)a3 tailLength:(double)a4
++ (CGPath)_createPathForBalloonRadius:(double)radius tailLength:(double)length
 {
-  v6 = a4 / 6.0;
-  v12 = a3 * 0.38499999;
-  v7 = a4 / 3.0;
+  v6 = length / 6.0;
+  v12 = radius * 0.38499999;
+  v7 = length / 3.0;
   Mutable = CGPathCreateMutable();
-  CGPathMoveToPoint(Mutable, 0, a3 + a3, a3);
-  v9 = a4 * 0.5;
-  CGPathAddCurveToPoint(Mutable, 0, a3 + a3, a3 * 1.5, a3 + a3 - a3 * 0.38499999, a3 + a3 - v7, v7 + a4 * 0.5 + a3, a3 + a3);
-  v10 = a3 + a3 + a4;
-  CGPathAddCurveToPoint(Mutable, 0, v7 + a3, a3 + a3 + v7, v6 + a3, v10, a3, v10);
-  CGPathAddCurveToPoint(Mutable, 0, a3 - v6, v10, a3 - v7, a3 + a3 + v7, a3 - (v9 + v7), a3 + a3);
-  CGPathAddCurveToPoint(Mutable, 0, v12, a3 + a3 - v7, 0.0, a3 * 1.5, 0.0, a3);
-  CGPathAddCurveToPoint(Mutable, 0, 0.0, a3 * 0.448000014, a3 * 0.448000014, 0.0, a3, 0.0);
-  CGPathAddCurveToPoint(Mutable, 0, a3 + a3 - a3 * 0.448000014, 0.0, a3 + a3, a3 * 0.448000014, a3 + a3, a3);
+  CGPathMoveToPoint(Mutable, 0, radius + radius, radius);
+  v9 = length * 0.5;
+  CGPathAddCurveToPoint(Mutable, 0, radius + radius, radius * 1.5, radius + radius - radius * 0.38499999, radius + radius - v7, v7 + length * 0.5 + radius, radius + radius);
+  v10 = radius + radius + length;
+  CGPathAddCurveToPoint(Mutable, 0, v7 + radius, radius + radius + v7, v6 + radius, v10, radius, v10);
+  CGPathAddCurveToPoint(Mutable, 0, radius - v6, v10, radius - v7, radius + radius + v7, radius - (v9 + v7), radius + radius);
+  CGPathAddCurveToPoint(Mutable, 0, v12, radius + radius - v7, 0.0, radius * 1.5, 0.0, radius);
+  CGPathAddCurveToPoint(Mutable, 0, 0.0, radius * 0.448000014, radius * 0.448000014, 0.0, radius, 0.0);
+  CGPathAddCurveToPoint(Mutable, 0, radius + radius - radius * 0.448000014, 0.0, radius + radius, radius * 0.448000014, radius + radius, radius);
   CGPathCloseSubpath(Mutable);
   return Mutable;
 }

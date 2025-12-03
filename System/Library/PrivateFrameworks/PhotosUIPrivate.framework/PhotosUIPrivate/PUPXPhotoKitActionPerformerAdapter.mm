@@ -1,41 +1,41 @@
 @interface PUPXPhotoKitActionPerformerAdapter
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection;
 + (Class)pxActionPerformerClass;
 - (NSString)pxActionType;
-- (PUPXPhotoKitActionPerformerAdapter)initWithActionType:(unint64_t)a3 assets:(id)a4 orAssetsByAssetCollection:(id)a5;
-- (PUPXPhotoKitActionPerformerAdapter)initWithActionType:(unint64_t)a3 assets:(id)a4 orAssetsByAssetCollection:(id)a5 pxActionPerformer:(id)a6;
-- (double)actionPerformerBottomPaddingForPresentingToast:(id)a3;
-- (id)actionPerformerHostViewControllerForPresentingToast:(id)a3;
+- (PUPXPhotoKitActionPerformerAdapter)initWithActionType:(unint64_t)type assets:(id)assets orAssetsByAssetCollection:(id)collection;
+- (PUPXPhotoKitActionPerformerAdapter)initWithActionType:(unint64_t)type assets:(id)assets orAssetsByAssetCollection:(id)collection pxActionPerformer:(id)performer;
+- (double)actionPerformerBottomPaddingForPresentingToast:(id)toast;
+- (id)actionPerformerHostViewControllerForPresentingToast:(id)toast;
 - (unint64_t)actionType;
-- (void)_configureActionPerformer:(id)a3;
+- (void)_configureActionPerformer:(id)performer;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PUPXPhotoKitActionPerformerAdapter
 
-- (double)actionPerformerBottomPaddingForPresentingToast:(id)a3
+- (double)actionPerformerBottomPaddingForPresentingToast:(id)toast
 {
-  v4 = [(PUAssetActionPerformer *)self delegate];
-  [v4 assetActionPerformerBottomPaddingForPresentingToast:self];
+  delegate = [(PUAssetActionPerformer *)self delegate];
+  [delegate assetActionPerformerBottomPaddingForPresentingToast:self];
   v6 = v5;
 
   return v6;
 }
 
-- (id)actionPerformerHostViewControllerForPresentingToast:(id)a3
+- (id)actionPerformerHostViewControllerForPresentingToast:(id)toast
 {
-  v4 = [(PUAssetActionPerformer *)self delegate];
-  v5 = [v4 assetActionPerformerHostViewControllerForPresentingToast:self];
+  delegate = [(PUAssetActionPerformer *)self delegate];
+  v5 = [delegate assetActionPerformerHostViewControllerForPresentingToast:self];
 
   return v5;
 }
 
 - (NSString)pxActionType
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:804 description:{@"Method %s is a responsibility of subclass %@", "-[PUPXPhotoKitActionPerformerAdapter pxActionType]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:804 description:{@"Method %s is a responsibility of subclass %@", "-[PUPXPhotoKitActionPerformerAdapter pxActionType]", v6}];
 
   abort();
 }
@@ -51,33 +51,33 @@
   [(PXPhotoKitAssetActionPerformer *)pxActionPerformer performActionWithCompletionHandler:v3];
 }
 
-- (void)_configureActionPerformer:(id)a3
+- (void)_configureActionPerformer:(id)performer
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = [(PUPhotoKitActionPerformer *)self photosDataSource];
-  v6 = [v5 immutableCopy];
+  photosDataSource = [(PUPhotoKitActionPerformer *)self photosDataSource];
+  immutableCopy = [photosDataSource immutableCopy];
 
-  if (v6)
+  if (immutableCopy)
   {
-    v7 = [objc_alloc(MEMORY[0x1E69C37D0]) initWithImmutablePhotosDataSource:v6 withChange:0];
+    assets2 = [objc_alloc(MEMORY[0x1E69C37D0]) initWithImmutablePhotosDataSource:immutableCopy withChange:0];
     v8 = objc_alloc_init(MEMORY[0x1E69C4580]);
-    v9 = [(PUAssetActionPerformer *)self assetsByAssetCollection];
+    assetsByAssetCollection = [(PUAssetActionPerformer *)self assetsByAssetCollection];
 
-    if (v9)
+    if (assetsByAssetCollection)
     {
-      v10 = [(PUAssetActionPerformer *)self assetsByAssetCollection];
+      assetsByAssetCollection2 = [(PUAssetActionPerformer *)self assetsByAssetCollection];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __64__PUPXPhotoKitActionPerformerAdapter__configureActionPerformer___block_invoke;
       v29[3] = &unk_1E7B7BA50;
       v34 = a2;
-      v30 = v6;
-      v31 = self;
+      v30 = immutableCopy;
+      selfCopy = self;
       v32 = v8;
-      v33 = v7;
-      [v10 enumerateKeysAndObjectsUsingBlock:v29];
+      v33 = assets2;
+      [assetsByAssetCollection2 enumerateKeysAndObjectsUsingBlock:v29];
 
-      v11 = v30;
+      assets = v30;
     }
 
     else
@@ -86,8 +86,8 @@
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v11 = [(PUAssetActionPerformer *)self assets];
-      v15 = [v11 countByEnumeratingWithState:&v25 objects:v35 count:16];
+      assets = [(PUAssetActionPerformer *)self assets];
+      v15 = [assets countByEnumeratingWithState:&v25 objects:v35 count:16];
       if (v15)
       {
         v16 = v15;
@@ -99,37 +99,37 @@
           {
             if (*v26 != v17)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(assets);
             }
 
             v19 = *(*(&v25 + 1) + 8 * i);
-            v20 = [v6 indexPathForAsset:v19 hintIndexPath:0 hintCollection:0];
+            v20 = [immutableCopy indexPathForAsset:v19 hintIndexPath:0 hintCollection:0];
             if (!v20)
             {
               [MEMORY[0x1E696AAA8] currentHandler];
               v21 = v22 = v19;
-              [v21 handleFailureInMethod:v23 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:771 description:{@"Unable to find asset %@ in dataSource %@", v22, v6}];
+              [v21 handleFailureInMethod:v23 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:771 description:{@"Unable to find asset %@ in dataSource %@", v22, immutableCopy}];
             }
 
-            [v7 identifier];
+            [assets2 identifier];
             PXSimpleIndexPathFromIndexPath();
             [v8 addIndexPath:v24];
           }
 
-          v16 = [v11 countByEnumeratingWithState:&v25 objects:v35 count:16];
+          v16 = [assets countByEnumeratingWithState:&v25 objects:v35 count:16];
         }
 
         while (v16);
       }
     }
 
-    v14 = [objc_alloc(MEMORY[0x1E69C45D8]) initWithDataSource:v7 selectedIndexPaths:v8];
+    v14 = [objc_alloc(MEMORY[0x1E69C45D8]) initWithDataSource:assets2 selectedIndexPaths:v8];
   }
 
   else
   {
-    v7 = [(PUAssetActionPerformer *)self assets];
-    v8 = [MEMORY[0x1E69C37D0] dataSourceWithAssets:v7];
+    assets2 = [(PUAssetActionPerformer *)self assets];
+    v8 = [MEMORY[0x1E69C37D0] dataSourceWithAssets:assets2];
     v12 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, objc_msgSend(v8, "numberOfItemsInSection:", 0)}];
     v13 = [MEMORY[0x1E69C4528] indexPathSetWithItemIndexes:v12 dataSourceIdentifier:objc_msgSend(v8 section:{"identifier"), 0}];
     v14 = [objc_alloc(MEMORY[0x1E69C45D8]) initWithDataSource:v8 selectedIndexPaths:v13];
@@ -209,16 +209,16 @@ void __64__PUPXPhotoKitActionPerformerAdapter__configureActionPerformer___block_
   }
 }
 
-- (PUPXPhotoKitActionPerformerAdapter)initWithActionType:(unint64_t)a3 assets:(id)a4 orAssetsByAssetCollection:(id)a5 pxActionPerformer:(id)a6
+- (PUPXPhotoKitActionPerformerAdapter)initWithActionType:(unint64_t)type assets:(id)assets orAssetsByAssetCollection:(id)collection pxActionPerformer:(id)performer
 {
-  v11 = a6;
+  performerCopy = performer;
   v15.receiver = self;
   v15.super_class = PUPXPhotoKitActionPerformerAdapter;
-  v12 = [(PUAssetActionPerformer *)&v15 initWithActionType:a3 assets:a4 orAssetsByAssetCollection:a5];
+  v12 = [(PUAssetActionPerformer *)&v15 initWithActionType:type assets:assets orAssetsByAssetCollection:collection];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_pxActionPerformer, a6);
+    objc_storeStrong(&v12->_pxActionPerformer, performer);
     [(PXPhotoKitAssetActionPerformer *)v13->_pxActionPerformer setDelegate:v13];
     [(PUPXPhotoKitActionPerformerAdapter *)v13 _configureActionPerformer:v13->_pxActionPerformer];
   }
@@ -226,49 +226,49 @@ void __64__PUPXPhotoKitActionPerformerAdapter__configureActionPerformer___block_
   return v13;
 }
 
-- (PUPXPhotoKitActionPerformerAdapter)initWithActionType:(unint64_t)a3 assets:(id)a4 orAssetsByAssetCollection:(id)a5
+- (PUPXPhotoKitActionPerformerAdapter)initWithActionType:(unint64_t)type assets:(id)assets orAssetsByAssetCollection:(id)collection
 {
-  v8 = a5;
-  v9 = a4;
+  collectionCopy = collection;
+  assetsCopy = assets;
   v10 = objc_alloc([objc_opt_class() pxActionPerformerClass]);
-  v11 = [(PUPXPhotoKitActionPerformerAdapter *)self pxActionType];
-  v12 = [v10 initWithActionType:v11];
-  v13 = [(PUPXPhotoKitActionPerformerAdapter *)self initWithActionType:a3 assets:v9 orAssetsByAssetCollection:v8 pxActionPerformer:v12];
+  pxActionType = [(PUPXPhotoKitActionPerformerAdapter *)self pxActionType];
+  v12 = [v10 initWithActionType:pxActionType];
+  v13 = [(PUPXPhotoKitActionPerformerAdapter *)self initWithActionType:type assets:assetsCopy orAssetsByAssetCollection:collectionCopy pxActionPerformer:v12];
 
   return v13;
 }
 
 - (unint64_t)actionType
 {
-  v2 = [(PUPXPhotoKitActionPerformerAdapter *)self pxActionType];
-  v3 = PUAssetActionTypeForPXAssetActionType(v2);
+  pxActionType = [(PUPXPhotoKitActionPerformerAdapter *)self pxActionType];
+  v3 = PUAssetActionTypeForPXAssetActionType(pxActionType);
 
   return v3;
 }
 
 + (Class)pxActionPerformerClass
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PUPhotoKitAssetActionManager.m" lineNumber:800 description:{@"Method %s is a responsibility of subclass %@", "+[PUPXPhotoKitActionPerformerAdapter pxActionPerformerClass]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:800 description:{@"Method %s is a responsibility of subclass %@", "+[PUPXPhotoKitActionPerformerAdapter pxActionPerformerClass]", v6}];
 
   abort();
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 pxActionPerformerClass];
-  if ([v8 providesCanPerformError])
+  collectionCopy = collection;
+  assetCopy = asset;
+  pxActionPerformerClass = [self pxActionPerformerClass];
+  if ([pxActionPerformerClass providesCanPerformError])
   {
-    v9 = [v8 canPerformOnAsset:v7 inAssetCollection:v6 person:0 socialGroup:0 error:0];
+    v9 = [pxActionPerformerClass canPerformOnAsset:assetCopy inAssetCollection:collectionCopy person:0 socialGroup:0 error:0];
   }
 
   else
   {
-    v9 = [v8 canPerformOnAsset:v7 inAssetCollection:v6 person:0 socialGroup:0];
+    v9 = [pxActionPerformerClass canPerformOnAsset:assetCopy inAssetCollection:collectionCopy person:0 socialGroup:0];
   }
 
   v10 = v9;

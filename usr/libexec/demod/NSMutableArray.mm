@@ -1,31 +1,31 @@
 @interface NSMutableArray
-- (BOOL)_addHMACComponent:(id)a3 error:(id *)a4;
+- (BOOL)_addHMACComponent:(id)component error:(id *)error;
 @end
 
 @implementation NSMutableArray
 
-- (BOOL)_addHMACComponent:(id)a3 error:(id *)a4
+- (BOOL)_addHMACComponent:(id)component error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v6 = [a3 _stringForHMAC];
-  if (v6)
+  _stringForHMAC = [component _stringForHMAC];
+  if (_stringForHMAC)
   {
-    [(NSMutableArray *)self addObject:v6];
+    [(NSMutableArray *)self addObject:_stringForHMAC];
   }
 
-  else if (a4)
+  else if (error)
   {
     v9 = NSLocalizedDescriptionKey;
     v10 = @"Cannot encode HMAC component";
     v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-    *a4 = [NSError errorWithDomain:@"AluminiumAuthenticatorErrorDomain" code:1 userInfo:v7];
+    *error = [NSError errorWithDomain:@"AluminiumAuthenticatorErrorDomain" code:1 userInfo:v7];
   }
 
-  return v6 != 0;
+  return _stringForHMAC != 0;
 }
 
 @end

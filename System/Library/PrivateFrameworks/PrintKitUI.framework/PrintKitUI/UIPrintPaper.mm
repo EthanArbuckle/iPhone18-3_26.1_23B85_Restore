@@ -1,25 +1,25 @@
 @interface UIPrintPaper
 + (UIPrintPaper)bestPaperForPageSize:(CGSize)contentSize withPapersFromArray:(NSArray *)paperList;
-+ (id)_defaultPKPaperForOuptutType:(int64_t)a3;
-+ (id)_defaultPaperForOutputType:(int64_t)a3;
-+ (id)_defaultPaperListForOutputType:(int64_t)a3;
-+ (id)_genericPaperListForOutputType:(int64_t)a3;
-+ (id)_readyDocumentPaperListForPrinter:(id)a3 withDuplexMode:(int64_t)a4 contentSize:(CGSize)a5 scaleUpForRoll:(BOOL)a6;
-+ (id)_readyPaperListForPrinter:(id)a3 withDuplexMode:(int64_t)a4 forContentType:(int64_t)a5 contentSize:(CGSize)a6;
-+ (id)bestPaperForPageSize:(CGSize)a3 andContentType:(int64_t)a4 withPapersFromArray:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (CGRect)_printableRectForDuplex:(BOOL)a3;
++ (id)_defaultPKPaperForOuptutType:(int64_t)type;
++ (id)_defaultPaperForOutputType:(int64_t)type;
++ (id)_defaultPaperListForOutputType:(int64_t)type;
++ (id)_genericPaperListForOutputType:(int64_t)type;
++ (id)_readyDocumentPaperListForPrinter:(id)printer withDuplexMode:(int64_t)mode contentSize:(CGSize)size scaleUpForRoll:(BOOL)roll;
++ (id)_readyPaperListForPrinter:(id)printer withDuplexMode:(int64_t)mode forContentType:(int64_t)type contentSize:(CGSize)size;
++ (id)bestPaperForPageSize:(CGSize)size andContentType:(int64_t)type withPapersFromArray:(id)array;
+- (BOOL)isEqual:(id)equal;
+- (CGRect)_printableRectForDuplex:(BOOL)duplex;
 - (CGRect)printRect;
 - (CGRect)printableRect;
 - (CGRect)unAdjustedPrintableRect;
 - (CGSize)paperSize;
 - (CGSize)unAdjustedPaperSize;
-- (id)_initWithPrintKitPaper:(id)a3;
+- (id)_initWithPrintKitPaper:(id)paper;
 - (id)_localizedMediaTypeName;
 - (id)_localizedName;
 - (id)description;
 - (id)mediaType;
-- (void)_updatePKPaper:(id)a3;
+- (void)_updatePKPaper:(id)paper;
 @end
 
 @implementation UIPrintPaper
@@ -30,8 +30,8 @@
   width = contentSize.width;
   v7 = paperList;
   v8 = objc_opt_class();
-  v9 = [v8 generic4x6Paper];
-  [v9 paperSize];
+  generic4x6Paper = [v8 generic4x6Paper];
+  [generic4x6Paper paperSize];
   if (vabdd_f64(width, v10) + vabdd_f64(height, v11) < 1.0)
   {
     v15 = 1;
@@ -39,16 +39,16 @@
 
   else
   {
-    v12 = [v8 generic3_5x5Paper];
-    [v12 paperSize];
+    generic3_5x5Paper = [v8 generic3_5x5Paper];
+    [generic3_5x5Paper paperSize];
     if (vabdd_f64(width, v13) + vabdd_f64(height, v14) >= 1.0)
     {
-      v16 = [v8 genericA6Paper];
-      [v16 paperSize];
+      genericA6Paper = [v8 genericA6Paper];
+      [genericA6Paper paperSize];
       if (vabdd_f64(width, v17) + vabdd_f64(height, v18) >= 1.0)
       {
-        v19 = [v8 genericPRC32KPaper];
-        [v19 paperSize];
+        genericPRC32KPaper = [v8 genericPRC32KPaper];
+        [genericPRC32KPaper paperSize];
         v15 = vabdd_f64(width, v20) + vabdd_f64(height, v21) < 1.0;
       }
 
@@ -64,24 +64,24 @@
     }
   }
 
-  v22 = [a1 bestPaperForPageSize:v15 andContentType:v7 withPapersFromArray:{width, height}];
+  v22 = [self bestPaperForPageSize:v15 andContentType:v7 withPapersFromArray:{width, height}];
 
   return v22;
 }
 
-+ (id)bestPaperForPageSize:(CGSize)a3 andContentType:(int64_t)a4 withPapersFromArray:(id)a5
++ (id)bestPaperForPageSize:(CGSize)size andContentType:(int64_t)type withPapersFromArray:(id)array
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v148 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v122 = a4 & 0xFFFFFFFFFFFFFFFDLL;
-  v9 = [MEMORY[0x277CBEB18] array];
+  arrayCopy = array;
+  v122 = type & 0xFFFFFFFFFFFFFFFDLL;
+  array = [MEMORY[0x277CBEB18] array];
   v135 = 0u;
   v136 = 0u;
   v137 = 0u;
   v138 = 0u;
-  v10 = v8;
+  v10 = arrayCopy;
   v11 = [v10 countByEnumeratingWithState:&v135 objects:v146 count:16];
   v119 = v10;
   if (!v11)
@@ -112,24 +112,24 @@
       }
 
       v19 = *(*(&v135 + 1) + 8 * i);
-      v20 = [v19 pkPaper];
+      pkPaper = [v19 pkPaper];
       [v19 paperSize];
       v22 = v21;
       v24 = v23;
-      if ([v20 isRoll])
+      if ([pkPaper isRoll])
       {
         if (width > 0.0)
         {
-          [v20 paperSize];
-          if ([v20 maxCutLength] == v25)
+          [pkPaper paperSize];
+          if ([pkPaper maxCutLength] == v25)
           {
             v40 = height / width;
             if (v122 == 1)
             {
               [v19 printableRect];
               v44 = v40 * v43;
-              v45 = [v20 topMarginInPoints];
-              v42 = v44 + ([v20 bottomMarginInPoints] + v45);
+              topMarginInPoints = [pkPaper topMarginInPoints];
+              v42 = v44 + ([pkPaper bottomMarginInPoints] + topMarginInPoints);
             }
 
             else
@@ -138,8 +138,8 @@
               v42 = v40 * v41;
             }
 
-            v46 = [v19 pkPaper];
-            v47 = [v46 cutToLength:v42];
+            pkPaper2 = [v19 pkPaper];
+            v47 = [pkPaper2 cutToLength:v42];
             [v19 _updatePKPaper:v47];
 
             goto LABEL_44;
@@ -180,7 +180,7 @@ LABEL_28:
         }
 
 LABEL_39:
-        [v9 addObject:v29];
+        [array addObject:v29];
         v13 = v29;
 LABEL_44:
 
@@ -253,7 +253,7 @@ LABEL_45:
   if (!v13 || v17 > 1.0)
   {
 LABEL_47:
-    v118 = v9;
+    v118 = array;
     v49 = v10;
     v50 = 0;
     do
@@ -324,7 +324,7 @@ LABEL_60:
       v13 = v59;
     }
 
-    v9 = v118;
+    array = v118;
     v10 = v119;
   }
 
@@ -412,17 +412,17 @@ LABEL_82:
     }
   }
 
-  v81 = [v13 mediaType];
-  v82 = v81;
+  mediaType = [v13 mediaType];
+  v82 = mediaType;
   if (v122 == 1)
   {
-    if ([v81 containsString:@"glossy"])
+    if ([mediaType containsString:@"glossy"])
     {
       goto LABEL_127;
     }
 
-    v99 = [v13 mediaType];
-    v100 = [v99 containsString:@"matte"];
+    mediaType2 = [v13 mediaType];
+    v100 = [mediaType2 containsString:@"matte"];
 
     if ((v100 & 1) == 0)
     {
@@ -435,7 +435,7 @@ LABEL_82:
       if (v101)
       {
         v102 = v101;
-        v86 = v9;
+        v86 = array;
         v103 = *v124;
         while (2)
         {
@@ -455,15 +455,15 @@ LABEL_82:
               [v13 paperSize];
               if (v106 == v110 && v108 == v109)
               {
-                v112 = [v89 mediaType];
-                if ([v112 containsString:@"glossy"])
+                mediaType3 = [v89 mediaType];
+                if ([mediaType3 containsString:@"glossy"])
                 {
 
                   goto LABEL_125;
                 }
 
-                v113 = [v89 mediaType];
-                v114 = [v113 containsString:@"matte"];
+                mediaType4 = [v89 mediaType];
+                v114 = [mediaType4 containsString:@"matte"];
 
                 if (v114)
                 {
@@ -485,7 +485,7 @@ LABEL_82:
 LABEL_123:
         v10 = v119;
 LABEL_126:
-        v9 = v86;
+        array = v86;
       }
 
 LABEL_127:
@@ -494,7 +494,7 @@ LABEL_127:
 
   else
   {
-    v83 = [v81 isEqualToString:@"stationery"];
+    v83 = [mediaType isEqualToString:@"stationery"];
 
     if ((v83 & 1) == 0)
     {
@@ -507,7 +507,7 @@ LABEL_127:
       if (v84)
       {
         v85 = v84;
-        v86 = v9;
+        v86 = array;
         v87 = *v128;
 LABEL_93:
         v88 = 0;
@@ -527,8 +527,8 @@ LABEL_93:
             [v13 paperSize];
             if (v91 == v95 && v93 == v94)
             {
-              v97 = [v89 mediaType];
-              v98 = [v97 isEqualToString:@"stationery"];
+              mediaType5 = [v89 mediaType];
+              v98 = [mediaType5 isEqualToString:@"stationery"];
 
               if (v98)
               {
@@ -567,24 +567,24 @@ LABEL_125:
   return v13;
 }
 
-+ (id)_readyPaperListForPrinter:(id)a3 withDuplexMode:(int64_t)a4 forContentType:(int64_t)a5 contentSize:(CGSize)a6
++ (id)_readyPaperListForPrinter:(id)printer withDuplexMode:(int64_t)mode forContentType:(int64_t)type contentSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
+  height = size.height;
+  width = size.width;
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = v10;
-  if ((a5 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  printerCopy = printer;
+  v11 = printerCopy;
+  if ((type & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
-    [v10 papersForPhotoWithSize:{width, height}];
+    [printerCopy papersForPhotoWithSize:{width, height}];
   }
 
   else
   {
-    [v10 papersForDocumentWithSize:a4 != 0 andDuplex:{width, height}];
+    [printerCopy papersForDocumentWithSize:mode != 0 andDuplex:{width, height}];
   }
   v12 = ;
-  v13 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -607,7 +607,7 @@ LABEL_125:
         v19 = *(*(&v23 + 1) + 8 * i);
         v20 = [UIPrintPaper alloc];
         v21 = [(UIPrintPaper *)v20 _initWithPrintKitPaper:v19, v23];
-        [v13 addObject:v21];
+        [array addObject:v21];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -616,20 +616,20 @@ LABEL_125:
     while (v16);
   }
 
-  return v13;
+  return array;
 }
 
-+ (id)_readyDocumentPaperListForPrinter:(id)a3 withDuplexMode:(int64_t)a4 contentSize:(CGSize)a5 scaleUpForRoll:(BOOL)a6
++ (id)_readyDocumentPaperListForPrinter:(id)printer withDuplexMode:(int64_t)mode contentSize:(CGSize)size scaleUpForRoll:(BOOL)roll
 {
-  v6 = a6;
-  height = a5.height;
-  width = a5.width;
+  rollCopy = roll;
+  height = size.height;
+  width = size.width;
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = v10;
-  if (v10)
+  printerCopy = printer;
+  v11 = printerCopy;
+  if (printerCopy)
   {
-    v12 = [v10 papersForDocumentWithSize:v6 scaleUpOnRoll:a4 != 0 andDuplex:{width, height}];
+    v12 = [printerCopy papersForDocumentWithSize:rollCopy scaleUpOnRoll:mode != 0 andDuplex:{width, height}];
   }
 
   else
@@ -637,7 +637,7 @@ LABEL_125:
     v12 = 0;
   }
 
-  v13 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -660,7 +660,7 @@ LABEL_125:
         v19 = *(*(&v23 + 1) + 8 * i);
         v20 = [UIPrintPaper alloc];
         v21 = [(UIPrintPaper *)v20 _initWithPrintKitPaper:v19, v23];
-        [v13 addObject:v21];
+        [array addObject:v21];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -669,10 +669,10 @@ LABEL_125:
     while (v16);
   }
 
-  return v13;
+  return array;
 }
 
-+ (id)_defaultPKPaperForOuptutType:(int64_t)a3
++ (id)_defaultPKPaperForOuptutType:(int64_t)type
 {
   if (!_defaultPKPaperForOuptutType____letterCountries)
   {
@@ -681,10 +681,10 @@ LABEL_125:
     _defaultPKPaperForOuptutType____letterCountries = v4;
   }
 
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v6 objectForKey:*MEMORY[0x277CBE690]];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v7 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
 
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  if ((type & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     if ([v7 isEqualToString:@"JP"])
     {
@@ -695,54 +695,54 @@ LABEL_125:
     {
       [MEMORY[0x277D41098] generic4x6Paper];
     }
-    v8 = ;
+    genericLetterPaper = ;
   }
 
   else if (([_defaultPKPaperForOuptutType____letterCountries containsObject:v7] & 1) != 0 || !v7)
   {
-    v8 = [MEMORY[0x277D41098] genericLetterPaper];
+    genericLetterPaper = [MEMORY[0x277D41098] genericLetterPaper];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D41098] genericA4Paper];
+    genericLetterPaper = [MEMORY[0x277D41098] genericA4Paper];
   }
 
-  v9 = v8;
+  v9 = genericLetterPaper;
 
   return v9;
 }
 
-+ (id)_genericPaperListForOutputType:(int64_t)a3
++ (id)_genericPaperListForOutputType:(int64_t)type
 {
   v30 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_class();
   v5 = v4;
   v6 = MEMORY[0x277CBEA60];
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  if ((type & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
-    v7 = [v4 genericA6Paper];
-    v8 = [v5 generic4x6Paper];
-    v9 = [v5 generic3_5x5Paper];
-    v10 = [v5 genericPRC32KPaper];
-    v11 = [v5 genericHagakiPaper];
+    genericA6Paper = [v4 genericA6Paper];
+    generic4x6Paper = [v5 generic4x6Paper];
+    generic3_5x5Paper = [v5 generic3_5x5Paper];
+    genericPRC32KPaper = [v5 genericPRC32KPaper];
+    genericHagakiPaper = [v5 genericHagakiPaper];
     v12 = [v5 genericBorderlessWithName:@"na_5x7_5x7in"];
     v13 = [v5 genericBorderlessWithName:@"na_govt-letter_8x10in"];
     v14 = [v5 genericBorderlessWithName:@"om_small-photo_100x150mm"];
     v15 = [v5 genericBorderlessWithName:@"om_large-photo_200x300"];
-    v16 = [v6 arrayWithObjects:{v7, v8, v9, v10, v11, v12, v13, v14, v15, 0}];
+    v16 = [v6 arrayWithObjects:{genericA6Paper, generic4x6Paper, generic3_5x5Paper, genericPRC32KPaper, genericHagakiPaper, v12, v13, v14, v15, 0}];
   }
 
   else
   {
-    v7 = [v4 genericA4Paper];
-    v8 = [v5 genericLetterPaper];
-    v9 = [v5 genericLegalPaper];
-    v10 = [v5 genericWithName:@"na_ledger_11x17in"];
-    v11 = [v5 genericWithName:@"iso_a3_297x420mm"];
+    genericA6Paper = [v4 genericA4Paper];
+    generic4x6Paper = [v5 genericLetterPaper];
+    generic3_5x5Paper = [v5 genericLegalPaper];
+    genericPRC32KPaper = [v5 genericWithName:@"na_ledger_11x17in"];
+    genericHagakiPaper = [v5 genericWithName:@"iso_a3_297x420mm"];
     v12 = [v5 genericWithName:@"iso_b5_176x250mm"];
     v13 = [v5 genericWithName:@"jis_b5_182x257mm"];
-    v16 = [v6 arrayWithObjects:{v7, v8, v9, v10, v11, v12, v13, 0}];
+    v16 = [v6 arrayWithObjects:{genericA6Paper, generic4x6Paper, generic3_5x5Paper, genericPRC32KPaper, genericHagakiPaper, v12, v13, 0}];
   }
 
   v17 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v16, "count")}];
@@ -778,10 +778,10 @@ LABEL_125:
   return v17;
 }
 
-+ (id)_defaultPaperListForOutputType:(int64_t)a3
++ (id)_defaultPaperListForOutputType:(int64_t)type
 {
   v21 = *MEMORY[0x277D85DE8];
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  if ((type & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     [MEMORY[0x277D41098] photoPapers];
   }
@@ -791,7 +791,7 @@ LABEL_125:
     [MEMORY[0x277D41098] documentPapers];
   }
   v4 = ;
-  v5 = [UIPrintPaper _defaultPKPaperForOuptutType:a3];
+  v5 = [UIPrintPaper _defaultPKPaperForOuptutType:type];
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
   v16 = 0u;
   v17 = 0u;
@@ -835,57 +835,57 @@ LABEL_125:
   return v6;
 }
 
-+ (id)_defaultPaperForOutputType:(int64_t)a3
++ (id)_defaultPaperForOutputType:(int64_t)type
 {
-  v3 = [UIPrintPaper _defaultPKPaperForOuptutType:a3];
+  v3 = [UIPrintPaper _defaultPKPaperForOuptutType:type];
   v4 = [[UIPrintPaper alloc] _initWithPrintKitPaper:v3];
 
   return v4;
 }
 
-- (id)_initWithPrintKitPaper:(id)a3
+- (id)_initWithPrintKitPaper:(id)paper
 {
-  v4 = a3;
+  paperCopy = paper;
   v8.receiver = self;
   v8.super_class = UIPrintPaper;
   v5 = [(UIPrintPaper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(UIPrintPaper *)v5 setPkPaper:v4];
+    [(UIPrintPaper *)v5 setPkPaper:paperCopy];
     [(UIPrintPaper *)v6 setScalingFactor:1.0];
   }
 
   return v6;
 }
 
-- (void)_updatePKPaper:(id)a3
+- (void)_updatePKPaper:(id)paper
 {
-  v6 = a3;
-  v4 = [(UIPrintPaper *)self pkPaper];
+  paperCopy = paper;
+  pkPaper = [(UIPrintPaper *)self pkPaper];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = paperCopy;
+  if (pkPaper != paperCopy)
   {
-    [(UIPrintPaper *)self setPkPaper:v6];
-    v5 = v6;
+    [(UIPrintPaper *)self setPkPaper:paperCopy];
+    v5 = paperCopy;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(UIPrintPaper *)self pkPaper];
-  v6 = [v4 pkPaper];
+  equalCopy = equal;
+  pkPaper = [(UIPrintPaper *)self pkPaper];
+  pkPaper2 = [equalCopy pkPaper];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(equalCopy) = [pkPaper isEqual:pkPaper2];
+  return equalCopy;
 }
 
 - (CGSize)paperSize
 {
-  v3 = [(UIPrintPaper *)self pkPaper];
-  [v3 paperSize];
+  pkPaper = [(UIPrintPaper *)self pkPaper];
+  [pkPaper paperSize];
   v5 = v4;
   v7 = v6;
 
@@ -893,8 +893,8 @@ LABEL_125:
   v9 = v5 / v8;
   [(UIPrintPaper *)self scalingFactor];
   v11 = v7 / v10;
-  v12 = [(UIPrintPaper *)self paperOrientation];
-  if (v12)
+  paperOrientation = [(UIPrintPaper *)self paperOrientation];
+  if (paperOrientation)
   {
     v13 = v11;
   }
@@ -904,7 +904,7 @@ LABEL_125:
     v13 = v9;
   }
 
-  if (v12)
+  if (paperOrientation)
   {
     v14 = v9;
   }
@@ -921,8 +921,8 @@ LABEL_125:
 
 - (CGSize)unAdjustedPaperSize
 {
-  v3 = [(UIPrintPaper *)self pkPaper];
-  [v3 paperSize];
+  pkPaper = [(UIPrintPaper *)self pkPaper];
+  [pkPaper paperSize];
   v5 = v4;
   v7 = v6;
 
@@ -938,8 +938,8 @@ LABEL_125:
 
 - (CGRect)unAdjustedPrintableRect
 {
-  v2 = [(UIPrintPaper *)self pkPaper];
-  [v2 imageableAreaRect];
+  pkPaper = [(UIPrintPaper *)self pkPaper];
+  [pkPaper imageableAreaRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -958,34 +958,34 @@ LABEL_125:
 
 - (CGRect)printableRect
 {
-  v3 = [(UIPrintPaper *)self pkPaper];
-  [v3 paperSize];
+  pkPaper = [(UIPrintPaper *)self pkPaper];
+  [pkPaper paperSize];
   v5 = v4;
   [(UIPrintPaper *)self scalingFactor];
   v7 = v6;
-  v8 = [(UIPrintPaper *)self pkPaper];
-  [v8 paperSize];
+  pkPaper2 = [(UIPrintPaper *)self pkPaper];
+  [pkPaper2 paperSize];
   v10 = v9;
   [(UIPrintPaper *)self scalingFactor];
   v12 = v11;
 
-  v13 = [(UIPrintPaper *)self pkPaper];
-  [v13 imageableAreaRect];
+  pkPaper3 = [(UIPrintPaper *)self pkPaper];
+  [pkPaper3 imageableAreaRect];
   v15 = v14;
   [(UIPrintPaper *)self scalingFactor];
   v17 = v15 / v16;
-  v18 = [(UIPrintPaper *)self pkPaper];
-  [v18 imageableAreaRect];
+  pkPaper4 = [(UIPrintPaper *)self pkPaper];
+  [pkPaper4 imageableAreaRect];
   v20 = v19;
   [(UIPrintPaper *)self scalingFactor];
   v22 = v20 / v21;
-  v23 = [(UIPrintPaper *)self pkPaper];
-  [v23 imageableAreaRect];
+  pkPaper5 = [(UIPrintPaper *)self pkPaper];
+  [pkPaper5 imageableAreaRect];
   v25 = v24;
   [(UIPrintPaper *)self scalingFactor];
   v27 = v25 / v26;
-  v28 = [(UIPrintPaper *)self pkPaper];
-  [v28 imageableAreaRect];
+  pkPaper6 = [(UIPrintPaper *)self pkPaper];
+  [pkPaper6 imageableAreaRect];
   v30 = v29;
   [(UIPrintPaper *)self scalingFactor];
   v32 = v30 / v31;
@@ -1020,15 +1020,15 @@ LABEL_125:
   return result;
 }
 
-- (CGRect)_printableRectForDuplex:(BOOL)a3
+- (CGRect)_printableRectForDuplex:(BOOL)duplex
 {
-  v3 = a3;
+  duplexCopy = duplex;
   [(UIPrintPaper *)self printableRect];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  if (v3)
+  if (duplexCopy)
   {
     [(UIPrintPaper *)self paperSize];
     v14 = v13;
@@ -1092,33 +1092,33 @@ LABEL_125:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(UIPrintPaper *)self pkPaper];
-  v5 = [v3 stringWithFormat:@"<UIPrintPaper:%p %@>", self, v4];
+  pkPaper = [(UIPrintPaper *)self pkPaper];
+  v5 = [v3 stringWithFormat:@"<UIPrintPaper:%p %@>", self, pkPaper];
 
   return v5;
 }
 
 - (id)_localizedName
 {
-  v2 = [(UIPrintPaper *)self pkPaper];
-  v3 = [v2 localizedName];
+  pkPaper = [(UIPrintPaper *)self pkPaper];
+  localizedName = [pkPaper localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (id)_localizedMediaTypeName
 {
-  v2 = [(UIPrintPaper *)self pkPaper];
-  v3 = [v2 mediaTypeName];
+  pkPaper = [(UIPrintPaper *)self pkPaper];
+  mediaTypeName = [pkPaper mediaTypeName];
 
-  return v3;
+  return mediaTypeName;
 }
 
 - (id)mediaType
 {
-  v2 = [(UIPrintPaper *)self pkPaper];
-  v3 = [v2 mediaInfo];
-  v4 = [v3 objectForKeyedSubscript:@"media-type"];
+  pkPaper = [(UIPrintPaper *)self pkPaper];
+  mediaInfo = [pkPaper mediaInfo];
+  v4 = [mediaInfo objectForKeyedSubscript:@"media-type"];
 
   return v4;
 }

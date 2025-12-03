@@ -1,19 +1,19 @@
 @interface SBHImmutableIconGridSizeClassSet
-- (SBHImmutableIconGridSizeClassSet)initWithGridSizeClasses:(id)a3;
-- (SBHImmutableIconGridSizeClassSet)initWithIconGridSizeClassSet:(id)a3;
+- (SBHImmutableIconGridSizeClassSet)initWithGridSizeClasses:(id)classes;
+- (SBHImmutableIconGridSizeClassSet)initWithIconGridSizeClassSet:(id)set;
 @end
 
 @implementation SBHImmutableIconGridSizeClassSet
 
-- (SBHImmutableIconGridSizeClassSet)initWithGridSizeClasses:(id)a3
+- (SBHImmutableIconGridSizeClassSet)initWithGridSizeClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   v9.receiver = self;
   v9.super_class = SBHImmutableIconGridSizeClassSet;
-  v5 = [(SBHIconGridSizeClassSet *)&v9 initWithGridSizeClasses:v4];
+  v5 = [(SBHIconGridSizeClassSet *)&v9 initWithGridSizeClasses:classesCopy];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [classesCopy copy];
     gridSizeClasses = v5->_gridSizeClasses;
     v5->_gridSizeClasses = v6;
   }
@@ -21,16 +21,16 @@
   return v5;
 }
 
-- (SBHImmutableIconGridSizeClassSet)initWithIconGridSizeClassSet:(id)a3
+- (SBHImmutableIconGridSizeClassSet)initWithIconGridSizeClassSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v10.receiver = self;
   v10.super_class = SBHImmutableIconGridSizeClassSet;
-  v5 = [(SBHIconGridSizeClassSet *)&v10 initWithIconGridSizeClassSet:v4];
+  v5 = [(SBHIconGridSizeClassSet *)&v10 initWithIconGridSizeClassSet:setCopy];
   if (v5)
   {
-    v6 = [v4 _removedGridSizeClasses];
-    v7 = [v6 copy];
+    _removedGridSizeClasses = [setCopy _removedGridSizeClasses];
+    v7 = [_removedGridSizeClasses copy];
     removedGridSizeClasses = v5->_removedGridSizeClasses;
     v5->_removedGridSizeClasses = v7;
   }

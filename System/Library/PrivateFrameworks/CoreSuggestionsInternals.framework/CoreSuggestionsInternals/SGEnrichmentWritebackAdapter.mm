@@ -1,30 +1,30 @@
 @interface SGEnrichmentWritebackAdapter
-+ (BOOL)_isEligibleEvent:(id)a3;
-+ (BOOL)_isSupportedEntityType:(int64_t)a3;
-+ (id)_attributeSetForEvent:(id)a3;
-+ (id)_bundleIdentifierFromEvent:(id)a3;
++ (BOOL)_isEligibleEvent:(id)event;
++ (BOOL)_isSupportedEntityType:(int64_t)type;
++ (id)_attributeSetForEvent:(id)event;
++ (id)_bundleIdentifierFromEvent:(id)event;
 + (id)_index;
-- (id)_deleteEventsMatchingEvent:(id)a3 keepingNewerEvents:(BOOL)a4;
-- (id)_deleteEventsMatchingGroupId:(id)a3 fallbackGroupId:(id)a4 olderThanDate:(id)a5;
-- (id)_uniqueIdentifiersMatchingEvent:(id)a3 olderThanDate:(id)a4;
-- (id)_uniqueIdentifiersMatchingGroupId:(id)a3 fallbackGroupId:(id)a4 olderThanDate:(id)a5;
-- (void)addEvent:(id)a3;
-- (void)addEvents:(id)a3;
-- (void)cancelEvents:(id)a3;
-- (void)orphanEvent:(id)a3;
+- (id)_deleteEventsMatchingEvent:(id)event keepingNewerEvents:(BOOL)events;
+- (id)_deleteEventsMatchingGroupId:(id)id fallbackGroupId:(id)groupId olderThanDate:(id)date;
+- (id)_uniqueIdentifiersMatchingEvent:(id)event olderThanDate:(id)date;
+- (id)_uniqueIdentifiersMatchingGroupId:(id)id fallbackGroupId:(id)groupId olderThanDate:(id)date;
+- (void)addEvent:(id)event;
+- (void)addEvents:(id)events;
+- (void)cancelEvents:(id)events;
+- (void)orphanEvent:(id)event;
 @end
 
 @implementation SGEnrichmentWritebackAdapter
 
-- (void)cancelEvents:(id)a3
+- (void)cancelEvents:(id)events
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  eventsCopy = events;
+  v5 = [eventsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -36,7 +36,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventsCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
@@ -47,7 +47,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [eventsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -56,15 +56,15 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addEvents:(id)a3
+- (void)addEvents:(id)events
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  eventsCopy = events;
+  v5 = [eventsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -76,7 +76,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventsCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
@@ -87,7 +87,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [eventsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -96,60 +96,60 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)orphanEvent:(id)a3
+- (void)orphanEvent:(id)event
 {
-  v4 = [(SGEnrichmentWritebackAdapter *)self _deleteEventsMatchingEvent:a3 keepingNewerEvents:0];
+  v4 = [(SGEnrichmentWritebackAdapter *)self _deleteEventsMatchingEvent:event keepingNewerEvents:0];
   [v4 setTimeout:60.0];
-  v3 = [v4 wait];
+  wait = [v4 wait];
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
   v65 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![SGEnrichmentWritebackAdapter _isEligibleEvent:v5])
+  eventCopy = event;
+  if (![SGEnrichmentWritebackAdapter _isEligibleEvent:eventCopy])
   {
     v6 = sgLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138739971;
-      v62 = v5;
+      v62 = eventCopy;
       _os_log_impl(&dword_231E60000, v6, OS_LOG_TYPE_DEFAULT, "addEvent:%{sensitive}@ skipping due to being ineligible", buf, 0xCu);
     }
 
     goto LABEL_39;
   }
 
-  v6 = [SGEnrichmentWritebackAdapter _bundleIdentifierFromEvent:v5];
+  v6 = [SGEnrichmentWritebackAdapter _bundleIdentifierFromEvent:eventCopy];
   if ([v6 isEqualToString:*MEMORY[0x277D021C0]])
   {
-    v7 = [v5 duplicateKey];
-    v8 = [v7 parentKey];
-    v9 = [v8 emailKey];
-    v10 = [v9 messageId];
+    duplicateKey = [eventCopy duplicateKey];
+    parentKey = [duplicateKey parentKey];
+    emailKey = [parentKey emailKey];
+    messageId = [emailKey messageId];
     goto LABEL_8;
   }
 
   if ([v6 isEqualToString:*MEMORY[0x277D021D0]])
   {
-    v7 = [v5 duplicateKey];
-    v8 = [v7 parentKey];
-    v9 = [v8 messageKey];
-    v10 = [v9 uniqueIdentifier];
+    duplicateKey = [eventCopy duplicateKey];
+    parentKey = [duplicateKey parentKey];
+    emailKey = [parentKey messageKey];
+    messageId = [emailKey uniqueIdentifier];
 LABEL_8:
-    v11 = v10;
+    v11 = messageId;
 
     if (v11)
     {
-      v12 = [(SGEnrichmentWritebackAdapter *)self _deleteEventsMatchingEvent:v5 keepingNewerEvents:1];
+      v12 = [(SGEnrichmentWritebackAdapter *)self _deleteEventsMatchingEvent:eventCopy keepingNewerEvents:1];
       [v12 setTimeout:60.0];
-      v13 = [v12 wait];
-      v14 = [v12 result];
+      wait = [v12 wait];
+      result = [v12 result];
 
-      if (v14)
+      if (result)
       {
-        v15 = [v12 result];
-        v16 = [v15 isEqualToNumber:&unk_284749518];
+        result2 = [v12 result];
+        v16 = [result2 isEqualToNumber:&unk_284749518];
 
         if (v16)
         {
@@ -161,21 +161,21 @@ LABEL_8:
           v17 = @"confirm";
         }
 
-        v18 = [(SGEnrichmentWritebackAdapter *)self _uniqueIdentifiersMatchingEvent:v5 olderThanDate:0];
+        v18 = [(SGEnrichmentWritebackAdapter *)self _uniqueIdentifiersMatchingEvent:eventCopy olderThanDate:0];
         [v18 setTimeout:60.0];
-        v19 = [v18 wait];
-        v20 = [v18 error];
+        wait2 = [v18 wait];
+        error = [v18 error];
 
-        if (v20)
+        if (error)
         {
           v21 = sgLogHandle();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
           {
-            v44 = [v18 error];
+            error2 = [v18 error];
             *buf = 138740227;
-            v62 = v5;
+            v62 = eventCopy;
             v63 = 2112;
-            v64 = v44;
+            v64 = error2;
             _os_log_fault_impl(&dword_231E60000, v21, OS_LOG_TYPE_FAULT, "addEvent:%{sensitive}@ bailing because failed to query spotlight for newer events: %@", buf, 0x16u);
           }
 
@@ -188,26 +188,26 @@ LABEL_8:
         }
 
         v55 = v11;
-        v24 = [v18 result];
-        v25 = [v24 count];
+        result3 = [v18 result];
+        v25 = [result3 count];
 
         if (v25)
         {
           v26 = sgLogHandle();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
-            v27 = [v18 result];
+            result4 = [v18 result];
             *buf = 138740227;
-            v62 = v5;
+            v62 = eventCopy;
             v63 = 2117;
-            v64 = v27;
+            v64 = result4;
             _os_log_impl(&dword_231E60000, v26, OS_LOG_TYPE_DEFAULT, "addEvent:%{sensitive}@ bailing because newer events were found in spotlight: %{sensitive}@", buf, 0x16u);
           }
 
           goto LABEL_35;
         }
 
-        v28 = [SGEnrichmentWritebackAdapter _attributeSetForEvent:v5];
+        v28 = [SGEnrichmentWritebackAdapter _attributeSetForEvent:eventCopy];
         v26 = v28;
         if (!v28)
         {
@@ -224,7 +224,7 @@ LABEL_35:
           if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138739971;
-            v62 = v5;
+            v62 = eventCopy;
             _os_log_impl(&dword_231E60000, v43, OS_LOG_TYPE_DEFAULT, "addEvent:%{sensitive}@ bailing because event is not valid for spotlight donation", buf, 0xCu);
           }
 
@@ -232,33 +232,33 @@ LABEL_35:
         }
 
         context = objc_autoreleasePoolPush();
-        v29 = [v5 duplicateKey];
-        v30 = [v29 parentKey];
-        v52 = +[SGEnrichmentWritebackAdapter _isSupportedEntityType:](SGEnrichmentWritebackAdapter, "_isSupportedEntityType:", [v30 entityType]);
+        duplicateKey2 = [eventCopy duplicateKey];
+        parentKey2 = [duplicateKey2 parentKey];
+        v52 = +[SGEnrichmentWritebackAdapter _isSupportedEntityType:](SGEnrichmentWritebackAdapter, "_isSupportedEntityType:", [parentKey2 entityType]);
 
         if (!v52)
         {
-          v47 = [MEMORY[0x277CCA890] currentHandler];
-          v54 = [v5 duplicateKey];
-          v48 = [v54 parentKey];
-          [v47 handleFailureInMethod:a2 object:self file:@"SGEnrichmentWritebackAdapter.m" lineNumber:292 description:{@"unexpected entityType %lld (uniqueIdentifier logic only supports mail and message bundle ID)", objc_msgSend(v48, "entityType")}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          duplicateKey3 = [eventCopy duplicateKey];
+          parentKey3 = [duplicateKey3 parentKey];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"SGEnrichmentWritebackAdapter.m" lineNumber:292 description:{@"unexpected entityType %lld (uniqueIdentifier logic only supports mail and message bundle ID)", objc_msgSend(parentKey3, "entityType")}];
         }
 
         if ([v6 rangeOfString:@"-" options:2]== 0x7FFFFFFFFFFFFFFFLL)
         {
           v31 = objc_alloc(MEMORY[0x277CCACA8]);
-          v32 = [v26 eventGroupIdentifier];
-          v53 = [v31 initWithFormat:@"%@-%@-default-%@-%@", @"CoreSuggestions", @"v3", v32, v6];
+          eventGroupIdentifier = [v26 eventGroupIdentifier];
+          v53 = [v31 initWithFormat:@"%@-%@-default-%@-%@", @"CoreSuggestions", @"v3", eventGroupIdentifier, v6];
 
           objc_autoreleasePoolPop(context);
           v49 = objc_autoreleasePoolPush();
           v33 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"%."];
-          v34 = [v33 invertedSet];
+          invertedSet = [v33 invertedSet];
 
           v60[0] = @"CoreSuggestions";
           v60[1] = @"v3";
           v60[2] = @"default";
-          v35 = [v55 stringByAddingPercentEncodingWithAllowedCharacters:v34];
+          v35 = [v55 stringByAddingPercentEncodingWithAllowedCharacters:invertedSet];
           v60[3] = v35;
           v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:4];
           contexta = [v36 _pas_componentsJoinedByString:@"."];
@@ -273,7 +273,7 @@ LABEL_35:
           v56[1] = 3221225472;
           v56[2] = __41__SGEnrichmentWritebackAdapter_addEvent___block_invoke;
           v56[3] = &unk_2789501E0;
-          v57 = v5;
+          v57 = eventCopy;
           v58 = v38;
           v41 = v38;
           [v39 indexSearchableItems:v40 completionHandler:v56];
@@ -292,7 +292,7 @@ LABEL_38:
         if (os_log_type_enabled(v46, OS_LOG_TYPE_FAULT))
         {
           *buf = 138740227;
-          v62 = v5;
+          v62 = eventCopy;
           v63 = 2114;
           v64 = v6;
           _os_log_fault_impl(&dword_231E60000, v46, OS_LOG_TYPE_FAULT, "addEvent:%{sensitive}@ bailing because bundleIdentifierForUniqueIdentifier contains '-': %{public}@", buf, 0x16u);
@@ -311,11 +311,11 @@ LABEL_38:
         v23 = sgLogHandle();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
         {
-          v45 = [v12 error];
+          error3 = [v12 error];
           *buf = 138740227;
-          v62 = v5;
+          v62 = eventCopy;
           v63 = 2112;
-          v64 = v45;
+          v64 = error3;
           _os_log_fault_impl(&dword_231E60000, v23, OS_LOG_TYPE_FAULT, "addEvent:%{sensitive}@ bailing because deletion timed out or failed: %@", buf, 0x16u);
         }
 
@@ -334,7 +334,7 @@ LABEL_25:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
   {
     *buf = 138739971;
-    v62 = v5;
+    v62 = eventCopy;
     _os_log_fault_impl(&dword_231E60000, v22, OS_LOG_TYPE_FAULT, "addEvent:%{sensitive}@ bailing due to nil messageId", buf, 0xCu);
   }
 
@@ -376,26 +376,26 @@ void __41__SGEnrichmentWritebackAdapter_addEvent___block_invoke(uint64_t a1, voi
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_deleteEventsMatchingEvent:(id)a3 keepingNewerEvents:(BOOL)a4
+- (id)_deleteEventsMatchingEvent:(id)event keepingNewerEvents:(BOOL)events
 {
-  v6 = a3;
-  if (([v6 heuristicUpdatingEnabled] & 1) != 0 && (objc_msgSend(v6, "duplicateKey"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "parentKey"), v8 = objc_claimAutoreleasedReturnValue(), v9 = +[SGEnrichmentWritebackAdapter _isSupportedEntityType:](SGEnrichmentWritebackAdapter, "_isSupportedEntityType:", objc_msgSend(v8, "entityType")), v8, v7, v9))
+  eventCopy = event;
+  if (([eventCopy heuristicUpdatingEnabled] & 1) != 0 && (objc_msgSend(eventCopy, "duplicateKey"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "parentKey"), v8 = objc_claimAutoreleasedReturnValue(), v9 = +[SGEnrichmentWritebackAdapter _isSupportedEntityType:](SGEnrichmentWritebackAdapter, "_isSupportedEntityType:", objc_msgSend(v8, "entityType")), v8, v7, v9))
   {
-    v10 = [v6 duplicateKey];
-    v11 = [v10 pseudoEventKey];
-    v12 = [v11 groupId];
-    v13 = [v6 extraKeyTag];
-    v14 = [v13 value];
-    if (a4)
+    duplicateKey = [eventCopy duplicateKey];
+    pseudoEventKey = [duplicateKey pseudoEventKey];
+    groupId = [pseudoEventKey groupId];
+    extraKeyTag = [eventCopy extraKeyTag];
+    value = [extraKeyTag value];
+    if (events)
     {
-      [v6 creationTimestamp];
+      [eventCopy creationTimestamp];
       v16 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:v15];
-      v17 = [(SGEnrichmentWritebackAdapter *)self _deleteEventsMatchingGroupId:v12 fallbackGroupId:v14 olderThanDate:v16];
+      v17 = [(SGEnrichmentWritebackAdapter *)self _deleteEventsMatchingGroupId:groupId fallbackGroupId:value olderThanDate:v16];
     }
 
     else
     {
-      v17 = [(SGEnrichmentWritebackAdapter *)self _deleteEventsMatchingGroupId:v12 fallbackGroupId:v14 olderThanDate:0];
+      v17 = [(SGEnrichmentWritebackAdapter *)self _deleteEventsMatchingGroupId:groupId fallbackGroupId:value olderThanDate:0];
     }
   }
 
@@ -407,26 +407,26 @@ void __41__SGEnrichmentWritebackAdapter_addEvent___block_invoke(uint64_t a1, voi
   return v17;
 }
 
-- (id)_deleteEventsMatchingGroupId:(id)a3 fallbackGroupId:(id)a4 olderThanDate:(id)a5
+- (id)_deleteEventsMatchingGroupId:(id)id fallbackGroupId:(id)groupId olderThanDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 | v9)
+  idCopy = id;
+  groupIdCopy = groupId;
+  dateCopy = date;
+  if (idCopy | groupIdCopy)
   {
     v12 = objc_opt_new();
-    v13 = [v12 workQueue];
+    workQueue = [v12 workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __91__SGEnrichmentWritebackAdapter__deleteEventsMatchingGroupId_fallbackGroupId_olderThanDate___block_invoke;
     block[3] = &unk_278954AC8;
     block[4] = self;
-    v18 = v8;
-    v19 = v9;
-    v20 = v10;
+    v18 = idCopy;
+    v19 = groupIdCopy;
+    v20 = dateCopy;
     v14 = v12;
     v21 = v14;
-    dispatch_async(v13, block);
+    dispatch_async(workQueue, block);
 
     v15 = v21;
     v11 = v14;
@@ -544,18 +544,18 @@ uint64_t __91__SGEnrichmentWritebackAdapter__deleteEventsMatchingGroupId_fallbac
   return [v2 completeWithResult:v3 error:a2];
 }
 
-- (id)_uniqueIdentifiersMatchingEvent:(id)a3 olderThanDate:(id)a4
+- (id)_uniqueIdentifiersMatchingEvent:(id)event olderThanDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 heuristicUpdatingEnabled])
+  eventCopy = event;
+  dateCopy = date;
+  if ([eventCopy heuristicUpdatingEnabled])
   {
-    v8 = [v6 duplicateKey];
-    v9 = [v8 pseudoEventKey];
-    v10 = [v9 groupId];
-    v11 = [v6 extraKeyTag];
-    v12 = [v11 value];
-    v13 = [(SGEnrichmentWritebackAdapter *)self _uniqueIdentifiersMatchingGroupId:v10 fallbackGroupId:v12 olderThanDate:v7];
+    duplicateKey = [eventCopy duplicateKey];
+    pseudoEventKey = [duplicateKey pseudoEventKey];
+    groupId = [pseudoEventKey groupId];
+    extraKeyTag = [eventCopy extraKeyTag];
+    value = [extraKeyTag value];
+    v13 = [(SGEnrichmentWritebackAdapter *)self _uniqueIdentifiersMatchingGroupId:groupId fallbackGroupId:value olderThanDate:dateCopy];
   }
 
   else
@@ -566,13 +566,13 @@ uint64_t __91__SGEnrichmentWritebackAdapter__deleteEventsMatchingGroupId_fallbac
   return v13;
 }
 
-- (id)_uniqueIdentifiersMatchingGroupId:(id)a3 fallbackGroupId:(id)a4 olderThanDate:(id)a5
+- (id)_uniqueIdentifiersMatchingGroupId:(id)id fallbackGroupId:(id)groupId olderThanDate:(id)date
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7 | v8)
+  idCopy = id;
+  groupIdCopy = groupId;
+  dateCopy = date;
+  if (idCopy | groupIdCopy)
   {
     v35 = objc_opt_new();
     v11 = objc_opt_new();
@@ -583,20 +583,20 @@ uint64_t __91__SGEnrichmentWritebackAdapter__deleteEventsMatchingGroupId_fallbac
 
     [v11 setReason:@"reason:SGEnrichmentWritebackAdapter-1; code:8"];
     v13 = objc_opt_new();
-    if (v7)
+    if (idCopy)
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = spotlightEscaped(v7);
+      v15 = spotlightEscaped(idCopy);
       v16 = [@"kMDItemEventGroupIdentifier == " stringByAppendingString:v15];
       [v13 addObject:v16];
 
       objc_autoreleasePoolPop(v14);
     }
 
-    if (v8)
+    if (groupIdCopy)
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = spotlightEscaped(v8);
+      v18 = spotlightEscaped(groupIdCopy);
       v19 = [@"kMDItemEventGroupIdentifier == " stringByAppendingString:v18];
       [v13 addObject:v19];
 
@@ -605,10 +605,10 @@ uint64_t __91__SGEnrichmentWritebackAdapter__deleteEventsMatchingGroupId_fallbac
 
     v20 = [v13 _pas_componentsJoinedByString:@" || "];
 
-    if (v9)
+    if (dateCopy)
     {
       v21 = objc_alloc(MEMORY[0x277CCACA8]);
-      [v9 timeIntervalSinceReferenceDate];
+      [dateCopy timeIntervalSinceReferenceDate];
       v23 = [v21 initWithFormat:@"(%@) && kMDItemContentCreationDate < %f", v20, v22, v35];
 
       v20 = v23;
@@ -725,38 +725,38 @@ id __96__SGEnrichmentWritebackAdapter__uniqueIdentifiersMatchingGroupId_fallback
   return v6;
 }
 
-+ (id)_attributeSetForEvent:(id)a3
++ (id)_attributeSetForEvent:(id)event
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 attributeSetForEvent];
-  if (!v4)
+  eventCopy = event;
+  attributeSetForEvent = [eventCopy attributeSetForEvent];
+  if (!attributeSetForEvent)
   {
     goto LABEL_20;
   }
 
-  v5 = [SGEnrichmentWritebackAdapter _bundleIdentifierFromEvent:v3];
+  v5 = [SGEnrichmentWritebackAdapter _bundleIdentifierFromEvent:eventCopy];
   if ([v5 isEqualToString:*MEMORY[0x277D021C0]])
   {
-    [v4 setEventSourceBundleIdentifier:@"com.apple.mobilemail"];
-    v6 = [v3 duplicateKey];
-    v7 = [v6 parentKey];
-    v8 = [v7 emailKey];
-    v9 = [v8 messageId];
+    [attributeSetForEvent setEventSourceBundleIdentifier:@"com.apple.mobilemail"];
+    duplicateKey = [eventCopy duplicateKey];
+    parentKey = [duplicateKey parentKey];
+    emailKey = [parentKey emailKey];
+    messageId = [emailKey messageId];
 LABEL_6:
-    v10 = v9;
-    [v4 setEventMessageIdentifier:v9];
+    v10 = messageId;
+    [attributeSetForEvent setEventMessageIdentifier:messageId];
 
     goto LABEL_7;
   }
 
   if ([v5 isEqualToString:*MEMORY[0x277D021D0]])
   {
-    [v4 setEventSourceBundleIdentifier:@"com.apple.MobileSMS"];
-    v6 = [v3 duplicateKey];
-    v7 = [v6 parentKey];
-    v8 = [v7 messageKey];
-    v9 = [v8 uniqueIdentifier];
+    [attributeSetForEvent setEventSourceBundleIdentifier:@"com.apple.MobileSMS"];
+    duplicateKey = [eventCopy duplicateKey];
+    parentKey = [duplicateKey parentKey];
+    emailKey = [parentKey messageKey];
+    messageId = [emailKey uniqueIdentifier];
     goto LABEL_6;
   }
 
@@ -765,8 +765,8 @@ LABEL_7:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = [v3 tags];
-  v12 = [v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  tags = [eventCopy tags];
+  v12 = [tags countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v12)
   {
     v13 = v12;
@@ -777,7 +777,7 @@ LABEL_9:
     {
       if (*v34 != v14)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(tags);
       }
 
       v16 = *(*(&v33 + 1) + 8 * v15);
@@ -788,7 +788,7 @@ LABEL_9:
 
       if (v13 == ++v15)
       {
-        v13 = [v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v13 = [tags countByEnumeratingWithState:&v33 objects:v37 count:16];
         if (v13)
         {
           goto LABEL_9;
@@ -805,41 +805,41 @@ LABEL_9:
       goto LABEL_19;
     }
 
-    v18 = [v17 value];
+    value = [v17 value];
     v19 = SGDelimitedStringsDeserialize();
 
-    v20 = [v19 firstObject];
-    [v4 setAccountIdentifier:v20];
+    firstObject = [v19 firstObject];
+    [attributeSetForEvent setAccountIdentifier:firstObject];
 
-    v21 = [v19 lastObject];
-    [v4 setMailMessageID:v21];
+    lastObject = [v19 lastObject];
+    [attributeSetForEvent setMailMessageID:lastObject];
 
-    v11 = v17;
+    tags = v17;
   }
 
 LABEL_18:
 
 LABEL_19:
-  v22 = [v3 tags];
-  v23 = [v22 _pas_mappedSetWithTransform:&__block_literal_global_98_14628];
-  v24 = [v23 allObjects];
-  [v4 setMailboxIdentifiers:v24];
+  tags2 = [eventCopy tags];
+  v23 = [tags2 _pas_mappedSetWithTransform:&__block_literal_global_98_14628];
+  allObjects = [v23 allObjects];
+  [attributeSetForEvent setMailboxIdentifiers:allObjects];
 
-  v25 = [v3 duplicateKey];
-  v26 = [v25 pseudoEventKey];
-  v27 = [v26 groupId];
-  [v4 setEventGroupIdentifier:v27];
+  duplicateKey2 = [eventCopy duplicateKey];
+  pseudoEventKey = [duplicateKey2 pseudoEventKey];
+  groupId = [pseudoEventKey groupId];
+  [attributeSetForEvent setEventGroupIdentifier:groupId];
 
-  v28 = [v3 extraKeyTag];
-  v29 = [v28 value];
-  [v4 setEventFallbackGroupIdentifier:v29];
+  extraKeyTag = [eventCopy extraKeyTag];
+  value2 = [extraKeyTag value];
+  [attributeSetForEvent setEventFallbackGroupIdentifier:value2];
 
-  v30 = v4;
+  v30 = attributeSetForEvent;
 LABEL_20:
 
   v31 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return attributeSetForEvent;
 }
 
 id __54__SGEnrichmentWritebackAdapter__attributeSetForEvent___block_invoke(uint64_t a1, void *a2)
@@ -858,32 +858,32 @@ id __54__SGEnrichmentWritebackAdapter__attributeSetForEvent___block_invoke(uint6
   return v3;
 }
 
-+ (BOOL)_isEligibleEvent:(id)a3
++ (BOOL)_isEligibleEvent:(id)event
 {
-  v22 = a3;
+  eventCopy = event;
   v23 = objc_autoreleasePoolPush();
   v20 = objc_alloc(MEMORY[0x277CBEB98]);
-  v19 = [MEMORY[0x277D01FA0] extractedFlight];
-  v18 = [MEMORY[0x277D01FA0] extractedHotel];
-  v3 = [MEMORY[0x277D01FA0] extractedFood];
-  v4 = [MEMORY[0x277D01FA0] extractedCarRental];
-  v5 = [MEMORY[0x277D01FA0] extractedTicket];
-  v6 = [MEMORY[0x277D01FA0] extractedMovie];
-  v7 = [MEMORY[0x277D01FA0] extractedAppointment];
-  v8 = [MEMORY[0x277D01FA0] extractedSocial];
-  v9 = [MEMORY[0x277D01FA0] extractedBus];
-  v10 = [MEMORY[0x277D01FA0] extractedBoat];
-  v11 = [MEMORY[0x277D01FA0] extractedTrain];
-  v21 = [v20 initWithObjects:{v19, v18, v3, v4, v5, v6, v7, v8, v9, v10, v11, 0}];
+  extractedFlight = [MEMORY[0x277D01FA0] extractedFlight];
+  extractedHotel = [MEMORY[0x277D01FA0] extractedHotel];
+  extractedFood = [MEMORY[0x277D01FA0] extractedFood];
+  extractedCarRental = [MEMORY[0x277D01FA0] extractedCarRental];
+  extractedTicket = [MEMORY[0x277D01FA0] extractedTicket];
+  extractedMovie = [MEMORY[0x277D01FA0] extractedMovie];
+  extractedAppointment = [MEMORY[0x277D01FA0] extractedAppointment];
+  extractedSocial = [MEMORY[0x277D01FA0] extractedSocial];
+  extractedBus = [MEMORY[0x277D01FA0] extractedBus];
+  extractedBoat = [MEMORY[0x277D01FA0] extractedBoat];
+  extractedTrain = [MEMORY[0x277D01FA0] extractedTrain];
+  v21 = [v20 initWithObjects:{extractedFlight, extractedHotel, extractedFood, extractedCarRental, extractedTicket, extractedMovie, extractedAppointment, extractedSocial, extractedBus, extractedBoat, extractedTrain, 0}];
 
   objc_autoreleasePoolPop(v23);
-  v12 = [v22 duplicateKey];
-  v13 = [v12 parentKey];
-  if ([a1 _isSupportedEntityType:{objc_msgSend(v13, "entityType")}])
+  duplicateKey = [eventCopy duplicateKey];
+  parentKey = [duplicateKey parentKey];
+  if ([self _isSupportedEntityType:{objc_msgSend(parentKey, "entityType")}])
   {
-    v14 = [v22 tags];
+    tags = [eventCopy tags];
     v15 = v21;
-    v16 = [v14 intersectsSet:v21];
+    v16 = [tags intersectsSet:v21];
   }
 
   else
@@ -895,11 +895,11 @@ id __54__SGEnrichmentWritebackAdapter__attributeSetForEvent___block_invoke(uint6
   return v16;
 }
 
-+ (BOOL)_isSupportedEntityType:(int64_t)a3
++ (BOOL)_isSupportedEntityType:(int64_t)type
 {
-  if (a3 != 5)
+  if (type != 5)
   {
-    return a3 == 13;
+    return type == 13;
   }
 
   v8 = v3;
@@ -919,17 +919,17 @@ id __54__SGEnrichmentWritebackAdapter__attributeSetForEvent___block_invoke(uint6
   return 0;
 }
 
-+ (id)_bundleIdentifierFromEvent:(id)a3
++ (id)_bundleIdentifierFromEvent:(id)event
 {
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  eventCopy = event;
   v5 = [v3 alloc];
   v6 = [v5 initWithObjectsAndKeys:{*MEMORY[0x277D021C0], &unk_284749548, *MEMORY[0x277D021D0], &unk_284749560, 0}];
   v7 = MEMORY[0x277CCABB0];
-  v8 = [v4 duplicateKey];
+  duplicateKey = [eventCopy duplicateKey];
 
-  v9 = [v8 parentKey];
-  v10 = [v7 numberWithLongLong:{objc_msgSend(v9, "entityType")}];
+  parentKey = [duplicateKey parentKey];
+  v10 = [v7 numberWithLongLong:{objc_msgSend(parentKey, "entityType")}];
   v11 = [v6 objectForKey:v10];
 
   return v11;

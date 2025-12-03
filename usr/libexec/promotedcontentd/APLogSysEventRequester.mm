@@ -1,6 +1,6 @@
 @interface APLogSysEventRequester
 - (id)protoBuffer;
-- (void)makeDelayedRequest:(double)a3 requestSentHandler:(id)a4 responseCallback:(id)a5;
+- (void)makeDelayedRequest:(double)request requestSentHandler:(id)handler responseCallback:(id)callback;
 @end
 
 @implementation APLogSysEventRequester
@@ -8,34 +8,34 @@
 - (id)protoBuffer
 {
   v3 = objc_alloc_init(APPBLogSysEventRequest);
-  v4 = [(APLegacyMetricRequester *)self logMetadata];
-  [(APPBLogSysEventRequest *)v3 setMetaData:v4];
+  logMetadata = [(APLegacyMetricRequester *)self logMetadata];
+  [(APPBLogSysEventRequest *)v3 setMetaData:logMetadata];
 
   [(APPBLogSysEventRequest *)v3 setEventType:[(APLogSysEventRequester *)self eventType]];
   v5 = objc_alloc_init(APPBClickLocation);
   [(APPBLogSysEventRequest *)v3 setClickLocation:v5];
 
-  v6 = [(APLegacyMetricRequester *)self internalContent];
-  v7 = [v6 transientContent];
-  [v7 clickLocation];
+  internalContent = [(APLegacyMetricRequester *)self internalContent];
+  transientContent = [internalContent transientContent];
+  [transientContent clickLocation];
   v9 = v8;
-  v10 = [(APPBLogSysEventRequest *)v3 clickLocation];
-  [v10 setX:v9];
+  clickLocation = [(APPBLogSysEventRequest *)v3 clickLocation];
+  [clickLocation setX:v9];
 
-  v11 = [(APLegacyMetricRequester *)self internalContent];
-  v12 = [v11 transientContent];
-  [v12 clickLocation];
+  internalContent2 = [(APLegacyMetricRequester *)self internalContent];
+  transientContent2 = [internalContent2 transientContent];
+  [transientContent2 clickLocation];
   v14 = v13;
-  v15 = [(APPBLogSysEventRequest *)v3 clickLocation];
-  [v15 setY:v14];
+  clickLocation2 = [(APPBLogSysEventRequest *)v3 clickLocation];
+  [clickLocation2 setY:v14];
 
   return v3;
 }
 
-- (void)makeDelayedRequest:(double)a3 requestSentHandler:(id)a4 responseCallback:(id)a5
+- (void)makeDelayedRequest:(double)request requestSentHandler:(id)handler responseCallback:(id)callback
 {
-  v8 = a4;
-  v9 = a5;
+  handlerCopy = handler;
+  callbackCopy = callback;
   if (+[APSystemInternal isAppleInternalInstall])
   {
     v10 = [NSUserDefaults alloc];
@@ -50,13 +50,13 @@
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%{public}s Overriding delay to 0 seconds", buf, 0xCu);
       }
 
-      a3 = 0.0;
+      request = 0.0;
     }
   }
 
   v13.receiver = self;
   v13.super_class = APLogSysEventRequester;
-  [(APServerRequester *)&v13 makeDelayedRequest:v8 requestSentHandler:v9 responseCallback:a3];
+  [(APServerRequester *)&v13 makeDelayedRequest:handlerCopy requestSentHandler:callbackCopy responseCallback:request];
 }
 
 @end

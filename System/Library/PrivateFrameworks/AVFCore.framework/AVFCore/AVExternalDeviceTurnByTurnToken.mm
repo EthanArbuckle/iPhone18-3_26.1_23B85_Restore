@@ -1,20 +1,20 @@
 @interface AVExternalDeviceTurnByTurnToken
-- (AVExternalDeviceTurnByTurnToken)initWithExternalDevice:(id)a3;
+- (AVExternalDeviceTurnByTurnToken)initWithExternalDevice:(id)device;
 - (void)dealloc;
 @end
 
 @implementation AVExternalDeviceTurnByTurnToken
 
-- (AVExternalDeviceTurnByTurnToken)initWithExternalDevice:(id)a3
+- (AVExternalDeviceTurnByTurnToken)initWithExternalDevice:(id)device
 {
   v9.receiver = self;
   v9.super_class = AVExternalDeviceTurnByTurnToken;
   v4 = [(AVExternalDeviceTurnByTurnToken *)&v9 init];
   if (v4)
   {
-    v5 = a3;
-    v4->_externalDevice = v5;
-    if ([(AVExternalDevice *)v5 figEndpoint])
+    deviceCopy = device;
+    v4->_externalDevice = deviceCopy;
+    if ([(AVExternalDevice *)deviceCopy figEndpoint])
     {
       CMBaseObject = FigEndpointGetCMBaseObject();
       v7 = *(*(CMBaseObjectGetVTable() + 8) + 56);

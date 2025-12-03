@@ -1,22 +1,22 @@
 @interface MFComposeFromView
 + (id)log;
 - (ECEmailAddressConvertible)selectedAddress;
-- (MFComposeFromView)initWithFrame:(CGRect)a3;
+- (MFComposeFromView)initWithFrame:(CGRect)frame;
 - (MFPopupButton)popupButton;
 - (NSArray)availableAddresses;
 - (NSArray)deferredAddresses;
-- (id)_buttonItemWithAddress:(void *)a1;
-- (id)_hideMyEmailButtonItemWithAddress:(uint64_t)a1;
-- (id)menuForPopupButton:(id)a3;
+- (id)_buttonItemWithAddress:(void *)address;
+- (id)_hideMyEmailButtonItemWithAddress:(uint64_t)address;
+- (id)menuForPopupButton:(id)button;
 - (void)didMoveToWindow;
-- (void)popupButton:(id)a3 didSelectItem:(id)a4;
-- (void)popupButtonWillPresentMenu:(id)a3 animator:(id)a4;
+- (void)popupButton:(id)button didSelectItem:(id)item;
+- (void)popupButtonWillPresentMenu:(id)menu animator:(id)animator;
 - (void)refreshPreferredContentSize;
-- (void)setAvailableAddresses:(id)a3;
-- (void)setDeferredAddresses:(id)a3;
-- (void)setSelectedAddress:(id)a3;
-- (void)setSelectedAddressToHME:(id)a3;
-- (void)showLoadingState:(BOOL)a3;
+- (void)setAvailableAddresses:(id)addresses;
+- (void)setDeferredAddresses:(id)addresses;
+- (void)setSelectedAddress:(id)address;
+- (void)setSelectedAddressToHME:(id)e;
+- (void)showLoadingState:(BOOL)state;
 @end
 
 @implementation MFComposeFromView
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = __24__MFComposeFromView_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_0 != -1)
   {
     dispatch_once(&log_onceToken_0, block);
@@ -46,11 +46,11 @@ void __24__MFComposeFromView_log__block_invoke(uint64_t a1)
   log_log_0 = v1;
 }
 
-- (MFComposeFromView)initWithFrame:(CGRect)a3
+- (MFComposeFromView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MFComposeFromView;
-  v3 = [(MFComposeFromView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFComposeFromView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -73,25 +73,25 @@ void __24__MFComposeFromView_log__block_invoke(uint64_t a1)
     self->_popupButton = v5;
 
     [(MFPopupButton *)self->_popupButton setOpaque:0];
-    v7 = [objc_opt_class() defaultFont];
-    [(MFPopupButton *)self->_popupButton setFont:v7];
+    defaultFont = [objc_opt_class() defaultFont];
+    [(MFPopupButton *)self->_popupButton setFont:defaultFont];
 
     [(MFPopupButton *)self->_popupButton setDelegate:self];
     [(MFPopupButton *)self->_popupButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MFComposeFromView *)self addSubview:self->_popupButton];
     [(UIView *)self->_popupButton mf_pinToView:self layoutMarginEdges:8 flexibleEdges:2];
     v8 = MEMORY[0x1E696ACD8];
-    v20 = [(MFPopupButton *)self->_popupButton leadingAnchor];
-    v19 = [(MFComposeFromView *)self labelView];
-    v18 = [v19 trailingAnchor];
-    v17 = [v20 constraintEqualToSystemSpacingAfterAnchor:1.0 multiplier:?];
+    leadingAnchor = [(MFPopupButton *)self->_popupButton leadingAnchor];
+    labelView = [(MFComposeFromView *)self labelView];
+    trailingAnchor = [labelView trailingAnchor];
+    v17 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:1.0 multiplier:?];
     v21[0] = v17;
-    v9 = [(MFPopupButton *)self->_popupButton label];
-    v10 = [v9 textLabel];
-    v11 = [v10 firstBaselineAnchor];
-    v12 = [(MFComposeFromView *)self labelView];
-    v13 = [v12 firstBaselineAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13];
+    label = [(MFPopupButton *)self->_popupButton label];
+    textLabel = [label textLabel];
+    firstBaselineAnchor = [textLabel firstBaselineAnchor];
+    labelView2 = [(MFComposeFromView *)self labelView];
+    firstBaselineAnchor2 = [labelView2 firstBaselineAnchor];
+    v14 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
     v21[1] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
     [v8 activateConstraints:v15];
@@ -102,10 +102,10 @@ void __24__MFComposeFromView_log__block_invoke(uint64_t a1)
   return popupButton;
 }
 
-- (id)_buttonItemWithAddress:(void *)a1
+- (id)_buttonItemWithAddress:(void *)address
 {
   v3 = a2;
-  if (a1)
+  if (address)
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:@"HIDE_MY_EMAIL_TITLE" value:&stru_1F3CF3758 table:@"Main"];
@@ -113,23 +113,23 @@ void __24__MFComposeFromView_log__block_invoke(uint64_t a1)
 
     if (v6)
     {
-      [(MFComposeFromView *)a1 _hideMyEmailButtonItemWithAddress:v3];
+      [(MFComposeFromView *)address _hideMyEmailButtonItemWithAddress:v3];
     }
 
     else
     {
       [MFPopupButtonItem itemWithTitle:v3 style:MFAddressHasSafeDomain(v3) ^ 1];
     }
-    a1 = ;
+    address = ;
   }
 
-  return a1;
+  return address;
 }
 
-- (id)_hideMyEmailButtonItemWithAddress:(uint64_t)a1
+- (id)_hideMyEmailButtonItemWithAddress:(uint64_t)address
 {
   v3 = a2;
-  if (a1)
+  if (address)
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:@"HIDE_MY_EMAIL_TITLE" value:&stru_1F3CF3758 table:@"Main"];
@@ -146,14 +146,14 @@ void __24__MFComposeFromView_log__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)showLoadingState:(BOOL)a3
+- (void)showLoadingState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(MFPopupButton *)self->_popupButton label];
-  v6 = v5;
-  if (v3)
+  stateCopy = state;
+  label = [(MFPopupButton *)self->_popupButton label];
+  v6 = label;
+  if (stateCopy)
   {
-    [v5 startAnimating];
+    [label startAnimating];
 
     popupButton = self->_popupButton;
 
@@ -162,7 +162,7 @@ void __24__MFComposeFromView_log__block_invoke(uint64_t a1)
 
   else
   {
-    [v5 stopAnimating];
+    [label stopAnimating];
 
     v8 = self->_popupButton;
 
@@ -175,67 +175,67 @@ void __24__MFComposeFromView_log__block_invoke(uint64_t a1)
   v6.receiver = self;
   v6.super_class = MFComposeFromView;
   [(MFComposeFromView *)&v6 refreshPreferredContentSize];
-  v3 = [MEMORY[0x1E69963A0] sharedFontMetricCache];
-  [v3 ensureCacheIsValid];
+  mEMORY[0x1E69963A0] = [MEMORY[0x1E69963A0] sharedFontMetricCache];
+  [mEMORY[0x1E69963A0] ensureCacheIsValid];
 
-  v4 = [objc_opt_class() defaultFont];
-  v5 = [(MFComposeFromView *)self popupButton];
-  [v5 setFont:v4];
+  defaultFont = [objc_opt_class() defaultFont];
+  popupButton = [(MFComposeFromView *)self popupButton];
+  [popupButton setFont:defaultFont];
 
   [(MFComposeFromView *)self setNeedsLayout];
 }
 
-- (void)setSelectedAddress:(id)a3
+- (void)setSelectedAddress:(id)address
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  addressCopy = address;
+  v7 = addressCopy;
+  if (addressCopy)
   {
-    v5 = [(MFComposeFromView *)self _buttonItemWithAddress:v4];
-    v6 = [(MFComposeFromView *)self popupButton];
-    [v6 setSelectedItem:v5];
+    popupButton2 = [(MFComposeFromView *)self _buttonItemWithAddress:addressCopy];
+    popupButton = [(MFComposeFromView *)self popupButton];
+    [popupButton setSelectedItem:popupButton2];
   }
 
   else
   {
-    v5 = [(MFComposeFromView *)self popupButton];
-    [v5 setSelectedItem:0];
+    popupButton2 = [(MFComposeFromView *)self popupButton];
+    [popupButton2 setSelectedItem:0];
   }
 }
 
-- (void)setSelectedAddressToHME:(id)a3
+- (void)setSelectedAddressToHME:(id)e
 {
-  v5 = [(MFComposeFromView *)self _hideMyEmailButtonItemWithAddress:a3];
-  v4 = [(MFComposeFromView *)self popupButton];
-  [v4 setSelectedItem:v5];
+  v5 = [(MFComposeFromView *)self _hideMyEmailButtonItemWithAddress:e];
+  popupButton = [(MFComposeFromView *)self popupButton];
+  [popupButton setSelectedItem:v5];
 }
 
 - (ECEmailAddressConvertible)selectedAddress
 {
-  v2 = [(MFComposeFromView *)self popupButton];
-  v3 = [v2 selectedItem];
-  v4 = [v3 title];
+  popupButton = [(MFComposeFromView *)self popupButton];
+  selectedItem = [popupButton selectedItem];
+  title = [selectedItem title];
 
-  return v4;
+  return title;
 }
 
-- (void)setAvailableAddresses:(id)a3
+- (void)setAvailableAddresses:(id)addresses
 {
-  v4 = MEMORY[0x1E695E0F0];
-  if (a3)
+  addressesCopy = MEMORY[0x1E695E0F0];
+  if (addresses)
   {
-    v4 = a3;
+    addressesCopy = addresses;
   }
 
-  v5 = v4;
+  v5 = addressesCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__MFComposeFromView_setAvailableAddresses___block_invoke;
   v8[3] = &unk_1E806CCA8;
   v8[4] = self;
   v6 = [v5 ef_map:v8];
-  v7 = [(MFComposeFromView *)self popupButton];
-  [v7 setItems:v6];
+  popupButton = [(MFComposeFromView *)self popupButton];
+  [popupButton setItems:v6];
 }
 
 id __43__MFComposeFromView_setAvailableAddresses___block_invoke(uint64_t a1, void *a2)
@@ -247,30 +247,30 @@ id __43__MFComposeFromView_setAvailableAddresses___block_invoke(uint64_t a1, voi
 
 - (NSArray)availableAddresses
 {
-  v2 = [(MFComposeFromView *)self popupButton];
-  v3 = [v2 items];
-  v4 = [v3 ef_mapSelector:sel_title];
+  popupButton = [(MFComposeFromView *)self popupButton];
+  items = [popupButton items];
+  v4 = [items ef_mapSelector:sel_title];
 
   return v4;
 }
 
-- (void)setDeferredAddresses:(id)a3
+- (void)setDeferredAddresses:(id)addresses
 {
-  v4 = MEMORY[0x1E695E0F0];
-  if (a3)
+  addressesCopy = MEMORY[0x1E695E0F0];
+  if (addresses)
   {
-    v4 = a3;
+    addressesCopy = addresses;
   }
 
-  v5 = v4;
+  v5 = addressesCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__MFComposeFromView_setDeferredAddresses___block_invoke;
   v8[3] = &unk_1E806CCA8;
   v8[4] = self;
   v6 = [v5 ef_map:v8];
-  v7 = [(MFComposeFromView *)self popupButton];
-  [v7 setDeferredItems:v6];
+  popupButton = [(MFComposeFromView *)self popupButton];
+  [popupButton setDeferredItems:v6];
 }
 
 id __42__MFComposeFromView_setDeferredAddresses___block_invoke(uint64_t a1, void *a2)
@@ -282,9 +282,9 @@ id __42__MFComposeFromView_setDeferredAddresses___block_invoke(uint64_t a1, void
 
 - (NSArray)deferredAddresses
 {
-  v2 = [(MFComposeFromView *)self popupButton];
-  v3 = [v2 deferredItems];
-  v4 = [v3 ef_mapSelector:sel_title];
+  popupButton = [(MFComposeFromView *)self popupButton];
+  deferredItems = [popupButton deferredItems];
+  v4 = [deferredItems ef_mapSelector:sel_title];
 
   return v4;
 }
@@ -294,28 +294,28 @@ id __42__MFComposeFromView_setDeferredAddresses___block_invoke(uint64_t a1, void
   v3.receiver = self;
   v3.super_class = MFComposeFromView;
   [(MFComposeFromView *)&v3 didMoveToWindow];
-  v2 = [MEMORY[0x1E699ACD8] sharedInstance];
-  [v2 isAvailable:&__block_literal_global_5];
+  mEMORY[0x1E699ACD8] = [MEMORY[0x1E699ACD8] sharedInstance];
+  [mEMORY[0x1E699ACD8] isAvailable:&__block_literal_global_5];
 }
 
-- (id)menuForPopupButton:(id)a3
+- (id)menuForPopupButton:(id)button
 {
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40__MFComposeFromView_menuForPopupButton___block_invoke;
   v10[3] = &unk_1E806CD18;
   v10[4] = self;
   v5 = [MEMORY[0x1E69DC928] elementWithProvider:v10];
-  [v4 addObject:v5];
+  [array addObject:v5];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __40__MFComposeFromView_menuForPopupButton___block_invoke_3;
   v9[3] = &unk_1E806CD18;
   v9[4] = self;
   v6 = [MEMORY[0x1E69DC928] elementWithProvider:v9];
-  [v4 addObject:v6];
-  v7 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F3CF3758 children:v4];
+  [array addObject:v6];
+  v7 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F3CF3758 children:array];
 
   return v7;
 }
@@ -401,21 +401,21 @@ id __40__MFComposeFromView_menuForPopupButton___block_invoke_46(uint64_t a1, voi
   return v5;
 }
 
-- (void)popupButton:(id)a3 didSelectItem:(id)a4
+- (void)popupButton:(id)button didSelectItem:(id)item
 {
-  v7 = a4;
-  v5 = [(MFComposeFromView *)self delegate];
-  v6 = [v7 popupTitle];
-  [v5 composeFromView:self didSelectAddress:v6];
+  itemCopy = item;
+  delegate = [(MFComposeFromView *)self delegate];
+  popupTitle = [itemCopy popupTitle];
+  [delegate composeFromView:self didSelectAddress:popupTitle];
 }
 
-- (void)popupButtonWillPresentMenu:(id)a3 animator:(id)a4
+- (void)popupButtonWillPresentMenu:(id)menu animator:(id)animator
 {
-  if (a4)
+  if (animator)
   {
-    v5 = [(MFComposeFromView *)self backgroundColor];
-    v6 = [MEMORY[0x1E69DC888] separatorColor];
-    [(MFComposeFromView *)self setBackgroundColor:v6];
+    backgroundColor = [(MFComposeFromView *)self backgroundColor];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+    [(MFComposeFromView *)self setBackgroundColor:separatorColor];
 
     v7 = MEMORY[0x1E69DD250];
     v9[0] = MEMORY[0x1E69E9820];
@@ -423,7 +423,7 @@ id __40__MFComposeFromView_menuForPopupButton___block_invoke_46(uint64_t a1, voi
     v9[2] = __57__MFComposeFromView_popupButtonWillPresentMenu_animator___block_invoke;
     v9[3] = &unk_1E806C520;
     v9[4] = self;
-    v8 = v5;
+    v8 = backgroundColor;
     v10 = v8;
     [v7 animateWithDuration:0x20000 delay:v9 options:0 animations:0.76 completion:0.0];
   }

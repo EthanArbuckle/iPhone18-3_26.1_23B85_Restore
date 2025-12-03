@@ -1,17 +1,17 @@
 @interface SBLineFragment
-+ (id)fragmentWithIndex:(unint64_t)a3 length:(unint64_t)a4 lineWidth:(double)a5;
++ (id)fragmentWithIndex:(unint64_t)index length:(unint64_t)length lineWidth:(double)width;
 - (_NSRange)range;
 - (id)description;
 @end
 
 @implementation SBLineFragment
 
-+ (id)fragmentWithIndex:(unint64_t)a3 length:(unint64_t)a4 lineWidth:(double)a5
++ (id)fragmentWithIndex:(unint64_t)index length:(unint64_t)length lineWidth:(double)width
 {
   v8 = objc_alloc_init(SBLineFragment);
-  [(SBLineFragment *)v8 setIndex:a3];
-  [(SBLineFragment *)v8 setRange:a3, a4];
-  [(SBLineFragment *)v8 setLineWidth:a5];
+  [(SBLineFragment *)v8 setIndex:index];
+  [(SBLineFragment *)v8 setRange:index, length];
+  [(SBLineFragment *)v8 setLineWidth:width];
 
   return v8;
 }

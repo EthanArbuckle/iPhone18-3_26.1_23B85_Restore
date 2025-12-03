@@ -24,55 +24,55 @@
 - (double)pcxHueComponent
 {
   v2 = 0.0;
-  [a1 getHue:&v2 saturation:0 brightness:0 alpha:0];
+  [self getHue:&v2 saturation:0 brightness:0 alpha:0];
   return v2;
 }
 
 - (double)pcxSaturationComponent
 {
   v2 = 0.0;
-  [a1 getHue:0 saturation:&v2 brightness:0 alpha:0];
+  [self getHue:0 saturation:&v2 brightness:0 alpha:0];
   return v2;
 }
 
 - (double)pcxBrightnessComponent
 {
   v2 = 0.0;
-  [a1 getHue:0 saturation:0 brightness:&v2 alpha:0];
+  [self getHue:0 saturation:0 brightness:&v2 alpha:0];
   return v2;
 }
 
 - (double)pcxRedComponent
 {
   v2 = 0.0;
-  [a1 getRed:&v2 green:0 blue:0 alpha:0];
+  [self getRed:&v2 green:0 blue:0 alpha:0];
   return v2;
 }
 
 - (double)pcxGreenComponent
 {
   v2 = 0.0;
-  [a1 getRed:0 green:&v2 blue:0 alpha:0];
+  [self getRed:0 green:&v2 blue:0 alpha:0];
   return v2;
 }
 
 - (double)pcxBlueComponent
 {
   v2 = 0.0;
-  [a1 getRed:0 green:0 blue:&v2 alpha:0];
+  [self getRed:0 green:0 blue:&v2 alpha:0];
   return v2;
 }
 
 - (double)pcxAlphaComponent
 {
   v2 = 0.0;
-  [a1 getRed:0 green:0 blue:0 alpha:&v2];
+  [self getRed:0 green:0 blue:0 alpha:&v2];
   return v2;
 }
 
 - (CGColor)pcxColorUsingColorSpace:()PCXColorAdditions
 {
-  result = CGColorCreateCopyByMatchingToColorSpace(a3, kCGRenderingIntentPerceptual, [a1 CGColor], 0);
+  result = CGColorCreateCopyByMatchingToColorSpace(a3, kCGRenderingIntentPerceptual, [self CGColor], 0);
   if (result)
   {
     v5 = result;
@@ -97,7 +97,7 @@
     +[UIColor(PCXColorAdditions) pcxColorWithSRGBRed:green:blue:alpha:];
   }
 
-  return [a1 pcxColorWithColorSpace:sRGBColorSpace_result components:v7 count:4];
+  return [self pcxColorWithColorSpace:sRGBColorSpace_result components:v7 count:4];
 }
 
 + (uint64_t)pcxColorWithGenericGamma22White:()PCXColorAdditions alpha:
@@ -110,7 +110,7 @@
     +[UIColor(PCXColorAdditions) pcxColorWithGenericGamma22White:alpha:];
   }
 
-  return [a1 pcxColorWithColorSpace:GenericGrayGamma22ColorSpace_result components:v5 count:2];
+  return [self pcxColorWithColorSpace:GenericGrayGamma22ColorSpace_result components:v5 count:2];
 }
 
 + (uint64_t)pcxColorWithCalibratedWhite:()PCXColorAdditions alpha:
@@ -123,7 +123,7 @@
     +[UIColor(PCXColorAdditions) pcxColorWithCalibratedWhite:alpha:];
   }
 
-  return [a1 pcxColorWithColorSpace:CalibratedGray_result components:v5 count:2];
+  return [self pcxColorWithColorSpace:CalibratedGray_result components:v5 count:2];
 }
 
 + (uint64_t)pcxColorWithDeviceWhite:()PCXColorAdditions alpha:
@@ -136,7 +136,7 @@
     +[UIColor(PCXColorAdditions) pcxColorWithDeviceWhite:alpha:];
   }
 
-  return [a1 pcxColorWithColorSpace:DeviceRGB_result components:v5 count:2];
+  return [self pcxColorWithColorSpace:DeviceRGB_result components:v5 count:2];
 }
 
 + (uint64_t)pcxColorWithDeviceRed:()PCXColorAdditions green:blue:alpha:
@@ -151,7 +151,7 @@
     +[UIColor(PCXColorAdditions) pcxColorWithDeviceWhite:alpha:];
   }
 
-  return [a1 pcxColorWithColorSpace:DeviceRGB_result components:v7 count:4];
+  return [self pcxColorWithColorSpace:DeviceRGB_result components:v7 count:4];
 }
 
 + (uint64_t)pcxColorWithDeviceHue:()PCXColorAdditions saturation:brightness:alpha:
@@ -163,7 +163,7 @@
 
   v10 = DeviceRGB_result;
 
-  return [a1 pcxColorWithColorSpace:v10 hue:a2 saturation:a3 brightness:a4 alpha:a5];
+  return [self pcxColorWithColorSpace:v10 hue:a2 saturation:a3 brightness:a4 alpha:a5];
 }
 
 + (uint64_t)pcxColorWithCalibratedRed:()PCXColorAdditions green:blue:alpha:
@@ -178,7 +178,7 @@
     +[UIColor(PCXColorAdditions) pcxColorWithCalibratedRed:green:blue:alpha:];
   }
 
-  return [a1 pcxColorWithColorSpace:CalibratedRGB_result components:v7 count:4];
+  return [self pcxColorWithColorSpace:CalibratedRGB_result components:v7 count:4];
 }
 
 + (uint64_t)pcxColorWithCalibratedHue:()PCXColorAdditions saturation:brightness:alpha:
@@ -190,7 +190,7 @@
 
   v10 = CalibratedRGB_result;
 
-  return [a1 pcxColorWithColorSpace:v10 hue:a2 saturation:a3 brightness:a4 alpha:a5];
+  return [self pcxColorWithColorSpace:v10 hue:a2 saturation:a3 brightness:a4 alpha:a5];
 }
 
 + (uint64_t)pcxColorWithColorSpace:()PCXColorAdditions components:count:
@@ -236,7 +236,7 @@
   v27 = vcvtq_f64_f32(*v25.f32);
   v28 = v25.f32[2];
   v29 = a5;
-  return [a1 pcxColorWithColorSpace:a7 components:&v27 count:4];
+  return [self pcxColorWithColorSpace:a7 components:&v27 count:4];
 }
 
 @end

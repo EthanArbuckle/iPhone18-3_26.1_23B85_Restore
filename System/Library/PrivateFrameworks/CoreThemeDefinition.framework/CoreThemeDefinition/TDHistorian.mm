@@ -1,49 +1,49 @@
 @interface TDHistorian
-- (BOOL)foundDataChangesSinceDate:(id)a3;
-- (TDHistorian)initWithDocument:(id)a3;
-- (id)_updateRecordsWithName:(id)a3 sinceDate:(id)a4;
-- (id)keySpecsForRenditionsRemovedSinceDate:(id)a3;
-- (id)productionsChangedSinceDate:(id)a3 uuidNeedsReset:(BOOL *)a4;
+- (BOOL)foundDataChangesSinceDate:(id)date;
+- (TDHistorian)initWithDocument:(id)document;
+- (id)_updateRecordsWithName:(id)name sinceDate:(id)date;
+- (id)keySpecsForRenditionsRemovedSinceDate:(id)date;
+- (id)productionsChangedSinceDate:(id)date uuidNeedsReset:(BOOL *)reset;
 - (id)productionsWithModifiedAssets;
-- (void)_updateEntryForManagedObject:(id)a3;
-- (void)updateEntriesForManagedObjects:(id)a3;
+- (void)_updateEntryForManagedObject:(id)object;
+- (void)updateEntriesForManagedObjects:(id)objects;
 @end
 
 @implementation TDHistorian
 
-- (id)_updateRecordsWithName:(id)a3 sinceDate:(id)a4
+- (id)_updateRecordsWithName:(id)name sinceDate:(id)date
 {
-  v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"dateOfLastChange > %@", a4];
+  date = [MEMORY[0x277CCAC30] predicateWithFormat:@"dateOfLastChange > %@", date];
   document = self->document;
 
-  return [(CoreThemeDocument *)document objectsForEntity:a3 withPredicate:v6 sortDescriptors:0];
+  return [(CoreThemeDocument *)document objectsForEntity:name withPredicate:date sortDescriptors:0];
 }
 
-- (void)_updateEntryForManagedObject:(id)a3
+- (void)_updateEntryForManagedObject:(id)object
 {
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [a3 dateOfLastChange];
-  if (!v5 || ([v4 timeIntervalSinceDate:v5], v6 > 5.0))
+  date = [MEMORY[0x277CBEAA8] date];
+  dateOfLastChange = [object dateOfLastChange];
+  if (!dateOfLastChange || ([date timeIntervalSinceDate:dateOfLastChange], v6 > 5.0))
   {
-    [a3 setDateOfLastChange:v4];
+    [object setDateOfLastChange:date];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [a3 production];
+      production = [object production];
 
-      [v7 setDateOfLastChange:v4];
+      [production setDateOfLastChange:date];
     }
   }
 }
 
-- (void)updateEntriesForManagedObjects:(id)a3
+- (void)updateEntriesForManagedObjects:(id)objects
 {
-  if ([a3 count])
+  if ([objects count])
   {
     v5 = 0;
     do
     {
-      v6 = [a3 objectAtIndex:v5];
+      v6 = [objects objectAtIndex:v5];
       if (objc_opt_respondsToSelector())
       {
         [(TDHistorian *)self _updateEntryForManagedObject:v6];
@@ -52,11 +52,11 @@
       ++v5;
     }
 
-    while (v5 < [a3 count]);
+    while (v5 < [objects count]);
   }
 }
 
-- (BOOL)foundDataChangesSinceDate:(id)a3
+- (BOOL)foundDataChangesSinceDate:(id)date
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = [(CoreThemeDocument *)self->document allObjectsForEntity:@"ElementProduction" withSortDescriptors:0];
@@ -79,7 +79,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if ([a3 compare:{objc_msgSend(*(*(&v12 + 1) + 8 * v9), "associatedFileModificationDateWithDocument:", self->document)}] == -1)
+        if ([date compare:{objc_msgSend(*(*(&v12 + 1) + 8 * v9), "associatedFileModificationDateWithDocument:", self->document)}] == -1)
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -108,7 +108,7 @@ LABEL_11:
 - (id)productionsWithModifiedAssets
 {
   v35 = *MEMORY[0x277D85DE8];
-  v29 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = [(CoreThemeDocument *)self->document allObjectsForEntity:@"PhotoshopElementProduction" withSortDescriptors:0];
   v30 = 0u;
   v31 = 0u;
@@ -139,8 +139,8 @@ LABEL_11:
           if ([v11 count])
           {
             v12 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"layer" ascending:1];
-            v13 = [v11 allObjects];
-            v14 = [v13 sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v12)}];
+            allObjects = [v11 allObjects];
+            v14 = [allObjects sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v12)}];
             v15 = [objc_msgSend(objc_msgSend(v14 "lastObject")];
           }
 
@@ -157,11 +157,11 @@ LABEL_11:
             v18 = [objc_msgSend(v8 "renditionType")];
             if (v18 == 8 || v18 == 5)
             {
-              v19 = [(CTDPSDPreviewRef *)v10 sliceRowCount];
-              if (!(v19 % [objc_msgSend(v8 "rowCount")]))
+              sliceRowCount = [(CTDPSDPreviewRef *)v10 sliceRowCount];
+              if (!(sliceRowCount % [objc_msgSend(v8 "rowCount")]))
               {
-                v20 = [(CTDPSDPreviewRef *)v10 sliceColumnCount];
-                if (!(v20 % [objc_msgSend(v8 "columnCount")]))
+                sliceColumnCount = [(CTDPSDPreviewRef *)v10 sliceColumnCount];
+                if (!(sliceColumnCount % [objc_msgSend(v8 "columnCount")]))
                 {
                   goto LABEL_20;
                 }
@@ -194,7 +194,7 @@ LABEL_11:
 
 LABEL_19:
             NSLog(&cfstr_NeedToUpdatePr.isa, [objc_msgSend(v8 "asset")]);
-            [v29 addObject:v8];
+            [array addObject:v8];
           }
 
           else if (v15 != v16)
@@ -217,69 +217,69 @@ LABEL_20:
   }
 
   v26 = *MEMORY[0x277D85DE8];
-  return v29;
+  return array;
 }
 
-- (id)productionsChangedSinceDate:(id)a3 uuidNeedsReset:(BOOL *)a4
+- (id)productionsChangedSinceDate:(id)date uuidNeedsReset:(BOOL *)reset
 {
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v8 = objc_alloc_init(MEMORY[0x277CCA8B0]);
-  [v7 addObjectsFromArray:{-[TDHistorian _updateRecordsWithName:sinceDate:](self, "_updateRecordsWithName:sinceDate:", @"ElementProduction", a3)}];
-  if (a4)
+  [array addObjectsFromArray:{-[TDHistorian _updateRecordsWithName:sinceDate:](self, "_updateRecordsWithName:sinceDate:", @"ElementProduction", date)}];
+  if (reset)
   {
-    v9 = *a4 || [v7 count] != 0;
-    *a4 = v9;
+    v9 = *reset || [array count] != 0;
+    *reset = v9;
   }
 
   v10 = [-[CoreThemeDocument allObjectsForEntity:withSortDescriptors:](self->document allObjectsForEntity:@"ElementProduction" withSortDescriptors:{0), "objectEnumerator"}];
-  v11 = [v10 nextObject];
-  if (v11)
+  nextObject = [v10 nextObject];
+  if (nextObject)
   {
-    v12 = v11;
+    nextObject2 = nextObject;
     do
     {
-      if ([v7 containsObject:v12])
+      if ([array containsObject:nextObject2])
       {
         break;
       }
 
       v13 = objc_alloc_init(MEMORY[0x277CCA8B0]);
-      v14 = [v12 associatedFileModificationDateWithDocument:self->document];
-      [a3 timeIntervalSinceReferenceDate];
+      v14 = [nextObject2 associatedFileModificationDateWithDocument:self->document];
+      [date timeIntervalSinceReferenceDate];
       if (v14)
       {
         v16 = v15;
         [v14 timeIntervalSinceReferenceDate];
         if (v17 > v16)
         {
-          [v7 addObject:v12];
+          [array addObject:nextObject2];
         }
       }
 
       [v13 drain];
-      v12 = [v10 nextObject];
+      nextObject2 = [v10 nextObject];
     }
 
-    while (v12);
+    while (nextObject2);
   }
 
   [v8 drain];
-  return v7;
+  return array;
 }
 
-- (id)keySpecsForRenditionsRemovedSinceDate:(id)a3
+- (id)keySpecsForRenditionsRemovedSinceDate:(id)date
 {
-  v3 = [(TDHistorian *)self _updateRecordsWithName:@"RenditionSpec" sinceDate:a3];
+  v3 = [(TDHistorian *)self _updateRecordsWithName:@"RenditionSpec" sinceDate:date];
 
   return [v3 valueForKey:@"keySpec"];
 }
 
-- (TDHistorian)initWithDocument:(id)a3
+- (TDHistorian)initWithDocument:(id)document
 {
   v5.receiver = self;
   v5.super_class = TDHistorian;
   result = [(TDHistorian *)&v5 init];
-  result->document = a3;
+  result->document = document;
   return result;
 }
 

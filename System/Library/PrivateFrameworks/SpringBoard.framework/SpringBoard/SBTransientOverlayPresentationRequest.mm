@@ -1,15 +1,15 @@
 @interface SBTransientOverlayPresentationRequest
-- (SBTransientOverlayPresentationRequest)initWithViewController:(id)a3;
+- (SBTransientOverlayPresentationRequest)initWithViewController:(id)controller;
 - (SBWindowScene)windowScene;
-- (id)_copyWithClass:(Class)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_copyWithClass:(Class)class;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBTransientOverlayPresentationRequest
 
-- (SBTransientOverlayPresentationRequest)initWithViewController:(id)a3
+- (SBTransientOverlayPresentationRequest)initWithViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = SBTransientOverlayPresentationRequest;
   v6 = [(SBTransientOverlayPresentationRequest *)&v9 init];
@@ -18,22 +18,22 @@
   {
     v6->_animated = 1;
     v6->_shouldDismissSiri = 1;
-    objc_storeStrong(&v6->_viewController, a3);
+    objc_storeStrong(&v6->_viewController, controller);
   }
 
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(SBTransientOverlayPresentationRequest *)self _copyWithClass:v4];
 }
 
-- (id)_copyWithClass:(Class)a3
+- (id)_copyWithClass:(Class)class
 {
-  v4 = [[a3 alloc] initWithViewController:self->_viewController];
+  v4 = [[class alloc] initWithViewController:self->_viewController];
   v5 = v4;
   if (v4)
   {

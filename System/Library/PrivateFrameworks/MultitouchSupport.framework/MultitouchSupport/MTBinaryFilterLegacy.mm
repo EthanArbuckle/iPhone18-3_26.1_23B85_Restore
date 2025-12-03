@@ -1,17 +1,17 @@
 @interface MTBinaryFilterLegacy
-- (id)initFromURL:(id)a3 device:(__MTDevice *)a4;
+- (id)initFromURL:(id)l device:(__MTDevice *)device;
 - (id)mtDevice;
 - (void)dealloc;
-- (void)filterFrame:(char *)a3 size:(unsigned int *)a4 maxSize:(unsigned int *)a5 extraFrame:(id)a6;
+- (void)filterFrame:(char *)frame size:(unsigned int *)size maxSize:(unsigned int *)maxSize extraFrame:(id)extraFrame;
 - (void)reset;
 @end
 
 @implementation MTBinaryFilterLegacy
 
-- (id)initFromURL:(id)a3 device:(__MTDevice *)a4
+- (id)initFromURL:(id)l device:(__MTDevice *)device
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  lCopy = l;
   v24.receiver = self;
   v24.super_class = MTBinaryFilterLegacy;
   v11 = [(MTBinaryFilterLegacy *)&v24 init];
@@ -21,22 +21,22 @@
     goto LABEL_18;
   }
 
-  objc_storeStrong(&v11->_bundleURL, a3);
-  v13 = CFBundleCreate(*MEMORY[0x277CBECE8], v10);
+  objc_storeStrong(&v11->_bundleURL, l);
+  v13 = CFBundleCreate(*MEMORY[0x277CBECE8], lCopy);
   cfBundle = v12->_cfBundle;
   v12->_cfBundle = v13;
 
   if (!v12->_cfBundle)
   {
-    if (!a4)
+    if (!device)
     {
       [MTBinaryFilterLegacy initFromURL:device:];
       goto LABEL_19;
     }
 
-    if (a4->var37)
+    if (device->var37)
     {
-      mt_CachePropertiesForDevice(a4);
+      mt_CachePropertiesForDevice(device);
     }
 
     v16 = MTLoggingFramework();
@@ -45,9 +45,9 @@
       goto LABEL_17;
     }
 
-    var13 = a4->var13;
+    var13 = device->var13;
     *buf = 138543618;
-    v26 = v10;
+    v26 = lCopy;
     v27 = 2048;
     v28 = var13;
     v18 = "Could not create bundle %{public}@ (deviceID 0x%llX)";
@@ -56,20 +56,20 @@
     goto LABEL_16;
   }
 
-  objc_storeWeak(&v12->_mtDevice, a4);
+  objc_storeWeak(&v12->_mtDevice, device);
   FunctionPointerForName = CFBundleGetFunctionPointerForName(v12->_cfBundle, @"MTCreateBinaryFilter");
   v12->_createBinaryFilter = FunctionPointerForName;
   if (!FunctionPointerForName)
   {
-    if (!a4)
+    if (!device)
     {
       [MTBinaryFilterLegacy initFromURL:device:];
       goto LABEL_19;
     }
 
-    if (a4->var37)
+    if (device->var37)
     {
-      mt_CachePropertiesForDevice(a4);
+      mt_CachePropertiesForDevice(device);
     }
 
     v16 = MTLoggingFramework();
@@ -78,11 +78,11 @@
       goto LABEL_17;
     }
 
-    v21 = a4->var13;
+    v21 = device->var13;
     *buf = 136446722;
     v26 = "MTCreateBinaryFilter";
     v27 = 2114;
-    v28 = v10;
+    v28 = lCopy;
     v29 = 2048;
     v30 = v21;
     v18 = "Did not find function pointer %{public}s in bundle %{public}@ (deviceID 0x%llX)";
@@ -99,28 +99,28 @@ LABEL_17:
   if (!v12->_legacyFilter)
   {
 LABEL_18:
-    a4 = 0;
+    device = 0;
     goto LABEL_19;
   }
 
-  a4 = v12;
+  device = v12;
 LABEL_19:
 
   v22 = *MEMORY[0x277D85DE8];
-  return a4;
+  return device;
 }
 
-- (void)filterFrame:(char *)a3 size:(unsigned int *)a4 maxSize:(unsigned int *)a5 extraFrame:(id)a6
+- (void)filterFrame:(char *)frame size:(unsigned int *)size maxSize:(unsigned int *)maxSize extraFrame:(id)extraFrame
 {
-  a6;
+  extraFrame;
   legacyFilter = self->_legacyFilter;
   if (legacyFilter)
   {
-    v11 = *a3;
-    (legacyFilter->var1)(legacyFilter, a3, a4, *a5);
-    if (*a3 != v11)
+    v11 = *frame;
+    (legacyFilter->var1)(legacyFilter, frame, size, *maxSize);
+    if (*frame != v11)
     {
-      *a5 = *a4;
+      *maxSize = *size;
     }
   }
 
@@ -133,7 +133,7 @@ LABEL_19:
   v2 = MTLoggingFramework();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
   {
-    v9 = *(a1 + 24);
+    v9 = *(self + 24);
     OUTLINED_FUNCTION_0_0();
     _os_log_impl(v3, v4, v5, v6, v7, 0xCu);
   }

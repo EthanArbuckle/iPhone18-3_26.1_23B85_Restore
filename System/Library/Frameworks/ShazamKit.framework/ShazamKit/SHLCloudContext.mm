@@ -4,7 +4,7 @@
 - (CKContainer)defaultContainer;
 - (CKContainer)manateeContainer;
 - (CKRecordZone)shazamLibraryZone;
-- (id)containerWithScope:(int64_t)a3;
+- (id)containerWithScope:(int64_t)scope;
 @end
 
 @implementation SHLCloudContext
@@ -82,29 +82,29 @@
   return shazamLibraryZone;
 }
 
-- (id)containerWithScope:(int64_t)a3
+- (id)containerWithScope:(int64_t)scope
 {
-  if (a3 == 2)
+  if (scope == 2)
   {
-    v3 = [(SHLCloudContext *)self debugContainer];
+    debugContainer = [(SHLCloudContext *)self debugContainer];
   }
 
-  else if (a3 == 1)
+  else if (scope == 1)
   {
-    v3 = [(SHLCloudContext *)self manateeContainer];
+    debugContainer = [(SHLCloudContext *)self manateeContainer];
   }
 
   else
   {
-    if (a3)
+    if (scope)
     {
       goto LABEL_8;
     }
 
-    v3 = [(SHLCloudContext *)self defaultContainer];
+    debugContainer = [(SHLCloudContext *)self defaultContainer];
   }
 
-  a2 = v3;
+  a2 = debugContainer;
 LABEL_8:
 
   return a2;

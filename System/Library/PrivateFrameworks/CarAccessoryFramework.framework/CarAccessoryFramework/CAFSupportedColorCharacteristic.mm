@@ -2,14 +2,14 @@
 + (void)load;
 - (CAFSupportedColor)supportedColorValue;
 - (id)formattedValue;
-- (void)setSupportedColorValue:(id)a3;
+- (void)setSupportedColorValue:(id)value;
 @end
 
 @implementation CAFSupportedColorCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFSupportedColorCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -17,22 +17,22 @@
 - (CAFSupportedColor)supportedColorValue
 {
   v3 = [CAFSupportedColor alloc];
-  v4 = [(CAFDictionaryCharacteristic *)self dictionaryValue];
-  v5 = [(CAFSupportedColor *)v3 initWithDictionary:v4];
+  dictionaryValue = [(CAFDictionaryCharacteristic *)self dictionaryValue];
+  v5 = [(CAFSupportedColor *)v3 initWithDictionary:dictionaryValue];
 
   return v5;
 }
 
-- (void)setSupportedColorValue:(id)a3
+- (void)setSupportedColorValue:(id)value
 {
-  v4 = [a3 dictionaryRepresentation];
-  [(CAFDictionaryCharacteristic *)self setDictionaryValue:v4];
+  dictionaryRepresentation = [value dictionaryRepresentation];
+  [(CAFDictionaryCharacteristic *)self setDictionaryValue:dictionaryRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFSupportedColorCharacteristic *)self supportedColorValue];
-  v3 = [v2 description];
+  supportedColorValue = [(CAFSupportedColorCharacteristic *)self supportedColorValue];
+  v3 = [supportedColorValue description];
 
   return v3;
 }

@@ -1,25 +1,25 @@
 @interface PluginDiskImageGraphNode
-+ (BOOL)validateWithDictionary:(id)a3 error:(id *)a4;
-- (BOOL)validateAppendedImageWithInfo:(id)a3 error:(id *)a4;
-- (PluginDiskImageGraphNode)initWithDictionary:(id)a3 workDir:(id)a4 error:(id *)a5;
-- (PluginDiskImageGraphNode)initWithPluginName:(id)a3 pluginParams:(id)a4 tag:(id)a5 UUID:(id)a6 parentNode:(id)a7 metadata:(id)a8 isCache:(BOOL)a9;
++ (BOOL)validateWithDictionary:(id)dictionary error:(id *)error;
+- (BOOL)validateAppendedImageWithInfo:(id)info error:(id *)error;
+- (PluginDiskImageGraphNode)initWithDictionary:(id)dictionary workDir:(id)dir error:(id *)error;
+- (PluginDiskImageGraphNode)initWithPluginName:(id)name pluginParams:(id)params tag:(id)tag UUID:(id)d parentNode:(id)node metadata:(id)metadata isCache:(BOOL)cache;
 - (id)URL;
 - (id)toDictionary;
 @end
 
 @implementation PluginDiskImageGraphNode
 
-+ (BOOL)validateWithDictionary:(id)a3 error:(id *)a4
++ (BOOL)validateWithDictionary:(id)dictionary error:(id *)error
 {
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
-  v10.receiver = a1;
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:dictionary];
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___PluginDiskImageGraphNode;
-  if (objc_msgSendSuper2(&v10, sel_validateWithDictionary_error_, v6, a4) && [v6 validateAndPopObjectForKey:@"PluginName" className:objc_opt_class() isOptional:0 error:a4] && objc_msgSend(v6, "validateAndPopObjectForKey:className:isOptional:error:", @"PluginParams", objc_opt_class(), 0, a4))
+  if (objc_msgSendSuper2(&v10, sel_validateWithDictionary_error_, v6, error) && [v6 validateAndPopObjectForKey:@"PluginName" className:objc_opt_class() isOptional:0 error:error] && objc_msgSend(v6, "validateAndPopObjectForKey:className:isOptional:error:", @"PluginParams", objc_opt_class(), 0, error))
   {
     if ([v6 count])
     {
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Validation failed, input contains unexpected data."];
-      v8 = [DIError failWithPOSIXCode:22 verboseInfo:v7 error:a4];
+      v8 = [DIError failWithPOSIXCode:22 verboseInfo:v7 error:error];
     }
 
     else
@@ -36,18 +36,18 @@
   return v8;
 }
 
-- (PluginDiskImageGraphNode)initWithPluginName:(id)a3 pluginParams:(id)a4 tag:(id)a5 UUID:(id)a6 parentNode:(id)a7 metadata:(id)a8 isCache:(BOOL)a9
+- (PluginDiskImageGraphNode)initWithPluginName:(id)name pluginParams:(id)params tag:(id)tag UUID:(id)d parentNode:(id)node metadata:(id)metadata isCache:(BOOL)cache
 {
-  v16 = a3;
-  v17 = a4;
+  nameCopy = name;
+  paramsCopy = params;
   v23.receiver = self;
   v23.super_class = PluginDiskImageGraphNode;
-  v18 = [(DiskImageGraphNode *)&v23 initWithTag:a5 UUID:a6 parentNode:a7 metadata:a8 isCache:a9];
+  v18 = [(DiskImageGraphNode *)&v23 initWithTag:tag UUID:d parentNode:node metadata:metadata isCache:cache];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_pluginName, a3);
-    v20 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:v17 copyItems:1];
+    objc_storeStrong(&v18->_pluginName, name);
+    v20 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:paramsCopy copyItems:1];
     pluginParams = v19->_pluginParams;
     v19->_pluginParams = v20;
   }
@@ -55,64 +55,64 @@
   return v19;
 }
 
-- (PluginDiskImageGraphNode)initWithDictionary:(id)a3 workDir:(id)a4 error:(id *)a5
+- (PluginDiskImageGraphNode)initWithDictionary:(id)dictionary workDir:(id)dir error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([PluginDiskImageGraphNode validateWithDictionary:v8 error:a5])
+  dictionaryCopy = dictionary;
+  dirCopy = dir;
+  if ([PluginDiskImageGraphNode validateWithDictionary:dictionaryCopy error:error])
   {
     v17.receiver = self;
     v17.super_class = PluginDiskImageGraphNode;
-    v10 = [(DiskImageGraphNode *)&v17 initWithDictionary:v8 workDir:v9 error:a5];
+    v10 = [(DiskImageGraphNode *)&v17 initWithDictionary:dictionaryCopy workDir:dirCopy error:error];
     if (v10)
     {
-      v11 = [v8 objectForKeyedSubscript:@"PluginName"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"PluginName"];
       pluginName = v10->_pluginName;
       v10->_pluginName = v11;
 
-      v13 = [v8 objectForKeyedSubscript:@"PluginParams"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"PluginParams"];
       pluginParams = v10->_pluginParams;
       v10->_pluginParams = v13;
     }
 
     self = v10;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)toDictionary
 {
   v8.receiver = self;
   v8.super_class = PluginDiskImageGraphNode;
-  v3 = [(DiskImageGraphNode *)&v8 toDictionary];
-  v4 = [v3 mutableCopy];
+  toDictionary = [(DiskImageGraphNode *)&v8 toDictionary];
+  v4 = [toDictionary mutableCopy];
 
-  v5 = [(PluginDiskImageGraphNode *)self pluginName];
-  [v4 setObject:v5 forKeyedSubscript:@"PluginName"];
+  pluginName = [(PluginDiskImageGraphNode *)self pluginName];
+  [v4 setObject:pluginName forKeyedSubscript:@"PluginName"];
 
-  v6 = [(PluginDiskImageGraphNode *)self pluginParams];
-  [v4 setObject:v6 forKeyedSubscript:@"PluginParams"];
+  pluginParams = [(PluginDiskImageGraphNode *)self pluginParams];
+  [v4 setObject:pluginParams forKeyedSubscript:@"PluginParams"];
 
   return v4;
 }
 
 - (id)URL
 {
-  v3 = [(PluginDiskImageGraphNode *)self pluginName];
-  v4 = [(PluginDiskImageGraphNode *)self pluginParams];
-  v5 = [DIURL newDIURLWithPluginName:v3 params:v4];
+  pluginName = [(PluginDiskImageGraphNode *)self pluginName];
+  pluginParams = [(PluginDiskImageGraphNode *)self pluginParams];
+  v5 = [DIURL newDIURLWithPluginName:pluginName params:pluginParams];
 
   return v5;
 }
 
-- (BOOL)validateAppendedImageWithInfo:(id)a3 error:(id *)a4
+- (BOOL)validateAppendedImageWithInfo:(id)info error:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = *__error();

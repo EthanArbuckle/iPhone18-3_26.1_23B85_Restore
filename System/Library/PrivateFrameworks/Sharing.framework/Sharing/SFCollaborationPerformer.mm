@@ -1,46 +1,46 @@
 @interface SFCollaborationPerformer
 - (SFCollaborationCreationDelegate)creationDelegate;
-- (SFCollaborationPerformer)initWithCollaborationItem:(id)a3 activityType:(id)a4 context:(id)a5;
-- (SFCollaborationPerformer)initWithCollaborationItem:(id)a3 activityType:(id)a4 deviceScreenScale:(double)a5;
+- (SFCollaborationPerformer)initWithCollaborationItem:(id)item activityType:(id)type context:(id)context;
+- (SFCollaborationPerformer)initWithCollaborationItem:(id)item activityType:(id)type deviceScreenScale:(double)scale;
 - (SFCollaborationPerformerDelegate)delegate;
-- (void)_createCollaborationRequestWithCompletionHandler:(id)a3;
-- (void)_createSharingURLForCollaborationRequest:(id)a3;
-- (void)_didCreateCollaborationWithResult:(id)a3;
+- (void)_createCollaborationRequestWithCompletionHandler:(id)handler;
+- (void)_createSharingURLForCollaborationRequest:(id)request;
+- (void)_didCreateCollaborationWithResult:(id)result;
 - (void)_handleSubitemInSharedFolder;
 - (void)_handleUnsharedFolderWithSharedSubitems;
 - (void)_performAfterFolderCheck;
-- (void)_performWithAddParticipantsAllowed:(BOOL)a3;
+- (void)_performWithAddParticipantsAllowed:(BOOL)allowed;
 - (void)cancel;
 - (void)perform;
 @end
 
 @implementation SFCollaborationPerformer
 
-- (SFCollaborationPerformer)initWithCollaborationItem:(id)a3 activityType:(id)a4 deviceScreenScale:(double)a5
+- (SFCollaborationPerformer)initWithCollaborationItem:(id)item activityType:(id)type deviceScreenScale:(double)scale
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  itemCopy = item;
+  typeCopy = type;
   v21.receiver = self;
   v21.super_class = SFCollaborationPerformer;
   v11 = [(SFCollaborationPerformer *)&v21 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_collaborationItem, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_collaborationItem, item);
+    v13 = [typeCopy copy];
     activityType = v12->_activityType;
     v12->_activityType = v13;
 
-    v12->_deviceScreenScale = a5;
+    v12->_deviceScreenScale = scale;
     v12->_requiresParticipants = 0;
     v15 = share_sheet_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v23 = v9;
+      v23 = itemCopy;
       v24 = 2112;
-      v25 = v10;
+      v25 = typeCopy;
       _os_log_impl(&dword_1A9662000, v15, OS_LOG_TYPE_DEFAULT, "New Collaboration Performer for item:%@ activityType:%@", buf, 0x16u);
     }
 
@@ -54,12 +54,12 @@
   return v12;
 }
 
-- (SFCollaborationPerformer)initWithCollaborationItem:(id)a3 activityType:(id)a4 context:(id)a5
+- (SFCollaborationPerformer)initWithCollaborationItem:(id)item activityType:(id)type context:(id)context
 {
-  v8 = a4;
-  v9 = a3;
-  [a5 deviceScreenScale];
-  v10 = [(SFCollaborationPerformer *)self initWithCollaborationItem:v9 activityType:v8 deviceScreenScale:?];
+  typeCopy = type;
+  itemCopy = item;
+  [context deviceScreenScale];
+  v10 = [(SFCollaborationPerformer *)self initWithCollaborationItem:itemCopy activityType:typeCopy deviceScreenScale:?];
 
   return v10;
 }
@@ -83,24 +83,24 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A9662000, v6, OS_LOG_TYPE_DEFAULT, "performing Collaboration Performer:%@", buf, 0xCu);
   }
 
-  v7 = [(SFCollaborationPerformer *)self creationDelegate];
+  creationDelegate = [(SFCollaborationPerformer *)self creationDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     objc_initWeak(buf, self);
-    v9 = [(SFCollaborationPerformer *)self creationDelegate];
-    v10 = [(SFCollaborationPerformer *)self collaborationItem];
+    creationDelegate2 = [(SFCollaborationPerformer *)self creationDelegate];
+    collaborationItem = [(SFCollaborationPerformer *)self collaborationItem];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __35__SFCollaborationPerformer_perform__block_invoke;
     v15[3] = &unk_1E788AE00;
     objc_copyWeak(&v16, buf);
-    [v9 addParticipantsAllowedForCollaborationItem:v10 completionHandler:v15];
+    [creationDelegate2 addParticipantsAllowedForCollaborationItem:collaborationItem completionHandler:v15];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(buf);
@@ -111,10 +111,10 @@
     v11 = share_sheet_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(SFCollaborationPerformer *)self collaborationItem];
-      v13 = [v12 identifier];
+      collaborationItem2 = [(SFCollaborationPerformer *)self collaborationItem];
+      identifier = [collaborationItem2 identifier];
       *buf = 138412290;
-      v18 = v13;
+      selfCopy = identifier;
       _os_log_impl(&dword_1A9662000, v11, OS_LOG_TYPE_DEFAULT, "Collaboration performer for item %@ assuming Add Participants Allowed is true because the creation delegate doesn't implement the delegate function", buf, 0xCu);
     }
 
@@ -152,38 +152,38 @@ void __35__SFCollaborationPerformer_perform__block_invoke_18(uint64_t a1)
   [WeakRetained _performWithAddParticipantsAllowed:*(a1 + 40)];
 }
 
-- (void)_performWithAddParticipantsAllowed:(BOOL)a3
+- (void)_performWithAddParticipantsAllowed:(BOOL)allowed
 {
-  v3 = a3;
+  allowedCopy = allowed;
   v52 = *MEMORY[0x1E69E9840];
-  v5 = [(SFCollaborationPerformer *)self collaborationItem];
-  v6 = [v5 type];
+  collaborationItem = [(SFCollaborationPerformer *)self collaborationItem];
+  type = [collaborationItem type];
 
-  if (v6 == 2)
+  if (type == 2)
   {
-    v7 = [(SFCollaborationPerformer *)self collaborationItem];
-    v8 = [v7 isURLProviderSupported];
+    collaborationItem2 = [(SFCollaborationPerformer *)self collaborationItem];
+    isURLProviderSupported = [collaborationItem2 isURLProviderSupported];
 
     goto LABEL_16;
   }
 
-  v9 = [(SFCollaborationPerformer *)self collaborationItem];
-  v10 = [SFCollaborationUtilities isCollaborationItemPrivateShare:v9];
+  collaborationItem3 = [(SFCollaborationPerformer *)self collaborationItem];
+  v10 = [SFCollaborationUtilities isCollaborationItemPrivateShare:collaborationItem3];
 
-  v11 = [(SFCollaborationPerformer *)self activityType];
-  if ([v11 isEqualToString:@"com.apple.UIKit.activity.Mail"])
+  activityType = [(SFCollaborationPerformer *)self activityType];
+  if ([activityType isEqualToString:@"com.apple.UIKit.activity.Mail"])
   {
   }
 
   else
   {
-    v12 = [(SFCollaborationPerformer *)self activityType];
-    v13 = [v12 isEqualToString:&stru_1F1D30528];
+    activityType2 = [(SFCollaborationPerformer *)self activityType];
+    v13 = [activityType2 isEqualToString:&stru_1F1D30528];
 
     if ((v13 & 1) == 0)
     {
-      v8 = v3 & v10;
-      if (v3 && v10)
+      isURLProviderSupported = allowedCopy & v10;
+      if (allowedCopy && v10)
       {
         goto LABEL_16;
       }
@@ -202,7 +202,7 @@ void __35__SFCollaborationPerformer_perform__block_invoke_18(uint64_t a1)
           v16 = @"YES";
         }
 
-        if (v3)
+        if (allowedCopy)
         {
           v15 = @"NO";
         }
@@ -216,35 +216,35 @@ void __35__SFCollaborationPerformer_perform__block_invoke_18(uint64_t a1)
     }
   }
 
-  v8 = 0;
+  isURLProviderSupported = 0;
 LABEL_16:
-  [(SFCollaborationPerformer *)self setRequiresParticipants:v8];
+  [(SFCollaborationPerformer *)self setRequiresParticipants:isURLProviderSupported];
   v17 = share_sheet_log();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(SFCollaborationPerformer *)self collaborationItem];
-    v19 = [v18 identifier];
-    v20 = [(SFCollaborationPerformer *)self requiresParticipants];
+    collaborationItem4 = [(SFCollaborationPerformer *)self collaborationItem];
+    identifier = [collaborationItem4 identifier];
+    requiresParticipants = [(SFCollaborationPerformer *)self requiresParticipants];
     v21 = @"NO";
-    if (v20)
+    if (requiresParticipants)
     {
       v21 = @"YES";
     }
 
     *buf = 138412546;
-    v49 = v19;
+    v49 = identifier;
     v50 = 2112;
     v51 = v21;
     _os_log_impl(&dword_1A9662000, v17, OS_LOG_TYPE_DEFAULT, "Collaboration performer for item %@ beginning perform with requiresParticipants:%@", buf, 0x16u);
   }
 
-  v22 = [(SFCollaborationPerformer *)self delegate];
+  delegate = [(SFCollaborationPerformer *)self delegate];
   v23 = objc_opt_respondsToSelector();
 
-  v24 = [(SFCollaborationPerformer *)self delegate];
+  delegate2 = [(SFCollaborationPerformer *)self delegate];
   if (v23)
   {
-    [v24 didBeginCreationForCollaborationPerformer:self requiresAddParticipants:{-[SFCollaborationPerformer requiresParticipants](self, "requiresParticipants")}];
+    [delegate2 didBeginCreationForCollaborationPerformer:self requiresAddParticipants:{-[SFCollaborationPerformer requiresParticipants](self, "requiresParticipants")}];
   }
 
   else
@@ -256,57 +256,57 @@ LABEL_16:
       goto LABEL_25;
     }
 
-    v24 = [(SFCollaborationPerformer *)self delegate];
-    [v24 didBeginCreationForCollaborationPerformer:self];
+    delegate2 = [(SFCollaborationPerformer *)self delegate];
+    [delegate2 didBeginCreationForCollaborationPerformer:self];
   }
 
 LABEL_25:
-  v26 = [(SFCollaborationPerformer *)self collaborationItem];
-  v27 = [v26 metadata];
-  if (v27)
+  collaborationItem5 = [(SFCollaborationPerformer *)self collaborationItem];
+  metadata = [collaborationItem5 metadata];
+  if (metadata)
   {
 LABEL_28:
 
     goto LABEL_29;
   }
 
-  v27 = [(SFCollaborationPerformer *)self collaborationItem];
-  v28 = [v27 shareOptions];
-  if (v28)
+  metadata = [(SFCollaborationPerformer *)self collaborationItem];
+  shareOptions = [metadata shareOptions];
+  if (shareOptions)
   {
 
     goto LABEL_28;
   }
 
-  v37 = [(SFCollaborationPerformer *)self collaborationItem];
-  v38 = [v37 metadataLoadError];
-  v39 = v38 == 0;
+  collaborationItem6 = [(SFCollaborationPerformer *)self collaborationItem];
+  metadataLoadError = [collaborationItem6 metadataLoadError];
+  v39 = metadataLoadError == 0;
 
   if (v39)
   {
 LABEL_29:
-    v29 = [(SFCollaborationPerformer *)self collaborationItem];
-    if (![v29 type])
+    collaborationItem7 = [(SFCollaborationPerformer *)self collaborationItem];
+    if (![collaborationItem7 type])
     {
-      v30 = [(SFCollaborationPerformer *)self creationDelegate];
+      creationDelegate = [(SFCollaborationPerformer *)self creationDelegate];
       if (objc_opt_respondsToSelector())
       {
-        v31 = [(SFCollaborationPerformer *)self creationDelegate];
+        creationDelegate2 = [(SFCollaborationPerformer *)self creationDelegate];
         v32 = objc_opt_respondsToSelector();
 
         if (v32)
         {
           objc_initWeak(buf, self);
-          v33 = [(SFCollaborationPerformer *)self collaborationItem];
-          v34 = [v33 fileURL];
+          collaborationItem8 = [(SFCollaborationPerformer *)self collaborationItem];
+          fileURL = [collaborationItem8 fileURL];
 
-          v35 = [(SFCollaborationPerformer *)self creationDelegate];
+          creationDelegate3 = [(SFCollaborationPerformer *)self creationDelegate];
           v46[0] = MEMORY[0x1E69E9820];
           v46[1] = 3221225472;
           v46[2] = __63__SFCollaborationPerformer__performWithAddParticipantsAllowed___block_invoke;
           v46[3] = &unk_1E788AE50;
           objc_copyWeak(&v47, buf);
-          [v35 shareStatusForURL:v34 completionHandler:v46];
+          [creationDelegate3 shareStatusForURL:fileURL completionHandler:v46];
 
           objc_destroyWeak(&v47);
           objc_destroyWeak(buf);
@@ -328,15 +328,15 @@ LABEL_35:
     [(SFCollaborationPerformer *)self _performWithAddParticipantsAllowed:v40];
   }
 
-  v41 = [(SFCollaborationPerformer *)self delegate];
+  delegate3 = [(SFCollaborationPerformer *)self delegate];
   v42 = objc_opt_respondsToSelector();
 
   if (v42)
   {
-    v43 = [(SFCollaborationPerformer *)self delegate];
-    v44 = [(SFCollaborationPerformer *)self collaborationItem];
-    v45 = [v44 metadataLoadError];
-    [v43 didFailCreationForCollaborationPerformer:self error:v45];
+    delegate4 = [(SFCollaborationPerformer *)self delegate];
+    collaborationItem9 = [(SFCollaborationPerformer *)self collaborationItem];
+    metadataLoadError2 = [collaborationItem9 metadataLoadError];
+    [delegate4 didFailCreationForCollaborationPerformer:self error:metadataLoadError2];
   }
 
   [(SFCollaborationPerformer *)self cancel];
@@ -388,13 +388,13 @@ void __63__SFCollaborationPerformer__performWithAddParticipantsAllowed___block_i
   }
 
   objc_initWeak(buf, self);
-  v4 = [(SFCollaborationPerformer *)self creationDelegate];
+  creationDelegate = [(SFCollaborationPerformer *)self creationDelegate];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __67__SFCollaborationPerformer__handleUnsharedFolderWithSharedSubitems__block_invoke;
   v5[3] = &unk_1E788AEF0;
   objc_copyWeak(&v6, buf);
-  [v4 canShareFolderContainingExistingSharedItemsWithCompletionHandler:v5];
+  [creationDelegate canShareFolderContainingExistingSharedItemsWithCompletionHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(buf);
@@ -474,22 +474,22 @@ void __67__SFCollaborationPerformer__handleUnsharedFolderWithSharedSubitems__blo
     _os_log_impl(&dword_1A9662000, v3, OS_LOG_TYPE_DEFAULT, "Collaboration item is a file in a shared folder", buf, 2u);
   }
 
-  v4 = [(SFCollaborationPerformer *)self creationDelegate];
+  creationDelegate = [(SFCollaborationPerformer *)self creationDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(SFCollaborationPerformer *)self creationDelegate];
+    creationDelegate2 = [(SFCollaborationPerformer *)self creationDelegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
       objc_initWeak(buf, self);
-      v7 = [(SFCollaborationPerformer *)self creationDelegate];
+      creationDelegate3 = [(SFCollaborationPerformer *)self creationDelegate];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __56__SFCollaborationPerformer__handleSubitemInSharedFolder__block_invoke;
       v8[3] = &unk_1E788AEF0;
       objc_copyWeak(&v9, buf);
-      [v7 canManageShareForDocumentInSharedFolderWithCompletionHandler:v8];
+      [creationDelegate3 canManageShareForDocumentInSharedFolderWithCompletionHandler:v8];
 
       objc_destroyWeak(&v9);
       objc_destroyWeak(buf);
@@ -520,36 +520,36 @@ void __56__SFCollaborationPerformer__handleSubitemInSharedFolder__block_invoke(u
   }
 }
 
-- (void)_createSharingURLForCollaborationRequest:(id)a3
+- (void)_createSharingURLForCollaborationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_initWeak(&location, self);
   if (![(SFCollaborationPerformer *)self requiresParticipants])
   {
-    v7 = [(SFCollaborationPerformer *)self creationDelegate];
+    creationDelegate = [(SFCollaborationPerformer *)self creationDelegate];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __69__SFCollaborationPerformer__createSharingURLForCollaborationRequest___block_invoke_46;
     v10[3] = &unk_1E788AE78;
     v8 = &v11;
     objc_copyWeak(&v11, &location);
-    [v7 createSharingURLForCollaborationRequest:v4 completionHandler:v10];
+    [creationDelegate createSharingURLForCollaborationRequest:requestCopy completionHandler:v10];
     goto LABEL_5;
   }
 
-  v5 = [(SFCollaborationPerformer *)self creationDelegate];
+  creationDelegate2 = [(SFCollaborationPerformer *)self creationDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SFCollaborationPerformer *)self creationDelegate];
+    creationDelegate = [(SFCollaborationPerformer *)self creationDelegate];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __69__SFCollaborationPerformer__createSharingURLForCollaborationRequest___block_invoke;
     v12[3] = &unk_1E788AE78;
     v8 = &v13;
     objc_copyWeak(&v13, &location);
-    [v7 createSharingURLWithParticipantsForCollaborationRequest:v4 completionHandler:v12];
+    [creationDelegate createSharingURLWithParticipantsForCollaborationRequest:requestCopy completionHandler:v12];
 LABEL_5:
 
     objc_destroyWeak(v8);
@@ -666,27 +666,27 @@ void __52__SFCollaborationPerformer__performAfterFolderCheck__block_invoke_2(uin
   v3 = share_sheet_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SFCollaborationPerformer *)self collaborationItem];
-    v5 = [v4 identifier];
+    collaborationItem = [(SFCollaborationPerformer *)self collaborationItem];
+    identifier = [collaborationItem identifier];
     v8 = 138412290;
-    v9 = v5;
+    v9 = identifier;
     _os_log_impl(&dword_1A9662000, v3, OS_LOG_TYPE_DEFAULT, "Cancel Collaboration creation for collaboration item %@", &v8, 0xCu);
   }
 
   [(SFCollaborationPerformer *)self setDidCancel:1];
   self->_isRunning = 0;
-  v6 = [(SFCollaborationPerformer *)self delegate];
-  [v6 didCancelCreationForCollaborationPerformer:self];
+  delegate = [(SFCollaborationPerformer *)self delegate];
+  [delegate didCancelCreationForCollaborationPerformer:self];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_createCollaborationRequestWithCompletionHandler:(id)a3
+- (void)_createCollaborationRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v5 = [(SFCollaborationPerformer *)self collaborationItem];
-  v6 = [(SFCollaborationPerformer *)self activityType];
+  collaborationItem = [(SFCollaborationPerformer *)self collaborationItem];
+  activityType = [(SFCollaborationPerformer *)self activityType];
   [(SFCollaborationPerformer *)self deviceScreenScale];
   v8 = v7;
   v10[0] = MEMORY[0x1E69E9820];
@@ -694,9 +694,9 @@ void __52__SFCollaborationPerformer__performAfterFolderCheck__block_invoke_2(uin
   v10[2] = __77__SFCollaborationPerformer__createCollaborationRequestWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E788AF40;
   objc_copyWeak(&v12, &location);
-  v9 = v4;
+  v9 = handlerCopy;
   v11 = v9;
-  [SFCollaborationUtilities createCollaborationRequestWithCollaborationItem:v5 activityType:v6 deviceScreenScale:v10 completionHandler:v8];
+  [SFCollaborationUtilities createCollaborationRequestWithCollaborationItem:collaborationItem activityType:activityType deviceScreenScale:v10 completionHandler:v8];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -714,9 +714,9 @@ void __77__SFCollaborationPerformer__createCollaborationRequestWithCompletionHan
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_didCreateCollaborationWithResult:(id)a3
+- (void)_didCreateCollaborationWithResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   if (![(SFCollaborationPerformer *)self didCancel])
   {
     v6 = share_sheet_log();
@@ -726,24 +726,24 @@ void __77__SFCollaborationPerformer__createCollaborationRequestWithCompletionHan
       _os_log_impl(&dword_1A9662000, v6, OS_LOG_TYPE_DEFAULT, "Did create Collaboration", buf, 2u);
     }
 
-    v7 = [v5 sharingURL];
+    sharingURL = [resultCopy sharingURL];
 
-    if (!v7)
+    if (!sharingURL)
     {
       v8 = share_sheet_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        [(SFCollaborationPerformer *)v5 _didCreateCollaborationWithResult:v8];
+        [(SFCollaborationPerformer *)resultCopy _didCreateCollaborationWithResult:v8];
       }
     }
 
     self->_isRunning = 0;
-    objc_storeStrong(&self->_cloudSharingResult, a3);
-    v9 = [(SFCollaborationPerformer *)self collaborationItem];
-    [v9 setCloudSharingResult:v5];
+    objc_storeStrong(&self->_cloudSharingResult, result);
+    collaborationItem = [(SFCollaborationPerformer *)self collaborationItem];
+    [collaborationItem setCloudSharingResult:resultCopy];
 
-    v10 = [(SFCollaborationPerformer *)self delegate];
-    [v10 didFinishCreationForCollaborationPerformer:self];
+    delegate = [(SFCollaborationPerformer *)self delegate];
+    [delegate didFinishCreationForCollaborationPerformer:self];
   }
 
   v11 = gelato_sharing_log();

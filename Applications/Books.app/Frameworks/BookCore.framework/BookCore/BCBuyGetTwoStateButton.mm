@@ -1,6 +1,6 @@
 @interface BCBuyGetTwoStateButton
-- (BCBuyGetTwoStateButton)initWithCoder:(id)a3;
-- (BCBuyGetTwoStateButton)initWithFrame:(CGRect)a3;
+- (BCBuyGetTwoStateButton)initWithCoder:(id)coder;
+- (BCBuyGetTwoStateButton)initWithFrame:(CGRect)frame;
 - (BCBuyGetTwoStateButtonDelegate)delegate;
 - (BOOL)buttonShouldBeReadState;
 - (BOOL)canPreorder;
@@ -13,30 +13,30 @@
 - (BOOL)storeReachable;
 - (BOOL)wasPreordered;
 - (CGRect)alignmentFrame;
-- (CGSize)alignmentSizeThatFits:(CGSize)a3;
+- (CGSize)alignmentSizeThatFits:(CGSize)fits;
 - (id)description;
 - (void)_commonInit;
-- (void)buttonTouched:(id)a3 event:(id)a4;
+- (void)buttonTouched:(id)touched event:(id)event;
 - (void)buyPressed;
 - (void)preorderPressed;
 - (void)pricePressed;
 - (void)readOrProductPressed;
 - (void)resetButtonState;
-- (void)setAlignmentFrame:(CGRect)a3;
-- (void)setAsset:(id)a3;
-- (void)setButtonState:(unint64_t)a3;
-- (void)setProductProfile:(id)a3;
+- (void)setAlignmentFrame:(CGRect)frame;
+- (void)setAsset:(id)asset;
+- (void)setButtonState:(unint64_t)state;
+- (void)setProductProfile:(id)profile;
 - (void)updateButton;
 - (void)updateConfiguration;
 @end
 
 @implementation BCBuyGetTwoStateButton
 
-- (BCBuyGetTwoStateButton)initWithFrame:(CGRect)a3
+- (BCBuyGetTwoStateButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = BCBuyGetTwoStateButton;
-  v3 = [(BCBuyGetTwoStateButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BCBuyGetTwoStateButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -46,11 +46,11 @@
   return v4;
 }
 
-- (BCBuyGetTwoStateButton)initWithCoder:(id)a3
+- (BCBuyGetTwoStateButton)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BCBuyGetTwoStateButton;
-  v3 = [(BCBuyGetTwoStateButton *)&v6 initWithCoder:a3];
+  v3 = [(BCBuyGetTwoStateButton *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -152,16 +152,16 @@
   return result;
 }
 
-- (void)setAlignmentFrame:(CGRect)a3
+- (void)setAlignmentFrame:(CGRect)frame
 {
-  [(BCBuyGetTwoStateButton *)self frameForAlignmentRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(BCBuyGetTwoStateButton *)self frameForAlignmentRect:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 
   [(BCBuyGetTwoStateButton *)self setFrame:?];
 }
 
-- (CGSize)alignmentSizeThatFits:(CGSize)a3
+- (CGSize)alignmentSizeThatFits:(CGSize)fits
 {
-  [(BCBuyGetTwoStateButton *)self sizeThatFits:a3.width, a3.height];
+  [(BCBuyGetTwoStateButton *)self sizeThatFits:fits.width, fits.height];
   CGRectMakeWithSize();
   [(BCBuyGetTwoStateButton *)self alignmentRectForFrame:?];
   v5 = v4;
@@ -209,31 +209,31 @@
   [(BCBuyGetTwoStateButton *)self setButtonState:v3];
 }
 
-- (void)setButtonState:(unint64_t)a3
+- (void)setButtonState:(unint64_t)state
 {
   buttonState = self->_buttonState;
-  if (buttonState != a3)
+  if (buttonState != state)
   {
-    self->_buttonState = a3;
-    v5 = [(BCBuyGetTwoStateButton *)self delegate];
+    self->_buttonState = state;
+    delegate = [(BCBuyGetTwoStateButton *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(BCBuyGetTwoStateButton *)self delegate];
-      [v7 buyButton:self stateDidChange:buttonState];
+      delegate2 = [(BCBuyGetTwoStateButton *)self delegate];
+      [delegate2 buyButton:self stateDidChange:buttonState];
     }
 
     [(BCBuyGetTwoStateButton *)self updateButton];
   }
 }
 
-- (void)buttonTouched:(id)a3 event:(id)a4
+- (void)buttonTouched:(id)touched event:(id)event
 {
-  v5 = [a4 touchesForView:a3];
-  v6 = [v5 anyObject];
+  v5 = [event touchesForView:touched];
+  anyObject = [v5 anyObject];
   lastTouch = self->_lastTouch;
-  self->_lastTouch = v6;
+  self->_lastTouch = anyObject;
 
   if (![(BCBuyGetTwoStateButton *)self buttonState]|| [(BCBuyGetTwoStateButton *)self buttonState]== &dword_0 + 1)
   {
@@ -311,33 +311,33 @@ LABEL_11:
 
 - (void)buyPressed
 {
-  v3 = [(BCBuyGetTwoStateButton *)self buyParameters];
-  if (!v3)
+  buyParameters = [(BCBuyGetTwoStateButton *)self buyParameters];
+  if (!buyParameters)
   {
-    v4 = [(BCBuyGetTwoStateButton *)self asset];
-    if (v4)
+    asset = [(BCBuyGetTwoStateButton *)self asset];
+    if (asset)
     {
-      v5 = [(BCBuyGetTwoStateButton *)self asset];
-      [v5 buyParams];
+      asset2 = [(BCBuyGetTwoStateButton *)self asset];
+      [asset2 buyParams];
     }
 
     else
     {
-      v5 = [(BCBuyGetTwoStateButton *)self productProfile];
-      [v5 buyParameters];
+      asset2 = [(BCBuyGetTwoStateButton *)self productProfile];
+      [asset2 buyParameters];
     }
-    v3 = ;
+    buyParameters = ;
   }
 
   [(BCBuyGetTwoStateButton *)self setButtonState:7];
   objc_initWeak(&location, self);
-  v6 = [(BCBuyGetTwoStateButton *)self delegate];
+  delegate = [(BCBuyGetTwoStateButton *)self delegate];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_163E28;
   v7[3] = &unk_2C9020;
   objc_copyWeak(&v8, &location);
-  [v6 buyButton:self initialBuy:v3 completion:v7];
+  [delegate buyButton:self initialBuy:buyParameters completion:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -346,32 +346,32 @@ LABEL_11:
 - (void)readOrProductPressed
 {
   objc_initWeak(&location, self);
-  v3 = [(BCBuyGetTwoStateButton *)self delegate];
+  delegate = [(BCBuyGetTwoStateButton *)self delegate];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_163FE0;
   v4[3] = &unk_2C9020;
   objc_copyWeak(&v5, &location);
-  [v3 buyButton:self initialBuy:0 completion:v4];
+  [delegate buyButton:self initialBuy:0 completion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
-  if (self->_asset != v5)
+  assetCopy = asset;
+  if (self->_asset != assetCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_asset, a3);
-    v6 = [(BFMAsset *)v10 buyParams];
-    [(BCBuyGetTwoStateButton *)self setBuyParameters:v6];
+    v10 = assetCopy;
+    objc_storeStrong(&self->_asset, asset);
+    buyParams = [(BFMAsset *)v10 buyParams];
+    [(BCBuyGetTwoStateButton *)self setBuyParameters:buyParams];
 
-    v7 = [(BFMAsset *)v10 priceFormatted];
-    if (v7)
+    priceFormatted = [(BFMAsset *)v10 priceFormatted];
+    if (priceFormatted)
     {
-      [(BCBuyGetTwoStateButton *)self setPriceString:v7];
+      [(BCBuyGetTwoStateButton *)self setPriceString:priceFormatted];
     }
 
     else
@@ -379,9 +379,9 @@ LABEL_11:
       v8 = [BCMAssetWrapper actionTextForType:0 withAsset:v10];
       [(BCBuyGetTwoStateButton *)self setPriceString:v8];
 
-      v9 = [(BFMAsset *)v10 offer];
+      offer = [(BFMAsset *)v10 offer];
 
-      if (v9)
+      if (offer)
       {
         [(BCBuyGetTwoStateButton *)self setIsSingleState:1];
       }
@@ -390,24 +390,24 @@ LABEL_11:
     [(BCBuyGetTwoStateButton *)self resetButtonState];
     [(BCBuyGetTwoStateButton *)self updateButton];
 
-    v5 = v10;
+    assetCopy = v10;
   }
 }
 
-- (void)setProductProfile:(id)a3
+- (void)setProductProfile:(id)profile
 {
-  v5 = a3;
-  if (self->_productProfile != v5)
+  profileCopy = profile;
+  if (self->_productProfile != profileCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_productProfile, a3);
-    v6 = [(AEUserPublishingProductProfile *)v10 buyParameters];
-    [(BCBuyGetTwoStateButton *)self setBuyParameters:v6];
+    v10 = profileCopy;
+    objc_storeStrong(&self->_productProfile, profile);
+    buyParameters = [(AEUserPublishingProductProfile *)v10 buyParameters];
+    [(BCBuyGetTwoStateButton *)self setBuyParameters:buyParameters];
 
-    v7 = [(AEUserPublishingProductProfile *)v10 priceString];
-    if (v7)
+    priceString = [(AEUserPublishingProductProfile *)v10 priceString];
+    if (priceString)
     {
-      [(BCBuyGetTwoStateButton *)self setPriceString:v7];
+      [(BCBuyGetTwoStateButton *)self setPriceString:priceString];
     }
 
     else
@@ -415,9 +415,9 @@ LABEL_11:
       v8 = [(AEUserPublishingProductProfile *)v10 actionTextWithType:0];
       [(BCBuyGetTwoStateButton *)self setPriceString:v8];
 
-      v9 = [(AEUserPublishingProductProfile *)v10 offer];
+      offer = [(AEUserPublishingProductProfile *)v10 offer];
 
-      if (v9)
+      if (offer)
       {
         [(BCBuyGetTwoStateButton *)self setIsSingleState:1];
       }
@@ -426,7 +426,7 @@ LABEL_11:
     [(BCBuyGetTwoStateButton *)self resetButtonState];
     [(BCBuyGetTwoStateButton *)self updateButton];
 
-    v5 = v10;
+    profileCopy = v10;
   }
 }
 
@@ -435,25 +435,25 @@ LABEL_11:
   v81.receiver = self;
   v81.super_class = BCBuyGetTwoStateButton;
   [(BCBuyGetTwoStateButton *)&v81 updateConfiguration];
-  v3 = [(BCBuyGetTwoStateButton *)self configuration];
-  v4 = [v3 copy];
+  configuration = [(BCBuyGetTwoStateButton *)self configuration];
+  v4 = [configuration copy];
 
-  v5 = [v4 background];
-  [v5 setStrokeWidth:0.0];
+  background = [v4 background];
+  [background setStrokeWidth:0.0];
 
-  v6 = [v4 background];
-  [v6 setStrokeColor:0];
+  background2 = [v4 background];
+  [background2 setStrokeColor:0];
 
   [v4 setImage:0];
   [v4 setPreferredSymbolConfigurationForImage:0];
-  v7 = [(BCBuyGetTwoStateButton *)self buttonState];
-  v11 = v7;
-  v12 = 0;
-  if (v7 > 5)
+  buttonState = [(BCBuyGetTwoStateButton *)self buttonState];
+  v11 = buttonState;
+  buyStateTextColor = 0;
+  if (buttonState > 5)
   {
-    if (v7 > 8)
+    if (buttonState > 8)
     {
-      if ((v7 - 9) >= 2)
+      if ((buttonState - 9) >= 2)
       {
         goto LABEL_69;
       }
@@ -461,15 +461,15 @@ LABEL_11:
 
     else
     {
-      if (v7 == 6)
+      if (buttonState == 6)
       {
-        v35 = [(BCBuyGetTwoStateButton *)self titleLabel];
-        v36 = [v35 font];
+        titleLabel = [(BCBuyGetTwoStateButton *)self titleLabel];
+        font = [titleLabel font];
 
-        [v36 pointSize];
+        [font pointSize];
         v38 = v37;
         [(BCBuyGetTwoStateButton *)self buttonShrinkFactor];
-        v40 = [v36 fontWithSize:v38 * v39];
+        v40 = [font fontWithSize:v38 * v39];
 
         v41 = [UIImageSymbolConfiguration configurationWithFont:v40];
         [v4 setPreferredSymbolConfigurationForImage:v41];
@@ -477,15 +477,15 @@ LABEL_11:
         v42 = [UIImage systemImageNamed:@"checkmark"];
         [v4 setImage:v42];
 
-        v12 = +[UIColor whiteColor];
-        v13 = [(BCBuyGetTwoStateButton *)self preorderedDefaultTitle];
+        buyStateTextColor = +[UIColor whiteColor];
+        preorderedDefaultTitle = [(BCBuyGetTwoStateButton *)self preorderedDefaultTitle];
         v43 = +[UIColor tertiaryLabelColor];
         [(BCBuyGetTwoStateButton *)self setNormalBackgroundColor:v43];
 
         goto LABEL_59;
       }
 
-      if (v7 != 7 && [(BCBuyGetTwoStateButton *)self buttonShouldBeCanPreorderState])
+      if (buttonState != 7 && [(BCBuyGetTwoStateButton *)self buttonShouldBeCanPreorderState])
       {
         goto LABEL_26;
       }
@@ -494,27 +494,27 @@ LABEL_11:
 
   else
   {
-    if (v7 <= 2)
+    if (buttonState <= 2)
     {
-      if (!v7)
+      if (!buttonState)
       {
         [(BCBuyGetTwoStateButton *)self resetButtonState];
         goto LABEL_68;
       }
 
-      if (v7 != 1)
+      if (buttonState != 1)
       {
-        if (v7 != 2)
+        if (buttonState != 2)
         {
           goto LABEL_69;
         }
 
-        v12 = [(BCBuyGetTwoStateButton *)self buyStateTextColor];
-        v13 = [(BCBuyGetTwoStateButton *)self buyDefaultTitle];
-        v14 = [(BCBuyGetTwoStateButton *)self buyStateFrameColor];
-        if (v14)
+        buyStateTextColor = [(BCBuyGetTwoStateButton *)self buyStateTextColor];
+        preorderedDefaultTitle = [(BCBuyGetTwoStateButton *)self buyDefaultTitle];
+        buyStateFrameColor = [(BCBuyGetTwoStateButton *)self buyStateFrameColor];
+        if (buyStateFrameColor)
         {
-          v15 = v14;
+          v15 = buyStateFrameColor;
           [(BCBuyGetTwoStateButton *)self frameWidth];
           v17 = vabdd_f64(0.0, v16);
 
@@ -522,8 +522,8 @@ LABEL_11:
           {
             [(BCBuyGetTwoStateButton *)self frameWidth];
             v19 = v18;
-            v20 = [v4 background];
-            [v20 setStrokeWidth:v19];
+            background3 = [v4 background];
+            [background3 setStrokeWidth:v19];
 
             if ([(BCBuyGetTwoStateButton *)self isEnabled])
             {
@@ -535,31 +535,31 @@ LABEL_11:
               [(BCBuyGetTwoStateButton *)self disabledTextColor];
             }
             v55 = ;
-            v56 = [v4 background];
-            [v56 setStrokeColor:v55];
+            background4 = [v4 background];
+            [background4 setStrokeColor:v55];
           }
         }
 
-        v46 = [(BCBuyGetTwoStateButton *)self buyStateBackgroundFillColor];
+        buyStateBackgroundFillColor = [(BCBuyGetTwoStateButton *)self buyStateBackgroundFillColor];
         goto LABEL_58;
       }
 
       goto LABEL_21;
     }
 
-    if (v7 != 3)
+    if (buttonState != 3)
     {
-      if (v7 != 4)
+      if (buttonState != 4)
       {
-        v12 = +[UIColor systemOrangeColor];
-        v13 = [(BCBuyGetTwoStateButton *)self canPreorderDefaultTitle];
+        buyStateTextColor = +[UIColor systemOrangeColor];
+        preorderedDefaultTitle = [(BCBuyGetTwoStateButton *)self canPreorderDefaultTitle];
         [(BCBuyGetTwoStateButton *)self frameWidth];
         if (vabdd_f64(0.0, v21) >= 0.00999999978)
         {
           [(BCBuyGetTwoStateButton *)self frameWidth];
           v23 = v22;
-          v24 = [v4 background];
-          [v24 setStrokeWidth:v23];
+          background5 = [v4 background];
+          [background5 setStrokeWidth:v23];
 
           if ([(BCBuyGetTwoStateButton *)self isEnabled])
           {
@@ -571,17 +571,17 @@ LABEL_11:
             [(BCBuyGetTwoStateButton *)self disabledTextColor];
           }
           v53 = ;
-          v54 = [v4 background];
-          [v54 setStrokeColor:v53];
+          background6 = [v4 background];
+          [background6 setStrokeColor:v53];
         }
 
-        v46 = +[UIColor whiteColor];
+        buyStateBackgroundFillColor = +[UIColor whiteColor];
         goto LABEL_58;
       }
 
 LABEL_26:
-      v27 = [(BCBuyGetTwoStateButton *)self priceString];
-      if ([v27 length])
+      priceString = [(BCBuyGetTwoStateButton *)self priceString];
+      if ([priceString length])
       {
         [(BCBuyGetTwoStateButton *)self priceString];
       }
@@ -590,16 +590,16 @@ LABEL_26:
       {
         [(BCBuyGetTwoStateButton *)self canPreorderDefaultTitle];
       }
-      v13 = ;
+      preorderedDefaultTitle = ;
 
-      v12 = +[UIColor whiteColor];
+      buyStateTextColor = +[UIColor whiteColor];
       [(BCBuyGetTwoStateButton *)self frameWidth];
       if (vabdd_f64(0.0, v47) >= 0.00999999978)
       {
         [(BCBuyGetTwoStateButton *)self frameWidth];
         v49 = v48;
-        v50 = [v4 background];
-        [v50 setStrokeWidth:v49];
+        background7 = [v4 background];
+        [background7 setStrokeWidth:v49];
 
         if ([(BCBuyGetTwoStateButton *)self isEnabled])
         {
@@ -611,17 +611,17 @@ LABEL_26:
           [(BCBuyGetTwoStateButton *)self disabledTextColor];
         }
         v51 = ;
-        v52 = [v4 background];
-        [v52 setStrokeColor:v51];
+        background8 = [v4 background];
+        [background8 setStrokeColor:v51];
       }
 
-      v46 = +[UIColor systemOrangeColor];
+      buyStateBackgroundFillColor = +[UIColor systemOrangeColor];
       goto LABEL_58;
     }
   }
 
 LABEL_21:
-  v13 = [(BCBuyGetTwoStateButton *)self buyDefaultTitle];
+  preorderedDefaultTitle = [(BCBuyGetTwoStateButton *)self buyDefaultTitle];
   if (v11 == 3)
   {
     if ([(BCBuyGetTwoStateButton *)self isAudiobook])
@@ -634,17 +634,17 @@ LABEL_21:
       [(BCBuyGetTwoStateButton *)self readDefaultTitle];
     }
 
-    v13 = v25 = v13;
+    preorderedDefaultTitle = priceString2 = preorderedDefaultTitle;
   }
 
   else
   {
-    v25 = [(BCBuyGetTwoStateButton *)self priceString];
-    if ([v25 length])
+    priceString2 = [(BCBuyGetTwoStateButton *)self priceString];
+    if ([priceString2 length])
     {
-      v26 = [(BCBuyGetTwoStateButton *)self priceString];
+      priceString3 = [(BCBuyGetTwoStateButton *)self priceString];
 
-      v13 = v26;
+      preorderedDefaultTitle = priceString3;
     }
   }
 
@@ -657,11 +657,11 @@ LABEL_21:
   {
     [(BCBuyGetTwoStateButton *)self textColor];
   }
-  v12 = ;
-  v28 = [(BCBuyGetTwoStateButton *)self frameColor];
-  if (v28)
+  buyStateTextColor = ;
+  frameColor = [(BCBuyGetTwoStateButton *)self frameColor];
+  if (frameColor)
   {
-    v29 = v28;
+    v29 = frameColor;
     [(BCBuyGetTwoStateButton *)self frameWidth];
     v31 = vabdd_f64(0.0, v30);
 
@@ -669,8 +669,8 @@ LABEL_21:
     {
       [(BCBuyGetTwoStateButton *)self frameWidth];
       v33 = v32;
-      v34 = [v4 background];
-      [v34 setStrokeWidth:v33];
+      background9 = [v4 background];
+      [background9 setStrokeWidth:v33];
 
       if ([(BCBuyGetTwoStateButton *)self isEnabled])
       {
@@ -682,8 +682,8 @@ LABEL_21:
         [(BCBuyGetTwoStateButton *)self disabledTextColor];
       }
       v44 = ;
-      v45 = [v4 background];
-      [v45 setStrokeColor:v44];
+      background10 = [v4 background];
+      [background10 setStrokeColor:v44];
     }
   }
 
@@ -696,18 +696,18 @@ LABEL_21:
   {
     [(BCBuyGetTwoStateButton *)self backgroundFillColor];
   }
-  v46 = ;
+  buyStateBackgroundFillColor = ;
 LABEL_58:
-  v40 = v46;
-  [(BCBuyGetTwoStateButton *)self setNormalBackgroundColor:v46];
+  v40 = buyStateBackgroundFillColor;
+  [(BCBuyGetTwoStateButton *)self setNormalBackgroundColor:buyStateBackgroundFillColor];
 LABEL_59:
 
-  if (!v13)
+  if (!preorderedDefaultTitle)
   {
 LABEL_69:
     BCReportAssertionFailureWithMessage("/Library/Caches/com.apple.xbs/Sources/Alder/frameworks/BookCore/BookCore/Views/BCBuyGetTwoStateButton.m", 421, "[BCBuyGetTwoStateButton updateConfiguration]", "buttonTitle", 0, v8, v9, v10, v80);
-    v13 = 0;
-    if (v12)
+    preorderedDefaultTitle = 0;
+    if (buyStateTextColor)
     {
       goto LABEL_61;
     }
@@ -717,56 +717,56 @@ LABEL_70:
     goto LABEL_61;
   }
 
-  if (!v12)
+  if (!buyStateTextColor)
   {
     goto LABEL_70;
   }
 
 LABEL_61:
-  v62 = [(BCBuyGetTwoStateButton *)self buttonFont];
+  buttonFont = [(BCBuyGetTwoStateButton *)self buttonFont];
 
-  if (!v62)
+  if (!buttonFont)
   {
     sub_1ED068(v63, v64, v65, v66, v67, v68, v69, v70);
   }
 
-  v71 = [(BCBuyGetTwoStateButton *)self normalBackgroundColor];
-  v72 = [v4 background];
-  [v72 setBackgroundColor:v71];
+  normalBackgroundColor = [(BCBuyGetTwoStateButton *)self normalBackgroundColor];
+  background11 = [v4 background];
+  [background11 setBackgroundColor:normalBackgroundColor];
 
-  [v4 setBaseForegroundColor:v12];
+  [v4 setBaseForegroundColor:buyStateTextColor];
   v73 = [NSAttributedString alloc];
   v82[0] = NSFontAttributeName;
-  v74 = [(BCBuyGetTwoStateButton *)self buttonFont];
-  v83[0] = v74;
+  buttonFont2 = [(BCBuyGetTwoStateButton *)self buttonFont];
+  v83[0] = buttonFont2;
   v82[1] = NSForegroundColorAttributeName;
-  v75 = [(BCBuyGetTwoStateButton *)self isEnabled];
-  v76 = v12;
-  if ((v75 & 1) == 0)
+  isEnabled = [(BCBuyGetTwoStateButton *)self isEnabled];
+  disabledTextColor = buyStateTextColor;
+  if ((isEnabled & 1) == 0)
   {
-    v76 = [(BCBuyGetTwoStateButton *)self disabledTextColor];
+    disabledTextColor = [(BCBuyGetTwoStateButton *)self disabledTextColor];
   }
 
-  v83[1] = v76;
+  v83[1] = disabledTextColor;
   v77 = [NSDictionary dictionaryWithObjects:v83 forKeys:v82 count:2];
-  v78 = [v73 initWithString:v13 attributes:v77];
+  v78 = [v73 initWithString:preorderedDefaultTitle attributes:v77];
   [v4 setAttributedTitle:v78];
 
-  if ((v75 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
   }
 
   [(BCBuyGetTwoStateButton *)self setConfiguration:v4];
-  v79 = [v4 attributedTitle];
-  [(BCBuyGetTwoStateButton *)self setAccessibilityAttributedLabel:v79];
+  attributedTitle = [v4 attributedTitle];
+  [(BCBuyGetTwoStateButton *)self setAccessibilityAttributedLabel:attributedTitle];
 
 LABEL_68:
 }
 
 - (void)updateButton
 {
-  v4 = [(BCBuyGetTwoStateButton *)self buttonShouldBeReadState];
-  if ((v4 & 1) == 0)
+  buttonShouldBeReadState = [(BCBuyGetTwoStateButton *)self buttonShouldBeReadState];
+  if ((buttonShouldBeReadState & 1) == 0)
   {
     if (![(BCBuyGetTwoStateButton *)self storeReachable])
     {
@@ -774,8 +774,8 @@ LABEL_68:
       goto LABEL_13;
     }
 
-    v2 = [(BCBuyGetTwoStateButton *)self buyParameters];
-    if (![v2 length])
+    buyParameters = [(BCBuyGetTwoStateButton *)self buyParameters];
+    if (![buyParameters length])
     {
       [(BCBuyGetTwoStateButton *)self setEnabled:0];
 LABEL_12:
@@ -786,18 +786,18 @@ LABEL_12:
 
   if ([(BCBuyGetTwoStateButton *)self isDownloading]&& ![(BCBuyGetTwoStateButton *)self isAudiobook])
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
   else
   {
     v5 = +[UIApplication isRunningInStoreDemoMode]^ 1;
-    v6 = self;
+    selfCopy2 = self;
   }
 
-  [(BCBuyGetTwoStateButton *)v6 setEnabled:v5];
-  if ((v4 & 1) == 0)
+  [(BCBuyGetTwoStateButton *)selfCopy2 setEnabled:v5];
+  if ((buttonShouldBeReadState & 1) == 0)
   {
     goto LABEL_12;
   }
@@ -809,64 +809,64 @@ LABEL_13:
 
 - (BOOL)isStore
 {
-  v2 = [(BCBuyGetTwoStateButton *)self delegate];
-  v3 = [v2 isStore];
+  delegate = [(BCBuyGetTwoStateButton *)self delegate];
+  isStore = [delegate isStore];
 
-  return v3;
+  return isStore;
 }
 
 - (BOOL)isDownloading
 {
-  v2 = [(BCBuyGetTwoStateButton *)self delegate];
-  v3 = [v2 isDownloading];
+  delegate = [(BCBuyGetTwoStateButton *)self delegate];
+  isDownloading = [delegate isDownloading];
 
-  return v3;
+  return isDownloading;
 }
 
 - (BOOL)isLocal
 {
-  v2 = [(BCBuyGetTwoStateButton *)self delegate];
-  v3 = [v2 isLocal];
+  delegate = [(BCBuyGetTwoStateButton *)self delegate];
+  isLocal = [delegate isLocal];
 
-  return v3;
+  return isLocal;
 }
 
 - (BOOL)isCloud
 {
-  v2 = [(BCBuyGetTwoStateButton *)self delegate];
-  v3 = [v2 isCloud];
+  delegate = [(BCBuyGetTwoStateButton *)self delegate];
+  isCloud = [delegate isCloud];
 
-  return v3;
+  return isCloud;
 }
 
 - (BOOL)isSample
 {
-  v2 = [(BCBuyGetTwoStateButton *)self delegate];
-  v3 = [v2 isSample];
+  delegate = [(BCBuyGetTwoStateButton *)self delegate];
+  isSample = [delegate isSample];
 
-  return v3;
+  return isSample;
 }
 
 - (BOOL)isAudiobook
 {
-  v2 = [(BCBuyGetTwoStateButton *)self delegate];
-  v3 = [v2 isAudiobook];
+  delegate = [(BCBuyGetTwoStateButton *)self delegate];
+  isAudiobook = [delegate isAudiobook];
 
-  return v3;
+  return isAudiobook;
 }
 
 - (BOOL)wasPreordered
 {
-  v2 = [(BCBuyGetTwoStateButton *)self delegate];
-  v3 = [v2 wasPreordered];
+  delegate = [(BCBuyGetTwoStateButton *)self delegate];
+  wasPreordered = [delegate wasPreordered];
 
-  return v3;
+  return wasPreordered;
 }
 
 - (BOOL)canPreorder
 {
-  v3 = [(BCBuyGetTwoStateButton *)self asset];
-  if (v3)
+  asset = [(BCBuyGetTwoStateButton *)self asset];
+  if (asset)
   {
     [(BCBuyGetTwoStateButton *)self asset];
   }
@@ -876,20 +876,20 @@ LABEL_13:
     [(BCBuyGetTwoStateButton *)self productProfile];
   }
   v4 = ;
-  v5 = [v4 isPreorder];
+  isPreorder = [v4 isPreorder];
 
-  return v5;
+  return isPreorder;
 }
 
 - (BOOL)storeReachable
 {
-  v3 = [(BCBuyGetTwoStateButton *)self delegate];
+  delegate = [(BCBuyGetTwoStateButton *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(BCBuyGetTwoStateButton *)self delegate];
-    v6 = [v5 storeReachable];
+    delegate2 = [(BCBuyGetTwoStateButton *)self delegate];
+    storeReachable = [delegate2 storeReachable];
   }
 
   else
@@ -899,20 +899,20 @@ LABEL_13:
       return 0;
     }
 
-    v5 = +[BUAccountsProvider sharedProvider];
-    if ([v5 isStoreAccountManagedAppleID])
+    delegate2 = +[BUAccountsProvider sharedProvider];
+    if ([delegate2 isStoreAccountManagedAppleID])
     {
-      v6 = 0;
+      storeReachable = 0;
     }
 
     else
     {
       v8 = +[BURestrictionsProvider sharedInstance];
-      v6 = [v8 isBookStoreAllowed];
+      storeReachable = [v8 isBookStoreAllowed];
     }
   }
 
-  return v6;
+  return storeReachable;
 }
 
 - (id)description
@@ -923,15 +923,15 @@ LABEL_13:
   v4 = [v3 mutableCopy];
 
   [v4 appendFormat:@" \n"];
-  v5 = [(BCBuyGetTwoStateButton *)self currentAttributedTitle];
-  v6 = [v5 string];
-  [v4 appendFormat:@"\t currentTitle = %@ \n", v6];
+  currentAttributedTitle = [(BCBuyGetTwoStateButton *)self currentAttributedTitle];
+  string = [currentAttributedTitle string];
+  [v4 appendFormat:@"\t currentTitle = %@ \n", string];
 
-  v7 = [(BCBuyGetTwoStateButton *)self priceString];
-  [v4 appendFormat:@"\t priceString = %@ \n", v7];
+  priceString = [(BCBuyGetTwoStateButton *)self priceString];
+  [v4 appendFormat:@"\t priceString = %@ \n", priceString];
 
-  v8 = [(BCBuyGetTwoStateButton *)self buyParameters];
-  [v4 appendFormat:@"\t buyParameters = %@ \n", v8];
+  buyParameters = [(BCBuyGetTwoStateButton *)self buyParameters];
+  [v4 appendFormat:@"\t buyParameters = %@ \n", buyParameters];
 
   v9 = [NSNumber numberWithBool:[(BCBuyGetTwoStateButton *)self invertedContent]];
   [v4 appendFormat:@"\t invertedContent = %@ \n", v9];

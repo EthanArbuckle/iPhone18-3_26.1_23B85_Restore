@@ -1,6 +1,6 @@
 @interface MFAttachmentCompositionContext
 - (MFAttachmentCompositionContext)init;
-- (MFAttachmentCompositionContext)initWithContextID:(id)a3;
+- (MFAttachmentCompositionContext)initWithContextID:(id)d;
 - (NSArray)attachments;
 - (void)dealloc;
 @end
@@ -14,8 +14,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(MFAttachmentCompositionContext *)self attachments];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  attachments = [(MFAttachmentCompositionContext *)self attachments];
+  v4 = [(NSArray *)attachments countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -27,7 +27,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(attachments);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
@@ -37,7 +37,7 @@
       }
 
       while (v5 != v7);
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [(NSArray *)attachments countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -53,19 +53,19 @@
 
 - (MFAttachmentCompositionContext)init
 {
-  v3 = [MEMORY[0x277CCACA8] mf_UUID];
+  mf_UUID = [MEMORY[0x277CCACA8] mf_UUID];
 
-  return [(MFAttachmentCompositionContext *)self initWithContextID:v3];
+  return [(MFAttachmentCompositionContext *)self initWithContextID:mf_UUID];
 }
 
-- (MFAttachmentCompositionContext)initWithContextID:(id)a3
+- (MFAttachmentCompositionContext)initWithContextID:(id)d
 {
   v6.receiver = self;
   v6.super_class = MFAttachmentCompositionContext;
   v4 = [(MFAttachmentCompositionContext *)&v6 init];
   if (v4)
   {
-    v4->_contextID = a3;
+    v4->_contextID = d;
   }
 
   return v4;
@@ -74,9 +74,9 @@
 - (NSArray)attachments
 {
   v3 = +[MFAttachmentManager defaultManager];
-  v4 = [(MFAttachmentCompositionContext *)self contextID];
+  contextID = [(MFAttachmentCompositionContext *)self contextID];
 
-  return [v3 attachmentsForContext:v4];
+  return [v3 attachmentsForContext:contextID];
 }
 
 @end

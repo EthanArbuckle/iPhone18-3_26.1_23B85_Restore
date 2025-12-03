@@ -1,28 +1,28 @@
 @interface DirBlock
-- (id)initInDir:(id)a3;
-- (id)readDirBlockNum:(unint64_t)a3;
-- (id)readRelativeDirBlockNum:(unsigned int)a3;
-- (id)setBytes:(id)a3 atOffset:(unint64_t)a4;
+- (id)initInDir:(id)dir;
+- (id)readDirBlockNum:(unint64_t)num;
+- (id)readRelativeDirBlockNum:(unsigned int)num;
+- (id)setBytes:(id)bytes atOffset:(unint64_t)offset;
 - (id)writeToDisk;
-- (id)writeToDiskFromOffset:(unint64_t)a3 length:(unint64_t)a4;
-- (void)getBytesAtOffset:(unint64_t)a3;
+- (id)writeToDiskFromOffset:(unint64_t)offset length:(unint64_t)length;
+- (void)getBytesAtOffset:(unint64_t)offset;
 - (void)releaseBlock;
 @end
 
 @implementation DirBlock
 
-- (id)initInDir:(id)a3
+- (id)initInDir:(id)dir
 {
-  v4 = a3;
+  dirCopy = dir;
   v11.receiver = self;
   v11.super_class = DirBlock;
   v5 = [(DirBlock *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(DirBlock *)v5 setDir:v4];
+    [(DirBlock *)v5 setDir:dirCopy];
     [(DirBlock *)v6 setOffsetInVolume:0];
-    -[DirBlock setSize:](v6, "setSize:", [v4 getDirBlockSize]);
+    -[DirBlock setSize:](v6, "setSize:", [dirCopy getDirBlockSize]);
     v7 = [NSMutableData dataWithLength:[(DirBlock *)v6 size]];
     [(DirBlock *)v6 setData:v7];
 
@@ -41,34 +41,34 @@
   dispatch_semaphore_signal(v2);
 }
 
-- (id)readDirBlockNum:(unint64_t)a3
+- (id)readDirBlockNum:(unint64_t)num
 {
   v5 = [(DirBlock *)self dir];
-  v6 = [v5 isFat1216RootDir];
+  isFat1216RootDir = [v5 isFat1216RootDir];
 
   v7 = [(DirBlock *)self dir];
-  v8 = [v7 volume];
-  v9 = [v8 systemInfo];
-  v10 = v9;
-  if (v6)
+  volume = [v7 volume];
+  systemInfo = [volume systemInfo];
+  v10 = systemInfo;
+  if (isFat1216RootDir)
   {
-    v11 = [v9 rootSector];
+    rootSector = [systemInfo rootSector];
     v12 = [(DirBlock *)self dir];
-    v13 = [v12 volume];
-    v14 = [v13 systemInfo];
-    v15 = [v14 bytesPerSector] * v11;
+    volume2 = [v12 volume];
+    systemInfo2 = [volume2 systemInfo];
+    v15 = [systemInfo2 bytesPerSector] * rootSector;
   }
 
   else
   {
-    v15 = [v9 offsetForDirBlock:a3];
+    v15 = [systemInfo offsetForDirBlock:num];
   }
 
   v16 = [(DirBlock *)self dir];
-  v17 = [v16 volume];
-  v18 = [v17 resource];
-  v19 = [(DirBlock *)self data];
-  v20 = +[Utilities syncMetaReadFromDevice:into:startingAt:length:](Utilities, "syncMetaReadFromDevice:into:startingAt:length:", v18, [v19 mutableBytes], v15, -[DirBlock size](self, "size"));
+  volume3 = [v16 volume];
+  resource = [volume3 resource];
+  data = [(DirBlock *)self data];
+  v20 = +[Utilities syncMetaReadFromDevice:into:startingAt:length:](Utilities, "syncMetaReadFromDevice:into:startingAt:length:", resource, [data mutableBytes], v15, -[DirBlock size](self, "size"));
 
   if (!v20)
   {
@@ -78,7 +78,7 @@
   return v20;
 }
 
-- (id)readRelativeDirBlockNum:(unsigned int)a3
+- (id)readRelativeDirBlockNum:(unsigned int)num
 {
   v41 = 0;
   v42[0] = &v41;
@@ -95,22 +95,22 @@
   v35 = 0x2020000000;
   v36 = 0;
   v4 = [(DirBlock *)self dir];
-  v5 = [v4 firstCluster];
+  firstCluster = [v4 firstCluster];
 
   v6 = [(DirBlock *)self dir];
-  v7 = [v6 volume];
-  v8 = [v7 systemInfo];
-  v9 = [v8 dirBlockSize];
+  volume = [v6 volume];
+  systemInfo = [volume systemInfo];
+  dirBlockSize = [systemInfo dirBlockSize];
 
   v10 = [(DirBlock *)self dir];
-  v11 = [v10 volume];
-  v12 = [v11 systemInfo];
-  v13 = [v12 bytesPerCluster];
+  volume2 = [v10 volume];
+  systemInfo2 = [volume2 systemInfo];
+  bytesPerCluster = [systemInfo2 bytesPerCluster];
 
   v14 = [(DirBlock *)self dir];
-  LOBYTE(v11) = [v14 isFat1216RootDir];
+  LOBYTE(volume2) = [v14 isFat1216RootDir];
 
-  if (v11)
+  if (volume2)
   {
     v15 = 0;
 LABEL_3:
@@ -120,13 +120,13 @@ LABEL_3:
   else
   {
     v17 = 0;
-    v18 = v13 / v9;
+    v18 = bytesPerCluster / dirBlockSize;
     while (1)
     {
       v19 = [(DirBlock *)self dir];
-      v20 = [v19 volume];
-      v21 = [v20 systemInfo];
-      v22 = [v21 isClusterValid:v5];
+      volume3 = [v19 volume];
+      systemInfo3 = [volume3 systemInfo];
+      v22 = [systemInfo3 isClusterValid:firstCluster];
 
       if (!v22)
       {
@@ -134,8 +134,8 @@ LABEL_3:
       }
 
       v23 = [(DirBlock *)self dir];
-      v24 = [v23 volume];
-      v25 = [v24 fatManager];
+      volume4 = [v23 volume];
+      fatManager = [volume4 fatManager];
       v32[0] = _NSConcreteStackBlock;
       v32[1] = 3221225472;
       v32[2] = sub_100006680;
@@ -143,19 +143,19 @@ LABEL_3:
       v32[4] = &v41;
       v32[5] = &v33;
       v32[6] = &v37;
-      [v25 getContigClusterChainLengthStartingAt:v5 replyHandler:v32];
+      [fatManager getContigClusterChainLengthStartingAt:firstCluster replyHandler:v32];
 
       if (*(v42[0] + 40))
       {
         break;
       }
 
-      if (a3 >= v17)
+      if (num >= v17)
       {
         v26 = *(v34 + 6);
-        if (v18 * v26 + v17 > a3)
+        if (v18 * v26 + v17 > num)
         {
-          v15 = a3 - v17 + v5 * v18;
+          v15 = num - v17 + firstCluster * v18;
           if (v15)
           {
             goto LABEL_3;
@@ -166,7 +166,7 @@ LABEL_15:
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
           {
             v28 = [(DirBlock *)self dir];
-            sub_10002D3D0(buf, a3, [v28 getDirSize], v28);
+            sub_10002D3D0(buf, num, [v28 getDirSize], v28);
           }
 
           v16 = fs_errorForPOSIXError();
@@ -180,7 +180,7 @@ LABEL_15:
       }
 
       v17 += v26 * v18;
-      v5 = *(v38 + 6);
+      firstCluster = *(v38 + 6);
     }
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -200,13 +200,13 @@ LABEL_18:
   return v29;
 }
 
-- (void)getBytesAtOffset:(unint64_t)a3
+- (void)getBytesAtOffset:(unint64_t)offset
 {
-  if ([(DirBlock *)self size]<= a3)
+  if ([(DirBlock *)self size]<= offset)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_10002D44C(self, a3);
+      sub_10002D44C(self, offset);
     }
 
     return 0;
@@ -214,21 +214,21 @@ LABEL_18:
 
   else
   {
-    v5 = [(DirBlock *)self data];
-    v6 = [v5 bytes] + a3;
+    data = [(DirBlock *)self data];
+    v6 = [data bytes] + offset;
   }
 
   return v6;
 }
 
-- (id)setBytes:(id)a3 atOffset:(unint64_t)a4
+- (id)setBytes:(id)bytes atOffset:(unint64_t)offset
 {
-  v6 = a3;
-  v7 = [v6 length] + a4;
+  bytesCopy = bytes;
+  v7 = [bytesCopy length] + offset;
   if (v7 <= [(DirBlock *)self size])
   {
-    v9 = [(DirBlock *)self data];
-    memcpy([v9 mutableBytes] + a4, objc_msgSend(v6, "bytes"), objc_msgSend(v6, "length"));
+    data = [(DirBlock *)self data];
+    memcpy([data mutableBytes] + offset, objc_msgSend(bytesCopy, "bytes"), objc_msgSend(bytesCopy, "length"));
 
     v8 = 0;
   }
@@ -244,17 +244,17 @@ LABEL_18:
 - (id)writeToDisk
 {
   v3 = [(DirBlock *)self dir];
-  v4 = [v3 volume];
-  v5 = [v4 resource];
-  v6 = [(DirBlock *)self data];
-  v7 = +[Utilities metaWriteToDevice:from:startingAt:length:forceSyncWrite:](Utilities, "metaWriteToDevice:from:startingAt:length:forceSyncWrite:", v5, [v6 bytes], -[DirBlock offsetInVolume](self, "offsetInVolume"), -[DirBlock size](self, "size"), 0);
+  volume = [v3 volume];
+  resource = [volume resource];
+  data = [(DirBlock *)self data];
+  v7 = +[Utilities metaWriteToDevice:from:startingAt:length:forceSyncWrite:](Utilities, "metaWriteToDevice:from:startingAt:length:forceSyncWrite:", resource, [data bytes], -[DirBlock offsetInVolume](self, "offsetInVolume"), -[DirBlock size](self, "size"), 0);
 
   return v7;
 }
 
-- (id)writeToDiskFromOffset:(unint64_t)a3 length:(unint64_t)a4
+- (id)writeToDiskFromOffset:(unint64_t)offset length:(unint64_t)length
 {
-  if (a4 + a3 <= [(DirBlock *)self size])
+  if (length + offset <= [(DirBlock *)self size])
   {
     [(DirBlock *)self writeToDisk];
   }

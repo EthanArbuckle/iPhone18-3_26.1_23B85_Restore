@@ -1,24 +1,24 @@
 @interface InAppReceiptDatabaseShared
-+ (id)databasePathsForBundleID:(id)a3 error:(id *)a4;
++ (id)databasePathsForBundleID:(id)d error:(id *)error;
 @end
 
 @implementation InAppReceiptDatabaseShared
 
-+ (id)databasePathsForBundleID:(id)a3 error:(id *)a4
++ (id)databasePathsForBundleID:(id)d error:(id *)error
 {
-  v5 = a3;
+  dCopy = d;
   v18 = 0;
-  v6 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v5 allowPlaceholder:0 error:&v18];
+  v6 = [[LSApplicationRecord alloc] initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v18];
 
   v7 = v18;
   v8 = v7;
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v9 = v7;
       v10 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -29,12 +29,12 @@
 
   else
   {
-    v11 = [v6 dataContainerURL];
-    v12 = [v11 path];
+    dataContainerURL = [v6 dataContainerURL];
+    path = [dataContainerURL path];
 
-    if (v12)
+    if (path)
     {
-      v13 = [v12 stringByAppendingPathComponent:@"/Library/Caches/StoreKit/"];
+      v13 = [path stringByAppendingPathComponent:@"/Library/Caches/StoreKit/"];
       v14 = [v13 stringByAppendingPathComponent:@"receipts.db"];
       v19[0] = v14;
       v15 = [v13 stringByAppendingPathComponent:@"receipts.db-shm"];
@@ -44,10 +44,10 @@
       v10 = [NSArray arrayWithObjects:v19 count:3];
     }
 
-    else if (a4)
+    else if (error)
     {
       ASDErrorWithTitleAndMessage();
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else

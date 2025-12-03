@@ -1,22 +1,22 @@
 @interface MPSImageScreenTelemetry
 - ($1C75447F214D9465CD650DD956230C7F)sourceRegion;
-- (MPSImageScreenTelemetry)initWithCoder:(id)a3 device:(id)a4;
-- (MPSImageScreenTelemetry)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSImageScreenTelemetry)initWithCoder:(id)coder device:(id)device;
+- (MPSImageScreenTelemetry)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
 - (void)dealloc;
-- (void)encodeToCommandBuffer:(id)a3 sourceTexture:(id)a4 destinationBuffer:(id)a5 destinationOffset:(unint64_t)a6;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSourceRegion:(id *)a3;
+- (void)encodeToCommandBuffer:(id)buffer sourceTexture:(id)texture destinationBuffer:(id)destinationBuffer destinationOffset:(unint64_t)offset;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSourceRegion:(id *)region;
 @end
 
 @implementation MPSImageScreenTelemetry
 
-- (MPSImageScreenTelemetry)initWithDevice:(id)a3
+- (MPSImageScreenTelemetry)initWithDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSImageScreenTelemetry;
-  result = [(MPSUnaryImageKernel *)&v6 initWithDevice:a3];
+  result = [(MPSUnaryImageKernel *)&v6 initWithDevice:device];
   if (result)
   {
     result->_zoneWidth = 16;
@@ -33,11 +33,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v8.receiver = self;
   v8.super_class = MPSImageScreenTelemetry;
-  result = [(MPSUnaryImageKernel *)&v8 copyWithZone:a3 device:a4];
+  result = [(MPSUnaryImageKernel *)&v8 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 26) = self->_zoneWidth;
@@ -71,29 +71,29 @@
   return objc_msgSend_stringWithFormat_(v3, v6, @"%@\n\tzoneWidth: %lu zoneHeight: %lu\n", v7, v8, v9, v4, zoneWidth, self->_zoneHeight);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v29.receiver = self;
   v29.super_class = MPSImageScreenTelemetry;
   [(MPSUnaryImageKernel *)&v29 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, v4[26], @"MPSImageScreenTelemetry.zoneWidth", v6, v7);
-  objc_msgSend_encodeInt64_forKey_(a3, v8, v4[27], @"MPSImageScreenTelemetry.zoneHeight", v9, v10);
-  objc_msgSend_encodeInt64_forKey_(a3, v11, v4[28], @"MPSImageScreenTelemetry.numberOfZonesInX", v12, v13);
-  objc_msgSend_encodeInt64_forKey_(a3, v14, v4[29], @"MPSImageScreenTelemetry.numberOfZonesInY", v15, v16);
-  v4 += 30;
-  objc_msgSend_encodeInt64_forKey_(a3, v17, *v4, @"MPSImageScreenTelemetry.sourceRectOriginX", v18, v19);
-  objc_msgSend_encodeInt64_forKey_(a3, v20, v4[1], @"MPSImageScreenTelemetry.sourceRectOriginY", v21, v22);
-  objc_msgSend_encodeInt64_forKey_(a3, v23, v4[3], @"MPSImageScreenTelemetry.sourceRectWidth", v24, v25);
-  objc_msgSend_encodeInt64_forKey_(a3, v26, v4[4], @"MPSImageScreenTelemetry.sourceRectHeight", v27, v28);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, selfCopy[26], @"MPSImageScreenTelemetry.zoneWidth", v6, v7);
+  objc_msgSend_encodeInt64_forKey_(coder, v8, selfCopy[27], @"MPSImageScreenTelemetry.zoneHeight", v9, v10);
+  objc_msgSend_encodeInt64_forKey_(coder, v11, selfCopy[28], @"MPSImageScreenTelemetry.numberOfZonesInX", v12, v13);
+  objc_msgSend_encodeInt64_forKey_(coder, v14, selfCopy[29], @"MPSImageScreenTelemetry.numberOfZonesInY", v15, v16);
+  selfCopy += 30;
+  objc_msgSend_encodeInt64_forKey_(coder, v17, *selfCopy, @"MPSImageScreenTelemetry.sourceRectOriginX", v18, v19);
+  objc_msgSend_encodeInt64_forKey_(coder, v20, selfCopy[1], @"MPSImageScreenTelemetry.sourceRectOriginY", v21, v22);
+  objc_msgSend_encodeInt64_forKey_(coder, v23, selfCopy[3], @"MPSImageScreenTelemetry.sourceRectWidth", v24, v25);
+  objc_msgSend_encodeInt64_forKey_(coder, v26, selfCopy[4], @"MPSImageScreenTelemetry.sourceRectHeight", v27, v28);
 }
 
-- (MPSImageScreenTelemetry)initWithCoder:(id)a3 device:(id)a4
+- (MPSImageScreenTelemetry)initWithCoder:(id)coder device:(id)device
 {
   v41.receiver = self;
   v41.super_class = MPSImageScreenTelemetry;
-  v5 = [(MPSUnaryImageKernel *)&v41 initWithCoder:a3 device:a4];
+  v5 = [(MPSUnaryImageKernel *)&v41 initWithCoder:coder device:device];
   v10 = v5;
   if (!v5)
   {
@@ -102,14 +102,14 @@
 
   if (*(&v5->super.super.super.isa + *MEMORY[0x277CD7358] + 2) << 16 == 0x10000)
   {
-    v5->_zoneWidth = objc_msgSend_decodeInt64ForKey_(a3, v6, @"MPSImageScreenTelemetry.zoneWidth", v7, v8, v9);
-    v10->_zoneHeight = objc_msgSend_decodeInt64ForKey_(a3, v11, @"MPSImageScreenTelemetry.zoneHeight", v12, v13, v14);
-    v10->_numberOfZonesInX = objc_msgSend_decodeInt64ForKey_(a3, v15, @"MPSImageScreenTelemetry.numberOfZonesInX", v16, v17, v18);
-    v10->_numberOfZonesInY = objc_msgSend_decodeInt64ForKey_(a3, v19, @"MPSImageScreenTelemetry.numberOfZonesInY", v20, v21, v22);
-    v10->_sourceRegion.origin.x = objc_msgSend_decodeInt64ForKey_(a3, v23, @"MPSImageScreenTelemetry.sourceRectOriginX", v24, v25, v26);
-    v10->_sourceRegion.origin.y = objc_msgSend_decodeInt64ForKey_(a3, v27, @"MPSImageScreenTelemetry.sourceRectOriginY", v28, v29, v30);
-    v10->_sourceRegion.size.width = objc_msgSend_decodeInt64ForKey_(a3, v31, @"MPSImageScreenTelemetry.sourceRectWidth", v32, v33, v34);
-    v10->_sourceRegion.size.height = objc_msgSend_decodeInt64ForKey_(a3, v35, @"MPSImageScreenTelemetry.sourceRectHeight", v36, v37, v38);
+    v5->_zoneWidth = objc_msgSend_decodeInt64ForKey_(coder, v6, @"MPSImageScreenTelemetry.zoneWidth", v7, v8, v9);
+    v10->_zoneHeight = objc_msgSend_decodeInt64ForKey_(coder, v11, @"MPSImageScreenTelemetry.zoneHeight", v12, v13, v14);
+    v10->_numberOfZonesInX = objc_msgSend_decodeInt64ForKey_(coder, v15, @"MPSImageScreenTelemetry.numberOfZonesInX", v16, v17, v18);
+    v10->_numberOfZonesInY = objc_msgSend_decodeInt64ForKey_(coder, v19, @"MPSImageScreenTelemetry.numberOfZonesInY", v20, v21, v22);
+    v10->_sourceRegion.origin.x = objc_msgSend_decodeInt64ForKey_(coder, v23, @"MPSImageScreenTelemetry.sourceRectOriginX", v24, v25, v26);
+    v10->_sourceRegion.origin.y = objc_msgSend_decodeInt64ForKey_(coder, v27, @"MPSImageScreenTelemetry.sourceRectOriginY", v28, v29, v30);
+    v10->_sourceRegion.size.width = objc_msgSend_decodeInt64ForKey_(coder, v31, @"MPSImageScreenTelemetry.sourceRectWidth", v32, v33, v34);
+    v10->_sourceRegion.size.height = objc_msgSend_decodeInt64ForKey_(coder, v35, @"MPSImageScreenTelemetry.sourceRectHeight", v36, v37, v38);
     return v10;
   }
 
@@ -123,66 +123,66 @@
   return 0;
 }
 
-- (void)encodeToCommandBuffer:(id)a3 sourceTexture:(id)a4 destinationBuffer:(id)a5 destinationOffset:(unint64_t)a6
+- (void)encodeToCommandBuffer:(id)buffer sourceTexture:(id)texture destinationBuffer:(id)destinationBuffer destinationOffset:(unint64_t)offset
 {
   v9 = *MEMORY[0x277CD7350];
   v10 = MEMORY[0x277CD7378];
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 1) == 0)
   {
     v11 = *(&self->super.super.super.isa + v9);
-    v12 = objc_msgSend_pixelFormat(a4, a2, a3, a4, a5, a6);
+    v12 = objc_msgSend_pixelFormat(texture, a2, buffer, texture, destinationBuffer, offset);
     PixelInfo = MPSDevice::GetPixelInfo(v11, v12, MPSImageFeatureChannelFormatNone);
-    if (!a4 && MTLReportFailureTypeEnabled())
+    if (!texture && MTLReportFailureTypeEnabled())
     {
       v202 = objc_opt_class();
       v204 = NSStringFromClass(v202);
       MTLReportFailure();
     }
 
-    if (!a5 && MTLReportFailureTypeEnabled())
+    if (!destinationBuffer && MTLReportFailureTypeEnabled())
     {
       v203 = objc_opt_class();
       v204 = NSStringFromClass(v203);
       MTLReportFailure();
     }
 
-    objc_msgSend_textureType(a4, v13, v14, v15, v16, v17, v204);
-    if (objc_msgSend_textureType(a4, v19, v20, v21, v22, v23) != 2 && MTLReportFailureTypeEnabled())
+    objc_msgSend_textureType(texture, v13, v14, v15, v16, v17, v204);
+    if (objc_msgSend_textureType(texture, v19, v20, v21, v22, v23) != 2 && MTLReportFailureTypeEnabled())
     {
-      v205 = a4;
+      textureCopy2 = texture;
       MTLReportFailure();
     }
 
     if ((~PixelInfo & 0xF000000) == 0 && MTLReportFailureTypeEnabled())
     {
-      v205 = a4;
-      v208 = v12;
+      textureCopy2 = texture;
+      offsetCopy = v12;
       MTLReportFailure();
     }
 
     memset(&v224, 0, sizeof(v224));
-    objc_msgSend_sourceRegion(self, v24, v25, v26, v27, v28, v205, v208);
+    objc_msgSend_sourceRegion(self, v24, v25, v26, v27, v28, textureCopy2, offsetCopy);
     memset(&v223, 0, sizeof(v223));
-    v222.width = objc_msgSend_width(a4, v29, v30, v31, v32, v33);
-    v222.height = objc_msgSend_height(a4, v34, v35, v36, v37, v38);
+    v222.width = objc_msgSend_width(texture, v29, v30, v31, v32, v33);
+    v222.height = objc_msgSend_height(texture, v34, v35, v36, v37, v38);
     v222.depth = 1;
     v221 = v224;
     MPSGetEffectiveClipRegion(&v223, &v222, &v221);
-    objc_msgSend_width(a4, v39, v40, v41, v42, v43);
+    objc_msgSend_width(texture, v39, v40, v41, v42, v43);
     v44 = v223.size.width + v223.origin.x;
-    if (v44 > objc_msgSend_width(a4, v45, v46, v47, v48, v49) && MTLReportFailureTypeEnabled())
+    if (v44 > objc_msgSend_width(texture, v45, v46, v47, v48, v49) && MTLReportFailureTypeEnabled())
     {
       v206 = v223.size.width + v223.origin.x;
-      v209 = objc_msgSend_width(a4, v50, v51, v52, v53, v54);
+      v209 = objc_msgSend_width(texture, v50, v51, v52, v53, v54);
       MTLReportFailure();
     }
 
-    objc_msgSend_height(a4, v50, v51, v52, v53, v54, v206, v209);
+    objc_msgSend_height(texture, v50, v51, v52, v53, v54, v206, v209);
     v55 = v223.size.height + v223.origin.y;
-    if (v55 > objc_msgSend_height(a4, v56, v57, v58, v59, v60) && MTLReportFailureTypeEnabled())
+    if (v55 > objc_msgSend_height(texture, v56, v57, v58, v59, v60) && MTLReportFailureTypeEnabled())
     {
       v207 = v223.size.height + v223.origin.y;
-      v210 = objc_msgSend_height(a4, v61, v62, v63, v64, v65);
+      v210 = objc_msgSend_height(texture, v61, v62, v63, v64, v65);
       MTLReportFailure();
     }
 
@@ -196,27 +196,27 @@
       MTLReportFailure();
     }
 
-    if ((a6 & 3) != 0 && MTLReportFailureTypeEnabled())
+    if ((offset & 3) != 0 && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
     v66 = objc_msgSend_numberOfZonesInX(self, v61, v62, v63, v64, v65, v207, v210);
     v72 = 16 * v66 * objc_msgSend_numberOfZonesInY(self, v67, v68, v69, v70, v71) + 16;
-    objc_msgSend_length(a5, v73, v74, v75, v76, v77);
-    if (v72 + a6 > objc_msgSend_length(a5, v78, v79, v80, v81, v82) && MTLReportFailureTypeEnabled())
+    objc_msgSend_length(destinationBuffer, v73, v74, v75, v76, v77);
+    if (v72 + offset > objc_msgSend_length(destinationBuffer, v78, v79, v80, v81, v82) && MTLReportFailureTypeEnabled())
     {
       v204 = v72;
-      v208 = a6;
+      offsetCopy = offset;
       MTLReportFailure();
     }
   }
 
-  v214 = a6;
+  offsetCopy2 = offset;
   memset(&v224, 0, sizeof(v224));
-  v83 = objc_msgSend_width(a4, a2, a3, a4, a5, a6, v204, v208);
-  v213 = a4;
-  v89 = objc_msgSend_height(a4, v84, v85, v86, v87, v88);
+  v83 = objc_msgSend_width(texture, a2, buffer, texture, destinationBuffer, offset, v204, offsetCopy);
+  textureCopy3 = texture;
+  v89 = objc_msgSend_height(texture, v84, v85, v86, v87, v88);
   v221.origin.x = v83;
   v221.origin.y = v89;
   v221.origin.z = 1;
@@ -229,11 +229,11 @@
   if (v224.size.height && v224.size.width)
   {
     v211 = v9;
-    MEMORY[0x23EE7BAC0](&v221, a3, 0);
+    MEMORY[0x23EE7BAC0](&v221, buffer, 0);
     v92 = objc_alloc(MEMORY[0x277CD7210]);
-    v100 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v92, v93, a3, 0, v94, v95);
+    v100 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v92, v93, buffer, 0, v94, v95);
     v219 = v100;
-    v220 = self;
+    selfCopy = self;
     if ((*(&self->super.super.super.isa + *v10) & 0x18) != 0)
     {
       v101 = *(&self->super.super.super.isa + *MEMORY[0x277CD7360]);
@@ -288,8 +288,8 @@
       v140 = v135 / v136;
     }
 
-    objc_msgSend_setTexture_atIndex_(v100, v137, v213, 0, v138, v139);
-    objc_msgSend_setBuffer_offset_atIndex_(v100, v141, a5, v214, 0, v142);
+    objc_msgSend_setTexture_atIndex_(v100, v137, textureCopy3, 0, v138, v139);
+    objc_msgSend_setBuffer_offset_atIndex_(v100, v141, destinationBuffer, offsetCopy2, 0, v142);
     objc_msgSend_setBuffer_offset_atIndex_(v100, v143, TempBuffer, 0, 1, v144);
     objc_msgSend_setBytes_length_atIndex_(v100, v145, &v222, 24, 2, v146);
     objc_msgSend_setThreadgroupMemoryLength_atIndex_(v100, v147, 32 * v140, 0, v148, v149);
@@ -315,7 +315,7 @@
       v168 = v165;
     }
 
-    objc_msgSend_setBuffer_offset_atIndex_(v100, v166, a5, v214, 0, v167);
+    objc_msgSend_setBuffer_offset_atIndex_(v100, v166, destinationBuffer, offsetCopy2, 0, v167);
     objc_msgSend_setBuffer_offset_atIndex_(v100, v169, TempBuffer, 0, 1, v170);
     objc_msgSend_setBytes_length_atIndex_(v100, v171, &v222, 24, 2, v172);
     objc_msgSend_setThreadgroupMemoryLength_atIndex_(v100, v173, 16 * v168, 0, v174, v175);
@@ -324,9 +324,9 @@
     v217 = v168;
     v218 = *&v223.origin.x;
     objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v100, v176, &v223, &v217, v177, v178);
-    if (a5)
+    if (destinationBuffer)
     {
-      v184 = objc_msgSend_userDictionary(a3, v179, v180, v181, v182, v183);
+      v184 = objc_msgSend_userDictionary(buffer, v179, v180, v181, v182, v183);
       v189 = objc_msgSend_objectForKey_(v184, v185, @"_MPSCommandBufferRetainListKey", v186, v187, v188);
       if (!v189)
       {
@@ -338,11 +338,11 @@
         v223.origin.z = sub_23993DAA4;
         v223.size.width = &unk_278AC37A8;
         v223.size.height = @"_MPSCommandBufferRetainListKey";
-        objc_msgSend_addCompletedHandler_(a3, v198, &v223, v199, v200, v201);
+        objc_msgSend_addCompletedHandler_(buffer, v198, &v223, v199, v200, v201);
         v189 = v194;
       }
 
-      objc_msgSend_addObject_(v189, v190, a5, v191, v192, v193);
+      objc_msgSend_addObject_(v189, v190, destinationBuffer, v191, v192, v193);
     }
 
     objc_msgSend_endEncoding(v100, v179, v180, v181, v182, v183);
@@ -360,11 +360,11 @@
   return self;
 }
 
-- (void)setSourceRegion:(id *)a3
+- (void)setSourceRegion:(id *)region
 {
-  v4 = *&a3->var0.var2;
-  v3 = *&a3->var1.var1;
-  *&self->_sourceRegion.origin.x = *&a3->var0.var0;
+  v4 = *&region->var0.var2;
+  v3 = *&region->var1.var1;
+  *&self->_sourceRegion.origin.x = *&region->var0.var0;
   *&self->_sourceRegion.origin.z = v4;
   *&self->_sourceRegion.size.height = v3;
 }

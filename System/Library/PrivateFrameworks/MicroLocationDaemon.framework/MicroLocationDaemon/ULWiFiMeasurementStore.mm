@@ -1,7 +1,7 @@
 @interface ULWiFiMeasurementStore
 + (unsigned)maxEntriesInTable;
 - (BOOL)deleteOrphanRecords;
-- (vector<short,)getChannelsUsedByMeasurementsAtLoiGroupID:(ULWiFiMeasurementStore *)self withSourceBSSIDinSet:(SEL)a3 fromScanTime:(const uuid *)a4 toScanTime:(const void *)a5;
+- (vector<short,)getChannelsUsedByMeasurementsAtLoiGroupID:(ULWiFiMeasurementStore *)self withSourceBSSIDinSet:(SEL)set fromScanTime:(const uuid *)time toScanTime:(const void *)scanTime;
 @end
 
 @implementation ULWiFiMeasurementStore
@@ -9,26 +9,26 @@
 + (unsigned)maxEntriesInTable
 {
   v2 = +[ULDefaultsSingleton shared];
-  v3 = [v2 defaultsDictionary];
+  defaultsDictionary = [v2 defaultsDictionary];
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULWiFiMeasurementTableMaxRows"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaultsDictionary objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
   }
 
   else
   {
-    v6 = [&unk_286A71CB8 unsignedIntValue];
+    unsignedIntValue = [&unk_286A71CB8 unsignedIntValue];
   }
 
-  v7 = v6;
+  v7 = unsignedIntValue;
 
   return v7;
 }
 
-- (vector<short,)getChannelsUsedByMeasurementsAtLoiGroupID:(ULWiFiMeasurementStore *)self withSourceBSSIDinSet:(SEL)a3 fromScanTime:(const uuid *)a4 toScanTime:(const void *)a5
+- (vector<short,)getChannelsUsedByMeasurementsAtLoiGroupID:(ULWiFiMeasurementStore *)self withSourceBSSIDinSet:(SEL)set fromScanTime:(const uuid *)time toScanTime:(const void *)scanTime
 {
   var1 = a7.var1;
   v8 = a7.var0.var1;
@@ -39,43 +39,43 @@
   __src[1] = 0;
   v72 = 0;
   v14 = +[ULDefaultsSingleton shared];
-  v15 = [v14 defaultsDictionary];
+  defaultsDictionary = [v14 defaultsDictionary];
 
   v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULDatabaseSelectionLimit"];
-  v61 = self;
-  v17 = [v15 objectForKey:v16];
+  selfCopy = self;
+  v17 = [defaultsDictionary objectForKey:v16];
   if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v18 = [v17 unsignedIntValue];
+    unsignedIntValue = [v17 unsignedIntValue];
   }
 
   else
   {
-    v18 = [&unk_286A71CD0 unsignedIntValue];
+    unsignedIntValue = [&unk_286A71CD0 unsignedIntValue];
   }
 
-  v60 = v18;
+  v60 = unsignedIntValue;
 
   context = objc_autoreleasePoolPush();
-  v65 = [MEMORY[0x277CBEB18] array];
-  v19 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a4];
-  v64 = [v19 UUIDString];
+  array = [MEMORY[0x277CBEB18] array];
+  v19 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:time];
+  uUIDString = [v19 UUIDString];
 
   v20 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K = %d", @"scanningEvent", @"scanResult", 0];
-  [v65 addObject:v20];
+  [array addObject:v20];
 
   v21 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K = %d", @"scanningEvent", @"scanType", 0];
-  [v65 addObject:v21];
+  [array addObject:v21];
 
-  v22 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K.%K = %@", @"scanningEvent", @"loi", @"loiGroupId", v64];
-  [v65 addObject:v22];
+  v22 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K.%K = %@", @"scanningEvent", @"loi", @"loiGroupId", uUIDString];
+  [array addObject:v22];
 
   if (v9)
   {
     v23 = MEMORY[0x277CCAC30];
     v24 = [MEMORY[0x277CCABB0] numberWithDouble:v10];
     v25 = [v23 predicateWithFormat:@"%K.%K > %@", @"scanningEvent", @"timestamp", v24];
-    [v65 addObject:v25];
+    [array addObject:v25];
   }
 
   if (var1)
@@ -83,24 +83,24 @@
     v26 = MEMORY[0x277CCAC30];
     v27 = [MEMORY[0x277CCABB0] numberWithDouble:v8];
     v28 = [v26 predicateWithFormat:@"%K.%K <= %@", @"scanningEvent", @"timestamp", v27];
-    [v65 addObject:v28];
+    [array addObject:v28];
   }
 
-  if (*(a5 + 24) != 1)
+  if (*(scanTime + 24) != 1)
   {
     goto LABEL_20;
   }
 
-  if (*(a5 + 2))
+  if (*(scanTime + 2))
   {
     v29 = [MEMORY[0x277CBEB18] arrayWithCapacity:?];
-    if ((*(a5 + 24) & 1) == 0)
+    if ((*(scanTime + 24) & 1) == 0)
     {
       std::__throw_bad_optional_access[abi:ne200100]();
     }
 
-    v32 = *a5;
-    v31 = a5 + 8;
+    v32 = *scanTime;
+    v31 = scanTime + 8;
     v30 = v32;
     if (v32 != v31)
     {
@@ -140,7 +140,7 @@
     }
 
     v37 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"sourceBSSID", v29];
-    [v65 addObject:v37];
+    [array addObject:v37];
 
 LABEL_20:
     v63 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"timestamp" ascending:0];
@@ -148,7 +148,7 @@ LABEL_20:
     v39 = NSStringFromClass(v38);
     v74[0] = v63;
     v40 = [MEMORY[0x277CBEA60] arrayWithObjects:v74 count:1];
-    v41 = [(ULStore *)v61 fetchPropertyForEntityName:v39 propertyToFetch:@"channel" distinctResults:0 byAndPredicates:v65 sortDescriptors:v40 andLimit:v60];
+    v41 = [(ULStore *)selfCopy fetchPropertyForEntityName:v39 propertyToFetch:@"channel" distinctResults:0 byAndPredicates:array sortDescriptors:v40 andLimit:v60];
 
     v68 = 0u;
     v69 = 0u;
@@ -168,7 +168,7 @@ LABEL_20:
             objc_enumerationMutation(v42);
           }
 
-          v46 = [*(*(&v66 + 1) + 8 * i) shortValue];
+          shortValue = [*(*(&v66 + 1) + 8 * i) shortValue];
           v47 = __src[1];
           if (__src[1] >= v72)
           {
@@ -205,7 +205,7 @@ LABEL_20:
               std::__allocate_at_least[abi:ne200100]<std::allocator<ULHomeSlamAnalyticEventDO::EventTypeEnum>>(__src, v53);
             }
 
-            *(2 * v51) = v46;
+            *(2 * v51) = shortValue;
             v48 = (2 * v51 + 2);
             memcpy(0, v49, v50);
             v54 = __src[0];
@@ -220,7 +220,7 @@ LABEL_20:
 
           else
           {
-            *__src[1] = v46;
+            *__src[1] = shortValue;
             v48 = v47 + 2;
           }
 
@@ -278,13 +278,13 @@ LABEL_41:
 
 - (BOOL)deleteOrphanRecords
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = NIL", @"scanningEvent"];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  LOBYTE(self) = [(ULStore *)self batchDeleteObjectsWithEntityName:v6 byAndPredicates:v3 sortDescriptors:0 andLimit:0];
+  LOBYTE(self) = [(ULStore *)self batchDeleteObjectsWithEntityName:v6 byAndPredicates:array sortDescriptors:0 andLimit:0];
 
   return self;
 }

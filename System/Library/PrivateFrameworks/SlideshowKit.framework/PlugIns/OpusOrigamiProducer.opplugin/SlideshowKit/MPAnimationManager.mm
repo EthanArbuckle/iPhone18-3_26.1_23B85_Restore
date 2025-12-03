@@ -1,8 +1,8 @@
 @interface MPAnimationManager
 + (id)sharedManager;
-+ (void)loadAnimationManagerWithPaths:(id)a3;
++ (void)loadAnimationManagerWithPaths:(id)paths;
 + (void)releaseSharedManager;
-- (MPAnimationManager)initWithPaths:(id)a3;
+- (MPAnimationManager)initWithPaths:(id)paths;
 - (void)dealloc;
 @end
 
@@ -13,13 +13,13 @@
   result = qword_1EF360;
   if (!qword_1EF360)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!qword_1EF360)
     {
       qword_1EF360 = [[MPAnimationManager alloc] initWithPaths:0];
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return qword_1EF360;
   }
 
@@ -30,11 +30,11 @@
 {
   if (qword_1EF360)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
 
     qword_1EF360 = 0;
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
   }
 }
 
@@ -48,7 +48,7 @@
   [(MPAnimationManager *)&v3 dealloc];
 }
 
-+ (void)loadAnimationManagerWithPaths:(id)a3
++ (void)loadAnimationManagerWithPaths:(id)paths
 {
   if (qword_1EF360)
   {
@@ -56,10 +56,10 @@
     qword_1EF360 = 0;
   }
 
-  qword_1EF360 = [[MPAnimationManager alloc] initWithPaths:a3];
+  qword_1EF360 = [[MPAnimationManager alloc] initWithPaths:paths];
 }
 
-- (MPAnimationManager)initWithPaths:(id)a3
+- (MPAnimationManager)initWithPaths:(id)paths
 {
   v21.receiver = self;
   v21.super_class = MPAnimationManager;
@@ -70,9 +70,9 @@
     v16->mAnimationSets = objc_alloc_init(NSMutableDictionary);
     v4 = +[NSMutableArray array];
     v5 = v4;
-    if (a3)
+    if (paths)
     {
-      [v4 addObjectsFromArray:a3];
+      [v4 addObjectsFromArray:paths];
     }
 
     else

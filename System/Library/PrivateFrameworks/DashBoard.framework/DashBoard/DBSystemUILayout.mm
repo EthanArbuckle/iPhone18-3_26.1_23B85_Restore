@@ -30,7 +30,7 @@
   v8 = MEMORY[0x28223BE20](v6);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   (*(v7 + 16))(v10, *(&self->super.isa + OBJC_IVAR___DBSystemUILayout__systemUILayout) + *((*MEMORY[0x277D85000] & **(&self->super.isa + OBJC_IVAR___DBSystemUILayout__systemUILayout)) + 0x58), v6, v8);
-  v11 = self;
+  selfCopy = self;
   sub_248381AE0();
   (*(v7 + 8))(v10, v6);
   v12 = sub_248381AB0();
@@ -52,7 +52,7 @@
 
 - (NSNumber)persistentElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2482936B8();
 
   return v3;
@@ -60,7 +60,7 @@
 
 - (BOOL)hasDefrostPersistentElement
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_248293910();
 
   return v3 & 1;
@@ -80,7 +80,7 @@
   v5 = MEMORY[0x28223BE20](v3);
   v7 = &v13 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   (*(v4 + 16))(v7, *(&self->super.isa + OBJC_IVAR___DBSystemUILayout__systemUILayout) + *((*MEMORY[0x277D85000] & **(&self->super.isa + OBJC_IVAR___DBSystemUILayout__systemUILayout)) + 0x58), v3, v5);
-  v8 = self;
+  selfCopy = self;
   v9 = sub_248381AF0();
   v11 = v10;
   (*(v4 + 8))(v7, v3);

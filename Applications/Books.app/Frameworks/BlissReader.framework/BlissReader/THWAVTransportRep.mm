@@ -1,10 +1,10 @@
 @interface THWAVTransportRep
 - (id)transportLayout;
-- (void)addChildViewsToArray:(id)a3;
+- (void)addChildViewsToArray:(id)array;
 - (void)viewScaleDidChange;
-- (void)willAddChildView:(id)a3 toView:(id)a4;
+- (void)willAddChildView:(id)view toView:(id)toView;
 - (void)willBeRemoved;
-- (void)willRemoveChildView:(id)a3;
+- (void)willRemoveChildView:(id)view;
 @end
 
 @implementation THWAVTransportRep
@@ -26,7 +26,7 @@
   return TSUDynamicCast();
 }
 
-- (void)addChildViewsToArray:(id)a3
+- (void)addChildViewsToArray:(id)array
 {
   objc_opt_class();
   [(THWAVTransportRep *)self layout];
@@ -40,26 +40,26 @@
     if ([v6 count])
     {
 
-      [a3 addObjectsFromArray:v7];
+      [array addObjectsFromArray:v7];
     }
   }
 }
 
-- (void)willAddChildView:(id)a3 toView:(id)a4
+- (void)willAddChildView:(id)view toView:(id)toView
 {
-  [a4 addSubview:a3];
+  [toView addSubview:view];
 
-  [(THWAVTransportRep *)self setChildViewSuperview:a4];
+  [(THWAVTransportRep *)self setChildViewSuperview:toView];
 }
 
-- (void)willRemoveChildView:(id)a3
+- (void)willRemoveChildView:(id)view
 {
   objc_opt_class();
   [(THWAVTransportRep *)self layout];
-  if (([objc_msgSend(objc_msgSend(objc_msgSend(TSUDynamicCast() "transportController")] & 1) != 0 || (v5 = -[THWAVTransportRep childViewSuperview](self, "childViewSuperview"), v5 == objc_msgSend(a3, "superview")))
+  if (([objc_msgSend(objc_msgSend(objc_msgSend(TSUDynamicCast() "transportController")] & 1) != 0 || (v5 = -[THWAVTransportRep childViewSuperview](self, "childViewSuperview"), v5 == objc_msgSend(view, "superview")))
   {
 
-    [a3 removeFromSuperview];
+    [view removeFromSuperview];
   }
 }
 

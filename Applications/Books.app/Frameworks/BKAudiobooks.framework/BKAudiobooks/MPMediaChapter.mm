@@ -6,9 +6,9 @@
 
 - (NSString)bk_UTF8Title
 {
-  v3 = [(MPMediaChapter *)self title];
-  v4 = [(MPMediaChapter *)self title];
-  v5 = [v4 cStringUsingEncoding:30];
+  title = [(MPMediaChapter *)self title];
+  title2 = [(MPMediaChapter *)self title];
+  v5 = [title2 cStringUsingEncoding:30];
 
   if (v5)
   {
@@ -18,11 +18,11 @@
     {
       v8 = v6;
 
-      v3 = v8;
+      title = v8;
     }
   }
 
-  return v3;
+  return title;
 }
 
 @end

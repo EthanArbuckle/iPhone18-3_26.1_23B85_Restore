@@ -1,33 +1,33 @@
 @interface SUUIShelfPageSectionConfiguration
-- (BOOL)prefetchResourcesForShelfItemViewElement:(id)a3 reason:(int64_t)a4;
-- (CGSize)cellSizeForShelfViewElement:(id)a3 indexPath:(id)a4 numberOfShelfItems:(int64_t)a5;
-- (Class)_cellClassForEffectiveShelfItemViewElement:(id)a3;
-- (Class)_lockupCellClassWithLockup:(id)a3;
+- (BOOL)prefetchResourcesForShelfItemViewElement:(id)element reason:(int64_t)reason;
+- (CGSize)cellSizeForShelfViewElement:(id)element indexPath:(id)path numberOfShelfItems:(int64_t)items;
+- (Class)_cellClassForEffectiveShelfItemViewElement:(id)element;
+- (Class)_lockupCellClassWithLockup:(id)lockup;
 - (SUUIShelfPageSectionConfigurationDataSource)dataSource;
 - (UICollectionView)shelfCollectionView;
-- (UIEdgeInsets)sectionContentInsetAdjustedFromValue:(UIEdgeInsets)a3 forShelfViewElement:(id)a4 withSectionIndex:(int64_t)a5;
-- (double)_columnSpacingForShelfItemViewElements:(id)a3;
-- (double)_perspectiveHeightForContentSize:(double)a3;
-- (id)_dequeueCellForLockup:(id)a3 collectionView:(id)a4 indexPath:(id)a5;
-- (id)_reloadShelfLayoutDataWithNumberOfShelfItems:(int64_t)a3;
-- (id)_shelfItemViewElementAtIndex:(int64_t)a3;
-- (id)_styledShelfCollectionViewLayoutForExistingLayout:(id)a3;
-- (id)actualIndexPathOfShelfItemClosestToVisibleBoundsForNormalizedIndexPath:(id)a3 numberOfShelfItems:(unint64_t)a4;
-- (id)backgroundColorForShelfViewElement:(id)a3;
-- (id)cellForShelfItemViewElement:(id)a3 indexPath:(id)a4;
-- (id)cellForShelfViewElement:(id)a3 indexPath:(id)a4;
-- (id)normalizedShelfItemIndexPathFromActualIndexPath:(id)a3 numberOfShelfItems:(unint64_t)a4;
-- (int64_t)lockupTypeForLockup:(id)a3;
+- (UIEdgeInsets)sectionContentInsetAdjustedFromValue:(UIEdgeInsets)value forShelfViewElement:(id)element withSectionIndex:(int64_t)index;
+- (double)_columnSpacingForShelfItemViewElements:(id)elements;
+- (double)_perspectiveHeightForContentSize:(double)size;
+- (id)_dequeueCellForLockup:(id)lockup collectionView:(id)view indexPath:(id)path;
+- (id)_reloadShelfLayoutDataWithNumberOfShelfItems:(int64_t)items;
+- (id)_shelfItemViewElementAtIndex:(int64_t)index;
+- (id)_styledShelfCollectionViewLayoutForExistingLayout:(id)layout;
+- (id)actualIndexPathOfShelfItemClosestToVisibleBoundsForNormalizedIndexPath:(id)path numberOfShelfItems:(unint64_t)items;
+- (id)backgroundColorForShelfViewElement:(id)element;
+- (id)cellForShelfItemViewElement:(id)element indexPath:(id)path;
+- (id)cellForShelfViewElement:(id)element indexPath:(id)path;
+- (id)normalizedShelfItemIndexPathFromActualIndexPath:(id)path numberOfShelfItems:(unint64_t)items;
+- (int64_t)lockupTypeForLockup:(id)lockup;
 - (void)_updateShelfLayoutDataContentInset;
-- (void)registerReusableClassesForCollectionView:(id)a3;
-- (void)reloadLockupTypeForShelfViewElement:(id)a3;
-- (void)reloadShelfLayoutDataForShelfViewElement:(id)a3 withShelfItemViewElements:(id)a4 requestCellLayouts:(BOOL)a5 numberOfShelfItems:(int64_t)a6;
-- (void)requestCellLayoutForViewElement:(id)a3 withColumnWidth:(double)a4;
-- (void)setShelfCollectionViewBackgroundColor:(id)a3;
-- (void)setShelfCollectionViewDataSource:(id)a3;
-- (void)setShelfCollectionViewDelegate:(id)a3;
-- (void)setShelfViewElementStyle:(id)a3;
-- (void)shelfItemsCollectionView:(id)a3 willApplyLayoutAttributes:(id)a4 forViewElement:(id)a5 withItemIndex:(int64_t)a6;
+- (void)registerReusableClassesForCollectionView:(id)view;
+- (void)reloadLockupTypeForShelfViewElement:(id)element;
+- (void)reloadShelfLayoutDataForShelfViewElement:(id)element withShelfItemViewElements:(id)elements requestCellLayouts:(BOOL)layouts numberOfShelfItems:(int64_t)items;
+- (void)requestCellLayoutForViewElement:(id)element withColumnWidth:(double)width;
+- (void)setShelfCollectionViewBackgroundColor:(id)color;
+- (void)setShelfCollectionViewDataSource:(id)source;
+- (void)setShelfCollectionViewDelegate:(id)delegate;
+- (void)setShelfViewElementStyle:(id)style;
+- (void)shelfItemsCollectionView:(id)view willApplyLayoutAttributes:(id)attributes forViewElement:(id)element withItemIndex:(int64_t)index;
 @end
 
 @implementation SUUIShelfPageSectionConfiguration
@@ -73,44 +73,44 @@
   return shelfCollectionView;
 }
 
-- (void)setShelfCollectionViewBackgroundColor:(id)a3
+- (void)setShelfCollectionViewBackgroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   p_shelfCollectionViewBackgroundColor = &self->_shelfCollectionViewBackgroundColor;
-  if (self->_shelfCollectionViewBackgroundColor != v5)
+  if (self->_shelfCollectionViewBackgroundColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_shelfCollectionViewBackgroundColor, a3);
+    v7 = colorCopy;
+    objc_storeStrong(p_shelfCollectionViewBackgroundColor, color);
     p_shelfCollectionViewBackgroundColor = [(UICollectionView *)self->_shelfCollectionView setBackgroundColor:v7];
   }
 
   MEMORY[0x2821F9730](p_shelfCollectionViewBackgroundColor);
 }
 
-- (void)setShelfCollectionViewDataSource:(id)a3
+- (void)setShelfCollectionViewDataSource:(id)source
 {
-  if (self->_shelfCollectionViewDataSource != a3)
+  if (self->_shelfCollectionViewDataSource != source)
   {
-    self->_shelfCollectionViewDataSource = a3;
+    self->_shelfCollectionViewDataSource = source;
     [(UICollectionView *)self->_shelfCollectionView setDataSource:?];
   }
 }
 
-- (void)setShelfCollectionViewDelegate:(id)a3
+- (void)setShelfCollectionViewDelegate:(id)delegate
 {
-  if (self->_shelfCollectionViewDelegate != a3)
+  if (self->_shelfCollectionViewDelegate != delegate)
   {
-    self->_shelfCollectionViewDelegate = a3;
+    self->_shelfCollectionViewDelegate = delegate;
     [(UICollectionView *)self->_shelfCollectionView setDelegate:?];
   }
 }
 
-- (void)setShelfViewElementStyle:(id)a3
+- (void)setShelfViewElementStyle:(id)style
 {
-  v19 = a3;
-  if (self->_shelfViewElementStyle != v19)
+  styleCopy = style;
+  if (self->_shelfViewElementStyle != styleCopy)
   {
-    objc_storeStrong(&self->_shelfViewElementStyle, a3);
+    objc_storeStrong(&self->_shelfViewElementStyle, style);
     v5 = [(IKViewElementStyle *)self->_shelfViewElementStyle valueForStyle:@"itml-shelf-zooming-layout-peeking-item-width"];
     [v5 floatValue];
     v7 = v6;
@@ -135,9 +135,9 @@
     shelfCollectionView = self->_shelfCollectionView;
     if (shelfCollectionView)
     {
-      v16 = [(UICollectionView *)shelfCollectionView collectionViewLayout];
-      v17 = [(SUUIShelfPageSectionConfiguration *)self _styledShelfCollectionViewLayoutForExistingLayout:v16];
-      if (v16 != v17)
+      collectionViewLayout = [(UICollectionView *)shelfCollectionView collectionViewLayout];
+      v17 = [(SUUIShelfPageSectionConfiguration *)self _styledShelfCollectionViewLayoutForExistingLayout:collectionViewLayout];
+      if (collectionViewLayout != v17)
       {
         [(UICollectionView *)self->_shelfCollectionView setCollectionViewLayout:v17];
         v18 = self->_shelfCollectionView;
@@ -149,20 +149,20 @@
   }
 }
 
-- (id)actualIndexPathOfShelfItemClosestToVisibleBoundsForNormalizedIndexPath:(id)a3 numberOfShelfItems:(unint64_t)a4
+- (id)actualIndexPathOfShelfItemClosestToVisibleBoundsForNormalizedIndexPath:(id)path numberOfShelfItems:(unint64_t)items
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pathCopy = path;
   if ([(SUUIShelfPageSectionConfiguration *)self numberOfIterations]== 1)
   {
-    v7 = v6;
+    v7 = pathCopy;
   }
 
   else
   {
-    v8 = [v6 item];
-    v9 = [(SUUIShelfPageSectionConfiguration *)self shelfCollectionView];
-    [v9 indexPathsForVisibleItems];
+    item = [pathCopy item];
+    shelfCollectionView = [(SUUIShelfPageSectionConfiguration *)self shelfCollectionView];
+    [shelfCollectionView indexPathsForVisibleItems];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -182,7 +182,7 @@ LABEL_5:
         }
 
         v15 = *(*(&v27 + 1) + 8 * v14);
-        if ([v15 item] % a4 == v8)
+        if ([v15 item] % items == item)
         {
           break;
         }
@@ -216,20 +216,20 @@ LABEL_11:
     {
       v16 = [v10 sortedArrayUsingComparator:&__block_literal_global_23];
 
-      v17 = [v16 firstObject];
-      v18 = [v16 lastObject];
-      v19 = v17;
-      if (v17 != v18)
+      firstObject = [v16 firstObject];
+      lastObject = [v16 lastObject];
+      v19 = firstObject;
+      if (firstObject != lastObject)
       {
-        v20 = [v17 item] % a4;
-        v21 = [v18 item] % a4;
-        v22 = v20 - v8;
-        if ((v20 - v8) < 0)
+        v20 = [firstObject item] % items;
+        v21 = [lastObject item] % items;
+        v22 = v20 - item;
+        if ((v20 - item) < 0)
         {
-          v22 = v8 - v20;
+          v22 = item - v20;
         }
 
-        v23 = v21 - v8;
+        v23 = v21 - item;
         if (v23 < 0)
         {
           v23 = -v23;
@@ -237,25 +237,25 @@ LABEL_11:
 
         if (v22 >= v23)
         {
-          v19 = v18;
+          v19 = lastObject;
         }
 
         else
         {
-          v19 = v17;
+          v19 = firstObject;
         }
       }
 
       v24 = v19;
-      v25 = [v24 item];
-      v7 = [MEMORY[0x277CCAA70] indexPathForItem:v8 + v25 / a4 * a4 inSection:{objc_msgSend(v6, "section")}];
+      item2 = [v24 item];
+      v7 = [MEMORY[0x277CCAA70] indexPathForItem:item + item2 / items * items inSection:{objc_msgSend(pathCopy, "section")}];
 
       v10 = v16;
     }
 
     else
     {
-      v7 = v6;
+      v7 = pathCopy;
     }
 
 LABEL_24:
@@ -287,27 +287,27 @@ uint64_t __127__SUUIShelfPageSectionConfiguration_actualIndexPathOfShelfItemClos
   }
 }
 
-- (id)backgroundColorForShelfViewElement:(id)a3
+- (id)backgroundColorForShelfViewElement:(id)element
 {
-  v3 = [a3 style];
-  v4 = [v3 ikBackgroundColor];
-  v5 = [v4 color];
+  style = [element style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  return v5;
+  return color;
 }
 
-- (id)cellForShelfViewElement:(id)a3 indexPath:(id)a4
+- (id)cellForShelfViewElement:(id)element indexPath:(id)path
 {
   pageSectionContext = self->_pageSectionContext;
-  v6 = a4;
-  v7 = [(SUUIStorePageSectionContext *)pageSectionContext collectionView];
-  v8 = [v7 dequeueReusableCellWithReuseIdentifier:0x286AF9C20 forIndexPath:v6];
+  pathCopy = path;
+  collectionView = [(SUUIStorePageSectionContext *)pageSectionContext collectionView];
+  v8 = [collectionView dequeueReusableCellWithReuseIdentifier:0x286AF9C20 forIndexPath:pathCopy];
 
-  v9 = [(SUUIShelfPageSectionConfiguration *)self shelfCollectionView];
-  [v8 setCollectionView:v9];
+  shelfCollectionView = [(SUUIShelfPageSectionConfiguration *)self shelfCollectionView];
+  [v8 setCollectionView:shelfCollectionView];
   if (self->_needsShelfCollectionViewReload)
   {
-    [v9 reloadData];
+    [shelfCollectionView reloadData];
     self->_needsShelfCollectionViewReload = 0;
   }
 
@@ -329,13 +329,13 @@ uint64_t __127__SUUIShelfPageSectionConfiguration_actualIndexPathOfShelfItemClos
   return v8;
 }
 
-- (CGSize)cellSizeForShelfViewElement:(id)a3 indexPath:(id)a4 numberOfShelfItems:(int64_t)a5
+- (CGSize)cellSizeForShelfViewElement:(id)element indexPath:(id)path numberOfShelfItems:(int64_t)items
 {
-  [(SUUIStorePageSectionContext *)self->_pageSectionContext activePageWidth:a3];
+  [(SUUIStorePageSectionContext *)self->_pageSectionContext activePageWidth:element];
   v8 = v7;
   if (self->_needsShelfCollectionViewLayout)
   {
-    v9 = [(SUUIShelfPageSectionConfiguration *)self _reloadShelfLayoutDataWithNumberOfShelfItems:a5];
+    v9 = [(SUUIShelfPageSectionConfiguration *)self _reloadShelfLayoutDataWithNumberOfShelfItems:items];
     self->_needsShelfCollectionViewLayout = 0;
   }
 
@@ -359,21 +359,21 @@ uint64_t __127__SUUIShelfPageSectionConfiguration_actualIndexPathOfShelfItemClos
   return result;
 }
 
-- (id)cellForShelfItemViewElement:(id)a3 indexPath:(id)a4
+- (id)cellForShelfItemViewElement:(id)element indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUUIShelfPageSectionConfiguration *)self shelfCollectionView];
-  v9 = [(SUUIShelfPageSectionConfiguration *)self effectiveViewElementForShelfItemViewElement:v6];
-  v10 = [v9 elementType];
+  elementCopy = element;
+  pathCopy = path;
+  shelfCollectionView = [(SUUIShelfPageSectionConfiguration *)self shelfCollectionView];
+  v9 = [(SUUIShelfPageSectionConfiguration *)self effectiveViewElementForShelfItemViewElement:elementCopy];
+  elementType = [v9 elementType];
   v11 = 0;
-  if (v10 <= 48)
+  if (elementType <= 48)
   {
-    if (v10 == 14)
+    if (elementType == 14)
     {
-      if ([v6 cardType] != 3)
+      if ([elementCopy cardType] != 3)
       {
-        v11 = [v8 dequeueReusableCellWithReuseIdentifier:0x286AFFD60 forIndexPath:v7];
+        v11 = [shelfCollectionView dequeueReusableCellWithReuseIdentifier:0x286AFFD60 forIndexPath:pathCopy];
         [v11 setArtworkBoundingSize:0];
         goto LABEL_14;
       }
@@ -383,7 +383,7 @@ uint64_t __127__SUUIShelfPageSectionConfiguration_actualIndexPathOfShelfItemClos
 
     else
     {
-      if (v10 != 28)
+      if (elementType != 28)
       {
         goto LABEL_14;
       }
@@ -391,21 +391,21 @@ uint64_t __127__SUUIShelfPageSectionConfiguration_actualIndexPathOfShelfItemClos
       v12 = 0x286AF7760;
     }
 
-    v11 = [v8 dequeueReusableCellWithReuseIdentifier:v12 forIndexPath:v7];
+    v11 = [shelfCollectionView dequeueReusableCellWithReuseIdentifier:v12 forIndexPath:pathCopy];
     goto LABEL_14;
   }
 
-  if (v10 == 49)
+  if (elementType == 49)
   {
 LABEL_5:
-    v11 = [v8 dequeueReusableCellWithReuseIdentifier:0x286AF3680 forIndexPath:v7];
+    v11 = [shelfCollectionView dequeueReusableCellWithReuseIdentifier:0x286AF3680 forIndexPath:pathCopy];
     [v11 setShowsReflectionImage:0];
     goto LABEL_14;
   }
 
-  if (v10 != 66)
+  if (elementType != 66)
   {
-    if (v10 != 152)
+    if (elementType != 152)
     {
       goto LABEL_14;
     }
@@ -413,15 +413,15 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v13 = [(SUUIShelfPageSectionConfiguration *)self shelfCollectionView];
-  v11 = [(SUUIShelfPageSectionConfiguration *)self _dequeueCellForLockup:v9 collectionView:v13 indexPath:v7];
+  shelfCollectionView2 = [(SUUIShelfPageSectionConfiguration *)self shelfCollectionView];
+  v11 = [(SUUIShelfPageSectionConfiguration *)self _dequeueCellForLockup:v9 collectionView:shelfCollectionView2 indexPath:pathCopy];
 
 LABEL_14:
-  -[SUUIShelfLayoutData sizeForItemAtIndex:](self->_shelfLayoutData, "sizeForItemAtIndex:", [v7 item]);
+  -[SUUIShelfLayoutData sizeForItemAtIndex:](self->_shelfLayoutData, "sizeForItemAtIndex:", [pathCopy item]);
   v15 = v14;
-  v16 = [v9 style];
-  v17 = [v16 visibility];
-  v18 = [v17 isEqualToString:@"hidden"];
+  style = [v9 style];
+  visibility = [style visibility];
+  v18 = [visibility isEqualToString:@"hidden"];
 
   if (v18)
   {
@@ -438,39 +438,39 @@ LABEL_14:
   {
     pageSectionContext = self->_pageSectionContext;
     v21 = v11;
-    v22 = [(SUUIStorePageSectionContext *)pageSectionContext parentViewController];
-    v23 = [v22 view];
+    parentViewController = [(SUUIStorePageSectionContext *)pageSectionContext parentViewController];
+    view = [parentViewController view];
 
-    [v21 setPerspectiveTargetView:v23];
-    [v23 bounds];
+    [v21 setPerspectiveTargetView:view];
+    [view bounds];
     [v21 setVanishingPoint:{CGRectGetMidX(v26), -800.0}];
   }
 
   return v11;
 }
 
-- (int64_t)lockupTypeForLockup:(id)a3
+- (int64_t)lockupTypeForLockup:(id)lockup
 {
   result = self->_lockupType;
   if (result == -1)
   {
-    return [a3 lockupViewType];
+    return [lockup lockupViewType];
   }
 
   return result;
 }
 
-- (id)normalizedShelfItemIndexPathFromActualIndexPath:(id)a3 numberOfShelfItems:(unint64_t)a4
+- (id)normalizedShelfItemIndexPathFromActualIndexPath:(id)path numberOfShelfItems:(unint64_t)items
 {
-  v6 = a3;
+  pathCopy = path;
   if ([(SUUIShelfPageSectionConfiguration *)self numberOfIterations]== 1)
   {
-    v7 = v6;
+    v7 = pathCopy;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCAA70] indexPathForItem:objc_msgSend(v6 inSection:{"item") % a4, objc_msgSend(v6, "section")}];
+    v7 = [MEMORY[0x277CCAA70] indexPathForItem:objc_msgSend(pathCopy inSection:{"item") % items, objc_msgSend(pathCopy, "section")}];
   }
 
   v8 = v7;
@@ -478,30 +478,30 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)prefetchResourcesForShelfItemViewElement:(id)a3 reason:(int64_t)a4
+- (BOOL)prefetchResourcesForShelfItemViewElement:(id)element reason:(int64_t)reason
 {
-  v6 = [(SUUIShelfPageSectionConfiguration *)self effectiveViewElementForShelfItemViewElement:a3];
-  LOBYTE(a4) = [(objc_class *)[(SUUIShelfPageSectionConfiguration *)self _cellClassForEffectiveShelfItemViewElement:v6] prefetchResourcesForViewElement:v6 reason:a4 context:self->_cellLayoutContext];
+  v6 = [(SUUIShelfPageSectionConfiguration *)self effectiveViewElementForShelfItemViewElement:element];
+  LOBYTE(reason) = [(objc_class *)[(SUUIShelfPageSectionConfiguration *)self _cellClassForEffectiveShelfItemViewElement:v6] prefetchResourcesForViewElement:v6 reason:reason context:self->_cellLayoutContext];
 
-  return a4;
+  return reason;
 }
 
-- (void)registerReusableClassesForCollectionView:(id)a3
+- (void)registerReusableClassesForCollectionView:(id)view
 {
-  v3 = a3;
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF9C20];
+  viewCopy = view;
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF9C20];
 }
 
-- (void)reloadLockupTypeForShelfViewElement:(id)a3
+- (void)reloadLockupTypeForShelfViewElement:(id)element
 {
-  v4 = [a3 style];
-  v7 = [v4 lockupType];
+  style = [element style];
+  lockupType = [style lockupType];
 
-  v5 = v7;
-  if (v7)
+  v5 = lockupType;
+  if (lockupType)
   {
-    v6 = SUUILockupViewTypeForString(v7);
-    v5 = v7;
+    v6 = SUUILockupViewTypeForString(lockupType);
+    v5 = lockupType;
   }
 
   else
@@ -514,42 +514,42 @@ LABEL_14:
   MEMORY[0x2821F96F8](v6, v5);
 }
 
-- (void)reloadShelfLayoutDataForShelfViewElement:(id)a3 withShelfItemViewElements:(id)a4 requestCellLayouts:(BOOL)a5 numberOfShelfItems:(int64_t)a6
+- (void)reloadShelfLayoutDataForShelfViewElement:(id)element withShelfItemViewElements:(id)elements requestCellLayouts:(BOOL)layouts numberOfShelfItems:(int64_t)items
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a3;
+  layoutsCopy = layouts;
+  elementsCopy = elements;
+  elementCopy = element;
   v12 = [SUUIShelfLayoutData alloc];
-  v13 = [v11 numberOfRows];
+  numberOfRows = [elementCopy numberOfRows];
 
-  [(SUUIShelfPageSectionConfiguration *)self _columnSpacingForShelfItemViewElements:v10];
+  [(SUUIShelfPageSectionConfiguration *)self _columnSpacingForShelfItemViewElements:elementsCopy];
   v15 = v14;
 
-  v16 = [(SUUIShelfLayoutData *)v12 initWithNumberOfRows:v13 columnSpacing:v15];
+  v16 = [(SUUIShelfLayoutData *)v12 initWithNumberOfRows:numberOfRows columnSpacing:v15];
   shelfLayoutData = self->_shelfLayoutData;
   self->_shelfLayoutData = v16;
 
   [(SUUIShelfPageSectionConfiguration *)self _updateShelfLayoutDataContentInset];
-  v18 = [(SUUIShelfPageSectionConfiguration *)self _reloadShelfLayoutDataWithNumberOfShelfItems:a6];
-  if (v7)
+  v18 = [(SUUIShelfPageSectionConfiguration *)self _reloadShelfLayoutDataWithNumberOfShelfItems:items];
+  if (layoutsCopy)
   {
-    v19 = [(SUUIShelfPageSectionConfiguration *)self numberOfIterations];
-    v20 = [(SUUIShelfLayoutData *)self->_shelfLayoutData numberOfRows];
+    numberOfIterations = [(SUUIShelfPageSectionConfiguration *)self numberOfIterations];
+    numberOfRows2 = [(SUUIShelfLayoutData *)self->_shelfLayoutData numberOfRows];
     v21 = self->_shelfLayoutData;
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __142__SUUIShelfPageSectionConfiguration_reloadShelfLayoutDataForShelfViewElement_withShelfItemViewElements_requestCellLayouts_numberOfShelfItems___block_invoke;
     v23[3] = &unk_2798FA858;
-    v26 = v20;
-    v27 = a6;
-    v28 = v19;
+    v26 = numberOfRows2;
+    itemsCopy = items;
+    v28 = numberOfIterations;
     v24 = v18;
-    v25 = self;
+    selfCopy = self;
     [(SUUIShelfLayoutData *)v21 enumerateColumnsUsingBlock:v23];
   }
 
-  v22 = [(UICollectionView *)self->_shelfCollectionView collectionViewLayout];
-  [v22 setLayoutData:self->_shelfLayoutData];
+  collectionViewLayout = [(UICollectionView *)self->_shelfCollectionView collectionViewLayout];
+  [collectionViewLayout setLayoutData:self->_shelfLayoutData];
 }
 
 void __142__SUUIShelfPageSectionConfiguration_reloadShelfLayoutDataForShelfViewElement_withShelfItemViewElements_requestCellLayouts_numberOfShelfItems___block_invoke(uint64_t a1, uint64_t a2, double a3)
@@ -609,24 +609,24 @@ void __142__SUUIShelfPageSectionConfiguration_reloadShelfLayoutDataForShelfViewE
   }
 }
 
-- (void)requestCellLayoutForViewElement:(id)a3 withColumnWidth:(double)a4
+- (void)requestCellLayoutForViewElement:(id)element withColumnWidth:(double)width
 {
-  v6 = [(SUUIShelfPageSectionConfiguration *)self effectiveViewElementForShelfItemViewElement:a3];
-  [(objc_class *)[(SUUIShelfPageSectionConfiguration *)self _cellClassForEffectiveShelfItemViewElement:v6] requestLayoutForViewElement:v6 width:self->_cellLayoutContext context:a4];
+  v6 = [(SUUIShelfPageSectionConfiguration *)self effectiveViewElementForShelfItemViewElement:element];
+  [(objc_class *)[(SUUIShelfPageSectionConfiguration *)self _cellClassForEffectiveShelfItemViewElement:v6] requestLayoutForViewElement:v6 width:self->_cellLayoutContext context:width];
 }
 
-- (UIEdgeInsets)sectionContentInsetAdjustedFromValue:(UIEdgeInsets)a3 forShelfViewElement:(id)a4 withSectionIndex:(int64_t)a5
+- (UIEdgeInsets)sectionContentInsetAdjustedFromValue:(UIEdgeInsets)value forShelfViewElement:(id)element withSectionIndex:(int64_t)index
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = value.right;
+  bottom = value.bottom;
+  left = value.left;
+  top = value.top;
   v18 = 0;
-  v10 = [a4 style];
-  v11 = SUUIViewElementPaddingForStyle(v10, &v18);
+  style = [element style];
+  v11 = SUUIViewElementPaddingForStyle(style, &v18);
   v13 = v12;
 
-  if (a5)
+  if (index)
   {
     v14 = top;
   }
@@ -660,35 +660,35 @@ void __142__SUUIShelfPageSectionConfiguration_reloadShelfLayoutDataForShelfViewE
   return result;
 }
 
-- (void)shelfItemsCollectionView:(id)a3 willApplyLayoutAttributes:(id)a4 forViewElement:(id)a5 withItemIndex:(int64_t)a6
+- (void)shelfItemsCollectionView:(id)view willApplyLayoutAttributes:(id)attributes forViewElement:(id)element withItemIndex:(int64_t)index
 {
-  v18 = a3;
-  v10 = a4;
-  v11 = [(SUUIShelfPageSectionConfiguration *)self effectiveViewElementForShelfItemViewElement:a5];
-  v12 = [v11 style];
-  v13 = [v12 ikBackgroundColor];
-  v14 = [v13 color];
+  viewCopy = view;
+  attributesCopy = attributes;
+  v11 = [(SUUIShelfPageSectionConfiguration *)self effectiveViewElementForShelfItemViewElement:element];
+  style = [v11 style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (v14)
+  if (color)
   {
-    [v10 setBackgroundColor:v14];
+    [attributesCopy setBackgroundColor:color];
   }
 
   else
   {
-    v15 = [v18 backgroundColor];
-    [v10 setBackgroundColor:v15];
+    backgroundColor = [viewCopy backgroundColor];
+    [attributesCopy setBackgroundColor:backgroundColor];
   }
 
-  v16 = [(SUUIShelfLayoutData *)self->_shelfLayoutData numberOfRows];
-  if (v16 == 1)
+  numberOfRows = [(SUUIShelfLayoutData *)self->_shelfLayoutData numberOfRows];
+  if (numberOfRows == 1)
   {
     v17 = 40;
   }
 
-  else if (a6 % v16)
+  else if (index % numberOfRows)
   {
-    if (a6 % v16 == v16 - 1)
+    if (index % numberOfRows == numberOfRows - 1)
     {
       v17 = 32;
     }
@@ -704,23 +704,23 @@ void __142__SUUIShelfPageSectionConfiguration_reloadShelfLayoutDataForShelfViewE
     v17 = 8;
   }
 
-  [v10 setPosition:v17];
+  [attributesCopy setPosition:v17];
 }
 
-- (Class)_cellClassForEffectiveShelfItemViewElement:(id)a3
+- (Class)_cellClassForEffectiveShelfItemViewElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 elementType];
+  elementCopy = element;
+  elementType = [elementCopy elementType];
   v6 = 0;
-  if (v5 <= 48)
+  if (elementType <= 48)
   {
-    if (v5 == 14)
+    if (elementType == 14)
     {
-      [v4 cardType];
+      [elementCopy cardType];
       goto LABEL_11;
     }
 
-    if (v5 == 28)
+    if (elementType == 28)
     {
       goto LABEL_11;
     }
@@ -728,12 +728,12 @@ void __142__SUUIShelfPageSectionConfiguration_reloadShelfLayoutDataForShelfViewE
 
   else
   {
-    switch(v5)
+    switch(elementType)
     {
       case 49:
         goto LABEL_11;
       case 66:
-        v7 = [(SUUIShelfPageSectionConfiguration *)self _lockupCellClassWithLockup:v4];
+        v7 = [(SUUIShelfPageSectionConfiguration *)self _lockupCellClassWithLockup:elementCopy];
 LABEL_12:
         v6 = v7;
         break;
@@ -749,10 +749,10 @@ LABEL_11:
   return v6;
 }
 
-- (double)_columnSpacingForShelfItemViewElements:(id)a3
+- (double)_columnSpacingForShelfItemViewElements:(id)elements
 {
-  v4 = [(SUUIStorePageSectionContext *)self->_pageSectionContext clientContext];
-  v5 = SUUIUserInterfaceIdiom(v4);
+  clientContext = [(SUUIStorePageSectionContext *)self->_pageSectionContext clientContext];
+  v5 = SUUIUserInterfaceIdiom(clientContext);
 
   result = 15.0;
   if (v5 == 1)
@@ -769,11 +769,11 @@ LABEL_11:
   return result;
 }
 
-- (id)_dequeueCellForLockup:(id)a3 collectionView:(id)a4 indexPath:(id)a5
+- (id)_dequeueCellForLockup:(id)lockup collectionView:(id)view indexPath:(id)path
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SUUIShelfPageSectionConfiguration *)self lockupTypeForLockup:a3];
+  viewCopy = view;
+  pathCopy = path;
+  v10 = [(SUUIShelfPageSectionConfiguration *)self lockupTypeForLockup:lockup];
   if (v10 > 8)
   {
     v11 = 0;
@@ -781,7 +781,7 @@ LABEL_11:
 
   else if (((1 << v10) & 0x1E6) != 0)
   {
-    v11 = [v8 dequeueReusableCellWithReuseIdentifier:0x286AFE180 forIndexPath:v9];
+    v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:0x286AFE180 forIndexPath:pathCopy];
     [v11 setSeparatorStyle:5];
   }
 
@@ -797,15 +797,15 @@ LABEL_11:
       v12 = 0x286AFFCE0;
     }
 
-    v11 = [v8 dequeueReusableCellWithReuseIdentifier:v12 forIndexPath:v9];
+    v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:v12 forIndexPath:pathCopy];
   }
 
   return v11;
 }
 
-- (Class)_lockupCellClassWithLockup:(id)a3
+- (Class)_lockupCellClassWithLockup:(id)lockup
 {
-  if ([(SUUIShelfPageSectionConfiguration *)self lockupTypeForLockup:a3]<= 8)
+  if ([(SUUIShelfPageSectionConfiguration *)self lockupTypeForLockup:lockup]<= 8)
   {
     v3 = objc_opt_class();
   }
@@ -813,13 +813,13 @@ LABEL_11:
   return v3;
 }
 
-- (double)_perspectiveHeightForContentSize:(double)a3
+- (double)_perspectiveHeightForContentSize:(double)size
 {
-  [SUUIStackedImageView maximumPerspectiveHeightForSize:a3, a3];
+  [SUUIStackedImageView maximumPerspectiveHeightForSize:size, size];
   v5 = v4;
-  v6 = [(SUUIShelfPageSectionConfiguration *)self isTopSection];
+  isTopSection = [(SUUIShelfPageSectionConfiguration *)self isTopSection];
   result = v5 + -15.0;
-  if (v6)
+  if (isTopSection)
   {
     return v5;
   }
@@ -827,10 +827,10 @@ LABEL_11:
   return result;
 }
 
-- (id)_reloadShelfLayoutDataWithNumberOfShelfItems:(int64_t)a3
+- (id)_reloadShelfLayoutDataWithNumberOfShelfItems:(int64_t)items
 {
-  v5 = [(SUUIShelfPageSectionConfiguration *)self numberOfIterations];
-  if (v5 < 2)
+  numberOfIterations = [(SUUIShelfPageSectionConfiguration *)self numberOfIterations];
+  if (numberOfIterations < 2)
   {
     v6 = 0;
   }
@@ -841,15 +841,15 @@ LABEL_11:
   }
 
   shelfLayoutData = self->_shelfLayoutData;
-  v8 = v5 * a3;
+  v8 = numberOfIterations * items;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __82__SUUIShelfPageSectionConfiguration__reloadShelfLayoutDataWithNumberOfShelfItems___block_invoke;
   v12[3] = &unk_2798FA880;
-  v15 = a3;
+  itemsCopy = items;
   v9 = v6;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   [(SUUIShelfLayoutData *)shelfLayoutData reloadWithItemCount:v8 sizeBlock:v12];
   v10 = v9;
 
@@ -885,23 +885,23 @@ double __82__SUUIShelfPageSectionConfiguration__reloadShelfLayoutDataWithNumberO
   return v9;
 }
 
-- (id)_shelfItemViewElementAtIndex:(int64_t)a3
+- (id)_shelfItemViewElementAtIndex:(int64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v6 = [WeakRetained shelfPageSectionConfiguration:self viewElementAtIndex:a3];
+  v6 = [WeakRetained shelfPageSectionConfiguration:self viewElementAtIndex:index];
 
   return v6;
 }
 
-- (id)_styledShelfCollectionViewLayoutForExistingLayout:(id)a3
+- (id)_styledShelfCollectionViewLayoutForExistingLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   if (self->_wantsZoomingShelfLayout)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = layoutCopy;
     }
 
     else
@@ -921,7 +921,7 @@ double __82__SUUIShelfPageSectionConfiguration__reloadShelfLayoutDataWithNumberO
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = layoutCopy;
     }
 
     else
@@ -947,11 +947,11 @@ double __82__SUUIShelfPageSectionConfiguration__reloadShelfLayoutDataWithNumberO
 
   else
   {
-    v8 = [(SUUIShelfPageSectionConfiguration *)self pageSectionContext];
-    [v8 horizontalPadding];
+    pageSectionContext = [(SUUIShelfPageSectionConfiguration *)self pageSectionContext];
+    [pageSectionContext horizontalPadding];
     v10 = v9;
-    v11 = [(SUUIShelfPageSectionConfiguration *)self pageSectionContext];
-    [v11 horizontalPadding];
+    pageSectionContext2 = [(SUUIShelfPageSectionConfiguration *)self pageSectionContext];
+    [pageSectionContext2 horizontalPadding];
     v13 = v12;
 
     v5 = v10 + 100.0;

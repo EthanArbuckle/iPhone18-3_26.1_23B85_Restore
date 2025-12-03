@@ -1,6 +1,6 @@
 @interface _UIAlertControllerGlassTVBackgroundView
 + (CGSize)backgroundInsetAmount;
-- (_UIAlertControllerGlassTVBackgroundView)initWithFrame:(CGRect)a3;
+- (_UIAlertControllerGlassTVBackgroundView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation _UIAlertControllerGlassTVBackgroundView
@@ -14,11 +14,11 @@
   return result;
 }
 
-- (_UIAlertControllerGlassTVBackgroundView)initWithFrame:(CGRect)a3
+- (_UIAlertControllerGlassTVBackgroundView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIAlertControllerGlassTVBackgroundView;
-  v3 = [(_UIAlertControllerModernTVBackgroundView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UIAlertControllerModernTVBackgroundView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3 && [objc_opt_class() wantsGlassEffectView])
   {
     v4 = [[_UIViewGlass alloc] initWithVariant:0];

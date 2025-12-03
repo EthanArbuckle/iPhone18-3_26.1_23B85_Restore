@@ -4,8 +4,8 @@
 - (double)normalizedDefaultLevel;
 - (id)copy;
 - (id)description;
-- (void)setCurrentLevel:(double)a3;
-- (void)setLastAdjustedLevel:(double)a3;
+- (void)setCurrentLevel:(double)level;
+- (void)setLastAdjustedLevel:(double)level;
 @end
 
 @implementation PUAdjustmentInfo
@@ -15,12 +15,12 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PUAdjustmentInfo *)self localizedName];
-  v7 = [(PUAdjustmentInfo *)self enabled];
-  v8 = [(PUAdjustmentInfo *)self localizedSectionName];
-  v9 = [(PUAdjustmentInfo *)self adjustmentKey];
-  v10 = [(PUAdjustmentInfo *)self settingKey];
-  v11 = [(PUAdjustmentInfo *)self attributeKey];
+  localizedName = [(PUAdjustmentInfo *)self localizedName];
+  enabled = [(PUAdjustmentInfo *)self enabled];
+  localizedSectionName = [(PUAdjustmentInfo *)self localizedSectionName];
+  adjustmentKey = [(PUAdjustmentInfo *)self adjustmentKey];
+  settingKey = [(PUAdjustmentInfo *)self settingKey];
+  attributeKey = [(PUAdjustmentInfo *)self attributeKey];
   [(PUAdjustmentInfo *)self minimumLevel];
   v13 = v12;
   [(PUAdjustmentInfo *)self maximumLevel];
@@ -32,7 +32,7 @@
   [(PUAdjustmentInfo *)self lastAdjustedLevel];
   v21 = v20;
   [(PUAdjustmentInfo *)self currentLevel];
-  v23 = [v3 stringWithFormat:@"<%@: %p, name=%@, enabled:%d, sectionName:%@, adjustmentKey=%@, settingsKey:%@, attributeKey:%@, min=%f, max=%f, default=%f, identity=%f, lastAdjusted=%f, current=%f", v5, self, v6, v7, v8, v9, v10, v11, v13, v15, v17, v19, v21, v22];
+  v23 = [v3 stringWithFormat:@"<%@: %p, name=%@, enabled:%d, sectionName:%@, adjustmentKey=%@, settingsKey:%@, attributeKey:%@, min=%f, max=%f, default=%f, identity=%f, lastAdjusted=%f, current=%f", v5, self, localizedName, enabled, localizedSectionName, adjustmentKey, settingKey, attributeKey, v13, v15, v17, v19, v21, v22];
 
   return v23;
 }
@@ -48,27 +48,27 @@
   else
   {
     v5 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENT_CHANGE_TITLE");
-    v7 = [(PUAdjustmentInfo *)self localizedName];
+    localizedName = [(PUAdjustmentInfo *)self localizedName];
     v3 = PULocalizedStringWithValidatedFormat(v5, @"%@");
   }
 
   return v3;
 }
 
-- (void)setLastAdjustedLevel:(double)a3
+- (void)setLastAdjustedLevel:(double)level
 {
-  if (self->_lastAdjustedLevel != a3)
+  if (self->_lastAdjustedLevel != level)
   {
-    self->_lastAdjustedLevel = a3;
+    self->_lastAdjustedLevel = level;
   }
 }
 
-- (void)setCurrentLevel:(double)a3
+- (void)setCurrentLevel:(double)level
 {
-  if (self->_currentLevel != a3)
+  if (self->_currentLevel != level)
   {
     [(PUAdjustmentInfo *)self setLastAdjustedLevel:?];
-    self->_currentLevel = a3;
+    self->_currentLevel = level;
   }
 }
 

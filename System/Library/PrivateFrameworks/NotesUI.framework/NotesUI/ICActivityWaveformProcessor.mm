@@ -1,5 +1,5 @@
 @interface ICActivityWaveformProcessor
-- (BOOL)getAmplitudes:(float *)a3 count:(int)a4 startTime:(double)a5 endTime:(double)a6;
+- (BOOL)getAmplitudes:(float *)amplitudes count:(int)count startTime:(double)time endTime:(double)endTime;
 - (ICActivityWaveformProcessor)init;
 - (ICActivityWaveformProcessorDelegate)delegate;
 - (VMFrameRange)_bufferRange;
@@ -11,8 +11,8 @@
 - (void)_tearDown;
 - (void)consumeRingBufferIfNecessary;
 - (void)dealloc;
-- (void)prepareToProcessWithFormat:(id)a3 audioTime:(id)a4 punchInTime:(double)a5;
-- (void)processAudioBuffer:(id)a3;
+- (void)prepareToProcessWithFormat:(id)format audioTime:(id)time punchInTime:(double)inTime;
+- (void)processAudioBuffer:(id)buffer;
 @end
 
 @implementation ICActivityWaveformProcessor
@@ -65,31 +65,31 @@
   result = 0.0;
   if (self->_isPrepared)
   {
-    v4 = [(ICActivityWaveformProcessor *)self _bufferRange];
-    return self->_referenceMediaTime + (v5 + v4) / self->_sampleRate;
+    _bufferRange = [(ICActivityWaveformProcessor *)self _bufferRange];
+    return self->_referenceMediaTime + (v5 + _bufferRange) / self->_sampleRate;
   }
 
   return result;
 }
 
-- (void)prepareToProcessWithFormat:(id)a3 audioTime:(id)a4 punchInTime:(double)a5
+- (void)prepareToProcessWithFormat:(id)format audioTime:(id)time punchInTime:(double)inTime
 {
-  v8 = a3;
-  v9 = a4;
+  formatCopy = format;
+  timeCopy = time;
   if (self->_isPrepared)
   {
     [(ICActivityWaveformProcessor *)self _tearDown];
   }
 
-  [v8 sampleRate];
+  [formatCopy sampleRate];
   self->_sampleRate = v10;
-  self->_punchInTime = a5;
+  self->_punchInTime = inTime;
   v11 = +[ICRecorderStyleProvider sharedStyleProvider];
   [v11 activityWaveformTimeWindowDuration];
   v13 = v12;
 
   sampleRate = self->_sampleRate;
-  [MEMORY[0x1E69584A0] secondsForHostTime:{objc_msgSend(v9, "hostTime")}];
+  [MEMORY[0x1E69584A0] secondsForHostTime:{objc_msgSend(timeCopy, "hostTime")}];
   v15 = v13 + 0.2 + 0.5;
   self->_referenceMediaTime = v16;
   self->_emptyFramesToLeaveInInputBuffer = (self->_sampleRate * 0.5);
@@ -127,17 +127,17 @@
   self->_isPrepared = 0;
 }
 
-- (void)processAudioBuffer:(id)a3
+- (void)processAudioBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = [v4 floatChannelData];
-  v6 = [v4 frameLength];
-  v7 = v6;
-  if (v6)
+  bufferCopy = buffer;
+  floatChannelData = [bufferCopy floatChannelData];
+  frameLength = [bufferCopy frameLength];
+  v7 = frameLength;
+  if (frameLength)
   {
     mCapacity = self->_ringBuffer.mCapacity;
     v9 = atomic_load(&self->_ringBuffer.mFill);
-    if (mCapacity - v9 < v6)
+    if (mCapacity - v9 < frameLength)
     {
       [(ICActivityWaveformProcessor *)self consumeRingBufferIfNecessary];
     }
@@ -147,9 +147,9 @@
     v12 = -1.0;
     if (v10 - v11 >= v7)
     {
-      memcpy(*self->_ringBuffer.mWritePointers, *v5, 4 * v7);
+      memcpy(*self->_ringBuffer.mWritePointers, *floatChannelData, 4 * v7);
       VMAudio::ICRingBuffer<float>::advanceWritePointer(&self->_ringBuffer, v7);
-      [(ICAmplitudeAnalyzer *)self->_audioQueueAmplitudeAnalyzer calculateAmplitude:v5 sampleCount:v7 channelCount:1];
+      [(ICAmplitudeAnalyzer *)self->_audioQueueAmplitudeAnalyzer calculateAmplitude:floatChannelData sampleCount:v7 channelCount:1];
     }
 
     v13[0] = MEMORY[0x1E69E9820];
@@ -175,7 +175,7 @@ uint64_t __50__ICActivityWaveformProcessor_processAudioBuffer___block_invoke(uin
   return [v3 consumeRingBufferIfNecessary];
 }
 
-- (BOOL)getAmplitudes:(float *)a3 count:(int)a4 startTime:(double)a5 endTime:(double)a6
+- (BOOL)getAmplitudes:(float *)amplitudes count:(int)count startTime:(double)time endTime:(double)endTime
 {
   v32[1] = *MEMORY[0x1E69E9840];
   if (!self->_isPrepared)
@@ -186,20 +186,20 @@ uint64_t __50__ICActivityWaveformProcessor_processAudioBuffer___block_invoke(uin
   os_unfair_lock_lock(&self->_readerLock);
   referenceMediaTime = self->_referenceMediaTime;
   sampleRate = self->_sampleRate;
-  v13 = [(ICActivityWaveformProcessor *)self _bufferRange];
-  if (a4 < 1)
+  _bufferRange = [(ICActivityWaveformProcessor *)self _bufferRange];
+  if (count < 1)
   {
     v21 = 1;
   }
 
   else
   {
-    v15 = v13;
+    v15 = _bufferRange;
     v16 = 0;
-    v17 = ((a5 - referenceMediaTime) * sampleRate);
-    v18 = (a6 - a5) / a4;
-    v19 = v14 + v13;
-    v20 = a4;
+    v17 = ((time - referenceMediaTime) * sampleRate);
+    v18 = (endTime - time) / count;
+    v19 = v14 + _bufferRange;
+    countCopy = count;
     v21 = 1;
     do
     {
@@ -238,10 +238,10 @@ uint64_t __50__ICActivityWaveformProcessor_processAudioBuffer___block_invoke(uin
       }
 
       v21 &= v28;
-      a3[v16++] = v30;
+      amplitudes[v16++] = v30;
     }
 
-    while (v20 != v16);
+    while (countCopy != v16);
   }
 
   os_unfair_lock_unlock(&self->_readerLock);
@@ -273,11 +273,11 @@ uint64_t __50__ICActivityWaveformProcessor_processAudioBuffer___block_invoke(uin
   if ([(ICActivityWaveformProcessor *)self _excessFrames]>= 1)
   {
     os_unfair_lock_lock(&self->_readerLock);
-    v3 = [(ICActivityWaveformProcessor *)self _excessFrames];
-    if (v3 >= 1)
+    _excessFrames = [(ICActivityWaveformProcessor *)self _excessFrames];
+    if (_excessFrames >= 1)
     {
-      v4 = v3;
-      VMAudio::ICRingBuffer<float>::advanceReadPointer(&self->_ringBuffer, v3);
+      v4 = _excessFrames;
+      VMAudio::ICRingBuffer<float>::advanceReadPointer(&self->_ringBuffer, _excessFrames);
       self->_inputBufferReadPosition += v4;
     }
 

@@ -1,15 +1,15 @@
 @interface LACDTOLocationProviderCRAdapter
-- (LACDTOLocationProviderCRAdapter)initWithWorkQueue:(id)a3;
-- (int64_t)_locationStateRawValueFromLocationEnum:(int64_t)a3;
-- (void)_checkIsInFamiliarLocationWithCompletion:(id)a3;
-- (void)checkIsInFamiliarLocationWithCompletion:(id)a3;
+- (LACDTOLocationProviderCRAdapter)initWithWorkQueue:(id)queue;
+- (int64_t)_locationStateRawValueFromLocationEnum:(int64_t)enum;
+- (void)_checkIsInFamiliarLocationWithCompletion:(id)completion;
+- (void)checkIsInFamiliarLocationWithCompletion:(id)completion;
 @end
 
 @implementation LACDTOLocationProviderCRAdapter
 
-- (LACDTOLocationProviderCRAdapter)initWithWorkQueue:(id)a3
+- (LACDTOLocationProviderCRAdapter)initWithWorkQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = LACDTOLocationProviderCRAdapter;
   v6 = [(LACDTOLocationProviderCRAdapter *)&v14 init];
@@ -17,12 +17,12 @@
   {
     if (getRTRoutineManagerClass())
     {
-      v7 = [getRTRoutineManagerClass() defaultManager];
+      defaultManager = [getRTRoutineManagerClass() defaultManager];
       manager = v6->_manager;
-      v6->_manager = v7;
+      v6->_manager = defaultManager;
     }
 
-    objc_storeStrong(&v6->_replyQueue, a3);
+    objc_storeStrong(&v6->_replyQueue, queue);
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     v11 = [LACConcurrencyUtilities createUserInitiatedSerialQueueWithIdentifier:v10];
@@ -33,10 +33,10 @@
   return v6;
 }
 
-- (void)checkIsInFamiliarLocationWithCompletion:(id)a3
+- (void)checkIsInFamiliarLocationWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if (self->_manager)
   {
     locationState = self->_locationState;
@@ -52,13 +52,13 @@
         {
           v9 = self->_locationState;
           *buf = 138543618;
-          v19 = self;
+          selfCopy = self;
           v20 = 2112;
           v21 = v9;
           _os_log_impl(&dword_1B0233000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ will use cached value %@", buf, 0x16u);
         }
 
-        v4[2](v4, self->_locationState);
+        completionCopy[2](completionCopy, self->_locationState);
         goto LABEL_13;
       }
 
@@ -79,7 +79,7 @@
     v15[2] = __75__LACDTOLocationProviderCRAdapter_checkIsInFamiliarLocationWithCompletion___block_invoke;
     v15[3] = &unk_1E7A957E8;
     objc_copyWeak(&v17, buf);
-    v16 = v4;
+    v16 = completionCopy;
     dispatch_async(internalQueue, v15);
 
     objc_destroyWeak(&v17);
@@ -94,7 +94,7 @@
   }
 
   v11 = +[LACDTOLocationState nullInstance];
-  v4[2](v4, v11);
+  completionCopy[2](completionCopy, v11);
 
 LABEL_13:
   v14 = *MEMORY[0x1E69E9840];
@@ -150,15 +150,15 @@ void __75__LACDTOLocationProviderCRAdapter_checkIsInFamiliarLocationWithCompleti
   }
 }
 
-- (void)_checkIsInFamiliarLocationWithCompletion:(id)a3
+- (void)_checkIsInFamiliarLocationWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = LACLogDTOLocation();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ will start query", buf, 0xCu);
   }
 
@@ -172,7 +172,7 @@ void __75__LACDTOLocationProviderCRAdapter_checkIsInFamiliarLocationWithCompleti
   v10[2] = __76__LACDTOLocationProviderCRAdapter__checkIsInFamiliarLocationWithCompletion___block_invoke;
   v10[3] = &unk_1E7A97090;
   objc_copyWeak(&v12, buf);
-  v8 = v4;
+  v8 = completionCopy;
   v11 = v8;
   [(RTRoutineManager *)manager fetchAuthorizedLocationStatus:v10];
 
@@ -228,16 +228,16 @@ void __76__LACDTOLocationProviderCRAdapter__checkIsInFamiliarLocationWithComplet
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)_locationStateRawValueFromLocationEnum:(int64_t)a3
+- (int64_t)_locationStateRawValueFromLocationEnum:(int64_t)enum
 {
-  if (a3 > 3)
+  if (enum > 3)
   {
     v3 = &LACDTOLocationStateRawValueAwayFromFamiliarLocation;
   }
 
   else
   {
-    v3 = off_1E7A970C8[a3];
+    v3 = off_1E7A970C8[enum];
   }
 
   return *v3;

@@ -1,11 +1,11 @@
 @interface VNWeakTypeWrapperCollection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VNWeakTypeWrapperCollection)init;
-- (id)allObjectsDroppingWeakZeroedObjects:(BOOL)a3;
+- (id)allObjectsDroppingWeakZeroedObjects:(BOOL)objects;
 - (id)description;
-- (id)findObjectMeetingSearchCriteria:(id)a3 droppingWeakZeroedObjects:(BOOL)a4;
-- (void)_enumerateObjectsDroppingWeakZeroedObjects:(BOOL)a3 usingBlock:(id)a4;
-- (void)addObject:(id)a3 droppingWeakZeroedObjects:(BOOL)a4;
+- (id)findObjectMeetingSearchCriteria:(id)criteria droppingWeakZeroedObjects:(BOOL)objects;
+- (void)_enumerateObjectsDroppingWeakZeroedObjects:(BOOL)objects usingBlock:(id)block;
+- (void)addObject:(id)object droppingWeakZeroedObjects:(BOOL)objects;
 @end
 
 @implementation VNWeakTypeWrapperCollection
@@ -21,10 +21,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -34,7 +34,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NSMutableArray *)self->_weakObjectWrappers isEqualToArray:v4->_weakObjectWrappers];
+      v5 = [(NSMutableArray *)self->_weakObjectWrappers isEqualToArray:equalCopy->_weakObjectWrappers];
     }
 
     else
@@ -46,9 +46,9 @@
   return v5;
 }
 
-- (id)allObjectsDroppingWeakZeroedObjects:(BOOL)a3
+- (id)allObjectsDroppingWeakZeroedObjects:(BOOL)objects
 {
-  v3 = a3;
+  objectsCopy = objects;
   [(NSRecursiveLock *)self->_weakObjectWrappersLock lock];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v9[0] = MEMORY[0x1E69E9820];
@@ -57,7 +57,7 @@
   v9[3] = &unk_1E77B27E0;
   v6 = v5;
   v10 = v6;
-  [(VNWeakTypeWrapperCollection *)self _enumerateObjectsDroppingWeakZeroedObjects:v3 usingBlock:v9];
+  [(VNWeakTypeWrapperCollection *)self _enumerateObjectsDroppingWeakZeroedObjects:objectsCopy usingBlock:v9];
   v7 = [v6 copy];
 
   [(NSRecursiveLock *)self->_weakObjectWrappersLock unlock];
@@ -65,10 +65,10 @@
   return v7;
 }
 
-- (id)findObjectMeetingSearchCriteria:(id)a3 droppingWeakZeroedObjects:(BOOL)a4
+- (id)findObjectMeetingSearchCriteria:(id)criteria droppingWeakZeroedObjects:(BOOL)objects
 {
-  v4 = a4;
-  v6 = a3;
+  objectsCopy = objects;
+  criteriaCopy = criteria;
   [(NSRecursiveLock *)self->_weakObjectWrappersLock lock];
   v16 = 0;
   v17 = &v16;
@@ -80,10 +80,10 @@
   v11 = 3221225472;
   v12 = __89__VNWeakTypeWrapperCollection_findObjectMeetingSearchCriteria_droppingWeakZeroedObjects___block_invoke;
   v13 = &unk_1E77B27B8;
-  v7 = v6;
+  v7 = criteriaCopy;
   v14 = v7;
   v15 = &v16;
-  [(VNWeakTypeWrapperCollection *)self _enumerateObjectsDroppingWeakZeroedObjects:v4 usingBlock:&v10];
+  [(VNWeakTypeWrapperCollection *)self _enumerateObjectsDroppingWeakZeroedObjects:objectsCopy usingBlock:&v10];
   v8 = v17[5];
 
   _Block_object_dispose(&v16, 8);
@@ -102,10 +102,10 @@ void __89__VNWeakTypeWrapperCollection_findObjectMeetingSearchCriteria_droppingW
   }
 }
 
-- (void)addObject:(id)a3 droppingWeakZeroedObjects:(BOOL)a4
+- (void)addObject:(id)object droppingWeakZeroedObjects:(BOOL)objects
 {
-  v4 = a4;
-  v6 = a3;
+  objectsCopy = objects;
+  objectCopy = object;
   [(NSRecursiveLock *)self->_weakObjectWrappersLock lock];
   v16 = 0;
   v17 = &v16;
@@ -115,10 +115,10 @@ void __89__VNWeakTypeWrapperCollection_findObjectMeetingSearchCriteria_droppingW
   v11 = 3221225472;
   v12 = __67__VNWeakTypeWrapperCollection_addObject_droppingWeakZeroedObjects___block_invoke;
   v13 = &unk_1E77B2790;
-  v7 = v6;
+  v7 = objectCopy;
   v14 = v7;
   v15 = &v16;
-  [(VNWeakTypeWrapperCollection *)self _enumerateObjectsDroppingWeakZeroedObjects:v4 usingBlock:&v10];
+  [(VNWeakTypeWrapperCollection *)self _enumerateObjectsDroppingWeakZeroedObjects:objectsCopy usingBlock:&v10];
   if ((v17[3] & 1) == 0)
   {
     v8 = [VNWeakTypeWrapper alloc];
@@ -142,10 +142,10 @@ uint64_t __67__VNWeakTypeWrapperCollection_addObject_droppingWeakZeroedObjects__
   return result;
 }
 
-- (void)_enumerateObjectsDroppingWeakZeroedObjects:(BOOL)a3 usingBlock:(id)a4
+- (void)_enumerateObjectsDroppingWeakZeroedObjects:(BOOL)objects usingBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
+  objectsCopy = objects;
+  blockCopy = block;
   v7 = 0;
   v19 = 0;
   v20 = &v19;
@@ -155,7 +155,7 @@ uint64_t __67__VNWeakTypeWrapperCollection_addObject_droppingWeakZeroedObjects__
   v17[1] = v17;
   v17[2] = 0x2020000000;
   v18 = 0;
-  if (v4)
+  if (objectsCopy)
   {
     v7 = objc_alloc_init(MEMORY[0x1E696AD50]);
   }
@@ -165,12 +165,12 @@ uint64_t __67__VNWeakTypeWrapperCollection_addObject_droppingWeakZeroedObjects__
   v11[1] = 3221225472;
   v11[2] = __85__VNWeakTypeWrapperCollection__enumerateObjectsDroppingWeakZeroedObjects_usingBlock___block_invoke;
   v11[3] = &unk_1E77B2768;
-  v16 = v4;
+  v16 = objectsCopy;
   v9 = v7;
   v12 = v9;
   v14 = &v19;
   v15 = v17;
-  v10 = v6;
+  v10 = blockCopy;
   v13 = v10;
   [(NSMutableArray *)weakObjectWrappers enumerateObjectsUsingBlock:v11];
   if (*(v20 + 24) == 1)

@@ -1,20 +1,20 @@
 @interface HUSwitchHomesWelcomeOnboardingFlow
-- (HUSwitchHomesWelcomeOnboardingFlow)initWithHome:(id)a3;
-- (id)processUserInput:(id)a3;
+- (HUSwitchHomesWelcomeOnboardingFlow)initWithHome:(id)home;
+- (id)processUserInput:(id)input;
 @end
 
 @implementation HUSwitchHomesWelcomeOnboardingFlow
 
-- (HUSwitchHomesWelcomeOnboardingFlow)initWithHome:(id)a3
+- (HUSwitchHomesWelcomeOnboardingFlow)initWithHome:(id)home
 {
-  v6 = a3;
+  homeCopy = home;
   v18.receiver = self;
   v18.super_class = HUSwitchHomesWelcomeOnboardingFlow;
   v7 = [(HUSwitchHomesWelcomeOnboardingFlow *)&v18 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_home, a3);
+    objc_storeStrong(&v7->_home, home);
     v9 = objc_alloc_init(MEMORY[0x277D2C900]);
     readyFuture = v8->_readyFuture;
     v8->_readyFuture = v9;
@@ -77,24 +77,24 @@ id __51__HUSwitchHomesWelcomeOnboardingFlow_initWithHome___block_invoke(uint64_t
   return v12;
 }
 
-- (id)processUserInput:(id)a3
+- (id)processUserInput:(id)input
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  inputCopy = input;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     v18 = 138412802;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2112;
     v21 = v7;
     v22 = 2112;
-    v23 = v5;
+    v23 = inputCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ with input results: %@", &v18, 0x20u);
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"HUSwitchHomesWelcomeOnboardingKey_UserInput"];
+  v8 = [inputCopy objectForKeyedSubscript:@"HUSwitchHomesWelcomeOnboardingKey_UserInput"];
   if ([v8 integerValue])
   {
     if ([v8 integerValue] == 1)
@@ -104,7 +104,7 @@ id __51__HUSwitchHomesWelcomeOnboardingFlow_initWithHome___block_invoke(uint64_t
       {
         v10 = NSStringFromSelector(a2);
         v18 = 138412546;
-        v19 = self;
+        selfCopy2 = self;
         v20 = 2112;
         v21 = v10;
         _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@:%@ User Switched Homes - Aborting Current Onboarding", &v18, 0x16u);
@@ -118,14 +118,14 @@ id __51__HUSwitchHomesWelcomeOnboardingFlow_initWithHome___block_invoke(uint64_t
   {
     v11 = objc_alloc(MEMORY[0x277D14C98]);
     home = self->_home;
-    v13 = [(HMHome *)home currentUser];
-    v14 = [v11 initWithHome:home user:v13 nameStyle:0];
+    currentUser = [(HMHome *)home currentUser];
+    v14 = [v11 initWithHome:home user:currentUser nameStyle:0];
 
     v15 = [v14 setCompletedNonOwnerUserHomeSwitchingUI:1];
   }
 
-  v16 = [(HUSwitchHomesWelcomeOnboardingFlow *)self onboardingFuture];
-  [v16 finishWithNoResult];
+  onboardingFuture = [(HUSwitchHomesWelcomeOnboardingFlow *)self onboardingFuture];
+  [onboardingFuture finishWithNoResult];
 
   return 0;
 }

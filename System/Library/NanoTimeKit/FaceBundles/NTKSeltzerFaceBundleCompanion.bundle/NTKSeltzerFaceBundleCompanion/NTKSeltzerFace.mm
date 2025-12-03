@@ -1,17 +1,17 @@
 @interface NTKSeltzerFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (BOOL)isRestrictedForDevice:(id)device;
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)complicationConfiguration;
-- (BOOL)_snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (BOOL)_snapshotContext:(id)context isStaleRelativeToContext:(id)toContext;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (int64_t)timeStyle;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (void)selectOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)selectOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKSeltzerFace
@@ -24,20 +24,20 @@
   return v3;
 }
 
-- (void)selectOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)selectOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NTKSeltzerFace *)self selectedOptionForCustomEditMode:a4 slot:v9];
+  optionCopy = option;
+  slotCopy = slot;
+  v10 = [(NTKSeltzerFace *)self selectedOptionForCustomEditMode:mode slot:slotCopy];
   v13.receiver = self;
   v13.super_class = NTKSeltzerFace;
-  [(NTKSeltzerFace *)&v13 selectOption:v8 forCustomEditMode:a4 slot:v9];
+  [(NTKSeltzerFace *)&v13 selectOption:optionCopy forCustomEditMode:mode slot:slotCopy];
 
-  if (a4 == 15 && (NTKEqualObjects() & 1) == 0)
+  if (mode == 15 && (NTKEqualObjects() & 1) == 0)
   {
     v11 = v10;
-    v12 = [v8 style];
-    if (v12 != [v11 style])
+    style = [optionCopy style];
+    if (style != [v11 style])
     {
       [(NTKSeltzerFace *)self _notifyObserversFaceTimeStyleChanged];
     }
@@ -53,8 +53,8 @@
 
   else
   {
-    v6 = [(NTKSeltzerFace *)self device];
-    v7 = [v6 supportsPDRCapability:3171091165];
+    device = [(NTKSeltzerFace *)self device];
+    v7 = [device supportsPDRCapability:3171091165];
 
     if (v7)
     {
@@ -70,29 +70,29 @@
   return [NTKSeltzerFaceBundle localizedStringForKey:v5 comment:@"description"];
 }
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 deviceCategory] == &dword_0 + 1)
+  deviceCopy = device;
+  if ([deviceCopy deviceCategory] == &dword_0 + 1)
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v4 = [v3 supportsPDRCapability:360081074] ^ 1;
+    v4 = [deviceCopy supportsPDRCapability:360081074] ^ 1;
   }
 
   return v4;
 }
 
-- (BOOL)_snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4
+- (BOOL)_snapshotContext:(id)context isStaleRelativeToContext:(id)toContext
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 calendarDateMatchesContext:v6])
+  contextCopy = context;
+  toContextCopy = toContext;
+  if ([contextCopy calendarDateMatchesContext:toContextCopy])
   {
-    v7 = [v5 localeMatchesContext:v6] ^ 1;
+    v7 = [contextCopy localeMatchesContext:toContextCopy] ^ 1;
   }
 
   else
@@ -115,9 +115,9 @@
   return v3;
 }
 
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device
 {
-  if ([a3 isEqualToString:{NTKComplicationSlotBottomLeft, a4}])
+  if ([slot isEqualToString:{NTKComplicationSlotBottomLeft, device}])
   {
     v4 = [NTKComplication timerComplicationWithDuration:180.0];
   }
@@ -130,9 +130,9 @@
   return v4;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  switch(a3)
+  switch(mode)
   {
     case 10:
       v4 = NTKPigmentEditOption_ptr;
@@ -154,20 +154,20 @@ LABEL_7:
   return v6;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 15)
+  slotCopy = slot;
+  if (mode == 15)
   {
-    v7 = [(NTKSeltzerFace *)self device];
-    v8 = [NTKDualTimeStyleEditOption optionWithStyle:0 forDevice:v7];
+    device = [(NTKSeltzerFace *)self device];
+    v8 = [NTKDualTimeStyleEditOption optionWithStyle:0 forDevice:device];
     goto LABEL_5;
   }
 
-  if (a3 == 12)
+  if (mode == 12)
   {
-    v7 = [(NTKSeltzerFace *)self device];
-    v8 = [NTKSeltzerCalendarEditOption defaultOptionForDevice:v7];
+    device = [(NTKSeltzerFace *)self device];
+    v8 = [NTKSeltzerCalendarEditOption defaultOptionForDevice:device];
 LABEL_5:
     v9 = v8;
 
@@ -180,24 +180,24 @@ LABEL_7:
   return v9;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  v6 = a4;
-  if (a3 == 15)
+  deviceCopy = device;
+  if (mode == 15)
   {
     v7 = NTKCompanionClockFaceLocalizedString();
   }
 
-  else if (a3 == 12)
+  else if (mode == 12)
   {
     v7 = [NTKSeltzerFaceBundle localizedStringForKey:@"SELTZER_EDIT_MODE_LABEL_CALENDAR" comment:@"Calendar"];
   }
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___NTKSeltzerFace;
-    v7 = objc_msgSendSuper2(&v10, "_localizedNameOverrideForCustomEditMode:forDevice:", a3, v6);
+    v7 = objc_msgSendSuper2(&v10, "_localizedNameOverrideForCustomEditMode:forDevice:", mode, deviceCopy);
   }
 
   v8 = v7;
@@ -205,30 +205,30 @@ LABEL_7:
   return v8;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKSeltzerFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKSeltzerFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKSeltzerFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKSeltzerFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKSeltzerFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKSeltzerFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKSeltzerFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKSeltzerFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKSeltzerFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKSeltzerFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKSeltzerFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKSeltzerFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }

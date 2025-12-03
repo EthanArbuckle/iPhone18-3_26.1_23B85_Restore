@@ -1,10 +1,10 @@
 @interface _CNNeverObservable
-- (id)subscribe:(id)a3;
+- (id)subscribe:(id)subscribe;
 @end
 
 @implementation _CNNeverObservable
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
   v3 = objc_alloc_init(CNCancelationToken);
 

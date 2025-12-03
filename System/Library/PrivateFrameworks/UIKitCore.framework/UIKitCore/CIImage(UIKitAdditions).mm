@@ -8,11 +8,11 @@
 - (uint64_t)initWithImage:()UIKitAdditions
 {
   v5 = a3;
-  v6 = [a3 CGImage];
-  if (v6)
+  cGImage = [a3 CGImage];
+  if (cGImage)
   {
 
-    return [a1 initWithCGImage:v6];
+    return [self initWithCGImage:cGImage];
   }
 
   else
@@ -25,10 +25,10 @@
 - (uint64_t)initWithImage:()UIKitAdditions options:
 {
   v6 = a4;
-  v7 = [a3 CGImage];
-  if (v7)
+  cGImage = [a3 CGImage];
+  if (cGImage)
   {
-    v8 = [a1 initWithCGImage:v7 options:v6];
+    v8 = [self initWithCGImage:cGImage options:v6];
   }
 
   else

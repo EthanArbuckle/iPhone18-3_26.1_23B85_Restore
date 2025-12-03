@@ -1,12 +1,12 @@
 @interface SBLockOverlayView
-- (id)_legibilitySettingsForStyle:(unint64_t)a3;
+- (id)_legibilitySettingsForStyle:(unint64_t)style;
 @end
 
 @implementation SBLockOverlayView
 
-- (id)_legibilitySettingsForStyle:(unint64_t)a3
+- (id)_legibilitySettingsForStyle:(unint64_t)style
 {
-  if (a3 > 1)
+  if (style > 1)
   {
     v8.receiver = self;
     v8.super_class = SBLockOverlayView;

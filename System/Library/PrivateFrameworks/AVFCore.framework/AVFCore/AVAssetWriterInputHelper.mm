@@ -1,9 +1,9 @@
 @interface AVAssetWriterInputHelper
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)preferredMediaChunkDuration;
-- (AVAssetWriterInputHelper)initWithConfigurationState:(id)a3;
+- (AVAssetWriterInputHelper)initWithConfigurationState:(id)state;
 - (AVOutputSettings)outputSettings;
-- (BOOL)appendPixelBuffer:(__CVBuffer *)a3 withPresentationTime:(id *)a4;
-- (BOOL)appendTaggedPixelBufferGroup:(OpaqueCMTaggedBufferGroup *)a3 withPresentationTime:(id *)a4;
+- (BOOL)appendPixelBuffer:(__CVBuffer *)buffer withPresentationTime:(id *)time;
+- (BOOL)appendTaggedPixelBufferGroup:(OpaqueCMTaggedBufferGroup *)group withPresentationTime:(id *)time;
 - (BOOL)expectsMediaDataInRealTime;
 - (BOOL)marksOutputTrackAsEnabled;
 - (BOOL)maximizePowerEfficiency;
@@ -19,15 +19,15 @@
 - (NSString)mediaType;
 - (NSURL)sampleReferenceBaseURL;
 - (float)preferredVolume;
-- (id)associatedInputsWithTrackAssociationType:(id)a3;
+- (id)associatedInputsWithTrackAssociationType:(id)type;
 - (id)availableTrackAssociationTypes;
 - (id)description;
-- (id)transitionToAndReturnTerminalHelperWithTerminalStatus:(int64_t)a3;
+- (id)transitionToAndReturnTerminalHelperWithTerminalStatus:(int64_t)status;
 - (int)mediaTimeScale;
 - (int)trackID;
-- (int64_t)appendCaption:(id)a3 error:(id *)a4;
-- (int64_t)appendCaptionGroup:(id)a3 error:(id *)a4;
-- (int64_t)appendSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4;
+- (int64_t)appendCaption:(id)caption error:(id *)error;
+- (int64_t)appendCaptionGroup:(id)group error:(id *)error;
+- (int64_t)appendSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error;
 - (int64_t)layer;
 - (int64_t)preferredMediaChunkAlignment;
 - (int64_t)preferredMediaChunkSize;
@@ -35,45 +35,45 @@
 - (opaqueCMFormatDescription)sourceFormatHint;
 - (signed)alternateGroupID;
 - (signed)provisionalAlternateGroupID;
-- (void)addTrackAssociationWithTrackOfInput:(id)a3 type:(id)a4;
+- (void)addTrackAssociationWithTrackOfInput:(id)input type:(id)type;
 - (void)dealloc;
 - (void)markAsFinished;
 - (void)markCurrentPassAsFinished;
-- (void)requestMediaDataWhenReadyOnQueue:(id)a3 usingBlock:(id)a4;
-- (void)setAlternateGroupID:(signed __int16)a3;
-- (void)setExpectsMediaDataInRealTime:(BOOL)a3;
-- (void)setExtendedLanguageTag:(id)a3;
-- (void)setLanguageCode:(id)a3;
-- (void)setLayer:(int64_t)a3;
-- (void)setMarksOutputTrackAsEnabled:(BOOL)a3;
-- (void)setMaximizePowerEfficiency:(BOOL)a3;
-- (void)setMediaDataLocation:(id)a3;
-- (void)setMediaTimeScale:(int)a3;
-- (void)setMetadata:(id)a3;
-- (void)setNaturalSize:(CGSize)a3;
-- (void)setPerformsMultiPassEncodingIfSupported:(BOOL)a3;
-- (void)setPreferredMediaChunkAlignment:(int64_t)a3;
-- (void)setPreferredMediaChunkDuration:(id *)a3;
-- (void)setPreferredMediaChunkSize:(int64_t)a3;
-- (void)setPreferredVolume:(float)a3;
-- (void)setProvisionalAlternateGroupID:(signed __int16)a3;
-- (void)setSampleReferenceBaseURL:(id)a3;
-- (void)setSourcePixelBufferAttributes:(id)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)requestMediaDataWhenReadyOnQueue:(id)queue usingBlock:(id)block;
+- (void)setAlternateGroupID:(signed __int16)d;
+- (void)setExpectsMediaDataInRealTime:(BOOL)time;
+- (void)setExtendedLanguageTag:(id)tag;
+- (void)setLanguageCode:(id)code;
+- (void)setLayer:(int64_t)layer;
+- (void)setMarksOutputTrackAsEnabled:(BOOL)enabled;
+- (void)setMaximizePowerEfficiency:(BOOL)efficiency;
+- (void)setMediaDataLocation:(id)location;
+- (void)setMediaTimeScale:(int)scale;
+- (void)setMetadata:(id)metadata;
+- (void)setNaturalSize:(CGSize)size;
+- (void)setPerformsMultiPassEncodingIfSupported:(BOOL)supported;
+- (void)setPreferredMediaChunkAlignment:(int64_t)alignment;
+- (void)setPreferredMediaChunkDuration:(id *)duration;
+- (void)setPreferredMediaChunkSize:(int64_t)size;
+- (void)setPreferredVolume:(float)volume;
+- (void)setProvisionalAlternateGroupID:(signed __int16)d;
+- (void)setSampleReferenceBaseURL:(id)l;
+- (void)setSourcePixelBufferAttributes:(id)attributes;
+- (void)setTransform:(CGAffineTransform *)transform;
 - (void)stopRequestingMediaData;
-- (void)transitionAssetWriterAndAllInputsToFailedStatusWithError:(id)a3;
+- (void)transitionAssetWriterAndAllInputsToFailedStatusWithError:(id)error;
 @end
 
 @implementation AVAssetWriterInputHelper
 
-- (AVAssetWriterInputHelper)initWithConfigurationState:(id)a3
+- (AVAssetWriterInputHelper)initWithConfigurationState:(id)state
 {
   v15.receiver = self;
   v15.super_class = AVAssetWriterInputHelper;
   v5 = [(AVAssetWriterInputHelper *)&v15 init];
   v6 = objc_opt_class();
   AVRequireConcreteObject(v5, a2, v6);
-  if (!a3)
+  if (!state)
   {
     v8 = v5;
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(v5 userInfo:{a2, @"invalid parameter not satisfying: %s", v9, v10, v11, v12, v13, "configurationState != nil"), 0}];
@@ -82,7 +82,7 @@
 
   if (v5)
   {
-    v5->_configurationState = a3;
+    v5->_configurationState = state;
   }
 
   return v5;
@@ -109,48 +109,48 @@
   return 0;
 }
 
-- (id)transitionToAndReturnTerminalHelperWithTerminalStatus:(int64_t)a3
+- (id)transitionToAndReturnTerminalHelperWithTerminalStatus:(int64_t)status
 {
-  v5 = [(AVWeakReference *)[(AVAssetWriterInputHelper *)self weakReferenceToAssetWriterInput] referencedObject];
-  v6 = [[AVAssetWriterInputTerminalHelper alloc] initWithConfigurationState:[(AVAssetWriterInputHelper *)self configurationState] terminalStatus:a3];
-  [v5 _setHelper:v6];
+  referencedObject = [(AVWeakReference *)[(AVAssetWriterInputHelper *)self weakReferenceToAssetWriterInput] referencedObject];
+  v6 = [[AVAssetWriterInputTerminalHelper alloc] initWithConfigurationState:[(AVAssetWriterInputHelper *)self configurationState] terminalStatus:status];
+  [referencedObject _setHelper:v6];
 
   return v6;
 }
 
-- (void)transitionAssetWriterAndAllInputsToFailedStatusWithError:(id)a3
+- (void)transitionAssetWriterAndAllInputsToFailedStatusWithError:(id)error
 {
-  v4 = [(AVWeakReference *)[(AVAssetWriterInputHelper *)self weakReferenceToAssetWriterInput] referencedObject];
+  referencedObject = [(AVWeakReference *)[(AVAssetWriterInputHelper *)self weakReferenceToAssetWriterInput] referencedObject];
 
-  [v4 _tellAssetWriterToTransitionToFailedStatusWithError:a3];
+  [referencedObject _tellAssetWriterToTransitionToFailedStatusWithError:error];
 }
 
 - (int)trackID
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 trackID];
+  return [(AVAssetWriterInputConfigurationState *)configurationState trackID];
 }
 
 - (NSString)mediaType
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 mediaType];
+  return [(AVAssetWriterInputConfigurationState *)configurationState mediaType];
 }
 
 - (AVOutputSettings)outputSettings
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 outputSettings];
+  return [(AVAssetWriterInputConfigurationState *)configurationState outputSettings];
 }
 
 - (opaqueCMFormatDescription)sourceFormatHint
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 sourceFormatHint];
+  return [(AVAssetWriterInputConfigurationState *)configurationState sourceFormatHint];
 }
 
 - (CGAffineTransform)transform
@@ -172,245 +172,245 @@
   return result;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
 - (NSArray)metadata
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 metadataItems];
+  return [(AVAssetWriterInputConfigurationState *)configurationState metadataItems];
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
 - (int)mediaTimeScale
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 mediaTimeScale];
+  return [(AVAssetWriterInputConfigurationState *)configurationState mediaTimeScale];
 }
 
-- (void)setMediaTimeScale:(int)a3
+- (void)setMediaTimeScale:(int)scale
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
 - (BOOL)expectsMediaDataInRealTime
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 expectsMediaDataInRealTime];
+  return [(AVAssetWriterInputConfigurationState *)configurationState expectsMediaDataInRealTime];
 }
 
-- (void)setExpectsMediaDataInRealTime:(BOOL)a3
+- (void)setExpectsMediaDataInRealTime:(BOOL)time
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
 - (BOOL)maximizePowerEfficiency
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 maximizePowerEfficiency];
+  return [(AVAssetWriterInputConfigurationState *)configurationState maximizePowerEfficiency];
 }
 
-- (void)setMaximizePowerEfficiency:(BOOL)a3
+- (void)setMaximizePowerEfficiency:(BOOL)efficiency
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
 - (CGSize)naturalSize
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v2 naturalSize];
+  [(AVAssetWriterInputConfigurationState *)configurationState naturalSize];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setNaturalSize:(CGSize)a3
+- (void)setNaturalSize:(CGSize)size
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
 - (NSString)languageCode
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 languageCode];
+  return [(AVAssetWriterInputConfigurationState *)configurationState languageCode];
 }
 
-- (void)setLanguageCode:(id)a3
+- (void)setLanguageCode:(id)code
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
 - (NSString)extendedLanguageTag
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 extendedLanguageTag];
+  return [(AVAssetWriterInputConfigurationState *)configurationState extendedLanguageTag];
 }
 
-- (void)setExtendedLanguageTag:(id)a3
+- (void)setExtendedLanguageTag:(id)tag
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
 - (BOOL)marksOutputTrackAsEnabled
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 marksOutputTrackAsEnabled];
+  return [(AVAssetWriterInputConfigurationState *)configurationState marksOutputTrackAsEnabled];
 }
 
-- (void)setMarksOutputTrackAsEnabled:(BOOL)a3
+- (void)setMarksOutputTrackAsEnabled:(BOOL)enabled
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
 - (float)preferredVolume
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v2 preferredVolume];
+  [(AVAssetWriterInputConfigurationState *)configurationState preferredVolume];
   return result;
 }
 
-- (void)setPreferredVolume:(float)a3
+- (void)setPreferredVolume:(float)volume
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
 - (int64_t)layer
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 layer];
+  return [(AVAssetWriterInputConfigurationState *)configurationState layer];
 }
 
-- (void)setLayer:(int64_t)a3
+- (void)setLayer:(int64_t)layer
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
 - (signed)alternateGroupID
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 alternateGroupID];
+  return [(AVAssetWriterInputConfigurationState *)configurationState alternateGroupID];
 }
 
-- (void)setAlternateGroupID:(signed __int16)a3
+- (void)setAlternateGroupID:(signed __int16)d
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
 - (signed)provisionalAlternateGroupID
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 provisionalAlternateGroupID];
+  return [(AVAssetWriterInputConfigurationState *)configurationState provisionalAlternateGroupID];
 }
 
-- (void)setProvisionalAlternateGroupID:(signed __int16)a3
+- (void)setProvisionalAlternateGroupID:(signed __int16)d
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
 - (NSDictionary)trackReferences
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 trackReferences];
+  return [(AVAssetWriterInputConfigurationState *)configurationState trackReferences];
 }
 
 - (BOOL)performsMultiPassEncodingIfSupported
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 performsMultiPassEncodingIfSupported];
+  return [(AVAssetWriterInputConfigurationState *)configurationState performsMultiPassEncodingIfSupported];
 }
 
-- (void)setPerformsMultiPassEncodingIfSupported:(BOOL)a3
+- (void)setPerformsMultiPassEncodingIfSupported:(BOOL)supported
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
@@ -433,91 +433,91 @@
   return result;
 }
 
-- (void)setPreferredMediaChunkDuration:(id *)a3
+- (void)setPreferredMediaChunkDuration:(id *)duration
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
 - (int64_t)preferredMediaChunkAlignment
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 preferredMediaChunkAlignment];
+  return [(AVAssetWriterInputConfigurationState *)configurationState preferredMediaChunkAlignment];
 }
 
-- (void)setPreferredMediaChunkAlignment:(int64_t)a3
+- (void)setPreferredMediaChunkAlignment:(int64_t)alignment
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
 - (int64_t)preferredMediaChunkSize
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 preferredMediaChunkSize];
+  return [(AVAssetWriterInputConfigurationState *)configurationState preferredMediaChunkSize];
 }
 
-- (void)setPreferredMediaChunkSize:(int64_t)a3
+- (void)setPreferredMediaChunkSize:(int64_t)size
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
 - (NSString)mediaDataLocation
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 mediaDataLocation];
+  return [(AVAssetWriterInputConfigurationState *)configurationState mediaDataLocation];
 }
 
-- (void)setMediaDataLocation:(id)a3
+- (void)setMediaDataLocation:(id)location
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
 - (NSURL)sampleReferenceBaseURL
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 sampleReferenceBaseURL];
+  return [(AVAssetWriterInputConfigurationState *)configurationState sampleReferenceBaseURL];
 }
 
-- (void)setSampleReferenceBaseURL:(id)a3
+- (void)setSampleReferenceBaseURL:(id)l
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = objc_opt_class();
-  v8 = [(AVAssetWriterInputHelper *)self status];
-  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, v8), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v14 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithClassAndSelector(v7 userInfo:{a2, @"Cannot call method when status is %d", v9, v10, v11, v12, v13, status), 0}];
   objc_exception_throw(v14);
 }
 
-- (void)requestMediaDataWhenReadyOnQueue:(id)a3 usingBlock:(id)a4
+- (void)requestMediaDataWhenReadyOnQueue:(id)queue usingBlock:(id)block
 {
   v6 = MEMORY[0x1E695DF30];
   v7 = *MEMORY[0x1E695D930];
   v8 = objc_opt_class();
-  v9 = [(AVAssetWriterInputHelper *)self status];
-  v15 = [v6 exceptionWithName:v7 reason:AVMethodExceptionReasonWithClassAndSelector(v8 userInfo:{a2, @"Cannot call method when status is %d", v10, v11, v12, v13, v14, v9), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v15 = [v6 exceptionWithName:v7 reason:AVMethodExceptionReasonWithClassAndSelector(v8 userInfo:{a2, @"Cannot call method when status is %d", v10, v11, v12, v13, v14, status), 0}];
   objc_exception_throw(v15);
 }
 
@@ -526,56 +526,56 @@
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
   v6 = objc_opt_class();
-  v7 = [(AVAssetWriterInputHelper *)self status];
-  v13 = [v4 exceptionWithName:v5 reason:AVMethodExceptionReasonWithClassAndSelector(v6 userInfo:{a2, @"Cannot call method when status is %d", v8, v9, v10, v11, v12, v7), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v13 = [v4 exceptionWithName:v5 reason:AVMethodExceptionReasonWithClassAndSelector(v6 userInfo:{a2, @"Cannot call method when status is %d", v8, v9, v10, v11, v12, status), 0}];
   objc_exception_throw(v13);
 }
 
-- (int64_t)appendSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4
+- (int64_t)appendSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = AVErrorForClientProgrammingError([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Cannot call method when status is %d", -[AVAssetWriterInputHelper status](self, "status", a3)), 0}]);
+    *error = AVErrorForClientProgrammingError([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Cannot call method when status is %d", -[AVAssetWriterInputHelper status](self, "status", buffer)), 0}]);
   }
 
   return 1;
 }
 
-- (BOOL)appendPixelBuffer:(__CVBuffer *)a3 withPresentationTime:(id *)a4
+- (BOOL)appendPixelBuffer:(__CVBuffer *)buffer withPresentationTime:(id *)time
 {
   v6 = MEMORY[0x1E695DF30];
   v7 = *MEMORY[0x1E695D930];
   v8 = objc_opt_class();
-  v9 = [(AVAssetWriterInputHelper *)self status];
-  v15 = [v6 exceptionWithName:v7 reason:AVMethodExceptionReasonWithClassAndSelector(v8 userInfo:{a2, @"Cannot call method when status is %d", v10, v11, v12, v13, v14, v9), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v15 = [v6 exceptionWithName:v7 reason:AVMethodExceptionReasonWithClassAndSelector(v8 userInfo:{a2, @"Cannot call method when status is %d", v10, v11, v12, v13, v14, status), 0}];
   objc_exception_throw(v15);
 }
 
-- (BOOL)appendTaggedPixelBufferGroup:(OpaqueCMTaggedBufferGroup *)a3 withPresentationTime:(id *)a4
+- (BOOL)appendTaggedPixelBufferGroup:(OpaqueCMTaggedBufferGroup *)group withPresentationTime:(id *)time
 {
   v6 = MEMORY[0x1E695DF30];
   v7 = *MEMORY[0x1E695D930];
   v8 = objc_opt_class();
-  v9 = [(AVAssetWriterInputHelper *)self status];
-  v15 = [v6 exceptionWithName:v7 reason:AVMethodExceptionReasonWithClassAndSelector(v8 userInfo:{a2, @"Cannot call method when status is %d", v10, v11, v12, v13, v14, v9), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v15 = [v6 exceptionWithName:v7 reason:AVMethodExceptionReasonWithClassAndSelector(v8 userInfo:{a2, @"Cannot call method when status is %d", v10, v11, v12, v13, v14, status), 0}];
   objc_exception_throw(v15);
 }
 
-- (int64_t)appendCaption:(id)a3 error:(id *)a4
+- (int64_t)appendCaption:(id)caption error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = AVErrorForClientProgrammingError([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Cannot call method when status is %d", -[AVAssetWriterInputHelper status](self, "status", a3)), 0}]);
+    *error = AVErrorForClientProgrammingError([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Cannot call method when status is %d", -[AVAssetWriterInputHelper status](self, "status", caption)), 0}]);
   }
 
   return 1;
 }
 
-- (int64_t)appendCaptionGroup:(id)a3 error:(id *)a4
+- (int64_t)appendCaptionGroup:(id)group error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = AVErrorForClientProgrammingError([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Cannot call method when status is %d", -[AVAssetWriterInputHelper status](self, "status", a3)), 0}]);
+    *error = AVErrorForClientProgrammingError([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Cannot call method when status is %d", -[AVAssetWriterInputHelper status](self, "status", group)), 0}]);
   }
 
   return 1;
@@ -586,8 +586,8 @@
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
   v6 = objc_opt_class();
-  v7 = [(AVAssetWriterInputHelper *)self status];
-  v13 = [v4 exceptionWithName:v5 reason:AVMethodExceptionReasonWithClassAndSelector(v6 userInfo:{a2, @"Cannot call method when status is %d", v8, v9, v10, v11, v12, v7), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v13 = [v4 exceptionWithName:v5 reason:AVMethodExceptionReasonWithClassAndSelector(v6 userInfo:{a2, @"Cannot call method when status is %d", v8, v9, v10, v11, v12, status), 0}];
   objc_exception_throw(v13);
 }
 
@@ -596,49 +596,49 @@
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
   v6 = objc_opt_class();
-  v7 = [(AVAssetWriterInputHelper *)self status];
-  v13 = [v4 exceptionWithName:v5 reason:AVMethodExceptionReasonWithClassAndSelector(v6 userInfo:{a2, @"Cannot call method when status is %d", v8, v9, v10, v11, v12, v7), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v13 = [v4 exceptionWithName:v5 reason:AVMethodExceptionReasonWithClassAndSelector(v6 userInfo:{a2, @"Cannot call method when status is %d", v8, v9, v10, v11, v12, status), 0}];
   objc_exception_throw(v13);
 }
 
 - (NSDictionary)sourcePixelBufferAttributes
 {
-  v2 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  return [(AVAssetWriterInputConfigurationState *)v2 sourcePixelBufferAttributes];
+  return [(AVAssetWriterInputConfigurationState *)configurationState sourcePixelBufferAttributes];
 }
 
-- (void)setSourcePixelBufferAttributes:(id)a3
+- (void)setSourcePixelBufferAttributes:(id)attributes
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
-  v7 = [(AVAssetWriterInputHelper *)self status];
-  v13 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"Cannot call method when status is %d", v8, v9, v10, v11, v12, v7), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v13 = [v5 exceptionWithName:v6 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"Cannot call method when status is %d", v8, v9, v10, v11, v12, status), 0}];
   objc_exception_throw(v13);
 }
 
-- (void)addTrackAssociationWithTrackOfInput:(id)a3 type:(id)a4
+- (void)addTrackAssociationWithTrackOfInput:(id)input type:(id)type
 {
   v6 = MEMORY[0x1E695DF30];
   v7 = *MEMORY[0x1E695D930];
   v8 = objc_opt_class();
-  v9 = [(AVAssetWriterInputHelper *)self status];
-  v15 = [v6 exceptionWithName:v7 reason:AVMethodExceptionReasonWithClassAndSelector(v8 userInfo:{a2, @"Cannot call method when status is %d", v10, v11, v12, v13, v14, v9), 0}];
+  status = [(AVAssetWriterInputHelper *)self status];
+  v15 = [v6 exceptionWithName:v7 reason:AVMethodExceptionReasonWithClassAndSelector(v8 userInfo:{a2, @"Cannot call method when status is %d", v10, v11, v12, v13, v14, status), 0}];
   objc_exception_throw(v15);
 }
 
 - (id)availableTrackAssociationTypes
 {
-  v2 = [(AVAssetWriterInputConfigurationState *)[(AVAssetWriterInputHelper *)self configurationState] trackReferences];
+  trackReferences = [(AVAssetWriterInputConfigurationState *)[(AVAssetWriterInputHelper *)self configurationState] trackReferences];
 
-  return [(NSDictionary *)v2 allKeys];
+  return [(NSDictionary *)trackReferences allKeys];
 }
 
-- (id)associatedInputsWithTrackAssociationType:(id)a3
+- (id)associatedInputsWithTrackAssociationType:(id)type
 {
-  v4 = [(AVAssetWriterInputConfigurationState *)[(AVAssetWriterInputHelper *)self configurationState] trackReferences];
+  trackReferences = [(AVAssetWriterInputConfigurationState *)[(AVAssetWriterInputHelper *)self configurationState] trackReferences];
 
-  return [(NSDictionary *)v4 objectForKey:a3];
+  return [(NSDictionary *)trackReferences objectForKey:type];
 }
 
 @end

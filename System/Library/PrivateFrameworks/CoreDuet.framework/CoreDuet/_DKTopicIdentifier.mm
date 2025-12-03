@@ -1,14 +1,14 @@
 @interface _DKTopicIdentifier
-+ (id)withTopic:(id)a3;
++ (id)withTopic:(id)topic;
 @end
 
 @implementation _DKTopicIdentifier
 
-+ (id)withTopic:(id)a3
++ (id)withTopic:(id)topic
 {
-  v4 = a3;
-  v5 = [a1 type];
-  v6 = [_DKIdentifier identifierWithString:v4 type:v5];
+  topicCopy = topic;
+  type = [self type];
+  v6 = [_DKIdentifier identifierWithString:topicCopy type:type];
 
   return v6;
 }

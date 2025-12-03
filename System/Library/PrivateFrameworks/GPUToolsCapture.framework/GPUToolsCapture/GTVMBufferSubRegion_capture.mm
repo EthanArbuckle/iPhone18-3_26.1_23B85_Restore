@@ -1,8 +1,8 @@
 @interface GTVMBufferSubRegion_capture
-- (GTVMBufferSubRegion_capture)initWithGTVMBuffer:(id)a3 range:(_NSRange)a4;
+- (GTVMBufferSubRegion_capture)initWithGTVMBuffer:(id)buffer range:(_NSRange)range;
 - (const)bytes;
 - (id)GTGPUToolsData;
-- (id)subdataWithRange:(_NSRange)a3;
+- (id)subdataWithRange:(_NSRange)range;
 - (void)dealloc;
 @end
 
@@ -10,11 +10,11 @@
 
 - (id)GTGPUToolsData
 {
-  v3 = [(GTVMBufferSubRegion_capture *)self bytes];
-  if (v3)
+  bytes = [(GTVMBufferSubRegion_capture *)self bytes];
+  if (bytes)
   {
-    v4 = v3;
-    v5 = self;
+    v4 = bytes;
+    selfCopy = self;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = __37__GTVMBufferSubRegion_GTGPUToolsData__block_invoke;
@@ -30,11 +30,11 @@
   }
 }
 
-- (id)subdataWithRange:(_NSRange)a3
+- (id)subdataWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.location + a3.length > [(GTVMBufferSubRegion_capture *)self length])
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > [(GTVMBufferSubRegion_capture *)self length])
   {
     return 0;
   }
@@ -62,16 +62,16 @@
   [(GTVMBufferSubRegion_capture *)&v3 dealloc];
 }
 
-- (GTVMBufferSubRegion_capture)initWithGTVMBuffer:(id)a3 range:(_NSRange)a4
+- (GTVMBufferSubRegion_capture)initWithGTVMBuffer:(id)buffer range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9.receiver = self;
   v9.super_class = GTVMBufferSubRegion_capture;
   v7 = [(GTVMBufferSubRegion_capture *)&v9 init];
   if (v7)
   {
-    v7->_parent = a3;
+    v7->_parent = buffer;
     v7->_range.location = location;
     v7->_range.length = length;
   }

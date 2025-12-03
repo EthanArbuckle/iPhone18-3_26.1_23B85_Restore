@@ -1,29 +1,29 @@
 @interface LSDatabaseBuilder
-- (LSDatabaseBuilder)initWithIOQueue:(id)a3;
-- (void)createAndSeedLocalDatabase:(BOOL *)a3;
-- (void)seedCryptexContentIfNeeded:(BOOL *)a3;
-- (void)setSeedingComplete:(BOOL)a3;
-- (void)syncWithMI:(void *)a3;
+- (LSDatabaseBuilder)initWithIOQueue:(id)queue;
+- (void)createAndSeedLocalDatabase:(BOOL *)database;
+- (void)seedCryptexContentIfNeeded:(BOOL *)needed;
+- (void)setSeedingComplete:(BOOL)complete;
+- (void)syncWithMI:(void *)i;
 @end
 
 @implementation LSDatabaseBuilder
 
-- (LSDatabaseBuilder)initWithIOQueue:(id)a3
+- (LSDatabaseBuilder)initWithIOQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = LSDatabaseBuilder;
   v6 = [(LSDatabaseBuilder *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_ioQueue, a3);
+    objc_storeStrong(&v6->_ioQueue, queue);
   }
 
   return v7;
 }
 
-- (void)seedCryptexContentIfNeeded:(BOOL *)a3
+- (void)seedCryptexContentIfNeeded:(BOOL *)needed
 {
   MEMORY[0x1865D7C40](self, a2);
   v5 = objc_autoreleasePoolPush();
@@ -32,7 +32,7 @@
   {
     if ([(_LSDatabase *)v7 cryptexContentChanged])
     {
-      *a3 = 1;
+      *needed = 1;
       v6 = _LSDatabaseGetSeedingGroup();
       dispatch_group_enter(v6);
 
@@ -57,7 +57,7 @@ void __48__LSDatabaseBuilder_seedCryptexContentIfNeeded___block_invoke()
   JUMPOUT(0x1865D7C50);
 }
 
-- (void)createAndSeedLocalDatabase:(BOOL *)a3
+- (void)createAndSeedLocalDatabase:(BOOL *)database
 {
   v25 = *MEMORY[0x1E69E9840];
   MEMORY[0x1865D7C40](self, a2);
@@ -74,7 +74,7 @@ void __48__LSDatabaseBuilder_seedCryptexContentIfNeeded___block_invoke()
     if ([(_LSDatabase *)v6 isSeeded]&& ([(_LSDatabase *)v6 isSeedingComplete]& 1) != 0)
     {
       _LSDatabaseCommit(v6);
-      *a3 = 0;
+      *database = 0;
     }
 
     else
@@ -102,7 +102,7 @@ void __48__LSDatabaseBuilder_seedCryptexContentIfNeeded___block_invoke()
 
       _LSDatabaseSessionSetSeedingInProgress(1);
       [(_LSDatabase *)v6 setSeeded:?];
-      *a3 = 1;
+      *database = 1;
       MEMORY[0x1865D7C40]();
       v13 = _LSDatabaseGetSeedingGroup();
       dispatch_group_enter(v13);
@@ -240,7 +240,7 @@ LABEL_24:
   return MEMORY[0x1865D7C50]();
 }
 
-- (void)syncWithMI:(void *)a3
+- (void)syncWithMI:(void *)i
 {
   v4 = _LSDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -253,7 +253,7 @@ LABEL_24:
   v6[1] = 3221225472;
   v6[2] = __32__LSDatabaseBuilder_syncWithMI___block_invoke;
   v6[3] = &__block_descriptor_40_e15_v16__0__NSURL_8l;
-  v6[4] = a3;
+  v6[4] = i;
   _LSServer_SyncWithMobileInstallation(v6);
   v5 = _LSDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -294,16 +294,16 @@ void __32__LSDatabaseBuilder_syncWithMI___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setSeedingComplete:(BOOL)a3
+- (void)setSeedingComplete:(BOOL)complete
 {
-  v3 = a3;
+  completeCopy = complete;
   v13 = *MEMORY[0x1E69E9840];
   v4 = _LSServer_CopyLocalDatabase(0);
   if (v4)
   {
     _LSDatabaseSessionSetSeedingInProgress(0);
     [(_LSDatabase *)v4 setSeeded:?];
-    [(_LSDatabase *)v4 setSeedingComplete:v3];
+    [(_LSDatabase *)v4 setSeedingComplete:completeCopy];
     _LSDatabaseCommit(v4);
     _LSSaveImmediately(1);
   }

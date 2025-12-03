@@ -1,32 +1,32 @@
 @interface TVPlaybackCustomEventUserInfo
-- (BOOL)respondsToSelector:(SEL)a3;
-- (TVPlaybackCustomEventUserInfo)initWithProperties:(id)a3 expectsReturnValue:(BOOL)a4;
-- (void)processReturnJSValue:(id)a3 inContext:(id)a4;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (TVPlaybackCustomEventUserInfo)initWithProperties:(id)properties expectsReturnValue:(BOOL)value;
+- (void)processReturnJSValue:(id)value inContext:(id)context;
 @end
 
 @implementation TVPlaybackCustomEventUserInfo
 
-- (TVPlaybackCustomEventUserInfo)initWithProperties:(id)a3 expectsReturnValue:(BOOL)a4
+- (TVPlaybackCustomEventUserInfo)initWithProperties:(id)properties expectsReturnValue:(BOOL)value
 {
-  v6 = a3;
+  propertiesCopy = properties;
   v11.receiver = self;
   v11.super_class = TVPlaybackCustomEventUserInfo;
   v7 = [(TVPlaybackCustomEventUserInfo *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [propertiesCopy copy];
     properties = v7->_properties;
     v7->_properties = v8;
 
-    v7->_expectsReturnValue = a4;
+    v7->_expectsReturnValue = value;
   }
 
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (sel_processReturnJSValue_inContext_ == a3)
+  if (sel_processReturnJSValue_inContext_ == selector)
   {
     return self->_expectsReturnValue;
   }
@@ -41,13 +41,13 @@
   }
 }
 
-- (void)processReturnJSValue:(id)a3 inContext:(id)a4
+- (void)processReturnJSValue:(id)value inContext:(id)context
 {
-  v5 = [a3 toObject];
+  toObject = [value toObject];
   returnValue = self->_returnValue;
-  self->_returnValue = v5;
+  self->_returnValue = toObject;
 
-  MEMORY[0x2821F96F8](v5, returnValue);
+  MEMORY[0x2821F96F8](toObject, returnValue);
 }
 
 @end

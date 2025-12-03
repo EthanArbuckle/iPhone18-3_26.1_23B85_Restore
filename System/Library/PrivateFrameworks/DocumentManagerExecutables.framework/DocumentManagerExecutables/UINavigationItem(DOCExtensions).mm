@@ -7,31 +7,31 @@
 - (void)doc_safeSetSearchController:()DOCExtensions
 {
   v4 = a3;
-  v5 = [a1 searchController];
-  v6 = [v5 transitionCoordinator];
-  if (v6)
+  searchController = [self searchController];
+  transitionCoordinator = [searchController transitionCoordinator];
+  if (transitionCoordinator)
   {
-    v7 = [a1 doc_pendingSearchControllerUpdateRequest];
+    doc_pendingSearchControllerUpdateRequest = [self doc_pendingSearchControllerUpdateRequest];
 
     v8 = objc_opt_new();
     [v8 setSearchController:v4];
 
-    [a1 doc_setPendingSearchControllerUpdateRequest:v8];
-    if (!v7)
+    [self doc_setPendingSearchControllerUpdateRequest:v8];
+    if (!doc_pendingSearchControllerUpdateRequest)
     {
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __63__UINavigationItem_DOCExtensions__doc_safeSetSearchController___block_invoke;
       v9[3] = &unk_278FA23F8;
-      v9[4] = a1;
-      [v6 animateAlongsideTransition:0 completion:v9];
+      v9[4] = self;
+      [transitionCoordinator animateAlongsideTransition:0 completion:v9];
     }
   }
 
   else
   {
-    [a1 doc_setPendingSearchControllerUpdateRequest:0];
-    [a1 setSearchController:v4];
+    [self doc_setPendingSearchControllerUpdateRequest:0];
+    [self setSearchController:v4];
     v8 = v4;
   }
 }

@@ -1,15 +1,15 @@
 @interface VKCaptureTextAnalyzer
-- (BOOL)_isCanceledRequest:(id)a3;
+- (BOOL)_isCanceledRequest:(id)request;
 - (VKCaptureTextAnalyzer)init;
 - (id)_documentDetectionRequest;
-- (id)_documentRecognitionRequestWithInputBlock:(id)a3;
-- (id)_documentRecognitionRequestWithInputBlocks:(id)a3;
-- (id)_imageAnalysisForDocument:(id)a3 imageSize:(CGSize)a4;
-- (void)_didProcessRequest:(id)a3 withDetectionResult:(id)a4 analysis:(id)a5 error:(id)a6;
-- (void)_enqueueProcessingForRequest:(id)a3;
+- (id)_documentRecognitionRequestWithInputBlock:(id)block;
+- (id)_documentRecognitionRequestWithInputBlocks:(id)blocks;
+- (id)_imageAnalysisForDocument:(id)document imageSize:(CGSize)size;
+- (void)_didProcessRequest:(id)request withDetectionResult:(id)result analysis:(id)analysis error:(id)error;
+- (void)_enqueueProcessingForRequest:(id)request;
 - (void)cancelAllRequests;
 - (void)dealloc;
-- (void)processRequest:(id)a3;
+- (void)processRequest:(id)request;
 @end
 
 @implementation VKCaptureTextAnalyzer
@@ -34,29 +34,29 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E6984688] globalSession];
-  [v3 releaseCachedResources];
+  globalSession = [MEMORY[0x1E6984688] globalSession];
+  [globalSession releaseCachedResources];
 
   v4.receiver = self;
   v4.super_class = VKCaptureTextAnalyzer;
   [(VKCaptureTextAnalyzer *)&v4 dealloc];
 }
 
-- (void)processRequest:(id)a3
+- (void)processRequest:(id)request
 {
-  v7 = a3;
+  requestCopy = request;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v4 = [(VKCaptureTextAnalyzer *)self _processingRequest];
-  if (v4 == v7)
+  _processingRequest = [(VKCaptureTextAnalyzer *)self _processingRequest];
+  if (_processingRequest == requestCopy)
   {
   }
 
   else
   {
-    v5 = [(VKCaptureTextAnalyzer *)self _pendingRequest];
+    _pendingRequest = [(VKCaptureTextAnalyzer *)self _pendingRequest];
 
-    v6 = v7;
-    if (v5 == v7)
+    v6 = requestCopy;
+    if (_pendingRequest == requestCopy)
     {
       goto LABEL_8;
     }
@@ -64,63 +64,63 @@
     [(VKCaptureTextAnalyzer *)self cancelAllRequests];
     if ([(VKCaptureTextAnalyzer *)self _isProcessing])
     {
-      [(VKCaptureTextAnalyzer *)self _setPendingRequest:v7];
+      [(VKCaptureTextAnalyzer *)self _setPendingRequest:requestCopy];
     }
 
     else
     {
-      [(VKCaptureTextAnalyzer *)self _enqueueProcessingForRequest:v7];
+      [(VKCaptureTextAnalyzer *)self _enqueueProcessingForRequest:requestCopy];
     }
   }
 
-  v6 = v7;
+  v6 = requestCopy;
 LABEL_8:
 }
 
 - (void)cancelAllRequests
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(VKCaptureTextAnalyzer *)self _pendingRequest];
-  v3 = [(VKCaptureTextAnalyzer *)self _processingRequest];
-  if (v5)
+  _pendingRequest = [(VKCaptureTextAnalyzer *)self _pendingRequest];
+  _processingRequest = [(VKCaptureTextAnalyzer *)self _processingRequest];
+  if (_pendingRequest)
   {
-    v4 = [v5 delegate];
-    [v4 requestDidCancel:v5];
+    delegate = [_pendingRequest delegate];
+    [delegate requestDidCancel:_pendingRequest];
 
     [(VKCaptureTextAnalyzer *)self _setPendingRequest:0];
   }
 
-  if (v3)
+  if (_processingRequest)
   {
     [(VKCaptureTextAnalyzer *)self _setProcessingRequest:0];
   }
 }
 
-- (BOOL)_isCanceledRequest:(id)a3
+- (BOOL)_isCanceledRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(VKCaptureTextAnalyzer *)self _pendingRequest];
+  _pendingRequest = [(VKCaptureTextAnalyzer *)self _pendingRequest];
 
-  v6 = [(VKCaptureTextAnalyzer *)self _processingRequest];
+  _processingRequest = [(VKCaptureTextAnalyzer *)self _processingRequest];
 
-  return v5 != v4 && v6 != v4;
+  return _pendingRequest != requestCopy && _processingRequest != requestCopy;
 }
 
-- (void)_enqueueProcessingForRequest:(id)a3
+- (void)_enqueueProcessingForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(VKCaptureTextAnalyzer *)self _setProcessing:1];
-  [(VKCaptureTextAnalyzer *)self _setProcessingRequest:v4];
-  v5 = [(VKCaptureTextAnalyzer *)self _processingQueue];
+  [(VKCaptureTextAnalyzer *)self _setProcessingRequest:requestCopy];
+  _processingQueue = [(VKCaptureTextAnalyzer *)self _processingQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__VKCaptureTextAnalyzer__enqueueProcessingForRequest___block_invoke;
   v7[3] = &unk_1E7BE4768;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
+  dispatch_async(_processingQueue, v7);
 }
 
 void __54__VKCaptureTextAnalyzer__enqueueProcessingForRequest___block_invoke(uint64_t a1)
@@ -332,17 +332,17 @@ uint64_t __54__VKCaptureTextAnalyzer__enqueueProcessingForRequest___block_invoke
   return [v2 _didProcessRequest:v3 withDetectionResult:v4 analysis:v5 error:v6];
 }
 
-- (void)_didProcessRequest:(id)a3 withDetectionResult:(id)a4 analysis:(id)a5 error:(id)a6
+- (void)_didProcessRequest:(id)request withDetectionResult:(id)result analysis:(id)analysis error:(id)error
 {
-  v18 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  requestCopy = request;
+  resultCopy = result;
+  analysisCopy = analysis;
+  errorCopy = error;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if ([(VKCaptureTextAnalyzer *)self _isCanceledRequest:v18])
+  if ([(VKCaptureTextAnalyzer *)self _isCanceledRequest:requestCopy])
   {
-    v13 = [v18 delegate];
-    [v13 requestDidCancel:v18];
+    delegate = [requestCopy delegate];
+    [delegate requestDidCancel:requestCopy];
   }
 
   else
@@ -351,44 +351,44 @@ uint64_t __54__VKCaptureTextAnalyzer__enqueueProcessingForRequest___block_invoke
     if ([(VKCaptureTextAnalyzer *)self shouldCreateFeedbackProviders])
     {
       v14 = objc_alloc_init(VKFeedbackProvider);
-      v15 = [[VKCaptureTextFeedbackAssetProvider alloc] initWithRequest:v18 detectionResult:v10];
+      v15 = [[VKCaptureTextFeedbackAssetProvider alloc] initWithRequest:requestCopy detectionResult:resultCopy];
       [(VKFeedbackProvider *)v14 setAssetsProvider:v15];
 
-      [(VKFeedbackProvider *)v14 setError:v12];
-      [v11 setFeedbackProvider:v14];
+      [(VKFeedbackProvider *)v14 setError:errorCopy];
+      [analysisCopy setFeedbackProvider:v14];
     }
 
-    v16 = [v18 delegate];
-    v13 = v16;
-    if (v12)
+    delegate2 = [requestCopy delegate];
+    delegate = delegate2;
+    if (errorCopy)
     {
-      [v16 request:v18 didFailWithError:v12];
+      [delegate2 request:requestCopy didFailWithError:errorCopy];
     }
 
     else
     {
-      [v16 request:v18 didRecgonizeTextWithAnalysis:v11];
+      [delegate2 request:requestCopy didRecgonizeTextWithAnalysis:analysisCopy];
     }
   }
 
-  v17 = [(VKCaptureTextAnalyzer *)self _pendingRequest];
-  if (v17)
+  _pendingRequest = [(VKCaptureTextAnalyzer *)self _pendingRequest];
+  if (_pendingRequest)
   {
     [(VKCaptureTextAnalyzer *)self _setPendingRequest:0];
-    [(VKCaptureTextAnalyzer *)self _enqueueProcessingForRequest:v17];
+    [(VKCaptureTextAnalyzer *)self _enqueueProcessingForRequest:_pendingRequest];
   }
 }
 
-- (id)_imageAnalysisForDocument:(id)a3 imageSize:(CGSize)a4
+- (id)_imageAnalysisForDocument:(id)document imageSize:(CGSize)size
 {
-  if (a3)
+  if (document)
   {
-    height = a4.height;
-    width = a4.width;
-    v6 = a3;
-    v7 = [[VKCImageAnalysisResult alloc] initWithDocumentObservation:v6 mrcDataDetectors:0 imageSize:width, height];
+    height = size.height;
+    width = size.width;
+    documentCopy = document;
+    height = [[VKCImageAnalysisResult alloc] initWithDocumentObservation:documentCopy mrcDataDetectors:0 imageSize:width, height];
 
-    v8 = [(VKImageAnalysis *)[VKCImageAnalysis alloc] initWithAnalysisResult:v7];
+    v8 = [(VKImageAnalysis *)[VKCImageAnalysis alloc] initWithAnalysisResult:height];
   }
 
   else
@@ -409,15 +409,15 @@ uint64_t __54__VKCaptureTextAnalyzer__enqueueProcessingForRequest___block_invoke
   return v2;
 }
 
-- (id)_documentRecognitionRequestWithInputBlock:(id)a3
+- (id)_documentRecognitionRequestWithInputBlock:(id)block
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (block)
   {
-    v9 = a3;
+    blockCopy = block;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v9 count:1];
+    blockCopy2 = block;
+    v6 = [v4 arrayWithObjects:&blockCopy count:1];
   }
 
   else
@@ -425,23 +425,23 @@ uint64_t __54__VKCaptureTextAnalyzer__enqueueProcessingForRequest___block_invoke
     v6 = 0;
   }
 
-  v7 = [(VKCaptureTextAnalyzer *)self _documentRecognitionRequestWithInputBlocks:v6, v9, v10];
+  v7 = [(VKCaptureTextAnalyzer *)self _documentRecognitionRequestWithInputBlocks:v6, blockCopy, v10];
 
   return v7;
 }
 
-- (id)_documentRecognitionRequestWithInputBlocks:(id)a3
+- (id)_documentRecognitionRequestWithInputBlocks:(id)blocks
 {
   v3 = MEMORY[0x1E6984628];
-  v4 = a3;
+  blocksCopy = blocks;
   v5 = objc_alloc_init(v3);
   [v5 setDetectionOnly:0];
   [v5 setUsesLanguageCorrection:1];
   [v5 setRecognitionLevel:0];
-  [v5 setInputTextBlocks:v4];
+  [v5 setInputTextBlocks:blocksCopy];
 
-  v6 = [MEMORY[0x1E695DF58] preferredLanguages];
-  [v5 setRecognitionLanguages:v6];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  [v5 setRecognitionLanguages:preferredLanguages];
 
   return v5;
 }

@@ -1,8 +1,8 @@
 @interface SUUIViewElement
 - (BOOL)canMoveWithinCollection;
-- (BOOL)descendsFromElementWithType:(unint64_t)a3;
+- (BOOL)descendsFromElementWithType:(unint64_t)type;
 - (BOOL)handlesBackgroundColorDirectly;
-- (BOOL)isDescendentFromViewElement:(id)a3;
+- (BOOL)isDescendentFromViewElement:(id)element;
 - (BOOL)isEnabled;
 - (BOOL)rendersWithParallax;
 - (BOOL)rendersWithPerspective;
@@ -14,31 +14,31 @@
 - (NSString)indexBarEntryID;
 - (SUUIEntityProviding)entityProvider;
 - (SUUIEntityProviding)explicitEntityProvider;
-- (SUUIViewElement)elementWithIdentifier:(id)a3;
-- (SUUIViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)ancestorElementMatchingPredicate:(id)a3;
-- (id)ancestorElementOfType:(unint64_t)a3;
-- (id)applyUpdatesWithElement:(id)a3;
-- (id)expandableLabelElementForWidth:(double)a3 context:(id)a4;
-- (id)featureWithName:(id)a3;
-- (id)firstChildForElementName:(id)a3;
-- (id)firstChildForElementType:(unint64_t)a3;
-- (id)firstDescendentWithIndexBarEntryID:(id)a3;
-- (void)_entityProviderDidInvalidateNotification:(id)a3;
+- (SUUIViewElement)elementWithIdentifier:(id)identifier;
+- (SUUIViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)ancestorElementMatchingPredicate:(id)predicate;
+- (id)ancestorElementOfType:(unint64_t)type;
+- (id)applyUpdatesWithElement:(id)element;
+- (id)expandableLabelElementForWidth:(double)width context:(id)context;
+- (id)featureWithName:(id)name;
+- (id)firstChildForElementName:(id)name;
+- (id)firstChildForElementType:(unint64_t)type;
+- (id)firstDescendentWithIndexBarEntryID:(id)d;
+- (void)_entityProviderDidInvalidateNotification:(id)notification;
 - (void)_entityValueProviderDidChange;
-- (void)_registerForNotificationsForEntityProvider:(id)a3;
-- (void)_unregisterForNotificationsForEntityProvider:(id)a3;
+- (void)_registerForNotificationsForEntityProvider:(id)provider;
+- (void)_unregisterForNotificationsForEntityProvider:(id)provider;
 - (void)dealloc;
-- (void)enumerateChildrenUsingBlock:(id)a3;
-- (void)enumerateViewElementsWithDictionary:(id)a3 factory:(id)a4 usingBlock:(id)a5;
-- (void)setEntityValueProvider:(id)a3;
+- (void)enumerateChildrenUsingBlock:(id)block;
+- (void)enumerateViewElementsWithDictionary:(id)dictionary factory:(id)factory usingBlock:(id)block;
+- (void)setEntityValueProvider:(id)provider;
 @end
 
 @implementation SUUIViewElement
 
-- (id)expandableLabelElementForWidth:(double)a3 context:(id)a4
+- (id)expandableLabelElementForWidth:(double)width context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -49,8 +49,8 @@
   v10[1] = 3221225472;
   v10[2] = __85__SUUIViewElement_SUUIReviewListPageSection__expandableLabelElementForWidth_context___block_invoke;
   v10[3] = &unk_2798F5E50;
-  v7 = v6;
-  v13 = a3;
+  v7 = contextCopy;
+  widthCopy = width;
   v11 = v7;
   v12 = &v14;
   [(SUUIViewElement *)self enumerateChildrenUsingBlock:v10];
@@ -79,15 +79,15 @@ void __85__SUUIViewElement_SUUIReviewListPageSection__expandableLabelElementForW
   }
 }
 
-- (SUUIViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v15.receiver = self;
   v15.super_class = SUUIViewElement;
-  v9 = [(SUUIViewElement *)&v15 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v15 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"pin"];
+    v10 = [elementCopy getAttribute:@"pin"];
     if ([v10 isEqualToString:@"alone"])
     {
       v11 = 2;
@@ -113,15 +113,15 @@ void __85__SUUIViewElement_SUUIReviewListPageSection__expandableLabelElementForW
       if (![v10 length])
       {
 LABEL_14:
-        v13 = [v8 getAttribute:@"pinGroup"];
+        v13 = [elementCopy getAttribute:@"pinGroup"];
         v9->_pinGroup = [v13 isEqualToString:@"before-top"];
 
         goto LABEL_15;
       }
 
-      v12 = [v10 BOOLValue];
+      bOOLValue = [v10 BOOLValue];
       v11 = 1;
-      if (v12)
+      if (bOOLValue)
       {
         v11 = 2;
       }
@@ -150,129 +150,129 @@ LABEL_15:
 
 - (BOOL)canMoveWithinCollection
 {
-  v2 = [(SUUIViewElement *)self attributes];
-  v3 = [v2 objectForKey:@"canMoveWithinCollection"];
+  attributes = [(SUUIViewElement *)self attributes];
+  v3 = [attributes objectForKey:@"canMoveWithinCollection"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)ancestorElementMatchingPredicate:(id)a3
+- (id)ancestorElementMatchingPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [(SUUIViewElement *)self parent];
-  if (v5)
+  predicateCopy = predicate;
+  parent = [(SUUIViewElement *)self parent];
+  if (parent)
   {
-    while (!v4[2](v4, v5))
+    while (!predicateCopy[2](predicateCopy, parent))
     {
-      v6 = [v5 parent];
+      v5Parent = [parent parent];
 
-      v5 = v6;
-      if (!v6)
+      parent = v5Parent;
+      if (!v5Parent)
       {
         goto LABEL_7;
       }
     }
 
-    v5 = v5;
-    v6 = v5;
+    parent = parent;
+    v5Parent = parent;
   }
 
   else
   {
-    v6 = 0;
+    v5Parent = 0;
   }
 
 LABEL_7:
 
-  return v5;
+  return parent;
 }
 
-- (id)ancestorElementOfType:(unint64_t)a3
+- (id)ancestorElementOfType:(unint64_t)type
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __41__SUUIViewElement_ancestorElementOfType___block_invoke;
   v5[3] = &__block_descriptor_40_e25_B16__0__SUUIViewElement_8l;
-  v5[4] = a3;
+  v5[4] = type;
   v3 = [(SUUIViewElement *)self ancestorElementMatchingPredicate:v5];
 
   return v3;
 }
 
-- (BOOL)descendsFromElementWithType:(unint64_t)a3
+- (BOOL)descendsFromElementWithType:(unint64_t)type
 {
-  v4 = [(SUUIViewElement *)self parent];
-  if (!v4)
+  parent = [(SUUIViewElement *)self parent];
+  if (!parent)
   {
     return 0;
   }
 
-  v5 = v4;
+  v5 = parent;
   do
   {
-    v6 = [v5 elementType];
-    v7 = [v5 parent];
+    elementType = [v5 elementType];
+    parent2 = [v5 parent];
 
-    v5 = v7;
-    v8 = v6 == a3;
+    v5 = parent2;
+    v8 = elementType == type;
   }
 
-  while (!v8 && v7);
+  while (!v8 && parent2);
 
   return v8;
 }
 
-- (BOOL)isDescendentFromViewElement:(id)a3
+- (BOOL)isDescendentFromViewElement:(id)element
 {
-  v4 = self;
-  if (!v4)
+  selfCopy = self;
+  if (!selfCopy)
   {
     return 0;
   }
 
-  v5 = v4;
+  v5 = selfCopy;
   do
   {
-    v6 = [(SUUIViewElement *)v5 parent];
+    parent = [(SUUIViewElement *)v5 parent];
 
-    v7 = v5 == a3;
-    v8 = v5 == a3;
-    v5 = v6;
+    v7 = v5 == element;
+    v8 = v5 == element;
+    v5 = parent;
   }
 
-  while (!v7 && v6);
+  while (!v7 && parent);
 
   return v8;
 }
 
-- (SUUIViewElement)elementWithIdentifier:(id)a3
+- (SUUIViewElement)elementWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__36;
   v19 = __Block_byref_object_dispose__36;
   v20 = 0;
-  v5 = [(SUUIViewElement *)self itmlID];
-  v6 = [v5 isEqualToString:v4];
+  itmlID = [(SUUIViewElement *)self itmlID];
+  v6 = [itmlID isEqualToString:identifierCopy];
 
   if (v6)
   {
     v7 = v16;
-    v8 = self;
+    selfCopy = self;
     v9 = v7[5];
-    v7[5] = v8;
+    v7[5] = selfCopy;
   }
 
   else
@@ -282,7 +282,7 @@ LABEL_7:
     v12[2] = __41__SUUIViewElement_elementWithIdentifier___block_invoke;
     v12[3] = &unk_2798F7E80;
     v14 = &v15;
-    v13 = v4;
+    v13 = identifierCopy;
     [(SUUIViewElement *)self enumerateChildrenUsingBlock:v12];
     v9 = v13;
   }
@@ -305,49 +305,49 @@ void __41__SUUIViewElement_elementWithIdentifier___block_invoke(uint64_t a1, voi
 
 - (SUUIEntityProviding)entityProvider
 {
-  v3 = [(SUUIViewElement *)self explicitEntityProvider];
-  v4 = v3;
-  if (v3)
+  explicitEntityProvider = [(SUUIViewElement *)self explicitEntityProvider];
+  v4 = explicitEntityProvider;
+  if (explicitEntityProvider)
   {
-    v5 = v3;
+    entityProvider = explicitEntityProvider;
   }
 
   else
   {
-    v6 = [(SUUIViewElement *)self parent];
-    v5 = [v6 entityProvider];
+    parent = [(SUUIViewElement *)self parent];
+    entityProvider = [parent entityProvider];
   }
 
-  return v5;
+  return entityProvider;
 }
 
 - (IKEntityValueProviding)entityValueProvider
 {
-  v3 = [(SUUIViewElement *)self explicitEntityValueProvider];
-  if (!v3)
+  explicitEntityValueProvider = [(SUUIViewElement *)self explicitEntityValueProvider];
+  if (!explicitEntityValueProvider)
   {
-    v4 = [(SUUIViewElement *)self entityProvider];
-    v5 = [(SUUIViewElement *)self parent];
-    if (v5)
+    entityProvider = [(SUUIViewElement *)self entityProvider];
+    parent = [(SUUIViewElement *)self parent];
+    if (parent)
     {
       while (1)
       {
-        v6 = [v5 entityProvider];
-        if (v4 != v6 && ([v4 isEqual:v6] & 1) == 0)
+        entityProvider2 = [parent entityProvider];
+        if (entityProvider != entityProvider2 && ([entityProvider isEqual:entityProvider2] & 1) == 0)
         {
           break;
         }
 
-        v7 = [v5 explicitEntityValueProvider];
-        if (v7)
+        explicitEntityValueProvider2 = [parent explicitEntityValueProvider];
+        if (explicitEntityValueProvider2)
         {
           goto LABEL_12;
         }
 
-        v8 = [v5 parent];
+        v5Parent = [parent parent];
 
-        v5 = v8;
-        if (!v8)
+        parent = v5Parent;
+        if (!v5Parent)
         {
           goto LABEL_9;
         }
@@ -355,21 +355,21 @@ void __41__SUUIViewElement_elementWithIdentifier___block_invoke(uint64_t a1, voi
     }
 
 LABEL_9:
-    if ([v4 numberOfSections] && objc_msgSend(v4, "numberOfEntitiesInSection:", 0))
+    if ([entityProvider numberOfSections] && objc_msgSend(entityProvider, "numberOfEntitiesInSection:", 0))
     {
-      v6 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:0];
-      v7 = [v4 entityValueProviderAtIndexPath:v6];
+      entityProvider2 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:0];
+      explicitEntityValueProvider2 = [entityProvider entityValueProviderAtIndexPath:entityProvider2];
 LABEL_12:
-      v3 = v7;
+      explicitEntityValueProvider = explicitEntityValueProvider2;
     }
 
     else
     {
-      v3 = 0;
+      explicitEntityValueProvider = 0;
     }
   }
 
-  return v3;
+  return explicitEntityValueProvider;
 }
 
 - (SUUIEntityProviding)explicitEntityProvider
@@ -377,13 +377,13 @@ LABEL_12:
   if (!self->_hasValidEntityProvider)
   {
     self->_hasValidEntityProvider = 1;
-    v3 = [(SUUIViewElement *)self attributes];
-    v4 = [v3 objectForKey:@"entityProviderID"];
+    attributes = [(SUUIViewElement *)self attributes];
+    v4 = [attributes objectForKey:@"entityProviderID"];
 
     if ([v4 length])
     {
-      v5 = [(IKViewElement *)self entityProviderList];
-      v6 = [v5 entityProviderWithIdentifier:v4];
+      entityProviderList = [(IKViewElement *)self entityProviderList];
+      v6 = [entityProviderList entityProviderWithIdentifier:v4];
       entityProvider = self->_entityProvider;
       self->_entityProvider = v6;
 
@@ -408,12 +408,12 @@ LABEL_12:
 - (NSSet)entityValueProperties
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [(SUUIViewElement *)self children];
+  children = [(SUUIViewElement *)self children];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v3 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -425,22 +425,22 @@ LABEL_12:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(children);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) entityValueProperties];
-        if (v8)
+        entityValueProperties = [*(*(&v10 + 1) + 8 * i) entityValueProperties];
+        if (entityValueProperties)
         {
           if (!v5)
           {
             v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
           }
 
-          [v5 unionSet:v8];
+          [v5 unionSet:entityValueProperties];
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -454,10 +454,10 @@ LABEL_12:
   return v5;
 }
 
-- (void)enumerateChildrenUsingBlock:(id)a3
+- (void)enumerateChildrenUsingBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -466,8 +466,8 @@ LABEL_12:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(SUUIViewElement *)self children];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v21 count:16];
+  children = [(SUUIViewElement *)self children];
+  v6 = [children countByEnumeratingWithState:&v13 objects:v21 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -477,7 +477,7 @@ LABEL_3:
     {
       if (*v14 != v7)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(children);
       }
 
       v9 = *(*(&v13 + 1) + 8 * v8);
@@ -488,14 +488,14 @@ LABEL_3:
         v10[1] = 3221225472;
         v10[2] = __47__SUUIViewElement_enumerateChildrenUsingBlock___block_invoke;
         v10[3] = &unk_2798F91A8;
-        v11 = v4;
+        v11 = blockCopy;
         v12 = &v17;
         [v9 enumerateChildrenUsingBlock:v10];
       }
 
       else
       {
-        (*(v4 + 2))(v4, v9, v18 + 3);
+        (*(blockCopy + 2))(blockCopy, v9, v18 + 3);
       }
 
       if (v18[3])
@@ -505,7 +505,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v5 countByEnumeratingWithState:&v13 objects:v21 count:16];
+        v6 = [children countByEnumeratingWithState:&v13 objects:v21 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -526,20 +526,20 @@ uint64_t __47__SUUIViewElement_enumerateChildrenUsingBlock___block_invoke(uint64
   return result;
 }
 
-- (void)enumerateViewElementsWithDictionary:(id)a3 factory:(id)a4 usingBlock:(id)a5
+- (void)enumerateViewElementsWithDictionary:(id)dictionary factory:(id)factory usingBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 objectForKey:@"c"];
+  factoryCopy = factory;
+  blockCopy = block;
+  v10 = [dictionary objectForKey:@"c"];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __74__SUUIViewElement_enumerateViewElementsWithDictionary_factory_usingBlock___block_invoke;
   v13[3] = &unk_2798F91D0;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = factoryCopy;
+  selfCopy = self;
+  v16 = blockCopy;
+  v11 = blockCopy;
+  v12 = factoryCopy;
   [v10 enumerateObjectsUsingBlock:v13];
 }
 
@@ -557,10 +557,10 @@ uint64_t __74__SUUIViewElement_enumerateViewElementsWithDictionary_factory_using
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (id)featureWithName:(id)a3
+- (id)featureWithName:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   [(SUUIViewElement *)self features];
   v13 = 0u;
   v14 = 0u;
@@ -580,8 +580,8 @@ uint64_t __74__SUUIViewElement_enumerateViewElementsWithDictionary_factory_using
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 featureName];
-        v11 = [v10 isEqualToString:v4];
+        featureName = [v9 featureName];
+        v11 = [featureName isEqualToString:nameCopy];
 
         if (v11)
         {
@@ -605,7 +605,7 @@ LABEL_11:
   return v6;
 }
 
-- (id)firstChildForElementType:(unint64_t)a3
+- (id)firstChildForElementType:(unint64_t)type
 {
   v6 = 0;
   v7 = &v6;
@@ -618,7 +618,7 @@ LABEL_11:
   v5[2] = __44__SUUIViewElement_firstChildForElementType___block_invoke;
   v5[3] = &unk_2798F6968;
   v5[4] = &v6;
-  v5[5] = a3;
+  v5[5] = type;
   [(SUUIViewElement *)self enumerateChildrenUsingBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -635,9 +635,9 @@ void __44__SUUIViewElement_firstChildForElementType___block_invoke(uint64_t a1, 
   }
 }
 
-- (id)firstChildForElementName:(id)a3
+- (id)firstChildForElementName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -648,7 +648,7 @@ void __44__SUUIViewElement_firstChildForElementType___block_invoke(uint64_t a1, 
   v8[1] = 3221225472;
   v8[2] = __44__SUUIViewElement_firstChildForElementName___block_invoke;
   v8[3] = &unk_2798F91F8;
-  v5 = v4;
+  v5 = nameCopy;
   v9 = v5;
   v10 = &v11;
   [(SUUIViewElement *)self enumerateChildrenUsingBlock:v8];
@@ -694,26 +694,26 @@ void __44__SUUIViewElement_firstChildForElementName___block_invoke(uint64_t a1, 
 
 - (BOOL)isEnabled
 {
-  v2 = [(SUUIViewElement *)self parent];
-  v3 = v2;
-  if (v2)
+  parent = [(SUUIViewElement *)self parent];
+  v3 = parent;
+  if (parent)
   {
-    v4 = [v2 isEnabled];
+    isEnabled = [parent isEnabled];
   }
 
   else
   {
-    v4 = 1;
+    isEnabled = 1;
   }
 
-  return v4;
+  return isEnabled;
 }
 
 - (NSSet)personalizationLibraryItems
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(SUUIViewElement *)self children];
-  SUUIViewElementAccumulatePersonalizationLibraryItemsForChildren(v3, v4);
+  children = [(SUUIViewElement *)self children];
+  SUUIViewElementAccumulatePersonalizationLibraryItemsForChildren(v3, children);
 
   return v3;
 }
@@ -725,8 +725,8 @@ void __44__SUUIViewElement_firstChildForElementName___block_invoke(uint64_t a1, 
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(SUUIViewElement *)self children];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  children = [(SUUIViewElement *)self children];
+  v3 = [children countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -736,7 +736,7 @@ void __44__SUUIViewElement_firstChildForElementName___block_invoke(uint64_t a1, 
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(children);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) rendersWithPerspective])
@@ -746,7 +746,7 @@ void __44__SUUIViewElement_firstChildForElementName___block_invoke(uint64_t a1, 
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [children countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -768,8 +768,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(SUUIViewElement *)self children];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  children = [(SUUIViewElement *)self children];
+  v3 = [children countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -779,7 +779,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(children);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) rendersWithParallax])
@@ -789,7 +789,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [children countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -804,53 +804,53 @@ LABEL_11:
   return v3;
 }
 
-- (void)setEntityValueProvider:(id)a3
+- (void)setEntityValueProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   entityValueProvider = self->_entityValueProvider;
-  if (entityValueProvider != v5)
+  if (entityValueProvider != providerCopy)
   {
-    v7 = v5;
-    entityValueProvider = [entityValueProvider isEqual:v5];
-    v5 = v7;
+    v7 = providerCopy;
+    entityValueProvider = [entityValueProvider isEqual:providerCopy];
+    providerCopy = v7;
     if ((entityValueProvider & 1) == 0)
     {
-      objc_storeStrong(&self->_entityValueProvider, a3);
+      objc_storeStrong(&self->_entityValueProvider, provider);
       entityValueProvider = [(SUUIViewElement *)self _entityValueProviderDidChange];
-      v5 = v7;
+      providerCopy = v7;
     }
   }
 
-  MEMORY[0x2821F96F8](entityValueProvider, v5);
+  MEMORY[0x2821F96F8](entityValueProvider, providerCopy);
 }
 
 - (NSCopying)uniquingMapKey
 {
-  v2 = [(SUUIViewElement *)self parent];
-  v3 = v2;
-  if (v2)
+  parent = [(SUUIViewElement *)self parent];
+  v3 = parent;
+  if (parent)
   {
-    v4 = [v2 uniquingMapKey];
+    uniquingMapKey = [parent uniquingMapKey];
   }
 
   else
   {
-    v4 = 0;
+    uniquingMapKey = 0;
   }
 
-  return v4;
+  return uniquingMapKey;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v17.receiver = self;
   v17.super_class = SUUIViewElement;
-  v5 = [(SUUIViewElement *)&v17 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v17 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self)
+  if (elementCopy != self)
   {
-    if (!v4)
+    if (!elementCopy)
     {
       goto LABEL_17;
     }
@@ -867,23 +867,23 @@ LABEL_6:
     flattenedChildren = self->_flattenedChildren;
     self->_flattenedChildren = 0;
 
-    self->_pinStyle = [(SUUIViewElement *)v4 pinStyle];
-    v10 = [(SUUIViewElement *)v4 explicitEntityValueProvider];
+    self->_pinStyle = [(SUUIViewElement *)elementCopy pinStyle];
+    explicitEntityValueProvider = [(SUUIViewElement *)elementCopy explicitEntityValueProvider];
     entityValueProvider = self->_entityValueProvider;
-    if (entityValueProvider == v10 || ([(IKEntityValueProviding *)entityValueProvider isEqual:v10]& 1) != 0)
+    if (entityValueProvider == explicitEntityValueProvider || ([(IKEntityValueProviding *)entityValueProvider isEqual:explicitEntityValueProvider]& 1) != 0)
     {
       v12 = 0;
     }
 
     else
     {
-      objc_storeStrong(&self->_entityValueProvider, v10);
+      objc_storeStrong(&self->_entityValueProvider, explicitEntityValueProvider);
       v12 = 1;
     }
 
-    v13 = [(SUUIViewElement *)v4 explicitEntityProvider];
+    explicitEntityProvider = [(SUUIViewElement *)elementCopy explicitEntityProvider];
     v14 = self->_entityProvider;
-    if (v14 == v13 || ([(SUUIEntityProviding *)v14 isEqual:v13]& 1) != 0)
+    if (v14 == explicitEntityProvider || ([(SUUIEntityProviding *)v14 isEqual:explicitEntityProvider]& 1) != 0)
     {
       if (!v12)
       {
@@ -900,7 +900,7 @@ LABEL_16:
         [(SUUIViewElement *)self _unregisterForNotificationsForEntityProvider:?];
       }
 
-      objc_storeStrong(&self->_entityProvider, v13);
+      objc_storeStrong(&self->_entityProvider, explicitEntityProvider);
       if (self->_entityProvider)
       {
         [(SUUIViewElement *)self _registerForNotificationsForEntityProvider:?];
@@ -926,8 +926,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v7 = [v5 updateType];
-  if (v4 && v7)
+  updateType = [v5 updateType];
+  if (elementCopy && updateType)
   {
     goto LABEL_6;
   }
@@ -937,7 +937,7 @@ LABEL_17:
   return v6;
 }
 
-- (void)_entityProviderDidInvalidateNotification:(id)a3
+- (void)_entityProviderDidInvalidateNotification:(id)notification
 {
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -1010,39 +1010,39 @@ void __48__SUUIViewElement__entityValueProviderDidChange__block_invoke(uint64_t 
   }
 }
 
-- (void)_registerForNotificationsForEntityProvider:(id)a3
+- (void)_registerForNotificationsForEntityProvider:(id)provider
 {
-  if (a3)
+  if (provider)
   {
     v4 = MEMORY[0x277CCAB98];
-    v5 = a3;
-    v6 = [v4 defaultCenter];
-    [v6 addObserver:self selector:sel__entityProviderDidInvalidateNotification_ name:*MEMORY[0x277D1AF58] object:v5];
+    providerCopy = provider;
+    defaultCenter = [v4 defaultCenter];
+    [defaultCenter addObserver:self selector:sel__entityProviderDidInvalidateNotification_ name:*MEMORY[0x277D1AF58] object:providerCopy];
   }
 }
 
-- (void)_unregisterForNotificationsForEntityProvider:(id)a3
+- (void)_unregisterForNotificationsForEntityProvider:(id)provider
 {
-  if (a3)
+  if (provider)
   {
     v4 = MEMORY[0x277CCAB98];
-    v5 = a3;
-    v6 = [v4 defaultCenter];
-    [v6 removeObserver:self name:*MEMORY[0x277D1AF58] object:v5];
+    providerCopy = provider;
+    defaultCenter = [v4 defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D1AF58] object:providerCopy];
   }
 }
 
-- (id)firstDescendentWithIndexBarEntryID:(id)a3
+- (id)firstDescendentWithIndexBarEntryID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [(SUUIViewElement *)self indexBarEntryID];
-    v6 = [v5 isEqualToString:v4];
+    indexBarEntryID = [(SUUIViewElement *)self indexBarEntryID];
+    v6 = [indexBarEntryID isEqualToString:dCopy];
 
     if (v6)
     {
-      v7 = self;
+      selfCopy = self;
     }
 
     else
@@ -1057,10 +1057,10 @@ void __48__SUUIViewElement__entityValueProviderDidChange__block_invoke(uint64_t 
       v9[1] = 3221225472;
       v9[2] = __77__SUUIViewElement_SUUIIndexBarAdditions__firstDescendentWithIndexBarEntryID___block_invoke;
       v9[3] = &unk_2798F91F8;
-      v10 = v4;
+      v10 = dCopy;
       v11 = &v12;
       [(SUUIViewElement *)self enumerateChildrenUsingBlock:v9];
-      v7 = v13[5];
+      selfCopy = v13[5];
 
       _Block_object_dispose(&v12, 8);
     }
@@ -1068,10 +1068,10 @@ void __48__SUUIViewElement__entityValueProviderDidChange__block_invoke(uint64_t 
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 void __77__SUUIViewElement_SUUIIndexBarAdditions__firstDescendentWithIndexBarEntryID___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -1104,8 +1104,8 @@ LABEL_5:
 
 - (NSString)indexBarEntryID
 {
-  v2 = [(SUUIViewElement *)self attributes];
-  v3 = [v2 objectForKey:@"indexBarEntryID"];
+  attributes = [(SUUIViewElement *)self attributes];
+  v3 = [attributes objectForKey:@"indexBarEntryID"];
 
   if (v3 && ![v3 length])
   {
@@ -1120,16 +1120,16 @@ LABEL_5:
 {
   if ([(SUUIViewElement *)self elementType]== 66)
   {
-    v3 = self;
-    if ([(SUUIViewElement *)v3 lockupViewType]== 7)
+    selfCopy = self;
+    if ([(SUUIViewElement *)selfCopy lockupViewType]== 7)
     {
 
       return 1;
     }
 
-    v4 = [(SUUIViewElement *)v3 lockupViewType];
+    lockupViewType = [(SUUIViewElement *)selfCopy lockupViewType];
 
-    if (v4 == 6)
+    if (lockupViewType == 6)
     {
       return 1;
     }

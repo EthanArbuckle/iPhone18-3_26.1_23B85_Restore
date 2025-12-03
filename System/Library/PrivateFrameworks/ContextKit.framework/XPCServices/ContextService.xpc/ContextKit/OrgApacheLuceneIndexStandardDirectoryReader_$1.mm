@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneIndexStandardDirectoryReader_$1
-- (id)doBodyWithNSString:(id)a3;
+- (id)doBodyWithNSString:(id)string;
 @end
 
 @implementation OrgApacheLuceneIndexStandardDirectoryReader_$1
 
-- (id)doBodyWithNSString:(id)a3
+- (id)doBodyWithNSString:(id)string
 {
-  CommitWithOrgApacheLuceneStoreDirectory_withNSString = OrgApacheLuceneIndexSegmentInfos_readCommitWithOrgApacheLuceneStoreDirectory_withNSString_(self->super.directory_, a3);
+  CommitWithOrgApacheLuceneStoreDirectory_withNSString = OrgApacheLuceneIndexSegmentInfos_readCommitWithOrgApacheLuceneStoreDirectory_withNSString_(self->super.directory_, string);
   if (!CommitWithOrgApacheLuceneStoreDirectory_withNSString)
   {
     JreThrowNullPointerException();

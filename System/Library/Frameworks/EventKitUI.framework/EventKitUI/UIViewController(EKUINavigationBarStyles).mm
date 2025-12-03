@@ -12,83 +12,83 @@
 
 - (uint64_t)ekui_adjustNavAndToolBarToTranslucentGrayStyles
 {
-  [a1 ekui_adjustNavBarToTranslucentGrayStyle];
+  [self ekui_adjustNavBarToTranslucentGrayStyle];
 
-  return [a1 ekui_adjustToolBarToTranslucentGrayStyle];
+  return [self ekui_adjustToolBarToTranslucentGrayStyle];
 }
 
 - (void)ekui_adjustNavBarToTranslucentGrayStyle
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
-  v2 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setShadowColor:v2];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v4 setShadowColor:clearColor];
 
-  v3 = [a1 navigationItem];
-  [v3 setScrollEdgeAppearance:v4];
+  navigationItem = [self navigationItem];
+  [navigationItem setScrollEdgeAppearance:v4];
 }
 
 - (void)ekui_adjustToolBarToTranslucentGrayStyle
 {
-  v1 = [a1 navigationController];
-  v4 = [v1 toolbar];
+  navigationController = [self navigationController];
+  toolbar = [navigationController toolbar];
 
-  v2 = [v4 standardAppearance];
-  v3 = [MEMORY[0x1E69DC888] separatorColor];
-  [v2 setShadowColor:v3];
+  standardAppearance = [toolbar standardAppearance];
+  separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+  [standardAppearance setShadowColor:separatorColor];
 
-  [v4 setScrollEdgeAppearance:v2];
+  [toolbar setScrollEdgeAppearance:standardAppearance];
 }
 
 - (void)ekui_adjustNavBarToTranslucentGrayStyleWithSeparator
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
-  v2 = [MEMORY[0x1E69DC888] separatorColor];
-  [v4 setShadowColor:v2];
+  separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+  [v4 setShadowColor:separatorColor];
 
-  v3 = [a1 navigationItem];
-  [v3 setScrollEdgeAppearance:v4];
+  navigationItem = [self navigationItem];
+  [navigationItem setScrollEdgeAppearance:v4];
 }
 
 - (uint64_t)ekui_adjustNavAndToolBarToTransparentStyles
 {
-  [a1 ekui_adjustNavBarToTransparentStyle];
+  [self ekui_adjustNavBarToTransparentStyle];
 
-  return [a1 ekui_adjustToolBarToTransparentStyle];
+  return [self ekui_adjustToolBarToTransparentStyle];
 }
 
 - (void)ekui_adjustNavBarToTransparentStyle
 {
   v8 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
   [v8 configureWithOpaqueBackground];
-  v2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v8 setBackgroundColor:v2];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v8 setBackgroundColor:systemBackgroundColor];
 
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [v8 setShadowColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v8 setShadowColor:clearColor];
 
-  v4 = [a1 navigationItem];
-  [v4 setScrollEdgeAppearance:v8];
+  navigationItem = [self navigationItem];
+  [navigationItem setScrollEdgeAppearance:v8];
 
   v5 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
-  v6 = [MEMORY[0x1E69DC888] separatorColor];
-  [v5 setShadowColor:v6];
+  separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+  [v5 setShadowColor:separatorColor];
 
-  v7 = [a1 navigationItem];
-  [v7 setStandardAppearance:v5];
+  navigationItem2 = [self navigationItem];
+  [navigationItem2 setStandardAppearance:v5];
 }
 
 - (void)ekui_adjustToolBarToTransparentStyle
 {
-  v1 = [a1 navigationController];
-  v4 = [v1 toolbar];
+  navigationController = [self navigationController];
+  toolbar = [navigationController toolbar];
 
-  v2 = [v4 scrollEdgeAppearance];
-  [v2 configureWithOpaqueBackground];
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v2 setBackgroundColor:v3];
+  scrollEdgeAppearance = [toolbar scrollEdgeAppearance];
+  [scrollEdgeAppearance configureWithOpaqueBackground];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [scrollEdgeAppearance setBackgroundColor:systemBackgroundColor];
 
-  [v2 setShadowColor:0];
-  [v4 setScrollEdgeAppearance:v2];
+  [scrollEdgeAppearance setShadowColor:0];
+  [toolbar setScrollEdgeAppearance:scrollEdgeAppearance];
 }
 
 @end

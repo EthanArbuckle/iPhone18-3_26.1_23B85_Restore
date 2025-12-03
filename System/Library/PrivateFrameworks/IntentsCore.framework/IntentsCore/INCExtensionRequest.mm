@@ -1,14 +1,14 @@
 @interface INCExtensionRequest
 + (void)initialize;
-- (INCExtensionRequest)initWithIdentifier:(id)a3;
+- (INCExtensionRequest)initWithIdentifier:(id)identifier;
 - (id)_extensionContextHost;
 - (id)_requestOperationQueue;
 - (void)_resetContextTimer;
-- (void)_resetExtensionContextHostWithCompletion:(id)a3;
+- (void)_resetExtensionContextHostWithCompletion:(id)completion;
 - (void)_scheduleContextTimer;
 - (void)reset;
-- (void)setExtensionInputItems:(id)a3;
-- (void)startRequestForIntent:(id)a3 completion:(id)a4;
+- (void)setExtensionInputItems:(id)items;
+- (void)startRequestForIntent:(id)intent completion:(id)completion;
 @end
 
 @implementation INCExtensionRequest
@@ -132,17 +132,17 @@ void __44__INCExtensionRequest__scheduleContextTimer__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_resetExtensionContextHostWithCompletion:(id)a3
+- (void)_resetExtensionContextHostWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(INCExtensionRequest *)self _resetContextTimer];
-  v5 = [(INCExtensionRequest *)self _extensionContextHost];
-  v6 = [v5 _auxiliaryConnection];
-  v8 = [v6 remoteObjectProxy];
+  _extensionContextHost = [(INCExtensionRequest *)self _extensionContextHost];
+  _auxiliaryConnection = [_extensionContextHost _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
 
-  if (v4)
+  if (completionCopy)
   {
-    v7 = v4;
+    v7 = completionCopy;
   }
 
   else
@@ -150,15 +150,15 @@ void __44__INCExtensionRequest__scheduleContextTimer__block_invoke(uint64_t a1)
     v7 = &__block_literal_global;
   }
 
-  [v8 completeTransactionWithIntentIdentifier:self->_identifier completion:v7];
+  [remoteObjectProxy completeTransactionWithIntentIdentifier:self->_identifier completion:v7];
 }
 
-- (void)startRequestForIntent:(id)a3 completion:(id)a4
+- (void)startRequestForIntent:(id)intent completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  intentCopy = intent;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -166,8 +166,8 @@ void __44__INCExtensionRequest__scheduleContextTimer__block_invoke(uint64_t a1)
     block[2] = __56__INCExtensionRequest_startRequestForIntent_completion___block_invoke;
     block[3] = &unk_2797E8140;
     block[4] = self;
-    v12 = v7;
-    v11 = v6;
+    v12 = completionCopy;
+    v11 = intentCopy;
     dispatch_async(queue, block);
   }
 }
@@ -287,17 +287,17 @@ void __56__INCExtensionRequest_startRequestForIntent_completion___block_invoke_5
   [v1 setSuspended:0];
 }
 
-- (void)setExtensionInputItems:(id)a3
+- (void)setExtensionInputItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__INCExtensionRequest_setExtensionInputItems___block_invoke;
   v7[3] = &unk_2797E7820;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemsCopy;
+  v6 = itemsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -309,9 +309,9 @@ uint64_t __46__INCExtensionRequest_setExtensionInputItems___block_invoke(uint64_
   return [v2 _resetExtensionContextHostWithCompletion:0];
 }
 
-- (INCExtensionRequest)initWithIdentifier:(id)a3
+- (INCExtensionRequest)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = INCExtensionRequest;
   v6 = [(INCExtensionRequest *)&v11 init];
@@ -323,7 +323,7 @@ uint64_t __46__INCExtensionRequest_setExtensionInputItems___block_invoke(uint64_
     queue = v6->_queue;
     v6->_queue = v8;
 
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     *&v6->_requiresTCC = 257;
   }
 
@@ -332,7 +332,7 @@ uint64_t __46__INCExtensionRequest_setExtensionInputItems___block_invoke(uint64_
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     INLogInitIfNeeded();

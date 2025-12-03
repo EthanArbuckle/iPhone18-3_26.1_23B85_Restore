@@ -1,21 +1,21 @@
 @interface FIUIActivityDataProvider
 + (id)sharedModel;
-- (BOOL)_loadingStateForActivitySummary:(id)a3;
+- (BOOL)_loadingStateForActivitySummary:(id)summary;
 - (FIUIActivityDataProvider)init;
 - (id)_currentActivitySummaryQueryCollectionIntervalsOverride;
 - (id)_queue_activityDataModelFromCurrentActivitySummary;
 - (id)switcherActivityDataModel;
-- (void)_broadcastCurrentModelUpdateToSubscribers:(id)a3;
+- (void)_broadcastCurrentModelUpdateToSubscribers:(id)subscribers;
 - (void)_handleTimeChange;
-- (void)_queue_restartQueriesPreservingExistingGoals:(BOOL)a3;
-- (void)_queue_updateChartStatisticsWithStatisticsQueryResult:(id)a3;
-- (void)_queue_updateCurrentActivitySummaryWithSummary:(id)a3;
-- (void)_setCurrentDate:(id)a3;
-- (void)addSubscriber:(id)a3;
+- (void)_queue_restartQueriesPreservingExistingGoals:(BOOL)goals;
+- (void)_queue_updateChartStatisticsWithStatisticsQueryResult:(id)result;
+- (void)_queue_updateCurrentActivitySummaryWithSummary:(id)summary;
+- (void)_setCurrentDate:(id)date;
+- (void)addSubscriber:(id)subscriber;
 - (void)dealloc;
-- (void)fitnessAppsStateObserver:(id)a3 restrictedStateDidChange:(int64_t)a4;
-- (void)getCurrentActivityDataModelWithHandler:(id)a3;
-- (void)removeSubscriber:(id)a3;
+- (void)fitnessAppsStateObserver:(id)observer restrictedStateDidChange:(int64_t)change;
+- (void)getCurrentActivityDataModelWithHandler:(id)handler;
+- (void)removeSubscriber:(id)subscriber;
 @end
 
 @implementation FIUIActivityDataProvider
@@ -27,17 +27,17 @@
   v2 = [(FIUIActivityDataProvider *)&v24 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696C510] kilocalorieUnit];
+    kilocalorieUnit = [MEMORY[0x1E696C510] kilocalorieUnit];
     kcalUnit = v2->_kcalUnit;
-    v2->_kcalUnit = v3;
+    v2->_kcalUnit = kilocalorieUnit;
 
-    v5 = [MEMORY[0x1E696C510] minuteUnit];
+    minuteUnit = [MEMORY[0x1E696C510] minuteUnit];
     minuteUnit = v2->_minuteUnit;
-    v2->_minuteUnit = v5;
+    v2->_minuteUnit = minuteUnit;
 
-    v7 = [MEMORY[0x1E696C510] countUnit];
+    countUnit = [MEMORY[0x1E696C510] countUnit];
     countUnit = v2->_countUnit;
-    v2->_countUnit = v7;
+    v2->_countUnit = countUnit;
 
     v9 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
     v10 = dispatch_queue_create("com.apple.nanolifestyle.activity.cacheaccess", v9);
@@ -56,13 +56,13 @@
     subscriber_queue = v13->_subscriber_queue;
     v13->_subscriber_queue = v14;
 
-    v16 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     subscribers = v13->_subscribers;
-    v13->_subscribers = v16;
+    v13->_subscribers = weakObjectsHashTable;
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v13 selector:sel__handleTimeChange name:*MEMORY[0x1E69DDB88] object:0];
-    [v18 addObserver:v13 selector:sel__handleTimeChange name:*MEMORY[0x1E695D810] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__handleTimeChange name:*MEMORY[0x1E69DDB88] object:0];
+    [defaultCenter addObserver:v13 selector:sel__handleTimeChange name:*MEMORY[0x1E695D810] object:0];
     v19 = objc_alloc_init(MEMORY[0x1E699C9C8]);
     fitnessAppsStateObserver = v13->_fitnessAppsStateObserver;
     v13->_fitnessAppsStateObserver = v19;
@@ -83,8 +83,8 @@ uint64_t __32__FIUIActivityDataProvider_init__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   fitnessAppsStateObserver = self->_fitnessAppsStateObserver;
   self->_fitnessAppsStateObserver = 0;
@@ -100,7 +100,7 @@ uint64_t __32__FIUIActivityDataProvider_init__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __39__FIUIActivityDataProvider_sharedModel__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedModel_onceToken != -1)
   {
     dispatch_once(&sharedModel_onceToken, block);
@@ -118,11 +118,11 @@ uint64_t __39__FIUIActivityDataProvider_sharedModel__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addSubscriber:(id)a3
+- (void)addSubscriber:(id)subscriber
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 description];
+  subscriberCopy = subscriber;
+  v5 = [subscriberCopy description];
   _HKInitializeLogging();
   v6 = *MEMORY[0x1E696B928];
   if (os_log_type_enabled(*MEMORY[0x1E696B928], OS_LOG_TYPE_DEFAULT))
@@ -138,10 +138,10 @@ uint64_t __39__FIUIActivityDataProvider_sharedModel__block_invoke()
   block[2] = __42__FIUIActivityDataProvider_addSubscriber___block_invoke;
   block[3] = &unk_1E878C008;
   block[4] = self;
-  v11 = v4;
+  v11 = subscriberCopy;
   v12 = v5;
   v8 = v5;
-  v9 = v4;
+  v9 = subscriberCopy;
   dispatch_async(subscriber_queue, block);
 }
 
@@ -215,16 +215,16 @@ uint64_t __42__FIUIActivityDataProvider_addSubscriber___block_invoke_2(uint64_t 
   return [*(a1 + 32) _queue_startQueries];
 }
 
-- (void)removeSubscriber:(id)a3
+- (void)removeSubscriber:(id)subscriber
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  subscriberCopy = subscriber;
   _HKInitializeLogging();
   v5 = *MEMORY[0x1E696B928];
   if (os_log_type_enabled(*MEMORY[0x1E696B928], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = subscriberCopy;
     _os_log_impl(&dword_1E5D0F000, v5, OS_LOG_TYPE_DEFAULT, "Timeline model removing subscriber: %@", buf, 0xCu);
   }
 
@@ -296,17 +296,17 @@ uint64_t __53__FIUIActivityDataProvider_switcherActivityDataModel__block_invoke(
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getCurrentActivityDataModelWithHandler:(id)a3
+- (void)getCurrentActivityDataModelWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__FIUIActivityDataProvider_getCurrentActivityDataModelWithHandler___block_invoke;
   v7[3] = &unk_1E878CE60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -344,9 +344,9 @@ void __67__FIUIActivityDataProvider_getCurrentActivityDataModelWithHandler___blo
   return v6;
 }
 
-- (void)_queue_restartQueriesPreservingExistingGoals:(BOOL)a3
+- (void)_queue_restartQueriesPreservingExistingGoals:(BOOL)goals
 {
-  v3 = a3;
+  goalsCopy = goals;
   _HKInitializeLogging();
   v5 = *MEMORY[0x1E696B928];
   if (os_log_type_enabled(*MEMORY[0x1E696B928], OS_LOG_TYPE_DEFAULT))
@@ -355,64 +355,64 @@ void __67__FIUIActivityDataProvider_getCurrentActivityDataModelWithHandler___blo
     _os_log_impl(&dword_1E5D0F000, v5, OS_LOG_TYPE_DEFAULT, "Timeline model restarting queries", v6, 2u);
   }
 
-  [(FIUIActivityDataProvider *)self _queue_stopQueriesPreservingExistingGoals:v3];
+  [(FIUIActivityDataProvider *)self _queue_stopQueriesPreservingExistingGoals:goalsCopy];
   [(FIUIActivityDataProvider *)self _queue_startQueries];
 }
 
-- (BOOL)_loadingStateForActivitySummary:(id)a3
+- (BOOL)_loadingStateForActivitySummary:(id)summary
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  summaryCopy = summary;
   _HKInitializeLogging();
   v4 = *MEMORY[0x1E696B928];
   if (os_log_type_enabled(*MEMORY[0x1E696B928], OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
     v7[0] = 67109634;
-    v7[1] = v3 == 0;
+    v7[1] = summaryCopy == 0;
     v8 = 2112;
-    v9 = v3;
+    v9 = summaryCopy;
     v10 = 1024;
-    v11 = [v3 _isDataLoading];
+    _isDataLoading = [summaryCopy _isDataLoading];
     _os_log_impl(&dword_1E5D0F000, v5, OS_LOG_TYPE_DEFAULT, "databaseLoading?:%u activitySummary:%@ [activitySummary _isDataLoading]:%u", v7, 0x18u);
   }
 
-  return v3 == 0;
+  return summaryCopy == 0;
 }
 
 - (id)_queue_activityDataModelFromCurrentActivitySummary
 {
   v3 = self->_queue_currentActivitySummary;
   v4 = objc_alloc_init(FIUIActivityDataModel);
-  v5 = [(HKActivitySummary *)v3 activeEnergyBurned];
-  v6 = [(HKActivitySummary *)v3 activeEnergyBurnedGoal];
-  v7 = [(HKActivitySummary *)v3 appleMoveMinutes];
-  [v7 doubleValueForUnit:self->_minuteUnit];
+  activeEnergyBurned = [(HKActivitySummary *)v3 activeEnergyBurned];
+  activeEnergyBurnedGoal = [(HKActivitySummary *)v3 activeEnergyBurnedGoal];
+  appleMoveMinutes = [(HKActivitySummary *)v3 appleMoveMinutes];
+  [appleMoveMinutes doubleValueForUnit:self->_minuteUnit];
   v9 = v8;
 
-  v10 = [(HKActivitySummary *)v3 appleMoveMinutesGoal];
-  [v10 doubleValueForUnit:self->_minuteUnit];
+  appleMoveMinutesGoal = [(HKActivitySummary *)v3 appleMoveMinutesGoal];
+  [appleMoveMinutesGoal doubleValueForUnit:self->_minuteUnit];
   v12 = v11;
 
-  v13 = [(HKActivitySummary *)v3 appleExerciseTime];
-  [v13 doubleValueForUnit:self->_minuteUnit];
+  appleExerciseTime = [(HKActivitySummary *)v3 appleExerciseTime];
+  [appleExerciseTime doubleValueForUnit:self->_minuteUnit];
   v15 = v14;
 
-  v16 = [(HKActivitySummary *)v3 appleExerciseTimeGoal];
-  [v16 doubleValueForUnit:self->_minuteUnit];
+  appleExerciseTimeGoal = [(HKActivitySummary *)v3 appleExerciseTimeGoal];
+  [appleExerciseTimeGoal doubleValueForUnit:self->_minuteUnit];
   v18 = v17;
 
-  v19 = [(HKActivitySummary *)v3 appleStandHours];
-  [v19 doubleValueForUnit:self->_countUnit];
+  appleStandHours = [(HKActivitySummary *)v3 appleStandHours];
+  [appleStandHours doubleValueForUnit:self->_countUnit];
   v21 = v20;
 
-  v22 = [(HKActivitySummary *)v3 appleStandHoursGoal];
-  [v22 doubleValueForUnit:self->_countUnit];
+  appleStandHoursGoal = [(HKActivitySummary *)v3 appleStandHoursGoal];
+  [appleStandHoursGoal doubleValueForUnit:self->_countUnit];
   v24 = v23;
 
   [(FIUIActivityDataModel *)v4 setActivityMoveMode:[(HKActivitySummary *)v3 _activityMoveMode]];
-  [(FIUIActivityDataModel *)v4 setActiveEnergyTotal:v5];
-  [(FIUIActivityDataModel *)v4 setActiveEnergyGoal:v6];
+  [(FIUIActivityDataModel *)v4 setActiveEnergyTotal:activeEnergyBurned];
+  [(FIUIActivityDataModel *)v4 setActiveEnergyGoal:activeEnergyBurnedGoal];
   [(FIUIActivityDataModel *)v4 setAppleMoveTimeTotal:v9];
   [(FIUIActivityDataModel *)v4 setAppleMoveTimeGoal:v12];
   [(FIUIActivityDataModel *)v4 setAppleExerciseTimeTotal:v15];
@@ -466,8 +466,8 @@ void __67__FIUIActivityDataProvider_getCurrentActivityDataModelWithHandler___blo
   }
 
   [(FIUIActivityDataModel *)v4 setAppleStandHourChartData:queue_currentStandChartData];
-  v30 = [MEMORY[0x1E695DF00] date];
-  [(FIUIActivityDataModel *)v4 setDate:v30];
+  date = [MEMORY[0x1E695DF00] date];
+  [(FIUIActivityDataModel *)v4 setDate:date];
 
   [(FIUIActivityDataModel *)v4 setDatabaseLoading:[(FIUIActivityDataProvider *)self _loadingStateForActivitySummary:v3]];
   [(FIUIActivityDataModel *)v4 setAreFitnessAppsRestricted:self->_areFitnessAppsRestricted];
@@ -475,35 +475,35 @@ void __67__FIUIActivityDataProvider_getCurrentActivityDataModelWithHandler___blo
   return v4;
 }
 
-- (void)_queue_updateCurrentActivitySummaryWithSummary:(id)a3
+- (void)_queue_updateCurrentActivitySummaryWithSummary:(id)summary
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v18 = [(HKActivitySummary *)self->_queue_currentActivitySummary activeEnergyBurnedGoal];
-  v32 = [(HKActivitySummary *)self->_queue_currentActivitySummary activeEnergyBurned];
-  v30 = [(HKActivitySummary *)self->_queue_currentActivitySummary appleMoveMinutesGoal];
-  v28 = [(HKActivitySummary *)self->_queue_currentActivitySummary appleMoveMinutes];
-  v26 = [(HKActivitySummary *)self->_queue_currentActivitySummary appleExerciseTimeGoal];
-  v24 = [(HKActivitySummary *)self->_queue_currentActivitySummary appleExerciseTime];
-  v22 = [(HKActivitySummary *)self->_queue_currentActivitySummary appleStandHoursGoal];
-  v20 = [(HKActivitySummary *)self->_queue_currentActivitySummary appleStandHours];
-  v16 = [(HKActivitySummary *)self->_queue_currentActivitySummary paused];
-  v5 = [v4 activeEnergyBurnedGoal];
-  v31 = [v4 activeEnergyBurned];
-  v29 = [v4 appleMoveMinutesGoal];
-  v27 = [v4 appleMoveMinutes];
-  v25 = [v4 appleExerciseTimeGoal];
-  v23 = [v4 appleExerciseTime];
-  v21 = [v4 appleStandHoursGoal];
-  v19 = [v4 appleStandHours];
-  v6 = [(FIUIActivityDataProvider *)self _isPausedForActivitySummary:v4];
-  v7 = [(HKActivitySummary *)self->_queue_currentActivitySummary _activitySummaryIndex];
-  v8 = [v4 _activitySummaryIndex];
-  v9 = [(HKActivitySummary *)self->_queue_currentActivitySummary _activityMoveMode];
-  v10 = [v4 _activityMoveMode];
-  v11 = [(HKActivitySummary *)self->_queue_currentActivitySummary _wheelchairUse];
-  v12 = [v4 _wheelchairUse];
-  if (v7 == v8 && v9 == v10 && v11 == v12 && ((v16 ^ v6) & 1) == 0 && [v18 isEqual:v5] && objc_msgSend(v32, "isEqual:", v31) && objc_msgSend(v30, "isEqual:", v29) && objc_msgSend(v28, "isEqual:", v27) && objc_msgSend(v26, "isEqual:", v25) && objc_msgSend(v24, "isEqual:", v23) && objc_msgSend(v22, "isEqual:", v21) && objc_msgSend(v20, "isEqual:", v19))
+  summaryCopy = summary;
+  activeEnergyBurnedGoal = [(HKActivitySummary *)self->_queue_currentActivitySummary activeEnergyBurnedGoal];
+  activeEnergyBurned = [(HKActivitySummary *)self->_queue_currentActivitySummary activeEnergyBurned];
+  appleMoveMinutesGoal = [(HKActivitySummary *)self->_queue_currentActivitySummary appleMoveMinutesGoal];
+  appleMoveMinutes = [(HKActivitySummary *)self->_queue_currentActivitySummary appleMoveMinutes];
+  appleExerciseTimeGoal = [(HKActivitySummary *)self->_queue_currentActivitySummary appleExerciseTimeGoal];
+  appleExerciseTime = [(HKActivitySummary *)self->_queue_currentActivitySummary appleExerciseTime];
+  appleStandHoursGoal = [(HKActivitySummary *)self->_queue_currentActivitySummary appleStandHoursGoal];
+  appleStandHours = [(HKActivitySummary *)self->_queue_currentActivitySummary appleStandHours];
+  paused = [(HKActivitySummary *)self->_queue_currentActivitySummary paused];
+  activeEnergyBurnedGoal2 = [summaryCopy activeEnergyBurnedGoal];
+  activeEnergyBurned2 = [summaryCopy activeEnergyBurned];
+  appleMoveMinutesGoal2 = [summaryCopy appleMoveMinutesGoal];
+  appleMoveMinutes2 = [summaryCopy appleMoveMinutes];
+  appleExerciseTimeGoal2 = [summaryCopy appleExerciseTimeGoal];
+  appleExerciseTime2 = [summaryCopy appleExerciseTime];
+  appleStandHoursGoal2 = [summaryCopy appleStandHoursGoal];
+  appleStandHours2 = [summaryCopy appleStandHours];
+  v6 = [(FIUIActivityDataProvider *)self _isPausedForActivitySummary:summaryCopy];
+  _activitySummaryIndex = [(HKActivitySummary *)self->_queue_currentActivitySummary _activitySummaryIndex];
+  _activitySummaryIndex2 = [summaryCopy _activitySummaryIndex];
+  _activityMoveMode = [(HKActivitySummary *)self->_queue_currentActivitySummary _activityMoveMode];
+  _activityMoveMode2 = [summaryCopy _activityMoveMode];
+  _wheelchairUse = [(HKActivitySummary *)self->_queue_currentActivitySummary _wheelchairUse];
+  _wheelchairUse2 = [summaryCopy _wheelchairUse];
+  if (_activitySummaryIndex == _activitySummaryIndex2 && _activityMoveMode == _activityMoveMode2 && _wheelchairUse == _wheelchairUse2 && ((paused ^ v6) & 1) == 0 && [activeEnergyBurnedGoal isEqual:activeEnergyBurnedGoal2] && objc_msgSend(activeEnergyBurned, "isEqual:", activeEnergyBurned2) && objc_msgSend(appleMoveMinutesGoal, "isEqual:", appleMoveMinutesGoal2) && objc_msgSend(appleMoveMinutes, "isEqual:", appleMoveMinutes2) && objc_msgSend(appleExerciseTimeGoal, "isEqual:", appleExerciseTimeGoal2) && objc_msgSend(appleExerciseTime, "isEqual:", appleExerciseTime2) && objc_msgSend(appleStandHoursGoal, "isEqual:", appleStandHoursGoal2) && objc_msgSend(appleStandHours, "isEqual:", appleStandHours2))
   {
     _HKInitializeLogging();
     v13 = *MEMORY[0x1E696B928];
@@ -513,41 +513,41 @@ void __67__FIUIActivityDataProvider_getCurrentActivityDataModelWithHandler___blo
       *buf = 138412546;
       v34 = queue_currentActivitySummary;
       v35 = 2112;
-      v36 = v4;
+      v36 = summaryCopy;
       _os_log_impl(&dword_1E5D0F000, v13, OS_LOG_TYPE_DEFAULT, "New activity summary (%@) has same values as existing (%@), skipping update", buf, 0x16u);
     }
   }
 
   else
   {
-    objc_storeStrong(&self->_queue_currentActivitySummary, a3);
-    v15 = [(FIUIActivityDataProvider *)self _queue_activityDataModelFromCurrentActivitySummary];
-    [(FIUIActivityDataProvider *)self _broadcastCurrentModelUpdateToSubscribers:v15];
+    objc_storeStrong(&self->_queue_currentActivitySummary, summary);
+    _queue_activityDataModelFromCurrentActivitySummary = [(FIUIActivityDataProvider *)self _queue_activityDataModelFromCurrentActivitySummary];
+    [(FIUIActivityDataProvider *)self _broadcastCurrentModelUpdateToSubscribers:_queue_activityDataModelFromCurrentActivitySummary];
   }
 }
 
-- (void)_queue_updateChartStatisticsWithStatisticsQueryResult:(id)a3
+- (void)_queue_updateChartStatisticsWithStatisticsQueryResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 activeEnergyResults];
+  resultCopy = result;
+  activeEnergyResults = [resultCopy activeEnergyResults];
   queue_currentActiveEnergyChartData = self->_queue_currentActiveEnergyChartData;
-  self->_queue_currentActiveEnergyChartData = v5;
+  self->_queue_currentActiveEnergyChartData = activeEnergyResults;
 
-  v7 = [v4 appleMoveTimeResults];
+  appleMoveTimeResults = [resultCopy appleMoveTimeResults];
   queue_currentMoveTimeChartData = self->_queue_currentMoveTimeChartData;
-  self->_queue_currentMoveTimeChartData = v7;
+  self->_queue_currentMoveTimeChartData = appleMoveTimeResults;
 
-  v9 = [v4 appleExerciseTimeResults];
+  appleExerciseTimeResults = [resultCopy appleExerciseTimeResults];
   queue_currentExerciseChartData = self->_queue_currentExerciseChartData;
-  self->_queue_currentExerciseChartData = v9;
+  self->_queue_currentExerciseChartData = appleExerciseTimeResults;
 
-  v11 = [v4 appleStandHourResults];
+  appleStandHourResults = [resultCopy appleStandHourResults];
 
   queue_currentStandChartData = self->_queue_currentStandChartData;
-  self->_queue_currentStandChartData = v11;
+  self->_queue_currentStandChartData = appleStandHourResults;
 
-  v13 = [(FIUIActivityDataProvider *)self _queue_activityDataModelFromCurrentActivitySummary];
-  [(FIUIActivityDataProvider *)self _broadcastCurrentModelUpdateToSubscribers:v13];
+  _queue_activityDataModelFromCurrentActivitySummary = [(FIUIActivityDataProvider *)self _queue_activityDataModelFromCurrentActivitySummary];
+  [(FIUIActivityDataProvider *)self _broadcastCurrentModelUpdateToSubscribers:_queue_activityDataModelFromCurrentActivitySummary];
 }
 
 - (void)_handleTimeChange
@@ -632,17 +632,17 @@ void __45__FIUIActivityDataProvider__handleTimeChange__block_invoke_2(uint64_t a
   }
 }
 
-- (void)_broadcastCurrentModelUpdateToSubscribers:(id)a3
+- (void)_broadcastCurrentModelUpdateToSubscribers:(id)subscribers
 {
-  v4 = a3;
+  subscribersCopy = subscribers;
   subscriber_queue = self->_subscriber_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__FIUIActivityDataProvider__broadcastCurrentModelUpdateToSubscribers___block_invoke;
   v7[3] = &unk_1E878BFB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = subscribersCopy;
+  v6 = subscribersCopy;
   dispatch_async(subscriber_queue, v7);
 }
 
@@ -680,24 +680,24 @@ void __70__FIUIActivityDataProvider__broadcastCurrentModelUpdateToSubscribers___
   }
 }
 
-- (void)fitnessAppsStateObserver:(id)a3 restrictedStateDidChange:(int64_t)a4
+- (void)fitnessAppsStateObserver:(id)observer restrictedStateDidChange:(int64_t)change
 {
-  self->_areFitnessAppsRestricted = a4 == 1;
-  v5 = [(FIUIActivityDataProvider *)self _queue_activityDataModelFromCurrentActivitySummary];
-  [(FIUIActivityDataProvider *)self _broadcastCurrentModelUpdateToSubscribers:v5];
+  self->_areFitnessAppsRestricted = change == 1;
+  _queue_activityDataModelFromCurrentActivitySummary = [(FIUIActivityDataProvider *)self _queue_activityDataModelFromCurrentActivitySummary];
+  [(FIUIActivityDataProvider *)self _broadcastCurrentModelUpdateToSubscribers:_queue_activityDataModelFromCurrentActivitySummary];
 }
 
-- (void)_setCurrentDate:(id)a3
+- (void)_setCurrentDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__FIUIActivityDataProvider__setCurrentDate___block_invoke;
   v7[3] = &unk_1E878BFB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_sync(queue, v7);
 }
 

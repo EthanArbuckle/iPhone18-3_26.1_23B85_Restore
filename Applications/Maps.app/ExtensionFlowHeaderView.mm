@@ -1,5 +1,5 @@
 @interface ExtensionFlowHeaderView
-- (ExtensionFlowHeaderView)initWithFrame:(CGRect)a3;
+- (ExtensionFlowHeaderView)initWithFrame:(CGRect)frame;
 - (ExtensionFlowHeaderViewDelegate)delegate;
 - (NSString)detailText;
 - (NSString)titleText;
@@ -7,13 +7,13 @@
 - (UIImage)iconImage;
 - (void)configureDismissButton;
 - (void)configureImages;
-- (void)dismissButtonTapped:(id)a3;
+- (void)dismissButtonTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setBannerImage:(id)a3;
-- (void)setDetailText:(id)a3;
-- (void)setDismissButtonType:(unint64_t)a3;
-- (void)setIconImage:(id)a3;
-- (void)setTitleText:(id)a3;
+- (void)setBannerImage:(id)image;
+- (void)setDetailText:(id)text;
+- (void)setDismissButtonType:(unint64_t)type;
+- (void)setIconImage:(id)image;
+- (void)setTitleText:(id)text;
 - (void)setupConstraints;
 @end
 
@@ -26,50 +26,50 @@
   return WeakRetained;
 }
 
-- (void)setDismissButtonType:(unint64_t)a3
+- (void)setDismissButtonType:(unint64_t)type
 {
-  if (self->_dismissButtonType != a3)
+  if (self->_dismissButtonType != type)
   {
-    self->_dismissButtonType = a3;
+    self->_dismissButtonType = type;
     [(ExtensionFlowHeaderView *)self configureDismissButton];
   }
 }
 
 - (NSString)detailText
 {
-  v2 = [(ExtensionFlowHeaderView *)self detailLabel];
-  v3 = [v2 text];
+  detailLabel = [(ExtensionFlowHeaderView *)self detailLabel];
+  text = [detailLabel text];
 
-  return v3;
+  return text;
 }
 
 - (NSString)titleText
 {
-  v2 = [(ExtensionFlowHeaderView *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(ExtensionFlowHeaderView *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setDetailText:(id)a3
+- (void)setDetailText:(id)text
 {
-  v4 = a3;
-  v5 = [(ExtensionFlowHeaderView *)self detailLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  detailLabel = [(ExtensionFlowHeaderView *)self detailLabel];
+  [detailLabel setText:textCopy];
 
-  v6 = [v4 length];
+  v6 = [textCopy length];
   if (v6)
   {
-    v7 = [(ExtensionFlowHeaderView *)self titleVerticalConstraintDetailPresent];
-    [v7 setActive:1];
+    titleVerticalConstraintDetailPresent = [(ExtensionFlowHeaderView *)self titleVerticalConstraintDetailPresent];
+    [titleVerticalConstraintDetailPresent setActive:1];
 
     [(ExtensionFlowHeaderView *)self titleVerticalConstraintDetailNotPresent];
   }
 
   else
   {
-    v8 = [(ExtensionFlowHeaderView *)self titleVerticalConstraintDetailNotPresent];
-    [v8 setActive:1];
+    titleVerticalConstraintDetailNotPresent = [(ExtensionFlowHeaderView *)self titleVerticalConstraintDetailNotPresent];
+    [titleVerticalConstraintDetailNotPresent setActive:1];
 
     [(ExtensionFlowHeaderView *)self titleVerticalConstraintDetailPresent];
   }
@@ -77,51 +77,51 @@
   [v9 setActive:0];
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v4 = a3;
-  v5 = [(ExtensionFlowHeaderView *)self titleLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  titleLabel = [(ExtensionFlowHeaderView *)self titleLabel];
+  [titleLabel setText:textCopy];
 }
 
 - (UIImage)bannerImage
 {
-  v2 = [(ExtensionFlowHeaderView *)self bannerImageView];
-  v3 = [v2 image];
+  bannerImageView = [(ExtensionFlowHeaderView *)self bannerImageView];
+  image = [bannerImageView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setBannerImage:(id)a3
+- (void)setBannerImage:(id)image
 {
-  v4 = a3;
-  v5 = [(ExtensionFlowHeaderView *)self bannerImageView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  bannerImageView = [(ExtensionFlowHeaderView *)self bannerImageView];
+  [bannerImageView setImage:imageCopy];
 
   [(ExtensionFlowHeaderView *)self configureImages];
 }
 
 - (UIImage)iconImage
 {
-  v2 = [(ExtensionFlowHeaderView *)self iconImageView];
-  v3 = [v2 image];
+  iconImageView = [(ExtensionFlowHeaderView *)self iconImageView];
+  image = [iconImageView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v4 = a3;
-  v5 = [(ExtensionFlowHeaderView *)self iconImageView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  iconImageView = [(ExtensionFlowHeaderView *)self iconImageView];
+  [iconImageView setImage:imageCopy];
 
   [(ExtensionFlowHeaderView *)self configureImages];
 }
 
-- (void)dismissButtonTapped:(id)a3
+- (void)dismissButtonTapped:(id)tapped
 {
-  v4 = [(ExtensionFlowHeaderView *)self delegate];
-  [v4 extensionFlowHeaderViewDidTapDismiss:self];
+  delegate = [(ExtensionFlowHeaderView *)self delegate];
+  [delegate extensionFlowHeaderViewDidTapDismiss:self];
 }
 
 - (void)layoutSubviews
@@ -135,12 +135,12 @@
 
 - (void)configureImages
 {
-  v3 = [(ExtensionFlowHeaderView *)self bannerImageView];
-  v4 = [v3 image];
+  bannerImageView = [(ExtensionFlowHeaderView *)self bannerImageView];
+  image = [bannerImageView image];
 
-  v5 = [(ExtensionFlowHeaderView *)self bannerImageView];
-  v6 = v5;
-  if (v4)
+  bannerImageView2 = [(ExtensionFlowHeaderView *)self bannerImageView];
+  v6 = bannerImageView2;
+  if (image)
   {
     v7 = 1.0;
   }
@@ -150,7 +150,7 @@
     v7 = 0.0;
   }
 
-  if (v4)
+  if (image)
   {
     v8 = 0.0;
   }
@@ -160,20 +160,20 @@
     v8 = 1.0;
   }
 
-  [v5 setAlpha:v7];
+  [bannerImageView2 setAlpha:v7];
 
-  v9 = [(ExtensionFlowHeaderView *)self iconImageView];
-  [v9 setAlpha:v8];
+  iconImageView = [(ExtensionFlowHeaderView *)self iconImageView];
+  [iconImageView setAlpha:v8];
 
-  v10 = [(ExtensionFlowHeaderView *)self titleLabel];
-  [v10 setAlpha:v8];
+  titleLabel = [(ExtensionFlowHeaderView *)self titleLabel];
+  [titleLabel setAlpha:v8];
 
-  v11 = [(ExtensionFlowHeaderView *)self detailLabel];
-  [v11 setAlpha:v8];
+  detailLabel = [(ExtensionFlowHeaderView *)self detailLabel];
+  [detailLabel setAlpha:v8];
 
-  v15 = [(ExtensionFlowHeaderView *)self iconImageView];
-  v12 = [v15 image];
-  if (v12)
+  iconImageView2 = [(ExtensionFlowHeaderView *)self iconImageView];
+  image2 = [iconImageView2 image];
+  if (image2)
   {
     v13 = 15.0;
   }
@@ -183,14 +183,14 @@
     v13 = 0.0;
   }
 
-  v14 = [(ExtensionFlowHeaderView *)self iconImageViewLeadingConstraint];
-  [v14 setConstant:v13];
+  iconImageViewLeadingConstraint = [(ExtensionFlowHeaderView *)self iconImageViewLeadingConstraint];
+  [iconImageViewLeadingConstraint setConstant:v13];
 }
 
 - (void)configureDismissButton
 {
-  v3 = [(ExtensionFlowHeaderView *)self dismissButtonType];
-  if (v3 == 1)
+  dismissButtonType = [(ExtensionFlowHeaderView *)self dismissButtonType];
+  if (dismissButtonType == 1)
   {
     v9 = 0;
     v8 = 1;
@@ -198,155 +198,155 @@
 
   else
   {
-    if (v3)
+    if (dismissButtonType)
     {
       return;
     }
 
-    v4 = [(ExtensionFlowHeaderView *)self dismissButtonDone];
+    dismissButtonDone = [(ExtensionFlowHeaderView *)self dismissButtonDone];
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"extension_flow_done_key" value:@"localized string not found" table:0];
-    [v4 setTitle:v6 forState:0];
+    [dismissButtonDone setTitle:v6 forState:0];
 
-    v7 = [(ExtensionFlowHeaderView *)self dismissButtonDone];
-    [v7 setImage:0 forState:0];
+    dismissButtonDone2 = [(ExtensionFlowHeaderView *)self dismissButtonDone];
+    [dismissButtonDone2 setImage:0 forState:0];
 
     v8 = 0;
     v9 = 1;
   }
 
-  v10 = [(ExtensionFlowHeaderView *)self dismissButtonX];
-  [v10 setHidden:v9];
+  dismissButtonX = [(ExtensionFlowHeaderView *)self dismissButtonX];
+  [dismissButtonX setHidden:v9];
 
-  v11 = [(ExtensionFlowHeaderView *)self dismissButtonDone];
-  [v11 setHidden:v8];
+  dismissButtonDone3 = [(ExtensionFlowHeaderView *)self dismissButtonDone];
+  [dismissButtonDone3 setHidden:v8];
 }
 
 - (void)setupConstraints
 {
-  v3 = [(ExtensionFlowHeaderView *)self titleLabel];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [(ExtensionFlowHeaderView *)self titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(ExtensionFlowHeaderView *)self detailLabel];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  detailLabel = [(ExtensionFlowHeaderView *)self detailLabel];
+  [detailLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(ExtensionFlowHeaderView *)self dismissButtonX];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  dismissButtonX = [(ExtensionFlowHeaderView *)self dismissButtonX];
+  [dismissButtonX setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(ExtensionFlowHeaderView *)self dismissButtonDone];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  dismissButtonDone = [(ExtensionFlowHeaderView *)self dismissButtonDone];
+  [dismissButtonDone setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(ExtensionFlowHeaderView *)self iconImageView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  iconImageView = [(ExtensionFlowHeaderView *)self iconImageView];
+  [iconImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(ExtensionFlowHeaderView *)self bannerImageView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bannerImageView = [(ExtensionFlowHeaderView *)self bannerImageView];
+  [bannerImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(ExtensionFlowHeaderView *)self iconImageView];
-  v10 = [v9 leadingAnchor];
-  v11 = [(ExtensionFlowHeaderView *)self leadingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:15.0];
+  iconImageView2 = [(ExtensionFlowHeaderView *)self iconImageView];
+  leadingAnchor = [iconImageView2 leadingAnchor];
+  leadingAnchor2 = [(ExtensionFlowHeaderView *)self leadingAnchor];
+  v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:15.0];
   [(ExtensionFlowHeaderView *)self setIconImageViewLeadingConstraint:v12];
 
-  v13 = [(ExtensionFlowHeaderView *)self titleLabel];
-  v14 = [v13 lastBaselineAnchor];
-  v15 = [(ExtensionFlowHeaderView *)self topAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:28.5];
+  titleLabel2 = [(ExtensionFlowHeaderView *)self titleLabel];
+  lastBaselineAnchor = [titleLabel2 lastBaselineAnchor];
+  topAnchor = [(ExtensionFlowHeaderView *)self topAnchor];
+  v16 = [lastBaselineAnchor constraintEqualToAnchor:topAnchor constant:28.5];
   [(ExtensionFlowHeaderView *)self setTitleVerticalConstraintDetailPresent:v16];
 
-  v17 = [(ExtensionFlowHeaderView *)self titleLabel];
-  v18 = [v17 centerYAnchor];
-  v19 = [(ExtensionFlowHeaderView *)self centerYAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  titleLabel3 = [(ExtensionFlowHeaderView *)self titleLabel];
+  centerYAnchor = [titleLabel3 centerYAnchor];
+  centerYAnchor2 = [(ExtensionFlowHeaderView *)self centerYAnchor];
+  v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [(ExtensionFlowHeaderView *)self setTitleVerticalConstraintDetailNotPresent:v20];
 
-  v83 = [(ExtensionFlowHeaderView *)self iconImageViewLeadingConstraint];
-  v84[0] = v83;
-  v82 = [(ExtensionFlowHeaderView *)self iconImageView];
-  v81 = [v82 centerYAnchor];
-  v80 = [(ExtensionFlowHeaderView *)self centerYAnchor];
-  v79 = [v81 constraintEqualToAnchor:v80];
+  iconImageViewLeadingConstraint = [(ExtensionFlowHeaderView *)self iconImageViewLeadingConstraint];
+  v84[0] = iconImageViewLeadingConstraint;
+  iconImageView3 = [(ExtensionFlowHeaderView *)self iconImageView];
+  centerYAnchor3 = [iconImageView3 centerYAnchor];
+  centerYAnchor4 = [(ExtensionFlowHeaderView *)self centerYAnchor];
+  v79 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v84[1] = v79;
-  v78 = [(ExtensionFlowHeaderView *)self bannerImageView];
-  v76 = [v78 leadingAnchor];
-  v77 = [(ExtensionFlowHeaderView *)self iconImageView];
-  v75 = [v77 leadingAnchor];
-  v74 = [v76 constraintEqualToAnchor:v75];
+  bannerImageView2 = [(ExtensionFlowHeaderView *)self bannerImageView];
+  leadingAnchor3 = [bannerImageView2 leadingAnchor];
+  iconImageView4 = [(ExtensionFlowHeaderView *)self iconImageView];
+  leadingAnchor4 = [iconImageView4 leadingAnchor];
+  v74 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v84[2] = v74;
-  v73 = [(ExtensionFlowHeaderView *)self bannerImageView];
-  v72 = [v73 centerYAnchor];
-  v71 = [(ExtensionFlowHeaderView *)self centerYAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71];
+  bannerImageView3 = [(ExtensionFlowHeaderView *)self bannerImageView];
+  centerYAnchor5 = [bannerImageView3 centerYAnchor];
+  centerYAnchor6 = [(ExtensionFlowHeaderView *)self centerYAnchor];
+  v70 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   v84[3] = v70;
-  v69 = [(ExtensionFlowHeaderView *)self bannerImageView];
-  v68 = [v69 widthAnchor];
-  v67 = [v68 constraintLessThanOrEqualToConstant:125.0];
+  bannerImageView4 = [(ExtensionFlowHeaderView *)self bannerImageView];
+  widthAnchor = [bannerImageView4 widthAnchor];
+  v67 = [widthAnchor constraintLessThanOrEqualToConstant:125.0];
   v84[4] = v67;
-  v66 = [(ExtensionFlowHeaderView *)self bannerImageView];
-  v65 = [v66 heightAnchor];
-  v64 = [v65 constraintLessThanOrEqualToConstant:46.0];
+  bannerImageView5 = [(ExtensionFlowHeaderView *)self bannerImageView];
+  heightAnchor = [bannerImageView5 heightAnchor];
+  v64 = [heightAnchor constraintLessThanOrEqualToConstant:46.0];
   v84[5] = v64;
-  v63 = [(ExtensionFlowHeaderView *)self titleLabel];
-  v61 = [v63 leadingAnchor];
-  v62 = [(ExtensionFlowHeaderView *)self iconImageView];
-  v60 = [v62 trailingAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60 constant:15.0];
+  titleLabel4 = [(ExtensionFlowHeaderView *)self titleLabel];
+  leadingAnchor5 = [titleLabel4 leadingAnchor];
+  iconImageView5 = [(ExtensionFlowHeaderView *)self iconImageView];
+  trailingAnchor = [iconImageView5 trailingAnchor];
+  v59 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor constant:15.0];
   v84[6] = v59;
-  v58 = [(ExtensionFlowHeaderView *)self titleLabel];
-  v56 = [v58 trailingAnchor];
-  v57 = [(ExtensionFlowHeaderView *)self dismissButtonX];
-  v55 = [v57 leadingAnchor];
-  v54 = [v56 constraintLessThanOrEqualToAnchor:v55 constant:-15.0];
+  titleLabel5 = [(ExtensionFlowHeaderView *)self titleLabel];
+  trailingAnchor2 = [titleLabel5 trailingAnchor];
+  dismissButtonX2 = [(ExtensionFlowHeaderView *)self dismissButtonX];
+  leadingAnchor6 = [dismissButtonX2 leadingAnchor];
+  v54 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:leadingAnchor6 constant:-15.0];
   v84[7] = v54;
-  v53 = [(ExtensionFlowHeaderView *)self titleVerticalConstraintDetailPresent];
-  v84[8] = v53;
-  v52 = [(ExtensionFlowHeaderView *)self detailLabel];
-  v50 = [v52 leadingAnchor];
-  v51 = [(ExtensionFlowHeaderView *)self titleLabel];
-  v49 = [v51 leadingAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  titleVerticalConstraintDetailPresent = [(ExtensionFlowHeaderView *)self titleVerticalConstraintDetailPresent];
+  v84[8] = titleVerticalConstraintDetailPresent;
+  detailLabel2 = [(ExtensionFlowHeaderView *)self detailLabel];
+  leadingAnchor7 = [detailLabel2 leadingAnchor];
+  titleLabel6 = [(ExtensionFlowHeaderView *)self titleLabel];
+  leadingAnchor8 = [titleLabel6 leadingAnchor];
+  v48 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v84[9] = v48;
-  v47 = [(ExtensionFlowHeaderView *)self detailLabel];
-  v45 = [v47 trailingAnchor];
-  v46 = [(ExtensionFlowHeaderView *)self titleLabel];
-  v44 = [v46 trailingAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  detailLabel3 = [(ExtensionFlowHeaderView *)self detailLabel];
+  trailingAnchor3 = [detailLabel3 trailingAnchor];
+  titleLabel7 = [(ExtensionFlowHeaderView *)self titleLabel];
+  trailingAnchor4 = [titleLabel7 trailingAnchor];
+  v43 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v84[10] = v43;
-  v42 = [(ExtensionFlowHeaderView *)self detailLabel];
-  v40 = [v42 lastBaselineAnchor];
-  v41 = [(ExtensionFlowHeaderView *)self titleLabel];
-  v39 = [v41 lastBaselineAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39 constant:17.5];
+  detailLabel4 = [(ExtensionFlowHeaderView *)self detailLabel];
+  lastBaselineAnchor2 = [detailLabel4 lastBaselineAnchor];
+  titleLabel8 = [(ExtensionFlowHeaderView *)self titleLabel];
+  lastBaselineAnchor3 = [titleLabel8 lastBaselineAnchor];
+  v38 = [lastBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor3 constant:17.5];
   v84[11] = v38;
-  v37 = [(ExtensionFlowHeaderView *)self dismissButtonX];
-  v36 = [v37 centerYAnchor];
-  v35 = [(ExtensionFlowHeaderView *)self centerYAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  dismissButtonX3 = [(ExtensionFlowHeaderView *)self dismissButtonX];
+  centerYAnchor7 = [dismissButtonX3 centerYAnchor];
+  centerYAnchor8 = [(ExtensionFlowHeaderView *)self centerYAnchor];
+  v34 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
   v84[12] = v34;
-  v33 = [(ExtensionFlowHeaderView *)self dismissButtonX];
-  v32 = [v33 trailingAnchor];
-  v31 = [(ExtensionFlowHeaderView *)self trailingAnchor];
-  v21 = [v32 constraintEqualToAnchor:v31 constant:-15.0];
+  dismissButtonX4 = [(ExtensionFlowHeaderView *)self dismissButtonX];
+  trailingAnchor5 = [dismissButtonX4 trailingAnchor];
+  trailingAnchor6 = [(ExtensionFlowHeaderView *)self trailingAnchor];
+  v21 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-15.0];
   v84[13] = v21;
-  v22 = [(ExtensionFlowHeaderView *)self dismissButtonDone];
-  v23 = [v22 centerYAnchor];
-  v24 = [(ExtensionFlowHeaderView *)self centerYAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  dismissButtonDone2 = [(ExtensionFlowHeaderView *)self dismissButtonDone];
+  centerYAnchor9 = [dismissButtonDone2 centerYAnchor];
+  centerYAnchor10 = [(ExtensionFlowHeaderView *)self centerYAnchor];
+  v25 = [centerYAnchor9 constraintEqualToAnchor:centerYAnchor10];
   v84[14] = v25;
-  v26 = [(ExtensionFlowHeaderView *)self dismissButtonDone];
-  v27 = [v26 trailingAnchor];
-  v28 = [(ExtensionFlowHeaderView *)self trailingAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28 constant:-15.0];
+  dismissButtonDone3 = [(ExtensionFlowHeaderView *)self dismissButtonDone];
+  trailingAnchor7 = [dismissButtonDone3 trailingAnchor];
+  trailingAnchor8 = [(ExtensionFlowHeaderView *)self trailingAnchor];
+  v29 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-15.0];
   v84[15] = v29;
   v30 = [NSArray arrayWithObjects:v84 count:16];
   [NSLayoutConstraint activateConstraints:v30];
 }
 
-- (ExtensionFlowHeaderView)initWithFrame:(CGRect)a3
+- (ExtensionFlowHeaderView)initWithFrame:(CGRect)frame
 {
   v42.receiver = self;
   v42.super_class = ExtensionFlowHeaderView;
-  v3 = [(ExtensionFlowHeaderView *)&v42 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ExtensionFlowHeaderView *)&v42 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -423,29 +423,29 @@
       while (v24);
     }
 
-    v29 = [(ExtensionFlowHeaderView *)v4 dismissButtonDone];
-    [v29 addTarget:v4 action:"dismissButtonTapped:" forControlEvents:64];
+    dismissButtonDone = [(ExtensionFlowHeaderView *)v4 dismissButtonDone];
+    [dismissButtonDone addTarget:v4 action:"dismissButtonTapped:" forControlEvents:64];
 
-    v30 = [(ExtensionFlowHeaderView *)v4 dismissButtonX];
-    [v30 addTarget:v4 action:"dismissButtonTapped:" forControlEvents:64];
+    dismissButtonX = [(ExtensionFlowHeaderView *)v4 dismissButtonX];
+    [dismissButtonX addTarget:v4 action:"dismissButtonTapped:" forControlEvents:64];
 
-    v31 = [(ExtensionFlowHeaderView *)v4 bannerImageView];
-    [(ExtensionFlowHeaderView *)v4 addSubview:v31];
+    bannerImageView = [(ExtensionFlowHeaderView *)v4 bannerImageView];
+    [(ExtensionFlowHeaderView *)v4 addSubview:bannerImageView];
 
-    v32 = [(ExtensionFlowHeaderView *)v4 iconImageView];
-    [(ExtensionFlowHeaderView *)v4 addSubview:v32];
+    iconImageView = [(ExtensionFlowHeaderView *)v4 iconImageView];
+    [(ExtensionFlowHeaderView *)v4 addSubview:iconImageView];
 
-    v33 = [(ExtensionFlowHeaderView *)v4 titleLabel];
-    [(ExtensionFlowHeaderView *)v4 addSubview:v33];
+    titleLabel = [(ExtensionFlowHeaderView *)v4 titleLabel];
+    [(ExtensionFlowHeaderView *)v4 addSubview:titleLabel];
 
-    v34 = [(ExtensionFlowHeaderView *)v4 detailLabel];
-    [(ExtensionFlowHeaderView *)v4 addSubview:v34];
+    detailLabel = [(ExtensionFlowHeaderView *)v4 detailLabel];
+    [(ExtensionFlowHeaderView *)v4 addSubview:detailLabel];
 
-    v35 = [(ExtensionFlowHeaderView *)v4 dismissButtonX];
-    [(ExtensionFlowHeaderView *)v4 addSubview:v35];
+    dismissButtonX2 = [(ExtensionFlowHeaderView *)v4 dismissButtonX];
+    [(ExtensionFlowHeaderView *)v4 addSubview:dismissButtonX2];
 
-    v36 = [(ExtensionFlowHeaderView *)v4 dismissButtonDone];
-    [(ExtensionFlowHeaderView *)v4 addSubview:v36];
+    dismissButtonDone2 = [(ExtensionFlowHeaderView *)v4 dismissButtonDone];
+    [(ExtensionFlowHeaderView *)v4 addSubview:dismissButtonDone2];
 
     [(ExtensionFlowHeaderView *)v4 setupConstraints];
     [(ExtensionFlowHeaderView *)v4 configureDismissButton];

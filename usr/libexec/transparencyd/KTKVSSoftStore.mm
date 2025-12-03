@@ -2,20 +2,20 @@
 + (id)sharedStore;
 - (BOOL)storeReady;
 - (KTKVSProtocol)store;
-- (KTKVSSoftStore)initWithStore:(id)a3;
+- (KTKVSSoftStore)initWithStore:(id)store;
 - (NSString)accountMetricID;
-- (id)objectForKey:(id)a3;
-- (void)forceSync:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setStore:(id)a3;
+- (id)objectForKey:(id)key;
+- (void)forceSync:(id)sync;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setStore:(id)store;
 @end
 
 @implementation KTKVSSoftStore
 
-- (KTKVSSoftStore)initWithStore:(id)a3
+- (KTKVSSoftStore)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v10.receiver = self;
   v10.super_class = KTKVSSoftStore;
   v6 = [(KTKVSSoftStore *)&v10 init];
@@ -23,7 +23,7 @@
   if (v6)
   {
     [(KTKVSSoftStore *)v6 setLock:0];
-    objc_storeStrong(&v7->_internalStore, a3);
+    objc_storeStrong(&v7->_internalStore, store);
     v8 = v7;
   }
 
@@ -61,32 +61,32 @@
   return v3;
 }
 
-- (void)setStore:(id)a3
+- (void)setStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   os_unfair_lock_lock(&self->_lock);
   internalStore = self->_internalStore;
-  self->_internalStore = v4;
+  self->_internalStore = storeCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (NSString)accountMetricID
 {
-  v2 = [(KTKVSSoftStore *)self store];
-  v3 = [v2 accountMetricID];
+  store = [(KTKVSSoftStore *)self store];
+  accountMetricID = [store accountMetricID];
 
-  return v3;
+  return accountMetricID;
 }
 
-- (void)forceSync:(id)a3
+- (void)forceSync:(id)sync
 {
-  v4 = a3;
-  v5 = [(KTKVSSoftStore *)self store];
-  v6 = v5;
-  if (v5)
+  syncCopy = sync;
+  store = [(KTKVSSoftStore *)self store];
+  v6 = store;
+  if (store)
   {
-    [v5 forceSync:v4];
+    [store forceSync:syncCopy];
   }
 
   else
@@ -104,40 +104,40 @@
     }
 
     v8 = [TransparencyError errorWithDomain:kTransparencyErrorAccount code:-328 description:@"no KVS store yet"];
-    v4[2](v4, v8);
+    syncCopy[2](syncCopy, v8);
   }
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(KTKVSSoftStore *)self store];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  store = [(KTKVSSoftStore *)self store];
+  v6 = [store objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(KTKVSSoftStore *)self store];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  store = [(KTKVSSoftStore *)self store];
+  [store removeObjectForKey:keyCopy];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KTKVSSoftStore *)self store];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  store = [(KTKVSSoftStore *)self store];
+  [store setObject:objectCopy forKey:keyCopy];
 }
 
 - (BOOL)storeReady
 {
-  v2 = [(KTKVSSoftStore *)self store];
-  v3 = [v2 storeReady];
+  store = [(KTKVSSoftStore *)self store];
+  storeReady = [store storeReady];
 
-  return v3;
+  return storeReady;
 }
 
 @end

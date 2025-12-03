@@ -1,24 +1,24 @@
 @interface ContactAttributeResolutionResult
-+ (id)confirmationRequiredWithContactAttributeToConfirm:(id)a3;
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3;
-+ (id)disambiguationWithContactAttributesToDisambiguate:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)successWithResolvedContactAttribute:(id)a3;
-+ (id)successWithResolvedObject:(id)a3;
++ (id)confirmationRequiredWithContactAttributeToConfirm:(id)confirm;
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm;
++ (id)disambiguationWithContactAttributesToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedContactAttribute:(id)attribute;
++ (id)successWithResolvedObject:(id)object;
 @end
 
 @implementation ContactAttributeResolutionResult
 
-+ (id)successWithResolvedContactAttribute:(id)a3
++ (id)successWithResolvedContactAttribute:(id)attribute
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static ContactAttributeResolutionResult.success(with:)(v4);
+  attributeCopy = attribute;
+  v5 = static ContactAttributeResolutionResult.success(with:)(attributeCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithContactAttributesToDisambiguate:(id)a3
++ (id)disambiguationWithContactAttributesToDisambiguate:(id)disambiguate
 {
   type metadata accessor for ContactAttribute();
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -28,23 +28,23 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithContactAttributeToConfirm:(id)a3
++ (id)confirmationRequiredWithContactAttributeToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static ContactAttributeResolutionResult.confirmationRequired(with:)(a3);
+  confirmCopy = confirm;
+  v5 = static ContactAttributeResolutionResult.confirmationRequired(with:)(confirm);
 
   return v5;
 }
 
-+ (id)successWithResolvedObject:(id)a3
++ (id)successWithResolvedObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   static ContactAttributeResolutionResult.success(with:)();
   return static ContactAttributeResolutionResult.disambiguation(with:)();
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for INObject();
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -52,9 +52,9 @@
   return static ContactAttributeResolutionResult.confirmationRequired(with:)();
 }
 
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm
 {
-  v3 = a3;
+  confirmCopy = confirm;
   static ContactAttributeResolutionResult.confirmationRequired(with:)();
   return ContactAttributeResolutionResult.__allocating_init(JSONDictionary:intent:)();
 }

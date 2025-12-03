@@ -1,23 +1,23 @@
 @interface CUIMutableCatalog
-- (CUIMutableCatalog)initWithName:(id)a3;
-- (id)_baseKeyForName:(id)a3;
+- (CUIMutableCatalog)initWithName:(id)name;
+- (id)_baseKeyForName:(id)name;
 - (void)dealloc;
-- (void)insertCGImage:(CGImage *)a3 name:(id)a4 scale:(double)a5 idiom:(int64_t)a6 subtype:(int64_t)a7;
-- (void)insertCGImage:(CGImage *)a3 withName:(id)a4 andDescription:(id)a5;
-- (void)removeImageNamed:(id)a3 scale:(double)a4 idiom:(int64_t)a5 subtype:(int64_t)a6;
-- (void)removeImageNamed:(id)a3 withDescription:(id)a4;
-- (void)removeImagesNamed:(id)a3;
+- (void)insertCGImage:(CGImage *)image name:(id)name scale:(double)scale idiom:(int64_t)idiom subtype:(int64_t)subtype;
+- (void)insertCGImage:(CGImage *)image withName:(id)name andDescription:(id)description;
+- (void)removeImageNamed:(id)named scale:(double)scale idiom:(int64_t)idiom subtype:(int64_t)subtype;
+- (void)removeImageNamed:(id)named withDescription:(id)description;
+- (void)removeImagesNamed:(id)named;
 @end
 
 @implementation CUIMutableCatalog
 
-- (CUIMutableCatalog)initWithName:(id)a3
+- (CUIMutableCatalog)initWithName:(id)name
 {
   v12.receiver = self;
   v12.super_class = CUIMutableCatalog;
   v13 = 0;
   v4 = [(CUICatalog *)&v12 init];
-  [(CUICatalog *)v4 setStorageRef:[CUIThemeFacet themeNamed:a3 forBundleIdentifier:kCUIMutableStructureThemeStoreBundlePrefix error:&v13]];
+  [(CUICatalog *)v4 setStorageRef:[CUIThemeFacet themeNamed:name forBundleIdentifier:kCUIMutableStructureThemeStoreBundlePrefix error:&v13]];
   if (![(CUICatalog *)v4 storageRef])
   {
     _CUILog(4, "[CUIMutableCatalog init] got error: %@", v5, v6, v7, v8, v9, v10, v13);
@@ -36,7 +36,7 @@
   [(CUICatalog *)&v3 dealloc];
 }
 
-- (id)_baseKeyForName:(id)a3
+- (id)_baseKeyForName:(id)name
 {
   result = [-[CUICatalog _themeStore](self "_themeStore")];
   if (result)
@@ -49,27 +49,27 @@
   return result;
 }
 
-- (void)insertCGImage:(CGImage *)a3 name:(id)a4 scale:(double)a5 idiom:(int64_t)a6 subtype:(int64_t)a7
+- (void)insertCGImage:(CGImage *)image name:(id)name scale:(double)scale idiom:(int64_t)idiom subtype:(int64_t)subtype
 {
   v13 = objc_alloc_init(CUINamedImageDescription);
-  [(CUINamedImageDescription *)v13 setScale:a5];
-  [(CUINamedImageDescription *)v13 setIdiom:a6];
-  [(CUINamedImageDescription *)v13 setSubtype:a7];
-  [(CUIMutableCatalog *)self insertCGImage:a3 withName:a4 andDescription:v13];
+  [(CUINamedImageDescription *)v13 setScale:scale];
+  [(CUINamedImageDescription *)v13 setIdiom:idiom];
+  [(CUINamedImageDescription *)v13 setSubtype:subtype];
+  [(CUIMutableCatalog *)self insertCGImage:image withName:name andDescription:v13];
 }
 
-- (void)removeImageNamed:(id)a3 scale:(double)a4 idiom:(int64_t)a5 subtype:(int64_t)a6
+- (void)removeImageNamed:(id)named scale:(double)scale idiom:(int64_t)idiom subtype:(int64_t)subtype
 {
   v11 = objc_alloc_init(CUINamedImageDescription);
-  [(CUINamedImageDescription *)v11 setScale:a4];
-  [(CUINamedImageDescription *)v11 setIdiom:a5];
-  [(CUINamedImageDescription *)v11 setSubtype:a6];
-  [(CUIMutableCatalog *)self removeImageNamed:a3 withDescription:v11];
+  [(CUINamedImageDescription *)v11 setScale:scale];
+  [(CUINamedImageDescription *)v11 setIdiom:idiom];
+  [(CUINamedImageDescription *)v11 setSubtype:subtype];
+  [(CUIMutableCatalog *)self removeImageNamed:named withDescription:v11];
 }
 
-- (void)insertCGImage:(CGImage *)a3 withName:(id)a4 andDescription:(id)a5
+- (void)insertCGImage:(CGImage *)image withName:(id)name andDescription:(id)description
 {
-  v10 = [(CUICatalog *)self _themeStore];
+  _themeStore = [(CUICatalog *)self _themeStore];
   if ((*(self + 88) & 1) == 0)
   {
     *(self + 88) |= 1u;
@@ -87,13 +87,13 @@
   if ((*(self + 88) & 2) != 0)
   {
 
-    [v10 insertCGImage:a3 withName:a4 andDescription:a5];
+    [_themeStore insertCGImage:image withName:name andDescription:description];
   }
 }
 
-- (void)removeImageNamed:(id)a3 withDescription:(id)a4
+- (void)removeImageNamed:(id)named withDescription:(id)description
 {
-  v8 = [(CUICatalog *)self _themeStore];
+  _themeStore = [(CUICatalog *)self _themeStore];
   if ((*(self + 88) & 1) == 0)
   {
     *(self + 88) |= 1u;
@@ -111,13 +111,13 @@
   if ((*(self + 88) & 2) != 0)
   {
 
-    [v8 removeImageNamed:a3 withDescription:a4];
+    [_themeStore removeImageNamed:named withDescription:description];
   }
 }
 
-- (void)removeImagesNamed:(id)a3
+- (void)removeImagesNamed:(id)named
 {
-  v6 = [(CUICatalog *)self _themeStore];
+  _themeStore = [(CUICatalog *)self _themeStore];
   if ((*(self + 88) & 1) == 0)
   {
     *(self + 88) |= 1u;
@@ -135,7 +135,7 @@
   if ((*(self + 88) & 2) != 0)
   {
 
-    [v6 removeImagesNamed:a3];
+    [_themeStore removeImagesNamed:named];
   }
 }
 

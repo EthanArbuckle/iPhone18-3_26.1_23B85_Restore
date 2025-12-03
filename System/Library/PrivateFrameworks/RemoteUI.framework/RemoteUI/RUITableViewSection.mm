@@ -8,26 +8,26 @@
 - (RUITableView)tableElement;
 - (RUITableViewHeaderFooterView)containerizedFooterView;
 - (RUITableViewHeaderFooterView)containerizedHeaderView;
-- (RUITableViewSection)initWithAttributes:(id)a3 parent:(id)a4;
+- (RUITableViewSection)initWithAttributes:(id)attributes parent:(id)parent;
 - (RemoteUITableFooter)footerView;
-- (id)colorFromAttributeString:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)colorFromAttributeString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)staticFunctions;
 - (id)staticValues;
-- (id)subElementWithID:(id)a3;
-- (id)subElementsWithName:(id)a3;
-- (id)viewForElementIdentifier:(id)a3;
-- (void)footerView:(id)a3 activatedLinkWithURL:(id)a4;
-- (void)headerView:(id)a3 activatedLinkWithURL:(id)a4;
-- (void)headerViewDidChange:(id)a3;
-- (void)populatePostbackDictionary:(id)a3;
+- (id)subElementWithID:(id)d;
+- (id)subElementsWithName:(id)name;
+- (id)viewForElementIdentifier:(id)identifier;
+- (void)footerView:(id)view activatedLinkWithURL:(id)l;
+- (void)headerView:(id)view activatedLinkWithURL:(id)l;
+- (void)headerViewDidChange:(id)change;
+- (void)populatePostbackDictionary:(id)dictionary;
 - (void)reportInternalRenderEvent;
-- (void)setAttributes:(id)a3;
-- (void)setDrawTopSeparator:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setImageAlignment:(unint64_t)a3;
-- (void)setImageSize:(CGSize)a3;
-- (void)tappedShowAllRowWithTable:(id)a3;
+- (void)setAttributes:(id)attributes;
+- (void)setDrawTopSeparator:(BOOL)separator;
+- (void)setImage:(id)image;
+- (void)setImageAlignment:(unint64_t)alignment;
+- (void)setImageSize:(CGSize)size;
+- (void)tappedShowAllRowWithTable:(id)table;
 @end
 
 @implementation RUITableViewSection
@@ -80,23 +80,23 @@
   return v6;
 }
 
-- (RUITableViewSection)initWithAttributes:(id)a3 parent:(id)a4
+- (RUITableViewSection)initWithAttributes:(id)attributes parent:(id)parent
 {
   v12.receiver = self;
   v12.super_class = RUITableViewSection;
-  v4 = [(RUIElement *)&v12 initWithAttributes:a3 parent:a4];
+  v4 = [(RUIElement *)&v12 initWithAttributes:attributes parent:parent];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     rows = v4->_rows;
     v4->_rows = v5;
 
-    v7 = [(RUIElement *)v4 style];
+    style = [(RUIElement *)v4 style];
 
-    if (v7)
+    if (style)
     {
-      v8 = [(RUIElement *)v4 style];
-      [v8 sectionHeaderHeight];
+      style2 = [(RUIElement *)v4 style];
+      [style2 sectionHeaderHeight];
       v4->_headerHeight = v9;
 
       v10 = *MEMORY[0x277D76F30];
@@ -114,55 +114,55 @@
   return v4;
 }
 
-- (void)setDrawTopSeparator:(BOOL)a3
+- (void)setDrawTopSeparator:(BOOL)separator
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithBool:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithBool:separator];
   drawsTopSeparator = self->_drawsTopSeparator;
   self->_drawsTopSeparator = v4;
 
   MEMORY[0x2821F96F8](v4, drawsTopSeparator);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(RUIElement *)self attributes];
+  attributes = [(RUIElement *)self attributes];
   v5 = [RUITableViewSection alloc];
-  v6 = [(RUIElement *)self attributes];
-  v7 = [(RUIElement *)self parent];
-  v8 = [(RUITableViewSection *)v5 initWithAttributes:v6 parent:v7];
+  attributes2 = [(RUIElement *)self attributes];
+  parent = [(RUIElement *)self parent];
+  v8 = [(RUITableViewSection *)v5 initWithAttributes:attributes2 parent:parent];
 
-  [(RUITableViewSection *)v8 setAttributes:v4];
-  v9 = [(RUIElement *)self style];
-  [(RUIElement *)v8 setStyle:v9];
+  [(RUITableViewSection *)v8 setAttributes:attributes];
+  style = [(RUIElement *)self style];
+  [(RUIElement *)v8 setStyle:style];
 
-  v10 = [(RUITableViewSection *)self tableElement];
-  [(RUITableViewSection *)v8 setTableElement:v10];
+  tableElement = [(RUITableViewSection *)self tableElement];
+  [(RUITableViewSection *)v8 setTableElement:tableElement];
 
-  v11 = [v4 objectForKeyedSubscript:@"header"];
+  v11 = [attributes objectForKeyedSubscript:@"header"];
 
   if (v11)
   {
     v12 = [(RUIElement *)[RUIHeaderElement alloc] initWithAttributes:0 parent:v8];
-    v13 = [v4 objectForKeyedSubscript:@"header"];
+    v13 = [attributes objectForKeyedSubscript:@"header"];
     [(RUIElement *)v12 setBody:v13];
 
     [(RUITableViewSection *)v8 setHeader:v12];
-    v14 = [v4 objectForKeyedSubscript:@"headerHeight"];
+    v14 = [attributes objectForKeyedSubscript:@"headerHeight"];
 
     if (v14)
     {
-      v15 = [v4 objectForKeyedSubscript:@"headerHeight"];
+      v15 = [attributes objectForKeyedSubscript:@"headerHeight"];
       [v15 floatValue];
       [(RUITableViewSection *)v8 setHeaderHeight:v16];
     }
   }
 
-  v17 = [v4 objectForKeyedSubscript:@"footer"];
+  v17 = [attributes objectForKeyedSubscript:@"footer"];
 
   if (v17)
   {
     v18 = [(RUIElement *)[RUIFooterElement alloc] initWithAttributes:0 parent:v8];
-    v19 = [v4 objectForKeyedSubscript:@"footer"];
+    v19 = [attributes objectForKeyedSubscript:@"footer"];
     [(RUIElement *)v18 setBody:v19];
 
     [(RUITableViewSection *)v8 setFooter:v18];
@@ -190,22 +190,22 @@
       self->_showAllRow = v8;
 
       v10 = self->_showAllRow;
-      v11 = [(RUIElement *)self style];
-      [(RUIElement *)v10 setStyle:v11];
+      style = [(RUIElement *)self style];
+      [(RUIElement *)v10 setStyle:style];
 
-      v12 = [(RUITableViewRow *)self->_showAllRow tableCell];
-      v13 = [v12 ruiTextLabel];
-      v14 = [(RUIElement *)self style];
-      v15 = [v14 buttonRowTextColor];
-      [v13 setTextColor:v15];
+      tableCell = [(RUITableViewRow *)self->_showAllRow tableCell];
+      ruiTextLabel = [tableCell ruiTextLabel];
+      style2 = [(RUIElement *)self style];
+      buttonRowTextColor = [style2 buttonRowTextColor];
+      [ruiTextLabel setTextColor:buttonRowTextColor];
 
-      v16 = [(RUITableViewRow *)self->_showAllRow tableCell];
-      [v16 setIndentationLevel:1];
+      tableCell2 = [(RUITableViewRow *)self->_showAllRow tableCell];
+      [tableCell2 setIndentationLevel:1];
 
-      v17 = [(RUITableViewRow *)self->_showAllRow tableCell];
-      v18 = [(RUIElement *)self attributes];
-      v19 = [v18 objectForKey:@"showAllIndent"];
-      [v17 setIndentationWidth:{objc_msgSend(v19, "integerValue")}];
+      tableCell3 = [(RUITableViewRow *)self->_showAllRow tableCell];
+      attributes = [(RUIElement *)self attributes];
+      v19 = [attributes objectForKey:@"showAllIndent"];
+      [tableCell3 setIndentationWidth:{objc_msgSend(v19, "integerValue")}];
     }
 
     v20 = [(NSMutableArray *)self->_rows subarrayWithRange:0, self->_disclosureLimit];
@@ -222,12 +222,12 @@
   return v21;
 }
 
-- (void)tappedShowAllRowWithTable:(id)a3
+- (void)tappedShowAllRowWithTable:(id)table
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RUITableViewRow *)self->_showAllRow tableCell];
-  v6 = [v4 indexPathForCell:v5];
+  tableCopy = table;
+  tableCell = [(RUITableViewRow *)self->_showAllRow tableCell];
+  v6 = [tableCopy indexPathForCell:tableCell];
 
   v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSMutableArray count](self->_rows, "count") - self->_disclosureLimit}];
   for (i = self->_disclosureLimit; i < [(NSMutableArray *)self->_rows count]; ++i)
@@ -240,32 +240,32 @@
   showAllRow = self->_showAllRow;
   self->_showAllRow = 0;
 
-  [v4 beginUpdates];
+  [tableCopy beginUpdates];
   v12[0] = v6;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  [v4 deleteRowsAtIndexPaths:v11 withRowAnimation:0];
+  [tableCopy deleteRowsAtIndexPaths:v11 withRowAnimation:0];
 
-  [v4 insertRowsAtIndexPaths:v7 withRowAnimation:0];
-  [v4 endUpdates];
+  [tableCopy insertRowsAtIndexPaths:v7 withRowAnimation:0];
+  [tableCopy endUpdates];
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = RUITableViewSection;
-  v4 = a3;
-  [(RUIElement *)&v7 setAttributes:v4];
-  v5 = [v4 objectForKey:{@"disclosureLimit", v7.receiver, v7.super_class}];
+  attributesCopy = attributes;
+  [(RUIElement *)&v7 setAttributes:attributesCopy];
+  v5 = [attributesCopy objectForKey:{@"disclosureLimit", v7.receiver, v7.super_class}];
   self->_disclosureLimit = [v5 integerValue];
 
-  v6 = [v4 objectForKey:@"hideTopSeparator"];
+  v6 = [attributesCopy objectForKey:@"hideTopSeparator"];
 
   -[RUITableViewSection setDrawTopSeparator:](self, "setDrawTopSeparator:", [v6 BOOLValue] ^ 1);
 }
 
-- (id)colorFromAttributeString:(id)a3
+- (id)colorFromAttributeString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = [MEMORY[0x277D75348] _remoteUI_colorWithString:?];
   }
@@ -280,12 +280,12 @@
 
 - (Class)_customHeaderClass
 {
-  v3 = [(RUIElement *)self parent];
+  parent = [(RUIElement *)self parent];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 objectModel];
-    v5 = [v4 customHeaderClassForSection:self];
+    objectModel = [parent objectModel];
+    v5 = [objectModel customHeaderClassForSection:self];
 
     if (v5)
     {
@@ -296,7 +296,7 @@ LABEL_11:
     }
   }
 
-  v7 = [(RUITableViewSection *)self header];
+  header = [(RUITableViewSection *)self header];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -307,15 +307,15 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v9 = [(RUIElement *)self attributes];
-  v10 = [v9 objectForKey:@"image"];
-  if (v10)
+  attributes = [(RUIElement *)self attributes];
+  attributes2 = [attributes objectForKey:@"image"];
+  if (attributes2)
   {
     goto LABEL_8;
   }
 
-  v10 = [(RUIElement *)self attributes];
-  v11 = [v10 objectForKey:@"image2x"];
+  attributes2 = [(RUIElement *)self attributes];
+  v11 = [attributes2 objectForKey:@"image2x"];
   if (v11)
   {
 
@@ -325,24 +325,24 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v14 = [(RUIElement *)self attributes];
-  v15 = [v14 objectForKey:@"image3x"];
+  attributes3 = [(RUIElement *)self attributes];
+  v15 = [attributes3 objectForKey:@"image3x"];
 
   if (v15)
   {
     goto LABEL_10;
   }
 
-  v16 = [(RUITableViewSection *)self detailHeader];
-  if (v16 || ([(RUITableViewSection *)self subHeader], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+  detailHeader = [(RUITableViewSection *)self detailHeader];
+  if (detailHeader || ([(RUITableViewSection *)self subHeader], (detailHeader = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v9 = v16;
+    attributes = detailHeader;
     goto LABEL_9;
   }
 
-  v17 = [(RUITableViewSection *)self header];
-  v18 = [v17 attributes];
-  v19 = [v18 objectForKeyedSubscript:@"color"];
+  header2 = [(RUITableViewSection *)self header];
+  attributes4 = [header2 attributes];
+  v19 = [attributes4 objectForKeyedSubscript:@"color"];
 
   if (v19)
   {
@@ -357,8 +357,8 @@ LABEL_12:
 
 - (RUITableViewHeaderFooterView)containerizedHeaderView
 {
-  v3 = [(RUITableViewSection *)self headerView];
-  v4 = v3;
+  headerView = [(RUITableViewSection *)self headerView];
+  v4 = headerView;
   containerizedHeaderView = self->_containerizedHeaderView;
   if (containerizedHeaderView)
   {
@@ -367,7 +367,7 @@ LABEL_12:
 
   else
   {
-    v6 = v3 == 0;
+    v6 = headerView == 0;
   }
 
   if (!v6)
@@ -391,31 +391,31 @@ LABEL_12:
   if (!headerView)
   {
     v4 = objc_alloc([(RUITableViewSection *)self _customHeaderClass]);
-    v5 = [(RUITableViewSection *)self header];
-    v6 = [v5 attributes];
-    v7 = [v4 initWithAttributes:v6];
+    header = [(RUITableViewSection *)self header];
+    attributes = [header attributes];
+    v7 = [v4 initWithAttributes:attributes];
     v8 = self->_headerView;
     self->_headerView = v7;
 
-    v9 = [(RUITableViewSection *)self header];
-    v10 = [v9 attributes];
-    v11 = [v10 objectForKeyedSubscript:@"largeFont"];
+    header2 = [(RUITableViewSection *)self header];
+    attributes2 = [header2 attributes];
+    v11 = [attributes2 objectForKeyedSubscript:@"largeFont"];
 
     if (!v11)
     {
       v12 = +[RUIPlatform isSolariumEnabled];
       header = self->_header;
-      v14 = [(RUIElement *)header body];
-      v15 = v14;
+      body = [(RUIElement *)header body];
+      v15 = body;
       if (v12)
       {
-        [(RUIElement *)header setBody:v14];
+        [(RUIElement *)header setBody:body];
       }
 
       else
       {
-        v16 = [v14 localizedUppercaseString];
-        [(RUIElement *)header setBody:v16];
+        localizedUppercaseString = [body localizedUppercaseString];
+        [(RUIElement *)header setBody:localizedUppercaseString];
       }
     }
 
@@ -440,35 +440,35 @@ LABEL_12:
   return v17;
 }
 
-- (void)headerView:(id)a3 activatedLinkWithURL:(id)a4
+- (void)headerView:(id)view activatedLinkWithURL:(id)l
 {
-  v5 = a4;
-  v6 = [(RUITableViewSection *)self header];
-  v7 = [v6 attributes];
-  v10 = [v7 mutableCopy];
+  lCopy = l;
+  header = [(RUITableViewSection *)self header];
+  attributes = [header attributes];
+  v10 = [attributes mutableCopy];
 
-  v8 = [v5 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  [v10 setObject:v8 forKeyedSubscript:@"url"];
+  [v10 setObject:absoluteString forKeyedSubscript:@"url"];
   v9 = [[RUIElement alloc] initWithAttributes:v10 parent:self];
   [(RUIElement *)self performAction:2 forElement:v9 completion:0];
 }
 
-- (void)headerViewDidChange:(id)a3
+- (void)headerViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(RUITableViewSection *)self tableElement];
-  v6 = [v5 sections];
-  v7 = [v6 indexOfObject:self];
+  changeCopy = change;
+  tableElement = [(RUITableViewSection *)self tableElement];
+  sections = [tableElement sections];
+  v7 = [sections indexOfObject:self];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__RUITableViewSection_headerViewDidChange___block_invoke;
   block[3] = &unk_2782E8398;
-  v10 = v4;
-  v11 = self;
+  v10 = changeCopy;
+  selfCopy = self;
   v12 = v7;
-  v8 = v4;
+  v8 = changeCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -484,36 +484,36 @@ void __43__RUITableViewSection_headerViewDidChange___block_invoke(uint64_t a1)
   [v3 reconfigureRowsAtIndexPaths:v5];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   if (objc_opt_respondsToSelector())
   {
-    [(RUIHeader *)self->_headerView setIconImage:v5];
-    v4 = [(RUIElement *)self parent];
-    [v4 reloadHeadersAndFootersForSection:self];
+    [(RUIHeader *)self->_headerView setIconImage:imageCopy];
+    parent = [(RUIElement *)self parent];
+    [parent reloadHeadersAndFootersForSection:self];
   }
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (objc_opt_respondsToSelector())
   {
     [(RUIHeader *)self->_headerView setImageSize:width, height];
-    v6 = [(RUIElement *)self parent];
-    [v6 reloadHeadersAndFootersForSection:self];
+    parent = [(RUIElement *)self parent];
+    [parent reloadHeadersAndFootersForSection:self];
   }
 }
 
-- (void)setImageAlignment:(unint64_t)a3
+- (void)setImageAlignment:(unint64_t)alignment
 {
   if (objc_opt_respondsToSelector())
   {
-    [(RUIHeader *)self->_headerView setImageAlignment:a3];
-    v5 = [(RUIElement *)self parent];
-    [v5 reloadHeadersAndFootersForSection:self];
+    [(RUIHeader *)self->_headerView setImageAlignment:alignment];
+    parent = [(RUIElement *)self parent];
+    [parent reloadHeadersAndFootersForSection:self];
   }
 }
 
@@ -526,7 +526,7 @@ void __43__RUITableViewSection_headerViewDidChange___block_invoke(uint64_t a1)
 
   else
   {
-    v5 = [(RUITableViewSection *)self header];
+    header = [(RUITableViewSection *)self header];
     v6 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -536,10 +536,10 @@ void __43__RUITableViewSection_headerViewDidChange___block_invoke(uint64_t a1)
 
 - (Class)_customFooterClass
 {
-  v3 = [(RUIElement *)self parent];
-  v4 = [(RUITableViewSection *)self footer];
-  v5 = [v4 attributes];
-  v6 = [v5 objectForKeyedSubscript:@"privacyBundleIdentifier"];
+  parent = [(RUIElement *)self parent];
+  footer = [(RUITableViewSection *)self footer];
+  attributes = [footer attributes];
+  v6 = [attributes objectForKeyedSubscript:@"privacyBundleIdentifier"];
 
   if (v6)
   {
@@ -549,8 +549,8 @@ void __43__RUITableViewSection_headerViewDidChange___block_invoke(uint64_t a1)
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v3 objectModel];
-    v11 = [v10 customFooterClassForSection:self];
+    objectModel = [parent objectModel];
+    v11 = [objectModel customFooterClassForSection:self];
 
     if (v11)
     {
@@ -559,7 +559,7 @@ void __43__RUITableViewSection_headerViewDidChange___block_invoke(uint64_t a1)
     }
   }
 
-  v12 = [(RUITableViewSection *)self footer];
+  footer2 = [(RUITableViewSection *)self footer];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -572,28 +572,28 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  v14 = [(RUITableViewSection *)self footer];
-  v15 = [v14 attributes];
-  v16 = [v15 objectForKeyedSubscript:@"url"];
+  footer3 = [(RUITableViewSection *)self footer];
+  attributes2 = [footer3 attributes];
+  v16 = [attributes2 objectForKeyedSubscript:@"url"];
   if (!v16)
   {
-    v17 = [(RUITableViewSection *)self footer];
-    v18 = [v17 attributes];
-    [v18 objectForKeyedSubscript:@"activationFunction"];
+    footer4 = [(RUITableViewSection *)self footer];
+    attributes3 = [footer4 attributes];
+    [attributes3 objectForKeyedSubscript:@"activationFunction"];
   }
 
-  v19 = [(RUITableViewSection *)self footer];
-  v20 = [v19 attributes];
-  v21 = [v20 objectForKeyedSubscript:@"color"];
+  footer5 = [(RUITableViewSection *)self footer];
+  attributes4 = [footer5 attributes];
+  v21 = [attributes4 objectForKeyedSubscript:@"color"];
   if (!v21)
   {
-    v22 = [(RUIElement *)self style];
+    style = [(RUIElement *)self style];
     v23 = +[RUIStyle defaultStyle];
-    [v22 isMemberOfClass:objc_opt_class()];
+    [style isMemberOfClass:objc_opt_class()];
   }
 
-  v24 = [(RUITableViewSection *)self footer];
-  if (v24)
+  footer6 = [(RUITableViewSection *)self footer];
+  if (footer6)
   {
 
     goto LABEL_2;
@@ -607,8 +607,8 @@ LABEL_4:
 
 - (RUITableViewHeaderFooterView)containerizedFooterView
 {
-  v3 = [(RUITableViewSection *)self footerView];
-  v4 = v3;
+  footerView = [(RUITableViewSection *)self footerView];
+  v4 = footerView;
   containerizedFooterView = self->_containerizedFooterView;
   if (containerizedFooterView)
   {
@@ -617,7 +617,7 @@ LABEL_4:
 
   else
   {
-    v6 = v3 == 0;
+    v6 = footerView == 0;
   }
 
   if (!v6)
@@ -641,9 +641,9 @@ LABEL_4:
   if (!footerView)
   {
     v4 = objc_alloc([(RUITableViewSection *)self _customFooterClass]);
-    v5 = [(RUITableViewSection *)self footer];
-    v6 = [v5 attributes];
-    v7 = [v4 initWithAttributes:v6];
+    footer = [(RUITableViewSection *)self footer];
+    attributes = [footer attributes];
+    v7 = [v4 initWithAttributes:attributes];
     v8 = self->_footerView;
     self->_footerView = v7;
 
@@ -661,16 +661,16 @@ LABEL_4:
   return v9;
 }
 
-- (void)footerView:(id)a3 activatedLinkWithURL:(id)a4
+- (void)footerView:(id)view activatedLinkWithURL:(id)l
 {
-  v5 = a4;
-  v6 = [(RUITableViewSection *)self footer];
-  v7 = [v6 attributes];
-  v10 = [v7 mutableCopy];
+  lCopy = l;
+  footer = [(RUITableViewSection *)self footer];
+  attributes = [footer attributes];
+  v10 = [attributes mutableCopy];
 
-  v8 = [v5 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  [v10 setObject:v8 forKeyedSubscript:@"url"];
+  [v10 setObject:absoluteString forKeyedSubscript:@"url"];
   v9 = [[RUIElement alloc] initWithAttributes:v10 parent:self];
   [(RUIElement *)self performAction:2 forElement:v9 completion:0];
 }
@@ -684,7 +684,7 @@ LABEL_4:
 
   else
   {
-    v5 = [(RUITableViewSection *)self header];
+    header = [(RUITableViewSection *)self header];
     v6 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -692,10 +692,10 @@ LABEL_4:
   return isKindOfClass & 1;
 }
 
-- (void)populatePostbackDictionary:(id)a3
+- (void)populatePostbackDictionary:(id)dictionary
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -716,7 +716,7 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) populatePostbackDictionary:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) populatePostbackDictionary:{dictionaryCopy, v10}];
       }
 
       while (v7 != v9);
@@ -727,10 +727,10 @@ LABEL_4:
   }
 }
 
-- (id)subElementWithID:(id)a3
+- (id)subElementWithID:(id)d
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -751,8 +751,8 @@ LABEL_4:
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:v4];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqualToString:dCopy];
 
         if (v12)
         {
@@ -763,7 +763,7 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        v13 = [v10 subElementWithID:v4];
+        v13 = [v10 subElementWithID:dCopy];
         if (v13)
         {
           goto LABEL_16;
@@ -781,10 +781,10 @@ LABEL_16:
   }
 
   v14 = 152;
-  v15 = [(RUIElement *)self->_header identifier];
-  v16 = [v15 isEqualToString:v4];
+  identifier2 = [(RUIElement *)self->_header identifier];
+  v16 = [identifier2 isEqualToString:dCopy];
 
-  if (v16 || (v14 = 160, -[RUIElement identifier](self->_subHeader, "identifier"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 isEqualToString:v4], v17, v18) || (v14 = 168, -[RUIElement identifier](self->_detailHeader, "identifier"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", v4), v19, v20) || (v14 = 176, -[RUIElement identifier](self->_footer, "identifier"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", v4), v21, v22))
+  if (v16 || (v14 = 160, -[RUIElement identifier](self->_subHeader, "identifier"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 isEqualToString:dCopy], v17, v18) || (v14 = 168, -[RUIElement identifier](self->_detailHeader, "identifier"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", dCopy), v19, v20) || (v14 = 176, -[RUIElement identifier](self->_footer, "identifier"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", dCopy), v21, v22))
   {
     v23 = *(&self->super.super.isa + v14);
   }
@@ -799,18 +799,18 @@ LABEL_17:
   return v23;
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RUIElement *)self->_header identifier];
-  if ([v5 isEqualToString:v4])
+  identifierCopy = identifier;
+  identifier = [(RUIElement *)self->_header identifier];
+  if ([identifier isEqualToString:identifierCopy])
   {
     goto LABEL_4;
   }
 
-  v6 = [(RUIElement *)self->_subHeader identifier];
-  if ([v6 isEqualToString:v4])
+  identifier2 = [(RUIElement *)self->_subHeader identifier];
+  if ([identifier2 isEqualToString:identifierCopy])
   {
 
 LABEL_4:
@@ -821,16 +821,16 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v10 = [(RUIElement *)self->_detailHeader identifier];
-  v11 = [v10 isEqualToString:v4];
+  identifier3 = [(RUIElement *)self->_detailHeader identifier];
+  v11 = [identifier3 isEqualToString:identifierCopy];
 
   if (v11)
   {
     goto LABEL_5;
   }
 
-  v12 = [(RUIElement *)self->_footer identifier];
-  v13 = [v12 isEqualToString:v4];
+  identifier4 = [(RUIElement *)self->_footer identifier];
+  v13 = [identifier4 isEqualToString:identifierCopy];
 
   if (v13)
   {
@@ -857,7 +857,7 @@ LABEL_6:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v20 + 1) + 8 * i) viewForElementIdentifier:{v4, v20}];
+        v19 = [*(*(&v20 + 1) + 8 * i) viewForElementIdentifier:{identifierCopy, v20}];
         if (v19)
         {
           v8 = v19;
@@ -882,10 +882,10 @@ LABEL_7:
   return v8;
 }
 
-- (id)subElementsWithName:(id)a3
+- (id)subElementsWithName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
@@ -907,15 +907,15 @@ LABEL_7:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 name];
-        v13 = [v12 isEqualToString:v4];
+        name = [v11 name];
+        v13 = [name isEqualToString:nameCopy];
 
         if (v13)
         {
           [v5 addObject:v11];
         }
 
-        v14 = [v11 subElementsWithName:v4];
+        v14 = [v11 subElementsWithName:nameCopy];
         [v5 addObjectsFromArray:v14];
       }
 
@@ -937,7 +937,7 @@ LABEL_7:
 
 - (void)reportInternalRenderEvent
 {
-  v2 = self;
+  selfCopy = self;
   RUITableViewSection.reportInternalRenderEvent()();
 }
 

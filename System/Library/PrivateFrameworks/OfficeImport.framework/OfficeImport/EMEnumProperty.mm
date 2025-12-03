@@ -1,10 +1,10 @@
 @interface EMEnumProperty
-+ (id)mapHorizontalAlignmentValue:(int)a3;
-+ (id)mapUnderlineValue:(int)a3;
-+ (id)mapVerticalAlignmentValue:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (EMEnumProperty)initWithEnum:(int)a3;
-- (id)cssStringForName:(id)a3;
++ (id)mapHorizontalAlignmentValue:(int)value;
++ (id)mapUnderlineValue:(int)value;
++ (id)mapVerticalAlignmentValue:(int)value;
+- (BOOL)isEqual:(id)equal;
+- (EMEnumProperty)initWithEnum:(int)enum;
+- (id)cssStringForName:(id)name;
 - (id)mapHorizontalAlignment;
 - (id)mapUnderline;
 - (id)mapVerticalAlignment;
@@ -40,42 +40,42 @@
   }
 }
 
-- (EMEnumProperty)initWithEnum:(int)a3
+- (EMEnumProperty)initWithEnum:(int)enum
 {
   v5.receiver = self;
   v5.super_class = EMEnumProperty;
   result = [(EMEnumProperty *)&v5 init];
   if (result)
   {
-    result->wdValue = a3;
+    result->wdValue = enum;
   }
 
   return result;
 }
 
-+ (id)mapHorizontalAlignmentValue:(int)a3
++ (id)mapHorizontalAlignmentValue:(int)value
 {
-  if (a3 > 6)
+  if (value > 6)
   {
     return &stru_286EE1130;
   }
 
   else
   {
-    return off_2799CE128[a3];
+    return off_2799CE128[value];
   }
 }
 
-+ (id)mapVerticalAlignmentValue:(int)a3
++ (id)mapVerticalAlignmentValue:(int)value
 {
-  if (a3 > 5)
+  if (value > 5)
   {
     return &stru_286EE1130;
   }
 
   else
   {
-    return off_2799CE160[a3];
+    return off_2799CE160[value];
   }
 }
 
@@ -92,9 +92,9 @@
   }
 }
 
-+ (id)mapUnderlineValue:(int)a3
++ (id)mapUnderlineValue:(int)value
 {
-  if ((a3 - 1) >= 4)
+  if ((value - 1) >= 4)
   {
     return &stru_286EE1130;
   }
@@ -105,43 +105,43 @@
   }
 }
 
-- (id)cssStringForName:(id)a3
+- (id)cssStringForName:(id)name
 {
-  v4 = a3;
-  if ([v4 compare:@"text-align"])
+  nameCopy = name;
+  if ([nameCopy compare:@"text-align"])
   {
-    if ([v4 compare:@"vertical-align"])
+    if ([nameCopy compare:@"vertical-align"])
     {
-      if ([v4 compare:@"underline"])
+      if ([nameCopy compare:@"underline"])
       {
         v5 = 0;
         goto LABEL_9;
       }
 
-      v6 = [(EMEnumProperty *)self mapUnderline];
+      mapUnderline = [(EMEnumProperty *)self mapUnderline];
     }
 
     else
     {
-      v6 = [(EMEnumProperty *)self mapVerticalAlignment];
+      mapUnderline = [(EMEnumProperty *)self mapVerticalAlignment];
     }
   }
 
   else
   {
-    v6 = [(EMEnumProperty *)self mapHorizontalAlignment];
+    mapUnderline = [(EMEnumProperty *)self mapHorizontalAlignment];
   }
 
-  v5 = v6;
+  v5 = mapUnderline;
 LABEL_9:
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -149,7 +149,7 @@ LABEL_9:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && v4->wdValue == self->wdValue;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && equalCopy->wdValue == self->wdValue;
   }
 
   return v5;

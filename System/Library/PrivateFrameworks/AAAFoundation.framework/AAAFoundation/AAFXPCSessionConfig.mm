@@ -1,36 +1,36 @@
 @interface AAFXPCSessionConfig
-- (AAFXPCSessionConfig)initWithServiceName:(id)a3 remoteProtocol:(id)a4 exportedProtocol:(id)a5 options:(unint64_t)a6;
-- (AAFXPCSessionConfig)initWithServiceName:(id)a3 remoteProtocol:(id)a4 options:(unint64_t)a5;
+- (AAFXPCSessionConfig)initWithServiceName:(id)name remoteProtocol:(id)protocol exportedProtocol:(id)exportedProtocol options:(unint64_t)options;
+- (AAFXPCSessionConfig)initWithServiceName:(id)name remoteProtocol:(id)protocol options:(unint64_t)options;
 @end
 
 @implementation AAFXPCSessionConfig
 
-- (AAFXPCSessionConfig)initWithServiceName:(id)a3 remoteProtocol:(id)a4 options:(unint64_t)a5
+- (AAFXPCSessionConfig)initWithServiceName:(id)name remoteProtocol:(id)protocol options:(unint64_t)options
 {
-  v9 = a3;
-  v10 = a4;
+  nameCopy = name;
+  protocolCopy = protocol;
   v14.receiver = self;
   v14.super_class = AAFXPCSessionConfig;
   v11 = [(AAFXPCSessionConfig *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_serviceName, a3);
-    v12->_options = a5;
-    objc_storeStrong(&v12->_remoteProtocol, a4);
+    objc_storeStrong(&v11->_serviceName, name);
+    v12->_options = options;
+    objc_storeStrong(&v12->_remoteProtocol, protocol);
   }
 
   return v12;
 }
 
-- (AAFXPCSessionConfig)initWithServiceName:(id)a3 remoteProtocol:(id)a4 exportedProtocol:(id)a5 options:(unint64_t)a6
+- (AAFXPCSessionConfig)initWithServiceName:(id)name remoteProtocol:(id)protocol exportedProtocol:(id)exportedProtocol options:(unint64_t)options
 {
-  v11 = a5;
-  v12 = [(AAFXPCSessionConfig *)self initWithServiceName:a3 remoteProtocol:a4 options:a6];
+  exportedProtocolCopy = exportedProtocol;
+  v12 = [(AAFXPCSessionConfig *)self initWithServiceName:name remoteProtocol:protocol options:options];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_exportedProtocol, a5);
+    objc_storeStrong(&v12->_exportedProtocol, exportedProtocol);
   }
 
   return v13;

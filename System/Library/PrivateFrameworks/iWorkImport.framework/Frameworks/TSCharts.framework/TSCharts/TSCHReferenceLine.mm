@@ -1,45 +1,45 @@
 @interface TSCHReferenceLine
-+ (id)defaultNonStyleWithContext:(id)a3 referenceLineType:(unint64_t)a4 axis:(id)a5;
-+ (id)p_lineLabelForType:(unint64_t)a3;
-+ (unint64_t)maxNumberOfReferenceLinesOfType:(unint64_t)a3;
-+ (unint64_t)styleSwapOrStyleOwnerIndexFromAxisID:(id)a3 refLineIndex:(unint64_t)a4;
++ (id)defaultNonStyleWithContext:(id)context referenceLineType:(unint64_t)type axis:(id)axis;
++ (id)p_lineLabelForType:(unint64_t)type;
++ (unint64_t)maxNumberOfReferenceLinesOfType:(unint64_t)type;
++ (unint64_t)styleSwapOrStyleOwnerIndexFromAxisID:(id)d refLineIndex:(unint64_t)index;
 - (BOOL)labelShowing;
 - (BOOL)valueLabelShowing;
 - (TSCHChartAxis)axis;
-- (TSCHReferenceLine)initWithModel:(id)a3 axisID:(id)a4 index:(unint64_t)a5 uuid:(id)a6;
+- (TSCHReferenceLine)initWithModel:(id)model axisID:(id)d index:(unint64_t)index uuid:(id)uuid;
 - (double)referenceLineAxisValue;
-- (float)floatValueForProperty:(int)a3 defaultValue:(float)a4;
+- (float)floatValueForProperty:(int)property defaultValue:(float)value;
 - (id)chartInfo;
 - (id)context;
 - (id)defaultProperties;
 - (id)drawableInfo;
 - (id)g_genericToDefaultPropertyMap;
-- (id)g_operationPropertyNameForGenericProperty:(int)a3;
+- (id)g_operationPropertyNameForGenericProperty:(int)property;
 - (id)localizedTypeName;
 - (id)model;
 - (id)nonstyle;
-- (id)objectValueForProperty:(int)a3;
+- (id)objectValueForProperty:(int)property;
 - (id)style;
-- (id)swapTuplesForMutations:(id)a3 forImport:(BOOL)a4;
-- (id)transformedTuplesWithTuple:(id)a3;
-- (int)defaultPropertyForGeneric:(int)a3;
-- (int)intValueForProperty:(int)a3 defaultValue:(int)a4;
-- (void)setStyle:(id)a3 nonStyle:(id)a4;
+- (id)swapTuplesForMutations:(id)mutations forImport:(BOOL)import;
+- (id)transformedTuplesWithTuple:(id)tuple;
+- (int)defaultPropertyForGeneric:(int)generic;
+- (int)intValueForProperty:(int)property defaultValue:(int)value;
+- (void)setStyle:(id)style nonStyle:(id)nonStyle;
 @end
 
 @implementation TSCHReferenceLine
 
-- (TSCHReferenceLine)initWithModel:(id)a3 axisID:(id)a4 index:(unint64_t)a5 uuid:(id)a6
+- (TSCHReferenceLine)initWithModel:(id)model axisID:(id)d index:(unint64_t)index uuid:(id)uuid
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  modelCopy = model;
+  dCopy = d;
+  uuidCopy = uuid;
   v44.receiver = self;
   v44.super_class = TSCHReferenceLine;
   v14 = [(TSCHReferenceLine *)&v44 init];
   if (v14)
   {
-    if (!v10)
+    if (!modelCopy)
     {
       v18 = MEMORY[0x277D81150];
       v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, v15, v16, v17, "[TSCHReferenceLine initWithModel:axisID:index:uuid:]");
@@ -49,10 +49,10 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v29, v30, v31, v32);
     }
 
-    objc_storeWeak(&v14->_model, v10);
-    objc_storeStrong(&v14->_axisID, a4);
-    v14->_styleSwapIndex = objc_msgSend_styleSwapOrStyleOwnerIndexFromAxisID_refLineIndex_(TSCHReferenceLine, v33, v34, v35, v36, v11, a5);
-    v41 = objc_msgSend_copy(v12, v37, v38, v39, v40);
+    objc_storeWeak(&v14->_model, modelCopy);
+    objc_storeStrong(&v14->_axisID, d);
+    v14->_styleSwapIndex = objc_msgSend_styleSwapOrStyleOwnerIndexFromAxisID_refLineIndex_(TSCHReferenceLine, v33, v34, v35, v36, dCopy, index);
+    v41 = objc_msgSend_copy(uuidCopy, v37, v38, v39, v40);
     UUID = v14->_UUID;
     v14->_UUID = v41;
   }
@@ -60,26 +60,26 @@
   return v14;
 }
 
-+ (unint64_t)maxNumberOfReferenceLinesOfType:(unint64_t)a3
++ (unint64_t)maxNumberOfReferenceLinesOfType:(unint64_t)type
 {
-  if (a3 - 1 < 4)
+  if (type - 1 < 4)
   {
     return 1;
   }
 
-  if (a3 == 5)
+  if (type == 5)
   {
-    return objc_msgSend_maxNumberOfReferenceLines(a1, a2, v3, v4, v5);
+    return objc_msgSend_maxNumberOfReferenceLines(self, a2, v3, v4, v5);
   }
 
   return 0;
 }
 
-+ (unint64_t)styleSwapOrStyleOwnerIndexFromAxisID:(id)a3 refLineIndex:(unint64_t)a4
++ (unint64_t)styleSwapOrStyleOwnerIndexFromAxisID:(id)d refLineIndex:(unint64_t)index
 {
-  v5 = a3;
-  v10 = objc_msgSend_type(v5, v6, v7, v8, v9);
-  v15 = objc_msgSend_ordinal(v5, v11, v12, v13, v14);
+  dCopy = d;
+  v10 = objc_msgSend_type(dCopy, v6, v7, v8, v9);
+  v15 = objc_msgSend_ordinal(dCopy, v11, v12, v13, v14);
 
   if (v10 >= 8)
   {
@@ -101,15 +101,15 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v46, v47, v48, v49);
   }
 
-  return v10 | (32 * a4) | (8 * v15);
+  return v10 | (32 * index) | (8 * v15);
 }
 
-+ (id)defaultNonStyleWithContext:(id)a3 referenceLineType:(unint64_t)a4 axis:(id)a5
++ (id)defaultNonStyleWithContext:(id)context referenceLineType:(unint64_t)type axis:(id)axis
 {
-  v8 = a5;
-  v13 = objc_msgSend_defaultStyleWithContext_(TSCHReferenceLineNonStyle, v9, v10, v11, v12, a3);
+  axisCopy = axis;
+  v13 = objc_msgSend_defaultStyleWithContext_(TSCHReferenceLineNonStyle, v9, v10, v11, v12, context);
   v18 = v13;
-  if (a4 >> 31)
+  if (type >> 31)
   {
     sub_2764A6CDC(v15, v16, v17, v13, v14);
     objc_msgSend_setIntValue_forProperty_(v18, v59, v60, v61, v62, 0x7FFFFFFFLL, 1592);
@@ -117,21 +117,21 @@
 
   else
   {
-    objc_msgSend_setIntValue_forProperty_(v13, v14, v15, v16, v17, a4, 1592);
+    objc_msgSend_setIntValue_forProperty_(v13, v14, v15, v16, v17, type, 1592);
   }
 
   objc_msgSend_setIntValue_forProperty_(v18, v19, v20, v21, v22, 1, 1589);
   objc_msgSend_setIntValue_forProperty_(v18, v23, v24, v25, v26, 1, 1588);
-  v31 = objc_msgSend_p_lineLabelForType_(a1, v27, v28, v29, v30, a4);
+  v31 = objc_msgSend_p_lineLabelForType_(self, v27, v28, v29, v30, type);
   objc_msgSend_setValue_forProperty_(v18, v32, v33, v34, v35, v31, 1585);
 
-  objc_msgSend_setIntValue_forProperty_(v18, v36, v37, v38, v39, a4 == 5, 1590);
-  if (a4 == 5)
+  objc_msgSend_setIntValue_forProperty_(v18, v36, v37, v38, v39, type == 5, 1590);
+  if (type == 5)
   {
     v44 = MEMORY[0x277CCABB0];
-    objc_msgSend_min(v8, v40, v41, v42, v43);
+    objc_msgSend_min(axisCopy, v40, v41, v42, v43);
     v46 = v45;
-    objc_msgSend_max(v8, v47, v45, v48, v49);
+    objc_msgSend_max(axisCopy, v47, v45, v48, v49);
     v53 = objc_msgSend_numberWithDouble_(v44, v51, (v46 + v50) * 0.5, 0.5, v52);
     objc_msgSend_setValue_forProperty_(v18, v54, v55, v56, v57, v53, 1584);
   }
@@ -139,16 +139,16 @@
   return v18;
 }
 
-+ (id)p_lineLabelForType:(unint64_t)a3
++ (id)p_lineLabelForType:(unint64_t)type
 {
-  if (a3 - 1 > 4)
+  if (type - 1 > 4)
   {
     v12 = 0;
   }
 
   else
   {
-    v6 = off_27A6B6858[a3 - 1];
+    v6 = off_27A6B6858[type - 1];
     v7 = sub_276360774(v3, v4, v5);
     v12 = objc_msgSend_localizedStringForKey_value_table_(v7, v8, v9, v10, v11, v6, &stru_288528678, @"TSCharts");
   }
@@ -322,12 +322,12 @@ LABEL_15:
   return v6;
 }
 
-- (int)defaultPropertyForGeneric:(int)a3
+- (int)defaultPropertyForGeneric:(int)generic
 {
   v7 = objc_msgSend_p_genericToDefaultPropertyMap(self, a2, v3, v4, v5);
-  if (objc_msgSend_containsKey_(v7, v8, v9, v10, v11, a3))
+  if (objc_msgSend_containsKey_(v7, v8, v9, v10, v11, generic))
   {
-    v16 = objc_msgSend_intForKey_(v7, v12, v13, v14, v15, a3);
+    v16 = objc_msgSend_intForKey_(v7, v12, v13, v14, v15, generic);
   }
 
   else
@@ -338,36 +338,36 @@ LABEL_15:
   return v16;
 }
 
-- (int)intValueForProperty:(int)a3 defaultValue:(int)a4
+- (int)intValueForProperty:(int)property defaultValue:(int)value
 {
   v6 = 0;
-  if (sub_2762E5130(self, self->_style, self->_nonStyle, *&a3, &v6))
+  if (sub_2762E5130(self, self->_style, self->_nonStyle, *&property, &v6))
   {
     return v6;
   }
 
   else
   {
-    return a4;
+    return value;
   }
 }
 
-- (float)floatValueForProperty:(int)a3 defaultValue:(float)a4
+- (float)floatValueForProperty:(int)property defaultValue:(float)value
 {
   v7 = 0.0;
-  v5 = sub_2762E5658(self, self->_style, self->_nonStyle, *&a3, &v7);
+  v5 = sub_2762E5658(self, self->_style, self->_nonStyle, *&property, &v7);
   result = v7;
   if (!v5)
   {
-    return a4;
+    return value;
   }
 
   return result;
 }
 
-- (id)objectValueForProperty:(int)a3
+- (id)objectValueForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   style = self->_style;
   nonStyle = self->_nonStyle;
   v9 = 0;
@@ -421,10 +421,10 @@ LABEL_15:
   return v8;
 }
 
-- (id)swapTuplesForMutations:(id)a3 forImport:(BOOL)a4
+- (id)swapTuplesForMutations:(id)mutations forImport:(BOOL)import
 {
-  v4 = a4;
-  v6 = a3;
+  importCopy = import;
+  mutationsCopy = mutations;
   objc_initWeak(&location, self);
   styleSwapIndex = self->_styleSwapIndex;
   v14[0] = MEMORY[0x277D85DD0];
@@ -432,7 +432,7 @@ LABEL_15:
   v14[2] = sub_2761CC4CC;
   v14[3] = &unk_27A6B6838;
   objc_copyWeak(&v15, &location);
-  v12 = objc_msgSend_convertToStyleSwapTuplesForStyleOwner_styleSwapType_nonStyleSwapType_index_fromMutations_forImport_withOptionalStyleValueConversionBlock_(TSCHPropertyMutationHelper, v8, v9, v10, v11, self, 13, 14, styleSwapIndex, v6, v4, v14);
+  v12 = objc_msgSend_convertToStyleSwapTuplesForStyleOwner_styleSwapType_nonStyleSwapType_index_fromMutations_forImport_withOptionalStyleValueConversionBlock_(TSCHPropertyMutationHelper, v8, v9, v10, v11, self, 13, 14, styleSwapIndex, mutationsCopy, importCopy, v14);
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 
@@ -453,27 +453,27 @@ LABEL_15:
   return TSUDynamicCast();
 }
 
-- (id)transformedTuplesWithTuple:(id)a3
+- (id)transformedTuplesWithTuple:(id)tuple
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v11[0] = a3;
+  v11[0] = tuple;
   v3 = MEMORY[0x277CBEA60];
-  v4 = a3;
+  tupleCopy = tuple;
   v9 = objc_msgSend_arrayWithObjects_count_(v3, v5, v6, v7, v8, v11, 1);
 
   return v9;
 }
 
-- (void)setStyle:(id)a3 nonStyle:(id)a4
+- (void)setStyle:(id)style nonStyle:(id)nonStyle
 {
-  v6 = a3;
-  v7 = a4;
+  styleCopy = style;
+  nonStyleCopy = nonStyle;
   style = self->_style;
-  self->_style = v6;
-  v10 = v6;
+  self->_style = styleCopy;
+  v10 = styleCopy;
 
   nonStyle = self->_nonStyle;
-  self->_nonStyle = v7;
+  self->_nonStyle = nonStyleCopy;
 }
 
 - (id)g_genericToDefaultPropertyMap
@@ -488,9 +488,9 @@ LABEL_15:
   return v3;
 }
 
-- (id)g_operationPropertyNameForGenericProperty:(int)a3
+- (id)g_operationPropertyNameForGenericProperty:(int)property
 {
-  v6 = *&a3;
+  v6 = *&property;
   v8 = objc_msgSend_specificPropertyForGeneric_(self, a2, v3, v4, v5);
   if (v8 || (v8 = objc_msgSend_defaultPropertyForGeneric_(self, v9, v10, v11, v12, v6), v8))
   {

@@ -12,10 +12,10 @@
   v12 = a5;
   v13 = a4;
   v14 = a3;
-  v15 = [v10 sharedConnection];
-  v16 = [v11 safari_URLByNormalizingBlobURL];
+  sharedConnection = [v10 sharedConnection];
+  safari_URLByNormalizingBlobURL = [v11 safari_URLByNormalizingBlobURL];
 
-  v17 = [v9 documentProxyForName:v14 type:v13 MIMEType:v12 sourceIsManaged:{objc_msgSend(v15, "isURLManaged:", v16)}];
+  v17 = [v9 documentProxyForName:v14 type:v13 MIMEType:v12 sourceIsManaged:{objc_msgSend(sharedConnection, "isURLManaged:", safari_URLByNormalizingBlobURL)}];
 
   return v17;
 }

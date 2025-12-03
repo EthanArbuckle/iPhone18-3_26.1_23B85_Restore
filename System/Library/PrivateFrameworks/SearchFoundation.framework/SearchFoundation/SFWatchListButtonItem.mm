@@ -1,12 +1,12 @@
 @interface SFWatchListButtonItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFWatchListButtonItem)initWithCoder:(id)a3;
-- (SFWatchListButtonItem)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFWatchListButtonItem)initWithCoder:(id)coder;
+- (SFWatchListButtonItem)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFWatchListButtonItem
@@ -16,35 +16,35 @@
   v10.receiver = self;
   v10.super_class = SFWatchListButtonItem;
   v3 = [(SFButtonItem *)&v10 hash];
-  v4 = [(SFWatchListButtonItem *)self watchListItem];
-  v5 = [v4 hash];
-  v6 = [(SFWatchListButtonItem *)self toggleButtonConfiguration];
-  v7 = v5 ^ [v6 hash];
+  watchListItem = [(SFWatchListButtonItem *)self watchListItem];
+  v5 = [watchListItem hash];
+  toggleButtonConfiguration = [(SFWatchListButtonItem *)self toggleButtonConfiguration];
+  v7 = v5 ^ [toggleButtonConfiguration hash];
   v8 = v7 ^ [(SFButtonItem *)self uniqueId];
 
   return v8 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFWatchListButtonItem *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFWatchListButtonItem *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v23.receiver = self;
       v23.super_class = SFWatchListButtonItem;
-      if ([(SFButtonItem *)&v23 isEqual:v5])
+      if ([(SFButtonItem *)&v23 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFWatchListButtonItem *)self watchListItem];
-        v8 = [(SFWatchListButtonItem *)v6 watchListItem];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        watchListItem = [(SFWatchListButtonItem *)self watchListItem];
+        watchListItem2 = [(SFWatchListButtonItem *)v6 watchListItem];
+        if ((watchListItem != 0) == (watchListItem2 == 0))
         {
           v11 = 0;
 LABEL_25:
@@ -52,47 +52,47 @@ LABEL_25:
           goto LABEL_26;
         }
 
-        v9 = [(SFWatchListButtonItem *)self watchListItem];
-        if (v9)
+        watchListItem3 = [(SFWatchListButtonItem *)self watchListItem];
+        if (watchListItem3)
         {
-          v10 = [(SFWatchListButtonItem *)self watchListItem];
-          v3 = [(SFWatchListButtonItem *)v6 watchListItem];
-          if (![v10 isEqual:v3])
+          watchListItem4 = [(SFWatchListButtonItem *)self watchListItem];
+          watchListItem5 = [(SFWatchListButtonItem *)v6 watchListItem];
+          if (![watchListItem4 isEqual:watchListItem5])
           {
             v11 = 0;
             goto LABEL_23;
           }
 
-          v22 = v10;
+          v22 = watchListItem4;
         }
 
-        v12 = [(SFWatchListButtonItem *)self toggleButtonConfiguration];
-        v13 = [(SFWatchListButtonItem *)v6 toggleButtonConfiguration];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        toggleButtonConfiguration = [(SFWatchListButtonItem *)self toggleButtonConfiguration];
+        toggleButtonConfiguration2 = [(SFWatchListButtonItem *)v6 toggleButtonConfiguration];
+        v14 = toggleButtonConfiguration2;
+        if ((toggleButtonConfiguration != 0) == (toggleButtonConfiguration2 == 0))
         {
 
           v11 = 0;
           goto LABEL_22;
         }
 
-        v15 = [(SFWatchListButtonItem *)self toggleButtonConfiguration];
-        if (v15)
+        toggleButtonConfiguration3 = [(SFWatchListButtonItem *)self toggleButtonConfiguration];
+        if (toggleButtonConfiguration3)
         {
-          v19 = v3;
-          v16 = [(SFWatchListButtonItem *)self toggleButtonConfiguration];
-          v20 = [(SFWatchListButtonItem *)v6 toggleButtonConfiguration];
-          v21 = v16;
-          if (![v16 isEqual:?])
+          v19 = watchListItem5;
+          toggleButtonConfiguration4 = [(SFWatchListButtonItem *)self toggleButtonConfiguration];
+          toggleButtonConfiguration5 = [(SFWatchListButtonItem *)v6 toggleButtonConfiguration];
+          v21 = toggleButtonConfiguration4;
+          if (![toggleButtonConfiguration4 isEqual:?])
           {
             v11 = 0;
-            v3 = v19;
+            watchListItem5 = v19;
 LABEL_20:
 
 LABEL_21:
 LABEL_22:
-            v10 = v22;
-            if (!v9)
+            watchListItem4 = v22;
+            if (!watchListItem3)
             {
 LABEL_24:
 
@@ -104,12 +104,12 @@ LABEL_23:
             goto LABEL_24;
           }
 
-          v3 = v19;
+          watchListItem5 = v19;
         }
 
-        v17 = [(SFButtonItem *)self uniqueId];
-        v11 = v17 == [(SFButtonItem *)v6 uniqueId];
-        if (!v15)
+        uniqueId = [(SFButtonItem *)self uniqueId];
+        v11 = uniqueId == [(SFButtonItem *)v6 uniqueId];
+        if (!toggleButtonConfiguration3)
         {
           goto LABEL_21;
         }
@@ -126,17 +126,17 @@ LABEL_26:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SFWatchListButtonItem;
-  v4 = [(SFButtonItem *)&v10 copyWithZone:a3];
-  v5 = [(SFWatchListButtonItem *)self watchListItem];
-  v6 = [v5 copy];
+  v4 = [(SFButtonItem *)&v10 copyWithZone:zone];
+  watchListItem = [(SFWatchListButtonItem *)self watchListItem];
+  v6 = [watchListItem copy];
   [v4 setWatchListItem:v6];
 
-  v7 = [(SFWatchListButtonItem *)self toggleButtonConfiguration];
-  v8 = [v7 copy];
+  toggleButtonConfiguration = [(SFWatchListButtonItem *)self toggleButtonConfiguration];
+  v8 = [toggleButtonConfiguration copy];
   [v4 setToggleButtonConfiguration:v8];
 
   [v4 setUniqueId:{-[SFButtonItem uniqueId](self, "uniqueId")}];
@@ -146,31 +146,31 @@ LABEL_26:
 - (NSData)jsonData
 {
   v2 = [[_SFPBWatchListButtonItem alloc] initWithFacade:self];
-  v3 = [(_SFPBWatchListButtonItem *)v2 jsonData];
+  jsonData = [(_SFPBWatchListButtonItem *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBWatchListButtonItem alloc] initWithFacade:self];
-  v3 = [(_SFPBWatchListButtonItem *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBWatchListButtonItem *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBWatchListButtonItem alloc] initWithFacade:self];
-  v5 = [(_SFPBWatchListButtonItem *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBWatchListButtonItem *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFWatchListButtonItem)initWithCoder:(id)a3
+- (SFWatchListButtonItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBWatchListButtonItem alloc] initWithData:v5];
   v7 = [(SFWatchListButtonItem *)self initWithProtobuf:v6];
@@ -178,37 +178,37 @@ LABEL_26:
   return v7;
 }
 
-- (SFWatchListButtonItem)initWithProtobuf:(id)a3
+- (SFWatchListButtonItem)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v16.receiver = self;
   v16.super_class = SFWatchListButtonItem;
   v5 = [(SFWatchListButtonItem *)&v16 init];
   if (v5)
   {
-    v6 = [v4 watchListItem];
+    watchListItem = [protobufCopy watchListItem];
 
-    if (v6)
+    if (watchListItem)
     {
       v7 = [SFWatchListItem alloc];
-      v8 = [v4 watchListItem];
-      v9 = [(SFWatchListItem *)v7 initWithProtobuf:v8];
+      watchListItem2 = [protobufCopy watchListItem];
+      v9 = [(SFWatchListItem *)v7 initWithProtobuf:watchListItem2];
       [(SFWatchListButtonItem *)v5 setWatchListItem:v9];
     }
 
-    v10 = [v4 toggleButtonConfiguration];
+    toggleButtonConfiguration = [protobufCopy toggleButtonConfiguration];
 
-    if (v10)
+    if (toggleButtonConfiguration)
     {
       v11 = [SFToggleButtonConfiguration alloc];
-      v12 = [v4 toggleButtonConfiguration];
-      v13 = [(SFToggleButtonConfiguration *)v11 initWithProtobuf:v12];
+      toggleButtonConfiguration2 = [protobufCopy toggleButtonConfiguration];
+      v13 = [(SFToggleButtonConfiguration *)v11 initWithProtobuf:toggleButtonConfiguration2];
       [(SFWatchListButtonItem *)v5 setToggleButtonConfiguration:v13];
     }
 
-    if ([v4 uniqueId])
+    if ([protobufCopy uniqueId])
     {
-      -[SFButtonItem setUniqueId:](v5, "setUniqueId:", [v4 uniqueId]);
+      -[SFButtonItem setUniqueId:](v5, "setUniqueId:", [protobufCopy uniqueId]);
     }
 
     v14 = v5;

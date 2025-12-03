@@ -1,27 +1,27 @@
 @interface WFREPBAlertRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFREPBAlertRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v7 = fromCopy;
+  if (fromCopy[2])
   {
     [(WFREPBAlertRequest *)self setAssociatedRunRequestIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   alert = self->_alert;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (alert)
   {
     if (!v6)
@@ -42,17 +42,17 @@
     [(WFREPBAlertRequest *)self setAlert:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_9:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((associatedRunRequestIdentifier = self->_associatedRunRequestIdentifier, !(associatedRunRequestIdentifier | v4[2])) || -[NSString isEqual:](associatedRunRequestIdentifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((associatedRunRequestIdentifier = self->_associatedRunRequestIdentifier, !(associatedRunRequestIdentifier | equalCopy[2])) || -[NSString isEqual:](associatedRunRequestIdentifier, "isEqual:")))
   {
     alert = self->_alert;
-    if (alert | v4[1])
+    if (alert | equalCopy[1])
     {
       v7 = [(WFREPBAlert *)alert isEqual:?];
     }
@@ -71,37 +71,37 @@ LABEL_9:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_associatedRunRequestIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_associatedRunRequestIdentifier copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(WFREPBAlert *)self->_alert copyWithZone:a3];
+  v8 = [(WFREPBAlert *)self->_alert copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   associatedRunRequestIdentifier = self->_associatedRunRequestIdentifier;
-  v5 = a3;
-  [v5 setAssociatedRunRequestIdentifier:associatedRunRequestIdentifier];
-  [v5 setAlert:self->_alert];
+  toCopy = to;
+  [toCopy setAssociatedRunRequestIdentifier:associatedRunRequestIdentifier];
+  [toCopy setAlert:self->_alert];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_associatedRunRequestIdentifier)
   {
     __assert_rtn("[WFREPBAlertRequest writeTo:]", "WFREPBAlertRequest.m", 97, "nil != self->_associatedRunRequestIdentifier");
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   if (!self->_alert)
   {
@@ -113,19 +113,19 @@ LABEL_9:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   associatedRunRequestIdentifier = self->_associatedRunRequestIdentifier;
   if (associatedRunRequestIdentifier)
   {
-    [v3 setObject:associatedRunRequestIdentifier forKey:@"associatedRunRequestIdentifier"];
+    [dictionary setObject:associatedRunRequestIdentifier forKey:@"associatedRunRequestIdentifier"];
   }
 
   alert = self->_alert;
   if (alert)
   {
-    v7 = [(WFREPBAlert *)alert dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"alert"];
+    dictionaryRepresentation = [(WFREPBAlert *)alert dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"alert"];
   }
 
   return v4;
@@ -137,8 +137,8 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = WFREPBAlertRequest;
   v4 = [(WFREPBAlertRequest *)&v8 description];
-  v5 = [(WFREPBAlertRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFREPBAlertRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

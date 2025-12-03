@@ -1,16 +1,16 @@
 @interface THWTransportControlRep
 - (TSWTransportControlClone)clone;
-- (id)buttonControl:(id)a3 imageForState:(int)a4 highlighted:(BOOL)a5;
-- (id)fontNameForLabelControl:(id)a3;
-- (id)shadowForLabelControl:(id)a3;
-- (int)buttonControlState:(id)a3;
-- (void)addAdditionalChildLayersToArray:(id)a3;
-- (void)buttonControlWasPressed:(id)a3;
+- (id)buttonControl:(id)control imageForState:(int)state highlighted:(BOOL)highlighted;
+- (id)fontNameForLabelControl:(id)control;
+- (id)shadowForLabelControl:(id)control;
+- (int)buttonControlState:(id)state;
+- (void)addAdditionalChildLayersToArray:(id)array;
+- (void)buttonControlWasPressed:(id)pressed;
 - (void)dealloc;
 - (void)p_updateBackgroundLayerContent;
 - (void)p_updateControlStates;
 - (void)screenScaleDidChange;
-- (void)transportControlCloneDidUpdateState:(id)a3;
+- (void)transportControlCloneDidUpdateState:(id)state;
 - (void)updateFromLayout;
 - (void)wasAddedToParent;
 - (void)willBeRemovedFromParent;
@@ -75,7 +75,7 @@
   [(THWTransportControlRep *)self p_updateBackgroundLayerContent];
 }
 
-- (void)addAdditionalChildLayersToArray:(id)a3
+- (void)addAdditionalChildLayersToArray:(id)array
 {
   v6.receiver = self;
   v6.super_class = THWTransportControlRep;
@@ -87,51 +87,51 @@
   if (backgroundLayer)
   {
     [(CALayer *)backgroundLayer setFrame:?];
-    [a3 insertObject:self->_backgroundLayer atIndex:0];
+    [array insertObject:self->_backgroundLayer atIndex:0];
   }
 }
 
-- (void)buttonControlWasPressed:(id)a3
+- (void)buttonControlWasPressed:(id)pressed
 {
-  v4 = [objc_msgSend(a3 "layout")];
+  v4 = [objc_msgSend(pressed "layout")];
   if (v4 == &dword_0 + 2)
   {
-    v7 = [(THWTransportControlRep *)self clone];
+    clone = [(THWTransportControlRep *)self clone];
 
-    [(TSWTransportControlClone *)v7 transportControlCloneGotoNext];
+    [(TSWTransportControlClone *)clone transportControlCloneGotoNext];
   }
 
   else if (v4 == &dword_0 + 1)
   {
-    v6 = [(THWTransportControlRep *)self clone];
+    clone2 = [(THWTransportControlRep *)self clone];
 
-    [(TSWTransportControlClone *)v6 transportControlCloneGotoPrev];
+    [(TSWTransportControlClone *)clone2 transportControlCloneGotoPrev];
   }
 
   else if (!v4)
   {
-    v5 = [(THWTransportControlRep *)self clone];
+    clone3 = [(THWTransportControlRep *)self clone];
 
-    [(TSWTransportControlClone *)v5 transportControlCloneGotoFirst];
+    [(TSWTransportControlClone *)clone3 transportControlCloneGotoFirst];
   }
 }
 
-- (id)buttonControl:(id)a3 imageForState:(int)a4 highlighted:(BOOL)a5
+- (id)buttonControl:(id)control imageForState:(int)state highlighted:(BOOL)highlighted
 {
-  v5 = a5;
-  v7 = [objc_msgSend(a3 "layout")];
+  highlightedCopy = highlighted;
+  v7 = [objc_msgSend(control "layout")];
   if (v7 > 2)
   {
     goto LABEL_7;
   }
 
   v8 = @"_N";
-  if (v5)
+  if (highlightedCopy)
   {
     v8 = @"_P";
   }
 
-  if (a4 == 2)
+  if (state == 2)
   {
     v8 = @"_D";
   }
@@ -147,17 +147,17 @@ LABEL_7:
   return result;
 }
 
-- (int)buttonControlState:(id)a3
+- (int)buttonControlState:(id)state
 {
-  v4 = [objc_msgSend(a3 "layout")];
+  v4 = [objc_msgSend(state "layout")];
   if (v4 == &dword_0 + 2)
   {
-    v5 = [(TSWTransportControlClone *)[(THWTransportControlRep *)self clone] transportControlCloneCanGotoNext];
+    transportControlCloneCanGotoNext = [(TSWTransportControlClone *)[(THWTransportControlRep *)self clone] transportControlCloneCanGotoNext];
   }
 
   else if (v4 == &dword_0 + 1)
   {
-    v5 = [(TSWTransportControlClone *)[(THWTransportControlRep *)self clone] transportControlCloneCanGotoPrev];
+    transportControlCloneCanGotoNext = [(TSWTransportControlClone *)[(THWTransportControlRep *)self clone] transportControlCloneCanGotoPrev];
   }
 
   else
@@ -167,10 +167,10 @@ LABEL_7:
       return 0;
     }
 
-    v5 = [(TSWTransportControlClone *)[(THWTransportControlRep *)self clone] transportControlCloneCanGotoFirst];
+    transportControlCloneCanGotoNext = [(TSWTransportControlClone *)[(THWTransportControlRep *)self clone] transportControlCloneCanGotoFirst];
   }
 
-  if (v5)
+  if (transportControlCloneCanGotoNext)
   {
     return 0;
   }
@@ -181,24 +181,24 @@ LABEL_7:
   }
 }
 
-- (id)fontNameForLabelControl:(id)a3
+- (id)fontNameForLabelControl:(id)control
 {
-  v3 = [TSUFont boldSystemFontOfSize:a3, 12.0];
+  v3 = [TSUFont boldSystemFontOfSize:control, 12.0];
 
   return [v3 fontName];
 }
 
-- (id)shadowForLabelControl:(id)a3
+- (id)shadowForLabelControl:(id)control
 {
-  v3 = [+[TSUColor blackColor](TSUColor blackColor];
+  blackColor = [+[TSUColor blackColor](TSUColor blackColor];
 
-  return [TSDShadow shadowWithAngle:v3 offset:1 radius:-90.0 opacity:1.0 color:0.0 enabled:1.0];
+  return [TSDShadow shadowWithAngle:blackColor offset:1 radius:-90.0 opacity:1.0 color:0.0 enabled:1.0];
 }
 
-- (void)transportControlCloneDidUpdateState:(id)a3
+- (void)transportControlCloneDidUpdateState:(id)state
 {
-  v4 = [a3 object];
-  if (v4 == [(THWTransportControlRep *)self clone])
+  object = [state object];
+  if (object == [(THWTransportControlRep *)self clone])
   {
 
     [(THWTransportControlRep *)self p_updateControlStates];
@@ -219,9 +219,9 @@ LABEL_7:
 
 - (void)p_updateControlStates
 {
-  v2 = [(THWTransportControlRep *)self layout];
+  layout = [(THWTransportControlRep *)self layout];
 
-  [v2 invalidateControls];
+  [layout invalidateControls];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface ASCExponentialBackoff
-- (ASCExponentialBackoff)initWithBaseSleepTimeInterval:(double)a3 maxSleepTimeInterval:(double)a4;
+- (ASCExponentialBackoff)initWithBaseSleepTimeInterval:(double)interval maxSleepTimeInterval:(double)timeInterval;
 - (double)nextSleepTimeInterval;
 - (void)reset;
 @end
 
 @implementation ASCExponentialBackoff
 
-- (ASCExponentialBackoff)initWithBaseSleepTimeInterval:(double)a3 maxSleepTimeInterval:(double)a4
+- (ASCExponentialBackoff)initWithBaseSleepTimeInterval:(double)interval maxSleepTimeInterval:(double)timeInterval
 {
   v11.receiver = self;
   v11.super_class = ASCExponentialBackoff;
@@ -14,8 +14,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_baseSleepTimeInterval = a3;
-    v6->_maxSleepTimeInterval = a4;
+    v6->_baseSleepTimeInterval = interval;
+    v6->_maxSleepTimeInterval = timeInterval;
     v8 = objc_alloc_init(MEMORY[0x277D225F0]);
     attemptLock = v7->_attemptLock;
     v7->_attemptLock = v8;
@@ -28,15 +28,15 @@
 
 - (double)nextSleepTimeInterval
 {
-  v3 = [(ASCExponentialBackoff *)self attemptLock];
-  [v3 lock];
+  attemptLock = [(ASCExponentialBackoff *)self attemptLock];
+  [attemptLock lock];
 
   v4 = exp2([(ASCExponentialBackoff *)self attemptsMade]);
   [(ASCExponentialBackoff *)self baseSleepTimeInterval];
   v6 = v5 * v4;
   [(ASCExponentialBackoff *)self setAttemptsMade:[(ASCExponentialBackoff *)self attemptsMade]+ 1];
-  v7 = [(ASCExponentialBackoff *)self attemptLock];
-  [v7 unlock];
+  attemptLock2 = [(ASCExponentialBackoff *)self attemptLock];
+  [attemptLock2 unlock];
 
   [(ASCExponentialBackoff *)self maxSleepTimeInterval];
   if (result >= v6)
@@ -49,12 +49,12 @@
 
 - (void)reset
 {
-  v3 = [(ASCExponentialBackoff *)self attemptLock];
-  [v3 lock];
+  attemptLock = [(ASCExponentialBackoff *)self attemptLock];
+  [attemptLock lock];
 
   [(ASCExponentialBackoff *)self setAttemptsMade:0];
-  v4 = [(ASCExponentialBackoff *)self attemptLock];
-  [v4 unlock];
+  attemptLock2 = [(ASCExponentialBackoff *)self attemptLock];
+  [attemptLock2 unlock];
 }
 
 @end

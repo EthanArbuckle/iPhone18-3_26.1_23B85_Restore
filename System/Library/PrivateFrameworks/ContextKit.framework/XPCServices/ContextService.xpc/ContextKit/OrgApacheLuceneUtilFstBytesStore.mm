@@ -2,42 +2,42 @@
 + (void)initialize;
 - (NSString)description;
 - (id)getForwardReader;
-- (id)getReverseReaderWithBoolean:(BOOL)a3;
+- (id)getReverseReaderWithBoolean:(BOOL)boolean;
 - (int64_t)getPosition;
 - (int64_t)ramBytesUsed;
 - (void)dealloc;
 - (void)finish;
-- (void)reverseWithLong:(int64_t)a3 withLong:(int64_t)a4;
-- (void)skipBytesWithInt:(int)a3;
-- (void)truncateWithLong:(int64_t)a3;
-- (void)writeByteWithByte:(char)a3;
-- (void)writeByteWithInt:(int)a3 withByte:(char)a4;
-- (void)writeIntWithLong:(int64_t)a3 withInt:(int)a4;
-- (void)writeToWithOrgApacheLuceneStoreDataOutput:(id)a3;
+- (void)reverseWithLong:(int64_t)long withLong:(int64_t)withLong;
+- (void)skipBytesWithInt:(int)int;
+- (void)truncateWithLong:(int64_t)long;
+- (void)writeByteWithByte:(char)byte;
+- (void)writeByteWithInt:(int)int withByte:(char)byte;
+- (void)writeIntWithLong:(int64_t)long withInt:(int)int;
+- (void)writeToWithOrgApacheLuceneStoreDataOutput:(id)output;
 @end
 
 @implementation OrgApacheLuceneUtilFstBytesStore
 
-- (void)writeByteWithInt:(int)a3 withByte:(char)a4
+- (void)writeByteWithInt:(int)int withByte:(char)byte
 {
   blocks = self->blocks_;
-  if (!blocks || (v9 = [(JavaUtilList *)blocks getWithInt:(a3 >> self->blockBits_)]) == 0)
+  if (!blocks || (v9 = [(JavaUtilList *)blocks getWithInt:(int >> self->blockBits_)]) == 0)
   {
     JreThrowNullPointerException();
   }
 
   v10 = v9;
-  v11 = self->blockMask_ & a3;
+  v11 = self->blockMask_ & int;
   v12 = v9[2];
   if (v11 < 0 != v8 || v11 >= v12)
   {
     IOSArray_throwOutOfBoundsWithMsg(v12, v11);
   }
 
-  *(v10 + v11 + 12) = a4;
+  *(v10 + v11 + 12) = byte;
 }
 
-- (void)writeByteWithByte:(char)a3
+- (void)writeByteWithByte:(char)byte
 {
   nextWrite = self->nextWrite_;
   if (nextWrite == self->blockSize_)
@@ -68,10 +68,10 @@ LABEL_8:
     IOSArray_throwOutOfBoundsWithMsg(size, nextWrite);
   }
 
-  *(&current->super.size_ + nextWrite + 4) = a3;
+  *(&current->super.size_ + nextWrite + 4) = byte;
 }
 
-- (void)writeIntWithLong:(int64_t)a3 withInt:(int)a4
+- (void)writeIntWithLong:(int64_t)long withInt:(int)int
 {
   blocks = self->blocks_;
   if (!blocks)
@@ -80,8 +80,8 @@ LABEL_11:
     JreThrowNullPointerException();
   }
 
-  v7 = self->blockMask_ & a3;
-  v8 = a3 >> self->blockBits_;
+  v7 = self->blockMask_ & long;
+  v8 = long >> self->blockBits_;
   v9 = [(JavaUtilList *)blocks getWithInt:v8];
   for (i = 24; i != -8; i -= 8)
   {
@@ -97,7 +97,7 @@ LABEL_11:
     }
 
     v12 = (v7 + 1);
-    v9[v7 + 12] = a4 >> (i & 0x18);
+    v9[v7 + 12] = int >> (i & 0x18);
     if (v12 == self->blockSize_)
     {
       v8 = (v8 + 1);
@@ -109,7 +109,7 @@ LABEL_11:
   }
 }
 
-- (void)reverseWithLong:(int64_t)a3 withLong:(int64_t)a4
+- (void)reverseWithLong:(int64_t)long withLong:(int64_t)withLong
 {
   blocks = self->blocks_;
   if (!blocks)
@@ -117,20 +117,20 @@ LABEL_11:
     goto LABEL_25;
   }
 
-  v7 = a3;
+  longCopy = long;
   blockMask = self->blockMask_;
-  v9 = a3 >> self->blockBits_;
+  v9 = long >> self->blockBits_;
   v10 = [(JavaUtilList *)blocks getWithInt:v9];
   v11 = self->blockMask_;
-  v23 = a4 >> self->blockBits_;
+  v23 = withLong >> self->blockBits_;
   v12 = [(JavaUtilList *)self->blocks_ getWithInt:?];
-  v13 = a4 - v7 + 1;
+  v13 = withLong - longCopy + 1;
   if (v13 >= 2)
   {
     v14 = v12;
     v15 = v13 / 2;
-    v16 = v11 & a4;
-    v17 = blockMask & v7;
+    v16 = v11 & withLong;
+    v17 = blockMask & longCopy;
     while (v10)
     {
       v18 = *(v10 + 2);
@@ -192,16 +192,16 @@ LABEL_25:
   }
 }
 
-- (void)skipBytesWithInt:(int)a3
+- (void)skipBytesWithInt:(int)int
 {
-  if (a3 >= 1)
+  if (int >= 1)
   {
     nextWrite = self->nextWrite_;
     while (1)
     {
       v5 = self->blockSize_ - nextWrite;
-      v6 = a3 - v5;
-      if (a3 <= v5)
+      v6 = int - v5;
+      if (int <= v5)
       {
         break;
       }
@@ -216,14 +216,14 @@ LABEL_25:
       [(JavaUtilList *)blocks addWithId:self->current_];
       nextWrite = 0;
       self->nextWrite_ = 0;
-      a3 = v6;
+      int = v6;
       if (v6 <= 0)
       {
         return;
       }
     }
 
-    self->nextWrite_ = nextWrite + a3;
+    self->nextWrite_ = nextWrite + int;
   }
 }
 
@@ -238,11 +238,11 @@ LABEL_25:
   return self->nextWrite_ + ([(JavaUtilList *)blocks size]- 1) * self->blockSize_;
 }
 
-- (void)truncateWithLong:(int64_t)a3
+- (void)truncateWithLong:(int64_t)long
 {
-  v5 = a3 >> self->blockBits_;
-  v6 = (self->blockMask_ & a3) == 0;
-  self->nextWrite_ = self->blockMask_ & a3;
+  v5 = long >> self->blockBits_;
+  v6 = (self->blockMask_ & long) == 0;
+  self->nextWrite_ = self->blockMask_ & long;
   if (v6)
   {
     v5 = (v5 - 1);
@@ -256,7 +256,7 @@ LABEL_25:
   }
 
   [v8 clear];
-  if (a3)
+  if (long)
   {
     v9 = [(JavaUtilList *)self->blocks_ getWithInt:v5];
   }
@@ -287,7 +287,7 @@ LABEL_25:
   }
 }
 
-- (void)writeToWithOrgApacheLuceneStoreDataOutput:(id)a3
+- (void)writeToWithOrgApacheLuceneStoreDataOutput:(id)output
 {
   v10 = 0u;
   v11 = 0u;
@@ -314,7 +314,7 @@ LABEL_12:
           objc_enumerationMutation(blocks);
         }
 
-        if (!a3)
+        if (!output)
         {
           goto LABEL_12;
         }
@@ -325,7 +325,7 @@ LABEL_12:
           goto LABEL_12;
         }
 
-        [a3 writeBytesWithByteArray:v9 withInt:0 withInt:{*(v9 + 8), v10}];
+        [output writeBytesWithByteArray:v9 withInt:0 withInt:{*(v9 + 8), v10}];
       }
 
       v6 = [(JavaUtilList *)blocks countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -359,9 +359,9 @@ LABEL_12:
   return v4;
 }
 
-- (id)getReverseReaderWithBoolean:(BOOL)a3
+- (id)getReverseReaderWithBoolean:(BOOL)boolean
 {
-  if (!a3)
+  if (!boolean)
   {
     goto LABEL_5;
   }
@@ -448,7 +448,7 @@ LABEL_5:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneUtilFstBytesStore_class_();
     v3 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

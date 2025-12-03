@@ -1,92 +1,92 @@
 @interface BKSBacklightFeatures
 + (id)protobufSchema;
 - (BKSBacklightFeatures)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)didFinishProtobufDecodingWithError:(id *)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)didFinishProtobufDecodingWithError:(id *)error;
 - (id)succinctDescription;
-- (void)setFixedBrightnessLevelWhileDisabled:(float)a3;
-- (void)setFixedBrightnessNitsWhileDisabled:(float)a3;
+- (void)setFixedBrightnessLevelWhileDisabled:(float)disabled;
+- (void)setFixedBrightnessNitsWhileDisabled:(float)disabled;
 @end
 
 @implementation BKSBacklightFeatures
 
-- (id)didFinishProtobufDecodingWithError:(id *)a3
+- (id)didFinishProtobufDecodingWithError:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
   fixedBrightnessLevelWhileDisabled = self->_fixedBrightnessLevelWhileDisabled;
   if (fixedBrightnessLevelWhileDisabled == -1.0 || (fixedBrightnessNitsWhileDisabled = self->_fixedBrightnessNitsWhileDisabled, fixedBrightnessNitsWhileDisabled == -1.0))
   {
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    if (a3)
+    if (error)
     {
       v6 = MEMORY[0x1E696ABC0];
       v7 = *MEMORY[0x1E696A798];
       v13 = *MEMORY[0x1E696A588];
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot have both set: nitsWhileDisabled:%g levelWhileDisabled:%g", fixedBrightnessNitsWhileDisabled, fixedBrightnessLevelWhileDisabled];
-      v14[0] = v8;
+      fixedBrightnessLevelWhileDisabled = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot have both set: nitsWhileDisabled:%g levelWhileDisabled:%g", fixedBrightnessNitsWhileDisabled, fixedBrightnessLevelWhileDisabled];
+      v14[0] = fixedBrightnessLevelWhileDisabled;
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-      *a3 = [v6 errorWithDomain:v7 code:22 userInfo:v9];
+      *error = [v6 errorWithDomain:v7 code:22 userInfo:v9];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(BKSBacklightFeatures *)self succinctDescriptionBuilder];
-  v5 = [v4 appendBool:self->_disableFeatures withName:@"disableFeatures"];
-  v6 = [v4 appendFloat:@"fixedBrightnessNitsWhileDisabled" withName:self->_fixedBrightnessNitsWhileDisabled];
-  v7 = [v4 appendFloat:@"fixedBrightnessLevelWhileDisabled" withName:self->_fixedBrightnessLevelWhileDisabled];
+  succinctDescriptionBuilder = [(BKSBacklightFeatures *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendBool:self->_disableFeatures withName:@"disableFeatures"];
+  v6 = [succinctDescriptionBuilder appendFloat:@"fixedBrightnessNitsWhileDisabled" withName:self->_fixedBrightnessNitsWhileDisabled];
+  v7 = [succinctDescriptionBuilder appendFloat:@"fixedBrightnessLevelWhileDisabled" withName:self->_fixedBrightnessLevelWhileDisabled];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKSBacklightFeatures *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKSBacklightFeatures *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BKSBacklightFeatures *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKSBacklightFeatures *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (void)setFixedBrightnessLevelWhileDisabled:(float)a3
+- (void)setFixedBrightnessLevelWhileDisabled:(float)disabled
 {
   if (self->_fixedBrightnessNitsWhileDisabled >= 0.0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"BKSBacklightFeatures.m" lineNumber:33 description:@"cannot set both brightness level and nits; choose one or the other"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKSBacklightFeatures.m" lineNumber:33 description:@"cannot set both brightness level and nits; choose one or the other"];
   }
 
-  self->_fixedBrightnessLevelWhileDisabled = a3;
+  self->_fixedBrightnessLevelWhileDisabled = disabled;
 }
 
-- (void)setFixedBrightnessNitsWhileDisabled:(float)a3
+- (void)setFixedBrightnessNitsWhileDisabled:(float)disabled
 {
   if (self->_fixedBrightnessLevelWhileDisabled >= 0.0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"BKSBacklightFeatures.m" lineNumber:28 description:@"cannot set both brightness level and nits; choose one or the other"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKSBacklightFeatures.m" lineNumber:28 description:@"cannot set both brightness level and nits; choose one or the other"];
   }
 
-  self->_fixedBrightnessNitsWhileDisabled = a3;
+  self->_fixedBrightnessNitsWhileDisabled = disabled;
 }
 
 - (BKSBacklightFeatures)init
@@ -110,7 +110,7 @@
   block[1] = 3221225472;
   block[2] = __38__BKSBacklightFeatures_protobufSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (protobufSchema_onceToken_9819 != -1)
   {
     dispatch_once(&protobufSchema_onceToken_9819, block);

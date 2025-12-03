@@ -1,29 +1,29 @@
 @interface PREditorLookTransition
-- (BOOL)matchesCurrentLook:(id)a3 destinationLook:(id)a4;
+- (BOOL)matchesCurrentLook:(id)look destinationLook:(id)destinationLook;
 - (NSString)description;
-- (PREditorLookTransition)initWithCurrentLook:(id)a3 destinationLook:(id)a4;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (PREditorLookTransition)initWithCurrentLook:(id)look destinationLook:(id)destinationLook;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)cancelInteractiveTransition;
 - (void)finishInteractiveTransition;
-- (void)updateInteractiveTransition:(double)a3;
+- (void)updateInteractiveTransition:(double)transition;
 @end
 
 @implementation PREditorLookTransition
 
-- (PREditorLookTransition)initWithCurrentLook:(id)a3 destinationLook:(id)a4
+- (PREditorLookTransition)initWithCurrentLook:(id)look destinationLook:(id)destinationLook
 {
-  v6 = a3;
-  v7 = a4;
+  lookCopy = look;
+  destinationLookCopy = destinationLook;
   v14.receiver = self;
   v14.super_class = PREditorLookTransition;
   v8 = [(PREditorLookTransition *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lookCopy copy];
     currentLook = v8->_currentLook;
     v8->_currentLook = v9;
 
-    v11 = [v7 copy];
+    v11 = [destinationLookCopy copy];
     destinationLook = v8->_destinationLook;
     v8->_destinationLook = v11;
   }
@@ -31,16 +31,16 @@
   return v8;
 }
 
-- (BOOL)matchesCurrentLook:(id)a3 destinationLook:(id)a4
+- (BOOL)matchesCurrentLook:(id)look destinationLook:(id)destinationLook
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PREditorLookTransition *)self currentLook];
+  destinationLookCopy = destinationLook;
+  lookCopy = look;
+  currentLook = [(PREditorLookTransition *)self currentLook];
   v9 = BSEqualObjects();
 
   if (v9)
   {
-    v10 = [(PREditorLookTransition *)self destinationLook];
+    destinationLook = [(PREditorLookTransition *)self destinationLook];
     v11 = BSEqualObjects();
   }
 
@@ -52,47 +52,47 @@
   return v11;
 }
 
-- (void)updateInteractiveTransition:(double)a3
+- (void)updateInteractiveTransition:(double)transition
 {
-  v5 = fmax(fmin((a3 + -0.2) / 0.6, 1.0), 0.0);
-  v10 = [(PREditorLookTransition *)self titleStyleTransition];
-  [v10 updateInteractiveTransition:v5];
-  v6 = [(PREditorLookTransition *)self titleScrollingTransition];
-  [v6 updateInteractiveTransition:a3];
-  v7 = [(PREditorLookTransition *)self subtitleStyleTransition];
-  [v7 updateInteractiveTransition:v5];
-  v8 = [(PREditorLookTransition *)self complicationTransition];
-  [v8 updateInteractiveTransition:v5];
-  v9 = [(PREditorLookTransition *)self lookNameTransition];
-  [v9 updateInteractiveTransition:a3];
+  v5 = fmax(fmin((transition + -0.2) / 0.6, 1.0), 0.0);
+  titleStyleTransition = [(PREditorLookTransition *)self titleStyleTransition];
+  [titleStyleTransition updateInteractiveTransition:v5];
+  titleScrollingTransition = [(PREditorLookTransition *)self titleScrollingTransition];
+  [titleScrollingTransition updateInteractiveTransition:transition];
+  subtitleStyleTransition = [(PREditorLookTransition *)self subtitleStyleTransition];
+  [subtitleStyleTransition updateInteractiveTransition:v5];
+  complicationTransition = [(PREditorLookTransition *)self complicationTransition];
+  [complicationTransition updateInteractiveTransition:v5];
+  lookNameTransition = [(PREditorLookTransition *)self lookNameTransition];
+  [lookNameTransition updateInteractiveTransition:transition];
 }
 
 - (void)finishInteractiveTransition
 {
-  v7 = [(PREditorLookTransition *)self titleStyleTransition];
-  [v7 cancelInteractiveTransition];
-  v3 = [(PREditorLookTransition *)self titleScrollingTransition];
-  [v3 finishInteractiveTransition];
-  v4 = [(PREditorLookTransition *)self subtitleStyleTransition];
-  [v4 finishInteractiveTransition];
-  v5 = [(PREditorLookTransition *)self complicationTransition];
-  [v5 finishInteractiveTransition];
-  v6 = [(PREditorLookTransition *)self lookNameTransition];
-  [v6 finishInteractiveTransition];
+  titleStyleTransition = [(PREditorLookTransition *)self titleStyleTransition];
+  [titleStyleTransition cancelInteractiveTransition];
+  titleScrollingTransition = [(PREditorLookTransition *)self titleScrollingTransition];
+  [titleScrollingTransition finishInteractiveTransition];
+  subtitleStyleTransition = [(PREditorLookTransition *)self subtitleStyleTransition];
+  [subtitleStyleTransition finishInteractiveTransition];
+  complicationTransition = [(PREditorLookTransition *)self complicationTransition];
+  [complicationTransition finishInteractiveTransition];
+  lookNameTransition = [(PREditorLookTransition *)self lookNameTransition];
+  [lookNameTransition finishInteractiveTransition];
 }
 
 - (void)cancelInteractiveTransition
 {
-  v7 = [(PREditorLookTransition *)self titleStyleTransition];
-  [v7 cancelInteractiveTransition];
-  v3 = [(PREditorLookTransition *)self titleScrollingTransition];
-  [v3 cancelInteractiveTransition];
-  v4 = [(PREditorLookTransition *)self subtitleStyleTransition];
-  [v4 cancelInteractiveTransition];
-  v5 = [(PREditorLookTransition *)self complicationTransition];
-  [v5 cancelInteractiveTransition];
-  v6 = [(PREditorLookTransition *)self lookNameTransition];
-  [v6 cancelInteractiveTransition];
+  titleStyleTransition = [(PREditorLookTransition *)self titleStyleTransition];
+  [titleStyleTransition cancelInteractiveTransition];
+  titleScrollingTransition = [(PREditorLookTransition *)self titleScrollingTransition];
+  [titleScrollingTransition cancelInteractiveTransition];
+  subtitleStyleTransition = [(PREditorLookTransition *)self subtitleStyleTransition];
+  [subtitleStyleTransition cancelInteractiveTransition];
+  complicationTransition = [(PREditorLookTransition *)self complicationTransition];
+  [complicationTransition cancelInteractiveTransition];
+  lookNameTransition = [(PREditorLookTransition *)self lookNameTransition];
+  [lookNameTransition cancelInteractiveTransition];
 }
 
 - (NSString)description
@@ -102,7 +102,7 @@
   v8 = 3221225472;
   v9 = __37__PREditorLookTransition_description__block_invoke;
   v10 = &unk_1E7843070;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -111,26 +111,26 @@
   return v5;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v16 = a3;
-  v4 = [(PREditorLookTransition *)self currentLook];
-  v5 = [v16 appendObject:v4 withName:@"currentLook"];
+  formatterCopy = formatter;
+  currentLook = [(PREditorLookTransition *)self currentLook];
+  v5 = [formatterCopy appendObject:currentLook withName:@"currentLook"];
 
-  v6 = [(PREditorLookTransition *)self destinationLook];
-  v7 = [v16 appendObject:v6 withName:@"destinationLook"];
+  destinationLook = [(PREditorLookTransition *)self destinationLook];
+  v7 = [formatterCopy appendObject:destinationLook withName:@"destinationLook"];
 
-  v8 = [(PREditorLookTransition *)self titleStyleTransition];
-  v9 = [v16 appendObject:v8 withName:@"titleStyleTransition"];
+  titleStyleTransition = [(PREditorLookTransition *)self titleStyleTransition];
+  v9 = [formatterCopy appendObject:titleStyleTransition withName:@"titleStyleTransition"];
 
-  v10 = [(PREditorLookTransition *)self titleScrollingTransition];
-  v11 = [v16 appendObject:v10 withName:@"titleScrollingTransition"];
+  titleScrollingTransition = [(PREditorLookTransition *)self titleScrollingTransition];
+  v11 = [formatterCopy appendObject:titleScrollingTransition withName:@"titleScrollingTransition"];
 
-  v12 = [(PREditorLookTransition *)self subtitleStyleTransition];
-  v13 = [v16 appendObject:v12 withName:@"subtitleStyleTransition"];
+  subtitleStyleTransition = [(PREditorLookTransition *)self subtitleStyleTransition];
+  v13 = [formatterCopy appendObject:subtitleStyleTransition withName:@"subtitleStyleTransition"];
 
-  v14 = [(PREditorLookTransition *)self lookNameTransition];
-  v15 = [v16 appendObject:v14 withName:@"lookNameTransition"];
+  lookNameTransition = [(PREditorLookTransition *)self lookNameTransition];
+  v15 = [formatterCopy appendObject:lookNameTransition withName:@"lookNameTransition"];
 }
 
 @end

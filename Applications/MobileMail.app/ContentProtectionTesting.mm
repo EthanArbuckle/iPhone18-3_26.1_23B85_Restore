@@ -1,8 +1,8 @@
 @interface ContentProtectionTesting
 + (id)sharedInstance;
 - (void)_invalidateLockTimer;
-- (void)_lockTimerFired:(id)a3;
-- (void)_simulateContentProtectionState:(int64_t)a3;
+- (void)_lockTimerFired:(id)fired;
+- (void)_simulateContentProtectionState:(int64_t)state;
 - (void)disableContentProtection;
 - (void)toggleLockState;
 @end
@@ -68,9 +68,9 @@ LABEL_9:
   [(ContentProtectionTesting *)self _simulateContentProtectionState:3];
 }
 
-- (void)_lockTimerFired:(id)a3
+- (void)_lockTimerFired:(id)fired
 {
-  if (self->_lockTimer == a3)
+  if (self->_lockTimer == fired)
   {
     if (EFContentProtectionGetObservedState() == 2)
     {
@@ -88,22 +88,22 @@ LABEL_9:
   self->_lockTimer = 0;
 }
 
-- (void)_simulateContentProtectionState:(int64_t)a3
+- (void)_simulateContentProtectionState:(int64_t)state
 {
-  if (a3 > 3)
+  if (state > 3)
   {
     v4 = @"invalid";
   }
 
   else
   {
-    v4 = off_10064C730[a3];
+    v4 = off_10064C730[state];
   }
 
   v5 = MFLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [NSNumber numberWithInteger:a3];
+    v6 = [NSNumber numberWithInteger:state];
     v7 = 138412546;
     v8 = v4;
     v9 = 2112;

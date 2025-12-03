@@ -1,27 +1,27 @@
 @interface TSAPdfTaggerTableLayoutSpaceContext
-- (TSAPdfTaggerTableLayoutSpaceContext)initWithStateOfTagger:(id)a3 tableLayoutSpace:(id)a4;
+- (TSAPdfTaggerTableLayoutSpaceContext)initWithStateOfTagger:(id)tagger tableLayoutSpace:(id)space;
 - (TSUCellRect)bodyCellRange;
 - (_NSRange)bodyRowRange;
-- (void)addRow:(unsigned int)a3;
+- (void)addRow:(unsigned int)row;
 @end
 
 @implementation TSAPdfTaggerTableLayoutSpaceContext
 
-- (TSAPdfTaggerTableLayoutSpaceContext)initWithStateOfTagger:(id)a3 tableLayoutSpace:(id)a4
+- (TSAPdfTaggerTableLayoutSpaceContext)initWithStateOfTagger:(id)tagger tableLayoutSpace:(id)space
 {
-  v6 = a3;
-  v7 = a4;
+  taggerCopy = tagger;
+  spaceCopy = space;
   v24.receiver = self;
   v24.super_class = TSAPdfTaggerTableLayoutSpaceContext;
-  v8 = [(TSAPdfTaggerContext *)&v24 initWithStateOfTagger:v6];
+  v8 = [(TSAPdfTaggerContext *)&v24 initWithStateOfTagger:taggerCopy];
   if (v8)
   {
     v9 = objc_opt_class();
-    v12 = objc_msgSend_topOfContextStackWithExpectedClass_(v6, v10, v9, v11);
+    v12 = objc_msgSend_topOfContextStackWithExpectedClass_(taggerCopy, v10, v9, v11);
     tableChunkContext = v8->_tableChunkContext;
     v8->_tableChunkContext = v12;
 
-    objc_storeStrong(&v8->_tableLayoutSpace, a4);
+    objc_storeStrong(&v8->_tableLayoutSpace, space);
     v17 = objc_msgSend_tableLayoutSpace(v8, v14, v15, v16);
     v21 = objc_msgSend_layout(v17, v18, v19, v20);
 
@@ -44,10 +44,10 @@
   return result;
 }
 
-- (void)addRow:(unsigned int)a3
+- (void)addRow:(unsigned int)row
 {
-  v4 = *&a3;
-  if (objc_msgSend_currentRowIndex(self, a2, *&a3, v3) == 0x7FFFFFFF)
+  v4 = *&row;
+  if (objc_msgSend_currentRowIndex(self, a2, *&row, v3) == 0x7FFFFFFF)
   {
     v9 = v4;
   }

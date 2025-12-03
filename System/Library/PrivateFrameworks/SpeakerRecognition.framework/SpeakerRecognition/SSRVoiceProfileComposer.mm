@@ -1,28 +1,28 @@
 @interface SSRVoiceProfileComposer
 + (id)sharedTrainer;
-- (BOOL)_addUtteranceHelper:(id)a3 toProfile:(id)a4 withAnalyzer:(id)a5 withPreTriggerAudioTime:(double)a6 withError:(id *)a7;
-- (BOOL)addUtterance:(id)a3 toProfile:(id)a4;
-- (BOOL)addUtterance:(id)a3 toProfile:(id)a4 withAsset:(id)a5 error:(id *)a6;
-- (BOOL)addUtterance:(id)a3 toProfile:(id)a4 withAsset:(id)a5 sessionUtteranceId:(id)a6 sessionMHUUID:(id)a7 phId:(unint64_t)a8;
-- (BOOL)addUtterance:(id)a3 toProfile:(id)a4 withSecureAsset:(id)a5 error:(id *)a6;
-- (BOOL)addUtterance:(id)a3 toProfile:(id)a4 withSecureAsset:(id)a5 sessionUtteranceId:(id)a6 sessionMHUUID:(id)a7 phId:(unint64_t)a8;
+- (BOOL)_addUtteranceHelper:(id)helper toProfile:(id)profile withAnalyzer:(id)analyzer withPreTriggerAudioTime:(double)time withError:(id *)error;
+- (BOOL)addUtterance:(id)utterance toProfile:(id)profile;
+- (BOOL)addUtterance:(id)utterance toProfile:(id)profile withAsset:(id)asset error:(id *)error;
+- (BOOL)addUtterance:(id)utterance toProfile:(id)profile withAsset:(id)asset sessionUtteranceId:(id)id sessionMHUUID:(id)d phId:(unint64_t)phId;
+- (BOOL)addUtterance:(id)utterance toProfile:(id)profile withSecureAsset:(id)asset error:(id *)error;
+- (BOOL)addUtterance:(id)utterance toProfile:(id)profile withSecureAsset:(id)asset sessionUtteranceId:(id)id sessionMHUUID:(id)d phId:(unint64_t)phId;
 - (SSRVoiceProfileComposer)init;
-- (double)_getPreTriggerAudioTimeFromAsset:(id)a3;
-- (id)_getAnalyzerWithAsset:(id)a3 forProfile:(id)a4;
-- (id)_getAnalyzerWithSecureAsset:(id)a3;
-- (void)_logEnrollmentUtteranceWithUtteranceId:(unint64_t)a3 mhUUID:(id)a4 locale:(id)a5 phId:(unint64_t)a6;
-- (void)logEnrollmentUtterance:(id)a3 locale:(id)a4 utteranceId:(unint64_t)a5 mhUUID:(id)a6 phId:(unint64_t)a7;
+- (double)_getPreTriggerAudioTimeFromAsset:(id)asset;
+- (id)_getAnalyzerWithAsset:(id)asset forProfile:(id)profile;
+- (id)_getAnalyzerWithSecureAsset:(id)asset;
+- (void)_logEnrollmentUtteranceWithUtteranceId:(unint64_t)id mhUUID:(id)d locale:(id)locale phId:(unint64_t)phId;
+- (void)logEnrollmentUtterance:(id)utterance locale:(id)locale utteranceId:(unint64_t)id mhUUID:(id)d phId:(unint64_t)phId;
 @end
 
 @implementation SSRVoiceProfileComposer
 
-- (BOOL)_addUtteranceHelper:(id)a3 toProfile:(id)a4 withAnalyzer:(id)a5 withPreTriggerAudioTime:(double)a6 withError:(id *)a7
+- (BOOL)_addUtteranceHelper:(id)helper toProfile:(id)profile withAnalyzer:(id)analyzer withPreTriggerAudioTime:(double)time withError:(id *)error
 {
   v67 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v62 = a5;
-  v13 = [v11 length];
+  helperCopy = helper;
+  profileCopy = profile;
+  analyzerCopy = analyzer;
+  v13 = [helperCopy length];
   if (!v13)
   {
     LOBYTE(v34) = 0;
@@ -32,30 +32,30 @@ LABEL_26:
     goto LABEL_38;
   }
 
-  v56 = a7;
-  v57 = v12;
+  errorCopy = error;
+  v57 = profileCopy;
   v14 = 0;
   v15 = 0;
   v60 = *MEMORY[0x277D01B40];
   v59 = *MEMORY[0x277D01B48];
   v16 = *MEMORY[0x277D01DF8];
-  v58 = v11;
+  v58 = helperCopy;
   while (1)
   {
-    v17 = [MEMORY[0x277D016E0] inputRecordingSampleByteDepth];
-    if (v13 / v17 >= 0xA0)
+    inputRecordingSampleByteDepth = [MEMORY[0x277D016E0] inputRecordingSampleByteDepth];
+    if (v13 / inputRecordingSampleByteDepth >= 0xA0)
     {
       v18 = 160;
     }
 
     else
     {
-      v18 = v13 / v17;
+      v18 = v13 / inputRecordingSampleByteDepth;
     }
 
     v19 = v18 * [MEMORY[0x277D016E0] inputRecordingSampleByteDepth];
-    v20 = [v11 subdataWithRange:{v14, v19}];
-    v21 = [v62 analyzeWithBuffer:v20];
+    v20 = [helperCopy subdataWithRange:{v14, v19}];
+    v21 = [analyzerCopy analyzeWithBuffer:v20];
 
     if (!v21)
     {
@@ -63,21 +63,21 @@ LABEL_26:
     }
 
     v22 = [v21 mutableCopy];
-    v23 = [MEMORY[0x277D018F8] deviceProductType];
-    [v22 setObject:v23 forKeyedSubscript:v60];
+    deviceProductType = [MEMORY[0x277D018F8] deviceProductType];
+    [v22 setObject:deviceProductType forKeyedSubscript:v60];
 
-    v24 = [MEMORY[0x277D018F8] deviceProductVersion];
-    [v22 setObject:v24 forKeyedSubscript:v59];
+    deviceProductVersion = [MEMORY[0x277D018F8] deviceProductVersion];
+    [v22 setObject:deviceProductVersion forKeyedSubscript:v59];
 
     v25 = [v22 objectForKeyedSubscript:v16];
     if (v25)
     {
       v26 = v25;
       v27 = [v22 objectForKeyedSubscript:v16];
-      v28 = [v27 BOOLValue];
+      bOOLValue = [v27 BOOLValue];
 
-      v11 = v58;
-      if (v28)
+      helperCopy = v58;
+      if (bOOLValue)
       {
         break;
       }
@@ -92,17 +92,17 @@ LABEL_10:
 
     if (!v13)
     {
-      v30 = v56;
-      if (!v56)
+      v30 = errorCopy;
+      if (!errorCopy)
       {
         LOBYTE(v34) = 0;
         v13 = 0;
         v32 = 0;
-        v12 = v57;
+        profileCopy = v57;
         goto LABEL_38;
       }
 
-      v12 = v57;
+      profileCopy = v57;
       if (!v15)
       {
         LOBYTE(v34) = 0;
@@ -119,15 +119,15 @@ LABEL_10:
   }
 
   v35 = [v22 objectForKeyedSubscript:*MEMORY[0x277D01F00]];
-  v36 = [v35 unsignedIntegerValue];
-  v37 = v36 * [MEMORY[0x277D016E0] inputRecordingSampleByteDepth];
+  unsignedIntegerValue = [v35 unsignedIntegerValue];
+  v37 = unsignedIntegerValue * [MEMORY[0x277D016E0] inputRecordingSampleByteDepth];
 
   v38 = [v22 objectForKeyedSubscript:*MEMORY[0x277D01E78]];
-  v39 = [v38 unsignedIntegerValue];
-  v40 = v39 * [MEMORY[0x277D016E0] inputRecordingSampleByteDepth];
+  unsignedIntegerValue2 = [v38 unsignedIntegerValue];
+  v40 = unsignedIntegerValue2 * [MEMORY[0x277D016E0] inputRecordingSampleByteDepth];
 
   [MEMORY[0x277D016E0] inputRecordingSampleRate];
-  v42 = v41 * a6 * [MEMORY[0x277D016E0] inputRecordingSampleByteDepth];
+  v42 = v41 * time * [MEMORY[0x277D016E0] inputRecordingSampleByteDepth];
   if (v37 >= v42)
   {
     v43 = v37 - v42;
@@ -174,8 +174,8 @@ LABEL_10:
     v32 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:1402 userInfo:0];
   }
 
-  v30 = v56;
-  if (v56)
+  v30 = errorCopy;
+  if (errorCopy)
   {
     v51 = v34;
   }
@@ -188,13 +188,13 @@ LABEL_10:
   if (v51)
   {
     v15 = 0;
-    v12 = v57;
-    v11 = v58;
+    profileCopy = v57;
+    helperCopy = v58;
     goto LABEL_38;
   }
 
-  v12 = v57;
-  v11 = v58;
+  profileCopy = v57;
+  helperCopy = v58;
   if (v13)
   {
     v52 = v13;
@@ -224,112 +224,112 @@ LABEL_38:
   return v34;
 }
 
-- (id)_getAnalyzerWithSecureAsset:(id)a3
+- (id)_getAnalyzerWithSecureAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [[_TtC18SpeakerRecognition34CSVTUITwoPassKeywordDetectorHelper alloc] initWithSecureAsset:v3 supportMph:1];
+  assetCopy = asset;
+  v4 = [[_TtC18SpeakerRecognition34CSVTUITwoPassKeywordDetectorHelper alloc] initWithSecureAsset:assetCopy supportMph:1];
 
   return v4;
 }
 
-- (double)_getPreTriggerAudioTimeFromAsset:(id)a3
+- (double)_getPreTriggerAudioTimeFromAsset:(id)asset
 {
-  v3 = [MEMORY[0x277D01958] decodeConfigFrom:a3 forFirstPassSource:0];
+  v3 = [MEMORY[0x277D01958] decodeConfigFrom:asset forFirstPassSource:0];
   [v3 preTriggerAudioTime];
   v5 = v4;
 
   return v5;
 }
 
-- (id)_getAnalyzerWithAsset:(id)a3 forProfile:(id)a4
+- (id)_getAnalyzerWithAsset:(id)asset forProfile:(id)profile
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D01958] decodeConfigFrom:v5 forFirstPassSource:0];
+  assetCopy = asset;
+  profileCopy = profile;
+  v7 = [MEMORY[0x277D01958] decodeConfigFrom:assetCopy forFirstPassSource:0];
   if ([v7 useRecognizerCombination] && +[SSRUtils isMphVTUIKeywordDetectorSupportedPlatform](SSRUtils, "isMphVTUIKeywordDetectorSupportedPlatform"))
   {
     v8 = [[CSVoiceTriggerUserSelectedPhrase alloc] initWithEndpointId:0];
     v9 = MEMORY[0x277D018F8];
-    v10 = [v6 locale];
-    if ([v9 supportsMphForLanguageCode:v10])
+    locale = [profileCopy locale];
+    if ([v9 supportsMphForLanguageCode:locale])
     {
-      v11 = [(CSVoiceTriggerUserSelectedPhrase *)v8 multiPhraseSelected];
+      multiPhraseSelected = [(CSVoiceTriggerUserSelectedPhrase *)v8 multiPhraseSelected];
     }
 
     else
     {
-      v11 = 0;
+      multiPhraseSelected = 0;
     }
 
-    v12 = [[CSVTUITwoPassKeywordDetector alloc] initWithAsset:v5 supportMph:v11];
+    v12 = [[CSVTUITwoPassKeywordDetector alloc] initWithAsset:assetCopy supportMph:multiPhraseSelected];
   }
 
   else
   {
-    v12 = [[CSVTUIKeywordDetector alloc] initWithAsset:v5];
+    v12 = [[CSVTUIKeywordDetector alloc] initWithAsset:assetCopy];
   }
 
   return v12;
 }
 
-- (void)_logEnrollmentUtteranceWithUtteranceId:(unint64_t)a3 mhUUID:(id)a4 locale:(id)a5 phId:(unint64_t)a6
+- (void)_logEnrollmentUtteranceWithUtteranceId:(unint64_t)id mhUUID:(id)d locale:(id)locale phId:(unint64_t)phId
 {
-  v18 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CEF360] sharedPreferences];
-  v11 = [v10 siriDataSharingOptInStatus];
+  dCopy = d;
+  localeCopy = locale;
+  mEMORY[0x277CEF360] = [MEMORY[0x277CEF360] sharedPreferences];
+  siriDataSharingOptInStatus = [mEMORY[0x277CEF360] siriDataSharingOptInStatus];
 
-  if (v11 == 1)
+  if (siriDataSharingOptInStatus == 1)
   {
     v12 = objc_alloc_init(MEMORY[0x277D5A6F8]);
-    [v12 setPageNumber:a3];
-    [v12 setTriggerPhrase:{+[SSRUtils convertToSchemaEnumWithPhId:](SSRUtils, "convertToSchemaEnumWithPhId:", a6)}];
-    v13 = [SSRUtils convertSchemaTypeWithLocale:v9];
+    [v12 setPageNumber:id];
+    [v12 setTriggerPhrase:{+[SSRUtils convertToSchemaEnumWithPhId:](SSRUtils, "convertToSchemaEnumWithPhId:", phId)}];
+    v13 = [SSRUtils convertSchemaTypeWithLocale:localeCopy];
     [v12 setSiriInputLocale:v13];
 
     v14 = objc_alloc_init(MEMORY[0x277D5A698]);
     v15 = objc_alloc_init(MEMORY[0x277D5A6B0]);
-    v16 = [objc_alloc(MEMORY[0x277D5AC70]) initWithNSUUID:v18];
+    v16 = [objc_alloc(MEMORY[0x277D5AC70]) initWithNSUUID:dCopy];
     [v15 setSiriSetupId:v16];
 
     [v14 setEventMetadata:v15];
     [v14 setEnrollmentUtteranceDetected:v12];
-    v17 = [MEMORY[0x277D552B8] sharedStream];
-    [v17 emitMessage:v14];
+    mEMORY[0x277D552B8] = [MEMORY[0x277D552B8] sharedStream];
+    [mEMORY[0x277D552B8] emitMessage:v14];
   }
 }
 
-- (void)logEnrollmentUtterance:(id)a3 locale:(id)a4 utteranceId:(unint64_t)a5 mhUUID:(id)a6 phId:(unint64_t)a7
+- (void)logEnrollmentUtterance:(id)utterance locale:(id)locale utteranceId:(unint64_t)id mhUUID:(id)d phId:(unint64_t)phId
 {
-  v11 = a4;
-  v12 = a6;
+  localeCopy = locale;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__SSRVoiceProfileComposer_logEnrollmentUtterance_locale_utteranceId_mhUUID_phId___block_invoke;
   block[3] = &unk_278578350;
   block[4] = self;
-  v17 = v12;
-  v18 = v11;
-  v19 = a5;
-  v20 = a7;
-  v14 = v11;
-  v15 = v12;
+  v17 = dCopy;
+  v18 = localeCopy;
+  idCopy = id;
+  phIdCopy = phId;
+  v14 = localeCopy;
+  v15 = dCopy;
   dispatch_async(queue, block);
 }
 
-- (BOOL)addUtterance:(id)a3 toProfile:(id)a4 withSecureAsset:(id)a5 sessionUtteranceId:(id)a6 sessionMHUUID:(id)a7 phId:(unint64_t)a8
+- (BOOL)addUtterance:(id)utterance toProfile:(id)profile withSecureAsset:(id)asset sessionUtteranceId:(id)id sessionMHUUID:(id)d phId:(unint64_t)phId
 {
   v29 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = [(SSRVoiceProfileComposer *)self addUtterance:v14 toProfile:v15 withSecureAsset:a5 error:0];
-  if (v16 && v17)
+  utteranceCopy = utterance;
+  profileCopy = profile;
+  idCopy = id;
+  dCopy = d;
+  v18 = [(SSRVoiceProfileComposer *)self addUtterance:utteranceCopy toProfile:profileCopy withSecureAsset:asset error:0];
+  if (idCopy && dCopy)
   {
-    v19 = [v15 locale];
-    -[SSRVoiceProfileComposer logEnrollmentUtterance:locale:utteranceId:mhUUID:phId:](self, "logEnrollmentUtterance:locale:utteranceId:mhUUID:phId:", v14, v19, [v16 unsignedIntegerValue], v17, a8);
+    locale = [profileCopy locale];
+    -[SSRVoiceProfileComposer logEnrollmentUtterance:locale:utteranceId:mhUUID:phId:](self, "logEnrollmentUtterance:locale:utteranceId:mhUUID:phId:", utteranceCopy, locale, [idCopy unsignedIntegerValue], dCopy, phId);
   }
 
   else
@@ -340,9 +340,9 @@ LABEL_38:
       v23 = 136315650;
       v24 = "[SSRVoiceProfileComposer addUtterance:toProfile:withSecureAsset:sessionUtteranceId:sessionMHUUID:phId:]";
       v25 = 2112;
-      v26 = v16;
+      v26 = idCopy;
       v27 = 2112;
-      v28 = v17;
+      v28 = dCopy;
       _os_log_error_impl(&dword_225E12000, v20, OS_LOG_TYPE_ERROR, "%s utteranceId or mhUUID passed in are nil - utteranceId: %@ mhUUID: %@", &v23, 0x20u);
     }
   }
@@ -351,18 +351,18 @@ LABEL_38:
   return v18;
 }
 
-- (BOOL)addUtterance:(id)a3 toProfile:(id)a4 withAsset:(id)a5 sessionUtteranceId:(id)a6 sessionMHUUID:(id)a7 phId:(unint64_t)a8
+- (BOOL)addUtterance:(id)utterance toProfile:(id)profile withAsset:(id)asset sessionUtteranceId:(id)id sessionMHUUID:(id)d phId:(unint64_t)phId
 {
   v29 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = [(SSRVoiceProfileComposer *)self addUtterance:v14 toProfile:v15 withAsset:a5 error:0];
-  if (v16 && v17)
+  utteranceCopy = utterance;
+  profileCopy = profile;
+  idCopy = id;
+  dCopy = d;
+  v18 = [(SSRVoiceProfileComposer *)self addUtterance:utteranceCopy toProfile:profileCopy withAsset:asset error:0];
+  if (idCopy && dCopy)
   {
-    v19 = [v15 locale];
-    -[SSRVoiceProfileComposer logEnrollmentUtterance:locale:utteranceId:mhUUID:phId:](self, "logEnrollmentUtterance:locale:utteranceId:mhUUID:phId:", v14, v19, [v16 unsignedIntegerValue], v17, a8);
+    locale = [profileCopy locale];
+    -[SSRVoiceProfileComposer logEnrollmentUtterance:locale:utteranceId:mhUUID:phId:](self, "logEnrollmentUtterance:locale:utteranceId:mhUUID:phId:", utteranceCopy, locale, [idCopy unsignedIntegerValue], dCopy, phId);
   }
 
   else
@@ -373,9 +373,9 @@ LABEL_38:
       v23 = 136315650;
       v24 = "[SSRVoiceProfileComposer addUtterance:toProfile:withAsset:sessionUtteranceId:sessionMHUUID:phId:]";
       v25 = 2112;
-      v26 = v16;
+      v26 = idCopy;
       v27 = 2112;
-      v28 = v17;
+      v28 = dCopy;
       _os_log_error_impl(&dword_225E12000, v20, OS_LOG_TYPE_ERROR, "%s utteranceId or mhUUID passed in are nil - utteranceId: %@ mhUUID: %@", &v23, 0x20u);
     }
   }
@@ -384,40 +384,40 @@ LABEL_38:
   return v18;
 }
 
-- (BOOL)addUtterance:(id)a3 toProfile:(id)a4 withSecureAsset:(id)a5 error:(id *)a6
+- (BOOL)addUtterance:(id)utterance toProfile:(id)profile withSecureAsset:(id)asset error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(SSRVoiceProfileComposer *)self _getAnalyzerWithSecureAsset:v10];
-  [(SSRVoiceProfileComposer *)self _getPreTriggerAudioTimeFromSecureAsset:v10];
+  assetCopy = asset;
+  profileCopy = profile;
+  utteranceCopy = utterance;
+  v13 = [(SSRVoiceProfileComposer *)self _getAnalyzerWithSecureAsset:assetCopy];
+  [(SSRVoiceProfileComposer *)self _getPreTriggerAudioTimeFromSecureAsset:assetCopy];
   v15 = v14;
 
-  LOBYTE(a6) = [(SSRVoiceProfileComposer *)self _addUtteranceHelper:v12 toProfile:v11 withAnalyzer:v13 withPreTriggerAudioTime:a6 withError:v15];
-  return a6;
+  LOBYTE(error) = [(SSRVoiceProfileComposer *)self _addUtteranceHelper:utteranceCopy toProfile:profileCopy withAnalyzer:v13 withPreTriggerAudioTime:error withError:v15];
+  return error;
 }
 
-- (BOOL)addUtterance:(id)a3 toProfile:(id)a4 withAsset:(id)a5 error:(id *)a6
+- (BOOL)addUtterance:(id)utterance toProfile:(id)profile withAsset:(id)asset error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(SSRVoiceProfileComposer *)self _getAnalyzerWithAsset:v10 forProfile:v11];
-  [(SSRVoiceProfileComposer *)self _getPreTriggerAudioTimeFromAsset:v10];
+  assetCopy = asset;
+  profileCopy = profile;
+  utteranceCopy = utterance;
+  v13 = [(SSRVoiceProfileComposer *)self _getAnalyzerWithAsset:assetCopy forProfile:profileCopy];
+  [(SSRVoiceProfileComposer *)self _getPreTriggerAudioTimeFromAsset:assetCopy];
   v15 = v14;
 
-  LOBYTE(a6) = [(SSRVoiceProfileComposer *)self _addUtteranceHelper:v12 toProfile:v11 withAnalyzer:v13 withPreTriggerAudioTime:a6 withError:v15];
-  return a6;
+  LOBYTE(error) = [(SSRVoiceProfileComposer *)self _addUtteranceHelper:utteranceCopy toProfile:profileCopy withAnalyzer:v13 withPreTriggerAudioTime:error withError:v15];
+  return error;
 }
 
-- (BOOL)addUtterance:(id)a3 toProfile:(id)a4
+- (BOOL)addUtterance:(id)utterance toProfile:(id)profile
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  utteranceCopy = utterance;
+  profileCopy = profile;
   v8 = +[SSRAssetManager sharedManager];
-  v9 = [v7 locale];
-  v10 = [v8 installedAssetOfType:0 forLanguage:v9];
+  locale = [profileCopy locale];
+  defaultFallBackAssetForVoiceTrigger = [v8 installedAssetOfType:0 forLanguage:locale];
 
   v11 = MEMORY[0x277D01970];
   v12 = *MEMORY[0x277D01970];
@@ -426,11 +426,11 @@ LABEL_38:
     v17 = 136315394;
     v18 = "[SSRVoiceProfileComposer addUtterance:toProfile:]";
     v19 = 2114;
-    v20 = v10;
+    v20 = defaultFallBackAssetForVoiceTrigger;
     _os_log_impl(&dword_225E12000, v12, OS_LOG_TYPE_DEFAULT, "%s CSVoiceTriggerAsset found: %{public}@", &v17, 0x16u);
   }
 
-  if (!v10)
+  if (!defaultFallBackAssetForVoiceTrigger)
   {
     v13 = *v11;
     if (os_log_type_enabled(*v11, OS_LOG_TYPE_DEFAULT))
@@ -440,10 +440,10 @@ LABEL_38:
       _os_log_impl(&dword_225E12000, v13, OS_LOG_TYPE_DEFAULT, "%s Cannot find voicetrigger asset from asset manager, let's fallback to asset in the framework", &v17, 0xCu);
     }
 
-    v10 = [MEMORY[0x277D015F8] defaultFallBackAssetForVoiceTrigger];
+    defaultFallBackAssetForVoiceTrigger = [MEMORY[0x277D015F8] defaultFallBackAssetForVoiceTrigger];
   }
 
-  v14 = [(SSRVoiceProfileComposer *)self addUtterance:v6 toProfile:v7 withAsset:v10 error:0];
+  v14 = [(SSRVoiceProfileComposer *)self addUtterance:utteranceCopy toProfile:profileCopy withAsset:defaultFallBackAssetForVoiceTrigger error:0];
 
   v15 = *MEMORY[0x277D85DE8];
   return v14;

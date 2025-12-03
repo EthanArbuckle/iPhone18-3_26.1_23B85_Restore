@@ -1,21 +1,21 @@
 @interface CheckStoreQueueTask
-- (void)completeWithError:(id)a3;
+- (void)completeWithError:(id)error;
 - (void)main;
 @end
 
 @implementation CheckStoreQueueTask
 
-- (void)completeWithError:(id)a3
+- (void)completeWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
-    sub_1001D8C40(self, v4, 0, 0, 0, 0);
+    sub_1001D8C40(self, errorCopy, 0, 0, 0, 0);
   }
 
   v5.receiver = self;
   v5.super_class = CheckStoreQueueTask;
-  [(Task *)&v5 completeWithError:v4];
+  [(Task *)&v5 completeWithError:errorCopy];
 }
 
 - (void)main
@@ -56,14 +56,14 @@ LABEL_96:
     goto LABEL_96;
   }
 
-  v128 = [(PurchaseInfo *)self->_purchaseInfo account];
-  if (!v128)
+  account = [(PurchaseInfo *)self->_purchaseInfo account];
+  if (!account)
   {
     v5 = +[ACAccountStore ams_sharedAccountStore];
-    v6 = [v5 ams_activeiTunesAccount];
+    ams_activeiTunesAccount = [v5 ams_activeiTunesAccount];
 
-    v128 = v6;
-    if (!v6)
+    account = ams_activeiTunesAccount;
+    if (!ams_activeiTunesAccount)
     {
       v105 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v105, OS_LOG_TYPE_ERROR))
@@ -86,27 +86,27 @@ LABEL_99:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = self->_logKey;
-    v9 = [v128 ams_DSID];
+    ams_DSID = [account ams_DSID];
     *buf = 138412546;
     v142 = v8;
     v143 = 2114;
-    v144 = v9;
+    v144 = ams_DSID;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%@] Loading queue for account: %{public}@", buf, 0x16u);
   }
 
-  v10 = [(PurchaseInfo *)self->_purchaseInfo requestPresenter];
-  if (v10 && (reason = self->_reason, v10, reason == 3))
+  requestPresenter = [(PurchaseInfo *)self->_purchaseInfo requestPresenter];
+  if (requestPresenter && (reason = self->_reason, requestPresenter, reason == 3))
   {
-    v12 = [(PurchaseInfo *)self->_purchaseInfo requestPresenter];
+    requestPresenter2 = [(PurchaseInfo *)self->_purchaseInfo requestPresenter];
   }
 
   else
   {
-    v12 = objc_opt_new();
+    requestPresenter2 = objc_opt_new();
   }
 
-  v15 = v12;
-  v16 = sub_1003EBCD8([LoadStoreQueueTask alloc], self->_queueType, v128, self->_preorderPushUUID, v12, self->_bag, self->_logKey);
+  v15 = requestPresenter2;
+  v16 = sub_1003EBCD8([LoadStoreQueueTask alloc], self->_queueType, account, self->_preorderPushUUID, requestPresenter2, self->_bag, self->_logKey);
   v138 = 0;
   v17 = [(Task *)self runSubTask:v16 returningError:&v138];
   v19 = v138;
@@ -168,7 +168,7 @@ LABEL_99:
   v125 = 0;
   v127 = 0;
   v24 = *v135;
-  v120 = self;
+  selfCopy = self;
   v129 = *v135;
   v130 = v21;
   v25 = v22;
@@ -206,11 +206,11 @@ LABEL_99:
           {
             v33 = self->_logKey;
             v34 = objc_getProperty(v27, v32, 216, 1);
-            v35 = [v34 unsignedLongLongValue];
+            unsignedLongLongValue = [v34 unsignedLongLongValue];
             *buf = 138412546;
             v142 = v33;
             v143 = 2048;
-            v144 = v35;
+            v144 = unsignedLongLongValue;
             _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "[%@] Queue contains preorder fulfillment info for %llu", buf, 0x16u);
           }
 
@@ -223,8 +223,8 @@ LABEL_99:
           v38 = v36;
           v39 = v27 ? objc_getProperty(v27, v37, 216, 1) : 0;
           v40 = v39;
-          v41 = [(PurchaseInfo *)self->_purchaseInfo itemID];
-          v42 = [v40 isEqualToNumber:v41];
+          itemID = [(PurchaseInfo *)self->_purchaseInfo itemID];
+          v42 = [v40 isEqualToNumber:itemID];
 
           if (v42)
           {
@@ -266,9 +266,9 @@ LABEL_65:
                 v93 = ASDLogHandleForCategory();
                 if (os_log_type_enabled(v93, OS_LOG_TYPE_ERROR))
                 {
-                  v94 = [(PurchaseInfo *)v43 logKey];
+                  logKey = [(PurchaseInfo *)v43 logKey];
                   *buf = 138412546;
-                  v142 = v94;
+                  v142 = logKey;
                   v143 = 2114;
                   v144 = v92;
                   _os_log_error_impl(&_mh_execute_header, v93, OS_LOG_TYPE_ERROR, "[%@] Importing queued purchase failed: %{public}@", buf, 0x16u);
@@ -301,7 +301,7 @@ LABEL_65:
 
         v54 = v49;
         v55 = v53;
-        v56 = v128;
+        v56 = account;
         v57 = [[PurchaseInfo alloc] initWithBag:self->_bag];
         v43 = v57;
         if (v27)
@@ -415,9 +415,9 @@ LABEL_49:
             }
 
             v121 = v78;
-            v79 = [v55[15] exactBundleVersion];
-            v80 = [v55[15] iTunesMetadata];
-            v81 = [v80 versionIdentifier];
+            exactBundleVersion = [v55[15] exactBundleVersion];
+            iTunesMetadata = [v55[15] iTunesMetadata];
+            versionIdentifier = [iTunesMetadata versionIdentifier];
 
             *buf = 138413314;
             v142 = v124;
@@ -426,18 +426,18 @@ LABEL_49:
             v145 = 2114;
             v146 = v121;
             v147 = 2114;
-            v148 = v79;
+            v148 = exactBundleVersion;
             v149 = 2048;
-            v150 = v81;
+            v150 = versionIdentifier;
             _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "[%@] Queue check found update for %{public}@ to %{public}@. Installed version = %{public}@ (%lld)", buf, 0x34u);
 
-            self = v120;
+            self = selfCopy;
           }
 
-          v82 = [v55[15] iTunesMetadata];
-          v83 = [v82 versionIdentifier];
+          iTunesMetadata2 = [v55[15] iTunesMetadata];
+          versionIdentifier2 = [iTunesMetadata2 versionIdentifier];
 
-          v84 = [NSNumber numberWithLongLong:v83];
+          v84 = [NSNumber numberWithLongLong:versionIdentifier2];
           [(PurchaseInfo *)v43 setInstalledExternalVersionID:v84];
 
           v85 = sub_1003D30CC(v55);
@@ -515,9 +515,9 @@ LABEL_105:
     v106 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v106, OS_LOG_TYPE_ERROR))
     {
-      v117 = [(PurchaseInfo *)self->_purchaseInfo logKey];
+      logKey2 = [(PurchaseInfo *)self->_purchaseInfo logKey];
       *buf = 138412290;
-      v142 = v117;
+      v142 = logKey2;
       _os_log_error_impl(&_mh_execute_header, v106, OS_LOG_TYPE_ERROR, "[%@] Server sent us to the queue to complete the purchase but the item was not there", buf, 0xCu);
     }
 
@@ -564,8 +564,8 @@ LABEL_111:
 
   else
   {
-    v114 = [(PurchaseInfo *)self->_purchaseInfo itemID];
-    sub_1001D8C40(self, 0, v110, v127, v114 != 0, v126 & 1);
+    itemID2 = [(PurchaseInfo *)self->_purchaseInfo itemID];
+    sub_1001D8C40(self, 0, v110, v127, itemID2 != 0, v126 & 1);
   }
 
   [(Task *)self completeWithSuccess:v118];

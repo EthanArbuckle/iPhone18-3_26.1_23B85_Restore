@@ -1,16 +1,16 @@
 @interface TonePickerViewRepresentable.Coordinator
 - (_TtCV14ContactsUICoreP33_EA00BFAD0B6A1DB4F54018AB8FB6008727TonePickerViewRepresentable11Coordinator)init;
-- (void)picker:(id)a3 didPickItem:(id)a4;
+- (void)picker:(id)picker didPickItem:(id)item;
 @end
 
 @implementation TonePickerViewRepresentable.Coordinator
 
-- (void)picker:(id)a3 didPickItem:(id)a4
+- (void)picker:(id)picker didPickItem:(id)item
 {
-  if (a4)
+  if (item)
   {
-    v6 = a3;
-    v7 = self;
+    pickerCopy = picker;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1A34CD920();
     swift_unknownObjectRelease();
@@ -19,8 +19,8 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    pickerCopy2 = picker;
+    selfCopy2 = self;
   }
 
   sub_1A3331A78(v10);

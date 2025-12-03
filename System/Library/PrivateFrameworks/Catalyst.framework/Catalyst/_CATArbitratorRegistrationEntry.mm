@@ -1,19 +1,19 @@
 @interface _CATArbitratorRegistrationEntry
-- (_CATArbitratorRegistrationEntry)initWithResource:(id)a3 maxConcurrentCount:(unint64_t)a4;
+- (_CATArbitratorRegistrationEntry)initWithResource:(id)resource maxConcurrentCount:(unint64_t)count;
 - (void)invalidate;
 - (void)pendingWaitsNeedServicing;
-- (void)resourceProxyDidInvalidate:(id)a3;
+- (void)resourceProxyDidInvalidate:(id)invalidate;
 - (void)servicePendingWaitTokens;
 @end
 
 @implementation _CATArbitratorRegistrationEntry
 
-- (_CATArbitratorRegistrationEntry)initWithResource:(id)a3 maxConcurrentCount:(unint64_t)a4
+- (_CATArbitratorRegistrationEntry)initWithResource:(id)resource maxConcurrentCount:(unint64_t)count
 {
-  v7 = a3;
-  if (v7)
+  resourceCopy = resource;
+  if (resourceCopy)
   {
-    if (a4)
+    if (count)
     {
       goto LABEL_3;
     }
@@ -22,7 +22,7 @@
   else
   {
     [_CATArbitratorRegistrationEntry initWithResource:maxConcurrentCount:];
-    if (a4)
+    if (count)
     {
       goto LABEL_3;
     }
@@ -36,8 +36,8 @@ LABEL_3:
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->mResource, a3);
-    v9->mMaxConcurrentCount = a4;
+    objc_storeStrong(&v8->mResource, resource);
+    v9->mMaxConcurrentCount = count;
     v10 = objc_opt_new();
     mPendingWaits = v9->mPendingWaits;
     v9->mPendingWaits = v10;
@@ -85,12 +85,12 @@ LABEL_3:
   dispatch_source_cancel(mPendingWaitsSource);
 }
 
-- (void)resourceProxyDidInvalidate:(id)a3
+- (void)resourceProxyDidInvalidate:(id)invalidate
 {
-  v7 = a3;
+  invalidateCopy = invalidate;
   v4 = self->mPendingWaits;
   objc_sync_enter(v4);
-  if ([v7 isExclusive])
+  if ([invalidateCopy isExclusive])
   {
     v5 = 0;
   }
@@ -137,8 +137,8 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v6 = [(NSMutableArray *)self->mPendingWaits firstObject];
-    v4 = [(_CATArbitratorRegistrationEntry *)self makeResourceProxyIfPossibleWithoutLocking:[(NSMutableArray *)v6 isExclusive]];
+    firstObject = [(NSMutableArray *)self->mPendingWaits firstObject];
+    v4 = [(_CATArbitratorRegistrationEntry *)self makeResourceProxyIfPossibleWithoutLocking:[(NSMutableArray *)firstObject isExclusive]];
     if (!v4)
     {
       break;
@@ -147,7 +147,7 @@ LABEL_6:
     [(NSMutableArray *)self->mPendingWaits removeObjectAtIndex:0];
     objc_sync_exit(v3);
 
-    [(NSMutableArray *)v6 notifyWithResourceProxy:v4];
+    [(NSMutableArray *)firstObject notifyWithResourceProxy:v4];
     if (dispatch_source_testcancel(self->mPendingWaitsSource))
     {
       return;
@@ -156,7 +156,7 @@ LABEL_6:
 
   objc_sync_exit(v3);
 
-  v5 = v6;
+  v5 = firstObject;
 LABEL_7:
 }
 

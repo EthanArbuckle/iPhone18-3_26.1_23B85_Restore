@@ -1,6 +1,6 @@
 @interface CKFetchRecordZoneChangesOperation
-- (BOOL)ic_intersectsRecordZoneIDSet:(id)a3;
-- (BOOL)ic_shouldDependOnCKFetchRecordZoneChangesOperation:(id)a3;
+- (BOOL)ic_intersectsRecordZoneIDSet:(id)set;
+- (BOOL)ic_shouldDependOnCKFetchRecordZoneChangesOperation:(id)operation;
 - (id)ic_loggingValues;
 - (id)ic_shortLoggingDescription;
 - (void)ic_removeAllCKCompletionBlocksButNotTheNSOperationCompletionBlock_50200031;
@@ -12,17 +12,17 @@
 {
   v10.receiver = self;
   v10.super_class = CKFetchRecordZoneChangesOperation;
-  v3 = [(CKFetchRecordZoneChangesOperation *)&v10 ic_loggingValues];
-  v4 = [v3 mutableCopy];
+  ic_loggingValues = [(CKFetchRecordZoneChangesOperation *)&v10 ic_loggingValues];
+  v4 = [ic_loggingValues mutableCopy];
 
-  v5 = [(CKFetchRecordZoneChangesOperation *)self configurationsByRecordZoneID];
+  configurationsByRecordZoneID = [(CKFetchRecordZoneChangesOperation *)self configurationsByRecordZoneID];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000BDC08;
   v8[3] = &unk_1008DBDB8;
   v6 = v4;
   v9 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v8];
+  [configurationsByRecordZoneID enumerateKeysAndObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -31,8 +31,8 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CKFetchRecordZoneChangesOperation *)self operationID];
-  v6 = [NSString stringWithFormat:@"<%@ %@>", v4, v5];
+  operationID = [(CKFetchRecordZoneChangesOperation *)self operationID];
+  v6 = [NSString stringWithFormat:@"<%@ %@>", v4, operationID];
 
   return v6;
 }
@@ -49,14 +49,14 @@
   [(CKFetchRecordZoneChangesOperation *)self setRecordZoneChangeTokensUpdatedBlock:0];
 }
 
-- (BOOL)ic_intersectsRecordZoneIDSet:(id)a3
+- (BOOL)ic_intersectsRecordZoneIDSet:(id)set
 {
-  v4 = a3;
-  v5 = [(CKFetchRecordZoneChangesOperation *)self recordZoneIDs];
-  if ([v5 count])
+  setCopy = set;
+  recordZoneIDs = [(CKFetchRecordZoneChangesOperation *)self recordZoneIDs];
+  if ([recordZoneIDs count])
   {
-    v6 = [(CKFetchRecordZoneChangesOperation *)self recordZoneIDs];
-    v7 = [NSSet setWithArray:v6];
+    recordZoneIDs2 = [(CKFetchRecordZoneChangesOperation *)self recordZoneIDs];
+    v7 = [NSSet setWithArray:recordZoneIDs2];
   }
 
   else
@@ -64,9 +64,9 @@
     v7 = +[NSSet set];
   }
 
-  if (v4)
+  if (setCopy)
   {
-    v8 = v4;
+    v8 = setCopy;
   }
 
   else
@@ -80,38 +80,38 @@
   return v10;
 }
 
-- (BOOL)ic_shouldDependOnCKFetchRecordZoneChangesOperation:(id)a3
+- (BOOL)ic_shouldDependOnCKFetchRecordZoneChangesOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(CKFetchRecordZoneChangesOperation *)self database];
-  v6 = [v5 container];
-  v7 = [v6 options];
-  v8 = [v7 accountOverrideInfo];
-  v9 = [v8 accountID];
+  operationCopy = operation;
+  database = [(CKFetchRecordZoneChangesOperation *)self database];
+  container = [database container];
+  options = [container options];
+  accountOverrideInfo = [options accountOverrideInfo];
+  accountID = [accountOverrideInfo accountID];
 
-  v10 = [v4 database];
-  v11 = [v10 container];
-  v12 = [v11 options];
-  v13 = [v12 accountOverrideInfo];
-  v14 = [v13 accountID];
+  database2 = [operationCopy database];
+  container2 = [database2 container];
+  options2 = [container2 options];
+  accountOverrideInfo2 = [options2 accountOverrideInfo];
+  accountID2 = [accountOverrideInfo2 accountID];
 
-  if (v9 != v14 && ![v9 isEqual:v14])
+  if (accountID != accountID2 && ![accountID isEqual:accountID2])
   {
     goto LABEL_6;
   }
 
-  v15 = [(CKFetchRecordZoneChangesOperation *)self database];
-  v16 = [v15 databaseScope];
-  v17 = [v4 database];
-  v18 = [v17 databaseScope];
+  database3 = [(CKFetchRecordZoneChangesOperation *)self database];
+  databaseScope = [database3 databaseScope];
+  database4 = [operationCopy database];
+  databaseScope2 = [database4 databaseScope];
 
-  if (v16 == v18)
+  if (databaseScope == databaseScope2)
   {
-    v19 = [v4 recordZoneIDs];
-    if (v19)
+    recordZoneIDs = [operationCopy recordZoneIDs];
+    if (recordZoneIDs)
     {
-      v20 = [v4 recordZoneIDs];
-      v21 = [NSSet setWithArray:v20];
+      recordZoneIDs2 = [operationCopy recordZoneIDs];
+      v21 = [NSSet setWithArray:recordZoneIDs2];
     }
 
     else

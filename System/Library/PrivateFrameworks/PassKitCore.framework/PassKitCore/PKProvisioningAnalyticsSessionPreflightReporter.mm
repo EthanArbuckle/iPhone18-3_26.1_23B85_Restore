@@ -1,13 +1,13 @@
 @interface PKProvisioningAnalyticsSessionPreflightReporter
 + (id)createUnaffiliatedReporter;
 - (id)startPreflight;
-- (void)_reportPreflightStepCompleteForContext:(id)a3 token:(id)a4;
+- (void)_reportPreflightStepCompleteForContext:(id)context token:(id)token;
 - (void)_sendPendingEvents;
-- (void)affiliateReporter:(id)a3;
-- (void)finishPreflightForToken:(id)a3;
-- (void)reportAppExtensionPreflightComplete:(id)a3 token:(id)a4;
-- (void)reportCredentialsPreflightComplete:(id)a3 token:(id)a4;
-- (void)reportPreflightStepComplete:(id)a3 itemCount:(unint64_t)a4 token:(id)a5;
+- (void)affiliateReporter:(id)reporter;
+- (void)finishPreflightForToken:(id)token;
+- (void)reportAppExtensionPreflightComplete:(id)complete token:(id)token;
+- (void)reportCredentialsPreflightComplete:(id)complete token:(id)token;
+- (void)reportPreflightStepComplete:(id)complete itemCount:(unint64_t)count token:(id)token;
 @end
 
 @implementation PKProvisioningAnalyticsSessionPreflightReporter
@@ -20,19 +20,19 @@
   return v2;
 }
 
-- (void)affiliateReporter:(id)a3
+- (void)affiliateReporter:(id)reporter
 {
-  if (*(a3 + 24) == 1)
+  if (*(reporter + 24) == 1)
   {
-    *(a3 + 24) = 0;
-    v7 = a3;
-    v5 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-    [v7 setResponder:v5];
+    *(reporter + 24) = 0;
+    reporterCopy = reporter;
+    responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+    [reporterCopy setResponder:responder];
 
-    v6 = [(PKProvisioningAnalyticsSessionReporter *)self sessionID];
-    [v7 setSessionID:v6];
+    sessionID = [(PKProvisioningAnalyticsSessionReporter *)self sessionID];
+    [reporterCopy setSessionID:sessionID];
 
-    [v7 _sendPendingEvents];
+    [reporterCopy _sendPendingEvents];
   }
 }
 
@@ -62,8 +62,8 @@
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        v10 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-        [v10 reportPreflightEventForReporter:self context:v9];
+        responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+        [responder reportPreflightEventForReporter:self context:v9];
 
         ++v8;
       }
@@ -83,18 +83,18 @@
   return v2;
 }
 
-- (void)finishPreflightForToken:(id)a3
+- (void)finishPreflightForToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
-    v14 = v4;
-    v5 = [v4 stepProperties];
+    v14 = tokenCopy;
+    stepProperties = [tokenCopy stepProperties];
     v6 = MEMORY[0x1E696AD98];
     Current = CFAbsoluteTimeGetCurrent();
     [v14 start];
     v9 = [v6 numberWithDouble:Current - v8];
-    [v5 setObject:v9 forKeyedSubscript:@"duration"];
+    [stepProperties setObject:v9 forKeyedSubscript:@"duration"];
 
     if (self->_isUnaffiliated)
     {
@@ -108,13 +108,13 @@
         pendingEventsToReport = self->_pendingEventsToReport;
       }
 
-      [(NSMutableArray *)pendingEventsToReport addObject:v5];
+      [(NSMutableArray *)pendingEventsToReport addObject:stepProperties];
     }
 
     else
     {
-      v13 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-      [v13 reportPreflightEventForReporter:self context:v5];
+      responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+      [responder reportPreflightEventForReporter:self context:stepProperties];
     }
   }
 
@@ -124,45 +124,45 @@
   }
 }
 
-- (void)reportPreflightStepComplete:(id)a3 itemCount:(unint64_t)a4 token:(id)a5
+- (void)reportPreflightStepComplete:(id)complete itemCount:(unint64_t)count token:(id)token
 {
-  v17 = a3;
-  v8 = a5;
+  completeCopy = complete;
+  tokenCopy = token;
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v10 = MEMORY[0x1E696AD98];
   Current = CFAbsoluteTimeGetCurrent();
-  [v8 start];
+  [tokenCopy start];
   v13 = [v10 numberWithDouble:Current - v12];
-  v14 = [v17 stringByAppendingString:@".duration"];
+  v14 = [completeCopy stringByAppendingString:@".duration"];
   [v9 setObject:v13 forKeyedSubscript:v14];
 
-  if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+  if (count != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    v16 = [v17 stringByAppendingString:@".count"];
+    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
+    v16 = [completeCopy stringByAppendingString:@".count"];
     [v9 setObject:v15 forKeyedSubscript:v16];
   }
 
-  [(PKProvisioningAnalyticsSessionPreflightReporter *)self _reportPreflightStepCompleteForContext:v9 token:v8];
+  [(PKProvisioningAnalyticsSessionPreflightReporter *)self _reportPreflightStepCompleteForContext:v9 token:tokenCopy];
 }
 
-- (void)reportCredentialsPreflightComplete:(id)a3 token:(id)a4
+- (void)reportCredentialsPreflightComplete:(id)complete token:(id)token
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  completeCopy = complete;
+  tokenCopy = token;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v8 = MEMORY[0x1E696AD98];
   Current = CFAbsoluteTimeGetCurrent();
-  [v6 start];
+  [tokenCopy start];
   v11 = [v8 numberWithDouble:Current - v10];
   [v7 setObject:v11 forKeyedSubscript:@"credentials.duration"];
 
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(completeCopy, "count")}];
   [v7 setObject:v12 forKeyedSubscript:@"credentials.count"];
 
-  v25 = v5;
-  v13 = [v5 pk_groupDictionaryByApplyingBlock:&__block_literal_global_120];
+  v25 = completeCopy;
+  v13 = [completeCopy pk_groupDictionaryByApplyingBlock:&__block_literal_global_120];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -183,12 +183,12 @@
 
         v18 = *(*(&v26 + 1) + 8 * i);
         v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"credentials.%@.count", v18];
-        v20 = [v19 lowercaseString];
+        lowercaseString = [v19 lowercaseString];
 
         v21 = MEMORY[0x1E696AD98];
         v22 = [v13 objectForKeyedSubscript:v18];
         v23 = [v21 numberWithUnsignedInteger:{objc_msgSend(v22, "count")}];
-        [v7 setObject:v23 forKeyedSubscript:v20];
+        [v7 setObject:v23 forKeyedSubscript:lowercaseString];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -197,7 +197,7 @@
     while (v15);
   }
 
-  [(PKProvisioningAnalyticsSessionPreflightReporter *)self _reportPreflightStepCompleteForContext:v7 token:v6];
+  [(PKProvisioningAnalyticsSessionPreflightReporter *)self _reportPreflightStepCompleteForContext:v7 token:tokenCopy];
 }
 
 __CFString *__92__PKProvisioningAnalyticsSessionPreflightReporter_reportCredentialsPreflightComplete_token___block_invoke(uint64_t a1, void *a2)
@@ -207,36 +207,36 @@ __CFString *__92__PKProvisioningAnalyticsSessionPreflightReporter_reportCredenti
   return PKPaymentCardTypeToString(v2);
 }
 
-- (void)reportAppExtensionPreflightComplete:(id)a3 token:(id)a4
+- (void)reportAppExtensionPreflightComplete:(id)complete token:(id)token
 {
   v6 = MEMORY[0x1E695DF90];
-  v7 = a4;
-  v8 = a3;
+  tokenCopy = token;
+  completeCopy = complete;
   v16 = objc_alloc_init(v6);
   v9 = MEMORY[0x1E696AD98];
   Current = CFAbsoluteTimeGetCurrent();
-  [v7 start];
+  [tokenCopy start];
   v12 = [v9 numberWithDouble:Current - v11];
   [v16 setObject:v12 forKeyedSubscript:@"appExtension.duration"];
 
   v13 = MEMORY[0x1E696AD98];
-  v14 = [v8 count];
+  v14 = [completeCopy count];
 
   v15 = [v13 numberWithUnsignedInteger:v14];
   [v16 setObject:v15 forKeyedSubscript:@"appExtension.count"];
 
-  [(PKProvisioningAnalyticsSessionPreflightReporter *)self _reportPreflightStepCompleteForContext:v16 token:v7];
+  [(PKProvisioningAnalyticsSessionPreflightReporter *)self _reportPreflightStepCompleteForContext:v16 token:tokenCopy];
 }
 
-- (void)_reportPreflightStepCompleteForContext:(id)a3 token:(id)a4
+- (void)_reportPreflightStepCompleteForContext:(id)context token:(id)token
 {
-  v8 = a3;
-  v5 = a4;
-  if (v5)
+  contextCopy = context;
+  tokenCopy = token;
+  if (tokenCopy)
   {
-    v6 = v5;
-    v7 = [v5 stepProperties];
-    [v7 addEntriesFromDictionary:v8];
+    v6 = tokenCopy;
+    stepProperties = [tokenCopy stepProperties];
+    [stepProperties addEntriesFromDictionary:contextCopy];
   }
 
   else

@@ -1,18 +1,18 @@
 @interface SBHTintedIconImageStyleConfiguration
-- (SBHTintedIconImageStyleConfiguration)initWithConfigurationType:(int64_t)a3 variant:(int64_t)a4 tintColor:(id)a5;
+- (SBHTintedIconImageStyleConfiguration)initWithConfigurationType:(int64_t)type variant:(int64_t)variant tintColor:(id)color;
 @end
 
 @implementation SBHTintedIconImageStyleConfiguration
 
-- (SBHTintedIconImageStyleConfiguration)initWithConfigurationType:(int64_t)a3 variant:(int64_t)a4 tintColor:(id)a5
+- (SBHTintedIconImageStyleConfiguration)initWithConfigurationType:(int64_t)type variant:(int64_t)variant tintColor:(id)color
 {
-  v8 = a5;
+  colorCopy = color;
   v13.receiver = self;
   v13.super_class = SBHTintedIconImageStyleConfiguration;
-  v9 = [(SBHIconImageStyleConfiguration *)&v13 initWithConfigurationType:a3 variant:a4 tintColor:v8];
+  v9 = [(SBHIconImageStyleConfiguration *)&v13 initWithConfigurationType:type variant:variant tintColor:colorCopy];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [colorCopy copy];
     tintColor = v9->_tintColor;
     v9->_tintColor = v10;
   }

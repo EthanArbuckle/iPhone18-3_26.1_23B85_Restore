@@ -1,43 +1,43 @@
 @interface _SFPBOpenCalculationCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBOpenCalculationCommand)initWithDictionary:(id)a3;
-- (_SFPBOpenCalculationCommand)initWithFacade:(id)a3;
-- (_SFPBOpenCalculationCommand)initWithJSON:(id)a3;
+- (_SFPBOpenCalculationCommand)initWithDictionary:(id)dictionary;
+- (_SFPBOpenCalculationCommand)initWithFacade:(id)facade;
+- (_SFPBOpenCalculationCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setInput:(id)a3;
-- (void)setOutput:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setInput:(id)input;
+- (void)setOutput:(id)output;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBOpenCalculationCommand
 
-- (_SFPBOpenCalculationCommand)initWithFacade:(id)a3
+- (_SFPBOpenCalculationCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBOpenCalculationCommand *)self init];
   if (v5)
   {
-    v6 = [v4 input];
+    input = [facadeCopy input];
 
-    if (v6)
+    if (input)
     {
-      v7 = [v4 input];
-      [(_SFPBOpenCalculationCommand *)v5 setInput:v7];
+      input2 = [facadeCopy input];
+      [(_SFPBOpenCalculationCommand *)v5 setInput:input2];
     }
 
-    v8 = [v4 output];
+    output = [facadeCopy output];
 
-    if (v8)
+    if (output)
     {
-      v9 = [v4 output];
-      [(_SFPBOpenCalculationCommand *)v5 setOutput:v9];
+      output2 = [facadeCopy output];
+      [(_SFPBOpenCalculationCommand *)v5 setOutput:output2];
     }
 
-    if ([v4 hasShouldOpenCurrencyConversionProvider])
+    if ([facadeCopy hasShouldOpenCurrencyConversionProvider])
     {
-      -[_SFPBOpenCalculationCommand setShouldOpenCurrencyConversionProvider:](v5, "setShouldOpenCurrencyConversionProvider:", [v4 shouldOpenCurrencyConversionProvider]);
+      -[_SFPBOpenCalculationCommand setShouldOpenCurrencyConversionProvider:](v5, "setShouldOpenCurrencyConversionProvider:", [facadeCopy shouldOpenCurrencyConversionProvider]);
     }
 
     v10 = v5;
@@ -46,15 +46,15 @@
   return v5;
 }
 
-- (_SFPBOpenCalculationCommand)initWithDictionary:(id)a3
+- (_SFPBOpenCalculationCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = _SFPBOpenCalculationCommand;
   v5 = [(_SFPBOpenCalculationCommand *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"input"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"input"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@
       [(_SFPBOpenCalculationCommand *)v5 setInput:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"output"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"output"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
       [(_SFPBOpenCalculationCommand *)v5 setOutput:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"shouldOpenCurrencyConversionProvider"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"shouldOpenCurrencyConversionProvider"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,30 +83,30 @@
   return v5;
 }
 
-- (_SFPBOpenCalculationCommand)initWithJSON:(id)a3
+- (_SFPBOpenCalculationCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBOpenCalculationCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBOpenCalculationCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBOpenCalculationCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -119,28 +119,28 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_input)
   {
-    v4 = [(_SFPBOpenCalculationCommand *)self input];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"input"];
+    input = [(_SFPBOpenCalculationCommand *)self input];
+    v5 = [input copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"input"];
   }
 
   if (self->_output)
   {
-    v6 = [(_SFPBOpenCalculationCommand *)self output];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"output"];
+    output = [(_SFPBOpenCalculationCommand *)self output];
+    v7 = [output copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"output"];
   }
 
   if (self->_shouldOpenCurrencyConversionProvider)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBOpenCalculationCommand shouldOpenCurrencyConversionProvider](self, "shouldOpenCurrencyConversionProvider")}];
-    [v3 setObject:v8 forKeyedSubscript:@"shouldOpenCurrencyConversionProvider"];
+    [dictionary setObject:v8 forKeyedSubscript:@"shouldOpenCurrencyConversionProvider"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -156,28 +156,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBOpenCalculationCommand *)self input];
-  v6 = [v4 input];
-  if ((v5 != 0) == (v6 == 0))
+  input = [(_SFPBOpenCalculationCommand *)self input];
+  input2 = [equalCopy input];
+  if ((input != 0) == (input2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBOpenCalculationCommand *)self input];
-  if (v7)
+  input3 = [(_SFPBOpenCalculationCommand *)self input];
+  if (input3)
   {
-    v8 = v7;
-    v9 = [(_SFPBOpenCalculationCommand *)self input];
-    v10 = [v4 input];
-    v11 = [v9 isEqual:v10];
+    v8 = input3;
+    input4 = [(_SFPBOpenCalculationCommand *)self input];
+    input5 = [equalCopy input];
+    v11 = [input4 isEqual:input5];
 
     if (!v11)
     {
@@ -189,24 +189,24 @@
   {
   }
 
-  v5 = [(_SFPBOpenCalculationCommand *)self output];
-  v6 = [v4 output];
-  if ((v5 != 0) != (v6 == 0))
+  input = [(_SFPBOpenCalculationCommand *)self output];
+  input2 = [equalCopy output];
+  if ((input != 0) != (input2 == 0))
   {
-    v12 = [(_SFPBOpenCalculationCommand *)self output];
-    if (!v12)
+    output = [(_SFPBOpenCalculationCommand *)self output];
+    if (!output)
     {
 
 LABEL_15:
       shouldOpenCurrencyConversionProvider = self->_shouldOpenCurrencyConversionProvider;
-      v17 = shouldOpenCurrencyConversionProvider == [v4 shouldOpenCurrencyConversionProvider];
+      v17 = shouldOpenCurrencyConversionProvider == [equalCopy shouldOpenCurrencyConversionProvider];
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBOpenCalculationCommand *)self output];
-    v15 = [v4 output];
-    v16 = [v14 isEqual:v15];
+    v13 = output;
+    output2 = [(_SFPBOpenCalculationCommand *)self output];
+    output3 = [equalCopy output];
+    v16 = [output2 isEqual:output3];
 
     if (v16)
     {
@@ -226,17 +226,17 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBOpenCalculationCommand *)self input];
-  if (v4)
+  toCopy = to;
+  input = [(_SFPBOpenCalculationCommand *)self input];
+  if (input)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBOpenCalculationCommand *)self output];
-  if (v5)
+  output = [(_SFPBOpenCalculationCommand *)self output];
+  if (output)
   {
     PBDataWriterWriteStringField();
   }
@@ -247,18 +247,18 @@ LABEL_13:
   }
 }
 
-- (void)setOutput:(id)a3
+- (void)setOutput:(id)output
 {
-  v4 = [a3 copy];
+  v4 = [output copy];
   output = self->_output;
   self->_output = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setInput:(id)a3
+- (void)setInput:(id)input
 {
-  v4 = [a3 copy];
+  v4 = [input copy];
   input = self->_input;
   self->_input = v4;
 

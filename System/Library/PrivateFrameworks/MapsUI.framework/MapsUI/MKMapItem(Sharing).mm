@@ -8,21 +8,21 @@
 - (id)_mapsui_thumbnailWithSize:()Sharing annotationView:
 {
   v8 = a5;
-  v9 = [a1 location];
+  location = [self location];
 
-  if (v9)
+  if (location)
   {
-    v10 = [a1 location];
-    [v10 coordinate];
+    location2 = [self location];
+    [location2 coordinate];
     latitude = v11;
     longitude = v13;
   }
 
   else
   {
-    [a1 _coordinate];
+    [self _coordinate];
     v16 = v15;
-    [a1 _coordinate];
+    [self _coordinate];
     v18 = CLLocationCoordinate2DMake(v16, v17);
     latitude = v18.latitude;
     longitude = v18.longitude;
@@ -62,7 +62,7 @@
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E696F418]);
-  v7[0] = a1;
+  v7[0] = self;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   v4 = [v2 urlForOpeningMapItems:v3 options:0];
 

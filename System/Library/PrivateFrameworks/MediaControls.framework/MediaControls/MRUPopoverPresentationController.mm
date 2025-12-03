@@ -1,14 +1,14 @@
 @interface MRUPopoverPresentationController
-- (MRUPopoverPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (MRUPopoverPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 @end
 
 @implementation MRUPopoverPresentationController
 
-- (MRUPopoverPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (MRUPopoverPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v7.receiver = self;
   v7.super_class = MRUPopoverPresentationController;
-  v4 = [(MRUPopoverPresentationController *)&v7 initWithPresentedViewController:a3 presentingViewController:a4];
+  v4 = [(MRUPopoverPresentationController *)&v7 initWithPresentedViewController:controller presentingViewController:viewController];
   if (v4)
   {
     v5 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:2];

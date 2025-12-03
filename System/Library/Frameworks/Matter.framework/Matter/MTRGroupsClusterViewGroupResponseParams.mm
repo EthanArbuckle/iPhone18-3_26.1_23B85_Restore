@@ -1,9 +1,9 @@
 @interface MTRGroupsClusterViewGroupResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRGroupsClusterViewGroupResponseParams)init;
-- (MTRGroupsClusterViewGroupResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRGroupsClusterViewGroupResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRGroupsClusterViewGroupResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,20 +33,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRGroupsClusterViewGroupResponseParams);
-  v5 = [(MTRGroupsClusterViewGroupResponseParams *)self status];
-  [(MTRGroupsClusterViewGroupResponseParams *)v4 setStatus:v5];
+  status = [(MTRGroupsClusterViewGroupResponseParams *)self status];
+  [(MTRGroupsClusterViewGroupResponseParams *)v4 setStatus:status];
 
-  v6 = [(MTRGroupsClusterViewGroupResponseParams *)self groupID];
-  [(MTRGroupsClusterViewGroupResponseParams *)v4 setGroupID:v6];
+  groupID = [(MTRGroupsClusterViewGroupResponseParams *)self groupID];
+  [(MTRGroupsClusterViewGroupResponseParams *)v4 setGroupID:groupID];
 
-  v7 = [(MTRGroupsClusterViewGroupResponseParams *)self groupName];
-  [(MTRGroupsClusterViewGroupResponseParams *)v4 setGroupName:v7];
+  groupName = [(MTRGroupsClusterViewGroupResponseParams *)self groupName];
+  [(MTRGroupsClusterViewGroupResponseParams *)v4 setGroupName:groupName];
 
-  v8 = [(MTRGroupsClusterViewGroupResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRGroupsClusterViewGroupResponseParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTRGroupsClusterViewGroupResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRGroupsClusterViewGroupResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -108,7 +108,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRGroupsClusterViewGroupResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRGroupsClusterViewGroupResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRGroupsClusterViewGroupResponseParams;
@@ -116,7 +116,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRGroupsClusterViewGroupResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRGroupsClusterViewGroupResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -132,20 +132,20 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTRGroupsClusterViewGroupResponseParams *)self setStatus:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(a3 + 1)];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(struct + 1)];
   [(MTRGroupsClusterViewGroupResponseParams *)self setGroupID:v6];
 
-  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*(a3 + 1) length:*(a3 + 2) encoding:4];
+  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*(struct + 1) length:*(struct + 2) encoding:4];
   [(MTRGroupsClusterViewGroupResponseParams *)self setGroupName:v7];
 
-  v8 = [(MTRGroupsClusterViewGroupResponseParams *)self groupName];
+  groupName = [(MTRGroupsClusterViewGroupResponseParams *)self groupName];
 
-  if (v8)
+  if (groupName)
   {
     v9 = 0;
   }
@@ -155,7 +155,7 @@ LABEL_6:
     v9 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm";
   }
 
-  if (v8)
+  if (groupName)
   {
     v10 = 0;
   }

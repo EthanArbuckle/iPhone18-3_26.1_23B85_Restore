@@ -1,58 +1,58 @@
 @interface PTPCameraDevice
-- (BOOL)acceptConnection:(id)a3;
+- (BOOL)acceptConnection:(id)connection;
 - (NSString)internalUUID;
 - (NSXPCListenerEndpoint)endpoint;
-- (PTPCameraDevice)initWithDeviceContext:(id)a3;
+- (PTPCameraDevice)initWithDeviceContext:(id)context;
 - (id)additionalProperties;
-- (id)itemForObjectHandle:(id)a3;
+- (id)itemForObjectHandle:(id)handle;
 - (void)closeDevice;
 - (void)dealloc;
-- (void)enumerateContentWithOptions:(id)a3;
-- (void)registerInterestedEventNotifications:(id)a3;
-- (void)requestDeleteObjectHandle:(id)a3 options:(id)a4 withReply:(id)a5;
-- (void)requestDownloadObjectHandle:(id)a3 options:(id)a4 withReply:(id)a5;
+- (void)enumerateContentWithOptions:(id)options;
+- (void)registerInterestedEventNotifications:(id)notifications;
+- (void)requestDeleteObjectHandle:(id)handle options:(id)options withReply:(id)reply;
+- (void)requestDownloadObjectHandle:(id)handle options:(id)options withReply:(id)reply;
 - (void)requestEndUsingDevice;
-- (void)requestFingerprintForObjectHandle:(id)a3 withReply:(id)a4;
-- (void)requestMetadataForObjectHandle:(id)a3 options:(id)a4 withReply:(id)a5;
-- (void)requestReadDataFromObjectHandle:(id)a3 options:(id)a4 withReply:(id)a5;
-- (void)requestStartUsingDeviceWithReply:(id)a3;
-- (void)requestThumbnailDataForObjectHandle:(id)a3 options:(id)a4 withReply:(id)a5;
-- (void)sendPTPCommand:(id)a3 andPayload:(id)a4 withReply:(id)a5;
-- (void)unregisterInterestedEventNotifications:(id)a3;
+- (void)requestFingerprintForObjectHandle:(id)handle withReply:(id)reply;
+- (void)requestMetadataForObjectHandle:(id)handle options:(id)options withReply:(id)reply;
+- (void)requestReadDataFromObjectHandle:(id)handle options:(id)options withReply:(id)reply;
+- (void)requestStartUsingDeviceWithReply:(id)reply;
+- (void)requestThumbnailDataForObjectHandle:(id)handle options:(id)options withReply:(id)reply;
+- (void)sendPTPCommand:(id)command andPayload:(id)payload withReply:(id)reply;
+- (void)unregisterInterestedEventNotifications:(id)notifications;
 @end
 
 @implementation PTPCameraDevice
 
-- (PTPCameraDevice)initWithDeviceContext:(id)a3
+- (PTPCameraDevice)initWithDeviceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = PTPCameraDevice;
-  v5 = [(PTPCameraDevice *)&v16 initWithDeviceContext:v4];
+  v5 = [(PTPCameraDevice *)&v16 initWithDeviceContext:contextCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ICDevicePrimaryIdentifier"];
+    v6 = [contextCopy objectForKeyedSubscript:@"ICDevicePrimaryIdentifier"];
     v5->_locationID = [v6 integerValue];
 
     v7 = objc_alloc_init(NSMutableArray);
     controlBundles = v5->_controlBundles;
     v5->_controlBundles = v7;
 
-    v9 = [(PTPCameraDevice *)v5 cameraDictionary];
-    [v9 setObject:@"camera" forKeyedSubscript:@"ICDeviceSystemSymbolName"];
+    cameraDictionary = [(PTPCameraDevice *)v5 cameraDictionary];
+    [cameraDictionary setObject:@"camera" forKeyedSubscript:@"ICDeviceSystemSymbolName"];
 
-    v10 = [v4 objectForKeyedSubscript:@"ICDeviceName"];
-    v11 = [(PTPCameraDevice *)v5 cameraDictionary];
-    [v11 setObject:v10 forKeyedSubscript:@"ICDeviceName"];
+    v10 = [contextCopy objectForKeyedSubscript:@"ICDeviceName"];
+    cameraDictionary2 = [(PTPCameraDevice *)v5 cameraDictionary];
+    [cameraDictionary2 setObject:v10 forKeyedSubscript:@"ICDeviceName"];
 
-    v12 = [(PTPCameraDevice *)v5 cameraDictionary];
-    [v12 setObject:@"ICTransportTypeUSB" forKeyedSubscript:@"ICDeviceTransportType"];
+    cameraDictionary3 = [(PTPCameraDevice *)v5 cameraDictionary];
+    [cameraDictionary3 setObject:@"ICTransportTypeUSB" forKeyedSubscript:@"ICDeviceTransportType"];
 
-    v13 = [(PTPCameraDevice *)v5 cameraDictionary];
-    [v13 setObject:@"Camera" forKeyedSubscript:@"ICDeviceType"];
+    cameraDictionary4 = [(PTPCameraDevice *)v5 cameraDictionary];
+    [cameraDictionary4 setObject:@"Camera" forKeyedSubscript:@"ICDeviceType"];
 
-    v14 = [(PTPCameraDevice *)v5 cameraDictionary];
-    [v14 setObject:@"Camera" forKeyedSubscript:@"ICDeviceProductKind"];
+    cameraDictionary5 = [(PTPCameraDevice *)v5 cameraDictionary];
+    [cameraDictionary5 setObject:@"Camera" forKeyedSubscript:@"ICDeviceProductKind"];
   }
 
   return v5;
@@ -68,8 +68,8 @@
     v3 = [v4 stringByAppendingString:@".."];
   }
 
-  v5 = [(PTPInitiator *)self->_initiator transport];
-  v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%p | %16s - 0x%08X", self, "dealloc locID", [v5 locationID]);
+  transport = [(PTPInitiator *)self->_initiator transport];
+  v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%p | %16s - 0x%08X", self, "dealloc locID", [transport locationID]);
 
   v7 = _gICOSLog;
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
@@ -77,7 +77,7 @@
     v8 = v3;
     v9 = v7;
     *buf = 136446466;
-    v14 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v15 = 2114;
     v16 = v6;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -87,8 +87,8 @@
   initiator = self->_initiator;
   self->_initiator = 0;
 
-  v11 = [(PTPCameraDevice *)self deviceOperationQueue];
-  [v11 waitUntilAllOperationsAreFinished];
+  deviceOperationQueue = [(PTPCameraDevice *)self deviceOperationQueue];
+  [deviceOperationQueue waitUntilAllOperationsAreFinished];
 
   self->_locationID = 0;
   v12.receiver = self;
@@ -98,16 +98,16 @@
 
 - (NSXPCListenerEndpoint)endpoint
 {
-  v2 = [(PTPCameraDevice *)self listener];
-  v3 = [v2 endpoint];
+  listener = [(PTPCameraDevice *)self listener];
+  endpoint = [listener endpoint];
 
-  return v3;
+  return endpoint;
 }
 
 - (NSString)internalUUID
 {
-  v2 = [(PTPCameraDevice *)self cameraDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"ICInternalDeviceUUID"];
+  cameraDictionary = [(PTPCameraDevice *)self cameraDictionary];
+  v3 = [cameraDictionary objectForKeyedSubscript:@"ICInternalDeviceUUID"];
 
   return v3;
 }
@@ -133,15 +133,15 @@
     sub_10001D0A8(v3, v5);
   }
 
-  v6 = [(PTPCameraDevice *)self sessionManager];
+  sessionManager = [(PTPCameraDevice *)self sessionManager];
   v7 = +[NSXPCConnection currentConnection];
   v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 processIdentifier]);
-  [v6 removeSessionsWithProcessIdentifier:v8];
+  [sessionManager removeSessionsWithProcessIdentifier:v8];
 }
 
-- (void)requestStartUsingDeviceWithReply:(id)a3
+- (void)requestStartUsingDeviceWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[NSXPCConnection currentConnection];
   v6 = v5;
   memset(&error[1], 0, 32);
@@ -173,9 +173,9 @@
     v10 = [v11 stringByAppendingString:@".."];
   }
 
-  v12 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
   v13 = "NO";
-  if (v12)
+  if (bOOLValue)
   {
     v13 = "YES";
   }
@@ -186,9 +186,9 @@
   {
     v16 = v10;
     v17 = v15;
-    v18 = [(__CFString *)v10 UTF8String];
+    uTF8String = [(__CFString *)v10 UTF8String];
     token.val[0] = 136446466;
-    *&token.val[1] = v18;
+    *&token.val[1] = uTF8String;
     LOWORD(token.val[3]) = 2114;
     *(&token.val[3] + 2) = v14;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &token, 0x16u);
@@ -200,105 +200,105 @@
   v21[3] = &unk_10002C7F8;
   v21[4] = self;
   v22 = v9;
-  v23 = v4;
-  v19 = v4;
+  v23 = replyCopy;
+  v19 = replyCopy;
   v20 = [NSBlockOperation blockOperationWithBlock:v21];
   [(PTPCameraDevice *)self addInteractiveOperation:v20];
 }
 
-- (void)registerInterestedEventNotifications:(id)a3
+- (void)registerInterestedEventNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   +[NSXPCConnection currentConnection];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100002AC4;
   v8[3] = &unk_10002C820;
   v8[4] = self;
-  v10 = v9 = v4;
+  v10 = v9 = notificationsCopy;
   v5 = v10;
-  v6 = v4;
+  v6 = notificationsCopy;
   v7 = [NSBlockOperation blockOperationWithBlock:v8];
   [(PTPCameraDevice *)self addInteractiveOperation:v7];
 }
 
-- (void)unregisterInterestedEventNotifications:(id)a3
+- (void)unregisterInterestedEventNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   +[NSXPCConnection currentConnection];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100002C00;
   v8[3] = &unk_10002C820;
   v8[4] = self;
-  v10 = v9 = v4;
+  v10 = v9 = notificationsCopy;
   v5 = v10;
-  v6 = v4;
+  v6 = notificationsCopy;
   v7 = [NSBlockOperation blockOperationWithBlock:v8];
   [(PTPCameraDevice *)self addInteractiveOperation:v7];
 }
 
-- (void)requestMetadataForObjectHandle:(id)a3 options:(id)a4 withReply:(id)a5
+- (void)requestMetadataForObjectHandle:(id)handle options:(id)options withReply:(id)reply
 {
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_100002D5C;
   v15 = &unk_10002C848;
-  v16 = self;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v8 = v19;
-  v9 = v18;
-  v10 = v17;
+  selfCopy = self;
+  handleCopy = handle;
+  optionsCopy = options;
+  replyCopy = reply;
+  v8 = replyCopy;
+  v9 = optionsCopy;
+  v10 = handleCopy;
   v11 = [NSBlockOperation blockOperationWithBlock:&v12];
-  [(PTPCameraDevice *)self addInteractiveOperation:v11, v12, v13, v14, v15, v16];
+  [(PTPCameraDevice *)self addInteractiveOperation:v11, v12, v13, v14, v15, selfCopy];
 }
 
-- (void)requestThumbnailDataForObjectHandle:(id)a3 options:(id)a4 withReply:(id)a5
+- (void)requestThumbnailDataForObjectHandle:(id)handle options:(id)options withReply:(id)reply
 {
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_100002F34;
   v15 = &unk_10002C848;
-  v16 = self;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v8 = v19;
-  v9 = v18;
-  v10 = v17;
+  selfCopy = self;
+  handleCopy = handle;
+  optionsCopy = options;
+  replyCopy = reply;
+  v8 = replyCopy;
+  v9 = optionsCopy;
+  v10 = handleCopy;
   v11 = [NSBlockOperation blockOperationWithBlock:&v12];
-  [(PTPCameraDevice *)self addInteractiveOperation:v11, v12, v13, v14, v15, v16];
+  [(PTPCameraDevice *)self addInteractiveOperation:v11, v12, v13, v14, v15, selfCopy];
 }
 
-- (void)requestDownloadObjectHandle:(id)a3 options:(id)a4 withReply:(id)a5
+- (void)requestDownloadObjectHandle:(id)handle options:(id)options withReply:(id)reply
 {
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_1000030E0;
   v13 = &unk_10002C870;
-  v14 = a4;
-  v15 = a5;
-  v7 = v15;
-  v8 = v14;
+  optionsCopy = options;
+  replyCopy = reply;
+  v7 = replyCopy;
+  v8 = optionsCopy;
   v9 = [NSBlockOperation blockOperationWithBlock:&v10];
   [(PTPCameraDevice *)self addInteractiveOperation:v9, v10, v11, v12, v13];
 }
 
-- (void)requestReadDataFromObjectHandle:(id)a3 options:(id)a4 withReply:(id)a5
+- (void)requestReadDataFromObjectHandle:(id)handle options:(id)options withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 objectForKeyedSubscript:@"ICReadBufferStreamOpen"];
+  handleCopy = handle;
+  optionsCopy = options;
+  replyCopy = reply;
+  v11 = [optionsCopy objectForKeyedSubscript:@"ICReadBufferStreamOpen"];
   if (v11)
   {
   }
 
   else
   {
-    v12 = [v9 objectForKeyedSubscript:@"ICReadBufferStreamClose"];
+    v12 = [optionsCopy objectForKeyedSubscript:@"ICReadBufferStreamClose"];
 
     if (!v12)
     {
@@ -306,67 +306,67 @@
       v16 = 3221225472;
       v17 = sub_100003314;
       v18 = &unk_10002C848;
-      v19 = self;
-      v20 = v8;
-      v21 = v9;
-      v22 = v10;
+      selfCopy = self;
+      v20 = handleCopy;
+      v21 = optionsCopy;
+      v22 = replyCopy;
       v14 = [NSBlockOperation blockOperationWithBlock:&v15];
-      [(PTPCameraDevice *)self addInteractiveOperation:v14, v15, v16, v17, v18, v19];
+      [(PTPCameraDevice *)self addInteractiveOperation:v14, v15, v16, v17, v18, selfCopy];
 
       goto LABEL_5;
     }
   }
 
   v13 = +[NSMutableDictionary dictionary];
-  [v13 addEntriesFromDictionary:v9];
+  [v13 addEntriesFromDictionary:optionsCopy];
   [v13 setObject:&off_10002F450 forKeyedSubscript:@"errCode"];
-  (*(v10 + 2))(v10, v13);
+  (*(replyCopy + 2))(replyCopy, v13);
 
 LABEL_5:
 }
 
-- (void)requestDeleteObjectHandle:(id)a3 options:(id)a4 withReply:(id)a5
+- (void)requestDeleteObjectHandle:(id)handle options:(id)options withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  optionsCopy = options;
+  replyCopy = reply;
   +[NSXPCConnection currentConnection];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100003710;
   v16[3] = &unk_10002C898;
   v16[4] = self;
-  v19 = v17 = v8;
-  v20 = v10;
-  v18 = v9;
+  v19 = v17 = handleCopy;
+  v20 = replyCopy;
+  v18 = optionsCopy;
   v11 = v19;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v12 = replyCopy;
+  v13 = optionsCopy;
+  v14 = handleCopy;
   v15 = [NSBlockOperation blockOperationWithBlock:v16];
   [(PTPCameraDevice *)self addInteractiveOperation:v15];
 }
 
-- (void)requestFingerprintForObjectHandle:(id)a3 withReply:(id)a4
+- (void)requestFingerprintForObjectHandle:(id)handle withReply:(id)reply
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100003A88;
   v9[3] = &unk_10002C7F8;
   v9[4] = self;
-  v10 = a3;
-  v11 = a4;
-  v6 = v11;
-  v7 = v10;
+  handleCopy = handle;
+  replyCopy = reply;
+  v6 = replyCopy;
+  v7 = handleCopy;
   v8 = [NSBlockOperation blockOperationWithBlock:v9];
   [(PTPCameraDevice *)self addInteractiveOperation:v8];
 }
 
-- (void)sendPTPCommand:(id)a3 andPayload:(id)a4 withReply:(id)a5
+- (void)sendPTPCommand:(id)command andPayload:(id)payload withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  commandCopy = command;
+  payloadCopy = payload;
+  replyCopy = reply;
   v11 = +[NSXPCConnection currentConnection];
   v12 = v11;
   v25 = 0u;
@@ -384,29 +384,29 @@ LABEL_5:
     v16 = 3221225472;
     v17 = sub_100003D58;
     v18 = &unk_10002C848;
-    v19 = self;
-    v20 = v8;
-    v21 = v9;
-    v22 = v10;
+    selfCopy = self;
+    v20 = commandCopy;
+    v21 = payloadCopy;
+    v22 = replyCopy;
     v13 = [NSBlockOperation blockOperationWithBlock:&v15];
-    [(PTPCameraDevice *)self addInteractiveOperation:v13, v15, v16, v17, v18, v19];
+    [(PTPCameraDevice *)self addInteractiveOperation:v13, v15, v16, v17, v18, selfCopy];
   }
 
   else
   {
     v14 = +[NSMutableDictionary dictionary];
     [v14 setObject:&off_10002F480 forKeyedSubscript:@"errCode"];
-    (*(v10 + 2))(v10, v14);
+    (*(replyCopy + 2))(replyCopy, v14);
   }
 }
 
-- (void)enumerateContentWithOptions:(id)a3
+- (void)enumerateContentWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[NSXPCConnection currentConnection];
   [(PTPCameraDevice *)self setPrioritizeSpeed:0];
-  v6 = [v4 objectForKeyedSubscript:@"ICEnumerationPrioritizeSpeed"];
-  if (v6 && (v7 = v6, [v4 objectForKeyedSubscript:@"ICEnumerationPrioritizeSpeed"], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "BOOLValue"), v8, v7, v9))
+  v6 = [optionsCopy objectForKeyedSubscript:@"ICEnumerationPrioritizeSpeed"];
+  if (v6 && (v7 = v6, [optionsCopy objectForKeyedSubscript:@"ICEnumerationPrioritizeSpeed"], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "BOOLValue"), v8, v7, v9))
   {
     __ICOSLogCreate();
     v10 = @"Enum-Priority";
@@ -423,7 +423,7 @@ LABEL_5:
       v14 = v10;
       v15 = v13;
       *buf = 136446466;
-      v29 = [(__CFString *)v10 UTF8String];
+      uTF8String = [(__CFString *)v10 UTF8String];
       v30 = 2114;
       v31 = v12;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -449,7 +449,7 @@ LABEL_5:
       v20 = v16;
       v21 = v19;
       *buf = 136446466;
-      v29 = [(__CFString *)v16 UTF8String];
+      uTF8String = [(__CFString *)v16 UTF8String];
       v30 = 2114;
       v31 = v18;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -461,10 +461,10 @@ LABEL_5:
   v25[2] = sub_10000410C;
   v25[3] = &unk_10002C820;
   v25[4] = self;
-  v26 = v4;
+  v26 = optionsCopy;
   v27 = v5;
   v22 = v5;
-  v23 = v4;
+  v23 = optionsCopy;
   v24 = [NSBlockOperation blockOperationWithBlock:v25];
   [(PTPCameraDevice *)self addInteractiveOperation:v24];
 }
@@ -472,35 +472,35 @@ LABEL_5:
 - (id)additionalProperties
 {
   v6 = @"ICDeviceAccessRestrictedAppleDevice";
-  v2 = [(PTPCameraDevice *)self initiator];
-  v3 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v2 isAccessRestrictedAppleDevice]);
+  initiator = [(PTPCameraDevice *)self initiator];
+  v3 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [initiator isAccessRestrictedAppleDevice]);
   v7 = v3;
   v4 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
 
   return v4;
 }
 
-- (id)itemForObjectHandle:(id)a3
+- (id)itemForObjectHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(PTPCameraDevice *)self initiator];
-  v6 = [v4 unsignedIntegerValue];
+  handleCopy = handle;
+  initiator = [(PTPCameraDevice *)self initiator];
+  unsignedIntegerValue = [handleCopy unsignedIntegerValue];
 
-  v7 = [v5 cameraItemWithObjectID:v6];
+  v7 = [initiator cameraItemWithObjectID:unsignedIntegerValue];
 
   return v7;
 }
 
-- (BOOL)acceptConnection:(id)a3
+- (BOOL)acceptConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = PTPCameraDevice;
-  if (![(PTPCameraDevice *)&v15 acceptConnection:v4])
+  if (![(PTPCameraDevice *)&v15 acceptConnection:connectionCopy])
   {
     v14.receiver = self;
     v14.super_class = PTPCameraDevice;
-    if (![(PTPCameraDevice *)&v14 evaulateCommonTCC:v4])
+    if (![(PTPCameraDevice *)&v14 evaulateCommonTCC:connectionCopy])
     {
       v12 = 0;
       goto LABEL_10;
@@ -520,9 +520,9 @@ LABEL_5:
     {
       v9 = v5;
       v10 = v8;
-      v11 = [(__CFString *)v5 UTF8String];
+      uTF8String = [(__CFString *)v5 UTF8String];
       *buf = 136446466;
-      v17 = v11;
+      v17 = uTF8String;
       v18 = 2114;
       v19 = v7;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -538,8 +538,8 @@ LABEL_10:
 - (void)closeDevice
 {
   v3 = dispatch_semaphore_create(0);
-  v4 = [(PTPCameraDevice *)self deviceOperationQueue];
-  [v4 cancelAllOperations];
+  deviceOperationQueue = [(PTPCameraDevice *)self deviceOperationQueue];
+  [deviceOperationQueue cancelAllOperations];
 
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
@@ -567,8 +567,8 @@ LABEL_10:
       v11 = @"closeDevice";
     }
 
-    v12 = [(PTPCameraDevice *)self cameraDictionary];
-    v13 = [v12 objectForKeyedSubscript:@"ICDeviceName"];
+    cameraDictionary = [(PTPCameraDevice *)self cameraDictionary];
+    v13 = [cameraDictionary objectForKeyedSubscript:@"ICDeviceName"];
     v14 = [NSString stringWithFormat:@">>> Close Timed Out: %@", v13];
 
     v15 = _gICOSLog;
@@ -591,8 +591,8 @@ LABEL_10:
       v11 = @"closeDevice";
     }
 
-    v16 = [(PTPCameraDevice *)self cameraDictionary];
-    v17 = [v16 objectForKeyedSubscript:@"ICDeviceName"];
+    cameraDictionary2 = [(PTPCameraDevice *)self cameraDictionary];
+    v17 = [cameraDictionary2 objectForKeyedSubscript:@"ICDeviceName"];
     v14 = [NSString stringWithFormat:@">>> Device Closed: %@", v17];
 
     v18 = _gICOSLog;
@@ -600,9 +600,9 @@ LABEL_10:
     {
       v19 = v11;
       v20 = v18;
-      v21 = [(__CFString *)v11 UTF8String];
+      uTF8String = [(__CFString *)v11 UTF8String];
       *buf = 136446466;
-      v25 = v21;
+      v25 = uTF8String;
       v26 = 2114;
       v27 = v14;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);

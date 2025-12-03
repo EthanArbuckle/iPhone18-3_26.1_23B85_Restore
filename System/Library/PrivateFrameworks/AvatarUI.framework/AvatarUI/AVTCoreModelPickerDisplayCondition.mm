@@ -1,23 +1,23 @@
 @interface AVTCoreModelPickerDisplayCondition
-+ (id)displayConditionFromDictionnary:(id)a3;
-- (AVTCoreModelPickerDisplayCondition)initWithTargetSectionIndex:(unint64_t)a3 value:(unint64_t)a4;
++ (id)displayConditionFromDictionnary:(id)dictionnary;
+- (AVTCoreModelPickerDisplayCondition)initWithTargetSectionIndex:(unint64_t)index value:(unint64_t)value;
 @end
 
 @implementation AVTCoreModelPickerDisplayCondition
 
-+ (id)displayConditionFromDictionnary:(id)a3
++ (id)displayConditionFromDictionnary:(id)dictionnary
 {
-  if (a3)
+  if (dictionnary)
   {
     v5 = kAVTEditingModelDefinitionsDisplayConditionSectionIndexKey;
-    v6 = a3;
-    v7 = [v6 objectForKeyedSubscript:v5];
-    v8 = [v7 integerValue];
+    dictionnaryCopy = dictionnary;
+    v7 = [dictionnaryCopy objectForKeyedSubscript:v5];
+    integerValue = [v7 integerValue];
 
-    v9 = [v6 objectForKeyedSubscript:kAVTEditingModelDefinitionsDisplayConditionValueKey];
+    v9 = [dictionnaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsDisplayConditionValueKey];
 
-    v10 = [a1 conditionValueFromString:v9];
-    v11 = [[AVTCoreModelPickerDisplayCondition alloc] initWithTargetSectionIndex:v8 value:v10];
+    v10 = [self conditionValueFromString:v9];
+    v11 = [[AVTCoreModelPickerDisplayCondition alloc] initWithTargetSectionIndex:integerValue value:v10];
   }
 
   else
@@ -28,15 +28,15 @@
   return v11;
 }
 
-- (AVTCoreModelPickerDisplayCondition)initWithTargetSectionIndex:(unint64_t)a3 value:(unint64_t)a4
+- (AVTCoreModelPickerDisplayCondition)initWithTargetSectionIndex:(unint64_t)index value:(unint64_t)value
 {
   v7.receiver = self;
   v7.super_class = AVTCoreModelPickerDisplayCondition;
   result = [(AVTCoreModelPickerDisplayCondition *)&v7 init];
   if (result)
   {
-    result->_targetSectionIndex = a3;
-    result->_value = a4;
+    result->_targetSectionIndex = index;
+    result->_value = value;
   }
 
   return result;

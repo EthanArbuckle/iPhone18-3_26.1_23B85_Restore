@@ -1,7 +1,7 @@
 @interface OrgApacheLuceneIndexMultiPostingsEnum
 - (id)getPayload;
-- (id)resetWithOrgApacheLuceneIndexMultiPostingsEnum_EnumWithSliceArray:(id)a3 withInt:(int)a4;
-- (int)advanceWithInt:(int)a3;
+- (id)resetWithOrgApacheLuceneIndexMultiPostingsEnum_EnumWithSliceArray:(id)array withInt:(int)int;
+- (int)advanceWithInt:(int)int;
 - (int)endOffset;
 - (int)freq;
 - (int)nextDoc;
@@ -13,10 +13,10 @@
 
 @implementation OrgApacheLuceneIndexMultiPostingsEnum
 
-- (id)resetWithOrgApacheLuceneIndexMultiPostingsEnum_EnumWithSliceArray:(id)a3 withInt:(int)a4
+- (id)resetWithOrgApacheLuceneIndexMultiPostingsEnum_EnumWithSliceArray:(id)array withInt:(int)int
 {
-  self->numSubs_ = a4;
-  if (a4 >= 1)
+  self->numSubs_ = int;
+  if (int >= 1)
   {
     v6 = 0;
     do
@@ -34,18 +34,18 @@
       }
 
       v10 = (&subs->elementType_)[v6];
-      if (!v10 || !a3)
+      if (!v10 || !array)
       {
         goto LABEL_20;
       }
 
-      v11 = *(a3 + 2);
+      v11 = *(array + 2);
       if (v6 >= v11)
       {
         IOSArray_throwOutOfBoundsWithMsg(v11, v6);
       }
 
-      v12 = *(a3 + v6 + 3);
+      v12 = *(array + v6 + 3);
       if (!v12)
       {
         goto LABEL_20;
@@ -65,13 +65,13 @@
         goto LABEL_20;
       }
 
-      v16 = *(a3 + 2);
+      v16 = *(array + 2);
       if (v6 >= v16)
       {
         IOSArray_throwOutOfBoundsWithMsg(v16, v6);
       }
 
-      v17 = *(a3 + v6 + 3);
+      v17 = *(array + v6 + 3);
       if (!v17)
       {
 LABEL_20:
@@ -82,7 +82,7 @@ LABEL_20:
       ++v6;
     }
 
-    while (a4 != v6);
+    while (int != v6);
   }
 
   self->upto_ = -1;
@@ -102,7 +102,7 @@ LABEL_20:
   return [(OrgApacheLuceneIndexPostingsEnum *)current freq];
 }
 
-- (int)advanceWithInt:(int)a3
+- (int)advanceWithInt:(int)int
 {
   while (1)
   {
@@ -115,20 +115,20 @@ LABEL_20:
       }
 
       currentBase = self->currentBase_;
-      v7 = (a3 - currentBase);
-      if (a3 >= currentBase)
+      v7 = (int - currentBase);
+      if (int >= currentBase)
       {
-        v8 = [(OrgApacheLuceneIndexPostingsEnum *)current advanceWithInt:v7];
+        nextDoc = [(OrgApacheLuceneIndexPostingsEnum *)current advanceWithInt:v7];
       }
 
       else
       {
-        v8 = [(OrgApacheLuceneIndexPostingsEnum *)current nextDoc];
+        nextDoc = [(OrgApacheLuceneIndexPostingsEnum *)current nextDoc];
       }
 
-      if (v8 != 0x7FFFFFFF)
+      if (nextDoc != 0x7FFFFFFF)
       {
-        result = self->currentBase_ + v8;
+        result = self->currentBase_ + nextDoc;
         goto LABEL_21;
       }
 
@@ -239,10 +239,10 @@ LABEL_19:
     }
 
 LABEL_12:
-    v14 = [(OrgApacheLuceneIndexPostingsEnum *)current nextDoc];
-    if (v14 != 0x7FFFFFFF)
+    nextDoc = [(OrgApacheLuceneIndexPostingsEnum *)current nextDoc];
+    if (nextDoc != 0x7FFFFFFF)
     {
-      result = self->currentBase_ + v14;
+      result = self->currentBase_ + nextDoc;
       goto LABEL_18;
     }
 

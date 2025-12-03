@@ -1,27 +1,27 @@
 @interface HKSampleTypeUpdateController
-- (BOOL)_isHighFrequencyDataType:(id)a3;
-- (HKSampleTypeUpdateController)initWithHealthStore:(id)a3;
+- (BOOL)_isHighFrequencyDataType:(id)type;
+- (HKSampleTypeUpdateController)initWithHealthStore:(id)store;
 - (id)_failedQuerySampleTypes;
-- (id)_findThrottledUpdateData:(id)a3;
-- (id)_observersForType:(id)a3;
-- (int64_t)_queryStateForType:(id)a3;
-- (void)_callObservers:(id)a3 withType:(id)a4 samplesAdded:(id)a5 objectsRemoved:(id)a6 recoveringFromError:(BOOL)a7;
-- (void)_createQueryForType:(id)a3;
+- (id)_findThrottledUpdateData:(id)data;
+- (id)_observersForType:(id)type;
+- (int64_t)_queryStateForType:(id)type;
+- (void)_callObservers:(id)observers withType:(id)type samplesAdded:(id)added objectsRemoved:(id)removed recoveringFromError:(BOOL)error;
+- (void)_createQueryForType:(id)type;
 - (void)_drainAllThrottledDataIfNecessary;
-- (void)_drainThrottledDataIfNecessary:(id)a3 recoveringFromError:(BOOL)a4;
-- (void)_errorRecoveryCallbacksForType:(id)a3;
-- (void)_handleHighFrequencyObserverCallbacksForType:(id)a3;
-- (void)_handleQueryCallbackForType:(id)a3 samplesAdded:(id)a4 objectsDeleted:(id)a5 error:(id)a6;
-- (void)_handleQueryErrorForType:(id)a3 error:(id)a4;
-- (void)_handleQuerySuccessForType:(id)a3 samplesAdded:(id)a4 objectsRemoved:(id)a5;
+- (void)_drainThrottledDataIfNecessary:(id)necessary recoveringFromError:(BOOL)error;
+- (void)_errorRecoveryCallbacksForType:(id)type;
+- (void)_handleHighFrequencyObserverCallbacksForType:(id)type;
+- (void)_handleQueryCallbackForType:(id)type samplesAdded:(id)added objectsDeleted:(id)deleted error:(id)error;
+- (void)_handleQueryErrorForType:(id)type error:(id)error;
+- (void)_handleQuerySuccessForType:(id)type samplesAdded:(id)added objectsRemoved:(id)removed;
 - (void)_installThrottlingTimer;
-- (void)_removeQueryForType:(id)a3 queryState:(int64_t)a4;
+- (void)_removeQueryForType:(id)type queryState:(int64_t)state;
 - (void)_removeThrottlingTimer;
 - (void)_resumeFailedQueries;
-- (void)_sendThrottledUpdatesToObservers:(id)a3 recoveringFromError:(BOOL)a4;
-- (void)_setQueryState:(int64_t)a3 forType:(id)a4;
-- (void)addObserver:(id)a3 forType:(id)a4;
-- (void)removeObserver:(id)a3 forType:(id)a4;
+- (void)_sendThrottledUpdatesToObservers:(id)observers recoveringFromError:(BOOL)error;
+- (void)_setQueryState:(int64_t)state forType:(id)type;
+- (void)addObserver:(id)observer forType:(id)type;
+- (void)removeObserver:(id)observer forType:(id)type;
 @end
 
 @implementation HKSampleTypeUpdateController
@@ -33,8 +33,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(HKSampleTypeUpdateController *)self _failedQuerySampleTypes];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v21 count:16];
+  _failedQuerySampleTypes = [(HKSampleTypeUpdateController *)self _failedQuerySampleTypes];
+  v4 = [_failedQuerySampleTypes countByEnumeratingWithState:&v13 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -46,7 +46,7 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_failedQuerySampleTypes);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
@@ -56,11 +56,11 @@
         {
           v10 = objc_opt_class();
           v11 = v10;
-          v12 = [v8 identifier];
+          identifier = [v8 identifier];
           *buf = 138543619;
           v18 = v10;
           v19 = 2113;
-          v20 = v12;
+          v20 = identifier;
           _os_log_error_impl(&dword_1C3942000, v9, OS_LOG_TYPE_ERROR, "%{public}@: Resuming failed query from background (%{private}@)", buf, 0x16u);
         }
 
@@ -70,7 +70,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v21 count:16];
+      v5 = [_failedQuerySampleTypes countByEnumeratingWithState:&v13 objects:v21 count:16];
     }
 
     while (v5);
@@ -118,16 +118,16 @@
   return v3;
 }
 
-- (HKSampleTypeUpdateController)initWithHealthStore:(id)a3
+- (HKSampleTypeUpdateController)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v20.receiver = self;
   v20.super_class = HKSampleTypeUpdateController;
   v6 = [(HKSampleTypeUpdateController *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     outstandingQueriesByType = v7->_outstandingQueriesByType;
     v7->_outstandingQueriesByType = v8;
@@ -141,11 +141,11 @@
     v7->_observersByType = v12;
 
     v7->_applicationIsInBackground = 0;
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v7 selector:sel__applicationMovingToForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__applicationMovingToForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v7 selector:sel__applicationMovingToBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__applicationMovingToBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
 
     v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
     throttledDataBySampleType = v7->_throttledDataBySampleType;
@@ -240,16 +240,16 @@ LABEL_11:
   }
 }
 
-- (void)_sendThrottledUpdatesToObservers:(id)a3 recoveringFromError:(BOOL)a4
+- (void)_sendThrottledUpdatesToObservers:(id)observers recoveringFromError:(BOOL)error
 {
-  v4 = a4;
+  errorCopy = error;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  observersCopy = observers;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = [v6 throttledObservers];
+  obj = [observersCopy throttledObservers];
   v7 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -266,10 +266,10 @@ LABEL_11:
         }
 
         v11 = *(*(&v16 + 1) + 8 * v10);
-        v12 = [v6 throttledSampleType];
-        v13 = [v6 throttledSamplesAdded];
-        v14 = [v6 throttledDeletedObjects];
-        [v11 updateController:self didReceiveUpdateForType:v12 samplesAdded:v13 objectsRemoved:v14 recoveringFromError:v4];
+        throttledSampleType = [observersCopy throttledSampleType];
+        throttledSamplesAdded = [observersCopy throttledSamplesAdded];
+        throttledDeletedObjects = [observersCopy throttledDeletedObjects];
+        [v11 updateController:self didReceiveUpdateForType:throttledSampleType samplesAdded:throttledSamplesAdded objectsRemoved:throttledDeletedObjects recoveringFromError:errorCopy];
 
         ++v10;
       }
@@ -282,77 +282,77 @@ LABEL_11:
   }
 }
 
-- (void)_drainThrottledDataIfNecessary:(id)a3 recoveringFromError:(BOOL)a4
+- (void)_drainThrottledDataIfNecessary:(id)necessary recoveringFromError:(BOOL)error
 {
-  v4 = a4;
-  v11 = a3;
-  if ([v11 incomingUpdateCountSinceLastDrain])
+  errorCopy = error;
+  necessaryCopy = necessary;
+  if ([necessaryCopy incomingUpdateCountSinceLastDrain])
   {
-    v6 = [v11 throttledObservers];
-    v7 = [v6 count];
+    throttledObservers = [necessaryCopy throttledObservers];
+    v7 = [throttledObservers count];
 
     if (v7)
     {
-      if ([v11 incomingUpdateCountSinceLastDrain] > 2)
+      if ([necessaryCopy incomingUpdateCountSinceLastDrain] > 2)
       {
         [(HKSampleTypeUpdateController *)self _installThrottlingTimer];
         v8 = CACurrentMediaTime();
-        if (v4 || (v9 = v8, [v11 lastDrainTime], v8 = v9 - v10, v8 >= 1.0))
+        if (errorCopy || (v9 = v8, [necessaryCopy lastDrainTime], v8 = v9 - v10, v8 >= 1.0))
         {
-          [(HKSampleTypeUpdateController *)self _sendThrottledUpdatesToObservers:v11 recoveringFromError:v4, v8];
-          [v11 clearThrottlingData];
-          [v11 updateDrainTime];
+          [(HKSampleTypeUpdateController *)self _sendThrottledUpdatesToObservers:necessaryCopy recoveringFromError:errorCopy, v8];
+          [necessaryCopy clearThrottlingData];
+          [necessaryCopy updateDrainTime];
         }
       }
 
       else
       {
-        [(HKSampleTypeUpdateController *)self _sendThrottledUpdatesToObservers:v11 recoveringFromError:v4];
-        [v11 clearThrottlingData];
+        [(HKSampleTypeUpdateController *)self _sendThrottledUpdatesToObservers:necessaryCopy recoveringFromError:errorCopy];
+        [necessaryCopy clearThrottlingData];
       }
     }
   }
 }
 
-- (void)addObserver:(id)a3 forType:(id)a4
+- (void)addObserver:(id)observer forType:(id)type
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(HKSampleTypeUpdateController *)self _observersForType:v6];
-  [v7 addObject:v8];
-  if ([(HKSampleTypeUpdateController *)self _typeRequiresNewQuery:v6])
+  observerCopy = observer;
+  typeCopy = type;
+  v7 = [(HKSampleTypeUpdateController *)self _observersForType:typeCopy];
+  [v7 addObject:observerCopy];
+  if ([(HKSampleTypeUpdateController *)self _typeRequiresNewQuery:typeCopy])
   {
-    [(HKSampleTypeUpdateController *)self _createQueryForType:v6];
+    [(HKSampleTypeUpdateController *)self _createQueryForType:typeCopy];
   }
 
   else
   {
-    [v8 updateController:self didReceiveUpdateForType:v6 samplesAdded:MEMORY[0x1E695E0F0] objectsRemoved:MEMORY[0x1E695E0F0] recoveringFromError:0];
+    [observerCopy updateController:self didReceiveUpdateForType:typeCopy samplesAdded:MEMORY[0x1E695E0F0] objectsRemoved:MEMORY[0x1E695E0F0] recoveringFromError:0];
   }
 }
 
-- (void)removeObserver:(id)a3 forType:(id)a4
+- (void)removeObserver:(id)observer forType:(id)type
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  observerCopy = observer;
+  typeCopy = type;
+  v8 = typeCopy;
+  if (typeCopy)
   {
-    v22[0] = v7;
-    v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
+    v22[0] = typeCopy;
+    _allObservedTypes = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
   }
 
   else
   {
-    v9 = [(HKSampleTypeUpdateController *)self _allObservedTypes];
+    _allObservedTypes = [(HKSampleTypeUpdateController *)self _allObservedTypes];
   }
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = v9;
+  v10 = _allObservedTypes;
   v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
@@ -369,7 +369,7 @@ LABEL_11:
 
         v15 = *(*(&v17 + 1) + 8 * i);
         v16 = [(HKSampleTypeUpdateController *)self _observersForType:v15, v17];
-        [v16 removeObject:v6];
+        [v16 removeObject:observerCopy];
         if (![v16 count])
         {
           [(HKSampleTypeUpdateController *)self _removeQueryForType:v15 queryState:0];
@@ -383,80 +383,80 @@ LABEL_11:
   }
 }
 
-- (id)_observersForType:(id)a3
+- (id)_observersForType:(id)type
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_observersByType objectForKeyedSubscript:v4];
+  typeCopy = type;
+  v5 = [(NSMutableDictionary *)self->_observersByType objectForKeyedSubscript:typeCopy];
   if (!v5)
   {
     v5 = [MEMORY[0x1E696AC70] hashTableWithOptions:5];
-    [(NSMutableDictionary *)self->_observersByType setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_observersByType setObject:v5 forKeyedSubscript:typeCopy];
   }
 
   return v5;
 }
 
-- (id)_findThrottledUpdateData:(id)a3
+- (id)_findThrottledUpdateData:(id)data
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_throttledDataBySampleType objectForKeyedSubscript:v4];
+  dataCopy = data;
+  v5 = [(NSMutableDictionary *)self->_throttledDataBySampleType objectForKeyedSubscript:dataCopy];
   if (!v5)
   {
-    v5 = [[HKThrottledUpdateData alloc] initWithSampleType:v4];
-    [(NSMutableDictionary *)self->_throttledDataBySampleType setObject:v5 forKeyedSubscript:v4];
+    v5 = [[HKThrottledUpdateData alloc] initWithSampleType:dataCopy];
+    [(NSMutableDictionary *)self->_throttledDataBySampleType setObject:v5 forKeyedSubscript:dataCopy];
   }
 
   return v5;
 }
 
-- (void)_callObservers:(id)a3 withType:(id)a4 samplesAdded:(id)a5 objectsRemoved:(id)a6 recoveringFromError:(BOOL)a7
+- (void)_callObservers:(id)observers withType:(id)type samplesAdded:(id)added objectsRemoved:(id)removed recoveringFromError:(BOOL)error
 {
-  v7 = a7;
-  v18 = a4;
+  errorCopy = error;
+  typeCopy = type;
   v13 = MEMORY[0x1E696AF00];
-  v14 = a6;
-  v15 = a5;
-  v16 = a3;
+  removedCopy = removed;
+  addedCopy = added;
+  observersCopy = observers;
   if (([v13 isMainThread] & 1) == 0)
   {
     [HKSampleTypeUpdateController _callObservers:a2 withType:self samplesAdded:? objectsRemoved:? recoveringFromError:?];
   }
 
-  v17 = [(HKSampleTypeUpdateController *)self _findThrottledUpdateData:v18];
-  [v17 addThrottledObservers:v16 samplesAdded:v15 objectsRemoved:v14];
+  v17 = [(HKSampleTypeUpdateController *)self _findThrottledUpdateData:typeCopy];
+  [v17 addThrottledObservers:observersCopy samplesAdded:addedCopy objectsRemoved:removedCopy];
 
-  [(HKSampleTypeUpdateController *)self _drainThrottledDataIfNecessary:v17 recoveringFromError:v7];
+  [(HKSampleTypeUpdateController *)self _drainThrottledDataIfNecessary:v17 recoveringFromError:errorCopy];
 }
 
-- (int64_t)_queryStateForType:(id)a3
+- (int64_t)_queryStateForType:(id)type
 {
-  v3 = [(NSMutableDictionary *)self->_queryStatesByType objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_queryStatesByType objectForKeyedSubscript:type];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (void)_setQueryState:(int64_t)a3 forType:(id)a4
+- (void)_setQueryState:(int64_t)state forType:(id)type
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithInteger:a3];
-  [(NSMutableDictionary *)self->_queryStatesByType setObject:v8 forKeyedSubscript:v7];
+  typeCopy = type;
+  v8 = [v6 numberWithInteger:state];
+  [(NSMutableDictionary *)self->_queryStatesByType setObject:v8 forKeyedSubscript:typeCopy];
 }
 
-- (BOOL)_isHighFrequencyDataType:(id)a3
+- (BOOL)_isHighFrequencyDataType:(id)type
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -464,8 +464,8 @@ LABEL_11:
     v9[0] = *MEMORY[0x1E696BD28];
     v9[1] = v4;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
-    v6 = [v3 identifier];
-    v7 = [v5 containsObject:v6];
+    identifier = [typeCopy identifier];
+    v7 = [v5 containsObject:identifier];
   }
 
   else
@@ -476,29 +476,29 @@ LABEL_11:
   return v7;
 }
 
-- (void)_createQueryForType:(id)a3
+- (void)_createQueryForType:(id)type
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(HKSampleTypeUpdateController *)self _setQueryState:1 forType:v4];
-  v5 = [MEMORY[0x1E695DF70] array];
+  typeCopy = type;
+  [(HKSampleTypeUpdateController *)self _setQueryState:1 forType:typeCopy];
+  array = [MEMORY[0x1E695DF70] array];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __52__HKSampleTypeUpdateController__createQueryForType___block_invoke;
   aBlock[3] = &unk_1E81B8F00;
   aBlock[4] = self;
-  v6 = v4;
+  v6 = typeCopy;
   v38 = v6;
   v7 = _Block_copy(aBlock);
   v8 = objc_alloc(MEMORY[0x1E696BF08]);
-  v9 = [MEMORY[0x1E696C380] latestAnchor];
+  latestAnchor = [MEMORY[0x1E696C380] latestAnchor];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __52__HKSampleTypeUpdateController__createQueryForType___block_invoke_3;
   v35[3] = &unk_1E81B8F28;
   v10 = v7;
   v36 = v10;
-  v11 = [v8 initWithType:v6 predicate:0 anchor:v9 limit:0 resultsHandler:v35];
+  v11 = [v8 initWithType:v6 predicate:0 anchor:latestAnchor limit:0 resultsHandler:v35];
 
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
@@ -507,7 +507,7 @@ LABEL_11:
   v12 = v10;
   v34 = v12;
   [v11 setUpdateHandler:v33];
-  [v5 addObject:v11];
+  [array addObject:v11];
   if ([(HKSampleTypeUpdateController *)self _isHighFrequencyDataType:v6])
   {
     *buf = 0;
@@ -524,13 +524,13 @@ LABEL_11:
     v32[5] = buf;
     v13 = _Block_copy(v32);
     v14 = MEMORY[0x1E696C378];
-    v15 = [MEMORY[0x1E695DF00] date];
-    v16 = [v14 predicateForSamplesWithStartDate:v15 endDate:0 options:0];
+    date = [MEMORY[0x1E695DF00] date];
+    v16 = [v14 predicateForSamplesWithStartDate:date endDate:0 options:0];
 
     v17 = objc_alloc(MEMORY[0x1E696C2E8]);
     v18 = [v17 initWithSampleType:*(*&buf[8] + 40) predicate:v16 updateHandler:v13];
     [v18 setObserveUnfrozenSeries:1];
-    [v5 addObject:v18];
+    [array addObject:v18];
 
     _Block_object_dispose(buf, 8);
   }
@@ -544,7 +544,7 @@ LABEL_11:
     v21 = HKLogWellnessDashboard();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v26 = [v5 count];
+      v26 = [array count];
       v27 = [v6 description];
       *buf = 134218498;
       *&buf[4] = self;
@@ -560,7 +560,7 @@ LABEL_11:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v22 = v5;
+  v22 = array;
   v23 = [v22 countByEnumeratingWithState:&v28 objects:v39 count:16];
   if (v23)
   {
@@ -619,11 +619,11 @@ uint64_t __52__HKSampleTypeUpdateController__createQueryForType___block_invoke_3
   return result;
 }
 
-- (void)_removeQueryForType:(id)a3 queryState:(int64_t)a4
+- (void)_removeQueryForType:(id)type queryState:(int64_t)state
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_outstandingQueriesByType objectForKeyedSubscript:v6];
+  typeCopy = type;
+  v7 = [(NSMutableDictionary *)self->_outstandingQueriesByType objectForKeyedSubscript:typeCopy];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -653,45 +653,45 @@ uint64_t __52__HKSampleTypeUpdateController__createQueryForType___block_invoke_3
     while (v9);
   }
 
-  [(NSMutableDictionary *)self->_outstandingQueriesByType removeObjectForKey:v6];
-  [(HKSampleTypeUpdateController *)self _setQueryState:a4 forType:v6];
+  [(NSMutableDictionary *)self->_outstandingQueriesByType removeObjectForKey:typeCopy];
+  [(HKSampleTypeUpdateController *)self _setQueryState:state forType:typeCopy];
 }
 
-- (void)_handleQueryCallbackForType:(id)a3 samplesAdded:(id)a4 objectsDeleted:(id)a5 error:(id)a6
+- (void)_handleQueryCallbackForType:(id)type samplesAdded:(id)added objectsDeleted:(id)deleted error:(id)error
 {
-  if (a6)
+  if (error)
   {
-    [(HKSampleTypeUpdateController *)self _handleQueryErrorForType:a3 error:a6, a5];
+    [(HKSampleTypeUpdateController *)self _handleQueryErrorForType:type error:error, deleted];
   }
 
   else
   {
-    [(HKSampleTypeUpdateController *)self _handleQuerySuccessForType:a3 samplesAdded:a4 objectsRemoved:a5];
+    [(HKSampleTypeUpdateController *)self _handleQuerySuccessForType:type samplesAdded:added objectsRemoved:deleted];
   }
 }
 
-- (void)_handleQueryErrorForType:(id)a3 error:(id)a4
+- (void)_handleQueryErrorForType:(id)type error:(id)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  errorCopy = error;
   _HKInitializeLogging();
   v8 = HKLogWellnessDashboard();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     v11 = objc_opt_class();
     v12 = v11;
-    v13 = [v6 identifier];
+    identifier = [typeCopy identifier];
     *buf = 138543875;
     v17 = v11;
     v18 = 2113;
-    v19 = v13;
+    v19 = identifier;
     v20 = 2114;
-    v21 = v7;
+    v21 = errorCopy;
     _os_log_error_impl(&dword_1C3942000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Sample type error (%{private}@): %{public}@", buf, 0x20u);
   }
 
-  [(HKSampleTypeUpdateController *)self _removeQueryForType:v6 queryState:3];
+  [(HKSampleTypeUpdateController *)self _removeQueryForType:typeCopy queryState:3];
   if (self->_applicationIsInBackground)
   {
     _HKInitializeLogging();
@@ -710,7 +710,7 @@ uint64_t __52__HKSampleTypeUpdateController__createQueryForType___block_invoke_3
     v14[2] = __63__HKSampleTypeUpdateController__handleQueryErrorForType_error___block_invoke;
     v14[3] = &unk_1E81B5AD0;
     v14[4] = self;
-    v15 = v6;
+    v15 = typeCopy;
     dispatch_after(v10, MEMORY[0x1E69E96A0], v14);
   }
 }
@@ -728,13 +728,13 @@ uint64_t __63__HKSampleTypeUpdateController__handleQueryErrorForType_error___blo
   return [*(a1 + 32) _createQueryForType:*(a1 + 40)];
 }
 
-- (void)_handleQuerySuccessForType:(id)a3 samplesAdded:(id)a4 objectsRemoved:(id)a5
+- (void)_handleQuerySuccessForType:(id)type samplesAdded:(id)added objectsRemoved:(id)removed
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(HKSampleTypeUpdateController *)self _setQueryState:2 forType:v8];
+  typeCopy = type;
+  addedCopy = added;
+  removedCopy = removed;
+  [(HKSampleTypeUpdateController *)self _setQueryState:2 forType:typeCopy];
   _HKInitializeLogging();
   v11 = HKLogWellnessDashboard();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
@@ -744,36 +744,36 @@ uint64_t __63__HKSampleTypeUpdateController__handleQueryErrorForType_error___blo
     v13 = HKLogWellnessDashboard();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v16 = [v8 identifier];
+      identifier = [typeCopy identifier];
       v17 = 134218755;
-      v18 = self;
+      selfCopy = self;
       v19 = 2113;
-      v20 = v16;
+      v20 = identifier;
       v21 = 2048;
-      v22 = [v9 count];
+      v22 = [addedCopy count];
       v23 = 2048;
-      v24 = [v10 count];
+      v24 = [removedCopy count];
       _os_log_debug_impl(&dword_1C3942000, v13, OS_LOG_TYPE_DEBUG, "HKSampleTypeUpdateController(%p, %{private}@): ChartDataUpdate: adding %ld objects, removing %ld objects", &v17, 0x2Au);
     }
   }
 
-  v14 = [(HKSampleTypeUpdateController *)self _observersForType:v8];
-  v15 = [v14 allObjects];
-  [(HKSampleTypeUpdateController *)self _callObservers:v15 withType:v8 samplesAdded:v9 objectsRemoved:v10 recoveringFromError:0];
+  v14 = [(HKSampleTypeUpdateController *)self _observersForType:typeCopy];
+  allObjects = [v14 allObjects];
+  [(HKSampleTypeUpdateController *)self _callObservers:allObjects withType:typeCopy samplesAdded:addedCopy objectsRemoved:removedCopy recoveringFromError:0];
 }
 
-- (void)_handleHighFrequencyObserverCallbacksForType:(id)a3
+- (void)_handleHighFrequencyObserverCallbacksForType:(id)type
 {
-  v4 = a3;
-  v5 = [(HKSampleTypeUpdateController *)self _observersForType:v4];
+  typeCopy = type;
+  v5 = [(HKSampleTypeUpdateController *)self _observersForType:typeCopy];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__HKSampleTypeUpdateController__handleHighFrequencyObserverCallbacksForType___block_invoke;
   block[3] = &unk_1E81B5A10;
   v9 = v5;
-  v10 = self;
-  v11 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v11 = typeCopy;
+  v6 = typeCopy;
   v7 = v5;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
@@ -812,16 +812,16 @@ void __77__HKSampleTypeUpdateController__handleHighFrequencyObserverCallbacksFor
   }
 }
 
-- (void)_errorRecoveryCallbacksForType:(id)a3
+- (void)_errorRecoveryCallbacksForType:(id)type
 {
-  v6 = a3;
-  v4 = [(HKSampleTypeUpdateController *)self _observersForType:v6];
-  v5 = [v4 allObjects];
-  [(HKSampleTypeUpdateController *)self _callObservers:v5 withType:v6 samplesAdded:MEMORY[0x1E695E0F0] objectsRemoved:MEMORY[0x1E695E0F0] recoveringFromError:1];
+  typeCopy = type;
+  v4 = [(HKSampleTypeUpdateController *)self _observersForType:typeCopy];
+  allObjects = [v4 allObjects];
+  [(HKSampleTypeUpdateController *)self _callObservers:allObjects withType:typeCopy samplesAdded:MEMORY[0x1E695E0F0] objectsRemoved:MEMORY[0x1E695E0F0] recoveringFromError:1];
 
-  if ([(HKSampleTypeUpdateController *)self _isHighFrequencyDataType:v6])
+  if ([(HKSampleTypeUpdateController *)self _isHighFrequencyDataType:typeCopy])
   {
-    [(HKSampleTypeUpdateController *)self _handleHighFrequencyObserverCallbacksForType:v6];
+    [(HKSampleTypeUpdateController *)self _handleHighFrequencyObserverCallbacksForType:typeCopy];
   }
 }
 

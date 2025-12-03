@@ -11,11 +11,11 @@
   {
     if (a4)
     {
-      return [a1 setObject:? forKey:?];
+      return [self setObject:? forKey:?];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)vui_setOrRemoveObject:()VideosUICore forKey:
@@ -26,12 +26,12 @@
   {
     if (v7)
     {
-      [a1 setObject:v7 forKey:v6];
+      [self setObject:v7 forKey:v6];
     }
 
     else
     {
-      [a1 removeObjectForKey:v6];
+      [self removeObjectForKey:v6];
     }
   }
 }

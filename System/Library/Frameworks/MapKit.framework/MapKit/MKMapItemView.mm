@@ -1,22 +1,22 @@
 @interface MKMapItemView
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_clampCoordinateSpan:(id)result;
 - (BOOL)_areBoundsValid;
-- (MKMapItemView)initWithFrame:(CGRect)a3;
+- (MKMapItemView)initWithFrame:(CGRect)frame;
 - (id)_annotationView;
 - (id)_customAnnotation;
-- (id)_deriveSnapshotOptions:(BOOL)a3;
+- (id)_deriveSnapshotOptions:(BOOL)options;
 - (void)_addAttributionViews;
-- (void)_addTapRecognizerForAttributionView:(id)a3;
+- (void)_addTapRecognizerForAttributionView:(id)view;
 - (void)_callCompletionHandler;
 - (void)_callCompletionHandlerWithInvalidBoundsError;
 - (void)_callCompletionHandlerWithInvalidCoordinateSpanError;
-- (void)_fetchLookAroundViewforMapItem:(id)a3;
+- (void)_fetchLookAroundViewforMapItem:(id)item;
 - (void)_getParentItem;
-- (void)_handleTapOnAttribution:(id)a3;
-- (void)_handleTapOnLookAroundView:(id)a3;
-- (void)_handleTapOnSnapshot:(id)a3;
-- (void)_loadMapItem:(id)a3 camera:(id)a4 coordinateSpan:(id)a5 completionHandler:(id)a6;
-- (void)_receivedFullyDrawnNotification:(id)a3;
+- (void)_handleTapOnAttribution:(id)attribution;
+- (void)_handleTapOnLookAroundView:(id)view;
+- (void)_handleTapOnSnapshot:(id)snapshot;
+- (void)_loadMapItem:(id)item camera:(id)camera coordinateSpan:(id)span completionHandler:(id)handler;
+- (void)_receivedFullyDrawnNotification:(id)notification;
 - (void)_reloadSnapshot;
 - (void)_renderMapItem;
 - (void)_resetAttributionViewState;
@@ -26,17 +26,17 @@
 - (void)_setupObserver;
 - (void)_setupSnapshotConstraints;
 - (void)_takeSnapshotCompleted;
-- (void)_takeSnapshotWithCompletionHandler:(id)a3 isReload:(BOOL)a4;
+- (void)_takeSnapshotWithCompletionHandler:(id)handler isReload:(BOOL)reload;
 - (void)_updateBorders;
 - (void)cancel;
 - (void)dealloc;
 - (void)infoCardThemeChanged;
 - (void)layoutSubviews;
-- (void)loadMapItem:(id)a3 completionHandler:(id)a4;
-- (void)loadMapItem:(id)a3 coordinateSpan:(id)a4 completionHandler:(id)a5;
-- (void)setShouldShowBorders:(BOOL)a3;
-- (void)setShouldShowMapAttribution:(BOOL)a3;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)loadMapItem:(id)item completionHandler:(id)handler;
+- (void)loadMapItem:(id)item coordinateSpan:(id)span completionHandler:(id)handler;
+- (void)setShouldShowBorders:(BOOL)borders;
+- (void)setShouldShowMapAttribution:(BOOL)attribution;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 - (void)triggerAnimation;
 @end
 
@@ -44,8 +44,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MKMapItemView;
@@ -61,8 +61,8 @@
     _os_log_impl(&dword_1A2EA0000, v3, OS_LOG_TYPE_INFO, "BEGIN triggerAnimation", buf, 2u);
   }
 
-  v4 = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
-  [v4 moveToCloseUpView];
+  lookAroundViewIfPresent = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
+  [lookAroundViewIfPresent moveToCloseUpView];
 
   v5 = MKGetMKMapItemViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -92,9 +92,9 @@
 
 - (void)_resetLookAroundContainerViewState
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  v4 = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
-  [v3 removeObserver:self name:@"MKLookAroundViewDidBecomeFullyDrawn" object:v4];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  lookAroundViewIfPresent = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
+  [defaultCenter removeObserver:self name:@"MKLookAroundViewDidBecomeFullyDrawn" object:lookAroundViewIfPresent];
 
   [(MKMapItemView *)self removeConstraints:self->_lookAroundConstraints];
   [(MKLookAroundContainerView *)self->_lookAroundContainerView removeFromSuperview];
@@ -197,11 +197,11 @@
 
 - (void)_renderMapItem
 {
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [(MKMapItemView *)self setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(MKMapItemView *)self setBackgroundColor:clearColor];
 
-  v4 = [(MKMapSnapshotView *)self->_snapshotView image];
-  if (v4 && (v5 = self->_lookAroundContainerView, v4, v5))
+  image = [(MKMapSnapshotView *)self->_snapshotView image];
+  if (image && (v5 = self->_lookAroundContainerView, image, v5))
   {
     [(NSLayoutConstraint *)self->_snapshotWidthConstraint setActive:0];
     [(MKLookAroundContainerView *)self->_lookAroundContainerView setHidden:0];
@@ -209,8 +209,8 @@
 
   else
   {
-    v6 = [(MKMapSnapshotView *)self->_snapshotView image];
-    if (!v6)
+    image2 = [(MKMapSnapshotView *)self->_snapshotView image];
+    if (!image2)
     {
       return;
     }
@@ -235,9 +235,9 @@
   [(MKMapItemView *)self _callCompletionHandler];
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = a4;
+  collectionCopy = collection;
   v6 = MKGetMKMapItemViewLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -247,9 +247,9 @@
 
   if (self->_loadCalledOnce)
   {
-    v7 = [(MKMapItemView *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
-    if (v8 == [v5 userInterfaceStyle] || (-[MKMapItemView bounds](self, "bounds"), v9 == 0.0))
+    traitCollection = [(MKMapItemView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
+    if (userInterfaceStyle == [collectionCopy userInterfaceStyle] || (-[MKMapItemView bounds](self, "bounds"), v9 == 0.0))
     {
     }
 
@@ -312,17 +312,17 @@ void __32__MKMapItemView__reloadSnapshot__block_invoke(uint64_t a1, uint64_t a2)
 {
   v20[3] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v19 = [(MKMapSnapshotView *)self->_snapshotView topAnchor];
-  v18 = [(MKMapItemView *)self topAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  topAnchor = [(MKMapSnapshotView *)self->_snapshotView topAnchor];
+  topAnchor2 = [(MKMapItemView *)self topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v20[0] = v17;
-  v4 = [(MKMapSnapshotView *)self->_snapshotView trailingAnchor];
-  v5 = [(MKMapItemView *)self trailingAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  trailingAnchor = [(MKMapSnapshotView *)self->_snapshotView trailingAnchor];
+  trailingAnchor2 = [(MKMapItemView *)self trailingAnchor];
+  v6 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v20[1] = v6;
-  v7 = [(MKMapSnapshotView *)self->_snapshotView heightAnchor];
-  v8 = [(MKMapItemView *)self heightAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  heightAnchor = [(MKMapSnapshotView *)self->_snapshotView heightAnchor];
+  heightAnchor2 = [(MKMapItemView *)self heightAnchor];
+  v9 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v20[2] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
   v11 = [v3 arrayWithArray:v10];
@@ -330,20 +330,20 @@ void __32__MKMapItemView__reloadSnapshot__block_invoke(uint64_t a1, uint64_t a2)
   self->_snapshotConstraints = v11;
 
   [MEMORY[0x1E696ACD8] activateConstraints:self->_snapshotConstraints];
-  v13 = [(MKMapSnapshotView *)self->_snapshotView widthAnchor];
-  v14 = [(MKMapItemView *)self widthAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  widthAnchor = [(MKMapSnapshotView *)self->_snapshotView widthAnchor];
+  widthAnchor2 = [(MKMapItemView *)self widthAnchor];
+  v15 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   snapshotWidthConstraint = self->_snapshotWidthConstraint;
   self->_snapshotWidthConstraint = v15;
 
   [(NSLayoutConstraint *)self->_snapshotWidthConstraint setActive:1];
 }
 
-- (void)setShouldShowMapAttribution:(BOOL)a3
+- (void)setShouldShowMapAttribution:(BOOL)attribution
 {
-  if (self->_shouldShowMapAttribution != a3)
+  if (self->_shouldShowMapAttribution != attribution)
   {
-    self->_shouldShowMapAttribution = a3;
+    self->_shouldShowMapAttribution = attribution;
     [(MKMapItemView *)self _resetAttributionViewState];
     if (self->_shouldShowMapAttribution)
     {
@@ -358,7 +358,7 @@ void __32__MKMapItemView__reloadSnapshot__block_invoke(uint64_t a1, uint64_t a2)
   v53[2] = *MEMORY[0x1E69E9840];
   if (self->_snapshotView)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v4 = [MKMapAttributionImage badgeImageForView:self];
     v49 = v4;
     if (v4)
@@ -373,24 +373,24 @@ void __32__MKMapItemView__reloadSnapshot__block_invoke(uint64_t a1, uint64_t a2)
       [(UIImageView *)self->_attributionBadgeView setImage:v5];
       [(MKMapSnapshotView *)self->_snapshotView addSubview:self->_attributionBadgeView];
       v50 = self->_attributionBadgeView;
-      v9 = [(UIImageView *)self->_attributionBadgeView widthAnchor];
+      widthAnchor = [(UIImageView *)self->_attributionBadgeView widthAnchor];
       [v5 size];
-      v10 = [v9 constraintEqualToConstant:?];
+      v10 = [widthAnchor constraintEqualToConstant:?];
       v53[0] = v10;
-      v11 = [(UIImageView *)self->_attributionBadgeView heightAnchor];
+      heightAnchor = [(UIImageView *)self->_attributionBadgeView heightAnchor];
       [v5 size];
-      v13 = [v11 constraintEqualToConstant:v12];
+      v13 = [heightAnchor constraintEqualToConstant:v12];
       v53[1] = v13;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:2];
-      [v3 addObjectsFromArray:v14];
+      [array addObjectsFromArray:v14];
 
       v15 = 10.0;
     }
 
     else
     {
-      v16 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-      v17 = [v16 userInterfaceStyle] == 2;
+      currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+      v17 = [currentTraitCollection userInterfaceStyle] == 2;
 
       v18 = [[MKAppleLogoLabel alloc] initForMapType:0 forDarkMode:v17];
       attributionAppleLogo = self->_attributionAppleLogo;
@@ -403,22 +403,22 @@ void __32__MKMapItemView__reloadSnapshot__block_invoke(uint64_t a1, uint64_t a2)
       v15 = 7.0 - v20;
     }
 
-    v21 = v3;
-    v22 = [(UIImageView *)v50 leadingAnchor];
-    v23 = [(MKMapSnapshotView *)self->_snapshotView leadingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23 constant:10.0];
+    v21 = array;
+    leadingAnchor = [(UIImageView *)v50 leadingAnchor];
+    leadingAnchor2 = [(MKMapSnapshotView *)self->_snapshotView leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
     v52[0] = v24;
-    v25 = [(MKMapSnapshotView *)self->_snapshotView bottomAnchor];
-    v26 = [(UIImageView *)v50 bottomAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26 constant:v15];
+    bottomAnchor = [(MKMapSnapshotView *)self->_snapshotView bottomAnchor];
+    bottomAnchor2 = [(UIImageView *)v50 bottomAnchor];
+    v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v15];
     v52[1] = v27;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:2];
     [v21 addObjectsFromArray:v28];
 
-    v29 = [MEMORY[0x1E69A2478] modernManager];
-    v30 = [v29 activeTileGroup];
+    modernManager = [MEMORY[0x1E69A2478] modernManager];
+    activeTileGroup = [modernManager activeTileGroup];
     [(MKMapItem *)self->_mapItem _coordinate];
-    v31 = [v30 mapAttributionURLForCoordinate:?];
+    v31 = [activeTileGroup mapAttributionURLForCoordinate:?];
     v32 = v21;
     attributionURL = self->_attributionURL;
     self->_attributionURL = v31;
@@ -434,21 +434,21 @@ void __32__MKMapItemView__reloadSnapshot__block_invoke(uint64_t a1, uint64_t a2)
       [(MKAttributionLabel *)self->_attributionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
       [(MKMapSnapshotView *)self->_snapshotView addSubview:self->_attributionLabel];
       [(MKMapItemView *)self _addTapRecognizerForAttributionView:self->_attributionLabel];
-      v48 = [(MKAttributionLabel *)self->_attributionLabel widthAnchor];
+      widthAnchor2 = [(MKAttributionLabel *)self->_attributionLabel widthAnchor];
       [(MKAttributionLabel *)self->_attributionLabel bounds];
-      v47 = [v48 constraintEqualToConstant:v36];
+      v47 = [widthAnchor2 constraintEqualToConstant:v36];
       v51[0] = v47;
-      v37 = [(MKAttributionLabel *)self->_attributionLabel heightAnchor];
+      heightAnchor2 = [(MKAttributionLabel *)self->_attributionLabel heightAnchor];
       [(MKAttributionLabel *)self->_attributionLabel bounds];
-      v39 = [v37 constraintEqualToConstant:v38];
+      v39 = [heightAnchor2 constraintEqualToConstant:v38];
       v51[1] = v39;
-      v40 = [(MKAttributionLabel *)self->_attributionLabel leadingAnchor];
-      v41 = [(UIImageView *)v50 trailingAnchor];
-      v42 = [v40 constraintEqualToAnchor:v41 constant:10.0];
+      leadingAnchor3 = [(MKAttributionLabel *)self->_attributionLabel leadingAnchor];
+      trailingAnchor = [(UIImageView *)v50 trailingAnchor];
+      v42 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:10.0];
       v51[2] = v42;
-      v43 = [(MKMapSnapshotView *)self->_snapshotView bottomAnchor];
-      v44 = [(MKAttributionLabel *)self->_attributionLabel bottomAnchor];
-      v45 = [v43 constraintEqualToAnchor:v44 constant:10.0];
+      bottomAnchor3 = [(MKMapSnapshotView *)self->_snapshotView bottomAnchor];
+      bottomAnchor4 = [(MKAttributionLabel *)self->_attributionLabel bottomAnchor];
+      v45 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:10.0];
       v51[3] = v45;
       v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:4];
       [v32 addObjectsFromArray:v46];
@@ -458,37 +458,37 @@ void __32__MKMapItemView__reloadSnapshot__block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (void)_addTapRecognizerForAttributionView:(id)a3
+- (void)_addTapRecognizerForAttributionView:(id)view
 {
   v4 = MEMORY[0x1E69DD060];
-  v5 = a3;
+  viewCopy = view;
   v6 = [[v4 alloc] initWithTarget:self action:sel__handleTapOnAttribution_];
-  [v5 addGestureRecognizer:v6];
+  [viewCopy addGestureRecognizer:v6];
 }
 
 - (void)_setupLookAroundConstraints
 {
   v28[6] = *MEMORY[0x1E69E9840];
   v3 = +[MKSystemController sharedInstance];
-  v4 = [v3 isGlassEnabled];
+  isGlassEnabled = [v3 isGlassEnabled];
 
   v5 = MEMORY[0x1E695DF70];
-  v27 = [(MKLookAroundContainerView *)self->_lookAroundContainerView topAnchor];
-  v26 = [(MKMapItemView *)self topAnchor];
-  v25 = [v27 constraintGreaterThanOrEqualToAnchor:v26];
+  topAnchor = [(MKLookAroundContainerView *)self->_lookAroundContainerView topAnchor];
+  topAnchor2 = [(MKMapItemView *)self topAnchor];
+  v25 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v28[0] = v25;
-  v24 = [(MKLookAroundContainerView *)self->_lookAroundContainerView bottomAnchor];
-  v23 = [(MKMapItemView *)self bottomAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23 constant:-8.0];
+  bottomAnchor = [(MKLookAroundContainerView *)self->_lookAroundContainerView bottomAnchor];
+  bottomAnchor2 = [(MKMapItemView *)self bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-8.0];
   v28[1] = v22;
-  v21 = [(MKLookAroundContainerView *)self->_lookAroundContainerView leadingAnchor];
-  v20 = [(MKMapItemView *)self leadingAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20 constant:8.0];
+  leadingAnchor = [(MKLookAroundContainerView *)self->_lookAroundContainerView leadingAnchor];
+  leadingAnchor2 = [(MKMapItemView *)self leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
   v28[2] = v19;
-  v6 = [(MKLookAroundContainerView *)self->_lookAroundContainerView widthAnchor];
-  v7 = v6;
+  widthAnchor = [(MKLookAroundContainerView *)self->_lookAroundContainerView widthAnchor];
+  v7 = widthAnchor;
   v8 = 124.0;
-  if (v4)
+  if (isGlassEnabled)
   {
     v8 = 112.0;
     v9 = 76.0;
@@ -499,14 +499,14 @@ void __32__MKMapItemView__reloadSnapshot__block_invoke(uint64_t a1, uint64_t a2)
     v9 = 91.0;
   }
 
-  v10 = [v6 constraintEqualToConstant:v8];
+  v10 = [widthAnchor constraintEqualToConstant:v8];
   v28[3] = v10;
-  v11 = [(MKLookAroundContainerView *)self->_lookAroundContainerView heightAnchor];
-  v12 = [v11 constraintEqualToConstant:v9];
+  heightAnchor = [(MKLookAroundContainerView *)self->_lookAroundContainerView heightAnchor];
+  v12 = [heightAnchor constraintEqualToConstant:v9];
   v28[4] = v12;
-  v13 = [(MKLookAroundContainerView *)self->_lookAroundContainerView trailingAnchor];
-  v14 = [(MKMapItemView *)self trailingAnchor];
-  v15 = [v13 constraintLessThanOrEqualToAnchor:v14];
+  trailingAnchor = [(MKLookAroundContainerView *)self->_lookAroundContainerView trailingAnchor];
+  trailingAnchor2 = [(MKMapItemView *)self trailingAnchor];
+  v15 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   v28[5] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:6];
   v17 = [v5 arrayWithArray:v16];
@@ -516,17 +516,17 @@ void __32__MKMapItemView__reloadSnapshot__block_invoke(uint64_t a1, uint64_t a2)
   [MEMORY[0x1E696ACD8] activateConstraints:self->_lookAroundConstraints];
 }
 
-- (void)_receivedFullyDrawnNotification:(id)a3
+- (void)_receivedFullyDrawnNotification:(id)notification
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v5 = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
-  v6 = [v5 isLoading];
+  lookAroundViewIfPresent = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
+  isLoading = [lookAroundViewIfPresent isLoading];
 
   v7 = MKGetMKMapItemViewLog();
   v8 = v7;
-  if (v6)
+  if (isLoading)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -556,24 +556,24 @@ void __32__MKMapItemView__reloadSnapshot__block_invoke(uint64_t a1, uint64_t a2)
 
 - (void)_setupObserver
 {
-  v3 = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
-  if (v3)
+  lookAroundViewIfPresent = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
+  if (lookAroundViewIfPresent)
   {
-    v5 = v3;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel__receivedFullyDrawnNotification_ name:@"MKLookAroundViewDidBecomeFullyDrawn" object:v5];
+    v5 = lookAroundViewIfPresent;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__receivedFullyDrawnNotification_ name:@"MKLookAroundViewDidBecomeFullyDrawn" object:v5];
 
-    v3 = v5;
+    lookAroundViewIfPresent = v5;
   }
 }
 
-- (void)_handleTapOnLookAroundView:(id)a3
+- (void)_handleTapOnLookAroundView:(id)view
 {
-  v3 = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
-  [v3 openInMapsWithCompletionHandler:0];
+  lookAroundViewIfPresent = [(MKLookAroundContainerView *)self->_lookAroundContainerView lookAroundViewIfPresent];
+  [lookAroundViewIfPresent openInMapsWithCompletionHandler:0];
 }
 
-- (void)_handleTapOnAttribution:(id)a3
+- (void)_handleTapOnAttribution:(id)attribution
 {
   if (self->_attributionURL)
   {
@@ -582,7 +582,7 @@ void __32__MKMapItemView__reloadSnapshot__block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (void)_handleTapOnSnapshot:(id)a3
+- (void)_handleTapOnSnapshot:(id)snapshot
 {
   v5[1] = *MEMORY[0x1E69E9840];
   if (self->_shouldLaunchDefaultNavigation)
@@ -663,12 +663,12 @@ LABEL_6:
   v3 = objc_alloc_init(MKPointAnnotation);
   [(MKMapItem *)self->_mapItem _coordinate];
   [(MKPointAnnotation *)v3 setCoordinate:?];
-  v4 = [(MKMapItem *)self->_mapItem name];
-  [(MKShape *)v3 setTitle:v4];
+  name = [(MKMapItem *)self->_mapItem name];
+  [(MKShape *)v3 setTitle:name];
 
   v5 = [[MKMarkerAnnotationView alloc] initWithAnnotation:v3 reuseIdentifier:0];
-  v6 = [(MKMapItem *)self->_mapItem _styleAttributes];
-  [(MKMarkerAnnotationView *)v5 _setStyleAttributes:v6];
+  _styleAttributes = [(MKMapItem *)self->_mapItem _styleAttributes];
+  [(MKMarkerAnnotationView *)v5 _setStyleAttributes:_styleAttributes];
 
   return v5;
 }
@@ -679,20 +679,20 @@ LABEL_6:
   v3 = objc_alloc(MEMORY[0x1E69DF408]);
   [(MKMapItem *)self->_mapItem _coordinate];
   v4 = [v3 initWithCoordinate:?];
-  v5 = [(MKMapItem *)self->_mapItem name];
-  [v4 setText:v5 locale:0];
+  name = [(MKMapItem *)self->_mapItem name];
+  [v4 setText:name locale:0];
 
-  v6 = [(MKMapItem *)self->_mapItem _styleAttributes];
-  v7 = [v6 copy];
+  _styleAttributes = [(MKMapItem *)self->_mapItem _styleAttributes];
+  markerStyleAttributes = [_styleAttributes copy];
 
-  if (!v7)
+  if (!markerStyleAttributes)
   {
-    v7 = [MEMORY[0x1E69A1DB0] markerStyleAttributes];
+    markerStyleAttributes = [MEMORY[0x1E69A1DB0] markerStyleAttributes];
   }
 
   v10 = xmmword_1A30F71B0;
-  [v7 replaceAttributes:&v10 count:2];
-  [v4 setStyleAttributes:v7];
+  [markerStyleAttributes replaceAttributes:&v10 count:2];
+  [v4 setStyleAttributes:markerStyleAttributes];
   v8 = objc_alloc_init(_MKAnnotationViewCustomFeatureAnnotation);
   [(MKMapItem *)self->_mapItem _coordinate];
   [(_MKAnnotationViewCustomFeatureAnnotation *)v8 setCoordinate:?];
@@ -701,13 +701,13 @@ LABEL_6:
   return v8;
 }
 
-- (id)_deriveSnapshotOptions:(BOOL)a3
+- (id)_deriveSnapshotOptions:(BOOL)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v14[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MKMapSnapshotOptions);
   v6 = v5;
-  if (v3)
+  if (optionsCopy)
   {
     [(MKMapSnapshotOptions *)v5 setMapType:105];
   }
@@ -716,8 +716,8 @@ LABEL_6:
   {
     v7 = [[MKStandardMapConfiguration alloc] initWithElevationStyle:1];
     [(MKMapSnapshotOptions *)v6 setPreferredConfiguration:v7];
-    v8 = [(MKMapItemView *)self _customAnnotation];
-    v14[0] = v8;
+    _customAnnotation = [(MKMapItemView *)self _customAnnotation];
+    v14[0] = _customAnnotation;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
     [(MKMapSnapshotOptions *)v6 _setCustomFeatureAnnotations:v9];
   }
@@ -735,8 +735,8 @@ LABEL_6:
 
   [(MKMapItemView *)self bounds];
   [(MKMapSnapshotOptions *)v6 setSize:v10, v11];
-  v12 = [(MKMapItemView *)self traitCollection];
-  [(MKMapSnapshotOptions *)v6 setTraitCollection:v12];
+  traitCollection = [(MKMapItemView *)self traitCollection];
+  [(MKMapSnapshotOptions *)v6 setTraitCollection:traitCollection];
 
   [(MKMapSnapshotOptions *)v6 _setSearchResultsType:1];
   [(MKMapSnapshotOptions *)v6 _setShowsAppleLogo:0];
@@ -771,11 +771,11 @@ LABEL_6:
   }
 }
 
-- (void)_takeSnapshotWithCompletionHandler:(id)a3 isReload:(BOOL)a4
+- (void)_takeSnapshotWithCompletionHandler:(id)handler isReload:(BOOL)reload
 {
-  v4 = a4;
+  reloadCopy = reload;
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  handlerCopy = handler;
   [(MKMapItemView *)self bounds];
   self->_sizeWhenLastLoaded.width = v7;
   self->_sizeWhenLastLoaded.height = v8;
@@ -797,8 +797,8 @@ LABEL_6:
       v12 = 8.0;
     }
 
-    v13 = [(MKMapSnapshotView *)self->_snapshotView layer];
-    [v13 setCornerRadius:v12];
+    layer = [(MKMapSnapshotView *)self->_snapshotView layer];
+    [layer setCornerRadius:v12];
 
     [(MKMapSnapshotView *)self->_snapshotView setHidden:1];
     v14 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTapOnSnapshot_];
@@ -820,7 +820,7 @@ LABEL_6:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = @"NO";
-    if (v4)
+    if (reloadCopy)
     {
       v16 = @"YES";
     }
@@ -839,7 +839,7 @@ LABEL_6:
     _os_signpost_emit_with_name_impl(&dword_1A2EA0000, v18, OS_SIGNPOST_INTERVAL_BEGIN, signpostID, "MapSnapshot", &unk_1A30FEA0E, buf, 2u);
   }
 
-  if (v4)
+  if (reloadCopy)
   {
     v20 = [(MKMapItemView *)self _deriveSnapshotOptions:1];
   }
@@ -857,9 +857,9 @@ LABEL_6:
   v25[2] = __61__MKMapItemView__takeSnapshotWithCompletionHandler_isReload___block_invoke;
   v25[3] = &unk_1E76C9CE8;
   objc_copyWeak(v27, &location);
-  v28 = v4;
+  v28 = reloadCopy;
   v27[1] = v21;
-  v24 = v6;
+  v24 = handlerCopy;
   v26 = v24;
   [(MKMapSnapshotView *)v22 takeSnapshotWithOptions:v23 gridOptions:v20 completionHandler:v25];
 
@@ -951,27 +951,27 @@ LABEL_15:
   }
 }
 
-- (void)_fetchLookAroundViewforMapItem:(id)a3
+- (void)_fetchLookAroundViewforMapItem:(id)item
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A2478] modernManager];
-  v6 = [v5 isMuninEnabled];
-  if (!v4 || !v6)
+  itemCopy = item;
+  modernManager = [MEMORY[0x1E69A2478] modernManager];
+  isMuninEnabled = [modernManager isMuninEnabled];
+  if (!itemCopy || !isMuninEnabled)
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v7 = [v4 _hasLookAroundStorefront];
+  _hasLookAroundStorefront = [itemCopy _hasLookAroundStorefront];
 
-  if (v7 && !self->_hideLookAroundView)
+  if (_hasLookAroundStorefront && !self->_hideLookAroundView)
   {
     v8 = MKGetMKMapItemViewLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = _MKDebugNameForMapItem(v4);
+      v9 = _MKDebugNameForMapItem(itemCopy);
       v18 = 138477827;
       v19 = v9;
       _os_log_impl(&dword_1A2EA0000, v8, OS_LOG_TYPE_INFO, "BEGIN _fetchLookAroundViewforMapItem: %{private}@", &v18, 0xCu);
@@ -990,7 +990,7 @@ LABEL_14:
     lookAroundContainerView = self->_lookAroundContainerView;
     self->_lookAroundContainerView = v13;
 
-    [(MKLookAroundContainerView *)self->_lookAroundContainerView setMapItem:v4];
+    [(MKLookAroundContainerView *)self->_lookAroundContainerView setMapItem:itemCopy];
     [(MKLookAroundContainerView *)self->_lookAroundContainerView setClipsToBounds:1];
     v15 = +[MKSystemController sharedInstance];
     if ([v15 isGlassEnabled])
@@ -1003,13 +1003,13 @@ LABEL_14:
       v16 = 8.0;
     }
 
-    v17 = [(MKLookAroundContainerView *)self->_lookAroundContainerView layer];
-    [v17 setCornerRadius:v16];
+    layer = [(MKLookAroundContainerView *)self->_lookAroundContainerView layer];
+    [layer setCornerRadius:v16];
 
     [(MKLookAroundContainerView *)self->_lookAroundContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MKLookAroundContainerView *)self->_lookAroundContainerView setHidden:1];
-    v5 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTapOnLookAroundView_];
-    [(MKLookAroundContainerView *)self->_lookAroundContainerView addGestureRecognizer:v5];
+    modernManager = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTapOnLookAroundView_];
+    [(MKLookAroundContainerView *)self->_lookAroundContainerView addGestureRecognizer:modernManager];
     [(MKMapItemView *)self addSubview:self->_lookAroundContainerView];
     [(MKMapItemView *)self _setupLookAroundConstraints];
     [(MKMapItemView *)self _setupObserver];
@@ -1033,8 +1033,8 @@ LABEL_15:
 
   else if ([(MKMapItemView *)self shouldResolveMapItem])
   {
-    v4 = [(MKMapItem *)self->_mapItem _identifier];
-    v5 = v4 == 0;
+    _identifier = [(MKMapItem *)self->_mapItem _identifier];
+    v5 = _identifier == 0;
 
     v6 = +[MKMapService sharedService];
     v7 = self->_mapItem;
@@ -1046,8 +1046,8 @@ LABEL_15:
 
     else
     {
-      v8 = [(MKMapItem *)v7 _identifier];
-      v14[0] = v8;
+      _identifier2 = [(MKMapItem *)v7 _identifier];
+      v14[0] = _identifier2;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
       v10 = [v6 ticketForIdentifiers:v9 traits:0];
     }
@@ -1172,13 +1172,13 @@ void __31__MKMapItemView__getParentItem__block_invoke(uint64_t a1, void *a2, voi
   return v4 > 0.0;
 }
 
-- (void)_loadMapItem:(id)a3 camera:(id)a4 coordinateSpan:(id)a5 completionHandler:(id)a6
+- (void)_loadMapItem:(id)item camera:(id)camera coordinateSpan:(id)span completionHandler:(id)handler
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  var1 = span.var1;
+  var0 = span.var0;
+  itemCopy = item;
+  cameraCopy = camera;
+  handlerCopy = handler;
   v15 = MKGetMKMapItemViewLog();
   v16 = v15;
   signpostID = self->_signpostID;
@@ -1188,17 +1188,17 @@ void __31__MKMapItemView__getParentItem__block_invoke(uint64_t a1, void *a2, voi
     _os_signpost_emit_with_name_impl(&dword_1A2EA0000, v16, OS_SIGNPOST_INTERVAL_BEGIN, signpostID, "Load", &unk_1A30FEA0E, buf, 2u);
   }
 
-  v18 = MEMORY[0x1A58E9F30](v14);
+  v18 = MEMORY[0x1A58E9F30](handlerCopy);
   mapItemloadedCompletionHandler = self->_mapItemloadedCompletionHandler;
   self->_mapItemloadedCompletionHandler = v18;
 
   if ([(MKMapItemView *)self _areBoundsValid])
   {
-    if (v13 || var0 >= 0.0 && var0 <= 180.0 && var1 >= 0.0 && var1 <= 360.0)
+    if (cameraCopy || var0 >= 0.0 && var0 <= 180.0 && var1 >= 0.0 && var1 <= 360.0)
     {
       self->_loadCalledOnce = 1;
-      objc_storeStrong(&self->_mapItem, a3);
-      objc_storeStrong(&self->_camera, a4);
+      objc_storeStrong(&self->_mapItem, item);
+      objc_storeStrong(&self->_camera, camera);
       [(MKMapItemView *)self _clampCoordinateSpan:var0, var1];
       self->_coordinateSpan.latitudeDelta = v20;
       self->_coordinateSpan.longitudeDelta = v21;
@@ -1233,20 +1233,20 @@ void __70__MKMapItemView__loadMapItem_camera_coordinateSpan_completionHandler___
   [WeakRetained _takeSnapshotCompleted];
 }
 
-- (void)loadMapItem:(id)a3 coordinateSpan:(id)a4 completionHandler:(id)a5
+- (void)loadMapItem:(id)item coordinateSpan:(id)span completionHandler:(id)handler
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = span.var1;
+  var0 = span.var0;
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  [v9 _coordinate];
+  itemCopy = item;
+  handlerCopy = handler;
+  [itemCopy _coordinate];
   v12 = v11;
   v14 = v13;
   v15 = MKGetMKMapItemViewLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = _MKDebugNameForMapItem(v9);
+    v16 = _MKDebugNameForMapItem(itemCopy);
     v17 = MEMORY[0x1E696AEC0];
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%+.8f, %+.8f", v12, v14];
     v19 = [v17 stringWithFormat:@"<center:%@ span:%+.8f, %+.8f>", v18, *&var0, *&var1];
@@ -1258,20 +1258,20 @@ void __70__MKMapItemView__loadMapItem_camera_coordinateSpan_completionHandler___
     _os_log_impl(&dword_1A2EA0000, v15, OS_LOG_TYPE_INFO, "BEGIN loadMapItem: %{private}@ region: %{private}@", buf, 0x16u);
   }
 
-  [(MKMapItemView *)self _loadMapItem:v9 camera:0 coordinateSpan:v10 completionHandler:var0, var1];
+  [(MKMapItemView *)self _loadMapItem:itemCopy camera:0 coordinateSpan:handlerCopy completionHandler:var0, var1];
 }
 
-- (void)loadMapItem:(id)a3 completionHandler:(id)a4
+- (void)loadMapItem:(id)item completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  handlerCopy = handler;
   [(MKMapItemView *)self bounds];
-  v10 = [MKMapCamera cameraLookingAtMapItem:v6 forViewSize:1 allowPitch:v8, v9];
+  v10 = [MKMapCamera cameraLookingAtMapItem:itemCopy forViewSize:1 allowPitch:v8, v9];
   v11 = MKGetMKMapItemViewLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = _MKDebugNameForMapItem(v6);
+    v12 = _MKDebugNameForMapItem(itemCopy);
     v13 = [v10 description];
     v14 = 138478083;
     v15 = v12;
@@ -1280,7 +1280,7 @@ void __70__MKMapItemView__loadMapItem_camera_coordinateSpan_completionHandler___
     _os_log_impl(&dword_1A2EA0000, v11, OS_LOG_TYPE_INFO, "BEGIN loadMapItem: %{private}@ camera: %{private}@", &v14, 0x16u);
   }
 
-  [(MKMapItemView *)self _loadMapItem:v6 camera:v10 coordinateSpan:v7 completionHandler:NAN, NAN];
+  [(MKMapItemView *)self _loadMapItem:itemCopy camera:v10 coordinateSpan:handlerCopy completionHandler:NAN, NAN];
 }
 
 - (void)_updateBorders
@@ -1288,19 +1288,19 @@ void __70__MKMapItemView__loadMapItem_camera_coordinateSpan_completionHandler___
   v3 = 0.0;
   if (self->_shouldShowBorders)
   {
-    v4 = [(MKMapItemView *)self window];
-    v5 = [v4 screen];
-    v6 = v5;
-    if (v5)
+    window = [(MKMapItemView *)self window];
+    screen = [window screen];
+    v6 = screen;
+    if (screen)
     {
-      [v5 nativeScale];
+      [screen nativeScale];
       v8 = v7;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v9 nativeScale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen nativeScale];
       v8 = v10;
     }
 
@@ -1313,15 +1313,15 @@ void __70__MKMapItemView__loadMapItem_camera_coordinateSpan_completionHandler___
   }
 
   [(MKLookAroundContainerView *)self->_lookAroundContainerView setBorderWidth:v3];
-  v12 = [(MKMapSnapshotView *)self->_snapshotView layer];
-  [v12 setBorderWidth:v3];
+  layer = [(MKMapSnapshotView *)self->_snapshotView layer];
+  [layer setBorderWidth:v3];
 }
 
-- (void)setShouldShowBorders:(BOOL)a3
+- (void)setShouldShowBorders:(BOOL)borders
 {
-  if (self->_shouldShowBorders != a3)
+  if (self->_shouldShowBorders != borders)
   {
-    self->_shouldShowBorders = a3;
+    self->_shouldShowBorders = borders;
     [(MKMapItemView *)self _updateBorders];
   }
 }
@@ -1331,25 +1331,25 @@ void __70__MKMapItemView__loadMapItem_camera_coordinateSpan_completionHandler___
   v11.receiver = self;
   v11.super_class = MKMapItemView;
   [(UIView *)&v11 infoCardThemeChanged];
-  v3 = [(UIView *)self mk_theme];
-  v4 = [v3 separatorLineColor];
-  v5 = [v4 CGColor];
-  v6 = [(MKLookAroundContainerView *)self->_lookAroundContainerView layer];
-  [v6 setBorderColor:v5];
+  mk_theme = [(UIView *)self mk_theme];
+  separatorLineColor = [mk_theme separatorLineColor];
+  cGColor = [separatorLineColor CGColor];
+  layer = [(MKLookAroundContainerView *)self->_lookAroundContainerView layer];
+  [layer setBorderColor:cGColor];
 
-  v7 = [(UIView *)self mk_theme];
-  v8 = [v7 separatorLineColor];
-  v9 = [v8 CGColor];
-  v10 = [(MKMapSnapshotView *)self->_snapshotView layer];
-  [v10 setBorderColor:v9];
+  mk_theme2 = [(UIView *)self mk_theme];
+  separatorLineColor2 = [mk_theme2 separatorLineColor];
+  cGColor2 = [separatorLineColor2 CGColor];
+  layer2 = [(MKMapSnapshotView *)self->_snapshotView layer];
+  [layer2 setBorderColor:cGColor2];
 }
 
-- (MKMapItemView)initWithFrame:(CGRect)a3
+- (MKMapItemView)initWithFrame:(CGRect)frame
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = MKMapItemView;
-  v3 = [(MKMapItemView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKMapItemView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

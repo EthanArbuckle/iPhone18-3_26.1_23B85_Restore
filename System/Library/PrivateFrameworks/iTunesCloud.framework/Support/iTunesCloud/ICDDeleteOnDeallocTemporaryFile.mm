@@ -1,5 +1,5 @@
 @interface ICDDeleteOnDeallocTemporaryFile
-- (ICDDeleteOnDeallocTemporaryFile)initWithTemporaryFileURL:(id)a3;
+- (ICDDeleteOnDeallocTemporaryFile)initWithTemporaryFileURL:(id)l;
 - (void)dealloc;
 @end
 
@@ -15,12 +15,12 @@
   [(ICDDeleteOnDeallocTemporaryFile *)&v4 dealloc];
 }
 
-- (ICDDeleteOnDeallocTemporaryFile)initWithTemporaryFileURL:(id)a3
+- (ICDDeleteOnDeallocTemporaryFile)initWithTemporaryFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[NSFileManager defaultManager];
-  v6 = [v4 path];
-  v7 = [v5 fileExistsAtPath:v6];
+  path = [lCopy path];
+  v7 = [v5 fileExistsAtPath:path];
 
   if (v7)
   {
@@ -29,21 +29,21 @@
     v8 = [(ICDDeleteOnDeallocTemporaryFile *)&v13 init];
     if (v8)
     {
-      v9 = [v4 copy];
+      v9 = [lCopy copy];
       fileURL = v8->_fileURL;
       v8->_fileURL = v9;
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

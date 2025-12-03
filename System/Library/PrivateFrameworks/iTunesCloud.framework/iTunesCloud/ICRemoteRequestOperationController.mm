@@ -8,7 +8,7 @@
 - (void)_invalidateClientConnection;
 - (void)_scheduleInvalidationOfClientConnection;
 - (void)_willBeginExecutingRemoteRequestOperation;
-- (void)performRemoteRequestOperationWithExecutionContext:(id)a3 completionHandler:(id)a4;
+- (void)performRemoteRequestOperationWithExecutionContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation ICRemoteRequestOperationController
@@ -197,20 +197,20 @@ void *__76__ICRemoteRequestOperationController__didEndExecutingRemoteRequestOper
   }
 }
 
-- (void)performRemoteRequestOperationWithExecutionContext:(id)a3 completionHandler:(id)a4
+- (void)performRemoteRequestOperationWithExecutionContext:(id)context completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  contextCopy = context;
   [(ICRemoteRequestOperationController *)self _willBeginExecutingRemoteRequestOperation];
-  v8 = [(ICRemoteRequestOperationController *)self _clientConnection];
+  _clientConnection = [(ICRemoteRequestOperationController *)self _clientConnection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __106__ICRemoteRequestOperationController_performRemoteRequestOperationWithExecutionContext_completionHandler___block_invoke;
   v14[3] = &unk_1E7BFA490;
   v14[4] = self;
-  v9 = v6;
+  v9 = handlerCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [_clientConnection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __106__ICRemoteRequestOperationController_performRemoteRequestOperationWithExecutionContext_completionHandler___block_invoke_3;
@@ -218,7 +218,7 @@ void *__76__ICRemoteRequestOperationController__didEndExecutingRemoteRequestOper
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 performRemoteRequestOperationWithExecutionContext:v7 completionHandler:v12];
+  [v10 performRemoteRequestOperationWithExecutionContext:contextCopy completionHandler:v12];
 }
 
 void __106__ICRemoteRequestOperationController_performRemoteRequestOperationWithExecutionContext_completionHandler___block_invoke(uint64_t a1, void *a2)

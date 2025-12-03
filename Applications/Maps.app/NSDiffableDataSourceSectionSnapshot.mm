@@ -1,39 +1,39 @@
 @interface NSDiffableDataSourceSectionSnapshot
 - (NSString)_maps_recursiveDescription;
-- (id)_maps_applyChangesWithNewRootSnapshot:(id)a3 oldRootSnapshot:(id)a4;
-- (id)_maps_internal_recursiveDescriptionOfItem:(id)a3;
-- (id)_maps_recursiveDescriptionOfItem:(id)a3;
-- (void)_maps_updateWithNodeSnapshot:(id)a3 previousNodeSnapshot:(id)a4 reloadedItems:(id)a5 insertedItems:(id)a6 deletedItems:(id)a7 movedItems:(id)a8 expandedItems:(id)a9 collapsedItems:(id)a10;
+- (id)_maps_applyChangesWithNewRootSnapshot:(id)snapshot oldRootSnapshot:(id)rootSnapshot;
+- (id)_maps_internal_recursiveDescriptionOfItem:(id)item;
+- (id)_maps_recursiveDescriptionOfItem:(id)item;
+- (void)_maps_updateWithNodeSnapshot:(id)snapshot previousNodeSnapshot:(id)nodeSnapshot reloadedItems:(id)items insertedItems:(id)insertedItems deletedItems:(id)deletedItems movedItems:(id)movedItems expandedItems:(id)expandedItems collapsedItems:(id)self0;
 @end
 
 @implementation NSDiffableDataSourceSectionSnapshot
 
-- (void)_maps_updateWithNodeSnapshot:(id)a3 previousNodeSnapshot:(id)a4 reloadedItems:(id)a5 insertedItems:(id)a6 deletedItems:(id)a7 movedItems:(id)a8 expandedItems:(id)a9 collapsedItems:(id)a10
+- (void)_maps_updateWithNodeSnapshot:(id)snapshot previousNodeSnapshot:(id)nodeSnapshot reloadedItems:(id)items insertedItems:(id)insertedItems deletedItems:(id)deletedItems movedItems:(id)movedItems expandedItems:(id)expandedItems collapsedItems:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v77 = a5;
-  v81 = a6;
-  v79 = a7;
-  v80 = a8;
-  v76 = a9;
-  v75 = a10;
-  v78 = v17;
-  v18 = [v17 childSnapshots];
+  snapshotCopy = snapshot;
+  nodeSnapshotCopy = nodeSnapshot;
+  itemsCopy = items;
+  insertedItemsCopy = insertedItems;
+  deletedItemsCopy = deletedItems;
+  movedItemsCopy = movedItems;
+  expandedItemsCopy = expandedItems;
+  collapsedItemsCopy = collapsedItems;
+  v78 = nodeSnapshotCopy;
+  childSnapshots = [nodeSnapshotCopy childSnapshots];
   v90[0] = _NSConcreteStackBlock;
   v90[1] = 3221225472;
   v90[2] = sub_1007CD998;
   v90[3] = &unk_10162A4A0;
   v90[4] = self;
-  v19 = sub_100021DB0(v18, v90);
+  v19 = sub_100021DB0(childSnapshots, v90);
 
-  v20 = [v16 childSnapshots];
-  v21 = sub_100021DB0(v20, &stru_10162A4E0);
+  childSnapshots2 = [snapshotCopy childSnapshots];
+  v21 = sub_100021DB0(childSnapshots2, &stru_10162A4E0);
 
   v22 = sub_100021DB0(v19, &stru_10162A500);
   v70 = v22;
   v71 = v21;
-  v74 = v16;
+  v74 = snapshotCopy;
   v72 = v19;
   if (v21 != v22)
   {
@@ -68,11 +68,11 @@
           }
 
           v32 = *(*(&v86 + 1) + 8 * v31);
-          v33 = [v32 object];
-          v34 = [v32 changeType];
-          if (v34 == 1)
+          object = [v32 object];
+          changeType = [v32 changeType];
+          if (changeType == 1)
           {
-            v94 = v33;
+            v94 = object;
             v40 = [v30[286] arrayWithObjects:&v94 count:1];
             [(NSDiffableDataSourceSectionSnapshot *)self deleteItems:v40];
 
@@ -80,68 +80,68 @@
             [v25 removeObjectAtIndex:{objc_msgSend(v32, "index")}];
             if ([v32 associatedIndex] == 0x7FFFFFFFFFFFFFFFLL)
             {
-              [v79 addObject:v41];
+              [deletedItemsCopy addObject:v41];
             }
 
             goto LABEL_23;
           }
 
-          if (v34)
+          if (changeType)
           {
             goto LABEL_24;
           }
 
-          v35 = [v32 index];
-          if (v35 >= [v25 count])
+          index = [v32 index];
+          if (index >= [v25 count])
           {
             v38 = v25;
-            v97 = v33;
+            v97 = object;
             v36 = [v30[286] arrayWithObjects:&v97 count:1];
-            v37 = [v74 identifierPath];
-            if (![v37 length])
+            identifierPath = [v74 identifierPath];
+            if (![identifierPath length])
             {
               [(NSDiffableDataSourceSectionSnapshot *)self appendItems:v36 intoParentItem:0];
               goto LABEL_19;
             }
 
-            v39 = [v74 identifierPath];
-            [(NSDiffableDataSourceSectionSnapshot *)self appendItems:v36 intoParentItem:v39];
+            identifierPath2 = [v74 identifierPath];
+            [(NSDiffableDataSourceSectionSnapshot *)self appendItems:v36 intoParentItem:identifierPath2];
           }
 
           else if ([v32 index])
           {
-            v95 = v33;
+            v95 = object;
             v36 = [v30[286] arrayWithObjects:&v95 count:1];
-            v37 = [v25 objectAtIndexedSubscript:{objc_msgSend(v32, "index") - 1}];
-            [v37 identifierPath];
-            v39 = v38 = v25;
-            [(NSDiffableDataSourceSectionSnapshot *)self insertItems:v36 afterItem:v39];
+            identifierPath = [v25 objectAtIndexedSubscript:{objc_msgSend(v32, "index") - 1}];
+            [identifierPath identifierPath];
+            identifierPath2 = v38 = v25;
+            [(NSDiffableDataSourceSectionSnapshot *)self insertItems:v36 afterItem:identifierPath2];
           }
 
           else
           {
-            v96 = v33;
+            v96 = object;
             v36 = [v30[286] arrayWithObjects:&v96 count:1];
-            v37 = [v25 objectAtIndexedSubscript:0];
-            [v37 identifierPath];
-            v39 = v38 = v25;
-            [(NSDiffableDataSourceSectionSnapshot *)self insertItems:v36 beforeItem:v39];
+            identifierPath = [v25 objectAtIndexedSubscript:0];
+            [identifierPath identifierPath];
+            identifierPath2 = v38 = v25;
+            [(NSDiffableDataSourceSectionSnapshot *)self insertItems:v36 beforeItem:identifierPath2];
           }
 
 LABEL_19:
-          v42 = [v33 identifiers];
-          v43 = [v42 lastObject];
-          v41 = [v74 childSnapshotWithIdentifier:v43];
+          identifiers = [object identifiers];
+          lastObject = [identifiers lastObject];
+          v41 = [v74 childSnapshotWithIdentifier:lastObject];
 
           [v38 insertObject:v41 atIndex:{objc_msgSend(v32, "index")}];
           if ([v32 associatedIndex] == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v44 = v81;
+            v44 = insertedItemsCopy;
           }
 
           else
           {
-            v44 = v80;
+            v44 = movedItemsCopy;
           }
 
           [v44 addObject:v41];
@@ -161,31 +161,31 @@ LABEL_24:
         {
 LABEL_28:
 
-          v16 = v74;
+          snapshotCopy = v74;
           break;
         }
       }
     }
   }
 
-  v46 = [v16 identifierPath];
-  v47 = [v46 length];
+  identifierPath3 = [snapshotCopy identifierPath];
+  v47 = [identifierPath3 length];
 
   if (v47)
   {
-    if (([v16 expanded] & 1) == 0)
+    if (([snapshotCopy expanded] & 1) == 0)
     {
-      v48 = [v16 identifierPath];
-      v49 = [(NSDiffableDataSourceSectionSnapshot *)self isExpanded:v48];
+      identifierPath4 = [snapshotCopy identifierPath];
+      v49 = [(NSDiffableDataSourceSectionSnapshot *)self isExpanded:identifierPath4];
 
       if (v49)
       {
-        v50 = [v16 identifierPath];
-        v93 = v50;
+        identifierPath5 = [snapshotCopy identifierPath];
+        v93 = identifierPath5;
         v51 = [NSArray arrayWithObjects:&v93 count:1];
         [(NSDiffableDataSourceSectionSnapshot *)self collapseItems:v51];
 
-        [v75 addObject:v16];
+        [collapsedItemsCopy addObject:snapshotCopy];
       }
     }
   }
@@ -194,8 +194,8 @@ LABEL_28:
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v52 = [v16 childSnapshots];
-  v53 = [v52 countByEnumeratingWithState:&v82 objects:v92 count:16];
+  childSnapshots3 = [snapshotCopy childSnapshots];
+  v53 = [childSnapshots3 countByEnumeratingWithState:&v82 objects:v92 count:16];
   if (v53)
   {
     v54 = v53;
@@ -206,88 +206,88 @@ LABEL_28:
       {
         if (*v83 != v55)
         {
-          objc_enumerationMutation(v52);
+          objc_enumerationMutation(childSnapshots3);
         }
 
         v57 = *(*(&v82 + 1) + 8 * i);
-        v58 = [v57 identifierPath];
-        v59 = [v58 identifiers];
-        v60 = [v59 lastObject];
-        v61 = [v78 childSnapshotWithIdentifier:v60];
+        identifierPath6 = [v57 identifierPath];
+        identifiers2 = [identifierPath6 identifiers];
+        lastObject2 = [identifiers2 lastObject];
+        v61 = [v78 childSnapshotWithIdentifier:lastObject2];
 
-        [(NSDiffableDataSourceSectionSnapshot *)self _maps_updateWithNodeSnapshot:v57 previousNodeSnapshot:v61 reloadedItems:v77 insertedItems:v81 deletedItems:v79 movedItems:v80 expandedItems:v76 collapsedItems:v75, v70, v71];
+        [(NSDiffableDataSourceSectionSnapshot *)self _maps_updateWithNodeSnapshot:v57 previousNodeSnapshot:v61 reloadedItems:itemsCopy insertedItems:insertedItemsCopy deletedItems:deletedItemsCopy movedItems:movedItemsCopy expandedItems:expandedItemsCopy collapsedItems:collapsedItemsCopy, v70, v71];
       }
 
-      v54 = [v52 countByEnumeratingWithState:&v82 objects:v92 count:16];
+      v54 = [childSnapshots3 countByEnumeratingWithState:&v82 objects:v92 count:16];
     }
 
     while (v54);
   }
 
-  v62 = [v74 identifierPath];
-  v63 = [v62 length];
+  identifierPath7 = [v74 identifierPath];
+  v63 = [identifierPath7 length];
 
   if (v63)
   {
     if ([v74 expanded])
     {
-      v64 = [v74 identifierPath];
-      v65 = [(NSDiffableDataSourceSectionSnapshot *)self isExpanded:v64];
+      identifierPath8 = [v74 identifierPath];
+      v65 = [(NSDiffableDataSourceSectionSnapshot *)self isExpanded:identifierPath8];
 
       if ((v65 & 1) == 0)
       {
-        v66 = [v74 identifierPath];
-        v91 = v66;
+        identifierPath9 = [v74 identifierPath];
+        v91 = identifierPath9;
         v67 = [NSArray arrayWithObjects:&v91 count:1];
         [(NSDiffableDataSourceSectionSnapshot *)self expandItems:v67];
 
-        [v76 addObject:v74];
+        [expandedItemsCopy addObject:v74];
       }
     }
 
-    v68 = [v74 identifierPath];
-    v69 = [(NSDiffableDataSourceSectionSnapshot *)self isVisible:v68];
+    identifierPath10 = [v74 identifierPath];
+    v69 = [(NSDiffableDataSourceSectionSnapshot *)self isVisible:identifierPath10];
 
     if (v78 && v69 && [v74 needsReloadFromPreviousItemSnapshot:v78])
     {
-      [v77 addObject:v74];
+      [itemsCopy addObject:v74];
     }
   }
 }
 
-- (id)_maps_applyChangesWithNewRootSnapshot:(id)a3 oldRootSnapshot:(id)a4
+- (id)_maps_applyChangesWithNewRootSnapshot:(id)snapshot oldRootSnapshot:(id)rootSnapshot
 {
-  v6 = a4;
-  v7 = a3;
+  rootSnapshotCopy = rootSnapshot;
+  snapshotCopy = snapshot;
   v8 = +[NSMutableArray array];
   v9 = +[NSMutableArray array];
   v10 = +[NSMutableArray array];
   v11 = +[NSMutableArray array];
   v12 = +[NSMutableArray array];
   v13 = +[NSMutableArray array];
-  [(NSDiffableDataSourceSectionSnapshot *)self _maps_updateWithNodeSnapshot:v7 previousNodeSnapshot:v6 reloadedItems:v8 insertedItems:v9 deletedItems:v10 movedItems:v11 expandedItems:v12 collapsedItems:v13];
+  [(NSDiffableDataSourceSectionSnapshot *)self _maps_updateWithNodeSnapshot:snapshotCopy previousNodeSnapshot:rootSnapshotCopy reloadedItems:v8 insertedItems:v9 deletedItems:v10 movedItems:v11 expandedItems:v12 collapsedItems:v13];
 
   v14 = [[MapsUIDiffableDataSourceSectionSnapshotUpdateDifference alloc] initWithReloadedItems:v8 insertedItems:v9 deletedItems:v10 movedItems:v11 expandedItems:v12 collapsedItems:v13];
 
   return v14;
 }
 
-- (id)_maps_internal_recursiveDescriptionOfItem:(id)a3
+- (id)_maps_internal_recursiveDescriptionOfItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 description];
+  itemCopy = item;
+  v5 = [itemCopy description];
   v6 = [NSMutableString stringWithString:v5];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v16 = v4;
-  v7 = [(NSDiffableDataSourceSectionSnapshot *)self snapshotOfParentItem:v4 includingParentItem:0];
-  v8 = [v7 rootItems];
+  v16 = itemCopy;
+  v7 = [(NSDiffableDataSourceSectionSnapshot *)self snapshotOfParentItem:itemCopy includingParentItem:0];
+  rootItems = [v7 rootItems];
 
-  obj = v8;
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  obj = rootItems;
+  v9 = [rootItems countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -315,11 +315,11 @@ LABEL_28:
   return v6;
 }
 
-- (id)_maps_recursiveDescriptionOfItem:(id)a3
+- (id)_maps_recursiveDescriptionOfItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSDiffableDataSourceSectionSnapshot *)self snapshotOfParentItem:v4 includingParentItem:1];
-  v6 = [v5 _maps_internal_recursiveDescriptionOfItem:v4];
+  itemCopy = item;
+  v5 = [(NSDiffableDataSourceSectionSnapshot *)self snapshotOfParentItem:itemCopy includingParentItem:1];
+  v6 = [v5 _maps_internal_recursiveDescriptionOfItem:itemCopy];
 
   return v6;
 }

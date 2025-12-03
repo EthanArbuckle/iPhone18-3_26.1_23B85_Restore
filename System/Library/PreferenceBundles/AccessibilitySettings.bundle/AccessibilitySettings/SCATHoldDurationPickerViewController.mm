@@ -2,8 +2,8 @@
 - (BOOL)numericalPreferenceEnabled;
 - (double)maximumValue;
 - (double)numericalPreferenceValue;
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3;
-- (void)setNumericalPreferenceValueFromUser:(double)a3;
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user;
+- (void)setNumericalPreferenceValueFromUser:(double)user;
 @end
 
 @implementation SCATHoldDurationPickerViewController
@@ -12,9 +12,9 @@
 {
   v2 = kAXSAssistiveTouchInputHoldDurationMax;
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 switchControlTapBehavior];
+  switchControlTapBehavior = [v3 switchControlTapBehavior];
 
-  if (v4 == &dword_0 + 1)
+  if (switchControlTapBehavior == &dword_0 + 1)
   {
     v5 = +[AXSettings sharedInstance];
     [v5 switchControlAutoTapTimeout];
@@ -38,25 +38,25 @@
   return v4;
 }
 
-- (void)setNumericalPreferenceValueFromUser:(double)a3
+- (void)setNumericalPreferenceValueFromUser:(double)user
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setAssistiveTouchInputHoldDuration:a3];
+  [v4 setAssistiveTouchInputHoldDuration:user];
 }
 
 - (BOOL)numericalPreferenceEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchInputHoldEnabled];
+  assistiveTouchInputHoldEnabled = [v2 assistiveTouchInputHoldEnabled];
 
-  return v3;
+  return assistiveTouchInputHoldEnabled;
 }
 
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user
 {
-  v3 = a3;
+  userCopy = user;
   v4 = +[AXSettings sharedInstance];
-  [v4 setAssistiveTouchInputHoldEnabled:v3];
+  [v4 setAssistiveTouchInputHoldEnabled:userCopy];
 }
 
 @end

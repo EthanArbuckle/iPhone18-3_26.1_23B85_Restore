@@ -1,10 +1,10 @@
 @interface _UIDropInteractionHighlightEffect
-- (CGRect)clippingRectInView:(id)a3 forView:(id)a4;
-- (CGRect)highlightRectInView:(id)a3 forDragInteraction:(id)a4 withContext:(id)a5;
+- (CGRect)clippingRectInView:(id)view forView:(id)forView;
+- (CGRect)highlightRectInView:(id)view forDragInteraction:(id)interaction withContext:(id)context;
 - (_UIDropInteractionHighlightEffect)init;
-- (id)updateShapeLayerForFrame:(CGRect)a3 inView:(id)a4;
+- (id)updateShapeLayerForFrame:(CGRect)frame inView:(id)view;
 - (void)dealloc;
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4;
+- (void)interaction:(id)interaction didChangeWithContext:(id)context;
 - (void)removeShapeLayer;
 @end
 
@@ -28,24 +28,24 @@
   return v3;
 }
 
-- (id)updateShapeLayerForFrame:(CGRect)a3 inView:(id)a4
+- (id)updateShapeLayerForFrame:(CGRect)frame inView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [v9 keyboardSceneDelegate];
-  v11 = [v10 containerView];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  keyboardSceneDelegate = [viewCopy keyboardSceneDelegate];
+  containerView = [keyboardSceneDelegate containerView];
 
-  v12 = [v11 window];
-  [v12 convertRect:v9 fromView:{x, y, width, height}];
+  window = [containerView window];
+  [window convertRect:viewCopy fromView:{x, y, width, height}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  [v12 convertRect:v11 toView:{v14, v16, v18, v20}];
+  [window convertRect:containerView toView:{v14, v16, v18, v20}];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -55,14 +55,14 @@
   shapeLayer = self->_shapeLayer;
   if (!shapeLayer)
   {
-    v32 = [MEMORY[0x1E69794A0] layer];
-    [(CAShapeLayer *)v32 setAllowsHitTesting:0];
-    [(CAShapeLayer *)v32 setFillColor:0];
-    v33 = [v11 layer];
-    [v33 addSublayer:v32];
+    layer = [MEMORY[0x1E69794A0] layer];
+    [(CAShapeLayer *)layer setAllowsHitTesting:0];
+    [(CAShapeLayer *)layer setFillColor:0];
+    layer2 = [containerView layer];
+    [layer2 addSublayer:layer];
 
     v34 = self->_shapeLayer;
-    self->_shapeLayer = v32;
+    self->_shapeLayer = layer;
 
     shapeLayer = self->_shapeLayer;
   }
@@ -101,30 +101,30 @@
   self->_shapeLayer = 0;
 }
 
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4
+- (void)interaction:(id)interaction didChangeWithContext:(id)context
 {
-  v28 = a3;
-  v6 = a4;
+  interactionCopy = interaction;
+  contextCopy = context;
   visualState = self->_visualState;
-  if (visualState != [v6 state])
+  if (visualState != [contextCopy state])
   {
-    v8 = [v6 state];
-    self->_visualState = v8;
-    if (!v8 || v8 == 3)
+    state = [contextCopy state];
+    self->_visualState = state;
+    if (!state || state == 3)
     {
       [(_UIDropInteractionHighlightEffect *)self removeShapeLayer];
     }
 
-    else if (v8 == 1)
+    else if (state == 1)
     {
-      v9 = [v28 view];
-      [(_UIDropInteractionHighlightEffect *)self highlightRectInView:v9 forDragInteraction:v28 withContext:v6];
+      view = [interactionCopy view];
+      [(_UIDropInteractionHighlightEffect *)self highlightRectInView:view forDragInteraction:interactionCopy withContext:contextCopy];
       v31 = CGRectInset(v30, self->_highlightInset - self->_highlightWidth, self->_highlightInset - self->_highlightWidth);
       x = v31.origin.x;
       y = v31.origin.y;
       width = v31.size.width;
       height = v31.size.height;
-      [(_UIDropInteractionHighlightEffect *)self clippingRectInView:v9 forView:v9];
+      [(_UIDropInteractionHighlightEffect *)self clippingRectInView:view forView:view];
       v34.origin.x = v14;
       v34.origin.y = v15;
       v34.size.width = v16;
@@ -179,26 +179,26 @@
         v26 = v21;
       }
 
-      v27 = [(_UIDropInteractionHighlightEffect *)self updateShapeLayerForFrame:v9 inView:v23, v24, v25, v26];
+      v27 = [(_UIDropInteractionHighlightEffect *)self updateShapeLayerForFrame:view inView:v23, v24, v25, v26];
     }
   }
 }
 
-- (CGRect)clippingRectInView:(id)a3 forView:(id)a4
+- (CGRect)clippingRectInView:(id)view forView:(id)forView
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 window];
-  [v7 bounds];
-  [v5 convertRect:v7 fromView:?];
+  viewCopy = view;
+  forViewCopy = forView;
+  window = [forViewCopy window];
+  [window bounds];
+  [viewCopy convertRect:window fromView:?];
   x = v8;
   y = v10;
   width = v12;
   height = v14;
-  v16 = [v6 _viewControllerForAncestor];
-  if (v16)
+  _viewControllerForAncestor = [forViewCopy _viewControllerForAncestor];
+  if (_viewControllerForAncestor)
   {
-    v17 = v16;
+    v17 = _viewControllerForAncestor;
     do
     {
       if ([v17 _isHostedRootViewController])
@@ -206,21 +206,21 @@
         break;
       }
 
-      if (![v6 _isMemberOfViewControllerHierarchy:v17])
+      if (![forViewCopy _isMemberOfViewControllerHierarchy:v17])
       {
         break;
       }
 
-      v18 = [v17 view];
-      v19 = [v18 safeAreaLayoutGuide];
+      view = [v17 view];
+      safeAreaLayoutGuide = [view safeAreaLayoutGuide];
 
-      [v19 layoutFrame];
+      [safeAreaLayoutGuide layoutFrame];
       v21 = v20;
       v23 = v22;
       v25 = v24;
       v27 = v26;
-      v28 = [v19 owningView];
-      [v5 convertRect:v28 fromView:{v21, v23, v25, v27}];
+      owningView = [safeAreaLayoutGuide owningView];
+      [viewCopy convertRect:owningView fromView:{v21, v23, v25, v27}];
       v30 = v29;
       v32 = v31;
       v34 = v33;
@@ -239,12 +239,12 @@
       y = v43.origin.y;
       width = v43.size.width;
       height = v43.size.height;
-      v37 = [v17 parentViewController];
+      parentViewController = [v17 parentViewController];
 
-      v17 = v37;
+      v17 = parentViewController;
     }
 
-    while (v37);
+    while (parentViewController);
   }
 
   v38 = x;
@@ -258,12 +258,12 @@
   return result;
 }
 
-- (CGRect)highlightRectInView:(id)a3 forDragInteraction:(id)a4 withContext:(id)a5
+- (CGRect)highlightRectInView:(id)view forDragInteraction:(id)interaction withContext:(id)context
 {
-  v6 = a3;
-  v7 = [a4 view];
-  [v7 bounds];
-  [v6 convertRect:v7 fromView:?];
+  viewCopy = view;
+  view = [interaction view];
+  [view bounds];
+  [viewCopy convertRect:view fromView:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;

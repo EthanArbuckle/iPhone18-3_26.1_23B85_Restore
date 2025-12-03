@@ -8,7 +8,7 @@
 
 - (uint64_t)remdes_BOOLForKey:()REMDistributedEvaluationCollectionOptions defaultValue:
 {
-  v5 = [a1 objectForKey:?];
+  v5 = [self objectForKey:?];
   if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     a4 = [v5 BOOLValue];
@@ -19,7 +19,7 @@
 
 - (uint64_t)remdes_nsuintegerForKey:()REMDistributedEvaluationCollectionOptions defaultValue:
 {
-  v5 = [a1 objectForKey:?];
+  v5 = [self objectForKey:?];
   if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     a4 = [v5 unsignedIntegerValue];
@@ -30,7 +30,7 @@
 
 - (double)remdes_doubleForKey:()REMDistributedEvaluationCollectionOptions defaultValue:
 {
-  v3 = [a1 objectForKey:?];
+  v3 = [self objectForKey:?];
   if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [v3 doubleValue];

@@ -1,13 +1,13 @@
 @interface RAPDirectionInstructionsIncorrectQuestion
 - ($873BFAB23BBB6E2F0B0288ED2F935688)routeStepMapRect;
-- (BOOL)hasCorrectionForRouteStep:(id)a3 transitListItem:(id)a4;
+- (BOOL)hasCorrectionForRouteStep:(id)step transitListItem:(id)item;
 - (BOOL)isComplete;
 - (NSString)localizedTitle;
-- (RAPDirectionInstructionsIncorrectQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 direction:(id)a5;
-- (id)_correctionforComposedRouteStep:(id)a3 listItem:(id)a4;
-- (id)instructionCorrectionQuestionForStep:(id)a3 listItem:(id)a4;
-- (void)_fillSubmissionParameters:(id)a3;
-- (void)saveCorrection:(id)a3;
+- (RAPDirectionInstructionsIncorrectQuestion)initWithReport:(id)report parentQuestion:(id)question direction:(id)direction;
+- (id)_correctionforComposedRouteStep:(id)step listItem:(id)item;
+- (id)instructionCorrectionQuestionForStep:(id)step listItem:(id)item;
+- (void)_fillSubmissionParameters:(id)parameters;
+- (void)saveCorrection:(id)correction;
 @end
 
 @implementation RAPDirectionInstructionsIncorrectQuestion
@@ -25,9 +25,9 @@
   return result;
 }
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -48,7 +48,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v18 + 1) + 8 * v9) _fillSubmissionParameters:{v4, v18}];
+        [*(*(&v18 + 1) + 8 * v9) _fillSubmissionParameters:{parametersCopy, v18}];
         v9 = v9 + 1;
       }
 
@@ -59,41 +59,41 @@
     while (v7);
   }
 
-  [v4 setType:8];
-  v10 = [v4 commonContext];
+  [parametersCopy setType:8];
+  commonContext = [parametersCopy commonContext];
 
-  if (!v10)
+  if (!commonContext)
   {
     v11 = objc_alloc_init(GEORPFeedbackCommonContext);
-    [v4 setCommonContext:v11];
+    [parametersCopy setCommonContext:v11];
   }
 
-  v12 = [v4 details];
+  details = [parametersCopy details];
 
-  if (!v12)
+  if (!details)
   {
     v13 = objc_alloc_init(GEORPFeedbackDetails);
-    [v4 setDetails:v13];
+    [parametersCopy setDetails:v13];
   }
 
-  v14 = [v4 details];
-  v15 = [v14 directionsFeedback];
+  details2 = [parametersCopy details];
+  directionsFeedback = [details2 directionsFeedback];
 
-  if (!v15)
+  if (!directionsFeedback)
   {
-    v15 = objc_alloc_init(GEORPDirectionsFeedback);
-    v16 = [v4 details];
-    [v16 setDirectionsFeedback:v15];
+    directionsFeedback = objc_alloc_init(GEORPDirectionsFeedback);
+    details3 = [parametersCopy details];
+    [details3 setDirectionsFeedback:directionsFeedback];
   }
 
-  [v15 setCorrectionType:1];
-  v17 = [v4 commonContext];
-  [v17 addUserPath:43];
+  [directionsFeedback setCorrectionType:1];
+  commonContext2 = [parametersCopy commonContext];
+  [commonContext2 addUserPath:43];
 }
 
-- (BOOL)hasCorrectionForRouteStep:(id)a3 transitListItem:(id)a4
+- (BOOL)hasCorrectionForRouteStep:(id)step transitListItem:(id)item
 {
-  v4 = [(RAPDirectionInstructionsIncorrectQuestion *)self _correctionforComposedRouteStep:a3 listItem:a4];
+  v4 = [(RAPDirectionInstructionsIncorrectQuestion *)self _correctionforComposedRouteStep:step listItem:item];
   v5 = v4 != 0;
 
   return v5;
@@ -110,26 +110,26 @@
   return incorrectInstructions;
 }
 
-- (void)saveCorrection:(id)a3
+- (void)saveCorrection:(id)correction
 {
-  v4 = a3;
+  correctionCopy = correction;
   incorrectInstructions = self->_incorrectInstructions;
-  v12 = v4;
+  v12 = correctionCopy;
   if (!incorrectInstructions)
   {
     v6 = objc_opt_new();
     v7 = self->_incorrectInstructions;
     self->_incorrectInstructions = v6;
 
-    v4 = v12;
+    correctionCopy = v12;
     incorrectInstructions = self->_incorrectInstructions;
   }
 
-  if (([(NSMutableArray *)incorrectInstructions containsObject:v4]& 1) != 0)
+  if (([(NSMutableArray *)incorrectInstructions containsObject:correctionCopy]& 1) != 0)
   {
-    v8 = [v12 comment];
+    comment = [v12 comment];
     v9 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-    v10 = [v8 stringByTrimmingCharactersInSet:v9];
+    v10 = [comment stringByTrimmingCharactersInSet:v9];
     v11 = [v10 length];
 
     if (!v11)
@@ -146,10 +146,10 @@
   [(RAPQuestion *)self _didChange];
 }
 
-- (id)_correctionforComposedRouteStep:(id)a3 listItem:(id)a4
+- (id)_correctionforComposedRouteStep:(id)step listItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  stepCopy = step;
+  itemCopy = item;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -169,13 +169,13 @@
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 composedRouteStep];
-        v14 = v13;
-        if (v13 == v6)
+        composedRouteStep = [v12 composedRouteStep];
+        v14 = composedRouteStep;
+        if (composedRouteStep == stepCopy)
         {
-          v15 = [v12 listItem];
+          listItem = [v12 listItem];
 
-          if (v15 == v7)
+          if (listItem == itemCopy)
           {
             v9 = v12;
             goto LABEL_13;
@@ -202,31 +202,31 @@ LABEL_13:
   return v9;
 }
 
-- (id)instructionCorrectionQuestionForStep:(id)a3 listItem:(id)a4
+- (id)instructionCorrectionQuestionForStep:(id)step listItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RAPDirectionInstructionsIncorrectQuestion *)self _correctionforComposedRouteStep:v6 listItem:v7];
+  stepCopy = step;
+  itemCopy = item;
+  v8 = [(RAPDirectionInstructionsIncorrectQuestion *)self _correctionforComposedRouteStep:stepCopy listItem:itemCopy];
   if (!v8)
   {
     v9 = [RAPInstructionCorrectionQuestion alloc];
-    v10 = [(RAPQuestion *)self report];
-    v8 = [(RAPInstructionCorrectionQuestion *)v9 initWithReport:v10 parentQuestion:self composedRouteStep:v6 listItem:v7];
+    report = [(RAPQuestion *)self report];
+    v8 = [(RAPInstructionCorrectionQuestion *)v9 initWithReport:report parentQuestion:self composedRouteStep:stepCopy listItem:itemCopy];
   }
 
   return v8;
 }
 
-- (RAPDirectionInstructionsIncorrectQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 direction:(id)a5
+- (RAPDirectionInstructionsIncorrectQuestion)initWithReport:(id)report parentQuestion:(id)question direction:(id)direction
 {
-  v9 = a5;
+  directionCopy = direction;
   v13.receiver = self;
   v13.super_class = RAPDirectionInstructionsIncorrectQuestion;
-  v10 = [(RAPQuestion *)&v13 initWithReport:a3 parentQuestion:a4];
+  v10 = [(RAPQuestion *)&v13 initWithReport:report parentQuestion:question];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_selectedValue, a5);
+    objc_storeStrong(&v10->_selectedValue, direction);
   }
 
   return v11;

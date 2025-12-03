@@ -1,25 +1,25 @@
 @interface NTKLeghornFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
++ (BOOL)isRestrictedForDevice:(id)device;
 + (double)defaultWaypointRadius;
-+ (id)_alpineInitialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4;
++ (id)_alpineInitialDefaultComplicationForSlot:(id)slot forDevice:(id)device;
 + (id)_complicationSlotDescriptors;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-+ (void)_applyInitialDefaultComplicationsForFace:(id)a3 forDevice:(id)a4;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
++ (void)_applyInitialDefaultComplicationsForFace:(id)face forDevice:(id)device;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
 - (double)waypointRadius;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
-- (id)_localizedNameForComplicationSlot:(id)a3;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_localizedNameForComplicationSlot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)curatedGalleryBackgroundColors;
-- (id)editOptionSectionControllerForContext:(id)a3;
+- (id)editOptionSectionControllerForContext:(id)context;
 - (id)nightModeConfiguration;
 - (int64_t)timeStyle;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (void)_noteOptionChangedFrom:(id)a3 to:(id)a4 forCustomEditMode:(int64_t)a5 slot:(id)a6;
-- (void)setWaypointRadius:(double)a3;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_noteOptionChangedFrom:(id)from to:(id)to forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)setWaypointRadius:(double)radius;
 @end
 
 @implementation NTKLeghornFace
@@ -32,13 +32,13 @@
   return v6;
 }
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (_os_feature_enabled_impl())
   {
-    v8 = objc_msgSend_deviceCategory(v3, v4, v5) == 6 || objc_msgSend_deviceCategory(v3, v6, v7) == 4;
-    v9 = v8 & objc_msgSend_isRunningNapiliGMOrLater(v3, v6, v7) ^ 1;
+    v8 = objc_msgSend_deviceCategory(deviceCopy, v4, v5) == 6 || objc_msgSend_deviceCategory(deviceCopy, v6, v7) == 4;
+    v9 = v8 & objc_msgSend_isRunningNapiliGMOrLater(deviceCopy, v6, v7) ^ 1;
   }
 
   else
@@ -80,25 +80,25 @@
   return v14;
 }
 
-+ (id)_alpineInitialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4
++ (id)_alpineInitialDefaultComplicationForSlot:(id)slot forDevice:(id)device
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (objc_msgSend_isEqualToString_(v5, v7, v8, *MEMORY[0x277D2BF08]))
+  slotCopy = slot;
+  deviceCopy = device;
+  if (objc_msgSend_isEqualToString_(slotCopy, v7, v8, *MEMORY[0x277D2BF08]))
   {
     objc_msgSend_anyComplicationOfType_(MEMORY[0x277D2BFB0], v9, v10, 43);
     v17 = LABEL_18:;
     goto LABEL_19;
   }
 
-  if (objc_msgSend_isEqualToString_(v5, v9, v10, *MEMORY[0x277D2BF10]))
+  if (objc_msgSend_isEqualToString_(slotCopy, v9, v10, *MEMORY[0x277D2BF10]))
   {
     objc_msgSend_anyComplicationOfType_(MEMORY[0x277D2BFB0], v11, v12, 7);
     goto LABEL_18;
   }
 
-  if (objc_msgSend_isEqualToString_(v5, v11, v12, *MEMORY[0x277D2BEF0]))
+  if (objc_msgSend_isEqualToString_(slotCopy, v11, v12, *MEMORY[0x277D2BEF0]))
   {
     if (!objc_msgSend_isRunningInStoreDemoMode(MEMORY[0x277D75128], v13, v14) || !CFPreferencesGetAppBooleanValue(@"StandaloneIsSecured", @"com.apple.Carousel", 0))
     {
@@ -113,9 +113,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (objc_msgSend_isEqualToString_(v5, v13, v14, *MEMORY[0x277D2BEE0]))
+  if (objc_msgSend_isEqualToString_(slotCopy, v13, v14, *MEMORY[0x277D2BEE0]))
   {
-    if (objc_msgSend_deviceCategory(v6, v18, v19) != 6)
+    if (objc_msgSend_deviceCategory(deviceCopy, v18, v19) != 6)
     {
       goto LABEL_15;
     }
@@ -141,7 +141,7 @@ LABEL_15:
 
   else
   {
-    if (objc_msgSend_isEqualToString_(v5, v18, v19, *MEMORY[0x277D2BEE8]))
+    if (objc_msgSend_isEqualToString_(slotCopy, v18, v19, *MEMORY[0x277D2BEE8]))
     {
       goto LABEL_17;
     }
@@ -154,16 +154,16 @@ LABEL_20:
   return v27;
 }
 
-+ (void)_applyInitialDefaultComplicationsForFace:(id)a3 forDevice:(id)a4
++ (void)_applyInitialDefaultComplicationsForFace:(id)face forDevice:(id)device
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  faceCopy = face;
+  deviceCopy = device;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = objc_msgSend__orderedComplicationSlots(a1, v8, 0.0, 0);
+  v9 = objc_msgSend__orderedComplicationSlots(self, v8, 0.0, 0);
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, v11, &v22, v26, 16);
   if (v12)
   {
@@ -179,8 +179,8 @@ LABEL_20:
         }
 
         v18 = *(*(&v22 + 1) + 8 * i);
-        v19 = objc_msgSend__initialDefaultComplicationForSlot_forDevice_(a1, v13, v14, v18, v7);
-        objc_msgSend_setComplication_forSlot_(v6, v20, v21, v19, v18);
+        v19 = objc_msgSend__initialDefaultComplicationForSlot_forDevice_(self, v13, v14, v18, deviceCopy);
+        objc_msgSend_setComplication_forSlot_(faceCopy, v20, v21, v19, v18);
       }
 
       v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v13, v14, &v22, v26, 16);
@@ -205,10 +205,10 @@ LABEL_20:
   return v5;
 }
 
-- (id)_localizedNameForComplicationSlot:(id)a3
+- (id)_localizedNameForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if (objc_msgSend_isEqualToString_(v4, v5, v6, *MEMORY[0x277D2BEF0]))
+  slotCopy = slot;
+  if (objc_msgSend_isEqualToString_(slotCopy, v5, v6, *MEMORY[0x277D2BEF0]))
   {
     v7 = NTKFoghornFaceLocalizedString(@"LEGHORN_SLOT_LABEL_CENTER");
   }
@@ -217,7 +217,7 @@ LABEL_20:
   {
     v10.receiver = self;
     v10.super_class = NTKLeghornFace;
-    v7 = [(NTKFace *)&v10 _localizedNameForComplicationSlot:v4];
+    v7 = [(NTKFace *)&v10 _localizedNameForComplicationSlot:slotCopy];
   }
 
   v8 = v7;
@@ -253,13 +253,13 @@ LABEL_20:
   return v16;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a4;
+  slotCopy = slot;
   v9 = 0;
-  if (a3 > 15)
+  if (mode > 15)
   {
-    if (a3 == 16)
+    if (mode == 16)
     {
       v10 = objc_msgSend_device(self, v6, v8);
       v13 = objc_msgSend_optionForEverythingForDevice_(NTKLeghornPOIFilterEditOption, v18, v19, v10);
@@ -267,7 +267,7 @@ LABEL_20:
 
     else
     {
-      if (a3 != 18)
+      if (mode != 18)
       {
         goto LABEL_11;
       }
@@ -277,7 +277,7 @@ LABEL_20:
     }
   }
 
-  else if (a3 == 14)
+  else if (mode == 14)
   {
     v10 = objc_msgSend_device(self, v6, v8);
     v13 = objc_msgSend_optionWithHiVizComplicationStyle_forDevice_(NTKLeghornHiVizComplicationStyleEditOption, v16, v17, 2, v10);
@@ -285,7 +285,7 @@ LABEL_20:
 
   else
   {
-    if (a3 != 15)
+    if (mode != 15)
     {
       goto LABEL_11;
     }
@@ -301,57 +301,57 @@ LABEL_11:
   return v9;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = objc_msgSend__optionClassForCustomEditMode_(self, a2, v4, a3, a4);
+  v6 = objc_msgSend__optionClassForCustomEditMode_(self, a2, v4, mode, slot);
   v9 = objc_msgSend_device(self, v7, v8);
   v12 = objc_msgSend_numberOfOptionsForDevice_(v6, v10, v11, v9);
 
   return v12;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v9 = a5;
-  if (a4 == 16)
+  slotCopy = slot;
+  if (mode == 16)
   {
     v11 = objc_msgSend_configuration(self, v8, v10);
-    objc_msgSend_optionForCustomEditMode_slot_(v11, v12, v13, 16, v9);
+    objc_msgSend_optionForCustomEditMode_slot_(v11, v12, v13, 16, slotCopy);
   }
 
   else
   {
-    v14 = objc_msgSend__optionClassForCustomEditMode_(self, v8, v10, a4);
+    v14 = objc_msgSend__optionClassForCustomEditMode_(self, v8, v10, mode);
     v11 = objc_msgSend_device(self, v15, v16);
-    objc_msgSend_optionAtIndex_forDevice_(v14, v17, v18, a3, v11);
+    objc_msgSend_optionAtIndex_forDevice_(v14, v17, v18, index, v11);
   }
   v19 = ;
 
   return v19;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 16)
+  if (mode == 16)
   {
     return 0;
   }
 
-  v8 = a3;
-  v11 = objc_msgSend__optionClassForCustomEditMode_(self, v9, v10, a4);
+  optionCopy = option;
+  v11 = objc_msgSend__optionClassForCustomEditMode_(self, v9, v10, mode);
   v14 = objc_msgSend_device(self, v12, v13);
-  v17 = objc_msgSend_indexOfOption_forDevice_(v11, v15, v16, v8, v14);
+  v17 = objc_msgSend_indexOfOption_forDevice_(v11, v15, v16, optionCopy, v14);
 
   return v17;
 }
 
-- (void)_noteOptionChangedFrom:(id)a3 to:(id)a4 forCustomEditMode:(int64_t)a5 slot:(id)a6
+- (void)_noteOptionChangedFrom:(id)from to:(id)to forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v11 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = NTKLeghornFace;
-  [(NTKFace *)&v8 _noteOptionChangedFrom:a3 to:a4 forCustomEditMode:a5 slot:a6];
-  if (a5 == 16)
+  [(NTKFace *)&v8 _noteOptionChangedFrom:from to:to forCustomEditMode:mode slot:slot];
+  if (mode == 16)
   {
     v7 = NTKFoghornFaceBundleLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -363,9 +363,9 @@ LABEL_11:
   }
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 - 14) <= 4 && ((0x17u >> (a3 - 14)))
+  if (mode - 14) <= 4 && ((0x17u >> (mode - 14)))
   {
     v4 = objc_opt_class();
   }
@@ -378,18 +378,18 @@ LABEL_11:
   return v4;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  v7 = a4;
-  if (a3 <= 15)
+  deviceCopy = device;
+  if (mode <= 15)
   {
-    if (a3 == 14)
+    if (mode == 14)
     {
       objc_msgSend_stringByAppendingString_(@"EDIT_MODE_LABEL_LEGHORN_HIVIZ_STYLE", v6, v8, @"_COMPANION");
       goto LABEL_11;
     }
 
-    if (a3 == 15)
+    if (mode == 15)
     {
       objc_msgSend_stringByAppendingString_(@"EDIT_MODE_LABEL_LEGHORN_TIME_STYLE", v6, v8, @"_COMPANION");
       v9 = LABEL_11:;
@@ -398,19 +398,19 @@ LABEL_11:
     }
 
 LABEL_8:
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = &OBJC_METACLASS___NTKLeghornFace;
-    v11 = objc_msgSendSuper2(&v13, sel__localizedNameOverrideForCustomEditMode_forDevice_, a3, v7);
+    v11 = objc_msgSendSuper2(&v13, sel__localizedNameOverrideForCustomEditMode_forDevice_, mode, deviceCopy);
     goto LABEL_13;
   }
 
-  if (a3 == 16)
+  if (mode == 16)
   {
     objc_msgSend_stringByAppendingString_(@"EDIT_MODE_LABEL_LEGHORN_FILTER", v6, v8, @"_COMPANION");
     goto LABEL_11;
   }
 
-  if (a3 != 18)
+  if (mode != 18)
   {
     goto LABEL_8;
   }
@@ -429,17 +429,17 @@ LABEL_13:
 {
   v11.receiver = self;
   v11.super_class = NTKLeghornFace;
-  v3 = [(NTKFace *)&v11 nightModeConfiguration];
+  nightModeConfiguration = [(NTKFace *)&v11 nightModeConfiguration];
   v6 = objc_msgSend_selectedOptionForCustomEditMode_slot_(self, v4, v5, 18, 0);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_msgSend_analyticsKey(v6, v7, v8);
 
-    v3 = v9;
+    nightModeConfiguration = v9;
   }
 
-  return v3;
+  return nightModeConfiguration;
 }
 
 + (double)defaultWaypointRadius
@@ -471,9 +471,9 @@ LABEL_13:
   return v7;
 }
 
-- (void)setWaypointRadius:(double)a3
+- (void)setWaypointRadius:(double)radius
 {
-  v7 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], a2, a3);
+  v7 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], a2, radius);
   objc_msgSend_setCustomData_forKey_(self, v5, v6, v7, @"radius");
 }
 
@@ -485,18 +485,18 @@ LABEL_13:
   return v4;
 }
 
-- (id)editOptionSectionControllerForContext:(id)a3
+- (id)editOptionSectionControllerForContext:(id)context
 {
-  v4 = a3;
-  v7 = objc_msgSend_collection(v4, v5, v6);
+  contextCopy = context;
+  v7 = objc_msgSend_collection(contextCopy, v5, v6);
   if (objc_msgSend_mode(v7, v8, v9) == 16)
   {
-    v12 = objc_msgSend_tableViewProvider(v4, v10, v11);
-    v15 = objc_msgSend_inGallery(v4, v13, v14);
-    v18 = objc_msgSend_faceView(v4, v16, v17);
+    v12 = objc_msgSend_tableViewProvider(contextCopy, v10, v11);
+    v15 = objc_msgSend_inGallery(contextCopy, v13, v14);
+    v18 = objc_msgSend_faceView(contextCopy, v16, v17);
     v19 = [NTKCLeghornFaceDetailContentSectionController alloc];
     v22 = objc_msgSend_initWithTableViewController_face_inGallery_editOptionCollection_faceView_(v19, v20, v21, v12, self, v15, v7, v18);
-    v25 = objc_msgSend_requestingViewController(v4, v23, v24);
+    v25 = objc_msgSend_requestingViewController(contextCopy, v23, v24);
     objc_msgSend_setParentViewController_(v22, v26, v27, v25);
   }
 
@@ -504,7 +504,7 @@ LABEL_13:
   {
     v29.receiver = self;
     v29.super_class = NTKLeghornFace;
-    v22 = [(NTKFace *)&v29 editOptionSectionControllerForContext:v4];
+    v22 = [(NTKFace *)&v29 editOptionSectionControllerForContext:contextCopy];
   }
 
   return v22;

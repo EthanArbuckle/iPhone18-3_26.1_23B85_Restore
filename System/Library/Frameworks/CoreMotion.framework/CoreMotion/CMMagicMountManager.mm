@@ -4,15 +4,15 @@
 - (id)initPrivate;
 - (void)dealloc;
 - (void)deallocPrivate;
-- (void)feedMountStatus:(int64_t)a3 apAwake:(BOOL)a4 simulated:(BOOL)a5 timestamp:(double)a6;
-- (void)onMagicMountData:(const MagicMountState *)a3;
+- (void)feedMountStatus:(int64_t)status apAwake:(BOOL)awake simulated:(BOOL)simulated timestamp:(double)timestamp;
+- (void)onMagicMountData:(const MagicMountState *)data;
 - (void)sendMagicMountStateToClientPrivate;
-- (void)setAPWakesAllowed:(BOOL)a3;
-- (void)setAPWakesAllowedPrivate:(BOOL)a3;
-- (void)setMagicMountConfiguration:(int64_t)a3;
-- (void)simulateMagicMountEvent:(int64_t)a3 delay:(double)a4;
-- (void)startMagicMountUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
-- (void)startMagicMountUpdatesToQueue:(id)a3 withHandler:(id)a4;
+- (void)setAPWakesAllowed:(BOOL)allowed;
+- (void)setAPWakesAllowedPrivate:(BOOL)private;
+- (void)setMagicMountConfiguration:(int64_t)configuration;
+- (void)simulateMagicMountEvent:(int64_t)event delay:(double)delay;
+- (void)startMagicMountUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
+- (void)startMagicMountUpdatesToQueue:(id)queue withHandler:(id)handler;
 - (void)stopMagicMountUpdates;
 - (void)stopMagicMountUpdatesPrivate;
 @end
@@ -81,7 +81,7 @@
   internal = self->_internal;
 }
 
-- (void)startMagicMountUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startMagicMountUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2988 != -1)
@@ -120,8 +120,8 @@
   v12[2] = sub_19B7590F0;
   v12[3] = &unk_1E7532C08;
   v12[4] = self;
-  v12[5] = a3;
-  v12[6] = a4;
+  v12[5] = queue;
+  v12[6] = handler;
   sub_19B420C9C(v10, v12);
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -169,7 +169,7 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setMagicMountConfiguration:(int64_t)a3
+- (void)setMagicMountConfiguration:(int64_t)configuration
 {
   v15 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2988 != -1)
@@ -184,7 +184,7 @@
     *buf = 134349312;
     v12 = magicMountConfiguration;
     v13 = 2050;
-    v14 = a3;
+    configurationCopy = configuration;
     _os_log_impl(&dword_19B41C000, v5, OS_LOG_TYPE_DEFAULT, "setMagicMountConfiguration: %{public}ld -> %{public}ld", buf, 0x16u);
   }
 
@@ -206,11 +206,11 @@
     }
   }
 
-  self->_magicMountConfiguration = a3;
+  self->_magicMountConfiguration = configuration;
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAPWakesAllowed:(BOOL)a3
+- (void)setAPWakesAllowed:(BOOL)allowed
 {
   v14 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2988 != -1)
@@ -249,7 +249,7 @@
   v10[2] = sub_19B75970C;
   v10[3] = &unk_1E75337D0;
   v10[4] = self;
-  v11 = a3;
+  allowedCopy = allowed;
   sub_19B420C9C(v8, v10);
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -321,10 +321,10 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onMagicMountData:(const MagicMountState *)a3
+- (void)onMagicMountData:(const MagicMountState *)data
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (data)
   {
     if (qword_1EAFE2988 != -1)
     {
@@ -334,10 +334,10 @@
     v5 = qword_1EAFE2990;
     if (os_log_type_enabled(qword_1EAFE2990, OS_LOG_TYPE_INFO))
     {
-      var1 = a3->var1;
-      var2 = a3->var2;
-      var3 = a3->var3;
-      var0 = a3->var0;
+      var1 = data->var1;
+      var2 = data->var2;
+      var3 = data->var3;
+      var0 = data->var0;
       *buf = 67240960;
       v22 = var1;
       v23 = 1026;
@@ -358,10 +358,10 @@
         dispatch_once(&qword_1EAFE2988, &unk_1F0E3B598);
       }
 
-      v17 = a3->var1;
-      v18 = a3->var2;
-      v19 = a3->var3;
-      v20 = a3->var0;
+      v17 = data->var1;
+      v18 = data->var2;
+      v19 = data->var3;
+      v20 = data->var0;
       v12 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 2, "[CMMagicMountManager onMagicMountData:]", "CoreLocation: %s\n", v12);
       if (v12 != buf)
@@ -370,7 +370,7 @@
       }
     }
 
-    objc_msgSend_feedMountStatus_apAwake_simulated_timestamp_(self, v11, a3->var1, a3->var2, a3->var3, a3->var0);
+    objc_msgSend_feedMountStatus_apAwake_simulated_timestamp_(self, v11, data->var1, data->var2, data->var3, data->var0);
   }
 
   else
@@ -436,9 +436,9 @@
   return result;
 }
 
-- (void)simulateMagicMountEvent:(int64_t)a3 delay:(double)a4
+- (void)simulateMagicMountEvent:(int64_t)event delay:(double)delay
 {
-  v5 = a3;
+  eventCopy = event;
   if (qword_1EAFE3AB8 != -1)
   {
     dispatch_once(&qword_1EAFE3AB8, &unk_1F0E29340);
@@ -446,10 +446,10 @@
 
   v6 = qword_1EAFE3AB0 + 32;
 
-  sub_19B74570C(v6, v5, a4);
+  sub_19B74570C(v6, eventCopy, delay);
 }
 
-- (void)feedMountStatus:(int64_t)a3 apAwake:(BOOL)a4 simulated:(BOOL)a5 timestamp:(double)a6
+- (void)feedMountStatus:(int64_t)status apAwake:(BOOL)awake simulated:(BOOL)simulated timestamp:(double)timestamp
 {
   v11 = sub_19B420D84();
   v12[0] = MEMORY[0x1E69E9820];
@@ -457,14 +457,14 @@
   v12[2] = sub_19B759FA4;
   v12[3] = &unk_1E7535BD8;
   v12[4] = self;
-  v12[5] = a3;
-  *&v12[6] = a6;
-  v13 = a4;
-  v14 = a5;
+  v12[5] = status;
+  *&v12[6] = timestamp;
+  awakeCopy = awake;
+  simulatedCopy = simulated;
   sub_19B420C9C(v11, v12);
 }
 
-- (void)startMagicMountUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)startMagicMountUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   sub_19B420D84();
   sub_19B44B9A0();
@@ -472,17 +472,17 @@
   if ((sub_19B421620() & 0x400) != 0)
   {
     v10 = internal[4];
-    if (v10 != a3)
+    if (v10 != queue)
     {
 
-      internal[4] = a3;
+      internal[4] = queue;
     }
 
     v11 = internal[3];
-    if (v11 != a4)
+    if (v11 != handler)
     {
 
-      internal[3] = objc_msgSend_copy(a4, v12, v13);
+      internal[3] = objc_msgSend_copy(handler, v12, v13);
     }
 
     if (!internal[5] && (sub_19B421620() & 0x400) != 0)
@@ -542,9 +542,9 @@
   }
 }
 
-- (void)setAPWakesAllowedPrivate:(BOOL)a3
+- (void)setAPWakesAllowedPrivate:(BOOL)private
 {
-  v3 = a3;
+  privateCopy = private;
   v13 = *MEMORY[0x1E69E9840];
   sub_19B420D84();
   sub_19B44B9A0();
@@ -556,7 +556,7 @@
 
   if ((internal[64] & 1) == 0)
   {
-    internal[65] = v3;
+    internal[65] = privateCopy;
     if (qword_1EAFE2988 != -1)
     {
       dispatch_once(&qword_1EAFE2988, &unk_1F0E3B598);
@@ -589,14 +589,14 @@
     goto LABEL_19;
   }
 
-  if (internal[65] == v3)
+  if (internal[65] == privateCopy)
   {
 LABEL_19:
     v11 = *MEMORY[0x1E69E9840];
     return;
   }
 
-  internal[65] = v3;
+  internal[65] = privateCopy;
   v7 = *MEMORY[0x1E69E9840];
 
   MEMORY[0x1EEE66B58](internal, sel_sendAPWakesRequestPrivate, v6);

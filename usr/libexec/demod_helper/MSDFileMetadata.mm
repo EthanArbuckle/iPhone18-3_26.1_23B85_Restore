@@ -1,47 +1,47 @@
 @interface MSDFileMetadata
-+ (id)accessControlListWithPath:(id)a3;
-+ (id)compareResultToNSString:(int)a3;
-+ (id)extendedAttributeKeysWithPath:(id)a3;
-+ (id)extendedAttributesWithPath:(id)a3;
-+ (id)fileAttributesWithPath:(id)a3;
-+ (id)fileHashWithPath:(id)a3;
-+ (id)fileMetaDataWithMetadataDictionary:(id)a3;
-+ (id)fileMetadatatWithPath:(id)a3;
-+ (id)targetFileWithPath:(id)a3;
-+ (id)valueForExtendedAttributesKey:(id)a3 forPath:(id)a4;
-- (BOOL)removeAllExtendedAttributes:(id)a3;
-- (BOOL)restoreAttribuesToPath:(id)a3;
-- (MSDFileMetadata)initWithDictionary:(id)a3;
-- (MSDFileMetadata)initWithPath:(id)a3;
++ (id)accessControlListWithPath:(id)path;
++ (id)compareResultToNSString:(int)string;
++ (id)extendedAttributeKeysWithPath:(id)path;
++ (id)extendedAttributesWithPath:(id)path;
++ (id)fileAttributesWithPath:(id)path;
++ (id)fileHashWithPath:(id)path;
++ (id)fileMetaDataWithMetadataDictionary:(id)dictionary;
++ (id)fileMetadatatWithPath:(id)path;
++ (id)targetFileWithPath:(id)path;
++ (id)valueForExtendedAttributesKey:(id)key forPath:(id)path;
+- (BOOL)removeAllExtendedAttributes:(id)attributes;
+- (BOOL)restoreAttribuesToPath:(id)path;
+- (MSDFileMetadata)initWithDictionary:(id)dictionary;
+- (MSDFileMetadata)initWithPath:(id)path;
 - (NSData)getAccessControlList;
 - (NSData)getHash;
 - (NSDictionary)getExtendedAttributes;
 - (NSDictionary)getFileAttributes;
 - (NSString)getFileType;
 - (NSString)getTargetFile;
-- (id)fileAttributesAllowSet:(id)a3;
-- (int)compareWith:(id)a3;
+- (id)fileAttributesAllowSet:(id)set;
+- (int)compareWith:(id)with;
 - (int64_t)getFileSize;
 - (void)dealloc;
 @end
 
 @implementation MSDFileMetadata
 
-+ (id)fileHashWithPath:(id)a3
++ (id)fileHashWithPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v10 = 0;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3 isDirectory:&v10];
+  v5 = [v4 fileExistsAtPath:pathCopy isDirectory:&v10];
 
   if (v5)
   {
     if ((v10 & 1) == 0)
     {
-      v6 = [NSURL fileURLWithString:v3];
-      v7 = [v6 fileHash];
+      v6 = [NSURL fileURLWithString:pathCopy];
+      fileHash = [v6 fileHash];
 
-      if (v7)
+      if (fileHash)
       {
         goto LABEL_8;
       }
@@ -50,31 +50,31 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v12 = v3;
+        v12 = pathCopy;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Maybe it's an iCloud file (%{public}@)?", buf, 0xCu);
       }
     }
 
-    v7 = +[NSData data];
+    fileHash = +[NSData data];
   }
 
   else
   {
     sub_100028490();
-    v7 = 0;
+    fileHash = 0;
   }
 
 LABEL_8:
 
-  return v7;
+  return fileHash;
 }
 
-+ (id)fileAttributesWithPath:(id)a3
++ (id)fileAttributesWithPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSFileManager defaultManager];
   v10 = 0;
-  v5 = [v4 attributesOfItemAtPath:v3 error:&v10];
+  v5 = [v4 attributesOfItemAtPath:pathCopy error:&v10];
   v6 = v10;
   v7 = [v5 mutableCopy];
 
@@ -83,7 +83,7 @@ LABEL_8:
     v8 = sub_100021268();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_100028524(v3, v6);
+      sub_100028524(pathCopy, v6);
     }
   }
 
@@ -100,12 +100,12 @@ LABEL_8:
   return v7;
 }
 
-+ (id)extendedAttributeKeysWithPath:(id)a3
++ (id)extendedAttributeKeysWithPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = [NSMutableArray arrayWithCapacity:0];
-  v5 = [v3 fileSystemRepresentation];
-  v6 = listxattr(v5, 0, 0, 1);
+  fileSystemRepresentation = [pathCopy fileSystemRepresentation];
+  v6 = listxattr(fileSystemRepresentation, 0, 0, 1);
   if (v6 < 0)
   {
     sub_100028674();
@@ -124,7 +124,7 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v10 = listxattr(v5, [v8 mutableBytes], v7, 1);
+    v10 = listxattr(fileSystemRepresentation, [v8 mutableBytes], v7, 1);
     if (v10 > 0)
     {
       v11 = v10;
@@ -132,10 +132,10 @@ LABEL_6:
       v12 = 0;
       do
       {
-        v13 = [v9 bytes];
-        v14 = [NSString stringWithUTF8String:&v13[v12]];
+        bytes = [v9 bytes];
+        v14 = [NSString stringWithUTF8String:&bytes[v12]];
         [v4 addObject:v14];
-        v12 += strlen(&v13[v12]) + 1;
+        v12 += strlen(&bytes[v12]) + 1;
       }
 
       while (v12 < v11);
@@ -151,16 +151,16 @@ LABEL_7:
   return v15;
 }
 
-+ (id)accessControlListWithPath:(id)a3
++ (id)accessControlListWithPath:(id)path
 {
-  v3 = a3;
-  file = acl_get_file([v3 fileSystemRepresentation], ACL_TYPE_EXTENDED);
+  pathCopy = path;
+  file = acl_get_file([pathCopy fileSystemRepresentation], ACL_TYPE_EXTENDED);
   if (file)
   {
     v5 = file;
     if (acl_valid(file))
     {
-      sub_10002871C(v3, &v13);
+      sub_10002871C(pathCopy, &v13);
       v12 = v13;
     }
 
@@ -215,13 +215,13 @@ LABEL_9:
   return v10;
 }
 
-+ (id)valueForExtendedAttributesKey:(id)a3 forPath:(id)a4
++ (id)valueForExtendedAttributesKey:(id)key forPath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 UTF8String];
-  v7 = [v5 fileSystemRepresentation];
+  pathCopy = path;
+  uTF8String = [key UTF8String];
+  fileSystemRepresentation = [pathCopy fileSystemRepresentation];
   v8 = +[NSMutableData data];
-  v9 = getxattr(v7, v6, 0, 0, 0, 1);
+  v9 = getxattr(fileSystemRepresentation, uTF8String, 0, 0, 0, 1);
   if (v9 < 0)
   {
     sub_100028A00();
@@ -232,7 +232,7 @@ LABEL_9:
     v10 = [NSMutableData dataWithLength:v9];
 
     v8 = v10;
-    v11 = getxattr(v7, v6, [v10 mutableBytes], v9, 0, 1);
+    v11 = getxattr(fileSystemRepresentation, uTF8String, [v10 mutableBytes], v9, 0, 1);
     if (v11 < 0)
     {
       sub_10002896C();
@@ -247,10 +247,10 @@ LABEL_9:
   return v8;
 }
 
-+ (id)extendedAttributesWithPath:(id)a3
++ (id)extendedAttributesWithPath:(id)path
 {
-  v3 = a3;
-  v4 = [MSDFileMetadata extendedAttributeKeysWithPath:v3];
+  pathCopy = path;
+  v4 = [MSDFileMetadata extendedAttributeKeysWithPath:pathCopy];
   if (v4)
   {
     v5 = [NSMutableDictionary dictionaryWithCapacity:0];
@@ -280,7 +280,7 @@ LABEL_9:
             }
 
             v13 = *(*(&v18 + 1) + 8 * v11);
-            v9 = [MSDFileMetadata valueForExtendedAttributesKey:v13 forPath:v3];
+            v9 = [MSDFileMetadata valueForExtendedAttributesKey:v13 forPath:pathCopy];
 
             [v5 setObject:v9 forKey:v13];
             v11 = v11 + 1;
@@ -323,50 +323,50 @@ LABEL_9:
   return v14;
 }
 
-+ (id)targetFileWithPath:(id)a3
++ (id)targetFileWithPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSFileManager defaultManager];
   v8 = 0;
-  v5 = [v4 destinationOfSymbolicLinkAtPath:v3 error:&v8];
+  v5 = [v4 destinationOfSymbolicLinkAtPath:pathCopy error:&v8];
   v6 = v8;
 
   if (v6)
   {
-    sub_100028B44(v3, v6);
+    sub_100028B44(pathCopy, v6);
   }
 
   return v5;
 }
 
-- (MSDFileMetadata)initWithDictionary:(id)a3
+- (MSDFileMetadata)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = MSDFileMetadata;
   v6 = [(MSDFileMetadata *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dict, a3);
+    objc_storeStrong(&v6->_dict, dictionary);
   }
 
   return v7;
 }
 
-- (MSDFileMetadata)initWithPath:(id)a3
+- (MSDFileMetadata)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v19.receiver = self;
   v19.super_class = MSDFileMetadata;
   v5 = [(MSDFileMetadata *)&v19 init];
   if (v5)
   {
     v6 = +[NSMutableDictionary dictionary];
-    v7 = [MSDFileMetadata fileAttributesWithPath:v4];
+    v7 = [MSDFileMetadata fileAttributesWithPath:pathCopy];
     if (v7)
     {
-      v8 = [MSDFileMetadata extendedAttributesWithPath:v4];
+      v8 = [MSDFileMetadata extendedAttributesWithPath:pathCopy];
       if (v8)
       {
         v9 = v8;
@@ -375,7 +375,7 @@ LABEL_9:
 
         if (v11)
         {
-          v12 = [MSDFileMetadata targetFileWithPath:v4];
+          v12 = [MSDFileMetadata targetFileWithPath:pathCopy];
           if (v12)
           {
             v13 = v12;
@@ -403,7 +403,7 @@ LABEL_11:
           goto LABEL_22;
         }
 
-        v16 = [MSDFileMetadata accessControlListWithPath:v4];
+        v16 = [MSDFileMetadata accessControlListWithPath:pathCopy];
         if (!v16)
         {
 LABEL_22:
@@ -412,7 +412,7 @@ LABEL_22:
         }
 
         v14 = v16;
-        v17 = [MSDFileMetadata fileHashWithPath:v4];
+        v17 = [MSDFileMetadata fileHashWithPath:pathCopy];
         if (v17)
         {
           v15 = v17;
@@ -449,18 +449,18 @@ LABEL_18:
   return v5;
 }
 
-+ (id)fileMetadatatWithPath:(id)a3
++ (id)fileMetadatatWithPath:(id)path
 {
-  v3 = a3;
-  v4 = [[MSDFileMetadata alloc] initWithPath:v3];
+  pathCopy = path;
+  v4 = [[MSDFileMetadata alloc] initWithPath:pathCopy];
 
   return v4;
 }
 
-+ (id)fileMetaDataWithMetadataDictionary:(id)a3
++ (id)fileMetaDataWithMetadataDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[MSDFileMetadata alloc] initWithDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[MSDFileMetadata alloc] initWithDictionary:dictionaryCopy];
 
   return v4;
 }
@@ -475,12 +475,12 @@ LABEL_18:
   [(MSDFileMetadata *)&v4 dealloc];
 }
 
-- (BOOL)removeAllExtendedAttributes:(id)a3
+- (BOOL)removeAllExtendedAttributes:(id)attributes
 {
-  v3 = a3;
-  v4 = [v3 fileSystemRepresentation];
+  attributesCopy = attributes;
+  fileSystemRepresentation = [attributesCopy fileSystemRepresentation];
   v5 = 1;
-  v6 = listxattr(v4, 0, 0, 1);
+  v6 = listxattr(fileSystemRepresentation, 0, 0, 1);
   if (v6 >= 1)
   {
     v7 = v6;
@@ -488,7 +488,7 @@ LABEL_18:
     if (v8)
     {
       v9 = v8;
-      v10 = listxattr(v4, v8, v7, 1);
+      v10 = listxattr(fileSystemRepresentation, v8, v7, 1);
       if (v10 < 1)
       {
         v14 = sub_100021268();
@@ -502,7 +502,7 @@ LABEL_18:
       {
         v11 = &v9[v10];
         v12 = v9;
-        while (!removexattr(v4, v12, 1))
+        while (!removexattr(fileSystemRepresentation, v12, 1))
         {
           v12 += strlen(v12) + 1;
           if (v12 >= v11)
@@ -515,7 +515,7 @@ LABEL_18:
         v14 = sub_100021268();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          sub_100028D2C(v12, v3, v14);
+          sub_100028D2C(v12, attributesCopy, v14);
         }
       }
 
@@ -534,42 +534,42 @@ LABEL_8:
   return v5;
 }
 
-- (int)compareWith:(id)a3
+- (int)compareWith:(id)with
 {
-  v4 = a3;
-  if (v4)
+  withCopy = with;
+  if (withCopy)
   {
-    v5 = [(MSDFileMetadata *)self getFileType];
-    v6 = [v4 getFileType];
-    v7 = [v5 isEqualToString:v6];
+    getFileType = [(MSDFileMetadata *)self getFileType];
+    getFileType2 = [withCopy getFileType];
+    v7 = [getFileType isEqualToString:getFileType2];
 
     if (v7)
     {
-      v8 = [(MSDFileMetadata *)self getFileType];
-      v9 = [v8 isEqualToString:NSFileTypeRegular];
+      getFileType3 = [(MSDFileMetadata *)self getFileType];
+      v9 = [getFileType3 isEqualToString:NSFileTypeRegular];
 
-      if (v9 && (-[MSDFileMetadata getHash](self, "getHash"), v10 = objc_claimAutoreleasedReturnValue(), [v4 getHash], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqualToData:", v11), v11, v10, !v12))
+      if (v9 && (-[MSDFileMetadata getHash](self, "getHash"), v10 = objc_claimAutoreleasedReturnValue(), [withCopy getHash], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqualToData:", v11), v11, v10, !v12))
       {
         v47 = 2;
       }
 
       else
       {
-        v13 = [(MSDFileMetadata *)self getFileType];
-        v14 = [v13 isEqualToString:NSFileTypeSymbolicLink];
+        getFileType4 = [(MSDFileMetadata *)self getFileType];
+        v14 = [getFileType4 isEqualToString:NSFileTypeSymbolicLink];
 
-        if (!v14 || (-[MSDFileMetadata getTargetFile](self, "getTargetFile"), v15 = objc_claimAutoreleasedReturnValue(), [v4 getTargetFile], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "isEqualToString:", v16), v16, v15, v17))
+        if (!v14 || (-[MSDFileMetadata getTargetFile](self, "getTargetFile"), v15 = objc_claimAutoreleasedReturnValue(), [withCopy getTargetFile], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "isEqualToString:", v16), v16, v15, v17))
         {
-          v56 = self;
-          v18 = [(MSDFileMetadata *)self getFileAttributes];
-          v57 = v4;
-          v19 = [v4 getFileAttributes];
+          selfCopy = self;
+          getFileAttributes = [(MSDFileMetadata *)self getFileAttributes];
+          v57 = withCopy;
+          getFileAttributes2 = [withCopy getFileAttributes];
           v63 = 0u;
           v64 = 0u;
           v65 = 0u;
           v66 = 0u;
-          v20 = v18;
-          v21 = [v20 countByEnumeratingWithState:&v63 objects:v68 count:16];
+          getAccessControlList = getFileAttributes;
+          v21 = [getAccessControlList countByEnumeratingWithState:&v63 objects:v68 count:16];
           if (v21)
           {
             v22 = v21;
@@ -580,32 +580,32 @@ LABEL_8:
               {
                 if (*v64 != v58)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(getAccessControlList);
                 }
 
                 v24 = *(*(&v63 + 1) + 8 * i);
                 if (([v24 isEqualToString:NSFileGroupOwnerAccountID] & 1) != 0 || (objc_msgSend(v24, "isEqualToString:", NSFileOwnerAccountID) & 1) != 0 || objc_msgSend(v24, "isEqualToString:", NSFilePosixPermissions))
                 {
-                  v25 = [v20 objectForKey:v24];
-                  [v19 objectForKey:v24];
-                  v27 = v26 = v20;
+                  v25 = [getAccessControlList objectForKey:v24];
+                  [getFileAttributes2 objectForKey:v24];
+                  v27 = v26 = getAccessControlList;
                   v28 = [v25 isEqual:v27];
 
-                  v20 = v26;
+                  getAccessControlList = v26;
                   if (!v28)
                   {
                     v47 = 4;
-                    v34 = v26;
-                    v35 = v19;
-                    v4 = v57;
+                    getExtendedAttributes = v26;
+                    getExtendedAttributes2 = getFileAttributes2;
+                    withCopy = v57;
                     goto LABEL_54;
                   }
                 }
 
                 if ([v24 isEqualToString:NSFileProtectionKey])
                 {
-                  v29 = [v20 objectForKey:v24];
-                  v30 = [v19 objectForKey:v24];
+                  v29 = [getAccessControlList objectForKey:v24];
+                  v30 = [getFileAttributes2 objectForKey:v24];
                   if (([v29 isEqualToString:v30] & 1) == 0)
                   {
                     v31 = [v29 isEqualToString:NSFileProtectionNone];
@@ -613,17 +613,17 @@ LABEL_8:
                     if (v32 & 1) == 0 && !v29 && ([v30 isEqualToString:NSFileProtectionNone])
                     {
                       v47 = 4;
-                      v35 = v19;
-                      v34 = v20;
+                      getExtendedAttributes2 = getFileAttributes2;
+                      getExtendedAttributes = getAccessControlList;
 LABEL_52:
-                      v4 = v57;
+                      withCopy = v57;
                       goto LABEL_53;
                     }
                   }
                 }
               }
 
-              v22 = [v20 countByEnumeratingWithState:&v63 objects:v68 count:16];
+              v22 = [getAccessControlList countByEnumeratingWithState:&v63 objects:v68 count:16];
               if (v22)
               {
                 continue;
@@ -633,25 +633,25 @@ LABEL_52:
             }
           }
 
-          v33 = v56;
-          v34 = [(MSDFileMetadata *)v56 getExtendedAttributes];
+          v33 = selfCopy;
+          getExtendedAttributes = [(MSDFileMetadata *)selfCopy getExtendedAttributes];
 
-          v4 = v57;
-          v35 = [v57 getExtendedAttributes];
+          withCopy = v57;
+          getExtendedAttributes2 = [v57 getExtendedAttributes];
 
-          if (v34)
+          if (getExtendedAttributes)
           {
-            if (v35)
+            if (getExtendedAttributes2)
             {
-              v36 = [NSMutableDictionary dictionaryWithDictionary:v34];
-              v30 = [NSMutableDictionary dictionaryWithDictionary:v35];
+              v36 = [NSMutableDictionary dictionaryWithDictionary:getExtendedAttributes];
+              v30 = [NSMutableDictionary dictionaryWithDictionary:getExtendedAttributes2];
               [v36 removeObjectForKey:@"com.apple.assetsd.dbRebuildUuid"];
               [v30 removeObjectForKey:@"com.apple.assetsd.dbRebuildUuid"];
               v37 = [v36 count];
               if (v37 != [v30 count])
               {
                 v47 = 4;
-                v20 = v36;
+                getAccessControlList = v36;
                 goto LABEL_53;
               }
 
@@ -681,7 +681,7 @@ LABEL_52:
 
                     if (!v46)
                     {
-                      v20 = v38;
+                      getAccessControlList = v38;
 
                       v47 = 4;
                       goto LABEL_52;
@@ -698,11 +698,11 @@ LABEL_52:
                 }
               }
 
-              v33 = v56;
-              v4 = v57;
+              v33 = selfCopy;
+              withCopy = v57;
 LABEL_47:
-              v48 = [(MSDFileMetadata *)v33 getFileType];
-              v49 = [v48 isEqualToString:NSFileTypeSymbolicLink];
+              getFileType5 = [(MSDFileMetadata *)v33 getFileType];
+              v49 = [getFileType5 isEqualToString:NSFileTypeSymbolicLink];
 
               if (v49)
               {
@@ -710,19 +710,19 @@ LABEL_47:
                 goto LABEL_55;
               }
 
-              v20 = [(MSDFileMetadata *)v33 getAccessControlList];
-              v51 = [v4 getAccessControlList];
-              v30 = v51;
-              if (v20)
+              getAccessControlList = [(MSDFileMetadata *)v33 getAccessControlList];
+              getAccessControlList2 = [withCopy getAccessControlList];
+              v30 = getAccessControlList2;
+              if (getAccessControlList)
               {
-                if (v51)
+                if (getAccessControlList2)
                 {
-                  [(MSDFileMetadata *)v56 getAccessControlList];
-                  v53 = v52 = v20;
-                  v54 = [v4 getAccessControlList];
-                  v55 = [v53 isEqualToData:v54];
+                  [(MSDFileMetadata *)selfCopy getAccessControlList];
+                  v53 = v52 = getAccessControlList;
+                  getAccessControlList3 = [withCopy getAccessControlList];
+                  v55 = [v53 isEqualToData:getAccessControlList3];
 
-                  v20 = v52;
+                  getAccessControlList = v52;
                   if (v55)
                   {
                     goto LABEL_60;
@@ -730,7 +730,7 @@ LABEL_47:
                 }
               }
 
-              else if (!v51)
+              else if (!getAccessControlList2)
               {
 LABEL_60:
                 v47 = 5;
@@ -747,12 +747,12 @@ LABEL_54:
 
           else
           {
-            if (!v35)
+            if (!getExtendedAttributes2)
             {
               goto LABEL_47;
             }
 
-            v34 = 0;
+            getExtendedAttributes = 0;
           }
 
           v47 = 4;
@@ -781,15 +781,15 @@ LABEL_56:
   return v47;
 }
 
-- (id)fileAttributesAllowSet:(id)a3
+- (id)fileAttributesAllowSet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   v4 = [NSArray arrayWithObjects:NSFileBusy, NSFileHFSCreatorCode, NSFileHFSTypeCode, NSFileImmutable, NSFileCreationDate, NSFileExtensionHidden, NSFileGroupOwnerAccountID, NSFileGroupOwnerAccountName, NSFileModificationDate, NSFileOwnerAccountID, NSFileOwnerAccountName, NSFilePosixPermissions, 0];
-  v5 = [v3 allKeys];
-  v6 = [NSMutableArray arrayWithArray:v5];
+  allKeys = [setCopy allKeys];
+  v6 = [NSMutableArray arrayWithArray:allKeys];
 
   [v6 removeObjectsInArray:v4];
-  v7 = [NSMutableDictionary dictionaryWithDictionary:v3];
+  v7 = [NSMutableDictionary dictionaryWithDictionary:setCopy];
 
   [v7 removeObjectsForKeys:v6];
 
@@ -879,53 +879,53 @@ LABEL_56:
 - (int64_t)getFileSize
 {
   v2 = [(NSDictionary *)self->_dict objectForKey:@"MSDManifestFileAttributes"];
-  v3 = [v2 fileType];
-  v4 = [v3 isEqualToString:@"NSFileTypeRegular"];
+  fileType = [v2 fileType];
+  v4 = [fileType isEqualToString:@"NSFileTypeRegular"];
 
   if (v4)
   {
-    v5 = [v2 fileSize];
+    fileSize = [v2 fileSize];
   }
 
   else
   {
-    v5 = 0;
+    fileSize = 0;
   }
 
-  return v5;
+  return fileSize;
 }
 
-+ (id)compareResultToNSString:(int)a3
++ (id)compareResultToNSString:(int)string
 {
-  if (a3 > 5)
+  if (string > 5)
   {
     return @"Unknown compare result.";
   }
 
   else
   {
-    return *(&off_100050D70 + a3);
+    return *(&off_100050D70 + string);
   }
 }
 
-- (BOOL)restoreAttribuesToPath:(id)a3
+- (BOOL)restoreAttribuesToPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[NSFileManager defaultManager];
-  v6 = [(MSDFileMetadata *)self getFileType];
-  v7 = [v6 isEqualToString:?];
+  getFileType = [(MSDFileMetadata *)self getFileType];
+  v7 = [getFileType isEqualToString:?];
 
   if (v7)
   {
-    v8 = [v4 UTF8String];
-    v9 = [(MSDFileMetadata *)self getFileAttributes];
-    v10 = [v9 fileOwnerAccountID];
-    v11 = [v10 intValue];
-    v12 = [(MSDFileMetadata *)self getFileAttributes];
-    v13 = [v12 fileGroupOwnerAccountID];
-    LODWORD(v8) = lchown(v8, v11, [v13 intValue]);
+    uTF8String = [pathCopy UTF8String];
+    getFileAttributes = [(MSDFileMetadata *)self getFileAttributes];
+    fileOwnerAccountID = [getFileAttributes fileOwnerAccountID];
+    intValue = [fileOwnerAccountID intValue];
+    getFileAttributes2 = [(MSDFileMetadata *)self getFileAttributes];
+    fileGroupOwnerAccountID = [getFileAttributes2 fileGroupOwnerAccountID];
+    LODWORD(uTF8String) = lchown(uTF8String, intValue, [fileGroupOwnerAccountID intValue]);
 
-    if (v8)
+    if (uTF8String)
     {
       v60 = sub_100021268();
       if (!os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
@@ -940,11 +940,11 @@ LABEL_56:
 
     else
     {
-      v14 = [v4 UTF8String];
-      v15 = [(MSDFileMetadata *)self getFileAttributes];
-      LODWORD(v14) = lchmod(v14, [v15 filePosixPermissions]);
+      uTF8String2 = [pathCopy UTF8String];
+      getFileAttributes3 = [(MSDFileMetadata *)self getFileAttributes];
+      LODWORD(uTF8String2) = lchmod(uTF8String2, [getFileAttributes3 filePosixPermissions]);
 
-      if (!v14)
+      if (!uTF8String2)
       {
         v16 = 0;
         goto LABEL_8;
@@ -969,10 +969,10 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  v17 = [(MSDFileMetadata *)self getFileAttributes];
-  v18 = [(MSDFileMetadata *)self fileAttributesAllowSet:v17];
+  getFileAttributes4 = [(MSDFileMetadata *)self getFileAttributes];
+  v18 = [(MSDFileMetadata *)self fileAttributesAllowSet:getFileAttributes4];
   v96 = 0;
-  v19 = [v5 setAttributes:v18 ofItemAtPath:v4 error:&v96];
+  v19 = [v5 setAttributes:v18 ofItemAtPath:pathCopy error:&v96];
   v16 = v96;
 
   if ((v19 & 1) == 0)
@@ -982,10 +982,10 @@ LABEL_50:
     {
       [v16 localizedDescription];
       v72 = v71 = v5;
-      v73 = [(MSDFileMetadata *)self getFileAttributes];
-      v74 = [(MSDFileMetadata *)self fileAttributesAllowSet:v73];
+      getFileAttributes5 = [(MSDFileMetadata *)self getFileAttributes];
+      v74 = [(MSDFileMetadata *)self fileAttributesAllowSet:getFileAttributes5];
       *buf = 138543874;
-      v99 = v4;
+      v99 = pathCopy;
       v100 = 2114;
       v101 = v72;
       v102 = 2114;
@@ -998,11 +998,11 @@ LABEL_50:
     goto LABEL_48;
   }
 
-  v20 = [(MSDFileMetadata *)self getFileAttributes];
-  v21 = [v20 objectForKey:NSFileProtectionKey];
+  getFileAttributes6 = [(MSDFileMetadata *)self getFileAttributes];
+  v21 = [getFileAttributes6 objectForKey:NSFileProtectionKey];
   v22 = [NSDictionary dictionaryWithObjectsAndKeys:v21, NSFileProtectionKey, 0];
   v95 = v16;
-  v23 = [v5 setAttributes:v22 ofItemAtPath:v4 error:&v95];
+  v23 = [v5 setAttributes:v22 ofItemAtPath:pathCopy error:&v95];
   v24 = v95;
 
   if ((v23 & 1) == 0)
@@ -1010,13 +1010,13 @@ LABEL_50:
     v64 = sub_100021268();
     if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
     {
-      v76 = [v24 localizedDescription];
-      v77 = [(MSDFileMetadata *)self getFileAttributes];
-      v78 = [v77 objectForKey:NSFileProtectionKey];
+      localizedDescription = [v24 localizedDescription];
+      getFileAttributes7 = [(MSDFileMetadata *)self getFileAttributes];
+      v78 = [getFileAttributes7 objectForKey:NSFileProtectionKey];
       *buf = 138543874;
-      v99 = v4;
+      v99 = pathCopy;
       v100 = 2114;
-      v101 = v76;
+      v101 = localizedDescription;
       v102 = 2114;
       v103 = v78;
       _os_log_error_impl(&_mh_execute_header, v64, OS_LOG_TYPE_ERROR, "Could not set file protection key at %{public}@ with error - %{public}@, attributes = %{public}@", buf, 0x20u);
@@ -1031,7 +1031,7 @@ LABEL_50:
 
   v16 = v24;
 LABEL_8:
-  if (![(MSDFileMetadata *)self removeAllExtendedAttributes:v4])
+  if (![(MSDFileMetadata *)self removeAllExtendedAttributes:pathCopy])
   {
 LABEL_48:
     v39 = 0;
@@ -1046,11 +1046,11 @@ LABEL_51:
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v25 = [(MSDFileMetadata *)self getExtendedAttributes];
-  v26 = [v25 allKeys];
+  getExtendedAttributes = [(MSDFileMetadata *)self getExtendedAttributes];
+  allKeys = [getExtendedAttributes allKeys];
 
-  obj = v26;
-  v27 = [v26 countByEnumeratingWithState:&v91 objects:v97 count:16];
+  obj = allKeys;
+  v27 = [allKeys countByEnumeratingWithState:&v91 objects:v97 count:16];
   if (!v27)
   {
     v30 = 0;
@@ -1058,7 +1058,7 @@ LABEL_51:
   }
 
   v28 = v27;
-  v29 = self;
+  selfCopy = self;
   v88 = v5;
   v30 = 0;
   v31 = 0;
@@ -1091,8 +1091,8 @@ LABEL_51:
         goto LABEL_33;
       }
 
-      v36 = [(MSDFileMetadata *)v29 getExtendedAttributes];
-      v30 = [v36 objectForKey:v31];
+      getExtendedAttributes2 = [(MSDFileMetadata *)selfCopy getExtendedAttributes];
+      v30 = [getExtendedAttributes2 objectForKey:v31];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1118,7 +1118,7 @@ LABEL_42:
         goto LABEL_32;
       }
 
-      if (setxattr([v4 fileSystemRepresentation], objc_msgSend(v31, "UTF8String"), objc_msgSend(v30, "bytes"), objc_msgSend(v30, "length"), 0, 1))
+      if (setxattr([pathCopy fileSystemRepresentation], objc_msgSend(v31, "UTF8String"), objc_msgSend(v30, "bytes"), objc_msgSend(v30, "length"), 0, 1))
       {
         v57 = sub_100021268();
         if (!sub_10000AD20(v57))
@@ -1127,7 +1127,7 @@ LABEL_42:
         }
 
         *buf = 138543362;
-        v99 = v4;
+        v99 = pathCopy;
         sub_10000ACE4();
         v56 = 12;
         goto LABEL_42;
@@ -1149,21 +1149,21 @@ LABEL_42:
   }
 
   v5 = v88;
-  self = v29;
+  self = selfCopy;
 LABEL_21:
 
-  v37 = [(MSDFileMetadata *)self getFileType];
-  v38 = [v37 isEqualToString:NSFileTypeSymbolicLink];
+  getFileType2 = [(MSDFileMetadata *)self getFileType];
+  v38 = [getFileType2 isEqualToString:NSFileTypeSymbolicLink];
 
   if ((v38 & 1) == 0)
   {
-    v40 = [(MSDFileMetadata *)self getAccessControlList];
-    v41 = [v40 length];
+    getAccessControlList = [(MSDFileMetadata *)self getAccessControlList];
+    v41 = [getAccessControlList length];
 
     if (v41)
     {
-      v42 = [(MSDFileMetadata *)self getAccessControlList];
-      self = acl_copy_int([v42 bytes]);
+      getAccessControlList2 = [(MSDFileMetadata *)self getAccessControlList];
+      self = acl_copy_int([getAccessControlList2 bytes]);
 
       if (!self)
       {
@@ -1219,7 +1219,7 @@ LABEL_60:
 
     else
     {
-      if (!acl_set_file([v4 fileSystemRepresentation], ACL_TYPE_EXTENDED, self))
+      if (!acl_set_file([pathCopy fileSystemRepresentation], ACL_TYPE_EXTENDED, self))
       {
 LABEL_39:
         acl_free(self);

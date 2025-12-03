@@ -1,28 +1,28 @@
 @interface UserProfileReportHistoryManager
 + (id)sharedInstance;
-- (BOOL)_shouldShowReportOrIncidentCreatedInCountry:(id)a3;
+- (BOOL)_shouldShowReportOrIncidentCreatedInCountry:(id)country;
 - (BOOL)isChinaUserOutsideOfChina;
 - (GEOObserverHashTable)observers;
 - (NSArray)rapHistory;
 - (UserProfileReportHistoryManager)init;
-- (int64_t)_daysBetweenDates:(id)a3 currentDate:(id)a4;
-- (int64_t)countForGEOTrafficIncidentType:(int)a3;
+- (int64_t)_daysBetweenDates:(id)dates currentDate:(id)date;
+- (int64_t)countForGEOTrafficIncidentType:(int)type;
 - (void)_cancelMapItemTicket;
 - (void)_fetchMapItemsForRAPHistoryIfNeeded;
 - (void)_loadReportsAndIncidents;
-- (void)_updateReports:(id)a3 incidents:(id)a4;
-- (void)countryConfigurationDidChange:(id)a3;
+- (void)_updateReports:(id)reports incidents:(id)incidents;
+- (void)countryConfigurationDidChange:(id)change;
 - (void)refineRAPHistory;
 @end
 
 @implementation UserProfileReportHistoryManager
 
-- (void)countryConfigurationDidChange:(id)a3
+- (void)countryConfigurationDidChange:(id)change
 {
   v4 = +[GEOCountryConfiguration sharedConfiguration];
-  v5 = [v4 countryCode];
+  countryCode = [v4 countryCode];
   countryCode = self->_countryCode;
-  self->_countryCode = v5;
+  self->_countryCode = countryCode;
 
   [(UserProfileReportHistoryManager *)self _loadReportsAndIncidents];
 }
@@ -60,19 +60,19 @@
           }
 
           v7 = *(*(&v31 + 1) + 8 * i);
-          v8 = [v7 mapItem];
+          mapItem = [v7 mapItem];
 
-          if (!v8)
+          if (!mapItem)
           {
-            v9 = [v7 contentData];
-            v10 = [v9 mapItemStorage];
-            v11 = v10;
-            if (v10)
+            contentData = [v7 contentData];
+            mapItemStorage = [contentData mapItemStorage];
+            v11 = mapItemStorage;
+            if (mapItemStorage)
             {
-              v12 = [v10 _identifier];
-              if (v12)
+              _identifier = [mapItemStorage _identifier];
+              if (_identifier)
               {
-                v13 = [[MKMapItemIdentifier alloc] initWithGEOMapItemIdentifier:v12];
+                v13 = [[MKMapItemIdentifier alloc] initWithGEOMapItemIdentifier:_identifier];
                 v14 = [v26 objectForKeyedSubscript:v13];
                 if (!v14)
                 {
@@ -92,8 +92,8 @@
       while (v4);
     }
 
-    v15 = [v26 allKeys];
-    v16 = [v15 count];
+    allKeys = [v26 allKeys];
+    v16 = [allKeys count];
     v17 = sub_100026868();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_INFO);
     if (v16)
@@ -107,7 +107,7 @@
       }
 
       v20 = +[MKMapService sharedService];
-      v21 = [v20 ticketForIdentifiers:v15 traits:0];
+      v21 = [v20 ticketForIdentifiers:allKeys traits:0];
       mapItemTicket = val->_mapItemTicket;
       val->_mapItemTicket = v21;
 
@@ -118,7 +118,7 @@
       v27[2] = sub_100ADACA8;
       v27[3] = &unk_10165D328;
       objc_copyWeak(&v30, buf);
-      v28 = v15;
+      v28 = allKeys;
       v29 = v26;
       [(MKMapServiceTicket *)v23 submitWithHandler:v27 networkActivity:0];
 
@@ -164,24 +164,24 @@
   }
 }
 
-- (int64_t)_daysBetweenDates:(id)a3 currentDate:(id)a4
+- (int64_t)_daysBetweenDates:(id)dates currentDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
+  dateCopy = date;
+  datesCopy = dates;
   v7 = +[NSCalendar currentCalendar];
-  v8 = [v7 components:16 fromDate:v6 toDate:v5 options:0];
+  v8 = [v7 components:16 fromDate:datesCopy toDate:dateCopy options:0];
 
   v9 = [v8 day];
   return v9;
 }
 
-- (void)_updateReports:(id)a3 incidents:(id)a4
+- (void)_updateReports:(id)reports incidents:(id)incidents
 {
-  v7 = a3;
-  v8 = a4;
+  reportsCopy = reports;
+  incidentsCopy = incidents;
   v9 = +[NSDate date];
   UInteger = GEOConfigGetUInteger();
-  objc_storeStrong(&self->_allRAPReports, a3);
+  objc_storeStrong(&self->_allRAPReports, reports);
   v49[0] = _NSConcreteStackBlock;
   v49[1] = 3221225472;
   v49[2] = sub_100ADB484;
@@ -190,19 +190,19 @@
   v36 = v9;
   v50 = v36;
   v51 = UInteger;
-  v39 = v7;
-  v11 = sub_1000282CC(v7, v49);
+  v39 = reportsCopy;
+  v11 = sub_1000282CC(reportsCopy, v49);
   filteredRAPReports = self->_filteredRAPReports;
   self->_filteredRAPReports = v11;
 
-  objc_storeStrong(&self->_allTrafficIncidentReports, a4);
+  objc_storeStrong(&self->_allTrafficIncidentReports, incidents);
   v48[0] = _NSConcreteStackBlock;
   v48[1] = 3221225472;
   v48[2] = sub_100ADB524;
   v48[3] = &unk_1016376C8;
   v48[4] = self;
-  v38 = v8;
-  v13 = sub_1000282CC(v8, v48);
+  v38 = incidentsCopy;
+  v13 = sub_1000282CC(incidentsCopy, v48);
   filteredTrafficIncidentReports = self->_filteredTrafficIncidentReports;
   self->_filteredTrafficIncidentReports = v13;
 
@@ -227,14 +227,14 @@
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v44 + 1) + 8 * i) reportStatus];
+        reportStatus = [*(*(&v44 + 1) + 8 * i) reportStatus];
         p_hasInReviewRAPs = &self->_hasInReviewRAPs;
-        if (!v20)
+        if (!reportStatus)
         {
           goto LABEL_11;
         }
 
-        if (v20 == 2)
+        if (reportStatus == 2)
         {
           p_hasInReviewRAPs = &self->_hasTellUsMoreRAPs;
 LABEL_11:
@@ -243,7 +243,7 @@ LABEL_11:
         }
 
         p_hasInReviewRAPs = &self->_hasReviewedRAPs;
-        if (v20 == 1)
+        if (reportStatus == 1)
         {
           goto LABEL_11;
         }
@@ -260,7 +260,7 @@ LABEL_11:
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v37 = self;
+  selfCopy = self;
   v23 = self->_filteredTrafficIncidentReports;
   v24 = [(NSArray *)v23 countByEnumeratingWithState:&v40 objects:v52 count:16];
   if (v24)
@@ -279,9 +279,9 @@ LABEL_11:
         v28 = *(*(&v40 + 1) + 8 * j);
         v29 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v28 incidentType]);
         v30 = [(NSDictionary *)v22 objectForKeyedSubscript:v29];
-        v31 = [v30 integerValue];
+        integerValue = [v30 integerValue];
 
-        v32 = [NSNumber numberWithInteger:v31 + 1];
+        v32 = [NSNumber numberWithInteger:integerValue + 1];
         v33 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v28 incidentType]);
         [(NSDictionary *)v22 setObject:v32 forKeyedSubscript:v33];
       }
@@ -292,12 +292,12 @@ LABEL_11:
     while (v25);
   }
 
-  geoIncidentCounts = v37->_geoIncidentCounts;
-  v37->_geoIncidentCounts = v22;
+  geoIncidentCounts = selfCopy->_geoIncidentCounts;
+  selfCopy->_geoIncidentCounts = v22;
   v35 = v22;
 
-  [(GEOObserverHashTable *)v37->_observers reportHistoryManagerDidUpdate:v37];
-  [(UserProfileReportHistoryManager *)v37 _fetchMapItemsForRAPHistoryIfNeeded];
+  [(GEOObserverHashTable *)selfCopy->_observers reportHistoryManagerDidUpdate:selfCopy];
+  [(UserProfileReportHistoryManager *)selfCopy _fetchMapItemsForRAPHistoryIfNeeded];
 }
 
 - (void)_loadReportsAndIncidents
@@ -349,20 +349,20 @@ LABEL_11:
   _Block_object_dispose(v17, 8);
 }
 
-- (int64_t)countForGEOTrafficIncidentType:(int)a3
+- (int64_t)countForGEOTrafficIncidentType:(int)type
 {
   geoIncidentCounts = self->_geoIncidentCounts;
-  v4 = [NSNumber numberWithInt:*&a3];
+  v4 = [NSNumber numberWithInt:*&type];
   v5 = [(NSDictionary *)geoIncidentCounts objectForKeyedSubscript:v4];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
-- (BOOL)_shouldShowReportOrIncidentCreatedInCountry:(id)a3
+- (BOOL)_shouldShowReportOrIncidentCreatedInCountry:(id)country
 {
-  v4 = a3;
-  v5 = (![(UserProfileReportHistoryManager *)self inChina]|| [(UserProfileReportHistoryManager *)self _isChinaCountryCode:v4]) && (![(UserProfileReportHistoryManager *)self _inKorea]|| [(UserProfileReportHistoryManager *)self _isKoreaCountryCode:v4]) && ([(UserProfileReportHistoryManager *)self inChina]|| ![(UserProfileReportHistoryManager *)self _isChinaCountryCode:v4]) && ([(UserProfileReportHistoryManager *)self _inKorea]|| ![(UserProfileReportHistoryManager *)self _isKoreaCountryCode:v4]);
+  countryCopy = country;
+  v5 = (![(UserProfileReportHistoryManager *)self inChina]|| [(UserProfileReportHistoryManager *)self _isChinaCountryCode:countryCopy]) && (![(UserProfileReportHistoryManager *)self _inKorea]|| [(UserProfileReportHistoryManager *)self _isKoreaCountryCode:countryCopy]) && ([(UserProfileReportHistoryManager *)self inChina]|| ![(UserProfileReportHistoryManager *)self _isChinaCountryCode:countryCopy]) && ([(UserProfileReportHistoryManager *)self _inKorea]|| ![(UserProfileReportHistoryManager *)self _isKoreaCountryCode:countryCopy]);
 
   return v5;
 }
@@ -393,8 +393,8 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) countryCodeUponCreation];
-        v10 = [(UserProfileReportHistoryManager *)self _isChinaCountryCode:v9];
+        countryCodeUponCreation = [*(*(&v12 + 1) + 8 * i) countryCodeUponCreation];
+        v10 = [(UserProfileReportHistoryManager *)self _isChinaCountryCode:countryCodeUponCreation];
 
         if (v10)
         {
@@ -442,9 +442,9 @@ LABEL_13:
   if (v2)
   {
     v3 = +[GEOCountryConfiguration sharedConfiguration];
-    v4 = [v3 countryCode];
+    countryCode = [v3 countryCode];
     countryCode = v2->_countryCode;
-    v2->_countryCode = v4;
+    v2->_countryCode = countryCode;
 
     v6 = +[RAPRecordMapsSync sharedInstance];
     [v6 registerObserver:v2];

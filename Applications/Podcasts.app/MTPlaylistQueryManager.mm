@@ -1,16 +1,16 @@
 @interface MTPlaylistQueryManager
-+ (BOOL)updatePlaylist:(id)a3 inContext:(id)a4;
-+ (id)_allEligiblePodcastsForPlaylistInCtx:(id)a3;
-+ (void)_fixSortOrder:(id)a3 generated_p:(BOOL *)a4;
-+ (void)_sortUngroupedList:(id)a3 inPlaylist:(id)a4;
-+ (void)updateEpisodesForSettings:(id)a3 ctx:(id)a4;
-- (BOOL)updatePlaylistWithUuid:(id)a3 inContext:(id)a4 applyAdditionalChangesBlock:(id)a5;
-- (BOOL)updatePlaylistsWithUuids:(id)a3;
-- (BOOL)updatePlaylistsWithUuids:(id)a3 context:(id)a4 applyAdditionalChangesBlock:(id)a5;
++ (BOOL)updatePlaylist:(id)playlist inContext:(id)context;
++ (id)_allEligiblePodcastsForPlaylistInCtx:(id)ctx;
++ (void)_fixSortOrder:(id)order generated_p:(BOOL *)generated_p;
++ (void)_sortUngroupedList:(id)list inPlaylist:(id)playlist;
++ (void)updateEpisodesForSettings:(id)settings ctx:(id)ctx;
+- (BOOL)updatePlaylistWithUuid:(id)uuid inContext:(id)context applyAdditionalChangesBlock:(id)block;
+- (BOOL)updatePlaylistsWithUuids:(id)uuids;
+- (BOOL)updatePlaylistsWithUuids:(id)uuids context:(id)context applyAdditionalChangesBlock:(id)block;
 - (MTPlaylistQueryManager)init;
 - (void)createDefaultPlaylists;
-- (void)resultsChangedWithDeletedIds:(id)a3 insertIds:(id)a4 updatedIds:(id)a5;
-- (void)updateAllPlaylistsWithCompletion:(id)a3;
+- (void)resultsChangedWithDeletedIds:(id)ids insertIds:(id)insertIds updatedIds:(id)updatedIds;
+- (void)updateAllPlaylistsWithCompletion:(id)completion;
 @end
 
 @implementation MTPlaylistQueryManager
@@ -29,10 +29,10 @@
   return v2;
 }
 
-- (void)resultsChangedWithDeletedIds:(id)a3 insertIds:(id)a4 updatedIds:(id)a5
+- (void)resultsChangedWithDeletedIds:(id)ids insertIds:(id)insertIds updatedIds:(id)updatedIds
 {
-  v6 = a4;
-  if ([v6 count])
+  insertIdsCopy = insertIds;
+  if ([insertIdsCopy count])
   {
     v7 = dispatch_get_global_queue(-2, 0);
     v8[0] = _NSConcreteStackBlock;
@@ -40,25 +40,25 @@
     v8[2] = sub_1000FF680;
     v8[3] = &unk_1004D8798;
     v8[4] = self;
-    v9 = v6;
+    v9 = insertIdsCopy;
     dispatch_async(v7, v8);
   }
 }
 
-+ (void)_fixSortOrder:(id)a3 generated_p:(BOOL *)a4
++ (void)_fixSortOrder:(id)order generated_p:(BOOL *)generated_p
 {
-  v5 = a3;
-  v6 = [v5 mutableOrderedSetValueForKey:kPlaylistSettings];
-  v7 = [v5 containerOrder];
-  if (v7 <= 2)
+  orderCopy = order;
+  v6 = [orderCopy mutableOrderedSetValueForKey:kPlaylistSettings];
+  containerOrder = [orderCopy containerOrder];
+  if (containerOrder <= 2)
   {
-    if (!v7)
+    if (!containerOrder)
     {
       v8 = &stru_1004DC478;
       goto LABEL_12;
     }
 
-    if (v7 == 1)
+    if (containerOrder == 1)
     {
       v8 = &stru_1004DC498;
       goto LABEL_12;
@@ -67,7 +67,7 @@
 
   else
   {
-    switch(v7)
+    switch(containerOrder)
     {
       case 3:
         v8 = &stru_1004DC4B8;
@@ -118,19 +118,19 @@ LABEL_12:
     while (v11);
   }
 
-  *a4 = 1;
+  *generated_p = 1;
 LABEL_13:
 }
 
-+ (BOOL)updatePlaylist:(id)a3 inContext:(id)a4
++ (BOOL)updatePlaylist:(id)playlist inContext:(id)context
 {
-  v5 = a3;
-  v52 = a4;
-  v48 = v5;
-  v53 = [v52 playlistForUuid:v5];
+  playlistCopy = playlist;
+  contextCopy = context;
+  v48 = playlistCopy;
+  v53 = [contextCopy playlistForUuid:playlistCopy];
   if (!v53)
   {
-    LOBYTE(v49) = 0;
+    LOBYTE(needsUpdate) = 0;
     goto LABEL_58;
   }
 
@@ -141,9 +141,9 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Calling refreshObject:mergeChanges: for playlist.", buf, 2u);
   }
 
-  [v52 refreshObject:v53 mergeChanges:1];
-  v49 = [v53 needsUpdate];
-  if (v49)
+  [contextCopy refreshObject:v53 mergeChanges:1];
+  needsUpdate = [v53 needsUpdate];
+  if (needsUpdate)
   {
     [v53 setNeedsUpdate:0];
   }
@@ -152,14 +152,14 @@ LABEL_13:
   {
     if ([v53 isItunesPlaylist])
     {
-      if (v49)
+      if (needsUpdate)
       {
-        LOBYTE(v49) = 1;
+        LOBYTE(needsUpdate) = 1;
       }
 
       else
       {
-        LOBYTE(v49) = [v53 updateUnplayedCount];
+        LOBYTE(needsUpdate) = [v53 updateUnplayedCount];
       }
 
       goto LABEL_58;
@@ -167,29 +167,29 @@ LABEL_13:
 
     if ([v53 includesAllPodcasts])
     {
-      v47 = [a1 _allEligiblePodcastsForPlaylistInCtx:v52];
+      array = [self _allEligiblePodcastsForPlaylistInCtx:contextCopy];
     }
 
     else
     {
-      v7 = [v53 podcasts];
-      v47 = [v7 array];
+      podcasts = [v53 podcasts];
+      array = [podcasts array];
     }
 
-    if ([v47 count])
+    if ([array count])
     {
       buf[0] = 0;
-      if (!v49)
+      if (!needsUpdate)
       {
 LABEL_56:
         [0 report];
-        LOBYTE(v49) = v49 | buf[0];
+        LOBYTE(needsUpdate) = needsUpdate | buf[0];
         goto LABEL_57;
       }
 
       [0 reportWithMarker:@"*** Update start ***"];
-      v8 = [v53 settings];
-      v9 = [v8 copy];
+      settings = [v53 settings];
+      v9 = [settings copy];
 
       v60 = 0u;
       v61 = 0u;
@@ -211,20 +211,20 @@ LABEL_56:
             }
 
             v14 = *(*(&v58 + 1) + 8 * i);
-            v15 = [v14 podcast];
-            if (v15)
+            podcast = [v14 podcast];
+            if (podcast)
             {
               if ([v14 needsUpdate])
               {
-                v16 = [v14 podcast];
-                v17 = [v16 title];
-                v18 = [NSString stringWithFormat:@"Settings needs update: %@", v17];
+                podcast2 = [v14 podcast];
+                title = [podcast2 title];
+                v18 = [NSString stringWithFormat:@"Settings needs update: %@", title];
                 [0 reportWithMarker:v18];
 
-                [a1 updateEpisodesForSettings:v14 ctx:v52];
+                [self updateEpisodesForSettings:v14 ctx:contextCopy];
                 [v14 setNeedsUpdate:0];
-                v19 = [v14 episodes];
-                v20 = [v19 valueForKey:v50];
+                episodes = [v14 episodes];
+                v20 = [episodes valueForKey:v50];
                 v21 = [NSString stringWithFormat:@"\n%@", v20];
                 [0 reportWithMarker:v21];
               }
@@ -235,8 +235,8 @@ LABEL_56:
               v22 = +[IMLogger sharedLogger];
               [v22 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Library/Playlists/MTPlaylistQueryManager.m" lineNumber:225 format:@"Settings object with no podcast set"];
 
-              [v52 deleteObject:v14];
-              v15 = 0;
+              [contextCopy deleteObject:v14];
+              podcast = 0;
             }
           }
 
@@ -246,9 +246,9 @@ LABEL_56:
         while (v11);
       }
 
-      [a1 _fixSortOrder:v53 generated_p:buf];
-      v23 = [v53 settings];
-      v24 = [v23 copy];
+      [self _fixSortOrder:v53 generated_p:buf];
+      settings2 = [v53 settings];
+      v24 = [settings2 copy];
 
       v25 = objc_opt_new();
       v56 = 0u;
@@ -270,14 +270,14 @@ LABEL_56:
             }
 
             v30 = *(*(&v54 + 1) + 8 * j);
-            v31 = [v30 episodes];
-            v32 = [v31 mutableCopy];
+            episodes2 = [v30 episodes];
+            v32 = [episodes2 mutableCopy];
 
-            v33 = [v53 deletedEpisodes];
-            [v32 minusSet:v33];
+            deletedEpisodes = [v53 deletedEpisodes];
+            [v32 minusSet:deletedEpisodes];
 
-            v34 = [v30 episodes];
-            v35 = [v32 isEqualToOrderedSet:v34];
+            episodes3 = [v30 episodes];
+            v35 = [v32 isEqualToOrderedSet:episodes3];
 
             if ((v35 & 1) == 0)
             {
@@ -285,8 +285,8 @@ LABEL_56:
               buf[0] = 1;
             }
 
-            v36 = [v30 episodes];
-            [v25 unionOrderedSet:v36];
+            episodes4 = [v30 episodes];
+            [v25 unionOrderedSet:episodes4];
 
             [v30 setEpisodeCount:{objc_msgSend(v32, "count")}];
           }
@@ -297,19 +297,19 @@ LABEL_56:
         while (v27);
       }
 
-      v37 = [v53 deletedEpisodes];
-      [v25 minusSet:v37];
+      deletedEpisodes2 = [v53 deletedEpisodes];
+      [v25 minusSet:deletedEpisodes2];
 
-      v38 = [v53 episodes];
-      if ([v25 isEqualToOrderedSet:v38])
+      episodes5 = [v53 episodes];
+      if ([v25 isEqualToOrderedSet:episodes5])
       {
-        v39 = [v53 isUngroupedList];
+        isUngroupedList = [v53 isUngroupedList];
 
-        if ((v39 & 1) == 0)
+        if ((isUngroupedList & 1) == 0)
         {
 LABEL_51:
-          v43 = [v53 episodes];
-          if ([v43 count])
+          episodes6 = [v53 episodes];
+          if ([episodes6 count])
           {
           }
 
@@ -336,7 +336,7 @@ LABEL_51:
 
       if ([v53 isUngroupedList])
       {
-        [a1 _sortUngroupedList:v25 inPlaylist:v53];
+        [self _sortUngroupedList:v25 inPlaylist:v53];
       }
 
       [v53 setEpisodes:v25];
@@ -346,14 +346,14 @@ LABEL_51:
       goto LABEL_51;
     }
 
-    v40 = [v53 podcasts];
-    if (![v40 count])
+    podcasts2 = [v53 podcasts];
+    if (![podcasts2 count])
     {
-      v41 = [v53 deletedEpisodes];
-      if (![v41 count])
+      deletedEpisodes3 = [v53 deletedEpisodes];
+      if (![deletedEpisodes3 count])
       {
-        v42 = [v53 episodes];
-        if (![v42 count])
+        episodes7 = [v53 episodes];
+        if (![episodes7 count])
         {
           v46 = [v53 unplayedCount] == 0;
 
@@ -372,25 +372,25 @@ LABEL_46:
     [v53 setDeletedEpisodes:0];
     [v53 setEpisodes:0];
     [v53 setUnplayedCount:0];
-    LOBYTE(v49) = 1;
+    LOBYTE(needsUpdate) = 1;
 LABEL_57:
   }
 
 LABEL_58:
 
-  return v49 & 1;
+  return needsUpdate & 1;
 }
 
-+ (void)_sortUngroupedList:(id)a3 inPlaylist:(id)a4
++ (void)_sortUngroupedList:(id)list inPlaylist:(id)playlist
 {
-  v11 = a3;
-  v5 = a4;
-  v6 = [v5 containerOrder];
-  if (v6 <= 1)
+  listCopy = list;
+  playlistCopy = playlist;
+  containerOrder = [playlistCopy containerOrder];
+  if (containerOrder <= 1)
   {
-    if (v6)
+    if (containerOrder)
     {
-      if (v6 != 1)
+      if (containerOrder != 1)
       {
         goto LABEL_13;
       }
@@ -406,18 +406,18 @@ LABEL_58:
 
   else
   {
-    switch(v6)
+    switch(containerOrder)
     {
       case 2:
-        v8 = [v5 episodes];
-        v9 = [v8 mutableCopy];
+        episodes = [playlistCopy episodes];
+        v9 = [episodes mutableCopy];
 
-        v10 = [v11 mutableCopy];
+        v10 = [listCopy mutableCopy];
         [v10 minusOrderedSet:v9];
-        [v9 intersectOrderedSet:v11];
-        [v11 removeAllObjects];
-        [v11 unionOrderedSet:v10];
-        [v11 unionOrderedSet:v9];
+        [v9 intersectOrderedSet:listCopy];
+        [listCopy removeAllObjects];
+        [listCopy unionOrderedSet:v10];
+        [listCopy unionOrderedSet:v9];
 
         goto LABEL_13;
       case 3:
@@ -431,30 +431,30 @@ LABEL_58:
     }
   }
 
-  [v11 sortUsingComparator:v7];
+  [listCopy sortUsingComparator:v7];
 LABEL_13:
 }
 
-+ (void)updateEpisodesForSettings:(id)a3 ctx:(id)a4
++ (void)updateEpisodesForSettings:(id)settings ctx:(id)ctx
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 predicateForSettings];
-  v8 = [v5 podcast];
-  v9 = [v8 sortDescriptorsForPlayOrderByPubDate];
+  settingsCopy = settings;
+  ctxCopy = ctx;
+  predicateForSettings = [settingsCopy predicateForSettings];
+  podcast = [settingsCopy podcast];
+  sortDescriptorsForPlayOrderByPubDate = [podcast sortDescriptorsForPlayOrderByPubDate];
 
-  v10 = [v5 integerForEpisodesToShow];
-  v30 = v6;
-  if (v10)
+  integerForEpisodesToShow = [settingsCopy integerForEpisodesToShow];
+  v30 = ctxCopy;
+  if (integerForEpisodesToShow)
   {
-    v11 = v10;
+    v11 = integerForEpisodesToShow;
     v12 = kEpisodeLevel;
-    v13 = [NSPredicate predicateWithFormat:@"%K < %ld", kEpisodeLevel, v10];
-    v29 = [v7 AND:v13];
+    v13 = [NSPredicate predicateWithFormat:@"%K < %ld", kEpisodeLevel, integerForEpisodesToShow];
+    v29 = [predicateForSettings AND:v13];
 
     v14 = kMTEpisodeEntityName;
-    v15 = v9;
-    v16 = v6;
+    v15 = sortDescriptorsForPlayOrderByPubDate;
+    v16 = ctxCopy;
     v17 = [NSSortDescriptor sortDescriptorWithKey:kEpisodePubDate ascending:0];
     v31[0] = v17;
     v18 = [NSSortDescriptor sortDescriptorWithKey:kEpisodeEpisodeNumber ascending:0];
@@ -465,84 +465,84 @@ LABEL_13:
     v31[3] = v20;
     v21 = [NSArray arrayWithObjects:v31 count:4];
     v22 = v16;
-    v9 = v15;
+    sortDescriptorsForPlayOrderByPubDate = v15;
     v23 = [v22 objectsInEntity:v14 predicate:v29 sortDescriptors:v21 returnsObjectsAsFaults:1 limit:v11];
 
     v24 = [v23 sortedArrayUsingDescriptors:v15];
 
-    v7 = v29;
+    predicateForSettings = v29;
   }
 
   else
   {
-    v24 = [v6 objectsInEntity:kMTEpisodeEntityName predicate:v7 sortDescriptors:v9 returnsObjectsAsFaults:1 limit:0];
+    v24 = [ctxCopy objectsInEntity:kMTEpisodeEntityName predicate:predicateForSettings sortDescriptors:sortDescriptorsForPlayOrderByPubDate returnsObjectsAsFaults:1 limit:0];
   }
 
   v25 = [NSOrderedSet orderedSetWithArray:v24];
-  v26 = [v5 episodes];
-  v27 = [v25 isEqualToOrderedSet:v26];
+  episodes = [settingsCopy episodes];
+  v27 = [v25 isEqualToOrderedSet:episodes];
 
   if ((v27 & 1) == 0)
   {
     v28 = [NSOrderedSet orderedSetWithArray:v24];
-    [v5 setEpisodes:v28];
+    [settingsCopy setEpisodes:v28];
   }
 
-  [v5 setVisible:{objc_msgSend(v24, "count") != 0}];
-  [v5 latestEpisodeDate];
-  [v5 setLatestEpisodeAvailabilityDate:?];
-  [v5 oldestEpisodeDate];
-  [v5 setEarliestEpisodeAvailabilityDate:?];
+  [settingsCopy setVisible:{objc_msgSend(v24, "count") != 0}];
+  [settingsCopy latestEpisodeDate];
+  [settingsCopy setLatestEpisodeAvailabilityDate:?];
+  [settingsCopy oldestEpisodeDate];
+  [settingsCopy setEarliestEpisodeAvailabilityDate:?];
 }
 
-- (BOOL)updatePlaylistWithUuid:(id)a3 inContext:(id)a4 applyAdditionalChangesBlock:(id)a5
+- (BOOL)updatePlaylistWithUuid:(id)uuid inContext:(id)context applyAdditionalChangesBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [NSSet setWithObject:a3];
-  LOBYTE(self) = [(MTPlaylistQueryManager *)self updatePlaylistsWithUuids:v10 context:v9 applyAdditionalChangesBlock:v8];
+  blockCopy = block;
+  contextCopy = context;
+  v10 = [NSSet setWithObject:uuid];
+  LOBYTE(self) = [(MTPlaylistQueryManager *)self updatePlaylistsWithUuids:v10 context:contextCopy applyAdditionalChangesBlock:blockCopy];
 
   return self;
 }
 
-- (void)updateAllPlaylistsWithCompletion:(id)a3
+- (void)updateAllPlaylistsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5->_updateAllPlaylistBackgroundWorkController)
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_updateAllPlaylistBackgroundWorkController)
   {
     v6 = [MTCoalescableWorkController controllerWithQosClass:21 identifier:@"MTPlaylistQueryManager.updateAllPlaylists"];
-    updateAllPlaylistBackgroundWorkController = v5->_updateAllPlaylistBackgroundWorkController;
-    v5->_updateAllPlaylistBackgroundWorkController = v6;
+    updateAllPlaylistBackgroundWorkController = selfCopy->_updateAllPlaylistBackgroundWorkController;
+    selfCopy->_updateAllPlaylistBackgroundWorkController = v6;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  v8 = v5->_updateAllPlaylistBackgroundWorkController;
+  v8 = selfCopy->_updateAllPlaylistBackgroundWorkController;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100100ABC;
   v9[3] = &unk_1004D8358;
-  v9[4] = v5;
-  [(MTCoalescableWorkController *)v8 schedule:v9 completion:v4];
+  v9[4] = selfCopy;
+  [(MTCoalescableWorkController *)v8 schedule:v9 completion:completionCopy];
 }
 
-- (BOOL)updatePlaylistsWithUuids:(id)a3
+- (BOOL)updatePlaylistsWithUuids:(id)uuids
 {
-  v4 = a3;
+  uuidsCopy = uuids;
   v5 = +[MTDB sharedInstance];
-  v6 = [v5 mainOrPrivateContext];
+  mainOrPrivateContext = [v5 mainOrPrivateContext];
 
-  LOBYTE(self) = [(MTPlaylistQueryManager *)self updatePlaylistsWithUuids:v4 context:v6 applyAdditionalChangesBlock:0];
+  LOBYTE(self) = [(MTPlaylistQueryManager *)self updatePlaylistsWithUuids:uuidsCopy context:mainOrPrivateContext applyAdditionalChangesBlock:0];
   return self;
 }
 
-- (BOOL)updatePlaylistsWithUuids:(id)a3 context:(id)a4 applyAdditionalChangesBlock:(id)a5
+- (BOOL)updatePlaylistsWithUuids:(id)uuids context:(id)context applyAdditionalChangesBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  uuidsCopy = uuids;
+  contextCopy = context;
+  blockCopy = block;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -551,41 +551,41 @@ LABEL_13:
   v14[1] = 3221225472;
   v14[2] = sub_100100F58;
   v14[3] = &unk_1004DC5E0;
-  v10 = v7;
+  v10 = uuidsCopy;
   v15 = v10;
   v18 = &v19;
-  v11 = v8;
+  v11 = contextCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = blockCopy;
   v17 = v12;
   [v11 performBlockAndWait:v14];
-  LOBYTE(v9) = *(v20 + 24);
+  LOBYTE(blockCopy) = *(v20 + 24);
 
   _Block_object_dispose(&v19, 8);
-  return v9;
+  return blockCopy;
 }
 
 - (void)createDefaultPlaylists
 {
   v2 = +[MTDB sharedInstance];
-  v3 = [v2 mainOrPrivateContext];
+  mainOrPrivateContext = [v2 mainOrPrivateContext];
 
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001012C4;
   v5[3] = &unk_1004D8358;
-  v6 = v3;
-  v4 = v3;
+  v6 = mainOrPrivateContext;
+  v4 = mainOrPrivateContext;
   [v4 performBlockAndWait:v5];
 }
 
-+ (id)_allEligiblePodcastsForPlaylistInCtx:(id)a3
++ (id)_allEligiblePodcastsForPlaylistInCtx:(id)ctx
 {
   v3 = kMTPodcastEntityName;
-  v4 = a3;
+  ctxCopy = ctx;
   v5 = +[MTPodcast predicateForNotHiddenNotImplicitlyFollowedPodcasts];
   v6 = +[MTPodcast sortDescriptorsForAllPodcasts];
-  v7 = [v4 objectsInEntity:v3 predicate:v5 sortDescriptors:v6];
+  v7 = [ctxCopy objectsInEntity:v3 predicate:v5 sortDescriptors:v6];
 
   return v7;
 }

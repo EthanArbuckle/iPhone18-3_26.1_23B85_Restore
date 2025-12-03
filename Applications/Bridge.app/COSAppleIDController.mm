@@ -1,20 +1,20 @@
 @interface COSAppleIDController
-- (BOOL)_federatedAuthRequiredForAccount:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)_federatedAuthRequiredForAccount:(id)account;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (COSAppleIDController)init;
-- (id)newPasswordTextFieldSpecifierWithID:(id)a3;
+- (id)newPasswordTextFieldSpecifierWithID:(id)d;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_textFieldValueDidChange:(id)a3;
-- (void)addForgotPasswordFooterToSpecifier:(id)a3 withActionSelector:(SEL)a4;
-- (void)appleIDAuthController:(id)a3 didSignInWithSuccess:(BOOL)a4 error:(id)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_textFieldValueDidChange:(id)change;
+- (void)addForgotPasswordFooterToSpecifier:(id)specifier withActionSelector:(SEL)selector;
+- (void)appleIDAuthController:(id)controller didSignInWithSuccess:(BOOL)success error:(id)error;
 - (void)dealloc;
-- (void)enableSignInButtons:(BOOL)a3;
-- (void)handleAccountsInfoReply:(id)a3 error:(id)a4;
-- (void)loggedInSuccessfullyToAccount:(id)a3;
+- (void)enableSignInButtons:(BOOL)buttons;
+- (void)handleAccountsInfoReply:(id)reply error:(id)error;
+- (void)loggedInSuccessfullyToAccount:(id)account;
 - (void)openiCloudPaneInSettingsApp;
 - (void)queryWatchForAccountsInfo;
-- (void)removeForgotPasswordFooterFromSpecifier:(id)a3;
+- (void)removeForgotPasswordFooterFromSpecifier:(id)specifier;
 - (void)startNetworkRequest;
 - (void)stopNetworkRequest;
 - (void)tappedForgotButton;
@@ -26,7 +26,7 @@
 - (void)tappedSignInToiCloud;
 - (void)tappedSignInToiMessage;
 - (void)tappedSignInToiTunesStore;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation COSAppleIDController
@@ -40,9 +40,9 @@
   if (v2)
   {
     v2->_hasFetchedAccountsInfo = 0;
-    v4 = [UIApp activeWatch];
+    activeWatch = [UIApp activeWatch];
     pairedWatch = v3->_pairedWatch;
-    v3->_pairedWatch = v4;
+    v3->_pairedWatch = activeWatch;
 
     if (!v3->_pairedWatch)
     {
@@ -268,11 +268,11 @@
         v50 = "NO";
       }
 
-      v51 = [(ACAccount *)v3->_iCloudAccount aa_displayName];
-      v52 = [(ACAccount *)v3->_iMessageAccount aa_displayName];
-      v53 = [(ACAccount *)v3->_faceTimeAccount aa_displayName];
-      v54 = [(ACAccount *)v3->_iTunesStoreAccount aa_displayName];
-      v55 = v54;
+      aa_displayName = [(ACAccount *)v3->_iCloudAccount aa_displayName];
+      aa_displayName2 = [(ACAccount *)v3->_iMessageAccount aa_displayName];
+      aa_displayName3 = [(ACAccount *)v3->_faceTimeAccount aa_displayName];
+      aa_displayName4 = [(ACAccount *)v3->_iTunesStoreAccount aa_displayName];
+      v55 = aa_displayName4;
       v56 = "YES";
       if (!v3->_sameiCloudAndiMessageAppleID)
       {
@@ -289,13 +289,13 @@
 
       v73 = v50;
       v74 = 2112;
-      v75 = v51;
+      v75 = aa_displayName;
       v76 = 2112;
-      v77 = v52;
+      v77 = aa_displayName2;
       v78 = 2112;
-      v79 = v53;
+      v79 = aa_displayName3;
       v80 = 2112;
-      v81 = v54;
+      v81 = aa_displayName4;
       v82 = 2080;
       v83 = v56;
       v84 = 2080;
@@ -413,9 +413,9 @@
   return v3;
 }
 
-- (BOOL)_federatedAuthRequiredForAccount:(id)a3
+- (BOOL)_federatedAuthRequiredForAccount:(id)account
 {
-  v3 = [a3 accountPropertyForKey:AKAuthMode];
+  v3 = [account accountPropertyForKey:AKAuthMode];
   v4 = [v3 unsignedIntegerValue] == 2;
 
   return v4;
@@ -502,10 +502,10 @@
       [v5 addObject:v22];
 LABEL_77:
       objc_storeStrong(&self->BPSListController_opaque[v3], v5);
-      v63 = [(COSAppleIDController *)self navigationItem];
+      navigationItem = [(COSAppleIDController *)self navigationItem];
       v64 = +[NSBundle mainBundle];
       v65 = [v64 localizedStringForKey:@"TITLE" value:&stru_10026E598 table:@"AppleID"];
-      [v63 setTitle:v65];
+      [navigationItem setTitle:v65];
 
       objc_destroyWeak(&v78);
       objc_destroyWeak(&location);
@@ -531,8 +531,8 @@ LABEL_77:
     v11 = [PSSpecifier groupSpecifierWithID:@"iCloudGroup"];
 
     [v5 addObject:v11];
-    v12 = +[NSBundle mainBundle];
-    v13 = [v12 localizedStringForKey:@"APPLE_ID" value:&stru_10026E598 table:@"AppleID"];
+    identifier = +[NSBundle mainBundle];
+    v13 = [identifier localizedStringForKey:@"APPLE_ID" value:&stru_10026E598 table:@"AppleID"];
     v14 = [PSTextFieldSpecifier preferenceSpecifierNamed:v13 target:self set:0 get:"getiCloudUsernameForSpecifier:" detail:0 cell:8 edit:0];
 
     [v14 setProperty:@"iCloudLogin" forKey:PSIDKey];
@@ -544,7 +544,7 @@ LABEL_77:
       goto LABEL_27;
     }
 
-    v16 = 208;
+    identifier2 = 208;
     iMessageAccount = self->_iMessageAccount;
     if (iMessageAccount)
     {
@@ -805,9 +805,9 @@ LABEL_76:
 
     if (iMessageAccount)
     {
-      v12 = [(ACAccount *)faceTimeAccount identifier];
-      v16 = [(ACAccount *)self->_iMessageAccount identifier];
-      if ([v12 isEqualToString:v16])
+      identifier = [(ACAccount *)faceTimeAccount identifier];
+      identifier2 = [(ACAccount *)self->_iMessageAccount identifier];
+      if ([identifier isEqualToString:identifier2])
       {
         v19 = 1;
         goto LABEL_12;
@@ -847,52 +847,52 @@ LABEL_78:
   return v4;
 }
 
-- (void)addForgotPasswordFooterToSpecifier:(id)a3 withActionSelector:(SEL)a4
+- (void)addForgotPasswordFooterToSpecifier:(id)specifier withActionSelector:(SEL)selector
 {
-  v6 = a3;
+  specifierCopy = specifier;
   v7 = +[NSBundle mainBundle];
   v14 = [v7 localizedStringForKey:@"FORGOT" value:&stru_10026E598 table:@"AppleID"];
 
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v6 setProperty:v9 forKey:PSFooterCellClassGroupKey];
+  [specifierCopy setProperty:v9 forKey:PSFooterCellClassGroupKey];
 
-  [v6 setProperty:v14 forKey:PSFooterHyperlinkViewTitleKey];
+  [specifierCopy setProperty:v14 forKey:PSFooterHyperlinkViewTitleKey];
   v16.length = [v14 length];
   v16.location = 0;
   v10 = NSStringFromRange(v16);
-  [v6 setProperty:v10 forKey:PSFooterHyperlinkViewLinkRangeKey];
+  [specifierCopy setProperty:v10 forKey:PSFooterHyperlinkViewLinkRangeKey];
 
   v11 = [NSValue valueWithNonretainedObject:self];
-  [v6 setProperty:v11 forKey:PSFooterHyperlinkViewTargetKey];
+  [specifierCopy setProperty:v11 forKey:PSFooterHyperlinkViewTargetKey];
 
-  v12 = NSStringFromSelector(a4);
-  [v6 setProperty:v12 forKey:PSFooterHyperlinkViewActionKey];
+  v12 = NSStringFromSelector(selector);
+  [specifierCopy setProperty:v12 forKey:PSFooterHyperlinkViewActionKey];
 
   v13 = [NSNumber numberWithInt:1];
-  [v6 setProperty:v13 forKey:PSFooterAlignmentGroupKey];
+  [specifierCopy setProperty:v13 forKey:PSFooterAlignmentGroupKey];
 }
 
-- (void)removeForgotPasswordFooterFromSpecifier:(id)a3
+- (void)removeForgotPasswordFooterFromSpecifier:(id)specifier
 {
   v3 = PSFooterCellClassGroupKey;
-  v4 = a3;
-  [v4 removePropertyForKey:v3];
-  [v4 removePropertyForKey:PSFooterHyperlinkViewTitleKey];
-  [v4 removePropertyForKey:PSFooterHyperlinkViewLinkRangeKey];
-  [v4 removePropertyForKey:PSFooterHyperlinkViewTargetKey];
-  [v4 removePropertyForKey:PSFooterHyperlinkViewActionKey];
-  [v4 removePropertyForKey:PSFooterAlignmentGroupKey];
+  specifierCopy = specifier;
+  [specifierCopy removePropertyForKey:v3];
+  [specifierCopy removePropertyForKey:PSFooterHyperlinkViewTitleKey];
+  [specifierCopy removePropertyForKey:PSFooterHyperlinkViewLinkRangeKey];
+  [specifierCopy removePropertyForKey:PSFooterHyperlinkViewTargetKey];
+  [specifierCopy removePropertyForKey:PSFooterHyperlinkViewActionKey];
+  [specifierCopy removePropertyForKey:PSFooterAlignmentGroupKey];
 }
 
-- (id)newPasswordTextFieldSpecifierWithID:(id)a3
+- (id)newPasswordTextFieldSpecifierWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"PASSWORD" value:&stru_10026E598 table:@"AppleID"];
   v7 = [PSTextFieldSpecifier preferenceSpecifierNamed:v6 target:self set:"setPassword:withSpecifier:" get:0 detail:0 cell:8 edit:0];
 
-  [v7 setProperty:v4 forKey:PSIDKey];
+  [v7 setProperty:dCopy forKey:PSIDKey];
   [v7 setKeyboardType:1 autoCaps:0 autoCorrection:1];
   [v7 setCellType:12];
   v8 = +[NSBundle mainBundle];
@@ -950,23 +950,23 @@ LABEL_78:
   objc_destroyWeak(buf);
 }
 
-- (void)handleAccountsInfoReply:(id)a3 error:(id)a4
+- (void)handleAccountsInfoReply:(id)reply error:(id)error
 {
-  v6 = a3;
-  v7 = v6;
+  replyCopy = reply;
+  v7 = replyCopy;
   self->_hasFetchedAccountsInfo = 1;
-  if (a4)
+  if (error)
   {
     v52 = _NSConcreteStackBlock;
     v53 = 3221225472;
     v54 = sub_1000362DC;
     v55 = &unk_1002682F0;
-    v56 = self;
+    selfCopy = self;
     BPSPresentGizmoUnreachableServiceAlertWithDismissalHandler();
     goto LABEL_55;
   }
 
-  v8 = [v6 objectForKeyedSubscript:kNSSAccountsKey];
+  v8 = [replyCopy objectForKeyedSubscript:kNSSAccountsKey];
   v37 = v7;
   v9 = [v7 objectForKeyedSubscript:kNSSAKDeviceKey];
   watchAKDevice = self->_watchAKDevice;
@@ -1179,14 +1179,14 @@ LABEL_55:
   BPSOpenSensitiveURLAsync();
 }
 
-- (void)enableSignInButtons:(BOOL)a3
+- (void)enableSignInButtons:(BOOL)buttons
 {
-  v3 = a3;
+  buttonsCopy = buttons;
   v5 = pbb_accountsignin_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v10 = v3;
+    v10 = buttonsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Enable / disable sign in button: %d", buf, 8u);
   }
 
@@ -1195,7 +1195,7 @@ LABEL_55:
   v7[2] = sub_10003654C;
   v7[3] = &unk_100268E08;
   v7[4] = self;
-  v8 = v3;
+  v8 = buttonsCopy;
   v6 = objc_retainBlock(v7);
   (v6[2])(v6, @"iCloudSignIn");
   (v6[2])(v6, @"iMessageSignIn");
@@ -1212,8 +1212,8 @@ LABEL_55:
     [(COSAppleIDController *)self startNetworkRequest];
     if (self->_displayiCloudPasswordTextField)
     {
-      v3 = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
-      [v3 resignFirstResponder];
+      firstResponder = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
+      [firstResponder resignFirstResponder];
     }
 
     v4 = self->_iCloudAccount;
@@ -1250,15 +1250,15 @@ LABEL_55:
     {
       if (self->_displayiCloudPasswordTextField)
       {
-        v9 = [(UITextField *)self->_iCloudPasswordTextField text];
+        text = [(UITextField *)self->_iCloudPasswordTextField text];
       }
 
       else
       {
-        v9 = 0;
+        text = 0;
       }
 
-      [(COSAppleIDAuthController *)self->_authController startSigningInWithPassword:v9];
+      [(COSAppleIDAuthController *)self->_authController startSigningInWithPassword:text];
     }
 
     else
@@ -1284,8 +1284,8 @@ LABEL_55:
     [(COSAppleIDController *)self startNetworkRequest];
     if (self->_displayiMessagePasswordTextField)
     {
-      v4 = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
-      [v4 resignFirstResponder];
+      firstResponder = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
+      [firstResponder resignFirstResponder];
     }
 
     v5 = [[COSAppleIDAuthController alloc] initWithAccountStore:self->_accountStore account:self->_iMessageAccount timeout:self->_pairedWatch device:0.0];
@@ -1298,15 +1298,15 @@ LABEL_55:
     {
       if (self->_displayiMessagePasswordTextField)
       {
-        v7 = [(UITextField *)self->_iMessagePasswordTextField text];
+        text = [(UITextField *)self->_iMessagePasswordTextField text];
       }
 
       else
       {
-        v7 = 0;
+        text = 0;
       }
 
-      [(COSAppleIDAuthController *)self->_authController startSigningInWithPassword:v7];
+      [(COSAppleIDAuthController *)self->_authController startSigningInWithPassword:text];
     }
 
     else
@@ -1332,8 +1332,8 @@ LABEL_55:
     [(COSAppleIDController *)self startNetworkRequest];
     if (self->_displayFaceTimePasswordTextField)
     {
-      v4 = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
-      [v4 resignFirstResponder];
+      firstResponder = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
+      [firstResponder resignFirstResponder];
     }
 
     v5 = [[COSAppleIDAuthController alloc] initWithAccountStore:self->_accountStore account:self->_faceTimeAccount timeout:self->_pairedWatch device:0.0];
@@ -1346,15 +1346,15 @@ LABEL_55:
     {
       if (self->_displayFaceTimePasswordTextField)
       {
-        v7 = [(UITextField *)self->_faceTimePasswordTextField text];
+        text = [(UITextField *)self->_faceTimePasswordTextField text];
       }
 
       else
       {
-        v7 = 0;
+        text = 0;
       }
 
-      [(COSAppleIDAuthController *)self->_authController startSigningInWithPassword:v7];
+      [(COSAppleIDAuthController *)self->_authController startSigningInWithPassword:text];
     }
 
     else
@@ -1380,8 +1380,8 @@ LABEL_55:
     [(COSAppleIDController *)self startNetworkRequest];
     if (self->_displayiTunesStorePasswordTextField)
     {
-      v4 = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
-      [v4 resignFirstResponder];
+      firstResponder = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
+      [firstResponder resignFirstResponder];
     }
 
     v5 = [[COSAppleIDAuthController alloc] initWithAccountStore:self->_accountStore account:self->_iTunesStoreAccount timeout:self->_pairedWatch device:0.0];
@@ -1394,15 +1394,15 @@ LABEL_55:
     {
       if (self->_displayiTunesStorePasswordTextField)
       {
-        v7 = [(UITextField *)self->_iTunesStorePasswordTextField text];
+        text = [(UITextField *)self->_iTunesStorePasswordTextField text];
       }
 
       else
       {
-        v7 = 0;
+        text = 0;
       }
 
-      [(COSAppleIDAuthController *)self->_authController startSigningInWithPassword:v7];
+      [(COSAppleIDAuthController *)self->_authController startSigningInWithPassword:text];
     }
 
     else
@@ -1412,15 +1412,15 @@ LABEL_55:
   }
 }
 
-- (void)loggedInSuccessfullyToAccount:(id)a3
+- (void)loggedInSuccessfullyToAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   [(COSAppleIDController *)self _removeAppleIDFollowUp];
-  if ([(ACAccount *)v4 isEqual:ACAccountTypeIdentifierAppleAccount])
+  if ([(ACAccount *)accountCopy isEqual:ACAccountTypeIdentifierAppleAccount])
   {
-    v5 = [(COSAppleIDController *)self parentController];
+    parentController = [(COSAppleIDController *)self parentController];
 
-    if (v5)
+    if (parentController)
     {
       [PBBridgeCAReporter recordSigninEventPostPair:0];
     }
@@ -1439,8 +1439,8 @@ LABEL_55:
       self->_iMessageInteractiveAuthRequired = 0;
       [(COSAppleIDController *)self removeSpecifierID:@"iMessageSignIn" animated:1];
       [(COSAppleIDController *)self removeSpecifierID:@"iMessagePassword" animated:1];
-      v10 = [(COSAppleIDController *)self specifiers];
-      v11 = v10;
+      specifiers = [(COSAppleIDController *)self specifiers];
+      v11 = specifiers;
       v12 = @"iMessageGroup";
     }
 
@@ -1450,8 +1450,8 @@ LABEL_55:
       self->_facetimeInteractiveAuthRequired = 0;
       [(COSAppleIDController *)self removeSpecifierID:@"iFaceTimeSignIn" animated:1];
       [(COSAppleIDController *)self removeSpecifierID:@"iFaceTimePassword" animated:1];
-      v10 = [(COSAppleIDController *)self specifiers];
-      v11 = v10;
+      specifiers = [(COSAppleIDController *)self specifiers];
+      v11 = specifiers;
       v12 = @"iFaceTimeGroup";
     }
 
@@ -1467,12 +1467,12 @@ LABEL_55:
       [(COSAppleIDController *)self _removeStoreFollowUp];
       [(COSAppleIDController *)self removeSpecifierID:@"iTunesStoreSignInCell" animated:1];
       [(COSAppleIDController *)self removeSpecifierID:@"iTunesStorePasswordCell" animated:1];
-      v10 = [(COSAppleIDController *)self specifiers];
-      v11 = v10;
+      specifiers = [(COSAppleIDController *)self specifiers];
+      v11 = specifiers;
       v12 = @"iTunesStoreGroup";
     }
 
-    v13 = [v10 specifierForID:v12];
+    v13 = [specifiers specifierForID:v12];
     [(COSAppleIDController *)self removeForgotPasswordFooterFromSpecifier:v13];
 
     goto LABEL_15;
@@ -1482,11 +1482,11 @@ LABEL_55:
   self->_iCloudInteractiveAuthRequired = 0;
   [(COSAppleIDController *)self removeSpecifierID:@"iCloudSignIn" animated:1];
   [(COSAppleIDController *)self removeSpecifierID:@"iCloudPassword" animated:1];
-  v6 = [(COSAppleIDController *)self specifiers];
-  v7 = [v6 specifierForID:@"iCloudGroup"];
+  specifiers2 = [(COSAppleIDController *)self specifiers];
+  v7 = [specifiers2 specifierForID:@"iCloudGroup"];
   [(COSAppleIDController *)self removeForgotPasswordFooterFromSpecifier:v7];
 
-  if (self->_iCloudAccount == v4 && self->_sameiCloudAndiTunesStoreAppleID && !self->_watchIsSignedInToiTunesStore)
+  if (self->_iCloudAccount == accountCopy && self->_sameiCloudAndiTunesStoreAppleID && !self->_watchIsSignedInToiTunesStore)
   {
     iTunesStoreAccount = self->_iTunesStoreAccount;
     accountStore = self->_accountStore;
@@ -1503,28 +1503,28 @@ LABEL_15:
 
 - (void)startNetworkRequest
 {
-  v3 = [(COSAppleIDController *)self view];
-  [v3 setUserInteractionEnabled:0];
+  view = [(COSAppleIDController *)self view];
+  [view setUserInteractionEnabled:0];
 
   v8 = [[UIActivityIndicatorView alloc] initWithFrame:{0.0, 0.0, 20.0, 20.0}];
   v4 = [[UIBarButtonItem alloc] initWithCustomView:v8];
-  v5 = [(COSAppleIDController *)self navigationController];
-  v6 = [v5 navigationBar];
+  navigationController = [(COSAppleIDController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
-  v7 = [v6 topItem];
-  [v7 setRightBarButtonItem:v4];
+  topItem = [navigationBar topItem];
+  [topItem setRightBarButtonItem:v4];
   [v8 startAnimating];
 }
 
 - (void)stopNetworkRequest
 {
-  v3 = [(COSAppleIDController *)self navigationController];
-  v6 = [v3 navigationBar];
+  navigationController = [(COSAppleIDController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
-  v4 = [v6 topItem];
-  [v4 setRightBarButtonItem:0];
-  v5 = [(COSAppleIDController *)self view];
-  [v5 setUserInteractionEnabled:1];
+  topItem = [navigationBar topItem];
+  [topItem setRightBarButtonItem:0];
+  view = [(COSAppleIDController *)self view];
+  [view setUserInteractionEnabled:1];
 }
 
 - (void)tappedForgotiCloudButton
@@ -1594,8 +1594,8 @@ LABEL_15:
   [(COSAppleIDController *)self startNetworkRequest];
   if (self->_displayiCloudPasswordTextField || self->_displayiMessagePasswordTextField || self->_displayFaceTimePasswordTextField || self->_displayiTunesStorePasswordTextField)
   {
-    v3 = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
-    [v3 resignFirstResponder];
+    firstResponder = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
+    [firstResponder resignFirstResponder];
   }
 
   if (self->_recoveringCredentialsForiCloud)
@@ -1634,26 +1634,26 @@ LABEL_17:
   [(COSAppleIDAuthController *)self->_authController startRecoveringCredentials];
 }
 
-- (void)_textFieldValueDidChange:(id)a3
+- (void)_textFieldValueDidChange:(id)change
 {
-  v4 = [a3 object];
-  v11 = v4;
-  if (v4 == self->_iCloudPasswordTextField)
+  object = [change object];
+  v11 = object;
+  if (object == self->_iCloudPasswordTextField)
   {
     v5 = @"iCloudSignIn";
   }
 
-  else if (v4 == self->_iMessagePasswordTextField)
+  else if (object == self->_iMessagePasswordTextField)
   {
     v5 = @"iMessageSignIn";
   }
 
-  else if (v4 == self->_faceTimePasswordTextField)
+  else if (object == self->_faceTimePasswordTextField)
   {
     v5 = @"iFaceTimeSignIn";
   }
 
-  else if (v4 == self->_iTunesStorePasswordTextField)
+  else if (object == self->_iTunesStorePasswordTextField)
   {
     v5 = @"iTunesStoreSignInCell";
   }
@@ -1664,11 +1664,11 @@ LABEL_17:
   }
 
   v6 = [(COSAppleIDController *)self specifierForID:v5];
-  v7 = [(UITextField *)v11 text];
-  v8 = v7;
-  if (v7)
+  text = [(UITextField *)v11 text];
+  v8 = text;
+  if (text)
   {
-    v9 = [v7 isEqualToString:&stru_10026E598] ^ 1;
+    v9 = [text isEqualToString:&stru_10026E598] ^ 1;
   }
 
   else
@@ -1682,57 +1682,57 @@ LABEL_17:
   [(COSAppleIDController *)self reloadSpecifier:v6];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
-  [v5 resignFirstResponder];
+  disappearCopy = disappear;
+  firstResponder = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
+  [firstResponder resignFirstResponder];
 
   v6.receiver = self;
   v6.super_class = COSAppleIDController;
-  [(COSAppleIDController *)&v6 viewWillDisappear:v3];
+  [(COSAppleIDController *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v56.receiver = self;
   v56.super_class = COSAppleIDController;
-  v8 = [(COSAppleIDController *)&v56 tableView:v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 specifier];
+  v8 = [(COSAppleIDController *)&v56 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v10 = v8;
-    v11 = [v9 identifier];
-    if (([v11 isEqualToString:@"iCloudLogin"] & 1) == 0)
+    identifier = [specifier identifier];
+    if (([identifier isEqualToString:@"iCloudLogin"] & 1) == 0)
     {
-      v12 = [v9 identifier];
-      if (([v12 isEqualToString:@"iMessageLogin"] & 1) == 0)
+      identifier2 = [specifier identifier];
+      if (([identifier2 isEqualToString:@"iMessageLogin"] & 1) == 0)
       {
-        v13 = [v9 identifier];
-        if (![v13 isEqualToString:@"iFaceTimeLogin"])
+        identifier3 = [specifier identifier];
+        if (![identifier3 isEqualToString:@"iFaceTimeLogin"])
         {
-          [v9 identifier];
+          [specifier identifier];
           v19 = v46 = v10;
           v20 = [v19 isEqualToString:@"iTunesStoreLoginCell"];
 
           v10 = v46;
           if ((v20 & 1) == 0)
           {
-            v14 = [v46 editableTextField];
-            v21 = [v9 identifier];
-            v22 = [v21 isEqualToString:@"iCloudPassword"];
+            editableTextField = [v46 editableTextField];
+            identifier4 = [specifier identifier];
+            v22 = [identifier4 isEqualToString:@"iCloudPassword"];
 
             if (v22)
             {
-              objc_storeStrong(&self->_iCloudPasswordTextField, v14);
+              objc_storeStrong(&self->_iCloudPasswordTextField, editableTextField);
               [(UITextField *)self->_iCloudPasswordTextField setDelegate:self];
               if (self->_iCloudPasswordTextFieldTextDidChangeObserver)
               {
                 v23 = +[NSNotificationCenter defaultCenter];
-                [v23 removeObserver:self->_iCloudPasswordTextFieldTextDidChangeObserver name:UITextFieldTextDidChangeNotification object:v14];
+                [v23 removeObserver:self->_iCloudPasswordTextFieldTextDidChangeObserver name:UITextFieldTextDidChangeNotification object:editableTextField];
               }
 
               objc_initWeak(&location, self);
@@ -1743,26 +1743,26 @@ LABEL_17:
               v53[2] = sub_1000381F4;
               v53[3] = &unk_100268E70;
               objc_copyWeak(&v54, &location);
-              v26 = [v24 addObserverForName:UITextFieldTextDidChangeNotification object:v14 queue:0 usingBlock:v53];
+              v26 = [v24 addObserverForName:UITextFieldTextDidChangeNotification object:editableTextField queue:0 usingBlock:v53];
               iCloudPasswordTextFieldTextDidChangeObserver = self->_iCloudPasswordTextFieldTextDidChangeObserver;
               self->_iCloudPasswordTextFieldTextDidChangeObserver = v26;
 
-              [v14 setReturnKeyType:9];
+              [editableTextField setReturnKeyType:9];
             }
 
             else
             {
-              v28 = [v9 identifier];
-              v29 = [v28 isEqualToString:@"iMessagePassword"];
+              identifier5 = [specifier identifier];
+              v29 = [identifier5 isEqualToString:@"iMessagePassword"];
 
               if (v29)
               {
-                objc_storeStrong(&self->_iMessagePasswordTextField, v14);
+                objc_storeStrong(&self->_iMessagePasswordTextField, editableTextField);
                 [(UITextField *)self->_iMessagePasswordTextField setDelegate:self];
                 if (self->_iMessagePasswordTextFieldTextDidChangeObserver)
                 {
                   v30 = +[NSNotificationCenter defaultCenter];
-                  [v30 removeObserver:self->_iMessagePasswordTextFieldTextDidChangeObserver name:UITextFieldTextDidChangeNotification object:v14];
+                  [v30 removeObserver:self->_iMessagePasswordTextFieldTextDidChangeObserver name:UITextFieldTextDidChangeNotification object:editableTextField];
                 }
 
                 objc_initWeak(&location, self);
@@ -1773,26 +1773,26 @@ LABEL_17:
                 v51[2] = sub_100038250;
                 v51[3] = &unk_100268E70;
                 objc_copyWeak(&v52, &location);
-                v32 = [v31 addObserverForName:UITextFieldTextDidChangeNotification object:v14 queue:0 usingBlock:v51];
+                v32 = [v31 addObserverForName:UITextFieldTextDidChangeNotification object:editableTextField queue:0 usingBlock:v51];
                 iMessagePasswordTextFieldTextDidChangeObserver = self->_iMessagePasswordTextFieldTextDidChangeObserver;
                 self->_iMessagePasswordTextFieldTextDidChangeObserver = v32;
 
-                [v14 setReturnKeyType:9];
+                [editableTextField setReturnKeyType:9];
               }
 
               else
               {
-                v34 = [v9 identifier];
-                v35 = [v34 isEqualToString:@"iFaceTimePassword"];
+                identifier6 = [specifier identifier];
+                v35 = [identifier6 isEqualToString:@"iFaceTimePassword"];
 
                 if (v35)
                 {
-                  objc_storeStrong(&self->_faceTimePasswordTextField, v14);
+                  objc_storeStrong(&self->_faceTimePasswordTextField, editableTextField);
                   [(UITextField *)self->_faceTimePasswordTextField setDelegate:self];
                   if (self->_faceTimePasswordTextFieldTextDidChangeObserver)
                   {
                     v36 = +[NSNotificationCenter defaultCenter];
-                    [v36 removeObserver:self->_faceTimePasswordTextFieldTextDidChangeObserver name:UITextFieldTextDidChangeNotification object:v14];
+                    [v36 removeObserver:self->_faceTimePasswordTextFieldTextDidChangeObserver name:UITextFieldTextDidChangeNotification object:editableTextField];
                   }
 
                   objc_initWeak(&location, self);
@@ -1803,29 +1803,29 @@ LABEL_17:
                   v49[2] = sub_1000382AC;
                   v49[3] = &unk_100268E70;
                   objc_copyWeak(&v50, &location);
-                  v38 = [v37 addObserverForName:UITextFieldTextDidChangeNotification object:v14 queue:0 usingBlock:v49];
+                  v38 = [v37 addObserverForName:UITextFieldTextDidChangeNotification object:editableTextField queue:0 usingBlock:v49];
                   faceTimePasswordTextFieldTextDidChangeObserver = self->_faceTimePasswordTextFieldTextDidChangeObserver;
                   self->_faceTimePasswordTextFieldTextDidChangeObserver = v38;
 
-                  [v14 setReturnKeyType:9];
+                  [editableTextField setReturnKeyType:9];
                 }
 
                 else
                 {
-                  v40 = [v9 identifier];
-                  v41 = [v40 isEqualToString:@"iTunesStorePasswordCell"];
+                  identifier7 = [specifier identifier];
+                  v41 = [identifier7 isEqualToString:@"iTunesStorePasswordCell"];
 
                   if (!v41)
                   {
                     goto LABEL_9;
                   }
 
-                  objc_storeStrong(&self->_iTunesStorePasswordTextField, v14);
+                  objc_storeStrong(&self->_iTunesStorePasswordTextField, editableTextField);
                   [(UITextField *)self->_iTunesStorePasswordTextField setDelegate:self];
                   if (self->_iTunesStorePasswordTextFieldTextDidChangeObserver)
                   {
                     v42 = +[NSNotificationCenter defaultCenter];
-                    [v42 removeObserver:self->_iTunesStorePasswordTextFieldTextDidChangeObserver name:UITextFieldTextDidChangeNotification object:v14];
+                    [v42 removeObserver:self->_iTunesStorePasswordTextFieldTextDidChangeObserver name:UITextFieldTextDidChangeNotification object:editableTextField];
                   }
 
                   objc_initWeak(&location, self);
@@ -1836,11 +1836,11 @@ LABEL_17:
                   v47[2] = sub_100038308;
                   v47[3] = &unk_100268E70;
                   objc_copyWeak(&v48, &location);
-                  v44 = [v43 addObserverForName:UITextFieldTextDidChangeNotification object:v14 queue:0 usingBlock:v47];
+                  v44 = [v43 addObserverForName:UITextFieldTextDidChangeNotification object:editableTextField queue:0 usingBlock:v47];
                   iTunesStorePasswordTextFieldTextDidChangeObserver = self->_iTunesStorePasswordTextFieldTextDidChangeObserver;
                   self->_iTunesStorePasswordTextFieldTextDidChangeObserver = v44;
 
-                  [v14 setReturnKeyType:9];
+                  [editableTextField setReturnKeyType:9];
                 }
               }
             }
@@ -1852,16 +1852,16 @@ LABEL_17:
           }
 
 LABEL_8:
-          v14 = [v10 editableTextField];
+          editableTextField = [v10 editableTextField];
           v15 = BPSDetailTextColor();
-          [v14 setTextColor:v15];
+          [editableTextField setTextColor:v15];
 
-          [v14 setAdjustsFontSizeToFitWidth:1];
-          [v14 setMinimumFontSize:1.0];
-          v16 = [v10 titleLabel];
-          [v16 setEnabled:1];
+          [editableTextField setAdjustsFontSizeToFitWidth:1];
+          [editableTextField setMinimumFontSize:1.0];
+          titleLabel = [v10 titleLabel];
+          [titleLabel setEnabled:1];
           v17 = BPSTextColor();
-          [v16 setTextColor:v17];
+          [titleLabel setTextColor:v17];
 
 LABEL_9:
           goto LABEL_10;
@@ -1877,30 +1877,30 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  [(UITextField *)v4 resignFirstResponder];
-  v5 = [(UITextField *)v4 text];
-  v6 = v5;
-  if (v5 && ([v5 isEqualToString:&stru_10026E598] & 1) == 0)
+  returnCopy = return;
+  [(UITextField *)returnCopy resignFirstResponder];
+  text = [(UITextField *)returnCopy text];
+  v6 = text;
+  if (text && ([text isEqualToString:&stru_10026E598] & 1) == 0)
   {
-    if (self->_iCloudPasswordTextField == v4)
+    if (self->_iCloudPasswordTextField == returnCopy)
     {
       [(COSAppleIDController *)self tappedSignInToiCloud];
     }
 
-    else if (self->_iMessagePasswordTextField == v4)
+    else if (self->_iMessagePasswordTextField == returnCopy)
     {
       [(COSAppleIDController *)self tappedSignInToiMessage];
     }
 
-    else if (self->_faceTimePasswordTextField == v4)
+    else if (self->_faceTimePasswordTextField == returnCopy)
     {
       [(COSAppleIDController *)self tappedSignInToFaceTime];
     }
 
-    else if (self->_iTunesStorePasswordTextField == v4)
+    else if (self->_iTunesStorePasswordTextField == returnCopy)
     {
       [(COSAppleIDController *)self tappedSignInToiTunesStore];
     }
@@ -1909,31 +1909,31 @@ LABEL_10:
   return 1;
 }
 
-- (void)appleIDAuthController:(id)a3 didSignInWithSuccess:(BOOL)a4 error:(id)a5
+- (void)appleIDAuthController:(id)controller didSignInWithSuccess:(BOOL)success error:(id)error
 {
-  v18 = a3;
-  v8 = a5;
+  controllerCopy = controller;
+  errorCopy = error;
   [(COSAppleIDAuthController *)self->_authController setDelegate:0];
   authController = self->_authController;
   self->_authController = 0;
 
   [(COSAppleIDController *)self stopNetworkRequest];
   [(COSAppleIDController *)self enableSignInButtons:1];
-  if (a4)
+  if (success)
   {
     goto LABEL_2;
   }
 
-  v11 = [v8 domain];
-  if ([v11 isEqualToString:@"com.apple.appleaccount"])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"com.apple.appleaccount"])
   {
-    v12 = [v8 code];
+    code = [errorCopy code];
 
-    if (v12 == -6)
+    if (code == -6)
     {
 LABEL_2:
-      v10 = [v18 account];
-      [(COSAppleIDController *)self loggedInSuccessfullyToAccount:v10];
+      account = [controllerCopy account];
+      [(COSAppleIDController *)self loggedInSuccessfullyToAccount:account];
 
       goto LABEL_33;
     }
@@ -1958,7 +1958,7 @@ LABEL_2:
     {
       if ((!self->_signingInToFaceTime || self->_facetimeInteractiveAuthRequired) && (!self->_signingInToiTunesStore || self->_iTunesInteractiveAuthRequired))
       {
-        [COSAppleIDLoginViewController showAlertForLoginFailureWithError:v8 presentingViewController:self];
+        [COSAppleIDLoginViewController showAlertForLoginFailureWithError:errorCopy presentingViewController:self];
         goto LABEL_33;
       }
 

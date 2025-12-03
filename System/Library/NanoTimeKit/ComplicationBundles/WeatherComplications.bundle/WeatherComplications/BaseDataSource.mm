@@ -1,13 +1,13 @@
 @interface BaseDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
 + (NSString)appIdentifier;
 + (NSString)localizedAppName;
 + (NSString)localizedComplicationName;
 - (_TtC20WeatherComplications14BaseDataSource)init;
 - (id)currentSwitcherTemplate;
 - (id)sampleTemplate;
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5;
-- (void)getTimelineEntriesAfterDate:(id)a3 limit:(int64_t)a4 withHandler:(id)a5;
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler;
+- (void)getTimelineEntriesAfterDate:(id)date limit:(int64_t)limit withHandler:(id)handler;
 @end
 
 @implementation BaseDataSource
@@ -35,13 +35,13 @@
   return v3;
 }
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
   v6 = (*(ObjCClassMetadata + 296))();
-  LOBYTE(a3) = sub_23BDA8A20(a3, v6);
+  LOBYTE(family) = sub_23BDA8A20(family, v6);
 
-  return a3 & 1;
+  return family & 1;
 }
 
 + (NSString)localizedComplicationName
@@ -63,12 +63,12 @@
 
 - (id)currentSwitcherTemplate
 {
-  v2 = [(BaseDataSource *)self sampleTemplate];
+  sampleTemplate = [(BaseDataSource *)self sampleTemplate];
 
-  return v2;
+  return sampleTemplate;
 }
 
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler
 {
   v6 = sub_23BD9628C(&qword_27E1C5958, &unk_23BDC8E10);
   v7 = *(*(v6 - 8) + 64);
@@ -80,7 +80,7 @@
   MEMORY[0x28223BE20](v10);
   v14 = &v16 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_23BDC5FF0();
-  if (a4)
+  if (travelDate)
   {
     sub_23BDC5FF0();
     v15 = 0;
@@ -96,18 +96,18 @@
   sub_23BD962D4(v9, &qword_27E1C5958, &unk_23BDC8E10);
 }
 
-- (void)getTimelineEntriesAfterDate:(id)a3 limit:(int64_t)a4 withHandler:(id)a5
+- (void)getTimelineEntriesAfterDate:(id)date limit:(int64_t)limit withHandler:(id)handler
 {
   v7 = sub_23BDC6010();
   v8 = *(v7 - 8);
   v9 = *(v8 + 64);
   MEMORY[0x28223BE20](v7);
   v11 = &v14 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   sub_23BDC5FF0();
   _Block_copy(v12);
-  v13 = self;
-  sub_23BDB5B84(v11, v13, v12);
+  selfCopy = self;
+  sub_23BDB5B84(v11, selfCopy, v12);
   _Block_release(v12);
   _Block_release(v12);
 
@@ -121,13 +121,13 @@
   v5 = *(v4 + 64);
   MEMORY[0x28223BE20](v3);
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   sub_23BDC6000();
-  (*((*MEMORY[0x277D85000] & v8->super.super.super.isa) + 0x120))(v7);
+  (*((*MEMORY[0x277D85000] & selfCopy->super.super.super.isa) + 0x120))(v7);
   v10 = v9;
   (*(v4 + 8))(v7, v3);
   ObjectType = swift_getObjectType();
-  v12 = (*(v10 + 48))([(CLKCComplicationDataSource *)v8 family], ObjectType, v10);
+  v12 = (*(v10 + 48))([(CLKCComplicationDataSource *)selfCopy family], ObjectType, v10);
   [v12 finalize];
 
   swift_unknownObjectRelease();

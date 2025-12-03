@@ -1,12 +1,12 @@
 @interface CUKalmanConfiguration
 + (id)bluetoothRSSIConfiguration;
 + (id)defaultConfiguration;
-- (CUKalmanConfiguration)initWithParamR:(double)a3 paramQ:(double)a4 paramA:(double)a5 paramB:(double)a6 paramC:(double)a7;
+- (CUKalmanConfiguration)initWithParamR:(double)r paramQ:(double)q paramA:(double)a paramB:(double)b paramC:(double)c;
 @end
 
 @implementation CUKalmanConfiguration
 
-- (CUKalmanConfiguration)initWithParamR:(double)a3 paramQ:(double)a4 paramA:(double)a5 paramB:(double)a6 paramC:(double)a7
+- (CUKalmanConfiguration)initWithParamR:(double)r paramQ:(double)q paramA:(double)a paramB:(double)b paramC:(double)c
 {
   v16.receiver = self;
   v16.super_class = CUKalmanConfiguration;
@@ -14,11 +14,11 @@
   v13 = v12;
   if (v12)
   {
-    v12->_paramR = a3;
-    v12->_paramQ = a4;
-    v12->_paramA = a5;
-    v12->_paramB = a6;
-    v12->_paramC = a7;
+    v12->_paramR = r;
+    v12->_paramQ = q;
+    v12->_paramA = a;
+    v12->_paramB = b;
+    v12->_paramC = c;
     v14 = v12;
   }
 

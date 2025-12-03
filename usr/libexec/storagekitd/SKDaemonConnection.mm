@@ -1,36 +1,36 @@
 @interface SKDaemonConnection
-+ (int64_t)checkPrivilegeLevelWithConnection:(id)a3;
++ (int64_t)checkPrivilegeLevelWithConnection:(id)connection;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
 - (BOOL)authorizeRequestForRoot;
-- (BOOL)chownFileAtURL:(id)a3 error:(id *)a4;
-- (BOOL)preflightRequestWithSKDisk:(id)a3 entitlementLevel:(int64_t)a4 completionUUID:(id)a5 prettyFunc:(const char *)a6 authorizationNeeded:(BOOL)a7;
-- (SKDaemonConnection)initWithConnection:(id)a3;
-- (id)_safe_object:(id)a3;
-- (id)eraseWithEraser:(id)a3 reply:(id)a4;
-- (id)preflightRequestWithDiskDict:(id)a3 entitlementLevel:(int64_t)a4 completionUUID:(id)a5 prettyFunc:(const char *)a6 requireRoot:(BOOL)a7 failResGenFunc:(id)a8;
-- (id)preflightRequestWithDiskDict:(id)a3 entitlementLevel:(int64_t)a4 prettyFunc:(const char *)a5;
-- (id)preflightRequestWithDisksArr:(id)a3 entitlementLevel:(int64_t)a4 completionUUID:(id)a5 prettyFunc:(const char *)a6 requireRootForInternal:(BOOL)a7 failResGenFunc:(id)a8;
-- (id)resizeDisk:(id)a3 size:(unint64_t)a4 reply:(id)a5;
-- (void)childDisksForWholeDisk:(id)a3 withCompletionUUID:(id)a4;
-- (void)ejectDisk:(id)a3 withCompletionUUID:(id)a4;
-- (void)filesystemsWithCallbackBlock:(id)a3;
-- (void)isBusyWithCompletionUUID:(id)a3;
-- (void)mountDisk:(id)a3 options:(id)a4 withCompletionUUID:(id)a5;
-- (void)physicalStoresForAPFSVolume:(id)a3 withCompletionUUID:(id)a4;
-- (void)recacheDisk:(id)a3 options:(unint64_t)a4 withCompletionUUID:(id)a5;
-- (void)renameDisk:(id)a3 to:(id)a4 withCompletionUUID:(id)a5;
-- (void)syncAllDisksWithCompletionBlock:(id)a3;
-- (void)syncAllDisksWithCompletionUUID:(id)a3;
-- (void)unmountDisk:(id)a3 options:(id)a4 withCompletionUUID:(id)a5;
-- (void)volumesForAPFSPS:(id)a3 withCompletionUUID:(id)a4;
-- (void)wholeDiskForDiskDictionary:(id)a3 withCompletionUUID:(id)a4;
+- (BOOL)chownFileAtURL:(id)l error:(id *)error;
+- (BOOL)preflightRequestWithSKDisk:(id)disk entitlementLevel:(int64_t)level completionUUID:(id)d prettyFunc:(const char *)func authorizationNeeded:(BOOL)needed;
+- (SKDaemonConnection)initWithConnection:(id)connection;
+- (id)_safe_object:(id)_safe_object;
+- (id)eraseWithEraser:(id)eraser reply:(id)reply;
+- (id)preflightRequestWithDiskDict:(id)dict entitlementLevel:(int64_t)level completionUUID:(id)d prettyFunc:(const char *)func requireRoot:(BOOL)root failResGenFunc:(id)genFunc;
+- (id)preflightRequestWithDiskDict:(id)dict entitlementLevel:(int64_t)level prettyFunc:(const char *)func;
+- (id)preflightRequestWithDisksArr:(id)arr entitlementLevel:(int64_t)level completionUUID:(id)d prettyFunc:(const char *)func requireRootForInternal:(BOOL)internal failResGenFunc:(id)genFunc;
+- (id)resizeDisk:(id)disk size:(unint64_t)size reply:(id)reply;
+- (void)childDisksForWholeDisk:(id)disk withCompletionUUID:(id)d;
+- (void)ejectDisk:(id)disk withCompletionUUID:(id)d;
+- (void)filesystemsWithCallbackBlock:(id)block;
+- (void)isBusyWithCompletionUUID:(id)d;
+- (void)mountDisk:(id)disk options:(id)options withCompletionUUID:(id)d;
+- (void)physicalStoresForAPFSVolume:(id)volume withCompletionUUID:(id)d;
+- (void)recacheDisk:(id)disk options:(unint64_t)options withCompletionUUID:(id)d;
+- (void)renameDisk:(id)disk to:(id)to withCompletionUUID:(id)d;
+- (void)syncAllDisksWithCompletionBlock:(id)block;
+- (void)syncAllDisksWithCompletionUUID:(id)d;
+- (void)unmountDisk:(id)disk options:(id)options withCompletionUUID:(id)d;
+- (void)volumesForAPFSPS:(id)s withCompletionUUID:(id)d;
+- (void)wholeDiskForDiskDictionary:(id)dictionary withCompletionUUID:(id)d;
 @end
 
 @implementation SKDaemonConnection
 
-+ (int64_t)checkPrivilegeLevelWithConnection:(id)a3
++ (int64_t)checkPrivilegeLevelWithConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = sub_10000BFD0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -38,7 +38,7 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "A SK client wants to connect", v14, 2u);
   }
 
-  if ([v3 BOOLValueForEntitlement:off_1000590A8])
+  if ([connectionCopy BOOLValueForEntitlement:off_1000590A8])
   {
     v5 = sub_10000BFD0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -51,7 +51,7 @@
     goto LABEL_7;
   }
 
-  if ([v3 BOOLValueForEntitlement:off_1000590A0])
+  if ([connectionCopy BOOLValueForEntitlement:off_1000590A0])
   {
     v5 = sub_10000BFD0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -69,9 +69,9 @@
     goto LABEL_7;
   }
 
-  if (![v3 BOOLValueForEntitlement:off_100059098])
+  if (![connectionCopy BOOLValueForEntitlement:off_100059098])
   {
-    v8 = [v3 BOOLValueForEntitlement:off_100059090];
+    v8 = [connectionCopy BOOLValueForEntitlement:off_100059090];
     v5 = sub_10000BFD0();
     v9 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
     if (v8)
@@ -89,9 +89,9 @@ LABEL_21:
 
     else if (v9)
     {
-      v13 = [v3 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       v14[0] = 67109120;
-      v14[1] = v13;
+      v14[1] = processIdentifier;
       v10 = "Client (%d) not entitiled, applying default level (information)";
       v11 = v5;
       v12 = 8;
@@ -115,9 +115,9 @@ LABEL_7:
   return v6;
 }
 
-- (SKDaemonConnection)initWithConnection:(id)a3
+- (SKDaemonConnection)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v17.receiver = self;
   v17.super_class = SKDaemonConnection;
   v5 = [(SKDaemonConnection *)&v17 init];
@@ -128,11 +128,11 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v6 = [SKDaemonConnection checkPrivilegeLevelWithConnection:v4];
+  v6 = [SKDaemonConnection checkPrivilegeLevelWithConnection:connectionCopy];
   *(v5 + 4) = v6;
   if (v6 != -1)
   {
-    if ([v4 BOOLValueForEntitlement:off_1000590B0])
+    if ([connectionCopy BOOLValueForEntitlement:off_1000590B0])
     {
       v7 = sub_10000BFD0();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -145,14 +145,14 @@ LABEL_14:
     }
 
     v8 = sub_100001228();
-    [v4 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
-    [v4 setExportedObject:v5];
-    *(v5 + 5) = [v4 effectiveUserIdentifier];
-    *(v5 + 6) = [v4 effectiveGroupIdentifier];
-    if (v4)
+    [connectionCopy setExportedObject:v5];
+    *(v5 + 5) = [connectionCopy effectiveUserIdentifier];
+    *(v5 + 6) = [connectionCopy effectiveGroupIdentifier];
+    if (connectionCopy)
     {
-      [v4 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -164,20 +164,20 @@ LABEL_14:
     *(v5 + 40) = *buf;
     *(v5 + 56) = v10;
     v11 = sub_1000013D4();
-    [v4 setRemoteObjectInterface:v11];
+    [connectionCopy setRemoteObjectInterface:v11];
 
-    v12 = [v4 remoteObjectProxyWithErrorHandler:&stru_100048EC0];
+    v12 = [connectionCopy remoteObjectProxyWithErrorHandler:&stru_100048EC0];
     v13 = *(v5 + 1);
     *(v5 + 1) = v12;
 
     v14 = sub_10000BFD0();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v4 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       *buf = 136315394;
       *&buf[4] = "[SKDaemonConnection initWithConnection:]";
       *&buf[12] = 1024;
-      *&buf[14] = v15;
+      *&buf[14] = processIdentifier;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s: Connected via XPC from pid %d", buf, 0x12u);
     }
 
@@ -203,11 +203,11 @@ LABEL_15:
   return 0;
 }
 
-- (BOOL)preflightRequestWithSKDisk:(id)a3 entitlementLevel:(int64_t)a4 completionUUID:(id)a5 prettyFunc:(const char *)a6 authorizationNeeded:(BOOL)a7
+- (BOOL)preflightRequestWithSKDisk:(id)disk entitlementLevel:(int64_t)level completionUUID:(id)d prettyFunc:(const char *)func authorizationNeeded:(BOOL)needed
 {
-  v11 = a3;
-  v12 = a5;
-  if (!v11)
+  diskCopy = disk;
+  dCopy = d;
+  if (!diskCopy)
   {
     v14 = sub_10000BFD0();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -224,22 +224,22 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v13 = [(SKDaemonConnection *)self privilege];
-  if ([v11 isExternal] && -[SKDaemonConnection privilege](self, "privilege") == 2)
+  privilege = [(SKDaemonConnection *)self privilege];
+  if ([diskCopy isExternal] && -[SKDaemonConnection privilege](self, "privilege") == 2)
   {
-    v13 = 3;
+    privilege = 3;
   }
 
-  if (v13 < a4)
+  if (privilege < level)
   {
     v14 = sub_10000BFD0();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (v12)
+    if (dCopy)
     {
       if (v15)
       {
         *buf = 138543362;
-        v26 = v12;
+        funcCopy = dCopy;
         v16 = "Missing entitlement, request denied for UUID: %{public}@.";
 LABEL_14:
         v17 = v14;
@@ -251,7 +251,7 @@ LABEL_14:
     else if (v15)
     {
       *buf = 136446210;
-      v26 = a6;
+      funcCopy = func;
       v16 = "Missing entitlement, request denied for API: %{public}s.";
       goto LABEL_14;
     }
@@ -266,8 +266,8 @@ LABEL_16:
   v22[1] = 3221225472;
   v22[2] = sub_10000D268;
   v22[3] = &unk_100048EE8;
-  v24 = a6;
-  v23 = v11;
+  funcCopy2 = func;
+  v23 = diskCopy;
   [v19 logEvent:@"com.apple.StorageKit.storagekitd.usage" eventPayloadBuilder:v22];
 
   v20 = 1;
@@ -277,23 +277,23 @@ LABEL_17:
   return v20;
 }
 
-- (id)preflightRequestWithDiskDict:(id)a3 entitlementLevel:(int64_t)a4 prettyFunc:(const char *)a5
+- (id)preflightRequestWithDiskDict:(id)dict entitlementLevel:(int64_t)level prettyFunc:(const char *)func
 {
-  v8 = a3;
+  dictCopy = dict;
   v9 = sub_10000BFD0();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412546;
-    v16 = v8;
+    v16 = dictCopy;
     v17 = 2080;
-    v18 = a5;
+    funcCopy = func;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Preflight for %@ at %s", &v15, 0x16u);
   }
 
   v10 = +[SKDaemonManager sharedManager];
-  v11 = [v10 knownDiskForDictionary:v8];
+  v11 = [v10 knownDiskForDictionary:dictCopy];
 
-  v12 = [(SKDaemonConnection *)self preflightRequestWithSKDisk:v11 entitlementLevel:a4 completionUUID:0 prettyFunc:a5 authorizationNeeded:1];
+  v12 = [(SKDaemonConnection *)self preflightRequestWithSKDisk:v11 entitlementLevel:level completionUUID:0 prettyFunc:func authorizationNeeded:1];
   v13 = 0;
   if (v12)
   {
@@ -303,62 +303,62 @@ LABEL_17:
   return v13;
 }
 
-- (id)preflightRequestWithDiskDict:(id)a3 entitlementLevel:(int64_t)a4 completionUUID:(id)a5 prettyFunc:(const char *)a6 requireRoot:(BOOL)a7 failResGenFunc:(id)a8
+- (id)preflightRequestWithDiskDict:(id)dict entitlementLevel:(int64_t)level completionUUID:(id)d prettyFunc:(const char *)func requireRoot:(BOOL)root failResGenFunc:(id)genFunc
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a5;
-  v16 = a8;
-  if (v9 && ![(SKDaemonConnection *)self authorizeRequestForRoot])
+  rootCopy = root;
+  dictCopy = dict;
+  dCopy = d;
+  genFuncCopy = genFunc;
+  if (rootCopy && ![(SKDaemonConnection *)self authorizeRequestForRoot])
   {
     progressHandler = self->_progressHandler;
-    v19 = v16[2](v16);
-    [(SKHelperClientProtocol *)progressHandler requestWithUUID:v15 didCompleteWithResult:v19];
+    v19 = genFuncCopy[2](genFuncCopy);
+    [(SKHelperClientProtocol *)progressHandler requestWithUUID:dCopy didCompleteWithResult:v19];
 
     v17 = 0;
   }
 
   else
   {
-    v17 = [(SKDaemonConnection *)self preflightRequestWithDiskDict:v14 entitlementLevel:a4 completionUUID:v15 prettyFunc:a6 authorizationNeeded:!v9 failResGenFunc:v16];
+    v17 = [(SKDaemonConnection *)self preflightRequestWithDiskDict:dictCopy entitlementLevel:level completionUUID:dCopy prettyFunc:func authorizationNeeded:!rootCopy failResGenFunc:genFuncCopy];
   }
 
   return v17;
 }
 
-- (id)preflightRequestWithDisksArr:(id)a3 entitlementLevel:(int64_t)a4 completionUUID:(id)a5 prettyFunc:(const char *)a6 requireRootForInternal:(BOOL)a7 failResGenFunc:(id)a8
+- (id)preflightRequestWithDisksArr:(id)arr entitlementLevel:(int64_t)level completionUUID:(id)d prettyFunc:(const char *)func requireRootForInternal:(BOOL)internal failResGenFunc:(id)genFunc
 {
-  v33 = a7;
-  v10 = a3;
-  v11 = a5;
-  v12 = a8;
+  internalCopy = internal;
+  arrCopy = arr;
+  dCopy = d;
+  genFuncCopy = genFunc;
   v13 = sub_10000BFD0();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v42 = v10;
+    v42 = arrCopy;
     v43 = 2080;
-    v44 = a6;
+    funcCopy = func;
     v45 = 2114;
-    v46 = v11;
+    v46 = dCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Preflight for %@ at %s with UUID: %{public}@", buf, 0x20u);
   }
 
-  v14 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
+  v14 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [arrCopy count]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v15 = v10;
+  v15 = arrCopy;
   v16 = [v15 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v16)
   {
     v17 = v16;
     v18 = 0;
     v19 = *v37;
-    v31 = v12;
+    v31 = genFuncCopy;
 LABEL_5:
-    v20 = v11;
+    v20 = dCopy;
     v21 = 0;
     while (1)
     {
@@ -382,9 +382,9 @@ LABEL_5:
 
 LABEL_24:
         progressHandler = self->_progressHandler;
-        v12 = v31;
+        genFuncCopy = v31;
         v29 = v31[2](v31);
-        v11 = v20;
+        dCopy = v20;
         [(SKHelperClientProtocol *)progressHandler requestWithUUID:v20 didCompleteWithResult:v29];
 
         v26 = 0;
@@ -393,9 +393,9 @@ LABEL_24:
 
       if ((v18 & 1) == 0)
       {
-        if (!v33)
+        if (!internalCopy)
         {
-          if (![(SKDaemonConnection *)self preflightRequestWithSKDisk:v24 entitlementLevel:a4 completionUUID:v20 prettyFunc:a6 authorizationNeeded:1])
+          if (![(SKDaemonConnection *)self preflightRequestWithSKDisk:v24 entitlementLevel:level completionUUID:v20 prettyFunc:func authorizationNeeded:1])
           {
             goto LABEL_24;
           }
@@ -405,13 +405,13 @@ LABEL_17:
           goto LABEL_18;
         }
 
-        v25 = [v24 isTrusted];
-        if (![(SKDaemonConnection *)self preflightRequestWithSKDisk:v24 entitlementLevel:a4 completionUUID:v20 prettyFunc:a6 authorizationNeeded:v25 ^ 1])
+        isTrusted = [v24 isTrusted];
+        if (![(SKDaemonConnection *)self preflightRequestWithSKDisk:v24 entitlementLevel:level completionUUID:v20 prettyFunc:func authorizationNeeded:isTrusted ^ 1])
         {
           goto LABEL_24;
         }
 
-        if (!v25)
+        if (!isTrusted)
         {
           goto LABEL_17;
         }
@@ -429,8 +429,8 @@ LABEL_18:
       if (v17 == ++v21)
       {
         v17 = [v15 countByEnumeratingWithState:&v36 objects:v40 count:16];
-        v11 = v20;
-        v12 = v31;
+        dCopy = v20;
+        genFuncCopy = v31;
         if (v17)
         {
           goto LABEL_5;
@@ -447,9 +447,9 @@ LABEL_25:
   return v26;
 }
 
-- (void)syncAllDisksWithCompletionBlock:(id)a3
+- (void)syncAllDisksWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = sub_10000BFD0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -464,14 +464,14 @@ LABEL_25:
   v8[1] = 3221225472;
   v8[2] = sub_10000DD50;
   v8[3] = &unk_100048F10;
-  v9 = v4;
-  v7 = v4;
+  v9 = blockCopy;
+  v7 = blockCopy;
   [v6 syncAllDisksWithCompletionBlock:v8];
 }
 
-- (void)syncAllDisksWithCompletionUUID:(id)a3
+- (void)syncAllDisksWithCompletionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = sub_10000BFD0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -486,79 +486,79 @@ LABEL_25:
   v8[2] = sub_10000DE64;
   v8[3] = &unk_100048F38;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = dCopy;
+  v7 = dCopy;
   [v6 syncAllDisksWithCompletionBlock:v8];
 }
 
-- (void)wholeDiskForDiskDictionary:(id)a3 withCompletionUUID:(id)a4
+- (void)wholeDiskForDiskDictionary:(id)dictionary withCompletionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  dCopy = d;
   v8 = sub_10000BFD0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v16 = v6;
+    v16 = dictionaryCopy;
     v17 = 2080;
     v18 = "[SKDaemonConnection wholeDiskForDiskDictionary:withCompletionUUID:]";
     v19 = 2114;
-    v20 = v7;
+    v20 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Preflight for %@ at %s with UUID: %{public}@", buf, 0x20u);
   }
 
   v9 = +[SKDaemonManager sharedManager];
   v10 = +[SKDaemonManager sharedManager];
-  v11 = [v10 knownDiskForDictionary:v6];
+  v11 = [v10 knownDiskForDictionary:dictionaryCopy];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000E010;
   v13[3] = &unk_100048F60;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
+  v14 = dCopy;
+  v12 = dCopy;
   [v9 wholeDiskForDisk:v11 withCallbackBlock:v13];
 }
 
-- (void)childDisksForWholeDisk:(id)a3 withCompletionUUID:(id)a4
+- (void)childDisksForWholeDisk:(id)disk withCompletionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  diskCopy = disk;
+  dCopy = d;
   v8 = sub_10000BFD0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v16 = v6;
+    v16 = diskCopy;
     v17 = 2080;
     v18 = "[SKDaemonConnection childDisksForWholeDisk:withCompletionUUID:]";
     v19 = 2114;
-    v20 = v7;
+    v20 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Preflight for %@ at %s with UUID: %{public}@", buf, 0x20u);
   }
 
   v9 = +[SKDaemonManager sharedManager];
   v10 = +[SKDaemonManager sharedManager];
-  v11 = [v10 knownDiskForDictionary:v6];
+  v11 = [v10 knownDiskForDictionary:diskCopy];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000E268;
   v13[3] = &unk_100048F88;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
+  v14 = dCopy;
+  v12 = dCopy;
   [v9 childDisksForWholeDisk:v11 withCallbackBlock:v13];
 }
 
-- (void)isBusyWithCompletionUUID:(id)a3
+- (void)isBusyWithCompletionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = sub_10000BFD0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v11 = "[SKDaemonConnection isBusyWithCompletionUUID:]";
     v12 = 2114;
-    v13 = v4;
+    v13 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Preflight at %s with UUID: %{public}@", buf, 0x16u);
   }
 
@@ -568,44 +568,44 @@ LABEL_25:
   v8[2] = sub_10000E528;
   v8[3] = &unk_100048FB0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = dCopy;
+  v7 = dCopy;
   [v6 isBusy:v8];
 }
 
-- (void)recacheDisk:(id)a3 options:(unint64_t)a4 withCompletionUUID:(id)a5
+- (void)recacheDisk:(id)disk options:(unint64_t)options withCompletionUUID:(id)d
 {
-  v8 = a3;
-  v9 = a5;
+  diskCopy = disk;
+  dCopy = d;
   v10 = sub_10000BFD0();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v18 = v8;
+    v18 = diskCopy;
     v19 = 2080;
     v20 = "[SKDaemonConnection recacheDisk:options:withCompletionUUID:]";
     v21 = 2114;
-    v22 = v9;
+    v22 = dCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Preflight for %@ at %s with UUID: %{public}@", buf, 0x20u);
   }
 
   [(SKDaemonConnection *)self validateAuthRef];
   v11 = +[SKDaemonManager sharedManager];
   v12 = +[SKDaemonManager sharedManager];
-  v13 = [v12 knownDiskForDictionary:v8];
+  v13 = [v12 knownDiskForDictionary:diskCopy];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000E784;
   v15[3] = &unk_100048F38;
   v15[4] = self;
-  v16 = v9;
-  v14 = v9;
-  [v11 recacheDisk:v13 options:a4 callbackBlock:v15];
+  v16 = dCopy;
+  v14 = dCopy;
+  [v11 recacheDisk:v13 options:options callbackBlock:v15];
 }
 
-- (void)filesystemsWithCallbackBlock:(id)a3
+- (void)filesystemsWithCallbackBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = sub_10000BFD0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -619,74 +619,74 @@ LABEL_25:
   v7[1] = 3221225472;
   v7[2] = sub_10000E8C8;
   v7[3] = &unk_100048FD8;
-  v8 = v3;
-  v6 = v3;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [v5 filesystemsWithCallbackBlock:v7];
 }
 
-- (void)physicalStoresForAPFSVolume:(id)a3 withCompletionUUID:(id)a4
+- (void)physicalStoresForAPFSVolume:(id)volume withCompletionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  volumeCopy = volume;
+  dCopy = d;
   v8 = sub_10000BFD0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v16 = v6;
+    v16 = volumeCopy;
     v17 = 2080;
     v18 = "[SKDaemonConnection physicalStoresForAPFSVolume:withCompletionUUID:]";
     v19 = 2114;
-    v20 = v7;
+    v20 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Preflight for %@ at %s with UUID: %{public}@", buf, 0x20u);
   }
 
   v9 = +[SKDaemonManager sharedManager];
   v10 = +[SKDaemonManager sharedManager];
-  v11 = [v10 knownDiskForDictionary:v6];
+  v11 = [v10 knownDiskForDictionary:volumeCopy];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000EA70;
   v13[3] = &unk_100048F88;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
+  v14 = dCopy;
+  v12 = dCopy;
   [v9 physicalStoresForAPFSVolume:v11 completionBlock:v13];
 }
 
-- (void)volumesForAPFSPS:(id)a3 withCompletionUUID:(id)a4
+- (void)volumesForAPFSPS:(id)s withCompletionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  sCopy = s;
+  dCopy = d;
   v8 = sub_10000BFD0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v16 = v6;
+    v16 = sCopy;
     v17 = 2080;
     v18 = "[SKDaemonConnection volumesForAPFSPS:withCompletionUUID:]";
     v19 = 2114;
-    v20 = v7;
+    v20 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Preflight for %@ at %s with UUID: %{public}@", buf, 0x20u);
   }
 
   v9 = +[SKDaemonManager sharedManager];
   v10 = +[SKDaemonManager sharedManager];
-  v11 = [v10 knownDiskForDictionary:v6];
+  v11 = [v10 knownDiskForDictionary:sCopy];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000ED94;
   v13[3] = &unk_100048F88;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
+  v14 = dCopy;
+  v12 = dCopy;
   [v9 volumesForAPFSPS:v11 completionBlock:v13];
 }
 
-- (void)renameDisk:(id)a3 to:(id)a4 withCompletionUUID:(id)a5
+- (void)renameDisk:(id)disk to:(id)to withCompletionUUID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SKDaemonConnection *)self preflightRequestWithDiskDict:a3 entitlementLevel:1 completionUUID:v9 prettyFunc:"[SKDaemonConnection renameDisk:to:withCompletionUUID:]" failResGenFunc:&stru_100049018];
+  toCopy = to;
+  dCopy = d;
+  v10 = [(SKDaemonConnection *)self preflightRequestWithDiskDict:disk entitlementLevel:1 completionUUID:dCopy prettyFunc:"[SKDaemonConnection renameDisk:to:withCompletionUUID:]" failResGenFunc:&stru_100049018];
   if (v10)
   {
     v11 = +[SKDaemonManager sharedManager];
@@ -695,16 +695,16 @@ LABEL_25:
     v12[2] = sub_10000F0D4;
     v12[3] = &unk_100049040;
     v12[4] = self;
-    v13 = v9;
-    [v11 renameDisk:v10 to:v8 withCompletionBlock:v12];
+    v13 = dCopy;
+    [v11 renameDisk:v10 to:toCopy withCompletionBlock:v12];
   }
 }
 
-- (void)unmountDisk:(id)a3 options:(id)a4 withCompletionUUID:(id)a5
+- (void)unmountDisk:(id)disk options:(id)options withCompletionUUID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SKDaemonConnection *)self preflightRequestWithDiskDict:a3 entitlementLevel:1 completionUUID:v9 prettyFunc:"[SKDaemonConnection unmountDisk:options:withCompletionUUID:]" failResGenFunc:&stru_100049060];
+  optionsCopy = options;
+  dCopy = d;
+  v10 = [(SKDaemonConnection *)self preflightRequestWithDiskDict:disk entitlementLevel:1 completionUUID:dCopy prettyFunc:"[SKDaemonConnection unmountDisk:options:withCompletionUUID:]" failResGenFunc:&stru_100049060];
   if (v10)
   {
     v11 = +[SKDaemonManager sharedManager];
@@ -713,28 +713,28 @@ LABEL_25:
     v12[2] = sub_10000F334;
     v12[3] = &unk_100049040;
     v12[4] = self;
-    v13 = v9;
-    [v11 unmountDisk:v10 options:v8 withCompletionBlock:v12];
+    v13 = dCopy;
+    [v11 unmountDisk:v10 options:optionsCopy withCompletionBlock:v12];
   }
 }
 
-- (void)mountDisk:(id)a3 options:(id)a4 withCompletionUUID:(id)a5
+- (void)mountDisk:(id)disk options:(id)options withCompletionUUID:(id)d
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  dCopy = d;
+  optionsCopy = options;
+  diskCopy = disk;
   v11 = +[SKDaemonManager sharedManager];
-  v12 = [v11 knownDiskForDictionary:v10];
+  v12 = [v11 knownDiskForDictionary:diskCopy];
 
   v13 = [SKMountOperation alloc];
   v19 = _NSConcreteStackBlock;
   v20 = 3221225472;
   v21 = sub_10000F5D8;
   v22 = &unk_100049040;
-  v23 = self;
-  v14 = v8;
+  selfCopy = self;
+  v14 = dCopy;
   v24 = v14;
-  v15 = [(SKMountOperation *)v13 initWithDisk:v12 options:v9 connection:self completionBlock:&v19];
+  v15 = [(SKMountOperation *)v13 initWithDisk:v12 options:optionsCopy connection:self completionBlock:&v19];
 
   if (v15)
   {
@@ -755,10 +755,10 @@ LABEL_25:
   }
 }
 
-- (void)ejectDisk:(id)a3 withCompletionUUID:(id)a4
+- (void)ejectDisk:(id)disk withCompletionUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(SKDaemonConnection *)self preflightRequestWithDiskDict:a3 entitlementLevel:1 completionUUID:v6 prettyFunc:"[SKDaemonConnection ejectDisk:withCompletionUUID:]" failResGenFunc:&stru_100049080];
+  dCopy = d;
+  v7 = [(SKDaemonConnection *)self preflightRequestWithDiskDict:disk entitlementLevel:1 completionUUID:dCopy prettyFunc:"[SKDaemonConnection ejectDisk:withCompletionUUID:]" failResGenFunc:&stru_100049080];
   if (v7)
   {
     v8 = +[SKDaemonManager sharedManager];
@@ -767,18 +767,18 @@ LABEL_25:
     v9[2] = sub_10000F81C;
     v9[3] = &unk_100049040;
     v9[4] = self;
-    v10 = v6;
+    v10 = dCopy;
     [v8 ejectDisk:v7 withCompletionBlock:v9];
   }
 }
 
-- (id)_safe_object:(id)a3
+- (id)_safe_object:(id)_safe_object
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  _safe_objectCopy = _safe_object;
+  v4 = _safe_objectCopy;
+  if (_safe_objectCopy)
   {
-    v5 = v3;
+    v5 = _safe_objectCopy;
   }
 
   else
@@ -791,14 +791,14 @@ LABEL_25:
   return v6;
 }
 
-- (BOOL)chownFileAtURL:(id)a3 error:(id *)a4
+- (BOOL)chownFileAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && ([v6 path], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  lCopy = l;
+  v7 = lCopy;
+  if (lCopy && ([lCopy path], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [v7 path];
-    v10 = chown([v9 UTF8String], -[SKDaemonConnection uid](self, "uid"), -[SKDaemonConnection gid](self, "gid"));
+    path = [v7 path];
+    v10 = chown([path UTF8String], -[SKDaemonConnection uid](self, "uid"), -[SKDaemonConnection gid](self, "gid"));
 
     if (!v10)
     {
@@ -809,12 +809,12 @@ LABEL_25:
     v11 = sub_10000BFD0();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v7 path];
+      path2 = [v7 path];
       v13 = *__error();
       v19 = 136315650;
       v20 = "[SKDaemonConnection chownFileAtURL:error:]";
       v21 = 2112;
-      v22 = v12;
+      v22 = path2;
       v23 = 1024;
       v24 = v13;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s: chown on %@ failed with errno %d", &v19, 0x1Cu);
@@ -830,29 +830,29 @@ LABEL_25:
     v14 = 255;
   }
 
-  v16 = [SKError errorWithCode:v14 debugDescription:v15 error:a4];
+  v16 = [SKError errorWithCode:v14 debugDescription:v15 error:error];
   v17 = v16 != 0;
 
 LABEL_9:
   return v17;
 }
 
-- (id)eraseWithEraser:(id)a3 reply:(id)a4
+- (id)eraseWithEraser:(id)eraser reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  eraserCopy = eraser;
+  replyCopy = reply;
   v8 = sub_10000BFD0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v19 = v6;
+    v19 = eraserCopy;
     v20 = 2082;
     v21 = "[SKDaemonConnection eraseWithEraser:reply:]";
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Preflight check for %@ at %{public}s", buf, 0x16u);
   }
 
-  v9 = [v6 disk];
-  v10 = [(SKDaemonConnection *)self preflightRequestWithSKDisk:v9 entitlementLevel:3 prettyFunc:"[SKDaemonConnection eraseWithEraser:reply:]"];
+  disk = [eraserCopy disk];
+  v10 = [(SKDaemonConnection *)self preflightRequestWithSKDisk:disk entitlementLevel:3 prettyFunc:"[SKDaemonConnection eraseWithEraser:reply:]"];
 
   if (v10)
   {
@@ -862,8 +862,8 @@ LABEL_9:
     v15[2] = sub_10000FCEC;
     v15[3] = &unk_1000490A8;
     v15[4] = self;
-    v16 = v7;
-    v12 = [v11 eraseWithEraser:v6 completionBlock:v15];
+    v16 = replyCopy;
+    v12 = [v11 eraseWithEraser:eraserCopy completionBlock:v15];
     v13 = v16;
   }
 
@@ -872,17 +872,17 @@ LABEL_9:
     v11 = [SKError errorWithCode:112 userInfo:0];
     v17 = v11;
     v13 = [NSArray arrayWithObjects:&v17 count:1];
-    (*(v7 + 2))(v7, v13);
+    (*(replyCopy + 2))(replyCopy, v13);
     v12 = 0;
   }
 
   return v12;
 }
 
-- (id)resizeDisk:(id)a3 size:(unint64_t)a4 reply:(id)a5
+- (id)resizeDisk:(id)disk size:(unint64_t)size reply:(id)reply
 {
-  v8 = a5;
-  v9 = [(SKDaemonConnection *)self preflightRequestWithDiskDict:a3 entitlementLevel:3 prettyFunc:"[SKDaemonConnection resizeDisk:size:reply:]"];
+  replyCopy = reply;
+  v9 = [(SKDaemonConnection *)self preflightRequestWithDiskDict:disk entitlementLevel:3 prettyFunc:"[SKDaemonConnection resizeDisk:size:reply:]"];
   if (v9)
   {
     v10 = +[SKDaemonManager sharedManager];
@@ -890,14 +890,14 @@ LABEL_9:
     v14[1] = 3221225472;
     v14[2] = sub_10000FF9C;
     v14[3] = &unk_1000490D0;
-    v15 = v8;
-    v11 = [v10 resize:v9 toSize:a4 completionBlock:v14];
+    v15 = replyCopy;
+    v11 = [v10 resize:v9 toSize:size completionBlock:v14];
   }
 
   else
   {
     v12 = [SKError errorWithCode:112 userInfo:0];
-    (*(v8 + 2))(v8, v12);
+    (*(replyCopy + 2))(replyCopy, v12);
 
     v11 = 0;
   }

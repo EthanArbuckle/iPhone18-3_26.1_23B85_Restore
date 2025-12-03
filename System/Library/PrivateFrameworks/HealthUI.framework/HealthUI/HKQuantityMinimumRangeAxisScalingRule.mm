@@ -1,62 +1,62 @@
 @interface HKQuantityMinimumRangeAxisScalingRule
-+ (id)ruleWithDefaultYAxisRange:(id)a3 anchorValue:(id)a4;
-+ (id)ruleWithDefaultYAxisRange:(id)a3 axisRangeOverrides:(id)a4;
-+ (id)ruleWithDefaultYAxisRange:(id)a3 minimumValue:(id)a4 maximumValue:(id)a5 axisRangeOverrides:(id)a6;
-+ (id)ruleWithDefaultYAxisRange:(id)a3 minimumValue:(id)a4 maximumValue:(id)a5 axisRangeOverrides:(id)a6 noDataAxisBounds:(id)a7;
-- (BOOL)isCompatibleWithQuantityType:(id)a3;
++ (id)ruleWithDefaultYAxisRange:(id)range anchorValue:(id)value;
++ (id)ruleWithDefaultYAxisRange:(id)range axisRangeOverrides:(id)overrides;
++ (id)ruleWithDefaultYAxisRange:(id)range minimumValue:(id)value maximumValue:(id)maximumValue axisRangeOverrides:(id)overrides;
++ (id)ruleWithDefaultYAxisRange:(id)range minimumValue:(id)value maximumValue:(id)maximumValue axisRangeOverrides:(id)overrides noDataAxisBounds:(id)bounds;
+- (BOOL)isCompatibleWithQuantityType:(id)type;
 - (id)description;
 - (id)noDataStartingRange;
 - (void)_convertQuantities;
-- (void)setUnit:(id)a3;
+- (void)setUnit:(id)unit;
 @end
 
 @implementation HKQuantityMinimumRangeAxisScalingRule
 
-+ (id)ruleWithDefaultYAxisRange:(id)a3 axisRangeOverrides:(id)a4
++ (id)ruleWithDefaultYAxisRange:(id)range axisRangeOverrides:(id)overrides
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() ruleWithDefaultYAxisRange:v6 minimumValue:0 maximumValue:0 axisRangeOverrides:v5 noDataAxisBounds:0];
+  overridesCopy = overrides;
+  rangeCopy = range;
+  v7 = [objc_opt_class() ruleWithDefaultYAxisRange:rangeCopy minimumValue:0 maximumValue:0 axisRangeOverrides:overridesCopy noDataAxisBounds:0];
 
   return v7;
 }
 
-+ (id)ruleWithDefaultYAxisRange:(id)a3 minimumValue:(id)a4 maximumValue:(id)a5 axisRangeOverrides:(id)a6
++ (id)ruleWithDefaultYAxisRange:(id)range minimumValue:(id)value maximumValue:(id)maximumValue axisRangeOverrides:(id)overrides
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [objc_opt_class() ruleWithDefaultYAxisRange:v12 minimumValue:v11 maximumValue:v10 axisRangeOverrides:v9 noDataAxisBounds:0];
+  overridesCopy = overrides;
+  maximumValueCopy = maximumValue;
+  valueCopy = value;
+  rangeCopy = range;
+  v13 = [objc_opt_class() ruleWithDefaultYAxisRange:rangeCopy minimumValue:valueCopy maximumValue:maximumValueCopy axisRangeOverrides:overridesCopy noDataAxisBounds:0];
 
   return v13;
 }
 
-+ (id)ruleWithDefaultYAxisRange:(id)a3 minimumValue:(id)a4 maximumValue:(id)a5 axisRangeOverrides:(id)a6 noDataAxisBounds:(id)a7
++ (id)ruleWithDefaultYAxisRange:(id)range minimumValue:(id)value maximumValue:(id)maximumValue axisRangeOverrides:(id)overrides noDataAxisBounds:(id)bounds
 {
-  v25 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  rangeCopy = range;
+  valueCopy = value;
+  maximumValueCopy = maximumValue;
+  overridesCopy = overrides;
+  boundsCopy = bounds;
   v16 = objc_alloc_init(objc_opt_class());
-  objc_storeStrong(v16 + 5, a3);
-  objc_storeStrong(v16 + 9, a6);
-  objc_storeStrong(v16 + 6, a4);
-  objc_storeStrong(v16 + 7, a5);
-  if (v12)
+  objc_storeStrong(v16 + 5, range);
+  objc_storeStrong(v16 + 9, overrides);
+  objc_storeStrong(v16 + 6, value);
+  objc_storeStrong(v16 + 7, maximumValue);
+  if (valueCopy)
   {
     v17 = MEMORY[0x1E696AD98];
-    v18 = [v12 _unit];
-    [v12 doubleValueForUnit:v18];
+    _unit = [valueCopy _unit];
+    [valueCopy doubleValueForUnit:_unit];
     v19 = [v17 numberWithDouble:?];
 
-    if (v13)
+    if (maximumValueCopy)
     {
 LABEL_3:
       v20 = MEMORY[0x1E696AD98];
-      v21 = [v13 _unit];
-      [v13 doubleValueForUnit:v21];
+      _unit2 = [maximumValueCopy _unit];
+      [maximumValueCopy doubleValueForUnit:_unit2];
       v22 = [v20 numberWithDouble:?];
 
       goto LABEL_6;
@@ -66,7 +66,7 @@ LABEL_3:
   else
   {
     v19 = 0;
-    if (v13)
+    if (maximumValueCopy)
     {
       goto LABEL_3;
     }
@@ -77,41 +77,41 @@ LABEL_6:
   v23 = [HKValueRange valueRangeWithMinValue:v19 maxValue:v22];
   [v16 setAxisBounds:v23];
 
-  [v16 setNoDataAxisBounds:v15];
+  [v16 setNoDataAxisBounds:boundsCopy];
 
   return v16;
 }
 
-+ (id)ruleWithDefaultYAxisRange:(id)a3 anchorValue:(id)a4
++ (id)ruleWithDefaultYAxisRange:(id)range anchorValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
+  rangeCopy = range;
+  valueCopy = value;
   v7 = objc_alloc_init(objc_opt_class());
   v8 = v7[5];
-  v7[5] = v5;
-  v9 = v5;
+  v7[5] = rangeCopy;
+  v9 = rangeCopy;
 
   v10 = v7[8];
-  v7[8] = v6;
+  v7[8] = valueCopy;
 
   [v7 setAxisBounds:0];
 
   return v7;
 }
 
-- (void)setUnit:(id)a3
+- (void)setUnit:(id)unit
 {
-  objc_storeStrong(&self->_unit, a3);
+  objc_storeStrong(&self->_unit, unit);
 
   [(HKQuantityMinimumRangeAxisScalingRule *)self _convertQuantities];
 }
 
-- (BOOL)isCompatibleWithQuantityType:(id)a3
+- (BOOL)isCompatibleWithQuantityType:(id)type
 {
   defaultYAxisRangeQuantity = self->_defaultYAxisRangeQuantity;
-  v4 = a3;
-  v5 = [(HKQuantity *)defaultYAxisRangeQuantity _unit];
-  v6 = [v4 isCompatibleWithUnit:v5];
+  typeCopy = type;
+  _unit = [(HKQuantity *)defaultYAxisRangeQuantity _unit];
+  v6 = [typeCopy isCompatibleWithUnit:_unit];
 
   return v6;
 }
@@ -121,8 +121,8 @@ LABEL_6:
   [(HKQuantity *)self->_defaultYAxisRangeQuantity doubleValueForUnit:self->_unit];
   v4 = v3;
   v5 = MEMORY[0x1E696C348];
-  v6 = [(HKQuantity *)self->_defaultYAxisRangeQuantity _unit];
-  v7 = [v5 quantityWithUnit:v6 doubleValue:0.0];
+  _unit = [(HKQuantity *)self->_defaultYAxisRangeQuantity _unit];
+  v7 = [v5 quantityWithUnit:_unit doubleValue:0.0];
   [v7 doubleValueForUnit:self->_unit];
   v9 = v8;
 
@@ -137,7 +137,7 @@ LABEL_6:
     v30 = &unk_1E81BAAC0;
     v12 = v10;
     v31 = v12;
-    v32 = self;
+    selfCopy = self;
     [(NSDictionary *)axisRangeQuantityOverrides enumerateKeysAndObjectsUsingBlock:&v27];
     axisRangeOverrides = self->super._axisRangeOverrides;
     self->super._axisRangeOverrides = v12;
@@ -206,13 +206,13 @@ void __59__HKQuantityMinimumRangeAxisScalingRule__convertQuantities__block_invok
   if (noDataAxisBounds)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(HKValueRange *)noDataAxisBounds minValue];
-    [v5 doubleValueForUnit:self->_unit];
+    minValue = [(HKValueRange *)noDataAxisBounds minValue];
+    [minValue doubleValueForUnit:self->_unit];
     v6 = [v4 numberWithDouble:?];
 
     v7 = MEMORY[0x1E696AD98];
-    v8 = [(HKValueRange *)self->_noDataAxisBounds maxValue];
-    [v8 doubleValueForUnit:self->_unit];
+    maxValue = [(HKValueRange *)self->_noDataAxisBounds maxValue];
+    [maxValue doubleValueForUnit:self->_unit];
     v9 = [v7 numberWithDouble:?];
 
     v10 = [HKValueRange valueRangeWithMinValue:v6 maxValue:v9];

@@ -1,7 +1,7 @@
 @interface CDRapportListener
 - (CDRapportListener)init;
 - (void)_activated;
-- (void)_handleEvent:(id)a3;
+- (void)_handleEvent:(id)event;
 - (void)_invalidated;
 - (void)activate;
 - (void)invalidate;
@@ -74,9 +74,9 @@
   }
 }
 
-- (void)_handleEvent:(id)a3
+- (void)_handleEvent:(id)event
 {
-  xdict = a3;
+  xdict = event;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   string = xpc_dictionary_get_string(xdict, _xpc_event_key_name);
   v5 = xpc_dictionary_get_string(xdict, "deviceID");

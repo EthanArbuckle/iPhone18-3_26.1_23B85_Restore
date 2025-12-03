@@ -1,11 +1,11 @@
 @interface DBCalendarIconImageProvider
 + (id)sharedInstance;
 - (DBCalendarIconImageProvider)init;
-- (id)iconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5;
-- (id)iconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5;
-- (void)calendarIconImageProviderHasChanged:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (id)iconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options;
+- (id)iconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options;
+- (void)calendarIconImageProviderHasChanged:(id)changed;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation DBCalendarIconImageProvider
@@ -49,50 +49,50 @@ uint64_t __45__DBCalendarIconImageProvider_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)iconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5
+- (id)iconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options
 {
   v10 = v8;
   v11 = v7;
   v12 = v6;
   v13 = v5;
-  v15 = a3;
-  v16 = [(DBCalendarIconImageProvider *)self imageProvider];
-  v17 = [v16 iconImageWithInfo:v15 traitCollection:a4 options:{v13, v12, v11, v10}];
+  infoCopy = info;
+  imageProvider = [(DBCalendarIconImageProvider *)self imageProvider];
+  v17 = [imageProvider iconImageWithInfo:infoCopy traitCollection:collection options:{v13, v12, v11, v10}];
 
   return v17;
 }
 
-- (id)iconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5
+- (id)iconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options
 {
   v10 = v8;
   v11 = v7;
   v12 = v6;
   v13 = v5;
-  v15 = a3;
-  v16 = [(DBCalendarIconImageProvider *)self imageProvider];
-  v17 = [v16 iconLayerWithInfo:v15 traitCollection:a4 options:{v13, v12, v11, v10}];
+  infoCopy = info;
+  imageProvider = [(DBCalendarIconImageProvider *)self imageProvider];
+  v17 = [imageProvider iconLayerWithInfo:infoCopy traitCollection:collection options:{v13, v12, v11, v10}];
 
   return v17;
 }
 
-- (void)calendarIconImageProviderHasChanged:(id)a3
+- (void)calendarIconImageProviderHasChanged:(id)changed
 {
-  v3 = [(DBCalendarIconImageProvider *)self observers];
-  [v3 didUpdateImage];
+  observers = [(DBCalendarIconImageProvider *)self observers];
+  [observers didUpdateImage];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBCalendarIconImageProvider *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(DBCalendarIconImageProvider *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBCalendarIconImageProvider *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(DBCalendarIconImageProvider *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
 @end

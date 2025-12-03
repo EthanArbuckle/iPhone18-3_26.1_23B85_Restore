@@ -1,25 +1,25 @@
 @interface WBSOnDiskDataCache
 - (WBSDataCacheDelegate)dataCacheDelegate;
-- (WBSOnDiskDataCache)initWithCacheDirectoryURL:(id)a3;
+- (WBSOnDiskDataCache)initWithCacheDirectoryURL:(id)l;
 - (id)_diskAccessQueueName;
-- (id)_fileLocationForKeyString:(id)a3;
+- (id)_fileLocationForKeyString:(id)string;
 - (id)_internalQueueName;
-- (id)requestEntryForKeyString:(id)a3;
-- (id)settingForKey:(id)a3;
-- (int64_t)_internalEntryStateForKeyString:(id)a3;
-- (int64_t)entryStateForKeyString:(id)a3;
-- (void)_didFailToLoadEntryForKeyString:(id)a3 error:(id)a4;
-- (void)_didLoadEntry:(id)a3 forKeyString:(id)a4;
-- (void)_dispatchDiskAccessBlock:(id)a3;
+- (id)requestEntryForKeyString:(id)string;
+- (id)settingForKey:(id)key;
+- (int64_t)_internalEntryStateForKeyString:(id)string;
+- (int64_t)entryStateForKeyString:(id)string;
+- (void)_didFailToLoadEntryForKeyString:(id)string error:(id)error;
+- (void)_didLoadEntry:(id)entry forKeyString:(id)string;
+- (void)_dispatchDiskAccessBlock:(id)block;
 - (void)_notifyDidFinishSettingUp;
-- (void)getEntryURLForKeyString:(id)a3 completionHandler:(id)a4;
-- (void)removeEntriesForKeyStrings:(id)a3 completionHandler:(id)a4;
-- (void)removeEntriesForKeyStringsNotIncludedIn:(id)a3 completionHandler:(id)a4;
+- (void)getEntryURLForKeyString:(id)string completionHandler:(id)handler;
+- (void)removeEntriesForKeyStrings:(id)strings completionHandler:(id)handler;
+- (void)removeEntriesForKeyStringsNotIncludedIn:(id)in completionHandler:(id)handler;
 - (void)reset;
 - (void)savePendingChangesBeforeTearDown;
-- (void)setEntry:(id)a3 forKeyString:(id)a4 completionHandler:(id)a5;
-- (void)setIsInMemoryCacheEnabled:(BOOL)a3;
-- (void)setSetting:(id)a3 forKey:(id)a4;
+- (void)setEntry:(id)entry forKeyString:(id)string completionHandler:(id)handler;
+- (void)setIsInMemoryCacheEnabled:(BOOL)enabled;
+- (void)setSetting:(id)setting forKey:(id)key;
 - (void)setUp;
 @end
 
@@ -149,21 +149,21 @@ uint64_t __27__WBSOnDiskDataCache_setUp__block_invoke_2_15(uint64_t a1)
   }
 }
 
-- (WBSOnDiskDataCache)initWithCacheDirectoryURL:(id)a3
+- (WBSOnDiskDataCache)initWithCacheDirectoryURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = WBSOnDiskDataCache;
   v6 = [(WBSOnDiskDataCache *)&v17 init];
   if (v6)
   {
     v7 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
-    v8 = [(WBSOnDiskDataCache *)v6 _internalQueueName];
-    v9 = dispatch_queue_create([v8 UTF8String], v7);
+    _internalQueueName = [(WBSOnDiskDataCache *)v6 _internalQueueName];
+    v9 = dispatch_queue_create([_internalQueueName UTF8String], v7);
     internalQueue = v6->_internalQueue;
     v6->_internalQueue = v9;
 
-    objc_storeStrong(&v6->_cacheDirectoryURL, a3);
+    objc_storeStrong(&v6->_cacheDirectoryURL, l);
     v6->_isInMemoryCacheEnabled = 1;
     v11 = objc_alloc_init(MEMORY[0x1E695DEE0]);
     entriesForKeyStringsCache = v6->_entriesForKeyStringsCache;
@@ -179,11 +179,11 @@ uint64_t __27__WBSOnDiskDataCache_setUp__block_invoke_2_15(uint64_t a1)
   return v6;
 }
 
-- (void)setIsInMemoryCacheEnabled:(BOOL)a3
+- (void)setIsInMemoryCacheEnabled:(BOOL)enabled
 {
-  if (self->_isInMemoryCacheEnabled != a3)
+  if (self->_isInMemoryCacheEnabled != enabled)
   {
-    self->_isInMemoryCacheEnabled = a3;
+    self->_isInMemoryCacheEnabled = enabled;
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __48__WBSOnDiskDataCache_setIsInMemoryCacheEnabled___block_invoke;
@@ -322,10 +322,10 @@ LABEL_9:
 LABEL_10:
 }
 
-- (id)settingForKey:(id)a3
+- (id)settingForKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
+  keyCopy = key;
+  v5 = keyCopy;
   if (self->_terminating)
   {
     v6 = 0;
@@ -345,7 +345,7 @@ LABEL_10:
     v8[3] = &unk_1E8286468;
     v10 = &v11;
     v8[4] = self;
-    v9 = v4;
+    v9 = keyCopy;
     [(WBSOnDiskDataCache *)self _internalQueueDispatchSync:v8];
     v6 = v12[5];
 
@@ -363,19 +363,19 @@ void __36__WBSOnDiskDataCache_settingForKey___block_invoke(void *a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setSetting:(id)a3 forKey:(id)a4
+- (void)setSetting:(id)setting forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  settingCopy = setting;
+  keyCopy = key;
   if (!self->_terminating)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __40__WBSOnDiskDataCache_setSetting_forKey___block_invoke;
     v8[3] = &unk_1E8282EF0;
-    v9 = v6;
-    v10 = self;
-    v11 = v7;
+    v9 = settingCopy;
+    selfCopy = self;
+    v11 = keyCopy;
     [(WBSOnDiskDataCache *)self _internalQueueDispatchAsync:v8];
   }
 }
@@ -405,10 +405,10 @@ uint64_t __40__WBSOnDiskDataCache_setSetting_forKey___block_invoke(void *a1)
   return result;
 }
 
-- (id)requestEntryForKeyString:(id)a3
+- (id)requestEntryForKeyString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
+  stringCopy = string;
+  v5 = stringCopy;
   if (self->_terminating)
   {
     v6 = 0;
@@ -428,7 +428,7 @@ uint64_t __40__WBSOnDiskDataCache_setSetting_forKey___block_invoke(void *a1)
     v8[3] = &unk_1E8286468;
     v10 = &v11;
     v8[4] = self;
-    v9 = v4;
+    v9 = stringCopy;
     [(WBSOnDiskDataCache *)self _internalQueueDispatchSync:v8];
     v6 = v12[5];
 
@@ -484,14 +484,14 @@ void __47__WBSOnDiskDataCache_requestEntryForKeyString___block_invoke_2(uint64_t
   [v4 _internalQueueDispatchAsync:v6];
 }
 
-- (void)getEntryURLForKeyString:(id)a3 completionHandler:(id)a4
+- (void)getEntryURLForKeyString:(id)string completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  stringCopy = string;
+  handlerCopy = handler;
+  v8 = handlerCopy;
   if (self->_terminating)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   else
@@ -501,7 +501,7 @@ void __47__WBSOnDiskDataCache_requestEntryForKeyString___block_invoke_2(uint64_t
     v9[2] = __64__WBSOnDiskDataCache_getEntryURLForKeyString_completionHandler___block_invoke;
     v9[3] = &unk_1E8283450;
     v9[4] = self;
-    v10 = v6;
+    v10 = stringCopy;
     v11 = v8;
     [(WBSOnDiskDataCache *)self _dispatchDiskAccessBlock:v9];
   }
@@ -531,11 +531,11 @@ void __64__WBSOnDiskDataCache_getEntryURLForKeyString_completionHandler___block_
   [v6 _internalQueueDispatchAsync:v8];
 }
 
-- (void)setEntry:(id)a3 forKeyString:(id)a4 completionHandler:(id)a5
+- (void)setEntry:(id)entry forKeyString:(id)string completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entryCopy = entry;
+  stringCopy = string;
+  handlerCopy = handler;
   if (!self->_terminating)
   {
     v11[0] = MEMORY[0x1E69E9820];
@@ -543,9 +543,9 @@ void __64__WBSOnDiskDataCache_getEntryURLForKeyString_completionHandler___block_
     v11[2] = __62__WBSOnDiskDataCache_setEntry_forKeyString_completionHandler___block_invoke;
     v11[3] = &unk_1E8286490;
     v11[4] = self;
-    v12 = v9;
-    v14 = v10;
-    v13 = v8;
+    v12 = stringCopy;
+    v14 = handlerCopy;
+    v13 = entryCopy;
     [(WBSOnDiskDataCache *)self _dispatchDiskAccessBlock:v11];
   }
 }
@@ -689,59 +689,59 @@ uint64_t __62__WBSOnDiskDataCache_setEntry_forKeyString_completionHandler___bloc
   return result;
 }
 
-- (void)_didLoadEntry:(id)a3 forKeyString:(id)a4
+- (void)_didLoadEntry:(id)entry forKeyString:(id)string
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v9)
+  entryCopy = entry;
+  stringCopy = string;
+  v7 = stringCopy;
+  if (entryCopy)
   {
-    [(NSCache *)self->_entriesForKeyStringsCache setObject:v9 forKey:v6];
+    [(NSCache *)self->_entriesForKeyStringsCache setObject:entryCopy forKey:stringCopy];
     [(NSMutableSet *)self->_missingEntryKeyStrings removeObject:v7];
   }
 
   else
   {
-    [(NSMutableSet *)self->_missingEntryKeyStrings addObject:v6];
+    [(NSMutableSet *)self->_missingEntryKeyStrings addObject:stringCopy];
   }
 
   [(NSMutableSet *)self->_pendingKeyStringRequests removeObject:v7];
   WeakRetained = objc_loadWeakRetained(&self->_dataCacheDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained dataCache:self didLoadEntry:v9 forKeyString:v7];
+    [WeakRetained dataCache:self didLoadEntry:entryCopy forKeyString:v7];
   }
 }
 
-- (void)_didFailToLoadEntryForKeyString:(id)a3 error:(id)a4
+- (void)_didFailToLoadEntryForKeyString:(id)string error:(id)error
 {
-  v8 = a3;
-  v6 = a4;
-  [(NSMutableSet *)self->_missingEntryKeyStrings addObject:v8];
-  [(NSMutableSet *)self->_pendingKeyStringRequests removeObject:v8];
+  stringCopy = string;
+  errorCopy = error;
+  [(NSMutableSet *)self->_missingEntryKeyStrings addObject:stringCopy];
+  [(NSMutableSet *)self->_pendingKeyStringRequests removeObject:stringCopy];
   WeakRetained = objc_loadWeakRetained(&self->_dataCacheDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained dataCache:self didFailToLoadEntryForKeyString:v8 error:v6];
+    [WeakRetained dataCache:self didFailToLoadEntryForKeyString:stringCopy error:errorCopy];
   }
 }
 
-- (void)removeEntriesForKeyStrings:(id)a3 completionHandler:(id)a4
+- (void)removeEntriesForKeyStrings:(id)strings completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stringsCopy = strings;
+  handlerCopy = handler;
   if (!self->_terminating)
   {
-    v8 = [v6 copy];
+    v8 = [stringsCopy copy];
 
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __67__WBSOnDiskDataCache_removeEntriesForKeyStrings_completionHandler___block_invoke;
     v9[3] = &unk_1E8283450;
-    v6 = v8;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    stringsCopy = v8;
+    v10 = stringsCopy;
+    selfCopy = self;
+    v12 = handlerCopy;
     [(WBSOnDiskDataCache *)self _dispatchDiskAccessBlock:v9];
   }
 }
@@ -839,19 +839,19 @@ uint64_t __67__WBSOnDiskDataCache_removeEntriesForKeyStrings_completionHandler__
   return result;
 }
 
-- (void)removeEntriesForKeyStringsNotIncludedIn:(id)a3 completionHandler:(id)a4
+- (void)removeEntriesForKeyStringsNotIncludedIn:(id)in completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  inCopy = in;
+  handlerCopy = handler;
   if (!self->_terminating)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __80__WBSOnDiskDataCache_removeEntriesForKeyStringsNotIncludedIn_completionHandler___block_invoke;
     v8[3] = &unk_1E8283450;
-    v9 = v6;
-    v10 = self;
-    v11 = v7;
+    v9 = inCopy;
+    selfCopy = self;
+    v11 = handlerCopy;
     [(WBSOnDiskDataCache *)self _dispatchDiskAccessBlock:v8];
   }
 }
@@ -912,9 +912,9 @@ id __80__WBSOnDiskDataCache_removeEntriesForKeyStringsNotIncludedIn_completionHa
   return v2;
 }
 
-- (int64_t)entryStateForKeyString:(id)a3
+- (int64_t)entryStateForKeyString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -923,10 +923,10 @@ id __80__WBSOnDiskDataCache_removeEntriesForKeyStringsNotIncludedIn_completionHa
   v8[1] = 3221225472;
   v8[2] = __45__WBSOnDiskDataCache_entryStateForKeyString___block_invoke;
   v8[3] = &unk_1E8286468;
-  v9 = v4;
+  v9 = stringCopy;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = stringCopy;
   [(WBSOnDiskDataCache *)self _internalQueueDispatchSync:v8];
   v6 = v12[3];
 
@@ -941,26 +941,26 @@ uint64_t __45__WBSOnDiskDataCache_entryStateForKeyString___block_invoke(uint64_t
   return result;
 }
 
-- (int64_t)_internalEntryStateForKeyString:(id)a3
+- (int64_t)_internalEntryStateForKeyString:(id)string
 {
-  v4 = a3;
-  if (([(NSMutableSet *)self->_missingEntryKeyStrings containsObject:v4]& 1) != 0)
+  stringCopy = string;
+  if (([(NSMutableSet *)self->_missingEntryKeyStrings containsObject:stringCopy]& 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(NSCache *)self->_entriesForKeyStringsCache objectForKey:v4];
+    v6 = [(NSCache *)self->_entriesForKeyStringsCache objectForKey:stringCopy];
     v5 = 2 * (v6 != 0);
   }
 
   return v5;
 }
 
-- (void)_dispatchDiskAccessBlock:(id)a3
+- (void)_dispatchDiskAccessBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (!self->_terminating)
   {
     operator new();
@@ -976,11 +976,11 @@ id **__47__WBSOnDiskDataCache__dispatchDiskAccessBlock___block_invoke(uint64_t a
   return std::unique_ptr<SafariShared::SuddenTerminationDisabler>::~unique_ptr[abi:sn200100](&v4);
 }
 
-- (id)_fileLocationForKeyString:(id)a3
+- (id)_fileLocationForKeyString:(id)string
 {
   cacheDirectoryURL = self->_cacheDirectoryURL;
-  v4 = [a3 safari_md5Hash];
-  v5 = [(NSURL *)cacheDirectoryURL URLByAppendingPathComponent:v4 isDirectory:0];
+  safari_md5Hash = [string safari_md5Hash];
+  v5 = [(NSURL *)cacheDirectoryURL URLByAppendingPathComponent:safari_md5Hash isDirectory:0];
 
   return v5;
 }

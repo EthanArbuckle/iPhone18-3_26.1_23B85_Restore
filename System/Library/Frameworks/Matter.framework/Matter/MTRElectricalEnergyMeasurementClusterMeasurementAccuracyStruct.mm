@@ -1,6 +1,6 @@
 @interface MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct
 - (MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -26,31 +26,31 @@
     maxMeasuredValue = v3->_maxMeasuredValue;
     v3->_maxMeasuredValue = &unk_284C3E588;
 
-    v8 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     accuracyRanges = v3->_accuracyRanges;
-    v3->_accuracyRanges = v8;
+    v3->_accuracyRanges = array;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct);
-  v5 = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)self measurementType];
-  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)v4 setMeasurementType:v5];
+  measurementType = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)self measurementType];
+  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)v4 setMeasurementType:measurementType];
 
-  v6 = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)self measured];
-  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)v4 setMeasured:v6];
+  measured = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)self measured];
+  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)v4 setMeasured:measured];
 
-  v7 = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)self minMeasuredValue];
-  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)v4 setMinMeasuredValue:v7];
+  minMeasuredValue = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)self minMeasuredValue];
+  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)v4 setMinMeasuredValue:minMeasuredValue];
 
-  v8 = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)self maxMeasuredValue];
-  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)v4 setMaxMeasuredValue:v8];
+  maxMeasuredValue = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)self maxMeasuredValue];
+  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)v4 setMaxMeasuredValue:maxMeasuredValue];
 
-  v9 = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)self accuracyRanges];
-  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)v4 setAccuracyRanges:v9];
+  accuracyRanges = [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)self accuracyRanges];
+  [(MTRElectricalEnergyMeasurementClusterMeasurementAccuracyStruct *)v4 setAccuracyRanges:accuracyRanges];
 
   return v4;
 }

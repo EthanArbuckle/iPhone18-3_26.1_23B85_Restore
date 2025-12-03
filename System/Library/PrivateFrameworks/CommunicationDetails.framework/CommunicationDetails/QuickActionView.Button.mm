@@ -1,10 +1,10 @@
 @interface QuickActionView.Button
-- (_TtCC20CommunicationDetails15QuickActionView6Button)initWithCoder:(id)a3;
+- (_TtCC20CommunicationDetails15QuickActionView6Button)initWithCoder:(id)coder;
 @end
 
 @implementation QuickActionView.Button
 
-- (_TtCC20CommunicationDetails15QuickActionView6Button)initWithCoder:(id)a3
+- (_TtCC20CommunicationDetails15QuickActionView6Button)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

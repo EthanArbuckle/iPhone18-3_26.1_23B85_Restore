@@ -1,25 +1,25 @@
 @interface TRINamespaceDatabase
-- ($61A80719B04F7407D3E47539F1B23CAA)removeDynamicNamespaceRecordWithNamespaceName:(id)a3;
-- ($61A80719B04F7407D3E47539F1B23CAA)setFetched:(BOOL)a3 forDynamicNamespaceName:(id)a4;
-- (BOOL)_enumerateDynamicNamespaceRecordsWithWhereClause:(id)a3 bind:(id)a4 block:(id)a5;
-- (BOOL)addOrUpdateDynamicNamespaceWithName:(id)a3 compatibilityVersion:(unsigned int)a4 defaultsFileURL:(id)a5 teamId:(id)a6 appContainerId:(id)a7 appContainerType:(int64_t)a8 cloudKitContainer:(int)a9;
-- (BOOL)enumerateAppContainerIdsForContainer:(int)a3 block:(id)a4;
-- (BOOL)enumerateDynamicNamespaceRecordsForContainer:(int)a3 teamId:(id)a4 block:(id)a5;
-- (BOOL)enumerateDynamicNamespaceRecordsWithBlock:(id)a3;
-- (BOOL)hasUnfetchedNamespaceForTeamId:(id)a3;
-- (TRINamespaceDatabase)initWithDatabase:(id)a3;
-- (id)dynamicNamespaceRecordWithNamespaceName:(id)a3;
+- ($61A80719B04F7407D3E47539F1B23CAA)removeDynamicNamespaceRecordWithNamespaceName:(id)name;
+- ($61A80719B04F7407D3E47539F1B23CAA)setFetched:(BOOL)fetched forDynamicNamespaceName:(id)name;
+- (BOOL)_enumerateDynamicNamespaceRecordsWithWhereClause:(id)clause bind:(id)bind block:(id)block;
+- (BOOL)addOrUpdateDynamicNamespaceWithName:(id)name compatibilityVersion:(unsigned int)version defaultsFileURL:(id)l teamId:(id)id appContainerId:(id)containerId appContainerType:(int64_t)type cloudKitContainer:(int)container;
+- (BOOL)enumerateAppContainerIdsForContainer:(int)container block:(id)block;
+- (BOOL)enumerateDynamicNamespaceRecordsForContainer:(int)container teamId:(id)id block:(id)block;
+- (BOOL)enumerateDynamicNamespaceRecordsWithBlock:(id)block;
+- (BOOL)hasUnfetchedNamespaceForTeamId:(id)id;
+- (TRINamespaceDatabase)initWithDatabase:(id)database;
+- (id)dynamicNamespaceRecordWithNamespaceName:(id)name;
 @end
 
 @implementation TRINamespaceDatabase
 
-- (TRINamespaceDatabase)initWithDatabase:(id)a3
+- (TRINamespaceDatabase)initWithDatabase:(id)database
 {
-  v6 = a3;
-  if (!v6)
+  databaseCopy = database;
+  if (!databaseCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"database"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"database"}];
   }
 
   v11.receiver = self;
@@ -28,66 +28,66 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_db, a3);
+    objc_storeStrong(&v7->_db, database);
   }
 
   return v8;
 }
 
-- (BOOL)addOrUpdateDynamicNamespaceWithName:(id)a3 compatibilityVersion:(unsigned int)a4 defaultsFileURL:(id)a5 teamId:(id)a6 appContainerId:(id)a7 appContainerType:(int64_t)a8 cloudKitContainer:(int)a9
+- (BOOL)addOrUpdateDynamicNamespaceWithName:(id)name compatibilityVersion:(unsigned int)version defaultsFileURL:(id)l teamId:(id)id appContainerId:(id)containerId appContainerType:(int64_t)type cloudKitContainer:(int)container
 {
   v41 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  if (v16)
+  nameCopy = name;
+  lCopy = l;
+  idCopy = id;
+  containerIdCopy = containerId;
+  if (nameCopy)
   {
-    if (v18)
+    if (idCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_12:
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"teamId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"teamId"}];
 
-    if (v19)
+    if (containerIdCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_13:
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"appContainerId"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"appContainerId"}];
 
     goto LABEL_4;
   }
 
-  v26 = [MEMORY[0x277CCA890] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
-  if (!v18)
+  if (!idCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_3:
-  if (!v19)
+  if (!containerIdCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_4:
-  if ([v18 length] && (objc_msgSend(v18, "stringByAppendingString:", @"."), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v16, "hasPrefix:", v20), v20, (v21 & 1) == 0))
+  if ([idCopy length] && (objc_msgSend(idCopy, "stringByAppendingString:", @"."), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(nameCopy, "hasPrefix:", v20), v20, (v21 & 1) == 0))
   {
     v23 = TRILogCategory_Server();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      *&buf[4] = v16;
+      *&buf[4] = nameCopy;
       *&buf[12] = 2114;
-      *&buf[14] = v18;
+      *&buf[14] = idCopy;
       _os_log_error_impl(&dword_26F567000, v23, OS_LOG_TYPE_ERROR, "dynamic namespace name (%{public}@) must be prefixed with teamId (%{public}@)", buf, 0x16u);
     }
 
@@ -105,14 +105,14 @@ LABEL_4:
     v29[2] = __154__TRINamespaceDatabase_addOrUpdateDynamicNamespaceWithName_compatibilityVersion_defaultsFileURL_teamId_appContainerId_appContainerType_cloudKitContainer___block_invoke;
     v29[3] = &unk_279DE1B38;
     v35 = buf;
-    v30 = v16;
-    v31 = v18;
-    v32 = v19;
-    v36 = a8;
-    v37 = a9;
-    v38 = a4;
-    v33 = v17;
-    v34 = self;
+    v30 = nameCopy;
+    v31 = idCopy;
+    v32 = containerIdCopy;
+    typeCopy = type;
+    containerCopy = container;
+    versionCopy = version;
+    v33 = lCopy;
+    selfCopy = self;
     [(TRINamespaceDatabase *)self writeTransactionWithFailableBlock:v29];
     v22 = *(*&buf[8] + 24);
 
@@ -176,13 +176,13 @@ void __154__TRINamespaceDatabase_addOrUpdateDynamicNamespaceWithName_compatibili
   [v4 bindNamedParam:":defaults_url" toNSString:v5];
 }
 
-- ($61A80719B04F7407D3E47539F1B23CAA)removeDynamicNamespaceRecordWithNamespaceName:(id)a3
+- ($61A80719B04F7407D3E47539F1B23CAA)removeDynamicNamespaceRecordWithNamespaceName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
   }
 
   v14 = 0;
@@ -194,9 +194,9 @@ void __154__TRINamespaceDatabase_addOrUpdateDynamicNamespaceWithName_compatibili
   v10[1] = 3221225472;
   v10[2] = __70__TRINamespaceDatabase_removeDynamicNamespaceRecordWithNamespaceName___block_invoke;
   v10[3] = &unk_279DDF9C0;
-  v6 = v5;
+  v6 = nameCopy;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
   [(TRINamespaceDatabase *)self writeTransactionWithFailableBlock:v10];
   v7.var0 = v15[4];
@@ -241,16 +241,16 @@ uint64_t __70__TRINamespaceDatabase_removeDynamicNamespaceRecordWithNamespaceNam
   return *v10;
 }
 
-- (BOOL)_enumerateDynamicNamespaceRecordsWithWhereClause:(id)a3 bind:(id)a4 block:(id)a5
+- (BOOL)_enumerateDynamicNamespaceRecordsWithWhereClause:(id)clause bind:(id)bind block:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if ((v9 == 0) != (v10 == 0))
+  clauseCopy = clause;
+  bindCopy = bind;
+  blockCopy = block;
+  v12 = blockCopy;
+  if ((clauseCopy == 0) != (bindCopy == 0))
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:138 description:{@"Invalid parameter not satisfying: %@", @"(whereClause == nil) == (bind == nil)"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:138 description:{@"Invalid parameter not satisfying: %@", @"(whereClause == nil) == (bind == nil)"}];
 
     if (v12)
     {
@@ -258,13 +258,13 @@ uint64_t __70__TRINamespaceDatabase_removeDynamicNamespaceRecordWithNamespaceNam
     }
 
 LABEL_5:
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
     goto LABEL_3;
   }
 
-  if (!v11)
+  if (!blockCopy)
   {
     goto LABEL_5;
   }
@@ -278,12 +278,12 @@ LABEL_3:
   v20[1] = 3221225472;
   v20[2] = __84__TRINamespaceDatabase__enumerateDynamicNamespaceRecordsWithWhereClause_bind_block___block_invoke;
   v20[3] = &unk_279DE1B60;
-  v13 = v9;
+  v13 = clauseCopy;
   v21 = v13;
   v25 = &v27;
-  v14 = v10;
+  v14 = bindCopy;
   v26 = a2;
-  v22 = self;
+  selfCopy = self;
   v23 = v14;
   v15 = v12;
   v24 = v15;
@@ -467,13 +467,13 @@ LABEL_19:
   return *v19;
 }
 
-- (id)dynamicNamespaceRecordWithNamespaceName:(id)a3
+- (id)dynamicNamespaceRecordWithNamespaceName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:195 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:195 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
   }
 
   v14 = 0;
@@ -486,7 +486,7 @@ LABEL_19:
   v12[1] = 3221225472;
   v12[2] = __64__TRINamespaceDatabase_dynamicNamespaceRecordWithNamespaceName___block_invoke;
   v12[3] = &unk_279DDF860;
-  v6 = v5;
+  v6 = nameCopy;
   v13 = v6;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -510,29 +510,29 @@ LABEL_19:
   return v8;
 }
 
-- (BOOL)enumerateDynamicNamespaceRecordsWithBlock:(id)a3
+- (BOOL)enumerateDynamicNamespaceRecordsWithBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
-  v6 = [(TRINamespaceDatabase *)self _enumerateDynamicNamespaceRecordsWithWhereClause:0 bind:0 block:v5];
+  v6 = [(TRINamespaceDatabase *)self _enumerateDynamicNamespaceRecordsWithWhereClause:0 bind:0 block:blockCopy];
 
   return v6;
 }
 
-- (BOOL)enumerateDynamicNamespaceRecordsForContainer:(int)a3 teamId:(id)a4 block:(id)a5
+- (BOOL)enumerateDynamicNamespaceRecordsForContainer:(int)container teamId:(id)id block:(id)block
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  idCopy = id;
+  blockCopy = block;
+  v11 = blockCopy;
+  if (!idCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:221 description:{@"Invalid parameter not satisfying: %@", @"teamId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:221 description:{@"Invalid parameter not satisfying: %@", @"teamId"}];
 
     if (v11)
     {
@@ -540,13 +540,13 @@ LABEL_19:
     }
 
 LABEL_5:
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!blockCopy)
   {
     goto LABEL_5;
   }
@@ -556,9 +556,9 @@ LABEL_3:
   v17[1] = 3221225472;
   v17[2] = __82__TRINamespaceDatabase_enumerateDynamicNamespaceRecordsForContainer_teamId_block___block_invoke;
   v17[3] = &unk_279DE1BB0;
-  v19 = a3;
-  v18 = v9;
-  v12 = v9;
+  containerCopy = container;
+  v18 = idCopy;
+  v12 = idCopy;
   v13 = [(TRINamespaceDatabase *)self _enumerateDynamicNamespaceRecordsWithWhereClause:@" WHERE         cloudKitContainerId = :container_id     AND teamId = :team_id" bind:v17 block:v11];
 
   return v13;
@@ -572,13 +572,13 @@ void __82__TRINamespaceDatabase_enumerateDynamicNamespaceRecordsForContainer_tea
   [v4 bindNamedParam:":team_id" toNSString:*(a1 + 32)];
 }
 
-- (BOOL)enumerateAppContainerIdsForContainer:(int)a3 block:(id)a4
+- (BOOL)enumerateAppContainerIdsForContainer:(int)container block:(id)block
 {
-  v7 = a4;
-  if (!v7)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   v17 = 0;
@@ -589,11 +589,11 @@ void __82__TRINamespaceDatabase_enumerateDynamicNamespaceRecordsForContainer_tea
   v12[1] = 3221225472;
   v12[2] = __67__TRINamespaceDatabase_enumerateAppContainerIdsForContainer_block___block_invoke;
   v12[3] = &unk_279DE1BF8;
-  v16 = a3;
+  containerCopy = container;
   v14 = &v17;
   v15 = a2;
   v12[4] = self;
-  v8 = v7;
+  v8 = blockCopy;
   v13 = v8;
   [(TRINamespaceDatabase *)self readTransactionWithFailableBlock:v12];
   v9 = *(v18 + 24);
@@ -663,13 +663,13 @@ uint64_t __67__TRINamespaceDatabase_enumerateAppContainerIdsForContainer_block__
   return *v6;
 }
 
-- ($61A80719B04F7407D3E47539F1B23CAA)setFetched:(BOOL)a3 forDynamicNamespaceName:(id)a4
+- ($61A80719B04F7407D3E47539F1B23CAA)setFetched:(BOOL)fetched forDynamicNamespaceName:(id)name
 {
-  v7 = a4;
-  if (!v7)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:271 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:271 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
   }
 
   v17 = 0;
@@ -681,10 +681,10 @@ uint64_t __67__TRINamespaceDatabase_enumerateAppContainerIdsForContainer_block__
   v12[1] = 3221225472;
   v12[2] = __59__TRINamespaceDatabase_setFetched_forDynamicNamespaceName___block_invoke;
   v12[3] = &unk_279DE17F8;
-  v16 = a3;
-  v8 = v7;
+  fetchedCopy = fetched;
+  v8 = nameCopy;
   v13 = v8;
-  v14 = self;
+  selfCopy = self;
   v15 = &v17;
   [(TRINamespaceDatabase *)self writeTransactionWithFailableBlock:v12];
   v9.var0 = v18[4];
@@ -738,13 +738,13 @@ void __59__TRINamespaceDatabase_setFetched_forDynamicNamespaceName___block_invok
   [v4 bindNamedParam:":name" toNSString:*(a1 + 32)];
 }
 
-- (BOOL)hasUnfetchedNamespaceForTeamId:(id)a3
+- (BOOL)hasUnfetchedNamespaceForTeamId:(id)id
 {
-  v5 = a3;
-  if (!v5)
+  idCopy = id;
+  if (!idCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:302 description:{@"Invalid parameter not satisfying: %@", @"teamId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceDatabase.m" lineNumber:302 description:{@"Invalid parameter not satisfying: %@", @"teamId"}];
   }
 
   v13 = 0;
@@ -755,7 +755,7 @@ void __59__TRINamespaceDatabase_setFetched_forDynamicNamespaceName___block_invok
   v11[1] = 3221225472;
   v11[2] = __55__TRINamespaceDatabase_hasUnfetchedNamespaceForTeamId___block_invoke;
   v11[3] = &unk_279DDF860;
-  v6 = v5;
+  v6 = idCopy;
   v12 = v6;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;

@@ -1,15 +1,15 @@
 @interface PGGraphLocationStreetEdge
 + (id)filter;
-- (id)initFromLocationNode:(id)a3 toStreetNode:(id)a4;
+- (id)initFromLocationNode:(id)node toStreetNode:(id)streetNode;
 @end
 
 @implementation PGGraphLocationStreetEdge
 
-- (id)initFromLocationNode:(id)a3 toStreetNode:(id)a4
+- (id)initFromLocationNode:(id)node toStreetNode:(id)streetNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphLocationStreetEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:streetNode];
 }
 
 + (id)filter

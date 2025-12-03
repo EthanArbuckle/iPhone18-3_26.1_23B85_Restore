@@ -1,35 +1,35 @@
 @interface CurrentLocationDataProvider
 - (CurrentLocationDataProvider)init;
 - (GEOObserverHashTable)observers;
-- (void)_updateCurrentLocationAndNotifyObservers:(BOOL)a3;
-- (void)setActive:(BOOL)a3;
+- (void)_updateCurrentLocationAndNotifyObservers:(BOOL)observers;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation CurrentLocationDataProvider
 
-- (void)_updateCurrentLocationAndNotifyObservers:(BOOL)a3
+- (void)_updateCurrentLocationAndNotifyObservers:(BOOL)observers
 {
   if (self->_active)
   {
-    v3 = a3;
+    observersCopy = observers;
     if ([(MKLocationManager *)self->_locationManager isAuthorizedForPreciseLocation])
     {
-      v6 = [(MKLocationManager *)self->_locationManager currentLocation];
+      currentLocation = [(MKLocationManager *)self->_locationManager currentLocation];
     }
 
     else
     {
-      v6 = 0;
+      currentLocation = 0;
     }
 
-    if (v6 == self->_currentLocation)
+    if (currentLocation == self->_currentLocation)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = [(GEOLocation *)v6 isEqual:?];
+      v7 = [(GEOLocation *)currentLocation isEqual:?];
     }
 
     v8 = sub_1000410AC();
@@ -38,9 +38,9 @@
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
       v11 = NSStringFromSelector(a2);
-      if (v6)
+      if (currentLocation)
       {
-        [(GEOLocation *)v6 coordinate];
+        [(GEOLocation *)currentLocation coordinate];
         v14 = [NSString stringWithFormat:@"%+.8f, %+.8f", v12, v13];
       }
 
@@ -65,15 +65,15 @@
       v23 = 2112;
       v24 = v16;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@ %@, currentLocation = %@, currentLocationChanged = %@", buf, 0x2Au);
-      if (v6)
+      if (currentLocation)
       {
       }
     }
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_currentLocation, v6);
-      if (v3)
+      objc_storeStrong(&self->_currentLocation, currentLocation);
+      if (observersCopy)
       {
         [(GEOObserverHashTable *)self->_observers homeDataProvidingObjectDidUpdate:self];
       }
@@ -96,13 +96,13 @@
   return observers;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     locationManager = self->_locationManager;
-    if (a3)
+    if (active)
     {
       [(MKLocationManager *)locationManager startLocationUpdateWithObserver:self];
 

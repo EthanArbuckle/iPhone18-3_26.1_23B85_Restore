@@ -1,37 +1,37 @@
 @interface PGPetQuestionFactory
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4;
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block;
 - (id)initialPetQuestion;
-- (void)updateInitialQuestion:(id)a3;
+- (void)updateInitialQuestion:(id)question;
 @end
 
 @implementation PGPetQuestionFactory
 
-- (void)updateInitialQuestion:(id)a3
+- (void)updateInitialQuestion:(id)question
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGSurveyQuestionFactory *)self workingContext];
-  v6 = [v5 photoLibrary];
+  questionCopy = question;
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+  photoLibrary = [workingContext photoLibrary];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __46__PGPetQuestionFactory_updateInitialQuestion___block_invoke;
   v13[3] = &unk_27888A660;
-  v7 = v4;
+  v7 = questionCopy;
   v14 = v7;
   v12 = 0;
-  [v6 performChangesAndWait:v13 error:&v12];
+  [photoLibrary performChangesAndWait:v13 error:&v12];
   v8 = v12;
 
   if (v8)
   {
     v9 = +[PGLogging sharedLogging];
-    v10 = [v9 loggingConnection];
+    loggingConnection = [v9 loggingConnection];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v16 = v8;
-      _os_log_error_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_ERROR, "[Questions] Error performing library changes for pet inital question: %@", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[Questions] Error performing library changes for pet inital question: %@", buf, 0xCu);
     }
   }
 
@@ -48,25 +48,25 @@ void __46__PGPetQuestionFactory_updateInitialQuestion___block_invoke(uint64_t a1
 
 - (id)initialPetQuestion
 {
-  v2 = [(PGSurveyQuestionFactory *)self workingContext];
-  v3 = [v2 photoLibrary];
-  v4 = [v3 librarySpecificFetchOptions];
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+  photoLibrary = [workingContext photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v4 setFetchLimit:1];
+  [librarySpecificFetchOptions setFetchLimit:1];
   v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type = %d AND entityType = %d AND entityIdentifier = %@", 13, 4, @"PET_INITIAL_QUESTION_FAKE_ASSET"];
-  [v4 setPredicate:v5];
+  [librarySpecificFetchOptions setPredicate:v5];
 
-  v6 = [MEMORY[0x277CD9970] fetchQuestionsWithOptions:v4 validQuestionsOnly:0];
-  v7 = [v6 firstObject];
+  v6 = [MEMORY[0x277CD9970] fetchQuestionsWithOptions:librarySpecificFetchOptions validQuestionsOnly:0];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = _Block_copy(v6);
+  blockCopy = block;
+  v7 = _Block_copy(blockCopy);
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -90,7 +90,7 @@ void __46__PGPetQuestionFactory_updateInitialQuestion___block_invoke(uint64_t a1
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
 LABEL_19:
-          v21 = MEMORY[0x277CBEBF8];
+          allObjects = MEMORY[0x277CBEBF8];
           goto LABEL_22;
         }
 
@@ -105,7 +105,7 @@ LABEL_11:
       }
     }
 
-    if (!a3)
+    if (!limit)
     {
       v11 = CFAbsoluteTimeGetCurrent();
       if (v11 - v34[3] < 0.01)
@@ -132,14 +132,14 @@ LABEL_11:
     }
   }
 
-  else if (!a3)
+  else if (!limit)
   {
     goto LABEL_19;
   }
 
   v13 = [MEMORY[0x277CBEB58] set];
-  v14 = [(PGSurveyQuestionFactory *)self workingContext];
-  v15 = [v14 photoLibrary];
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+  photoLibrary = [workingContext photoLibrary];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __65__PGPetQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke;
@@ -147,15 +147,15 @@ LABEL_11:
   v24[4] = self;
   v16 = v13;
   v25 = v16;
-  v17 = v15;
+  v17 = photoLibrary;
   v26 = v17;
-  v30 = a3;
+  limitCopy = limit;
   v18 = v7;
   v27 = v18;
   v28 = &v33;
   v31 = 0x3F847AE147AE147BLL;
   v29 = &v37;
-  [v14 performSynchronousConcurrentGraphReadUsingBlock:v24];
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:v24];
   if (v7 && (v19 = CFAbsoluteTimeGetCurrent(), v19 - v34[3] >= 0.01) && (v34[3] = v19, v32 = 0, v18[2](v18, &v32, 1.0), v20 = *(v38 + 24) | v32, *(v38 + 24) = v20, (v20 & 1) != 0))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -167,12 +167,12 @@ LABEL_11:
       _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
     }
 
-    v21 = MEMORY[0x277CBEBF8];
+    allObjects = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v21 = [v16 allObjects];
+    allObjects = [v16 allObjects];
   }
 
 LABEL_22:
@@ -181,7 +181,7 @@ LABEL_22:
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return allObjects;
 }
 
 void __65__PGPetQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke(uint64_t a1, void *a2)

@@ -4,46 +4,46 @@
 - (Class)strokeClass;
 - (Class)strokeSelectionClass;
 - (NSArray)_rootStrokes;
-- (PKDrawingCoherence)initWithCoder:(id)a3;
-- (PKDrawingCoherence)initWithData:(id)a3 error:(id *)a4;
-- (PKDrawingCoherence)initWithData:(id)a3 loadNonInkingStrokes:(BOOL)a4 error:(id *)a5;
-- (PKDrawingCoherence)initWithDrawing:(id)a3;
-- (PKDrawingCoherence)initWithStrokes:(id)a3 fromDrawing:(id)a4;
-- (id)_strokeForIdentifier:(id)a3;
+- (PKDrawingCoherence)initWithCoder:(id)coder;
+- (PKDrawingCoherence)initWithData:(id)data error:(id *)error;
+- (PKDrawingCoherence)initWithData:(id)data loadNonInkingStrokes:(BOOL)strokes error:(id *)error;
+- (PKDrawingCoherence)initWithDrawing:(id)drawing;
+- (PKDrawingCoherence)initWithStrokes:(id)strokes fromDrawing:(id)drawing;
+- (id)_strokeForIdentifier:(id)identifier;
 - (id)copyWithoutInternalStrokes;
 - (id)dataRepresentation;
-- (id)drawingByApplyingTransform:(CGAffineTransform *)a3;
-- (id)drawingByApplyingTransform:(CGAffineTransform *)a3 transformInk:(BOOL)a4;
+- (id)drawingByApplyingTransform:(CGAffineTransform *)transform;
+- (id)drawingByApplyingTransform:(CGAffineTransform *)transform transformInk:(BOOL)ink;
 - (id)newStroke;
 - (id)serializeTransiently;
-- (id)serializeWithVersion:(int64_t)a3;
-- (id)setStroke:(id)a3 hidden:(BOOL)a4;
-- (id)transformStrokes:(id)a3 paths:(id)a4 masks:(id)a5;
-- (id)undoableAddNewStrokes:(id)a3 replacingOldStrokes:(id)a4;
-- (id)undoableSetStrokes:(id)a3 groupID:(id)a4 actionName:(id)a5;
-- (id)undoableSetStrokes:(id)a3 inks:(id)a4;
-- (id)undoableTransformStrokes:(id)a3 withTransform:(CGAffineTransform *)a4 concat:(BOOL)a5;
-- (id)updateFromSlicedIntersectingIndexes:(int64_t *)a3 resultNewRoots:(const void *)a4 resultUpdatedStrokes:(const void *)a5 count:(int64_t)a6;
-- (id)visibleStrokeForInsertingStroke:(id)a3;
+- (id)serializeWithVersion:(int64_t)version;
+- (id)setStroke:(id)stroke hidden:(BOOL)hidden;
+- (id)transformStrokes:(id)strokes paths:(id)paths masks:(id)masks;
+- (id)undoableAddNewStrokes:(id)strokes replacingOldStrokes:(id)oldStrokes;
+- (id)undoableSetStrokes:(id)strokes groupID:(id)d actionName:(id)name;
+- (id)undoableSetStrokes:(id)strokes inks:(id)inks;
+- (id)undoableTransformStrokes:(id)strokes withTransform:(CGAffineTransform *)transform concat:(BOOL)concat;
+- (id)updateFromSlicedIntersectingIndexes:(int64_t *)indexes resultNewRoots:(const void *)roots resultUpdatedStrokes:(const void *)strokes count:(int64_t)count;
+- (id)visibleStrokeForInsertingStroke:(id)stroke;
 - (int64_t)_rootStrokesCount;
 - (int64_t)hash;
 - (int64_t)requiredContentVersion;
-- (unint64_t)_mergeWithDrawing:(id)a3;
-- (void)deleteStrokes:(id)a3;
+- (unint64_t)_mergeWithDrawing:(id)drawing;
+- (void)deleteStrokes:(id)strokes;
 - (void)invalidateVisibleStrokes;
-- (void)setStrokes:(id)a3 groupID:(id)a4;
-- (void)setStrokes:(id)a3 hidden:(BOOL)a4;
-- (void)setStrokes:(id)a3 inks:(id)a4;
-- (void)set_canvasBounds:(CGRect)a3;
-- (void)transformStrokes:(id)a3 withTransform:(CGAffineTransform *)a4 concat:(BOOL)a5;
-- (void)updateStroke:(id)a3 indexHint:(int64_t)a4;
+- (void)setStrokes:(id)strokes groupID:(id)d;
+- (void)setStrokes:(id)strokes hidden:(BOOL)hidden;
+- (void)setStrokes:(id)strokes inks:(id)inks;
+- (void)set_canvasBounds:(CGRect)bounds;
+- (void)transformStrokes:(id)strokes withTransform:(CGAffineTransform *)transform concat:(BOOL)concat;
+- (void)updateStroke:(id)stroke indexHint:(int64_t)hint;
 @end
 
 @implementation PKDrawingCoherence
 
-- (PKDrawingCoherence)initWithData:(id)a3 error:(id *)a4
+- (PKDrawingCoherence)initWithData:(id)data error:(id *)error
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
 
@@ -52,16 +52,16 @@
   return v8;
 }
 
-- (PKDrawingCoherence)initWithStrokes:(id)a3 fromDrawing:(id)a4
+- (PKDrawingCoherence)initWithStrokes:(id)strokes fromDrawing:(id)drawing
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s9PencilKit9PKDrawingVSgMd);
   MEMORY[0x1EEE9AC00](v6 - 8);
   v8 = v16 - v7 + 16;
   swift_unknownObjectRetain();
-  v9 = a4;
+  drawingCopy = drawing;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  if (v9)
+  if (drawingCopy)
   {
     static PKDrawing._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -90,27 +90,27 @@
   return v13;
 }
 
-- (PKDrawingCoherence)initWithDrawing:(id)a3
+- (PKDrawingCoherence)initWithDrawing:(id)drawing
 {
   v4 = type metadata accessor for PKDrawing();
   MEMORY[0x1EEE9AC00](v4 - 8);
   v6 = &v9 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = a3;
+  drawingCopy = drawing;
   static PKDrawing._unconditionallyBridgeFromObjectiveC(_:)();
 
   return PKDrawingCoherence.init(drawing:)(v6);
 }
 
-- (PKDrawingCoherence)initWithData:(id)a3 loadNonInkingStrokes:(BOOL)a4 error:(id *)a5
+- (PKDrawingCoherence)initWithData:(id)data loadNonInkingStrokes:(BOOL)strokes error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
   return specialized PKDrawingCoherence.init(data:loadNonInkingStrokes:)(v6, v8);
 }
 
-- (PKDrawingCoherence)initWithCoder:(id)a3
+- (PKDrawingCoherence)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -147,7 +147,7 @@
 
 - (id)dataRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKDrawingCoherence.dataRepresentation()();
   v5 = v4;
 
@@ -157,9 +157,9 @@
   return v6.super.isa;
 }
 
-- (id)serializeWithVersion:(int64_t)a3
+- (id)serializeWithVersion:(int64_t)version
 {
-  v4 = self;
+  selfCopy = self;
   PKDrawingCoherence.concreteDrawing()(v5);
   v7 = v6;
   isa = [v6 serializeWithVersion_];
@@ -182,10 +182,10 @@
 
 - (id)serializeTransiently
 {
-  v2 = self;
+  selfCopy = self;
   PKDrawingCoherence.concreteDrawing()(v3);
   v5 = v4;
-  v6 = [v4 serializeTransiently];
+  serializeTransiently = [v4 serializeTransiently];
 
   v7 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
@@ -200,18 +200,18 @@
 {
   v3 = type metadata accessor for PKDrawingStruct(0);
   MEMORY[0x1EEE9AC00](v3 - 8);
-  v5 = &v18 - ((v4 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v5 = &selfCopy - ((v4 + 15) & 0xFFFFFFFFFFFFFFF0);
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s9Coherence7CapsuleVy8PaperKit15PKDrawingStructVGMd);
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
-  v9 = &v18 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v9 = &selfCopy - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v10);
-  v12 = &v18 - v11;
+  v12 = &selfCopy - v11;
   v13 = OBJC_IVAR___PKDrawingCoherence_model;
   swift_beginAccess();
   v14 = *(v7 + 16);
   v14(v12, self + v13, v6);
-  v18 = self;
+  selfCopy = self;
   Capsule.root.getter();
   v15 = *(v7 + 8);
   v15(v12, v6);
@@ -237,11 +237,11 @@
   swift_beginAccess();
   (*(v8 + 16))(v10, self + v11, v7);
   swift_getKeyPath();
-  v12 = self;
+  selfCopy = self;
   Capsule.subscript.getter();
 
   (*(v8 + 8))(v10, v7);
-  v16 = v12;
+  v16 = selfCopy;
   type metadata accessor for PKStroke();
   CROrderedSet.map<A>(_:)();
 
@@ -265,7 +265,7 @@
   swift_beginAccess();
   (*(v8 + 16))(v10, self + v11, v7);
   swift_getKeyPath();
-  v12 = self;
+  selfCopy = self;
   Capsule.subscript.getter();
 
   (*(v8 + 8))(v10, v7);
@@ -281,7 +281,7 @@
   v4 = *(v3 - 8);
   MEMORY[0x1EEE9AC00](v3);
   v6 = &v12 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   static PKDrawing._unconditionallyBridgeFromObjectiveC(_:)();
 
   PKDrawing._bridgeToObjectiveC()(v8);
@@ -292,7 +292,7 @@
 
 - (CGRect)bounds
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKDrawingCoherence.bounds.getter();
   v5 = v4;
   v7 = v6;
@@ -319,7 +319,7 @@
   swift_beginAccess();
   (*(v4 + 16))(v6, self + v7, v3);
   swift_getKeyPath();
-  v8 = self;
+  selfCopy = self;
   Capsule.subscript.getter();
 
   (*(v4 + 8))(v6, v3);
@@ -334,16 +334,16 @@
   return result;
 }
 
-- (void)set_canvasBounds:(CGRect)a3
+- (void)set_canvasBounds:(CGRect)bounds
 {
   swift_beginAccess();
-  v4 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&_s9Coherence7CapsuleVy8PaperKit15PKDrawingStructVGMd);
   Capsule.mutate<A>(_:)();
   swift_endAccess();
 }
 
-- (id)visibleStrokeForInsertingStroke:(id)a3
+- (id)visibleStrokeForInsertingStroke:(id)stroke
 {
   v4 = type metadata accessor for PKStroke();
   v5 = *(v4 - 8);
@@ -351,11 +351,11 @@
   v7 = &v17 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v8);
   v10 = &v17 - v9;
-  v11 = a3;
+  strokeCopy = stroke;
   static PKStroke._unconditionallyBridgeFromObjectiveC(_:)();
 
   isa = PKStroke._bridgeToObjectiveC()().super.isa;
-  v13 = [(objc_class *)isa copyForMutation];
+  copyForMutation = [(objc_class *)isa copyForMutation];
 
   static PKStroke._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = *(v5 + 8);
@@ -366,13 +366,13 @@
   return v15.super.isa;
 }
 
-- (id)setStroke:(id)a3 hidden:(BOOL)a4
+- (id)setStroke:(id)stroke hidden:(BOOL)hidden
 {
   v5 = type metadata accessor for PKStroke();
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = a3;
+  strokeCopy = stroke;
   static PKStroke._unconditionallyBridgeFromObjectiveC(_:)();
 
   v10.super.isa = PKStroke._bridgeToObjectiveC()().super.isa;
@@ -381,49 +381,49 @@
   return v10.super.isa;
 }
 
-- (void)setStrokes:(id)a3 hidden:(BOOL)a4
+- (void)setStrokes:(id)strokes hidden:(BOOL)hidden
 {
-  if (a4)
+  if (hidden)
   {
-    [(PKDrawingCoherence *)self deleteStrokes:a3];
+    [(PKDrawingCoherence *)self deleteStrokes:strokes];
   }
 }
 
-- (id)undoableAddNewStrokes:(id)a3 replacingOldStrokes:(id)a4
+- (id)undoableAddNewStrokes:(id)strokes replacingOldStrokes:(id)oldStrokes
 {
   type metadata accessor for PKStroke();
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = self;
+  selfCopy = self;
   PKDrawingCoherence.undoableAddNewStrokes(_:replacingOldStrokes:)(v8, v5, v6);
   v10 = v9;
 
   return v10;
 }
 
-- (void)updateStroke:(id)a3 indexHint:(int64_t)a4
+- (void)updateStroke:(id)stroke indexHint:(int64_t)hint
 {
   v6 = type metadata accessor for PKStroke();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = a3;
-  v11 = self;
+  strokeCopy = stroke;
+  selfCopy = self;
   static PKStroke._unconditionallyBridgeFromObjectiveC(_:)();
 
   specialized PKDrawingCoherence.updateStroke(_:indexHint:)(v9);
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)transformStrokes:(id)a3 withTransform:(CGAffineTransform *)a4 concat:(BOOL)a5
+- (void)transformStrokes:(id)strokes withTransform:(CGAffineTransform *)transform concat:(BOOL)concat
 {
-  v5 = a5;
-  b = a4->b;
-  c = a4->c;
-  d = a4->d;
-  tx = a4->tx;
-  ty = a4->ty;
-  a = a4->a;
+  concatCopy = concat;
+  b = transform->b;
+  c = transform->c;
+  d = transform->d;
+  tx = transform->tx;
+  ty = transform->ty;
+  a = transform->a;
   v16 = b;
   v17 = c;
   v18 = d;
@@ -438,7 +438,7 @@
   v14.tx = tx;
   v14.ty = ty;
   IsIdentity = CGAffineTransformIsIdentity(&v14);
-  if (IsIdentity && v5)
+  if (IsIdentity && concatCopy)
   {
   }
 
@@ -446,44 +446,44 @@
   {
     MEMORY[0x1EEE9AC00](IsIdentity);
     swift_beginAccess();
-    v13 = self;
+    selfCopy = self;
     __swift_instantiateConcreteTypeFromMangledNameV2(&_s9Coherence7CapsuleVy8PaperKit15PKDrawingStructVGMd);
     Capsule.callAsFunction<A>(_:)();
     swift_endAccess();
 
-    [(PKDrawingCoherence *)v13 invalidateVisibleStrokes];
+    [(PKDrawingCoherence *)selfCopy invalidateVisibleStrokes];
   }
 }
 
-- (void)deleteStrokes:(id)a3
+- (void)deleteStrokes:(id)strokes
 {
   type metadata accessor for PKStroke();
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_beginAccess();
-  v4 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&_s9Coherence7CapsuleVy8PaperKit15PKDrawingStructVGMd);
   Capsule.callAsFunction<A>(_:)();
   swift_endAccess();
 
-  [(PKDrawingCoherence *)v4 invalidateVisibleStrokes];
+  [(PKDrawingCoherence *)selfCopy invalidateVisibleStrokes];
 }
 
-- (id)undoableTransformStrokes:(id)a3 withTransform:(CGAffineTransform *)a4 concat:(BOOL)a5
+- (id)undoableTransformStrokes:(id)strokes withTransform:(CGAffineTransform *)transform concat:(BOOL)concat
 {
-  v7 = *&a4->c;
-  *&v14.a = *&a4->a;
+  v7 = *&transform->c;
+  *&v14.a = *&transform->a;
   *&v14.c = v7;
-  *&v14.tx = *&a4->tx;
+  *&v14.tx = *&transform->tx;
   type metadata accessor for PKStroke();
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
-  PKDrawingCoherence.undoableTransformStrokes(_:with:concat:)(v10, v8, &v14, a5);
+  selfCopy = self;
+  PKDrawingCoherence.undoableTransformStrokes(_:with:concat:)(v10, v8, &v14, concat);
   v12 = v11;
 
   return v12;
 }
 
-- (id)transformStrokes:(id)a3 paths:(id)a4 masks:(id)a5
+- (id)transformStrokes:(id)strokes paths:(id)paths masks:(id)masks
 {
   type metadata accessor for PKStroke();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -493,7 +493,7 @@
   v7 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   type metadata accessor for PKMathRecognitionItemAttributes(0, &lazy cache variable for type metadata for PKStrokeMask);
   v8 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   PKDrawingCoherence.undoableSetStrokes(_:paths:masks:)(v10, v6, v7, v8);
   v12 = v11;
 
@@ -511,42 +511,42 @@
   return v14.super.isa;
 }
 
-- (void)setStrokes:(id)a3 inks:(id)a4
+- (void)setStrokes:(id)strokes inks:(id)inks
 {
   type metadata accessor for PKStroke();
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
   type metadata accessor for PKInk();
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_beginAccess();
-  v5 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&_s9Coherence7CapsuleVy8PaperKit15PKDrawingStructVGMd);
   Capsule.mutate<A>(_:)();
   swift_endAccess();
 
-  [(PKDrawingCoherence *)v5 invalidateVisibleStrokes];
+  [(PKDrawingCoherence *)selfCopy invalidateVisibleStrokes];
 }
 
-- (id)undoableSetStrokes:(id)a3 inks:(id)a4
+- (id)undoableSetStrokes:(id)strokes inks:(id)inks
 {
   type metadata accessor for PKStroke();
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   type metadata accessor for PKInk();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = self;
+  selfCopy = self;
   PKDrawingCoherence.undoableSetStrokes(_:inks:)(v8, v5, v6);
   v10 = v9;
 
   return v10;
 }
 
-- (void)setStrokes:(id)a3 groupID:(id)a4
+- (void)setStrokes:(id)strokes groupID:(id)d
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4UUIDVSgMd);
   MEMORY[0x1EEE9AC00](v6 - 8);
   v8 = &v14 - v7;
   type metadata accessor for PKStroke();
   v9 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = type metadata accessor for UUID();
@@ -563,7 +563,7 @@
   *(&v14 - 2) = v9;
   *(&v14 - 1) = v8;
   swift_beginAccess();
-  v13 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&_s9Coherence7CapsuleVy8PaperKit15PKDrawingStructVGMd);
   Capsule.mutate<A>(_:)();
   swift_endAccess();
@@ -571,14 +571,14 @@
   outlined destroy of StocksKitCurrencyCache.Provider?(v8, &_s10Foundation4UUIDVSgMd);
 }
 
-- (id)undoableSetStrokes:(id)a3 groupID:(id)a4 actionName:(id)a5
+- (id)undoableSetStrokes:(id)strokes groupID:(id)d actionName:(id)name
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4UUIDVSgMd);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v19 - v8;
   type metadata accessor for PKStroke();
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = type metadata accessor for UUID();
@@ -593,7 +593,7 @@
 
   v13 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = v14;
-  v16 = self;
+  selfCopy = self;
   v17 = PKDrawingCoherence.undoableSetStrokes(_:groupID:actionName:)(v10, v9, v13, v15);
 
   outlined destroy of StocksKitCurrencyCache.Provider?(v9, &_s10Foundation4UUIDVSgMd);
@@ -601,29 +601,29 @@
   return v17;
 }
 
-- (id)updateFromSlicedIntersectingIndexes:(int64_t *)a3 resultNewRoots:(const void *)a4 resultUpdatedStrokes:(const void *)a5 count:(int64_t)a6
+- (id)updateFromSlicedIntersectingIndexes:(int64_t *)indexes resultNewRoots:(const void *)roots resultUpdatedStrokes:(const void *)strokes count:(int64_t)count
 {
-  v10 = self;
-  v11 = PKDrawingCoherence.update(fromSlicedIntersectingIndexes:resultNewRoots:resultUpdatedStrokes:count:)(a3, a4, a5, a6);
+  selfCopy = self;
+  v11 = PKDrawingCoherence.update(fromSlicedIntersectingIndexes:resultNewRoots:resultUpdatedStrokes:count:)(indexes, roots, strokes, count);
 
   return v11;
 }
 
-- (id)drawingByApplyingTransform:(CGAffineTransform *)a3
+- (id)drawingByApplyingTransform:(CGAffineTransform *)transform
 {
-  tx = a3->tx;
-  ty = a3->ty;
+  tx = transform->tx;
+  ty = transform->ty;
   v7 = type metadata accessor for PKDrawing();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7);
   v10 = v18 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = self;
-  v12 = *&a3->c;
-  v18[0] = *&a3->a;
+  selfCopy = self;
+  v12 = *&transform->c;
+  v18[0] = *&transform->a;
   v18[1] = v12;
   v19 = tx;
   v20 = ty;
-  v13 = [(PKDrawingCoherence *)v11 drawingByApplyingTransform:v18 transformInk:1];
+  v13 = [(PKDrawingCoherence *)selfCopy drawingByApplyingTransform:v18 transformInk:1];
   static PKDrawing._unconditionallyBridgeFromObjectiveC(_:)();
 
   PKDrawing._bridgeToObjectiveC()(v14);
@@ -633,18 +633,18 @@
   return v16;
 }
 
-- (id)drawingByApplyingTransform:(CGAffineTransform *)a3 transformInk:(BOOL)a4
+- (id)drawingByApplyingTransform:(CGAffineTransform *)transform transformInk:(BOOL)ink
 {
-  v6 = *&a3->c;
-  v17[0] = *&a3->a;
+  v6 = *&transform->c;
+  v17[0] = *&transform->a;
   v17[1] = v6;
-  v17[2] = *&a3->tx;
+  v17[2] = *&transform->tx;
   v7 = type metadata accessor for PKDrawing();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7);
   v10 = v17 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = self;
-  v12 = PKDrawingCoherence.applyTransform(_:transformInk:)(v17, a4);
+  selfCopy = self;
+  v12 = PKDrawingCoherence.applyTransform(_:transformInk:)(v17, ink);
   static PKDrawing._unconditionallyBridgeFromObjectiveC(_:)();
 
   PKDrawing._bridgeToObjectiveC()(v13);
@@ -669,13 +669,13 @@
   v13 = type metadata accessor for PKDrawingCoherence(0);
   v19.receiver = self;
   v19.super_class = v13;
-  v14 = self;
+  selfCopy = self;
   [(PKDrawingCoherence *)&v19 invalidateVisibleStrokes];
   v15 = OBJC_IVAR___PKDrawingCoherence_model;
   swift_beginAccess();
   v16 = *(v7 + 16);
-  v16(v12, v14 + v15, v6);
-  v16(v9, v14 + v15, v6);
+  v16(v12, selfCopy + v15, v6);
+  v16(v9, selfCopy + v15, v6);
   Capsule.rootID.getter();
   v17 = *(v7 + 8);
   v17(v9, v6);
@@ -685,14 +685,14 @@
   v17(v12, v6);
 }
 
-- (unint64_t)_mergeWithDrawing:(id)a3
+- (unint64_t)_mergeWithDrawing:(id)drawing
 {
   v5 = type metadata accessor for PKDrawing();
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = a3;
-  v10 = self;
+  drawingCopy = drawing;
+  selfCopy = self;
   static PKDrawing._unconditionallyBridgeFromObjectiveC(_:)();
 
   v11 = PKDrawingCoherence._merge(with:)(v8);
@@ -702,13 +702,13 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKDrawingCoherence.hash.getter();
 
   return v3;
 }
 
-- (id)_strokeForIdentifier:(id)a3
+- (id)_strokeForIdentifier:(id)identifier
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -718,7 +718,7 @@
   MEMORY[0x1EEE9AC00](v8 - 8);
   v10 = &v18 - v9;
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = self;
+  selfCopy = self;
   PKDrawingCoherence._stroke(forIdentifier:)(v7, v10);
 
   (*(v5 + 8))(v7, v4);

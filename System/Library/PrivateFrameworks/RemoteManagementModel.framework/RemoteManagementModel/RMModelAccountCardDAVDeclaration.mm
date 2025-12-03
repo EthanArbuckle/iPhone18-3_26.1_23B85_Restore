@@ -1,12 +1,12 @@
 @interface RMModelAccountCardDAVDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 hostName:(id)a4;
-+ (id)buildWithIdentifier:(id)a3 visibleName:(id)a4 hostName:(id)a5 port:(id)a6 path:(id)a7 authenticationCredentialsAssetReference:(id)a8;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier hostName:(id)name;
++ (id)buildWithIdentifier:(id)identifier visibleName:(id)name hostName:(id)hostName port:(id)port path:(id)path authenticationCredentialsAssetReference:(id)reference;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
 - (id)assetReferences;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAccountCardDAVDeclaration
@@ -52,60 +52,60 @@ void __51__RMModelAccountCardDAVDeclaration_assetReferences__block_invoke()
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)buildWithIdentifier:(id)a3 visibleName:(id)a4 hostName:(id)a5 port:(id)a6 path:(id)a7 authenticationCredentialsAssetReference:(id)a8
++ (id)buildWithIdentifier:(id)identifier visibleName:(id)name hostName:(id)hostName port:(id)port path:(id)path authenticationCredentialsAssetReference:(id)reference
 {
-  v13 = a3;
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
+  identifierCopy = identifier;
+  referenceCopy = reference;
+  pathCopy = path;
+  portCopy = port;
+  hostNameCopy = hostName;
+  nameCopy = name;
   v19 = objc_opt_new();
   [v19 setDeclarationType:@"com.apple.configuration.account.carddav"];
-  if (v13)
+  if (identifierCopy)
   {
-    [v19 setDeclarationIdentifier:v13];
+    [v19 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v20 = [MEMORY[0x277CCAD78] UUID];
-    v21 = [v20 UUIDString];
-    [v19 setDeclarationIdentifier:v21];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v19 setDeclarationIdentifier:uUIDString];
   }
 
-  [v19 setPayloadVisibleName:v18];
+  [v19 setPayloadVisibleName:nameCopy];
 
-  [v19 setPayloadHostName:v17];
-  [v19 setPayloadPort:v16];
+  [v19 setPayloadHostName:hostNameCopy];
+  [v19 setPayloadPort:portCopy];
 
-  [v19 setPayloadPath:v15];
-  [v19 setPayloadAuthenticationCredentialsAssetReference:v14];
+  [v19 setPayloadPath:pathCopy];
+  [v19 setPayloadAuthenticationCredentialsAssetReference:referenceCopy];
 
   [v19 updateServerToken];
 
   return v19;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 hostName:(id)a4
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier hostName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v7 = objc_opt_new();
   [v7 setDeclarationType:@"com.apple.configuration.account.carddav"];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setDeclarationIdentifier:v5];
+    [v7 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [v7 setDeclarationIdentifier:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v7 setDeclarationIdentifier:uUIDString];
   }
 
-  [v7 setPayloadHostName:v6];
+  [v7 setPayloadHostName:nameCopy];
 
   [v7 updateServerToken];
 
@@ -150,12 +150,12 @@ void __51__RMModelAccountCardDAVDeclaration_assetReferences__block_invoke()
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelAccountCardDAVDeclaration allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -163,38 +163,38 @@ void __51__RMModelAccountCardDAVDeclaration_assetReferences__block_invoke()
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"VisibleName" forKeyPath:@"payloadVisibleName" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"HostName" forKeyPath:@"payloadHostName" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v7 usingKey:@"Port" forKeyPath:@"payloadPort" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"Path" forKeyPath:@"payloadPath" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"AuthenticationCredentialsAssetReference" forKeyPath:@"payloadAuthenticationCredentialsAssetReference" isRequired:0 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"VisibleName" forKeyPath:@"payloadVisibleName" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"HostName" forKeyPath:@"payloadHostName" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"Port" forKeyPath:@"payloadPort" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Path" forKeyPath:@"payloadPath" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"AuthenticationCredentialsAssetReference" forKeyPath:@"payloadAuthenticationCredentialsAssetReference" isRequired:0 defaultValue:0 error:error];
   return v13;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelAccountCardDAVDeclaration *)self payloadVisibleName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"VisibleName" value:v5 isRequired:0 defaultValue:0];
+  payloadVisibleName = [(RMModelAccountCardDAVDeclaration *)self payloadVisibleName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"VisibleName" value:payloadVisibleName isRequired:0 defaultValue:0];
 
-  v6 = [(RMModelAccountCardDAVDeclaration *)self payloadHostName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"HostName" value:v6 isRequired:1 defaultValue:0];
+  payloadHostName = [(RMModelAccountCardDAVDeclaration *)self payloadHostName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"HostName" value:payloadHostName isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelAccountCardDAVDeclaration *)self payloadPort];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"Port" value:v7 isRequired:0 defaultValue:0];
+  payloadPort = [(RMModelAccountCardDAVDeclaration *)self payloadPort];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"Port" value:payloadPort isRequired:0 defaultValue:0];
 
-  v8 = [(RMModelAccountCardDAVDeclaration *)self payloadPath];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Path" value:v8 isRequired:0 defaultValue:0];
+  payloadPath = [(RMModelAccountCardDAVDeclaration *)self payloadPath];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Path" value:payloadPath isRequired:0 defaultValue:0];
 
-  v9 = [(RMModelAccountCardDAVDeclaration *)self payloadAuthenticationCredentialsAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"AuthenticationCredentialsAssetReference" value:v9 isRequired:0 defaultValue:0];
+  payloadAuthenticationCredentialsAssetReference = [(RMModelAccountCardDAVDeclaration *)self payloadAuthenticationCredentialsAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"AuthenticationCredentialsAssetReference" value:payloadAuthenticationCredentialsAssetReference isRequired:0 defaultValue:0];
 
   v10 = [v4 copy];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v16.receiver = self;
   v16.super_class = RMModelAccountCardDAVDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v16 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v16 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadVisibleName copy];
   v6 = v4[6];
   v4[6] = v5;

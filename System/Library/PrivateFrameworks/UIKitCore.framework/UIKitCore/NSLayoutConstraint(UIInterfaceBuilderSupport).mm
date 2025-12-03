@@ -8,31 +8,31 @@
 - (_NSLayoutConstraintConstant)_encodedConstant
 {
   v2 = 0.0;
-  if (![a1 symbolicConstant])
+  if (![self symbolicConstant])
   {
-    [a1 constant];
+    [self constant];
     v2 = v3;
   }
 
-  v4 = [a1 symbolicConstant];
+  symbolicConstant = [self symbolicConstant];
 
-  return [_NSLayoutConstraintConstant constantWithSymbolicValue:v4 numericValue:v2];
+  return [_NSLayoutConstraintConstant constantWithSymbolicValue:symbolicConstant numericValue:v2];
 }
 
 - (uint64_t)_setEncodedConstant:()UIInterfaceBuilderSupport
 {
   if ([a3 symbolicValue])
   {
-    v5 = [a3 symbolicValue];
+    symbolicValue = [a3 symbolicValue];
 
-    return [a1 setSymbolicConstant:v5];
+    return [self setSymbolicConstant:symbolicValue];
   }
 
   else
   {
     [a3 numericValue];
 
-    return [a1 setConstant:?];
+    return [self setConstant:?];
   }
 }
 

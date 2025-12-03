@@ -1,37 +1,37 @@
 @interface HFMutableColorPalette
-- (void)setColor:(id)a3 atIndex:(unint64_t)a4;
+- (void)setColor:(id)color atIndex:(unint64_t)index;
 @end
 
 @implementation HFMutableColorPalette
 
-- (void)setColor:(id)a3 atIndex:(unint64_t)a4
+- (void)setColor:(id)color atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(HFColorPalette *)self colors];
-  v8 = [v7 count];
+  colorCopy = color;
+  colors = [(HFColorPalette *)self colors];
+  v8 = [colors count];
 
-  if (v8 <= a4)
+  if (v8 <= index)
   {
     v9 = MEMORY[0x277CCABB0];
-    v10 = [(HFColorPalette *)self colors];
-    v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
+    colors2 = [(HFColorPalette *)self colors];
+    v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(colors2, "count")}];
     NSLog(&cfstr_AttemptingToSe.isa, v11);
   }
 
-  v12 = [(HFColorPalette *)self _isNaturalLightPalette];
-  if (a4 || !v12)
+  _isNaturalLightPalette = [(HFColorPalette *)self _isNaturalLightPalette];
+  if (index || !_isNaturalLightPalette)
   {
-    if ([v6 isNaturalLightColor])
+    if ([colorCopy isNaturalLightColor])
     {
       NSLog(&cfstr_YouCanTSetTheN.isa);
     }
 
     else
     {
-      v14 = [(HFColorPalette *)self rawColors];
-      v15 = [v14 mutableCopy];
+      rawColors = [(HFColorPalette *)self rawColors];
+      v15 = [rawColors mutableCopy];
 
-      [v15 setObject:v6 atIndexedSubscript:a4];
+      [v15 setObject:colorCopy atIndexedSubscript:index];
       [(HFColorPalette *)self setRawColors:v15];
     }
   }

@@ -1,34 +1,34 @@
 @interface PMiOSSliderViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axSetMemoriesEditSliderType:(int64_t)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setSelectedItem:(int64_t)a3;
+- (void)_axSetMemoriesEditSliderType:(int64_t)type;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setSelectedItem:(int64_t)item;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation PMiOSSliderViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PMiOSSliderViewController" isKindOfClass:@"UICollectionViewController"];
-  [v3 validateClass:@"PMiOSSliderViewController" hasInstanceMethod:@"selectedItem" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PMiOSSliderViewController" hasInstanceMethod:@"provider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PMiOSSliderViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"PMiOSSliderViewController" hasInstanceMethod:@"viewDidLayoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PMiOSSliderViewController" hasInstanceMethod:@"setSelectedItem:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"PMiOSSliderViewController" hasInstanceMethod:@"scrollViewWillBeginDragging:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PMiOSSliderViewController" hasInstanceMethod:@"scrollViewDidEndDragging: willDecelerate:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"PMiOSSliderViewController" hasInstanceMethod:@"_setFontStyleForCell: highlighted:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateProtocol:@"PMSliderProviderProtocol" hasRequiredInstanceMethod:@"displayNameForIndex:"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PMiOSSliderViewController" isKindOfClass:@"UICollectionViewController"];
+  [validationsCopy validateClass:@"PMiOSSliderViewController" hasInstanceMethod:@"selectedItem" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PMiOSSliderViewController" hasInstanceMethod:@"provider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PMiOSSliderViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"PMiOSSliderViewController" hasInstanceMethod:@"viewDidLayoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PMiOSSliderViewController" hasInstanceMethod:@"setSelectedItem:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"PMiOSSliderViewController" hasInstanceMethod:@"scrollViewWillBeginDragging:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PMiOSSliderViewController" hasInstanceMethod:@"scrollViewDidEndDragging: willDecelerate:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"PMiOSSliderViewController" hasInstanceMethod:@"_setFontStyleForCell: highlighted:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateProtocol:@"PMSliderProviderProtocol" hasRequiredInstanceMethod:@"displayNameForIndex:"];
 }
 
-- (void)_axSetMemoriesEditSliderType:(int64_t)a3
+- (void)_axSetMemoriesEditSliderType:(int64_t)type
 {
   [(PMiOSSliderViewControllerAccessibility *)self _setAXMemoriesEditSliderType:?];
-  v5 = [(PMiOSSliderViewControllerAccessibility *)self _axMemoriesMoodSlider];
-  [v5 setSliderType:a3];
+  _axMemoriesMoodSlider = [(PMiOSSliderViewControllerAccessibility *)self _axMemoriesMoodSlider];
+  [_axMemoriesMoodSlider setSliderType:type];
 }
 
 - (void)viewDidLayoutSubviews
@@ -45,12 +45,12 @@
   v17.super_class = PMiOSSliderViewControllerAccessibility;
   [(PMiOSSliderViewControllerAccessibility *)&v17 _accessibilityLoadAccessibilityInformation];
   [(PMiOSSliderViewControllerAccessibility *)self _setAXDraggingSlider:0];
-  v3 = [(PMiOSSliderViewControllerAccessibility *)self _axMemoriesMoodSlider];
-  if (!v3)
+  _axMemoriesMoodSlider = [(PMiOSSliderViewControllerAccessibility *)self _axMemoriesMoodSlider];
+  if (!_axMemoriesMoodSlider)
   {
-    v3 = [[AXMemoriesSlider alloc] initWithAccessibilityContainer:self];
+    _axMemoriesMoodSlider = [[AXMemoriesSlider alloc] initWithAccessibilityContainer:self];
     [(PMiOSSliderViewControllerAccessibility *)self safeIntegerForKey:@"selectedItem"];
-    [(AXMemoriesSlider *)v3 setSliderType:[(PMiOSSliderViewControllerAccessibility *)self _axMemoriesEditSliderType]];
+    [(AXMemoriesSlider *)_axMemoriesMoodSlider setSliderType:[(PMiOSSliderViewControllerAccessibility *)self _axMemoriesEditSliderType]];
     v4 = [(PMiOSSliderViewControllerAccessibility *)self safeValueForKey:@"provider"];
     v11 = 0;
     v12 = &v11;
@@ -64,9 +64,9 @@
     v6 = v12[5];
 
     _Block_object_dispose(&v11, 8);
-    [(AXMemoriesSlider *)v3 setSelectedDescription:v6];
+    [(AXMemoriesSlider *)_axMemoriesMoodSlider setSelectedDescription:v6];
 
-    [(PMiOSSliderViewControllerAccessibility *)self _setAXMemoriesMoodSlider:v3];
+    [(PMiOSSliderViewControllerAccessibility *)self _setAXMemoriesMoodSlider:_axMemoriesMoodSlider];
     LOBYTE(v11) = 0;
     objc_opt_class();
     v7 = [(PMiOSSliderViewControllerAccessibility *)self safeValueForKey:@"view"];
@@ -77,7 +77,7 @@
       abort();
     }
 
-    v9 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, v3, v10, 3221225472, __84__PMiOSSliderViewControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke, &unk_29F2D0C18}];
+    v9 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, _axMemoriesMoodSlider, v10, 3221225472, __84__PMiOSSliderViewControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke, &unk_29F2D0C18}];
     [v8 setAccessibilityElements:v9];
   }
 }
@@ -92,13 +92,13 @@ uint64_t __84__PMiOSSliderViewControllerAccessibility__accessibilityLoadAccessib
   return MEMORY[0x2A1C71028]();
 }
 
-- (void)setSelectedItem:(int64_t)a3
+- (void)setSelectedItem:(int64_t)item
 {
   v14.receiver = self;
   v14.super_class = PMiOSSliderViewControllerAccessibility;
-  [(PMiOSSliderViewControllerAccessibility *)&v14 setSelectedItem:a3];
-  v4 = [(PMiOSSliderViewControllerAccessibility *)self _axMemoriesMoodSlider];
-  if (v4)
+  [(PMiOSSliderViewControllerAccessibility *)&v14 setSelectedItem:item];
+  _axMemoriesMoodSlider = [(PMiOSSliderViewControllerAccessibility *)self _axMemoriesMoodSlider];
+  if (_axMemoriesMoodSlider)
   {
     v5 = [(PMiOSSliderViewControllerAccessibility *)self safeValueForKey:@"provider"];
     [(PMiOSSliderViewControllerAccessibility *)self safeIntegerForKey:@"selectedItem"];
@@ -113,7 +113,7 @@ uint64_t __84__PMiOSSliderViewControllerAccessibility__accessibilityLoadAccessib
     v6 = v9[5];
 
     _Block_object_dispose(&v8, 8);
-    [v4 setSelectedDescription:v6];
+    [_axMemoriesMoodSlider setSelectedDescription:v6];
   }
 }
 
@@ -127,11 +127,11 @@ uint64_t __58__PMiOSSliderViewControllerAccessibility_setSelectedItem___block_in
   return MEMORY[0x2A1C71028]();
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v4.receiver = self;
   v4.super_class = PMiOSSliderViewControllerAccessibility;
-  [(PMiOSSliderViewControllerAccessibility *)&v4 scrollViewWillBeginDragging:a3];
+  [(PMiOSSliderViewControllerAccessibility *)&v4 scrollViewWillBeginDragging:dragging];
   [(PMiOSSliderViewControllerAccessibility *)self _setAXDraggingSlider:1];
 }
 

@@ -1,12 +1,12 @@
 @interface BSUIContextActionDataAssetModel
 - (BSUIContextActionDataAssetModel)init;
-- (BSUIContextActionDataAssetModel)initWithAdamID:(id)a3;
-- (BSUIContextActionDataAssetModel)initWithLibraryAsset:(id)a3 productProfile:(id)a4;
+- (BSUIContextActionDataAssetModel)initWithAdamID:(id)d;
+- (BSUIContextActionDataAssetModel)initWithLibraryAsset:(id)asset productProfile:(id)profile;
 @end
 
 @implementation BSUIContextActionDataAssetModel
 
-- (BSUIContextActionDataAssetModel)initWithAdamID:(id)a3
+- (BSUIContextActionDataAssetModel)initWithAdamID:(id)d
 {
   v4 = sub_2C58C8();
   v5 = self + OBJC_IVAR___BSUIContextActionDataAssetModel_initType;
@@ -18,11 +18,11 @@
   return [(BSUIContextActionDataAssetModel *)&v8 init];
 }
 
-- (BSUIContextActionDataAssetModel)initWithLibraryAsset:(id)a3 productProfile:(id)a4
+- (BSUIContextActionDataAssetModel)initWithLibraryAsset:(id)asset productProfile:(id)profile
 {
-  v5 = a3;
-  v6 = a4;
-  return ContextActionDataModel.Asset.init(libraryAsset:productProfile:)(v5, a4);
+  assetCopy = asset;
+  profileCopy = profile;
+  return ContextActionDataModel.Asset.init(libraryAsset:productProfile:)(assetCopy, profile);
 }
 
 - (BSUIContextActionDataAssetModel)init

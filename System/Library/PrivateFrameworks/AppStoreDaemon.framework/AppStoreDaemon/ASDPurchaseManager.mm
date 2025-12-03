@@ -2,20 +2,20 @@
 + (id)interface;
 + (id)sharedManager;
 - (ASDPurchaseManager)init;
-- (id)adopt:(id)a3;
+- (id)adopt:(id)adopt;
 - (id)adoptableBundleIdentifiers;
-- (void)adoptionStatus:(BOOL)a3 withReplyHandler:(id)a4;
+- (void)adoptionStatus:(BOOL)status withReplyHandler:(id)handler;
 - (void)checkAutomaticDownloadQueue;
 - (void)checkPendingQueue;
-- (void)checkPreflightForItemIdentifier:(id)a3 atURL:(id)a4 withReplyHandler:(id)a5;
-- (void)installReceiptData:(id)a3 atBundleURL:(id)a4 withReplyHandler:(id)a5;
-- (void)processPurchase:(id)a3 withResponseHandler:(id)a4;
-- (void)processPurchases:(id)a3 withResponseHandler:(id)a4;
-- (void)purchaseBatch:(id)a3 additionalBuyParams:(id)a4 withResultHandler:(id)a5;
-- (void)purchaseBatchWithItemMetadata:(id)a3 additionalBuyParams:(id)a4 withResultHandler:(id)a5;
-- (void)renewReceiptForApplicationAtURL:(id)a3 withAppleID:(id)a4 password:(id)a5 forceSandbox:(BOOL)a6 withCompletionHandler:(id)a7;
-- (void)startPurchase:(id)a3 withResultHandler:(id)a4;
-- (void)unadoptWithReplyHandler:(id)a3;
+- (void)checkPreflightForItemIdentifier:(id)identifier atURL:(id)l withReplyHandler:(id)handler;
+- (void)installReceiptData:(id)data atBundleURL:(id)l withReplyHandler:(id)handler;
+- (void)processPurchase:(id)purchase withResponseHandler:(id)handler;
+- (void)processPurchases:(id)purchases withResponseHandler:(id)handler;
+- (void)purchaseBatch:(id)batch additionalBuyParams:(id)params withResultHandler:(id)handler;
+- (void)purchaseBatchWithItemMetadata:(id)metadata additionalBuyParams:(id)params withResultHandler:(id)handler;
+- (void)renewReceiptForApplicationAtURL:(id)l withAppleID:(id)d password:(id)password forceSandbox:(BOOL)sandbox withCompletionHandler:(id)handler;
+- (void)startPurchase:(id)purchase withResultHandler:(id)handler;
+- (void)unadoptWithReplyHandler:(id)handler;
 @end
 
 @implementation ASDPurchaseManager
@@ -47,7 +47,7 @@
   block[1] = 3221225472;
   block[2] = __35__ASDPurchaseManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED90D650 != -1)
   {
     dispatch_once(&qword_1ED90D650, block);
@@ -84,9 +84,9 @@ uint64_t __35__ASDPurchaseManager_sharedManager__block_invoke(uint64_t a1)
   return self;
 }
 
-- (id)adopt:(id)a3
+- (id)adopt:(id)adopt
 {
-  v3 = a3;
+  adoptCopy = adopt;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -110,7 +110,7 @@ uint64_t __35__ASDPurchaseManager_sharedManager__block_invoke(uint64_t a1)
   v10[2] = __28__ASDPurchaseManager_adopt___block_invoke_2;
   v10[3] = &unk_1E7CDBB80;
   v10[4] = &v13;
-  [v7 adopt:v3 withReplyHandler:v10];
+  [v7 adopt:adoptCopy withReplyHandler:v10];
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -178,17 +178,17 @@ uint64_t __35__ASDPurchaseManager_sharedManager__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)adoptionStatus:(BOOL)a3 withReplyHandler:(id)a4
+- (void)adoptionStatus:(BOOL)status withReplyHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__ASDPurchaseManager_adoptionStatus_withReplyHandler___block_invoke;
   v9[3] = &unk_1E7CDD8F8;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = handlerCopy;
+  statusCopy = status;
+  v8 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getPurchaseServiceWithCompletionHandler:v9];
 }
 
@@ -220,22 +220,22 @@ void __54__ASDPurchaseManager_adoptionStatus_withReplyHandler___block_invoke(uin
   }
 }
 
-- (void)purchaseBatch:(id)a3 additionalBuyParams:(id)a4 withResultHandler:(id)a5
+- (void)purchaseBatch:(id)batch additionalBuyParams:(id)params withResultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  batchCopy = batch;
+  paramsCopy = params;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __74__ASDPurchaseManager_purchaseBatch_additionalBuyParams_withResultHandler___block_invoke;
   v15[3] = &unk_1E7CDD948;
-  v17 = v9;
-  v18 = v10;
-  v16 = v8;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v17 = paramsCopy;
+  v18 = handlerCopy;
+  v16 = batchCopy;
+  v12 = paramsCopy;
+  v13 = batchCopy;
+  v14 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getPurchaseServiceWithCompletionHandler:v15];
 }
 
@@ -268,22 +268,22 @@ void __74__ASDPurchaseManager_purchaseBatch_additionalBuyParams_withResultHandle
   }
 }
 
-- (void)purchaseBatchWithItemMetadata:(id)a3 additionalBuyParams:(id)a4 withResultHandler:(id)a5
+- (void)purchaseBatchWithItemMetadata:(id)metadata additionalBuyParams:(id)params withResultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  paramsCopy = params;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __90__ASDPurchaseManager_purchaseBatchWithItemMetadata_additionalBuyParams_withResultHandler___block_invoke;
   v15[3] = &unk_1E7CDD948;
-  v17 = v9;
-  v18 = v10;
-  v16 = v8;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v17 = paramsCopy;
+  v18 = handlerCopy;
+  v16 = metadataCopy;
+  v12 = paramsCopy;
+  v13 = metadataCopy;
+  v14 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getPurchaseServiceWithCompletionHandler:v15];
 }
 
@@ -316,19 +316,19 @@ void __90__ASDPurchaseManager_purchaseBatchWithItemMetadata_additionalBuyParams_
   }
 }
 
-- (void)processPurchase:(id)a3 withResponseHandler:(id)a4
+- (void)processPurchase:(id)purchase withResponseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  purchaseCopy = purchase;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58__ASDPurchaseManager_processPurchase_withResponseHandler___block_invoke;
   v11[3] = &unk_1E7CDD970;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = purchaseCopy;
+  v13 = handlerCopy;
+  v9 = purchaseCopy;
+  v10 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getPurchaseServiceWithCompletionHandler:v11];
 }
 
@@ -360,19 +360,19 @@ void __58__ASDPurchaseManager_processPurchase_withResponseHandler___block_invoke
   }
 }
 
-- (void)processPurchases:(id)a3 withResponseHandler:(id)a4
+- (void)processPurchases:(id)purchases withResponseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  purchasesCopy = purchases;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__ASDPurchaseManager_processPurchases_withResponseHandler___block_invoke;
   v11[3] = &unk_1E7CDD970;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = purchasesCopy;
+  v13 = handlerCopy;
+  v9 = purchasesCopy;
+  v10 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getPurchaseServiceWithCompletionHandler:v11];
 }
 
@@ -404,12 +404,12 @@ void __59__ASDPurchaseManager_processPurchases_withResponseHandler___block_invok
   }
 }
 
-- (void)startPurchase:(id)a3 withResultHandler:(id)a4
+- (void)startPurchase:(id)purchase withResultHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([ASDStoreKitService shouldProcessStoreKitPurchase:v6])
+  purchaseCopy = purchase;
+  handlerCopy = handler;
+  if ([ASDStoreKitService shouldProcessStoreKitPurchase:purchaseCopy])
   {
     v8 = ASDLogHandleForCategory(13);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -425,9 +425,9 @@ void __59__ASDPurchaseManager_processPurchases_withResponseHandler___block_invok
     v18[2] = __54__ASDPurchaseManager_startPurchase_withResultHandler___block_invoke;
     v18[3] = &unk_1E7CDD998;
     v10 = &v19;
-    v19 = v7;
-    v11 = v7;
-    [ASDStoreKitService processStoreKitPurchase:v6 withResultHandler:v18];
+    v19 = handlerCopy;
+    v11 = handlerCopy;
+    [ASDStoreKitService processStoreKitPurchase:purchaseCopy withResultHandler:v18];
   }
 
   else
@@ -438,9 +438,9 @@ void __59__ASDPurchaseManager_processPurchases_withResponseHandler___block_invok
     v15[2] = __54__ASDPurchaseManager_startPurchase_withResultHandler___block_invoke_2;
     v15[3] = &unk_1E7CDD970;
     v10 = &v17;
-    v17 = v7;
-    v16 = v6;
-    v13 = v7;
+    v17 = handlerCopy;
+    v16 = purchaseCopy;
+    v13 = handlerCopy;
     [(ASDServiceBroker *)serviceBroker getPurchaseServiceWithCompletionHandler:v15];
   }
 
@@ -563,30 +563,30 @@ void __39__ASDPurchaseManager_checkPendingQueue__block_invoke_2(uint64_t a1, voi
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkPreflightForItemIdentifier:(id)a3 atURL:(id)a4 withReplyHandler:(id)a5
+- (void)checkPreflightForItemIdentifier:(id)identifier atURL:(id)l withReplyHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    (*(a5 + 2))(a5, 0, 0);
+    (*(handler + 2))(handler, 0, 0);
   }
 }
 
-- (void)installReceiptData:(id)a3 atBundleURL:(id)a4 withReplyHandler:(id)a5
+- (void)installReceiptData:(id)data atBundleURL:(id)l withReplyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  lCopy = l;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __70__ASDPurchaseManager_installReceiptData_atBundleURL_withReplyHandler___block_invoke;
   v15[3] = &unk_1E7CDD948;
-  v17 = v9;
-  v18 = v10;
-  v16 = v8;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v17 = lCopy;
+  v18 = handlerCopy;
+  v16 = dataCopy;
+  v12 = lCopy;
+  v13 = dataCopy;
+  v14 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getPurchaseServiceWithCompletionHandler:v15];
 }
 
@@ -619,26 +619,26 @@ void __70__ASDPurchaseManager_installReceiptData_atBundleURL_withReplyHandler___
   }
 }
 
-- (void)renewReceiptForApplicationAtURL:(id)a3 withAppleID:(id)a4 password:(id)a5 forceSandbox:(BOOL)a6 withCompletionHandler:(id)a7
+- (void)renewReceiptForApplicationAtURL:(id)l withAppleID:(id)d password:(id)password forceSandbox:(BOOL)sandbox withCompletionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  lCopy = l;
+  dCopy = d;
+  passwordCopy = password;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __110__ASDPurchaseManager_renewReceiptForApplicationAtURL_withAppleID_password_forceSandbox_withCompletionHandler___block_invoke;
   v21[3] = &unk_1E7CDD9E8;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = v15;
-  v26 = a6;
-  v17 = v14;
-  v18 = v13;
-  v19 = v12;
-  v20 = v15;
+  v22 = lCopy;
+  v23 = dCopy;
+  v24 = passwordCopy;
+  v25 = handlerCopy;
+  sandboxCopy = sandbox;
+  v17 = passwordCopy;
+  v18 = dCopy;
+  v19 = lCopy;
+  v20 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getPurchaseServiceWithCompletionHandler:v21];
 }
 
@@ -673,16 +673,16 @@ void __110__ASDPurchaseManager_renewReceiptForApplicationAtURL_withAppleID_passw
   }
 }
 
-- (void)unadoptWithReplyHandler:(id)a3
+- (void)unadoptWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__ASDPurchaseManager_unadoptWithReplyHandler___block_invoke;
   v7[3] = &unk_1E7CDDA10;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getPurchaseServiceWithCompletionHandler:v7];
 }
 

@@ -1,68 +1,68 @@
 @interface PKLinkedAppView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKLinkedAppView)initWithCoder:(id)a3;
-- (PKLinkedAppView)initWithLinkedApplication:(id)a3 reuseIdentifier:(id)a4;
-- (PKLinkedAppView)initWithStoreIDs:(id)a3 systemAppBundleIdentifiers:(id)a4 appLaunchURL:(id)a5 reuseIdentifier:(id)a6;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKLinkedAppView)initWithCoder:(id)coder;
+- (PKLinkedAppView)initWithLinkedApplication:(id)application reuseIdentifier:(id)identifier;
+- (PKLinkedAppView)initWithStoreIDs:(id)ds systemAppBundleIdentifiers:(id)identifiers appLaunchURL:(id)l reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setButtonBackgroundColor:(id)a3;
-- (void)setButtonTintColor:(id)a3;
-- (void)setMainLabelColor:(id)a3;
-- (void)setSubTextLabelColor:(id)a3;
+- (void)setButtonBackgroundColor:(id)color;
+- (void)setButtonTintColor:(id)color;
+- (void)setMainLabelColor:(id)color;
+- (void)setSubTextLabelColor:(id)color;
 @end
 
 @implementation PKLinkedAppView
 
-- (PKLinkedAppView)initWithCoder:(id)a3
+- (PKLinkedAppView)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"This class is not NSCoding compliant"];
 
   return [(PKLinkedAppView *)self init];
 }
 
-- (PKLinkedAppView)initWithStoreIDs:(id)a3 systemAppBundleIdentifiers:(id)a4 appLaunchURL:(id)a5 reuseIdentifier:(id)a6
+- (PKLinkedAppView)initWithStoreIDs:(id)ds systemAppBundleIdentifiers:(id)identifiers appLaunchURL:(id)l reuseIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[PKLinkedApplication alloc] initWithStoreIDs:v13 systemAppBundleIdentifiers:v12 defaultLaunchURL:v11];
+  identifierCopy = identifier;
+  lCopy = l;
+  identifiersCopy = identifiers;
+  dsCopy = ds;
+  v14 = [[PKLinkedApplication alloc] initWithStoreIDs:dsCopy systemAppBundleIdentifiers:identifiersCopy defaultLaunchURL:lCopy];
 
-  v15 = [(PKLinkedAppView *)self initWithLinkedApplication:v14 reuseIdentifier:v10];
+  v15 = [(PKLinkedAppView *)self initWithLinkedApplication:v14 reuseIdentifier:identifierCopy];
   return v15;
 }
 
-- (PKLinkedAppView)initWithLinkedApplication:(id)a3 reuseIdentifier:(id)a4
+- (PKLinkedAppView)initWithLinkedApplication:(id)application reuseIdentifier:(id)identifier
 {
-  v6 = a3;
+  applicationCopy = application;
   v20.receiver = self;
   v20.super_class = PKLinkedAppView;
-  v7 = [(PKLinkedAppView *)&v20 initWithStyle:0 reuseIdentifier:a4];
+  v7 = [(PKLinkedAppView *)&v20 initWithStyle:0 reuseIdentifier:identifier];
   if (v7)
   {
-    v8 = [[PKLinkedAppContentView alloc] initWithLinkedApplication:v6];
+    v8 = [[PKLinkedAppContentView alloc] initWithLinkedApplication:applicationCopy];
     linkedAppView = v7->_linkedAppView;
     v7->_linkedAppView = v8;
 
-    v10 = [(PKLinkedAppView *)v7 contentView];
-    [v10 addSubview:v7->_linkedAppView];
+    contentView = [(PKLinkedAppView *)v7 contentView];
+    [contentView addSubview:v7->_linkedAppView];
 
     [(PKLinkedAppView *)v7 setSelectionStyle:0];
-    v11 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     mainLabelColor = v7->_mainLabelColor;
-    v7->_mainLabelColor = v11;
+    v7->_mainLabelColor = labelColor;
 
-    v13 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     subTextLabelColor = v7->_subTextLabelColor;
-    v7->_subTextLabelColor = v13;
+    v7->_subTextLabelColor = secondaryLabelColor;
 
-    v15 = [MEMORY[0x1E69DC888] systemBlueColor];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
     buttonTintColor = v7->_buttonTintColor;
-    v7->_buttonTintColor = v15;
+    v7->_buttonTintColor = systemBlueColor;
 
-    v17 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+    tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
     buttonBackgroundColor = v7->_buttonBackgroundColor;
-    v7->_buttonBackgroundColor = v17;
+    v7->_buttonBackgroundColor = tertiarySystemFillColor;
   }
 
   return v7;
@@ -76,9 +76,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKLinkedAppContentView *)self->_linkedAppView sizeThatFits:a3.width, a3.height];
+  [(PKLinkedAppContentView *)self->_linkedAppView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -94,47 +94,47 @@
   [(PKLinkedAppContentView *)linkedAppView setFrame:?];
 }
 
-- (void)setMainLabelColor:(id)a3
+- (void)setMainLabelColor:(id)color
 {
-  v5 = a3;
-  if (self->_mainLabelColor != v5)
+  colorCopy = color;
+  if (self->_mainLabelColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mainLabelColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_mainLabelColor, color);
+    colorCopy = v6;
   }
 }
 
-- (void)setSubTextLabelColor:(id)a3
+- (void)setSubTextLabelColor:(id)color
 {
-  v5 = a3;
-  if (self->_subTextLabelColor != v5)
+  colorCopy = color;
+  if (self->_subTextLabelColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_subTextLabelColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_subTextLabelColor, color);
+    colorCopy = v6;
   }
 }
 
-- (void)setButtonBackgroundColor:(id)a3
+- (void)setButtonBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_buttonBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_buttonBackgroundColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_buttonBackgroundColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_buttonBackgroundColor, color);
+    colorCopy = v6;
   }
 }
 
-- (void)setButtonTintColor:(id)a3
+- (void)setButtonTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_buttonTintColor != v5)
+  colorCopy = color;
+  if (self->_buttonTintColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_buttonTintColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_buttonTintColor, color);
+    colorCopy = v6;
   }
 }
 

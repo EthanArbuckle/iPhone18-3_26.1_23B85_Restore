@@ -1,6 +1,6 @@
 @interface HMDBackingStoreCacheUpdateRecordOperation
-- (HMDBackingStoreCacheUpdateRecordOperation)initWithGroup:(id)a3 name:(id)a4 record:(id)a5 data:(id)a6 encoding:(unint64_t)a7 model:(id)a8 resultBlock:(id)a9;
-- (HMDBackingStoreCacheUpdateRecordOperation)initWithGroup:(id)a3 record:(id)a4 resultBlock:(id)a5;
+- (HMDBackingStoreCacheUpdateRecordOperation)initWithGroup:(id)group name:(id)name record:(id)record data:(id)data encoding:(unint64_t)encoding model:(id)model resultBlock:(id)block;
+- (HMDBackingStoreCacheUpdateRecordOperation)initWithGroup:(id)group record:(id)record resultBlock:(id)block;
 - (id)mainReturningError;
 @end
 
@@ -8,13 +8,13 @@
 
 - (id)mainReturningError
 {
-  v3 = [(HMDBackingStoreOperation *)self store];
-  v4 = [v3 local];
-  v5 = [(HMDBackingStoreOperation *)self store];
-  v6 = [v5 uuid];
-  v7 = [v6 UUIDString];
+  store = [(HMDBackingStoreOperation *)self store];
+  local = [store local];
+  store2 = [(HMDBackingStoreOperation *)self store];
+  uuid = [store2 uuid];
+  uUIDString = [uuid UUIDString];
   v19 = 0;
-  v8 = [v4 _fetchIDForStore:v7 error:&v19];
+  v8 = [local _fetchIDForStore:uUIDString error:&v19];
   v9 = v19;
 
   if (v9)
@@ -24,24 +24,24 @@
 
   else
   {
-    v11 = [(HMDBackingStoreCacheUpdateRecordOperation *)self record];
+    record = [(HMDBackingStoreCacheUpdateRecordOperation *)self record];
 
-    v12 = [(HMDBackingStoreOperation *)self store];
-    v13 = [v12 local];
-    v14 = [(HMDBackingStoreCacheUpdateRecordOperation *)self group];
-    v15 = [v14 groupID];
-    if (v11)
+    store3 = [(HMDBackingStoreOperation *)self store];
+    local2 = [store3 local];
+    group = [(HMDBackingStoreCacheUpdateRecordOperation *)self group];
+    groupID = [group groupID];
+    if (record)
     {
-      v16 = [(HMDBackingStoreCacheUpdateRecordOperation *)self record];
-      v17 = [(HMDBackingStoreCacheUpdateRecordOperation *)self data];
-      [v13 _updateRecordWithGroupID:v15 store:v8 record:v16 data:v17 encoding:{-[HMDBackingStoreCacheUpdateRecordOperation encoding](self, "encoding")}];
+      record2 = [(HMDBackingStoreCacheUpdateRecordOperation *)self record];
+      data = [(HMDBackingStoreCacheUpdateRecordOperation *)self data];
+      [local2 _updateRecordWithGroupID:groupID store:v8 record:record2 data:data encoding:{-[HMDBackingStoreCacheUpdateRecordOperation encoding](self, "encoding")}];
     }
 
     else
     {
-      v16 = [(HMDBackingStoreCacheUpdateRecordOperation *)self recordName];
-      v17 = [(HMDBackingStoreCacheUpdateRecordOperation *)self model];
-      [v13 _updateRecordWithGroupID:v15 store:v8 name:v16 model:v17];
+      record2 = [(HMDBackingStoreCacheUpdateRecordOperation *)self recordName];
+      data = [(HMDBackingStoreCacheUpdateRecordOperation *)self model];
+      [local2 _updateRecordWithGroupID:groupID store:v8 name:record2 model:data];
     }
     v10 = ;
   }
@@ -49,18 +49,18 @@
   return v10;
 }
 
-- (HMDBackingStoreCacheUpdateRecordOperation)initWithGroup:(id)a3 record:(id)a4 resultBlock:(id)a5
+- (HMDBackingStoreCacheUpdateRecordOperation)initWithGroup:(id)group record:(id)record resultBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 objectForKey:@"k00"];
-  v12 = [v11 integerValue];
+  groupCopy = group;
+  recordCopy = record;
+  blockCopy = block;
+  v11 = [recordCopy objectForKey:@"k00"];
+  selfCopy = [v11 integerValue];
 
-  if (v12)
+  if (selfCopy)
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"k%02lu", v12];
-    v14 = [v9 objectForKey:v13];
+    selfCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"k%02lu", selfCopy];
+    v14 = [recordCopy objectForKey:selfCopy];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -77,48 +77,48 @@
 
     if (v16)
     {
-      self = [(HMDBackingStoreCacheUpdateRecordOperation *)self initWithGroup:v8 name:0 record:v9 data:v16 encoding:v12 model:0 resultBlock:v10];
-      v12 = self;
+      self = [(HMDBackingStoreCacheUpdateRecordOperation *)self initWithGroup:groupCopy name:0 record:recordCopy data:v16 encoding:selfCopy model:0 resultBlock:blockCopy];
+      selfCopy = self;
     }
 
     else
     {
-      v12 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (HMDBackingStoreCacheUpdateRecordOperation)initWithGroup:(id)a3 name:(id)a4 record:(id)a5 data:(id)a6 encoding:(unint64_t)a7 model:(id)a8 resultBlock:(id)a9
+- (HMDBackingStoreCacheUpdateRecordOperation)initWithGroup:(id)group name:(id)name record:(id)record data:(id)data encoding:(unint64_t)encoding model:(id)model resultBlock:(id)block
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
+  groupCopy = group;
+  nameCopy = name;
+  recordCopy = record;
+  dataCopy = data;
+  modelCopy = model;
   v31.receiver = self;
   v31.super_class = HMDBackingStoreCacheUpdateRecordOperation;
-  v20 = [(HMDBackingStoreOperation *)&v31 initWithResultBlock:a9];
+  v20 = [(HMDBackingStoreOperation *)&v31 initWithResultBlock:block];
   group = v20->_group;
-  v20->_group = v15;
-  v22 = v15;
+  v20->_group = groupCopy;
+  v22 = groupCopy;
 
   recordName = v20->_recordName;
-  v20->_recordName = v16;
-  v24 = v16;
+  v20->_recordName = nameCopy;
+  v24 = nameCopy;
 
   record = v20->_record;
-  v20->_record = v17;
-  v26 = v17;
+  v20->_record = recordCopy;
+  v26 = recordCopy;
 
   data = v20->_data;
-  v20->_data = v18;
-  v28 = v18;
+  v20->_data = dataCopy;
+  v28 = dataCopy;
 
-  v20->_encoding = a7;
+  v20->_encoding = encoding;
   model = v20->_model;
-  v20->_model = v19;
+  v20->_model = modelCopy;
 
   return v20;
 }

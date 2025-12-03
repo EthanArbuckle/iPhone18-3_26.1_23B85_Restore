@@ -1,18 +1,18 @@
 @interface RBSProcessExitStatus
-+ (RBSProcessExitStatus)statusWithDomain:(unsigned int)a3 code:(unint64_t)a4;
-+ (__CFString)_nameForDomain:(int)a3 includeNumber:;
-+ (__CFString)_nameForDomain:(uint64_t)a3 code:(int)a4 includeNumber:;
++ (RBSProcessExitStatus)statusWithDomain:(unsigned int)domain code:(unint64_t)code;
++ (__CFString)_nameForDomain:(int)domain includeNumber:;
++ (__CFString)_nameForDomain:(uint64_t)domain code:(int)code includeNumber:;
 - (BOOL)isCrash;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RBSProcessExitStatus)initWithCoder:(id)a3;
-- (RBSProcessExitStatus)initWithRBSXPCCoder:(id)a3;
+- (RBSProcessExitStatus)initWithCoder:(id)coder;
+- (RBSProcessExitStatus)initWithRBSXPCCoder:(id)coder;
 - (id)_dictionaryRepresentation;
-- (id)_initWithDictionaryRepresentation:(id)a3;
+- (id)_initWithDictionaryRepresentation:(id)representation;
 - (id)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSProcessExitStatus
@@ -49,11 +49,11 @@
   return v5 & 1;
 }
 
-+ (RBSProcessExitStatus)statusWithDomain:(unsigned int)a3 code:(unint64_t)a4
++ (RBSProcessExitStatus)statusWithDomain:(unsigned int)domain code:(unint64_t)code
 {
-  v6 = objc_alloc_init(a1);
-  v6[2] = a3;
-  *(v6 + 2) = a4;
+  v6 = objc_alloc_init(self);
+  v6[2] = domain;
+  *(v6 + 2) = code;
 
   return v6;
 }
@@ -75,13 +75,13 @@
   return v8;
 }
 
-+ (__CFString)_nameForDomain:(int)a3 includeNumber:
++ (__CFString)_nameForDomain:(int)domain includeNumber:
 {
   objc_opt_self();
   if (a2 <= 0x28)
   {
     v5 = off_1E7275F00[a2];
-    if (!a3)
+    if (!domain)
     {
       goto LABEL_8;
     }
@@ -90,7 +90,7 @@
     goto LABEL_6;
   }
 
-  if (a3)
+  if (domain)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown(%u))", a2, v7];
     v5 = LABEL_6:;
@@ -103,7 +103,7 @@ LABEL_8:
   return v5;
 }
 
-+ (__CFString)_nameForDomain:(uint64_t)a3 code:(int)a4 includeNumber:
++ (__CFString)_nameForDomain:(uint64_t)domain code:(int)code includeNumber:
 {
   objc_opt_self();
   v7 = 0;
@@ -113,8 +113,8 @@ LABEL_8:
     switch(a2)
     {
       case 23:
-        v9 = a3 - 1;
-        if ((a3 - 1) < 3)
+        v9 = domain - 1;
+        if ((domain - 1) < 3)
         {
           v10 = off_1E7276238;
           goto LABEL_20;
@@ -123,16 +123,16 @@ LABEL_8:
         break;
       case 10:
         v7 = 0;
-        if (a3 <= 3221229822)
+        if (domain <= 3221229822)
         {
-          if (a3 == 732775916)
+          if (domain == 732775916)
           {
             v7 = @"security-violation";
           }
 
           else
           {
-            if (a3 != 2343432205)
+            if (domain != 2343432205)
             {
               goto LABEL_24;
             }
@@ -143,7 +143,7 @@ LABEL_8:
 
         else
         {
-          switch(a3)
+          switch(domain)
           {
             case 3221229823:
               v7 = @"thermal-pressure";
@@ -161,8 +161,8 @@ LABEL_8:
 
         goto LABEL_21;
       case 9:
-        v9 = a3 - 1;
-        if (a3 - 1) < 0xE && ((0x3FFDu >> v9))
+        v9 = domain - 1;
+        if (domain - 1) < 0xE && ((0x3FFDu >> v9))
         {
           v10 = off_1E7276048;
           goto LABEL_20;
@@ -180,8 +180,8 @@ LABEL_23:
 
   if (a2 == 1)
   {
-    v9 = a3 - 1;
-    if ((a3 - 1) < 0xD)
+    v9 = domain - 1;
+    if ((domain - 1) < 0xD)
     {
       v10 = off_1E72760B8;
       goto LABEL_20;
@@ -192,8 +192,8 @@ LABEL_23:
 
   if (a2 == 2)
   {
-    v9 = a3 - 1;
-    if (a3 - 1) < 0x1F && ((0x67BFFFBFu >> v9))
+    v9 = domain - 1;
+    if (domain - 1) < 0x1F && ((0x67BFFFBFu >> v9))
     {
       v10 = off_1E7276120;
       goto LABEL_20;
@@ -207,8 +207,8 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v9 = a3 - 1;
-  if ((a3 - 1) >= 4)
+  v9 = domain - 1;
+  if ((domain - 1) >= 4)
   {
     goto LABEL_23;
   }
@@ -217,7 +217,7 @@ LABEL_23:
 LABEL_20:
   v7 = v10[v9];
 LABEL_21:
-  if (!a4)
+  if (!code)
   {
     v12 = 0;
     goto LABEL_33;
@@ -225,14 +225,14 @@ LABEL_21:
 
   v8 = 0;
 LABEL_24:
-  if (a3 < 0x10000)
+  if (domain < 0x10000)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", a3];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", domain];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%llx", a3];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%llx", domain];
   }
   v11 = ;
   v12 = v11;
@@ -244,7 +244,7 @@ LABEL_24:
 
   else
   {
-    if (!a4)
+    if (!code)
     {
       goto LABEL_33;
     }
@@ -258,18 +258,18 @@ LABEL_33:
   return v7;
 }
 
-- (id)_initWithDictionaryRepresentation:(id)a3
+- (id)_initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v9.receiver = self;
   v9.super_class = RBSProcessExitStatus;
   v5 = [(RBSProcessExitStatus *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"_domain"];
+    v6 = [representationCopy objectForKeyedSubscript:@"_domain"];
     v5->_domain = [v6 unsignedIntValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"_code"];
+    v7 = [representationCopy objectForKeyedSubscript:@"_code"];
     v5->_code = [v7 unsignedLongLongValue];
   }
 
@@ -290,10 +290,10 @@ LABEL_33:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -301,7 +301,7 @@ LABEL_33:
   else
   {
     v5 = objc_opt_class();
-    v6 = v5 == objc_opt_class() && self->_domain == v4->_domain && self->_code == v4->_code;
+    v6 = v5 == objc_opt_class() && self->_domain == equalCopy->_domain && self->_code == equalCopy->_code;
   }
 
   return v6;
@@ -315,47 +315,47 @@ LABEL_33:
   return v4 ^ (v4 >> 31);
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   domain = self->_domain;
-  v5 = a3;
-  [v5 encodeInt64:domain forKey:@"_domain"];
-  [v5 encodeInt64:self->_code forKey:@"_code"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:domain forKey:@"_domain"];
+  [coderCopy encodeInt64:self->_code forKey:@"_code"];
 }
 
-- (RBSProcessExitStatus)initWithRBSXPCCoder:(id)a3
+- (RBSProcessExitStatus)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = RBSProcessExitStatus;
   v5 = [(RBSProcessExitStatus *)&v7 init];
   if (v5)
   {
-    v5->_domain = [v4 decodeInt64ForKey:@"_domain"];
-    v5->_code = [v4 decodeInt64ForKey:@"_code"];
+    v5->_domain = [coderCopy decodeInt64ForKey:@"_domain"];
+    v5->_code = [coderCopy decodeInt64ForKey:@"_code"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   domain = self->_domain;
-  v5 = a3;
-  [v5 encodeInt32:domain forKey:@"_domain"];
-  [v5 encodeInt64:self->_code forKey:@"_code"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:domain forKey:@"_domain"];
+  [coderCopy encodeInt64:self->_code forKey:@"_code"];
 }
 
-- (RBSProcessExitStatus)initWithCoder:(id)a3
+- (RBSProcessExitStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = RBSProcessExitStatus;
   v5 = [(RBSProcessExitStatus *)&v7 init];
   if (v5)
   {
-    v5->_domain = [v4 decodeInt32ForKey:@"_domain"];
-    v5->_code = [v4 decodeInt64ForKey:@"_code"];
+    v5->_domain = [coderCopy decodeInt32ForKey:@"_domain"];
+    v5->_code = [coderCopy decodeInt64ForKey:@"_code"];
   }
 
   return v5;

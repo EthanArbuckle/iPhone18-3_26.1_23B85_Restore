@@ -1,5 +1,5 @@
 @interface LUIClassTableViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
@@ -7,11 +7,11 @@
 
 @implementation LUIClassTableViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"LUIClassTableViewController" hasInstanceMethod:@"footerButtonPressed:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"LUIClassTableViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"LUIClassTableViewController" hasInstanceMethod:@"footerButtonPressed:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"LUIClassTableViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
 }
 
 - (void)viewDidLoad
@@ -36,9 +36,9 @@
   v3 = [(LUIClassTableViewControllerAccessibility *)self safeValueForKey:@"view"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 subviews];
+  subviews = [v4 subviews];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  v6 = [subviews countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -51,7 +51,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
@@ -70,15 +70,15 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v7);
 
     if ((v10 & (v8 != 0)) == 1)
     {
-      v13 = [v8 accessibilityTraits];
-      [v8 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | v13];
+      accessibilityTraits = [v8 accessibilityTraits];
+      [v8 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | accessibilityTraits];
     }
   }
 
@@ -101,24 +101,24 @@
   v7 = 3221225472;
   v8 = __70__LUIClassTableViewControllerAccessibility_accessibilityPerformEscape__block_invoke;
   v9 = &unk_29F2CA3A0;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   AXPerformSafeBlock();
   if (v13[3])
   {
-    v3 = 1;
+    accessibilityPerformEscape = 1;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = LUIClassTableViewControllerAccessibility;
-    v3 = [(LUIClassTableViewControllerAccessibility *)&v5 accessibilityPerformEscape];
-    *(v13 + 24) = v3;
+    accessibilityPerformEscape = [(LUIClassTableViewControllerAccessibility *)&v5 accessibilityPerformEscape];
+    *(v13 + 24) = accessibilityPerformEscape;
   }
 
   _Block_object_dispose(&v12, 8);
-  return v3;
+  return accessibilityPerformEscape;
 }
 
 uint64_t __70__LUIClassTableViewControllerAccessibility_accessibilityPerformEscape__block_invoke(uint64_t a1)

@@ -1,39 +1,39 @@
 @interface HMDRemoteEventRouterProtoTopic
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMDRemoteEventRouterProtoTopic
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(HMDRemoteEventRouterProtoTopic *)self setTopic:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(HMDRemoteEventRouterProtoTopic *)self setEventUUID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((topic = self->_topic, !(topic | v4[2])) || -[NSString isEqual:](topic, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((topic = self->_topic, !(topic | equalCopy[2])) || -[NSString isEqual:](topic, "isEqual:")))
   {
     eventUUID = self->_eventUUID;
-    if (eventUUID | v4[1])
+    if (eventUUID | equalCopy[1])
     {
       v7 = [(NSString *)eventUUID isEqual:?];
     }
@@ -52,62 +52,62 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_topic copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_topic copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_eventUUID copyWithZone:a3];
+  v8 = [(NSString *)self->_eventUUID copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_topic)
   {
-    [v4 setTopic:?];
-    v4 = v5;
+    [toCopy setTopic:?];
+    toCopy = v5;
   }
 
   if (self->_eventUUID)
   {
     [v5 setEventUUID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_topic)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_eventUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   topic = self->_topic;
   if (topic)
   {
-    [v3 setObject:topic forKey:@"topic"];
+    [dictionary setObject:topic forKey:@"topic"];
   }
 
   eventUUID = self->_eventUUID;
@@ -125,8 +125,8 @@
   v8.receiver = self;
   v8.super_class = HMDRemoteEventRouterProtoTopic;
   v4 = [(HMDRemoteEventRouterProtoTopic *)&v8 description];
-  v5 = [(HMDRemoteEventRouterProtoTopic *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMDRemoteEventRouterProtoTopic *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

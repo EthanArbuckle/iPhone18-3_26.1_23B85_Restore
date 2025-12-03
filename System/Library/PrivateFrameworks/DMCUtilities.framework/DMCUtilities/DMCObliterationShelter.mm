@@ -1,15 +1,15 @@
 @interface DMCObliterationShelter
-- (BOOL)_createDirectoryAtPathIfNeeded:(id)a3 error:(id *)a4;
+- (BOOL)_createDirectoryAtPathIfNeeded:(id)needed error:(id *)error;
 - (BOOL)clear;
-- (BOOL)preserveWithError:(id *)a3;
-- (BOOL)retrieveWithError:(id *)a3;
+- (BOOL)preserveWithError:(id *)error;
+- (BOOL)retrieveWithError:(id *)error;
 - (DMCObliterationShelter)init;
 - (id)_allPathsToClear;
 - (id)_cloudConfigProfilePath_retrieve;
 - (id)_cloudConfigProfilePath_stash;
 - (id)_configurationDictionaryPath_retrieve;
 - (id)_configurationDictionaryPath_stash;
-- (id)_createFailToWriteFileErrorWithFilePath:(id)a3;
+- (id)_createFailToWriteFileErrorWithFilePath:(id)path;
 - (id)_generateConfigurationDictionary;
 - (id)_generateShelteredDetailsForLogging;
 - (id)_mdmProfilePath_retrieve;
@@ -31,44 +31,44 @@
   v2 = [(DMCObliterationShelter *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __30__DMCObliterationShelter_init__block_invoke;
     v6[3] = &unk_1E7ADCE38;
     v7 = v2;
-    v4 = [v3 addObserverForName:@"DMCObliterationShelterConfigChanged" object:0 queue:0 usingBlock:v6];
+    v4 = [defaultCenter addObserverForName:@"DMCObliterationShelterConfigChanged" object:0 queue:0 usingBlock:v6];
   }
 
   return v2;
 }
 
-- (BOOL)preserveWithError:(id *)a3
+- (BOOL)preserveWithError:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = [(DMCObliterationShelter *)self _stashDirectoryPath];
-  v6 = [(DMCObliterationShelter *)self _createDirectoryAtPathIfNeeded:v5 error:a3];
+  _stashDirectoryPath = [(DMCObliterationShelter *)self _stashDirectoryPath];
+  v6 = [(DMCObliterationShelter *)self _createDirectoryAtPathIfNeeded:_stashDirectoryPath error:error];
 
   if (v6)
   {
-    v7 = [(DMCObliterationShelter *)self _generateConfigurationDictionary];
-    v8 = [(DMCObliterationShelter *)self _configurationDictionaryPath_stash];
+    _generateConfigurationDictionary = [(DMCObliterationShelter *)self _generateConfigurationDictionary];
+    _configurationDictionaryPath_stash = [(DMCObliterationShelter *)self _configurationDictionaryPath_stash];
     v9 = *MEMORY[0x1E696A3A8];
-    v10 = [v7 DMCWriteToBinaryFile:v8 protectionType:*MEMORY[0x1E696A3A8]];
+    v10 = [_generateConfigurationDictionary DMCWriteToBinaryFile:_configurationDictionaryPath_stash protectionType:*MEMORY[0x1E696A3A8]];
 
     if (v10)
     {
-      v11 = [(DMCObliterationShelter *)self _configurationDictionaryPath_stash];
-      DMCSetSkipBackupAttributeToItemAtPath(v11, 1);
+      _configurationDictionaryPath_stash2 = [(DMCObliterationShelter *)self _configurationDictionaryPath_stash];
+      DMCSetSkipBackupAttributeToItemAtPath(_configurationDictionaryPath_stash2, 1);
 
-      v12 = [(DMCObliterationShelter *)self wifiProfileData];
+      wifiProfileData = [(DMCObliterationShelter *)self wifiProfileData];
 
-      if (v12)
+      if (wifiProfileData)
       {
-        v13 = [(DMCObliterationShelter *)self wifiProfileData];
-        v14 = [(DMCObliterationShelter *)self _wifiProfilePath_stash];
+        wifiProfileData2 = [(DMCObliterationShelter *)self wifiProfileData];
+        _wifiProfilePath_stash = [(DMCObliterationShelter *)self _wifiProfilePath_stash];
         v38 = 0;
-        [v13 writeToFile:v14 options:0x10000000 error:&v38];
+        [wifiProfileData2 writeToFile:_wifiProfilePath_stash options:0x10000000 error:&v38];
         v15 = v38;
 
         if (v15)
@@ -87,18 +87,18 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v23 = [(DMCObliterationShelter *)self _wifiProfilePath_stash];
-        DMCSetSkipBackupAttributeToItemAtPath(v23, 1);
+        _wifiProfilePath_stash2 = [(DMCObliterationShelter *)self _wifiProfilePath_stash];
+        DMCSetSkipBackupAttributeToItemAtPath(_wifiProfilePath_stash2, 1);
       }
 
-      v24 = [(DMCObliterationShelter *)self mdmProfileData];
+      mdmProfileData = [(DMCObliterationShelter *)self mdmProfileData];
 
-      if (v24)
+      if (mdmProfileData)
       {
-        v25 = [(DMCObliterationShelter *)self mdmProfileData];
-        v26 = [(DMCObliterationShelter *)self _mdmProfilePath_stash];
+        mdmProfileData2 = [(DMCObliterationShelter *)self mdmProfileData];
+        _mdmProfilePath_stash = [(DMCObliterationShelter *)self _mdmProfilePath_stash];
         v37 = 0;
-        [v25 writeToFile:v26 options:0x10000000 error:&v37];
+        [mdmProfileData2 writeToFile:_mdmProfilePath_stash options:0x10000000 error:&v37];
         v15 = v37;
 
         if (v15)
@@ -114,31 +114,31 @@ LABEL_18:
 
 LABEL_19:
 
-          v7 = v15;
+          _generateConfigurationDictionary = v15;
           goto LABEL_20;
         }
 
-        v30 = [(DMCObliterationShelter *)self _mdmProfilePath_stash];
-        DMCSetSkipBackupAttributeToItemAtPath(v30, 1);
+        _mdmProfilePath_stash2 = [(DMCObliterationShelter *)self _mdmProfilePath_stash];
+        DMCSetSkipBackupAttributeToItemAtPath(_mdmProfilePath_stash2, 1);
       }
 
-      v31 = [(DMCObliterationShelter *)self cloudConfigurationDetails];
+      cloudConfigurationDetails = [(DMCObliterationShelter *)self cloudConfigurationDetails];
 
-      if (!v31)
+      if (!cloudConfigurationDetails)
       {
         v18 = 1;
         goto LABEL_23;
       }
 
-      v32 = [(DMCObliterationShelter *)self cloudConfigurationDetails];
-      v33 = [(DMCObliterationShelter *)self _cloudConfigProfilePath_stash];
-      v34 = [v32 DMCWriteToBinaryFile:v33 protectionType:v9];
+      cloudConfigurationDetails2 = [(DMCObliterationShelter *)self cloudConfigurationDetails];
+      _cloudConfigProfilePath_stash = [(DMCObliterationShelter *)self _cloudConfigProfilePath_stash];
+      v34 = [cloudConfigurationDetails2 DMCWriteToBinaryFile:_cloudConfigProfilePath_stash protectionType:v9];
 
       if (v34)
       {
-        v35 = [(DMCObliterationShelter *)self _cloudConfigProfilePath_stash];
+        _cloudConfigProfilePath_stash2 = [(DMCObliterationShelter *)self _cloudConfigProfilePath_stash];
         v18 = 1;
-        DMCSetSkipBackupAttributeToItemAtPath(v35, 1);
+        DMCSetSkipBackupAttributeToItemAtPath(_cloudConfigProfilePath_stash2, 1);
 
 LABEL_23:
         goto LABEL_24;
@@ -151,7 +151,7 @@ LABEL_23:
         _os_log_impl(&dword_1B1630000, v36, OS_LOG_TYPE_ERROR, "DMCObliterationShelter: Failed to store cloud config profile", buf, 2u);
       }
 
-      v20 = [(DMCObliterationShelter *)self _cloudConfigProfilePath_stash];
+      _cloudConfigProfilePath_stash3 = [(DMCObliterationShelter *)self _cloudConfigProfilePath_stash];
     }
 
     else
@@ -163,20 +163,20 @@ LABEL_23:
         _os_log_impl(&dword_1B1630000, v19, OS_LOG_TYPE_ERROR, "DMCObliterationShelter: Failed to store configuration file", buf, 2u);
       }
 
-      v20 = [(DMCObliterationShelter *)self _configurationDictionaryPath_stash];
+      _cloudConfigProfilePath_stash3 = [(DMCObliterationShelter *)self _configurationDictionaryPath_stash];
     }
 
-    v21 = v20;
-    v22 = [(DMCObliterationShelter *)self _createFailToWriteFileErrorWithFilePath:v20];
+    v21 = _cloudConfigProfilePath_stash3;
+    v22 = [(DMCObliterationShelter *)self _createFailToWriteFileErrorWithFilePath:_cloudConfigProfilePath_stash3];
 
-    v7 = v22;
+    _generateConfigurationDictionary = v22;
     if (v22)
     {
 LABEL_20:
-      if (a3)
+      if (error)
       {
-        v27 = v7;
-        *a3 = v7;
+        v27 = _generateConfigurationDictionary;
+        *error = _generateConfigurationDictionary;
       }
 
       [(DMCObliterationShelter *)self clear];
@@ -198,30 +198,30 @@ LABEL_24:
   return v18;
 }
 
-- (BOOL)retrieveWithError:(id *)a3
+- (BOOL)retrieveWithError:(id *)error
 {
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
-  v6 = [v4 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  _retrievalDirectoryPath = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
+  v6 = [defaultManager fileExistsAtPath:_retrievalDirectoryPath];
 
   if (v6)
   {
-    v7 = [(DMCObliterationShelter *)self _configurationDictionaryPath_retrieve];
-    v8 = [(DMCObliterationShelter *)self _wifiProfilePath_retrieve];
-    v9 = [(DMCObliterationShelter *)self _mdmProfilePath_retrieve];
-    v10 = [(DMCObliterationShelter *)self _cloudConfigProfilePath_retrieve];
+    _configurationDictionaryPath_retrieve = [(DMCObliterationShelter *)self _configurationDictionaryPath_retrieve];
+    _wifiProfilePath_retrieve = [(DMCObliterationShelter *)self _wifiProfilePath_retrieve];
+    _mdmProfilePath_retrieve = [(DMCObliterationShelter *)self _mdmProfilePath_retrieve];
+    _cloudConfigProfilePath_retrieve = [(DMCObliterationShelter *)self _cloudConfigProfilePath_retrieve];
   }
 
   else
   {
-    v11 = [(DMCObliterationShelter *)self _stashDirectoryPath];
-    v12 = [v4 fileExistsAtPath:v11];
+    _stashDirectoryPath = [(DMCObliterationShelter *)self _stashDirectoryPath];
+    v12 = [defaultManager fileExistsAtPath:_stashDirectoryPath];
 
     if (!v12)
     {
-      v7 = 0;
-      v8 = 0;
-      v9 = 0;
+      _configurationDictionaryPath_retrieve = 0;
+      _wifiProfilePath_retrieve = 0;
+      _mdmProfilePath_retrieve = 0;
       v14 = 0;
       goto LABEL_19;
     }
@@ -233,19 +233,19 @@ LABEL_24:
       _os_log_impl(&dword_1B1630000, v13, OS_LOG_TYPE_DEFAULT, "DMCObliterationShelter: config file exists in the stash directory instead. This might be before data migration", v27, 2u);
     }
 
-    v7 = [(DMCObliterationShelter *)self _configurationDictionaryPath_stash];
-    v8 = [(DMCObliterationShelter *)self _wifiProfilePath_stash];
-    v9 = [(DMCObliterationShelter *)self _mdmProfilePath_stash];
-    v10 = [(DMCObliterationShelter *)self _cloudConfigProfilePath_stash];
+    _configurationDictionaryPath_retrieve = [(DMCObliterationShelter *)self _configurationDictionaryPath_stash];
+    _wifiProfilePath_retrieve = [(DMCObliterationShelter *)self _wifiProfilePath_stash];
+    _mdmProfilePath_retrieve = [(DMCObliterationShelter *)self _mdmProfilePath_stash];
+    _cloudConfigProfilePath_retrieve = [(DMCObliterationShelter *)self _cloudConfigProfilePath_stash];
   }
 
-  v14 = v10;
-  if (v7)
+  v14 = _cloudConfigProfilePath_retrieve;
+  if (_configurationDictionaryPath_retrieve)
   {
-    if ([v4 fileExistsAtPath:v7])
+    if ([defaultManager fileExistsAtPath:_configurationDictionaryPath_retrieve])
     {
       [(DMCObliterationShelter *)self setHasConfigFile:1];
-      v15 = [MEMORY[0x1E695DF20] DMCDictionaryFromFile:v7];
+      v15 = [MEMORY[0x1E695DF20] DMCDictionaryFromFile:_configurationDictionaryPath_retrieve];
       v16 = [v15 objectForKeyedSubscript:@"Languages"];
       [(DMCObliterationShelter *)self setLanguageStrings:v16];
 
@@ -271,19 +271,19 @@ LABEL_24:
       }
     }
 
-    if ([v4 fileExistsAtPath:v8])
+    if ([defaultManager fileExistsAtPath:_wifiProfilePath_retrieve])
     {
-      v23 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v8];
+      v23 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:_wifiProfilePath_retrieve];
       [(DMCObliterationShelter *)self setWifiProfileData:v23];
     }
 
-    if ([v4 fileExistsAtPath:v9])
+    if ([defaultManager fileExistsAtPath:_mdmProfilePath_retrieve])
     {
-      v24 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v9];
+      v24 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:_mdmProfilePath_retrieve];
       [(DMCObliterationShelter *)self setMdmProfileData:v24];
     }
 
-    if ([v4 fileExistsAtPath:v14])
+    if ([defaultManager fileExistsAtPath:v14])
     {
       v25 = [MEMORY[0x1E695DF20] DMCDictionaryFromFile:v14];
       [(DMCObliterationShelter *)self setCloudConfigurationDetails:v25];
@@ -309,14 +309,14 @@ LABEL_19:
   [(DMCObliterationShelter *)self setIsSharediPad:0];
   [(DMCObliterationShelter *)self setAdditionalDetails:0];
   [(DMCObliterationShelter *)self setUserDefaults:0];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v16 = self;
-  v4 = [(DMCObliterationShelter *)self _allPathsToClear];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  selfCopy = self;
+  _allPathsToClear = [(DMCObliterationShelter *)self _allPathsToClear];
+  v5 = [_allPathsToClear countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -328,14 +328,14 @@ LABEL_19:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allPathsToClear);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        if ([v3 fileExistsAtPath:v10])
+        if ([defaultManager fileExistsAtPath:v10])
         {
           v17 = 0;
-          [v3 removeItemAtPath:v10 error:&v17];
+          [defaultManager removeItemAtPath:v10 error:&v17];
           v11 = v17;
           if (v11)
           {
@@ -355,7 +355,7 @@ LABEL_19:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v6 = [_allPathsToClear countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v6);
@@ -366,7 +366,7 @@ LABEL_19:
     v8 = 1;
   }
 
-  [(DMCObliterationShelter *)v16 _postConfigChangedNotification];
+  [(DMCObliterationShelter *)selfCopy _postConfigChangedNotification];
   v14 = *MEMORY[0x1E69E9840];
   return v8 & 1;
 }
@@ -377,9 +377,9 @@ LABEL_19:
   [(DMCObliterationShelter *)self retrieveWithError:0];
   if (![(DMCObliterationShelter *)self isSharediPad])
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
-    v6 = [v4 fileExistsAtPath:v5];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    _retrievalDirectoryPath = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
+    v6 = [defaultManager fileExistsAtPath:_retrievalDirectoryPath];
 
     if (!v6)
     {
@@ -393,9 +393,9 @@ LABEL_19:
       _os_log_impl(&dword_1B1630000, v7, OS_LOG_TYPE_DEFAULT, "DMCObliterationShelter: Cleaning up existing Return to Service files.", buf, 2u);
     }
 
-    v8 = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
+    _retrievalDirectoryPath2 = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
     v24 = 0;
-    [v4 removeItemAtPath:v8 error:&v24];
+    [defaultManager removeItemAtPath:_retrievalDirectoryPath2 error:&v24];
     v9 = v24;
 
     if (v9)
@@ -414,8 +414,8 @@ LABEL_19:
     else
     {
 LABEL_11:
-      v11 = [(DMCObliterationShelter *)self _stashDirectoryPath];
-      v12 = [v4 fileExistsAtPath:v11];
+      _stashDirectoryPath = [(DMCObliterationShelter *)self _stashDirectoryPath];
+      v12 = [defaultManager fileExistsAtPath:_stashDirectoryPath];
 
       v13 = *DMCLogObjects();
       v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
@@ -436,10 +436,10 @@ LABEL_11:
         _os_log_impl(&dword_1B1630000, v13, OS_LOG_TYPE_DEFAULT, "DMCObliterationShelter: Migrating sheltered files.", buf, 2u);
       }
 
-      v15 = [(DMCObliterationShelter *)self _stashDirectoryPath];
-      v16 = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
+      _stashDirectoryPath2 = [(DMCObliterationShelter *)self _stashDirectoryPath];
+      _retrievalDirectoryPath3 = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
       v23 = 0;
-      [v4 moveItemAtPath:v15 toPath:v16 error:&v23];
+      [defaultManager moveItemAtPath:_stashDirectoryPath2 toPath:_retrievalDirectoryPath3 error:&v23];
       v9 = v23;
 
       if (v9)
@@ -457,8 +457,8 @@ LABEL_11:
 
       else
       {
-        v18 = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
-        DMCSetSkipBackupAttributeToItemAtPath(v18, 1);
+        _retrievalDirectoryPath4 = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
+        DMCSetSkipBackupAttributeToItemAtPath(_retrievalDirectoryPath4, 1);
 
         v19 = *DMCLogObjects();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -468,8 +468,8 @@ LABEL_11:
         }
 
         v20 = objc_opt_new();
-        v21 = [(DMCObliterationShelter *)self _generateShelteredDetailsForLogging];
-        [v20 logRegularEventForTopic:@"Return to Service" reason:@"RTS File Migrated" details:v21];
+        _generateShelteredDetailsForLogging = [(DMCObliterationShelter *)self _generateShelteredDetailsForLogging];
+        [v20 logRegularEventForTopic:@"Return to Service" reason:@"RTS File Migrated" details:_generateShelteredDetailsForLogging];
       }
 
       [(DMCObliterationShelter *)self _postConfigChangedNotification];
@@ -492,18 +492,18 @@ LABEL_26:
 
 - (void)_postConfigChangedNotification
 {
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 postNotificationName:@"DMCObliterationShelterConfigChanged" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"DMCObliterationShelterConfigChanged" object:0];
 }
 
 - (id)_generateConfigurationDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(DMCObliterationShelter *)self languageStrings];
-  [v3 setObject:v4 forKeyedSubscript:@"Languages"];
+  languageStrings = [(DMCObliterationShelter *)self languageStrings];
+  [v3 setObject:languageStrings forKeyedSubscript:@"Languages"];
 
-  v5 = [(DMCObliterationShelter *)self localeString];
-  [v3 setObject:v5 forKeyedSubscript:@"Locale"];
+  localeString = [(DMCObliterationShelter *)self localeString];
+  [v3 setObject:localeString forKeyedSubscript:@"Locale"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMCObliterationShelter isSupervised](self, "isSupervised")}];
   [v3 setObject:v6 forKeyedSubscript:@"IsSupervised"];
@@ -514,13 +514,13 @@ LABEL_26:
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMCObliterationShelter isSharediPad](self, "isSharediPad")}];
   [v3 setObject:v8 forKeyedSubscript:@"IsSharediPad"];
 
-  v9 = [(DMCObliterationShelter *)self additionalDetails];
-  [v3 setObject:v9 forKeyedSubscript:@"AdditionalDetails"];
+  additionalDetails = [(DMCObliterationShelter *)self additionalDetails];
+  [v3 setObject:additionalDetails forKeyedSubscript:@"AdditionalDetails"];
 
   if (+[DMCFeatureFlags isAppleInternal])
   {
-    v10 = [(DMCObliterationShelter *)self userDefaults];
-    [v3 setObject:v10 forKeyedSubscript:@"UserDefaults"];
+    userDefaults = [(DMCObliterationShelter *)self userDefaults];
+    [v3 setObject:userDefaults forKeyedSubscript:@"UserDefaults"];
   }
 
   v11 = [v3 copy];
@@ -530,14 +530,14 @@ LABEL_26:
 
 - (id)_generateShelteredDetailsForLogging
 {
-  v3 = [(DMCObliterationShelter *)self _generateConfigurationDictionary];
-  v4 = [v3 mutableCopy];
+  _generateConfigurationDictionary = [(DMCObliterationShelter *)self _generateConfigurationDictionary];
+  v4 = [_generateConfigurationDictionary mutableCopy];
 
-  v5 = [(DMCObliterationShelter *)self generateExclusionPaths];
-  [v4 setObject:v5 forKeyedSubscript:@"ExclusionPaths"];
+  generateExclusionPaths = [(DMCObliterationShelter *)self generateExclusionPaths];
+  [v4 setObject:generateExclusionPaths forKeyedSubscript:@"ExclusionPaths"];
 
-  v6 = [(DMCObliterationShelter *)self wifiProfileData];
-  v7 = [v6 description];
+  wifiProfileData = [(DMCObliterationShelter *)self wifiProfileData];
+  v7 = [wifiProfileData description];
   v8 = v7;
   if (v7)
   {
@@ -551,8 +551,8 @@ LABEL_26:
 
   [v4 setObject:v9 forKeyedSubscript:@"WiFiProfileData"];
 
-  v10 = [(DMCObliterationShelter *)self mdmProfileData];
-  v11 = [v10 description];
+  mdmProfileData = [(DMCObliterationShelter *)self mdmProfileData];
+  v11 = [mdmProfileData description];
   v12 = v11;
   if (v11)
   {
@@ -586,12 +586,12 @@ LABEL_26:
   return v17;
 }
 
-- (BOOL)_createDirectoryAtPathIfNeeded:(id)a3 error:(id *)a4
+- (BOOL)_createDirectoryAtPathIfNeeded:(id)needed error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v6 fileExistsAtPath:v5])
+  neededCopy = needed;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:neededCopy])
   {
     v7 = 0;
     v8 = 1;
@@ -604,7 +604,7 @@ LABEL_26:
     v8 = 1;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v14 = 0;
-    [v6 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:v9 error:&v14];
+    [defaultManager createDirectoryAtPath:neededCopy withIntermediateDirectories:1 attributes:v9 error:&v14];
     v7 = v14;
 
     if (v7)
@@ -617,11 +617,11 @@ LABEL_26:
         _os_log_impl(&dword_1B1630000, v10, OS_LOG_TYPE_ERROR, "DMCObliterationShelter: Failed to create stash directory with error: %{public}@", buf, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
         v11 = v7;
         v8 = 0;
-        *a4 = v7;
+        *error = v7;
       }
 
       else
@@ -635,10 +635,10 @@ LABEL_26:
   return v8;
 }
 
-- (id)_createFailToWriteFileErrorWithFilePath:(id)a3
+- (id)_createFailToWriteFileErrorWithFilePath:(id)path
 {
   v8 = MEMORY[0x1E696ABC0];
-  v9 = DMCErrorArray(@"Failed to store file to path %@", a2, a3, v3, v4, v5, v6, v7, a3);
+  v9 = DMCErrorArray(@"Failed to store file to path %@", a2, path, v3, v4, v5, v6, v7, path);
   v10 = [v8 DMCErrorWithDomain:@"DMCReturnToServiceErrorDomain" code:16008 descriptionArray:v9 errorType:@"DMCFatalError"];
 
   return v10;
@@ -647,47 +647,47 @@ LABEL_26:
 - (id)generateExclusionPaths
 {
   v3 = objc_opt_new();
-  v4 = [(DMCObliterationShelter *)self _stashDirectoryPath];
-  [v3 addObject:v4];
+  _stashDirectoryPath = [(DMCObliterationShelter *)self _stashDirectoryPath];
+  [v3 addObject:_stashDirectoryPath];
 
-  v5 = [(DMCObliterationShelter *)self _configurationDictionaryPath_stash];
-  [v3 addObject:v5];
+  _configurationDictionaryPath_stash = [(DMCObliterationShelter *)self _configurationDictionaryPath_stash];
+  [v3 addObject:_configurationDictionaryPath_stash];
 
   if (+[DMCMultiUserModeUtilities isSharediPad])
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [(DMCObliterationShelter *)self _containerMetadataPlistPath_stash];
-    v8 = [v6 fileExistsAtPath:v7];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    _containerMetadataPlistPath_stash = [(DMCObliterationShelter *)self _containerMetadataPlistPath_stash];
+    v8 = [defaultManager fileExistsAtPath:_containerMetadataPlistPath_stash];
 
     if (v8)
     {
-      v9 = [(DMCObliterationShelter *)self _containerMetadataPlistPath_stash];
-      [v3 addObject:v9];
+      _containerMetadataPlistPath_stash2 = [(DMCObliterationShelter *)self _containerMetadataPlistPath_stash];
+      [v3 addObject:_containerMetadataPlistPath_stash2];
     }
   }
 
-  v10 = [(DMCObliterationShelter *)self wifiProfileData];
+  wifiProfileData = [(DMCObliterationShelter *)self wifiProfileData];
 
-  if (v10)
+  if (wifiProfileData)
   {
-    v11 = [(DMCObliterationShelter *)self _wifiProfilePath_stash];
-    [v3 addObject:v11];
+    _wifiProfilePath_stash = [(DMCObliterationShelter *)self _wifiProfilePath_stash];
+    [v3 addObject:_wifiProfilePath_stash];
   }
 
-  v12 = [(DMCObliterationShelter *)self mdmProfileData];
+  mdmProfileData = [(DMCObliterationShelter *)self mdmProfileData];
 
-  if (v12)
+  if (mdmProfileData)
   {
-    v13 = [(DMCObliterationShelter *)self _mdmProfilePath_stash];
-    [v3 addObject:v13];
+    _mdmProfilePath_stash = [(DMCObliterationShelter *)self _mdmProfilePath_stash];
+    [v3 addObject:_mdmProfilePath_stash];
   }
 
-  v14 = [(DMCObliterationShelter *)self cloudConfigurationDetails];
+  cloudConfigurationDetails = [(DMCObliterationShelter *)self cloudConfigurationDetails];
 
-  if (v14)
+  if (cloudConfigurationDetails)
   {
-    v15 = [(DMCObliterationShelter *)self _cloudConfigProfilePath_stash];
-    [v3 addObject:v15];
+    _cloudConfigProfilePath_stash = [(DMCObliterationShelter *)self _cloudConfigProfilePath_stash];
+    [v3 addObject:_cloudConfigProfilePath_stash];
   }
 
   v16 = [v3 copy];
@@ -753,64 +753,64 @@ void __42__DMCObliterationShelter__allPathsToClear__block_invoke(uint64_t a1)
 
 - (id)_configurationDictionaryPath_stash
 {
-  v2 = [(DMCObliterationShelter *)self _stashDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"config_stash.plist"];
+  _stashDirectoryPath = [(DMCObliterationShelter *)self _stashDirectoryPath];
+  v3 = [_stashDirectoryPath stringByAppendingPathComponent:@"config_stash.plist"];
 
   return v3;
 }
 
 - (id)_wifiProfilePath_stash
 {
-  v2 = [(DMCObliterationShelter *)self _stashDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"wifi_profile_stash.mobileconfig"];
+  _stashDirectoryPath = [(DMCObliterationShelter *)self _stashDirectoryPath];
+  v3 = [_stashDirectoryPath stringByAppendingPathComponent:@"wifi_profile_stash.mobileconfig"];
 
   return v3;
 }
 
 - (id)_mdmProfilePath_stash
 {
-  v2 = [(DMCObliterationShelter *)self _stashDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"mdm_profile_stash.mobileconfig"];
+  _stashDirectoryPath = [(DMCObliterationShelter *)self _stashDirectoryPath];
+  v3 = [_stashDirectoryPath stringByAppendingPathComponent:@"mdm_profile_stash.mobileconfig"];
 
   return v3;
 }
 
 - (id)_cloudConfigProfilePath_stash
 {
-  v2 = [(DMCObliterationShelter *)self _stashDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"cloud_config_profile_stash.plist"];
+  _stashDirectoryPath = [(DMCObliterationShelter *)self _stashDirectoryPath];
+  v3 = [_stashDirectoryPath stringByAppendingPathComponent:@"cloud_config_profile_stash.plist"];
 
   return v3;
 }
 
 - (id)_configurationDictionaryPath_retrieve
 {
-  v2 = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"config_stash.plist"];
+  _retrievalDirectoryPath = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
+  v3 = [_retrievalDirectoryPath stringByAppendingPathComponent:@"config_stash.plist"];
 
   return v3;
 }
 
 - (id)_wifiProfilePath_retrieve
 {
-  v2 = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"wifi_profile_stash.mobileconfig"];
+  _retrievalDirectoryPath = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
+  v3 = [_retrievalDirectoryPath stringByAppendingPathComponent:@"wifi_profile_stash.mobileconfig"];
 
   return v3;
 }
 
 - (id)_mdmProfilePath_retrieve
 {
-  v2 = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"mdm_profile_stash.mobileconfig"];
+  _retrievalDirectoryPath = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
+  v3 = [_retrievalDirectoryPath stringByAppendingPathComponent:@"mdm_profile_stash.mobileconfig"];
 
   return v3;
 }
 
 - (id)_cloudConfigProfilePath_retrieve
 {
-  v2 = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"cloud_config_profile_stash.plist"];
+  _retrievalDirectoryPath = [(DMCObliterationShelter *)self _retrievalDirectoryPath];
+  v3 = [_retrievalDirectoryPath stringByAppendingPathComponent:@"cloud_config_profile_stash.plist"];
 
   return v3;
 }

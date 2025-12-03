@@ -1,18 +1,18 @@
 @interface _DPPINEParameter
 - (_DPPINEParameter)init;
-- (_DPPINEParameter)initWithFractionalBitCount:(int64_t)a3 l2NormBound:(float)a4 numOfProofs:(int64_t)a5 wraparoundCheckCount:(int64_t)a6 pineType:(unsigned int)a7;
+- (_DPPINEParameter)initWithFractionalBitCount:(int64_t)count l2NormBound:(float)bound numOfProofs:(int64_t)proofs wraparoundCheckCount:(int64_t)checkCount pineType:(unsigned int)type;
 @end
 
 @implementation _DPPINEParameter
 
-- (_DPPINEParameter)initWithFractionalBitCount:(int64_t)a3 l2NormBound:(float)a4 numOfProofs:(int64_t)a5 wraparoundCheckCount:(int64_t)a6 pineType:(unsigned int)a7
+- (_DPPINEParameter)initWithFractionalBitCount:(int64_t)count l2NormBound:(float)bound numOfProofs:(int64_t)proofs wraparoundCheckCount:(int64_t)checkCount pineType:(unsigned int)type
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR____DPPINEParameter_fractionalBitCount) = a3;
-  *(&self->super.isa + OBJC_IVAR____DPPINEParameter_l2NormBound) = a4;
-  *(&self->super.isa + OBJC_IVAR____DPPINEParameter_numOfProofs) = a5;
-  *(&self->super.isa + OBJC_IVAR____DPPINEParameter_wraparoundCheckCount) = a6;
-  *(&self->super.isa + OBJC_IVAR____DPPINEParameter_pineType) = a7;
+  *(&self->super.isa + OBJC_IVAR____DPPINEParameter_fractionalBitCount) = count;
+  *(&self->super.isa + OBJC_IVAR____DPPINEParameter_l2NormBound) = bound;
+  *(&self->super.isa + OBJC_IVAR____DPPINEParameter_numOfProofs) = proofs;
+  *(&self->super.isa + OBJC_IVAR____DPPINEParameter_wraparoundCheckCount) = checkCount;
+  *(&self->super.isa + OBJC_IVAR____DPPINEParameter_pineType) = type;
   v15.receiver = self;
   v15.super_class = ObjectType;
   return [(_DPPINEParameter *)&v15 init];

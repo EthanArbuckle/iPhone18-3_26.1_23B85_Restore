@@ -1,22 +1,22 @@
 @interface OrgApacheLuceneUtilBitDocIdSet_Builder
-- (OrgApacheLuceneUtilBitDocIdSet_Builder)initWithInt:(int)a3;
+- (OrgApacheLuceneUtilBitDocIdSet_Builder)initWithInt:(int)int;
 - (id)build;
-- (void)andNotWithOrgApacheLuceneSearchDocIdSetIterator:(id)a3;
-- (void)and__WithOrgApacheLuceneSearchDocIdSetIterator:(id)a3;
+- (void)andNotWithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator;
+- (void)and__WithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator;
 - (void)dealloc;
-- (void)or__WithOrgApacheLuceneSearchDocIdSetIterator:(id)a3;
+- (void)or__WithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator;
 @end
 
 @implementation OrgApacheLuceneUtilBitDocIdSet_Builder
 
-- (OrgApacheLuceneUtilBitDocIdSet_Builder)initWithInt:(int)a3
+- (OrgApacheLuceneUtilBitDocIdSet_Builder)initWithInt:(int)int
 {
-  self->maxDoc_ = a3;
-  self->threshold_ = a3 >> 10;
+  self->maxDoc_ = int;
+  self->threshold_ = int >> 10;
   return self;
 }
 
-- (void)or__WithOrgApacheLuceneSearchDocIdSetIterator:(id)a3
+- (void)or__WithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator
 {
   p_denseSet = &self->denseSet_;
   denseSet = self->denseSet_;
@@ -25,23 +25,23 @@
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!iterator)
   {
 LABEL_17:
     JreThrowNullPointerException();
   }
 
-  v7 = [a3 cost];
-  v8 = v7 + self->costUpperBound_;
+  cost = [iterator cost];
+  v8 = cost + self->costUpperBound_;
   self->costUpperBound_ = v8;
   threshold = self->threshold_;
-  if (v8 < threshold || ((v10 = v7, (sparseSet = self->sparseSet_) == 0) ? (v12 = 0) : (v12 = [(OrgApacheLuceneUtilSparseFixedBitSet *)sparseSet approximateCardinality], threshold = self->threshold_), v13 = v10 + v12, self->costUpperBound_ = v13, v13 < threshold))
+  if (v8 < threshold || ((v10 = cost, (sparseSet = self->sparseSet_) == 0) ? (v12 = 0) : (v12 = [(OrgApacheLuceneUtilSparseFixedBitSet *)sparseSet approximateCardinality], threshold = self->threshold_), v13 = v10 + v12, self->costUpperBound_ = v13, v13 < threshold))
   {
     denseSet = self->sparseSet_;
     if (denseSet || (v14 = new_OrgApacheLuceneUtilSparseFixedBitSet_initWithInt_(self->maxDoc_), JreStrongAssignAndConsume(&self->sparseSet_, v14), (denseSet = self->sparseSet_) != 0))
     {
 LABEL_10:
-      v15 = a3;
+      iteratorCopy = iterator;
       goto LABEL_11;
     }
 
@@ -50,7 +50,7 @@ LABEL_10:
 
   v16 = new_OrgApacheLuceneUtilFixedBitSet_initWithInt_(self->maxDoc_);
   JreStrongAssignAndConsume(p_denseSet, v16);
-  [(OrgApacheLuceneUtilFixedBitSet *)self->denseSet_ or__WithOrgApacheLuceneSearchDocIdSetIterator:a3];
+  [(OrgApacheLuceneUtilFixedBitSet *)self->denseSet_ or__WithOrgApacheLuceneSearchDocIdSetIterator:iterator];
   v17 = self->sparseSet_;
   if (!v17)
   {
@@ -58,28 +58,28 @@ LABEL_10:
   }
 
   v18 = *p_denseSet;
-  v15 = new_OrgApacheLuceneUtilBitSetIterator_initWithOrgApacheLuceneUtilBitSet_withLong_(v17, 0);
+  iteratorCopy = new_OrgApacheLuceneUtilBitSetIterator_initWithOrgApacheLuceneUtilBitSet_withLong_(v17, 0);
   denseSet = v18;
 LABEL_11:
 
-  [denseSet or__WithOrgApacheLuceneSearchDocIdSetIterator:v15];
+  [denseSet or__WithOrgApacheLuceneSearchDocIdSetIterator:iteratorCopy];
 }
 
-- (void)and__WithOrgApacheLuceneSearchDocIdSetIterator:(id)a3
+- (void)and__WithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator
 {
   denseSet = self->denseSet_;
   if (denseSet || (denseSet = self->sparseSet_) != 0)
   {
-    [denseSet and__WithOrgApacheLuceneSearchDocIdSetIterator:a3];
+    [denseSet and__WithOrgApacheLuceneSearchDocIdSetIterator:iterator];
   }
 }
 
-- (void)andNotWithOrgApacheLuceneSearchDocIdSetIterator:(id)a3
+- (void)andNotWithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator
 {
   denseSet = self->denseSet_;
   if (denseSet || (denseSet = self->sparseSet_) != 0)
   {
-    [denseSet andNotWithOrgApacheLuceneSearchDocIdSetIterator:a3];
+    [denseSet andNotWithOrgApacheLuceneSearchDocIdSetIterator:iterator];
   }
 }
 

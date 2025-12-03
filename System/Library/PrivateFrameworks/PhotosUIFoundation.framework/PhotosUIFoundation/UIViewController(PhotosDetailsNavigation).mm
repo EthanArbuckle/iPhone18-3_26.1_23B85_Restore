@@ -10,43 +10,43 @@
 {
   v2 = ShouldUseSystemSwipeToDismissAssociationKey;
   v3 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  objc_setAssociatedObject(a1, v2, v3, 1);
+  objc_setAssociatedObject(self, v2, v3, 1);
 }
 
 - (uint64_t)shouldUseSystemSwipeToDismiss
 {
-  v2 = objc_getAssociatedObject(a1, ShouldUseSystemSwipeToDismissAssociationKey);
+  v2 = objc_getAssociatedObject(self, ShouldUseSystemSwipeToDismissAssociationKey);
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v5 = [a1 parentViewController];
-    v4 = [v5 shouldUseSystemSwipeToDismiss];
+    parentViewController = [self parentViewController];
+    bOOLValue = [parentViewController shouldUseSystemSwipeToDismiss];
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)representedItem
 {
-  v2 = [a1 explicitRepresentedItem];
-  v3 = v2;
-  if (v2)
+  explicitRepresentedItem = [self explicitRepresentedItem];
+  v3 = explicitRepresentedItem;
+  if (explicitRepresentedItem)
   {
-    v4 = v2;
+    representedItem = explicitRepresentedItem;
   }
 
   else
   {
-    v5 = [a1 childViewControllerForRepresentedItem];
-    v4 = [v5 representedItem];
+    childViewControllerForRepresentedItem = [self childViewControllerForRepresentedItem];
+    representedItem = [childViewControllerForRepresentedItem representedItem];
   }
 
-  return v4;
+  return representedItem;
 }
 
 @end

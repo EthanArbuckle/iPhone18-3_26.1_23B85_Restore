@@ -1,25 +1,25 @@
 @interface DeskCamSessionInputMetadata
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)timestamp;
-- (DeskCamSessionInputMetadata)initWithCoder:(id)a3;
-- (DeskCamSessionInputMetadata)initWithDetectedObjectsInfo:(id)a3 cameraCalibrationData:(id)a4 cameraOrientation:(int)a5 timestamp:(id *)a6 aspectRatio:(float)a7 sensorID:(int)a8 gravity:;
-- (id)_createCameraCalibrationDictionary:(id)a3;
-- (void)_parseDetectedObjectsInfo:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DeskCamSessionInputMetadata)initWithCoder:(id)coder;
+- (DeskCamSessionInputMetadata)initWithDetectedObjectsInfo:(id)info cameraCalibrationData:(id)data cameraOrientation:(int)orientation timestamp:(id *)timestamp aspectRatio:(float)ratio sensorID:(int)d gravity:;
+- (id)_createCameraCalibrationDictionary:(id)dictionary;
+- (void)_parseDetectedObjectsInfo:(id)info;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DeskCamSessionInputMetadata
 
-- (DeskCamSessionInputMetadata)initWithDetectedObjectsInfo:(id)a3 cameraCalibrationData:(id)a4 cameraOrientation:(int)a5 timestamp:(id *)a6 aspectRatio:(float)a7 sensorID:(int)a8 gravity:
+- (DeskCamSessionInputMetadata)initWithDetectedObjectsInfo:(id)info cameraCalibrationData:(id)data cameraOrientation:(int)orientation timestamp:(id *)timestamp aspectRatio:(float)ratio sensorID:(int)d gravity:
 {
   v25 = v8;
-  v15 = a3;
-  v16 = a4;
+  infoCopy = info;
+  dataCopy = data;
   v17 = [(DeskCamSessionInputMetadata *)self init];
   v18 = v17;
   if (v17)
   {
-    [(DeskCamSessionInputMetadata *)v17 _parseDetectedObjectsInfo:v15];
-    if (v16 && ([(DeskCamSessionInputMetadata *)v18 _createCameraCalibrationDictionary:v16], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
+    [(DeskCamSessionInputMetadata *)v17 _parseDetectedObjectsInfo:infoCopy];
+    if (dataCopy && ([(DeskCamSessionInputMetadata *)v18 _createCameraCalibrationDictionary:dataCopy], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       cameraCalibrationDictionary = v18->_cameraCalibrationDictionary;
       v18->_cameraCalibrationDictionary = v19;
@@ -28,7 +28,7 @@
 
     else
     {
-      if (a8 == 1906)
+      if (d == 1906)
       {
         defaultCalibrationDictionaryForPictou();
       }
@@ -42,39 +42,39 @@
       v18->_cameraCalibrationDictionary = v22;
     }
 
-    v18->_cameraOrientation = a5;
-    v23 = *&a6->var0;
-    *&v18->_timestamp.flags = a6->var3;
+    v18->_cameraOrientation = orientation;
+    v23 = *&timestamp->var0;
+    *&v18->_timestamp.flags = timestamp->var3;
     *(&v18->_cameraOrientation + 1) = v23;
-    *(&v18->_timestamp.epoch + 1) = a7;
-    LODWORD(v18->_aspectRatio) = a8;
+    *(&v18->_timestamp.epoch + 1) = ratio;
+    LODWORD(v18->_aspectRatio) = d;
     *&v18->_anon_44[8] = v25;
   }
 
   return v18;
 }
 
-- (DeskCamSessionInputMetadata)initWithCoder:(id)a3
+- (DeskCamSessionInputMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DeskCamSessionInputMetadata *)self init];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"bodyDetections"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"bodyDetections"];
     bodyDetections = v5->_bodyDetections;
     v5->_bodyDetections = v9;
 
     if (!v5->_bodyDetections)
     {
-      v11 = [v4 decodeObjectOfClasses:v8 forKey:@"detections"];
+      v11 = [coderCopy decodeObjectOfClasses:v8 forKey:@"detections"];
       v12 = v5->_bodyDetections;
       v5->_bodyDetections = v11;
     }
 
-    v13 = [v4 decodeObjectOfClasses:v8 forKey:@"faceDetections"];
+    v13 = [coderCopy decodeObjectOfClasses:v8 forKey:@"faceDetections"];
     faceDetections = v5->_faceDetections;
     v5->_faceDetections = v13;
 
@@ -82,27 +82,27 @@
     v16 = objc_opt_class();
     v17 = objc_opt_class();
     v18 = [v15 setWithObjects:{v16, v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"timestamp"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"timestamp"];
 
     CMTimeMakeFromDictionary(&v34, v19);
     *(&v5->_cameraOrientation + 1) = v34;
-    [v4 decodeFloatForKey:@"aspectRatio"];
+    [coderCopy decodeFloatForKey:@"aspectRatio"];
     HIDWORD(v5->_timestamp.epoch) = v20;
     v21 = MEMORY[0x277CBEB98];
     v22 = objc_opt_class();
     v23 = objc_opt_class();
     v24 = [v21 setWithObjects:{v22, v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"cameraCalibrationDictionary"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"cameraCalibrationDictionary"];
     cameraCalibrationDictionary = v5->_cameraCalibrationDictionary;
     v5->_cameraCalibrationDictionary = v25;
 
-    v5->_cameraOrientation = [v4 decodeInt32ForKey:@"cameraOrientation"];
-    LODWORD(v5->_aspectRatio) = [v4 decodeInt32ForKey:@"sensorID"];
-    [v4 decodeFloatForKey:@"gravityX"];
+    v5->_cameraOrientation = [coderCopy decodeInt32ForKey:@"cameraOrientation"];
+    LODWORD(v5->_aspectRatio) = [coderCopy decodeInt32ForKey:@"sensorID"];
+    [coderCopy decodeFloatForKey:@"gravityX"];
     v33 = v27;
-    [v4 decodeFloatForKey:@"gravityY"];
+    [coderCopy decodeFloatForKey:@"gravityY"];
     v32 = v28;
-    [v4 decodeFloatForKey:@"gravityZ"];
+    [coderCopy decodeFloatForKey:@"gravityZ"];
     v29 = v33;
     DWORD1(v29) = v32;
     DWORD2(v29) = v30;
@@ -112,48 +112,48 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_bodyDetections forKey:@"bodyDetections"];
-  [v4 encodeObject:self->_faceDetections forKey:@"faceDetections"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_bodyDetections forKey:@"bodyDetections"];
+  [coderCopy encodeObject:self->_faceDetections forKey:@"faceDetections"];
   v5 = *MEMORY[0x277CBECE8];
   *&v11.value = *(&self->_cameraOrientation + 1);
   v11.epoch = *&self->_timestamp.flags;
   v6 = CMTimeCopyAsDictionary(&v11, v5);
-  [v4 encodeObject:v6 forKey:@"timestamp"];
+  [coderCopy encodeObject:v6 forKey:@"timestamp"];
   if (v6)
   {
     CFRelease(v6);
   }
 
   LODWORD(v7) = HIDWORD(self->_timestamp.epoch);
-  [v4 encodeFloat:@"aspectRatio" forKey:v7];
-  [v4 encodeObject:self->_cameraCalibrationDictionary forKey:@"cameraCalibrationDictionary"];
-  [v4 encodeInt32:self->_cameraOrientation forKey:@"cameraOrientation"];
-  [v4 encodeInt32:LODWORD(self->_aspectRatio) forKey:@"sensorID"];
+  [coderCopy encodeFloat:@"aspectRatio" forKey:v7];
+  [coderCopy encodeObject:self->_cameraCalibrationDictionary forKey:@"cameraCalibrationDictionary"];
+  [coderCopy encodeInt32:self->_cameraOrientation forKey:@"cameraOrientation"];
+  [coderCopy encodeInt32:LODWORD(self->_aspectRatio) forKey:@"sensorID"];
   LODWORD(v8) = *&self->_anon_44[8];
-  [v4 encodeFloat:@"gravityX" forKey:v8];
+  [coderCopy encodeFloat:@"gravityX" forKey:v8];
   LODWORD(v9) = *self->_gravity;
-  [v4 encodeFloat:@"gravityY" forKey:v9];
+  [coderCopy encodeFloat:@"gravityY" forKey:v9];
   LODWORD(v10) = *&self->_gravity[4];
-  [v4 encodeFloat:@"gravityZ" forKey:v10];
+  [coderCopy encodeFloat:@"gravityZ" forKey:v10];
 }
 
-- (void)_parseDetectedObjectsInfo:(id)a3
+- (void)_parseDetectedObjectsInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v35 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v38 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v4)
+  if (infoCopy)
   {
-    v27 = self;
-    v28 = v4;
+    selfCopy = self;
+    v28 = infoCopy;
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    obj = v4;
+    obj = infoCopy;
     v31 = [obj countByEnumeratingWithState:&v47 objects:v46 count:16];
     if (!v31)
     {
@@ -209,9 +209,9 @@
               if ([v8 isEqualToString:v6])
               {
                 v18 = [v15 objectForKeyedSubscript:v36];
-                v19 = [v18 intValue];
+                intValue = [v18 intValue];
 
-                v20 = 2 * v19;
+                v20 = 2 * intValue;
                 v21 = v38;
               }
 
@@ -223,9 +223,9 @@
                 }
 
                 v22 = [v15 objectForKeyedSubscript:v34];
-                v23 = [v22 intValue];
+                intValue2 = [v22 intValue];
 
-                v20 = (2 * v23) | 1;
+                v20 = (2 * intValue2) | 1;
                 v21 = v35;
               }
 
@@ -250,8 +250,8 @@ LABEL_17:
       {
 LABEL_21:
 
-        self = v27;
-        v4 = v28;
+        self = selfCopy;
+        infoCopy = v28;
         break;
       }
     }
@@ -272,17 +272,17 @@ LABEL_21:
   return self;
 }
 
-- (id)_createCameraCalibrationDictionary:(id)a3
+- (id)_createCameraCalibrationDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     v5 = 0;
     goto LABEL_18;
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"PixelSize"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"PixelSize"];
   if (!v5)
   {
 LABEL_18:

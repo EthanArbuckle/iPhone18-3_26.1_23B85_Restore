@@ -26,7 +26,7 @@
 - (id)convertedToRGB
 {
   v2 = CGColorSpaceCreateWithName(*MEMORY[0x277CBF458]);
-  CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v2, kCGRenderingIntentDefault, [a1 CGColor], 0);
+  CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v2, kCGRenderingIntentDefault, [self CGColor], 0);
   if (CopyByMatchingToColorSpace)
   {
     v4 = [objc_alloc(MEMORY[0x277D75348]) initWithCGColor:CopyByMatchingToColorSpace];

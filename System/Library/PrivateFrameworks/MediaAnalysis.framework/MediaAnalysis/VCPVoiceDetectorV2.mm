@@ -1,10 +1,10 @@
 @interface VCPVoiceDetectorV2
 - (VCPVoiceDetectorV2)init;
 - (id)results;
-- (int)finalizeAnalysisAtTime:(id *)a3;
+- (int)finalizeAnalysisAtTime:(id *)time;
 - (int)loadModel;
-- (int)processAudioSamples:(AudioBufferList *)a3 timestamp:(AudioTimeStamp *)a4;
-- (int)setupWithAudioStream:(const AudioStreamBasicDescription *)a3;
+- (int)processAudioSamples:(AudioBufferList *)samples timestamp:(AudioTimeStamp *)timestamp;
+- (int)setupWithAudioStream:(const AudioStreamBasicDescription *)stream;
 - (void)dealloc;
 @end
 
@@ -36,7 +36,7 @@
   [(VCPVoiceDetectorV2 *)&v4 dealloc];
 }
 
-- (int)setupWithAudioStream:(const AudioStreamBasicDescription *)a3
+- (int)setupWithAudioStream:(const AudioStreamBasicDescription *)stream
 {
   v4 = *&self->_voiceActivityNew;
   if (v4)
@@ -63,10 +63,10 @@
   result = AudioComponentInstanceNew(Next, &self->_voiceActivityNew);
   if (!result)
   {
-    result = AudioUnitSetProperty(*&self->_voiceActivityNew, 8u, 1u, 0, a3, 0x28u);
+    result = AudioUnitSetProperty(*&self->_voiceActivityNew, 8u, 1u, 0, stream, 0x28u);
     if (!result)
     {
-      result = AudioUnitSetProperty(*&self->_voiceActivityNew, 8u, 2u, 0, a3, 0x28u);
+      result = AudioUnitSetProperty(*&self->_voiceActivityNew, 8u, 2u, 0, stream, 0x28u);
       if (!result)
       {
         result = AudioUnitSetProperty(*&self->_voiceActivityNew, 0xEu, 2u, 0, &self->super._sampleBatchSize, 4u);
@@ -157,13 +157,13 @@
   }
 }
 
-- (int)processAudioSamples:(AudioBufferList *)a3 timestamp:(AudioTimeStamp *)a4
+- (int)processAudioSamples:(AudioBufferList *)samples timestamp:(AudioTimeStamp *)timestamp
 {
   inInputBufferLists[1] = *MEMORY[0x1E69E9840];
   ioActionFlags = 512;
-  ioOutputBufferLists = a3;
-  inInputBufferLists[0] = a3;
-  result = AudioUnitProcessMultiple(*&self->_voiceActivityNew, &ioActionFlags, a4, self->super._sampleBatchSize, 1u, inInputBufferLists, 1u, &ioOutputBufferLists);
+  ioOutputBufferLists = samples;
+  inInputBufferLists[0] = samples;
+  result = AudioUnitProcessMultiple(*&self->_voiceActivityNew, &ioActionFlags, timestamp, self->super._sampleBatchSize, 1u, inInputBufferLists, 1u, &ioOutputBufferLists);
   if (!result)
   {
     if (LOBYTE(self->super._musicDetections) == BYTE4(self->super._trackStart.epoch))
@@ -206,11 +206,11 @@
   return result;
 }
 
-- (int)finalizeAnalysisAtTime:(id *)a3
+- (int)finalizeAnalysisAtTime:(id *)time
 {
   if (BYTE4(self->super._trackStart.epoch) == 1)
   {
-    [(VCPVoiceDetector *)self addDetectionFromTime:&self->super._voiceActivity toTime:a3 result:self->super._voiceStart.epoch, v3, v4];
+    [(VCPVoiceDetector *)self addDetectionFromTime:&self->super._voiceActivity toTime:time result:self->super._voiceStart.epoch, v3, v4];
   }
 
   return 0;

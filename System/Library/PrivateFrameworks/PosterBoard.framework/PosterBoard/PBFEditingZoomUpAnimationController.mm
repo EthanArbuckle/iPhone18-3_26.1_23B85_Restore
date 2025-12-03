@@ -1,17 +1,17 @@
 @interface PBFEditingZoomUpAnimationController
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
-- (void)editingSceneViewControllerDidFinishShowingContent:(id)a3;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
+- (void)editingSceneViewControllerDidFinishShowingContent:(id)content;
 - (void)finishTransitionIfPossible;
 @end
 
 @implementation PBFEditingZoomUpAnimationController
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  v3 = [a3 isAnimated];
+  isAnimated = [duration isAnimated];
   result = 0.0;
-  if (v3)
+  if (isAnimated)
   {
     return 0.5;
   }
@@ -19,11 +19,11 @@
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:*MEMORY[0x277D77230]];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x277D77240]];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77230]];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77240]];
   v7 = objc_opt_class();
   v8 = v6;
   if (v7)
@@ -75,10 +75,10 @@
 
     v15 = v14;
 
-    v16 = [v15 bottomViewController];
+    bottomViewController = [v15 bottomViewController];
 
     v17 = objc_opt_class();
-    v18 = v16;
+    v18 = bottomViewController;
     if (v17)
     {
       if (objc_opt_isKindOfClass())
@@ -102,14 +102,14 @@
 
   v59 = v11;
 
-  v20 = [v5 view];
-  v21 = [v8 view];
-  v61 = [v20 window];
-  v22 = [v20 traitCollection];
-  [v22 displayCornerRadius];
+  view = [v5 view];
+  view2 = [v8 view];
+  window = [view window];
+  traitCollection = [view traitCollection];
+  [traitCollection displayCornerRadius];
   v57 = v23;
 
-  [v61 bounds];
+  [window bounds];
   v25 = v24;
   v27 = v26;
   v29 = v28;
@@ -117,15 +117,15 @@
   rect = v30;
   [v11 setShowsContentWhenReady:1];
   [v11 addObserver:self];
-  v58 = [(PBFEditingZoomAnimationController *)self previewView];
+  previewView = [(PBFEditingZoomAnimationController *)self previewView];
   [(PBFEditingZoomAnimationController *)self buildDimmingView];
   v32 = v60 = v5;
-  v33 = [(PBFEditingZoomAnimationController *)self complicationsView];
-  v34 = [(PBFEditingZoomAnimationController *)self buildZoomingViewWithPreviewView:v58 previewFrame:v21 editingView:v33 complicationsView:v25, v27, v29, v31];
-  v35 = [v4 containerView];
-  [v35 addSubview:v32];
-  [v35 addSubview:v34];
-  [v35 bounds];
+  complicationsView = [(PBFEditingZoomAnimationController *)self complicationsView];
+  v34 = [(PBFEditingZoomAnimationController *)self buildZoomingViewWithPreviewView:previewView previewFrame:view2 editingView:complicationsView complicationsView:v25, v27, v29, v31];
+  containerView = [transitionCopy containerView];
+  [containerView addSubview:v32];
+  [containerView addSubview:v34];
+  [containerView bounds];
   [v32 setFrame:?];
   [v32 setAlpha:0.0];
   [(PBFEditingZoomAnimationController *)self previewFrame];
@@ -156,10 +156,10 @@
   CGAffineTransformMakeScale(&v72, sx, v42);
   [v34 setTransform:&v72];
   [v34 bounds];
-  [v21 setFrame:?];
+  [view2 setFrame:?];
   [(PBFEditingZoomAnimationController *)self previewCornerRadius];
   [v34 _setContinuousCornerRadius:v43 / v42];
-  [v33 bounds];
+  [complicationsView bounds];
   v45 = v44;
   v47 = v46;
   v77.origin.x = v25;
@@ -173,14 +173,14 @@
   v78.size.height = rect;
   v49 = CGRectGetHeight(v78);
   CGAffineTransformMakeScale(&v72, v48, v49 / v47);
-  [v33 setTransform:&v72];
+  [complicationsView setTransform:&v72];
   [v34 bounds];
   UIRectGetCenter();
-  [v33 setCenter:?];
-  [(PBFEditingZoomUpAnimationController *)self setTransitionContext:v4];
+  [complicationsView setCenter:?];
+  [(PBFEditingZoomUpAnimationController *)self setTransitionContext:transitionCopy];
   [(PBFEditingZoomUpAnimationController *)self setDimmingView:v32];
   [(PBFEditingZoomUpAnimationController *)self setZoomingView:v34];
-  [(PBFEditingZoomUpAnimationController *)self transitionDuration:v4];
+  [(PBFEditingZoomUpAnimationController *)self transitionDuration:transitionCopy];
   v51 = v50;
   v52 = MEMORY[0x277D75D18];
   v64[0] = MEMORY[0x277D85DD0];
@@ -231,22 +231,22 @@ uint64_t __57__PBFEditingZoomUpAnimationController_animateTransition___block_inv
 {
   if ([(PBFEditingZoomUpAnimationController *)self isAnimationFinished]&& [(PBFEditingZoomUpAnimationController *)self isContentReady])
   {
-    v8 = [(PBFEditingZoomUpAnimationController *)self transitionContext];
-    v3 = [v8 viewControllerForKey:*MEMORY[0x277D77240]];
-    v4 = [v3 view];
-    v5 = [v8 containerView];
-    v6 = [(PBFEditingZoomUpAnimationController *)self dimmingView];
-    v7 = [(PBFEditingZoomUpAnimationController *)self zoomingView];
-    [v6 removeFromSuperview];
-    [v7 removeFromSuperview];
-    [v5 addSubview:v4];
-    [v8 finalFrameForViewController:v3];
-    [v4 setFrame:?];
-    [v8 completeTransition:{objc_msgSend(v8, "transitionWasCancelled") ^ 1}];
+    transitionContext = [(PBFEditingZoomUpAnimationController *)self transitionContext];
+    v3 = [transitionContext viewControllerForKey:*MEMORY[0x277D77240]];
+    view = [v3 view];
+    containerView = [transitionContext containerView];
+    dimmingView = [(PBFEditingZoomUpAnimationController *)self dimmingView];
+    zoomingView = [(PBFEditingZoomUpAnimationController *)self zoomingView];
+    [dimmingView removeFromSuperview];
+    [zoomingView removeFromSuperview];
+    [containerView addSubview:view];
+    [transitionContext finalFrameForViewController:v3];
+    [view setFrame:?];
+    [transitionContext completeTransition:{objc_msgSend(transitionContext, "transitionWasCancelled") ^ 1}];
   }
 }
 
-- (void)editingSceneViewControllerDidFinishShowingContent:(id)a3
+- (void)editingSceneViewControllerDidFinishShowingContent:(id)content
 {
   [(PBFEditingZoomUpAnimationController *)self setContentReady:1];
 

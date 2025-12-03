@@ -1,6 +1,6 @@
 @interface PPSSQLStorage
-+ (id)trimConditionsForEntryKey:(id)a3 trimDate:(double)a4 currDate:(double)a5;
-- (BOOL)updateTable:(id)a3 transferDataForKeys:(id)a4;
++ (id)trimConditionsForEntryKey:(id)key trimDate:(double)date currDate:(double)currDate;
+- (BOOL)updateTable:(id)table transferDataForKeys:(id)keys;
 - (PPSSQLStorage)init;
 - (id)BGSQLConnection;
 - (id)CESQLConnection;
@@ -8,26 +8,26 @@
 - (id)PLSQLConnection;
 - (id)PreUnlockEPSQLConnection;
 - (id)XCSQLConnection;
-- (id)connectionForKey:(id)a3;
-- (id)metricsToAddForStorage:(id)a3 processedMetrics:(id)a4;
-- (id)metricsToUpdateForStorage:(id)a3 processedMetrics:(id)a4;
-- (id)setupDBConnectionAtPath:(id)a3;
-- (int)storageForConnection:(id)a3;
+- (id)connectionForKey:(id)key;
+- (id)metricsToAddForStorage:(id)storage processedMetrics:(id)metrics;
+- (id)metricsToUpdateForStorage:(id)storage processedMetrics:(id)metrics;
+- (id)setupDBConnectionAtPath:(id)path;
+- (int)storageForConnection:(id)connection;
 - (void)closeAllConnections;
 - (void)createMetadataTable;
 - (void)deleteOldMetadataStore;
 - (void)handleMetadataVersionChange;
-- (void)handleSchemaMismatchForTable:(id)a3;
+- (void)handleSchemaMismatchForTable:(id)table;
 - (void)persistMetadata;
-- (void)setupArrayTableForEntryKey:(id)a3 withName:(id)a4 withConnection:(id)a5;
+- (void)setupArrayTableForEntryKey:(id)key withName:(id)name withConnection:(id)connection;
 - (void)setupDBConnections;
-- (void)setupDynamicTableForEntryKey:(id)a3 withName:(id)a4 withConnection:(id)a5;
+- (void)setupDynamicTableForEntryKey:(id)key withName:(id)name withConnection:(id)connection;
 - (void)setupFolders;
 - (void)setupMetadataStorage;
-- (void)setupStorageForEntryKey:(id)a3;
-- (void)setupTableForEntryKey:(id)a3 withName:(id)a4;
+- (void)setupStorageForEntryKey:(id)key;
+- (void)setupTableForEntryKey:(id)key withName:(id)name;
 - (void)startStorage;
-- (void)updateMetadata:(id)a3 updateMetrics:(id)a4 addMetrics:(id)a5;
+- (void)updateMetadata:(id)metadata updateMetrics:(id)metrics addMetrics:(id)addMetrics;
 @end
 
 @implementation PPSSQLStorage
@@ -196,10 +196,10 @@ uint64_t __37__PPSSQLStorage_setupMetadataStorage__block_invoke(uint64_t a1)
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [(PPSSQLStorage *)self connectionByStorage];
-  v11 = [v10 allValues];
+  connectionByStorage = [(PPSSQLStorage *)self connectionByStorage];
+  allValues = [connectionByStorage allValues];
 
-  v12 = [v11 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  v12 = [allValues countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v12)
   {
     v13 = v12;
@@ -210,7 +210,7 @@ uint64_t __37__PPSSQLStorage_setupMetadataStorage__block_invoke(uint64_t a1)
       {
         if (*v26 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allValues);
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
@@ -236,12 +236,12 @@ uint64_t __37__PPSSQLStorage_setupMetadataStorage__block_invoke(uint64_t a1)
         if (([v16 tableExistsForTableName:@"PLCoreStorage_MetadataVersion"] & 1) == 0)
         {
           [v16 createTableName:@"PLCoreStorage_MetadataVersion" withColumns:v9];
-          v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INSERT INTO %@ (%@) VALUES (%f)", @"PLCoreStorage_MetadataVersion", @"version", 0x3FF0000000000000];
-          v20 = [v16 performQuery:v19];
+          0x3FF0000000000000 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INSERT INTO %@ (%@) VALUES (%f)", @"PLCoreStorage_MetadataVersion", @"version", 0x3FF0000000000000];
+          v20 = [v16 performQuery:0x3FF0000000000000];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v25 objects:v31 count:16];
+      v13 = [allValues countByEnumeratingWithState:&v25 objects:v31 count:16];
     }
 
     while (v13);
@@ -258,10 +258,10 @@ uint64_t __37__PPSSQLStorage_setupMetadataStorage__block_invoke(uint64_t a1)
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = [(PPSSQLStorage *)self connectionByStorage];
-  v5 = [v4 allValues];
+  connectionByStorage = [(PPSSQLStorage *)self connectionByStorage];
+  allValues = [connectionByStorage allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
@@ -276,7 +276,7 @@ uint64_t __37__PPSSQLStorage_setupMetadataStorage__block_invoke(uint64_t a1)
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v25 + 1) + 8 * v11);
@@ -301,13 +301,13 @@ LABEL_11:
         v15 = v9;
         v16 = v8;
         v17 = v10;
-        v18 = v5;
+        v18 = allValues;
         v20 = v19 = v3;
         [v20 doubleValue];
         v22 = v21;
 
         v3 = v19;
-        v5 = v18;
+        allValues = v18;
         v10 = v17;
         v8 = v16;
         v9 = v15;
@@ -323,7 +323,7 @@ LABEL_12:
       }
 
       while (v7 != v11);
-      v7 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v7);
@@ -342,10 +342,10 @@ LABEL_12:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(PPSSQLStorage *)self connectionByStorage];
-  v5 = [v4 allValues];
+  connectionByStorage = [(PPSSQLStorage *)self connectionByStorage];
+  allValues = [connectionByStorage allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -357,7 +357,7 @@ LABEL_12:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
@@ -375,7 +375,7 @@ LABEL_12:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -384,20 +384,20 @@ LABEL_12:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateMetadata:(id)a3 updateMetrics:(id)a4 addMetrics:(id)a5
+- (void)updateMetadata:(id)metadata updateMetrics:(id)metrics addMetrics:(id)addMetrics
 {
   v94 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v55 = a5;
-  v64 = v7;
-  [v7 beginTransaction];
+  metadataCopy = metadata;
+  metricsCopy = metrics;
+  addMetricsCopy = addMetrics;
+  v64 = metadataCopy;
+  [metadataCopy beginTransaction];
   v63 = +[PLUtilities buildVersion];
   v83 = 0u;
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v9 = v8;
+  v9 = metricsCopy;
   obj = [v9 countByEnumeratingWithState:&v81 objects:v93 count:16];
   if (obj)
   {
@@ -437,8 +437,8 @@ LABEL_12:
               v17 = *(*(&v77 + 1) + 8 * i);
               v18 = [v9 objectForKeyedSubscript:v12];
               v19 = [v18 objectForKeyedSubscript:v17];
-              v20 = [MEMORY[0x1E695DFB0] null];
-              v21 = v19 == v20;
+              null = [MEMORY[0x1E695DFB0] null];
+              v21 = v19 == null;
 
               if (v21)
               {
@@ -451,9 +451,9 @@ LABEL_12:
                 v22 = [v9 objectForKeyedSubscript:v12];
                 v23 = [v22 objectForKeyedSubscript:v17];
 
-                v24 = [v23 data];
+                data = [v23 data];
                 [v23 version];
-                [v64 writeMetadata:v24 forFKID:v12 build:v63 name:v17 version:?];
+                [v64 writeMetadata:data forFKID:v12 build:v63 name:v17 version:?];
               }
             }
 
@@ -477,7 +477,7 @@ LABEL_12:
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  obja = v55;
+  obja = addMetricsCopy;
   v49 = [obja countByEnumeratingWithState:&v73 objects:v91 count:16];
   if (v49)
   {
@@ -573,9 +573,9 @@ LABEL_42:
                         v43 = [v40 objectAtIndexedSubscript:0];
                         v39 = [v43 objectForKeyedSubscript:@"ID"];
 
-                        v44 = [v36 data];
+                        data2 = [v36 data];
                         [v36 version];
-                        [v64 writeMetadata:v44 forFKID:v39 build:v63 name:v33 version:?];
+                        [v64 writeMetadata:data2 forFKID:v39 build:v63 name:v33 version:?];
                       }
 
                       else
@@ -639,15 +639,15 @@ LABEL_44:
   v47 = *MEMORY[0x1E69E9840];
 }
 
-- (id)metricsToUpdateForStorage:(id)a3 processedMetrics:(id)a4
+- (id)metricsToUpdateForStorage:(id)storage processedMetrics:(id)metrics
 {
   v93 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  storageCopy = storage;
+  metricsCopy = metrics;
   v7 = objc_opt_new();
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT * from %@", @"PLCoreStorage_Metadata"];
-  v66 = v5;
-  v9 = [v5 performQuery:v8];
+  v66 = storageCopy;
+  v9 = [storageCopy performQuery:v8];
 
   v83 = 0u;
   v84 = 0u;
@@ -662,7 +662,7 @@ LABEL_44:
     v65 = *v82;
     v12 = 0x1E696A000uLL;
     v76 = v7;
-    v73 = v6;
+    v73 = metricsCopy;
     do
     {
       v13 = 0;
@@ -679,9 +679,9 @@ LABEL_44:
         v15 = [v14 objectForKeyedSubscript:@"subsystem"];
         v16 = [v14 objectForKeyedSubscript:@"category"];
         v17 = [v14 objectForKeyedSubscript:@"ID"];
-        v18 = [v17 integerValue];
+        integerValue = [v17 integerValue];
 
-        v68 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT FK_ID, name, max(version) as version FROM %@ WHERE FK_ID=%lu GROUP BY FK_ID, name", @"PLCoreStorage_Metadata_Dynamic", v18];
+        v68 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT FK_ID, name, max(version) as version FROM %@ WHERE FK_ID=%lu GROUP BY FK_ID, name", @"PLCoreStorage_Metadata_Dynamic", integerValue];
         v19 = [v66 performQuery:?];
         v77 = 0u;
         v78 = 0u;
@@ -714,23 +714,23 @@ LABEL_44:
               v28 = v27;
               if (!v27 || ([v27 version], v29 < v25))
               {
-                v30 = [*(v12 + 3480) numberWithInteger:v18];
+                v30 = [*(v12 + 3480) numberWithInteger:integerValue];
                 [v11 objectForKeyedSubscript:v30];
                 v32 = v31 = v12;
 
                 if (!v32)
                 {
                   v33 = objc_opt_new();
-                  v34 = [*(v31 + 3480) numberWithInteger:v18];
+                  v34 = [*(v31 + 3480) numberWithInteger:integerValue];
                   [v11 setObject:v33 forKeyedSubscript:v34];
                 }
 
-                v35 = [MEMORY[0x1E695DFB0] null];
-                v36 = [*(v31 + 3480) numberWithInteger:v18];
-                v37 = [v11 objectForKeyedSubscript:v36];
-                [v37 setObject:v35 forKeyedSubscript:v26];
+                null = [MEMORY[0x1E695DFB0] null];
+                entryKeysToSetup = [*(v31 + 3480) numberWithInteger:integerValue];
+                v37 = [v11 objectForKeyedSubscript:entryKeysToSetup];
+                [v37 setObject:null forKeyedSubscript:v26];
 
-                v6 = v73;
+                metricsCopy = v73;
 LABEL_16:
 
                 v12 = 0x1E696A000;
@@ -738,69 +738,69 @@ LABEL_16:
               }
 
               [v28 version];
-              v6 = v73;
+              metricsCopy = v73;
               if (v46 <= v25)
               {
                 goto LABEL_18;
               }
 
-              v47 = [*(v12 + 3480) numberWithInteger:v18];
+              v47 = [*(v12 + 3480) numberWithInteger:integerValue];
               v48 = [v76 objectForKeyedSubscript:v47];
 
               if (!v48)
               {
                 v49 = objc_opt_new();
-                v50 = [*(v12 + 3480) numberWithInteger:v18];
+                v50 = [*(v12 + 3480) numberWithInteger:integerValue];
                 [v76 setObject:v49 forKeyedSubscript:v50];
               }
 
               [v28 version];
               if (v51 == v25)
               {
-                v52 = [*(v12 + 3480) numberWithInteger:v18];
+                v52 = [*(v12 + 3480) numberWithInteger:integerValue];
                 v53 = [v76 objectForKeyedSubscript:v52];
                 [v53 setObject:v28 forKeyedSubscript:v26];
 
-                v35 = [PPSEntryKey entryKeyForMetric:v28];
-                if (v35)
+                null = [PPSEntryKey entryKeyForMetric:v28];
+                if (null)
                 {
-                  v36 = [(PPSSQLStorage *)self entryKeysToSetup];
-                  [v36 addObject:v35];
+                  entryKeysToSetup = [(PPSSQLStorage *)self entryKeysToSetup];
+                  [entryKeysToSetup addObject:null];
                   goto LABEL_16;
                 }
 
 LABEL_17:
 
 LABEL_18:
-                v38 = [v6 objectForKeyedSubscript:v15];
+                v38 = [metricsCopy objectForKeyedSubscript:v15];
 
                 if (!v38)
                 {
                   v39 = objc_opt_new();
-                  [v6 setObject:v39 forKeyedSubscript:v15];
+                  [metricsCopy setObject:v39 forKeyedSubscript:v15];
                 }
 
-                v40 = [v6 objectForKeyedSubscript:v15];
+                v40 = [metricsCopy objectForKeyedSubscript:v15];
                 v41 = [v40 objectForKeyedSubscript:v16];
 
                 if (!v41)
                 {
                   v42 = objc_opt_new();
-                  v43 = [v6 objectForKeyedSubscript:v15];
+                  v43 = [metricsCopy objectForKeyedSubscript:v15];
                   [v43 setObject:v42 forKeyedSubscript:v16];
                 }
 
-                v44 = [v6 objectForKeyedSubscript:v15];
+                v44 = [metricsCopy objectForKeyedSubscript:v15];
                 v45 = [v44 objectForKeyedSubscript:v16];
                 [v45 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v26];
 
                 goto LABEL_23;
               }
 
-              v54 = [MEMORY[0x1E695DFB0] null];
-              v55 = [*(v12 + 3480) numberWithInteger:v18];
+              null2 = [MEMORY[0x1E695DFB0] null];
+              v55 = [*(v12 + 3480) numberWithInteger:integerValue];
               v56 = [v76 objectForKeyedSubscript:v55];
-              [v56 setObject:v54 forKeyedSubscript:v26];
+              [v56 setObject:null2 forKeyedSubscript:v26];
 
               v57 = [v73 objectForKeyedSubscript:v15];
               v58 = [v57 objectForKeyedSubscript:v16];
@@ -809,12 +809,12 @@ LABEL_18:
               v44 = sqlLog();
               if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
               {
-                v59 = [v28 subsystem];
-                v60 = [v28 category];
+                subsystem = [v28 subsystem];
+                category = [v28 category];
                 *buf = 138412802;
-                v86 = v59;
+                v86 = subsystem;
                 v87 = 2112;
-                v88 = v60;
+                v88 = category;
                 v89 = 2112;
                 v90 = v26;
                 _os_log_debug_impl(&dword_1D8611000, v44, OS_LOG_TYPE_DEBUG, "Metric[%@:%@:%@] underwent a major version change. Dropping old metadata", buf, 0x20u);
@@ -851,21 +851,21 @@ LABEL_23:
   return v11;
 }
 
-- (id)metricsToAddForStorage:(id)a3 processedMetrics:(id)a4
+- (id)metricsToAddForStorage:(id)storage processedMetrics:(id)metrics
 {
   v68 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v48 = a4;
+  storageCopy = storage;
+  metricsCopy = metrics;
   v47 = objc_opt_new();
-  v7 = [MEMORY[0x1E69BDC20] getAllSubsystem];
-  v46 = self;
-  v38 = v6;
-  v50 = [(PPSSQLStorage *)self storageForConnection:v6];
+  getAllSubsystem = [MEMORY[0x1E69BDC20] getAllSubsystem];
+  selfCopy = self;
+  v38 = storageCopy;
+  v50 = [(PPSSQLStorage *)self storageForConnection:storageCopy];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v7;
+  obj = getAllSubsystem;
   v41 = [obj countByEnumeratingWithState:&v61 objects:v67 count:16];
   if (v41)
   {
@@ -927,14 +927,14 @@ LABEL_23:
 
                     if ([v16 storage] == v50)
                     {
-                      v17 = [v48 objectForKeyedSubscript:v9];
+                      v17 = [metricsCopy objectForKeyedSubscript:v9];
                       [v17 objectForKeyedSubscript:v12];
                       v19 = v18 = v9;
                       v20 = [v19 objectForKeyedSubscript:v14];
-                      v21 = [v20 BOOLValue];
+                      bOOLValue = [v20 BOOLValue];
 
                       v9 = v18;
-                      if ((v21 & 1) == 0)
+                      if ((bOOLValue & 1) == 0)
                       {
                         v22 = [v47 objectForKeyedSubscript:v18];
 
@@ -966,8 +966,8 @@ LABEL_23:
 
                         if (v34)
                         {
-                          v35 = [(PPSSQLStorage *)v46 entryKeysToSetup];
-                          [v35 addObject:v34];
+                          entryKeysToSetup = [(PPSSQLStorage *)selfCopy entryKeysToSetup];
+                          [entryKeysToSetup addObject:v34];
                         }
 
                         v9 = v18;
@@ -1015,54 +1015,54 @@ LABEL_23:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setupStorageForEntryKey:(id)a3
+- (void)setupStorageForEntryKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PPSSQLStorage *)self connectionForKey:v4];
-  if (([v5 tableExistsForTableName:v4] & 1) == 0)
+  keyCopy = key;
+  v5 = [(PPSSQLStorage *)self connectionForKey:keyCopy];
+  if (([v5 tableExistsForTableName:keyCopy] & 1) == 0)
   {
-    [(PPSSQLStorage *)self setupTableForEntryKey:v4];
+    [(PPSSQLStorage *)self setupTableForEntryKey:keyCopy];
   }
 
-  if ([PPSEntryKey hasDynamicKeys:v4])
+  if ([PPSEntryKey hasDynamicKeys:keyCopy])
   {
-    v6 = [PPSEntryKey dynamicTableNameForEntryKey:v4];
-    [(PPSSQLStorage *)self setupDynamicTableForEntryKey:v4 withName:v6 withConnection:v5];
+    v6 = [PPSEntryKey dynamicTableNameForEntryKey:keyCopy];
+    [(PPSSQLStorage *)self setupDynamicTableForEntryKey:keyCopy withName:v6 withConnection:v5];
   }
 
-  if ([PPSEntryKey hasArrayKeys:v4])
+  if ([PPSEntryKey hasArrayKeys:keyCopy])
   {
-    [(PPSSQLStorage *)self setupArrayTableForEntryKey:v4 withName:v4 withConnection:v5];
+    [(PPSSQLStorage *)self setupArrayTableForEntryKey:keyCopy withName:keyCopy withConnection:v5];
   }
 
-  v7 = [(PPSSQLStorage *)self entryKeysToSetup];
-  v8 = [v7 containsObject:v4];
+  entryKeysToSetup = [(PPSSQLStorage *)self entryKeysToSetup];
+  v8 = [entryKeysToSetup containsObject:keyCopy];
 
   if (v8)
   {
-    [(PPSSQLStorage *)self handleSchemaMismatchForTable:v4];
+    [(PPSSQLStorage *)self handleSchemaMismatchForTable:keyCopy];
     v9 = sqlLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       [PPSSQLStorage setupStorageForEntryKey:];
     }
 
-    v10 = [(PPSSQLStorage *)self entryKeysToSetup];
-    [v10 removeObject:v4];
+    entryKeysToSetup2 = [(PPSSQLStorage *)self entryKeysToSetup];
+    [entryKeysToSetup2 removeObject:keyCopy];
   }
 }
 
-- (void)handleSchemaMismatchForTable:(id)a3
+- (void)handleSchemaMismatchForTable:(id)table
 {
   v104 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v60 = self;
-  v64 = [(PPSSQLStorage *)self connectionForKey:v4];
-  v5 = [MEMORY[0x1E695DF70] arrayWithObject:v4];
+  tableCopy = table;
+  selfCopy = self;
+  v64 = [(PPSSQLStorage *)self connectionForKey:tableCopy];
+  v5 = [MEMORY[0x1E695DF70] arrayWithObject:tableCopy];
   v6 = 0x1E8518000uLL;
-  if ([PPSEntryKey hasDynamicKeys:v4])
+  if ([PPSEntryKey hasDynamicKeys:tableCopy])
   {
-    v7 = [PPSEntryKey dynamicTableNameForEntryKey:v4];
+    v7 = [PPSEntryKey dynamicTableNameForEntryKey:tableCopy];
     [v5 addObject:v7];
   }
 
@@ -1071,12 +1071,12 @@ LABEL_23:
     v7 = 0;
   }
 
-  v63 = v4;
-  v58 = [PPSEntryKey hasArrayKeys:v4];
+  v63 = tableCopy;
+  v58 = [PPSEntryKey hasArrayKeys:tableCopy];
   v56 = v7;
   if (v58)
   {
-    v8 = [PPSEntryKey arrayMetricsForEntryKey:v4];
+    v8 = [PPSEntryKey arrayMetricsForEntryKey:tableCopy];
     v89 = 0u;
     v90 = 0u;
     v91 = 0u;
@@ -1098,9 +1098,9 @@ LABEL_23:
 
           v13 = *(*(&v89 + 1) + 8 * i);
           v14 = [v8 objectForKeyedSubscript:v13];
-          v15 = [v14 fixedArraySize];
+          fixedArraySize = [v14 fixedArraySize];
 
-          if (!v15)
+          if (!fixedArraySize)
           {
             v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_Array_%@", v63, v13];
 
@@ -1120,7 +1120,7 @@ LABEL_23:
       v57 = 0;
     }
 
-    v4 = v63;
+    tableCopy = v63;
     v6 = 0x1E8518000uLL;
   }
 
@@ -1150,17 +1150,17 @@ LABEL_23:
         }
 
         v19 = *(*(&v85 + 1) + 8 * v18);
-        v20 = [*(v17 + 3984) dictionary];
+        dictionary = [*(v17 + 3984) dictionary];
         v66 = [v64 tableInfo:v19];
         v65 = v19;
-        if ([v19 isEqualToString:v4])
+        if ([v19 isEqualToString:tableCopy])
         {
-          v21 = [*(v6 + 2656) baseMetricsForEntryKey:v4];
-          [v20 addEntriesFromDictionary:v21];
+          v21 = [*(v6 + 2656) baseMetricsForEntryKey:tableCopy];
+          [dictionary addEntriesFromDictionary:v21];
 
           if (v58)
           {
-            v22 = [*(v6 + 2656) arrayMetricsForEntryKey:v4];
+            v22 = [*(v6 + 2656) arrayMetricsForEntryKey:tableCopy];
             v81 = 0u;
             v82 = 0u;
             v83 = 0u;
@@ -1184,7 +1184,7 @@ LABEL_23:
                   v29 = v28;
                   if (v28 && [v28 fixedArraySize])
                   {
-                    [v20 setObject:v29 forKeyedSubscript:v27];
+                    [dictionary setObject:v29 forKeyedSubscript:v27];
                   }
                 }
 
@@ -1202,21 +1202,21 @@ LABEL_23:
         {
           if ([v19 containsString:@"_Dynamic"])
           {
-            v30 = [*(v6 + 2656) dynamicMetricsForEntryKey:v4];
+            v30 = [*(v6 + 2656) dynamicMetricsForEntryKey:tableCopy];
             goto LABEL_40;
           }
 
-          if ([v4 containsString:@"_Array"])
+          if ([tableCopy containsString:@"_Array"])
           {
-            v30 = [*(v6 + 2656) arrayMetricsForEntryKey:v4];
+            v30 = [*(v6 + 2656) arrayMetricsForEntryKey:tableCopy];
 LABEL_40:
             v22 = v30;
-            [v20 addEntriesFromDictionary:v30];
+            [dictionary addEntriesFromDictionary:v30];
 LABEL_41:
           }
         }
 
-        v31 = [*(v17 + 3984) dictionary];
+        dictionary2 = [*(v17 + 3984) dictionary];
         v32 = [MEMORY[0x1E695DFA8] set];
         v33 = [MEMORY[0x1E695DFA8] set];
         v34 = [MEMORY[0x1E695DFA8] set];
@@ -1224,9 +1224,9 @@ LABEL_41:
         v75[1] = 3221225472;
         v75[2] = __46__PPSSQLStorage_handleSchemaMismatchForTable___block_invoke;
         v75[3] = &unk_1E851A0E0;
-        v35 = v20;
+        v35 = dictionary;
         v76 = v35;
-        v36 = v31;
+        v36 = dictionary2;
         v77 = v36;
         v37 = v33;
         v78 = v37;
@@ -1236,12 +1236,12 @@ LABEL_41:
         v80 = v39;
         [v66 enumerateObjectsUsingBlock:v75];
         v40 = MEMORY[0x1E695DFA8];
-        v41 = [v35 allKeys];
-        v42 = [v40 setWithArray:v41];
+        allKeys = [v35 allKeys];
+        v42 = [v40 setWithArray:allKeys];
 
         v43 = MEMORY[0x1E695DFD8];
-        v44 = [v36 allKeys];
-        v45 = [v43 setWithArray:v44];
+        allKeys2 = [v36 allKeys];
+        v45 = [v43 setWithArray:allKeys2];
         [v42 minusSet:v45];
 
         [v42 minusSet:v39];
@@ -1273,14 +1273,14 @@ LABEL_41:
           }
 
           v50 = MEMORY[0x1E695DFA8];
-          v51 = [v46 allKeys];
-          v52 = [v50 setWithArray:v51];
+          allKeys3 = [v46 allKeys];
+          v52 = [v50 setWithArray:allKeys3];
 
           [v52 minusSet:v48];
           [v52 minusSet:v37];
           [v52 minusSet:v47];
-          [(PPSSQLStorage *)v60 updateTable:v65 transferDataForKeys:v52];
-          v4 = v63;
+          [(PPSSQLStorage *)selfCopy updateTable:v65 transferDataForKeys:v52];
+          tableCopy = v63;
 LABEL_47:
 
           goto LABEL_48;
@@ -1457,23 +1457,23 @@ void __46__PPSSQLStorage_handleSchemaMismatchForTable___block_invoke_169(uint64_
   v11 = [*(a1 + 48) performQuery:v10];
 }
 
-- (void)setupTableForEntryKey:(id)a3 withName:(id)a4
+- (void)setupTableForEntryKey:(id)key withName:(id)name
 {
   v67 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v47 = a4;
-  v46 = [(PPSSQLStorage *)self connectionForKey:v6];
-  v7 = [PPSEntryKey baseMetricsForEntryKey:v6];
-  v48 = v6;
-  v8 = [PPSEntryKey arrayMetricsForEntryKey:v6];
-  v9 = [MEMORY[0x1E695DF90] dictionary];
+  keyCopy = key;
+  nameCopy = name;
+  v46 = [(PPSSQLStorage *)self connectionForKey:keyCopy];
+  v7 = [PPSEntryKey baseMetricsForEntryKey:keyCopy];
+  v48 = keyCopy;
+  v8 = [PPSEntryKey arrayMetricsForEntryKey:keyCopy];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v53 = v7;
-  [v9 addEntriesFromDictionary:v7];
+  [dictionary addEntriesFromDictionary:v7];
   v45 = v8;
-  [v9 addEntriesFromDictionary:v8];
-  v51 = v9;
-  v10 = [v9 allKeys];
-  v11 = [v10 sortedArrayUsingSelector:sel_compare_];
+  [dictionary addEntriesFromDictionary:v8];
+  v51 = dictionary;
+  allKeys = [dictionary allKeys];
+  v11 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v12 = objc_opt_new();
   [v12 addObject:&unk_1F540CD38];
@@ -1545,11 +1545,11 @@ void __46__PPSSQLStorage_handleSchemaMismatchForTable___block_invoke_169(uint64_
 
               v22 = v57;
               v24 = (v24 + 1);
-              v35 = [v57 fixedArraySize];
+              fixedArraySize = [v57 fixedArraySize];
               v23 = v55;
             }
 
-            while (v24 < v35);
+            while (v24 < fixedArraySize);
           }
         }
 
@@ -1597,22 +1597,22 @@ void __46__PPSSQLStorage_handleSchemaMismatchForTable___block_invoke_169(uint64_
     [PPSSQLStorage setupTableForEntryKey:withName:];
   }
 
-  [v46 createTableName:v47 withColumns:v56];
+  [v46 createTableName:nameCopy withColumns:v56];
   v44 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setupDynamicTableForEntryKey:(id)a3 withName:(id)a4 withConnection:(id)a5
+- (void)setupDynamicTableForEntryKey:(id)key withName:(id)name withConnection:(id)connection
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v24 = a4;
-  v23 = a5;
-  v8 = [PPSEntryKey dynamicMetricsForEntryKey:v7];
+  keyCopy = key;
+  nameCopy = name;
+  connectionCopy = connection;
+  v8 = [PPSEntryKey dynamicMetricsForEntryKey:keyCopy];
   v9 = objc_opt_new();
   [v9 addObject:&unk_1F540CD88];
   [v9 addObject:&unk_1F540CDB0];
-  v25 = v7;
-  [PPSEntryKey allDynamicKeysForEntryKey:v7];
+  v25 = keyCopy;
+  [PPSEntryKey allDynamicKeysForEntryKey:keyCopy];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -1662,21 +1662,21 @@ void __46__PPSSQLStorage_handleSchemaMismatchForTable___block_invoke_169(uint64_
     [PPSSQLStorage setupTableForEntryKey:withName:];
   }
 
-  [v23 createTableName:v24 withColumns:v9];
-  [v23 createCompositeIndexOnTable:v24 forColumns:&unk_1F540B7E8];
+  [connectionCopy createTableName:nameCopy withColumns:v9];
+  [connectionCopy createCompositeIndexOnTable:nameCopy forColumns:&unk_1F540B7E8];
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setupArrayTableForEntryKey:(id)a3 withName:(id)a4 withConnection:(id)a5
+- (void)setupArrayTableForEntryKey:(id)key withName:(id)name withConnection:(id)connection
 {
   v45 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [PPSEntryKey arrayMetricsForEntryKey:v7];
-  v32 = v7;
-  v11 = [PPSEntryKey allArrayKeysForEntryKey:v7];
+  keyCopy = key;
+  nameCopy = name;
+  connectionCopy = connection;
+  v10 = [PPSEntryKey arrayMetricsForEntryKey:keyCopy];
+  v32 = keyCopy;
+  v11 = [PPSEntryKey allArrayKeysForEntryKey:keyCopy];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -1689,7 +1689,7 @@ void __46__PPSSQLStorage_handleSchemaMismatchForTable___block_invoke_169(uint64_
     v15 = 0x1E696A000uLL;
     v36 = *v38;
     v33 = v10;
-    v34 = v8;
+    v34 = nameCopy;
     do
     {
       v16 = 0;
@@ -1707,17 +1707,17 @@ void __46__PPSSQLStorage_handleSchemaMismatchForTable___block_invoke_169(uint64_
         {
           v19 = *(v14 + 3952);
           v20 = objc_opt_new();
-          v21 = [*(v15 + 3776) stringWithFormat:@"%@_Array_%@", v8, v17];
-          if (([v9 tableExistsForTableName:v21] & 1) == 0)
+          v21 = [*(v15 + 3776) stringWithFormat:@"%@_Array_%@", nameCopy, v17];
+          if (([connectionCopy tableExistsForTableName:v21] & 1) == 0)
           {
             [v20 addObject:&unk_1F540CDD8];
             [v20 addObject:&unk_1F540CE00];
             v42[0] = @"column-name";
-            v22 = [v18 name];
+            name = [v18 name];
             v42[1] = @"type";
-            v43[0] = v22;
+            v43[0] = name;
             v23 = v11;
-            v24 = v9;
+            v24 = connectionCopy;
             v25 = PLVTypeToPLSQLiteType_0;
             v26 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v18, "datatype")}];
             v27 = [v25 objectForKeyedSubscript:v26];
@@ -1725,20 +1725,20 @@ void __46__PPSSQLStorage_handleSchemaMismatchForTable___block_invoke_169(uint64_
             v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:2];
             [v20 addObject:v28];
 
-            v9 = v24;
+            connectionCopy = v24;
             v11 = v23;
             v14 = 0x1E695D000;
 
             v15 = 0x1E696A000;
-            [v9 createTableName:v21 withColumns:v20];
+            [connectionCopy createTableName:v21 withColumns:v20];
             v41[0] = @"FK_ID";
-            v29 = [v18 name];
-            v41[1] = v29;
+            name2 = [v18 name];
+            v41[1] = name2;
             v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
-            [v9 createCompositeIndexOnTable:v21 forColumns:v30];
+            [connectionCopy createCompositeIndexOnTable:v21 forColumns:v30];
 
             v10 = v33;
-            v8 = v34;
+            nameCopy = v34;
           }
 
           v13 = v35;
@@ -1757,15 +1757,15 @@ void __46__PPSSQLStorage_handleSchemaMismatchForTable___block_invoke_169(uint64_
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)updateTable:(id)a3 transferDataForKeys:(id)a4
+- (BOOL)updateTable:(id)table transferDataForKeys:(id)keys
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [@"PPSTmp_" stringByAppendingString:v6];
-  if ([v6 containsString:@"_Dynamic"])
+  tableCopy = table;
+  keysCopy = keys;
+  v8 = [@"PPSTmp_" stringByAppendingString:tableCopy];
+  if ([tableCopy containsString:@"_Dynamic"])
   {
-    v9 = [v6 mutableCopy];
+    v9 = [tableCopy mutableCopy];
     v10 = [v9 length] - 8;
 LABEL_5:
     v11 = [v9 substringToIndex:v10];
@@ -1773,65 +1773,65 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v6 containsString:@"_Array"])
+  if ([tableCopy containsString:@"_Array"])
   {
-    v9 = [v6 mutableCopy];
+    v9 = [tableCopy mutableCopy];
     v10 = [v9 rangeOfString:@"_Array_"];
     goto LABEL_5;
   }
 
-  v11 = v6;
+  v11 = tableCopy;
 LABEL_7:
   v12 = [(PPSSQLStorage *)self connectionForKey:v11];
   [v12 beginTransaction];
-  [v7 addObject:@"ID"];
-  if ([v6 containsString:@"_Dynamic"])
+  [keysCopy addObject:@"ID"];
+  if ([tableCopy containsString:@"_Dynamic"])
   {
-    [v7 addObject:@"FK_ID"];
+    [keysCopy addObject:@"FK_ID"];
     [(PPSSQLStorage *)self setupDynamicTableForEntryKey:v11 withName:v8 withConnection:v12];
   }
 
-  else if ([v6 containsString:@"_Array"])
+  else if ([tableCopy containsString:@"_Array"])
   {
-    [v7 addObject:@"FK_ID"];
+    [keysCopy addObject:@"FK_ID"];
     v13 = [@"PPSTmp_" stringByAppendingString:v11];
     [(PPSSQLStorage *)self setupArrayTableForEntryKey:v11 withName:v13 withConnection:v12];
   }
 
   else
   {
-    [v7 addObject:@"timestamp"];
+    [keysCopy addObject:@"timestamp"];
     [(PPSSQLStorage *)self setupTableForEntryKey:v11 withName:v8];
   }
 
-  v14 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __49__PPSSQLStorage_updateTable_transferDataForKeys___block_invoke;
   v25[3] = &unk_1E851A158;
-  v15 = v14;
+  v15 = string;
   v26 = v15;
-  [v7 enumerateObjectsUsingBlock:v25];
+  [keysCopy enumerateObjectsUsingBlock:v25];
   v16 = [v15 substringToIndex:{objc_msgSend(v15, "length") - 2}];
-  v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INSERT INTO %@ (%@) SELECT %@ FROM %@", v8, v16, v16, v6];
+  tableCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"INSERT INTO %@ (%@) SELECT %@ FROM %@", v8, v16, v16, tableCopy];
   v18 = sqlLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
     [PPSSQLStorage updateTable:transferDataForKeys:];
   }
 
-  v19 = [v12 performQuery:v17];
-  [v12 dropTable:v6];
-  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE %@ RENAME TO %@", v8, v6];
+  v19 = [v12 performQuery:tableCopy];
+  [v12 dropTable:tableCopy];
+  tableCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE %@ RENAME TO %@", v8, tableCopy];
   v21 = sqlLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v20;
+    v28 = tableCopy2;
     _os_log_impl(&dword_1D8611000, v21, OS_LOG_TYPE_DEFAULT, "UpdateTable alter query %@", buf, 0xCu);
   }
 
-  v22 = [v12 performQuery:v20];
+  v22 = [v12 performQuery:tableCopy2];
   [v12 endTransaction];
 
   v23 = *MEMORY[0x1E69E9840];
@@ -1849,106 +1849,106 @@ uint64_t __49__PPSSQLStorage_updateTable_transferDataForKeys___block_invoke(uint
   return [v5 appendString:{@", "}];
 }
 
-- (id)connectionForKey:(id)a3
+- (id)connectionForKey:(id)key
 {
-  v4 = [PPSEntryKey storageForEntryKey:a3];
-  v5 = [(PPSSQLStorage *)self connectionByStorage];
+  v4 = [PPSEntryKey storageForEntryKey:key];
+  connectionByStorage = [(PPSSQLStorage *)self connectionByStorage];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:v4];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [connectionByStorage objectForKeyedSubscript:v6];
 
   return v7;
 }
 
 - (id)PLSQLConnection
 {
-  v2 = [(PPSSQLStorage *)self connectionByStorage];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F5405E08];
+  connectionByStorage = [(PPSSQLStorage *)self connectionByStorage];
+  v3 = [connectionByStorage objectForKeyedSubscript:&unk_1F5405E08];
 
   return v3;
 }
 
 - (id)EPSQLConnection
 {
-  v2 = [(PPSSQLStorage *)self connectionByStorage];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F5405DF0];
+  connectionByStorage = [(PPSSQLStorage *)self connectionByStorage];
+  v3 = [connectionByStorage objectForKeyedSubscript:&unk_1F5405DF0];
 
   return v3;
 }
 
 - (id)PreUnlockEPSQLConnection
 {
-  v2 = [(PPSSQLStorage *)self connectionByStorage];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F5405DF0];
+  connectionByStorage = [(PPSSQLStorage *)self connectionByStorage];
+  v3 = [connectionByStorage objectForKeyedSubscript:&unk_1F5405DF0];
 
   return v3;
 }
 
 - (id)CESQLConnection
 {
-  v2 = [(PPSSQLStorage *)self connectionByStorage];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F5405E20];
+  connectionByStorage = [(PPSSQLStorage *)self connectionByStorage];
+  v3 = [connectionByStorage objectForKeyedSubscript:&unk_1F5405E20];
 
   return v3;
 }
 
 - (id)XCSQLConnection
 {
-  v2 = [(PPSSQLStorage *)self connectionByStorage];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F5405E38];
+  connectionByStorage = [(PPSSQLStorage *)self connectionByStorage];
+  v3 = [connectionByStorage objectForKeyedSubscript:&unk_1F5405E38];
 
   return v3;
 }
 
 - (id)BGSQLConnection
 {
-  v2 = [(PPSSQLStorage *)self connectionByStorage];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F5405E50];
+  connectionByStorage = [(PPSSQLStorage *)self connectionByStorage];
+  v3 = [connectionByStorage objectForKeyedSubscript:&unk_1F5405E50];
 
   return v3;
 }
 
-- (int)storageForConnection:(id)a3
+- (int)storageForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(PPSSQLStorage *)self PLSQLConnection];
+  connectionCopy = connection;
+  pLSQLConnection = [(PPSSQLStorage *)self PLSQLConnection];
 
-  if (v5 == v4)
+  if (pLSQLConnection == connectionCopy)
   {
     v11 = 2;
   }
 
   else
   {
-    v6 = [(PPSSQLStorage *)self EPSQLConnection];
+    ePSQLConnection = [(PPSSQLStorage *)self EPSQLConnection];
 
-    if (v6 == v4 || ([(PPSSQLStorage *)self PreUnlockEPSQLConnection], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 == v4))
+    if (ePSQLConnection == connectionCopy || ([(PPSSQLStorage *)self PreUnlockEPSQLConnection], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 == connectionCopy))
     {
       v11 = 1;
     }
 
     else
     {
-      v8 = [(PPSSQLStorage *)self CESQLConnection];
+      cESQLConnection = [(PPSSQLStorage *)self CESQLConnection];
 
-      if (v8 == v4)
+      if (cESQLConnection == connectionCopy)
       {
         v11 = 3;
       }
 
       else
       {
-        v9 = [(PPSSQLStorage *)self XCSQLConnection];
+        xCSQLConnection = [(PPSSQLStorage *)self XCSQLConnection];
 
-        if (v9 == v4)
+        if (xCSQLConnection == connectionCopy)
         {
           v11 = 4;
         }
 
         else
         {
-          v10 = [(PPSSQLStorage *)self BGSQLConnection];
+          bGSQLConnection = [(PPSSQLStorage *)self BGSQLConnection];
 
-          if (v10 == v4)
+          if (bGSQLConnection == connectionCopy)
           {
             v11 = 5;
           }
@@ -1967,20 +1967,20 @@ uint64_t __49__PPSSQLStorage_updateTable_transferDataForKeys___block_invoke(uint
 
 - (void)closeAllConnections
 {
-  v3 = [(PPSSQLStorage *)self PLSQLConnection];
-  [v3 closeConnection];
+  pLSQLConnection = [(PPSSQLStorage *)self PLSQLConnection];
+  [pLSQLConnection closeConnection];
 
-  v4 = [(PPSSQLStorage *)self EPSQLConnection];
-  [v4 closeConnection];
+  ePSQLConnection = [(PPSSQLStorage *)self EPSQLConnection];
+  [ePSQLConnection closeConnection];
 
-  v5 = [(PPSSQLStorage *)self CESQLConnection];
-  [v5 closeConnection];
+  cESQLConnection = [(PPSSQLStorage *)self CESQLConnection];
+  [cESQLConnection closeConnection];
 
-  v6 = [(PPSSQLStorage *)self XCSQLConnection];
-  [v6 closeConnection];
+  xCSQLConnection = [(PPSSQLStorage *)self XCSQLConnection];
+  [xCSQLConnection closeConnection];
 
-  v7 = [(PPSSQLStorage *)self BGSQLConnection];
-  [v7 closeConnection];
+  bGSQLConnection = [(PPSSQLStorage *)self BGSQLConnection];
+  [bGSQLConnection closeConnection];
 }
 
 - (void)setupFolders
@@ -2040,13 +2040,13 @@ uint64_t __49__PPSSQLStorage_updateTable_transferDataForKeys___block_invoke(uint
     while (v18);
   }
 
-  v21 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v30 = *MEMORY[0x1E696A3A0];
   v31 = *MEMORY[0x1E696A3A8];
   v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
   v23 = +[PPSFileUtilities containerPath];
   v24 = [v23 stringByAppendingString:@"/Library/PerfPowerTelemetry/"];
-  [v21 setAttributes:v22 ofItemAtPath:v24 error:0];
+  [defaultManager setAttributes:v22 ofItemAtPath:v24 error:0];
 
   v25 = *MEMORY[0x1E69E9840];
 }
@@ -2054,30 +2054,30 @@ uint64_t __49__PPSSQLStorage_updateTable_transferDataForKeys___block_invoke(uint
 - (void)setupDBConnections
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [a1 lastPathComponent];
+  lastPathComponent = [self lastPathComponent];
   OUTLINED_FUNCTION_2();
   _os_log_error_impl(&dword_1D8611000, a2, OS_LOG_TYPE_ERROR, "Invalid connection to PreUnlock DB '%@'", v5, 0xCu);
 
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)setupDBConnectionAtPath:(id)a3
+- (id)setupDBConnectionAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[PPSFileUtilities containerPath];
   v5 = [v4 stringByAppendingString:@"/Library/PerfPowerTelemetry/"];
   v6 = [v5 stringByAppendingString:@"PreUnlock/"];
-  v7 = [v3 hasPrefix:v6];
+  v7 = [pathCopy hasPrefix:v6];
 
   v8 = [PLSQLiteConnection alloc];
   if (v7)
   {
-    v9 = [(PLSQLiteConnection *)v8 initWithFilePath:v3 withFlags:&unk_1F540B800];
+    v9 = [(PLSQLiteConnection *)v8 initWithFilePath:pathCopy withFlags:&unk_1F540B800];
   }
 
   else
   {
-    v9 = [(PLSQLiteConnection *)v8 initWithFilePath:v3];
+    v9 = [(PLSQLiteConnection *)v8 initWithFilePath:pathCopy];
   }
 
   v10 = v9;
@@ -2105,24 +2105,24 @@ void __51__PPSSQLStorage_trimConditionsForStorage_trimDate___block_invoke(uint64
   }
 }
 
-+ (id)trimConditionsForEntryKey:(id)a3 trimDate:(double)a4 currDate:(double)a5
++ (id)trimConditionsForEntryKey:(id)key trimDate:(double)date currDate:(double)currDate
 {
-  v7 = a3;
-  v8 = [PPSEntryKey timeToLiveForEntryKey:v7];
-  if ([PPSEntryKey directionalityForEntryKey:v7]== 3)
+  keyCopy = key;
+  v8 = [PPSEntryKey timeToLiveForEntryKey:keyCopy];
+  if ([PPSEntryKey directionalityForEntryKey:keyCopy]== 3)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is NULL OR %@<(SELECT max(%@) FROM '%@' WHERE %@<%f)", @"timestamp", @"timestamp", @"timestamp", v7, @"timestamp", *&a4];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is NULL OR %@<(SELECT max(%@) FROM '%@' WHERE %@<%f)", @"timestamp", @"timestamp", @"timestamp", keyCopy, @"timestamp", *&date];
   }
 
   else
   {
-    v9 = a5 + v8 * -86400.0;
-    if (v9 > a4)
+    dateCopy = currDate + v8 * -86400.0;
+    if (dateCopy > date)
     {
-      v9 = a4;
+      dateCopy = date;
     }
 
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@ is NULL OR %@<%f)", @"timestamp", @"timestamp", *&v9, v12, v13, v14];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@ is NULL OR %@<%f)", @"timestamp", @"timestamp", *&dateCopy, v12, v13, v14];
   }
   v10 = ;
 

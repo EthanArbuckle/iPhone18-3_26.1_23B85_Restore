@@ -1,26 +1,26 @@
 @interface STUIStatusBarRadarItem
 - (STUIStatusBarRadarView)radarItemView;
-- (id)imageForUpdate:(id)a3;
+- (id)imageForUpdate:(id)update;
 - (void)_create_radarItemView;
 @end
 
 @implementation STUIStatusBarRadarItem
 
-- (id)imageForUpdate:(id)a3
+- (id)imageForUpdate:(id)update
 {
-  v3 = a3;
-  v4 = [v3 data];
-  v5 = [v4 radarEntry];
-  v6 = [v5 BOOLValue];
+  updateCopy = update;
+  data = [updateCopy data];
+  radarEntry = [data radarEntry];
+  bOOLValue = [radarEntry BOOLValue];
 
   v7 = MEMORY[0x277D755B8];
   v8 = DashBoardFrameworkBundle();
-  v9 = [v3 styleAttributes];
+  styleAttributes = [updateCopy styleAttributes];
 
-  v10 = [v9 traitCollection];
-  v11 = [v7 imageNamed:@"Black_Radar" inBundle:v8 compatibleWithTraitCollection:v10];
+  traitCollection = [styleAttributes traitCollection];
+  v11 = [v7 imageNamed:@"Black_Radar" inBundle:v8 compatibleWithTraitCollection:traitCollection];
 
-  if ((v6 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     [v11 size];
     UIGraphicsBeginImageContext(v16);

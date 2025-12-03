@@ -1,32 +1,32 @@
 @interface _UIHostedFocusSystemDelegateProxy
-- (BOOL)_focusSystem:(id)a3 containsChildOfHostEnvironment:(id)a4;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)_focusSystem:(id)system containsChildOfHostEnvironment:(id)environment;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (_UIHostedFocusSystemDelegate)delegate;
-- (_UIHostedFocusSystemDelegateProxy)initWithFocusSystem:(id)a3 delegate:(id)a4;
-- (id)_focusSystem:(id)a3 focusItemsInRect:(CGRect)a4;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (_UIHostedFocusSystemDelegateProxy)initWithFocusSystem:(id)system delegate:(id)delegate;
+- (id)_focusSystem:(id)system focusItemsInRect:(CGRect)rect;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
 @end
 
 @implementation _UIHostedFocusSystemDelegateProxy
 
-- (_UIHostedFocusSystemDelegateProxy)initWithFocusSystem:(id)a3 delegate:(id)a4
+- (_UIHostedFocusSystemDelegateProxy)initWithFocusSystem:(id)system delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = _UIHostedFocusSystemDelegateProxy;
   v7 = [(_UIHostedFocusSystemDelegateProxy *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_focusSystem = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_focusSystem = system;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
   }
 
   return v8;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -36,73 +36,73 @@
 
   else
   {
-    v6 = [(_UIHostedFocusSystem *)self->_focusSystem _hostFocusSystem];
-    v7 = [v6 delegate];
+    _hostFocusSystem = [(_UIHostedFocusSystem *)self->_focusSystem _hostFocusSystem];
+    delegate = [_hostFocusSystem delegate];
     v5 = objc_opt_respondsToSelector();
   }
 
   return v5 & 1;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 methodSignatureForSelector:a3];
+    _hostFocusSystem = objc_loadWeakRetained(&self->_delegate);
+    v8 = [_hostFocusSystem methodSignatureForSelector:selector];
   }
 
   else
   {
-    v7 = [(_UIHostedFocusSystem *)self->_focusSystem _hostFocusSystem];
-    v9 = [v7 delegate];
-    v8 = [v9 methodSignatureForSelector:a3];
+    _hostFocusSystem = [(_UIHostedFocusSystem *)self->_focusSystem _hostFocusSystem];
+    delegate = [_hostFocusSystem delegate];
+    v8 = [delegate methodSignatureForSelector:selector];
   }
 
   return v8;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = objc_loadWeakRetained(&self->_delegate);
+    delegate = objc_loadWeakRetained(&self->_delegate);
   }
 
   else
   {
-    v7 = [(_UIHostedFocusSystem *)self->_focusSystem _hostFocusSystem];
-    v6 = [v7 delegate];
+    _hostFocusSystem = [(_UIHostedFocusSystem *)self->_focusSystem _hostFocusSystem];
+    delegate = [_hostFocusSystem delegate];
   }
 
-  return v6;
+  return delegate;
 }
 
-- (BOOL)_focusSystem:(id)a3 containsChildOfHostEnvironment:(id)a4
+- (BOOL)_focusSystem:(id)system containsChildOfHostEnvironment:(id)environment
 {
-  v6 = a4;
-  v7 = a3;
+  environmentCopy = environment;
+  systemCopy = system;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained _focusSystem:v7 containsChildOfHostEnvironment:v6];
+  v9 = [WeakRetained _focusSystem:systemCopy containsChildOfHostEnvironment:environmentCopy];
 
   return v9;
 }
 
-- (id)_focusSystem:(id)a3 focusItemsInRect:(CGRect)a4
+- (id)_focusSystem:(id)system focusItemsInRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  systemCopy = system;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v11 = [WeakRetained _focusSystem:v9 focusItemsInRect:{x, y, width, height}];
+  v11 = [WeakRetained _focusSystem:systemCopy focusItemsInRect:{x, y, width, height}];
 
   return v11;
 }

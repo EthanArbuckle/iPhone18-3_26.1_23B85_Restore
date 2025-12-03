@@ -4,9 +4,9 @@
 - (double)sampleRate;
 - (int)bitrate;
 - (int)numberOfChannels;
-- (void)setCodec:(id)a3;
-- (void)setHumanReadableCodecString:(id)a3;
-- (void)setSampleRate:(double)a3;
+- (void)setCodec:(id)codec;
+- (void)setHumanReadableCodecString:(id)string;
+- (void)setSampleRate:(double)rate;
 @end
 
 @implementation RWIProtocolDOMAudioMediaStats
@@ -18,11 +18,11 @@
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"bitrate"];
 }
 
-- (void)setCodec:(id)a3
+- (void)setCodec:(id)codec
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMAudioMediaStats;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"codec"];
+  [(RWIProtocolJSONObject *)&v3 setString:codec forKey:@"codec"];
 }
 
 - (NSString)codec
@@ -34,11 +34,11 @@
   return v2;
 }
 
-- (void)setHumanReadableCodecString:(id)a3
+- (void)setHumanReadableCodecString:(id)string
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMAudioMediaStats;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"humanReadableCodecString"];
+  [(RWIProtocolJSONObject *)&v3 setString:string forKey:@"humanReadableCodecString"];
 }
 
 - (NSString)humanReadableCodecString
@@ -57,11 +57,11 @@
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"numberOfChannels"];
 }
 
-- (void)setSampleRate:(double)a3
+- (void)setSampleRate:(double)rate
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMAudioMediaStats;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"sampleRate" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"sampleRate" forKey:rate];
 }
 
 - (double)sampleRate

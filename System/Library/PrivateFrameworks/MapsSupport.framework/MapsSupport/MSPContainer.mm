@@ -1,31 +1,31 @@
 @interface MSPContainer
-+ (void)_preventAssertionsForDuplicateStorageIdentifiersInContainersCreatedPerfomingBlock:(id)a3;
++ (void)_preventAssertionsForDuplicateStorageIdentifiersInContainersCreatedPerfomingBlock:(id)block;
 + (void)clearDiscardableDataFromAllContainers;
-+ (void)mutableObjectContentDidUpdate:(id)a3;
-- (BOOL)_checkAndAddCoalescedEditForContext:(id)a3 identifiers:(id)a4 enqueuedBlock:(id)a5 completionQueue:(id)a6 completion:(id)a7;
++ (void)mutableObjectContentDidUpdate:(id)update;
+- (BOOL)_checkAndAddCoalescedEditForContext:(id)context identifiers:(id)identifiers enqueuedBlock:(id)block completionQueue:(id)queue completion:(id)completion;
 - (BOOL)containerHasLoadedContents;
 - (MSPContainer)init;
-- (MSPContainer)initWithPersister:(id)a3;
+- (MSPContainer)initWithPersister:(id)persister;
 - (MSPQuerySource)entireContentsQuerySource;
-- (id)_objectsWithDuplicateStorageIdentifiersFromArray:(id)a3;
-- (id)_processedContentsForPersisterContents:(id)a3;
-- (id)beginCoalescingEditsWithContext:(id)a3;
+- (id)_objectsWithDuplicateStorageIdentifiersFromArray:(id)array;
+- (id)_processedContentsForPersisterContents:(id)contents;
+- (id)beginCoalescingEditsWithContext:(id)context;
 - (void)_clearObjectCacheIfNeeded;
 - (void)_commitPendingCoalescedEditsIfAny;
-- (void)_endCoalescingEditsForContext:(id)a3;
-- (void)_forEachObserver:(id)a3;
-- (void)_performInitialLoadNotifyingObservers:(BOOL)a3 kickOffSynchronously:(BOOL)a4 completion:(id)a5;
-- (void)accessContentsUsingConcurrentBlock:(id)a3;
-- (void)accessStateSnapshotUsingConcurrentBlock:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)coalesceEditsForContext:(id)a3 inBlock:(id)a4;
+- (void)_endCoalescingEditsForContext:(id)context;
+- (void)_forEachObserver:(id)observer;
+- (void)_performInitialLoadNotifyingObservers:(BOOL)observers kickOffSynchronously:(BOOL)synchronously completion:(id)completion;
+- (void)accessContentsUsingConcurrentBlock:(id)block;
+- (void)accessStateSnapshotUsingConcurrentBlock:(id)block;
+- (void)addObserver:(id)observer;
+- (void)coalesceEditsForContext:(id)context inBlock:(id)block;
 - (void)dealloc;
-- (void)editByMergingStateSnapshot:(id)a3 mergeOptions:(id)a4 context:(id)a5 completionQueue:(id)a6 completion:(id)a7;
-- (void)editContentsUsingBarrierBlock:(id)a3 context:(id)a4 completionQueue:(id)a5 completion:(id)a6;
-- (void)editObjectsWithIdentifiers:(id)a3 usingBarrierBlock:(id)a4 context:(id)a5 completionQueue:(id)a6 completion:(id)a7;
-- (void)eraseFromStorageTypes:(unint64_t)a3 withCompletionQueue:(id)a4 completion:(id)a5;
-- (void)persisterContentsDidChangeExternally:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)editByMergingStateSnapshot:(id)snapshot mergeOptions:(id)options context:(id)context completionQueue:(id)queue completion:(id)completion;
+- (void)editContentsUsingBarrierBlock:(id)block context:(id)context completionQueue:(id)queue completion:(id)completion;
+- (void)editObjectsWithIdentifiers:(id)identifiers usingBarrierBlock:(id)block context:(id)context completionQueue:(id)queue completion:(id)completion;
+- (void)eraseFromStorageTypes:(unint64_t)types withCompletionQueue:(id)queue completion:(id)completion;
+- (void)persisterContentsDidChangeExternally:(id)externally;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation MSPContainer
@@ -42,43 +42,43 @@
   return v3;
 }
 
-+ (void)mutableObjectContentDidUpdate:(id)a3
++ (void)mutableObjectContentDidUpdate:(id)update
 {
   v3 = MEMORY[0x277CCAB98];
-  v4 = a3;
-  v5 = [v3 defaultCenter];
-  [v5 postNotificationName:@"MSPMutableObjectContentDidUpdateNotification" object:v4];
+  updateCopy = update;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter postNotificationName:@"MSPMutableObjectContentDidUpdateNotification" object:updateCopy];
 }
 
-+ (void)_preventAssertionsForDuplicateStorageIdentifiersInContainersCreatedPerfomingBlock:(id)a3
++ (void)_preventAssertionsForDuplicateStorageIdentifiersInContainersCreatedPerfomingBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     v3 = MEMORY[0x277CCACC8];
-    v4 = a3;
-    v5 = [v3 currentThread];
-    v7 = [v5 threadDictionary];
+    blockCopy = block;
+    currentThread = [v3 currentThread];
+    threadDictionary = [currentThread threadDictionary];
 
-    v6 = [v7 objectForKeyedSubscript:@"com.apple.Maps.MSPContainerPreventAssertionsForDuplicateStorageIdentifiers"];
-    [v7 setObject:MEMORY[0x277CBEC38] forKey:@"com.apple.Maps.MSPContainerPreventAssertionsForDuplicateStorageIdentifiers"];
-    v4[2](v4);
+    v6 = [threadDictionary objectForKeyedSubscript:@"com.apple.Maps.MSPContainerPreventAssertionsForDuplicateStorageIdentifiers"];
+    [threadDictionary setObject:MEMORY[0x277CBEC38] forKey:@"com.apple.Maps.MSPContainerPreventAssertionsForDuplicateStorageIdentifiers"];
+    blockCopy[2](blockCopy);
 
     if (v6)
     {
-      [v7 setObject:v6 forKey:@"com.apple.Maps.MSPContainerPreventAssertionsForDuplicateStorageIdentifiers"];
+      [threadDictionary setObject:v6 forKey:@"com.apple.Maps.MSPContainerPreventAssertionsForDuplicateStorageIdentifiers"];
     }
 
     else
     {
-      [v7 removeObjectForKey:@"com.apple.Maps.MSPContainerPreventAssertionsForDuplicateStorageIdentifiers"];
+      [threadDictionary removeObjectForKey:@"com.apple.Maps.MSPContainerPreventAssertionsForDuplicateStorageIdentifiers"];
     }
   }
 }
 
 + (void)clearDiscardableDataFromAllContainers
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"MSPContainerClearDiscardableData" object:objc_opt_class()];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"MSPContainerClearDiscardableData" object:objc_opt_class()];
 }
 
 - (MSPContainer)init
@@ -88,36 +88,36 @@
   return result;
 }
 
-- (MSPContainer)initWithPersister:(id)a3
+- (MSPContainer)initWithPersister:(id)persister
 {
-  v5 = a3;
+  persisterCopy = persister;
   v25.receiver = self;
   v25.super_class = MSPContainer;
   v6 = [(MSPContainer *)&v25 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCACC8] currentThread];
-    v8 = [v7 threadDictionary];
-    v9 = [v8 objectForKey:@"com.apple.Maps.MSPContainerPreventAssertionsForDuplicateStorageIdentifiers"];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary = [currentThread threadDictionary];
+    v9 = [threadDictionary objectForKey:@"com.apple.Maps.MSPContainerPreventAssertionsForDuplicateStorageIdentifiers"];
     v6->_preventsAssertionsForDuplicateStorageIdentifiers = [v9 isEqual:MEMORY[0x277CBEC38]];
 
-    v10 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v10;
+    v6->_observers = weakObjectsHashTable;
 
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.Maps.MSPContainerAccessQueue-%p", v6];
-    v13 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x277D85CD8], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v15 = dispatch_queue_create(v13, v14);
+    v15 = dispatch_queue_create(uTF8String, v14);
     accessQueue = v6->_accessQueue;
     v6->_accessQueue = v15;
 
-    objc_storeStrong(&v6->_persister, a3);
-    [v5 setDelegate:v6];
+    objc_storeStrong(&v6->_persister, persister);
+    [persisterCopy setDelegate:v6];
     objc_opt_class();
-    _MSPLogForContainer(v6, @"Created with persister %p (%@)", v17, v18, v19, v20, v21, v22, v5);
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v23 addObserver:v6 selector:sel__clearObjectCacheIfNeeded name:@"MSPContainerClearDiscardableData" object:objc_opt_class()];
+    _MSPLogForContainer(v6, @"Created with persister %p (%@)", v17, v18, v19, v20, v21, v22, persisterCopy);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__clearObjectCacheIfNeeded name:@"MSPContainerClearDiscardableData" object:objc_opt_class()];
 
     [(MSPContainer *)v6 _performInitialLoadNotifyingObservers:0 kickOffSynchronously:1 completion:0];
   }
@@ -127,17 +127,17 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"MSPContainerClearDiscardableData" object:objc_opt_class()];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"MSPContainerClearDiscardableData" object:objc_opt_class()];
 
   v4.receiver = self;
   v4.super_class = MSPContainer;
   [(MSPContainer *)&v4 dealloc];
 }
 
-- (void)accessContentsUsingConcurrentBlock:(id)a3
+- (void)accessContentsUsingConcurrentBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -146,8 +146,8 @@
   v7[3] = &unk_279868070;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(accessQueue, v7);
 
   objc_destroyWeak(&v9);
@@ -203,17 +203,17 @@ void __51__MSPContainer_accessContentsUsingConcurrentBlock___block_invoke(void *
 
 - (BOOL)containerHasLoadedContents
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  hasLoadedContents = v2->_hasLoadedContents;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  hasLoadedContents = selfCopy->_hasLoadedContents;
+  objc_sync_exit(selfCopy);
 
   return hasLoadedContents;
 }
 
-- (void)accessStateSnapshotUsingConcurrentBlock:(id)a3
+- (void)accessStateSnapshotUsingConcurrentBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -222,8 +222,8 @@ void __51__MSPContainer_accessContentsUsingConcurrentBlock___block_invoke(void *
   v7[3] = &unk_279868070;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(accessQueue, v7);
 
   objc_destroyWeak(&v9);
@@ -322,10 +322,10 @@ void __41__MSPContainer__clearObjectCacheIfNeeded__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performInitialLoadNotifyingObservers:(BOOL)a3 kickOffSynchronously:(BOOL)a4 completion:(id)a5
+- (void)_performInitialLoadNotifyingObservers:(BOOL)observers kickOffSynchronously:(BOOL)synchronously completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
+  synchronouslyCopy = synchronously;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -333,12 +333,12 @@ void __41__MSPContainer__clearObjectCacheIfNeeded__block_invoke(uint64_t a1)
   v12[3] = &unk_2798680E8;
   objc_copyWeak(&v14, &location);
   v12[4] = self;
-  v15 = a3;
-  v9 = v8;
+  observersCopy = observers;
+  v9 = completionCopy;
   v13 = v9;
   v10 = MEMORY[0x259C7AD60](v12);
   v11 = v10;
-  if (v5)
+  if (synchronouslyCopy)
   {
     v10[2](v10);
   }
@@ -572,14 +572,14 @@ void __86__MSPContainer__performInitialLoadNotifyingObservers_kickOffSynchronous
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_processedContentsForPersisterContents:(id)a3
+- (id)_processedContentsForPersisterContents:(id)contents
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  contentsCopy = contents;
+  if (contentsCopy)
   {
-    v5 = v4;
-    v6 = [v4 copy];
+    v5 = contentsCopy;
+    v6 = [contentsCopy copy];
 
     v7 = [(MSPContainer *)self _objectsWithDuplicateStorageIdentifiersFromArray:v6];
     if ([v7 count] && !-[MSPContainerPersister duplicatesPolicy](self->_persister, "duplicatesPolicy"))
@@ -666,16 +666,16 @@ void __86__MSPContainer__performInitialLoadNotifyingObservers_kickOffSynchronous
   return v21;
 }
 
-- (id)_objectsWithDuplicateStorageIdentifiersFromArray:(id)a3
+- (id)_objectsWithDuplicateStorageIdentifiersFromArray:(id)array
 {
   v49 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v6)
   {
@@ -690,10 +690,10 @@ void __86__MSPContainer__performInitialLoadNotifyingObservers_kickOffSynchronous
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v42 + 1) + 8 * i) storageIdentifier];
-        if (v10)
+        storageIdentifier = [*(*(&v42 + 1) + 8 * i) storageIdentifier];
+        if (storageIdentifier)
         {
-          [v4 addObject:v10];
+          [v4 addObject:storageIdentifier];
         }
       }
 
@@ -736,12 +736,12 @@ void __86__MSPContainer__performInitialLoadNotifyingObservers_kickOffSynchronous
           }
 
           v20 = *(*(&v38 + 1) + 8 * j);
-          v21 = [v20 storageIdentifier];
-          v22 = [v14 objectForKeyedSubscript:v21];
+          storageIdentifier2 = [v20 storageIdentifier];
+          v22 = [v14 objectForKeyedSubscript:storageIdentifier2];
           if (!v22)
           {
             v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
-            [v14 setObject:v22 forKeyedSubscript:v21];
+            [v14 setObject:v22 forKeyedSubscript:storageIdentifier2];
           }
 
           [v22 addObject:v20];
@@ -795,22 +795,22 @@ void __86__MSPContainer__performInitialLoadNotifyingObservers_kickOffSynchronous
   return v14;
 }
 
-- (void)persisterContentsDidChangeExternally:(id)a3
+- (void)persisterContentsDidChangeExternally:(id)externally
 {
-  v4 = a3;
+  externallyCopy = externally;
   objc_opt_class();
-  _MSPLogForContainer(self, @"Contents changed externally from persister %p (%@) -- enqueuing a full refetch", v5, v6, v7, v8, v9, v10, v4);
+  _MSPLogForContainer(self, @"Contents changed externally from persister %p (%@) -- enqueuing a full refetch", v5, v6, v7, v8, v9, v10, externallyCopy);
 
   [(MSPContainer *)self _performInitialLoadNotifyingObservers:1 kickOffSynchronously:0 completion:0];
 }
 
-- (void)editByMergingStateSnapshot:(id)a3 mergeOptions:(id)a4 context:(id)a5 completionQueue:(id)a6 completion:(id)a7
+- (void)editByMergingStateSnapshot:(id)snapshot mergeOptions:(id)options context:(id)context completionQueue:(id)queue completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  snapshotCopy = snapshot;
+  optionsCopy = options;
+  contextCopy = context;
+  queueCopy = queue;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   accessQueue = self->_accessQueue;
   v23[0] = MEMORY[0x277D85DD0];
@@ -818,17 +818,17 @@ void __86__MSPContainer__performInitialLoadNotifyingObservers_kickOffSynchronous
   v23[2] = __91__MSPContainer_editByMergingStateSnapshot_mergeOptions_context_completionQueue_completion___block_invoke;
   v23[3] = &unk_279868138;
   objc_copyWeak(&v30, &location);
-  v24 = v12;
-  v25 = v13;
-  v26 = v15;
-  v27 = self;
-  v28 = v14;
-  v29 = v16;
-  v18 = v14;
-  v19 = v15;
-  v20 = v16;
-  v21 = v13;
-  v22 = v12;
+  v24 = snapshotCopy;
+  v25 = optionsCopy;
+  v26 = queueCopy;
+  selfCopy = self;
+  v28 = contextCopy;
+  v29 = completionCopy;
+  v18 = contextCopy;
+  v19 = queueCopy;
+  v20 = completionCopy;
+  v21 = optionsCopy;
+  v22 = snapshotCopy;
   dispatch_barrier_async(accessQueue, v23);
 
   objc_destroyWeak(&v30);
@@ -1142,26 +1142,26 @@ void __91__MSPContainer_editByMergingStateSnapshot_mergeOptions_context_completi
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)eraseFromStorageTypes:(unint64_t)a3 withCompletionQueue:(id)a4 completion:(id)a5
+- (void)eraseFromStorageTypes:(unint64_t)types withCompletionQueue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __69__MSPContainer_eraseFromStorageTypes_withCompletionQueue_completion___block_invoke;
   v33[3] = &unk_279868160;
-  if (a3 <= 1)
+  if (types <= 1)
   {
-    v10 = 1;
+    typesCopy = 1;
   }
 
   else
   {
-    v10 = a3;
+    typesCopy = types;
   }
 
   v33[4] = self;
-  v33[5] = v10;
+  v33[5] = typesCopy;
   [(MSPContainer *)self _forEachObserver:v33];
   objc_initWeak(&location, self);
   v28[0] = MEMORY[0x277D85DD0];
@@ -1169,10 +1169,10 @@ void __91__MSPContainer_editByMergingStateSnapshot_mergeOptions_context_completi
   v28[2] = __69__MSPContainer_eraseFromStorageTypes_withCompletionQueue_completion___block_invoke_2;
   v28[3] = &unk_279868188;
   objc_copyWeak(v31, &location);
-  v31[1] = v10;
-  v11 = v9;
+  v31[1] = typesCopy;
+  v11 = completionCopy;
   v30 = v11;
-  v12 = v8;
+  v12 = queueCopy;
   v29 = v12;
   v13 = MEMORY[0x259C7AD60](v28);
   v25[0] = MEMORY[0x277D85DD0];
@@ -1180,13 +1180,13 @@ void __91__MSPContainer_editByMergingStateSnapshot_mergeOptions_context_completi
   v25[2] = __69__MSPContainer_eraseFromStorageTypes_withCompletionQueue_completion___block_invoke_3;
   v25[3] = &unk_279868200;
   objc_copyWeak(v27, &location);
-  v27[1] = v10;
+  v27[1] = typesCopy;
   v14 = v13;
   v25[4] = self;
   v26 = v14;
   v15 = MEMORY[0x259C7AD60](v25);
   v22 = v15;
-  if ((v10 & 2) != 0)
+  if ((typesCopy & 2) != 0)
   {
     _MSPLogForContainer(self, @"Erasing container contents", v16, v17, v18, v19, v20, v21, v23[0]);
     v23[0] = MEMORY[0x277D85DD0];
@@ -1387,19 +1387,19 @@ void __69__MSPContainer_eraseFromStorageTypes_withCompletionQueue_completion___b
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)editContentsUsingBarrierBlock:(id)a3 context:(id)a4 completionQueue:(id)a5 completion:(id)a6
+- (void)editContentsUsingBarrierBlock:(id)block context:(id)context completionQueue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a4 copy];
+  blockCopy = block;
+  queueCopy = queue;
+  completionCopy = completion;
+  v13 = [context copy];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __81__MSPContainer_editContentsUsingBarrierBlock_context_completionQueue_completion___block_invoke;
   v28[3] = &unk_279868248;
-  v14 = v10;
+  v14 = blockCopy;
   v29 = v14;
-  if ([(MSPContainer *)self _checkAndAddCoalescedEditForContext:v13 identifiers:0 enqueuedBlock:v28 completionQueue:v11 completion:v12])
+  if ([(MSPContainer *)self _checkAndAddCoalescedEditForContext:v13 identifiers:0 enqueuedBlock:v28 completionQueue:queueCopy completion:completionCopy])
   {
     _MSPLogForContainer(self, @"Coalescing is on for this context -- the edit for context %@, will be enqueued for later.", v15, v16, v17, v18, v19, v20, v13);
   }
@@ -1415,8 +1415,8 @@ void __69__MSPContainer_eraseFromStorageTypes_withCompletionQueue_completion___b
     v24 = v14;
     v21[4] = self;
     v22 = v13;
-    v25 = v12;
-    v23 = v11;
+    v25 = completionCopy;
+    v23 = queueCopy;
     [(MSPContainer *)self accessContentsUsingConcurrentBlock:v21];
 
     objc_destroyWeak(&v26);
@@ -1843,14 +1843,14 @@ void __81__MSPContainer_editContentsUsingBarrierBlock_context_completionQueue_co
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)editObjectsWithIdentifiers:(id)a3 usingBarrierBlock:(id)a4 context:(id)a5 completionQueue:(id)a6 completion:(id)a7
+- (void)editObjectsWithIdentifiers:(id)identifiers usingBarrierBlock:(id)block context:(id)context completionQueue:(id)queue completion:(id)completion
 {
-  v12 = a4;
+  blockCopy = block;
   v13 = MEMORY[0x277CBEB98];
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = [v13 setWithArray:a3];
+  completionCopy = completion;
+  queueCopy = queue;
+  contextCopy = context;
+  v17 = [v13 setWithArray:identifiers];
   v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -1858,11 +1858,11 @@ void __81__MSPContainer_editContentsUsingBarrierBlock_context_completionQueue_co
   v22[3] = &unk_279868360;
   v23 = v17;
   v24 = v18;
-  v25 = v12;
-  v19 = v12;
+  v25 = blockCopy;
+  v19 = blockCopy;
   v20 = v18;
   v21 = v17;
-  [(MSPContainer *)self editContentsUsingBarrierBlock:v22 context:v16 completionQueue:v15 completion:v14];
+  [(MSPContainer *)self editContentsUsingBarrierBlock:v22 context:contextCopy completionQueue:queueCopy completion:completionCopy];
 }
 
 void __96__MSPContainer_editObjectsWithIdentifiers_usingBarrierBlock_context_completionQueue_completion___block_invoke(uint64_t a1, void *a2)
@@ -1907,39 +1907,39 @@ void __96__MSPContainer_editObjectsWithIdentifiers_usingBarrierBlock_context_com
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_observers addObject:v5];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_observers removeObject:v5];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)_forEachObserver:(id)a3
+- (void)_forEachObserver:(id)observer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   context = objc_autoreleasePoolPush();
   v5 = self->_observers;
   objc_sync_enter(v5);
-  v6 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   objc_sync_exit(v5);
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v6;
+  obj = allObjects;
   v7 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -1965,7 +1965,7 @@ void __96__MSPContainer_editObjectsWithIdentifiers_usingBarrierBlock_context_com
         block[1] = 3221225472;
         block[2] = __33__MSPContainer__forEachObserver___block_invoke;
         block[3] = &unk_2798674D8;
-        v13 = v4;
+        v13 = observerCopy;
         block[4] = v10;
         v18 = v13;
         dispatch_async(accessQueue, block);
@@ -1993,78 +1993,78 @@ void __33__MSPContainer__forEachObserver___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)beginCoalescingEditsWithContext:(id)a3
+- (id)beginCoalescingEditsWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  editCoalescingContexts = v5->_editCoalescingContexts;
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  editCoalescingContexts = selfCopy->_editCoalescingContexts;
   if (!editCoalescingContexts)
   {
     v7 = objc_alloc_init(MEMORY[0x277CCA940]);
-    v8 = v5->_editCoalescingContexts;
-    v5->_editCoalescingContexts = v7;
+    v8 = selfCopy->_editCoalescingContexts;
+    selfCopy->_editCoalescingContexts = v7;
 
-    editCoalescingContexts = v5->_editCoalescingContexts;
+    editCoalescingContexts = selfCopy->_editCoalescingContexts;
   }
 
-  [(NSCountedSet *)editCoalescingContexts addObject:v4];
-  objc_sync_exit(v5);
+  [(NSCountedSet *)editCoalescingContexts addObject:contextCopy];
+  objc_sync_exit(selfCopy);
 
-  v9 = [[MSPContainerCoalescingToken alloc] initWithContainerOwner:v5 context:v4];
+  v9 = [[MSPContainerCoalescingToken alloc] initWithContainerOwner:selfCopy context:contextCopy];
 
   return v9;
 }
 
-- (void)_endCoalescingEditsForContext:(id)a3
+- (void)_endCoalescingEditsForContext:(id)context
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSCountedSet *)v4->_editCoalescingContexts removeObject:v5];
-  if (([(NSCountedSet *)v4->_editCoalescingContexts containsObject:v5]& 1) == 0 && [v4->_contextCoalescingFor isEqual:v5])
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSCountedSet *)selfCopy->_editCoalescingContexts removeObject:contextCopy];
+  if (([(NSCountedSet *)selfCopy->_editCoalescingContexts containsObject:contextCopy]& 1) == 0 && [selfCopy->_contextCoalescingFor isEqual:contextCopy])
   {
-    [(MSPContainer *)v4 _commitPendingCoalescedEditsIfAny];
+    [(MSPContainer *)selfCopy _commitPendingCoalescedEditsIfAny];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)coalesceEditsForContext:(id)a3 inBlock:(id)a4
+- (void)coalesceEditsForContext:(id)context inBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(MSPContainer *)self beginCoalescingEditsWithContext:a3];
-  v6[2](v6);
+  blockCopy = block;
+  v7 = [(MSPContainer *)self beginCoalescingEditsWithContext:context];
+  blockCopy[2](blockCopy);
 
   [v7 endCoalescingEdits];
 }
 
-- (BOOL)_checkAndAddCoalescedEditForContext:(id)a3 identifiers:(id)a4 enqueuedBlock:(id)a5 completionQueue:(id)a6 completion:(id)a7
+- (BOOL)_checkAndAddCoalescedEditForContext:(id)context identifiers:(id)identifiers enqueuedBlock:(id)block completionQueue:(id)queue completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = self;
-  objc_sync_enter(v18);
-  if (v18->_isCommittingEnqueuedEdits)
+  contextCopy = context;
+  identifiersCopy = identifiers;
+  blockCopy = block;
+  queueCopy = queue;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isCommittingEnqueuedEdits)
   {
     goto LABEL_13;
   }
 
-  contextCoalescingFor = v18->_contextCoalescingFor;
+  contextCoalescingFor = selfCopy->_contextCoalescingFor;
   if (contextCoalescingFor)
   {
-    if (v13 && ([contextCoalescingFor isEqual:v13]& 1) != 0)
+    if (contextCopy && ([contextCoalescingFor isEqual:contextCopy]& 1) != 0)
     {
       goto LABEL_7;
     }
 
-    [(MSPContainer *)v18 _commitPendingCoalescedEditsIfAny];
+    [(MSPContainer *)selfCopy _commitPendingCoalescedEditsIfAny];
   }
 
-  if (!v13)
+  if (!contextCopy)
   {
 LABEL_13:
     v23 = 0;
@@ -2072,54 +2072,54 @@ LABEL_13:
   }
 
 LABEL_7:
-  if (![(NSCountedSet *)v18->_editCoalescingContexts containsObject:v13])
+  if (![(NSCountedSet *)selfCopy->_editCoalescingContexts containsObject:contextCopy])
   {
     goto LABEL_13;
   }
 
-  objc_storeStrong(&v18->_contextCoalescingFor, a3);
-  if (v14)
+  objc_storeStrong(&selfCopy->_contextCoalescingFor, context);
+  if (identifiersCopy)
   {
-    if (!v18->_coalescedEditsNeedEntireContents)
+    if (!selfCopy->_coalescedEditsNeedEntireContents)
     {
-      coalescedPartialContentIdentifiersToFetch = v18->_coalescedPartialContentIdentifiersToFetch;
+      coalescedPartialContentIdentifiersToFetch = selfCopy->_coalescedPartialContentIdentifiersToFetch;
       if (!coalescedPartialContentIdentifiersToFetch)
       {
         v21 = objc_alloc_init(MEMORY[0x277CBEB58]);
-        v22 = v18->_coalescedPartialContentIdentifiersToFetch;
-        v18->_coalescedPartialContentIdentifiersToFetch = v21;
+        v22 = selfCopy->_coalescedPartialContentIdentifiersToFetch;
+        selfCopy->_coalescedPartialContentIdentifiersToFetch = v21;
 
-        coalescedPartialContentIdentifiersToFetch = v18->_coalescedPartialContentIdentifiersToFetch;
+        coalescedPartialContentIdentifiersToFetch = selfCopy->_coalescedPartialContentIdentifiersToFetch;
       }
 
-      [(NSMutableSet *)coalescedPartialContentIdentifiersToFetch addObjectsFromArray:v14];
+      [(NSMutableSet *)coalescedPartialContentIdentifiersToFetch addObjectsFromArray:identifiersCopy];
     }
   }
 
   else
   {
-    v18->_coalescedEditsNeedEntireContents = 1;
-    v25 = v18->_coalescedPartialContentIdentifiersToFetch;
-    v18->_coalescedPartialContentIdentifiersToFetch = 0;
+    selfCopy->_coalescedEditsNeedEntireContents = 1;
+    v25 = selfCopy->_coalescedPartialContentIdentifiersToFetch;
+    selfCopy->_coalescedPartialContentIdentifiersToFetch = 0;
   }
 
-  enqueuedCoalescingEditBarrierBlocks = v18->_enqueuedCoalescingEditBarrierBlocks;
+  enqueuedCoalescingEditBarrierBlocks = selfCopy->_enqueuedCoalescingEditBarrierBlocks;
   if (!enqueuedCoalescingEditBarrierBlocks)
   {
     v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v28 = v18->_enqueuedCoalescingEditBarrierBlocks;
-    v18->_enqueuedCoalescingEditBarrierBlocks = v27;
+    v28 = selfCopy->_enqueuedCoalescingEditBarrierBlocks;
+    selfCopy->_enqueuedCoalescingEditBarrierBlocks = v27;
 
-    enqueuedCoalescingEditBarrierBlocks = v18->_enqueuedCoalescingEditBarrierBlocks;
+    enqueuedCoalescingEditBarrierBlocks = selfCopy->_enqueuedCoalescingEditBarrierBlocks;
   }
 
-  v29 = [v15 copy];
+  v29 = [blockCopy copy];
   v30 = MEMORY[0x259C7AD60]();
   [(NSMutableArray *)enqueuedCoalescingEditBarrierBlocks addObject:v30];
 
-  if (v18->_enqueuedCoalescingCompletionBlocks)
+  if (selfCopy->_enqueuedCoalescingCompletionBlocks)
   {
-    if (!v17)
+    if (!completionCopy)
     {
       goto LABEL_25;
     }
@@ -2128,24 +2128,24 @@ LABEL_7:
   else
   {
     v31 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    enqueuedCoalescingCompletionBlocks = v18->_enqueuedCoalescingCompletionBlocks;
-    v18->_enqueuedCoalescingCompletionBlocks = v31;
+    enqueuedCoalescingCompletionBlocks = selfCopy->_enqueuedCoalescingCompletionBlocks;
+    selfCopy->_enqueuedCoalescingCompletionBlocks = v31;
 
-    if (!v17)
+    if (!completionCopy)
     {
       goto LABEL_25;
     }
   }
 
-  v33 = v18->_enqueuedCoalescingCompletionBlocks;
-  if (v16)
+  v33 = selfCopy->_enqueuedCoalescingCompletionBlocks;
+  if (queueCopy)
   {
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __105__MSPContainer__checkAndAddCoalescedEditForContext_identifiers_enqueuedBlock_completionQueue_completion___block_invoke;
     v40[3] = &unk_279868388;
-    v41 = v16;
-    v42 = v17;
+    v41 = queueCopy;
+    v42 = completionCopy;
     v34 = [v40 copy];
     v35 = MEMORY[0x259C7AD60]();
     [(NSMutableArray *)v33 addObject:v35];
@@ -2153,27 +2153,27 @@ LABEL_7:
 
   else
   {
-    v36 = [v17 copy];
+    v36 = [completionCopy copy];
     v37 = MEMORY[0x259C7AD60]();
     [(NSMutableArray *)v33 addObject:v37];
   }
 
 LABEL_25:
   v23 = 1;
-  if (!v18->_hasScheduledDelayedCommitForCoalescedEdits)
+  if (!selfCopy->_hasScheduledDelayedCommitForCoalescedEdits)
   {
-    v18->_hasScheduledDelayedCommitForCoalescedEdits = 1;
+    selfCopy->_hasScheduledDelayedCommitForCoalescedEdits = 1;
     v38 = dispatch_time(0, 200000000);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __105__MSPContainer__checkAndAddCoalescedEditForContext_identifiers_enqueuedBlock_completionQueue_completion___block_invoke_3;
     block[3] = &unk_279866158;
-    block[4] = v18;
+    block[4] = selfCopy;
     dispatch_after(v38, MEMORY[0x277D85CD0], block);
   }
 
 LABEL_14:
-  objc_sync_exit(v18);
+  objc_sync_exit(selfCopy);
 
   return v23;
 }
@@ -2195,28 +2195,28 @@ void __105__MSPContainer__checkAndAddCoalescedEditForContext_identifiers_enqueue
 
 - (void)_commitPendingCoalescedEditsIfAny
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_contextCoalescingFor;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_contextCoalescingFor;
   if (v3)
   {
-    v2->_isCommittingEnqueuedEdits = 1;
-    v4 = v2->_enqueuedCoalescingEditBarrierBlocks;
-    v5 = v2->_enqueuedCoalescingCompletionBlocks;
-    v6 = [(NSMutableSet *)v2->_coalescedPartialContentIdentifiersToFetch allObjects];
-    contextCoalescingFor = v2->_contextCoalescingFor;
-    v2->_contextCoalescingFor = 0;
+    selfCopy->_isCommittingEnqueuedEdits = 1;
+    v4 = selfCopy->_enqueuedCoalescingEditBarrierBlocks;
+    v5 = selfCopy->_enqueuedCoalescingCompletionBlocks;
+    allObjects = [(NSMutableSet *)selfCopy->_coalescedPartialContentIdentifiersToFetch allObjects];
+    contextCoalescingFor = selfCopy->_contextCoalescingFor;
+    selfCopy->_contextCoalescingFor = 0;
 
-    enqueuedCoalescingEditBarrierBlocks = v2->_enqueuedCoalescingEditBarrierBlocks;
-    v2->_enqueuedCoalescingEditBarrierBlocks = 0;
+    enqueuedCoalescingEditBarrierBlocks = selfCopy->_enqueuedCoalescingEditBarrierBlocks;
+    selfCopy->_enqueuedCoalescingEditBarrierBlocks = 0;
 
-    enqueuedCoalescingCompletionBlocks = v2->_enqueuedCoalescingCompletionBlocks;
-    v2->_enqueuedCoalescingCompletionBlocks = 0;
+    enqueuedCoalescingCompletionBlocks = selfCopy->_enqueuedCoalescingCompletionBlocks;
+    selfCopy->_enqueuedCoalescingCompletionBlocks = 0;
 
-    coalescedPartialContentIdentifiersToFetch = v2->_coalescedPartialContentIdentifiersToFetch;
-    v2->_coalescedPartialContentIdentifiersToFetch = 0;
+    coalescedPartialContentIdentifiersToFetch = selfCopy->_coalescedPartialContentIdentifiersToFetch;
+    selfCopy->_coalescedPartialContentIdentifiersToFetch = 0;
 
-    if (v6)
+    if (allObjects)
     {
       v11 = v16;
       v16[0] = MEMORY[0x277D85DD0];
@@ -2230,7 +2230,7 @@ void __105__MSPContainer__checkAndAddCoalescedEditForContext_identifiers_enqueue
       v15[2] = __49__MSPContainer__commitPendingCoalescedEditsIfAny__block_invoke_2;
       v15[3] = &unk_2798683D8;
       v15[4] = v5;
-      [(MSPContainer *)v2 editObjectsWithIdentifiers:v6 usingBarrierBlock:v16 context:v3 completionQueue:0 completion:v15];
+      [(MSPContainer *)selfCopy editObjectsWithIdentifiers:allObjects usingBarrierBlock:v16 context:v3 completionQueue:0 completion:v15];
     }
 
     else
@@ -2247,14 +2247,14 @@ void __105__MSPContainer__checkAndAddCoalescedEditForContext_identifiers_enqueue
       v13[2] = __49__MSPContainer__commitPendingCoalescedEditsIfAny__block_invoke_4;
       v13[3] = &unk_2798683D8;
       v13[4] = v5;
-      [(MSPContainer *)v2 editContentsUsingBarrierBlock:v14 context:v3 completionQueue:0 completion:v13];
+      [(MSPContainer *)selfCopy editContentsUsingBarrierBlock:v14 context:v3 completionQueue:0 completion:v13];
     }
 
-    v2->_hasScheduledDelayedCommitForCoalescedEdits = 0;
-    v2->_isCommittingEnqueuedEdits = 0;
+    selfCopy->_hasScheduledDelayedCommitForCoalescedEdits = 0;
+    selfCopy->_isCommittingEnqueuedEdits = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __49__MSPContainer__commitPendingCoalescedEditsIfAny__block_invoke(uint64_t a1, void *a2)

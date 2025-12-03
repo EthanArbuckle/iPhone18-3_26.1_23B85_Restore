@@ -1,25 +1,25 @@
 @interface ASReachabilityManager
-+ (id)sharedInstanceForServiceIdentifier:(id)a3;
-- (id)_initWithServiceIdentifier:(id)a3;
-- (void)_addDestinationsToQuery:(id)a3 updateHandler:(id)a4 completionHandler:(id)a5;
-- (void)queryDestinations:(id)a3 updateHandler:(id)a4 completionHandler:(id)a5;
++ (id)sharedInstanceForServiceIdentifier:(id)identifier;
+- (id)_initWithServiceIdentifier:(id)identifier;
+- (void)_addDestinationsToQuery:(id)query updateHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)queryDestinations:(id)destinations updateHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation ASReachabilityManager
 
-+ (id)sharedInstanceForServiceIdentifier:(id)a3
++ (id)sharedInstanceForServiceIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (sharedInstanceForServiceIdentifier__once != -1)
   {
     +[ASReachabilityManager sharedInstanceForServiceIdentifier:];
   }
 
-  v4 = [sharedInstanceForServiceIdentifier__sharedInstanceByServiceIdentifier objectForKey:v3];
+  v4 = [sharedInstanceForServiceIdentifier__sharedInstanceByServiceIdentifier objectForKey:identifierCopy];
   if (!v4)
   {
-    v4 = [[ASReachabilityManager alloc] _initWithServiceIdentifier:v3];
-    [sharedInstanceForServiceIdentifier__sharedInstanceByServiceIdentifier setObject:v4 forKey:v3];
+    v4 = [[ASReachabilityManager alloc] _initWithServiceIdentifier:identifierCopy];
+    [sharedInstanceForServiceIdentifier__sharedInstanceByServiceIdentifier setObject:v4 forKey:identifierCopy];
   }
 
   return v4;
@@ -32,16 +32,16 @@ uint64_t __60__ASReachabilityManager_sharedInstanceForServiceIdentifier___block_
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_initWithServiceIdentifier:(id)a3
+- (id)_initWithServiceIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = ASReachabilityManager;
   v6 = [(ASReachabilityManager *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceIdentifier, a3);
+    objc_storeStrong(&v6->_serviceIdentifier, identifier);
     v8 = objc_alloc_init(ASReachabilityStatusCache);
     statusCache = v7->_statusCache;
     v7->_statusCache = v8;
@@ -58,23 +58,23 @@ uint64_t __60__ASReachabilityManager_sharedInstanceForServiceIdentifier___block_
   return v7;
 }
 
-- (void)_addDestinationsToQuery:(id)a3 updateHandler:(id)a4 completionHandler:(id)a5
+- (void)_addDestinationsToQuery:(id)query updateHandler:(id)handler completionHandler:(id)completionHandler
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queryCopy = query;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   ASLoggingInitialize();
   v11 = ASLogDefault;
   if (os_log_type_enabled(ASLogDefault, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
     *buf = 134217984;
-    v40 = [v8 count];
+    v40 = [queryCopy count];
     _os_log_impl(&dword_23E4FA000, v12, OS_LOG_TYPE_DEFAULT, "Reachability: Request for %lu destinations", buf, 0xCu);
   }
 
-  v13 = [(ASReachabilityStatusCache *)self->_statusCache statusesForDestinations:v8];
+  v13 = [(ASReachabilityStatusCache *)self->_statusCache statusesForDestinations:queryCopy];
   if ([v13 count])
   {
     ASLoggingInitialize();
@@ -88,7 +88,7 @@ uint64_t __60__ASReachabilityManager_sharedInstanceForServiceIdentifier___block_
       _os_log_impl(&dword_23E4FA000, v15, OS_LOG_TYPE_DEFAULT, "Reachability: Hit %lu destinations in cache first pass", buf, 0xCu);
     }
 
-    v9[2](v9, v13);
+    handlerCopy[2](handlerCopy, v13);
   }
 
   v17 = MEMORY[0x277CCAC30];
@@ -99,19 +99,19 @@ uint64_t __60__ASReachabilityManager_sharedInstanceForServiceIdentifier___block_
   v18 = v13;
   v37 = v18;
   v19 = [v17 predicateWithBlock:v36];
-  v20 = [v8 filteredSetUsingPredicate:v19];
+  v20 = [queryCopy filteredSetUsingPredicate:v19];
 
   if ([v20 count])
   {
     v21 = objc_alloc_init(ASReachabilityQueryOperation);
-    [(ASReachabilityQueryOperation *)v21 setUpdateHandler:v9];
+    [(ASReachabilityQueryOperation *)v21 setUpdateHandler:handlerCopy];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __81__ASReachabilityManager__addDestinationsToQuery_updateHandler_completionHandler___block_invoke_2;
     v33[3] = &unk_278C462C8;
     v34 = v18;
-    v28 = v10;
-    v35 = v10;
+    v28 = completionHandlerCopy;
+    v35 = completionHandlerCopy;
     [(ASReachabilityQueryOperation *)v21 setCompletionHandler:v33];
     [(ASReachabilityQueryOperation *)v21 setDestinations:v20];
     [(ASReachabilityQueryOperation *)v21 setStatusCache:self->_statusCache];
@@ -121,8 +121,8 @@ uint64_t __60__ASReachabilityManager_sharedInstanceForServiceIdentifier___block_
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v22 = [(NSOperationQueue *)self->_queryOperationQueue operations];
-    v23 = [v22 countByEnumeratingWithState:&v29 objects:v38 count:16];
+    operations = [(NSOperationQueue *)self->_queryOperationQueue operations];
+    v23 = [operations countByEnumeratingWithState:&v29 objects:v38 count:16];
     if (v23)
     {
       v24 = v23;
@@ -134,26 +134,26 @@ uint64_t __60__ASReachabilityManager_sharedInstanceForServiceIdentifier___block_
         {
           if (*v30 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(operations);
           }
 
           [*(*(&v29 + 1) + 8 * v26++) setQueuePriority:-4];
         }
 
         while (v24 != v26);
-        v24 = [v22 countByEnumeratingWithState:&v29 objects:v38 count:16];
+        v24 = [operations countByEnumeratingWithState:&v29 objects:v38 count:16];
       }
 
       while (v24);
     }
 
     [(NSOperationQueue *)self->_queryOperationQueue addOperation:v21];
-    v10 = v28;
+    completionHandlerCopy = v28;
   }
 
   else
   {
-    (*(v10 + 2))(v10, v18);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, v18);
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -177,22 +177,22 @@ void __81__ASReachabilityManager__addDestinationsToQuery_updateHandler_completio
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)queryDestinations:(id)a3 updateHandler:(id)a4 completionHandler:(id)a5
+- (void)queryDestinations:(id)destinations updateHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a4;
-  v12 = a5;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __75__ASReachabilityManager_queryDestinations_updateHandler_completionHandler___block_invoke;
   v13[3] = &unk_278C46318;
-  v14 = v8;
+  v14 = handlerCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __75__ASReachabilityManager_queryDestinations_updateHandler_completionHandler___block_invoke_3;
   v11[3] = &unk_278C46318;
-  v9 = v12;
-  v10 = v8;
-  [(ASReachabilityManager *)self _addDestinationsToQuery:a3 updateHandler:v13 completionHandler:v11];
+  v9 = completionHandlerCopy;
+  v10 = handlerCopy;
+  [(ASReachabilityManager *)self _addDestinationsToQuery:destinations updateHandler:v13 completionHandler:v11];
 }
 
 void __75__ASReachabilityManager_queryDestinations_updateHandler_completionHandler___block_invoke(uint64_t a1, void *a2)

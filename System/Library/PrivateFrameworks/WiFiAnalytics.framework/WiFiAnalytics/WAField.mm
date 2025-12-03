@@ -4,37 +4,37 @@
 - (NSMutableArray)repeatableValues;
 - (NSString)stringValue;
 - (WAField)init;
-- (WAField)initWithCoder:(id)a3;
+- (WAField)initWithCoder:(id)coder;
 - (WAMessageAWD)subMessageValue;
 - (double)doubleValue;
 - (float)floatValue;
 - (id)_ownTypeAsString;
-- (id)_typeAsString:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_typeAsString:(int64_t)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int)int32Value;
 - (int64_t)int64Value;
 - (unint64_t)uint64Value;
 - (unsigned)uint32Value;
-- (void)_addRepeatableValue:(id)a3;
-- (void)_throwIncorrecTypeExceptionForType:(int64_t)a3 isGet:(BOOL)a4;
-- (void)_throwIncorrectRepeatableStateExceptionAsFieldShouldBeRepeatable:(BOOL)a3 isGet:(BOOL)a4 forType:(int64_t)a5;
-- (void)addRepeatableBytes:(id)a3;
-- (void)addRepeatableDoubleValue:(double)a3;
-- (void)addRepeatableFloatValue:(float)a3;
-- (void)addRepeatableInt64Value:(int64_t)a3;
-- (void)addRepeatableString:(id)a3;
-- (void)addRepeatableSubMessageValue:(id)a3;
-- (void)addRepeatableUInt64Value:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBytesValue:(id)a3;
-- (void)setDoubleValue:(double)a3;
-- (void)setFloatValue:(float)a3;
-- (void)setInt64Value:(int64_t)a3;
-- (void)setRepeatableValues:(id)a3;
-- (void)setStringValue:(id)a3;
-- (void)setSubMessageValue:(id)a3;
-- (void)setUint64Value:(unint64_t)a3;
+- (void)_addRepeatableValue:(id)value;
+- (void)_throwIncorrecTypeExceptionForType:(int64_t)type isGet:(BOOL)get;
+- (void)_throwIncorrectRepeatableStateExceptionAsFieldShouldBeRepeatable:(BOOL)repeatable isGet:(BOOL)get forType:(int64_t)type;
+- (void)addRepeatableBytes:(id)bytes;
+- (void)addRepeatableDoubleValue:(double)value;
+- (void)addRepeatableFloatValue:(float)value;
+- (void)addRepeatableInt64Value:(int64_t)value;
+- (void)addRepeatableString:(id)string;
+- (void)addRepeatableSubMessageValue:(id)value;
+- (void)addRepeatableUInt64Value:(unint64_t)value;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBytesValue:(id)value;
+- (void)setDoubleValue:(double)value;
+- (void)setFloatValue:(float)value;
+- (void)setInt64Value:(int64_t)value;
+- (void)setRepeatableValues:(id)values;
+- (void)setStringValue:(id)value;
+- (void)setSubMessageValue:(id)value;
+- (void)setUint64Value:(unint64_t)value;
 @end
 
 @implementation WAField
@@ -71,13 +71,13 @@
     v9 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v15 = 136446722;
       v16 = "[WAField doubleValue]";
       v17 = 1024;
       *v18 = 112;
       *&v18[4] = 2112;
-      *&v18[6] = v10;
+      *&v18[6] = _ownTypeAsString;
       _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get a single double value from a repeatable field (this field is a %@)", &v15, 0x1Cu);
     }
 
@@ -89,14 +89,14 @@
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
       v8 = [(WAField *)self key];
       v15 = 136446978;
       v16 = "[WAField doubleValue]";
       v17 = 1024;
       *v18 = 111;
       *&v18[4] = 2112;
-      *&v18[6] = v7;
+      *&v18[6] = _ownTypeAsString2;
       v19 = 2112;
       v20 = v8;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get double value from field of wrong type (this field is a %@). Field key: %@", &v15, 0x26u);
@@ -109,11 +109,11 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
   {
     v13 = [(WAField *)self key];
-    v14 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString3 = [(WAField *)self _ownTypeAsString];
     v15 = 138412546;
     v16 = v13;
     v17 = 2112;
-    *v18 = v14;
+    *v18 = _ownTypeAsString3;
     _os_log_fault_impl(&dword_1C8460000, v11, OS_LOG_TYPE_FAULT, "Failed to properly access key %@ of type %@", &v15, 0x16u);
   }
 
@@ -138,13 +138,13 @@
     v9 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v15 = 136446722;
       v16 = "[WAField floatValue]";
       v17 = 1024;
       *v18 = 121;
       *&v18[4] = 2112;
-      *&v18[6] = v10;
+      *&v18[6] = _ownTypeAsString;
       _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get a single float value from a repeatable field (this field is a %@)", &v15, 0x1Cu);
     }
 
@@ -156,14 +156,14 @@
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
       v8 = [(WAField *)self key];
       v15 = 136446978;
       v16 = "[WAField floatValue]";
       v17 = 1024;
       *v18 = 120;
       *&v18[4] = 2112;
-      *&v18[6] = v7;
+      *&v18[6] = _ownTypeAsString2;
       v19 = 2112;
       v20 = v8;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get float value from field of wrong type (this field is a %@) Field key: %@", &v15, 0x26u);
@@ -176,11 +176,11 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
   {
     v13 = [(WAField *)self key];
-    v14 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString3 = [(WAField *)self _ownTypeAsString];
     v15 = 138412546;
     v16 = v13;
     v17 = 2112;
-    *v18 = v14;
+    *v18 = _ownTypeAsString3;
     _os_log_fault_impl(&dword_1C8460000, v11, OS_LOG_TYPE_FAULT, "Failed to properly access key %@ of type %@", &v15, 0x16u);
   }
 
@@ -204,13 +204,13 @@
     v9 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v15 = 136446722;
       v16 = "[WAField int32Value]";
       v17 = 1024;
       *v18 = 130;
       *&v18[4] = 2112;
-      *&v18[6] = v10;
+      *&v18[6] = _ownTypeAsString;
       _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get a single int32 value from a repeatable field (this field is a %@)", &v15, 0x1Cu);
     }
 
@@ -222,14 +222,14 @@
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
       v8 = [(WAField *)self key];
       v15 = 136446978;
       v16 = "[WAField int32Value]";
       v17 = 1024;
       *v18 = 129;
       *&v18[4] = 2112;
-      *&v18[6] = v7;
+      *&v18[6] = _ownTypeAsString2;
       v19 = 2112;
       v20 = v8;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get int32 value from field of wrong type (this field is a %@) Field key: %@", &v15, 0x26u);
@@ -242,11 +242,11 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
   {
     v13 = [(WAField *)self key];
-    v14 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString3 = [(WAField *)self _ownTypeAsString];
     v15 = 138412546;
     v16 = v13;
     v17 = 2112;
-    *v18 = v14;
+    *v18 = _ownTypeAsString3;
     _os_log_fault_impl(&dword_1C8460000, v11, OS_LOG_TYPE_FAULT, "Failed to properly access key %@ of type %@", &v15, 0x16u);
   }
 
@@ -270,13 +270,13 @@
     v9 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v15 = 136446722;
       v16 = "[WAField int64Value]";
       v17 = 1024;
       *v18 = 139;
       *&v18[4] = 2112;
-      *&v18[6] = v10;
+      *&v18[6] = _ownTypeAsString;
       _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get a single int64 value from a repeatable field (this field is a %@)", &v15, 0x1Cu);
     }
 
@@ -288,14 +288,14 @@
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
       v8 = [(WAField *)self key];
       v15 = 136446978;
       v16 = "[WAField int64Value]";
       v17 = 1024;
       *v18 = 138;
       *&v18[4] = 2112;
-      *&v18[6] = v7;
+      *&v18[6] = _ownTypeAsString2;
       v19 = 2112;
       v20 = v8;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get int64 value from field of wrong type (this field is a %@) Field key: %@", &v15, 0x26u);
@@ -308,11 +308,11 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
   {
     v13 = [(WAField *)self key];
-    v14 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString3 = [(WAField *)self _ownTypeAsString];
     v15 = 138412546;
     v16 = v13;
     v17 = 2112;
-    *v18 = v14;
+    *v18 = _ownTypeAsString3;
     _os_log_fault_impl(&dword_1C8460000, v11, OS_LOG_TYPE_FAULT, "Failed to properly access key %@ of type %@", &v15, 0x16u);
   }
 
@@ -336,13 +336,13 @@
     v9 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v15 = 136446722;
       v16 = "[WAField uint32Value]";
       v17 = 1024;
       *v18 = 148;
       *&v18[4] = 2112;
-      *&v18[6] = v10;
+      *&v18[6] = _ownTypeAsString;
       _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get a single uint32 value from a repeatable field (this field is a %@)", &v15, 0x1Cu);
     }
 
@@ -354,14 +354,14 @@
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
       v8 = [(WAField *)self key];
       v15 = 136446978;
       v16 = "[WAField uint32Value]";
       v17 = 1024;
       *v18 = 147;
       *&v18[4] = 2112;
-      *&v18[6] = v7;
+      *&v18[6] = _ownTypeAsString2;
       v19 = 2112;
       v20 = v8;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get uint32 value from field of wrong type (this field is a %@) Field key: %@", &v15, 0x26u);
@@ -374,11 +374,11 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
   {
     v13 = [(WAField *)self key];
-    v14 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString3 = [(WAField *)self _ownTypeAsString];
     v15 = 138412546;
     v16 = v13;
     v17 = 2112;
-    *v18 = v14;
+    *v18 = _ownTypeAsString3;
     _os_log_fault_impl(&dword_1C8460000, v11, OS_LOG_TYPE_FAULT, "Failed to properly access key %@ of type %@", &v15, 0x16u);
   }
 
@@ -402,13 +402,13 @@
     v9 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v15 = 136446722;
       v16 = "[WAField uint64Value]";
       v17 = 1024;
       *v18 = 157;
       *&v18[4] = 2112;
-      *&v18[6] = v10;
+      *&v18[6] = _ownTypeAsString;
       _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get a single uint64 value from a repeatable field (this field is a %@)", &v15, 0x1Cu);
     }
 
@@ -420,14 +420,14 @@
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
       v8 = [(WAField *)self key];
       v15 = 136446978;
       v16 = "[WAField uint64Value]";
       v17 = 1024;
       *v18 = 156;
       *&v18[4] = 2112;
-      *&v18[6] = v7;
+      *&v18[6] = _ownTypeAsString2;
       v19 = 2112;
       v20 = v8;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get uint64 value from field of wrong type (this field is a %@) Field key: %@", &v15, 0x26u);
@@ -440,11 +440,11 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
   {
     v13 = [(WAField *)self key];
-    v14 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString3 = [(WAField *)self _ownTypeAsString];
     v15 = 138412546;
     v16 = v13;
     v17 = 2112;
-    *v18 = v14;
+    *v18 = _ownTypeAsString3;
     _os_log_fault_impl(&dword_1C8460000, v11, OS_LOG_TYPE_FAULT, "Failed to properly access key %@ of type %@", &v15, 0x16u);
   }
 
@@ -468,13 +468,13 @@
     v9 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v15 = 136446722;
       v16 = "[WAField BOOLValue]";
       v17 = 1024;
       *v18 = 166;
       *&v18[4] = 2112;
-      *&v18[6] = v10;
+      *&v18[6] = _ownTypeAsString;
       _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get a single BOOL value from a repeatable field (this field is a %@)", &v15, 0x1Cu);
     }
 
@@ -486,14 +486,14 @@
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
       v8 = [(WAField *)self key];
       v15 = 136446978;
       v16 = "[WAField BOOLValue]";
       v17 = 1024;
       *v18 = 165;
       *&v18[4] = 2112;
-      *&v18[6] = v7;
+      *&v18[6] = _ownTypeAsString2;
       v19 = 2112;
       v20 = v8;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get BOOL value from field of wrong type (this field is a %@) Field key: %@", &v15, 0x26u);
@@ -506,11 +506,11 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
   {
     v13 = [(WAField *)self key];
-    v14 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString3 = [(WAField *)self _ownTypeAsString];
     v15 = 138412546;
     v16 = v13;
     v17 = 2112;
-    *v18 = v14;
+    *v18 = _ownTypeAsString3;
     _os_log_fault_impl(&dword_1C8460000, v11, OS_LOG_TYPE_FAULT, "Failed to properly access key %@ of type %@", &v15, 0x16u);
   }
 
@@ -532,13 +532,13 @@
     v9 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v14 = 136446722;
       v15 = "[WAField stringValue]";
       v16 = 1024;
       *v17 = 175;
       *&v17[4] = 2112;
-      *&v17[6] = v10;
+      *&v17[6] = _ownTypeAsString;
       _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get a single string value from a repeatable field (this field is a %@)", &v14, 0x1Cu);
     }
 
@@ -550,14 +550,14 @@
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
       v8 = [(WAField *)self key];
       v14 = 136446978;
       v15 = "[WAField stringValue]";
       v16 = 1024;
       *v17 = 174;
       *&v17[4] = 2112;
-      *&v17[6] = v7;
+      *&v17[6] = _ownTypeAsString2;
       v18 = 2112;
       v19 = v8;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get string value from field of wrong type (this field is a %@) Field key: %@", &v14, 0x26u);
@@ -570,11 +570,11 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
   {
     v12 = [(WAField *)self key];
-    v13 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString3 = [(WAField *)self _ownTypeAsString];
     v14 = 138412546;
     v15 = v12;
     v16 = 2112;
-    *v17 = v13;
+    *v17 = _ownTypeAsString3;
     _os_log_fault_impl(&dword_1C8460000, v11, OS_LOG_TYPE_FAULT, "Failed to properly access key %@ of type %@", &v14, 0x16u);
   }
 
@@ -599,13 +599,13 @@ LABEL_4:
     v9 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v14 = 136446722;
       v15 = "[WAField bytesValue]";
       v16 = 1024;
       *v17 = 184;
       *&v17[4] = 2112;
-      *&v17[6] = v10;
+      *&v17[6] = _ownTypeAsString;
       _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get a single bytes value from a repeatable field (this field is a %@)", &v14, 0x1Cu);
     }
 
@@ -617,14 +617,14 @@ LABEL_4:
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
       v8 = [(WAField *)self key];
       v14 = 136446978;
       v15 = "[WAField bytesValue]";
       v16 = 1024;
       *v17 = 183;
       *&v17[4] = 2112;
-      *&v17[6] = v7;
+      *&v17[6] = _ownTypeAsString2;
       v18 = 2112;
       v19 = v8;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get bytes value from field of wrong type (this field is a %@) Field key: %@", &v14, 0x26u);
@@ -637,11 +637,11 @@ LABEL_4:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
   {
     v12 = [(WAField *)self key];
-    v13 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString3 = [(WAField *)self _ownTypeAsString];
     v14 = 138412546;
     v15 = v12;
     v16 = 2112;
-    *v17 = v13;
+    *v17 = _ownTypeAsString3;
     _os_log_fault_impl(&dword_1C8460000, v11, OS_LOG_TYPE_FAULT, "Failed to properly access key %@ of type %@", &v14, 0x16u);
   }
 
@@ -666,13 +666,13 @@ LABEL_4:
     v9 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v14 = 136446722;
       v15 = "[WAField subMessageValue]";
       v16 = 1024;
       *v17 = 193;
       *&v17[4] = 2112;
-      *&v17[6] = v10;
+      *&v17[6] = _ownTypeAsString;
       _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get a single submessage value from a repeatable field (this field is a %@)", &v14, 0x1Cu);
     }
 
@@ -684,14 +684,14 @@ LABEL_4:
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
       v8 = [(WAField *)self key];
       v14 = 136446978;
       v15 = "[WAField subMessageValue]";
       v16 = 1024;
       *v17 = 192;
       *&v17[4] = 2112;
-      *&v17[6] = v7;
+      *&v17[6] = _ownTypeAsString2;
       v18 = 2112;
       v19 = v8;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to get submessage value from field of wrong type (this field is a %@) Field key: %@", &v14, 0x26u);
@@ -704,11 +704,11 @@ LABEL_4:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
   {
     v12 = [(WAField *)self key];
-    v13 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString3 = [(WAField *)self _ownTypeAsString];
     v14 = 138412546;
     v15 = v12;
     v16 = 2112;
-    *v17 = v13;
+    *v17 = _ownTypeAsString3;
     _os_log_fault_impl(&dword_1C8460000, v11, OS_LOG_TYPE_FAULT, "Failed to properly access key %@ of type %@", &v14, 0x16u);
   }
 
@@ -719,14 +719,14 @@ LABEL_4:
   return v3;
 }
 
-- (void)setDoubleValue:(double)a3
+- (void)setDoubleValue:(double)value
 {
   v23 = *MEMORY[0x1E69E9840];
   if ([(WAField *)self type]== 1)
   {
     if (![(WAField *)self isRepeatable])
     {
-      v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+      v5 = [MEMORY[0x1E696AD98] numberWithDouble:value];
       value = self->_value;
       self->_value = v5;
       v7 = *MEMORY[0x1E69E9840];
@@ -744,7 +744,7 @@ LABEL_4:
       v19 = 1024;
       *v20 = 202;
       *&v20[4] = 2048;
-      *&v20[6] = a3;
+      *&v20[6] = value;
       v21 = 2112;
       v22 = v12;
       _os_log_impl(&dword_1C8460000, v11, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to set a single value (%f) on a repeatable field (%@). Ignored.", &v17, 0x26u);
@@ -758,14 +758,14 @@ LABEL_4:
     v8 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v10 = [(WAField *)self key];
       v17 = 136446978;
       v18 = "[WAField setDoubleValue:]";
       v19 = 1024;
       *v20 = 201;
       *&v20[4] = 2112;
-      *&v20[6] = v9;
+      *&v20[6] = _ownTypeAsString;
       v21 = 2112;
       v22 = v10;
       _os_log_impl(&dword_1C8460000, v8, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to set double value on a WAField instance that's not of that type (type is %@). Set was ignored. Field key: %@", &v17, 0x26u);
@@ -778,25 +778,25 @@ LABEL_4:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
   {
     v15 = [(WAField *)self key];
-    v16 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
     v17 = 138412546;
     v18 = v15;
     v19 = 2112;
-    *v20 = v16;
+    *v20 = _ownTypeAsString2;
     _os_log_fault_impl(&dword_1C8460000, v13, OS_LOG_TYPE_FAULT, "Failed to properly set key %@ of type %@", &v17, 0x16u);
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setFloatValue:(float)a3
+- (void)setFloatValue:(float)value
 {
   v24 = *MEMORY[0x1E69E9840];
   if ([(WAField *)self type]== 2)
   {
     if (![(WAField *)self isRepeatable])
     {
-      *&v5 = a3;
+      *&v5 = value;
       v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
       value = self->_value;
       self->_value = v6;
@@ -815,7 +815,7 @@ LABEL_4:
       v20 = 1024;
       *v21 = 212;
       *&v21[4] = 2048;
-      *&v21[6] = a3;
+      *&v21[6] = value;
       v22 = 2112;
       v23 = v13;
       _os_log_impl(&dword_1C8460000, v12, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to set a single value (%f) on a repeatable field (%@). Ignored.", &v18, 0x26u);
@@ -829,14 +829,14 @@ LABEL_4:
     v9 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v11 = [(WAField *)self key];
       v18 = 136446978;
       v19 = "[WAField setFloatValue:]";
       v20 = 1024;
       *v21 = 211;
       *&v21[4] = 2112;
-      *&v21[6] = v10;
+      *&v21[6] = _ownTypeAsString;
       v22 = 2112;
       v23 = v11;
       _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to set float value on a WAField instance that's not of that type (type is %@). Set was ignored. Field key: %@", &v18, 0x26u);
@@ -849,25 +849,25 @@ LABEL_4:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
   {
     v16 = [(WAField *)self key];
-    v17 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
     v18 = 138412546;
     v19 = v16;
     v20 = 2112;
-    *v21 = v17;
+    *v21 = _ownTypeAsString2;
     _os_log_fault_impl(&dword_1C8460000, v14, OS_LOG_TYPE_FAULT, "Failed to properly set key %@ of type %@", &v18, 0x16u);
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setInt64Value:(int64_t)a3
+- (void)setInt64Value:(int64_t)value
 {
   v23 = *MEMORY[0x1E69E9840];
   if ([(WAField *)self type]== 4)
   {
     if (![(WAField *)self isRepeatable])
     {
-      v5 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+      v5 = [MEMORY[0x1E696AD98] numberWithLongLong:value];
       value = self->_value;
       self->_value = v5;
       v7 = *MEMORY[0x1E69E9840];
@@ -885,7 +885,7 @@ LABEL_4:
       v19 = 1024;
       *v20 = 232;
       *&v20[4] = 2048;
-      *&v20[6] = a3;
+      *&v20[6] = value;
       v21 = 2112;
       v22 = v12;
       _os_log_impl(&dword_1C8460000, v11, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to set a single value (%lld) on a repeatable field (%@). Ignored.", &v17, 0x26u);
@@ -899,14 +899,14 @@ LABEL_4:
     v8 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v10 = [(WAField *)self key];
       v17 = 136446978;
       v18 = "[WAField setInt64Value:]";
       v19 = 1024;
       *v20 = 231;
       *&v20[4] = 2112;
-      *&v20[6] = v9;
+      *&v20[6] = _ownTypeAsString;
       v21 = 2112;
       v22 = v10;
       _os_log_impl(&dword_1C8460000, v8, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to set an int64 value on a WAField instance that's not of that type (type is %@). Set was ignored. Field key: %@", &v17, 0x26u);
@@ -919,25 +919,25 @@ LABEL_4:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
   {
     v15 = [(WAField *)self key];
-    v16 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
     v17 = 138412546;
     v18 = v15;
     v19 = 2112;
-    *v20 = v16;
+    *v20 = _ownTypeAsString2;
     _os_log_fault_impl(&dword_1C8460000, v13, OS_LOG_TYPE_FAULT, "Failed to properly set key %@ of type %@", &v17, 0x16u);
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setUint64Value:(unint64_t)a3
+- (void)setUint64Value:(unint64_t)value
 {
   v23 = *MEMORY[0x1E69E9840];
   if ([(WAField *)self type]== 6)
   {
     if (![(WAField *)self isRepeatable])
     {
-      v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+      v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:value];
       value = self->_value;
       self->_value = v5;
       v7 = *MEMORY[0x1E69E9840];
@@ -955,7 +955,7 @@ LABEL_4:
       v19 = 1024;
       *v20 = 251;
       *&v20[4] = 2048;
-      *&v20[6] = a3;
+      *&v20[6] = value;
       v21 = 2112;
       v22 = v12;
       _os_log_impl(&dword_1C8460000, v11, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to set a single value (%llu) on a repeatable field (%@). Ignored.", &v17, 0x26u);
@@ -969,14 +969,14 @@ LABEL_4:
     v8 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v10 = [(WAField *)self key];
       v17 = 136446978;
       v18 = "[WAField setUint64Value:]";
       v19 = 1024;
       *v20 = 250;
       *&v20[4] = 2112;
-      *&v20[6] = v9;
+      *&v20[6] = _ownTypeAsString;
       v21 = 2112;
       v22 = v10;
       _os_log_impl(&dword_1C8460000, v8, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to set uint64 value on a WAField instance that's not of that type (type is %@). Set was ignored. Field key: %@", &v17, 0x26u);
@@ -989,26 +989,26 @@ LABEL_4:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
   {
     v15 = [(WAField *)self key];
-    v16 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
     v17 = 138412546;
     v18 = v15;
     v19 = 2112;
-    *v20 = v16;
+    *v20 = _ownTypeAsString2;
     _os_log_fault_impl(&dword_1C8460000, v13, OS_LOG_TYPE_FAULT, "Failed to properly set key %@ of type %@", &v17, 0x16u);
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  valueCopy = value;
   if ([(WAField *)self type]== 8)
   {
     if (![(WAField *)self isRepeatable])
     {
-      objc_storeStrong(&self->_value, a3);
+      objc_storeStrong(&self->_value, value);
       goto LABEL_4;
     }
 
@@ -1021,7 +1021,7 @@ LABEL_4:
       v17 = 1024;
       *v18 = 271;
       *&v18[4] = 2112;
-      *&v18[6] = v5;
+      *&v18[6] = valueCopy;
       v19 = 2112;
       v20 = v11;
       _os_log_impl(&dword_1C8460000, v10, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to set a single value (%@) on a repeatable field (%@). Ignored.", &v15, 0x26u);
@@ -1035,14 +1035,14 @@ LABEL_4:
     v7 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v9 = [(WAField *)self key];
       v15 = 136446978;
       v16 = "[WAField setStringValue:]";
       v17 = 1024;
       *v18 = 270;
       *&v18[4] = 2112;
-      *&v18[6] = v8;
+      *&v18[6] = _ownTypeAsString;
       v19 = 2112;
       v20 = v9;
       _os_log_impl(&dword_1C8460000, v7, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to set string value on a WAField instance that's not of that type (type is %@). Set was ignored. Field key: %@", &v15, 0x26u);
@@ -1055,11 +1055,11 @@ LABEL_4:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
   {
     v13 = [(WAField *)self key];
-    v14 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
     v15 = 138412546;
     v16 = v13;
     v17 = 2112;
-    *v18 = v14;
+    *v18 = _ownTypeAsString2;
     _os_log_fault_impl(&dword_1C8460000, v12, OS_LOG_TYPE_FAULT, "Failed to properly set key %@ of type %@", &v15, 0x16u);
   }
 
@@ -1067,15 +1067,15 @@ LABEL_4:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setBytesValue:(id)a3
+- (void)setBytesValue:(id)value
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  valueCopy = value;
   if ([(WAField *)self type]== 9)
   {
     if (![(WAField *)self isRepeatable])
     {
-      objc_storeStrong(&self->_value, a3);
+      objc_storeStrong(&self->_value, value);
       goto LABEL_4;
     }
 
@@ -1088,7 +1088,7 @@ LABEL_4:
       v17 = 1024;
       *v18 = 281;
       *&v18[4] = 2112;
-      *&v18[6] = v5;
+      *&v18[6] = valueCopy;
       v19 = 2112;
       v20 = v11;
       _os_log_impl(&dword_1C8460000, v10, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to set a single value (%@) on a repeatable field (%@). Ignored.", &v15, 0x26u);
@@ -1102,14 +1102,14 @@ LABEL_4:
     v7 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v9 = [(WAField *)self key];
       v15 = 136446978;
       v16 = "[WAField setBytesValue:]";
       v17 = 1024;
       *v18 = 280;
       *&v18[4] = 2112;
-      *&v18[6] = v8;
+      *&v18[6] = _ownTypeAsString;
       v19 = 2112;
       v20 = v9;
       _os_log_impl(&dword_1C8460000, v7, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to set bytes value on a WAField instance that's not of that type (type is %@). Set was ignored. Field key: %@", &v15, 0x26u);
@@ -1122,11 +1122,11 @@ LABEL_4:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
   {
     v13 = [(WAField *)self key];
-    v14 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
     v15 = 138412546;
     v16 = v13;
     v17 = 2112;
-    *v18 = v14;
+    *v18 = _ownTypeAsString2;
     _os_log_fault_impl(&dword_1C8460000, v12, OS_LOG_TYPE_FAULT, "Failed to properly set key %@ of type %@", &v15, 0x16u);
   }
 
@@ -1134,15 +1134,15 @@ LABEL_4:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSubMessageValue:(id)a3
+- (void)setSubMessageValue:(id)value
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  valueCopy = value;
   if ([(WAField *)self type]== 10)
   {
     if (![(WAField *)self isRepeatable])
     {
-      objc_storeStrong(&self->_value, a3);
+      objc_storeStrong(&self->_value, value);
       goto LABEL_4;
     }
 
@@ -1155,7 +1155,7 @@ LABEL_4:
       v17 = 1024;
       *v18 = 291;
       *&v18[4] = 2112;
-      *&v18[6] = v5;
+      *&v18[6] = valueCopy;
       v19 = 2112;
       v20 = v11;
       _os_log_impl(&dword_1C8460000, v10, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to set a single value (%@) on a repeatable field (%@). Ignored.", &v15, 0x26u);
@@ -1169,14 +1169,14 @@ LABEL_4:
     v7 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v9 = [(WAField *)self key];
       v15 = 136446978;
       v16 = "[WAField setSubMessageValue:]";
       v17 = 1024;
       *v18 = 290;
       *&v18[4] = 2112;
-      *&v18[6] = v8;
+      *&v18[6] = _ownTypeAsString;
       v19 = 2112;
       v20 = v9;
       _os_log_impl(&dword_1C8460000, v7, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to set submessage value on a WAField instance that's not of that type (type is %@). Set was ignored. Field key: %@", &v15, 0x26u);
@@ -1189,11 +1189,11 @@ LABEL_4:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
   {
     v13 = [(WAField *)self key];
-    v14 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
     v15 = 138412546;
     v16 = v13;
     v17 = 2112;
-    *v18 = v14;
+    *v18 = _ownTypeAsString2;
     _os_log_fault_impl(&dword_1C8460000, v12, OS_LOG_TYPE_FAULT, "Failed to properly set key %@ of type %@", &v15, 0x16u);
   }
 
@@ -1201,13 +1201,13 @@ LABEL_4:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setRepeatableValues:(id)a3
+- (void)setRepeatableValues:(id)values
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  valuesCopy = values;
   if ([(WAField *)self isRepeatable])
   {
-    objc_storeStrong(&self->_value, a3);
+    objc_storeStrong(&self->_value, values);
   }
 
   else
@@ -1227,11 +1227,11 @@ LABEL_4:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
       v9 = [(WAField *)self key];
-      v10 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v11 = 138412546;
       v12 = v9;
       v13 = 2112;
-      v14 = v10;
+      v14 = _ownTypeAsString;
       _os_log_fault_impl(&dword_1C8460000, v8, OS_LOG_TYPE_FAULT, "Failed to properly set key %@ of type %@", &v11, 0x16u);
     }
   }
@@ -1239,12 +1239,12 @@ LABEL_4:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addRepeatableDoubleValue:(double)a3
+- (void)addRepeatableDoubleValue:(double)value
 {
   v20 = *MEMORY[0x1E69E9840];
   if ([(WAField *)self type]== 1)
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v13 = [MEMORY[0x1E696AD98] numberWithDouble:value];
     [(WAField *)self _addRepeatableValue:?];
     v5 = *MEMORY[0x1E69E9840];
   }
@@ -1254,14 +1254,14 @@ LABEL_4:
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v8 = [(WAField *)self key];
       *buf = 136446978;
       v15 = "[WAField addRepeatableDoubleValue:]";
       v16 = 1024;
       *v17 = 309;
       *&v17[4] = 2112;
-      *&v17[6] = v7;
+      *&v17[6] = _ownTypeAsString;
       v18 = 2112;
       v19 = v8;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to add a repeatable double value on a WAField instance that's not of that type (type is %@). Set was ignored. Field key: %@", buf, 0x26u);
@@ -1271,11 +1271,11 @@ LABEL_4:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
       v11 = [(WAField *)self key];
-      v12 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
       *buf = 138412546;
       v15 = v11;
       v16 = 2112;
-      *v17 = v12;
+      *v17 = _ownTypeAsString2;
       _os_log_fault_impl(&dword_1C8460000, v9, OS_LOG_TYPE_FAULT, "Failed to properly add key %@ of type %@", buf, 0x16u);
     }
 
@@ -1283,12 +1283,12 @@ LABEL_4:
   }
 }
 
-- (void)addRepeatableFloatValue:(float)a3
+- (void)addRepeatableFloatValue:(float)value
 {
   v21 = *MEMORY[0x1E69E9840];
   if ([(WAField *)self type]== 2)
   {
-    *&v5 = a3;
+    *&v5 = value;
     v14 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
     [(WAField *)self _addRepeatableValue:?];
     v6 = *MEMORY[0x1E69E9840];
@@ -1299,14 +1299,14 @@ LABEL_4:
     v7 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v9 = [(WAField *)self key];
       *buf = 136446978;
       v16 = "[WAField addRepeatableFloatValue:]";
       v17 = 1024;
       *v18 = 318;
       *&v18[4] = 2112;
-      *&v18[6] = v8;
+      *&v18[6] = _ownTypeAsString;
       v19 = 2112;
       v20 = v9;
       _os_log_impl(&dword_1C8460000, v7, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to add a repeatable float value on a WAField instance that's not of that type (type is %@). Set was ignored. Field key: %@", buf, 0x26u);
@@ -1316,11 +1316,11 @@ LABEL_4:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
       v12 = [(WAField *)self key];
-      v13 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
       *buf = 138412546;
       v16 = v12;
       v17 = 2112;
-      *v18 = v13;
+      *v18 = _ownTypeAsString2;
       _os_log_fault_impl(&dword_1C8460000, v10, OS_LOG_TYPE_FAULT, "Failed to properly add key %@ of type %@", buf, 0x16u);
     }
 
@@ -1328,12 +1328,12 @@ LABEL_4:
   }
 }
 
-- (void)addRepeatableInt64Value:(int64_t)a3
+- (void)addRepeatableInt64Value:(int64_t)value
 {
   v20 = *MEMORY[0x1E69E9840];
   if ([(WAField *)self type]== 4)
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    v13 = [MEMORY[0x1E696AD98] numberWithLongLong:value];
     [(WAField *)self _addRepeatableValue:?];
     v5 = *MEMORY[0x1E69E9840];
   }
@@ -1343,14 +1343,14 @@ LABEL_4:
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v8 = [(WAField *)self key];
       *buf = 136446978;
       v15 = "[WAField addRepeatableInt64Value:]";
       v16 = 1024;
       *v17 = 336;
       *&v17[4] = 2112;
-      *&v17[6] = v7;
+      *&v17[6] = _ownTypeAsString;
       v18 = 2112;
       v19 = v8;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to add a repeatable int64 value on a WAField instance that's not of that type (type is %@). Set was ignored. Field key: %@", buf, 0x26u);
@@ -1360,11 +1360,11 @@ LABEL_4:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
       v11 = [(WAField *)self key];
-      v12 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
       *buf = 138412546;
       v15 = v11;
       v16 = 2112;
-      *v17 = v12;
+      *v17 = _ownTypeAsString2;
       _os_log_fault_impl(&dword_1C8460000, v9, OS_LOG_TYPE_FAULT, "Failed to properly add key %@ of type %@", buf, 0x16u);
     }
 
@@ -1372,12 +1372,12 @@ LABEL_4:
   }
 }
 
-- (void)addRepeatableUInt64Value:(unint64_t)a3
+- (void)addRepeatableUInt64Value:(unint64_t)value
 {
   v20 = *MEMORY[0x1E69E9840];
   if ([(WAField *)self type]== 6)
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:value];
     [(WAField *)self _addRepeatableValue:?];
     v5 = *MEMORY[0x1E69E9840];
   }
@@ -1387,14 +1387,14 @@ LABEL_4:
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v8 = [(WAField *)self key];
       *buf = 136446978;
       v15 = "[WAField addRepeatableUInt64Value:]";
       v16 = 1024;
       *v17 = 354;
       *&v17[4] = 2112;
-      *&v17[6] = v7;
+      *&v17[6] = _ownTypeAsString;
       v18 = 2112;
       v19 = v8;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to add a repeatable uint64 value on a WAField instance that's not of that type (type is %@). Set was ignored. Field key: %@", buf, 0x26u);
@@ -1404,11 +1404,11 @@ LABEL_4:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
       v11 = [(WAField *)self key];
-      v12 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
       *buf = 138412546;
       v15 = v11;
       v16 = 2112;
-      *v17 = v12;
+      *v17 = _ownTypeAsString2;
       _os_log_fault_impl(&dword_1C8460000, v9, OS_LOG_TYPE_FAULT, "Failed to properly add key %@ of type %@", buf, 0x16u);
     }
 
@@ -1416,29 +1416,29 @@ LABEL_4:
   }
 }
 
-- (void)addRepeatableString:(id)a3
+- (void)addRepeatableString:(id)string
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
     if ([(WAField *)self type]== 8)
     {
-      [(WAField *)self _addRepeatableValue:v4];
+      [(WAField *)self _addRepeatableValue:stringCopy];
       goto LABEL_4;
     }
 
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v8 = [(WAField *)self key];
       v12 = 136446978;
       v13 = "[WAField addRepeatableString:]";
       v14 = 1024;
       *v15 = 373;
       *&v15[4] = 2112;
-      *&v15[6] = v7;
+      *&v15[6] = _ownTypeAsString;
       v16 = 2112;
       v17 = v8;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to add a repeatable string value on a WAField instance that's not of that type (type is %@). Set was ignored . Field key: %@", &v12, 0x26u);
@@ -1452,13 +1452,13 @@ LABEL_4:
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self key];
+      _ownTypeAsString = [(WAField *)self key];
       v12 = 136446722;
       v13 = "[WAField addRepeatableString:]";
       v14 = 1024;
       *v15 = 372;
       *&v15[4] = 2112;
-      *&v15[6] = v7;
+      *&v15[6] = _ownTypeAsString;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to add nil string value - preventing crash by bailing but DATA LOSS HAS LIKELY OCCURRED as the caller meant to add something. Field key: %@", &v12, 0x1Cu);
 LABEL_9:
     }
@@ -1468,11 +1468,11 @@ LABEL_9:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
   {
     v10 = [(WAField *)self key];
-    v11 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
     v12 = 138412546;
     v13 = v10;
     v14 = 2112;
-    *v15 = v11;
+    *v15 = _ownTypeAsString2;
     _os_log_fault_impl(&dword_1C8460000, v9, OS_LOG_TYPE_FAULT, "Failed to properly add key %@ of type %@", &v12, 0x16u);
   }
 
@@ -1480,29 +1480,29 @@ LABEL_4:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addRepeatableBytes:(id)a3
+- (void)addRepeatableBytes:(id)bytes
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  bytesCopy = bytes;
+  if (bytesCopy)
   {
     if ([(WAField *)self type]== 9)
     {
-      [(WAField *)self _addRepeatableValue:v4];
+      [(WAField *)self _addRepeatableValue:bytesCopy];
       goto LABEL_4;
     }
 
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v8 = [(WAField *)self key];
       v12 = 136446978;
       v13 = "[WAField addRepeatableBytes:]";
       v14 = 1024;
       *v15 = 383;
       *&v15[4] = 2112;
-      *&v15[6] = v7;
+      *&v15[6] = _ownTypeAsString;
       v16 = 2112;
       v17 = v8;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to add a repeatable bytes value on a WAField instance that's not of that type (type is %@). Set was ignored. Field key: %@", &v12, 0x26u);
@@ -1516,13 +1516,13 @@ LABEL_4:
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self key];
+      _ownTypeAsString = [(WAField *)self key];
       v12 = 136446722;
       v13 = "[WAField addRepeatableBytes:]";
       v14 = 1024;
       *v15 = 382;
       *&v15[4] = 2112;
-      *&v15[6] = v7;
+      *&v15[6] = _ownTypeAsString;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to add nil bytes value - preventing crash by bailing but DATA LOSS HAS LIKELY OCCURRED as the caller meant to add something. Field key: %@", &v12, 0x1Cu);
 LABEL_9:
     }
@@ -1532,11 +1532,11 @@ LABEL_9:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
   {
     v10 = [(WAField *)self key];
-    v11 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
     v12 = 138412546;
     v13 = v10;
     v14 = 2112;
-    *v15 = v11;
+    *v15 = _ownTypeAsString2;
     _os_log_fault_impl(&dword_1C8460000, v9, OS_LOG_TYPE_FAULT, "Failed to properly add key %@ of type %@", &v12, 0x16u);
   }
 
@@ -1544,29 +1544,29 @@ LABEL_4:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addRepeatableSubMessageValue:(id)a3
+- (void)addRepeatableSubMessageValue:(id)value
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  valueCopy = value;
+  if (valueCopy)
   {
     if ([(WAField *)self type]== 10)
     {
-      [(WAField *)self _addRepeatableValue:v4];
+      [(WAField *)self _addRepeatableValue:valueCopy];
       goto LABEL_4;
     }
 
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v8 = [(WAField *)self key];
       v12 = 136446978;
       v13 = "[WAField addRepeatableSubMessageValue:]";
       v14 = 1024;
       *v15 = 393;
       *&v15[4] = 2112;
-      *&v15[6] = v7;
+      *&v15[6] = _ownTypeAsString;
       v16 = 2112;
       v17 = v8;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to add a repeatable submessage value on a WAField instance that's not of that type (type is %@). Set was ignored. Field key: %@", &v12, 0x26u);
@@ -1580,13 +1580,13 @@ LABEL_4:
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(WAField *)self key];
+      _ownTypeAsString = [(WAField *)self key];
       v12 = 136446722;
       v13 = "[WAField addRepeatableSubMessageValue:]";
       v14 = 1024;
       *v15 = 392;
       *&v15[4] = 2112;
-      *&v15[6] = v7;
+      *&v15[6] = _ownTypeAsString;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to add nil submessage value - preventing crash by bailing but DATA LOSS HAS LIKELY OCCURRED as the caller meant to add something. Field key: %@", &v12, 0x1Cu);
 LABEL_9:
     }
@@ -1596,11 +1596,11 @@ LABEL_9:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
   {
     v10 = [(WAField *)self key];
-    v11 = [(WAField *)self _ownTypeAsString];
+    _ownTypeAsString2 = [(WAField *)self _ownTypeAsString];
     v12 = 138412546;
     v13 = v10;
     v14 = 2112;
-    *v15 = v11;
+    *v15 = _ownTypeAsString2;
     _os_log_fault_impl(&dword_1C8460000, v9, OS_LOG_TYPE_FAULT, "Failed to properly add key %@ of type %@", &v12, 0x16u);
   }
 
@@ -1608,10 +1608,10 @@ LABEL_4:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addRepeatableValue:(id)a3
+- (void)_addRepeatableValue:(id)value
 {
   *&v16[13] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valueCopy = value;
   if ([(WAField *)self isRepeatable])
   {
     if (!self->_value || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -1621,7 +1621,7 @@ LABEL_4:
       self->_value = v5;
     }
 
-    [self->_value addObject:v4];
+    [self->_value addObject:valueCopy];
   }
 
   else
@@ -1644,11 +1644,11 @@ LABEL_4:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
       v11 = [(WAField *)self key];
-      v12 = [(WAField *)self _ownTypeAsString];
+      _ownTypeAsString = [(WAField *)self _ownTypeAsString];
       v13 = 138412546;
       v14 = v11;
       v15 = 2112;
-      *v16 = v12;
+      *v16 = _ownTypeAsString;
       _os_log_fault_impl(&dword_1C8460000, v10, OS_LOG_TYPE_FAULT, "Failed to properly add key %@ of type %@", &v13, 0x16u);
     }
   }
@@ -1662,7 +1662,7 @@ LABEL_4:
   objc_exception_throw(v2);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x1E69E9840];
   v21 = MEMORY[0x1E696ACD0];
@@ -1702,41 +1702,41 @@ LABEL_4:
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeInteger:self->_type forKey:@"_type"];
-  [v6 encodeBool:self->_isRepeatable forKey:@"_isRepeatable"];
-  [v6 encodeObject:self->_key forKey:@"_key"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_type forKey:@"_type"];
+  [coderCopy encodeBool:self->_isRepeatable forKey:@"_isRepeatable"];
+  [coderCopy encodeObject:self->_key forKey:@"_key"];
   typeInfoForRepeatableSubmessage = self->_typeInfoForRepeatableSubmessage;
   if (typeInfoForRepeatableSubmessage)
   {
-    [v6 encodeObject:typeInfoForRepeatableSubmessage forKey:@"_typeInfoForRepeatableSubmessage"];
+    [coderCopy encodeObject:typeInfoForRepeatableSubmessage forKey:@"_typeInfoForRepeatableSubmessage"];
   }
 
   value = self->_value;
   if (value)
   {
-    [v6 encodeObject:value forKey:@"_value"];
+    [coderCopy encodeObject:value forKey:@"_value"];
   }
 }
 
-- (WAField)initWithCoder:(id)a3
+- (WAField)initWithCoder:(id)coder
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = WAField;
   v5 = [(WAField *)&v26 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"_type"];
-    v5->_isRepeatable = [v4 decodeBoolForKey:@"_isRepeatable"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_key"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"_type"];
+    v5->_isRepeatable = [coderCopy decodeBoolForKey:@"_isRepeatable"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_key"];
     key = v5->_key;
     v5->_key = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_typeInfoForRepeatableSubmessage"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_typeInfoForRepeatableSubmessage"];
     typeInfoForRepeatableSubmessage = v5->_typeInfoForRepeatableSubmessage;
     v5->_typeInfoForRepeatableSubmessage = v8;
 
@@ -1752,7 +1752,7 @@ LABEL_4:
       v16 = objc_opt_class();
       v17 = objc_opt_class();
       v18 = [v25 setWithObjects:{v10, v11, v12, v13, v14, v15, v16, v17, objc_opt_class(), 0}];
-      v19 = [v4 decodeObjectOfClasses:v18 forKey:@"_value"];
+      v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"_value"];
       value = v5->_value;
       v5->_value = v19;
 
@@ -1760,19 +1760,19 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    v21 = [(WAField *)v5 type];
-    if (v21 > 7)
+    type = [(WAField *)v5 type];
+    if (type > 7)
     {
-      if (v21 == 8 || v21 == 9 || v21 == 10)
+      if (type == 8 || type == 9 || type == 10)
       {
         goto LABEL_6;
       }
     }
 
-    else if ((v21 - 1) < 7)
+    else if ((type - 1) < 7)
     {
 LABEL_6:
-      v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_value"];
+      v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_value"];
       v18 = v5->_value;
       v5->_value = v22;
       goto LABEL_7;
@@ -1806,15 +1806,15 @@ LABEL_8:
     goto LABEL_91;
   }
 
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = [(WAField *)self key];
-  v5 = [(WAField *)self _ownTypeAsString];
-  [v3 appendFormat:@"%@ - %@: ", v4, v5];
+  _ownTypeAsString = [(WAField *)self _ownTypeAsString];
+  [string appendFormat:@"%@ - %@: ", v4, _ownTypeAsString];
 
   if ([(WAField *)self isRepeatable])
   {
-    v6 = [(WAField *)self repeatableValues];
-    v7 = [v6 count];
+    repeatableValues = [(WAField *)self repeatableValues];
+    v7 = [repeatableValues count];
 
     if (v7)
     {
@@ -1826,15 +1826,15 @@ LABEL_8:
       v8 = @"[]";
     }
 
-    [v3 appendString:v8];
+    [string appendString:v8];
   }
 
   for (i = 0; ; ++i)
   {
     if ([(WAField *)self isRepeatable])
     {
-      v10 = [(WAField *)self repeatableValues];
-      v11 = [v10 count];
+      repeatableValues2 = [(WAField *)self repeatableValues];
+      v11 = [repeatableValues2 count];
 
       v12 = v11 >= 10 ? 10 : v11;
       v13 = v12;
@@ -1845,47 +1845,47 @@ LABEL_8:
       v13 = 1;
     }
 
-    v14 = [(WAField *)self isRepeatable];
+    isRepeatable = [(WAField *)self isRepeatable];
     if (i >= v13)
     {
       break;
     }
 
-    if (v14)
+    if (isRepeatable)
     {
-      [v3 appendString:@"          "];
+      [string appendString:@"          "];
     }
 
-    v15 = [(WAField *)self type];
-    if (v15 > 5)
+    type = [(WAField *)self type];
+    if (type > 5)
     {
-      if (v15 > 7)
+      if (type > 7)
       {
-        switch(v15)
+        switch(type)
         {
           case 8:
             v43 = MEMORY[0x1E696AEC0];
-            v44 = [(WAField *)self isRepeatable];
-            if (v44)
+            isRepeatable2 = [(WAField *)self isRepeatable];
+            if (isRepeatable2)
             {
-              v76 = [(WAField *)self repeatableValues];
-              v45 = [v76 objectAtIndexedSubscript:i];
-              v68 = v45;
+              repeatableValues3 = [(WAField *)self repeatableValues];
+              stringValue = [repeatableValues3 objectAtIndexedSubscript:i];
+              v68 = stringValue;
             }
 
             else
             {
-              v45 = [(WAField *)self stringValue];
-              v71 = v45;
+              stringValue = [(WAField *)self stringValue];
+              v71 = stringValue;
             }
 
-            v55 = [v43 stringWithFormat:@"%@", v45];
-            [v3 appendString:v55];
+            v55 = [v43 stringWithFormat:@"%@", stringValue];
+            [string appendString:v55];
 
-            if (v44)
+            if (isRepeatable2)
             {
 
-              v27 = v76;
+              v27 = repeatableValues3;
             }
 
             else
@@ -1896,27 +1896,27 @@ LABEL_8:
             break;
           case 9:
             v49 = MEMORY[0x1E696AEC0];
-            v50 = [(WAField *)self isRepeatable];
-            if (v50)
+            isRepeatable3 = [(WAField *)self isRepeatable];
+            if (isRepeatable3)
             {
-              v74 = [(WAField *)self repeatableValues];
-              v51 = [v74 objectAtIndexedSubscript:i];
-              v66 = v51;
+              repeatableValues4 = [(WAField *)self repeatableValues];
+              bytesValue = [repeatableValues4 objectAtIndexedSubscript:i];
+              v66 = bytesValue;
             }
 
             else
             {
-              v51 = [(WAField *)self bytesValue];
-              v69 = v51;
+              bytesValue = [(WAField *)self bytesValue];
+              v69 = bytesValue;
             }
 
-            v59 = [v49 stringWithFormat:@"%@", v51];
-            [v3 appendString:v59];
+            v59 = [v49 stringWithFormat:@"%@", bytesValue];
+            [string appendString:v59];
 
-            if (v50)
+            if (isRepeatable3)
             {
 
-              v27 = v74;
+              v27 = repeatableValues4;
             }
 
             else
@@ -1927,27 +1927,27 @@ LABEL_8:
             break;
           case 10:
             v19 = MEMORY[0x1E696AEC0];
-            v20 = [(WAField *)self isRepeatable];
-            if (v20)
+            isRepeatable4 = [(WAField *)self isRepeatable];
+            if (isRepeatable4)
             {
-              v72 = [(WAField *)self repeatableValues];
-              v21 = [v72 objectAtIndexedSubscript:i];
-              v65 = v21;
+              repeatableValues5 = [(WAField *)self repeatableValues];
+              subMessageValue = [repeatableValues5 objectAtIndexedSubscript:i];
+              v65 = subMessageValue;
             }
 
             else
             {
-              v21 = [(WAField *)self subMessageValue];
-              v67 = v21;
+              subMessageValue = [(WAField *)self subMessageValue];
+              v67 = subMessageValue;
             }
 
-            v57 = [v19 stringWithFormat:@"%@", v21];
-            [v3 appendString:v57];
+            v57 = [v19 stringWithFormat:@"%@", subMessageValue];
+            [string appendString:v57];
 
-            if (v20)
+            if (isRepeatable4)
             {
 
-              v27 = v72;
+              v27 = repeatableValues5;
             }
 
             else
@@ -1961,13 +1961,13 @@ LABEL_54:
             v27 = WALogCategoryDefaultHandle();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
             {
-              v52 = [(WAField *)self type];
+              type2 = [(WAField *)self type];
               *buf = 136446722;
               v89 = "[WAField description]";
               v90 = 1024;
               v91 = 542;
               v92 = 2048;
-              v93 = v52;
+              v93 = type2;
               _os_log_impl(&dword_1C8460000, v27, OS_LOG_TYPE_ERROR, "%{public}s::%d:PARSER: Unhandled type: %ld", buf, 0x1Cu);
             }
 
@@ -1979,29 +1979,29 @@ LABEL_80:
         goto LABEL_81;
       }
 
-      if (v15 == 6)
+      if (type == 6)
       {
         v37 = MEMORY[0x1E696AEC0];
-        v38 = [(WAField *)self isRepeatable];
-        if (v38)
+        isRepeatable5 = [(WAField *)self isRepeatable];
+        if (isRepeatable5)
         {
-          v82 = [(WAField *)self repeatableValues];
-          v73 = [v82 objectAtIndexedSubscript:i];
-          v39 = [v73 unsignedLongLongValue];
+          repeatableValues6 = [(WAField *)self repeatableValues];
+          v73 = [repeatableValues6 objectAtIndexedSubscript:i];
+          unsignedLongLongValue = [v73 unsignedLongLongValue];
         }
 
         else
         {
-          v39 = [(WAField *)self uint64Value];
+          unsignedLongLongValue = [(WAField *)self uint64Value];
         }
 
-        v53 = [v37 stringWithFormat:@"%llu", v39];
-        [v3 appendString:v53];
+        v53 = [v37 stringWithFormat:@"%llu", unsignedLongLongValue];
+        [string appendString:v53];
 
-        if (v38)
+        if (isRepeatable5)
         {
 
-          v27 = v82;
+          v27 = repeatableValues6;
           goto LABEL_80;
         }
       }
@@ -2009,133 +2009,133 @@ LABEL_80:
       else
       {
         v28 = MEMORY[0x1E696AEC0];
-        v29 = [(WAField *)self isRepeatable];
-        v30 = self;
-        if (v29)
+        isRepeatable6 = [(WAField *)self isRepeatable];
+        selfCopy = self;
+        if (isRepeatable6)
         {
-          v79 = [(WAField *)self repeatableValues];
-          v30 = [v79 objectAtIndexedSubscript:i];
-          v70 = v30;
+          repeatableValues7 = [(WAField *)self repeatableValues];
+          selfCopy = [repeatableValues7 objectAtIndexedSubscript:i];
+          v70 = selfCopy;
         }
 
-        v31 = [v28 stringWithFormat:@"%d", objc_msgSend(v30, "BOOLValue")];
-        [v3 appendString:v31];
+        v31 = [v28 stringWithFormat:@"%d", objc_msgSend(selfCopy, "BOOLValue")];
+        [string appendString:v31];
 
-        if (v29)
+        if (isRepeatable6)
         {
 
-          v27 = v79;
+          v27 = repeatableValues7;
           goto LABEL_80;
         }
       }
     }
 
-    else if (v15 <= 2)
+    else if (type <= 2)
     {
-      if (v15 == 1)
+      if (type == 1)
       {
         v32 = MEMORY[0x1E696AEC0];
-        v33 = [(WAField *)self isRepeatable];
-        v34 = self;
-        if (v33)
+        isRepeatable7 = [(WAField *)self isRepeatable];
+        selfCopy2 = self;
+        if (isRepeatable7)
         {
-          v87 = [(WAField *)self repeatableValues];
-          v34 = [v87 objectAtIndexedSubscript:i];
-          v81 = v34;
+          repeatableValues8 = [(WAField *)self repeatableValues];
+          selfCopy2 = [repeatableValues8 objectAtIndexedSubscript:i];
+          v81 = selfCopy2;
         }
 
-        [v34 doubleValue];
+        [selfCopy2 doubleValue];
         v36 = [v32 stringWithFormat:@"%f", v35];
-        [v3 appendString:v36];
+        [string appendString:v36];
 
-        if (v33)
+        if (isRepeatable7)
         {
 
-          v27 = v87;
+          v27 = repeatableValues8;
           goto LABEL_80;
         }
       }
 
       else
       {
-        if (v15 != 2)
+        if (type != 2)
         {
           goto LABEL_54;
         }
 
         v22 = MEMORY[0x1E696AEC0];
-        v23 = [(WAField *)self isRepeatable];
-        v24 = self;
-        if (v23)
+        isRepeatable8 = [(WAField *)self isRepeatable];
+        selfCopy3 = self;
+        if (isRepeatable8)
         {
-          v86 = [(WAField *)self repeatableValues];
-          v24 = [v86 objectAtIndexedSubscript:i];
-          v78 = v24;
+          repeatableValues9 = [(WAField *)self repeatableValues];
+          selfCopy3 = [repeatableValues9 objectAtIndexedSubscript:i];
+          v78 = selfCopy3;
         }
 
-        [v24 floatValue];
+        [selfCopy3 floatValue];
         v26 = [v22 stringWithFormat:@"%f", v25];
-        [v3 appendString:v26];
+        [string appendString:v26];
 
-        if (v23)
+        if (isRepeatable8)
         {
 
-          v27 = v86;
+          v27 = repeatableValues9;
           goto LABEL_80;
         }
       }
     }
 
-    else if (v15 == 3)
+    else if (type == 3)
     {
       v40 = MEMORY[0x1E696AEC0];
-      v41 = [(WAField *)self isRepeatable];
-      if (v41)
+      isRepeatable9 = [(WAField *)self isRepeatable];
+      if (isRepeatable9)
       {
-        v85 = [(WAField *)self repeatableValues];
-        v80 = [v85 objectAtIndexedSubscript:i];
-        v42 = [v80 intValue];
+        repeatableValues10 = [(WAField *)self repeatableValues];
+        v80 = [repeatableValues10 objectAtIndexedSubscript:i];
+        intValue = [v80 intValue];
       }
 
       else
       {
-        v42 = [(WAField *)self int32Value];
+        intValue = [(WAField *)self int32Value];
       }
 
-      v54 = [v40 stringWithFormat:@"%d", v42];
-      [v3 appendString:v54];
+      v54 = [v40 stringWithFormat:@"%d", intValue];
+      [string appendString:v54];
 
-      if (v41)
+      if (isRepeatable9)
       {
 
-        v27 = v85;
+        v27 = repeatableValues10;
         goto LABEL_80;
       }
     }
 
-    else if (v15 == 4)
+    else if (type == 4)
     {
       v46 = MEMORY[0x1E696AEC0];
-      v47 = [(WAField *)self isRepeatable];
-      if (v47)
+      isRepeatable10 = [(WAField *)self isRepeatable];
+      if (isRepeatable10)
       {
-        v84 = [(WAField *)self repeatableValues];
-        v77 = [v84 objectAtIndexedSubscript:i];
-        v48 = [v77 intValue];
+        repeatableValues11 = [(WAField *)self repeatableValues];
+        v77 = [repeatableValues11 objectAtIndexedSubscript:i];
+        intValue2 = [v77 intValue];
       }
 
       else
       {
-        v48 = [(WAField *)self int64Value];
+        intValue2 = [(WAField *)self int64Value];
       }
 
-      v58 = [v46 stringWithFormat:@"%lld", v48];
-      [v3 appendString:v58];
+      v58 = [v46 stringWithFormat:@"%lld", intValue2];
+      [string appendString:v58];
 
-      if (v47)
+      if (isRepeatable10)
       {
 
-        v27 = v84;
+        v27 = repeatableValues11;
         goto LABEL_80;
       }
     }
@@ -2143,26 +2143,26 @@ LABEL_80:
     else
     {
       v16 = MEMORY[0x1E696AEC0];
-      v17 = [(WAField *)self isRepeatable];
-      if (v17)
+      isRepeatable11 = [(WAField *)self isRepeatable];
+      if (isRepeatable11)
       {
-        v83 = [(WAField *)self repeatableValues];
-        v75 = [v83 objectAtIndexedSubscript:i];
-        v18 = [v75 unsignedIntValue];
+        repeatableValues12 = [(WAField *)self repeatableValues];
+        v75 = [repeatableValues12 objectAtIndexedSubscript:i];
+        unsignedIntValue = [v75 unsignedIntValue];
       }
 
       else
       {
-        v18 = [(WAField *)self uint32Value];
+        unsignedIntValue = [(WAField *)self uint32Value];
       }
 
-      v56 = [v16 stringWithFormat:@"%u", v18];
-      [v3 appendString:v56];
+      v56 = [v16 stringWithFormat:@"%u", unsignedIntValue];
+      [string appendString:v56];
 
-      if (v17)
+      if (isRepeatable11)
       {
 
-        v27 = v83;
+        v27 = repeatableValues12;
         goto LABEL_80;
       }
     }
@@ -2170,27 +2170,27 @@ LABEL_80:
 LABEL_81:
     if ([(WAField *)self isRepeatable])
     {
-      [v3 appendString:{@", \r"}];
+      [string appendString:{@", \r"}];
     }
 
     if (i == 9)
     {
-      [v3 appendString:@"          ...\r"];
+      [string appendString:@"          ...\r"];
     }
   }
 
-  if (v14)
+  if (isRepeatable)
   {
-    v60 = [(WAField *)self repeatableValues];
-    v61 = [v60 count];
+    repeatableValues13 = [(WAField *)self repeatableValues];
+    v61 = [repeatableValues13 count];
 
     if (v61)
     {
-      [v3 appendString:@"     ]"];
+      [string appendString:@"     ]"];
     }
   }
 
-  v62 = [MEMORY[0x1E696AEC0] stringWithString:v3];
+  v62 = [MEMORY[0x1E696AEC0] stringWithString:string];
 
 LABEL_91:
   v63 = *MEMORY[0x1E69E9840];
@@ -2198,20 +2198,20 @@ LABEL_91:
   return v62;
 }
 
-- (id)_typeAsString:(int64_t)a3
+- (id)_typeAsString:(int64_t)string
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AD60] string];
-  if (a3 <= 4)
+  string = [MEMORY[0x1E696AD60] string];
+  if (string <= 4)
   {
-    if (a3 > 1)
+    if (string > 1)
     {
-      if (a3 == 2)
+      if (string == 2)
       {
         v6 = @"float";
       }
 
-      else if (a3 == 3)
+      else if (string == 3)
       {
         v6 = @"int32";
       }
@@ -2224,9 +2224,9 @@ LABEL_91:
       goto LABEL_28;
     }
 
-    if (a3)
+    if (string)
     {
-      if (a3 != 1)
+      if (string != 1)
       {
 LABEL_25:
         v8 = WALogCategoryDefaultHandle();
@@ -2237,7 +2237,7 @@ LABEL_25:
           v24 = 1024;
           v25 = 600;
           v26 = 2048;
-          v27 = [(WAField *)self type];
+          type = [(WAField *)self type];
           _os_log_impl(&dword_1C8460000, v8, OS_LOG_TYPE_ERROR, "%{public}s::%d:PARSER: Unhandled type: %ld", buf, 0x1Cu);
         }
 
@@ -2256,14 +2256,14 @@ LABEL_25:
 
   else
   {
-    if (a3 <= 7)
+    if (string <= 7)
     {
-      if (a3 == 5)
+      if (string == 5)
       {
         v6 = @"uint32";
       }
 
-      else if (a3 == 6)
+      else if (string == 6)
       {
         v6 = @"uint64";
       }
@@ -2276,7 +2276,7 @@ LABEL_25:
       goto LABEL_28;
     }
 
-    switch(a3)
+    switch(string)
     {
       case 8:
         v6 = @"string";
@@ -2297,35 +2297,35 @@ LABEL_25:
 
         if ([(WAField *)self isRepeatable])
         {
-          v11 = [(WAField *)self repeatableValues];
-          v12 = [v11 firstObject];
+          repeatableValues = [(WAField *)self repeatableValues];
+          firstObject = [repeatableValues firstObject];
           v13 = MEMORY[0x1E696AEC0];
-          if (v12)
+          if (firstObject)
           {
-            v14 = [(WAField *)self repeatableValues];
-            v15 = [v14 firstObject];
-            v16 = [v15 key];
-            v17 = [(WAField *)self repeatableValues];
-            [v13 stringWithFormat:@"Repeatable submessage with key: %@, count: %lu", v16, objc_msgSend(v17, "count"), v21];
+            repeatableValues2 = [(WAField *)self repeatableValues];
+            firstObject2 = [repeatableValues2 firstObject];
+            repeatableValues4 = [firstObject2 key];
+            repeatableValues3 = [(WAField *)self repeatableValues];
+            [v13 stringWithFormat:@"Repeatable submessage with key: %@, count: %lu", repeatableValues4, objc_msgSend(repeatableValues3, "count"), v21];
           }
 
           else
           {
-            v14 = [v7 objectAtIndexedSubscript:0];
-            v15 = [v7 objectAtIndexedSubscript:1];
-            v16 = [(WAField *)self repeatableValues];
-            v17 = [v16 firstObject];
-            [v13 stringWithFormat:@"Repeatable submessage, key: %@ original classname: %@ first instance: %@", v14, v15, v17];
+            repeatableValues2 = [v7 objectAtIndexedSubscript:0];
+            firstObject2 = [v7 objectAtIndexedSubscript:1];
+            repeatableValues4 = [(WAField *)self repeatableValues];
+            repeatableValues3 = [repeatableValues4 firstObject];
+            [v13 stringWithFormat:@"Repeatable submessage, key: %@ original classname: %@ first instance: %@", repeatableValues2, firstObject2, repeatableValues3];
           }
           v20 = ;
-          [v5 appendFormat:@"%@", v20];
+          [string appendFormat:@"%@", v20];
         }
 
         else
         {
-          v18 = [(WAField *)self subMessageValue];
-          v19 = [v18 key];
-          [v5 appendFormat:@"%@", v19];
+          subMessageValue = [(WAField *)self subMessageValue];
+          v19 = [subMessageValue key];
+          [string appendFormat:@"%@", v19];
         }
 
         goto LABEL_29;
@@ -2335,26 +2335,26 @@ LABEL_25:
   }
 
 LABEL_28:
-  [v5 appendString:v6];
+  [string appendString:v6];
 LABEL_29:
   v9 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return string;
 }
 
 - (id)_ownTypeAsString
 {
-  v3 = [(WAField *)self type];
+  type = [(WAField *)self type];
 
-  return [(WAField *)self _typeAsString:v3];
+  return [(WAField *)self _typeAsString:type];
 }
 
-- (void)_throwIncorrecTypeExceptionForType:(int64_t)a3 isGet:(BOOL)a4
+- (void)_throwIncorrecTypeExceptionForType:(int64_t)type isGet:(BOOL)get
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = MEMORY[0x1E696AEC0];
-  if (a4)
+  if (get)
   {
     v8 = @"GET";
   }
@@ -2364,23 +2364,23 @@ LABEL_29:
     v8 = @"SET";
   }
 
-  v9 = [(WAField *)self _typeAsString:a3];
-  v10 = [(WAField *)self _ownTypeAsString];
+  v9 = [(WAField *)self _typeAsString:type];
+  _ownTypeAsString = [(WAField *)self _ownTypeAsString];
   v11 = [(WAField *)self key];
-  v12 = [v7 stringWithFormat:@"Attempt to %@ %@ value on a field that's a %@. Field Key: %@", v8, v9, v10, v11];
+  v12 = [v7 stringWithFormat:@"Attempt to %@ %@ value on a field that's a %@. Field Key: %@", v8, v9, _ownTypeAsString, v11];
   v13 = [v5 exceptionWithName:v6 reason:v12 userInfo:0];
   v14 = v13;
 
   objc_exception_throw(v13);
 }
 
-- (void)_throwIncorrectRepeatableStateExceptionAsFieldShouldBeRepeatable:(BOOL)a3 isGet:(BOOL)a4 forType:(int64_t)a5
+- (void)_throwIncorrectRepeatableStateExceptionAsFieldShouldBeRepeatable:(BOOL)repeatable isGet:(BOOL)get forType:(int64_t)type
 {
-  v5 = a3;
+  repeatableCopy = repeatable;
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D930];
   v9 = MEMORY[0x1E696AEC0];
-  if (a4)
+  if (get)
   {
     v10 = @"GET";
   }
@@ -2390,10 +2390,10 @@ LABEL_29:
     v10 = @"SET";
   }
 
-  v11 = [(WAField *)self _typeAsString:a5];
+  v11 = [(WAField *)self _typeAsString:type];
   v12 = [(WAField *)self key];
   v13 = v12;
-  if (v5)
+  if (repeatableCopy)
   {
     [v9 stringWithFormat:@"Attempt to %@ a single value on a field that holds repeatable values. Type: %@ field key: %@", v10, v11, v12];
   }

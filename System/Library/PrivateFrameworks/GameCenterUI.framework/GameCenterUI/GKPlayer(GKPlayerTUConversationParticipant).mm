@@ -9,8 +9,8 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [MEMORY[0x277D0C038] internalRepresentation];
-  v9 = [a1 initWithInternalRepresentation:v8];
+  internalRepresentation = [MEMORY[0x277D0C038] internalRepresentation];
+  v9 = [self initWithInternalRepresentation:internalRepresentation];
   v10 = v9;
   if (v9)
   {
@@ -24,7 +24,7 @@
 {
   value = a3;
   v6 = a4;
-  objc_setAssociatedObject(a1, @"_gkTUParticipant", value, 0x301);
+  objc_setAssociatedObject(self, @"_gkTUParticipant", value, 0x301);
   if (value)
   {
     [value identifier];
@@ -32,53 +32,53 @@
     v8 = IDSIDAliasHashUInt64();
 
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", v8];
-    v10 = [a1 internal];
-    [v10 setPlayerID:v9];
+    internal = [self internal];
+    [internal setPlayerID:v9];
 
-    v11 = [a1 internal];
-    v12 = [v11 playerID];
+    internal2 = [self internal];
+    playerID = [internal2 playerID];
 
-    if (!v12)
+    if (!playerID)
     {
-      v13 = [MEMORY[0x277CCAD78] UUID];
-      v14 = [v13 UUIDString];
-      v15 = [a1 internal];
-      [v15 setPlayerID:v14];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      internal3 = [self internal];
+      [internal3 setPlayerID:uUIDString];
     }
 
-    [a1 setTuParticipant:value];
-    v16 = [a1 internal];
-    [v16 setAlias:0];
+    [self setTuParticipant:value];
+    internal4 = [self internal];
+    [internal4 setAlias:0];
 
     v17 = objc_opt_new();
-    v18 = [value handle];
-    v19 = [v18 value];
-    v20 = [GKMessageUtilities contactFromEmailOrPhoneNumber:v19 fromContactStore:v17];
+    handle = [value handle];
+    value = [handle value];
+    v20 = [GKMessageUtilities contactFromEmailOrPhoneNumber:value fromContactStore:v17];
 
     if (v20)
     {
       v21 = objc_alloc_init(MEMORY[0x277CBDA78]);
       v22 = [v21 stringFromContact:v20];
 
-      v23 = [a1 internal];
-      [v23 setAlias:v22];
+      internal5 = [self internal];
+      [internal5 setAlias:v22];
 
-      v24 = [a1 internal];
-      [v24 setContact:v20];
+      internal6 = [self internal];
+      [internal6 setContact:v20];
     }
 
-    v25 = [value handle];
-    v26 = [v25 value];
-    v27 = [a1 internal];
-    [v27 setCompositeName:v26];
+    handle2 = [value handle];
+    value2 = [handle2 value];
+    internal7 = [self internal];
+    [internal7 setCompositeName:value2];
 
-    v28 = [a1 internal];
-    [v28 setAvatarType:&unk_286189588];
+    internal8 = [self internal];
+    [internal8 setAvatarType:&unk_286189588];
 
-    v29 = [value handle];
-    v30 = [v29 value];
-    v31 = [a1 internal];
-    [v31 setMessagesID:v30];
+    handle3 = [value handle];
+    value3 = [handle3 value];
+    internal9 = [self internal];
+    [internal9 setMessagesID:value3];
   }
 }
 

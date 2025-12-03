@@ -1,44 +1,44 @@
 @interface CKSharedAudioCollectionViewCell
 - (CKAudioProgressView)audioPlaybackView;
-- (id)formattedDurationTextForAsset:(id)a3;
-- (void)configureWithAttachmentItem:(id)a3;
+- (id)formattedDurationTextForAsset:(id)asset;
+- (void)configureWithAttachmentItem:(id)item;
 - (void)layoutSubviews;
 @end
 
 @implementation CKSharedAudioCollectionViewCell
 
-- (void)configureWithAttachmentItem:(id)a3
+- (void)configureWithAttachmentItem:(id)item
 {
-  v4 = a3;
-  v13 = [v4 fileURL];
-  v5 = CKAVURLAssetForURL(v13);
+  itemCopy = item;
+  fileURL = [itemCopy fileURL];
+  v5 = CKAVURLAssetForURL(fileURL);
   v6 = MEMORY[0x1E696AEC0];
   v7 = [(CKSharedAudioCollectionViewCell *)self formattedDurationTextForAsset:v5];
-  v8 = [v4 createdDate];
+  createdDate = [itemCopy createdDate];
 
-  v9 = [(CKSharedAudioCollectionViewCell *)self formattedCreatedDateTextFromDate:v8];
+  v9 = [(CKSharedAudioCollectionViewCell *)self formattedCreatedDateTextFromDate:createdDate];
   v10 = [v6 stringWithFormat:@"%@\n%@", v7, v9];
 
-  v11 = [(CKSharedAssetCollectionViewCell *)self previewTitleLabel];
+  previewTitleLabel = [(CKSharedAssetCollectionViewCell *)self previewTitleLabel];
   v12 = [(CKSharedAssetCollectionViewCell *)self formattedTitleFromPreviewTitle:v10];
-  [v11 setAttributedText:v12];
+  [previewTitleLabel setAttributedText:v12];
 
   [(CKSharedAudioCollectionViewCell *)self setNeedsLayout];
   [(CKSharedAudioCollectionViewCell *)self layoutIfNeeded];
 }
 
-- (id)formattedDurationTextForAsset:(id)a3
+- (id)formattedDurationTextForAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   if (formattedDurationTextForAsset___pred_CMTimeGetSecondsCoreMedia != -1)
   {
     [CKSharedAudioCollectionViewCell formattedDurationTextForAsset:];
   }
 
   v4 = formattedDurationTextForAsset___CMTimeGetSeconds;
-  if (v3)
+  if (assetCopy)
   {
-    [v3 duration];
+    [assetCopy duration];
   }
 
   else
@@ -69,8 +69,8 @@ void *__65__CKSharedAudioCollectionViewCell_formattedDurationTextForAsset___bloc
     self->_audioPlaybackView = v4;
 
     [(CKAudioProgressView *)self->_audioPlaybackView setColor:0xFFFFFFFFLL];
-    v6 = [(CKSharedAssetCollectionViewCell *)self previewView];
-    [v6 addSubview:self->_audioPlaybackView];
+    previewView = [(CKSharedAssetCollectionViewCell *)self previewView];
+    [previewView addSubview:self->_audioPlaybackView];
 
     audioPlaybackView = self->_audioPlaybackView;
   }
@@ -83,14 +83,14 @@ void *__65__CKSharedAudioCollectionViewCell_formattedDurationTextForAsset___bloc
   *&rect.origin.y = self;
   *&rect.size.width = CKSharedAudioCollectionViewCell;
   [(CGFloat *)&rect.origin.y layoutSubviews];
-  v3 = [(CKSharedAssetCollectionViewCell *)self previewView];
-  [v3 bounds];
+  previewView = [(CKSharedAssetCollectionViewCell *)self previewView];
+  [previewView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKSharedAudioCollectionViewCell *)self audioPlaybackView];
+  audioPlaybackView = [(CKSharedAudioCollectionViewCell *)self audioPlaybackView];
   v13 = *(MEMORY[0x1E695F058] + 8);
   rect.origin.x = *MEMORY[0x1E695F058];
   v20.origin.x = v5;
@@ -122,8 +122,8 @@ void *__65__CKSharedAudioCollectionViewCell_formattedDurationTextForAsset___bloc
   v25.origin.y = v13;
   v25.size.width = v14;
   v25.size.height = v15;
-  [v12 setFrame:{v17, v18 - CGRectGetHeight(v25) * 0.5, v14, v15}];
-  [v12 prepareForDisplayIfNeeded];
+  [audioPlaybackView setFrame:{v17, v18 - CGRectGetHeight(v25) * 0.5, v14, v15}];
+  [audioPlaybackView prepareForDisplayIfNeeded];
 }
 
 @end

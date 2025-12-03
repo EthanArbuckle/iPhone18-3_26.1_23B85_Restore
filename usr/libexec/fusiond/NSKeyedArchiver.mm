@@ -1,65 +1,65 @@
 @interface NSKeyedArchiver
-+ (id)archiveObject:(id)a3;
-+ (id)archiveObjectToData:(id)a3;
-+ (id)archiveObjectToDict:(id)a3;
-+ (void)archiveObject:(id)a3 to:(id)a4;
++ (id)archiveObject:(id)object;
++ (id)archiveObjectToData:(id)data;
++ (id)archiveObjectToDict:(id)dict;
++ (void)archiveObject:(id)object to:(id)to;
 @end
 
 @implementation NSKeyedArchiver
 
-+ (id)archiveObjectToData:(id)a3
++ (id)archiveObjectToData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-  [v4 encodeObject:v3 forKey:NSKeyedArchiveRootObjectKey];
-  v5 = [v4 encodedData];
-  v6 = [v3 description];
+  [v4 encodeObject:dataCopy forKey:NSKeyedArchiveRootObjectKey];
+  encodedData = [v4 encodedData];
+  v6 = [dataCopy description];
 
   NSLog(@"Successfully archived Object : %@", v6);
-  NSLog(@"%s: Data length : %lu", "+[NSKeyedArchiver(XPC) archiveObjectToData:]", [v5 length]);
+  NSLog(@"%s: Data length : %lu", "+[NSKeyedArchiver(XPC) archiveObjectToData:]", [encodedData length]);
 
-  return v5;
+  return encodedData;
 }
 
-+ (id)archiveObjectToDict:(id)a3
++ (id)archiveObjectToDict:(id)dict
 {
-  v3 = [NSKeyedArchiver archiveObjectToData:a3];
+  v3 = [NSKeyedArchiver archiveObjectToData:dict];
   v4 = [NSMutableDictionary dictionaryWithObjectsAndKeys:&off_100011F50, @"Version", v3, @"SerializedObject", 0];
 
   return v4;
 }
 
-+ (id)archiveObject:(id)a3
++ (id)archiveObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = xpc_dictionary_create(0, 0, 0);
   v5 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-  [v5 encodeObject:v3 forKey:NSKeyedArchiveRootObjectKey];
-  v6 = [v5 encodedData];
+  [v5 encodeObject:objectCopy forKey:NSKeyedArchiveRootObjectKey];
+  encodedData = [v5 encodedData];
   xpc_dictionary_set_uint64(v4, "Version", 1uLL);
-  xpc_dictionary_set_data(v4, "SerializedObject", [v6 bytes], objc_msgSend(v6, "length"));
-  v7 = [v3 description];
+  xpc_dictionary_set_data(v4, "SerializedObject", [encodedData bytes], objc_msgSend(encodedData, "length"));
+  v7 = [objectCopy description];
 
   NSLog(@"Successfully archived Object : %@", v7);
-  NSLog(@"%s: Data length : %lu", "+[NSKeyedArchiver(XPC) archiveObject:]", [v6 length]);
+  NSLog(@"%s: Data length : %lu", "+[NSKeyedArchiver(XPC) archiveObject:]", [encodedData length]);
 
   return v4;
 }
 
-+ (void)archiveObject:(id)a3 to:(id)a4
++ (void)archiveObject:(id)object to:(id)to
 {
-  v5 = a4;
-  v6 = a3;
+  toCopy = to;
+  objectCopy = object;
   v9 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-  [v9 encodeObject:v6 forKey:NSKeyedArchiveRootObjectKey];
-  v7 = [v9 encodedData];
-  xpc_dictionary_set_uint64(v5, "Version", 1uLL);
-  xpc_dictionary_set_data(v5, "SerializedObject", [v7 bytes], objc_msgSend(v7, "length"));
+  [v9 encodeObject:objectCopy forKey:NSKeyedArchiveRootObjectKey];
+  encodedData = [v9 encodedData];
+  xpc_dictionary_set_uint64(toCopy, "Version", 1uLL);
+  xpc_dictionary_set_data(toCopy, "SerializedObject", [encodedData bytes], objc_msgSend(encodedData, "length"));
 
-  v8 = [v6 description];
+  v8 = [objectCopy description];
 
   NSLog(@"Successfully archived Object : %@", v8);
-  NSLog(@"%s: Data length : %lu", "+[NSKeyedArchiver(XPC) archiveObject:to:]", [v7 length]);
+  NSLog(@"%s: Data length : %lu", "+[NSKeyedArchiver(XPC) archiveObject:to:]", [encodedData length]);
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface HSTContactFrameMetadataAccessor
 - (SurfaceSize)surfaceSize;
-- (void)setSurfaceSize:(SurfaceSize)a3;
+- (void)setSurfaceSize:(SurfaceSize)size;
 @end
 
 @implementation HSTContactFrameMetadataAccessor
@@ -17,7 +17,7 @@
   return p_metadata->surfaceSize.var0.__val_;
 }
 
-- (void)setSurfaceSize:(SurfaceSize)a3
+- (void)setSurfaceSize:(SurfaceSize)size
 {
   p_metadata = &self->frame->metadata;
   if (!self->frame->metadata.surfaceSize.__engaged_)
@@ -25,7 +25,7 @@
     self->frame->metadata.surfaceSize.__engaged_ = 1;
   }
 
-  p_metadata->surfaceSize.var0.__val_ = a3;
+  p_metadata->surfaceSize.var0.__val_ = size;
 }
 
 @end

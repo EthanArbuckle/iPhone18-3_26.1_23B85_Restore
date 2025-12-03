@@ -1,20 +1,20 @@
 @interface HMDAssistantCommandHelper
 + (id)logCategory;
-- (HMDAssistantCommandHelper)initWithQueue:(id)a3 msgDispatcher:(id)a4;
+- (HMDAssistantCommandHelper)initWithQueue:(id)queue msgDispatcher:(id)dispatcher;
 - (HMDHome)home;
-- (void)__handleAccessoryCharacteristicsChanged:(id)a3;
+- (void)__handleAccessoryCharacteristicsChanged:(id)changed;
 - (void)_register;
-- (void)_reportOperationStartedForAccessory:(id)a3;
+- (void)_reportOperationStartedForAccessory:(id)accessory;
 - (void)_reportResponses;
 - (void)_reportResponsesForMediaRequests;
-- (void)addActionSetRequest:(id)a3 actionSet:(id)a4 completionHandler:(id)a5;
-- (void)addMediaWriteRequests:(id)a3 withRequestProperty:(id)a4 completion:(id)a5;
-- (void)addReadRequests:(id)a3 home:(id)a4 completion:(id)a5;
-- (void)addWriteRequests:(id)a3 home:(id)a4 completion:(id)a5;
+- (void)addActionSetRequest:(id)request actionSet:(id)set completionHandler:(id)handler;
+- (void)addMediaWriteRequests:(id)requests withRequestProperty:(id)property completion:(id)completion;
+- (void)addReadRequests:(id)requests home:(id)home completion:(id)completion;
+- (void)addWriteRequests:(id)requests home:(id)home completion:(id)completion;
 - (void)dealloc;
-- (void)handleAccessoryCharacteristicsChangedNotification:(id)a3;
-- (void)removeResponses:(id)a3;
-- (void)reportOperationStartedForAccessory:(id)a3;
+- (void)handleAccessoryCharacteristicsChangedNotification:(id)notification;
+- (void)removeResponses:(id)responses;
+- (void)reportOperationStartedForAccessory:(id)accessory;
 - (void)timeoutAndReportResults;
 @end
 
@@ -27,45 +27,45 @@
   return WeakRetained;
 }
 
-- (void)removeResponses:(id)a3
+- (void)removeResponses:(id)responses
 {
-  v4 = a3;
-  v5 = [(HMDAssistantCommandHelper *)self responses];
-  [v5 removeObjectsInArray:v4];
+  responsesCopy = responses;
+  responses = [(HMDAssistantCommandHelper *)self responses];
+  [responses removeObjectsInArray:responsesCopy];
 }
 
-- (void)addActionSetRequest:(id)a3 actionSet:(id)a4 completionHandler:(id)a5
+- (void)addActionSetRequest:(id)request actionSet:(id)set completionHandler:(id)handler
 {
   v52 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  setCopy = set;
+  handlerCopy = handler;
   v12 = objc_alloc(MEMORY[0x277D0F770]);
   v13 = MEMORY[0x277CCACA8];
   v14 = MEMORY[0x259C01AE0](self, a2);
   v15 = [v13 stringWithFormat:@"%@, %s:%ld", v14, "/Library/Caches/com.apple.xbs/Sources/HomeKit_executables_legacy/Sources/homed/Assistant/HMDAssistantCommandHelper.m", 518];
   v36 = [v12 initWithName:v15];
 
-  v16 = [MEMORY[0x277CCAD78] UUID];
-  [(HMDAssistantCommandHelper *)self setMessageId:v16];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [(HMDAssistantCommandHelper *)self setMessageId:uUID];
 
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     v20 = HMFGetLogIdentifier();
-    v21 = [(HMDAssistantCommandHelper *)v18 messageId];
-    v22 = [v21 UUIDString];
-    v23 = [v10 name];
+    messageId = [(HMDAssistantCommandHelper *)selfCopy messageId];
+    uUIDString = [messageId UUIDString];
+    name = [setCopy name];
     *buf = 138544130;
     v45 = v20;
     v46 = 2112;
-    v47 = v22;
+    v47 = uUIDString;
     v48 = 2112;
-    v49 = v23;
+    v49 = name;
     v50 = 2112;
-    v51 = v9;
+    v51 = requestCopy;
     _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_INFO, "%{public}@Sending execute action set %@ with id %@ to home %@", buf, 0x2Au);
   }
 
@@ -74,9 +74,9 @@
   v24 = *MEMORY[0x277CD2050];
   v42[0] = @"sourceType";
   v42[1] = v24;
-  v25 = [v10 uuid];
-  v26 = [v25 UUIDString];
-  v43[1] = v26;
+  uuid = [setCopy uuid];
+  uUIDString2 = [uuid UUIDString];
+  v43[1] = uUIDString2;
   v42[2] = @"kApplyDeviceUnlockKey";
   v27 = [MEMORY[0x277CCABB0] numberWithInt:!isPasscodeEnabledOnThisDevice()];
   v43[2] = v27;
@@ -86,12 +86,12 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __77__HMDAssistantCommandHelper_addActionSetRequest_actionSet_completionHandler___block_invoke;
   aBlock[3] = &unk_279725198;
-  v29 = v11;
+  v29 = handlerCopy;
   v41 = v29;
   v30 = _Block_copy(aBlock);
-  [(HMDAssistantCommandHelper *)v18 setResponseHandler:v30];
-  [(HMDAssistantCommandHelper *)v18 setExecutingActionSet:1];
-  objc_initWeak(buf, v18);
+  [(HMDAssistantCommandHelper *)selfCopy setResponseHandler:v30];
+  [(HMDAssistantCommandHelper *)selfCopy setExecutingActionSet:1];
+  objc_initWeak(buf, selfCopy);
   v31 = MEMORY[0x277D0F818];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
@@ -102,7 +102,7 @@
   v33 = v36;
   v38 = v33;
   v34 = [v31 internalMessageWithName:v32 messagePayload:v28 responseHandler:v37];
-  [v9 executeActionSet:v34];
+  [requestCopy executeActionSet:v34];
 
   objc_destroyWeak(&v39);
   objc_destroyWeak(buf);
@@ -183,50 +183,50 @@ void __77__HMDAssistantCommandHelper_addActionSetRequest_actionSet_completionHan
   }
 }
 
-- (void)addWriteRequests:(id)a3 home:(id)a4 completion:(id)a5
+- (void)addWriteRequests:(id)requests home:(id)home completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  requestsCopy = requests;
+  homeCopy = home;
+  completionCopy = completion;
+  if ([requestsCopy count])
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    [(HMDAssistantCommandHelper *)self setMessageId:v11];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [(HMDAssistantCommandHelper *)self setMessageId:uUID];
 
-    [(HMDAssistantCommandHelper *)self setHome:v9];
-    [(HMDAssistantCommandHelper *)self setResponseHandler:v10];
+    [(HMDAssistantCommandHelper *)self setHome:homeCopy];
+    [(HMDAssistantCommandHelper *)self setResponseHandler:completionCopy];
     [(HMDAssistantCommandHelper *)self _register];
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [(HMDAssistantCommandHelper *)v13 messageId];
-      v17 = [v16 UUIDString];
+      messageId = [(HMDAssistantCommandHelper *)selfCopy messageId];
+      uUIDString = [messageId UUIDString];
       *buf = 138544130;
       v28 = v15;
       v29 = 2112;
-      v30 = v17;
+      v30 = uUIDString;
       v31 = 2112;
-      v32 = v9;
+      v32 = homeCopy;
       v33 = 2112;
-      v34 = v8;
+      v34 = requestsCopy;
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@Sending write request with id %@ to home %@ with write request tuples: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v12);
-    [(HMDAssistantCommandHelper *)v13 setRequests:v8];
-    objc_initWeak(buf, v13);
-    v18 = [(HMDAssistantCommandHelper *)v13 messageId];
+    [(HMDAssistantCommandHelper *)selfCopy setRequests:requestsCopy];
+    objc_initWeak(buf, selfCopy);
+    messageId2 = [(HMDAssistantCommandHelper *)selfCopy messageId];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __62__HMDAssistantCommandHelper_addWriteRequests_home_completion___block_invoke;
     v25[3] = &unk_279733AE8;
     objc_copyWeak(&v26, buf);
-    v25[4] = v13;
-    [v9 writeCharacteristicValues:v8 source:1 message:0 identifier:v18 qualityOfService:25 withCompletionHandler:v25];
+    v25[4] = selfCopy;
+    [homeCopy writeCharacteristicValues:requestsCopy source:1 message:0 identifier:messageId2 qualityOfService:25 withCompletionHandler:v25];
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(buf);
@@ -235,7 +235,7 @@ void __77__HMDAssistantCommandHelper_addActionSetRequest_actionSet_completionHan
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -243,13 +243,13 @@ void __77__HMDAssistantCommandHelper_addActionSetRequest_actionSet_completionHan
       *buf = 138543618;
       v28 = v22;
       v29 = 2112;
-      v30 = v9;
+      v30 = homeCopy;
       _os_log_impl(&dword_2531F8000, v21, OS_LOG_TYPE_INFO, "%{public}@Received write request to home %@ with no request tuples, reporting invalid parameters error", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v19);
     v23 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:3 userInfo:0];
-    v10[2](v10, v23, 0);
+    completionCopy[2](completionCopy, v23, 0);
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -307,49 +307,49 @@ void __62__HMDAssistantCommandHelper_addWriteRequests_home_completion___block_in
   }
 }
 
-- (void)addReadRequests:(id)a3 home:(id)a4 completion:(id)a5
+- (void)addReadRequests:(id)requests home:(id)home completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  requestsCopy = requests;
+  homeCopy = home;
+  completionCopy = completion;
+  if ([requestsCopy count])
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    [(HMDAssistantCommandHelper *)self setMessageId:v11];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [(HMDAssistantCommandHelper *)self setMessageId:uUID];
 
-    [(HMDAssistantCommandHelper *)self setHome:v9];
-    [(HMDAssistantCommandHelper *)self setResponseHandler:v10];
+    [(HMDAssistantCommandHelper *)self setHome:homeCopy];
+    [(HMDAssistantCommandHelper *)self setResponseHandler:completionCopy];
     [(HMDAssistantCommandHelper *)self _register];
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [(HMDAssistantCommandHelper *)v13 messageId];
-      v17 = [v16 UUIDString];
+      messageId = [(HMDAssistantCommandHelper *)selfCopy messageId];
+      uUIDString = [messageId UUIDString];
       *buf = 138544130;
       v28 = v15;
       v29 = 2112;
-      v30 = v17;
+      v30 = uUIDString;
       v31 = 2112;
-      v32 = v9;
+      v32 = homeCopy;
       v33 = 2112;
-      v34 = v8;
+      v34 = requestsCopy;
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@Sending read request with id %@ to home %@ with characteristics: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v12);
-    [(HMDAssistantCommandHelper *)v13 setRequests:v8];
-    objc_initWeak(buf, v13);
-    v18 = [(HMDAssistantCommandHelper *)v13 messageId];
+    [(HMDAssistantCommandHelper *)selfCopy setRequests:requestsCopy];
+    objc_initWeak(buf, selfCopy);
+    messageId2 = [(HMDAssistantCommandHelper *)selfCopy messageId];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __61__HMDAssistantCommandHelper_addReadRequests_home_completion___block_invoke;
     v25[3] = &unk_279733B98;
     objc_copyWeak(&v26, buf);
-    [v9 readCharacteristicValues:v8 identifier:v18 source:1 qualityOfService:25 withCompletionHandler:v25];
+    [homeCopy readCharacteristicValues:requestsCopy identifier:messageId2 source:1 qualityOfService:25 withCompletionHandler:v25];
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(buf);
@@ -358,7 +358,7 @@ void __62__HMDAssistantCommandHelper_addWriteRequests_home_completion___block_in
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -366,13 +366,13 @@ void __62__HMDAssistantCommandHelper_addWriteRequests_home_completion___block_in
       *buf = 138543618;
       v28 = v22;
       v29 = 2112;
-      v30 = v9;
+      v30 = homeCopy;
       _os_log_impl(&dword_2531F8000, v21, OS_LOG_TYPE_INFO, "%{public}@Received read request to home %@ with no characteristics, reporting invalid parameters error", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v19);
     v23 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:3 userInfo:0];
-    v10[2](v10, v23, 0);
+    completionCopy[2](completionCopy, v23, 0);
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -430,22 +430,22 @@ void __61__HMDAssistantCommandHelper_addReadRequests_home_completion___block_inv
   }
 }
 
-- (void)addMediaWriteRequests:(id)a3 withRequestProperty:(id)a4 completion:(id)a5
+- (void)addMediaWriteRequests:(id)requests withRequestProperty:(id)property completion:(id)completion
 {
   v60 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v39 = a4;
-  v9 = a5;
-  v38 = v9;
-  v35 = v8;
-  if ([v8 count])
+  requestsCopy = requests;
+  propertyCopy = property;
+  completionCopy = completion;
+  v38 = completionCopy;
+  v35 = requestsCopy;
+  if ([requestsCopy count])
   {
-    [(HMDAssistantCommandHelper *)self setMediaResponseHandler:v9];
-    [(HMDAssistantCommandHelper *)self setMediaRequests:v8];
-    v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count")}];
+    [(HMDAssistantCommandHelper *)self setMediaResponseHandler:completionCopy];
+    [(HMDAssistantCommandHelper *)self setMediaRequests:requestsCopy];
+    v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(requestsCopy, "count")}];
     [(HMDAssistantCommandHelper *)self setMediaResponses:v10];
 
-    v37 = self;
+    selfCopy = self;
     objc_initWeak(&location, self);
     *&v57 = 0;
     *(&v57 + 1) = &v57;
@@ -455,7 +455,7 @@ void __61__HMDAssistantCommandHelper_addReadRequests_home_completion___block_inv
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v11 = v8;
+    v11 = requestsCopy;
     v12 = [v11 countByEnumeratingWithState:&v47 objects:v56 count:16];
     if (v12)
     {
@@ -471,13 +471,13 @@ void __61__HMDAssistantCommandHelper_addReadRequests_home_completion___block_inv
           }
 
           v14 = *(*(&v47 + 1) + 8 * i);
-          v15 = [v14 mediaProfile];
-          v16 = [v15 accessory];
+          mediaProfile = [v14 mediaProfile];
+          accessory = [mediaProfile accessory];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v17 = v16;
+            v17 = accessory;
           }
 
           else
@@ -489,19 +489,19 @@ void __61__HMDAssistantCommandHelper_addReadRequests_home_completion___block_inv
 
           if (v18)
           {
-            v19 = [v18 mediaProfile];
-            v20 = [v14 value];
+            mediaProfile2 = [v18 mediaProfile];
+            value = [v14 value];
             v41[0] = MEMORY[0x277D85DD0];
             v41[1] = 3221225472;
             v41[2] = __82__HMDAssistantCommandHelper_addMediaWriteRequests_withRequestProperty_completion___block_invoke;
             v41[3] = &unk_279735AF8;
             objc_copyWeak(&v46, &location);
             v45 = &v57;
-            v21 = v39;
+            v21 = propertyCopy;
             v42 = v21;
             v43 = v18;
             v44 = v11;
-            [v19 handleSetValue:v20 withRequestProperty:v21 withCompletionHandler:v41];
+            [mediaProfile2 handleSetValue:value withRequestProperty:v21 withCompletionHandler:v41];
 
             objc_destroyWeak(&v46);
           }
@@ -509,17 +509,17 @@ void __61__HMDAssistantCommandHelper_addReadRequests_home_completion___block_inv
           else
           {
             v22 = objc_autoreleasePoolPush();
-            v23 = v37;
+            v23 = selfCopy;
             v24 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
             {
               v25 = HMFGetLogIdentifier();
-              v26 = [v14 mediaProfile];
-              v27 = [v26 uniqueIdentifier];
+              mediaProfile3 = [v14 mediaProfile];
+              uniqueIdentifier = [mediaProfile3 uniqueIdentifier];
               *buf = 138543618;
               v53 = v25;
               v54 = 2112;
-              v55 = v27;
+              v55 = uniqueIdentifier;
               _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_INFO, "%{public}@Media Profile (%@) does not contain HMDAppleMediaAccessory type accessory, something went wrong.", buf, 0x16u);
             }
 
@@ -542,7 +542,7 @@ void __61__HMDAssistantCommandHelper_addReadRequests_home_completion___block_inv
   else
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy2 = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
@@ -630,18 +630,18 @@ LABEL_6:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAccessoryCharacteristicsChangedNotification:(id)a3
+- (void)handleAccessoryCharacteristicsChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDAssistantCommandHelper *)self queue];
+  notificationCopy = notification;
+  queue = [(HMDAssistantCommandHelper *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__HMDAssistantCommandHelper_handleAccessoryCharacteristicsChangedNotification___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __79__HMDAssistantCommandHelper_handleAccessoryCharacteristicsChangedNotification___block_invoke(uint64_t a1)
@@ -651,12 +651,12 @@ void __79__HMDAssistantCommandHelper_handleAccessoryCharacteristicsChangedNotifi
   [v1 __handleAccessoryCharacteristicsChanged:v2];
 }
 
-- (void)__handleAccessoryCharacteristicsChanged:(id)a3
+- (void)__handleAccessoryCharacteristicsChanged:(id)changed
 {
   v122 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -664,24 +664,24 @@ void __79__HMDAssistantCommandHelper_handleAccessoryCharacteristicsChangedNotifi
     *buf = 138543618;
     v117 = v8;
     v118 = 2112;
-    v119 = v4;
+    v119 = changedCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Processing characteristic reponses for Siri: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v67 = v4;
-  v9 = [v4 hmf_UUIDForKey:@"kModifiedCharacteristicsMessageIdentifierKey"];
-  v10 = [(HMDAssistantCommandHelper *)v6 messageId];
+  v67 = changedCopy;
+  v9 = [changedCopy hmf_UUIDForKey:@"kModifiedCharacteristicsMessageIdentifierKey"];
+  messageId = [(HMDAssistantCommandHelper *)selfCopy messageId];
   v66 = v9;
-  LODWORD(v9) = [v9 isEqual:v10];
+  LODWORD(v9) = [v9 isEqual:messageId];
 
   if (v9)
   {
-    v11 = [(HMDAssistantCommandHelper *)v6 responseHandler];
+    responseHandler = [(HMDAssistantCommandHelper *)selfCopy responseHandler];
 
-    if (v11)
+    if (responseHandler)
     {
-      [v4 hmf_dictionaryForKey:@"kModifiedCharacteristicsForAccessoryKey"];
+      [changedCopy hmf_dictionaryForKey:@"kModifiedCharacteristicsForAccessoryKey"];
       v107 = 0u;
       v108 = 0u;
       v109 = 0u;
@@ -691,7 +691,7 @@ void __79__HMDAssistantCommandHelper_handleAccessoryCharacteristicsChangedNotifi
       {
         v68 = *v108;
         v76 = *MEMORY[0x277CD2128];
-        v82 = v6;
+        v82 = selfCopy;
         do
         {
           v12 = 0;
@@ -705,10 +705,10 @@ void __79__HMDAssistantCommandHelper_handleAccessoryCharacteristicsChangedNotifi
             v71 = v12;
             v13 = *(*(&v107 + 1) + 8 * v12);
             v14 = [obj hmf_dictionaryForKey:v13];
-            v15 = [(HMDAssistantCommandHelper *)v6 home];
+            home = [(HMDAssistantCommandHelper *)selfCopy home];
             v90 = v13;
             v16 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v13];
-            v17 = [v15 accessoryWithUUID:v16];
+            v17 = [home accessoryWithUUID:v16];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -773,15 +773,15 @@ void __79__HMDAssistantCommandHelper_handleAccessoryCharacteristicsChangedNotifi
                         v87 = [v83 errorFromDataForKey:v76];
                         if (v87)
                         {
-                          [(HMDAssistantCommandHelper *)v6 setNumErrors:[(HMDAssistantCommandHelper *)v6 numErrors]+ 1];
+                          [(HMDAssistantCommandHelper *)selfCopy setNumErrors:[(HMDAssistantCommandHelper *)selfCopy numErrors]+ 1];
                         }
 
                         v97 = 0u;
                         v98 = 0u;
                         v95 = 0u;
                         v96 = 0u;
-                        v24 = [(HMDAssistantCommandHelper *)v6 requests];
-                        v25 = [v24 countByEnumeratingWithState:&v95 objects:v112 count:16];
+                        requests = [(HMDAssistantCommandHelper *)selfCopy requests];
+                        v25 = [requests countByEnumeratingWithState:&v95 objects:v112 count:16];
                         if (v25)
                         {
                           v26 = v25;
@@ -792,25 +792,25 @@ LABEL_27:
                           {
                             if (*v96 != v27)
                             {
-                              objc_enumerationMutation(v24);
+                              objc_enumerationMutation(requests);
                             }
 
                             v29 = *(*(&v95 + 1) + 8 * v28);
-                            v30 = [v29 characteristic];
-                            v31 = [v30 accessory];
-                            v32 = [v31 uuid];
+                            characteristic = [v29 characteristic];
+                            accessory = [characteristic accessory];
+                            uuid = [accessory uuid];
 
-                            v33 = [v30 instanceID];
-                            v34 = [v32 UUIDString];
-                            if ([v90 isEqual:v34])
+                            instanceID = [characteristic instanceID];
+                            uUIDString = [uuid UUIDString];
+                            if ([v90 isEqual:uUIDString])
                             {
-                              v35 = [v88 isEqual:v33];
+                              v35 = [v88 isEqual:instanceID];
 
                               if (v35)
                               {
                                 v36 = [HMDCharacteristicResponse responseWithRequest:v29 error:v87];
 
-                                v6 = v82;
+                                selfCopy = v82;
                                 v89 = v36;
                                 if (v36)
                                 {
@@ -827,7 +827,7 @@ LABEL_27:
 
                             if (v26 == ++v28)
                             {
-                              v26 = [v24 countByEnumeratingWithState:&v95 objects:v112 count:16];
+                              v26 = [requests countByEnumeratingWithState:&v95 objects:v112 count:16];
                               if (v26)
                               {
                                 goto LABEL_27;
@@ -838,10 +838,10 @@ LABEL_27:
                           }
                         }
 
-                        v6 = v82;
+                        selfCopy = v82;
 LABEL_38:
                         v37 = objc_autoreleasePoolPush();
-                        v38 = v6;
+                        v38 = selfCopy;
                         v39 = HMFGetOSLogHandle();
                         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
                         {
@@ -864,8 +864,8 @@ LABEL_41:
                         v94 = 0u;
                         v91 = 0u;
                         v92 = 0u;
-                        v42 = [(HMDAssistantCommandHelper *)v6 responses];
-                        v43 = [v42 countByEnumeratingWithState:&v91 objects:v111 count:16];
+                        responses = [(HMDAssistantCommandHelper *)selfCopy responses];
+                        v43 = [responses countByEnumeratingWithState:&v91 objects:v111 count:16];
                         if (v43)
                         {
                           v44 = v43;
@@ -876,15 +876,15 @@ LABEL_43:
                           {
                             if (*v92 != v45)
                             {
-                              objc_enumerationMutation(v42);
+                              objc_enumerationMutation(responses);
                             }
 
                             v47 = *(*(&v91 + 1) + 8 * v46);
-                            v48 = [v47 request];
-                            v49 = [v48 characteristic];
-                            v50 = [v89 request];
-                            v51 = [v50 characteristic];
-                            v52 = [v49 isEqual:v51];
+                            request = [v47 request];
+                            characteristic2 = [request characteristic];
+                            request2 = [v89 request];
+                            characteristic3 = [request2 characteristic];
+                            v52 = [characteristic2 isEqual:characteristic3];
 
                             if (v52)
                             {
@@ -893,20 +893,20 @@ LABEL_43:
 
                             if (v44 == ++v46)
                             {
-                              v44 = [v42 countByEnumeratingWithState:&v91 objects:v111 count:16];
+                              v44 = [responses countByEnumeratingWithState:&v91 objects:v111 count:16];
                               if (v44)
                               {
                                 goto LABEL_43;
                               }
 
-                              v6 = v82;
+                              selfCopy = v82;
                               goto LABEL_50;
                             }
                           }
 
                           v56 = v47;
 
-                          v6 = v82;
+                          selfCopy = v82;
                           v55 = v83;
                           v54 = v84;
                           v53 = v85;
@@ -915,10 +915,10 @@ LABEL_43:
                             goto LABEL_54;
                           }
 
-                          v57 = [(HMDAssistantCommandHelper *)v82 responses];
-                          [v57 removeObject:v56];
+                          responses2 = [(HMDAssistantCommandHelper *)v82 responses];
+                          [responses2 removeObject:v56];
 
-                          v42 = v56;
+                          responses = v56;
                         }
 
                         else
@@ -930,8 +930,8 @@ LABEL_50:
                         }
 
 LABEL_54:
-                        v58 = [(HMDAssistantCommandHelper *)v6 responses];
-                        [v58 addObject:v89];
+                        responses3 = [(HMDAssistantCommandHelper *)selfCopy responses];
+                        [responses3 addObject:v89];
                       }
 
                       v80 = [v81 countByEnumeratingWithState:&v99 objects:v113 count:16];
@@ -962,26 +962,26 @@ LABEL_54:
 
       if (([v67 hmf_BOOLForKey:@"kMultiPartResponseKey"] & 1) == 0)
       {
-        [(HMDAssistantCommandHelper *)v6 _reportResponses];
+        [(HMDAssistantCommandHelper *)selfCopy _reportResponses];
       }
     }
 
     else
     {
       v59 = objc_autoreleasePoolPush();
-      v60 = v6;
+      v60 = selfCopy;
       v61 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
       {
         v62 = HMFGetLogIdentifier();
-        v63 = [v67 shortDescription];
-        v64 = [v66 UUIDString];
+        shortDescription = [v67 shortDescription];
+        uUIDString2 = [v66 UUIDString];
         *buf = 138543874;
         v117 = v62;
         v118 = 2112;
-        v119 = v63;
+        v119 = shortDescription;
         v120 = 2112;
-        v121 = v64;
+        v121 = uUIDString2;
         _os_log_impl(&dword_2531F8000, v61, OS_LOG_TYPE_INFO, "%{public}@Characteristic change notification '%@' too late for request %@", buf, 0x20u);
       }
 
@@ -992,15 +992,15 @@ LABEL_54:
   v65 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportOperationStartedForAccessory:(id)a3
+- (void)_reportOperationStartedForAccessory:(id)accessory
 {
   v65 = *MEMORY[0x277D85DE8];
-  v41 = a3;
-  v4 = [v41 object];
+  accessoryCopy = accessory;
+  object = [accessoryCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = object;
   }
 
   else
@@ -1011,7 +1011,7 @@ LABEL_54:
   v6 = v5;
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -1028,13 +1028,13 @@ LABEL_54:
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = [(HMDAssistantCommandHelper *)v8 requests];
+  obj = [(HMDAssistantCommandHelper *)selfCopy requests];
   v11 = [obj countByEnumeratingWithState:&v53 objects:v64 count:16];
   if (v11)
   {
     v12 = v11;
     v13 = *v54;
-    v43 = v8;
+    v43 = selfCopy;
     v44 = v6;
     v42 = *v54;
     do
@@ -1049,23 +1049,23 @@ LABEL_54:
         }
 
         v48 = *(*(&v53 + 1) + 8 * v14);
-        v15 = [v48 characteristic];
-        v16 = [v15 accessory];
-        v17 = [v16 uuid];
+        characteristic = [v48 characteristic];
+        accessory = [characteristic accessory];
+        uuid = [accessory uuid];
 
-        v18 = [v15 instanceID];
-        v19 = [v6 uuid];
-        v20 = [v17 hmf_isEqualToUUID:v19];
+        instanceID = [characteristic instanceID];
+        uuid2 = [v6 uuid];
+        v20 = [uuid hmf_isEqualToUUID:uuid2];
 
         if (v20)
         {
-          v47 = v15;
+          v47 = characteristic;
           v51 = 0u;
           v52 = 0u;
           v49 = 0u;
           v50 = 0u;
-          v21 = [(HMDAssistantCommandHelper *)v8 responses];
-          v22 = [v21 countByEnumeratingWithState:&v49 objects:v63 count:16];
+          responses = [(HMDAssistantCommandHelper *)selfCopy responses];
+          v22 = [responses countByEnumeratingWithState:&v49 objects:v63 count:16];
           if (v22)
           {
             v23 = v22;
@@ -1076,26 +1076,26 @@ LABEL_54:
               {
                 if (*v50 != v24)
                 {
-                  objc_enumerationMutation(v21);
+                  objc_enumerationMutation(responses);
                 }
 
-                v26 = [*(*(&v49 + 1) + 8 * i) request];
-                v27 = [v26 characteristic];
+                request = [*(*(&v49 + 1) + 8 * i) request];
+                characteristic2 = [request characteristic];
 
-                v28 = [v27 accessory];
-                v29 = [v28 uuid];
+                accessory2 = [characteristic2 accessory];
+                uuid3 = [accessory2 uuid];
 
-                v30 = [v27 instanceID];
+                instanceID2 = [characteristic2 instanceID];
                 if (HMFEqualObjects() && HMFEqualObjects())
                 {
 
-                  v8 = v43;
+                  selfCopy = v43;
                   v6 = v44;
                   goto LABEL_25;
                 }
               }
 
-              v23 = [v21 countByEnumeratingWithState:&v49 objects:v63 count:16];
+              v23 = [responses countByEnumeratingWithState:&v49 objects:v63 count:16];
               if (v23)
               {
                 continue;
@@ -1106,34 +1106,34 @@ LABEL_54:
           }
 
           v31 = objc_autoreleasePoolPush();
-          v8 = v43;
+          selfCopy = v43;
           v32 = v43;
           v33 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
           {
             v34 = HMFGetLogIdentifier();
-            v35 = [v17 UUIDString];
+            uUIDString = [uuid UUIDString];
             *buf = 138543874;
             v58 = v34;
             v59 = 2112;
-            v60 = v35;
+            v60 = uUIDString;
             v61 = 2112;
-            v62 = v18;
+            v62 = instanceID;
             _os_log_impl(&dword_2531F8000, v33, OS_LOG_TYPE_INFO, "%{public}@No response for requests with characteristic %@/%@ - inserting operation started error response", buf, 0x20u);
           }
 
           objc_autoreleasePoolPop(v31);
-          v21 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:2404];
-          v27 = [HMDCharacteristicResponse responseWithRequest:v48 error:v21];
+          responses = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:2404];
+          characteristic2 = [HMDCharacteristicResponse responseWithRequest:v48 error:responses];
           [(HMDAssistantCommandHelper *)v32 setNumErrors:[(HMDAssistantCommandHelper *)v32 numErrors]+ 1];
-          v29 = [(HMDAssistantCommandHelper *)v32 responses];
-          [v29 addObject:v27];
+          uuid3 = [(HMDAssistantCommandHelper *)v32 responses];
+          [uuid3 addObject:characteristic2];
           v6 = v44;
 LABEL_25:
           v13 = v42;
 
           v12 = v45;
-          v15 = v47;
+          characteristic = v47;
         }
 
         ++v14;
@@ -1146,81 +1146,81 @@ LABEL_25:
     while (v12);
   }
 
-  v36 = [(HMDAssistantCommandHelper *)v8 requests];
-  v37 = [v36 count];
-  v38 = [(HMDAssistantCommandHelper *)v8 responses];
-  v39 = [v38 count];
+  requests = [(HMDAssistantCommandHelper *)selfCopy requests];
+  v37 = [requests count];
+  responses2 = [(HMDAssistantCommandHelper *)selfCopy responses];
+  v39 = [responses2 count];
 
   if (v37 == v39)
   {
-    [(HMDAssistantCommandHelper *)v8 _reportResponses];
+    [(HMDAssistantCommandHelper *)selfCopy _reportResponses];
   }
 
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportOperationStartedForAccessory:(id)a3
+- (void)reportOperationStartedForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(HMDAssistantCommandHelper *)self queue];
+  accessoryCopy = accessory;
+  queue = [(HMDAssistantCommandHelper *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__HMDAssistantCommandHelper_reportOperationStartedForAccessory___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = accessoryCopy;
+  v6 = accessoryCopy;
+  dispatch_async(queue, v7);
 }
 
 - (void)_reportResponses
 {
-  v2 = self;
+  selfCopy = self;
   v86 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAssistantCommandHelper *)self responseHandler];
+  responseHandler = [(HMDAssistantCommandHelper *)self responseHandler];
 
-  if (v3)
+  if (responseHandler)
   {
-    v4 = [(HMDAssistantCommandHelper *)v2 responseHandler];
-    [(HMDAssistantCommandHelper *)v2 setResponseHandler:0];
+    responseHandler2 = [(HMDAssistantCommandHelper *)selfCopy responseHandler];
+    [(HMDAssistantCommandHelper *)selfCopy setResponseHandler:0];
     v5 = MEMORY[0x277CBEB18];
-    v6 = [(HMDAssistantCommandHelper *)v2 requests];
-    v62 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    requests = [(HMDAssistantCommandHelper *)selfCopy requests];
+    v62 = [v5 arrayWithCapacity:{objc_msgSend(requests, "count")}];
 
-    if ([(HMDAssistantCommandHelper *)v2 executingActionSet])
+    if ([(HMDAssistantCommandHelper *)selfCopy executingActionSet])
     {
       v7 = [MEMORY[0x277CCA9B8] hmErrorWithCode:15];
     }
 
     else
     {
-      v14 = [(HMDAssistantCommandHelper *)v2 requests];
-      v15 = [v14 count];
-      v16 = [(HMDAssistantCommandHelper *)v2 responses];
-      v17 = [v16 count];
+      requests2 = [(HMDAssistantCommandHelper *)selfCopy requests];
+      v15 = [requests2 count];
+      responses = [(HMDAssistantCommandHelper *)selfCopy responses];
+      v17 = [responses count];
 
-      v18 = [(HMDAssistantCommandHelper *)v2 responses];
+      responses2 = [(HMDAssistantCommandHelper *)selfCopy responses];
       if (v15 == v17)
       {
 
-        v62 = v18;
+        v62 = responses2;
       }
 
       else
       {
-        v60 = v4;
-        [v62 addObjectsFromArray:v18];
+        v60 = responseHandler2;
+        [v62 addObjectsFromArray:responses2];
 
         v75 = 0u;
         v76 = 0u;
         v73 = 0u;
         v74 = 0u;
-        obj = [(HMDAssistantCommandHelper *)v2 requests];
+        obj = [(HMDAssistantCommandHelper *)selfCopy requests];
         v66 = [obj countByEnumeratingWithState:&v73 objects:v85 count:16];
         if (v66)
         {
           v64 = *v74;
-          v65 = v2;
+          v65 = selfCopy;
           do
           {
             for (i = 0; i != v66; ++i)
@@ -1231,18 +1231,18 @@ LABEL_25:
               }
 
               v67 = *(*(&v73 + 1) + 8 * i);
-              v20 = [v67 characteristic];
-              v21 = [v20 accessory];
-              v22 = [v21 uuid];
+              characteristic = [v67 characteristic];
+              accessory = [characteristic accessory];
+              uuid = [accessory uuid];
 
-              v68 = v20;
-              v23 = [v20 instanceID];
+              v68 = characteristic;
+              instanceID = [characteristic instanceID];
               v69 = 0u;
               v70 = 0u;
               v71 = 0u;
               v72 = 0u;
-              v24 = [(HMDAssistantCommandHelper *)v2 responses];
-              v25 = [v24 countByEnumeratingWithState:&v69 objects:v84 count:16];
+              responses3 = [(HMDAssistantCommandHelper *)selfCopy responses];
+              v25 = [responses3 countByEnumeratingWithState:&v69 objects:v84 count:16];
               if (v25)
               {
                 v26 = v25;
@@ -1253,26 +1253,26 @@ LABEL_25:
                   {
                     if (*v70 != v27)
                     {
-                      objc_enumerationMutation(v24);
+                      objc_enumerationMutation(responses3);
                     }
 
-                    v29 = [*(*(&v69 + 1) + 8 * j) request];
-                    v30 = [v29 characteristic];
+                    request = [*(*(&v69 + 1) + 8 * j) request];
+                    characteristic2 = [request characteristic];
 
-                    v31 = [v30 accessory];
-                    v32 = [v31 uuid];
+                    accessory2 = [characteristic2 accessory];
+                    uuid2 = [accessory2 uuid];
 
-                    v33 = [v30 instanceID];
+                    instanceID2 = [characteristic2 instanceID];
                     if (HMFEqualObjects() && HMFEqualObjects())
                     {
 
-                      v2 = v65;
+                      selfCopy = v65;
                       v44 = v68;
                       goto LABEL_33;
                     }
                   }
 
-                  v26 = [v24 countByEnumeratingWithState:&v69 objects:v84 count:16];
+                  v26 = [responses3 countByEnumeratingWithState:&v69 objects:v84 count:16];
                   if (v26)
                   {
                     continue;
@@ -1283,26 +1283,26 @@ LABEL_25:
               }
 
               v34 = v67;
-              v35 = [v67 characteristic];
-              v24 = [v35 accessory];
+              characteristic3 = [v67 characteristic];
+              responses3 = [characteristic3 accessory];
 
-              if ([v24 isSuspendCapable] && (v83 = v67, objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &v83, 1), v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v24, "canWakeBasedOnCharacteristicRequests:", v36), v36, v37))
+              if ([responses3 isSuspendCapable] && (v83 = v67, objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &v83, 1), v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(responses3, "canWakeBasedOnCharacteristicRequests:", v36), v36, v37))
               {
                 v38 = objc_autoreleasePoolPush();
-                v2 = v65;
+                selfCopy = v65;
                 v39 = v65;
                 v40 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
                 {
                   v41 = HMFGetLogIdentifier();
-                  [v22 UUIDString];
+                  [uuid UUIDString];
                   v42 = v61 = v38;
                   *buf = 138543874;
                   v78 = v41;
                   v79 = 2112;
                   v80 = v42;
                   v81 = 2112;
-                  v82 = v23;
+                  v82 = instanceID;
                   _os_log_impl(&dword_2531F8000, v40, OS_LOG_TYPE_INFO, "%{public}@No response for wakeable write requests with characteristic %@/%@ - for suspeded accessory inserting operation started error response", buf, 0x20u);
 
                   v38 = v61;
@@ -1315,19 +1315,19 @@ LABEL_25:
               else
               {
                 v45 = objc_autoreleasePoolPush();
-                v2 = v65;
+                selfCopy = v65;
                 v46 = v65;
                 v47 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
                 {
                   v48 = HMFGetLogIdentifier();
-                  v49 = [v22 UUIDString];
+                  uUIDString = [uuid UUIDString];
                   *buf = 138543874;
                   v78 = v48;
                   v79 = 2112;
-                  v80 = v49;
+                  v80 = uUIDString;
                   v81 = 2112;
-                  v82 = v23;
+                  v82 = instanceID;
                   _os_log_impl(&dword_2531F8000, v47, OS_LOG_TYPE_INFO, "%{public}@No response for requests with characteristic %@/%@ - inserting an in-progress error response", buf, 0x20u);
 
                   v34 = v67;
@@ -1337,11 +1337,11 @@ LABEL_25:
                 v43 = [MEMORY[0x277CCA9B8] hmErrorWithCode:15];
               }
 
-              v30 = v43;
+              characteristic2 = v43;
               v44 = v68;
-              v32 = [HMDCharacteristicResponse responseWithRequest:v34 error:v43];
-              [(HMDAssistantCommandHelper *)v2 setNumErrors:[(HMDAssistantCommandHelper *)v2 numErrors]+ 1];
-              [v62 addObject:v32];
+              uuid2 = [HMDCharacteristicResponse responseWithRequest:v34 error:v43];
+              [(HMDAssistantCommandHelper *)selfCopy setNumErrors:[(HMDAssistantCommandHelper *)selfCopy numErrors]+ 1];
+              [v62 addObject:uuid2];
 LABEL_33:
             }
 
@@ -1351,36 +1351,36 @@ LABEL_33:
           while (v66);
         }
 
-        v4 = v60;
+        responseHandler2 = v60;
       }
 
-      if (![(HMDAssistantCommandHelper *)v2 numErrors])
+      if (![(HMDAssistantCommandHelper *)selfCopy numErrors])
       {
         v52 = 0;
 LABEL_43:
         v53 = objc_autoreleasePoolPush();
-        v54 = v2;
+        v54 = selfCopy;
         v55 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
         {
           v56 = HMFGetLogIdentifier();
-          v57 = [(HMDAssistantCommandHelper *)v54 messageId];
-          v58 = [v57 UUIDString];
+          messageId = [(HMDAssistantCommandHelper *)v54 messageId];
+          uUIDString2 = [messageId UUIDString];
           *buf = 138543618;
           v78 = v56;
           v79 = 2112;
-          v80 = v58;
+          v80 = uUIDString2;
           _os_log_impl(&dword_2531F8000, v55, OS_LOG_TYPE_INFO, "%{public}@Calling response handler for the id %@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v53);
-        (v4)[2](v4, v52, v62);
+        (responseHandler2)[2](responseHandler2, v52, v62);
 
         goto LABEL_46;
       }
 
-      v50 = [(HMDAssistantCommandHelper *)v2 numErrors];
-      if (v50 >= [v62 count])
+      numErrors = [(HMDAssistantCommandHelper *)selfCopy numErrors];
+      if (numErrors >= [v62 count])
       {
         v51 = 74;
       }
@@ -1398,17 +1398,17 @@ LABEL_43:
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = v2;
+  v9 = selfCopy;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [(HMDAssistantCommandHelper *)v9 messageId];
-    v13 = [v12 UUIDString];
+    messageId2 = [(HMDAssistantCommandHelper *)v9 messageId];
+    uUIDString3 = [messageId2 UUIDString];
     *buf = 138543618;
     v78 = v11;
     v79 = 2112;
-    v80 = v13;
+    v80 = uUIDString3;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Results already reported for Siri command %@ - ignoring the notification/timer", buf, 0x16u);
   }
 
@@ -1420,31 +1420,31 @@ LABEL_46:
 - (void)_reportResponsesForMediaRequests
 {
   v57 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAssistantCommandHelper *)self mediaResponseHandler];
+  mediaResponseHandler = [(HMDAssistantCommandHelper *)self mediaResponseHandler];
 
-  if (v3)
+  if (mediaResponseHandler)
   {
-    v4 = [(HMDAssistantCommandHelper *)self mediaResponseHandler];
+    mediaResponseHandler2 = [(HMDAssistantCommandHelper *)self mediaResponseHandler];
     [(HMDAssistantCommandHelper *)self setMediaResponseHandler:0];
     v5 = objc_alloc(MEMORY[0x277CBEB18]);
-    v6 = [(HMDAssistantCommandHelper *)self mediaRequests];
-    v7 = [v5 initWithCapacity:{objc_msgSend(v6, "count")}];
+    mediaRequests = [(HMDAssistantCommandHelper *)self mediaRequests];
+    v7 = [v5 initWithCapacity:{objc_msgSend(mediaRequests, "count")}];
 
-    v8 = [(HMDAssistantCommandHelper *)self mediaResponses];
-    v9 = [v8 count];
-    v10 = [(HMDAssistantCommandHelper *)self mediaRequests];
-    v11 = [v10 count];
+    mediaResponses = [(HMDAssistantCommandHelper *)self mediaResponses];
+    v9 = [mediaResponses count];
+    mediaRequests2 = [(HMDAssistantCommandHelper *)self mediaRequests];
+    v11 = [mediaRequests2 count];
 
-    v12 = [(HMDAssistantCommandHelper *)self mediaResponses];
+    mediaResponses2 = [(HMDAssistantCommandHelper *)self mediaResponses];
     if (v9 == v11)
     {
     }
 
     else
     {
-      v38 = v4;
+      v38 = mediaResponseHandler2;
       v39 = v7;
-      [v7 addObjectsFromArray:v12];
+      [v7 addObjectsFromArray:mediaResponses2];
 
       v48 = 0u;
       v49 = 0u;
@@ -1466,16 +1466,16 @@ LABEL_46:
             }
 
             v20 = *(*(&v46 + 1) + 8 * i);
-            v21 = [v20 mediaProfile];
-            v22 = [v21 uniqueIdentifier];
-            v23 = [v22 UUIDString];
+            mediaProfile = [v20 mediaProfile];
+            uniqueIdentifier = [mediaProfile uniqueIdentifier];
+            uUIDString = [uniqueIdentifier UUIDString];
 
             v44 = 0u;
             v45 = 0u;
             v42 = 0u;
             v43 = 0u;
-            v24 = [(HMDAssistantCommandHelper *)self mediaResponses];
-            v25 = [v24 countByEnumeratingWithState:&v42 objects:v55 count:16];
+            mediaResponses3 = [(HMDAssistantCommandHelper *)self mediaResponses];
+            v25 = [mediaResponses3 countByEnumeratingWithState:&v42 objects:v55 count:16];
             if (v25)
             {
               v26 = v25;
@@ -1486,10 +1486,10 @@ LABEL_14:
               {
                 if (*v43 != v27)
                 {
-                  objc_enumerationMutation(v24);
+                  objc_enumerationMutation(mediaResponses3);
                 }
 
-                v29 = [*(*(&v42 + 1) + 8 * v28) objectForKey:v23];
+                v29 = [*(*(&v42 + 1) + 8 * v28) objectForKey:uUIDString];
 
                 if (v29)
                 {
@@ -1498,7 +1498,7 @@ LABEL_14:
 
                 if (v26 == ++v28)
                 {
-                  v26 = [v24 countByEnumeratingWithState:&v42 objects:v55 count:16];
+                  v26 = [mediaResponses3 countByEnumeratingWithState:&v42 objects:v55 count:16];
                   if (v26)
                   {
                     goto LABEL_14;
@@ -1514,7 +1514,7 @@ LABEL_14:
 LABEL_20:
 
               v30 = objc_autoreleasePoolPush();
-              v31 = self;
+              selfCopy = self;
               v32 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
               {
@@ -1522,15 +1522,15 @@ LABEL_20:
                 *buf = 138543618;
                 v52 = v33;
                 v53 = 2112;
-                v54 = v23;
+                v54 = uUIDString;
                 _os_log_impl(&dword_2531F8000, v32, OS_LOG_TYPE_INFO, "%{public}@No response for requests for media profile %@ - inserting an in-progress error response", buf, 0x16u);
               }
 
               objc_autoreleasePoolPop(v30);
               v34 = [MEMORY[0x277CCA9B8] hmErrorWithCode:15];
-              v24 = [HMDMediaPropertyResponse responseWithRequest:v20 error:v34];
+              mediaResponses3 = [HMDMediaPropertyResponse responseWithRequest:v20 error:v34];
 
-              v50 = v24;
+              v50 = mediaResponses3;
               v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v50 count:1];
               v36 = [HMDMediaPropertyResponse serializeResponses:v35];
               [v39 addObject:v36];
@@ -1543,17 +1543,17 @@ LABEL_20:
         while (v18);
       }
 
-      v4 = v38;
-      v12 = v39;
+      mediaResponseHandler2 = v38;
+      mediaResponses2 = v39;
     }
 
-    (v4)[2](v4, 0, v12);
+    (mediaResponseHandler2)[2](mediaResponseHandler2, 0, mediaResponses2);
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -1571,13 +1571,13 @@ LABEL_20:
 
 - (void)timeoutAndReportResults
 {
-  v3 = [(HMDAssistantCommandHelper *)self queue];
+  queue = [(HMDAssistantCommandHelper *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__HMDAssistantCommandHelper_timeoutAndReportResults__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __52__HMDAssistantCommandHelper_timeoutAndReportResults__block_invoke(uint64_t a1)
@@ -1615,46 +1615,46 @@ uint64_t __52__HMDAssistantCommandHelper_timeoutAndReportResults__block_invoke(u
 
 - (void)_register
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_handleAccessoryCharacteristicsChangedNotification_ name:@"HMDAccessoryCharacteristicsResponseReceivedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleAccessoryCharacteristicsChangedNotification_ name:@"HMDAccessoryCharacteristicsResponseReceivedNotification" object:0];
 }
 
 - (void)dealloc
 {
-  v3 = [(HMDAssistantCommandHelper *)self msgDispatcher];
-  [v3 deregisterReceiver:self];
+  msgDispatcher = [(HMDAssistantCommandHelper *)self msgDispatcher];
+  [msgDispatcher deregisterReceiver:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = HMDAssistantCommandHelper;
   [(HMDAssistantCommandHelper *)&v5 dealloc];
 }
 
-- (HMDAssistantCommandHelper)initWithQueue:(id)a3 msgDispatcher:(id)a4
+- (HMDAssistantCommandHelper)initWithQueue:(id)queue msgDispatcher:(id)dispatcher
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  dispatcherCopy = dispatcher;
   v17.receiver = self;
   v17.super_class = HMDAssistantCommandHelper;
   v9 = [(HMDAssistantCommandHelper *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeStrong(&v10->_msgDispatcher, a4);
-    v11 = [MEMORY[0x277CCAD78] UUID];
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_msgDispatcher, dispatcher);
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uuid = v10->_uuid;
-    v10->_uuid = v11;
+    v10->_uuid = uUID;
 
-    v13 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     responses = v10->_responses;
-    v10->_responses = v13;
+    v10->_responses = array;
 
     v10->_numErrors = 0;
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v10 selector:sel_reportOperationStartedForAccessory_ name:@"kHMDAccessoryWakeNotificationStarted" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_reportOperationStartedForAccessory_ name:@"kHMDAccessoryWakeNotificationStarted" object:0];
   }
 
   return v10;

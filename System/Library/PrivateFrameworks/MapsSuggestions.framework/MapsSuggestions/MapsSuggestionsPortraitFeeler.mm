@@ -1,19 +1,19 @@
 @interface MapsSuggestionsPortraitFeeler
-- (MapsSuggestionsPortraitFeeler)initWithDelegate:(id)a3 portrait:(id)a4;
-- (MapsSuggestionsPortraitFeeler)initWithDelegate:(id)a3 portrait:(id)a4 name:(id)a5;
+- (MapsSuggestionsPortraitFeeler)initWithDelegate:(id)delegate portrait:(id)portrait;
+- (MapsSuggestionsPortraitFeeler)initWithDelegate:(id)delegate portrait:(id)portrait name:(id)name;
 - (id).cxx_construct;
 @end
 
 @implementation MapsSuggestionsPortraitFeeler
 
-- (MapsSuggestionsPortraitFeeler)initWithDelegate:(id)a3 portrait:(id)a4 name:(id)a5
+- (MapsSuggestionsPortraitFeeler)initWithDelegate:(id)delegate portrait:(id)portrait name:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  portraitCopy = portrait;
+  nameCopy = name;
   v23.receiver = self;
   v23.super_class = MapsSuggestionsPortraitFeeler;
-  v11 = [(MapsSuggestionsBaseFeeler *)&v23 initWithDelegate:v8 name:v10];
+  v11 = [(MapsSuggestionsBaseFeeler *)&v23 initWithDelegate:delegateCopy name:nameCopy];
   if (v11)
   {
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -28,7 +28,7 @@
     name = v11->_queue._name;
     v11->_queue._name = v15;
 
-    objc_storeStrong(&v11->_portrait, a4);
+    objc_storeStrong(&v11->_portrait, portrait);
     GEOConfigGetDouble();
     v11->_pollingFrequency = v17;
     v18 = [[MapsSuggestionsMutableSignalPack alloc] initWithCapacity:2];
@@ -39,12 +39,12 @@
   return v11;
 }
 
-- (MapsSuggestionsPortraitFeeler)initWithDelegate:(id)a3 portrait:(id)a4
+- (MapsSuggestionsPortraitFeeler)initWithDelegate:(id)delegate portrait:(id)portrait
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  portraitCopy = portrait;
   v8 = [objc_opt_class() description];
-  v9 = [(MapsSuggestionsPortraitFeeler *)self initWithDelegate:v6 portrait:v7 name:v8];
+  v9 = [(MapsSuggestionsPortraitFeeler *)self initWithDelegate:delegateCopy portrait:portraitCopy name:v8];
 
   return v9;
 }

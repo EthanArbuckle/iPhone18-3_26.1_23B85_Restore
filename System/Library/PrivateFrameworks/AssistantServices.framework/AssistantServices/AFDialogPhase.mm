@@ -1,14 +1,14 @@
 @interface AFDialogPhase
-+ (id)_dialogPhaseWithType:(int64_t)a3;
-+ (id)dialogPhaseForAceDialogPhase:(id)a3;
-- (AFDialogPhase)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDialogPhase:(id)a3;
++ (id)_dialogPhaseWithType:(int64_t)type;
++ (id)dialogPhaseForAceDialogPhase:(id)phase;
+- (AFDialogPhase)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDialogPhase:(id)phase;
 - (NSString)aceDialogPhaseValue;
-- (id)_initWithType:(int64_t)a3;
+- (id)_initWithType:(int64_t)type;
 - (id)description;
 - (int)UEIUUFRReadyDialogPhase;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFDialogPhase
@@ -143,17 +143,17 @@
 
 - (NSString)aceDialogPhaseValue
 {
-  v3 = [(AFDialogPhase *)self _type];
-  if (v3 <= 5)
+  _type = [(AFDialogPhase *)self _type];
+  if (_type <= 5)
   {
-    if (v3 > 2)
+    if (_type > 2)
     {
-      if (v3 == 3)
+      if (_type == 3)
       {
         v4 = MEMORY[0x1E69C8330];
       }
 
-      else if (v3 == 4)
+      else if (_type == 4)
       {
         v4 = MEMORY[0x1E69C8300];
       }
@@ -166,14 +166,14 @@
       goto LABEL_24;
     }
 
-    if (v3 == 1)
+    if (_type == 1)
     {
       v4 = MEMORY[0x1E69C82F0];
     }
 
     else
     {
-      if (v3 != 2)
+      if (_type != 2)
       {
         goto LABEL_28;
       }
@@ -184,14 +184,14 @@
 
   else
   {
-    if (v3 <= 8)
+    if (_type <= 8)
     {
-      if (v3 == 6)
+      if (_type == 6)
       {
         v4 = MEMORY[0x1E69C8310];
       }
 
-      else if (v3 == 7)
+      else if (_type == 7)
       {
         v4 = MEMORY[0x1E69C8308];
       }
@@ -204,7 +204,7 @@
       goto LABEL_24;
     }
 
-    switch(v3)
+    switch(_type)
     {
       case 9:
         v4 = MEMORY[0x1E69C8318];
@@ -236,19 +236,19 @@ LABEL_25:
 
 - (int)UEIUUFRReadyDialogPhase
 {
-  v2 = [(AFDialogPhase *)self _type];
-  if ((v2 - 1) >= 0xB)
+  _type = [(AFDialogPhase *)self _type];
+  if ((_type - 1) >= 0xB)
   {
-    LODWORD(v2) = 0;
+    LODWORD(_type) = 0;
   }
 
-  return v2;
+  return _type;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -256,65 +256,65 @@ LABEL_25:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AFDialogPhase *)self isEqualToDialogPhase:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AFDialogPhase *)self isEqualToDialogPhase:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToDialogPhase:(id)a3
+- (BOOL)isEqualToDialogPhase:(id)phase
 {
-  v4 = a3;
-  v5 = [(AFDialogPhase *)self _type];
-  v6 = [v4 _type];
+  phaseCopy = phase;
+  _type = [(AFDialogPhase *)self _type];
+  _type2 = [phaseCopy _type];
 
-  return v5 == v6;
+  return _type == _type2;
 }
 
-- (AFDialogPhase)initWithCoder:(id)a3
+- (AFDialogPhase)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = AFDialogPhase;
   v5 = [(AFDialogPhase *)&v7 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"AFDialogPhaseType"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"AFDialogPhaseType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[AFDialogPhase _type](self forKey:{"_type"), @"AFDialogPhaseType"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[AFDialogPhase _type](self forKey:{"_type"), @"AFDialogPhaseType"}];
 }
 
-- (id)_initWithType:(int64_t)a3
+- (id)_initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = AFDialogPhase;
   result = [(AFDialogPhase *)&v5 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = type;
   }
 
   return result;
 }
 
-+ (id)_dialogPhaseWithType:(int64_t)a3
++ (id)_dialogPhaseWithType:(int64_t)type
 {
-  v3 = [[AFDialogPhase alloc] _initWithType:a3];
+  v3 = [[AFDialogPhase alloc] _initWithType:type];
 
   return v3;
 }
 
-+ (id)dialogPhaseForAceDialogPhase:(id)a3
++ (id)dialogPhaseForAceDialogPhase:(id)phase
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E69C82F0]])
+  phaseCopy = phase;
+  if ([phaseCopy isEqualToString:*MEMORY[0x1E69C82F0]])
   {
     v4 = +[AFDialogPhase acknowledgementDialogPhase];
 LABEL_21:
@@ -322,55 +322,55 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69C8328]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x1E69C8328]])
   {
     v4 = +[AFDialogPhase reflectionDialogPhase];
     goto LABEL_21;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69C8330]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x1E69C8330]])
   {
     v4 = +[AFDialogPhase statusDialogPhase];
     goto LABEL_21;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69C8300]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x1E69C8300]])
   {
     v4 = +[AFDialogPhase clarificationDialogPhase];
     goto LABEL_21;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69C8338]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x1E69C8338]])
   {
     v4 = +[AFDialogPhase summaryDialogPhase];
     goto LABEL_21;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69C8310]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x1E69C8310]])
   {
     v4 = +[AFDialogPhase confirmationDialogPhase];
     goto LABEL_21;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69C8308]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x1E69C8308]])
   {
     v4 = +[AFDialogPhase completionDialogPhase];
     goto LABEL_21;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69C8320]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x1E69C8320]])
   {
     v4 = +[AFDialogPhase errorDialogPhase];
     goto LABEL_21;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69C8318]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x1E69C8318]])
   {
     v4 = +[AFDialogPhase confirmedDialogPhase];
     goto LABEL_21;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69C82F8]])
+  if ([phaseCopy isEqualToString:*MEMORY[0x1E69C82F8]])
   {
     v4 = +[AFDialogPhase cancelledDialogPhase];
     goto LABEL_21;

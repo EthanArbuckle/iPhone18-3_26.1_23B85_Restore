@@ -2,13 +2,13 @@
 - (ATXAmbientSuggestionProviderDelegate)delegate;
 - (NSArray)stackSuggestions;
 - (void)ambientConfigurationManagerCacheDidUpdate;
-- (void)logStackDidChangeToWidget:(id)a3 reason:(unint64_t)a4;
-- (void)logUserDidTapWidget:(id)a3;
+- (void)logStackDidChangeToWidget:(id)widget reason:(unint64_t)reason;
+- (void)logUserDidTapWidget:(id)widget;
 - (void)logViewDidAppear;
 - (void)logViewDidDisappear;
-- (void)logWidgetStack:(id)a3 didChangeToWidget:(id)a4 reason:(unint64_t)a5;
-- (void)readStacksWithCompletion:(id)a3;
-- (void)writeStacks:(NSArray *)a3 completion:(id)a4;
+- (void)logWidgetStack:(id)stack didChangeToWidget:(id)widget reason:(unint64_t)reason;
+- (void)readStacksWithCompletion:(id)completion;
+- (void)writeStacks:(NSArray *)stacks completion:(id)completion;
 @end
 
 @implementation ATXAmbientSuggestionProvider
@@ -16,7 +16,7 @@
 - (NSArray)stackSuggestions
 {
   v2 = *(self + OBJC_IVAR___ATXAmbientSuggestionProvider_lock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 24));
   v4 = (*(**(v2 + 16) + 112))();
   os_unfair_lock_unlock((v2 + 24));
@@ -45,27 +45,27 @@
 
 - (void)logViewDidAppear
 {
-  v3 = self;
+  selfCopy = self;
   v2 = sub_2441D1D5C();
   (*(*v2 + 128))(v2);
 }
 
 - (void)logViewDidDisappear
 {
-  v3 = self;
+  selfCopy = self;
   v2 = sub_2441D1D5C();
   (*(*v2 + 136))(v2);
 }
 
-- (void)logUserDidTapWidget:(id)a3
+- (void)logUserDidTapWidget:(id)widget
 {
-  v4 = a3;
-  v6 = self;
+  widgetCopy = widget;
+  selfCopy = self;
   v5 = sub_2441D1D5C();
-  (*(*v5 + 144))(v4);
+  (*(*v5 + 144))(widgetCopy);
 }
 
-- (void)logStackDidChangeToWidget:(id)a3 reason:(unint64_t)a4
+- (void)logStackDidChangeToWidget:(id)widget reason:(unint64_t)reason
 {
   ObjectType = swift_getObjectType();
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27EDD5F30, &qword_2441DAEC0);
@@ -78,35 +78,35 @@
   v13[2] = 0;
   v13[3] = 0;
   v13[4] = self;
-  v13[5] = a3;
-  v13[6] = a4;
+  v13[5] = widget;
+  v13[6] = reason;
   v13[7] = ObjectType;
-  v14 = a3;
-  v15 = self;
+  widgetCopy = widget;
+  selfCopy = self;
   sub_2441A5C20(0, 0, v11, &unk_2441DE258, v13);
 }
 
-- (void)logWidgetStack:(id)a3 didChangeToWidget:(id)a4 reason:(unint64_t)a5
+- (void)logWidgetStack:(id)stack didChangeToWidget:(id)widget reason:(unint64_t)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  ATXAmbientSuggestionProvider.logWidgetStack(_:didChangeTo:reason:)(v8, v9, a5);
+  stackCopy = stack;
+  widgetCopy = widget;
+  selfCopy = self;
+  ATXAmbientSuggestionProvider.logWidgetStack(_:didChangeTo:reason:)(stackCopy, widgetCopy, reason);
 }
 
 - (void)ambientConfigurationManagerCacheDidUpdate
 {
-  v2 = self;
+  selfCopy = self;
   ATXAmbientSuggestionProvider.ambientConfigurationManagerCacheDidUpdate()();
 }
 
-- (void)readStacksWithCompletion:(id)a3
+- (void)readStacksWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27EDD5F30, &qword_2441DAEC0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -122,19 +122,19 @@
   v13[3] = 0;
   v13[4] = &unk_2441DE248;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_2441AD2EC(0, 0, v8, &unk_2441DE250, v13);
 }
 
-- (void)writeStacks:(NSArray *)a3 completion:(id)a4
+- (void)writeStacks:(NSArray *)stacks completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27EDD5F30, &qword_2441DAEC0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = stacks;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_2441D8D9C();
@@ -149,8 +149,8 @@
   v15[3] = 0;
   v15[4] = &unk_2441DE208;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  stacksCopy = stacks;
+  selfCopy = self;
   sub_2441AD2EC(0, 0, v10, &unk_2441DE218, v15);
 }
 

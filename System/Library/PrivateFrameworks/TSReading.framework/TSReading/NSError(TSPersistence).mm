@@ -112,23 +112,23 @@ LABEL_26:
   }
 
 LABEL_31:
-  v15 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[NSError(TSPersistence) tsp_errorWithCode:underlyingError:]"];
   v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/NSError_TSPersistence.mm"];
-  [v15 handleFailureInFunction:v16 file:v17 lineNumber:83 description:@"Bad error code"];
+  [currentHandler handleFailureInFunction:v16 file:v17 lineNumber:83 description:@"Bad error code"];
 
   v9 = 0;
   v10 = 0;
 LABEL_28:
-  v13 = [a1 tsu_errorWithDomain:@"com.apple.iWork.TSPersistence" code:a3 alertTitle:v10 alertMessage:v9 underlyingError:v6];
+  v13 = [self tsu_errorWithDomain:@"com.apple.iWork.TSPersistence" code:a3 alertTitle:v10 alertMessage:v9 underlyingError:v6];
 
   return v13;
 }
 
 + (id)tsp_recoverableErrorWithCode:()TSPersistence
 {
-  v2 = [a1 tsp_errorWithCode:?];
-  v3 = [a1 tsp_recoverableErrorWithError:v2];
+  v2 = [self tsp_errorWithCode:?];
+  v3 = [self tsp_recoverableErrorWithError:v2];
 
   return v3;
 }
@@ -139,11 +139,11 @@ LABEL_28:
   if (v3)
   {
     v4 = v3;
-    v5 = [v3 userInfo];
-    if (v5)
+    userInfo = [v3 userInfo];
+    if (userInfo)
     {
-      v6 = [v4 userInfo];
-      v7 = [v6 mutableCopy];
+      userInfo2 = [v4 userInfo];
+      v7 = [userInfo2 mutableCopy];
     }
 
     else
@@ -153,8 +153,8 @@ LABEL_28:
 
     [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"TSPErrorIsRecoverable"];
     v9 = MEMORY[0x277CCA9B8];
-    v10 = [v4 domain];
-    v8 = [v9 errorWithDomain:v10 code:objc_msgSend(v4 userInfo:{"code"), v7}];
+    domain = [v4 domain];
+    v8 = [v9 errorWithDomain:domain code:objc_msgSend(v4 userInfo:{"code"), v7}];
   }
 
   else
@@ -167,29 +167,29 @@ LABEL_28:
 
 - (uint64_t)tsp_isRecoverable
 {
-  v3 = [a1 code];
-  if (v3 == 11)
+  code = [self code];
+  if (code == 11)
   {
-    v1 = [a1 domain];
-    if ([v1 isEqualToString:@"com.apple.iWork.TSPersistence"])
+    domain = [self domain];
+    if ([domain isEqualToString:@"com.apple.iWork.TSPersistence"])
     {
-      v4 = 1;
+      bOOLValue = 1;
 LABEL_5:
 
-      return v4;
+      return bOOLValue;
     }
   }
 
-  v5 = [a1 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"TSPErrorIsRecoverable"];
-  v4 = [v6 BOOLValue];
+  userInfo = [self userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"TSPErrorIsRecoverable"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v3 == 11)
+  if (code == 11)
   {
     goto LABEL_5;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

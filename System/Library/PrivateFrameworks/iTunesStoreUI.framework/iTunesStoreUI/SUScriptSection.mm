@@ -1,26 +1,26 @@
 @interface SUScriptSection
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (BOOL)transient;
 - (NSString)badgeValue;
 - (NSString)identifier;
-- (SUScriptSection)initWithNativeSection:(id)a3;
+- (SUScriptSection)initWithNativeSection:(id)section;
 - (SUScriptViewController)viewController;
 - (id)scriptAttributeKeys;
 - (void)dealloc;
-- (void)setBadgeValue:(id)a3 animated:(BOOL)a4 blink:(BOOL)a5;
+- (void)setBadgeValue:(id)value animated:(BOOL)animated blink:(BOOL)blink;
 @end
 
 @implementation SUScriptSection
 
-- (SUScriptSection)initWithNativeSection:(id)a3
+- (SUScriptSection)initWithNativeSection:(id)section
 {
   v4 = [(SUScriptObject *)self init];
   if (v4)
   {
-    v4->_identifier = [a3 identifier];
-    v4->_transient = [a3 isTransient];
+    v4->_identifier = [section identifier];
+    v4->_transient = [section isTransient];
   }
 
   return v4;
@@ -37,7 +37,7 @@
   [(SUScriptObject *)&v3 dealloc];
 }
 
-- (void)setBadgeValue:(id)a3 animated:(BOOL)a4 blink:(BOOL)a5
+- (void)setBadgeValue:(id)value animated:(BOOL)animated blink:(BOOL)blink
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -49,7 +49,7 @@
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v9 = 0;
-  if (!a3 || (isKindOfClass & 1) != 0 || (objc_opt_class(), v9 = a3, (objc_opt_isKindOfClass() & 1) != 0))
+  if (!value || (isKindOfClass & 1) != 0 || (objc_opt_class(), v9 = value, (objc_opt_isKindOfClass() & 1) != 0))
   {
 LABEL_3:
     v10 = [v9 length];
@@ -69,8 +69,8 @@ LABEL_3:
 
     block[4] = self;
     block[5] = v11;
-    v15 = a4;
-    v16 = a5;
+    animatedCopy = animated;
+    blinkCopy = blink;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     return;
   }
@@ -118,13 +118,13 @@ uint64_t __48__SUScriptSection_setBadgeValue_animated_blink___block_invoke(uint6
   if (!v3)
   {
 LABEL_5:
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     goto LABEL_6;
   }
 
-  v4 = v3;
+  null = v3;
 LABEL_6:
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v9, 8);
   return v5;
 }
@@ -164,20 +164,20 @@ uint64_t __29__SUScriptSection_badgeValue__block_invoke(uint64_t a1)
   v8 = 3221225472;
   v9 = __33__SUScriptSection_viewController__block_invoke;
   v10 = &unk_1E81650B0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __33__SUScriptSection_viewController__block_invoke, &unk_1E81650B0, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __33__SUScriptSection_viewController__block_invoke, &unk_1E81650B0, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
   return v5;
 }
@@ -189,27 +189,27 @@ uint64_t __33__SUScriptSection_viewController__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_25 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptSection;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_20, 1);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_20, 1);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptSection;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -219,14 +219,14 @@ uint64_t __33__SUScriptSection_viewController__block_invoke(uint64_t a1)
 {
   v4.receiver = self;
   v4.super_class = SUScriptSection;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_25 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_25 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_20 = sel_setBadgeValue_animated_blink_;
     unk_1EBF3AC80 = @"setBadgeValue";

@@ -1,14 +1,14 @@
 @interface QOSMetrics
-+ (BOOL)shouldCollectLoadURLMetricsWithBag:(id)a3 clientBundleID:(id)a4;
-+ (void)cacheQOSPackageInstallMetricsCollectionChanceFromBag:(id)a3;
++ (BOOL)shouldCollectLoadURLMetricsWithBag:(id)bag clientBundleID:(id)d;
++ (void)cacheQOSPackageInstallMetricsCollectionChanceFromBag:(id)bag;
 - (_TtC9appstored10QOSMetrics)init;
 @end
 
 @implementation QOSMetrics
 
-+ (BOOL)shouldCollectLoadURLMetricsWithBag:(id)a3 clientBundleID:(id)a4
++ (BOOL)shouldCollectLoadURLMetricsWithBag:(id)bag clientBundleID:(id)d
 {
-  if (a4)
+  if (d)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -20,17 +20,17 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = sub_1001728D8(v8, v5, v7);
+  bagCopy = bag;
+  v9 = sub_1001728D8(bagCopy, v5, v7);
 
   return v9;
 }
 
-+ (void)cacheQOSPackageInstallMetricsCollectionChanceFromBag:(id)a3
++ (void)cacheQOSPackageInstallMetricsCollectionChanceFromBag:(id)bag
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  sub_100171914(v4);
+  bagCopy = bag;
+  sub_100171914(bagCopy);
 }
 
 - (_TtC9appstored10QOSMetrics)init

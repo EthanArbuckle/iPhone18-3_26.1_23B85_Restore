@@ -1,7 +1,7 @@
 @interface WCM_ExternalAccessoryIOS
 - (WCM_ExternalAccessoryIOS)init;
-- (void)_accessoryConnected:(id)a3;
-- (void)_accessoryDisconnected:(id)a3;
+- (void)_accessoryConnected:(id)connected;
+- (void)_accessoryDisconnected:(id)disconnected;
 - (void)accessoryReconnect;
 - (void)dealloc;
 @end
@@ -35,26 +35,26 @@
   [(WCM_ExternalAccessory *)&v3 dealloc];
 }
 
-- (void)_accessoryConnected:(id)a3
+- (void)_accessoryConnected:(id)connected
 {
   [WCM_Logging logLevel:2 message:@"External AccessoryConnected"];
-  v5 = [objc_msgSend(a3 "userInfo")];
+  v5 = [objc_msgSend(connected "userInfo")];
   [*(&self->super._eaConnection + 1) addObject:v5];
-  v6 = [v5 name];
-  v7 = [v5 manufacturer];
-  v8 = [v5 modelNumber];
+  name = [v5 name];
+  manufacturer = [v5 manufacturer];
+  modelNumber = [v5 modelNumber];
   v9 = [+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
-  [WCM_Logging logLevel:2 message:@"WCM_ExternalAccessory:accessory connected [%@] [%@] [%@]", v6, v7, v8];
-  if (![v7 isEqualToString:@"Medtronic"])
+  [WCM_Logging logLevel:2 message:@"WCM_ExternalAccessory:accessory connected [%@] [%@] [%@]", name, manufacturer, modelNumber];
+  if (![manufacturer isEqualToString:@"Medtronic"])
   {
     goto LABEL_12;
   }
 
-  if ([v8 isEqualToString:@"Model 24970A"])
+  if ([modelNumber isEqualToString:@"Model 24970A"])
   {
-    if ([v6 length] >= 0x15)
+    if ([name length] >= 0x15)
     {
-      if ([objc_msgSend(v6 substringToIndex:{16), "isEqualToString:", objc_msgSend(@"Model 24970A SPMxxxxxxA", "substringToIndex:", 16)}])
+      if ([objc_msgSend(name substringToIndex:{16), "isEqualToString:", objc_msgSend(@"Model 24970A SPMxxxxxxA", "substringToIndex:", 16)}])
       {
         [WCM_Logging logLevel:2 message:@"WCM_ExternalAccessory:Medtronic Base connected"];
         ++dword_1002B81DC;
@@ -66,7 +66,7 @@
     }
   }
 
-  if ([v8 isEqualToString:@"Model 24967"] && objc_msgSend(v6, "length") >= 0x15 && objc_msgSend(objc_msgSend(v6, "substringToIndex:", 15), "isEqualToString:", objc_msgSend(@"Model 24967 RFAxxxxxxA", "substringToIndex:", 15)))
+  if ([modelNumber isEqualToString:@"Model 24967"] && objc_msgSend(name, "length") >= 0x15 && objc_msgSend(objc_msgSend(name, "substringToIndex:", 15), "isEqualToString:", objc_msgSend(@"Model 24967 RFAxxxxxxA", "substringToIndex:", 15)))
   {
     [WCM_Logging logLevel:2 message:@"WCM_ExternalAccessory:Medtronic Tele connected"];
     v10 = ++dword_1002B81DC;
@@ -92,15 +92,15 @@ LABEL_12:
   }
 }
 
-- (void)_accessoryDisconnected:(id)a3
+- (void)_accessoryDisconnected:(id)disconnected
 {
   [WCM_Logging logLevel:2 message:@"External AccessoryDisConnected"];
-  v5 = [objc_msgSend(a3 "userInfo")];
+  v5 = [objc_msgSend(disconnected "userInfo")];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = self;
+  selfCopy = self;
   v20 = [+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
   v7 = *(&self->super._eaConnection + 1);
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -122,16 +122,16 @@ LABEL_12:
         }
 
         v14 = *(*(&v21 + 1) + 8 * v12);
-        v15 = [v14 connectionID];
-        if (v15 == [v5 connectionID])
+        connectionID = [v14 connectionID];
+        if (connectionID == [v5 connectionID])
         {
-          v16 = [v14 name];
-          v17 = [v14 manufacturer];
-          v18 = [v14 modelNumber];
-          [WCM_Logging logLevel:2 message:@"WCM_ExternalAccessory:accessory disconnected [%@] [%@] [%@]", v16, v17, v18];
-          if ([v17 isEqualToString:@"Medtronic"])
+          name = [v14 name];
+          manufacturer = [v14 manufacturer];
+          modelNumber = [v14 modelNumber];
+          [WCM_Logging logLevel:2 message:@"WCM_ExternalAccessory:accessory disconnected [%@] [%@] [%@]", name, manufacturer, modelNumber];
+          if ([manufacturer isEqualToString:@"Medtronic"])
           {
-            if ([v18 isEqualToString:@"Model 24970A"] && objc_msgSend(v16, "length") >= 0x15 && objc_msgSend(objc_msgSend(v16, "substringToIndex:", 16), "isEqualToString:", objc_msgSend(@"Model 24970A SPMxxxxxxA", "substringToIndex:", 16)) && (+[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 2, @"WCM_ExternalAccessory:Medtronic Base Disconnected"), dword_1002B81DC >= 1))
+            if ([modelNumber isEqualToString:@"Model 24970A"] && objc_msgSend(name, "length") >= 0x15 && objc_msgSend(objc_msgSend(name, "substringToIndex:", 16), "isEqualToString:", objc_msgSend(@"Model 24970A SPMxxxxxxA", "substringToIndex:", 16)) && (+[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 2, @"WCM_ExternalAccessory:Medtronic Base Disconnected"), dword_1002B81DC >= 1))
             {
               --dword_1002B81DC;
               v19 = 1;
@@ -146,11 +146,11 @@ LABEL_12:
               v19 = 0;
             }
 
-            if ([v18 isEqualToString:@"Model 24967"])
+            if ([modelNumber isEqualToString:@"Model 24967"])
             {
-              if ([v16 length] >= 0x15)
+              if ([name length] >= 0x15)
               {
-                if ([objc_msgSend(v16 substringToIndex:{15), "isEqualToString:", objc_msgSend(@"Model 24967 RFAxxxxxxA", "substringToIndex:", 15)}])
+                if ([objc_msgSend(name substringToIndex:{15), "isEqualToString:", objc_msgSend(@"Model 24967 RFAxxxxxxA", "substringToIndex:", 15)}])
                 {
                   [WCM_Logging logLevel:2 message:@"WCM_ExternalAccessory:Medtronic Tele Disconnected"];
                   if (dword_1002B81DC >= 1)
@@ -170,14 +170,14 @@ LABEL_12:
             {
               if (!dword_1002B81DC)
               {
-                [(WCM_ExternalAccessory *)v6 setEaConnection:1];
+                [(WCM_ExternalAccessory *)selfCopy setEaConnection:1];
                 [WCM_Logging logLevel:2 message:@"WCM_ExternalAccessory:Send Medtronic Disconnected btc"];
                 [+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
               }
             }
           }
 
-          [*(&v6->super._eaConnection + 1) removeObjectAtIndex:v13];
+          [*(&selfCopy->super._eaConnection + 1) removeObjectAtIndex:v13];
           return;
         }
 

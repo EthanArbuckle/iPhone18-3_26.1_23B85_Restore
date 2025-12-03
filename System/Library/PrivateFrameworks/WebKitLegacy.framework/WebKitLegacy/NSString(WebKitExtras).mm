@@ -8,23 +8,23 @@
 
 - (uint64_t)_web_stringByAbbreviatingWithTildeInPath
 {
-  v2 = [(NSString *)NSHomeDirectory() stringByResolvingSymlinksInPath];
-  if ([a1 hasPrefix:v2])
+  stringByResolvingSymlinksInPath = [(NSString *)NSHomeDirectory() stringByResolvingSymlinksInPath];
+  if ([self hasPrefix:stringByResolvingSymlinksInPath])
   {
-    v3 = -[NSString stringByAppendingPathComponent:](NSHomeDirectory(), "stringByAppendingPathComponent:", [a1 substringFromIndex:{-[NSString length](v2, "length")}]);
+    selfCopy = -[NSString stringByAppendingPathComponent:](NSHomeDirectory(), "stringByAppendingPathComponent:", [self substringFromIndex:{-[NSString length](stringByResolvingSymlinksInPath, "length")}]);
   }
 
   else
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
-  return [(NSString *)v3 stringByAbbreviatingWithTildeInPath];
+  return [(NSString *)selfCopy stringByAbbreviatingWithTildeInPath];
 }
 
 - (__CFString)_webkit_stringByTrimmingWhitespace
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   CFStringTrimWhitespace(v1);
   if (v1)
   {
@@ -36,8 +36,8 @@
 
 + (uint64_t)_webkit_localCacheDirectoryWithBundleIdentifier:()WebKitExtras
 {
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 objectForKey:WebKitLocalCacheDefaultsKey];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults objectForKey:WebKitLocalCacheDefaultsKey];
   if (!v5 || (v6 = v5, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v6 = [(NSString *)NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches"];

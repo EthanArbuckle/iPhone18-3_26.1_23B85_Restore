@@ -1,6 +1,6 @@
 @interface FCGroupFont
 - (FCGroupFont)init;
-- (FCGroupFont)initWithName:(id)a3 urlString:(id)a4;
+- (FCGroupFont)initWithName:(id)name urlString:(id)string;
 @end
 
 @implementation FCGroupFont
@@ -31,12 +31,12 @@
   objc_exception_throw(v6);
 }
 
-- (FCGroupFont)initWithName:(id)a3 urlString:(id)a4
+- (FCGroupFont)initWithName:(id)name urlString:(id)string
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  nameCopy = name;
+  stringCopy = string;
+  if (!nameCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "name"];
     *buf = 136315906;
@@ -49,13 +49,13 @@
     v23 = v13;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v8)
+    if (stringCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v8)
+  else if (stringCopy)
   {
     goto LABEL_6;
   }
@@ -81,10 +81,10 @@ LABEL_6:
   v10 = v9;
   if (v9)
   {
-    if (v7 && v8)
+    if (nameCopy && stringCopy)
     {
-      objc_storeStrong(&v9->_name, a3);
-      objc_storeStrong(&v10->_urlString, a4);
+      objc_storeStrong(&v9->_name, name);
+      objc_storeStrong(&v10->_urlString, string);
     }
 
     else

@@ -1,49 +1,49 @@
 @interface CalendarsViewController
 - (BOOL)canDismiss;
 - (BOOL)isModalInPresentation;
-- (CalendarsViewController)initWithModel:(id)a3 destination:(unint64_t)a4;
+- (CalendarsViewController)initWithModel:(id)model destination:(unint64_t)destination;
 - (id)backgroundColor;
 - (id)preservedState;
 - (id)refreshCalendarsButtonPressed;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_identityChanged:(id)a3;
-- (void)_saveFilterAndNotifyWithReason:(id)a3;
+- (void)_identityChanged:(id)changed;
+- (void)_saveFilterAndNotifyWithReason:(id)reason;
 - (void)_updateChooserForFocusMode;
-- (void)calendarChooserCollapsedSectionIdentifiersDidChange:(id)a3;
-- (void)calendarChooserDidFinish:(id)a3;
-- (void)calendarChooserSelectedIdentityDidChange:(id)a3;
-- (void)calendarChooserSelectionDidChange:(id)a3;
+- (void)calendarChooserCollapsedSectionIdentifiersDidChange:(id)change;
+- (void)calendarChooserDidFinish:(id)finish;
+- (void)calendarChooserSelectedIdentityDidChange:(id)change;
+- (void)calendarChooserSelectionDidChange:(id)change;
 - (void)calendarChooserUpdatedToolbarItems;
 - (void)dealloc;
-- (void)focusModeConfigurationChanged:(id)a3;
+- (void)focusModeConfigurationChanged:(id)changed;
 - (void)loadView;
-- (void)restorePresentedViewControllers:(id)a3 startIndex:(unint64_t)a4 presenter:(id)a5;
-- (void)restorePreservedState:(id)a3;
-- (void)selectedCalendarsChanged:(id)a3;
-- (void)showAddSubscribedCalendarWithURL:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)restorePresentedViewControllers:(id)controllers startIndex:(unint64_t)index presenter:(id)presenter;
+- (void)restorePreservedState:(id)state;
+- (void)selectedCalendarsChanged:(id)changed;
+- (void)showAddSubscribedCalendarWithURL:(id)l;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation CalendarsViewController
 
-- (CalendarsViewController)initWithModel:(id)a3 destination:(unint64_t)a4
+- (CalendarsViewController)initWithModel:(id)model destination:(unint64_t)destination
 {
-  v7 = a3;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = CalendarsViewController;
   v8 = [(CalendarsViewController *)&v12 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_model, a3);
-    v9->_destination = a4;
-    if (a4 == 2)
+    objc_storeStrong(&v8->_model, model);
+    v9->_destination = destination;
+    if (destination == 2)
     {
       v10 = +[NSNotificationCenter defaultCenter];
-      [v10 addObserver:v9 selector:"_identityChanged:" name:CUIKCalendarModelIdentityChangedNotification object:v7];
+      [v10 addObserver:v9 selector:"_identityChanged:" name:CUIKCalendarModelIdentityChangedNotification object:modelCopy];
     }
   }
 
@@ -62,7 +62,7 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(CalendarsViewController *)self view];
+  view = [(CalendarsViewController *)self view];
   IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy();
 
   if (IsRegularInViewHierarchy)
@@ -78,16 +78,16 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v5 = [(CalendarsViewController *)self backgroundColor];
-  v3 = [(CalendarsViewController *)self view];
-  [v3 setBackgroundColor:v5];
-  v4 = [v3 mainView];
-  [v4 setBackgroundColor:v5];
+  backgroundColor = [(CalendarsViewController *)self backgroundColor];
+  view = [(CalendarsViewController *)self view];
+  [view setBackgroundColor:backgroundColor];
+  mainView = [view mainView];
+  [mainView setBackgroundColor:backgroundColor];
 }
 
 - (void)loadView
 {
-  v19 = [(CalendarsViewController *)self model];
+  model = [(CalendarsViewController *)self model];
   v3 = [EKCalendarChooser alloc];
   if (self->_destination == 2)
   {
@@ -99,11 +99,11 @@
     v4 = 0;
   }
 
-  v5 = [v19 eventStore];
-  v6 = [v19 sourceForSelectedIdentity];
+  eventStore = [model eventStore];
+  sourceForSelectedIdentity = [model sourceForSelectedIdentity];
   *(&v18 + 1) = 257;
   LOBYTE(v18) = self->_destination != 2;
-  v7 = [v3 initWithSelectionStyle:1 displayStyle:v4 entityType:0 forEvent:0 eventStore:v5 limitedToSource:v6 showIdentityChooser:v18 showDelegateSetupCell:? showAccountStatus:?];
+  v7 = [v3 initWithSelectionStyle:1 displayStyle:v4 entityType:0 forEvent:0 eventStore:eventStore limitedToSource:sourceForSelectedIdentity showIdentityChooser:v18 showDelegateSetupCell:? showAccountStatus:?];
 
   if (self->_destination == 2)
   {
@@ -124,25 +124,25 @@
   [*p_chooser didMoveToParentViewController:self];
   if (v7)
   {
-    v11 = [v19 selectedCalendarsIgnoringFocus];
-    [v7 setSelectedCalendars:v11];
+    selectedCalendarsIgnoringFocus = [model selectedCalendarsIgnoringFocus];
+    [v7 setSelectedCalendars:selectedCalendarsIgnoringFocus];
 
     [v7 setDelegate:self];
-    v12 = [v19 collapsedSectionIdentifiers];
-    [v7 setCollapsedSectionIdentifiers:v12];
+    collapsedSectionIdentifiers = [model collapsedSectionIdentifiers];
+    [v7 setCollapsedSectionIdentifiers:collapsedSectionIdentifiers];
 
     [v7 setShowsDoneButton:self->_destination == 0];
     [v7 setAllowsPullToRefresh:1];
-    [v7 setShowsDeclinedEventsSetting:{objc_msgSend(v19, "invitationBearingStoresExistForEvents")}];
+    [v7 setShowsDeclinedEventsSetting:{objc_msgSend(model, "invitationBearingStoresExistForEvents")}];
     [v7 setShowsCompletedRemindersSetting:1];
     [v7 setShowDetailAccessories:1];
     objc_storeStrong(&self->_chooser, v7);
     [(CalendarsViewController *)self _updateChooserForFocusMode];
     v13 = +[NSNotificationCenter defaultCenter];
-    [v13 addObserver:self selector:"selectedCalendarsChanged:" name:CUIKCalendarModelFilterChangedNotification object:v19];
+    [v13 addObserver:self selector:"selectedCalendarsChanged:" name:CUIKCalendarModelFilterChangedNotification object:model];
 
     v14 = +[NSNotificationCenter defaultCenter];
-    [v14 addObserver:self selector:"focusModeConfigurationChanged:" name:CUIKCalendarModelFocusModeConfigurationChangedNotification object:v19];
+    [v14 addObserver:self selector:"focusModeConfigurationChanged:" name:CUIKCalendarModelFocusModeConfigurationChangedNotification object:model];
 
     [CalDistributedNotificationCenter addObserver:self selector:"blockedUserChanged" name:CMFSyncAgentBlockListUpdated];
   }
@@ -154,15 +154,15 @@
     chooser = self->_chooser;
   }
 
-  v17 = [chooser view];
-  [(RootView *)v15 setMainView:v17];
+  view = [chooser view];
+  [(RootView *)v15 setMainView:view];
   [(CalendarsViewController *)self setView:v15];
 }
 
 - (void)_updateChooserForFocusMode
 {
-  v3 = [(CUIKCalendarModel *)self->_model unselectedCalendarsForFocusMode];
-  v4 = v3 != 0;
+  unselectedCalendarsForFocusMode = [(CUIKCalendarModel *)self->_model unselectedCalendarsForFocusMode];
+  v4 = unselectedCalendarsForFocusMode != 0;
 
   chooser = self->_chooser;
 
@@ -173,8 +173,8 @@
 {
   if (!self->_embeddedNavigationController)
   {
-    v4 = [(EKCalendarChooser *)self->_chooser toolbarItems];
-    [(CalendarsViewController *)self setToolbarItems:v4 animated:1];
+    toolbarItems = [(EKCalendarChooser *)self->_chooser toolbarItems];
+    [(CalendarsViewController *)self setToolbarItems:toolbarItems animated:1];
   }
 }
 
@@ -189,12 +189,12 @@
     embeddedNavigationController = self->_chooser;
   }
 
-  v4 = [embeddedNavigationController view];
-  v5 = [(CalendarsViewController *)self backgroundColor];
-  [v4 setBackgroundColor:v5];
+  view = [embeddedNavigationController view];
+  backgroundColor = [(CalendarsViewController *)self backgroundColor];
+  [view setBackgroundColor:backgroundColor];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   if (self->_urlToOpen)
   {
@@ -206,35 +206,35 @@
 
 - (BOOL)isModalInPresentation
 {
-  v3 = [(CalendarsViewController *)self embeddedNavigationController];
-  v4 = [v3 presentedViewController];
+  embeddedNavigationController = [(CalendarsViewController *)self embeddedNavigationController];
+  presentedViewController = [embeddedNavigationController presentedViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 viewControllers];
-    v6 = [v5 firstObject];
-    v7 = [v6 isModalInPresentation];
+    viewControllers = [presentedViewController viewControllers];
+    firstObject = [viewControllers firstObject];
+    isModalInPresentation = [firstObject isModalInPresentation];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = CalendarsViewController;
-    v7 = [(CalendarsViewController *)&v9 isModalInPresentation];
+    isModalInPresentation = [(CalendarsViewController *)&v9 isModalInPresentation];
   }
 
-  return v7;
+  return isModalInPresentation;
 }
 
-- (void)selectedCalendarsChanged:(id)a3
+- (void)selectedCalendarsChanged:(id)changed
 {
-  v5 = [(CalendarsViewController *)self model];
-  v4 = [v5 selectedCalendarsIgnoringFocus];
-  [(EKCalendarChooser *)self->_chooser setSelectedCalendars:v4];
+  model = [(CalendarsViewController *)self model];
+  selectedCalendarsIgnoringFocus = [model selectedCalendarsIgnoringFocus];
+  [(EKCalendarChooser *)self->_chooser setSelectedCalendars:selectedCalendarsIgnoringFocus];
 }
 
-- (void)focusModeConfigurationChanged:(id)a3
+- (void)focusModeConfigurationChanged:(id)changed
 {
   [(CalendarsViewController *)self _updateChooserForFocusMode];
   chooser = self->_chooser;
@@ -242,93 +242,93 @@
   [(EKCalendarChooser *)chooser focusModeConfigurationChanged];
 }
 
-- (void)_identityChanged:(id)a3
+- (void)_identityChanged:(id)changed
 {
   chooser = self->_chooser;
-  v5 = [(CalendarsViewController *)self model];
-  v4 = [v5 sourceForSelectedIdentity];
-  [(EKCalendarChooser *)chooser identityChanged:v4];
+  model = [(CalendarsViewController *)self model];
+  sourceForSelectedIdentity = [model sourceForSelectedIdentity];
+  [(EKCalendarChooser *)chooser identityChanged:sourceForSelectedIdentity];
 }
 
-- (void)calendarChooserSelectionDidChange:(id)a3
+- (void)calendarChooserSelectionDidChange:(id)change
 {
   model = self->_model;
-  v5 = a3;
-  v6 = [(CUIKCalendarModel *)model sourceForSelectedIdentity];
-  v7 = [v5 selectedCalendars];
+  changeCopy = change;
+  sourceForSelectedIdentity = [(CUIKCalendarModel *)model sourceForSelectedIdentity];
+  selectedCalendars = [changeCopy selectedCalendars];
 
-  [(CUIKCalendarModel *)model updateSourceForSelectedIdentity:v6 selectedCalendars:v7];
+  [(CUIKCalendarModel *)model updateSourceForSelectedIdentity:sourceForSelectedIdentity selectedCalendars:selectedCalendars];
 
   [(CalendarsViewController *)self _saveFilterAndNotifyWithReason:@"calendar chooser selection changed"];
 }
 
-- (void)calendarChooserSelectedIdentityDidChange:(id)a3
+- (void)calendarChooserSelectedIdentityDidChange:(id)change
 {
   model = self->_model;
-  v5 = [a3 sourceForSelectedIdentity];
-  [(CUIKCalendarModel *)model updateSourceForSelectedIdentity:v5 selectedCalendars:0];
+  sourceForSelectedIdentity = [change sourceForSelectedIdentity];
+  [(CUIKCalendarModel *)model updateSourceForSelectedIdentity:sourceForSelectedIdentity selectedCalendars:0];
 
   [(CalendarsViewController *)self _saveFilterAndNotifyWithReason:@"calendar chooser selected identity changed"];
 }
 
-- (void)calendarChooserCollapsedSectionIdentifiersDidChange:(id)a3
+- (void)calendarChooserCollapsedSectionIdentifiersDidChange:(id)change
 {
-  v4 = [a3 collapsedSectionIdentifiers];
-  [(CUIKCalendarModel *)self->_model setCollapsedSectionIdentifiers:v4];
+  collapsedSectionIdentifiers = [change collapsedSectionIdentifiers];
+  [(CUIKCalendarModel *)self->_model setCollapsedSectionIdentifiers:collapsedSectionIdentifiers];
 }
 
-- (void)_saveFilterAndNotifyWithReason:(id)a3
+- (void)_saveFilterAndNotifyWithReason:(id)reason
 {
   model = self->_model;
-  v5 = a3;
-  v6 = [(CUIKCalendarModel *)model selectedCalendarsIgnoringFocus];
-  [(CUIKCalendarModel *)self->_model setSelectedCalendarsAndRequestPreferenceSave:v6 reason:v5];
+  reasonCopy = reason;
+  selectedCalendarsIgnoringFocus = [(CUIKCalendarModel *)model selectedCalendarsIgnoringFocus];
+  [(CUIKCalendarModel *)self->_model setSelectedCalendarsAndRequestPreferenceSave:selectedCalendarsIgnoringFocus reason:reasonCopy];
 }
 
 - (id)refreshCalendarsButtonPressed
 {
   CalAnalyticsSendEvent();
   v3 = [EKAccountRefresher alloc];
-  v4 = [(CalendarsViewController *)self model];
-  v5 = [v4 eventStore];
-  v6 = [v3 initWithEventStore:v5];
+  model = [(CalendarsViewController *)self model];
+  eventStore = [model eventStore];
+  v6 = [v3 initWithEventStore:eventStore];
 
   [v6 refresh];
 
   return v6;
 }
 
-- (void)calendarChooserDidFinish:(id)a3
+- (void)calendarChooserDidFinish:(id)finish
 {
   [(CalendarsViewController *)self _saveFilterAndNotifyWithReason:@"calendar chooser dismissed"];
-  v4 = [(CalendarsViewController *)self embeddedNavigationController];
-  v5 = [v4 popViewControllerAnimated:0];
+  embeddedNavigationController = [(CalendarsViewController *)self embeddedNavigationController];
+  v5 = [embeddedNavigationController popViewControllerAnimated:0];
 
-  v6 = [(CalendarsViewController *)self doneBlock];
+  doneBlock = [(CalendarsViewController *)self doneBlock];
 
-  if (v6)
+  if (doneBlock)
   {
-    v7 = [(CalendarsViewController *)self doneBlock];
-    (v7)[2](v7, self, 0);
+    doneBlock2 = [(CalendarsViewController *)self doneBlock];
+    (doneBlock2)[2](doneBlock2, self, 0);
 
     [(CalendarsViewController *)self setDoneBlock:0];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(CalendarsViewController *)self _saveFilterAndNotifyWithReason:@"calendarsviewcontroller dismissed"];
   v5.receiver = self;
   v5.super_class = CalendarsViewController;
-  [(CalendarsViewController *)&v5 viewDidDisappear:v3];
+  [(CalendarsViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)showAddSubscribedCalendarWithURL:(id)a3
+- (void)showAddSubscribedCalendarWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   chooser = self->_chooser;
-  v7 = v5;
+  v7 = lCopy;
   if (chooser)
   {
     [(EKCalendarChooser *)chooser showAddSubscribedCalendarWithURL:?];
@@ -336,56 +336,56 @@
 
   else
   {
-    objc_storeStrong(&self->_urlToOpen, a3);
+    objc_storeStrong(&self->_urlToOpen, l);
   }
 }
 
 - (id)preservedState
 {
   v3 = objc_alloc_init(CalendarsViewControllerPreservedState);
-  v4 = [(EKCalendarChooser *)self->_chooser centeredCalendar];
-  [(CalendarsViewControllerPreservedState *)v3 setCenteredCalendar:v4];
+  centeredCalendar = [(EKCalendarChooser *)self->_chooser centeredCalendar];
+  [(CalendarsViewControllerPreservedState *)v3 setCenteredCalendar:centeredCalendar];
 
-  v5 = [(EKCalendarChooser *)self->_chooser displayedEditor];
-  [(CalendarsViewControllerPreservedState *)v3 setDisplayedEditor:v5];
+  displayedEditor = [(EKCalendarChooser *)self->_chooser displayedEditor];
+  [(CalendarsViewControllerPreservedState *)v3 setDisplayedEditor:displayedEditor];
 
   v6 = +[NSMutableArray array];
-  v7 = [(CalendarsViewController *)self presentedViewController];
-  if (v7)
+  presentedViewController = [(CalendarsViewController *)self presentedViewController];
+  if (presentedViewController)
   {
-    v8 = v7;
+    v8 = presentedViewController;
     do
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (NSClassFromString(@"MFMessageComposeViewController"), (objc_opt_isKindOfClass()) || (NSClassFromString(@"_UIContextMenuActionsOnlyViewController"), (objc_opt_isKindOfClass()) || (NSClassFromString(@"DDParsecCollectionViewController"), (objc_opt_isKindOfClass()))
       {
-        v9 = [v8 presentingViewController];
-        [v9 dismissViewControllerAnimated:0 completion:0];
+        presentingViewController = [v8 presentingViewController];
+        [presentingViewController dismissViewControllerAnimated:0 completion:0];
 
-        v10 = [v8 presentedViewController];
+        presentedViewController2 = [v8 presentedViewController];
       }
 
       else
       {
         v11 = objc_alloc_init(PresentedViewControllerState);
         [(PresentedViewControllerState *)v11 setViewController:v8];
-        v12 = [v8 popoverPresentationController];
-        v13 = [v12 sourceView];
-        [(PresentedViewControllerState *)v11 setSourceView:v13];
+        popoverPresentationController = [v8 popoverPresentationController];
+        sourceView = [popoverPresentationController sourceView];
+        [(PresentedViewControllerState *)v11 setSourceView:sourceView];
 
-        v14 = [v8 popoverPresentationController];
-        -[PresentedViewControllerState setArrowDirection:](v11, "setArrowDirection:", [v14 permittedArrowDirections]);
+        popoverPresentationController2 = [v8 popoverPresentationController];
+        -[PresentedViewControllerState setArrowDirection:](v11, "setArrowDirection:", [popoverPresentationController2 permittedArrowDirections]);
 
         [v6 addObject:v11];
-        v10 = [v8 presentedViewController];
+        presentedViewController2 = [v8 presentedViewController];
 
         v8 = v11;
       }
 
-      v8 = v10;
+      v8 = presentedViewController2;
     }
 
-    while (v10);
+    while (presentedViewController2);
   }
 
   if ([v6 count])
@@ -394,15 +394,15 @@
     v16 = v15 - 1;
     if (v15 != 1)
     {
-      v17 = 0;
+      viewController = 0;
       do
       {
-        v18 = v17;
+        v18 = viewController;
         v19 = [v6 objectAtIndex:v16];
-        v17 = [v19 viewController];
+        viewController = [v19 viewController];
 
-        v20 = [v17 presentingViewController];
-        [v20 dismissViewControllerAnimated:0 completion:0];
+        presentingViewController2 = [viewController presentingViewController];
+        [presentingViewController2 dismissViewControllerAnimated:0 completion:0];
 
         --v16;
       }
@@ -416,16 +416,16 @@
   return v3;
 }
 
-- (void)restorePreservedState:(id)a3
+- (void)restorePreservedState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 displayedEditor];
-  v6 = [(CUIKCalendarModel *)self->_model selectedCalendarsIgnoringFocus];
-  [(EKCalendarChooser *)self->_chooser setSelectedCalendars:v6];
+  stateCopy = state;
+  displayedEditor = [stateCopy displayedEditor];
+  selectedCalendarsIgnoringFocus = [(CUIKCalendarModel *)self->_model selectedCalendarsIgnoringFocus];
+  [(EKCalendarChooser *)self->_chooser setSelectedCalendars:selectedCalendarsIgnoringFocus];
 
   chooser = self->_chooser;
-  v8 = [v4 centeredCalendar];
-  [(EKCalendarChooser *)chooser centerOnCalendar:v8];
+  centeredCalendar = [stateCopy centeredCalendar];
+  [(EKCalendarChooser *)chooser centerOnCalendar:centeredCalendar];
 
   v9 = self->_chooser;
   v12[0] = _NSConcreteStackBlock;
@@ -433,26 +433,26 @@
   v12[2] = sub_100104620;
   v12[3] = &unk_10020F2E0;
   v12[4] = self;
-  v13 = v4;
-  v14 = v5;
-  v10 = v5;
-  v11 = v4;
+  v13 = stateCopy;
+  v14 = displayedEditor;
+  v10 = displayedEditor;
+  v11 = stateCopy;
   [(EKCalendarChooser *)v9 redisplayEditor:v10 completion:v12];
 }
 
-- (void)restorePresentedViewControllers:(id)a3 startIndex:(unint64_t)a4 presenter:(id)a5
+- (void)restorePresentedViewControllers:(id)controllers startIndex:(unint64_t)index presenter:(id)presenter
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 presentedViewControllersState];
-  if ([v10 count] > a4)
+  controllersCopy = controllers;
+  presenterCopy = presenter;
+  presentedViewControllersState = [controllersCopy presentedViewControllersState];
+  if ([presentedViewControllersState count] > index)
   {
-    v11 = [v10 objectAtIndex:a4];
-    v12 = [v11 viewController];
+    v11 = [presentedViewControllersState objectAtIndex:index];
+    viewController = [v11 viewController];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v12 viewControllers], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "displayedEditor"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "containsObject:", v14), v14, v13, v15))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([viewController viewControllers], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(controllersCopy, "displayedEditor"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "containsObject:", v14), v14, v13, v15))
     {
-      [(CalendarsViewController *)self restorePresentedViewControllers:v8 startIndex:a4 + 1 presenter:v9];
+      [(CalendarsViewController *)self restorePresentedViewControllers:controllersCopy startIndex:index + 1 presenter:presenterCopy];
     }
 
     else
@@ -460,43 +460,43 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        v16 = [v11 sourceView];
+        sourceView = [v11 sourceView];
 
-        if (v16)
+        if (sourceView)
         {
-          v17 = [v11 sourceView];
-          v18 = [v12 popoverPresentationController];
-          [v18 setSourceView:v17];
+          sourceView2 = [v11 sourceView];
+          popoverPresentationController = [viewController popoverPresentationController];
+          [popoverPresentationController setSourceView:sourceView2];
 
-          v19 = [v11 arrowDirection];
-          v20 = [v12 popoverPresentationController];
-          [v20 setPermittedArrowDirections:v19];
+          arrowDirection = [v11 arrowDirection];
+          popoverPresentationController2 = [viewController popoverPresentationController];
+          [popoverPresentationController2 setPermittedArrowDirections:arrowDirection];
         }
 
         else
         {
-          v25 = [v8 displayedEditor];
-          v21 = [v25 navigationController];
-          v22 = [v21 view];
-          v23 = [v12 popoverPresentationController];
-          [v23 setSourceView:v22];
+          displayedEditor = [controllersCopy displayedEditor];
+          navigationController = [displayedEditor navigationController];
+          view = [navigationController view];
+          popoverPresentationController3 = [viewController popoverPresentationController];
+          [popoverPresentationController3 setSourceView:view];
         }
       }
 
       else
       {
-        [v12 setModalPresentationStyle:3];
+        [viewController setModalPresentationStyle:3];
       }
 
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
       v26[2] = sub_1001048F4;
       v26[3] = &unk_10020FD10;
-      v27 = v12;
-      v28 = v9;
-      v29 = self;
-      v30 = v8;
-      v31 = a4;
+      v27 = viewController;
+      v28 = presenterCopy;
+      selfCopy = self;
+      v30 = controllersCopy;
+      indexCopy = index;
       v24 = objc_retainBlock(v26);
       (v24[2])();
     }
@@ -520,9 +520,9 @@
 
 - (BOOL)canDismiss
 {
-  v2 = [(CalendarsViewController *)self embeddedNavigationController];
-  v3 = [v2 viewControllers];
-  v4 = [v3 count] == 1;
+  embeddedNavigationController = [(CalendarsViewController *)self embeddedNavigationController];
+  viewControllers = [embeddedNavigationController viewControllers];
+  v4 = [viewControllers count] == 1;
 
   return v4;
 }

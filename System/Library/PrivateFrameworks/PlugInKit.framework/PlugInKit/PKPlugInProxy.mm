@@ -10,152 +10,152 @@
 - (NSUUID)pluginUUID;
 - (PKBundleProxy)containingBundle;
 - (PKExtensionPointProxy)extensionPoint;
-- (PKPlugInProxy)initWithLSPlugInKitProxy:(id)a3;
-- (PKPlugInProxy)initWithURL:(id)a3;
-- (PKPlugInProxy)initWithUUID:(id)a3;
-- (id)objectForInfoDictionaryKey:(id)a3 ofClass:(Class)a4 inScope:(unint64_t)a5;
+- (PKPlugInProxy)initWithLSPlugInKitProxy:(id)proxy;
+- (PKPlugInProxy)initWithURL:(id)l;
+- (PKPlugInProxy)initWithUUID:(id)d;
+- (id)objectForInfoDictionaryKey:(id)key ofClass:(Class)class inScope:(unint64_t)scope;
 @end
 
 @implementation PKPlugInProxy
 
-- (PKPlugInProxy)initWithURL:(id)a3
+- (PKPlugInProxy)initWithURL:(id)l
 {
-  v4 = [MEMORY[0x1E6963678] pluginKitProxyForURL:a3];
+  v4 = [MEMORY[0x1E6963678] pluginKitProxyForURL:l];
   if (v4)
   {
     v7.receiver = self;
     v7.super_class = PKPlugInProxy;
     self = [(PKBundleProxy *)&v7 initWithLSBundleProxy:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (PKPlugInProxy)initWithUUID:(id)a3
+- (PKPlugInProxy)initWithUUID:(id)d
 {
-  v4 = [MEMORY[0x1E6963678] pluginKitProxyForUUID:a3];
+  v4 = [MEMORY[0x1E6963678] pluginKitProxyForUUID:d];
   if (v4)
   {
     v7.receiver = self;
     v7.super_class = PKPlugInProxy;
     self = [(PKBundleProxy *)&v7 initWithLSBundleProxy:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (PKPlugInProxy)initWithLSPlugInKitProxy:(id)a3
+- (PKPlugInProxy)initWithLSPlugInKitProxy:(id)proxy
 {
   v4.receiver = self;
   v4.super_class = PKPlugInProxy;
-  return [(PKBundleProxy *)&v4 initWithLSBundleProxy:a3];
+  return [(PKBundleProxy *)&v4 initWithLSBundleProxy:proxy];
 }
 
 - (NSUUID)pluginUUID
 {
-  v2 = [(PKBundleProxy *)self lsObject];
-  v3 = [v2 pluginUUID];
+  lsObject = [(PKBundleProxy *)self lsObject];
+  pluginUUID = [lsObject pluginUUID];
 
-  return v3;
+  return pluginUUID;
 }
 
 - (PKBundleProxy)containingBundle
 {
-  v2 = [(PKBundleProxy *)self lsObject];
-  v3 = [v2 containingBundle];
+  lsObject = [(PKBundleProxy *)self lsObject];
+  containingBundle = [lsObject containingBundle];
 
-  return v3;
+  return containingBundle;
 }
 
 - (NSString)pluginIdentifier
 {
-  v2 = [(PKBundleProxy *)self lsObject];
-  v3 = [v2 pluginIdentifier];
+  lsObject = [(PKBundleProxy *)self lsObject];
+  pluginIdentifier = [lsObject pluginIdentifier];
 
-  return v3;
+  return pluginIdentifier;
 }
 
 - (NSDate)registrationDate
 {
-  v2 = [(PKBundleProxy *)self lsObject];
-  v3 = [v2 registrationDate];
+  lsObject = [(PKBundleProxy *)self lsObject];
+  registrationDate = [lsObject registrationDate];
 
-  return v3;
+  return registrationDate;
 }
 
 - (BOOL)isOnSystemPartition
 {
-  v2 = [(PKBundleProxy *)self lsObject];
-  v3 = [v2 isOnSystemPartition];
+  lsObject = [(PKBundleProxy *)self lsObject];
+  isOnSystemPartition = [lsObject isOnSystemPartition];
 
-  return v3;
+  return isOnSystemPartition;
 }
 
 - (NSString)originalIdentifier
 {
-  v2 = [(PKBundleProxy *)self lsObject];
-  v3 = [v2 originalIdentifier];
+  lsObject = [(PKBundleProxy *)self lsObject];
+  originalIdentifier = [lsObject originalIdentifier];
 
-  return v3;
+  return originalIdentifier;
 }
 
 - (NSDictionary)infoPlist
 {
-  v2 = [(PKBundleProxy *)self lsObject];
-  v3 = [v2 infoPlist];
+  lsObject = [(PKBundleProxy *)self lsObject];
+  infoPlist = [lsObject infoPlist];
 
-  return v3;
+  return infoPlist;
 }
 
 - (NSNumber)platform
 {
-  v2 = [(PKBundleProxy *)self lsObject];
-  v3 = [v2 platform];
+  lsObject = [(PKBundleProxy *)self lsObject];
+  platform = [lsObject platform];
 
-  return v3;
+  return platform;
 }
 
 - (PKExtensionPointProxy)extensionPoint
 {
-  v2 = [(PKBundleProxy *)self lsObject];
-  v3 = [v2 extensionPoint];
+  lsObject = [(PKBundleProxy *)self lsObject];
+  extensionPoint = [lsObject extensionPoint];
 
-  return v3;
+  return extensionPoint;
 }
 
 - (NSArray)launchPersonas
 {
-  v2 = [(PKBundleProxy *)self lsObject];
-  v3 = [v2 launchPersonas];
+  lsObject = [(PKBundleProxy *)self lsObject];
+  launchPersonas = [lsObject launchPersonas];
 
-  return v3;
+  return launchPersonas;
 }
 
 - (NSDictionary)pluginKitDictionary
 {
-  v2 = [(PKBundleProxy *)self lsObject];
-  v3 = [v2 pluginKitDictionary];
+  lsObject = [(PKBundleProxy *)self lsObject];
+  pluginKitDictionary = [lsObject pluginKitDictionary];
 
-  return v3;
+  return pluginKitDictionary;
 }
 
-- (id)objectForInfoDictionaryKey:(id)a3 ofClass:(Class)a4 inScope:(unint64_t)a5
+- (id)objectForInfoDictionaryKey:(id)key ofClass:(Class)class inScope:(unint64_t)scope
 {
-  v8 = a3;
-  v9 = [(PKBundleProxy *)self lsObject];
-  v10 = [v9 objectForInfoDictionaryKey:v8 ofClass:a4 inScope:a5];
+  keyCopy = key;
+  lsObject = [(PKBundleProxy *)self lsObject];
+  v10 = [lsObject objectForInfoDictionaryKey:keyCopy ofClass:class inScope:scope];
 
   return v10;
 }

@@ -1,16 +1,16 @@
 @interface CRLWPRepHelper
-+ (id)forCurrentPlatform:(id)a3;
-- (CGPoint)anchorPointForCaretLayer:(BOOL)a3 rotated:(BOOL)a4;
-- (CGPoint)positionForCaretLayer:(CGRect)a3;
++ (id)forCurrentPlatform:(id)platform;
+- (CGPoint)anchorPointForCaretLayer:(BOOL)layer rotated:(BOOL)rotated;
+- (CGPoint)positionForCaretLayer:(CGRect)layer;
 - (CGRect)boundsForCaretLayer:(CGRect)result;
 - (_TtC8Freeform14CRLWPRepHelper)init;
 - (id)colorForGhostCaret;
-- (void)addLiftAnimationToFloatingCursor:(id)a3 floatingCaretLayer:(id)a4;
+- (void)addLiftAnimationToFloatingCursor:(id)cursor floatingCaretLayer:(id)layer;
 @end
 
 @implementation CRLWPRepHelper
 
-+ (id)forCurrentPlatform:(id)a3
++ (id)forCurrentPlatform:(id)platform
 {
   v3 = type metadata accessor for CRLWPRepHelper();
   v4 = objc_allocWithZone(v3);
@@ -32,21 +32,21 @@
   return v2;
 }
 
-- (CGPoint)anchorPointForCaretLayer:(BOOL)a3 rotated:(BOOL)a4
+- (CGPoint)anchorPointForCaretLayer:(BOOL)layer rotated:(BOOL)rotated
 {
   v4 = 0.5;
   v5 = 1.0;
-  if (!a3)
+  if (!layer)
   {
     v5 = 0.5;
   }
 
-  if (!a4)
+  if (!rotated)
   {
     v5 = 0.0;
   }
 
-  if (!a4 || !a3)
+  if (!rotated || !layer)
   {
     v4 = 0.0;
   }
@@ -65,21 +65,21 @@
   return result;
 }
 
-- (CGPoint)positionForCaretLayer:(CGRect)a3
+- (CGPoint)positionForCaretLayer:(CGRect)layer
 {
-  v3 = floor(a3.origin.x + a3.size.width * -0.5);
-  v4 = floor(a3.origin.y);
+  v3 = floor(layer.origin.x + layer.size.width * -0.5);
+  v4 = floor(layer.origin.y);
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (void)addLiftAnimationToFloatingCursor:(id)a3 floatingCaretLayer:(id)a4
+- (void)addLiftAnimationToFloatingCursor:(id)cursor floatingCaretLayer:(id)layer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1007F7320(v7);
+  cursorCopy = cursor;
+  layerCopy = layer;
+  selfCopy = self;
+  sub_1007F7320(layerCopy);
 }
 
 - (_TtC8Freeform14CRLWPRepHelper)init

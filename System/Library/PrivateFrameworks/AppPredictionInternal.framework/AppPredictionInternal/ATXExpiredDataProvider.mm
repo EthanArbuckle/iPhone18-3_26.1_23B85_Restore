@@ -1,24 +1,24 @@
 @interface ATXExpiredDataProvider
-- (ATXExpiredDataProvider)initWithAppInfoManager:(id)a3 histogramBundleIdTable:(id)a4;
-- (id)expiredActionKeysFromExpiredBundleIds:(id)a3;
+- (ATXExpiredDataProvider)initWithAppInfoManager:(id)manager histogramBundleIdTable:(id)table;
+- (id)expiredActionKeysFromExpiredBundleIds:(id)ids;
 - (id)expiredBundleIds;
 - (id)expiredBundleIdsAndActionKeys;
 @end
 
 @implementation ATXExpiredDataProvider
 
-- (ATXExpiredDataProvider)initWithAppInfoManager:(id)a3 histogramBundleIdTable:(id)a4
+- (ATXExpiredDataProvider)initWithAppInfoManager:(id)manager histogramBundleIdTable:(id)table
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  tableCopy = table;
   v12.receiver = self;
   v12.super_class = ATXExpiredDataProvider;
   v9 = [(ATXExpiredDataProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_appInfoManager, a3);
-    objc_storeStrong(&v10->_histogramBundleIdTable, a4);
+    objc_storeStrong(&v9->_appInfoManager, manager);
+    objc_storeStrong(&v10->_histogramBundleIdTable, table);
   }
 
   return v10;
@@ -26,25 +26,25 @@
 
 - (id)expiredBundleIdsAndActionKeys
 {
-  v3 = [(ATXExpiredDataProvider *)self expiredBundleIds];
-  v4 = [(ATXExpiredDataProvider *)self expiredActionKeysFromExpiredBundleIds:v3];
-  v5 = [[ATXExpiredData alloc] initWithExpiredBundleIds:v3 expiredActionKeys:v4];
+  expiredBundleIds = [(ATXExpiredDataProvider *)self expiredBundleIds];
+  v4 = [(ATXExpiredDataProvider *)self expiredActionKeysFromExpiredBundleIds:expiredBundleIds];
+  v5 = [[ATXExpiredData alloc] initWithExpiredBundleIds:expiredBundleIds expiredActionKeys:v4];
 
   return v5;
 }
 
 - (id)expiredBundleIds
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(_ATXAppInfoManager *)self->_appInfoManager allApps];
+  date = [MEMORY[0x277CBEAA8] date];
+  allApps = [(_ATXAppInfoManager *)self->_appInfoManager allApps];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__ATXExpiredDataProvider_expiredBundleIds__block_invoke;
   v8[3] = &unk_27859B8B0;
   v8[4] = self;
-  v9 = v3;
-  v5 = v3;
-  v6 = [v4 objectsPassingTest:v8];
+  v9 = date;
+  v5 = date;
+  v6 = [allApps objectsPassingTest:v8];
 
   return v6;
 }
@@ -72,13 +72,13 @@ BOOL __42__ATXExpiredDataProvider_expiredBundleIds__block_invoke(uint64_t a1, ui
   return v9;
 }
 
-- (id)expiredActionKeysFromExpiredBundleIds:(id)a3
+- (id)expiredActionKeysFromExpiredBundleIds:(id)ids
 {
-  v4 = a3;
-  if ([v4 count])
+  idsCopy = ids;
+  if ([idsCopy count])
   {
     histogramBundleIdTable = self->_histogramBundleIdTable;
-    v6 = [_ATXActionUtils actionKeyFilterForCandidateBundleIds:v4 candidateActionTypes:0 blacklist:0];
+    v6 = [_ATXActionUtils actionKeyFilterForCandidateBundleIds:idsCopy candidateActionTypes:0 blacklist:0];
     v7 = [(ATXHistogramTable *)histogramBundleIdTable allKeysFilteredBy:v6];
 
     v8 = [MEMORY[0x277CBEB98] setWithArray:v7];

@@ -1,23 +1,23 @@
 @interface AppTelemetryQBSInvestigation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasServerTruthDirCount:(BOOL)a3;
-- (void)setHasServerTruthDirFaultCount:(BOOL)a3;
-- (void)setHasServerTruthTotalItemsCount:(BOOL)a3;
-- (void)setHasTimeSinceLogin:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasServerTruthDirCount:(BOOL)count;
+- (void)setHasServerTruthDirFaultCount:(BOOL)count;
+- (void)setHasServerTruthTotalItemsCount:(BOOL)count;
+- (void)setHasTimeSinceLogin:(BOOL)login;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AppTelemetryQBSInvestigation
 
-- (void)setHasServerTruthDirCount:(BOOL)a3
+- (void)setHasServerTruthDirCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasServerTruthDirFaultCount:(BOOL)a3
+- (void)setHasServerTruthDirFaultCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTimeSinceLogin:(BOOL)a3
+- (void)setHasTimeSinceLogin:(BOOL)login
 {
-  if (a3)
+  if (login)
   {
     v3 = 16;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasServerTruthTotalItemsCount:(BOOL)a3
+- (void)setHasServerTruthTotalItemsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -81,20 +81,20 @@
   v8.receiver = self;
   v8.super_class = AppTelemetryQBSInvestigation;
   v4 = [(AppTelemetryQBSInvestigation *)&v8 description];
-  v5 = [(AppTelemetryQBSInvestigation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AppTelemetryQBSInvestigation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_serverTruthDirCount];
-    [v3 setObject:v7 forKey:@"serverTruthDirCount"];
+    [dictionary setObject:v7 forKey:@"serverTruthDirCount"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -115,7 +115,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_serverTruthDirFaultCount];
-  [v3 setObject:v8 forKey:@"serverTruthDirFaultCount"];
+  [dictionary setObject:v8 forKey:@"serverTruthDirFaultCount"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -131,7 +131,7 @@ LABEL_4:
 
 LABEL_12:
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_clientTruthDirFaultCount];
-  [v3 setObject:v9 forKey:@"clientTruthDirFaultCount"];
+  [dictionary setObject:v9 forKey:@"clientTruthDirFaultCount"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -147,23 +147,23 @@ LABEL_5:
 
 LABEL_13:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timeSinceLogin];
-  [v3 setObject:v10 forKey:@"timeSinceLogin"];
+  [dictionary setObject:v10 forKey:@"timeSinceLogin"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_6:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_serverTruthTotalItemsCount];
-    [v3 setObject:v5 forKey:@"serverTruthTotalItemsCount"];
+    [dictionary setObject:v5 forKey:@"serverTruthTotalItemsCount"];
   }
 
 LABEL_7:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -229,14 +229,14 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_serverTruthDirCount;
-    *(v4 + 48) |= 2u;
+    toCopy[2] = self->_serverTruthDirCount;
+    *(toCopy + 48) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -255,8 +255,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_serverTruthDirFaultCount;
-  *(v4 + 48) |= 4u;
+  toCopy[3] = self->_serverTruthDirFaultCount;
+  *(toCopy + 48) |= 4u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -270,8 +270,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  v4[1] = self->_clientTruthDirFaultCount;
-  *(v4 + 48) |= 1u;
+  toCopy[1] = self->_clientTruthDirFaultCount;
+  *(toCopy + 48) |= 1u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -285,21 +285,21 @@ LABEL_5:
   }
 
 LABEL_13:
-  v4[5] = self->_timeSinceLogin;
-  *(v4 + 48) |= 0x10u;
+  toCopy[5] = self->_timeSinceLogin;
+  *(toCopy + 48) |= 0x10u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_6:
-    v4[4] = self->_serverTruthTotalItemsCount;
-    *(v4 + 48) |= 8u;
+    toCopy[4] = self->_serverTruthTotalItemsCount;
+    *(toCopy + 48) |= 8u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -366,23 +366,23 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_serverTruthDirCount != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_serverTruthDirCount != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
 LABEL_26:
     v5 = 0;
@@ -391,47 +391,47 @@ LABEL_26:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_serverTruthDirFaultCount != *(v4 + 3))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_serverTruthDirFaultCount != *(equalCopy + 3))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
     goto LABEL_26;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_clientTruthDirFaultCount != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_clientTruthDirFaultCount != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 48) & 0x10) == 0 || self->_timeSinceLogin != *(v4 + 5))
+    if ((*(equalCopy + 48) & 0x10) == 0 || self->_timeSinceLogin != *(equalCopy + 5))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 48) & 0x10) != 0)
+  else if ((*(equalCopy + 48) & 0x10) != 0)
   {
     goto LABEL_26;
   }
 
-  v5 = (*(v4 + 48) & 8) == 0;
+  v5 = (*(equalCopy + 48) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0 || self->_serverTruthTotalItemsCount != *(v4 + 4))
+    if ((*(equalCopy + 48) & 8) == 0 || self->_serverTruthTotalItemsCount != *(equalCopy + 4))
     {
       goto LABEL_26;
     }
@@ -512,15 +512,15 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 48);
+  fromCopy = from;
+  v5 = *(fromCopy + 48);
   if ((v5 & 2) != 0)
   {
-    self->_serverTruthDirCount = *(v4 + 2);
+    self->_serverTruthDirCount = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -533,14 +533,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 48) & 4) == 0)
+  else if ((*(fromCopy + 48) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_serverTruthDirFaultCount = *(v4 + 3);
+  self->_serverTruthDirFaultCount = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 1) == 0)
   {
 LABEL_4:
@@ -553,9 +553,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_clientTruthDirFaultCount = *(v4 + 1);
+  self->_clientTruthDirFaultCount = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x10) == 0)
   {
 LABEL_5:
@@ -568,12 +568,12 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_timeSinceLogin = *(v4 + 5);
+  self->_timeSinceLogin = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 48) & 8) != 0)
+  if ((*(fromCopy + 48) & 8) != 0)
   {
 LABEL_6:
-    self->_serverTruthTotalItemsCount = *(v4 + 4);
+    self->_serverTruthTotalItemsCount = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 

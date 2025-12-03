@@ -1,140 +1,140 @@
 @interface AKSignInWithAppleAccountShareInfo
-- (AKSignInWithAppleAccountShareInfo)initWithCoder:(id)a3;
-- (AKSignInWithAppleAccountShareInfo)initWithGroupID:(id)a3 participantID:(id)a4;
-- (AKSignInWithAppleAccountShareInfo)initWithGroupID:(id)a3 participantID:(id)a4 participantName:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AKSignInWithAppleAccountShareInfo)initWithCoder:(id)coder;
+- (AKSignInWithAppleAccountShareInfo)initWithGroupID:(id)d participantID:(id)iD;
+- (AKSignInWithAppleAccountShareInfo)initWithGroupID:(id)d participantID:(id)iD participantName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKSignInWithAppleAccountShareInfo
 
-- (AKSignInWithAppleAccountShareInfo)initWithGroupID:(id)a3 participantID:(id)a4 participantName:(id)a5
+- (AKSignInWithAppleAccountShareInfo)initWithGroupID:(id)d participantID:(id)iD participantName:(id)name
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, iD);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  v5 = v14;
-  v14 = 0;
+  objc_storeStrong(&v11, name);
+  v5 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v5;
   v10.super_class = AKSignInWithAppleAccountShareInfo;
-  v14 = [(AKSignInWithAppleAccountShareInfo *)&v10 init];
-  objc_storeStrong(&v14, v14);
-  if (v14)
+  selfCopy = [(AKSignInWithAppleAccountShareInfo *)&v10 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v14->_groupID, location[0]);
-    objc_storeStrong(&v14->_participantID, v12);
-    objc_storeStrong(&v14->_participantName, v11);
+    objc_storeStrong(&selfCopy->_groupID, location[0]);
+    objc_storeStrong(&selfCopy->_participantID, v12);
+    objc_storeStrong(&selfCopy->_participantName, v11);
   }
 
-  v7 = MEMORY[0x1E69E5928](v14);
+  v7 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (AKSignInWithAppleAccountShareInfo)initWithGroupID:(id)a3 participantID:(id)a4
+- (AKSignInWithAppleAccountShareInfo)initWithGroupID:(id)d participantID:(id)iD
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v4 = v10;
-  v10 = 0;
-  v10 = [(AKSignInWithAppleAccountShareInfo *)v4 initWithGroupID:location[0] participantID:v8 participantName:&stru_1F0781300];
-  v7 = MEMORY[0x1E69E5928](v10);
+  objc_storeStrong(&v8, iD);
+  v4 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKSignInWithAppleAccountShareInfo *)v4 initWithGroupID:location[0] participantID:v8 participantName:&stru_1F0781300];
+  v7 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (AKSignInWithAppleAccountShareInfo)initWithCoder:(id)a3
+- (AKSignInWithAppleAccountShareInfo)initWithCoder:(id)coder
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v17;
-  v17 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v15.receiver = v3;
   v15.super_class = AKSignInWithAppleAccountShareInfo;
-  v17 = [(AKSignInWithAppleAccountShareInfo *)&v15 init];
-  objc_storeStrong(&v17, v17);
-  if (v17)
+  selfCopy = [(AKSignInWithAppleAccountShareInfo *)&v15 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"groupID"];
-    groupID = v17->_groupID;
-    v17->_groupID = v4;
+    groupID = selfCopy->_groupID;
+    selfCopy->_groupID = v4;
     MEMORY[0x1E69E5920](groupID);
     v6 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"participantID"];
-    participantID = v17->_participantID;
-    v17->_participantID = v6;
+    participantID = selfCopy->_participantID;
+    selfCopy->_participantID = v6;
     MEMORY[0x1E69E5920](participantID);
     v8 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"participantName"];
-    participantName = v17->_participantName;
-    v17->_participantName = v8;
+    participantName = selfCopy->_participantName;
+    selfCopy->_participantName = v8;
     MEMORY[0x1E69E5920](participantName);
     v10 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"participantHandle"];
-    participantHandle = v17->_participantHandle;
-    v17->_participantHandle = v10;
+    participantHandle = selfCopy->_participantHandle;
+    selfCopy->_participantHandle = v10;
     MEMORY[0x1E69E5920](participantHandle);
     v12 = [location[0] decodeBoolForKey:@"isCurrentUser"];
-    v17->_isCurrentUser = v12;
+    selfCopy->_isCurrentUser = v12;
   }
 
-  v14 = MEMORY[0x1E69E5928](v17);
+  v14 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v4->_groupID forKey:@"groupID"];
-  [location[0] encodeObject:v4->_participantID forKey:@"participantID"];
-  [location[0] encodeObject:v4->_participantName forKey:@"participantName"];
-  [location[0] encodeObject:v4->_participantHandle forKey:@"participantHandle"];
-  [location[0] encodeBool:v4->_isCurrentUser forKey:@"isCurrentUser"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_groupID forKey:@"groupID"];
+  [location[0] encodeObject:selfCopy->_participantID forKey:@"participantID"];
+  [location[0] encodeObject:selfCopy->_participantName forKey:@"participantName"];
+  [location[0] encodeObject:selfCopy->_participantHandle forKey:@"participantHandle"];
+  [location[0] encodeBool:selfCopy->_isCurrentUser forKey:@"isCurrentUser"];
   objc_storeStrong(location, 0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v14 = self;
+  selfCopy = self;
   v13[2] = a2;
-  v13[1] = a3;
-  v13[0] = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v3 = [(NSString *)v14->_groupID copy];
+  v13[1] = zone;
+  v13[0] = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v3 = [(NSString *)selfCopy->_groupID copy];
   v4 = *(v13[0] + 2);
   *(v13[0] + 2) = v3;
   MEMORY[0x1E69E5920](v4);
-  v5 = [(NSString *)v14->_participantID copy];
+  v5 = [(NSString *)selfCopy->_participantID copy];
   v6 = *(v13[0] + 3);
   *(v13[0] + 3) = v5;
   MEMORY[0x1E69E5920](v6);
-  v7 = [(NSString *)v14->_participantName copy];
+  v7 = [(NSString *)selfCopy->_participantName copy];
   v8 = *(v13[0] + 4);
   *(v13[0] + 4) = v7;
   MEMORY[0x1E69E5920](v8);
-  v9 = [(NSString *)v14->_participantHandle copy];
+  v9 = [(NSString *)selfCopy->_participantHandle copy];
   v10 = *(v13[0] + 5);
   *(v13[0] + 5) = v9;
   MEMORY[0x1E69E5920](v10);
-  *(v13[0] + 8) = v14->_isCurrentUser;
+  *(v13[0] + 8) = selfCopy->_isCurrentUser;
   v12 = MEMORY[0x1E69E5928](v13[0]);
   objc_storeStrong(v13, 0);
   return v12;

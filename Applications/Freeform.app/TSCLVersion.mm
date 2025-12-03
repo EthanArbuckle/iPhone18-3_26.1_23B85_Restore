@@ -7,7 +7,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   TSCLVersion.description.getter();
 
   v3 = String._bridgeToObjectiveC()();

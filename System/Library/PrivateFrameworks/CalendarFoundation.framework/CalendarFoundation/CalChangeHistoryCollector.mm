@@ -1,8 +1,8 @@
 @interface CalChangeHistoryCollector
 - (CalChangeHistoryCollector)init;
-- (void)visitAddContactEvent:(id)a3;
-- (void)visitDeleteContactEvent:(id)a3;
-- (void)visitUpdateContactEvent:(id)a3;
+- (void)visitAddContactEvent:(id)event;
+- (void)visitDeleteContactEvent:(id)event;
+- (void)visitUpdateContactEvent:(id)event;
 @end
 
 @implementation CalChangeHistoryCollector
@@ -30,33 +30,33 @@
   return v2;
 }
 
-- (void)visitAddContactEvent:(id)a3
+- (void)visitAddContactEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(CalChangeHistoryCollector *)self insertedContacts];
-  v6 = [v4 contact];
+  eventCopy = event;
+  insertedContacts = [(CalChangeHistoryCollector *)self insertedContacts];
+  contact = [eventCopy contact];
 
-  [v5 addObject:v6];
+  [insertedContacts addObject:contact];
   self->_hasChanges = 1;
 }
 
-- (void)visitUpdateContactEvent:(id)a3
+- (void)visitUpdateContactEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(CalChangeHistoryCollector *)self updatedContacts];
-  v6 = [v4 contact];
+  eventCopy = event;
+  updatedContacts = [(CalChangeHistoryCollector *)self updatedContacts];
+  contact = [eventCopy contact];
 
-  [v5 addObject:v6];
+  [updatedContacts addObject:contact];
   self->_hasChanges = 1;
 }
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(CalChangeHistoryCollector *)self deletedContactIdentifiers];
-  v6 = [v4 contactIdentifier];
+  eventCopy = event;
+  deletedContactIdentifiers = [(CalChangeHistoryCollector *)self deletedContactIdentifiers];
+  contactIdentifier = [eventCopy contactIdentifier];
 
-  [v5 addObject:v6];
+  [deletedContactIdentifiers addObject:contactIdentifier];
   self->_hasChanges = 1;
 }
 

@@ -3,28 +3,28 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)seekTime;
 - ($D9D8CEB498DB86C92DC7BFFFAE539F32)trimmedTimeRange;
 - (BOOL)isDisplayingPhoto;
-- (BOOL)livePhotoView:(id)a3 canBeginInteractivePlaybackAtPoint:(CGPoint)a4;
+- (BOOL)livePhotoView:(id)view canBeginInteractivePlaybackAtPoint:(CGPoint)point;
 - (CGImage)overridePhoto;
 - (CGPoint)scaleAnchorOffset;
 - (CGRect)contentsRect;
-- (PHLivePhotoView)initWithCoder:(id)a3;
-- (PHLivePhotoView)initWithFrame:(CGRect)a3;
+- (PHLivePhotoView)initWithCoder:(id)coder;
+- (PHLivePhotoView)initWithFrame:(CGRect)frame;
 - (UIGestureRecognizer)playbackGestureRecognizer;
-- (double)livePhotoViewExtraMinimumTouchDuration:(id)a3 touch:(id)a4;
+- (double)livePhotoViewExtraMinimumTouchDuration:(id)duration touch:(id)touch;
 - (id)_debugOverlayImageViewIfExists;
 - (id)delegate;
 - (id)generateSnapshotImage;
-- (id)photosAssetDebugOverlayViewCurrentlyDisplayedImage:(id)a3;
-- (int64_t)photosAssetDebugOverlayViewPreferredImageDynamicRange:(id)a3;
+- (id)photosAssetDebugOverlayViewCurrentlyDisplayedImage:(id)image;
+- (int64_t)photosAssetDebugOverlayViewPreferredImageDynamicRange:(id)range;
 - (void)_addDebugOverlayViewIfNeeded;
-- (void)_applySRLCompensationAmount:(id)a3 updateCount:(int64_t)a4;
+- (void)_applySRLCompensationAmount:(id)amount updateCount:(int64_t)count;
 - (void)_commonPHLivePhotoViewInitialization;
 - (void)_handlePlayerItemStatusChanged;
 - (void)_playerDidBeginHinting;
-- (void)_setPlaybackRequested:(BOOL)a3;
-- (void)_setPlayerItem:(id)a3;
-- (void)_setPlayingVitality:(BOOL)a3;
-- (void)_setScrubbing:(BOOL)a3;
+- (void)_setPlaybackRequested:(BOOL)requested;
+- (void)_setPlayerItem:(id)item;
+- (void)_setPlayingVitality:(BOOL)vitality;
+- (void)_setScrubbing:(BOOL)scrubbing;
 - (void)_updateCurrentPlaybackStyleAndSeeking;
 - (void)_updatePlayerAudioEnabled;
 - (void)_updatePlayerTargetReadiness;
@@ -33,24 +33,24 @@
 - (void)_updateStatusBorder;
 - (void)_updateVideoFilter;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)photosAssetDebugOverlayView:(id)a3 didRequestPreferredImageDynamicRange:(int64_t)a4;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)photosAssetDebugOverlayView:(id)view didRequestPreferredImageDynamicRange:(int64_t)range;
 - (void)setContentMode:(PHLivePhotoViewContentMode)contentMode;
 - (void)setContentsRect:(CGRect)contentsRect;
 - (void)setDelegate:(id)delegate;
 - (void)setLivePhoto:(PHLivePhoto *)livePhoto;
 - (void)setMuted:(BOOL)muted;
-- (void)setOverridePhoto:(CGImage *)a3;
-- (void)setOverrideSRLCompensationAmount:(id)a3;
-- (void)setPhotoView:(id)a3;
-- (void)setPlaybackControllingInteraction:(id)a3;
-- (void)setPlayer:(id)a3;
-- (void)setPreferredImageDynamicRange:(int64_t)a3;
-- (void)setScaleAnchorOffset:(CGPoint)a3;
-- (void)setSeekTime:(id *)a3;
-- (void)setShowsStatusBorder:(BOOL)a3;
-- (void)setTargetReadiness:(int64_t)a3;
-- (void)setTrimmedTimeRange:(id *)a3;
+- (void)setOverridePhoto:(CGImage *)photo;
+- (void)setOverrideSRLCompensationAmount:(id)amount;
+- (void)setPhotoView:(id)view;
+- (void)setPlaybackControllingInteraction:(id)interaction;
+- (void)setPlayer:(id)player;
+- (void)setPreferredImageDynamicRange:(int64_t)range;
+- (void)setScaleAnchorOffset:(CGPoint)offset;
+- (void)setSeekTime:(id *)time;
+- (void)setShowsStatusBorder:(BOOL)border;
+- (void)setTargetReadiness:(int64_t)readiness;
+- (void)setTrimmedTimeRange:(id *)range;
 - (void)startPlaybackWithStyle:(PHLivePhotoViewPlaybackStyle)playbackStyle;
 - (void)stopPlayback;
 @end
@@ -97,11 +97,11 @@
 
 - (id)_debugOverlayImageViewIfExists
 {
-  v2 = [(PHLivePhotoView *)self photoView];
+  photoView = [(PHLivePhotoView *)self photoView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = photoView;
   }
 
   else
@@ -112,19 +112,19 @@
   return v3;
 }
 
-- (int64_t)photosAssetDebugOverlayViewPreferredImageDynamicRange:(id)a3
+- (int64_t)photosAssetDebugOverlayViewPreferredImageDynamicRange:(id)range
 {
-  v4 = [(PHLivePhotoView *)self _debugOverlayImageViewIfExists];
-  v5 = v4;
-  if (!v4)
+  selfCopy = [(PHLivePhotoView *)self _debugOverlayImageViewIfExists];
+  v5 = selfCopy;
+  if (!selfCopy)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  v6 = [v4 preferredImageDynamicRange];
-  if (v6 < 3)
+  preferredImageDynamicRange = [selfCopy preferredImageDynamicRange];
+  if (preferredImageDynamicRange < 3)
   {
-    v7 = v6 + 1;
+    v7 = preferredImageDynamicRange + 1;
   }
 
   else
@@ -135,30 +135,30 @@
   return v7;
 }
 
-- (void)photosAssetDebugOverlayView:(id)a3 didRequestPreferredImageDynamicRange:(int64_t)a4
+- (void)photosAssetDebugOverlayView:(id)view didRequestPreferredImageDynamicRange:(int64_t)range
 {
-  v6 = [(PHLivePhotoView *)self _debugOverlayImageViewIfExists];
-  if ((a4 - 1) >= 3)
+  selfCopy = [(PHLivePhotoView *)self _debugOverlayImageViewIfExists];
+  if ((range - 1) >= 3)
   {
     v7 = -1;
   }
 
   else
   {
-    v7 = a4 - 1;
+    v7 = range - 1;
   }
 
-  v8 = v6;
-  if (!v6)
+  v8 = selfCopy;
+  if (!selfCopy)
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  [v6 setPreferredImageDynamicRange:v7];
+  [selfCopy setPreferredImageDynamicRange:v7];
   [(PHLivePhotoView *)self _updateDebugOverlayView];
 }
 
-- (id)photosAssetDebugOverlayViewCurrentlyDisplayedImage:(id)a3
+- (id)photosAssetDebugOverlayViewCurrentlyDisplayedImage:(id)image
 {
   livePhoto = [(PHLivePhotoView *)self _debugOverlayImageViewIfExists];
   v5 = livePhoto;
@@ -167,31 +167,31 @@
     livePhoto = self->_livePhoto;
   }
 
-  v6 = [livePhoto image];
+  image = [livePhoto image];
 
-  return v6;
+  return image;
 }
 
-- (double)livePhotoViewExtraMinimumTouchDuration:(id)a3 touch:(id)a4
+- (double)livePhotoViewExtraMinimumTouchDuration:(id)duration touch:(id)touch
 {
   if (!self->_delegateFlags.respondsToExtraMinimumTouchDuration)
   {
     return 0.0;
   }
 
-  v5 = a4;
-  v6 = [(PHLivePhotoView *)self delegate];
-  [v6 livePhotoView:self extraMinimumTouchDurationForTouch:v5 withStyle:1];
+  touchCopy = touch;
+  delegate = [(PHLivePhotoView *)self delegate];
+  [delegate livePhotoView:self extraMinimumTouchDurationForTouch:touchCopy withStyle:1];
   v8 = v7;
 
   return v8;
 }
 
-- (BOOL)livePhotoView:(id)a3 canBeginInteractivePlaybackAtPoint:(CGPoint)a4
+- (BOOL)livePhotoView:(id)view canBeginInteractivePlaybackAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   if (self->_delegateFlags.respondsToCanBeginPlayback && (-[PHLivePhotoView delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 livePhotoView:self canBeginPlaybackWithStyle:1], v8, !v9))
   {
     v12 = 0;
@@ -199,12 +199,12 @@
 
   else
   {
-    v10 = [(PHLivePhotoView *)self playbackControllingInteraction];
+    playbackControllingInteraction = [(PHLivePhotoView *)self playbackControllingInteraction];
 
-    if (v10)
+    if (playbackControllingInteraction)
     {
-      v11 = [(PHLivePhotoView *)self playbackControllingInteraction];
-      v12 = [v11 livePhotoView:self canBeginInteractivePlaybackAtPoint:v7 inView:{x, y}];
+      playbackControllingInteraction2 = [(PHLivePhotoView *)self playbackControllingInteraction];
+      v12 = [playbackControllingInteraction2 livePhotoView:self canBeginInteractivePlaybackAtPoint:viewCopy inView:{x, y}];
     }
 
     else
@@ -216,30 +216,30 @@
   return v12;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (ISPlayerChangeObserverContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (ISPlayerChangeObserverContext == context)
   {
-    if ((v6 & 0x10) != 0)
+    if ((changeCopy & 0x10) != 0)
     {
       pl_dispatch_on_main_queue();
     }
 
-    if ((v6 & 0x20) != 0 && [v8 isHinting])
+    if ((changeCopy & 0x20) != 0 && [observableCopy isHinting])
     {
       pl_dispatch_on_main_queue();
     }
 
-    if ((v6 & 8) != 0)
+    if ((changeCopy & 8) != 0)
     {
       pl_dispatch_on_main_queue();
       [(PHLivePhotoView *)self _updateCurrentPlaybackStyleAndSeeking];
     }
   }
 
-  else if ((v6 & 1) != 0 && ISPlayerItemChangeObserverContext == a5)
+  else if ((changeCopy & 1) != 0 && ISPlayerItemChangeObserverContext == context)
   {
     pl_dispatch_on_main_queue();
   }
@@ -314,20 +314,20 @@ LABEL_10:
 
 - (void)_updatePlayerViewDynamicRange
 {
-  v3 = [(PHLivePhotoView *)self preferredImageDynamicRange];
-  v4 = [(PHLivePhotoView *)self playerView];
-  [v4 setPreferredImageDynamicRange:v3];
+  preferredImageDynamicRange = [(PHLivePhotoView *)self preferredImageDynamicRange];
+  playerView = [(PHLivePhotoView *)self playerView];
+  [playerView setPreferredImageDynamicRange:preferredImageDynamicRange];
 }
 
-- (void)_applySRLCompensationAmount:(id)a3 updateCount:(int64_t)a4
+- (void)_applySRLCompensationAmount:(id)amount updateCount:(int64_t)count
 {
-  v8 = a3;
-  if ([(PHLivePhotoView *)self videoFilterUpdateCounter]== a4)
+  amountCopy = amount;
+  if ([(PHLivePhotoView *)self videoFilterUpdateCounter]== count)
   {
-    if (v8)
+    if (amountCopy)
     {
       v6 = [MEMORY[0x1E6979378] filterWithType:@"srl"];
-      [v6 setValue:v8 forKey:@"inputAmount"];
+      [v6 setValue:amountCopy forKey:@"inputAmount"];
     }
 
     else
@@ -335,34 +335,34 @@ LABEL_10:
       v6 = 0;
     }
 
-    v7 = [(PHLivePhotoView *)self playerView];
-    [v7 setVideoFilter:v6];
+    playerView = [(PHLivePhotoView *)self playerView];
+    [playerView setVideoFilter:v6];
   }
 }
 
 - (void)_updateVideoFilter
 {
   [(PHLivePhotoView *)self setVideoFilterUpdateCounter:[(PHLivePhotoView *)self videoFilterUpdateCounter]+ 1];
-  v3 = [(PHLivePhotoView *)self videoFilterUpdateCounter];
-  v4 = [(PHLivePhotoView *)self overrideSRLCompensationAmount];
-  if (v4)
+  videoFilterUpdateCounter = [(PHLivePhotoView *)self videoFilterUpdateCounter];
+  overrideSRLCompensationAmount = [(PHLivePhotoView *)self overrideSRLCompensationAmount];
+  if (overrideSRLCompensationAmount)
   {
-    [(PHLivePhotoView *)self _applySRLCompensationAmount:v4 updateCount:v3];
+    [(PHLivePhotoView *)self _applySRLCompensationAmount:overrideSRLCompensationAmount updateCount:videoFilterUpdateCounter];
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v5 = [(PHLivePhotoView *)self livePhoto];
+    livePhoto = [(PHLivePhotoView *)self livePhoto];
     v6 = dispatch_get_global_queue(25, 0);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __37__PHLivePhotoView__updateVideoFilter__block_invoke;
     v8[3] = &unk_1E83F7298;
-    v9 = v5;
-    v7 = v5;
+    v9 = livePhoto;
+    v7 = livePhoto;
     objc_copyWeak(v10, &location);
-    v10[1] = v3;
+    v10[1] = videoFilterUpdateCounter;
     dispatch_async(v6, v8);
 
     objc_destroyWeak(v10);
@@ -393,12 +393,12 @@ void __37__PHLivePhotoView__updateVideoFilter__block_invoke_2(uint64_t a1)
   [WeakRetained _applySRLCompensationAmount:*(a1 + 32) updateCount:*(a1 + 48)];
 }
 
-- (void)setOverrideSRLCompensationAmount:(id)a3
+- (void)setOverrideSRLCompensationAmount:(id)amount
 {
-  v5 = a3;
-  if (self->_overrideSRLCompensationAmount != v5 && ([(NSNumber *)v5 isEqual:?]& 1) == 0)
+  amountCopy = amount;
+  if (self->_overrideSRLCompensationAmount != amountCopy && ([(NSNumber *)amountCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_overrideSRLCompensationAmount, a3);
+    objc_storeStrong(&self->_overrideSRLCompensationAmount, amount);
     [(PHLivePhotoView *)self _updateVideoFilter];
   }
 
@@ -428,8 +428,8 @@ void __37__PHLivePhotoView__updateVideoFilter__block_invoke_2(uint64_t a1)
       }
     }
 
-    v5 = [(PHLivePhotoView *)self player];
-    [v5 setTargetReadiness:v3];
+    player = [(PHLivePhotoView *)self player];
+    [player setTargetReadiness:v3];
   }
 }
 
@@ -437,128 +437,128 @@ void __37__PHLivePhotoView__updateVideoFilter__block_invoke_2(uint64_t a1)
 {
   if (self->_delegatePrivateFlags.respondsToDidBeginHinting)
   {
-    v4 = [(PHLivePhotoView *)self delegate];
-    [v4 livePhotoViewDidBeginHinting:self];
+    delegate = [(PHLivePhotoView *)self delegate];
+    [delegate livePhotoViewDidBeginHinting:self];
   }
 }
 
 - (void)_updateCurrentPlaybackStyleAndSeeking
 {
-  v3 = [(PHLivePhotoView *)self player];
-  v4 = [v3 currentPlaybackStyle];
+  player = [(PHLivePhotoView *)self player];
+  currentPlaybackStyle = [player currentPlaybackStyle];
 
-  v5 = 2 * (v4 == 2);
-  if (v4 == 1)
+  v5 = 2 * (currentPlaybackStyle == 2);
+  if (currentPlaybackStyle == 1)
   {
     v5 = 1;
   }
 
   self->_currentPlaybackStyle = v5;
 
-  [(PHLivePhotoView *)self _setScrubbing:v4 == 3];
+  [(PHLivePhotoView *)self _setScrubbing:currentPlaybackStyle == 3];
 }
 
 - (void)_updateStatusBorder
 {
   if ([(PHLivePhotoView *)self showsStatusBorder])
   {
-    v9 = [(PHLivePhotoView *)self _playerItem];
-    if ([v9 status] == 3)
+    _playerItem = [(PHLivePhotoView *)self _playerItem];
+    if ([_playerItem status] == 3)
     {
-      v3 = [MEMORY[0x1E69DC888] greenColor];
-      v4 = [v9 videoComposition];
+      greenColor = [MEMORY[0x1E69DC888] greenColor];
+      videoComposition = [_playerItem videoComposition];
 
-      if (v4)
+      if (videoComposition)
       {
-        v5 = [MEMORY[0x1E69DC888] purpleColor];
+        purpleColor = [MEMORY[0x1E69DC888] purpleColor];
 
-        v3 = v5;
+        greenColor = purpleColor;
       }
     }
 
     else
     {
-      v3 = [MEMORY[0x1E69DC888] redColor];
+      greenColor = [MEMORY[0x1E69DC888] redColor];
     }
 
-    v7 = [(PHLivePhotoView *)self layer];
-    [v7 setBorderColor:{objc_msgSend(v3, "CGColor")}];
+    layer = [(PHLivePhotoView *)self layer];
+    [layer setBorderColor:{objc_msgSend(greenColor, "CGColor")}];
 
-    v8 = [(PHLivePhotoView *)self layer];
-    [v8 setBorderWidth:2.0];
+    layer2 = [(PHLivePhotoView *)self layer];
+    [layer2 setBorderWidth:2.0];
   }
 
   else
   {
-    v6 = [(PHLivePhotoView *)self layer];
-    [v6 setBorderWidth:0.0];
+    layer3 = [(PHLivePhotoView *)self layer];
+    [layer3 setBorderWidth:0.0];
 
-    v9 = [(PHLivePhotoView *)self layer];
-    [v9 setBorderColor:0];
+    _playerItem = [(PHLivePhotoView *)self layer];
+    [_playerItem setBorderColor:0];
   }
 }
 
-- (void)_setPlayingVitality:(BOOL)a3
+- (void)_setPlayingVitality:(BOOL)vitality
 {
-  if (self->__playingVitality != a3)
+  if (self->__playingVitality != vitality)
   {
-    self->__playingVitality = a3;
-    if (!a3 && self->_delegatePrivateFlags.respondsToDidEndPlayingVitality)
+    self->__playingVitality = vitality;
+    if (!vitality && self->_delegatePrivateFlags.respondsToDidEndPlayingVitality)
     {
-      v4 = [(PHLivePhotoView *)self delegate];
-      [v4 livePhotoViewDidEndPlayingVitality:self];
+      delegate = [(PHLivePhotoView *)self delegate];
+      [delegate livePhotoViewDidEndPlayingVitality:self];
     }
   }
 }
 
 - (void)_updatePlayingVitality
 {
-  v3 = [(PHLivePhotoView *)self player];
-  -[PHLivePhotoView _setPlayingVitality:](self, "_setPlayingVitality:", [v3 isPlayingVitality]);
+  player = [(PHLivePhotoView *)self player];
+  -[PHLivePhotoView _setPlayingVitality:](self, "_setPlayingVitality:", [player isPlayingVitality]);
 }
 
 - (void)_updatePlayerAudioEnabled
 {
-  v3 = [(PHLivePhotoView *)self isMuted];
-  v4 = [(PHLivePhotoView *)self player];
-  [v4 setAudioEnabled:!v3];
+  isMuted = [(PHLivePhotoView *)self isMuted];
+  player = [(PHLivePhotoView *)self player];
+  [player setAudioEnabled:!isMuted];
 }
 
-- (void)_setPlayerItem:(id)a3
+- (void)_setPlayerItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   playerItem = self->__playerItem;
-  if (playerItem != v5)
+  if (playerItem != itemCopy)
   {
-    v8 = v5;
+    v8 = itemCopy;
     [(ISPlayerItem *)playerItem unregisterChangeObserver:self context:ISPlayerItemChangeObserverContext];
-    objc_storeStrong(&self->__playerItem, a3);
+    objc_storeStrong(&self->__playerItem, item);
     [(ISPlayerItem *)self->__playerItem registerChangeObserver:self context:ISPlayerItemChangeObserverContext];
     [(PHLivePhotoView *)self _updateStatusBorder];
-    v7 = [(PHLivePhotoView *)self player];
-    [v7 setPlayerItem:v8];
+    player = [(PHLivePhotoView *)self player];
+    [player setPlayerItem:v8];
 
     playerItem = [(PHLivePhotoView *)self _updatePlayerAudioEnabled];
-    v5 = v8;
+    itemCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](playerItem, v5);
+  MEMORY[0x1EEE66BB8](playerItem, itemCopy);
 }
 
-- (void)_setScrubbing:(BOOL)a3
+- (void)_setScrubbing:(BOOL)scrubbing
 {
-  if (self->_scrubbing != a3)
+  if (self->_scrubbing != scrubbing)
   {
-    self->_scrubbing = a3;
-    if (a3)
+    self->_scrubbing = scrubbing;
+    if (scrubbing)
     {
       if (!self->_delegatePrivateFlags.respondsToDidBeginScrubbing)
       {
         return;
       }
 
-      v4 = [(PHLivePhotoView *)self delegate];
-      [v4 livePhotoViewDidBeginScrubbing:self];
+      delegate = [(PHLivePhotoView *)self delegate];
+      [delegate livePhotoViewDidBeginScrubbing:self];
     }
 
     else
@@ -568,42 +568,42 @@ void __37__PHLivePhotoView__updateVideoFilter__block_invoke_2(uint64_t a1)
         return;
       }
 
-      v4 = [(PHLivePhotoView *)self delegate];
-      [v4 livePhotoViewDidEndScrubbing:self];
+      delegate = [(PHLivePhotoView *)self delegate];
+      [delegate livePhotoViewDidEndScrubbing:self];
     }
   }
 }
 
 - (BOOL)isDisplayingPhoto
 {
-  v2 = [(PHLivePhotoView *)self playerView];
-  v3 = [v2 isDisplayingPhoto];
+  playerView = [(PHLivePhotoView *)self playerView];
+  isDisplayingPhoto = [playerView isDisplayingPhoto];
 
-  return v3;
+  return isDisplayingPhoto;
 }
 
 - (id)generateSnapshotImage
 {
-  v2 = [(PHLivePhotoView *)self playerView];
-  v3 = [v2 generateSnapshotImage];
+  playerView = [(PHLivePhotoView *)self playerView];
+  generateSnapshotImage = [playerView generateSnapshotImage];
 
-  return v3;
+  return generateSnapshotImage;
 }
 
 - (CGImage)overridePhoto
 {
-  v2 = [(PHLivePhotoView *)self playerView];
-  v3 = [v2 overrideImage];
-  v4 = [v3 CGImage];
+  playerView = [(PHLivePhotoView *)self playerView];
+  overrideImage = [playerView overrideImage];
+  cGImage = [overrideImage CGImage];
 
-  return v4;
+  return cGImage;
 }
 
-- (void)setOverridePhoto:(CGImage *)a3
+- (void)setOverridePhoto:(CGImage *)photo
 {
-  v5 = [MEMORY[0x1E69DCAB8] imageWithCGImage:a3];
-  v4 = [(PHLivePhotoView *)self playerView];
-  [v4 setOverrideImage:v5];
+  v5 = [MEMORY[0x1E69DCAB8] imageWithCGImage:photo];
+  playerView = [(PHLivePhotoView *)self playerView];
+  [playerView setOverrideImage:v5];
 }
 
 - (void)setContentMode:(PHLivePhotoViewContentMode)contentMode
@@ -611,21 +611,21 @@ void __37__PHLivePhotoView__updateVideoFilter__block_invoke_2(uint64_t a1)
   v6.receiver = self;
   v6.super_class = PHLivePhotoView;
   [(PHLivePhotoView *)&v6 setContentMode:?];
-  v5 = [(PHLivePhotoView *)self playerView];
-  [v5 setContentMode:contentMode];
+  playerView = [(PHLivePhotoView *)self playerView];
+  [playerView setContentMode:contentMode];
 }
 
 - (void)stopPlayback
 {
-  v2 = [(PHLivePhotoView *)self player];
-  [v2 stopPlayback];
+  player = [(PHLivePhotoView *)self player];
+  [player stopPlayback];
 }
 
 - (void)startPlaybackWithStyle:(PHLivePhotoViewPlaybackStyle)playbackStyle
 {
   v4 = playbackStyle == PHLivePhotoViewPlaybackStyleHint;
-  v5 = [(PHLivePhotoView *)self player];
-  v7 = v5;
+  player = [(PHLivePhotoView *)self player];
+  v7 = player;
   if (playbackStyle == PHLivePhotoViewPlaybackStyleFull)
   {
     v6 = 1;
@@ -636,28 +636,28 @@ void __37__PHLivePhotoView__updateVideoFilter__block_invoke_2(uint64_t a1)
     v6 = 2 * v4;
   }
 
-  [v5 startPlaybackWithStyleWhenReady:v6 settleAutomatically:1];
+  [player startPlaybackWithStyleWhenReady:v6 settleAutomatically:1];
 }
 
-- (void)setTrimmedTimeRange:(id *)a3
+- (void)setTrimmedTimeRange:(id *)range
 {
-  v4 = *&a3->var0.var3;
-  v3 = *&a3->var1.var1;
-  *&self->_trimmedTimeRange.start.value = *&a3->var0.var0;
+  v4 = *&range->var0.var3;
+  v3 = *&range->var1.var1;
+  *&self->_trimmedTimeRange.start.value = *&range->var0.var0;
   *&self->_trimmedTimeRange.start.epoch = v4;
   *&self->_trimmedTimeRange.duration.timescale = v3;
-  v5 = [(PHLivePhotoView *)self player:a3->var0.var0];
+  v5 = [(PHLivePhotoView *)self player:range->var0.var0];
   [v5 setTrimTimeRange:&v6];
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)seekTime
 {
-  v4 = [(PHLivePhotoView *)self player];
-  if (v4)
+  player = [(PHLivePhotoView *)self player];
+  if (player)
   {
-    v6 = v4;
-    [v4 seekTime];
-    v4 = v6;
+    v6 = player;
+    [player seekTime];
+    player = v6;
   }
 
   else
@@ -670,11 +670,11 @@ void __37__PHLivePhotoView__updateVideoFilter__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)setSeekTime:(id *)a3
+- (void)setSeekTime:(id *)time
 {
-  v4 = [(PHLivePhotoView *)self player];
-  v5 = *a3;
-  [v4 setSeekTime:&v5 completion:0];
+  player = [(PHLivePhotoView *)self player];
+  v5 = *time;
+  [player setSeekTime:&v5 completion:0];
 }
 
 - (void)setMuted:(BOOL)muted
@@ -686,20 +686,20 @@ void __37__PHLivePhotoView__updateVideoFilter__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_setPlaybackRequested:(BOOL)a3
+- (void)_setPlaybackRequested:(BOOL)requested
 {
-  if (self->__playbackRequested != a3)
+  if (self->__playbackRequested != requested)
   {
-    self->__playbackRequested = a3;
+    self->__playbackRequested = requested;
     [(PHLivePhotoView *)self _updatePlayerTargetReadiness];
   }
 }
 
-- (void)setTargetReadiness:(int64_t)a3
+- (void)setTargetReadiness:(int64_t)readiness
 {
-  if (self->_targetReadiness != a3)
+  if (self->_targetReadiness != readiness)
   {
-    self->_targetReadiness = a3;
+    self->_targetReadiness = readiness;
     [(PHLivePhotoView *)self _updatePlayerTargetReadiness];
   }
 }
@@ -713,29 +713,29 @@ void __37__PHLivePhotoView__updateVideoFilter__block_invoke_2(uint64_t a1)
     objc_storeStrong(&self->_livePhoto, livePhoto);
     if (v5)
     {
-      v6 = [(PHLivePhoto *)v5 image];
-      v7 = [(PHLivePhoto *)v5 videoAsset];
+      image = [(PHLivePhoto *)v5 image];
+      videoAsset = [(PHLivePhoto *)v5 videoAsset];
       [(PHLivePhoto *)v5 photoTime];
       Seconds = CMTimeGetSeconds(&v46);
-      [v6 imageOrientation];
+      [image imageOrientation];
       v9 = PLExifOrientationFromImageOrientation();
       [(PHLivePhoto *)v5 targetSize];
       v12 = v11;
       v13 = v10;
       if (v11 == *MEMORY[0x1E695F060] && v10 == *(MEMORY[0x1E695F060] + 8))
       {
-        v15 = [(PHLivePhotoView *)self window];
-        v16 = [v15 screen];
+        window = [(PHLivePhotoView *)self window];
+        screen = [window screen];
 
-        if (!v16)
+        if (!screen)
         {
-          v16 = [MEMORY[0x1E69DCEB0] mainScreen];
+          screen = [MEMORY[0x1E69DCEB0] mainScreen];
         }
 
-        [v16 bounds];
+        [screen bounds];
         v18 = v17;
         v20 = v19;
-        [v16 scale];
+        [screen scale];
         v22 = v21 * v18;
         v23 = v21 * v20;
         if (v22 >= v23)
@@ -751,8 +751,8 @@ void __37__PHLivePhotoView__updateVideoFilter__block_invoke_2(uint64_t a1)
         v12 = v13;
       }
 
-      v24 = [(PHLivePhoto *)v5 hasPhotoColorAdjustments];
-      v25 = [objc_alloc(MEMORY[0x1E69C1AE8]) initWithVideoAsset:v7 UIImage:v6 photoTime:v9 photoEXIFOrientation:v24 options:Seconds];
+      hasPhotoColorAdjustments = [(PHLivePhoto *)v5 hasPhotoColorAdjustments];
+      v25 = [objc_alloc(MEMORY[0x1E69C1AE8]) initWithVideoAsset:videoAsset UIImage:image photoTime:v9 photoEXIFOrientation:hasPhotoColorAdjustments options:Seconds];
       [(PHLivePhoto *)v5 size];
       v28 = 0;
       if (v26 != 0.0 && v27 != 0.0)
@@ -795,17 +795,17 @@ void __37__PHLivePhotoView__updateVideoFilter__block_invoke_2(uint64_t a1)
       }
 
       v31 = [MEMORY[0x1E69C1B00] playerItemWithAsset:v25 targetSize:v28 contentAspectRatio:{v12, v13}];
-      v38 = [(PHLivePhoto *)v5 videoComposition];
-      [v31 setVideoComposition:v38];
+      videoComposition = [(PHLivePhoto *)v5 videoComposition];
+      [v31 setVideoComposition:videoComposition];
       [(PHLivePhoto *)v5 audioVolume];
       v40 = v39;
-      v41 = [(ISLivePhotoUIView *)self->_playerView player];
+      player = [(ISLivePhotoUIView *)self->_playerView player];
       LODWORD(v42) = v40;
-      [v41 setAudioVolume:v42];
+      [player setAudioVolume:v42];
 
       playbackControllingInteraction = self->_playbackControllingInteraction;
-      v44 = [(PHLivePhoto *)self->_livePhoto image];
-      [(PHLivePhotoViewPlaybackControllingInteraction *)playbackControllingInteraction updatePhotosImage:v44];
+      image2 = [(PHLivePhoto *)self->_livePhoto image];
+      [(PHLivePhotoViewPlaybackControllingInteraction *)playbackControllingInteraction updatePhotosImage:image2];
     }
 
     else
@@ -821,15 +821,15 @@ void __37__PHLivePhotoView__updateVideoFilter__block_invoke_2(uint64_t a1)
   v45 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setScaleAnchorOffset:(CGPoint)a3
+- (void)setScaleAnchorOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  if (self->_scaleAnchorOffset.x != a3.x || self->_scaleAnchorOffset.y != a3.y)
+  y = offset.y;
+  x = offset.x;
+  if (self->_scaleAnchorOffset.x != offset.x || self->_scaleAnchorOffset.y != offset.y)
   {
-    self->_scaleAnchorOffset = a3;
-    v6 = [(PHLivePhotoView *)self playerView];
-    [v6 setScaleAnchorOffset:{x, y}];
+    self->_scaleAnchorOffset = offset;
+    playerView = [(PHLivePhotoView *)self playerView];
+    [playerView setScaleAnchorOffset:{x, y}];
   }
 }
 
@@ -846,23 +846,23 @@ void __37__PHLivePhotoView__updateVideoFilter__block_invoke_2(uint64_t a1)
     p_contentsRect->origin.y = y;
     p_contentsRect->size.width = width;
     p_contentsRect->size.height = height;
-    v9 = [(PHLivePhotoView *)self playerView];
-    [v9 setContentsRect:{x, y, width, height}];
+    playerView = [(PHLivePhotoView *)self playerView];
+    [playerView setContentsRect:{x, y, width, height}];
   }
 }
 
-- (void)setPhotoView:(id)a3
+- (void)setPhotoView:(id)view
 {
-  v5 = a3;
-  if (self->_photoView != v5)
+  viewCopy = view;
+  if (self->_photoView != viewCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_photoView, a3);
-    v6 = [(PHLivePhotoView *)self playerView];
-    [v6 setCustomPhotoView:self->_photoView];
+    v7 = viewCopy;
+    objc_storeStrong(&self->_photoView, view);
+    playerView = [(PHLivePhotoView *)self playerView];
+    [playerView setCustomPhotoView:self->_photoView];
 
     [(PHLivePhotoView *)self _updateDebugOverlayView];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
@@ -891,45 +891,45 @@ void __37__PHLivePhotoView__updateVideoFilter__block_invoke_2(uint64_t a1)
 
 - (UIGestureRecognizer)playbackGestureRecognizer
 {
-  v2 = [(PHLivePhotoView *)self playerView];
-  v3 = [v2 playbackGestureRecognizer];
+  playerView = [(PHLivePhotoView *)self playerView];
+  playbackGestureRecognizer = [playerView playbackGestureRecognizer];
 
-  return v3;
+  return playbackGestureRecognizer;
 }
 
-- (void)setShowsStatusBorder:(BOOL)a3
+- (void)setShowsStatusBorder:(BOOL)border
 {
-  if (self->_showsStatusBorder != a3)
+  if (self->_showsStatusBorder != border)
   {
-    self->_showsStatusBorder = a3;
+    self->_showsStatusBorder = border;
     [(PHLivePhotoView *)self _updateStatusBorder];
   }
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v5 = a3;
-  if (self->_player != v5)
+  playerCopy = player;
+  if (self->_player != playerCopy)
   {
-    v9 = v5;
-    v6 = [(PHLivePhotoView *)self playerView];
+    v9 = playerCopy;
+    playerView = [(PHLivePhotoView *)self playerView];
     [(ISLivePhotoPlayer *)self->_player unregisterChangeObserver:self context:ISPlayerChangeObserverContext];
-    objc_storeStrong(&self->_player, a3);
+    objc_storeStrong(&self->_player, player);
     [(ISLivePhotoPlayer *)self->_player registerChangeObserver:self context:ISPlayerChangeObserverContext];
-    [v6 setPlayer:self->_player];
-    v7 = [(ISLivePhotoPlayer *)v9 playerItem];
+    [playerView setPlayer:self->_player];
+    playerItem = [(ISLivePhotoPlayer *)v9 playerItem];
     playerItem = self->__playerItem;
-    self->__playerItem = v7;
+    self->__playerItem = playerItem;
 
-    v5 = v9;
+    playerCopy = v9;
   }
 }
 
-- (void)setPreferredImageDynamicRange:(int64_t)a3
+- (void)setPreferredImageDynamicRange:(int64_t)range
 {
-  if (self->_preferredImageDynamicRange != a3)
+  if (self->_preferredImageDynamicRange != range)
   {
-    self->_preferredImageDynamicRange = a3;
+    self->_preferredImageDynamicRange = range;
     [(PHLivePhotoView *)self _updatePlayerViewDynamicRange];
 
     [(PHLivePhotoView *)self _updateDebugOverlayView];
@@ -960,9 +960,9 @@ void __37__PHLivePhotoView__updateVideoFilter__block_invoke_2(uint64_t a1)
   [(ISLivePhotoUIView *)self->_playerView setAutoresizingMask:18];
   [(ISLivePhotoUIView *)self->_playerView setDelegate:self];
   [(PHLivePhotoView *)self addSubview:self->_playerView];
-  v6 = [(ISLivePhotoUIView *)self->_playerView player];
+  player = [(ISLivePhotoUIView *)self->_playerView player];
   player = self->_player;
-  self->_player = v6;
+  self->_player = player;
 
   [(ISLivePhotoPlayer *)self->_player registerChangeObserver:self context:ISPlayerChangeObserverContext];
   self->_contentsRect.origin.x = 0.0;
@@ -977,37 +977,37 @@ void __37__PHLivePhotoView__updateVideoFilter__block_invoke_2(uint64_t a1)
   [(PHLivePhotoView *)self _addDebugOverlayViewIfNeeded];
 }
 
-- (void)setPlaybackControllingInteraction:(id)a3
+- (void)setPlaybackControllingInteraction:(id)interaction
 {
-  v5 = a3;
-  if (self->_playbackControllingInteraction != v5)
+  interactionCopy = interaction;
+  if (self->_playbackControllingInteraction != interactionCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_playbackControllingInteraction, a3);
+    v9 = interactionCopy;
+    objc_storeStrong(&self->_playbackControllingInteraction, interaction);
     [(PHLivePhotoViewPlaybackControllingInteraction *)v9 setLivePhotoView:self];
-    v6 = [(PHLivePhotoView *)self playerView];
+    playerView = [(PHLivePhotoView *)self playerView];
     if (v9)
     {
-      v7 = [v6 playbackGestureRecognizer];
-      [(PHLivePhotoView *)self addGestureRecognizer:v7];
+      playbackGestureRecognizer = [playerView playbackGestureRecognizer];
+      [(PHLivePhotoView *)self addGestureRecognizer:playbackGestureRecognizer];
     }
 
     else
     {
-      v7 = [(PHLivePhotoView *)self playerView];
-      v8 = [v7 playbackGestureRecognizer];
-      [v6 addGestureRecognizer:v8];
+      playbackGestureRecognizer = [(PHLivePhotoView *)self playerView];
+      v7PlaybackGestureRecognizer = [playbackGestureRecognizer playbackGestureRecognizer];
+      [playerView addGestureRecognizer:v7PlaybackGestureRecognizer];
     }
 
-    v5 = v9;
+    interactionCopy = v9;
   }
 }
 
-- (PHLivePhotoView)initWithCoder:(id)a3
+- (PHLivePhotoView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PHLivePhotoView;
-  v3 = [(PHLivePhotoView *)&v6 initWithCoder:a3];
+  v3 = [(PHLivePhotoView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -1017,11 +1017,11 @@ void __37__PHLivePhotoView__updateVideoFilter__block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (PHLivePhotoView)initWithFrame:(CGRect)a3
+- (PHLivePhotoView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PHLivePhotoView;
-  v3 = [(PHLivePhotoView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHLivePhotoView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

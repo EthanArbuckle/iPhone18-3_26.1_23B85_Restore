@@ -1,17 +1,17 @@
 @interface MPCAssistantEncodings
-- (id)decodeURLData:(id)a3;
-- (id)encodeURLData:(id)a3;
-- (void)decodeHashedRouteUIDs:(id)a3 completion:(id)a4;
-- (void)encodeHashedRouteUIDs:(id)a3 completion:(id)a4;
+- (id)decodeURLData:(id)data;
+- (id)encodeURLData:(id)data;
+- (void)decodeHashedRouteUIDs:(id)ds completion:(id)completion;
+- (void)encodeHashedRouteUIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation MPCAssistantEncodings
 
-- (void)decodeHashedRouteUIDs:(id)a3 completion:(id)a4
+- (void)decodeHashedRouteUIDs:(id)ds completion:(id)completion
 {
   v40 = *MEMORY[0x1E69E9840];
-  v21 = a4;
-  v5 = [a3 mutableCopy];
+  completionCopy = completion;
+  v5 = [ds mutableCopy];
   if ([v5 containsObject:@"LOCAL_DEVICE"])
   {
     v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Assistant");
@@ -81,8 +81,8 @@
   block[3] = &unk_1E8239198;
   v25 = obj;
   v26 = v7;
-  v27 = v21;
-  v18 = v21;
+  v27 = completionCopy;
+  v18 = completionCopy;
   v19 = v7;
   v20 = obj;
   dispatch_group_notify(v8, v10, block);
@@ -190,11 +190,11 @@ uint64_t __58__MPCAssistantEncodings_decodeHashedRouteUIDs_completion___block_in
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-- (void)encodeHashedRouteUIDs:(id)a3 completion:(id)a4
+- (void)encodeHashedRouteUIDs:(id)ds completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v20 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v21 = objc_alloc_init(getAFSecurityConnectionClass());
   v7 = dispatch_group_create();
@@ -205,7 +205,7 @@ uint64_t __58__MPCAssistantEncodings_decodeHashedRouteUIDs_completion___block_in
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = v5;
+  v10 = dsCopy;
   v11 = [v10 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v11)
   {
@@ -254,9 +254,9 @@ uint64_t __58__MPCAssistantEncodings_decodeHashedRouteUIDs_completion___block_in
   block[2] = __58__MPCAssistantEncodings_encodeHashedRouteUIDs_completion___block_invoke_6;
   block[3] = &unk_1E8239170;
   v23 = v6;
-  v24 = v20;
+  v24 = completionCopy;
   v18 = v6;
-  v19 = v20;
+  v19 = completionCopy;
   dispatch_group_notify(v7, v9, block);
 }
 
@@ -300,19 +300,19 @@ void __58__MPCAssistantEncodings_encodeHashedRouteUIDs_completion___block_invoke
   [*(a1 + 40) addObject:v2];
 }
 
-- (id)decodeURLData:(id)a3
+- (id)decodeURLData:(id)data
 {
-  v3 = [a3 stringByRemovingPercentEncoding];
-  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v3 options:0];
+  stringByRemovingPercentEncoding = [data stringByRemovingPercentEncoding];
+  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:stringByRemovingPercentEncoding options:0];
 
   return v4;
 }
 
-- (id)encodeURLData:(id)a3
+- (id)encodeURLData:(id)data
 {
-  v3 = [a3 base64EncodedStringWithOptions:0];
-  v4 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-  v5 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:v4];
+  v3 = [data base64EncodedStringWithOptions:0];
+  uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+  v5 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
   return v5;
 }

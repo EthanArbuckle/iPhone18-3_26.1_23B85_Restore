@@ -16,7 +16,7 @@
   if (objc_opt_respondsToSelector())
   {
     v4 = MEMORY[0x29EDBA070];
-    v5 = [(NSNumber *)v2 unsignedLongLongValue];
+    unsignedLongLongValue = [(NSNumber *)v2 unsignedLongLongValue];
     v6 = v4;
   }
 
@@ -27,17 +27,17 @@
       return v2;
     }
 
-    v7 = [(NSNumber *)v2 longLongValue];
-    if (v7 < 0)
+    longLongValue = [(NSNumber *)v2 longLongValue];
+    if (longLongValue < 0)
     {
       return v2;
     }
 
-    v5 = v7;
+    unsignedLongLongValue = longLongValue;
     v6 = MEMORY[0x29EDBA070];
   }
 
-  return [v6 numberWithUnsignedLongLong:v5];
+  return [v6 numberWithUnsignedLongLong:unsignedLongLongValue];
 }
 
 @end

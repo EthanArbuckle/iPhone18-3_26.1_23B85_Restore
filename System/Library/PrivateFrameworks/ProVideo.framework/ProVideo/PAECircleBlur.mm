@@ -1,19 +1,19 @@
 @interface PAECircleBlur
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6;
-- (PAECircleBlur)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info;
+- (PAECircleBlur)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAECircleBlur
 
-- (PAECircleBlur)initWithAPIManager:(id)a3
+- (PAECircleBlur)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAECircleBlur;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -48,41 +48,41 @@
   v6 = !v5;
   if (!v5)
   {
-    v7 = [v4 versionAtCreation];
+    versionAtCreation = [v4 versionAtCreation];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     [v3 addPointParameterWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultX:@"CircleBlur::Center" defaultY:0 parmFlags:{0), 1, 0, 0.5, 0.5}];
     [v3 addFloatSliderWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultValue:@"CircleBlur::Blur Amount" parameterMin:0 parameterMax:0) sliderMin:2 sliderMax:0 delta:10.0 parmFlags:{0.0, 100.0, 0.0, 100.0, 1.0}];
-    [v3 addFloatSliderWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultValue:@"CircleBlur::Circle Radius" parameterMin:0 parameterMax:0) sliderMin:3 sliderMax:0 delta:400.0 parmFlags:{0.0, dbl_260343760[v7 < 3], 0.0, dbl_260343770[v7 < 3], 1.0}];
+    [v3 addFloatSliderWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultValue:@"CircleBlur::Circle Radius" parameterMin:0 parameterMax:0) sliderMin:3 sliderMax:0 delta:400.0 parmFlags:{0.0, dbl_260343760[versionAtCreation < 3], 0.0, dbl_260343770[versionAtCreation < 3], 1.0}];
     [v3 addToggleButtonWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultValue:@"CircleBlur::Crop" parmFlags:{0, 0), 4, 1, 1}];
   }
 
   return v6;
 }
 
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info
 {
-  v6 = self;
+  selfCopy = self;
   LOBYTE(self) = 0;
-  if (a3)
+  if (width)
   {
-    if (a4)
+    if (height)
     {
-      self = [(PROAPIAccessing *)v6->super.super._apiManager apiForProtocol:&unk_28735E258];
+      self = [(PROAPIAccessing *)selfCopy->super.super._apiManager apiForProtocol:&unk_28735E258];
       if (self)
       {
-        v11 = self;
+        selfCopy2 = self;
         v15 = 0;
-        [(PAECircleBlur *)self getBoolValue:&v15 fromParm:4 atFxTime:a6->var0.var1];
+        [(PAECircleBlur *)self getBoolValue:&v15 fromParm:4 atFxTime:info->var0.var1];
         v14 = 0.0;
         v12 = 0.0;
         if ((v15 & 1) == 0)
         {
-          [(PAECircleBlur *)v11 getFloatValue:&v14 fromParm:2 atFxTime:a6->var0.var1, 0.0];
+          [(PAECircleBlur *)selfCopy2 getFloatValue:&v14 fromParm:2 atFxTime:info->var0.var1, 0.0];
           v12 = v14 * 1.8 + v14 * 1.8;
         }
 
-        *a3 = (v12 + a5->var0);
-        *a4 = (v12 + a5->var1);
+        *width = (v12 + input->var0);
+        *height = (v12 + input->var1);
         LOBYTE(self) = 1;
       }
     }
@@ -91,7 +91,7 @@
   return self;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v100 = *MEMORY[0x277D85DE8];
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
@@ -111,10 +111,10 @@
     return 0;
   }
 
-  v13 = [v10 versionAtCreation];
-  [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a3];
-  [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
-  if (!v13)
+  versionAtCreation = [v10 versionAtCreation];
+  [(PAESharedDefaultBase *)self getInversePixelTransformForImage:output];
+  [(PAESharedDefaultBase *)self getPixelTransformForImage:input];
+  if (!versionAtCreation)
   {
     v88.f64[0] = 1.0;
     *(&v90 + 1) = 0x3FF0000000000000;
@@ -124,24 +124,24 @@
   v79 = 10.0;
   v77 = 1;
   v76 = 0uLL;
-  [v9 getXValue:&v76 YValue:&v76 + 8 fromParm:1 atFxTime:a5->var0.var1];
-  if (v13 >= 2)
+  [v9 getXValue:&v76 YValue:&v76 + 8 fromParm:1 atFxTime:info->var0.var1];
+  if (versionAtCreation >= 2)
   {
-    v14 = a4;
+    outputCopy = input;
   }
 
   else
   {
-    v14 = a3;
+    outputCopy = output;
   }
 
-  [(PAESharedDefaultBase *)self convertRelativeToImageCoordinates:&v76 withImage:v14];
+  [(PAESharedDefaultBase *)self convertRelativeToImageCoordinates:&v76 withImage:outputCopy];
   v76 = v75[0];
-  [v9 getFloatValue:&v79 fromParm:2 atFxTime:a5->var0.var1];
-  [v9 getFloatValue:&v78 fromParm:3 atFxTime:a5->var0.var1];
-  [v9 getBoolValue:&v77 fromParm:4 atFxTime:a5->var0.var1];
-  v15 = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
-  v16 = [a4 imageType];
+  [v9 getFloatValue:&v79 fromParm:2 atFxTime:info->var0.var1];
+  [v9 getFloatValue:&v78 fromParm:3 atFxTime:info->var0.var1];
+  [v9 getBoolValue:&v77 fromParm:4 atFxTime:info->var0.var1];
+  v15 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
+  imageType = [input imageType];
   v75[5] = v85;
   v75[6] = v86;
   v75[7] = v87;
@@ -163,7 +163,7 @@
   PCMatrix44Tmpl<double>::leftTranslate(&v67, v17, -*(&v76 + 1), 0.0);
   if (v15)
   {
-    v18 = v16 == 3;
+    v18 = imageType == 3;
   }
 
   else
@@ -176,9 +176,9 @@
   {
     if (v79 == 0.0)
     {
-      if (a4)
+      if (input)
       {
-        [a4 heliumRef];
+        [input heliumRef];
       }
 
       else
@@ -186,7 +186,7 @@
         v98[0] = 0;
       }
 
-      [a3 setHeliumRef:v98];
+      [output setHeliumRef:v98];
       if (v98[0])
       {
         (*(*v98[0] + 24))(v98[0]);
@@ -195,9 +195,9 @@
 
     else
     {
-      if (a4)
+      if (input)
       {
-        [a4 heliumRef];
+        [input heliumRef];
       }
 
       else
@@ -213,7 +213,7 @@
           (*(*v66 + 16))(v66);
         }
 
-        [(PAESharedDefaultBase *)self smear:&v65 fromImage:a4 toImage:a4];
+        [(PAESharedDefaultBase *)self smear:&v65 fromImage:input toImage:input];
         v19 = v98[0];
         if (v66 == v98[0])
         {
@@ -333,10 +333,10 @@
       (*(*v31 + 16))(v31);
       if (v77 == 1)
       {
-        [(PAESharedDefaultBase *)self crop:&v64 fromImage:a4 toImage:a3];
+        [(PAESharedDefaultBase *)self crop:&v64 fromImage:input toImage:output];
       }
 
-      [a3 setHeliumRef:&v64];
+      [output setHeliumRef:&v64];
       if (v64)
       {
         (*(*v64 + 24))(v64);
@@ -354,15 +354,15 @@
   return v12;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 1;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 1;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

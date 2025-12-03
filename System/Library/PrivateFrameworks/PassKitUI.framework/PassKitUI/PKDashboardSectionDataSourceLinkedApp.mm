@@ -1,24 +1,24 @@
 @interface PKDashboardSectionDataSourceLinkedApp
 - (PKDashboardSectionDataSourceDelegate)delegate;
-- (PKDashboardSectionDataSourceLinkedApp)initWithStoreIDs:(id)a3 applicationBundleIdentifiers:(id)a4 defaultLaunchURL:(id)a5;
-- (id)itemForSectionIdentifier:(id)a3 atIndex:(unint64_t)a4;
+- (PKDashboardSectionDataSourceLinkedApp)initWithStoreIDs:(id)ds applicationBundleIdentifiers:(id)identifiers defaultLaunchURL:(id)l;
+- (id)itemForSectionIdentifier:(id)identifier atIndex:(unint64_t)index;
 @end
 
 @implementation PKDashboardSectionDataSourceLinkedApp
 
-- (PKDashboardSectionDataSourceLinkedApp)initWithStoreIDs:(id)a3 applicationBundleIdentifiers:(id)a4 defaultLaunchURL:(id)a5
+- (PKDashboardSectionDataSourceLinkedApp)initWithStoreIDs:(id)ds applicationBundleIdentifiers:(id)identifiers defaultLaunchURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  identifiersCopy = identifiers;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = PKDashboardSectionDataSourceLinkedApp;
   v11 = [(PKDashboardSectionDataSourceLinkedApp *)&v15 init];
   if (v11)
   {
-    if ([v8 count] || objc_msgSend(v9, "count"))
+    if ([dsCopy count] || objc_msgSend(identifiersCopy, "count"))
     {
-      v12 = [[PKLinkedApplication alloc] initWithApplicationIdentifiers:v9 storeIDs:v8 defaultLaunchURL:v10];
+      v12 = [[PKLinkedApplication alloc] initWithApplicationIdentifiers:identifiersCopy storeIDs:dsCopy defaultLaunchURL:lCopy];
       linkedApplication = v11->_linkedApplication;
       v11->_linkedApplication = v12;
 
@@ -31,7 +31,7 @@
   return v11;
 }
 
-- (id)itemForSectionIdentifier:(id)a3 atIndex:(unint64_t)a4
+- (id)itemForSectionIdentifier:(id)identifier atIndex:(unint64_t)index
 {
   v5 = objc_alloc_init(PKDashboardPassLinkedAppItem);
   [(PKDashboardPassLinkedAppItem *)v5 setLinkedApplication:self->_linkedApplication];

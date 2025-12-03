@@ -1,33 +1,33 @@
 @interface PLModelMigrationAction_MigrateSocialGroupRebuildPersistence
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
-- (int64_t)persistSocialGroupDirectoryJournalInContext:(id)a3 progress:(id)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
+- (int64_t)persistSocialGroupDirectoryJournalInContext:(id)context progress:(id)progress;
 - (void)deleteGraphNodeSocialGroupDirectoryJournal;
 - (void)deleteGraphNodeSocialGroupJournal;
 @end
 
 @implementation PLModelMigrationAction_MigrateSocialGroupRebuildPersistence
 
-- (int64_t)persistSocialGroupDirectoryJournalInContext:(id)a3 progress:(id)a4
+- (int64_t)persistSocialGroupDirectoryJournalInContext:(id)context progress:(id)progress
 {
   v94 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  progressCopy = progress;
   [(PLModelMigrationAction_MigrateSocialGroupRebuildPersistence *)self deleteGraphNodeSocialGroupDirectoryJournal];
-  [v7 setCompletedUnitCount:{objc_msgSend(v7, "completedUnitCount") + 1}];
+  [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "completedUnitCount") + 1}];
   v8 = [PLDirectoryJournal alloc];
-  v9 = [(PLModelMigrationActionCore *)self pathManager];
-  v49 = [(PLDirectoryJournal *)v8 initWithPathManager:v9 payloadClass:objc_opt_class()];
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
+  v49 = [(PLDirectoryJournal *)v8 initWithPathManager:pathManager payloadClass:objc_opt_class()];
 
   v10 = MEMORY[0x1E695D5E0];
   v11 = +[PLGraphNode entityName];
   v12 = [v10 fetchRequestWithEntityName:v11];
 
-  v13 = [PLSocialGroup predicateForAllSocialGroupsInContext:v6];
+  v13 = [PLSocialGroup predicateForAllSocialGroupsInContext:contextCopy];
   [v12 setPredicate:v13];
 
   [v12 setFetchBatchSize:100];
   v57 = 0;
-  v14 = [v6 executeFetchRequest:v12 error:&v57];
+  v14 = [contextCopy executeFetchRequest:v12 error:&v57];
   v15 = v57;
   if (!v14)
   {
@@ -36,9 +36,9 @@
 
     if (v37)
     {
-      v38 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v38)
+      if (logger)
       {
         v91 = 0u;
         v92 = 0u;
@@ -105,7 +105,7 @@
 
   v16 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{objc_msgSend(v14, "count")}];
   v17 = 1;
-  [v7 addChild:v16 withPendingUnitCount:1];
+  [progressCopy addChild:v16 withPendingUnitCount:1];
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
@@ -117,8 +117,8 @@
     v19 = v18;
     v45 = v14;
     v46 = v12;
-    v47 = v7;
-    v48 = v6;
+    v47 = progressCopy;
+    v48 = contextCopy;
     v20 = *v54;
     v21 = v49;
     while (2)
@@ -137,8 +137,8 @@
 
         if (v24)
         {
-          v7 = v47;
-          v6 = v48;
+          progressCopy = v47;
+          contextCopy = v48;
           v14 = v45;
           v12 = v46;
           v17 = 2;
@@ -161,9 +161,9 @@
 
           if (v28)
           {
-            v29 = [(PLModelMigrationActionCore *)self logger];
+            logger2 = [(PLModelMigrationActionCore *)self logger];
 
-            if (v29)
+            if (logger2)
             {
               v91 = 0u;
               v92 = 0u;
@@ -198,9 +198,9 @@
               memset(buf, 0, sizeof(buf));
               v30 = PLMigrationGetLog();
               os_log_type_enabled(v30, OS_LOG_TYPE_ERROR);
-              v31 = [v23 uuid];
+              uuid = [v23 uuid];
               v58 = 138543618;
-              v59 = v31;
+              v59 = uuid;
               v60 = 2112;
               v61 = v15;
               LODWORD(v44) = 22;
@@ -222,9 +222,9 @@
               v34 = PLMigrationGetLog();
               if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
               {
-                v35 = [v23 uuid];
+                uuid2 = [v23 uuid];
                 *buf = 138543618;
-                *&buf[4] = v35;
+                *&buf[4] = uuid2;
                 *&buf[12] = 2112;
                 *&buf[14] = v15;
                 _os_log_impl(&dword_19BF1F000, v34, OS_LOG_TYPE_ERROR, "PLDirectoryJournal: persistManagedObject of node %{public}@ failed: %@", buf, 0x16u);
@@ -245,8 +245,8 @@
 
     v25 = v15;
     v17 = 1;
-    v7 = v47;
-    v6 = v48;
+    progressCopy = v47;
+    contextCopy = v48;
     v14 = v45;
     v12 = v46;
   }
@@ -273,9 +273,9 @@ LABEL_33:
 
   if (v5)
   {
-    v6 = [(PLModelMigrationActionCore *)self logger];
+    logger = [(PLModelMigrationActionCore *)self logger];
 
-    if (v6)
+    if (logger)
     {
       v58 = 0u;
       v59 = 0u;
@@ -340,22 +340,22 @@ LABEL_33:
   }
 
   v13 = [PLDirectoryJournal alloc];
-  v14 = [(PLModelMigrationActionCore *)self pathManager];
-  v15 = [(PLDirectoryJournal *)v13 initWithPathManager:v14 payloadClass:v3];
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
+  v15 = [(PLDirectoryJournal *)v13 initWithPathManager:pathManager payloadClass:v3];
 
   v25 = 0;
-  LOBYTE(v14) = [(PLDirectoryJournal *)v15 removeAllPersistenceFilesWithError:&v25];
+  LOBYTE(pathManager) = [(PLDirectoryJournal *)v15 removeAllPersistenceFilesWithError:&v25];
   v16 = v25;
-  if ((v14 & 1) == 0)
+  if ((pathManager & 1) == 0)
   {
     v17 = PLMigrationGetLog();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_ERROR);
 
     if (v18)
     {
-      v19 = [(PLModelMigrationActionCore *)self logger];
+      logger2 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v19)
+      if (logger2)
       {
         v58 = 0u;
         v59 = 0u;
@@ -423,17 +423,17 @@ LABEL_33:
 {
   v61 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_class();
-  v4 = [(PLModelMigrationActionCore *)self pathManager];
-  v5 = [PLRebuildJournalManager baseURLFromPathManager:v4];
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
+  v5 = [PLRebuildJournalManager baseURLFromPathManager:pathManager];
 
   v6 = PLMigrationGetLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
   if (v7)
   {
-    v8 = [(PLModelMigrationActionCore *)self logger];
+    logger = [(PLModelMigrationActionCore *)self logger];
 
-    if (v8)
+    if (logger)
     {
       v59 = 0u;
       v60 = 0u;
@@ -509,9 +509,9 @@ LABEL_33:
 
     if (v19)
     {
-      v20 = [(PLModelMigrationActionCore *)self logger];
+      logger2 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v20)
+      if (logger2)
       {
         v59 = 0u;
         v60 = 0u;
@@ -575,11 +575,11 @@ LABEL_33:
   }
 }
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
-  v5 = a3;
-  v6 = [(PLModelMigrationActionCore *)self pathManager];
-  if ([v6 isUBF])
+  contextCopy = context;
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
+  if ([pathManager isUBF])
   {
     v7 = 1;
   }
@@ -590,10 +590,10 @@ LABEL_33:
   }
 
   v8 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:v7 pendingParentUnitCount:0];
-  v9 = [(PLModelMigrationActionCore *)self pathManager];
-  v10 = [v9 isUBF];
+  pathManager2 = [(PLModelMigrationActionCore *)self pathManager];
+  isUBF = [pathManager2 isUBF];
 
-  if (v10)
+  if (isUBF)
   {
     [(PLModelMigrationAction_MigrateSocialGroupRebuildPersistence *)self deleteGraphNodeSocialGroupJournal];
     if (!MEMORY[0x19EAEE520]([v8 setCompletedUnitCount:{objc_msgSend(v8, "completedUnitCount") + 1}]))
@@ -605,7 +605,7 @@ LABEL_33:
     [v8 setTotalUnitCount:{objc_msgSend(v8, "totalUnitCount") + 2}];
   }
 
-  v11 = [(PLModelMigrationAction_MigrateSocialGroupRebuildPersistence *)self persistSocialGroupDirectoryJournalInContext:v5 progress:v8];
+  v11 = [(PLModelMigrationAction_MigrateSocialGroupRebuildPersistence *)self persistSocialGroupDirectoryJournalInContext:contextCopy progress:v8];
 LABEL_9:
   [(PLModelMigrationActionCore *)self finalizeProgress];
 

@@ -1,43 +1,43 @@
 @interface UIWebTiledView
 - (CGRect)visibleRect;
 - (CGSize)tileSize;
-- (UIWebTiledView)initWithFrame:(CGRect)a3;
+- (UIWebTiledView)initWithFrame:(CGRect)frame;
 - (void)_didScroll;
-- (void)_screenChanged:(id)a3;
-- (void)_updateForScreen:(id)a3;
+- (void)_screenChanged:(id)changed;
+- (void)_updateForScreen:(id)screen;
 - (void)dealloc;
-- (void)drawImageIntoTiles:(CGImage *)a3;
+- (void)drawImageIntoTiles:(CGImage *)tiles;
 - (void)layoutSubviews;
 - (void)layoutTilesNow;
-- (void)layoutTilesNowForRect:(CGRect)a3;
-- (void)setAllowsPaintingAndScriptsWhilePanning:(BOOL)a3;
-- (void)setEditingTilingModeEnabled:(BOOL)a3;
-- (void)setInGesture:(int)a3;
+- (void)layoutTilesNowForRect:(CGRect)rect;
+- (void)setAllowsPaintingAndScriptsWhilePanning:(BOOL)panning;
+- (void)setEditingTilingModeEnabled:(BOOL)enabled;
+- (void)setInGesture:(int)gesture;
 - (void)setNeedsLayout;
-- (void)setTileDrawingEnabled:(BOOL)a3;
-- (void)setTilingArea:(int)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
-- (void)setWAKWindow:(id)a3;
+- (void)setTileDrawingEnabled:(BOOL)enabled;
+- (void)setTilingArea:(int)area;
+- (void)setTransform:(CGAffineTransform *)transform;
+- (void)setWAKWindow:(id)window;
 - (void)updateTilingMode;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation UIWebTiledView
 
-- (void)_updateForScreen:(id)a3
+- (void)_updateForScreen:(id)screen
 {
-  if (a3)
+  if (screen)
   {
     wakWindow = self->_wakWindow;
-    [a3 _referenceBounds];
+    [screen _referenceBounds];
     [(WAKWindow *)wakWindow setScreenSize:v6, v7];
     if ([UIApp _appAdoptsUISceneLifecycle])
     {
-      v8 = [(UIView *)self window];
-      if (v8)
+      window = [(UIView *)self window];
+      if (window)
       {
-        v9 = v8;
-        if ([__UIStatusBarManagerForWindow(v8) isStatusBarHidden])
+        v9 = window;
+        if ([__UIStatusBarManagerForWindow(window) isStatusBarHidden])
         {
           v10 = 1;
         }
@@ -53,19 +53,19 @@
 
       else
       {
-        [a3 _mainSceneFrame];
+        [screen _mainSceneFrame];
       }
     }
 
     else
     {
-      [a3 _applicationFrame];
+      [screen _applicationFrame];
     }
 
     [(WAKWindow *)self->_wakWindow setAvailableScreenSize:v11, v12];
     [(WAKWindow *)self->_wakWindow screenScale];
     v15 = v14;
-    [a3 scale];
+    [screen scale];
     v17 = v16;
     [(WAKWindow *)self->_wakWindow setScreenScale:?];
     if (v17 != v15)
@@ -77,29 +77,29 @@
   }
 }
 
-- (UIWebTiledView)initWithFrame:(CGRect)a3
+- (UIWebTiledView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   objc_opt_self();
   v8 = __invalidatesViewUponCreation;
   objc_opt_self();
   __invalidatesViewUponCreation = 0;
   v11.receiver = self;
   v11.super_class = UIWebTiledView;
-  v9 = [(UIView *)&v11 initWithFrame:x, y, width, height];
+  height = [(UIView *)&v11 initWithFrame:x, y, width, height];
   objc_opt_self();
   __invalidatesViewUponCreation = v8;
-  if (v9)
+  if (height)
   {
-    v9->_wakWindow = [objc_alloc(MEMORY[0x1E69E2F28]) initWithLayer:{-[UIView layer](v9, "layer")}];
-    [(UIWebTiledView *)v9 _updateForScreen:[(UIView *)v9 _screen]];
+    height->_wakWindow = [objc_alloc(MEMORY[0x1E69E2F28]) initWithLayer:{-[UIView layer](height, "layer")}];
+    [(UIWebTiledView *)height _updateForScreen:[(UIView *)height _screen]];
   }
 
   [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
-  return v9;
+  return height;
 }
 
 - (void)dealloc
@@ -111,11 +111,11 @@
   [(UIView *)&v3 dealloc];
 }
 
-- (void)setWAKWindow:(id)a3
+- (void)setWAKWindow:(id)window
 {
-  v5 = a3;
+  windowCopy = window;
 
-  self->_wakWindow = a3;
+  self->_wakWindow = window;
 }
 
 - (CGRect)visibleRect
@@ -136,22 +136,22 @@
   [(WAKWindow *)wakWindow layoutTilesNow];
 }
 
-- (void)layoutTilesNowForRect:(CGRect)a3
+- (void)layoutTilesNowForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   WebThreadLock();
   wakWindow = self->_wakWindow;
 
   [(WAKWindow *)wakWindow layoutTilesNowForRect:x, y, width, height];
 }
 
-- (void)drawImageIntoTiles:(CGImage *)a3
+- (void)drawImageIntoTiles:(CGImage *)tiles
 {
   WebThreadLock();
-  [(WAKWindow *)self->_wakWindow setContentReplacementImage:a3];
+  [(WAKWindow *)self->_wakWindow setContentReplacementImage:tiles];
   [(WAKWindow *)self->_wakWindow removeAllTiles];
   [(WAKWindow *)self->_wakWindow layoutTilesNow];
   v5[0] = MEMORY[0x1E69E9820];
@@ -179,28 +179,28 @@
   }
 }
 
-- (void)_screenChanged:(id)a3
+- (void)_screenChanged:(id)changed
 {
-  if ([objc_msgSend(a3 "object")])
+  if ([objc_msgSend(changed "object")])
   {
-    v5 = [objc_msgSend(a3 "userInfo")];
+    v5 = [objc_msgSend(changed "userInfo")];
 
     [(UIWebTiledView *)self _updateForScreen:v5];
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v5 = [(WAKWindow *)self->_wakWindow rootLayer];
-  if (a3 && !v5)
+  rootLayer = [(WAKWindow *)self->_wakWindow rootLayer];
+  if (window && !rootLayer)
   {
     [(UIWebTiledView *)self setNeedsLayout];
   }
 
-  -[UIWebTiledView _updateForScreen:](self, "_updateForScreen:", [a3 screen]);
+  -[UIWebTiledView _updateForScreen:](self, "_updateForScreen:", [window screen]);
   wakWindow = self->_wakWindow;
 
-  [(WAKWindow *)wakWindow setVisible:a3 != 0];
+  [(WAKWindow *)wakWindow setVisible:window != 0];
 }
 
 - (void)updateTilingMode
@@ -249,20 +249,20 @@
   [(WAKWindow *)self->_wakWindow setTilingMode:v5];
 }
 
-- (void)setInGesture:(int)a3
+- (void)setInGesture:(int)gesture
 {
-  if (self->_inGestureType != a3)
+  if (self->_inGestureType != gesture)
   {
-    self->_inGestureType = a3;
+    self->_inGestureType = gesture;
     [(UIWebTiledView *)self updateTilingMode];
   }
 }
 
-- (void)setTilingArea:(int)a3
+- (void)setTilingArea:(int)area
 {
-  if (self->_tilingArea != a3)
+  if (self->_tilingArea != area)
   {
-    self->_tilingArea = a3;
+    self->_tilingArea = area;
     if (!self->_tilingModeIsLocked)
     {
       [(UIWebTiledView *)self updateTilingMode];
@@ -270,11 +270,11 @@
   }
 }
 
-- (void)setAllowsPaintingAndScriptsWhilePanning:(BOOL)a3
+- (void)setAllowsPaintingAndScriptsWhilePanning:(BOOL)panning
 {
-  if (self->_allowsPaintingAndScriptsWhilePanning != a3)
+  if (self->_allowsPaintingAndScriptsWhilePanning != panning)
   {
-    self->_allowsPaintingAndScriptsWhilePanning = a3;
+    self->_allowsPaintingAndScriptsWhilePanning = panning;
     [(UIWebTiledView *)self updateTilingMode];
   }
 }
@@ -293,14 +293,14 @@
   [(UIView *)&v2 setNeedsLayout];
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
   v5.receiver = self;
   v5.super_class = UIWebTiledView;
-  v3 = *&a3->c;
-  v4[0] = *&a3->a;
+  v3 = *&transform->c;
+  v4[0] = *&transform->a;
   v4[1] = v3;
-  v4[2] = *&a3->tx;
+  v4[2] = *&transform->tx;
   [(UIView *)&v5 setTransform:v4];
 }
 
@@ -313,9 +313,9 @@
   return result;
 }
 
-- (void)setTileDrawingEnabled:(BOOL)a3
+- (void)setTileDrawingEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0;
   }
@@ -328,11 +328,11 @@
   [(WAKWindow *)self->_wakWindow setTilingMode:v3];
 }
 
-- (void)setEditingTilingModeEnabled:(BOOL)a3
+- (void)setEditingTilingModeEnabled:(BOOL)enabled
 {
-  if (self->_editingTilingModeEnabled != a3)
+  if (self->_editingTilingModeEnabled != enabled)
   {
-    self->_editingTilingModeEnabled = a3;
+    self->_editingTilingModeEnabled = enabled;
     [(UIWebTiledView *)self updateTilingMode];
   }
 }

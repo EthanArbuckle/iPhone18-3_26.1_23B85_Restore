@@ -1,41 +1,41 @@
 @interface BMWalletPaymentsCommerceClassicOrderPayment
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMWalletPaymentsCommerceClassicOrderPayment)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMWalletPaymentsCommerceClassicOrderPayment)initWithTotalAmount:(id)a3 totalCurrencyCode:(id)a4 paymentMethods:(id)a5 applePayTransactionIdentifiers:(id)a6 transactions:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMWalletPaymentsCommerceClassicOrderPayment)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMWalletPaymentsCommerceClassicOrderPayment)initWithTotalAmount:(id)amount totalCurrencyCode:(id)code paymentMethods:(id)methods applePayTransactionIdentifiers:(id)identifiers transactions:(id)transactions;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_applePayTransactionIdentifiersJSONArray;
 - (id)_paymentMethodsJSONArray;
 - (id)_transactionsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMWalletPaymentsCommerceClassicOrderPayment
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self totalAmount];
-    v7 = [v5 totalAmount];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    totalAmount = [(BMWalletPaymentsCommerceClassicOrderPayment *)self totalAmount];
+    totalAmount2 = [v5 totalAmount];
+    v8 = totalAmount2;
+    if (totalAmount == totalAmount2)
     {
     }
 
     else
     {
-      v9 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self totalAmount];
-      v10 = [v5 totalAmount];
-      v11 = [v9 isEqual:v10];
+      totalAmount3 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self totalAmount];
+      totalAmount4 = [v5 totalAmount];
+      v11 = [totalAmount3 isEqual:totalAmount4];
 
       if (!v11)
       {
@@ -43,18 +43,18 @@
       }
     }
 
-    v13 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self totalCurrencyCode];
-    v14 = [v5 totalCurrencyCode];
-    v15 = v14;
-    if (v13 == v14)
+    totalCurrencyCode = [(BMWalletPaymentsCommerceClassicOrderPayment *)self totalCurrencyCode];
+    totalCurrencyCode2 = [v5 totalCurrencyCode];
+    v15 = totalCurrencyCode2;
+    if (totalCurrencyCode == totalCurrencyCode2)
     {
     }
 
     else
     {
-      v16 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self totalCurrencyCode];
-      v17 = [v5 totalCurrencyCode];
-      v18 = [v16 isEqual:v17];
+      totalCurrencyCode3 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self totalCurrencyCode];
+      totalCurrencyCode4 = [v5 totalCurrencyCode];
+      v18 = [totalCurrencyCode3 isEqual:totalCurrencyCode4];
 
       if (!v18)
       {
@@ -62,18 +62,18 @@
       }
     }
 
-    v19 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self paymentMethods];
-    v20 = [v5 paymentMethods];
-    v21 = v20;
-    if (v19 == v20)
+    paymentMethods = [(BMWalletPaymentsCommerceClassicOrderPayment *)self paymentMethods];
+    paymentMethods2 = [v5 paymentMethods];
+    v21 = paymentMethods2;
+    if (paymentMethods == paymentMethods2)
     {
     }
 
     else
     {
-      v22 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self paymentMethods];
-      v23 = [v5 paymentMethods];
-      v24 = [v22 isEqual:v23];
+      paymentMethods3 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self paymentMethods];
+      paymentMethods4 = [v5 paymentMethods];
+      v24 = [paymentMethods3 isEqual:paymentMethods4];
 
       if (!v24)
       {
@@ -81,18 +81,18 @@
       }
     }
 
-    v25 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self applePayTransactionIdentifiers];
-    v26 = [v5 applePayTransactionIdentifiers];
-    v27 = v26;
-    if (v25 == v26)
+    applePayTransactionIdentifiers = [(BMWalletPaymentsCommerceClassicOrderPayment *)self applePayTransactionIdentifiers];
+    applePayTransactionIdentifiers2 = [v5 applePayTransactionIdentifiers];
+    v27 = applePayTransactionIdentifiers2;
+    if (applePayTransactionIdentifiers == applePayTransactionIdentifiers2)
     {
     }
 
     else
     {
-      v28 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self applePayTransactionIdentifiers];
-      v29 = [v5 applePayTransactionIdentifiers];
-      v30 = [v28 isEqual:v29];
+      applePayTransactionIdentifiers3 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self applePayTransactionIdentifiers];
+      applePayTransactionIdentifiers4 = [v5 applePayTransactionIdentifiers];
+      v30 = [applePayTransactionIdentifiers3 isEqual:applePayTransactionIdentifiers4];
 
       if (!v30)
       {
@@ -104,18 +104,18 @@ LABEL_23:
       }
     }
 
-    v31 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self transactions];
-    v32 = [v5 transactions];
-    if (v31 == v32)
+    transactions = [(BMWalletPaymentsCommerceClassicOrderPayment *)self transactions];
+    transactions2 = [v5 transactions];
+    if (transactions == transactions2)
     {
       v12 = 1;
     }
 
     else
     {
-      v33 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self transactions];
-      v34 = [v5 transactions];
-      v12 = [v33 isEqual:v34];
+      transactions3 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self transactions];
+      transactions4 = [v5 transactions];
+      v12 = [transactions3 isEqual:transactions4];
     }
 
     goto LABEL_23;
@@ -130,56 +130,56 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v23[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self totalAmount];
-  v4 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self totalCurrencyCode];
-  v5 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self _paymentMethodsJSONArray];
-  v6 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self _applePayTransactionIdentifiersJSONArray];
-  v7 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self _transactionsJSONArray];
+  totalAmount = [(BMWalletPaymentsCommerceClassicOrderPayment *)self totalAmount];
+  totalCurrencyCode = [(BMWalletPaymentsCommerceClassicOrderPayment *)self totalCurrencyCode];
+  _paymentMethodsJSONArray = [(BMWalletPaymentsCommerceClassicOrderPayment *)self _paymentMethodsJSONArray];
+  _applePayTransactionIdentifiersJSONArray = [(BMWalletPaymentsCommerceClassicOrderPayment *)self _applePayTransactionIdentifiersJSONArray];
+  _transactionsJSONArray = [(BMWalletPaymentsCommerceClassicOrderPayment *)self _transactionsJSONArray];
   v18 = @"totalAmount";
-  v8 = v3;
-  if (!v3)
+  null = totalAmount;
+  if (!totalAmount)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v8;
-  v23[0] = v8;
+  v16 = null;
+  v23[0] = null;
   v19 = @"totalCurrencyCode";
-  v9 = v4;
-  if (!v4)
+  null2 = totalCurrencyCode;
+  if (!totalCurrencyCode)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v9;
+  v23[1] = null2;
   v20 = @"paymentMethods";
-  v10 = v5;
-  if (!v5)
+  null3 = _paymentMethodsJSONArray;
+  if (!_paymentMethodsJSONArray)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v10;
+  v23[2] = null3;
   v21 = @"applePayTransactionIdentifiers";
-  v11 = v6;
-  if (!v6)
+  null4 = _applePayTransactionIdentifiersJSONArray;
+  if (!_applePayTransactionIdentifiersJSONArray)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v11;
+  v23[3] = null4;
   v22 = @"transactions";
-  v12 = v7;
-  if (!v7)
+  null5 = _transactionsJSONArray;
+  if (!_transactionsJSONArray)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
-  if (v7)
+  if (_transactionsJSONArray)
   {
-    if (v6)
+    if (_applePayTransactionIdentifiersJSONArray)
     {
       goto LABEL_13;
     }
@@ -188,10 +188,10 @@ LABEL_24:
   else
   {
 
-    if (v6)
+    if (_applePayTransactionIdentifiersJSONArray)
     {
 LABEL_13:
-      if (v5)
+      if (_paymentMethodsJSONArray)
       {
         goto LABEL_14;
       }
@@ -200,17 +200,17 @@ LABEL_13:
     }
   }
 
-  if (v5)
+  if (_paymentMethodsJSONArray)
   {
 LABEL_14:
-    if (v4)
+    if (totalCurrencyCode)
     {
       goto LABEL_15;
     }
 
 LABEL_22:
 
-    if (v3)
+    if (totalAmount)
     {
       goto LABEL_16;
     }
@@ -220,13 +220,13 @@ LABEL_22:
 
 LABEL_21:
 
-  if (!v4)
+  if (!totalCurrencyCode)
   {
     goto LABEL_22;
   }
 
 LABEL_15:
-  if (v3)
+  if (totalAmount)
   {
     goto LABEL_16;
   }
@@ -247,8 +247,8 @@ LABEL_16:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self transactions];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  transactions = [(BMWalletPaymentsCommerceClassicOrderPayment *)self transactions];
+  v5 = [transactions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -259,14 +259,14 @@ LABEL_16:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(transactions);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [transactions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -285,8 +285,8 @@ LABEL_16:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self applePayTransactionIdentifiers];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  applePayTransactionIdentifiers = [(BMWalletPaymentsCommerceClassicOrderPayment *)self applePayTransactionIdentifiers];
+  v5 = [applePayTransactionIdentifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -297,13 +297,13 @@ LABEL_16:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(applePayTransactionIdentifiers);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [applePayTransactionIdentifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -322,8 +322,8 @@ LABEL_16:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self paymentMethods];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  paymentMethods = [(BMWalletPaymentsCommerceClassicOrderPayment *)self paymentMethods];
+  v5 = [paymentMethods countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -334,13 +334,13 @@ LABEL_16:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(paymentMethods);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [paymentMethods countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -351,28 +351,28 @@ LABEL_16:
   return v3;
 }
 
-- (BMWalletPaymentsCommerceClassicOrderPayment)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMWalletPaymentsCommerceClassicOrderPayment)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v128[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"totalAmount"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"totalAmount"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v31 = objc_alloc(MEMORY[0x1E696ABC0]);
         v32 = *MEMORY[0x1E698F240];
         v127 = *MEMORY[0x1E696A578];
-        v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"totalAmount"];
-        v128[0] = v29;
+        errorCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"totalAmount"];
+        v128[0] = errorCopy;
         v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v128 forKeys:&v127 count:1];
         v33 = [v31 initWithDomain:v32 code:2 userInfo:v9];
         v7 = 0;
         v30 = 0;
-        *a4 = v33;
+        *error = v33;
         goto LABEL_95;
       }
 
@@ -389,7 +389,7 @@ LABEL_16:
     v7 = 0;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"totalCurrencyCode"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"totalCurrencyCode"];
   v87 = v6;
   v88 = v8;
   if (v8 && (v9 = v8, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -397,8 +397,8 @@ LABEL_16:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v29 = a4;
-      if (a4)
+      errorCopy = error;
+      if (error)
       {
         v34 = objc_alloc(MEMORY[0x1E696ABC0]);
         v35 = v7;
@@ -409,9 +409,9 @@ LABEL_16:
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v126 forKeys:&v125 count:1];
         v37 = v36;
         v7 = v35;
-        v29 = 0;
+        errorCopy = 0;
         v30 = 0;
-        *a4 = [v34 initWithDomain:v37 code:2 userInfo:v13];
+        *error = [v34 initWithDomain:v37 code:2 userInfo:v13];
         goto LABEL_93;
       }
 
@@ -429,14 +429,14 @@ LABEL_16:
     v85 = 0;
   }
 
-  v10 = [v5 objectForKeyedSubscript:@"paymentMethods"];
-  v11 = [MEMORY[0x1E695DFB0] null];
-  v12 = [v10 isEqual:v11];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"paymentMethods"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v12 = [v10 isEqual:null];
 
-  v84 = self;
+  selfCopy = self;
   if (v12)
   {
-    v86 = v5;
+    v86 = dictionaryCopy;
 
     v10 = 0;
   }
@@ -448,11 +448,11 @@ LABEL_16:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v30 = 0;
           v7 = v83;
-          v29 = v85;
+          errorCopy = v85;
           goto LABEL_94;
         }
 
@@ -463,12 +463,12 @@ LABEL_16:
         v124 = v13;
         v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v124 forKeys:&v123 count:1];
         v30 = 0;
-        *a4 = [v45 initWithDomain:v46 code:2 userInfo:v19];
+        *error = [v45 initWithDomain:v46 code:2 userInfo:v19];
         goto LABEL_53;
       }
     }
 
-    v86 = v5;
+    v86 = dictionaryCopy;
   }
 
   v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
@@ -498,7 +498,7 @@ LABEL_16:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (a4)
+        if (error)
         {
           v22 = objc_alloc(MEMORY[0x1E696ABC0]);
           v23 = *MEMORY[0x1E698F240];
@@ -509,11 +509,11 @@ LABEL_16:
           v25 = v22;
           v26 = v23;
 LABEL_31:
-          v29 = v85;
-          v5 = v86;
+          errorCopy = v85;
+          dictionaryCopy = v86;
           v7 = v83;
           v30 = 0;
-          *a4 = [v25 initWithDomain:v26 code:2 userInfo:v24];
+          *error = [v25 initWithDomain:v26 code:2 userInfo:v24];
           v19 = v10;
           goto LABEL_91;
         }
@@ -522,17 +522,17 @@ LABEL_34:
         v30 = 0;
         v19 = v10;
 LABEL_35:
-        v5 = v86;
+        dictionaryCopy = v86;
 LABEL_53:
         v7 = v83;
-        v29 = v85;
+        errorCopy = v85;
         goto LABEL_92;
       }
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v27 = objc_alloc(MEMORY[0x1E696ABC0]);
           v28 = *MEMORY[0x1E698F240];
@@ -558,8 +558,8 @@ LABEL_53:
 LABEL_21:
 
   v19 = [v86 objectForKeyedSubscript:@"applePayTransactionIdentifiers"];
-  v20 = [MEMORY[0x1E695DFB0] null];
-  v21 = [v19 isEqual:v20];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v21 = [v19 isEqual:null2];
 
   if (!v21)
   {
@@ -574,7 +574,7 @@ LABEL_21:
       goto LABEL_40;
     }
 
-    if (a4)
+    if (error)
     {
       v63 = objc_alloc(MEMORY[0x1E696ABC0]);
       v64 = *MEMORY[0x1E698F240];
@@ -583,7 +583,7 @@ LABEL_21:
       v117 = v90;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v117 forKeys:&v116 count:1];
       v30 = 0;
-      *a4 = [v63 initWithDomain:v64 code:2 userInfo:v24];
+      *error = [v63 initWithDomain:v64 code:2 userInfo:v24];
       goto LABEL_78;
     }
 
@@ -620,7 +620,7 @@ LABEL_40:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (a4)
+        if (error)
         {
           v47 = objc_alloc(MEMORY[0x1E696ABC0]);
           v48 = *MEMORY[0x1E698F240];
@@ -631,9 +631,9 @@ LABEL_40:
           v50 = v47;
           v51 = v48;
 LABEL_58:
-          v29 = v85;
-          v5 = v86;
-          *a4 = [v50 initWithDomain:v51 code:2 userInfo:v49];
+          errorCopy = v85;
+          dictionaryCopy = v86;
+          *error = [v50 initWithDomain:v51 code:2 userInfo:v49];
 
           v30 = 0;
           v24 = v19;
@@ -645,8 +645,8 @@ LABEL_61:
         v30 = 0;
         v24 = v19;
 LABEL_78:
-        v29 = v85;
-        v5 = v86;
+        errorCopy = v85;
+        dictionaryCopy = v86;
         v7 = v83;
         goto LABEL_91;
       }
@@ -654,7 +654,7 @@ LABEL_78:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v52 = objc_alloc(MEMORY[0x1E696ABC0]);
           v53 = *MEMORY[0x1E698F240];
@@ -680,8 +680,8 @@ LABEL_78:
 LABEL_49:
 
   v24 = [v86 objectForKeyedSubscript:@"transactions"];
-  v43 = [MEMORY[0x1E695DFB0] null];
-  v44 = [v24 isEqual:v43];
+  null3 = [MEMORY[0x1E695DFB0] null];
+  v44 = [v24 isEqual:null3];
 
   if (v44)
   {
@@ -695,7 +695,7 @@ LABEL_49:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v7 = v83;
-      if (a4)
+      if (error)
       {
         v77 = objc_alloc(MEMORY[0x1E696ABC0]);
         v78 = *MEMORY[0x1E698F240];
@@ -703,18 +703,18 @@ LABEL_49:
         v82 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"transactions"];
         v110 = v82;
         v79 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v110 forKeys:&v109 count:1];
-        *a4 = [v77 initWithDomain:v78 code:2 userInfo:v79];
+        *error = [v77 initWithDomain:v78 code:2 userInfo:v79];
 
         v30 = 0;
-        v29 = v85;
-        v5 = v86;
+        errorCopy = v85;
+        dictionaryCopy = v86;
       }
 
       else
       {
         v30 = 0;
-        v29 = v85;
-        v5 = v86;
+        errorCopy = v85;
+        dictionaryCopy = v86;
       }
 
       goto LABEL_91;
@@ -750,11 +750,11 @@ LABEL_49:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v29 = v85;
-        v5 = v86;
+        errorCopy = v85;
+        dictionaryCopy = v86;
         v7 = v83;
-        v65 = a4;
-        if (a4)
+        errorCopy3 = error;
+        if (error)
         {
           v66 = objc_alloc(MEMORY[0x1E696ABC0]);
           v67 = v86;
@@ -768,9 +768,9 @@ LABEL_49:
 LABEL_84:
           v72 = [v69 dictionaryWithObjects:v70 forKeys:v71 count:1];
           v73 = v68;
-          v5 = v67;
-          v29 = v85;
-          *v65 = [v66 initWithDomain:v73 code:2 userInfo:v72];
+          dictionaryCopy = v67;
+          errorCopy = v85;
+          *errorCopy3 = [v66 initWithDomain:v73 code:2 userInfo:v72];
 LABEL_88:
         }
 
@@ -784,11 +784,11 @@ LABEL_89:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v29 = v85;
-        v5 = v86;
+        errorCopy = v85;
+        dictionaryCopy = v86;
         v7 = v83;
-        v65 = a4;
-        if (a4)
+        errorCopy3 = error;
+        if (error)
         {
           v66 = objc_alloc(MEMORY[0x1E696ABC0]);
           v67 = v86;
@@ -813,14 +813,14 @@ LABEL_89:
       if (v62)
       {
         v72 = v62;
-        if (a4)
+        if (error)
         {
           v74 = v62;
-          *a4 = v72;
+          *error = v72;
         }
 
-        v29 = v85;
-        v5 = v86;
+        errorCopy = v85;
+        dictionaryCopy = v86;
         v7 = v83;
         goto LABEL_88;
       }
@@ -848,16 +848,16 @@ LABEL_89:
 LABEL_75:
 
   v7 = v83;
-  v29 = v85;
-  v30 = [(BMWalletPaymentsCommerceClassicOrderPayment *)v84 initWithTotalAmount:v83 totalCurrencyCode:v85 paymentMethods:v13 applePayTransactionIdentifiers:v90 transactions:v81];
-  v84 = v30;
-  v5 = v86;
+  errorCopy = v85;
+  v30 = [(BMWalletPaymentsCommerceClassicOrderPayment *)selfCopy initWithTotalAmount:v83 totalCurrencyCode:v85 paymentMethods:v13 applePayTransactionIdentifiers:v90 transactions:v81];
+  selfCopy = v30;
+  dictionaryCopy = v86;
 LABEL_90:
 
 LABEL_91:
 LABEL_92:
 
-  self = v84;
+  self = selfCopy;
 LABEL_93:
 
   v6 = v87;
@@ -875,15 +875,15 @@ LABEL_96:
 {
   v3 = objc_opt_new();
   [(BMWalletPaymentsCommerceClassicOrderPayment *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_totalAmount)
   {
     PBDataWriterWriteStringField();
@@ -973,7 +973,7 @@ LABEL_96:
 
         v22 = *(*(&v24 + 1) + 8 * k);
         PBDataWriterPlaceMark();
-        [v22 writeTo:v4];
+        [v22 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -986,9 +986,9 @@ LABEL_96:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v37.receiver = self;
   v37.super_class = BMWalletPaymentsCommerceClassicOrderPayment;
   v5 = [(BMEventBase *)&v37 init];
@@ -1000,12 +1000,12 @@ LABEL_96:
   v6 = objc_opt_new();
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  v9 = [v4 position];
-  if (v9 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1016,18 +1016,18 @@ LABEL_96:
       while (1)
       {
         LOBYTE(v38[0]) = 0;
-        v13 = [v4 position] + 1;
-        if (v13 >= [v4 position] && (v14 = objc_msgSend(v4, "position") + 1, v14 <= objc_msgSend(v4, "length")))
+        v13 = [fromCopy position] + 1;
+        if (v13 >= [fromCopy position] && (v14 = objc_msgSend(fromCopy, "position") + 1, v14 <= objc_msgSend(fromCopy, "length")))
         {
-          v15 = [v4 data];
-          [v15 getBytes:v38 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v38 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v12 |= (v38[0] & 0x7F) << v10;
@@ -1044,9 +1044,9 @@ LABEL_96:
         }
       }
 
-      v17 = [v4 hasError] ? 0 : v12;
+      v17 = [fromCopy hasError] ? 0 : v12;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v17 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v17 & 7) == 4)
       {
         break;
       }
@@ -1104,7 +1104,7 @@ LABEL_33:
           case 5:
             v38[0] = 0;
             v38[1] = 0;
-            if (!PBReaderPlaceMark() || (v19 = [[BMWalletPaymentsCommerceClassicOrderTransaction alloc] initByReadFrom:v4]) == 0)
+            if (!PBReaderPlaceMark() || (v19 = [[BMWalletPaymentsCommerceClassicOrderTransaction alloc] initByReadFrom:fromCopy]) == 0)
             {
 LABEL_42:
 
@@ -1124,10 +1124,10 @@ LABEL_42:
       }
 
 LABEL_37:
-      v27 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v27 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v28 = [v6 copy];
@@ -1142,8 +1142,8 @@ LABEL_37:
   transactions = v5->_transactions;
   v5->_transactions = v32;
 
-  v34 = [v4 hasError];
-  if (v34)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_39:
     v35 = 0;
@@ -1161,34 +1161,34 @@ LABEL_40:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self totalAmount];
-  v5 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self totalCurrencyCode];
-  v6 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self paymentMethods];
-  v7 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self applePayTransactionIdentifiers];
-  v8 = [(BMWalletPaymentsCommerceClassicOrderPayment *)self transactions];
-  v9 = [v3 initWithFormat:@"BMWalletPaymentsCommerceClassicOrderPayment with totalAmount: %@, totalCurrencyCode: %@, paymentMethods: %@, applePayTransactionIdentifiers: %@, transactions: %@", v4, v5, v6, v7, v8];
+  totalAmount = [(BMWalletPaymentsCommerceClassicOrderPayment *)self totalAmount];
+  totalCurrencyCode = [(BMWalletPaymentsCommerceClassicOrderPayment *)self totalCurrencyCode];
+  paymentMethods = [(BMWalletPaymentsCommerceClassicOrderPayment *)self paymentMethods];
+  applePayTransactionIdentifiers = [(BMWalletPaymentsCommerceClassicOrderPayment *)self applePayTransactionIdentifiers];
+  transactions = [(BMWalletPaymentsCommerceClassicOrderPayment *)self transactions];
+  v9 = [v3 initWithFormat:@"BMWalletPaymentsCommerceClassicOrderPayment with totalAmount: %@, totalCurrencyCode: %@, paymentMethods: %@, applePayTransactionIdentifiers: %@, transactions: %@", totalAmount, totalCurrencyCode, paymentMethods, applePayTransactionIdentifiers, transactions];
 
   return v9;
 }
 
-- (BMWalletPaymentsCommerceClassicOrderPayment)initWithTotalAmount:(id)a3 totalCurrencyCode:(id)a4 paymentMethods:(id)a5 applePayTransactionIdentifiers:(id)a6 transactions:(id)a7
+- (BMWalletPaymentsCommerceClassicOrderPayment)initWithTotalAmount:(id)amount totalCurrencyCode:(id)code paymentMethods:(id)methods applePayTransactionIdentifiers:(id)identifiers transactions:(id)transactions
 {
-  v19 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  amountCopy = amount;
+  codeCopy = code;
+  methodsCopy = methods;
+  identifiersCopy = identifiers;
+  transactionsCopy = transactions;
   v20.receiver = self;
   v20.super_class = BMWalletPaymentsCommerceClassicOrderPayment;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_totalAmount, a3);
-    objc_storeStrong(&v17->_totalCurrencyCode, a4);
-    objc_storeStrong(&v17->_paymentMethods, a5);
-    objc_storeStrong(&v17->_applePayTransactionIdentifiers, a6);
-    objc_storeStrong(&v17->_transactions, a7);
+    objc_storeStrong(&v17->_totalAmount, amount);
+    objc_storeStrong(&v17->_totalCurrencyCode, code);
+    objc_storeStrong(&v17->_paymentMethods, methods);
+    objc_storeStrong(&v17->_applePayTransactionIdentifiers, identifiers);
+    objc_storeStrong(&v17->_transactions, transactions);
   }
 
   return v17;
@@ -1260,9 +1260,9 @@ id __54__BMWalletPaymentsCommerceClassicOrderPayment_columns__block_invoke(uint6
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1270,8 +1270,8 @@ id __54__BMWalletPaymentsCommerceClassicOrderPayment_columns__block_invoke(uint6
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMWalletPaymentsCommerceClassicOrderPayment alloc] initByReadFrom:v7];
     v4 = v8;

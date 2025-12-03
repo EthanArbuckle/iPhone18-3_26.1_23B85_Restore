@@ -1,13 +1,13 @@
 @interface CAAUEQGraphView.ControlAccessibilityElement
 - (_TtCC12CoreAudioKit15CAAUEQGraphView27ControlAccessibilityElement)init;
-- (_TtCC12CoreAudioKit15CAAUEQGraphView27ControlAccessibilityElement)initWithAccessibilityContainer:(id)a3;
+- (_TtCC12CoreAudioKit15CAAUEQGraphView27ControlAccessibilityElement)initWithAccessibilityContainer:(id)container;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
 @end
 
 @implementation CAAUEQGraphView.ControlAccessibilityElement
 
-- (_TtCC12CoreAudioKit15CAAUEQGraphView27ControlAccessibilityElement)initWithAccessibilityContainer:(id)a3
+- (_TtCC12CoreAudioKit15CAAUEQGraphView27ControlAccessibilityElement)initWithAccessibilityContainer:(id)container
 {
   swift_unknownObjectRetain();
   sub_23719682C();
@@ -17,13 +17,13 @@
 
 - (void)accessibilityIncrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_23716AD7C();
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_23716B160();
 }
 

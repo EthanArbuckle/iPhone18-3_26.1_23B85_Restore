@@ -1,54 +1,54 @@
 @interface KCellularGsmIdleConfig
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAcc:(BOOL)a3;
-- (void)setHasAccessTech:(BOOL)a3;
-- (void)setHasArfcnBcch:(BOOL)a3;
-- (void)setHasAttachAllowed:(BOOL)a3;
-- (void)setHasBsPaMfrms:(BOOL)a3;
-- (void)setHasBsic:(BOOL)a3;
-- (void)setHasC2Valid:(BOOL)a3;
-- (void)setHasCba:(BOOL)a3;
-- (void)setHasCbchSupported:(BOOL)a3;
-- (void)setHasCbq:(BOOL)a3;
-- (void)setHasCi:(BOOL)a3;
-- (void)setHasCrOffset:(BOOL)a3;
-- (void)setHasCsPagemode:(BOOL)a3;
-- (void)setHasDtxFromBs:(BOOL)a3;
-- (void)setHasEcsc:(BOOL)a3;
-- (void)setHasEmergCallAllowed:(BOOL)a3;
-- (void)setHasGsmBand:(BOOL)a3;
-- (void)setHasHalfRateSupported:(BOOL)a3;
-- (void)setHasLac:(BOOL)a3;
-- (void)setHasMaxRetransCs:(BOOL)a3;
-- (void)setHasMcc:(BOOL)a3;
-- (void)setHasMnc:(BOOL)a3;
-- (void)setHasMsTxpwr:(BOOL)a3;
-- (void)setHasMultibRep:(BOOL)a3;
-- (void)setHasPenaltyT:(BOOL)a3;
-- (void)setHasRadioLinkTimeout:(BOOL)a3;
-- (void)setHasReestAllowed:(BOOL)a3;
-- (void)setHasRxAccMin:(BOOL)a3;
-- (void)setHasSi2TerNeeded:(BOOL)a3;
-- (void)setHasSi78Broadcast:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasT3212:(BOOL)a3;
-- (void)setHasTmpOffset:(BOOL)a3;
-- (void)setHasTypeOfCurChan:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAcc:(BOOL)acc;
+- (void)setHasAccessTech:(BOOL)tech;
+- (void)setHasArfcnBcch:(BOOL)bcch;
+- (void)setHasAttachAllowed:(BOOL)allowed;
+- (void)setHasBsPaMfrms:(BOOL)mfrms;
+- (void)setHasBsic:(BOOL)bsic;
+- (void)setHasC2Valid:(BOOL)valid;
+- (void)setHasCba:(BOOL)cba;
+- (void)setHasCbchSupported:(BOOL)supported;
+- (void)setHasCbq:(BOOL)cbq;
+- (void)setHasCi:(BOOL)ci;
+- (void)setHasCrOffset:(BOOL)offset;
+- (void)setHasCsPagemode:(BOOL)pagemode;
+- (void)setHasDtxFromBs:(BOOL)bs;
+- (void)setHasEcsc:(BOOL)ecsc;
+- (void)setHasEmergCallAllowed:(BOOL)allowed;
+- (void)setHasGsmBand:(BOOL)band;
+- (void)setHasHalfRateSupported:(BOOL)supported;
+- (void)setHasLac:(BOOL)lac;
+- (void)setHasMaxRetransCs:(BOOL)cs;
+- (void)setHasMcc:(BOOL)mcc;
+- (void)setHasMnc:(BOOL)mnc;
+- (void)setHasMsTxpwr:(BOOL)txpwr;
+- (void)setHasMultibRep:(BOOL)rep;
+- (void)setHasPenaltyT:(BOOL)t;
+- (void)setHasRadioLinkTimeout:(BOOL)timeout;
+- (void)setHasReestAllowed:(BOOL)allowed;
+- (void)setHasRxAccMin:(BOOL)min;
+- (void)setHasSi2TerNeeded:(BOOL)needed;
+- (void)setHasSi78Broadcast:(BOOL)broadcast;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasT3212:(BOOL)t3212;
+- (void)setHasTmpOffset:(BOOL)offset;
+- (void)setHasTypeOfCurChan:(BOOL)chan;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularGsmIdleConfig
 
-- (void)setHasArfcnBcch:(BOOL)a3
+- (void)setHasArfcnBcch:(BOOL)bcch
 {
   v3 = 8;
-  if (!a3)
+  if (!bcch)
   {
     v3 = 0;
   }
@@ -56,10 +56,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasMcc:(BOOL)a3
+- (void)setHasMcc:(BOOL)mcc
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!mcc)
   {
     v3 = 0;
   }
@@ -67,10 +67,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)setHasMnc:(BOOL)a3
+- (void)setHasMnc:(BOOL)mnc
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!mnc)
   {
     v3 = 0;
   }
@@ -78,10 +78,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3);
 }
 
-- (void)setHasLac:(BOOL)a3
+- (void)setHasLac:(BOOL)lac
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!lac)
   {
     v3 = 0;
   }
@@ -89,10 +89,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)setHasCi:(BOOL)a3
+- (void)setHasCi:(BOOL)ci
 {
   v3 = 2048;
-  if (!a3)
+  if (!ci)
   {
     v3 = 0;
   }
@@ -100,10 +100,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setHasBsic:(BOOL)a3
+- (void)setHasBsic:(BOOL)bsic
 {
   v3 = 64;
-  if (!a3)
+  if (!bsic)
   {
     v3 = 0;
   }
@@ -111,10 +111,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setHasDtxFromBs:(BOOL)a3
+- (void)setHasDtxFromBs:(BOOL)bs
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!bs)
   {
     v3 = 0;
   }
@@ -122,10 +122,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasRadioLinkTimeout:(BOOL)a3
+- (void)setHasRadioLinkTimeout:(BOOL)timeout
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!timeout)
   {
     v3 = 0;
   }
@@ -133,10 +133,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3);
 }
 
-- (void)setHasMultibRep:(BOOL)a3
+- (void)setHasMultibRep:(BOOL)rep
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!rep)
   {
     v3 = 0;
   }
@@ -144,10 +144,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)setHasGsmBand:(BOOL)a3
+- (void)setHasGsmBand:(BOOL)band
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!band)
   {
     v3 = 0;
   }
@@ -155,10 +155,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setHasAccessTech:(BOOL)a3
+- (void)setHasAccessTech:(BOOL)tech
 {
   v3 = 4;
-  if (!a3)
+  if (!tech)
   {
     v3 = 0;
   }
@@ -166,10 +166,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setHasTypeOfCurChan:(BOOL)a3
+- (void)setHasTypeOfCurChan:(BOOL)chan
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!chan)
   {
     v3 = 0;
   }
@@ -177,10 +177,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3);
 }
 
-- (void)setHasMsTxpwr:(BOOL)a3
+- (void)setHasMsTxpwr:(BOOL)txpwr
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!txpwr)
   {
     v3 = 0;
   }
@@ -188,10 +188,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3);
 }
 
-- (void)setHasRxAccMin:(BOOL)a3
+- (void)setHasRxAccMin:(BOOL)min
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!min)
   {
     v3 = 0;
   }
@@ -199,10 +199,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasCbq:(BOOL)a3
+- (void)setHasCbq:(BOOL)cbq
 {
   v3 = 1024;
-  if (!a3)
+  if (!cbq)
   {
     v3 = 0;
   }
@@ -210,10 +210,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setHasCba:(BOOL)a3
+- (void)setHasCba:(BOOL)cba
 {
   v3 = 256;
-  if (!a3)
+  if (!cba)
   {
     v3 = 0;
   }
@@ -221,10 +221,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setHasC2Valid:(BOOL)a3
+- (void)setHasC2Valid:(BOOL)valid
 {
   v3 = 128;
-  if (!a3)
+  if (!valid)
   {
     v3 = 0;
   }
@@ -232,10 +232,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (void)setHasCrOffset:(BOOL)a3
+- (void)setHasCrOffset:(BOOL)offset
 {
   v3 = 4096;
-  if (!a3)
+  if (!offset)
   {
     v3 = 0;
   }
@@ -243,10 +243,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setHasTmpOffset:(BOOL)a3
+- (void)setHasTmpOffset:(BOOL)offset
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!offset)
   {
     v3 = 0;
   }
@@ -254,10 +254,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setHasPenaltyT:(BOOL)a3
+- (void)setHasPenaltyT:(BOOL)t
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!t)
   {
     v3 = 0;
   }
@@ -265,10 +265,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)setHasT3212:(BOOL)a3
+- (void)setHasT3212:(BOOL)t3212
 {
   v3 = &_mh_execute_header;
-  if (!a3)
+  if (!t3212)
   {
     v3 = 0;
   }
@@ -276,10 +276,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (void)setHasAcc:(BOOL)a3
+- (void)setHasAcc:(BOOL)acc
 {
   v3 = 2;
-  if (!a3)
+  if (!acc)
   {
     v3 = 0;
   }
@@ -287,10 +287,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (void)setHasBsPaMfrms:(BOOL)a3
+- (void)setHasBsPaMfrms:(BOOL)mfrms
 {
   v3 = 32;
-  if (!a3)
+  if (!mfrms)
   {
     v3 = 0;
   }
@@ -298,10 +298,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setHasCsPagemode:(BOOL)a3
+- (void)setHasCsPagemode:(BOOL)pagemode
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!pagemode)
   {
     v3 = 0;
   }
@@ -309,10 +309,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasMaxRetransCs:(BOOL)a3
+- (void)setHasMaxRetransCs:(BOOL)cs
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!cs)
   {
     v3 = 0;
   }
@@ -320,10 +320,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (void)setHasEmergCallAllowed:(BOOL)a3
+- (void)setHasEmergCallAllowed:(BOOL)allowed
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!allowed)
   {
     v3 = 0;
   }
@@ -331,10 +331,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (void)setHasAttachAllowed:(BOOL)a3
+- (void)setHasAttachAllowed:(BOOL)allowed
 {
   v3 = 16;
-  if (!a3)
+  if (!allowed)
   {
     v3 = 0;
   }
@@ -342,10 +342,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasHalfRateSupported:(BOOL)a3
+- (void)setHasHalfRateSupported:(BOOL)supported
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!supported)
   {
     v3 = 0;
   }
@@ -353,10 +353,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setHasSi78Broadcast:(BOOL)a3
+- (void)setHasSi78Broadcast:(BOOL)broadcast
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!broadcast)
   {
     v3 = 0;
   }
@@ -364,10 +364,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setHasCbchSupported:(BOOL)a3
+- (void)setHasCbchSupported:(BOOL)supported
 {
   v3 = 512;
-  if (!a3)
+  if (!supported)
   {
     v3 = 0;
   }
@@ -375,10 +375,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasReestAllowed:(BOOL)a3
+- (void)setHasReestAllowed:(BOOL)allowed
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!allowed)
   {
     v3 = 0;
   }
@@ -386,10 +386,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3);
 }
 
-- (void)setHasEcsc:(BOOL)a3
+- (void)setHasEcsc:(BOOL)ecsc
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!ecsc)
   {
     v3 = 0;
   }
@@ -397,10 +397,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (void)setHasSi2TerNeeded:(BOOL)a3
+- (void)setHasSi2TerNeeded:(BOOL)needed
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!needed)
   {
     v3 = 0;
   }
@@ -408,10 +408,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3);
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!id)
   {
     v3 = 0;
   }
@@ -424,8 +424,8 @@
   v7.receiver = self;
   v7.super_class = KCellularGsmIdleConfig;
   v3 = [(KCellularGsmIdleConfig *)&v7 description];
-  v4 = [(KCellularGsmIdleConfig *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(KCellularGsmIdleConfig *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -985,9 +985,9 @@ LABEL_37:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v40 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
@@ -1503,14 +1503,14 @@ LABEL_36:
 LABEL_37:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
-    v4[1] = self->_timestamp;
-    v4[19] |= 1uLL;
+    toCopy[1] = self->_timestamp;
+    toCopy[19] |= 1uLL;
     has = self->_has;
     if ((*&has & 8) == 0)
     {
@@ -1529,8 +1529,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 6) = self->_arfcnBcch;
-  v4[19] |= 8uLL;
+  *(toCopy + 6) = self->_arfcnBcch;
+  toCopy[19] |= 8uLL;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -1544,8 +1544,8 @@ LABEL_4:
   }
 
 LABEL_42:
-  *(v4 + 24) = self->_mcc;
-  v4[19] |= 0x200000uLL;
+  *(toCopy + 24) = self->_mcc;
+  toCopy[19] |= 0x200000uLL;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -1559,8 +1559,8 @@ LABEL_5:
   }
 
 LABEL_43:
-  *(v4 + 25) = self->_mnc;
-  v4[19] |= 0x400000uLL;
+  *(toCopy + 25) = self->_mnc;
+  toCopy[19] |= 0x400000uLL;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1574,8 +1574,8 @@ LABEL_6:
   }
 
 LABEL_44:
-  *(v4 + 22) = self->_lac;
-  v4[19] |= 0x80000uLL;
+  *(toCopy + 22) = self->_lac;
+  toCopy[19] |= 0x80000uLL;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1589,8 +1589,8 @@ LABEL_7:
   }
 
 LABEL_45:
-  *(v4 + 14) = self->_ci;
-  v4[19] |= 0x800uLL;
+  *(toCopy + 14) = self->_ci;
+  toCopy[19] |= 0x800uLL;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1604,8 +1604,8 @@ LABEL_8:
   }
 
 LABEL_46:
-  *(v4 + 9) = self->_bsic;
-  v4[19] |= 0x40uLL;
+  *(toCopy + 9) = self->_bsic;
+  toCopy[19] |= 0x40uLL;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1619,8 +1619,8 @@ LABEL_9:
   }
 
 LABEL_47:
-  *(v4 + 17) = self->_dtxFromBs;
-  v4[19] |= 0x4000uLL;
+  *(toCopy + 17) = self->_dtxFromBs;
+  toCopy[19] |= 0x4000uLL;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -1634,8 +1634,8 @@ LABEL_10:
   }
 
 LABEL_48:
-  *(v4 + 29) = self->_radioLinkTimeout;
-  v4[19] |= 0x4000000uLL;
+  *(toCopy + 29) = self->_radioLinkTimeout;
+  toCopy[19] |= 0x4000000uLL;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -1649,8 +1649,8 @@ LABEL_11:
   }
 
 LABEL_49:
-  *(v4 + 27) = self->_multibRep;
-  v4[19] |= 0x1000000uLL;
+  *(toCopy + 27) = self->_multibRep;
+  toCopy[19] |= 0x1000000uLL;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1664,8 +1664,8 @@ LABEL_12:
   }
 
 LABEL_50:
-  *(v4 + 20) = self->_gsmBand;
-  v4[19] |= 0x20000uLL;
+  *(toCopy + 20) = self->_gsmBand;
+  toCopy[19] |= 0x20000uLL;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1679,8 +1679,8 @@ LABEL_13:
   }
 
 LABEL_51:
-  *(v4 + 5) = self->_accessTech;
-  v4[19] |= 4uLL;
+  *(toCopy + 5) = self->_accessTech;
+  toCopy[19] |= 4uLL;
   has = self->_has;
   if ((*&has & 0x400000000) == 0)
   {
@@ -1694,8 +1694,8 @@ LABEL_14:
   }
 
 LABEL_52:
-  *(v4 + 37) = self->_typeOfCurChan;
-  v4[19] |= 0x400000000uLL;
+  *(toCopy + 37) = self->_typeOfCurChan;
+  toCopy[19] |= 0x400000000uLL;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -1709,8 +1709,8 @@ LABEL_15:
   }
 
 LABEL_53:
-  *(v4 + 26) = self->_msTxpwr;
-  v4[19] |= 0x800000uLL;
+  *(toCopy + 26) = self->_msTxpwr;
+  toCopy[19] |= 0x800000uLL;
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
   {
@@ -1724,8 +1724,8 @@ LABEL_16:
   }
 
 LABEL_54:
-  *(v4 + 31) = self->_rxAccMin;
-  v4[19] |= 0x10000000uLL;
+  *(toCopy + 31) = self->_rxAccMin;
+  toCopy[19] |= 0x10000000uLL;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1739,8 +1739,8 @@ LABEL_17:
   }
 
 LABEL_55:
-  *(v4 + 13) = self->_cbq;
-  v4[19] |= 0x400uLL;
+  *(toCopy + 13) = self->_cbq;
+  toCopy[19] |= 0x400uLL;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1754,8 +1754,8 @@ LABEL_18:
   }
 
 LABEL_56:
-  *(v4 + 11) = self->_cba;
-  v4[19] |= 0x100uLL;
+  *(toCopy + 11) = self->_cba;
+  toCopy[19] |= 0x100uLL;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1769,8 +1769,8 @@ LABEL_19:
   }
 
 LABEL_57:
-  *(v4 + 10) = self->_c2Valid;
-  v4[19] |= 0x80uLL;
+  *(toCopy + 10) = self->_c2Valid;
+  toCopy[19] |= 0x80uLL;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1784,8 +1784,8 @@ LABEL_20:
   }
 
 LABEL_58:
-  *(v4 + 15) = self->_crOffset;
-  v4[19] |= 0x1000uLL;
+  *(toCopy + 15) = self->_crOffset;
+  toCopy[19] |= 0x1000uLL;
   has = self->_has;
   if ((*&has & 0x200000000) == 0)
   {
@@ -1799,8 +1799,8 @@ LABEL_21:
   }
 
 LABEL_59:
-  *(v4 + 36) = self->_tmpOffset;
-  v4[19] |= 0x200000000uLL;
+  *(toCopy + 36) = self->_tmpOffset;
+  toCopy[19] |= 0x200000000uLL;
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -1814,8 +1814,8 @@ LABEL_22:
   }
 
 LABEL_60:
-  *(v4 + 28) = self->_penaltyT;
-  v4[19] |= 0x2000000uLL;
+  *(toCopy + 28) = self->_penaltyT;
+  toCopy[19] |= 0x2000000uLL;
   has = self->_has;
   if ((*&has & 0x100000000) == 0)
   {
@@ -1829,8 +1829,8 @@ LABEL_23:
   }
 
 LABEL_61:
-  *(v4 + 35) = self->_t3212;
-  v4[19] |= &_mh_execute_header;
+  *(toCopy + 35) = self->_t3212;
+  toCopy[19] |= &_mh_execute_header;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1844,8 +1844,8 @@ LABEL_24:
   }
 
 LABEL_62:
-  *(v4 + 4) = self->_acc;
-  v4[19] |= 2uLL;
+  *(toCopy + 4) = self->_acc;
+  toCopy[19] |= 2uLL;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1859,8 +1859,8 @@ LABEL_25:
   }
 
 LABEL_63:
-  *(v4 + 8) = self->_bsPaMfrms;
-  v4[19] |= 0x20uLL;
+  *(toCopy + 8) = self->_bsPaMfrms;
+  toCopy[19] |= 0x20uLL;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1874,8 +1874,8 @@ LABEL_26:
   }
 
 LABEL_64:
-  *(v4 + 16) = self->_csPagemode;
-  v4[19] |= 0x2000uLL;
+  *(toCopy + 16) = self->_csPagemode;
+  toCopy[19] |= 0x2000uLL;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -1889,8 +1889,8 @@ LABEL_27:
   }
 
 LABEL_65:
-  *(v4 + 23) = self->_maxRetransCs;
-  v4[19] |= 0x100000uLL;
+  *(toCopy + 23) = self->_maxRetransCs;
+  toCopy[19] |= 0x100000uLL;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1904,8 +1904,8 @@ LABEL_28:
   }
 
 LABEL_66:
-  *(v4 + 19) = self->_emergCallAllowed;
-  v4[19] |= 0x10000uLL;
+  *(toCopy + 19) = self->_emergCallAllowed;
+  toCopy[19] |= 0x10000uLL;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1919,8 +1919,8 @@ LABEL_29:
   }
 
 LABEL_67:
-  *(v4 + 7) = self->_attachAllowed;
-  v4[19] |= 0x10uLL;
+  *(toCopy + 7) = self->_attachAllowed;
+  toCopy[19] |= 0x10uLL;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1934,8 +1934,8 @@ LABEL_30:
   }
 
 LABEL_68:
-  *(v4 + 21) = self->_halfRateSupported;
-  v4[19] |= 0x40000uLL;
+  *(toCopy + 21) = self->_halfRateSupported;
+  toCopy[19] |= 0x40000uLL;
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
   {
@@ -1949,8 +1949,8 @@ LABEL_31:
   }
 
 LABEL_69:
-  *(v4 + 33) = self->_si78Broadcast;
-  v4[19] |= 0x40000000uLL;
+  *(toCopy + 33) = self->_si78Broadcast;
+  toCopy[19] |= 0x40000000uLL;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1964,8 +1964,8 @@ LABEL_32:
   }
 
 LABEL_70:
-  *(v4 + 12) = self->_cbchSupported;
-  v4[19] |= 0x200uLL;
+  *(toCopy + 12) = self->_cbchSupported;
+  toCopy[19] |= 0x200uLL;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -1979,8 +1979,8 @@ LABEL_33:
   }
 
 LABEL_71:
-  *(v4 + 30) = self->_reestAllowed;
-  v4[19] |= 0x8000000uLL;
+  *(toCopy + 30) = self->_reestAllowed;
+  toCopy[19] |= 0x8000000uLL;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1994,8 +1994,8 @@ LABEL_34:
   }
 
 LABEL_72:
-  *(v4 + 18) = self->_ecsc;
-  v4[19] |= 0x8000uLL;
+  *(toCopy + 18) = self->_ecsc;
+  toCopy[19] |= 0x8000uLL;
   has = self->_has;
   if ((*&has & 0x20000000) == 0)
   {
@@ -2009,21 +2009,21 @@ LABEL_35:
   }
 
 LABEL_73:
-  *(v4 + 32) = self->_si2TerNeeded;
-  v4[19] |= 0x20000000uLL;
+  *(toCopy + 32) = self->_si2TerNeeded;
+  toCopy[19] |= 0x20000000uLL;
   if ((*&self->_has & 0x80000000) != 0)
   {
 LABEL_36:
-    *(v4 + 34) = self->_subsId;
-    v4[19] |= 0x80000000uLL;
+    *(toCopy + 34) = self->_subsId;
+    toCopy[19] |= 0x80000000uLL;
   }
 
 LABEL_37:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (*&has)
   {
@@ -2542,19 +2542,19 @@ LABEL_37:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_177;
   }
 
   has = self->_has;
-  v6 = *(v4 + 19);
+  v6 = *(equalCopy + 19);
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_177;
     }
@@ -2569,7 +2569,7 @@ LABEL_177:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_arfcnBcch != *(v4 + 6))
+    if ((v6 & 8) == 0 || self->_arfcnBcch != *(equalCopy + 6))
     {
       goto LABEL_177;
     }
@@ -2582,7 +2582,7 @@ LABEL_177:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v6 & 0x200000) == 0 || self->_mcc != *(v4 + 24))
+    if ((v6 & 0x200000) == 0 || self->_mcc != *(equalCopy + 24))
     {
       goto LABEL_177;
     }
@@ -2595,7 +2595,7 @@ LABEL_177:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v6 & 0x400000) == 0 || self->_mnc != *(v4 + 25))
+    if ((v6 & 0x400000) == 0 || self->_mnc != *(equalCopy + 25))
     {
       goto LABEL_177;
     }
@@ -2608,7 +2608,7 @@ LABEL_177:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v6 & 0x80000) == 0 || self->_lac != *(v4 + 22))
+    if ((v6 & 0x80000) == 0 || self->_lac != *(equalCopy + 22))
     {
       goto LABEL_177;
     }
@@ -2621,7 +2621,7 @@ LABEL_177:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_ci != *(v4 + 14))
+    if ((v6 & 0x800) == 0 || self->_ci != *(equalCopy + 14))
     {
       goto LABEL_177;
     }
@@ -2634,7 +2634,7 @@ LABEL_177:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_bsic != *(v4 + 9))
+    if ((v6 & 0x40) == 0 || self->_bsic != *(equalCopy + 9))
     {
       goto LABEL_177;
     }
@@ -2647,7 +2647,7 @@ LABEL_177:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v6 & 0x4000) == 0 || self->_dtxFromBs != *(v4 + 17))
+    if ((v6 & 0x4000) == 0 || self->_dtxFromBs != *(equalCopy + 17))
     {
       goto LABEL_177;
     }
@@ -2660,7 +2660,7 @@ LABEL_177:
 
   if ((*&has & 0x4000000) != 0)
   {
-    if ((v6 & 0x4000000) == 0 || self->_radioLinkTimeout != *(v4 + 29))
+    if ((v6 & 0x4000000) == 0 || self->_radioLinkTimeout != *(equalCopy + 29))
     {
       goto LABEL_177;
     }
@@ -2673,7 +2673,7 @@ LABEL_177:
 
   if ((*&has & 0x1000000) != 0)
   {
-    if ((v6 & 0x1000000) == 0 || self->_multibRep != *(v4 + 27))
+    if ((v6 & 0x1000000) == 0 || self->_multibRep != *(equalCopy + 27))
     {
       goto LABEL_177;
     }
@@ -2686,7 +2686,7 @@ LABEL_177:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_gsmBand != *(v4 + 20))
+    if ((v6 & 0x20000) == 0 || self->_gsmBand != *(equalCopy + 20))
     {
       goto LABEL_177;
     }
@@ -2699,7 +2699,7 @@ LABEL_177:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_accessTech != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_accessTech != *(equalCopy + 5))
     {
       goto LABEL_177;
     }
@@ -2712,7 +2712,7 @@ LABEL_177:
 
   if ((*&has & 0x400000000) != 0)
   {
-    if ((v6 & 0x400000000) == 0 || self->_typeOfCurChan != *(v4 + 37))
+    if ((v6 & 0x400000000) == 0 || self->_typeOfCurChan != *(equalCopy + 37))
     {
       goto LABEL_177;
     }
@@ -2725,7 +2725,7 @@ LABEL_177:
 
   if ((*&has & 0x800000) != 0)
   {
-    if ((v6 & 0x800000) == 0 || self->_msTxpwr != *(v4 + 26))
+    if ((v6 & 0x800000) == 0 || self->_msTxpwr != *(equalCopy + 26))
     {
       goto LABEL_177;
     }
@@ -2738,7 +2738,7 @@ LABEL_177:
 
   if ((*&has & 0x10000000) != 0)
   {
-    if ((v6 & 0x10000000) == 0 || self->_rxAccMin != *(v4 + 31))
+    if ((v6 & 0x10000000) == 0 || self->_rxAccMin != *(equalCopy + 31))
     {
       goto LABEL_177;
     }
@@ -2751,7 +2751,7 @@ LABEL_177:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_cbq != *(v4 + 13))
+    if ((v6 & 0x400) == 0 || self->_cbq != *(equalCopy + 13))
     {
       goto LABEL_177;
     }
@@ -2764,7 +2764,7 @@ LABEL_177:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_cba != *(v4 + 11))
+    if ((v6 & 0x100) == 0 || self->_cba != *(equalCopy + 11))
     {
       goto LABEL_177;
     }
@@ -2777,7 +2777,7 @@ LABEL_177:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_c2Valid != *(v4 + 10))
+    if ((v6 & 0x80) == 0 || self->_c2Valid != *(equalCopy + 10))
     {
       goto LABEL_177;
     }
@@ -2790,7 +2790,7 @@ LABEL_177:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v6 & 0x1000) == 0 || self->_crOffset != *(v4 + 15))
+    if ((v6 & 0x1000) == 0 || self->_crOffset != *(equalCopy + 15))
     {
       goto LABEL_177;
     }
@@ -2803,7 +2803,7 @@ LABEL_177:
 
   if ((*&has & 0x200000000) != 0)
   {
-    if ((v6 & 0x200000000) == 0 || self->_tmpOffset != *(v4 + 36))
+    if ((v6 & 0x200000000) == 0 || self->_tmpOffset != *(equalCopy + 36))
     {
       goto LABEL_177;
     }
@@ -2816,7 +2816,7 @@ LABEL_177:
 
   if ((*&has & 0x2000000) != 0)
   {
-    if ((v6 & 0x2000000) == 0 || self->_penaltyT != *(v4 + 28))
+    if ((v6 & 0x2000000) == 0 || self->_penaltyT != *(equalCopy + 28))
     {
       goto LABEL_177;
     }
@@ -2829,7 +2829,7 @@ LABEL_177:
 
   if ((*&has & 0x100000000) != 0)
   {
-    if ((v6 & 0x100000000) == 0 || self->_t3212 != *(v4 + 35))
+    if ((v6 & 0x100000000) == 0 || self->_t3212 != *(equalCopy + 35))
     {
       goto LABEL_177;
     }
@@ -2842,7 +2842,7 @@ LABEL_177:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_acc != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_acc != *(equalCopy + 4))
     {
       goto LABEL_177;
     }
@@ -2855,7 +2855,7 @@ LABEL_177:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_bsPaMfrms != *(v4 + 8))
+    if ((v6 & 0x20) == 0 || self->_bsPaMfrms != *(equalCopy + 8))
     {
       goto LABEL_177;
     }
@@ -2868,7 +2868,7 @@ LABEL_177:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v6 & 0x2000) == 0 || self->_csPagemode != *(v4 + 16))
+    if ((v6 & 0x2000) == 0 || self->_csPagemode != *(equalCopy + 16))
     {
       goto LABEL_177;
     }
@@ -2881,7 +2881,7 @@ LABEL_177:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v6 & 0x100000) == 0 || self->_maxRetransCs != *(v4 + 23))
+    if ((v6 & 0x100000) == 0 || self->_maxRetransCs != *(equalCopy + 23))
     {
       goto LABEL_177;
     }
@@ -2894,7 +2894,7 @@ LABEL_177:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_emergCallAllowed != *(v4 + 19))
+    if ((v6 & 0x10000) == 0 || self->_emergCallAllowed != *(equalCopy + 19))
     {
       goto LABEL_177;
     }
@@ -2907,7 +2907,7 @@ LABEL_177:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_attachAllowed != *(v4 + 7))
+    if ((v6 & 0x10) == 0 || self->_attachAllowed != *(equalCopy + 7))
     {
       goto LABEL_177;
     }
@@ -2920,7 +2920,7 @@ LABEL_177:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v6 & 0x40000) == 0 || self->_halfRateSupported != *(v4 + 21))
+    if ((v6 & 0x40000) == 0 || self->_halfRateSupported != *(equalCopy + 21))
     {
       goto LABEL_177;
     }
@@ -2933,7 +2933,7 @@ LABEL_177:
 
   if ((*&has & 0x40000000) != 0)
   {
-    if ((v6 & 0x40000000) == 0 || self->_si78Broadcast != *(v4 + 33))
+    if ((v6 & 0x40000000) == 0 || self->_si78Broadcast != *(equalCopy + 33))
     {
       goto LABEL_177;
     }
@@ -2946,7 +2946,7 @@ LABEL_177:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_cbchSupported != *(v4 + 12))
+    if ((v6 & 0x200) == 0 || self->_cbchSupported != *(equalCopy + 12))
     {
       goto LABEL_177;
     }
@@ -2959,7 +2959,7 @@ LABEL_177:
 
   if ((*&has & 0x8000000) != 0)
   {
-    if ((v6 & 0x8000000) == 0 || self->_reestAllowed != *(v4 + 30))
+    if ((v6 & 0x8000000) == 0 || self->_reestAllowed != *(equalCopy + 30))
     {
       goto LABEL_177;
     }
@@ -2972,7 +2972,7 @@ LABEL_177:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v6 & 0x8000) == 0 || self->_ecsc != *(v4 + 18))
+    if ((v6 & 0x8000) == 0 || self->_ecsc != *(equalCopy + 18))
     {
       goto LABEL_177;
     }
@@ -2985,7 +2985,7 @@ LABEL_177:
 
   if ((*&has & 0x20000000) != 0)
   {
-    if ((v6 & 0x20000000) == 0 || self->_si2TerNeeded != *(v4 + 32))
+    if ((v6 & 0x20000000) == 0 || self->_si2TerNeeded != *(equalCopy + 32))
     {
       goto LABEL_177;
     }
@@ -2998,7 +2998,7 @@ LABEL_177:
 
   if ((*&has & 0x80000000) != 0)
   {
-    if ((v6 & 0x80000000) == 0 || self->_subsId != *(v4 + 34))
+    if ((v6 & 0x80000000) == 0 || self->_subsId != *(equalCopy + 34))
     {
       goto LABEL_177;
     }
@@ -3505,15 +3505,15 @@ LABEL_36:
   return v37 ^ v38 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 19);
+  fromCopy = from;
+  v5 = *(fromCopy + 19);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1uLL;
-    v5 = *(v4 + 19);
+    v5 = *(fromCopy + 19);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -3531,9 +3531,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_arfcnBcch = *(v4 + 6);
+  self->_arfcnBcch = *(fromCopy + 6);
   *&self->_has |= 8uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x200000) == 0)
   {
 LABEL_4:
@@ -3546,9 +3546,9 @@ LABEL_4:
   }
 
 LABEL_42:
-  self->_mcc = *(v4 + 24);
+  self->_mcc = *(fromCopy + 24);
   *&self->_has |= 0x200000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x400000) == 0)
   {
 LABEL_5:
@@ -3561,9 +3561,9 @@ LABEL_5:
   }
 
 LABEL_43:
-  self->_mnc = *(v4 + 25);
+  self->_mnc = *(fromCopy + 25);
   *&self->_has |= 0x400000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_6:
@@ -3576,9 +3576,9 @@ LABEL_6:
   }
 
 LABEL_44:
-  self->_lac = *(v4 + 22);
+  self->_lac = *(fromCopy + 22);
   *&self->_has |= 0x80000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x800) == 0)
   {
 LABEL_7:
@@ -3591,9 +3591,9 @@ LABEL_7:
   }
 
 LABEL_45:
-  self->_ci = *(v4 + 14);
+  self->_ci = *(fromCopy + 14);
   *&self->_has |= 0x800uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x40) == 0)
   {
 LABEL_8:
@@ -3606,9 +3606,9 @@ LABEL_8:
   }
 
 LABEL_46:
-  self->_bsic = *(v4 + 9);
+  self->_bsic = *(fromCopy + 9);
   *&self->_has |= 0x40uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_9:
@@ -3621,9 +3621,9 @@ LABEL_9:
   }
 
 LABEL_47:
-  self->_dtxFromBs = *(v4 + 17);
+  self->_dtxFromBs = *(fromCopy + 17);
   *&self->_has |= 0x4000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x4000000) == 0)
   {
 LABEL_10:
@@ -3636,9 +3636,9 @@ LABEL_10:
   }
 
 LABEL_48:
-  self->_radioLinkTimeout = *(v4 + 29);
+  self->_radioLinkTimeout = *(fromCopy + 29);
   *&self->_has |= 0x4000000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x1000000) == 0)
   {
 LABEL_11:
@@ -3651,9 +3651,9 @@ LABEL_11:
   }
 
 LABEL_49:
-  self->_multibRep = *(v4 + 27);
+  self->_multibRep = *(fromCopy + 27);
   *&self->_has |= 0x1000000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_12:
@@ -3666,9 +3666,9 @@ LABEL_12:
   }
 
 LABEL_50:
-  self->_gsmBand = *(v4 + 20);
+  self->_gsmBand = *(fromCopy + 20);
   *&self->_has |= 0x20000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 4) == 0)
   {
 LABEL_13:
@@ -3681,9 +3681,9 @@ LABEL_13:
   }
 
 LABEL_51:
-  self->_accessTech = *(v4 + 5);
+  self->_accessTech = *(fromCopy + 5);
   *&self->_has |= 4uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x400000000) == 0)
   {
 LABEL_14:
@@ -3696,9 +3696,9 @@ LABEL_14:
   }
 
 LABEL_52:
-  self->_typeOfCurChan = *(v4 + 37);
+  self->_typeOfCurChan = *(fromCopy + 37);
   *&self->_has |= 0x400000000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x800000) == 0)
   {
 LABEL_15:
@@ -3711,9 +3711,9 @@ LABEL_15:
   }
 
 LABEL_53:
-  self->_msTxpwr = *(v4 + 26);
+  self->_msTxpwr = *(fromCopy + 26);
   *&self->_has |= 0x800000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x10000000) == 0)
   {
 LABEL_16:
@@ -3726,9 +3726,9 @@ LABEL_16:
   }
 
 LABEL_54:
-  self->_rxAccMin = *(v4 + 31);
+  self->_rxAccMin = *(fromCopy + 31);
   *&self->_has |= 0x10000000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x400) == 0)
   {
 LABEL_17:
@@ -3741,9 +3741,9 @@ LABEL_17:
   }
 
 LABEL_55:
-  self->_cbq = *(v4 + 13);
+  self->_cbq = *(fromCopy + 13);
   *&self->_has |= 0x400uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x100) == 0)
   {
 LABEL_18:
@@ -3756,9 +3756,9 @@ LABEL_18:
   }
 
 LABEL_56:
-  self->_cba = *(v4 + 11);
+  self->_cba = *(fromCopy + 11);
   *&self->_has |= 0x100uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x80) == 0)
   {
 LABEL_19:
@@ -3771,9 +3771,9 @@ LABEL_19:
   }
 
 LABEL_57:
-  self->_c2Valid = *(v4 + 10);
+  self->_c2Valid = *(fromCopy + 10);
   *&self->_has |= 0x80uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_20:
@@ -3786,9 +3786,9 @@ LABEL_20:
   }
 
 LABEL_58:
-  self->_crOffset = *(v4 + 15);
+  self->_crOffset = *(fromCopy + 15);
   *&self->_has |= 0x1000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x200000000) == 0)
   {
 LABEL_21:
@@ -3801,9 +3801,9 @@ LABEL_21:
   }
 
 LABEL_59:
-  self->_tmpOffset = *(v4 + 36);
+  self->_tmpOffset = *(fromCopy + 36);
   *&self->_has |= 0x200000000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x2000000) == 0)
   {
 LABEL_22:
@@ -3816,9 +3816,9 @@ LABEL_22:
   }
 
 LABEL_60:
-  self->_penaltyT = *(v4 + 28);
+  self->_penaltyT = *(fromCopy + 28);
   *&self->_has |= 0x2000000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x100000000) == 0)
   {
 LABEL_23:
@@ -3831,9 +3831,9 @@ LABEL_23:
   }
 
 LABEL_61:
-  self->_t3212 = *(v4 + 35);
+  self->_t3212 = *(fromCopy + 35);
   *&self->_has |= &_mh_execute_header;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 2) == 0)
   {
 LABEL_24:
@@ -3846,9 +3846,9 @@ LABEL_24:
   }
 
 LABEL_62:
-  self->_acc = *(v4 + 4);
+  self->_acc = *(fromCopy + 4);
   *&self->_has |= 2uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x20) == 0)
   {
 LABEL_25:
@@ -3861,9 +3861,9 @@ LABEL_25:
   }
 
 LABEL_63:
-  self->_bsPaMfrms = *(v4 + 8);
+  self->_bsPaMfrms = *(fromCopy + 8);
   *&self->_has |= 0x20uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_26:
@@ -3876,9 +3876,9 @@ LABEL_26:
   }
 
 LABEL_64:
-  self->_csPagemode = *(v4 + 16);
+  self->_csPagemode = *(fromCopy + 16);
   *&self->_has |= 0x2000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x100000) == 0)
   {
 LABEL_27:
@@ -3891,9 +3891,9 @@ LABEL_27:
   }
 
 LABEL_65:
-  self->_maxRetransCs = *(v4 + 23);
+  self->_maxRetransCs = *(fromCopy + 23);
   *&self->_has |= 0x100000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_28:
@@ -3906,9 +3906,9 @@ LABEL_28:
   }
 
 LABEL_66:
-  self->_emergCallAllowed = *(v4 + 19);
+  self->_emergCallAllowed = *(fromCopy + 19);
   *&self->_has |= 0x10000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x10) == 0)
   {
 LABEL_29:
@@ -3921,9 +3921,9 @@ LABEL_29:
   }
 
 LABEL_67:
-  self->_attachAllowed = *(v4 + 7);
+  self->_attachAllowed = *(fromCopy + 7);
   *&self->_has |= 0x10uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x40000) == 0)
   {
 LABEL_30:
@@ -3936,9 +3936,9 @@ LABEL_30:
   }
 
 LABEL_68:
-  self->_halfRateSupported = *(v4 + 21);
+  self->_halfRateSupported = *(fromCopy + 21);
   *&self->_has |= 0x40000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x40000000) == 0)
   {
 LABEL_31:
@@ -3951,9 +3951,9 @@ LABEL_31:
   }
 
 LABEL_69:
-  self->_si78Broadcast = *(v4 + 33);
+  self->_si78Broadcast = *(fromCopy + 33);
   *&self->_has |= 0x40000000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x200) == 0)
   {
 LABEL_32:
@@ -3966,9 +3966,9 @@ LABEL_32:
   }
 
 LABEL_70:
-  self->_cbchSupported = *(v4 + 12);
+  self->_cbchSupported = *(fromCopy + 12);
   *&self->_has |= 0x200uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x8000000) == 0)
   {
 LABEL_33:
@@ -3981,9 +3981,9 @@ LABEL_33:
   }
 
 LABEL_71:
-  self->_reestAllowed = *(v4 + 30);
+  self->_reestAllowed = *(fromCopy + 30);
   *&self->_has |= 0x8000000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_34:
@@ -3996,9 +3996,9 @@ LABEL_34:
   }
 
 LABEL_72:
-  self->_ecsc = *(v4 + 18);
+  self->_ecsc = *(fromCopy + 18);
   *&self->_has |= 0x8000uLL;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   if ((v5 & 0x20000000) == 0)
   {
 LABEL_35:
@@ -4011,12 +4011,12 @@ LABEL_35:
   }
 
 LABEL_73:
-  self->_si2TerNeeded = *(v4 + 32);
+  self->_si2TerNeeded = *(fromCopy + 32);
   *&self->_has |= 0x20000000uLL;
-  if ((*(v4 + 19) & 0x80000000) != 0)
+  if ((*(fromCopy + 19) & 0x80000000) != 0)
   {
 LABEL_36:
-    self->_subsId = *(v4 + 34);
+    self->_subsId = *(fromCopy + 34);
     *&self->_has |= 0x80000000uLL;
   }
 

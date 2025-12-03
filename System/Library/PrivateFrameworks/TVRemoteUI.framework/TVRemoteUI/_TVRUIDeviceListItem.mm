@@ -1,43 +1,43 @@
 @interface _TVRUIDeviceListItem
-+ (id)itemWithDevice:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (_TVRUIDeviceListItem)initWithDevice:(id)a3;
++ (id)itemWithDevice:(id)device;
+- (BOOL)isEqual:(id)equal;
+- (_TVRUIDeviceListItem)initWithDevice:(id)device;
 - (unint64_t)hash;
 @end
 
 @implementation _TVRUIDeviceListItem
 
-- (_TVRUIDeviceListItem)initWithDevice:(id)a3
+- (_TVRUIDeviceListItem)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = _TVRUIDeviceListItem;
   v6 = [(_TVRUIDeviceListItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-+ (id)itemWithDevice:(id)a3
++ (id)itemWithDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDevice:v3];
+  deviceCopy = device;
+  v4 = [objc_alloc(objc_opt_class()) initWithDevice:deviceCopy];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 device];
-    v6 = [(_TVRUIDeviceListItem *)self device];
-    v7 = [v5 isEqualToDevice:v6];
+    device = [equalCopy device];
+    device2 = [(_TVRUIDeviceListItem *)self device];
+    v7 = [device isEqualToDevice:device2];
   }
 
   else
@@ -50,8 +50,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_TVRUIDeviceListItem *)self device];
-  v3 = [v2 hash];
+  device = [(_TVRUIDeviceListItem *)self device];
+  v3 = [device hash];
 
   return v3;
 }

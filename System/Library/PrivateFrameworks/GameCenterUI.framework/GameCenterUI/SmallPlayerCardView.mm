@@ -1,7 +1,7 @@
 @interface SmallPlayerCardView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (UIButton)accessibilityCloseButton;
 - (UIButton)accessibilityInviteButton;
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilitySubtitleLabel;
@@ -9,14 +9,14 @@
 - (void)didTapButton;
 - (void)didTapCloseButton;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SmallPlayerCardView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_24DFB64A4();
   v5 = v4;
   v7 = v6;
@@ -30,7 +30,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_24DFD6924();
   v4 = v3;
   v6 = v5;
@@ -42,11 +42,11 @@
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_24DFD6970(a4);
+  selfCopy = self;
+  v7 = sub_24DFD6970(in);
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -65,27 +65,27 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24DFD6D54();
 }
 
 - (void)didTapCloseButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_24DFD706C();
 }
 
 - (void)didTapButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_24DFD7324();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24DFD73DC(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24DFD73DC(change);
 }
 
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilityTitleLabel

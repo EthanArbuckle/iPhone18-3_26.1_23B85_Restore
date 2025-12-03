@@ -25,16 +25,16 @@
   {
     v4 = @"delete.button";
 LABEL_5:
-    v5 = accessibilityPeerPaymentLocalizedString(v4);
+    accessibilityLabel = accessibilityPeerPaymentLocalizedString(v4);
     goto LABEL_7;
   }
 
   v7.receiver = self;
   v7.super_class = PKPeerPaymentNumberPadActionButtonAccessibility;
-  v5 = [(PKPeerPaymentNumberPadActionButtonAccessibility *)&v7 accessibilityLabel];
+  accessibilityLabel = [(PKPeerPaymentNumberPadActionButtonAccessibility *)&v7 accessibilityLabel];
 LABEL_7:
 
-  return v5;
+  return accessibilityLabel;
 }
 
 @end

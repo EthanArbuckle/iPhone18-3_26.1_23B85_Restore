@@ -1,18 +1,18 @@
 @interface _HMFCFHTTPServerRequest
 - (_HMFCFHTTPServerConnection)connection;
 - (_HMFCFHTTPServerRequest)init;
-- (_HMFCFHTTPServerRequest)initWithConnection:(id)a3 requestRef:(_CFHTTPServerRequest *)a4;
+- (_HMFCFHTTPServerRequest)initWithConnection:(id)connection requestRef:(_CFHTTPServerRequest *)ref;
 - (id)URL;
 - (id)attributeDescriptions;
 - (id)body;
 - (id)headerFields;
 - (id)method;
-- (id)responseWithStatusCode:(int64_t)a3;
+- (id)responseWithStatusCode:(int64_t)code;
 - (void)dealloc;
-- (void)setBody:(id)a3;
-- (void)setHeaders:(id)a3;
-- (void)setMethod:(id)a3;
-- (void)setURL:(id)a3;
+- (void)setBody:(id)body;
+- (void)setHeaders:(id)headers;
+- (void)setMethod:(id)method;
+- (void)setURL:(id)l;
 @end
 
 @implementation _HMFCFHTTPServerRequest
@@ -30,21 +30,21 @@
   objc_exception_throw(v7);
 }
 
-- (_HMFCFHTTPServerRequest)initWithConnection:(id)a3 requestRef:(_CFHTTPServerRequest *)a4
+- (_HMFCFHTTPServerRequest)initWithConnection:(id)connection requestRef:(_CFHTTPServerRequest *)ref
 {
-  v6 = a3;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = _HMFCFHTTPServerRequest;
   v7 = [(HMFHTTPRequestInternal *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_connection, v6);
-    v8->_requestRef = CFRetain(a4);
+    objc_storeWeak(&v7->_connection, connectionCopy);
+    v8->_requestRef = CFRetain(ref);
     v8->_bodyStream = _CFHTTPServerRequestCopyBodyStream();
-    v9 = [MEMORY[0x277CBEB28] data];
+    data = [MEMORY[0x277CBEB28] data];
     bodyData = v8->_bodyData;
-    v8->_bodyData = v9;
+    v8->_bodyData = data;
   }
 
   return v8;
@@ -86,9 +86,9 @@
   return v6;
 }
 
-- (id)responseWithStatusCode:(int64_t)a3
+- (id)responseWithStatusCode:(int64_t)code
 {
-  v3 = [[_HMFCFHTTPServerResponse alloc] initWithRequest:self statusCode:a3];
+  v3 = [[_HMFCFHTTPServerResponse alloc] initWithRequest:self statusCode:code];
 
   return v3;
 }
@@ -131,8 +131,8 @@
 
 - (id)body
 {
-  v3 = [(_HMFCFHTTPServerRequest *)self bodyData];
-  v4 = [v3 length];
+  bodyData = [(_HMFCFHTTPServerRequest *)self bodyData];
+  v4 = [bodyData length];
 
   if (v4)
   {
@@ -147,9 +147,9 @@
   return v5;
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -161,9 +161,9 @@
   objc_exception_throw(v10);
 }
 
-- (void)setMethod:(id)a3
+- (void)setMethod:(id)method
 {
-  v4 = a3;
+  methodCopy = method;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -175,9 +175,9 @@
   objc_exception_throw(v10);
 }
 
-- (void)setHeaders:(id)a3
+- (void)setHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -189,9 +189,9 @@
   objc_exception_throw(v10);
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
-  v4 = a3;
+  bodyCopy = body;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

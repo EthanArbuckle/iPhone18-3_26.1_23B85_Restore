@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (IMDCKRecordSaltManager)init;
 - (id)_container;
-- (void)_fetchLatestSaltFromCloudKitAndPersistWithCompletion:(id)a3;
-- (void)_scheduleOperation:(id)a3;
+- (void)_fetchLatestSaltFromCloudKitAndPersistWithCompletion:(id)completion;
+- (void)_scheduleOperation:(id)operation;
 - (void)deleteDeDupeRecordZone;
-- (void)fetchLatestRecordKeyFromCKAndCreateIfKeyDoesNotExistWithCompletion:(id)a3 forceFetch:(BOOL)a4;
+- (void)fetchLatestRecordKeyFromCKAndCreateIfKeyDoesNotExistWithCompletion:(id)completion forceFetch:(BOOL)fetch;
 @end
 
 @implementation IMDCKRecordSaltManager
@@ -40,25 +40,25 @@
   return v2;
 }
 
-- (void)_scheduleOperation:(id)a3
+- (void)_scheduleOperation:(id)operation
 {
-  v3 = a3;
+  operationCopy = operation;
   v5 = +[IMDCKDatabaseManager sharedInstance];
-  v4 = [v5 truthDatabase];
-  [v4 addOperation:v3];
+  truthDatabase = [v5 truthDatabase];
+  [truthDatabase addOperation:operationCopy];
 }
 
 - (id)_container
 {
   v2 = +[IMDCKDatabaseManager sharedInstance];
-  v3 = [v2 truthContainer];
+  truthContainer = [v2 truthContainer];
 
-  return v3;
+  return truthContainer;
 }
 
-- (void)_fetchLatestSaltFromCloudKitAndPersistWithCompletion:(id)a3
+- (void)_fetchLatestSaltFromCloudKitAndPersistWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -69,30 +69,30 @@
     }
   }
 
-  v6 = [(IMDCKRecordSaltManager *)self _container];
+  _container = [(IMDCKRecordSaltManager *)self _container];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_22B5FEB3C;
   v8[3] = &unk_278706230;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 fetchUserRecordIDWithCompletionHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [_container fetchUserRecordIDWithCompletionHandler:v8];
 }
 
-- (void)fetchLatestRecordKeyFromCKAndCreateIfKeyDoesNotExistWithCompletion:(id)a3 forceFetch:(BOOL)a4
+- (void)fetchLatestRecordKeyFromCKAndCreateIfKeyDoesNotExistWithCompletion:(id)completion forceFetch:(BOOL)fetch
 {
-  v4 = a4;
+  fetchCopy = fetch;
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(IMDCKRecordSaltManager *)self _CKUtilitiesSharedInstance];
-  v8 = [v7 cloudKitSyncingEnabled];
+  completionCopy = completion;
+  _CKUtilitiesSharedInstance = [(IMDCKRecordSaltManager *)self _CKUtilitiesSharedInstance];
+  cloudKitSyncingEnabled = [_CKUtilitiesSharedInstance cloudKitSyncingEnabled];
 
-  v9 = [MEMORY[0x277D1ACB8] sharedInstance];
-  v10 = [v9 isUnderFirstDataProtectionLock];
+  mEMORY[0x277D1ACB8] = [MEMORY[0x277D1ACB8] sharedInstance];
+  isUnderFirstDataProtectionLock = [mEMORY[0x277D1ACB8] isUnderFirstDataProtectionLock];
 
   v11 = IMOSLoggingEnabled();
-  if ((v8 | v4) != 1 || v10)
+  if ((cloudKitSyncingEnabled | fetchCopy) != 1 || isUnderFirstDataProtectionLock)
   {
     if (v11)
     {
@@ -100,7 +100,7 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         v16 = @"NO";
-        if (v8)
+        if (cloudKitSyncingEnabled)
         {
           v17 = @"YES";
         }
@@ -110,7 +110,7 @@
           v17 = @"NO";
         }
 
-        if (v10)
+        if (isUnderFirstDataProtectionLock)
         {
           v16 = @"YES";
         }
@@ -127,9 +127,9 @@
     block[1] = 3221225472;
     block[2] = sub_22B5FF1F0;
     block[3] = &unk_278706258;
-    v23 = v6;
-    v24 = v10;
-    v18 = v6;
+    v23 = completionCopy;
+    v24 = isUnderFirstDataProtectionLock;
+    v18 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
@@ -145,15 +145,15 @@
       }
     }
 
-    v13 = [(IMDCKRecordSaltManager *)self ckQueue];
+    ckQueue = [(IMDCKRecordSaltManager *)self ckQueue];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = sub_22B5FF290;
     v20[3] = &unk_278703808;
     v20[4] = self;
-    v21 = v6;
-    v14 = v6;
-    dispatch_async(v13, v20);
+    v21 = completionCopy;
+    v14 = completionCopy;
+    dispatch_async(ckQueue, v20);
   }
 
   v19 = *MEMORY[0x277D85DE8];

@@ -1,7 +1,7 @@
 @interface MCEASAccountPayload
 - (BOOL)containsSensitiveUserInformation;
 - (BOOL)mustNotUseSynchronizableCredential;
-- (MCEASAccountPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCEASAccountPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (NSString)emailAddress;
 - (id)calendarAccountIdentifiers;
 - (id)contactsAccountIdentifiers;
@@ -17,26 +17,26 @@
 
 @implementation MCEASAccountPayload
 
-- (MCEASAccountPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCEASAccountPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v140 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v135.receiver = self;
   v135.super_class = MCEASAccountPayload;
-  v10 = [(MCEmailAccountPayloadBase *)&v135 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCEmailAccountPayloadBase *)&v135 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   v11 = v10;
   if (!v10)
   {
     goto LABEL_24;
   }
 
-  v12 = [(MCPayload *)v10 displayName];
+  displayName = [(MCPayload *)v10 displayName];
   accountDescription = v11->_accountDescription;
-  v11->_accountDescription = v12;
+  v11->_accountDescription = displayName;
 
   v134 = 0;
-  v14 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"UserName" isRequired:0 outError:&v134];
+  v14 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"UserName" isRequired:0 outError:&v134];
   v15 = v134;
   username = v11->_username;
   v11->_username = v14;
@@ -47,7 +47,7 @@
   }
 
   v133 = 0;
-  v17 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"EmailAddress" isRequired:0 outError:&v133];
+  v17 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"EmailAddress" isRequired:0 outError:&v133];
   v15 = v133;
   emailAddress = v11->_emailAddress;
   v11->_emailAddress = v17;
@@ -58,7 +58,7 @@
   }
 
   v132 = 0;
-  v19 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"SSL" isRequired:0 outError:&v132];
+  v19 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"SSL" isRequired:0 outError:&v132];
   v15 = v132;
   useSSL = v11->_useSSL;
   v11->_useSSL = v19;
@@ -69,7 +69,7 @@
   }
 
   v131 = 0;
-  v21 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"OAuth" isRequired:0 outError:&v131];
+  v21 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"OAuth" isRequired:0 outError:&v131];
   v15 = v131;
   useOAuth = v11->_useOAuth;
   v11->_useOAuth = v21;
@@ -85,7 +85,7 @@
   }
 
   v130 = 0;
-  v23 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"OAuthSignInURL" isRequired:0 outError:&v130];
+  v23 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"OAuthSignInURL" isRequired:0 outError:&v130];
   v15 = v130;
   OAuthSignInURL = v11->_OAuthSignInURL;
   v11->_OAuthSignInURL = v23;
@@ -112,7 +112,7 @@
   }
 
   v129 = 0;
-  v26 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"OAuthTokenRequestURL" isRequired:0 outError:&v129];
+  v26 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"OAuthTokenRequestURL" isRequired:0 outError:&v129];
   v15 = v129;
   OAuthTokenRequestURL = v11->_OAuthTokenRequestURL;
   v11->_OAuthTokenRequestURL = v26;
@@ -126,7 +126,7 @@
   {
 LABEL_13:
     v128 = 0;
-    v29 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"MailNumberOfPastDaysToSync" isRequired:0 outError:&v128];
+    v29 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"MailNumberOfPastDaysToSync" isRequired:0 outError:&v128];
     v15 = v128;
     mailNumberOfPastDaysToSync = v11->_mailNumberOfPastDaysToSync;
     v11->_mailNumberOfPastDaysToSync = v29;
@@ -137,7 +137,7 @@ LABEL_13:
     }
 
     v127 = 0;
-    v31 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"SyncDefaultFoldersOnly" isRequired:0 outError:&v127];
+    v31 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"SyncDefaultFoldersOnly" isRequired:0 outError:&v127];
     v15 = v127;
     syncDefaultFoldersOnlyNum = v11->_syncDefaultFoldersOnlyNum;
     v11->_syncDefaultFoldersOnlyNum = v31;
@@ -149,7 +149,7 @@ LABEL_13:
 
     v11->_syncDefaultFoldersOnly = [(NSNumber *)v11->_syncDefaultFoldersOnlyNum BOOLValue];
     v126 = 0;
-    v46 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"CommunicationServiceRules" isRequired:0 outError:&v126];
+    v46 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"CommunicationServiceRules" isRequired:0 outError:&v126];
     v47 = v126;
     if (v47)
     {
@@ -163,7 +163,7 @@ LABEL_13:
     communicationServiceRules = v11->_communicationServiceRules;
     v11->_communicationServiceRules = v48;
 
-    if (v15 || (v124 = 0, [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"EnableMail" isRequired:0 outError:&v124], v50 = objc_claimAutoreleasedReturnValue(), v15 = v124, enableMailNum = v11->_enableMailNum, v11->_enableMailNum = v50, enableMailNum, v15))
+    if (v15 || (v124 = 0, [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"EnableMail" isRequired:0 outError:&v124], v50 = objc_claimAutoreleasedReturnValue(), v15 = v124, enableMailNum = v11->_enableMailNum, v11->_enableMailNum = v50, enableMailNum, v15))
     {
 LABEL_31:
 
@@ -175,10 +175,10 @@ LABEL_31:
 LABEL_15:
       v33 = [(MCPayload *)v11 malformedPayloadErrorWithError:v15];
       v34 = v33;
-      if (a5)
+      if (error)
       {
         v35 = v33;
-        *a5 = v34;
+        *error = v34;
       }
 
       v36 = _MCLogObjects;
@@ -187,11 +187,11 @@ LABEL_15:
         v37 = v36;
         v38 = objc_opt_class();
         v39 = v38;
-        v40 = [v34 MCVerboseDescription];
+        mCVerboseDescription = [v34 MCVerboseDescription];
         *buf = 138543618;
         v137 = v38;
         v138 = 2114;
-        v139 = v40;
+        v139 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v37, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
       }
 
@@ -200,8 +200,8 @@ LABEL_15:
     }
 
     v123 = 0;
-    v103 = v8;
-    v52 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"EnableContacts" isRequired:0 outError:&v123];
+    v103 = dictionaryCopy;
+    v52 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"EnableContacts" isRequired:0 outError:&v123];
     v53 = v123;
     enableContactsNum = v11->_enableContactsNum;
     v11->_enableContactsNum = v52;
@@ -297,11 +297,11 @@ LABEL_15:
 LABEL_49:
       v15 = v53;
 LABEL_50:
-      v8 = v103;
+      dictionaryCopy = v103;
       goto LABEL_31;
     }
 
-    if ([v9 isStub])
+    if ([profileCopy isStub])
     {
       v107 = 0;
       v80 = [v103 MCValidateAndRemoveNonZeroLengthStringWithKey:@"Host" isRequired:0 outError:&v107];
@@ -450,17 +450,17 @@ LABEL_50:
   }
 
 LABEL_20:
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v41 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v42 = v41;
-      v43 = [(MCPayload *)v11 friendlyName];
+      friendlyName = [(MCPayload *)v11 friendlyName];
       *buf = 138543618;
-      v137 = v43;
+      v137 = friendlyName;
       v138 = 2114;
-      v139 = v8;
+      v139 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v42, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -474,8 +474,8 @@ LABEL_24:
 {
   v33.receiver = self;
   v33.super_class = MCEASAccountPayload;
-  v3 = [(MCEmailAccountPayloadBase *)&v33 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCEmailAccountPayloadBase *)&v33 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
   if (self->_accountDescription)
   {
@@ -502,21 +502,21 @@ LABEL_24:
     [v4 appendFormat:@"Email       : %@\n", self->_emailAddress];
   }
 
-  v5 = [(MCEASAccountPayload *)self useSSL];
+  useSSL = [(MCEASAccountPayload *)self useSSL];
 
-  if (v5)
+  if (useSSL)
   {
-    v6 = [(MCEASAccountPayload *)self useSSL];
-    v7 = MCStringForBool([v6 BOOLValue]);
+    useSSL2 = [(MCEASAccountPayload *)self useSSL];
+    v7 = MCStringForBool([useSSL2 BOOLValue]);
     [v4 appendFormat:@"useSSL      : %@\n", v7];
   }
 
-  v8 = [(MCEASAccountPayload *)self useOAuth];
+  useOAuth = [(MCEASAccountPayload *)self useOAuth];
 
-  if (v8)
+  if (useOAuth)
   {
-    v9 = [(MCEASAccountPayload *)self useOAuth];
-    v10 = MCStringForBool([v9 BOOLValue]);
+    useOAuth2 = [(MCEASAccountPayload *)self useOAuth];
+    v10 = MCStringForBool([useOAuth2 BOOLValue]);
     [v4 appendFormat:@"useOAuth    : %@\n", v10];
   }
 
@@ -643,12 +643,12 @@ LABEL_24:
 {
   v30.receiver = self;
   v30.super_class = MCEASAccountPayload;
-  v3 = [(MCEmailAccountPayloadBase *)&v30 stubDictionary];
-  v4 = v3;
+  stubDictionary = [(MCEmailAccountPayloadBase *)&v30 stubDictionary];
+  v4 = stubDictionary;
   accountDescription = self->_accountDescription;
   if (accountDescription)
   {
-    [v3 setObject:accountDescription forKey:@"PayloadDisplayName"];
+    [stubDictionary setObject:accountDescription forKey:@"PayloadDisplayName"];
   }
 
   hostname = self->_hostname;
@@ -791,8 +791,8 @@ LABEL_24:
 
 - (id)restrictions
 {
-  v2 = [(MCEASAccountPayload *)self communicationServiceRules];
-  v3 = [MCCommunicationServiceRulesUtilities restrictionsForValidatedCommunicationServiceRules:v2];
+  communicationServiceRules = [(MCEASAccountPayload *)self communicationServiceRules];
+  v3 = [MCCommunicationServiceRulesUtilities restrictionsForValidatedCommunicationServiceRules:communicationServiceRules];
 
   return v3;
 }
@@ -807,13 +807,13 @@ LABEL_24:
 
   else
   {
-    v5 = [(MCEASAccountPayload *)self username];
-    if (v5 && (v6 = v5, [(MCEASAccountPayload *)self hostname], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+    username = [(MCEASAccountPayload *)self username];
+    if (username && (v6 = username, [(MCEASAccountPayload *)self hostname], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
     {
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [(MCEASAccountPayload *)self username];
-      v10 = [(MCEASAccountPayload *)self hostname];
-      v4 = [v8 stringWithFormat:@"%@@%@", v9, v10];
+      username2 = [(MCEASAccountPayload *)self username];
+      hostname = [(MCEASAccountPayload *)self hostname];
+      v4 = [v8 stringWithFormat:@"%@@%@", username2, hostname];
     }
 
     else
@@ -827,8 +827,8 @@ LABEL_24:
 
 - (id)subtitle1Label
 {
-  v2 = [(MCEASAccountPayload *)self hostname];
-  if (v2)
+  hostname = [(MCEASAccountPayload *)self hostname];
+  if (hostname)
   {
     v3 = @"EAS_SERVER_NAME_COLON";
   }
@@ -845,46 +845,46 @@ LABEL_24:
 
 - (id)subtitle2Label
 {
-  v3 = [(MCEASAccountPayload *)self emailAddress];
-  if (v3)
+  emailAddress = [(MCEASAccountPayload *)self emailAddress];
+  if (emailAddress)
   {
-    v4 = v3;
-    v5 = [(MCEASAccountPayload *)self hostname];
+    v4 = emailAddress;
+    hostname = [(MCEASAccountPayload *)self hostname];
 
-    if (v5)
+    if (hostname)
     {
-      v3 = MCLocalizedString(@"EAS_EMAIL_ADDRESS_COLON");
+      emailAddress = MCLocalizedString(@"EAS_EMAIL_ADDRESS_COLON");
     }
 
     else
     {
-      v3 = 0;
+      emailAddress = 0;
     }
   }
 
-  return v3;
+  return emailAddress;
 }
 
 - (id)subtitle2Description
 {
-  v3 = [(MCEASAccountPayload *)self emailAddress];
-  if (v3)
+  emailAddress = [(MCEASAccountPayload *)self emailAddress];
+  if (emailAddress)
   {
-    v4 = v3;
-    v5 = [(MCEASAccountPayload *)self hostname];
+    v4 = emailAddress;
+    hostname = [(MCEASAccountPayload *)self hostname];
 
-    if (v5)
+    if (hostname)
     {
-      v3 = [(MCEASAccountPayload *)self emailAddress];
+      emailAddress = [(MCEASAccountPayload *)self emailAddress];
     }
 
     else
     {
-      v3 = 0;
+      emailAddress = 0;
     }
   }
 
-  return v3;
+  return emailAddress;
 }
 
 - (id)payloadDescriptionKeyValueSections
@@ -1102,8 +1102,8 @@ LABEL_24:
 
   if (self->_certificatePersistentID)
   {
-    v88 = [(MCPayload *)self profile];
-    v89 = [v88 subjectSummaryFromCertificateWithPersistentID:self->_certificatePersistentID];
+    profile = [(MCPayload *)self profile];
+    v89 = [profile subjectSummaryFromCertificateWithPersistentID:self->_certificatePersistentID];
   }
 
   else
@@ -1113,8 +1113,8 @@ LABEL_24:
       goto LABEL_49;
     }
 
-    v88 = [(MCPayload *)self profile];
-    v89 = [v88 subjectSummaryFromCertificatePayloadWithUUID:self->_certificateUUID];
+    profile = [(MCPayload *)self profile];
+    v89 = [profile subjectSummaryFromCertificatePayloadWithUUID:self->_certificateUUID];
   }
 
   v90 = v89;
@@ -1138,8 +1138,8 @@ LABEL_49:
 
   v98.receiver = self;
   v98.super_class = MCEASAccountPayload;
-  v96 = [(MCEmailAccountPayloadBase *)&v98 payloadDescriptionKeyValueSections];
-  [v94 addObjectsFromArray:v96];
+  payloadDescriptionKeyValueSections = [(MCEmailAccountPayloadBase *)&v98 payloadDescriptionKeyValueSections];
+  [v94 addObjectsFromArray:payloadDescriptionKeyValueSections];
 
   if (![v94 count])
   {
@@ -1159,71 +1159,71 @@ LABEL_49:
     return 1;
   }
 
-  v4 = [(MCEASAccountPayload *)self password];
-  if (v4)
+  password = [(MCEASAccountPayload *)self password];
+  if (password)
   {
-    v3 = 1;
+    hasCertificate = 1;
   }
 
   else
   {
-    v5 = [(MCEASAccountPayload *)self embeddedCertificate];
-    if (v5)
+    embeddedCertificate = [(MCEASAccountPayload *)self embeddedCertificate];
+    if (embeddedCertificate)
     {
-      v3 = 1;
+      hasCertificate = 1;
     }
 
     else
     {
-      v6 = [(MCEASAccountPayload *)self embeddedCertificateName];
-      if (v6)
+      embeddedCertificateName = [(MCEASAccountPayload *)self embeddedCertificateName];
+      if (embeddedCertificateName)
       {
-        v3 = 1;
+        hasCertificate = 1;
       }
 
       else
       {
-        v7 = [(MCEASAccountPayload *)self embeddedCertificatePassword];
-        if (v7)
+        embeddedCertificatePassword = [(MCEASAccountPayload *)self embeddedCertificatePassword];
+        if (embeddedCertificatePassword)
         {
-          v3 = 1;
+          hasCertificate = 1;
         }
 
         else
         {
-          v8 = [(MCEASAccountPayload *)self certificateUUID];
-          if (v8)
+          certificateUUID = [(MCEASAccountPayload *)self certificateUUID];
+          if (certificateUUID)
           {
-            v3 = 1;
+            hasCertificate = 1;
           }
 
           else
           {
-            v3 = [(MCEASAccountPayload *)self hasCertificate];
+            hasCertificate = [(MCEASAccountPayload *)self hasCertificate];
           }
         }
       }
     }
   }
 
-  return v3;
+  return hasCertificate;
 }
 
 - (BOOL)mustNotUseSynchronizableCredential
 {
-  v3 = [(MCEASAccountPayload *)self password];
-  if (v3)
+  password = [(MCEASAccountPayload *)self password];
+  if (password)
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v5 = [(MCEASAccountPayload *)self useOAuth];
-    v4 = [v5 BOOLValue];
+    useOAuth = [(MCEASAccountPayload *)self useOAuth];
+    bOOLValue = [useOAuth BOOLValue];
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)mailAccountIdentifiers

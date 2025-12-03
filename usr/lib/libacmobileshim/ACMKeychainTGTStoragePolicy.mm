@@ -1,19 +1,19 @@
 @interface ACMKeychainTGTStoragePolicy
 - (ACFKeychainManagerProtocol)keychainManager;
-- (BOOL)performRemoveTokenWithPrincipal:(id)a3 service:(id)a4;
-- (BOOL)performStoreToken:(id)a3 withService:(id)a4;
-- (BOOL)removeTokenWithPrincipal:(id)a3;
-- (BOOL)storeToken:(id)a3;
-- (BOOL)updateToken:(id)a3;
-- (id)allTokensWithPrincipal:(id)a3;
-- (id)allTokensWithPrincipal:(id)a3 service:(id)a4;
-- (id)dictionaryWithSSOToken:(id)a3;
-- (id)searchItemWithInfo:(id)a3;
-- (id)searchTokenWithPrincipal:(id)a3;
-- (id)ssoTokenWithKeychainInfo:(id)a3 realm:(id)a4;
-- (id)tokenDataWithDictionary:(id)a3;
-- (id)tokenDictionaryWithData:(id)a3;
-- (int)storeItemWithInfo:(id)a3;
+- (BOOL)performRemoveTokenWithPrincipal:(id)principal service:(id)service;
+- (BOOL)performStoreToken:(id)token withService:(id)service;
+- (BOOL)removeTokenWithPrincipal:(id)principal;
+- (BOOL)storeToken:(id)token;
+- (BOOL)updateToken:(id)token;
+- (id)allTokensWithPrincipal:(id)principal;
+- (id)allTokensWithPrincipal:(id)principal service:(id)service;
+- (id)dictionaryWithSSOToken:(id)token;
+- (id)searchItemWithInfo:(id)info;
+- (id)searchTokenWithPrincipal:(id)principal;
+- (id)ssoTokenWithKeychainInfo:(id)info realm:(id)realm;
+- (id)tokenDataWithDictionary:(id)dictionary;
+- (id)tokenDictionaryWithData:(id)data;
+- (int)storeItemWithInfo:(id)info;
 @end
 
 @implementation ACMKeychainTGTStoragePolicy
@@ -25,24 +25,24 @@
   return [v2 keychainManager];
 }
 
-- (BOOL)storeToken:(id)a3
+- (BOOL)storeToken:(id)token
 {
-  v5 = [(ACMKeychainTGTStoragePolicy *)self service];
+  service = [(ACMKeychainTGTStoragePolicy *)self service];
 
-  return [(ACMKeychainTGTStoragePolicy *)self performStoreToken:a3 withService:v5];
+  return [(ACMKeychainTGTStoragePolicy *)self performStoreToken:token withService:service];
 }
 
-- (BOOL)updateToken:(id)a3
+- (BOOL)updateToken:(id)token
 {
-  v5 = [(ACMKeychainTGTStoragePolicy *)self service];
+  service = [(ACMKeychainTGTStoragePolicy *)self service];
 
-  return [(ACMKeychainTGTStoragePolicy *)self performStoreToken:a3 withService:v5];
+  return [(ACMKeychainTGTStoragePolicy *)self performStoreToken:token withService:service];
 }
 
-- (id)searchTokenWithPrincipal:(id)a3
+- (id)searchTokenWithPrincipal:(id)principal
 {
   v16 = *MEMORY[0x29EDCA608];
-  v3 = [(ACMKeychainTGTStoragePolicy *)self allTokensWithPrincipal:a3];
+  v3 = [(ACMKeychainTGTStoragePolicy *)self allTokensWithPrincipal:principal];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -79,19 +79,19 @@
   return v6;
 }
 
-- (id)allTokensWithPrincipal:(id)a3
+- (id)allTokensWithPrincipal:(id)principal
 {
-  v5 = [(ACMKeychainTGTStoragePolicy *)self service];
+  service = [(ACMKeychainTGTStoragePolicy *)self service];
 
-  return [(ACMKeychainTGTStoragePolicy *)self allTokensWithPrincipal:a3 service:v5];
+  return [(ACMKeychainTGTStoragePolicy *)self allTokensWithPrincipal:principal service:service];
 }
 
-- (id)ssoTokenWithKeychainInfo:(id)a3 realm:(id)a4
+- (id)ssoTokenWithKeychainInfo:(id)info realm:(id)realm
 {
-  v5 = a3;
-  [a3 account];
+  infoCopy = info;
+  [info account];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([(ACMSSOToken *)v5 generic], objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([(ACMToken *)v5 creationDate], objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([(ACMSSOToken *)v5 service], objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([(ACMSSOToken *)infoCopy generic], objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([(ACMToken *)infoCopy creationDate], objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([(ACMSSOToken *)infoCopy service], objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (qword_2A1EB8F60)
     {
@@ -102,28 +102,28 @@
 
       if ((ACFLogSettingsGetLevelMask() & 8) != 0)
       {
-        [(ACMSSOToken *)v5 account];
+        [(ACMSSOToken *)infoCopy account];
         v15 = objc_opt_class();
-        ACFLog(3, "[ACMKeychainTGTStoragePolicy ssoTokenWithKeychainInfo:realm:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMKeychainTGTStoragePolicy.m", 69, 0, "Account of class %@: %@", v15, [(ACMSSOToken *)v5 account]);
+        ACFLog(3, "[ACMKeychainTGTStoragePolicy ssoTokenWithKeychainInfo:realm:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMKeychainTGTStoragePolicy.m", 69, 0, "Account of class %@: %@", v15, [(ACMSSOToken *)infoCopy account]);
       }
 
       if ((ACFLogSettingsGetLevelMask() & 8) != 0)
       {
-        [(ACMToken *)v5 creationDate];
+        [(ACMToken *)infoCopy creationDate];
         v16 = objc_opt_class();
-        ACFLog(3, "[ACMKeychainTGTStoragePolicy ssoTokenWithKeychainInfo:realm:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMKeychainTGTStoragePolicy.m", 70, 0, "Creation Date of class %@: %@", v16, [(ACMToken *)v5 creationDate]);
+        ACFLog(3, "[ACMKeychainTGTStoragePolicy ssoTokenWithKeychainInfo:realm:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMKeychainTGTStoragePolicy.m", 70, 0, "Creation Date of class %@: %@", v16, [(ACMToken *)infoCopy creationDate]);
       }
 
       if ((ACFLogSettingsGetLevelMask() & 8) != 0)
       {
-        [(ACMSSOToken *)v5 service];
+        [(ACMSSOToken *)infoCopy service];
         v17 = objc_opt_class();
-        ACFLog(3, "[ACMKeychainTGTStoragePolicy ssoTokenWithKeychainInfo:realm:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMKeychainTGTStoragePolicy.m", 71, 0, "Service of class %@: %@", v17, [(ACMSSOToken *)v5 service]);
+        ACFLog(3, "[ACMKeychainTGTStoragePolicy ssoTokenWithKeychainInfo:realm:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMKeychainTGTStoragePolicy.m", 71, 0, "Service of class %@: %@", v17, [(ACMSSOToken *)infoCopy service]);
       }
 
       if ((ACFLogSettingsGetLevelMask() & 8) != 0)
       {
-        [(ACMSSOToken *)v5 generic];
+        [(ACMSSOToken *)infoCopy generic];
         v18 = objc_opt_class();
         ACFLog(3, "[ACMKeychainTGTStoragePolicy ssoTokenWithKeychainInfo:realm:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMKeychainTGTStoragePolicy.m", 72, 0, "Generic of class %@", v18);
       }
@@ -132,60 +132,60 @@
     return 0;
   }
 
-  if (!v5)
+  if (!infoCopy)
   {
-    return v5;
+    return infoCopy;
   }
 
-  if (a4 && ![(NSString *)[(ACFPrincipal *)[(ACMToken *)v5 principal] realm] isEqualToString:a4])
+  if (realm && ![(NSString *)[(ACFPrincipal *)[(ACMToken *)infoCopy principal] realm] isEqualToString:realm])
   {
     return 0;
   }
 
-  v7 = [(ACMKeychainTGTStoragePolicy *)self tokenDictionaryWithData:[(ACMSSOToken *)v5 generic]];
+  v7 = [(ACMKeychainTGTStoragePolicy *)self tokenDictionaryWithData:[(ACMSSOToken *)infoCopy generic]];
   if (!v7)
   {
     return 0;
   }
 
   v8 = v7;
-  v9 = [(ACMToken *)v5 creationDate];
+  creationDate = [(ACMToken *)infoCopy creationDate];
   v10 = [v8 objectForKey:@"d"];
   if (v10)
   {
     v11 = MEMORY[0x29EDB8DB0];
     [v10 doubleValue];
-    v9 = [v11 dateWithTimeIntervalSince1970:v12 / 1000.0];
+    creationDate = [v11 dateWithTimeIntervalSince1970:v12 / 1000.0];
   }
 
-  v5 = [(ACMToken *)ACMSSOToken tokenWithPrincipal:[(ACMToken *)v5 principal] creationDate:v9 tokenData:0];
+  infoCopy = [(ACMToken *)ACMSSOToken tokenWithPrincipal:[(ACMToken *)infoCopy principal] creationDate:creationDate tokenData:0];
   v13 = MEMORY[0x29EDB8DB0];
   [objc_msgSend(v8 objectForKey:{@"e", "doubleValue"}];
-  -[ACMToken setExpirationDate:](v5, "setExpirationDate:", [v13 dateWithTimeIntervalSince1970:v14 / 1000.0]);
-  -[ACMToken setNonce:](v5, "setNonce:", [v8 objectForKey:@"o"]);
-  -[ACMSSOToken setSessionToken:](v5, "setSessionToken:", [v8 objectForKey:@"q"]);
-  -[ACMSSOToken setRecentAuthenticationDate:](v5, "setRecentAuthenticationDate:", [v8 objectForKey:@"ACMSSOKeyRecentAuthenticationDate"]);
-  -[ACMSSOToken setRecentUnlockDate:](v5, "setRecentUnlockDate:", [v8 objectForKey:@"ACMSSOKeyRecentUnlockDate"]);
-  -[ACMSSOToken setPersonID:](v5, "setPersonID:", [v8 objectForKey:@"pid"]);
-  if (![(ACMSSOToken *)v5 recentUnlockDate])
+  -[ACMToken setExpirationDate:](infoCopy, "setExpirationDate:", [v13 dateWithTimeIntervalSince1970:v14 / 1000.0]);
+  -[ACMToken setNonce:](infoCopy, "setNonce:", [v8 objectForKey:@"o"]);
+  -[ACMSSOToken setSessionToken:](infoCopy, "setSessionToken:", [v8 objectForKey:@"q"]);
+  -[ACMSSOToken setRecentAuthenticationDate:](infoCopy, "setRecentAuthenticationDate:", [v8 objectForKey:@"ACMSSOKeyRecentAuthenticationDate"]);
+  -[ACMSSOToken setRecentUnlockDate:](infoCopy, "setRecentUnlockDate:", [v8 objectForKey:@"ACMSSOKeyRecentUnlockDate"]);
+  -[ACMSSOToken setPersonID:](infoCopy, "setPersonID:", [v8 objectForKey:@"pid"]);
+  if (![(ACMSSOToken *)infoCopy recentUnlockDate])
   {
-    [(ACMSSOToken *)v5 setRecentUnlockDate:[(ACMSSOToken *)v5 recentAuthenticationDate]];
+    [(ACMSSOToken *)infoCopy setRecentUnlockDate:[(ACMSSOToken *)infoCopy recentAuthenticationDate]];
   }
 
-  return v5;
+  return infoCopy;
 }
 
-- (id)searchItemWithInfo:(id)a3
+- (id)searchItemWithInfo:(id)info
 {
-  v4 = [(ACMKeychainTGTStoragePolicy *)self keychainManager];
+  keychainManager = [(ACMKeychainTGTStoragePolicy *)self keychainManager];
 
-  return [(ACFKeychainManagerProtocol *)v4 searchItemWithInfo:a3];
+  return [(ACFKeychainManagerProtocol *)keychainManager searchItemWithInfo:info];
 }
 
-- (id)allTokensWithPrincipal:(id)a3 service:(id)a4
+- (id)allTokensWithPrincipal:(id)principal service:(id)service
 {
   v23 = *MEMORY[0x29EDCA608];
-  v6 = [ACMKeychainTokenInfo keychainTokenInfoWithPrincipal:a3 indicator:a4];
+  v6 = [ACMKeychainTokenInfo keychainTokenInfoWithPrincipal:principal indicator:service];
   [(ACFKeychainItemInfo *)v6 setReturnLimit:-1];
   v7 = [(ACMKeychainTGTStoragePolicy *)self searchItemWithInfo:v6];
   objc_opt_class();
@@ -205,7 +205,7 @@ LABEL_5:
 
   v9 = 0;
 LABEL_6:
-  v10 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -225,7 +225,7 @@ LABEL_6:
           objc_enumerationMutation(v9);
         }
 
-        v15 = -[ACMKeychainTGTStoragePolicy ssoTokenWithKeychainInfo:realm:](self, "ssoTokenWithKeychainInfo:realm:", *(*(&v18 + 1) + 8 * v14), [a3 realm]);
+        v15 = -[ACMKeychainTGTStoragePolicy ssoTokenWithKeychainInfo:realm:](self, "ssoTokenWithKeychainInfo:realm:", *(*(&v18 + 1) + 8 * v14), [principal realm]);
         if (v15)
         {
           v16 = v15;
@@ -234,7 +234,7 @@ LABEL_6:
             ACFLog(7, "[ACMKeychainTGTStoragePolicy allTokensWithPrincipal:service:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMKeychainTGTStoragePolicy.m", 134, 0, "Created SSO Token - %@", v16);
           }
 
-          [v10 addObject:v16];
+          [array addObject:v16];
         }
 
         ++v14;
@@ -247,27 +247,27 @@ LABEL_6:
     while (v12);
   }
 
-  if (![v10 count])
+  if (![array count])
   {
     return [MEMORY[0x29EDB8D80] array];
   }
 
-  return v10;
+  return array;
 }
 
-- (BOOL)removeTokenWithPrincipal:(id)a3
+- (BOOL)removeTokenWithPrincipal:(id)principal
 {
-  v5 = [(ACMKeychainTGTStoragePolicy *)self service];
+  service = [(ACMKeychainTGTStoragePolicy *)self service];
 
-  return [(ACMKeychainTGTStoragePolicy *)self performRemoveTokenWithPrincipal:a3 service:v5];
+  return [(ACMKeychainTGTStoragePolicy *)self performRemoveTokenWithPrincipal:principal service:service];
 }
 
-- (BOOL)performRemoveTokenWithPrincipal:(id)a3 service:(id)a4
+- (BOOL)performRemoveTokenWithPrincipal:(id)principal service:(id)service
 {
   v27 = *MEMORY[0x29EDCA608];
-  v6 = [ACMKeychainTokenInfo keychainTokenInfoWithPrincipal:a3 indicator:a4];
+  v6 = [ACMKeychainTokenInfo keychainTokenInfoWithPrincipal:principal indicator:service];
   [(ACFKeychainItemInfo *)v6 setReturnLimit:-1];
-  v21 = self;
+  selfCopy = self;
   v7 = [(ACFKeychainManagerProtocol *)[(ACMKeychainTGTStoragePolicy *)self keychainManager] searchItemWithInfo:v6];
   if (!v7)
   {
@@ -308,7 +308,7 @@ LABEL_35:
 
       v14 = *(*(&v22 + 1) + 8 * v13);
       v15 = +[ACFKeychainItemInfo keychainItemInfo];
-      if ([objc_msgSend(a3 "principalString")])
+      if ([objc_msgSend(principal "principalString")])
       {
         [v15 setAccount:{objc_msgSend(v14, "account")}];
 LABEL_11:
@@ -316,13 +316,13 @@ LABEL_11:
         {
           [v15 setService:{objc_msgSend(v14, "service")}];
           [v15 setClassCode:{+[ACMKeychainTokenInfo classCode](ACMKeychainTokenInfo, "classCode")}];
-          v11 |= [(ACFKeychainManagerProtocol *)[(ACMKeychainTGTStoragePolicy *)v21 keychainManager] removeItemWithInfo:v15];
+          v11 |= [(ACFKeychainManagerProtocol *)[(ACMKeychainTGTStoragePolicy *)selfCopy keychainManager] removeItemWithInfo:v15];
         }
 
         goto LABEL_13;
       }
 
-      if ([objc_msgSend(a3 "realm")] && objc_msgSend(objc_msgSend(v14, "account"), "hasSuffix:", objc_msgSend(a3, "realm")))
+      if ([objc_msgSend(principal "realm")] && objc_msgSend(objc_msgSend(v14, "account"), "hasSuffix:", objc_msgSend(principal, "realm")))
       {
         v16 = qword_2A1EB8F60;
         [v15 setAccount:{objc_msgSend(v14, "account")}];
@@ -334,7 +334,7 @@ LABEL_11:
         goto LABEL_11;
       }
 
-      if ([objc_msgSend(a3 "userName")] && objc_msgSend(objc_msgSend(v14, "account"), "hasPrefix:", objc_msgSend(a3, "userName")))
+      if ([objc_msgSend(principal "userName")] && objc_msgSend(objc_msgSend(v14, "account"), "hasPrefix:", objc_msgSend(principal, "userName")))
       {
         v17 = qword_2A1EB8F60;
         [v15 setAccount:{objc_msgSend(v14, "account")}];
@@ -346,7 +346,7 @@ LABEL_11:
         goto LABEL_11;
       }
 
-      if (![objc_msgSend(a3 "userName")] && !objc_msgSend(objc_msgSend(a3, "realm"), "length"))
+      if (![objc_msgSend(principal "userName")] && !objc_msgSend(objc_msgSend(principal, "realm"), "length"))
       {
         v18 = qword_2A1EB8F60;
         [v15 setAccount:{objc_msgSend(v14, "account")}];
@@ -376,30 +376,30 @@ LABEL_13:
   return v11 & 1;
 }
 
-- (id)dictionaryWithSSOToken:(id)a3
+- (id)dictionaryWithSSOToken:(id)token
 {
   v4 = MEMORY[0x29EDB8E00];
   v5 = MEMORY[0x29EDBA070];
-  [objc_msgSend(a3 "expirationDate")];
+  [objc_msgSend(token "expirationDate")];
   v7 = [v5 numberWithLongLong:(v6 * 1000.0)];
   v8 = MEMORY[0x29EDBA070];
-  [objc_msgSend(a3 "creationDate")];
-  return [v4 dictionaryWithObjectsAndKeys:{v7, @"e", objc_msgSend(v8, "numberWithLongLong:", (v9 * 1000.0)), @"d", objc_msgSend(a3, "nonce"), @"o", objc_msgSend(a3, "sessionToken"), @"q", objc_msgSend(a3, "recentAuthenticationDate"), @"ACMSSOKeyRecentAuthenticationDate", objc_msgSend(a3, "recentUnlockDate"), @"ACMSSOKeyRecentUnlockDate", objc_msgSend(a3, "personID"), @"pid", 0}];
+  [objc_msgSend(token "creationDate")];
+  return [v4 dictionaryWithObjectsAndKeys:{v7, @"e", objc_msgSend(v8, "numberWithLongLong:", (v9 * 1000.0)), @"d", objc_msgSend(token, "nonce"), @"o", objc_msgSend(token, "sessionToken"), @"q", objc_msgSend(token, "recentAuthenticationDate"), @"ACMSSOKeyRecentAuthenticationDate", objc_msgSend(token, "recentUnlockDate"), @"ACMSSOKeyRecentUnlockDate", objc_msgSend(token, "personID"), @"pid", 0}];
 }
 
-- (int)storeItemWithInfo:(id)a3
+- (int)storeItemWithInfo:(id)info
 {
-  v5 = [(ACMKeychainTGTStoragePolicy *)self keychainManager];
-  v6 = [(ACMKeychainTGTStoragePolicy *)self useSharedStorage];
+  keychainManager = [(ACMKeychainTGTStoragePolicy *)self keychainManager];
+  useSharedStorage = [(ACMKeychainTGTStoragePolicy *)self useSharedStorage];
 
-  return [(ACFKeychainManagerProtocol *)v5 storeItemWithInfo:a3 share:v6 result:0];
+  return [(ACFKeychainManagerProtocol *)keychainManager storeItemWithInfo:info share:useSharedStorage result:0];
 }
 
-- (id)tokenDataWithDictionary:(id)a3
+- (id)tokenDataWithDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    return [MEMORY[0x29EDBA0C0] dataWithPropertyList:a3 format:200 options:0 error:0];
+    return [MEMORY[0x29EDBA0C0] dataWithPropertyList:dictionary format:200 options:0 error:0];
   }
 
   else
@@ -408,24 +408,24 @@ LABEL_13:
   }
 }
 
-- (id)tokenDictionaryWithData:(id)a3
+- (id)tokenDictionaryWithData:(id)data
 {
-  result = [a3 length];
+  result = [data length];
   if (result)
   {
     v5 = MEMORY[0x29EDBA0C0];
 
-    return [v5 propertyListWithData:a3 options:0 format:0 error:0];
+    return [v5 propertyListWithData:data options:0 format:0 error:0];
   }
 
   return result;
 }
 
-- (BOOL)performStoreToken:(id)a3 withService:(id)a4
+- (BOOL)performStoreToken:(id)token withService:(id)service
 {
-  v7 = +[ACMKeychainTokenInfo keychainTokenInfoWithPrincipal:indicator:](ACMKeychainTokenInfo, "keychainTokenInfoWithPrincipal:indicator:", [a3 principal], a4);
-  -[ACMKeychainTGTStoragePolicy performRemoveTokenWithPrincipal:service:](self, "performRemoveTokenWithPrincipal:service:", +[ACFPrincipal principalWithUserName:realm:](ACFPrincipal, "principalWithUserName:realm:", 0, [objc_msgSend(a3 "principal")]), a4);
-  [(ACMKeychainTokenInfo *)v7 setTokenData:[(ACMKeychainTGTStoragePolicy *)self tokenDataWithDictionary:[(ACMKeychainTGTStoragePolicy *)self dictionaryWithSSOToken:a3]]];
+  v7 = +[ACMKeychainTokenInfo keychainTokenInfoWithPrincipal:indicator:](ACMKeychainTokenInfo, "keychainTokenInfoWithPrincipal:indicator:", [token principal], service);
+  -[ACMKeychainTGTStoragePolicy performRemoveTokenWithPrincipal:service:](self, "performRemoveTokenWithPrincipal:service:", +[ACFPrincipal principalWithUserName:realm:](ACFPrincipal, "principalWithUserName:realm:", 0, [objc_msgSend(token "principal")]), service);
+  [(ACMKeychainTokenInfo *)v7 setTokenData:[(ACMKeychainTGTStoragePolicy *)self tokenDataWithDictionary:[(ACMKeychainTGTStoragePolicy *)self dictionaryWithSSOToken:token]]];
   if (![(NSData *)[(ACMKeychainTokenInfo *)v7 tokenData] length])
   {
     if (qword_2A1EB8F60 && (ACFLogSettingsGetLevelMask() & 8) != 0)
@@ -436,7 +436,7 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  -[ACFKeychainItemInfo setCreationDate:](v7, "setCreationDate:", [a3 creationDate]);
+  -[ACFKeychainItemInfo setCreationDate:](v7, "setCreationDate:", [token creationDate]);
   [(ACFKeychainItemInfo *)v7 setSynchronizable:0];
   if (qword_2A1EB8F68 && (ACFLogSettingsGetLevelMask() & 0x80) != 0)
   {

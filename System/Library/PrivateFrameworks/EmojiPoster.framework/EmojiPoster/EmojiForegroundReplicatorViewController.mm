@@ -1,6 +1,6 @@
 @interface EmojiForegroundReplicatorViewController
-- (_TtC11EmojiPoster39EmojiForegroundReplicatorViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)adjustScaleWithGesture:(id)a3;
+- (_TtC11EmojiPoster39EmojiForegroundReplicatorViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)adjustScaleWithGesture:(id)gesture;
 - (void)viewDidLoad;
 @end
 
@@ -8,20 +8,20 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_249FEF084();
 }
 
-- (void)adjustScaleWithGesture:(id)a3
+- (void)adjustScaleWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_249FEFC58(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_249FEFC58(gestureCopy);
 }
 
-- (_TtC11EmojiPoster39EmojiForegroundReplicatorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11EmojiPoster39EmojiForegroundReplicatorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_24A021698();
     v7 = v6;
@@ -33,8 +33,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return EmojiForegroundReplicatorViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return EmojiForegroundReplicatorViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

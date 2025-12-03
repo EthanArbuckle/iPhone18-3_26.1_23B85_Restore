@@ -1,28 +1,28 @@
 @interface ICLegacyNoteUtilities
-+ (id)temporaryTextStorageWithAttributedString:(id)a3 replicaID:(id)a4 styler:(id)a5;
-+ (void)copyValuesFromLegacyNote:(id)a3 toNote:(id)a4 styler:(id)a5 attachmentPreviewGenerator:(id)a6;
-+ (void)importLegacyNote:(id)a3 temporaryTextStorage:(id)a4 toNote:(id)a5 attachmentPreviewGenerator:(id)a6;
++ (id)temporaryTextStorageWithAttributedString:(id)string replicaID:(id)d styler:(id)styler;
++ (void)copyValuesFromLegacyNote:(id)note toNote:(id)toNote styler:(id)styler attachmentPreviewGenerator:(id)generator;
++ (void)importLegacyNote:(id)note temporaryTextStorage:(id)storage toNote:(id)toNote attachmentPreviewGenerator:(id)generator;
 @end
 
 @implementation ICLegacyNoteUtilities
 
-+ (id)temporaryTextStorageWithAttributedString:(id)a3 replicaID:(id)a4 styler:(id)a5
++ (id)temporaryTextStorageWithAttributedString:(id)string replicaID:(id)d styler:(id)styler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[ICTTTextStorage alloc] initWithData:0 replicaID:v8];
+  stylerCopy = styler;
+  dCopy = d;
+  stringCopy = string;
+  v10 = [[ICTTTextStorage alloc] initWithData:0 replicaID:dCopy];
 
-  v11 = [(ICTTTextStorage *)v10 styler];
+  styler = [(ICTTTextStorage *)v10 styler];
 
-  [(ICTTTextStorage *)v10 setStyler:v7];
+  [(ICTTTextStorage *)v10 setStyler:stylerCopy];
   [(ICTTTextStorage *)v10 setConvertAttributes:1];
   [(ICTTTextStorage *)v10 setWantsUndoCommands:0];
-  [(ICTTTextStorage *)v10 replaceCharactersInRange:0 withAttributedString:[(ICTTTextStorage *)v10 length], v9];
+  [(ICTTTextStorage *)v10 replaceCharactersInRange:0 withAttributedString:[(ICTTTextStorage *)v10 length], stringCopy];
 
   [(ICTTTextStorage *)v10 fixupAfterEditing];
   [(ICTTTextStorage *)v10 setConvertAttributes:0];
-  if (!v11)
+  if (!styler)
   {
     [(ICTTTextStorage *)v10 setStyler:0];
   }
@@ -30,27 +30,27 @@
   return v10;
 }
 
-+ (void)importLegacyNote:(id)a3 temporaryTextStorage:(id)a4 toNote:(id)a5 attachmentPreviewGenerator:(id)a6
++ (void)importLegacyNote:(id)note temporaryTextStorage:(id)storage toNote:(id)toNote attachmentPreviewGenerator:(id)generator
 {
   v46 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  noteCopy = note;
+  storageCopy = storage;
+  toNoteCopy = toNote;
+  generatorCopy = generator;
   v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v14 = [v9 managedObjectContext];
+  managedObjectContext = [noteCopy managedObjectContext];
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __97__ICLegacyNoteUtilities_importLegacyNote_temporaryTextStorage_toNote_attachmentPreviewGenerator___block_invoke;
   v42[3] = &unk_1E8468F80;
-  v15 = v9;
+  v15 = noteCopy;
   v43 = v15;
   v16 = v13;
   v44 = v16;
-  [v14 performBlockAndWait:v42];
+  [managedObjectContext performBlockAndWait:v42];
 
   v17 = *MEMORY[0x1E69B7628];
-  v18 = [v10 length];
+  v18 = [storageCopy length];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __97__ICLegacyNoteUtilities_importLegacyNote_temporaryTextStorage_toNote_attachmentPreviewGenerator___block_invoke_2;
@@ -59,15 +59,15 @@
   v39 = v19;
   v20 = v16;
   v40 = v20;
-  v21 = v10;
+  v21 = storageCopy;
   v41 = v21;
   [v21 enumerateAttribute:v17 inRange:0 options:v18 usingBlock:{0, v38}];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v22 = [v20 allValues];
-  v23 = [v22 countByEnumeratingWithState:&v34 objects:v45 count:16];
+  allValues = [v20 allValues];
+  v23 = [allValues countByEnumeratingWithState:&v34 objects:v45 count:16];
   if (v23)
   {
     v24 = v23;
@@ -79,33 +79,33 @@
       {
         if (*v35 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(allValues);
         }
 
-        [MEMORY[0x1E69B77B0] importLegacyAttachment:*(*(&v34 + 1) + 8 * v26++) toNote:v11 attachmentPreviewGenerator:v12];
+        [MEMORY[0x1E69B77B0] importLegacyAttachment:*(*(&v34 + 1) + 8 * v26++) toNote:toNoteCopy attachmentPreviewGenerator:generatorCopy];
       }
 
       while (v24 != v26);
-      v24 = [v22 countByEnumeratingWithState:&v34 objects:v45 count:16];
+      v24 = [allValues countByEnumeratingWithState:&v34 objects:v45 count:16];
     }
 
     while (v24);
   }
 
-  v27 = [v11 textStorage];
-  [v27 setWantsUndoCommands:0];
+  textStorage = [toNoteCopy textStorage];
+  [textStorage setWantsUndoCommands:0];
 
-  v28 = [v11 textStorage];
-  v29 = [v11 textStorage];
-  [v28 deleteCharactersInRange:{0, objc_msgSend(v29, "length")}];
+  textStorage2 = [toNoteCopy textStorage];
+  textStorage3 = [toNoteCopy textStorage];
+  [textStorage2 deleteCharactersInRange:{0, objc_msgSend(textStorage3, "length")}];
 
-  v30 = [v11 textStorage];
-  v31 = [v30 mergeableString];
-  v32 = [v21 mergeableString];
-  [v31 mergeWithString:v32];
+  textStorage4 = [toNoteCopy textStorage];
+  mergeableString = [textStorage4 mergeableString];
+  mergeableString2 = [v21 mergeableString];
+  [mergeableString mergeWithString:mergeableString2];
 
-  v33 = [v11 textStorage];
-  [v33 setWantsUndoCommands:1];
+  textStorage5 = [toNoteCopy textStorage];
+  [textStorage5 setWantsUndoCommands:1];
 }
 
 void __97__ICLegacyNoteUtilities_importLegacyNote_temporaryTextStorage_toNote_attachmentPreviewGenerator___block_invoke(uint64_t a1)
@@ -244,55 +244,55 @@ void __97__ICLegacyNoteUtilities_importLegacyNote_temporaryTextStorage_toNote_at
   *(v5 + 40) = v4;
 }
 
-+ (void)copyValuesFromLegacyNote:(id)a3 toNote:(id)a4 styler:(id)a5 attachmentPreviewGenerator:(id)a6
++ (void)copyValuesFromLegacyNote:(id)note toNote:(id)toNote styler:(id)styler attachmentPreviewGenerator:(id)generator
 {
-  v25 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = [v25 managedObjectContext];
+  noteCopy = note;
+  toNoteCopy = toNote;
+  generatorCopy = generator;
+  stylerCopy = styler;
+  managedObjectContext = [noteCopy managedObjectContext];
 
-  if (!v13)
+  if (!managedObjectContext)
   {
-    [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"legacyNote.managedObjectContext" functionName:"+[ICLegacyNoteUtilities copyValuesFromLegacyNote:toNote:styler:attachmentPreviewGenerator:]" simulateCrash:1 showAlert:0 format:{@"Legacy note does not have valid object context %@", v25}];
+    [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"legacyNote.managedObjectContext" functionName:"+[ICLegacyNoteUtilities copyValuesFromLegacyNote:toNote:styler:attachmentPreviewGenerator:]" simulateCrash:1 showAlert:0 format:{@"Legacy note does not have valid object context %@", noteCopy}];
   }
 
-  v14 = [v25 htmlString];
+  htmlString = [noteCopy htmlString];
   v15 = MEMORY[0x1E69B77F0];
-  v16 = [MEMORY[0x1E69B7868] sharedInstance];
-  v17 = [v15 attributedStringFromHTMLString:v14 readerDelegate:v16];
+  mEMORY[0x1E69B7868] = [MEMORY[0x1E69B7868] sharedInstance];
+  v17 = [v15 attributedStringFromHTMLString:htmlString readerDelegate:mEMORY[0x1E69B7868]];
 
-  v18 = [v10 currentReplicaID];
-  v19 = [a1 temporaryTextStorageWithAttributedString:v17 replicaID:v18 styler:v12];
+  currentReplicaID = [toNoteCopy currentReplicaID];
+  v19 = [self temporaryTextStorageWithAttributedString:v17 replicaID:currentReplicaID styler:stylerCopy];
 
-  v20 = [v25 creationDate];
-  if (v20)
+  creationDate = [noteCopy creationDate];
+  if (creationDate)
   {
-    [v10 setCreationDate:v20];
+    [toNoteCopy setCreationDate:creationDate];
   }
 
   else
   {
-    v21 = [MEMORY[0x1E695DF00] date];
-    [v10 setCreationDate:v21];
+    date = [MEMORY[0x1E695DF00] date];
+    [toNoteCopy setCreationDate:date];
   }
 
-  v22 = [v25 modificationDate];
-  if (v22)
+  modificationDate = [noteCopy modificationDate];
+  if (modificationDate)
   {
-    [v10 setModificationDate:v22];
+    [toNoteCopy setModificationDate:modificationDate];
   }
 
   else
   {
-    v23 = [MEMORY[0x1E695DF00] date];
-    [v10 setModificationDate:v23];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [toNoteCopy setModificationDate:date2];
   }
 
-  v24 = [v25 title];
-  [v10 setTitle:v24];
+  title = [noteCopy title];
+  [toNoteCopy setTitle:title];
 
-  [a1 importLegacyNote:v25 temporaryTextStorage:v19 toNote:v10 attachmentPreviewGenerator:v11];
+  [self importLegacyNote:noteCopy temporaryTextStorage:v19 toNote:toNoteCopy attachmentPreviewGenerator:generatorCopy];
 }
 
 void __97__ICLegacyNoteUtilities_importLegacyNote_temporaryTextStorage_toNote_attachmentPreviewGenerator___block_invoke_2_cold_1(void *a1, uint8_t *buf, os_log_t log)

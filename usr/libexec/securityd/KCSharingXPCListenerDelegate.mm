@@ -1,14 +1,14 @@
 @interface KCSharingXPCListenerDelegate
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (KCSharingDaemonGroupManager)groupManager;
 - (KCSharingSyncController)syncController;
 - (KCSharingXPCListenerDelegate)init;
-- (KCSharingXPCListenerDelegate)initWithListener:(id)a3 queue:(id)a4 daemonGroupManager:(id)a5 syncController:(id)a6 entitlementBearer:(id)a7;
-- (id)allowedProtocolForEntitlementBearer:(id)a3;
+- (KCSharingXPCListenerDelegate)initWithListener:(id)listener queue:(id)queue daemonGroupManager:(id)manager syncController:(id)controller entitlementBearer:(id)bearer;
+- (id)allowedProtocolForEntitlementBearer:(id)bearer;
 - (void)accountChanged;
-- (void)connectionWasInterrupted:(id)a3;
-- (void)connectionWasInvalidated:(id)a3;
+- (void)connectionWasInterrupted:(id)interrupted;
+- (void)connectionWasInvalidated:(id)invalidated;
 - (void)groupsUpdated;
 @end
 
@@ -30,34 +30,34 @@
 
 - (void)accountChanged
 {
-  v3 = [(KCSharingXPCListenerDelegate *)self connectionQueue];
+  connectionQueue = [(KCSharingXPCListenerDelegate *)self connectionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100031A80;
   block[3] = &unk_100346018;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(connectionQueue, block);
 }
 
 - (void)groupsUpdated
 {
-  v3 = [(KCSharingXPCListenerDelegate *)self connectionQueue];
+  connectionQueue = [(KCSharingXPCListenerDelegate *)self connectionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100031C98;
   block[3] = &unk_100346018;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(connectionQueue, block);
 }
 
-- (void)connectionWasInvalidated:(id)a3
+- (void)connectionWasInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   v5 = KCSharingLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = invalidatedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "connection invalidated %@", buf, 0xCu);
   }
 
@@ -66,7 +66,7 @@
   v9[1] = 3221225472;
   v9[2] = sub_100031F6C;
   v9[3] = &unk_100333C68;
-  v7 = v4;
+  v7 = invalidatedCopy;
   v10 = v7;
   v8 = [(NSMutableArray *)clientConnections indexOfObjectPassingTest:v9];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
@@ -75,32 +75,32 @@
   }
 }
 
-- (void)connectionWasInterrupted:(id)a3
+- (void)connectionWasInterrupted:(id)interrupted
 {
-  v3 = a3;
+  interruptedCopy = interrupted;
   v4 = KCSharingLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = interruptedCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "connection interrupted %@", &v5, 0xCu);
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(KCSharingXPCListenerDelegate *)self entitlementBearer];
-  v9 = v8;
-  if (v8)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  entitlementBearer = [(KCSharingXPCListenerDelegate *)self entitlementBearer];
+  v9 = entitlementBearer;
+  if (entitlementBearer)
   {
-    v10 = v8;
+    v10 = entitlementBearer;
   }
 
   else
   {
-    v10 = v7;
+    v10 = connectionCopy;
   }
 
   v11 = v10;
@@ -113,7 +113,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v31 = v7;
+      v31 = connectionCopy;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Rejected connection %{public}@ lacks entitlement", buf, 0xCu);
     }
 
@@ -124,16 +124,16 @@
   {
     v15 = NSStringFromProtocol(v12);
     *buf = 138543618;
-    v31 = v7;
+    v31 = connectionCopy;
     v32 = 2114;
     v33 = v15;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Accepted connection %{public}@, allowed protocol %{public}@", buf, 0x16u);
   }
 
   v16 = [KCSharingXPCServer alloc];
-  v17 = [(KCSharingXPCListenerDelegate *)self groupManager];
-  v18 = [(KCSharingXPCListenerDelegate *)self syncController];
-  v14 = [(KCSharingXPCServer *)v16 initWithConnection:v7 allowedProtocol:v12 groupManager:v17 syncController:v18];
+  groupManager = [(KCSharingXPCListenerDelegate *)self groupManager];
+  syncController = [(KCSharingXPCListenerDelegate *)self syncController];
+  v14 = [(KCSharingXPCServer *)v16 initWithConnection:connectionCopy allowedProtocol:v12 groupManager:groupManager syncController:syncController];
 
   if (!v14)
   {
@@ -141,7 +141,7 @@
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v31 = v7;
+      v31 = connectionCopy;
       _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to init KCSharingXPCServer for connection %{public}@", buf, 0xCu);
     }
 
@@ -159,18 +159,18 @@ LABEL_14:
   v26[3] = &unk_100333C40;
   objc_copyWeak(&v27, buf);
   objc_copyWeak(&v28, &location);
-  [v7 setInterruptionHandler:v26];
+  [connectionCopy setInterruptionHandler:v26];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100032494;
   v23[3] = &unk_100333C40;
   objc_copyWeak(&v24, buf);
   objc_copyWeak(&v25, &location);
-  [v7 setInvalidationHandler:v23];
-  v19 = [(KCSharingXPCListenerDelegate *)self connectionQueue];
-  [v7 _setQueue:v19];
+  [connectionCopy setInvalidationHandler:v23];
+  connectionQueue = [(KCSharingXPCListenerDelegate *)self connectionQueue];
+  [connectionCopy _setQueue:connectionQueue];
 
-  [v7 resume];
+  [connectionCopy resume];
   [(NSMutableArray *)self->_clientConnections addObject:v14];
   objc_destroyWeak(&v25);
   objc_destroyWeak(&v24);
@@ -184,10 +184,10 @@ LABEL_15:
   return v20;
 }
 
-- (id)allowedProtocolForEntitlementBearer:(id)a3
+- (id)allowedProtocolForEntitlementBearer:(id)bearer
 {
-  v3 = a3;
-  if (sub_100010058(v3, @"com.apple.private.keychain.kcsharing.client"))
+  bearerCopy = bearer;
+  if (sub_100010058(bearerCopy, @"com.apple.private.keychain.kcsharing.client"))
   {
     v4 = &protocolRef_KCSharingXPCServerProtocol;
 LABEL_5:
@@ -195,7 +195,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if (sub_100010058(v3, @"com.apple.private.keychain.kcsharing.invitation.notifier"))
+  if (sub_100010058(bearerCopy, @"com.apple.private.keychain.kcsharing.invitation.notifier"))
   {
     v4 = &protocolRef_KCSharingInvitationNotificationProtocol;
     goto LABEL_5;
@@ -207,13 +207,13 @@ LABEL_7:
   return v5;
 }
 
-- (KCSharingXPCListenerDelegate)initWithListener:(id)a3 queue:(id)a4 daemonGroupManager:(id)a5 syncController:(id)a6 entitlementBearer:(id)a7
+- (KCSharingXPCListenerDelegate)initWithListener:(id)listener queue:(id)queue daemonGroupManager:(id)manager syncController:(id)controller entitlementBearer:(id)bearer
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  listenerCopy = listener;
+  queueCopy = queue;
+  managerCopy = manager;
+  controllerCopy = controller;
+  bearerCopy = bearer;
   v18 = KCSharingLogObject();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
@@ -227,15 +227,15 @@ LABEL_7:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_listener, a3);
-    objc_storeStrong(&v20->_connectionQueue, a4);
+    objc_storeStrong(&v19->_listener, listener);
+    objc_storeStrong(&v20->_connectionQueue, queue);
     v21 = +[NSMutableArray array];
     clientConnections = v20->_clientConnections;
     v20->_clientConnections = v21;
 
-    objc_storeWeak(&v20->_groupManager, v15);
-    objc_storeWeak(&v20->_syncController, v16);
-    objc_storeStrong(&v20->_entitlementBearer, a7);
+    objc_storeWeak(&v20->_groupManager, managerCopy);
+    objc_storeWeak(&v20->_syncController, controllerCopy);
+    objc_storeStrong(&v20->_entitlementBearer, bearer);
     [(NSXPCListener *)v20->_listener setDelegate:v20];
     [(NSXPCListener *)v20->_listener _setQueue:v20->_connectionQueue];
     [(NSXPCListener *)v20->_listener resume];

@@ -1,8 +1,8 @@
 @interface CIDVUIBiometricReplacementFlowManager
 - (CIDVUIBiometricReplacementFlowManager)init;
-- (void)beginBiometricReplacement:(id)a3;
-- (void)beginBiometricReplacementForWatch:(id)a3;
-- (void)beginBiometricReplacementWithAuthenticationHandler:(id)a3 andCompletion:(id)a4;
+- (void)beginBiometricReplacement:(id)replacement;
+- (void)beginBiometricReplacementForWatch:(id)watch;
+- (void)beginBiometricReplacementWithAuthenticationHandler:(id)handler andCompletion:(id)completion;
 @end
 
 @implementation CIDVUIBiometricReplacementFlowManager
@@ -21,26 +21,26 @@
   return v2;
 }
 
-- (void)beginBiometricReplacement:(id)a3
+- (void)beginBiometricReplacement:(id)replacement
 {
-  v4 = a3;
-  v5 = [(CIDVUIBiometricReplacementFlowManager *)self biometricReplacementFlowManager];
-  [v5 beginBiometricReplacementForTarget:1 withAuthHandler:v4 andCompletionHandler:0];
+  replacementCopy = replacement;
+  biometricReplacementFlowManager = [(CIDVUIBiometricReplacementFlowManager *)self biometricReplacementFlowManager];
+  [biometricReplacementFlowManager beginBiometricReplacementForTarget:1 withAuthHandler:replacementCopy andCompletionHandler:0];
 }
 
-- (void)beginBiometricReplacementForWatch:(id)a3
+- (void)beginBiometricReplacementForWatch:(id)watch
 {
-  v4 = a3;
-  v5 = [(CIDVUIBiometricReplacementFlowManager *)self biometricReplacementFlowManager];
-  [v5 beginBiometricReplacementForTarget:2 withAuthHandler:v4 andCompletionHandler:0];
+  watchCopy = watch;
+  biometricReplacementFlowManager = [(CIDVUIBiometricReplacementFlowManager *)self biometricReplacementFlowManager];
+  [biometricReplacementFlowManager beginBiometricReplacementForTarget:2 withAuthHandler:watchCopy andCompletionHandler:0];
 }
 
-- (void)beginBiometricReplacementWithAuthenticationHandler:(id)a3 andCompletion:(id)a4
+- (void)beginBiometricReplacementWithAuthenticationHandler:(id)handler andCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CIDVUIBiometricReplacementFlowManager *)self biometricReplacementFlowManager];
-  [v8 beginBiometricReplacementForTarget:1 withAuthHandler:v7 andCompletionHandler:v6];
+  completionCopy = completion;
+  handlerCopy = handler;
+  biometricReplacementFlowManager = [(CIDVUIBiometricReplacementFlowManager *)self biometricReplacementFlowManager];
+  [biometricReplacementFlowManager beginBiometricReplacementForTarget:1 withAuthHandler:handlerCopy andCompletionHandler:completionCopy];
 }
 
 @end

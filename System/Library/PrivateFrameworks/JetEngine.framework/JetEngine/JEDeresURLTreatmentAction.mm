@@ -1,18 +1,18 @@
 @interface JEDeresURLTreatmentAction
-- (JEDeresURLTreatmentAction)initWithField:(id)a3 configuration:(id)a4;
-- (id)allowedQueryItemsFromItems:(id)a3;
-- (id)performAction:(id)a3 context:(id)a4;
+- (JEDeresURLTreatmentAction)initWithField:(id)field configuration:(id)configuration;
+- (id)allowedQueryItemsFromItems:(id)items;
+- (id)performAction:(id)action context:(id)context;
 @end
 
 @implementation JEDeresURLTreatmentAction
 
-- (JEDeresURLTreatmentAction)initWithField:(id)a3 configuration:(id)a4
+- (JEDeresURLTreatmentAction)initWithField:(id)field configuration:(id)configuration
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  configurationCopy = configuration;
   v29.receiver = self;
   v29.super_class = JEDeresURLTreatmentAction;
-  v7 = [(JETreatmentAction *)&v29 initWithField:a3 configuration:v6];
+  v7 = [(JETreatmentAction *)&v29 initWithField:field configuration:configurationCopy];
   if (!v7)
   {
 LABEL_19:
@@ -20,7 +20,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"scope"];
+  v8 = [configurationCopy objectForKeyedSubscript:@"scope"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -38,7 +38,7 @@ LABEL_19:
     scope = v7->_scope;
     v7->_scope = v10;
 
-    v12 = [v6 objectForKeyedSubscript:@"allowedParams"];
+    v12 = [configurationCopy objectForKeyedSubscript:@"allowedParams"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,11 +105,11 @@ LABEL_20:
   return v9;
 }
 
-- (id)performAction:(id)a3 context:(id)a4
+- (id)performAction:(id)action context:(id)context
 {
   v9.receiver = self;
   v9.super_class = JEDeresURLTreatmentAction;
-  v5 = [(JETreatmentAction *)&v9 performAction:a3 context:a4];
+  v5 = [(JETreatmentAction *)&v9 performAction:action context:context];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -135,9 +135,9 @@ LABEL_20:
   return v7;
 }
 
-- (id)allowedQueryItemsFromItems:(id)a3
+- (id)allowedQueryItemsFromItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   if (self)
   {
     allowedParameters = self->_allowedParameters;
@@ -148,7 +148,7 @@ LABEL_20:
     allowedParameters = 0;
   }
 
-  if (-[NSDictionary count](allowedParameters, "count") && [v4 count])
+  if (-[NSDictionary count](allowedParameters, "count") && [itemsCopy count])
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -156,7 +156,7 @@ LABEL_20:
     v11[3] = &unk_1E794A8E8;
     v11[4] = self;
     v6 = [MEMORY[0x1E696AE18] predicateWithBlock:v11];
-    v7 = [v4 filteredArrayUsingPredicate:v6];
+    v7 = [itemsCopy filteredArrayUsingPredicate:v6];
     if ([v7 count])
     {
       v8 = v7;

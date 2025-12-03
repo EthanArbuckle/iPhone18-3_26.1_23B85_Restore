@@ -21,7 +21,7 @@
   handler[1] = 3221225472;
   handler[2] = __50__DAAnalyticsReporter_startDailyAnalyticsReporter__block_invoke;
   handler[3] = &__block_descriptor_40_e33_v16__0__NSObject_OS_xpc_object__8l;
-  handler[4] = a1;
+  handler[4] = self;
   xpc_activity_register("com.apple.dataaccess.dataaccessd.dailyAnalytics", v5, handler);
 }
 

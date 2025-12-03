@@ -2,10 +2,10 @@
 - (SceneManager)init;
 - (void)createInitialAppScene;
 - (void)createInputUIScene;
-- (void)sceneDidActivate:(id)a3;
-- (void)sceneDidDeactivate:(id)a3 withContext:(id)a4;
-- (void)workspace:(id)a3 didAddScene:(id)a4;
-- (void)workspace:(id)a3 willRemoveScene:(id)a4;
+- (void)sceneDidActivate:(id)activate;
+- (void)sceneDidDeactivate:(id)deactivate withContext:(id)context;
+- (void)workspace:(id)workspace didAddScene:(id)scene;
+- (void)workspace:(id)workspace willRemoveScene:(id)scene;
 @end
 
 @implementation SceneManager
@@ -39,8 +39,8 @@
 
 - (void)createInitialAppScene
 {
-  v2 = [(SceneManager *)self workspace];
-  v3 = [v2 createScene:&stru_100028C98];
+  workspace = [(SceneManager *)self workspace];
+  v3 = [workspace createScene:&stru_100028C98];
 
   [v3 updateSettings:&stru_100028CD8];
   [v3 activate:0];
@@ -48,8 +48,8 @@
 
 - (void)createInputUIScene
 {
-  v2 = [(SceneManager *)self workspace];
-  v3 = [v2 createScene:&stru_100028D18];
+  workspace = [(SceneManager *)self workspace];
+  v3 = [workspace createScene:&stru_100028D18];
 
   +[FBDisplayManager mainConfiguration];
   v5[0] = _NSConcreteStackBlock;
@@ -61,60 +61,60 @@
   [v3 activate:0];
 }
 
-- (void)sceneDidActivate:(id)a3
+- (void)sceneDidActivate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   v5 = sub_100012608();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_100012CD4(v5, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  v13 = [(SceneManager *)self scenes];
-  [v13 addObject:v4];
+  scenes = [(SceneManager *)self scenes];
+  [scenes addObject:activateCopy];
 
-  v14 = [(SceneManager *)self rootWindowScenePresentationBinder];
-  [v14 addScene:v4];
+  rootWindowScenePresentationBinder = [(SceneManager *)self rootWindowScenePresentationBinder];
+  [rootWindowScenePresentationBinder addScene:activateCopy];
 }
 
-- (void)sceneDidDeactivate:(id)a3 withContext:(id)a4
+- (void)sceneDidDeactivate:(id)deactivate withContext:(id)context
 {
-  v5 = a3;
+  deactivateCopy = deactivate;
   v6 = sub_100012608();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     sub_100012D4C(v6, v7, v8, v9, v10, v11, v12, v13);
   }
 
-  v14 = [(SceneManager *)self scenes];
-  [v14 removeObject:v5];
+  scenes = [(SceneManager *)self scenes];
+  [scenes removeObject:deactivateCopy];
 
-  v15 = [(SceneManager *)self rootWindowScenePresentationBinder];
-  [v15 removeScene:v5];
+  rootWindowScenePresentationBinder = [(SceneManager *)self rootWindowScenePresentationBinder];
+  [rootWindowScenePresentationBinder removeScene:deactivateCopy];
 }
 
-- (void)workspace:(id)a3 didAddScene:(id)a4
+- (void)workspace:(id)workspace didAddScene:(id)scene
 {
-  v5 = a4;
+  sceneCopy = scene;
   v6 = sub_100012608();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     sub_100012DC4(v6, v7, v8, v9, v10, v11, v12, v13);
   }
 
-  [v5 setDelegate:self];
+  [sceneCopy setDelegate:self];
 }
 
-- (void)workspace:(id)a3 willRemoveScene:(id)a4
+- (void)workspace:(id)workspace willRemoveScene:(id)scene
 {
-  v4 = a4;
+  sceneCopy = scene;
   v5 = sub_100012608();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_100012E3C(v5, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  [v4 setDelegate:0];
+  [sceneCopy setDelegate:0];
 }
 
 @end

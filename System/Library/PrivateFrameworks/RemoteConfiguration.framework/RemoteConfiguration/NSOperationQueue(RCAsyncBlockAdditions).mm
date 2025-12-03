@@ -7,7 +7,7 @@
 - (void)rc_addAsyncOperationWithBlock:()RCAsyncBlockAdditions
 {
   v2 = [RCAsyncBlockOperation asyncBlockOperationWithBlock:?];
-  [a1 addOperation:v2];
+  [self addOperation:v2];
 }
 
 @end

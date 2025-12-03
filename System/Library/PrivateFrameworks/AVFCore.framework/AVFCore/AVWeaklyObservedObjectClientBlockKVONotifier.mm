@@ -1,6 +1,6 @@
 @interface AVWeaklyObservedObjectClientBlockKVONotifier
-- (AVWeaklyObservedObjectClientBlockKVONotifier)initWithCallbackContextRegistry:(id)a3 observer:(id)a4 object:(id)a5 keyPath:(id)a6 options:(unint64_t)a7 block:(id)a8;
-- (void)callbackDidFireWithChangeDictionary:(id)a3;
+- (AVWeaklyObservedObjectClientBlockKVONotifier)initWithCallbackContextRegistry:(id)registry observer:(id)observer object:(id)object keyPath:(id)path options:(unint64_t)options block:(id)block;
+- (void)callbackDidFireWithChangeDictionary:(id)dictionary;
 - (void)cancelCallbacks;
 - (void)dealloc;
 - (void)start;
@@ -8,9 +8,9 @@
 
 @implementation AVWeaklyObservedObjectClientBlockKVONotifier
 
-- (AVWeaklyObservedObjectClientBlockKVONotifier)initWithCallbackContextRegistry:(id)a3 observer:(id)a4 object:(id)a5 keyPath:(id)a6 options:(unint64_t)a7 block:(id)a8
+- (AVWeaklyObservedObjectClientBlockKVONotifier)initWithCallbackContextRegistry:(id)registry observer:(id)observer object:(id)object keyPath:(id)path options:(unint64_t)options block:(id)block
 {
-  if (!a3)
+  if (!registry)
   {
     v17 = MEMORY[0x1E695DF30];
     v18 = *MEMORY[0x1E695D940];
@@ -18,7 +18,7 @@
     goto LABEL_16;
   }
 
-  if (!a4)
+  if (!observer)
   {
     v17 = MEMORY[0x1E695DF30];
     v18 = *MEMORY[0x1E695D940];
@@ -26,7 +26,7 @@
     goto LABEL_16;
   }
 
-  if (!a5)
+  if (!object)
   {
     v17 = MEMORY[0x1E695DF30];
     v18 = *MEMORY[0x1E695D940];
@@ -34,7 +34,7 @@
     goto LABEL_16;
   }
 
-  if (!a6)
+  if (!path)
   {
     v17 = MEMORY[0x1E695DF30];
     v18 = *MEMORY[0x1E695D940];
@@ -42,13 +42,13 @@
     goto LABEL_16;
   }
 
-  if (!a8)
+  if (!block)
   {
     v17 = MEMORY[0x1E695DF30];
     v18 = *MEMORY[0x1E695D940];
     v19 = "block != nil";
 LABEL_16:
-    v20 = [v17 exceptionWithName:v18 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", a4, a5, a6, a7, a8, v19), 0}];
+    v20 = [v17 exceptionWithName:v18 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", observer, object, path, options, block, v19), 0}];
     objc_exception_throw(v20);
   }
 
@@ -57,19 +57,19 @@ LABEL_16:
   v14 = [(AVWeaklyObservedObjectClientBlockKVONotifier *)&v21 init];
   if (v14)
   {
-    v15 = a3;
-    if (v15)
+    registryCopy = registry;
+    if (registryCopy)
     {
-      v15 = CFRetain(v15);
+      registryCopy = CFRetain(registryCopy);
     }
 
-    v14->_callbackContextRegistry = v15;
-    v14->_observer = a4;
-    v14->_weakReferenceToObject = [[AVWeakReference alloc] initWithReferencedObject:a5];
-    v14->_unsafeUnretainedObject = a5;
-    v14->_keyPath = [a6 copy];
-    v14->_options = a7;
-    v14->_block = [a8 copy];
+    v14->_callbackContextRegistry = registryCopy;
+    v14->_observer = observer;
+    v14->_weakReferenceToObject = [[AVWeakReference alloc] initWithReferencedObject:object];
+    v14->_unsafeUnretainedObject = object;
+    v14->_keyPath = [path copy];
+    v14->_options = options;
+    v14->_block = [block copy];
   }
 
   return v14;
@@ -104,15 +104,15 @@ LABEL_16:
 
 - (void)start
 {
-  v3 = [(AVWeakReference *)self->_weakReferenceToObject referencedObject];
+  referencedObject = [(AVWeakReference *)self->_weakReferenceToObject referencedObject];
   v4 = [(AVCallbackContextRegistry *)self->_callbackContextRegistry registerCallbackContextObject:self];
   self->_callbackContextToken = v4;
-  [v3 addObserver:self->_observer forKeyPath:self->_keyPath options:self->_options context:v4];
+  [referencedObject addObserver:self->_observer forKeyPath:self->_keyPath options:self->_options context:v4];
 
-  [v3 addCallbackToCancelDuringDeallocation:self];
+  [referencedObject addCallbackToCancelDuringDeallocation:self];
 }
 
-- (void)callbackDidFireWithChangeDictionary:(id)a3
+- (void)callbackDidFireWithChangeDictionary:(id)dictionary
 {
   if ([(AVWeakReference *)self->_weakReferenceToObject referencedObject])
   {
@@ -132,13 +132,13 @@ LABEL_16:
   unsafeUnretainedObject = self->_unsafeUnretainedObject;
   if (unsafeUnretainedObject && FigAtomicCompareAndSwapPtr())
   {
-    v4 = [(AVWeakReference *)self->_weakReferenceToObject referencedObject];
-    if (!v4)
+    referencedObject = [(AVWeakReference *)self->_weakReferenceToObject referencedObject];
+    if (!referencedObject)
     {
-      v4 = unsafeUnretainedObject;
+      referencedObject = unsafeUnretainedObject;
     }
 
-    [(AVWeakObservable *)v4 removeObserver:self->_observer forKeyPath:self->_keyPath context:self->_callbackContextToken];
+    [(AVWeakObservable *)referencedObject removeObserver:self->_observer forKeyPath:self->_keyPath context:self->_callbackContextToken];
     callbackContextRegistry = self->_callbackContextRegistry;
     callbackContextToken = self->_callbackContextToken;
 

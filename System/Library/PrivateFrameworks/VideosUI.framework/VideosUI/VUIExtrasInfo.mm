@@ -1,24 +1,24 @@
 @interface VUIExtrasInfo
-+ (BOOL)isValidExtrasInfo:(id)a3;
++ (BOOL)isValidExtrasInfo:(id)info;
 - (NSString)extrasURLString;
 - (NSString)previewURLString;
-- (VUIExtrasInfo)initWithDictionary:(id)a3;
-- (VUIExtrasInfo)initWithMediaItem:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_initializeWithMPMediaItem:(id)a3;
-- (void)setActionParams:(id)a3;
+- (VUIExtrasInfo)initWithDictionary:(id)dictionary;
+- (VUIExtrasInfo)initWithMediaItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_initializeWithMPMediaItem:(id)item;
+- (void)setActionParams:(id)params;
 @end
 
 @implementation VUIExtrasInfo
 
-- (VUIExtrasInfo)initWithDictionary:(id)a3
+- (VUIExtrasInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = VUIExtrasInfo;
   v5 = [(VUIExtrasInfo *)&v10 init];
   v6 = v5;
-  if (!v4)
+  if (!dictionaryCopy)
   {
     goto LABEL_5;
   }
@@ -32,7 +32,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v4;
+    v7 = dictionaryCopy;
     extrasDict = v6->_extrasDict;
     v6->_extrasDict = v7;
   }
@@ -49,22 +49,22 @@ LABEL_7:
   return v6;
 }
 
-- (VUIExtrasInfo)initWithMediaItem:(id)a3
+- (VUIExtrasInfo)initWithMediaItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = VUIExtrasInfo;
   v5 = [(VUIExtrasInfo *)&v8 init];
   if (v5)
   {
-    v6 = [v4 mediaPlayerMediaItem];
-    [(VUIExtrasInfo *)v5 _initializeWithMPMediaItem:v6];
+    mediaPlayerMediaItem = [itemCopy mediaPlayerMediaItem];
+    [(VUIExtrasInfo *)v5 _initializeWithMPMediaItem:mediaPlayerMediaItem];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [VUIExtrasInfo alloc];
   extrasDict = self->_extrasDict;
@@ -126,33 +126,33 @@ LABEL_7:
   return v4;
 }
 
-- (void)setActionParams:(id)a3
+- (void)setActionParams:(id)params
 {
   v4 = MEMORY[0x1E695DF90];
   extrasDict = self->_extrasDict;
-  v6 = a3;
+  paramsCopy = params;
   v9 = [v4 dictionaryWithDictionary:extrasDict];
-  [v9 setValue:v6 forKey:@"buyParams"];
+  [v9 setValue:paramsCopy forKey:@"buyParams"];
 
   v7 = [v9 copy];
   v8 = self->_extrasDict;
   self->_extrasDict = v7;
 }
 
-+ (BOOL)isValidExtrasInfo:(id)a3
++ (BOOL)isValidExtrasInfo:(id)info
 {
-  v3 = [a3 extrasURLString];
-  v4 = [v3 length] != 0;
+  extrasURLString = [info extrasURLString];
+  v4 = [extrasURLString length] != 0;
 
   return v4;
 }
 
-- (void)_initializeWithMPMediaItem:(id)a3
+- (void)_initializeWithMPMediaItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v25 = v4;
+    v25 = itemCopy;
     v5 = objc_opt_new();
     v6 = [v25 valueForProperty:*MEMORY[0x1E696FB50]];
     if ([v6 length])
@@ -164,8 +164,8 @@ LABEL_7:
         v9 = v8;
         if (v8)
         {
-          v10 = [v8 queryItems];
-          v11 = [v10 mutableCopy];
+          queryItems = [v8 queryItems];
+          v11 = [queryItems mutableCopy];
 
           if (!v11)
           {
@@ -178,11 +178,11 @@ LABEL_7:
             [v11 addObject:v12];
             [v9 setQueryItems:v11];
             v13 = [v9 URL];
-            v14 = [v13 absoluteString];
+            absoluteString = [v13 absoluteString];
 
-            if ([v14 length])
+            if ([absoluteString length])
             {
-              v15 = v14;
+              v15 = absoluteString;
 
               v6 = v15;
             }
@@ -225,7 +225,7 @@ LABEL_24:
         extrasDict = self->_extrasDict;
         self->_extrasDict = v23;
 
-        v4 = v25;
+        itemCopy = v25;
         goto LABEL_25;
       }
 

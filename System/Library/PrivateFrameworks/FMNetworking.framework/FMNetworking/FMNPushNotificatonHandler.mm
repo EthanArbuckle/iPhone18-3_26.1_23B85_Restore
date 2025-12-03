@@ -1,8 +1,8 @@
 @interface FMNPushNotificatonHandler
 - (_TtC12FMNetworking25FMNPushNotificatonHandler)init;
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
 - (void)dealloc;
 @end
 
@@ -14,13 +14,13 @@
   if (v3)
   {
     *(&self->super.isa + OBJC_IVAR____TtC12FMNetworking25FMNPushNotificatonHandler__apsConnection) = 0;
-    v4 = self;
+    selfCopy = self;
     [v3 shutdown];
   }
 
   else
   {
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6.receiver = self;
@@ -35,21 +35,21 @@
   return result;
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  if (a4)
+  if (token)
   {
-    v6 = a3;
-    v7 = self;
-    v8 = a4;
+    connectionCopy = connection;
+    selfCopy = self;
+    tokenCopy = token;
     v9 = sub_24A8BB024();
     v11 = v10;
   }
 
   else
   {
-    v12 = a3;
-    v13 = self;
+    connectionCopy2 = connection;
+    selfCopy2 = self;
     v9 = 0;
     v11 = 0xF000000000000000;
   }
@@ -58,20 +58,20 @@
   sub_24A88C814(v9, v11);
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v8 = a4;
-  if (a4)
+  tokenCopy = token;
+  if (token)
   {
-    v10 = a3;
-    v11 = a5;
-    v12 = a6;
-    v13 = self;
-    v14 = v8;
-    v8 = sub_24A8BB024();
+    connectionCopy = connection;
+    topicCopy = topic;
+    identifierCopy = identifier;
+    selfCopy = self;
+    v14 = tokenCopy;
+    tokenCopy = sub_24A8BB024();
     v16 = v15;
 
-    if (a5)
+    if (topic)
     {
       goto LABEL_3;
     }
@@ -79,17 +79,17 @@
 
   else
   {
-    v17 = a3;
-    v18 = a5;
-    v19 = a6;
-    v20 = self;
+    connectionCopy2 = connection;
+    topicCopy2 = topic;
+    identifierCopy2 = identifier;
+    selfCopy2 = self;
     v16 = 0xF000000000000000;
-    if (a5)
+    if (topic)
     {
 LABEL_3:
       sub_24A8BB254();
 
-      if (!a6)
+      if (!identifier)
       {
         goto LABEL_7;
       }
@@ -98,7 +98,7 @@ LABEL_3:
     }
   }
 
-  if (a6)
+  if (identifier)
   {
 LABEL_4:
     sub_24A8BB254();
@@ -107,10 +107,10 @@ LABEL_4:
 LABEL_7:
   sub_24A8B62F0();
 
-  sub_24A88C814(v8, v16);
+  sub_24A88C814(tokenCopy, v16);
 }
 
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EF793A0, &unk_24A8BCD90);
   v6 = swift_allocObject();
@@ -122,7 +122,7 @@ LABEL_7:
   *(v6 + 32) = v8;
   *(v6 + 40) = v7;
   sub_24A882CB8(0, &qword_2814AB000, 0x277D86200);
-  v10 = self;
+  selfCopy = self;
 
   v9 = sub_24A8BB464();
   sub_24A8BB3D4();

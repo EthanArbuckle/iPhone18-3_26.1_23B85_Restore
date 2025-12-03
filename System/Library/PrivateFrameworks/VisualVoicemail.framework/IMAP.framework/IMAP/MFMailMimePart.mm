@@ -1,5 +1,5 @@
 @interface MFMailMimePart
-+ (BOOL)isRecognizedClassForContent:(id)a3;
++ (BOOL)isRecognizedClassForContent:(id)content;
 - (BOOL)_shouldContinueDecodingProcess;
 - (id)decodeMessagePartial;
 - (id)decodeMessageRfc822;
@@ -8,8 +8,8 @@
 - (id)decodeTextHtml;
 - (id)decodeTextPlain;
 - (id)decodeTextRichtext;
-- (id)fileWrapperForDecodedObject:(id)a3 withFileData:(id *)a4;
-- (void)configureFileWrapper:(id)a3;
+- (id)fileWrapperForDecodedObject:(id)object withFileData:(id *)data;
+- (void)configureFileWrapper:(id)wrapper;
 @end
 
 @implementation MFMailMimePart
@@ -17,13 +17,13 @@
 - (id)decodeTextRichtext
 {
   v3 = _MFDecodeText();
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  v5 = [v4 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v6 = [v5 objectForKey:*MEMORY[0x277D24E88]];
-  v7 = [v6 BOOLValue];
+  v6 = [threadDictionary objectForKey:*MEMORY[0x277D24E88]];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [MEMORY[0x277CCACA8] mf_stringFromMimeRichTextString:v3 asHTML:v7];
+  v8 = [MEMORY[0x277CCACA8] mf_stringFromMimeRichTextString:v3 asHTML:bOOLValue];
   v9 = [MFWebMessageDocument alloc];
   v10 = [v8 dataUsingEncoding:4];
   v11 = [(MFWebMessageDocument *)v9 initWithMimePart:self htmlData:v10 encoding:134217984];
@@ -34,13 +34,13 @@
 - (id)decodeTextEnriched
 {
   v3 = _MFDecodeText();
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  v5 = [v4 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v6 = [v5 objectForKey:*MEMORY[0x277D24E88]];
-  v7 = [v6 BOOLValue];
+  v6 = [threadDictionary objectForKey:*MEMORY[0x277D24E88]];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [MEMORY[0x277CCACA8] mf_stringFromMimeEnrichedString:v3 asHTML:v7];
+  v8 = [MEMORY[0x277CCACA8] mf_stringFromMimeEnrichedString:v3 asHTML:bOOLValue];
   v9 = [MFWebMessageDocument alloc];
   v10 = [v8 dataUsingEncoding:4];
   v11 = [(MFWebMessageDocument *)v9 initWithMimePart:self htmlData:v10 encoding:134217984];
@@ -50,22 +50,22 @@
 
 - (id)decodeTextHtml
 {
-  v3 = [MEMORY[0x277CCACC8] currentThread];
-  v4 = [v3 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
   v5 = _MFOffsetFromThreadDictionary();
-  v6 = [v4 objectForKey:*MEMORY[0x277D24E98]];
-  v7 = [v6 BOOLValue];
+  v6 = [threadDictionary objectForKey:*MEMORY[0x277D24E98]];
+  bOOLValue = [v6 BOOLValue];
 
   v14 = 0;
   v13 = 0;
-  v8 = [(MFMailMimePart *)self copyBodyDataToOffset:v5 resultOffset:&v14 downloadIfNecessary:v7 isComplete:&v13];
+  v8 = [(MFMailMimePart *)self copyBodyDataToOffset:v5 resultOffset:&v14 downloadIfNecessary:bOOLValue isComplete:&v13];
   v9 = [objc_allocWithZone(MFWebMessageDocument) initWithMimePart:self htmlData:v8 encoding:{-[MFMailMimePart textEncoding](self, "textEncoding")}];
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v14];
-  [v4 setObject:v10 forKey:*MEMORY[0x277D24EB0]];
+  [threadDictionary setObject:v10 forKey:*MEMORY[0x277D24EB0]];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:v13];
-  [v4 setObject:v11 forKey:*MEMORY[0x277D24EA0]];
+  [threadDictionary setObject:v11 forKey:*MEMORY[0x277D24EA0]];
 
   return v9;
 }
@@ -74,15 +74,15 @@
 {
   v15 = 0;
   v3 = _MFCopyDecodeText();
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  v5 = [v4 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D24E88]];
-  v7 = [v6 BOOLValue];
+  v6 = [threadDictionary objectForKeyedSubscript:*MEMORY[0x277D24E88]];
+  bOOLValue = [v6 BOOLValue];
 
   v14 = 0;
   v8 = _formatFlowedOptions(self);
-  if (v7)
+  if (bOOLValue)
   {
     v9 = 12;
   }
@@ -102,60 +102,60 @@
 
 - (id)decodeMultipartAppledouble
 {
-  v2 = [(MFMailMimePart *)self firstChildPart];
-  v3 = [v2 nextSiblingPart];
-  v4 = [v3 fileWrapperForcingDownload:0];
+  firstChildPart = [(MFMailMimePart *)self firstChildPart];
+  nextSiblingPart = [firstChildPart nextSiblingPart];
+  v4 = [nextSiblingPart fileWrapperForcingDownload:0];
 
   return v4;
 }
 
-- (id)fileWrapperForDecodedObject:(id)a3 withFileData:(id *)a4
+- (id)fileWrapperForDecodedObject:(id)object withFileData:(id *)data
 {
-  v6 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 fileWrapper];
+    fileWrapper = [objectCopy fileWrapper];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = MFMailMimePart;
-    v7 = [(MFMailMimePart *)&v10 fileWrapperForDecodedObject:v6 withFileData:a4];
+    fileWrapper = [(MFMailMimePart *)&v10 fileWrapperForDecodedObject:objectCopy withFileData:data];
   }
 
-  v8 = v7;
+  v8 = fileWrapper;
 
   return v8;
 }
 
-- (void)configureFileWrapper:(id)a3
+- (void)configureFileWrapper:(id)wrapper
 {
-  v4 = a3;
+  wrapperCopy = wrapper;
   v22.receiver = self;
   v22.super_class = MFMailMimePart;
-  [(MFMailMimePart *)&v22 configureFileWrapper:v4];
-  if (v4)
+  [(MFMailMimePart *)&v22 configureFileWrapper:wrapperCopy];
+  if (wrapperCopy)
   {
     v5 = [(MFMailMimePart *)self bodyParameterForKey:*MEMORY[0x277D24E78]];
     if (v5)
     {
       v6 = v5;
 LABEL_4:
-      [v4 setURL:v6];
+      [wrapperCopy setURL:v6];
 
       goto LABEL_5;
     }
 
-    v18 = [(MFMailMimePart *)self mimeBody];
-    v19 = [v18 message];
-    v20 = [v19 URL];
+    mimeBody = [(MFMailMimePart *)self mimeBody];
+    message = [mimeBody message];
+    v20 = [message URL];
 
     if (v20)
     {
-      v21 = [(MFMailMimePart *)self partNumber];
-      v6 = [v20 stringByAppendingFormat:@"&aid=%@", v21];
+      partNumber = [(MFMailMimePart *)self partNumber];
+      v6 = [v20 stringByAppendingFormat:@"&aid=%@", partNumber];
 
       if (v6)
       {
@@ -165,37 +165,37 @@ LABEL_4:
   }
 
 LABEL_5:
-  if (([v4 isPlaceholder] & 1) == 0)
+  if (([wrapperCopy isPlaceholder] & 1) == 0)
   {
-    v7 = [(MFMailMimePart *)self mimeBody];
-    v8 = [v7 message];
+    mimeBody2 = [(MFMailMimePart *)self mimeBody];
+    message2 = [mimeBody2 message];
 
     if (objc_opt_respondsToSelector())
     {
-      v9 = [MEMORY[0x277CCAA00] defaultManager];
-      v10 = [v8 performSelector:sel__attachmentStorageLocation];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v10 = [message2 performSelector:sel__attachmentStorageLocation];
       if (v10)
       {
         v11 = v10;
-        v12 = [(MFMailMimePart *)self partNumber];
-        v13 = [v11 stringByAppendingPathComponent:v12];
+        partNumber2 = [(MFMailMimePart *)self partNumber];
+        v13 = [v11 stringByAppendingPathComponent:partNumber2];
 
-        if (([v9 fileExistsAtPath:v13] & 1) == 0)
+        if (([defaultManager fileExistsAtPath:v13] & 1) == 0)
         {
-          [v9 createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:0];
+          [defaultManager createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:0];
         }
 
-        v14 = [v4 preferredFilename];
-        if (v14)
+        preferredFilename = [wrapperCopy preferredFilename];
+        if (preferredFilename)
         {
-          v15 = [v13 stringByAppendingPathComponent:v14];
-          if (([v9 fileExistsAtPath:v15] & 1) == 0)
+          v15 = [v13 stringByAppendingPathComponent:preferredFilename];
+          if (([defaultManager fileExistsAtPath:v15] & 1) == 0)
           {
-            v16 = [v4 regularFileContents];
-            v17 = [v4 fileAttributes];
-            [v9 createFileAtPath:v15 contents:v16 attributes:v17];
+            regularFileContents = [wrapperCopy regularFileContents];
+            fileAttributes = [wrapperCopy fileAttributes];
+            [defaultManager createFileAtPath:v15 contents:regularFileContents attributes:fileAttributes];
 
-            [v4 setPath:v15];
+            [wrapperCopy setPath:v15];
           }
         }
       }
@@ -206,15 +206,15 @@ LABEL_5:
 - (BOOL)_shouldContinueDecodingProcess
 {
   v2 = +[MFActivityMonitor currentMonitor];
-  v3 = [v2 error];
-  v4 = v3 == 0;
+  error = [v2 error];
+  v4 = error == 0;
 
   return v4;
 }
 
-+ (BOOL)isRecognizedClassForContent:(id)a3
++ (BOOL)isRecognizedClassForContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -223,9 +223,9 @@ LABEL_5:
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___MFMailMimePart;
-    v5 = objc_msgSendSuper2(&v7, sel_isRecognizedClassForContent_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_isRecognizedClassForContent_, contentCopy);
   }
 
   return v5;
@@ -233,54 +233,54 @@ LABEL_5:
 
 - (id)decodeMessageRfc822
 {
-  v3 = [(MFMailMimePart *)self bodyData];
-  if (v3)
+  bodyData = [(MFMailMimePart *)self bodyData];
+  if (bodyData)
   {
-    v4 = [(MFMessage *)MFMailMessage messageWithRFC822Data:v3 withParentPart:self];
-    v5 = [(MFMailMimePart *)self mimeBody];
-    v6 = v5;
-    if (v5)
+    v4 = [(MFMessage *)MFMailMessage messageWithRFC822Data:bodyData withParentPart:self];
+    mimeBody = [(MFMailMimePart *)self mimeBody];
+    v6 = mimeBody;
+    if (mimeBody)
     {
-      v7 = [v5 message];
-      v8 = [v7 messageURL];
+      message = [mimeBody message];
+      messageURL = [message messageURL];
 
-      [v4 setMessageURL:v8];
+      [v4 setMessageURL:messageURL];
       v9 = [MFRFC822AttachmentDataProvider alloc];
-      v10 = [v6 topLevelPart];
-      v11 = [(MFRFC822AttachmentDataProvider *)v9 initWithMessageData:v3 parentPart:v10];
+      topLevelPart = [v6 topLevelPart];
+      v11 = [(MFRFC822AttachmentDataProvider *)v9 initWithMessageData:bodyData parentPart:topLevelPart];
 
       v12 = +[MFAttachmentManager allManagers];
-      v13 = [v12 anyObject];
-      [v13 addProvider:v11 forBaseURL:v8];
+      anyObject = [v12 anyObject];
+      [anyObject addProvider:v11 forBaseURL:messageURL];
     }
 
     v22 = 0;
-    v14 = [v4 messageBody];
+    messageBody = [v4 messageBody];
     if ([(MFMailMimePart *)self isGenerated])
     {
-      v15 = [v14 contentToOffset:0x7FFFFFFFFFFFFFFFLL resultOffset:0 asHTML:1 isComplete:&v22];
+      v15 = [messageBody contentToOffset:0x7FFFFFFFFFFFFFFFLL resultOffset:0 asHTML:1 isComplete:&v22];
     }
 
     else
     {
-      v15 = v3;
+      v15 = bodyData;
       v22 = 1;
     }
 
-    v16 = [MEMORY[0x277CCACC8] currentThread];
-    v17 = [v16 threadDictionary];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary = [currentThread threadDictionary];
 
     v18 = [MEMORY[0x277CCABB0] numberWithBool:v22];
-    [v17 setObject:v18 forKey:*MEMORY[0x277D24EA0]];
+    [threadDictionary setObject:v18 forKey:*MEMORY[0x277D24EA0]];
 
-    if (v14)
+    if (messageBody)
     {
-      v19 = [v17 objectForKey:*MEMORY[0x277D24E90]];
-      v20 = [v19 BOOLValue];
+      v19 = [threadDictionary objectForKey:*MEMORY[0x277D24E90]];
+      bOOLValue = [v19 BOOLValue];
 
-      if (v20)
+      if (bOOLValue)
       {
-        [v17 setObject:v14 forKey:*MEMORY[0x277D24EA8]];
+        [threadDictionary setObject:messageBody forKey:*MEMORY[0x277D24EA8]];
       }
     }
   }

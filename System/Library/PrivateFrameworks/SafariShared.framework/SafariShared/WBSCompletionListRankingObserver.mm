@@ -2,9 +2,9 @@
 - (SFRankingFeedback)rankingFeedback;
 - (WBSCompletionListRankingObserverDelegate)delegate;
 - (id)_createFeedbackGenerator;
-- (unint64_t)completionListRankingObserverFeedbackGenerator:(id)a3 frequentlyVisitedSitesIndexOfItem:(id)a4 hidingItem:(id)a5;
+- (unint64_t)completionListRankingObserverFeedbackGenerator:(id)generator frequentlyVisitedSitesIndexOfItem:(id)item hidingItem:(id)hidingItem;
 - (void)didBeginRanking;
-- (void)didBeginSectionWithBundleIdentifier:(id)a3;
+- (void)didBeginSectionWithBundleIdentifier:(id)identifier;
 - (void)didEndRanking;
 @end
 
@@ -12,9 +12,9 @@
 
 - (void)didBeginRanking
 {
-  v3 = [(WBSCompletionListRankingObserver *)self _createFeedbackGenerator];
+  _createFeedbackGenerator = [(WBSCompletionListRankingObserver *)self _createFeedbackGenerator];
   feedbackGenerator = self->_feedbackGenerator;
-  self->_feedbackGenerator = v3;
+  self->_feedbackGenerator = _createFeedbackGenerator;
 
   if (objc_opt_respondsToSelector())
   {
@@ -34,12 +34,12 @@
   }
 }
 
-- (void)didBeginSectionWithBundleIdentifier:(id)a3
+- (void)didBeginSectionWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (objc_opt_respondsToSelector())
   {
-    [(_CompletionListRankingObserverFeedbackGenerator *)self->_feedbackGenerator didBeginSectionWithBundleIdentifier:v4];
+    [(_CompletionListRankingObserverFeedbackGenerator *)self->_feedbackGenerator didBeginSectionWithBundleIdentifier:identifierCopy];
   }
 }
 
@@ -48,15 +48,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(_CompletionListRankingObserverFeedbackGenerator *)self->_feedbackGenerator rankingFeedback];
+    rankingFeedback = [(_CompletionListRankingObserverFeedbackGenerator *)self->_feedbackGenerator rankingFeedback];
   }
 
   else
   {
-    v3 = 0;
+    rankingFeedback = 0;
   }
 
-  return v3;
+  return rankingFeedback;
 }
 
 - (id)_createFeedbackGenerator
@@ -70,14 +70,14 @@
   return v3;
 }
 
-- (unint64_t)completionListRankingObserverFeedbackGenerator:(id)a3 frequentlyVisitedSitesIndexOfItem:(id)a4 hidingItem:(id)a5
+- (unint64_t)completionListRankingObserverFeedbackGenerator:(id)generator frequentlyVisitedSitesIndexOfItem:(id)item hidingItem:(id)hidingItem
 {
-  v7 = a4;
-  v8 = a5;
+  itemCopy = item;
+  hidingItemCopy = hidingItem;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v10 = [WeakRetained completionListRankingObserver:self frequentlyVisitedSitesIndexOfItem:v7 hidingItem:v8];
+    v10 = [WeakRetained completionListRankingObserver:self frequentlyVisitedSitesIndexOfItem:itemCopy hidingItem:hidingItemCopy];
   }
 
   else

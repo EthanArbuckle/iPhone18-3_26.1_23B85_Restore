@@ -1,18 +1,18 @@
 @interface BatteryStatusView
 - (BOOL)isProductOfDifferentColors;
-- (_TtC19HeadphoneSettingsUI17BatteryStatusView)initWithFrame:(CGRect)a3 device:(id)a4 darkMode:(BOOL)a5;
+- (_TtC19HeadphoneSettingsUI17BatteryStatusView)initWithFrame:(CGRect)frame device:(id)device darkMode:(BOOL)mode;
 - (id)batteryIconViewInstance;
 - (id)caseImage;
 - (id)deviceImage;
-- (id)getAssetsDictionary:(unsigned int)a3;
-- (id)getDeviceCaseIconName:(unsigned int)a3;
+- (id)getAssetsDictionary:(unsigned int)dictionary;
+- (id)getDeviceCaseIconName:(unsigned int)name;
 - (id)getProductIDString;
 - (id)leftBudImage;
 - (id)rightBudImage;
-- (unsigned)bestDeviceColor:(unsigned int)a3 productID:(unsigned int)a4;
+- (unsigned)bestDeviceColor:(unsigned int)color productID:(unsigned int)d;
 - (unsigned)defaultFiltersID;
 - (void)setupViews;
-- (void)startListeningModernWithDevice:(id)a3;
+- (void)startListeningModernWithDevice:(id)device;
 @end
 
 @implementation BatteryStatusView
@@ -26,13 +26,13 @@
   return v4;
 }
 
-- (void)startListeningModernWithDevice:(id)a3
+- (void)startListeningModernWithDevice:(id)device
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](device);
   MEMORY[0x1E69E5928](self);
-  sub_1AC230A18(a3);
+  sub_1AC230A18(device);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](device);
 }
 
 - (void)setupViews
@@ -42,14 +42,14 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (_TtC19HeadphoneSettingsUI17BatteryStatusView)initWithFrame:(CGRect)a3 device:(id)a4 darkMode:(BOOL)a5
+- (_TtC19HeadphoneSettingsUI17BatteryStatusView)initWithFrame:(CGRect)frame device:(id)device darkMode:(BOOL)mode
 {
-  MEMORY[0x1E69E5928](a4);
+  MEMORY[0x1E69E5928](device);
   v5 = sub_1AC30910C();
   sub_1AC23355C(v5);
 }
 
-- (id)getDeviceCaseIconName:(unsigned int)a3
+- (id)getDeviceCaseIconName:(unsigned int)name
 {
   MEMORY[0x1E69E5928](self);
   sub_1AC23388C();
@@ -59,7 +59,7 @@
   return v5;
 }
 
-- (id)getAssetsDictionary:(unsigned int)a3
+- (id)getAssetsDictionary:(unsigned int)dictionary
 {
   MEMORY[0x1E69E5928](self);
   v5 = sub_1AC233974();
@@ -94,10 +94,10 @@
   return v4;
 }
 
-- (unsigned)bestDeviceColor:(unsigned int)a3 productID:(unsigned int)a4
+- (unsigned)bestDeviceColor:(unsigned int)color productID:(unsigned int)d
 {
   MEMORY[0x1E69E5928](self);
-  v7 = sub_1AC233C20(a3);
+  v7 = sub_1AC233C20(color);
   MEMORY[0x1E69E5920](self);
   return v7;
 }

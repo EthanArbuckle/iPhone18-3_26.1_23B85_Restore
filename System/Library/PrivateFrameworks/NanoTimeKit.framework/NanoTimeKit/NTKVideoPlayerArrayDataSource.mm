@@ -1,25 +1,25 @@
 @interface NTKVideoPlayerArrayDataSource
-+ (id)dataSourceForDevice:(id)a3 withPosterImage:(id)a4 order:(unint64_t)a5 andListings:(id)a6;
-+ (id)dataSourceForDevice:(id)a3 withPosterImage:(id)a4 order:(unint64_t)a5 endBehavior:(unint64_t)a6 andFilenames:(id)a7;
++ (id)dataSourceForDevice:(id)device withPosterImage:(id)image order:(unint64_t)order andListings:(id)listings;
++ (id)dataSourceForDevice:(id)device withPosterImage:(id)image order:(unint64_t)order endBehavior:(unint64_t)behavior andFilenames:(id)filenames;
 - (id)currentListing;
-- (id)initForDevice:(id)a3 withListings:(id)a4;
-- (void)advanceToNextListing:(unint64_t)a3;
+- (id)initForDevice:(id)device withListings:(id)listings;
+- (void)advanceToNextListing:(unint64_t)listing;
 @end
 
 @implementation NTKVideoPlayerArrayDataSource
 
-+ (id)dataSourceForDevice:(id)a3 withPosterImage:(id)a4 order:(unint64_t)a5 endBehavior:(unint64_t)a6 andFilenames:(id)a7
++ (id)dataSourceForDevice:(id)device withPosterImage:(id)image order:(unint64_t)order endBehavior:(unint64_t)behavior andFilenames:(id)filenames
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a7;
-  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v12, "count")}];
+  deviceCopy = device;
+  imageCopy = image;
+  filenamesCopy = filenames;
+  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(filenamesCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v14 = v12;
+  v14 = filenamesCopy;
   v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v15)
   {
@@ -34,8 +34,8 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [NTKVideoPlayerListing listingForDevice:v10 withFilename:*(*(&v23 + 1) + 8 * i)];
-        [v19 setEndBehavior:a6];
+        v19 = [NTKVideoPlayerListing listingForDevice:deviceCopy withFilename:*(*(&v23 + 1) + 8 * i)];
+        [v19 setEndBehavior:behavior];
         [v13 addObject:v19];
       }
 
@@ -45,27 +45,27 @@
     while (v16);
   }
 
-  v20 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:v10 withPosterImage:v11 order:a5 andListings:v13];
+  v20 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:deviceCopy withPosterImage:imageCopy order:order andListings:v13];
 
   return v20;
 }
 
-+ (id)dataSourceForDevice:(id)a3 withPosterImage:(id)a4 order:(unint64_t)a5 andListings:(id)a6
++ (id)dataSourceForDevice:(id)device withPosterImage:(id)image order:(unint64_t)order andListings:(id)listings
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[NTKVideoPlayerArrayDataSource alloc] initForDevice:v11 withListings:v9];
+  listingsCopy = listings;
+  imageCopy = image;
+  deviceCopy = device;
+  v12 = [[NTKVideoPlayerArrayDataSource alloc] initForDevice:deviceCopy withListings:listingsCopy];
 
-  [v12 setPosterImage:v10];
-  [v12 setOrder:a5];
+  [v12 setPosterImage:imageCopy];
+  [v12 setOrder:order];
 
   return v12;
 }
 
-- (id)initForDevice:(id)a3 withListings:(id)a4
+- (id)initForDevice:(id)device withListings:(id)listings
 {
-  v6 = a4;
+  listingsCopy = listings;
   v10.receiver = self;
   v10.super_class = NTKVideoPlayerArrayDataSource;
   v7 = [(NTKVideoPlayerDataSource *)&v10 init];
@@ -73,14 +73,14 @@
   if (v7)
   {
     v7->_currentListingIndex = -1;
-    objc_storeStrong(&v7->_listings, a4);
+    objc_storeStrong(&v7->_listings, listings);
     v8->_order = 0;
   }
 
   return v8;
 }
 
-- (void)advanceToNextListing:(unint64_t)a3
+- (void)advanceToNextListing:(unint64_t)listing
 {
   order = self->_order;
   if (order == 1)

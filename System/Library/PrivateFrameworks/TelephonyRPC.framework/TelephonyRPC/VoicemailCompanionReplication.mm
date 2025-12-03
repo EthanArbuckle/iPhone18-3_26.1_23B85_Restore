@@ -1,35 +1,35 @@
 @interface VoicemailCompanionReplication
 - (BOOL)_isSyncing;
-- (BOOL)service:(id)a3 startSession:(id)a4 error:(id *)a5;
-- (BOOL)syncSession:(id)a3 resetDataStoreWithError:(id *)a4;
+- (BOOL)service:(id)service startSession:(id)session error:(id *)error;
+- (BOOL)syncSession:(id)session resetDataStoreWithError:(id *)error;
 - (NSMutableArray)remoteVoicemails;
 - (VoicemailCompanionReplication)init;
-- (id)changesBetween:(id)a3 and:(id)a4;
+- (id)changesBetween:(id)between and:(id)and;
 - (id)voicemails;
 - (int64_t)currentMigrationVersion;
-- (int64_t)indexOfVoicemail:(id)a3 inArray:(id)a4;
-- (void)_handleVoicemailsChangedNotification:(id)a3;
-- (void)_retrySyncSession:(id)a3;
+- (int64_t)indexOfVoicemail:(id)voicemail inArray:(id)array;
+- (void)_handleVoicemailsChangedNotification:(id)notification;
+- (void)_retrySyncSession:(id)session;
 - (void)_syncRestrictionUpdated;
 - (void)dealloc;
 - (void)handleSIGTERM;
-- (void)initialSyncStateObserver:(id)a3 syncDidCompleteForPairingIdentifier:(id)a4;
+- (void)initialSyncStateObserver:(id)observer syncDidCompleteForPairingIdentifier:(id)identifier;
 - (void)remoteVoicemails;
-- (void)removeFromRemoteVoicemails:(id)a3;
-- (void)service:(id)a3 encounteredError:(id)a4 context:(id)a5;
-- (void)service:(id)a3 sessionEnded:(id)a4 error:(id)a5;
-- (void)serviceDidPairDevice:(id)a3;
-- (void)setCurrentMigrationVersion:(int64_t)a3;
-- (void)setRemoteVoicemails:(id)a3;
-- (void)setSyncing:(BOOL)a3;
-- (void)sync:(BOOL)a3 force:(BOOL)a4;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4;
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3;
-- (void)syncSession:(id)a3 applyChanges:(id)a4 completion:(id)a5;
-- (void)syncSession:(id)a3 didEndWithError:(id)a4;
-- (void)syncSessionManager:(id)a3 reportProgress:(double)a4;
-- (void)syncSessionManagerDidCompleteSending:(id)a3;
+- (void)removeFromRemoteVoicemails:(id)voicemails;
+- (void)service:(id)service encounteredError:(id)error context:(id)context;
+- (void)service:(id)service sessionEnded:(id)ended error:(id)error;
+- (void)serviceDidPairDevice:(id)device;
+- (void)setCurrentMigrationVersion:(int64_t)version;
+- (void)setRemoteVoicemails:(id)voicemails;
+- (void)setSyncing:(BOOL)syncing;
+- (void)sync:(BOOL)sync force:(BOOL)force;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session;
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction;
+- (void)syncSession:(id)session applyChanges:(id)changes completion:(id)completion;
+- (void)syncSession:(id)session didEndWithError:(id)error;
+- (void)syncSessionManager:(id)manager reportProgress:(double)progress;
+- (void)syncSessionManagerDidCompleteSending:(id)sending;
 @end
 
 @implementation VoicemailCompanionReplication
@@ -115,9 +115,9 @@
       }
     }
 
-    v30 = [MEMORY[0x277CCAB98] defaultCenter];
-    v31 = [MEMORY[0x277CCAB88] VoicemailManager_ObjC_VoicemailsChangedNotification];
-    [v30 addObserver:v4 selector:sel__handleVoicemailsChangedNotification_ name:v31 object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    voicemailManager_ObjC_VoicemailsChangedNotification = [MEMORY[0x277CCAB88] VoicemailManager_ObjC_VoicemailsChangedNotification];
+    [defaultCenter addObserver:v4 selector:sel__handleVoicemailsChangedNotification_ name:voicemailManager_ObjC_VoicemailsChangedNotification object:0];
 
     v32 = dispatch_get_global_queue(21, 0);
     block[0] = MEMORY[0x277D85DD0];
@@ -206,8 +206,8 @@ void __37__VoicemailCompanionReplication_init__block_invoke_2(uint64_t a1, xpc_o
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   initialSyncCoordinator = self->_initialSyncCoordinator;
   self->_initialSyncCoordinator = 0;
@@ -217,10 +217,10 @@ void __37__VoicemailCompanionReplication_init__block_invoke_2(uint64_t a1, xpc_o
   [(VoicemailCompanionReplication *)&v5 dealloc];
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  sessionCopy = session;
   v6 = nph_general_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -229,29 +229,29 @@ void __37__VoicemailCompanionReplication_init__block_invoke_2(uint64_t a1, xpc_o
     _os_log_impl(&dword_26D269000, v6, OS_LOG_TYPE_DEFAULT, "%s", &v9, 0xCu);
   }
 
-  v7 = [v5 syncSessionType];
-  [(VoicemailCompanionReplication *)self sync:v7 == 0 force:1];
+  syncSessionType = [sessionCopy syncSessionType];
+  [(VoicemailCompanionReplication *)self sync:syncSessionType == 0 force:1];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  sessionCopy = session;
   v5 = nph_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[VoicemailCompanionReplication syncCoordinator:didInvalidateSyncSession:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = sessionCopy;
     _os_log_impl(&dword_26D269000, v5, OS_LOG_TYPE_DEFAULT, "%s: initialSyncSession: %@", &v7, 0x16u);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = nph_general_log();
@@ -266,17 +266,17 @@ void __37__VoicemailCompanionReplication_init__block_invoke_2(uint64_t a1, xpc_o
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initialSyncStateObserver:(id)a3 syncDidCompleteForPairingIdentifier:(id)a4
+- (void)initialSyncStateObserver:(id)observer syncDidCompleteForPairingIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = nph_general_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[VoicemailCompanionReplication initialSyncStateObserver:syncDidCompleteForPairingIdentifier:]";
     v10 = 2112;
-    v11 = v5;
+    v11 = identifierCopy;
     _os_log_impl(&dword_26D269000, v6, OS_LOG_TYPE_DEFAULT, "%s: %@", &v8, 0x16u);
   }
 
@@ -295,14 +295,14 @@ void __37__VoicemailCompanionReplication_init__block_invoke_2(uint64_t a1, xpc_o
     _os_log_impl(&dword_26D269000, v3, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v4 = [(VoicemailCompanionReplication *)self initialSyncStateObserver];
-  v5 = [(NPSDomainAccessor *)self->_domainAccessor pairingID];
+  initialSyncStateObserver = [(VoicemailCompanionReplication *)self initialSyncStateObserver];
+  pairingID = [(NPSDomainAccessor *)self->_domainAccessor pairingID];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__VoicemailCompanionReplication__syncRestrictionUpdated__block_invoke;
   v7[3] = &unk_279D96210;
   v7[4] = self;
-  [v4 requestSyncStateForPairingIdentifier:v5 completion:v7];
+  [initialSyncStateObserver requestSyncStateForPairingIdentifier:pairingID completion:v7];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -355,11 +355,11 @@ void __56__VoicemailCompanionReplication__syncRestrictionUpdated__block_invoke(u
     _os_log_impl(&dword_26D269000, v3, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v4 = [(VoicemailCompanionReplication *)self syncSessionManager];
-  [v4 setCancelled:1];
+  syncSessionManager = [(VoicemailCompanionReplication *)self syncSessionManager];
+  [syncSessionManager setCancelled:1];
 
-  v5 = [(VoicemailCompanionReplication *)self notSyncingCondition];
-  [v5 lock];
+  notSyncingCondition = [(VoicemailCompanionReplication *)self notSyncingCondition];
+  [notSyncingCondition lock];
 
   if ([(VoicemailCompanionReplication *)self _isSyncing])
   {
@@ -373,8 +373,8 @@ void __56__VoicemailCompanionReplication__syncRestrictionUpdated__block_invoke(u
         _os_log_impl(&dword_26D269000, v6, OS_LOG_TYPE_DEFAULT, "%s - sync in progress; waiting for it to cancel out", buf, 0xCu);
       }
 
-      v7 = [(VoicemailCompanionReplication *)self notSyncingCondition];
-      [v7 wait];
+      notSyncingCondition2 = [(VoicemailCompanionReplication *)self notSyncingCondition];
+      [notSyncingCondition2 wait];
     }
 
     while ([(VoicemailCompanionReplication *)self _isSyncing]);
@@ -399,15 +399,15 @@ void __56__VoicemailCompanionReplication__syncRestrictionUpdated__block_invoke(u
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSyncing:(BOOL)a3
+- (void)setSyncing:(BOOL)syncing
 {
-  v3 = a3;
-  v5 = [(VoicemailCompanionReplication *)self notSyncingCondition];
-  [v5 lock];
+  syncingCopy = syncing;
+  notSyncingCondition = [(VoicemailCompanionReplication *)self notSyncingCondition];
+  [notSyncingCondition lock];
 
-  if ([(VoicemailCompanionReplication *)self _isSyncing]!= v3)
+  if ([(VoicemailCompanionReplication *)self _isSyncing]!= syncingCopy)
   {
-    if (v3)
+    if (syncingCopy)
     {
       v6 = os_transaction_create();
       [(VoicemailCompanionReplication *)self setTransaction:v6];
@@ -420,27 +420,27 @@ void __56__VoicemailCompanionReplication__syncRestrictionUpdated__block_invoke(u
 
     if (![(VoicemailCompanionReplication *)self _isSyncing])
     {
-      v7 = [(VoicemailCompanionReplication *)self notSyncingCondition];
-      [v7 broadcast];
+      notSyncingCondition2 = [(VoicemailCompanionReplication *)self notSyncingCondition];
+      [notSyncingCondition2 broadcast];
     }
   }
 
-  v8 = [(VoicemailCompanionReplication *)self notSyncingCondition];
-  [v8 unlock];
+  notSyncingCondition3 = [(VoicemailCompanionReplication *)self notSyncingCondition];
+  [notSyncingCondition3 unlock];
 }
 
 - (BOOL)_isSyncing
 {
-  v2 = [(VoicemailCompanionReplication *)self transaction];
-  v3 = v2 != 0;
+  transaction = [(VoicemailCompanionReplication *)self transaction];
+  v3 = transaction != 0;
 
   return v3;
 }
 
-- (void)sync:(BOOL)a3 force:(BOOL)a4
+- (void)sync:(BOOL)sync force:(BOOL)force
 {
-  v4 = a4;
-  v5 = a3;
+  forceCopy = force;
+  syncCopy = sync;
   v18 = *MEMORY[0x277D85DE8];
   v7 = nph_general_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -448,38 +448,38 @@ void __56__VoicemailCompanionReplication__syncRestrictionUpdated__block_invoke(u
     v13 = 136315650;
     v14 = "[VoicemailCompanionReplication sync:force:]";
     v15 = 1024;
-    *v16 = v5;
+    *v16 = syncCopy;
     *&v16[4] = 1024;
-    *&v16[6] = v4;
+    *&v16[6] = forceCopy;
     _os_log_impl(&dword_26D269000, v7, OS_LOG_TYPE_DEFAULT, "%s: reset: %d force: %d", &v13, 0x18u);
   }
 
-  if (v5 || [(VoicemailCompanionReplication *)self isSyncPermitted]|| v4)
+  if (syncCopy || [(VoicemailCompanionReplication *)self isSyncPermitted]|| forceCopy)
   {
     [(VoicemailCompanionReplication *)self setSyncing:1];
-    v8 = [(VoicemailCompanionReplication *)self currentMigrationVersion];
+    currentMigrationVersion = [(VoicemailCompanionReplication *)self currentMigrationVersion];
     v9 = nph_general_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 136315650;
       v14 = "[VoicemailCompanionReplication sync:force:]";
       v15 = 2048;
-      *v16 = v8;
+      *v16 = currentMigrationVersion;
       *&v16[8] = 2048;
       v17 = 1;
       _os_log_impl(&dword_26D269000, v9, OS_LOG_TYPE_DEFAULT, "%s: currentMigrationVersion: %ld requiredMigrationVersion: %ld", &v13, 0x20u);
     }
 
-    v10 = [(VoicemailCompanionReplication *)self syncService];
-    v11 = v10;
-    if (v5 || v8 <= 0)
+    syncService = [(VoicemailCompanionReplication *)self syncService];
+    v11 = syncService;
+    if (syncCopy || currentMigrationVersion <= 0)
     {
-      [v10 setNeedsResetSync];
+      [syncService setNeedsResetSync];
     }
 
     else
     {
-      [v10 setHasChangesAvailable];
+      [syncService setHasChangesAvailable];
     }
   }
 
@@ -497,10 +497,10 @@ void __56__VoicemailCompanionReplication__syncRestrictionUpdated__block_invoke(u
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_retrySyncSession:(id)a3
+- (void)_retrySyncSession:(id)session
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   v5 = nph_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -509,11 +509,11 @@ void __56__VoicemailCompanionReplication__syncRestrictionUpdated__block_invoke(u
     _os_log_impl(&dword_26D269000, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v6 = [v4 isResetSync];
-  v7 = [v4 wasCancelled];
-  if (v6)
+  isResetSync = [sessionCopy isResetSync];
+  wasCancelled = [sessionCopy wasCancelled];
+  if (isResetSync)
   {
-    if (v7)
+    if (wasCancelled)
     {
       v8 = 0;
     }
@@ -546,7 +546,7 @@ void __56__VoicemailCompanionReplication__syncRestrictionUpdated__block_invoke(u
     objc_destroyWeak(buf);
   }
 
-  else if (v7)
+  else if (wasCancelled)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -595,98 +595,98 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncSessionManager:(id)a3 reportProgress:(double)a4
+- (void)syncSessionManager:(id)manager reportProgress:(double)progress
 {
   v18 = *MEMORY[0x277D85DE8];
   v6 = nph_general_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(VoicemailCompanionReplication *)self initialSyncCoordinator];
-    v8 = [v7 activeSyncSession];
+    initialSyncCoordinator = [(VoicemailCompanionReplication *)self initialSyncCoordinator];
+    activeSyncSession = [initialSyncCoordinator activeSyncSession];
     v12 = 136315650;
     v13 = "[VoicemailCompanionReplication syncSessionManager:reportProgress:]";
     v14 = 2048;
-    v15 = a4;
+    progressCopy = progress;
     v16 = 2112;
-    v17 = v8;
+    v17 = activeSyncSession;
     _os_log_impl(&dword_26D269000, v6, OS_LOG_TYPE_DEFAULT, "%s: progress: %f activeSyncSession: %@", &v12, 0x20u);
   }
 
-  v9 = [(VoicemailCompanionReplication *)self initialSyncCoordinator];
-  v10 = [v9 activeSyncSession];
-  [v10 reportProgress:a4];
+  initialSyncCoordinator2 = [(VoicemailCompanionReplication *)self initialSyncCoordinator];
+  activeSyncSession2 = [initialSyncCoordinator2 activeSyncSession];
+  [activeSyncSession2 reportProgress:progress];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncSessionManagerDidCompleteSending:(id)a3
+- (void)syncSessionManagerDidCompleteSending:(id)sending
 {
-  v4 = [(VoicemailCompanionReplication *)self initialSyncCoordinator];
-  v3 = [v4 activeSyncSession];
-  [v3 syncDidCompleteSending];
+  initialSyncCoordinator = [(VoicemailCompanionReplication *)self initialSyncCoordinator];
+  activeSyncSession = [initialSyncCoordinator activeSyncSession];
+  [activeSyncSession syncDidCompleteSending];
 }
 
-- (void)syncSession:(id)a3 didEndWithError:(id)a4
+- (void)syncSession:(id)session didEndWithError:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   v8 = nph_general_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 136315394;
     v19 = "[VoicemailCompanionReplication syncSession:didEndWithError:]";
     v20 = 2112;
-    *v21 = v7;
+    *v21 = errorCopy;
     _os_log_impl(&dword_26D269000, v8, OS_LOG_TYPE_DEFAULT, "%s: error: %@", &v18, 0x16u);
   }
 
   v9 = nph_general_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 isSending];
-    v11 = [v6 wasCancelled];
-    v12 = [v6 isResetSync];
+    isSending = [sessionCopy isSending];
+    wasCancelled = [sessionCopy wasCancelled];
+    isResetSync = [sessionCopy isResetSync];
     v18 = 136315906;
     v19 = "[VoicemailCompanionReplication syncSession:didEndWithError:]";
     v20 = 1024;
-    *v21 = v10;
+    *v21 = isSending;
     *&v21[4] = 1024;
-    *&v21[6] = v11;
+    *&v21[6] = wasCancelled;
     v22 = 1024;
-    v23 = v12;
+    v23 = isResetSync;
     _os_log_impl(&dword_26D269000, v9, OS_LOG_TYPE_DEFAULT, "%s: session isSending: %d wasCanceled: %d isResetSync: %d", &v18, 0x1Eu);
   }
 
-  if ([v6 isSending])
+  if ([sessionCopy isSending])
   {
-    if (v7)
+    if (errorCopy)
     {
-      v13 = [(VoicemailCompanionReplication *)self initialSyncCoordinator];
-      v14 = [v13 activeSyncSession];
-      [v14 syncDidFailWithError:v7];
+      initialSyncCoordinator = [(VoicemailCompanionReplication *)self initialSyncCoordinator];
+      activeSyncSession = [initialSyncCoordinator activeSyncSession];
+      [activeSyncSession syncDidFailWithError:errorCopy];
     }
 
     else
     {
-      v15 = [(VoicemailCompanionReplication *)self syncingVoicemails];
-      [(VoicemailCompanionReplication *)self setRemoteVoicemails:v15];
+      syncingVoicemails = [(VoicemailCompanionReplication *)self syncingVoicemails];
+      [(VoicemailCompanionReplication *)self setRemoteVoicemails:syncingVoicemails];
 
-      if ([v6 isResetSync])
+      if ([sessionCopy isResetSync])
       {
         [(VoicemailCompanionReplication *)self setCurrentMigrationVersion:1];
       }
 
-      v13 = [(VoicemailCompanionReplication *)self initialSyncCoordinator];
-      v14 = [v13 activeSyncSession];
-      [v14 syncDidComplete];
+      initialSyncCoordinator = [(VoicemailCompanionReplication *)self initialSyncCoordinator];
+      activeSyncSession = [initialSyncCoordinator activeSyncSession];
+      [activeSyncSession syncDidComplete];
     }
 
     [(VoicemailCompanionReplication *)self setSyncingVoicemails:0];
-    v16 = [v6 wasCancelled];
-    if (v7 || v16)
+    wasCancelled2 = [sessionCopy wasCancelled];
+    if (errorCopy || wasCancelled2)
     {
-      [(VoicemailCompanionReplication *)self _retrySyncSession:v6];
+      [(VoicemailCompanionReplication *)self _retrySyncSession:sessionCopy];
     }
   }
 
@@ -695,12 +695,12 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncSession:(id)a3 applyChanges:(id)a4 completion:(id)a5
+- (void)syncSession:(id)session applyChanges:(id)changes completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v25 = a5;
+  sessionCopy = session;
+  changesCopy = changes;
+  completionCopy = completion;
   v9 = nph_general_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -713,7 +713,7 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v8;
+  obj = changesCopy;
   v10 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v10)
   {
@@ -740,14 +740,14 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
         v16 = nph_general_log();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [v14 changeType];
+          changeType = [v14 changeType];
           *buf = 134217984;
-          v34 = v17;
+          v34 = changeType;
           _os_log_impl(&dword_26D269000, v16, OS_LOG_TYPE_DEFAULT, "changeType: %ld", buf, 0xCu);
         }
 
-        v18 = [v7 serializer];
-        v19 = [v18 dataFromChange:v14];
+        serializer = [sessionCopy serializer];
+        v19 = [serializer dataFromChange:v14];
 
         v20 = [[NanoPhoneVoicemailMeta alloc] initWithData:v19];
         v21 = nph_general_log();
@@ -758,8 +758,8 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
           _os_log_impl(&dword_26D269000, v21, OS_LOG_TYPE_DEFAULT, "vmMeta: %@", buf, 0xCu);
         }
 
-        v22 = [v14 changeType];
-        switch(v22)
+        changeType2 = [v14 changeType];
+        switch(changeType2)
         {
           case 3:
             [(VoicemailCompanionReplication *)self removeFromRemoteVoicemails:v20];
@@ -791,21 +791,21 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
     while (v11);
   }
 
-  v25[2](v25, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)syncSession:(id)a3 resetDataStoreWithError:(id *)a4
+- (BOOL)syncSession:(id)session resetDataStoreWithError:(id *)error
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = nph_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(VoicemailCompanionReplication *)self syncService];
+    syncService = [(VoicemailCompanionReplication *)self syncService];
     v9 = 136315394;
     v10 = "[VoicemailCompanionReplication syncSession:resetDataStoreWithError:]";
     v11 = 1024;
-    v12 = [v6 isMasterStore];
+    isMasterStore = [syncService isMasterStore];
     _os_log_impl(&dword_26D269000, v5, OS_LOG_TYPE_DEFAULT, "%s: isMasterStore: %d", &v9, 0x12u);
   }
 
@@ -813,18 +813,18 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   return 0;
 }
 
-- (id)changesBetween:(id)a3 and:(id)a4
+- (id)changesBetween:(id)between and:(id)and
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  betweenCopy = between;
+  andCopy = and;
   v7 = nph_general_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v23 = 136315394;
     v24 = "[VoicemailCompanionReplication changesBetween:and:]";
     v25 = 2112;
-    v26 = v5;
+    v26 = betweenCopy;
     _os_log_impl(&dword_26D269000, v7, OS_LOG_TYPE_INFO, "%s: from: %@", &v23, 0x16u);
   }
 
@@ -834,25 +834,25 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
     v23 = 136315394;
     v24 = "[VoicemailCompanionReplication changesBetween:and:]";
     v25 = 2112;
-    v26 = v6;
+    v26 = andCopy;
     _os_log_impl(&dword_26D269000, v8, OS_LOG_TYPE_INFO, "%s: and: %@", &v23, 0x16u);
   }
 
-  if (!v5)
+  if (!betweenCopy)
   {
-    v5 = objc_opt_new();
+    betweenCopy = objc_opt_new();
   }
 
-  v9 = [objc_alloc(MEMORY[0x277CFBA90]) initWithChangesBetween:v5 and:v6];
+  v9 = [objc_alloc(MEMORY[0x277CFBA90]) initWithChangesBetween:betweenCopy and:andCopy];
   v10 = nph_general_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 added];
-    v12 = [v11 count];
-    v13 = [v9 updated];
-    v14 = [v13 count];
-    v15 = [v9 deleted];
-    v16 = [v15 count];
+    added = [v9 added];
+    v12 = [added count];
+    updated = [v9 updated];
+    v14 = [updated count];
+    deleted = [v9 deleted];
+    v16 = [deleted count];
     v23 = 136315906;
     v24 = "[VoicemailCompanionReplication changesBetween:and:]";
     v25 = 2048;
@@ -867,17 +867,17 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   v17 = nph_general_log();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [v9 added];
-    v19 = [v9 updated];
-    v20 = [v9 deleted];
+    added2 = [v9 added];
+    updated2 = [v9 updated];
+    deleted2 = [v9 deleted];
     v23 = 136315906;
     v24 = "[VoicemailCompanionReplication changesBetween:and:]";
     v25 = 2112;
-    v26 = v18;
+    v26 = added2;
     v27 = 2112;
-    v28 = v19;
+    v28 = updated2;
     v29 = 2112;
-    v30 = v20;
+    v30 = deleted2;
     _os_log_impl(&dword_26D269000, v17, OS_LOG_TYPE_INFO, "%s: added: %@ updated: %@ deleted: %@", &v23, 0x2Au);
   }
 
@@ -886,7 +886,7 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   return v9;
 }
 
-- (void)_handleVoicemailsChangedNotification:(id)a3
+- (void)_handleVoicemailsChangedNotification:(id)notification
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = nph_general_log();
@@ -901,14 +901,14 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
 
   if (v5)
   {
-    v6 = [(VoicemailCompanionReplication *)self voicemailsLoadedCondition];
-    [v6 lock];
+    voicemailsLoadedCondition = [(VoicemailCompanionReplication *)self voicemailsLoadedCondition];
+    [voicemailsLoadedCondition lock];
 
-    v7 = [(VoicemailCompanionReplication *)self voicemailsLoadedCondition];
-    [v7 broadcast];
+    voicemailsLoadedCondition2 = [(VoicemailCompanionReplication *)self voicemailsLoadedCondition];
+    [voicemailsLoadedCondition2 broadcast];
 
-    v8 = [(VoicemailCompanionReplication *)self voicemailsLoadedCondition];
-    [v8 unlock];
+    voicemailsLoadedCondition3 = [(VoicemailCompanionReplication *)self voicemailsLoadedCondition];
+    [voicemailsLoadedCondition3 unlock];
 
     v9 = nph_general_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -923,7 +923,7 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serviceDidPairDevice:(id)a3
+- (void)serviceDidPairDevice:(id)device
 {
   v13 = *MEMORY[0x277D85DE8];
   syncService = self->_syncService;
@@ -946,11 +946,11 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)service:(id)a3 startSession:(id)a4 error:(id *)a5
+- (BOOL)service:(id)service startSession:(id)session error:(id *)error
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  serviceCopy = service;
+  sessionCopy = session;
   v10 = nph_general_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -963,7 +963,7 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v42 = 138412290;
-    v43 = v8;
+    v43 = serviceCopy;
     _os_log_impl(&dword_26D269000, v11, OS_LOG_TYPE_DEFAULT, "service: %@", &v42, 0xCu);
   }
 
@@ -971,46 +971,46 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v42 = 138412290;
-    v43 = v9;
+    v43 = sessionCopy;
     _os_log_impl(&dword_26D269000, v12, OS_LOG_TYPE_DEFAULT, "session: %@", &v42, 0xCu);
   }
 
   v13 = nph_general_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v9 state];
+    state = [sessionCopy state];
     v42 = 134217984;
-    v43 = v14;
+    v43 = state;
     _os_log_impl(&dword_26D269000, v13, OS_LOG_TYPE_DEFAULT, "session.state: %ld", &v42, 0xCu);
   }
 
   v15 = 1;
   [(VoicemailCompanionReplication *)self setSyncing:1];
-  [v9 setDelegate:self->_syncSessionManager];
-  [v9 setSerializer:self->_syncSessionManager];
-  [v9 setTargetQueue:self->_syncServiceQueue];
+  [sessionCopy setDelegate:self->_syncSessionManager];
+  [sessionCopy setSerializer:self->_syncSessionManager];
+  [sessionCopy setTargetQueue:self->_syncServiceQueue];
   v46 = *MEMORY[0x277D18568];
   v47[0] = MEMORY[0x277CBEC38];
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:&v46 count:1];
-  [v9 setOptions:v16];
+  [sessionCopy setOptions:v16];
 
-  if ([v9 isSending])
+  if ([sessionCopy isSending])
   {
-    v17 = [(VoicemailCompanionReplication *)self voicemails];
-    v18 = [v17 mutableCopy];
+    voicemails = [(VoicemailCompanionReplication *)self voicemails];
+    v18 = [voicemails mutableCopy];
     [(VoicemailCompanionReplication *)self setSyncingVoicemails:v18];
 
-    if ([v9 isResetSync])
+    if ([sessionCopy isResetSync])
     {
       v19 = nph_general_log();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(VoicemailCompanionReplication *)self syncingVoicemails];
-        if (v20)
+        syncingVoicemails = [(VoicemailCompanionReplication *)self syncingVoicemails];
+        if (syncingVoicemails)
         {
           v21 = MEMORY[0x277CCABB0];
-          v5 = [(VoicemailCompanionReplication *)self syncingVoicemails];
-          v22 = [v21 numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+          syncingVoicemails2 = [(VoicemailCompanionReplication *)self syncingVoicemails];
+          v22 = [v21 numberWithUnsignedInteger:{objc_msgSend(syncingVoicemails2, "count")}];
         }
 
         else
@@ -1023,51 +1023,51 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
         v44 = 2112;
         v45 = v22;
         _os_log_impl(&dword_26D269000, v19, OS_LOG_TYPE_DEFAULT, "%s: there are %@ voicemails to be reset synced", &v42, 0x16u);
-        if (v20)
+        if (syncingVoicemails)
         {
         }
       }
 
       syncSessionManager = self->_syncSessionManager;
-      v25 = [(VoicemailCompanionReplication *)self syncingVoicemails];
+      syncingVoicemails3 = [(VoicemailCompanionReplication *)self syncingVoicemails];
       v32 = 1;
-      [(NPHVMSyncSessionManager *)syncSessionManager enqueueVoicemailChanges:v25 changeType:1];
+      [(NPHVMSyncSessionManager *)syncSessionManager enqueueVoicemailChanges:syncingVoicemails3 changeType:1];
     }
 
     else
     {
-      v23 = [(VoicemailCompanionReplication *)self remoteVoicemails];
-      v24 = [(VoicemailCompanionReplication *)self syncingVoicemails];
-      v25 = [(VoicemailCompanionReplication *)self changesBetween:v23 and:v24];
+      remoteVoicemails = [(VoicemailCompanionReplication *)self remoteVoicemails];
+      syncingVoicemails4 = [(VoicemailCompanionReplication *)self syncingVoicemails];
+      syncingVoicemails3 = [(VoicemailCompanionReplication *)self changesBetween:remoteVoicemails and:syncingVoicemails4];
 
-      v26 = [v25 added];
-      v27 = [v25 updated];
-      v28 = [v25 deleted];
-      v29 = [v26 count];
-      v30 = [v27 count] + v29;
-      v31 = [v28 count];
+      added = [syncingVoicemails3 added];
+      updated = [syncingVoicemails3 updated];
+      deleted = [syncingVoicemails3 deleted];
+      v29 = [added count];
+      v30 = [updated count] + v29;
+      v31 = [deleted count];
       v32 = v30 + v31 != 0;
       if (v30 + v31)
       {
-        if ([v26 count])
+        if ([added count])
         {
           v33 = self->_syncSessionManager;
-          v34 = [v26 allObjects];
-          [(NPHVMSyncSessionManager *)v33 enqueueVoicemailChanges:v34 changeType:1];
+          allObjects = [added allObjects];
+          [(NPHVMSyncSessionManager *)v33 enqueueVoicemailChanges:allObjects changeType:1];
         }
 
-        if ([v27 count])
+        if ([updated count])
         {
           v35 = self->_syncSessionManager;
-          v36 = [v27 allObjects];
-          [(NPHVMSyncSessionManager *)v35 enqueueVoicemailChanges:v36 changeType:2];
+          allObjects2 = [updated allObjects];
+          [(NPHVMSyncSessionManager *)v35 enqueueVoicemailChanges:allObjects2 changeType:2];
         }
 
-        if ([v28 count])
+        if ([deleted count])
         {
           v37 = self->_syncSessionManager;
-          v38 = [v28 allObjects];
-          [(NPHVMSyncSessionManager *)v37 enqueueVoicemailChanges:v38 changeType:3];
+          allObjects3 = [deleted allObjects];
+          [(NPHVMSyncSessionManager *)v37 enqueueVoicemailChanges:allObjects3 changeType:3];
         }
       }
     }
@@ -1079,12 +1079,12 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   return v15;
 }
 
-- (void)service:(id)a3 sessionEnded:(id)a4 error:(id)a5
+- (void)service:(id)service sessionEnded:(id)ended error:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  serviceCopy = service;
+  endedCopy = ended;
+  errorCopy = error;
   v10 = nph_general_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1097,7 +1097,7 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v7;
+    v16 = serviceCopy;
     _os_log_impl(&dword_26D269000, v11, OS_LOG_TYPE_DEFAULT, "service: %@", &v15, 0xCu);
   }
 
@@ -1105,7 +1105,7 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v8;
+    v16 = endedCopy;
     _os_log_impl(&dword_26D269000, v12, OS_LOG_TYPE_DEFAULT, "session: %@", &v15, 0xCu);
   }
 
@@ -1113,19 +1113,19 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v9;
+    v16 = errorCopy;
     _os_log_impl(&dword_26D269000, v13, OS_LOG_TYPE_DEFAULT, "error: %@", &v15, 0xCu);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 encounteredError:(id)a4 context:(id)a5
+- (void)service:(id)service encounteredError:(id)error context:(id)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  serviceCopy = service;
+  errorCopy = error;
+  contextCopy = context;
   v10 = nph_general_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1138,7 +1138,7 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v7;
+    v16 = serviceCopy;
     _os_log_impl(&dword_26D269000, v11, OS_LOG_TYPE_DEFAULT, "service: %@", &v15, 0xCu);
   }
 
@@ -1146,7 +1146,7 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v9;
+    v16 = contextCopy;
     _os_log_impl(&dword_26D269000, v12, OS_LOG_TYPE_DEFAULT, "context: %@", &v15, 0xCu);
   }
 
@@ -1154,7 +1154,7 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v8;
+    v16 = errorCopy;
     _os_log_impl(&dword_26D269000, v13, OS_LOG_TYPE_DEFAULT, "error: %@", &v15, 0xCu);
   }
 
@@ -1163,7 +1163,7 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
 
 - (NSMutableArray)remoteVoicemails
 {
-  v3 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   v4 = [(NPSDomainAccessor *)self->_domainAccessor objectForKey:@"kVoicemailForReplicationKey"];
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
@@ -1195,15 +1195,15 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   return v12;
 }
 
-- (void)setRemoteVoicemails:(id)a3
+- (void)setRemoteVoicemails:(id)voicemails
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  voicemailsCopy = voicemails;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [voicemailsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1215,24 +1215,24 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(voicemailsCopy);
         }
 
-        v9 = [*(*(&v16 + 1) + 8 * v8) voicemailBody];
-        [v9 setVoicemailRecording:0];
+        voicemailBody = [*(*(&v16 + 1) + 8 * v8) voicemailBody];
+        [voicemailBody setVoicemailRecording:0];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [voicemailsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 
   v15 = 0;
-  v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v15];
+  v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:voicemailsCopy requiringSecureCoding:1 error:&v15];
   v11 = v15;
   if (v11)
   {
@@ -1244,12 +1244,12 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
   }
 
   [(NPSDomainAccessor *)self->_domainAccessor setObject:v10 forKey:@"kVoicemailForReplicationKey"];
-  v13 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentMigrationVersion:(int64_t)a3
+- (void)setCurrentMigrationVersion:(int64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = nph_general_log();
@@ -1258,72 +1258,72 @@ void __51__VoicemailCompanionReplication__retrySyncSession___block_invoke(uint64
     v8 = 136315650;
     v9 = "[VoicemailCompanionReplication setCurrentMigrationVersion:]";
     v10 = 2048;
-    v11 = a3;
+    versionCopy = version;
     v12 = 2048;
-    v13 = [(VoicemailCompanionReplication *)self currentMigrationVersion];
+    currentMigrationVersion = [(VoicemailCompanionReplication *)self currentMigrationVersion];
     _os_log_impl(&dword_26D269000, v5, OS_LOG_TYPE_DEFAULT, "%s: %ld (oldValue: %ld)", &v8, 0x20u);
   }
 
-  [(NPSDomainAccessor *)self->_domainAccessor setInteger:a3 forKey:@"NPHVoicemailCompanionReplicationCurrentMigrationVersionKey"];
-  v6 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  [(NPSDomainAccessor *)self->_domainAccessor setInteger:version forKey:@"NPHVoicemailCompanionReplicationCurrentMigrationVersionKey"];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   v7 = *MEMORY[0x277D85DE8];
 }
 
 - (int64_t)currentMigrationVersion
 {
-  v2 = [(VoicemailCompanionReplication *)self domainAccessor];
-  v3 = [v2 integerForKey:@"NPHVoicemailCompanionReplicationCurrentMigrationVersionKey"];
+  domainAccessor = [(VoicemailCompanionReplication *)self domainAccessor];
+  v3 = [domainAccessor integerForKey:@"NPHVoicemailCompanionReplicationCurrentMigrationVersionKey"];
 
   return v3;
 }
 
-- (void)removeFromRemoteVoicemails:(id)a3
+- (void)removeFromRemoteVoicemails:(id)voicemails
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VoicemailCompanionReplication *)self remoteVoicemails];
+  voicemailsCopy = voicemails;
+  remoteVoicemails = [(VoicemailCompanionReplication *)self remoteVoicemails];
   v6 = nph_general_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315650;
     v10 = "[VoicemailCompanionReplication removeFromRemoteVoicemails:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = voicemailsCopy;
     v13 = 2112;
-    v14 = v5;
+    v14 = remoteVoicemails;
     _os_log_impl(&dword_26D269000, v6, OS_LOG_TYPE_DEFAULT, "%s - %@ removed from %@", &v9, 0x20u);
   }
 
-  v7 = [(VoicemailCompanionReplication *)self indexOfVoicemail:v4 inArray:v5];
+  v7 = [(VoicemailCompanionReplication *)self indexOfVoicemail:voicemailsCopy inArray:remoteVoicemails];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v5 removeObjectAtIndex:v7];
+    [remoteVoicemails removeObjectAtIndex:v7];
   }
 
-  [(VoicemailCompanionReplication *)self setRemoteVoicemails:v5];
+  [(VoicemailCompanionReplication *)self setRemoteVoicemails:remoteVoicemails];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)indexOfVoicemail:(id)a3 inArray:(id)a4
+- (int64_t)indexOfVoicemail:(id)voicemail inArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  voicemailCopy = voicemail;
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
     v7 = 0;
     while (1)
     {
-      v8 = [v6 objectAtIndex:v7];
-      v9 = [v8 identifier];
-      v10 = [v5 identifier];
+      v8 = [arrayCopy objectAtIndex:v7];
+      identifier = [v8 identifier];
+      identifier2 = [voicemailCopy identifier];
 
-      if (v9 == v10)
+      if (identifier == identifier2)
       {
         break;
       }
 
-      if (++v7 >= [v6 count])
+      if (++v7 >= [arrayCopy count])
       {
         goto LABEL_5;
       }
@@ -1352,14 +1352,14 @@ LABEL_5:
       _os_log_impl(&dword_26D269000, v4, OS_LOG_TYPE_DEFAULT, "%s: waiting for voicemailsLoadedCondition", buf, 0xCu);
     }
 
-    v5 = [(VoicemailCompanionReplication *)self voicemailsLoadedCondition];
-    [v5 lock];
+    voicemailsLoadedCondition = [(VoicemailCompanionReplication *)self voicemailsLoadedCondition];
+    [voicemailsLoadedCondition lock];
 
-    v6 = [(VoicemailCompanionReplication *)self voicemailsLoadedCondition];
-    [v6 wait];
+    voicemailsLoadedCondition2 = [(VoicemailCompanionReplication *)self voicemailsLoadedCondition];
+    [voicemailsLoadedCondition2 wait];
 
-    v7 = [(VoicemailCompanionReplication *)self voicemailsLoadedCondition];
-    [v7 unlock];
+    voicemailsLoadedCondition3 = [(VoicemailCompanionReplication *)self voicemailsLoadedCondition];
+    [voicemailsLoadedCondition3 unlock];
 
     ListOfVoicemailsToSyncWithManager(self->_voicemailManager);
   }

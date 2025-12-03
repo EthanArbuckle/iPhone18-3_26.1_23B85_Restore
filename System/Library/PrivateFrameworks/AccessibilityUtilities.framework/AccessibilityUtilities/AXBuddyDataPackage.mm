@@ -2,69 +2,69 @@
 + (id)dataBlobForBuddy;
 + (id)dataPackageForCurrentSettings;
 + (void)dataBlobForBuddy;
-+ (void)restoreDataBlobForBuddy:(id)a3;
-+ (void)setTestData:(id)a3 forModel:(id)a4 hasHomeButton:(BOOL)a5 largeTextUsesExtendedRange:(BOOL)a6;
-- (AXBuddyDataPackage)initWithCoder:(id)a3;
++ (void)restoreDataBlobForBuddy:(id)buddy;
++ (void)setTestData:(id)data forModel:(id)model hasHomeButton:(BOOL)button largeTextUsesExtendedRange:(BOOL)range;
+- (AXBuddyDataPackage)initWithCoder:(id)coder;
 - (void)applySavedSettings;
-- (void)encodeWithCoder:(id)a3;
-- (void)processDomainDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)processDomainDictionary:(id)dictionary;
 @end
 
 @implementation AXBuddyDataPackage
 
-- (AXBuddyDataPackage)initWithCoder:(id)a3
+- (AXBuddyDataPackage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AXBuddyDataPackage;
   v5 = [(AXBuddyDataPackage *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodePropertyListForKey:@"accessibilityOptions"];
+    v6 = [coderCopy decodePropertyListForKey:@"accessibilityOptions"];
     [(AXBuddyDataPackage *)v5 setAccessibilityOptions:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredContentSizeCategoryName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredContentSizeCategoryName"];
     [(AXBuddyDataPackage *)v5 setAxPreferredContentSizeCategoryName:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"axOSVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"axOSVersion"];
     [(AXBuddyDataPackage *)v5 setAxOSVersion:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"axModel"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"axModel"];
     [(AXBuddyDataPackage *)v5 setAxModel:v9];
 
-    -[AXBuddyDataPackage setUsesExtendedSlider:](v5, "setUsesExtendedSlider:", [v4 decodeBoolForKey:@"usesExtendedSlider"]);
-    -[AXBuddyDataPackage setHasHomeButton:](v5, "setHasHomeButton:", [v4 decodeBoolForKey:@"AXSHasHomeButton"]);
+    -[AXBuddyDataPackage setUsesExtendedSlider:](v5, "setUsesExtendedSlider:", [coderCopy decodeBoolForKey:@"usesExtendedSlider"]);
+    -[AXBuddyDataPackage setHasHomeButton:](v5, "setHasHomeButton:", [coderCopy decodeBoolForKey:@"AXSHasHomeButton"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(AXBuddyDataPackage *)self accessibilityOptions];
-  [v8 encodeObject:v4 forKey:@"accessibilityOptions"];
+  coderCopy = coder;
+  accessibilityOptions = [(AXBuddyDataPackage *)self accessibilityOptions];
+  [coderCopy encodeObject:accessibilityOptions forKey:@"accessibilityOptions"];
 
-  v5 = [(AXBuddyDataPackage *)self axPreferredContentSizeCategoryName];
-  [v8 encodeObject:v5 forKey:@"preferredContentSizeCategoryName"];
+  axPreferredContentSizeCategoryName = [(AXBuddyDataPackage *)self axPreferredContentSizeCategoryName];
+  [coderCopy encodeObject:axPreferredContentSizeCategoryName forKey:@"preferredContentSizeCategoryName"];
 
-  v6 = [(AXBuddyDataPackage *)self axOSVersion];
-  [v8 encodeObject:v6 forKey:@"axOSVersion"];
+  axOSVersion = [(AXBuddyDataPackage *)self axOSVersion];
+  [coderCopy encodeObject:axOSVersion forKey:@"axOSVersion"];
 
-  v7 = [(AXBuddyDataPackage *)self axModel];
-  [v8 encodeObject:v7 forKey:@"axModel"];
+  axModel = [(AXBuddyDataPackage *)self axModel];
+  [coderCopy encodeObject:axModel forKey:@"axModel"];
 
-  [v8 encodeBool:-[AXBuddyDataPackage usesExtendedSlider](self forKey:{"usesExtendedSlider"), @"usesExtendedSlider"}];
-  [v8 encodeBool:-[AXBuddyDataPackage hasHomeButton](self forKey:{"hasHomeButton"), @"AXSHasHomeButton"}];
+  [coderCopy encodeBool:-[AXBuddyDataPackage usesExtendedSlider](self forKey:{"usesExtendedSlider"), @"usesExtendedSlider"}];
+  [coderCopy encodeBool:-[AXBuddyDataPackage hasHomeButton](self forKey:{"hasHomeButton"), @"AXSHasHomeButton"}];
 }
 
 + (id)dataPackageForCurrentSettings
 {
   v43 = *MEMORY[0x1E69E9840];
-  v32 = objc_alloc_init(a1);
+  v32 = objc_alloc_init(self);
   v34 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 keysToIgnoreDuringBuddyTransfer];
+  keysToIgnoreDuringBuddyTransfer = [v2 keysToIgnoreDuringBuddyTransfer];
 
   v38 = 0u;
   v39 = 0u;
@@ -73,7 +73,7 @@
   v4 = objc_alloc(MEMORY[0x1E695DEC8]);
   obj = [v4 initWithObjects:{*MEMORY[0x1E69E4BB0], *MEMORY[0x1E69E4F30], *MEMORY[0x1E69E4C70], *MEMORY[0x1E69E4D78], *MEMORY[0x1E69E4F78], *MEMORY[0x1E69E4F60], *MEMORY[0x1E69E4FA8], *MEMORY[0x1E69E4E90], *MEMORY[0x1E69E4F20], *MEMORY[0x1E69E4F10], *MEMORY[0x1E69E4E18], 0}];
   v5 = [obj countByEnumeratingWithState:&v36 objects:v42 count:16];
-  v33 = v3;
+  v33 = keysToIgnoreDuringBuddyTransfer;
   if (v5)
   {
     v6 = v5;
@@ -107,11 +107,11 @@
               v41 = v17;
               _os_log_impl(&dword_18B15E000, v16, OS_LOG_TYPE_DEFAULT, "Transferring ignore trackpad setting: %@", buf, 0xCu);
 
-              v3 = v33;
+              keysToIgnoreDuringBuddyTransfer = v33;
             }
           }
 
-          [(__CFDictionary *)v14 removeObjectsForKeys:v3];
+          [(__CFDictionary *)v14 removeObjectsForKeys:keysToIgnoreDuringBuddyTransfer];
           if (v14)
           {
             [v34 setObject:v14 forKey:v11];
@@ -132,39 +132,39 @@
   [v32 setAxPreferredContentSizeCategoryName:v18];
 
   [v32 setUsesExtendedSlider:_AXSLargeTextUsesExtendedRange() != 0];
-  v19 = [objc_opt_class() testData];
+  testData = [objc_opt_class() testData];
 
-  if (v19)
+  if (testData)
   {
     v20 = AXLogSettings();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
-      v21 = [objc_opt_class() testData];
+      testData2 = [objc_opt_class() testData];
       *buf = 138412290;
-      v41 = v21;
+      v41 = testData2;
       _os_log_impl(&dword_18B15E000, v20, OS_LOG_TYPE_INFO, "Using test data mode settings: %@", buf, 0xCu);
     }
 
-    v22 = [objc_opt_class() testData];
-    v23 = [v22 objectForKey:@"AXSOSVersion"];
+    testData3 = [objc_opt_class() testData];
+    v23 = [testData3 objectForKey:@"AXSOSVersion"];
     [v32 setAxOSVersion:v23];
 
-    v24 = [objc_opt_class() testData];
-    v25 = [v24 objectForKey:@"AXSModel"];
+    testData4 = [objc_opt_class() testData];
+    v25 = [testData4 objectForKey:@"AXSModel"];
     [v32 setAxModel:v25];
 
-    v26 = [objc_opt_class() testData];
-    v27 = [v26 objectForKey:@"AXSUsesExtendedRange"];
+    testData5 = [objc_opt_class() testData];
+    v27 = [testData5 objectForKey:@"AXSUsesExtendedRange"];
     [v32 setUsesExtendedSlider:{objc_msgSend(v27, "BOOLValue")}];
   }
 
   else
   {
-    v28 = [a1 productVersionForBuddy];
-    [v32 setAxOSVersion:v28];
+    productVersionForBuddy = [self productVersionForBuddy];
+    [v32 setAxOSVersion:productVersionForBuddy];
 
-    v29 = [a1 deviceClassForBuddy];
-    [v32 setAxModel:v29];
+    deviceClassForBuddy = [self deviceClassForBuddy];
+    [v32 setAxModel:deviceClassForBuddy];
 
     [v32 setHasHomeButton:AXDeviceHasHomeButton()];
   }
@@ -172,23 +172,23 @@
   return v32;
 }
 
-+ (void)setTestData:(id)a3 forModel:(id)a4 hasHomeButton:(BOOL)a5 largeTextUsesExtendedRange:(BOOL)a6
++ (void)setTestData:(id)data forModel:(id)model hasHomeButton:(BOOL)button largeTextUsesExtendedRange:(BOOL)range
 {
-  v6 = a6;
-  v7 = a5;
+  rangeCopy = range;
+  buttonCopy = button;
   v20[4] = *MEMORY[0x1E69E9840];
   v19[0] = @"AXSOSVersion";
   v19[1] = @"AXSModel";
-  v20[0] = a3;
-  v20[1] = a4;
+  v20[0] = data;
+  v20[1] = model;
   v19[2] = @"AXSHasHomeButton";
   v9 = MEMORY[0x1E696AD98];
-  v10 = a4;
-  v11 = a3;
-  v12 = [v9 numberWithBool:v7];
+  modelCopy = model;
+  dataCopy = data;
+  v12 = [v9 numberWithBool:buttonCopy];
   v20[2] = v12;
   v19[3] = @"AXSOSVersion";
-  v13 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+  v13 = [MEMORY[0x1E696AD98] numberWithBool:rangeCopy];
   v20[3] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:4];
 
@@ -196,9 +196,9 @@
   v15 = AXLogSettings();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = [objc_opt_class() testData];
+    testData = [objc_opt_class() testData];
     v17 = 138412290;
-    v18 = v16;
+    v18 = testData;
     _os_log_impl(&dword_18B15E000, v15, OS_LOG_TYPE_INFO, "Setting test data mode settings: %@", &v17, 0xCu);
   }
 }
@@ -236,8 +236,8 @@
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
-        v11 = [(AXBuddyDataPackage *)self accessibilityOptions];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        accessibilityOptions = [(AXBuddyDataPackage *)self accessibilityOptions];
+        v12 = [accessibilityOptions objectForKeyedSubscript:v10];
 
         [(AXBuddyDataPackage *)self processDomainDictionary:v12];
         v13 = AXLogSettings();
@@ -256,8 +256,8 @@
           _os_log_impl(&dword_18B15E000, v14, OS_LOG_TYPE_DEFAULT, "Applying saved settings: %@", buf, 0xCu);
         }
 
-        v15 = [(AXBuddyDataPackage *)self accessibilityOptions];
-        v16 = [v15 objectForKeyedSubscript:v10];
+        accessibilityOptions2 = [(AXBuddyDataPackage *)self accessibilityOptions];
+        v16 = [accessibilityOptions2 objectForKeyedSubscript:v10];
         CFPreferencesSetMultiple(v16, 0, v10, v6, v7);
 
         CFPreferencesSynchronize(v10, v6, v8);
@@ -269,19 +269,19 @@
     while (v5);
   }
 
-  v17 = [(AXBuddyDataPackage *)self axPreferredContentSizeCategoryName];
-  if (v17)
+  axPreferredContentSizeCategoryName = [(AXBuddyDataPackage *)self axPreferredContentSizeCategoryName];
+  if (axPreferredContentSizeCategoryName)
   {
-    v18 = [(AXBuddyDataPackage *)self axPreferredContentSizeCategoryName];
+    axPreferredContentSizeCategoryName2 = [(AXBuddyDataPackage *)self axPreferredContentSizeCategoryName];
     _AXSSetPreferredContentSizeCategoryName();
   }
 
   v19 = AXLogSettings();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(AXBuddyDataPackage *)self usesExtendedSlider];
+    usesExtendedSlider = [(AXBuddyDataPackage *)self usesExtendedSlider];
     *buf = 67109120;
-    LODWORD(v30) = v20;
+    LODWORD(v30) = usesExtendedSlider;
     _os_log_impl(&dword_18B15E000, v19, OS_LOG_TYPE_DEFAULT, "Uses extended slider: %d", buf, 8u);
   }
 
@@ -297,29 +297,29 @@
   }
 }
 
-- (void)processDomainDictionary:(id)a3
+- (void)processDomainDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = +[AXBuddyDataPackage deviceClassForBuddy];
   v6 = +[AXBuddyDataPackage productVersionForBuddy];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:AXDeviceHasHomeButton()];
-  v8 = [objc_opt_class() testData];
-  if (v8)
+  testData = [objc_opt_class() testData];
+  if (testData)
   {
-    v9 = v8;
+    v9 = testData;
     v10 = _AXSInUnitTestMode();
 
     if (v10)
     {
-      v11 = [objc_opt_class() testData];
-      v12 = [v11 objectForKey:@"AXSOSVersion"];
+      testData2 = [objc_opt_class() testData];
+      v12 = [testData2 objectForKey:@"AXSOSVersion"];
 
-      v13 = [objc_opt_class() testData];
-      v14 = [v13 objectForKey:@"AXSModel"];
+      testData3 = [objc_opt_class() testData];
+      v14 = [testData3 objectForKey:@"AXSModel"];
 
-      v15 = [objc_opt_class() testData];
-      v16 = [v15 objectForKey:@"AXSHasHomeButton"];
+      testData4 = [objc_opt_class() testData];
+      v16 = [testData4 objectForKey:@"AXSHasHomeButton"];
 
       v7 = v16;
       v6 = v12;
@@ -327,21 +327,21 @@
     }
   }
 
-  v17 = [(AXBuddyDataPackage *)self axModel];
-  if (v17)
+  axModel = [(AXBuddyDataPackage *)self axModel];
+  if (axModel)
   {
-    v18 = v17;
-    v19 = [(AXBuddyDataPackage *)self axModel];
-    v20 = [v5 isEqualToString:v19];
+    v18 = axModel;
+    axModel2 = [(AXBuddyDataPackage *)self axModel];
+    v20 = [v5 isEqualToString:axModel2];
 
     if ((v20 & 1) == 0)
     {
-      [v4 removeObjectForKey:*MEMORY[0x1E6988708]];
+      [dictionaryCopy removeObjectForKey:*MEMORY[0x1E6988708]];
     }
   }
 
   v21 = MEMORY[0x1E69E4F40];
-  v22 = [v4 objectForKey:*MEMORY[0x1E69E4F40]];
+  v22 = [dictionaryCopy objectForKey:*MEMORY[0x1E69E4F40]];
   if (!v22 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (![v22 count] || objc_msgSend(v22, "count") == 1 && objc_msgSend(v22, "containsObject:", &unk_1EFE96BF8)))
   {
     v23 = AXLogSettings();
@@ -352,7 +352,7 @@
       _os_log_impl(&dword_18B15E000, v23, OS_LOG_TYPE_DEFAULT, "Removing TC options because its empty or only has buddy settings: %@", &v25, 0xCu);
     }
 
-    [v4 removeObjectForKey:*v21];
+    [dictionaryCopy removeObjectForKey:*v21];
   }
 
   if (([v7 BOOLValue] & 1) == 0 && -[AXBuddyDataPackage hasHomeButton](self, "hasHomeButton") || objc_msgSend(v7, "BOOLValue") && !-[AXBuddyDataPackage hasHomeButton](self, "hasHomeButton"))
@@ -364,10 +364,10 @@
       _os_log_impl(&dword_18B15E000, v24, OS_LOG_TYPE_DEFAULT, "Removing Reduce motion preference from domain dict because home button changed", &v25, 2u);
     }
 
-    [v4 removeObjectForKey:*MEMORY[0x1E69E4EC0]];
+    [dictionaryCopy removeObjectForKey:*MEMORY[0x1E69E4EC0]];
   }
 
-  [v4 removeObjectForKey:*MEMORY[0x1E69E4F90]];
+  [dictionaryCopy removeObjectForKey:*MEMORY[0x1E69E4F90]];
 }
 
 + (id)dataBlobForBuddy
@@ -405,12 +405,12 @@
   return v7;
 }
 
-+ (void)restoreDataBlobForBuddy:(id)a3
++ (void)restoreDataBlobForBuddy:(id)buddy
 {
   v3 = MEMORY[0x1E696ACD0];
-  v4 = a3;
+  buddyCopy = buddy;
   v10 = 0;
-  v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v10];
+  v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:buddyCopy error:&v10];
 
   v6 = v10;
   v7 = AXLogSettings();
@@ -439,7 +439,7 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_18B15E000, a2, OS_LOG_TYPE_ERROR, "Error archiving data blob for buddy: %@", &v2, 0xCu);
 }
 

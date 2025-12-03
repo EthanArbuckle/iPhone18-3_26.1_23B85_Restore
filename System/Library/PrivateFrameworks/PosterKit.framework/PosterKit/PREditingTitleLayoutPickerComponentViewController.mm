@@ -1,21 +1,21 @@
 @interface PREditingTitleLayoutPickerComponentViewController
-+ (id)defaultTitleLayoutsForRole:(id)a3;
++ (id)defaultTitleLayoutsForRole:(id)role;
 - (BOOL)isUsingVerticalLanguage;
-- (PREditingTitleLayoutPickerComponentViewController)initWithTitleLayouts:(id)a3 selectedLayout:(unint64_t)a4;
+- (PREditingTitleLayoutPickerComponentViewController)initWithTitleLayouts:(id)layouts selectedLayout:(unint64_t)layout;
 - (PREditingTitleLayoutPickerComponentViewControllerDelegate)delegate;
 - (double)cellHeight;
-- (id)cellViewFor:(unint64_t)a3 largestItemHeight:(double *)a4;
+- (id)cellViewFor:(unint64_t)for largestItemHeight:(double *)height;
 - (void)loadView;
-- (void)setSelectedTitleLayout:(unint64_t)a3;
+- (void)setSelectedTitleLayout:(unint64_t)layout;
 - (void)updateLayoutForCurrentSize;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation PREditingTitleLayoutPickerComponentViewController
 
-+ (id)defaultTitleLayoutsForRole:(id)a3
++ (id)defaultTitleLayoutsForRole:(id)role
 {
-  if ([a3 isEqual:@"PRPosterRoleIncomingCall"])
+  if ([role isEqual:@"PRPosterRoleIncomingCall"])
   {
     return &unk_1F1C6BBD8;
   }
@@ -26,17 +26,17 @@
   }
 }
 
-- (PREditingTitleLayoutPickerComponentViewController)initWithTitleLayouts:(id)a3 selectedLayout:(unint64_t)a4
+- (PREditingTitleLayoutPickerComponentViewController)initWithTitleLayouts:(id)layouts selectedLayout:(unint64_t)layout
 {
-  v7 = a3;
+  layoutsCopy = layouts;
   v11.receiver = self;
   v11.super_class = PREditingTitleLayoutPickerComponentViewController;
   v8 = [(PREditingTitleLayoutPickerComponentViewController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_titleLayouts, a3);
-    v9->_selectedTitleLayout = a4;
+    objc_storeStrong(&v8->_titleLayouts, layouts);
+    v9->_selectedTitleLayout = layout;
   }
 
   return v9;
@@ -46,28 +46,28 @@
 {
   v2 = PRBundle();
   v3 = [v2 localizedStringForKey:@"POSTER_LAYOUT_VERTICAL" value:&stru_1F1C13D90 table:@"PosterKit"];
-  v4 = [v3 pr_isSuitableForVerticalLayout];
+  pr_isSuitableForVerticalLayout = [v3 pr_isSuitableForVerticalLayout];
 
-  return v4;
+  return pr_isSuitableForVerticalLayout;
 }
 
 - (double)cellHeight
 {
-  v3 = [(PREditingTitleLayoutPickerComponentViewController *)self isUsingVerticalLanguage];
-  v4 = [(PREditingTitleLayoutPickerComponentViewController *)self isUsingSmallerSizing];
+  isUsingVerticalLanguage = [(PREditingTitleLayoutPickerComponentViewController *)self isUsingVerticalLanguage];
+  isUsingSmallerSizing = [(PREditingTitleLayoutPickerComponentViewController *)self isUsingSmallerSizing];
   result = 84.0;
-  if (v4)
+  if (isUsingSmallerSizing)
   {
     result = 82.0;
   }
 
   v6 = 64.0;
-  if (v4)
+  if (isUsingSmallerSizing)
   {
     v6 = 62.0;
   }
 
-  if (!v3)
+  if (!isUsingVerticalLanguage)
   {
     return v6;
   }
@@ -75,13 +75,13 @@
   return result;
 }
 
-- (id)cellViewFor:(unint64_t)a3 largestItemHeight:(double *)a4
+- (id)cellViewFor:(unint64_t)for largestItemHeight:(double *)height
 {
   v31[1] = *MEMORY[0x1E69E9840];
   if ([(PREditingTitleLayoutPickerComponentViewController *)self isUsingVerticalLanguage])
   {
     v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD40]];
-    IsVertical = PRPosterTitleLayoutIsVertical(a3);
+    IsVertical = PRPosterTitleLayoutIsVertical(for);
     v8 = PRBundle();
     v9 = v8;
     if (IsVertical)
@@ -102,57 +102,57 @@
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
     v14 = [v12 initWithString:v11 attributes:v13];
 
-    v15 = PRPosterTitleLayoutIsVertical(a3);
+    v15 = PRPosterTitleLayoutIsVertical(for);
     [v14 size];
-    if (a4)
+    if (height)
     {
       if (!v15)
       {
         v16 = v17;
       }
 
-      if (*a4 >= v16)
+      if (*height >= v16)
       {
-        v16 = *a4;
+        v16 = *height;
       }
 
-      *a4 = v16;
+      *height = v16;
     }
 
-    v18 = a3;
-    if (PRPosterTitleLayoutIsVertical(a3))
+    forCopy2 = for;
+    if (PRPosterTitleLayoutIsVertical(for))
     {
       if (_AXSPrefersHorizontalTextLayout())
       {
-        v18 = 0;
+        forCopy2 = 0;
       }
 
       else
       {
-        v18 = a3;
+        forCopy2 = for;
       }
     }
 
     v19 = objc_alloc_init(PREditingTitleLayoutPickerCellView);
     [(PREditingTitleLayoutPickerCellView *)v19 setFont:v6];
-    [(PREditingTitleLayoutPickerCellView *)v19 setLayout:v18];
+    [(PREditingTitleLayoutPickerCellView *)v19 setLayout:forCopy2];
     [(PREditingTitleLayoutPickerCellView *)v19 setText:v11];
-    [(PREditingTitleLayoutPickerCellView *)v19 setTag:a3];
+    [(PREditingTitleLayoutPickerCellView *)v19 setTag:for];
   }
 
   else
   {
     v19 = objc_alloc_init(PREditingPickerImageCellView);
-    v20 = [(PREditingTitleLayoutPickerCellView *)v19 contentImageView];
-    v21 = [MEMORY[0x1E69DC888] blackColor];
-    [v20 setTintColor:v21];
+    contentImageView = [(PREditingTitleLayoutPickerCellView *)v19 contentImageView];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [contentImageView setTintColor:blackColor];
 
-    v22 = [(PREditingTitleLayoutPickerCellView *)v19 contentImageView];
-    [v22 setContentMode:1];
+    contentImageView2 = [(PREditingTitleLayoutPickerCellView *)v19 contentImageView];
+    [contentImageView2 setContentMode:1];
 
-    [(PREditingTitleLayoutPickerCellView *)v19 setTag:a3];
+    [(PREditingTitleLayoutPickerCellView *)v19 setTag:for];
     v6 = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
-    if (PRPosterTitleLayoutIsVertical(a3))
+    if (PRPosterTitleLayoutIsVertical(for))
     {
       v23 = @"textbox.vertical.filled.topright.iphone";
     }
@@ -163,11 +163,11 @@
     }
 
     [(PREditingTitleLayoutPickerCellView *)v19 configureWithSystemImageNamed:v23 configuration:v6];
-    if (a4)
+    if (height)
     {
-      v24 = *a4;
-      v25 = [(PREditingTitleLayoutPickerCellView *)v19 contentImageView];
-      [v25 frame];
+      v24 = *height;
+      contentImageView3 = [(PREditingTitleLayoutPickerCellView *)v19 contentImageView];
+      [contentImageView3 frame];
       v27 = v26;
 
       if (v24 >= v27)
@@ -180,7 +180,7 @@
         v28 = v27;
       }
 
-      *a4 = v28;
+      *height = v28;
     }
   }
 
@@ -197,12 +197,12 @@
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v3 = [(PREditingTitleLayoutPickerComponentViewController *)self titleLayouts];
-  v4 = [v3 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  titleLayouts = [(PREditingTitleLayoutPickerComponentViewController *)self titleLayouts];
+  v4 = [titleLayouts countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v4)
   {
     v5 = *v34;
-    obj = v3;
+    obj = titleLayouts;
     do
     {
       v6 = 0;
@@ -213,15 +213,15 @@
           objc_enumerationMutation(obj);
         }
 
-        v7 = [*(*(&v33 + 1) + 8 * v6) unsignedIntValue];
-        v8 = [(PREditingTitleLayoutPickerComponentViewController *)self cellViewFor:v7 largestItemHeight:&self->_largestItemHeight];
+        unsignedIntValue = [*(*(&v33 + 1) + 8 * v6) unsignedIntValue];
+        v8 = [(PREditingTitleLayoutPickerComponentViewController *)self cellViewFor:unsignedIntValue largestItemHeight:&self->_largestItemHeight];
         v9 = MEMORY[0x1E69DC628];
         v31[0] = MEMORY[0x1E69E9820];
         v31[1] = 3221225472;
         v31[2] = __61__PREditingTitleLayoutPickerComponentViewController_loadView__block_invoke;
         v31[3] = &unk_1E7843218;
         objc_copyWeak(v32, &location);
-        v32[1] = v7;
+        v32[1] = unsignedIntValue;
         v10 = [v9 actionWithHandler:v31];
         [v8 addAction:v10 forControlEvents:0x2000];
         if (BSEqualDoubles())
@@ -238,7 +238,7 @@
       }
 
       while (v4 != v6);
-      v3 = obj;
+      titleLayouts = obj;
       v4 = [obj countByEnumeratingWithState:&v33 objects:v39 count:16];
     }
 
@@ -259,21 +259,21 @@
   [(UIStackView *)self->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
   [v27 addSubview:self->_stackView];
   v21 = MEMORY[0x1E696ACD8];
-  v26 = [(UIStackView *)self->_stackView leadingAnchor];
-  v25 = [v27 leadingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25 constant:24.0];
+  leadingAnchor = [(UIStackView *)self->_stackView leadingAnchor];
+  leadingAnchor2 = [v27 leadingAnchor];
+  v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:24.0];
   v38[0] = v24;
-  v23 = [(UIStackView *)self->_stackView trailingAnchor];
-  v22 = [v27 trailingAnchor];
-  v13 = [v23 constraintEqualToAnchor:v22 constant:-24.0];
+  trailingAnchor = [(UIStackView *)self->_stackView trailingAnchor];
+  trailingAnchor2 = [v27 trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-24.0];
   v38[1] = v13;
-  v14 = [(UIStackView *)self->_stackView bottomAnchor];
-  v15 = [v27 bottomAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+  bottomAnchor2 = [v27 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v38[2] = v16;
-  v17 = [(UIStackView *)self->_stackView topAnchor];
-  v18 = [v27 topAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  topAnchor = [(UIStackView *)self->_stackView topAnchor];
+  topAnchor2 = [v27 topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v38[3] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:4];
   [v21 activateConstraints:v20];
@@ -297,8 +297,8 @@ void __61__PREditingTitleLayoutPickerComponentViewController_loadView__block_inv
   v6.receiver = self;
   v6.super_class = PREditingTitleLayoutPickerComponentViewController;
   [(PREditingTitleLayoutPickerComponentViewController *)&v6 viewDidLayoutSubviews];
-  v3 = [(PREditingTitleLayoutPickerComponentViewController *)self view];
-  [v3 bounds];
+  view = [(PREditingTitleLayoutPickerComponentViewController *)self view];
+  [view bounds];
   v5 = v4;
 
   if ([(PREditingTitleLayoutPickerComponentViewController *)self isUsingSmallerSizing]!= v5 <= 375.0)
@@ -312,16 +312,16 @@ void __61__PREditingTitleLayoutPickerComponentViewController_loadView__block_inv
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696ACD8];
-  v4 = [(PREditingTitleLayoutPickerComponentViewController *)self heightCellConstraints];
-  [v3 deactivateConstraints:v4];
+  heightCellConstraints = [(PREditingTitleLayoutPickerComponentViewController *)self heightCellConstraints];
+  [v3 deactivateConstraints:heightCellConstraints];
 
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(PREditingTitleLayoutPickerComponentViewController *)self cellViews];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  cellViews = [(PREditingTitleLayoutPickerComponentViewController *)self cellViews];
+  v7 = [cellViews countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -333,43 +333,43 @@ void __61__PREditingTitleLayoutPickerComponentViewController_loadView__block_inv
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(cellViews);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) heightAnchor];
+        heightAnchor = [*(*(&v15 + 1) + 8 * v10) heightAnchor];
         [(PREditingTitleLayoutPickerComponentViewController *)self cellHeight];
-        v12 = [v11 constraintEqualToConstant:?];
-        [v5 addObject:v12];
+        v12 = [heightAnchor constraintEqualToConstant:?];
+        [array addObject:v12];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [cellViews countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  v13 = [v5 copy];
+  v13 = [array copy];
   heightCellConstraints = self->_heightCellConstraints;
   self->_heightCellConstraints = v13;
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v5];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 }
 
-- (void)setSelectedTitleLayout:(unint64_t)a3
+- (void)setSelectedTitleLayout:(unint64_t)layout
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (self->_selectedTitleLayout != a3)
+  if (self->_selectedTitleLayout != layout)
   {
-    self->_selectedTitleLayout = a3;
+    self->_selectedTitleLayout = layout;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(PREditingTitleLayoutPickerComponentViewController *)self cellViews];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    cellViews = [(PREditingTitleLayoutPickerComponentViewController *)self cellViews];
+    v6 = [cellViews countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -380,21 +380,21 @@ void __61__PREditingTitleLayoutPickerComponentViewController_loadView__block_inv
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(cellViews);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
-          if ([v10 tag] == a3)
+          if ([v10 tag] == layout)
           {
-            v11 = [(PREditingTitleLayoutPickerComponentViewController *)self selectedCellView];
-            [v11 setSelected:0];
+            selectedCellView = [(PREditingTitleLayoutPickerComponentViewController *)self selectedCellView];
+            [selectedCellView setSelected:0];
 
             [(PREditingTitleLayoutPickerComponentViewController *)self setSelectedCellView:v10];
             [v10 setSelected:1];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [cellViews countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);

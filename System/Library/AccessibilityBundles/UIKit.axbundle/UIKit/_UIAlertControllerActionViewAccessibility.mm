@@ -1,5 +1,5 @@
 @interface _UIAlertControllerActionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityUserTestingIsCancelButton;
 - (BOOL)_accessibilityUserTestingIsDefaultButton;
 - (BOOL)_accessibilityUserTestingIsDestructiveButton;
@@ -13,14 +13,14 @@
 
 @implementation _UIAlertControllerActionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v11 = location;
   v10 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"_UIAlertControllerActionView";
   v3 = "UILabel";
   [location[0] validateClass:? hasInstanceVariable:? withType:?];
@@ -47,28 +47,28 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = 0;
-  v7 = [(_UIAlertControllerActionViewAccessibility *)self accessibilityUserDefinedTraits];
-  *&v2 = MEMORY[0x29EDC9740](v7).n128_u64[0];
-  if (v7)
+  unsignedLongLongValue = 0;
+  accessibilityUserDefinedTraits = [(_UIAlertControllerActionViewAccessibility *)self accessibilityUserDefinedTraits];
+  *&v2 = MEMORY[0x29EDC9740](accessibilityUserDefinedTraits).n128_u64[0];
+  if (accessibilityUserDefinedTraits)
   {
-    v6 = [(_UIAlertControllerActionViewAccessibility *)v15 accessibilityUserDefinedTraits];
-    v13 = [v6 unsignedLongLongValue];
-    MEMORY[0x29EDC9740](v6);
+    accessibilityUserDefinedTraits2 = [(_UIAlertControllerActionViewAccessibility *)selfCopy accessibilityUserDefinedTraits];
+    unsignedLongLongValue = [accessibilityUserDefinedTraits2 unsignedLongLongValue];
+    MEMORY[0x29EDC9740](accessibilityUserDefinedTraits2);
   }
 
   else
   {
-    v12.receiver = v15;
+    v12.receiver = selfCopy;
     v12.super_class = _UIAlertControllerActionViewAccessibility;
-    v13 = [(_UIAlertControllerActionViewAccessibility *)&v12 accessibilityTraits]| *MEMORY[0x29EDC7F70];
+    unsignedLongLongValue = [(_UIAlertControllerActionViewAccessibility *)&v12 accessibilityTraits]| *MEMORY[0x29EDC7F70];
   }
 
   v10 = 0;
   objc_opt_class();
-  v5 = [(_UIAlertControllerActionViewAccessibility *)v15 safeValueForKey:@"action"];
+  v5 = [(_UIAlertControllerActionViewAccessibility *)selfCopy safeValueForKey:@"action"];
   v9 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v5);
   v8 = MEMORY[0x29EDC9748](v9);
@@ -76,42 +76,42 @@
   v11 = v8;
   if ([v8 safeBoolForKey:@"isEnabled"])
   {
-    v13 &= ~*MEMORY[0x29EDC7FA8];
+    unsignedLongLongValue &= ~*MEMORY[0x29EDC7FA8];
   }
 
   else
   {
-    v13 |= *MEMORY[0x29EDC7FA8];
+    unsignedLongLongValue |= *MEMORY[0x29EDC7FA8];
   }
 
   if ([v11 safeBoolForKey:@"_checked"])
   {
-    v13 |= *MEMORY[0x29EDC7FC0];
+    unsignedLongLongValue |= *MEMORY[0x29EDC7FC0];
   }
 
-  v4 = v13;
+  v4 = unsignedLongLongValue;
   objc_storeStrong(&v11, 0);
   return v4;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v13 = self;
+  selfCopy = self;
   v12[1] = a2;
-  v8 = [(_UIAlertControllerActionViewAccessibility *)self isAccessibilityUserDefinedElement];
-  *&v2 = MEMORY[0x29EDC9740](v8).n128_u64[0];
-  if (v8)
+  isAccessibilityUserDefinedElement = [(_UIAlertControllerActionViewAccessibility *)self isAccessibilityUserDefinedElement];
+  *&v2 = MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement).n128_u64[0];
+  if (isAccessibilityUserDefinedElement)
   {
-    v7 = [(_UIAlertControllerActionViewAccessibility *)v13 isAccessibilityUserDefinedElement];
-    v14 = [v7 BOOLValue] & 1;
-    MEMORY[0x29EDC9740](v7);
+    isAccessibilityUserDefinedElement2 = [(_UIAlertControllerActionViewAccessibility *)selfCopy isAccessibilityUserDefinedElement];
+    v14 = [isAccessibilityUserDefinedElement2 BOOLValue] & 1;
+    MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement2);
   }
 
   else
   {
     v11 = 0;
     objc_opt_class();
-    v6 = [(_UIAlertControllerActionViewAccessibility *)v13 safeValueForKey:@"action"];
+    v6 = [(_UIAlertControllerActionViewAccessibility *)selfCopy safeValueForKey:@"action"];
     v10 = __UIAccessibilityCastAsClass();
     MEMORY[0x29EDC9740](v6);
     v9 = MEMORY[0x29EDC9748](v10);
@@ -126,7 +126,7 @@
 
     else
     {
-      v14 = ([(_UIAlertControllerActionViewAccessibility *)v13 accessibilityElementsHidden]& 1) == 0;
+      v14 = ([(_UIAlertControllerActionViewAccessibility *)selfCopy accessibilityElementsHidden]& 1) == 0;
     }
 
     objc_storeStrong(v12, 0);
@@ -137,100 +137,100 @@
 
 - (id)accessibilityLabel
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
-  v11 = [(_UIAlertControllerActionViewAccessibility *)self accessibilityUserDefinedLabel];
-  *&v2 = MEMORY[0x29EDC9740](v11).n128_u64[0];
-  if (v11)
+  accessibilityUserDefinedLabel = [(_UIAlertControllerActionViewAccessibility *)self accessibilityUserDefinedLabel];
+  *&v2 = MEMORY[0x29EDC9740](accessibilityUserDefinedLabel).n128_u64[0];
+  if (accessibilityUserDefinedLabel)
   {
-    v16 = [(_UIAlertControllerActionViewAccessibility *)v15 accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel2 = [(_UIAlertControllerActionViewAccessibility *)selfCopy accessibilityUserDefinedLabel];
   }
 
   else
   {
-    v10 = [(_UIAlertControllerActionViewAccessibility *)v15 safeValueForKey:@"action", v2];
+    v10 = [(_UIAlertControllerActionViewAccessibility *)selfCopy safeValueForKey:@"action", v2];
     v14[0] = [v10 accessibilityLabel];
     if ([v14[0] length])
     {
-      v16 = MEMORY[0x29EDC9748](v14[0]);
+      accessibilityUserDefinedLabel2 = MEMORY[0x29EDC9748](v14[0]);
       v13 = 1;
     }
 
     else
     {
-      v9 = [(_UIAlertControllerActionViewAccessibility *)v15 safeValueForKey:@"label"];
-      v12 = [v9 accessibilityLabel];
-      if (([(_UIAlertControllerActionViewAccessibility *)v15 safeBoolForKey:@"_hasDescriptiveText", MEMORY[0x29EDC9740](v9).n128_f64[0]]& 1) != 0)
+      v9 = [(_UIAlertControllerActionViewAccessibility *)selfCopy safeValueForKey:@"label"];
+      accessibilityLabel = [v9 accessibilityLabel];
+      if (([(_UIAlertControllerActionViewAccessibility *)selfCopy safeBoolForKey:@"_hasDescriptiveText", MEMORY[0x29EDC9740](v9).n128_f64[0]]& 1) != 0)
       {
-        v8 = [(_UIAlertControllerActionViewAccessibility *)v15 safeValueForKey:@"_descriptiveLabel"];
-        v7 = [v8 accessibilityLabel];
+        v8 = [(_UIAlertControllerActionViewAccessibility *)selfCopy safeValueForKey:@"_descriptiveLabel"];
+        accessibilityLabel2 = [v8 accessibilityLabel];
         v3 = __UIAXStringForVariables();
-        v4 = v12;
-        v12 = v3;
+        v4 = accessibilityLabel;
+        accessibilityLabel = v3;
         MEMORY[0x29EDC9740](v4);
-        MEMORY[0x29EDC9740](v7);
+        MEMORY[0x29EDC9740](accessibilityLabel2);
         MEMORY[0x29EDC9740](v8);
       }
 
-      v16 = MEMORY[0x29EDC9748](v12);
+      accessibilityUserDefinedLabel2 = MEMORY[0x29EDC9748](accessibilityLabel);
       v13 = 1;
-      objc_storeStrong(&v12, 0);
+      objc_storeStrong(&accessibilityLabel, 0);
     }
 
     objc_storeStrong(v14, 0);
   }
 
-  v5 = v16;
+  v5 = accessibilityUserDefinedLabel2;
 
   return v5;
 }
 
 - (id)accessibilityLanguage
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   v4 = [(_UIAlertControllerActionViewAccessibility *)self safeValueForKey:@"action"];
   location[0] = [v4 accessibilityLanguage];
   if ([location[0] length])
   {
-    v9 = MEMORY[0x29EDC9748](location[0]);
+    accessibilityLanguage = MEMORY[0x29EDC9748](location[0]);
   }
 
   else
   {
-    v5.receiver = v8;
+    v5.receiver = selfCopy;
     v5.super_class = _UIAlertControllerActionViewAccessibility;
-    v9 = [(_UIAlertControllerActionViewAccessibility *)&v5 accessibilityLanguage];
+    accessibilityLanguage = [(_UIAlertControllerActionViewAccessibility *)&v5 accessibilityLanguage];
   }
 
   v6 = 1;
   objc_storeStrong(location, 0);
-  v2 = v9;
+  v2 = accessibilityLanguage;
 
   return v2;
 }
 
 - (id)accessibilityIdentifier
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   v4 = [(_UIAlertControllerActionViewAccessibility *)self safeValueForKey:@"action"];
   location[0] = [v4 accessibilityIdentifier];
   if ([location[0] length])
   {
-    v9 = MEMORY[0x29EDC9748](location[0]);
+    accessibilityIdentifier = MEMORY[0x29EDC9748](location[0]);
   }
 
   else
   {
-    v5.receiver = v8;
+    v5.receiver = selfCopy;
     v5.super_class = _UIAlertControllerActionViewAccessibility;
-    v9 = [(_UIAlertControllerActionViewAccessibility *)&v5 accessibilityIdentifier];
+    accessibilityIdentifier = [(_UIAlertControllerActionViewAccessibility *)&v5 accessibilityIdentifier];
   }
 
   v6 = 1;
   objc_storeStrong(location, 0);
-  v2 = v9;
+  v2 = accessibilityIdentifier;
 
   return v2;
 }

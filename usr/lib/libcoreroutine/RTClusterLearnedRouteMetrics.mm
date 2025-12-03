@@ -1,13 +1,13 @@
 @interface RTClusterLearnedRouteMetrics
-+ (id)sharedInstance:(id)a3;
++ (id)sharedInstance:(id)instance;
 - (RTClusterLearnedRouteMetrics)init;
 - (id)prepareCloudSyncMetrics;
 - (id)prepareMetrics;
 - (void)_initData;
 - (void)_processClusterStatistics;
 - (void)_processCompoundRouteMetric;
-- (void)printMetricDictionary:(id)a3;
-- (void)submitToCoreAnalytics:(int64_t)a3;
+- (void)printMetricDictionary:(id)dictionary;
+- (void)submitToCoreAnalytics:(int64_t)analytics;
 @end
 
 @implementation RTClusterLearnedRouteMetrics
@@ -50,14 +50,14 @@
   return v3;
 }
 
-+ (id)sharedInstance:(id)a3
++ (id)sharedInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__RTClusterLearnedRouteMetrics_sharedInstance___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_2814A7DB8 != -1)
   {
     dispatch_once(&qword_2814A7DB8, block);
@@ -65,7 +65,7 @@
 
   if (_MergedGlobals_123)
   {
-    [_MergedGlobals_123 setDefaultsManager:v4];
+    [_MergedGlobals_123 setDefaultsManager:instanceCopy];
     v5 = _MergedGlobals_123;
   }
 
@@ -188,14 +188,14 @@ uint64_t __47__RTClusterLearnedRouteMetrics_sharedInstance___block_invoke(uint64
 - (void)_processClusterStatistics
 {
   v108 = *MEMORY[0x277D85DE8];
-  v4 = [(RTClusterLearnedRouteMetrics *)self defaultsManager];
-  v5 = [RTClusterLearnedRouteMetrics sharedInstance:v4];
+  defaultsManager = [(RTClusterLearnedRouteMetrics *)self defaultsManager];
+  v5 = [RTClusterLearnedRouteMetrics sharedInstance:defaultsManager];
 
   if (v5)
   {
-    v6 = [v5 clusterStatisticsArray];
+    clusterStatisticsArray = [v5 clusterStatisticsArray];
 
-    if (v6)
+    if (clusterStatisticsArray)
     {
       v7 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -460,29 +460,29 @@ LABEL_46:
 - (id)prepareCloudSyncMetrics
 {
   v12[6] = *MEMORY[0x277D85DE8];
-  v2 = self->_cloudKitSyncMetrics;
-  if (!v2)
+  initForDefaultMetric = self->_cloudKitSyncMetrics;
+  if (!initForDefaultMetric)
   {
-    v2 = [[RTLearnedRouteCloudKitSyncStatisticsMetrics alloc] initForDefaultMetric];
+    initForDefaultMetric = [[RTLearnedRouteCloudKitSyncStatisticsMetrics alloc] initForDefaultMetric];
   }
 
   v11[0] = @"NumEntriesTripClusterMO";
-  v3 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCloudKitSyncStatisticsMetrics numEntriesTripClusterMO](v2, "numEntriesTripClusterMO")}];
+  v3 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCloudKitSyncStatisticsMetrics numEntriesTripClusterMO](initForDefaultMetric, "numEntriesTripClusterMO")}];
   v12[0] = v3;
   v11[1] = @"NumEntriesTripClusterRecencyMO";
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCloudKitSyncStatisticsMetrics numEntriesTripClusterRecencyMO](v2, "numEntriesTripClusterRecencyMO")}];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCloudKitSyncStatisticsMetrics numEntriesTripClusterRecencyMO](initForDefaultMetric, "numEntriesTripClusterRecencyMO")}];
   v12[1] = v4;
   v11[2] = @"NumEntriesTripClusterRoadTransitionsMO";
-  v5 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCloudKitSyncStatisticsMetrics numEntriesTripClusterRoadTransitionsMO](v2, "numEntriesTripClusterRoadTransitionsMO")}];
+  v5 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCloudKitSyncStatisticsMetrics numEntriesTripClusterRoadTransitionsMO](initForDefaultMetric, "numEntriesTripClusterRoadTransitionsMO")}];
   v12[2] = v5;
   v11[3] = @"NumEntriesTripClusterRouteMO";
-  v6 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCloudKitSyncStatisticsMetrics numEntriesTripClusterRouteMO](v2, "numEntriesTripClusterRouteMO")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCloudKitSyncStatisticsMetrics numEntriesTripClusterRouteMO](initForDefaultMetric, "numEntriesTripClusterRouteMO")}];
   v12[3] = v6;
   v11[4] = @"NumEntriesTripClusterScheduleMO";
-  v7 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCloudKitSyncStatisticsMetrics numEntriesTripClusterScheduleMO](v2, "numEntriesTripClusterScheduleMO")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCloudKitSyncStatisticsMetrics numEntriesTripClusterScheduleMO](initForDefaultMetric, "numEntriesTripClusterScheduleMO")}];
   v12[4] = v7;
   v11[5] = @"NumTransactionsTripClusterRoadTransitionsMO";
-  v8 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCloudKitSyncStatisticsMetrics numTransactionsTripClusterRoadTransitionsMO](v2, "numTransactionsTripClusterRoadTransitionsMO")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCloudKitSyncStatisticsMetrics numTransactionsTripClusterRoadTransitionsMO](initForDefaultMetric, "numTransactionsTripClusterRoadTransitionsMO")}];
   v12[5] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:6];
 
@@ -494,13 +494,13 @@ LABEL_46:
   v127[74] = *MEMORY[0x277D85DE8];
   [(RTClusterLearnedRouteMetrics *)self _processClusterStatistics];
   [(RTClusterLearnedRouteMetrics *)self _processCompoundRouteMetric];
-  v3 = self->_clusterMetrics;
-  v4 = self->_spiStatMetrics;
-  v5 = self->_multiModalStatMetrics;
-  v6 = self->_compoundRouteMetric;
-  if (v3)
+  initForDefaultMetric = self->_clusterMetrics;
+  initForDefaultMetric3 = self->_spiStatMetrics;
+  initForDefaultMetric2 = self->_multiModalStatMetrics;
+  initForDefaultMetric4 = self->_compoundRouteMetric;
+  if (initForDefaultMetric)
   {
-    if (v4)
+    if (initForDefaultMetric3)
     {
       goto LABEL_3;
     }
@@ -508,18 +508,18 @@ LABEL_46:
 
   else
   {
-    v3 = [[RTLearnedRouteClusterStatisticsMetrics alloc] initForDefaultMetric];
-    if (v4)
+    initForDefaultMetric = [[RTLearnedRouteClusterStatisticsMetrics alloc] initForDefaultMetric];
+    if (initForDefaultMetric3)
     {
 LABEL_3:
-      if (v5)
+      if (initForDefaultMetric2)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
-      v5 = [[RTLearnedRouteMultiModalStatisticsMetrics alloc] initForDefaultMetric];
-      if (v6)
+      initForDefaultMetric2 = [[RTLearnedRouteMultiModalStatisticsMetrics alloc] initForDefaultMetric];
+      if (initForDefaultMetric4)
       {
         goto LABEL_5;
       }
@@ -528,344 +528,344 @@ LABEL_10:
     }
   }
 
-  v4 = [[RTLearnedRouteSPIStatisticsMetrics alloc] initForDefaultMetric];
-  if (!v5)
+  initForDefaultMetric3 = [[RTLearnedRouteSPIStatisticsMetrics alloc] initForDefaultMetric];
+  if (!initForDefaultMetric2)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v6)
+  if (initForDefaultMetric4)
   {
     goto LABEL_5;
   }
 
 LABEL_11:
-  v6 = [[RTLearnedRouteCompoundRouteMetrics alloc] initForDefaultMetric];
+  initForDefaultMetric4 = [[RTLearnedRouteCompoundRouteMetrics alloc] initForDefaultMetric];
 LABEL_5:
   v126[0] = @"DTWForMatchedTripAvg";
   v7 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteClusterStatisticsMetrics *)v3 dtwForMatchedTripAvg];
+  [(RTLearnedRouteClusterStatisticsMetrics *)initForDefaultMetric dtwForMatchedTripAvg];
   v125 = [v7 numberWithFloat:?];
   v127[0] = v125;
   v126[1] = @"DTWForMatchedTripMax";
   v8 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteClusterStatisticsMetrics *)v3 dtwForMatchedTripMax];
+  [(RTLearnedRouteClusterStatisticsMetrics *)initForDefaultMetric dtwForMatchedTripMax];
   v124 = [v8 numberWithFloat:?];
   v127[1] = v124;
   v126[2] = @"DTWForUnmatchedTripAvg";
   v9 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteClusterStatisticsMetrics *)v3 dtwForUnmatchedTripAvg];
+  [(RTLearnedRouteClusterStatisticsMetrics *)initForDefaultMetric dtwForUnmatchedTripAvg];
   v123 = [v9 numberWithFloat:?];
   v127[2] = v123;
   v126[3] = @"DTWForUnmatchedTripMax";
   v10 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteClusterStatisticsMetrics *)v3 dtwForUnmatchedTripMax];
+  [(RTLearnedRouteClusterStatisticsMetrics *)initForDefaultMetric dtwForUnmatchedTripMax];
   v122 = [v10 numberWithFloat:?];
   v127[3] = v122;
   v126[4] = @"DTWForUnmatchedTripMin";
   v11 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteClusterStatisticsMetrics *)v3 dtwForUnmatchedTripMin];
+  [(RTLearnedRouteClusterStatisticsMetrics *)initForDefaultMetric dtwForUnmatchedTripMin];
   v121 = [v11 numberWithFloat:?];
   v127[4] = v121;
   v126[5] = @"RouteLengthAvg";
   v12 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteClusterStatisticsMetrics *)v3 routeLengthAvg];
+  [(RTLearnedRouteClusterStatisticsMetrics *)initForDefaultMetric routeLengthAvg];
   v120 = [v12 numberWithFloat:?];
   v127[5] = v120;
   v126[6] = @"RouteLengthMax";
   v13 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteClusterStatisticsMetrics *)v3 routeLengthMax];
+  [(RTLearnedRouteClusterStatisticsMetrics *)initForDefaultMetric routeLengthMax];
   v119 = [v13 numberWithFloat:?];
   v127[6] = v119;
   v126[7] = @"TripsToFormLearnedRouteAvg";
   v14 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteClusterStatisticsMetrics *)v3 tripsToFormLearnedRouteAvg];
+  [(RTLearnedRouteClusterStatisticsMetrics *)initForDefaultMetric tripsToFormLearnedRouteAvg];
   v118 = [v14 numberWithFloat:?];
   v127[7] = v118;
   v126[8] = @"TripsToFormLearnedRouteMax";
-  v117 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteClusterStatisticsMetrics tripsToFormLearnedRouteMax](v3, "tripsToFormLearnedRouteMax")}];
+  v117 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteClusterStatisticsMetrics tripsToFormLearnedRouteMax](initForDefaultMetric, "tripsToFormLearnedRouteMax")}];
   v127[8] = v117;
   v126[9] = @"WaypointCountAvg";
   v15 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteClusterStatisticsMetrics *)v3 waypointCountAvg];
+  [(RTLearnedRouteClusterStatisticsMetrics *)initForDefaultMetric waypointCountAvg];
   v116 = [v15 numberWithFloat:?];
   v127[9] = v116;
   v126[10] = @"WaypointCountMax";
   v16 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteClusterStatisticsMetrics *)v3 waypointCountMax];
+  [(RTLearnedRouteClusterStatisticsMetrics *)initForDefaultMetric waypointCountMax];
   v115 = [v16 numberWithFloat:?];
   v127[10] = v115;
   v126[11] = @"NumOfDaysSinceClusterTraversalMax";
-  v114 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteClusterStatisticsMetrics numOfDaysSinceClusterTraversalMax](v3, "numOfDaysSinceClusterTraversalMax")}];
+  v114 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteClusterStatisticsMetrics numOfDaysSinceClusterTraversalMax](initForDefaultMetric, "numOfDaysSinceClusterTraversalMax")}];
   v127[11] = v114;
   v126[12] = @"NumClustersBetweenODPairMax";
-  v113 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteClusterStatisticsMetrics numClustersBetweenODPairMax](v3, "numClustersBetweenODPairMax")}];
+  v113 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteClusterStatisticsMetrics numClustersBetweenODPairMax](initForDefaultMetric, "numClustersBetweenODPairMax")}];
   v127[12] = v113;
   v126[13] = @"NumRoadsDifferenceBetweenTripSegmentAndLearnedRoute";
-  v112 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteClusterStatisticsMetrics numRoadsDifferenceBetweenTripSegmentAndLearnedRoute](v3, "numRoadsDifferenceBetweenTripSegmentAndLearnedRoute")}];
+  v112 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteClusterStatisticsMetrics numRoadsDifferenceBetweenTripSegmentAndLearnedRoute](initForDefaultMetric, "numRoadsDifferenceBetweenTripSegmentAndLearnedRoute")}];
   v127[13] = v112;
   v126[14] = @"ClusterProcessingRunTimeAvg";
   v17 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteClusterStatisticsMetrics *)v3 clusterProcessingRunTimeAvg];
+  [(RTLearnedRouteClusterStatisticsMetrics *)initForDefaultMetric clusterProcessingRunTimeAvg];
   v111 = [v17 numberWithFloat:?];
   v127[14] = v111;
   v126[15] = @"ClusterProcessingRunTimeMax";
   v18 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteClusterStatisticsMetrics *)v3 clusterProcessingRunTimeMax];
+  [(RTLearnedRouteClusterStatisticsMetrics *)initForDefaultMetric clusterProcessingRunTimeMax];
   v110 = [v18 numberWithFloat:?];
   v127[15] = v110;
   v126[16] = @"LearningPipelineDeferralCount";
-  v109 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteClusterStatisticsMetrics learningPipelineDeferralCount](v3, "learningPipelineDeferralCount")}];
+  v109 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteClusterStatisticsMetrics learningPipelineDeferralCount](initForDefaultMetric, "learningPipelineDeferralCount")}];
   v127[16] = v109;
   v126[17] = @"TSPRunTimeAvg";
   v19 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteClusterStatisticsMetrics *)v3 tspRunTimeAvg];
+  [(RTLearnedRouteClusterStatisticsMetrics *)initForDefaultMetric tspRunTimeAvg];
   v108 = [v19 numberWithFloat:?];
   v127[17] = v108;
   v126[18] = @"TSPRunTimeMax";
   v20 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteClusterStatisticsMetrics *)v3 tspRunTimeMax];
+  [(RTLearnedRouteClusterStatisticsMetrics *)initForDefaultMetric tspRunTimeMax];
   v107 = [v20 numberWithFloat:?];
   v127[18] = v107;
   v126[19] = @"IsSPISuccess";
-  v106 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics isSPISuccess](v4, "isSPISuccess")}];
+  v106 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics isSPISuccess](initForDefaultMetric3, "isSPISuccess")}];
   v127[19] = v106;
   v126[20] = @"DidSPIReturnDestinationVisit";
-  v105 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics didSPIReturnDestinationVisit](v4, "didSPIReturnDestinationVisit")}];
+  v105 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics didSPIReturnDestinationVisit](initForDefaultMetric3, "didSPIReturnDestinationVisit")}];
   v127[20] = v105;
   v126[21] = @"DidSPIReturned2Routes";
-  v104 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics didSPIReturned2Routes](v4, "didSPIReturned2Routes")}];
+  v104 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics didSPIReturned2Routes](initForDefaultMetric3, "didSPIReturned2Routes")}];
   v127[21] = v104;
   v126[22] = @"DidSPIReturned3Routes";
-  v103 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics didSPIReturned3Routes](v4, "didSPIReturned3Routes")}];
+  v103 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics didSPIReturned3Routes](initForDefaultMetric3, "didSPIReturned3Routes")}];
   v127[22] = v103;
   v126[23] = @"DidSPIReturnNonVisit";
-  v102 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics didSPIReturnNonVisit](v4, "didSPIReturnNonVisit")}];
+  v102 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics didSPIReturnNonVisit](initForDefaultMetric3, "didSPIReturnNonVisit")}];
   v127[23] = v102;
   v126[24] = @"DidSPIReturnODPair";
-  v101 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics didSPIReturnODPair](v4, "didSPIReturnODPair")}];
+  v101 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics didSPIReturnODPair](initForDefaultMetric3, "didSPIReturnODPair")}];
   v127[24] = v101;
   v126[25] = @"DidSPIReturnOriginVisit";
-  v100 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics didSPIReturnOriginVisit](v4, "didSPIReturnOriginVisit")}];
+  v100 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics didSPIReturnOriginVisit](initForDefaultMetric3, "didSPIReturnOriginVisit")}];
   v127[25] = v100;
   v126[26] = @"NumSPIReturnWaypointsAvg";
-  v99 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteSPIStatisticsMetrics numSPIReturnWaypointsAvg](v4, "numSPIReturnWaypointsAvg")}];
+  v99 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteSPIStatisticsMetrics numSPIReturnWaypointsAvg](initForDefaultMetric3, "numSPIReturnWaypointsAvg")}];
   v127[26] = v99;
   v126[27] = @"SpiQueryType";
-  v98 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteSPIStatisticsMetrics spiQueryType](v4, "spiQueryType")}];
+  v98 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteSPIStatisticsMetrics spiQueryType](initForDefaultMetric3, "spiQueryType")}];
   v127[27] = v98;
   v126[28] = @"SpiResponseTime";
   v21 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteSPIStatisticsMetrics *)v4 spiResponseTime];
+  [(RTLearnedRouteSPIStatisticsMetrics *)initForDefaultMetric3 spiResponseTime];
   v97 = [v21 numberWithFloat:?];
   v127[28] = v97;
   v126[29] = @"SPIReturnRouteLengthAvg";
   v22 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteSPIStatisticsMetrics *)v4 spiReturnRouteLengthAvg];
+  [(RTLearnedRouteSPIStatisticsMetrics *)initForDefaultMetric3 spiReturnRouteLengthAvg];
   v96 = [v22 numberWithFloat:?];
   v127[29] = v96;
   v126[30] = @"TimeBetweenSPIQueriesAvg";
   v23 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteSPIStatisticsMetrics *)v4 timeBetweenSPIQueries];
+  [(RTLearnedRouteSPIStatisticsMetrics *)initForDefaultMetric3 timeBetweenSPIQueries];
   v95 = [v23 numberWithFloat:?];
   v127[30] = v95;
   v126[31] = @"IsSPIResponseRouteHighLikelihood";
-  v94 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics isSPIResponseRouteHighLikelihood](v4, "isSPIResponseRouteHighLikelihood")}];
+  v94 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics isSPIResponseRouteHighLikelihood](initForDefaultMetric3, "isSPIResponseRouteHighLikelihood")}];
   v127[31] = v94;
   v126[32] = @"IsSPIResponseRouteLowLikelihood";
-  v93 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics isSPIResponseRouteLowLikelihood](v4, "isSPIResponseRouteLowLikelihood")}];
+  v93 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics isSPIResponseRouteLowLikelihood](initForDefaultMetric3, "isSPIResponseRouteLowLikelihood")}];
   v127[32] = v93;
   v126[33] = @"FetchReasonCode";
-  v92 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteSPIStatisticsMetrics fetchReasonCode](v4, "fetchReasonCode")}];
+  v92 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteSPIStatisticsMetrics fetchReasonCode](initForDefaultMetric3, "fetchReasonCode")}];
   v127[33] = v92;
   v126[34] = @"IsSPIBestRouteLikelihood";
-  v91 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics isSPIBestRouteLikelihood](v4, "isSPIBestRouteLikelihood")}];
+  v91 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTLearnedRouteSPIStatisticsMetrics isSPIBestRouteLikelihood](initForDefaultMetric3, "isSPIBestRouteLikelihood")}];
   v127[34] = v91;
   v126[35] = @"MultiModalBikeDistanceAfterDriveAvg";
   v24 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalBikeDistanceAfterDriveAvg];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalBikeDistanceAfterDriveAvg];
   v90 = [v24 numberWithFloat:?];
   v127[35] = v90;
   v126[36] = @"MultiModalBikeDistanceAfterDriveMax";
   v25 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalBikeDistanceAfterDriveMax];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalBikeDistanceAfterDriveMax];
   v89 = [v25 numberWithFloat:?];
   v127[36] = v89;
   v126[37] = @"MultiModalBikeDistanceBeforeDriveAvg";
   v26 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalBikeDistanceBeforeDriveAvg];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalBikeDistanceBeforeDriveAvg];
   v88 = [v26 numberWithFloat:?];
   v127[37] = v88;
   v126[38] = @"MultiModalBikeDistanceBeforeDriveMax";
   v27 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalBikeDistanceBeforeDriveMax];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalBikeDistanceBeforeDriveMax];
   v87 = [v27 numberWithFloat:?];
   v127[38] = v87;
   v126[39] = @"MultiModalBikeTimeAfterDriveAvg";
   v28 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalBikeTimeAfterDriveAvg];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalBikeTimeAfterDriveAvg];
   v86 = [v28 numberWithFloat:?];
   v127[39] = v86;
   v126[40] = @"MultiModalBikeTimeAfterDriveMax";
   v29 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalBikeTimeAfterDriveMax];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalBikeTimeAfterDriveMax];
   v85 = [v29 numberWithFloat:?];
   v127[40] = v85;
   v126[41] = @"MultiModalBikeTimeBeforeDriveAvg";
   v30 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalBikeTimeBeforeDriveAvg];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalBikeTimeBeforeDriveAvg];
   v84 = [v30 numberWithFloat:?];
   v127[41] = v84;
   v126[42] = @"MultiModalBikeTimeBeforeDriveMax";
   v31 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalBikeTimeBeforeDriveMax];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalBikeTimeBeforeDriveMax];
   v83 = [v31 numberWithFloat:?];
   v127[42] = v83;
   v126[43] = @"MultiModalDriveDistanceMax";
   v32 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalDriveDistanceMax];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalDriveDistanceMax];
   v82 = [v32 numberWithFloat:?];
   v127[43] = v82;
   v126[44] = @"MultiModalDriveTimeMax";
   v33 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalDriveTimeMax];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalDriveTimeMax];
   v81 = [v33 numberWithFloat:?];
   v127[44] = v81;
   v126[45] = @"MultiModalNumBikeSegmentsAvg";
   v34 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalNumBikeSegmentsAvg];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalNumBikeSegmentsAvg];
   v80 = [v34 numberWithFloat:?];
   v127[45] = v80;
   v126[46] = @"MultiModalNumBikeSegmentsMax";
   v35 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalNumBikeSegmentsMax];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalNumBikeSegmentsMax];
   v79 = [v35 numberWithFloat:?];
   v127[46] = v79;
   v126[47] = @"MultiModalNumWalkSegmentsAvg";
   v36 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalNumWalkSegmentsAvg];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalNumWalkSegmentsAvg];
   v78 = [v36 numberWithFloat:?];
   v127[47] = v78;
   v126[48] = @"MultiModalNumWalkSegmentsMax";
   v37 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalNumWalkSegmentsMax];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalNumWalkSegmentsMax];
   v77 = [v37 numberWithFloat:?];
   v127[48] = v77;
   v126[49] = @"MultiModalTripSegmentsBikeOnly";
-  v76 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics multiModalTripSegmentsBikeOnly](v5, "multiModalTripSegmentsBikeOnly")}];
+  v76 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics multiModalTripSegmentsBikeOnly](initForDefaultMetric2, "multiModalTripSegmentsBikeOnly")}];
   v127[49] = v76;
   v126[50] = @"MultiModalTripSegmentsWalkOnly";
-  v75 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics multiModalTripSegmentsWalkOnly](v5, "multiModalTripSegmentsWalkOnly")}];
+  v75 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics multiModalTripSegmentsWalkOnly](initForDefaultMetric2, "multiModalTripSegmentsWalkOnly")}];
   v127[50] = v75;
   v126[51] = @"MultiModalTripSegmentsWithDrive";
-  v74 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics multiModalTripSegmentsWithDrive](v5, "multiModalTripSegmentsWithDrive")}];
+  v74 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics multiModalTripSegmentsWithDrive](initForDefaultMetric2, "multiModalTripSegmentsWithDrive")}];
   v127[51] = v74;
   v126[52] = @"MultiModalWalkDistanceAfterDriveAvg";
   v38 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalWalkDistanceAfterDriveAvg];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalWalkDistanceAfterDriveAvg];
   v72 = [v38 numberWithFloat:?];
   v127[52] = v72;
   v126[53] = @"MultiModalWalkDistanceAfterDriveMax";
   v39 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalWalkDistanceAfterDriveMax];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalWalkDistanceAfterDriveMax];
   v70 = [v39 numberWithFloat:?];
   v127[53] = v70;
   v126[54] = @"MultiModalWalkDistanceBeforeDriveAvg";
   v40 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalWalkDistanceBeforeDriveAvg];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalWalkDistanceBeforeDriveAvg];
   v69 = [v40 numberWithFloat:?];
   v127[54] = v69;
   v126[55] = @"MultiModalWalkDistanceBeforeDriveMax";
   v41 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalWalkDistanceBeforeDriveMax];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalWalkDistanceBeforeDriveMax];
   v68 = [v41 numberWithFloat:?];
   v127[55] = v68;
   v126[56] = @"MultiModalWalkTimeAfterDriveAvg";
   v42 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalWalkTimeAfterDriveAvg];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalWalkTimeAfterDriveAvg];
   v67 = [v42 numberWithFloat:?];
   v127[56] = v67;
   v126[57] = @"MultiModalWalkTimeAfterDriveMax";
   v43 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalWalkTimeAfterDriveMax];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalWalkTimeAfterDriveMax];
   v66 = [v43 numberWithFloat:?];
   v127[57] = v66;
   v126[58] = @"MultiModalWalkTimeBeforeDriveAvg";
   v44 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalWalkTimeBeforeDriveAvg];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalWalkTimeBeforeDriveAvg];
   v65 = [v44 numberWithFloat:?];
   v127[58] = v65;
   v126[59] = @"MultiModalWalkTimeBeforeDriveMax";
   v45 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteMultiModalStatisticsMetrics *)v5 multiModalWalkTimeBeforeDriveMax];
+  [(RTLearnedRouteMultiModalStatisticsMetrics *)initForDefaultMetric2 multiModalWalkTimeBeforeDriveMax];
   v64 = [v45 numberWithFloat:?];
   v127[59] = v64;
   v126[60] = @"NumCyclingAfterDriveClusters";
-  v63 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics numCyclingAfterDriveClusters](v5, "numCyclingAfterDriveClusters")}];
+  v63 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics numCyclingAfterDriveClusters](initForDefaultMetric2, "numCyclingAfterDriveClusters")}];
   v127[60] = v63;
   v126[61] = @"NumCyclingBeforeDriveClusters";
-  v62 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics numCyclingBeforeDriveClusters](v5, "numCyclingBeforeDriveClusters")}];
+  v62 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics numCyclingBeforeDriveClusters](initForDefaultMetric2, "numCyclingBeforeDriveClusters")}];
   v127[61] = v62;
   v126[62] = @"NumCyclingOnlyClusters";
-  v61 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics numCyclingOnlyClusters](v5, "numCyclingOnlyClusters")}];
+  v61 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics numCyclingOnlyClusters](initForDefaultMetric2, "numCyclingOnlyClusters")}];
   v127[62] = v61;
   v126[63] = @"NumDrivingOnlyClusters";
-  v60 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics numDrivingOnlyClusters](v5, "numDrivingOnlyClusters")}];
+  v60 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics numDrivingOnlyClusters](initForDefaultMetric2, "numDrivingOnlyClusters")}];
   v127[63] = v60;
   v126[64] = @"NumWalkingAfterDriveClusters";
-  v59 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics numWalkingAfterDriveClusters](v5, "numWalkingAfterDriveClusters")}];
+  v59 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics numWalkingAfterDriveClusters](initForDefaultMetric2, "numWalkingAfterDriveClusters")}];
   v127[64] = v59;
   v126[65] = @"NumWalkingBeforeDriveClusters";
-  v58 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics numWalkingBeforeDriveClusters](v5, "numWalkingBeforeDriveClusters")}];
+  v58 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics numWalkingBeforeDriveClusters](initForDefaultMetric2, "numWalkingBeforeDriveClusters")}];
   v127[65] = v58;
   v126[66] = @"NumWalkingOnlyClusters";
-  [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics numWalkingOnlyClusters](v5, "numWalkingOnlyClusters")}];
-  v46 = v73 = v3;
+  [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteMultiModalStatisticsMetrics numWalkingOnlyClusters](initForDefaultMetric2, "numWalkingOnlyClusters")}];
+  v46 = v73 = initForDefaultMetric;
   v127[66] = v46;
   v126[67] = @"CompoundRoutesDistanceBetweenAdjacentCompoundTripSegmentsAvg";
   v47 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteCompoundRouteMetrics *)v6 compoundRoutesDistanceBetweenAdjacentCompoundTripSegmentsAvg];
+  [(RTLearnedRouteCompoundRouteMetrics *)initForDefaultMetric4 compoundRoutesDistanceBetweenAdjacentCompoundTripSegmentsAvg];
   v48 = [v47 numberWithFloat:?];
   v127[67] = v48;
   v126[68] = @"CompoundRoutesNumDriveSegmentsCompoundedAvg";
   v49 = MEMORY[0x277CCABB0];
-  [(RTLearnedRouteCompoundRouteMetrics *)v6 compoundRoutesNumDriveSegmentsCompoundedAvg];
+  [(RTLearnedRouteCompoundRouteMetrics *)initForDefaultMetric4 compoundRoutesNumDriveSegmentsCompoundedAvg];
   [v49 numberWithFloat:?];
-  v50 = v71 = v4;
+  v50 = v71 = initForDefaultMetric3;
   v127[68] = v50;
   v126[69] = @"CompoundRoutesNumFailureDrivesTooFar";
-  v51 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCompoundRouteMetrics compoundRoutesNumFailureDrivesTooFar](v6, "compoundRoutesNumFailureDrivesTooFar")}];
+  v51 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCompoundRouteMetrics compoundRoutesNumFailureDrivesTooFar](initForDefaultMetric4, "compoundRoutesNumFailureDrivesTooFar")}];
   v127[69] = v51;
   v126[70] = @"CompoundRoutesNumFailureDrivesTooLong";
-  v52 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCompoundRouteMetrics compoundRoutesNumFailureDrivesTooLong](v6, "compoundRoutesNumFailureDrivesTooLong")}];
+  v52 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCompoundRouteMetrics compoundRoutesNumFailureDrivesTooLong](initForDefaultMetric4, "compoundRoutesNumFailureDrivesTooLong")}];
   v127[70] = v52;
   v126[71] = @"CompoundRoutesNumFailureDrivesTooMany";
-  v53 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCompoundRouteMetrics compoundRoutesNumFailureDrivesTooMany](v6, "compoundRoutesNumFailureDrivesTooMany")}];
+  v53 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCompoundRouteMetrics compoundRoutesNumFailureDrivesTooMany](initForDefaultMetric4, "compoundRoutesNumFailureDrivesTooMany")}];
   v127[71] = v53;
   v126[72] = @"CompoundRoutesNumFailureTripSegments";
-  v54 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCompoundRouteMetrics compoundRoutesNumFailureTripSegments](v6, "compoundRoutesNumFailureTripSegments")}];
+  v54 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCompoundRouteMetrics compoundRoutesNumFailureTripSegments](initForDefaultMetric4, "compoundRoutesNumFailureTripSegments")}];
   v127[72] = v54;
   v126[73] = @"CompoundRoutesNumSuccessTripSegments";
-  v55 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCompoundRouteMetrics compoundRoutesNumSuccessTripSegments](v6, "compoundRoutesNumSuccessTripSegments")}];
+  v55 = [MEMORY[0x277CCABB0] numberWithInt:{-[RTLearnedRouteCompoundRouteMetrics compoundRoutesNumSuccessTripSegments](initForDefaultMetric4, "compoundRoutesNumSuccessTripSegments")}];
   v127[73] = v55;
   v57 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v127 forKeys:v126 count:74];
 
   return v57;
 }
 
-- (void)printMetricDictionary:(id)a3
+- (void)printMetricDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  if (dictionaryCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [v3 countByEnumeratingWithState:&v12 objects:v20 count:16];
+    v5 = [dictionaryCopy countByEnumeratingWithState:&v12 objects:v20 count:16];
     if (v5)
     {
       v6 = v5;
@@ -900,15 +900,15 @@ LABEL_5:
   }
 }
 
-- (void)submitToCoreAnalytics:(int64_t)a3
+- (void)submitToCoreAnalytics:(int64_t)analytics
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = [(RTClusterLearnedRouteMetrics *)self defaultsManager];
-  if (!v6 || (v7 = v6, -[RTClusterLearnedRouteMetrics defaultsManager](self, "defaultsManager"), v8 = objc_claimAutoreleasedReturnValue(), [v8 objectForKey:@"RTDefaultsTripSegmentMetricDisablement"], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, !v9) || (-[RTClusterLearnedRouteMetrics defaultsManager](self, "defaultsManager"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKey:", @"RTDefaultsTripSegmentMetricDisablement"), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11) || (v12 = objc_msgSend(v11, "BOOLValue"), v11, !v12))
+  defaultsManager = [(RTClusterLearnedRouteMetrics *)self defaultsManager];
+  if (!defaultsManager || (v7 = defaultsManager, -[RTClusterLearnedRouteMetrics defaultsManager](self, "defaultsManager"), v8 = objc_claimAutoreleasedReturnValue(), [v8 objectForKey:@"RTDefaultsTripSegmentMetricDisablement"], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, !v9) || (-[RTClusterLearnedRouteMetrics defaultsManager](self, "defaultsManager"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKey:", @"RTDefaultsTripSegmentMetricDisablement"), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11) || (v12 = objc_msgSend(v11, "BOOLValue"), v11, !v12))
   {
-    if (a3 != 3)
+    if (analytics != 3)
     {
-      if (a3 != 5)
+      if (analytics != 5)
       {
 LABEL_21:
         [(RTClusterLearnedRouteMetrics *)self _initData];

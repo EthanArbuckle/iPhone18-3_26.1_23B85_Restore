@@ -1,17 +1,17 @@
 @interface VMURangeToStringMap
 - (VMURangeToStringMap)init;
-- (VMURangeToStringMap)initWithCoder:(id)a3;
-- (_VMURange)rangeContainingAddress:(unint64_t)a3;
-- (_VMURange)rangeForString:(id)a3 startingAtAddress:(unint64_t)a4;
+- (VMURangeToStringMap)initWithCoder:(id)coder;
+- (_VMURange)rangeContainingAddress:(unint64_t)address;
+- (_VMURange)rangeForString:(id)string startingAtAddress:(unint64_t)address;
 - (id).cxx_construct;
 - (id)description;
-- (id)stringForAddress:(unint64_t)a3;
-- (unsigned)indexForString:(id)a3 insertIfMissing:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateHexAddressesInStrings:(id)a3;
-- (void)enumerateRanges:(id)a3;
-- (void)resymbolicateStringsWithSymbolicator:(_CSTypeRef)a3;
-- (void)setString:(id)a3 forRange:(_VMURange)a4;
+- (id)stringForAddress:(unint64_t)address;
+- (unsigned)indexForString:(id)string insertIfMissing:(BOOL)missing;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateHexAddressesInStrings:(id)strings;
+- (void)enumerateRanges:(id)ranges;
+- (void)resymbolicateStringsWithSymbolicator:(_CSTypeRef)symbolicator;
+- (void)setString:(id)string forRange:(_VMURange)range;
 - (void)sort;
 @end
 
@@ -34,12 +34,12 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:1];
-  [v4 encodeObject:v5 forKey:@"classVersion"];
+  [coderCopy encodeObject:v5 forKey:@"classVersion"];
 
   v6 = objc_opt_new();
   [v6 serialize32:{-[VMURangeToStringMap count](self, "count")}];
@@ -85,15 +85,15 @@
     while (v12);
   }
 
-  v15 = [v6 copyContiguousData];
-  [v4 encodeObject:v15 forKey:@"simpleSerializerData"];
+  copyContiguousData = [v6 copyContiguousData];
+  [coderCopy encodeObject:copyContiguousData forKey:@"simpleSerializerData"];
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (VMURangeToStringMap)initWithCoder:(id)a3
+- (VMURangeToStringMap)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(VMURangeToStringMap *)self init];
   v6 = v5;
   if (!v5)
@@ -102,12 +102,12 @@
   }
 
   v5->_sorted = 0;
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"classVersion"];
-  v8 = [v7 unsignedIntValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"classVersion"];
+  unsignedIntValue = [v7 unsignedIntValue];
 
-  if (v8 == 1)
+  if (unsignedIntValue == 1)
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"simpleSerializerData"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"simpleSerializerData"];
     v10 = [[VMUSimpleDeserializer alloc] initWithData:v9];
     v34 = 0;
     v11 = [(VMUSimpleDeserializer *)v10 deserialize32WithError:&v34];
@@ -215,17 +215,17 @@ LABEL_18:
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   for (i = self->_rangeAndStringVector.__begin_; i != self->_rangeAndStringVector.__end_; i = (i + 24))
   {
     v5 = *i;
     v6 = *(i + 1);
     v7 = *(i + 4);
     v8 = [(NSMutableArray *)self->_strings objectAtIndexedSubscript:v7];
-    [v3 appendFormat:@"%#llx-%#llx[%llu] stringID %u %@\n", v5, v6 + v5, v6, v7, v8];
+    [string appendFormat:@"%#llx-%#llx[%llu] stringID %u %@\n", v5, v6 + v5, v6, v7, v8];
   }
 
-  return v3;
+  return string;
 }
 
 - (void)sort
@@ -251,26 +251,26 @@ LABEL_18:
   }
 }
 
-- (unsigned)indexForString:(id)a3 insertIfMissing:(BOOL)a4
+- (unsigned)indexForString:(id)string insertIfMissing:(BOOL)missing
 {
-  v4 = a4;
-  v10 = a3;
-  if (!v10)
+  missingCopy = missing;
+  stringCopy = string;
+  if (!stringCopy)
   {
     return -1;
   }
 
-  v6 = std::__hash_table<std::__hash_value_type<NSString * {__strong},unsigned int>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},unsigned int>,NSStringHashFunctor,NSStringEqualsFunctor,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},unsigned int>,NSStringEqualsFunctor,NSStringHashFunctor,true>,std::allocator<std::__hash_value_type<NSString * {__strong},unsigned int>>>::find<NSString * {__strong}>(&self->_stringToIndexMap.__table_.__bucket_list_.__ptr_, &v10);
+  v6 = std::__hash_table<std::__hash_value_type<NSString * {__strong},unsigned int>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},unsigned int>,NSStringHashFunctor,NSStringEqualsFunctor,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},unsigned int>,NSStringEqualsFunctor,NSStringHashFunctor,true>,std::allocator<std::__hash_value_type<NSString * {__strong},unsigned int>>>::find<NSString * {__strong}>(&self->_stringToIndexMap.__table_.__bucket_list_.__ptr_, &stringCopy);
   if (v6)
   {
     v7 = *(v6 + 6);
   }
 
-  else if (v4)
+  else if (missingCopy)
   {
-    [(NSMutableArray *)self->_strings addObject:v10];
+    [(NSMutableArray *)self->_strings addObject:stringCopy];
     v9 = [(NSMutableArray *)self->_strings count]- 1;
-    std::__hash_table<std::__hash_value_type<NSString * {__strong},unsigned int>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},unsigned int>,NSStringHashFunctor,NSStringEqualsFunctor,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},unsigned int>,NSStringEqualsFunctor,NSStringHashFunctor,true>,std::allocator<std::__hash_value_type<NSString * {__strong},unsigned int>>>::__emplace_unique_key_args<NSString * {__strong},NSString * {__strong}&,unsigned int &>(&self->_stringToIndexMap.__table_.__bucket_list_.__ptr_, &v10);
+    std::__hash_table<std::__hash_value_type<NSString * {__strong},unsigned int>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},unsigned int>,NSStringHashFunctor,NSStringEqualsFunctor,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},unsigned int>,NSStringEqualsFunctor,NSStringHashFunctor,true>,std::allocator<std::__hash_value_type<NSString * {__strong},unsigned int>>>::__emplace_unique_key_args<NSString * {__strong},NSString * {__strong}&,unsigned int &>(&self->_stringToIndexMap.__table_.__bucket_list_.__ptr_, &stringCopy);
     v7 = v9;
   }
 
@@ -282,16 +282,16 @@ LABEL_18:
   return v7;
 }
 
-- (void)setString:(id)a3 forRange:(_VMURange)a4
+- (void)setString:(id)string forRange:(_VMURange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  if (v7)
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  if (stringCopy)
   {
     *(&v8 + 1) = length;
     *&v8 = location;
-    v9 = [(VMURangeToStringMap *)self indexForString:v7 insertIfMissing:1];
+    v9 = [(VMURangeToStringMap *)self indexForString:stringCopy insertIfMissing:1];
     if (self->_sorted && [(VMURangeToStringMap *)self count]&& location < *(self->_rangeAndStringVector.__end_ - 2) + *(self->_rangeAndStringVector.__end_ - 3))
     {
       self->_sorted = 0;
@@ -301,7 +301,7 @@ LABEL_18:
   }
 }
 
-- (id)stringForAddress:(unint64_t)a3
+- (id)stringForAddress:(unint64_t)address
 {
   if (!self->_sorted)
   {
@@ -321,7 +321,7 @@ LABEL_18:
       v11 = *v9;
       v10 = (v9 + 3);
       v7 += ~(v7 >> 1);
-      if (v11 > a3)
+      if (v11 > address)
       {
         v7 = v8;
       }
@@ -335,7 +335,7 @@ LABEL_18:
     while (v7);
   }
 
-  if (end == begin || a3 - *(end - 3) >= *(end - 2))
+  if (end == begin || address - *(end - 3) >= *(end - 2))
   {
     v12 = 0;
   }
@@ -348,7 +348,7 @@ LABEL_18:
   return v12;
 }
 
-- (_VMURange)rangeContainingAddress:(unint64_t)a3
+- (_VMURange)rangeContainingAddress:(unint64_t)address
 {
   if (!self->_sorted)
   {
@@ -368,7 +368,7 @@ LABEL_18:
       v11 = *v9;
       v10 = (v9 + 3);
       v7 += ~(v7 >> 1);
-      if (v11 > a3)
+      if (v11 > address)
       {
         v7 = v8;
       }
@@ -382,7 +382,7 @@ LABEL_18:
     while (v7);
   }
 
-  if (end == begin || (v12 = *(end - 3), v13 = *(end - 2), a3 - v12 >= v13))
+  if (end == begin || (v12 = *(end - 3), v13 = *(end - 2), address - v12 >= v13))
   {
     v13 = 0;
     v12 = 0x7FFFFFFFFFFFFFFFLL;
@@ -393,10 +393,10 @@ LABEL_18:
   return result;
 }
 
-- (_VMURange)rangeForString:(id)a3 startingAtAddress:(unint64_t)a4
+- (_VMURange)rangeForString:(id)string startingAtAddress:(unint64_t)address
 {
-  v6 = a3;
-  v7 = [(VMURangeToStringMap *)self indexForString:v6 insertIfMissing:0];
+  stringCopy = string;
+  v7 = [(VMURangeToStringMap *)self indexForString:stringCopy insertIfMissing:0];
   if (v7 != -1)
   {
     if (!self->_sorted)
@@ -416,7 +416,7 @@ LABEL_18:
         v14 = *v12;
         v13 = (v12 + 3);
         v10 += ~(v10 >> 1);
-        if (v14 > a4)
+        if (v14 > address)
         {
           v10 = v11;
         }
@@ -453,7 +453,7 @@ LABEL_15:
   return result;
 }
 
-- (void)resymbolicateStringsWithSymbolicator:(_CSTypeRef)a3
+- (void)resymbolicateStringsWithSymbolicator:(_CSTypeRef)symbolicator
 {
   v4 = [(NSMutableArray *)self->_strings count];
   if (v4)
@@ -483,20 +483,20 @@ LABEL_15:
   }
 }
 
-- (void)enumerateRanges:(id)a3
+- (void)enumerateRanges:(id)ranges
 {
-  v6 = a3;
+  rangesCopy = ranges;
   begin = self->_rangeAndStringVector.__begin_;
   for (i = self->_rangeAndStringVector.__end_; begin != i; begin = (begin + 24))
   {
-    (*(v6 + 2))(v6, *begin, *(begin + 1));
+    (*(rangesCopy + 2))(rangesCopy, *begin, *(begin + 1));
   }
 }
 
-- (void)enumerateHexAddressesInStrings:(id)a3
+- (void)enumerateHexAddressesInStrings:(id)strings
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringsCopy = strings;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -526,7 +526,7 @@ LABEL_15:
             {
               v12 = v11;
               v13 = strtoll([v11 UTF8String], 0, 16);
-              v4[2](v4, v13);
+              stringsCopy[2](stringsCopy, v13);
             }
           }
         }

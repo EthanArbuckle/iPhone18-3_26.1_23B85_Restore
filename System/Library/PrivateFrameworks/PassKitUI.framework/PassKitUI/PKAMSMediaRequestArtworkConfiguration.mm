@@ -1,14 +1,14 @@
 @interface PKAMSMediaRequestArtworkConfiguration
 - (CGSize)artworkSize;
-- (PKAMSMediaRequestArtworkConfiguration)initWithArtworkSize:(CGSize)a3 artworkCropType:(unint64_t)a4 animatedArtworkType:(unint64_t)a5;
+- (PKAMSMediaRequestArtworkConfiguration)initWithArtworkSize:(CGSize)size artworkCropType:(unint64_t)type animatedArtworkType:(unint64_t)artworkType;
 @end
 
 @implementation PKAMSMediaRequestArtworkConfiguration
 
-- (PKAMSMediaRequestArtworkConfiguration)initWithArtworkSize:(CGSize)a3 artworkCropType:(unint64_t)a4 animatedArtworkType:(unint64_t)a5
+- (PKAMSMediaRequestArtworkConfiguration)initWithArtworkSize:(CGSize)size artworkCropType:(unint64_t)type animatedArtworkType:(unint64_t)artworkType
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = PKAMSMediaRequestArtworkConfiguration;
   result = [(PKAMSMediaRequestArtworkConfiguration *)&v10 init];
@@ -16,8 +16,8 @@
   {
     result->_artworkSize.width = width;
     result->_artworkSize.height = height;
-    result->_cropType = a4;
-    result->_animatedArtworkType = a5;
+    result->_cropType = type;
+    result->_animatedArtworkType = artworkType;
   }
 
   return result;

@@ -1,30 +1,30 @@
 @interface TSCH3DChartValueLabelsSceneObject
-- (id)convertSelectionPathTo3D:(id)a3 path:(id)a4;
-- (id)selectionPathForInfo:(id)a3 scene:(id)a4 pickedPoint:(id)a5;
-- (void)renderAnnotatedLabels:(id)a3;
+- (id)convertSelectionPathTo3D:(id)d path:(id)path;
+- (id)selectionPathForInfo:(id)info scene:(id)scene pickedPoint:(id)point;
+- (void)renderAnnotatedLabels:(id)labels;
 @end
 
 @implementation TSCH3DChartValueLabelsSceneObject
 
-- (void)renderAnnotatedLabels:(id)a3
+- (void)renderAnnotatedLabels:(id)labels
 {
-  v18 = a3;
-  v8 = objc_msgSend_scene(v18, v4, v5, v6, v7);
+  labelsCopy = labels;
+  v8 = objc_msgSend_scene(labelsCopy, v4, v5, v6, v7);
   v13 = objc_msgSend_main(v8, v9, v10, v11, v12);
 
-  objc_msgSend_renderLabelsSceneObject_pipeline_(v13, v14, v15, v16, v17, self, v18);
+  objc_msgSend_renderLabelsSceneObject_pipeline_(v13, v14, v15, v16, v17, self, labelsCopy);
 }
 
-- (id)selectionPathForInfo:(id)a3 scene:(id)a4 pickedPoint:(id)a5
+- (id)selectionPathForInfo:(id)info scene:(id)scene pickedPoint:(id)point
 {
   v79[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v14 = v9;
-  if (v9)
+  infoCopy = info;
+  sceneCopy = scene;
+  pointCopy = point;
+  v14 = pointCopy;
+  if (pointCopy)
   {
-    objc_msgSend_element(v9, v10, v11, v12, v13);
+    objc_msgSend_element(pointCopy, v10, v11, v12, v13);
     v19 = v78;
   }
 
@@ -39,7 +39,7 @@
     v19 = 0;
   }
 
-  v35 = objc_msgSend_model(v7, v15, v16, v17, v18);
+  v35 = objc_msgSend_model(infoCopy, v15, v16, v17, v18);
   v40 = objc_msgSend_seriesAtIndex_(v35, v36, v37, v38, v39, v19);
 
   if (!v40)
@@ -62,16 +62,16 @@
   return v76;
 }
 
-- (id)convertSelectionPathTo3D:(id)a3 path:(id)a4
+- (id)convertSelectionPathTo3D:(id)d path:(id)path
 {
   v68[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (objc_msgSend_argumentsCount(v6, v7, v8, v9, v10) == 1)
+  dCopy = d;
+  pathCopy = path;
+  if (objc_msgSend_argumentsCount(pathCopy, v7, v8, v9, v10) == 1)
   {
-    v15 = objc_msgSend_argumentAtIndex_(v6, v11, v12, v13, v14, 0);
+    v15 = objc_msgSend_argumentAtIndex_(pathCopy, v11, v12, v13, v14, 0);
     v20 = objc_msgSend_unsignedIntegerValue(v15, v16, v17, v18, v19);
-    v25 = objc_msgSend_model(v5, v21, v22, v23, v24);
+    v25 = objc_msgSend_model(dCopy, v21, v22, v23, v24);
     v30 = objc_msgSend_seriesAtIndex_(v25, v26, v27, v28, v29, v20);
 
     if (!v30)

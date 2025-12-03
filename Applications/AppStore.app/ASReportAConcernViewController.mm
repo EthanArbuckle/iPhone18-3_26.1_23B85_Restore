@@ -1,14 +1,14 @@
 @interface ASReportAConcernViewController
-- (ASReportAConcernViewController)initWithConfiguration:(id)a3;
+- (ASReportAConcernViewController)initWithConfiguration:(id)configuration;
 @end
 
 @implementation ASReportAConcernViewController
 
-- (ASReportAConcernViewController)initWithConfiguration:(id)a3
+- (ASReportAConcernViewController)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  objc_storeStrong(&self->_configuration, a3);
-  v6 = [[ASReportAConcernReasonViewController alloc] initWithConfiguration:v5];
+  configurationCopy = configuration;
+  objc_storeStrong(&self->_configuration, configuration);
+  v6 = [[ASReportAConcernReasonViewController alloc] initWithConfiguration:configurationCopy];
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;

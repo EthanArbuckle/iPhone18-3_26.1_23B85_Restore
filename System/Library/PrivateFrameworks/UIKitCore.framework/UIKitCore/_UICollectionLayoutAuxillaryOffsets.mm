@@ -1,21 +1,21 @@
 @interface _UICollectionLayoutAuxillaryOffsets
-- (BOOL)containsIndex:(int64_t)a3 forElementKind:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)overlapsOffsets:(id)a3;
+- (BOOL)containsIndex:(int64_t)index forElementKind:(id)kind;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)overlapsOffsets:(id)offsets;
 - (NSSet)elementKinds;
 - (NSString)description;
-- (_NSRange)rangeForElementKind:(id)a3;
+- (_NSRange)rangeForElementKind:(id)kind;
 - (_UICollectionLayoutAuxillaryOffsets)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)indexesForElementKind:(id)a3;
-- (id)initWithOffsets:(id *)a1;
-- (id)offsetsByApplyingOffsets:(id)a3;
-- (id)offsetsByRebasingOnOffsets:(id)a3;
-- (int64_t)offsetForElementKind:(id)a3;
-- (void)_offsetWithOffsets:(int)a3 applyingBase:;
-- (void)addIndexes:(void *)a3 forElementKind:;
-- (void)incrementCountForElementKind:(uint64_t)a1;
-- (void)incrementCountsFromOffsets:(id *)a1;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)indexesForElementKind:(id)kind;
+- (id)initWithOffsets:(id *)offsets;
+- (id)offsetsByApplyingOffsets:(id)offsets;
+- (id)offsetsByRebasingOnOffsets:(id)offsets;
+- (int64_t)offsetForElementKind:(id)kind;
+- (void)_offsetWithOffsets:(int)offsets applyingBase:;
+- (void)addIndexes:(void *)indexes forElementKind:;
+- (void)incrementCountForElementKind:(uint64_t)kind;
+- (void)incrementCountsFromOffsets:(id *)offsets;
 @end
 
 @implementation _UICollectionLayoutAuxillaryOffsets
@@ -31,27 +31,27 @@
 - (NSSet)elementKinds
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(NSMutableDictionary *)self->_offsets allKeys];
-  v4 = [v2 setWithArray:v3];
+  allKeys = [(NSMutableDictionary *)self->_offsets allKeys];
+  v4 = [v2 setWithArray:allKeys];
 
   return v4;
 }
 
-- (id)initWithOffsets:(id *)a1
+- (id)initWithOffsets:(id *)offsets
 {
-  v2 = a1;
-  if (a1)
+  offsetsCopy = offsets;
+  if (offsets)
   {
     if (!a2)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:sel_initWithOffsets_ object:v2 file:@"_UICollectionLayoutHelpers.m" lineNumber:1608 description:{@"Invalid parameter not satisfying: %@", @"offsets"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithOffsets_ object:offsetsCopy file:@"_UICollectionLayoutHelpers.m" lineNumber:1608 description:{@"Invalid parameter not satisfying: %@", @"offsets"}];
     }
 
-    v13.receiver = v2;
+    v13.receiver = offsetsCopy;
     v13.super_class = _UICollectionLayoutAuxillaryOffsets;
-    v2 = objc_msgSendSuper2(&v13, sel_init);
-    if (v2)
+    offsetsCopy = objc_msgSendSuper2(&v13, sel_init);
+    if (offsetsCopy)
     {
       v7 = 0;
       v8 = &v7;
@@ -65,12 +65,12 @@
       v6[3] = &unk_1E70FAD98;
       v6[4] = &v7;
       [a2 enumerateKeysAndObjectsUsingBlock:v6];
-      objc_storeStrong(v2 + 1, v8[5]);
+      objc_storeStrong(offsetsCopy + 1, v8[5]);
       _Block_object_dispose(&v7, 8);
     }
   }
 
-  return v2;
+  return offsetsCopy;
 }
 
 - (NSString)description
@@ -92,7 +92,7 @@
   v14 = v15;
   v8 = v6;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   [(NSMutableDictionary *)offsets enumerateKeysAndObjectsUsingBlock:v11];
   [v8 appendString:@">"];
   v9 = v8;
@@ -102,23 +102,23 @@
   return v9;
 }
 
-- (id)offsetsByApplyingOffsets:(id)a3
+- (id)offsetsByApplyingOffsets:(id)offsets
 {
   v4 = [(_UICollectionLayoutAuxillaryOffsets *)self copy];
-  [(_UICollectionLayoutAuxillaryOffsets *)v4 _offsetWithOffsets:a3 applyingBase:0];
+  [(_UICollectionLayoutAuxillaryOffsets *)v4 _offsetWithOffsets:offsets applyingBase:0];
 
   return v4;
 }
 
-- (void)_offsetWithOffsets:(int)a3 applyingBase:
+- (void)_offsetWithOffsets:(int)offsets applyingBase:
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     if (!a2)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:sel__offsetWithOffsets_applyingBase_ object:a1 file:@"_UICollectionLayoutHelpers.m" lineNumber:1793 description:{@"Invalid parameter not satisfying: %@", @"offsets"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__offsetWithOffsets_applyingBase_ object:self file:@"_UICollectionLayoutHelpers.m" lineNumber:1793 description:{@"Invalid parameter not satisfying: %@", @"offsets"}];
     }
 
     v25 = 0u;
@@ -145,17 +145,17 @@
           v12 = v11;
           if (v10 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v19 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v19 handleFailureInMethod:sel__offsetWithOffsets_applyingBase_ object:a1 file:@"_UICollectionLayoutHelpers.m" lineNumber:1796 description:{@"Invalid parameter not satisfying: %@", @"range.location != NSNotFound"}];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler2 handleFailureInMethod:sel__offsetWithOffsets_applyingBase_ object:self file:@"_UICollectionLayoutHelpers.m" lineNumber:1796 description:{@"Invalid parameter not satisfying: %@", @"range.location != NSNotFound"}];
           }
 
-          v13 = [*(a1 + 8) objectForKeyedSubscript:v9];
+          v13 = [*(self + 8) objectForKeyedSubscript:v9];
           v14 = v13;
           if (v13)
           {
-            v15 = [v13 firstIndex];
+            firstIndex = [v13 firstIndex];
             v16 = [v14 count];
-            if (a3)
+            if (offsets)
             {
               v17 = 0;
             }
@@ -165,8 +165,8 @@
               v17 = v12;
             }
 
-            v18 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{v17 + v10 + v15, v16}];
-            [*(a1 + 8) setObject:v18 forKeyedSubscript:v9];
+            v18 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{v17 + v10 + firstIndex, v16}];
+            [*(self + 8) setObject:v18 forKeyedSubscript:v9];
           }
         }
 
@@ -178,29 +178,29 @@
   }
 }
 
-- (id)offsetsByRebasingOnOffsets:(id)a3
+- (id)offsetsByRebasingOnOffsets:(id)offsets
 {
   v4 = [(_UICollectionLayoutAuxillaryOffsets *)self copy];
-  [(_UICollectionLayoutAuxillaryOffsets *)v4 _offsetWithOffsets:a3 applyingBase:1];
+  [(_UICollectionLayoutAuxillaryOffsets *)v4 _offsetWithOffsets:offsets applyingBase:1];
 
   return v4;
 }
 
-- (void)addIndexes:(void *)a3 forElementKind:
+- (void)addIndexes:(void *)indexes forElementKind:
 {
-  if (a1)
+  if (self)
   {
-    if (![a3 length])
+    if (![indexes length])
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:sel_addIndexes_forElementKind_ object:a1 file:@"_UICollectionLayoutHelpers.m" lineNumber:1675 description:{@"Invalid parameter not satisfying: %@", @"elementKind.length"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_addIndexes_forElementKind_ object:self file:@"_UICollectionLayoutHelpers.m" lineNumber:1675 description:{@"Invalid parameter not satisfying: %@", @"elementKind.length"}];
     }
 
-    v6 = [*(a1 + 8) objectForKeyedSubscript:a3];
+    v6 = [*(self + 8) objectForKeyedSubscript:indexes];
     if (!v6)
     {
       v8 = objc_alloc_init(MEMORY[0x1E696AD50]);
-      [*(a1 + 8) setObject:v8 forKeyedSubscript:a3];
+      [*(self + 8) setObject:v8 forKeyedSubscript:indexes];
       v6 = v8;
     }
 
@@ -209,17 +209,17 @@
   }
 }
 
-- (void)incrementCountsFromOffsets:(id *)a1
+- (void)incrementCountsFromOffsets:(id *)offsets
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a1 && a2)
+  if (offsets && a2)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [a2 elementKinds];
-    v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    elementKinds = [a2 elementKinds];
+    v5 = [elementKinds countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v5)
     {
       v6 = v5;
@@ -230,28 +230,28 @@
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(elementKinds);
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
           v10 = [a2 indexesForElementKind:v9];
-          v11 = [a1[1] objectForKeyedSubscript:v9];
+          v11 = [offsets[1] objectForKeyedSubscript:v9];
           if (v11)
           {
             v12 = v11;
-            v13 = [a1 rangeForElementKind:v9];
+            v13 = [offsets rangeForElementKind:v9];
             [v12 addIndexesInRange:{v13 + v14, objc_msgSend(v10, "count")}];
           }
 
           else
           {
             v12 = objc_alloc_init(MEMORY[0x1E696AD50]);
-            [a1[1] setObject:v12 forKeyedSubscript:v9];
+            [offsets[1] setObject:v12 forKeyedSubscript:v9];
             [v12 addIndexes:v10];
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [elementKinds countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v6);
@@ -259,21 +259,21 @@
   }
 }
 
-- (void)incrementCountForElementKind:(uint64_t)a1
+- (void)incrementCountForElementKind:(uint64_t)kind
 {
-  if (a1)
+  if (kind)
   {
     if (![a2 length])
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:sel_incrementCountForElementKind_ object:a1 file:@"_UICollectionLayoutHelpers.m" lineNumber:1704 description:{@"Invalid parameter not satisfying: %@", @"elementKind.length"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_incrementCountForElementKind_ object:kind file:@"_UICollectionLayoutHelpers.m" lineNumber:1704 description:{@"Invalid parameter not satisfying: %@", @"elementKind.length"}];
     }
 
-    v4 = [*(a1 + 8) objectForKeyedSubscript:a2];
+    v4 = [*(kind + 8) objectForKeyedSubscript:a2];
     if (!v4)
     {
       v7 = objc_alloc_init(MEMORY[0x1E696AD50]);
-      [*(a1 + 8) setObject:v7 forKeyedSubscript:a2];
+      [*(kind + 8) setObject:v7 forKeyedSubscript:a2];
       v4 = v7;
     }
 
@@ -292,45 +292,45 @@
   }
 }
 
-- (_NSRange)rangeForElementKind:(id)a3
+- (_NSRange)rangeForElementKind:(id)kind
 {
-  if (![a3 length])
+  if (![kind length])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutHelpers.m" lineNumber:1719 description:{@"Invalid parameter not satisfying: %@", @"elementKind.length"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutHelpers.m" lineNumber:1719 description:{@"Invalid parameter not satisfying: %@", @"elementKind.length"}];
   }
 
-  v6 = [(NSMutableDictionary *)self->_offsets objectForKeyedSubscript:a3];
+  v6 = [(NSMutableDictionary *)self->_offsets objectForKeyedSubscript:kind];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 firstIndex];
+    firstIndex = [v6 firstIndex];
     v9 = [v7 count];
   }
 
   else
   {
     v9 = 0;
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    firstIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v10 = v8;
+  v10 = firstIndex;
   v11 = v9;
   result.length = v11;
   result.location = v10;
   return result;
 }
 
-- (id)indexesForElementKind:(id)a3
+- (id)indexesForElementKind:(id)kind
 {
-  if (![a3 length])
+  if (![kind length])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_UICollectionLayoutAuxillaryOffsets indexesForElementKind:]"];
-    [v10 handleFailureInFunction:v11 file:@"_UICollectionLayoutHelpers.m" lineNumber:1729 description:{@"Invalid parameter not satisfying: %@", @"elementKind.length"}];
+    [currentHandler handleFailureInFunction:v11 file:@"_UICollectionLayoutHelpers.m" lineNumber:1729 description:{@"Invalid parameter not satisfying: %@", @"elementKind.length"}];
   }
 
-  v5 = [(NSMutableDictionary *)self->_offsets objectForKeyedSubscript:a3];
+  v5 = [(NSMutableDictionary *)self->_offsets objectForKeyedSubscript:kind];
   v6 = v5;
   if (v5)
   {
@@ -347,29 +347,29 @@
   return v8;
 }
 
-- (int64_t)offsetForElementKind:(id)a3
+- (int64_t)offsetForElementKind:(id)kind
 {
-  if (![a3 length])
+  if (![kind length])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutHelpers.m" lineNumber:1734 description:{@"Invalid parameter not satisfying: %@", @"elementKind.length"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionLayoutHelpers.m" lineNumber:1734 description:{@"Invalid parameter not satisfying: %@", @"elementKind.length"}];
   }
 
-  return [(_UICollectionLayoutAuxillaryOffsets *)self rangeForElementKind:a3];
+  return [(_UICollectionLayoutAuxillaryOffsets *)self rangeForElementKind:kind];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_UICollectionLayoutAuxillaryOffsets allocWithZone:a3];
+  v4 = [_UICollectionLayoutAuxillaryOffsets allocWithZone:zone];
   offsets = self->_offsets;
 
   return [(_UICollectionLayoutAuxillaryOffsets *)&v4->super.isa initWithOffsets:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -384,8 +384,8 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(_UICollectionLayoutAuxillaryOffsets *)self elementKinds];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  elementKinds = [(_UICollectionLayoutAuxillaryOffsets *)self elementKinds];
+  v6 = [elementKinds countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -396,20 +396,20 @@
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(elementKinds);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
         v11 = [(_UICollectionLayoutAuxillaryOffsets *)self rangeForElementKind:v10];
         v13 = v12;
-        if (v11 != [a3 rangeForElementKind:v10] || v13 != v14)
+        if (v11 != [equal rangeForElementKind:v10] || v13 != v14)
         {
           v16 = 0;
           goto LABEL_18;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [elementKinds countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
@@ -421,15 +421,15 @@ LABEL_18:
   return v16;
 }
 
-- (BOOL)overlapsOffsets:(id)a3
+- (BOOL)overlapsOffsets:(id)offsets
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(_UICollectionLayoutAuxillaryOffsets *)self elementKinds];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  elementKinds = [(_UICollectionLayoutAuxillaryOffsets *)self elementKinds];
+  v6 = [elementKinds countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -440,12 +440,12 @@ LABEL_18:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(elementKinds);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [(_UICollectionLayoutAuxillaryOffsets *)self indexesForElementKind:v10];
-        v12 = [a3 indexesForElementKind:v10];
+        v12 = [offsets indexesForElementKind:v10];
         if ([v12 count] && objc_msgSend(v11, "containsIndexes:", v12))
         {
 
@@ -454,7 +454,7 @@ LABEL_18:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [elementKinds countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -470,13 +470,13 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)containsIndex:(int64_t)a3 forElementKind:(id)a4
+- (BOOL)containsIndex:(int64_t)index forElementKind:(id)kind
 {
-  v5 = [(_UICollectionLayoutAuxillaryOffsets *)self indexesForElementKind:a4];
+  v5 = [(_UICollectionLayoutAuxillaryOffsets *)self indexesForElementKind:kind];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 containsIndex:a3];
+    v7 = [v5 containsIndex:index];
   }
 
   else

@@ -1,22 +1,22 @@
 @interface ServicePredictionController
 - (_TtC17wirelessinsightsd27ServicePredictionController)init;
-- (void)handleLocationAuthorizationUpdate:(BOOL)a3;
-- (void)handleLocationUpdate:(id)a3;
+- (void)handleLocationAuthorizationUpdate:(BOOL)update;
+- (void)handleLocationUpdate:(id)update;
 @end
 
 @implementation ServicePredictionController
 
-- (void)handleLocationUpdate:(id)a3
+- (void)handleLocationUpdate:(id)update
 {
   v5 = sub_100164A3C(&qword_1002D7180, &qword_10024ABF0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v17 - v7;
-  v9 = a3;
+  updateCopy = update;
 
-  [v9 latitude];
+  [updateCopy latitude];
   v11 = v10;
-  [v9 longitude];
+  [updateCopy longitude];
   v13 = [objc_allocWithZone(CLLocation) initWithLatitude:v11 longitude:v12];
   v14 = type metadata accessor for TaskPriority();
   (*(*(v14 - 8) + 56))(v8, 1, 1, v14);
@@ -29,13 +29,13 @@
   sub_100176B80(0, 0, v8, &unk_10024D4F0, v15);
 }
 
-- (void)handleLocationAuthorizationUpdate:(BOOL)a3
+- (void)handleLocationAuthorizationUpdate:(BOOL)update
 {
   v5 = sub_100164A3C(&qword_1002D7180, &qword_10024ABF0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v11 - v7;
-  if (!a3)
+  if (!update)
   {
     v9 = type metadata accessor for TaskPriority();
     (*(*(v9 - 8) + 56))(v8, 1, 1, v9);

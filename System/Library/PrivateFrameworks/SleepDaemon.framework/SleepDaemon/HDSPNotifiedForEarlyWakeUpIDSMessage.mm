@@ -1,5 +1,5 @@
 @interface HDSPNotifiedForEarlyWakeUpIDSMessage
-- (HDSPNotifiedForEarlyWakeUpIDSMessage)initWithCoder:(id)a3;
+- (HDSPNotifiedForEarlyWakeUpIDSMessage)initWithCoder:(id)coder;
 - (NSString)identifier;
 @end
 
@@ -12,7 +12,7 @@
   return NSStringFromClass(v2);
 }
 
-- (HDSPNotifiedForEarlyWakeUpIDSMessage)initWithCoder:(id)a3
+- (HDSPNotifiedForEarlyWakeUpIDSMessage)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = HDSPNotifiedForEarlyWakeUpIDSMessage;

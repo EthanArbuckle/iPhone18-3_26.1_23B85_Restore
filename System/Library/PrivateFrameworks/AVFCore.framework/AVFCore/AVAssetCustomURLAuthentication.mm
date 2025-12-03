@@ -1,12 +1,12 @@
 @interface AVAssetCustomURLAuthentication
-- (AVAssetCustomURLAuthentication)initWithFigAsset:(OpaqueFigAsset *)a3;
-- (int)_handleAuthChallenge:(__CFDictionary *)a3 requestID:(unint64_t)a4 canHandleRequestOut:(char *)a5;
+- (AVAssetCustomURLAuthentication)initWithFigAsset:(OpaqueFigAsset *)asset;
+- (int)_handleAuthChallenge:(__CFDictionary *)challenge requestID:(unint64_t)d canHandleRequestOut:(char *)out;
 - (void)dealloc;
 @end
 
 @implementation AVAssetCustomURLAuthentication
 
-- (AVAssetCustomURLAuthentication)initWithFigAsset:(OpaqueFigAsset *)a3
+- (AVAssetCustomURLAuthentication)initWithFigAsset:(OpaqueFigAsset *)asset
 {
   v14.receiver = self;
   v14.super_class = AVAssetCustomURLAuthentication;
@@ -14,7 +14,7 @@
   v4 = [(AVAssetCustomURLAuthentication *)&v14 init];
   if (v4)
   {
-    if (!a3)
+    if (!asset)
     {
       goto LABEL_11;
     }
@@ -78,11 +78,11 @@ LABEL_11:
   [(AVAssetCustomURLAuthentication *)&v5 dealloc];
 }
 
-- (int)_handleAuthChallenge:(__CFDictionary *)a3 requestID:(unint64_t)a4 canHandleRequestOut:(char *)a5
+- (int)_handleAuthChallenge:(__CFDictionary *)challenge requestID:(unint64_t)d canHandleRequestOut:(char *)out
 {
   v18 = 0;
   v19 = 0;
-  *a5 = 0;
+  *out = 0;
   v9 = FigCustomURLRequestInfoCopyNSURLAuthenticationChallenge();
   if (v9)
   {
@@ -101,20 +101,20 @@ LABEL_11:
 
   else
   {
-    *a5 = 1;
+    *out = 1;
     v10 = FigCustomURLRequestInfoCopyURL();
     if (v10 || (v11 = [AVAssetCustomURLAuthentication copyKeychainCredentialForUrl:v18]) == 0)
     {
-      [(AVAssetCustomURLAuthentication *)a3 _handleAuthChallenge:v16 requestID:a4 canHandleRequestOut:?];
+      [(AVAssetCustomURLAuthentication *)challenge _handleAuthChallenge:v16 requestID:d canHandleRequestOut:?];
       v12 = 0;
     }
 
     else
     {
       v12 = v11;
-      if (a3)
+      if (challenge)
       {
-        CFRetain(a3);
+        CFRetain(challenge);
       }
 
       v13 = v12;
@@ -123,8 +123,8 @@ LABEL_11:
       block[1] = 3221225472;
       block[2] = __85__AVAssetCustomURLAuthentication__handleAuthChallenge_requestID_canHandleRequestOut___block_invoke;
       block[3] = &unk_1E7462CF8;
-      block[6] = a3;
-      block[7] = a4;
+      block[6] = challenge;
+      block[7] = d;
       block[4] = v12;
       block[5] = self;
       dispatch_async(callbackQueue, block);

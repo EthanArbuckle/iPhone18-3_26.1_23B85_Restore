@@ -1,43 +1,43 @@
 @interface HearingAidAdvancedController
-- (id)HIID:(id)a3;
-- (id)connection:(id)a3;
-- (id)firmwareVersion:(id)a3;
-- (id)hardwareVersion:(id)a3;
+- (id)HIID:(id)d;
+- (id)connection:(id)connection;
+- (id)firmwareVersion:(id)version;
+- (id)hardwareVersion:(id)version;
 - (id)specifiers;
-- (id)specifiersForEar:(int)a3;
-- (void)setSpecifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)specifiersForEar:(int)ear;
+- (void)setSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation HearingAidAdvancedController
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = HearingAidAdvancedController;
-  v4 = a3;
-  [(HearingAidAdvancedController *)&v6 setSpecifier:v4];
-  v5 = [v4 userInfo];
+  specifierCopy = specifier;
+  [(HearingAidAdvancedController *)&v6 setSpecifier:specifierCopy];
+  userInfo = [specifierCopy userInfo];
 
-  [(HearingAidAdvancedController *)self setDevice:v5];
+  [(HearingAidAdvancedController *)self setDevice:userInfo];
 }
 
-- (id)HIID:(id)a3
+- (id)HIID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = [a3 userInfo];
-    v5 = [v4 BOOLValue];
-    v6 = [(HearingAidAdvancedController *)self device];
-    v7 = v6;
-    if (v5)
+    userInfo = [d userInfo];
+    bOOLValue = [userInfo BOOLValue];
+    device = [(HearingAidAdvancedController *)self device];
+    v7 = device;
+    if (bOOLValue)
     {
-      [v6 leftUUID];
+      [device leftUUID];
     }
 
     else
     {
-      [v6 rightUUID];
+      [device rightUUID];
     }
     v8 = ;
   }
@@ -50,25 +50,25 @@
   return v8;
 }
 
-- (id)connection:(id)a3
+- (id)connection:(id)connection
 {
-  v4 = a3;
-  if (v4)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
-    v5 = [(HearingAidAdvancedController *)self device];
-    v6 = [v5 isLeftConnected];
+    device = [(HearingAidAdvancedController *)self device];
+    isLeftConnected = [device isLeftConnected];
 
-    v7 = [(HearingAidAdvancedController *)self device];
-    v8 = [v7 isRightConnected];
+    device2 = [(HearingAidAdvancedController *)self device];
+    isRightConnected = [device2 isRightConnected];
 
-    v9 = [v4 userInfo];
-    if ([v9 BOOLValue])
+    userInfo = [connectionCopy userInfo];
+    if ([userInfo BOOLValue])
     {
-      v8 = v6;
+      isRightConnected = isLeftConnected;
     }
 
     v10 = hearingSettingsLocString(@"AdvancedSettingsConnectionStatusNotConnected", @"HearingAidDetailSettings");
-    if (v8 == 1)
+    if (isRightConnected == 1)
     {
       v11 = hearingSettingsLocString(@"AdvancedSettingsConnectionStatusConnected", @"HearingAidDetailSettings");
 
@@ -84,27 +84,27 @@
   return v10;
 }
 
-- (id)firmwareVersion:(id)a3
+- (id)firmwareVersion:(id)version
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  versionCopy = version;
+  v5 = versionCopy;
+  if (!versionCopy)
   {
     goto LABEL_6;
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 BOOLValue];
-  v8 = [(HearingAidAdvancedController *)self device];
-  v9 = v8;
-  if (v7)
+  userInfo = [versionCopy userInfo];
+  bOOLValue = [userInfo BOOLValue];
+  device = [(HearingAidAdvancedController *)self device];
+  v9 = device;
+  if (bOOLValue)
   {
-    [v8 leftFirmwareVersion];
+    [device leftFirmwareVersion];
   }
 
   else
   {
-    [v8 rightFirmwareVersion];
+    [device rightFirmwareVersion];
   }
   v10 = ;
 
@@ -117,27 +117,27 @@ LABEL_6:
   return v10;
 }
 
-- (id)hardwareVersion:(id)a3
+- (id)hardwareVersion:(id)version
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  versionCopy = version;
+  v5 = versionCopy;
+  if (!versionCopy)
   {
     goto LABEL_6;
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 BOOLValue];
-  v8 = [(HearingAidAdvancedController *)self device];
-  v9 = v8;
-  if (v7)
+  userInfo = [versionCopy userInfo];
+  bOOLValue = [userInfo BOOLValue];
+  device = [(HearingAidAdvancedController *)self device];
+  v9 = device;
+  if (bOOLValue)
   {
-    [v8 leftHardwareVersion];
+    [device leftHardwareVersion];
   }
 
   else
   {
-    [v8 rightHardwareVersion];
+    [device rightHardwareVersion];
   }
   v10 = ;
 
@@ -150,10 +150,10 @@ LABEL_6:
   return v10;
 }
 
-- (id)specifiersForEar:(int)a3
+- (id)specifiersForEar:(int)ear
 {
   v5 = +[NSMutableArray array];
-  v6 = a3 == 2;
+  v6 = ear == 2;
   v7 = hearingSettingsLocString(@"AdvancedSettingsConnectionTitle", @"HearingAidDetailSettings");
   v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:"connection:" detail:0 cell:4 edit:0];
 
@@ -193,10 +193,10 @@ LABEL_6:
   if (!v4)
   {
     v5 = +[NSMutableArray array];
-    v6 = [(HearingAidAdvancedController *)self device];
-    v7 = [v6 rightAvailable];
+    device = [(HearingAidAdvancedController *)self device];
+    rightAvailable = [device rightAvailable];
 
-    if (v7)
+    if (rightAvailable)
     {
       v8 = hearingSettingsLocString(@"AdvancedSettingsGroupRightTitle", @"HearingAidDetailSettings");
       v9 = [PSSpecifier groupSpecifierWithName:v8];
@@ -206,10 +206,10 @@ LABEL_6:
       [v5 addObjectsFromArray:v10];
     }
 
-    v11 = [(HearingAidAdvancedController *)self device];
-    v12 = [v11 leftAvailable];
+    device2 = [(HearingAidAdvancedController *)self device];
+    leftAvailable = [device2 leftAvailable];
 
-    if (v12)
+    if (leftAvailable)
     {
       v13 = hearingSettingsLocString(@"AdvancedSettingsGroupLeftTitle", @"HearingAidDetailSettings");
       v14 = [PSSpecifier groupSpecifierWithName:v13];
@@ -221,8 +221,8 @@ LABEL_6:
     }
 
     v16 = +[AXHAServer sharedInstance];
-    v17 = [v16 availableControllers];
-    v18 = [v17 count];
+    availableControllers = [v16 availableControllers];
+    v18 = [availableControllers count];
 
     if (v18)
     {
@@ -231,14 +231,14 @@ LABEL_6:
 
       [v5 addObject:v20];
       v21 = +[AXHAServer sharedInstance];
-      v22 = [v21 availableControllers];
+      availableControllers2 = [v21 availableControllers];
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
       v25[2] = sub_2CC90;
       v25[3] = &unk_49428;
       v25[4] = self;
       v26 = v5;
-      [v22 enumerateObjectsUsingBlock:v25];
+      [availableControllers2 enumerateObjectsUsingBlock:v25];
     }
 
     v23 = *&self->PSListController_opaque[v3];
@@ -250,13 +250,13 @@ LABEL_6:
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = HearingAidAdvancedController;
-  v6 = a4;
-  [(HearingAidAdvancedController *)&v11 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(HearingAidAdvancedController *)self indexForIndexPath:v6, v11.receiver, v11.super_class];
+  pathCopy = path;
+  [(HearingAidAdvancedController *)&v11 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(HearingAidAdvancedController *)self indexForIndexPath:pathCopy, v11.receiver, v11.super_class];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {

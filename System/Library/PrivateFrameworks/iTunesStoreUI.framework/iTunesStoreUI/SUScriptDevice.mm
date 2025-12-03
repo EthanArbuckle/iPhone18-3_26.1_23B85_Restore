@@ -1,6 +1,6 @@
 @interface SUScriptDevice
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSArray)automaticDownloadMediaTypes;
 - (NSNumber)diskSpaceAvailable;
@@ -9,7 +9,7 @@
 - (SUScriptColor)accessibilitySingleColor;
 - (SUScriptDevice)init;
 - (SUScriptDictionary)diskUsageDictionary;
-- (id)UTIForURL:(id)a3;
+- (id)UTIForURL:(id)l;
 - (id)accessibilityBoldTextEnabled;
 - (id)accessibilityButtonShapesEnabled;
 - (id)accessibilityDarkenSystemColors;
@@ -17,26 +17,26 @@
 - (id)accessibilityMotionAutoPlayVideo;
 - (id)accessibilitySingleColorSelected;
 - (id)accessibilityUseDarkerKeyboard;
-- (id)checkCapabilitiesPropertyListString:(id)a3 showFailureDialog:(BOOL)a4;
-- (id)getMachineIdentifierForAccountIdentifier:(id)a3;
-- (id)hasCapability:(id)a3;
-- (id)isRestrictionLockedDown:(id)a3;
+- (id)checkCapabilitiesPropertyListString:(id)string showFailureDialog:(BOOL)dialog;
+- (id)getMachineIdentifierForAccountIdentifier:(id)identifier;
+- (id)hasCapability:(id)capability;
+- (id)isRestrictionLockedDown:(id)down;
 - (id)needsToneRegrantOption;
-- (id)restrictionLevelForType:(id)a3;
+- (id)restrictionLevelForType:(id)type;
 - (id)scriptAttributeKeys;
-- (id)valueForRestriction:(id)a3;
-- (int64_t)BOOLValueForRestriction:(id)a3;
-- (int64_t)_deviceCapabilityForString:(id)a3;
+- (id)valueForRestriction:(id)restriction;
+- (int64_t)BOOLValueForRestriction:(id)restriction;
+- (int64_t)_deviceCapabilityForString:(id)string;
 - (int64_t)activeNetworkType;
 - (int64_t)hardwareType;
 - (unsigned)deviceTypeIdentifier;
-- (void)_addScriptFunction:(id)a3;
-- (void)_removeScriptFunction:(id)a3;
+- (void)_addScriptFunction:(id)function;
+- (void)_removeScriptFunction:(id)function;
 - (void)dealloc;
-- (void)requestFreeSpaceWithBytes:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)setAutomaticDownloadKinds:(id)a3 withCompletionHandler:(id)a4;
-- (void)setDiskUsageDictionary:(id)a3;
-- (void)setValueForRestriction:(id)a3 enabled:(id)a4;
+- (void)requestFreeSpaceWithBytes:(id)bytes options:(id)options completionHandler:(id)handler;
+- (void)setAutomaticDownloadKinds:(id)kinds withCompletionHandler:(id)handler;
+- (void)setDiskUsageDictionary:(id)dictionary;
+- (void)setValueForRestriction:(id)restriction enabled:(id)enabled;
 @end
 
 @implementation SUScriptDevice
@@ -48,14 +48,14 @@
   v2 = [(SUScriptObject *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__autoDownloadKindsChangedNotification_ name:*MEMORY[0x1E69D4A68] object:0];
-    [v3 addObserver:v2 selector:sel__accessibilitySettingsChangedNotification_ name:*MEMORY[0x1E69DD8A0] object:0];
-    [v3 addObserver:v2 selector:sel__accessibilitySettingsChangedNotification_ name:*MEMORY[0x1E69DD8B8] object:0];
-    [v3 addObserver:v2 selector:sel__accessibilitySettingsChangedNotification_ name:*MEMORY[0x1E69DDA50] object:0];
-    [v3 addObserver:v2 selector:sel__accessibilitySettingsChangedNotification_ name:*MEMORY[0x1E69DD920] object:0];
-    [v3 addObserver:v2 selector:sel__accessibilitySettingsChangedNotification_ name:*MEMORY[0x1E69DD938] object:0];
-    [v3 addObserver:v2 selector:sel__accessibilitySettingsChangedNotification_ name:*MEMORY[0x1E69DDA48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__autoDownloadKindsChangedNotification_ name:*MEMORY[0x1E69D4A68] object:0];
+    [defaultCenter addObserver:v2 selector:sel__accessibilitySettingsChangedNotification_ name:*MEMORY[0x1E69DD8A0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__accessibilitySettingsChangedNotification_ name:*MEMORY[0x1E69DD8B8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__accessibilitySettingsChangedNotification_ name:*MEMORY[0x1E69DDA50] object:0];
+    [defaultCenter addObserver:v2 selector:sel__accessibilitySettingsChangedNotification_ name:*MEMORY[0x1E69DD920] object:0];
+    [defaultCenter addObserver:v2 selector:sel__accessibilitySettingsChangedNotification_ name:*MEMORY[0x1E69DD938] object:0];
+    [defaultCenter addObserver:v2 selector:sel__accessibilitySettingsChangedNotification_ name:*MEMORY[0x1E69DDA48] object:0];
   }
 
   return v2;
@@ -63,14 +63,14 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69D4A68] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DD8A0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DD8B8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDA50] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DD938] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDA48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69D4A68] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DD8A0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DD8B8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDA50] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DD938] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDA48] object:0];
   [(NSMutableArray *)self->_scriptFunctions makeObjectsPerformSelector:sel_setThisObject_ withObject:0];
 
   v4.receiver = self;
@@ -78,7 +78,7 @@
   [(SUScriptObject *)&v4 dealloc];
 }
 
-- (int64_t)BOOLValueForRestriction:(id)a3
+- (int64_t)BOOLValueForRestriction:(id)restriction
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -90,16 +90,16 @@
   return 0;
 }
 
-- (id)checkCapabilitiesPropertyListString:(id)a3 showFailureDialog:(BOOL)a4
+- (id)checkCapabilitiesPropertyListString:(id)string showFailureDialog:(BOOL)dialog
 {
-  v4 = a4;
+  dialogCopy = dialog;
   v6 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  v7 = SUScriptPropertyListFromString(a3);
+  v7 = SUScriptPropertyListFromString(string);
   if (v7)
   {
     v11 = 0;
     v8 = [objc_msgSend(MEMORY[0x1E69E4748] "sharedInstance")];
-    if ((v8 & 1) == 0 && v4)
+    if ((v8 & 1) == 0 && dialogCopy)
     {
       WebThreadRunOnMainThread();
       v8 = 0;
@@ -127,11 +127,11 @@ void __72__SUScriptDevice_checkCapabilitiesPropertyListString_showFailureDialog_
   [objc_msgSend(MEMORY[0x1E69E4798] "mainQueue")];
 }
 
-- (id)getMachineIdentifierForAccountIdentifier:(id)a3
+- (id)getMachineIdentifierForAccountIdentifier:(id)identifier
 {
   if (objc_opt_respondsToSelector())
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a3, "unsignedLongLongValue")}];
+    v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(identifier, "unsignedLongLongValue")}];
   }
 
   else
@@ -160,12 +160,12 @@ void __72__SUScriptDevice_checkCapabilitiesPropertyListString_showFailureDialog_
   return v5;
 }
 
-- (id)hasCapability:(id)a3
+- (id)hasCapability:(id)capability
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([a3 isEqualToString:{-[SUScriptDevice capabilityNameEmail](self, "capabilityNameEmail")}])
+    if ([capability isEqualToString:{-[SUScriptDevice capabilityNameEmail](self, "capabilityNameEmail")}])
     {
       if (!CPCanSendMail())
       {
@@ -177,7 +177,7 @@ LABEL_13:
       return *v5;
     }
 
-    if ([a3 isEqualToString:{-[SUScriptDevice capabilityNameExplicitMedia](self, "capabilityNameExplicitMedia")}])
+    if ([capability isEqualToString:{-[SUScriptDevice capabilityNameExplicitMedia](self, "capabilityNameExplicitMedia")}])
     {
       if ((SSRestrictionsShouldRestrictExplicitContent() & 1) == 0)
       {
@@ -187,12 +187,12 @@ LABEL_13:
 
     else
     {
-      if ([a3 isEqualToString:{-[SUScriptDevice capabilityNamePodcasts](self, "capabilityNamePodcasts")}])
+      if ([capability isEqualToString:{-[SUScriptDevice capabilityNamePodcasts](self, "capabilityNamePodcasts")}])
       {
         goto LABEL_13;
       }
 
-      v6 = [(SUScriptDevice *)self _deviceCapabilityForString:a3];
+      v6 = [(SUScriptDevice *)self _deviceCapabilityForString:capability];
       if (v6 == -1)
       {
         v8 = MGCopyAnswer();
@@ -233,7 +233,7 @@ LABEL_6:
   return *v5;
 }
 
-- (id)isRestrictionLockedDown:(id)a3
+- (id)isRestrictionLockedDown:(id)down
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -255,12 +255,12 @@ LABEL_6:
   return *v5;
 }
 
-- (void)requestFreeSpaceWithBytes:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)requestFreeSpaceWithBytes:(id)bytes options:(id)options completionHandler:(id)handler
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = 0;
+    options = 0;
   }
 
   objc_opt_class();
@@ -274,22 +274,22 @@ LABEL_6:
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v9 = 0;
-    if (a5 && (isKindOfClass & 1) == 0)
+    if (handler && (isKindOfClass & 1) == 0)
     {
-      v9 = [[SUScriptFunction alloc] initWithScriptObject:a5];
+      v9 = [[SUScriptFunction alloc] initWithScriptObject:handler];
     }
   }
 
   [(SUScriptDevice *)self _addScriptFunction:v9];
-  if (a4)
+  if (options)
   {
-    a4 = [a4 safeValueForKey:{-[SUScriptDevice freeSpaceOptionEffortLevel](self, "freeSpaceOptionEffortLevel")}];
+    options = [options safeValueForKey:{-[SUScriptDevice freeSpaceOptionEffortLevel](self, "freeSpaceOptionEffortLevel")}];
   }
 
   if (objc_opt_respondsToSelector())
   {
     v11 = objc_alloc(MEMORY[0x1E695DF20]);
-    v12 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a4, "intValue")}];
+    v12 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(options, "intValue")}];
     v13 = [v11 initWithObjectsAndKeys:{v12, *MEMORY[0x1E698B6C0], 0}];
   }
 
@@ -301,7 +301,7 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a3 unsignedLongLongValue];
+    [bytes unsignedLongLongValue];
   }
 
   else
@@ -309,7 +309,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      strtoull([a3 UTF8String], 0, 10);
+      strtoull([bytes UTF8String], 0, 10);
     }
   }
 
@@ -328,9 +328,9 @@ uint64_t __70__SUScriptDevice_requestFreeSpaceWithBytes_options_completionHandle
   return [v8 _removeScriptFunction:v9];
 }
 
-- (id)restrictionLevelForType:(id)a3
+- (id)restrictionLevelForType:(id)type
 {
-  if ([a3 isEqual:{-[SUScriptDevice restrictionTypeApplications](self, "restrictionTypeApplications")}] || objc_msgSend(a3, "isEqual:", -[SUScriptDevice restrictionTypeMovies](self, "restrictionTypeMovies")) || objc_msgSend(a3, "isEqual:", -[SUScriptDevice restrictionTypeTelevision](self, "restrictionTypeTelevision")))
+  if ([type isEqual:{-[SUScriptDevice restrictionTypeApplications](self, "restrictionTypeApplications")}] || objc_msgSend(type, "isEqual:", -[SUScriptDevice restrictionTypeMovies](self, "restrictionTypeMovies")) || objc_msgSend(type, "isEqual:", -[SUScriptDevice restrictionTypeTelevision](self, "restrictionTypeTelevision")))
   {
     v5 = SSRestrictionsCopyRankForMediaType();
 
@@ -344,39 +344,39 @@ uint64_t __70__SUScriptDevice_requestFreeSpaceWithBytes_options_completionHandle
   }
 }
 
-- (void)setAutomaticDownloadKinds:(id)a3 withCompletionHandler:(id)a4
+- (void)setAutomaticDownloadKinds:(id)kinds withCompletionHandler:(id)handler
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    kinds = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = 0;
+    handler = 0;
   }
 
-  v7 = [a3 copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
+  v7 = [kinds copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
   if (v7)
   {
     v8 = v7;
-    if (a4)
+    if (handler)
     {
-      a4 = [[SUScriptFunction alloc] initWithScriptObject:a4];
+      handler = [[SUScriptFunction alloc] initWithScriptObject:handler];
     }
 
-    [(SUScriptDevice *)self _addScriptFunction:a4];
-    v9 = [MEMORY[0x1E69D48B0] currentDevice];
+    [(SUScriptDevice *)self _addScriptFunction:handler];
+    currentDevice = [MEMORY[0x1E69D48B0] currentDevice];
     v10 = [MEMORY[0x1E695DFD8] setWithArray:v8];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __66__SUScriptDevice_setAutomaticDownloadKinds_withCompletionHandler___block_invoke;
     v12[3] = &unk_1E8166050;
-    v12[4] = a4;
+    v12[4] = handler;
     v12[5] = self;
-    [v9 setAutomaticDownloadKinds:v10 withCompletionBlock:v12];
+    [currentDevice setAutomaticDownloadKinds:v10 withCompletionBlock:v12];
   }
 
   else
@@ -396,14 +396,14 @@ uint64_t __66__SUScriptDevice_setAutomaticDownloadKinds_withCompletionHandler___
   return [v3 _removeScriptFunction:v4];
 }
 
-- (void)setValueForRestriction:(id)a3 enabled:(id)a4
+- (void)setValueForRestriction:(id)restriction enabled:(id)enabled
 {
   if (objc_opt_respondsToSelector())
   {
-    v6 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v7 = [a4 BOOLValue];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    bOOLValue = [enabled BOOLValue];
 
-    [v6 setBoolValue:v7 forSetting:a3];
+    [mEMORY[0x1E69ADFB8] setBoolValue:bOOLValue forSetting:restriction];
   }
 
   else
@@ -414,10 +414,10 @@ uint64_t __66__SUScriptDevice_setAutomaticDownloadKinds_withCompletionHandler___
   }
 }
 
-- (id)UTIForURL:(id)a3
+- (id)UTIForURL:(id)l
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v4 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:a3]) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v4 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:l]) != 0)
   {
     v5 = v4;
     v6 = SUCopyUTIForFilePath([v4 path], 1);
@@ -432,14 +432,14 @@ uint64_t __66__SUScriptDevice_setAutomaticDownloadKinds_withCompletionHandler___
   }
 }
 
-- (id)valueForRestriction:(id)a3
+- (id)valueForRestriction:(id)restriction
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [MEMORY[0x1E69ADFB8] sharedConnection];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
 
-    return [v4 effectiveValueForSetting:a3];
+    return [mEMORY[0x1E69ADFB8] effectiveValueForSetting:restriction];
   }
 
   else
@@ -622,9 +622,9 @@ LABEL_38:
 
 - (unsigned)deviceTypeIdentifier
 {
-  v2 = [MEMORY[0x1E69D48B0] currentDevice];
+  currentDevice = [MEMORY[0x1E69D48B0] currentDevice];
 
-  return [v2 deviceTypeIdentifier];
+  return [currentDevice deviceTypeIdentifier];
 }
 
 - (NSNumber)diskSpaceAvailable
@@ -896,10 +896,10 @@ intptr_t __46__SUScriptDevice_metricsPostFrequencyOverride__block_invoke(uint64_
 - (id)needsToneRegrantOption
 {
   v2 = objc_alloc_init(ISWeakLinkedClassForString());
-  v3 = [v2 _wasAffectedByAccidentalToneDeletion];
+  _wasAffectedByAccidentalToneDeletion = [v2 _wasAffectedByAccidentalToneDeletion];
 
   v4 = MEMORY[0x1E695E4D0];
-  if (!v3)
+  if (!_wasAffectedByAccidentalToneDeletion)
   {
     v4 = MEMORY[0x1E695E4C0];
   }
@@ -907,7 +907,7 @@ intptr_t __46__SUScriptDevice_metricsPostFrequencyOverride__block_invoke(uint64_
   return *v4;
 }
 
-- (void)setDiskUsageDictionary:(id)a3
+- (void)setDiskUsageDictionary:(id)dictionary
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"diskUsage"];
@@ -915,11 +915,11 @@ intptr_t __46__SUScriptDevice_metricsPostFrequencyOverride__block_invoke(uint64_
   [v3 throwException:v4];
 }
 
-- (void)_addScriptFunction:(id)a3
+- (void)_addScriptFunction:(id)function
 {
-  if (a3)
+  if (function)
   {
-    [a3 setThisObject:self];
+    [function setThisObject:self];
     [(SUScriptObject *)self lock];
     scriptFunctions = self->_scriptFunctions;
     if (!scriptFunctions)
@@ -928,65 +928,65 @@ intptr_t __46__SUScriptDevice_metricsPostFrequencyOverride__block_invoke(uint64_
       self->_scriptFunctions = scriptFunctions;
     }
 
-    [(NSMutableArray *)scriptFunctions addObject:a3];
+    [(NSMutableArray *)scriptFunctions addObject:function];
 
     [(SUScriptObject *)self unlock];
   }
 }
 
-- (int64_t)_deviceCapabilityForString:(id)a3
+- (int64_t)_deviceCapabilityForString:(id)string
 {
-  if ([a3 isEqualToString:{-[SUScriptDevice capabilityNameHDVideo](self, "capabilityNameHDVideo")}])
+  if ([string isEqualToString:{-[SUScriptDevice capabilityNameHDVideo](self, "capabilityNameHDVideo")}])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:{-[SUScriptDevice capabilityNameHDVideo1080p](self, "capabilityNameHDVideo1080p")}])
+  if ([string isEqualToString:{-[SUScriptDevice capabilityNameHDVideo1080p](self, "capabilityNameHDVideo1080p")}])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:{-[SUScriptDevice capabilityNameHDVideo720p](self, "capabilityNameHDVideo720p")}])
+  if ([string isEqualToString:{-[SUScriptDevice capabilityNameHDVideo720p](self, "capabilityNameHDVideo720p")}])
   {
     return 1;
   }
 
-  return [a3 isEqualToString:{-[SUScriptDevice capabilityNameWiFi](self, "capabilityNameWiFi")}] - 1;
+  return [string isEqualToString:{-[SUScriptDevice capabilityNameWiFi](self, "capabilityNameWiFi")}] - 1;
 }
 
-- (void)_removeScriptFunction:(id)a3
+- (void)_removeScriptFunction:(id)function
 {
-  if (a3)
+  if (function)
   {
-    [a3 setThisObject:0];
+    [function setThisObject:0];
     [(SUScriptObject *)self lock];
-    [(NSMutableArray *)self->_scriptFunctions removeObjectIdenticalTo:a3];
+    [(NSMutableArray *)self->_scriptFunctions removeObjectIdenticalTo:function];
 
     [(SUScriptObject *)self unlock];
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_50 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptDevice;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_38, 11);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_38, 11);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptDevice;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -996,14 +996,14 @@ intptr_t __46__SUScriptDevice_metricsPostFrequencyOverride__block_invoke(uint64_
 {
   v4.receiver = self;
   v4.super_class = SUScriptDevice;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_50 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_50 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_38 = sel_BOOLValueForRestriction_;
     *algn_1EBF3B368 = @"BOOLValueForRestriction";

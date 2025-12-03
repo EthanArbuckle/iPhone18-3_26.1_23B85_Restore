@@ -1,9 +1,9 @@
 @interface _CNUILikenessFingerprintNonpersistedContactImpl
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_CNUILikenessFingerprintNonpersistedContactImpl)init;
-- (_CNUILikenessFingerprintNonpersistedContactImpl)initWithContact:(id)a3;
-- (_CNUILikenessFingerprintNonpersistedContactImpl)initWithContactType:(int64_t)a3 givenName:(id)a4 middleName:(id)a5 familyName:(id)a6 emailAddresses:(id)a7 phoneNumbers:(id)a8 imageData:(id)a9 thumbnailImageData:(id)a10;
+- (_CNUILikenessFingerprintNonpersistedContactImpl)initWithContact:(id)contact;
+- (_CNUILikenessFingerprintNonpersistedContactImpl)initWithContactType:(int64_t)type givenName:(id)name middleName:(id)middleName familyName:(id)familyName emailAddresses:(id)addresses phoneNumbers:(id)numbers imageData:(id)data thumbnailImageData:(id)self0;
 - (unint64_t)hash;
 @end
 
@@ -11,74 +11,74 @@
 
 - (_CNUILikenessFingerprintNonpersistedContactImpl)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (_CNUILikenessFingerprintNonpersistedContactImpl)initWithContact:(id)a3
+- (_CNUILikenessFingerprintNonpersistedContactImpl)initWithContact:(id)contact
 {
-  v3 = a3;
-  v15 = [v3 contactType];
-  v4 = [v3 givenName];
-  v5 = [v3 middleName];
-  v6 = [v3 familyName];
-  v7 = [v3 emailAddresses];
-  v8 = [v7 _cn_compactMap:&__block_literal_global_133];
-  v9 = [v3 phoneNumbers];
-  v10 = [v9 _cn_compactMap:&__block_literal_global_135];
-  v11 = [v3 imageData];
-  v12 = [v3 thumbnailImageData];
+  contactCopy = contact;
+  contactType = [contactCopy contactType];
+  givenName = [contactCopy givenName];
+  middleName = [contactCopy middleName];
+  familyName = [contactCopy familyName];
+  emailAddresses = [contactCopy emailAddresses];
+  v8 = [emailAddresses _cn_compactMap:&__block_literal_global_133];
+  phoneNumbers = [contactCopy phoneNumbers];
+  v10 = [phoneNumbers _cn_compactMap:&__block_literal_global_135];
+  imageData = [contactCopy imageData];
+  thumbnailImageData = [contactCopy thumbnailImageData];
 
-  v13 = [(_CNUILikenessFingerprintNonpersistedContactImpl *)self initWithContactType:v15 givenName:v4 middleName:v5 familyName:v6 emailAddresses:v8 phoneNumbers:v10 imageData:v11 thumbnailImageData:v12];
+  v13 = [(_CNUILikenessFingerprintNonpersistedContactImpl *)self initWithContactType:contactType givenName:givenName middleName:middleName familyName:familyName emailAddresses:v8 phoneNumbers:v10 imageData:imageData thumbnailImageData:thumbnailImageData];
   return v13;
 }
 
-- (_CNUILikenessFingerprintNonpersistedContactImpl)initWithContactType:(int64_t)a3 givenName:(id)a4 middleName:(id)a5 familyName:(id)a6 emailAddresses:(id)a7 phoneNumbers:(id)a8 imageData:(id)a9 thumbnailImageData:(id)a10
+- (_CNUILikenessFingerprintNonpersistedContactImpl)initWithContactType:(int64_t)type givenName:(id)name middleName:(id)middleName familyName:(id)familyName emailAddresses:(id)addresses phoneNumbers:(id)numbers imageData:(id)data thumbnailImageData:(id)self0
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  nameCopy = name;
+  middleNameCopy = middleName;
+  familyNameCopy = familyName;
+  addressesCopy = addresses;
+  numbersCopy = numbers;
+  dataCopy = data;
+  imageDataCopy = imageData;
   v41.receiver = self;
   v41.super_class = _CNUILikenessFingerprintNonpersistedContactImpl;
   v23 = [(_CNUILikenessFingerprintNonpersistedContactImpl *)&v41 init];
   v24 = v23;
   if (v23)
   {
-    v23->_contactType = a3;
-    v25 = [v16 copy];
+    v23->_contactType = type;
+    v25 = [nameCopy copy];
     givenName = v24->_givenName;
     v24->_givenName = v25;
 
-    v27 = [v17 copy];
+    v27 = [middleNameCopy copy];
     middleName = v24->_middleName;
     v24->_middleName = v27;
 
-    v29 = [v18 copy];
+    v29 = [familyNameCopy copy];
     familyName = v24->_familyName;
     v24->_familyName = v29;
 
-    v31 = [v19 copy];
+    v31 = [addressesCopy copy];
     emailAddresses = v24->_emailAddresses;
     v24->_emailAddresses = v31;
 
-    v33 = [v20 copy];
+    v33 = [numbersCopy copy];
     phoneNumbers = v24->_phoneNumbers;
     v24->_phoneNumbers = v33;
 
-    if ([v21 length])
+    if ([dataCopy length])
     {
       v35 = 56;
-      v36 = v21;
+      v36 = dataCopy;
     }
 
     else
     {
-      if (![v22 length])
+      if (![imageDataCopy length])
       {
 LABEL_7:
         v39 = v24;
@@ -86,7 +86,7 @@ LABEL_7:
       }
 
       v35 = 64;
-      v36 = v22;
+      v36 = imageDataCopy;
     }
 
     v37 = [MEMORY[0x1E696B098] valueWithPointer:v36];
@@ -142,18 +142,18 @@ LABEL_8:
     v13 = [v3 appendName:@"thumbnailImageData" object:?];
   }
 
-  v14 = [v3 build];
+  build = [v3 build];
 
-  return v14;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
-    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || self->_contactType != v4->_contactType || (givenName = self->_givenName, givenName | v4->_givenName) && ![(NSString *)givenName isEqual:?]|| (middleName = self->_middleName, middleName | v4->_middleName) && ![(NSString *)middleName isEqual:?]|| (familyName = self->_familyName, familyName | v4->_familyName) && ![(NSString *)familyName isEqual:?]|| (emailAddresses = self->_emailAddresses, emailAddresses | v4->_emailAddresses) && ![(NSArray *)emailAddresses isEqual:?]|| (phoneNumbers = self->_phoneNumbers, phoneNumbers | v4->_phoneNumbers) && ![(NSArray *)phoneNumbers isEqual:?]|| (imageDataPointer = self->_imageDataPointer, imageDataPointer | v4->_imageDataPointer) && ![(NSValue *)imageDataPointer isEqual:?]|| (thumbnailImageDataPointer = self->_thumbnailImageDataPointer, thumbnailImageDataPointer | v4->_thumbnailImageDataPointer) && ![(NSValue *)thumbnailImageDataPointer isEqual:?])
+    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || self->_contactType != equalCopy->_contactType || (givenName = self->_givenName, givenName | equalCopy->_givenName) && ![(NSString *)givenName isEqual:?]|| (middleName = self->_middleName, middleName | equalCopy->_middleName) && ![(NSString *)middleName isEqual:?]|| (familyName = self->_familyName, familyName | equalCopy->_familyName) && ![(NSString *)familyName isEqual:?]|| (emailAddresses = self->_emailAddresses, emailAddresses | equalCopy->_emailAddresses) && ![(NSArray *)emailAddresses isEqual:?]|| (phoneNumbers = self->_phoneNumbers, phoneNumbers | equalCopy->_phoneNumbers) && ![(NSArray *)phoneNumbers isEqual:?]|| (imageDataPointer = self->_imageDataPointer, imageDataPointer | equalCopy->_imageDataPointer) && ![(NSValue *)imageDataPointer isEqual:?]|| (thumbnailImageDataPointer = self->_thumbnailImageDataPointer, thumbnailImageDataPointer | equalCopy->_thumbnailImageDataPointer) && ![(NSValue *)thumbnailImageDataPointer isEqual:?])
     {
       v12 = 0;
     }

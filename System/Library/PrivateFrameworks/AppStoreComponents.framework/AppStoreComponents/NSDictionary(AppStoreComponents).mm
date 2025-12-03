@@ -8,7 +8,7 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 mutableCopy];
+  v8 = [self mutableCopy];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __92__NSDictionary_AppStoreComponents__asc_dictionaryByMergingDictionary_uniquingKeysWithBlock___block_invoke;

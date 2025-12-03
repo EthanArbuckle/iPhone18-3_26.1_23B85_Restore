@@ -1,32 +1,32 @@
 @interface ACCMediaLibraryShim
 + (BOOL)allowCachedTracksForAppleMusic;
 + (BOOL)isMusicAppVisible;
-- (ACCMediaLibraryShim)initWithAccessory:(id)a3 windowPerLibrary:(unsigned int)a4 delegate:(id)a5;
+- (ACCMediaLibraryShim)initWithAccessory:(id)accessory windowPerLibrary:(unsigned int)library delegate:(id)delegate;
 - (ACCMediaLibraryShimDelegate)delegate;
 - (BOOL)_checkForDifferentMediaLibraries;
 - (BOOL)_checkForDifferentRadioLibrary;
 - (BOOL)isGeniusMixesSupported;
-- (void)_handlMediaLibraryNeedFilterChange:(id)a3;
-- (void)_mediaLibrariesAvailableChanged:(id)a3;
+- (void)_handlMediaLibraryNeedFilterChange:(id)change;
+- (void)_mediaLibrariesAvailableChanged:(id)changed;
 - (void)_sendLibraryInfoList;
-- (void)_setupNewLibraries:(id)a3 forAccessory:(id)a4;
-- (void)_updateMediaLibraryInfomationUpdates:(BOOL)a3;
-- (void)_updateSubscribedToAppleMusicStatus:(BOOL)a3;
-- (void)confirmMediaLibraryPlaylistContentUpdate:(id)a3 lastRevision:(id)a4;
-- (void)confirmMediaLibraryUpdate:(id)a3 lastRevision:(id)a4 updateCount:(unsigned int)a5;
+- (void)_setupNewLibraries:(id)libraries forAccessory:(id)accessory;
+- (void)_updateMediaLibraryInfomationUpdates:(BOOL)updates;
+- (void)_updateSubscribedToAppleMusicStatus:(BOOL)status;
+- (void)confirmMediaLibraryPlaylistContentUpdate:(id)update lastRevision:(id)revision;
+- (void)confirmMediaLibraryUpdate:(id)update lastRevision:(id)revision updateCount:(unsigned int)count;
 - (void)dealloc;
-- (void)playAllSongs:(id)a3;
-- (void)playAllSongs:(id)a3 firstItemPersistentID:(unint64_t)a4;
-- (void)playMediaLibraryCollection:(id)a3 collection:(unint64_t)a4 type:(int)a5 firstItemIndex:(unint64_t)a6;
-- (void)playMediaLibraryCollection:(id)a3 collection:(unint64_t)a4 type:(int)a5 firstItemPersistentID:(unint64_t)a6;
-- (void)playMediaLibraryCurrentSelection:(id)a3;
-- (void)playMediaLibraryItems:(id)a3 itemList:(id)a4 firstItemIndex:(unint64_t)a5;
+- (void)playAllSongs:(id)songs;
+- (void)playAllSongs:(id)songs firstItemPersistentID:(unint64_t)d;
+- (void)playMediaLibraryCollection:(id)collection collection:(unint64_t)a4 type:(int)type firstItemIndex:(unint64_t)index;
+- (void)playMediaLibraryCollection:(id)collection collection:(unint64_t)a4 type:(int)type firstItemPersistentID:(unint64_t)d;
+- (void)playMediaLibraryCurrentSelection:(id)selection;
+- (void)playMediaLibraryItems:(id)items itemList:(id)list firstItemIndex:(unint64_t)index;
 - (void)shuttingDown;
-- (void)startMediaLibraryUpdate:(id)a3 lastRevision:(id)a4 requestedInfo:(id)a5;
+- (void)startMediaLibraryUpdate:(id)update lastRevision:(id)revision requestedInfo:(id)info;
 - (void)startSendingMediaLibraryInfomationUpdates;
-- (void)startShimForAccessoryAttach:(id)a3;
+- (void)startShimForAccessoryAttach:(id)attach;
 - (void)stopAllMediaLibraryUpdate;
-- (void)stopMediaLibraryUpdate:(id)a3;
+- (void)stopMediaLibraryUpdate:(id)update;
 - (void)stopSendingMediaLibraryInfomationUpdates;
 @end
 
@@ -47,17 +47,17 @@
 + (BOOL)isMusicAppVisible
 {
   v2 = GetMediaLibraryHelper();
-  v3 = [v2 showMusic];
+  showMusic = [v2 showMusic];
 
-  return v3;
+  return showMusic;
 }
 
-- (void)_updateSubscribedToAppleMusicStatus:(BOOL)a3
+- (void)_updateSubscribedToAppleMusicStatus:(BOOL)status
 {
   v15 = *MEMORY[0x277D85DE8];
   if (!self->_isShuttingDown && self->_enableLibraryInfoUpdate)
   {
-    v4 = a3;
+    statusCopy = status;
     AppBooleanValue = __allowCachedTracksForAppleMusic___allowCachedTracksForAppleMusicSetting;
     if (__allowCachedTracksForAppleMusic___allowCachedTracksForAppleMusicSetting == -1)
     {
@@ -76,7 +76,7 @@
       {
         if (__mlForceAppleMusicSubscribedState != 2)
         {
-          if (v4)
+          if (statusCopy)
           {
           }
 
@@ -122,10 +122,10 @@ LABEL_14:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_mediaLibrariesAvailableChanged:(id)a3
+- (void)_mediaLibrariesAvailableChanged:(id)changed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -155,7 +155,7 @@ LABEL_14:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = changedCopy;
     _os_log_impl(&dword_2335D3000, v7, OS_LOG_TYPE_INFO, "_mediaLibrariesAvailableChanged: notification=%@", buf, 0xCu);
   }
 
@@ -184,10 +184,10 @@ _BYTE *__55__ACCMediaLibraryShim__mediaLibrariesAvailableChanged___block_invoke(
   return result;
 }
 
-- (void)_handlMediaLibraryNeedFilterChange:(id)a3
+- (void)_handlMediaLibraryNeedFilterChange:(id)change
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -217,7 +217,7 @@ _BYTE *__55__ACCMediaLibraryShim__mediaLibrariesAvailableChanged___block_invoke(
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = changeCopy;
     _os_log_impl(&dword_2335D3000, v7, OS_LOG_TYPE_INFO, "_handlMediaLibraryNeedFilterChange: notification=%@", &v9, 0xCu);
   }
 
@@ -225,11 +225,11 @@ _BYTE *__55__ACCMediaLibraryShim__mediaLibrariesAvailableChanged___block_invoke(
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setupNewLibraries:(id)a3 forAccessory:(id)a4
+- (void)_setupNewLibraries:(id)libraries forAccessory:(id)accessory
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v44 = a4;
+  librariesCopy = libraries;
+  accessoryCopy = accessory;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 1;
@@ -265,22 +265,22 @@ _BYTE *__55__ACCMediaLibraryShim__mediaLibrariesAvailableChanged___block_invoke(
     v54 = 1024;
     v55 = isShuttingDown;
     v56 = 2112;
-    v57 = v6;
+    v57 = librariesCopy;
     v58 = 2112;
-    v59 = v44;
+    v59 = accessoryCopy;
     _os_log_impl(&dword_2335D3000, v9, OS_LOG_TYPE_INFO, "_setupNewLibraries: _enableLibraryInfoUpdate=%d _isShuttingDown=%d oldLibraryList=%@ accessory=%@", buf, 0x22u);
   }
 
   if (self->_enableLibraryInfoUpdate && !self->_isShuttingDown)
   {
-    v12 = [MEMORY[0x277CD5E10] mediaLibraries];
+    mediaLibraries = [MEMORY[0x277CD5E10] mediaLibraries];
     v46 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     libraryList = self->_libraryList;
     p_libraryList = &self->_libraryList;
     self->_libraryList = v13;
 
-    v15 = [(ACCMediaLibraryShim *)self subscribedToAppleMusic];
+    subscribedToAppleMusic = [(ACCMediaLibraryShim *)self subscribedToAppleMusic];
     deviceLibrary = self->_deviceLibrary;
     self->_deviceLibrary = 0;
 
@@ -309,7 +309,7 @@ _BYTE *__55__ACCMediaLibraryShim__mediaLibrariesAvailableChanged___block_invoke(
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    obj = v12;
+    obj = mediaLibraries;
     v19 = [obj countByEnumeratingWithState:&v47 objects:v51 count:16];
     if (v19)
     {
@@ -325,13 +325,13 @@ _BYTE *__55__ACCMediaLibraryShim__mediaLibrariesAvailableChanged___block_invoke(
           }
 
           v23 = *(*(&v47 + 1) + 8 * i);
-          v24 = ACCMediaLibraryShimUIDString(v23, v15);
-          v25 = ACCMediaLibraryShimUIDString(self->_deviceMediaLibrary, v15);
+          v24 = ACCMediaLibraryShimUIDString(v23, subscribedToAppleMusic);
+          v25 = ACCMediaLibraryShimUIDString(self->_deviceMediaLibrary, subscribedToAppleMusic);
           v26 = [v24 isEqualToString:v25];
 
-          if (!v6 || ([v6 objectForKey:v24], (v27 = objc_claimAutoreleasedReturnValue()) == 0))
+          if (!librariesCopy || ([librariesCopy objectForKey:v24], (v27 = objc_claimAutoreleasedReturnValue()) == 0))
           {
-            v27 = [[ACCMediaLibraryShimInfo alloc] initWithMediaLibrary:v23 accessory:v44 Context:self LibraryType:v26 ^ 1u];
+            v27 = [[ACCMediaLibraryShimInfo alloc] initWithMediaLibrary:v23 accessory:accessoryCopy Context:self LibraryType:v26 ^ 1u];
           }
 
           [v46 setObject:v23 forKey:v24];
@@ -408,7 +408,7 @@ LABEL_40:
         goto LABEL_40;
       }
 
-      v31 = [[ACCMediaLibraryShimInfo alloc] initWithMediaLibrary:self->_mpRadioLibrary accessory:v44 Context:self LibraryType:2];
+      v31 = [[ACCMediaLibraryShimInfo alloc] initWithMediaLibrary:self->_mpRadioLibrary accessory:accessoryCopy Context:self LibraryType:2];
       v32 = self->_radioLibrary;
       self->_radioLibrary = v31;
 
@@ -426,11 +426,11 @@ LABEL_53:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (ACCMediaLibraryShim)initWithAccessory:(id)a3 windowPerLibrary:(unsigned int)a4 delegate:(id)a5
+- (ACCMediaLibraryShim)initWithAccessory:(id)accessory windowPerLibrary:(unsigned int)library delegate:(id)delegate
 {
   v46 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  accessoryCopy = accessory;
+  delegateCopy = delegate;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 1;
@@ -460,11 +460,11 @@ LABEL_53:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v41 = v9;
+    v41 = accessoryCopy;
     v42 = 1024;
-    v43 = a4;
+    libraryCopy = library;
     v44 = 2112;
-    v45 = v10;
+    v45 = delegateCopy;
     _os_log_impl(&dword_2335D3000, v13, OS_LOG_TYPE_INFO, "ACCMediaLibraryShim  initWithAccessory: %@ windowPerLibrary: %u delegate: %@", buf, 0x1Cu);
   }
 
@@ -488,7 +488,7 @@ LABEL_53:
     v14->_libraryInfoUpdateQ = v18;
 
     v14->_enableLibraryInfoUpdate = 0;
-    objc_storeStrong(&v14->_accessory, a3);
+    objc_storeStrong(&v14->_accessory, accessory);
     v14->_isShuttingDown = 0;
     deviceLibrary = v14->_deviceLibrary;
     v14->_deviceLibrary = 0;
@@ -496,14 +496,14 @@ LABEL_53:
     radioLibrary = v14->_radioLibrary;
     v14->_radioLibrary = 0;
 
-    v14->_windowPerLibrary = a4;
+    v14->_windowPerLibrary = library;
     libraries = v14->_libraries;
     v14->_libraries = 0;
 
     libraryList = v14->_libraryList;
     v14->_libraryList = 0;
 
-    objc_storeWeak(&v14->_delegate, v10);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
     memUse = v14->_memUse;
     v14->_memUse = 0;
 
@@ -515,53 +515,53 @@ LABEL_53:
     }
 
     v27 = MEMORY[0x277CD5E10];
-    v28 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v27 setRunLoopForNotifications:v28];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [v27 setRunLoopForNotifications:mainRunLoop];
 
     [MEMORY[0x277CD5E38] setFilteringDisabled:1];
     v29 = [MEMORY[0x277CD5E30] predicateWithValue:&unk_2848E90E8 forProperty:*MEMORY[0x277CD57C8]];
-    v30 = [MEMORY[0x277CD5E10] defaultMediaLibrary];
-    [v30 addLibraryFilterPredicate:v29];
+    defaultMediaLibrary = [MEMORY[0x277CD5E10] defaultMediaLibrary];
+    [defaultMediaLibrary addLibraryFilterPredicate:v29];
 
-    v31 = [MEMORY[0x277CD5E10] deviceMediaLibrary];
+    deviceMediaLibrary = [MEMORY[0x277CD5E10] deviceMediaLibrary];
     deviceMediaLibrary = v14->_deviceMediaLibrary;
-    v14->_deviceMediaLibrary = v31;
+    v14->_deviceMediaLibrary = deviceMediaLibrary;
 
-    v33 = [MEMORY[0x277CD6020] defaultRadioLibrary];
+    defaultRadioLibrary = [MEMORY[0x277CD6020] defaultRadioLibrary];
     mpRadioLibrary = v14->_mpRadioLibrary;
-    v14->_mpRadioLibrary = v33;
+    v14->_mpRadioLibrary = defaultRadioLibrary;
 
     v35 = GetMediaLibraryHelper();
     v14->_radioIsEnabled = [v35 iTunesRadioEnabled];
 
     v14->_subscribedToAppleMusic = 0;
     [(ACCMediaLibraryShim *)v14 _updateSubscribedToAppleMusicStatus:1];
-    v36 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v36 addObserver:v14 selector:sel__mediaLibrariesAvailableChanged_ name:*MEMORY[0x277CD58C8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v14 selector:sel__mediaLibrariesAvailableChanged_ name:*MEMORY[0x277CD58C8] object:0];
     if (__allowCachedTracksForAppleMusic___allowCachedTracksForAppleMusicSetting == -1)
     {
       __allowCachedTracksForAppleMusic___allowCachedTracksForAppleMusicSetting = CFPreferencesGetAppBooleanValue(@"allowCachedTracksForAppleMusic", @"com.apple.iapd", 0);
     }
 
-    [v36 addObserver:v14 selector:sel__mediaLibrariesAvailableChanged_ name:*MEMORY[0x277CD5CE8] object:0];
-    [v36 addObserver:v14 selector:sel__handlMediaLibraryNeedFilterChange_ name:kMediaLibraryNeedFilterChange object:0];
+    [defaultCenter addObserver:v14 selector:sel__mediaLibrariesAvailableChanged_ name:*MEMORY[0x277CD5CE8] object:0];
+    [defaultCenter addObserver:v14 selector:sel__handlMediaLibraryNeedFilterChange_ name:kMediaLibraryNeedFilterChange object:0];
   }
 
   v37 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (void)startShimForAccessoryAttach:(id)a3
+- (void)startShimForAccessoryAttach:(id)attach
 {
-  v4 = a3;
+  attachCopy = attach;
   libraryInfoUpdateQ = self->_libraryInfoUpdateQ;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__ACCMediaLibraryShim_startShimForAccessoryAttach___block_invoke;
   v7[3] = &unk_2789E3428;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = attachCopy;
+  v6 = attachCopy;
   dispatch_async(libraryInfoUpdateQ, v7);
 }
 
@@ -606,8 +606,8 @@ LABEL_53:
   }
 
   *&self->_enableLibraryInfoUpdate = 256;
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
   libraryInfoUpdateQ = self->_libraryInfoUpdateQ;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -620,7 +620,7 @@ LABEL_53:
     memUse = self->_memUse;
     if (memUse)
     {
-      v37 = v8;
+      v37 = defaultCenter;
       [(ACCMemUsageStat *)memUse update];
       if (gLogObjects && gNumLogObjects >= 1)
       {
@@ -640,14 +640,14 @@ LABEL_53:
 
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(ACCMediaLibraryAccessory *)self->_accessory accessoryUID];
-        v14 = [MEMORY[0x277CBEAA8] date];
-        v15 = [(ACCMemUsageStat *)self->_memUse statInfo];
-        v16 = [v15 startTime];
-        [v14 timeIntervalSinceDate:v16];
+        accessoryUID = [(ACCMediaLibraryAccessory *)self->_accessory accessoryUID];
+        date = [MEMORY[0x277CBEAA8] date];
+        statInfo = [(ACCMemUsageStat *)self->_memUse statInfo];
+        startTime = [statInfo startTime];
+        [date timeIntervalSinceDate:startTime];
         v17 = self->_memUse;
         *buf = 138412802;
-        v46 = v13;
+        v46 = accessoryUID;
         v47 = 2048;
         v48 = v18;
         v49 = 2112;
@@ -655,18 +655,18 @@ LABEL_53:
         _os_log_impl(&dword_2335D3000, v11, OS_LOG_TYPE_DEFAULT, "shuttingDown: %@, Finished after %f sec, memUse:\n%@", buf, 0x20u);
       }
 
-      v19 = [(ACCMemUsageStat *)self->_memUse markList];
-      v38 = [v19 count];
+      markList = [(ACCMemUsageStat *)self->_memUse markList];
+      v38 = [markList count];
 
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v39 = self;
-      v20 = [(ACCMemUsageStat *)self->_memUse markList];
-      v21 = [v20 allValues];
+      selfCopy = self;
+      markList2 = [(ACCMemUsageStat *)self->_memUse markList];
+      allValues = [markList2 allValues];
 
-      v22 = [v21 countByEnumeratingWithState:&v40 objects:v53 count:16];
+      v22 = [allValues countByEnumeratingWithState:&v40 objects:v53 count:16];
       if (v22)
       {
         v23 = v22;
@@ -679,7 +679,7 @@ LABEL_53:
           {
             if (*v41 != v25)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(allValues);
             }
 
             v28 = *(*(&v40 + 1) + 8 * i);
@@ -717,9 +717,9 @@ LABEL_53:
 
             if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
             {
-              v34 = [(ACCMediaLibraryAccessory *)v39->_accessory accessoryUID];
+              accessoryUID2 = [(ACCMediaLibraryAccessory *)selfCopy->_accessory accessoryUID];
               *buf = 138413058;
-              v46 = v34;
+              v46 = accessoryUID2;
               v47 = 2048;
               v48 = v24;
               v49 = 2048;
@@ -732,14 +732,14 @@ LABEL_53:
             v24 = (v24 + 1);
           }
 
-          v23 = [v21 countByEnumeratingWithState:&v40 objects:v53 count:16];
+          v23 = [allValues countByEnumeratingWithState:&v40 objects:v53 count:16];
         }
 
         while (v23);
       }
 
-      self = v39;
-      v8 = v37;
+      self = selfCopy;
+      defaultCenter = v37;
     }
   }
 
@@ -808,8 +808,8 @@ void __35__ACCMediaLibraryShim_shuttingDown__block_invoke(uint64_t a1)
 - (void)dealloc
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = *(a1 + 8);
-  v2 = *(a1 + 64);
+  v1 = *(self + 8);
+  v2 = *(self + 64);
   OUTLINED_FUNCTION_7();
   v7 = v3;
   _os_log_debug_impl(&dword_2335D3000, v4, OS_LOG_TYPE_DEBUG, "ACCMediaLibraryShim dealloc: _libraries=%@  _libraryList=%@", v6, 0x16u);
@@ -879,10 +879,10 @@ void __30__ACCMediaLibraryShim_dealloc__block_invoke(uint64_t a1)
     goto LABEL_23;
   }
 
-  v3 = [MEMORY[0x277CD5E10] mediaLibraries];
-  v4 = [(ACCMediaLibraryShim *)self subscribedToAppleMusic];
+  mediaLibraries = [MEMORY[0x277CD5E10] mediaLibraries];
+  subscribedToAppleMusic = [(ACCMediaLibraryShim *)self subscribedToAppleMusic];
   v5 = [(NSDictionary *)self->_libraries count];
-  if (v5 != [v3 count])
+  if (v5 != [mediaLibraries count])
   {
     v16 = 1;
     goto LABEL_22;
@@ -892,7 +892,7 @@ void __30__ACCMediaLibraryShim_dealloc__block_invoke(uint64_t a1)
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v3;
+  v6 = mediaLibraries;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v7)
   {
@@ -912,8 +912,8 @@ LABEL_17:
         objc_enumerationMutation(v6);
       }
 
-      v11 = ACCMediaLibraryShimUIDString(*(*(&v19 + 1) + 8 * i), v4);
-      v12 = ACCMediaLibraryShimUIDString(self->_deviceMediaLibrary, v4);
+      v11 = ACCMediaLibraryShimUIDString(*(*(&v19 + 1) + 8 * i), subscribedToAppleMusic);
+      v12 = ACCMediaLibraryShimUIDString(self->_deviceMediaLibrary, subscribedToAppleMusic);
       v13 = [v11 isEqualToString:{v12, v19}];
 
       if (v13)
@@ -966,9 +966,9 @@ LABEL_23:
   v19 = *MEMORY[0x277D85DE8];
   radioIsEnabled = self->_radioIsEnabled;
   v4 = GetMediaLibraryHelper();
-  v5 = [v4 iTunesRadioEnabled];
+  iTunesRadioEnabled = [v4 iTunesRadioEnabled];
 
-  if (radioIsEnabled != v5)
+  if (radioIsEnabled != iTunesRadioEnabled)
   {
     if (gLogObjects)
     {
@@ -1003,7 +1003,7 @@ LABEL_23:
       v16[0] = 67109376;
       v16[1] = v9;
       v17 = 1024;
-      v18 = [v10 iTunesRadioEnabled];
+      iTunesRadioEnabled2 = [v10 iTunesRadioEnabled];
       _os_log_impl(&dword_2335D3000, v8, OS_LOG_TYPE_INFO, "_checkForDifferentRadioLibrary: _radioIsEnabled=%d->%d", v16, 0xEu);
     }
 
@@ -1012,13 +1012,13 @@ LABEL_23:
 
     if (self->_radioIsEnabled)
     {
-      v12 = [MEMORY[0x277CD6020] defaultRadioLibrary];
+      defaultRadioLibrary = [MEMORY[0x277CD6020] defaultRadioLibrary];
       mpRadioLibrary = self->_mpRadioLibrary;
-      self->_mpRadioLibrary = v12;
+      self->_mpRadioLibrary = defaultRadioLibrary;
     }
   }
 
-  result = radioIsEnabled != v5;
+  result = radioIsEnabled != iTunesRadioEnabled;
   v15 = *MEMORY[0x277D85DE8];
   return result;
 }
@@ -1038,8 +1038,8 @@ LABEL_23:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v4 = [(NSMutableDictionary *)self->_libraryList allValues];
-    v5 = [v4 countByEnumeratingWithState:&v39 objects:v45 count:16];
+    allValues = [(NSMutableDictionary *)self->_libraryList allValues];
+    v5 = [allValues countByEnumeratingWithState:&v39 objects:v45 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1050,16 +1050,16 @@ LABEL_5:
       {
         if (*v40 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v39 + 1) + 8 * v8);
         if (![v9 libraryType])
         {
           v10 = objc_alloc(MEMORY[0x277CE82B0]);
-          v11 = [v9 UIDString];
-          v12 = [v9 name];
-          v13 = [v10 initWithMediaLibrary:v11 name:v12 type:{objc_msgSend(v9, "libraryType")}];
+          uIDString = [v9 UIDString];
+          name = [v9 name];
+          v13 = [v10 initWithMediaLibrary:uIDString name:name type:{objc_msgSend(v9, "libraryType")}];
 
           [v3 addObject:v13];
         }
@@ -1071,7 +1071,7 @@ LABEL_5:
 
         if (v6 == ++v8)
         {
-          v6 = [v4 countByEnumeratingWithState:&v39 objects:v45 count:16];
+          v6 = [allValues countByEnumeratingWithState:&v39 objects:v45 count:16];
           if (v6)
           {
             goto LABEL_5;
@@ -1132,13 +1132,13 @@ LABEL_15:
               _os_log_impl(&dword_2335D3000, v16, OS_LOG_TYPE_INFO, "_sendLibraryInfoList: _radioIsEnabled=%d _radioLibrary=%@ _mpRadioLibrary=%@", buf, 0x1Cu);
             }
 
-            v17 = [(ACCMediaLibraryShimInfo *)self->_radioLibrary UIDString];
+            uIDString2 = [(ACCMediaLibraryShimInfo *)self->_radioLibrary UIDString];
             if ([(ACCMediaLibraryShimInfo *)self->_radioLibrary libraryType]== 2)
             {
               v28 = acc_strings_bundle();
               v29 = [v28 localizedStringForKey:@"Apple Music Radio" value:&stru_2848E72C8 table:0];
 
-              v30 = [objc_alloc(MEMORY[0x277CE82B0]) initWithMediaLibrary:v17 name:v29 type:2];
+              v30 = [objc_alloc(MEMORY[0x277CE82B0]) initWithMediaLibrary:uIDString2 name:v29 type:2];
               [v3 addObject:v30];
             }
 
@@ -1147,7 +1147,7 @@ LABEL_15:
 
           if (v15)
           {
-            v17 = *gLogObjects;
+            uIDString2 = *gLogObjects;
           }
 
           else
@@ -1157,23 +1157,23 @@ LABEL_15:
               [ACCMediaLibraryShimInfo _getUIDString];
             }
 
-            v17 = MEMORY[0x277D86220];
+            uIDString2 = MEMORY[0x277D86220];
             v31 = MEMORY[0x277D86220];
           }
 
-          if (!os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+          if (!os_log_type_enabled(uIDString2, OS_LOG_TYPE_INFO))
           {
             goto LABEL_50;
           }
 
-          v32 = [(MPRadioLibrary *)self->_mpRadioLibrary stationCount];
+          stationCount = [(MPRadioLibrary *)self->_mpRadioLibrary stationCount];
           v33 = self->_radioIsEnabled;
           *buf = 134218240;
-          *v44 = v32;
+          *v44 = stationCount;
           *&v44[8] = 1024;
           *&v44[10] = v33;
           v21 = "_sendLibraryInfoList: RadioLibrary count(%llu) == 0 _radioIsEnabled=%d";
-          v22 = v17;
+          v22 = uIDString2;
           v23 = 18;
         }
 
@@ -1181,7 +1181,7 @@ LABEL_15:
         {
           if (gLogObjects && gNumLogObjects >= 1)
           {
-            v17 = *gLogObjects;
+            uIDString2 = *gLogObjects;
           }
 
           else
@@ -1191,11 +1191,11 @@ LABEL_15:
               [ACCMediaLibraryShimInfo _getUIDString];
             }
 
-            v17 = MEMORY[0x277D86220];
+            uIDString2 = MEMORY[0x277D86220];
             v18 = MEMORY[0x277D86220];
           }
 
-          if (!os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+          if (!os_log_type_enabled(uIDString2, OS_LOG_TYPE_INFO))
           {
             goto LABEL_50;
           }
@@ -1207,7 +1207,7 @@ LABEL_15:
           *&v44[8] = 2112;
           *&v44[10] = v20;
           v21 = "_sendLibraryInfoList: Error, no RadioLibrary (info=%@ mp=%@)";
-          v22 = v17;
+          v22 = uIDString2;
           v23 = 22;
         }
 
@@ -1237,15 +1237,15 @@ LABEL_50:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateMediaLibraryInfomationUpdates:(BOOL)a3
+- (void)_updateMediaLibraryInfomationUpdates:(BOOL)updates
 {
   v24 = *MEMORY[0x277D85DE8];
   if (self->_enableLibraryInfoUpdate && !self->_isShuttingDown)
   {
-    v4 = a3;
-    v5 = [(ACCMediaLibraryShim *)self _checkForDifferentRadioLibrary];
-    v6 = [(ACCMediaLibraryShim *)self _checkForDifferentMediaLibraries];
-    if (self->_enableLibraryInfoUpdate && !self->_isShuttingDown && (v5 || v6 || v4))
+    updatesCopy = updates;
+    _checkForDifferentRadioLibrary = [(ACCMediaLibraryShim *)self _checkForDifferentRadioLibrary];
+    _checkForDifferentMediaLibraries = [(ACCMediaLibraryShim *)self _checkForDifferentMediaLibraries];
+    if (self->_enableLibraryInfoUpdate && !self->_isShuttingDown && (_checkForDifferentRadioLibrary || _checkForDifferentMediaLibraries || updatesCopy))
     {
       v7 = self->_libraryList;
       libraryList = self->_libraryList;
@@ -1256,8 +1256,8 @@ LABEL_50:
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v9 = [(NSMutableDictionary *)v7 allValues];
-      v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      allValues = [(NSMutableDictionary *)v7 allValues];
+      v10 = [allValues countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v10)
       {
         v11 = v10;
@@ -1268,13 +1268,13 @@ LABEL_50:
           {
             if (*v20 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allValues);
             }
 
             v14 = *(*(&v19 + 1) + 8 * i);
             v15 = self->_libraryList;
-            v16 = [v14 UIDString];
-            v17 = [(NSMutableDictionary *)v15 objectForKey:v16];
+            uIDString = [v14 UIDString];
+            v17 = [(NSMutableDictionary *)v15 objectForKey:uIDString];
 
             if (!v17)
             {
@@ -1283,7 +1283,7 @@ LABEL_50:
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v11 = [allValues countByEnumeratingWithState:&v19 objects:v23 count:16];
         }
 
         while (v11);
@@ -1499,12 +1499,12 @@ uint64_t __63__ACCMediaLibraryShim_stopSendingMediaLibraryInfomationUpdates__blo
   return AppBooleanValue != 0;
 }
 
-- (void)startMediaLibraryUpdate:(id)a3 lastRevision:(id)a4 requestedInfo:(id)a5
+- (void)startMediaLibraryUpdate:(id)update lastRevision:(id)revision requestedInfo:(id)info
 {
   v58 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  updateCopy = update;
+  revisionCopy = revision;
+  infoCopy = info;
   v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
   if (gLogObjects)
   {
@@ -1534,26 +1534,26 @@ uint64_t __63__ACCMediaLibraryShim_stopSendingMediaLibraryInfomationUpdates__blo
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = ACCMediaLibraryFeatureRequestedInfoDesc(v9);
+    v14 = ACCMediaLibraryFeatureRequestedInfoDesc(infoCopy);
     *buf = 138412802;
-    v53 = v7;
+    v53 = updateCopy;
     v54 = 2112;
-    v55 = v8;
+    v55 = revisionCopy;
     v56 = 2112;
     v57 = v14;
     _os_log_impl(&dword_2335D3000, v13, OS_LOG_TYPE_DEFAULT, "startMediaLibraryUpdate:%@ lastRevision:%@ requestedInfo:%@", buf, 0x20u);
   }
 
-  v33 = v8;
+  v33 = revisionCopy;
 
-  v34 = v7;
-  [v10 setValue:v7 forKey:@"LibUID"];
+  v34 = updateCopy;
+  [v10 setValue:updateCopy forKey:@"LibUID"];
   [v10 setValue:@"1" forKey:@"Progress"];
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v15 = v9;
+  v15 = infoCopy;
   v16 = [v15 countByEnumeratingWithState:&v47 objects:v51 count:16];
   if (v16)
   {
@@ -1745,10 +1745,10 @@ void __74__ACCMediaLibraryShim_startMediaLibraryUpdate_lastRevision_requestedInf
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopMediaLibraryUpdate:(id)a3
+- (void)stopMediaLibraryUpdate:(id)update
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -1779,7 +1779,7 @@ void __74__ACCMediaLibraryShim_startMediaLibraryUpdate_lastRevision_requestedInf
   {
     isShuttingDown = self->_isShuttingDown;
     *buf = 138412546;
-    v14 = v4;
+    v14 = updateCopy;
     v15 = 1024;
     v16 = isShuttingDown;
     _os_log_impl(&dword_2335D3000, v7, OS_LOG_TYPE_DEFAULT, "stopMediaLibraryUpdate: %@ _isShuttingDown=%d", buf, 0x12u);
@@ -1793,7 +1793,7 @@ void __74__ACCMediaLibraryShim_startMediaLibraryUpdate_lastRevision_requestedInf
     v11[2] = __46__ACCMediaLibraryShim_stopMediaLibraryUpdate___block_invoke;
     v11[3] = &unk_2789E3428;
     v11[4] = self;
-    v12 = v4;
+    v12 = updateCopy;
     dispatch_async(libraryInfoUpdateQ, v11);
   }
 
@@ -2057,10 +2057,10 @@ void *__48__ACCMediaLibraryShim_stopAllMediaLibraryUpdate__block_invoke(void *re
   return result;
 }
 
-- (void)playMediaLibraryCurrentSelection:(id)a3
+- (void)playMediaLibraryCurrentSelection:(id)selection
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  selectionCopy = selection;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -2091,7 +2091,7 @@ void *__48__ACCMediaLibraryShim_stopAllMediaLibraryUpdate__block_invoke(void *re
   {
     isShuttingDown = self->_isShuttingDown;
     *buf = 138412546;
-    v14 = v4;
+    v14 = selectionCopy;
     v15 = 1024;
     v16 = isShuttingDown;
     _os_log_impl(&dword_2335D3000, v7, OS_LOG_TYPE_DEFAULT, "playMediaLibraryCurrentSelection: %@ _isShuttingDown=%d", buf, 0x12u);
@@ -2105,7 +2105,7 @@ void *__48__ACCMediaLibraryShim_stopAllMediaLibraryUpdate__block_invoke(void *re
     v11[2] = __56__ACCMediaLibraryShim_playMediaLibraryCurrentSelection___block_invoke;
     v11[3] = &unk_2789E3428;
     v11[4] = self;
-    v12 = v4;
+    v12 = selectionCopy;
     dispatch_async(libraryInfoUpdateQ, v11);
   }
 
@@ -2189,11 +2189,11 @@ void __56__ACCMediaLibraryShim_playMediaLibraryCurrentSelection___block_invoke(u
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)playMediaLibraryItems:(id)a3 itemList:(id)a4 firstItemIndex:(unint64_t)a5
+- (void)playMediaLibraryItems:(id)items itemList:(id)list firstItemIndex:(unint64_t)index
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  itemsCopy = items;
+  listCopy = list;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 1;
@@ -2222,14 +2222,14 @@ void __56__ACCMediaLibraryShim_playMediaLibraryCurrentSelection___block_invoke(u
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v9 count];
+    v13 = [listCopy count];
     isShuttingDown = self->_isShuttingDown;
     *buf = 138413058;
-    v22 = v8;
+    v22 = itemsCopy;
     v23 = 2048;
     v24 = v13;
     v25 = 2048;
-    v26 = a5;
+    indexCopy = index;
     v27 = 1024;
     v28 = isShuttingDown;
     _os_log_impl(&dword_2335D3000, v12, OS_LOG_TYPE_DEFAULT, "playMediaLibraryItems: %@ itemList.count:%lu firstItemIndex:%lu _isShuttingDown=%d", buf, 0x26u);
@@ -2243,9 +2243,9 @@ void __56__ACCMediaLibraryShim_playMediaLibraryCurrentSelection___block_invoke(u
     v17[2] = __69__ACCMediaLibraryShim_playMediaLibraryItems_itemList_firstItemIndex___block_invoke;
     v17[3] = &unk_2789E3538;
     v17[4] = self;
-    v18 = v8;
-    v19 = v9;
-    v20 = a5;
+    v18 = itemsCopy;
+    v19 = listCopy;
+    indexCopy2 = index;
     dispatch_async(libraryInfoUpdateQ, v17);
   }
 
@@ -2335,10 +2335,10 @@ void __69__ACCMediaLibraryShim_playMediaLibraryItems_itemList_firstItemIndex___b
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)playMediaLibraryCollection:(id)a3 collection:(unint64_t)a4 type:(int)a5 firstItemIndex:(unint64_t)a6
+- (void)playMediaLibraryCollection:(id)collection collection:(unint64_t)a4 type:(int)type firstItemIndex:(unint64_t)index
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  collectionCopy = collection;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 1;
@@ -2369,13 +2369,13 @@ void __69__ACCMediaLibraryShim_playMediaLibraryItems_itemList_firstItemIndex___b
   {
     isShuttingDown = self->_isShuttingDown;
     *buf = 138413314;
-    v23 = v10;
+    v23 = collectionCopy;
     v24 = 2048;
     v25 = a4;
     v26 = 1024;
-    v27 = a5;
+    typeCopy = type;
     v28 = 2048;
-    v29 = a6;
+    indexCopy = index;
     v30 = 1024;
     v31 = isShuttingDown;
     _os_log_impl(&dword_2335D3000, v13, OS_LOG_TYPE_DEFAULT, "playMediaLibraryCollection: %@ collectionPersistentID:%llu collectionType:%d firstItemIndex:%lu _isShuttingDown=%d", buf, 0x2Cu);
@@ -2389,10 +2389,10 @@ void __69__ACCMediaLibraryShim_playMediaLibraryItems_itemList_firstItemIndex___b
     block[2] = __81__ACCMediaLibraryShim_playMediaLibraryCollection_collection_type_firstItemIndex___block_invoke;
     block[3] = &unk_2789E3560;
     block[4] = self;
-    v18 = v10;
+    v18 = collectionCopy;
     v19 = a4;
-    v21 = a5;
-    v20 = a6;
+    typeCopy2 = type;
+    indexCopy2 = index;
     dispatch_async(libraryInfoUpdateQ, block);
   }
 
@@ -2485,10 +2485,10 @@ void __81__ACCMediaLibraryShim_playMediaLibraryCollection_collection_type_firstI
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)playMediaLibraryCollection:(id)a3 collection:(unint64_t)a4 type:(int)a5 firstItemPersistentID:(unint64_t)a6
+- (void)playMediaLibraryCollection:(id)collection collection:(unint64_t)a4 type:(int)type firstItemPersistentID:(unint64_t)d
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  collectionCopy = collection;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 1;
@@ -2519,13 +2519,13 @@ void __81__ACCMediaLibraryShim_playMediaLibraryCollection_collection_type_firstI
   {
     isShuttingDown = self->_isShuttingDown;
     *buf = 138413314;
-    v23 = v10;
+    v23 = collectionCopy;
     v24 = 2048;
     v25 = a4;
     v26 = 1024;
-    v27 = a5;
+    typeCopy = type;
     v28 = 2048;
-    v29 = a6;
+    dCopy = d;
     v30 = 1024;
     v31 = isShuttingDown;
     _os_log_impl(&dword_2335D3000, v13, OS_LOG_TYPE_DEFAULT, "playMediaLibraryCollection: %@ collectionPersistentID:%llu collectionType:%d firstItemPersistentID:%llu _isShuttingDown=%d", buf, 0x2Cu);
@@ -2539,10 +2539,10 @@ void __81__ACCMediaLibraryShim_playMediaLibraryCollection_collection_type_firstI
     block[2] = __88__ACCMediaLibraryShim_playMediaLibraryCollection_collection_type_firstItemPersistentID___block_invoke;
     block[3] = &unk_2789E3560;
     block[4] = self;
-    v18 = v10;
+    v18 = collectionCopy;
     v19 = a4;
-    v21 = a5;
-    v20 = a6;
+    typeCopy2 = type;
+    dCopy2 = d;
     dispatch_async(libraryInfoUpdateQ, block);
   }
 
@@ -2635,10 +2635,10 @@ void __88__ACCMediaLibraryShim_playMediaLibraryCollection_collection_type_firstI
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)playAllSongs:(id)a3
+- (void)playAllSongs:(id)songs
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  songsCopy = songs;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -2669,7 +2669,7 @@ void __88__ACCMediaLibraryShim_playMediaLibraryCollection_collection_type_firstI
   {
     isShuttingDown = self->_isShuttingDown;
     *buf = 138412546;
-    v14 = v4;
+    v14 = songsCopy;
     v15 = 1024;
     v16 = isShuttingDown;
     _os_log_impl(&dword_2335D3000, v7, OS_LOG_TYPE_DEFAULT, "playAllSongs: %@ _isShuttingDown=%d", buf, 0x12u);
@@ -2683,7 +2683,7 @@ void __88__ACCMediaLibraryShim_playMediaLibraryCollection_collection_type_firstI
     v11[2] = __36__ACCMediaLibraryShim_playAllSongs___block_invoke;
     v11[3] = &unk_2789E3428;
     v11[4] = self;
-    v12 = v4;
+    v12 = songsCopy;
     dispatch_async(libraryInfoUpdateQ, v11);
   }
 
@@ -2767,10 +2767,10 @@ void __36__ACCMediaLibraryShim_playAllSongs___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)playAllSongs:(id)a3 firstItemPersistentID:(unint64_t)a4
+- (void)playAllSongs:(id)songs firstItemPersistentID:(unint64_t)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  songsCopy = songs;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 1;
@@ -2801,9 +2801,9 @@ void __36__ACCMediaLibraryShim_playAllSongs___block_invoke(uint64_t a1)
   {
     isShuttingDown = self->_isShuttingDown;
     *buf = 138412802;
-    v17 = v6;
+    v17 = songsCopy;
     v18 = 2048;
-    v19 = a4;
+    dCopy = d;
     v20 = 1024;
     v21 = isShuttingDown;
     _os_log_impl(&dword_2335D3000, v9, OS_LOG_TYPE_DEFAULT, "playAllSongs: %@ firstItemPersistentID:%llu _isShuttingDown=%d", buf, 0x1Cu);
@@ -2817,8 +2817,8 @@ void __36__ACCMediaLibraryShim_playAllSongs___block_invoke(uint64_t a1)
     block[2] = __58__ACCMediaLibraryShim_playAllSongs_firstItemPersistentID___block_invoke;
     block[3] = &unk_2789E3588;
     block[4] = self;
-    v14 = v6;
-    v15 = a4;
+    v14 = songsCopy;
+    dCopy2 = d;
     dispatch_async(libraryInfoUpdateQ, block);
   }
 
@@ -2905,11 +2905,11 @@ void __58__ACCMediaLibraryShim_playAllSongs_firstItemPersistentID___block_invoke
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)confirmMediaLibraryUpdate:(id)a3 lastRevision:(id)a4 updateCount:(unsigned int)a5
+- (void)confirmMediaLibraryUpdate:(id)update lastRevision:(id)revision updateCount:(unsigned int)count
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  updateCopy = update;
+  revisionCopy = revision;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 1;
@@ -2940,9 +2940,9 @@ void __58__ACCMediaLibraryShim_playAllSongs_firstItemPersistentID___block_invoke
   {
     isShuttingDown = self->_isShuttingDown;
     *buf = 138412802;
-    v21 = v8;
+    v21 = updateCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = revisionCopy;
     v24 = 1024;
     v25 = isShuttingDown;
     _os_log_impl(&dword_2335D3000, v12, OS_LOG_TYPE_DEFAULT, "confirmMediaLibraryUpdate: %@ lastRevision:%@ _isShuttingDown=%d", buf, 0x1Cu);
@@ -2956,9 +2956,9 @@ void __58__ACCMediaLibraryShim_playAllSongs_firstItemPersistentID___block_invoke
     v16[2] = __74__ACCMediaLibraryShim_confirmMediaLibraryUpdate_lastRevision_updateCount___block_invoke;
     v16[3] = &unk_2789E35B0;
     v16[4] = self;
-    v17 = v8;
-    v18 = v9;
-    v19 = a5;
+    v17 = updateCopy;
+    v18 = revisionCopy;
+    countCopy = count;
     dispatch_async(libraryInfoUpdateQ, v16);
   }
 
@@ -3048,11 +3048,11 @@ void __74__ACCMediaLibraryShim_confirmMediaLibraryUpdate_lastRevision_updateCoun
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)confirmMediaLibraryPlaylistContentUpdate:(id)a3 lastRevision:(id)a4
+- (void)confirmMediaLibraryPlaylistContentUpdate:(id)update lastRevision:(id)revision
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  revisionCopy = revision;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 1;
@@ -3083,9 +3083,9 @@ void __74__ACCMediaLibraryShim_confirmMediaLibraryUpdate_lastRevision_updateCoun
   {
     isShuttingDown = self->_isShuttingDown;
     *buf = 138412802;
-    v18 = v6;
+    v18 = updateCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = revisionCopy;
     v21 = 1024;
     v22 = isShuttingDown;
     _os_log_impl(&dword_2335D3000, v10, OS_LOG_TYPE_DEFAULT, "confirmMediaLibraryPlaylistContentUpdate: %@ lastRevision:%@ _isShuttingDown=%d", buf, 0x1Cu);
@@ -3099,8 +3099,8 @@ void __74__ACCMediaLibraryShim_confirmMediaLibraryUpdate_lastRevision_updateCoun
     block[2] = __77__ACCMediaLibraryShim_confirmMediaLibraryPlaylistContentUpdate_lastRevision___block_invoke;
     block[3] = &unk_2789E34E8;
     block[4] = self;
-    v15 = v6;
-    v16 = v7;
+    v15 = updateCopy;
+    v16 = revisionCopy;
     dispatch_async(libraryInfoUpdateQ, block);
   }
 

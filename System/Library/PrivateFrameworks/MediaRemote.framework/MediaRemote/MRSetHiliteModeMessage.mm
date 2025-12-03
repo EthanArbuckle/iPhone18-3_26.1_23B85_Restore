@@ -6,10 +6,10 @@
 
 - (BOOL)hiliteMode
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 hiliteMode];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  hiliteMode = [underlyingCodableMessage hiliteMode];
 
-  return v3;
+  return hiliteMode;
 }
 
 @end

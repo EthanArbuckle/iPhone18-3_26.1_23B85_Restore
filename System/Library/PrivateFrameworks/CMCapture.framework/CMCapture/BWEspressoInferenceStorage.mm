@@ -1,31 +1,31 @@
 @interface BWEspressoInferenceStorage
-- (BWEspressoInferenceStorage)initWithBindingNameByRequirement:(id)a3 requirementsNeedingPixelBuffers:(id)a4 requirementsNeedingPixelBufferPools:(id)a5 requirementsNeedingTensors:(id)a6;
-- (id)newMetadataDictionarySatisfyingRequirement:(id)a3;
-- (opaqueCMSampleBuffer)newSampleBufferSatisfyingRequirement:(id)a3 withPropagationSampleBuffer:(opaqueCMSampleBuffer *)a4;
+- (BWEspressoInferenceStorage)initWithBindingNameByRequirement:(id)requirement requirementsNeedingPixelBuffers:(id)buffers requirementsNeedingPixelBufferPools:(id)pools requirementsNeedingTensors:(id)tensors;
+- (id)newMetadataDictionarySatisfyingRequirement:(id)requirement;
+- (opaqueCMSampleBuffer)newSampleBufferSatisfyingRequirement:(id)requirement withPropagationSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)clear;
 - (void)dealloc;
 @end
 
 @implementation BWEspressoInferenceStorage
 
-- (BWEspressoInferenceStorage)initWithBindingNameByRequirement:(id)a3 requirementsNeedingPixelBuffers:(id)a4 requirementsNeedingPixelBufferPools:(id)a5 requirementsNeedingTensors:(id)a6
+- (BWEspressoInferenceStorage)initWithBindingNameByRequirement:(id)requirement requirementsNeedingPixelBuffers:(id)buffers requirementsNeedingPixelBufferPools:(id)pools requirementsNeedingTensors:(id)tensors
 {
   v23.receiver = self;
   v23.super_class = BWEspressoInferenceStorage;
-  v8 = [(BWInferenceProviderStorage *)&v23 initWithRequirementsNeedingPixelBuffers:a4 requirementsNeedingPixelBufferPools:a5];
+  v8 = [(BWInferenceProviderStorage *)&v23 initWithRequirementsNeedingPixelBuffers:buffers requirementsNeedingPixelBufferPools:pools];
   if (v8)
   {
-    v8->_bindingNameByRequirement = [a3 copy];
+    v8->_bindingNameByRequirement = [requirement copy];
     v9 = [MEMORY[0x1E696AE10] pointerFunctionsWithOptions:0];
     v10 = [MEMORY[0x1E696AE10] pointerFunctionsWithOptions:259];
-    v8->_tensorByRequirement = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyPointerFunctions:v9 valuePointerFunctions:v10 capacity:{objc_msgSend(a6, "count")}];
+    v8->_tensorByRequirement = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyPointerFunctions:v9 valuePointerFunctions:v10 capacity:{objc_msgSend(tensors, "count")}];
     v8->_requirementsUsingTensors = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v8->_requirementsUsingPixelBuffers = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [a6 countByEnumeratingWithState:&v19 objects:v18 count:16];
+    v11 = [tensors countByEnumeratingWithState:&v19 objects:v18 count:16];
     if (v11)
     {
       v12 = v11;
@@ -37,7 +37,7 @@
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(a6);
+            objc_enumerationMutation(tensors);
           }
 
           v15 = *(*(&v19 + 1) + 8 * v14);
@@ -58,7 +58,7 @@
         }
 
         while (v12 != v14);
-        v12 = [a6 countByEnumeratingWithState:&v19 objects:v18 count:16];
+        v12 = [tensors countByEnumeratingWithState:&v19 objects:v18 count:16];
       }
 
       while (v12);
@@ -84,24 +84,24 @@
   [(NSMutableSet *)self->_requirementsUsingPixelBuffers removeAllObjects];
 }
 
-- (opaqueCMSampleBuffer)newSampleBufferSatisfyingRequirement:(id)a3 withPropagationSampleBuffer:(opaqueCMSampleBuffer *)a4
+- (opaqueCMSampleBuffer)newSampleBufferSatisfyingRequirement:(id)requirement withPropagationSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v51 = 0;
   v7 = [(NSMutableSet *)self->_requirementsUsingTensors containsObject:?];
-  v8 = [(NSMutableSet *)self->_requirementsUsingPixelBuffers containsObject:a3];
+  v8 = [(NSMutableSet *)self->_requirementsUsingPixelBuffers containsObject:requirement];
   if ((v7 & 1) == 0 && !v8)
   {
     return v51;
   }
 
-  v9 = [a3 videoFormat];
-  if (!v9)
+  videoFormat = [requirement videoFormat];
+  if (!videoFormat)
   {
     return v51;
   }
 
-  v10 = v9;
-  v11 = [(BWInferenceProviderStorage *)self pixelBufferForRequirement:a3];
+  v10 = videoFormat;
+  v11 = [(BWInferenceProviderStorage *)self pixelBufferForRequirement:requirement];
   if (!v11)
   {
     return v51;
@@ -110,7 +110,7 @@
   v12 = v11;
   if (v7)
   {
-    v13 = [(BWEspressoInferenceStorage *)self tensorForRequirement:a3];
+    v13 = [(BWEspressoInferenceStorage *)self tensorForRequirement:requirement];
     if (!v13)
     {
       return v51;
@@ -154,7 +154,7 @@ LABEL_15:
 LABEL_16:
     if (v16 == v14->var4 * v18 * v14->var5)
     {
-      if ([v10 deviceOriented] && objc_msgSend(v10, "pixelFormat") == 1278226534 && ((v20 = CMGetAttachment(a4, @"UprightExifOrientation", 0)) != 0 || (v20 = objc_msgSend(CMGetAttachment(a4, *off_1E798A3C8, 0), "objectForKeyedSubscript:", *off_1E798A5B0)) != 0) && (LOBYTE(v49) = 0, (v21 = FigCaptureRotationDegreesAndMirroringFromExifOrientation(objc_msgSend(v20, "intValue"), &v49)) != 0))
+      if ([v10 deviceOriented] && objc_msgSend(v10, "pixelFormat") == 1278226534 && ((v20 = CMGetAttachment(buffer, @"UprightExifOrientation", 0)) != 0 || (v20 = objc_msgSend(CMGetAttachment(buffer, *off_1E798A3C8, 0), "objectForKeyedSubscript:", *off_1E798A5B0)) != 0) && (LOBYTE(v49) = 0, (v21 = FigCaptureRotationDegreesAndMirroringFromExifOrientation(objc_msgSend(v20, "intValue"), &v49)) != 0))
       {
         v22 = v21;
         v23 = OUTLINED_FUNCTION_1_74();
@@ -261,11 +261,11 @@ LABEL_30:
   return v51;
 }
 
-- (id)newMetadataDictionarySatisfyingRequirement:(id)a3
+- (id)newMetadataDictionarySatisfyingRequirement:(id)requirement
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [a3 metadataKeys];
-  v7 = [(BWEspressoInferenceStorage *)self tensorForRequirement:a3];
+  metadataKeys = [requirement metadataKeys];
+  v7 = [(BWEspressoInferenceStorage *)self tensorForRequirement:requirement];
   if (!v7 || (v8 = v7, !v7->var0))
   {
     fig_log_get_emitter();
@@ -275,11 +275,11 @@ LABEL_30:
   }
 
   v9 = v7->var5 * v7->var4 * v7->var6 * v7->var7 * v7->var8;
-  v10 = [a3 mappingOption];
-  v11 = v10;
-  if (!v10 || v10 == 2)
+  mappingOption = [requirement mappingOption];
+  v11 = mappingOption;
+  if (!mappingOption || mappingOption == 2)
   {
-    v18 = [v6 count];
+    v18 = [metadataKeys count];
     if (v18 >= v9)
     {
       v19 = v9;
@@ -295,14 +295,14 @@ LABEL_30:
       v20 = v18;
       for (i = 0; i != v19; ++i)
       {
-        v22 = [v6 objectAtIndexedSubscript:i];
+        v22 = [metadataKeys objectAtIndexedSubscript:i];
         LODWORD(v23) = *(v8->var0 + i);
         [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v23), v22}];
       }
 
       if (v11 == 2 && v20 < v9)
       {
-        v25 = [v6 objectAtIndexedSubscript:v19 - 1];
+        v25 = [metadataKeys objectAtIndexedSubscript:v19 - 1];
         v26 = [v5 objectForKeyedSubscript:v25];
         v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v26, 0}];
         do
@@ -315,14 +315,14 @@ LABEL_30:
         while (v9 != v19);
         v16 = v5;
         v17 = v12;
-        v15 = v25;
+        firstObject = v25;
 LABEL_23:
-        [v16 setObject:v17 forKeyedSubscript:v15];
+        [v16 setObject:v17 forKeyedSubscript:firstObject];
       }
     }
   }
 
-  else if (v10 == 1)
+  else if (mappingOption == 1)
   {
     v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v9];
     if (v9)
@@ -334,7 +334,7 @@ LABEL_23:
       }
     }
 
-    v15 = [v6 firstObject];
+    firstObject = [metadataKeys firstObject];
     v16 = v5;
     v17 = v12;
     goto LABEL_23;

@@ -1,7 +1,7 @@
 @interface MTAWorldClockCollectionCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)canBecomeFocused;
-- (MTAWorldClockCollectionCellAccessibility)initWithFrame:(CGRect)a3;
+- (MTAWorldClockCollectionCellAccessibility)initWithFrame:(CGRect)frame;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axModifyDeleteButton;
@@ -9,19 +9,19 @@
 
 @implementation MTAWorldClockCollectionCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTAWorldClockCollectionCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"MTAWorldClockCollectionCell" hasInstanceMethod:@"worldClockView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAWorldClockCollectionCell" hasInstanceMethod:@"deleteButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTAWorldClockCollectionCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"MTAWorldClockCollectionCell" hasInstanceMethod:@"worldClockView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAWorldClockCollectionCell" hasInstanceMethod:@"deleteButton" withFullSignature:{"@", 0}];
 }
 
-- (MTAWorldClockCollectionCellAccessibility)initWithFrame:(CGRect)a3
+- (MTAWorldClockCollectionCellAccessibility)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MTAWorldClockCollectionCellAccessibility;
-  v3 = [(MTAWorldClockCollectionCellAccessibility *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTAWorldClockCollectionCellAccessibility *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -43,9 +43,9 @@
 {
   v2 = [(MTAWorldClockCollectionCellAccessibility *)self safeValueForKey:@"worldClockView"];
   v3 = [v2 safeValueForKey:@"cityNameLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (BOOL)canBecomeFocused

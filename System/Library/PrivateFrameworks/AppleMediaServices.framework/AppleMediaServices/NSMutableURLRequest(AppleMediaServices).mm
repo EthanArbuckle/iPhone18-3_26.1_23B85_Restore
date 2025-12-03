@@ -37,16 +37,16 @@
 
 - (AMSPromiseSerialQueue)_ams_promiseSerialQueue
 {
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = objc_getAssociatedObject(v1, &_ams_promiseSerialQueue_queueKey);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = objc_getAssociatedObject(selfCopy, &_ams_promiseSerialQueue_queueKey);
   if (!v2)
   {
     v2 = objc_alloc_init(AMSPromiseSerialQueue);
-    objc_setAssociatedObject(v1, &_ams_promiseSerialQueue_queueKey, v2, 1);
+    objc_setAssociatedObject(selfCopy, &_ams_promiseSerialQueue_queueKey, v2, 1);
   }
 
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
 
   return v2;
 }
@@ -54,7 +54,7 @@
 - (void)ams_addAcceptLanguageHeader
 {
   v2 = +[AMSDevice language];
-  [a1 setValue:v2 forHTTPHeaderField:@"Accept-Language"];
+  [self setValue:v2 forHTTPHeaderField:@"Accept-Language"];
 }
 
 - (uint64_t)ams_addCachePolicyHeader
@@ -62,18 +62,18 @@
   result = os_variant_has_internal_content();
   if (result)
   {
-    v3 = [a1 cachePolicy];
-    if (v3 > 5)
+    cachePolicy = [self cachePolicy];
+    if (cachePolicy > 5)
     {
       v4 = @"Unknown";
     }
 
     else
     {
-      v4 = off_1E73BE518[v3];
+      v4 = off_1E73BE518[cachePolicy];
     }
 
-    return [a1 setValue:v4 forHTTPHeaderField:@"X-Apple-NSURLCachePolicy"];
+    return [self setValue:v4 forHTTPHeaderField:@"X-Apple-NSURLCachePolicy"];
   }
 
   return result;
@@ -81,11 +81,11 @@
 
 - (void)ams_addTimezoneOffsetHeader
 {
-  v5 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v2 = [v5 secondsFromGMT];
-  v3 = [MEMORY[0x1E696AD98] numberWithDouble:v2];
-  v4 = [v3 stringValue];
-  [a1 setValue:v4 forHTTPHeaderField:@"X-Apple-Tz"];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  secondsFromGMT = [localTimeZone secondsFromGMT];
+  v3 = [MEMORY[0x1E696AD98] numberWithDouble:secondsFromGMT];
+  stringValue = [v3 stringValue];
+  [self setValue:stringValue forHTTPHeaderField:@"X-Apple-Tz"];
 }
 
 - (uint64_t)ams_addForwardedForHeader
@@ -93,7 +93,7 @@
   v2 = +[AMSDefaults forwardedForIPAddress];
   if (v2)
   {
-    [a1 setValue:v2 forHTTPHeaderField:@"X-Forwarded-For"];
+    [self setValue:v2 forHTTPHeaderField:@"X-Forwarded-For"];
   }
 
   return MEMORY[0x1EEE66BB8]();
@@ -101,14 +101,14 @@
 
 - (void)ams_addPrimaryiCloudIdentifierHeader
 {
-  v2 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v5 = [v2 ams_activeiCloudAccount];
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  ams_activeiCloudAccount = [ams_sharedAccountStore ams_activeiCloudAccount];
 
-  v3 = [v5 ams_DSID];
-  if ([v3 longLongValue])
+  ams_DSID = [ams_activeiCloudAccount ams_DSID];
+  if ([ams_DSID longLongValue])
   {
-    v4 = [v3 stringValue];
-    [a1 setValue:v4 forHTTPHeaderField:@"iCloud-DSID"];
+    stringValue = [ams_DSID stringValue];
+    [self setValue:stringValue forHTTPHeaderField:@"iCloud-DSID"];
   }
 }
 
@@ -118,22 +118,22 @@
   v4[1] = 3221225472;
   v4[2] = __58__NSMutableURLRequest_AppleMediaServices__ams_addHeaders___block_invoke;
   v4[3] = &unk_1E73B7EE0;
-  v4[4] = a1;
+  v4[4] = self;
   return [a3 enumerateKeysAndObjectsUsingBlock:v4];
 }
 
 - (id)ams_addAuthKitHeaders
 {
-  v2 = [a1 _ams_authKitHeaders];
+  _ams_authKitHeaders = [self _ams_authKitHeaders];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __64__NSMutableURLRequest_AppleMediaServices__ams_addAuthKitHeaders__block_invoke;
   v5[3] = &unk_1E73BE418;
-  v5[4] = a1;
-  [v2 addSuccessBlock:v5];
-  v3 = [v2 binaryPromiseAdapter];
+  v5[4] = self;
+  [_ams_authKitHeaders addSuccessBlock:v5];
+  binaryPromiseAdapter = [_ams_authKitHeaders binaryPromiseAdapter];
 
-  return v3;
+  return binaryPromiseAdapter;
 }
 
 - (void)ams_addAuthorizationHeaderForAccount:()AppleMediaServices
@@ -142,15 +142,15 @@
   {
     v4 = MEMORY[0x1E696AEC0];
     v5 = a3;
-    v6 = [v5 aa_personID];
-    v7 = [v5 aa_authToken];
+    aa_personID = [v5 aa_personID];
+    aa_authToken = [v5 aa_authToken];
 
-    v10 = [v4 stringWithFormat:@"%@:%@", v6, v7];
+    v10 = [v4 stringWithFormat:@"%@:%@", aa_personID, aa_authToken];
 
     v8 = [v10 dataUsingEncoding:4];
     v9 = [v8 base64EncodedStringWithOptions:0];
 
-    [a1 setValue:v9 forHTTPHeaderField:@"Authorization"];
+    [self setValue:v9 forHTTPHeaderField:@"Authorization"];
   }
 }
 
@@ -161,14 +161,14 @@
     if (a4)
     {
       v5 = [AMSBiometrics headersWithAccount:"headersWithAccount:options:signatureResult:" options:? signatureResult:?];
-      v6 = [a1 allHTTPHeaderFields];
+      allHTTPHeaderFields = [self allHTTPHeaderFields];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __86__NSMutableURLRequest_AppleMediaServices__ams_addBiometricsHeadersForAccount_options___block_invoke;
       v8[3] = &unk_1E73B7F08;
-      v9 = v6;
-      v10 = a1;
-      v7 = v6;
+      v9 = allHTTPHeaderFields;
+      selfCopy = self;
+      v7 = allHTTPHeaderFields;
       [v5 enumerateKeysAndObjectsUsingBlock:v8];
     }
   }
@@ -179,22 +179,22 @@
   if ((a3 & 1) == 0)
   {
     v4 = +[AMSProcessInfo currentProcess];
-    v5 = [v4 bundleIdentifier];
-    if ([v5 isEqualToString:@"com.apple.Music"])
+    bundleIdentifier = [v4 bundleIdentifier];
+    if ([bundleIdentifier isEqualToString:@"com.apple.Music"])
     {
     }
 
     else
     {
       v6 = +[AMSProcessInfo currentProcess];
-      v7 = [v6 bundleIdentifier];
-      v8 = [v7 isEqualToString:@"com.apple.TVMusic"];
+      bundleIdentifier2 = [v6 bundleIdentifier];
+      v8 = [bundleIdentifier2 isEqualToString:@"com.apple.TVMusic"];
 
       if (!v8)
       {
-        v9 = [a1 URL];
-        v10 = [v9 ams_parameters];
-        v19 = [v10 mutableCopy];
+        v9 = [self URL];
+        ams_parameters = [v9 ams_parameters];
+        v19 = [ams_parameters mutableCopy];
         if (!v19)
         {
           v21 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -210,9 +210,9 @@
     }
   }
 
-  v9 = [a1 URL];
-  v10 = [v9 ams_unmodifiedParameters];
-  v11 = [v10 mutableCopy];
+  v9 = [self URL];
+  ams_parameters = [v9 ams_unmodifiedParameters];
+  v11 = [ams_parameters mutableCopy];
   if (!v11)
   {
     v21 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -233,14 +233,14 @@ LABEL_9:
 
     if (!v14)
     {
-      v15 = [MEMORY[0x1E696AFB0] UUID];
-      v16 = [v15 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
 
-      [v21 setObject:v16 forKeyedSubscript:@"buster"];
-      v17 = [a1 URL];
+      [v21 setObject:uUIDString forKeyedSubscript:@"buster"];
+      v17 = [self URL];
       v18 = [v17 ams_URLByReplacingQueryParameters:v21 withEncodedParameters:v13];
 
-      [a1 setURL:v18];
+      [self setURL:v18];
     }
   }
 
@@ -249,38 +249,38 @@ LABEL_9:
 
 - (void)ams_addClientIdentifierHeaderForClient:()AppleMediaServices
 {
-  v4 = [a3 bundleIdentifier];
-  [a1 setValue:v4 forHTTPHeaderField:@"X-Apple-Client-Application"];
+  bundleIdentifier = [a3 bundleIdentifier];
+  [self setValue:bundleIdentifier forHTTPHeaderField:@"X-Apple-Client-Application"];
 }
 
 - (void)ams_addClientVersionsForClient:()AppleMediaServices
 {
   v24 = a3;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [v24 proxyAppBundleID];
+  proxyAppBundleID = [v24 proxyAppBundleID];
 
-  if (v5)
+  if (proxyAppBundleID)
   {
-    v6 = [v24 proxyAppBundleID];
-    [v4 addObject:v6];
+    proxyAppBundleID2 = [v24 proxyAppBundleID];
+    [v4 addObject:proxyAppBundleID2];
   }
 
-  v7 = [v24 mappedBundleInfo];
-  v8 = [v7 bundleIdentifier];
+  mappedBundleInfo = [v24 mappedBundleInfo];
+  bundleIdentifier = [mappedBundleInfo bundleIdentifier];
 
-  if (v8)
+  if (bundleIdentifier)
   {
-    v9 = [v24 mappedBundleInfo];
-    v10 = [v9 bundleIdentifier];
-    [v4 addObject:v10];
+    mappedBundleInfo2 = [v24 mappedBundleInfo];
+    bundleIdentifier2 = [mappedBundleInfo2 bundleIdentifier];
+    [v4 addObject:bundleIdentifier2];
   }
 
-  v11 = [v24 bundleIdentifier];
+  bundleIdentifier3 = [v24 bundleIdentifier];
 
-  if (v11)
+  if (bundleIdentifier3)
   {
-    v12 = [v24 bundleIdentifier];
-    [v4 addObject:v12];
+    bundleIdentifier4 = [v24 bundleIdentifier];
+    [v4 addObject:bundleIdentifier4];
   }
 
   if ([v4 count])
@@ -289,13 +289,13 @@ LABEL_9:
     while (v13 < [v4 count])
     {
       v14 = [v4 objectAtIndexedSubscript:v13];
-      v15 = [v14 lowercaseString];
-      v16 = [&unk_1F0779DA8 objectForKeyedSubscript:v15];
+      lowercaseString = [v14 lowercaseString];
+      v16 = [&unk_1F0779DA8 objectForKeyedSubscript:lowercaseString];
 
       if (v16)
       {
-        v17 = [v24 bundleIdentifier];
-        v18 = [v17 compare:v14 options:1];
+        bundleIdentifier5 = [v24 bundleIdentifier];
+        v18 = [bundleIdentifier5 compare:v14 options:1];
 
         if (v18)
         {
@@ -308,15 +308,15 @@ LABEL_9:
         }
 
         v21 = v19;
-        v22 = [(AMSProcessInfo *)v19 clientVersion];
-        [(__CFString *)v22 doubleValue];
+        clientVersion = [(AMSProcessInfo *)v19 clientVersion];
+        [(__CFString *)clientVersion doubleValue];
         if (v23 == 0.0)
         {
 
-          v22 = @"??";
+          clientVersion = @"??";
         }
 
-        v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", v16, v22];
+        v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", v16, clientVersion];
       }
 
       else
@@ -334,15 +334,15 @@ LABEL_9:
 
     v20 = 0;
 LABEL_21:
-    [a1 setValue:v20 forHTTPHeaderField:@"X-Apple-Client-Versions"];
+    [self setValue:v20 forHTTPHeaderField:@"X-Apple-Client-Versions"];
   }
 }
 
 - (void)ams_addContentLengthHeaderForData:()AppleMediaServices
 {
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "length")}];
-  v4 = [v5 stringValue];
-  [a1 setValue:v4 forHTTPHeaderField:@"Content-Length"];
+  stringValue = [v5 stringValue];
+  [self setValue:stringValue forHTTPHeaderField:@"Content-Length"];
 }
 
 - (uint64_t)ams_addContentTypeHeaderForEncoding:()AppleMediaServices
@@ -357,7 +357,7 @@ LABEL_21:
     v3 = off_1E73BE548[a3];
   }
 
-  return [a1 setValue:v3 forHTTPHeaderField:@"Content-Type"];
+  return [self setValue:v3 forHTTPHeaderField:@"Content-Type"];
 }
 
 - (id)ams_addCookiesAsynchronouslyForAccount:()AppleMediaServices clientInfo:bag:cleanupGlobalCookies:
@@ -366,7 +366,7 @@ LABEL_21:
   v11 = a3;
   v12 = a4;
   v13 = a5;
-  v14 = [a1 URL];
+  v14 = [self URL];
 
   if (v14)
   {
@@ -386,13 +386,13 @@ LABEL_21:
       if (v18)
       {
         v16 = v18;
-        v19 = [v18 ams_mediaType];
-        v20 = [v16 _ams_localiTunesAccountForAccountMediaType:v19 updateStorefront:0];
+        ams_mediaType = [v18 ams_mediaType];
+        v20 = [v16 _ams_localiTunesAccountForAccountMediaType:ams_mediaType updateStorefront:0];
         v64[0] = MEMORY[0x1E69E9820];
         v64[1] = 3221225472;
         v64[2] = __118__NSMutableURLRequest_AppleMediaServices__ams_addCookiesAsynchronouslyForAccount_clientInfo_bag_cleanupGlobalCookies___block_invoke;
         v64[3] = &unk_1E73B4538;
-        v64[4] = a1;
+        v64[4] = self;
         v65 = v11;
         v17 = [v20 continueWithBlock:v64];
       }
@@ -405,8 +405,8 @@ LABEL_21:
           v30 = +[AMSLogConfig sharedConfig];
         }
 
-        v31 = [v30 OSLogObject];
-        if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v30 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v55 = a2;
           v32 = AMSLogKey();
@@ -424,13 +424,13 @@ LABEL_21:
             [v33 stringWithFormat:@"%@: ", v34];
           }
           v36 = ;
-          v38 = [a1 URL];
+          v38 = [self URL];
           v39 = AMSHashIfNeeded(v38);
           *buf = 138543618;
           v69 = v36;
           v70 = 2114;
           v71 = v39;
-          _os_log_impl(&dword_192869000, v31, OS_LOG_TYPE_ERROR, "%{public}@No account store was available. No local account cookies will be added to this request. URL = %{public}@", buf, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@No account store was available. No local account cookies will be added to this request. URL = %{public}@", buf, 0x16u);
 
           if (v32)
           {
@@ -459,13 +459,13 @@ LABEL_21:
     }
 
     v41 = [v13 arrayForKey:@"clientIDDomains"];
-    v42 = [v41 valuePromise];
+    valuePromise = [v41 valuePromise];
     v63[0] = MEMORY[0x1E69E9820];
     v63[1] = 3221225472;
     v63[2] = __118__NSMutableURLRequest_AppleMediaServices__ams_addCookiesAsynchronouslyForAccount_clientInfo_bag_cleanupGlobalCookies___block_invoke_153;
     v63[3] = &unk_1E73BE440;
-    v63[4] = a1;
-    v43 = [v42 continueWithBlock:v63];
+    v63[4] = self;
+    v43 = [valuePromise continueWithBlock:v63];
 
     if (!v43)
     {
@@ -475,8 +475,8 @@ LABEL_21:
         v44 = +[AMSLogConfig sharedConfig];
       }
 
-      v45 = [v44 OSLogObject];
-      if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v44 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v56 = a2;
         v46 = AMSLogKey();
@@ -496,7 +496,7 @@ LABEL_21:
         v50 = ;
         *buf = 138543362;
         v69 = v50;
-        _os_log_impl(&dword_192869000, v45, OS_LOG_TYPE_DEFAULT, "%{public}@No bag was provided. Defaulting to not applying analytics cookies.", buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@No bag was provided. Defaulting to not applying analytics cookies.", buf, 0xCu);
         if (v46)
         {
 
@@ -517,12 +517,12 @@ LABEL_21:
     v59[1] = 3221225472;
     v59[2] = __118__NSMutableURLRequest_AppleMediaServices__ams_addCookiesAsynchronouslyForAccount_clientInfo_bag_cleanupGlobalCookies___block_invoke_157;
     v59[3] = &unk_1E73BE4B0;
-    v59[4] = a1;
+    v59[4] = self;
     v61 = a2;
     v60 = v13;
     v62 = v58;
     v53 = [v52 thenWithBlock:v59];
-    v37 = [v53 binaryPromiseAdapter];
+    binaryPromiseAdapter = [v53 binaryPromiseAdapter];
 
     v12 = v57;
   }
@@ -535,8 +535,8 @@ LABEL_21:
       v21 = +[AMSLogConfig sharedConfig];
     }
 
-    v22 = [v21 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [v21 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v23 = v12;
       v24 = a2;
@@ -558,7 +558,7 @@ LABEL_21:
       v29 = ;
       *buf = 138543362;
       v69 = v29;
-      _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@URL is nil, can’t add cookies.", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@URL is nil, can’t add cookies.", buf, 0xCu);
       if (v25)
       {
 
@@ -569,17 +569,17 @@ LABEL_21:
     }
 
     v17 = AMSError(2, @"Can't add cookies as request doesn't have a URL.", 0, 0);
-    v37 = [AMSBinaryPromise promiseWithError:v17];
+    binaryPromiseAdapter = [AMSBinaryPromise promiseWithError:v17];
   }
 
-  return v37;
+  return binaryPromiseAdapter;
 }
 
 - (void)ams_addCookiesForAccount:()AppleMediaServices clientInfo:bag:cleanupGlobalCookies:
 {
-  v1 = a1;
+  selfCopy = self;
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [a1 ams_addCookiesAsynchronouslyForAccount:? clientInfo:? bag:? cleanupGlobalCookies:?];
+  v2 = [self ams_addCookiesAsynchronouslyForAccount:? clientInfo:? bag:? cleanupGlobalCookies:?];
   v12 = 0;
   [v2 resultWithError:&v12];
   v3 = v12;
@@ -592,8 +592,8 @@ LABEL_21:
       v4 = +[AMSLogConfig sharedConfig];
     }
 
-    v5 = [v4 OSLogObject];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v4 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v6 = AMSLogKey();
       v7 = MEMORY[0x1E696AEC0];
@@ -601,8 +601,8 @@ LABEL_21:
       v9 = v8;
       if (v6)
       {
-        v1 = AMSLogKey();
-        [v7 stringWithFormat:@"%@: [%@] ", v9, v1];
+        selfCopy = AMSLogKey();
+        [v7 stringWithFormat:@"%@: [%@] ", v9, selfCopy];
       }
 
       else
@@ -615,11 +615,11 @@ LABEL_21:
       v14 = v10;
       v15 = 2114;
       v16 = v11;
-      _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_ERROR, "%{public}@Failed to synchronously add cookies for account. error = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Failed to synchronously add cookies for account. error = %{public}@", buf, 0x16u);
       if (v6)
       {
 
-        v10 = v1;
+        v10 = selfCopy;
       }
     }
   }
@@ -633,10 +633,10 @@ LABEL_21:
   if (a3 && v6)
   {
     v8 = a3;
-    [a1 ams_addMMeClientInfoAndDeviceHeaders];
-    v9 = [v8 accountStore];
+    [self ams_addMMeClientInfoAndDeviceHeaders];
+    accountStore = [v8 accountStore];
     v18 = 0;
-    v10 = [v9 ams_fetchGrandSlamTokenForAccount:v8 withIdentifier:v7 error:&v18];
+    v10 = [accountStore ams_fetchGrandSlamTokenForAccount:v8 withIdentifier:v7 error:&v18];
 
     v11 = v18;
     if (v11 || !v10)
@@ -647,8 +647,8 @@ LABEL_21:
         v12 = +[AMSLogConfig sharedConfig];
       }
 
-      v13 = [v12 OSLogObject];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v12 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v14 = objc_opt_class();
         v15 = v14;
@@ -660,35 +660,35 @@ LABEL_21:
         v22 = v16;
         v23 = 2114;
         v24 = v17;
-        _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch GrandSlam token. %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch GrandSlam token. %{public}@", buf, 0x20u);
       }
     }
 
-    [a1 setValue:v10 forHTTPHeaderField:@"X-Apple-GS-Token"];
-    [a1 setValue:v7 forHTTPHeaderField:@"X-Apple-GS-Token-Identifier"];
+    [self setValue:v10 forHTTPHeaderField:@"X-Apple-GS-Token"];
+    [self setValue:v7 forHTTPHeaderField:@"X-Apple-GS-Token-Identifier"];
   }
 }
 
 - (void)ams_addIdentifierHeadersForAccount:()AppleMediaServices
 {
   v4 = a3;
-  v5 = [v4 ams_DSID];
-  v6 = [v5 stringValue];
-  [a1 setValue:v6 forHTTPHeaderField:@"X-DSID"];
+  ams_DSID = [v4 ams_DSID];
+  stringValue = [ams_DSID stringValue];
+  [self setValue:stringValue forHTTPHeaderField:@"X-DSID"];
 
-  v7 = [v4 ams_altDSID];
+  ams_altDSID = [v4 ams_altDSID];
 
-  [a1 setValue:v7 forHTTPHeaderField:@"X-Apple-ADSID"];
+  [self setValue:ams_altDSID forHTTPHeaderField:@"X-Apple-ADSID"];
 }
 
 - (void)ams_addMMeClientInfoAndDeviceHeaders
 {
-  v2 = [MEMORY[0x1E698B890] currentInfo];
-  v4 = [v2 clientInfoHeader];
+  currentInfo = [MEMORY[0x1E698B890] currentInfo];
+  clientInfoHeader = [currentInfo clientInfoHeader];
 
   v3 = +[AMSDevice uniqueDeviceId];
-  [a1 setValue:v4 forHTTPHeaderField:@"X-MMe-Client-Info"];
-  [a1 setValue:v3 forHTTPHeaderField:@"X-Mme-Device-Id"];
+  [self setValue:clientInfoHeader forHTTPHeaderField:@"X-MMe-Client-Info"];
+  [self setValue:v3 forHTTPHeaderField:@"X-Mme-Device-Id"];
 }
 
 - (void)ams_addSilentEnrollmentHeadersForAccount:()AppleMediaServices
@@ -698,7 +698,7 @@ LABEL_21:
   v3[1] = 3221225472;
   v3[2] = __84__NSMutableURLRequest_AppleMediaServices__ams_addSilentEnrollmentHeadersForAccount___block_invoke;
   v3[3] = &unk_1E73B7EE0;
-  v3[4] = a1;
+  v3[4] = self;
   [v2 enumerateKeysAndObjectsUsingBlock:v3];
 }
 
@@ -707,12 +707,12 @@ LABEL_21:
   v6 = a3;
   if (v6)
   {
-    v4 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-    v5 = [v4 ams_secureTokenForAccount:v6];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    v5 = [ams_sharedAccountStore ams_secureTokenForAccount:v6];
 
     if (v5)
     {
-      [a1 setValue:v5 forHTTPHeaderField:@"X-Token"];
+      [self setValue:v5 forHTTPHeaderField:@"X-Token"];
     }
   }
 }
@@ -725,7 +725,7 @@ LABEL_21:
   v8 = [AMSMutableSet setWithHashBlock:&__block_literal_global_187];
   v36 = v7;
   [v8 addObjectsFromArray:v7];
-  v9 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v10 = +[AMSLogConfig sharedConfig];
   if (!v10)
   {
@@ -733,8 +733,8 @@ LABEL_21:
   }
 
   v37 = v6;
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = v12;
@@ -745,7 +745,7 @@ LABEL_21:
     v46 = v14;
     v47 = 2048;
     v48 = [v8 count];
-    _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Adding Group DSIDs for %lu accounts", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Adding Group DSIDs for %lu accounts", buf, 0x20u);
   }
 
   v40 = 0u;
@@ -768,14 +768,14 @@ LABEL_21:
         }
 
         v20 = *(*(&v38 + 1) + 8 * i);
-        v21 = [v20 ams_DSID];
-        v22 = [v21 stringValue];
+        ams_DSID = [v20 ams_DSID];
+        stringValue = [ams_DSID stringValue];
 
-        if ([v22 length])
+        if ([stringValue length])
         {
-          [v9 appendFormat:@"%@; ", v22];
-          v23 = [v20 ams_cookies];
-          [a1 _ams_addCookies:v23];
+          [string appendFormat:@"%@; ", stringValue];
+          ams_cookies = [v20 ams_cookies];
+          [self _ams_addCookies:ams_cookies];
         }
       }
 
@@ -793,8 +793,8 @@ LABEL_21:
       v24 = +[AMSLogConfig sharedConfig];
     }
 
-    v25 = [v24 OSLogObject];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v24 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v26 = objc_opt_class();
       v27 = v26;
@@ -806,14 +806,14 @@ LABEL_21:
       v46 = v28;
       v47 = 2112;
       v48 = v29;
-      _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Adding DSID to group list for primary account: %@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Adding DSID to group list for primary account: %@", buf, 0x20u);
     }
 
-    v30 = [v37 ams_cookies];
-    [a1 _ams_addCookies:v30];
+    ams_cookies2 = [v37 ams_cookies];
+    [self _ams_addCookies:ams_cookies2];
   }
 
-  if ([v9 length])
+  if ([string length])
   {
     v31 = +[AMSLogConfig sharedConfig];
     if (!v31)
@@ -821,8 +821,8 @@ LABEL_21:
       v31 = +[AMSLogConfig sharedConfig];
     }
 
-    v32 = [v31 OSLogObject];
-    if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [v31 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v33 = objc_opt_class();
       v34 = v33;
@@ -832,29 +832,29 @@ LABEL_21:
       v45 = 2114;
       v46 = v35;
       v47 = 2112;
-      v48 = v9;
-      _os_log_impl(&dword_192869000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Group DSIDs list: %@", buf, 0x20u);
+      v48 = string;
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Group DSIDs list: %@", buf, 0x20u);
     }
 
-    [a1 setValue:v9 forHTTPHeaderField:@"X-Group-DSIDs"];
+    [self setValue:string forHTTPHeaderField:@"X-Group-DSIDs"];
   }
 }
 
 - (uint64_t)ams_removeAnisetteHeaders
 {
-  [a1 setValue:0 forHTTPHeaderField:@"X-Apple-AMD-M"];
-  [a1 setValue:0 forHTTPHeaderField:@"X-Apple-MD-M"];
-  [a1 setValue:0 forHTTPHeaderField:@"X-Apple-AMD"];
+  [self setValue:0 forHTTPHeaderField:@"X-Apple-AMD-M"];
+  [self setValue:0 forHTTPHeaderField:@"X-Apple-MD-M"];
+  [self setValue:0 forHTTPHeaderField:@"X-Apple-AMD"];
 
-  return [a1 setValue:0 forHTTPHeaderField:@"X-Apple-MD"];
+  return [self setValue:0 forHTTPHeaderField:@"X-Apple-MD"];
 }
 
 - (uint64_t)ams_removeFPDIHeaders
 {
-  [a1 setValue:0 forHTTPHeaderField:@"X-Apple-FPDISignature"];
-  [a1 setValue:0 forHTTPHeaderField:@"X-Apple-FPDIAction"];
+  [self setValue:0 forHTTPHeaderField:@"X-Apple-FPDISignature"];
+  [self setValue:0 forHTTPHeaderField:@"X-Apple-FPDIAction"];
 
-  return [a1 setValue:0 forHTTPHeaderField:@"X-Apple-FPDIRetryCount"];
+  return [self setValue:0 forHTTPHeaderField:@"X-Apple-FPDIRetryCount"];
 }
 
 - (uint64_t)ams_setBodyParameters:()AppleMediaServices encoding:compressBody:error:
@@ -890,23 +890,23 @@ LABEL_43:
     goto LABEL_46;
   }
 
-  v13 = [a1 HTTPMethod];
-  if ([v13 isEqualToString:@"POST"])
+  hTTPMethod = [self HTTPMethod];
+  if ([hTTPMethod isEqualToString:@"POST"])
   {
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v14 = [a1 HTTPMethod];
-  if ([v14 isEqualToString:@"PATCH"])
+  hTTPMethod2 = [self HTTPMethod];
+  if ([hTTPMethod2 isEqualToString:@"PATCH"])
   {
 
     goto LABEL_8;
   }
 
-  v34 = [a1 HTTPMethod];
-  v35 = [v34 isEqualToString:@"PUT"];
+  hTTPMethod3 = [self HTTPMethod];
+  v35 = [hTTPMethod3 isEqualToString:@"PUT"];
 
   if (v35)
   {
@@ -919,7 +919,7 @@ LABEL_9:
     {
       if (!a5)
       {
-        [a1 setHTTPBody:v15];
+        [self setHTTPBody:v15];
         goto LABEL_25;
       }
 
@@ -927,23 +927,23 @@ LABEL_9:
       if (v18)
       {
         v19 = v18;
-        [a1 setHTTPBody:v18];
-        [a1 setValue:@"gzip" forHTTPHeaderField:@"Content-Encoding"];
+        [self setHTTPBody:v18];
+        [self setValue:@"gzip" forHTTPHeaderField:@"Content-Encoding"];
 
 LABEL_25:
-        v31 = [a1 valueForHTTPHeaderField:@"Content-Type"];
+        v31 = [self valueForHTTPHeaderField:@"Content-Type"];
 
         if (!v31)
         {
-          [a1 ams_addContentTypeHeaderForEncoding:v12];
+          [self ams_addContentTypeHeaderForEncoding:v12];
         }
 
-        v32 = [a1 valueForHTTPHeaderField:@"Content-Length"];
+        v32 = [self valueForHTTPHeaderField:@"Content-Length"];
 
         if (!v32)
         {
-          v33 = [a1 HTTPBody];
-          [a1 ams_addContentLengthHeaderForData:v33];
+          hTTPBody = [self HTTPBody];
+          [self ams_addContentLengthHeaderForData:hTTPBody];
         }
 
         v23 = 1;
@@ -972,8 +972,8 @@ LABEL_25:
         v25 = +[AMSLogConfig sharedConfig];
       }
 
-      v26 = [v25 OSLogObject];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v25 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v27 = objc_opt_class();
         v28 = v27;
@@ -985,7 +985,7 @@ LABEL_25:
         v49 = v29;
         v50 = 2114;
         v51 = v30;
-        _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode data from parameters. Error: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode data from parameters. Error: %{public}@", buf, 0x20u);
       }
     }
 
@@ -1004,8 +1004,8 @@ LABEL_30:
       v38 = +[AMSLogConfig sharedConfig];
     }
 
-    v39 = [v38 OSLogObject];
-    if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v38 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v40 = objc_opt_class();
       v41 = v40;
@@ -1014,7 +1014,7 @@ LABEL_30:
       v47 = v40;
       v48 = 2114;
       v49 = v42;
-      _os_log_impl(&dword_192869000, v39, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Only dictionaries are supported for query parameters;", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Only dictionaries are supported for query parameters;", buf, 0x16u);
     }
 
     if (a6)
@@ -1028,18 +1028,18 @@ LABEL_30:
     goto LABEL_43;
   }
 
-  v36 = [a1 URL];
+  v36 = [self URL];
   v37 = [v36 ams_URLByAppendingQueryParameters:v11];
 
   if (v37)
   {
-    [a1 setURL:v37];
+    [self setURL:v37];
   }
 
   else
   {
-    v43 = [a1 URL];
-    [a1 setURL:v43];
+    v43 = [self URL];
+    [self setURL:v43];
   }
 
   v23 = 1;
@@ -1051,15 +1051,15 @@ LABEL_46:
 - (id)ams_addHeadersFromPromise:()AppleMediaServices
 {
   v4 = a3;
-  v5 = [a1 _ams_promiseSerialQueue];
+  _ams_promiseSerialQueue = [self _ams_promiseSerialQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69__NSMutableURLRequest_AppleMediaServices__ams_addHeadersFromPromise___block_invoke;
   v9[3] = &unk_1E73BD228;
   v10 = v4;
-  v11 = a1;
+  selfCopy = self;
   v6 = v4;
-  v7 = [v5 runBinaryPromiseBlock:v9];
+  v7 = [_ams_promiseSerialQueue runBinaryPromiseBlock:v9];
 
   return v7;
 }
@@ -1067,14 +1067,14 @@ LABEL_46:
 - (id)ams_modifyRequestWithBlock:()AppleMediaServices
 {
   v4 = a3;
-  v5 = [a1 _ams_promiseSerialQueue];
+  _ams_promiseSerialQueue = [self _ams_promiseSerialQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__NSMutableURLRequest_AppleMediaServices__ams_modifyRequestWithBlock___block_invoke;
   v9[3] = &unk_1E73BE4F8;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 runBinaryPromiseBlock:v9];
+  v7 = [_ams_promiseSerialQueue runBinaryPromiseBlock:v9];
 
   return v7;
 }
@@ -1082,13 +1082,13 @@ LABEL_46:
 - (AMSMutablePromise)_ams_authKitHeaders
 {
   v2 = objc_alloc_init(AMSMutablePromise);
-  v3 = a1;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 urlRequest];
+    urlRequest = [selfCopy urlRequest];
 
-    v3 = v4;
+    selfCopy = urlRequest;
   }
 
   v5 = dispatch_get_global_queue(0, 0);
@@ -1096,10 +1096,10 @@ LABEL_46:
   v11[1] = 3221225472;
   v11[2] = __62__NSMutableURLRequest_AppleMediaServices___ams_authKitHeaders__block_invoke;
   v11[3] = &unk_1E73B3DE0;
-  v12 = v3;
+  v12 = selfCopy;
   v6 = v2;
   v13 = v6;
-  v7 = v3;
+  v7 = selfCopy;
   dispatch_async(v5, v11);
 
   v8 = v13;
@@ -1111,30 +1111,30 @@ LABEL_46:
 - (void)_ams_replaceCookies:()AppleMediaServices
 {
   v4 = a3;
-  [a1 setHTTPShouldHandleCookies:0];
+  [self setHTTPShouldHandleCookies:0];
   v5 = [MEMORY[0x1E695ABF8] requestHeaderFieldsWithCookies:v4];
 
-  [a1 ams_addHeaders:v5];
+  [self ams_addHeaders:v5];
 }
 
 - (void)_ams_addCookies:()AppleMediaServices
 {
   v26 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 ams_cookies];
-  v6 = [v5 mutableCopy];
+  ams_cookies = [self ams_cookies];
+  v6 = [ams_cookies mutableCopy];
 
   v18 = v4;
-  v7 = [a1 _ams_separateCookies:v4];
+  v7 = [self _ams_separateCookies:v4];
   [v6 addEntriesFromDictionary:v7];
 
-  v8 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [v6 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  allKeys = [v6 allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1145,26 +1145,26 @@ LABEL_46:
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
         v15 = [v6 objectForKeyedSubscript:v14];
-        [v8 appendFormat:@"%@=%@; ", v14, v15];
+        [string appendFormat:@"%@=%@; ", v14, v15];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v19 objects:v25 count:16];
     }
 
     while (v11);
   }
 
   v23 = @"Cookie";
-  v16 = [MEMORY[0x1E696AEC0] stringWithString:v8];
+  v16 = [MEMORY[0x1E696AEC0] stringWithString:string];
   v24 = v16;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
 
-  [a1 ams_addHeaders:v17];
+  [self ams_addHeaders:v17];
 }
 
 - (id)_ams_separateCookies:()AppleMediaServices
@@ -1193,8 +1193,8 @@ LABEL_46:
         }
 
         v6 = *(*(&v20 + 1) + 8 * i);
-        v7 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-        v8 = [v6 stringByTrimmingCharactersInSet:v7];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+        v8 = [v6 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
         v9 = [v8 rangeOfString:@"="];
         if (v9 != 0x7FFFFFFFFFFFFFFFLL)

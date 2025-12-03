@@ -1,34 +1,34 @@
 @interface PKThumbnailCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKThumbnailCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKThumbnailCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)_resetFonts;
-- (void)_setupImageView:(id)a3;
+- (void)_setupImageView:(id)view;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setImage:(id)a3 animated:(BOOL)a4;
-- (void)setStrokeImage:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)showAvatarView:(BOOL)a3;
+- (void)setImage:(id)image animated:(BOOL)animated;
+- (void)setStrokeImage:(BOOL)image;
+- (void)setTitle:(id)title;
+- (void)showAvatarView:(BOOL)view;
 @end
 
 @implementation PKThumbnailCollectionViewCell
 
-- (PKThumbnailCollectionViewCell)initWithFrame:(CGRect)a3
+- (PKThumbnailCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = PKThumbnailCollectionViewCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKThumbnailCollectionViewCell *)v3 contentView];
+    contentView = [(PKThumbnailCollectionViewCell *)v3 contentView];
     v6 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     imageView = v4->_imageView;
     v4->_imageView = v6;
 
     [(PKThumbnailCollectionViewCell *)v4 _setupImageView:v4->_imageView];
-    [v5 addSubview:v4->_imageView];
+    [contentView addSubview:v4->_imageView];
     v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     labelTitle = v4->_labelTitle;
     v4->_labelTitle = v8;
@@ -38,7 +38,7 @@
     LODWORD(v10) = 1036831949;
     [(UILabel *)v4->_labelTitle _setHyphenationFactor:v10];
     [(UILabel *)v4->_labelTitle setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
-    [v5 addSubview:v4->_labelTitle];
+    [contentView addSubview:v4->_labelTitle];
     v11 = [objc_alloc(getCNAvatarViewClass_2()) initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     avatarView = v4->_avatarView;
     v4->_avatarView = v11;
@@ -47,7 +47,7 @@
     [(CNAvatarView *)v4->_avatarView setAsynchronousRendering:1];
     [(CNAvatarView *)v4->_avatarView setShowsContactOnTap:0];
     [(CNAvatarView *)v4->_avatarView setHidden:1];
-    [v5 addSubview:v4->_avatarView];
+    [contentView addSubview:v4->_avatarView];
     [(PKThumbnailCollectionViewCell *)v4 _resetFonts];
     v17[0] = objc_opt_class();
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
@@ -75,13 +75,13 @@
   [(UILabel *)labelTitle setFont:v3];
 }
 
-- (void)_setupImageView:(id)a3
+- (void)_setupImageView:(id)view
 {
-  v4 = a3;
-  [v4 setContentMode:1];
-  v9 = [v4 layer];
+  viewCopy = view;
+  [viewCopy setContentMode:1];
+  layer = [viewCopy layer];
 
-  [v9 setCornerCurve:*MEMORY[0x1E69796E8]];
+  [layer setCornerCurve:*MEMORY[0x1E69796E8]];
   v5 = _UISolariumFeatureFlagEnabled();
   v6 = 6.0;
   if (v5)
@@ -89,10 +89,10 @@
     v6 = 13.0;
   }
 
-  [v9 setCornerRadius:v6];
-  [v9 setMasksToBounds:1];
-  v7 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  [v9 setBorderColor:{objc_msgSend(v7, "CGColor")}];
+  [layer setCornerRadius:v6];
+  [layer setMasksToBounds:1];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  [layer setBorderColor:{objc_msgSend(tertiaryLabelColor, "CGColor")}];
 
   v8 = 0.0;
   if (self->_strokeImage)
@@ -100,25 +100,25 @@
     v8 = PKUIPixelLength();
   }
 
-  [v9 setBorderWidth:v8];
+  [layer setBorderWidth:v8];
 }
 
-- (void)setStrokeImage:(BOOL)a3
+- (void)setStrokeImage:(BOOL)image
 {
-  if (self->_strokeImage == !a3)
+  if (self->_strokeImage == !image)
   {
-    self->_strokeImage = a3;
+    self->_strokeImage = image;
     imageView = self->_imageView;
     if (imageView)
     {
-      v6 = [(UIImageView *)imageView layer];
+      layer = [(UIImageView *)imageView layer];
       v5 = 0.0;
       if (self->_strokeImage)
       {
         v5 = PKUIPixelLength();
       }
 
-      [v6 setBorderWidth:v5];
+      [layer setBorderWidth:v5];
     }
   }
 }
@@ -139,12 +139,12 @@
   [(UILabel *)self->_labelTitle setFrame:v4, v6 + v8 + 10.0, v8, v11];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(UILabel *)self->_labelTitle font];
-  [v5 lineHeight];
+  height = fits.height;
+  width = fits.width;
+  font = [(UILabel *)self->_labelTitle font];
+  [font lineHeight];
   v7 = width + 10.0 + v6 * 2.0;
 
   v8 = fmin(v7, height);
@@ -154,29 +154,29 @@
   return result;
 }
 
-- (void)showAvatarView:(BOOL)a3
+- (void)showAvatarView:(BOOL)view
 {
-  v3 = a3;
-  [(CNAvatarView *)self->_avatarView setHidden:!a3];
+  viewCopy = view;
+  [(CNAvatarView *)self->_avatarView setHidden:!view];
   imageView = self->_imageView;
 
-  [(UIImageView *)imageView setHidden:v3];
+  [(UIImageView *)imageView setHidden:viewCopy];
 }
 
-- (void)setImage:(id)a3 animated:(BOOL)a4
+- (void)setImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_image != v7)
+  animatedCopy = animated;
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    objc_storeStrong(&self->_image, a3);
+    objc_storeStrong(&self->_image, image);
     if (self->_image)
     {
       [(PKThumbnailCollectionViewCell *)self showAvatarView:0];
       imageView = self->_imageView;
       if (imageView)
       {
-        if (v4)
+        if (animatedCopy)
         {
           v9 = imageView;
           v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:self->_image];
@@ -198,17 +198,17 @@
           v22[2] = __51__PKThumbnailCollectionViewCell_setImage_animated___block_invoke_2;
           v22[3] = &unk_1E8011D28;
           v23 = v25;
-          v13 = v25;
+          image = v25;
           [v12 pkui_animateUsingOptions:4 animations:v24 completion:v22];
         }
 
         else
         {
-          v13 = [(UIImageView *)imageView image];
+          image = [(UIImageView *)imageView image];
           [(UIImageView *)self->_imageView setImage:self->_image];
-          v17 = [(UIImageView *)self->_imageView image];
+          image2 = [(UIImageView *)self->_imageView image];
 
-          if (v17 == v13)
+          if (image2 == image)
           {
             v18 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:self->_image];
             v19 = self->_imageView;
@@ -228,12 +228,12 @@
         [(PKThumbnailCollectionViewCell *)self _setupImageView:self->_imageView];
       }
 
-      v20 = [(UIImageView *)self->_imageView superview];
+      superview = [(UIImageView *)self->_imageView superview];
 
-      if (!v20)
+      if (!superview)
       {
-        v21 = [(PKThumbnailCollectionViewCell *)self contentView];
-        [v21 addSubview:self->_imageView];
+        contentView = [(PKThumbnailCollectionViewCell *)self contentView];
+        [contentView addSubview:self->_imageView];
 
         goto LABEL_14;
       }
@@ -241,9 +241,9 @@
 
     else
     {
-      v14 = [(UIImageView *)self->_imageView superview];
+      superview2 = [(UIImageView *)self->_imageView superview];
 
-      if (v14)
+      if (superview2)
       {
         [(UIImageView *)self->_imageView removeFromSuperview];
 LABEL_14:
@@ -261,11 +261,11 @@ uint64_t __51__PKThumbnailCollectionViewCell_setImage_animated___block_invoke(ui
   return [v2 setAlpha:0.0];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   v6 = self->_title;
-  v7 = v5;
+  v7 = titleCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -284,7 +284,7 @@ uint64_t __51__PKThumbnailCollectionViewCell_setImage_animated___block_invoke(ui
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_title, a3);
+    objc_storeStrong(&self->_title, title);
     [(UILabel *)self->_labelTitle setText:v9];
     [(PKThumbnailCollectionViewCell *)self setNeedsLayout];
   }

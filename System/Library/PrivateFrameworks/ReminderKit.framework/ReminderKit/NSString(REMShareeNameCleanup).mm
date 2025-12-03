@@ -6,8 +6,8 @@
 
 - (void)rem_tidyFormattedNameString
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if ([v3 length])
   {

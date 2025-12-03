@@ -1,21 +1,21 @@
 @interface PLBackgroundJobStatusCenter
 - (NSDictionary)statusDumpDictionary;
 - (PLBackgroundJobStatusCenter)init;
-- (void)_addRegistrationEventToQueue:(id)a3;
-- (void)_addRunningEventToQueue:(id)a3;
+- (void)_addRegistrationEventToQueue:(id)queue;
+- (void)_addRunningEventToQueue:(id)queue;
 - (void)_recordNonRegistrationEvent;
-- (void)_recordRegistrationEventToState:(unint64_t)a3;
-- (void)backgroundJobServiceDidChangeStateFrom:(unint64_t)a3 to:(unint64_t)a4;
-- (void)recordFinishingWorker:(id)a3;
-- (void)recordStartingWorker:(id)a3 withJobCount:(unint64_t)a4;
-- (void)recordStoppingWorker:(id)a3 withRemainingJobCount:(unint64_t)a4;
-- (void)recordTaskSubmittedWithCriteria:(id)a3;
-- (void)recordWorkerHasPendingJobs:(id)a3;
+- (void)_recordRegistrationEventToState:(unint64_t)state;
+- (void)backgroundJobServiceDidChangeStateFrom:(unint64_t)from to:(unint64_t)to;
+- (void)recordFinishingWorker:(id)worker;
+- (void)recordStartingWorker:(id)worker withJobCount:(unint64_t)count;
+- (void)recordStoppingWorker:(id)worker withRemainingJobCount:(unint64_t)count;
+- (void)recordTaskSubmittedWithCriteria:(id)criteria;
+- (void)recordWorkerHasPendingJobs:(id)jobs;
 @end
 
 @implementation PLBackgroundJobStatusCenter
 
-- (void)backgroundJobServiceDidChangeStateFrom:(unint64_t)a3 to:(unint64_t)a4
+- (void)backgroundJobServiceDidChangeStateFrom:(unint64_t)from to:(unint64_t)to
 {
   isolationQueue = self->_isolationQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -23,8 +23,8 @@
   block[2] = __73__PLBackgroundJobStatusCenter_backgroundJobServiceDidChangeStateFrom_to___block_invoke;
   block[3] = &unk_1E7578320;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = to;
+  block[6] = from;
   dispatch_async(isolationQueue, block);
 }
 
@@ -161,17 +161,17 @@ void __51__PLBackgroundJobStatusCenter_statusDumpDictionary__block_invoke(uint64
   *(v17 + 40) = v16;
 }
 
-- (void)recordFinishingWorker:(id)a3
+- (void)recordFinishingWorker:(id)worker
 {
-  v4 = a3;
+  workerCopy = worker;
   isolationQueue = self->_isolationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__PLBackgroundJobStatusCenter_recordFinishingWorker___block_invoke;
   v7[3] = &unk_1E7578848;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = workerCopy;
+  selfCopy = self;
+  v6 = workerCopy;
   dispatch_async(isolationQueue, v7);
 }
 
@@ -187,18 +187,18 @@ void __53__PLBackgroundJobStatusCenter_recordFinishingWorker___block_invoke(uint
   [*(a1 + 40) _addRunningEventToQueue:v4];
 }
 
-- (void)recordStoppingWorker:(id)a3 withRemainingJobCount:(unint64_t)a4
+- (void)recordStoppingWorker:(id)worker withRemainingJobCount:(unint64_t)count
 {
-  v6 = a3;
+  workerCopy = worker;
   isolationQueue = self->_isolationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__PLBackgroundJobStatusCenter_recordStoppingWorker_withRemainingJobCount___block_invoke;
   block[3] = &unk_1E75782F8;
-  v11 = self;
-  v12 = a4;
-  v10 = v6;
-  v8 = v6;
+  selfCopy = self;
+  countCopy = count;
+  v10 = workerCopy;
+  v8 = workerCopy;
   dispatch_async(isolationQueue, block);
 }
 
@@ -215,18 +215,18 @@ void __74__PLBackgroundJobStatusCenter_recordStoppingWorker_withRemainingJobCoun
   [*(a1 + 40) _addRunningEventToQueue:v4];
 }
 
-- (void)recordStartingWorker:(id)a3 withJobCount:(unint64_t)a4
+- (void)recordStartingWorker:(id)worker withJobCount:(unint64_t)count
 {
-  v6 = a3;
+  workerCopy = worker;
   isolationQueue = self->_isolationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__PLBackgroundJobStatusCenter_recordStartingWorker_withJobCount___block_invoke;
   block[3] = &unk_1E75782F8;
-  v11 = self;
-  v12 = a4;
-  v10 = v6;
-  v8 = v6;
+  selfCopy = self;
+  countCopy = count;
+  v10 = workerCopy;
+  v8 = workerCopy;
   dispatch_async(isolationQueue, block);
 }
 
@@ -243,17 +243,17 @@ void __65__PLBackgroundJobStatusCenter_recordStartingWorker_withJobCount___block
   [*(a1 + 40) _addRunningEventToQueue:v4];
 }
 
-- (void)recordTaskSubmittedWithCriteria:(id)a3
+- (void)recordTaskSubmittedWithCriteria:(id)criteria
 {
-  v4 = a3;
+  criteriaCopy = criteria;
   isolationQueue = self->_isolationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__PLBackgroundJobStatusCenter_recordTaskSubmittedWithCriteria___block_invoke;
   v7[3] = &unk_1E7578848;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = criteriaCopy;
+  v6 = criteriaCopy;
   dispatch_async(isolationQueue, v7);
 }
 
@@ -264,17 +264,17 @@ void __63__PLBackgroundJobStatusCenter_recordTaskSubmittedWithCriteria___block_i
   [v1 addObject:v2];
 }
 
-- (void)recordWorkerHasPendingJobs:(id)a3
+- (void)recordWorkerHasPendingJobs:(id)jobs
 {
-  v4 = a3;
+  jobsCopy = jobs;
   isolationQueue = self->_isolationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__PLBackgroundJobStatusCenter_recordWorkerHasPendingJobs___block_invoke;
   v7[3] = &unk_1E7578848;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = jobsCopy;
+  v6 = jobsCopy;
   dispatch_async(isolationQueue, v7);
 }
 
@@ -289,25 +289,25 @@ void __58__PLBackgroundJobStatusCenter_recordWorkerHasPendingJobs___block_invoke
 {
   dispatch_assert_queue_V2(self->_isolationQueue);
   v4 = objc_alloc_init(PLBackgroundJobStatusSubmissionEvent);
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(PLBackgroundJobStatusEvent *)v4 setEventTimestamp:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  [(PLBackgroundJobStatusEvent *)v4 setEventTimestamp:date];
 
   [(PLBackgroundJobStatusSubmissionEvent *)v4 setSubmittedTask:0];
   [(PLBackgroundJobStatusCenter *)self _addRegistrationEventToQueue:v4];
   [(NSMutableSet *)self->_workersResponsibleForRegistration removeAllObjects];
 }
 
-- (void)_recordRegistrationEventToState:(unint64_t)a3
+- (void)_recordRegistrationEventToState:(unint64_t)state
 {
   v19 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_isolationQueue);
   v4 = objc_alloc_init(PLBackgroundJobStatusSubmissionEvent);
-  v5 = [MEMORY[0x1E695DF00] date];
-  [(PLBackgroundJobStatusEvent *)v4 setEventTimestamp:v5];
+  date = [MEMORY[0x1E695DF00] date];
+  [(PLBackgroundJobStatusEvent *)v4 setEventTimestamp:date];
 
   [(PLBackgroundJobStatusSubmissionEvent *)v4 setSubmittedTask:1];
-  v6 = [(NSMutableSet *)self->_workersResponsibleForRegistration allObjects];
-  [(PLBackgroundJobStatusSubmissionEvent *)v4 setWorkersResponsible:v6];
+  allObjects = [(NSMutableSet *)self->_workersResponsibleForRegistration allObjects];
+  [(PLBackgroundJobStatusSubmissionEvent *)v4 setWorkersResponsible:allObjects];
 
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v14 = 0u;
@@ -348,12 +348,12 @@ void __58__PLBackgroundJobStatusCenter_recordWorkerHasPendingJobs___block_invoke
   [(NSMutableSet *)self->_criteriaShortCodesOfSubmittedTasks removeAllObjects];
 }
 
-- (void)_addRunningEventToQueue:(id)a3
+- (void)_addRunningEventToQueue:(id)queue
 {
   isolationQueue = self->_isolationQueue;
-  v5 = a3;
+  queueCopy = queue;
   dispatch_assert_queue_V2(isolationQueue);
-  [(NSMutableArray *)self->_runningEventsQueue addObject:v5];
+  [(NSMutableArray *)self->_runningEventsQueue addObject:queueCopy];
 
   if ([(NSMutableArray *)self->_runningEventsQueue count]>= 0x15)
   {
@@ -363,12 +363,12 @@ void __58__PLBackgroundJobStatusCenter_recordWorkerHasPendingJobs___block_invoke
   }
 }
 
-- (void)_addRegistrationEventToQueue:(id)a3
+- (void)_addRegistrationEventToQueue:(id)queue
 {
   isolationQueue = self->_isolationQueue;
-  v5 = a3;
+  queueCopy = queue;
   dispatch_assert_queue_V2(isolationQueue);
-  [(NSMutableArray *)self->_registrationEventsQueue addObject:v5];
+  [(NSMutableArray *)self->_registrationEventsQueue addObject:queueCopy];
 
   if ([(NSMutableArray *)self->_registrationEventsQueue count]>= 0x15)
   {

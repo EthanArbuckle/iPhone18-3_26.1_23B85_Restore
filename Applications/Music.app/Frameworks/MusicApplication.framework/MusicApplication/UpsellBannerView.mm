@@ -1,19 +1,19 @@
 @interface UpsellBannerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
 - (void)music_inheritedLayoutInsetsDidChange;
-- (void)setShowsAppleMusicLogo:(BOOL)a3;
+- (void)setShowsAppleMusicLogo:(BOOL)logo;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UpsellBannerView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_1D4684(width);
   v7 = v6;
 
@@ -26,7 +26,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6AB4();
 }
 
@@ -39,25 +39,25 @@
   [v2 setNeedsLayout];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(UpsellBannerView *)&v6 traitCollectionDidChange:v4];
+  [(UpsellBannerView *)&v6 traitCollectionDidChange:changeCopy];
   sub_1D65D0();
   sub_1D6438();
   [v5 setNeedsLayout];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_1D455C(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_1D455C(event, x, y);
 
   return v10;
 }
@@ -71,15 +71,15 @@
   sub_1D6438();
 }
 
-- (void)setShowsAppleMusicLogo:(BOOL)a3
+- (void)setShowsAppleMusicLogo:(BOOL)logo
 {
   v4 = *(self + OBJC_IVAR____TtC16MusicApplication16UpsellBannerView_showsAppleMusicLogo);
-  *(self + OBJC_IVAR____TtC16MusicApplication16UpsellBannerView_showsAppleMusicLogo) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR____TtC16MusicApplication16UpsellBannerView_showsAppleMusicLogo) = logo;
+  if (v4 != logo)
   {
-    v5 = self;
+    selfCopy = self;
     sub_1D65D0();
-    [(UpsellBannerView *)v5 setNeedsLayout];
+    [(UpsellBannerView *)selfCopy setNeedsLayout];
   }
 }
 

@@ -9,7 +9,7 @@
 + (MPSNNArithmeticGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNBinaryGradientStateNode *)gradientState isSecondarySourceFilter:(BOOL)isSecondarySourceFilter
 {
   v6 = isSecondarySourceFilter;
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   v14 = objc_msgSend_initWithSourceGradient_sourceImage_gradientState_isSecondarySourceFilter_(v10, v11, sourceGradient, sourceImage, gradientState, v6, v12, v13);
 
   return v14;

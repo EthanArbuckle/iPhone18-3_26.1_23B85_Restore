@@ -1,14 +1,14 @@
 @interface ICDelegateAccountStoreOptions
-+ (id)defaultOptionsWithServiceEndpoint:(id)a3;
-+ (id)defaultOptionsWithServiceName:(id)a3;
-+ (id)singleWriterOptionsWithDatabasePath:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (ICDelegateAccountStoreOptions)initWithCoder:(id)a3;
++ (id)defaultOptionsWithServiceEndpoint:(id)endpoint;
++ (id)defaultOptionsWithServiceName:(id)name;
++ (id)singleWriterOptionsWithDatabasePath:(id)path;
+- (BOOL)isEqual:(id)equal;
+- (ICDelegateAccountStoreOptions)initWithCoder:(id)coder;
 - (NSString)XPCServiceName;
 - (NSString)databasePath;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICDelegateAccountStoreOptions
@@ -104,53 +104,53 @@
   return (v66 + v67) ^ __ROR8__(v66, 47) ^ v69 ^ __ROR8__(v66 + v67, 32) ^ v69 ^ __ROR8__(v67 ^ v68, 43);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   databasePath = self->_databasePath;
-  v5 = a3;
-  [v5 encodeObject:databasePath forKey:@"dp"];
-  [v5 encodeObject:self->_listenerEndpoint forKey:@"le"];
-  [v5 encodeObject:self->_serviceName forKey:@"sn"];
-  [v5 encodeBool:self->_singleWriter forKey:@"sw"];
+  coderCopy = coder;
+  [coderCopy encodeObject:databasePath forKey:@"dp"];
+  [coderCopy encodeObject:self->_listenerEndpoint forKey:@"le"];
+  [coderCopy encodeObject:self->_serviceName forKey:@"sn"];
+  [coderCopy encodeBool:self->_singleWriter forKey:@"sw"];
 }
 
-- (ICDelegateAccountStoreOptions)initWithCoder:(id)a3
+- (ICDelegateAccountStoreOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ICDelegateAccountStoreOptions;
   v5 = [(ICDelegateAccountStoreOptions *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dp"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dp"];
     databasePath = v5->_databasePath;
     v5->_databasePath = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"le"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"le"];
     listenerEndpoint = v5->_listenerEndpoint;
     v5->_listenerEndpoint = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sn"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sn"];
     serviceName = v5->_serviceName;
     v5->_serviceName = v10;
 
-    v5->_singleWriter = [v4 decodeBoolForKey:@"sw"];
+    v5->_singleWriter = [coderCopy decodeBoolForKey:@"sw"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(NSString *)self->_databasePath copyWithZone:a3];
+    v6 = [(NSString *)self->_databasePath copyWithZone:zone];
     v7 = *(v5 + 8);
     *(v5 + 8) = v6;
 
     objc_storeStrong((v5 + 16), self->_listenerEndpoint);
-    v8 = [(NSString *)self->_serviceName copyWithZone:a3];
+    v8 = [(NSString *)self->_serviceName copyWithZone:zone];
     v9 = *(v5 + 24);
     *(v5 + 24) = v8;
 
@@ -160,19 +160,19 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(ICDelegateAccountStoreOptions *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(ICDelegateAccountStoreOptions *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       databasePath = v5->_databasePath;
       v7 = self->_databasePath;
       v8 = v7;
@@ -266,13 +266,13 @@ LABEL_19:
   }
 }
 
-+ (id)singleWriterOptionsWithDatabasePath:(id)a3
++ (id)singleWriterOptionsWithDatabasePath:(id)path
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  pathCopy = path;
+  v5 = objc_alloc_init(self);
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     v7 = v5[1];
     v5[1] = v6;
 
@@ -282,13 +282,13 @@ LABEL_19:
   return v5;
 }
 
-+ (id)defaultOptionsWithServiceName:(id)a3
++ (id)defaultOptionsWithServiceName:(id)name
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  nameCopy = name;
+  v5 = objc_alloc_init(self);
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     v7 = v5[3];
     v5[3] = v6;
   }
@@ -296,14 +296,14 @@ LABEL_19:
   return v5;
 }
 
-+ (id)defaultOptionsWithServiceEndpoint:(id)a3
++ (id)defaultOptionsWithServiceEndpoint:(id)endpoint
 {
-  v5 = a3;
-  v6 = objc_alloc_init(a1);
+  endpointCopy = endpoint;
+  v6 = objc_alloc_init(self);
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6 + 2, a3);
+    objc_storeStrong(v6 + 2, endpoint);
   }
 
   return v7;

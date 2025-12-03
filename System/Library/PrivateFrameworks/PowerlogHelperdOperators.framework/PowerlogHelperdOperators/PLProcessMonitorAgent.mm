@@ -21,44 +21,44 @@
 + (id)entryEventPointProcessSnapshot;
 + (id)entryEventPointSharedCacheReslid;
 + (id)entryEventPointSystemFreezerStats;
-+ (unint64_t)PIDToCoalitionID:(int)a3;
++ (unint64_t)PIDToCoalitionID:(int)d;
 + (void)load;
 - (PLProcessMonitorAgent)init;
-- (id)fetchSnapshotWithFlags:(unsigned int)a3;
+- (id)fetchSnapshotWithFlags:(unsigned int)flags;
 - (id)getAllProcessExitsInLastHour;
 - (id)getFrozenProcesses;
 - (id)getJSEIdleTime;
-- (id)getJetsamSnapshotEntries:(jetsam_snapshot *)a3;
-- (id)getProcessExits:(id)a3;
-- (id)getProcessName:(char *)a3;
-- (id)getProcessesNotInFreezer:(id)a3 withCurrentProcesses:(id)a4;
-- (int)getFrozenToSwapLedgerIndex:(int64_t)a3;
-- (int)getLedgerIndex:(int64_t)a3 forKey:(id)a4;
-- (int)getProcDirtyTimeLedgerIndex:(int64_t)a3;
-- (int)get_kthread_list:(unint64_t *)a3;
+- (id)getJetsamSnapshotEntries:(jetsam_snapshot *)entries;
+- (id)getProcessExits:(id)exits;
+- (id)getProcessName:(char *)name;
+- (id)getProcessesNotInFreezer:(id)freezer withCurrentProcesses:(id)processes;
+- (int)getFrozenToSwapLedgerIndex:(int64_t)index;
+- (int)getLedgerIndex:(int64_t)index forKey:(id)key;
+- (int)getProcDirtyTimeLedgerIndex:(int64_t)index;
+- (int)get_kthread_list:(unint64_t *)get_kthread_list;
 - (void)disableProcessExitLogging;
 - (void)enableProcessExitLogging;
 - (void)initOperatorDependancies;
 - (void)initializeThreadStatsLogging;
 - (void)log;
-- (void)logEventBackwardAppLaunchTimeSeries:(id)a3;
-- (void)logEventBackwardProcessExitHistogram:(id)a3 withStats:(id *)a4 withDate:(id)a5;
-- (void)logEventForwardAppResumeInferredCarry:(id)a3;
+- (void)logEventBackwardAppLaunchTimeSeries:(id)series;
+- (void)logEventBackwardProcessExitHistogram:(id)histogram withStats:(id *)stats withDate:(id)date;
+- (void)logEventForwardAppResumeInferredCarry:(id)carry;
 - (void)logEventIntervalKernelTaskMonitor;
 - (void)logEventIntervalProcessMonitorIntervalUsingCache;
 - (void)logEventPointAppNapEnabled;
-- (void)logEventPointAppNotFrozen:(id)a3;
-- (void)logEventPointAppResumePredictions:(id)a3;
+- (void)logEventPointAppNotFrozen:(id)frozen;
+- (void)logEventPointAppResumePredictions:(id)predictions;
 - (void)logEventPointFreezerDemotion;
 - (void)logEventPointFreezerStats;
 - (void)logEventPointMemoryTracking;
-- (void)logEventPointProcessExit:(id)a3 excludeProcesses:(id)a4 withStats:(id *)a5 withDate:(id)a6 withNowInSec:(unint64_t)a7;
+- (void)logEventPointProcessExit:(id)exit excludeProcesses:(id)processes withStats:(id *)stats withDate:(id)date withNowInSec:(unint64_t)sec;
 - (void)logEventPointProcessSnapshot;
 - (void)logEventPointSystemFreezerStats;
 - (void)logProcDirtyStats;
 - (void)logProcessExit;
 - (void)logThreadStats;
-- (void)processesOfInterest:(id)a3;
+- (void)processesOfInterest:(id)interest;
 - (void)updateProcessExitSummary;
 - (void)updateProcessMonitorCache;
 @end
@@ -67,7 +67,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLProcessMonitorAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -76,35 +76,35 @@
 {
   v17[10] = *MEMORY[0x277D85DE8];
   v16[0] = @"MemoryTracking";
-  v15 = [a1 entryEventPointMemoryTracking];
-  v17[0] = v15;
+  entryEventPointMemoryTracking = [self entryEventPointMemoryTracking];
+  v17[0] = entryEventPointMemoryTracking;
   v16[1] = @"ProcessSnapshot";
-  v3 = [a1 entryEventPointProcessSnapshot];
-  v17[1] = v3;
+  entryEventPointProcessSnapshot = [self entryEventPointProcessSnapshot];
+  v17[1] = entryEventPointProcessSnapshot;
   v16[2] = @"ProcessExit";
-  v4 = [a1 entryEventPointProcessExit];
-  v17[2] = v4;
+  entryEventPointProcessExit = [self entryEventPointProcessExit];
+  v17[2] = entryEventPointProcessExit;
   v16[3] = @"FreezerStats";
-  v5 = [a1 entryEventPointFreezerStats];
-  v17[3] = v5;
+  entryEventPointFreezerStats = [self entryEventPointFreezerStats];
+  v17[3] = entryEventPointFreezerStats;
   v16[4] = @"FreezerDemotion";
-  v6 = [a1 entryEventPointFreezerDemotion];
-  v17[4] = v6;
+  entryEventPointFreezerDemotion = [self entryEventPointFreezerDemotion];
+  v17[4] = entryEventPointFreezerDemotion;
   v16[5] = @"SharedCacheReslid";
-  v7 = [a1 entryEventPointSharedCacheReslid];
-  v17[5] = v7;
+  entryEventPointSharedCacheReslid = [self entryEventPointSharedCacheReslid];
+  v17[5] = entryEventPointSharedCacheReslid;
   v16[6] = @"AppResumePredictions";
-  v8 = [a1 entryEventPointAppResumePredictions];
-  v17[6] = v8;
+  entryEventPointAppResumePredictions = [self entryEventPointAppResumePredictions];
+  v17[6] = entryEventPointAppResumePredictions;
   v16[7] = @"AppNotFrozen";
-  v9 = [a1 entryEventPointAppNotFrozen];
-  v17[7] = v9;
+  entryEventPointAppNotFrozen = [self entryEventPointAppNotFrozen];
+  v17[7] = entryEventPointAppNotFrozen;
   v16[8] = @"SystemFreezerStats";
-  v10 = [a1 entryEventPointSystemFreezerStats];
-  v17[8] = v10;
+  entryEventPointSystemFreezerStats = [self entryEventPointSystemFreezerStats];
+  v17[8] = entryEventPointSystemFreezerStats;
   v16[9] = @"AppNapEnabled";
-  v11 = [a1 entryEventPointAppNapEnabled];
-  v17[9] = v11;
+  entryEventPointAppNapEnabled = [self entryEventPointAppNapEnabled];
+  v17[9] = entryEventPointAppNapEnabled;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:10];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -122,33 +122,33 @@
   v26[0] = v20;
   v25[1] = *MEMORY[0x277D3F540];
   v21[0] = @"HeapTotal";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_RealFormat];
-  v22[0] = v18;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
+  v22[0] = commonTypeDict_RealFormat;
   v21[1] = @"HeapUsed";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_RealFormat];
-  v22[1] = v16;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat];
+  v22[1] = commonTypeDict_RealFormat2;
   v21[2] = @"HeapFree";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_RealFormat];
-  v22[2] = v14;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat];
+  v22[2] = commonTypeDict_RealFormat3;
   v21[3] = @"MallocBlocks";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v22[3] = v3;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v22[3] = commonTypeDict_IntegerFormat;
   v21[4] = @"MallocSize";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_RealFormat];
-  v22[4] = v5;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_RealFormat];
+  v22[4] = commonTypeDict_RealFormat4;
   v21[5] = @"MallocMaxSize";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_RealFormat];
-  v22[5] = v7;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat5 = [mEMORY[0x277D3F198]6 commonTypeDict_RealFormat];
+  v22[5] = commonTypeDict_RealFormat5;
   v21[6] = @"MallocAllocated";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_RealFormat];
-  v22[6] = v9;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat6 = [mEMORY[0x277D3F198]7 commonTypeDict_RealFormat];
+  v22[6] = commonTypeDict_RealFormat6;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:7];
   v26[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
@@ -176,21 +176,21 @@
   v22[0] = v16;
   v21[1] = *MEMORY[0x277D3F540];
   v17[0] = @"PID";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v18[0] = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v18[0] = commonTypeDict_IntegerFormat;
   v17[1] = @"BundleID";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat_withBundleID];
-  v18[1] = v7;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withBundleID];
+  v18[1] = commonTypeDict_StringFormat_withBundleID;
   v17[2] = @"PhyFootprint";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v18[2] = v9;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v18[2] = commonTypeDict_IntegerFormat2;
   v17[3] = @"StartOrder";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_IntegerFormat];
-  v18[3] = v11;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v18[3] = commonTypeDict_IntegerFormat3;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:4];
   v22[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
@@ -215,33 +215,33 @@
   v27[0] = v21;
   v26[1] = *MEMORY[0x277D3F540];
   v22[0] = @"PID";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v23[0] = v19;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v23[0] = commonTypeDict_IntegerFormat;
   v22[1] = @"ProcessName";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_StringFormat_withProcessName];
-  v23[1] = v17;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withProcessName = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withProcessName];
+  v23[1] = commonTypeDict_StringFormat_withProcessName;
   v22[2] = @"timeSinceSpawn";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v23[2] = v15;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v23[2] = commonTypeDict_IntegerFormat2;
   v22[3] = @"lastTimeToRelaunch";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v23[3] = v4;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v23[3] = commonTypeDict_IntegerFormat3;
   v22[4] = @"ReasonNamespace";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v23[4] = v6;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v23[4] = commonTypeDict_IntegerFormat4;
   v22[5] = @"ReasonCode";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v23[5] = v8;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v23[5] = commonTypeDict_IntegerFormat5;
   v22[6] = @"JetsamPriority";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v23[6] = v10;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v23[6] = commonTypeDict_IntegerFormat6;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:7];
   v27[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
@@ -264,33 +264,33 @@
   v27[0] = v21;
   v26[1] = *MEMORY[0x277D3F540];
   v22[0] = @"RemainingPages";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v23[0] = v19;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v23[0] = commonTypeDict_IntegerFormat;
   v22[1] = @"ThawCount";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v23[1] = v17;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v23[1] = commonTypeDict_IntegerFormat2;
   v22[2] = @"ThawPercentage";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v23[2] = v15;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v23[2] = commonTypeDict_IntegerFormat3;
   v22[3] = @"RefreezeAvgBytes";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v23[3] = v4;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v23[3] = commonTypeDict_IntegerFormat4;
   v22[4] = @"ThawsPerGB";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v23[4] = v6;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v23[4] = commonTypeDict_IntegerFormat5;
   v22[5] = @"SwapTotal";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v23[5] = v8;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v23[5] = commonTypeDict_IntegerFormat6;
   v22[6] = @"SwapUsed";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v23[6] = v10;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v23[6] = commonTypeDict_IntegerFormat7;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:7];
   v27[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
@@ -315,25 +315,25 @@
   v23[0] = v17;
   v22[1] = *MEMORY[0x277D3F540];
   v18[0] = @"PID";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v19[0] = v15;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v19[0] = commonTypeDict_IntegerFormat;
   v18[1] = @"ProcessName";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat_withProcessName];
-  v19[1] = v4;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withProcessName = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withProcessName];
+  v19[1] = commonTypeDict_StringFormat_withProcessName;
   v18[2] = @"Credits";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v19[2] = v6;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v19[2] = commonTypeDict_IntegerFormat2;
   v18[3] = @"Debits";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v19[3] = v8;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v19[3] = commonTypeDict_IntegerFormat3;
   v18[4] = @"Balance";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v19[4] = v10;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v19[4] = commonTypeDict_IntegerFormat4;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:5];
   v23[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
@@ -358,13 +358,13 @@
   v17[0] = v3;
   v16[1] = *MEMORY[0x277D3F540];
   v12[0] = @"PID";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v12[1] = @"ProcessName";
-  v13[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat_withProcessName];
-  v13[1] = v7;
+  v13[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withProcessName = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withProcessName];
+  v13[1] = commonTypeDict_StringFormat_withProcessName;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -389,13 +389,13 @@
   v17[0] = v3;
   v16[1] = *MEMORY[0x277D3F540];
   v12[0] = @"PID";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v12[1] = @"ProcessName";
-  v13[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat_withProcessName];
-  v13[1] = v7;
+  v13[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withProcessName = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withProcessName];
+  v13[1] = commonTypeDict_StringFormat_withProcessName;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -418,17 +418,17 @@
   v19[0] = v3;
   v18[1] = *MEMORY[0x277D3F540];
   v14[0] = @"BundleID";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat_withBundleID];
-  v15[0] = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198] commonTypeDict_StringFormat_withBundleID];
+  v15[0] = commonTypeDict_StringFormat_withBundleID;
   v14[1] = @"PredictionScore";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_RealFormat];
-  v15[1] = v7;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat];
+  v15[1] = commonTypeDict_RealFormat;
   v14[2] = @"PredictionType";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v15[2] = v9;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v15[2] = commonTypeDict_IntegerFormat;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
   v19[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
@@ -451,17 +451,17 @@
   v19[0] = v3;
   v18[1] = *MEMORY[0x277D3F540];
   v14[0] = @"BundleID";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat_withBundleID];
-  v15[0] = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198] commonTypeDict_StringFormat_withBundleID];
+  v15[0] = commonTypeDict_StringFormat_withBundleID;
   v14[1] = @"PID";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v15[1] = v7;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v15[1] = commonTypeDict_IntegerFormat;
   v14[2] = @"Reason";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v15[2] = v9;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v15[2] = commonTypeDict_IntegerFormat2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
   v19[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
@@ -484,9 +484,9 @@
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"PID";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v11 = commonTypeDict_IntegerFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -500,11 +500,11 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"ProcessID";
-  v3 = [a1 entryEventForwardProcessID];
+  entryEventForwardProcessID = [self entryEventForwardProcessID];
   v8[1] = @"AppResumeInferredCarry";
-  v9[0] = v3;
-  v4 = [a1 entryEventForwardAppResumeInferredCarry];
-  v9[1] = v4;
+  v9[0] = entryEventForwardProcessID;
+  entryEventForwardAppResumeInferredCarry = [self entryEventForwardAppResumeInferredCarry];
+  v9[1] = entryEventForwardAppResumeInferredCarry;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -530,25 +530,25 @@
   v24[0] = v18;
   v23[1] = *MEMORY[0x277D3F540];
   v19[0] = @"PID";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v20[0] = v16;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v20[0] = commonTypeDict_IntegerFormat;
   v19[1] = @"BundleID";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat_withBundleID];
-  v20[1] = v5;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withBundleID];
+  v20[1] = commonTypeDict_StringFormat_withBundleID;
   v19[2] = @"ProcessName";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat_withProcessName];
-  v20[2] = v7;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withProcessName = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat_withProcessName];
+  v20[2] = commonTypeDict_StringFormat_withProcessName;
   v19[3] = @"CoalitionID";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v20[3] = v9;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v20[3] = commonTypeDict_IntegerFormat2;
   v19[4] = @"PUUID";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v20[4] = v11;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]5 commonTypeDict_StringFormat];
+  v20[4] = commonTypeDict_StringFormat;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:5];
   v24[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
@@ -570,9 +570,9 @@
     v14[0] = v2;
     v13[1] = *MEMORY[0x277D3F540];
     v9 = @"CarryType";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v10 = v4;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v10 = commonTypeDict_IntegerFormat;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v14[1] = v5;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -592,14 +592,14 @@
 {
   v10[3] = *MEMORY[0x277D85DE8];
   v9[0] = @"ProcessExitHistogram";
-  v3 = [a1 entryEventBackwardProcessExitHistogram];
-  v10[0] = v3;
+  entryEventBackwardProcessExitHistogram = [self entryEventBackwardProcessExitHistogram];
+  v10[0] = entryEventBackwardProcessExitHistogram;
   v9[1] = @"ThreadStats";
-  v4 = [a1 entryEventBackwardDefinitionThreadStats];
-  v10[1] = v4;
+  entryEventBackwardDefinitionThreadStats = [self entryEventBackwardDefinitionThreadStats];
+  v10[1] = entryEventBackwardDefinitionThreadStats;
   v9[2] = @"AppLaunchTimeSeries";
-  v5 = [a1 entryEventBackwardAppLaunchTimeSeries];
-  v10[2] = v5;
+  entryEventBackwardAppLaunchTimeSeries = [self entryEventBackwardAppLaunchTimeSeries];
+  v10[2] = entryEventBackwardAppLaunchTimeSeries;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:3];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -624,25 +624,25 @@
     v23[0] = v17;
     v22[1] = *MEMORY[0x277D3F540];
     v18[0] = @"PID";
-    v16 = [MEMORY[0x277D3F198] sharedInstance];
-    v15 = [v16 commonTypeDict_IntegerFormat];
-    v19[0] = v15;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v19[0] = commonTypeDict_IntegerFormat;
     v18[1] = @"ProcessName";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_StringFormat_withProcessName];
-    v19[1] = v4;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat_withProcessName = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withProcessName];
+    v19[1] = commonTypeDict_StringFormat_withProcessName;
     v18[2] = @"ThreadName";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_StringFormat];
-    v19[2] = v6;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+    v19[2] = commonTypeDict_StringFormat;
     v18[3] = @"SysTime";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v19[3] = v8;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v19[3] = commonTypeDict_IntegerFormat2;
     v18[4] = @"UsrTime";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_IntegerFormat];
-    v19[4] = v10;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v19[4] = commonTypeDict_IntegerFormat3;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:5];
     v23[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
@@ -671,17 +671,17 @@
   v19[0] = v3;
   v18[1] = *MEMORY[0x277D3F540];
   v14[0] = @"BundleID";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat_withBundleID];
-  v15[0] = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198] commonTypeDict_StringFormat_withBundleID];
+  v15[0] = commonTypeDict_StringFormat_withBundleID;
   v14[1] = @"Duration";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v15[1] = v7;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v15[1] = commonTypeDict_IntegerFormat;
   v14[2] = @"IsForeground";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_BoolFormat];
-  v15[2] = v9;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v15[2] = commonTypeDict_BoolFormat;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
   v19[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
@@ -695,11 +695,11 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"ProcessMonitorInterval";
-  v3 = [a1 entryEventIntervalDefinitionProcessMonitorDiff];
+  entryEventIntervalDefinitionProcessMonitorDiff = [self entryEventIntervalDefinitionProcessMonitorDiff];
   v8[1] = @"KernelTaskMonitor";
-  v9[0] = v3;
-  v4 = [a1 entryEventIntervalDefinitionKernelTaskMonitor];
-  v9[1] = v4;
+  v9[0] = entryEventIntervalDefinitionProcessMonitorDiff;
+  entryEventIntervalDefinitionKernelTaskMonitor = [self entryEventIntervalDefinitionKernelTaskMonitor];
+  v9[1] = entryEventIntervalDefinitionKernelTaskMonitor;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -725,31 +725,31 @@
   v30[0] = v20;
   v29[1] = *MEMORY[0x277D3F540];
   v25 = @"timestampEnd";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_DateFormat];
-  v26 = v18;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v26 = commonTypeDict_DateFormat;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
   v30[1] = v17;
   v29[2] = *MEMORY[0x277D3F500];
   v23[0] = @"key";
   v21[0] = @"PID";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v16 commonTypeDict_IntegerFormat];
-  v22[0] = v4;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v22[0] = commonTypeDict_IntegerFormat;
   v21[1] = @"ProcessName";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat_withProcessName];
-  v22[1] = v6;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withProcessName = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat_withProcessName];
+  v22[1] = commonTypeDict_StringFormat_withProcessName;
   v21[2] = @"BundleID";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_StringFormat_withBundleID];
-  v22[2] = v8;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat_withBundleID];
+  v22[2] = commonTypeDict_StringFormat_withBundleID;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:3];
   v23[1] = @"value";
   v24[0] = v9;
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_IntegerFormat];
-  v24[1] = v11;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v24[1] = commonTypeDict_IntegerFormat2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
   v30[2] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:3];
@@ -772,29 +772,29 @@
   v25[0] = v19;
   v24[1] = *MEMORY[0x277D3F540];
   v20[0] = @"timestampEnd";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_DateFormat];
-  v21[0] = v17;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v21[0] = commonTypeDict_DateFormat;
   v20[1] = @"ThreadID";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v21[1] = v15;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v21[1] = commonTypeDict_IntegerFormat;
   v20[2] = @"ThreadName";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
-  v21[2] = v4;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v21[2] = commonTypeDict_StringFormat;
   v20[3] = @"CPUTime";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_RealFormat];
-  v21[3] = v6;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat];
+  v21[3] = commonTypeDict_RealFormat;
   v20[4] = @"CPUEnergyP";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v21[4] = v8;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v21[4] = commonTypeDict_IntegerFormat2;
   v20[5] = @"CPUEnergyE";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v21[5] = v10;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v21[5] = commonTypeDict_IntegerFormat3;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:6];
   v25[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
@@ -819,41 +819,41 @@
   v31[0] = v25;
   v30[1] = *MEMORY[0x277D3F540];
   v26[0] = @"ProcessName";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_StringFormat_withProcessName];
-  v27[0] = v23;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withProcessName = [mEMORY[0x277D3F198] commonTypeDict_StringFormat_withProcessName];
+  v27[0] = commonTypeDict_StringFormat_withProcessName;
   v26[1] = @"lastTimeToRelaunch";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_IntegerFormat];
-  v27[1] = v21;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v27[1] = commonTypeDict_IntegerFormat;
   v26[2] = @"ReasonNamespace";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v27[2] = v19;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v27[2] = commonTypeDict_IntegerFormat2;
   v26[3] = @"ReasonCode";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v27[3] = v17;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v27[3] = commonTypeDict_IntegerFormat3;
   v26[4] = @"0s-5s";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v27[4] = v15;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v27[4] = commonTypeDict_IntegerFormat4;
   v26[5] = @"5s-10s";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v27[5] = v4;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v27[5] = commonTypeDict_IntegerFormat5;
   v26[6] = @"10s-60s";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v27[6] = v6;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v27[6] = commonTypeDict_IntegerFormat6;
   v26[7] = @"60s+";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v27[7] = v8;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v27[7] = commonTypeDict_IntegerFormat7;
   v26[8] = @"UnknownDuration";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v27[8] = v10;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v27[8] = commonTypeDict_IntegerFormat8;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:9];
   v31[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
@@ -885,35 +885,35 @@
     lastCPUTimeDict = v2->_lastCPUTimeDict;
     v2->_lastCPUTimeDict = 0;
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v2 selector:sel_processesOfInterest_ name:@"PLProcessMonitorAgent.addProcessesOfInterest" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_processesOfInterest_ name:@"PLProcessMonitorAgent.addProcessesOfInterest" object:0];
   }
 
   return v2;
 }
 
-- (void)processesOfInterest:(id)a3
+- (void)processesOfInterest:(id)interest
 {
-  v4 = [a3 userInfo];
-  if (v4)
+  userInfo = [interest userInfo];
+  if (userInfo)
   {
-    v8 = v4;
-    v5 = [v4 objectForKeyedSubscript:@"entry"];
+    v8 = userInfo;
+    v5 = [userInfo objectForKeyedSubscript:@"entry"];
     if (v5)
     {
-      v6 = [(PLProcessMonitorAgent *)self processes];
+      processes = [(PLProcessMonitorAgent *)self processes];
       v7 = [v8 objectForKeyedSubscript:@"entry"];
-      [v6 unionSet:v7];
+      [processes unionSet:v7];
     }
 
-    v4 = v8;
+    userInfo = v8;
   }
 }
 
 - (void)initOperatorDependancies
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0(&dword_25EE51000, a1, a3, "ProcDirtyStats: Picked random time in next 24 hours for sending stats to CA: %@", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0(&dword_25EE51000, self, a3, "ProcDirtyStats: Picked random time in next 24 hours for sending stats to CA: %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -1051,8 +1051,8 @@ id __49__PLProcessMonitorAgent_initOperatorDependancies__block_invoke_469(uint64
 - (void)updateProcessExitSummary
 {
   v3 = [(PLOperator *)PLProcessMonitorAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"ProcessExitHistogram"];
-  v4 = [(PLOperator *)self storage];
-  self->_processExitSummaryCount = [v4 countOfEntriesForKey:v3];
+  storage = [(PLOperator *)self storage];
+  self->_processExitSummaryCount = [storage countOfEntriesForKey:v3];
 
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -1072,9 +1072,9 @@ id __49__PLProcessMonitorAgent_initOperatorDependancies__block_invoke_469(uint64
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Init processExitSummaryCount = %d\n", self->_processExitSummaryCount];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLProcessMonitorAgent.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLProcessMonitorAgent updateProcessExitSummary]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:799];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:799];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1085,13 +1085,13 @@ id __49__PLProcessMonitorAgent_initOperatorDependancies__block_invoke_469(uint64
   }
 
   v12 = dispatch_time(0, 86400000000000);
-  v13 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__PLProcessMonitorAgent_updateProcessExitSummary__block_invoke_477;
   block[3] = &unk_279A5BDC0;
   block[4] = self;
-  dispatch_after(v12, v13, block);
+  dispatch_after(v12, workQueue, block);
 }
 
 uint64_t __49__PLProcessMonitorAgent_updateProcessExitSummary__block_invoke(uint64_t a1)
@@ -1148,7 +1148,7 @@ uint64_t __49__PLProcessMonitorAgent_updateProcessExitSummary__block_invoke_2(ui
 - (void)enableProcessExitLogging
 {
   v7 = *MEMORY[0x277D85DE8];
-  strerror(a1);
+  strerror(self);
   OUTLINED_FUNCTION_7_2();
   OUTLINED_FUNCTION_8_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0x12u);
@@ -1166,10 +1166,10 @@ uint64_t __49__PLProcessMonitorAgent_enableProcessExitLogging__block_invoke(uint
 {
   [(PLProcessMonitorAgent *)self setLaunchServiceStatsEnabled:0];
   v2 = launch_service_stats_disable_4ppse();
-  v3 = [MEMORY[0x277D3F180] debugEnabled];
+  debugEnabled = [MEMORY[0x277D3F180] debugEnabled];
   if (v2)
   {
-    if (v3)
+    if (debugEnabled)
     {
       v4 = objc_opt_class();
       block = MEMORY[0x277D85DD0];
@@ -1187,9 +1187,9 @@ uint64_t __49__PLProcessMonitorAgent_enableProcessExitLogging__block_invoke(uint
         v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to disable launch_service_stats(%d):%s", v2, strerror(v2), block, v17, v18, v19, v20];
         v6 = MEMORY[0x277D3F178];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLProcessMonitorAgent.m"];
-        v8 = [v7 lastPathComponent];
+        lastPathComponent = [v7 lastPathComponent];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLProcessMonitorAgent disableProcessExitLogging]"];
-        [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:836];
+        [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:836];
 
         v10 = PLLogCommon();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1202,7 +1202,7 @@ LABEL_14:
     }
   }
 
-  else if (v3)
+  else if (debugEnabled)
   {
     v11 = objc_opt_class();
     v21[0] = MEMORY[0x277D85DD0];
@@ -1220,9 +1220,9 @@ LABEL_14:
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"launch_service_stats successfully disabled."];
       v12 = MEMORY[0x277D3F178];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLProcessMonitorAgent.m"];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent2 = [v13 lastPathComponent];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLProcessMonitorAgent disableProcessExitLogging]"];
-      [v12 logMessage:v5 fromFile:v14 fromFunction:v15 fromLineNumber:833];
+      [v12 logMessage:v5 fromFile:lastPathComponent2 fromFunction:v15 fromLineNumber:833];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1253,7 +1253,7 @@ uint64_t __50__PLProcessMonitorAgent_disableProcessExitLogging__block_invoke_489
 {
   v58 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x277CBEAA8] monotonicDate];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   v5 = objc_opt_new();
   v34 = 0;
   v6 = objc_opt_new();
@@ -1261,8 +1261,8 @@ uint64_t __50__PLProcessMonitorAgent_disableProcessExitLogging__block_invoke_489
   v7 = 0x279A5A000uLL;
   if (+[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") || +[PLUtilities isPerfPowerMetricd])
   {
-    v8 = [(PLProcessMonitorAgent *)self processes];
-    v9 = [v8 count];
+    processes = [(PLProcessMonitorAgent *)self processes];
+    v9 = [processes count];
 
     if (v9)
     {
@@ -1271,8 +1271,8 @@ uint64_t __50__PLProcessMonitorAgent_disableProcessExitLogging__block_invoke_489
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v10 = [(PLProcessMonitorAgent *)self processes];
-      v11 = [v10 countByEnumeratingWithState:&v30 objects:v56 count:16];
+      processes2 = [(PLProcessMonitorAgent *)self processes];
+      v11 = [processes2 countByEnumeratingWithState:&v30 objects:v56 count:16];
       if (v11)
       {
         v12 = v11;
@@ -1284,7 +1284,7 @@ uint64_t __50__PLProcessMonitorAgent_disableProcessExitLogging__block_invoke_489
           {
             if (*v31 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(processes2);
             }
 
             v15 = *(*(&v30 + 1) + 8 * v14);
@@ -1314,7 +1314,7 @@ uint64_t __50__PLProcessMonitorAgent_disableProcessExitLogging__block_invoke_489
           }
 
           while (v12 != v14);
-          v12 = [v10 countByEnumeratingWithState:&v30 objects:v56 count:16];
+          v12 = [processes2 countByEnumeratingWithState:&v30 objects:v56 count:16];
         }
 
         while (v12);
@@ -1372,23 +1372,23 @@ uint64_t __50__PLProcessMonitorAgent_disableProcessExitLogging__block_invoke_489
   if ([v6 count] && (objc_msgSend(*(v7 + 3824), "isPowerlogHelperd") & 1) == 0 && (objc_msgSend(*(v7 + 3824), "isPerfPowerMetricd") & 1) == 0)
   {
     v21 = [v6 objectAtIndexedSubscript:0];
-    v22 = [v21 entryKey];
-    v35 = v22;
+    entryKey = [v21 entryKey];
+    v35 = entryKey;
     v36 = v6;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
     [v6 objectAtIndexedSubscript:0];
     v25 = v24 = v3;
-    v26 = [v25 entryKey];
-    [(PLOperator *)self logEntries:v23 withGroupID:v26];
+    entryKey2 = [v25 entryKey];
+    [(PLOperator *)self logEntries:v23 withGroupID:entryKey2];
 
     v3 = v24;
   }
 
   [(PLProcessMonitorAgent *)self setLastCPUTimeDict:v5];
-  v27 = [(PLProcessMonitorAgent *)self currentCachedDate];
-  [(PLProcessMonitorAgent *)self setPreviousCacheDate:v27];
+  currentCachedDate = [(PLProcessMonitorAgent *)self currentCachedDate];
+  [(PLProcessMonitorAgent *)self setPreviousCacheDate:currentCachedDate];
 
-  [(PLProcessMonitorAgent *)self setCurrentCachedDate:v4];
+  [(PLProcessMonitorAgent *)self setCurrentCachedDate:monotonicDate];
   [(PLProcessMonitorAgent *)self setCurrentCachedTotalCPUTime:v34];
 
   objc_autoreleasePoolPop(v3);
@@ -1422,9 +1422,9 @@ uint64_t __50__PLProcessMonitorAgent_disableProcessExitLogging__block_invoke_489
         v13 = [v10 stringWithFormat:@"Error: Could not get frozen process list: %s\n", v12, block, v21, v22, v23, v24];
         v14 = MEMORY[0x277D3F178];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLProcessMonitorAgent.m"];
-        v16 = [v15 lastPathComponent];
+        lastPathComponent = [v15 lastPathComponent];
         v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLProcessMonitorAgent getFrozenProcesses]"];
-        [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:976];
+        [v14 logMessage:v13 fromFile:lastPathComponent fromFunction:v17 fromLineNumber:976];
 
         v18 = PLLogCommon();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -1482,17 +1482,17 @@ uint64_t __43__PLProcessMonitorAgent_getFrozenProcesses__block_invoke(uint64_t a
   return result;
 }
 
-- (id)getProcessesNotInFreezer:(id)a3 withCurrentProcesses:(id)a4
+- (id)getProcessesNotInFreezer:(id)freezer withCurrentProcesses:(id)processes
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  freezerCopy = freezer;
+  processesCopy = processes;
   v7 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v5;
+  v8 = freezerCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -1508,7 +1508,7 @@ uint64_t __43__PLProcessMonitorAgent_getFrozenProcesses__block_invoke(uint64_t a
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v6 objectForKeyedSubscript:{v13, v18}];
+        v14 = [processesCopy objectForKeyedSubscript:{v13, v18}];
 
         if (!v14)
         {
@@ -1528,10 +1528,10 @@ uint64_t __43__PLProcessMonitorAgent_getFrozenProcesses__block_invoke(uint64_t a
   return v7;
 }
 
-- (int)getLedgerIndex:(int64_t)a3 forKey:(id)a4
+- (int)getLedgerIndex:(int64_t)index forKey:(id)key
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  keyCopy = key;
   if ((ledger() & 0x80000000) == 0)
   {
     v5 = malloc_type_malloc(0, 0x1000040565EDBD2uLL);
@@ -1547,14 +1547,14 @@ uint64_t __43__PLProcessMonitorAgent_getFrozenProcesses__block_invoke(uint64_t a
   return -1;
 }
 
-- (int)getFrozenToSwapLedgerIndex:(int64_t)a3
+- (int)getFrozenToSwapLedgerIndex:(int64_t)index
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __52__PLProcessMonitorAgent_getFrozenToSwapLedgerIndex___block_invoke;
   v4[3] = &unk_279A5C600;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = index;
   if (getFrozenToSwapLedgerIndex__onceToken != -1)
   {
     dispatch_once(&getFrozenToSwapLedgerIndex__onceToken, v4);
@@ -1570,14 +1570,14 @@ uint64_t __52__PLProcessMonitorAgent_getFrozenToSwapLedgerIndex___block_invoke(u
   return result;
 }
 
-- (int)getProcDirtyTimeLedgerIndex:(int64_t)a3
+- (int)getProcDirtyTimeLedgerIndex:(int64_t)index
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __53__PLProcessMonitorAgent_getProcDirtyTimeLedgerIndex___block_invoke;
   v4[3] = &unk_279A5C600;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = index;
   if (getProcDirtyTimeLedgerIndex__onceToken != -1)
   {
     dispatch_once(&getProcDirtyTimeLedgerIndex__onceToken, v4);
@@ -1654,9 +1654,9 @@ uint64_t __50__PLProcessMonitorAgent_ledgerDataAtIndex_forPid___block_invoke_519
           v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"error with malloc_get_all_zones"];
           v8 = MEMORY[0x277D3F178];
           v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLProcessMonitorAgent.m"];
-          v10 = [v9 lastPathComponent];
+          lastPathComponent = [v9 lastPathComponent];
           v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLProcessMonitorAgent logEventPointMemoryTracking]"];
-          [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:1107];
+          [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:1107];
 
           v12 = PLLogCommon();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -1698,9 +1698,9 @@ uint64_t __50__PLProcessMonitorAgent_ledgerDataAtIndex_forPid___block_invoke_519
           v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"heap: total=%f used=%f free=%f", v24.bytes_total * 0.0009765625, v24.bytes_used * 0.0009765625, v24.bytes_free * 0.0009765625];
           v18 = MEMORY[0x277D3F178];
           v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLProcessMonitorAgent.m"];
-          v20 = [v19 lastPathComponent];
+          lastPathComponent2 = [v19 lastPathComponent];
           v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLProcessMonitorAgent logEventPointMemoryTracking]"];
-          [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:1130];
+          [v18 logMessage:v17 fromFile:lastPathComponent2 fromFunction:v21 fromLineNumber:1130];
 
           v22 = PLLogCommon();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -1755,7 +1755,7 @@ uint64_t __52__PLProcessMonitorAgent_logEventPointMemoryTracking__block_invoke_5
     if (v6)
     {
       v7 = v6;
-      v45 = self;
+      selfCopy = self;
       memset(v6, 255, v5);
       v46 = v7;
       v8 = proc_listpids(1u, 0, v7, v4);
@@ -1897,7 +1897,7 @@ uint64_t __52__PLProcessMonitorAgent_logEventPointMemoryTracking__block_invoke_5
       v55 = v44;
       v56 = v33;
       v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
-      [(PLOperator *)v45 logEntries:v41 withGroupID:v44];
+      [(PLOperator *)selfCopy logEntries:v41 withGroupID:v44];
 
       free(v46);
     }
@@ -1934,15 +1934,15 @@ uint64_t __39__PLProcessMonitorAgent_logProcessExit__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)logEventPointProcessExit:(id)a3 excludeProcesses:(id)a4 withStats:(id *)a5 withDate:(id)a6 withNowInSec:(unint64_t)a7
+- (void)logEventPointProcessExit:(id)exit excludeProcesses:(id)processes withStats:(id *)stats withDate:(id)date withNowInSec:(unint64_t)sec
 {
   v67 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v49 = a4;
-  v47 = a6;
-  v41 = v10;
-  v11 = [v10 allKeys];
-  v12 = [v11 sortedArrayUsingComparator:&__block_literal_global_558];
+  exitCopy = exit;
+  processesCopy = processes;
+  dateCopy = date;
+  v41 = exitCopy;
+  allKeys = [exitCopy allKeys];
+  v12 = [allKeys sortedArrayUsingComparator:&__block_literal_global_558];
 
   v46 = objc_opt_new();
   v45 = [(PLOperator *)PLProcessMonitorAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"ProcessExit"];
@@ -1988,17 +1988,17 @@ uint64_t __39__PLProcessMonitorAgent_logProcessExit__block_invoke_2(uint64_t a1)
 
               v17 = *(*(&v55 + 1) + 8 * i);
               v18 = objc_autoreleasePoolPush();
-              v19 = (a5->var1 + 59 * [v17 intValue]);
-              v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:{xpc_array_get_string(a5->var0, *v19)}];
-              if (([v49 containsObject:v20] & 1) == 0)
+              v19 = (stats->var1 + 59 * [v17 intValue]);
+              v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:{xpc_array_get_string(stats->var0, *v19)}];
+              if (([processesCopy containsObject:v20] & 1) == 0)
               {
-                v21 = [v47 dateByAddingTimeInterval:(a7 - *(v19 + 3)) / -1000.0];
+                v21 = [dateCopy dateByAddingTimeInterval:(sec - *(v19 + 3)) / -1000.0];
                 v22 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v45 withDate:v21];
                 v23 = [*(v13 + 2992) numberWithInt:v19[5]];
                 [v22 setObject:v23 forKeyedSubscript:@"PID"];
 
                 v24 = *v19;
-                if (xpc_array_get_count(a5->var0) > v24)
+                if (xpc_array_get_count(stats->var0) > v24)
                 {
                   [v22 setObject:v20 forKeyedSubscript:@"ProcessName"];
                 }
@@ -2169,12 +2169,12 @@ id __99__PLProcessMonitorAgent_logEventPointProcessExit_excludeProcesses_withSta
   v23 = *MEMORY[0x277D85DE8];
   [(PLProcessMonitorAgent *)self logProcessExit];
   v3 = [(PLOperator *)PLProcessMonitorAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"ProcessExitHistogram"];
-  v4 = [MEMORY[0x277CBEAA8] monotonicDate];
-  v5 = [v4 dateByAddingTimeInterval:-3600.0];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  v5 = [monotonicDate dateByAddingTimeInterval:-3600.0];
   v6 = MEMORY[0x277CCACA8];
   [v5 timeIntervalSince1970];
   v8 = v7;
-  [v4 timeIntervalSince1970];
+  [monotonicDate timeIntervalSince1970];
   v10 = [v6 stringWithFormat:@"SELECT ID, %@, %@, %@, timestamp from %@ WHERE timestamp > %f AND timestamp <= %f", @"ProcessName", @"ReasonNamespace", @"ReasonCode", v3, v8, v9];
   v11 = PLLogProcessMonitor();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -2184,9 +2184,9 @@ id __99__PLProcessMonitorAgent_logEventPointProcessExit_excludeProcesses_withSta
     _os_log_impl(&dword_25EE51000, v11, OS_LOG_TYPE_INFO, "LastHourKills Query is %@", buf, 0xCu);
   }
 
-  v12 = [(PLOperator *)self storage];
-  v13 = [v12 connection];
-  v14 = [v13 performQuery:v10];
+  storage = [(PLOperator *)self storage];
+  connection = [storage connection];
+  v14 = [connection performQuery:v10];
 
   v15 = PLLogProcessMonitor();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -2204,12 +2204,12 @@ id __99__PLProcessMonitorAgent_logEventPointProcessExit_excludeProcesses_withSta
   return v14;
 }
 
-- (id)getProcessExits:(id)a3
+- (id)getProcessExits:(id)exits
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  exitsCopy = exits;
+  v5 = exitsCopy;
+  if (!exitsCopy)
   {
     v26 = PLLogProcessMonitor();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -2220,26 +2220,26 @@ id __99__PLProcessMonitorAgent_logEventPointProcessExit_excludeProcesses_withSta
     goto LABEL_14;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"lastNHours"];
-  v7 = [v6 longLongValue];
+  v6 = [exitsCopy objectForKeyedSubscript:@"lastNHours"];
+  longLongValue = [v6 longLongValue];
 
   v8 = [v5 objectForKeyedSubscript:@"ReasonCode"];
-  v9 = [v8 longLongValue];
+  longLongValue2 = [v8 longLongValue];
 
   v10 = [v5 objectForKeyedSubscript:@"ReasonNamespace"];
-  v11 = [v10 longLongValue];
+  longLongValue3 = [v10 longLongValue];
 
-  if (v7 > 0x18 || v9 < 0 || v11 < 0)
+  if (longLongValue > 0x18 || longLongValue2 < 0 || longLongValue3 < 0)
   {
     v26 = PLLogProcessMonitor();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218496;
-      v31 = v7;
+      v31 = longLongValue;
       v32 = 2048;
-      v33 = v9;
+      v33 = longLongValue2;
       v34 = 2048;
-      v35 = v11;
+      v35 = longLongValue3;
       _os_log_error_impl(&dword_25EE51000, v26, OS_LOG_TYPE_ERROR, "Invalid payload sent to query lastNHours %lld reasonCode %lld reasonNamespace %lld", buf, 0x20u);
     }
 
@@ -2249,13 +2249,13 @@ LABEL_14:
   }
 
   v12 = [(PLOperator *)PLProcessMonitorAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"ProcessExitHistogram"];
-  v13 = [MEMORY[0x277CBEAA8] monotonicDate];
-  v14 = [v13 dateByAddingTimeInterval:v7 * -3600.0];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  v14 = [monotonicDate dateByAddingTimeInterval:longLongValue * -3600.0];
   v15 = MEMORY[0x277CCACA8];
   [v14 timeIntervalSince1970];
   v17 = v16;
-  [v13 timeIntervalSince1970];
-  v19 = [v15 stringWithFormat:@"SELECT %@ as LaunchdName, SUM(0s-5s + 10s-60s + 5s-10s + 60s+ + UnknownDuration) as count from %@ WHERE %@ = %lld AND %@ = %lld AND timestamp > %f AND timestamp <= %f GROUP BY %@", @"ProcessName", v12, @"ReasonNamespace", v11, @"ReasonCode", v9, v17, v18, @"ProcessName"];;
+  [monotonicDate timeIntervalSince1970];
+  v19 = [v15 stringWithFormat:@"SELECT %@ as LaunchdName, SUM(0s-5s + 10s-60s + 5s-10s + 60s+ + UnknownDuration) as count from %@ WHERE %@ = %lld AND %@ = %lld AND timestamp > %f AND timestamp <= %f GROUP BY %@", @"ProcessName", v12, @"ReasonNamespace", longLongValue3, @"ReasonCode", longLongValue2, v17, v18, @"ProcessName"];;
   v20 = PLLogProcessMonitor();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
@@ -2264,9 +2264,9 @@ LABEL_14:
     _os_log_impl(&dword_25EE51000, v20, OS_LOG_TYPE_INFO, "MemoryKills Query is %@", buf, 0xCu);
   }
 
-  v21 = [(PLOperator *)self storage];
-  v22 = [v21 connection];
-  v23 = [v22 performQuery:v19];
+  storage = [(PLOperator *)self storage];
+  connection = [storage connection];
+  v23 = [connection performQuery:v19];
 
   v24 = PLLogProcessMonitor();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
@@ -2343,13 +2343,13 @@ uint64_t __50__PLProcessMonitorAgent_logEventPointFreezerStats__block_invoke_2(u
 - (void)logEventPointFreezerDemotion
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v3 = [(PLProcessMonitorAgent *)self diffFreezerProcs];
+  diffFreezerProcs = [(PLProcessMonitorAgent *)self diffFreezerProcs];
 
-  if (v3)
+  if (diffFreezerProcs)
   {
     v4 = objc_opt_new();
     v5 = [(PLOperator *)PLProcessMonitorAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"FreezerDemotion"];
-    v6 = [(PLProcessMonitorAgent *)self diffFreezerProcs];
+    diffFreezerProcs2 = [(PLProcessMonitorAgent *)self diffFreezerProcs];
     v16 = MEMORY[0x277D85DD0];
     v17 = 3221225472;
     v18 = __53__PLProcessMonitorAgent_logEventPointFreezerDemotion__block_invoke_642;
@@ -2358,7 +2358,7 @@ uint64_t __50__PLProcessMonitorAgent_logEventPointFreezerStats__block_invoke_2(u
     v20 = v7;
     v8 = v4;
     v21 = v8;
-    [v6 enumerateKeysAndObjectsUsingBlock:&v16];
+    [diffFreezerProcs2 enumerateKeysAndObjectsUsingBlock:&v16];
 
     if ([v8 count])
     {
@@ -2390,9 +2390,9 @@ LABEL_5:
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"No processes were evicted out of freezer"];
       v11 = MEMORY[0x277D3F178];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLProcessMonitorAgent.m"];
-      v13 = [v12 lastPathComponent];
+      lastPathComponent = [v12 lastPathComponent];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLProcessMonitorAgent logEventPointFreezerDemotion]"];
-      [v11 logMessage:v8 fromFile:v13 fromFunction:v14 fromLineNumber:1508];
+      [v11 logMessage:v8 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:1508];
 
       v7 = PLLogCommon();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -2434,29 +2434,29 @@ void __53__PLProcessMonitorAgent_logEventPointFreezerDemotion__block_invoke_642(
   }
 }
 
-- (void)logEventPointAppResumePredictions:(id)a3
+- (void)logEventPointAppResumePredictions:(id)predictions
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (predictions)
   {
     v4 = MEMORY[0x277CBEAA8];
-    v5 = a3;
+    predictionsCopy = predictions;
     v6 = [v4 now];
-    v7 = [v6 convertFromSystemToMonotonic];
+    convertFromSystemToMonotonic = [v6 convertFromSystemToMonotonic];
 
-    v8 = [v5 objectForKeyedSubscript:@"appResumePredictions"];
+    v8 = [predictionsCopy objectForKeyedSubscript:@"appResumePredictions"];
 
     v9 = [(PLOperator *)PLProcessMonitorAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"AppResumePredictions"];
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v16 = MEMORY[0x277D85DD0];
     v17 = 3221225472;
     v18 = __59__PLProcessMonitorAgent_logEventPointAppResumePredictions___block_invoke;
     v19 = &unk_279A5D830;
     v11 = v9;
     v20 = v11;
-    v12 = v7;
+    v12 = convertFromSystemToMonotonic;
     v21 = v12;
-    v13 = v10;
+    v13 = array;
     v22 = v13;
     [v8 enumerateObjectsUsingBlock:&v16];
     if ([v13 count])
@@ -2481,29 +2481,29 @@ void __59__PLProcessMonitorAgent_logEventPointAppResumePredictions___block_invok
   [*(a1 + 48) addObject:v5];
 }
 
-- (void)logEventPointAppNotFrozen:(id)a3
+- (void)logEventPointAppNotFrozen:(id)frozen
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (frozen)
   {
     v4 = MEMORY[0x277CBEAA8];
-    v5 = a3;
+    frozenCopy = frozen;
     v6 = [v4 now];
-    v7 = [v6 convertFromSystemToMonotonic];
+    convertFromSystemToMonotonic = [v6 convertFromSystemToMonotonic];
 
-    v8 = [v5 objectForKeyedSubscript:@"Applications"];
+    v8 = [frozenCopy objectForKeyedSubscript:@"Applications"];
 
     v9 = [(PLOperator *)PLProcessMonitorAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"AppNotFrozen"];
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v16 = MEMORY[0x277D85DD0];
     v17 = 3221225472;
     v18 = __51__PLProcessMonitorAgent_logEventPointAppNotFrozen___block_invoke;
     v19 = &unk_279A5D830;
     v11 = v9;
     v20 = v11;
-    v12 = v7;
+    v12 = convertFromSystemToMonotonic;
     v21 = v12;
-    v13 = v10;
+    v13 = array;
     v22 = v13;
     [v8 enumerateObjectsUsingBlock:&v16];
     if ([v13 count])
@@ -2535,15 +2535,15 @@ void __51__PLProcessMonitorAgent_logEventPointAppNotFrozen___block_invoke(uint64
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (id)getJetsamSnapshotEntries:(jetsam_snapshot *)a3
+- (id)getJetsamSnapshotEntries:(jetsam_snapshot *)entries
 {
-  if (a3)
+  if (entries)
   {
     v5 = objc_opt_new();
-    if (a3->var4)
+    if (entries->var4)
     {
       v6 = 0;
-      var1 = a3->var5[0].var1;
+      var1 = entries->var5[0].var1;
       do
       {
         v8 = [(PLProcessMonitorAgent *)self getProcessName:var1];
@@ -2557,7 +2557,7 @@ void __51__PLProcessMonitorAgent_logEventPointAppNotFrozen___block_invoke(uint64
         var1 += 288;
       }
 
-      while (a3->var4 > v6);
+      while (entries->var4 > v6);
     }
 
     v10 = PLLogProcessMonitor();
@@ -2575,7 +2575,7 @@ void __51__PLProcessMonitorAgent_logEventPointAppNotFrozen___block_invoke(uint64
   return v5;
 }
 
-- (id)fetchSnapshotWithFlags:(unsigned int)a3
+- (id)fetchSnapshotWithFlags:(unsigned int)flags
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = memorystatus_control();
@@ -2668,14 +2668,14 @@ LABEL_22:
   return v13;
 }
 
-- (id)getProcessName:(char *)a3
+- (id)getProcessName:(char *)name
 {
   *&v10[4071] = *MEMORY[0x277D85DE8];
   bzero(v10, 0xFDFuLL);
-  v4 = *(a3 + 1);
-  v8[0] = *a3;
+  v4 = *(name + 1);
+  v8[0] = *name;
   v8[1] = v4;
-  v9 = a3[32];
+  v9 = name[32];
   if (LOBYTE(v8[0]))
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:v8];
@@ -2776,27 +2776,27 @@ id __42__PLProcessMonitorAgent_logProcDirtyStats__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)logEventForwardAppResumeInferredCarry:(id)a3
+- (void)logEventForwardAppResumeInferredCarry:(id)carry
 {
-  if (a3)
+  if (carry)
   {
     v4 = *MEMORY[0x277D3F5D0];
-    v5 = a3;
+    carryCopy = carry;
     v9 = [(PLOperator *)PLProcessMonitorAgent entryKeyForType:v4 andName:@"AppResumeInferredCarry"];
-    v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v9 withRawData:v5];
+    v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v9 withRawData:carryCopy];
 
     [(PLOperator *)self logEntry:v6];
-    v7 = [v6 dictionary];
-    v8 = [v6 entryDate];
-    [(PLOperator *)self logForSubsystem:@"BackgroundProcessing" category:@"AppResumeInferredCarry" data:v7 date:v8];
+    dictionary = [v6 dictionary];
+    entryDate = [v6 entryDate];
+    [(PLOperator *)self logForSubsystem:@"BackgroundProcessing" category:@"AppResumeInferredCarry" data:dictionary date:entryDate];
   }
 }
 
-- (void)logEventBackwardProcessExitHistogram:(id)a3 withStats:(id *)a4 withDate:(id)a5
+- (void)logEventBackwardProcessExitHistogram:(id)histogram withStats:(id *)stats withDate:(id)date
 {
   v59 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  histogramCopy = histogram;
+  dateCopy = date;
   context = objc_autoreleasePoolPush();
   v43 = objc_opt_new();
   v46 = [(PLOperator *)PLProcessMonitorAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"ProcessExitHistogram"];
@@ -2804,8 +2804,8 @@ id __42__PLProcessMonitorAgent_logProcDirtyStats__block_invoke(uint64_t a1)
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v9 = v7;
-  v41 = v8;
+  v9 = histogramCopy;
+  v41 = dateCopy;
   v44 = v9;
   v47 = [v9 countByEnumeratingWithState:&v50 objects:v58 count:16];
   if (v47)
@@ -2822,12 +2822,12 @@ id __42__PLProcessMonitorAgent_logProcDirtyStats__block_invoke(uint64_t a1)
         }
 
         v11 = *(*(&v50 + 1) + 8 * v10);
-        v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v46 withDate:v8];
+        v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v46 withDate:dateCopy];
         v13 = [v9 objectForKey:v11];
-        v14 = [v11 labelIdx];
-        if (xpc_array_get_count(a4->var0) > v14)
+        labelIdx = [v11 labelIdx];
+        if (xpc_array_get_count(stats->var0) > labelIdx)
         {
-          v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:{xpc_array_get_string(a4->var0, objc_msgSend(v11, "labelIdx"))}];
+          v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:{xpc_array_get_string(stats->var0, objc_msgSend(v11, "labelIdx"))}];
           [v12 setObject:v15 forKeyedSubscript:@"ProcessName"];
 
           if ([v11 lastTTR] != -1)
@@ -2881,9 +2881,9 @@ LABEL_10:
             v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: process exit buffer label index out of range."];
             v26 = MEMORY[0x277D3F178];
             v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLProcessMonitorAgent.m"];
-            v28 = [v27 lastPathComponent];
+            lastPathComponent = [v27 lastPathComponent];
             v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLProcessMonitorAgent logEventBackwardProcessExitHistogram:withStats:withDate:]"];
-            [v26 logMessage:v25 fromFile:v28 fromFunction:v29 fromLineNumber:1824];
+            [v26 logMessage:v25 fromFile:lastPathComponent fromFunction:v29 fromLineNumber:1824];
 
             v30 = PLLogCommon();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -2893,7 +2893,7 @@ LABEL_10:
               _os_log_debug_impl(&dword_25EE51000, v30, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
             }
 
-            v8 = v41;
+            dateCopy = v41;
             goto LABEL_10;
           }
         }
@@ -2934,12 +2934,12 @@ LABEL_18:
 
     if (logEventBackwardProcessExitHistogram_withStats_withDate__classDebugEnabled_681 == 1)
     {
-      v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"processExitSummaryCount = %d\n", self->_processExitSummaryCount, context];
+      context = [MEMORY[0x277CCACA8] stringWithFormat:@"processExitSummaryCount = %d\n", self->_processExitSummaryCount, context];
       v34 = MEMORY[0x277D3F178];
       v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLProcessMonitorAgent.m"];
-      v36 = [v35 lastPathComponent];
+      lastPathComponent2 = [v35 lastPathComponent];
       v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLProcessMonitorAgent logEventBackwardProcessExitHistogram:withStats:withDate:]"];
-      [v34 logMessage:v33 fromFile:v36 fromFunction:v37 fromLineNumber:1849];
+      [v34 logMessage:context fromFile:lastPathComponent2 fromFunction:v37 fromLineNumber:1849];
 
       v38 = PLLogCommon();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
@@ -2947,7 +2947,7 @@ LABEL_18:
         __111__PLProcessPortMap_pidAndProcessNameForDestAddress_withDestPort_withSourceAddress_withSourcePort_withProtocol___block_invoke_cold_1();
       }
 
-      v8 = v41;
+      dateCopy = v41;
       v9 = v44;
     }
   }
@@ -2977,7 +2977,7 @@ uint64_t __81__PLProcessMonitorAgent_logEventBackwardProcessExitHistogram_withSt
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (int)get_kthread_list:(unint64_t *)a3
+- (int)get_kthread_list:(unint64_t *)get_kthread_list
 {
   v23 = 0u;
   memset(buffer, 0, sizeof(buffer));
@@ -2992,7 +2992,7 @@ uint64_t __81__PLProcessMonitorAgent_logEventBackwardProcessExitHistogram_withSt
     v9 = v8;
     if (v8 == v5)
     {
-      *a3 = v7;
+      *get_kthread_list = v7;
     }
 
     else
@@ -3006,7 +3006,7 @@ uint64_t __81__PLProcessMonitorAgent_logEventBackwardProcessExitHistogram_withSt
 
         if (v8 >= v6)
         {
-          *a3 = v7;
+          *get_kthread_list = v7;
           return v6 >> 3;
         }
 
@@ -3022,7 +3022,7 @@ uint64_t __81__PLProcessMonitorAgent_logEventBackwardProcessExitHistogram_withSt
         v19 = 2272517343;
       }
 
-      *a3 = malloc_type_realloc(v18, v17, v19);
+      *get_kthread_list = malloc_type_realloc(v18, v17, v19);
       return v9 / 8;
     }
   }
@@ -3047,9 +3047,9 @@ uint64_t __81__PLProcessMonitorAgent_logEventBackwardProcessExitHistogram_withSt
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"proc_pidinfo(PROC_PIDLISTTHREADIDS) failed"];
         v12 = MEMORY[0x277D3F178];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLProcessMonitorAgent.m"];
-        v14 = [v13 lastPathComponent];
+        lastPathComponent = [v13 lastPathComponent];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLProcessMonitorAgent get_kthread_list:]"];
-        [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:1953];
+        [v12 logMessage:v11 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:1953];
 
         v16 = PLLogCommon();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -3093,11 +3093,11 @@ uint64_t __58__PLProcessMonitorAgent_logEventIntervalKernelTaskMonitor__block_in
   return result;
 }
 
-+ (unint64_t)PIDToCoalitionID:(int)a3
++ (unint64_t)PIDToCoalitionID:(int)d
 {
   v15 = 0;
   memset(buffer, 0, sizeof(buffer));
-  v3 = proc_pidinfo(a3, 20, 1uLL, buffer, 40);
+  v3 = proc_pidinfo(d, 20, 1uLL, buffer, 40);
   if (v3 == 40)
   {
     return *&buffer[0];
@@ -3122,9 +3122,9 @@ uint64_t __58__PLProcessMonitorAgent_logEventIntervalKernelTaskMonitor__block_in
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"proc_pidinfo(PROC_PIDCOALITIONINFO) failed\n"];
       v8 = MEMORY[0x277D3F178];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLProcessMonitorAgent.m"];
-      v10 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLProcessMonitorAgent PIDToCoalitionID:]"];
-      [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:2117];
+      [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:2117];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -3191,27 +3191,27 @@ void __49__PLProcessMonitorAgent_enableThreadStatsLogging__block_invoke()
 - (void)logThreadStats
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(PLProcessMonitorAgent *)self threadStats];
+  threadStats = [(PLProcessMonitorAgent *)self threadStats];
 
-  if (v3)
+  if (threadStats)
   {
-    v4 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     v5 = [(PLOperator *)PLProcessMonitorAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"ThreadStats"];
-    v6 = [(PLProcessMonitorAgent *)self threadStats];
-    v7 = [v6 diffSinceLastSnapshot];
+    threadStats2 = [(PLProcessMonitorAgent *)self threadStats];
+    diffSinceLastSnapshot = [threadStats2 diffSinceLastSnapshot];
 
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __39__PLProcessMonitorAgent_logThreadStats__block_invoke;
     v16[3] = &unk_279A5D8A8;
     v9 = v5;
     v17 = v9;
-    v10 = v4;
+    v10 = monotonicDate;
     v18 = v10;
-    v11 = v8;
+    v11 = array;
     v19 = v11;
-    [v7 enumerateKeysAndObjectsUsingBlock:v16];
+    [diffSinceLastSnapshot enumerateKeysAndObjectsUsingBlock:v16];
     if ([v11 count])
     {
       v12 = PLLogCommon();
@@ -3279,14 +3279,14 @@ void __39__PLProcessMonitorAgent_logThreadStats__block_invoke_2(uint64_t a1, voi
   [*(a1 + 64) addObject:v14];
 }
 
-- (void)logEventBackwardAppLaunchTimeSeries:(id)a3
+- (void)logEventBackwardAppLaunchTimeSeries:(id)series
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  seriesCopy = series;
+  v5 = seriesCopy;
+  if (seriesCopy && [seriesCopy count])
   {
-    v23 = self;
+    selfCopy = self;
     v6 = PLLogProcessMonitor();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
@@ -3328,10 +3328,10 @@ void __39__PLProcessMonitorAgent_logThreadStats__block_invoke_2(uint64_t a1, voi
           [v14 setObject:v17 forKeyedSubscript:@"Duration"];
 
           v18 = [v13 objectForKeyedSubscript:@"beginDate"];
-          v19 = [v18 convertFromSystemToMonotonic];
+          convertFromSystemToMonotonic = [v18 convertFromSystemToMonotonic];
 
           v20 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v8 withRawData:v14];
-          [v20 setEntryDate:v19];
+          [v20 setEntryDate:convertFromSystemToMonotonic];
           [v7 addObject:v20];
 
           ++v12;
@@ -3349,7 +3349,7 @@ void __39__PLProcessMonitorAgent_logThreadStats__block_invoke_2(uint64_t a1, voi
       v30 = v8;
       v31 = v7;
       v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-      [(PLOperator *)v23 logEntries:v21 withGroupID:v8];
+      [(PLOperator *)selfCopy logEntries:v21 withGroupID:v8];
     }
 
     v5 = v24;

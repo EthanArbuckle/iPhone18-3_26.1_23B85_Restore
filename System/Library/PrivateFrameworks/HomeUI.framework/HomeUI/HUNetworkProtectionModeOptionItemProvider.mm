@@ -1,22 +1,22 @@
 @interface HUNetworkProtectionModeOptionItemProvider
 - (HUNetworkProtectionModeOptionItemProvider)init;
-- (HUNetworkProtectionModeOptionItemProvider)initWithGroup:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HUNetworkProtectionModeOptionItemProvider)initWithGroup:(id)group;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reloadItems;
 @end
 
 @implementation HUNetworkProtectionModeOptionItemProvider
 
-- (HUNetworkProtectionModeOptionItemProvider)initWithGroup:(id)a3
+- (HUNetworkProtectionModeOptionItemProvider)initWithGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   v11.receiver = self;
   v11.super_class = HUNetworkProtectionModeOptionItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_group, a3);
+    objc_storeStrong(&v6->_group, group);
     v8 = [MEMORY[0x277CBEB58] set];
     networkProtectionModeOptionItems = v7->_networkProtectionModeOptionItems;
     v7->_networkProtectionModeOptionItems = v8;
@@ -27,18 +27,18 @@
 
 - (HUNetworkProtectionModeOptionItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithGroup_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUNetworkProtectionModeOptionItemProvider.m" lineNumber:33 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkProtectionModeOptionItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUNetworkProtectionModeOptionItemProvider.m" lineNumber:33 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkProtectionModeOptionItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HUNetworkProtectionModeOptionItemProvider *)self group];
-  v6 = [v4 initWithGroup:v5];
+  group = [(HUNetworkProtectionModeOptionItemProvider *)self group];
+  v6 = [v4 initWithGroup:group];
 
   return v6;
 }

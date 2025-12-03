@@ -1,12 +1,12 @@
 @interface HDDemoDataVitalsSampleGenerator
 - (HDDemoDataVitalsSampleGenerator)init;
-- (HDDemoDataVitalsSampleGenerator)initWithCoder:(id)a3;
-- (double)_computeBodyTempInCelsiusForDemoPerson:(id)a3 atTime:(double)a4 addNoise:(BOOL)a5;
-- (uint64_t)_computeBloodPressureForDemoPerson:(double)a3 atTime:(double)a4 baseBloodPressure:(double)a5 stdDev:;
-- (uint64_t)_computeMaxHRForDemoPerson:(double)a3 atTime:;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7;
-- (void)setupWithDemoDataGenerator:(id)a3;
+- (HDDemoDataVitalsSampleGenerator)initWithCoder:(id)coder;
+- (double)_computeBodyTempInCelsiusForDemoPerson:(id)person atTime:(double)time addNoise:(BOOL)noise;
+- (uint64_t)_computeBloodPressureForDemoPerson:(double)person atTime:(double)time baseBloodPressure:(double)pressure stdDev:;
+- (uint64_t)_computeMaxHRForDemoPerson:(double)person atTime:;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection;
+- (void)setupWithDemoDataGenerator:(id)generator;
 @end
 
 @implementation HDDemoDataVitalsSampleGenerator
@@ -38,56 +38,56 @@
   return v3;
 }
 
-- (HDDemoDataVitalsSampleGenerator)initWithCoder:(id)a3
+- (HDDemoDataVitalsSampleGenerator)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = HDDemoDataVitalsSampleGenerator;
-  v5 = [(HDDemoDataBaseSampleGenerator *)&v15 initWithCoder:v4];
+  v5 = [(HDDemoDataBaseSampleGenerator *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"HDDemoDataVitalsSampleHelperNextHeartRateSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataVitalsSampleHelperNextHeartRateSampleTimeKey"];
     v5->_nextHeartRateSampleTime = v6;
-    [v4 decodeDoubleForKey:@"HDDemoDataVitalsSampleHelperNextRespirationRateSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataVitalsSampleHelperNextRespirationRateSampleTimeKey"];
     v5->_nextRespirationRateSampleTime = v7;
-    [v4 decodeDoubleForKey:@"HDDemoDataVitalsSampleHelperLastRespirationRateGenerationTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataVitalsSampleHelperLastRespirationRateGenerationTimeKey"];
     v5->_lastRespirationRateGenerationTime = v8;
-    [v4 decodeDoubleForKey:@"HDDemoDataVitalsSampleHelperNextBloodPressureSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataVitalsSampleHelperNextBloodPressureSampleTimeKey"];
     v5->_nextBloodPressureSampleTime = v9;
-    [v4 decodeDoubleForKey:@"HDDemoDataVitalsSampleHelperNextBodyTempSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataVitalsSampleHelperNextBodyTempSampleTimeKey"];
     v5->_nextBodyTempSampleTime = v10;
-    [v4 decodeDoubleForKey:@"HDDemoDataVitalsSampleHelperNextOxygenSaturationSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataVitalsSampleHelperNextOxygenSaturationSampleTimeKey"];
     v5->_nextOxygenSaturationSampleTime = v11;
-    [v4 decodeDoubleForKey:@"HDDemoDataVitalsSampleHelperNextPeripheralPerfusionIndexSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataVitalsSampleHelperNextPeripheralPerfusionIndexSampleTimeKey"];
     v5->_nextPeripheralPerfusionIndexSampleTime = v12;
-    [v4 decodeDoubleForKey:@"HDDemoDataVitalsSampleHelperLastPeripheralPerfusionIndexValueKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataVitalsSampleHelperLastPeripheralPerfusionIndexValueKey"];
     v5->_lastPeripheralPerfusionIndexValue = v13;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HDDemoDataVitalsSampleGenerator;
-  v4 = a3;
-  [(HDDemoDataBaseSampleGenerator *)&v5 encodeWithCoder:v4];
-  [v4 encodeDouble:@"HDDemoDataVitalsSampleHelperNextHeartRateSampleTimeKey" forKey:{self->_nextHeartRateSampleTime, v5.receiver, v5.super_class}];
-  [v4 encodeDouble:@"HDDemoDataVitalsSampleHelperNextRespirationRateSampleTimeKey" forKey:self->_nextRespirationRateSampleTime];
-  [v4 encodeDouble:@"HDDemoDataVitalsSampleHelperLastRespirationRateGenerationTimeKey" forKey:self->_lastRespirationRateGenerationTime];
-  [v4 encodeDouble:@"HDDemoDataVitalsSampleHelperNextBloodPressureSampleTimeKey" forKey:self->_nextBloodPressureSampleTime];
-  [v4 encodeDouble:@"HDDemoDataVitalsSampleHelperNextBodyTempSampleTimeKey" forKey:self->_nextBodyTempSampleTime];
-  [v4 encodeDouble:@"HDDemoDataVitalsSampleHelperNextOxygenSaturationSampleTimeKey" forKey:self->_nextOxygenSaturationSampleTime];
-  [v4 encodeDouble:@"HDDemoDataVitalsSampleHelperNextPeripheralPerfusionIndexSampleTimeKey" forKey:self->_nextPeripheralPerfusionIndexSampleTime];
-  [v4 encodeDouble:@"HDDemoDataVitalsSampleHelperLastPeripheralPerfusionIndexValueKey" forKey:self->_lastPeripheralPerfusionIndexValue];
+  coderCopy = coder;
+  [(HDDemoDataBaseSampleGenerator *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"HDDemoDataVitalsSampleHelperNextHeartRateSampleTimeKey" forKey:{self->_nextHeartRateSampleTime, v5.receiver, v5.super_class}];
+  [coderCopy encodeDouble:@"HDDemoDataVitalsSampleHelperNextRespirationRateSampleTimeKey" forKey:self->_nextRespirationRateSampleTime];
+  [coderCopy encodeDouble:@"HDDemoDataVitalsSampleHelperLastRespirationRateGenerationTimeKey" forKey:self->_lastRespirationRateGenerationTime];
+  [coderCopy encodeDouble:@"HDDemoDataVitalsSampleHelperNextBloodPressureSampleTimeKey" forKey:self->_nextBloodPressureSampleTime];
+  [coderCopy encodeDouble:@"HDDemoDataVitalsSampleHelperNextBodyTempSampleTimeKey" forKey:self->_nextBodyTempSampleTime];
+  [coderCopy encodeDouble:@"HDDemoDataVitalsSampleHelperNextOxygenSaturationSampleTimeKey" forKey:self->_nextOxygenSaturationSampleTime];
+  [coderCopy encodeDouble:@"HDDemoDataVitalsSampleHelperNextPeripheralPerfusionIndexSampleTimeKey" forKey:self->_nextPeripheralPerfusionIndexSampleTime];
+  [coderCopy encodeDouble:@"HDDemoDataVitalsSampleHelperLastPeripheralPerfusionIndexValueKey" forKey:self->_lastPeripheralPerfusionIndexValue];
 }
 
-- (void)setupWithDemoDataGenerator:(id)a3
+- (void)setupWithDemoDataGenerator:(id)generator
 {
   v6.receiver = self;
   v6.super_class = HDDemoDataVitalsSampleGenerator;
-  [(HDDemoDataBaseSampleGenerator *)&v6 setupWithDemoDataGenerator:a3];
+  [(HDDemoDataBaseSampleGenerator *)&v6 setupWithDemoDataGenerator:generator];
   diurnalBPVariationTable = self->_diurnalBPVariationTable;
   self->_diurnalBPVariationTable = &unk_283CB0438;
 
@@ -95,31 +95,31 @@
   self->_diurnalTempVariationTable = &unk_283CB0450;
 }
 
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection
 {
   v366[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  personCopy = person;
+  dateCopy = date;
   v360.receiver = self;
   v360.super_class = HDDemoDataVitalsSampleGenerator;
-  v355 = a7;
-  [(HDDemoDataBaseSampleGenerator *)&v360 generateObjectsForDemoPerson:v10 fromTime:v11 toTime:a5 currentDate:a5 objectCollection:?];
+  collectionCopy = collection;
+  [(HDDemoDataBaseSampleGenerator *)&v360 generateObjectsForDemoPerson:personCopy fromTime:dateCopy toTime:toTime currentDate:toTime objectCollection:?];
   if (qword_27D86C268 != -1)
   {
     dispatch_once(&qword_27D86C268, &__block_literal_global_244);
   }
 
-  v12 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v13 = [v12 generatorState];
-  v349 = self;
-  if ([v13 isDoingHIIT])
+  demoDataGenerator = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  generatorState = [demoDataGenerator generatorState];
+  selfCopy = self;
+  if ([generatorState isDoingHIIT])
   {
     goto LABEL_12;
   }
 
-  v14 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v15 = [v14 generatorState];
-  if ([v15 isDoingYoga])
+  demoDataGenerator2 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  generatorState2 = [demoDataGenerator2 generatorState];
+  if ([generatorState2 isDoingYoga])
   {
 LABEL_11:
 
@@ -127,122 +127,122 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v16 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v17 = [v16 generatorState];
-  if ([v17 isDoingElliptical])
+  demoDataGenerator3 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  generatorState3 = [demoDataGenerator3 generatorState];
+  if ([generatorState3 isDoingElliptical])
   {
 LABEL_10:
 
-    self = v349;
+    self = selfCopy;
     goto LABEL_11;
   }
 
-  v18 = [(HDDemoDataBaseSampleGenerator *)v349 demoDataGenerator];
-  v19 = [v18 generatorState];
-  if ([v19 isWalking])
+  demoDataGenerator4 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+  generatorState4 = [demoDataGenerator4 generatorState];
+  if ([generatorState4 isWalking])
   {
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v346 = v16;
-  v351 = v19;
-  v20 = [(HDDemoDataBaseSampleGenerator *)v349 demoDataGenerator];
-  v21 = [v20 generatorState];
-  if ([v21 isHiking])
+  v346 = demoDataGenerator3;
+  v351 = generatorState4;
+  demoDataGenerator5 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+  generatorState5 = [demoDataGenerator5 generatorState];
+  if ([generatorState5 isHiking])
   {
 
-    v19 = v351;
-    v16 = v346;
+    generatorState4 = v351;
+    demoDataGenerator3 = v346;
     goto LABEL_9;
   }
 
-  v339 = v21;
-  v341 = v20;
-  v344 = v18;
-  v84 = [(HDDemoDataBaseSampleGenerator *)v349 demoDataGenerator];
-  v337 = [v84 generatorState];
-  if ([v337 isRunning])
+  v339 = generatorState5;
+  v341 = demoDataGenerator5;
+  v344 = demoDataGenerator4;
+  demoDataGenerator6 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+  generatorState6 = [demoDataGenerator6 generatorState];
+  if ([generatorState6 isRunning])
   {
-    v85 = v84;
+    v85 = demoDataGenerator6;
     v86 = 1;
     v87 = v351;
   }
 
   else
   {
-    v336 = [(HDDemoDataBaseSampleGenerator *)v349 demoDataGenerator];
-    v335 = [v336 generatorState];
-    if ([v335 isSwimming])
+    demoDataGenerator7 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+    generatorState7 = [demoDataGenerator7 generatorState];
+    if ([generatorState7 isSwimming])
     {
-      v85 = v84;
-      v334 = 1;
+      v85 = demoDataGenerator6;
+      isUnderwaterDiving = 1;
       v87 = v351;
     }
 
     else
     {
-      v333 = [(HDDemoDataBaseSampleGenerator *)v349 demoDataGenerator];
-      v332 = [v333 generatorState];
-      if ([v332 isCoreTraining])
+      demoDataGenerator8 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+      generatorState8 = [demoDataGenerator8 generatorState];
+      if ([generatorState8 isCoreTraining])
       {
-        v85 = v84;
-        v334 = 1;
+        v85 = demoDataGenerator6;
+        isUnderwaterDiving = 1;
         v87 = v351;
       }
 
       else
       {
-        v331 = [(HDDemoDataBaseSampleGenerator *)v349 demoDataGenerator];
-        v330 = [v331 generatorState];
-        if ([v330 isDancing])
+        demoDataGenerator9 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+        generatorState9 = [demoDataGenerator9 generatorState];
+        if ([generatorState9 isDancing])
         {
-          v85 = v84;
-          v334 = 1;
+          v85 = demoDataGenerator6;
+          isUnderwaterDiving = 1;
           v87 = v351;
-          v323 = v331;
+          v323 = demoDataGenerator9;
         }
 
         else
         {
-          v329 = [(HDDemoDataBaseSampleGenerator *)v349 demoDataGenerator];
-          v328 = [v329 generatorState];
-          v85 = v84;
-          if ([v328 isFunctionalStrengthTraining])
+          demoDataGenerator10 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+          generatorState10 = [demoDataGenerator10 generatorState];
+          v85 = demoDataGenerator6;
+          if ([generatorState10 isFunctionalStrengthTraining])
           {
-            v334 = 1;
+            isUnderwaterDiving = 1;
             v87 = v351;
-            v323 = v331;
+            v323 = demoDataGenerator9;
           }
 
           else
           {
-            v327 = [(HDDemoDataBaseSampleGenerator *)v349 demoDataGenerator];
-            v326 = [v327 generatorState];
-            if ([v326 isCoolingDown])
+            demoDataGenerator11 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+            generatorState11 = [demoDataGenerator11 generatorState];
+            if ([generatorState11 isCoolingDown])
             {
-              v334 = 1;
+              isUnderwaterDiving = 1;
             }
 
             else
             {
-              v324 = [(HDDemoDataBaseSampleGenerator *)v349 demoDataGenerator];
-              v325 = [v324 generatorState];
-              v334 = [v325 isUnderwaterDiving];
+              demoDataGenerator12 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+              generatorState12 = [demoDataGenerator12 generatorState];
+              isUnderwaterDiving = [generatorState12 isUnderwaterDiving];
             }
 
             v87 = v351;
-            v323 = v331;
+            v323 = demoDataGenerator9;
           }
         }
       }
     }
 
-    v86 = v334;
+    v86 = isUnderwaterDiving;
   }
 
-  self = v349;
+  self = selfCopy;
   if ((v86 & 1) == 0)
   {
     v22 = 0;
@@ -252,53 +252,53 @@ LABEL_9:
 LABEL_13:
   v22 = 1;
 LABEL_14:
-  v23 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v24 = [v23 activitySampleGenerator];
-  v25 = [v24 _isDemoPersonInWorkoutRecovery:v10 atTime:a5];
+  demoDataGenerator13 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  activitySampleGenerator = [demoDataGenerator13 activitySampleGenerator];
+  v25 = [activitySampleGenerator _isDemoPersonInWorkoutRecovery:personCopy atTime:toTime];
 
-  v26 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v27 = [v26 mindfulnessSampleGenerator];
-  v28 = [v27 didGenerateMindfulnessMinute];
+  demoDataGenerator14 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  mindfulnessSampleGenerator = [demoDataGenerator14 mindfulnessSampleGenerator];
+  didGenerateMindfulnessMinute = [mindfulnessSampleGenerator didGenerateMindfulnessMinute];
 
-  v29 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v30 = [v29 sleepSampleGenerator];
-  v31 = [v30 isDemoPersonSleeping:v10 atTime:a5];
+  demoDataGenerator15 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  sleepSampleGenerator = [demoDataGenerator15 sleepSampleGenerator];
+  v31 = [sleepSampleGenerator isDemoPersonSleeping:personCopy atTime:toTime];
 
-  v348 = v11;
-  if ((v31 & 1) == 0 && (v28 & 1) == 0 && (v22 & 1) == 0 && (v25 & 1) == 0)
+  v348 = dateCopy;
+  if ((v31 & 1) == 0 && (didGenerateMindfulnessMinute & 1) == 0 && (v22 & 1) == 0 && (v25 & 1) == 0)
   {
-    v32 = v10;
+    v32 = personCopy;
     v33 = v32;
-    if (self && self->_nextHeartRateSampleTime <= a5)
+    if (self && self->_nextHeartRateSampleTime <= toTime)
     {
       [v32 heartRateSampleFrequency];
       v39 = v38;
-      v40 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v41 = [v40 statisticsSampleGenerator];
+      demoDataGenerator16 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      statisticsSampleGenerator = [demoDataGenerator16 statisticsSampleGenerator];
       [v33 heartRateSampleFrequencyStdDev];
-      [v41 computeNoiseFromTime:a5 stdDev:v42];
+      [statisticsSampleGenerator computeNoiseFromTime:toTime stdDev:v42];
       self->_nextHeartRateSampleTime = v39 + v43 + self->_nextHeartRateSampleTime;
 
       v44 = v33;
-      v45 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v46 = [v45 statisticsSampleGenerator];
+      demoDataGenerator17 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      statisticsSampleGenerator2 = [demoDataGenerator17 statisticsSampleGenerator];
       [v44 heartRateSampleNoiseStdDev];
-      [v46 computeNoiseFromTime:a5 stdDev:v47];
+      [statisticsSampleGenerator2 computeNoiseFromTime:toTime stdDev:v47];
       v49 = v48;
 
-      v50 = [(HDDemoDataVitalsSampleGenerator *)self _computeMaxHRForDemoPerson:v44 atTime:a5];
-      v51 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v52 = [v51 generatorState];
-      v53 = [v52 isExercising];
+      v50 = [(HDDemoDataVitalsSampleGenerator *)self _computeMaxHRForDemoPerson:v44 atTime:toTime];
+      demoDataGenerator18 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      generatorState13 = [demoDataGenerator18 generatorState];
+      isExercising = [generatorState13 isExercising];
 
-      if (v53)
+      if (isExercising)
       {
-        v54 = [(HDDemoDataVitalsSampleGenerator *)self _computeMaxHRForDemoPerson:v44 atTime:a5];
+        v54 = [(HDDemoDataVitalsSampleGenerator *)self _computeMaxHRForDemoPerson:v44 atTime:toTime];
         [v44 exerciseIntensityPercentage];
         v56 = v55;
-        v57 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-        v58 = [v57 statisticsSampleGenerator];
-        [v58 computeNoiseFromTime:a5 stdDev:0.05];
+        demoDataGenerator19 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+        statisticsSampleGenerator3 = [demoDataGenerator19 statisticsSampleGenerator];
+        [statisticsSampleGenerator3 computeNoiseFromTime:toTime stdDev:0.05];
         v60 = v49 + v59 + v54 * v56;
 
         v61 = 6;
@@ -306,22 +306,22 @@ LABEL_14:
 
       else
       {
-        v62 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-        v63 = [v62 activitySampleGenerator];
+        demoDataGenerator20 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+        activitySampleGenerator2 = [demoDataGenerator20 activitySampleGenerator];
         [v44 heartRateSampleFrequency];
-        v65 = [v63 _isDemoPersonWalking:v44 atTime:a5 samplePeriod:v64];
+        v65 = [activitySampleGenerator2 _isDemoPersonWalking:v44 atTime:toTime samplePeriod:v64];
 
-        v66 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-        v67 = [v66 activitySampleGenerator];
-        v68 = v67;
+        demoDataGenerator21 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+        activitySampleGenerator3 = [demoDataGenerator21 activitySampleGenerator];
+        v68 = activitySampleGenerator3;
         if (v65)
         {
-          v69 = [v67 _computeFlightsClimbedForDemoPerson:v44 atTime:a5];
+          v69 = [activitySampleGenerator3 _computeFlightsClimbedForDemoPerson:v44 atTime:toTime];
 
-          v70 = [v44 restingHeartRate];
-          v71 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-          v72 = [v71 statisticsSampleGenerator];
-          [v72 randomDoubleFromGenerator];
+          restingHeartRate = [v44 restingHeartRate];
+          demoDataGenerator22 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+          statisticsSampleGenerator4 = [demoDataGenerator22 statisticsSampleGenerator];
+          [statisticsSampleGenerator4 randomDoubleFromGenerator];
           v74 = v73;
 
           v61 = 0;
@@ -335,33 +335,33 @@ LABEL_14:
             v75 = 1.3;
           }
 
-          v60 = v49 + v70 * (v75 + v74 * 0.2);
+          v60 = v49 + restingHeartRate * (v75 + v74 * 0.2);
         }
 
         else
         {
-          v76 = [v67 _isDemoPersonCoolingDown:v44 atTime:a5];
+          v76 = [activitySampleGenerator3 _isDemoPersonCoolingDown:v44 atTime:toTime];
 
           if (v76)
           {
-            v77 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-            v78 = [v77 activitySampleGenerator];
-            [v78 _computePercentCooledForDemoPerson:v44 atTime:a5];
+            demoDataGenerator23 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+            activitySampleGenerator4 = [demoDataGenerator23 activitySampleGenerator];
+            [activitySampleGenerator4 _computePercentCooledForDemoPerson:v44 atTime:toTime];
             v80 = v79;
 
-            v81 = [v44 restingHeartRate];
+            restingHeartRate2 = [v44 restingHeartRate];
             v82 = v50 - [v44 restingHeartRate];
             [v44 exerciseIntensityPercentage];
-            v60 = v81 + v83 * v82 * (1.0 - v80);
+            v60 = restingHeartRate2 + v83 * v82 * (1.0 - v80);
             v61 = 2;
           }
 
           else
           {
             v60 = v49 + [v44 restingHeartRate];
-            v88 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-            v89 = [v88 statisticsSampleGenerator];
-            [v89 pseudoRandomDoubleFromTime:a5];
+            demoDataGenerator24 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+            statisticsSampleGenerator5 = [demoDataGenerator24 statisticsSampleGenerator];
+            [statisticsSampleGenerator5 pseudoRandomDoubleFromTime:toTime];
             v91 = v90;
 
             if (v91 >= 20.0)
@@ -377,15 +377,15 @@ LABEL_14:
         }
       }
 
-      v92 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v93 = [v92 foodSampleGenerator];
-      v94 = [v93 _isDemoPersonConsumingCaffeine:v44 atTime:a5];
+      demoDataGenerator25 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      foodSampleGenerator = [demoDataGenerator25 foodSampleGenerator];
+      v94 = [foodSampleGenerator _isDemoPersonConsumingCaffeine:v44 atTime:toTime];
 
       if (v94)
       {
-        v95 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-        v96 = [v95 statisticsSampleGenerator];
-        [v96 computeNoiseFromTime:a5 stdDev:3.0];
+        demoDataGenerator26 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+        statisticsSampleGenerator6 = [demoDataGenerator26 statisticsSampleGenerator];
+        [statisticsSampleGenerator6 computeNoiseFromTime:toTime stdDev:3.0];
         v60 = v60 + fabs(v97) + 4.0;
       }
 
@@ -415,9 +415,9 @@ LABEL_14:
         v103 = [MEMORY[0x277CCABB0] numberWithInteger:v61];
         v366[0] = v103;
         v104 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v366 forKeys:&v365 count:1];
-        v105 = [v101 quantitySampleWithType:v102 quantity:v100 startDate:v11 endDate:v11 metadata:v104];
+        v105 = [v101 quantitySampleWithType:v102 quantity:v100 startDate:dateCopy endDate:dateCopy metadata:v104];
 
-        [v355 addObjectFromWatch:v105];
+        [collectionCopy addObjectFromWatch:v105];
       }
 
       v106 = v44;
@@ -425,7 +425,7 @@ LABEL_14:
     }
   }
 
-  v34 = v10;
+  v34 = personCopy;
   if (!self)
   {
     v35 = 0.0;
@@ -435,33 +435,33 @@ LABEL_14:
   }
 
 LABEL_47:
-  if (self->_nextBloodPressureSampleTime > a5)
+  if (self->_nextBloodPressureSampleTime > toTime)
   {
 
-    v107 = v10;
+    v107 = personCopy;
     goto LABEL_55;
   }
 
-  v108 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v109 = [v108 statisticsSampleGenerator];
-  [v10 bloodPressureSampleFrequency];
+  demoDataGenerator27 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  statisticsSampleGenerator7 = [demoDataGenerator27 statisticsSampleGenerator];
+  [personCopy bloodPressureSampleFrequency];
   v111 = v110;
-  [v10 genericSampleTimeNoiseStdDev];
-  [v109 computeStatisticalTimeFromCurrentTime:a5 mean:v111 stdDev:v112];
+  [personCopy genericSampleTimeNoiseStdDev];
+  [statisticsSampleGenerator7 computeStatisticalTimeFromCurrentTime:toTime mean:v111 stdDev:v112];
   self->_nextBloodPressureSampleTime = v113 + self->_nextBloodPressureSampleTime;
 
-  v114 = [v10 restingSystolicBloodPressure];
-  [v10 restingSystolicBloodPressureSampleNoiseStdDev];
-  v37 = [(HDDemoDataVitalsSampleGenerator *)&self->super.super.isa _computeBloodPressureForDemoPerson:v10 atTime:a5 baseBloodPressure:v114 stdDev:v115];
-  v116 = [v10 restingDiastolicBloodPressure];
-  [v10 restingDiastolicBloodPressureSampleNoiseStdDev];
+  restingSystolicBloodPressure = [personCopy restingSystolicBloodPressure];
+  [personCopy restingSystolicBloodPressureSampleNoiseStdDev];
+  v37 = [(HDDemoDataVitalsSampleGenerator *)&self->super.super.isa _computeBloodPressureForDemoPerson:personCopy atTime:toTime baseBloodPressure:restingSystolicBloodPressure stdDev:v115];
+  restingDiastolicBloodPressure = [personCopy restingDiastolicBloodPressure];
+  [personCopy restingDiastolicBloodPressureSampleNoiseStdDev];
   v36 = 0;
-  v35 = [(HDDemoDataVitalsSampleGenerator *)&self->super.super.isa _computeBloodPressureForDemoPerson:v10 atTime:a5 baseBloodPressure:v116 stdDev:v117];
+  v35 = [(HDDemoDataVitalsSampleGenerator *)&self->super.super.isa _computeBloodPressureForDemoPerson:personCopy atTime:toTime baseBloodPressure:restingDiastolicBloodPressure stdDev:v117];
 LABEL_50:
 
   if (v37 == -2147483650.0 || v35 == -2147483650.0)
   {
-    v127 = v10;
+    v127 = personCopy;
     if (v36)
     {
       goto LABEL_53;
@@ -472,17 +472,17 @@ LABEL_50:
   {
     [MEMORY[0x277CCD7E8] quantityWithUnit:qword_27D86C210 doubleValue:v37];
     v118 = v352 = v36;
-    v119 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C238 quantity:v118 startDate:v11 endDate:v11];
-    [v355 addObjectFromPhone:v119];
+    v119 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C238 quantity:v118 startDate:dateCopy endDate:dateCopy];
+    [collectionCopy addObjectFromPhone:v119];
     v120 = [MEMORY[0x277CCD7E8] quantityWithUnit:qword_27D86C210 doubleValue:v35];
-    v121 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C240 quantity:v120 startDate:v11 endDate:v11];
-    [v355 addObjectFromPhone:v121];
+    v121 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C240 quantity:v120 startDate:dateCopy endDate:dateCopy];
+    [collectionCopy addObjectFromPhone:v121];
     v122 = [MEMORY[0x277CBEB98] setWithObjects:{v119, v121, 0}];
-    v123 = [MEMORY[0x277CCD240] correlationWithType:qword_27D86C248 startDate:v11 endDate:v11 objects:v122];
-    self = v349;
-    [v355 addObjectFromPhone:v123];
+    v123 = [MEMORY[0x277CCD240] correlationWithType:qword_27D86C248 startDate:dateCopy endDate:dateCopy objects:v122];
+    self = selfCopy;
+    [collectionCopy addObjectFromPhone:v123];
 
-    v124 = v10;
+    v124 = personCopy;
     if (v352)
     {
 LABEL_53:
@@ -494,110 +494,110 @@ LABEL_53:
 
 LABEL_55:
   v128 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (self->_nextRespirationRateSampleTime <= a5)
+  if (self->_nextRespirationRateSampleTime <= toTime)
   {
-    v129 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-    v130 = [v129 sleepSampleGenerator];
-    v131 = [v130 isDemoPersonSleeping:v10 atTime:a5];
+    demoDataGenerator28 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+    sleepSampleGenerator2 = [demoDataGenerator28 sleepSampleGenerator];
+    v131 = [sleepSampleGenerator2 isDemoPersonSleeping:personCopy atTime:toTime];
 
-    if (!v131 || (v132.f64[0] = self->_lastRespirationRateGenerationTime, v132.f64[0] == 0.0) || (v132.f64[1] = a5, v133 = vcvtq_s64_f64(vdivq_f64(vmulq_f64(v132, vdupq_n_s64(0x40F5180000000000uLL)), vdupq_n_s64(0x404E000000000000uLL))), v134 = v133.i64[1], v135 = v133.i64[0], v133.i64[0] >= v133.i64[1]))
+    if (!v131 || (v132.f64[0] = self->_lastRespirationRateGenerationTime, v132.f64[0] == 0.0) || (v132.f64[1] = toTime, v133 = vcvtq_s64_f64(vdivq_f64(vmulq_f64(v132, vdupq_n_s64(0x40F5180000000000uLL)), vdupq_n_s64(0x404E000000000000uLL))), v134 = v133.i64[1], v135 = v133.i64[0], v133.i64[0] >= v133.i64[1]))
     {
 LABEL_79:
-      v185 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v186 = [v185 sleepSampleGenerator];
-      if ([v186 isDemoPersonSleeping:v10 atTime:a5])
+      demoDataGenerator29 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      sleepSampleGenerator3 = [demoDataGenerator29 sleepSampleGenerator];
+      if ([sleepSampleGenerator3 isDemoPersonSleeping:personCopy atTime:toTime])
       {
-        [v10 restingRespirationRateSampleFrequencyDuringSleep];
+        [personCopy restingRespirationRateSampleFrequencyDuringSleep];
       }
 
       else
       {
-        [v10 restingRespirationRateSampleFrequency];
+        [personCopy restingRespirationRateSampleFrequency];
       }
 
       v188 = v187;
 
       self->_nextRespirationRateSampleTime = v188 + self->_nextRespirationRateSampleTime;
-      self->_lastRespirationRateGenerationTime = a5;
+      self->_lastRespirationRateGenerationTime = toTime;
       v125 = [v128 copy];
       goto LABEL_83;
     }
 
     while (1)
     {
-      v136 = v10;
-      v137 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v138 = [v137 statisticsSampleGenerator];
+      v136 = personCopy;
+      demoDataGenerator30 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      statisticsSampleGenerator8 = [demoDataGenerator30 statisticsSampleGenerator];
       [v136 restingRespirationRateSampleNoiseStdDev];
-      [v138 computeNoiseFromTime:v135 * 60.0 * 0.0000115740741 stdDev:v139];
+      [statisticsSampleGenerator8 computeNoiseFromTime:v135 * 60.0 * 0.0000115740741 stdDev:v139];
       v141 = v140;
 
-      v142 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v143 = [v142 sleepSampleGenerator];
-      v144 = [v143 isDemoPersonSleeping:v136 atTime:v135 * 60.0 * 0.0000115740741];
+      demoDataGenerator31 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      sleepSampleGenerator4 = [demoDataGenerator31 sleepSampleGenerator];
+      v144 = [sleepSampleGenerator4 isDemoPersonSleeping:v136 atTime:v135 * 60.0 * 0.0000115740741];
 
-      v145 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v146 = v145;
+      demoDataGenerator32 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      v146 = demoDataGenerator32;
       if (v144)
       {
-        v147 = [v145 statisticsSampleGenerator];
+        statisticsSampleGenerator9 = [demoDataGenerator32 statisticsSampleGenerator];
         [v136 restingRespirationRateSampleNoiseStdDev];
-        [v147 computeNoiseFromTime:v135 * 60.0 * 0.0000115740741 stdDev:{vabdd_f64(v148, (arc4random() & 0x7FFFFFFF) / 2147483650.0 * (v148 + v148) + 0.0)}];
+        [statisticsSampleGenerator9 computeNoiseFromTime:v135 * 60.0 * 0.0000115740741 stdDev:{vabdd_f64(v148, (arc4random() & 0x7FFFFFFF) / 2147483650.0 * (v148 + v148) + 0.0)}];
         v150 = v149;
 
-        v151 = [v136 restingRespirationRate];
-        v152 = v150 + ((arc4random() & 0x7FFFFFFF) / 2147483650.0 * 2.0 + -1.0 + v151) * 1.15;
+        restingRespirationRate = [v136 restingRespirationRate];
+        v152 = v150 + ((arc4random() & 0x7FFFFFFF) / 2147483650.0 * 2.0 + -1.0 + restingRespirationRate) * 1.15;
       }
 
       else
       {
-        v153 = [v145 generatorState];
-        v154 = [v153 isExercising];
+        generatorState14 = [demoDataGenerator32 generatorState];
+        isExercising2 = [generatorState14 isExercising];
 
-        if (v154)
+        if (isExercising2)
         {
-          v155 = [v136 restingRespirationRate];
+          restingRespirationRate2 = [v136 restingRespirationRate];
           v156 = 1.5;
         }
 
         else
         {
-          v157 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-          v158 = [v157 activitySampleGenerator];
+          demoDataGenerator33 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+          activitySampleGenerator5 = [demoDataGenerator33 activitySampleGenerator];
           [v136 restingRespirationRateSampleFrequency];
-          v160 = [v158 _isDemoPersonWalking:v136 atTime:v135 * 60.0 * 0.0000115740741 samplePeriod:v159];
+          v160 = [activitySampleGenerator5 _isDemoPersonWalking:v136 atTime:v135 * 60.0 * 0.0000115740741 samplePeriod:v159];
 
-          v161 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-          v162 = [v161 activitySampleGenerator];
-          v163 = v162;
+          demoDataGenerator34 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+          activitySampleGenerator6 = [demoDataGenerator34 activitySampleGenerator];
+          v163 = activitySampleGenerator6;
           v164 = v135 * 60.0 * 0.0000115740741;
           if (!v160)
           {
-            v166 = [v162 _isDemoPersonCoolingDown:v136 atTime:v164];
+            v166 = [activitySampleGenerator6 _isDemoPersonCoolingDown:v136 atTime:v164];
 
             if (v166)
             {
-              v167 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-              v168 = [v167 activitySampleGenerator];
-              [v168 _computePercentCooledForDemoPerson:v136 atTime:v135 * 60.0 * 0.0000115740741];
+              demoDataGenerator35 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+              activitySampleGenerator7 = [demoDataGenerator35 activitySampleGenerator];
+              [activitySampleGenerator7 _computePercentCooledForDemoPerson:v136 atTime:v135 * 60.0 * 0.0000115740741];
               v170 = v169;
 
               v171 = (1.0 - v170) * vcvtd_n_f64_s64([v136 restingRespirationRate], 1uLL) * 0.5;
-              v172 = v171 + [v136 restingRespirationRate];
+              restingRespirationRate3 = v171 + [v136 restingRespirationRate];
             }
 
             else
             {
-              v172 = [v136 restingRespirationRate];
+              restingRespirationRate3 = [v136 restingRespirationRate];
             }
 
-            v152 = v141 + v172;
+            v152 = v141 + restingRespirationRate3;
             goto LABEL_73;
           }
 
-          v165 = [v162 _computeFlightsClimbedForDemoPerson:v136 atTime:v164];
+          v165 = [activitySampleGenerator6 _computeFlightsClimbedForDemoPerson:v136 atTime:v164];
 
-          v155 = [v136 restingRespirationRate];
+          restingRespirationRate2 = [v136 restingRespirationRate];
           if (v165)
           {
             v156 = 1.3;
@@ -609,21 +609,21 @@ LABEL_79:
           }
         }
 
-        v152 = v141 + v155 * v156;
+        v152 = v141 + restingRespirationRate2 * v156;
       }
 
 LABEL_73:
 
-      v173 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v174 = [v173 sleepSampleGenerator];
-      v175 = [v174 isDemoPersonSleeping:v136 atTime:v135 * 60.0 * 0.0000115740741];
+      demoDataGenerator36 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      sleepSampleGenerator5 = [demoDataGenerator36 sleepSampleGenerator];
+      v175 = [sleepSampleGenerator5 isDemoPersonSleeping:v136 atTime:v135 * 60.0 * 0.0000115740741];
 
       if (v175)
       {
-        v176 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-        v177 = [v176 generatorState];
-        v178 = [v177 firstSampleDate];
-        v179 = [v178 dateByAddingTimeInterval:v135 * 60.0 * 0.0000115740741 * 86400.0];
+        demoDataGenerator37 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+        generatorState15 = [demoDataGenerator37 generatorState];
+        firstSampleDate = [generatorState15 firstSampleDate];
+        v179 = [firstSampleDate dateByAddingTimeInterval:v135 * 60.0 * 0.0000115740741 * 86400.0];
 
         v180 = [HDDemoDataRespirationRate alloc];
         v181 = [MEMORY[0x277CCABB0] numberWithDouble:floor(v152 + v152) * 0.5];
@@ -643,7 +643,7 @@ LABEL_73:
         }
 
         [v128 addObject:v180];
-        self = v349;
+        self = selfCopy;
       }
 
       v135 += 10;
@@ -664,7 +664,7 @@ LABEL_84:
   v347 = v126;
   if ([v125 count])
   {
-    v342 = v10;
+    v342 = personCopy;
     v358 = 0u;
     v359 = 0u;
     v356 = 0u;
@@ -687,17 +687,17 @@ LABEL_84:
           v193 = *(*(&v356 + 1) + 8 * i);
           v194 = MEMORY[0x277CCD7E8];
           v195 = _MergedGlobals_15_0;
-          v196 = [v193 rate];
-          [v196 doubleValue];
+          rate = [v193 rate];
+          [rate doubleValue];
           v197 = [v194 quantityWithUnit:v195 doubleValue:?];
 
           v198 = MEMORY[0x277CCD800];
           v199 = qword_27D86C230;
-          v200 = [v193 date];
-          v201 = [v193 date];
-          v202 = [v198 quantitySampleWithType:v199 quantity:v197 startDate:v200 endDate:v201];
+          date = [v193 date];
+          date2 = [v193 date];
+          v202 = [v198 quantitySampleWithType:v199 quantity:v197 startDate:date endDate:date2];
 
-          [v355 addObjectFromWatch:v202];
+          [collectionCopy addObjectFromWatch:v202];
         }
 
         v190 = [v353 countByEnumeratingWithState:&v356 objects:v364 count:16];
@@ -706,33 +706,33 @@ LABEL_84:
       while (v190);
     }
 
-    v11 = v348;
-    self = v349;
-    v10 = v342;
+    dateCopy = v348;
+    self = selfCopy;
+    personCopy = v342;
     v125 = v345;
     v126 = v347;
   }
 
-  v203 = v10;
+  v203 = personCopy;
   v204 = v203;
   if (v126)
   {
     goto LABEL_96;
   }
 
-  if (self->_nextBodyTempSampleTime > a5)
+  if (self->_nextBodyTempSampleTime > toTime)
   {
     goto LABEL_96;
   }
 
   [v203 bodyTempSampleFrequency];
   v206 = v205;
-  v207 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v208 = [v207 statisticsSampleGenerator];
-  [v208 computeNoiseFromTime:a5 stdDev:0.0416666667];
+  demoDataGenerator38 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  statisticsSampleGenerator10 = [demoDataGenerator38 statisticsSampleGenerator];
+  [statisticsSampleGenerator10 computeNoiseFromTime:toTime stdDev:0.0416666667];
   self->_nextBodyTempSampleTime = v206 + v209 + self->_nextBodyTempSampleTime;
 
-  [(HDDemoDataVitalsSampleGenerator *)self _computeBodyTempInCelsiusForDemoPerson:v204 atTime:1 addNoise:a5];
+  [(HDDemoDataVitalsSampleGenerator *)self _computeBodyTempInCelsiusForDemoPerson:v204 atTime:1 addNoise:toTime];
   if (v210 == -2147483650.0)
   {
 LABEL_96:
@@ -753,8 +753,8 @@ LABEL_96:
     v223 = qword_27D86C218;
     [v211 doubleValue];
     v212 = [v222 quantityWithUnit:v223 doubleValue:?];
-    v224 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C250 quantity:v212 startDate:v11 endDate:v11];
-    [v355 addObjectFromPhone:v224];
+    v224 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C250 quantity:v212 startDate:dateCopy endDate:dateCopy];
+    [collectionCopy addObjectFromPhone:v224];
   }
 
 LABEL_98:
@@ -762,19 +762,19 @@ LABEL_98:
   if ([v204 resultsTrackingType] == 2 || HKFeatureFlagBloodOxygenSaturationEnabled())
   {
     v213 = v204;
-    v343 = v11;
-    if ((v126 & 1) != 0 || self->_nextOxygenSaturationSampleTime > a5)
+    v343 = dateCopy;
+    if ((v126 & 1) != 0 || self->_nextOxygenSaturationSampleTime > toTime)
     {
       goto LABEL_108;
     }
 
-    v214 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-    v215 = [v214 sleepSampleGenerator];
-    v216 = [v215 isDemoPersonSleeping:v213 atTime:a5];
+    demoDataGenerator39 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+    sleepSampleGenerator6 = [demoDataGenerator39 sleepSampleGenerator];
+    v216 = [sleepSampleGenerator6 isDemoPersonSleeping:v213 atTime:toTime];
 
-    v217 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-    v218 = [v217 statisticsSampleGenerator];
-    [v218 pseudoRandomDoubleFromTime:a5];
+    demoDataGenerator40 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+    statisticsSampleGenerator11 = [demoDataGenerator40 statisticsSampleGenerator];
+    [statisticsSampleGenerator11 pseudoRandomDoubleFromTime:toTime];
     v220 = v219;
     if (v216)
     {
@@ -798,25 +798,25 @@ LABEL_108:
     else
     {
       [v213 oxygenSaturationSampleFrequency];
-      v229 = v228 + a5;
-      v230 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v231 = [v230 statisticsSampleGenerator];
-      [v231 computeNoiseFromTime:a5 stdDev:0.00208333333];
+      v229 = v228 + toTime;
+      demoDataGenerator41 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      statisticsSampleGenerator12 = [demoDataGenerator41 statisticsSampleGenerator];
+      [statisticsSampleGenerator12 computeNoiseFromTime:toTime stdDev:0.00208333333];
       self->_nextOxygenSaturationSampleTime = v229 + v232;
 
       [v213 oxygenSaturationMean];
       v234 = v233;
       [v213 oxygenSaturationStdDev];
       v236 = v235;
-      v237 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v238 = [v237 generatorState];
-      v239 = [v238 calendarDay];
+      demoDataGenerator42 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      generatorState16 = [demoDataGenerator42 generatorState];
+      calendarDay = [generatorState16 calendarDay];
 
-      if (v239 == 7)
+      if (calendarDay == 7)
       {
-        v240 = [MEMORY[0x277CBEA80] currentCalendar];
-        v241 = [MEMORY[0x277CBEAA8] date];
-        v242 = [v240 dateByAddingUnit:16 value:-14 toDate:v241 options:0];
+        currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+        date3 = [MEMORY[0x277CBEAA8] date];
+        v242 = [currentCalendar dateByAddingUnit:16 value:-14 toDate:date3 options:0];
 
         v227 = v343;
         if ([v343 hk_isAfterDate:v242])
@@ -833,25 +833,25 @@ LABEL_108:
         v227 = v343;
       }
 
-      v245 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v246 = [v245 statisticsSampleGenerator];
-      [v246 computeNoiseFromTime:a5 stdDev:v236];
+      demoDataGenerator43 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      statisticsSampleGenerator13 = [demoDataGenerator43 statisticsSampleGenerator];
+      [statisticsSampleGenerator13 computeNoiseFromTime:toTime stdDev:v236];
       v248 = v247;
 
-      v249 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v250 = [v249 generatorState];
-      v251 = [v250 isExercising];
+      demoDataGenerator44 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      generatorState17 = [demoDataGenerator44 generatorState];
+      isExercising3 = [generatorState17 isExercising];
 
       v252 = v234 + -1.0;
-      if (!v251)
+      if (!isExercising3)
       {
         v252 = v234;
       }
 
       v253 = v248 + v252;
-      v254 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v255 = [v254 sleepSampleGenerator];
-      v256 = [v255 isDemoPersonSleeping:v213 atTime:a5];
+      demoDataGenerator45 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      sleepSampleGenerator7 = [demoDataGenerator45 sleepSampleGenerator];
+      v256 = [sleepSampleGenerator7 isDemoPersonSleeping:v213 atTime:toTime];
 
       v257 = 2.0;
       if (v256)
@@ -894,14 +894,14 @@ LABEL_108:
       v267 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v363 forKeys:&v362 count:1];
       v268 = MEMORY[0x277CCD800];
       v269 = qword_27D86C258;
-      v270 = [MEMORY[0x277CCD2E8] localDevice];
+      localDevice = [MEMORY[0x277CCD2E8] localDevice];
       v271 = v268;
       v272 = v340;
-      v273 = [v271 quantitySampleWithType:v269 quantity:v340 startDate:v227 endDate:v227 device:v270 metadata:v267];
+      v273 = [v271 quantitySampleWithType:v269 quantity:v340 startDate:v227 endDate:v227 device:localDevice metadata:v267];
 
       if (HKFeatureFlagBloodOxygenSaturationEnabled())
       {
-        [v355 addObjectFromWatch:v273];
+        [collectionCopy addObjectFromWatch:v273];
         v338 = v264;
         if (v347)
         {
@@ -946,9 +946,9 @@ LABEL_108:
             v276 = 70.0;
           }
 
-          v278 = [(HDDemoDataBaseSampleGenerator *)v349 demoDataGenerator];
-          v279 = [v278 statisticsSampleGenerator];
-          [v279 pseudoRandomDoubleFromTime:a5];
+          demoDataGenerator46 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+          statisticsSampleGenerator14 = [demoDataGenerator46 statisticsSampleGenerator];
+          [statisticsSampleGenerator14 pseudoRandomDoubleFromTime:toTime];
           v281 = v276 + v280 * v277;
 
           v282 = [MEMORY[0x277CCABB0] numberWithDouble:v281];
@@ -959,13 +959,13 @@ LABEL_108:
         [v282 doubleValue];
         v285 = [v283 quantityWithUnit:v284 doubleValue:?];
         v286 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C228 quantity:v285 startDate:v343 endDate:v343];
-        [v355 addObjectFromWatch:v286];
+        [collectionCopy addObjectFromWatch:v286];
         v287 = objc_alloc_init(MEMORY[0x277CBEB28]);
-        v288 = [v286 UUID];
-        [v287 hk_appendBytesWithUUID:v288];
+        uUID = [v286 UUID];
+        [v287 hk_appendBytesWithUUID:uUID];
 
-        v289 = [v273 UUID];
-        [v355 setAssociatedObjectUUIDs:v287 forObjectUUID:v289];
+        uUID2 = [v273 UUID];
+        [collectionCopy setAssociatedObjectUUIDs:v287 forObjectUUID:uUID2];
 
         v264 = v338;
         v272 = v340;
@@ -973,51 +973,51 @@ LABEL_108:
 
       else
       {
-        [v355 addObjectFromPhone:v273];
+        [collectionCopy addObjectFromPhone:v273];
       }
 
       v211 = v354;
     }
 
     v125 = v345;
-    v11 = v348;
+    dateCopy = v348;
     v126 = v347;
   }
 
   if ([v204 resultsTrackingType] == 2)
   {
     v290 = v204;
-    if ((v126 & 1) != 0 || v349->_nextPeripheralPerfusionIndexSampleTime > a5)
+    if ((v126 & 1) != 0 || selfCopy->_nextPeripheralPerfusionIndexSampleTime > toTime)
     {
       v291 = 0;
 LABEL_157:
 
 LABEL_158:
-      v11 = v348;
+      dateCopy = v348;
       v211 = v354;
       goto LABEL_159;
     }
 
-    v292 = [(HDDemoDataBaseSampleGenerator *)v349 demoDataGenerator];
-    v293 = [v292 generatorState];
-    if ([v293 isExercising])
+    demoDataGenerator47 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+    generatorState18 = [demoDataGenerator47 generatorState];
+    if ([generatorState18 isExercising])
     {
     }
 
     else
     {
-      v294 = [(HDDemoDataBaseSampleGenerator *)v349 demoDataGenerator];
-      [v294 activitySampleGenerator];
+      demoDataGenerator48 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+      [demoDataGenerator48 activitySampleGenerator];
       v296 = v295 = v125;
-      v297 = [v296 _isDemoPersonCoolingDown:v290 atTime:a5];
+      v297 = [v296 _isDemoPersonCoolingDown:v290 atTime:toTime];
 
       v125 = v295;
       if ((v297 & 1) == 0)
       {
-        v310 = a5 + 1;
-        v311 = [(HDDemoDataBaseSampleGenerator *)v349 demoDataGenerator];
-        v312 = [MEMORY[0x277CBEA80] currentCalendar];
-        v313 = [v311 isDemoDataTimeInWeekend:v312 calendar:a5];
+        v310 = toTime + 1;
+        demoDataGenerator49 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+        currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+        v313 = [demoDataGenerator49 isDemoDataTimeInWeekend:currentCalendar2 calendar:toTime];
 
         if (v313)
         {
@@ -1029,15 +1029,15 @@ LABEL_158:
           [v290 weekdaySleepParameters];
         }
         v309 = ;
-        v314 = [(HDDemoDataBaseSampleGenerator *)v349 demoDataGenerator];
-        v315 = [v314 activitySampleGenerator];
+        demoDataGenerator50 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+        activitySampleGenerator8 = [demoDataGenerator50 activitySampleGenerator];
         [v309 wakeUpTime];
         v317 = v316 + v310;
         [v290 exerciseStartTime];
         v319 = v318;
         [v290 exerciseStartTimeStdDev];
-        [v315 _computeExerciseTimeFromCurrentTime:v317 mean:v319 stdDev:v320];
-        v349->_nextPeripheralPerfusionIndexSampleTime = v321 + v310;
+        [activitySampleGenerator8 _computeExerciseTimeFromCurrentTime:v317 mean:v319 stdDev:v320];
+        selfCopy->_nextPeripheralPerfusionIndexSampleTime = v321 + v310;
 
         v291 = 0;
 LABEL_156:
@@ -1047,20 +1047,20 @@ LABEL_156:
     }
 
     [v290 peripheralPerfusionIndexSampleFrequency];
-    v349->_nextPeripheralPerfusionIndexSampleTime = v298 + v349->_nextPeripheralPerfusionIndexSampleTime;
+    selfCopy->_nextPeripheralPerfusionIndexSampleTime = v298 + selfCopy->_nextPeripheralPerfusionIndexSampleTime;
     [v290 peripheralPerfusionIndexMean];
     v300 = v299;
-    v301 = [(HDDemoDataBaseSampleGenerator *)v349 demoDataGenerator];
-    v302 = [v301 statisticsSampleGenerator];
+    demoDataGenerator51 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+    statisticsSampleGenerator15 = [demoDataGenerator51 statisticsSampleGenerator];
     [v290 peripheralPerfusionIndexStdDev];
-    [v302 computeNoiseFromTime:a5 stdDev:v303];
+    [statisticsSampleGenerator15 computeNoiseFromTime:toTime stdDev:v303];
     v305 = v300 + v304;
 
     [v290 peripheralPerfusionIndexSampleFrequency];
     if (v306 < 0.000694444444)
     {
-      v305 = v349->_lastPeripheralPerfusionIndexValue * 0.6 + v305 * 0.4;
-      v349->_lastPeripheralPerfusionIndexValue = v305;
+      v305 = selfCopy->_lastPeripheralPerfusionIndexValue * 0.6 + v305 * 0.4;
+      selfCopy->_lastPeripheralPerfusionIndexValue = v305;
     }
 
     v291 = [MEMORY[0x277CCABB0] numberWithDouble:(v305 * 100.0) / 100.0 / 100.0];
@@ -1075,7 +1075,7 @@ LABEL_156:
     [v291 doubleValue];
     v290 = [v307 quantityWithUnit:v308 doubleValue:?];
     v309 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C260 quantity:v290 startDate:v348 endDate:v348];
-    [v355 addObjectFromPhone:v309];
+    [collectionCopy addObjectFromPhone:v309];
     goto LABEL_156;
   }
 
@@ -1137,12 +1137,12 @@ uint64_t __109__HDDemoDataVitalsSampleGenerator_generateObjectsForDemoPerson_fro
   return MEMORY[0x2821F96F8](v22, v23);
 }
 
-- (uint64_t)_computeBloodPressureForDemoPerson:(double)a3 atTime:(double)a4 baseBloodPressure:(double)a5 stdDev:
+- (uint64_t)_computeBloodPressureForDemoPerson:(double)person atTime:(double)time baseBloodPressure:(double)pressure stdDev:
 {
   v9 = a2;
-  v10 = [a1 demoDataGenerator];
-  v11 = [v10 sleepSampleGenerator];
-  v12 = [v11 isDemoPersonSleeping:v9 atTime:a3];
+  demoDataGenerator = [self demoDataGenerator];
+  sleepSampleGenerator = [demoDataGenerator sleepSampleGenerator];
+  v12 = [sleepSampleGenerator isDemoPersonSleeping:v9 atTime:person];
 
   if (v12)
   {
@@ -1151,23 +1151,23 @@ uint64_t __109__HDDemoDataVitalsSampleGenerator_generateObjectsForDemoPerson_fro
 
   else
   {
-    v14 = [a1[4] objectAtIndexedSubscript:((a3 - a3) * 24.0)];
+    v14 = [self[4] objectAtIndexedSubscript:((person - person) * 24.0)];
     [v14 doubleValue];
-    v16 = v15 * a4;
+    v16 = v15 * time;
 
     if ([v9 biologicalSex] != 2)
     {
       v16 = v16 * 0.9;
     }
 
-    v17 = [a1 demoDataGenerator];
-    v18 = [v17 generatorState];
-    v19 = [v18 isExercising];
+    demoDataGenerator2 = [self demoDataGenerator];
+    generatorState = [demoDataGenerator2 generatorState];
+    isExercising = [generatorState isExercising];
 
     v20 = 0.0;
-    if (v19)
+    if (isExercising)
     {
-      v21 = a4 * 0.07 + 4.0;
+      v21 = time * 0.07 + 4.0;
     }
 
     else
@@ -1175,21 +1175,21 @@ uint64_t __109__HDDemoDataVitalsSampleGenerator_generateObjectsForDemoPerson_fro
       v21 = 0.0;
     }
 
-    v22 = [a1 demoDataGenerator];
-    v23 = [v22 foodSampleGenerator];
-    v24 = [v23 _isDemoPersonConsumingCaffeine:v9 atTime:a3];
+    demoDataGenerator3 = [self demoDataGenerator];
+    foodSampleGenerator = [demoDataGenerator3 foodSampleGenerator];
+    v24 = [foodSampleGenerator _isDemoPersonConsumingCaffeine:v9 atTime:person];
 
     if (v24)
     {
-      v25 = [a1 demoDataGenerator];
-      v26 = [v25 statisticsSampleGenerator];
-      [v26 computeNoiseFromTime:a3 stdDev:2.25];
+      demoDataGenerator4 = [self demoDataGenerator];
+      statisticsSampleGenerator = [demoDataGenerator4 statisticsSampleGenerator];
+      [statisticsSampleGenerator computeNoiseFromTime:person stdDev:2.25];
       v20 = fabs(v27) + 2.5;
     }
 
-    v28 = [a1 demoDataGenerator];
-    v29 = [v28 statisticsSampleGenerator];
-    [v29 computeNoiseFromTime:a3 stdDev:a5];
+    demoDataGenerator5 = [self demoDataGenerator];
+    statisticsSampleGenerator2 = [demoDataGenerator5 statisticsSampleGenerator];
+    [statisticsSampleGenerator2 computeNoiseFromTime:person stdDev:pressure];
     v31 = v30;
 
     v13 = (v16 + v21 + v20 + v31);
@@ -1198,31 +1198,31 @@ uint64_t __109__HDDemoDataVitalsSampleGenerator_generateObjectsForDemoPerson_fro
   return v13;
 }
 
-- (uint64_t)_computeMaxHRForDemoPerson:(double)a3 atTime:
+- (uint64_t)_computeMaxHRForDemoPerson:(double)person atTime:
 {
   v5 = a2;
-  v6 = [a1 demoDataGenerator];
-  v7 = [v6 currentDateFromCurrentTime:a3];
+  demoDataGenerator = [self demoDataGenerator];
+  v7 = [demoDataGenerator currentDateFromCurrentTime:person];
 
-  v8 = [v5 birthDateComponents];
+  birthDateComponents = [v5 birthDateComponents];
 
-  v9 = HDDemoData_ageBetweenNSDateComponentsAndDate(v8, v7);
+  v9 = HDDemoData_ageBetweenNSDateComponentsAndDate(birthDateComponents, v7);
   return 220 - v9;
 }
 
-- (double)_computeBodyTempInCelsiusForDemoPerson:(id)a3 atTime:(double)a4 addNoise:(BOOL)a5
+- (double)_computeBodyTempInCelsiusForDemoPerson:(id)person atTime:(double)time addNoise:(BOOL)noise
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v10 = [v9 reproductiveHealthSampleGenerator];
-  v11 = [v10 _computeNextLuteinizingHormoneSurgeForDemoPerson:v8 atTime:a4] + 1;
+  noiseCopy = noise;
+  personCopy = person;
+  demoDataGenerator = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  reproductiveHealthSampleGenerator = [demoDataGenerator reproductiveHealthSampleGenerator];
+  v11 = [reproductiveHealthSampleGenerator _computeNextLuteinizingHormoneSurgeForDemoPerson:personCopy atTime:time] + 1;
 
-  [v8 menstrualPeriodFrequency];
+  [personCopy menstrualPeriodFrequency];
   v13 = v12;
   v14 = v11 / v12;
-  [v8 menstrualPeriodFrequency];
-  v16 = a4 % v15 + v14 * v13 - v11 + 15;
+  [personCopy menstrualPeriodFrequency];
+  v16 = time % v15 + v14 * v13 - v11 + 15;
   if (self)
   {
     diurnalTempVariationTable = self->_diurnalTempVariationTable;
@@ -1233,39 +1233,39 @@ uint64_t __109__HDDemoDataVitalsSampleGenerator_generateObjectsForDemoPerson_fro
     diurnalTempVariationTable = 0;
   }
 
-  v18 = [(NSArray *)diurnalTempVariationTable objectAtIndexedSubscript:((a4 - a4) * 24.0) % 24];
+  v18 = [(NSArray *)diurnalTempVariationTable objectAtIndexedSubscript:((time - time) * 24.0) % 24];
   [v18 doubleValue];
   v20 = v19;
 
-  v21 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v22 = [v21 reproductiveHealthSampleGenerator];
-  v23 = [v22 _basalBodyTempMultiplier];
-  v24 = [v23 objectAtIndexedSubscript:v16 % 28];
+  demoDataGenerator2 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  reproductiveHealthSampleGenerator2 = [demoDataGenerator2 reproductiveHealthSampleGenerator];
+  _basalBodyTempMultiplier = [reproductiveHealthSampleGenerator2 _basalBodyTempMultiplier];
+  v24 = [_basalBodyTempMultiplier objectAtIndexedSubscript:v16 % 28];
   [v24 doubleValue];
   v26 = v25;
 
   v27 = v20 * v26;
-  [v8 bodyTempFeverMultiplier];
+  [personCopy bodyTempFeverMultiplier];
   v29 = v27 * v28;
-  v30 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v31 = [v30 generatorState];
-  LODWORD(v23) = [v31 isExercising];
+  demoDataGenerator3 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  generatorState = [demoDataGenerator3 generatorState];
+  LODWORD(_basalBodyTempMultiplier) = [generatorState isExercising];
 
   v32 = 0.0;
   v33 = v27 + v29;
   v34 = 0.0;
-  if (v23)
+  if (_basalBodyTempMultiplier)
   {
-    [v8 bodyTempExerciseMultiplier];
+    [personCopy bodyTempExerciseMultiplier];
     v34 = v33 * v35;
   }
 
-  if (v5)
+  if (noiseCopy)
   {
-    v36 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-    v37 = [v36 statisticsSampleGenerator];
-    [v8 bodyTempSampleNoiseStdDev];
-    [v37 computeNoiseFromTime:a4 stdDev:v38];
+    demoDataGenerator4 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+    statisticsSampleGenerator = [demoDataGenerator4 statisticsSampleGenerator];
+    [personCopy bodyTempSampleNoiseStdDev];
+    [statisticsSampleGenerator computeNoiseFromTime:time stdDev:v38];
     v32 = v39;
   }
 

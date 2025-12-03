@@ -1,5 +1,5 @@
 @interface EpisodeViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomContent;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,15 +7,15 @@
 
 @implementation EpisodeViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ShelfKitCollectionViews.EpisodeView" hasInstanceMethod:@"accessibilityCaptionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.EpisodeView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.EpisodeView" hasInstanceMethod:@"accessibilitySummaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.EpisodeView" hasInstanceMethod:@"accessibilityArtworkView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.EpisodeView" hasInstanceMethod:@"accessibilityDurationLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.ArtworkView" hasInstanceMethod:@"accessibilityTitle" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.EpisodeView" hasInstanceMethod:@"accessibilityCaptionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.EpisodeView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.EpisodeView" hasInstanceMethod:@"accessibilitySummaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.EpisodeView" hasInstanceMethod:@"accessibilityArtworkView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.EpisodeView" hasInstanceMethod:@"accessibilityDurationLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ArtworkView" hasInstanceMethod:@"accessibilityTitle" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -23,17 +23,17 @@
   v3 = [(EpisodeViewAccessibility *)self safeValueForKey:@"accessibilityArtworkView"];
   v4 = [v3 safeValueForKey:@"accessibilityTitle"];
   v5 = [(EpisodeViewAccessibility *)self safeValueForKey:@"accessibilityCaptionLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel = [v5 accessibilityLabel];
   v7 = [(EpisodeViewAccessibility *)self safeValueForKey:@"accessibilityTitleLabel"];
-  v8 = [v7 accessibilityLabel];
+  accessibilityLabel2 = [v7 accessibilityLabel];
   v9 = [(EpisodeViewAccessibility *)self safeValueForKey:@"accessibilityDurationLabel"];
-  v10 = [v9 accessibilityLabel];
+  accessibilityLabel3 = [v9 accessibilityLabel];
   v11 = [(EpisodeViewAccessibility *)self safeValueForKey:@"accessibilityArtworkView"];
   if ([v11 _accessibilityViewIsVisible])
   {
     [(EpisodeViewAccessibility *)self safeValueForKey:@"accessibilityArtworkView"];
     v12 = v17 = v5;
-    v16 = [v12 accessibilityLabel];
+    accessibilityLabel4 = [v12 accessibilityLabel];
     v13 = __UIAXStringForVariables();
 
     v5 = v17;
@@ -51,20 +51,20 @@
 
 - (id)accessibilityCustomContent
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(EpisodeViewAccessibility *)self safeValueForKey:@"accessibilitySummaryLabel"];
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  if ([v5 length])
+  if ([accessibilityLabel length])
   {
     v6 = MEMORY[0x29EDB8058];
     v7 = accessibilityLocalizedString(@"summary.title");
-    v8 = [v6 customContentWithLabel:v7 value:v5];
+    v8 = [v6 customContentWithLabel:v7 value:accessibilityLabel];
 
-    [v3 addObject:v8];
+    [array addObject:v8];
   }
 
-  return v3;
+  return array;
 }
 
 - (unint64_t)accessibilityTraits

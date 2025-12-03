@@ -6,10 +6,10 @@
 
 - (SBInputUISceneController)inputUISceneController
 {
-  v2 = [SBApp systemUIScenesCoordinator];
-  v3 = [v2 inputUISceneController];
+  systemUIScenesCoordinator = [SBApp systemUIScenesCoordinator];
+  inputUISceneController = [systemUIScenesCoordinator inputUISceneController];
 
-  return v3;
+  return inputUISceneController;
 }
 
 @end

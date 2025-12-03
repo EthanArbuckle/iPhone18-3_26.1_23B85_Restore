@@ -1,69 +1,69 @@
 @interface ICAttachmentGalleryActivityItemSource
-- (id)activityViewController:(id)a3 attachmentNameForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (id)activityViewController:(id)controller attachmentNameForActivityType:(id)type;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation ICAttachmentGalleryActivityItemSource
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   v3 = MEMORY[0x1E695DFF8];
-  v4 = [(ICAttachmentActivityItemSource *)self attachment];
-  v5 = [ICDocCamPDFGenerator versionPDFPathForAttachment:v4];
+  attachment = [(ICAttachmentActivityItemSource *)self attachment];
+  v5 = [ICDocCamPDFGenerator versionPDFPathForAttachment:attachment];
   v6 = [v3 fileURLWithPath:v5];
 
   return v6;
 }
 
-- (id)activityViewController:(id)a3 attachmentNameForActivityType:(id)a4
+- (id)activityViewController:(id)controller attachmentNameForActivityType:(id)type
 {
-  v4 = [(ICAttachmentActivityItemSource *)self attachment:a3];
-  v5 = [v4 title];
+  v4 = [(ICAttachmentActivityItemSource *)self attachment:controller];
+  title = [v4 title];
 
   v6 = MEMORY[0x1E69B7680];
-  v7 = [*MEMORY[0x1E6982F10] identifier];
-  v8 = [v6 filenameExtensionForUTI:v7];
+  identifier = [*MEMORY[0x1E6982F10] identifier];
+  v8 = [v6 filenameExtensionForUTI:identifier];
 
   if (v8)
   {
-    v9 = [v5 pathExtension];
-    v10 = [v9 isEqual:v8];
+    pathExtension = [title pathExtension];
+    v10 = [pathExtension isEqual:v8];
 
     if ((v10 & 1) == 0)
     {
-      v11 = [v5 stringByAppendingPathExtension:v8];
+      v11 = [title stringByAppendingPathExtension:v8];
 
-      v5 = v11;
+      title = v11;
     }
   }
 
-  return v5;
+  return title;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  typeCopy = type;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__75;
   v21 = __Block_byref_object_dispose__75;
   v22 = 0;
-  v8 = [MEMORY[0x1E69B7800] sharedContext];
-  v9 = [v8 workerManagedObjectContext];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  workerManagedObjectContext = [mEMORY[0x1E69B7800] workerManagedObjectContext];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __84__ICAttachmentGalleryActivityItemSource_activityViewController_itemForActivityType___block_invoke;
   v14[3] = &unk_1E8469190;
   v14[4] = self;
-  v10 = v9;
+  v10 = workerManagedObjectContext;
   v15 = v10;
   v16 = &v17;
   [v10 performBlockAndWait:v14];
-  if ([v7 isEqualToString:*MEMORY[0x1E69CDA90]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E69CDA90]])
   {
     v11 = v18[5];
     v18[5] = 0;

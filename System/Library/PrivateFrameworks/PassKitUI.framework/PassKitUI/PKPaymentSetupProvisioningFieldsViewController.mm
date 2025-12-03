@@ -1,39 +1,39 @@
 @interface PKPaymentSetupProvisioningFieldsViewController
 - (PKPaymentProvisioningViewControllerDelegate)flowItemDelegate;
-- (PKPaymentSetupProvisioningFieldsViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6;
+- (PKPaymentSetupProvisioningFieldsViewController)initWithProvisioningController:(id)controller context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model;
 - (id)_cardDetailsFooterView;
-- (void)addDifferentCard:(id)a3;
+- (void)addDifferentCard:(id)card;
 - (void)dealloc;
 - (void)resetRightBarButtonState;
-- (void)setNotificationTextInFooterView:(id)a3;
-- (void)setupLater:(id)a3;
-- (void)showVerifiedUIForPass:(id)a3;
+- (void)setNotificationTextInFooterView:(id)view;
+- (void)setupLater:(id)later;
+- (void)showVerifiedUIForPass:(id)pass;
 - (void)suppressFooterViewManualEntryButton;
 - (void)suppressFooterViewSkipCardButton;
 - (void)updateLocationAuthorization;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPaymentSetupProvisioningFieldsViewController
 
-- (PKPaymentSetupProvisioningFieldsViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6
+- (PKPaymentSetupProvisioningFieldsViewController)initWithProvisioningController:(id)controller context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = [a3 webService];
+  modelCopy = model;
+  delegateCopy = delegate;
+  webService = [controller webService];
   v15.receiver = self;
   v15.super_class = PKPaymentSetupProvisioningFieldsViewController;
-  v13 = [(PKPaymentSetupFieldsViewController *)&v15 initWithWebService:v12 context:a4 setupDelegate:v11 setupFieldsModel:v10];
+  v13 = [(PKPaymentSetupFieldsViewController *)&v15 initWithWebService:webService context:context setupDelegate:delegateCopy setupFieldsModel:modelCopy];
 
   return v13;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(CLInUseAssertion *)self->_CLInUse invalidate];
   [(UINotificationFeedbackGenerator *)self->_cardAddedFeedbackGenerator deactivate];
@@ -48,17 +48,17 @@
   v7.super_class = PKPaymentSetupProvisioningFieldsViewController;
   [(PKPaymentSetupFieldsViewController *)&v7 viewDidLoad];
   v3 = objc_alloc(MEMORY[0x1E69DCCF0]);
-  v4 = [(PKPaymentSetupProvisioningFieldsViewController *)self view];
-  v5 = [v3 initWithView:v4];
+  view = [(PKPaymentSetupProvisioningFieldsViewController *)self view];
+  v5 = [v3 initWithView:view];
   cardAddedFeedbackGenerator = self->_cardAddedFeedbackGenerator;
   self->_cardAddedFeedbackGenerator = v5;
 
   [(UINotificationFeedbackGenerator *)self->_cardAddedFeedbackGenerator activateWithCompletionBlock:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (!self->_CLInUse)
   {
     v5 = MEMORY[0x1E695FBE0];
@@ -70,12 +70,12 @@
 
   v9.receiver = self;
   v9.super_class = PKPaymentSetupProvisioningFieldsViewController;
-  [(PKPaymentSetupFieldsViewController *)&v9 viewWillAppear:v3];
+  [(PKPaymentSetupFieldsViewController *)&v9 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   CLInUse = self->_CLInUse;
   if (CLInUse)
   {
@@ -86,7 +86,7 @@
 
   v7.receiver = self;
   v7.super_class = PKPaymentSetupProvisioningFieldsViewController;
-  [(PKPaymentSetupFieldsViewController *)&v7 viewWillDisappear:v3];
+  [(PKPaymentSetupFieldsViewController *)&v7 viewWillDisappear:disappearCopy];
 }
 
 - (id)_cardDetailsFooterView
@@ -95,8 +95,8 @@
   if (!cardDetailsFooterView)
   {
     v4 = [PKPaymentSetupFooterView alloc];
-    v5 = [(PKPaymentSetupTableViewController *)self context];
-    v6 = [(PKPaymentSetupFooterView *)v4 initWithFrame:v5 context:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+    context = [(PKPaymentSetupTableViewController *)self context];
+    v6 = [(PKPaymentSetupFooterView *)v4 initWithFrame:context context:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     v7 = self->_cardDetailsFooterView;
     self->_cardDetailsFooterView = v6;
 
@@ -105,8 +105,8 @@
     UIEdgeInsetsMakeWithEdges();
     [(PKPaymentSetupFooterView *)v8 setReadableContentInsets:?];
     v9 = self->_cardDetailsFooterView;
-    v10 = [(PKPaymentSetupTableViewController *)self tableView];
-    [v10 bounds];
+    tableView = [(PKPaymentSetupTableViewController *)self tableView];
+    [tableView bounds];
     [(PKPaymentSetupFooterView *)v9 sizeThatFits:CGRectGetWidth(v17), 3.40282347e38];
     v12 = v11;
     v14 = v13;
@@ -122,23 +122,23 @@
 {
   if (_UISolariumFeatureFlagEnabled())
   {
-    v6 = [(PKPaymentSetupTableViewController *)self dockView];
-    v3 = [v6 footerView];
-    [v3 setSkipCardButton:0];
+    dockView = [(PKPaymentSetupTableViewController *)self dockView];
+    footerView = [dockView footerView];
+    [footerView setSkipCardButton:0];
   }
 
   else
   {
-    v4 = [(PKPaymentSetupProvisioningFieldsViewController *)self _cardDetailsFooterView];
-    [v4 setSkipCardButton:0];
+    _cardDetailsFooterView = [(PKPaymentSetupProvisioningFieldsViewController *)self _cardDetailsFooterView];
+    [_cardDetailsFooterView setSkipCardButton:0];
 
-    v5 = [(PKPaymentSetupProvisioningFieldsViewController *)self _cardDetailsFooterView];
-    [v5 sizeToFit];
+    _cardDetailsFooterView2 = [(PKPaymentSetupProvisioningFieldsViewController *)self _cardDetailsFooterView];
+    [_cardDetailsFooterView2 sizeToFit];
 
-    v6 = [(PKPaymentSetupTableViewController *)self tableView];
-    v3 = [(PKPaymentSetupProvisioningFieldsViewController *)self footerView];
-    [v3 bounds];
-    [v6 _tableFooterHeightDidChangeToHeight:CGRectGetHeight(v8)];
+    dockView = [(PKPaymentSetupTableViewController *)self tableView];
+    footerView = [(PKPaymentSetupProvisioningFieldsViewController *)self footerView];
+    [footerView bounds];
+    [dockView _tableFooterHeightDidChangeToHeight:CGRectGetHeight(v8)];
   }
 }
 
@@ -146,58 +146,58 @@
 {
   if (_UISolariumFeatureFlagEnabled())
   {
-    v6 = [(PKPaymentSetupTableViewController *)self dockView];
-    v3 = [v6 footerView];
-    [v3 setManualEntryButton:0];
+    dockView = [(PKPaymentSetupTableViewController *)self dockView];
+    footerView = [dockView footerView];
+    [footerView setManualEntryButton:0];
   }
 
   else
   {
-    v4 = [(PKPaymentSetupProvisioningFieldsViewController *)self _cardDetailsFooterView];
-    [v4 setManualEntryButton:0];
+    _cardDetailsFooterView = [(PKPaymentSetupProvisioningFieldsViewController *)self _cardDetailsFooterView];
+    [_cardDetailsFooterView setManualEntryButton:0];
 
-    v5 = [(PKPaymentSetupProvisioningFieldsViewController *)self _cardDetailsFooterView];
-    [v5 sizeToFit];
+    _cardDetailsFooterView2 = [(PKPaymentSetupProvisioningFieldsViewController *)self _cardDetailsFooterView];
+    [_cardDetailsFooterView2 sizeToFit];
 
-    v6 = [(PKPaymentSetupTableViewController *)self tableView];
-    v3 = [(PKPaymentSetupProvisioningFieldsViewController *)self footerView];
-    [v3 bounds];
-    [v6 _tableFooterHeightDidChangeToHeight:CGRectGetHeight(v8)];
+    dockView = [(PKPaymentSetupTableViewController *)self tableView];
+    footerView = [(PKPaymentSetupProvisioningFieldsViewController *)self footerView];
+    [footerView bounds];
+    [dockView _tableFooterHeightDidChangeToHeight:CGRectGetHeight(v8)];
   }
 }
 
-- (void)setNotificationTextInFooterView:(id)a3
+- (void)setNotificationTextInFooterView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (_UISolariumFeatureFlagEnabled())
   {
-    v10 = [(PKPaymentSetupTableViewController *)self dockView];
-    v5 = [v10 footerView];
-    v6 = [v5 notificationText];
-    [v6 setText:v4];
+    dockView = [(PKPaymentSetupTableViewController *)self dockView];
+    footerView = [dockView footerView];
+    notificationText = [footerView notificationText];
+    [notificationText setText:viewCopy];
   }
 
   else
   {
-    v7 = [(PKPaymentSetupProvisioningFieldsViewController *)self _cardDetailsFooterView];
-    v8 = [v7 notificationText];
-    [v8 setText:v4];
+    _cardDetailsFooterView = [(PKPaymentSetupProvisioningFieldsViewController *)self _cardDetailsFooterView];
+    notificationText2 = [_cardDetailsFooterView notificationText];
+    [notificationText2 setText:viewCopy];
 
-    v9 = [(PKPaymentSetupProvisioningFieldsViewController *)self _cardDetailsFooterView];
-    [v9 sizeToFit];
+    _cardDetailsFooterView2 = [(PKPaymentSetupProvisioningFieldsViewController *)self _cardDetailsFooterView];
+    [_cardDetailsFooterView2 sizeToFit];
 
-    v10 = [(PKPaymentSetupTableViewController *)self tableView];
-    v5 = [(PKPaymentSetupProvisioningFieldsViewController *)self footerView];
-    [v5 bounds];
-    [v10 _tableFooterHeightDidChangeToHeight:CGRectGetHeight(v12)];
+    dockView = [(PKPaymentSetupTableViewController *)self tableView];
+    footerView = [(PKPaymentSetupProvisioningFieldsViewController *)self footerView];
+    [footerView bounds];
+    [dockView _tableFooterHeightDidChangeToHeight:CGRectGetHeight(v12)];
   }
 }
 
-- (void)showVerifiedUIForPass:(id)a3
+- (void)showVerifiedUIForPass:(id)pass
 {
   v27[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 supportsBarcodePayment];
+  passCopy = pass;
+  supportsBarcodePayment = [passCopy supportsBarcodePayment];
   v6 = MEMORY[0x1E69B8540];
   v7 = *MEMORY[0x1E69BB6E8];
   v27[0] = *MEMORY[0x1E69BB6E0];
@@ -217,9 +217,9 @@
   v12 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v13 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v14 = v13;
-  if (!v5)
+  if (!supportsBarcodePayment)
   {
-    if ([v4 accessType] == 3)
+    if ([passCopy accessType] == 3)
     {
       [v14 appendString:@"ADDING_KEY"];
       [v12 appendString:@"KEY_ADDED_MESSAGE"];
@@ -227,20 +227,20 @@
 
     else
     {
-      v16 = [v4 associatedAccountFeatureIdentifier];
+      associatedAccountFeatureIdentifier = [passCopy associatedAccountFeatureIdentifier];
       [v14 appendString:@"ADDING_CARD"];
-      if (v16 == 4)
+      if (associatedAccountFeatureIdentifier == 4)
       {
         [v12 appendString:@"CARD_ADDED_BODY"];
         v15 = MEMORY[0x1E69BC720];
         goto LABEL_9;
       }
 
-      v17 = [(PKPaymentSetupFieldsViewController *)self webService];
-      v18 = [v17 targetDevice];
-      v19 = [v18 deviceName];
+      webService = [(PKPaymentSetupFieldsViewController *)self webService];
+      targetDevice = [webService targetDevice];
+      deviceName = [targetDevice deviceName];
 
-      v20 = PKDeviceSpecificLocalizedStringKeyForKey(@"CARD_ADDED_MESSAGE", [v19 isEqualToString:@"Apple Watch"]);
+      v20 = PKDeviceSpecificLocalizedStringKeyForKey(@"CARD_ADDED_MESSAGE", [deviceName isEqualToString:@"Apple Watch"]);
       [v12 appendString:v20];
     }
 
@@ -257,23 +257,23 @@ LABEL_9:
   v23 = v21(v12);
   [(PKPaymentSetupFieldsViewController *)self hideActivitySpinnerWithTitle:v22 subtitle:v23 animated:0];
 
-  v24 = [(PKPaymentSetupTableViewController *)self dockView];
-  [v24 setButtonsEnabled:0];
+  dockView = [(PKPaymentSetupTableViewController *)self dockView];
+  [dockView setButtonsEnabled:0];
 
   [(PKPaymentSetupFieldsViewController *)self endUserInteraction];
 }
 
-- (void)addDifferentCard:(id)a3
+- (void)addDifferentCard:(id)card
 {
   WeakRetained = objc_loadWeakRetained(&self->_flowItemDelegate);
   [WeakRetained provisioningViewControllerDidSelectManualEntry:self];
 }
 
-- (void)setupLater:(id)a3
+- (void)setupLater:(id)later
 {
-  MEMORY[0x1BFB41980](*MEMORY[0x1E69BA028], 0, a3);
-  v4 = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
-  [v4 viewControllerDidTerminateSetupFlow:self];
+  MEMORY[0x1BFB41980](*MEMORY[0x1E69BA028], 0, later);
+  setupDelegate = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
+  [setupDelegate viewControllerDidTerminateSetupFlow:self];
 }
 
 - (void)updateLocationAuthorization
@@ -285,8 +285,8 @@ LABEL_9:
     {
       v2 = MEMORY[0x1E695FBE8];
       v3 = PKPassKitCoreBundle();
-      v4 = [v3 bundlePath];
-      LODWORD(v2) = [v2 authorizationStatusForBundlePath:v4];
+      bundlePath = [v3 bundlePath];
+      LODWORD(v2) = [v2 authorizationStatusForBundlePath:bundlePath];
 
       if (!v2)
       {
@@ -307,9 +307,9 @@ LABEL_9:
 
 - (void)resetRightBarButtonState
 {
-  v3 = [(PKPaymentSetupFieldsViewController *)self isComplete];
+  isComplete = [(PKPaymentSetupFieldsViewController *)self isComplete];
 
-  [(PKPaymentSetupFieldsViewController *)self _setPrimaryButtonEnabled:v3];
+  [(PKPaymentSetupFieldsViewController *)self _setPrimaryButtonEnabled:isComplete];
 }
 
 - (PKPaymentProvisioningViewControllerDelegate)flowItemDelegate

@@ -1,45 +1,45 @@
 @interface PXPhotosHeaderCustomizationModel
 - (PXPhotosHeaderCustomizationModel)init;
-- (void)setAlpha:(double)a3;
-- (void)setShouldUseTextStyles:(BOOL)a3;
-- (void)setVerticalFloatingOffset:(double)a3;
-- (void)setVerticalVisibilityOffset:(double)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setShouldUseTextStyles:(BOOL)styles;
+- (void)setVerticalFloatingOffset:(double)offset;
+- (void)setVerticalVisibilityOffset:(double)offset;
 @end
 
 @implementation PXPhotosHeaderCustomizationModel
 
-- (void)setShouldUseTextStyles:(BOOL)a3
+- (void)setShouldUseTextStyles:(BOOL)styles
 {
-  if (self->_shouldUseTextStyles != a3)
+  if (self->_shouldUseTextStyles != styles)
   {
-    self->_shouldUseTextStyles = a3;
+    self->_shouldUseTextStyles = styles;
     [(PXPhotosHeaderCustomizationModel *)self signalChange:8];
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  if (self->_alpha != a3)
+  if (self->_alpha != alpha)
   {
-    self->_alpha = a3;
+    self->_alpha = alpha;
     [(PXPhotosHeaderCustomizationModel *)self signalChange:4];
   }
 }
 
-- (void)setVerticalFloatingOffset:(double)a3
+- (void)setVerticalFloatingOffset:(double)offset
 {
-  if (self->_verticalFloatingOffset != a3)
+  if (self->_verticalFloatingOffset != offset)
   {
-    self->_verticalFloatingOffset = a3;
+    self->_verticalFloatingOffset = offset;
     [(PXPhotosHeaderCustomizationModel *)self signalChange:2];
   }
 }
 
-- (void)setVerticalVisibilityOffset:(double)a3
+- (void)setVerticalVisibilityOffset:(double)offset
 {
-  if (self->_verticalVisibilityOffset != a3)
+  if (self->_verticalVisibilityOffset != offset)
   {
-    self->_verticalVisibilityOffset = a3;
+    self->_verticalVisibilityOffset = offset;
     [(PXPhotosHeaderCustomizationModel *)self signalChange:1];
   }
 }

@@ -2,12 +2,12 @@
 + (WBSCloudSubscriptionFeatureAvailabilityObserver)porcupineAvailabilityObserver;
 + (WBSCloudSubscriptionFeatureAvailabilityObserver)provisionNewHideMyEmailAvailabilityObserver;
 - (BOOL)_overridenAvailability;
-- (WBSCloudSubscriptionFeatureAvailabilityObserver)initWithFeatureIdentifier:(id)a3;
-- (void)_requestFeatureEligibilityBlockingQueueUntilResponse:(BOOL)a3;
-- (void)_requestFeatureObjectBlockingQueueUntilResponse:(BOOL)a3;
+- (WBSCloudSubscriptionFeatureAvailabilityObserver)initWithFeatureIdentifier:(id)identifier;
+- (void)_requestFeatureEligibilityBlockingQueueUntilResponse:(BOOL)response;
+- (void)_requestFeatureObjectBlockingQueueUntilResponse:(BOOL)response;
 - (void)dealloc;
-- (void)getFeatureAvailabilityWithCompletionHandler:(id)a3;
-- (void)getFeatureEligibilityWithCompletionHandler:(id)a3;
+- (void)getFeatureAvailabilityWithCompletionHandler:(id)handler;
+- (void)getFeatureEligibilityWithCompletionHandler:(id)handler;
 @end
 
 @implementation WBSCloudSubscriptionFeatureAvailabilityObserver
@@ -34,16 +34,16 @@ void __80__WBSCloudSubscriptionFeatureAvailabilityObserver_porcupineAvailability
 - (BOOL)_overridenAvailability
 {
   v2 = [@"WBSCloudFeatureOverride." stringByAppendingString:self->_featureIdentifier];
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:v2];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:v2];
 
   return v4;
 }
 
-- (WBSCloudSubscriptionFeatureAvailabilityObserver)initWithFeatureIdentifier:(id)a3
+- (WBSCloudSubscriptionFeatureAvailabilityObserver)initWithFeatureIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = WBSCloudSubscriptionFeatureAvailabilityObserver;
   v5 = [(WBSCloudSubscriptionFeatureAvailabilityObserver *)&v18 init];
@@ -53,7 +53,7 @@ void __80__WBSCloudSubscriptionFeatureAvailabilityObserver_porcupineAvailability
     queue = v5->_queue;
     v5->_queue = v6;
 
-    v8 = [v4 copy];
+    v8 = [identifierCopy copy];
     featureIdentifier = v5->_featureIdentifier;
     v5->_featureIdentifier = v8;
 
@@ -111,13 +111,13 @@ void __77__WBSCloudSubscriptionFeatureAvailabilityObserver_initWithFeatureIdenti
   [WeakRetained _requestFeatureEligibilityBlockingQueueUntilResponse:0];
 }
 
-- (void)_requestFeatureObjectBlockingQueueUntilResponse:(BOOL)a3
+- (void)_requestFeatureObjectBlockingQueueUntilResponse:(BOOL)response
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [(WBSCloudSubscriptionFeatureAvailabilityObserver *)self _overridenAvailability];
+  _overridenAvailability = [(WBSCloudSubscriptionFeatureAvailabilityObserver *)self _overridenAvailability];
   v6 = WBS_LOG_CHANNEL_PREFIXAppleAccount();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (_overridenAvailability)
   {
     if (v7)
     {
@@ -143,7 +143,7 @@ void __77__WBSCloudSubscriptionFeatureAvailabilityObserver_initWithFeatureIdenti
     v11[1] = 3221225472;
     v11[2] = __99__WBSCloudSubscriptionFeatureAvailabilityObserver__requestFeatureObjectBlockingQueueUntilResponse___block_invoke;
     v11[3] = &unk_1E7FB74B8;
-    v12 = a3;
+    responseCopy = response;
     v11[4] = self;
     dispatch_async(queue, v11);
   }
@@ -225,13 +225,13 @@ void __99__WBSCloudSubscriptionFeatureAvailabilityObserver__requestFeatureObject
   }
 }
 
-- (void)_requestFeatureEligibilityBlockingQueueUntilResponse:(BOOL)a3
+- (void)_requestFeatureEligibilityBlockingQueueUntilResponse:(BOOL)response
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [(WBSCloudSubscriptionFeatureAvailabilityObserver *)self _overridenAvailability];
+  _overridenAvailability = [(WBSCloudSubscriptionFeatureAvailabilityObserver *)self _overridenAvailability];
   v6 = WBS_LOG_CHANNEL_PREFIXAppleAccount();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (_overridenAvailability)
   {
     if (v7)
     {
@@ -258,7 +258,7 @@ void __99__WBSCloudSubscriptionFeatureAvailabilityObserver__requestFeatureObject
     v11[2] = __104__WBSCloudSubscriptionFeatureAvailabilityObserver__requestFeatureEligibilityBlockingQueueUntilResponse___block_invoke;
     v11[3] = &unk_1E7FB74B8;
     v11[4] = self;
-    v12 = a3;
+    responseCopy = response;
     dispatch_async(queue, v11);
   }
 }
@@ -355,17 +355,17 @@ void __104__WBSCloudSubscriptionFeatureAvailabilityObserver__requestFeatureEligi
   [(WBSCloudSubscriptionFeatureAvailabilityObserver *)&v3 dealloc];
 }
 
-- (void)getFeatureAvailabilityWithCompletionHandler:(id)a3
+- (void)getFeatureAvailabilityWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __95__WBSCloudSubscriptionFeatureAvailabilityObserver_getFeatureAvailabilityWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB81B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -411,17 +411,17 @@ void __95__WBSCloudSubscriptionFeatureAvailabilityObserver_getFeatureAvailabilit
   }
 }
 
-- (void)getFeatureEligibilityWithCompletionHandler:(id)a3
+- (void)getFeatureEligibilityWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __94__WBSCloudSubscriptionFeatureAvailabilityObserver_getFeatureEligibilityWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB81B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 

@@ -1,24 +1,24 @@
 @interface PHAssetCharacterRecognitionProperties
 + (id)propertiesToFetch;
-- (PHAssetCharacterRecognitionProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetCharacterRecognitionProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetCharacterRecognitionProperties
 
-- (PHAssetCharacterRecognitionProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetCharacterRecognitionProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  prefetchedCopy = prefetched;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v25.receiver = self;
   v25.super_class = PHAssetCharacterRecognitionProperties;
   v10 = [(PHAssetCharacterRecognitionProperties *)&v25 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->super._asset, v9);
-    v12 = !v5;
-    if (v5)
+    objc_storeWeak(&v10->super._asset, assetCopy);
+    v12 = !prefetchedCopy;
+    if (prefetchedCopy)
     {
       v13 = @"mediaAnalysisAttributes.characterRecognitionAttributes.characterRecognitionData";
     }
@@ -28,7 +28,7 @@
       v13 = @"characterRecognitionAttributes.characterRecognitionData";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v14 = @"mediaAnalysisAttributes.characterRecognitionAttributes.machineReadableCodeData";
     }
@@ -58,18 +58,18 @@
       v16 = @"mediaAnalysisAttributes.characterRecognitionAttributes.adjustmentVersion";
     }
 
-    v17 = [v8 objectForKeyedSubscript:v13];
+    v17 = [dictionaryCopy objectForKeyedSubscript:v13];
     characterRecognitionData = v11->_characterRecognitionData;
     v11->_characterRecognitionData = v17;
 
-    v19 = [v8 objectForKeyedSubscript:v14];
+    v19 = [dictionaryCopy objectForKeyedSubscript:v14];
     machineReadableCodeData = v11->_machineReadableCodeData;
     v11->_machineReadableCodeData = v19;
 
-    v21 = [v8 objectForKeyedSubscript:v15];
+    v21 = [dictionaryCopy objectForKeyedSubscript:v15];
     v11->_algorithmVersion = [v21 integerValue];
 
-    v22 = [v8 objectForKeyedSubscript:v16];
+    v22 = [dictionaryCopy objectForKeyedSubscript:v16];
     adjustmentVersion = v11->_adjustmentVersion;
     v11->_adjustmentVersion = v22;
   }

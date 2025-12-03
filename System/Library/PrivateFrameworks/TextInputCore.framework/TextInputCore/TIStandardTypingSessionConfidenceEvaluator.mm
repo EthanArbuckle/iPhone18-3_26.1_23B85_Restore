@@ -1,33 +1,33 @@
 @interface TIStandardTypingSessionConfidenceEvaluator
-+ (double)calculateAlignedTypingSessionConfidence:(id)a3;
-+ (unint64_t)evaluateConfidenceInSession:(id)a3 alignedSession:(id)a4;
++ (double)calculateAlignedTypingSessionConfidence:(id)confidence;
++ (unint64_t)evaluateConfidenceInSession:(id)session alignedSession:(id)alignedSession;
 @end
 
 @implementation TIStandardTypingSessionConfidenceEvaluator
 
-+ (double)calculateAlignedTypingSessionConfidence:(id)a3
++ (double)calculateAlignedTypingSessionConfidence:(id)confidence
 {
-  v3 = a3;
+  confidenceCopy = confidence;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v4 = [v3 alignedEntries];
+  alignedEntries = [confidenceCopy alignedEntries];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __86__TIStandardTypingSessionConfidenceEvaluator_calculateAlignedTypingSessionConfidence___block_invoke;
   v11[3] = &unk_27872FF48;
   v11[4] = &v12;
-  [v4 enumerateObjectsUsingBlock:v11];
+  [alignedEntries enumerateObjectsUsingBlock:v11];
 
-  v5 = [v3 alignedEntries];
-  v6 = [v5 count];
+  alignedEntries2 = [confidenceCopy alignedEntries];
+  v6 = [alignedEntries2 count];
 
   if (v6)
   {
     v7 = v13[3];
-    v8 = [v3 alignedEntries];
-    v9 = v7 / ([v8 count] * 3.0);
+    alignedEntries3 = [confidenceCopy alignedEntries];
+    v9 = v7 / ([alignedEntries3 count] * 3.0);
   }
 
   else
@@ -47,15 +47,15 @@ uint64_t __86__TIStandardTypingSessionConfidenceEvaluator_calculateAlignedTyping
   return result;
 }
 
-+ (unint64_t)evaluateConfidenceInSession:(id)a3 alignedSession:(id)a4
++ (unint64_t)evaluateConfidenceInSession:(id)session alignedSession:(id)alignedSession
 {
   v29 = *MEMORY[0x277D85DE8];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [a3 userActionHistory];
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  userActionHistory = [session userActionHistory];
+  v5 = [userActionHistory countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v5)
   {
     v11 = 2;
@@ -78,21 +78,21 @@ uint64_t __86__TIStandardTypingSessionConfidenceEvaluator_calculateAlignedTyping
       v13 = v8;
       if (*v25 != v10)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(userActionHistory);
       }
 
       v14 = *(*(&v24 + 1) + 8 * v12);
-      v15 = [v14 actionType];
-      if (v15 > 5)
+      actionType = [v14 actionType];
+      if (actionType > 5)
       {
-        if ((v15 - 7) < 5)
+        if ((actionType - 7) < 5)
         {
           goto LABEL_29;
         }
 
-        if (v15 != 6)
+        if (actionType != 6)
         {
-          if (v15 == 12)
+          if (actionType == 12)
           {
             v11 = 1;
             goto LABEL_29;
@@ -104,11 +104,11 @@ uint64_t __86__TIStandardTypingSessionConfidenceEvaluator_calculateAlignedTyping
         v9 = 1;
       }
 
-      else if (v15 <= 1)
+      else if (actionType <= 1)
       {
-        if (v15)
+        if (actionType)
         {
-          if (v15 != 1)
+          if (actionType != 1)
           {
             goto LABEL_27;
           }
@@ -131,19 +131,19 @@ uint64_t __86__TIStandardTypingSessionConfidenceEvaluator_calculateAlignedTyping
 
       else
       {
-        if (v15 == 2)
+        if (actionType == 2)
         {
-          v17 = [v14 documentState];
-          v18 = [v17 contextAfterInput];
-          v19 = v18 != 0;
+          documentState = [v14 documentState];
+          contextAfterInput = [documentState contextAfterInput];
+          v19 = contextAfterInput != 0;
 
           v9 |= v19;
           goto LABEL_29;
         }
 
-        if (v15 != 3)
+        if (actionType != 3)
         {
-          if (v15 == 4)
+          if (actionType == 4)
           {
             goto LABEL_29;
           }
@@ -167,7 +167,7 @@ LABEL_29:
 
     while (v6 != v12);
     v7 = v22 + v6;
-    v6 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v6 = [userActionHistory countByEnumeratingWithState:&v24 objects:v28 count:16];
   }
 
   while (v6);

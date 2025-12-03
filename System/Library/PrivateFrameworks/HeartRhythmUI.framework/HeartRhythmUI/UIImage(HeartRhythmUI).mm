@@ -25,8 +25,8 @@
 + (id)hrui_ECGOnboardingWristImage
 {
   v1 = MEMORY[0x277D755B8];
-  v2 = [a1 _watchImageName];
-  v3 = [v1 hrui_screenWidthImageWithName:v2];
+  _watchImageName = [self _watchImageName];
+  v3 = [v1 hrui_screenWidthImageWithName:_watchImageName];
 
   return v3;
 }

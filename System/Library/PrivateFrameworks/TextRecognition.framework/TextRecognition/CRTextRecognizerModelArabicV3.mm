@@ -2,7 +2,7 @@
 + (id)defaultURLOfModelInThisBundle;
 - (TextBoxesOffsets)wordBoxesOffsets;
 - (_TtC15TextRecognition29CRTextRecognizerModelArabicV3)init;
-- (_TtC15TextRecognition29CRTextRecognizerModelArabicV3)initWithConfiguration:(id)a3 owner:(id)a4 error:(id *)a5;
+- (_TtC15TextRecognition29CRTextRecognizerModelArabicV3)initWithConfiguration:(id)configuration owner:(id)owner error:(id *)error;
 @end
 
 @implementation CRTextRecognizerModelArabicV3
@@ -45,7 +45,7 @@
   return [(CRTextRecognizerModelArabicV3 *)&v3 init];
 }
 
-- (_TtC15TextRecognition29CRTextRecognizerModelArabicV3)initWithConfiguration:(id)a3 owner:(id)a4 error:(id *)a5
+- (_TtC15TextRecognition29CRTextRecognizerModelArabicV3)initWithConfiguration:(id)configuration owner:(id)owner error:(id *)error
 {
   v7 = sub_1B429F6D8();
   v8 = *(v7 - 8);
@@ -54,7 +54,7 @@
   v12 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB884870);
   MEMORY[0x1EEE9AC00](v12 - 8, v13);
   v15 = &v19[-v14];
-  if (a4)
+  if (owner)
   {
     sub_1B429F6B8();
     (*(v8 + 32))(v15, v11, v7);
@@ -66,8 +66,8 @@
     (*(v8 + 56))(v15, 1, 1, v7);
   }
 
-  v16 = a3;
-  v17 = sub_1B4131D08(v16, v15);
+  configurationCopy = configuration;
+  v17 = sub_1B4131D08(configurationCopy, v15);
 
   return v17;
 }

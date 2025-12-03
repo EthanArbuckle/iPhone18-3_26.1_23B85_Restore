@@ -1,31 +1,31 @@
 @interface BLStreamingZipHandler
-+ (id)optionsWithHashes:(id)a3 type:(id)a4 size:(int64_t)a5;
++ (id)optionsWithHashes:(id)hashes type:(id)type size:(int64_t)size;
 @end
 
 @implementation BLStreamingZipHandler
 
-+ (id)optionsWithHashes:(id)a3 type:(id)a4 size:(int64_t)a5
++ (id)optionsWithHashes:(id)hashes type:(id)type size:(int64_t)size
 {
-  v7 = a3;
-  v8 = a4;
+  hashesCopy = hashes;
+  typeCopy = type;
   v9 = objc_alloc_init(NSMutableDictionary);
-  if (v8 && v7 && a5 >= 1)
+  if (typeCopy && hashesCopy && size >= 1)
   {
     v10 = SZExtractorOptionsHashType;
-    if ([v8 isEqualToString:@"MD5"])
+    if ([typeCopy isEqualToString:@"MD5"])
     {
       v11 = &SZExtractorHashTypeMD5;
     }
 
     else
     {
-      if (![v8 isEqualToString:@"SHA1"])
+      if (![typeCopy isEqualToString:@"SHA1"])
       {
         v12 = BLServiceDownloadStreamingZipLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           v17 = 138543362;
-          v18 = v8;
+          v18 = typeCopy;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "[Download-StreamingZip]: Invalid hash type: %{public}@", &v17, 0xCu);
         }
 
@@ -39,9 +39,9 @@
 LABEL_12:
     v13 = SZExtractorOptionsHashesArray;
 
-    [v9 setObject:v7 forKey:v13];
+    [v9 setObject:hashesCopy forKey:v13];
     v14 = SZExtractorOptionsHashedChunkSize;
-    v15 = [NSNumber numberWithInteger:a5];
+    v15 = [NSNumber numberWithInteger:size];
     [v9 setObject:v15 forKey:v14];
   }
 

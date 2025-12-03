@@ -1,38 +1,38 @@
 @interface SiriUILabelStackTemplateView
 - (NSLayoutConstraint)bottomViewConstraint;
 - (NSLayoutConstraint)topViewConstraint;
-- (SiriUILabelStackTemplateView)initWithDataSource:(id)a3;
+- (SiriUILabelStackTemplateView)initWithDataSource:(id)source;
 - (SiriUILabelStackTemplateViewDelegate)delegate;
 - (double)desiredHeight;
 - (void)_createContentLayoutGuides;
 - (void)_updateTopAndBottomViewConstraints;
-- (void)insertLeadingView:(id)a3 withMargins:(UIEdgeInsets)a4;
-- (void)insertTopView:(id)a3;
-- (void)insertTrailingView:(id)a3 withMargins:(UIEdgeInsets)a4;
+- (void)insertLeadingView:(id)view withMargins:(UIEdgeInsets)margins;
+- (void)insertTopView:(id)view;
+- (void)insertTrailingView:(id)view withMargins:(UIEdgeInsets)margins;
 - (void)populateStack;
 - (void)reloadData;
 - (void)removeFromTemplatedSuperview;
-- (void)setDataSource:(id)a3;
-- (void)setTemplatedSuperview:(id)a3;
+- (void)setDataSource:(id)source;
+- (void)setTemplatedSuperview:(id)superview;
 - (void)updateConstraints;
 @end
 
 @implementation SiriUILabelStackTemplateView
 
-- (SiriUILabelStackTemplateView)initWithDataSource:(id)a3
+- (SiriUILabelStackTemplateView)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = SiriUILabelStackTemplateView;
-  v5 = [(SiriUIBaseTemplateView *)&v14 initWithDataSource:v4];
+  v5 = [(SiriUIBaseTemplateView *)&v14 initWithDataSource:sourceCopy];
   v6 = v5;
   if (v5)
   {
     v5->_defaultTextAlignment = 4;
-    v7 = [(SiriUIBaseTemplateView *)v5 dataSource];
-    v8 = [v7 alignmentValue];
+    dataSource = [(SiriUIBaseTemplateView *)v5 dataSource];
+    alignmentValue = [dataSource alignmentValue];
 
-    if (v8 == 1)
+    if (alignmentValue == 1)
     {
       v9 = 1;
     }
@@ -52,7 +52,7 @@
     v12 = [MEMORY[0x277CCAAD0] constraintWithItem:v6 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:44.0];
     [(SiriUILabelStackTemplateView *)v6 addConstraint:v12];
 
-    [(SiriUILabelStackTemplateView *)v6 setDataSource:v4];
+    [(SiriUILabelStackTemplateView *)v6 setDataSource:sourceCopy];
     [(SiriUILabelStackTemplateView *)v6 setNeedsUpdateConstraints];
     [(SiriUILabelStackTemplateView *)v6 setNeedsLayout];
   }
@@ -84,21 +84,21 @@
 
     [(UILayoutGuide *)self->_stackedComponentsBoundsGuide setIdentifier:@"inner components guide"];
     [(SiriUILabelStackTemplateView *)self addLayoutGuide:self->_stackedComponentsBoundsGuide];
-    v9 = [(UILayoutGuide *)self->_stackedComponentsBoundsGuide leadingAnchor];
-    v10 = [(UILayoutGuide *)self->_contentBoundsGuide leadingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    leadingAnchor = [(UILayoutGuide *)self->_stackedComponentsBoundsGuide leadingAnchor];
+    leadingAnchor2 = [(UILayoutGuide *)self->_contentBoundsGuide leadingAnchor];
+    v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-    v12 = [(UILayoutGuide *)self->_stackedComponentsBoundsGuide trailingAnchor];
-    v13 = [(UILayoutGuide *)self->_contentBoundsGuide trailingAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    trailingAnchor = [(UILayoutGuide *)self->_stackedComponentsBoundsGuide trailingAnchor];
+    trailingAnchor2 = [(UILayoutGuide *)self->_contentBoundsGuide trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-    v15 = [(UILayoutGuide *)self->_stackedComponentsBoundsGuide topAnchor];
-    v16 = [(UILayoutGuide *)self->_contentBoundsGuide topAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    topAnchor = [(UILayoutGuide *)self->_stackedComponentsBoundsGuide topAnchor];
+    topAnchor2 = [(UILayoutGuide *)self->_contentBoundsGuide topAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-    v18 = [(UILayoutGuide *)self->_stackedComponentsBoundsGuide bottomAnchor];
-    v19 = [(UILayoutGuide *)self->_contentBoundsGuide bottomAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    bottomAnchor = [(UILayoutGuide *)self->_stackedComponentsBoundsGuide bottomAnchor];
+    bottomAnchor2 = [(UILayoutGuide *)self->_contentBoundsGuide bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
     v25[0] = &unk_287A0D190;
     v25[1] = &unk_287A0D1A8;
@@ -113,8 +113,8 @@
     stackedComponentsGuideConstraints = self->_stackedComponentsGuideConstraints;
     self->_stackedComponentsGuideConstraints = v22;
 
-    v24 = [(NSMutableDictionary *)self->_stackedComponentsGuideConstraints allValues];
-    [(SiriUILabelStackTemplateView *)self addConstraints:v24];
+    allValues = [(NSMutableDictionary *)self->_stackedComponentsGuideConstraints allValues];
+    [(SiriUILabelStackTemplateView *)self addConstraints:allValues];
   }
 }
 
@@ -136,20 +136,20 @@
     [(SiriUILabelStackTemplateView *)self removeConstraint:v6];
   }
 
-  v7 = [(SiriUILabelStackTemplateView *)self topView];
-  if (v7)
+  topView = [(SiriUILabelStackTemplateView *)self topView];
+  if (topView)
   {
-    v8 = v7;
-    v9 = [(SiriUILabelStackTemplateView *)self topView];
-    v10 = [(SiriUILabelStackTemplateView *)self bottomView];
+    v8 = topView;
+    topView2 = [(SiriUILabelStackTemplateView *)self topView];
+    bottomView = [(SiriUILabelStackTemplateView *)self bottomView];
 
-    if (v9 == v10)
+    if (topView2 == bottomView)
     {
-      v11 = [(SiriUILabelStackTemplateView *)self topView];
-      v12 = [v11 centerYAnchor];
-      v13 = [(SiriUILabelStackTemplateView *)self stackedComponentsBoundsGuide];
-      v14 = [v13 centerYAnchor];
-      v15 = [v12 constraintEqualToAnchor:v14];
+      topView3 = [(SiriUILabelStackTemplateView *)self topView];
+      centerYAnchor = [topView3 centerYAnchor];
+      stackedComponentsBoundsGuide = [(SiriUILabelStackTemplateView *)self stackedComponentsBoundsGuide];
+      centerYAnchor2 = [stackedComponentsBoundsGuide centerYAnchor];
+      v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
       LODWORD(v16) = 1132068864;
       [v15 setPriority:v16];
@@ -157,30 +157,30 @@
     }
   }
 
-  v17 = [(SiriUILabelStackTemplateView *)self topView];
+  topView4 = [(SiriUILabelStackTemplateView *)self topView];
 
-  if (v17)
+  if (topView4)
   {
-    v18 = [(SiriUILabelStackTemplateView *)self componentsForViews];
+    componentsForViews = [(SiriUILabelStackTemplateView *)self componentsForViews];
     v19 = MEMORY[0x277CCAE60];
-    v20 = [(SiriUILabelStackTemplateView *)self topView];
-    v21 = [v19 valueWithPointer:v20];
-    v22 = [v18 objectForKey:v21];
+    topView5 = [(SiriUILabelStackTemplateView *)self topView];
+    v21 = [v19 valueWithPointer:topView5];
+    v22 = [componentsForViews objectForKey:v21];
 
     v23 = +[SiriUIComponentConstraintFactory sharedConstraintFactory];
-    v24 = [(SiriUILabelStackTemplateView *)self topView];
-    v25 = [(SiriUILabelStackTemplateView *)self stackedComponentsBoundsGuide];
-    v26 = [v23 topConstraintForView:v24 fromLayoutGuide:v25 templateComponent:v22 layoutStyle:{-[SiriUILabelStackTemplateView layoutStyle](self, "layoutStyle")}];
+    topView6 = [(SiriUILabelStackTemplateView *)self topView];
+    stackedComponentsBoundsGuide2 = [(SiriUILabelStackTemplateView *)self stackedComponentsBoundsGuide];
+    v26 = [v23 topConstraintForView:topView6 fromLayoutGuide:stackedComponentsBoundsGuide2 templateComponent:v22 layoutStyle:{-[SiriUILabelStackTemplateView layoutStyle](self, "layoutStyle")}];
     objc_storeWeak(&self->_topViewConstraint, v26);
 
     v27 = objc_loadWeakRetained(&self->_topViewConstraint);
     if (!v27)
     {
-      v28 = [(SiriUILabelStackTemplateView *)self topView];
-      v29 = [(SiriUILabelStackTemplateView *)self contentBoundsGuide];
-      v30 = [(SiriUIBaseTemplateView *)self templatedSuperview];
-      [v30 templatedContentMargins];
-      v31 = [v28 siriui_pinTopTo:v29 withMargin:? priority:?];
+      topView7 = [(SiriUILabelStackTemplateView *)self topView];
+      contentBoundsGuide = [(SiriUILabelStackTemplateView *)self contentBoundsGuide];
+      templatedSuperview = [(SiriUIBaseTemplateView *)self templatedSuperview];
+      [templatedSuperview templatedContentMargins];
+      v31 = [topView7 siriui_pinTopTo:contentBoundsGuide withMargin:? priority:?];
       objc_storeWeak(&self->_topViewConstraint, v31);
     }
 
@@ -188,30 +188,30 @@
     [(SiriUILabelStackTemplateView *)self addConstraint:v32];
   }
 
-  v33 = [(SiriUILabelStackTemplateView *)self bottomView];
+  bottomView2 = [(SiriUILabelStackTemplateView *)self bottomView];
 
-  if (v33)
+  if (bottomView2)
   {
-    v34 = [(SiriUILabelStackTemplateView *)self componentsForViews];
+    componentsForViews2 = [(SiriUILabelStackTemplateView *)self componentsForViews];
     v35 = MEMORY[0x277CCAE60];
-    v36 = [(SiriUILabelStackTemplateView *)self bottomView];
-    v37 = [v35 valueWithPointer:v36];
-    v49 = [v34 objectForKey:v37];
+    bottomView3 = [(SiriUILabelStackTemplateView *)self bottomView];
+    v37 = [v35 valueWithPointer:bottomView3];
+    v49 = [componentsForViews2 objectForKey:v37];
 
     v38 = +[SiriUIComponentConstraintFactory sharedConstraintFactory];
-    v39 = [(SiriUILabelStackTemplateView *)self bottomView];
-    v40 = [(SiriUILabelStackTemplateView *)self stackedComponentsBoundsGuide];
-    v41 = [v38 bottomConstraintForView:v39 fromLayoutGuide:v40 templateComponent:v49 layoutStyle:{-[SiriUILabelStackTemplateView layoutStyle](self, "layoutStyle")}];
+    bottomView4 = [(SiriUILabelStackTemplateView *)self bottomView];
+    stackedComponentsBoundsGuide3 = [(SiriUILabelStackTemplateView *)self stackedComponentsBoundsGuide];
+    v41 = [v38 bottomConstraintForView:bottomView4 fromLayoutGuide:stackedComponentsBoundsGuide3 templateComponent:v49 layoutStyle:{-[SiriUILabelStackTemplateView layoutStyle](self, "layoutStyle")}];
     objc_storeWeak(&self->_bottomViewConstraint, v41);
 
     v42 = objc_loadWeakRetained(&self->_bottomViewConstraint);
     if (!v42)
     {
-      v43 = [(SiriUILabelStackTemplateView *)self bottomView];
-      v44 = [(SiriUIBaseTemplateView *)self templatedSuperview];
-      [v44 templatedContentMargins];
+      bottomView5 = [(SiriUILabelStackTemplateView *)self bottomView];
+      templatedSuperview2 = [(SiriUIBaseTemplateView *)self templatedSuperview];
+      [templatedSuperview2 templatedContentMargins];
       LODWORD(v45) = 1132003328;
-      v47 = [v43 siriui_pinBottomTo:self withMargin:v46 priority:v45];
+      v47 = [bottomView5 siriui_pinBottomTo:self withMargin:v46 priority:v45];
       objc_storeWeak(&self->_bottomViewConstraint, v47);
     }
 
@@ -227,21 +227,21 @@
   [(SiriUILabelStackTemplateView *)&v25 updateConstraints];
   if (!self->_constraintsUpdated)
   {
-    v3 = [(SiriUIBaseTemplateView *)self templatedSuperview];
+    templatedSuperview = [(SiriUIBaseTemplateView *)self templatedSuperview];
 
-    if (v3)
+    if (templatedSuperview)
     {
       [(SiriUILabelStackTemplateView *)self _updateTopAndBottomViewConstraints];
       self->_constraintsUpdated = 1;
     }
   }
 
-  v4 = [(SiriUIBaseTemplateView *)self templatedSuperview];
+  templatedSuperview2 = [(SiriUIBaseTemplateView *)self templatedSuperview];
 
-  if (v4)
+  if (templatedSuperview2)
   {
-    v5 = [(SiriUIBaseTemplateView *)self templatedSuperview];
-    [v5 templatedContentMargins];
+    templatedSuperview3 = [(SiriUIBaseTemplateView *)self templatedSuperview];
+    [templatedSuperview3 templatedContentMargins];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -260,16 +260,16 @@
     [v17 setConstant:-v13];
   }
 
-  v18 = [(SiriUILabelStackTemplateView *)self delegate];
-  v19 = [v18 labelStackTemplateViewShouldLayoutCompressed:self];
+  delegate = [(SiriUILabelStackTemplateView *)self delegate];
+  v19 = [delegate labelStackTemplateViewShouldLayoutCompressed:self];
 
   v20 = 0.0;
   if ((v19 & 1) == 0)
   {
-    v21 = [(SiriUIBaseTemplateView *)self dataSource];
-    v22 = [v21 paddingValue];
+    dataSource = [(SiriUIBaseTemplateView *)self dataSource];
+    paddingValue = [dataSource paddingValue];
 
-    if (v22 == 1)
+    if (paddingValue == 1)
     {
       v20 = 22.0;
     }
@@ -287,13 +287,13 @@
   [v24 setConstant:-v20];
 }
 
-- (void)insertLeadingView:(id)a3 withMargins:(UIEdgeInsets)a4
+- (void)insertLeadingView:(id)view withMargins:(UIEdgeInsets)margins
 {
-  right = a4.right;
-  left = a4.left;
-  v7 = a3;
+  right = margins.right;
+  left = margins.left;
+  viewCopy = view;
   leadingViews = self->_leadingViews;
-  v28 = v7;
+  v28 = viewCopy;
   if (!leadingViews)
   {
     v9 = objc_alloc_init(MEMORY[0x277D75A68]);
@@ -309,30 +309,30 @@
     LODWORD(v12) = 1132068864;
     [(UIStackView *)self->_leadingViews setContentCompressionResistancePriority:0 forAxis:v12];
     v13 = self->_leadingViews;
-    v14 = [(SiriUILabelStackTemplateView *)self contentBoundsGuide];
-    v15 = [(UIStackView *)v13 siriui_pinLeadingToLeadingEdgeOf:v14 withMargin:0.0];
+    contentBoundsGuide = [(SiriUILabelStackTemplateView *)self contentBoundsGuide];
+    v15 = [(UIStackView *)v13 siriui_pinLeadingToLeadingEdgeOf:contentBoundsGuide withMargin:0.0];
 
     v16 = [(NSMutableDictionary *)self->_stackedComponentsGuideConstraints objectForKeyedSubscript:&unk_287A0D1C0];
     [(SiriUILabelStackTemplateView *)self removeConstraint:v16];
 
     v17 = [(UIStackView *)self->_leadingViews siriui_pinTrailingToLeadingEdgeOf:self->_stackedComponentsBoundsGuide withMargin:-12.0];
     [(NSMutableDictionary *)self->_stackedComponentsGuideConstraints setObject:v17 forKeyedSubscript:&unk_287A0D1C0];
-    v18 = [(UIStackView *)self->_leadingViews centerYAnchor];
-    v19 = [(UILayoutGuide *)self->_stackedComponentsBoundsGuide centerYAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    centerYAnchor = [(UIStackView *)self->_leadingViews centerYAnchor];
+    centerYAnchor2 = [(UILayoutGuide *)self->_stackedComponentsBoundsGuide centerYAnchor];
+    v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
     LODWORD(v21) = 1132068864;
     [v20 setPriority:v21];
     [(SiriUILabelStackTemplateView *)self addConstraint:v20];
 
-    v7 = v28;
+    viewCopy = v28;
     leadingViews = self->_leadingViews;
   }
 
-  [(UIStackView *)leadingViews addArrangedSubview:v7];
+  [(UIStackView *)leadingViews addArrangedSubview:viewCopy];
   v22 = +[SiriUIComponentConstraintFactory sharedConstraintFactory];
-  v23 = [(SiriUILabelStackTemplateView *)self contentBoundsGuide];
-  v24 = [v22 topConstraintForView:v28 fromLayoutGuide:v23 templateComponent:0 layoutStyle:{-[SiriUILabelStackTemplateView layoutStyle](self, "layoutStyle")}];
+  contentBoundsGuide2 = [(SiriUILabelStackTemplateView *)self contentBoundsGuide];
+  v24 = [v22 topConstraintForView:v28 fromLayoutGuide:contentBoundsGuide2 templateComponent:0 layoutStyle:{-[SiriUILabelStackTemplateView layoutStyle](self, "layoutStyle")}];
 
   if (v24)
   {
@@ -340,8 +340,8 @@
   }
 
   v25 = +[SiriUIComponentConstraintFactory sharedConstraintFactory];
-  v26 = [(SiriUILabelStackTemplateView *)self contentBoundsGuide];
-  v27 = [v25 bottomConstraintForView:v28 fromLayoutGuide:v26 templateComponent:0 layoutStyle:{-[SiriUILabelStackTemplateView layoutStyle](self, "layoutStyle")}];
+  contentBoundsGuide3 = [(SiriUILabelStackTemplateView *)self contentBoundsGuide];
+  v27 = [v25 bottomConstraintForView:v28 fromLayoutGuide:contentBoundsGuide3 templateComponent:0 layoutStyle:{-[SiriUILabelStackTemplateView layoutStyle](self, "layoutStyle")}];
 
   if (v27)
   {
@@ -351,13 +351,13 @@
   [(UIStackView *)self->_leadingViews setSpacing:fabs(left) + fabs(right)];
 }
 
-- (void)insertTrailingView:(id)a3 withMargins:(UIEdgeInsets)a4
+- (void)insertTrailingView:(id)view withMargins:(UIEdgeInsets)margins
 {
-  right = a4.right;
-  left = a4.left;
-  v7 = a3;
+  right = margins.right;
+  left = margins.left;
+  viewCopy = view;
   trailingViews = self->_trailingViews;
-  v22 = v7;
+  v22 = viewCopy;
   if (!trailingViews)
   {
     v9 = objc_alloc_init(MEMORY[0x277D75A68]);
@@ -373,53 +373,53 @@
     LODWORD(v12) = 1132068864;
     [(UIStackView *)self->_trailingViews setContentCompressionResistancePriority:0 forAxis:v12];
     v13 = self->_trailingViews;
-    v14 = [(SiriUILabelStackTemplateView *)self contentBoundsGuide];
-    v15 = [(UIStackView *)v13 siriui_pinTrailingToTrailingEdgeOf:v14 withMargin:0.0];
+    contentBoundsGuide = [(SiriUILabelStackTemplateView *)self contentBoundsGuide];
+    v15 = [(UIStackView *)v13 siriui_pinTrailingToTrailingEdgeOf:contentBoundsGuide withMargin:0.0];
 
     v16 = [(NSMutableDictionary *)self->_stackedComponentsGuideConstraints objectForKeyedSubscript:&unk_287A0D1D8];
     [(SiriUILabelStackTemplateView *)self removeConstraint:v16];
 
     v17 = [(UIStackView *)self->_trailingViews siriui_pinLeadingToTrailingEdgeOf:self->_stackedComponentsBoundsGuide withMargin:12.0];
     [(NSMutableDictionary *)self->_stackedComponentsGuideConstraints setObject:v17 forKeyedSubscript:&unk_287A0D1D8];
-    v18 = [(UIStackView *)self->_trailingViews centerYAnchor];
-    v19 = [(SiriUILabelStackTemplateView *)self stackedComponentsBoundsGuide];
-    v20 = [v19 centerYAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
+    centerYAnchor = [(UIStackView *)self->_trailingViews centerYAnchor];
+    stackedComponentsBoundsGuide = [(SiriUILabelStackTemplateView *)self stackedComponentsBoundsGuide];
+    centerYAnchor2 = [stackedComponentsBoundsGuide centerYAnchor];
+    v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [(SiriUILabelStackTemplateView *)self addConstraint:v21];
 
-    v7 = v22;
+    viewCopy = v22;
     trailingViews = self->_trailingViews;
   }
 
-  [(UIStackView *)trailingViews addArrangedSubview:v7];
+  [(UIStackView *)trailingViews addArrangedSubview:viewCopy];
   [(UIStackView *)self->_trailingViews setSpacing:fabs(left) + fabs(right)];
 }
 
-- (void)insertTopView:(id)a3
+- (void)insertTopView:(id)view
 {
-  v4 = a3;
-  [(SiriUILabelStackTemplateView *)self addSubview:v4];
-  v5 = [(SiriUILabelStackTemplateView *)self topView];
+  viewCopy = view;
+  [(SiriUILabelStackTemplateView *)self addSubview:viewCopy];
+  topView = [(SiriUILabelStackTemplateView *)self topView];
 
-  if (v5)
+  if (topView)
   {
-    v6 = [(SiriUILabelStackTemplateView *)self topView];
-    v7 = [(SiriUILabelStackTemplateView *)self componentsForViews];
-    v8 = [MEMORY[0x277CCAE60] valueWithPointer:v6];
-    v9 = [v7 objectForKey:v8];
+    topView2 = [(SiriUILabelStackTemplateView *)self topView];
+    componentsForViews = [(SiriUILabelStackTemplateView *)self componentsForViews];
+    v8 = [MEMORY[0x277CCAE60] valueWithPointer:topView2];
+    v9 = [componentsForViews objectForKey:v8];
 
     v10 = +[SiriUIComponentConstraintFactory sharedConstraintFactory];
-    v11 = [v10 verticalConstraintFromUpperView:v4 lowerView:v6 upperTemplateComponent:0 lowerTemplateComponent:v9 layoutStyle:{-[SiriUILabelStackTemplateView layoutStyle](self, "layoutStyle")}];
+    v11 = [v10 verticalConstraintFromUpperView:viewCopy lowerView:topView2 upperTemplateComponent:0 lowerTemplateComponent:v9 layoutStyle:{-[SiriUILabelStackTemplateView layoutStyle](self, "layoutStyle")}];
 
     [(SiriUILabelStackTemplateView *)self addConstraint:v11];
   }
 
   else
   {
-    [(SiriUILabelStackTemplateView *)self setBottomView:v4];
+    [(SiriUILabelStackTemplateView *)self setBottomView:viewCopy];
   }
 
-  [(SiriUILabelStackTemplateView *)self setTopView:v4];
+  [(SiriUILabelStackTemplateView *)self setTopView:viewCopy];
 
   [(SiriUILabelStackTemplateView *)self _updateTopAndBottomViewConstraints];
 
@@ -435,23 +435,23 @@
 
 - (void)removeFromTemplatedSuperview
 {
-  v3 = [(SiriUIBaseTemplateView *)self templatedSuperview];
-  [v3 templateSubviewWantsToBeRemovedFromHierarchy:self];
+  templatedSuperview = [(SiriUIBaseTemplateView *)self templatedSuperview];
+  [templatedSuperview templateSubviewWantsToBeRemovedFromHierarchy:self];
 }
 
 - (void)populateStack
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(SiriUILabelStackTemplateView *)self topView];
+  topView = [(SiriUILabelStackTemplateView *)self topView];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [(SiriUIBaseTemplateView *)self dataSource];
-  v5 = [v4 labelComponents];
+  dataSource = [(SiriUIBaseTemplateView *)self dataSource];
+  labelComponents = [dataSource labelComponents];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  obj = labelComponents;
+  v6 = [labelComponents countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -460,7 +460,7 @@
     do
     {
       v10 = 0;
-      v11 = v3;
+      v11 = topView;
       v12 = v8;
       do
       {
@@ -471,9 +471,9 @@
 
         v13 = *(*(&v23 + 1) + 8 * v10);
         v14 = [SiriUILabelComponentView viewForComponent:v13];
-        v15 = [(SiriUILabelStackTemplateView *)self componentsForViews];
+        componentsForViews = [(SiriUILabelStackTemplateView *)self componentsForViews];
         v16 = [MEMORY[0x277CCAE60] valueWithPointer:v14];
-        [v15 setObject:v13 forKey:v16];
+        [componentsForViews setObject:v13 forKey:v16];
 
         [(SiriUILabelStackTemplateView *)self addSubview:v14];
         if (v11)
@@ -493,18 +493,18 @@
         v20 = [v14 siriui_pinTrailingToTrailingEdgeOf:self->_stackedComponentsBoundsGuide withMargin:0.0];
         v8 = v13;
 
-        v3 = v14;
+        topView = v14;
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v21 = v3;
+          v21 = topView;
           [v21 setTextAlignment:{-[SiriUILabelStackTemplateView defaultTextAlignment](self, "defaultTextAlignment")}];
         }
 
-        [(SiriUILabelStackTemplateView *)self setBottomView:v3];
+        [(SiriUILabelStackTemplateView *)self setBottomView:topView];
 
         ++v10;
-        v11 = v3;
+        v11 = topView;
         v12 = v8;
       }
 
@@ -516,16 +516,16 @@
   }
 }
 
-- (void)setTemplatedSuperview:(id)a3
+- (void)setTemplatedSuperview:(id)superview
 {
-  v4 = a3;
+  superviewCopy = superview;
   v7.receiver = self;
   v7.super_class = SiriUILabelStackTemplateView;
-  [(SiriUIBaseTemplateView *)&v7 setTemplatedSuperview:v4];
-  if (v4)
+  [(SiriUIBaseTemplateView *)&v7 setTemplatedSuperview:superviewCopy];
+  if (superviewCopy)
   {
-    v5 = [(UIView *)self siriui_pinLeadingTo:v4 withMargin:0.0];
-    v6 = [(UIView *)self siriui_pinTrailingTo:v4 withMargin:0.0];
+    v5 = [(UIView *)self siriui_pinLeadingTo:superviewCopy withMargin:0.0];
+    v6 = [(UIView *)self siriui_pinTrailingTo:superviewCopy withMargin:0.0];
     [(SiriUILabelStackTemplateView *)self setNeedsUpdateConstraints];
   }
 }
@@ -537,11 +537,11 @@
   [(SiriUILabelStackTemplateView *)self setNeedsUpdateConstraints];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
   v4.receiver = self;
   v4.super_class = SiriUILabelStackTemplateView;
-  [(SiriUIBaseTemplateView *)&v4 setDataSource:a3];
+  [(SiriUIBaseTemplateView *)&v4 setDataSource:source];
   [(SiriUILabelStackTemplateView *)self reloadData];
 }
 

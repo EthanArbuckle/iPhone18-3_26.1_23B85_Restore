@@ -1,5 +1,5 @@
 @interface CCItemField
-+ (id)_selectorNameForDataType:(unsigned __int8)a3;
++ (id)_selectorNameForDataType:(unsigned __int8)type;
 - (BOOL)BOOLValue;
 - (BOOL)hasBoolValue;
 - (BOOL)hasDoubleValue;
@@ -9,7 +9,7 @@
 - (BOOL)hasRawEnumValue;
 - (BOOL)hasUInt32Value;
 - (BOOL)hasUInt64Value;
-- (CCItemField)initWithFieldType:(unsigned __int16)a3 dataType:(unsigned __int8)a4;
+- (CCItemField)initWithFieldType:(unsigned __int16)type dataType:(unsigned __int8)dataType;
 - (CCItemFieldValueStorage)valueStorage;
 - (NSObject)boxedJSONValue;
 - (double)doubleValue;
@@ -76,9 +76,9 @@
   return v3;
 }
 
-+ (id)_selectorNameForDataType:(unsigned __int8)a3
++ (id)_selectorNameForDataType:(unsigned __int8)type
 {
-  switch(a3)
+  switch(type)
   {
     case 0u:
       v3 = sel_stringValue;
@@ -156,15 +156,15 @@ LABEL_25:
   return v4;
 }
 
-- (CCItemField)initWithFieldType:(unsigned __int16)a3 dataType:(unsigned __int8)a4
+- (CCItemField)initWithFieldType:(unsigned __int16)type dataType:(unsigned __int8)dataType
 {
   v7.receiver = self;
   v7.super_class = CCItemField;
   result = [(CCItemField *)&v7 init];
   if (result)
   {
-    result->_fieldType = a3;
-    result->_dataType = a4;
+    result->_fieldType = type;
+    result->_dataType = dataType;
   }
 
   return result;
@@ -876,11 +876,11 @@ void __29__CCItemField_boxedJSONValue__block_invoke_8(uint64_t a1, uint64_t a2)
   v5 = NSStringFromClass(v4);
   v6 = CCTypeIdentifierRegistryBridge();
   v7 = [v6 descriptionForTypeIdentifier:{-[CCItemField fieldType](self, "fieldType")}];
-  v8 = [(CCItemField *)self fieldType];
+  fieldType = [(CCItemField *)self fieldType];
   v9 = CCStringFromItemFieldDataType([(CCItemField *)self dataType]);
-  v10 = [(CCItemField *)self boxedJSONValue];
-  v11 = [(CCItemField *)self parentMessageField];
-  v12 = [v3 initWithFormat:@"%@ - name: %@ fieldType: %hu dataType: %@, value: %@, parentField: %@", v5, v7, v8, v9, v10, v11];
+  boxedJSONValue = [(CCItemField *)self boxedJSONValue];
+  parentMessageField = [(CCItemField *)self parentMessageField];
+  v12 = [v3 initWithFormat:@"%@ - name: %@ fieldType: %hu dataType: %@, value: %@, parentField: %@", v5, v7, fieldType, v9, boxedJSONValue, parentMessageField];
 
   return v12;
 }

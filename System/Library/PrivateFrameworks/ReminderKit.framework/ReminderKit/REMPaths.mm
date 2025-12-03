@@ -1,30 +1,30 @@
 @interface REMPaths
 + (BOOL)_legacy_shouldUseCentralizedDataPath;
-+ (id)URLForGroupContainerWithIdentifier:(id)a3;
++ (id)URLForGroupContainerWithIdentifier:(id)identifier;
 + (id)attributesForGroupContainerDirectory;
-+ (id)createTemporaryFileDirectoryURLIfNeededWithError:(id *)a3;
++ (id)createTemporaryFileDirectoryURLIfNeededWithError:(id *)error;
 + (id)dataSeparationEnabled_applicationDocumentsURL;
 + (id)legacy_applicationDocumentsURL;
 + (id)legacy_centralizedDataPath;
-+ (void)unitTest_setLegacyApplicationDocumentsURL:(id)a3;
++ (void)unitTest_setLegacyApplicationDocumentsURL:(id)l;
 @end
 
 @implementation REMPaths
 
-+ (id)createTemporaryFileDirectoryURLIfNeededWithError:(id *)a3
++ (id)createTemporaryFileDirectoryURLIfNeededWithError:(id *)error
 {
   if (rem_feature_enabled(@"Reminders", @"dataSeparation"))
   {
-    [a1 dataSeparationEnabled_applicationDocumentsURL];
+    [self dataSeparationEnabled_applicationDocumentsURL];
   }
 
   else
   {
-    [a1 legacy_applicationDocumentsURL];
+    [self legacy_applicationDocumentsURL];
   }
   v5 = ;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 URLForDirectory:99 inDomain:1 appropriateForURL:v5 create:1 error:a3];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:v5 create:1 error:error];
 
   return v7;
 }
@@ -51,7 +51,7 @@
     block[1] = 3221225472;
     block[2] = __42__REMPaths_legacy_applicationDocumentsURL__block_invoke_2;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     dispatch_sync(creationQueue, block);
     v3 = legacy_applicationDocumentsURL;
   }
@@ -109,7 +109,7 @@ void __42__REMPaths_legacy_applicationDocumentsURL__block_invoke_2(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __57__REMPaths_dataSeparationEnabled_applicationDocumentsURL__block_invoke_2;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     dispatch_sync(creationQueue, block);
     v3 = dataSeparationEnabled_applicationDocumentsURL;
   }
@@ -142,10 +142,10 @@ void __57__REMPaths_dataSeparationEnabled_applicationDocumentsURL__block_invoke_
   }
 }
 
-+ (id)URLForGroupContainerWithIdentifier:(id)a3
++ (id)URLForGroupContainerWithIdentifier:(id)identifier
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v41 = 0;
   v42 = &v41;
   v43 = 0x2050000000;
@@ -164,11 +164,11 @@ void __57__REMPaths_dataSeparationEnabled_applicationDocumentsURL__block_invoke_
 
   v6 = v5;
   _Block_object_dispose(&v41, 8);
-  v7 = [v5 sharedManager];
-  v8 = [v7 currentPersona];
-  v9 = [v8 isProxy];
+  sharedManager = [v5 sharedManager];
+  currentPersona = [sharedManager currentPersona];
+  v9 = [currentPersona isProxy];
   v40 = 0;
-  v36 = [v8 copyCurrentPersonaContextWithError:&v40];
+  v36 = [currentPersona copyCurrentPersonaContextWithError:&v40];
   v10 = v40;
   v11 = v10;
   if (v10)
@@ -209,8 +209,8 @@ void __57__REMPaths_dataSeparationEnabled_applicationDocumentsURL__block_invoke_
     v15 = v14;
     _Block_object_dispose(&v41, 8);
     v16 = [v14 personaAttributesForPersonaType:0];
-    v17 = [v16 userPersonaUniqueString];
-    v18 = [v8 generateAndRestorePersonaContextWithPersonaUniqueString:v17];
+    userPersonaUniqueString = [v16 userPersonaUniqueString];
+    v18 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:userPersonaUniqueString];
   }
 
   else
@@ -228,8 +228,8 @@ void __57__REMPaths_dataSeparationEnabled_applicationDocumentsURL__block_invoke_
   }
 
 LABEL_16:
-  v19 = [MEMORY[0x1E696AC08] defaultManager];
-  v20 = [v19 containerURLForSecurityApplicationGroupIdentifier:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v20 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:identifierCopy];
 
   if (!v20)
   {
@@ -241,13 +241,13 @@ LABEL_16:
     }
 
     v22 = [MEMORY[0x1E6963618] bundleProxyForIdentifier:@"com.apple.reminders"];
-    v23 = [v22 groupContainerURLs];
-    v20 = [v23 objectForKey:v4];
+    groupContainerURLs = [v22 groupContainerURLs];
+    v20 = [groupContainerURLs objectForKey:identifierCopy];
   }
 
   if (v12)
   {
-    v24 = [v8 restorePersonaWithSavedPersonaContext:v37];
+    v24 = [currentPersona restorePersonaWithSavedPersonaContext:v37];
   }
 
   if (v20)
@@ -261,16 +261,16 @@ LABEL_16:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        *&buf[4] = v4;
+        *&buf[4] = identifierCopy;
         *&buf[12] = 2112;
         *&buf[14] = v20;
         _os_log_impl(&dword_19A0DB000, v27, OS_LOG_TYPE_DEFAULT, "URLForGroupContainer: %@ group container URL is not reachable. URL=%@", buf, 0x16u);
       }
 
-      v28 = [MEMORY[0x1E696AC08] defaultManager];
-      v29 = [a1 attributesForGroupContainerDirectory];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      attributesForGroupContainerDirectory = [self attributesForGroupContainerDirectory];
       v38 = 0;
-      v30 = [v28 createDirectoryAtURL:v20 withIntermediateDirectories:1 attributes:v29 error:&v38];
+      v30 = [defaultManager2 createDirectoryAtURL:v20 withIntermediateDirectories:1 attributes:attributesForGroupContainerDirectory error:&v38];
       v31 = v38;
 
       if ((v30 & 1) == 0)
@@ -278,7 +278,7 @@ LABEL_16:
         v32 = os_log_create("com.apple.reminderkit", "default");
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
-          [(REMPaths *)v4 URLForGroupContainerWithIdentifier:v31, v32];
+          [(REMPaths *)identifierCopy URLForGroupContainerWithIdentifier:v31, v32];
         }
       }
     }
@@ -289,7 +289,7 @@ LABEL_16:
     v26 = os_log_create("com.apple.reminderkit", "default");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      [(REMPaths *)v4 URLForGroupContainerWithIdentifier:v26];
+      [(REMPaths *)identifierCopy URLForGroupContainerWithIdentifier:v26];
     }
   }
 
@@ -344,9 +344,9 @@ void __48__REMPaths__legacy_shouldUseCentralizedDataPath__block_invoke()
   return v2;
 }
 
-+ (void)unitTest_setLegacyApplicationDocumentsURL:(id)a3
++ (void)unitTest_setLegacyApplicationDocumentsURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   if (onceToken != -1)
   {
     +[REMPaths(UnitTests) unitTest_setLegacyApplicationDocumentsURL:];
@@ -357,8 +357,8 @@ void __48__REMPaths__legacy_shouldUseCentralizedDataPath__block_invoke()
   block[1] = 3221225472;
   block[2] = __65__REMPaths_UnitTests__unitTest_setLegacyApplicationDocumentsURL___block_invoke_2;
   block[3] = &unk_1E7508028;
-  v7 = v3;
-  v5 = v3;
+  v7 = lCopy;
+  v5 = lCopy;
   dispatch_sync(v4, block);
 }
 

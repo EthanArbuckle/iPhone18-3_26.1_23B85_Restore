@@ -36,9 +36,9 @@ LABEL_6:
   }
 
   os_unfair_lock_lock(&self->_assertionLock);
-  v5 = [(AssertionManager *)self createInstance];
+  createInstance = [(AssertionManager *)self createInstance];
   v6 = self->_keepAliveAssertion;
-  self->_keepAliveAssertion = v5;
+  self->_keepAliveAssertion = createInstance;
 
   os_unfair_lock_unlock(&self->_assertionLock);
   v7 = self->_keepAliveAssertion;

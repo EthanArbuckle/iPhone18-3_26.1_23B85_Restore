@@ -1,15 +1,15 @@
 @interface UISSceneHostingSettingsModifier
-- (UISSceneHostingSettingsModifier)initWithBSXPCCoder:(id)a3;
-- (id)updaterForProposedSettings:(id)a3 withSettingsDiff:(id)a4;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (UISSceneHostingSettingsModifier)initWithBSXPCCoder:(id)coder;
+- (id)updaterForProposedSettings:(id)settings withSettingsDiff:(id)diff;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation UISSceneHostingSettingsModifier
 
-- (id)updaterForProposedSettings:(id)a3 withSettingsDiff:(id)a4
+- (id)updaterForProposedSettings:(id)settings withSettingsDiff:(id)diff
 {
-  v7 = a3;
-  v8 = a4;
+  settingsCopy = settings;
+  diffCopy = diff;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Implementation required for abstract method %s", "-[UISSceneHostingSettingsModifier updaterForProposedSettings:withSettingsDiff:]"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -21,7 +21,7 @@
     v16 = 2114;
     v17 = v12;
     v18 = 2048;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
     v21 = @"UISSceneHostingSettingsModifier.m";
     v22 = 1024;
@@ -37,9 +37,9 @@
   return result;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Implementation required for abstract method %s", "-[UISSceneHostingSettingsModifier encodeWithBSXPCCoder:]"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -51,7 +51,7 @@
     v12 = 2114;
     v13 = v9;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"UISSceneHostingSettingsModifier.m";
     v18 = 1024;
@@ -66,9 +66,9 @@
   __break(0);
 }
 
-- (UISSceneHostingSettingsModifier)initWithBSXPCCoder:(id)a3
+- (UISSceneHostingSettingsModifier)initWithBSXPCCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Implementation required for abstract method %s", "-[UISSceneHostingSettingsModifier initWithBSXPCCoder:]"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -80,7 +80,7 @@
     v13 = 2114;
     v14 = v9;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
     v18 = @"UISSceneHostingSettingsModifier.m";
     v19 = 1024;

@@ -1,70 +1,70 @@
 @interface TRIServerContext
 - (TRIPushServiceConnectionMultiplexing)pushServiceMuxer;
-- (TRIServerContext)initWithPaths:(id)a3 client:(id)a4 storageManagement:(id)a5 xpcActivityManagement:(id)a6;
+- (TRIServerContext)initWithPaths:(id)paths client:(id)client storageManagement:(id)management xpcActivityManagement:(id)activityManagement;
 - (TRITaskQueuing)taskQueue;
 - (TRIXPCActivityManagementProtocol)xpcActivityManager;
 - (id)ensureFakeCKDatabase;
-- (void)_logInitErrorWithClient:(id)a3 message:(id)a4;
-- (void)logErrorMetric:(id)a3;
+- (void)_logInitErrorWithClient:(id)client message:(id)message;
+- (void)logErrorMetric:(id)metric;
 @end
 
 @implementation TRIServerContext
 
-- (void)logErrorMetric:(id)a3
+- (void)logErrorMetric:(id)metric
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D73B40] metricWithName:@"server_error" categoricalValue:a3];
-  v5 = [(TRIServerContext *)self client];
-  v6 = [v5 logger];
-  v7 = [(TRIServerContext *)self client];
-  v8 = [v7 trackingId];
+  v4 = [MEMORY[0x277D73B40] metricWithName:@"server_error" categoricalValue:metric];
+  client = [(TRIServerContext *)self client];
+  logger = [client logger];
+  client2 = [(TRIServerContext *)self client];
+  trackingId = [client2 trackingId];
   v11[0] = v4;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  [v6 logWithTrackingId:v8 metrics:v9 dimensions:0 trialSystemTelemetry:0];
+  [logger logWithTrackingId:trackingId metrics:v9 dimensions:0 trialSystemTelemetry:0];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_logInitErrorWithClient:(id)a3 message:(id)a4
+- (void)_logInitErrorWithClient:(id)client message:(id)message
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  messageCopy = message;
+  clientCopy = client;
   v8 = TRILogCategory_Server();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = messageCopy;
     _os_log_error_impl(&dword_26F567000, v8, OS_LOG_TYPE_ERROR, "%@", &v11, 0xCu);
   }
 
-  v9 = [v7 shouldLogAtLevel:50 withPrivacyRadar:54260918];
+  v9 = [clientCopy shouldLogAtLevel:50 withPrivacyRadar:54260918];
   if (v9)
   {
-    [(TRIServerContext *)self logErrorMetric:v6];
+    [(TRIServerContext *)self logErrorMetric:messageCopy];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (TRIServerContext)initWithPaths:(id)a3 client:(id)a4 storageManagement:(id)a5 xpcActivityManagement:(id)a6
+- (TRIServerContext)initWithPaths:(id)paths client:(id)client storageManagement:(id)management xpcActivityManagement:(id)activityManagement
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  pathsCopy = paths;
+  clientCopy = client;
+  managementCopy = management;
+  activityManagementCopy = activityManagement;
+  if (pathsCopy)
   {
-    if (v13)
+    if (clientCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_13:
-    v46 = [MEMORY[0x277CCA890] currentHandler];
-    [v46 handleFailureInMethod:a2 object:self file:@"TRIServerContext.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"client"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIServerContext.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"client"}];
 
-    if (v14)
+    if (managementCopy)
     {
       goto LABEL_4;
     }
@@ -72,23 +72,23 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v45 = [MEMORY[0x277CCA890] currentHandler];
-  [v45 handleFailureInMethod:a2 object:self file:@"TRIServerContext.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"paths"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIServerContext.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"paths"}];
 
-  if (!v13)
+  if (!clientCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_3:
-  if (v14)
+  if (managementCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_14:
-  v47 = [MEMORY[0x277CCA890] currentHandler];
-  [v47 handleFailureInMethod:a2 object:self file:@"TRIServerContext.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"storageManagement"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIServerContext.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"storageManagement"}];
 
 LABEL_4:
   v49.receiver = self;
@@ -97,9 +97,9 @@ LABEL_4:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_paths, a3);
-    objc_storeStrong(&v17->_client, a4);
-    v18 = [[TRIDatabase alloc] initWithPaths:v17->_paths storageManagement:v14];
+    objc_storeStrong(&v16->_paths, paths);
+    objc_storeStrong(&v17->_client, client);
+    v18 = [[TRIDatabase alloc] initWithPaths:v17->_paths storageManagement:managementCopy];
     if (!v18)
     {
       [(TRIServerContext *)v17 _logInitErrorWithClient:v17->_client message:@"TRIDServer failed to initialize db"];
@@ -150,7 +150,7 @@ LABEL_4:
     contentTracker = v17->_contentTracker;
     v17->_contentTracker = v40;
 
-    objc_storeWeak(&v17->_xpcActivityManager, v15);
+    objc_storeWeak(&v17->_xpcActivityManager, activityManagementCopy);
     v42 = TRILogCategory_Server();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
     {
@@ -170,8 +170,8 @@ LABEL_11:
   taskQueue = self->_taskQueue;
   if (!taskQueue)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIServerContext.m" lineNumber:105 description:@"Task queue unexpectedly nil in server context"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIServerContext.m" lineNumber:105 description:@"Task queue unexpectedly nil in server context"];
 
     taskQueue = self->_taskQueue;
   }
@@ -184,8 +184,8 @@ LABEL_11:
   pushServiceMuxer = self->_pushServiceMuxer;
   if (!pushServiceMuxer)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIServerContext.m" lineNumber:110 description:@"Push service muxer unexpectedly nil in server context"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIServerContext.m" lineNumber:110 description:@"Push service muxer unexpectedly nil in server context"];
 
     pushServiceMuxer = self->_pushServiceMuxer;
   }
@@ -195,37 +195,37 @@ LABEL_11:
 
 - (id)ensureFakeCKDatabase
 {
-  v4 = [(TRIServerContext *)self fakeCKDatabase];
+  fakeCKDatabase = [(TRIServerContext *)self fakeCKDatabase];
 
-  if (!v4)
+  if (!fakeCKDatabase)
   {
-    v5 = [MEMORY[0x277D737E0] sharedPaths];
-    v6 = [v5 trialRootDir];
-    v7 = [v6 stringByAppendingPathComponent:@"CKSQLiteMock/Database"];
+    mEMORY[0x277D737E0] = [MEMORY[0x277D737E0] sharedPaths];
+    trialRootDir = [mEMORY[0x277D737E0] trialRootDir];
+    v7 = [trialRootDir stringByAppendingPathComponent:@"CKSQLiteMock/Database"];
 
-    v8 = [v5 trialRootDir];
-    v9 = [v8 stringByAppendingPathComponent:@"CKSQLiteMock/AssetCache"];
+    trialRootDir2 = [mEMORY[0x277D737E0] trialRootDir];
+    v9 = [trialRootDir2 stringByAppendingPathComponent:@"CKSQLiteMock/AssetCache"];
 
     v10 = [[TRISQLiteCKDatabase alloc] initWithParentDir:v7 assetCacheDir:v9];
     [(TRIServerContext *)self setFakeCKDatabase:v10];
 
-    v11 = [(TRIServerContext *)self fakeCKDatabase];
+    fakeCKDatabase2 = [(TRIServerContext *)self fakeCKDatabase];
 
-    if (!v11)
+    if (!fakeCKDatabase2)
     {
-      v15 = [MEMORY[0x277CCA890] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"TRIServerContext.m" lineNumber:123 description:@"Failed to instantiate TRISQLiteCKDatabase"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"TRIServerContext.m" lineNumber:123 description:@"Failed to instantiate TRISQLiteCKDatabase"];
     }
   }
 
-  v12 = [(TRIServerContext *)self fakeCKDatabase];
-  if (!v12)
+  fakeCKDatabase3 = [(TRIServerContext *)self fakeCKDatabase];
+  if (!fakeCKDatabase3)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRIServerContext.m" lineNumber:125 description:{@"Expression was unexpectedly nil/false: %@", @"self.fakeCKDatabase"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIServerContext.m" lineNumber:125 description:{@"Expression was unexpectedly nil/false: %@", @"self.fakeCKDatabase"}];
   }
 
-  return v12;
+  return fakeCKDatabase3;
 }
 
 - (TRIXPCActivityManagementProtocol)xpcActivityManager

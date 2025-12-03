@@ -1,5 +1,5 @@
 @interface SFPrivacyProxyTraffic
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -12,7 +12,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[SFPrivacyProxyTraffic allocWithZone:?]];
   [(SFPrivacyProxyTraffic *)v4 setSafariUnencrypted:[(SFPrivacyProxyTraffic *)self safariUnencrypted]];

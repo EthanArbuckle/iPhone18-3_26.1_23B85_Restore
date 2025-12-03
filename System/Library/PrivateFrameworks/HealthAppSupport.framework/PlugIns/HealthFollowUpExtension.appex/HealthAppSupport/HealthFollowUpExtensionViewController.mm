@@ -1,9 +1,9 @@
 @interface HealthFollowUpExtensionViewController
 + (id)actionIdentifiers;
-+ (void)clearFollowUpItemWithIdentifier:(id)a3;
++ (void)clearFollowUpItemWithIdentifier:(id)identifier;
 - (id)makeHealthStore;
 - (id)makeHealthViewControllerToPresent;
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5;
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion;
 @end
 
 @implementation HealthFollowUpExtensionViewController
@@ -19,12 +19,12 @@
 
 - (id)makeHealthViewControllerToPresent
 {
-  v3 = [(FLFollowUpItem *)self->_activeItem uniqueIdentifier];
-  if ([v3 isEqualToString:kHKEmergencyFollowUpUniqueIdentifier])
+  uniqueIdentifier = [(FLFollowUpItem *)self->_activeItem uniqueIdentifier];
+  if ([uniqueIdentifier isEqualToString:kHKEmergencyFollowUpUniqueIdentifier])
   {
-    v4 = [(FLFollowUpAction *)self->_activeAction identifier];
-    v5 = [(HealthFollowUpExtensionViewController *)self makeHealthStore];
-    v6 = [_TtC23HealthFollowUpExtension41EmergencyAccessBuddyViewControllerCreator makeFollowUpViewControllerFor:v4 healthStore:v5 followUpDelegate:self];
+    identifier = [(FLFollowUpAction *)self->_activeAction identifier];
+    makeHealthStore = [(HealthFollowUpExtensionViewController *)self makeHealthStore];
+    v6 = [_TtC23HealthFollowUpExtension41EmergencyAccessBuddyViewControllerCreator makeFollowUpViewControllerFor:identifier healthStore:makeHealthStore followUpDelegate:self];
   }
 
   else
@@ -42,11 +42,11 @@
   return v6;
 }
 
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  actionCopy = action;
+  completionCopy = completion;
   _HKInitializeLogging();
   v11 = HKLogDefault;
   if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_DEFAULT))
@@ -55,21 +55,21 @@
     v21 = 138412802;
     v22 = objc_opt_class();
     v23 = 2112;
-    v24 = v8;
+    v24 = itemCopy;
     v25 = 2112;
-    v26 = v9;
+    v26 = actionCopy;
     v13 = v22;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[%@] Extension processing item: %@ action: %@", &v21, 0x20u);
   }
 
-  v14 = [objc_opt_class() actionIdentifiers];
-  v15 = [v9 identifier];
-  v16 = [v14 containsObject:v15];
+  actionIdentifiers = [objc_opt_class() actionIdentifiers];
+  identifier = [actionCopy identifier];
+  v16 = [actionIdentifiers containsObject:identifier];
 
   if (v16)
   {
-    objc_storeStrong(&self->_activeAction, a4);
-    v17 = v8;
+    objc_storeStrong(&self->_activeAction, action);
+    v17 = itemCopy;
     activeItem = self->_activeItem;
     self->_activeItem = v17;
   }
@@ -84,28 +84,28 @@
     }
 
     v20 = objc_opt_class();
-    activeItem = [v8 uniqueIdentifier];
+    activeItem = [itemCopy uniqueIdentifier];
     [v20 clearFollowUpItemWithIdentifier:activeItem];
   }
 
-  v10[2](v10, v16 ^ 1);
+  completionCopy[2](completionCopy, v16 ^ 1);
 }
 
-+ (void)clearFollowUpItemWithIdentifier:(id)a3
++ (void)clearFollowUpItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [FLFollowUpController alloc];
   v6 = [v5 initWithClientIdentifier:kHKEmergencyFollowUpClientIdentifier];
   if (v6)
   {
-    v11 = v4;
+    v11 = identifierCopy;
     v7 = [NSArray arrayWithObjects:&v11 count:1];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100001C50;
     v8[3] = &unk_1000042A8;
-    v10 = a1;
-    v9 = v4;
+    selfCopy = self;
+    v9 = identifierCopy;
     [v6 clearPendingFollowUpItemsWithUniqueIdentifiers:v7 completion:v8];
   }
 }

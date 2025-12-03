@@ -1,47 +1,47 @@
 @interface MPDetailSlider
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (CGRect)thumbHitRect;
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (CGRect)trackRectForBounds:(CGRect)a3;
-- (MPDetailSlider)initWithFrame:(CGRect)a3 style:(int64_t)a4 maxTrackWidth:(double)a5;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
+- (MPDetailSlider)initWithFrame:(CGRect)frame style:(int64_t)style maxTrackWidth:(double)width;
 - (MPDetailSliderDelegate)delegate;
 - (NSString)localizedScrubSpeedText;
 - (UIEdgeInsets)_thumbHitEdgeInsets;
-- (id)_colorSliceImageWithColor:(id)a3 height:(double)a4;
-- (id)_modernThumbImageWithColor:(id)a3 height:(double)a4 includeShadow:(BOOL)a5;
-- (id)_stringForCurrentTime:(double)a3;
-- (id)_stringForInverseCurrentTime:(double)a3;
-- (id)_stringForTime:(double)a3 elapsed:(BOOL)a4;
+- (id)_colorSliceImageWithColor:(id)color height:(double)height;
+- (id)_modernThumbImageWithColor:(id)color height:(double)height includeShadow:(BOOL)shadow;
+- (id)_stringForCurrentTime:(double)time;
+- (id)_stringForInverseCurrentTime:(double)time;
+- (id)_stringForTime:(double)time elapsed:(BOOL)elapsed;
 - (id)createThumbView;
 - (id)currentThumbImage;
-- (id)timeLabelFontForStyle:(int64_t)a3;
-- (id)timeLabelTextColorForStyle:(int64_t)a3;
-- (void)_autoscrubTick:(id)a3;
+- (id)timeLabelFontForStyle:(int64_t)style;
+- (id)timeLabelTextColorForStyle:(int64_t)style;
+- (void)_autoscrubTick:(id)tick;
 - (void)_commitValue;
 - (void)_resetScrubInfo;
-- (void)_setValueWhileTracking:(float)a3 duration:(double)a4;
+- (void)_setValueWhileTracking:(float)tracking duration:(double)duration;
 - (void)_setupControlsForStyle;
 - (void)_updateForAvailableDuraton;
-- (void)_updateTimeDisplayForTime:(double)a3 force:(BOOL)a4;
+- (void)_updateTimeDisplayForTime:(double)time force:(BOOL)force;
 - (void)_updateTrackInset;
 - (void)cancelTracking;
-- (void)cancelTrackingWithEvent:(id)a3;
+- (void)cancelTrackingWithEvent:(id)event;
 - (void)dealloc;
-- (void)detailScrubController:(id)a3 didChangeScrubSpeed:(int64_t)a4;
-- (void)detailScrubController:(id)a3 didChangeValue:(float)a4;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)detailScrubController:(id)controller didChangeScrubSpeed:(int64_t)speed;
+- (void)detailScrubController:(id)controller didChangeValue:(float)value;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
 - (void)setAllowsScrubbing:(BOOL)allowsScrubbing;
 - (void)setAvailableDuration:(double)duration;
-- (void)setBounds:(CGRect)a3;
-- (void)setDuration:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setMinTimeLabelWidth:(double)a3;
-- (void)setTimeLabelStyle:(int64_t)a3;
-- (void)setValue:(float)a3 duration:(double)a4;
+- (void)setBounds:(CGRect)bounds;
+- (void)setDuration:(double)duration;
+- (void)setFrame:(CGRect)frame;
+- (void)setMinTimeLabelWidth:(double)width;
+- (void)setTimeLabelStyle:(int64_t)style;
+- (void)setValue:(float)value duration:(double)duration;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MPDetailSlider
@@ -134,18 +134,18 @@
         if (self->_thumbImageView)
         {
           v66 = MEMORY[0x1E69DCAB8];
-          v67 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
-          v68 = [v66 imageNamed:@"VideoPlayer_Slider_Track_Hollow" inBundle:v67];
+          mediaPlayerBundle = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
+          v68 = [v66 imageNamed:@"VideoPlayer_Slider_Track_Hollow" inBundle:mediaPlayerBundle];
 
-          v69 = [MEMORY[0x1E69DC888] blackColor];
-          v70 = [v68 _flatImageWithColor:v69];
+          blackColor = [MEMORY[0x1E69DC888] blackColor];
+          v70 = [v68 _flatImageWithColor:blackColor];
 
           [(MPDetailSlider *)self setMaximumTrackImage:v70 forState:0];
-          v71 = [(MPDetailSlider *)self _maxTrackView];
-          [v71 _setDrawsAsBackdropOverlay:1];
+          _maxTrackView = [(MPDetailSlider *)self _maxTrackView];
+          [_maxTrackView _setDrawsAsBackdropOverlay:1];
 
-          v72 = [(MPDetailSlider *)self _maxTrackView];
-          [v72 setAlpha:0.4];
+          _maxTrackView2 = [(MPDetailSlider *)self _maxTrackView];
+          [_maxTrackView2 setAlpha:0.4];
 
           v73 = objc_alloc(MEMORY[0x1E69DD250]);
           v74 = [v73 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -154,8 +154,8 @@
 
           [(UIView *)self->_downloadingTrackOverlay _setDrawsAsBackdropOverlay:1];
           v76 = self->_downloadingTrackOverlay;
-          v77 = [MEMORY[0x1E69DC888] blackColor];
-          [(UIView *)v76 setBackgroundColor:v77];
+          blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+          [(UIView *)v76 setBackgroundColor:blackColor2];
 
           [(UIView *)self->_downloadingTrackOverlay setAlpha:0.4];
           [(MPDetailSlider *)self insertSubview:self->_downloadingTrackOverlay belowSubview:self->_thumbImageView];
@@ -279,34 +279,34 @@ LABEL_21:
 - (void)_resetScrubInfo
 {
   thumbImageView = self->_thumbImageView;
-  v4 = [(MPDetailSlider *)self currentThumbImage];
-  [(UIImageView *)thumbImageView setImage:v4];
+  currentThumbImage = [(MPDetailSlider *)self currentThumbImage];
+  [(UIImageView *)thumbImageView setImage:currentThumbImage];
 
-  v5 = [(UIImageView *)self->_glowDetailScrubImageView layer];
-  [v5 removeAnimationForKey:@"pulseAnimation"];
+  layer = [(UIImageView *)self->_glowDetailScrubImageView layer];
+  [layer removeAnimationForKey:@"pulseAnimation"];
 }
 
-- (id)_stringForInverseCurrentTime:(double)a3
+- (id)_stringForInverseCurrentTime:(double)time
 {
   timeLabelStyle = self->_timeLabelStyle;
-  if (timeLabelStyle == 3 || timeLabelStyle == 2 && fabs(a3) < 30.0)
+  if (timeLabelStyle == 3 || timeLabelStyle == 2 && fabs(time) < 30.0)
   {
-    v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:{@"com.apple.MediaPlayer", a3}];
+    v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:{@"com.apple.MediaPlayer", time}];
     v5 = [v4 localizedStringForKey:@"LIVE" value:&stru_1F149ECA8 table:@"MediaPlayer"];
   }
 
   else
   {
-    v5 = [(MPDetailSlider *)self _stringForTime:0 elapsed:a3];
+    v5 = [(MPDetailSlider *)self _stringForTime:0 elapsed:time];
   }
 
   return v5;
 }
 
-- (id)_stringForCurrentTime:(double)a3
+- (id)_stringForCurrentTime:(double)time
 {
   timeLabelStyle = self->_timeLabelStyle;
-  if (timeLabelStyle == 3 || timeLabelStyle == 2 && vabdd_f64(self->_duration, a3) < 30.0)
+  if (timeLabelStyle == 3 || timeLabelStyle == 2 && vabdd_f64(self->_duration, time) < 30.0)
   {
     v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
     v5 = [v4 localizedStringForKey:@"UNKNOWN_DURATION" value:&stru_1F149ECA8 table:@"MediaPlayer"];
@@ -314,16 +314,16 @@ LABEL_21:
 
   else
   {
-    v5 = [(MPDetailSlider *)self _stringForTime:1 elapsed:a3];
+    v5 = [(MPDetailSlider *)self _stringForTime:1 elapsed:time];
   }
 
   return v5;
 }
 
-- (id)_stringForTime:(double)a3 elapsed:(BOOL)a4
+- (id)_stringForTime:(double)time elapsed:(BOOL)elapsed
 {
   formatter = self->_formatter;
-  if (a4)
+  if (elapsed)
   {
     v7 = 1;
   }
@@ -336,13 +336,13 @@ LABEL_21:
   [(AVTimeFormatter *)formatter setStyle:v7];
   v8 = self->_formatter;
 
-  return [(AVTimeFormatter *)v8 stringFromSeconds:a3];
+  return [(AVTimeFormatter *)v8 stringFromSeconds:time];
 }
 
-- (void)_updateTimeDisplayForTime:(double)a3 force:(BOOL)a4
+- (void)_updateTimeDisplayForTime:(double)time force:(BOOL)force
 {
-  v5 = floor(a3);
-  if (a4 || vabdd_f64(self->_currentTime, v5) > 2.22044605e-16)
+  v5 = floor(time);
+  if (force || vabdd_f64(self->_currentTime, v5) > 2.22044605e-16)
   {
     if (self->_timeLabelStyle != 1)
     {
@@ -365,8 +365,8 @@ LABEL_21:
 {
   [(MPDetailSlider *)self duration];
   v3 = [(MPDetailSlider *)self _stringForInverseCurrentTime:?];
-  v4 = [(UILabel *)self->_currentTimeInverseLabel font];
-  [v3 _legacy_sizeWithFont:v4];
+  font = [(UILabel *)self->_currentTimeInverseLabel font];
+  [v3 _legacy_sizeWithFont:font];
   v6 = v5;
 
   timeLabelStyle = self->_timeLabelStyle;
@@ -374,8 +374,8 @@ LABEL_21:
   {
     v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
     v9 = [v8 localizedStringForKey:@"LIVE" value:&stru_1F149ECA8 table:@"MediaPlayer"];
-    v10 = [(UILabel *)self->_currentTimeInverseLabel font];
-    [v9 _legacy_sizeWithFont:v10];
+    font2 = [(UILabel *)self->_currentTimeInverseLabel font];
+    [v9 _legacy_sizeWithFont:font2];
     v12 = v11;
 
     if (v6 < v12)
@@ -418,7 +418,7 @@ LABEL_21:
 
 - (void)_setupControlsForStyle
 {
-  v3 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
+  mediaPlayerBundle = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
   if (self->_timeLabelStyle == 3)
   {
     v31.width = 1.0;
@@ -448,7 +448,7 @@ LABEL_21:
     block[1] = 3221225472;
     block[2] = __40__MPDetailSlider__setupControlsForStyle__block_invoke_3;
     block[3] = &unk_1E7682518;
-    v9 = v3;
+    v9 = mediaPlayerBundle;
     v26 = v9;
     if (_setupControlsForStyle___trackImageOnce_92 == -1)
     {
@@ -490,7 +490,7 @@ LABEL_16:
     v29[1] = 3221225472;
     v29[2] = __40__MPDetailSlider__setupControlsForStyle__block_invoke;
     v29[3] = &unk_1E7682518;
-    v7 = v3;
+    v7 = mediaPlayerBundle;
     v30 = v7;
     if (_setupControlsForStyle___trackImageOnce == -1)
     {
@@ -532,25 +532,25 @@ LABEL_20:
   {
     if ((v5 & 1) == 0)
     {
-      v10 = [(MPDetailSlider *)self allowsScrubbing];
-      if (v10)
+      allowsScrubbing = [(MPDetailSlider *)self allowsScrubbing];
+      if (allowsScrubbing)
       {
-        v11 = [(MPDetailSlider *)self tintColor];
+        tintColor = [(MPDetailSlider *)self tintColor];
         v12 = 15.0;
       }
 
       else
       {
-        v11 = [MEMORY[0x1E69DC888] blackColor];
+        tintColor = [MEMORY[0x1E69DC888] blackColor];
         v12 = 7.0;
       }
 
-      v13 = [(MPDetailSlider *)self _modernThumbImageWithColor:v11 height:v10 includeShadow:v12];
+      v13 = [(MPDetailSlider *)self _modernThumbImageWithColor:tintColor height:allowsScrubbing includeShadow:v12];
       [(MPDetailSlider *)self setThumbImage:v13 forState:0];
     }
 
-    v14 = [(MPDetailSlider *)self traitCollection];
-    if ([v14 userInterfaceStyle] == 2)
+    traitCollection = [(MPDetailSlider *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
       v15 = 0.93;
       v16 = 1.0;
@@ -659,20 +659,20 @@ void __40__MPDetailSlider__setupControlsForStyle__block_invoke_4(uint64_t a1)
   _setupControlsForStyle___thumbImage_93 = v12;
 }
 
-- (id)_colorSliceImageWithColor:(id)a3 height:(double)a4
+- (id)_colorSliceImageWithColor:(id)color height:(double)height
 {
-  v6 = a3;
-  [v6 alphaComponent];
+  colorCopy = color;
+  [colorCopy alphaComponent];
   v8 = 1.0 - v7;
-  v9 = [(MPDetailSlider *)self traitCollection];
-  [v9 displayScale];
+  traitCollection = [(MPDetailSlider *)self traitCollection];
+  [traitCollection displayScale];
   if (v10 == 0.0)
   {
-    v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v11 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v13 = v12;
     v18.width = 1.0;
-    v18.height = a4;
+    v18.height = height;
     UIGraphicsBeginImageContextWithOptions(v18, v8 <= 0.00000011920929, v13);
   }
 
@@ -680,15 +680,15 @@ void __40__MPDetailSlider__setupControlsForStyle__block_invoke_4(uint64_t a1)
   {
     v14 = v10;
     v19.width = 1.0;
-    v19.height = a4;
+    v19.height = height;
     UIGraphicsBeginImageContextWithOptions(v19, v8 <= 0.00000011920929, v14);
   }
 
-  [v6 setFill];
+  [colorCopy setFill];
   v20.origin.x = 0.0;
   v20.origin.y = 0.0;
   v20.size.width = 1.0;
-  v20.size.height = a4;
+  v20.size.height = height;
   UIRectFillUsingBlendMode(v20, kCGBlendModeCopy);
   v15 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -696,19 +696,19 @@ void __40__MPDetailSlider__setupControlsForStyle__block_invoke_4(uint64_t a1)
   return v15;
 }
 
-- (id)_modernThumbImageWithColor:(id)a3 height:(double)a4 includeShadow:(BOOL)a5
+- (id)_modernThumbImageWithColor:(id)color height:(double)height includeShadow:(BOOL)shadow
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(MPDetailSlider *)self traitCollection];
-  [v9 displayScale];
+  shadowCopy = shadow;
+  colorCopy = color;
+  traitCollection = [(MPDetailSlider *)self traitCollection];
+  [traitCollection displayScale];
   if (v10 == 0.0)
   {
-    v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v11 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v13 = v12;
     v27.width = 6.0;
-    v27.height = a4 + 4.0;
+    v27.height = height + 4.0;
     UIGraphicsBeginImageContextWithOptions(v27, 0, v13);
   }
 
@@ -716,30 +716,30 @@ void __40__MPDetailSlider__setupControlsForStyle__block_invoke_4(uint64_t a1)
   {
     v14 = v10;
     v28.width = 6.0;
-    v28.height = a4 + 4.0;
+    v28.height = height + 4.0;
     UIGraphicsBeginImageContextWithOptions(v28, 0, v14);
   }
 
-  if (v5)
+  if (shadowCopy)
   {
     CurrentContext = UIGraphicsGetCurrentContext();
     v16 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.1];
-    v17 = [v16 CGColor];
-    CGContextSetShadowWithColor(CurrentContext, *MEMORY[0x1E695F060], 2.0, v17);
+    cGColor = [v16 CGColor];
+    CGContextSetShadowWithColor(CurrentContext, *MEMORY[0x1E695F060], 2.0, cGColor);
   }
 
-  [v8 setFill];
-  v18 = [(MPDetailSlider *)self traitCollection];
-  [v18 displayScale];
+  [colorCopy setFill];
+  traitCollection2 = [(MPDetailSlider *)self traitCollection];
+  [traitCollection2 displayScale];
   v20 = 1.0 / v19;
   if (1.0 / v19 == 0.0)
   {
-    v21 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v21 scale];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 scale];
     v20 = v22;
   }
 
-  v23 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:2.0 cornerRadius:{2.0, v20 + 1.0, a4, 3.0}];
+  v23 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:2.0 cornerRadius:{2.0, v20 + 1.0, height, 3.0}];
   [v23 fill];
 
   v24 = UIGraphicsGetImageFromCurrentImageContext();
@@ -748,7 +748,7 @@ void __40__MPDetailSlider__setupControlsForStyle__block_invoke_4(uint64_t a1)
   return v24;
 }
 
-- (id)timeLabelTextColorForStyle:(int64_t)a3
+- (id)timeLabelTextColorForStyle:(int64_t)style
 {
   if ((self->_style - 3) > 1)
   {
@@ -757,14 +757,14 @@ void __40__MPDetailSlider__setupControlsForStyle__block_invoke_4(uint64_t a1)
 
   else
   {
-    [MEMORY[0x1E69DC888] colorWithWhite:a3 alpha:{1.0, 0.45}];
+    [MEMORY[0x1E69DC888] colorWithWhite:style alpha:{1.0, 0.45}];
   }
   v3 = ;
 
   return v3;
 }
 
-- (id)timeLabelFontForStyle:(int64_t)a3
+- (id)timeLabelFontForStyle:(int64_t)style
 {
   v26[1] = *MEMORY[0x1E69E9840];
   style = self->_style;
@@ -787,17 +787,17 @@ void __40__MPDetailSlider__setupControlsForStyle__block_invoke_4(uint64_t a1)
     v6 = MEMORY[0x1E69DB878];
     v7 = 10.0;
 LABEL_7:
-    v8 = [v6 systemFontOfSize:{a3, v7}];
+    v8 = [v6 systemFontOfSize:{style, v7}];
     goto LABEL_10;
   }
 
   v4 = MEMORY[0x1E69DB878];
   v5 = 13.0;
 LABEL_9:
-  v8 = [v4 boldSystemFontOfSize:{a3, v5}];
+  v8 = [v4 boldSystemFontOfSize:{style, v5}];
 LABEL_10:
   v9 = v8;
-  v10 = [v8 fontDescriptor];
+  fontDescriptor = [v8 fontDescriptor];
   v25 = *MEMORY[0x1E69DB8B0];
   v12 = *MEMORY[0x1E69DB900];
   v22[0] = *MEMORY[0x1E69DB908];
@@ -816,40 +816,40 @@ LABEL_10:
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
   v26[0] = v15;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-  v17 = [v10 fontDescriptorByAddingAttributes:v16];
+  v17 = [fontDescriptor fontDescriptorByAddingAttributes:v16];
 
   v18 = [MEMORY[0x1E69DB878] fontWithDescriptor:v17 size:0.0];
 
   return v18;
 }
 
-- (void)setTimeLabelStyle:(int64_t)a3
+- (void)setTimeLabelStyle:(int64_t)style
 {
-  if (self->_timeLabelStyle != a3)
+  if (self->_timeLabelStyle != style)
   {
-    self->_timeLabelStyle = a3;
+    self->_timeLabelStyle = style;
     [(MPDetailSlider *)self _setupControlsForStyle];
 
     [(MPDetailSlider *)self setNeedsLayout];
   }
 }
 
-- (void)setMinTimeLabelWidth:(double)a3
+- (void)setMinTimeLabelWidth:(double)width
 {
-  if (self->_minTimeLabelWidth != a3)
+  if (self->_minTimeLabelWidth != width)
   {
-    self->_minTimeLabelWidth = a3;
+    self->_minTimeLabelWidth = width;
     [(MPDetailSlider *)self _updateTrackInset];
 
     [(MPDetailSlider *)self setNeedsLayout];
   }
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  if (vabdd_f64(self->_duration, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_duration, duration) > 2.22044605e-16)
   {
-    self->_duration = a3;
+    self->_duration = duration;
     [(MPDetailScrubController *)self->_scrubController setDuration:?];
     currentTime = self->_currentTime;
     if (currentTime >= self->_duration)
@@ -907,15 +907,15 @@ LABEL_10:
 
 - (NSString)localizedScrubSpeedText
 {
-  v2 = [(MPDetailScrubController *)self->_scrubController currentScrubSpeed];
-  if (v2 > 3)
+  currentScrubSpeed = [(MPDetailScrubController *)self->_scrubController currentScrubSpeed];
+  if (currentScrubSpeed > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_1E767FBC0[v2];
+    v3 = off_1E767FBC0[currentScrubSpeed];
     v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
     v5 = [v4 localizedStringForKey:v3 value:&stru_1F149ECA8 table:@"MediaPlayer"];
   }
@@ -950,18 +950,18 @@ LABEL_10:
   MEMORY[0x1EEE66BE0](WeakRetained, v6, v7);
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
-  [(MPDetailScrubController *)self->_scrubController cancelTrackingWithEvent:a3];
+  [(MPDetailScrubController *)self->_scrubController cancelTrackingWithEvent:event];
 
   [(MPDetailSlider *)self cancelTracking];
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   autoscrubTimer = self->_autoscrubTimer;
-  v7 = a4;
-  v8 = a3;
+  eventCopy = event;
+  touchCopy = touch;
   [(NSTimer *)autoscrubTimer invalidate];
   v9 = self->_autoscrubTimer;
   self->_autoscrubTimer = 0;
@@ -969,7 +969,7 @@ LABEL_10:
   self->_autoscrubActive = 0;
   self->_isTracking = 0;
   [(MPDetailSlider *)self _resetScrubInfo];
-  [(MPDetailScrubController *)self->_scrubController endTrackingWithTouch:v8 withEvent:v7];
+  [(MPDetailScrubController *)self->_scrubController endTrackingWithTouch:touchCopy withEvent:eventCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -978,17 +978,17 @@ LABEL_10:
   }
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 locationInView:self];
+  touchCopy = touch;
+  eventCopy = event;
+  [touchCopy locationInView:self];
   v9 = v8;
   v11 = v10;
   if ([(MPDetailScrubController *)self->_scrubController detailedScrubbingEnabled]&& [(MPDetailScrubController *)self->_scrubController durationAllowsForDetailedScrubbing])
   {
-    v12 = [(MPDetailSlider *)self window];
-    [(MPDetailSlider *)self convertPoint:v12 toView:v9, v11];
+    window = [(MPDetailSlider *)self window];
+    [(MPDetailSlider *)self convertPoint:window toView:v9, v11];
     v14 = v13;
     v16 = v15;
     autoscrubActive = self->_autoscrubActive;
@@ -998,11 +998,11 @@ LABEL_10:
       v14 = v16;
     }
 
-    [v12 bounds];
+    [window bounds];
     if (v18 > 1)
     {
       Width = CGRectGetWidth(*&v19);
-      if (v12)
+      if (window)
       {
 LABEL_7:
         v24 = v14 < 20.0;
@@ -1016,8 +1016,8 @@ LABEL_7:
         if (v24)
         {
           thumbImageView = self->_thumbImageView;
-          v26 = [(MPDetailSlider *)self currentThumbImage];
-          [(UIImageView *)thumbImageView setImage:v26];
+          currentThumbImage = [(MPDetailSlider *)self currentThumbImage];
+          [(UIImageView *)thumbImageView setImage:currentThumbImage];
 
           if (!autoscrubActive)
           {
@@ -1029,8 +1029,8 @@ LABEL_7:
             LODWORD(v29) = 2139095039;
             [v27 setRepeatCount:v29];
             [v27 setAutoreverses:1];
-            v30 = [(UIImageView *)self->_glowDetailScrubImageView layer];
-            [v30 addAnimation:v27 forKey:@"pulseAnimation"];
+            layer = [(UIImageView *)self->_glowDetailScrubImageView layer];
+            [layer addAnimation:v27 forKey:@"pulseAnimation"];
           }
 
           [(MPDetailSlider *)self value];
@@ -1063,7 +1063,7 @@ LABEL_7:
     else
     {
       Width = CGRectGetHeight(*&v19);
-      if (v12)
+      if (window)
       {
         goto LABEL_7;
       }
@@ -1073,8 +1073,8 @@ LABEL_7:
 LABEL_19:
     if (self->_autoscrubTimer)
     {
-      v36 = [(UIImageView *)self->_glowDetailScrubImageView layer];
-      [v36 removeAnimationForKey:@"pulseAnimation"];
+      layer2 = [(UIImageView *)self->_glowDetailScrubImageView layer];
+      [layer2 removeAnimationForKey:@"pulseAnimation"];
 
       [(NSTimer *)self->_autoscrubTimer invalidate];
       v37 = self->_autoscrubTimer;
@@ -1087,13 +1087,13 @@ LABEL_19:
     [(MPDetailSlider *)self sendActionsForControlEvents:4096];
   }
 
-  v35 = [(MPDetailScrubController *)self->_scrubController continueTrackingWithTouch:v6 withEvent:v7];
+  v35 = [(MPDetailScrubController *)self->_scrubController continueTrackingWithTouch:touchCopy withEvent:eventCopy];
 LABEL_25:
 
   return v35;
 }
 
-- (void)_autoscrubTick:(id)a3
+- (void)_autoscrubTick:(id)tick
 {
   [(MPDetailSlider *)self maximumValue];
   v5 = v4;
@@ -1105,11 +1105,11 @@ LABEL_25:
   [(MPDetailScrubController *)self->_scrubController scaleForVerticalPosition:self->_previousLocationInView.y];
   v10 = v9;
   v11 = v8 * v9;
-  v12 = [(MPDetailSlider *)self window];
-  [(MPDetailSlider *)self convertPoint:v12 toView:self->_previousLocationInView.x, self->_previousLocationInView.y];
+  window = [(MPDetailSlider *)self window];
+  [(MPDetailSlider *)self convertPoint:window toView:self->_previousLocationInView.x, self->_previousLocationInView.y];
   v14 = v13;
-  v15 = [(MPDetailSlider *)self window];
-  [v15 bounds];
+  window2 = [(MPDetailSlider *)self window];
+  [window2 bounds];
   if (v14 >= CGRectGetMidX(v27))
   {
     v16 = v11;
@@ -1149,12 +1149,12 @@ LABEL_25:
   }
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   scrubController = self->_scrubController;
-  v7 = a3;
-  v8 = [(MPDetailScrubController *)scrubController beginTrackingWithTouch:v7 withEvent:a4];
-  [v7 locationInView:self];
+  touchCopy = touch;
+  v8 = [(MPDetailScrubController *)scrubController beginTrackingWithTouch:touchCopy withEvent:event];
+  [touchCopy locationInView:self];
   v10 = v9;
   v12 = v11;
 
@@ -1174,19 +1174,19 @@ LABEL_25:
   return v8;
 }
 
-- (void)detailScrubController:(id)a3 didChangeValue:(float)a4
+- (void)detailScrubController:(id)controller didChangeValue:(float)value
 {
-  [(MPDetailSlider *)self _setValueWhileTracking:a3 duration:?];
+  [(MPDetailSlider *)self _setValueWhileTracking:controller duration:?];
 
   [(MPDetailSlider *)self _commitValue];
 }
 
-- (void)detailScrubController:(id)a3 didChangeScrubSpeed:(int64_t)a4
+- (void)detailScrubController:(id)controller didChangeScrubSpeed:(int64_t)speed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained detailSlider:self didChangeScrubSpeed:a4];
+    [WeakRetained detailSlider:self didChangeScrubSpeed:speed];
   }
 }
 
@@ -1223,12 +1223,12 @@ LABEL_25:
   return result;
 }
 
-- (void)_setValueWhileTracking:(float)a3 duration:(double)a4
+- (void)_setValueWhileTracking:(float)tracking duration:(double)duration
 {
   duration = self->_duration;
   if (duration > 0.0)
   {
-    v7 = fmax(a3, 0.0);
+    v7 = fmax(tracking, 0.0);
     if (duration < v7)
     {
       v7 = self->_duration;
@@ -1243,9 +1243,9 @@ LABEL_25:
       v10 = 1.0;
     }
 
-    v12 = [(MPDetailSlider *)self layer];
-    v13 = [v12 animationKeys];
-    v14 = [v13 count];
+    layer = [(MPDetailSlider *)self layer];
+    animationKeys = [layer animationKeys];
+    v14 = [animationKeys count];
 
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
@@ -1262,8 +1262,8 @@ LABEL_25:
     }
 
     v21 = v10;
-    v20 = self;
-    [MEMORY[0x1E69DD250] animateWithDuration:v15 delay:&v16 options:0 animations:a4 completion:0.0];
+    selfCopy = self;
+    [MEMORY[0x1E69DD250] animateWithDuration:v15 delay:&v16 options:0 animations:duration completion:0.0];
     [(MPDetailSlider *)self _updateForAvailableDuraton:v16];
     [(MPDetailSlider *)self _updateTimeDisplayForTime:v9];
     if (self->_isTracking && self->_canCommit)
@@ -1282,7 +1282,7 @@ uint64_t __50__MPDetailSlider__setValueWhileTracking_duration___block_invoke(uin
   return [*(a1 + 32) layoutIfNeeded];
 }
 
-- (void)setValue:(float)a3 duration:(double)a4
+- (void)setValue:(float)value duration:(double)duration
 {
   if (!self->_isTracking)
   {
@@ -1290,15 +1290,15 @@ uint64_t __50__MPDetailSlider__setValueWhileTracking_duration___block_invoke(uin
   }
 }
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
   v29.receiver = self;
   v29.super_class = MPDetailSlider;
-  [(MPDetailSlider *)&v29 thumbRectForBounds:a3.origin.x trackRect:a3.origin.y value:a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height, LODWORD(a5)];
+  [(MPDetailSlider *)&v29 thumbRectForBounds:bounds.origin.x trackRect:bounds.origin.y value:bounds.size.width, bounds.size.height, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, LODWORD(value)];
   if ((self->_style - 3) > 1)
   {
     v15 = 1.0;
-    if (a5 < 0.5)
+    if (value < 0.5)
     {
       v15 = -1.0;
     }
@@ -1313,19 +1313,19 @@ uint64_t __50__MPDetailSlider__setValueWhileTracking_duration___block_invoke(uin
   else
   {
     v11 = 0.0;
-    if (a5 < 0.5)
+    if (value < 0.5)
     {
       v11 = -1.0;
     }
 
     CGRectOffset(*&v7, v11, 0.5);
-    v12 = [(MPDetailSlider *)self traitCollection];
-    [v12 displayScale];
+    traitCollection = [(MPDetailSlider *)self traitCollection];
+    [traitCollection displayScale];
     v14 = v13;
     if (v13 == 0.0)
     {
-      v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v5 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
     }
 
     UIRectIntegralWithScale();
@@ -1349,12 +1349,12 @@ uint64_t __50__MPDetailSlider__setValueWhileTracking_duration___block_invoke(uin
   return result;
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(MPDetailSlider *)self _updateTrackInset];
   v14.receiver = self;
   v14.super_class = MPDetailSlider;
@@ -1414,8 +1414,8 @@ uint64_t __50__MPDetailSlider__setValueWhileTracking_duration___block_invoke(uin
       v4 = self->_glowDetailScrubImageView;
       if (v4)
       {
-        v5 = [(UIImageView *)v4 layer];
-        [v5 removeAllAnimations];
+        layer = [(UIImageView *)v4 layer];
+        [layer removeAllAnimations];
 
         [(UIImageView *)self->_glowDetailScrubImageView removeFromSuperview];
       }
@@ -1424,35 +1424,35 @@ uint64_t __50__MPDetailSlider__setValueWhileTracking_duration___block_invoke(uin
 
   v15.receiver = self;
   v15.super_class = MPDetailSlider;
-  v6 = [(MPDetailSlider *)&v15 currentThumbImage];
+  currentThumbImage = [(MPDetailSlider *)&v15 currentThumbImage];
 
-  return v6;
+  return currentThumbImage;
 }
 
 - (id)createThumbView
 {
   v7.receiver = self;
   v7.super_class = MPDetailSlider;
-  v3 = [(MPDetailSlider *)&v7 createThumbView];
+  createThumbView = [(MPDetailSlider *)&v7 createThumbView];
   thumbImageView = self->_thumbImageView;
-  self->_thumbImageView = v3;
+  self->_thumbImageView = createThumbView;
 
   v5 = self->_thumbImageView;
 
   return v5;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = MPDetailSlider;
-  v4 = a3;
-  [(MPDetailSlider *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(MPDetailSlider *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(MPDetailSlider *)self traitCollection:v9.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 == v7)
+  if (userInterfaceStyle == userInterfaceStyle2)
   {
   }
 
@@ -1478,12 +1478,12 @@ uint64_t __50__MPDetailSlider__setValueWhileTracking_duration___block_invoke(uin
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(MPDetailSlider *)self frame];
   v11.origin.x = x;
   v11.origin.y = y;
@@ -1500,12 +1500,12 @@ uint64_t __50__MPDetailSlider__setValueWhileTracking_duration___block_invoke(uin
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(MPDetailSlider *)self bounds];
   v11.origin.x = x;
   v11.origin.y = y;
@@ -1525,14 +1525,14 @@ uint64_t __50__MPDetailSlider__setValueWhileTracking_duration___block_invoke(uin
 - (void)layoutSubviews
 {
   [(MPDetailSlider *)self bounds];
-  v3 = [(MPDetailSlider *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(MPDetailSlider *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
 
   if (v5 < 0.00000011920929)
   {
-    v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v6 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v5 = v7;
   }
 
@@ -1634,8 +1634,8 @@ uint64_t __50__MPDetailSlider__setValueWhileTracking_duration___block_invoke(uin
   [(MPDetailSlider *)&v36 layoutSubviews];
   if ((self->_style - 3) <= 1)
   {
-    v31 = [(MPDetailSlider *)self _maxTrackView];
-    [v31 _setDrawsAsBackdropOverlayWithBlendMode:2];
+    _maxTrackView = [(MPDetailSlider *)self _maxTrackView];
+    [_maxTrackView _setDrawsAsBackdropOverlayWithBlendMode:2];
 
     [(UILabel *)self->_currentTimeLabel _setDrawsAsBackdropOverlayWithBlendMode:2];
     [(UILabel *)self->_currentTimeInverseLabel _setDrawsAsBackdropOverlayWithBlendMode:2];
@@ -1650,16 +1650,16 @@ uint64_t __50__MPDetailSlider__setValueWhileTracking_duration___block_invoke(uin
   [(MPDetailSlider *)&v3 dealloc];
 }
 
-- (MPDetailSlider)initWithFrame:(CGRect)a3 style:(int64_t)a4 maxTrackWidth:(double)a5
+- (MPDetailSlider)initWithFrame:(CGRect)frame style:(int64_t)style maxTrackWidth:(double)width
 {
-  if (a3.size.height < 34.0 && a4 == 3 || a3.size.height == 0.0)
+  if (frame.size.height < 34.0 && style == 3 || frame.size.height == 0.0)
   {
-    a3.size.height = 34.0;
+    frame.size.height = 34.0;
   }
 
   v15.receiver = self;
   v15.super_class = MPDetailSlider;
-  v9 = [(MPDetailSlider *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v9 = [(MPDetailSlider *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v9)
   {
     v10 = [[MPDetailScrubController alloc] initWithScrubbingControl:v9];
@@ -1669,9 +1669,9 @@ uint64_t __50__MPDetailSlider__setValueWhileTracking_duration___block_invoke(uin
     [(MPDetailScrubController *)v9->_scrubController setDelegate:v9];
     [(MPDetailScrubController *)v9->_scrubController setDetailedScrubbingEnabled:1];
     v9->_allowsScrubbing = 1;
-    v9->_maxTrackWidth = a5;
-    v9->_style = a4;
-    if ((a4 - 3) >= 2)
+    v9->_maxTrackWidth = width;
+    v9->_style = style;
+    if ((style - 3) >= 2)
     {
       v9->_minTimeLabelWidth = 41.0;
     }

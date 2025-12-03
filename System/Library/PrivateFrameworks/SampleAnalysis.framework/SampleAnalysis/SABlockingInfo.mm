@@ -1,5 +1,5 @@
 @interface SABlockingInfo
-- (BOOL)hasMatchingBlocker:(id)a3;
+- (BOOL)hasMatchingBlocker:(id)blocker;
 - (SABlockingInfo)init;
 - (id)_init;
 - (int)blockingPid;
@@ -70,23 +70,23 @@
   return result;
 }
 
-- (BOOL)hasMatchingBlocker:(id)a3
+- (BOOL)hasMatchingBlocker:(id)blocker
 {
-  v6 = [(SABlockingInfo *)self blockingTid];
-  v7 = [a3 blockingTid];
-  if (v6 | v7)
+  blockingTid = [(SABlockingInfo *)self blockingTid];
+  blockingTid2 = [blocker blockingTid];
+  if (blockingTid | blockingTid2)
   {
-    if (v6 != v7)
+    if (blockingTid != blockingTid2)
     {
       return 0;
     }
 
 LABEL_6:
-    v11 = [(SABlockingInfo *)self portName];
-    if (!v11)
+    portName = [(SABlockingInfo *)self portName];
+    if (!portName)
     {
-      v3 = [a3 portName];
-      if (!v3)
+      portName2 = [blocker portName];
+      if (!portName2)
       {
         v8 = 1;
 LABEL_16:
@@ -95,19 +95,19 @@ LABEL_16:
       }
     }
 
-    v12 = [(SABlockingInfo *)self portName];
-    if (v12)
+    portName3 = [(SABlockingInfo *)self portName];
+    if (portName3)
     {
-      v13 = v12;
-      v14 = [a3 portName];
-      if (v14)
+      v13 = portName3;
+      portName4 = [blocker portName];
+      if (portName4)
       {
-        v15 = v14;
-        v16 = [(SABlockingInfo *)self portName];
-        v17 = [a3 portName];
-        v8 = [v16 isEqualToString:v17];
+        v15 = portName4;
+        portName5 = [(SABlockingInfo *)self portName];
+        portName6 = [blocker portName];
+        v8 = [portName5 isEqualToString:portName6];
 
-        if (!v11)
+        if (!portName)
         {
           goto LABEL_16;
         }
@@ -119,7 +119,7 @@ LABEL_17:
     }
 
     v8 = 0;
-    if (!v11)
+    if (!portName)
     {
       goto LABEL_16;
     }
@@ -127,10 +127,10 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v9 = [(SABlockingInfo *)self blockingPid];
-  v10 = [a3 blockingPid];
+  blockingPid = [(SABlockingInfo *)self blockingPid];
+  blockingPid2 = [blocker blockingPid];
   v8 = 0;
-  if ((v9 & v10) != 0xFFFFFFFF && v9 == v10)
+  if ((blockingPid & blockingPid2) != 0xFFFFFFFF && blockingPid == blockingPid2)
   {
     goto LABEL_6;
   }

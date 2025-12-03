@@ -1,22 +1,22 @@
 @interface _JEAtomicFlag
-- (BOOL)compareWithValue:(BOOL)a3 andExchangeWithValue:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)compareWithValue:(BOOL)value andExchangeWithValue:(BOOL)withValue;
+- (BOOL)isEqual:(id)equal;
 - (_JEAtomicFlag)init;
-- (_JEAtomicFlag)initWithInitialValue:(BOOL)a3;
+- (_JEAtomicFlag)initWithInitialValue:(BOOL)value;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation _JEAtomicFlag
 
-- (_JEAtomicFlag)initWithInitialValue:(BOOL)a3
+- (_JEAtomicFlag)initWithInitialValue:(BOOL)value
 {
   v5.receiver = self;
   v5.super_class = _JEAtomicFlag;
   result = [(_JEAtomicFlag *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = value;
   }
 
   return result;
@@ -29,17 +29,17 @@
   return 0;
 }
 
-- (BOOL)compareWithValue:(BOOL)a3 andExchangeWithValue:(BOOL)a4
+- (BOOL)compareWithValue:(BOOL)value andExchangeWithValue:(BOOL)withValue
 {
-  v4 = a3;
-  atomic_compare_exchange_strong(&self->_value, &v4, a4);
-  return v4 == a3;
+  valueCopy = value;
+  atomic_compare_exchange_strong(&self->_value, &valueCopy, withValue);
+  return valueCopy == value;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     if (self)
     {
@@ -51,7 +51,7 @@
       v5 = 0;
     }
 
-    v6 = atomic_load(v4 + 8);
+    v6 = atomic_load(equalCopy + 8);
     v7 = v5 ^ v6 ^ 1;
   }
 

@@ -23,23 +23,23 @@
 - (void)_updateAuthentication
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(MDMHTTPTransaction *)self rmAccountID];
+  rmAccountID = [(MDMHTTPTransaction *)self rmAccountID];
 
   v4 = *(DMCLogObjects() + 8);
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
-  if (v3)
+  if (rmAccountID)
   {
     if (v5)
     {
       v6 = v4;
-      v7 = [(MDMHTTPTransaction *)self rmAccountID];
+      rmAccountID2 = [(MDMHTTPTransaction *)self rmAccountID];
       v11 = 138543362;
-      v12 = v7;
+      v12 = rmAccountID2;
       _os_log_impl(&dword_22E997000, v6, OS_LOG_TYPE_DEBUG, "RMAccount ID provided to MDMHTTPTransaction: %{public}@", &v11, 0xCu);
     }
 
-    v8 = [(MDMHTTPTransaction *)self rmAccountID];
-    v9 = [MDMAccountUtilities authenticatorForRMAccountID:v8];
+    rmAccountID3 = [(MDMHTTPTransaction *)self rmAccountID];
+    v9 = [MDMAccountUtilities authenticatorForRMAccountID:rmAccountID3];
     [(DMCHTTPTransaction *)self setAuthenticator:v9];
   }
 

@@ -2,13 +2,13 @@
 - (CSSmartSiriVolumeClient)init;
 - (CSSmartSiriVolumeClientDelegate)delegate;
 - (id)_getRemoteServiceProxyObject;
-- (id)getVolumeForTTSType:(unint64_t)a3 withContext:(id)a4;
+- (id)getVolumeForTTSType:(unint64_t)type withContext:(id)context;
 - (void)_createClientConnection;
 - (void)dealloc;
-- (void)didTTSVolumeChangeForReason:(unint64_t)a3;
-- (void)setPermanentVolumeOffsetWithDirection:(BOOL)a3;
-- (void)setSmartSiriVolumeDirection:(BOOL)a3;
-- (void)setSmartSiriVolumePercentage:(float)a3;
+- (void)didTTSVolumeChangeForReason:(unint64_t)reason;
+- (void)setPermanentVolumeOffsetWithDirection:(BOOL)direction;
+- (void)setSmartSiriVolumeDirection:(BOOL)direction;
+- (void)setSmartSiriVolumePercentage:(float)percentage;
 @end
 
 @implementation CSSmartSiriVolumeClient
@@ -192,7 +192,7 @@ void __55__CSSmartSiriVolumeClient__getRemoteServiceProxyObject__block_invoke(ui
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didTTSVolumeChangeForReason:(unint64_t)a3
+- (void)didTTSVolumeChangeForReason:(unint64_t)reason
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -200,7 +200,7 @@ void __55__CSSmartSiriVolumeClient__getRemoteServiceProxyObject__block_invoke(ui
   v4[2] = __55__CSSmartSiriVolumeClient_didTTSVolumeChangeForReason___block_invoke;
   v4[3] = &unk_2784C6EC0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reason;
   dispatch_async(queue, v4);
 }
 
@@ -235,7 +235,7 @@ void __55__CSSmartSiriVolumeClient_didTTSVolumeChangeForReason___block_invoke(ui
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPermanentVolumeOffsetWithDirection:(BOOL)a3
+- (void)setPermanentVolumeOffsetWithDirection:(BOOL)direction
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -243,7 +243,7 @@ void __55__CSSmartSiriVolumeClient_didTTSVolumeChangeForReason___block_invoke(ui
   v4[2] = __65__CSSmartSiriVolumeClient_setPermanentVolumeOffsetWithDirection___block_invoke;
   v4[3] = &unk_2784C6390;
   v4[4] = self;
-  v5 = a3;
+  directionCopy = direction;
   dispatch_async(queue, v4);
 }
 
@@ -271,7 +271,7 @@ void __65__CSSmartSiriVolumeClient_setPermanentVolumeOffsetWithDirection___block
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSmartSiriVolumeDirection:(BOOL)a3
+- (void)setSmartSiriVolumeDirection:(BOOL)direction
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -279,7 +279,7 @@ void __65__CSSmartSiriVolumeClient_setPermanentVolumeOffsetWithDirection___block
   v4[2] = __55__CSSmartSiriVolumeClient_setSmartSiriVolumeDirection___block_invoke;
   v4[3] = &unk_2784C6390;
   v4[4] = self;
-  v5 = a3;
+  directionCopy = direction;
   dispatch_sync(queue, v4);
 }
 
@@ -307,7 +307,7 @@ void __55__CSSmartSiriVolumeClient_setSmartSiriVolumeDirection___block_invoke(ui
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSmartSiriVolumePercentage:(float)a3
+- (void)setSmartSiriVolumePercentage:(float)percentage
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -315,7 +315,7 @@ void __55__CSSmartSiriVolumeClient_setSmartSiriVolumeDirection___block_invoke(ui
   v4[2] = __56__CSSmartSiriVolumeClient_setSmartSiriVolumePercentage___block_invoke;
   v4[3] = &unk_2784C5998;
   v4[4] = self;
-  v5 = a3;
+  percentageCopy = percentage;
   dispatch_sync(queue, v4);
 }
 
@@ -344,9 +344,9 @@ void __56__CSSmartSiriVolumeClient_setSmartSiriVolumePercentage___block_invoke(u
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getVolumeForTTSType:(unint64_t)a3 withContext:(id)a4
+- (id)getVolumeForTTSType:(unint64_t)type withContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -359,10 +359,10 @@ void __56__CSSmartSiriVolumeClient_setSmartSiriVolumePercentage___block_invoke(u
   v11[2] = __59__CSSmartSiriVolumeClient_getVolumeForTTSType_withContext___block_invoke;
   v11[3] = &unk_2784C4BE0;
   v11[4] = self;
-  v12 = v6;
+  v12 = contextCopy;
   v13 = &v15;
-  v14 = a3;
-  v8 = v6;
+  typeCopy = type;
+  v8 = contextCopy;
   dispatch_sync(queue, v11);
   v9 = v16[5];
 

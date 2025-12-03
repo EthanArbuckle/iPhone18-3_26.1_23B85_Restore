@@ -1,17 +1,17 @@
 @interface SMBClientdSettings
-- (BOOL)load:(id *)a3;
-- (BOOL)save:(id *)a3;
+- (BOOL)load:(id *)load;
+- (BOOL)save:(id *)save;
 - (NSDictionary)servers;
 - (SMBClientdSettings)init;
-- (id)addShares:(id)a3 atServer:(id)a4 serverDomainName:(id *)a5 service:(id)a6;
-- (id)findNewMountNumber:(unsigned int *)a3 error:(id *)a4;
-- (id)getPasswordForIdentifier:(id)a3 error:(id *)a4;
-- (id)internalAddShare:(id)a3 server:(id)a4 password:(id)a5 service:(id)a6 displayName:(id)a7 storageName:(id)a8 existingTags:(id)a9 flags:(unsigned int)a10;
-- (id)removeServer:(id)a3;
-- (id)storageStringForMountNumber:(unsigned int)a3;
+- (id)addShares:(id)shares atServer:(id)server serverDomainName:(id *)name service:(id)service;
+- (id)findNewMountNumber:(unsigned int *)number error:(id *)error;
+- (id)getPasswordForIdentifier:(id)identifier error:(id *)error;
+- (id)internalAddShare:(id)share server:(id)server password:(id)password service:(id)service displayName:(id)name storageName:(id)storageName existingTags:(id)tags flags:(unsigned int)self0;
+- (id)removeServer:(id)server;
+- (id)storageStringForMountNumber:(unsigned int)number;
 - (void)calculateSet;
 - (void)initFresh;
-- (void)reconstituteWithService:(id)a3;
+- (void)reconstituteWithService:(id)service;
 @end
 
 @implementation SMBClientdSettings
@@ -61,7 +61,7 @@
   [(NSMutableDictionary *)servers enumerateKeysAndObjectsUsingBlock:v3];
 }
 
-- (BOOL)load:(id *)a3
+- (BOOL)load:(id *)load
 {
   v21 = 0;
   v5 = sub_100033EC8(&v21);
@@ -73,8 +73,8 @@
     v21 = v9;
 
     v11 = +[NSFileManager defaultManager];
-    v12 = [v21 path];
-    v13 = [v11 fileExistsAtPath:v12];
+    path = [v21 path];
+    v13 = [v11 fileExistsAtPath:path];
 
     if (v13)
     {
@@ -84,7 +84,7 @@
       v5 = v14;
       if (v14 || !v8)
       {
-        if (!a3)
+        if (!load)
         {
           v7 = 0;
           goto LABEL_12;
@@ -114,7 +114,7 @@
     goto LABEL_12;
   }
 
-  if (!a3)
+  if (!load)
   {
     v7 = 0;
     v8 = 0;
@@ -125,24 +125,24 @@
   v7 = 0;
   v8 = 0;
 LABEL_4:
-  *a3 = v5;
+  *load = v5;
 LABEL_12:
 
   return v7;
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
   v17 = 0;
   v5 = sub_100033EC8(&v17);
   if (v5)
   {
     v6 = v5;
-    if (a3)
+    if (save)
     {
       v7 = v5;
       v8 = 0;
-      *a3 = v6;
+      *save = v6;
     }
 
     else
@@ -190,17 +190,17 @@ LABEL_12:
   return v8;
 }
 
-- (id)internalAddShare:(id)a3 server:(id)a4 password:(id)a5 service:(id)a6 displayName:(id)a7 storageName:(id)a8 existingTags:(id)a9 flags:(unsigned int)a10
+- (id)internalAddShare:(id)share server:(id)server password:(id)password service:(id)service displayName:(id)name storageName:(id)storageName existingTags:(id)tags flags:(unsigned int)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  shareCopy = share;
+  serverCopy = server;
+  passwordCopy = password;
+  serviceCopy = service;
+  nameCopy = name;
+  storageNameCopy = storageName;
+  tagsCopy = tags;
   v39 = 0;
-  v22 = [smbMount smbMountFromServerURL:v16 shareName:v15 password:v17 result:&v39];
+  v22 = [smbMount smbMountFromServerURL:serverCopy shareName:shareCopy password:passwordCopy result:&v39];
   if (!v22)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -216,7 +216,7 @@ LABEL_12:
   [v22 setTransaction:v23];
 
   v24 = +[LiveFSClient interfaceForListeners];
-  v25 = [v18 addVolume:v20 usingInterface:v24 connectionClass:objc_opt_class() queue:0 proxy:v22 description:v20];
+  v25 = [serviceCopy addVolume:storageNameCopy usingInterface:v24 connectionClass:objc_opt_class() queue:0 proxy:v22 description:storageNameCopy];
 
   if (v25)
   {
@@ -235,19 +235,19 @@ LABEL_9:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v15;
+    *&buf[4] = shareCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v20;
+    *&buf[14] = storageNameCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "internalAddShare: addVolume returned success for share: %@ desc: %@ ", buf, 0x16u);
   }
 
-  v28 = [@"com.apple.filesystems.smbclientd" stringByAppendingPathComponent:v20];
+  v28 = [@"com.apple.filesystems.smbclientd" stringByAppendingPathComponent:storageNameCopy];
   v29 = v28;
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v45 = 0;
-  if (v21)
+  if (tagsCopy)
   {
     v36[0] = _NSConcreteStackBlock;
     v36[1] = 3221225472;
@@ -255,7 +255,7 @@ LABEL_9:
     v36[3] = &unk_10008E1E8;
     v37 = v28;
     v38 = buf;
-    [v21 enumerateObjectsUsingBlock:v36];
+    [tagsCopy enumerateObjectsUsingBlock:v36];
   }
 
   v35 = [SMBFPClient newClientForProvider:@"com.apple.SMBClientProvider.FileProvider"];
@@ -265,7 +265,7 @@ LABEL_9:
     *v40 = 67109378;
     *v41 = v30;
     *&v41[4] = 2112;
-    *&v41[6] = v15;
+    *&v41[6] = shareCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "internalAddShare: Got mounter, about to try mounting. isMounted is %d for share: %@", v40, 0x12u);
   }
 
@@ -276,15 +276,15 @@ LABEL_29:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
       *v40 = 138412802;
-      *v41 = v20;
+      *v41 = storageNameCopy;
       *&v41[8] = 2112;
-      *&v41[10] = v19;
+      *&v41[10] = nameCopy;
       v42 = 2112;
-      v43 = v15;
+      v43 = shareCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "internalAddShare: Added the volume: %@ with displayName: %@ share: %@ to livefiles local mount service, trying to register with fskitd.", v40, 0x20u);
     }
 
-    v31 = [v35 mountVolume:v20 displayName:v19 provider:@"com.apple.SMBClientProvider.FileProvider" on:v29 how:v32];
+    v31 = [v35 mountVolume:storageNameCopy displayName:nameCopy provider:@"com.apple.SMBClientProvider.FileProvider" on:v29 how:v32];
     if (v31)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
@@ -292,20 +292,20 @@ LABEL_29:
         *v40 = 138412802;
         *v41 = v31;
         *&v41[8] = 2112;
-        *&v41[10] = v20;
+        *&v41[10] = storageNameCopy;
         v42 = 2112;
-        v43 = v15;
+        v43 = shareCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "internalAddShare: mountVolume returned error %@ for volume: %@ share: %@, about to tear down", v40, 0x20u);
       }
 
-      [v18 removeVolumeLocked:v20];
+      [serviceCopy removeVolumeLocked:storageNameCopy];
       [v22 setTransaction:0];
       if (*(*&buf[8] + 24) == 1)
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
         {
           *v40 = 138412290;
-          *v41 = v15;
+          *v41 = shareCopy;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "internalAddShare: Calling unmountVolume to force/forget share: %@", v40, 0xCu);
         }
 
@@ -315,12 +315,12 @@ LABEL_29:
 
     else
     {
-      if (a10)
+      if (flags)
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
         {
           *v40 = 138412290;
-          *v41 = v15;
+          *v41 = shareCopy;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "internalAddShare: try to create root node for share: %@ ", v40, 0xCu);
         }
 
@@ -336,7 +336,7 @@ LABEL_29:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *v40 = 138412290;
-    *v41 = v15;
+    *v41 = shareCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "internalAddShare: Force-unmounting existing mount for share: %@", v40, 0xCu);
   }
 
@@ -346,7 +346,7 @@ LABEL_29:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
       *v40 = 138412290;
-      *v41 = v15;
+      *v41 = shareCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "internalAddShare: Forced unmount returned success for share: %@", v40, 0xCu);
     }
 
@@ -368,7 +368,7 @@ LABEL_29:
     sub_100059594();
   }
 
-  [v18 removeVolumeLocked:v20];
+  [serviceCopy removeVolumeLocked:storageNameCopy];
   [v22 setTransaction:0];
 LABEL_43:
   v27 = v31;
@@ -379,7 +379,7 @@ LABEL_44:
   return v27;
 }
 
-- (id)findNewMountNumber:(unsigned int *)a3 error:(id *)a4
+- (id)findNewMountNumber:(unsigned int *)number error:(id *)error
 {
   v7 = 0;
   do
@@ -394,14 +394,14 @@ LABEL_44:
 
     else
     {
-      if (a3)
+      if (number)
       {
-        *a3 = v8;
+        *number = v8;
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = 0;
+        *error = 0;
       }
     }
 
@@ -415,21 +415,21 @@ LABEL_44:
   if (!v9)
   {
     v11 = getNSErrorFromLiveFSErrno();
-    if (a4)
+    if (error)
     {
       v11 = v11;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
   return v9;
 }
 
-- (id)storageStringForMountNumber:(unsigned int)a3
+- (id)storageStringForMountNumber:(unsigned int)number
 {
-  v9 = a3;
+  numberCopy = number;
   v3 = [NSCharacterSet characterSetWithCharactersInString:@"="];
-  v4 = [NSData dataWithBytes:&v9 length:4];
+  v4 = [NSData dataWithBytes:&numberCopy length:4];
   v5 = [v4 base64EncodedStringWithOptions:0];
   v6 = [v5 stringByTrimmingCharactersInSet:v3];
 
@@ -438,34 +438,34 @@ LABEL_44:
   return v7;
 }
 
-- (id)addShares:(id)a3 atServer:(id)a4 serverDomainName:(id *)a5 service:(id)a6
+- (id)addShares:(id)shares atServer:(id)server serverDomainName:(id *)name service:(id)service
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v11 scheme];
-  v14 = [v13 isEqualToString:@"smb"];
+  sharesCopy = shares;
+  serverCopy = server;
+  serviceCopy = service;
+  scheme = [serverCopy scheme];
+  v14 = [scheme isEqualToString:@"smb"];
 
   if ((v14 & 1) == 0)
   {
-    a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+    name = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     goto LABEL_70;
   }
 
-  v15 = [NSURLComponents componentsWithURL:v11 resolvingAgainstBaseURL:1];
-  v16 = [v15 user];
-  v60 = [v15 host];
-  v58 = [v15 password];
-  v59 = [v15 port];
-  if (v60)
+  v15 = [NSURLComponents componentsWithURL:serverCopy resolvingAgainstBaseURL:1];
+  user = [v15 user];
+  host = [v15 host];
+  password = [v15 password];
+  port = [v15 port];
+  if (host)
   {
-    if (v16)
+    if (user)
     {
-      v17 = [v16 caseInsensitiveCompare:@"GUEST"];
+      v17 = [user caseInsensitiveCompare:@"GUEST"];
       if (!v17)
       {
 
-        v58 = &stru_10008EA58;
+        password = &stru_10008EA58;
       }
 
       v91 = 0;
@@ -478,7 +478,7 @@ LABEL_44:
       v90 = 0;
       v95 = sub_10003567C;
       v96 = 0;
-      if (v59 && [v59 intValue] == 445)
+      if (port && [port intValue] == 445)
       {
         [v15 setPort:0];
       }
@@ -488,10 +488,10 @@ LABEL_44:
       [v15 setFragment:0];
       [v15 setQuery:0];
       v57 = [v15 URL];
-      v54 = [v57 absoluteString];
+      absoluteString = [v57 absoluteString];
       v18 = sub_100035684(v15);
-      v19 = self;
-      objc_sync_enter(v19);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       v81 = 0;
       v82 = &v81;
       v83 = 0x3032000000;
@@ -499,13 +499,13 @@ LABEL_44:
       v85 = sub_10003567C;
       v86 = 0;
       v55 = v18;
-      obj = &v19->super.isa;
-      v20 = [(NSMutableDictionary *)v19->_servers objectForKey:v18];
+      obj = &selfCopy->super.isa;
+      v20 = [(NSMutableDictionary *)selfCopy->_servers objectForKey:v18];
       v21 = v20;
       if (v20)
       {
         v22 = [v20 objectForKeyedSubscript:@"user"];
-        v23 = [v16 isEqualToString:v22];
+        v23 = [user isEqualToString:v22];
 
         if ((v23 & 1) == 0)
         {
@@ -514,7 +514,7 @@ LABEL_44:
             sub_100059698();
           }
 
-          a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+          name = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
           v17 = 0;
           v28 = 0;
           goto LABEL_66;
@@ -544,7 +544,7 @@ LABEL_44:
         }
 
         v32 = v24;
-        if (([(__CFString *)v58 isEqualToString:?]& 1) != 0)
+        if (([(__CFString *)password isEqualToString:?]& 1) != 0)
         {
 LABEL_43:
 
@@ -573,19 +573,19 @@ LABEL_45:
           v64 = v21;
           v65 = obj;
           v66 = v57;
-          v67 = v58;
-          v68 = v12;
+          v67 = password;
+          v68 = serviceCopy;
           v36 = v55;
           v69 = v36;
           v53 = v52;
           v70 = v53;
           v73 = &v91;
           v74 = &v87;
-          [v10 enumerateObjectsUsingBlock:v62];
-          if (a5)
+          [sharesCopy enumerateObjectsUsingBlock:v62];
+          if (name)
           {
             v37 = v53;
-            *a5 = v53;
+            *name = v53;
           }
 
           if (!*(v88 + 6))
@@ -613,7 +613,7 @@ LABEL_45:
             v61 = 0;
             [obj save:&v61];
             v41 = v61;
-            a5 = v41;
+            name = v41;
             if (v17)
             {
               v42 = v17;
@@ -634,7 +634,7 @@ LABEL_45:
           goto LABEL_66;
         }
 
-        v33 = [(__CFString *)v58 dataUsingEncoding:4];
+        v33 = [(__CFString *)password dataUsingEncoding:4];
         v79 = v17;
         v48 = [SMBClientdKeychainUtilities addItem:v33 forIdentifier:v55 error:&v79];
         v49 = v79;
@@ -654,14 +654,14 @@ LABEL_45:
 
 LABEL_65:
         v28 = 0;
-        a5 = v17;
+        name = v17;
 LABEL_66:
         _Block_object_dispose(&v81, 8);
 
         objc_sync_exit(obj);
         if (v28)
         {
-          a5 = v17;
+          name = v17;
         }
 
         _Block_object_dispose(&v87, 8);
@@ -686,7 +686,7 @@ LABEL_66:
       }
 
       v52 = [obj storageStringForMountNumber:LODWORD(v75[0])];
-      v27 = [v12 addVolumeCluster:v52];
+      v27 = [serviceCopy addVolumeCluster:v52];
 
       if (v27)
       {
@@ -703,7 +703,7 @@ LABEL_66:
           sub_100059898();
         }
 
-        v29 = [(__CFString *)v58 dataUsingEncoding:4];
+        v29 = [(__CFString *)password dataUsingEncoding:4];
         v77 = 0;
         v30 = [SMBClientdKeychainUtilities addItem:v29 forIdentifier:v55 error:&v77];
         v31 = v77;
@@ -731,9 +731,9 @@ LABEL_66:
           v99[2] = @"storageName";
           v99[3] = @"url";
           v100[2] = v52;
-          v100[3] = v54;
+          v100[3] = absoluteString;
           v99[4] = @"user";
-          v100[4] = v16;
+          v100[4] = user;
           v21 = [NSDictionary dictionaryWithObjects:v100 forKeys:v99 count:5];
           v45 = [v21 mutableCopy];
           v46 = v82[5];
@@ -765,31 +765,31 @@ LABEL_64:
     sub_100059A48();
   }
 
-  a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+  name = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
 LABEL_69:
 
 LABEL_70:
 
-  return a5;
+  return name;
 }
 
-- (id)removeServer:(id)a3
+- (id)removeServer:(id)server
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  serverCopy = server;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = sub_10003566C;
   v21 = sub_10003567C;
   v22 = 0;
-  servers = v5->_servers;
+  servers = selfCopy->_servers;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100035BB4;
   v14[3] = &unk_10008E238;
-  v7 = v4;
+  v7 = serverCopy;
   v15 = v7;
   v16 = &v17;
   [(NSMutableDictionary *)servers enumerateKeysAndObjectsUsingBlock:v14];
@@ -805,9 +805,9 @@ LABEL_70:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s Remove server entry: %@", buf, 0x16u);
     }
 
-    [(NSMutableDictionary *)v5->_servers removeObjectForKey:v18[5]];
+    [(NSMutableDictionary *)selfCopy->_servers removeObjectForKey:v18[5]];
     v13 = 0;
-    [(SMBClientdSettings *)v5 save:&v13];
+    [(SMBClientdSettings *)selfCopy save:&v13];
     v9 = v13;
     if (v9)
     {
@@ -832,18 +832,18 @@ LABEL_70:
   }
 
   _Block_object_dispose(&v17, 8);
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return 0;
 }
 
-- (void)reconstituteWithService:(id)a3
+- (void)reconstituteWithService:(id)service
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  serviceCopy = service;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v20 = 0;
-  [(SMBClientdSettings *)v5 load:&v20];
+  [(SMBClientdSettings *)selfCopy load:&v20];
   v6 = v20;
   if (v6)
   {
@@ -867,29 +867,29 @@ LABEL_70:
     v10 = objc_opt_new();
     v18 = v10;
     [v9 enumerateObjectsUsingBlock:v17];
-    servers = v5->_servers;
+    servers = selfCopy->_servers;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100035F50;
     v13[3] = &unk_10008E2B0;
-    v14 = v4;
-    v15 = v5;
+    v14 = serviceCopy;
+    v15 = selfCopy;
     v12 = v10;
     v16 = v12;
     [(NSMutableDictionary *)servers enumerateKeysAndObjectsUsingBlock:v13];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)getPasswordForIdentifier:(id)a3 error:(id *)a4
+- (id)getPasswordForIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
-  v6 = [NSURLComponents componentsWithURL:v5 resolvingAgainstBaseURL:1];
+  identifierCopy = identifier;
+  v6 = [NSURLComponents componentsWithURL:identifierCopy resolvingAgainstBaseURL:1];
   v7 = sub_100035684(v6);
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v13 = 0;
@@ -900,18 +900,18 @@ LABEL_70:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_100059EDC();
-      if (a4)
+      if (error)
       {
         goto LABEL_6;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_6:
       v10 = v9;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
       goto LABEL_10;
     }
 

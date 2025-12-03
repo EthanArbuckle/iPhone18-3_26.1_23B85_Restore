@@ -1,13 +1,13 @@
 @interface SBZionUnlockTrigger
 - (BOOL)_isRestToOpenAvailable;
 - (BOOL)bioUnlock;
-- (SBZionUnlockTrigger)initWithUnlockBehaviorConfigurationDelegate:(id)a3;
+- (SBZionUnlockTrigger)initWithUnlockBehaviorConfigurationDelegate:(id)delegate;
 - (id)succinctDescriptionBuilder;
 - (void)_cancelMinTouchIDTimer;
 - (void)_cancelRestToOpenTimer;
 - (void)_evaluateRestToOpenTimer;
 - (void)_startRestToOpenTimer;
-- (void)_startRestToOpenTimerWithDuration:(double)a3;
+- (void)_startRestToOpenTimerWithDuration:(double)duration;
 - (void)dealloc;
 - (void)fingerOff;
 - (void)fingerOn;
@@ -18,16 +18,16 @@
 
 @implementation SBZionUnlockTrigger
 
-- (SBZionUnlockTrigger)initWithUnlockBehaviorConfigurationDelegate:(id)a3
+- (SBZionUnlockTrigger)initWithUnlockBehaviorConfigurationDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SBZionUnlockTrigger;
   v5 = [(SBZionUnlockTrigger *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_behaviorConfigurationDelegate, v4);
+    objc_storeWeak(&v5->_behaviorConfigurationDelegate, delegateCopy);
   }
 
   return v6;
@@ -46,13 +46,13 @@
 {
   v9.receiver = self;
   v9.super_class = SBZionUnlockTrigger;
-  v3 = [(SBMesaUnlockTrigger *)&v9 succinctDescriptionBuilder];
-  v4 = [v3 appendBool:self->_fingerOn withName:@"fingerOn"];
-  v5 = [v3 appendBool:self->_fingerOffSinceWake withName:@"fingerOffSinceWake"];
-  v6 = [v3 appendBool:self->_restToOpenTimer != 0 withName:@"restToOpenTimer"];
-  v7 = [v3 appendBool:self->_minTouchIDTimer != 0 withName:@"minTouchIDTimer"];
+  succinctDescriptionBuilder = [(SBMesaUnlockTrigger *)&v9 succinctDescriptionBuilder];
+  v4 = [succinctDescriptionBuilder appendBool:self->_fingerOn withName:@"fingerOn"];
+  v5 = [succinctDescriptionBuilder appendBool:self->_fingerOffSinceWake withName:@"fingerOffSinceWake"];
+  v6 = [succinctDescriptionBuilder appendBool:self->_restToOpenTimer != 0 withName:@"restToOpenTimer"];
+  v7 = [succinctDescriptionBuilder appendBool:self->_minTouchIDTimer != 0 withName:@"minTouchIDTimer"];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
 - (BOOL)bioUnlock
@@ -91,7 +91,7 @@
       v13 = 3221225472;
       v14 = __32__SBZionUnlockTrigger_bioUnlock__block_invoke_2;
       v15 = &unk_2783A9398;
-      v16 = self;
+      selfCopy = self;
       v5 = &v12;
       v4 = WeakRetained;
     }
@@ -101,7 +101,7 @@
       v5 = 0;
     }
 
-    [v4 startRestToOpenCoachingWithCompletion:{v5, v12, v13, v14, v15, v16}];
+    [v4 startRestToOpenCoachingWithCompletion:{v5, v12, v13, v14, v15, selfCopy}];
   }
 
 LABEL_8:
@@ -131,9 +131,9 @@ void __32__SBZionUnlockTrigger_bioUnlock__block_invoke(uint64_t a1)
 {
   self->_fingerOn = 1;
   v3 = +[SBCoverSheetPresentationManager sharedInstance];
-  v4 = [v3 hasBeenDismissedSinceKeybagLockAndAuthenticated];
+  hasBeenDismissedSinceKeybagLockAndAuthenticated = [v3 hasBeenDismissedSinceKeybagLockAndAuthenticated];
 
-  if ([(SBMesaUnlockTrigger *)self authenticated]&& (v4 & 1) == 0)
+  if ([(SBMesaUnlockTrigger *)self authenticated]&& (hasBeenDismissedSinceKeybagLockAndAuthenticated & 1) == 0)
   {
     if ([(SBZionUnlockTrigger *)self _isRestToOpenAvailable])
     {
@@ -193,7 +193,7 @@ void __32__SBZionUnlockTrigger_bioUnlock__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_startRestToOpenTimerWithDuration:(double)a3
+- (void)_startRestToOpenTimerWithDuration:(double)duration
 {
   if (self->_fingerOn)
   {
@@ -211,10 +211,10 @@ void __32__SBZionUnlockTrigger_bioUnlock__block_invoke(uint64_t a1)
     v13 = __57__SBZionUnlockTrigger__startRestToOpenTimerWithDuration___block_invoke;
     v14 = &unk_2783A9918;
     objc_copyWeak(&v15, &location);
-    [(BSAbsoluteMachTimer *)v7 scheduleWithFireInterval:v8 leewayInterval:&v11 queue:a3 handler:0.0];
+    [(BSAbsoluteMachTimer *)v7 scheduleWithFireInterval:v8 leewayInterval:&v11 queue:duration handler:0.0];
 
     WeakRetained = objc_loadWeakRetained(&self->_behaviorConfigurationDelegate);
-    [WeakRetained fillRestToOpenWithDuration:{a3, v11, v12, v13, v14}];
+    [WeakRetained fillRestToOpenWithDuration:{duration, v11, v12, v13, v14}];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -231,8 +231,8 @@ void __57__SBZionUnlockTrigger__startRestToOpenTimerWithDuration___block_invoke(
 {
   if (self->_restToOpenTimer && self->_fingerOn && [(SBZionUnlockTrigger *)self _isRestToOpenAvailable])
   {
-    v3 = [(SBMesaUnlockTrigger *)self delegate];
-    [v3 mesaUnlockTriggerFired:self];
+    delegate = [(SBMesaUnlockTrigger *)self delegate];
+    [delegate mesaUnlockTriggerFired:self];
   }
 
   [(SBZionUnlockTrigger *)self _cancelRestToOpenTimer];
@@ -263,9 +263,9 @@ void __57__SBZionUnlockTrigger__startRestToOpenTimerWithDuration___block_invoke(
 - (BOOL)_isRestToOpenAvailable
 {
   WeakRetained = objc_loadWeakRetained(&self->_behaviorConfigurationDelegate);
-  v3 = [WeakRetained isRestToOpenAvailable];
+  isRestToOpenAvailable = [WeakRetained isRestToOpenAvailable];
 
-  return v3;
+  return isRestToOpenAvailable;
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface HKCDAPDFPrintPageRenderer
 - (CGRect)paperRect;
 - (CGRect)printableRect;
-- (HKCDAPDFPrintPageRenderer)initWithPaperRect:(CGRect)a3 horizontalMargin:(double)a4 verticalMargin:(double)a5;
-- (void)drawFooterForPageAtIndex:(int64_t)a3 inRect:(CGRect)a4;
+- (HKCDAPDFPrintPageRenderer)initWithPaperRect:(CGRect)rect horizontalMargin:(double)margin verticalMargin:(double)verticalMargin;
+- (void)drawFooterForPageAtIndex:(int64_t)index inRect:(CGRect)rect;
 @end
 
 @implementation HKCDAPDFPrintPageRenderer
 
-- (HKCDAPDFPrintPageRenderer)initWithPaperRect:(CGRect)a3 horizontalMargin:(double)a4 verticalMargin:(double)a5
+- (HKCDAPDFPrintPageRenderer)initWithPaperRect:(CGRect)rect horizontalMargin:(double)margin verticalMargin:(double)verticalMargin
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v15.receiver = self;
   v15.super_class = HKCDAPDFPrintPageRenderer;
   v11 = [(HKCDAPDFPrintPageRenderer *)&v15 init];
@@ -28,12 +28,12 @@
     v16.origin.y = y;
     v16.size.width = width;
     v16.size.height = height;
-    v17 = CGRectInset(v16, a4, a5);
+    v17 = CGRectInset(v16, margin, verticalMargin);
     *p_x = v17.origin.x;
     v12->_printableRectOverride.origin.y = v17.origin.y;
     v12->_printableRectOverride.size.width = v17.size.width;
-    v12->_printableRectOverride.size.height = v17.size.height + a5;
-    [(UIPrintPageRenderer *)v12 setFooterHeight:a5];
+    v12->_printableRectOverride.size.height = v17.size.height + verticalMargin;
+    [(UIPrintPageRenderer *)v12 setFooterHeight:verticalMargin];
   }
 
   return v12;
@@ -65,14 +65,14 @@
   return result;
 }
 
-- (void)drawFooterForPageAtIndex:(int64_t)a3 inRect:(CGRect)a4
+- (void)drawFooterForPageAtIndex:(int64_t)index inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v16[3] = *MEMORY[0x1E69E9840];
-  v8 = [MEMORY[0x1E69DB878] systemFontOfSize:{a3, 8.0}];
+  v8 = [MEMORY[0x1E69DB878] systemFontOfSize:{index, 8.0}];
   v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v10 = [v9 localizedStringForKey:@"CLINICAL_DOCUMENT_CDA_DISCLOSURE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
@@ -84,8 +84,8 @@
   v16[0] = v8;
   v16[1] = v11;
   v15[2] = *MEMORY[0x1E69DB650];
-  v13 = [MEMORY[0x1E69DC888] grayColor];
-  v16[2] = v13;
+  grayColor = [MEMORY[0x1E69DC888] grayColor];
+  v16[2] = grayColor;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
   [v10 boundingRectWithSize:1 options:v14 attributes:0 context:{width + -20.0, height}];

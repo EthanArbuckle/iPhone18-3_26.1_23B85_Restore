@@ -1,7 +1,7 @@
 @interface VUIAppDocumentRemovePlayHistoryEvent
-- (BOOL)isEqual:(id)a3;
-- (VUIAppDocumentRemovePlayHistoryEvent)initWithDescriptor:(id)a3;
-- (VUIAppDocumentRemovePlayHistoryEvent)initWithRemovedCanonicalIDs:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VUIAppDocumentRemovePlayHistoryEvent)initWithDescriptor:(id)descriptor;
+- (VUIAppDocumentRemovePlayHistoryEvent)initWithRemovedCanonicalIDs:(id)ds;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
@@ -9,7 +9,7 @@
 
 @implementation VUIAppDocumentRemovePlayHistoryEvent
 
-- (VUIAppDocumentRemovePlayHistoryEvent)initWithDescriptor:(id)a3
+- (VUIAppDocumentRemovePlayHistoryEvent)initWithDescriptor:(id)descriptor
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D940];
@@ -19,10 +19,10 @@
   return 0;
 }
 
-- (VUIAppDocumentRemovePlayHistoryEvent)initWithRemovedCanonicalIDs:(id)a3
+- (VUIAppDocumentRemovePlayHistoryEvent)initWithRemovedCanonicalIDs:(id)ds
 {
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v5 = +[VUIAppDocumentUpdateEventDescriptor removeFromPlayHistory];
     v11.receiver = self;
@@ -31,35 +31,35 @@
 
     if (v6)
     {
-      v7 = [v4 copy];
+      v7 = [dsCopy copy];
       removedCanonicalIDs = v6->_removedCanonicalIDs;
       v6->_removedCanonicalIDs = v7;
     }
 
     self = v6;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
 {
   v9.receiver = self;
   v9.super_class = VUIAppDocumentRemovePlayHistoryEvent;
-  v3 = [(VUIAppDocumentUpdateEvent *)&v9 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(VUIAppDocumentUpdateEvent *)&v9 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
-  v5 = [(VUIAppDocumentRemovePlayHistoryEvent *)self removedCanonicalIDs];
-  if ([v5 count])
+  removedCanonicalIDs = [(VUIAppDocumentRemovePlayHistoryEvent *)self removedCanonicalIDs];
+  if ([removedCanonicalIDs count])
   {
-    v6 = [v5 allObjects];
-    [v4 setObject:v6 forKey:@"removed"];
+    allObjects = [removedCanonicalIDs allObjects];
+    [v4 setObject:allObjects forKey:@"removed"];
   }
 
   v7 = [v4 copy];
@@ -72,32 +72,32 @@
   v7.receiver = self;
   v7.super_class = VUIAppDocumentRemovePlayHistoryEvent;
   v3 = [(VUIAppDocumentUpdateEvent *)&v7 hash];
-  v4 = [(VUIAppDocumentRemovePlayHistoryEvent *)self removedCanonicalIDs];
-  v5 = [v4 hash];
+  removedCanonicalIDs = [(VUIAppDocumentRemovePlayHistoryEvent *)self removedCanonicalIDs];
+  v5 = [removedCanonicalIDs hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v14.receiver = self;
     v14.super_class = VUIAppDocumentRemovePlayHistoryEvent;
     if ([(VUIAppDocumentUpdateEvent *)&v14 isEqual:v6])
     {
-      v7 = [(VUIAppDocumentRemovePlayHistoryEvent *)self removedCanonicalIDs];
-      v8 = [(VUIAppDocumentRemovePlayHistoryEvent *)v6 removedCanonicalIDs];
-      v9 = v7;
-      v10 = v8;
+      removedCanonicalIDs = [(VUIAppDocumentRemovePlayHistoryEvent *)self removedCanonicalIDs];
+      removedCanonicalIDs2 = [(VUIAppDocumentRemovePlayHistoryEvent *)v6 removedCanonicalIDs];
+      v9 = removedCanonicalIDs;
+      v10 = removedCanonicalIDs2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -137,8 +137,8 @@
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIAppDocumentRemovePlayHistoryEvent *)self removedCanonicalIDs];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"removedCanonicalIDs", v6];
+  removedCanonicalIDs = [(VUIAppDocumentRemovePlayHistoryEvent *)self removedCanonicalIDs];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"removedCanonicalIDs", removedCanonicalIDs];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];

@@ -1,39 +1,39 @@
 @interface HUServiceGridViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (CGSize)preferredContentSizeForCollectionViewContentSize:(CGSize)a3;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (CGSize)preferredContentSizeForCollectionViewContentSize:(CGSize)size;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
 - (HUGridLayoutOptions)layoutOptions;
-- (HUServiceGridViewController)initWithItemManager:(id)a3;
-- (HUServiceGridViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4;
+- (HUServiceGridViewController)initWithItemManager:(id)manager;
+- (HUServiceGridViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout;
 - (HUServiceGridViewControllerDelegate)delegate;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5;
-- (double)headerViewHeightForSectionIndex:(unint64_t)a3;
-- (id)_defaultLayoutOptionsForViewSize:(CGSize)a3;
-- (id)_performTapActionForItem:(id)a3 tappedArea:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (unint64_t)itemTypeForItem:(id)a3;
-- (void)configureCell:(id)a3 forItem:(id)a4;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index;
+- (double)headerViewHeightForSectionIndex:(unint64_t)index;
+- (id)_defaultLayoutOptionsForViewSize:(CGSize)size;
+- (id)_performTapActionForItem:(id)item tappedArea:(id)area;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (unint64_t)itemTypeForItem:(id)item;
+- (void)configureCell:(id)cell forItem:(id)item;
 - (void)layoutOptionsDidChange;
-- (void)setContentMargins:(unint64_t)a3;
-- (void)setLayoutOptions:(id)a3;
-- (void)setScrollDirection:(int64_t)a3;
+- (void)setContentMargins:(unint64_t)margins;
+- (void)setLayoutOptions:(id)options;
+- (void)setScrollDirection:(int64_t)direction;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation HUServiceGridViewController
 
-- (HUServiceGridViewController)initWithItemManager:(id)a3
+- (HUServiceGridViewController)initWithItemManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_alloc_init(HUGridFlowLayout);
   v8.receiver = self;
   v8.super_class = HUServiceGridViewController;
-  v6 = [(HUControllableItemCollectionViewController *)&v8 initWithItemManager:v4 collectionViewLayout:v5];
+  v6 = [(HUControllableItemCollectionViewController *)&v8 initWithItemManager:managerCopy collectionViewLayout:v5];
 
   if (v6)
   {
@@ -50,11 +50,11 @@
   return v6;
 }
 
-- (HUServiceGridViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4
+- (HUServiceGridViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithItemManager_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUServiceGridViewController.m" lineNumber:48 description:{@"%s is unavailable; use %@ instead", "-[HUServiceGridViewController initWithItemManager:collectionViewLayout:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUServiceGridViewController.m" lineNumber:48 description:{@"%s is unavailable; use %@ instead", "-[HUServiceGridViewController initWithItemManager:collectionViewLayout:]", v7}];
 
   return 0;
 }
@@ -64,39 +64,39 @@
   v11.receiver = self;
   v11.super_class = HUServiceGridViewController;
   [(HUControllableItemCollectionViewController *)&v11 viewDidLoad];
-  v3 = [(HUServiceGridViewController *)self collectionView];
+  collectionView = [(HUServiceGridViewController *)self collectionView];
   v4 = objc_opt_class();
   v5 = *MEMORY[0x277D767D8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v3 registerClass:v4 forSupplementaryViewOfKind:v5 withReuseIdentifier:v7];
+  [collectionView registerClass:v4 forSupplementaryViewOfKind:v5 withReuseIdentifier:v7];
 
-  v8 = [(HUServiceGridViewController *)self collectionView];
-  [v8 setAlwaysBounceVertical:1];
+  collectionView2 = [(HUServiceGridViewController *)self collectionView];
+  [collectionView2 setAlwaysBounceVertical:1];
 
-  v9 = [MEMORY[0x277D75348] clearColor];
-  v10 = [(HUServiceGridViewController *)self collectionView];
-  [v10 setBackgroundColor:v9];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  collectionView3 = [(HUServiceGridViewController *)self collectionView];
+  [collectionView3 setBackgroundColor:clearColor];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v19.receiver = self;
   v19.super_class = HUServiceGridViewController;
-  [(HUControllableItemCollectionViewController *)&v19 viewWillAppear:a3];
-  v4 = [(HUServiceGridViewController *)self layoutOptions];
-  [v4 viewSize];
+  [(HUControllableItemCollectionViewController *)&v19 viewWillAppear:appear];
+  layoutOptions = [(HUServiceGridViewController *)self layoutOptions];
+  [layoutOptions viewSize];
   v6 = v5;
   v8 = v7;
-  v9 = [(HUServiceGridViewController *)self view];
-  [v9 frame];
+  view = [(HUServiceGridViewController *)self view];
+  [view frame];
   v11 = v10;
   v13 = v12;
 
   if (v6 != v11 || v8 != v13)
   {
-    v15 = [(HUServiceGridViewController *)self view];
-    [v15 frame];
+    view2 = [(HUServiceGridViewController *)self view];
+    [view2 frame];
     v18 = [(HUServiceGridViewController *)self _defaultLayoutOptionsForViewSize:v16, v17];
     [(HUServiceGridViewController *)self setLayoutOptions:v18];
   }
@@ -107,38 +107,38 @@
   v18.receiver = self;
   v18.super_class = HUServiceGridViewController;
   [(HUServiceGridViewController *)&v18 viewWillLayoutSubviews];
-  v3 = [(HUServiceGridViewController *)self layoutOptions];
-  [v3 viewSize];
+  layoutOptions = [(HUServiceGridViewController *)self layoutOptions];
+  [layoutOptions viewSize];
   v5 = v4;
   v7 = v6;
-  v8 = [(HUServiceGridViewController *)self view];
-  [v8 frame];
+  view = [(HUServiceGridViewController *)self view];
+  [view frame];
   v10 = v9;
   v12 = v11;
 
   if (v5 != v10 || v7 != v12)
   {
-    v14 = [(HUServiceGridViewController *)self view];
-    [v14 frame];
+    view2 = [(HUServiceGridViewController *)self view];
+    [view2 frame];
     v17 = [(HUServiceGridViewController *)self _defaultLayoutOptionsForViewSize:v15, v16];
     [(HUServiceGridViewController *)self setLayoutOptions:v17];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = HUServiceGridViewController;
-  v7 = a4;
-  [(HUServiceGridViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(HUServiceGridViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __82__HUServiceGridViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_277DB79B8;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 void __82__HUServiceGridViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -150,47 +150,47 @@ void __82__HUServiceGridViewController_viewWillTransitionToSize_withTransitionCo
   [*(a1 + 32) setLayoutOptions:v5];
 }
 
-- (void)setScrollDirection:(int64_t)a3
+- (void)setScrollDirection:(int64_t)direction
 {
-  if (self->_scrollDirection != a3)
+  if (self->_scrollDirection != direction)
   {
-    self->_scrollDirection = a3;
-    v8 = [(HUServiceGridViewController *)self view];
-    [v8 frame];
+    self->_scrollDirection = direction;
+    view = [(HUServiceGridViewController *)self view];
+    [view frame];
     v7 = [(HUServiceGridViewController *)self _defaultLayoutOptionsForViewSize:v5, v6];
     [(HUServiceGridViewController *)self setLayoutOptions:v7];
   }
 }
 
-- (void)setContentMargins:(unint64_t)a3
+- (void)setContentMargins:(unint64_t)margins
 {
-  if (self->_contentMargins != a3)
+  if (self->_contentMargins != margins)
   {
-    self->_contentMargins = a3;
-    v8 = [(HUServiceGridViewController *)self view];
-    [v8 frame];
+    self->_contentMargins = margins;
+    view = [(HUServiceGridViewController *)self view];
+    [view frame];
     v7 = [(HUServiceGridViewController *)self _defaultLayoutOptionsForViewSize:v5, v6];
     [(HUServiceGridViewController *)self setLayoutOptions:v7];
   }
 }
 
-- (CGSize)preferredContentSizeForCollectionViewContentSize:(CGSize)a3
+- (CGSize)preferredContentSizeForCollectionViewContentSize:(CGSize)size
 {
   v18.receiver = self;
   v18.super_class = HUServiceGridViewController;
-  [(HUItemCollectionViewController *)&v18 preferredContentSizeForCollectionViewContentSize:a3.width, a3.height];
+  [(HUItemCollectionViewController *)&v18 preferredContentSizeForCollectionViewContentSize:size.width, size.height];
   v5 = v4;
   v7 = v6;
   if ([(HUServiceGridViewController *)self scrollDirection]== 1)
   {
-    v8 = [(HUServiceGridViewController *)self layoutOptions];
-    [v8 pointWidthForNumberOfColumns:1];
+    layoutOptions = [(HUServiceGridViewController *)self layoutOptions];
+    [layoutOptions pointWidthForNumberOfColumns:1];
     v10 = v9;
-    v11 = [(HUServiceGridViewController *)self layoutOptions];
-    [v11 sectionTopMargin];
+    layoutOptions2 = [(HUServiceGridViewController *)self layoutOptions];
+    [layoutOptions2 sectionTopMargin];
     v13 = v10 + v12;
-    v14 = [(HUServiceGridViewController *)self layoutOptions];
-    [v14 sectionBottomMargin];
+    layoutOptions3 = [(HUServiceGridViewController *)self layoutOptions];
+    [layoutOptions3 sectionBottomMargin];
     v7 = v13 + v15;
   }
 
@@ -201,29 +201,29 @@ void __82__HUServiceGridViewController_viewWillTransitionToSize_withTransitionCo
   return result;
 }
 
-- (unint64_t)itemTypeForItem:(id)a3
+- (unint64_t)itemTypeForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (id)_performTapActionForItem:(id)a3 tappedArea:(id)a4
+- (id)_performTapActionForItem:(id)item tappedArea:(id)area
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  areaCopy = area;
   v16.receiver = self;
   v16.super_class = HUServiceGridViewController;
-  v8 = [(HUControllableItemCollectionViewController *)&v16 _performTapActionForItem:v6 tappedArea:v7];
+  v8 = [(HUControllableItemCollectionViewController *)&v16 _performTapActionForItem:itemCopy tappedArea:areaCopy];
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __67__HUServiceGridViewController__performTapActionForItem_tappedArea___block_invoke;
   v12[3] = &unk_277DBD700;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = itemCopy;
   v13 = v9;
   v10 = [v8 flatMap:v12];
 
@@ -250,9 +250,9 @@ id __67__HUServiceGridViewController__performTapActionForItem_tappedArea___block
   return v6;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  if ([(HUServiceGridViewController *)self itemTypeForItem:a3, a4]> 1)
+  if ([(HUServiceGridViewController *)self itemTypeForItem:item, path]> 1)
   {
     v4 = 0;
   }
@@ -265,13 +265,13 @@ id __67__HUServiceGridViewController__performTapActionForItem_tappedArea___block
   return v4;
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
+  cellCopy = cell;
   v18.receiver = self;
   v18.super_class = HUServiceGridViewController;
-  [(HUControllableItemCollectionViewController *)&v18 configureCell:v6 forItem:a4];
-  v7 = v6;
+  [(HUControllableItemCollectionViewController *)&v18 configureCell:cellCopy forItem:item];
+  v7 = cellCopy;
   if ([v7 conformsToProtocol:&unk_2824AB728])
   {
     v8 = v7;
@@ -287,25 +287,25 @@ id __67__HUServiceGridViewController__performTapActionForItem_tappedArea___block
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v7;
-    v11 = [(HUServiceGridViewController *)self layoutOptions];
-    v12 = [v11 serviceCellOptions];
-    [v10 setLayoutOptions:v12];
+    layoutOptions2 = v7;
+    layoutOptions = [(HUServiceGridViewController *)self layoutOptions];
+    serviceCellOptions = [layoutOptions serviceCellOptions];
+    [layoutOptions2 setLayoutOptions:serviceCellOptions];
 
-    [v10 setShouldShowLoadingState:{-[HUServiceGridViewController shouldShowLoadingState](self, "shouldShowLoadingState")}];
-    v13 = [(HUItemCollectionViewController *)self itemManager];
+    [layoutOptions2 setShouldShowLoadingState:{-[HUServiceGridViewController shouldShowLoadingState](self, "shouldShowLoadingState")}];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
     objc_opt_class();
-    LOBYTE(v12) = objc_opt_isKindOfClass();
+    LOBYTE(serviceCellOptions) = objc_opt_isKindOfClass();
 
-    if ((v12 & 1) == 0)
+    if ((serviceCellOptions & 1) == 0)
     {
 LABEL_10:
 
       goto LABEL_11;
     }
 
-    v14 = [(HUItemCollectionViewController *)self itemManager];
-    [v10 setShouldShowRoomName:{objc_msgSend(v14, "shouldGroupByRoom") ^ 1}];
+    itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+    [layoutOptions2 setShouldShowRoomName:{objc_msgSend(itemManager2, "shouldGroupByRoom") ^ 1}];
 LABEL_9:
 
     goto LABEL_10;
@@ -314,32 +314,32 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(HUServiceGridViewController *)self layoutOptions];
-    v14 = [v10 sceneCellOptions];
-    [v9 setLayoutOptions:v14];
+    layoutOptions2 = [(HUServiceGridViewController *)self layoutOptions];
+    itemManager2 = [layoutOptions2 sceneCellOptions];
+    [v9 setLayoutOptions:itemManager2];
     goto LABEL_9;
   }
 
 LABEL_11:
   if ([MEMORY[0x277D14CE8] isAMac])
   {
-    v15 = [(HUServiceGridViewController *)self traitCollection];
-    v16 = [v15 userInterfaceStyle];
+    traitCollection = [(HUServiceGridViewController *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v16 == 1)
+    if (userInterfaceStyle == 1)
     {
-      v17 = [v9 layoutOptions];
-      [v17 setOnStateBorderStyle:1];
+      layoutOptions3 = [v9 layoutOptions];
+      [layoutOptions3 setOnStateBorderStyle:1];
     }
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = -[HUServiceGridViewController layoutOptionsForSection:](self, "layoutOptionsForSection:", [v6 section]);
-  v8 = [(HUItemCollectionViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v6];
+  pathCopy = path;
+  v7 = -[HUServiceGridViewController layoutOptionsForSection:](self, "layoutOptionsForSection:", [pathCopy section]);
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   v10 = [(HUServiceGridViewController *)self itemTypeForItem:v9];
   if (v10 == 1)
@@ -355,17 +355,17 @@ LABEL_11:
     }
 
     v13 = v12;
-    v15 = [v7 sceneCellOptions];
-    [v15 cellHeight];
+    sceneCellOptions = [v7 sceneCellOptions];
+    [sceneCellOptions cellHeight];
     v14 = v16;
 
-    v17 = [v7 sceneCellOptions];
-    v18 = [v17 font];
-    [v18 lineHeight];
+    sceneCellOptions2 = [v7 sceneCellOptions];
+    font = [sceneCellOptions2 font];
+    [font lineHeight];
     v20 = v19;
-    v21 = [v7 sceneCellOptions];
-    v22 = [v21 descriptionFont];
-    [v22 lineHeight];
+    sceneCellOptions3 = [v7 sceneCellOptions];
+    descriptionFont = [sceneCellOptions3 descriptionFont];
+    [descriptionFont lineHeight];
     v24 = v23 + v20 * 2.0;
 
     if (v14 < v24)
@@ -403,26 +403,26 @@ LABEL_11:
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v7 = [(HUServiceGridViewController *)self layoutOptionsForSection:a5, a4];
-  v8 = [(HUItemCollectionViewController *)self itemManager];
-  v9 = [v8 titleForSection:a5];
+  layout = [(HUServiceGridViewController *)self layoutOptionsForSection:index, layout];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v9 = [itemManager titleForSection:index];
 
   if (v9)
   {
-    v10 = [(HUItemCollectionViewController *)self itemManager];
-    v11 = [v10 numberOfSections] - 1;
+    itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+    v11 = [itemManager2 numberOfSections] - 1;
 
     v12 = 0.0;
     v13 = 0.0;
-    if (v11 != a5)
+    if (v11 != index)
     {
-      v14 = [(HUItemCollectionViewController *)self itemManager];
-      v15 = [v14 itemSectionForSectionIndex:a5 + 1];
+      itemManager3 = [(HUItemCollectionViewController *)self itemManager];
+      v15 = [itemManager3 itemSectionForSectionIndex:index + 1];
 
-      v16 = [v15 items];
-      v17 = [v16 count];
+      items = [v15 items];
+      v17 = [items count];
 
       if (v17)
       {
@@ -435,21 +435,21 @@ LABEL_11:
       }
     }
 
-    [v7 sectionLeadingMargin];
+    [layout sectionLeadingMargin];
     v19 = v18;
   }
 
   else
   {
-    [v7 sectionTopMargin];
+    [layout sectionTopMargin];
     v12 = v20;
-    [v7 sectionLeadingMargin];
+    [layout sectionLeadingMargin];
     v19 = v21;
-    [v7 sectionBottomMargin];
+    [layout sectionBottomMargin];
     v13 = v22;
   }
 
-  [v7 sectionTrailingMargin];
+  [layout sectionTrailingMargin];
   v24 = v23;
 
   v25 = v12;
@@ -463,14 +463,14 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v7 = [(HUItemCollectionViewController *)self itemManager:a3];
-  v8 = [v7 titleForSection:a5];
+  v7 = [(HUItemCollectionViewController *)self itemManager:view];
+  v8 = [v7 titleForSection:section];
   if (v8)
   {
     v9 = *MEMORY[0x277D76F30];
-    [(HUServiceGridViewController *)self headerViewHeightForSectionIndex:a5];
+    [(HUServiceGridViewController *)self headerViewHeightForSectionIndex:section];
     v11 = v10;
   }
 
@@ -487,38 +487,38 @@ LABEL_11:
   return result;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index
 {
-  v5 = [(HUServiceGridViewController *)self layoutOptionsForSection:a5, a4];
-  [v5 rowSpacing];
+  layout = [(HUServiceGridViewController *)self layoutOptionsForSection:index, layout];
+  [layout rowSpacing];
   v7 = v6;
 
   return v7;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a4;
-  v9 = a5;
+  kindCopy = kind;
+  pathCopy = path;
   v10 = *MEMORY[0x277D767D8];
-  v11 = a3;
-  if (([v8 isEqualToString:v10] & 1) == 0)
+  viewCopy = view;
+  if (([kindCopy isEqualToString:v10] & 1) == 0)
   {
-    NSLog(&cfstr_AskedForAViewF.isa, v8);
+    NSLog(&cfstr_AskedForAViewF.isa, kindCopy);
   }
 
-  v12 = [(HUItemCollectionViewController *)self itemManager];
-  v13 = [v12 titleForSection:{objc_msgSend(v9, "section")}];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v13 = [itemManager titleForSection:{objc_msgSend(pathCopy, "section")}];
 
   if (!v13)
   {
-    NSLog(&cfstr_AskedForHeader.isa, v9);
+    NSLog(&cfstr_AskedForHeader.isa, pathCopy);
   }
 
   objc_opt_class();
   v14 = objc_opt_class();
   v15 = NSStringFromClass(v14);
-  v16 = [v11 dequeueReusableSupplementaryViewOfKind:v8 withReuseIdentifier:v15 forIndexPath:v9];
+  v16 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v15 forIndexPath:pathCopy];
 
   if (objc_opt_isKindOfClass())
   {
@@ -532,49 +532,49 @@ LABEL_11:
 
   v18 = v17;
 
-  v19 = -[HUServiceGridViewController layoutOptionsForSection:](self, "layoutOptionsForSection:", [v9 section]);
-  v20 = [MEMORY[0x277D756E0] groupedHeaderConfiguration];
-  [v20 setText:v13];
-  [v20 directionalLayoutMargins];
+  v19 = -[HUServiceGridViewController layoutOptionsForSection:](self, "layoutOptionsForSection:", [pathCopy section]);
+  groupedHeaderConfiguration = [MEMORY[0x277D756E0] groupedHeaderConfiguration];
+  [groupedHeaderConfiguration setText:v13];
+  [groupedHeaderConfiguration directionalLayoutMargins];
   v22 = v21;
   v24 = v23;
   [v19 sectionTitleMargin];
   v26 = v25;
   [v19 sectionTitleMargin];
-  [v20 setDirectionalLayoutMargins:{v22, v26, v24}];
+  [groupedHeaderConfiguration setDirectionalLayoutMargins:{v22, v26, v24}];
   if (([(HUServiceGridViewController *)self contentMargins]& 0xA) == 0)
   {
-    [v20 setAxesPreservingSuperviewLayoutMargins:0];
+    [groupedHeaderConfiguration setAxesPreservingSuperviewLayoutMargins:0];
   }
 
-  [v18 setContentConfiguration:v20];
-  v27 = [MEMORY[0x277D751C0] clearConfiguration];
-  [v18 setBackgroundConfiguration:v27];
+  [v18 setContentConfiguration:groupedHeaderConfiguration];
+  clearConfiguration = [MEMORY[0x277D751C0] clearConfiguration];
+  [v18 setBackgroundConfiguration:clearConfiguration];
 
   return v18;
 }
 
-- (double)headerViewHeightForSectionIndex:(unint64_t)a3
+- (double)headerViewHeightForSectionIndex:(unint64_t)index
 {
-  v5 = [MEMORY[0x277D756E0] groupedHeaderConfiguration];
-  v6 = [(HUItemCollectionViewController *)self itemManager];
-  v7 = [v6 titleForSection:a3];
+  groupedHeaderConfiguration = [MEMORY[0x277D756E0] groupedHeaderConfiguration];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v7 = [itemManager titleForSection:index];
 
-  [v5 setText:v7];
-  v8 = [objc_alloc(MEMORY[0x277D756E8]) initWithConfiguration:v5];
+  [groupedHeaderConfiguration setText:v7];
+  v8 = [objc_alloc(MEMORY[0x277D756E8]) initWithConfiguration:groupedHeaderConfiguration];
   [v8 systemLayoutSizeFittingSize:{1.79769313e308, 1.79769313e308}];
   v10 = v9;
 
   return v10;
 }
 
-- (id)_defaultLayoutOptionsForViewSize:(CGSize)a3
+- (id)_defaultLayoutOptionsForViewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [MEMORY[0x277D14CE8] useMacIdiom];
+  height = size.height;
+  width = size.width;
+  useMacIdiom = [MEMORY[0x277D14CE8] useMacIdiom];
   v7 = &unk_282491730;
-  if (!v6)
+  if (!useMacIdiom)
   {
     v7 = 0;
   }
@@ -619,22 +619,22 @@ LABEL_11:
 
 - (HUGridLayoutOptions)layoutOptions
 {
-  v2 = [(HUServiceGridViewController *)self collectionView];
-  v3 = [v2 collectionViewLayout];
-  v4 = [v3 layoutOptions];
+  collectionView = [(HUServiceGridViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  layoutOptions = [collectionViewLayout layoutOptions];
 
-  return v4;
+  return layoutOptions;
 }
 
-- (void)setLayoutOptions:(id)a3
+- (void)setLayoutOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(HUServiceGridViewController *)self layoutOptions];
-  v6 = [v5 isEqual:v4];
+  optionsCopy = options;
+  layoutOptions = [(HUServiceGridViewController *)self layoutOptions];
+  v6 = [layoutOptions isEqual:optionsCopy];
 
-  v7 = [(HUServiceGridViewController *)self collectionView];
-  v8 = [v7 collectionViewLayout];
-  [v8 setLayoutOptions:v4];
+  collectionView = [(HUServiceGridViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout setLayoutOptions:optionsCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -650,10 +650,10 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(HUServiceGridViewController *)self collectionView];
-  v4 = [v3 visibleCells];
+  collectionView = [(HUServiceGridViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [visibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -665,15 +665,15 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleCells);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [(HUServiceGridViewController *)self layoutOptions];
-          v11 = [v10 serviceCellOptions];
+          layoutOptions = [(HUServiceGridViewController *)self layoutOptions];
+          serviceCellOptions = [layoutOptions serviceCellOptions];
         }
 
         else
@@ -684,19 +684,19 @@ LABEL_11:
             goto LABEL_11;
           }
 
-          v10 = [(HUServiceGridViewController *)self layoutOptions];
-          v11 = [v10 sceneCellOptions];
+          layoutOptions = [(HUServiceGridViewController *)self layoutOptions];
+          serviceCellOptions = [layoutOptions sceneCellOptions];
         }
 
-        v12 = v11;
-        [v9 setLayoutOptions:v11];
+        v12 = serviceCellOptions;
+        [v9 setLayoutOptions:serviceCellOptions];
 
 LABEL_11:
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [visibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);

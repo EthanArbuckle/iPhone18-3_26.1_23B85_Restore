@@ -1,29 +1,29 @@
 @interface GDInteractionEnumeration
-- (GDInteractionEnumeration)initWithStore:(id)a3 batchSize:(unint64_t)a4;
-- (GDInteractionEnumeration)initWithStore:(id)a3 predicate:(id)a4 sortDescriptor:(id)a5 batchSize:(unint64_t)a6;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (GDInteractionEnumeration)initWithStore:(id)store batchSize:(unint64_t)size;
+- (GDInteractionEnumeration)initWithStore:(id)store predicate:(id)predicate sortDescriptor:(id)descriptor batchSize:(unint64_t)size;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation GDInteractionEnumeration
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v5 = a4;
+  objectsCopy = objects;
   v51 = *MEMORY[0x1E69E9840];
-  if (a3->var0)
+  if (state->var0)
   {
-    v7 = a3->var3[0];
+    v7 = state->var3[0];
   }
 
   else
   {
     v7 = 0;
-    a3->var2 = self;
-    a3->var3[0] = 0;
-    a3->var0 = 1;
+    state->var2 = self;
+    state->var3[0] = 0;
+    state->var0 = 1;
   }
 
-  a3->var1 = a4;
+  state->var1 = objects;
   predicate = self->_predicate;
   sortDescriptor = self->_sortDescriptor;
   batchSize = self->_batchSize;
@@ -69,9 +69,9 @@
       while (2)
       {
         v36 = 0;
-        if (a5 >= v33)
+        if (count >= v33)
         {
-          v37 = a5 - v33;
+          v37 = count - v33;
         }
 
         else
@@ -98,7 +98,7 @@
             goto LABEL_25;
           }
 
-          *v5++ = *(*(&v44 + 1) + 8 * v36);
+          *objectsCopy++ = *(*(&v44 + 1) + 8 * v36);
           ++v35;
           ++v36;
         }
@@ -122,7 +122,7 @@
 
 LABEL_25:
 
-    a3->var3[0] += v35;
+    state->var3[0] += v35;
   }
 
   else
@@ -142,12 +142,12 @@ LABEL_25:
   return v35;
 }
 
-- (GDInteractionEnumeration)initWithStore:(id)a3 predicate:(id)a4 sortDescriptor:(id)a5 batchSize:(unint64_t)a6
+- (GDInteractionEnumeration)initWithStore:(id)store predicate:(id)predicate sortDescriptor:(id)descriptor batchSize:(unint64_t)size
 {
-  v12 = a3;
-  v13 = a4;
-  v17 = a5;
-  if (!a6)
+  storeCopy = store;
+  predicateCopy = predicate;
+  descriptorCopy = descriptor;
+  if (!size)
   {
     v22 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v14, v15, v16);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v22, v23, a2, self, @"GDInteractionStoreShim.m", 278, @"Invalid parameter not satisfying: %@", @"batchSize > 0");
@@ -159,31 +159,31 @@ LABEL_25:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_store, a3);
-    objc_storeStrong(&v19->_predicate, a4);
-    objc_storeStrong(&v19->_sortDescriptor, a5);
-    v20 = 10;
-    if (a6 > 0xA)
+    objc_storeStrong(&v18->_store, store);
+    objc_storeStrong(&v19->_predicate, predicate);
+    objc_storeStrong(&v19->_sortDescriptor, descriptor);
+    sizeCopy = 10;
+    if (size > 0xA)
     {
-      v20 = a6;
+      sizeCopy = size;
     }
 
-    v19->_batchSize = v20;
+    v19->_batchSize = sizeCopy;
   }
 
   return v19;
 }
 
-- (GDInteractionEnumeration)initWithStore:(id)a3 batchSize:(unint64_t)a4
+- (GDInteractionEnumeration)initWithStore:(id)store batchSize:(unint64_t)size
 {
-  v6 = a3;
+  storeCopy = store;
   v7 = objc_autoreleasePoolPush();
   v10 = objc_msgSend_predicateWithValue_(MEMORY[0x1E696AE18], v8, 1, v9);
   objc_autoreleasePoolPop(v7);
   v11 = objc_autoreleasePoolPush();
   v13 = objc_msgSend_sortDescriptorWithKey_ascending_(MEMORY[0x1E696AEB0], v12, @"startDate", 1);
   objc_autoreleasePoolPop(v11);
-  v15 = objc_msgSend_initWithStore_predicate_sortDescriptor_batchSize_(self, v14, v6, v10, v13, a4);
+  v15 = objc_msgSend_initWithStore_predicate_sortDescriptor_batchSize_(self, v14, storeCopy, v10, v13, size);
 
   return v15;
 }

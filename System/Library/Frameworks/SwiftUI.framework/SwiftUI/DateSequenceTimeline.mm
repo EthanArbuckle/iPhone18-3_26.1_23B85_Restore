@@ -1,20 +1,20 @@
 @interface DateSequenceTimeline
-- (_TtC7SwiftUI20DateSequenceTimeline)initWithIdentifier:(id)a3 configure:(id)a4;
-- (id)unconfiguredEntriesForDateInterval:(id)a3 previousEntry:(id)a4;
-- (int64_t)requestedFidelityForStartEntryInDateInterval:(id)a3 withPreviousEntry:(id)a4;
+- (_TtC7SwiftUI20DateSequenceTimeline)initWithIdentifier:(id)identifier configure:(id)configure;
+- (id)unconfiguredEntriesForDateInterval:(id)interval previousEntry:(id)entry;
+- (int64_t)requestedFidelityForStartEntryInDateInterval:(id)interval withPreviousEntry:(id)entry;
 @end
 
 @implementation DateSequenceTimeline
 
-- (id)unconfiguredEntriesForDateInterval:(id)a3 previousEntry:(id)a4
+- (id)unconfiguredEntriesForDateInterval:(id)interval previousEntry:(id)entry
 {
   v6 = type metadata accessor for DateInterval();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static DateInterval._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = self;
-  v11 = a4;
+  selfCopy = self;
+  entryCopy = entry;
   v12 = specialized DateSequenceTimeline.unconfiguredEntries(for:previousEntry:)();
 
   (*(v7 + 8))(v9, v6);
@@ -32,22 +32,22 @@
   return v13.super.isa;
 }
 
-- (int64_t)requestedFidelityForStartEntryInDateInterval:(id)a3 withPreviousEntry:(id)a4
+- (int64_t)requestedFidelityForStartEntryInDateInterval:(id)interval withPreviousEntry:(id)entry
 {
   v6 = type metadata accessor for DateInterval();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static DateInterval._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a4;
-  v11 = self;
-  v12 = DateSequenceTimeline.requestedFidelityForStartEntry(in:withPreviousEntry:)(v9, a4);
+  entryCopy = entry;
+  selfCopy = self;
+  v12 = DateSequenceTimeline.requestedFidelityForStartEntry(in:withPreviousEntry:)(v9, entry);
 
   (*(v7 + 8))(v9, v6);
   return v12;
 }
 
-- (_TtC7SwiftUI20DateSequenceTimeline)initWithIdentifier:(id)a3 configure:(id)a4
+- (_TtC7SwiftUI20DateSequenceTimeline)initWithIdentifier:(id)identifier configure:(id)configure
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

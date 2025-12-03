@@ -1,39 +1,39 @@
 @interface ICLAppRecord
-- (BOOL)isEqual:(id)a3;
-- (ICLAppRecord)initWithCoder:(id)a3;
-- (ICLAppRecord)initWithLegacyRecordDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICLAppRecord)initWithCoder:(id)coder;
+- (ICLAppRecord)initWithLegacyRecordDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)legacyRecordDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICLAppRecord
 
-- (ICLAppRecord)initWithCoder:(id)a3
+- (ICLAppRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = ICLAppRecord;
-  v5 = [(ICLPlaceholderRecord *)&v19 initWithCoder:v4];
+  v5 = [(ICLPlaceholderRecord *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parallelPlaceholderURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parallelPlaceholderURL"];
     parallelPlaceholderURL = v5->_parallelPlaceholderURL;
     v5->_parallelPlaceholderURL = v6;
 
-    v5->_isUpdatedSystemApp = [v4 decodeBoolForKey:@"isUpdatedSystemApp"];
+    v5->_isUpdatedSystemApp = [coderCopy decodeBoolForKey:@"isUpdatedSystemApp"];
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"driverKitExtensionURLs"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"driverKitExtensionURLs"];
     driverKitExtensionURLs = v5->_driverKitExtensionURLs;
     v5->_driverKitExtensionURLs = v11;
 
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"stashedVersions"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"stashedVersions"];
     stashedVersions = v5->_stashedVersions;
     v5->_stashedVersions = v16;
   }
@@ -41,33 +41,33 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = ICLAppRecord;
-  v4 = a3;
-  [(ICLPlaceholderRecord *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ICLPlaceholderRecord *)&v8 encodeWithCoder:coderCopy];
   v5 = [(ICLAppRecord *)self parallelPlaceholderURL:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"parallelPlaceholderURL"];
+  [coderCopy encodeObject:v5 forKey:@"parallelPlaceholderURL"];
 
-  [v4 encodeBool:-[ICLAppRecord isUpdatedSystemApp](self forKey:{"isUpdatedSystemApp"), @"isUpdatedSystemApp"}];
-  v6 = [(ICLAppRecord *)self driverKitExtensionURLs];
-  [v4 encodeObject:v6 forKey:@"driverKitExtensionURLs"];
+  [coderCopy encodeBool:-[ICLAppRecord isUpdatedSystemApp](self forKey:{"isUpdatedSystemApp"), @"isUpdatedSystemApp"}];
+  driverKitExtensionURLs = [(ICLAppRecord *)self driverKitExtensionURLs];
+  [coderCopy encodeObject:driverKitExtensionURLs forKey:@"driverKitExtensionURLs"];
 
-  v7 = [(ICLAppRecord *)self stashedVersions];
-  [v4 encodeObject:v7 forKey:@"stashedVersions"];
+  stashedVersions = [(ICLAppRecord *)self stashedVersions];
+  [coderCopy encodeObject:stashedVersions forKey:@"stashedVersions"];
 }
 
-- (ICLAppRecord)initWithLegacyRecordDictionary:(id)a3
+- (ICLAppRecord)initWithLegacyRecordDictionary:(id)dictionary
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = ICLAppRecord;
-  v5 = [(ICLPlaceholderRecord *)&v33 initWithLegacyRecordDictionary:v4];
+  v5 = [(ICLPlaceholderRecord *)&v33 initWithLegacyRecordDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ParallelPlaceholderPath"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ParallelPlaceholderPath"];
     objc_opt_class();
     v7 = v6;
     if (objc_opt_isKindOfClass())
@@ -86,10 +86,10 @@
       [(ICLAppRecord *)v5 setParallelPlaceholderURL:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"IsUpdatedSystemApp"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"IsUpdatedSystemApp"];
     [(ICLAppRecord *)v5 setIsUpdatedSystemApp:MIBooleanValue(v10, 0)];
 
-    v11 = [v4 objectForKeyedSubscript:@"DriverKitExtensionPaths"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"DriverKitExtensionPaths"];
     objc_opt_class();
     v12 = v11;
     if (objc_opt_isKindOfClass())
@@ -149,7 +149,7 @@
       }
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"StashedVersionInfo"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"StashedVersionInfo"];
     objc_opt_class();
     v23 = v22;
     if (objc_opt_isKindOfClass())
@@ -174,22 +174,22 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = ICLAppRecord;
   v5 = [(ICLPlaceholderRecord *)&v13 copyWithZone:?];
-  v6 = [(ICLAppRecord *)self parallelPlaceholderURL];
-  v7 = [v6 copyWithZone:a3];
+  parallelPlaceholderURL = [(ICLAppRecord *)self parallelPlaceholderURL];
+  v7 = [parallelPlaceholderURL copyWithZone:zone];
   [v5 setParallelPlaceholderURL:v7];
 
   [v5 setIsUpdatedSystemApp:{-[ICLAppRecord isUpdatedSystemApp](self, "isUpdatedSystemApp")}];
-  v8 = [(ICLAppRecord *)self driverKitExtensionURLs];
-  v9 = [v8 copyWithZone:a3];
+  driverKitExtensionURLs = [(ICLAppRecord *)self driverKitExtensionURLs];
+  v9 = [driverKitExtensionURLs copyWithZone:zone];
   [v5 setDriverKitExtensionURLs:v9];
 
-  v10 = [(ICLAppRecord *)self stashedVersions];
-  v11 = [v10 copyWithZone:a3];
+  stashedVersions = [(ICLAppRecord *)self stashedVersions];
+  v11 = [stashedVersions copyWithZone:zone];
   [v5 setStashedVersions:v11];
 
   return v5;
@@ -201,15 +201,15 @@
   v3 = objc_opt_new();
   v27.receiver = self;
   v27.super_class = ICLAppRecord;
-  v4 = [(ICLPlaceholderRecord *)&v27 legacyRecordDictionary];
-  [v3 addEntriesFromDictionary:v4];
+  legacyRecordDictionary = [(ICLPlaceholderRecord *)&v27 legacyRecordDictionary];
+  [v3 addEntriesFromDictionary:legacyRecordDictionary];
 
-  v5 = [(ICLAppRecord *)self parallelPlaceholderURL];
-  v6 = [v5 path];
+  parallelPlaceholderURL = [(ICLAppRecord *)self parallelPlaceholderURL];
+  path = [parallelPlaceholderURL path];
 
-  if (v6)
+  if (path)
   {
-    [v3 setObject:v6 forKeyedSubscript:@"ParallelPlaceholderPath"];
+    [v3 setObject:path forKeyedSubscript:@"ParallelPlaceholderPath"];
   }
 
   if ([(ICLAppRecord *)self isUpdatedSystemApp])
@@ -223,9 +223,9 @@
   }
 
   [v3 setObject:v7 forKeyedSubscript:@"IsUpdatedSystemApp"];
-  v8 = [(ICLAppRecord *)self driverKitExtensionURLs];
-  v9 = v8;
-  if (v8 && [v8 count])
+  driverKitExtensionURLs = [(ICLAppRecord *)self driverKitExtensionURLs];
+  v9 = driverKitExtensionURLs;
+  if (driverKitExtensionURLs && [driverKitExtensionURLs count])
   {
     v10 = objc_opt_new();
     v23 = 0u;
@@ -247,8 +247,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v23 + 1) + 8 * i) path];
-          [v10 addObject:v16];
+          path2 = [*(*(&v23 + 1) + 8 * i) path];
+          [v10 addObject:path2];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -264,15 +264,15 @@
     }
   }
 
-  v18 = [(ICLAppRecord *)self stashedVersions];
-  v19 = [v18 firstObject];
+  stashedVersions = [(ICLAppRecord *)self stashedVersions];
+  firstObject = [stashedVersions firstObject];
 
-  if (v19)
+  if (firstObject)
   {
-    v20 = [v19 legacyRecordDictionary];
-    if (v20)
+    legacyRecordDictionary2 = [firstObject legacyRecordDictionary];
+    if (legacyRecordDictionary2)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"StashedVersionInfo"];
+      [v3 setObject:legacyRecordDictionary2 forKeyedSubscript:@"StashedVersionInfo"];
     }
   }
 
@@ -281,10 +281,10 @@
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -296,27 +296,27 @@
     {
       v18.receiver = self;
       v18.super_class = ICLAppRecord;
-      if ([(ICLPlaceholderRecord *)&v18 isEqual:v4])
+      if ([(ICLPlaceholderRecord *)&v18 isEqual:equalCopy])
       {
-        v5 = v4;
-        v6 = [(ICLAppRecord *)self parallelPlaceholderURL];
-        v7 = [(ICLAppRecord *)v5 parallelPlaceholderURL];
-        v8 = MICompareObjects(v6, v7);
+        v5 = equalCopy;
+        parallelPlaceholderURL = [(ICLAppRecord *)self parallelPlaceholderURL];
+        parallelPlaceholderURL2 = [(ICLAppRecord *)v5 parallelPlaceholderURL];
+        v8 = MICompareObjects(parallelPlaceholderURL, parallelPlaceholderURL2);
 
         if (v8)
         {
-          v9 = [(ICLAppRecord *)self isUpdatedSystemApp];
-          if (v9 == [(ICLAppRecord *)v5 isUpdatedSystemApp])
+          isUpdatedSystemApp = [(ICLAppRecord *)self isUpdatedSystemApp];
+          if (isUpdatedSystemApp == [(ICLAppRecord *)v5 isUpdatedSystemApp])
           {
-            v12 = [(ICLAppRecord *)self driverKitExtensionURLs];
-            v13 = [(ICLAppRecord *)v5 driverKitExtensionURLs];
-            v14 = MICompareObjects(v12, v13);
+            driverKitExtensionURLs = [(ICLAppRecord *)self driverKitExtensionURLs];
+            driverKitExtensionURLs2 = [(ICLAppRecord *)v5 driverKitExtensionURLs];
+            v14 = MICompareObjects(driverKitExtensionURLs, driverKitExtensionURLs2);
 
             if (v14)
             {
-              v15 = [(ICLAppRecord *)self stashedVersions];
-              v16 = [(ICLAppRecord *)v5 stashedVersions];
-              v17 = MICompareObjects(v15, v16);
+              stashedVersions = [(ICLAppRecord *)self stashedVersions];
+              stashedVersions2 = [(ICLAppRecord *)v5 stashedVersions];
+              v17 = MICompareObjects(stashedVersions, stashedVersions2);
 
               if (v17)
               {
@@ -366,15 +366,15 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v3 = [(ICLAppRecord *)self isUpdatedSystemApp];
-  v4 = [(ICLAppRecord *)self parallelPlaceholderURL];
-  v5 = [v4 hash];
+  isUpdatedSystemApp = [(ICLAppRecord *)self isUpdatedSystemApp];
+  parallelPlaceholderURL = [(ICLAppRecord *)self parallelPlaceholderURL];
+  v5 = [parallelPlaceholderURL hash];
 
-  v6 = [(ICLAppRecord *)self stashedVersions];
-  v7 = v5 ^ [v6 hash] ^ v3;
+  stashedVersions = [(ICLAppRecord *)self stashedVersions];
+  v7 = v5 ^ [stashedVersions hash] ^ isUpdatedSystemApp;
 
-  v8 = [(ICLAppRecord *)self driverKitExtensionURLs];
-  v9 = v7 ^ [v8 hash];
+  driverKitExtensionURLs = [(ICLAppRecord *)self driverKitExtensionURLs];
+  v9 = v7 ^ [driverKitExtensionURLs hash];
 
   v11.receiver = self;
   v11.super_class = ICLAppRecord;

@@ -1,6 +1,6 @@
 @interface SLDSyndicationService
 + (id)sharedService;
-- (void)removeMessageGUIDFromSyndication:(id)a3 reply:(id)a4;
+- (void)removeMessageGUIDFromSyndication:(id)syndication reply:(id)reply;
 @end
 
 @implementation SLDSyndicationService
@@ -26,27 +26,27 @@ uint64_t __38__SLDSyndicationService_sharedService__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)removeMessageGUIDFromSyndication:(id)a3 reply:(id)a4
+- (void)removeMessageGUIDFromSyndication:(id)syndication reply:(id)reply
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  syndicationCopy = syndication;
+  replyCopy = reply;
   v7 = SLDaemonLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315394;
     v14 = "[SLDSyndicationService removeMessageGUIDFromSyndication:reply:]";
     v15 = 2112;
-    v16 = v5;
+    v16 = syndicationCopy;
     _os_log_impl(&dword_231772000, v7, OS_LOG_TYPE_DEFAULT, "%s messageGUID: %@", &v13, 0x16u);
   }
 
-  if (![v5 length])
+  if (![syndicationCopy length])
   {
     v9 = SLDaemonLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [SLDSyndicationService removeMessageGUIDFromSyndication:v5 reply:v9];
+      [SLDSyndicationService removeMessageGUIDFromSyndication:syndicationCopy reply:v9];
     }
 
     goto LABEL_14;
@@ -71,11 +71,11 @@ LABEL_14:
     v13 = 136315394;
     v14 = "[SLDSyndicationService removeMessageGUIDFromSyndication:reply:]";
     v15 = 2112;
-    v16 = v5;
+    v16 = syndicationCopy;
     _os_log_impl(&dword_231772000, v8, OS_LOG_TYPE_INFO, "%s: Calling remove message guid: %@", &v13, 0x16u);
   }
 
-  v9 = v5;
+  v9 = syndicationCopy;
   IMSPIRemoveMessageGUIDFromSyndicationSymbolLoc = getIMSPIRemoveMessageGUIDFromSyndicationSymbolLoc();
   if (!IMSPIRemoveMessageGUIDFromSyndicationSymbolLoc)
   {
@@ -86,7 +86,7 @@ LABEL_14:
   v11 = 1;
 LABEL_15:
 
-  v6[2](v6, v11);
+  replyCopy[2](replyCopy, v11);
   v12 = *MEMORY[0x277D85DE8];
 }
 

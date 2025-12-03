@@ -1,20 +1,20 @@
 @interface CSUSystemSearchTextEncoderV1
-- (BOOL)checkIfEmbeddingInDstBufferIsContiguous:(const void *)a3;
-- (BOOL)checkIfEmbeddingInSrcBufferIsContiguous:(id)a3;
-- (BOOL)loadResources:(id *)a3;
-- (CSUSystemSearchTextEncoderV1)initWithConfiguration:(id)a3;
-- (EspressoTensor)getTokenEmbeddingsforChunks:(SEL)a3 error:(vector<std:(std:(id *)a5 :allocator<std::vector<unsigned int>>> *)a4 :vector<unsigned)int>;
+- (BOOL)checkIfEmbeddingInDstBufferIsContiguous:(const void *)contiguous;
+- (BOOL)checkIfEmbeddingInSrcBufferIsContiguous:(id)contiguous;
+- (BOOL)loadResources:(id *)resources;
+- (CSUSystemSearchTextEncoderV1)initWithConfiguration:(id)configuration;
+- (EspressoTensor)getTokenEmbeddingsforChunks:(SEL)chunks error:(vector<std:(std:(id *)error :allocator<std::vector<unsigned int>>> *)a4 :vector<unsigned)int>;
 - (id).cxx_construct;
-- (vector<unsigned)getTokensOnText:(CSUSystemSearchTextEncoderV1 *)self withBOS:(SEL)a3 withEOS:(id)a4 withError:(BOOL)a5;
-- (void)_unsafeRunOnInput:(id)a3 completion:(id)a4;
-- (void)_unsafeRunOnInputText:(id)a3 completion:(id)a4;
-- (void)runOnInput:(id)a3 completion:(id)a4;
-- (void)runOnInputText:(id)a3 completion:(id)a4;
+- (vector<unsigned)getTokensOnText:(CSUSystemSearchTextEncoderV1 *)self withBOS:(SEL)s withEOS:(id)oS withError:(BOOL)error;
+- (void)_unsafeRunOnInput:(id)input completion:(id)completion;
+- (void)_unsafeRunOnInputText:(id)text completion:(id)completion;
+- (void)runOnInput:(id)input completion:(id)completion;
+- (void)runOnInputText:(id)text completion:(id)completion;
 @end
 
 @implementation CSUSystemSearchTextEncoderV1
 
-- (CSUSystemSearchTextEncoderV1)initWithConfiguration:(id)a3
+- (CSUSystemSearchTextEncoderV1)initWithConfiguration:(id)configuration
 {
   v9.receiver = self;
   v9.super_class = CSUSystemSearchTextEncoderV1;
@@ -27,21 +27,21 @@
   return 0;
 }
 
-- (vector<unsigned)getTokensOnText:(CSUSystemSearchTextEncoderV1 *)self withBOS:(SEL)a3 withEOS:(id)a4 withError:(BOOL)a5
+- (vector<unsigned)getTokensOnText:(CSUSystemSearchTextEncoderV1 *)self withBOS:(SEL)s withEOS:(id)oS withError:(BOOL)error
 {
   v8 = a6;
-  v9 = a5;
-  v12 = a4;
+  errorCopy = error;
+  oSCopy = oS;
   if (objc_msgSend_loadResources_(self, v13, a7, v14, v15))
   {
     if (objc_msgSend_inputIsLowerCase(self->_configuration, v16, v17, v18, v19))
     {
-      v24 = objc_msgSend_lowercaseString(v12, v20, v21, v22, v23);
+      v24 = objc_msgSend_lowercaseString(oSCopy, v20, v21, v22, v23);
 
-      v12 = v24;
+      oSCopy = v24;
     }
 
-    v25 = v12;
+    v25 = oSCopy;
     v30 = objc_msgSend_UTF8String(v25, v26, v27, v28, v29);
     v31 = strlen(v30);
     if (v31 >= 0x7FFFFFFFFFFFFFF8)
@@ -63,7 +63,7 @@
 
     *(&__dst + v32) = 0;
     (*(*self->_vocabulary.__ptr_ + 16))(&__src);
-    if (v9)
+    if (errorCopy)
     {
       v36 = 1;
       sub_1AC071660(&__src, __src, &v36);
@@ -111,7 +111,7 @@
   return result;
 }
 
-- (BOOL)loadResources:(id *)a3
+- (BOOL)loadResources:(id *)resources
 {
   v28 = *MEMORY[0x1E69E9840];
   v4 = sub_1AC090E50();
@@ -171,10 +171,10 @@
   return 1;
 }
 
-- (BOOL)checkIfEmbeddingInDstBufferIsContiguous:(const void *)a3
+- (BOOL)checkIfEmbeddingInDstBufferIsContiguous:(const void *)contiguous
 {
-  v4 = *(a3 + 2);
-  v3 = *(a3 + 3);
+  v4 = *(contiguous + 2);
+  v3 = *(contiguous + 3);
   if (v3 != v4)
   {
     if (((v3 - v4) & 0x8000000000000000) == 0)
@@ -185,7 +185,7 @@
     sub_1AC060AAC();
   }
 
-  (*(**(a3 + 5) + 32))(__p);
+  (*(**(contiguous + 5) + 32))(__p);
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -195,11 +195,11 @@
   return 0;
 }
 
-- (BOOL)checkIfEmbeddingInSrcBufferIsContiguous:(id)a3
+- (BOOL)checkIfEmbeddingInSrcBufferIsContiguous:(id)contiguous
 {
-  v4 = a3;
-  v9 = objc_msgSend_strides(v4, v5, v6, v7, v8);
-  v18 = objc_msgSend_shape(v4, v10, v11, v12, v13);
+  contiguousCopy = contiguous;
+  v9 = objc_msgSend_strides(contiguousCopy, v5, v6, v7, v8);
+  v18 = objc_msgSend_shape(contiguousCopy, v10, v11, v12, v13);
   for (i = 0; ; ++i)
   {
     if (i >= objc_msgSend_count(v18, v14, v15, v16, v17))
@@ -225,58 +225,58 @@ LABEL_7:
   return v34;
 }
 
-- (EspressoTensor)getTokenEmbeddingsforChunks:(SEL)a3 error:(vector<std:(std:(id *)a5 :allocator<std::vector<unsigned int>>> *)a4 :vector<unsigned)int>
+- (EspressoTensor)getTokenEmbeddingsforChunks:(SEL)chunks error:(vector<std:(std:(id *)error :allocator<std::vector<unsigned int>>> *)a4 :vector<unsigned)int>
 {
   v10 = *MEMORY[0x1E69E9840];
-  objc_msgSend_maximumSequenceLength(self->_configuration, a3, a4, a5, v5);
+  objc_msgSend_maximumSequenceLength(self->_configuration, chunks, a4, error, v5);
   v7 = 0;
   v8 = 0;
   v9 = 0;
   operator new();
 }
 
-- (void)_unsafeRunOnInput:(id)a3 completion:(id)a4
+- (void)_unsafeRunOnInput:(id)input completion:(id)completion
 {
   v13[37] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
+  inputCopy = input;
+  completionCopy = completion;
   v13[0] = 0;
-  LOBYTE(a4) = objc_msgSend_loadResources_(self, v6, v13, v7, v8);
+  LOBYTE(completion) = objc_msgSend_loadResources_(self, v6, v13, v7, v8);
   v9 = v13[0];
-  if (a4)
+  if (completion)
   {
     memset(&v13[1], 0, 24);
     operator new();
   }
 
-  v12[2](v12, 0, v9);
+  completionCopy[2](completionCopy, 0, v9);
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_unsafeRunOnInputText:(id)a3 completion:(id)a4
+- (void)_unsafeRunOnInputText:(id)text completion:(id)completion
 {
-  v17 = a3;
-  v6 = a4;
+  textCopy = text;
+  completionCopy = completion;
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  objc_msgSend_setString_(v8, v9, v17, v10, v11);
+  objc_msgSend_setString_(v8, v9, textCopy, v10, v11);
   objc_msgSend_addObject_(v7, v12, v8, v13, v14);
-  objc_msgSend_runOnInput_completion_(self, v15, v7, v6, v16);
+  objc_msgSend_runOnInput_completion_(self, v15, v7, completionCopy, v16);
 }
 
-- (void)runOnInput:(id)a3 completion:(id)a4
+- (void)runOnInput:(id)input completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  objc_msgSend__unsafeRunOnInput_completion_(self, v8, v6, v7, v9);
+  inputCopy = input;
+  completionCopy = completion;
+  objc_msgSend__unsafeRunOnInput_completion_(self, v8, inputCopy, completionCopy, v9);
 }
 
-- (void)runOnInputText:(id)a3 completion:(id)a4
+- (void)runOnInputText:(id)text completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  objc_msgSend__unsafeRunOnInputText_completion_(self, v8, v6, v7, v9);
+  textCopy = text;
+  completionCopy = completion;
+  objc_msgSend__unsafeRunOnInputText_completion_(self, v8, textCopy, completionCopy, v9);
 }
 
 - (id).cxx_construct

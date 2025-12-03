@@ -1,21 +1,21 @@
 @interface IDSUTunPeerServiceMap
-- (BOOL)associateServiceName:(id)a3 withStreamID:(unsigned __int16)a4 remoteInstanceID:(unsigned __int8 *)(a5 remoteInstanceIDChanged:;
+- (BOOL)associateServiceName:(id)name withStreamID:(unsigned __int16)d remoteInstanceID:(unsigned __int8 *)(a5 remoteInstanceIDChanged:;
 - (BOOL)setRemoteInstanceID:(unsigned __int8 *)(a3;
-- (BOOL)translateServiceName:(id)a3 toStreamID:(unsigned __int16 *)a4 createIfNotFound:(BOOL)a5 mappingCreated:(BOOL *)a6 remoteInstanceID:(unsigned __int8 *)(a7 remoteInstanceIDChanged:;
-- (BOOL)translateStreamID:(unsigned __int16)a3 toServiceName:(id *)a4 remoteInstanceID:(unsigned __int8 *)(a5 remoteInstanceIDChanged:;
-- (IDSUTunPeerServiceMap)initWithName:(id)a3;
+- (BOOL)translateServiceName:(id)name toStreamID:(unsigned __int16 *)d createIfNotFound:(BOOL)found mappingCreated:(BOOL *)created remoteInstanceID:(unsigned __int8 *)(a7 remoteInstanceIDChanged:;
+- (BOOL)translateStreamID:(unsigned __int16)d toServiceName:(id *)name remoteInstanceID:(unsigned __int8 *)(a5 remoteInstanceIDChanged:;
+- (IDSUTunPeerServiceMap)initWithName:(id)name;
 - (id)description;
 - (unint64_t)count;
 - (void)_dumpServiceMap;
-- (void)_simulateCrashWithErrorString:(id)a3;
+- (void)_simulateCrashWithErrorString:(id)string;
 - (void)dumpServiceMap;
 @end
 
 @implementation IDSUTunPeerServiceMap
 
-- (IDSUTunPeerServiceMap)initWithName:(id)a3
+- (IDSUTunPeerServiceMap)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = IDSUTunPeerServiceMap;
   v5 = [(IDSUTunPeerServiceMap *)&v13 init];
@@ -31,7 +31,7 @@
 
     v5->_lock._os_unfair_lock_opaque = 0;
     v5->_nextStreamID = 1;
-    v10 = [v4 copy];
+    v10 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v10;
   }
@@ -155,10 +155,10 @@ LABEL_21:
   return v6 == 0 || v3;
 }
 
-- (BOOL)associateServiceName:(id)a3 withStreamID:(unsigned __int16)a4 remoteInstanceID:(unsigned __int8 *)(a5 remoteInstanceIDChanged:
+- (BOOL)associateServiceName:(id)name withStreamID:(unsigned __int16)d remoteInstanceID:(unsigned __int8 *)(a5 remoteInstanceIDChanged:
 {
-  v8 = a4;
-  v10 = a3;
+  dCopy = d;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_lock);
   if (uuid_compare(a5, self->_remoteInstanceID))
   {
@@ -199,10 +199,10 @@ LABEL_21:
     goto LABEL_45;
   }
 
-  if (v8)
+  if (dCopy)
   {
     *&value[0] = 0xAAAAAAAAAAAAAAAALL;
-    v14 = NSMapMember(self->_streamIDToServiceNameMap, v8, 0, value);
+    v14 = NSMapMember(self->_streamIDToServiceNameMap, dCopy, 0, value);
     v15 = v14;
     v16 = *&value[0];
     if (v14)
@@ -216,7 +216,7 @@ LABEL_21:
     }
 
     v18 = v17;
-    v19 = NSMapMember(self->_serviceNameToStreamIDMap, v10, 0, value);
+    v19 = NSMapMember(self->_serviceNameToStreamIDMap, nameCopy, 0, value);
     v20 = v19;
     if (v19)
     {
@@ -230,8 +230,8 @@ LABEL_21:
 
     if (v15)
     {
-      v22 = [v10 isEqualToString:v16];
-      if (v20 && v21 != v8 || (v22 & 1) == 0)
+      v22 = [nameCopy isEqualToString:v16];
+      if (v20 && v21 != dCopy || (v22 & 1) == 0)
       {
         v23 = @"YES";
         v24 = @"NO";
@@ -240,7 +240,7 @@ LABEL_21:
           v23 = @"NO";
         }
 
-        if (!v20 || v21 == v8)
+        if (!v20 || v21 == dCopy)
         {
           goto LABEL_36;
         }
@@ -249,13 +249,13 @@ LABEL_21:
       }
     }
 
-    else if (v21 != v8 && v19)
+    else if (v21 != dCopy && v19)
     {
       v23 = @"NO";
 LABEL_35:
       v24 = @"YES";
 LABEL_36:
-      v27 = [NSString stringWithFormat:@"serviceMap[%@ <=> %lu] serviceNameMismatch %@ streamIDMismatch %@ [%@ <=> %lu]", v10, v8, v23, v24, v18, v21];
+      v27 = [NSString stringWithFormat:@"serviceMap[%@ <=> %lu] serviceNameMismatch %@ streamIDMismatch %@ [%@ <=> %lu]", nameCopy, dCopy, v23, v24, v18, v21];
       v28 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
@@ -284,8 +284,8 @@ LABEL_36:
       goto LABEL_44;
     }
 
-    [(NSMapTable *)self->_serviceNameToStreamIDMap setObject:v8 forKey:v10];
-    [(NSMapTable *)self->_streamIDToServiceNameMap setObject:v10 forKey:v8];
+    [(NSMapTable *)self->_serviceNameToStreamIDMap setObject:dCopy forKey:nameCopy];
+    [(NSMapTable *)self->_streamIDToServiceNameMap setObject:nameCopy forKey:dCopy];
     v13 = 1;
 LABEL_44:
 
@@ -296,7 +296,7 @@ LABEL_44:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     *out = 138412290;
-    *&out[4] = v10;
+    *&out[4] = nameCopy;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "cannot associate %@ with streamID 0", out, 0xCu);
   }
 
@@ -319,9 +319,9 @@ LABEL_45:
   return v13;
 }
 
-- (BOOL)translateStreamID:(unsigned __int16)a3 toServiceName:(id *)a4 remoteInstanceID:(unsigned __int8 *)(a5 remoteInstanceIDChanged:
+- (BOOL)translateStreamID:(unsigned __int16)d toServiceName:(id *)name remoteInstanceID:(unsigned __int8 *)(a5 remoteInstanceIDChanged:
 {
-  v9 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   if (uuid_compare(a5, self->_remoteInstanceID))
   {
@@ -364,10 +364,10 @@ LABEL_45:
   else
   {
     *out = 0xAAAAAAAAAAAAAAAALL;
-    v13 = NSMapMember(self->_streamIDToServiceNameMap, v9, 0, out);
+    v13 = NSMapMember(self->_streamIDToServiceNameMap, dCopy, 0, out);
     if (v13)
     {
-      *a4 = *out;
+      *name = *out;
     }
   }
 
@@ -375,15 +375,15 @@ LABEL_45:
   return v13;
 }
 
-- (BOOL)translateServiceName:(id)a3 toStreamID:(unsigned __int16 *)a4 createIfNotFound:(BOOL)a5 mappingCreated:(BOOL *)a6 remoteInstanceID:(unsigned __int8 *)(a7 remoteInstanceIDChanged:
+- (BOOL)translateServiceName:(id)name toStreamID:(unsigned __int16 *)d createIfNotFound:(BOOL)found mappingCreated:(BOOL *)created remoteInstanceID:(unsigned __int8 *)(a7 remoteInstanceIDChanged:
 {
-  v11 = a5;
-  v14 = a3;
+  foundCopy = found;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_lock);
   if (!uuid_compare(a7, self->_remoteInstanceID))
   {
     *&value[0] = 0xAAAAAAAAAAAAAAAALL;
-    if (NSMapMember(self->_serviceNameToStreamIDMap, v14, 0, value))
+    if (NSMapMember(self->_serviceNameToStreamIDMap, nameCopy, 0, value))
     {
       if (*&value[0] >= 0x10000uLL)
       {
@@ -393,7 +393,7 @@ LABEL_45:
           *out = 134218242;
           *&out[4] = *&value[0];
           *&out[12] = 2112;
-          *&out[14] = v14;
+          *&out[14] = nameCopy;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Unexpected streamID %lu found when asked to translate %@", out, 0x16u);
         }
 
@@ -412,12 +412,12 @@ LABEL_45:
         goto LABEL_20;
       }
 
-      *a4 = value[0];
+      *d = value[0];
     }
 
     else
     {
-      if (!v11)
+      if (!foundCopy)
       {
 LABEL_20:
         v17 = 0;
@@ -427,7 +427,7 @@ LABEL_20:
       if ([(NSMapTable *)self->_serviceNameToStreamIDMap count]> 0xFFFE)
       {
         v17 = 0;
-        *a6 = 0;
+        *created = 0;
         goto LABEL_28;
       }
 
@@ -448,10 +448,10 @@ LABEL_20:
       }
 
       while (NSMapMember(self->_streamIDToServiceNameMap, nextStreamID, 0, value));
-      *a4 = nextStreamID;
-      *a6 = 1;
-      [(NSMapTable *)self->_serviceNameToStreamIDMap setObject:nextStreamID forKey:v14];
-      [(NSMapTable *)self->_streamIDToServiceNameMap setObject:v14 forKey:nextStreamID];
+      *d = nextStreamID;
+      *created = 1;
+      [(NSMapTable *)self->_serviceNameToStreamIDMap setObject:nextStreamID forKey:nameCopy];
+      [(NSMapTable *)self->_streamIDToServiceNameMap setObject:nameCopy forKey:nextStreamID];
     }
 
     v17 = 1;
@@ -554,11 +554,11 @@ LABEL_28:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_simulateCrashWithErrorString:(id)a3
+- (void)_simulateCrashWithErrorString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v3 = +[NSProcessInfo processInfo];
-  v4 = [v3 processName];
+  processName = [v3 processName];
   IMLogSimulateCrashForProcess();
 }
 

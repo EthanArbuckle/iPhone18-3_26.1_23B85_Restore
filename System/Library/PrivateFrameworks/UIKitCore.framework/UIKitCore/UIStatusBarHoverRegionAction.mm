@@ -1,15 +1,15 @@
 @interface UIStatusBarHoverRegionAction
-- (UIStatusBarHoverRegionAction)initWithRegion:(int64_t)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (UIStatusBarHoverRegionAction)initWithRegion:(int64_t)region;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 - (int64_t)region;
 @end
 
 @implementation UIStatusBarHoverRegionAction
 
-- (UIStatusBarHoverRegionAction)initWithRegion:(int64_t)a3
+- (UIStatusBarHoverRegionAction)initWithRegion:(int64_t)region
 {
   v5 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:region];
   [v5 setObject:v6 forSetting:1];
 
   v9.receiver = self;
@@ -21,16 +21,16 @@
 
 - (int64_t)region
 {
-  v2 = [(UIStatusBarHoverRegionAction *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 integerValue];
+  info = [(UIStatusBarHoverRegionAction *)self info];
+  v3 = [info objectForSetting:1];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"statusBarRegion";
   }

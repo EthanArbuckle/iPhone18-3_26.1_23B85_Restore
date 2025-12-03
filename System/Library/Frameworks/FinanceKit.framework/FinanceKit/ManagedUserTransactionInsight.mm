@@ -1,5 +1,5 @@
 @interface ManagedUserTransactionInsight
-- (_TtC10FinanceKit29ManagedUserTransactionInsight)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC10FinanceKit29ManagedUserTransactionInsight)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (void)awakeFromInsert;
 - (void)willSave;
 @end
@@ -8,7 +8,7 @@
 
 - (void)willSave
 {
-  v2 = self;
+  selfCopy = self;
   ManagedUserTransactionInsight.willSave()();
 }
 
@@ -21,19 +21,19 @@
   v7 = &v10 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = self;
+  selfCopy = self;
   [(ManagedUserTransactionInsight *)&v10 awakeFromInsert];
   sub_1B77FF938();
   v9 = sub_1B77FF8B8();
   (*(v5 + 8))(v7, v4);
-  [(ManagedUserTransactionInsight *)v8 setUpdatedAt:v9];
+  [(ManagedUserTransactionInsight *)selfCopy setUpdatedAt:v9];
 }
 
-- (_TtC10FinanceKit29ManagedUserTransactionInsight)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC10FinanceKit29ManagedUserTransactionInsight)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(ManagedUserTransactionInsight *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedUserTransactionInsight *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

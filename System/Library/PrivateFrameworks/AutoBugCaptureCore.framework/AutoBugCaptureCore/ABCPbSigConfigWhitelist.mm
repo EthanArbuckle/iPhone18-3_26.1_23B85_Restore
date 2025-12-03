@@ -1,15 +1,15 @@
 @interface ABCPbSigConfigWhitelist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsGlobalDecision:(id)a3;
+- (int)StringAsGlobalDecision:(id)decision;
 - (int)globalDecision;
 - (unint64_t)hash;
-- (void)addSigConfig:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSigConfig:(id)config;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ABCPbSigConfigWhitelist
@@ -27,20 +27,20 @@
   }
 }
 
-- (int)StringAsGlobalDecision:(id)a3
+- (int)StringAsGlobalDecision:(id)decision
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NO_WHITELIST"])
+  decisionCopy = decision;
+  if ([decisionCopy isEqualToString:@"NO_WHITELIST"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"USE_OLD_ONE"])
+  else if ([decisionCopy isEqualToString:@"USE_OLD_ONE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FOLLOW_SIG_CONFIG"])
+  else if ([decisionCopy isEqualToString:@"FOLLOW_SIG_CONFIG"])
   {
     v4 = 2;
   }
@@ -53,22 +53,22 @@
   return v4;
 }
 
-- (void)addSigConfig:(id)a3
+- (void)addSigConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   sigConfigs = self->_sigConfigs;
-  v8 = v4;
+  v8 = configCopy;
   if (!sigConfigs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_sigConfigs;
     self->_sigConfigs = v6;
 
-    v4 = v8;
+    configCopy = v8;
     sigConfigs = self->_sigConfigs;
   }
 
-  [(NSMutableArray *)sigConfigs addObject:v4];
+  [(NSMutableArray *)sigConfigs addObject:configCopy];
 }
 
 - (id)description
@@ -77,8 +77,8 @@
   v8.receiver = self;
   v8.super_class = ABCPbSigConfigWhitelist;
   v4 = [(ABCPbSigConfigWhitelist *)&v8 description];
-  v5 = [(ABCPbSigConfigWhitelist *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ABCPbSigConfigWhitelist *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -86,7 +86,7 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     globalDecision = self->_globalDecision;
@@ -100,25 +100,25 @@
       v5 = off_278CF1538[globalDecision];
     }
 
-    [v3 setObject:v5 forKey:@"global_decision"];
+    [dictionary setObject:v5 forKey:@"global_decision"];
   }
 
   build = self->_build;
   if (build)
   {
-    [v3 setObject:build forKey:@"build"];
+    [dictionary setObject:build forKey:@"build"];
   }
 
   buildVariant = self->_buildVariant;
   if (buildVariant)
   {
-    [v3 setObject:buildVariant forKey:@"build_variant"];
+    [dictionary setObject:buildVariant forKey:@"build_variant"];
   }
 
   deviceModel = self->_deviceModel;
   if (deviceModel)
   {
-    [v3 setObject:deviceModel forKey:@"device_model"];
+    [dictionary setObject:deviceModel forKey:@"device_model"];
   }
 
   if ([(NSMutableArray *)self->_sigConfigs count])
@@ -143,8 +143,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -153,18 +153,18 @@
       while (v12);
     }
 
-    [v3 setObject:v9 forKey:@"sig_config"];
+    [dictionary setObject:v9 forKey:@"sig_config"];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     globalDecision = self->_globalDecision;
@@ -221,19 +221,19 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[8] = self->_globalDecision;
-    *(v4 + 48) |= 1u;
+    toCopy[8] = self->_globalDecision;
+    *(toCopy + 48) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_build)
   {
-    [v4 setBuild:?];
+    [toCopy setBuild:?];
   }
 
   if (self->_buildVariant)
@@ -249,10 +249,10 @@
   if ([(ABCPbSigConfigWhitelist *)self sigConfigsCount])
   {
     [v9 clearSigConfigs];
-    v5 = [(ABCPbSigConfigWhitelist *)self sigConfigsCount];
-    if (v5)
+    sigConfigsCount = [(ABCPbSigConfigWhitelist *)self sigConfigsCount];
+    if (sigConfigsCount)
     {
-      v6 = v5;
+      v6 = sigConfigsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(ABCPbSigConfigWhitelist *)self sigConfigAtIndex:i];
@@ -262,10 +262,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -273,15 +273,15 @@
     *(v5 + 48) |= 1u;
   }
 
-  v7 = [(NSString *)self->_build copyWithZone:a3];
+  v7 = [(NSString *)self->_build copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
-  v9 = [(NSString *)self->_buildVariant copyWithZone:a3];
+  v9 = [(NSString *)self->_buildVariant copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
-  v11 = [(NSString *)self->_deviceModel copyWithZone:a3];
+  v11 = [(NSString *)self->_deviceModel copyWithZone:zone];
   v12 = v6[3];
   v6[3] = v11;
 
@@ -305,7 +305,7 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * v17) copyWithZone:{a3, v21}];
+        v18 = [*(*(&v21 + 1) + 8 * v17) copyWithZone:{zone, v21}];
         [v6 addSigConfig:v18];
 
         ++v17;
@@ -322,24 +322,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_globalDecision != *(v4 + 8))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_globalDecision != *(equalCopy + 8))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -347,13 +347,13 @@ LABEL_15:
   }
 
   build = self->_build;
-  if (build | *(v4 + 1) && ![(NSString *)build isEqual:?])
+  if (build | *(equalCopy + 1) && ![(NSString *)build isEqual:?])
   {
     goto LABEL_15;
   }
 
   buildVariant = self->_buildVariant;
-  if (buildVariant | *(v4 + 2))
+  if (buildVariant | *(equalCopy + 2))
   {
     if (![(NSString *)buildVariant isEqual:?])
     {
@@ -362,7 +362,7 @@ LABEL_15:
   }
 
   deviceModel = self->_deviceModel;
-  if (deviceModel | *(v4 + 3))
+  if (deviceModel | *(equalCopy + 3))
   {
     if (![(NSString *)deviceModel isEqual:?])
     {
@@ -371,7 +371,7 @@ LABEL_15:
   }
 
   sigConfigs = self->_sigConfigs;
-  if (sigConfigs | *(v4 + 5))
+  if (sigConfigs | *(equalCopy + 5))
   {
     v10 = [(NSMutableArray *)sigConfigs isEqual:?];
   }
@@ -404,18 +404,18 @@ LABEL_16:
   return v6 ^ [(NSMutableArray *)self->_sigConfigs hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4[12])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[12])
   {
-    self->_globalDecision = v4[8];
+    self->_globalDecision = fromCopy[8];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ABCPbSigConfigWhitelist *)self setBuild:?];
   }

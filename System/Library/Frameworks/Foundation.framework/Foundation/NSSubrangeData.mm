@@ -1,10 +1,10 @@
 @interface NSSubrangeData
 - (NSSubrangeData)init;
-- (NSSubrangeData)initWithData:(id)a3 range:(_NSRange)a4;
+- (NSSubrangeData)initWithData:(id)data range:(_NSRange)range;
 - (void)dealloc;
-- (void)getBytes:(void *)a3;
-- (void)getBytes:(void *)a3 length:(unint64_t)a4;
-- (void)getBytes:(void *)a3 range:(_NSRange)a4;
+- (void)getBytes:(void *)bytes;
+- (void)getBytes:(void *)bytes length:(unint64_t)length;
+- (void)getBytes:(void *)bytes range:(_NSRange)range;
 @end
 
 @implementation NSSubrangeData
@@ -18,7 +18,7 @@
   [(NSSubrangeData *)&v3 dealloc];
 }
 
-- (void)getBytes:(void *)a3
+- (void)getBytes:(void *)bytes
 {
   v5 = _CFExecutableLinkedOnOrAfter();
   data = self->_data;
@@ -27,29 +27,29 @@
     location = self->_range.location;
     length = self->_range.length;
 
-    [(NSData *)data getBytes:a3 range:location, length];
+    [(NSData *)data getBytes:bytes range:location, length];
     return;
   }
 
-  v9 = [(NSData *)data bytes];
+  bytes = [(NSData *)data bytes];
   v10 = self->_range.location;
   v11 = self->_range.length;
-  v12 = v9 + v10;
+  v12 = bytes + v10;
   if (v11 < 0x80000)
   {
     goto LABEL_9;
   }
 
   v13 = MEMORY[0x1E69E9AC8];
-  if (((*MEMORY[0x1E69E9AC8] - 1) & (v12 | a3)) == 0)
+  if (((*MEMORY[0x1E69E9AC8] - 1) & (v12 | bytes)) == 0)
   {
     malloc_default_zone();
     if (!malloc_zone_claimed_address())
     {
       v14 = v11 & -*v13;
-      NSCopyMemoryPages(v12, a3, v14);
+      NSCopyMemoryPages(v12, bytes, v14);
       v12 += v14;
-      a3 = a3 + v14;
+      bytes = bytes + v14;
       v11 -= v14;
 LABEL_9:
       if (!v11)
@@ -59,15 +59,15 @@ LABEL_9:
     }
   }
 
-  memmove(a3, v12, v11);
+  memmove(bytes, v12, v11);
 }
 
-- (void)getBytes:(void *)a3 length:(unint64_t)a4
+- (void)getBytes:(void *)bytes length:(unint64_t)length
 {
   p_range = &self->_range;
-  if (self->_range.length >= a4)
+  if (self->_range.length >= length)
   {
-    length = a4;
+    length = length;
   }
 
   else
@@ -81,7 +81,7 @@ LABEL_9:
   {
     location = p_range->location;
 
-    [(NSData *)data getBytes:a3 range:location, length];
+    [(NSData *)data getBytes:bytes range:location, length];
     return;
   }
 
@@ -92,15 +92,15 @@ LABEL_9:
   }
 
   v12 = MEMORY[0x1E69E9AC8];
-  if (((*MEMORY[0x1E69E9AC8] - 1) & (v11 | a3)) == 0)
+  if (((*MEMORY[0x1E69E9AC8] - 1) & (v11 | bytes)) == 0)
   {
     malloc_default_zone();
     if (!malloc_zone_claimed_address())
     {
       v13 = length & -*v12;
-      NSCopyMemoryPages(v11, a3, v13);
+      NSCopyMemoryPages(v11, bytes, v13);
       v11 += v13;
-      a3 = a3 + v13;
+      bytes = bytes + v13;
       length -= v13;
 LABEL_12:
       if (!length)
@@ -110,18 +110,18 @@ LABEL_12:
     }
   }
 
-  memmove(a3, v11, length);
+  memmove(bytes, v11, length);
 }
 
-- (void)getBytes:(void *)a3 range:(_NSRange)a4
+- (void)getBytes:(void *)bytes range:(_NSRange)range
 {
-  if (!a4.length)
+  if (!range.length)
   {
     return;
   }
 
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9 = _CFExecutableLinkedOnOrAfter();
   v10 = self->_range.length;
   if (!v9)
@@ -178,15 +178,15 @@ LABEL_9:
   }
 
   v16 = MEMORY[0x1E69E9AC8];
-  if (((*MEMORY[0x1E69E9AC8] - 1) & (v15 | a3)) == 0)
+  if (((*MEMORY[0x1E69E9AC8] - 1) & (v15 | bytes)) == 0)
   {
     malloc_default_zone();
     if (!malloc_zone_claimed_address())
     {
       v17 = length & -*v16;
-      NSCopyMemoryPages(v15, a3, v17);
+      NSCopyMemoryPages(v15, bytes, v17);
       v15 += v17;
-      a3 = a3 + v17;
+      bytes = bytes + v17;
       length -= v17;
 LABEL_13:
       if (!length)
@@ -196,7 +196,7 @@ LABEL_13:
     }
   }
 
-  memmove(a3, v15, length);
+  memmove(bytes, v15, length);
 }
 
 - (NSSubrangeData)init
@@ -206,11 +206,11 @@ LABEL_13:
   objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:v3 userInfo:0]);
 }
 
-- (NSSubrangeData)initWithData:(id)a3 range:(_NSRange)a4
+- (NSSubrangeData)initWithData:(id)data range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = [a3 length];
+  length = range.length;
+  location = range.location;
+  v9 = [data length];
   if (__CFADD__(length, location))
   {
     v12 = _NSMethodExceptionProem(self, a2);
@@ -250,16 +250,16 @@ LABEL_14:
 
   if (objc_opt_isKindOfClass())
   {
-    self->_range.location = *(a3 + 1) + location;
+    self->_range.location = *(data + 1) + location;
     self->_range.length = length;
-    v10 = *(a3 + 3);
+    v10 = *(data + 3);
   }
 
   else
   {
     self->_range.location = location;
     self->_range.length = length;
-    v10 = [a3 copyWithZone:0];
+    v10 = [data copyWithZone:0];
   }
 
   self->_data = v10;

@@ -1,12 +1,12 @@
 @interface HomeState.Stream.HomeFrameworkObserver
 - (_TtCE4HomeCV13HomeDataModel9HomeState6Stream21HomeFrameworkObserver)init;
-- (void)didUpdateToInstallingState:(BOOL)a3 forAccessory:(id)a4;
-- (void)executionEnvironmentRunningStateDidChange:(id)a3;
-- (void)home:(id)a3 didReadValuesForCharacteristics:(id)a4 failedCharacteristics:(id)a5;
-- (void)home:(id)a3 didWriteValuesForCharacteristics:(id)a4 failedCharacteristics:(id)a5;
-- (void)home:(id)a3 willReadValuesForCharacteristics:(id)a4;
-- (void)softwareUpdateController:(id)a3 accessory:(id)a4 didFailUpdate:(id)a5 withError:(id)a6 timestamp:(id)a7;
-- (void)softwareUpdateController:(id)a3 accessory:(id)a4 didReceiveUpdate:(id)a5;
+- (void)didUpdateToInstallingState:(BOOL)state forAccessory:(id)accessory;
+- (void)executionEnvironmentRunningStateDidChange:(id)change;
+- (void)home:(id)home didReadValuesForCharacteristics:(id)characteristics failedCharacteristics:(id)failedCharacteristics;
+- (void)home:(id)home didWriteValuesForCharacteristics:(id)characteristics failedCharacteristics:(id)failedCharacteristics;
+- (void)home:(id)home willReadValuesForCharacteristics:(id)characteristics;
+- (void)softwareUpdateController:(id)controller accessory:(id)accessory didFailUpdate:(id)update withError:(id)error timestamp:(id)timestamp;
+- (void)softwareUpdateController:(id)controller accessory:(id)accessory didReceiveUpdate:(id)update;
 @end
 
 @implementation HomeState.Stream.HomeFrameworkObserver
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (void)home:(id)a3 didWriteValuesForCharacteristics:(id)a4 failedCharacteristics:(id)a5
+- (void)home:(id)home didWriteValuesForCharacteristics:(id)characteristics failedCharacteristics:(id)failedCharacteristics
 {
   v6 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C8443F0, &qword_20DD93820) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
@@ -33,43 +33,43 @@
   v12 = swift_allocObject();
   *(v12 + 16) = v9;
   *(v12 + 24) = v10;
-  v13 = self;
+  selfCopy = self;
 
   sub_20DD63B94();
 
   sub_20D9C7BC4(v8);
 }
 
-- (void)home:(id)a3 willReadValuesForCharacteristics:(id)a4
+- (void)home:(id)home willReadValuesForCharacteristics:(id)characteristics
 {
   sub_20D9C7830();
   sub_20D9C6D80(&unk_280E020F0, sub_20D9C7830);
   v6 = sub_20DD651E4();
-  v7 = a3;
-  v8 = self;
+  homeCopy = home;
+  selfCopy = self;
   sub_20D9C787C(v6);
 }
 
-- (void)home:(id)a3 didReadValuesForCharacteristics:(id)a4 failedCharacteristics:(id)a5
+- (void)home:(id)home didReadValuesForCharacteristics:(id)characteristics failedCharacteristics:(id)failedCharacteristics
 {
   sub_20D9C7830();
   sub_20D9C6D80(&unk_280E020F0, sub_20D9C7830);
   v7 = sub_20DD651E4();
   sub_20DD651E4();
-  v8 = a3;
-  v9 = self;
+  homeCopy = home;
+  selfCopy = self;
   sub_20D9C79E4(v7);
 }
 
-- (void)executionEnvironmentRunningStateDidChange:(id)a3
+- (void)executionEnvironmentRunningStateDidChange:(id)change
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C8443F0, &qword_20DD93820);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = a3;
-  v10 = self;
-  v11 = [v9 runningState];
+  changeCopy = change;
+  selfCopy = self;
+  runningState = [changeCopy runningState];
   v12 = sub_20DD65114();
   (*(*(v12 - 8) + 56))(v8, 1, 1, v12);
   v13 = swift_allocObject();
@@ -77,12 +77,12 @@
   v14 = swift_allocObject();
   v14[2] = 0;
   v14[3] = 0;
-  v14[4] = v11;
+  v14[4] = runningState;
   v14[5] = v13;
   sub_20DA1C200(0, 0, v8, &unk_20DD93830, v14);
 }
 
-- (void)softwareUpdateController:(id)a3 accessory:(id)a4 didReceiveUpdate:(id)a5
+- (void)softwareUpdateController:(id)controller accessory:(id)accessory didReceiveUpdate:(id)update
 {
   v5 = sub_20DD63744();
   v6 = *(v5 - 8);
@@ -93,7 +93,7 @@
   (*(v6 + 8))(v9, v5);
 }
 
-- (void)softwareUpdateController:(id)a3 accessory:(id)a4 didFailUpdate:(id)a5 withError:(id)a6 timestamp:(id)a7
+- (void)softwareUpdateController:(id)controller accessory:(id)accessory didFailUpdate:(id)update withError:(id)error timestamp:(id)timestamp
 {
   v7 = sub_20DD636C4();
   v8 = *(v7 - 8);
@@ -111,12 +111,12 @@
   (*(v13 + 8))(v16, v12);
 }
 
-- (void)didUpdateToInstallingState:(BOOL)a3 forAccessory:(id)a4
+- (void)didUpdateToInstallingState:(BOOL)state forAccessory:(id)accessory
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = self;
-  sub_20D9C5FAC(v4, v6);
+  stateCopy = state;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  sub_20D9C5FAC(stateCopy, accessoryCopy);
 }
 
 @end

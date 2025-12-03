@@ -1,6 +1,6 @@
 @interface USTrackingAgentPrivateConnection
-+ (BOOL)connectionHasFamilyControlsEntitlement:(id)a3;
-+ (BOOL)connectionHasPrivateEntitlement:(id)a3;
++ (BOOL)connectionHasFamilyControlsEntitlement:(id)entitlement;
++ (BOOL)connectionHasPrivateEntitlement:(id)entitlement;
 + (id)newConnection;
 + (id)newInterface;
 @end
@@ -10,8 +10,8 @@
 + (id)newConnection
 {
   v3 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.UsageTrackingAgent.private" options:4096];
-  v4 = [a1 newInterface];
-  [v3 setRemoteObjectInterface:v4];
+  newInterface = [self newInterface];
+  [v3 setRemoteObjectInterface:newInterface];
 
   return v3;
 }
@@ -39,38 +39,38 @@
   return v2;
 }
 
-+ (BOOL)connectionHasPrivateEntitlement:(id)a3
++ (BOOL)connectionHasPrivateEntitlement:(id)entitlement
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.private.usage-tracking"];
+  v3 = [entitlement valueForEntitlement:@"com.apple.private.usage-tracking"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (BOOL)connectionHasFamilyControlsEntitlement:(id)a3
++ (BOOL)connectionHasFamilyControlsEntitlement:(id)entitlement
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.developer.family-controls"];
+  v3 = [entitlement valueForEntitlement:@"com.apple.developer.family-controls"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

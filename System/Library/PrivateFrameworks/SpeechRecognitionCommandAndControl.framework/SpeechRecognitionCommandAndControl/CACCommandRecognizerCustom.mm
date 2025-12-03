@@ -34,12 +34,12 @@
         v9 = v8;
         if (v8)
         {
-          v10 = [(CACSpokenCommand *)v8 strings];
+          strings = [(CACSpokenCommand *)v8 strings];
 
-          if (v10)
+          if (strings)
           {
-            v11 = [(CACSpokenCommand *)v9 contextEvaluation];
-            v12 = [CACSpokenCommand stringFromContextEvaluationDictionary:v11 isCustom:1];
+            contextEvaluation = [(CACSpokenCommand *)v9 contextEvaluation];
+            v12 = [CACSpokenCommand stringFromContextEvaluationDictionary:contextEvaluation isCustom:1];
 
             v13 = [v2 objectForKey:v12];
             if (!v13)
@@ -81,9 +81,9 @@
         v19 = *(*(&v28 + 1) + 8 * j);
         v20 = [v14 objectForKey:v19];
         v21 = [CACCommandRecognizerCustom alloc];
-        v22 = [v20 firstObject];
-        v23 = [v22 contextEvaluation];
-        v24 = [(CACCommandRecognizer *)v21 initWithCommands:v20 contextEvaluators:v23 builtInLMIdentifiers:0];
+        firstObject = [v20 firstObject];
+        contextEvaluation2 = [firstObject contextEvaluation];
+        v24 = [(CACCommandRecognizer *)v21 initWithCommands:v20 contextEvaluators:contextEvaluation2 builtInLMIdentifiers:0];
 
         [(CACCommandRecognizer *)v24 setType:v19];
         [v27 addObject:v24];
@@ -103,8 +103,8 @@
   v4.receiver = self;
   v4.super_class = CACCommandRecognizerCustom;
   [(CACCommandRecognizer *)&v4 _buildLanguageModelUsingCommands];
-  v3 = [(CACSpeechRecognizer *)self->super._speechRecognizer languageModel];
-  [v3 setObject:*MEMORY[0x277CBED28] forAttribute:kCACLanguageModelAttributeCustomCommands];
+  languageModel = [(CACSpeechRecognizer *)self->super._speechRecognizer languageModel];
+  [languageModel setObject:*MEMORY[0x277CBED28] forAttribute:kCACLanguageModelAttributeCustomCommands];
 }
 
 @end

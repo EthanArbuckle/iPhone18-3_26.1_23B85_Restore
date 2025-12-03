@@ -1,6 +1,6 @@
 @interface SUSUIRemoteScheduleUpdateContainerController
 - (SUSUIRemoteScheduleUpdateContainerController)init;
-- (id)laggardsUIViewControllerForAction:(id)a3;
+- (id)laggardsUIViewControllerForAction:(id)action;
 @end
 
 @implementation SUSUIRemoteScheduleUpdateContainerController
@@ -18,9 +18,9 @@
   {
     [(SUSUIRemoteLaggardsUIHostingController *)v8 setUseNavigationController:1];
     [(SUSUIRemoteLaggardsUIHostingController *)v8 setAllowCancel:1];
-    v5 = [(SUSUIRemoteScheduleUpdateContainerController *)v8 _remoteViewControllerProxy];
-    [v5 setAllowsSiri:0];
-    objc_storeStrong(&v5, 0);
+    _remoteViewControllerProxy = [(SUSUIRemoteScheduleUpdateContainerController *)v8 _remoteViewControllerProxy];
+    [_remoteViewControllerProxy setAllowsSiri:0];
+    objc_storeStrong(&_remoteViewControllerProxy, 0);
   }
 
   v3 = v8;
@@ -28,16 +28,16 @@
   return v3;
 }
 
-- (id)laggardsUIViewControllerForAction:(id)a3
+- (id)laggardsUIViewControllerForAction:(id)action
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUSUIRemoteLaggardsUIHostingController *)v8 setUseNavigationController:1];
-  [(SUSUIRemoteLaggardsUIHostingController *)v8 setAllowCancel:1];
+  objc_storeStrong(location, action);
+  [(SUSUIRemoteLaggardsUIHostingController *)selfCopy setUseNavigationController:1];
+  [(SUSUIRemoteLaggardsUIHostingController *)selfCopy setAllowCancel:1];
   v4 = [SUSUIScheduleUpdateViewController alloc];
-  v5 = [location[0] descriptor];
+  descriptor = [location[0] descriptor];
   v6 = [(SUSUIScheduleUpdateViewController *)v4 initWithDescriptor:?];
 
   objc_storeStrong(location, 0);

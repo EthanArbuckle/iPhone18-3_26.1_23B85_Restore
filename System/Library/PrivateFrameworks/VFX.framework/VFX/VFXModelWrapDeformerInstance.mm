@@ -1,5 +1,5 @@
 @interface VFXModelWrapDeformerInstance
-- (unint64_t)updateWithContext:(id)a3;
+- (unint64_t)updateWithContext:(id)context;
 - (void)dealloc;
 @end
 
@@ -12,16 +12,16 @@
   [(VFXModelWrapDeformerInstance *)&v3 dealloc];
 }
 
-- (unint64_t)updateWithContext:(id)a3
+- (unint64_t)updateWithContext:(id)context
 {
-  v6 = objc_msgSend__currentFrameHash(a3, a2, a3, v3);
+  v6 = objc_msgSend__currentFrameHash(context, a2, context, v3);
   if (self->_currentFrameHash == v6)
   {
     return 0;
   }
 
   self->_currentFrameHash = v6;
-  v11 = objc_msgSend__currentRenderContext(a3, v7, v8, v9);
+  v11 = objc_msgSend__currentRenderContext(context, v7, v8, v9);
   v15 = objc_msgSend_resourceComputeEncoder(v11, v12, v13, v14);
   if (self->_isLegacySingleLayerDeformer)
   {
@@ -53,16 +53,16 @@
     *&self->_anon_114[44] = v20;
     *&self->_anon_114[60] = v21;
     objc_msgSend_setBytes_length_atIndex_(v15, v17, &self->_legacyUniforms, 80, 0);
-    v26 = objc_msgSend_dependency0PositionBuffer(a3, v23, v24, v25);
+    v26 = objc_msgSend_dependency0PositionBuffer(context, v23, v24, v25);
     objc_msgSend_setBuffer_offset_atIndex_(v15, v27, v26, 0, 1);
-    v31 = objc_msgSend_dstPositionBuffer(a3, v28, v29, v30);
+    v31 = objc_msgSend_dstPositionBuffer(context, v28, v29, v30);
     objc_msgSend_setBuffer_offset_atIndex_(v15, v32, v31, 0, 11);
     objc_msgSend_setBuffer_offset_atIndex_(v15, v33, self->_pointIndicesBuffer, 0, 3);
     objc_msgSend_setBuffer_offset_atIndex_(v15, v34, self->_barycentricCoordsBuffer, 0, 4);
     objc_msgSend_setBuffer_offset_atIndex_(v15, v35, self->_legacyOffsetsOrTransformsBuffer, 0, 6);
     if (self->_bindingMode == 1)
     {
-      v39 = objc_msgSend_srcPositionBuffer(a3, v36, v37, v38);
+      v39 = objc_msgSend_srcPositionBuffer(context, v36, v37, v38);
       objc_msgSend_setBuffer_offset_atIndex_(v15, v40, v39, 0, 10);
     }
   }
@@ -121,18 +121,18 @@
     *&self->_anon_14[108] = v50;
     *&self->_anon_14[124] = v51;
     objc_msgSend_setBytes_length_atIndex_(v15, v43, &self->_uniforms, 144, 0);
-    v55 = objc_msgSend_dependency0PositionBuffer(a3, v52, v53, v54);
+    v55 = objc_msgSend_dependency0PositionBuffer(context, v52, v53, v54);
     objc_msgSend_setBuffer_offset_atIndex_(v15, v56, v55, 0, 1);
-    v60 = objc_msgSend_dependency1PositionBuffer(a3, v57, v58, v59);
+    v60 = objc_msgSend_dependency1PositionBuffer(context, v57, v58, v59);
     objc_msgSend_setBuffer_offset_atIndex_(v15, v61, v60, 0, 2);
-    v65 = objc_msgSend_dstPositionBuffer(a3, v62, v63, v64);
+    v65 = objc_msgSend_dstPositionBuffer(context, v62, v63, v64);
     objc_msgSend_setBuffer_offset_atIndex_(v15, v66, v65, 0, 11);
     objc_msgSend_setBuffer_offset_atIndex_(v15, v67, self->_pointIndicesBuffer, 0, 3);
     objc_msgSend_setBuffer_offset_atIndex_(v15, v68, self->_barycentricCoordsBuffer, 0, 4);
     objc_msgSend_setBuffer_offset_atIndex_(v15, v69, self->_innerLayerInfluencesBuffer, 0, 5);
     if (self->_bindingMode == 1)
     {
-      v71 = objc_msgSend_srcPositionBuffer(a3, v36, v70, v38);
+      v71 = objc_msgSend_srcPositionBuffer(context, v36, v70, v38);
       objc_msgSend_setBuffer_offset_atIndex_(v15, v72, v71, 0, 10);
       objc_msgSend_setBuffer_offset_atIndex_(v15, v73, self->_innerBindingSpaceVectorsBuffer, 0, 8);
       objc_msgSend_setBuffer_offset_atIndex_(v15, v74, self->_outerBindingSpaceVectorsBuffer, 0, 9);

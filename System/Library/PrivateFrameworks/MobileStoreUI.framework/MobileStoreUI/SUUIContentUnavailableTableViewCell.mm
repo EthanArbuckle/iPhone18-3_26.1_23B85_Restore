@@ -1,15 +1,15 @@
 @interface SUUIContentUnavailableTableViewCell
-- (SUUIContentUnavailableTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SUUIContentUnavailableTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation SUUIContentUnavailableTableViewCell
 
-- (SUUIContentUnavailableTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SUUIContentUnavailableTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = SUUIContentUnavailableTableViewCell;
-  v4 = [(SUUITableViewCell *)&v11 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SUUITableViewCell *)&v11 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -19,8 +19,8 @@
     view = v5->_view;
     v5->_view = v7;
 
-    v9 = [(SUUIContentUnavailableTableViewCell *)v5 contentView];
-    [v9 addSubview:v5->_view];
+    contentView = [(SUUIContentUnavailableTableViewCell *)v5 contentView];
+    [contentView addSubview:v5->_view];
   }
 
   return v5;
@@ -31,8 +31,8 @@
   v12.receiver = self;
   v12.super_class = SUUIContentUnavailableTableViewCell;
   [(SUUITableViewCell *)&v12 layoutSubviews];
-  v3 = [(SUUIContentUnavailableTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUIContentUnavailableTableViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;

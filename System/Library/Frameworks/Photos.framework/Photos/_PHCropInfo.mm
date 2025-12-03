@@ -1,20 +1,20 @@
 @interface _PHCropInfo
-- (_PHCropInfo)initWithAsset:(id)a3 cropScore:(double)a4;
+- (_PHCropInfo)initWithAsset:(id)asset cropScore:(double)score;
 @end
 
 @implementation _PHCropInfo
 
-- (_PHCropInfo)initWithAsset:(id)a3 cropScore:(double)a4
+- (_PHCropInfo)initWithAsset:(id)asset cropScore:(double)score
 {
-  v7 = a3;
+  assetCopy = asset;
   v11.receiver = self;
   v11.super_class = _PHCropInfo;
   v8 = [(_PHCropInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_asset, a3);
-    v9->_cropScore = a4;
+    objc_storeStrong(&v8->_asset, asset);
+    v9->_cropScore = score;
   }
 
   return v9;

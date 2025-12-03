@@ -1,9 +1,9 @@
 @interface PowerUICECUtilities
-+ (BOOL)deviceWasRestartedWithDefaults:(id)a3;
++ (BOOL)deviceWasRestartedWithDefaults:(id)defaults;
 + (BOOL)isDemoCECSupported;
 + (BOOL)isDemoCecFlagEnabledForStore;
 + (BOOL)isDemoDevice;
-+ (BOOL)isPluggedIntoEligiblePowerSourceWithContext:(id)a3;
++ (BOOL)isPluggedIntoEligiblePowerSourceWithContext:(id)context;
 + (BOOL)resetStateOnUnplug;
 + (id)fetchEstimatedCountryCode;
 + (id)log;
@@ -32,45 +32,45 @@
 + (id)fetchEstimatedCountryCode
 {
   v2 = os_log_create("com.apple.powerui.cec", "");
-  v3 = [MEMORY[0x277D443A8] currentEstimates];
-  if ([v3 count])
+  currentEstimates = [MEMORY[0x277D443A8] currentEstimates];
+  if ([currentEstimates count])
   {
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
     {
       +[PowerUICECUtilities fetchEstimatedCountryCode];
     }
 
-    v4 = [v3 objectAtIndexedSubscript:0];
-    v5 = [v4 countryCode];
+    v4 = [currentEstimates objectAtIndexedSubscript:0];
+    countryCode = [v4 countryCode];
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
     {
       +[PowerUICECUtilities fetchEstimatedCountryCode];
     }
 
 LABEL_12:
-    v7 = v5;
+    v7 = countryCode;
 
-    v6 = v3;
+    lastKnownEstimates = currentEstimates;
     goto LABEL_13;
   }
 
-  v6 = [MEMORY[0x277D443A8] lastKnownEstimates];
+  lastKnownEstimates = [MEMORY[0x277D443A8] lastKnownEstimates];
 
-  if ([v6 count])
+  if ([lastKnownEstimates count])
   {
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
     {
       +[PowerUICECUtilities fetchEstimatedCountryCode];
     }
 
-    v4 = [v6 objectAtIndexedSubscript:0];
-    v5 = [v4 countryCode];
+    v4 = [lastKnownEstimates objectAtIndexedSubscript:0];
+    countryCode = [v4 countryCode];
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
     {
       +[PowerUICECUtilities fetchEstimatedCountryCode];
     }
 
-    v3 = v6;
+    currentEstimates = lastKnownEstimates;
     goto LABEL_12;
   }
 
@@ -95,14 +95,14 @@ LABEL_13:
         +[(PowerUICECUtilities *)v4];
       }
 
-      v6 = [v4 BOOLValue];
-      return v6;
+      bOOLValue = [v4 BOOLValue];
+      return bOOLValue;
     }
   }
 
-  v7 = [MEMORY[0x277D29510] sharedInstance];
+  mEMORY[0x277D29510] = [MEMORY[0x277D29510] sharedInstance];
   v15 = 0;
-  v8 = [v7 isSecureDemoModeEnabled:&v15];
+  v8 = [mEMORY[0x277D29510] isSecureDemoModeEnabled:&v15];
   v9 = v15;
 
   if (v9)
@@ -116,9 +116,9 @@ LABEL_13:
 
   else
   {
-    v11 = [MEMORY[0x277D29510] sharedInstance];
+    mEMORY[0x277D29510]2 = [MEMORY[0x277D29510] sharedInstance];
     v14 = 0;
-    v12 = [v11 isDeviceEnrolledWithDeKOTA:&v14];
+    v12 = [mEMORY[0x277D29510]2 isDeviceEnrolledWithDeKOTA:&v14];
     v9 = v14;
 
     if (!v9)
@@ -138,10 +138,10 @@ LABEL_13:
 
 + (BOOL)isDemoCecFlagEnabledForStore
 {
-  v2 = [MEMORY[0x277D29520] sharedInstance];
-  v3 = [v2 isCleanEnergyChargingEnabled];
+  mEMORY[0x277D29520] = [MEMORY[0x277D29520] sharedInstance];
+  isCleanEnergyChargingEnabled = [mEMORY[0x277D29520] isCleanEnergyChargingEnabled];
 
-  return v3;
+  return isCleanEnergyChargingEnabled;
 }
 
 + (BOOL)isDemoCECSupported
@@ -151,9 +151,9 @@ LABEL_13:
   return v2 & (v3 | +[PowerUISmartChargeUtilities isiPad]);
 }
 
-+ (BOOL)isPluggedIntoEligiblePowerSourceWithContext:(id)a3
++ (BOOL)isPluggedIntoEligiblePowerSourceWithContext:(id)context
 {
-  if (![PowerUISmartChargeUtilities isPluggedInWithContext:a3])
+  if (![PowerUISmartChargeUtilities isPluggedInWithContext:context])
   {
     return 0;
   }
@@ -171,7 +171,7 @@ LABEL_13:
         [PowerUICECUtilities isPluggedIntoEligiblePowerSourceWithContext:v5];
       }
 
-      v7 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
       goto LABEL_23;
     }
   }
@@ -190,7 +190,7 @@ LABEL_13:
         +[PowerUICECUtilities isPluggedIntoEligiblePowerSourceWithContext:];
       }
 
-      v7 = 1;
+      bOOLValue = 1;
       goto LABEL_24;
     }
 
@@ -206,18 +206,18 @@ LABEL_13:
         _os_log_impl(&dword_21B766000, v16, OS_LOG_TYPE_DEFAULT, "Device powering from another device", v18, 2u);
       }
 
-      v7 = 0;
+      bOOLValue = 0;
     }
 
     else
     {
-      v7 = 1;
+      bOOLValue = 1;
     }
 
 LABEL_23:
 
 LABEL_24:
-    return v7;
+    return bOOLValue;
   }
 
   v11 = [objc_opt_class() log];
@@ -229,9 +229,9 @@ LABEL_24:
   return 1;
 }
 
-+ (BOOL)deviceWasRestartedWithDefaults:(id)a3
++ (BOOL)deviceWasRestartedWithDefaults:(id)defaults
 {
-  v3 = [a3 stringForKey:@"bootUUIDOnLastInit"];
+  v3 = [defaults stringForKey:@"bootUUIDOnLastInit"];
   v4 = +[PowerUISmartChargeUtilities getCurrentBootSessionUUID];
   v5 = [v4 isEqualToString:v3];
 
@@ -260,8 +260,8 @@ LABEL_24:
     +[(PowerUICECUtilities *)v4];
   }
 
-  v6 = [v4 BOOLValue];
-  return v6;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 + (void)fetchEstimatedCountryCode
@@ -302,7 +302,7 @@ LABEL_24:
 + (void)resetStateOnUnplug
 {
   v9 = *MEMORY[0x277D85DE8];
-  [a1 BOOLValue];
+  [self BOOLValue];
   OUTLINED_FUNCTION_3_2();
   OUTLINED_FUNCTION_0_5(&dword_21B766000, v1, v2, "TestMode: Allow reset state on unplug set to %d", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];

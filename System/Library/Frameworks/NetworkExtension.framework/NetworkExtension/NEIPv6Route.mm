@@ -1,37 +1,37 @@
 @interface NEIPv6Route
 + (NEIPv6Route)defaultRoute;
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
 - (BOOL)isDefaultRoute;
-- (NEIPv6Route)initWithCoder:(id)a3;
+- (NEIPv6Route)initWithCoder:(id)coder;
 - (NEIPv6Route)initWithDestinationAddress:(NSString *)address networkPrefixLength:(NSNumber *)networkPrefixLength;
 - (id)copyLegacyDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromLegacyDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromLegacyDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEIPv6Route
 
-- (id)initFromLegacyDictionary:(id)a3
+- (id)initFromLegacyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(NEIPv6Route *)self init];
   if (v5)
   {
-    if (v4)
+    if (dictionaryCopy)
     {
       v6 = CFDICTIONARY_TYPE;
-      if (CFGetTypeID(v4) == v6)
+      if (CFGetTypeID(dictionaryCopy) == v6)
       {
-        v7 = NEGetValueWithType(v4, *MEMORY[0x1E6982508], CFSTRING_TYPE);
+        v7 = NEGetValueWithType(dictionaryCopy, *MEMORY[0x1E6982508], CFSTRING_TYPE);
         destinationAddress = v5->_destinationAddress;
         v5->_destinationAddress = v7;
 
-        v9 = NEGetValueWithType(v4, *MEMORY[0x1E6982520], CFNUMBER_TYPE);
+        v9 = NEGetValueWithType(dictionaryCopy, *MEMORY[0x1E6982520], CFNUMBER_TYPE);
         destinationNetworkPrefixLength = v5->_destinationNetworkPrefixLength;
         v5->_destinationNetworkPrefixLength = v9;
 
-        v11 = NEGetValueWithType(v4, *MEMORY[0x1E6982510], CFSTRING_TYPE);
+        v11 = NEGetValueWithType(dictionaryCopy, *MEMORY[0x1E6982510], CFSTRING_TYPE);
         gatewayAddress = v5->_gatewayAddress;
         v5->_gatewayAddress = v11;
       }
@@ -44,54 +44,54 @@
 - (id)copyLegacyDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(NEIPv6Route *)self destinationAddress];
+  destinationAddress = [(NEIPv6Route *)self destinationAddress];
 
-  if (v4)
+  if (destinationAddress)
   {
-    v5 = [(NEIPv6Route *)self destinationAddress];
-    [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x1E6982508]];
+    destinationAddress2 = [(NEIPv6Route *)self destinationAddress];
+    [v3 setObject:destinationAddress2 forKeyedSubscript:*MEMORY[0x1E6982508]];
   }
 
-  v6 = [(NEIPv6Route *)self destinationNetworkPrefixLength];
+  destinationNetworkPrefixLength = [(NEIPv6Route *)self destinationNetworkPrefixLength];
 
-  if (v6)
+  if (destinationNetworkPrefixLength)
   {
-    v7 = [(NEIPv6Route *)self destinationNetworkPrefixLength];
-    [v3 setObject:v7 forKeyedSubscript:*MEMORY[0x1E6982520]];
+    destinationNetworkPrefixLength2 = [(NEIPv6Route *)self destinationNetworkPrefixLength];
+    [v3 setObject:destinationNetworkPrefixLength2 forKeyedSubscript:*MEMORY[0x1E6982520]];
   }
 
-  v8 = [(NEIPv6Route *)self gatewayAddress];
+  gatewayAddress = [(NEIPv6Route *)self gatewayAddress];
 
-  if (v8)
+  if (gatewayAddress)
   {
-    v9 = [(NEIPv6Route *)self gatewayAddress];
-    [v3 setObject:v9 forKeyedSubscript:*MEMORY[0x1E6982510]];
+    gatewayAddress2 = [(NEIPv6Route *)self gatewayAddress];
+    [v3 setObject:gatewayAddress2 forKeyedSubscript:*MEMORY[0x1E6982510]];
   }
 
   return v3;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   v17 = 0uLL;
-  v5 = [(NEIPv6Route *)self destinationAddress];
+  destinationAddress = [(NEIPv6Route *)self destinationAddress];
 
-  if (!v5)
+  if (!destinationAddress)
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
     goto LABEL_9;
   }
 
-  v6 = [(NEIPv6Route *)self destinationAddress];
-  v7 = inet_pton(30, [v6 UTF8String], &v17);
+  destinationAddress2 = [(NEIPv6Route *)self destinationAddress];
+  v7 = inet_pton(30, [destinationAddress2 UTF8String], &v17);
 
   if (!v7)
   {
     v8 = @"Invalid NEIPv6Route Destination address";
 LABEL_8:
-    [NEConfiguration addError:v8 toList:v4];
-    LOBYTE(v5) = 0;
+    [NEConfiguration addError:v8 toList:errorsCopy];
+    LOBYTE(destinationAddress) = 0;
     goto LABEL_9;
   }
 
@@ -101,74 +101,74 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  LOBYTE(v5) = 1;
+  LOBYTE(destinationAddress) = 1;
 LABEL_9:
-  v9 = [(NEIPv6Route *)self destinationNetworkPrefixLength];
-  if (!v9 || (v10 = v9, -[NEIPv6Route destinationNetworkPrefixLength](self, "destinationNetworkPrefixLength"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 integerValue], v11, v10, v12 >= 129))
+  destinationNetworkPrefixLength = [(NEIPv6Route *)self destinationNetworkPrefixLength];
+  if (!destinationNetworkPrefixLength || (v10 = destinationNetworkPrefixLength, -[NEIPv6Route destinationNetworkPrefixLength](self, "destinationNetworkPrefixLength"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 integerValue], v11, v10, v12 >= 129))
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
   }
 
-  v13 = [(NEIPv6Route *)self gatewayAddress];
+  gatewayAddress = [(NEIPv6Route *)self gatewayAddress];
 
-  if (v13)
+  if (gatewayAddress)
   {
-    v14 = [(NEIPv6Route *)self gatewayAddress];
-    v15 = inet_pton(30, [v14 UTF8String], &v17);
+    gatewayAddress2 = [(NEIPv6Route *)self gatewayAddress];
+    v15 = inet_pton(30, [gatewayAddress2 UTF8String], &v17);
 
     if (!v15)
     {
-      [NEConfiguration addError:v4 toList:?];
-      LOBYTE(v5) = 0;
+      [NEConfiguration addError:errorsCopy toList:?];
+      LOBYTE(destinationAddress) = 0;
     }
   }
 
-  return v5;
+  return destinationAddress;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NEIPv6Route allocWithZone:a3];
-  v5 = [(NEIPv6Route *)self destinationAddress];
-  v6 = [(NEIPv6Route *)self destinationNetworkPrefixLength];
-  v7 = [(NEIPv6Route *)v4 initWithDestinationAddress:v5 networkPrefixLength:v6];
+  v4 = [NEIPv6Route allocWithZone:zone];
+  destinationAddress = [(NEIPv6Route *)self destinationAddress];
+  destinationNetworkPrefixLength = [(NEIPv6Route *)self destinationNetworkPrefixLength];
+  v7 = [(NEIPv6Route *)v4 initWithDestinationAddress:destinationAddress networkPrefixLength:destinationNetworkPrefixLength];
 
-  v8 = [(NEIPv6Route *)self gatewayAddress];
-  [(NEIPv6Route *)v7 setGatewayAddress:v8];
+  gatewayAddress = [(NEIPv6Route *)self gatewayAddress];
+  [(NEIPv6Route *)v7 setGatewayAddress:gatewayAddress];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NEIPv6Route *)self destinationAddress];
-  [v4 encodeObject:v5 forKey:@"DestinationAddress"];
+  coderCopy = coder;
+  destinationAddress = [(NEIPv6Route *)self destinationAddress];
+  [coderCopy encodeObject:destinationAddress forKey:@"DestinationAddress"];
 
-  v6 = [(NEIPv6Route *)self destinationNetworkPrefixLength];
-  [v4 encodeObject:v6 forKey:@"DestinationPrefixLength"];
+  destinationNetworkPrefixLength = [(NEIPv6Route *)self destinationNetworkPrefixLength];
+  [coderCopy encodeObject:destinationNetworkPrefixLength forKey:@"DestinationPrefixLength"];
 
-  v7 = [(NEIPv6Route *)self gatewayAddress];
-  [v4 encodeObject:v7 forKey:@"RouteGatewayAddress"];
+  gatewayAddress = [(NEIPv6Route *)self gatewayAddress];
+  [coderCopy encodeObject:gatewayAddress forKey:@"RouteGatewayAddress"];
 }
 
-- (NEIPv6Route)initWithCoder:(id)a3
+- (NEIPv6Route)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NEIPv6Route;
   v5 = [(NEIPv6Route *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DestinationAddress"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DestinationAddress"];
     destinationAddress = v5->_destinationAddress;
     v5->_destinationAddress = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DestinationPrefixLength"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DestinationPrefixLength"];
     destinationNetworkPrefixLength = v5->_destinationNetworkPrefixLength;
     v5->_destinationNetworkPrefixLength = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RouteGatewayAddress"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RouteGatewayAddress"];
     gatewayAddress = v5->_gatewayAddress;
     v5->_gatewayAddress = v10;
   }
@@ -179,13 +179,13 @@ LABEL_9:
 - (BOOL)isDefaultRoute
 {
   v3 = +[NEIPv6Route defaultRoute];
-  v4 = [(NEIPv6Route *)self destinationAddress];
-  v5 = [v3 destinationAddress];
-  if ([v4 isEqualToString:v5])
+  destinationAddress = [(NEIPv6Route *)self destinationAddress];
+  destinationAddress2 = [v3 destinationAddress];
+  if ([destinationAddress isEqualToString:destinationAddress2])
   {
-    v6 = [(NEIPv6Route *)self destinationNetworkPrefixLength];
-    v7 = [v3 destinationNetworkPrefixLength];
-    v8 = [v6 isEqualToNumber:v7];
+    destinationNetworkPrefixLength = [(NEIPv6Route *)self destinationNetworkPrefixLength];
+    destinationNetworkPrefixLength2 = [v3 destinationNetworkPrefixLength];
+    v8 = [destinationNetworkPrefixLength isEqualToNumber:destinationNetworkPrefixLength2];
   }
 
   else

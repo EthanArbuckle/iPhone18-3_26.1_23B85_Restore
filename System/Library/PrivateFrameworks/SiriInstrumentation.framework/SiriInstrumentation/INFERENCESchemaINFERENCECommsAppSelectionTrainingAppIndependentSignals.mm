@@ -1,57 +1,57 @@
 @interface INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAppResolutionType:(BOOL)a3;
-- (void)setHasCommunicationType:(BOOL)a3;
-- (void)setHasRequestOriginLanguage:(BOOL)a3;
-- (void)setHasUserPersona:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAppResolutionType:(BOOL)type;
+- (void)setHasCommunicationType:(BOOL)type;
+- (void)setHasRequestOriginLanguage:(BOOL)language;
+- (void)setHasUserPersona:(BOOL)persona;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals
 
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals;
   v5 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"requestOriginLocale"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"requestOriginLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals setRequestOriginLocale:](v5, "setRequestOriginLocale:", [v6 longLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"requestOriginLanguage"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"requestOriginLanguage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals setRequestOriginLanguage:](v5, "setRequestOriginLanguage:", [v7 longLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"communicationType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"communicationType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals setCommunicationType:](v5, "setCommunicationType:", [v8 longLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"appResolutionType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"appResolutionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals setAppResolutionType:](v5, "setAppResolutionType:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"userPersona"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"userPersona"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,30 +64,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -100,7 +100,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -115,14 +115,14 @@
       v6 = off_1E78D88B8[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"appResolutionType"];
+    [dictionary setObject:v6 forKeyedSubscript:@"appResolutionType"];
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals communicationType](self, "communicationType")}];
-    [v3 setObject:v7 forKeyedSubscript:@"communicationType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"communicationType"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -135,7 +135,7 @@ LABEL_8:
 
 LABEL_13:
       v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals requestOriginLocale](self, "requestOriginLocale")}];
-      [v3 setObject:v9 forKeyedSubscript:@"requestOriginLocale"];
+      [dictionary setObject:v9 forKeyedSubscript:@"requestOriginLocale"];
 
       if ((*&self->_has & 0x10) == 0)
       {
@@ -154,7 +154,7 @@ LABEL_14:
         v11 = off_1E78D8908[v10];
       }
 
-      [v3 setObject:v11 forKeyedSubscript:@"userPersona"];
+      [dictionary setObject:v11 forKeyedSubscript:@"userPersona"];
       goto LABEL_18;
     }
   }
@@ -165,7 +165,7 @@ LABEL_14:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppIndependentSignals requestOriginLanguage](self, "requestOriginLanguage")}];
-  [v3 setObject:v8 forKeyedSubscript:@"requestOriginLanguage"];
+  [dictionary setObject:v8 forKeyedSubscript:@"requestOriginLanguage"];
 
   has = self->_has;
   if (has)
@@ -180,9 +180,9 @@ LABEL_9:
   }
 
 LABEL_18:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -253,16 +253,16 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = v4[40];
+  v6 = equalCopy[40];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_22;
@@ -271,13 +271,13 @@ LABEL_6:
   if (*&has)
   {
     requestOriginLocale = self->_requestOriginLocale;
-    if (requestOriginLocale != [v4 requestOriginLocale])
+    if (requestOriginLocale != [equalCopy requestOriginLocale])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -289,13 +289,13 @@ LABEL_6:
   if (v8)
   {
     requestOriginLanguage = self->_requestOriginLanguage;
-    if (requestOriginLanguage != [v4 requestOriginLanguage])
+    if (requestOriginLanguage != [equalCopy requestOriginLanguage])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -307,13 +307,13 @@ LABEL_6:
   if (v10)
   {
     communicationType = self->_communicationType;
-    if (communicationType != [v4 communicationType])
+    if (communicationType != [equalCopy communicationType])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -325,10 +325,10 @@ LABEL_6:
   if (v12)
   {
     appResolutionType = self->_appResolutionType;
-    if (appResolutionType == [v4 appResolutionType])
+    if (appResolutionType == [equalCopy appResolutionType])
     {
       has = self->_has;
-      v6 = v4[40];
+      v6 = equalCopy[40];
       goto LABEL_18;
     }
 
@@ -347,7 +347,7 @@ LABEL_18:
   if (v14)
   {
     userPersona = self->_userPersona;
-    if (userPersona != [v4 userPersona])
+    if (userPersona != [equalCopy userPersona])
     {
       goto LABEL_22;
     }
@@ -359,9 +359,9 @@ LABEL_23:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -422,9 +422,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)setHasUserPersona:(BOOL)a3
+- (void)setHasUserPersona:(BOOL)persona
 {
-  if (a3)
+  if (persona)
   {
     v3 = 16;
   }
@@ -437,9 +437,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasAppResolutionType:(BOOL)a3
+- (void)setHasAppResolutionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -452,9 +452,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasCommunicationType:(BOOL)a3
+- (void)setHasCommunicationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -467,9 +467,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRequestOriginLanguage:(BOOL)a3
+- (void)setHasRequestOriginLanguage:(BOOL)language
 {
-  if (a3)
+  if (language)
   {
     v3 = 2;
   }

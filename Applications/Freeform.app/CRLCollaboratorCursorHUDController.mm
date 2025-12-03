@@ -1,14 +1,14 @@
 @interface CRLCollaboratorCursorHUDController
-- (CGPoint)p_cachedAnchorPointForDirection:(unint64_t)a3;
+- (CGPoint)p_cachedAnchorPointForDirection:(unint64_t)direction;
 - (CGRect)p_unscaledHUDFrame;
-- (CGRect)scaledFrameForHUDAtPoint:(CGPoint)a3 withDirection:(unint64_t)a4;
+- (CGRect)scaledFrameForHUDAtPoint:(CGPoint)point withDirection:(unint64_t)direction;
 - (CGSize)p_avatarSize;
 - (CGSize)p_displayStringSize;
 - (CGSize)p_followButtonSize;
 - (CGSize)p_followButtonStringSize;
-- (CGSize)p_sizeForString:(id)a3 font:(id)a4;
-- (CRLCollaboratorCursorHUDController)initWithCollaboratorPresence:(id)a3 delegate:(id)a4 hudSize:(unint64_t)a5 shouldAutoShrink:(BOOL)a6 shouldAutoHide:(BOOL)a7 isFollowing:(BOOL)a8 isLocalParticipant:(BOOL)a9;
-- (CRLCollaboratorCursorHUDController)initWithCollaboratorPresence:(id)a3 delegate:(id)a4 string:(id)a5 hudSize:(unint64_t)a6 shouldAutoTimeout:(BOOL)a7;
+- (CGSize)p_sizeForString:(id)string font:(id)font;
+- (CRLCollaboratorCursorHUDController)initWithCollaboratorPresence:(id)presence delegate:(id)delegate hudSize:(unint64_t)size shouldAutoShrink:(BOOL)shrink shouldAutoHide:(BOOL)hide isFollowing:(BOOL)following isLocalParticipant:(BOOL)participant;
+- (CRLCollaboratorCursorHUDController)initWithCollaboratorPresence:(id)presence delegate:(id)delegate string:(id)string hudSize:(unint64_t)size shouldAutoTimeout:(BOOL)timeout;
 - (NSArray)decoratorOverlayRenderables;
 - (double)p_avatarLeadingSpace;
 - (double)p_avatarTrailingSpace;
@@ -20,7 +20,7 @@
 - (double)p_totalHeight;
 - (double)p_widthOfEverythingExceptDisplayString;
 - (id)decoratorOverlayViews;
-- (id)p_bezierPathForHUDWithFrame:(CGRect)a3 direction:(unint64_t)a4 outAnchorPoint:(CGPoint *)a5;
+- (id)p_bezierPathForHUDWithFrame:(CGRect)frame direction:(unint64_t)direction outAnchorPoint:(CGPoint *)point;
 - (id)p_cachedPath;
 - (id)p_decoratorOverlayRenderablesLegacy;
 - (id)p_decoratorOverlayRenderablesWithFollow;
@@ -34,39 +34,39 @@
 - (void)dealloc;
 - (void)didEndZoomingOperation;
 - (void)hideHUD;
-- (void)moveHUDToPoint:(CGPoint)a3 withDirection:(unint64_t)a4;
+- (void)moveHUDToPoint:(CGPoint)point withDirection:(unint64_t)direction;
 - (void)p_autoHideHUD;
 - (void)p_autoShrinkHUD;
 - (void)p_clearPathAndAnchorPointCaches;
-- (void)p_followButtonPressed:(id)a3;
+- (void)p_followButtonPressed:(id)pressed;
 - (void)p_hideFollowHUD;
 - (void)p_hideHUDLegacy;
-- (void)p_stringFontSize:(double *)a3 fontWeight:(double *)a4 isDisplayString:(BOOL)a5;
+- (void)p_stringFontSize:(double *)size fontWeight:(double *)weight isDisplayString:(BOOL)string;
 - (void)p_toggleSize;
 - (void)p_updateButtonRenderableFillColor;
 - (void)resetAutoHideTimer;
 - (void)resetAutoShrinkTimer;
 - (void)resetFadeOutTimer;
-- (void)showHUDAtPoint:(CGPoint)a3 withDirection:(unint64_t)a4;
+- (void)showHUDAtPoint:(CGPoint)point withDirection:(unint64_t)direction;
 - (void)startAutoHideTimer;
 - (void)startAutoShrinkTimer;
 - (void)stopAutoHideTimer;
 - (void)stopAutoShrinkTimer;
 - (void)teardown;
-- (void)userInteractionEndedForView:(id)a3;
+- (void)userInteractionEndedForView:(id)view;
 @end
 
 @implementation CRLCollaboratorCursorHUDController
 
-- (CRLCollaboratorCursorHUDController)initWithCollaboratorPresence:(id)a3 delegate:(id)a4 string:(id)a5 hudSize:(unint64_t)a6 shouldAutoTimeout:(BOOL)a7
+- (CRLCollaboratorCursorHUDController)initWithCollaboratorPresence:(id)presence delegate:(id)delegate string:(id)string hudSize:(unint64_t)size shouldAutoTimeout:(BOOL)timeout
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = v15;
-  if (v13)
+  presenceCopy = presence;
+  delegateCopy = delegate;
+  stringCopy = string;
+  v16 = stringCopy;
+  if (presenceCopy)
   {
-    if (v15)
+    if (stringCopy)
     {
       goto LABEL_22;
     }
@@ -137,8 +137,8 @@ LABEL_22:
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->mCollaboratorPresence, a3);
-    objc_storeWeak(&v24->mDelegate, v14);
+    objc_storeStrong(&v23->mCollaboratorPresence, presence);
+    objc_storeWeak(&v24->mDelegate, delegateCopy);
     v25 = [v16 copy];
     mFullNameString = v24->mFullNameString;
     v24->mFullNameString = v25;
@@ -149,7 +149,7 @@ LABEL_22:
     mFollowString = v24->mFollowString;
     v24->mFollowString = 0;
 
-    v24->mHUDSize = a6;
+    v24->mHUDSize = size;
     v29 = objc_alloc_init(CRLOnce);
     mPreferredSizeOfFullNameStringOnce = v24->mPreferredSizeOfFullNameStringOnce;
     v24->mPreferredSizeOfFullNameStringOnce = v29;
@@ -159,7 +159,7 @@ LABEL_22:
     v24->mPreferredSizeOfShortNameStringOnce = v31;
 
     v24->mIsFollowing = 0;
-    v24->mShouldAutoTimeout = a7;
+    v24->mShouldAutoTimeout = timeout;
     mFollowButtonRenderable = v24->mFollowButtonRenderable;
     v24->mFollowButtonRenderable = 0;
 
@@ -167,9 +167,9 @@ LABEL_22:
     v35 = v34;
     v37 = v36;
     v38 = [_TtC8Freeform29CRLCollaboratorAvatarRenderer alloc];
-    v39 = [v13 owner];
-    v40 = [v39 contact];
-    v41 = [(CRLCollaboratorAvatarRenderer *)v38 initWithContact:v40 size:v35, v37];
+    owner = [presenceCopy owner];
+    contact = [owner contact];
+    v41 = [(CRLCollaboratorAvatarRenderer *)v38 initWithContact:contact size:v35, v37];
     mAvatarRenderer = v24->mAvatarRenderer;
     v24->mAvatarRenderer = v41;
 
@@ -180,14 +180,14 @@ LABEL_22:
   return v24;
 }
 
-- (CRLCollaboratorCursorHUDController)initWithCollaboratorPresence:(id)a3 delegate:(id)a4 hudSize:(unint64_t)a5 shouldAutoShrink:(BOOL)a6 shouldAutoHide:(BOOL)a7 isFollowing:(BOOL)a8 isLocalParticipant:(BOOL)a9
+- (CRLCollaboratorCursorHUDController)initWithCollaboratorPresence:(id)presence delegate:(id)delegate hudSize:(unint64_t)size shouldAutoShrink:(BOOL)shrink shouldAutoHide:(BOOL)hide isFollowing:(BOOL)following isLocalParticipant:(BOOL)participant
 {
-  v11 = a6;
-  v16 = a3;
-  v17 = a4;
-  if (!v16)
+  shrinkCopy = shrink;
+  presenceCopy = presence;
+  delegateCopy = delegate;
+  if (!presenceCopy)
   {
-    HIDWORD(v48) = v11;
+    HIDWORD(v48) = shrinkCopy;
     LODWORD(v48) = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
     {
@@ -214,7 +214,7 @@ LABEL_22:
     v20 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCollaboratorCursorHUDController.m"];
     [CRLAssertionHandler handleFailureInFunction:v19 file:v20 lineNumber:138 isFatal:0 description:"Invalid parameter not satisfying: %{public}s", "collaboratorPresence != nil", v48];
 
-    LOBYTE(v11) = v49;
+    LOBYTE(shrinkCopy) = v49;
   }
 
   v50.receiver = self;
@@ -223,9 +223,9 @@ LABEL_22:
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->mCollaboratorPresence, a3);
-    objc_storeWeak(&v22->mDelegate, v17);
-    v22->mHUDSize = a5;
+    objc_storeStrong(&v21->mCollaboratorPresence, presence);
+    objc_storeWeak(&v22->mDelegate, delegateCopy);
+    v22->mHUDSize = size;
     v23 = objc_alloc_init(CRLOnce);
     mPreferredSizeOfFullNameStringOnce = v22->mPreferredSizeOfFullNameStringOnce;
     v22->mPreferredSizeOfFullNameStringOnce = v23;
@@ -238,19 +238,19 @@ LABEL_22:
     mPreferredSizeOfFollowStringOnce = v22->mPreferredSizeOfFollowStringOnce;
     v22->mPreferredSizeOfFollowStringOnce = v27;
 
-    v22->mIsFollowing = a8;
-    v22->mIsLocalParticipant = a9;
-    v22->mShouldAutoHide = a7;
-    v22->mShouldAutoShrink = v11;
+    v22->mIsFollowing = following;
+    v22->mIsLocalParticipant = participant;
+    v22->mShouldAutoHide = hide;
+    v22->mShouldAutoShrink = shrinkCopy;
     v22->mShouldAutoTimeout = 0;
     v22->mFollowEnabled = 1;
-    v29 = [v16 shortDisplayName];
-    v30 = [v29 copy];
+    shortDisplayName = [presenceCopy shortDisplayName];
+    v30 = [shortDisplayName copy];
     mShortNameString = v22->mShortNameString;
     v22->mShortNameString = v30;
 
-    v32 = [v16 displayName];
-    v33 = [v32 copy];
+    displayName = [presenceCopy displayName];
+    v33 = [displayName copy];
     mFullNameString = v22->mFullNameString;
     v22->mFullNameString = v33;
 
@@ -263,9 +263,9 @@ LABEL_22:
     v39 = v38;
     v41 = v40;
     v42 = [_TtC8Freeform29CRLCollaboratorAvatarRenderer alloc];
-    v43 = [v16 owner];
-    v44 = [v43 contact];
-    v45 = [(CRLCollaboratorAvatarRenderer *)v42 initWithContact:v44 size:v39, v41];
+    owner = [presenceCopy owner];
+    contact = [owner contact];
+    v45 = [(CRLCollaboratorAvatarRenderer *)v42 initWithContact:contact size:v39, v41];
     mAvatarRenderer = v22->mAvatarRenderer;
     v22->mAvatarRenderer = v45;
   }
@@ -296,8 +296,8 @@ LABEL_22:
 
   [(CRLCollaboratorCursorHUDController *)self stopAutoHideTimer];
   [(CRLCollaboratorCursorHUDController *)self stopAutoShrinkTimer];
-  v5 = [(CRLCollaboratorCursorHUDController *)self p_delegate];
-  [v5 removeCollaboratorHUDController:self];
+  p_delegate = [(CRLCollaboratorCursorHUDController *)self p_delegate];
+  [p_delegate removeCollaboratorHUDController:self];
 
   mHUDRenderable = self->mHUDRenderable;
   self->mHUDRenderable = 0;
@@ -311,12 +311,12 @@ LABEL_22:
   self->mShouldAutoTimeout = 0;
 }
 
-- (void)showHUDAtPoint:(CGPoint)a3 withDirection:(unint64_t)a4
+- (void)showHUDAtPoint:(CGPoint)point withDirection:(unint64_t)direction
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(CRLCollaboratorCursorHUDController *)self p_delegate];
-  [v8 addCollaboratorHUDController:self];
+  y = point.y;
+  x = point.x;
+  p_delegate = [(CRLCollaboratorCursorHUDController *)self p_delegate];
+  [p_delegate addCollaboratorHUDController:self];
 
   if (sub_1001228B4())
   {
@@ -355,7 +355,7 @@ LABEL_22:
 
   self->mTargetPoint.x = x;
   self->mTargetPoint.y = y;
-  self->mDirection = a4;
+  self->mDirection = direction;
   if (self->mFollowEnabled)
   {
     if (!self->mHUDSize)
@@ -413,10 +413,10 @@ LABEL_22:
   }
 }
 
-- (void)moveHUDToPoint:(CGPoint)a3 withDirection:(unint64_t)a4
+- (void)moveHUDToPoint:(CGPoint)point withDirection:(unint64_t)direction
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (sub_1001228B4())
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -456,11 +456,11 @@ LABEL_22:
       mDirection = self->mDirection;
       self->mTargetPoint.x = x;
       self->mTargetPoint.y = y;
-      self->mDirection = a4;
+      self->mDirection = direction;
       mHUDRenderable = self->mHUDRenderable;
       self->mHUDRenderable = 0;
 
-      if (mDirection == a4)
+      if (mDirection == direction)
       {
         return;
       }
@@ -470,20 +470,20 @@ LABEL_22:
     {
       self->mTargetPoint.x = x;
       self->mTargetPoint.y = y;
-      self->mDirection = a4;
+      self->mDirection = direction;
       v13 = self->mHUDRenderable;
       self->mHUDRenderable = 0;
     }
 
-    v16 = [(CRLCollaboratorCursorHUDController *)self p_delegate];
-    [v16 positionDidUpdateForCollaboratorHUDController:self];
+    p_delegate = [(CRLCollaboratorCursorHUDController *)self p_delegate];
+    [p_delegate positionDidUpdateForCollaboratorHUDController:self];
   }
 }
 
-- (CGRect)scaledFrameForHUDAtPoint:(CGPoint)a3 withDirection:(unint64_t)a4
+- (CGRect)scaledFrameForHUDAtPoint:(CGPoint)point withDirection:(unint64_t)direction
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (sub_1001228B4())
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -526,7 +526,7 @@ LABEL_22:
   v19 = v18;
   v20 = +[CRLCanvasShapeRenderable renderable];
   v34 = CGPointZero;
-  v21 = [(CRLCollaboratorCursorHUDController *)self p_bezierPathForHUDWithFrame:a4 direction:&v34 outAnchorPoint:v13, v15, v17, v19];
+  v21 = [(CRLCollaboratorCursorHUDController *)self p_bezierPathForHUDWithFrame:direction direction:&v34 outAnchorPoint:v13, v15, v17, v19];
   [v20 setPath:{objc_msgSend(v21, "CGPath")}];
   [v21 bounds];
   [v20 setBounds:?];
@@ -558,8 +558,8 @@ LABEL_22:
 
 - (void)didEndZoomingOperation
 {
-  v3 = [(CRLCollaboratorCursorHUDController *)self p_delegate];
-  [v3 updatePositionForCollaboratorHUDController:self];
+  p_delegate = [(CRLCollaboratorCursorHUDController *)self p_delegate];
+  [p_delegate updatePositionForCollaboratorHUDController:self];
 }
 
 - (void)p_hideFollowHUD
@@ -568,8 +568,8 @@ LABEL_22:
   [(CRLCanvasRenderable *)self->mHUDRenderable setOpacity:0.0];
   [(CRLCollaboratorCursorOverlayView *)self->mSizeToggleOverlayView setAlpha:0.0];
   [(CRLCollaboratorCursorOverlayView *)self->mFollowToggleOverlayView setAlpha:0.0];
-  v3 = [(CRLCollaboratorCursorHUDController *)self p_delegate];
-  [v3 removeCollaboratorHUDController:self];
+  p_delegate = [(CRLCollaboratorCursorHUDController *)self p_delegate];
+  [p_delegate removeCollaboratorHUDController:self];
 }
 
 - (void)p_hideHUDLegacy
@@ -631,10 +631,10 @@ LABEL_22:
   return result;
 }
 
-- (void)p_followButtonPressed:(id)a3
+- (void)p_followButtonPressed:(id)pressed
 {
-  v4 = [(CRLCollaboratorCursorHUDController *)self p_delegate];
-  [v4 beginFollowing:self->mCollaboratorPresence forHUDController:self];
+  p_delegate = [(CRLCollaboratorCursorHUDController *)self p_delegate];
+  [p_delegate beginFollowing:self->mCollaboratorPresence forHUDController:self];
 }
 
 - (id)p_stringToDisplay
@@ -671,10 +671,10 @@ LABEL_22:
 - (id)p_decoratorOverlayRenderablesLegacy
 {
   mHideHUDTimer = self->mHideHUDTimer;
-  v4 = [(CRLCollaboratorCursorHUDController *)self p_delegate];
+  p_delegate = [(CRLCollaboratorCursorHUDController *)self p_delegate];
   [(CRLCollaboratorCursorHUDController *)self p_currentDesiredOpacity];
   v6 = v5;
-  [v4 updatePositionForCollaboratorHUDController:self];
+  [p_delegate updatePositionForCollaboratorHUDController:self];
   if (self->mHideHUDTimer)
   {
     v7 = 1;
@@ -696,7 +696,7 @@ LABEL_22:
       v13 = v12;
       v15 = v14;
       v17 = v16;
-      v18 = [(CRLCollaboratorCursorHUDController *)self p_stringToDisplay];
+      p_stringToDisplay = [(CRLCollaboratorCursorHUDController *)self p_stringToDisplay];
       v19 = +[CRLCanvasShapeRenderable renderable];
       v20 = self->mHUDRenderable;
       self->mHUDRenderable = v19;
@@ -740,7 +740,7 @@ LABEL_22:
             v87 = 2048;
             v88 = mHUDSize;
             v89 = 2112;
-            v90 = v18;
+            v90 = p_stringToDisplay;
             _os_log_error_impl(&_mh_execute_header, v69, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Produced an empty bezier path for HUD with frame %{public}@ direction %zi HUD size %zi string %@", buf, 0x4Au);
           }
 
@@ -762,7 +762,7 @@ LABEL_22:
           v92.size.width = v15;
           v92.size.height = v17;
           v27 = NSStringFromCGRect(v92);
-          [CRLAssertionHandler handleFailureInFunction:v25 file:v26 lineNumber:432 isFatal:0 description:"Produced an empty bezier path for HUD with frame %{public}@ direction %zi HUD size %zi string %@", v27, self->mDirection, self->mHUDSize, v18];
+          [CRLAssertionHandler handleFailureInFunction:v25 file:v26 lineNumber:432 isFatal:0 description:"Produced an empty bezier path for HUD with frame %{public}@ direction %zi HUD size %zi string %@", v27, self->mDirection, self->mHUDSize, p_stringToDisplay];
         }
 
         else
@@ -779,7 +779,7 @@ LABEL_22:
             v38 = v37;
             v40 = v39;
             v42 = v41;
-            [v4 contentsScale];
+            [p_delegate contentsScale];
             [(CRLCanvasRenderable *)self->mHUDRenderable setFrame:sub_1001221E8(v36, v38, v40, v42, v43)];
           }
 
@@ -790,8 +790,8 @@ LABEL_22:
 
           else
           {
-            v44 = [(CRLCollaboratorPresence *)self->mCollaboratorPresence owner];
-            v25 = [v44 collaboratorColorForType:1];
+            owner = [(CRLCollaboratorPresence *)self->mCollaboratorPresence owner];
+            v25 = [owner collaboratorColorForType:1];
           }
 
           -[CRLCanvasShapeRenderable setFillColor:](self->mHUDRenderable, "setFillColor:", [v25 CGColor]);
@@ -799,7 +799,7 @@ LABEL_22:
           [(CRLCanvasRenderable *)self->mHUDRenderable setOpacity:v45];
           v26 = +[CRLCanvasRenderable renderable];
           mAvatarRenderer = self->mAvatarRenderer;
-          [v4 contentsScale];
+          [p_delegate contentsScale];
           v27 = [(CRLCollaboratorAvatarRenderer *)mAvatarRenderer renderAvatarImageWithContentsScale:?];
           [(CRLCollaboratorCursorHUDController *)self p_avatarSize];
           v48 = v47;
@@ -817,7 +817,7 @@ LABEL_22:
 
           [v26 setContents:{objc_msgSend(v27, "CGImage")}];
           [v26 setFrame:{v52, (v17 - v50) * 0.5, v48, v50}];
-          [v4 contentsScale];
+          [p_delegate contentsScale];
           [v26 setContentsScale:?];
           [(CRLCanvasRenderable *)self->mHUDRenderable addSubrenderable:v26];
           if (![(CRLCollaboratorCursorHUDController *)self p_isCompact])
@@ -840,14 +840,14 @@ LABEL_22:
               v62 = v61;
             }
 
-            [v57 setString:v18];
-            [v4 contentsScale];
+            [v57 setString:p_stringToDisplay];
+            [p_delegate contentsScale];
             [v57 setFrame:{sub_1001221E8(v62, (v17 - v56) * 0.5, v54, v56, v63)}];
             *buf = 0;
             v73 = 0.0;
             [(CRLCollaboratorCursorHUDController *)self p_stringFontSize:buf fontWeight:&v73 isDisplayString:1];
             [v57 setFontSize:*buf];
-            if ([v18 length] >= 4)
+            if ([p_stringToDisplay length] >= 4)
             {
               [v57 setTruncationMode:kCATruncationEnd];
             }
@@ -857,7 +857,7 @@ LABEL_22:
             v65 = +[CRLColor whiteColor];
             [v57 setForegroundColor:{objc_msgSend(v65, "CGColor")}];
 
-            [v4 contentsScale];
+            [p_delegate contentsScale];
             [v57 setContentsScale:?];
             [(CRLCanvasRenderable *)self->mHUDRenderable addSubrenderable:v57];
           }
@@ -892,7 +892,7 @@ LABEL_22:
           v83 = 2114;
           v84 = v68;
           v85 = 2112;
-          v86 = v18;
+          v86 = p_stringToDisplay;
           _os_log_error_impl(&_mh_execute_header, v67, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Not creating cursor HUD because frame is %{public}@ for string %@", buf, 0x36u);
         }
 
@@ -914,7 +914,7 @@ LABEL_22:
         v93.size.width = v15;
         v93.size.height = v17;
         v34 = NSStringFromCGRect(v93);
-        [CRLAssertionHandler handleFailureInFunction:v32 file:v33 lineNumber:427 isFatal:0 description:"Not creating cursor HUD because frame is %{public}@ for string %@", v34, v18];
+        [CRLAssertionHandler handleFailureInFunction:v32 file:v33 lineNumber:427 isFatal:0 description:"Not creating cursor HUD because frame is %{public}@ for string %@", v34, p_stringToDisplay];
       }
 
       if (v6 < 1.0)
@@ -940,8 +940,8 @@ LABEL_22:
 
 - (id)p_decoratorOverlayRenderablesWithFollow
 {
-  v3 = [(CRLCollaboratorCursorHUDController *)self p_delegate];
-  [v3 updatePositionForCollaboratorHUDController:self];
+  p_delegate = [(CRLCollaboratorCursorHUDController *)self p_delegate];
+  [p_delegate updatePositionForCollaboratorHUDController:self];
   mHUDRenderable = self->mHUDRenderable;
   if (!mHUDRenderable)
   {
@@ -955,7 +955,7 @@ LABEL_22:
     v15 = self->mHUDRenderable;
     self->mHUDRenderable = v14;
 
-    v16 = [(CRLCollaboratorCursorHUDController *)self p_stringToDisplay];
+    p_stringToDisplay = [(CRLCollaboratorCursorHUDController *)self p_stringToDisplay];
     mFollowButtonRenderable = self->mFollowButtonRenderable;
     self->mFollowButtonRenderable = 0;
 
@@ -998,7 +998,7 @@ LABEL_22:
           v132 = 2048;
           v133 = mHUDSize;
           v134 = 2112;
-          v135 = v16;
+          v135 = p_stringToDisplay;
           _os_log_error_impl(&_mh_execute_header, v111, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Produced an empty bezier path for HUD with frame %{public}@ direction %zi HUD size %zi string %@", buf, 0x4Au);
         }
 
@@ -1020,7 +1020,7 @@ LABEL_22:
         v137.size.width = v11;
         v137.size.height = v13;
         v24 = NSStringFromCGRect(v137);
-        [CRLAssertionHandler handleFailureInFunction:v22 file:v23 lineNumber:530 isFatal:0 description:"Produced an empty bezier path for HUD with frame %{public}@ direction %zi HUD size %zi string %@", v24, self->mDirection, self->mHUDSize, v16];
+        [CRLAssertionHandler handleFailureInFunction:v22 file:v23 lineNumber:530 isFatal:0 description:"Produced an empty bezier path for HUD with frame %{public}@ direction %zi HUD size %zi string %@", v24, self->mDirection, self->mHUDSize, p_stringToDisplay];
       }
 
       else
@@ -1037,12 +1037,12 @@ LABEL_22:
           v34 = v33;
           v36 = v35;
           v38 = v37;
-          [v3 contentsScale];
+          [p_delegate contentsScale];
           [(CRLCanvasRenderable *)self->mHUDRenderable setFrame:sub_1001221E8(v32, v34, v36, v38, v39)];
         }
 
-        v40 = [(CRLCollaboratorPresence *)self->mCollaboratorPresence owner];
-        v41 = [v40 collaboratorColorForType:1];
+        owner = [(CRLCollaboratorPresence *)self->mCollaboratorPresence owner];
+        v41 = [owner collaboratorColorForType:1];
 
         if (!v41)
         {
@@ -1056,11 +1056,11 @@ LABEL_22:
           {
             mCollaboratorPresence = self->mCollaboratorPresence;
             v44 = v42;
-            v45 = [(CRLCollaboratorPresence *)mCollaboratorPresence owner];
+            owner2 = [(CRLCollaboratorPresence *)mCollaboratorPresence owner];
             *buf = 138543618;
             *&buf[4] = mCollaboratorPresence;
             *&buf[12] = 2114;
-            *&buf[14] = v45;
+            *&buf[14] = owner2;
             _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_INFO, "Collaborator Cursor: Unable to load collaborator color for presence: %{public}@ %{public}@", buf, 0x16u);
           }
         }
@@ -1076,7 +1076,7 @@ LABEL_22:
         [(CRLCanvasRenderable *)self->mHUDRenderable setShadowOffset:0.0, 2.0];
         v23 = +[CRLCanvasRenderable renderable];
         mAvatarRenderer = self->mAvatarRenderer;
-        [v3 contentsScale];
+        [p_delegate contentsScale];
         v24 = [(CRLCollaboratorAvatarRenderer *)mAvatarRenderer renderAvatarImageWithContentsScale:?];
         [(CRLCollaboratorCursorHUDController *)self p_avatarSize];
         v50 = v49;
@@ -1094,7 +1094,7 @@ LABEL_22:
 
         [v23 setContents:{objc_msgSend(v24, "CGImage")}];
         [v23 setFrame:{v54, (v13 - v52) * 0.5, v50, v52}];
-        [v3 contentsScale];
+        [p_delegate contentsScale];
         [v23 setContentsScale:?];
         v55 = +[CRLCanvasShapeRenderable renderable];
         v56 = [CRLColor colorWithWhite:0.0 alpha:0.100000001];
@@ -1118,7 +1118,7 @@ LABEL_22:
           v59 = v58;
           v61 = v60;
           v62 = +[CRLCanvasTextRenderable renderable];
-          [v62 setString:v16];
+          [v62 setString:p_stringToDisplay];
           [(CRLCollaboratorCursorHUDController *)self p_avatarLeadingSpace];
           v64 = v50 + v63;
           [(CRLCollaboratorCursorHUDController *)self p_avatarTrailingSpace];
@@ -1134,7 +1134,7 @@ LABEL_22:
             v68 = v66;
           }
 
-          [v3 contentsScale];
+          [p_delegate contentsScale];
           [v62 setFrame:{sub_1001221E8(v68, (v13 - v61) * 0.5, v59, v61, v69)}];
           [v62 frame];
           v71 = v70;
@@ -1148,7 +1148,7 @@ LABEL_22:
           v122 = 0;
           [(CRLCollaboratorCursorHUDController *)self p_stringFontSize:buf fontWeight:&v122 isDisplayString:1];
           [v62 setFontSize:*buf];
-          if ([v16 length] >= 4)
+          if ([p_stringToDisplay length] >= 4)
           {
             [v62 setTruncationMode:kCATruncationEnd];
           }
@@ -1157,7 +1157,7 @@ LABEL_22:
           v77 = +[CRLColor whiteColor];
           [v62 setForegroundColor:{objc_msgSend(v77, "CGColor")}];
 
-          [v3 contentsScale];
+          [p_delegate contentsScale];
           [v62 setContentsScale:?];
           [(CRLCanvasRenderable *)self->mHUDRenderable addSubrenderable:v62];
           if (!self->mIsFollowing && !self->mIsLocalParticipant)
@@ -1177,7 +1177,7 @@ LABEL_22:
               v84 = v83;
             }
 
-            [v3 contentsScale];
+            [p_delegate contentsScale];
             v86 = sub_1001221E8(v84, (v13 - v81) * 0.5, v79, v81, v85);
             v88 = v87;
             v90 = v89;
@@ -1206,7 +1206,7 @@ LABEL_22:
             v103 = (v13 - v98) * 0.5 - v102;
             v104 = +[CRLCanvasTextRenderable renderable];
             [v104 setString:self->mFollowString];
-            [v3 contentsScale];
+            [p_delegate contentsScale];
             [v104 setFrame:{sub_1001221E8(v101, v103, v96, v98, v105)}];
             v120 = 0;
             v121 = 0.0;
@@ -1217,7 +1217,7 @@ LABEL_22:
             [v104 setForegroundColor:{objc_msgSend(v106, "CGColor")}];
 
             v57 = v117;
-            [v3 contentsScale];
+            [p_delegate contentsScale];
             [v104 setContentsScale:?];
             [(CRLCanvasRenderable *)self->mHUDRenderable addSubrenderable:v104];
           }
@@ -1257,7 +1257,7 @@ LABEL_22:
         v128 = 2114;
         v129 = v110;
         v130 = 2112;
-        v131 = v16;
+        v131 = p_stringToDisplay;
         _os_log_error_impl(&_mh_execute_header, v109, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Not creating cursor HUD because frame is %{public}@ for string %@", buf, 0x36u);
       }
 
@@ -1279,7 +1279,7 @@ LABEL_22:
       v138.size.width = v11;
       v138.size.height = v13;
       v30 = NSStringFromCGRect(v138);
-      [CRLAssertionHandler handleFailureInFunction:v28 file:v29 lineNumber:525 isFatal:0 description:"Not creating cursor HUD because frame is %{public}@ for string %@", v30, v16];
+      [CRLAssertionHandler handleFailureInFunction:v28 file:v29 lineNumber:525 isFatal:0 description:"Not creating cursor HUD because frame is %{public}@ for string %@", v30, p_stringToDisplay];
     }
 
     mHUDRenderable = self->mHUDRenderable;
@@ -1341,7 +1341,7 @@ LABEL_22:
     goto LABEL_5;
   }
 
-  v7 = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
+  p_isCompact = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
   v8 = sub_1004A48FC();
   [(CRLCollaboratorCursorHUDController *)self p_unscaledHUDFrame];
   v10 = v9;
@@ -1350,10 +1350,10 @@ LABEL_22:
   v16 = v15;
   if (sub_1001207D0(v9, v11, v13, v15))
   {
-    if ((v7 & 1) == 0)
+    if ((p_isCompact & 1) == 0)
     {
 LABEL_30:
-      v27 = +[NSMutableArray array];
+      p_sizeToggleOverlayView2 = +[NSMutableArray array];
       [(CRLCollaboratorCursorHUDController *)self p_avatarLeadingSpace];
       v29 = v28;
       [(CRLCollaboratorCursorHUDController *)self p_avatarSize];
@@ -1402,10 +1402,10 @@ LABEL_30:
       [(CRLCanvasRenderable *)self->mHUDRenderable frame];
       v39 = sub_10011F334(v34, 0.0, v38);
       v41 = v40;
-      v42 = [(CRLCollaboratorCursorHUDController *)self p_sizeToggleOverlayView];
-      [v42 setInteractionDelegate:self];
-      [v42 setFrame:{v39, v41, v33, v16}];
-      [v27 addObject:v42];
+      p_sizeToggleOverlayView = [(CRLCollaboratorCursorHUDController *)self p_sizeToggleOverlayView];
+      [p_sizeToggleOverlayView setInteractionDelegate:self];
+      [p_sizeToggleOverlayView setFrame:{v39, v41, v33, v16}];
+      [p_sizeToggleOverlayView2 addObject:p_sizeToggleOverlayView];
       if (!self->mIsFollowing)
       {
         [(CRLCollaboratorCursorHUDController *)self p_followButtonSize];
@@ -1456,13 +1456,13 @@ LABEL_30:
         [(CRLCanvasRenderable *)self->mHUDRenderable frame];
         v54 = sub_10011F334(v49, 0.0, v53);
         v56 = v55;
-        v57 = [(CRLCollaboratorCursorHUDController *)self p_followToggleOverlayView];
-        [v57 setInteractionDelegate:self];
-        [v57 setFrame:{v54, v56, v44, v16}];
-        [v27 addObject:v57];
+        p_followToggleOverlayView = [(CRLCollaboratorCursorHUDController *)self p_followToggleOverlayView];
+        [p_followToggleOverlayView setInteractionDelegate:self];
+        [p_followToggleOverlayView setFrame:{v54, v56, v44, v16}];
+        [p_sizeToggleOverlayView2 addObject:p_followToggleOverlayView];
       }
 
-      v5 = [v27 copy];
+      v5 = [p_sizeToggleOverlayView2 copy];
 
       goto LABEL_59;
     }
@@ -1496,7 +1496,7 @@ LABEL_30:
     v19 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCollaboratorCursorHUDController.m"];
     [CRLAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:689 isFatal:0 description:"Non-finite standardHUDFrame."];
 
-    if (!v7)
+    if (!p_isCompact)
     {
       goto LABEL_30;
     }
@@ -1531,10 +1531,10 @@ LABEL_30:
   [(CRLCanvasRenderable *)self->mHUDRenderable frame];
   v24 = sub_10011F334(v10, v12, v23);
   v26 = v25;
-  v27 = [(CRLCollaboratorCursorHUDController *)self p_sizeToggleOverlayView];
-  [v27 setInteractionDelegate:self];
-  [v27 setFrame:{v24, v26, v14, v16}];
-  v58 = v27;
+  p_sizeToggleOverlayView2 = [(CRLCollaboratorCursorHUDController *)self p_sizeToggleOverlayView];
+  [p_sizeToggleOverlayView2 setInteractionDelegate:self];
+  [p_sizeToggleOverlayView2 setFrame:{v24, v26, v14, v16}];
+  v58 = p_sizeToggleOverlayView2;
   v5 = [NSArray arrayWithObjects:&v58 count:1];
 LABEL_59:
 
@@ -1584,9 +1584,9 @@ LABEL_5:
   return v4;
 }
 
-- (CGPoint)p_cachedAnchorPointForDirection:(unint64_t)a3
+- (CGPoint)p_cachedAnchorPointForDirection:(unint64_t)direction
 {
-  if (self->mCachedPathDirection == a3)
+  if (self->mCachedPathDirection == direction)
   {
     x = self->mCachedAnchorPoint.x;
     y = self->mCachedAnchorPoint.y;
@@ -1636,33 +1636,33 @@ LABEL_5:
   self->mCachedPath = 0;
 }
 
-- (id)p_bezierPathForHUDWithFrame:(CGRect)a3 direction:(unint64_t)a4 outAnchorPoint:(CGPoint *)a5
+- (id)p_bezierPathForHUDWithFrame:(CGRect)frame direction:(unint64_t)direction outAnchorPoint:(CGPoint *)point
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = [(CRLCollaboratorCursorHUDController *)self p_cachedPath];
-  if (v12)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  p_cachedPath = [(CRLCollaboratorCursorHUDController *)self p_cachedPath];
+  if (p_cachedPath)
   {
     v29.origin.x = x;
     v29.origin.y = y;
     v29.size.width = width;
     v29.size.height = height;
-    if (CGRectEqualToRect(v29, self->mCachedFrameForPaths) && self->mCachedPathDirection == a4)
+    if (CGRectEqualToRect(v29, self->mCachedFrameForPaths) && self->mCachedPathDirection == direction)
     {
-      v13 = [v12 copy];
-      [(CRLCollaboratorCursorHUDController *)self p_cachedAnchorPointForDirection:a4];
+      v13 = [p_cachedPath copy];
+      [(CRLCollaboratorCursorHUDController *)self p_cachedAnchorPointForDirection:direction];
       v15 = v14;
       v17 = v16;
-      if (!a5)
+      if (!point)
       {
         goto LABEL_25;
       }
 
 LABEL_24:
-      a5->x = v15;
-      a5->y = v17;
+      point->x = v15;
+      point->y = v17;
       goto LABEL_25;
     }
   }
@@ -1671,9 +1671,9 @@ LABEL_24:
   v18 = [CRLBezierPath bezierPathWithContinuousCornerRoundedRect:x cornerRadius:y, width, height, height * 0.5];
   MidX = CGPointZero.x;
   MidY = CGPointZero.y;
-  if (a4 > 1)
+  if (direction > 1)
   {
-    switch(a4)
+    switch(direction)
     {
       case 4uLL:
         v34.origin.x = x;
@@ -1725,12 +1725,12 @@ LABEL_14:
   }
 
   v17 = 0.5;
-  if (!a4)
+  if (!direction)
   {
     goto LABEL_19;
   }
 
-  if (a4 == 1)
+  if (direction == 1)
   {
     v32.origin.x = x;
     v32.origin.y = y;
@@ -1768,12 +1768,12 @@ LABEL_19:
   if (([v13 isEmpty] & 1) == 0)
   {
     objc_storeStrong(&self->mCachedPath, v18);
-    self->mCachedPathDirection = a4;
+    self->mCachedPathDirection = direction;
     self->mCachedAnchorPoint.x = v15;
     self->mCachedAnchorPoint.y = v17;
   }
 
-  if (a5)
+  if (point)
   {
     goto LABEL_24;
   }
@@ -1783,23 +1783,23 @@ LABEL_25:
   return v13;
 }
 
-- (void)userInteractionEndedForView:(id)a3
+- (void)userInteractionEndedForView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   self->mInteractionInProgress = 0;
   [(CRLCollaboratorCursorHUDController *)self p_updateButtonRenderableFillColor];
-  v4 = v5;
-  if (self->mSizeToggleOverlayView == v5)
+  v4 = viewCopy;
+  if (self->mSizeToggleOverlayView == viewCopy)
   {
     [(CRLCollaboratorCursorHUDController *)self p_toggleSize];
     goto LABEL_6;
   }
 
-  if (self->mFollowToggleOverlayView == v5 && !self->mIsFollowing)
+  if (self->mFollowToggleOverlayView == viewCopy && !self->mIsFollowing)
   {
-    [(CRLCollaboratorCursorHUDController *)self p_followButtonPressed:v5];
+    [(CRLCollaboratorCursorHUDController *)self p_followButtonPressed:viewCopy];
 LABEL_6:
-    v4 = v5;
+    v4 = viewCopy;
   }
 }
 
@@ -1807,8 +1807,8 @@ LABEL_6:
 {
   if (self->mFollowEnabled || !self->mShouldAutoTimeout)
   {
-    v3 = [(CRLCollaboratorCursorHUDController *)self p_delegate];
-    [v3 toggleSizeForCollaboratorHUDController:self];
+    p_delegate = [(CRLCollaboratorCursorHUDController *)self p_delegate];
+    [p_delegate toggleSizeForCollaboratorHUDController:self];
   }
 }
 
@@ -1843,15 +1843,15 @@ LABEL_6:
 
 - (double)p_avatarLeadingSpace
 {
-  v3 = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
+  p_isCompact = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
   result = 8.0;
-  if (v3)
+  if (p_isCompact)
   {
     result = 4.0;
   }
 
   v5 = 3.0;
-  if (v3)
+  if (p_isCompact)
   {
     v5 = 0.0;
   }
@@ -1866,15 +1866,15 @@ LABEL_6:
 
 - (double)p_avatarTrailingSpace
 {
-  v3 = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
+  p_isCompact = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
   result = 8.0;
-  if (v3)
+  if (p_isCompact)
   {
     result = 4.0;
   }
 
   v5 = 5.0;
-  if (v3)
+  if (p_isCompact)
   {
     v5 = 0.0;
   }
@@ -1889,17 +1889,17 @@ LABEL_6:
 
 - (CGSize)p_avatarSize
 {
-  v3 = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
+  p_isCompact = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
   if (self->mFollowEnabled)
   {
     v4 = 30.0;
-    if ((v3 & 1) == 0)
+    if ((p_isCompact & 1) == 0)
     {
-      v5 = [(CRLCollaboratorCursorHUDController *)self p_getAccessibilitySizeFromTraitCollection];
+      p_getAccessibilitySizeFromTraitCollection = [(CRLCollaboratorCursorHUDController *)self p_getAccessibilitySizeFromTraitCollection];
       v4 = 0.0;
-      if (v5 < 5)
+      if (p_getAccessibilitySizeFromTraitCollection < 5)
       {
-        v4 = dbl_1014647F8[v5];
+        v4 = dbl_1014647F8[p_getAccessibilitySizeFromTraitCollection];
       }
     }
   }
@@ -1907,7 +1907,7 @@ LABEL_6:
   else
   {
     v4 = 24.0;
-    if (v3)
+    if (p_isCompact)
     {
       v4 = 30.0;
     }
@@ -1919,16 +1919,16 @@ LABEL_6:
   return result;
 }
 
-- (CGSize)p_sizeForString:(id)a3 font:(id)a4
+- (CGSize)p_sizeForString:(id)string font:(id)font
 {
   v17 = NSFontAttributeName;
-  v18 = a4;
-  v5 = a4;
-  v6 = a3;
-  v7 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
+  fontCopy = font;
+  fontCopy2 = font;
+  stringCopy = string;
+  v7 = [NSDictionary dictionaryWithObjects:&fontCopy forKeys:&v17 count:1];
   v8 = [NSAttributedString alloc];
 
-  v9 = [v8 initWithString:v6 attributes:v7];
+  v9 = [v8 initWithString:stringCopy attributes:v7];
   v10 = CTLineCreateWithAttributedString(v9);
   BoundsWithOptions = CTLineGetBoundsWithOptions(v10, 0);
   width = BoundsWithOptions.size.width;
@@ -2067,12 +2067,12 @@ LABEL_6:
 
 - (double)p_maximumDisplayStringWidth
 {
-  v3 = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
+  p_isCompact = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
   result = 0.0;
-  if ((v3 & 1) == 0)
+  if ((p_isCompact & 1) == 0)
   {
-    v5 = [(CRLCollaboratorCursorHUDController *)self p_delegate];
-    [v5 visibleCanvasWidth];
+    p_delegate = [(CRLCollaboratorCursorHUDController *)self p_delegate];
+    [p_delegate visibleCanvasWidth];
     v7 = v6;
 
     [(CRLCollaboratorCursorHUDController *)self p_widthOfEverythingExceptDisplayString];
@@ -2100,9 +2100,9 @@ LABEL_6:
 
 - (double)p_displayStringTrailingSpace
 {
-  v2 = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
+  p_isCompact = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
   result = 8.0;
-  if (v2)
+  if (p_isCompact)
   {
     return 0.0;
   }
@@ -2112,8 +2112,8 @@ LABEL_6:
 
 - (CGSize)p_followButtonSize
 {
-  v3 = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
-  if (!self->mFollowEnabled || ((v3 | self->mIsFollowing) & 1) != 0 || self->mIsLocalParticipant)
+  p_isCompact = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
+  if (!self->mFollowEnabled || ((p_isCompact | self->mIsFollowing) & 1) != 0 || self->mIsLocalParticipant)
   {
     width = CGSizeZero.width;
     height = CGSizeZero.height;
@@ -2143,9 +2143,9 @@ LABEL_6:
 
 - (double)p_followButtonTrailingSpace
 {
-  v3 = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
+  p_isCompact = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
   result = 8.0;
-  if (v3 & 1 | !self->mFollowEnabled | self->mIsFollowing)
+  if (p_isCompact & 1 | !self->mFollowEnabled | self->mIsFollowing)
   {
     return 0.0;
   }
@@ -2166,13 +2166,13 @@ LABEL_6:
 
 - (double)p_totalHeight
 {
-  v3 = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
+  p_isCompact = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
   mFollowEnabled = self->mFollowEnabled;
   [(CRLCollaboratorCursorHUDController *)self p_avatarSize];
   v6 = v5;
   if (mFollowEnabled)
   {
-    if (v3)
+    if (p_isCompact)
     {
       return v5 + 8.0;
     }
@@ -2191,7 +2191,7 @@ LABEL_6:
   else
   {
     [(CRLCollaboratorCursorHUDController *)self p_displayStringSize];
-    if ((v3 & 1) == 0)
+    if ((p_isCompact & 1) == 0)
     {
       v8 = v6 + 6.0;
       v9 = v7 + 2.0;
@@ -2202,65 +2202,65 @@ LABEL_6:
   return v6;
 }
 
-- (void)p_stringFontSize:(double *)a3 fontWeight:(double *)a4 isDisplayString:(BOOL)a5
+- (void)p_stringFontSize:(double *)size fontWeight:(double *)weight isDisplayString:(BOOL)string
 {
-  v5 = a5;
-  v9 = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
+  stringCopy = string;
+  p_isCompact = [(CRLCollaboratorCursorHUDController *)self p_isCompact];
   if (self->mFollowEnabled)
   {
-    if (v5)
+    if (stringCopy)
     {
       v10 = UIFontWeightMedium;
-      v11 = [(CRLCollaboratorCursorHUDController *)self p_getAccessibilitySizeFromTraitCollection];
+      p_getAccessibilitySizeFromTraitCollection = [(CRLCollaboratorCursorHUDController *)self p_getAccessibilitySizeFromTraitCollection];
       v12 = 0.0;
       v13 = 19.0;
       v14 = 21.0;
       v15 = 23.0;
-      if (v11 != 4)
+      if (p_getAccessibilitySizeFromTraitCollection != 4)
       {
         v15 = 0.0;
       }
 
-      if (v11 != 3)
+      if (p_getAccessibilitySizeFromTraitCollection != 3)
       {
         v14 = v15;
       }
 
-      if (v11 != 2)
+      if (p_getAccessibilitySizeFromTraitCollection != 2)
       {
         v13 = v14;
       }
 
       v16 = 13.0;
-      v17 = v11 == 1;
+      v17 = p_getAccessibilitySizeFromTraitCollection == 1;
       v18 = 15.0;
     }
 
     else
     {
       v10 = UIFontWeightBold;
-      v11 = [(CRLCollaboratorCursorHUDController *)self p_getAccessibilitySizeFromTraitCollection];
+      p_getAccessibilitySizeFromTraitCollection = [(CRLCollaboratorCursorHUDController *)self p_getAccessibilitySizeFromTraitCollection];
       v12 = 0.0;
       v13 = 15.0;
       v19 = 17.0;
       v20 = 20.0;
-      if (v11 != 4)
+      if (p_getAccessibilitySizeFromTraitCollection != 4)
       {
         v20 = 0.0;
       }
 
-      if (v11 != 3)
+      if (p_getAccessibilitySizeFromTraitCollection != 3)
       {
         v19 = v20;
       }
 
-      if (v11 != 2)
+      if (p_getAccessibilitySizeFromTraitCollection != 2)
       {
         v13 = v19;
       }
 
       v16 = 11.0;
-      v17 = v11 == 1;
+      v17 = p_getAccessibilitySizeFromTraitCollection == 1;
       v18 = 13.0;
     }
 
@@ -2269,20 +2269,20 @@ LABEL_6:
       v12 = v18;
     }
 
-    if (!v11)
+    if (!p_getAccessibilitySizeFromTraitCollection)
     {
       v12 = v16;
     }
 
-    if (v11 > 1)
+    if (p_getAccessibilitySizeFromTraitCollection > 1)
     {
       v12 = v13;
     }
 
-    if (a3)
+    if (size)
     {
 LABEL_28:
-      *a3 = v12;
+      *size = v12;
     }
   }
 
@@ -2290,50 +2290,50 @@ LABEL_28:
   {
     v10 = UIFontWeightMedium;
     v12 = 15.0;
-    if (v9)
+    if (p_isCompact)
     {
       v12 = 10.0;
     }
 
-    if (a3)
+    if (size)
     {
       goto LABEL_28;
     }
   }
 
-  if (a4)
+  if (weight)
   {
-    *a4 = v10;
+    *weight = v10;
   }
 }
 
 - (int64_t)p_getAccessibilitySizeFromTraitCollection
 {
-  v2 = [(CRLCollaboratorCursorHUDController *)self p_delegate];
-  v3 = [v2 currentTraitCollection];
+  p_delegate = [(CRLCollaboratorCursorHUDController *)self p_delegate];
+  currentTraitCollection = [p_delegate currentTraitCollection];
 
-  v4 = [v3 preferredContentSizeCategory];
-  if ([v4 isEqualToString:UIContentSizeCategoryExtraLarge])
+  preferredContentSizeCategory = [currentTraitCollection preferredContentSizeCategory];
+  if ([preferredContentSizeCategory isEqualToString:UIContentSizeCategoryExtraLarge])
   {
     v5 = 1;
   }
 
-  else if ([v4 isEqualToString:UIContentSizeCategoryExtraExtraLarge])
+  else if ([preferredContentSizeCategory isEqualToString:UIContentSizeCategoryExtraExtraLarge])
   {
     v5 = 2;
   }
 
-  else if ([v4 isEqualToString:UIContentSizeCategoryExtraExtraExtraLarge])
+  else if ([preferredContentSizeCategory isEqualToString:UIContentSizeCategoryExtraExtraExtraLarge])
   {
     v5 = 3;
   }
 
-  else if ([v4 isEqualToString:UIContentSizeCategoryAccessibilityMedium] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", UIContentSizeCategoryAccessibilityLarge) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", UIContentSizeCategoryAccessibilityExtraLarge) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", UIContentSizeCategoryAccessibilityExtraExtraLarge))
+  else if ([preferredContentSizeCategory isEqualToString:UIContentSizeCategoryAccessibilityMedium] & 1) != 0 || (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", UIContentSizeCategoryAccessibilityLarge) & 1) != 0 || (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", UIContentSizeCategoryAccessibilityExtraLarge) & 1) != 0 || (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", UIContentSizeCategoryAccessibilityExtraExtraLarge))
   {
     v5 = 4;
   }
 
-  else if ([v4 isEqualToString:UIContentSizeCategoryAccessibilityExtraExtraExtraLarge])
+  else if ([preferredContentSizeCategory isEqualToString:UIContentSizeCategoryAccessibilityExtraExtraExtraLarge])
   {
     v5 = 4;
   }
@@ -2472,16 +2472,16 @@ LABEL_28:
 
     else
     {
-      v3 = [(CRLCollaboratorCursorHUDController *)self p_delegate];
-      [v3 toggleSizeForCollaboratorHUDController:self];
+      p_delegate = [(CRLCollaboratorCursorHUDController *)self p_delegate];
+      [p_delegate toggleSizeForCollaboratorHUDController:self];
     }
   }
 }
 
 - (void)p_autoHideHUD
 {
-  v3 = [(CRLCollaboratorCursorHUDController *)self p_delegate];
-  [v3 removeCollaboratorHUDController:self];
+  p_delegate = [(CRLCollaboratorCursorHUDController *)self p_delegate];
+  [p_delegate removeCollaboratorHUDController:self];
 
   mHUDRenderable = self->mHUDRenderable;
   self->mHUDRenderable = 0;

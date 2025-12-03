@@ -1,7 +1,7 @@
 @interface VCPCNNSmileDetectorEspresso
-+ (id)sharedModel:(id)a3;
++ (id)sharedModel:(id)model;
 - (VCPCNNSmileDetectorEspresso)init;
-- (int)computeSmileScore:(float *)a3;
+- (int)computeSmileScore:(float *)score;
 - (void)dealloc;
 @end
 
@@ -9,10 +9,10 @@
 
 - (VCPCNNSmileDetectorEspresso)init
 {
-  v3 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v4 = [v3 resourceURL];
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-  v5 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_smile.espresso.net" relativeToURL:v4];
+  v5 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_smile.espresso.net" relativeToURL:resourceURL];
   v14.receiver = self;
   v14.super_class = VCPCNNSmileDetectorEspresso;
   v6 = [(VCPCNNSmileDetectorEspresso *)&v14 init];
@@ -31,15 +31,15 @@
   return v12;
 }
 
-+ (id)sharedModel:(id)a3
++ (id)sharedModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v4 = +[VCPSharedInstanceManager sharedManager];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__VCPCNNSmileDetectorEspresso_sharedModel___block_invoke;
   v8[3] = &unk_1E834CF10;
-  v5 = v3;
+  v5 = modelCopy;
   v9 = v5;
   v6 = [v4 sharedInstanceWithIdentifier:@"VCPSmileEspresso" andCreationBlock:v8];
 
@@ -53,7 +53,7 @@ VCPCNNModelEspresso *__43__VCPCNNSmileDetectorEspresso_sharedModel___block_invok
   return v1;
 }
 
-- (int)computeSmileScore:(float *)a3
+- (int)computeSmileScore:(float *)score
 {
   result = [(VCPCNNModelEspresso *)self->_modelEspresso espressoForward:self->_inputData];
   if (!result)
@@ -63,7 +63,7 @@ VCPCNNModelEspresso *__43__VCPCNNSmileDetectorEspresso_sharedModel___block_invok
     {
       [(VCPCNNModelEspresso *)self->_modelEspresso outputBlob];
       result = 0;
-      *a3 = *(v6 + 4);
+      *score = *(v6 + 4);
     }
   }
 

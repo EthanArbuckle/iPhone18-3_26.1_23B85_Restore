@@ -14,8 +14,8 @@
 + (BOOL)crl_phoneDevice
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 model];
-  v4 = [v3 hasPrefix:@"iPhone"];
+  model = [v2 model];
+  v4 = [model hasPrefix:@"iPhone"];
 
   return v4;
 }
@@ -74,8 +74,8 @@
 + (BOOL)crl_iPodTouchDevice
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 model];
-  v4 = [v3 hasPrefix:@"iPod touch"];
+  model = [v2 model];
+  v4 = [model hasPrefix:@"iPod touch"];
 
   return v4;
 }
@@ -83,8 +83,8 @@
 + (BOOL)crl_iPadDevice
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 model];
-  v4 = [v3 hasPrefix:@"iPad"];
+  model = [v2 model];
+  v4 = [model hasPrefix:@"iPad"];
 
   return v4;
 }

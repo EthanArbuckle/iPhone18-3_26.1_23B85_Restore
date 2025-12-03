@@ -1,20 +1,20 @@
 @interface AKAppleIDAuthenticationWatchBuddyContext
 - (RUIStyle)remoteUIStyle;
-- (void)dismissBasicLoginUIWithCompletion:(id)a3;
-- (void)presentBasicLoginUIWithCompletion:(id)a3;
-- (void)presentBiometricOrPasscodeValidationForAppleID:(id)a3 completion:(id)a4;
-- (void)presentLoginAlertWithError:(id)a3 title:(id)a4 message:(id)a5 completion:(id)a6;
-- (void)willPresentModalNavigationController:(id)a3;
+- (void)dismissBasicLoginUIWithCompletion:(id)completion;
+- (void)presentBasicLoginUIWithCompletion:(id)completion;
+- (void)presentBiometricOrPasscodeValidationForAppleID:(id)d completion:(id)completion;
+- (void)presentLoginAlertWithError:(id)error title:(id)title message:(id)message completion:(id)completion;
+- (void)willPresentModalNavigationController:(id)controller;
 @end
 
 @implementation AKAppleIDAuthenticationWatchBuddyContext
 
-- (void)presentBasicLoginUIWithCompletion:(id)a3
+- (void)presentBasicLoginUIWithCompletion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v9 = _AKLogSystem();
   v8 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -26,30 +26,30 @@
   }
 
   objc_storeStrong(&v9, 0);
-  v6 = [(AKAppleIDAuthenticationWatchBuddyContext *)v11 username];
-  if (!v6)
+  username = [(AKAppleIDAuthenticationWatchBuddyContext *)selfCopy username];
+  if (!username)
   {
     __assert_rtn("[AKAppleIDAuthenticationWatchBuddyContext presentBasicLoginUIWithCompletion:]", "AKAppleIDAuthenticationWatchBuddyContext.m", 49, "username");
   }
 
-  v5 = [(AKAppleIDAuthenticationWatchBuddyContext *)v11 password];
-  if (!v5)
+  password = [(AKAppleIDAuthenticationWatchBuddyContext *)selfCopy password];
+  if (!password)
   {
     __assert_rtn("[AKAppleIDAuthenticationWatchBuddyContext presentBasicLoginUIWithCompletion:]", "AKAppleIDAuthenticationWatchBuddyContext.m", 52, "password");
   }
 
-  (*(location[0] + 2))(location[0], v6, v5, 0);
-  objc_storeStrong(&v5, 0);
-  objc_storeStrong(&v6, 0);
+  (*(location[0] + 2))(location[0], username, password, 0);
+  objc_storeStrong(&password, 0);
+  objc_storeStrong(&username, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissBasicLoginUIWithCompletion:(id)a3
+- (void)dismissBasicLoginUIWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v7 = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -65,19 +65,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)presentLoginAlertWithError:(id)a3 title:(id)a4 message:(id)a5 completion:(id)a6
+- (void)presentLoginAlertWithError:(id)error title:(id)title message:(id)message completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, title);
   v26 = 0;
-  objc_storeStrong(&v26, a5);
+  objc_storeStrong(&v26, message);
   v25 = 0;
-  objc_storeStrong(&v25, a6);
+  objc_storeStrong(&v25, completion);
   v24 = _AKLogSystem();
   v23 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -87,7 +87,7 @@
   }
 
   objc_storeStrong(&v24, 0);
-  [(AKAppleIDAuthenticationInAppContext *)v29 _assertValidPresentingViewController];
+  [(AKAppleIDAuthenticationInAppContext *)selfCopy _assertValidPresentingViewController];
   v8 = MEMORY[0x277D85CD0];
   v6 = MEMORY[0x277D85CD0];
   queue = v8;
@@ -98,7 +98,7 @@
   v19 = &unk_2784A6360;
   v20 = MEMORY[0x277D82BE0](v27);
   v21 = MEMORY[0x277D82BE0](v26);
-  v22 = MEMORY[0x277D82BE0](v29);
+  v22 = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v15);
   *&v7 = MEMORY[0x277D82BD8](queue).n128_u64[0];
   v10 = v25;
@@ -142,14 +142,14 @@ void __96__AKAppleIDAuthenticationWatchBuddyContext_presentLoginAlertWithError_t
   objc_storeStrong(location, 0);
 }
 
-- (void)presentBiometricOrPasscodeValidationForAppleID:(id)a3 completion:(id)a4
+- (void)presentBiometricOrPasscodeValidationForAppleID:(id)d completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, completion);
   v5 = v7;
   v6 = [MEMORY[0x277CCA9B8] ak_errorWithCode:-7027];
   v5[2](v5, 0);
@@ -160,7 +160,7 @@ void __96__AKAppleIDAuthenticationWatchBuddyContext_presentLoginAlertWithError_t
 
 - (RUIStyle)remoteUIStyle
 {
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
   v11[0] = [(AKAppleIDAuthenticationInAppContext *)self delegate];
   if (objc_opt_respondsToSelector())
@@ -176,12 +176,12 @@ void __96__AKAppleIDAuthenticationWatchBuddyContext_presentLoginAlertWithError_t
     }
 
     objc_storeStrong(&location, 0);
-    v13 = [v11[0] remoteUIStyle];
+    remoteUIStyle = [v11[0] remoteUIStyle];
   }
 
   else
   {
-    if (!v12->_remoteUIStyle)
+    if (!selfCopy->_remoteUIStyle)
     {
       if (BridgePreferencesLibraryCore(0))
       {
@@ -189,27 +189,27 @@ void __96__AKAppleIDAuthenticationWatchBuddyContext_presentLoginAlertWithError_t
       }
 
       v2 = objc_opt_new();
-      remoteUIStyle = v12->_remoteUIStyle;
-      v12->_remoteUIStyle = v2;
+      remoteUIStyle = selfCopy->_remoteUIStyle;
+      selfCopy->_remoteUIStyle = v2;
       MEMORY[0x277D82BD8](remoteUIStyle);
     }
 
-    v13 = MEMORY[0x277D82BE0](v12->_remoteUIStyle);
+    remoteUIStyle = MEMORY[0x277D82BE0](selfCopy->_remoteUIStyle);
   }
 
   objc_storeStrong(v11, 0);
-  v4 = v13;
+  v4 = remoteUIStyle;
 
   return v4;
 }
 
-- (void)willPresentModalNavigationController:(id)a3
+- (void)willPresentModalNavigationController:(id)controller
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = [(AKAppleIDAuthenticationInAppContext *)v11 delegate];
+  objc_storeStrong(location, controller);
+  delegate = [(AKAppleIDAuthenticationInAppContext *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
     v8 = _AKLogSystem();
@@ -223,17 +223,17 @@ void __96__AKAppleIDAuthenticationWatchBuddyContext_presentLoginAlertWithError_t
     }
 
     objc_storeStrong(&v8, 0);
-    [v9 willPresentModalNavigationController:location[0]];
+    [delegate willPresentModalNavigationController:location[0]];
   }
 
   else
   {
-    v3 = [location[0] navigationBar];
-    SBPSApplyStyleToNavBar(v3);
-    MEMORY[0x277D82BD8](v3);
+    navigationBar = [location[0] navigationBar];
+    SBPSApplyStyleToNavBar(navigationBar);
+    MEMORY[0x277D82BD8](navigationBar);
   }
 
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&delegate, 0);
   objc_storeStrong(location, 0);
 }
 

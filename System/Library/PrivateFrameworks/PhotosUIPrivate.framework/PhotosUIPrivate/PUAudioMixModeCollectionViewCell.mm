@@ -2,43 +2,43 @@
 - (BOOL)isHighlighted;
 - (BOOL)isSelected;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation PUAudioMixModeCollectionViewCell
 
 - (BOOL)isSelected
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B37DF7F8(&selRef_isSelected);
 
   return v3 & 1;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = self;
-  sub_1B37DF894(a3, &selRef_setSelected_);
+  selfCopy = self;
+  sub_1B37DF894(selected, &selRef_setSelected_);
 }
 
 - (BOOL)isHighlighted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B37DF7F8(&selRef_isHighlighted);
 
   return v3 & 1;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_1B37DF894(a3, &selRef_setHighlighted_);
+  selfCopy = self;
+  sub_1B37DF894(highlighted, &selRef_setHighlighted_);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37DFA54();
 }
 

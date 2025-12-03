@@ -1,34 +1,34 @@
 @interface _UISceneLayerHostContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_rebuildLayersForReason:(id)a3 withFence:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_rebuildLayersForReason:(id)reason withFence:(id)fence;
 @end
 
 @implementation _UISceneLayerHostContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UISceneLayerHostContainerView" hasInstanceMethod:@"_rebuildLayersForReason:withFence:" withFullSignature:{"v", "@", "@", 0}];
   objc_storeStrong(v4, obj);
 }
 
-- (void)_rebuildLayersForReason:(id)a3 withFence:(id)a4
+- (void)_rebuildLayersForReason:(id)reason withFence:(id)fence
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, reason);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v12.receiver = v15;
+  objc_storeStrong(&v13, fence);
+  v12.receiver = selfCopy;
   v12.super_class = _UISceneLayerHostContainerViewAccessibility;
   [(_UISceneLayerHostContainerViewAccessibility *)&v12 _rebuildLayersForReason:location[0] withFence:v13];
-  v11 = [(_UISceneLayerHostContainerViewAccessibility *)v15 _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Uiscenepresent_0.isa)];
+  v11 = [(_UISceneLayerHostContainerViewAccessibility *)selfCopy _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Uiscenepresent_0.isa)];
   v5 = MEMORY[0x29EDCA5F8];
   v6 = -1073741824;
   v7 = 0;

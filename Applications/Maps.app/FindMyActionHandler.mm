@@ -1,15 +1,15 @@
 @interface FindMyActionHandler
-+ (void)performAction:(id)a3 inContext:(id)a4;
++ (void)performAction:(id)action inContext:(id)context;
 - (FindMyActionHandler)init;
 @end
 
 @implementation FindMyActionHandler
 
-+ (void)performAction:(id)a3 inContext:(id)a4
++ (void)performAction:(id)action inContext:(id)context
 {
-  v5 = a3;
+  actionCopy = action;
   swift_unknownObjectRetain();
-  sub_1000DAF40(v5, a4);
+  sub_1000DAF40(actionCopy, context);
 
   swift_unknownObjectRelease();
 }

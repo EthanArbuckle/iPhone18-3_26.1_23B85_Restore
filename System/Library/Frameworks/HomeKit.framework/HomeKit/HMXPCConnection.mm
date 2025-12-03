@@ -1,7 +1,7 @@
 @interface HMXPCConnection
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
 - (HMFProcessInfo)processInfo;
-- (HMXPCConnection)initWithXPCConnection:(id)a3;
+- (HMXPCConnection)initWithXPCConnection:(id)connection;
 - (NSXPCInterface)exportedInterface;
 - (NSXPCInterface)remoteObjectInterface;
 - (OS_dispatch_queue)queue;
@@ -9,19 +9,19 @@
 - (id)exportedObject;
 - (id)interruptionHandler;
 - (id)remoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)valueForEntitlement:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)valueForEntitlement:(id)entitlement;
 - (int)processIdentifier;
 - (void)activate;
 - (void)invalidate;
 - (void)resume;
-- (void)setExportedInterface:(id)a3;
-- (void)setExportedObject:(id)a3;
-- (void)setInterruptionHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
-- (void)setQueue:(id)a3;
-- (void)setRemoteObjectInterface:(id)a3;
+- (void)setExportedInterface:(id)interface;
+- (void)setExportedObject:(id)object;
+- (void)setInterruptionHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
+- (void)setQueue:(id)queue;
+- (void)setRemoteObjectInterface:(id)interface;
 @end
 
 @implementation HMXPCConnection
@@ -34,9 +34,9 @@
   v5 = [v3 initWithName:@"Process ID" value:v4];
   v13[0] = v5;
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMXPCConnection *)self processInfo];
-  v8 = [v7 name];
-  v9 = [v6 initWithName:@"Process Name" value:v8];
+  processInfo = [(HMXPCConnection *)self processInfo];
+  name = [processInfo name];
+  v9 = [v6 initWithName:@"Process Name" value:name];
   v13[1] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
 
@@ -47,130 +47,130 @@
 
 - (void)invalidate
 {
-  v2 = [(HMXPCConnection *)self xpcConnection];
-  [v2 invalidate];
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  [xpcConnection invalidate];
 }
 
 - (void)resume
 {
-  v2 = [(HMXPCConnection *)self xpcConnection];
-  [v2 resume];
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  [xpcConnection resume];
 }
 
 - (void)activate
 {
-  v2 = [(HMXPCConnection *)self xpcConnection];
-  [v2 activate];
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  [xpcConnection activate];
 }
 
-- (id)valueForEntitlement:(id)a3
+- (id)valueForEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(HMXPCConnection *)self xpcConnection];
-  v6 = [v5 valueForEntitlement:v4];
+  entitlementCopy = entitlement;
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  v6 = [xpcConnection valueForEntitlement:entitlementCopy];
 
   return v6;
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMXPCConnection *)self xpcConnection];
-  [v5 setInvalidationHandler:v4];
+  handlerCopy = handler;
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  [xpcConnection setInvalidationHandler:handlerCopy];
 }
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMXPCConnection *)self xpcConnection];
-  [v5 setInterruptionHandler:v4];
+  handlerCopy = handler;
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  [xpcConnection setInterruptionHandler:handlerCopy];
 }
 
 - (id)interruptionHandler
 {
-  v2 = [(HMXPCConnection *)self xpcConnection];
-  v3 = [v2 interruptionHandler];
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  interruptionHandler = [xpcConnection interruptionHandler];
 
-  return v3;
+  return interruptionHandler;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMXPCConnection *)self xpcConnection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMXPCConnection *)self xpcConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  v6 = [xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
 - (id)remoteObjectProxy
 {
-  v2 = [(HMXPCConnection *)self xpcConnection];
-  v3 = [v2 remoteObjectProxy];
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (void)setRemoteObjectInterface:(id)a3
+- (void)setRemoteObjectInterface:(id)interface
 {
-  v4 = a3;
-  v5 = [(HMXPCConnection *)self xpcConnection];
-  [v5 setRemoteObjectInterface:v4];
+  interfaceCopy = interface;
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  [xpcConnection setRemoteObjectInterface:interfaceCopy];
 }
 
 - (NSXPCInterface)remoteObjectInterface
 {
-  v2 = [(HMXPCConnection *)self xpcConnection];
-  v3 = [v2 remoteObjectInterface];
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  remoteObjectInterface = [xpcConnection remoteObjectInterface];
 
-  return v3;
+  return remoteObjectInterface;
 }
 
-- (void)setExportedInterface:(id)a3
+- (void)setExportedInterface:(id)interface
 {
-  v4 = a3;
-  v5 = [(HMXPCConnection *)self xpcConnection];
-  [v5 setExportedInterface:v4];
+  interfaceCopy = interface;
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  [xpcConnection setExportedInterface:interfaceCopy];
 }
 
 - (NSXPCInterface)exportedInterface
 {
-  v2 = [(HMXPCConnection *)self xpcConnection];
-  v3 = [v2 exportedInterface];
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  exportedInterface = [xpcConnection exportedInterface];
 
-  return v3;
+  return exportedInterface;
 }
 
-- (void)setExportedObject:(id)a3
+- (void)setExportedObject:(id)object
 {
-  v4 = a3;
-  v5 = [(HMXPCConnection *)self xpcConnection];
-  [v5 setExportedObject:v4];
+  objectCopy = object;
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  [xpcConnection setExportedObject:objectCopy];
 }
 
 - (id)exportedObject
 {
-  v2 = [(HMXPCConnection *)self xpcConnection];
-  v3 = [v2 exportedObject];
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  exportedObject = [xpcConnection exportedObject];
 
-  return v3;
+  return exportedObject;
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMXPCConnection *)self xpcConnection];
-  [v4 _setQueue:v5];
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  [xpcConnection _setQueue:queueCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -178,22 +178,22 @@
 - (OS_dispatch_queue)queue
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMXPCConnection *)self xpcConnection];
-  v4 = [v3 _queue];
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  _queue = [xpcConnection _queue];
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return _queue;
 }
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken
 {
-  v4 = [(HMXPCConnection *)self xpcConnection];
-  if (v4)
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  if (xpcConnection)
   {
-    v6 = v4;
-    [v4 auditToken];
-    v4 = v6;
+    v6 = xpcConnection;
+    [xpcConnection auditToken];
+    xpcConnection = v6;
   }
 
   else
@@ -207,34 +207,34 @@
 
 - (int)processIdentifier
 {
-  v2 = [(HMXPCConnection *)self xpcConnection];
-  v3 = [v2 processIdentifier];
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  processIdentifier = [xpcConnection processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
 - (HMFProcessInfo)processInfo
 {
   v3 = objc_alloc(MEMORY[0x1E69A2A50]);
-  v4 = [(HMXPCConnection *)self xpcConnection];
-  v5 = [v3 initWithXPCConnection:v4];
+  xpcConnection = [(HMXPCConnection *)self xpcConnection];
+  v5 = [v3 initWithXPCConnection:xpcConnection];
 
   return v5;
 }
 
-- (HMXPCConnection)initWithXPCConnection:(id)a3
+- (HMXPCConnection)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
-  if (v5)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
-    v6 = v5;
+    v6 = connectionCopy;
     v12.receiver = self;
     v12.super_class = HMXPCConnection;
     v7 = [(HMXPCConnection *)&v12 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_xpcConnection, a3);
+      objc_storeStrong(&v7->_xpcConnection, connection);
     }
 
     return v8;

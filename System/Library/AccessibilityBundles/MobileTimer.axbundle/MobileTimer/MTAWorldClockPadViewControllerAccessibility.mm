@@ -1,6 +1,6 @@
 @interface MTAWorldClockPadViewControllerAccessibility
 - (void)loadView;
-- (void)updateClocksForOrientation:(int64_t)a3;
+- (void)updateClocksForOrientation:(int64_t)orientation;
 @end
 
 @implementation MTAWorldClockPadViewControllerAccessibility
@@ -17,11 +17,11 @@
   [v4 setAccessibilityHint:v5];
 }
 
-- (void)updateClocksForOrientation:(int64_t)a3
+- (void)updateClocksForOrientation:(int64_t)orientation
 {
   v5.receiver = self;
   v5.super_class = MTAWorldClockPadViewControllerAccessibility;
-  [(MTAWorldClockPadViewControllerAccessibility *)&v5 updateClocksForOrientation:a3];
+  [(MTAWorldClockPadViewControllerAccessibility *)&v5 updateClocksForOrientation:orientation];
   v4 = [(MTAWorldClockPadViewControllerAccessibility *)self safeValueForKey:@"mapView"];
   [v4 _accessibilityRemoveSolarTerminatorPath];
 }

@@ -1,15 +1,15 @@
 @interface NSCountableTextRange
 + (NSCountableTextRange)documentRange;
 + (void)initialize;
-- (BOOL)containsLocation:(id)a3;
-- (BOOL)intersectsWithTextRange:(id)a3;
-- (BOOL)isEqualToTextRange:(id)a3;
-- (NSCountableTextRange)initWithLocation:(id)a3 endLocation:(id)a4;
-- (NSCountableTextRange)initWithRange:(_NSRange)a3;
+- (BOOL)containsLocation:(id)location;
+- (BOOL)intersectsWithTextRange:(id)range;
+- (BOOL)isEqualToTextRange:(id)range;
+- (NSCountableTextRange)initWithLocation:(id)location endLocation:(id)endLocation;
+- (NSCountableTextRange)initWithRange:(_NSRange)range;
 - (_NSRange)range;
 - (id)debugDescription;
-- (id)textRangeByFormingUnionWithTextRange:(id)a3;
-- (id)textRangeByIntersectingWithTextRange:(id)a3;
+- (id)textRangeByFormingUnionWithTextRange:(id)range;
+- (id)textRangeByIntersectingWithTextRange:(id)range;
 @end
 
 @implementation NSCountableTextRange
@@ -26,10 +26,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __NSCountableTextRangeTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    __NSCountableTextRangeClass = a1;
+    __NSCountableTextRangeClass = self;
   }
 }
 
@@ -67,11 +67,11 @@ NSCountableTextRange *__37__NSCountableTextRange_documentRange__block_invoke()
   }
 }
 
-- (NSCountableTextRange)initWithRange:(_NSRange)a3
+- (NSCountableTextRange)initWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.location >= 0x7FFFFFFFFFFFFFFFLL)
+  length = range.length;
+  location = range.location;
+  if (range.location >= 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D940];
@@ -138,28 +138,28 @@ NSCountableTextRange *__37__NSCountableTextRange_documentRange__block_invoke()
   return v13;
 }
 
-- (NSCountableTextRange)initWithLocation:(id)a3 endLocation:(id)a4
+- (NSCountableTextRange)initWithLocation:(id)location endLocation:(id)endLocation
 {
   if (objc_opt_respondsToSelector())
   {
-    v7 = [a3 type];
-    if ([v7 isEqualToString:NSTextLocationTypeCountable])
+    type = [location type];
+    if ([type isEqualToString:NSTextLocationTypeCountable])
     {
-      if (!a4)
+      if (!endLocation)
       {
-        v10 = [a3 characterIndex];
+        characterIndex = [location characterIndex];
         goto LABEL_10;
       }
 
       if (objc_opt_respondsToSelector())
       {
-        v8 = [a4 type];
-        if ([v8 isEqualToString:NSTextLocationTypeCountable])
+        type2 = [endLocation type];
+        if ([type2 isEqualToString:NSTextLocationTypeCountable])
         {
-          v9 = [a4 characterIndex];
-          if (v9 >= [a3 characterIndex])
+          characterIndex2 = [endLocation characterIndex];
+          if (characterIndex2 >= [location characterIndex])
           {
-            v10 = [a3 characterIndex];
+            characterIndex = [location characterIndex];
             goto LABEL_8;
           }
         }
@@ -167,28 +167,28 @@ NSCountableTextRange *__37__NSCountableTextRange_documentRange__block_invoke()
     }
   }
 
-  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"-[%@ initWithLocation:endLocation:] initialized with locations {%@ %@}", objc_opt_class(), a3, a4}];
-  v10 = [a3 characterIndex];
-  if (a4)
+  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"-[%@ initWithLocation:endLocation:] initialized with locations {%@ %@}", objc_opt_class(), location, endLocation}];
+  characterIndex = [location characterIndex];
+  if (endLocation)
   {
 LABEL_8:
-    v11 = a4;
+    locationCopy = endLocation;
     goto LABEL_11;
   }
 
 LABEL_10:
-  v11 = a3;
+  locationCopy = location;
 LABEL_11:
-  v12 = [v11 characterIndex];
-  v13 = v12 - v10;
-  if (v12 >= 0x7FFFFFFFFFFFFFFFLL)
+  characterIndex3 = [locationCopy characterIndex];
+  v13 = characterIndex3 - characterIndex;
+  if (characterIndex3 >= 0x7FFFFFFFFFFFFFFFLL)
   {
     v13 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (v12 >= v10)
+  if (characterIndex3 >= characterIndex)
   {
-    v14 = v10;
+    v14 = characterIndex;
   }
 
   else
@@ -196,7 +196,7 @@ LABEL_11:
     v14 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (v12 >= v10)
+  if (characterIndex3 >= characterIndex)
   {
     v15 = v13;
   }
@@ -209,38 +209,38 @@ LABEL_11:
   return [(NSCountableTextRange *)self initWithRange:v14, v15];
 }
 
-- (BOOL)isEqualToTextRange:(id)a3
+- (BOOL)isEqualToTextRange:(id)range
 {
-  if ((__NSBaseClassDebugging & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0 && (v5 = [a3 type], objc_msgSend(v5, "isEqualToString:", NSTextLocationTypeCountable)))
+  if ((__NSBaseClassDebugging & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0 && (v5 = [range type], objc_msgSend(v5, "isEqualToString:", NSTextLocationTypeCountable)))
   {
     p_range = &self->_range;
-    return p_range->location == [a3 range] && p_range->length == v7;
+    return p_range->location == [range range] && p_range->length == v7;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = NSCountableTextRange;
-    return [(NSTextRange *)&v10 isEqualToTextRange:a3];
+    return [(NSTextRange *)&v10 isEqualToTextRange:range];
   }
 }
 
-- (BOOL)containsLocation:(id)a3
+- (BOOL)containsLocation:(id)location
 {
-  if ((__NSBaseClassDebugging & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0 && (v5 = [a3 type], objc_msgSend(v5, "isEqualToString:", NSTextLocationTypeCountable)))
+  if ((__NSBaseClassDebugging & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0 && (v5 = [location type], objc_msgSend(v5, "isEqualToString:", NSTextLocationTypeCountable)))
   {
-    v6 = [a3 characterIndex];
-    v7 = [(NSCountableTextRange *)self isEndingAtEOD];
+    characterIndex = [location characterIndex];
+    isEndingAtEOD = [(NSCountableTextRange *)self isEndingAtEOD];
     location = self->_range.location;
-    if (v7)
+    if (isEndingAtEOD)
     {
-      return v6 >= location;
+      return characterIndex >= location;
     }
 
     else
     {
-      v11 = v6 >= location;
-      v10 = v6 - location;
+      v11 = characterIndex >= location;
+      v10 = characterIndex - location;
       v11 = !v11 || v10 >= self->_range.length;
       return !v11;
     }
@@ -250,31 +250,31 @@ LABEL_11:
   {
     v12.receiver = self;
     v12.super_class = NSCountableTextRange;
-    return [(NSTextRange *)&v12 containsLocation:a3];
+    return [(NSTextRange *)&v12 containsLocation:location];
   }
 }
 
-- (BOOL)intersectsWithTextRange:(id)a3
+- (BOOL)intersectsWithTextRange:(id)range
 {
-  if ((__NSBaseClassDebugging & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0 && (v5 = [a3 type], objc_msgSend(v5, "isEqualToString:", NSTextLocationTypeCountable)))
+  if ((__NSBaseClassDebugging & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0 && (v5 = [range type], objc_msgSend(v5, "isEqualToString:", NSTextLocationTypeCountable)))
   {
     if ([(NSCountableTextRange *)self isEndingAtEOD])
     {
-      if ([a3 isEndingAtEOD])
+      if ([range isEndingAtEOD])
       {
         return 1;
       }
 
       else
       {
-        v8 = [a3 range];
-        return v8 + v9 > self->_range.location;
+        range = [range range];
+        return range + v9 > self->_range.location;
       }
     }
 
     else
     {
-      v11.location = [a3 range];
+      v11.location = [range range];
       v11.length = v7;
       return NSIntersectionRange(self[24], v11).length != 0;
     }
@@ -284,52 +284,52 @@ LABEL_11:
   {
     v10.receiver = self;
     v10.super_class = NSCountableTextRange;
-    return [(NSTextRange *)&v10 intersectsWithTextRange:a3];
+    return [(NSTextRange *)&v10 intersectsWithTextRange:range];
   }
 }
 
-- (id)textRangeByIntersectingWithTextRange:(id)a3
+- (id)textRangeByIntersectingWithTextRange:(id)range
 {
-  if ((__NSBaseClassDebugging & 1) != 0 || (objc_opt_respondsToSelector() & 1) == 0 || (v5 = [a3 type], !objc_msgSend(v5, "isEqualToString:", NSTextLocationTypeCountable)))
+  if ((__NSBaseClassDebugging & 1) != 0 || (objc_opt_respondsToSelector() & 1) == 0 || (v5 = [range type], !objc_msgSend(v5, "isEqualToString:", NSTextLocationTypeCountable)))
   {
     v21.receiver = self;
     v21.super_class = NSCountableTextRange;
-    return [(NSTextRange *)&v21 textRangeByIntersectingWithTextRange:a3];
+    return [(NSTextRange *)&v21 textRangeByIntersectingWithTextRange:range];
   }
 
-  v6 = [a3 range];
+  range = [range range];
   v8 = v7;
   if ([(NSCountableTextRange *)self isEndingAtEOD])
   {
-    v9 = [a3 isEndingAtEOD];
+    isEndingAtEOD = [range isEndingAtEOD];
     location = self->_range.location;
-    if (v9)
+    if (isEndingAtEOD)
     {
-      if (location <= v6)
+      if (location <= range)
       {
-        v11 = a3;
+        selfCopy = range;
       }
 
       else
       {
-        v11 = self;
+        selfCopy = self;
       }
 
-      v12 = v11;
+      selfCopy2 = selfCopy;
       goto LABEL_36;
     }
 
-    if (location <= v6)
+    if (location <= range)
     {
       goto LABEL_35;
     }
 
-    length = v6 + v8 - location;
+    length = range + v8 - location;
   }
 
   else
   {
-    v23.location = v6;
+    v23.location = range;
     v23.length = v8;
     v14 = NSIntersectionRange(self->_range, v23);
     location = v14.location;
@@ -342,18 +342,18 @@ LABEL_11:
     {
       if (self->_range.location != location || self->_range.length != length)
       {
-        if ([a3 range] != location || v17 != length)
+        if ([range range] != location || v17 != length)
         {
           goto LABEL_31;
         }
 
 LABEL_35:
-        v12 = a3;
+        selfCopy2 = range;
         goto LABEL_36;
       }
 
 LABEL_32:
-      v12 = self;
+      selfCopy2 = self;
       goto LABEL_36;
     }
 
@@ -365,7 +365,7 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  if ([a3 range] == location && v19 == length)
+  if ([range range] == location && v19 == length)
   {
     goto LABEL_35;
   }
@@ -376,25 +376,25 @@ LABEL_32:
   }
 
 LABEL_31:
-  v12 = [objc_alloc(objc_opt_class()) initWithRange:{location, length}];
+  selfCopy2 = [objc_alloc(objc_opt_class()) initWithRange:{location, length}];
 LABEL_36:
 
-  return v12;
+  return selfCopy2;
 }
 
-- (id)textRangeByFormingUnionWithTextRange:(id)a3
+- (id)textRangeByFormingUnionWithTextRange:(id)range
 {
-  if ((__NSBaseClassDebugging & 1) != 0 || (objc_opt_respondsToSelector() & 1) == 0 || (v5 = [a3 type], !objc_msgSend(v5, "isEqualToString:", NSTextLocationTypeCountable)))
+  if ((__NSBaseClassDebugging & 1) != 0 || (objc_opt_respondsToSelector() & 1) == 0 || (v5 = [range type], !objc_msgSend(v5, "isEqualToString:", NSTextLocationTypeCountable)))
   {
     v18.receiver = self;
     v18.super_class = NSCountableTextRange;
-    return [(NSTextRange *)&v18 textRangeByFormingUnionWithTextRange:a3];
+    return [(NSTextRange *)&v18 textRangeByFormingUnionWithTextRange:range];
   }
 
-  location = [a3 range];
+  location = [range range];
   if (![(NSCountableTextRange *)self isEndingAtEOD])
   {
-    v20.location = [a3 range];
+    v20.location = [range range];
     v20.length = v12;
     v13 = NSUnionRange(self->_range, v20);
     location = v13.location;
@@ -403,21 +403,21 @@ LABEL_36:
     goto LABEL_12;
   }
 
-  v7 = [a3 isEndingAtEOD];
+  isEndingAtEOD = [range isEndingAtEOD];
   v8 = self->_range.location;
-  if (v7)
+  if (isEndingAtEOD)
   {
     if (v8 >= location)
     {
-      v9 = a3;
+      selfCopy = range;
     }
 
     else
     {
-      v9 = self;
+      selfCopy = self;
     }
 
-    v10 = v9;
+    selfCopy2 = selfCopy;
     goto LABEL_25;
   }
 
@@ -427,24 +427,24 @@ LABEL_36:
 LABEL_12:
     if (v8 != location || self->_range.length != length)
     {
-      if ([a3 range] == location && v16 == length)
+      if ([range range] == location && v16 == length)
       {
-        v10 = a3;
+        selfCopy2 = range;
       }
 
       else
       {
-        v10 = [objc_alloc(objc_opt_class()) initWithRange:{location, length}];
+        selfCopy2 = [objc_alloc(objc_opt_class()) initWithRange:{location, length}];
       }
 
       goto LABEL_25;
     }
   }
 
-  v10 = self;
+  selfCopy2 = self;
 LABEL_25:
 
-  return v10;
+  return selfCopy2;
 }
 
 @end

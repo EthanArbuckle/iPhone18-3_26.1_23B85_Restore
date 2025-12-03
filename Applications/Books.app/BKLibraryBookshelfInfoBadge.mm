@@ -1,19 +1,19 @@
 @interface BKLibraryBookshelfInfoBadge
-- (BKLibraryBookshelfInfoBadge)initWithCoder:(id)a3;
-- (BKLibraryBookshelfInfoBadge)initWithFrame:(CGRect)a3;
+- (BKLibraryBookshelfInfoBadge)initWithCoder:(id)coder;
+- (BKLibraryBookshelfInfoBadge)initWithFrame:(CGRect)frame;
 - (NSAttributedString)attributedBadgeText;
 - (void)layoutSubviews;
-- (void)setAttributedBadgeText:(id)a3;
+- (void)setAttributedBadgeText:(id)text;
 @end
 
 @implementation BKLibraryBookshelfInfoBadge
 
-- (BKLibraryBookshelfInfoBadge)initWithFrame:(CGRect)a3
+- (BKLibraryBookshelfInfoBadge)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = (self + OBJC_IVAR___BKLibraryBookshelfInfoBadge_badgeText);
   *v8 = 0;
   v8[1] = 0;
@@ -26,7 +26,7 @@
   return [(BKLibraryBookshelfInfoBadge *)&v12 initWithFrame:x, y, width, height];
 }
 
-- (BKLibraryBookshelfInfoBadge)initWithCoder:(id)a3
+- (BKLibraryBookshelfInfoBadge)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR___BKLibraryBookshelfInfoBadge_badgeText);
   *v3 = 0;
@@ -41,22 +41,22 @@
 
 - (NSAttributedString)attributedBadgeText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005721DC();
 
   return v3;
 }
 
-- (void)setAttributedBadgeText:(id)a3
+- (void)setAttributedBadgeText:(id)text
 {
-  v6 = a3;
-  v5 = self;
-  sub_100572770(a3);
+  textCopy = text;
+  selfCopy = self;
+  sub_100572770(text);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100572430();
 }
 

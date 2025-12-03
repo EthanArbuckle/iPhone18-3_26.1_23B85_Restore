@@ -1,14 +1,14 @@
 @interface APTimeSpentReportActivity
-- (APTimeSpentReportActivity)initWithLegacyInterface:(id)a3 identifierProvider:(id)a4;
-- (BOOL)runActivity:(id)a3;
+- (APTimeSpentReportActivity)initWithLegacyInterface:(id)interface identifierProvider:(id)provider;
+- (BOOL)runActivity:(id)activity;
 - (NSMutableArray)promotedContentsReceived;
-- (void)cancelActiveWork:(id)a3;
-- (void)deferActivity:(id)a3 completionHandler:(id)a4;
-- (void)fetchSponsorshipAdsWithActivity:(id)a3;
-- (void)fetchSponsorshipAdsWithActivityIfFeatureFlagEnabled:(id)a3;
-- (void)makeAggregatedTimeSpentRequests:(id)a3 activity:(id)a4;
-- (void)markActivityAsFinished:(id)a3;
-- (void)terminateActivity:(id)a3;
+- (void)cancelActiveWork:(id)work;
+- (void)deferActivity:(id)activity completionHandler:(id)handler;
+- (void)fetchSponsorshipAdsWithActivity:(id)activity;
+- (void)fetchSponsorshipAdsWithActivityIfFeatureFlagEnabled:(id)enabled;
+- (void)makeAggregatedTimeSpentRequests:(id)requests activity:(id)activity;
+- (void)markActivityAsFinished:(id)finished;
+- (void)terminateActivity:(id)activity;
 @end
 
 @implementation APTimeSpentReportActivity
@@ -30,10 +30,10 @@
   return v6;
 }
 
-- (APTimeSpentReportActivity)initWithLegacyInterface:(id)a3 identifierProvider:(id)a4
+- (APTimeSpentReportActivity)initWithLegacyInterface:(id)interface identifierProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  interfaceCopy = interface;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = APTimeSpentReportActivity;
   v9 = [(APTimeSpentReportActivity *)&v14 init];
@@ -44,37 +44,37 @@
     queue = v9->_queue;
     v9->_queue = v11;
 
-    objc_storeStrong(&v9->_legacyInterface, a3);
-    objc_storeStrong(&v9->_identifierProvider, a4);
+    objc_storeStrong(&v9->_legacyInterface, interface);
+    objc_storeStrong(&v9->_identifierProvider, provider);
   }
 
   return v9;
 }
 
-- (BOOL)runActivity:(id)a3
+- (BOOL)runActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   [(APTimeSpentReportActivity *)self setIsCancelled:0];
   [(APTimeSpentReportActivity *)self setDidFinishAggregateTimeSpentActivity:0];
   [(APTimeSpentReportActivity *)self setDidFinishFetchingSponsorshipAdsActivity:0];
-  v5 = [(APTimeSpentReportActivity *)self promotedContentsReceived];
-  [v5 removeAllObjects];
+  promotedContentsReceived = [(APTimeSpentReportActivity *)self promotedContentsReceived];
+  [promotedContentsReceived removeAllObjects];
 
-  v6 = [(APTimeSpentReportActivity *)self legacyInterface];
-  v7 = [v6 aggregatedTimeSpentProcessor];
-  [(APTimeSpentReportActivity *)self setAggregatedTimeSpentLegacyInterface:v7];
+  legacyInterface = [(APTimeSpentReportActivity *)self legacyInterface];
+  aggregatedTimeSpentProcessor = [legacyInterface aggregatedTimeSpentProcessor];
+  [(APTimeSpentReportActivity *)self setAggregatedTimeSpentLegacyInterface:aggregatedTimeSpentProcessor];
 
   objc_initWeak(&location, self);
-  v8 = [(APTimeSpentReportActivity *)self queue];
+  queue = [(APTimeSpentReportActivity *)self queue];
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_1001DE3B0;
   v14 = &unk_100463FC8;
   objc_copyWeak(&v17, &location);
-  v9 = v4;
+  v9 = activityCopy;
   v15 = v9;
-  v16 = self;
-  dispatch_async(v8, &v11);
+  selfCopy = self;
+  dispatch_async(queue, &v11);
 
   [(APTimeSpentReportActivity *)self fetchSponsorshipAdsWithActivityIfFeatureFlagEnabled:v9, v11, v12, v13, v14];
   objc_destroyWeak(&v17);
@@ -83,9 +83,9 @@
   return 1;
 }
 
-- (void)deferActivity:(id)a3 completionHandler:(id)a4
+- (void)deferActivity:(id)activity completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = APLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -93,10 +93,10 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Request Aggregated Time Spent Report activity deferral.", v7, 2u);
   }
 
-  [(APTimeSpentReportActivity *)self cancelActiveWork:v5];
+  [(APTimeSpentReportActivity *)self cancelActiveWork:handlerCopy];
 }
 
-- (void)terminateActivity:(id)a3
+- (void)terminateActivity:(id)activity
 {
   v4 = APLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -108,29 +108,29 @@
   [(APTimeSpentReportActivity *)self cancelActiveWork:0];
 }
 
-- (void)makeAggregatedTimeSpentRequests:(id)a3 activity:(id)a4
+- (void)makeAggregatedTimeSpentRequests:(id)requests activity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  activityCopy = activity;
   if (![(APTimeSpentReportActivity *)self isCancelled])
   {
-    if ([v6 count])
+    if ([requestsCopy count])
     {
-      v8 = [v6 lastObject];
+      lastObject = [requestsCopy lastObject];
       objc_initWeak(&location, self);
-      v9 = [(APTimeSpentReportActivity *)self aggregatedTimeSpentLegacyInterface];
-      v10 = [v8 clientIdentifier];
-      v11 = [v8 aggregatedTimeSpentEntries];
+      aggregatedTimeSpentLegacyInterface = [(APTimeSpentReportActivity *)self aggregatedTimeSpentLegacyInterface];
+      clientIdentifier = [lastObject clientIdentifier];
+      aggregatedTimeSpentEntries = [lastObject aggregatedTimeSpentEntries];
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_1001DE890;
       v13[3] = &unk_100463FF0;
       objc_copyWeak(&v17, &location);
-      v12 = v8;
+      v12 = lastObject;
       v14 = v12;
-      v15 = v6;
-      v16 = v7;
-      [v9 sendAggregatedTimeSpentMetricFor:v10 aggregatedTimeSpentEntries:v11 completionHandler:v13];
+      v15 = requestsCopy;
+      v16 = activityCopy;
+      [aggregatedTimeSpentLegacyInterface sendAggregatedTimeSpentMetricFor:clientIdentifier aggregatedTimeSpentEntries:aggregatedTimeSpentEntries completionHandler:v13];
 
       objc_destroyWeak(&v17);
       objc_destroyWeak(&location);
@@ -139,45 +139,45 @@
     else
     {
       [(APTimeSpentReportActivity *)self setDidFinishAggregateTimeSpentActivity:1];
-      [(APTimeSpentReportActivity *)self markActivityAsFinished:v7];
+      [(APTimeSpentReportActivity *)self markActivityAsFinished:activityCopy];
     }
   }
 }
 
-- (void)cancelActiveWork:(id)a3
+- (void)cancelActiveWork:(id)work
 {
-  v4 = a3;
+  workCopy = work;
   [(APTimeSpentReportActivity *)self setIsCancelled:1];
-  v5 = [(APTimeSpentReportActivity *)self aggregatedTimeSpentLegacyInterface];
+  aggregatedTimeSpentLegacyInterface = [(APTimeSpentReportActivity *)self aggregatedTimeSpentLegacyInterface];
 
-  if (v5)
+  if (aggregatedTimeSpentLegacyInterface)
   {
-    v6 = [(APTimeSpentReportActivity *)self aggregatedTimeSpentLegacyInterface];
+    aggregatedTimeSpentLegacyInterface2 = [(APTimeSpentReportActivity *)self aggregatedTimeSpentLegacyInterface];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1001DEAB8;
     v7[3] = &unk_100464018;
     v7[4] = self;
-    v8 = v4;
-    [v6 cancel:v7];
+    v8 = workCopy;
+    [aggregatedTimeSpentLegacyInterface2 cancel:v7];
   }
 
-  else if (v4)
+  else if (workCopy)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(workCopy + 2))(workCopy, 1);
   }
 }
 
-- (void)fetchSponsorshipAdsWithActivityIfFeatureFlagEnabled:(id)a3
+- (void)fetchSponsorshipAdsWithActivityIfFeatureFlagEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001DEC00;
   v6[3] = &unk_100464040;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = enabledCopy;
   v7 = v5;
   [_TtC16promotedcontentd26SponsorshipAdFetchActivity isFetchFeatureFlagEnabledWithCompletionHandler:v6];
 
@@ -185,14 +185,14 @@
   objc_destroyWeak(&location);
 }
 
-- (void)fetchSponsorshipAdsWithActivity:(id)a3
+- (void)fetchSponsorshipAdsWithActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   if (+[_TtC16promotedcontentd26SponsorshipAdFetchActivity isFetchAllowedForCurrentStorefront]&& ![(APTimeSpentReportActivity *)self isCancelled])
   {
     [(APTimeSpentReportActivity *)self setDidFinishFetchingSponsorshipAdsActivity:0];
-    v5 = [(APTimeSpentReportActivity *)self promotedContentsReceived];
-    [v5 removeAllObjects];
+    promotedContentsReceived = [(APTimeSpentReportActivity *)self promotedContentsReceived];
+    [promotedContentsReceived removeAllObjects];
 
     v6 = +[APContext contextForSponsorshipAdRequest];
     objc_initWeak(&location, self);
@@ -209,7 +209,7 @@
     v12 = sub_1003957D4(v7, v8, v9, identifierProvider, v11, v22);
     [(APTimeSpentReportActivity *)self setControllerCoordinator:v12];
 
-    v13 = [(APTimeSpentReportActivity *)self controllerCoordinator];
+    controllerCoordinator = [(APTimeSpentReportActivity *)self controllerCoordinator];
     v14 = +[_TtC16promotedcontentd26SponsorshipAdFetchActivity defaultRequestTypes];
     v15 = +[_TtC16promotedcontentd26SponsorshipAdFetchActivity appleNewsBundleIdentifier];
     v16 = +[_TtC16promotedcontentd26SponsorshipAdFetchActivity defaultClientInfo];
@@ -221,8 +221,8 @@
     v18[4] = self;
     v17 = v6;
     v19 = v17;
-    v20 = v4;
-    sub_1003959BC(v13, v14, v17, v15, v16, 1, v18);
+    v20 = activityCopy;
+    sub_1003959BC(controllerCoordinator, v14, v17, v15, v16, 1, v18);
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&v23);
@@ -232,24 +232,24 @@
   else
   {
     [(APTimeSpentReportActivity *)self setDidFinishFetchingSponsorshipAdsActivity:1];
-    [(APTimeSpentReportActivity *)self markActivityAsFinished:v4];
+    [(APTimeSpentReportActivity *)self markActivityAsFinished:activityCopy];
   }
 }
 
-- (void)markActivityAsFinished:(id)a3
+- (void)markActivityAsFinished:(id)finished
 {
-  v5 = a3;
+  finishedCopy = finished;
   if ([(APTimeSpentReportActivity *)self didFinishFetchingSponsorshipAdsActivity])
   {
-    v4 = [(APTimeSpentReportActivity *)self promotedContentsReceived];
-    [v4 removeAllObjects];
+    promotedContentsReceived = [(APTimeSpentReportActivity *)self promotedContentsReceived];
+    [promotedContentsReceived removeAllObjects];
 
     [(APTimeSpentReportActivity *)self setControllerCoordinator:0];
   }
 
   if ([(APTimeSpentReportActivity *)self didFinishFetchingSponsorshipAdsActivity]&& [(APTimeSpentReportActivity *)self didFinishAggregateTimeSpentActivity])
   {
-    [v5 finished];
+    [finishedCopy finished];
   }
 }
 

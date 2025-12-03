@@ -1,48 +1,48 @@
 @interface CAMControlDrawerMenuButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilitySupportsActivateAction;
 - (BOOL)canBecomeFocused;
-- (void)_setExpanded:(BOOL)a3 animated:(BOOL)a4 shouldNotify:(BOOL)a5;
+- (void)_setExpanded:(BOOL)expanded animated:(BOOL)animated shouldNotify:(BOOL)notify;
 @end
 
 @implementation CAMControlDrawerMenuButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMControlDrawerMenuButton" isKindOfClass:@"UIControl"];
-  [v3 validateProtocol:@"CAMControlDrawerExpandableButton" hasMethod:@"isExpanded" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" conformsToProtocol:@"CAMControlDrawerExpandableButton"];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" isKindOfClass:@"CAMControlDrawerButton"];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_setExpanded:animated:shouldNotify:" withFullSignature:{"v", "B", "B", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" isKindOfClass:@"UIControl"];
+  [validationsCopy validateProtocol:@"CAMControlDrawerExpandableButton" hasMethod:@"isExpanded" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" conformsToProtocol:@"CAMControlDrawerExpandableButton"];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" isKindOfClass:@"CAMControlDrawerButton"];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_setExpanded:animated:shouldNotify:" withFullSignature:{"v", "B", "B", "B", 0}];
 }
 
 - (BOOL)_accessibilitySupportsActivateAction
 {
   v2 = [(CAMControlDrawerMenuButtonAccessibility *)self safeValueForKey:@"isUserInteractionEnabled"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)canBecomeFocused
 {
   v5.receiver = self;
   v5.super_class = CAMControlDrawerMenuButtonAccessibility;
-  v3 = [(CAMControlDrawerMenuButtonAccessibility *)&v5 canBecomeFocused];
+  canBecomeFocused = [(CAMControlDrawerMenuButtonAccessibility *)&v5 canBecomeFocused];
   if ([(CAMControlDrawerMenuButtonAccessibility *)self _accessibilityIsFKARunningForFocusItem])
   {
-    v3 &= [(CAMControlDrawerMenuButtonAccessibility *)self safeBoolForKey:@"isExpanded"]^ 1;
+    canBecomeFocused &= [(CAMControlDrawerMenuButtonAccessibility *)self safeBoolForKey:@"isExpanded"]^ 1;
   }
 
-  return v3;
+  return canBecomeFocused;
 }
 
-- (void)_setExpanded:(BOOL)a3 animated:(BOOL)a4 shouldNotify:(BOOL)a5
+- (void)_setExpanded:(BOOL)expanded animated:(BOOL)animated shouldNotify:(BOOL)notify
 {
   v5.receiver = self;
   v5.super_class = CAMControlDrawerMenuButtonAccessibility;
-  [(CAMControlDrawerMenuButtonAccessibility *)&v5 _setExpanded:a3 animated:a4 shouldNotify:a5];
+  [(CAMControlDrawerMenuButtonAccessibility *)&v5 _setExpanded:expanded animated:animated shouldNotify:notify];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
 }
 

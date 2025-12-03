@@ -1,7 +1,7 @@
 @interface UIWebPlugInView
-- (BOOL)respondsToSelector:(SEL)a3;
-- (UIWebPlugInView)initWithWebView:(id)a3 plugInView:(id)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (UIWebPlugInView)initWithWebView:(id)view plugInView:(id)inView;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)objectForWebScript;
 - (id)pluginLayer;
 - (void)_attachPluginLayerOnMainThread;
@@ -12,16 +12,16 @@
 - (void)attachPluginLayer;
 - (void)dealloc;
 - (void)detachPluginLayer;
-- (void)drawRect:(CGRect)a3;
-- (void)forwardInvocation:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)forwardInvocation:(id)invocation;
 - (void)invalidateGState;
 - (void)layout;
-- (void)mouseDown:(id)a3;
-- (void)mouseUp:(id)a3;
+- (void)mouseDown:(id)down;
+- (void)mouseUp:(id)up;
 - (void)reshape;
-- (void)setFrame:(CGRect)a3;
-- (void)setFrameSize:(CGSize)a3;
-- (void)setWebView:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setFrameSize:(CGSize)size;
+- (void)setWebView:(id)view;
 - (void)viewDidMoveToWindow;
 - (void)webPlugInDestroy;
 - (void)webPlugInInitialize;
@@ -31,16 +31,16 @@
 
 @implementation UIWebPlugInView
 
-- (UIWebPlugInView)initWithWebView:(id)a3 plugInView:(id)a4
+- (UIWebPlugInView)initWithWebView:(id)view plugInView:(id)inView
 {
   v6 = [(UIWebPlugInView *)self initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    v6->_webView = a3;
-    if (a4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    v6->_webView = view;
+    if (inView && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7->_uiView = a4;
+      v7->_uiView = inView;
       if (objc_opt_respondsToSelector())
       {
         [(UIView *)v7->_uiView performSelector:sel_setWAKView_ withObject:v7];
@@ -54,7 +54,7 @@
 
     else
     {
-      NSLog(&cfstr_PlugInViewIsNo.isa, a4);
+      NSLog(&cfstr_PlugInViewIsNo.isa, inView);
 
       return 0;
     }
@@ -84,12 +84,12 @@
   [(UIWebPlugInView *)&v6 dealloc];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIWebPlugInView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -112,10 +112,10 @@
   }
 }
 
-- (void)setFrameSize:(CGSize)a3
+- (void)setFrameSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(UIWebPlugInView *)self frame];
   v7 = v6;
   v9 = v8;
@@ -135,16 +135,16 @@
   [(UIWebPlugInView *)&v4 viewDidMoveToWindow];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(UIView *)self->_uiView willEnterFullScreen];
+    willEnterFullScreen = [(UIView *)self->_uiView willEnterFullScreen];
   }
 
   else
   {
-    v3 = 0;
+    willEnterFullScreen = 0;
   }
 
   [(UIWebPlugInView *)self bounds];
-  if (!CGRectIsEmpty(v5) || v3)
+  if (!CGRectIsEmpty(v5) || willEnterFullScreen)
   {
     WebThreadRunOnMainThread();
   }
@@ -189,12 +189,12 @@
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = WKGetCurrentGraphicsContext();
   if (CGContextGetType() == 1)
   {
@@ -215,7 +215,7 @@
 
     else
     {
-      v11 = [(UIView *)self->_uiView layer];
+      layer = [(UIView *)self->_uiView layer];
       v12 = GetContextStack(0);
       if (*v12 < 1)
       {
@@ -227,7 +227,7 @@
         v13 = v12[3 * (*v12 - 1) + 1];
       }
 
-      [(CALayer *)v11 renderInContext:v13];
+      [(CALayer *)layer renderInContext:v13];
     }
 
     CGContextRestoreGState(v8);
@@ -283,7 +283,7 @@
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v5.receiver = self;
   v5.super_class = UIWebPlugInView;
@@ -300,32 +300,32 @@
   return v3 & 1;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  [a3 selector];
+  [invocation selector];
   if (objc_opt_respondsToSelector())
   {
     uiView = self->_uiView;
 
-    [a3 invokeWithTarget:uiView];
+    [invocation invokeWithTarget:uiView];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIWebPlugInView;
-    [(UIWebPlugInView *)&v6 forwardInvocation:a3];
+    [(UIWebPlugInView *)&v6 forwardInvocation:invocation];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  result = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+  result = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   if (!result)
   {
     uiView = self->_uiView;
 
-    return [(UIView *)uiView methodSignatureForSelector:a3];
+    return [(UIView *)uiView methodSignatureForSelector:selector];
   }
 
   return result;
@@ -343,31 +343,31 @@
   return [(UIView *)uiView objectForWebScript];
 }
 
-- (void)mouseDown:(id)a3
+- (void)mouseDown:(id)down
 {
-  v3 = a3;
-  [WebThreadMakeNSInvocation() setArgument:&v3 atIndex:2];
+  downCopy = down;
+  [WebThreadMakeNSInvocation() setArgument:&downCopy atIndex:2];
   WebThreadCallDelegate();
 }
 
-- (void)mouseUp:(id)a3
+- (void)mouseUp:(id)up
 {
-  v3 = a3;
-  [WebThreadMakeNSInvocation() setArgument:&v3 atIndex:2];
+  upCopy = up;
+  [WebThreadMakeNSInvocation() setArgument:&upCopy atIndex:2];
   WebThreadCallDelegate();
 }
 
-- (void)setWebView:(id)a3
+- (void)setWebView:(id)view
 {
   webView = self->_webView;
-  if (webView != a3)
+  if (webView != view)
   {
     if (webView)
     {
       [(UIWebDocumentView *)webView didRemovePlugInView:self];
     }
 
-    self->_webView = a3;
+    self->_webView = view;
   }
 }
 
@@ -396,9 +396,9 @@
   if ([-[UIWebDocumentView webView](self->_webView "webView")])
   {
     [(UIWebPlugInView *)self setParentedInLayer:1];
-    v3 = [(UIView *)self->_uiView layer];
-    v4 = v3;
-    [(CALayer *)self->_hostingLayer addSublayer:v3];
+    layer = [(UIView *)self->_uiView layer];
+    v4 = layer;
+    [(CALayer *)self->_hostingLayer addSublayer:layer];
 
     [(UIWebDocumentView *)self->_webView _setSubviewCachesNeedUpdate:1];
 
@@ -411,10 +411,10 @@
   if ([(UIWebPlugInView *)self isParentedInLayer])
   {
     WebThreadLock();
-    v3 = [(UIView *)self->_uiView layer];
-    v4 = v3;
+    layer = [(UIView *)self->_uiView layer];
+    v4 = layer;
     [-[UIWebDocumentView webView](self->_webView "webView")];
-    [(CALayer *)[(UIView *)self->_webView layer] addSublayer:v3];
+    [(CALayer *)[(UIView *)self->_webView layer] addSublayer:layer];
 
     [(UIWebPlugInView *)self setParentedInLayer:0];
     [(UIWebPlugInView *)self _reshapeOnMainThread];

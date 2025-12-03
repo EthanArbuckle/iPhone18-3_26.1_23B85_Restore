@@ -1,46 +1,46 @@
 @interface CSDMessagingConversationMessage
 - (BOOL)constitutesLetMeInApproval;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)tuInvitationPreferences;
 - (NSUUID)conversationGroupUUID;
 - (TUConversationInvitationContext)tuInvitationContext;
 - (TUConversationLink)tuConversationLink;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAvMode:(id)a3;
-- (int)StringAsEnclosedEncryptedType:(id)a3;
-- (int)StringAsPresentationMode:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsAvMode:(id)mode;
+- (int)StringAsEnclosedEncryptedType:(id)type;
+- (int)StringAsPresentationMode:(id)mode;
+- (int)StringAsType:(id)type;
 - (int)avMode;
 - (int)enclosedEncryptedType;
 - (int)presentationMode;
 - (int)type;
 - (unint64_t)hash;
 - (unint64_t)resolvedPresentationMode;
-- (void)addActiveLightweightParticipants:(id)a3;
-- (void)addActiveParticipants:(id)a3;
-- (void)addActivitySessions:(id)a3;
-- (void)addAddedMembers:(id)a3;
-- (void)addInvitationPreferences:(id)a3;
-- (void)addLightweightMembers:(id)a3;
-- (void)addRemovedMembers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setConversationGroupUUID:(id)a3;
-- (void)setHasDisconnectedReason:(BOOL)a3;
-- (void)setHasEnclosedEncryptedType:(BOOL)a3;
-- (void)setHasGuestModeEnabled:(BOOL)a3;
-- (void)setHasIsLetMeInApproved:(BOOL)a3;
-- (void)setHasIsNearbySession:(BOOL)a3;
-- (void)setHasPresentationMode:(BOOL)a3;
-- (void)setHasRequestBlobRecoveryOptions:(BOOL)a3;
-- (void)setHasShouldSuppressInCallUI:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)setTUInvitationContext:(id)a3;
-- (void)setTUInvitationPreferences:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addActiveLightweightParticipants:(id)participants;
+- (void)addActiveParticipants:(id)participants;
+- (void)addActivitySessions:(id)sessions;
+- (void)addAddedMembers:(id)members;
+- (void)addInvitationPreferences:(id)preferences;
+- (void)addLightweightMembers:(id)members;
+- (void)addRemovedMembers:(id)members;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setConversationGroupUUID:(id)d;
+- (void)setHasDisconnectedReason:(BOOL)reason;
+- (void)setHasEnclosedEncryptedType:(BOOL)type;
+- (void)setHasGuestModeEnabled:(BOOL)enabled;
+- (void)setHasIsLetMeInApproved:(BOOL)approved;
+- (void)setHasIsNearbySession:(BOOL)session;
+- (void)setHasPresentationMode:(BOOL)mode;
+- (void)setHasRequestBlobRecoveryOptions:(BOOL)options;
+- (void)setHasShouldSuppressInCallUI:(BOOL)i;
+- (void)setHasType:(BOOL)type;
+- (void)setHasVersion:(BOOL)version;
+- (void)setTUInvitationContext:(id)context;
+- (void)setTUInvitationPreferences:(id)preferences;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingConversationMessage
@@ -59,16 +59,16 @@
 {
   if ([(CSDMessagingConversationMessage *)self hasLink])
   {
-    v3 = [(CSDMessagingConversationMessage *)self link];
-    v4 = [v3 tuConversationLink];
+    link = [(CSDMessagingConversationMessage *)self link];
+    tuConversationLink = [link tuConversationLink];
   }
 
   else
   {
-    v4 = 0;
+    tuConversationLink = 0;
   }
 
-  return v4;
+  return tuConversationLink;
 }
 
 - (unint64_t)resolvedPresentationMode
@@ -78,15 +78,15 @@
     return [(CSDMessagingConversationMessage *)self avMode]== 0;
   }
 
-  v3 = [(CSDMessagingConversationMessage *)self presentationMode];
-  if (v3 == 1)
+  presentationMode = [(CSDMessagingConversationMessage *)self presentationMode];
+  if (presentationMode == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v3 == 2);
+    return 2 * (presentationMode == 2);
   }
 }
 
@@ -97,8 +97,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CSDMessagingConversationMessage *)self invitationPreferences];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  invitationPreferences = [(CSDMessagingConversationMessage *)self invitationPreferences];
+  v5 = [invitationPreferences countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -109,17 +109,17 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(invitationPreferences);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) tuInvitationPreference];
-        if (v9)
+        tuInvitationPreference = [*(*(&v12 + 1) + 8 * i) tuInvitationPreference];
+        if (tuInvitationPreference)
         {
-          [v3 addObject:v9];
+          [v3 addObject:tuInvitationPreference];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [invitationPreferences countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -132,12 +132,12 @@
 
 - (NSUUID)conversationGroupUUID
 {
-  v3 = [(CSDMessagingConversationMessage *)self conversationGroupUUIDString];
-  if (v3)
+  conversationGroupUUIDString = [(CSDMessagingConversationMessage *)self conversationGroupUUIDString];
+  if (conversationGroupUUIDString)
   {
     v4 = [NSUUID alloc];
-    v5 = [(CSDMessagingConversationMessage *)self conversationGroupUUIDString];
-    v6 = [v4 initWithUUIDString:v5];
+    conversationGroupUUIDString2 = [(CSDMessagingConversationMessage *)self conversationGroupUUIDString];
+    v6 = [v4 initWithUUIDString:conversationGroupUUIDString2];
   }
 
   else
@@ -148,20 +148,20 @@
   return v6;
 }
 
-- (void)setConversationGroupUUID:(id)a3
+- (void)setConversationGroupUUID:(id)d
 {
-  v4 = [a3 UUIDString];
-  [(CSDMessagingConversationMessage *)self setConversationGroupUUIDString:v4];
+  uUIDString = [d UUIDString];
+  [(CSDMessagingConversationMessage *)self setConversationGroupUUIDString:uUIDString];
 }
 
-- (void)setTUInvitationPreferences:(id)a3
+- (void)setTUInvitationPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [preferencesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -173,7 +173,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(preferencesCopy);
         }
 
         v9 = [CSDMessagingConversationInvitationPreference invitationPreferenceWithTUConversationInvitationPreference:*(*(&v10 + 1) + 8 * v8)];
@@ -183,7 +183,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [preferencesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -195,9 +195,9 @@
   if ([(CSDMessagingConversationMessage *)self hasInvitationContext])
   {
     v3 = objc_alloc_init(TUConversationInvitationContext);
-    v4 = [(CSDMessagingConversationMessage *)self invitationContext];
-    v5 = [v4 nearbyStableDeviceIdentifiers];
-    [v3 setNearbyStableDeviceIdentifiers:v5];
+    invitationContext = [(CSDMessagingConversationMessage *)self invitationContext];
+    nearbyStableDeviceIdentifiers = [invitationContext nearbyStableDeviceIdentifiers];
+    [v3 setNearbyStableDeviceIdentifiers:nearbyStableDeviceIdentifiers];
   }
 
   else
@@ -208,18 +208,18 @@
   return v3;
 }
 
-- (void)setTUInvitationContext:(id)a3
+- (void)setTUInvitationContext:(id)context
 {
-  v8 = a3;
-  if (v8)
+  contextCopy = context;
+  if (contextCopy)
   {
     v4 = objc_alloc_init(CSDMessagingInvitationContext);
-    v5 = [v8 nearbyStableDeviceIdentifiers];
+    nearbyStableDeviceIdentifiers = [contextCopy nearbyStableDeviceIdentifiers];
 
-    if (v5)
+    if (nearbyStableDeviceIdentifiers)
     {
-      v6 = [v8 nearbyStableDeviceIdentifiers];
-      v7 = [NSMutableArray arrayWithArray:v6];
+      nearbyStableDeviceIdentifiers2 = [contextCopy nearbyStableDeviceIdentifiers];
+      v7 = [NSMutableArray arrayWithArray:nearbyStableDeviceIdentifiers2];
       [(CSDMessagingInvitationContext *)v4 setNearbyStableDeviceIdentifiers:v7];
     }
 
@@ -232,9 +232,9 @@
   }
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 64;
   }
@@ -260,9 +260,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -275,175 +275,175 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Invitation"])
+  else if ([typeCopy isEqualToString:@"Invitation"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Upgrade"])
+  else if ([typeCopy isEqualToString:@"Upgrade"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AddMember"])
+  else if ([typeCopy isEqualToString:@"AddMember"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"BlobRecoveryRequest"])
+  else if ([typeCopy isEqualToString:@"BlobRecoveryRequest"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"BlobRecoveryResponse"])
+  else if ([typeCopy isEqualToString:@"BlobRecoveryResponse"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"RespondedElsewhere"])
+  else if ([typeCopy isEqualToString:@"RespondedElsewhere"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"AddActivitySession"])
+  else if ([typeCopy isEqualToString:@"AddActivitySession"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Decline"])
+  else if ([typeCopy isEqualToString:@"Decline"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"LetMeInRequest"])
+  else if ([typeCopy isEqualToString:@"LetMeInRequest"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"LinkCreated"])
+  else if ([typeCopy isEqualToString:@"LinkCreated"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"NicknameUpdated"])
+  else if ([typeCopy isEqualToString:@"NicknameUpdated"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"EncryptedConversationMessage"])
+  else if ([typeCopy isEqualToString:@"EncryptedConversationMessage"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"LetMeInDelegation"])
+  else if ([typeCopy isEqualToString:@"LetMeInDelegation"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"LetMeInDelegationResponse"])
+  else if ([typeCopy isEqualToString:@"LetMeInDelegationResponse"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"LetMeInResponse"])
+  else if ([typeCopy isEqualToString:@"LetMeInResponse"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"RemoveMember"])
+  else if ([typeCopy isEqualToString:@"RemoveMember"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"RemoveActivitySession"])
+  else if ([typeCopy isEqualToString:@"RemoveActivitySession"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"RequestVideoUpgrade"])
+  else if ([typeCopy isEqualToString:@"RequestVideoUpgrade"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"UpdateActivity"])
+  else if ([typeCopy isEqualToString:@"UpdateActivity"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"LinkInvalidated"])
+  else if ([typeCopy isEqualToString:@"LinkInvalidated"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"AddLightweightMember"])
+  else if ([typeCopy isEqualToString:@"AddLightweightMember"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"LinkChanged"])
+  else if ([typeCopy isEqualToString:@"LinkChanged"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"UpdateActivityImage"])
+  else if ([typeCopy isEqualToString:@"UpdateActivityImage"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"GuestModeUpdated"])
+  else if ([typeCopy isEqualToString:@"GuestModeUpdated"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"Endorse"])
+  else if ([typeCopy isEqualToString:@"Endorse"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"AddHighlight"])
+  else if ([typeCopy isEqualToString:@"AddHighlight"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"RemoveHighlight"])
+  else if ([typeCopy isEqualToString:@"RemoveHighlight"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"UpdateJoinedMetadata"])
+  else if ([typeCopy isEqualToString:@"UpdateJoinedMetadata"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"ParticipantUpdated"])
+  else if ([typeCopy isEqualToString:@"ParticipantUpdated"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"RegisterMessagesGroupUUID"])
+  else if ([typeCopy isEqualToString:@"RegisterMessagesGroupUUID"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"ScreenShareRequest"])
+  else if ([typeCopy isEqualToString:@"ScreenShareRequest"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"ScreenShareResponse"])
+  else if ([typeCopy isEqualToString:@"ScreenShareResponse"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"SharePlayAvailable"])
+  else if ([typeCopy isEqualToString:@"SharePlayAvailable"])
   {
     v4 = 37;
   }
@@ -456,9 +456,9 @@
   return v4;
 }
 
-- (void)setHasShouldSuppressInCallUI:(BOOL)a3
+- (void)setHasShouldSuppressInCallUI:(BOOL)i
 {
-  if (a3)
+  if (i)
   {
     v3 = 1024;
   }
@@ -471,45 +471,45 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)addActiveParticipants:(id)a3
+- (void)addActiveParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   activeParticipants = self->_activeParticipants;
-  v8 = v4;
+  v8 = participantsCopy;
   if (!activeParticipants)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_activeParticipants;
     self->_activeParticipants = v6;
 
-    v4 = v8;
+    participantsCopy = v8;
     activeParticipants = self->_activeParticipants;
   }
 
-  [(NSMutableArray *)activeParticipants addObject:v4];
+  [(NSMutableArray *)activeParticipants addObject:participantsCopy];
 }
 
-- (void)addAddedMembers:(id)a3
+- (void)addAddedMembers:(id)members
 {
-  v4 = a3;
+  membersCopy = members;
   addedMembers = self->_addedMembers;
-  v8 = v4;
+  v8 = membersCopy;
   if (!addedMembers)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_addedMembers;
     self->_addedMembers = v6;
 
-    v4 = v8;
+    membersCopy = v8;
     addedMembers = self->_addedMembers;
   }
 
-  [(NSMutableArray *)addedMembers addObject:v4];
+  [(NSMutableArray *)addedMembers addObject:membersCopy];
 }
 
-- (void)setHasDisconnectedReason:(BOOL)a3
+- (void)setHasDisconnectedReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 2;
   }
@@ -522,27 +522,27 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)addActivitySessions:(id)a3
+- (void)addActivitySessions:(id)sessions
 {
-  v4 = a3;
+  sessionsCopy = sessions;
   activitySessions = self->_activitySessions;
-  v8 = v4;
+  v8 = sessionsCopy;
   if (!activitySessions)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_activitySessions;
     self->_activitySessions = v6;
 
-    v4 = v8;
+    sessionsCopy = v8;
     activitySessions = self->_activitySessions;
   }
 
-  [(NSMutableArray *)activitySessions addObject:v4];
+  [(NSMutableArray *)activitySessions addObject:sessionsCopy];
 }
 
-- (void)setHasIsLetMeInApproved:(BOOL)a3
+- (void)setHasIsLetMeInApproved:(BOOL)approved
 {
-  if (a3)
+  if (approved)
   {
     v3 = 256;
   }
@@ -568,9 +568,9 @@
   }
 }
 
-- (void)setHasEnclosedEncryptedType:(BOOL)a3
+- (void)setHasEnclosedEncryptedType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -583,175 +583,175 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (int)StringAsEnclosedEncryptedType:(id)a3
+- (int)StringAsEnclosedEncryptedType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Invitation"])
+  else if ([typeCopy isEqualToString:@"Invitation"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Upgrade"])
+  else if ([typeCopy isEqualToString:@"Upgrade"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AddMember"])
+  else if ([typeCopy isEqualToString:@"AddMember"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"BlobRecoveryRequest"])
+  else if ([typeCopy isEqualToString:@"BlobRecoveryRequest"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"BlobRecoveryResponse"])
+  else if ([typeCopy isEqualToString:@"BlobRecoveryResponse"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"RespondedElsewhere"])
+  else if ([typeCopy isEqualToString:@"RespondedElsewhere"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"AddActivitySession"])
+  else if ([typeCopy isEqualToString:@"AddActivitySession"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Decline"])
+  else if ([typeCopy isEqualToString:@"Decline"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"LetMeInRequest"])
+  else if ([typeCopy isEqualToString:@"LetMeInRequest"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"LinkCreated"])
+  else if ([typeCopy isEqualToString:@"LinkCreated"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"NicknameUpdated"])
+  else if ([typeCopy isEqualToString:@"NicknameUpdated"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"EncryptedConversationMessage"])
+  else if ([typeCopy isEqualToString:@"EncryptedConversationMessage"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"LetMeInDelegation"])
+  else if ([typeCopy isEqualToString:@"LetMeInDelegation"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"LetMeInDelegationResponse"])
+  else if ([typeCopy isEqualToString:@"LetMeInDelegationResponse"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"LetMeInResponse"])
+  else if ([typeCopy isEqualToString:@"LetMeInResponse"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"RemoveMember"])
+  else if ([typeCopy isEqualToString:@"RemoveMember"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"RemoveActivitySession"])
+  else if ([typeCopy isEqualToString:@"RemoveActivitySession"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"RequestVideoUpgrade"])
+  else if ([typeCopy isEqualToString:@"RequestVideoUpgrade"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"UpdateActivity"])
+  else if ([typeCopy isEqualToString:@"UpdateActivity"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"LinkInvalidated"])
+  else if ([typeCopy isEqualToString:@"LinkInvalidated"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"AddLightweightMember"])
+  else if ([typeCopy isEqualToString:@"AddLightweightMember"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"LinkChanged"])
+  else if ([typeCopy isEqualToString:@"LinkChanged"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"UpdateActivityImage"])
+  else if ([typeCopy isEqualToString:@"UpdateActivityImage"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"GuestModeUpdated"])
+  else if ([typeCopy isEqualToString:@"GuestModeUpdated"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"Endorse"])
+  else if ([typeCopy isEqualToString:@"Endorse"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"AddHighlight"])
+  else if ([typeCopy isEqualToString:@"AddHighlight"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"RemoveHighlight"])
+  else if ([typeCopy isEqualToString:@"RemoveHighlight"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"UpdateJoinedMetadata"])
+  else if ([typeCopy isEqualToString:@"UpdateJoinedMetadata"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"ParticipantUpdated"])
+  else if ([typeCopy isEqualToString:@"ParticipantUpdated"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"RegisterMessagesGroupUUID"])
+  else if ([typeCopy isEqualToString:@"RegisterMessagesGroupUUID"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"ScreenShareRequest"])
+  else if ([typeCopy isEqualToString:@"ScreenShareRequest"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"ScreenShareResponse"])
+  else if ([typeCopy isEqualToString:@"ScreenShareResponse"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"SharePlayAvailable"])
+  else if ([typeCopy isEqualToString:@"SharePlayAvailable"])
   {
     v4 = 37;
   }
@@ -764,81 +764,81 @@
   return v4;
 }
 
-- (void)addInvitationPreferences:(id)a3
+- (void)addInvitationPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   invitationPreferences = self->_invitationPreferences;
-  v8 = v4;
+  v8 = preferencesCopy;
   if (!invitationPreferences)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_invitationPreferences;
     self->_invitationPreferences = v6;
 
-    v4 = v8;
+    preferencesCopy = v8;
     invitationPreferences = self->_invitationPreferences;
   }
 
-  [(NSMutableArray *)invitationPreferences addObject:v4];
+  [(NSMutableArray *)invitationPreferences addObject:preferencesCopy];
 }
 
-- (void)addRemovedMembers:(id)a3
+- (void)addRemovedMembers:(id)members
 {
-  v4 = a3;
+  membersCopy = members;
   removedMembers = self->_removedMembers;
-  v8 = v4;
+  v8 = membersCopy;
   if (!removedMembers)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_removedMembers;
     self->_removedMembers = v6;
 
-    v4 = v8;
+    membersCopy = v8;
     removedMembers = self->_removedMembers;
   }
 
-  [(NSMutableArray *)removedMembers addObject:v4];
+  [(NSMutableArray *)removedMembers addObject:membersCopy];
 }
 
-- (void)addLightweightMembers:(id)a3
+- (void)addLightweightMembers:(id)members
 {
-  v4 = a3;
+  membersCopy = members;
   lightweightMembers = self->_lightweightMembers;
-  v8 = v4;
+  v8 = membersCopy;
   if (!lightweightMembers)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_lightweightMembers;
     self->_lightweightMembers = v6;
 
-    v4 = v8;
+    membersCopy = v8;
     lightweightMembers = self->_lightweightMembers;
   }
 
-  [(NSMutableArray *)lightweightMembers addObject:v4];
+  [(NSMutableArray *)lightweightMembers addObject:membersCopy];
 }
 
-- (void)addActiveLightweightParticipants:(id)a3
+- (void)addActiveLightweightParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   activeLightweightParticipants = self->_activeLightweightParticipants;
-  v8 = v4;
+  v8 = participantsCopy;
   if (!activeLightweightParticipants)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_activeLightweightParticipants;
     self->_activeLightweightParticipants = v6;
 
-    v4 = v8;
+    participantsCopy = v8;
     activeLightweightParticipants = self->_activeLightweightParticipants;
   }
 
-  [(NSMutableArray *)activeLightweightParticipants addObject:v4];
+  [(NSMutableArray *)activeLightweightParticipants addObject:participantsCopy];
 }
 
-- (void)setHasGuestModeEnabled:(BOOL)a3
+- (void)setHasGuestModeEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 128;
   }
@@ -864,20 +864,20 @@
   }
 }
 
-- (int)StringAsAvMode:(id)a3
+- (int)StringAsAvMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Audio"])
+  else if ([modeCopy isEqualToString:@"Audio"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Video"])
+  else if ([modeCopy isEqualToString:@"Video"])
   {
     v4 = 2;
   }
@@ -890,9 +890,9 @@
   return v4;
 }
 
-- (void)setHasRequestBlobRecoveryOptions:(BOOL)a3
+- (void)setHasRequestBlobRecoveryOptions:(BOOL)options
 {
-  if (a3)
+  if (options)
   {
     v3 = 16;
   }
@@ -918,9 +918,9 @@
   }
 }
 
-- (void)setHasPresentationMode:(BOOL)a3
+- (void)setHasPresentationMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 8;
   }
@@ -933,20 +933,20 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (int)StringAsPresentationMode:(id)a3
+- (int)StringAsPresentationMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Default"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Default"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AVLessSharePlay"])
+  else if ([modeCopy isEqualToString:@"AVLessSharePlay"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ContinuitySession"])
+  else if ([modeCopy isEqualToString:@"ContinuitySession"])
   {
     v4 = 2;
   }
@@ -959,9 +959,9 @@
   return v4;
 }
 
-- (void)setHasIsNearbySession:(BOOL)a3
+- (void)setHasIsNearbySession:(BOOL)session
 {
-  if (a3)
+  if (session)
   {
     v3 = 512;
   }
@@ -979,8 +979,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingConversationMessage;
   v3 = [(CSDMessagingConversationMessage *)&v7 description];
-  v4 = [(CSDMessagingConversationMessage *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingConversationMessage *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -1055,8 +1055,8 @@ LABEL_5:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v118 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v118 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v118 objects:v128 count:16];
@@ -1096,8 +1096,8 @@ LABEL_5:
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v114 + 1) + 8 * j) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation2 = [*(*(&v114 + 1) + 8 * j) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation2];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v114 objects:v127 count:16];
@@ -1143,8 +1143,8 @@ LABEL_5:
             objc_enumerationMutation(v24);
           }
 
-          v29 = [*(*(&v110 + 1) + 8 * k) dictionaryRepresentation];
-          [v23 addObject:v29];
+          dictionaryRepresentation3 = [*(*(&v110 + 1) + 8 * k) dictionaryRepresentation];
+          [v23 addObject:dictionaryRepresentation3];
         }
 
         v26 = [(NSMutableArray *)v24 countByEnumeratingWithState:&v110 objects:v126 count:16];
@@ -1165,15 +1165,15 @@ LABEL_5:
   link = self->_link;
   if (link)
   {
-    v32 = [(CSDMessagingConversationLink *)link dictionaryRepresentation];
-    [v3 setObject:v32 forKey:@"link"];
+    dictionaryRepresentation4 = [(CSDMessagingConversationLink *)link dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"link"];
   }
 
   reportData = self->_reportData;
   if (reportData)
   {
-    v34 = [(CSDMessagingConversationReport *)reportData dictionaryRepresentation];
-    [v3 setObject:v34 forKey:@"reportData"];
+    dictionaryRepresentation5 = [(CSDMessagingConversationReport *)reportData dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation5 forKey:@"reportData"];
   }
 
   if ((*&self->_has & 0x100) != 0)
@@ -1185,8 +1185,8 @@ LABEL_5:
   encryptedMessage = self->_encryptedMessage;
   if (encryptedMessage)
   {
-    v37 = [(CSDMessagingEncryptedConversationMessage *)encryptedMessage dictionaryRepresentation];
-    [v3 setObject:v37 forKey:@"encryptedMessage"];
+    dictionaryRepresentation6 = [(CSDMessagingEncryptedConversationMessage *)encryptedMessage dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation6 forKey:@"encryptedMessage"];
   }
 
   letMeInDelegationHandle = self->_letMeInDelegationHandle;
@@ -1239,8 +1239,8 @@ LABEL_5:
             objc_enumerationMutation(v46);
           }
 
-          v51 = [*(*(&v106 + 1) + 8 * m) dictionaryRepresentation];
-          [v45 addObject:v51];
+          dictionaryRepresentation7 = [*(*(&v106 + 1) + 8 * m) dictionaryRepresentation];
+          [v45 addObject:dictionaryRepresentation7];
         }
 
         v48 = [(NSMutableArray *)v46 countByEnumeratingWithState:&v106 objects:v125 count:16];
@@ -1274,8 +1274,8 @@ LABEL_5:
             objc_enumerationMutation(v53);
           }
 
-          v58 = [*(*(&v102 + 1) + 8 * n) dictionaryRepresentation];
-          [v52 addObject:v58];
+          dictionaryRepresentation8 = [*(*(&v102 + 1) + 8 * n) dictionaryRepresentation];
+          [v52 addObject:dictionaryRepresentation8];
         }
 
         v55 = [(NSMutableArray *)v53 countByEnumeratingWithState:&v102 objects:v124 count:16];
@@ -1309,8 +1309,8 @@ LABEL_5:
             objc_enumerationMutation(v60);
           }
 
-          v65 = [*(*(&v98 + 1) + 8 * ii) dictionaryRepresentation];
-          [v59 addObject:v65];
+          dictionaryRepresentation9 = [*(*(&v98 + 1) + 8 * ii) dictionaryRepresentation];
+          [v59 addObject:dictionaryRepresentation9];
         }
 
         v62 = [(NSMutableArray *)v60 countByEnumeratingWithState:&v98 objects:v123 count:16];
@@ -1344,8 +1344,8 @@ LABEL_5:
             objc_enumerationMutation(v67);
           }
 
-          v72 = [*(*(&v94 + 1) + 8 * jj) dictionaryRepresentation];
-          [v66 addObject:v72];
+          dictionaryRepresentation10 = [*(*(&v94 + 1) + 8 * jj) dictionaryRepresentation];
+          [v66 addObject:dictionaryRepresentation10];
         }
 
         v69 = [(NSMutableArray *)v67 countByEnumeratingWithState:&v94 objects:v122 count:16];
@@ -1372,15 +1372,15 @@ LABEL_5:
   joinedMetadata = self->_joinedMetadata;
   if (joinedMetadata)
   {
-    v76 = [(CSDMessagingConversationJoinedMetadata *)joinedMetadata dictionaryRepresentation];
-    [v3 setObject:v76 forKey:@"joinedMetadata"];
+    dictionaryRepresentation11 = [(CSDMessagingConversationJoinedMetadata *)joinedMetadata dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation11 forKey:@"joinedMetadata"];
   }
 
   stagedActivitySession = self->_stagedActivitySession;
   if (stagedActivitySession)
   {
-    v78 = [(CSDMessagingConversationActivitySession *)stagedActivitySession dictionaryRepresentation];
-    [v3 setObject:v78 forKey:@"stagedActivitySession"];
+    dictionaryRepresentation12 = [(CSDMessagingConversationActivitySession *)stagedActivitySession dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation12 forKey:@"stagedActivitySession"];
   }
 
   v79 = self->_has;
@@ -1411,8 +1411,8 @@ LABEL_5:
   screenShareContext = self->_screenShareContext;
   if (screenShareContext)
   {
-    v84 = [(CSDMessagingScreenShareContext *)screenShareContext dictionaryRepresentation];
-    [v3 setObject:v84 forKey:@"screenShareContext"];
+    dictionaryRepresentation13 = [(CSDMessagingScreenShareContext *)screenShareContext dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation13 forKey:@"screenShareContext"];
   }
 
   if ((*&self->_has & 8) != 0)
@@ -1434,8 +1434,8 @@ LABEL_5:
   invitationContext = self->_invitationContext;
   if (invitationContext)
   {
-    v88 = [(CSDMessagingInvitationContext *)invitationContext dictionaryRepresentation];
-    [v3 setObject:v88 forKey:@"invitationContext"];
+    dictionaryRepresentation14 = [(CSDMessagingInvitationContext *)invitationContext dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation14 forKey:@"invitationContext"];
   }
 
   if ((*&self->_has & 0x200) != 0)
@@ -1447,8 +1447,8 @@ LABEL_5:
   sharePlayAvailable = self->_sharePlayAvailable;
   if (sharePlayAvailable)
   {
-    v91 = [(CSDMessagingSharePlayAvailable *)sharePlayAvailable dictionaryRepresentation];
-    [v3 setObject:v91 forKey:@"sharePlayAvailable"];
+    dictionaryRepresentation15 = [(CSDMessagingSharePlayAvailable *)sharePlayAvailable dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation15 forKey:@"sharePlayAvailable"];
   }
 
   v92 = v3;
@@ -1456,9 +1456,9 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x40) != 0)
   {
@@ -1837,9 +1837,9 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -1849,8 +1849,8 @@ LABEL_5:
     }
 
 LABEL_81:
-    v4[52] = self->_type;
-    *(v4 + 110) |= 0x20u;
+    toCopy[52] = self->_type;
+    *(toCopy + 110) |= 0x20u;
     if ((*&self->_has & 0x400) == 0)
     {
       goto LABEL_5;
@@ -1859,8 +1859,8 @@ LABEL_81:
     goto LABEL_4;
   }
 
-  v4[53] = self->_version;
-  *(v4 + 110) |= 0x40u;
+  toCopy[53] = self->_version;
+  *(toCopy + 110) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -1871,19 +1871,19 @@ LABEL_3:
   if ((has & 0x400) != 0)
   {
 LABEL_4:
-    *(v4 + 219) = self->_shouldSuppressInCallUI;
-    *(v4 + 110) |= 0x400u;
+    *(toCopy + 219) = self->_shouldSuppressInCallUI;
+    *(toCopy + 110) |= 0x400u;
   }
 
 LABEL_5:
-  v37 = v4;
+  v37 = toCopy;
   if ([(CSDMessagingConversationMessage *)self activeParticipantsCount])
   {
     [v37 clearActiveParticipants];
-    v6 = [(CSDMessagingConversationMessage *)self activeParticipantsCount];
-    if (v6)
+    activeParticipantsCount = [(CSDMessagingConversationMessage *)self activeParticipantsCount];
+    if (activeParticipantsCount)
     {
-      v7 = v6;
+      v7 = activeParticipantsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(CSDMessagingConversationMessage *)self activeParticipantsAtIndex:i];
@@ -1900,10 +1900,10 @@ LABEL_5:
   if ([(CSDMessagingConversationMessage *)self addedMembersCount])
   {
     [v37 clearAddedMembers];
-    v10 = [(CSDMessagingConversationMessage *)self addedMembersCount];
-    if (v10)
+    addedMembersCount = [(CSDMessagingConversationMessage *)self addedMembersCount];
+    if (addedMembersCount)
     {
-      v11 = v10;
+      v11 = addedMembersCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(CSDMessagingConversationMessage *)self addedMembersAtIndex:j];
@@ -1926,10 +1926,10 @@ LABEL_5:
   if ([(CSDMessagingConversationMessage *)self activitySessionsCount])
   {
     [v37 clearActivitySessions];
-    v14 = [(CSDMessagingConversationMessage *)self activitySessionsCount];
-    if (v14)
+    activitySessionsCount = [(CSDMessagingConversationMessage *)self activitySessionsCount];
+    if (activitySessionsCount)
     {
-      v15 = v14;
+      v15 = activitySessionsCount;
       for (k = 0; k != v15; ++k)
       {
         v17 = [(CSDMessagingConversationMessage *)self activitySessionsAtIndex:k];
@@ -1989,10 +1989,10 @@ LABEL_5:
   if ([(CSDMessagingConversationMessage *)self invitationPreferencesCount])
   {
     [v37 clearInvitationPreferences];
-    v19 = [(CSDMessagingConversationMessage *)self invitationPreferencesCount];
-    if (v19)
+    invitationPreferencesCount = [(CSDMessagingConversationMessage *)self invitationPreferencesCount];
+    if (invitationPreferencesCount)
     {
-      v20 = v19;
+      v20 = invitationPreferencesCount;
       for (m = 0; m != v20; ++m)
       {
         v22 = [(CSDMessagingConversationMessage *)self invitationPreferencesAtIndex:m];
@@ -2004,10 +2004,10 @@ LABEL_5:
   if ([(CSDMessagingConversationMessage *)self removedMembersCount])
   {
     [v37 clearRemovedMembers];
-    v23 = [(CSDMessagingConversationMessage *)self removedMembersCount];
-    if (v23)
+    removedMembersCount = [(CSDMessagingConversationMessage *)self removedMembersCount];
+    if (removedMembersCount)
     {
-      v24 = v23;
+      v24 = removedMembersCount;
       for (n = 0; n != v24; ++n)
       {
         v26 = [(CSDMessagingConversationMessage *)self removedMembersAtIndex:n];
@@ -2019,10 +2019,10 @@ LABEL_5:
   if ([(CSDMessagingConversationMessage *)self lightweightMembersCount])
   {
     [v37 clearLightweightMembers];
-    v27 = [(CSDMessagingConversationMessage *)self lightweightMembersCount];
-    if (v27)
+    lightweightMembersCount = [(CSDMessagingConversationMessage *)self lightweightMembersCount];
+    if (lightweightMembersCount)
     {
-      v28 = v27;
+      v28 = lightweightMembersCount;
       for (ii = 0; ii != v28; ++ii)
       {
         v30 = [(CSDMessagingConversationMessage *)self lightweightMembersAtIndex:ii];
@@ -2034,10 +2034,10 @@ LABEL_5:
   if ([(CSDMessagingConversationMessage *)self activeLightweightParticipantsCount])
   {
     [v37 clearActiveLightweightParticipants];
-    v31 = [(CSDMessagingConversationMessage *)self activeLightweightParticipantsCount];
-    if (v31)
+    activeLightweightParticipantsCount = [(CSDMessagingConversationMessage *)self activeLightweightParticipantsCount];
+    if (activeLightweightParticipantsCount)
     {
-      v32 = v31;
+      v32 = activeLightweightParticipantsCount;
       for (jj = 0; jj != v32; ++jj)
       {
         v34 = [(CSDMessagingConversationMessage *)self activeLightweightParticipantsAtIndex:jj];
@@ -2116,9 +2116,9 @@ LABEL_5:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x40) != 0)
@@ -2173,7 +2173,7 @@ LABEL_5:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v104 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v104 + 1) + 8 * v12) copyWithZone:zone];
         [v6 addActiveParticipants:v13];
 
         v12 = v12 + 1;
@@ -2186,7 +2186,7 @@ LABEL_5:
     while (v10);
   }
 
-  v14 = [(NSString *)self->_conversationGroupUUIDString copyWithZone:a3];
+  v14 = [(NSString *)self->_conversationGroupUUIDString copyWithZone:zone];
   v15 = *(v6 + 6);
   *(v6 + 6) = v14;
 
@@ -2210,7 +2210,7 @@ LABEL_5:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v100 + 1) + 8 * v20) copyWithZone:a3];
+        v21 = [*(*(&v100 + 1) + 8 * v20) copyWithZone:zone];
         [v6 addAddedMembers:v21];
 
         v20 = v20 + 1;
@@ -2229,7 +2229,7 @@ LABEL_5:
     *(v6 + 110) |= 2u;
   }
 
-  v22 = [(NSString *)self->_protoUpgradeSessionUUID copyWithZone:a3];
+  v22 = [(NSString *)self->_protoUpgradeSessionUUID copyWithZone:zone];
   v23 = *(v6 + 19);
   *(v6 + 19) = v22;
 
@@ -2253,7 +2253,7 @@ LABEL_5:
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v96 + 1) + 8 * v28) copyWithZone:a3];
+        v29 = [*(*(&v96 + 1) + 8 * v28) copyWithZone:zone];
         [v6 addActivitySessions:v29];
 
         v28 = v28 + 1;
@@ -2266,15 +2266,15 @@ LABEL_5:
     while (v26);
   }
 
-  v30 = [(NSString *)self->_nickname copyWithZone:a3];
+  v30 = [(NSString *)self->_nickname copyWithZone:zone];
   v31 = *(v6 + 17);
   *(v6 + 17) = v30;
 
-  v32 = [(CSDMessagingConversationLink *)self->_link copyWithZone:a3];
+  v32 = [(CSDMessagingConversationLink *)self->_link copyWithZone:zone];
   v33 = *(v6 + 16);
   *(v6 + 16) = v32;
 
-  v34 = [(CSDMessagingConversationReport *)self->_reportData copyWithZone:a3];
+  v34 = [(CSDMessagingConversationReport *)self->_reportData copyWithZone:zone];
   v35 = *(v6 + 21);
   *(v6 + 21) = v34;
 
@@ -2284,15 +2284,15 @@ LABEL_5:
     *(v6 + 110) |= 0x100u;
   }
 
-  v36 = [(CSDMessagingEncryptedConversationMessage *)self->_encryptedMessage copyWithZone:a3];
+  v36 = [(CSDMessagingEncryptedConversationMessage *)self->_encryptedMessage copyWithZone:zone];
   v37 = *(v6 + 8);
   *(v6 + 8) = v36;
 
-  v38 = [(NSString *)self->_letMeInDelegationHandle copyWithZone:a3];
+  v38 = [(NSString *)self->_letMeInDelegationHandle copyWithZone:zone];
   v39 = *(v6 + 13);
   *(v6 + 13) = v38;
 
-  v40 = [(NSString *)self->_letMeInDelegationUUID copyWithZone:a3];
+  v40 = [(NSString *)self->_letMeInDelegationUUID copyWithZone:zone];
   v41 = *(v6 + 14);
   *(v6 + 14) = v40;
 
@@ -2322,7 +2322,7 @@ LABEL_5:
           objc_enumerationMutation(v42);
         }
 
-        v47 = [*(*(&v92 + 1) + 8 * v46) copyWithZone:a3];
+        v47 = [*(*(&v92 + 1) + 8 * v46) copyWithZone:zone];
         [v6 addInvitationPreferences:v47];
 
         v46 = v46 + 1;
@@ -2355,7 +2355,7 @@ LABEL_5:
           objc_enumerationMutation(v48);
         }
 
-        v53 = [*(*(&v88 + 1) + 8 * v52) copyWithZone:a3];
+        v53 = [*(*(&v88 + 1) + 8 * v52) copyWithZone:zone];
         [v6 addRemovedMembers:v53];
 
         v52 = v52 + 1;
@@ -2388,7 +2388,7 @@ LABEL_5:
           objc_enumerationMutation(v54);
         }
 
-        v59 = [*(*(&v84 + 1) + 8 * v58) copyWithZone:a3];
+        v59 = [*(*(&v84 + 1) + 8 * v58) copyWithZone:zone];
         [v6 addLightweightMembers:v59];
 
         v58 = v58 + 1;
@@ -2421,7 +2421,7 @@ LABEL_5:
           objc_enumerationMutation(v60);
         }
 
-        v65 = [*(*(&v80 + 1) + 8 * v64) copyWithZone:{a3, v80}];
+        v65 = [*(*(&v80 + 1) + 8 * v64) copyWithZone:{zone, v80}];
         [v6 addActiveLightweightParticipants:v65];
 
         v64 = v64 + 1;
@@ -2440,15 +2440,15 @@ LABEL_5:
     *(v6 + 110) |= 0x80u;
   }
 
-  v66 = [(NSString *)self->_highlightIdentifier copyWithZone:a3, v80];
+  v66 = [(NSString *)self->_highlightIdentifier copyWithZone:zone, v80];
   v67 = *(v6 + 9);
   *(v6 + 9) = v66;
 
-  v68 = [(CSDMessagingConversationJoinedMetadata *)self->_joinedMetadata copyWithZone:a3];
+  v68 = [(CSDMessagingConversationJoinedMetadata *)self->_joinedMetadata copyWithZone:zone];
   v69 = *(v6 + 12);
   *(v6 + 12) = v68;
 
-  v70 = [(CSDMessagingConversationActivitySession *)self->_stagedActivitySession copyWithZone:a3];
+  v70 = [(CSDMessagingConversationActivitySession *)self->_stagedActivitySession copyWithZone:zone];
   v71 = *(v6 + 25);
   *(v6 + 25) = v70;
 
@@ -2466,7 +2466,7 @@ LABEL_5:
     *(v6 + 110) |= 0x10u;
   }
 
-  v73 = [(CSDMessagingScreenShareContext *)self->_screenShareContext copyWithZone:a3];
+  v73 = [(CSDMessagingScreenShareContext *)self->_screenShareContext copyWithZone:zone];
   v74 = *(v6 + 23);
   *(v6 + 23) = v73;
 
@@ -2476,7 +2476,7 @@ LABEL_5:
     *(v6 + 110) |= 8u;
   }
 
-  v75 = [(CSDMessagingInvitationContext *)self->_invitationContext copyWithZone:a3];
+  v75 = [(CSDMessagingInvitationContext *)self->_invitationContext copyWithZone:zone];
   v76 = *(v6 + 10);
   *(v6 + 10) = v75;
 
@@ -2486,26 +2486,26 @@ LABEL_5:
     *(v6 + 110) |= 0x200u;
   }
 
-  v77 = [(CSDMessagingSharePlayAvailable *)self->_sharePlayAvailable copyWithZone:a3];
+  v77 = [(CSDMessagingSharePlayAvailable *)self->_sharePlayAvailable copyWithZone:zone];
   v78 = *(v6 + 24);
   *(v6 + 24) = v77;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   has = self->_has;
-  v6 = *(v4 + 110);
+  v6 = *(equalCopy + 110);
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_version != *(v4 + 53))
+    if ((v6 & 0x40) == 0 || self->_version != *(equalCopy + 53))
     {
       goto LABEL_24;
     }
@@ -2518,7 +2518,7 @@ LABEL_5:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_type != *(v4 + 52))
+    if ((v6 & 0x20) == 0 || self->_type != *(equalCopy + 52))
     {
       goto LABEL_24;
     }
@@ -2531,39 +2531,39 @@ LABEL_5:
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 110) & 0x400) == 0)
+    if ((*(equalCopy + 110) & 0x400) == 0)
     {
       goto LABEL_24;
     }
 
-    v13 = *(v4 + 219);
+    v13 = *(equalCopy + 219);
     if (self->_shouldSuppressInCallUI)
     {
-      if ((*(v4 + 219) & 1) == 0)
+      if ((*(equalCopy + 219) & 1) == 0)
       {
         goto LABEL_24;
       }
     }
 
-    else if (*(v4 + 219))
+    else if (*(equalCopy + 219))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 110) & 0x400) != 0)
+  else if ((*(equalCopy + 110) & 0x400) != 0)
   {
     goto LABEL_24;
   }
 
   activeParticipants = self->_activeParticipants;
-  if (activeParticipants | *(v4 + 2) && ![(NSMutableArray *)activeParticipants isEqual:?])
+  if (activeParticipants | *(equalCopy + 2) && ![(NSMutableArray *)activeParticipants isEqual:?])
   {
     goto LABEL_24;
   }
 
   conversationGroupUUIDString = self->_conversationGroupUUIDString;
-  if (conversationGroupUUIDString | *(v4 + 6))
+  if (conversationGroupUUIDString | *(equalCopy + 6))
   {
     if (![(NSString *)conversationGroupUUIDString isEqual:?])
     {
@@ -2572,7 +2572,7 @@ LABEL_5:
   }
 
   addedMembers = self->_addedMembers;
-  if (addedMembers | *(v4 + 4))
+  if (addedMembers | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)addedMembers isEqual:?])
     {
@@ -2580,10 +2580,10 @@ LABEL_5:
     }
   }
 
-  v10 = *(v4 + 110);
+  v10 = *(equalCopy + 110);
   if ((*&self->_has & 2) != 0)
   {
-    if ((v10 & 2) == 0 || self->_disconnectedReason != *(v4 + 14))
+    if ((v10 & 2) == 0 || self->_disconnectedReason != *(equalCopy + 14))
     {
       goto LABEL_24;
     }
@@ -2595,13 +2595,13 @@ LABEL_5:
   }
 
   protoUpgradeSessionUUID = self->_protoUpgradeSessionUUID;
-  if (protoUpgradeSessionUUID | *(v4 + 19) && ![(NSString *)protoUpgradeSessionUUID isEqual:?])
+  if (protoUpgradeSessionUUID | *(equalCopy + 19) && ![(NSString *)protoUpgradeSessionUUID isEqual:?])
   {
     goto LABEL_24;
   }
 
   activitySessions = self->_activitySessions;
-  if (activitySessions | *(v4 + 3))
+  if (activitySessions | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)activitySessions isEqual:?])
     {
@@ -2610,7 +2610,7 @@ LABEL_5:
   }
 
   nickname = self->_nickname;
-  if (nickname | *(v4 + 17))
+  if (nickname | *(equalCopy + 17))
   {
     if (![(NSString *)nickname isEqual:?])
     {
@@ -2619,7 +2619,7 @@ LABEL_5:
   }
 
   link = self->_link;
-  if (link | *(v4 + 16))
+  if (link | *(equalCopy + 16))
   {
     if (![(CSDMessagingConversationLink *)link isEqual:?])
     {
@@ -2628,7 +2628,7 @@ LABEL_5:
   }
 
   reportData = self->_reportData;
-  if (reportData | *(v4 + 21))
+  if (reportData | *(equalCopy + 21))
   {
     if (![(CSDMessagingConversationReport *)reportData isEqual:?])
     {
@@ -2636,42 +2636,42 @@ LABEL_5:
     }
   }
 
-  v19 = *(v4 + 110);
+  v19 = *(equalCopy + 110);
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 110) & 0x100) == 0)
+    if ((*(equalCopy + 110) & 0x100) == 0)
     {
       goto LABEL_24;
     }
 
-    v24 = *(v4 + 217);
+    v24 = *(equalCopy + 217);
     if (self->_isLetMeInApproved)
     {
-      if ((*(v4 + 217) & 1) == 0)
+      if ((*(equalCopy + 217) & 1) == 0)
       {
         goto LABEL_24;
       }
     }
 
-    else if (*(v4 + 217))
+    else if (*(equalCopy + 217))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 110) & 0x100) != 0)
+  else if ((*(equalCopy + 110) & 0x100) != 0)
   {
     goto LABEL_24;
   }
 
   encryptedMessage = self->_encryptedMessage;
-  if (encryptedMessage | *(v4 + 8) && ![(CSDMessagingEncryptedConversationMessage *)encryptedMessage isEqual:?])
+  if (encryptedMessage | *(equalCopy + 8) && ![(CSDMessagingEncryptedConversationMessage *)encryptedMessage isEqual:?])
   {
     goto LABEL_24;
   }
 
   letMeInDelegationHandle = self->_letMeInDelegationHandle;
-  if (letMeInDelegationHandle | *(v4 + 13))
+  if (letMeInDelegationHandle | *(equalCopy + 13))
   {
     if (![(NSString *)letMeInDelegationHandle isEqual:?])
     {
@@ -2680,7 +2680,7 @@ LABEL_5:
   }
 
   letMeInDelegationUUID = self->_letMeInDelegationUUID;
-  if (letMeInDelegationUUID | *(v4 + 14))
+  if (letMeInDelegationUUID | *(equalCopy + 14))
   {
     if (![(NSString *)letMeInDelegationUUID isEqual:?])
     {
@@ -2688,10 +2688,10 @@ LABEL_5:
     }
   }
 
-  v23 = *(v4 + 110);
+  v23 = *(equalCopy + 110);
   if ((*&self->_has & 4) != 0)
   {
-    if ((v23 & 4) == 0 || self->_enclosedEncryptedType != *(v4 + 15))
+    if ((v23 & 4) == 0 || self->_enclosedEncryptedType != *(equalCopy + 15))
     {
       goto LABEL_24;
     }
@@ -2703,13 +2703,13 @@ LABEL_5:
   }
 
   invitationPreferences = self->_invitationPreferences;
-  if (invitationPreferences | *(v4 + 11) && ![(NSMutableArray *)invitationPreferences isEqual:?])
+  if (invitationPreferences | *(equalCopy + 11) && ![(NSMutableArray *)invitationPreferences isEqual:?])
   {
     goto LABEL_24;
   }
 
   removedMembers = self->_removedMembers;
-  if (removedMembers | *(v4 + 20))
+  if (removedMembers | *(equalCopy + 20))
   {
     if (![(NSMutableArray *)removedMembers isEqual:?])
     {
@@ -2718,7 +2718,7 @@ LABEL_5:
   }
 
   lightweightMembers = self->_lightweightMembers;
-  if (lightweightMembers | *(v4 + 15))
+  if (lightweightMembers | *(equalCopy + 15))
   {
     if (![(NSMutableArray *)lightweightMembers isEqual:?])
     {
@@ -2727,7 +2727,7 @@ LABEL_5:
   }
 
   activeLightweightParticipants = self->_activeLightweightParticipants;
-  if (activeLightweightParticipants | *(v4 + 1))
+  if (activeLightweightParticipants | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)activeLightweightParticipants isEqual:?])
     {
@@ -2735,7 +2735,7 @@ LABEL_5:
     }
   }
 
-  v29 = *(v4 + 110);
+  v29 = *(equalCopy + 110);
   if ((*&self->_has & 0x80) != 0)
   {
     if ((v29 & 0x80) == 0)
@@ -2743,16 +2743,16 @@ LABEL_5:
       goto LABEL_24;
     }
 
-    v35 = *(v4 + 216);
+    v35 = *(equalCopy + 216);
     if (self->_guestModeEnabled)
     {
-      if ((*(v4 + 216) & 1) == 0)
+      if ((*(equalCopy + 216) & 1) == 0)
       {
         goto LABEL_24;
       }
     }
 
-    else if (*(v4 + 216))
+    else if (*(equalCopy + 216))
     {
       goto LABEL_24;
     }
@@ -2764,13 +2764,13 @@ LABEL_5:
   }
 
   highlightIdentifier = self->_highlightIdentifier;
-  if (highlightIdentifier | *(v4 + 9) && ![(NSString *)highlightIdentifier isEqual:?])
+  if (highlightIdentifier | *(equalCopy + 9) && ![(NSString *)highlightIdentifier isEqual:?])
   {
     goto LABEL_24;
   }
 
   joinedMetadata = self->_joinedMetadata;
-  if (joinedMetadata | *(v4 + 12))
+  if (joinedMetadata | *(equalCopy + 12))
   {
     if (![(CSDMessagingConversationJoinedMetadata *)joinedMetadata isEqual:?])
     {
@@ -2779,7 +2779,7 @@ LABEL_5:
   }
 
   stagedActivitySession = self->_stagedActivitySession;
-  if (stagedActivitySession | *(v4 + 25))
+  if (stagedActivitySession | *(equalCopy + 25))
   {
     if (![(CSDMessagingConversationActivitySession *)stagedActivitySession isEqual:?])
     {
@@ -2788,10 +2788,10 @@ LABEL_5:
   }
 
   v33 = self->_has;
-  v34 = *(v4 + 110);
+  v34 = *(equalCopy + 110);
   if (v33)
   {
-    if ((v34 & 1) == 0 || self->_avMode != *(v4 + 10))
+    if ((v34 & 1) == 0 || self->_avMode != *(equalCopy + 10))
     {
       goto LABEL_24;
     }
@@ -2804,7 +2804,7 @@ LABEL_5:
 
   if ((v33 & 0x10) != 0)
   {
-    if ((v34 & 0x10) == 0 || self->_requestBlobRecoveryOptions != *(v4 + 44))
+    if ((v34 & 0x10) == 0 || self->_requestBlobRecoveryOptions != *(equalCopy + 44))
     {
       goto LABEL_24;
     }
@@ -2816,7 +2816,7 @@ LABEL_5:
   }
 
   screenShareContext = self->_screenShareContext;
-  if (screenShareContext | *(v4 + 23))
+  if (screenShareContext | *(equalCopy + 23))
   {
     if (![(CSDMessagingScreenShareContext *)screenShareContext isEqual:?])
     {
@@ -2826,10 +2826,10 @@ LABEL_5:
     v33 = self->_has;
   }
 
-  v37 = *(v4 + 110);
+  v37 = *(equalCopy + 110);
   if ((v33 & 8) != 0)
   {
-    if ((v37 & 8) == 0 || self->_presentationMode != *(v4 + 36))
+    if ((v37 & 8) == 0 || self->_presentationMode != *(equalCopy + 36))
     {
       goto LABEL_24;
     }
@@ -2841,7 +2841,7 @@ LABEL_5:
   }
 
   invitationContext = self->_invitationContext;
-  if (invitationContext | *(v4 + 10))
+  if (invitationContext | *(equalCopy + 10))
   {
     if (![(CSDMessagingInvitationContext *)invitationContext isEqual:?])
     {
@@ -2851,10 +2851,10 @@ LABEL_5:
     v33 = self->_has;
   }
 
-  v39 = *(v4 + 110);
+  v39 = *(equalCopy + 110);
   if ((v33 & 0x200) == 0)
   {
-    if ((*(v4 + 110) & 0x200) == 0)
+    if ((*(equalCopy + 110) & 0x200) == 0)
     {
       goto LABEL_113;
     }
@@ -2864,15 +2864,15 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if ((*(v4 + 110) & 0x200) == 0)
+  if ((*(equalCopy + 110) & 0x200) == 0)
   {
     goto LABEL_24;
   }
 
-  v40 = *(v4 + 218);
+  v40 = *(equalCopy + 218);
   if (!self->_isNearbySession)
   {
-    if ((*(v4 + 218) & 1) == 0)
+    if ((*(equalCopy + 218) & 1) == 0)
     {
       goto LABEL_113;
     }
@@ -2880,14 +2880,14 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if ((*(v4 + 218) & 1) == 0)
+  if ((*(equalCopy + 218) & 1) == 0)
   {
     goto LABEL_24;
   }
 
 LABEL_113:
   sharePlayAvailable = self->_sharePlayAvailable;
-  if (sharePlayAvailable | *(v4 + 24))
+  if (sharePlayAvailable | *(equalCopy + 24))
   {
     v11 = [(CSDMessagingSharePlayAvailable *)sharePlayAvailable isEqual:?];
   }
@@ -3047,16 +3047,16 @@ LABEL_25:
   return v35 ^ v36 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v4 ^ v5 ^ v6 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ [(CSDMessagingSharePlayAvailable *)self->_sharePlayAvailable hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 110);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 110);
   if ((v6 & 0x40) != 0)
   {
-    self->_version = *(v4 + 53);
+    self->_version = *(fromCopy + 53);
     *&self->_has |= 0x40u;
-    v6 = *(v4 + 110);
+    v6 = *(fromCopy + 110);
     if ((v6 & 0x20) == 0)
     {
 LABEL_3:
@@ -3074,12 +3074,12 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_type = *(v4 + 52);
+  self->_type = *(fromCopy + 52);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 110) & 0x400) != 0)
+  if ((*(fromCopy + 110) & 0x400) != 0)
   {
 LABEL_4:
-    self->_shouldSuppressInCallUI = *(v4 + 219);
+    self->_shouldSuppressInCallUI = *(fromCopy + 219);
     *&self->_has |= 0x400u;
   }
 
@@ -3088,7 +3088,7 @@ LABEL_5:
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v83 objects:v93 count:16];
   if (v8)
   {

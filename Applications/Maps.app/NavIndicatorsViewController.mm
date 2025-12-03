@@ -3,18 +3,18 @@
 - (BOOL)_shouldEnableIncidentsReporting;
 - (NSLayoutConstraint)speedLimitToCompassBottomConstraint;
 - (NSLayoutConstraint)speedLimitToViewTopConstraint;
-- (NavIndicatorsViewController)initWithDelegate:(id)a3 pedestrianARSessionStateManager:(id)a4;
+- (NavIndicatorsViewController)initWithDelegate:(id)delegate pedestrianARSessionStateManager:(id)manager;
 - (NavIndicatorsViewControllerDelegate)delegate;
 - (double)_compassViewAlpha;
 - (double)_incidentReportingButtonAlpha;
 - (double)_speedLimitViewAlpha;
-- (id)_floatingButtonWithAction:(SEL)a3 axIdentifier:(id)a4 axLabel:(id)a5 image:(id)a6;
+- (id)_floatingButtonWithAction:(SEL)action axIdentifier:(id)identifier axLabel:(id)label image:(id)image;
 - (id)audioControlView;
 - (id)imageConfiguration;
-- (unint64_t)_guidanceLevel:(unint64_t)a3 supportingTransportType:(int)a4;
-- (void)_animateInCompassIfNeededWithTimeout:(BOOL)a3;
+- (unint64_t)_guidanceLevel:(unint64_t)level supportingTransportType:(int)type;
+- (void)_animateInCompassIfNeededWithTimeout:(BOOL)timeout;
 - (void)_animateOutCompassIfNeeded;
-- (void)_animateSpeedLimitViewAnimated:(BOOL)a3;
+- (void)_animateSpeedLimitViewAnimated:(BOOL)animated;
 - (void)_audioControlViewButtonTapped;
 - (void)_configureForForceWindshield;
 - (void)_configureForUnforceWindshield;
@@ -30,27 +30,27 @@
 - (void)_radarAuthorizationChanged;
 - (void)_removeCompassView;
 - (void)_scheduleTimerToDismissCompass;
-- (void)_setConstraint:(id)a3 active:(BOOL)a4;
-- (void)_setIndicatorsType:(unint64_t)a3 route:(id)a4;
+- (void)_setConstraint:(id)constraint active:(BOOL)active;
+- (void)_setIndicatorsType:(unint64_t)type route:(id)route;
 - (void)_updateAudioPreferences;
 - (void)_updateButtonsVisibility;
 - (void)_updateCompassStyling;
 - (void)_updateContent;
 - (void)_updateOverviewButton;
-- (void)audioControlView:(id)a3 didSelectAudioType:(unint64_t)a4;
+- (void)audioControlView:(id)view didSelectAudioType:(unint64_t)type;
 - (void)dealloc;
-- (void)didTapMapView:(id)a3 atPoint:(CGPoint)a4;
-- (void)insertDimmingOverlayForStaleMapEffectWithBlock:(id)a3;
+- (void)didTapMapView:(id)view atPoint:(CGPoint)point;
+- (void)insertDimmingOverlayForStaleMapEffectWithBlock:(id)block;
 - (void)loadView;
-- (void)mapViewNavigationCameraDidLeaveDefaultZoom:(id)a3;
-- (void)mapViewNavigationCameraHasStartedPanning:(id)a3;
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6;
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setControlsHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIndicatorsHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)mapViewNavigationCameraDidLeaveDefaultZoom:(id)zoom;
+- (void)mapViewNavigationCameraHasStartedPanning:(id)panning;
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic;
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setControlsHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setIndicatorsHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
+- (void)valueChangedForGEOConfigKey:(id)key;
 - (void)viewDidLoad;
 @end
 
@@ -73,16 +73,16 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_animateSpeedLimitViewAnimated:(BOOL)a3
+- (void)_animateSpeedLimitViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(NavIndicatorsViewController *)self _speedLimitViewAlpha];
   v6 = v5;
   if (v5 > 0.0)
   {
-    v7 = [(NavSpeedLimitView *)self->_speedLimitView superview];
+    superview = [(NavSpeedLimitView *)self->_speedLimitView superview];
 
-    if (!v7)
+    if (!superview)
     {
       [(NavIndicatorsViewController *)self _compassViewAlpha];
       v9 = v8;
@@ -96,13 +96,13 @@
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s: Inserting speedLimitView into the view hierarchy, below compass: %d", buf, 0x12u);
       }
 
-      v11 = [(NavIndicatorsViewController *)self view];
-      [v11 addSubview:self->_speedLimitView];
+      view = [(NavIndicatorsViewController *)self view];
+      [view addSubview:self->_speedLimitView];
 
-      v12 = [(NavSpeedLimitView *)self->_speedLimitView leadingAnchor];
-      v13 = [(NavIndicatorsViewController *)self view];
-      v14 = [v13 leadingAnchor];
-      v15 = [v12 constraintEqualToAnchor:v14 constant:self->_navIndicatorsPaddingHorizontal];
+      leadingAnchor = [(NavSpeedLimitView *)self->_speedLimitView leadingAnchor];
+      view2 = [(NavIndicatorsViewController *)self view];
+      leadingAnchor2 = [view2 leadingAnchor];
+      v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:self->_navIndicatorsPaddingHorizontal];
       [v15 setActive:1];
 
       if (v9 <= 0.0)
@@ -124,7 +124,7 @@
   v18[0] = _NSConcreteStackBlock;
   v18[2] = sub_100D60480;
   v18[3] = &unk_101661650;
-  if (v3)
+  if (animatedCopy)
   {
     v17 = 0.25;
   }
@@ -175,20 +175,20 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_animateInCompassIfNeededWithTimeout:(BOOL)a3
+- (void)_animateInCompassIfNeededWithTimeout:(BOOL)timeout
 {
   self->_temporarilyShowingCompass = 1;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100D6090C;
   v9[3] = &unk_101661AE0;
-  v10 = a3;
+  timeoutCopy = timeout;
   v9[4] = self;
   v4 = objc_retainBlock(v9);
   (v4[2])();
-  v5 = [(MKCompassView *)self->_compassView superview];
+  superview = [(MKCompassView *)self->_compassView superview];
 
-  if (!v5)
+  if (!superview)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -204,7 +204,7 @@
   }
 }
 
-- (void)mapViewNavigationCameraDidLeaveDefaultZoom:(id)a3
+- (void)mapViewNavigationCameraDidLeaveDefaultZoom:(id)zoom
 {
   if ([(NavIndicatorsViewController *)self indicatorsType]== 1)
   {
@@ -213,7 +213,7 @@
   }
 }
 
-- (void)mapViewNavigationCameraHasStartedPanning:(id)a3
+- (void)mapViewNavigationCameraHasStartedPanning:(id)panning
 {
   if ([(NavIndicatorsViewController *)self indicatorsType]== 1)
   {
@@ -222,9 +222,9 @@
   }
 }
 
-- (void)didTapMapView:(id)a3 atPoint:(CGPoint)a4
+- (void)didTapMapView:(id)view atPoint:(CGPoint)point
 {
-  if ([(NavIndicatorsViewController *)self indicatorsType:a3]== 1)
+  if ([(NavIndicatorsViewController *)self indicatorsType:view]== 1)
   {
 
     [(NavIndicatorsViewController *)self _animateInCompassIfNeededWithTimeout:1];
@@ -236,36 +236,36 @@
   v3 = [MapsSettings valueForConfigKey:NavigationConfig_ReportAndVerifyIncidentsWhileNavigating[0], NavigationConfig_ReportAndVerifyIncidentsWhileNavigating[1]];
   if ([v3 BOOLValue] && MapsFeature_IsEnabled_MoreReportTypes())
   {
-    v4 = [(NavIndicatorsViewController *)self route];
-    if ([v4 transportType])
+    route = [(NavIndicatorsViewController *)self route];
+    if ([route transportType])
     {
-      v5 = 0;
+      isIncidentReportingEnabled = 0;
     }
 
     else
     {
       v6 = +[TrafficIncidentLayoutManager sharedInstance];
-      v5 = [v6 isIncidentReportingEnabled];
+      isIncidentReportingEnabled = [v6 isIncidentReportingEnabled];
     }
   }
 
   else
   {
-    v5 = 0;
+    isIncidentReportingEnabled = 0;
   }
 
-  return v5;
+  return isIncidentReportingEnabled;
 }
 
-- (void)audioControlView:(id)a3 didSelectAudioType:(unint64_t)a4
+- (void)audioControlView:(id)view didSelectAudioType:(unint64_t)type
 {
   v5 = 1;
-  if (a4 != 1)
+  if (type != 1)
   {
     v5 = 2;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v6 = 0;
   }
@@ -275,20 +275,20 @@
     v6 = v5;
   }
 
-  v7 = [(NavIndicatorsViewController *)self audioPreferences];
-  v8 = [(NavIndicatorsViewController *)self route];
-  [v7 setGuidanceLevel:v6 forTransportType:{objc_msgSend(v8, "transportType")}];
+  audioPreferences = [(NavIndicatorsViewController *)self audioPreferences];
+  route = [(NavIndicatorsViewController *)self route];
+  [audioPreferences setGuidanceLevel:v6 forTransportType:{objc_msgSend(route, "transportType")}];
 
-  v9 = [(NavIndicatorsViewController *)self audioPreferences];
-  [v9 synchronize];
+  audioPreferences2 = [(NavIndicatorsViewController *)self audioPreferences];
+  [audioPreferences2 synchronize];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10 && a6 == &off_101652C18 && [&off_1016ED778 containsObject:v10])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (pathCopy && context == &off_101652C18 && [&off_1016ED778 containsObject:pathCopy])
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -302,28 +302,28 @@
   {
     v13.receiver = self;
     v13.super_class = NavIndicatorsViewController;
-    [(NavIndicatorsViewController *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(NavIndicatorsViewController *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  if (a3.var0 == 64 && a3.var1 == &unk_10163CB98 || a3.var0 == 63 && a3.var1 == &unk_10163CB60)
+  if (key.var0 == 64 && key.var1 == &unk_10163CB98 || key.var0 == 63 && key.var1 == &unk_10163CB60)
   {
     [(NavIndicatorsViewController *)self _updateContent];
   }
 }
 
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic
 {
-  v6 = *&a4;
-  v8 = a5;
-  v9 = [(NavIndicatorsViewController *)self audioPreferences];
-  v10 = [v9 guidanceLevelForTransportType:v6];
+  v6 = *&type;
+  routeCopy = route;
+  audioPreferences = [(NavIndicatorsViewController *)self audioPreferences];
+  v10 = [audioPreferences guidanceLevelForTransportType:v6];
 
-  v11 = [(NavIndicatorsViewController *)self audioPreferences];
-  v12 = [(NavIndicatorsViewController *)self route];
-  v13 = [v11 guidanceLevelForTransportType:{objc_msgSend(v12, "transportType")}];
+  audioPreferences2 = [(NavIndicatorsViewController *)self audioPreferences];
+  route = [(NavIndicatorsViewController *)self route];
+  v13 = [audioPreferences2 guidanceLevelForTransportType:{objc_msgSend(route, "transportType")}];
 
   v14 = [(NavIndicatorsViewController *)self _guidanceLevel:v13 supportingTransportType:v6];
   v15 = sub_100090D58();
@@ -361,7 +361,7 @@
     }
 
     [(NavIndicatorsViewController *)self setCurrentVoiceGuidanceLevel:v10];
-    [(NavIndicatorsViewController *)self setRoute:v8];
+    [(NavIndicatorsViewController *)self setRoute:routeCopy];
   }
 
   else
@@ -410,27 +410,27 @@
     }
 
     [(NavIndicatorsViewController *)self setCurrentVoiceGuidanceLevel:v10];
-    [(NavIndicatorsViewController *)self setRoute:v8];
+    [(NavIndicatorsViewController *)self setRoute:routeCopy];
 
-    v25 = [(NavIndicatorsViewController *)self audioPreferences];
-    [v25 setGuidanceLevel:v14 forTransportType:v6];
+    audioPreferences3 = [(NavIndicatorsViewController *)self audioPreferences];
+    [audioPreferences3 setGuidanceLevel:v14 forTransportType:v6];
 
-    v8 = [(NavIndicatorsViewController *)self audioPreferences];
-    [v8 synchronize];
+    routeCopy = [(NavIndicatorsViewController *)self audioPreferences];
+    [routeCopy synchronize];
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location
 {
   speedLimitView = self->_speedLimitView;
-  v6 = a4;
+  locationCopy = location;
   LODWORD(speedLimitView) = [(NavSpeedLimitView *)speedLimitView isVisible];
-  v7 = [v6 speedLimitIsMPH] ^ 1;
+  v7 = [locationCopy speedLimitIsMPH] ^ 1;
   v8 = self->_speedLimitView;
-  v9 = [v6 speedLimit];
-  v10 = [v6 speedLimitShieldType];
+  speedLimit = [locationCopy speedLimit];
+  speedLimitShieldType = [locationCopy speedLimitShieldType];
 
-  [(NavSpeedLimitView *)v8 setSpeedLimit:v9 units:v7 shieldType:v10];
+  [(NavSpeedLimitView *)v8 setSpeedLimit:speedLimit units:v7 shieldType:speedLimitShieldType];
   if (speedLimitView != [(NavSpeedLimitView *)self->_speedLimitView isVisible])
   {
 
@@ -438,60 +438,60 @@
   }
 }
 
-- (unint64_t)_guidanceLevel:(unint64_t)a3 supportingTransportType:(int)a4
+- (unint64_t)_guidanceLevel:(unint64_t)level supportingTransportType:(int)type
 {
-  if (a3 == 1)
+  if (level == 1)
   {
-    v4 = 0;
+    levelCopy = 0;
   }
 
   else
   {
-    v4 = a3;
+    levelCopy = level;
   }
 
-  if (a4)
+  if (type)
   {
-    v5 = 0;
-  }
-
-  else
-  {
-    v5 = a3;
-  }
-
-  if ((a4 - 2) >= 2)
-  {
-    return v5;
+    levelCopy2 = 0;
   }
 
   else
   {
-    return v4;
+    levelCopy2 = level;
+  }
+
+  if ((type - 2) >= 2)
+  {
+    return levelCopy2;
+  }
+
+  else
+  {
+    return levelCopy;
   }
 }
 
 - (void)_updateAudioPreferences
 {
-  v3 = [(NavIndicatorsViewController *)self audioPreferences];
-  [v3 loadValuesFromDefaults];
+  audioPreferences = [(NavIndicatorsViewController *)self audioPreferences];
+  [audioPreferences loadValuesFromDefaults];
 
-  v4 = [(NavIndicatorsViewController *)self audioPreferences];
-  v5 = [(NavIndicatorsViewController *)self route];
-  -[NavIndicatorsViewController setCurrentVoiceGuidanceLevel:](self, "setCurrentVoiceGuidanceLevel:", [v4 guidanceLevelForTransportType:{objc_msgSend(v5, "transportType")}]);
+  audioPreferences2 = [(NavIndicatorsViewController *)self audioPreferences];
+  route = [(NavIndicatorsViewController *)self route];
+  -[NavIndicatorsViewController setCurrentVoiceGuidanceLevel:](self, "setCurrentVoiceGuidanceLevel:", [audioPreferences2 guidanceLevelForTransportType:{objc_msgSend(route, "transportType")}]);
 
   v6 = sub_100090D58();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(NavIndicatorsViewController *)self currentVoiceGuidanceLevel];
-    if (v7 + 1 >= 4)
+    currentVoiceGuidanceLevel = [(NavIndicatorsViewController *)self currentVoiceGuidanceLevel];
+    if (currentVoiceGuidanceLevel + 1 >= 4)
     {
-      v8 = [NSString stringWithFormat:@"UNKNOWN: %lu", v7];
+      v8 = [NSString stringWithFormat:@"UNKNOWN: %lu", currentVoiceGuidanceLevel];
     }
 
     else
     {
-      v8 = *(&off_101652C58 + v7 + 1);
+      v8 = *(&off_101652C58 + currentVoiceGuidanceLevel + 1);
     }
 
     *buf = 138412290;
@@ -513,8 +513,8 @@
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "toggling heading mode", v5, 2u);
     }
 
-    v4 = [(NavIndicatorsViewController *)self delegate];
-    [v4 toggleHeadingMode];
+    delegate = [(NavIndicatorsViewController *)self delegate];
+    [delegate toggleHeadingMode];
 
     [(NavIndicatorsViewController *)self _animateOutCompassIfNeeded];
     [GEOAPPortal captureUserAction:1040 target:505 value:0];
@@ -526,10 +526,10 @@
   v3 = sub_100090D58();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -537,22 +537,22 @@
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(NavIndicatorsViewController *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(NavIndicatorsViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v12 = v9;
+    v12 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Launching TTR from nav indicators", buf, 0xCu);
   }
 
@@ -562,16 +562,16 @@ LABEL_10:
 
 - (void)_pressedReportingButton
 {
-  v2 = [(NavIndicatorsViewController *)self delegate];
-  [v2 reportAnIncident];
+  delegate = [(NavIndicatorsViewController *)self delegate];
+  [delegate reportAnIncident];
 
   [GEOAPPortal captureUserAction:115 target:505 value:0];
 }
 
 - (void)_pressedPedestrianAR
 {
-  v2 = [(NavIndicatorsViewController *)self delegate];
-  [v2 enterPedestrianAR];
+  delegate = [(NavIndicatorsViewController *)self delegate];
+  [delegate enterPedestrianAR];
 
   [GEOAPPortal captureUserAction:126 target:402 value:0];
 }
@@ -586,8 +586,8 @@ LABEL_10:
   }
 
   [GEOAPPortal captureUserAction:9018 target:505 value:0];
-  v4 = [(NavIndicatorsViewController *)self delegate];
-  [v4 switchToZoomedInMode];
+  delegate = [(NavIndicatorsViewController *)self delegate];
+  [delegate switchToZoomedInMode];
 
   [(NavIndicatorsViewController *)self _animateOutCompassIfNeeded];
   [(NavIndicatorsViewController *)self _animateSpeedLimitViewAnimated:1];
@@ -603,8 +603,8 @@ LABEL_10:
   }
 
   [GEOAPPortal captureUserAction:9017 target:505 value:0];
-  v4 = [(NavIndicatorsViewController *)self delegate];
-  [v4 switchToOverviewMode];
+  delegate = [(NavIndicatorsViewController *)self delegate];
+  [delegate switchToOverviewMode];
 
   [(NavIndicatorsViewController *)self _animateInCompassIfNeededWithTimeout:1];
   [(NavIndicatorsViewController *)self _animateSpeedLimitViewAnimated:1];
@@ -628,9 +628,9 @@ LABEL_10:
 {
   [(UIButton *)self->_toggleForceWindshield removeTarget:self action:"_pressedForceWindshield" forControlEvents:64];
   [(UIButton *)self->_toggleForceWindshield addTarget:self action:"_pressedUnforceWindshield" forControlEvents:64];
-  v5 = [(NavIndicatorsViewController *)self imageConfiguration];
+  imageConfiguration = [(NavIndicatorsViewController *)self imageConfiguration];
   toggleForceWindshield = self->_toggleForceWindshield;
-  v4 = [UIImage systemImageNamed:@"w.circle.fill" withConfiguration:v5];
+  v4 = [UIImage systemImageNamed:@"w.circle.fill" withConfiguration:imageConfiguration];
   [(UIButton *)toggleForceWindshield setImage:v4 forState:0];
 }
 
@@ -638,9 +638,9 @@ LABEL_10:
 {
   [(UIButton *)self->_toggleForceWindshield removeTarget:self action:"_pressedUnforceWindshield" forControlEvents:64];
   [(UIButton *)self->_toggleForceWindshield addTarget:self action:"_pressedForceWindshield" forControlEvents:64];
-  v5 = [(NavIndicatorsViewController *)self imageConfiguration];
+  imageConfiguration = [(NavIndicatorsViewController *)self imageConfiguration];
   toggleForceWindshield = self->_toggleForceWindshield;
-  v4 = [UIImage systemImageNamed:@"w.circle" withConfiguration:v5];
+  v4 = [UIImage systemImageNamed:@"w.circle" withConfiguration:imageConfiguration];
   [(UIButton *)toggleForceWindshield setImage:v4 forState:0];
 }
 
@@ -653,15 +653,15 @@ LABEL_10:
     [v3 setPreferredSymbolConfigurationForImage:v4];
 
     v5 = [UIColor colorNamed:@"NavigationMaterialColor"];
-    v6 = [v3 background];
-    [v6 setBackgroundColor:v5];
+    background = [v3 background];
+    [background setBackgroundColor:v5];
 
-    v7 = [v3 background];
-    [v7 setCornerRadius:30.0];
+    background2 = [v3 background];
+    [background2 setCornerRadius:30.0];
 
     [v3 setCornerStyle:-1];
-    v8 = [(NavIndicatorsViewController *)self imageConfiguration];
-    [v3 setPreferredSymbolConfigurationForImage:v8];
+    imageConfiguration = [(NavIndicatorsViewController *)self imageConfiguration];
+    [v3 setPreferredSymbolConfigurationForImage:imageConfiguration];
 
     if ([(NavIndicatorsViewController *)self indicatorsType]== 1)
     {
@@ -678,8 +678,8 @@ LABEL_10:
 
   if ([(NavIndicatorsViewController *)self indicatorsType]!= 1)
   {
-    v20 = [(NavIndicatorsViewController *)self imageConfiguration];
-    v10 = [UIImage systemImageNamed:@"point.topleft.down.to.point.bottomright.filled.curvepath" withConfiguration:v20];
+    imageConfiguration2 = [(NavIndicatorsViewController *)self imageConfiguration];
+    v10 = [UIImage systemImageNamed:@"point.topleft.down.to.point.bottomright.filled.curvepath" withConfiguration:imageConfiguration2];
 
     v3 = 0;
     goto LABEL_10;
@@ -687,8 +687,8 @@ LABEL_10:
 
   v3 = 0;
 LABEL_5:
-  v9 = [(NavIndicatorsViewController *)self imageConfiguration];
-  v10 = [UIImage systemImageNamed:@"location.north.line.fill" withConfiguration:v9];
+  imageConfiguration3 = [(NavIndicatorsViewController *)self imageConfiguration];
+  v10 = [UIImage systemImageNamed:@"location.north.line.fill" withConfiguration:imageConfiguration3];
 
   if (v3)
   {
@@ -718,7 +718,7 @@ LABEL_11:
   v25[3] = &unk_101661A40;
   v26 = v3;
   v27 = v10;
-  v28 = self;
+  selfCopy = self;
   v23 = v10;
   v24 = v3;
   [UIView performWithoutAnimation:v25];
@@ -726,8 +726,8 @@ LABEL_11:
 
 - (void)_updateCompassStyling
 {
-  v3 = [(NavIndicatorsViewController *)self traitCollection];
-  v4 = [v3 userInterfaceStyle] != 2;
+  traitCollection = [(NavIndicatorsViewController *)self traitCollection];
+  v4 = [traitCollection userInterfaceStyle] != 2;
 
   compassView = self->_compassView;
 
@@ -736,7 +736,7 @@ LABEL_11:
 
 - (void)_updateButtonsVisibility
 {
-  v3 = [(NavIndicatorsViewController *)self audioControlView];
+  audioControlView = [(NavIndicatorsViewController *)self audioControlView];
   if ([(PedestrianARSessionStateManager *)self->_pedestrianARSessionStateManager shouldShowPedestrianAR])
   {
     p_pedestrianARButton = &self->_pedestrianARButton;
@@ -752,15 +752,15 @@ LABEL_11:
 
   if (([(UIButton *)*p_pedestrianARButton isHidden]& 1) != 0)
   {
-    v6 = [(NavIndicatorsViewController *)self audioControlView];
+    audioControlView2 = [(NavIndicatorsViewController *)self audioControlView];
   }
 
   else
   {
-    v6 = *p_pedestrianARButton;
+    audioControlView2 = *p_pedestrianARButton;
   }
 
-  v14 = v6;
+  v14 = audioControlView2;
 
   if ([(NavIndicatorsViewController *)self _shouldEnableIncidentsReporting])
   {
@@ -772,15 +772,15 @@ LABEL_11:
 
   v8 = +[MapsRadarButtonHelper shouldShowButton];
   [(UIButton *)self->_ttrButton setHidden:v8 ^ 1];
-  v9 = [(UIButton *)self->_ttrButton heightAnchor];
-  v10 = v9;
+  heightAnchor = [(UIButton *)self->_ttrButton heightAnchor];
+  v10 = heightAnchor;
   v11 = 60.0;
   if (!v8)
   {
     v11 = 0.0;
   }
 
-  v12 = [v9 constraintEqualToConstant:v11];
+  v12 = [heightAnchor constraintEqualToConstant:v11];
   ttrButtonHeightConstraint = self->_ttrButtonHeightConstraint;
   self->_ttrButtonHeightConstraint = v12;
 }
@@ -812,30 +812,30 @@ LABEL_11:
 
   else
   {
-    v12 = [(MKCompassView *)compassView superview];
+    superview = [(MKCompassView *)compassView superview];
 
-    if (!v12)
+    if (!superview)
     {
-      v13 = [(NavIndicatorsViewController *)self view];
-      [v13 addSubview:self->_compassView];
+      view = [(NavIndicatorsViewController *)self view];
+      [view addSubview:self->_compassView];
 
-      v14 = [(MKCompassView *)self->_compassView leadingAnchor];
-      v15 = [(NavIndicatorsViewController *)self view];
-      v16 = [v15 leadingAnchor];
-      v17 = [v14 constraintEqualToAnchor:v16 constant:self->_navIndicatorsPaddingHorizontal];
+      leadingAnchor = [(MKCompassView *)self->_compassView leadingAnchor];
+      view2 = [(NavIndicatorsViewController *)self view];
+      leadingAnchor2 = [view2 leadingAnchor];
+      v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:self->_navIndicatorsPaddingHorizontal];
       [v3 addObject:v17];
 
-      v18 = [(MKCompassView *)self->_compassView topAnchor];
-      v19 = [(NavIndicatorsViewController *)self view];
-      v20 = [v19 topAnchor];
-      v21 = [v18 constraintEqualToAnchor:v20 constant:self->_navIndicatorsPaddingVertical];
+      topAnchor = [(MKCompassView *)self->_compassView topAnchor];
+      view3 = [(NavIndicatorsViewController *)self view];
+      topAnchor2 = [view3 topAnchor];
+      v21 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:self->_navIndicatorsPaddingVertical];
       [v3 addObject:v21];
     }
   }
 
   [(MKCompassView *)self->_compassView setAlpha:v5];
-  v22 = [(NavSpeedLimitView *)self->_speedLimitView superview];
-  v23 = v22;
+  superview2 = [(NavSpeedLimitView *)self->_speedLimitView superview];
+  v23 = superview2;
   if (v7 <= 0.0)
   {
 
@@ -867,28 +867,28 @@ LABEL_11:
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "%s: Inserting speedLimitView into the view hierarchy, below compass: %d", &v42, 0x12u);
       }
 
-      v25 = [(NavIndicatorsViewController *)self view];
-      [v25 addSubview:self->_speedLimitView];
+      view4 = [(NavIndicatorsViewController *)self view];
+      [view4 addSubview:self->_speedLimitView];
 
-      v26 = [(NavSpeedLimitView *)self->_speedLimitView leadingAnchor];
-      v27 = [(NavIndicatorsViewController *)self view];
-      v28 = [v27 leadingAnchor];
-      v29 = [v26 constraintEqualToAnchor:v28 constant:self->_navIndicatorsPaddingHorizontal];
+      leadingAnchor3 = [(NavSpeedLimitView *)self->_speedLimitView leadingAnchor];
+      view5 = [(NavIndicatorsViewController *)self view];
+      leadingAnchor4 = [view5 leadingAnchor];
+      v29 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:self->_navIndicatorsPaddingHorizontal];
       [v3 addObject:v29];
     }
 
     if (v5 <= 0.0)
     {
-      v32 = [(NavIndicatorsViewController *)self speedLimitToCompassBottomConstraint];
-      [(NavIndicatorsViewController *)self _setConstraint:v32 active:0];
+      speedLimitToCompassBottomConstraint = [(NavIndicatorsViewController *)self speedLimitToCompassBottomConstraint];
+      [(NavIndicatorsViewController *)self _setConstraint:speedLimitToCompassBottomConstraint active:0];
 
       [(NavIndicatorsViewController *)self speedLimitToViewTopConstraint];
     }
 
     else
     {
-      v30 = [(NavIndicatorsViewController *)self speedLimitToViewTopConstraint];
-      [(NavIndicatorsViewController *)self _setConstraint:v30 active:0];
+      speedLimitToViewTopConstraint = [(NavIndicatorsViewController *)self speedLimitToViewTopConstraint];
+      [(NavIndicatorsViewController *)self _setConstraint:speedLimitToViewTopConstraint active:0];
 
       [(NavIndicatorsViewController *)self speedLimitToCompassBottomConstraint];
     }
@@ -902,8 +902,8 @@ LABEL_11:
   {
     if (self->_audioControlButton)
     {
-      v35 = [(NavIndicatorsViewController *)self imageConfiguration];
-      v36 = [_TtC4Maps22NavAudioControlFactory imageForNavAudioType:v34 imageConfiguration:v35];
+      imageConfiguration = [(NavIndicatorsViewController *)self imageConfiguration];
+      v36 = [_TtC4Maps22NavAudioControlFactory imageForNavAudioType:v34 imageConfiguration:imageConfiguration];
 
       [(UIButton *)self->_audioControlButton setImage:v36 forState:0];
     }
@@ -911,10 +911,10 @@ LABEL_11:
 
   else
   {
-    v37 = [(NavIndicatorsViewController *)self route];
-    v38 = [v37 transportType];
+    route = [(NavIndicatorsViewController *)self route];
+    transportType = [route transportType];
 
-    if (v38)
+    if (transportType)
     {
       v39 = &off_1016ED9E8;
     }
@@ -936,9 +936,9 @@ LABEL_11:
 
   else
   {
-    v41 = [(UIButton *)reportingButton superview];
+    superview3 = [(UIButton *)reportingButton superview];
 
-    if (!v41)
+    if (!superview3)
     {
       [(UIStackView *)self->_stackView addArrangedSubview:self->_reportingButton];
     }
@@ -948,26 +948,26 @@ LABEL_11:
   [(NavIndicatorsViewController *)self _updateButtonsVisibility];
 }
 
-- (void)_setConstraint:(id)a3 active:(BOOL)a4
+- (void)_setConstraint:(id)constraint active:(BOOL)active
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  activeCopy = active;
+  constraintCopy = constraint;
+  v6 = constraintCopy;
+  if (constraintCopy)
   {
-    if (!v4)
+    if (!activeCopy)
     {
 LABEL_9:
-      [v6 setActive:v4];
+      [v6 setActive:activeCopy];
       goto LABEL_10;
     }
 
-    v7 = [v5 firstItem];
-    v8 = [v7 superview];
-    v9 = [v6 secondItem];
-    v10 = [v9 superview];
-    v11 = v8;
-    v12 = v10;
+    firstItem = [constraintCopy firstItem];
+    superview = [firstItem superview];
+    secondItem = [v6 secondItem];
+    superview2 = [secondItem superview];
+    v11 = superview;
+    v12 = superview2;
     if (!(v11 | v12))
     {
       v13 = 0;
@@ -985,17 +985,17 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v15 = [v6 firstItem];
-    v16 = [v6 secondItem];
-    if ([v15 isDescendantOfView:v16])
+    firstItem2 = [v6 firstItem];
+    secondItem2 = [v6 secondItem];
+    if ([firstItem2 isDescendantOfView:secondItem2])
     {
 
       goto LABEL_8;
     }
 
-    v17 = [v6 secondItem];
-    v18 = [v6 firstItem];
-    v20 = [v17 isDescendantOfView:v18];
+    secondItem3 = [v6 secondItem];
+    firstItem3 = [v6 firstItem];
+    v20 = [secondItem3 isDescendantOfView:firstItem3];
 
     if (v20)
     {
@@ -1016,15 +1016,15 @@ LABEL_10:
 
 - (void)_removeCompassView
 {
-  v3 = [(NavSpeedLimitView *)self->_speedLimitView superview];
+  superview = [(NavSpeedLimitView *)self->_speedLimitView superview];
 
-  if (v3)
+  if (superview)
   {
-    v4 = [(NavIndicatorsViewController *)self speedLimitToCompassBottomConstraint];
-    [(NavIndicatorsViewController *)self _setConstraint:v4 active:0];
+    speedLimitToCompassBottomConstraint = [(NavIndicatorsViewController *)self speedLimitToCompassBottomConstraint];
+    [(NavIndicatorsViewController *)self _setConstraint:speedLimitToCompassBottomConstraint active:0];
 
-    v5 = [(NavIndicatorsViewController *)self speedLimitToViewTopConstraint];
-    [(NavIndicatorsViewController *)self _setConstraint:v5 active:1];
+    speedLimitToViewTopConstraint = [(NavIndicatorsViewController *)self speedLimitToViewTopConstraint];
+    [(NavIndicatorsViewController *)self _setConstraint:speedLimitToViewTopConstraint active:1];
   }
 }
 
@@ -1032,8 +1032,8 @@ LABEL_10:
 {
   v3 = objc_opt_new();
   [(MKCompassView *)self->_compassView removeFromSuperview];
-  v4 = [(NavIndicatorsViewController *)self view];
-  [v4 addSubview:self->_compassView];
+  view = [(NavIndicatorsViewController *)self view];
+  [view addSubview:self->_compassView];
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
@@ -1041,39 +1041,39 @@ LABEL_10:
   v16[3] = &unk_101661B18;
   v16[4] = self;
   [UIView performWithoutAnimation:v16];
-  v5 = [(MKCompassView *)self->_compassView leadingAnchor];
-  v6 = [(NavIndicatorsViewController *)self view];
-  v7 = [v6 leadingAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:self->_navIndicatorsPaddingHorizontal];
+  leadingAnchor = [(MKCompassView *)self->_compassView leadingAnchor];
+  view2 = [(NavIndicatorsViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:self->_navIndicatorsPaddingHorizontal];
   [v3 addObject:v8];
 
-  v9 = [(MKCompassView *)self->_compassView topAnchor];
-  v10 = [(NavIndicatorsViewController *)self view];
-  v11 = [v10 topAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:self->_navIndicatorsPaddingVertical];
+  topAnchor = [(MKCompassView *)self->_compassView topAnchor];
+  view3 = [(NavIndicatorsViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:self->_navIndicatorsPaddingVertical];
   [v3 addObject:v12];
 
-  v13 = [(NavSpeedLimitView *)self->_speedLimitView superview];
+  superview = [(NavSpeedLimitView *)self->_speedLimitView superview];
 
-  if (v13)
+  if (superview)
   {
-    v14 = [(NavIndicatorsViewController *)self speedLimitToViewTopConstraint];
-    [(NavIndicatorsViewController *)self _setConstraint:v14 active:0];
+    speedLimitToViewTopConstraint = [(NavIndicatorsViewController *)self speedLimitToViewTopConstraint];
+    [(NavIndicatorsViewController *)self _setConstraint:speedLimitToViewTopConstraint active:0];
 
-    v15 = [(NavIndicatorsViewController *)self speedLimitToCompassBottomConstraint];
-    [(NavIndicatorsViewController *)self _setConstraint:v15 active:1];
+    speedLimitToCompassBottomConstraint = [(NavIndicatorsViewController *)self speedLimitToCompassBottomConstraint];
+    [(NavIndicatorsViewController *)self _setConstraint:speedLimitToCompassBottomConstraint active:1];
   }
 
   [NSLayoutConstraint activateConstraints:v3];
 }
 
-- (void)_setIndicatorsType:(unint64_t)a3 route:(id)a4
+- (void)_setIndicatorsType:(unint64_t)type route:(id)route
 {
-  v11 = a4;
+  routeCopy = route;
   indicatorsType = self->_indicatorsType;
   v8 = self->_route;
   v9 = v8;
-  if (v11 | v8)
+  if (routeCopy | v8)
   {
     v10 = [v8 isEqual:?];
   }
@@ -1083,10 +1083,10 @@ LABEL_10:
     v10 = 1;
   }
 
-  if (indicatorsType != a3 || (v10 & 1) == 0)
+  if (indicatorsType != type || (v10 & 1) == 0)
   {
-    self->_indicatorsType = a3;
-    objc_storeStrong(&self->_route, a4);
+    self->_indicatorsType = type;
+    objc_storeStrong(&self->_route, route);
     if (v10)
     {
       [(NavIndicatorsViewController *)self _updateOverviewButton];
@@ -1104,9 +1104,9 @@ LABEL_10:
   speedLimitToCompassBottomConstraint = self->_speedLimitToCompassBottomConstraint;
   if (!speedLimitToCompassBottomConstraint)
   {
-    v4 = [(NavSpeedLimitView *)self->_speedLimitView topAnchor];
-    v5 = [(MKCompassView *)self->_compassView bottomAnchor];
-    v6 = [v4 constraintEqualToAnchor:v5 constant:self->_navIndicatorsPaddingVertical];
+    topAnchor = [(NavSpeedLimitView *)self->_speedLimitView topAnchor];
+    bottomAnchor = [(MKCompassView *)self->_compassView bottomAnchor];
+    v6 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:self->_navIndicatorsPaddingVertical];
     v7 = self->_speedLimitToCompassBottomConstraint;
     self->_speedLimitToCompassBottomConstraint = v6;
 
@@ -1121,10 +1121,10 @@ LABEL_10:
   speedLimitToViewTopConstraint = self->_speedLimitToViewTopConstraint;
   if (!speedLimitToViewTopConstraint)
   {
-    v4 = [(NavSpeedLimitView *)self->_speedLimitView topAnchor];
-    v5 = [(NavIndicatorsViewController *)self view];
-    v6 = [v5 topAnchor];
-    v7 = [v4 constraintEqualToAnchor:v6 constant:self->_navIndicatorsPaddingVertical];
+    topAnchor = [(NavSpeedLimitView *)self->_speedLimitView topAnchor];
+    view = [(NavIndicatorsViewController *)self view];
+    topAnchor2 = [view topAnchor];
+    v7 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:self->_navIndicatorsPaddingVertical];
     v8 = self->_speedLimitToViewTopConstraint;
     self->_speedLimitToViewTopConstraint = v7;
 
@@ -1153,9 +1153,9 @@ LABEL_10:
 
 - (double)_incidentReportingButtonAlpha
 {
-  v2 = [(NavIndicatorsViewController *)self _shouldEnableIncidentsReporting];
+  _shouldEnableIncidentsReporting = [(NavIndicatorsViewController *)self _shouldEnableIncidentsReporting];
   result = 0.0;
-  if (v2)
+  if (_shouldEnableIncidentsReporting)
   {
     return 1.0;
   }
@@ -1169,11 +1169,11 @@ LABEL_10:
   if (!self->_indicatorsHidden)
   {
     BOOL = GEOConfigGetBOOL();
-    v5 = [(NavIndicatorsViewController *)self route];
-    v6 = [v5 transportType];
-    if (v6)
+    route = [(NavIndicatorsViewController *)self route];
+    transportType = [route transportType];
+    if (transportType)
     {
-      v7 = v6 == 3;
+      v7 = transportType == 3;
     }
 
     else
@@ -1195,11 +1195,11 @@ LABEL_10:
 
 - (double)_compassViewAlpha
 {
-  v3 = [(NavIndicatorsViewController *)self traitCollection];
-  v4 = [v3 isLuminanceReduced];
+  traitCollection = [(NavIndicatorsViewController *)self traitCollection];
+  isLuminanceReduced = [traitCollection isLuminanceReduced];
 
   v5 = 0.0;
-  if ((v4 & 1) == 0)
+  if ((isLuminanceReduced & 1) == 0)
   {
     if ([(NavIndicatorsViewController *)self indicatorsType]== 1)
     {
@@ -1229,17 +1229,17 @@ LABEL_10:
   return v5;
 }
 
-- (void)setIndicatorsHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setIndicatorsHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if (self->_indicatorsHidden != a3)
+  if (self->_indicatorsHidden != hidden)
   {
-    v4 = a4;
-    v5 = a3;
-    self->_indicatorsHidden = a3;
+    animatedCopy = animated;
+    hiddenCopy = hidden;
+    self->_indicatorsHidden = hidden;
     v7 = sub_100090D58();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      if (v5)
+      if (hiddenCopy)
       {
         v8 = @"YES";
       }
@@ -1250,7 +1250,7 @@ LABEL_10:
       }
 
       v9 = v8;
-      if (v4)
+      if (animatedCopy)
       {
         v10 = @"YES";
       }
@@ -1269,7 +1269,7 @@ LABEL_10:
     }
 
     v12 = 0.0;
-    if (v4)
+    if (animatedCopy)
     {
       v12 = 0.25;
     }
@@ -1280,21 +1280,21 @@ LABEL_10:
     v13[3] = &unk_101661B18;
     v13[4] = self;
     [UIView animateWithDuration:v13 animations:v12];
-    [(NavIndicatorsViewController *)self _animateSpeedLimitViewAnimated:v4];
+    [(NavIndicatorsViewController *)self _animateSpeedLimitViewAnimated:animatedCopy];
   }
 }
 
-- (void)setControlsHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setControlsHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if (self->_controlsHidden != a3)
+  if (self->_controlsHidden != hidden)
   {
-    v4 = a4;
-    v5 = a3;
-    self->_controlsHidden = a3;
+    animatedCopy = animated;
+    hiddenCopy = hidden;
+    self->_controlsHidden = hidden;
     v7 = sub_100090D58();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      if (v5)
+      if (hiddenCopy)
       {
         v8 = @"YES";
       }
@@ -1305,7 +1305,7 @@ LABEL_10:
       }
 
       v9 = v8;
-      if (v4)
+      if (animatedCopy)
       {
         v10 = @"YES";
       }
@@ -1323,7 +1323,7 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "setControlsHidden: %{public}@ animated: %@", buf, 0x16u);
     }
 
-    if (v5)
+    if (hiddenCopy)
     {
       v12 = 0.0;
     }
@@ -1338,7 +1338,7 @@ LABEL_10:
     v14[0] = _NSConcreteStackBlock;
     v14[2] = sub_100D63224;
     v14[3] = &unk_101661650;
-    if (!v4)
+    if (!animatedCopy)
     {
       v13 = 0.0;
     }
@@ -1399,91 +1399,91 @@ LABEL_10:
   [(NavIndicatorsViewController *)&v11 dealloc];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = NavIndicatorsViewController;
-  v4 = a3;
-  [(NavIndicatorsViewController *)&v10 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(NavIndicatorsViewController *)&v10 traitCollectionDidChange:changeCopy];
   [(NavIndicatorsViewController *)self _updateCompassStyling];
-  v5 = [(NavIndicatorsViewController *)self traitCollection];
-  v6 = sub_100017FE8(v4, v5);
+  traitCollection = [(NavIndicatorsViewController *)self traitCollection];
+  v6 = sub_100017FE8(changeCopy, traitCollection);
 
   if (v6)
   {
-    v7 = [(NavIndicatorsViewController *)self traitCollection];
-    v8 = [v7 isLuminanceReduced];
+    traitCollection2 = [(NavIndicatorsViewController *)self traitCollection];
+    isLuminanceReduced = [traitCollection2 isLuminanceReduced];
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100D634E8;
     v9[3] = &unk_101661B18;
     v9[4] = self;
-    [UIView _maps_animateForAndromeda:v8 animations:v9];
+    [UIView _maps_animateForAndromeda:isLuminanceReduced animations:v9];
   }
 }
 
-- (void)insertDimmingOverlayForStaleMapEffectWithBlock:(id)a3
+- (void)insertDimmingOverlayForStaleMapEffectWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(NavIndicatorsViewController *)self loadViewIfNeeded];
-  v5 = [(NavIndicatorsViewController *)self view];
-  v6 = v4[2](v4, v5);
+  view = [(NavIndicatorsViewController *)self view];
+  v6 = blockCopy[2](blockCopy, view);
 
   v7 = sub_100090D58();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     speedLimitView = self->_speedLimitView;
-    v9 = [(NavSpeedLimitView *)speedLimitView superview];
+    superview = [(NavSpeedLimitView *)speedLimitView superview];
     v11 = 138543874;
     v12 = v6;
     v13 = 2114;
     v14 = speedLimitView;
     v15 = 1024;
-    v16 = v9 != 0;
+    v16 = superview != 0;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Inserting %{public}@ below %{public}@ (hasSuperview: %d)", &v11, 0x1Cu);
   }
 
-  v10 = [(NavIndicatorsViewController *)self view];
-  [v10 insertSubview:v6 belowSubview:self->_speedLimitView];
+  view2 = [(NavIndicatorsViewController *)self view];
+  [view2 insertSubview:v6 belowSubview:self->_speedLimitView];
 }
 
-- (id)_floatingButtonWithAction:(SEL)a3 axIdentifier:(id)a4 axLabel:(id)a5 image:(id)a6
+- (id)_floatingButtonWithAction:(SEL)action axIdentifier:(id)identifier axLabel:(id)label image:(id)image
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  imageCopy = image;
+  labelCopy = label;
+  identifierCopy = identifier;
   v13 = objc_opt_new();
   [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v14) = 1148846080;
   [v13 setContentCompressionResistancePriority:1 forAxis:v14];
-  v15 = [v13 layer];
-  [v15 setCornerRadius:30.0];
+  layer = [v13 layer];
+  [layer setCornerRadius:30.0];
 
   [v13 _setTouchInsets:{self->_navIndicatorsTouchInsets.top, self->_navIndicatorsTouchInsets.left, self->_navIndicatorsTouchInsets.bottom, self->_navIndicatorsTouchInsets.right}];
-  [v13 setAccessibilityIdentifier:v12];
+  [v13 setAccessibilityIdentifier:identifierCopy];
 
-  [v13 setAccessibilityLabel:v11];
-  if (a3)
+  [v13 setAccessibilityLabel:labelCopy];
+  if (action)
   {
-    [v13 addTarget:self action:a3 forControlEvents:64];
+    [v13 addTarget:self action:action forControlEvents:64];
   }
 
   if (self->_disableGlass)
   {
-    v16 = [v13 layer];
+    layer2 = [v13 layer];
     LODWORD(v17) = 1045220557;
-    [v16 setShadowOpacity:v17];
+    [layer2 setShadowOpacity:v17];
 
     height = CGSizeZero.height;
-    v19 = [v13 layer];
-    [v19 setShadowOffset:{CGSizeZero.width, height}];
+    layer3 = [v13 layer];
+    [layer3 setShadowOffset:{CGSizeZero.width, height}];
 
-    v20 = [v13 layer];
-    [v20 setShadowRadius:1.0];
+    layer4 = [v13 layer];
+    [layer4 setShadowRadius:1.0];
 
-    v21 = [v13 layer];
-    [v21 setShadowPathIsBounds:1];
+    layer5 = [v13 layer];
+    [layer5 setShadowPathIsBounds:1];
 
     v22 = [UIColor colorNamed:@"NavigationMaterialColor"];
     [v13 setBackgroundColor:v22];
@@ -1500,15 +1500,15 @@ LABEL_10:
     v25 = ;
     [v13 setPreferredSymbolConfiguration:v25 forImageInState:0];
 
-    [v13 setImage:v10 forState:0];
+    [v13 setImage:imageCopy forState:0];
   }
 
   else
   {
     [v13 _maps_applyGlassBackgroundForButton:1 buttonBackgroundType:0];
-    [v13 setImage:v10 forState:0];
-    v23 = [(NavIndicatorsViewController *)self imageConfiguration];
-    [v13 setPreferredSymbolConfiguration:v23 forImageInState:0];
+    [v13 setImage:imageCopy forState:0];
+    imageConfiguration = [(NavIndicatorsViewController *)self imageConfiguration];
+    [v13 setPreferredSymbolConfiguration:imageConfiguration forImageInState:0];
 
     v24 = +[UIColor labelColor];
     [v13 setTintColor:v24];
@@ -1519,8 +1519,8 @@ LABEL_10:
 
 - (void)_audioControlViewButtonTapped
 {
-  v2 = [(NavIndicatorsViewController *)self delegate];
-  [v2 showVolumeControlView];
+  delegate = [(NavIndicatorsViewController *)self delegate];
+  [delegate showVolumeControlView];
 }
 
 - (id)audioControlView
@@ -1535,8 +1535,8 @@ LABEL_10:
     }
 
     v5 = [_TtC4Maps22NavAudioControlFactory navAudioTypeForGuidanceLevel:[(NavIndicatorsViewController *)self currentVoiceGuidanceLevel]];
-    v6 = [(NavIndicatorsViewController *)self imageConfiguration];
-    v7 = [_TtC4Maps22NavAudioControlFactory imageForNavAudioType:v5 imageConfiguration:v6];
+    imageConfiguration = [(NavIndicatorsViewController *)self imageConfiguration];
+    v7 = [_TtC4Maps22NavAudioControlFactory imageForNavAudioType:v5 imageConfiguration:imageConfiguration];
 
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"Audio Control Button [Accessibility]" value:@"localized string not found" table:0];
@@ -1650,8 +1650,8 @@ LABEL_7:
     [(UIStackView *)self->_stackView _maps_applyGlassGroup];
   }
 
-  v7 = [(NavIndicatorsViewController *)self view];
-  [v7 addSubview:self->_stackView];
+  view = [(NavIndicatorsViewController *)self view];
+  [view addSubview:self->_stackView];
 
   v8 = objc_opt_new();
   speedLimitView = self->_speedLimitView;
@@ -1702,8 +1702,8 @@ LABEL_7:
 
   [(UIStackView *)self->_stackView addArrangedSubview:self->_overviewButton];
   v23 = self->_stackView;
-  v24 = [(NavIndicatorsViewController *)self audioControlView];
-  [(UIStackView *)v23 addArrangedSubview:v24];
+  audioControlView = [(NavIndicatorsViewController *)self audioControlView];
+  [(UIStackView *)v23 addArrangedSubview:audioControlView];
 
   v25 = +[NSBundle mainBundle];
   v26 = [v25 localizedStringForKey:@"Pedestrian AR [Accessibility]" value:@"localized string not found" table:0];
@@ -1739,71 +1739,71 @@ LABEL_7:
   objc_copyWeak(&v96, &location);
   [MapsRadarButtonHelper configureWithButton:v39 presentationViewController:self actionHandler:v95];
   v40 = self->_ttrButton;
-  v41 = [(NavIndicatorsViewController *)self imageConfiguration];
-  [(UIButton *)v40 setPreferredSymbolConfiguration:v41 forImageInState:0];
+  imageConfiguration = [(NavIndicatorsViewController *)self imageConfiguration];
+  [(UIButton *)v40 setPreferredSymbolConfiguration:imageConfiguration forImageInState:0];
 
   [(UIStackView *)self->_stackView addArrangedSubview:self->_ttrButton];
   [(NavIndicatorsViewController *)self _updateButtonsVisibility];
-  v92 = [(UIStackView *)self->_stackView topAnchor];
-  v93 = [(NavIndicatorsViewController *)self view];
-  v91 = [v93 topAnchor];
-  v90 = [v92 constraintEqualToAnchor:v91 constant:self->_navIndicatorsPaddingVertical];
+  topAnchor = [(UIStackView *)self->_stackView topAnchor];
+  view2 = [(NavIndicatorsViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v90 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:self->_navIndicatorsPaddingVertical];
   v109[0] = v90;
-  v88 = [(UIStackView *)self->_stackView trailingAnchor];
-  v89 = [(NavIndicatorsViewController *)self view];
-  v87 = [v89 trailingAnchor];
-  v86 = [v88 constraintEqualToAnchor:v87 constant:-self->_navIndicatorsPaddingHorizontal];
+  trailingAnchor = [(UIStackView *)self->_stackView trailingAnchor];
+  view3 = [(NavIndicatorsViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v86 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-self->_navIndicatorsPaddingHorizontal];
   v109[1] = v86;
-  v85 = [(UIStackView *)self->_stackView bottomAnchor];
-  v84 = [(UIButton *)self->_ttrButton bottomAnchor];
-  v83 = [v85 constraintEqualToAnchor:v84];
+  bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+  bottomAnchor2 = [(UIButton *)self->_ttrButton bottomAnchor];
+  v83 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v109[2] = v83;
-  v82 = [(UIButton *)self->_overviewButton widthAnchor];
-  v81 = [v82 constraintEqualToConstant:60.0];
+  widthAnchor = [(UIButton *)self->_overviewButton widthAnchor];
+  v81 = [widthAnchor constraintEqualToConstant:60.0];
   v109[3] = v81;
-  v80 = [(UIButton *)self->_overviewButton heightAnchor];
-  v79 = [v80 constraintEqualToConstant:60.0];
+  heightAnchor = [(UIButton *)self->_overviewButton heightAnchor];
+  v79 = [heightAnchor constraintEqualToConstant:60.0];
   v109[4] = v79;
-  v78 = [(UIButton *)self->_pedestrianARButton widthAnchor];
-  v77 = [v78 constraintEqualToConstant:60.0];
+  widthAnchor2 = [(UIButton *)self->_pedestrianARButton widthAnchor];
+  v77 = [widthAnchor2 constraintEqualToConstant:60.0];
   v109[5] = v77;
-  v76 = [(UIButton *)self->_pedestrianARButton heightAnchor];
-  v42 = [(UIButton *)self->_pedestrianARButton widthAnchor];
-  v43 = [v76 constraintEqualToAnchor:v42];
+  heightAnchor2 = [(UIButton *)self->_pedestrianARButton heightAnchor];
+  widthAnchor3 = [(UIButton *)self->_pedestrianARButton widthAnchor];
+  v43 = [heightAnchor2 constraintEqualToAnchor:widthAnchor3];
   v109[6] = v43;
-  v44 = [(UIButton *)self->_ttrButton widthAnchor];
-  v45 = [v44 constraintEqualToConstant:60.0];
+  widthAnchor4 = [(UIButton *)self->_ttrButton widthAnchor];
+  v45 = [widthAnchor4 constraintEqualToConstant:60.0];
   ttrButtonHeightConstraint = self->_ttrButtonHeightConstraint;
   v109[7] = v45;
   v109[8] = ttrButtonHeightConstraint;
-  v47 = [(UIButton *)self->_reportingButton heightAnchor];
-  v48 = [v47 constraintEqualToConstant:60.0];
+  heightAnchor3 = [(UIButton *)self->_reportingButton heightAnchor];
+  v48 = [heightAnchor3 constraintEqualToConstant:60.0];
   v109[9] = v48;
-  v49 = [(UIButton *)self->_reportingButton widthAnchor];
-  v50 = [v49 constraintEqualToConstant:60.0];
+  widthAnchor5 = [(UIButton *)self->_reportingButton widthAnchor];
+  v50 = [widthAnchor5 constraintEqualToConstant:60.0];
   v109[10] = v50;
   v51 = [NSArray arrayWithObjects:v109 count:11];
   v94 = [v51 mutableCopy];
 
   if (MapsFeature_IsEnabled_MoreReportTypes())
   {
-    v52 = [(NavIndicatorsViewController *)self audioControlView];
-    v53 = [v52 widthAnchor];
-    v54 = [v53 constraintEqualToConstant:60.0];
+    audioControlView2 = [(NavIndicatorsViewController *)self audioControlView];
+    widthAnchor6 = [audioControlView2 widthAnchor];
+    v54 = [widthAnchor6 constraintEqualToConstant:60.0];
     v108[0] = v54;
-    v55 = [(NavIndicatorsViewController *)self audioControlView];
-    v56 = [v55 heightAnchor];
-    v57 = [(NavIndicatorsViewController *)self audioControlView];
-    v58 = [v57 widthAnchor];
-    v59 = [v56 constraintEqualToAnchor:v58];
+    audioControlView3 = [(NavIndicatorsViewController *)self audioControlView];
+    heightAnchor4 = [audioControlView3 heightAnchor];
+    audioControlView4 = [(NavIndicatorsViewController *)self audioControlView];
+    widthAnchor7 = [audioControlView4 widthAnchor];
+    v59 = [heightAnchor4 constraintEqualToAnchor:widthAnchor7];
     v108[1] = v59;
     v60 = [NSArray arrayWithObjects:v108 count:2];
     [v94 addObjectsFromArray:v60];
   }
 
-  v61 = +[VKDebugSettings sharedSettingsExt];
-  v62 = [v61 enableWindshieldOverrideButton];
-  if (!v62)
+  widthAnchor8 = +[VKDebugSettings sharedSettingsExt];
+  enableWindshieldOverrideButton = [widthAnchor8 enableWindshieldOverrideButton];
+  if (!enableWindshieldOverrideButton)
   {
     goto LABEL_14;
   }
@@ -1812,17 +1812,17 @@ LABEL_7:
 
   if (v63)
   {
-    v61 = [(UIButton *)self->_toggleForceWindshield widthAnchor];
-    v64 = [v61 constraintEqualToConstant:60.0];
+    widthAnchor8 = [(UIButton *)self->_toggleForceWindshield widthAnchor];
+    v64 = [widthAnchor8 constraintEqualToConstant:60.0];
     v107[0] = v64;
-    v65 = [(UIButton *)self->_toggleForceWindshield heightAnchor];
-    v66 = [v65 constraintEqualToConstant:60.0];
+    heightAnchor5 = [(UIButton *)self->_toggleForceWindshield heightAnchor];
+    v66 = [heightAnchor5 constraintEqualToConstant:60.0];
     v107[1] = v66;
     v67 = [NSArray arrayWithObjects:v107 count:2];
     [v94 addObjectsFromArray:v67];
 
 LABEL_14:
-    v68 = v62 ^ 1;
+    v68 = enableWindshieldOverrideButton ^ 1;
     goto LABEL_16;
   }
 
@@ -1832,9 +1832,9 @@ LABEL_16:
   [NSLayoutConstraint activateConstraints:v94];
   [(NavIndicatorsViewController *)self _updateContent];
   v69 = +[MNNavigationService sharedService];
-  v70 = [v69 route];
+  route = [v69 route];
 
-  if (!v70)
+  if (!route)
   {
     v73 = sub_10006D178();
     if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
@@ -1863,10 +1863,10 @@ LABEL_16:
     }
   }
 
-  v71 = [(NavIndicatorsViewController *)self audioPreferences];
-  -[NavIndicatorsViewController setCurrentVoiceGuidanceLevel:](self, "setCurrentVoiceGuidanceLevel:", [v71 guidanceLevelForTransportType:{objc_msgSend(v70, "transportType")}]);
+  audioPreferences = [(NavIndicatorsViewController *)self audioPreferences];
+  -[NavIndicatorsViewController setCurrentVoiceGuidanceLevel:](self, "setCurrentVoiceGuidanceLevel:", [audioPreferences guidanceLevelForTransportType:{objc_msgSend(route, "transportType")}]);
 
-  [(NavIndicatorsViewController *)self setRoute:v70];
+  [(NavIndicatorsViewController *)self setRoute:route];
   v72 = &_dispatch_main_q;
   _GEOConfigAddDelegateListenerForKey();
 
@@ -1881,10 +1881,10 @@ LABEL_16:
   [(NavIndicatorsViewController *)self setView:v3];
 }
 
-- (NavIndicatorsViewController)initWithDelegate:(id)a3 pedestrianARSessionStateManager:(id)a4
+- (NavIndicatorsViewController)initWithDelegate:(id)delegate pedestrianARSessionStateManager:(id)manager
 {
-  v6 = a3;
-  v26 = a4;
+  delegateCopy = delegate;
+  managerCopy = manager;
   v33.receiver = self;
   v33.super_class = NavIndicatorsViewController;
   v7 = [(NavIndicatorsViewController *)&v33 initWithNibName:0 bundle:0];
@@ -1894,11 +1894,11 @@ LABEL_16:
     v9 = NSStringFromClass(v8);
     [(NavIndicatorsViewController *)v7 setAccessibilityIdentifier:v9];
 
-    objc_storeWeak(&v7->_delegate, v6);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v10 = +[MNNavigationService sharedService];
     [v10 registerObserver:v7];
 
-    objc_storeStrong(&v7->_pedestrianARSessionStateManager, a4);
+    objc_storeStrong(&v7->_pedestrianARSessionStateManager, manager);
     [(PedestrianARSessionStateManager *)v7->_pedestrianARSessionStateManager addObserver:v7];
     v7->_observingAudioKeys = 1;
     v29 = 0u;

@@ -1,43 +1,43 @@
 @interface DADClientSubscribedCalendarJunkCheckDelegate
-- (id)_createURLRequestForSubscriptionCalendarURL:(id)a3;
-- (id)_findCalendarURLFromAccount:(id)a3;
-- (id)_generateBodyWithURL:(id)a3;
-- (void)_finishWithJunkStatusString:(id)a3 error:(id)a4;
-- (void)checkSubscribedCalendarJunkStatus:(id)a3;
-- (void)finishWithError:(id)a3;
+- (id)_createURLRequestForSubscriptionCalendarURL:(id)l;
+- (id)_findCalendarURLFromAccount:(id)account;
+- (id)_generateBodyWithURL:(id)l;
+- (void)_finishWithJunkStatusString:(id)string error:(id)error;
+- (void)checkSubscribedCalendarJunkStatus:(id)status;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation DADClientSubscribedCalendarJunkCheckDelegate
 
-- (void)checkSubscribedCalendarJunkStatus:(id)a3
+- (void)checkSubscribedCalendarJunkStatus:(id)status
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DADClientSubscribedCalendarJunkCheckDelegate *)self _createURLRequestForSubscriptionCalendarURL:v4];
+  statusCopy = status;
+  v5 = [(DADClientSubscribedCalendarJunkCheckDelegate *)self _createURLRequestForSubscriptionCalendarURL:statusCopy];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAD30] sharedSession];
-    v7 = [v5 HTTPBody];
+    mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
+    hTTPBody = [v5 HTTPBody];
     v11 = MEMORY[0x277D85DD0];
     v12 = 3221225472;
     v13 = __82__DADClientSubscribedCalendarJunkCheckDelegate_checkSubscribedCalendarJunkStatus___block_invoke;
     v14 = &unk_278F1D4C8;
-    v15 = v4;
-    v16 = self;
-    v8 = [v6 uploadTaskWithRequest:v5 fromData:v7 completionHandler:&v11];
+    v15 = statusCopy;
+    selfCopy = self;
+    v8 = [mEMORY[0x277CCAD30] uploadTaskWithRequest:v5 fromData:hTTPBody completionHandler:&v11];
 
     [v8 resume];
   }
 
   else
   {
-    v6 = DALoggingwithCategory();
+    mEMORY[0x277CCAD30] = DALoggingwithCategory();
     v9 = *(MEMORY[0x277D03988] + 4);
-    if (os_log_type_enabled(v6, v9))
+    if (os_log_type_enabled(mEMORY[0x277CCAD30], v9))
     {
       *buf = 138412290;
-      v18 = v4;
-      _os_log_impl(&dword_248524000, v6, v9, "Checking whether subscribed calendar is junk failed. Unable to create a URL request. Calendar URL = %@", buf, 0xCu);
+      v18 = statusCopy;
+      _os_log_impl(&dword_248524000, mEMORY[0x277CCAD30], v9, "Checking whether subscribed calendar is junk failed. Unable to create a URL request. Calendar URL = %@", buf, 0xCu);
     }
   }
 
@@ -138,32 +138,32 @@ LABEL_20:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 4);
   if (os_log_type_enabled(v5, v6))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = errorCopy;
     _os_log_impl(&dword_248524000, v5, v6, "Checking whether subscribed calendar is junk -finishWithError: called with error %@", &v8, 0xCu);
   }
 
-  [(DADClientSubscribedCalendarJunkCheckDelegate *)self _finishWithJunkStatusString:0 error:v4];
+  [(DADClientSubscribedCalendarJunkCheckDelegate *)self _finishWithJunkStatusString:0 error:errorCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createURLRequestForSubscriptionCalendarURL:(id)a3
+- (id)_createURLRequestForSubscriptionCalendarURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = sharedDAAccountStore();
-  v6 = [v5 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v5 aa_primaryAppleAccount];
 
-  if (v6)
+  if (aa_primaryAppleAccount)
   {
-    v7 = [(DADClientSubscribedCalendarJunkCheckDelegate *)self _findCalendarURLFromAccount:v6];
+    v7 = [(DADClientSubscribedCalendarJunkCheckDelegate *)self _findCalendarURLFromAccount:aa_primaryAppleAccount];
     if (v7)
     {
       v8 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:v7];
@@ -201,10 +201,10 @@ LABEL_6:
   [v14 setMainDocumentURL:v15];
 
   [v14 addValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"content-type"];
-  v16 = [(DADClientSubscribedCalendarJunkCheckDelegate *)self _generateBodyWithURL:v4];
+  v16 = [(DADClientSubscribedCalendarJunkCheckDelegate *)self _generateBodyWithURL:lCopy];
 
   [v14 setHTTPBody:v16];
-  if (v9 && ([v14 aa_addAuthTokenOrBasicAuthHeaderWithAccount:v6 preferUsingPassword:0] & 1) == 0)
+  if (v9 && ([v14 aa_addAuthTokenOrBasicAuthHeaderWithAccount:aa_primaryAppleAccount preferUsingPassword:0] & 1) == 0)
   {
     [v14 setURL:v11];
     v17 = DALoggingwithCategory();
@@ -219,60 +219,60 @@ LABEL_6:
   return v14;
 }
 
-- (id)_generateBodyWithURL:(id)a3
+- (id)_generateBodyWithURL:(id)l
 {
   v3 = MEMORY[0x277CFDCA0];
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(v3);
   v6 = *MEMORY[0x277CFDE60];
   v7 = *MEMORY[0x277CFDE90];
   [v5 startElement:*MEMORY[0x277CFDE60] inNamespace:*MEMORY[0x277CFDE90] withAttributes:0];
   v8 = *MEMORY[0x277CFDF38];
   v9 = *MEMORY[0x277CFDEF8];
-  v10 = [v4 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  [v5 appendElement:v8 inNamespace:v9 withStringContent:v10 withAttributeNamesAndValues:0];
+  [v5 appendElement:v8 inNamespace:v9 withStringContent:absoluteString withAttributeNamesAndValues:0];
   [v5 endElement:v6 inNamespace:v7];
-  v11 = [v5 data];
+  data = [v5 data];
 
-  return v11;
+  return data;
 }
 
-- (void)_finishWithJunkStatusString:(id)a3 error:(id)a4
+- (void)_finishWithJunkStatusString:(id)string error:(id)error
 {
-  v13 = a3;
-  v6 = a4;
+  stringCopy = string;
+  errorCopy = error;
   if (![(DADisableableObject *)self isDisabled]&& ![(DADClientDelegate *)self finished])
   {
     [(DADClientDelegate *)self setFinished:1];
-    v7 = [(DADClientDelegate *)self client];
-    v8 = [v7 rawConnection];
+    client = [(DADClientDelegate *)self client];
+    rawConnection = [client rawConnection];
 
-    if (v8)
+    if (rawConnection)
     {
       v9 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:3];
       [v9 setObject:*MEMORY[0x277D03AF0] forKeyedSubscript:*MEMORY[0x277D03C88]];
-      v10 = [(DADClientDelegate *)self delegateID];
-      [v9 setObject:v10 forKeyedSubscript:*MEMORY[0x277D03AF8]];
+      delegateID = [(DADClientDelegate *)self delegateID];
+      [v9 setObject:delegateID forKeyedSubscript:*MEMORY[0x277D03AF8]];
 
-      [v9 setObject:v13 forKeyedSubscript:*MEMORY[0x277D03B00]];
-      v11 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
+      [v9 setObject:stringCopy forKeyedSubscript:*MEMORY[0x277D03B00]];
+      v11 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:errorCopy requiringSecureCoding:1 error:0];
       [v9 setObject:v11 forKeyedSubscript:*MEMORY[0x277D03B40]];
 
       v12 = _CFXPCCreateXPCObjectFromCFObject();
-      xpc_connection_send_message(v8, v12);
+      xpc_connection_send_message(rawConnection, v12);
     }
   }
 }
 
-- (id)_findCalendarURLFromAccount:(id)a3
+- (id)_findCalendarURLFromAccount:(id)account
 {
-  v3 = [a3 calSyncingAccountUsingChildAccounts:0];
+  v3 = [account calSyncingAccountUsingChildAccounts:0];
   v4 = [objc_alloc(MEMORY[0x277D03720]) initWithBackingAccountInfo:v3];
   v5 = [v4 urlFromDataclassPropertiesForDataclass:*MEMORY[0x277CB8958]];
-  v6 = [v5 absoluteString];
+  absoluteString = [v5 absoluteString];
 
-  return v6;
+  return absoluteString;
 }
 
 @end

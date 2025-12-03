@@ -1,22 +1,22 @@
 @interface IUIRTISystemDelegateMultiplexer
-- (BOOL)respondsToSelector:(SEL)a3;
-- (void)inputSystemService:(id)a3 prepareForInputSession:(id)a4 options:(id)a5;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (void)inputSystemService:(id)service prepareForInputSession:(id)session options:(id)options;
 @end
 
 @implementation IUIRTISystemDelegateMultiplexer
 
-- (void)inputSystemService:(id)a3 prepareForInputSession:(id)a4 options:(id)a5
+- (void)inputSystemService:(id)service prepareForInputSession:(id)session options:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(IUIRTISystemDelegateMultiplexer *)self contextDelegate];
-  [v11 inputSystemService:v10 prepareForInputSession:v9 options:v8];
+  optionsCopy = options;
+  sessionCopy = session;
+  serviceCopy = service;
+  contextDelegate = [(IUIRTISystemDelegateMultiplexer *)self contextDelegate];
+  [contextDelegate inputSystemService:serviceCopy prepareForInputSession:sessionCopy options:optionsCopy];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v3 = [(IUIRTISystemDelegateMultiplexer *)self primaryDelegate];
+  primaryDelegate = [(IUIRTISystemDelegateMultiplexer *)self primaryDelegate];
   v4 = objc_opt_respondsToSelector();
 
   return v4 & 1;

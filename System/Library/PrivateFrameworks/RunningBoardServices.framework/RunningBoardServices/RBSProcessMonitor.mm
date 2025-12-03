@@ -1,28 +1,28 @@
 @interface RBSProcessMonitor
-+ (id)_monitorWithService:(id)a3;
-+ (id)_monitorWithService:(id)a3 configuration:(id)a4;
++ (id)_monitorWithService:(id)service;
++ (id)_monitorWithService:(id)service configuration:(id)configuration;
 + (id)monitor;
-+ (id)monitorWithConfiguration:(id)a3;
-+ (id)monitorWithPredicate:(id)a3 updateHandler:(id)a4;
++ (id)monitorWithConfiguration:(id)configuration;
++ (id)monitorWithPredicate:(id)predicate updateHandler:(id)handler;
 - (NSSet)states;
 - (RBSProcessMonitor)init;
 - (RBSProcessMonitorConfiguration)configuration;
-- (id)_initWithService:(id *)a1;
-- (id)stateForIdentity:(id)a3;
+- (id)_initWithService:(id *)service;
+- (id)stateForIdentity:(id)identity;
 - (unint64_t)events;
 - (unsigned)serviceClass;
-- (void)_handleExitEvent:(id)a3;
-- (void)_handlePreventLaunchUpdate:(id)a3;
-- (void)_handleProcessStateChange:(id)a3;
+- (void)_handleExitEvent:(id)event;
+- (void)_handlePreventLaunchUpdate:(id)update;
+- (void)_handleProcessStateChange:(id)change;
 - (void)_reconnect;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setEvents:(unint64_t)a3;
-- (void)setPredicates:(id)a3;
-- (void)setPreventLaunchUpdateHandle:(id)a3;
-- (void)setStateDescriptor:(id)a3;
-- (void)setUpdateHandler:(id)a3;
-- (void)updateConfiguration:(id)a3;
+- (void)setEvents:(unint64_t)events;
+- (void)setPredicates:(id)predicates;
+- (void)setPreventLaunchUpdateHandle:(id)handle;
+- (void)setStateDescriptor:(id)descriptor;
+- (void)setUpdateHandler:(id)handler;
+- (void)updateConfiguration:(id)configuration;
 @end
 
 @implementation RBSProcessMonitor
@@ -60,16 +60,16 @@
   os_unfair_lock_lock(&self->_lock);
   if (self->_valid)
   {
-    v3 = [(RBSProcessMonitorConfiguration *)self->_configuration serviceClass];
+    serviceClass = [(RBSProcessMonitorConfiguration *)self->_configuration serviceClass];
   }
 
   else
   {
-    v3 = 17;
+    serviceClass = 17;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return serviceClass;
 }
 
 - (RBSProcessMonitorConfiguration)configuration
@@ -92,27 +92,27 @@
 
 + (id)monitor
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)_monitorWithService:(id)a3
++ (id)_monitorWithService:(id)service
 {
-  v4 = a3;
-  v5 = [(RBSProcessMonitor *)[a1 alloc] _initWithService:v4];
+  serviceCopy = service;
+  v5 = [(RBSProcessMonitor *)[self alloc] _initWithService:serviceCopy];
 
   return v5;
 }
 
-+ (id)monitorWithPredicate:(id)a3 updateHandler:(id)a4
++ (id)monitorWithPredicate:(id)predicate updateHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (predicateCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -133,11 +133,11 @@ LABEL_3:
   v13[1] = 3221225472;
   v13[2] = __56__RBSProcessMonitor_monitorWithPredicate_updateHandler___block_invoke;
   v13[3] = &unk_1E7275E48;
-  v14 = v6;
+  v14 = predicateCopy;
   v15 = v8;
   v9 = v8;
-  v10 = v6;
-  v11 = [a1 monitorWithConfiguration:v13];
+  v10 = predicateCopy;
+  v11 = [self monitorWithConfiguration:v13];
 
   return v11;
 }
@@ -158,20 +158,20 @@ void __56__RBSProcessMonitor_monitorWithPredicate_updateHandler___block_invoke(u
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)monitorWithConfiguration:(id)a3
++ (id)monitorWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = +[RBSConnection sharedInstance];
-  v6 = [a1 _monitorWithService:v5 configuration:v4];
+  v6 = [self _monitorWithService:v5 configuration:configurationCopy];
 
   return v6;
 }
 
-- (id)stateForIdentity:(id)a3
+- (id)stateForIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_stateByIdentity objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_stateByIdentity objectForKeyedSubscript:identityCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -182,19 +182,19 @@ void __56__RBSProcessMonitor_monitorWithPredicate_updateHandler___block_invoke(u
 {
   os_unfair_lock_lock(&self->_lock);
   v3 = MEMORY[0x1E695DFA8];
-  v4 = [(NSMutableDictionary *)self->_stateByIdentity allValues];
-  v5 = [v3 setWithArray:v4];
+  allValues = [(NSMutableDictionary *)self->_stateByIdentity allValues];
+  v5 = [v3 setWithArray:allValues];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)updateConfiguration:(id)a3
+- (void)updateConfiguration:(id)configuration
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     [RBSProcessMonitor updateConfiguration:];
   }
@@ -203,7 +203,7 @@ void __56__RBSProcessMonitor_monitorWithPredicate_updateHandler___block_invoke(u
   if (self->_valid)
   {
     self->_configuring = 1;
-    v4[2](v4, self);
+    configurationCopy[2](configurationCopy, self);
     self->_configuring = 0;
     v5 = [(RBSProcessMonitorConfiguration *)self->_configuration copy];
     os_unfair_lock_unlock(&self->_lock);
@@ -222,8 +222,8 @@ void __56__RBSProcessMonitor_monitorWithPredicate_updateHandler___block_invoke(u
         v32 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v10 = [(NSMutableDictionary *)self->_stateByIdentity allValues];
-        v11 = [v10 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        allValues = [(NSMutableDictionary *)self->_stateByIdentity allValues];
+        v11 = [allValues countByEnumeratingWithState:&v29 objects:v34 count:16];
         if (v11)
         {
           v12 = v11;
@@ -234,17 +234,17 @@ void __56__RBSProcessMonitor_monitorWithPredicate_updateHandler___block_invoke(u
             {
               if (*v30 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(allValues);
               }
 
               v15 = *(*(&v29 + 1) + 8 * i);
-              v16 = [(RBSProcessMonitorConfiguration *)self->_configuration stateDescriptor];
-              [v16 filterState:v15];
+              stateDescriptor = [(RBSProcessMonitorConfiguration *)self->_configuration stateDescriptor];
+              [stateDescriptor filterState:v15];
 
               if (([v15 isEmptyState] & 1) == 0)
               {
-                v17 = [v15 process];
-                v18 = [v5 matchesProcess:v17];
+                process = [v15 process];
+                v18 = [v5 matchesProcess:process];
 
                 if (v18)
                 {
@@ -253,12 +253,12 @@ void __56__RBSProcessMonitor_monitorWithPredicate_updateHandler___block_invoke(u
               }
 
               stateByIdentity = self->_stateByIdentity;
-              v20 = [v15 process];
-              v21 = [v20 identity];
-              [(NSMutableDictionary *)stateByIdentity setObject:0 forKeyedSubscript:v21];
+              process2 = [v15 process];
+              identity = [process2 identity];
+              [(NSMutableDictionary *)stateByIdentity setObject:0 forKeyedSubscript:identity];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v29 objects:v34 count:16];
+            v12 = [allValues countByEnumeratingWithState:&v29 objects:v34 count:16];
           }
 
           while (v12);
@@ -276,10 +276,10 @@ void __56__RBSProcessMonitor_monitorWithPredicate_updateHandler___block_invoke(u
 
       else
       {
-        v24 = [v8 rbs_isPermanentFailure];
+        rbs_isPermanentFailure = [v8 rbs_isPermanentFailure];
         v25 = rbs_monitor_log();
         v26 = os_log_type_enabled(v25, OS_LOG_TYPE_ERROR);
-        if (v24)
+        if (rbs_isPermanentFailure)
         {
           if (v26)
           {
@@ -303,7 +303,7 @@ void __56__RBSProcessMonitor_monitorWithPredicate_updateHandler___block_invoke(u
   else
   {
     v23 = objc_alloc_init(RBSProcessMonitorConfiguration);
-    v4[2](v4, v23);
+    configurationCopy[2](configurationCopy, v23);
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -316,43 +316,43 @@ void __56__RBSProcessMonitor_monitorWithPredicate_updateHandler___block_invoke(u
   os_unfair_lock_lock(&self->_lock);
   if (self->_valid)
   {
-    v3 = [(RBSProcessMonitorConfiguration *)self->_configuration events];
+    events = [(RBSProcessMonitorConfiguration *)self->_configuration events];
   }
 
   else
   {
-    v3 = 0;
+    events = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return events;
 }
 
-- (void)setPredicates:(id)a3
+- (void)setPredicates:(id)predicates
 {
-  v4 = a3;
+  predicatesCopy = predicates;
   os_unfair_lock_assert_owner(&self->_lock);
   if (!self->_configuring)
   {
     [RBSProcessMonitor setPredicates:];
   }
 
-  [(RBSProcessMonitorConfiguration *)self->_configuration setPredicates:v4];
+  [(RBSProcessMonitorConfiguration *)self->_configuration setPredicates:predicatesCopy];
 }
 
-- (void)setStateDescriptor:(id)a3
+- (void)setStateDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_assert_owner(&self->_lock);
   if (!self->_configuring)
   {
     [RBSProcessMonitor setStateDescriptor:];
   }
 
-  [(RBSProcessMonitorConfiguration *)self->_configuration setStateDescriptor:v4];
+  [(RBSProcessMonitorConfiguration *)self->_configuration setStateDescriptor:descriptorCopy];
 }
 
-- (void)setEvents:(unint64_t)a3
+- (void)setEvents:(unint64_t)events
 {
   os_unfair_lock_assert_owner(&self->_lock);
   if (!self->_configuring)
@@ -362,24 +362,24 @@ void __56__RBSProcessMonitor_monitorWithPredicate_updateHandler___block_invoke(u
 
   configuration = self->_configuration;
 
-  [(RBSProcessMonitorConfiguration *)configuration setEvents:a3];
+  [(RBSProcessMonitorConfiguration *)configuration setEvents:events];
 }
 
-- (void)setUpdateHandler:(id)a3
+- (void)setUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_assert_owner(&self->_lock);
   if (!self->_configuring)
   {
     [RBSProcessMonitor setUpdateHandler:];
   }
 
-  [(RBSProcessMonitorConfiguration *)self->_configuration setUpdateHandler:v4];
+  [(RBSProcessMonitorConfiguration *)self->_configuration setUpdateHandler:handlerCopy];
 }
 
-- (void)setPreventLaunchUpdateHandle:(id)a3
+- (void)setPreventLaunchUpdateHandle:(id)handle
 {
-  newValue = a3;
+  newValue = handle;
   os_unfair_lock_assert_owner(&self->_lock);
   if (!self->_configuring)
   {
@@ -389,29 +389,29 @@ void __56__RBSProcessMonitor_monitorWithPredicate_updateHandler___block_invoke(u
   [(RBSProcessMonitorConfiguration *)self->_configuration setPreventLaunchUpdateHandler:?];
 }
 
-- (void)_handleProcessStateChange:(id)a3
+- (void)_handleProcessStateChange:(id)change
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(RBSProcessMonitorConfiguration *)self->_configuration stateDescriptor];
+  stateDescriptor = [(RBSProcessMonitorConfiguration *)self->_configuration stateDescriptor];
 
-  if (!v5 || !self->_valid)
+  if (!stateDescriptor || !self->_valid)
   {
     os_unfair_lock_unlock(&self->_lock);
     goto LABEL_28;
   }
 
-  v6 = [v4 process];
+  process = [changeCopy process];
   v7 = self->_configuration;
-  v8 = [v6 identity];
-  if ([(RBSProcessMonitorConfiguration *)v7 matchesProcess:v6])
+  identity = [process identity];
+  if ([(RBSProcessMonitorConfiguration *)v7 matchesProcess:process])
   {
-    v9 = [v4 copy];
-    v10 = [(RBSProcessMonitorConfiguration *)v7 stateDescriptor];
-    [v10 filterState:v9];
+    v9 = [changeCopy copy];
+    stateDescriptor2 = [(RBSProcessMonitorConfiguration *)v7 stateDescriptor];
+    [stateDescriptor2 filterState:v9];
 
-    v11 = [(NSMutableDictionary *)self->_stateByIdentity objectForKey:v8];
+    v11 = [(NSMutableDictionary *)self->_stateByIdentity objectForKey:identity];
     v12 = v11;
     if (v11)
     {
@@ -421,58 +421,58 @@ LABEL_13:
         v16 = rbs_monitor_log();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
-          v17 = [v4 process];
+          process2 = [changeCopy process];
           v22 = 138543362;
-          v23 = v17;
+          v23 = process2;
           _os_log_impl(&dword_18E8AD000, v16, OS_LOG_TYPE_INFO, "Update skipped for %{public}@", &v22, 0xCu);
         }
 
-        v13 = 0;
+        updateHandler = 0;
         v14 = 0;
         goto LABEL_16;
       }
     }
 
-    else if ([v4 isRunning] & 1) == 0 && (objc_msgSend(v4, "taskState") || (objc_msgSend(v4, "isEmptyState")))
+    else if ([changeCopy isRunning] & 1) == 0 && (objc_msgSend(changeCopy, "taskState") || (objc_msgSend(changeCopy, "isEmptyState")))
     {
       goto LABEL_13;
     }
 
-    v13 = [(RBSProcessMonitorConfiguration *)v7 updateHandler];
+    updateHandler = [(RBSProcessMonitorConfiguration *)v7 updateHandler];
     v15 = [v9 copy];
     v14 = [RBSProcessStateUpdate updateWithState:v15 previousState:v12 exitEvent:0];
 
 LABEL_16:
-    if ([v4 isRunning] & 1) == 0 && (objc_msgSend(v4, "taskState") || (objc_msgSend(v4, "isEmptyState")))
+    if ([changeCopy isRunning] & 1) == 0 && (objc_msgSend(changeCopy, "taskState") || (objc_msgSend(changeCopy, "isEmptyState")))
     {
-      [(NSMutableDictionary *)self->_stateByIdentity removeObjectForKey:v8];
+      [(NSMutableDictionary *)self->_stateByIdentity removeObjectForKey:identity];
     }
 
     else
     {
-      [(NSMutableDictionary *)self->_stateByIdentity setObject:v9 forKey:v8];
+      [(NSMutableDictionary *)self->_stateByIdentity setObject:v9 forKey:identity];
     }
 
     goto LABEL_22;
   }
 
-  [(NSMutableDictionary *)self->_stateByIdentity removeObjectForKey:v8];
-  v13 = 0;
+  [(NSMutableDictionary *)self->_stateByIdentity removeObjectForKey:identity];
+  updateHandler = 0;
   v14 = 0;
 LABEL_22:
   os_unfair_lock_unlock(&self->_lock);
-  if (v14 && v13)
+  if (v14 && updateHandler)
   {
-    (v13)[2](v13, self, v6, v14);
+    (updateHandler)[2](updateHandler, self, process, v14);
     v18 = rbs_monitor_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v19 = [v4 process];
-      v20 = [v4 taskState];
+      process3 = [changeCopy process];
+      taskState = [changeCopy taskState];
       v22 = 138543618;
-      v23 = v19;
+      v23 = process3;
       v24 = 1024;
-      v25 = v20;
+      v25 = taskState;
       _os_log_impl(&dword_18E8AD000, v18, OS_LOG_TYPE_INFO, "Update delivered for %{public}@ with taskState %d", &v22, 0x12u);
     }
   }
@@ -481,30 +481,30 @@ LABEL_28:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleExitEvent:(id)a3
+- (void)_handleExitEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   os_unfair_lock_lock(&self->_lock);
   if (self->_valid)
   {
-    v5 = [v4 process];
+    process = [eventCopy process];
     v6 = self->_configuration;
-    if (([(RBSProcessMonitorConfiguration *)v6 events]& 1) != 0 && [(RBSProcessMonitorConfiguration *)v6 matchesProcess:v5])
+    if (([(RBSProcessMonitorConfiguration *)v6 events]& 1) != 0 && [(RBSProcessMonitorConfiguration *)v6 matchesProcess:process])
     {
-      v7 = [(RBSProcessMonitorConfiguration *)v6 updateHandler];
-      v8 = [RBSProcessStateUpdate updateWithState:0 previousState:0 exitEvent:v4];
+      updateHandler = [(RBSProcessMonitorConfiguration *)v6 updateHandler];
+      v8 = [RBSProcessStateUpdate updateWithState:0 previousState:0 exitEvent:eventCopy];
     }
 
     else
     {
-      v7 = 0;
+      updateHandler = 0;
       v8 = 0;
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    if (v8 && v7)
+    if (v8 && updateHandler)
     {
-      (v7)[2](v7, self, v5, v8);
+      (updateHandler)[2](updateHandler, self, process, v8);
     }
   }
 
@@ -519,20 +519,20 @@ LABEL_28:
   }
 }
 
-- (void)_handlePreventLaunchUpdate:(id)a3
+- (void)_handlePreventLaunchUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   os_unfair_lock_lock(&self->_lock);
   if (self->_valid)
   {
     v5 = self->_configuration;
     if (([(RBSProcessMonitorConfiguration *)v5 events]& 2) != 0)
     {
-      v6 = [(RBSProcessMonitorConfiguration *)v5 preventLaunchUpdateHandler];
+      preventLaunchUpdateHandler = [(RBSProcessMonitorConfiguration *)v5 preventLaunchUpdateHandler];
       os_unfair_lock_unlock(&self->_lock);
-      if (v6)
+      if (preventLaunchUpdateHandler)
       {
-        (v6)[2](v6, self, v4);
+        (preventLaunchUpdateHandler)[2](preventLaunchUpdateHandler, self, updateCopy);
       }
     }
 
@@ -553,56 +553,56 @@ LABEL_28:
   }
 }
 
-- (id)_initWithService:(id *)a1
+- (id)_initWithService:(id *)service
 {
   v4 = a2;
-  if (a1)
+  if (service)
   {
-    v13.receiver = a1;
+    v13.receiver = service;
     v13.super_class = RBSProcessMonitor;
     v5 = objc_msgSendSuper2(&v13, sel_init);
-    a1 = v5;
+    service = v5;
     if (v5)
     {
       *(v5 + 24) = 1;
       objc_storeStrong(v5 + 2, a2);
-      *(a1 + 2) = 0;
+      *(service + 2) = 0;
       v6 = objc_alloc_init(RBSProcessMonitorConfiguration);
-      v7 = a1[4];
-      a1[4] = v6;
+      v7 = service[4];
+      service[4] = v6;
 
       v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v9 = a1[5];
-      a1[5] = v8;
+      v9 = service[5];
+      service[5] = v8;
 
       v10 = [RBSWorkloop createCalloutQueue:?];
-      v11 = a1[6];
-      a1[6] = v10;
+      v11 = service[6];
+      service[6] = v10;
     }
   }
 
-  return a1;
+  return service;
 }
 
-+ (id)_monitorWithService:(id)a3 configuration:(id)a4
++ (id)_monitorWithService:(id)service configuration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RBSProcessMonitor *)[a1 alloc] _initWithService:v7];
+  configurationCopy = configuration;
+  serviceCopy = service;
+  v8 = [(RBSProcessMonitor *)[self alloc] _initWithService:serviceCopy];
 
-  [v8 updateConfiguration:v6];
+  [v8 updateConfiguration:configurationCopy];
 
   return v8;
 }
 
 - (void)_reconnect
 {
-  if (a1)
+  if (self)
   {
-    return [a1 updateConfiguration:&__block_literal_global];
+    return [self updateConfiguration:&__block_literal_global];
   }
 
-  return a1;
+  return self;
 }
 
 + (void)monitorWithPredicate:updateHandler:.cold.1()

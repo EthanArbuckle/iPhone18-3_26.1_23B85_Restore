@@ -1,47 +1,47 @@
 @interface SXComponents
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)allComponents;
-- (SXComponents)initWithArray:(id)a3;
-- (id)componentsForContainerComponentWithPath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_removeComponent:(id)a3;
-- (void)addComponent:(id)a3;
-- (void)addComponentsFromArray:(id)a3;
-- (void)enumerateComponentsWithBlock:(id)a3;
-- (void)insertComponent:(id)a3 afterComponent:(id)a4;
-- (void)insertComponent:(id)a3 atIndex:(unint64_t)a4;
+- (SXComponents)initWithArray:(id)array;
+- (id)componentsForContainerComponentWithPath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_removeComponent:(id)component;
+- (void)addComponent:(id)component;
+- (void)addComponentsFromArray:(id)array;
+- (void)enumerateComponentsWithBlock:(id)block;
+- (void)insertComponent:(id)component afterComponent:(id)afterComponent;
+- (void)insertComponent:(id)component atIndex:(unint64_t)index;
 - (void)removeAllComponents;
-- (void)removeComponentAtIndex:(unint64_t)a3;
-- (void)removeComponentWithIdentifier:(id)a3;
-- (void)replaceComponent:(id)a3 withComponent:(id)a4;
-- (void)replaceComponentAtIndex:(unint64_t)a3 withComponent:(id)a4;
-- (void)setComponents:(id)a3;
+- (void)removeComponentAtIndex:(unint64_t)index;
+- (void)removeComponentWithIdentifier:(id)identifier;
+- (void)replaceComponent:(id)component withComponent:(id)withComponent;
+- (void)replaceComponentAtIndex:(unint64_t)index withComponent:(id)component;
+- (void)setComponents:(id)components;
 @end
 
 @implementation SXComponents
 
-- (SXComponents)initWithArray:(id)a3
+- (SXComponents)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v13.receiver = self;
   v13.super_class = SXComponents;
   v5 = [(SXComponents *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     components = v5->_components;
-    v5->_components = v6;
+    v5->_components = array;
 
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     componentsByIdentifier = v5->_componentsByIdentifier;
-    v5->_componentsByIdentifier = v8;
+    v5->_componentsByIdentifier = dictionary;
 
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     childComponentsByParentIdentifier = v5->_childComponentsByParentIdentifier;
-    v5->_childComponentsByParentIdentifier = v10;
+    v5->_childComponentsByParentIdentifier = dictionary2;
 
-    [(SXComponents *)v5 addComponentsFromArray:v4];
+    [(SXComponents *)v5 addComponentsFromArray:arrayCopy];
   }
 
   return v5;
@@ -54,10 +54,10 @@
   return v2;
 }
 
-- (void)enumerateComponentsWithBlock:(id)a3
+- (void)enumerateComponentsWithBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -78,12 +78,12 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if (v4[2](v4, self, v10))
+        if (blockCopy[2](blockCopy, self, v10))
         {
-          v11 = [v10 identifier];
-          v12 = [(SXComponents *)self componentsForContainerComponentWithIdentifier:v11];
+          identifier = [v10 identifier];
+          v12 = [(SXComponents *)self componentsForContainerComponentWithIdentifier:identifier];
 
-          [v12 enumerateComponentsWithBlock:v4];
+          [v12 enumerateComponentsWithBlock:blockCopy];
         }
       }
 
@@ -94,44 +94,44 @@
   }
 }
 
-- (id)componentsForContainerComponentWithPath:(id)a3
+- (id)componentsForContainerComponentWithPath:(id)path
 {
-  v4 = self;
-  v5 = [a3 objectEnumerator];
-  v6 = [v5 nextObject];
-  if (v6)
+  selfCopy = self;
+  objectEnumerator = [path objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    v7 = nextObject;
     do
     {
-      v8 = [(SXComponents *)v4 componentsForContainerComponentWithIdentifier:v7];
+      v8 = [(SXComponents *)selfCopy componentsForContainerComponentWithIdentifier:v7];
 
-      v9 = [v5 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v7 = v9;
-      v4 = v8;
+      v7 = nextObject2;
+      selfCopy = v8;
     }
 
-    while (v9);
+    while (nextObject2);
   }
 
   else
   {
-    v8 = v4;
+    v8 = selfCopy;
   }
 
   return v8;
 }
 
-- (void)addComponentsFromArray:(id)a3
+- (void)addComponentsFromArray:(id)array
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [arrayCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -143,29 +143,29 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrayCopy);
         }
 
         [(SXComponents *)self addComponent:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [arrayCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)addComponent:(id)a3
+- (void)addComponent:(id)component
 {
-  v4 = a3;
-  if (v4)
+  componentCopy = component;
+  if (componentCopy)
   {
     componentsByIdentifier = self->_componentsByIdentifier;
-    v8 = v4;
-    v6 = [v4 identifier];
-    v7 = [(NSMutableDictionary *)componentsByIdentifier objectForKey:v6];
+    v8 = componentCopy;
+    identifier = [componentCopy identifier];
+    v7 = [(NSMutableDictionary *)componentsByIdentifier objectForKey:identifier];
 
     if (v7)
     {
@@ -177,26 +177,26 @@
       [(SXComponents *)self insertComponent:v8 atIndex:[(SXComponents *)self count]];
     }
 
-    v4 = v8;
+    componentCopy = v8;
   }
 }
 
-- (void)insertComponent:(id)a3 atIndex:(unint64_t)a4
+- (void)insertComponent:(id)component atIndex:(unint64_t)index
 {
-  isKindOfClass = a3;
+  isKindOfClass = component;
   v7 = isKindOfClass;
   if (isKindOfClass)
   {
     v17 = isKindOfClass;
     isKindOfClass = [(SXComponents *)self count];
     v7 = v17;
-    if (isKindOfClass >= a4)
+    if (isKindOfClass >= index)
     {
       componentsByIdentifier = self->_componentsByIdentifier;
-      v9 = [v17 identifier];
-      [(NSMutableDictionary *)componentsByIdentifier setObject:v17 forKey:v9];
+      identifier = [v17 identifier];
+      [(NSMutableDictionary *)componentsByIdentifier setObject:v17 forKey:identifier];
 
-      [(NSMutableArray *)self->_components insertObject:v17 atIndex:a4];
+      [(NSMutableArray *)self->_components insertObject:v17 atIndex:index];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       v7 = v17;
@@ -204,14 +204,14 @@
       {
         v10 = v17;
         v11 = objc_alloc(objc_opt_class());
-        v12 = [v10 components];
-        v13 = [v12 NSArray];
-        v14 = [v11 initWithArray:v13];
+        components = [v10 components];
+        nSArray = [components NSArray];
+        v14 = [v11 initWithArray:nSArray];
 
         childComponentsByParentIdentifier = self->_childComponentsByParentIdentifier;
-        v16 = [v10 identifier];
+        identifier2 = [v10 identifier];
 
-        [(NSMutableDictionary *)childComponentsByParentIdentifier setObject:v14 forKey:v16];
+        [(NSMutableDictionary *)childComponentsByParentIdentifier setObject:v14 forKey:identifier2];
         v7 = v17;
       }
     }
@@ -220,53 +220,53 @@
   MEMORY[0x1EEE66BB8](isKindOfClass, v7);
 }
 
-- (void)insertComponent:(id)a3 afterComponent:(id)a4
+- (void)insertComponent:(id)component afterComponent:(id)afterComponent
 {
-  v7 = a3;
-  v6 = [(SXComponents *)self indexOfComponent:a4];
+  componentCopy = component;
+  v6 = [(SXComponents *)self indexOfComponent:afterComponent];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(SXComponents *)self addComponent:v7];
+    [(SXComponents *)self addComponent:componentCopy];
   }
 
   else
   {
-    [(SXComponents *)self insertComponent:v7 atIndex:v6 + 1];
+    [(SXComponents *)self insertComponent:componentCopy atIndex:v6 + 1];
   }
 }
 
-- (void)replaceComponentAtIndex:(unint64_t)a3 withComponent:(id)a4
+- (void)replaceComponentAtIndex:(unint64_t)index withComponent:(id)component
 {
-  v6 = a4;
-  [(SXComponents *)self removeComponentAtIndex:a3];
-  [(SXComponents *)self insertComponent:v6 atIndex:a3];
+  componentCopy = component;
+  [(SXComponents *)self removeComponentAtIndex:index];
+  [(SXComponents *)self insertComponent:componentCopy atIndex:index];
 }
 
-- (void)replaceComponent:(id)a3 withComponent:(id)a4
+- (void)replaceComponent:(id)component withComponent:(id)withComponent
 {
-  v6 = a4;
-  [(SXComponents *)self replaceComponentAtIndex:[(SXComponents *)self indexOfComponent:a3] withComponent:v6];
+  withComponentCopy = withComponent;
+  [(SXComponents *)self replaceComponentAtIndex:[(SXComponents *)self indexOfComponent:component] withComponent:withComponentCopy];
 }
 
-- (void)setComponents:(id)a3
+- (void)setComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   [(SXComponents *)self removeAllComponents];
-  [(SXComponents *)self addComponentsFromArray:v4];
+  [(SXComponents *)self addComponentsFromArray:componentsCopy];
 }
 
-- (void)removeComponentAtIndex:(unint64_t)a3
+- (void)removeComponentAtIndex:(unint64_t)index
 {
-  if ([(SXComponents *)self count]> a3)
+  if ([(SXComponents *)self count]> index)
   {
-    v5 = [(NSMutableArray *)self->_components objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_components objectAtIndex:index];
     [(SXComponents *)self _removeComponent:v5];
   }
 }
 
-- (void)removeComponentWithIdentifier:(id)a3
+- (void)removeComponentWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(NSMutableDictionary *)self->_componentsByIdentifier objectForKey:?];
     [(SXComponents *)self _removeComponent:v4];
@@ -282,25 +282,25 @@
   [(NSMutableDictionary *)childComponentsByParentIdentifier removeAllObjects];
 }
 
-- (void)_removeComponent:(id)a3
+- (void)_removeComponent:(id)component
 {
-  if (a3)
+  if (component)
   {
     components = self->_components;
-    v5 = a3;
-    [(NSMutableArray *)components removeObject:v5];
+    componentCopy = component;
+    [(NSMutableArray *)components removeObject:componentCopy];
     componentsByIdentifier = self->_componentsByIdentifier;
-    v7 = [v5 identifier];
-    [(NSMutableDictionary *)componentsByIdentifier removeObjectForKey:v7];
+    identifier = [componentCopy identifier];
+    [(NSMutableDictionary *)componentsByIdentifier removeObjectForKey:identifier];
 
     childComponentsByParentIdentifier = self->_childComponentsByParentIdentifier;
-    v9 = [v5 identifier];
+    identifier2 = [componentCopy identifier];
 
-    [(NSMutableDictionary *)childComponentsByParentIdentifier removeObjectForKey:v9];
+    [(NSMutableDictionary *)childComponentsByParentIdentifier removeObjectForKey:identifier2];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[SXComponents alloc] initWithArray:0];
   v5 = [(NSMutableArray *)self->_components mutableCopy];
@@ -335,7 +335,7 @@ void __29__SXComponents_copyWithZone___block_invoke(uint64_t a1, void *a2, void 
   [v4 setObject:v6 forKey:v5];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(SXComponents *)[SXMutableComponents alloc] initWithArray:0];
   v5 = [(NSMutableArray *)self->_components mutableCopy];
@@ -370,10 +370,10 @@ void __36__SXComponents_mutableCopyWithZone___block_invoke(uint64_t a1, void *a2
   [v4 setObject:v6 forKey:v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -381,9 +381,9 @@ void __36__SXComponents_mutableCopyWithZone___block_invoke(uint64_t a1, void *a2
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSMutableArray *)self->_components isEqualToArray:v4->_components]&& [(NSMutableDictionary *)self->_componentsByIdentifier isEqualToDictionary:v4->_componentsByIdentifier])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSMutableArray *)self->_components isEqualToArray:equalCopy->_components]&& [(NSMutableDictionary *)self->_componentsByIdentifier isEqualToDictionary:equalCopy->_componentsByIdentifier])
     {
-      v5 = [(NSMutableDictionary *)self->_childComponentsByParentIdentifier isEqualToDictionary:v4->_childComponentsByParentIdentifier];
+      v5 = [(NSMutableDictionary *)self->_childComponentsByParentIdentifier isEqualToDictionary:equalCopy->_childComponentsByParentIdentifier];
     }
 
     else

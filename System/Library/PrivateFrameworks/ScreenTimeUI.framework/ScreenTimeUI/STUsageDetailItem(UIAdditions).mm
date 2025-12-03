@@ -11,19 +11,19 @@
 
 - (id)localizedDisplayName
 {
-  v2 = [a1 identifier];
-  if ([v2 isEqualToString:*MEMORY[0x277D4BCC0]])
+  identifier = [self identifier];
+  if ([identifier isEqualToString:*MEMORY[0x277D4BCC0]])
   {
     v3 = +[STScreenTimeUIBundle bundle];
     v4 = v3;
     v5 = @"AllAppsAndCategories";
 LABEL_9:
-    v6 = [v3 localizedStringForKey:v5 value:&stru_282F1E250 table:0];
+    displayName = [v3 localizedStringForKey:v5 value:&stru_282F1E250 table:0];
 
     goto LABEL_10;
   }
 
-  if ([v2 isEqualToString:*MEMORY[0x277D4BCC8]])
+  if ([identifier isEqualToString:*MEMORY[0x277D4BCC8]])
   {
     v3 = +[STScreenTimeUIBundle bundle];
     v4 = v3;
@@ -31,7 +31,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if ([v2 isEqualToString:*MEMORY[0x277D4BCD0]])
+  if ([identifier isEqualToString:*MEMORY[0x277D4BCD0]])
   {
     v3 = +[STScreenTimeUIBundle bundle];
     v4 = v3;
@@ -39,7 +39,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if ([v2 isEqualToString:*MEMORY[0x277D4BCD8]])
+  if ([identifier isEqualToString:*MEMORY[0x277D4BCD8]])
   {
     v3 = +[STScreenTimeUIBundle bundle];
     v4 = v3;
@@ -47,52 +47,52 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = [a1 type];
-  switch(v8)
+  type = [self type];
+  switch(type)
   {
     case 3:
-      v11 = [MEMORY[0x277CF9658] shortLocalizedNameForIdentifier:v2];
+      _lp_userVisibleHost = [MEMORY[0x277CF9658] shortLocalizedNameForIdentifier:identifier];
       goto LABEL_21;
     case 2:
-      v11 = [v2 _lp_userVisibleHost];
+      _lp_userVisibleHost = [identifier _lp_userVisibleHost];
 LABEL_21:
-      v6 = v11;
+      displayName = _lp_userVisibleHost;
       break;
     case 1:
-      v9 = [MEMORY[0x277D4B8C0] sharedCache];
-      v10 = [v9 appInfoForBundleIdentifier:v2];
-      v6 = [v10 displayName];
+      mEMORY[0x277D4B8C0] = [MEMORY[0x277D4B8C0] sharedCache];
+      v10 = [mEMORY[0x277D4B8C0] appInfoForBundleIdentifier:identifier];
+      displayName = [v10 displayName];
       if (![v10 source])
       {
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
         v12[2] = __54__STUsageDetailItem_UIAdditions__localizedDisplayName__block_invoke;
         v12[3] = &unk_2783393D8;
-        v12[4] = a1;
-        [v9 fetchAppInfoForBundleIdentifier:v2 completionHandler:v12];
+        v12[4] = self;
+        [mEMORY[0x277D4B8C0] fetchAppInfoForBundleIdentifier:identifier completionHandler:v12];
       }
 
       break;
     default:
-      v6 = 0;
+      displayName = 0;
       break;
   }
 
 LABEL_10:
 
-  return v6;
+  return displayName;
 }
 
 - (id)iconImage
 {
   v2 = +[STIconCache sharedCache];
-  v3 = [a1 identifier];
-  v4 = [a1 type];
-  if (v4 == 3)
+  identifier = [self identifier];
+  type = [self type];
+  if (type == 3)
   {
-    v5 = [v2 imageForCategoryIdentifier:v3];
+    v5 = [v2 imageForCategoryIdentifier:identifier];
 LABEL_9:
-    v16 = v5;
+    imageForBlankApplicationIcon = v5;
     if (v5)
     {
       goto LABEL_11;
@@ -101,46 +101,46 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v4 != 2)
+  if (type != 2)
   {
-    if (v4 == 1)
+    if (type == 1)
     {
-      v5 = [v2 imageForBundleIdentifier:v3];
+      v5 = [v2 imageForBundleIdentifier:identifier];
       goto LABEL_9;
     }
 
 LABEL_10:
-    v16 = [v2 imageForBlankApplicationIcon];
-    [v2 addObserver:a1 selector:sel__didFindIconImage_ bundleIdentifier:v3];
-    v17 = [MEMORY[0x277D4B8C0] sharedCache];
-    [v17 addObserver:a1 selector:sel__didFindIconImage_ bundleIdentifier:v3];
+    imageForBlankApplicationIcon = [v2 imageForBlankApplicationIcon];
+    [v2 addObserver:self selector:sel__didFindIconImage_ bundleIdentifier:identifier];
+    mEMORY[0x277D4B8C0] = [MEMORY[0x277D4B8C0] sharedCache];
+    [mEMORY[0x277D4B8C0] addObserver:self selector:sel__didFindIconImage_ bundleIdentifier:identifier];
 
     goto LABEL_11;
   }
 
-  v6 = [a1 localizedDisplayName];
-  if ([v6 length])
+  localizedDisplayName = [self localizedDisplayName];
+  if ([localizedDisplayName length])
   {
     v7 = objc_opt_new();
     [v7 setScheme:@"https"];
-    [v7 setHost:v6];
+    [v7 setHost:localizedDisplayName];
     v21 = [v7 URL];
-    v8 = [v21 _lp_highLevelDomain];
-    v9 = [v7 host];
+    _lp_highLevelDomain = [v21 _lp_highLevelDomain];
+    host = [v7 host];
     v10 = [v7 URL];
-    v11 = v8;
-    v12 = v9;
+    v11 = _lp_highLevelDomain;
+    v12 = host;
     v13 = v10;
     if ([v11 length])
     {
       v14 = [v11 substringToIndex:1];
-      v15 = [v14 uppercaseString];
+      uppercaseString = [v14 uppercaseString];
     }
 
     else
     {
       v19 = [v12 substringToIndex:1];
-      v15 = [v19 uppercaseString];
+      uppercaseString = [v19 uppercaseString];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -156,48 +156,48 @@ LABEL_10:
       [STUsageDetailItem(UIAdditions) iconImage];
     }
 
-    v15 = 0;
+    uppercaseString = 0;
   }
 
-  v20 = [MEMORY[0x277D75C80] currentTraitCollection];
-  v16 = [v2 monogramImageForInitial:v15 useDarkColors:{objc_msgSend(v20, "userInterfaceStyle") == 2}];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  imageForBlankApplicationIcon = [v2 monogramImageForInitial:uppercaseString useDarkColors:{objc_msgSend(currentTraitCollection, "userInterfaceStyle") == 2}];
 
-  if (!v16)
+  if (!imageForBlankApplicationIcon)
   {
     goto LABEL_10;
   }
 
 LABEL_11:
 
-  return v16;
+  return imageForBlankApplicationIcon;
 }
 
 - (id)_monogramUsingDarkColors:()UIAdditions
 {
   v5 = +[STIconCache sharedCache];
-  v6 = [a1 localizedDisplayName];
-  if ([v6 length])
+  localizedDisplayName = [self localizedDisplayName];
+  if ([localizedDisplayName length])
   {
     v7 = objc_opt_new();
     [v7 setScheme:@"https"];
-    [v7 setHost:v6];
+    [v7 setHost:localizedDisplayName];
     v8 = [v7 URL];
-    v9 = [v8 _lp_highLevelDomain];
-    v10 = [v7 host];
+    _lp_highLevelDomain = [v8 _lp_highLevelDomain];
+    host = [v7 host];
     v11 = [v7 URL];
-    v12 = v9;
-    v13 = v10;
+    v12 = _lp_highLevelDomain;
+    v13 = host;
     v14 = v11;
     if ([v12 length])
     {
       v15 = [v12 substringToIndex:1];
-      v16 = [v15 uppercaseString];
+      uppercaseString = [v15 uppercaseString];
     }
 
     else
     {
       v17 = [v13 substringToIndex:1];
-      v16 = [v17 uppercaseString];
+      uppercaseString = [v17 uppercaseString];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -213,26 +213,26 @@ LABEL_11:
       [STUsageDetailItem(UIAdditions) iconImage];
     }
 
-    v16 = 0;
+    uppercaseString = 0;
   }
 
-  v18 = [v5 monogramImageForInitial:v16 useDarkColors:a3];
+  v18 = [v5 monogramImageForInitial:uppercaseString useDarkColors:a3];
 
   return v18;
 }
 
 - (uint64_t)_didFindIconImage:()UIAdditions
 {
-  [a1 willChangeValueForKey:@"iconImage"];
+  [self willChangeValueForKey:@"iconImage"];
   v2 = +[STIconCache sharedCache];
-  v3 = [a1 identifier];
-  [v2 removeObserver:a1 bundleIdentifier:v3];
+  identifier = [self identifier];
+  [v2 removeObserver:self bundleIdentifier:identifier];
 
-  v4 = [MEMORY[0x277D4B8C0] sharedCache];
-  v5 = [a1 identifier];
-  [v4 removeObserver:a1 bundleIdentifier:v5];
+  mEMORY[0x277D4B8C0] = [MEMORY[0x277D4B8C0] sharedCache];
+  identifier2 = [self identifier];
+  [mEMORY[0x277D4B8C0] removeObserver:self bundleIdentifier:identifier2];
 
-  return [a1 didChangeValueForKey:@"iconImage"];
+  return [self didChangeValueForKey:@"iconImage"];
 }
 
 + (void)iconImageForBundleIdentifier:()UIAdditions completionHandler:

@@ -1,9 +1,9 @@
 @interface FCMyArticlesSearchOperation
 - (BOOL)validateOperation;
 - (FCMyArticlesSearchOperation)init;
-- (id)_cappedFeedItemsFromResponses:(id)a3 allFeedItems:(id)a4;
-- (void)_generateFeedRequestsForFeedRange:(id)a3 completionHandler:(id)a4;
-- (void)operationWillFinishWithError:(id)a3;
+- (id)_cappedFeedItemsFromResponses:(id)responses allFeedItems:(id)items;
+- (void)_generateFeedRequestsForFeedRange:(id)range completionHandler:(id)handler;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -26,9 +26,9 @@
 - (BOOL)validateOperation
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(FCMyArticlesSearchOperation *)self context];
+  context = [(FCMyArticlesSearchOperation *)self context];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!context && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"articles search operation requires a context"];
     v19 = 136315906;
@@ -42,9 +42,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v19, 0x26u);
   }
 
-  v4 = [(FCMyArticlesSearchOperation *)self feature];
+  feature = [(FCMyArticlesSearchOperation *)self feature];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!feature && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"articles search operation requires a feature"];
     v19 = 136315906;
@@ -58,8 +58,8 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v19, 0x26u);
   }
 
-  v5 = [(FCMyArticlesSearchOperation *)self dateRange];
-  if (!v5 || (v6 = v5, -[FCMyArticlesSearchOperation dateRange](self, "dateRange"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isFinite], v7, v6, (v8 & 1) == 0))
+  dateRange = [(FCMyArticlesSearchOperation *)self dateRange];
+  if (!dateRange || (v6 = dateRange, -[FCMyArticlesSearchOperation dateRange](self, "dateRange"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isFinite], v7, v6, (v8 & 1) == 0))
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -76,44 +76,44 @@
     }
   }
 
-  v9 = [(FCMyArticlesSearchOperation *)self context];
-  if (v9)
+  context2 = [(FCMyArticlesSearchOperation *)self context];
+  if (context2)
   {
-    v10 = [(FCMyArticlesSearchOperation *)self feature];
-    if (v10)
+    feature2 = [(FCMyArticlesSearchOperation *)self feature];
+    if (feature2)
     {
-      v11 = [(FCMyArticlesSearchOperation *)self dateRange];
-      if (v11)
+      dateRange2 = [(FCMyArticlesSearchOperation *)self dateRange];
+      if (dateRange2)
       {
-        v12 = [(FCMyArticlesSearchOperation *)self dateRange];
-        v13 = [v12 isFinite];
+        dateRange3 = [(FCMyArticlesSearchOperation *)self dateRange];
+        isFinite = [dateRange3 isFinite];
       }
 
       else
       {
-        v13 = 0;
+        isFinite = 0;
       }
     }
 
     else
     {
-      v13 = 0;
+      isFinite = 0;
     }
   }
 
   else
   {
-    v13 = 0;
+    isFinite = 0;
   }
 
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return isFinite;
 }
 
 - (void)performOperation
 {
-  v3 = [(FCMyArticlesSearchOperation *)self dateRange];
-  v4 = [FCFeedRange feedRangeFromDateRange:v3];
+  dateRange = [(FCMyArticlesSearchOperation *)self dateRange];
+  v4 = [FCFeedRange feedRangeFromDateRange:dateRange];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -175,55 +175,55 @@ void __47__FCMyArticlesSearchOperation_performOperation__block_invoke_2(uint64_t
   [*(a1 + 32) finishedPerformingOperationWithError:v9];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v13 = a3;
-  v4 = [(FCMyArticlesSearchOperation *)self resultFeedItems];
+  errorCopy = error;
+  resultFeedItems = [(FCMyArticlesSearchOperation *)self resultFeedItems];
 
-  if (v13)
+  if (errorCopy)
   {
-    if (!v4)
+    if (!resultFeedItems)
     {
       goto LABEL_7;
     }
 
-    v5 = self;
+    selfCopy2 = self;
     v6 = 0;
   }
 
   else
   {
-    if (v4)
+    if (resultFeedItems)
     {
       goto LABEL_7;
     }
 
     v6 = MEMORY[0x1E695E0F0];
-    v5 = self;
+    selfCopy2 = self;
   }
 
-  [(FCMyArticlesSearchOperation *)v5 setResultFeedItems:v6];
+  [(FCMyArticlesSearchOperation *)selfCopy2 setResultFeedItems:v6];
 LABEL_7:
-  v7 = [(FCMyArticlesSearchOperation *)self searchCompletionHandler];
+  searchCompletionHandler = [(FCMyArticlesSearchOperation *)self searchCompletionHandler];
 
-  v9 = v13;
-  if (v7)
+  v9 = errorCopy;
+  if (searchCompletionHandler)
   {
-    v10 = [(FCMyArticlesSearchOperation *)self searchCompletionHandler];
-    v11 = [(FCMyArticlesSearchOperation *)self resultFeedItems];
-    v12 = [(FCMyArticlesSearchOperation *)self resultFeedContextByFeedID];
-    (v10)[2](v10, v11, v12, v13);
+    searchCompletionHandler2 = [(FCMyArticlesSearchOperation *)self searchCompletionHandler];
+    resultFeedItems2 = [(FCMyArticlesSearchOperation *)self resultFeedItems];
+    resultFeedContextByFeedID = [(FCMyArticlesSearchOperation *)self resultFeedContextByFeedID];
+    (searchCompletionHandler2)[2](searchCompletionHandler2, resultFeedItems2, resultFeedContextByFeedID, errorCopy);
 
-    v9 = v13;
+    v9 = errorCopy;
   }
 
   MEMORY[0x1EEE66BB8](v8, v9);
 }
 
-- (void)_generateFeedRequestsForFeedRange:(id)a3 completionHandler:(id)a4
+- (void)_generateFeedRequestsForFeedRange:(id)range completionHandler:(id)handler
 {
-  v23 = a3;
-  v22 = a4;
+  rangeCopy = range;
+  handlerCopy = handler;
   v41[0] = 0;
   v41[1] = v41;
   v41[2] = 0x3032000000;
@@ -244,8 +244,8 @@ LABEL_7:
   v38 = 0;
   v6 = dispatch_group_create();
   dispatch_group_enter(v6);
-  v7 = [(FCMyArticlesSearchOperation *)self context];
-  v8 = [v7 configurationManager];
+  context = [(FCMyArticlesSearchOperation *)self context];
+  configurationManager = [context configurationManager];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __83__FCMyArticlesSearchOperation__generateFeedRequestsForFeedRange_completionHandler___block_invoke;
@@ -254,16 +254,16 @@ LABEL_7:
   v36 = v39;
   v9 = v6;
   v34 = v9;
-  FCCoreConfigurationFetch(v8, v33);
+  FCCoreConfigurationFetch(configurationManager, v33);
 
   dispatch_group_enter(v9);
-  v10 = [(FCMyArticlesSearchOperation *)self context];
-  v11 = [v10 tagController];
-  v12 = [(FCMyArticlesSearchOperation *)self context];
-  v13 = [v12 subscriptionList];
-  v14 = [v13 allSubscribedTagIDs];
-  v15 = [v14 allObjects];
-  v16 = [(FCMyArticlesSearchOperation *)self qualityOfService];
+  context2 = [(FCMyArticlesSearchOperation *)self context];
+  tagController = [context2 tagController];
+  context3 = [(FCMyArticlesSearchOperation *)self context];
+  subscriptionList = [context3 subscriptionList];
+  allSubscribedTagIDs = [subscriptionList allSubscribedTagIDs];
+  allObjects = [allSubscribedTagIDs allObjects];
+  qualityOfService = [(FCMyArticlesSearchOperation *)self qualityOfService];
   v17 = FCDispatchQueueForQualityOfService([(FCMyArticlesSearchOperation *)self qualityOfService]);
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -272,21 +272,21 @@ LABEL_7:
   v32 = v37;
   v18 = v9;
   v31 = v18;
-  [v11 fetchTagsForTagIDs:v15 qualityOfService:v16 callbackQueue:v17 completionHandler:v30];
+  [tagController fetchTagsForTagIDs:allObjects qualityOfService:qualityOfService callbackQueue:v17 completionHandler:v30];
 
   v19 = FCDispatchQueueForQualityOfService([(FCMyArticlesSearchOperation *)self qualityOfService]);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__FCMyArticlesSearchOperation__generateFeedRequestsForFeedRange_completionHandler___block_invoke_3;
   block[3] = &unk_1E7C39B10;
-  v26 = v22;
+  v26 = handlerCopy;
   v27 = v37;
   v28 = v39;
   v29 = v41;
   block[4] = self;
-  v25 = v23;
-  v20 = v23;
-  v21 = v22;
+  v25 = rangeCopy;
+  v20 = rangeCopy;
+  v21 = handlerCopy;
   dispatch_group_notify(v18, v19, block);
 
   _Block_object_dispose(v37, 8);
@@ -475,22 +475,22 @@ uint64_t __83__FCMyArticlesSearchOperation__generateFeedRequestsForFeedRange_com
   return v4;
 }
 
-- (id)_cappedFeedItemsFromResponses:(id)a3 allFeedItems:(id)a4
+- (id)_cappedFeedItemsFromResponses:(id)responses allFeedItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
-  if (-[FCMyArticlesSearchOperation maxFeedItems](self, "maxFeedItems") && (v8 = [v7 count], v8 > -[FCMyArticlesSearchOperation maxFeedItems](self, "maxFeedItems")))
+  responsesCopy = responses;
+  itemsCopy = items;
+  if (-[FCMyArticlesSearchOperation maxFeedItems](self, "maxFeedItems") && (v8 = [itemsCopy count], v8 > -[FCMyArticlesSearchOperation maxFeedItems](self, "maxFeedItems")))
   {
-    v9 = [MEMORY[0x1E695DF70] array];
-    v10 = [v6 sortedArrayUsingSelector:sel_compareFeedItemCount_];
+    array = [MEMORY[0x1E695DF70] array];
+    v10 = [responsesCopy sortedArrayUsingSelector:sel_compareFeedItemCount_];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __74__FCMyArticlesSearchOperation__cappedFeedItemsFromResponses_allFeedItems___block_invoke_2;
     v15[3] = &unk_1E7C39B38;
     v15[4] = self;
-    v11 = v9;
+    v11 = array;
     v16 = v11;
-    v17 = v6;
+    v17 = responsesCopy;
     [v10 enumerateObjectsUsingBlock:v15];
     v12 = v17;
     v13 = v11;
@@ -502,7 +502,7 @@ uint64_t __83__FCMyArticlesSearchOperation__generateFeedRequestsForFeedRange_com
     v19 = 3221225472;
     v20 = __74__FCMyArticlesSearchOperation__cappedFeedItemsFromResponses_allFeedItems___block_invoke;
     v21 = &unk_1E7C36F98;
-    v22 = v7;
+    v22 = itemsCopy;
     v10 = v22;
     v13 = v10;
   }

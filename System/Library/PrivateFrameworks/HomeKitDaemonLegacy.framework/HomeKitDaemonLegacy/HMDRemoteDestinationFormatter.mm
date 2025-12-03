@@ -1,7 +1,7 @@
 @interface HMDRemoteDestinationFormatter
 + (id)defaultFormatter;
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5;
-- (id)stringForObjectValue:(id)a3;
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation HMDRemoteDestinationFormatter
@@ -13,29 +13,29 @@
   return v2;
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description
 {
-  if (a5)
+  if (description)
   {
     v5 = @"String does not appear to be valid remote destination";
-    if (!a4)
+    if (!string)
     {
       v5 = @"Invalid parameter 'string'";
     }
 
-    *a5 = v5;
+    *description = v5;
   }
 
   return 0;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = valueCopy;
   }
 
   else
@@ -52,20 +52,20 @@
       v8 = +[HMDAccountRegistry sharedRegistry];
       v9 = [v8 deviceForDevice:v7];
 
-      v10 = [v9 account];
-      if ([v10 isCurrentAccount])
+      account = [v9 account];
+      if ([account isCurrentAccount])
       {
-        v11 = [v9 localHandles];
-        if (![v11 hmf_isEmpty])
+        localHandles = [v9 localHandles];
+        if (![localHandles hmf_isEmpty])
         {
-          v20 = [v11 firstObject];
-          v12 = [v20 destination];
+          firstObject = [localHandles firstObject];
+          destination = [firstObject destination];
 
           goto LABEL_23;
         }
       }
 
-      v12 = [v9 remoteDestinationString];
+      destination = [v9 remoteDestinationString];
 LABEL_23:
 
       goto LABEL_35;
@@ -74,7 +74,7 @@ LABEL_23:
     goto LABEL_34;
   }
 
-  v13 = v4;
+  v13 = valueCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -90,12 +90,12 @@ LABEL_23:
 
   if (v7)
   {
-    v15 = [v7 device];
+    device = [v7 device];
 LABEL_15:
-    v16 = v15;
-    v17 = [(HMDRemoteDestinationFormatter *)self stringForObjectValue:v15];
+    primaryHandle = device;
+    v17 = [(HMDRemoteDestinationFormatter *)self stringForObjectValue:device];
 LABEL_21:
-    v12 = v17;
+    destination = v17;
 
     goto LABEL_35;
   }
@@ -116,8 +116,8 @@ LABEL_21:
 
   if (v7)
   {
-    v16 = [v7 primaryHandle];
-    v17 = __destinationForAccountHandle(self, v16);
+    primaryHandle = [v7 primaryHandle];
+    v17 = __destinationForAccountHandle(self, primaryHandle);
     goto LABEL_21;
   }
 
@@ -137,7 +137,7 @@ LABEL_21:
 
   if (v7)
   {
-    v12 = __destinationForAccountHandle(self, v7);
+    destination = __destinationForAccountHandle(self, v7);
     goto LABEL_35;
   }
 
@@ -157,15 +157,15 @@ LABEL_21:
 
   if (v7)
   {
-    v15 = [v7 handle];
+    device = [v7 handle];
     goto LABEL_15;
   }
 
 LABEL_34:
-  v12 = 0;
+  destination = 0;
 LABEL_35:
 
-  return v12;
+  return destination;
 }
 
 @end

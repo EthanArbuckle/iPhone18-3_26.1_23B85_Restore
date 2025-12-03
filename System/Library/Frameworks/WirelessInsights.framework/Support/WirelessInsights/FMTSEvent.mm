@@ -1,10 +1,10 @@
 @interface FMTSEvent
-- (FMTSEvent)initWithTimestamp:(unint64_t)a3;
+- (FMTSEvent)initWithTimestamp:(unint64_t)timestamp;
 @end
 
 @implementation FMTSEvent
 
-- (FMTSEvent)initWithTimestamp:(unint64_t)a3
+- (FMTSEvent)initWithTimestamp:(unint64_t)timestamp
 {
   v8.receiver = self;
   v8.super_class = FMTSEvent;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_timestamp = a3;
+    v4->_timestamp = timestamp;
     v4->_usedInAnomalyCount = 0;
     v6 = v4;
   }

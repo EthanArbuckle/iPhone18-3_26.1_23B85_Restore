@@ -1,28 +1,28 @@
 @interface ProgramBrickContentView
-- (_TtC9SeymourUI23ProgramBrickContentView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI23ProgramBrickContentView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ProgramBrickContentView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_20BEC08E4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_20BEC08E4(change);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BEC1494();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for ProgramBrickContentView();
   [(ProgramBrickContentView *)&v3 layoutSubviews];
 }
 
-- (_TtC9SeymourUI23ProgramBrickContentView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI23ProgramBrickContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

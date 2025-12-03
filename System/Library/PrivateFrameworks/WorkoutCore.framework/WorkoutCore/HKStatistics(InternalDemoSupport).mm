@@ -9,9 +9,9 @@
 
 - (uint64_t)_nlIsWorkoutDemoData
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
-  location[0] = objc_getAssociatedObject(a1, sel__nlIsWorkoutDemoData);
+  location[0] = objc_getAssociatedObject(self, sel__nlIsWorkoutDemoData);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -30,13 +30,13 @@
 - (uint64_t)set_nlIsWorkoutDemoData:()InternalDemoSupport
 {
   v5 = [MEMORY[0x277CCABB0] numberWithBool:a3 & 1];
-  objc_setAssociatedObject(a1, sel__nlIsWorkoutDemoData, v5, 1);
+  objc_setAssociatedObject(self, sel__nlIsWorkoutDemoData, v5, 1);
   return MEMORY[0x277D82BD8](v5);
 }
 
 + (id)_nlDistanceStatisticsForQuantityIdentifier:()InternalDemoSupport distanceInMeters:startDate:endDate:
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -49,17 +49,17 @@
   v6 = objc_alloc(MEMORY[0x277CCDA50]);
   v20 = [v6 initWithDataType:v21 startDate:v23 endDate:v22];
   v12 = MEMORY[0x277CCD7E8];
-  v14 = [MEMORY[0x277CCDAB0] meterUnit];
+  meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
   v13 = [v12 quantityWithUnit:v24 doubleValue:?];
   [v20 setSumQuantity:?];
   MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
+  MEMORY[0x277D82BD8](meterUnit);
   v15 = MEMORY[0x277CCD7E8];
-  v17 = [MEMORY[0x277CCDAB0] meterUnit];
+  meterUnit2 = [MEMORY[0x277CCDAB0] meterUnit];
   v16 = [v15 quantityWithUnit:v24 doubleValue:?];
   [v20 setMostRecentQuantity:?];
   MEMORY[0x277D82BD8](v16);
-  MEMORY[0x277D82BD8](v17);
+  MEMORY[0x277D82BD8](meterUnit2);
   v7 = objc_alloc(MEMORY[0x277CCA970]);
   v18 = [v7 initWithStartDate:v23 endDate:v22];
   [v20 setMostRecentQuantityDateInterval:?];
@@ -77,7 +77,7 @@
 
 + (id)_nlActiveEnergyStatisticsForQuantity:()InternalDemoSupport startDate:endDate:
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);

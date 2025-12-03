@@ -1,13 +1,13 @@
 @interface HUSwitchHomesWelcomeOnboardingFlowUtilities
-+ (id)currentUserHasUnfinishedFeatureOnboardingForHome:(id)a3;
++ (id)currentUserHasUnfinishedFeatureOnboardingForHome:(id)home;
 @end
 
 @implementation HUSwitchHomesWelcomeOnboardingFlowUtilities
 
-+ (id)currentUserHasUnfinishedFeatureOnboardingForHome:(id)a3
++ (id)currentUserHasUnfinishedFeatureOnboardingForHome:(id)home
 {
   v17[8] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  homeCopy = home;
   v17[0] = objc_opt_class();
   v17[1] = objc_opt_class();
   v17[2] = objc_opt_class();
@@ -21,12 +21,12 @@
   v13 = 3221225472;
   v14 = __96__HUSwitchHomesWelcomeOnboardingFlowUtilities_currentUserHasUnfinishedFeatureOnboardingForHome___block_invoke;
   v15 = &unk_277DBFB60;
-  v16 = v3;
-  v5 = v3;
+  v16 = homeCopy;
+  v5 = homeCopy;
   v6 = [v4 na_map:&v12];
   v7 = MEMORY[0x277D2C900];
-  v8 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v9 = [v7 combineAllFutures:v6 ignoringErrors:1 scheduler:v8];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v9 = [v7 combineAllFutures:v6 ignoringErrors:1 scheduler:mainThreadScheduler];
   v10 = [v9 flatMap:&__block_literal_global_157];
 
   return v10;

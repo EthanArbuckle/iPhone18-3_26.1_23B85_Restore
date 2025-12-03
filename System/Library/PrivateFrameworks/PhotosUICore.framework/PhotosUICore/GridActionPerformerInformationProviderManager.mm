@@ -1,16 +1,16 @@
 @interface GridActionPerformerInformationProviderManager
 - (_TtC12PhotosUICoreP33_6550EC013705D4178B218B443D955D0045GridActionPerformerInformationProviderManager)init;
-- (void)requestUserInfo:(id)a3;
+- (void)requestUserInfo:(id)info;
 @end
 
 @implementation GridActionPerformerInformationProviderManager
 
-- (void)requestUserInfo:(id)a3
+- (void)requestUserInfo:(id)info
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(info);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1A4667A30(sub_1A4554A54, v5);
 }
 

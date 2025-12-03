@@ -49,88 +49,88 @@
 
 - (id)SBUISA_elementIdentifier
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_stringforSetting:3213046];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_stringforSetting:3213046];
 
   return v2;
 }
 
 - (uint64_t)SBUISA_contentRole
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_contentRoleforSetting:3213021];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_contentRoleforSetting:3213021];
 
   return v2;
 }
 
 - (uint64_t)SBUISA_preferredLayoutMode
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_layoutModeforSetting:3213022];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_layoutModeforSetting:3213022];
 
   return v2;
 }
 
 - (uint64_t)SBUISA_minimumLayoutMode
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_layoutModeforSetting:3213023];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_layoutModeforSetting:3213023];
 
   return v2;
 }
 
 - (uint64_t)SBUISA_maximumLayoutMode
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_layoutModeforSetting:3213024];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_layoutModeforSetting:3213024];
 
   return v2;
 }
 
 - (uint64_t)SBUISA_appliedLayoutMode
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_layoutModeforSetting:3213025];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_layoutModeforSetting:3213025];
 
   return v2;
 }
 
 - (id)SBUISA_associatedScenePersistenceIdentifier
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_stringforSetting:3213026];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_stringforSetting:3213026];
 
   return v2;
 }
 
 - (id)SBUISA_associatedAppBundleIdentifier
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_stringforSetting:3213040];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_stringforSetting:3213040];
 
   return v2;
 }
 
 - (id)SBUISA_launchURL
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_URLforSetting:3213054];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_URLforSetting:3213054];
 
   return v2;
 }
 
 - (id)SBUISA_launchAction
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_BSActionforSetting:3213055];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_BSActionforSetting:3213055];
 
   return v2;
 }
 
 - (double)SBUISA_preferredLeadingViewSize
 {
-  v1 = [a1 otherSettings];
-  [v1 SBUISA_CGSizeforSetting:3213027];
+  otherSettings = [self otherSettings];
+  [otherSettings SBUISA_CGSizeforSetting:3213027];
   v3 = v2;
 
   return v3;
@@ -138,8 +138,8 @@
 
 - (double)SBUISA_preferredTrailingViewSize
 {
-  v1 = [a1 otherSettings];
-  [v1 SBUISA_CGSizeforSetting:3213028];
+  otherSettings = [self otherSettings];
+  [otherSettings SBUISA_CGSizeforSetting:3213028];
   v3 = v2;
 
   return v3;
@@ -147,8 +147,8 @@
 
 - (double)SBUISA_preferredMinimalViewSize
 {
-  v1 = [a1 otherSettings];
-  [v1 SBUISA_CGSizeforSetting:3213029];
+  otherSettings = [self otherSettings];
+  [otherSettings SBUISA_CGSizeforSetting:3213029];
   v3 = v2;
 
   return v3;
@@ -156,8 +156,8 @@
 
 - (double)SBUISA_preferredDetachedMinimalViewSize
 {
-  v1 = [a1 otherSettings];
-  [v1 SBUISA_CGSizeforSetting:3213030];
+  otherSettings = [self otherSettings];
+  [otherSettings SBUISA_CGSizeforSetting:3213030];
   v3 = v2;
 
   return v3;
@@ -165,48 +165,48 @@
 
 - (uint64_t)SBUISA_leadingViewRenderingId
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_renderingIdforSetting:3213032];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_renderingIdforSetting:3213032];
 
   return v2;
 }
 
 - (uint64_t)SBUISA_trailingViewRenderingId
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_renderingIdforSetting:3213033];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_renderingIdforSetting:3213033];
 
   return v2;
 }
 
 - (uint64_t)SBUISA_minimalViewRenderingId
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_renderingIdforSetting:3213034];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_renderingIdforSetting:3213034];
 
   return v2;
 }
 
 - (uint64_t)SBUISA_detachedMinimalViewRenderingId
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_renderingIdforSetting:3213035];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_renderingIdforSetting:3213035];
 
   return v2;
 }
 
 - (uint64_t)SBUISA_contextId
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_contextIdforSetting:3213031];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_contextIdforSetting:3213031];
 
   return v2;
 }
 
 - (double)SBUISA_customLayoutPreferredOutsetsFromUnsafeArea
 {
-  v1 = [a1 otherSettings];
-  [v1 SBUISA_directionalEdgeInsetsforSetting:3213036];
+  otherSettings = [self otherSettings];
+  [otherSettings SBUISA_directionalEdgeInsetsforSetting:3213036];
   v3 = v2;
 
   return v3;
@@ -214,16 +214,16 @@
 
 - (id)SBUISA_backgroundActivitiesToSuppress
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_backgroundActivityIdentifiersForSetting:3213037];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_backgroundActivityIdentifiersForSetting:3213037];
 
   return v2;
 }
 
 - (double)SBUISA_preferredCustomAspectRatio
 {
-  v1 = [a1 otherSettings];
-  [v1 SBUISA_CGSizeforSetting:3213038];
+  otherSettings = [self otherSettings];
+  [otherSettings SBUISA_CGSizeforSetting:3213038];
   v3 = v2;
 
   return v3;
@@ -231,33 +231,33 @@
 
 - (uint64_t)SBUISA_preferredCustomLayout
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_customLayoutModeforSetting:3213039];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_customLayoutModeforSetting:3213039];
 
   return v2;
 }
 
 - (uint64_t)SBUISA_hasMenuPresentation
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:3213041];
-  v3 = [v2 BOOLValue];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:3213041];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)SBUISA_presentationBehaviors
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_presentationBehaviorsForSetting:3213042];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_presentationBehaviorsForSetting:3213042];
 
   return v2;
 }
 
 - (BOOL)SBUISA_specifiesPreferredPaddingForCompactLayout
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:3213043];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:3213043];
 
   if (v2)
   {
@@ -275,26 +275,26 @@
 
 - (uint64_t)SBUISA_attachedMinimalViewRequiresZeroPadding
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:3213044];
-  v3 = [v2 BOOLValue];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:3213044];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)SBUISA_prefersFixedPortraitOrientation
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:3213045];
-  v3 = [v2 BOOLValue];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:3213045];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (double)SBUISA_preferredPaddingForCompactLayout
 {
-  v1 = [a1 otherSettings];
-  [v1 SBUISA_directionalEdgeInsetsforSetting:3213043];
+  otherSettings = [self otherSettings];
+  [otherSettings SBUISA_directionalEdgeInsetsforSetting:3213043];
   v3 = v2;
 
   return v3;
@@ -302,127 +302,127 @@
 
 - (uint64_t)SBUISA_preventsInteractiveDismissal
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:3213051];
-  v3 = [v2 BOOLValue];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:3213051];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)SBUISA_preventsAutomaticDismissal
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:3213052];
-  v3 = [v2 BOOLValue];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:3213052];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)SBUISA_leadingViewAccessibilityLabel
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_stringforSetting:3213047];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_stringforSetting:3213047];
 
   return v2;
 }
 
 - (id)SBUISA_trailingViewAccessibilityLabel
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_stringforSetting:3213048];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_stringforSetting:3213048];
 
   return v2;
 }
 
 - (id)SBUISA_minimalViewAccessibilityLabel
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_stringforSetting:3213049];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_stringforSetting:3213049];
 
   return v2;
 }
 
 - (id)SBUISA_detachedMinimalViewAccessibilityLabel
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_stringforSetting:3213050];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_stringforSetting:3213050];
 
   return v2;
 }
 
 - (id)SBUISA_keyColor
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_UIColorForSetting:3213053];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_UIColorForSetting:3213053];
 
   return v2;
 }
 
 - (uint64_t)SBUISA_isSecureFlipBookElement
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:3213056];
-  v3 = [v2 BOOLValue];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:3213056];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)SBUISA_isSecureFlipBookElementRegisteredForCapture
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:3213057];
-  v3 = [v2 BOOLValue];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:3213057];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)SBUISA_secureFlipBookRecordableConfigurations
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_secureFlipBookElementConfigurationsForSetting:3213058];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_secureFlipBookElementConfigurationsForSetting:3213058];
 
   return v2;
 }
 
 - (id)SBUISA_secureFlipBookSymmetricalConfigurations
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_secureFlipBookElementSymmetricalConfigurationsForSetting:3213059];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_secureFlipBookElementSymmetricalConfigurationsForSetting:3213059];
 
   return v2;
 }
 
 - (id)SBUISA_secureFlipBookPreferredConfiguration
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_stringforSetting:3213060];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_stringforSetting:3213060];
 
   return v2;
 }
 
 - (id)SBUISA_secureFlipBookPreferredComponentStates
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_componentStatesForSetting:3213061];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_componentStatesForSetting:3213061];
 
   return v2;
 }
 
 - (id)SBUI_systemApertureDescription
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUI_systemApertureDescription];
+  otherSettings = [self otherSettings];
+  sBUI_systemApertureDescription = [otherSettings SBUI_systemApertureDescription];
 
-  return v2;
+  return sBUI_systemApertureDescription;
 }
 
 - (id)SBUI_systemApertureDescriptionOfDiffFromSettings:()SBUISystemAperture
 {
   v4 = a3;
-  v5 = [a1 otherSettings];
-  v6 = [v4 otherSettings];
+  otherSettings = [self otherSettings];
+  otherSettings2 = [v4 otherSettings];
 
-  v7 = [v5 SBUI_systemApertureDescriptionOfDiffFromSettings:v6];
+  v7 = [otherSettings SBUI_systemApertureDescriptionOfDiffFromSettings:otherSettings2];
 
   return v7;
 }

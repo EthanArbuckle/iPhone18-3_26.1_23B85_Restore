@@ -1,6 +1,6 @@
 @interface PKAMSMediaItemsService
 - (PKAMSMediaItemsService)init;
-- (id)fetchItemsWithRequest:(id)a3 completion:(id)a4;
+- (id)fetchItemsWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation PKAMSMediaItemsService
@@ -13,9 +13,9 @@
   if (v2)
   {
     v3 = MEMORY[0x1E698C7D8];
-    v4 = [MEMORY[0x1E698C9E0] bagSubProfile];
-    v5 = [MEMORY[0x1E698C9E0] bagSubProfileVersion];
-    v6 = [v3 bagForProfile:v4 profileVersion:v5];
+    bagSubProfile = [MEMORY[0x1E698C9E0] bagSubProfile];
+    bagSubProfileVersion = [MEMORY[0x1E698C9E0] bagSubProfileVersion];
+    v6 = [v3 bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
     bag = v2->_bag;
     v2->_bag = v6;
   }
@@ -23,30 +23,30 @@
   return v2;
 }
 
-- (id)fetchItemsWithRequest:(id)a3 completion:(id)a4
+- (id)fetchItemsWithRequest:(id)request completion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  requestCopy = request;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!completionCopy)
   {
     v20 = 0;
     goto LABEL_21;
   }
 
-  v32 = v7;
+  v32 = completionCopy;
   v9 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 description];
+    v10 = [requestCopy description];
     *buf = 138412290;
     v44 = v10;
     _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "PKAMSMediaItemsService: Looking up item(s) from AppleMediaServices with request: %@.", buf, 0xCu);
   }
 
-  v11 = [v6 type];
-  if (v11 == 1)
+  type = [requestCopy type];
+  if (type == 1)
   {
     v12 = 202;
   }
@@ -57,11 +57,11 @@
   }
 
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v14 = [v6 artworkConfiguration];
-  v15 = v14 != 0;
-  v16 = [v14 animatedArtworkType];
-  v33 = v16 != 0;
-  if (v11 == 2)
+  artworkConfiguration = [requestCopy artworkConfiguration];
+  v15 = artworkConfiguration != 0;
+  animatedArtworkType = [artworkConfiguration animatedArtworkType];
+  v33 = animatedArtworkType != 0;
+  if (type == 2)
   {
     v17 = 205;
   }
@@ -71,34 +71,34 @@
     v17 = v12;
   }
 
-  if (v11 < 2)
+  if (type < 2)
   {
     goto LABEL_13;
   }
 
-  if (v11 == 2)
+  if (type == 2)
   {
     [v13 addObject:@"artistBio"];
 LABEL_13:
-    v18 = [v6 musicRequest];
-    v19 = [v18 musicIDs];
+    musicRequest = [requestCopy musicRequest];
+    musicIDs = [musicRequest musicIDs];
 
-    if (v16)
+    if (animatedArtworkType)
     {
       [v13 addObject:@"editorialVideo"];
     }
 
-    v15 = v14 != 0;
+    v15 = artworkConfiguration != 0;
     goto LABEL_18;
   }
 
-  v19 = 0;
+  musicIDs = 0;
 LABEL_18:
   v21 = [objc_alloc(MEMORY[0x1E698C9E0]) initWithType:v17 clientIdentifier:@"com.apple.Passbook" clientVersion:@"1" bag:self->_bag];
   v22 = v21;
-  if (v19)
+  if (musicIDs)
   {
-    [v21 setItemIdentifiers:v19];
+    [v21 setItemIdentifiers:musicIDs];
   }
 
   v41[0] = @"extend";
@@ -110,8 +110,8 @@ LABEL_18:
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:2];
   [v22 setAdditionalQueryParams:v25];
 
-  v26 = [v22 perform];
-  v27 = [[PKAMSPromiseWrapper alloc] initWithAMSPromise:v26];
+  perform = [v22 perform];
+  v27 = [[PKAMSPromiseWrapper alloc] initWithAMSPromise:perform];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __59__PKAMSMediaItemsService_fetchItemsWithRequest_completion___block_invoke;
@@ -119,13 +119,13 @@ LABEL_18:
   v28 = v27;
   v39 = v15;
   v35 = v28;
-  v36 = v14;
+  v36 = artworkConfiguration;
   v40 = v33;
-  v38 = v11;
+  v38 = type;
   v8 = v32;
   v37 = v32;
-  v29 = v14;
-  [v26 addFinishBlock:v34];
+  v29 = artworkConfiguration;
+  [perform addFinishBlock:v34];
   v30 = v37;
   v20 = v28;
 

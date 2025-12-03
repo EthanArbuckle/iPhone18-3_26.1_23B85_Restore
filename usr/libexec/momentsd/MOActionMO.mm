@@ -1,32 +1,32 @@
 @interface MOActionMO
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation MOActionMO
 
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOActionMO alloc] initWithContext:v5];
+  contextCopy = context;
+  objectCopy = object;
+  v7 = [[MOActionMO alloc] initWithContext:contextCopy];
 
-  v8 = [v6 identifier];
-  [(MOActionMO *)v7 setIdentifier:v8];
+  identifier = [objectCopy identifier];
+  [(MOActionMO *)v7 setIdentifier:identifier];
 
-  v9 = [v6 actionName];
-  [(MOActionMO *)v7 setAction:v9];
+  actionName = [objectCopy actionName];
+  [(MOActionMO *)v7 setAction:actionName];
 
-  -[MOActionMO setActionType:](v7, "setActionType:", [v6 actionType]);
-  -[MOActionMO setActionSubType:](v7, "setActionSubType:", [v6 actionSubtype]);
-  [v6 actionNameConfidence];
+  -[MOActionMO setActionType:](v7, "setActionType:", [objectCopy actionType]);
+  -[MOActionMO setActionSubType:](v7, "setActionSubType:", [objectCopy actionSubtype]);
+  [objectCopy actionNameConfidence];
   [(MOActionMO *)v7 setActionNameConfidence:?];
-  v10 = [v6 actionMetaData];
-  [(MOActionMO *)v7 setActionMetaData:v10];
+  actionMetaData = [objectCopy actionMetaData];
+  [(MOActionMO *)v7 setActionMetaData:actionMetaData];
 
-  -[MOActionMO setSourceEventAccessType:](v7, "setSourceEventAccessType:", [v6 sourceEventAccessType]);
-  v11 = [v6 sourceEventIdentifier];
+  -[MOActionMO setSourceEventAccessType:](v7, "setSourceEventAccessType:", [objectCopy sourceEventAccessType]);
+  sourceEventIdentifier = [objectCopy sourceEventIdentifier];
 
-  [(MOActionMO *)v7 setSourceEventIdentifier:v11];
+  [(MOActionMO *)v7 setSourceEventIdentifier:sourceEventIdentifier];
 
   return v7;
 }

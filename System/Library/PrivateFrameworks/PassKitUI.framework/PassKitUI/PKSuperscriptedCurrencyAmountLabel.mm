@@ -1,41 +1,41 @@
 @interface PKSuperscriptedCurrencyAmountLabel
 - (CGSize)lastLayedOutBoundsSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKSuperscriptedCurrencyAmountLabel)initWithPrimaryFont:(id)a3 superscriptFont:(id)a4 positiveValueTextColor:(id)a5 negativeValueTextColor:(id)a6;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKSuperscriptedCurrencyAmountLabel)initWithPrimaryFont:(id)font superscriptFont:(id)superscriptFont positiveValueTextColor:(id)color negativeValueTextColor:(id)textColor;
 - (id)_attributedString;
-- (void)_addSuperscriptToAttributedString:(id)a3 formattedCurrencyAmount:(id)a4 currencyAmountWithoutSymbols:(id)a5;
-- (void)_addSuperscriptToAttributedString:(id)a3 inRange:(_NSRange)a4;
+- (void)_addSuperscriptToAttributedString:(id)string formattedCurrencyAmount:(id)amount currencyAmountWithoutSymbols:(id)symbols;
+- (void)_addSuperscriptToAttributedString:(id)string inRange:(_NSRange)range;
 - (void)_updateLabel;
 - (void)layoutSubviews;
-- (void)setAmount:(id)a3;
-- (void)setAmount:(id)a3 currencyCode:(id)a4;
-- (void)setCurrencyCode:(id)a3;
-- (void)setNegativeValueTextColor:(id)a3;
-- (void)setPositiveValueTextColor:(id)a3;
-- (void)setPrimaryFont:(id)a3;
-- (void)setShowsNegativeValueDesignation:(BOOL)a3;
-- (void)setShowsPositiveValueDesignation:(BOOL)a3;
-- (void)setSuperscriptFont:(id)a3;
+- (void)setAmount:(id)amount;
+- (void)setAmount:(id)amount currencyCode:(id)code;
+- (void)setCurrencyCode:(id)code;
+- (void)setNegativeValueTextColor:(id)color;
+- (void)setPositiveValueTextColor:(id)color;
+- (void)setPrimaryFont:(id)font;
+- (void)setShowsNegativeValueDesignation:(BOOL)designation;
+- (void)setShowsPositiveValueDesignation:(BOOL)designation;
+- (void)setSuperscriptFont:(id)font;
 @end
 
 @implementation PKSuperscriptedCurrencyAmountLabel
 
-- (PKSuperscriptedCurrencyAmountLabel)initWithPrimaryFont:(id)a3 superscriptFont:(id)a4 positiveValueTextColor:(id)a5 negativeValueTextColor:(id)a6
+- (PKSuperscriptedCurrencyAmountLabel)initWithPrimaryFont:(id)font superscriptFont:(id)superscriptFont positiveValueTextColor:(id)color negativeValueTextColor:(id)textColor
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  fontCopy = font;
+  superscriptFontCopy = superscriptFont;
+  colorCopy = color;
+  textColorCopy = textColor;
   v20.receiver = self;
   v20.super_class = PKSuperscriptedCurrencyAmountLabel;
   v15 = [(PKSuperscriptedCurrencyAmountLabel *)&v20 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_primaryFont, a3);
-    objc_storeStrong(&v16->_superscriptFont, a4);
-    objc_storeStrong(&v16->_positiveValueTextColor, a5);
-    objc_storeStrong(&v16->_negativeValueTextColor, a6);
+    objc_storeStrong(&v15->_primaryFont, font);
+    objc_storeStrong(&v16->_superscriptFont, superscriptFont);
+    objc_storeStrong(&v16->_positiveValueTextColor, color);
+    objc_storeStrong(&v16->_negativeValueTextColor, textColor);
     v17 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     label = v16->_label;
     v16->_label = v17;
@@ -50,38 +50,38 @@
   return v16;
 }
 
-- (void)setCurrencyCode:(id)a3
+- (void)setCurrencyCode:(id)code
 {
-  v5 = a3;
-  if (self->_currencyCode != v5)
+  codeCopy = code;
+  if (self->_currencyCode != codeCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_currencyCode, a3);
+    v6 = codeCopy;
+    objc_storeStrong(&self->_currencyCode, code);
     [(PKSuperscriptedCurrencyAmountLabel *)self _updateLabel];
-    v5 = v6;
+    codeCopy = v6;
   }
 }
 
-- (void)setAmount:(id)a3
+- (void)setAmount:(id)amount
 {
-  v5 = a3;
-  if (self->_amount != v5)
+  amountCopy = amount;
+  if (self->_amount != amountCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_amount, a3);
+    v6 = amountCopy;
+    objc_storeStrong(&self->_amount, amount);
     [(PKSuperscriptedCurrencyAmountLabel *)self _updateLabel];
-    v5 = v6;
+    amountCopy = v6;
   }
 }
 
-- (void)setAmount:(id)a3 currencyCode:(id)a4
+- (void)setAmount:(id)amount currencyCode:(id)code
 {
-  v9 = a3;
-  v7 = a4;
-  if (self->_amount == v9)
+  amountCopy = amount;
+  codeCopy = code;
+  if (self->_amount == amountCopy)
   {
     p_currencyCode = &self->_currencyCode;
-    if (self->_currencyCode == v7)
+    if (self->_currencyCode == codeCopy)
     {
       goto LABEL_7;
     }
@@ -89,82 +89,82 @@
 
   else
   {
-    objc_storeStrong(&self->_amount, a3);
+    objc_storeStrong(&self->_amount, amount);
     p_currencyCode = &self->_currencyCode;
-    if (self->_currencyCode == v7)
+    if (self->_currencyCode == codeCopy)
     {
       goto LABEL_6;
     }
   }
 
-  objc_storeStrong(p_currencyCode, a4);
+  objc_storeStrong(p_currencyCode, code);
 LABEL_6:
   [(PKSuperscriptedCurrencyAmountLabel *)self _updateLabel];
 LABEL_7:
 }
 
-- (void)setPrimaryFont:(id)a3
+- (void)setPrimaryFont:(id)font
 {
-  v5 = a3;
-  if (v5 && self->_primaryFont != v5)
+  fontCopy = font;
+  if (fontCopy && self->_primaryFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_primaryFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_primaryFont, font);
     [(PKSuperscriptedCurrencyAmountLabel *)self _updateLabel];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
-- (void)setSuperscriptFont:(id)a3
+- (void)setSuperscriptFont:(id)font
 {
-  v5 = a3;
-  if (v5 && self->_superscriptFont != v5)
+  fontCopy = font;
+  if (fontCopy && self->_superscriptFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_superscriptFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_superscriptFont, font);
     [(PKSuperscriptedCurrencyAmountLabel *)self _updateLabel];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
-- (void)setPositiveValueTextColor:(id)a3
+- (void)setPositiveValueTextColor:(id)color
 {
-  v5 = a3;
-  if (v5 && self->_positiveValueTextColor != v5)
+  colorCopy = color;
+  if (colorCopy && self->_positiveValueTextColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_positiveValueTextColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_positiveValueTextColor, color);
     [(PKSuperscriptedCurrencyAmountLabel *)self _updateLabel];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setNegativeValueTextColor:(id)a3
+- (void)setNegativeValueTextColor:(id)color
 {
-  v5 = a3;
-  if (v5 && self->_negativeValueTextColor != v5)
+  colorCopy = color;
+  if (colorCopy && self->_negativeValueTextColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_negativeValueTextColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_negativeValueTextColor, color);
     [(PKSuperscriptedCurrencyAmountLabel *)self _updateLabel];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setShowsPositiveValueDesignation:(BOOL)a3
+- (void)setShowsPositiveValueDesignation:(BOOL)designation
 {
-  if (self->_showsPositiveValueDesignation != a3)
+  if (self->_showsPositiveValueDesignation != designation)
   {
-    self->_showsPositiveValueDesignation = a3;
+    self->_showsPositiveValueDesignation = designation;
     [(PKSuperscriptedCurrencyAmountLabel *)self _updateLabel];
   }
 }
 
-- (void)setShowsNegativeValueDesignation:(BOOL)a3
+- (void)setShowsNegativeValueDesignation:(BOOL)designation
 {
-  if (self->_showsNegativeValueDesignation != a3)
+  if (self->_showsNegativeValueDesignation != designation)
   {
-    self->_showsNegativeValueDesignation = a3;
+    self->_showsNegativeValueDesignation = designation;
     [(PKSuperscriptedCurrencyAmountLabel *)self _updateLabel];
   }
 }
@@ -188,9 +188,9 @@ LABEL_7:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->_label sizeThatFits:a3.width, a3.height];
+  [(UILabel *)self->_label sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -199,23 +199,23 @@ LABEL_7:
 - (void)_updateLabel
 {
   self->_lastLayedOutBoundsSize = *MEMORY[0x1E695F060];
-  v3 = [(PKSuperscriptedCurrencyAmountLabel *)self _attributedString];
-  [(UILabel *)self->_label setAttributedText:v3];
+  _attributedString = [(PKSuperscriptedCurrencyAmountLabel *)self _attributedString];
+  [(UILabel *)self->_label setAttributedText:_attributedString];
 }
 
-- (void)_addSuperscriptToAttributedString:(id)a3 formattedCurrencyAmount:(id)a4 currencyAmountWithoutSymbols:(id)a5
+- (void)_addSuperscriptToAttributedString:(id)string formattedCurrencyAmount:(id)amount currencyAmountWithoutSymbols:(id)symbols
 {
-  v8 = a3;
-  if (v8 && a4 && a5)
+  stringCopy = string;
+  if (stringCopy && amount && symbols)
   {
-    v18 = v8;
-    v9 = a5;
-    v10 = a4;
-    v11 = [v18 string];
-    v12 = [v11 rangeOfString:v10 options:0];
+    v18 = stringCopy;
+    symbolsCopy = symbols;
+    amountCopy = amount;
+    string = [v18 string];
+    v12 = [string rangeOfString:amountCopy options:0];
     v14 = v13;
 
-    v15 = [v11 rangeOfString:v9 options:0];
+    v15 = [string rangeOfString:symbolsCopy options:0];
     v17 = v16;
 
     if (v12 != 0x7FFFFFFFFFFFFFFFLL && v15 != 0x7FFFFFFFFFFFFFFFLL)
@@ -231,29 +231,29 @@ LABEL_7:
       }
     }
 
-    v8 = v18;
+    stringCopy = v18;
   }
 }
 
-- (void)_addSuperscriptToAttributedString:(id)a3 inRange:(_NSRange)a4
+- (void)_addSuperscriptToAttributedString:(id)string inRange:(_NSRange)range
 {
-  if (a4.location != 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     primaryFont = self->_primaryFont;
-    v15 = a3;
+    stringCopy = string;
     [(UIFont *)primaryFont capHeight];
     v10 = v9;
     [(UIFont *)self->_superscriptFont capHeight];
     v12 = ((v10 - v11) * self->_labelScaleFactor);
-    [v15 beginEditing];
-    [v15 addAttribute:*MEMORY[0x1E69DB648] value:self->_superscriptFont range:{location, length}];
+    [stringCopy beginEditing];
+    [stringCopy addAttribute:*MEMORY[0x1E69DB648] value:self->_superscriptFont range:{location, length}];
     v13 = *MEMORY[0x1E69DB610];
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
-    [v15 addAttribute:v13 value:v14 range:{location, length}];
+    [stringCopy addAttribute:v13 value:v14 range:{location, length}];
 
-    [v15 endEditing];
+    [stringCopy endEditing];
   }
 }
 
@@ -267,8 +267,8 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v5 = [MEMORY[0x1E696AB90] zero];
-  v6 = [(NSDecimalNumber *)amount compare:v5];
+  zero = [MEMORY[0x1E696AB90] zero];
+  v6 = [(NSDecimalNumber *)amount compare:zero];
 
   v7 = self->_amount;
   if (v6 == -1)
@@ -282,10 +282,10 @@ LABEL_7:
   }
 
   v22[0] = *MEMORY[0x1E69DB600];
-  v11 = [MEMORY[0x1E69DC888] clearColor];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
   v12 = *MEMORY[0x1E69DB650];
   v13 = *p_positiveValueTextColor;
-  v23[0] = v11;
+  v23[0] = clearColor;
   v23[1] = v13;
   v14 = *MEMORY[0x1E69DB648];
   v22[1] = v12;

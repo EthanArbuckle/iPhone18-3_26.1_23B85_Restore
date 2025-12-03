@@ -1,21 +1,21 @@
 @interface AAPCommandSearch
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation AAPCommandSearch
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_2F54;
     v12[3] = &unk_20798;
-    v12[4] = a3;
+    v12[4] = completion;
     v5 = objc_alloc_init(NSMutableArray);
-    v6 = [(AAPCommandSearch *)self applicationName];
-    v7 = [[NSString alloc] initWithFormat:@"displayName == %@cdw || alternateNames == %@cdw"], v6, v6);
+    applicationName = [(AAPCommandSearch *)self applicationName];
+    v7 = [[NSString alloc] initWithFormat:@"displayName == %@cdw || alternateNames == %@cdw"], applicationName, applicationName);
     v8 = AFSiriLogContextPlugin;
     if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_DEBUG))
     {
@@ -39,7 +39,7 @@
     v10[3] = &unk_207E8;
     v10[4] = v9;
     v10[5] = v5;
-    v10[6] = a3;
+    v10[6] = completion;
     v10[7] = v12;
     [v9 setCompletionHandler:v10];
     [v9 start];

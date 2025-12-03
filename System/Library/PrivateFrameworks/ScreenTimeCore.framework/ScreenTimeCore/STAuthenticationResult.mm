@@ -1,32 +1,32 @@
 @interface STAuthenticationResult
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAuthenticationResult:(id)a3;
-- (STAuthenticationResult)initWithCoder:(id)a3;
-- (STAuthenticationResult)initWithResult:(BOOL)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAuthenticationResult:(id)result;
+- (STAuthenticationResult)initWithCoder:(id)coder;
+- (STAuthenticationResult)initWithResult:(BOOL)result;
 @end
 
 @implementation STAuthenticationResult
 
-- (STAuthenticationResult)initWithResult:(BOOL)a3
+- (STAuthenticationResult)initWithResult:(BOOL)result
 {
   v5.receiver = self;
   v5.super_class = STAuthenticationResult;
   result = [(STAuthenticationResult *)&v5 init];
-  result->_authenticated = a3;
+  result->_authenticated = result;
   return result;
 }
 
-- (STAuthenticationResult)initWithCoder:(id)a3
+- (STAuthenticationResult)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"authenticated"];
+  v4 = [coder decodeBoolForKey:@"authenticated"];
 
   return [(STAuthenticationResult *)self initWithResult:v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -34,21 +34,21 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(STAuthenticationResult *)self isEqualToAuthenticationResult:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(STAuthenticationResult *)self isEqualToAuthenticationResult:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToAuthenticationResult:(id)a3
+- (BOOL)isEqualToAuthenticationResult:(id)result
 {
-  if (a3 == self)
+  if (result == self)
   {
     return 1;
   }
 
-  v4 = [a3 authenticated];
-  return v4 ^ [(STAuthenticationResult *)self authenticated]^ 1;
+  authenticated = [result authenticated];
+  return authenticated ^ [(STAuthenticationResult *)self authenticated]^ 1;
 }
 
 @end

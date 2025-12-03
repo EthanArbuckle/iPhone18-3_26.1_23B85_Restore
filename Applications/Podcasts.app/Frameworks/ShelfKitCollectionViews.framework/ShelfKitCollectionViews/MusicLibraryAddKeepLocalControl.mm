@@ -1,19 +1,19 @@
 @interface MusicLibraryAddKeepLocalControl
-+ (CGSize)_expectedSizeForControlStatusType:(int64_t)a3 controlTitle:(id)a4 hasControlImage:(BOOL)a5 displayScale:(double)a6 preferredHeight:(double)a7;
-+ (id)_controlTitleFontForControlStatusType:(int64_t)a3;
++ (CGSize)_expectedSizeForControlStatusType:(int64_t)type controlTitle:(id)title hasControlImage:(BOOL)image displayScale:(double)scale preferredHeight:(double)height;
++ (id)_controlTitleFontForControlStatusType:(int64_t)type;
 + (id)_newControlTitleLabel;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)intrinsicContentSize;
-- (CGSize)maximumSizeWithPreferredHeight:(double)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MusicLibraryAddKeepLocalControl)initWithFrame:(CGRect)a3;
+- (CGSize)maximumSizeWithPreferredHeight:(double)height;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MusicLibraryAddKeepLocalControl)initWithFrame:(CGRect)frame;
 - (MusicLibraryAddKeepLocalControlStatus)controlStatus;
 - (UIEdgeInsets)controlImageEdgeInsets;
 - (id)_centerImageForDownloading;
 - (id)_centerImageForPausedDownload;
 - (id)_currentContentSuperview;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)titleForControlStatusType:(int64_t)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)titleForControlStatusType:(int64_t)type;
 - (void)_beginTransientContentViewTransaction;
 - (void)_endTransientContentViewTransaction;
 - (void)_updateBackgroundViewCornerRadius;
@@ -23,26 +23,26 @@
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAdjustsFontSizeToFitWidth:(BOOL)a3;
-- (void)setAllowsAddImage:(BOOL)a3;
-- (void)setContentHorizontalAlignment:(int64_t)a3;
-- (void)setControlStatus:(MusicLibraryAddKeepLocalControlStatus)a3 animated:(BOOL)a4;
-- (void)setDisplayStyle:(int64_t)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setTitle:(id)a3 forControlStatusType:(int64_t)a4;
+- (void)setAdjustsFontSizeToFitWidth:(BOOL)width;
+- (void)setAllowsAddImage:(BOOL)image;
+- (void)setContentHorizontalAlignment:(int64_t)alignment;
+- (void)setControlStatus:(MusicLibraryAddKeepLocalControlStatus)status animated:(BOOL)animated;
+- (void)setDisplayStyle:(int64_t)style;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setTitle:(id)title forControlStatusType:(int64_t)type;
 - (void)tintColorDidChange;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MusicLibraryAddKeepLocalControl
 
-- (MusicLibraryAddKeepLocalControl)initWithFrame:(CGRect)a3
+- (MusicLibraryAddKeepLocalControl)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MusicLibraryAddKeepLocalControl;
-  v3 = [(MusicLibraryAddKeepLocalControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MusicLibraryAddKeepLocalControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -78,25 +78,25 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  if ([(MusicLibraryAddKeepLocalControl *)self pointInside:a4 withEvent:a3.x, a3.y]&& [(MusicLibraryAddKeepLocalControl *)self isEnabled])
+  if ([(MusicLibraryAddKeepLocalControl *)self pointInside:event withEvent:test.x, test.y]&& [(MusicLibraryAddKeepLocalControl *)self isEnabled])
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(MusicLibraryAddKeepLocalControl *)self bounds];
   v7 = v15.origin.x;
   v8 = v15.origin.y;
@@ -124,8 +124,8 @@
     return 1;
   }
 
-  v13 = [(UILabel *)self->_controlTitleLabel text];
-  if ([v13 length])
+  text = [(UILabel *)self->_controlTitleLabel text];
+  if ([text length])
   {
     v11 = 1;
   }
@@ -138,11 +138,11 @@
   return v11;
 }
 
-- (void)setAdjustsFontSizeToFitWidth:(BOOL)a3
+- (void)setAdjustsFontSizeToFitWidth:(BOOL)width
 {
-  if (self->_adjustsFontSizeToFitWidth != a3)
+  if (self->_adjustsFontSizeToFitWidth != width)
   {
-    self->_adjustsFontSizeToFitWidth = a3;
+    self->_adjustsFontSizeToFitWidth = width;
     [(MusicLibraryAddKeepLocalControl *)self _updateControlStatusProperties];
   }
 }
@@ -157,8 +157,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
+  [traitCollection displayScale];
   MTMPUFloatGetSafeScaleForValue();
   v13 = v12;
 
@@ -177,7 +177,7 @@
     v20 = v17;
   }
 
-  v21 = [(MusicLibraryAddKeepLocalControl *)self contentHorizontalAlignment];
+  contentHorizontalAlignment = [(MusicLibraryAddKeepLocalControl *)self contentHorizontalAlignment];
   controlImageView = self->_controlImageView;
   rect = v10;
   v117 = v6;
@@ -193,8 +193,8 @@
     r2 = v25;
     v121 = v26;
     v28 = v27;
-    v29 = [(UILabel *)self->_controlTitleLabel text];
-    v30 = [v29 length];
+    text = [(UILabel *)self->_controlTitleLabel text];
+    v30 = [text length];
 
     if (v30)
     {
@@ -208,7 +208,7 @@
       r1 = v32;
       v107 = v8 + -6.0;
       v108 = v33;
-      if (v21 == &dword_0 + 2)
+      if (contentHorizontalAlignment == &dword_0 + 2)
       {
         v126.origin.x = v4;
         v51 = v24;
@@ -243,7 +243,7 @@
         v37 = v33;
         v38 = 0.0;
         v39 = 0;
-        if (v21 == &dword_0 + 1)
+        if (contentHorizontalAlignment == &dword_0 + 1)
         {
           v40 = v110;
           v41 = v110;
@@ -332,7 +332,7 @@
     else
     {
       v49 = v24;
-      if (v21 == &dword_0 + 2)
+      if (contentHorizontalAlignment == &dword_0 + 2)
       {
         v139.origin.x = v4;
         v139.origin.y = v6;
@@ -346,7 +346,7 @@
         v50 = MaxX - CGRectGetWidth(v140);
       }
 
-      else if (v21 == &dword_0 + 1)
+      else if (contentHorizontalAlignment == &dword_0 + 1)
       {
         v125.origin.x = v4;
         v125.origin.y = v6;
@@ -374,12 +374,12 @@
 
   else
   {
-    v47 = [(UILabel *)self->_controlTitleLabel text];
-    v48 = [v47 length];
+    text2 = [(UILabel *)self->_controlTitleLabel text];
+    v48 = [text2 length];
 
     if (v48)
     {
-      if (v21 == &dword_0 + 2)
+      if (contentHorizontalAlignment == &dword_0 + 2)
       {
         v137.origin.x = v4;
         v137.origin.y = v6;
@@ -393,7 +393,7 @@
         CGRectGetWidth(v138);
       }
 
-      else if (v21 == &dword_0 + 1)
+      else if (contentHorizontalAlignment == &dword_0 + 1)
       {
         v124.origin.x = v4;
         v124.origin.y = v6;
@@ -456,7 +456,7 @@
   [(MusicDownloadProgressView *)self->_downloadProgressView frame];
   v80 = v79;
   v82 = v81;
-  if (v21 == &dword_0 + 2)
+  if (contentHorizontalAlignment == &dword_0 + 2)
   {
     v145.origin.x = v4;
     v145.origin.y = v6;
@@ -472,7 +472,7 @@
 
   else
   {
-    if (v21 != &dword_0 + 1)
+    if (contentHorizontalAlignment != &dword_0 + 1)
     {
       UIRectCenteredIntegralRectScale();
       r2a = v89;
@@ -543,7 +543,7 @@ LABEL_39:
   return result;
 }
 
-- (CGSize)maximumSizeWithPreferredHeight:(double)a3
+- (CGSize)maximumSizeWithPreferredHeight:(double)height
 {
   v4 = [(MusicLibraryAddKeepLocalControl *)self traitCollection:0];
   [v4 displayScale];
@@ -578,20 +578,20 @@ LABEL_39:
 
   while (v5 != 48);
   v16 = width;
-  v17 = height;
-  result.height = v17;
+  heightCopy = height;
+  result.height = heightCopy;
   result.width = v16;
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v4 = objc_opt_class();
   statusType = self->_controlStatus.statusType;
   v6 = [(MusicLibraryAddKeepLocalControl *)self titleForControlStatusType:statusType];
   v7 = self->_allowsAddImage || self->_controlStatus.statusType != 1;
-  v8 = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
-  [v8 displayScale];
+  traitCollection = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
+  [traitCollection displayScale];
   MTMPUFloatGetSafeScaleForValue();
   [v4 _expectedSizeForControlStatusType:statusType controlTitle:v6 hasControlImage:v7 displayScale:? preferredHeight:?];
   v10 = v9;
@@ -609,10 +609,10 @@ LABEL_39:
   v4.receiver = self;
   v4.super_class = MusicLibraryAddKeepLocalControl;
   [(MusicLibraryAddKeepLocalControl *)&v4 tintColorDidChange];
-  v3 = [(MusicLibraryAddKeepLocalControl *)self tintColor];
+  tintColor = [(MusicLibraryAddKeepLocalControl *)self tintColor];
   if (self->_displayStyle == 1)
   {
-    [(UIView *)self->_backgroundView setBackgroundColor:v3];
+    [(UIView *)self->_backgroundView setBackgroundColor:tintColor];
   }
 
   [(MusicLibraryAddKeepLocalControl *)self _updateControlTitleLabelVisualProperties];
@@ -622,65 +622,65 @@ LABEL_39:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = MusicLibraryAddKeepLocalControl;
-  [(MusicLibraryAddKeepLocalControl *)&v10 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
-  v6 = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  [(MusicLibraryAddKeepLocalControl *)&v10 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
+  traitCollection = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  v8 = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
-  v9 = v8;
-  if (v5 != v7 || ([v8 displayScale], objc_msgSend(v4, "displayScale"), (MTMPUFloatEqualToFloat() & 1) == 0))
+  traitCollection2 = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
+  v9 = traitCollection2;
+  if (userInterfaceStyle != userInterfaceStyle2 || ([traitCollection2 displayScale], objc_msgSend(changeCopy, "displayScale"), (MTMPUFloatEqualToFloat() & 1) == 0))
   {
     [(MusicLibraryAddKeepLocalControl *)self _updateControlStatusProperties];
   }
 }
 
-- (void)setContentHorizontalAlignment:(int64_t)a3
+- (void)setContentHorizontalAlignment:(int64_t)alignment
 {
-  v5 = [(MusicLibraryAddKeepLocalControl *)self contentHorizontalAlignment];
+  contentHorizontalAlignment = [(MusicLibraryAddKeepLocalControl *)self contentHorizontalAlignment];
   v6.receiver = self;
   v6.super_class = MusicLibraryAddKeepLocalControl;
-  [(MusicLibraryAddKeepLocalControl *)&v6 setContentHorizontalAlignment:a3];
-  if (v5 != [(MusicLibraryAddKeepLocalControl *)self contentHorizontalAlignment])
+  [(MusicLibraryAddKeepLocalControl *)&v6 setContentHorizontalAlignment:alignment];
+  if (contentHorizontalAlignment != [(MusicLibraryAddKeepLocalControl *)self contentHorizontalAlignment])
   {
     [(MusicLibraryAddKeepLocalControl *)self setNeedsLayout];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MusicLibraryAddKeepLocalControl;
-  [(MusicLibraryAddKeepLocalControl *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(MusicLibraryAddKeepLocalControl *)&v5 touchesCancelled:cancelled withEvent:event];
   self->_hadFirstTouchHighlight = 0;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MusicLibraryAddKeepLocalControl;
-  [(MusicLibraryAddKeepLocalControl *)&v5 touchesEnded:a3 withEvent:a4];
+  [(MusicLibraryAddKeepLocalControl *)&v5 touchesEnded:ended withEvent:event];
   self->_hadFirstTouchHighlight = 0;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(MusicLibraryAddKeepLocalControl *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(MusicLibraryAddKeepLocalControl *)self isHighlighted];
   v12.receiver = self;
   v12.super_class = MusicLibraryAddKeepLocalControl;
-  [(MusicLibraryAddKeepLocalControl *)&v12 setHighlighted:v3];
-  v6 = [(MusicLibraryAddKeepLocalControl *)self isHighlighted];
-  if (v5 != v6)
+  [(MusicLibraryAddKeepLocalControl *)&v12 setHighlighted:highlightedCopy];
+  isHighlighted2 = [(MusicLibraryAddKeepLocalControl *)self isHighlighted];
+  if (isHighlighted != isHighlighted2)
   {
-    v7 = v6;
+    v7 = isHighlighted2;
     v8 = 1.0;
-    if (v6)
+    if (isHighlighted2)
     {
       [(MusicLibraryAddKeepLocalControl *)self _beginTransientContentViewTransaction];
       v8 = 0.2;
@@ -731,11 +731,11 @@ id *__50__MusicLibraryAddKeepLocalControl_setHighlighted___block_invoke_2(id *re
   return result;
 }
 
-- (void)setAllowsAddImage:(BOOL)a3
+- (void)setAllowsAddImage:(BOOL)image
 {
-  if (self->_allowsAddImage != a3)
+  if (self->_allowsAddImage != image)
   {
-    self->_allowsAddImage = a3;
+    self->_allowsAddImage = image;
     if (self->_controlStatus.statusType == 1)
     {
       [(MusicLibraryAddKeepLocalControl *)self _updateControlStatusProperties];
@@ -743,29 +743,29 @@ id *__50__MusicLibraryAddKeepLocalControl_setHighlighted___block_invoke_2(id *re
   }
 }
 
-- (void)setDisplayStyle:(int64_t)a3
+- (void)setDisplayStyle:(int64_t)style
 {
-  if (self->_displayStyle != a3)
+  if (self->_displayStyle != style)
   {
-    self->_displayStyle = a3;
+    self->_displayStyle = style;
     [(MusicLibraryAddKeepLocalControl *)self _updateControlStatusProperties];
 
     [(MusicLibraryAddKeepLocalControl *)self _updateControlTitleLabelVisualProperties];
   }
 }
 
-- (void)setControlStatus:(MusicLibraryAddKeepLocalControlStatus)a3 animated:(BOOL)a4
+- (void)setControlStatus:(MusicLibraryAddKeepLocalControlStatus)status animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   p_controlStatus = &self->_controlStatus;
   statusType = self->_controlStatus.statusType;
-  if (statusType == a3.statusType && vabdd_f64(self->_controlStatus.downloadProgress, a3.downloadProgress) <= 0.00000011920929)
+  if (statusType == status.statusType && vabdd_f64(self->_controlStatus.downloadProgress, status.downloadProgress) <= 0.00000011920929)
   {
     return;
   }
 
-  p_controlStatus->statusType = a3.statusType;
-  self->_controlStatus.downloadProgress = a3.downloadProgress;
+  p_controlStatus->statusType = status.statusType;
+  self->_controlStatus.downloadProgress = status.downloadProgress;
   v8 = self->_controlStatusRevision + 1;
   self->_controlStatusRevision = v8;
   if (p_controlStatus->statusType != statusType || (p_controlStatus->statusType & 0xFFFFFFFFFFFFFFFELL) != 4)
@@ -788,7 +788,7 @@ id *__50__MusicLibraryAddKeepLocalControl_setHighlighted___block_invoke_2(id *re
       if (statusType != 3)
       {
 LABEL_17:
-        v18 = (statusType & 0xFFFFFFFFFFFFFFFELL) != 4 || !v4;
+        v18 = (statusType & 0xFFFFFFFFFFFFFFFELL) != 4 || !animatedCopy;
         if (!v18 && p_controlStatus->statusType == 6)
         {
           v20[0] = _NSConcreteStackBlock;
@@ -828,7 +828,7 @@ LABEL_23:
   v21[4] = self;
   v13 = objc_retainBlock(v21);
   v14 = v13;
-  if (v4)
+  if (animatedCopy)
   {
     [UIView animateWithDuration:134 delay:v13 options:0 animations:0.25 completion:0.0];
   }
@@ -878,12 +878,12 @@ id __61__MusicLibraryAddKeepLocalControl_setControlStatus_animated___block_invok
   return result;
 }
 
-- (void)setTitle:(id)a3 forControlStatusType:(int64_t)a4
+- (void)setTitle:(id)title forControlStatusType:(int64_t)type
 {
-  v11 = a3;
-  v6 = [NSNumber numberWithInteger:a4];
+  titleCopy = title;
+  v6 = [NSNumber numberWithInteger:type];
   controlStatusTypeToTitle = self->_controlStatusTypeToTitle;
-  if (v11)
+  if (titleCopy)
   {
     if (!controlStatusTypeToTitle)
     {
@@ -894,7 +894,7 @@ id __61__MusicLibraryAddKeepLocalControl_setControlStatus_animated___block_invok
       controlStatusTypeToTitle = self->_controlStatusTypeToTitle;
     }
 
-    [(NSMutableDictionary *)controlStatusTypeToTitle setObject:v11 forKey:v6];
+    [(NSMutableDictionary *)controlStatusTypeToTitle setObject:titleCopy forKey:v6];
   }
 
   else
@@ -907,48 +907,48 @@ id __61__MusicLibraryAddKeepLocalControl_setControlStatus_animated___block_invok
     }
   }
 
-  if (self->_controlStatus.statusType == a4)
+  if (self->_controlStatus.statusType == type)
   {
     [(MusicLibraryAddKeepLocalControl *)self _updateControlStatusProperties];
   }
 }
 
-- (id)titleForControlStatusType:(int64_t)a3
+- (id)titleForControlStatusType:(int64_t)type
 {
   controlStatusTypeToTitle = self->_controlStatusTypeToTitle;
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:type];
   v5 = [(NSMutableDictionary *)controlStatusTypeToTitle objectForKey:v4];
 
   return v5;
 }
 
-+ (CGSize)_expectedSizeForControlStatusType:(int64_t)a3 controlTitle:(id)a4 hasControlImage:(BOOL)a5 displayScale:(double)a6 preferredHeight:(double)a7
++ (CGSize)_expectedSizeForControlStatusType:(int64_t)type controlTitle:(id)title hasControlImage:(BOOL)image displayScale:(double)scale preferredHeight:(double)height
 {
-  v8 = a5;
-  v11 = a4;
-  v12 = v11;
+  imageCopy = image;
+  titleCopy = title;
+  v12 = titleCopy;
   width = CGSizeZero.width;
   height = CGSizeZero.height;
-  if (a3)
+  if (type)
   {
-    if ([v11 length])
+    if ([titleCopy length])
     {
-      v15 = [a1 _newControlTitleLabel];
-      v16 = [a1 _controlTitleFontForControlStatusType:a3];
-      [v15 setFont:v16];
+      _newControlTitleLabel = [self _newControlTitleLabel];
+      v16 = [self _controlTitleFontForControlStatusType:type];
+      [_newControlTitleLabel setFont:v16];
 
-      [v15 setText:v12];
-      v17 = [v15 font];
-      [v15 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+      [_newControlTitleLabel setText:v12];
+      font = [_newControlTitleLabel font];
+      [_newControlTitleLabel sizeThatFits:{1.79769313e308, 1.79769313e308}];
       MTMPUFloatCeilForScale();
-      if (v8)
+      if (imageCopy)
       {
         width = CGSizeZero.width + v18 + 0.0 + 6.0 + 28.0;
-        [v17 lineHeight];
+        [font lineHeight];
         v20 = v19;
-        [v17 ascender];
+        [font ascender];
         v22 = v20 - v21;
-        [v17 descender];
+        [font descender];
         height = fmax(v22 + v23 + 16.0, 28.0);
       }
 
@@ -957,17 +957,17 @@ id __61__MusicLibraryAddKeepLocalControl_setControlStatus_animated___block_invok
         width = CGSizeZero.width + v18 + 32.0;
       }
 
-      if (height <= a7)
+      if (height <= height)
       {
-        height = a7;
+        height = height;
       }
     }
 
     else
     {
-      if (a7 >= 28.0)
+      if (height >= 28.0)
       {
-        height = a7;
+        height = height;
       }
 
       else
@@ -980,8 +980,8 @@ id __61__MusicLibraryAddKeepLocalControl_setControlStatus_animated___block_invok
   }
 
   v24 = width;
-  v25 = height;
-  result.height = v25;
+  heightCopy = height;
+  result.height = heightCopy;
   result.width = v24;
   return result;
 }
@@ -995,20 +995,20 @@ id __61__MusicLibraryAddKeepLocalControl_setControlStatus_animated___block_invok
   return v2;
 }
 
-+ (id)_controlTitleFontForControlStatusType:(int64_t)a3
++ (id)_controlTitleFontForControlStatusType:(int64_t)type
 {
-  if (a3 == 6)
+  if (type == 6)
   {
-    v3 = [UIFont boldSystemFontOfSize:11.0];
+    defaultFont = [UIFont boldSystemFontOfSize:11.0];
   }
 
   else
   {
     v4 = [MTMPUFontDescriptor fontDescriptorWithTextStyle:2 weight:4];
-    v3 = [v4 defaultFont];
+    defaultFont = [v4 defaultFont];
   }
 
-  return v3;
+  return defaultFont;
 }
 
 - (void)_beginTransientContentViewTransaction
@@ -1032,8 +1032,8 @@ id __61__MusicLibraryAddKeepLocalControl_setControlStatus_animated___block_invok
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(MusicLibraryAddKeepLocalControl *)self subviews];
-    v8 = [v7 copy];
+    subviews = [(MusicLibraryAddKeepLocalControl *)self subviews];
+    v8 = [subviews copy];
 
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
@@ -1075,8 +1075,8 @@ id __61__MusicLibraryAddKeepLocalControl_setControlStatus_animated___block_invok
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(UIView *)self->_transientContentView subviews];
-  v4 = [v3 copy];
+  subviews = [(UIView *)self->_transientContentView subviews];
+  v4 = [subviews copy];
 
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
@@ -1171,24 +1171,24 @@ id __61__MusicLibraryAddKeepLocalControl_setControlStatus_animated___block_invok
   }
 
   v9 = v8 * 0.5;
-  v10 = [(UIView *)self->_backgroundView layer];
-  [v10 setCornerRadius:v9];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setCornerRadius:v9];
 }
 
 - (id)_centerImageForDownloading
 {
-  v3 = [(MusicLibraryAddKeepLocalControl *)self downloadingCenterIconType];
-  if (v3 == 1)
+  downloadingCenterIconType = [(MusicLibraryAddKeepLocalControl *)self downloadingCenterIconType];
+  if (downloadingCenterIconType == 1)
   {
-    v4 = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
-    v5 = [MusicAppTheme pauseButtonImageWithTraitCollection:v4];
+    traitCollection = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
+    v5 = [MusicAppTheme pauseButtonImageWithTraitCollection:traitCollection];
     goto LABEL_5;
   }
 
-  if (!v3)
+  if (!downloadingCenterIconType)
   {
-    v4 = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
-    v5 = [MusicAppTheme stopButtonImageWithTraitCollection:v4];
+    traitCollection = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
+    v5 = [MusicAppTheme stopButtonImageWithTraitCollection:traitCollection];
 LABEL_5:
     v6 = v5;
 
@@ -1204,8 +1204,8 @@ LABEL_7:
 
 - (id)_centerImageForPausedDownload
 {
-  v2 = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
-  v3 = [MusicAppTheme resumeButtonImageWithTraitCollection:v2];
+  traitCollection = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
+  v3 = [MusicAppTheme resumeButtonImageWithTraitCollection:traitCollection];
 
   v4 = [v3 imageWithRenderingMode:2];
 
@@ -1214,8 +1214,8 @@ LABEL_7:
 
 - (void)_updateControlStatusProperties
 {
-  v3 = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
+  [traitCollection displayScale];
 
   if (MTMPUFloatLessThanOrEqualToFloat())
   {
@@ -1234,8 +1234,8 @@ LABEL_7:
       v8 = self->_downloadProgressView;
       self->_downloadProgressView = v7;
 
-      v9 = [(MusicLibraryAddKeepLocalControl *)self _currentContentSuperview];
-      [v9 addSubview:self->_downloadProgressView];
+      _currentContentSuperview = [(MusicLibraryAddKeepLocalControl *)self _currentContentSuperview];
+      [_currentContentSuperview addSubview:self->_downloadProgressView];
     }
 
     v10 = self->_downloadProgressView;
@@ -1271,13 +1271,13 @@ LABEL_7:
         self->_backgroundView = v13;
 
         v15 = self->_backgroundView;
-        v16 = [(MusicLibraryAddKeepLocalControl *)self tintColor];
-        [(UIView *)v15 setBackgroundColor:v16];
+        tintColor = [(MusicLibraryAddKeepLocalControl *)self tintColor];
+        [(UIView *)v15 setBackgroundColor:tintColor];
 
         [(UIView *)self->_backgroundView setClipsToBounds:1];
         [(MusicLibraryAddKeepLocalControl *)self _updateBackgroundViewCornerRadius];
-        v17 = [(MusicLibraryAddKeepLocalControl *)self _currentContentSuperview];
-        [v17 insertSubview:self->_backgroundView atIndex:0];
+        _currentContentSuperview2 = [(MusicLibraryAddKeepLocalControl *)self _currentContentSuperview];
+        [_currentContentSuperview2 insertSubview:self->_backgroundView atIndex:0];
       }
 
       top = UIEdgeInsetsZero.top;
@@ -1312,9 +1312,9 @@ LABEL_7:
           v24 = 22.0;
         }
 
-        v25 = [(MusicLibraryAddKeepLocalControl *)self tintColor];
-        v26 = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
-        v27 = [MusicAppTheme cloudDownloadImageForTintColor:v25 pointSize:v26 traitCollection:v24];
+        tintColor2 = [(MusicLibraryAddKeepLocalControl *)self tintColor];
+        traitCollection2 = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
+        v27 = [MusicAppTheme cloudDownloadImageForTintColor:tintColor2 pointSize:traitCollection2 traitCollection:v24];
 
         goto LABEL_30;
       }
@@ -1335,8 +1335,8 @@ LABEL_24:
         v28 = 20.0;
       }
 
-      v29 = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
-      v27 = [MusicAppTheme addButtonImageWithPointSize:v29 traitCollection:v28];
+      traitCollection3 = [(MusicLibraryAddKeepLocalControl *)self traitCollection];
+      v27 = [MusicAppTheme addButtonImageWithPointSize:traitCollection3 traitCollection:v28];
 
       if (self->_displayStyle == 1)
       {
@@ -1424,8 +1424,8 @@ LABEL_42:
       v36 = self->_controlImageView;
       self->_controlImageView = v35;
 
-      v37 = [(MusicLibraryAddKeepLocalControl *)self _currentContentSuperview];
-      [v37 addSubview:self->_controlImageView];
+      _currentContentSuperview3 = [(MusicLibraryAddKeepLocalControl *)self _currentContentSuperview];
+      [_currentContentSuperview3 addSubview:self->_controlImageView];
 
       v30 = v47;
       controlImageView = self->_controlImageView;
@@ -1450,12 +1450,12 @@ LABEL_47:
   {
     if (!controlTitleLabel)
     {
-      v41 = [objc_opt_class() _newControlTitleLabel];
+      _newControlTitleLabel = [objc_opt_class() _newControlTitleLabel];
       v42 = self->_controlTitleLabel;
-      self->_controlTitleLabel = v41;
+      self->_controlTitleLabel = _newControlTitleLabel;
 
-      v43 = [(MusicLibraryAddKeepLocalControl *)self _currentContentSuperview];
-      [v43 addSubview:self->_controlTitleLabel];
+      _currentContentSuperview4 = [(MusicLibraryAddKeepLocalControl *)self _currentContentSuperview];
+      [_currentContentSuperview4 addSubview:self->_controlTitleLabel];
     }
 
     [(MusicLibraryAddKeepLocalControl *)self _updateControlTitleLabelVisualProperties];
@@ -1485,23 +1485,23 @@ LABEL_47:
   controlImageView = self->_controlImageView;
   if (controlImageView)
   {
-    v14 = [(UIImageView *)controlImageView layer];
+    layer = [(UIImageView *)controlImageView layer];
     if (self->_controlStatus.statusType == 3)
     {
       v4 = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-      v5 = [v14 presentationLayer];
-      if (v5)
+      presentationLayer = [layer presentationLayer];
+      if (presentationLayer)
       {
-        v6 = v5;
+        v6 = presentationLayer;
       }
 
       else
       {
-        v6 = v14;
+        v6 = layer;
       }
 
-      v7 = [v4 keyPath];
-      v8 = [v6 valueForKeyPath:v7];
+      keyPath = [v4 keyPath];
+      v8 = [v6 valueForKeyPath:keyPath];
 
       [v4 setFromValue:v8];
       [v8 floatValue];
@@ -1517,12 +1517,12 @@ LABEL_47:
       v12 = CACurrentMediaTime();
       [v4 duration];
       [v4 setBeginTime:{(v12 - fmod(v12, v13))}];
-      [v14 addAnimation:v4 forKey:@"_MusicLibraryAddKeepLocalControlWaitingSpinnerAnimationKey"];
+      [layer addAnimation:v4 forKey:@"_MusicLibraryAddKeepLocalControlWaitingSpinnerAnimationKey"];
     }
 
     else
     {
-      [v14 removeAnimationForKey:@"_MusicLibraryAddKeepLocalControlWaitingSpinnerAnimationKey"];
+      [layer removeAnimationForKey:@"_MusicLibraryAddKeepLocalControlWaitingSpinnerAnimationKey"];
     }
   }
 }

@@ -1,19 +1,19 @@
 @interface SXSpecVersionConditionValidator
-- (BOOL)validateCondition:(id)a3 context:(id)a4;
-- (SXSpecVersionConditionValidator)initWithSpecVersion:(id)a3;
+- (BOOL)validateCondition:(id)condition context:(id)context;
+- (SXSpecVersionConditionValidator)initWithSpecVersion:(id)version;
 @end
 
 @implementation SXSpecVersionConditionValidator
 
-- (SXSpecVersionConditionValidator)initWithSpecVersion:(id)a3
+- (SXSpecVersionConditionValidator)initWithSpecVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v9.receiver = self;
   v9.super_class = SXSpecVersionConditionValidator;
   v5 = [(SXSpecVersionConditionValidator *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [versionCopy copy];
     specVersion = v5->_specVersion;
     v5->_specVersion = v6;
   }
@@ -21,21 +21,21 @@
   return v5;
 }
 
-- (BOOL)validateCondition:(id)a3 context:(id)a4
+- (BOOL)validateCondition:(id)condition context:(id)context
 {
-  v5 = a3;
-  v6 = [v5 minSpecVersion];
-  v7 = [v5 maxSpecVersion];
+  conditionCopy = condition;
+  minSpecVersion = [conditionCopy minSpecVersion];
+  maxSpecVersion = [conditionCopy maxSpecVersion];
 
-  if (v6 && ([(SXSpecVersionConditionValidator *)self specVersion], v8 = objc_claimAutoreleasedReturnValue(), v9 = SXSpecVersionCompare(v6, v8), v8, v9 == 1))
+  if (minSpecVersion && ([(SXSpecVersionConditionValidator *)self specVersion], v8 = objc_claimAutoreleasedReturnValue(), v9 = SXSpecVersionCompare(minSpecVersion, v8), v8, v9 == 1))
   {
     v10 = 0;
   }
 
-  else if (v7)
+  else if (maxSpecVersion)
   {
-    v11 = [(SXSpecVersionConditionValidator *)self specVersion];
-    v10 = SXSpecVersionCompare(v7, v11) != -1;
+    specVersion = [(SXSpecVersionConditionValidator *)self specVersion];
+    v10 = SXSpecVersionCompare(maxSpecVersion, specVersion) != -1;
   }
 
   else

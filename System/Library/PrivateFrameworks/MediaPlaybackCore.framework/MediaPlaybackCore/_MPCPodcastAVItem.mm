@@ -10,7 +10,7 @@
 - (MPModelGenericObject)modelGenericObject;
 - (NSArray)musicSubscriptionInformation;
 - (NSDate)releaseDate;
-- (_MPCPodcastAVItem)initWithGenericObject:(id)a3 itemProperties:(id)a4 playbackRequestEnvironment:(id)a5 identityPropertySet:(id)a6;
+- (_MPCPodcastAVItem)initWithGenericObject:(id)object itemProperties:(id)properties playbackRequestEnvironment:(id)environment identityPropertySet:(id)set;
 - (double)durationFromExternalMetadata;
 - (id)artworkCatalogBlock;
 - (id)preferredAudioTimePitchAlgorithm;
@@ -21,19 +21,19 @@
 - (void)_clearAssetNow;
 - (void)_willBecomeActivePlayerItem;
 - (void)_willResignActivePlayerItem;
-- (void)loadAssetAndPlayerItemWithTask:(MPAVItemAssetTask *)a3 completion:(id)a4;
+- (void)loadAssetAndPlayerItemWithTask:(MPAVItemAssetTask *)task completion:(id)completion;
 - (void)pauseContentKeySession;
-- (void)pod_updateDurationSnapshotWithElapsedTime:(double)a3 playbackRate:(float)a4 playbackState:(int64_t)a5;
-- (void)resolvePlaybackError:(NSError *)a3 withCompletion:(id)a4;
+- (void)pod_updateDurationSnapshotWithElapsedTime:(double)time playbackRate:(float)rate playbackState:(int64_t)state;
+- (void)resolvePlaybackError:(NSError *)error withCompletion:(id)completion;
 - (void)resumeContentKeySession;
-- (void)setEnhanceDialogueActive:(BOOL)a3 error:(id *)a4;
+- (void)setEnhanceDialogueActive:(BOOL)active error:(id *)error;
 @end
 
 @implementation _MPCPodcastAVItem
 
 - (uint64_t)storeSubscriptionAdamID
 {
-  v1 = a1;
+  selfCopy = self;
   v2 = sub_1C5CEFC60();
 
   return v2;
@@ -41,7 +41,7 @@
 
 - (BOOL)supportsEnhanceDialogue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C5CD71B4();
 
   return v3 & 1;
@@ -49,21 +49,21 @@
 
 - (BOOL)isEnhanceDialogueActive
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C5CD72A0();
 
   return v3 & 1;
 }
 
-- (void)setEnhanceDialogueActive:(BOOL)a3 error:(id *)a4
+- (void)setEnhanceDialogueActive:(BOOL)active error:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   sub_1C5CD7310();
 }
 
 - (BOOL)isExplicitTrack
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C5CF00C0();
 
   return v3 & 1;
@@ -85,7 +85,7 @@
 
 - (unint64_t)mediaType
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5CEF4A4();
   v4 = v3;
 
@@ -94,7 +94,7 @@
 
 - (int64_t)storeItemInt64ID
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C5CEFC60();
 
   return v3;
@@ -105,7 +105,7 @@
   sub_1C5C67E04(0, &qword_1EC1A91D0, MEMORY[0x1E6969530], MEMORY[0x1E69E6720]);
   MEMORY[0x1EEE9AC00](v3 - 8);
   v5 = &v10 - v4;
-  v6 = self;
+  selfCopy = self;
   sub_1C5CEFFD0();
 
   v7 = sub_1C6015020();
@@ -121,7 +121,7 @@
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)duration
 {
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1C5CF0338();
   v7 = v6;
   v9 = v8;
@@ -134,7 +134,7 @@
 
 - (BOOL)usesBookmarking
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C5CF04B0();
 
   return v3;
@@ -142,7 +142,7 @@
 
 - (BOOL)isHLSAsset
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C5CF0544();
 
   return v3 & 1;
@@ -150,7 +150,7 @@
 
 - (MPCAudioAssetTypeSelection)preferredAudioAssetTypeSelection
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C5CF08CC();
 
   return v3;
@@ -158,7 +158,7 @@
 
 - (int64_t)preferredAudioAssetType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C5CF095C();
 
   return v3;
@@ -166,7 +166,7 @@
 
 - (NSArray)musicSubscriptionInformation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C5CF0A30();
 
   if (v3)
@@ -185,7 +185,7 @@
 
 - (MPModelGenericObject)modelGenericObject
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C5CF0B50();
 
   return v3;
@@ -193,7 +193,7 @@
 
 - (double)durationFromExternalMetadata
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C5CF2058();
 
   return v3;
@@ -201,7 +201,7 @@
 
 - (BOOL)isAssetLoaded
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C5CF2170();
 
   return v3 & 1;
@@ -209,51 +209,51 @@
 
 - (void)_clearAssetNow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5CF21C0();
 }
 
-- (void)loadAssetAndPlayerItemWithTask:(MPAVItemAssetTask *)a3 completion:(id)a4
+- (void)loadAssetAndPlayerItemWithTask:(MPAVItemAssetTask *)task completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = task;
   v7[3] = v6;
   v7[4] = self;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
 
   sub_1C5E3A9D0(&unk_1C60366B8, v7);
 }
 
 - (void)_willBecomeActivePlayerItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5CF28CC();
 }
 
 - (void)_willResignActivePlayerItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5CF41D8();
 }
 
 - (void)pauseContentKeySession
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5CF4298();
 }
 
 - (void)resumeContentKeySession
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5CF4520();
 }
 
-- (void)pod_updateDurationSnapshotWithElapsedTime:(double)a3 playbackRate:(float)a4 playbackState:(int64_t)a5
+- (void)pod_updateDurationSnapshotWithElapsedTime:(double)time playbackRate:(float)rate playbackState:(int64_t)state
 {
-  v8 = self;
-  sub_1C5CF48A4(a5, a3, a4);
+  selfCopy = self;
+  sub_1C5CF48A4(state, time, rate);
 }
 
 - (id)preferredAudioTimePitchAlgorithm
@@ -263,24 +263,24 @@
   return v2;
 }
 
-- (_MPCPodcastAVItem)initWithGenericObject:(id)a3 itemProperties:(id)a4 playbackRequestEnvironment:(id)a5 identityPropertySet:(id)a6
+- (_MPCPodcastAVItem)initWithGenericObject:(id)object itemProperties:(id)properties playbackRequestEnvironment:(id)environment identityPropertySet:(id)set
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  objectCopy = object;
+  propertiesCopy = properties;
+  environmentCopy = environment;
+  setCopy = set;
   sub_1C5CF6A84();
 }
 
-- (void)resolvePlaybackError:(NSError *)a3 withCompletion:(id)a4
+- (void)resolvePlaybackError:(NSError *)error withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = error;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  errorCopy = error;
+  selfCopy = self;
 
   sub_1C5E3A9D0(&unk_1C60366F8, v7);
 }

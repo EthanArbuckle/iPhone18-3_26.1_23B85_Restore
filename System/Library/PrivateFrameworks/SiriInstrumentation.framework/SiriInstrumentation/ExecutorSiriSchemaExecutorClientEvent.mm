@@ -1,9 +1,9 @@
 @interface ExecutorSiriSchemaExecutorClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (ExecutorSiriSchemaExecutorAppIntentCallContext)executorAppIntentCallContext;
-- (ExecutorSiriSchemaExecutorClientEvent)initWithDictionary:(id)a3;
-- (ExecutorSiriSchemaExecutorClientEvent)initWithJSON:(id)a3;
+- (ExecutorSiriSchemaExecutorClientEvent)initWithDictionary:(id)dictionary;
+- (ExecutorSiriSchemaExecutorClientEvent)initWithJSON:(id)n;
 - (ExecutorSiriSchemaExecutorIdentifierQueryCallContext)executorIdentifierQueryCallContext;
 - (ExecutorSiriSchemaExecutorPersonQueryCallContext)executorPersonQueryCallContext;
 - (ExecutorSiriSchemaExecutorRequestContext)executorRequestContext;
@@ -13,7 +13,7 @@
 - (ExecutorSiriSchemaExecutorStringQueryLocationCallContext)executorStringQueryLocationCallContext;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -28,28 +28,28 @@
 - (void)deleteExecutorStringQueryEntityCallContext;
 - (void)deleteExecutorStringQueryEntityMatcherCallContext;
 - (void)deleteExecutorStringQueryLocationCallContext;
-- (void)setExecutorAppIntentCallContext:(id)a3;
-- (void)setExecutorIdentifierQueryCallContext:(id)a3;
-- (void)setExecutorPersonQueryCallContext:(id)a3;
-- (void)setExecutorRequestContext:(id)a3;
-- (void)setExecutorSearchToolQueryCallContext:(id)a3;
-- (void)setExecutorStringQueryEntityCallContext:(id)a3;
-- (void)setExecutorStringQueryEntityMatcherCallContext:(id)a3;
-- (void)setExecutorStringQueryLocationCallContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setExecutorAppIntentCallContext:(id)context;
+- (void)setExecutorIdentifierQueryCallContext:(id)context;
+- (void)setExecutorPersonQueryCallContext:(id)context;
+- (void)setExecutorRequestContext:(id)context;
+- (void)setExecutorSearchToolQueryCallContext:(id)context;
+- (void)setExecutorStringQueryEntityCallContext:(id)context;
+- (void)setExecutorStringQueryEntityMatcherCallContext:(id)context;
+- (void)setExecutorStringQueryLocationCallContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ExecutorSiriSchemaExecutorClientEvent
 
-- (ExecutorSiriSchemaExecutorClientEvent)initWithDictionary:(id)a3
+- (ExecutorSiriSchemaExecutorClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = ExecutorSiriSchemaExecutorClientEvent;
   v5 = [(ExecutorSiriSchemaExecutorClientEvent *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,7 +58,7 @@
     }
 
     v27 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"executorAppIntentCallContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"executorAppIntentCallContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       [(ExecutorSiriSchemaExecutorClientEvent *)v5 setExecutorAppIntentCallContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:{@"executorSearchToolQueryCallContext", v8}];
+    v10 = [dictionaryCopy objectForKeyedSubscript:{@"executorSearchToolQueryCallContext", v8}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(ExecutorSiriSchemaExecutorClientEvent *)v5 setExecutorSearchToolQueryCallContext:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"executorPersonQueryCallContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"executorPersonQueryCallContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,7 +82,7 @@
       [(ExecutorSiriSchemaExecutorClientEvent *)v5 setExecutorPersonQueryCallContext:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"executorStringQueryLocationCallContext"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"executorStringQueryLocationCallContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
       [(ExecutorSiriSchemaExecutorClientEvent *)v5 setExecutorStringQueryLocationCallContext:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"executorStringQueryEntityMatcherCallContext"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"executorStringQueryEntityMatcherCallContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,7 +98,7 @@
       [(ExecutorSiriSchemaExecutorClientEvent *)v5 setExecutorStringQueryEntityMatcherCallContext:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"executorStringQueryEntityCallContext"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"executorStringQueryEntityCallContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -106,7 +106,7 @@
       [(ExecutorSiriSchemaExecutorClientEvent *)v5 setExecutorStringQueryEntityCallContext:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"executorIdentifierQueryCallContext"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"executorIdentifierQueryCallContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,7 +114,7 @@
       [(ExecutorSiriSchemaExecutorClientEvent *)v5 setExecutorIdentifierQueryCallContext:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"executorRequestContext"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"executorRequestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -128,30 +128,30 @@
   return v5;
 }
 
-- (ExecutorSiriSchemaExecutorClientEvent)initWithJSON:(id)a3
+- (ExecutorSiriSchemaExecutorClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ExecutorSiriSchemaExecutorClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ExecutorSiriSchemaExecutorClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ExecutorSiriSchemaExecutorClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -164,154 +164,154 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_eventMetadata)
   {
-    v4 = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    eventMetadata = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
+    dictionaryRepresentation = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"eventMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_executorAppIntentCallContext)
   {
-    v7 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorAppIntentCallContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    executorAppIntentCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorAppIntentCallContext];
+    dictionaryRepresentation2 = [executorAppIntentCallContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"executorAppIntentCallContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"executorAppIntentCallContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"executorAppIntentCallContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"executorAppIntentCallContext"];
     }
   }
 
   if (self->_executorIdentifierQueryCallContext)
   {
-    v10 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorIdentifierQueryCallContext];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    executorIdentifierQueryCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorIdentifierQueryCallContext];
+    dictionaryRepresentation3 = [executorIdentifierQueryCallContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"executorIdentifierQueryCallContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"executorIdentifierQueryCallContext"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"executorIdentifierQueryCallContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"executorIdentifierQueryCallContext"];
     }
   }
 
   if (self->_executorPersonQueryCallContext)
   {
-    v13 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorPersonQueryCallContext];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    executorPersonQueryCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorPersonQueryCallContext];
+    dictionaryRepresentation4 = [executorPersonQueryCallContext dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"executorPersonQueryCallContext"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"executorPersonQueryCallContext"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"executorPersonQueryCallContext"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"executorPersonQueryCallContext"];
     }
   }
 
   if (self->_executorRequestContext)
   {
-    v16 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorRequestContext];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    executorRequestContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorRequestContext];
+    dictionaryRepresentation5 = [executorRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"executorRequestContext"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"executorRequestContext"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"executorRequestContext"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"executorRequestContext"];
     }
   }
 
   if (self->_executorSearchToolQueryCallContext)
   {
-    v19 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorSearchToolQueryCallContext];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    executorSearchToolQueryCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorSearchToolQueryCallContext];
+    dictionaryRepresentation6 = [executorSearchToolQueryCallContext dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"executorSearchToolQueryCallContext"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"executorSearchToolQueryCallContext"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"executorSearchToolQueryCallContext"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"executorSearchToolQueryCallContext"];
     }
   }
 
   if (self->_executorStringQueryEntityCallContext)
   {
-    v22 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityCallContext];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    executorStringQueryEntityCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityCallContext];
+    dictionaryRepresentation7 = [executorStringQueryEntityCallContext dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"executorStringQueryEntityCallContext"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"executorStringQueryEntityCallContext"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"executorStringQueryEntityCallContext"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"executorStringQueryEntityCallContext"];
     }
   }
 
   if (self->_executorStringQueryEntityMatcherCallContext)
   {
-    v25 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityMatcherCallContext];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    executorStringQueryEntityMatcherCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityMatcherCallContext];
+    dictionaryRepresentation8 = [executorStringQueryEntityMatcherCallContext dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"executorStringQueryEntityMatcherCallContext"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"executorStringQueryEntityMatcherCallContext"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"executorStringQueryEntityMatcherCallContext"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"executorStringQueryEntityMatcherCallContext"];
     }
   }
 
   if (self->_executorStringQueryLocationCallContext)
   {
-    v28 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryLocationCallContext];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    executorStringQueryLocationCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryLocationCallContext];
+    dictionaryRepresentation9 = [executorStringQueryLocationCallContext dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"executorStringQueryLocationCallContext"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"executorStringQueryLocationCallContext"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"executorStringQueryLocationCallContext"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"executorStringQueryLocationCallContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -327,34 +327,34 @@
   return v9 ^ v10 ^ [(ExecutorSiriSchemaExecutorRequestContext *)self->_executorRequestContext hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_48;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_48;
   }
 
-  v6 = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v8 = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -366,20 +366,20 @@
   {
   }
 
-  v6 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorAppIntentCallContext];
-  v7 = [v4 executorAppIntentCallContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ExecutorSiriSchemaExecutorClientEvent *)self executorAppIntentCallContext];
+  eventMetadata2 = [equalCopy executorAppIntentCallContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v13 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorAppIntentCallContext];
-  if (v13)
+  executorAppIntentCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorAppIntentCallContext];
+  if (executorAppIntentCallContext)
   {
-    v14 = v13;
-    v15 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorAppIntentCallContext];
-    v16 = [v4 executorAppIntentCallContext];
-    v17 = [v15 isEqual:v16];
+    v14 = executorAppIntentCallContext;
+    executorAppIntentCallContext2 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorAppIntentCallContext];
+    executorAppIntentCallContext3 = [equalCopy executorAppIntentCallContext];
+    v17 = [executorAppIntentCallContext2 isEqual:executorAppIntentCallContext3];
 
     if (!v17)
     {
@@ -391,20 +391,20 @@
   {
   }
 
-  v6 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorSearchToolQueryCallContext];
-  v7 = [v4 executorSearchToolQueryCallContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ExecutorSiriSchemaExecutorClientEvent *)self executorSearchToolQueryCallContext];
+  eventMetadata2 = [equalCopy executorSearchToolQueryCallContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v18 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorSearchToolQueryCallContext];
-  if (v18)
+  executorSearchToolQueryCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorSearchToolQueryCallContext];
+  if (executorSearchToolQueryCallContext)
   {
-    v19 = v18;
-    v20 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorSearchToolQueryCallContext];
-    v21 = [v4 executorSearchToolQueryCallContext];
-    v22 = [v20 isEqual:v21];
+    v19 = executorSearchToolQueryCallContext;
+    executorSearchToolQueryCallContext2 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorSearchToolQueryCallContext];
+    executorSearchToolQueryCallContext3 = [equalCopy executorSearchToolQueryCallContext];
+    v22 = [executorSearchToolQueryCallContext2 isEqual:executorSearchToolQueryCallContext3];
 
     if (!v22)
     {
@@ -416,20 +416,20 @@
   {
   }
 
-  v6 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorPersonQueryCallContext];
-  v7 = [v4 executorPersonQueryCallContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ExecutorSiriSchemaExecutorClientEvent *)self executorPersonQueryCallContext];
+  eventMetadata2 = [equalCopy executorPersonQueryCallContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v23 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorPersonQueryCallContext];
-  if (v23)
+  executorPersonQueryCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorPersonQueryCallContext];
+  if (executorPersonQueryCallContext)
   {
-    v24 = v23;
-    v25 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorPersonQueryCallContext];
-    v26 = [v4 executorPersonQueryCallContext];
-    v27 = [v25 isEqual:v26];
+    v24 = executorPersonQueryCallContext;
+    executorPersonQueryCallContext2 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorPersonQueryCallContext];
+    executorPersonQueryCallContext3 = [equalCopy executorPersonQueryCallContext];
+    v27 = [executorPersonQueryCallContext2 isEqual:executorPersonQueryCallContext3];
 
     if (!v27)
     {
@@ -441,20 +441,20 @@
   {
   }
 
-  v6 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryLocationCallContext];
-  v7 = [v4 executorStringQueryLocationCallContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryLocationCallContext];
+  eventMetadata2 = [equalCopy executorStringQueryLocationCallContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v28 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryLocationCallContext];
-  if (v28)
+  executorStringQueryLocationCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryLocationCallContext];
+  if (executorStringQueryLocationCallContext)
   {
-    v29 = v28;
-    v30 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryLocationCallContext];
-    v31 = [v4 executorStringQueryLocationCallContext];
-    v32 = [v30 isEqual:v31];
+    v29 = executorStringQueryLocationCallContext;
+    executorStringQueryLocationCallContext2 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryLocationCallContext];
+    executorStringQueryLocationCallContext3 = [equalCopy executorStringQueryLocationCallContext];
+    v32 = [executorStringQueryLocationCallContext2 isEqual:executorStringQueryLocationCallContext3];
 
     if (!v32)
     {
@@ -466,20 +466,20 @@
   {
   }
 
-  v6 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityMatcherCallContext];
-  v7 = [v4 executorStringQueryEntityMatcherCallContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityMatcherCallContext];
+  eventMetadata2 = [equalCopy executorStringQueryEntityMatcherCallContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v33 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityMatcherCallContext];
-  if (v33)
+  executorStringQueryEntityMatcherCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityMatcherCallContext];
+  if (executorStringQueryEntityMatcherCallContext)
   {
-    v34 = v33;
-    v35 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityMatcherCallContext];
-    v36 = [v4 executorStringQueryEntityMatcherCallContext];
-    v37 = [v35 isEqual:v36];
+    v34 = executorStringQueryEntityMatcherCallContext;
+    executorStringQueryEntityMatcherCallContext2 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityMatcherCallContext];
+    executorStringQueryEntityMatcherCallContext3 = [equalCopy executorStringQueryEntityMatcherCallContext];
+    v37 = [executorStringQueryEntityMatcherCallContext2 isEqual:executorStringQueryEntityMatcherCallContext3];
 
     if (!v37)
     {
@@ -491,20 +491,20 @@
   {
   }
 
-  v6 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityCallContext];
-  v7 = [v4 executorStringQueryEntityCallContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityCallContext];
+  eventMetadata2 = [equalCopy executorStringQueryEntityCallContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v38 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityCallContext];
-  if (v38)
+  executorStringQueryEntityCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityCallContext];
+  if (executorStringQueryEntityCallContext)
   {
-    v39 = v38;
-    v40 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityCallContext];
-    v41 = [v4 executorStringQueryEntityCallContext];
-    v42 = [v40 isEqual:v41];
+    v39 = executorStringQueryEntityCallContext;
+    executorStringQueryEntityCallContext2 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityCallContext];
+    executorStringQueryEntityCallContext3 = [equalCopy executorStringQueryEntityCallContext];
+    v42 = [executorStringQueryEntityCallContext2 isEqual:executorStringQueryEntityCallContext3];
 
     if (!v42)
     {
@@ -516,20 +516,20 @@
   {
   }
 
-  v6 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorIdentifierQueryCallContext];
-  v7 = [v4 executorIdentifierQueryCallContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ExecutorSiriSchemaExecutorClientEvent *)self executorIdentifierQueryCallContext];
+  eventMetadata2 = [equalCopy executorIdentifierQueryCallContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v43 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorIdentifierQueryCallContext];
-  if (v43)
+  executorIdentifierQueryCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorIdentifierQueryCallContext];
+  if (executorIdentifierQueryCallContext)
   {
-    v44 = v43;
-    v45 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorIdentifierQueryCallContext];
-    v46 = [v4 executorIdentifierQueryCallContext];
-    v47 = [v45 isEqual:v46];
+    v44 = executorIdentifierQueryCallContext;
+    executorIdentifierQueryCallContext2 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorIdentifierQueryCallContext];
+    executorIdentifierQueryCallContext3 = [equalCopy executorIdentifierQueryCallContext];
+    v47 = [executorIdentifierQueryCallContext2 isEqual:executorIdentifierQueryCallContext3];
 
     if (!v47)
     {
@@ -541,12 +541,12 @@
   {
   }
 
-  v6 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorRequestContext];
-  v7 = [v4 executorRequestContext];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(ExecutorSiriSchemaExecutorClientEvent *)self executorRequestContext];
+  eventMetadata2 = [equalCopy executorRequestContext];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v48 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorRequestContext];
-    if (!v48)
+    executorRequestContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorRequestContext];
+    if (!executorRequestContext)
     {
 
 LABEL_51:
@@ -554,10 +554,10 @@ LABEL_51:
       goto LABEL_49;
     }
 
-    v49 = v48;
-    v50 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorRequestContext];
-    v51 = [v4 executorRequestContext];
-    v52 = [v50 isEqual:v51];
+    v49 = executorRequestContext;
+    executorRequestContext2 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorRequestContext];
+    executorRequestContext3 = [equalCopy executorRequestContext];
+    v52 = [executorRequestContext2 isEqual:executorRequestContext3];
 
     if (v52)
     {
@@ -577,82 +577,82 @@ LABEL_49:
   return v53;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v23 = a3;
-  v4 = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
+    eventMetadata2 = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorAppIntentCallContext];
+  executorAppIntentCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorAppIntentCallContext];
 
-  if (v6)
+  if (executorAppIntentCallContext)
   {
-    v7 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorAppIntentCallContext];
+    executorAppIntentCallContext2 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorAppIntentCallContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorSearchToolQueryCallContext];
+  executorSearchToolQueryCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorSearchToolQueryCallContext];
 
-  if (v8)
+  if (executorSearchToolQueryCallContext)
   {
-    v9 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorSearchToolQueryCallContext];
+    executorSearchToolQueryCallContext2 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorSearchToolQueryCallContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorPersonQueryCallContext];
+  executorPersonQueryCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorPersonQueryCallContext];
 
-  if (v10)
+  if (executorPersonQueryCallContext)
   {
-    v11 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorPersonQueryCallContext];
+    executorPersonQueryCallContext2 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorPersonQueryCallContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryLocationCallContext];
+  executorStringQueryLocationCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryLocationCallContext];
 
-  if (v12)
+  if (executorStringQueryLocationCallContext)
   {
-    v13 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryLocationCallContext];
+    executorStringQueryLocationCallContext2 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryLocationCallContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityMatcherCallContext];
+  executorStringQueryEntityMatcherCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityMatcherCallContext];
 
-  if (v14)
+  if (executorStringQueryEntityMatcherCallContext)
   {
-    v15 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityMatcherCallContext];
+    executorStringQueryEntityMatcherCallContext2 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityMatcherCallContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityCallContext];
+  executorStringQueryEntityCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityCallContext];
 
-  if (v16)
+  if (executorStringQueryEntityCallContext)
   {
-    v17 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityCallContext];
+    executorStringQueryEntityCallContext2 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityCallContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorIdentifierQueryCallContext];
+  executorIdentifierQueryCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorIdentifierQueryCallContext];
 
-  if (v18)
+  if (executorIdentifierQueryCallContext)
   {
-    v19 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorIdentifierQueryCallContext];
+    executorIdentifierQueryCallContext2 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorIdentifierQueryCallContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorRequestContext];
+  executorRequestContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorRequestContext];
 
-  v21 = v23;
-  if (v20)
+  v21 = toCopy;
+  if (executorRequestContext)
   {
-    v22 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorRequestContext];
+    executorRequestContext2 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorRequestContext];
     PBDataWriterWriteSubmessage();
 
-    v21 = v23;
+    v21 = toCopy;
   }
 }
 
@@ -681,9 +681,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setExecutorRequestContext:(id)a3
+- (void)setExecutorRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   executorAppIntentCallContext = self->_executorAppIntentCallContext;
   self->_executorAppIntentCallContext = 0;
 
@@ -706,14 +706,14 @@ LABEL_49:
   self->_executorIdentifierQueryCallContext = 0;
 
   v12 = 57;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   executorRequestContext = self->_executorRequestContext;
-  self->_executorRequestContext = v4;
+  self->_executorRequestContext = contextCopy;
 }
 
 - (void)deleteExecutorIdentifierQueryCallContext
@@ -741,9 +741,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setExecutorIdentifierQueryCallContext:(id)a3
+- (void)setExecutorIdentifierQueryCallContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   executorAppIntentCallContext = self->_executorAppIntentCallContext;
   self->_executorAppIntentCallContext = 0;
 
@@ -766,14 +766,14 @@ LABEL_49:
   self->_executorRequestContext = 0;
 
   v12 = 56;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   executorIdentifierQueryCallContext = self->_executorIdentifierQueryCallContext;
-  self->_executorIdentifierQueryCallContext = v4;
+  self->_executorIdentifierQueryCallContext = contextCopy;
 }
 
 - (void)deleteExecutorStringQueryEntityCallContext
@@ -801,9 +801,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setExecutorStringQueryEntityCallContext:(id)a3
+- (void)setExecutorStringQueryEntityCallContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   executorAppIntentCallContext = self->_executorAppIntentCallContext;
   self->_executorAppIntentCallContext = 0;
 
@@ -826,14 +826,14 @@ LABEL_49:
   self->_executorRequestContext = 0;
 
   v12 = 55;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   executorStringQueryEntityCallContext = self->_executorStringQueryEntityCallContext;
-  self->_executorStringQueryEntityCallContext = v4;
+  self->_executorStringQueryEntityCallContext = contextCopy;
 }
 
 - (void)deleteExecutorStringQueryEntityMatcherCallContext
@@ -861,9 +861,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setExecutorStringQueryEntityMatcherCallContext:(id)a3
+- (void)setExecutorStringQueryEntityMatcherCallContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   executorAppIntentCallContext = self->_executorAppIntentCallContext;
   self->_executorAppIntentCallContext = 0;
 
@@ -886,14 +886,14 @@ LABEL_49:
   self->_executorRequestContext = 0;
 
   v12 = 54;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   executorStringQueryEntityMatcherCallContext = self->_executorStringQueryEntityMatcherCallContext;
-  self->_executorStringQueryEntityMatcherCallContext = v4;
+  self->_executorStringQueryEntityMatcherCallContext = contextCopy;
 }
 
 - (void)deleteExecutorStringQueryLocationCallContext
@@ -921,9 +921,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setExecutorStringQueryLocationCallContext:(id)a3
+- (void)setExecutorStringQueryLocationCallContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   executorAppIntentCallContext = self->_executorAppIntentCallContext;
   self->_executorAppIntentCallContext = 0;
 
@@ -946,14 +946,14 @@ LABEL_49:
   self->_executorRequestContext = 0;
 
   v12 = 53;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   executorStringQueryLocationCallContext = self->_executorStringQueryLocationCallContext;
-  self->_executorStringQueryLocationCallContext = v4;
+  self->_executorStringQueryLocationCallContext = contextCopy;
 }
 
 - (void)deleteExecutorPersonQueryCallContext
@@ -981,9 +981,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setExecutorPersonQueryCallContext:(id)a3
+- (void)setExecutorPersonQueryCallContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   executorAppIntentCallContext = self->_executorAppIntentCallContext;
   self->_executorAppIntentCallContext = 0;
 
@@ -1006,14 +1006,14 @@ LABEL_49:
   self->_executorRequestContext = 0;
 
   v12 = 52;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   executorPersonQueryCallContext = self->_executorPersonQueryCallContext;
-  self->_executorPersonQueryCallContext = v4;
+  self->_executorPersonQueryCallContext = contextCopy;
 }
 
 - (void)deleteExecutorSearchToolQueryCallContext
@@ -1041,9 +1041,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setExecutorSearchToolQueryCallContext:(id)a3
+- (void)setExecutorSearchToolQueryCallContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   executorAppIntentCallContext = self->_executorAppIntentCallContext;
   self->_executorAppIntentCallContext = 0;
 
@@ -1066,14 +1066,14 @@ LABEL_49:
   self->_executorRequestContext = 0;
 
   v12 = 51;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   executorSearchToolQueryCallContext = self->_executorSearchToolQueryCallContext;
-  self->_executorSearchToolQueryCallContext = v4;
+  self->_executorSearchToolQueryCallContext = contextCopy;
 }
 
 - (void)deleteExecutorAppIntentCallContext
@@ -1101,9 +1101,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setExecutorAppIntentCallContext:(id)a3
+- (void)setExecutorAppIntentCallContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   executorSearchToolQueryCallContext = self->_executorSearchToolQueryCallContext;
   self->_executorSearchToolQueryCallContext = 0;
 
@@ -1126,113 +1126,113 @@ LABEL_49:
   self->_executorRequestContext = 0;
 
   v12 = 50;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   executorAppIntentCallContext = self->_executorAppIntentCallContext;
-  self->_executorAppIntentCallContext = v4;
+  self->_executorAppIntentCallContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(ExecutorSiriSchemaExecutorClientEvent *)self whichEvent_Type];
-  if (v2 - 50 > 7)
+  whichEvent_Type = [(ExecutorSiriSchemaExecutorClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 50 > 7)
   {
     return @"com.apple.aiml.siri.executor.ExecutorClientEvent";
   }
 
   else
   {
-    return off_1E78D4820[v2 - 50];
+    return off_1E78D4820[whichEvent_Type - 50];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v34.receiver = self;
   v34.super_class = ExecutorSiriSchemaExecutorClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v34 applySensitiveConditionsPolicy:v4];
-  v6 = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v34 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ExecutorSiriSchemaExecutorClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorAppIntentCallContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  executorAppIntentCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorAppIntentCallContext];
+  v10 = [executorAppIntentCallContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ExecutorSiriSchemaExecutorClientEvent *)self deleteExecutorAppIntentCallContext];
   }
 
-  v12 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorSearchToolQueryCallContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  executorSearchToolQueryCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorSearchToolQueryCallContext];
+  v13 = [executorSearchToolQueryCallContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(ExecutorSiriSchemaExecutorClientEvent *)self deleteExecutorSearchToolQueryCallContext];
   }
 
-  v15 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorPersonQueryCallContext];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  executorPersonQueryCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorPersonQueryCallContext];
+  v16 = [executorPersonQueryCallContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(ExecutorSiriSchemaExecutorClientEvent *)self deleteExecutorPersonQueryCallContext];
   }
 
-  v18 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryLocationCallContext];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  executorStringQueryLocationCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryLocationCallContext];
+  v19 = [executorStringQueryLocationCallContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(ExecutorSiriSchemaExecutorClientEvent *)self deleteExecutorStringQueryLocationCallContext];
   }
 
-  v21 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityMatcherCallContext];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  executorStringQueryEntityMatcherCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityMatcherCallContext];
+  v22 = [executorStringQueryEntityMatcherCallContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(ExecutorSiriSchemaExecutorClientEvent *)self deleteExecutorStringQueryEntityMatcherCallContext];
   }
 
-  v24 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityCallContext];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  executorStringQueryEntityCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorStringQueryEntityCallContext];
+  v25 = [executorStringQueryEntityCallContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(ExecutorSiriSchemaExecutorClientEvent *)self deleteExecutorStringQueryEntityCallContext];
   }
 
-  v27 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorIdentifierQueryCallContext];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  executorIdentifierQueryCallContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorIdentifierQueryCallContext];
+  v28 = [executorIdentifierQueryCallContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(ExecutorSiriSchemaExecutorClientEvent *)self deleteExecutorIdentifierQueryCallContext];
   }
 
-  v30 = [(ExecutorSiriSchemaExecutorClientEvent *)self executorRequestContext];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  executorRequestContext = [(ExecutorSiriSchemaExecutorClientEvent *)self executorRequestContext];
+  v31 = [executorRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(ExecutorSiriSchemaExecutorClientEvent *)self deleteExecutorRequestContext];
   }
@@ -1250,27 +1250,27 @@ LABEL_49:
 
 - (int)componentName
 {
-  v3 = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
-  v4 = [v3 ifRequestId];
+  eventMetadata = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
+  ifRequestId = [eventMetadata ifRequestId];
 
-  if (v4 && ([v4 value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(v4, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
+  if (ifRequestId && ([ifRequestId value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(ifRequestId, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
   {
     v9 = 45;
   }
 
   else
   {
-    v10 = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
-    v11 = [v10 executorId];
+    eventMetadata2 = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
+    executorId = [eventMetadata2 executorId];
 
-    if (v11)
+    if (executorId)
     {
-      v12 = [v11 value];
-      if (v12)
+      value = [executorId value];
+      if (value)
       {
-        v13 = v12;
-        v14 = [v11 value];
-        v15 = [v14 length];
+        v13 = value;
+        value2 = [executorId value];
+        v15 = [value2 length];
 
         if (v15)
         {
@@ -1288,13 +1288,13 @@ LABEL_49:
         v9 = 0;
       }
 
-      v4 = v11;
+      ifRequestId = executorId;
     }
 
     else
     {
       v9 = 0;
-      v4 = 0;
+      ifRequestId = 0;
     }
   }
 
@@ -1303,17 +1303,17 @@ LABEL_49:
 
 - (id)getComponentId
 {
-  v3 = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
-  v4 = [v3 ifRequestId];
+  eventMetadata = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
+  ifRequestId = [eventMetadata ifRequestId];
 
-  if (v4)
+  if (ifRequestId)
   {
-    v5 = [v4 value];
-    if (v5)
+    value = [ifRequestId value];
+    if (value)
     {
-      v6 = v5;
-      v7 = [v4 value];
-      v8 = [v7 length];
+      v6 = value;
+      value2 = [ifRequestId value];
+      v8 = [value2 length];
 
       if (v8)
       {
@@ -1322,62 +1322,62 @@ LABEL_49:
     }
   }
 
-  v9 = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
-  v10 = [v9 executorId];
+  eventMetadata2 = [(ExecutorSiriSchemaExecutorClientEvent *)self eventMetadata];
+  executorId = [eventMetadata2 executorId];
 
-  if (v10)
+  if (executorId)
   {
-    v11 = [v10 value];
-    if (!v11)
+    value3 = [executorId value];
+    if (!value3)
     {
       goto LABEL_10;
     }
 
-    v12 = [v10 value];
-    v13 = [v12 length];
+    value4 = [executorId value];
+    v13 = [value4 length];
 
     if (v13)
     {
-      v4 = v10;
+      ifRequestId = executorId;
 LABEL_8:
-      v11 = v4;
-      v10 = v11;
+      value3 = ifRequestId;
+      executorId = value3;
       goto LABEL_10;
     }
   }
 
-  v11 = 0;
+  value3 = 0;
 LABEL_10:
 
-  return v11;
+  return value3;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(ExecutorSiriSchemaExecutorClientEvent *)self whichEvent_Type];
-  if (v3 - 50 > 7)
+  whichEvent_Type = [(ExecutorSiriSchemaExecutorClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 50 > 7)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78E9628[v3 - 50]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78E9628[whichEvent_Type - 50]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 50 > 7)
+  if (tag - 50 > 7)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78E9668[a3 - 50];
+    return off_1E78E9668[tag - 50];
   }
 }
 

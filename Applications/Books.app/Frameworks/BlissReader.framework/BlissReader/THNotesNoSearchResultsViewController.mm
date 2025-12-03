@@ -1,29 +1,29 @@
 @interface THNotesNoSearchResultsViewController
-- (CGSize)sizeForContainerView:(id)a3;
-- (THNotesNoSearchResultsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)p_getConstraint:(id)a3 onView:(id)a4;
-- (id)p_findConstraint:(id)a3 onView:(id)a4;
+- (CGSize)sizeForContainerView:(id)view;
+- (THNotesNoSearchResultsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)p_getConstraint:(id)constraint onView:(id)view;
+- (id)p_findConstraint:(id)constraint onView:(id)view;
 - (void)dealloc;
 - (void)p_prepForFirstLaunchViewLayout;
 - (void)p_releaseOutlets;
-- (void)p_setConstraint:(id)a3 onView:(id)a4 toValue:(double)a5;
+- (void)p_setConstraint:(id)constraint onView:(id)view toValue:(double)value;
 - (void)p_updateNoteIconVisibility;
-- (void)setChapterIndex:(unint64_t)a3;
-- (void)setFooterType:(int)a3;
-- (void)setMessageType:(int)a3;
-- (void)setResults:(unint64_t)a3;
+- (void)setChapterIndex:(unint64_t)index;
+- (void)setFooterType:(int)type;
+- (void)setMessageType:(int)type;
+- (void)setResults:(unint64_t)results;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation THNotesNoSearchResultsViewController
 
-- (THNotesNoSearchResultsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (THNotesNoSearchResultsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6 = THBundle();
   v8.receiver = self;
   v8.super_class = THNotesNoSearchResultsViewController;
-  return [(THNotesNoSearchResultsViewController *)&v8 initWithNibName:a3 bundle:v6];
+  return [(THNotesNoSearchResultsViewController *)&v8 initWithNibName:name bundle:v6];
 }
 
 - (void)p_releaseOutlets
@@ -158,11 +158,11 @@
 
 - (void)p_updateNoteIconVisibility
 {
-  v3 = [(THNotesNoSearchResultsViewController *)self p_shouldShowNoteIcon];
-  [(UIImageView *)self->mNoteIcon setHidden:v3 ^ 1];
+  p_shouldShowNoteIcon = [(THNotesNoSearchResultsViewController *)self p_shouldShowNoteIcon];
+  [(UIImageView *)self->mNoteIcon setHidden:p_shouldShowNoteIcon ^ 1];
   mFirstLaunchViewHeader = self->mFirstLaunchViewHeader;
   v5 = 158.0;
-  if (!v3)
+  if (!p_shouldShowNoteIcon)
   {
     v5 = 0.0;
   }
@@ -170,9 +170,9 @@
   [(THNotesNoSearchResultsViewController *)self p_setConstraint:@"FirstLaunchViewHeaderVerticalSpace" onView:mFirstLaunchViewHeader toValue:v5];
 }
 
-- (id)p_findConstraint:(id)a3 onView:(id)a4
+- (id)p_findConstraint:(id)constraint onView:(id)view
 {
-  if (!a4)
+  if (!view)
   {
     return 0;
   }
@@ -181,8 +181,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [a4 constraints];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  constraints = [view constraints];
+  v8 = [constraints countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -193,7 +193,7 @@ LABEL_4:
     {
       if (*v15 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(constraints);
       }
 
       v12 = *(*(&v14 + 1) + 8 * v11);
@@ -204,13 +204,13 @@ LABEL_4:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [constraints countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v9)
         {
           goto LABEL_4;
         }
 
-        return -[THNotesNoSearchResultsViewController p_findConstraint:onView:](self, "p_findConstraint:onView:", a3, [a4 superview]);
+        return -[THNotesNoSearchResultsViewController p_findConstraint:onView:](self, "p_findConstraint:onView:", constraint, [view superview]);
       }
     }
 
@@ -220,23 +220,23 @@ LABEL_4:
     }
   }
 
-  return -[THNotesNoSearchResultsViewController p_findConstraint:onView:](self, "p_findConstraint:onView:", a3, [a4 superview]);
+  return -[THNotesNoSearchResultsViewController p_findConstraint:onView:](self, "p_findConstraint:onView:", constraint, [view superview]);
 }
 
-- (void)p_setConstraint:(id)a3 onView:(id)a4 toValue:(double)a5
+- (void)p_setConstraint:(id)constraint onView:(id)view toValue:(double)value
 {
-  v7 = [(THNotesNoSearchResultsViewController *)self p_findConstraint:a3 onView:a4];
+  v7 = [(THNotesNoSearchResultsViewController *)self p_findConstraint:constraint onView:view];
   if (!v7)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [v7 setConstant:a5];
+  [v7 setConstant:value];
 }
 
-- (double)p_getConstraint:(id)a3 onView:(id)a4
+- (double)p_getConstraint:(id)constraint onView:(id)view
 {
-  v5 = [(THNotesNoSearchResultsViewController *)self p_findConstraint:a3 onView:a4];
+  v5 = [(THNotesNoSearchResultsViewController *)self p_findConstraint:constraint onView:view];
   if (!v5)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -282,9 +282,9 @@ LABEL_4:
   [(THNotesNoSearchResultsViewController *)self p_updateNoteIconVisibility];
 }
 
-- (void)setChapterIndex:(unint64_t)a3
+- (void)setChapterIndex:(unint64_t)index
 {
-  self->mChapterIndex = a3;
+  self->mChapterIndex = index;
   mMessageType = self->mMessageType;
   v5 = THBundle();
   if (mMessageType == 1)
@@ -303,9 +303,9 @@ LABEL_4:
   [(UILabel *)mNoResultsViewHeader setText:v7];
 }
 
-- (void)setResults:(unint64_t)a3
+- (void)setResults:(unint64_t)results
 {
-  self->mResults = a3;
+  self->mResults = results;
   mMessageType = self->mMessageType;
   mPercentFoundLabel = self->mPercentFoundLabel;
   if (mMessageType == 1)
@@ -316,7 +316,7 @@ LABEL_4:
   }
 
   [(UILabel *)mPercentFoundLabel setHidden:0];
-  if (a3)
+  if (results)
   {
     if (self->mResults != 1)
     {
@@ -342,17 +342,17 @@ LABEL_11:
   [(UILabel *)v11 setText:v10];
 }
 
-- (void)setFooterType:(int)a3
+- (void)setFooterType:(int)type
 {
-  self->mFooterType = a3;
-  if (a3 == 1)
+  self->mFooterType = type;
+  if (type == 1)
   {
     mFooterLabel = self->mFooterLabel;
 
     [(UILabel *)mFooterLabel setHidden:?];
   }
 
-  else if (a3)
+  else if (type)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -367,23 +367,23 @@ LABEL_11:
   }
 }
 
-- (void)setMessageType:(int)a3
+- (void)setMessageType:(int)type
 {
-  self->mMessageType = a3;
-  if (a3 >= 2)
+  self->mMessageType = type;
+  if (type >= 2)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 }
 
-- (CGSize)sizeForContainerView:(id)a3
+- (CGSize)sizeForContainerView:(id)view
 {
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [a3 subviews];
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  subviews = [view subviews];
+  v6 = [subviews countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v6)
   {
     v7 = v6;
@@ -396,7 +396,7 @@ LABEL_11:
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v11 = *(*(&v28 + 1) + 8 * v10);
@@ -411,7 +411,7 @@ LABEL_11:
       }
 
       while (v7 != v10);
-      v14 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v14 = [subviews countByEnumeratingWithState:&v28 objects:v32 count:16];
       v7 = v14;
     }
 
@@ -424,7 +424,7 @@ LABEL_11:
   }
 
   mInstructionsViewWidth = UIViewNoIntrinsicMetric;
-  if (self->mNoResultsView == a3)
+  if (self->mNoResultsView == view)
   {
     [(THNotesNoSearchResultsViewController *)self p_getConstraint:@"NoResultsViewHeaderVerticalSpace" onView:self->mNoResultsViewHeader];
     v9 = v9 + v21;
@@ -433,7 +433,7 @@ LABEL_11:
     goto LABEL_24;
   }
 
-  if (self->mFirstLaunchView == a3)
+  if (self->mFirstLaunchView == view)
   {
     if ([(THNotesNoSearchResultsViewController *)self p_shouldShowNoteIcon])
     {
@@ -448,7 +448,7 @@ LABEL_11:
     goto LABEL_24;
   }
 
-  if (self->mInstructionsView == a3)
+  if (self->mInstructionsView == view)
   {
     mInstructionsViewWidth = self->mInstructionsViewWidth;
     [(THNotesNoSearchResultsViewController *)self p_getConstraint:@"FirstLaunchViewStepOneVerticalSpace" onView:self->mStepOneLabel];

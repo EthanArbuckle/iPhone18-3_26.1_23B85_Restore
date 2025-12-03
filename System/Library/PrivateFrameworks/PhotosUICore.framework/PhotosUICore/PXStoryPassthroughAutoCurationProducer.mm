@@ -1,22 +1,22 @@
 @interface PXStoryPassthroughAutoCurationProducer
 - (PXStoryPassthroughAutoCurationProducer)init;
-- (id)requestCuratedAssetsWithOptions:(unint64_t)a3 targetOverallDurationInfo:(id *)a4 resultHandler:(id)a5;
-- (id)requestCurationLengthsWithOptions:(unint64_t)a3 allAssets:(id)a4 curatedAssets:(id)a5 resultHandler:(id)a6;
+- (id)requestCuratedAssetsWithOptions:(unint64_t)options targetOverallDurationInfo:(id *)info resultHandler:(id)handler;
+- (id)requestCurationLengthsWithOptions:(unint64_t)options allAssets:(id)assets curatedAssets:(id)curatedAssets resultHandler:(id)handler;
 @end
 
 @implementation PXStoryPassthroughAutoCurationProducer
 
-- (id)requestCuratedAssetsWithOptions:(unint64_t)a3 targetOverallDurationInfo:(id *)a4 resultHandler:(id)a5
+- (id)requestCuratedAssetsWithOptions:(unint64_t)options targetOverallDurationInfo:(id *)info resultHandler:(id)handler
 {
-  v6 = a5;
-  v7 = [(PXStoryPassthroughAutoCurationProducer *)self assets];
+  handlerCopy = handler;
+  assets = [(PXStoryPassthroughAutoCurationProducer *)self assets];
 
-  if (v7)
+  if (assets)
   {
     v8 = [PXStoryProducerResult alloc];
-    v9 = [(PXStoryPassthroughAutoCurationProducer *)self assets];
-    v10 = [(PXStoryProducerResult *)v8 initWithObject:v9];
-    v6[2](v6, v10);
+    assets2 = [(PXStoryPassthroughAutoCurationProducer *)self assets];
+    v10 = [(PXStoryProducerResult *)v8 initWithObject:assets2];
+    handlerCopy[2](handlerCopy, v10);
   }
 
   else
@@ -28,21 +28,21 @@
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_ERROR, "requestCuratedAssetsWithOptions is not supported.", &v20, 2u);
     }
 
-    v9 = PXStoryErrorCreateWithCodeDebugFormat(16, @"Target Duration Curation Not Supported", v12, v13, v14, v15, v16, v17, v20);
+    assets2 = PXStoryErrorCreateWithCodeDebugFormat(16, @"Target Duration Curation Not Supported", v12, v13, v14, v15, v16, v17, v20);
     v10 = [[PXStoryProducerResult alloc] initWithObject:0];
-    v18 = [(PXStoryProducerResult *)v10 error:v9];
-    v6[2](v6, v18);
+    v18 = [(PXStoryProducerResult *)v10 error:assets2];
+    handlerCopy[2](handlerCopy, v18);
   }
 
   return 0;
 }
 
-- (id)requestCurationLengthsWithOptions:(unint64_t)a3 allAssets:(id)a4 curatedAssets:(id)a5 resultHandler:(id)a6
+- (id)requestCurationLengthsWithOptions:(unint64_t)options allAssets:(id)assets curatedAssets:(id)curatedAssets resultHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   v8 = [[PXStoryCurationLengthInfo alloc] initWithAvailableLengths:[(PXStoryPassthroughAutoCurationProducer *)self availableLengths] defaultLength:0];
   v9 = [[PXStoryProducerResult alloc] initWithObject:v8];
-  v7[2](v7, v9);
+  handlerCopy[2](handlerCopy, v9);
 
   return 0;
 }

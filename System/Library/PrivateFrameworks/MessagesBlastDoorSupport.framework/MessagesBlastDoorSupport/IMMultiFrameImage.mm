@@ -1,31 +1,31 @@
 @interface IMMultiFrameImage
-- (BOOL)finalizeASTCWithError:(id *)a3;
-- (BOOL)writeASTCImage:(CGImage *)a3 duration:(double)a4 error:(id *)a5;
-- (id)initForWritingWithFileURL:(id)a3 scale:(float)a4;
+- (BOOL)finalizeASTCWithError:(id *)error;
+- (BOOL)writeASTCImage:(CGImage *)image duration:(double)duration error:(id *)error;
+- (id)initForWritingWithFileURL:(id)l scale:(float)scale;
 - (void)deleteStream;
 @end
 
 @implementation IMMultiFrameImage
 
-- (id)initForWritingWithFileURL:(id)a3 scale:(float)a4
+- (id)initForWritingWithFileURL:(id)l scale:(float)scale
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = IMMultiFrameImage;
   v8 = [(IMMultiFrameImage *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_outputURL, a3);
-    v10 = 1.0;
-    if (a4 > 0.0)
+    objc_storeStrong(&v8->_outputURL, l);
+    scaleCopy = 1.0;
+    if (scale > 0.0)
     {
-      v10 = a4;
+      scaleCopy = scale;
     }
 
-    v9->_scale = v10;
-    v11 = [MEMORY[0x277CBEB78] outputStreamWithURL:v7 append:0];
+    v9->_scale = scaleCopy;
+    v11 = [MEMORY[0x277CBEB78] outputStreamWithURL:lCopy append:0];
     outputStream = v9->_outputStream;
     v9->_outputStream = v11;
 
@@ -42,13 +42,13 @@
 - (void)deleteStream
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = [(IMMultiFrameImage *)self outputStream];
-  [v3 close];
+  outputStream = [(IMMultiFrameImage *)self outputStream];
+  [outputStream close];
 
   v4 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v5 = [(IMMultiFrameImage *)self outputURL];
+  outputURL = [(IMMultiFrameImage *)self outputURL];
   v10[0] = 0;
-  v6 = [v4 removeItemAtURL:v5 error:v10];
+  v6 = [v4 removeItemAtURL:outputURL error:v10];
   v7 = v10[0];
 
   if ((v6 & 1) == 0)
@@ -63,16 +63,16 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)writeASTCImage:(CGImage *)a3 duration:(double)a4 error:(id *)a5
+- (BOOL)writeASTCImage:(CGImage *)image duration:(double)duration error:(id *)error
 {
   v44[3] = *MEMORY[0x277D85DE8];
-  v9 = [(IMMultiFrameImage *)self outputStream];
-  if (!a3 || a4 == 0.0)
+  outputStream = [(IMMultiFrameImage *)self outputStream];
+  if (!image || duration == 0.0)
   {
     v13 = IMMultiFrameImageLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [IMMultiFrameImage(ASTC_Persistence) writeASTCImage:a3 duration:v13 error:a4];
+      [IMMultiFrameImage(ASTC_Persistence) writeASTCImage:image duration:v13 error:duration];
     }
 
     v18 = 0;
@@ -80,9 +80,9 @@
 
   else
   {
-    v10 = [(IMMultiFrameImage *)self durations];
-    v11 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-    [v10 addObject:v11];
+    durations = [(IMMultiFrameImage *)self durations];
+    v11 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
+    [durations addObject:v11];
 
     v12 = *MEMORY[0x277CD2DD0];
     v43[0] = *MEMORY[0x277CD2F40];
@@ -94,7 +94,7 @@
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:3];
     v14 = objc_alloc_init(MEMORY[0x277CBEB28]);
     v15 = CGImageDestinationCreateWithData(v14, @"org.khronos.ktx", 1uLL, 0);
-    CGImageDestinationAddImage(v15, a3, v13);
+    CGImageDestinationAddImage(v15, image, v13);
     v16 = CGImageDestinationFinalize(v15);
     CFRelease(v15);
     if (v16)
@@ -106,7 +106,7 @@
       v40[1] = 0x3032000000;
       v40[2] = __Block_byref_object_copy_;
       v40[3] = __Block_byref_object_dispose_;
-      if ([v9 write:&v42 maxLength:8] == 8)
+      if ([outputStream write:&v42 maxLength:8] == 8)
       {
         v35 = 0;
         v36 = &v35;
@@ -116,14 +116,14 @@
         v31[1] = 3221225472;
         v31[2] = __69__IMMultiFrameImage_ASTC_Persistence__writeASTCImage_duration_error___block_invoke;
         v31[3] = &unk_2798C3D60;
-        v32 = v9;
+        v32 = outputStream;
         v33 = &v39;
         v34 = &v35;
         [(__CFData *)v14 enumerateByteRangesUsingBlock:v31];
         v17 = *(v36 + 24);
-        if (a5 && (v36[3] & 1) != 0)
+        if (error && (v36[3] & 1) != 0)
         {
-          *a5 = *(v40[0] + 40);
+          *error = *(v40[0] + 40);
         }
 
         v18 = v17 ^ 1;
@@ -132,9 +132,9 @@
 
       else
       {
-        v20 = [v9 streamError];
+        streamError = [outputStream streamError];
         v21 = *(v40[0] + 40);
-        *(v40[0] + 40) = v20;
+        *(v40[0] + 40) = streamError;
 
         v22 = IMMultiFrameImageLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -143,9 +143,9 @@
         }
 
         v18 = 0;
-        if (a5)
+        if (error)
         {
-          *a5 = *(v40[0] + 40);
+          *error = *(v40[0] + 40);
         }
       }
 
@@ -188,7 +188,7 @@ void __69__IMMultiFrameImage_ASTC_Persistence__writeASTCImage_duration_error___b
   }
 }
 
-- (BOOL)finalizeASTCWithError:(id *)a3
+- (BOOL)finalizeASTCWithError:(id *)error
 {
   v27[1] = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -197,18 +197,18 @@ void __69__IMMultiFrameImage_ASTC_Persistence__writeASTCImage_duration_error___b
   v7 = [v6 numberWithFloat:?];
   [v5 setObject:v7 forKeyedSubscript:@"CKAnimatedImageScale"];
 
-  v8 = [(IMMultiFrameImage *)self durations];
+  durations = [(IMMultiFrameImage *)self durations];
 
-  if (v8)
+  if (durations)
   {
-    v9 = [(IMMultiFrameImage *)self durations];
-    [v5 setObject:v9 forKeyedSubscript:@"CKAnimatedImageDurations"];
+    durations2 = [(IMMultiFrameImage *)self durations];
+    [v5 setObject:durations2 forKeyedSubscript:@"CKAnimatedImageDurations"];
   }
 
   v10 = [v5 copy];
-  v11 = [(IMMultiFrameImage *)self outputStream];
+  outputStream = [(IMMultiFrameImage *)self outputStream];
   v27[0] = 0;
-  v12 = [MEMORY[0x277CCAC58] writePropertyList:v10 toStream:v11 format:200 options:0 error:v27];
+  v12 = [MEMORY[0x277CCAC58] writePropertyList:v10 toStream:outputStream format:200 options:0 error:v27];
   v13 = v27[0];
   if (v12 <= 0)
   {
@@ -218,14 +218,14 @@ void __69__IMMultiFrameImage_ASTC_Persistence__writeASTCImage_duration_error___b
       [IMMultiFrameImage(ASTC_Persistence) finalizeASTCWithError:];
     }
 
-    v23 = v13;
+    streamError = v13;
     goto LABEL_17;
   }
 
   v26 = v12;
-  if ([v11 write:&v26 maxLength:8] != 8)
+  if ([outputStream write:&v26 maxLength:8] != 8)
   {
-    v23 = [v11 streamError];
+    streamError = [outputStream streamError];
     v19 = IMMultiFrameImageLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -235,13 +235,13 @@ void __69__IMMultiFrameImage_ASTC_Persistence__writeASTCImage_duration_error___b
     goto LABEL_16;
   }
 
-  v14 = [(IMMultiFrameImage *)self durations];
-  v15 = [v14 count];
+  durations3 = [(IMMultiFrameImage *)self durations];
+  v15 = [durations3 count];
 
   v26 = v15;
-  if ([v11 write:&v26 maxLength:8] != 8)
+  if ([outputStream write:&v26 maxLength:8] != 8)
   {
-    v23 = [v11 streamError];
+    streamError = [outputStream streamError];
     v19 = IMMultiFrameImageLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -256,16 +256,16 @@ LABEL_17:
   }
 
   LODWORD(v26) = 1129005385;
-  v16 = [v11 write:&v26 maxLength:4];
+  v16 = [outputStream write:&v26 maxLength:4];
   v17 = v16 == 4;
   if (v16 == 4)
   {
-    v23 = 0;
+    streamError = 0;
   }
 
   else
   {
-    v23 = [v11 streamError];
+    streamError = [outputStream streamError];
     v24 = IMMultiFrameImageLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -274,11 +274,11 @@ LABEL_17:
   }
 
 LABEL_18:
-  [v11 close];
-  if (a3)
+  [outputStream close];
+  if (error)
   {
-    v20 = v23;
-    *a3 = v23;
+    v20 = streamError;
+    *error = streamError;
   }
 
   v21 = *MEMORY[0x277D85DE8];

@@ -1,19 +1,19 @@
 @interface CKXReaderBase
-- (CKXReaderBase)initWithSchema:(id)a3;
+- (CKXReaderBase)initWithSchema:(id)schema;
 @end
 
 @implementation CKXReaderBase
 
-- (CKXReaderBase)initWithSchema:(id)a3
+- (CKXReaderBase)initWithSchema:(id)schema
 {
-  v5 = a3;
+  schemaCopy = schema;
   v9.receiver = self;
   v9.super_class = CKXReaderBase;
   v6 = [(CKXReaderBase *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_schema, a3);
+    objc_storeStrong(&v6->_schema, schema);
   }
 
   return v7;

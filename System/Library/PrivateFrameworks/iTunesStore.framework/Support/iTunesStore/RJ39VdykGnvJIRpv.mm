@@ -1,15 +1,15 @@
 @interface RJ39VdykGnvJIRpv
-- (RJ39VdykGnvJIRpv)initWithDictionary:(id)a3;
+- (RJ39VdykGnvJIRpv)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)toDictionary;
 @end
 
 @implementation RJ39VdykGnvJIRpv
 
-- (RJ39VdykGnvJIRpv)initWithDictionary:(id)a3
+- (RJ39VdykGnvJIRpv)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"_classType"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"_classType"];
   v6 = [v5 isEqualToString:@"settings"];
 
   if (v6)
@@ -19,43 +19,43 @@
     v7 = [(RJ39VdykGnvJIRpv *)&v20 init];
     if (v7)
     {
-      v8 = [v4 objectForKey:@"endpointIdentifier"];
+      v8 = [dictionaryCopy objectForKey:@"endpointIdentifier"];
       [(RJ39VdykGnvJIRpv *)v7 setEndpointIdentifier:v8];
 
-      v9 = [v4 objectForKey:@"endpointID"];
+      v9 = [dictionaryCopy objectForKey:@"endpointID"];
       -[RJ39VdykGnvJIRpv setEndpointID:](v7, "setEndpointID:", [v9 intValue]);
 
-      v10 = [v4 objectForKey:@"settingsType"];
+      v10 = [dictionaryCopy objectForKey:@"settingsType"];
       -[RJ39VdykGnvJIRpv setSettingsType:](v7, "setSettingsType:", [v10 intValue]);
 
-      v11 = [v4 objectForKey:@"pEmail"];
+      v11 = [dictionaryCopy objectForKey:@"pEmail"];
       [(RJ39VdykGnvJIRpv *)v7 setPEmail:v11];
 
-      v12 = [v4 objectForKey:@"pPhone"];
+      v12 = [dictionaryCopy objectForKey:@"pPhone"];
       [(RJ39VdykGnvJIRpv *)v7 setPPhone:v12];
 
-      v13 = [v4 objectForKey:@"phone"];
+      v13 = [dictionaryCopy objectForKey:@"phone"];
       [(RJ39VdykGnvJIRpv *)v7 setPhone:v13];
 
-      v14 = [v4 objectForKey:@"email"];
+      v14 = [dictionaryCopy objectForKey:@"email"];
       [(RJ39VdykGnvJIRpv *)v7 setEmail:v14];
 
       v15 = [n4cyKQis9m01XZsR alloc];
-      v16 = [v4 objectForKey:@"name"];
+      v16 = [dictionaryCopy objectForKey:@"name"];
       v17 = [(n4cyKQis9m01XZsR *)v15 initWithDictionary:v16];
       [(RJ39VdykGnvJIRpv *)v7 setName:v17];
     }
 
     self = v7;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 - (id)toDictionary
@@ -68,54 +68,54 @@
   v5 = [NSNumber numberWithUnsignedInteger:[(RJ39VdykGnvJIRpv *)self settingsType]];
   [v3 setObject:v5 forKeyedSubscript:@"settingsType"];
 
-  v6 = [(RJ39VdykGnvJIRpv *)self endpointIdentifier];
+  endpointIdentifier = [(RJ39VdykGnvJIRpv *)self endpointIdentifier];
 
-  if (v6)
+  if (endpointIdentifier)
   {
-    v7 = [(RJ39VdykGnvJIRpv *)self endpointIdentifier];
-    [v3 setObject:v7 forKeyedSubscript:@"endpointIdentifier"];
+    endpointIdentifier2 = [(RJ39VdykGnvJIRpv *)self endpointIdentifier];
+    [v3 setObject:endpointIdentifier2 forKeyedSubscript:@"endpointIdentifier"];
   }
 
-  v8 = [(RJ39VdykGnvJIRpv *)self pEmail];
+  pEmail = [(RJ39VdykGnvJIRpv *)self pEmail];
 
-  if (v8)
+  if (pEmail)
   {
-    v9 = [(RJ39VdykGnvJIRpv *)self pEmail];
-    [v3 setObject:v9 forKeyedSubscript:@"pEmail"];
+    pEmail2 = [(RJ39VdykGnvJIRpv *)self pEmail];
+    [v3 setObject:pEmail2 forKeyedSubscript:@"pEmail"];
   }
 
-  v10 = [(RJ39VdykGnvJIRpv *)self pPhone];
+  pPhone = [(RJ39VdykGnvJIRpv *)self pPhone];
 
-  if (v10)
+  if (pPhone)
   {
-    v11 = [(RJ39VdykGnvJIRpv *)self pPhone];
-    [v3 setObject:v11 forKeyedSubscript:@"pPhone"];
+    pPhone2 = [(RJ39VdykGnvJIRpv *)self pPhone];
+    [v3 setObject:pPhone2 forKeyedSubscript:@"pPhone"];
   }
 
-  v12 = [(RJ39VdykGnvJIRpv *)self phone];
+  phone = [(RJ39VdykGnvJIRpv *)self phone];
 
-  if (v12)
+  if (phone)
   {
-    v13 = [(RJ39VdykGnvJIRpv *)self phone];
-    [v3 setObject:v13 forKeyedSubscript:@"phone"];
+    phone2 = [(RJ39VdykGnvJIRpv *)self phone];
+    [v3 setObject:phone2 forKeyedSubscript:@"phone"];
   }
 
-  v14 = [(RJ39VdykGnvJIRpv *)self email];
+  email = [(RJ39VdykGnvJIRpv *)self email];
 
-  if (v14)
+  if (email)
   {
-    v15 = [(RJ39VdykGnvJIRpv *)self email];
-    [v3 setObject:v15 forKeyedSubscript:@"email"];
+    email2 = [(RJ39VdykGnvJIRpv *)self email];
+    [v3 setObject:email2 forKeyedSubscript:@"email"];
   }
 
-  v16 = [(RJ39VdykGnvJIRpv *)self name];
-  v17 = [v16 toDictionary];
+  name = [(RJ39VdykGnvJIRpv *)self name];
+  toDictionary = [name toDictionary];
 
-  if (v17)
+  if (toDictionary)
   {
-    v18 = [(RJ39VdykGnvJIRpv *)self name];
-    v19 = [v18 toDictionary];
-    [v3 setObject:v19 forKeyedSubscript:@"name"];
+    name2 = [(RJ39VdykGnvJIRpv *)self name];
+    toDictionary2 = [name2 toDictionary];
+    [v3 setObject:toDictionary2 forKeyedSubscript:@"name"];
   }
 
   return v3;
@@ -125,8 +125,8 @@
 {
   v3 = +[NSMutableString string];
   [v3 appendFormat:@"<%@, %p> {\n", objc_opt_class(), self];
-  v4 = [(RJ39VdykGnvJIRpv *)self endpointIdentifier];
-  [v3 appendFormat:@"\tendpointID: %@\n", v4];
+  endpointIdentifier = [(RJ39VdykGnvJIRpv *)self endpointIdentifier];
+  [v3 appendFormat:@"\tendpointID: %@\n", endpointIdentifier];
 
   [v3 appendFormat:@"}"];
 

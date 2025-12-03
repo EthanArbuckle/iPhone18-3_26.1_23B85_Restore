@@ -23,10 +23,10 @@
   v7 = 1.0;
   do
   {
-    v8 = [(GKCoherentNoiseSource *)self seed];
+    seed = [(GKCoherentNoiseSource *)self seed];
     v18[0] = v15;
     v18[1] = v17;
-    v9 = fabs(getGradientCoherentNoise(v18, v5 + v8));
+    v9 = fabs(getGradientCoherentNoise(v18, v5 + seed));
     v6 = v6 - (v7 - (v9 + v9) * v7);
     [(GKCoherentNoiseSource *)self lacunarity];
     v15 = vmulq_n_f64(v15, v10);
@@ -44,14 +44,14 @@
 {
   [(GKCoherentNoiseSource *)self frequency];
   v4 = v3;
-  v5 = [(GKCoherentNoiseSource *)self octaveCount];
+  octaveCount = [(GKCoherentNoiseSource *)self octaveCount];
   [(GKBillowNoiseSource *)self persistence];
   v7 = v6;
   [(GKCoherentNoiseSource *)self lacunarity];
   v9 = v8;
-  v10 = [(GKCoherentNoiseSource *)self seed];
+  seed = [(GKCoherentNoiseSource *)self seed];
 
-  return [GKBillowNoiseSource billowNoiseSourceWithFrequency:v5 octaveCount:v10 persistence:v4 lacunarity:v7 seed:v9];
+  return [GKBillowNoiseSource billowNoiseSourceWithFrequency:octaveCount octaveCount:seed persistence:v4 lacunarity:v7 seed:v9];
 }
 
 @end

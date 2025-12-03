@@ -5,25 +5,25 @@
 - (id)detailString;
 - (id)localizedWaitScreenDescription;
 - (id)suggestedButtonTitle;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (id)titleString;
 - (void)didEstablishHold;
 - (void)discoveryOperationComplete;
-- (void)remoteManagementInformationCell:(id)a3 buttonPressed:(id)a4;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)remoteManagementInformationCell:(id)cell buttonPressed:(id)pressed;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSRemoteManagementInformationViewController
 
 + (BOOL)controllerNeedsToRun
 {
-  v2 = [UIApp setupController];
-  v3 = [v2 offerYorktownForCurrentPairing];
+  setupController = [UIApp setupController];
+  offerYorktownForCurrentPairing = [setupController offerYorktownForCurrentPairing];
 
-  return v3;
+  return offerYorktownForCurrentPairing;
 }
 
 - (COSRemoteManagementInformationViewController)init
@@ -45,11 +45,11 @@
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = COSRemoteManagementInformationViewController;
-  [(COSRemoteManagementInformationViewController *)&v4 viewWillAppear:a3];
+  [(COSRemoteManagementInformationViewController *)&v4 viewWillAppear:appear];
   [(COSBuddyWatchDiscoveryMonitor *)self->_buddyWatchDiscoveryMonitor startDiscoveryCoordinator];
 }
 
@@ -77,7 +77,7 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   if (_os_feature_enabled_impl())
   {
@@ -88,8 +88,8 @@
 
   else
   {
-    v5 = [(COSRemoteManagementInformationViewController *)self delegate];
-    [v5 buddyControllerDone:self];
+    delegate = [(COSRemoteManagementInformationViewController *)self delegate];
+    [delegate buddyControllerDone:self];
   }
 }
 
@@ -122,21 +122,21 @@
 
 - (void)discoveryOperationComplete
 {
-  v3 = [(COSRemoteManagementInformationViewController *)self delegate];
-  [v3 buddyControllerDone:self];
+  delegate = [(COSRemoteManagementInformationViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:@"COSRemoteManagementInformationCell" forIndexPath:a4];
+  v5 = [view dequeueReusableCellWithIdentifier:@"COSRemoteManagementInformationCell" forIndexPath:path];
   [v5 setDelegate:self];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v5 = [a3 dequeueReusableHeaderFooterViewWithIdentifier:{@"COSRemoteManagementInformationHeder", a4}];
+  v5 = [view dequeueReusableHeaderFooterViewWithIdentifier:{@"COSRemoteManagementInformationHeder", section}];
   if (!self || (v6 = self->_organizationName) == 0)
   {
     v7 = +[NSBundle mainBundle];
@@ -169,8 +169,8 @@
   }
 
   [(UITableView *)tableView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(COSRemoteManagementInformationViewController *)self contentView];
-  v6 = v5;
+  contentView = [(COSRemoteManagementInformationViewController *)self contentView];
+  v6 = contentView;
   if (self)
   {
     v7 = self->_tableView;
@@ -181,10 +181,10 @@
     v7 = 0;
   }
 
-  [v5 addSubview:v7];
+  [contentView addSubview:v7];
 
-  v40 = [(COSRemoteManagementInformationViewController *)self contentView];
-  v8 = [v40 topAnchor];
+  contentView2 = [(COSRemoteManagementInformationViewController *)self contentView];
+  topAnchor = [contentView2 topAnchor];
   if (self)
   {
     sub_10003B11C();
@@ -196,11 +196,11 @@
   }
 
   v38 = v9;
-  v37 = [v38 topAnchor];
-  v36 = [v8 constraintEqualToAnchor:?];
+  topAnchor2 = [v38 topAnchor];
+  v36 = [topAnchor constraintEqualToAnchor:?];
   v42[0] = v36;
-  v35 = [(COSRemoteManagementInformationViewController *)self contentView];
-  v10 = [v35 bottomAnchor];
+  contentView3 = [(COSRemoteManagementInformationViewController *)self contentView];
+  bottomAnchor = [contentView3 bottomAnchor];
   if (self)
   {
     sub_10003B11C();
@@ -212,11 +212,11 @@
   }
 
   v33 = v11;
-  v32 = [v33 bottomAnchor];
-  v31 = [v10 constraintEqualToAnchor:?];
+  bottomAnchor2 = [v33 bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:?];
   v42[1] = v31;
-  v30 = [(COSRemoteManagementInformationViewController *)self contentView];
-  v12 = [v30 leadingAnchor];
+  contentView4 = [(COSRemoteManagementInformationViewController *)self contentView];
+  leadingAnchor = [contentView4 leadingAnchor];
   if (self)
   {
     sub_10003B11C();
@@ -228,14 +228,14 @@
   }
 
   v14 = v13;
-  v15 = [v14 leadingAnchor];
-  v29 = v12;
-  v16 = [v12 constraintEqualToAnchor:v15];
+  leadingAnchor2 = [v14 leadingAnchor];
+  v29 = leadingAnchor;
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v42[2] = v16;
-  v17 = [(COSRemoteManagementInformationViewController *)self contentView];
-  v18 = [v17 trailingAnchor];
-  v39 = v8;
-  v34 = v10;
+  contentView5 = [(COSRemoteManagementInformationViewController *)self contentView];
+  trailingAnchor = [contentView5 trailingAnchor];
+  v39 = topAnchor;
+  v34 = bottomAnchor;
   if (self)
   {
     sub_10003B11C();
@@ -247,8 +247,8 @@
   }
 
   v20 = v19;
-  v21 = [v20 trailingAnchor];
-  v22 = [v18 constraintEqualToAnchor:v21];
+  trailingAnchor2 = [v20 trailingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v42[3] = v22;
   v23 = [NSArray arrayWithObjects:v42 count:4];
   [NSLayoutConstraint activateConstraints:v23];
@@ -298,7 +298,7 @@
   [v28 setScrollEnabled:0];
 }
 
-- (void)remoteManagementInformationCell:(id)a3 buttonPressed:(id)a4
+- (void)remoteManagementInformationCell:(id)cell buttonPressed:(id)pressed
 {
   v6 = [COSNavigationController alloc];
   sub_100187260(self);

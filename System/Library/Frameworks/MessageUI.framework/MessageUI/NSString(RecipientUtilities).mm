@@ -18,50 +18,50 @@
 
 - (id)mf_copyDisplayableAddressComment
 {
-  v1 = a1;
-  v2 = [v1 emailAddressValue];
-  v3 = [v2 displayName];
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  emailAddressValue = [selfCopy emailAddressValue];
+  displayName = [emailAddressValue displayName];
+  v4 = displayName;
+  if (displayName)
   {
-    v5 = v3;
+    stringValue = displayName;
   }
 
   else
   {
-    v5 = [v1 stringValue];
+    stringValue = [selfCopy stringValue];
   }
 
-  v6 = v5;
+  v6 = stringValue;
 
-  v7 = [v6 ec_personNameComponents];
+  ec_personNameComponents = [v6 ec_personNameComponents];
 
-  if (v7)
+  if (ec_personNameComponents)
   {
-    [v7 setNamePrefix:0];
-    [v7 setNameSuffix:0];
+    [ec_personNameComponents setNamePrefix:0];
+    [ec_personNameComponents setNameSuffix:0];
     v8 = objc_alloc_init(MEMORY[0x1E696ADF8]);
     [v8 setStyle:3];
-    v9 = [v8 stringFromPersonNameComponents:v7];
+    v9 = [v8 stringFromPersonNameComponents:ec_personNameComponents];
   }
 
   else
   {
-    v10 = v1;
-    v11 = [v10 emailAddressValue];
-    v12 = [v11 displayName];
-    v13 = v12;
-    if (v12)
+    v10 = selfCopy;
+    emailAddressValue2 = [v10 emailAddressValue];
+    displayName2 = [emailAddressValue2 displayName];
+    v13 = displayName2;
+    if (displayName2)
     {
-      v14 = v12;
+      stringValue2 = displayName2;
     }
 
     else
     {
-      v14 = [v10 stringValue];
+      stringValue2 = [v10 stringValue];
     }
 
-    v8 = v14;
+    v8 = stringValue2;
 
     if (![v8 length])
     {

@@ -1,7 +1,7 @@
 @interface VSJSSubscription
-+ (id)toVSSubscriptions:(id)a3;
++ (id)toVSSubscriptions:(id)subscriptions;
 - (VSJSSubscription)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)toVSSubscription;
 @end
 
@@ -9,19 +9,19 @@
 
 - (VSJSSubscription)init
 {
-  v3 = [MEMORY[0x277D1B028] currentAppContext];
+  currentAppContext = [MEMORY[0x277D1B028] currentAppContext];
   v10.receiver = self;
   v10.super_class = VSJSSubscription;
-  v4 = [(IKJSObject *)&v10 initWithAppContext:v3];
+  v4 = [(IKJSObject *)&v10 initWithAppContext:currentAppContext];
 
   if (v4)
   {
     bundleId = v4->_bundleId;
     v4->_bundleId = &stru_2880B8BB0;
 
-    v6 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     expirationDate = v4->_expirationDate;
-    v4->_expirationDate = v6;
+    v4->_expirationDate = distantFuture;
 
     v4->_accessLevel = 0;
     billingIdentifier = v4->_billingIdentifier;
@@ -36,32 +36,32 @@
   v3 = objc_alloc_init(MEMORY[0x277CE22F0]);
   v4 = objc_alloc_init(MEMORY[0x277CE2300]);
   [v4 setValue:&unk_2880D26C8 forKey:@"kind"];
-  v5 = [(VSJSSubscription *)self bundleId];
-  [v4 setValue:v5 forKey:@"identifier"];
+  bundleId = [(VSJSSubscription *)self bundleId];
+  [v4 setValue:bundleId forKey:@"identifier"];
 
   [v3 setSource:v4];
   [v3 setAccessLevel:{-[VSJSSubscription accessLevel](self, "accessLevel")}];
-  v6 = [(VSJSSubscription *)self tierIdentifiers];
-  v7 = [v6 copy];
+  tierIdentifiers = [(VSJSSubscription *)self tierIdentifiers];
+  v7 = [tierIdentifiers copy];
   [v3 setTierIdentifiers:v7];
 
-  v8 = [(VSJSSubscription *)self billingIdentifier];
-  v9 = [v8 copy];
+  billingIdentifier = [(VSJSSubscription *)self billingIdentifier];
+  v9 = [billingIdentifier copy];
   [v3 setBillingIdentifier:v9];
 
   return v3;
 }
 
-+ (id)toVSSubscriptions:(id)a3
++ (id)toVSSubscriptions:(id)subscriptions
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  subscriptionsCopy = subscriptions;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = subscriptionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -76,10 +76,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) toVSSubscription];
-        if ([v10 accessLevel])
+        toVSSubscription = [*(*(&v13 + 1) + 8 * i) toVSSubscription];
+        if ([toVSSubscription accessLevel])
         {
-          [v4 addObject:v10];
+          [v4 addObject:toVSSubscription];
         }
       }
 
@@ -94,11 +94,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [VSJSSubscription allocWithZone:a3];
-  v5 = [(IKJSObject *)self appContext];
-  v6 = [(IKJSObject *)v4 initWithAppContext:v5];
+  v4 = [VSJSSubscription allocWithZone:zone];
+  appContext = [(IKJSObject *)self appContext];
+  v6 = [(IKJSObject *)v4 initWithAppContext:appContext];
 
   v7 = [(NSString *)self->_bundleId copy];
   bundleId = v6->_bundleId;

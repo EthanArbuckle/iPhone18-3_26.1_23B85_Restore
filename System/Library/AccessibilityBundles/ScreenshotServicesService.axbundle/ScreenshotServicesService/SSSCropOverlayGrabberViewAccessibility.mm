@@ -1,15 +1,15 @@
 @interface SSSCropOverlayGrabberViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SSSCropOverlayGrabberViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SSSCropOverlayLineView" hasInstanceVariable:@"_edge" withType:"Q"];
-  [v3 validateClass:@"SSSCropOverlayGrabberView" isKindOfClass:@"SSSCropOverlayLineView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SSSCropOverlayLineView" hasInstanceVariable:@"_edge" withType:"Q"];
+  [validationsCopy validateClass:@"SSSCropOverlayGrabberView" isKindOfClass:@"SSSCropOverlayLineView"];
 }
 
 - (id)accessibilityLabel

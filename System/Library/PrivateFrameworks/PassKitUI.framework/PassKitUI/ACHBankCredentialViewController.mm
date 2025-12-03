@@ -1,6 +1,6 @@
 @interface ACHBankCredentialViewController
-- (_TtC9PassKitUI31ACHBankCredentialViewController)initWithCoder:(id)a3;
-- (_TtC9PassKitUI31ACHBankCredentialViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9PassKitUI31ACHBankCredentialViewController)initWithCoder:(id)coder;
+- (_TtC9PassKitUI31ACHBankCredentialViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)editButtonTapped;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -8,7 +8,7 @@
 
 @implementation ACHBankCredentialViewController
 
-- (_TtC9PassKitUI31ACHBankCredentialViewController)initWithCoder:(id)a3
+- (_TtC9PassKitUI31ACHBankCredentialViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9PassKitUI31ACHBankCredentialViewController_hostingVC) = 0;
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC9PassKitUI31ACHBankCredentialViewController_editAction);
@@ -21,13 +21,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD616B18();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD616EFC();
 }
 
@@ -36,7 +36,7 @@
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9PassKitUI31ACHBankCredentialViewController_editAction);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_1BD0D44B8(v2);
     v2(v4);
 
@@ -44,7 +44,7 @@
   }
 }
 
-- (_TtC9PassKitUI31ACHBankCredentialViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9PassKitUI31ACHBankCredentialViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

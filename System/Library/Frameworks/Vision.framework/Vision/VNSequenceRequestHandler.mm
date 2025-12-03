@@ -1,37 +1,37 @@
 @interface VNSequenceRequestHandler
 + (void)forcedCleanup;
-+ (void)forcedCleanupWithOptions:(id)a3;
++ (void)forcedCleanupWithOptions:(id)options;
 + (void)requestForcedCleanup;
-+ (void)requestForcedCleanupWithOptions:(id)a3;
-+ (void)requestForcedCleanupWithOptions:(id)a3 completion:(id)a4;
-- (BOOL)_performRequests:(id)a3 onImageBuffer:(id)a4 gatheredForensics:(id *)a5 error:(id *)a6;
-- (BOOL)performRequests:(id)a3 onCGImage:(CGImage *)a4 orientation:(unsigned int)a5 gatheredForensics:(id *)a6 error:(id *)a7;
-- (BOOL)performRequests:(id)a3 onCIImage:(id)a4 orientation:(unsigned int)a5 gatheredForensics:(id *)a6 error:(id *)a7;
-- (BOOL)performRequests:(id)a3 onCMSampleBuffer:(opaqueCMSampleBuffer *)a4 orientation:(unsigned int)a5 gatheredForensics:(id *)a6 error:(id *)a7;
-- (BOOL)performRequests:(id)a3 onCVPixelBuffer:(__CVBuffer *)a4 orientation:(unsigned int)a5 gatheredForensics:(id *)a6 error:(id *)a7;
-- (BOOL)performRequests:(id)a3 onImageData:(id)a4 orientation:(unsigned int)a5 gatheredForensics:(id *)a6 error:(id *)a7;
-- (BOOL)performRequests:(id)a3 onImageURL:(id)a4 orientation:(unsigned int)a5 gatheredForensics:(id *)a6 error:(id *)a7;
++ (void)requestForcedCleanupWithOptions:(id)options;
++ (void)requestForcedCleanupWithOptions:(id)options completion:(id)completion;
+- (BOOL)_performRequests:(id)requests onImageBuffer:(id)buffer gatheredForensics:(id *)forensics error:(id *)error;
+- (BOOL)performRequests:(id)requests onCGImage:(CGImage *)image orientation:(unsigned int)orientation gatheredForensics:(id *)forensics error:(id *)error;
+- (BOOL)performRequests:(id)requests onCIImage:(id)image orientation:(unsigned int)orientation gatheredForensics:(id *)forensics error:(id *)error;
+- (BOOL)performRequests:(id)requests onCMSampleBuffer:(opaqueCMSampleBuffer *)buffer orientation:(unsigned int)orientation gatheredForensics:(id *)forensics error:(id *)error;
+- (BOOL)performRequests:(id)requests onCVPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation gatheredForensics:(id *)forensics error:(id *)error;
+- (BOOL)performRequests:(id)requests onImageData:(id)data orientation:(unsigned int)orientation gatheredForensics:(id *)forensics error:(id *)error;
+- (BOOL)performRequests:(id)requests onImageURL:(id)l orientation:(unsigned int)orientation gatheredForensics:(id *)forensics error:(id *)error;
 - (VNSequenceRequestHandler)init;
-- (VNSequenceRequestHandler)initWithSession:(id)a3;
+- (VNSequenceRequestHandler)initWithSession:(id)session;
 - (void)dealloc;
 @end
 
 @implementation VNSequenceRequestHandler
 
-- (BOOL)performRequests:(id)a3 onCMSampleBuffer:(opaqueCMSampleBuffer *)a4 orientation:(unsigned int)a5 gatheredForensics:(id *)a6 error:(id *)a7
+- (BOOL)performRequests:(id)requests onCMSampleBuffer:(opaqueCMSampleBuffer *)buffer orientation:(unsigned int)orientation gatheredForensics:(id *)forensics error:(id *)error
 {
-  v9 = *&a5;
-  v12 = a3;
-  v13 = [[VNImageBuffer alloc] initWithCMSampleBuffer:a4 orientation:v9 options:0 session:self->_session];
+  v9 = *&orientation;
+  requestsCopy = requests;
+  v13 = [[VNImageBuffer alloc] initWithCMSampleBuffer:buffer orientation:v9 options:0 session:self->_session];
   if (v13)
   {
-    v14 = [(VNSequenceRequestHandler *)self _performRequests:v12 onImageBuffer:v13 gatheredForensics:a6 error:a7];
+    v14 = [(VNSequenceRequestHandler *)self _performRequests:requestsCopy onImageBuffer:v13 gatheredForensics:forensics error:error];
   }
 
-  else if (a7)
+  else if (error)
   {
     [VNError errorForInvalidArgument:0 named:@"data"];
-    *a7 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -42,21 +42,21 @@
   return v14;
 }
 
-- (BOOL)performRequests:(id)a3 onImageData:(id)a4 orientation:(unsigned int)a5 gatheredForensics:(id *)a6 error:(id *)a7
+- (BOOL)performRequests:(id)requests onImageData:(id)data orientation:(unsigned int)orientation gatheredForensics:(id *)forensics error:(id *)error
 {
-  v9 = *&a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = [[VNImageBuffer alloc] initWithData:v13 orientation:v9 options:0 session:self->_session];
+  v9 = *&orientation;
+  requestsCopy = requests;
+  dataCopy = data;
+  v14 = [[VNImageBuffer alloc] initWithData:dataCopy orientation:v9 options:0 session:self->_session];
   if (v14)
   {
-    v15 = [(VNSequenceRequestHandler *)self _performRequests:v12 onImageBuffer:v14 gatheredForensics:a6 error:a7];
+    v15 = [(VNSequenceRequestHandler *)self _performRequests:requestsCopy onImageBuffer:v14 gatheredForensics:forensics error:error];
   }
 
-  else if (a7)
+  else if (error)
   {
     [VNError errorForInvalidArgument:0 named:@"data"];
-    *a7 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -67,21 +67,21 @@
   return v15;
 }
 
-- (BOOL)performRequests:(id)a3 onImageURL:(id)a4 orientation:(unsigned int)a5 gatheredForensics:(id *)a6 error:(id *)a7
+- (BOOL)performRequests:(id)requests onImageURL:(id)l orientation:(unsigned int)orientation gatheredForensics:(id *)forensics error:(id *)error
 {
-  v9 = *&a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = [[VNImageBuffer alloc] initWithURL:v13 orientation:v9 options:0 session:self->_session];
+  v9 = *&orientation;
+  requestsCopy = requests;
+  lCopy = l;
+  v14 = [[VNImageBuffer alloc] initWithURL:lCopy orientation:v9 options:0 session:self->_session];
   if (v14)
   {
-    v15 = [(VNSequenceRequestHandler *)self _performRequests:v12 onImageBuffer:v14 gatheredForensics:a6 error:a7];
+    v15 = [(VNSequenceRequestHandler *)self _performRequests:requestsCopy onImageBuffer:v14 gatheredForensics:forensics error:error];
   }
 
-  else if (a7)
+  else if (error)
   {
     [VNError errorForInvalidArgument:0 named:@"url"];
-    *a7 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -92,21 +92,21 @@
   return v15;
 }
 
-- (BOOL)performRequests:(id)a3 onCIImage:(id)a4 orientation:(unsigned int)a5 gatheredForensics:(id *)a6 error:(id *)a7
+- (BOOL)performRequests:(id)requests onCIImage:(id)image orientation:(unsigned int)orientation gatheredForensics:(id *)forensics error:(id *)error
 {
-  v9 = *&a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = [[VNImageBuffer alloc] initWithCIImage:v13 orientation:v9 options:0 session:self->_session];
+  v9 = *&orientation;
+  requestsCopy = requests;
+  imageCopy = image;
+  v14 = [[VNImageBuffer alloc] initWithCIImage:imageCopy orientation:v9 options:0 session:self->_session];
   if (v14)
   {
-    v15 = [(VNSequenceRequestHandler *)self _performRequests:v12 onImageBuffer:v14 gatheredForensics:a6 error:a7];
+    v15 = [(VNSequenceRequestHandler *)self _performRequests:requestsCopy onImageBuffer:v14 gatheredForensics:forensics error:error];
   }
 
-  else if (a7)
+  else if (error)
   {
     [VNError errorForInvalidArgument:0 named:@"ciImage"];
-    *a7 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -117,20 +117,20 @@
   return v15;
 }
 
-- (BOOL)performRequests:(id)a3 onCGImage:(CGImage *)a4 orientation:(unsigned int)a5 gatheredForensics:(id *)a6 error:(id *)a7
+- (BOOL)performRequests:(id)requests onCGImage:(CGImage *)image orientation:(unsigned int)orientation gatheredForensics:(id *)forensics error:(id *)error
 {
-  v9 = *&a5;
-  v12 = a3;
-  v13 = [[VNImageBuffer alloc] initWithCGImage:a4 orientation:v9 options:0 session:self->_session];
+  v9 = *&orientation;
+  requestsCopy = requests;
+  v13 = [[VNImageBuffer alloc] initWithCGImage:image orientation:v9 options:0 session:self->_session];
   if (v13)
   {
-    v14 = [(VNSequenceRequestHandler *)self _performRequests:v12 onImageBuffer:v13 gatheredForensics:a6 error:a7];
+    v14 = [(VNSequenceRequestHandler *)self _performRequests:requestsCopy onImageBuffer:v13 gatheredForensics:forensics error:error];
   }
 
-  else if (a7)
+  else if (error)
   {
     [VNError errorForInvalidArgument:0 named:@"cgImage"];
-    *a7 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -141,20 +141,20 @@
   return v14;
 }
 
-- (BOOL)performRequests:(id)a3 onCVPixelBuffer:(__CVBuffer *)a4 orientation:(unsigned int)a5 gatheredForensics:(id *)a6 error:(id *)a7
+- (BOOL)performRequests:(id)requests onCVPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation gatheredForensics:(id *)forensics error:(id *)error
 {
-  v9 = *&a5;
-  v12 = a3;
-  v13 = [[VNImageBuffer alloc] initWithCVPixelBuffer:a4 orientation:v9 options:0 session:self->_session];
+  v9 = *&orientation;
+  requestsCopy = requests;
+  v13 = [[VNImageBuffer alloc] initWithCVPixelBuffer:buffer orientation:v9 options:0 session:self->_session];
   if (v13)
   {
-    v14 = [(VNSequenceRequestHandler *)self _performRequests:v12 onImageBuffer:v13 gatheredForensics:a6 error:a7];
+    v14 = [(VNSequenceRequestHandler *)self _performRequests:requestsCopy onImageBuffer:v13 gatheredForensics:forensics error:error];
   }
 
-  else if (a7)
+  else if (error)
   {
     [VNError errorForInvalidArgument:0 named:@"pixelBuffer"];
-    *a7 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -210,16 +210,16 @@
   return v4;
 }
 
-- (VNSequenceRequestHandler)initWithSession:(id)a3
+- (VNSequenceRequestHandler)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v11.receiver = self;
   v11.super_class = VNSequenceRequestHandler;
   v6 = [(VNSequenceRequestHandler *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
     v8 = objc_alloc_init(VNRequestPerformer);
     requestPerformer = v7->_requestPerformer;
     v7->_requestPerformer = v8;
@@ -228,17 +228,17 @@
   return v7;
 }
 
-- (BOOL)_performRequests:(id)a3 onImageBuffer:(id)a4 gatheredForensics:(id *)a5 error:(id *)a6
+- (BOOL)_performRequests:(id)requests onImageBuffer:(id)buffer gatheredForensics:(id *)forensics error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  if (v11)
+  requestsCopy = requests;
+  bufferCopy = buffer;
+  if (bufferCopy)
   {
     v12 = objc_autoreleasePoolPush();
-    if (a5)
+    if (forensics)
     {
-      v13 = [[VNRequestForensics alloc] initWithOriginalRequests:v10];
-      *a5 = v13;
+      v13 = [[VNRequestForensics alloc] initWithOriginalRequests:requestsCopy];
+      *forensics = v13;
     }
 
     else
@@ -247,25 +247,25 @@
     }
 
     v15 = objc_alloc_init(VNObservationsCache);
-    v16 = [[VNRequestPerformingContext alloc] initWithSession:self->_session requestPerformer:self->_requestPerformer imageBuffer:v11 forensics:v13 observationsCache:v15];
+    v16 = [[VNRequestPerformingContext alloc] initWithSession:self->_session requestPerformer:self->_requestPerformer imageBuffer:bufferCopy forensics:v13 observationsCache:v15];
     [(VNRequestPerformingContext *)v16 qosClass];
     requestPerformer = self->_requestPerformer;
     v21 = 0;
-    v14 = [(VNRequestPerformer *)requestPerformer performRequests:v10 inContext:v16 error:&v21];
+    v14 = [(VNRequestPerformer *)requestPerformer performRequests:requestsCopy inContext:v16 error:&v21];
     v18 = v21;
 
     objc_autoreleasePoolPop(v12);
-    if (a6)
+    if (error)
     {
       v19 = v18;
-      *a6 = v18;
+      *error = v18;
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     [VNError errorForInvalidArgumentWithLocalizedDescription:@"no image buffer available"];
-    *a6 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -276,27 +276,27 @@
   return v14;
 }
 
-+ (void)forcedCleanupWithOptions:(id)a3
++ (void)forcedCleanupWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v3 = +[VNSession globalSession];
-  [v3 legacyForcedCleanupWithOptions:v4];
+  [v3 legacyForcedCleanupWithOptions:optionsCopy];
 }
 
-+ (void)requestForcedCleanupWithOptions:(id)a3 completion:(id)a4
++ (void)requestForcedCleanupWithOptions:(id)options completion:(id)completion
 {
-  v7 = a3;
-  v5 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v6 = +[VNSession globalSession];
-  [v6 legacyForcedCleanupWithOptions:v7];
-  v5[2](v5);
+  [v6 legacyForcedCleanupWithOptions:optionsCopy];
+  completionCopy[2](completionCopy);
 }
 
-+ (void)requestForcedCleanupWithOptions:(id)a3
++ (void)requestForcedCleanupWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v3 = +[VNSession globalSession];
-  [v3 legacyForcedCleanupWithOptions:v4];
+  [v3 legacyForcedCleanupWithOptions:optionsCopy];
 }
 
 + (void)forcedCleanup

@@ -2,12 +2,12 @@
 + (id)instantiate;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentRenderPresentationTime;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)normalizedMinimumHitTestArea;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)isCapturing;
 - (BOOL)livePlayerIsSaturated;
-- (CFXLiveCaptureViewController)initWithCoder:(id)a3;
+- (CFXLiveCaptureViewController)initWithCoder:(id)coder;
 - (CFXLiveCaptureViewControllerDelegate)delegate;
-- (CGPoint)locationInCaptureViewForGestureRecognizer:(id)a3;
+- (CGPoint)locationInCaptureViewForGestureRecognizer:(id)recognizer;
 - (JFXAnimojiTrackingLossDelegate)trackingLossDelegate;
 - (JFXImageView)renderImageView;
 - (JTImage)renderedImage;
@@ -15,51 +15,51 @@
 - (UIView)debugControlsView;
 - (UIView)uncroppedCameraViewfinderPlaceholderView;
 - (void)CFX_createUncroppedCameraPlaceholderViewIfNecessary;
-- (void)CFX_executeRenderCallbacksQueuedBeforeTime:(id *)a3;
+- (void)CFX_executeRenderCallbacksQueuedBeforeTime:(id *)time;
 - (void)CFX_installGestures;
-- (void)CFX_livePreviewDoubleTapped:(id)a3;
-- (void)CFX_livePreviewPanned:(id)a3;
-- (void)CFX_livePreviewPinched:(id)a3;
-- (void)CFX_livePreviewRotated:(id)a3;
-- (void)CFX_livePreviewTapped:(id)a3;
-- (void)CFX_setAnimationEnabledForOverlays:(BOOL)a3;
-- (void)CFX_setupVideoWriterWithAudio:(BOOL)a3 completion:(id)a4;
-- (void)CFX_tearDownVideoWriter:(id)a3;
-- (void)capturePhotoWithFlashMode:(int64_t)a3 completion:(id)a4;
+- (void)CFX_livePreviewDoubleTapped:(id)tapped;
+- (void)CFX_livePreviewPanned:(id)panned;
+- (void)CFX_livePreviewPinched:(id)pinched;
+- (void)CFX_livePreviewRotated:(id)rotated;
+- (void)CFX_livePreviewTapped:(id)tapped;
+- (void)CFX_setAnimationEnabledForOverlays:(BOOL)overlays;
+- (void)CFX_setupVideoWriterWithAudio:(BOOL)audio completion:(id)completion;
+- (void)CFX_tearDownVideoWriter:(id)writer;
+- (void)capturePhotoWithFlashMode:(int64_t)mode completion:(id)completion;
 - (void)didReceiveMemoryWarning;
-- (void)executeAfterNextFrameIsRendered:(id)a3;
+- (void)executeAfterNextFrameIsRendered:(id)rendered;
 - (void)flushRenderer;
 - (void)pauseRenderingCameraFrames;
-- (void)processAudioSample:(opaqueCMSampleBuffer *)a3;
-- (void)removeAllEffects:(id)a3;
-- (void)removeAllEffectsOfType:(id)a3 completion:(id)a4;
-- (void)renderVideoFrame:(id)a3;
-- (void)renderer:(id)a3 didPrepareToRenderFrameAtPresentationTime:(id *)a4;
-- (void)renderer:(id)a3 didRenderFrame:(id)a4;
+- (void)processAudioSample:(opaqueCMSampleBuffer *)sample;
+- (void)removeAllEffects:(id)effects;
+- (void)removeAllEffectsOfType:(id)type completion:(id)completion;
+- (void)renderVideoFrame:(id)frame;
+- (void)renderer:(id)renderer didPrepareToRenderFrameAtPresentationTime:(id *)time;
+- (void)renderer:(id)renderer didRenderFrame:(id)frame;
 - (void)resumeRenderingCameraFrames;
-- (void)setAnimojiBackgroundColor:(id)a3;
-- (void)setCurrentRenderPresentationTime_renderImageQ:(id *)a3;
-- (void)setUseLocalCameraViewfinder:(BOOL)a3;
-- (void)startButtonTouchUpInside:(id)a3;
+- (void)setAnimojiBackgroundColor:(id)color;
+- (void)setCurrentRenderPresentationTime_renderImageQ:(id *)q;
+- (void)setUseLocalCameraViewfinder:(BOOL)viewfinder;
+- (void)startButtonTouchUpInside:(id)inside;
 - (void)startRenderingCameraFrames;
-- (void)startVideoRecordingWithFlashMode:(int64_t)a3;
-- (void)stopButtonTouchUpInside:(id)a3;
-- (void)stopRenderingCameraFrames:(id)a3;
-- (void)stopVideoRecording:(id)a3;
-- (void)toggleDebugControlsView:(id)a3;
+- (void)startVideoRecordingWithFlashMode:(int64_t)mode;
+- (void)stopButtonTouchUpInside:(id)inside;
+- (void)stopRenderingCameraFrames:(id)frames;
+- (void)stopVideoRecording:(id)recording;
+- (void)toggleDebugControlsView:(id)view;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)willDropCameraFrame;
 @end
 
 @implementation CFXLiveCaptureViewController
 
-- (CFXLiveCaptureViewController)initWithCoder:(id)a3
+- (CFXLiveCaptureViewController)initWithCoder:(id)coder
 {
   v19.receiver = self;
   v19.super_class = CFXLiveCaptureViewController;
-  v3 = [(CFXLiveCaptureViewController *)&v19 initWithCoder:a3];
+  v3 = [(CFXLiveCaptureViewController *)&v19 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -102,22 +102,22 @@
   [(CFXLiveCaptureViewController *)self CFX_installGestures];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CFXLiveCaptureViewController;
-  [(CFXLiveCaptureViewController *)&v5 viewWillAppear:a3];
-  v4 = [(CFXLiveCaptureViewController *)self debugControlsView];
-  [v4 removeFromSuperview];
+  [(CFXLiveCaptureViewController *)&v5 viewWillAppear:appear];
+  debugControlsView = [(CFXLiveCaptureViewController *)self debugControlsView];
+  [debugControlsView removeFromSuperview];
 
   [(CFXLiveCaptureViewController *)self setDebugControlsView:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CFXLiveCaptureViewController;
-  [(CFXLiveCaptureViewController *)&v4 viewWillDisappear:a3];
+  [(CFXLiveCaptureViewController *)&v4 viewWillDisappear:disappear];
   if (!isStreamingMode([(CFXLiveCaptureViewController *)self captureMode]))
   {
     [(CFXLiveCaptureViewController *)self stopRenderingCameraFrames];
@@ -133,23 +133,23 @@
 
 - (BOOL)livePlayerIsSaturated
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CFXLiveCaptureViewController *)self renderQ];
+  renderQ = [(CFXLiveCaptureViewController *)self renderQ];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __53__CFXLiveCaptureViewController_livePlayerIsSaturated__block_invoke;
   v5[3] = &unk_278D79C60;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(renderQ, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __53__CFXLiveCaptureViewController_livePlayerIsSaturated__block_invoke(uint64_t a1)
@@ -160,13 +160,13 @@ void __53__CFXLiveCaptureViewController_livePlayerIsSaturated__block_invoke(uint
 
 - (void)willDropCameraFrame
 {
-  v3 = [(CFXLiveCaptureViewController *)self renderQ];
+  renderQ = [(CFXLiveCaptureViewController *)self renderQ];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__CFXLiveCaptureViewController_willDropCameraFrame__block_invoke;
   block[3] = &unk_278D79D20;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(renderQ, block);
 }
 
 void __51__CFXLiveCaptureViewController_willDropCameraFrame__block_invoke(uint64_t a1)
@@ -175,24 +175,24 @@ void __51__CFXLiveCaptureViewController_willDropCameraFrame__block_invoke(uint64
   [v1 willDropCameraFrame];
 }
 
-- (void)setUseLocalCameraViewfinder:(BOOL)a3
+- (void)setUseLocalCameraViewfinder:(BOOL)viewfinder
 {
-  if (self->_useLocalCameraViewfinder != a3)
+  if (self->_useLocalCameraViewfinder != viewfinder)
   {
-    v3 = a3;
-    v5 = [(CFXLiveCaptureViewController *)self renderImageView];
-    [v5 setHidden:!v3];
+    viewfinderCopy = viewfinder;
+    renderImageView = [(CFXLiveCaptureViewController *)self renderImageView];
+    [renderImageView setHidden:!viewfinderCopy];
 
-    self->_useLocalCameraViewfinder = v3;
+    self->_useLocalCameraViewfinder = viewfinderCopy;
   }
 }
 
 - (UIView)uncroppedCameraViewfinderPlaceholderView
 {
   [(CFXLiveCaptureViewController *)self CFX_createUncroppedCameraPlaceholderViewIfNecessary];
-  v3 = [(CFXLiveCaptureViewController *)self uncroppedRenderImagePlaceHolderView];
+  uncroppedRenderImagePlaceHolderView = [(CFXLiveCaptureViewController *)self uncroppedRenderImagePlaceHolderView];
 
-  if (v3)
+  if (uncroppedRenderImagePlaceHolderView)
   {
     [(CFXLiveCaptureViewController *)self uncroppedRenderImagePlaceHolderView];
   }
@@ -208,32 +208,32 @@ void __51__CFXLiveCaptureViewController_willDropCameraFrame__block_invoke(uint64
 
 - (void)CFX_createUncroppedCameraPlaceholderViewIfNecessary
 {
-  v28 = [MEMORY[0x277D75418] currentDevice];
-  if ([v28 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
-    v3 = [(CFXLiveCaptureViewController *)self captureMode];
+    captureMode = [(CFXLiveCaptureViewController *)self captureMode];
 
-    if (v3 == 1)
+    if (captureMode == 1)
     {
       return;
     }
 
-    v4 = [(CFXLiveCaptureViewController *)self uncroppedRenderImagePlaceHolderView];
+    uncroppedRenderImagePlaceHolderView = [(CFXLiveCaptureViewController *)self uncroppedRenderImagePlaceHolderView];
 
-    if (!v4)
+    if (!uncroppedRenderImagePlaceHolderView)
     {
       v5 = objc_alloc_init(MEMORY[0x277D75D18]);
       [(CFXLiveCaptureViewController *)self setUncroppedRenderImagePlaceHolderView:v5];
 
-      v6 = [(CFXLiveCaptureViewController *)self uncroppedRenderImagePlaceHolderView];
-      [v6 setUserInteractionEnabled:0];
+      uncroppedRenderImagePlaceHolderView2 = [(CFXLiveCaptureViewController *)self uncroppedRenderImagePlaceHolderView];
+      [uncroppedRenderImagePlaceHolderView2 setUserInteractionEnabled:0];
 
-      v7 = [(CFXLiveCaptureViewController *)self uncroppedRenderImagePlaceHolderView];
-      [v7 setHidden:1];
+      uncroppedRenderImagePlaceHolderView3 = [(CFXLiveCaptureViewController *)self uncroppedRenderImagePlaceHolderView];
+      [uncroppedRenderImagePlaceHolderView3 setHidden:1];
 
-      v8 = [(CFXLiveCaptureViewController *)self view];
-      v9 = [(CFXLiveCaptureViewController *)self uncroppedRenderImagePlaceHolderView];
-      [v8 insertSubview:v9 atIndex:0];
+      view = [(CFXLiveCaptureViewController *)self view];
+      uncroppedRenderImagePlaceHolderView4 = [(CFXLiveCaptureViewController *)self uncroppedRenderImagePlaceHolderView];
+      [view insertSubview:uncroppedRenderImagePlaceHolderView4 atIndex:0];
     }
 
     v10 = +[CFXMediaSettings sharedInstance];
@@ -241,8 +241,8 @@ void __51__CFXLiveCaptureViewController_willDropCameraFrame__block_invoke(uint64
     v12 = v11;
     v14 = v13;
 
-    v15 = [(CFXLiveCaptureViewController *)self renderImageView];
-    [v15 frame];
+    renderImageView = [(CFXLiveCaptureViewController *)self renderImageView];
+    [renderImageView frame];
     v17 = v16;
     v19 = v18;
     v21 = v20;
@@ -256,30 +256,30 @@ void __51__CFXLiveCaptureViewController_willDropCameraFrame__block_invoke(uint64
       v23 = v27;
     }
 
-    v28 = [(CFXLiveCaptureViewController *)self uncroppedRenderImagePlaceHolderView];
-    [v28 setFrame:{v17, v19, v21, v23}];
+    currentDevice = [(CFXLiveCaptureViewController *)self uncroppedRenderImagePlaceHolderView];
+    [currentDevice setFrame:{v17, v19, v21, v23}];
   }
 }
 
-- (void)startButtonTouchUpInside:(id)a3
+- (void)startButtonTouchUpInside:(id)inside
 {
   v3 = +[JFXVideoCameraController sharedInstance];
   [v3 startCameraSession:&__block_literal_global_5];
 }
 
-- (void)stopButtonTouchUpInside:(id)a3
+- (void)stopButtonTouchUpInside:(id)inside
 {
   v3 = +[JFXVideoCameraController sharedInstance];
   [v3 stopCameraSession:0];
 }
 
-- (void)toggleDebugControlsView:(id)a3
+- (void)toggleDebugControlsView:(id)view
 {
-  v4 = [(CFXLiveCaptureViewController *)self debugControlsView];
-  v5 = [v4 isHidden];
+  debugControlsView = [(CFXLiveCaptureViewController *)self debugControlsView];
+  isHidden = [debugControlsView isHidden];
 
-  v6 = [(CFXLiveCaptureViewController *)self debugControlsView];
-  [v6 setHidden:v5 ^ 1u];
+  debugControlsView2 = [(CFXLiveCaptureViewController *)self debugControlsView];
+  [debugControlsView2 setHidden:isHidden ^ 1u];
 }
 
 - (JTImage)renderedImage
@@ -290,14 +290,14 @@ void __51__CFXLiveCaptureViewController_willDropCameraFrame__block_invoke(uint64
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v3 = [(CFXLiveCaptureViewController *)self renderImageQ];
+  renderImageQ = [(CFXLiveCaptureViewController *)self renderImageQ];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__CFXLiveCaptureViewController_renderedImage__block_invoke;
   v6[3] = &unk_278D79C60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(renderImageQ, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -321,14 +321,14 @@ uint64_t __45__CFXLiveCaptureViewController_renderedImage__block_invoke(uint64_t
   v12 = 0;
   v13 = 0;
   v14 = 0;
-  v5 = [(CFXLiveCaptureViewController *)self renderImageQ];
+  renderImageQ = [(CFXLiveCaptureViewController *)self renderImageQ];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__CFXLiveCaptureViewController_currentRenderPresentationTime__block_invoke;
   block[3] = &unk_278D79C60;
   block[4] = self;
   block[5] = &v8;
-  dispatch_sync(v5, block);
+  dispatch_sync(renderImageQ, block);
 
   *retstr = *(v9 + 4);
   _Block_object_dispose(&v8, 8);
@@ -356,16 +356,16 @@ double __61__CFXLiveCaptureViewController_currentRenderPresentationTime__block_i
   return result;
 }
 
-- (void)renderer:(id)a3 didPrepareToRenderFrameAtPresentationTime:(id *)a4
+- (void)renderer:(id)renderer didPrepareToRenderFrameAtPresentationTime:(id *)time
 {
-  v6 = [(CFXLiveCaptureViewController *)self renderImageQ];
+  renderImageQ = [(CFXLiveCaptureViewController *)self renderImageQ];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__CFXLiveCaptureViewController_renderer_didPrepareToRenderFrameAtPresentationTime___block_invoke;
   v7[3] = &unk_278D7A078;
   v7[4] = self;
-  v8 = *a4;
-  dispatch_sync(v6, v7);
+  v8 = *time;
+  dispatch_sync(renderImageQ, v7);
 }
 
 uint64_t __83__CFXLiveCaptureViewController_renderer_didPrepareToRenderFrameAtPresentationTime___block_invoke(uint64_t a1)
@@ -375,12 +375,12 @@ uint64_t __83__CFXLiveCaptureViewController_renderer_didPrepareToRenderFrameAtPr
   return [*(a1 + 32) setCurrentRenderPresentationTime_renderImageQ:&v2];
 }
 
-- (void)renderer:(id)a3 didRenderFrame:(id)a4
+- (void)renderer:(id)renderer didRenderFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CFXLiveCaptureViewController *)self delegate];
-  [v8 liveCaptureViewController:self didRenderFrame:v7];
+  rendererCopy = renderer;
+  frameCopy = frame;
+  delegate = [(CFXLiveCaptureViewController *)self delegate];
+  [delegate liveCaptureViewController:self didRenderFrame:frameCopy];
 
   objc_initWeak(&location, self);
   v27[0] = MEMORY[0x277D85DD0];
@@ -391,16 +391,16 @@ uint64_t __83__CFXLiveCaptureViewController_renderer_didPrepareToRenderFrameAtPr
   v9 = MEMORY[0x245D22230](v27);
   v25 = 0uLL;
   v26 = 0;
-  if (v7)
+  if (frameCopy)
   {
-    [v7 timestamp];
+    [frameCopy timestamp];
   }
 
   if ([(CFXLiveCaptureViewController *)self useLocalCameraViewfinder])
   {
-    v10 = [MEMORY[0x277D41618] imageWithCVPixelBuffer:{objc_msgSend(v7, "pixelBuffer")}];
+    v10 = [MEMORY[0x277D41618] imageWithCVPixelBuffer:{objc_msgSend(frameCopy, "pixelBuffer")}];
     v11 = [[JTImage alloc] initWithPVImage:v10];
-    v12 = [(CFXLiveCaptureViewController *)self renderImageQ];
+    renderImageQ = [(CFXLiveCaptureViewController *)self renderImageQ];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56__CFXLiveCaptureViewController_renderer_didRenderFrame___block_invoke_2;
@@ -408,7 +408,7 @@ uint64_t __83__CFXLiveCaptureViewController_renderer_didPrepareToRenderFrameAtPr
     block[4] = self;
     v24 = v11;
     v13 = v11;
-    dispatch_sync(v12, block);
+    dispatch_sync(renderImageQ, block);
 
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -470,21 +470,21 @@ uint64_t __56__CFXLiveCaptureViewController_renderer_didRenderFrame___block_invo
   return v2(v1, &v4);
 }
 
-- (void)renderVideoFrame:(id)a3
+- (void)renderVideoFrame:(id)frame
 {
-  v4 = a3;
-  v5 = [(CFXLiveCaptureViewController *)self recordingQ];
+  frameCopy = frame;
+  recordingQ = [(CFXLiveCaptureViewController *)self recordingQ];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__CFXLiveCaptureViewController_renderVideoFrame___block_invoke;
   block[3] = &unk_278D79C88;
   block[4] = self;
-  v13 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v13 = frameCopy;
+  v6 = frameCopy;
+  dispatch_async(recordingQ, block);
 
   v7 = [[CFXFrame alloc] initWithFrameSet:v6];
-  v8 = [(CFXLiveCaptureViewController *)self renderQ];
+  renderQ = [(CFXLiveCaptureViewController *)self renderQ];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __49__CFXLiveCaptureViewController_renderVideoFrame___block_invoke_2;
@@ -492,7 +492,7 @@ uint64_t __56__CFXLiveCaptureViewController_renderer_didRenderFrame___block_invo
   v10[4] = self;
   v11 = v7;
   v9 = v7;
-  dispatch_async(v8, v10);
+  dispatch_async(renderQ, v10);
 }
 
 void __49__CFXLiveCaptureViewController_renderVideoFrame___block_invoke(uint64_t a1)
@@ -512,17 +512,17 @@ void __49__CFXLiveCaptureViewController_renderVideoFrame___block_invoke_2(uint64
   [v4 renderFrame:v2 effectComposition:v3];
 }
 
-- (void)processAudioSample:(opaqueCMSampleBuffer *)a3
+- (void)processAudioSample:(opaqueCMSampleBuffer *)sample
 {
-  CFRetain(a3);
-  v5 = [(CFXLiveCaptureViewController *)self recordingQ];
+  CFRetain(sample);
+  recordingQ = [(CFXLiveCaptureViewController *)self recordingQ];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__CFXLiveCaptureViewController_processAudioSample___block_invoke;
   v6[3] = &unk_278D7A118;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = sample;
+  dispatch_async(recordingQ, v6);
 }
 
 void __51__CFXLiveCaptureViewController_processAudioSample___block_invoke(uint64_t a1)
@@ -540,8 +540,8 @@ void __51__CFXLiveCaptureViewController_processAudioSample___block_invoke(uint64
 
 + (id)instantiate
 {
-  v2 = [MEMORY[0x277CCA8D8] jfxBundle];
-  v3 = [MEMORY[0x277D75AC8] storyboardWithName:@"CFXLiveCapture" bundle:v2];
+  jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+  v3 = [MEMORY[0x277D75AC8] storyboardWithName:@"CFXLiveCapture" bundle:jfxBundle];
   v4 = [v3 instantiateViewControllerWithIdentifier:@"CFXLiveCaptureViewController"];
 
   return v4;
@@ -555,14 +555,14 @@ void __51__CFXLiveCaptureViewController_processAudioSample___block_invoke(uint64
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v3 = [(CFXLiveCaptureViewController *)self renderQ];
+  renderQ = [(CFXLiveCaptureViewController *)self renderQ];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__CFXLiveCaptureViewController_animojiBackgroundColor__block_invoke;
   v6[3] = &unk_278D79C60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(renderQ, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -579,18 +579,18 @@ void __54__CFXLiveCaptureViewController_animojiBackgroundColor__block_invoke(uin
   *(v3 + 40) = v2;
 }
 
-- (void)setAnimojiBackgroundColor:(id)a3
+- (void)setAnimojiBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CFXLiveCaptureViewController *)self renderQ];
+  colorCopy = color;
+  renderQ = [(CFXLiveCaptureViewController *)self renderQ];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__CFXLiveCaptureViewController_setAnimojiBackgroundColor___block_invoke;
   v7[3] = &unk_278D79C88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = colorCopy;
+  v6 = colorCopy;
+  dispatch_sync(renderQ, v7);
 }
 
 void __58__CFXLiveCaptureViewController_setAnimojiBackgroundColor___block_invoke(uint64_t a1)
@@ -600,10 +600,10 @@ void __58__CFXLiveCaptureViewController_setAnimojiBackgroundColor___block_invoke
   [v2 setAnimojiBackgroundColor:v1];
 }
 
-- (void)executeAfterNextFrameIsRendered:(id)a3
+- (void)executeAfterNextFrameIsRendered:(id)rendered
 {
   memset(&v13, 0, sizeof(v13));
-  v4 = a3;
+  renderedCopy = rendered;
   v5 = +[CFXMediaSettings sharedInstance];
   CMTimeMake(&v13, 1, [v5 frameRate]);
 
@@ -615,22 +615,22 @@ void __58__CFXLiveCaptureViewController_setAnimojiBackgroundColor___block_invoke
   CMTimeAdd(&v11, &lhs, &v9);
   v6 = [CFXNextRenderedFrameCallback alloc];
   lhs = v11;
-  v7 = [(CFXNextRenderedFrameCallback *)v6 initWithBlock:v4 sendAfterRenderTime:&lhs];
+  v7 = [(CFXNextRenderedFrameCallback *)v6 initWithBlock:renderedCopy sendAfterRenderTime:&lhs];
 
-  v8 = [(CFXLiveCaptureViewController *)self renderFrameCompletionBlocks];
-  [v8 addObject:v7];
+  renderFrameCompletionBlocks = [(CFXLiveCaptureViewController *)self renderFrameCompletionBlocks];
+  [renderFrameCompletionBlocks addObject:v7];
 }
 
 - (void)startRenderingCameraFrames
 {
   [(CFXLiveCaptureViewController *)self loadViewIfNeeded];
-  v3 = [(CFXLiveCaptureViewController *)self renderQ];
+  renderQ = [(CFXLiveCaptureViewController *)self renderQ];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__CFXLiveCaptureViewController_startRenderingCameraFrames__block_invoke;
   block[3] = &unk_278D79D20;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(renderQ, block);
 }
 
 void __58__CFXLiveCaptureViewController_startRenderingCameraFrames__block_invoke(uint64_t a1)
@@ -661,18 +661,18 @@ void __58__CFXLiveCaptureViewController_startRenderingCameraFrames__block_invoke
   [v14 addAudioRenderDelegate:*(a1 + 32)];
 }
 
-- (void)stopRenderingCameraFrames:(id)a3
+- (void)stopRenderingCameraFrames:(id)frames
 {
-  v4 = a3;
-  v5 = [(CFXLiveCaptureViewController *)self renderQ];
+  framesCopy = frames;
+  renderQ = [(CFXLiveCaptureViewController *)self renderQ];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__CFXLiveCaptureViewController_stopRenderingCameraFrames___block_invoke;
   v7[3] = &unk_278D7A140;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = framesCopy;
+  v6 = framesCopy;
+  dispatch_async(renderQ, v7);
 }
 
 uint64_t __58__CFXLiveCaptureViewController_stopRenderingCameraFrames___block_invoke(uint64_t a1)
@@ -697,13 +697,13 @@ uint64_t __58__CFXLiveCaptureViewController_stopRenderingCameraFrames___block_in
 
 - (void)pauseRenderingCameraFrames
 {
-  v3 = [(CFXLiveCaptureViewController *)self renderQ];
+  renderQ = [(CFXLiveCaptureViewController *)self renderQ];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__CFXLiveCaptureViewController_pauseRenderingCameraFrames__block_invoke;
   block[3] = &unk_278D79D20;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(renderQ, block);
 }
 
 void __58__CFXLiveCaptureViewController_pauseRenderingCameraFrames__block_invoke(uint64_t a1)
@@ -714,13 +714,13 @@ void __58__CFXLiveCaptureViewController_pauseRenderingCameraFrames__block_invoke
 
 - (void)resumeRenderingCameraFrames
 {
-  v3 = [(CFXLiveCaptureViewController *)self renderQ];
+  renderQ = [(CFXLiveCaptureViewController *)self renderQ];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__CFXLiveCaptureViewController_resumeRenderingCameraFrames__block_invoke;
   block[3] = &unk_278D79D20;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(renderQ, block);
 }
 
 void __59__CFXLiveCaptureViewController_resumeRenderingCameraFrames__block_invoke(uint64_t a1)
@@ -731,13 +731,13 @@ void __59__CFXLiveCaptureViewController_resumeRenderingCameraFrames__block_invok
 
 - (void)flushRenderer
 {
-  v3 = [(CFXLiveCaptureViewController *)self renderQ];
+  renderQ = [(CFXLiveCaptureViewController *)self renderQ];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__CFXLiveCaptureViewController_flushRenderer__block_invoke;
   block[3] = &unk_278D79D20;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(renderQ, block);
 }
 
 void __45__CFXLiveCaptureViewController_flushRenderer__block_invoke(uint64_t a1)
@@ -746,31 +746,31 @@ void __45__CFXLiveCaptureViewController_flushRenderer__block_invoke(uint64_t a1)
   [v1 flush];
 }
 
-- (void)removeAllEffectsOfType:(id)a3 completion:(id)a4
+- (void)removeAllEffectsOfType:(id)type completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  completionCopy = completion;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __66__CFXLiveCaptureViewController_removeAllEffectsOfType_completion___block_invoke;
   v17[3] = &unk_278D7A168;
-  v8 = v7;
+  v8 = completionCopy;
   v18 = v8;
   v9 = MEMORY[0x245D22230](v17);
-  v10 = [(CFXLiveCaptureViewController *)self composition];
-  v11 = [v10 hasEffectOfType:v6];
+  composition = [(CFXLiveCaptureViewController *)self composition];
+  v11 = [composition hasEffectOfType:typeCopy];
 
   if (v11)
   {
-    v12 = [(CFXLiveCaptureViewController *)self composition];
+    composition2 = [(CFXLiveCaptureViewController *)self composition];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __66__CFXLiveCaptureViewController_removeAllEffectsOfType_completion___block_invoke_2;
     v13[3] = &unk_278D7A190;
-    v14 = v6;
-    v15 = self;
+    v14 = typeCopy;
+    selfCopy = self;
     v16 = v9;
-    [v12 removeAllEffectsOfType:v14 completion:v13];
+    [composition2 removeAllEffectsOfType:v14 completion:v13];
   }
 
   else
@@ -824,17 +824,17 @@ uint64_t __66__CFXLiveCaptureViewController_removeAllEffectsOfType_completion___
   return v4();
 }
 
-- (void)removeAllEffects:(id)a3
+- (void)removeAllEffects:(id)effects
 {
-  v4 = a3;
+  effectsCopy = effects;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __49__CFXLiveCaptureViewController_removeAllEffects___block_invoke;
   v11[3] = &unk_278D7A168;
-  v12 = v4;
-  v5 = v4;
+  v12 = effectsCopy;
+  v5 = effectsCopy;
   v6 = MEMORY[0x245D22230](v11);
-  v7 = [(CFXLiveCaptureViewController *)self composition];
+  composition = [(CFXLiveCaptureViewController *)self composition];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__CFXLiveCaptureViewController_removeAllEffects___block_invoke_2;
@@ -842,7 +842,7 @@ uint64_t __66__CFXLiveCaptureViewController_removeAllEffectsOfType_completion___
   v9[4] = self;
   v10 = v6;
   v8 = v6;
-  [v7 removeAllEffects:v9];
+  [composition removeAllEffects:v9];
 }
 
 void __49__CFXLiveCaptureViewController_removeAllEffects___block_invoke(uint64_t a1)
@@ -885,23 +885,23 @@ uint64_t __49__CFXLiveCaptureViewController_removeAllEffects___block_invoke_3(ui
 
 - (BOOL)isCapturing
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CFXLiveCaptureViewController *)self recordingQ];
+  recordingQ = [(CFXLiveCaptureViewController *)self recordingQ];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __43__CFXLiveCaptureViewController_isCapturing__block_invoke;
   v5[3] = &unk_278D79C60;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(recordingQ, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __43__CFXLiveCaptureViewController_isCapturing__block_invoke(uint64_t a1)
@@ -920,27 +920,27 @@ uint64_t __43__CFXLiveCaptureViewController_isCapturing__block_invoke(uint64_t a
   return result;
 }
 
-- (void)startVideoRecordingWithFlashMode:(int64_t)a3
+- (void)startVideoRecordingWithFlashMode:(int64_t)mode
 {
-  v4 = [(CFXLiveCaptureViewController *)self thermalPolicyManager];
-  [v4 setRecordingPolicy:1];
+  thermalPolicyManager = [(CFXLiveCaptureViewController *)self thermalPolicyManager];
+  [thermalPolicyManager setRecordingPolicy:1];
 
   [(CFXLiveCaptureViewController *)self CFX_setupVideoWriterWithAudio:1 completion:0];
 
   [(CFXLiveCaptureViewController *)self CFX_setAnimationEnabledForOverlays:1];
 }
 
-- (void)stopVideoRecording:(id)a3
+- (void)stopVideoRecording:(id)recording
 {
-  v4 = a3;
+  recordingCopy = recording;
   [(CFXLiveCaptureViewController *)self CFX_setAnimationEnabledForOverlays:0];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__CFXLiveCaptureViewController_stopVideoRecording___block_invoke;
   v6[3] = &unk_278D7A1B8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = recordingCopy;
+  v5 = recordingCopy;
   [(CFXLiveCaptureViewController *)self CFX_tearDownVideoWriter:v6];
 }
 
@@ -958,16 +958,16 @@ void __51__CFXLiveCaptureViewController_stopVideoRecording___block_invoke(uint64
   }
 }
 
-- (void)capturePhotoWithFlashMode:(int64_t)a3 completion:(id)a4
+- (void)capturePhotoWithFlashMode:(int64_t)mode completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(CFXLiveCaptureViewController *)self recordingQ];
+  completionCopy = completion;
+  recordingQ = [(CFXLiveCaptureViewController *)self recordingQ];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__CFXLiveCaptureViewController_capturePhotoWithFlashMode_completion___block_invoke;
   block[3] = &unk_278D79D20;
   block[4] = self;
-  dispatch_async(v7, block);
+  dispatch_async(recordingQ, block);
 
   v8 = +[JFXVideoCameraController sharedInstance];
   v10[0] = MEMORY[0x277D85DD0];
@@ -975,9 +975,9 @@ void __51__CFXLiveCaptureViewController_stopVideoRecording___block_invoke(uint64
   v10[2] = __69__CFXLiveCaptureViewController_capturePhotoWithFlashMode_completion___block_invoke_2;
   v10[3] = &unk_278D7A2A8;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v8 capturePhotoWithFlash:a3 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [v8 capturePhotoWithFlash:mode completion:v10];
 }
 
 void __69__CFXLiveCaptureViewController_capturePhotoWithFlashMode_completion___block_invoke_2(uint64_t a1, void *a2, void *a3, void *a4)
@@ -1118,9 +1118,9 @@ void __69__CFXLiveCaptureViewController_capturePhotoWithFlashMode_completion___b
   [v3 CFX_tearDownVideoWriter:v4];
 }
 
-- (void)CFX_setupVideoWriterWithAudio:(BOOL)a3 completion:(id)a4
+- (void)CFX_setupVideoWriterWithAudio:(BOOL)audio completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = dispatch_group_create();
   v32[0] = 0;
   v32[1] = v32;
@@ -1159,20 +1159,20 @@ void __69__CFXLiveCaptureViewController_capturePhotoWithFlashMode_completion___b
   v23 = 0;
   v12 = [JFXMediaURLManager videoRecordingFolderURL:&v23];
   v13 = v23;
-  v14 = [(CFXLiveCaptureViewController *)self recordingQ];
+  recordingQ = [(CFXLiveCaptureViewController *)self recordingQ];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__CFXLiveCaptureViewController_CFX_setupVideoWriterWithAudio_completion___block_invoke_3;
   block[3] = &unk_278D7A2F8;
   block[4] = self;
   v18 = v12;
-  v22 = a3;
+  audioCopy = audio;
   v20 = v32;
   v21 = v30;
-  v19 = v6;
-  v15 = v6;
+  v19 = completionCopy;
+  v15 = completionCopy;
   v16 = v12;
-  dispatch_group_notify(v11, v14, block);
+  dispatch_group_notify(v11, recordingQ, block);
 
   _Block_object_dispose(v30, 8);
   _Block_object_dispose(v32, 8);
@@ -1308,18 +1308,18 @@ LABEL_8:
   }
 }
 
-- (void)CFX_tearDownVideoWriter:(id)a3
+- (void)CFX_tearDownVideoWriter:(id)writer
 {
-  v4 = a3;
-  v5 = [(CFXLiveCaptureViewController *)self recordingQ];
+  writerCopy = writer;
+  recordingQ = [(CFXLiveCaptureViewController *)self recordingQ];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__CFXLiveCaptureViewController_CFX_tearDownVideoWriter___block_invoke;
   v7[3] = &unk_278D7A140;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = writerCopy;
+  v6 = writerCopy;
+  dispatch_async(recordingQ, v7);
 }
 
 void __56__CFXLiveCaptureViewController_CFX_tearDownVideoWriter___block_invoke(uint64_t a1)
@@ -1358,51 +1358,51 @@ void __56__CFXLiveCaptureViewController_CFX_tearDownVideoWriter___block_invoke_2
   v12 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_CFX_livePreviewTapped_];
   [v12 setDelegate:self];
   [v12 setNumberOfTapsRequired:1];
-  v3 = [(CFXLiveCaptureViewController *)self containerView];
-  [v3 addGestureRecognizer:v12];
+  containerView = [(CFXLiveCaptureViewController *)self containerView];
+  [containerView addGestureRecognizer:v12];
 
   v4 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel_CFX_livePreviewPanned_];
   [v4 setDelegate:self];
   [v4 setMinimumNumberOfTouches:1];
-  v5 = [(CFXLiveCaptureViewController *)self containerView];
-  [v5 addGestureRecognizer:v4];
+  containerView2 = [(CFXLiveCaptureViewController *)self containerView];
+  [containerView2 addGestureRecognizer:v4];
 
   v6 = [objc_alloc(MEMORY[0x277D75848]) initWithTarget:self action:sel_CFX_livePreviewPinched_];
   [v6 setDelegate:self];
   [v6 setScale:1.0];
-  v7 = [(CFXLiveCaptureViewController *)self containerView];
-  [v7 addGestureRecognizer:v6];
+  containerView3 = [(CFXLiveCaptureViewController *)self containerView];
+  [containerView3 addGestureRecognizer:v6];
 
   v8 = [objc_alloc(MEMORY[0x277D75938]) initWithTarget:self action:sel_CFX_livePreviewRotated_];
   [v8 setDelegate:self];
-  v9 = [(CFXLiveCaptureViewController *)self containerView];
-  [v9 addGestureRecognizer:v8];
+  containerView4 = [(CFXLiveCaptureViewController *)self containerView];
+  [containerView4 addGestureRecognizer:v8];
 
   v10 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_CFX_livePreviewDoubleTapped_];
   [v10 setDelegate:self];
   [v10 setNumberOfTapsRequired:2];
-  v11 = [(CFXLiveCaptureViewController *)self containerView];
-  [v11 addGestureRecognizer:v10];
+  containerView5 = [(CFXLiveCaptureViewController *)self containerView];
+  [containerView5 addGestureRecognizer:v10];
 }
 
-- (CGPoint)locationInCaptureViewForGestureRecognizer:(id)a3
+- (CGPoint)locationInCaptureViewForGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   [(CFXLiveCaptureViewController *)self CFX_createUncroppedCameraPlaceholderViewIfNecessary];
-  v5 = [(CFXLiveCaptureViewController *)self renderImageView];
-  v6 = [(CFXLiveCaptureViewController *)self uncroppedRenderImagePlaceHolderView];
+  renderImageView = [(CFXLiveCaptureViewController *)self renderImageView];
+  uncroppedRenderImagePlaceHolderView = [(CFXLiveCaptureViewController *)self uncroppedRenderImagePlaceHolderView];
 
-  if (v6)
+  if (uncroppedRenderImagePlaceHolderView)
   {
-    v7 = [(CFXLiveCaptureViewController *)self uncroppedRenderImagePlaceHolderView];
+    uncroppedRenderImagePlaceHolderView2 = [(CFXLiveCaptureViewController *)self uncroppedRenderImagePlaceHolderView];
 
-    v5 = v7;
+    renderImageView = uncroppedRenderImagePlaceHolderView2;
   }
 
-  [v4 locationInView:v5];
+  [recognizerCopy locationInView:renderImageView];
   v9 = v8;
   v11 = v10;
-  [v5 bounds];
+  [renderImageView bounds];
   v13 = v12;
   v15 = v14;
   +[JFXMediaSettings renderSize];
@@ -1426,59 +1426,59 @@ void __56__CFXLiveCaptureViewController_CFX_tearDownVideoWriter___block_invoke_2
   return result;
 }
 
-- (void)CFX_livePreviewTapped:(id)a3
+- (void)CFX_livePreviewTapped:(id)tapped
 {
-  [(CFXLiveCaptureViewController *)self locationInCaptureViewForGestureRecognizer:a3];
+  [(CFXLiveCaptureViewController *)self locationInCaptureViewForGestureRecognizer:tapped];
   v5 = v4;
   v7 = v6;
-  v8 = [(CFXLiveCaptureViewController *)self delegate];
-  [v8 liveCaptureViewController:self livePreviewTappedAtNormalizedPoint:{v5, v7}];
+  delegate = [(CFXLiveCaptureViewController *)self delegate];
+  [delegate liveCaptureViewController:self livePreviewTappedAtNormalizedPoint:{v5, v7}];
 }
 
-- (void)CFX_livePreviewPanned:(id)a3
+- (void)CFX_livePreviewPanned:(id)panned
 {
-  v4 = a3;
-  [(CFXLiveCaptureViewController *)self locationInCaptureViewForGestureRecognizer:v4];
+  pannedCopy = panned;
+  [(CFXLiveCaptureViewController *)self locationInCaptureViewForGestureRecognizer:pannedCopy];
   v6 = v5;
   v8 = v7;
-  v9 = [(CFXLiveCaptureViewController *)self delegate];
-  [v9 liveCaptureViewController:self livePreviewPannedAtNormalizedPoint:v4 gesture:{v6, v8}];
+  delegate = [(CFXLiveCaptureViewController *)self delegate];
+  [delegate liveCaptureViewController:self livePreviewPannedAtNormalizedPoint:pannedCopy gesture:{v6, v8}];
 }
 
-- (void)CFX_livePreviewPinched:(id)a3
+- (void)CFX_livePreviewPinched:(id)pinched
 {
-  v4 = a3;
-  [(CFXLiveCaptureViewController *)self locationInCaptureViewForGestureRecognizer:v4];
+  pinchedCopy = pinched;
+  [(CFXLiveCaptureViewController *)self locationInCaptureViewForGestureRecognizer:pinchedCopy];
   v6 = v5;
   v8 = v7;
-  v9 = [(CFXLiveCaptureViewController *)self delegate];
-  [v9 liveCaptureViewController:self livePreviewPinchedAtNormalizedCenterPoint:v4 gesture:{v6, v8}];
+  delegate = [(CFXLiveCaptureViewController *)self delegate];
+  [delegate liveCaptureViewController:self livePreviewPinchedAtNormalizedCenterPoint:pinchedCopy gesture:{v6, v8}];
 }
 
-- (void)CFX_livePreviewRotated:(id)a3
+- (void)CFX_livePreviewRotated:(id)rotated
 {
-  v4 = a3;
-  [(CFXLiveCaptureViewController *)self locationInCaptureViewForGestureRecognizer:v4];
+  rotatedCopy = rotated;
+  [(CFXLiveCaptureViewController *)self locationInCaptureViewForGestureRecognizer:rotatedCopy];
   v6 = v5;
   v8 = v7;
-  v9 = [(CFXLiveCaptureViewController *)self delegate];
-  [v9 liveCaptureViewController:self livePreviewRotatedAtNormalizedCenterPoint:v4 gesture:{v6, v8}];
+  delegate = [(CFXLiveCaptureViewController *)self delegate];
+  [delegate liveCaptureViewController:self livePreviewRotatedAtNormalizedCenterPoint:rotatedCopy gesture:{v6, v8}];
 }
 
-- (void)CFX_livePreviewDoubleTapped:(id)a3
+- (void)CFX_livePreviewDoubleTapped:(id)tapped
 {
-  v4 = a3;
-  [(CFXLiveCaptureViewController *)self locationInCaptureViewForGestureRecognizer:v4];
+  tappedCopy = tapped;
+  [(CFXLiveCaptureViewController *)self locationInCaptureViewForGestureRecognizer:tappedCopy];
   v6 = v5;
   v8 = v7;
-  v9 = [(CFXLiveCaptureViewController *)self delegate];
-  [v9 liveCaptureViewController:self livePreviewDoubleTappedAtNormalizedCenterPoint:v4 gesture:{v6, v8}];
+  delegate = [(CFXLiveCaptureViewController *)self delegate];
+  [delegate liveCaptureViewController:self livePreviewDoubleTappedAtNormalizedCenterPoint:tappedCopy gesture:{v6, v8}];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -1508,12 +1508,12 @@ void __56__CFXLiveCaptureViewController_CFX_tearDownVideoWriter___block_invoke_2
   return v9 & 1;
 }
 
-- (void)CFX_setAnimationEnabledForOverlays:(BOOL)a3
+- (void)CFX_setAnimationEnabledForOverlays:(BOOL)overlays
 {
-  v3 = a3;
+  overlaysCopy = overlays;
   v29 = *MEMORY[0x277D85DE8];
-  v4 = [(CFXLiveCaptureViewController *)self composition];
-  v5 = [v4 jtEffectsForType:2];
+  composition = [(CFXLiveCaptureViewController *)self composition];
+  v5 = [composition jtEffectsForType:2];
 
   v26 = 0u;
   v27 = 0u;
@@ -1536,15 +1536,15 @@ void __56__CFXLiveCaptureViewController_CFX_tearDownVideoWriter___block_invoke_2
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        [v12 enablePresentationState:!v3];
+        [v12 enablePresentationState:!overlaysCopy];
         v22 = 0u;
         v23 = 0u;
         v21 = 0u;
-        v13 = [v12 renderEffect];
-        v14 = v13;
-        if (v13)
+        renderEffect = [v12 renderEffect];
+        v14 = renderEffect;
+        if (renderEffect)
         {
-          [v13 effectRange];
+          [renderEffect effectRange];
         }
 
         else
@@ -1554,7 +1554,7 @@ void __56__CFXLiveCaptureViewController_CFX_tearDownVideoWriter___block_invoke_2
           v21 = 0u;
         }
 
-        if (v3)
+        if (overlaysCopy)
         {
           v21 = CFXEffectPreviewStartAtNextRenderTime;
           v15 = 0;
@@ -1570,11 +1570,11 @@ void __56__CFXLiveCaptureViewController_CFX_tearDownVideoWriter___block_invoke_2
         v18 = v21;
         v19 = v22;
         v20 = v23;
-        v16 = [v12 renderEffect];
+        renderEffect2 = [v12 renderEffect];
         v17[0] = v18;
         v17[1] = v19;
         v17[2] = v20;
-        [v16 setEffectRange:v17];
+        [renderEffect2 setEffectRange:v17];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -1584,18 +1584,18 @@ void __56__CFXLiveCaptureViewController_CFX_tearDownVideoWriter___block_invoke_2
   }
 }
 
-- (void)CFX_executeRenderCallbacksQueuedBeforeTime:(id *)a3
+- (void)CFX_executeRenderCallbacksQueuedBeforeTime:(id *)time
 {
   v5 = objc_opt_new();
-  v6 = [(CFXLiveCaptureViewController *)self renderFrameCompletionBlocks];
+  renderFrameCompletionBlocks = [(CFXLiveCaptureViewController *)self renderFrameCompletionBlocks];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __75__CFXLiveCaptureViewController_CFX_executeRenderCallbacksQueuedBeforeTime___block_invoke;
   v12 = &unk_278D7A370;
-  v14 = *a3;
+  v14 = *time;
   v13 = v5;
   v7 = v5;
-  [v6 enumerateObjectsUsingBlock:&v9];
+  [renderFrameCompletionBlocks enumerateObjectsUsingBlock:&v9];
 
   v8 = [(CFXLiveCaptureViewController *)self renderFrameCompletionBlocks:v9];
   [v8 removeObjectsInArray:v7];
@@ -1655,10 +1655,10 @@ void __75__CFXLiveCaptureViewController_CFX_executeRenderCallbacksQueuedBeforeTi
   return WeakRetained;
 }
 
-- (void)setCurrentRenderPresentationTime_renderImageQ:(id *)a3
+- (void)setCurrentRenderPresentationTime_renderImageQ:(id *)q
 {
-  var3 = a3->var3;
-  *&self->_currentRenderPresentationTime_renderImageQ.value = *&a3->var0;
+  var3 = q->var3;
+  *&self->_currentRenderPresentationTime_renderImageQ.value = *&q->var0;
   self->_currentRenderPresentationTime_renderImageQ.epoch = var3;
 }
 

@@ -1,21 +1,21 @@
 @interface SUUIMetricsDOMChange
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dictionaryRepresentation;
-- (SUUIMetricsDOMChange)initWithReportDomBuildTimesMessagePayload:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUUIMetricsDOMChange)initWithReportDomBuildTimesMessagePayload:(id)payload;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SUUIMetricsDOMChange
 
-- (SUUIMetricsDOMChange)initWithReportDomBuildTimesMessagePayload:(id)a3
+- (SUUIMetricsDOMChange)initWithReportDomBuildTimesMessagePayload:(id)payload
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"buildStartTime"];
-  v6 = [v4 objectForKeyedSubscript:@"buildEndTime"];
+  payloadCopy = payload;
+  v5 = [payloadCopy objectForKeyedSubscript:@"buildStartTime"];
+  v6 = [payloadCopy objectForKeyedSubscript:@"buildEndTime"];
   v7 = v6;
-  v8 = 0;
+  selfCopy = 0;
   if (v5 && v6)
   {
     v9 = [(SUUIMetricsDOMChange *)self init];
@@ -25,20 +25,20 @@
       [(SUUIMetricsDOMChange *)v9 setBuildStartTime:?];
       [SUUIMetricsUtilities timeIntervalFromJSTime:v7];
       [(SUUIMetricsDOMChange *)v9 setBuildEndTime:?];
-      v10 = [v4 objectForKeyedSubscript:@"messageWasDeferred"];
+      v10 = [payloadCopy objectForKeyedSubscript:@"messageWasDeferred"];
       -[SUUIMetricsDOMChange setFromDeferredMessage:](v9, "setFromDeferredMessage:", [v10 BOOLValue]);
     }
 
     self = v9;
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(SUUIMetricsDOMChange *)self buildStartTime];
   [v4 setBuildStartTime:?];
   [(SUUIMetricsDOMChange *)self buildEndTime];
@@ -85,9 +85,9 @@
   v8 = v6 + 100 * v7;
   [(SUUIMetricsDOMChange *)self renderEndTime];
   v10 = v8 + 1000 * v9;
-  v11 = [(SUUIMetricsDOMChange *)self isFromDeferredMessage];
+  isFromDeferredMessage = [(SUUIMetricsDOMChange *)self isFromDeferredMessage];
   v12 = 10000;
-  if (!v11)
+  if (!isFromDeferredMessage)
   {
     v12 = 0;
   }
@@ -95,10 +95,10 @@
   return v10 + v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v19) = 1;
   }
@@ -108,14 +108,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(SUUIMetricsDOMChange *)self buildStartTime];
       v7 = v6;
       [(SUUIMetricsDOMChange *)v5 buildStartTime];
       if (v7 == v8 && ([(SUUIMetricsDOMChange *)self buildEndTime], v10 = v9, [(SUUIMetricsDOMChange *)v5 buildEndTime], v10 == v11) && ([(SUUIMetricsDOMChange *)self renderStartTime], v13 = v12, [(SUUIMetricsDOMChange *)v5 renderStartTime], v13 == v14) && ([(SUUIMetricsDOMChange *)self renderEndTime], v16 = v15, [(SUUIMetricsDOMChange *)v5 renderEndTime], v16 == v17))
       {
-        v18 = [(SUUIMetricsDOMChange *)self isFromDeferredMessage];
-        v19 = v18 ^ [(SUUIMetricsDOMChange *)v5 isFromDeferredMessage]^ 1;
+        isFromDeferredMessage = [(SUUIMetricsDOMChange *)self isFromDeferredMessage];
+        v19 = isFromDeferredMessage ^ [(SUUIMetricsDOMChange *)v5 isFromDeferredMessage]^ 1;
       }
 
       else

@@ -1,14 +1,14 @@
 @interface MDMServerCore
 - (BOOL)_handleHTTPStatusGoneResponse;
 - (BOOL)_isAwaitingUserConfigured;
-- (BOOL)_memberQueueParseMDMConfigurationDict:(id)a3;
-- (BOOL)_readConfigurationOutError:(id *)a3 isUproot:(BOOL)a4;
-- (BOOL)_serverHasCapabilityForMessageType:(id)a3;
-- (BOOL)_shouldListenToEnvironment:(unint64_t)a3;
+- (BOOL)_memberQueueParseMDMConfigurationDict:(id)dict;
+- (BOOL)_readConfigurationOutError:(id *)error isUproot:(BOOL)uproot;
+- (BOOL)_serverHasCapabilityForMessageType:(id)type;
+- (BOOL)_shouldListenToEnvironment:(unint64_t)environment;
 - (BOOL)isAppInstallBlocked;
-- (BOOL)startOutError:(id *)a3;
+- (BOOL)startOutError:(id *)error;
 - (BOOL)userSwitchAlreadyInitiated;
-- (MDMServerCore)initWithChannelType:(unint64_t)a3;
+- (MDMServerCore)initWithChannelType:(unint64_t)type;
 - (NSDictionary)MDMOptions;
 - (NSDictionary)organizationInfo;
 - (NSDictionary)softwareUpdatePathFromDisk;
@@ -17,155 +17,155 @@
 - (NSString)serverName;
 - (id)_cachedResponse;
 - (id)_createBadInstallationError;
-- (id)_createEmptyTokenErrorWithUnderlyingError:(id)a3;
+- (id)_createEmptyTokenErrorWithUnderlyingError:(id)error;
 - (id)_createNoInstallationError;
 - (id)_createServerMissingBootstrapTokenCapabilityError;
 - (id)_createTokenUnsupportedError;
-- (id)_eraseWatchFailedWithUnderlayingError:(id)a3;
-- (id)_httpErrorFromTransaction:(id)a3 assertion:(id)a4 rmAccountID:(id)a5 enrollmentMode:(id)a6 reauthQueue:(id)a7;
+- (id)_eraseWatchFailedWithUnderlayingError:(id)error;
+- (id)_httpErrorFromTransaction:(id)transaction assertion:(id)assertion rmAccountID:(id)d enrollmentMode:(id)mode reauthQueue:(id)queue;
 - (id)_idleResponse;
-- (id)_mdmFilePathForChannelType:(unint64_t)a3;
-- (id)_mdmOutstandingActivitiesFilePathForChannelType:(unint64_t)a3;
-- (id)_mdmPropertiesFilePathForChannelType:(unint64_t)a3;
+- (id)_mdmFilePathForChannelType:(unint64_t)type;
+- (id)_mdmOutstandingActivitiesFilePathForChannelType:(unint64_t)type;
+- (id)_mdmPropertiesFilePathForChannelType:(unint64_t)type;
 - (id)_memberQueueCachedResponse;
 - (id)_memberQueueLastPushTokenHash;
 - (id)_memberQueuePushMagicMismatchDateMarker;
-- (id)_prefixNameForChannelType:(unint64_t)a3;
-- (id)_processAccountDrivenUnauthorizedFromTransaction:(id)a3 rmAccountID:(id)a4 reauthQueue:(id)a5;
-- (id)_processTraditionalErrorFromTransaction:(id)a3;
-- (id)_processTraditionalUnauthorizedFromTransaction:(id)a3 assertion:(id)a4;
-- (id)_processUnauthorizedFromTransaction:(id)a3 authParams:(id)a4 rmAccountID:(id)a5 rmAccountUsername:(id)a6 reauthQueue:(id)a7;
-- (id)_reasonStringWithReason:(id)a3;
-- (id)_requiredServerCapabilityForMessageType:(id)a3;
-- (id)_sendResponseSynchornously:(id)a3;
-- (id)_transactionForResponse:(id)a3;
-- (id)_triggerReauthenticationForTransaction:(id)a3 authenticator:(id)a4 authParams:(id)a5 rmAccountID:(id)a6 rmAccountUsername:(id)a7;
-- (id)_triggerRefreshTokenForTransaction:(id)a3 authenticator:(id)a4 authParams:(id)a5 rmAccountID:(id)a6 rmAccountUsername:(id)a7 reauthQueue:(id)a8;
+- (id)_prefixNameForChannelType:(unint64_t)type;
+- (id)_processAccountDrivenUnauthorizedFromTransaction:(id)transaction rmAccountID:(id)d reauthQueue:(id)queue;
+- (id)_processTraditionalErrorFromTransaction:(id)transaction;
+- (id)_processTraditionalUnauthorizedFromTransaction:(id)transaction assertion:(id)assertion;
+- (id)_processUnauthorizedFromTransaction:(id)transaction authParams:(id)params rmAccountID:(id)d rmAccountUsername:(id)username reauthQueue:(id)queue;
+- (id)_reasonStringWithReason:(id)reason;
+- (id)_requiredServerCapabilityForMessageType:(id)type;
+- (id)_sendResponseSynchornously:(id)synchornously;
+- (id)_transactionForResponse:(id)response;
+- (id)_triggerReauthenticationForTransaction:(id)transaction authenticator:(id)authenticator authParams:(id)params rmAccountID:(id)d rmAccountUsername:(id)username;
+- (id)_triggerRefreshTokenForTransaction:(id)transaction authenticator:(id)authenticator authParams:(id)params rmAccountID:(id)d rmAccountUsername:(id)username reauthQueue:(id)queue;
 - (id)_userEnrollmentAuthenticationDict;
 - (id)_userFieldsForResponse;
-- (id)responseFromBasicResponse:(id)a3;
-- (id)sendResponseSynchronously:(id)a3 outStatusCode:(int64_t *)a4 outError:(id *)a5;
-- (int)_listenForOneTimeGlobalNotification:(id)a3 callbackQueue:(id)a4 notificationHandler:(id)a5;
+- (id)responseFromBasicResponse:(id)response;
+- (id)sendResponseSynchronously:(id)synchronously outStatusCode:(int64_t *)code outError:(id *)error;
+- (int)_listenForOneTimeGlobalNotification:(id)notification callbackQueue:(id)queue notificationHandler:(id)handler;
 - (int64_t)_memberQueueTokenUpdateCount;
 - (int64_t)_tokenUpdateCount;
 - (int64_t)_tokenUpdateRetryCount;
-- (unsigned)_registerForDispatchNotification:(id)a3 outToken:(int *)a4 targetQueue:(id)a5 handler:(id)a6;
-- (void)_backgroundPollFromTask:(id)a3;
-- (void)_changeOrganizationNameForRMAccountIdentifier:(id)a3 personaID:(id)a4 organizationName:(id)a5;
+- (unsigned)_registerForDispatchNotification:(id)notification outToken:(int *)token targetQueue:(id)queue handler:(id)handler;
+- (void)_backgroundPollFromTask:(id)task;
+- (void)_changeOrganizationNameForRMAccountIdentifier:(id)identifier personaID:(id)d organizationName:(id)name;
 - (void)_clearCoreFollowup;
 - (void)_clearMAIDNotification;
-- (void)_currentLocaleDidChange:(id)a3;
+- (void)_currentLocaleDidChange:(id)change;
 - (void)_decreaseTokenUpdateRetryCount;
-- (void)_executeBlockWhenPushTokenIsAvailable:(id)a3;
+- (void)_executeBlockWhenPushTokenIsAvailable:(id)available;
 - (void)_executePushTokenWaitContinuationBlock;
-- (void)_executionQueueCheckForOutstandingActivityIsReachabilityEvent:(BOOL)a3 assertion:(id)a4 completionBlock:(id)a5;
-- (void)_executionQueueHandleRequest:(id)a3 assertion:(id)a4 completionBlock:(id)a5;
-- (void)_executionQueuePollServerForCommandWithAssertion:(id)a3 completionBlock:(id)a4;
-- (void)_executionQueueRemoveMDMProfileWithAssertion:(id)a3;
+- (void)_executionQueueCheckForOutstandingActivityIsReachabilityEvent:(BOOL)event assertion:(id)assertion completionBlock:(id)block;
+- (void)_executionQueueHandleRequest:(id)request assertion:(id)assertion completionBlock:(id)block;
+- (void)_executionQueuePollServerForCommandWithAssertion:(id)assertion completionBlock:(id)block;
+- (void)_executionQueueRemoveMDMProfileWithAssertion:(id)assertion;
 - (void)_executionQueueScheduleTokenUpdateRetryIfNeeded;
-- (void)_executionQueueTellServerAboutDeviceTokenWithAssertion:(id)a3 completionBlock:(id)a4;
+- (void)_executionQueueTellServerAboutDeviceTokenWithAssertion:(id)assertion completionBlock:(id)block;
 - (void)_keybagStateDidChange;
 - (void)_listenForCleanupMigrationFinishedNotificationAndRetryTokenUpdate;
-- (void)_listenForManagedAppleAccountLongLivedTokenChangedNotificationsOnQueue:(id)a3 perform:(id)a4;
-- (void)_makeGetTokenRequestWithRequestDict:(id)a3 completionHandler:(id)a4;
+- (void)_listenForManagedAppleAccountLongLivedTokenChangedNotificationsOnQueue:(id)queue perform:(id)perform;
+- (void)_makeGetTokenRequestWithRequestDict:(id)dict completionHandler:(id)handler;
 - (void)_memberQueueDecrementTokenUpdateRequestCount;
 - (void)_memberQueueDeregisterForRRTSIdleEvents;
 - (void)_memberQueueDeviceDidBecomeActive;
-- (void)_memberQueueDeviceDidBecomeIdleWithTimeoutInterval:(double)a3;
+- (void)_memberQueueDeviceDidBecomeIdleWithTimeoutInterval:(double)interval;
 - (void)_memberQueueForgetCurrentConfiguration;
-- (void)_memberQueueInactivityTaskFired:(id)a3;
+- (void)_memberQueueInactivityTaskFired:(id)fired;
 - (void)_memberQueueIncrementTokenUpdateRequestCount;
-- (void)_memberQueueLogLatestPushTokenIfNeeded:(id)a3;
-- (void)_memberQueuePollOrScheduleNextPollForHRNFromBackgroundTask:(id)a3;
+- (void)_memberQueueLogLatestPushTokenIfNeeded:(id)needed;
+- (void)_memberQueuePollOrScheduleNextPollForHRNFromBackgroundTask:(id)task;
 - (void)_memberQueueRRTSTimeoutReached;
 - (void)_memberQueueRegisterForRRTSIdleEvents;
-- (void)_memberQueueRemoveOutstandingActivityForKey:(id)a3;
-- (void)_memberQueueScheduleRRTSInactivityTaskWithInterval:(double)a3;
-- (void)_memberQueueSetCachedResponse:(id)a3;
+- (void)_memberQueueRemoveOutstandingActivityForKey:(id)key;
+- (void)_memberQueueScheduleRRTSInactivityTaskWithInterval:(double)interval;
+- (void)_memberQueueSetCachedResponse:(id)response;
 - (void)_memberQueueSetLastPollingAttempt;
 - (void)_memberQueueSetLastPollingSuccess;
-- (void)_memberQueueSetLastPushTokenHash:(id)a3;
-- (void)_memberQueueSetOutstandingActivity:(id)a3 forKey:(id)a4;
-- (void)_memberQueueSetPushMagicMismatchDateMarker:(id)a3;
-- (void)_memberQueueSetTokenUpdateRequestCount:(int64_t)a3;
-- (void)_memberQueueSetupAPSConnectionIsMDMConfigurationValid:(BOOL)a3 isUserDaemon:(BOOL)a4;
+- (void)_memberQueueSetLastPushTokenHash:(id)hash;
+- (void)_memberQueueSetOutstandingActivity:(id)activity forKey:(id)key;
+- (void)_memberQueueSetPushMagicMismatchDateMarker:(id)marker;
+- (void)_memberQueueSetTokenUpdateRequestCount:(int64_t)count;
+- (void)_memberQueueSetupAPSConnectionIsMDMConfigurationValid:(BOOL)valid isUserDaemon:(BOOL)daemon;
 - (void)_memberQueueStartListeningForInterestingEvents;
 - (void)_memberQueueStopListeningForInterestingEvents;
-- (void)_memberQueueUpdateOrganizationInfo:(id)a3;
+- (void)_memberQueueUpdateOrganizationInfo:(id)info;
 - (void)_networkReachabilityDidChange;
-- (void)_pollFromServerIfNeeded:(BOOL)a3 isReachabilityEvent:(BOOL)a4 completionHandler:(id)a5;
+- (void)_pollFromServerIfNeeded:(BOOL)needed isReachabilityEvent:(BOOL)event completionHandler:(id)handler;
 - (void)_pollOrScheduleNextPollForHRN;
 - (void)_pollingSucceeded;
 - (void)_postReauthFollowUpChangedNotification;
-- (void)_presentFollowUpForAuthURL:(id)a3 accountUsername:(id)a4 isMAIDAccount:(BOOL)a5;
-- (void)_processRequest:(id)a3 encodeResponse:(BOOL)a4 completion:(id)a5;
+- (void)_presentFollowUpForAuthURL:(id)l accountUsername:(id)username isMAIDAccount:(BOOL)account;
+- (void)_processRequest:(id)request encodeResponse:(BOOL)response completion:(id)completion;
 - (void)_registerAsUserSwitchStakeholder;
-- (void)_scheduleNextPollWithInterval:(double)a3;
+- (void)_scheduleNextPollWithInterval:(double)interval;
 - (void)_schedulePollingServerForCommand;
-- (void)_sendCheckInRequestAndHandleErrorForMessageType:(id)a3 requestDict:(id)a4 completionHandler:(id)a5;
-- (void)_sendResponse:(id)a3 completionBlock:(id)a4;
-- (void)_setCachedResponse:(id)a3;
+- (void)_sendCheckInRequestAndHandleErrorForMessageType:(id)type requestDict:(id)dict completionHandler:(id)handler;
+- (void)_sendResponse:(id)response completionBlock:(id)block;
+- (void)_setCachedResponse:(id)response;
 - (void)_setLastPollingAttempt;
 - (void)_setLastPollingSuccess;
 - (void)_setTokenUpdateRequestCountToZero;
-- (void)_syncBootstrapTokenToMDMWithToken:(id)a3 retryCount:(int64_t)a4 completionHandler:(id)a5;
-- (void)blockAppInstallsWithCompletion:(id)a3;
-- (void)blockMDMCommandsWithCompletion:(id)a3;
+- (void)_syncBootstrapTokenToMDMWithToken:(id)token retryCount:(int64_t)count completionHandler:(id)handler;
+- (void)blockAppInstallsWithCompletion:(id)completion;
+- (void)blockMDMCommandsWithCompletion:(id)completion;
 - (void)buddyDidFinish;
 - (void)dealloc;
-- (void)deleteBootstrapTokenWithToken:(id)a3 devicePasscode:(id)a4 completionHandler:(id)a5;
-- (void)deleteBootstrapTokenWithToken:(id)a3 devicePasscodeContext:(id)a4 completionHandler:(id)a5;
-- (void)depPushTokenWithCompletion:(id)a3;
-- (void)disablePushWakeWithCompletion:(id)a3;
-- (void)enablePushWakeWithCompletion:(id)a3;
-- (void)generateAndSyncBootstrapTokenWithDevicePasscode:(id)a3 completionHandler:(id)a4;
-- (void)generateAndSyncBootstrapTokenWithDevicePasscodeContext:(id)a3 completionHandler:(id)a4;
-- (void)generateBootstrapTokenWithDevicePasscode:(id)a3 completionHandler:(id)a4;
-- (void)generateBootstrapTokenWithDevicePasscodeContext:(id)a3 completionHandler:(id)a4;
-- (void)getAssertionDescriptionsWithCompletion:(id)a3;
-- (void)getOrgTokenForMAIDWithCompletionHandler:(id)a3;
-- (void)getWatchPairingTokenForPhoneID:(id)a3 watchID:(id)a4 securityToken:(id)a5 completionHandler:(id)a6;
-- (void)isAwaitingUserConfiguredWithCompletion:(id)a3;
-- (void)monitorDEPPushTokenIfNeededWithCompletion:(id)a3;
-- (void)monitorDEPPushTokenWithCompletion:(id)a3;
-- (void)nagForMigrationWithHardCodedValuesWithCompletion:(id)a3;
-- (void)nagWithID:(id)a3 clientID:(id)a4 schedule:(id)a5 title:(id)a6 message:(id)a7 notificationTitle:(id)a8 notificationMessage:(id)a9 actionTitle:(id)a10 actionURL:(id)a11 dismissTitle:(id)a12 dismissURL:(id)a13 deadlineURL:(id)a14 completion:(id)a15;
-- (void)notifyNewConfigurationWithCompletion:(id)a3;
-- (void)prepareToObliterationWithCompletionHandler:(id)a3;
-- (void)preserveAppsWithCompletion:(id)a3;
-- (void)pushServiceManager:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5 environment:(unint64_t)a6;
-- (void)pushServiceManager:(id)a3 didReceivePublicToken:(id)a4 forEnvironment:(unint64_t)a5;
-- (void)pushTokenWithCompletion:(id)a3;
-- (void)reauthenticationCompleteWithCompletion:(id)a3;
-- (void)removeUnusedPreservedAppsWithCompletion:(id)a3;
-- (void)requestDeviceObliterationWithPreserveDataPlan:(BOOL)a3 disallowProximitySetup:(BOOL)a4 completionHandler:(id)a5;
-- (void)requestInstallOfAppsInRestoreWithCompletion:(id)a3;
-- (void)requestRRTSCheckInAndValidationWithCompletionHandler:(id)a3;
-- (void)requestReturnToServiceObliterationWithPreserveDataPlan:(BOOL)a3 disallowProximitySetup:(BOOL)a4 mdmProfileData:(id)a5 wifiProfileData:(id)a6 revertToSnapshotName:(id)a7 bootstrapToken:(id)a8 completionHandler:(id)a9;
-- (void)retryNotNowWithCompletion:(id)a3;
-- (void)scheduleTokenUpdateIfNecessaryWithCompletion:(id)a3;
-- (void)scheduleTokenUpdateWithCompletion:(id)a3;
-- (void)sendMDMAuthenticationRequestWithCompletionHandler:(id)a3;
-- (void)sendMDMCheckOutRequestWithCompletionHandler:(id)a3;
-- (void)setMDMOptions:(id)a3;
-- (void)setOrganizationInfo:(id)a3;
-- (void)setUserSwitchAlreadyInitiated:(BOOL)a3;
-- (void)simulateDEPPushWithCompletion:(id)a3;
-- (void)simulatePushIfNetworkTetheredWithCompletion:(id)a3;
-- (void)simulatePushWithCompletion:(id)a3;
-- (void)stopNaggingForMigrationWithCompletion:(id)a3;
-- (void)syncBootstrapTokenToMDMWithToken:(id)a3 completionHandler:(id)a4;
-- (void)syncDEPPushTokenWithDelay:(double)a3 completion:(id)a4;
-- (void)touchWithCompletion:(id)a3;
-- (void)unblockAppInstallsWithCompletion:(id)a3;
-- (void)unblockMDMCommandsWithCompletion:(id)a3;
-- (void)uprootMDMWithCompletion:(id)a3;
+- (void)deleteBootstrapTokenWithToken:(id)token devicePasscode:(id)passcode completionHandler:(id)handler;
+- (void)deleteBootstrapTokenWithToken:(id)token devicePasscodeContext:(id)context completionHandler:(id)handler;
+- (void)depPushTokenWithCompletion:(id)completion;
+- (void)disablePushWakeWithCompletion:(id)completion;
+- (void)enablePushWakeWithCompletion:(id)completion;
+- (void)generateAndSyncBootstrapTokenWithDevicePasscode:(id)passcode completionHandler:(id)handler;
+- (void)generateAndSyncBootstrapTokenWithDevicePasscodeContext:(id)context completionHandler:(id)handler;
+- (void)generateBootstrapTokenWithDevicePasscode:(id)passcode completionHandler:(id)handler;
+- (void)generateBootstrapTokenWithDevicePasscodeContext:(id)context completionHandler:(id)handler;
+- (void)getAssertionDescriptionsWithCompletion:(id)completion;
+- (void)getOrgTokenForMAIDWithCompletionHandler:(id)handler;
+- (void)getWatchPairingTokenForPhoneID:(id)d watchID:(id)iD securityToken:(id)token completionHandler:(id)handler;
+- (void)isAwaitingUserConfiguredWithCompletion:(id)completion;
+- (void)monitorDEPPushTokenIfNeededWithCompletion:(id)completion;
+- (void)monitorDEPPushTokenWithCompletion:(id)completion;
+- (void)nagForMigrationWithHardCodedValuesWithCompletion:(id)completion;
+- (void)nagWithID:(id)d clientID:(id)iD schedule:(id)schedule title:(id)title message:(id)message notificationTitle:(id)notificationTitle notificationMessage:(id)notificationMessage actionTitle:(id)self0 actionURL:(id)self1 dismissTitle:(id)self2 dismissURL:(id)self3 deadlineURL:(id)self4 completion:(id)self5;
+- (void)notifyNewConfigurationWithCompletion:(id)completion;
+- (void)prepareToObliterationWithCompletionHandler:(id)handler;
+- (void)preserveAppsWithCompletion:(id)completion;
+- (void)pushServiceManager:(id)manager didReceiveMessageForTopic:(id)topic userInfo:(id)info environment:(unint64_t)environment;
+- (void)pushServiceManager:(id)manager didReceivePublicToken:(id)token forEnvironment:(unint64_t)environment;
+- (void)pushTokenWithCompletion:(id)completion;
+- (void)reauthenticationCompleteWithCompletion:(id)completion;
+- (void)removeUnusedPreservedAppsWithCompletion:(id)completion;
+- (void)requestDeviceObliterationWithPreserveDataPlan:(BOOL)plan disallowProximitySetup:(BOOL)setup completionHandler:(id)handler;
+- (void)requestInstallOfAppsInRestoreWithCompletion:(id)completion;
+- (void)requestRRTSCheckInAndValidationWithCompletionHandler:(id)handler;
+- (void)requestReturnToServiceObliterationWithPreserveDataPlan:(BOOL)plan disallowProximitySetup:(BOOL)setup mdmProfileData:(id)data wifiProfileData:(id)profileData revertToSnapshotName:(id)name bootstrapToken:(id)token completionHandler:(id)handler;
+- (void)retryNotNowWithCompletion:(id)completion;
+- (void)scheduleTokenUpdateIfNecessaryWithCompletion:(id)completion;
+- (void)scheduleTokenUpdateWithCompletion:(id)completion;
+- (void)sendMDMAuthenticationRequestWithCompletionHandler:(id)handler;
+- (void)sendMDMCheckOutRequestWithCompletionHandler:(id)handler;
+- (void)setMDMOptions:(id)options;
+- (void)setOrganizationInfo:(id)info;
+- (void)setUserSwitchAlreadyInitiated:(BOOL)initiated;
+- (void)simulateDEPPushWithCompletion:(id)completion;
+- (void)simulatePushIfNetworkTetheredWithCompletion:(id)completion;
+- (void)simulatePushWithCompletion:(id)completion;
+- (void)stopNaggingForMigrationWithCompletion:(id)completion;
+- (void)syncBootstrapTokenToMDMWithToken:(id)token completionHandler:(id)handler;
+- (void)syncDEPPushTokenWithDelay:(double)delay completion:(id)completion;
+- (void)touchWithCompletion:(id)completion;
+- (void)unblockAppInstallsWithCompletion:(id)completion;
+- (void)unblockMDMCommandsWithCompletion:(id)completion;
+- (void)uprootMDMWithCompletion:(id)completion;
 - (void)willSwitchUser;
 @end
 
 @implementation MDMServerCore
 
-- (MDMServerCore)initWithChannelType:(unint64_t)a3
+- (MDMServerCore)initWithChannelType:(unint64_t)type
 {
   v42.receiver = self;
   v42.super_class = MDMServerCore;
@@ -196,7 +196,7 @@
     *(v4 + 7) = v15;
 
     [*(v4 + 7) setServer:v4];
-    *(v4 + 6) = a3;
+    *(v4 + 6) = type;
     v17 = objc_opt_new();
     v18 = *(v4 + 8);
     *(v4 + 8) = v17;
@@ -216,7 +216,7 @@
     v22 = *(v4 + 11);
     *(v4 + 11) = v21;
 
-    v23 = [[MDMPushServiceManager alloc] initWithChannel:a3];
+    v23 = [[MDMPushServiceManager alloc] initWithChannel:type];
     v24 = *(v4 + 16);
     *(v4 + 16) = v23;
 
@@ -232,8 +232,8 @@
       _os_log_impl(&dword_2561F5000, v27, OS_LOG_TYPE_DEFAULT, "MDMServerCore subscribing to locale changes.", buf, 2u);
     }
 
-    v28 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v28 addObserver:v4 selector:sel__currentLocaleDidChange_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__currentLocaleDidChange_ name:*MEMORY[0x277CBE620] object:0];
 
     v29 = [objc_alloc(MEMORY[0x277D032B8]) initWithName:@"com.apple.devicemanagementclient.mdmd.polling" queue:0];
     v30 = *(v4 + 9);
@@ -249,13 +249,13 @@
       }
 
       v32 = *MEMORY[0x277D26150];
-      v33 = [v4 memberQueue];
+      memberQueue = [v4 memberQueue];
       v39[0] = MEMORY[0x277D85DD0];
       v39[1] = 3221225472;
       v39[2] = __37__MDMServerCore_initWithChannelType___block_invoke;
       v39[3] = &unk_27982CC38;
       v40 = v4;
-      [v40 _registerForDispatchNotification:v32 outToken:v4 + 32 targetQueue:v33 handler:v39];
+      [v40 _registerForDispatchNotification:v32 outToken:v4 + 32 targetQueue:memberQueue handler:v39];
     }
 
     v34 = objc_opt_new();
@@ -310,7 +310,7 @@ uint64_t __37__MDMServerCore_initWithChannelType___block_invoke(uint64_t a1)
   [(MDMServerCore *)&v4 dealloc];
 }
 
-- (BOOL)startOutError:(id *)a3
+- (BOOL)startOutError:(id *)error
 {
   v4 = DMCLogObjects();
   if (os_log_type_enabled(*(v4 + 8), OS_LOG_TYPE_DEBUG))
@@ -323,16 +323,16 @@ uint64_t __37__MDMServerCore_initWithChannelType___block_invoke(uint64_t a1)
   v7 = [v5 initWithReason:v6];
 
   +[MDMMCInterface profiledCheckIn];
-  v8 = [(MDMServerCore *)self pushServiceManager];
-  [v8 addPushServiceObserver:self];
+  pushServiceManager = [(MDMServerCore *)self pushServiceManager];
+  [pushServiceManager addPushServiceObserver:self];
 
-  v9 = [(MDMServerCore *)self depPushTokenManager];
-  [v9 startMonitoringDEPPushTokenChangeShouldForce:0];
+  depPushTokenManager = [(MDMServerCore *)self depPushTokenManager];
+  [depPushTokenManager startMonitoringDEPPushTokenChangeShouldForce:0];
 
   if ([MEMORY[0x277D034F8] isMDMMigrationEnabled])
   {
-    v10 = [(MDMServerCore *)self mdmMigrationManager];
-    [v10 startMonitoringDEPServerPushIfNeeded];
+    mdmMigrationManager = [(MDMServerCore *)self mdmMigrationManager];
+    [mdmMigrationManager startMonitoringDEPServerPushIfNeeded];
   }
 
   v17 = 0;
@@ -340,14 +340,14 @@ uint64_t __37__MDMServerCore_initWithChannelType___block_invoke(uint64_t a1)
   v12 = v17;
   if (v11)
   {
-    v13 = [(MDMServerCore *)self jobQueue];
+    jobQueue = [(MDMServerCore *)self jobQueue];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __31__MDMServerCore_startOutError___block_invoke;
     v15[3] = &unk_27982CC60;
     v15[4] = self;
     v16 = v7;
-    [v13 fromFunction:"-[MDMServerCore startOutError:]" enqueueJob:v15];
+    [jobQueue fromFunction:"-[MDMServerCore startOutError:]" enqueueJob:v15];
   }
 
   return v11;
@@ -369,13 +369,13 @@ void __31__MDMServerCore_startOutError___block_invoke(uint64_t a1, void *a2)
 
 - (void)_schedulePollingServerForCommand
 {
-  v3 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __49__MDMServerCore__schedulePollingServerForCommand__block_invoke;
   v4[3] = &unk_27982CCB0;
   v4[4] = self;
-  [v3 fromFunction:"-[MDMServerCore _schedulePollingServerForCommand]" enqueueJob:v4];
+  [jobQueue fromFunction:"-[MDMServerCore _schedulePollingServerForCommand]" enqueueJob:v4];
 }
 
 void __49__MDMServerCore__schedulePollingServerForCommand__block_invoke(uint64_t a1, void *a2)
@@ -391,22 +391,22 @@ void __49__MDMServerCore__schedulePollingServerForCommand__block_invoke(uint64_t
   [v4 _pollFromServerIfNeeded:0 isReachabilityEvent:0 completionHandler:v6];
 }
 
-- (void)_pollFromServerIfNeeded:(BOOL)a3 isReachabilityEvent:(BOOL)a4 completionHandler:(id)a5
+- (void)_pollFromServerIfNeeded:(BOOL)needed isReachabilityEvent:(BOOL)event completionHandler:(id)handler
 {
-  v6 = a3;
-  v8 = a5;
-  if (v6)
+  neededCopy = needed;
+  handlerCopy = handler;
+  if (neededCopy)
   {
     v9 = objc_alloc(MEMORY[0x277D035A0]);
     v10 = [(MDMServerCore *)self _reasonStringWithReason:@"Polling"];
     v11 = [v9 initWithReason:v10];
 
-    v12 = [(MDMServerCore *)self _cachedResponse];
+    _cachedResponse = [(MDMServerCore *)self _cachedResponse];
 
-    if (!v12)
+    if (!_cachedResponse)
     {
-      v13 = [(MDMServerCore *)self _idleResponse];
-      [(MDMServerCore *)self _setCachedResponse:v13];
+      _idleResponse = [(MDMServerCore *)self _idleResponse];
+      [(MDMServerCore *)self _setCachedResponse:_idleResponse];
     }
   }
 
@@ -415,18 +415,18 @@ void __49__MDMServerCore__schedulePollingServerForCommand__block_invoke(uint64_t
     v11 = 0;
   }
 
-  v14 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __79__MDMServerCore__pollFromServerIfNeeded_isReachabilityEvent_completionHandler___block_invoke;
   v17[3] = &unk_27982CCD8;
-  v20 = a4;
+  eventCopy = event;
   v17[4] = self;
   v18 = v11;
-  v19 = v8;
-  v15 = v8;
+  v19 = handlerCopy;
+  v15 = handlerCopy;
   v16 = v11;
-  [v14 queueBlock:v17];
+  [jobQueue queueBlock:v17];
 }
 
 void __79__MDMServerCore__pollFromServerIfNeeded_isReachabilityEvent_completionHandler___block_invoke(uint64_t a1)
@@ -460,29 +460,29 @@ uint64_t __127__MDMServerCore__executionQueueUpdateTokenIfNeededAndCheckForOutst
   return result;
 }
 
-- (void)_executionQueueCheckForOutstandingActivityIsReachabilityEvent:(BOOL)a3 assertion:(id)a4 completionBlock:(id)a5
+- (void)_executionQueueCheckForOutstandingActivityIsReachabilityEvent:(BOOL)event assertion:(id)assertion completionBlock:(id)block
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MDMServerCore *)self _cachedResponse];
+  eventCopy = event;
+  assertionCopy = assertion;
+  blockCopy = block;
+  _cachedResponse = [(MDMServerCore *)self _cachedResponse];
 
-  if (v10)
+  if (_cachedResponse)
   {
     *buf = 0;
     v19 = buf;
     v20 = 0x2020000000;
     v21 = 0;
-    v11 = [(MDMServerCore *)self memberQueue];
+    memberQueue = [(MDMServerCore *)self memberQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __105__MDMServerCore__executionQueueCheckForOutstandingActivityIsReachabilityEvent_assertion_completionBlock___block_invoke;
     block[3] = &unk_27982BB40;
     block[4] = self;
     block[5] = buf;
-    dispatch_async_and_wait(v11, block);
+    dispatch_async_and_wait(memberQueue, block);
 
-    if (v6 && v19[24] == 1 && DMCIsDeviceLocked())
+    if (eventCopy && v19[24] == 1 && DMCIsDeviceLocked())
     {
       v12 = *(DMCLogObjects() + 8);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -503,12 +503,12 @@ uint64_t __127__MDMServerCore__executionQueueUpdateTokenIfNeededAndCheckForOutst
         _os_log_impl(&dword_2561F5000, v14, OS_LOG_TYPE_DEFAULT, "Polling MDM server.", v16, 2u);
       }
 
-      [(MDMServerCore *)self _executionQueuePollServerForCommandWithAssertion:v8 completionBlock:v9];
+      [(MDMServerCore *)self _executionQueuePollServerForCommandWithAssertion:assertionCopy completionBlock:blockCopy];
       v13 = 0;
     }
 
     _Block_object_dispose(buf, 8);
-    if (!v9)
+    if (!blockCopy)
     {
       goto LABEL_18;
     }
@@ -516,7 +516,7 @@ uint64_t __127__MDMServerCore__executionQueueUpdateTokenIfNeededAndCheckForOutst
 LABEL_16:
     if (v13)
     {
-      v9[2](v9);
+      blockCopy[2](blockCopy);
     }
 
     goto LABEL_18;
@@ -530,7 +530,7 @@ LABEL_16:
   }
 
   v13 = 1;
-  if (v9)
+  if (blockCopy)
   {
     goto LABEL_16;
   }
@@ -545,18 +545,18 @@ uint64_t __105__MDMServerCore__executionQueueCheckForOutstandingActivityIsReacha
   return result;
 }
 
-- (void)_executionQueueTellServerAboutDeviceTokenWithAssertion:(id)a3 completionBlock:(id)a4
+- (void)_executionQueueTellServerAboutDeviceTokenWithAssertion:(id)assertion completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  assertionCopy = assertion;
+  blockCopy = block;
   if ([(MDMServerCore *)self executionQueueIsCheckinInProgress])
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __88__MDMServerCore__executionQueueTellServerAboutDeviceTokenWithAssertion_completionBlock___block_invoke;
     v16[3] = &unk_27982CD00;
-    v17 = v7;
-    v8 = v7;
+    v17 = blockCopy;
+    v8 = blockCopy;
     [(MDMServerCore *)self _executeBlockWhenPushTokenIsAvailable:v16];
     v9 = v17;
   }
@@ -576,9 +576,9 @@ uint64_t __105__MDMServerCore__executionQueueCheckForOutstandingActivityIsReacha
     v12[2] = __88__MDMServerCore__executionQueueTellServerAboutDeviceTokenWithAssertion_completionBlock___block_invoke_78;
     v12[3] = &unk_27982CDF0;
     v12[4] = self;
-    v14 = v7;
-    v13 = v6;
-    v11 = v7;
+    v14 = blockCopy;
+    v13 = assertionCopy;
+    v11 = blockCopy;
     [(MDMServerCore *)self _executeBlockWhenPushTokenIsAvailable:v12];
 
     v9 = v14;
@@ -1087,11 +1087,11 @@ uint64_t __88__MDMServerCore__executionQueueTellServerAboutDeviceTokenWithAssert
   }
 }
 
-- (void)_executionQueuePollServerForCommandWithAssertion:(id)a3 completionBlock:(id)a4
+- (void)_executionQueuePollServerForCommandWithAssertion:(id)assertion completionBlock:(id)block
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  assertionCopy = assertion;
+  blockCopy = block;
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
@@ -1106,7 +1106,7 @@ uint64_t __88__MDMServerCore__executionQueueTellServerAboutDeviceTokenWithAssert
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  v8 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__MDMServerCore__executionQueuePollServerForCommandWithAssertion_completionBlock___block_invoke;
@@ -1115,7 +1115,7 @@ uint64_t __88__MDMServerCore__executionQueueTellServerAboutDeviceTokenWithAssert
   block[5] = &v39;
   block[6] = &v33;
   block[7] = &v29;
-  dispatch_async_and_wait(v8, block);
+  dispatch_async_and_wait(memberQueue, block);
 
   if (*(v40 + 24) == 1 && *(v30 + 24) != 1)
   {
@@ -1128,10 +1128,10 @@ uint64_t __88__MDMServerCore__executionQueueTellServerAboutDeviceTokenWithAssert
       _os_log_impl(&dword_2561F5000, v13, OS_LOG_TYPE_DEFAULT, "Polling MDM server %{public}@ for next command.", &buf, 0xCu);
     }
 
-    v12 = [(MDMServerCore *)self _cachedResponse];
-    if (!v12)
+    _cachedResponse = [(MDMServerCore *)self _cachedResponse];
+    if (!_cachedResponse)
     {
-      v12 = [(MDMServerCore *)self _idleResponse];
+      _cachedResponse = [(MDMServerCore *)self _idleResponse];
     }
 
     if ([(MDMServerCore *)self userSwitchAlreadyInitiated])
@@ -1143,19 +1143,19 @@ uint64_t __88__MDMServerCore__executionQueueTellServerAboutDeviceTokenWithAssert
         _os_log_impl(&dword_2561F5000, v15, OS_LOG_TYPE_DEFAULT, "User switch already initiated. Not polling the MDM server for commands right now.", &buf, 2u);
       }
 
-      v16 = [(MDMServerCore *)self _cachedResponse];
-      v17 = v16 == 0;
+      _cachedResponse2 = [(MDMServerCore *)self _cachedResponse];
+      v17 = _cachedResponse2 == 0;
 
       if (v17)
       {
-        v18 = [(MDMServerCore *)self _idleResponse];
-        [(MDMServerCore *)self _setCachedResponse:v18];
+        _idleResponse = [(MDMServerCore *)self _idleResponse];
+        [(MDMServerCore *)self _setCachedResponse:_idleResponse];
       }
 
-      if (v7)
+      if (blockCopy)
       {
         v19 = dispatch_get_global_queue(0, 0);
-        dispatch_async(v19, v7);
+        dispatch_async(v19, blockCopy);
       }
     }
 
@@ -1165,14 +1165,14 @@ uint64_t __88__MDMServerCore__executionQueueTellServerAboutDeviceTokenWithAssert
       *(&buf + 1) = &buf;
       v44 = 0x2020000000;
       v45 = 0;
-      v20 = [(MDMServerCore *)self memberQueue];
+      memberQueue2 = [(MDMServerCore *)self memberQueue];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __82__MDMServerCore__executionQueuePollServerForCommandWithAssertion_completionBlock___block_invoke_99;
       v27[3] = &unk_27982BB40;
       v27[4] = self;
       v27[5] = &buf;
-      dispatch_async_and_wait(v20, v27);
+      dispatch_async_and_wait(memberQueue2, v27);
 
       v21 = *(*(&buf + 1) + 24);
       if (v21)
@@ -1186,11 +1186,11 @@ uint64_t __88__MDMServerCore__executionQueueTellServerAboutDeviceTokenWithAssert
       v23[2] = __82__MDMServerCore__executionQueuePollServerForCommandWithAssertion_completionBlock___block_invoke_2;
       v23[3] = &unk_27982CE90;
       v23[4] = self;
-      v24 = v6;
-      v26 = v7;
-      v12 = v12;
-      v25 = v12;
-      [(MDMServerCore *)self _sendResponse:v12 completionBlock:v23];
+      v24 = assertionCopy;
+      v26 = blockCopy;
+      _cachedResponse = _cachedResponse;
+      v25 = _cachedResponse;
+      [(MDMServerCore *)self _sendResponse:_cachedResponse completionBlock:v23];
 
       _Block_object_dispose(&buf, 8);
     }
@@ -1210,10 +1210,10 @@ uint64_t __88__MDMServerCore__executionQueueTellServerAboutDeviceTokenWithAssert
     _os_log_impl(&dword_2561F5000, v9, OS_LOG_TYPE_DEFAULT, "Ignoring MDM server poll. Config Valid? %{public}d. Is Uprooting? %{public}d", &buf, 0xEu);
   }
 
-  if (v7)
+  if (blockCopy)
   {
-    v12 = dispatch_get_global_queue(0, 0);
-    dispatch_async(v12, v7);
+    _cachedResponse = dispatch_get_global_queue(0, 0);
+    dispatch_async(_cachedResponse, blockCopy);
 LABEL_21:
   }
 
@@ -1463,38 +1463,38 @@ uint64_t __82__MDMServerCore__executionQueuePollServerForCommandWithAssertion_co
   return result;
 }
 
-- (id)sendResponseSynchronously:(id)a3 outStatusCode:(int64_t *)a4 outError:(id *)a5
+- (id)sendResponseSynchronously:(id)synchronously outStatusCode:(int64_t *)code outError:(id *)error
 {
-  v7 = [(MDMServerCore *)self _sendResponseSynchornously:a3];
-  v8 = [v7 responseData];
-  v9 = [v7 statusCode];
-  v10 = [v7 error];
-  if (a5)
+  v7 = [(MDMServerCore *)self _sendResponseSynchornously:synchronously];
+  responseData = [v7 responseData];
+  statusCode = [v7 statusCode];
+  error = [v7 error];
+  if (error)
   {
-    v10 = v10;
-    *a5 = v10;
+    error = error;
+    *error = error;
   }
 
-  if (a4)
+  if (code)
   {
-    *a4 = v9;
+    *code = statusCode;
   }
 
-  return v8;
+  return responseData;
 }
 
-- (void)_sendResponse:(id)a3 completionBlock:(id)a4
+- (void)_sendResponse:(id)response completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(MDMServerCore *)self _transactionForResponse:a3];
+  blockCopy = block;
+  v7 = [(MDMServerCore *)self _transactionForResponse:response];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __47__MDMServerCore__sendResponse_completionBlock___block_invoke;
   v10[3] = &unk_27982B898;
   v11 = v7;
-  v12 = v6;
+  v12 = blockCopy;
   v8 = v7;
-  v9 = v6;
+  v9 = blockCopy;
   [v8 performCompletionBlock:v10];
 }
 
@@ -1509,17 +1509,17 @@ uint64_t __47__MDMServerCore__sendResponse_completionBlock___block_invoke(uint64
   return result;
 }
 
-- (id)_sendResponseSynchornously:(id)a3
+- (id)_sendResponseSynchornously:(id)synchornously
 {
-  v3 = [(MDMServerCore *)self _transactionForResponse:a3];
+  v3 = [(MDMServerCore *)self _transactionForResponse:synchornously];
   [v3 performSynchronously];
 
   return v3;
 }
 
-- (id)_transactionForResponse:(id)a3
+- (id)_transactionForResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
@@ -1544,7 +1544,7 @@ uint64_t __47__MDMServerCore__sendResponse_completionBlock___block_invoke(uint64
   v26 = __Block_byref_object_copy__10;
   v27 = __Block_byref_object_dispose__10;
   v28 = 0;
-  v5 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__MDMServerCore__transactionForResponse___block_invoke;
@@ -1555,35 +1555,35 @@ uint64_t __47__MDMServerCore__sendResponse_completionBlock___block_invoke(uint64
   block[7] = &v33;
   block[8] = &v29;
   block[9] = &v23;
-  dispatch_async_and_wait(v5, block);
+  dispatch_async_and_wait(memberQueue, block);
 
   if ([(MDMServerCore *)self channelType]== 1)
   {
-    v6 = [v4 mutableCopy];
-    v7 = [(MDMServerCore *)self _userFieldsForResponse];
-    [v6 addEntriesFromDictionary:v7];
+    v6 = [responseCopy mutableCopy];
+    _userFieldsForResponse = [(MDMServerCore *)self _userFieldsForResponse];
+    [v6 addEntriesFromDictionary:_userFieldsForResponse];
 
     v8 = [v6 copy];
-    v4 = v8;
+    responseCopy = v8;
   }
 
-  v9 = [(MDMServerCore *)self _responseDataFromResponseDictionary:v4];
+  v9 = [(MDMServerCore *)self _responseDataFromResponseDictionary:responseCopy];
   v10 = objc_alloc(MEMORY[0x277D24668]);
   v11 = v24[5];
   v12 = v44[3];
   v13 = v38[5];
   v14 = *(v34 + 24);
   v15 = *(v30 + 24);
-  v16 = [MEMORY[0x277D24648] sharedConfiguration];
-  v17 = [v16 rmAccountID];
+  mEMORY[0x277D24648] = [MEMORY[0x277D24648] sharedConfiguration];
+  rmAccountID = [mEMORY[0x277D24648] rmAccountID];
   BYTE2(v21) = 0;
   LOWORD(v21) = 0;
-  v18 = [v10 initWithURL:v11 data:v9 identity:v12 pinnedCertificates:v13 pinningRevocationCheckRequired:v14 signMessage:v15 isCheckin:v21 isCheckout:v17 isShortTransaction:? rmAccountID:?];
+  v18 = [v10 initWithURL:v11 data:v9 identity:v12 pinnedCertificates:v13 pinningRevocationCheckRequired:v14 signMessage:v15 isCheckin:v21 isCheckout:rmAccountID isShortTransaction:? rmAccountID:?];
 
   if ([MEMORY[0x277D03500] shouldSimulateMDMCommunication])
   {
-    v19 = [MEMORY[0x277D24668] emptySuccessResponseBlock];
-    [v18 setSimulatedTransactionBlock:v19];
+    emptySuccessResponseBlock = [MEMORY[0x277D24668] emptySuccessResponseBlock];
+    [v18 setSimulatedTransactionBlock:emptySuccessResponseBlock];
   }
 
   _Block_object_dispose(&v23, 8);
@@ -1614,31 +1614,31 @@ uint64_t __41__MDMServerCore__transactionForResponse___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_processRequest:(id)a3 encodeResponse:(BOOL)a4 completion:(id)a5
+- (void)_processRequest:(id)request encodeResponse:(BOOL)response completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   v10 = objc_alloc(MEMORY[0x277D035A0]);
   v11 = MEMORY[0x277CCACA8];
-  v12 = [v8 objectForKeyedSubscript:@"Command"];
+  v12 = [requestCopy objectForKeyedSubscript:@"Command"];
   v13 = [v12 objectForKeyedSubscript:@"RequestType"];
   v14 = [v11 stringWithFormat:@"ProcessRequest-%@", v13];
   v15 = [v10 initWithReason:v14];
 
-  v16 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __59__MDMServerCore__processRequest_encodeResponse_completion___block_invoke;
   v20[3] = &unk_27982CF08;
   v20[4] = self;
-  v21 = v8;
+  v21 = requestCopy;
   v22 = v15;
-  v23 = v9;
-  v24 = a4;
-  v17 = v9;
+  v23 = completionCopy;
+  responseCopy = response;
+  v17 = completionCopy;
   v18 = v15;
-  v19 = v8;
-  [v16 fromFunction:"-[MDMServerCore _processRequest:encodeResponse:completion:]" enqueueJob:v20];
+  v19 = requestCopy;
+  [jobQueue fromFunction:"-[MDMServerCore _processRequest:encodeResponse:completion:]" enqueueJob:v20];
 }
 
 void __59__MDMServerCore__processRequest_encodeResponse_completion___block_invoke(uint64_t a1, void *a2)
@@ -1681,12 +1681,12 @@ void __59__MDMServerCore__processRequest_encodeResponse_completion___block_invok
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_executionQueueHandleRequest:(id)a3 assertion:(id)a4 completionBlock:(id)a5
+- (void)_executionQueueHandleRequest:(id)request assertion:(id)assertion completionBlock:(id)block
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  assertionCopy = assertion;
+  blockCopy = block;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -1701,7 +1701,7 @@ void __59__MDMServerCore__processRequest_encodeResponse_completion___block_invok
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v11 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__MDMServerCore__executionQueueHandleRequest_assertion_completionBlock___block_invoke;
@@ -1710,12 +1710,12 @@ void __59__MDMServerCore__processRequest_encodeResponse_completion___block_invok
   block[5] = &v38;
   block[6] = &v34;
   block[7] = &v30;
-  dispatch_async_and_wait(v11, block);
+  dispatch_async_and_wait(memberQueue, block);
 
-  v12 = [(MDMServerCore *)self channelType];
-  if (v12)
+  channelType = [(MDMServerCore *)self channelType];
+  if (channelType)
   {
-    if (v12 != 1)
+    if (channelType != 1)
     {
       v15 = 0;
       goto LABEL_7;
@@ -1734,15 +1734,15 @@ void __59__MDMServerCore__processRequest_encodeResponse_completion___block_invok
 LABEL_7:
   [v15 setServer:self];
   [v15 setIsMDMCommandBlocked:*(v31 + 24)];
-  if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (requestCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v16 = [v8 objectForKey:@"CommandUUID"];
+    v16 = [requestCopy objectForKey:@"CommandUUID"];
     if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v17 = [v8 objectForKey:@"Command"];
+      v17 = [requestCopy objectForKey:@"Command"];
       if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v18 = [(MDMServerCore *)self memberQueue];
+        memberQueue2 = [(MDMServerCore *)self memberQueue];
         v27[0] = MEMORY[0x277D85DD0];
         v27[1] = 3221225472;
         v27[2] = __72__MDMServerCore__executionQueueHandleRequest_assertion_completionBlock___block_invoke_2;
@@ -1750,7 +1750,7 @@ LABEL_7:
         v27[4] = self;
         v19 = v16;
         v28 = v19;
-        dispatch_async(v18, v27);
+        dispatch_async(memberQueue2, v27);
 
         v20 = *(DMCLogObjects() + 8);
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -1766,8 +1766,8 @@ LABEL_7:
         v25[2] = __72__MDMServerCore__executionQueueHandleRequest_assertion_completionBlock___block_invoke_120;
         v25[3] = &unk_27982CE40;
         v25[4] = self;
-        v26 = v10;
-        [v15 processRequest:v17 accessRights:v21 assertion:v9 completionBlock:v25];
+        v26 = blockCopy;
+        [v15 processRequest:v17 accessRights:v21 assertion:assertionCopy completionBlock:v25];
 
         v22 = 0;
       }
@@ -1789,10 +1789,10 @@ LABEL_7:
     v22 = 1;
   }
 
-  if (v10 && v22)
+  if (blockCopy && v22)
   {
     v23 = +[MDMParser malformedRequestErrorResult];
-    (*(v10 + 2))(v10, v23);
+    (*(blockCopy + 2))(blockCopy, v23);
   }
 
   _Block_object_dispose(&v30, 8);
@@ -1886,9 +1886,9 @@ void __72__MDMServerCore__executionQueueHandleRequest_assertion_completionBlock_
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMDMAuthenticationRequestWithCompletionHandler:(id)a3
+- (void)sendMDMAuthenticationRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
@@ -1899,17 +1899,17 @@ void __72__MDMServerCore__executionQueueHandleRequest_assertion_completionBlock_
   v7 = [(MDMServerCore *)self _reasonStringWithReason:@"Authenticate"];
   v8 = [v6 initWithReason:v7];
 
-  v9 = [(MDMServerCore *)self checkInQueue];
+  checkInQueue = [(MDMServerCore *)self checkInQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__MDMServerCore_sendMDMAuthenticationRequestWithCompletionHandler___block_invoke;
   block[3] = &unk_27982BE10;
   v13 = v8;
-  v14 = v4;
+  v14 = handlerCopy;
   block[4] = self;
   v10 = v8;
-  v11 = v4;
-  dispatch_async(v9, block);
+  v11 = handlerCopy;
+  dispatch_async(checkInQueue, block);
 }
 
 void __67__MDMServerCore_sendMDMAuthenticationRequestWithCompletionHandler___block_invoke(id *a1)
@@ -1963,9 +1963,9 @@ void __67__MDMServerCore_sendMDMAuthenticationRequestWithCompletionHandler___blo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMDMCheckOutRequestWithCompletionHandler:(id)a3
+- (void)sendMDMCheckOutRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
@@ -1976,17 +1976,17 @@ void __67__MDMServerCore_sendMDMAuthenticationRequestWithCompletionHandler___blo
   v7 = [(MDMServerCore *)self _reasonStringWithReason:@"CheckOut"];
   v8 = [v6 initWithReason:v7];
 
-  v9 = [(MDMServerCore *)self checkInQueue];
+  checkInQueue = [(MDMServerCore *)self checkInQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__MDMServerCore_sendMDMCheckOutRequestWithCompletionHandler___block_invoke;
   block[3] = &unk_27982BE10;
   v13 = v8;
-  v14 = v4;
+  v14 = handlerCopy;
   block[4] = self;
   v10 = v8;
-  v11 = v4;
-  dispatch_async(v9, block);
+  v11 = handlerCopy;
+  dispatch_async(checkInQueue, block);
 }
 
 void __61__MDMServerCore_sendMDMCheckOutRequestWithCompletionHandler___block_invoke(id *a1)
@@ -2024,9 +2024,9 @@ void __61__MDMServerCore_sendMDMCheckOutRequestWithCompletionHandler___block_inv
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyNewConfigurationWithCompletion:(id)a3
+- (void)notifyNewConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
@@ -2037,17 +2037,17 @@ void __61__MDMServerCore_sendMDMCheckOutRequestWithCompletionHandler___block_inv
   v7 = [(MDMServerCore *)self _reasonStringWithReason:@"NewConfig"];
   v8 = [v6 initWithReason:v7];
 
-  v9 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __54__MDMServerCore_notifyNewConfigurationWithCompletion___block_invoke;
   v12[3] = &unk_27982CF58;
   v13 = v8;
-  v14 = v4;
+  v14 = completionCopy;
   v12[4] = self;
   v10 = v8;
-  v11 = v4;
-  [v9 fromFunction:"-[MDMServerCore notifyNewConfigurationWithCompletion:]" enqueueJob:v12];
+  v11 = completionCopy;
+  [jobQueue fromFunction:"-[MDMServerCore notifyNewConfigurationWithCompletion:]" enqueueJob:v12];
 }
 
 void __54__MDMServerCore_notifyNewConfigurationWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -2070,24 +2070,24 @@ void __54__MDMServerCore_notifyNewConfigurationWithCompletion___block_invoke(uin
   v5[2]();
 }
 
-- (void)scheduleTokenUpdateWithCompletion:(id)a3
+- (void)scheduleTokenUpdateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore scheduleTokenUpdateWithCompletion:];
   }
 
-  v6 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__MDMServerCore_scheduleTokenUpdateWithCompletion___block_invoke;
   v8[3] = &unk_27982CFA8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 fromFunction:"-[MDMServerCore scheduleTokenUpdateWithCompletion:]" enqueueJob:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [jobQueue fromFunction:"-[MDMServerCore scheduleTokenUpdateWithCompletion:]" enqueueJob:v8];
 }
 
 void __51__MDMServerCore_scheduleTokenUpdateWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -2142,24 +2142,24 @@ uint64_t __51__MDMServerCore_scheduleTokenUpdateWithCompletion___block_invoke_3(
   return v3();
 }
 
-- (void)scheduleTokenUpdateIfNecessaryWithCompletion:(id)a3
+- (void)scheduleTokenUpdateIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore scheduleTokenUpdateIfNecessaryWithCompletion:];
   }
 
-  v6 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__MDMServerCore_scheduleTokenUpdateIfNecessaryWithCompletion___block_invoke;
   v8[3] = &unk_27982CFA8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 fromFunction:"-[MDMServerCore scheduleTokenUpdateIfNecessaryWithCompletion:]" enqueueJob:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [jobQueue fromFunction:"-[MDMServerCore scheduleTokenUpdateIfNecessaryWithCompletion:]" enqueueJob:v8];
 }
 
 void __62__MDMServerCore_scheduleTokenUpdateIfNecessaryWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -2189,24 +2189,24 @@ uint64_t __62__MDMServerCore_scheduleTokenUpdateIfNecessaryWithCompletion___bloc
   return v3();
 }
 
-- (void)simulatePushWithCompletion:(id)a3
+- (void)simulatePushWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore simulatePushWithCompletion:];
   }
 
-  v6 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__MDMServerCore_simulatePushWithCompletion___block_invoke;
   v8[3] = &unk_27982CFA8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 fromFunction:"-[MDMServerCore simulatePushWithCompletion:]" enqueueJob:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [jobQueue fromFunction:"-[MDMServerCore simulatePushWithCompletion:]" enqueueJob:v8];
 }
 
 void __44__MDMServerCore_simulatePushWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -2236,9 +2236,9 @@ uint64_t __44__MDMServerCore_simulatePushWithCompletion___block_invoke_2(uint64_
   return v3();
 }
 
-- (void)simulatePushIfNetworkTetheredWithCompletion:(id)a3
+- (void)simulatePushIfNetworkTetheredWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
@@ -2247,22 +2247,22 @@ uint64_t __44__MDMServerCore_simulatePushWithCompletion___block_invoke_2(uint64_
 
   if (DMCDeviceIsNetworkTethered())
   {
-    v6 = [MEMORY[0x277D262A0] sharedConnection];
-    v7 = [v6 installedMDMProfileIdentifier];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    installedMDMProfileIdentifier = [mEMORY[0x277D262A0] installedMDMProfileIdentifier];
 
-    if (v7)
+    if (installedMDMProfileIdentifier)
     {
-      v8 = [(MDMServerCore *)self jobQueue];
+      jobQueue = [(MDMServerCore *)self jobQueue];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __61__MDMServerCore_simulatePushIfNetworkTetheredWithCompletion___block_invoke;
       v15[3] = &unk_27982CFA8;
       v15[4] = self;
-      v16 = v4;
-      [v8 fromFunction:"-[MDMServerCore simulatePushIfNetworkTetheredWithCompletion:]" enqueueJob:v15];
+      v16 = completionCopy;
+      [jobQueue fromFunction:"-[MDMServerCore simulatePushIfNetworkTetheredWithCompletion:]" enqueueJob:v15];
     }
 
-    else if (v4)
+    else if (completionCopy)
     {
       v13 = *(DMCLogObjects() + 8);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -2271,7 +2271,7 @@ uint64_t __44__MDMServerCore_simulatePushWithCompletion___block_invoke_2(uint64_
         _os_log_impl(&dword_2561F5000, v13, OS_LOG_TYPE_DEFAULT, "Asked to poll server if tethered, but no MDM installation exists.", buf, 2u);
       }
 
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
@@ -2282,9 +2282,9 @@ uint64_t __44__MDMServerCore_simulatePushWithCompletion___block_invoke_2(uint64_
     v11 = DMCErrorArray();
     v12 = [v9 DMCErrorWithDomain:v10 code:12081 descriptionArray:v11 errorType:{*MEMORY[0x277D032F8], 0}];
 
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, v12);
+      (*(completionCopy + 2))(completionCopy, v12);
     }
   }
 }
@@ -2316,9 +2316,9 @@ uint64_t __61__MDMServerCore_simulatePushIfNetworkTetheredWithCompletion___block
   return v3();
 }
 
-- (void)retryNotNowWithCompletion:(id)a3
+- (void)retryNotNowWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
@@ -2329,26 +2329,26 @@ uint64_t __61__MDMServerCore_simulatePushIfNetworkTetheredWithCompletion___block
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v6 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__MDMServerCore_retryNotNowWithCompletion___block_invoke;
   block[3] = &unk_27982BB40;
   block[4] = self;
   block[5] = &v15;
-  dispatch_async_and_wait(v6, block);
+  dispatch_async_and_wait(memberQueue, block);
 
-  v7 = [(MDMServerCore *)self _cachedResponse];
-  if (v7 && (v8 = *(v16 + 24), v7, v8 == 1))
+  _cachedResponse = [(MDMServerCore *)self _cachedResponse];
+  if (_cachedResponse && (v8 = *(v16 + 24), _cachedResponse, v8 == 1))
   {
-    v9 = [(MDMServerCore *)self jobQueue];
+    jobQueue = [(MDMServerCore *)self jobQueue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __43__MDMServerCore_retryNotNowWithCompletion___block_invoke_2;
     v12[3] = &unk_27982CFA8;
     v12[4] = self;
-    v13 = v4;
-    [v9 fromFunction:"-[MDMServerCore retryNotNowWithCompletion:]" enqueueJob:v12];
+    v13 = completionCopy;
+    [jobQueue fromFunction:"-[MDMServerCore retryNotNowWithCompletion:]" enqueueJob:v12];
   }
 
   else
@@ -2360,9 +2360,9 @@ uint64_t __61__MDMServerCore_simulatePushIfNetworkTetheredWithCompletion___block
       _os_log_impl(&dword_2561F5000, v10, OS_LOG_TYPE_INFO, "Last response was not a NotNow. Ignoring poll request.", v11, 2u);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
@@ -2403,9 +2403,9 @@ uint64_t __43__MDMServerCore_retryNotNowWithCompletion___block_invoke_3(uint64_t
   return v3();
 }
 
-- (void)reauthenticationCompleteWithCompletion:(id)a3
+- (void)reauthenticationCompleteWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
@@ -2414,26 +2414,26 @@ uint64_t __43__MDMServerCore_retryNotNowWithCompletion___block_invoke_3(uint64_t
 
   [(MDMServerCore *)self _clearCoreFollowup];
   [(MDMServerCore *)self _postReauthFollowUpChangedNotification];
-  [(MDMServerCore *)self simulatePushWithCompletion:v4];
+  [(MDMServerCore *)self simulatePushWithCompletion:completionCopy];
 }
 
-- (void)preserveAppsWithCompletion:(id)a3
+- (void)preserveAppsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MDMServerCore *)self dmcAppsHelper];
-  [v5 preserveAppsWithCompletionHandler:v4];
+  completionCopy = completion;
+  dmcAppsHelper = [(MDMServerCore *)self dmcAppsHelper];
+  [dmcAppsHelper preserveAppsWithCompletionHandler:completionCopy];
 }
 
-- (void)removeUnusedPreservedAppsWithCompletion:(id)a3
+- (void)removeUnusedPreservedAppsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MDMServerCore *)self dmcAppsHelper];
-  [v5 removeUnusedPreservedAppsWithCompletionHandler:v4];
+  completionCopy = completion;
+  dmcAppsHelper = [(MDMServerCore *)self dmcAppsHelper];
+  [dmcAppsHelper removeUnusedPreservedAppsWithCompletionHandler:completionCopy];
 }
 
-- (void)uprootMDMWithCompletion:(id)a3
+- (void)uprootMDMWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
@@ -2452,19 +2452,19 @@ uint64_t __43__MDMServerCore_retryNotNowWithCompletion___block_invoke_3(uint64_t
   v12 = [v10 DMCDictionaryFromFile:v11];
 
   v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D248B0]];
-  v14 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __41__MDMServerCore_uprootMDMWithCompletion___block_invoke;
   v18[3] = &unk_27982CFF0;
   v19 = v13;
-  v20 = self;
+  selfCopy = self;
   v21 = v8;
-  v22 = v4;
+  v22 = completionCopy;
   v15 = v8;
-  v16 = v4;
+  v16 = completionCopy;
   v17 = v13;
-  [v14 fromFunction:"-[MDMServerCore uprootMDMWithCompletion:]" enqueueJob:v18];
+  [jobQueue fromFunction:"-[MDMServerCore uprootMDMWithCompletion:]" enqueueJob:v18];
 }
 
 void __41__MDMServerCore_uprootMDMWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -2711,14 +2711,14 @@ uint64_t __41__MDMServerCore_uprootMDMWithCompletion___block_invoke_148(uint64_t
   return [v2 _memberQueueSetTokenUpdateRequestCount:0];
 }
 
-- (void)pushTokenWithCompletion:(id)a3
+- (void)pushTokenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore pushTokenWithCompletion:];
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_4;
     }
@@ -2726,23 +2726,23 @@ uint64_t __41__MDMServerCore_uprootMDMWithCompletion___block_invoke_148(uint64_t
     goto LABEL_3;
   }
 
-  if (v4)
+  if (completionCopy)
   {
 LABEL_3:
     v6 = objc_alloc(MEMORY[0x277D03558]);
     v7 = [(MDMServerCore *)self _reasonStringWithReason:@"PushToken"];
     v8 = [v6 initWithReason:v7];
 
-    v9 = [(MDMServerCore *)self jobQueue];
+    jobQueue = [(MDMServerCore *)self jobQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __41__MDMServerCore_pushTokenWithCompletion___block_invoke;
     v11[3] = &unk_27982CF58;
     v11[4] = self;
     v12 = v8;
-    v13 = v4;
+    v13 = completionCopy;
     v10 = v8;
-    [v9 fromFunction:"-[MDMServerCore pushTokenWithCompletion:]" enqueueJob:v11];
+    [jobQueue fromFunction:"-[MDMServerCore pushTokenWithCompletion:]" enqueueJob:v11];
   }
 
 LABEL_4:
@@ -2801,14 +2801,14 @@ uint64_t __41__MDMServerCore_pushTokenWithCompletion___block_invoke_2(uint64_t a
   return result;
 }
 
-- (void)touchWithCompletion:(id)a3
+- (void)touchWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore touchWithCompletion:];
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_4;
     }
@@ -2816,16 +2816,16 @@ uint64_t __41__MDMServerCore_pushTokenWithCompletion___block_invoke_2(uint64_t a
     goto LABEL_3;
   }
 
-  if (v4)
+  if (completionCopy)
   {
 LABEL_3:
-    v6 = [(MDMServerCore *)self jobQueue];
+    jobQueue = [(MDMServerCore *)self jobQueue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __37__MDMServerCore_touchWithCompletion___block_invoke;
     v7[3] = &unk_27982D040;
-    v8 = v4;
-    [v6 fromFunction:"-[MDMServerCore touchWithCompletion:]" enqueueJob:v7];
+    v8 = completionCopy;
+    [jobQueue fromFunction:"-[MDMServerCore touchWithCompletion:]" enqueueJob:v7];
   }
 
 LABEL_4:
@@ -2840,40 +2840,40 @@ void __37__MDMServerCore_touchWithCompletion___block_invoke(uint64_t a1, void *a
   v4[2]();
 }
 
-- (void)nagWithID:(id)a3 clientID:(id)a4 schedule:(id)a5 title:(id)a6 message:(id)a7 notificationTitle:(id)a8 notificationMessage:(id)a9 actionTitle:(id)a10 actionURL:(id)a11 dismissTitle:(id)a12 dismissURL:(id)a13 deadlineURL:(id)a14 completion:(id)a15
+- (void)nagWithID:(id)d clientID:(id)iD schedule:(id)schedule title:(id)title message:(id)message notificationTitle:(id)notificationTitle notificationMessage:(id)notificationMessage actionTitle:(id)self0 actionURL:(id)self1 dismissTitle:(id)self2 dismissURL:(id)self3 deadlineURL:(id)self4 completion:(id)self5
 {
-  v37 = a15;
-  v36 = a14;
-  v35 = a13;
-  v34 = a12;
-  v33 = a11;
-  v32 = a10;
-  v31 = a9;
-  v30 = a8;
-  v29 = a7;
-  v39 = a6;
-  v19 = a5;
-  v28 = a4;
-  v20 = a3;
+  completionCopy = completion;
+  uRLCopy = uRL;
+  rLCopy = rL;
+  dismissTitleCopy = dismissTitle;
+  lCopy = l;
+  actionTitleCopy = actionTitle;
+  notificationMessageCopy = notificationMessage;
+  notificationTitleCopy = notificationTitle;
+  messageCopy = message;
+  titleCopy = title;
+  scheduleCopy = schedule;
+  iDCopy = iD;
+  dCopy = d;
   v21 = DMCLogObjects();
   if (os_log_type_enabled(*(v21 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore nagWithID:clientID:schedule:title:message:notificationTitle:notificationMessage:actionTitle:actionURL:dismissTitle:dismissURL:deadlineURL:completion:];
   }
 
-  v26 = [objc_alloc(MEMORY[0x277D032C8]) initWithStyle:1 identifier:v20 clientID:v28 schedule:v19 title:v39 message:v29 notificationTitle:v30 notificationMessage:v31 actionTitle:v32 actionURL:v33 dismissTitle:v34 dismissURL:v35 deadlineURL:v36];
+  v26 = [objc_alloc(MEMORY[0x277D032C8]) initWithStyle:1 identifier:dCopy clientID:iDCopy schedule:scheduleCopy title:titleCopy message:messageCopy notificationTitle:notificationTitleCopy notificationMessage:notificationMessageCopy actionTitle:actionTitleCopy actionURL:lCopy dismissTitle:dismissTitleCopy dismissURL:rLCopy deadlineURL:uRLCopy];
 
-  v22 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __166__MDMServerCore_nagWithID_clientID_schedule_title_message_notificationTitle_notificationMessage_actionTitle_actionURL_dismissTitle_dismissURL_deadlineURL_completion___block_invoke;
   v40[3] = &unk_27982D068;
   v40[4] = self;
   v41 = v26;
-  v42 = v37;
-  v23 = v37;
+  v42 = completionCopy;
+  v23 = completionCopy;
   v24 = v26;
-  [v22 fromFunction:"-[MDMServerCore nagWithID:clientID:schedule:title:message:notificationTitle:notificationMessage:actionTitle:actionURL:dismissTitle:dismissURL:deadlineURL:completion:]" enqueueJob:v40];
+  [jobQueue fromFunction:"-[MDMServerCore nagWithID:clientID:schedule:title:message:notificationTitle:notificationMessage:actionTitle:actionURL:dismissTitle:dismissURL:deadlineURL:completion:]" enqueueJob:v40];
 }
 
 void __166__MDMServerCore_nagWithID_clientID_schedule_title_message_notificationTitle_notificationMessage_actionTitle_actionURL_dismissTitle_dismissURL_deadlineURL_completion___block_invoke(void *a1, void *a2)
@@ -2890,16 +2890,16 @@ void __166__MDMServerCore_nagWithID_clientID_schedule_title_message_notification
   v4[2](v4);
 }
 
-- (void)nagForMigrationWithHardCodedValuesWithCompletion:(id)a3
+- (void)nagForMigrationWithHardCodedValuesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D24640] sharedConfiguration];
-  v6 = [v5 details];
-  v7 = v6;
+  completionCopy = completion;
+  mEMORY[0x277D24640] = [MEMORY[0x277D24640] sharedConfiguration];
+  details = [mEMORY[0x277D24640] details];
+  v7 = details;
   v8 = MEMORY[0x277CBEC10];
-  if (v6)
+  if (details)
   {
-    v8 = v6;
+    v8 = details;
   }
 
   v9 = v8;
@@ -2907,17 +2907,17 @@ void __166__MDMServerCore_nagWithID_clientID_schedule_title_message_notification
   v10 = [v9 mutableCopy];
   [v10 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D03090]];
   [v10 setObject:&unk_286850440 forKeyedSubscript:*MEMORY[0x277D03038]];
-  v11 = [MEMORY[0x277D262A0] sharedConnection];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __66__MDMServerCore_nagForMigrationWithHardCodedValuesWithCompletion___block_invoke;
   v14[3] = &unk_27982D090;
   v15 = v10;
-  v16 = self;
-  v17 = v4;
-  v12 = v4;
+  selfCopy = self;
+  v17 = completionCopy;
+  v12 = completionCopy;
   v13 = v10;
-  [v11 storeCloudConfigurationDetails:v13 completion:v14];
+  [mEMORY[0x277D262A0] storeCloudConfigurationDetails:v13 completion:v14];
 }
 
 void __66__MDMServerCore_nagForMigrationWithHardCodedValuesWithCompletion___block_invoke(uint64_t a1)
@@ -2981,18 +2981,18 @@ void __66__MDMServerCore_nagForMigrationWithHardCodedValuesWithCompletion___bloc
   v5[2]();
 }
 
-- (void)stopNaggingForMigrationWithCompletion:(id)a3
+- (void)stopNaggingForMigrationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
+  completionCopy = completion;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__MDMServerCore_stopNaggingForMigrationWithCompletion___block_invoke;
   v7[3] = &unk_27982D0B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 storePendingCloudConfigurationDetailsForMigration:0 completionHandler:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [mEMORY[0x277D262A0] storePendingCloudConfigurationDetailsForMigration:0 completionHandler:v7];
 }
 
 void __55__MDMServerCore_stopNaggingForMigrationWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -3034,127 +3034,127 @@ void __55__MDMServerCore_stopNaggingForMigrationWithCompletion___block_invoke_2(
   v5[2]();
 }
 
-- (void)isAwaitingUserConfiguredWithCompletion:(id)a3
+- (void)isAwaitingUserConfiguredWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore isAwaitingUserConfiguredWithCompletion:];
   }
 
-  v4[2](v4, [(MDMServerCore *)self _isAwaitingUserConfigured], 0);
+  completionCopy[2](completionCopy, [(MDMServerCore *)self _isAwaitingUserConfigured], 0);
 }
 
 - (BOOL)_isAwaitingUserConfigured
 {
-  v2 = [MEMORY[0x277D03538] awaitUserConfigurationEnabled];
-  if (v2)
+  awaitUserConfigurationEnabled = [MEMORY[0x277D03538] awaitUserConfigurationEnabled];
+  if (awaitUserConfigurationEnabled)
   {
-    LOBYTE(v2) = [MEMORY[0x277D03538] isCurrentUserConfigured] ^ 1;
+    LOBYTE(awaitUserConfigurationEnabled) = [MEMORY[0x277D03538] isCurrentUserConfigured] ^ 1;
   }
 
-  return v2;
+  return awaitUserConfigurationEnabled;
 }
 
-- (void)depPushTokenWithCompletion:(id)a3
+- (void)depPushTokenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore depPushTokenWithCompletion:];
   }
 
-  v6 = [(MDMServerCore *)self depPushTokenManager];
-  v7 = [v6 depPushToken];
+  depPushTokenManager = [(MDMServerCore *)self depPushTokenManager];
+  depPushToken = [depPushTokenManager depPushToken];
 
-  v4[2](v4, v7, 0);
+  completionCopy[2](completionCopy, depPushToken, 0);
 }
 
-- (void)syncDEPPushTokenWithDelay:(double)a3 completion:(id)a4
+- (void)syncDEPPushTokenWithDelay:(double)delay completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = DMCLogObjects();
   if (os_log_type_enabled(*(v7 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore syncDEPPushTokenWithDelay:completion:];
   }
 
-  v8 = [(MDMServerCore *)self depPushTokenManager];
-  [v8 syncDEPPushTokenWithDelay:v6 completion:a3];
+  depPushTokenManager = [(MDMServerCore *)self depPushTokenManager];
+  [depPushTokenManager syncDEPPushTokenWithDelay:completionCopy completion:delay];
 }
 
-- (void)monitorDEPPushTokenIfNeededWithCompletion:(id)a3
+- (void)monitorDEPPushTokenIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore monitorDEPPushTokenIfNeededWithCompletion:];
   }
 
-  v6 = [(MDMServerCore *)self depPushTokenManager];
-  [v6 startMonitoringDEPPushTokenChangeShouldForce:0];
+  depPushTokenManager = [(MDMServerCore *)self depPushTokenManager];
+  [depPushTokenManager startMonitoringDEPPushTokenChangeShouldForce:0];
 
-  v7 = [(MDMServerCore *)self depPushTokenManager];
-  [v7 scheduleMandatoryDEPPushTokenSyncWithRandomDelay:0];
+  depPushTokenManager2 = [(MDMServerCore *)self depPushTokenManager];
+  [depPushTokenManager2 scheduleMandatoryDEPPushTokenSyncWithRandomDelay:0];
 
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)monitorDEPPushTokenWithCompletion:(id)a3
+- (void)monitorDEPPushTokenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore monitorDEPPushTokenWithCompletion:];
   }
 
-  v6 = [(MDMServerCore *)self depPushTokenManager];
-  [v6 startMonitoringDEPPushTokenChangeShouldForce:1];
+  depPushTokenManager = [(MDMServerCore *)self depPushTokenManager];
+  [depPushTokenManager startMonitoringDEPPushTokenChangeShouldForce:1];
 
-  v7 = [(MDMServerCore *)self depPushTokenManager];
-  [v7 scheduleMandatoryDEPPushTokenSyncWithRandomDelay:0];
+  depPushTokenManager2 = [(MDMServerCore *)self depPushTokenManager];
+  [depPushTokenManager2 scheduleMandatoryDEPPushTokenSyncWithRandomDelay:0];
 
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)simulateDEPPushWithCompletion:(id)a3
+- (void)simulateDEPPushWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore simulateDEPPushWithCompletion:];
   }
 
-  v6 = [(MDMServerCore *)self depPushTokenManager];
-  [v6 simulateDEPPush];
+  depPushTokenManager = [(MDMServerCore *)self depPushTokenManager];
+  [depPushTokenManager simulateDEPPush];
 
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)requestDeviceObliterationWithPreserveDataPlan:(BOOL)a3 disallowProximitySetup:(BOOL)a4 completionHandler:(id)a5
+- (void)requestDeviceObliterationWithPreserveDataPlan:(BOOL)plan disallowProximitySetup:(BOOL)setup completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = DMCLogObjects();
   if (os_log_type_enabled(*(v9 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore requestDeviceObliterationWithPreserveDataPlan:disallowProximitySetup:completionHandler:];
   }
 
-  v10 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __104__MDMServerCore_requestDeviceObliterationWithPreserveDataPlan_disallowProximitySetup_completionHandler___block_invoke;
   v12[3] = &unk_27982D108;
-  v14 = a3;
-  v15 = a4;
-  v13 = v8;
-  v11 = v8;
-  [v10 fromFunction:"-[MDMServerCore requestDeviceObliterationWithPreserveDataPlan:disallowProximitySetup:completionHandler:]" enqueueJob:v12];
+  planCopy = plan;
+  setupCopy = setup;
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [jobQueue fromFunction:"-[MDMServerCore requestDeviceObliterationWithPreserveDataPlan:disallowProximitySetup:completionHandler:]" enqueueJob:v12];
 }
 
 void __104__MDMServerCore_requestDeviceObliterationWithPreserveDataPlan_disallowProximitySetup_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -3180,37 +3180,37 @@ uint64_t __104__MDMServerCore_requestDeviceObliterationWithPreserveDataPlan_disa
   return v2();
 }
 
-- (void)requestReturnToServiceObliterationWithPreserveDataPlan:(BOOL)a3 disallowProximitySetup:(BOOL)a4 mdmProfileData:(id)a5 wifiProfileData:(id)a6 revertToSnapshotName:(id)a7 bootstrapToken:(id)a8 completionHandler:(id)a9
+- (void)requestReturnToServiceObliterationWithPreserveDataPlan:(BOOL)plan disallowProximitySetup:(BOOL)setup mdmProfileData:(id)data wifiProfileData:(id)profileData revertToSnapshotName:(id)name bootstrapToken:(id)token completionHandler:(id)handler
 {
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  dataCopy = data;
+  profileDataCopy = profileData;
+  nameCopy = name;
+  tokenCopy = token;
+  handlerCopy = handler;
   v20 = DMCLogObjects();
   if (os_log_type_enabled(*(v20 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore requestReturnToServiceObliterationWithPreserveDataPlan:disallowProximitySetup:mdmProfileData:wifiProfileData:revertToSnapshotName:bootstrapToken:completionHandler:];
   }
 
-  v21 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __180__MDMServerCore_requestReturnToServiceObliterationWithPreserveDataPlan_disallowProximitySetup_mdmProfileData_wifiProfileData_revertToSnapshotName_bootstrapToken_completionHandler___block_invoke;
   v27[3] = &unk_27982D130;
-  v33 = a3;
-  v34 = a4;
-  v28 = v15;
-  v29 = v16;
-  v30 = v17;
-  v31 = v18;
-  v32 = v19;
-  v22 = v19;
-  v23 = v18;
-  v24 = v17;
-  v25 = v16;
-  v26 = v15;
-  [v21 fromFunction:"-[MDMServerCore requestReturnToServiceObliterationWithPreserveDataPlan:disallowProximitySetup:mdmProfileData:wifiProfileData:revertToSnapshotName:bootstrapToken:completionHandler:]" enqueueJob:v27];
+  planCopy = plan;
+  setupCopy = setup;
+  v28 = dataCopy;
+  v29 = profileDataCopy;
+  v30 = nameCopy;
+  v31 = tokenCopy;
+  v32 = handlerCopy;
+  v22 = handlerCopy;
+  v23 = tokenCopy;
+  v24 = nameCopy;
+  v25 = profileDataCopy;
+  v26 = dataCopy;
+  [jobQueue fromFunction:"-[MDMServerCore requestReturnToServiceObliterationWithPreserveDataPlan:disallowProximitySetup:mdmProfileData:wifiProfileData:revertToSnapshotName:bootstrapToken:completionHandler:]" enqueueJob:v27];
 }
 
 void __180__MDMServerCore_requestReturnToServiceObliterationWithPreserveDataPlan_disallowProximitySetup_mdmProfileData_wifiProfileData_revertToSnapshotName_bootstrapToken_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -3240,24 +3240,24 @@ uint64_t __180__MDMServerCore_requestReturnToServiceObliterationWithPreserveData
   return v2();
 }
 
-- (void)requestRRTSCheckInAndValidationWithCompletionHandler:(id)a3
+- (void)requestRRTSCheckInAndValidationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore requestRRTSCheckInAndValidationWithCompletionHandler:];
   }
 
-  v6 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__MDMServerCore_requestRRTSCheckInAndValidationWithCompletionHandler___block_invoke;
   v8[3] = &unk_27982CFA8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 fromFunction:"-[MDMServerCore requestRRTSCheckInAndValidationWithCompletionHandler:]" enqueueJob:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [jobQueue fromFunction:"-[MDMServerCore requestRRTSCheckInAndValidationWithCompletionHandler:]" enqueueJob:v8];
 }
 
 void __70__MDMServerCore_requestRRTSCheckInAndValidationWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -3293,53 +3293,53 @@ uint64_t __70__MDMServerCore_requestRRTSCheckInAndValidationWithCompletionHandle
   return v2();
 }
 
-- (void)generateBootstrapTokenWithDevicePasscode:(id)a3 completionHandler:(id)a4
+- (void)generateBootstrapTokenWithDevicePasscode:(id)passcode completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  passcodeCopy = passcode;
   v7 = DMCLogObjects();
   if (os_log_type_enabled(*(v7 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore generateBootstrapTokenWithDevicePasscode:completionHandler:];
   }
 
-  [MDMBootstrapTokenUtilities generateBootstrapTokenWithDevicePasscode:v6 completionHandler:v5];
+  [MDMBootstrapTokenUtilities generateBootstrapTokenWithDevicePasscode:passcodeCopy completionHandler:handlerCopy];
 }
 
-- (void)generateBootstrapTokenWithDevicePasscodeContext:(id)a3 completionHandler:(id)a4
+- (void)generateBootstrapTokenWithDevicePasscodeContext:(id)context completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  contextCopy = context;
   v7 = DMCLogObjects();
   if (os_log_type_enabled(*(v7 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore generateBootstrapTokenWithDevicePasscodeContext:completionHandler:];
   }
 
-  [MDMBootstrapTokenUtilities generateBootstrapTokenWithDevicePasscodeContext:v6 completionHandler:v5];
+  [MDMBootstrapTokenUtilities generateBootstrapTokenWithDevicePasscodeContext:contextCopy completionHandler:handlerCopy];
 }
 
-- (void)syncBootstrapTokenToMDMWithToken:(id)a3 completionHandler:(id)a4
+- (void)syncBootstrapTokenToMDMWithToken:(id)token completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  handlerCopy = handler;
   v8 = DMCLogObjects();
   if (os_log_type_enabled(*(v8 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore syncBootstrapTokenToMDMWithToken:completionHandler:];
   }
 
-  v9 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__MDMServerCore_syncBootstrapTokenToMDMWithToken_completionHandler___block_invoke;
   v12[3] = &unk_27982CF58;
-  v13 = v6;
-  v14 = v7;
+  v13 = tokenCopy;
+  v14 = handlerCopy;
   v12[4] = self;
-  v10 = v6;
-  v11 = v7;
-  [v9 fromFunction:"-[MDMServerCore syncBootstrapTokenToMDMWithToken:completionHandler:]" enqueueJob:v12];
+  v10 = tokenCopy;
+  v11 = handlerCopy;
+  [jobQueue fromFunction:"-[MDMServerCore syncBootstrapTokenToMDMWithToken:completionHandler:]" enqueueJob:v12];
 }
 
 void __68__MDMServerCore_syncBootstrapTokenToMDMWithToken_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -3383,29 +3383,29 @@ uint64_t __68__MDMServerCore_syncBootstrapTokenToMDMWithToken_completionHandler_
   return v2();
 }
 
-- (void)_syncBootstrapTokenToMDMWithToken:(id)a3 retryCount:(int64_t)a4 completionHandler:(id)a5
+- (void)_syncBootstrapTokenToMDMWithToken:(id)token retryCount:(int64_t)count completionHandler:(id)handler
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  tokenCopy = token;
+  handlerCopy = handler;
   v22 = *MEMORY[0x277D24790];
-  v23[0] = v8;
+  v23[0] = tokenCopy;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-  v11 = [(MDMServerCore *)self networkMonitor];
+  networkMonitor = [(MDMServerCore *)self networkMonitor];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __80__MDMServerCore__syncBootstrapTokenToMDMWithToken_retryCount_completionHandler___block_invoke;
   v17[3] = &unk_27982D1D0;
-  v12 = a4 == 0;
+  v12 = count == 0;
   v17[4] = self;
   v18 = v10;
-  v20 = v9;
-  v21 = a4;
-  v19 = v8;
-  v13 = v9;
-  v14 = v8;
+  v20 = handlerCopy;
+  countCopy = count;
+  v19 = tokenCopy;
+  v13 = handlerCopy;
+  v14 = tokenCopy;
   v15 = v10;
-  [v11 waitForNetworkWithTimeout:v12 strict:v17 completionHandler:10.0];
+  [networkMonitor waitForNetworkWithTimeout:v12 strict:v17 completionHandler:10.0];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -3482,55 +3482,55 @@ LABEL_16:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteBootstrapTokenWithToken:(id)a3 devicePasscode:(id)a4 completionHandler:(id)a5
+- (void)deleteBootstrapTokenWithToken:(id)token devicePasscode:(id)passcode completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  passcodeCopy = passcode;
+  tokenCopy = token;
   v10 = DMCLogObjects();
   if (os_log_type_enabled(*(v10 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore deleteBootstrapTokenWithToken:devicePasscode:completionHandler:];
   }
 
-  [MDMBootstrapTokenUtilities deleteBootstrapTokenWithToken:v9 devicePasscode:v8 completionHandler:v7];
+  [MDMBootstrapTokenUtilities deleteBootstrapTokenWithToken:tokenCopy devicePasscode:passcodeCopy completionHandler:handlerCopy];
 }
 
-- (void)deleteBootstrapTokenWithToken:(id)a3 devicePasscodeContext:(id)a4 completionHandler:(id)a5
+- (void)deleteBootstrapTokenWithToken:(id)token devicePasscodeContext:(id)context completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  contextCopy = context;
+  tokenCopy = token;
   v10 = DMCLogObjects();
   if (os_log_type_enabled(*(v10 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore deleteBootstrapTokenWithToken:devicePasscodeContext:completionHandler:];
   }
 
-  [MDMBootstrapTokenUtilities deleteBootstrapTokenWithToken:v9 devicePasscodeContext:v8 completionHandler:v7];
+  [MDMBootstrapTokenUtilities deleteBootstrapTokenWithToken:tokenCopy devicePasscodeContext:contextCopy completionHandler:handlerCopy];
 }
 
-- (void)generateAndSyncBootstrapTokenWithDevicePasscode:(id)a3 completionHandler:(id)a4
+- (void)generateAndSyncBootstrapTokenWithDevicePasscode:(id)passcode completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  passcodeCopy = passcode;
+  handlerCopy = handler;
   v8 = DMCLogObjects();
   if (os_log_type_enabled(*(v8 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore generateAndSyncBootstrapTokenWithDevicePasscode:completionHandler:];
   }
 
-  v9 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__MDMServerCore_generateAndSyncBootstrapTokenWithDevicePasscode_completionHandler___block_invoke;
   v12[3] = &unk_27982CF58;
-  v13 = v6;
-  v14 = v7;
+  v13 = passcodeCopy;
+  v14 = handlerCopy;
   v12[4] = self;
-  v10 = v6;
-  v11 = v7;
-  [v9 fromFunction:"-[MDMServerCore generateAndSyncBootstrapTokenWithDevicePasscode:completionHandler:]" enqueueJob:v12];
+  v10 = passcodeCopy;
+  v11 = handlerCopy;
+  [jobQueue fromFunction:"-[MDMServerCore generateAndSyncBootstrapTokenWithDevicePasscode:completionHandler:]" enqueueJob:v12];
 }
 
 void __83__MDMServerCore_generateAndSyncBootstrapTokenWithDevicePasscode_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -3691,27 +3691,27 @@ void __83__MDMServerCore_generateAndSyncBootstrapTokenWithDevicePasscode_complet
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateAndSyncBootstrapTokenWithDevicePasscodeContext:(id)a3 completionHandler:(id)a4
+- (void)generateAndSyncBootstrapTokenWithDevicePasscodeContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v8 = DMCLogObjects();
   if (os_log_type_enabled(*(v8 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore generateAndSyncBootstrapTokenWithDevicePasscodeContext:completionHandler:];
   }
 
-  v9 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __90__MDMServerCore_generateAndSyncBootstrapTokenWithDevicePasscodeContext_completionHandler___block_invoke;
   v12[3] = &unk_27982CF58;
-  v13 = v6;
-  v14 = v7;
+  v13 = contextCopy;
+  v14 = handlerCopy;
   v12[4] = self;
-  v10 = v6;
-  v11 = v7;
-  [v9 fromFunction:"-[MDMServerCore generateAndSyncBootstrapTokenWithDevicePasscodeContext:completionHandler:]" enqueueJob:v12];
+  v10 = contextCopy;
+  v11 = handlerCopy;
+  [jobQueue fromFunction:"-[MDMServerCore generateAndSyncBootstrapTokenWithDevicePasscodeContext:completionHandler:]" enqueueJob:v12];
 }
 
 void __90__MDMServerCore_generateAndSyncBootstrapTokenWithDevicePasscodeContext_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -3897,24 +3897,24 @@ void __90__MDMServerCore_generateAndSyncBootstrapTokenWithDevicePasscodeContext_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)blockMDMCommandsWithCompletion:(id)a3
+- (void)blockMDMCommandsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore blockMDMCommandsWithCompletion:];
   }
 
-  v6 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__MDMServerCore_blockMDMCommandsWithCompletion___block_invoke;
   v8[3] = &unk_27982CFA8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 fromFunction:"-[MDMServerCore blockMDMCommandsWithCompletion:]" enqueueJob:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [jobQueue fromFunction:"-[MDMServerCore blockMDMCommandsWithCompletion:]" enqueueJob:v8];
 }
 
 void __48__MDMServerCore_blockMDMCommandsWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -3985,7 +3985,7 @@ uint64_t __48__MDMServerCore_blockMDMCommandsWithCompletion___block_invoke_188(u
   return [*(a1 + 32) setMemberQueueIsBlockingMDMCommands:1];
 }
 
-- (void)unblockMDMCommandsWithCompletion:(id)a3
+- (void)unblockMDMCommandsWithCompletion:(id)completion
 {
   v4 = DMCLogObjects();
   if (os_log_type_enabled(*(v4 + 8), OS_LOG_TYPE_DEBUG))
@@ -3993,13 +3993,13 @@ uint64_t __48__MDMServerCore_blockMDMCommandsWithCompletion___block_invoke_188(u
     [MDMServerCore unblockMDMCommandsWithCompletion:];
   }
 
-  v5 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__MDMServerCore_unblockMDMCommandsWithCompletion___block_invoke;
   v6[3] = &unk_27982CCB0;
   v6[4] = self;
-  [v5 fromFunction:"-[MDMServerCore unblockMDMCommandsWithCompletion:]" enqueueJob:v6];
+  [jobQueue fromFunction:"-[MDMServerCore unblockMDMCommandsWithCompletion:]" enqueueJob:v6];
 
   [(MDMServerCore *)self retryNotNowWithCompletion:&__block_literal_global_191];
 }
@@ -4048,33 +4048,33 @@ void __50__MDMServerCore_unblockMDMCommandsWithCompletion___block_invoke_189(uin
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getWatchPairingTokenForPhoneID:(id)a3 watchID:(id)a4 securityToken:(id)a5 completionHandler:(id)a6
+- (void)getWatchPairingTokenForPhoneID:(id)d watchID:(id)iD securityToken:(id)token completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  tokenCopy = token;
+  handlerCopy = handler;
   v14 = DMCLogObjects();
   if (os_log_type_enabled(*(v14 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore getWatchPairingTokenForPhoneID:watchID:securityToken:completionHandler:];
   }
 
-  v15 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __88__MDMServerCore_getWatchPairingTokenForPhoneID_watchID_securityToken_completionHandler___block_invoke;
   v20[3] = &unk_27982D298;
-  v23 = v11;
-  v24 = v13;
+  v23 = iDCopy;
+  v24 = handlerCopy;
   v20[4] = self;
-  v21 = v12;
-  v22 = v10;
-  v16 = v11;
-  v17 = v10;
-  v18 = v12;
-  v19 = v13;
-  [v15 fromFunction:"-[MDMServerCore getWatchPairingTokenForPhoneID:watchID:securityToken:completionHandler:]" enqueueJob:v20];
+  v21 = tokenCopy;
+  v22 = dCopy;
+  v16 = iDCopy;
+  v17 = dCopy;
+  v18 = tokenCopy;
+  v19 = handlerCopy;
+  [jobQueue fromFunction:"-[MDMServerCore getWatchPairingTokenForPhoneID:watchID:securityToken:completionHandler:]" enqueueJob:v20];
 }
 
 void __88__MDMServerCore_getWatchPairingTokenForPhoneID_watchID_securityToken_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -4128,10 +4128,10 @@ uint64_t __88__MDMServerCore_getWatchPairingTokenForPhoneID_watchID_securityToke
   return v2();
 }
 
-- (void)getOrgTokenForMAIDWithCompletionHandler:(id)a3
+- (void)getOrgTokenForMAIDWithCompletionHandler:(id)handler
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
@@ -4142,19 +4142,19 @@ uint64_t __88__MDMServerCore_getWatchPairingTokenForPhoneID_watchID_securityToke
   {
     v10 = *MEMORY[0x277D24DC0];
     v11[0] = *MEMORY[0x277D24DB8];
-    v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
+    _createTokenUnsupportedError = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __57__MDMServerCore_getOrgTokenForMAIDWithCompletionHandler___block_invoke;
     v8[3] = &unk_27982D2C0;
-    v9 = v4;
-    [(MDMServerCore *)self _makeGetTokenRequestWithRequestDict:v6 completionHandler:v8];
+    v9 = handlerCopy;
+    [(MDMServerCore *)self _makeGetTokenRequestWithRequestDict:_createTokenUnsupportedError completionHandler:v8];
   }
 
   else
   {
-    v6 = [(MDMServerCore *)self _createTokenUnsupportedError];
-    (*(v4 + 2))(v4, 0, v6);
+    _createTokenUnsupportedError = [(MDMServerCore *)self _createTokenUnsupportedError];
+    (*(handlerCopy + 2))(handlerCopy, 0, _createTokenUnsupportedError);
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -4173,69 +4173,69 @@ void __57__MDMServerCore_getOrgTokenForMAIDWithCompletionHandler___block_invoke(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)enablePushWakeWithCompletion:(id)a3
+- (void)enablePushWakeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore enablePushWakeWithCompletion:];
   }
 
-  v6 = [(MDMServerCore *)self pushServiceManager];
+  pushServiceManager = [(MDMServerCore *)self pushServiceManager];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__MDMServerCore_enablePushWakeWithCompletion___block_invoke;
   v8[3] = &unk_27982CC88;
-  v9 = v4;
-  v7 = v4;
-  [v6 enablePushWakeWithCompletionHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [pushServiceManager enablePushWakeWithCompletionHandler:v8];
 }
 
-- (void)disablePushWakeWithCompletion:(id)a3
+- (void)disablePushWakeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*(v5 + 8), OS_LOG_TYPE_DEBUG))
   {
     [MDMServerCore disablePushWakeWithCompletion:];
   }
 
-  v6 = [(MDMServerCore *)self pushServiceManager];
+  pushServiceManager = [(MDMServerCore *)self pushServiceManager];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__MDMServerCore_disablePushWakeWithCompletion___block_invoke;
   v8[3] = &unk_27982CC88;
-  v9 = v4;
-  v7 = v4;
-  [v6 disablePushWakeWithCompletionHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [pushServiceManager disablePushWakeWithCompletionHandler:v8];
 }
 
 - (BOOL)isAppInstallBlocked
 {
-  v2 = [(MDMServerCore *)self appInstallBlocker];
-  v3 = [v2 isAppInstallBlocked];
+  appInstallBlocker = [(MDMServerCore *)self appInstallBlocker];
+  isAppInstallBlocked = [appInstallBlocker isAppInstallBlocked];
 
-  return v3;
+  return isAppInstallBlocked;
 }
 
-- (void)blockAppInstallsWithCompletion:(id)a3
+- (void)blockAppInstallsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MDMServerCore *)self appInstallBlocker];
-  [v5 blockAppInstallsWithCompletion:v4];
+  completionCopy = completion;
+  appInstallBlocker = [(MDMServerCore *)self appInstallBlocker];
+  [appInstallBlocker blockAppInstallsWithCompletion:completionCopy];
 }
 
-- (void)unblockAppInstallsWithCompletion:(id)a3
+- (void)unblockAppInstallsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MDMServerCore *)self appInstallBlocker];
-  [v5 unblockAppInstallsWithCompletion:v4];
+  completionCopy = completion;
+  appInstallBlocker = [(MDMServerCore *)self appInstallBlocker];
+  [appInstallBlocker unblockAppInstallsWithCompletion:completionCopy];
 }
 
-- (void)requestInstallOfAppsInRestoreWithCompletion:(id)a3
+- (void)requestInstallOfAppsInRestoreWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -4255,9 +4255,9 @@ void __57__MDMServerCore_getOrgTokenForMAIDWithCompletionHandler___block_invoke(
   v5[3] = &unk_27982D2E8;
   v5[4] = buf;
   [MEMORY[0x277D1C1C0] enumerateCoordinatorsUsingBlock:v5];
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3, *(v7 + 5));
+    completionCopy[2](completionCopy, *(v7 + 5));
   }
 
   _Block_object_dispose(buf, 8);
@@ -4442,18 +4442,18 @@ LABEL_11:
   return v10;
 }
 
-- (void)getAssertionDescriptionsWithCompletion:(id)a3
+- (void)getAssertionDescriptionsWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
     v4 = MEMORY[0x277D035A0];
-    v5 = a3;
-    v6 = [v4 assertionDescriptions];
-    (*(a3 + 2))(v5, v6, 0);
+    completionCopy = completion;
+    assertionDescriptions = [v4 assertionDescriptions];
+    (*(completion + 2))(completionCopy, assertionDescriptions, 0);
   }
 }
 
-- (BOOL)_readConfigurationOutError:(id *)a3 isUproot:(BOOL)a4
+- (BOOL)_readConfigurationOutError:(id *)error isUproot:(BOOL)uproot
 {
   v18 = 0;
   v19 = &v18;
@@ -4465,20 +4465,20 @@ LABEL_11:
   v15 = __Block_byref_object_copy__10;
   v16 = __Block_byref_object_dispose__10;
   v17 = 0;
-  v7 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__MDMServerCore__readConfigurationOutError_isUproot___block_invoke;
   v10[3] = &unk_27982D310;
   v10[4] = self;
   v10[5] = &v18;
-  v11 = a4;
+  uprootCopy = uproot;
   v10[6] = &v12;
-  dispatch_async_and_wait(v7, v10);
+  dispatch_async_and_wait(memberQueue, v10);
 
-  if (a3 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *error = v13[5];
   }
 
   if (![(MDMServerCore *)self channelType])
@@ -4598,11 +4598,11 @@ void __53__MDMServerCore__readConfigurationOutError_isUproot___block_invoke(uint
   [(MDMServerCore *)self setMemberQueueUseEnrollmentID:0];
 }
 
-- (BOOL)_memberQueueParseMDMConfigurationDict:(id)a3
+- (BOOL)_memberQueueParseMDMConfigurationDict:(id)dict
 {
   v162 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dictCopy = dict;
+  if (!dictCopy)
   {
     v66 = MEMORY[0x277CCA9B8];
     v67 = *MEMORY[0x277D03480];
@@ -4631,7 +4631,7 @@ LABEL_35:
   }
 
   v5 = *MEMORY[0x277D24808];
-  v6 = [v4 objectForKey:*MEMORY[0x277D24808]];
+  v6 = [dictCopy objectForKey:*MEMORY[0x277D24808]];
   if (!v6)
   {
     goto LABEL_83;
@@ -4644,9 +4644,9 @@ LABEL_35:
   }
 
   v7 = MEMORY[0x277D03520];
-  v8 = [MEMORY[0x277D24648] sharedConfiguration];
-  v9 = [v8 personaID];
-  -[MDMServerCore setMemberQueueIdentity:](self, "setMemberQueueIdentity:", [v7 copyIdentityWithPersistentID:v6 useSystemKeychain:1 enforcePersonalPersona:v9 != 0]);
+  mEMORY[0x277D24648] = [MEMORY[0x277D24648] sharedConfiguration];
+  personaID = [mEMORY[0x277D24648] personaID];
+  -[MDMServerCore setMemberQueueIdentity:](self, "setMemberQueueIdentity:", [v7 copyIdentityWithPersistentID:v6 useSystemKeychain:1 enforcePersonalPersona:personaID != 0]);
 
   if (![(MDMServerCore *)self memberQueueIdentity])
   {
@@ -4664,7 +4664,7 @@ LABEL_84:
   }
 
   v10 = *MEMORY[0x277D24CE8];
-  v11 = [v4 objectForKey:*MEMORY[0x277D24CE8]];
+  v11 = [dictCopy objectForKey:*MEMORY[0x277D24CE8]];
   if (v11)
   {
     objc_opt_class();
@@ -4675,13 +4675,13 @@ LABEL_84:
   }
 
   v12 = objc_opt_class();
-  v13 = [MEMORY[0x277D24648] sharedConfiguration];
-  v14 = [v13 personaID];
-  v15 = [v12 copyCertificatesWithPersistentIDs:v11 useSystemKeychain:1 enforcePersonalPersona:v14 != 0];
+  mEMORY[0x277D24648]2 = [MEMORY[0x277D24648] sharedConfiguration];
+  personaID2 = [mEMORY[0x277D24648]2 personaID];
+  v15 = [v12 copyCertificatesWithPersistentIDs:v11 useSystemKeychain:1 enforcePersonalPersona:personaID2 != 0];
   [(MDMServerCore *)self setMemberQueueServerPinnedSecCertificateRefs:v15];
 
   v10 = *MEMORY[0x277D247A0];
-  v11 = [v4 objectForKey:*MEMORY[0x277D247A0]];
+  v11 = [dictCopy objectForKey:*MEMORY[0x277D247A0]];
   if (v11)
   {
     objc_opt_class();
@@ -4692,13 +4692,13 @@ LABEL_84:
   }
 
   v16 = objc_opt_class();
-  v17 = [MEMORY[0x277D24648] sharedConfiguration];
-  v18 = [v17 personaID];
-  v19 = [v16 copyCertificatesWithPersistentIDs:v11 useSystemKeychain:1 enforcePersonalPersona:v18 != 0];
+  mEMORY[0x277D24648]3 = [MEMORY[0x277D24648] sharedConfiguration];
+  personaID3 = [mEMORY[0x277D24648]3 personaID];
+  v19 = [v16 copyCertificatesWithPersistentIDs:v11 useSystemKeychain:1 enforcePersonalPersona:personaID3 != 0];
   [(MDMServerCore *)self setMemberQueueCheckInPinnedSecCertificateRefs:v19];
 
   v10 = *MEMORY[0x277D24BF0];
-  v11 = [v4 objectForKey:*MEMORY[0x277D24BF0]];
+  v11 = [dictCopy objectForKey:*MEMORY[0x277D24BF0]];
   if (v11)
   {
     objc_opt_class();
@@ -4711,11 +4711,11 @@ LABEL_84:
   -[MDMServerCore setMemberQueuePinningRevocationCheckRequired:](self, "setMemberQueuePinningRevocationCheckRequired:", [v11 BOOLValue]);
 
   v5 = *MEMORY[0x277D248B0];
-  v20 = [v4 objectForKey:*MEMORY[0x277D248B0]];
+  v20 = [dictCopy objectForKey:*MEMORY[0x277D248B0]];
   [(MDMServerCore *)self setMemberQueueManagingProfileIdentifier:v20];
 
-  v21 = [(MDMServerCore *)self memberQueueManagingProfileIdentifier];
-  if (!v21 || (v22 = v21, [(MDMServerCore *)self memberQueueManagingProfileIdentifier], v23 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v23, v22, (isKindOfClass & 1) == 0))
+  memberQueueManagingProfileIdentifier = [(MDMServerCore *)self memberQueueManagingProfileIdentifier];
+  if (!memberQueueManagingProfileIdentifier || (v22 = memberQueueManagingProfileIdentifier, [(MDMServerCore *)self memberQueueManagingProfileIdentifier], v23 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v23, v22, (isKindOfClass & 1) == 0))
   {
 LABEL_83:
     v141 = MEMORY[0x277CCA9B8];
@@ -4730,23 +4730,23 @@ LABEL_83:
     goto LABEL_84;
   }
 
-  v25 = [MEMORY[0x277D03498] sharedInstance];
-  v26 = [v25 hrnMode];
+  mEMORY[0x277D03498] = [MEMORY[0x277D03498] sharedInstance];
+  hrnMode = [mEMORY[0x277D03498] hrnMode];
 
-  if (v26 == 2)
+  if (hrnMode == 2)
   {
     v5 = *MEMORY[0x277D24BF8];
-    v84 = [v4 objectForKey:*MEMORY[0x277D24BF8]];
+    v84 = [dictCopy objectForKey:*MEMORY[0x277D24BF8]];
     [(MDMServerCore *)self setMemberQueuePollingInterval:v84];
 
-    v85 = [(MDMServerCore *)self memberQueuePollingInterval];
-    if (!v85)
+    memberQueuePollingInterval = [(MDMServerCore *)self memberQueuePollingInterval];
+    if (!memberQueuePollingInterval)
     {
       goto LABEL_83;
     }
 
-    v86 = v85;
-    v87 = [(MDMServerCore *)self memberQueuePollingInterval];
+    v86 = memberQueuePollingInterval;
+    memberQueuePollingInterval2 = [(MDMServerCore *)self memberQueuePollingInterval];
     objc_opt_class();
     v88 = objc_opt_isKindOfClass();
 
@@ -4756,14 +4756,14 @@ LABEL_83:
     }
 
     v5 = *MEMORY[0x277D24810];
-    v89 = [v4 objectForKey:*MEMORY[0x277D24810]];
+    v89 = [dictCopy objectForKey:*MEMORY[0x277D24810]];
     [(MDMServerCore *)self setMemberQueueLastPollingAttempt:v89];
 
-    v90 = [(MDMServerCore *)self memberQueueLastPollingAttempt];
-    if (v90)
+    memberQueueLastPollingAttempt = [(MDMServerCore *)self memberQueueLastPollingAttempt];
+    if (memberQueueLastPollingAttempt)
     {
-      v91 = v90;
-      v92 = [(MDMServerCore *)self memberQueueLastPollingAttempt];
+      v91 = memberQueueLastPollingAttempt;
+      memberQueueLastPollingAttempt2 = [(MDMServerCore *)self memberQueueLastPollingAttempt];
       objc_opt_class();
       v93 = objc_opt_isKindOfClass();
 
@@ -4774,14 +4774,14 @@ LABEL_83:
     }
 
     v5 = *MEMORY[0x277D24828];
-    v94 = [v4 objectForKey:*MEMORY[0x277D24828]];
+    v94 = [dictCopy objectForKey:*MEMORY[0x277D24828]];
     [(MDMServerCore *)self setMemberQueueLastPollingSuccess:v94];
 
-    v95 = [(MDMServerCore *)self memberQueueLastPollingSuccess];
-    if (v95)
+    memberQueueLastPollingSuccess = [(MDMServerCore *)self memberQueueLastPollingSuccess];
+    if (memberQueueLastPollingSuccess)
     {
-      v96 = v95;
-      v97 = [(MDMServerCore *)self memberQueueLastPollingSuccess];
+      v96 = memberQueueLastPollingSuccess;
+      memberQueueLastPollingSuccess2 = [(MDMServerCore *)self memberQueueLastPollingSuccess];
       objc_opt_class();
       v98 = objc_opt_isKindOfClass();
 
@@ -4792,14 +4792,14 @@ LABEL_83:
     }
 
     v5 = *MEMORY[0x277D24818];
-    v99 = [v4 objectForKey:*MEMORY[0x277D24818]];
+    v99 = [dictCopy objectForKey:*MEMORY[0x277D24818]];
     [(MDMServerCore *)self setMemberQueueLastPollingAttemptMonotonicTime:v99];
 
-    v100 = [(MDMServerCore *)self memberQueueLastPollingAttemptMonotonicTime];
-    if (v100)
+    memberQueueLastPollingAttemptMonotonicTime = [(MDMServerCore *)self memberQueueLastPollingAttemptMonotonicTime];
+    if (memberQueueLastPollingAttemptMonotonicTime)
     {
-      v101 = v100;
-      v102 = [(MDMServerCore *)self memberQueueLastPollingAttemptMonotonicTime];
+      v101 = memberQueueLastPollingAttemptMonotonicTime;
+      memberQueueLastPollingAttemptMonotonicTime2 = [(MDMServerCore *)self memberQueueLastPollingAttemptMonotonicTime];
       objc_opt_class();
       v103 = objc_opt_isKindOfClass();
 
@@ -4810,14 +4810,14 @@ LABEL_83:
     }
 
     v5 = *MEMORY[0x277D24820];
-    v104 = [v4 objectForKey:*MEMORY[0x277D24820]];
+    v104 = [dictCopy objectForKey:*MEMORY[0x277D24820]];
     [(MDMServerCore *)self setMemberQueueLastPollingAttemptRTCResetCount:v104];
 
-    v105 = [(MDMServerCore *)self memberQueueLastPollingAttemptRTCResetCount];
-    if (v105)
+    memberQueueLastPollingAttemptRTCResetCount = [(MDMServerCore *)self memberQueueLastPollingAttemptRTCResetCount];
+    if (memberQueueLastPollingAttemptRTCResetCount)
     {
-      v106 = v105;
-      v107 = [(MDMServerCore *)self memberQueueLastPollingAttemptRTCResetCount];
+      v106 = memberQueueLastPollingAttemptRTCResetCount;
+      memberQueueLastPollingAttemptRTCResetCount2 = [(MDMServerCore *)self memberQueueLastPollingAttemptRTCResetCount];
       objc_opt_class();
       v108 = objc_opt_isKindOfClass();
 
@@ -4828,14 +4828,14 @@ LABEL_83:
     }
 
     v5 = *MEMORY[0x277D24830];
-    v109 = [v4 objectForKey:*MEMORY[0x277D24830]];
+    v109 = [dictCopy objectForKey:*MEMORY[0x277D24830]];
     [(MDMServerCore *)self setMemberQueueLastPollingSuccessMonotonicTime:v109];
 
-    v110 = [(MDMServerCore *)self memberQueueLastPollingSuccessMonotonicTime];
-    if (v110)
+    memberQueueLastPollingSuccessMonotonicTime = [(MDMServerCore *)self memberQueueLastPollingSuccessMonotonicTime];
+    if (memberQueueLastPollingSuccessMonotonicTime)
     {
-      v111 = v110;
-      v112 = [(MDMServerCore *)self memberQueueLastPollingSuccessMonotonicTime];
+      v111 = memberQueueLastPollingSuccessMonotonicTime;
+      memberQueueLastPollingSuccessMonotonicTime2 = [(MDMServerCore *)self memberQueueLastPollingSuccessMonotonicTime];
       objc_opt_class();
       v113 = objc_opt_isKindOfClass();
 
@@ -4846,11 +4846,11 @@ LABEL_83:
     }
 
     v5 = *MEMORY[0x277D24838];
-    v114 = [v4 objectForKey:*MEMORY[0x277D24838]];
+    v114 = [dictCopy objectForKey:*MEMORY[0x277D24838]];
     [(MDMServerCore *)self setMemberQueueLastPollingSuccessRTCResetCount:v114];
 
-    v63 = [(MDMServerCore *)self memberQueueLastPollingSuccessRTCResetCount];
-    if (!v63)
+    memberQueueLastPollingSuccessRTCResetCount = [(MDMServerCore *)self memberQueueLastPollingSuccessRTCResetCount];
+    if (!memberQueueLastPollingSuccessRTCResetCount)
     {
       goto LABEL_40;
     }
@@ -4858,37 +4858,37 @@ LABEL_83:
 
   else
   {
-    if (v26 == 1)
+    if (hrnMode == 1)
     {
       v5 = *MEMORY[0x277D24DD0];
-      v79 = [v4 objectForKey:*MEMORY[0x277D24DD0]];
+      v79 = [dictCopy objectForKey:*MEMORY[0x277D24DD0]];
       [(MDMServerCore *)self setMemberQueueTopic:v79];
 
-      v80 = [(MDMServerCore *)self memberQueueTopic];
-      if (!v80)
+      memberQueueTopic = [(MDMServerCore *)self memberQueueTopic];
+      if (!memberQueueTopic)
       {
         goto LABEL_83;
       }
 
-      v64 = v80;
-      v65 = [(MDMServerCore *)self memberQueueTopic];
+      v64 = memberQueueTopic;
+      memberQueueTopic2 = [(MDMServerCore *)self memberQueueTopic];
       goto LABEL_39;
     }
 
-    if (v26)
+    if (hrnMode)
     {
       goto LABEL_40;
     }
 
     v5 = *MEMORY[0x277D24DD0];
-    v27 = [v4 objectForKey:*MEMORY[0x277D24DD0]];
+    v27 = [dictCopy objectForKey:*MEMORY[0x277D24DD0]];
     [(MDMServerCore *)self setMemberQueueTopic:v27];
 
-    v28 = [(MDMServerCore *)self memberQueueTopic];
-    if (v28)
+    memberQueueTopic3 = [(MDMServerCore *)self memberQueueTopic];
+    if (memberQueueTopic3)
     {
-      v29 = v28;
-      v30 = [(MDMServerCore *)self memberQueueTopic];
+      v29 = memberQueueTopic3;
+      memberQueueTopic4 = [(MDMServerCore *)self memberQueueTopic];
       objc_opt_class();
       v31 = objc_opt_isKindOfClass();
 
@@ -4899,14 +4899,14 @@ LABEL_83:
     }
 
     v5 = *MEMORY[0x277D24BF8];
-    v32 = [v4 objectForKey:*MEMORY[0x277D24BF8]];
+    v32 = [dictCopy objectForKey:*MEMORY[0x277D24BF8]];
     [(MDMServerCore *)self setMemberQueuePollingInterval:v32];
 
-    v33 = [(MDMServerCore *)self memberQueuePollingInterval];
-    if (v33)
+    memberQueuePollingInterval3 = [(MDMServerCore *)self memberQueuePollingInterval];
+    if (memberQueuePollingInterval3)
     {
-      v34 = v33;
-      v35 = [(MDMServerCore *)self memberQueuePollingInterval];
+      v34 = memberQueuePollingInterval3;
+      memberQueuePollingInterval4 = [(MDMServerCore *)self memberQueuePollingInterval];
       objc_opt_class();
       v36 = objc_opt_isKindOfClass();
 
@@ -4917,14 +4917,14 @@ LABEL_83:
     }
 
     v5 = *MEMORY[0x277D24810];
-    v37 = [v4 objectForKey:*MEMORY[0x277D24810]];
+    v37 = [dictCopy objectForKey:*MEMORY[0x277D24810]];
     [(MDMServerCore *)self setMemberQueueLastPollingAttempt:v37];
 
-    v38 = [(MDMServerCore *)self memberQueueLastPollingAttempt];
-    if (v38)
+    memberQueueLastPollingAttempt3 = [(MDMServerCore *)self memberQueueLastPollingAttempt];
+    if (memberQueueLastPollingAttempt3)
     {
-      v39 = v38;
-      v40 = [(MDMServerCore *)self memberQueueLastPollingAttempt];
+      v39 = memberQueueLastPollingAttempt3;
+      memberQueueLastPollingAttempt4 = [(MDMServerCore *)self memberQueueLastPollingAttempt];
       objc_opt_class();
       v41 = objc_opt_isKindOfClass();
 
@@ -4935,14 +4935,14 @@ LABEL_83:
     }
 
     v5 = *MEMORY[0x277D24828];
-    v42 = [v4 objectForKey:*MEMORY[0x277D24828]];
+    v42 = [dictCopy objectForKey:*MEMORY[0x277D24828]];
     [(MDMServerCore *)self setMemberQueueLastPollingSuccess:v42];
 
-    v43 = [(MDMServerCore *)self memberQueueLastPollingSuccess];
-    if (v43)
+    memberQueueLastPollingSuccess3 = [(MDMServerCore *)self memberQueueLastPollingSuccess];
+    if (memberQueueLastPollingSuccess3)
     {
-      v44 = v43;
-      v45 = [(MDMServerCore *)self memberQueueLastPollingSuccess];
+      v44 = memberQueueLastPollingSuccess3;
+      memberQueueLastPollingSuccess4 = [(MDMServerCore *)self memberQueueLastPollingSuccess];
       objc_opt_class();
       v46 = objc_opt_isKindOfClass();
 
@@ -4953,14 +4953,14 @@ LABEL_83:
     }
 
     v5 = *MEMORY[0x277D24818];
-    v47 = [v4 objectForKey:*MEMORY[0x277D24818]];
+    v47 = [dictCopy objectForKey:*MEMORY[0x277D24818]];
     [(MDMServerCore *)self setMemberQueueLastPollingAttemptMonotonicTime:v47];
 
-    v48 = [(MDMServerCore *)self memberQueueLastPollingAttemptMonotonicTime];
-    if (v48)
+    memberQueueLastPollingAttemptMonotonicTime3 = [(MDMServerCore *)self memberQueueLastPollingAttemptMonotonicTime];
+    if (memberQueueLastPollingAttemptMonotonicTime3)
     {
-      v49 = v48;
-      v50 = [(MDMServerCore *)self memberQueueLastPollingAttemptMonotonicTime];
+      v49 = memberQueueLastPollingAttemptMonotonicTime3;
+      memberQueueLastPollingAttemptMonotonicTime4 = [(MDMServerCore *)self memberQueueLastPollingAttemptMonotonicTime];
       objc_opt_class();
       v51 = objc_opt_isKindOfClass();
 
@@ -4971,14 +4971,14 @@ LABEL_83:
     }
 
     v5 = *MEMORY[0x277D24820];
-    v52 = [v4 objectForKey:*MEMORY[0x277D24820]];
+    v52 = [dictCopy objectForKey:*MEMORY[0x277D24820]];
     [(MDMServerCore *)self setMemberQueueLastPollingAttemptRTCResetCount:v52];
 
-    v53 = [(MDMServerCore *)self memberQueueLastPollingAttemptRTCResetCount];
-    if (v53)
+    memberQueueLastPollingAttemptRTCResetCount3 = [(MDMServerCore *)self memberQueueLastPollingAttemptRTCResetCount];
+    if (memberQueueLastPollingAttemptRTCResetCount3)
     {
-      v54 = v53;
-      v55 = [(MDMServerCore *)self memberQueueLastPollingAttemptRTCResetCount];
+      v54 = memberQueueLastPollingAttemptRTCResetCount3;
+      memberQueueLastPollingAttemptRTCResetCount4 = [(MDMServerCore *)self memberQueueLastPollingAttemptRTCResetCount];
       objc_opt_class();
       v56 = objc_opt_isKindOfClass();
 
@@ -4989,14 +4989,14 @@ LABEL_83:
     }
 
     v5 = *MEMORY[0x277D24830];
-    v57 = [v4 objectForKey:*MEMORY[0x277D24830]];
+    v57 = [dictCopy objectForKey:*MEMORY[0x277D24830]];
     [(MDMServerCore *)self setMemberQueueLastPollingSuccessMonotonicTime:v57];
 
-    v58 = [(MDMServerCore *)self memberQueueLastPollingSuccessMonotonicTime];
-    if (v58)
+    memberQueueLastPollingSuccessMonotonicTime3 = [(MDMServerCore *)self memberQueueLastPollingSuccessMonotonicTime];
+    if (memberQueueLastPollingSuccessMonotonicTime3)
     {
-      v59 = v58;
-      v60 = [(MDMServerCore *)self memberQueueLastPollingSuccessMonotonicTime];
+      v59 = memberQueueLastPollingSuccessMonotonicTime3;
+      memberQueueLastPollingSuccessMonotonicTime4 = [(MDMServerCore *)self memberQueueLastPollingSuccessMonotonicTime];
       objc_opt_class();
       v61 = objc_opt_isKindOfClass();
 
@@ -5007,18 +5007,18 @@ LABEL_83:
     }
 
     v5 = *MEMORY[0x277D24838];
-    v62 = [v4 objectForKey:*MEMORY[0x277D24838]];
+    v62 = [dictCopy objectForKey:*MEMORY[0x277D24838]];
     [(MDMServerCore *)self setMemberQueueLastPollingSuccessRTCResetCount:v62];
 
-    v63 = [(MDMServerCore *)self memberQueueLastPollingSuccessRTCResetCount];
-    if (!v63)
+    memberQueueLastPollingSuccessRTCResetCount = [(MDMServerCore *)self memberQueueLastPollingSuccessRTCResetCount];
+    if (!memberQueueLastPollingSuccessRTCResetCount)
     {
       goto LABEL_40;
     }
   }
 
-  v64 = v63;
-  v65 = [(MDMServerCore *)self memberQueueLastPollingSuccessRTCResetCount];
+  v64 = memberQueueLastPollingSuccessRTCResetCount;
+  memberQueueTopic2 = [(MDMServerCore *)self memberQueueLastPollingSuccessRTCResetCount];
 LABEL_39:
   objc_opt_class();
   v81 = objc_opt_isKindOfClass();
@@ -5030,7 +5030,7 @@ LABEL_39:
 
 LABEL_40:
   v10 = *MEMORY[0x277D24CF0];
-  v11 = [v4 objectForKey:*MEMORY[0x277D24CF0]];
+  v11 = [dictCopy objectForKey:*MEMORY[0x277D24CF0]];
   if (!v11)
   {
     goto LABEL_97;
@@ -5046,7 +5046,7 @@ LABEL_40:
   [(MDMServerCore *)self setMemberQueueServerURL:v82];
 
   v10 = *MEMORY[0x277D247A8];
-  v11 = [v4 objectForKey:*MEMORY[0x277D247A8]];
+  v11 = [dictCopy objectForKey:*MEMORY[0x277D247A8]];
   if (v11)
   {
     objc_opt_class();
@@ -5055,19 +5055,19 @@ LABEL_40:
       goto LABEL_97;
     }
 
-    v83 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v11];
-    [(MDMServerCore *)self setMemberQueueCheckInURL:v83];
+    memberQueueServerURL = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v11];
+    [(MDMServerCore *)self setMemberQueueCheckInURL:memberQueueServerURL];
   }
 
   else
   {
-    v83 = [(MDMServerCore *)self memberQueueServerURL];
-    v115 = [v83 copy];
+    memberQueueServerURL = [(MDMServerCore *)self memberQueueServerURL];
+    v115 = [memberQueueServerURL copy];
     [(MDMServerCore *)self setMemberQueueCheckInURL:v115];
   }
 
   v10 = *MEMORY[0x277D246B0];
-  v11 = [v4 objectForKey:*MEMORY[0x277D246B0]];
+  v11 = [dictCopy objectForKey:*MEMORY[0x277D246B0]];
   if (!v11)
   {
     goto LABEL_97;
@@ -5082,7 +5082,7 @@ LABEL_40:
   -[MDMServerCore setMemberQueueAccessRights:](self, "setMemberQueueAccessRights:", [v11 unsignedIntValue]);
 
   v10 = *MEMORY[0x277D24DE0];
-  v11 = [v4 objectForKey:*MEMORY[0x277D24DE0]];
+  v11 = [dictCopy objectForKey:*MEMORY[0x277D24DE0]];
   if (v11)
   {
     objc_opt_class();
@@ -5095,7 +5095,7 @@ LABEL_40:
   -[MDMServerCore setMemberQueueUseDevelopmentAPNS:](self, "setMemberQueueUseDevelopmentAPNS:", [v11 BOOLValue]);
 
   v10 = *MEMORY[0x277D24D80];
-  v11 = [v4 objectForKey:*MEMORY[0x277D24D80]];
+  v11 = [dictCopy objectForKey:*MEMORY[0x277D24D80]];
   if (v11)
   {
     objc_opt_class();
@@ -5108,17 +5108,17 @@ LABEL_40:
   -[MDMServerCore setMemberQueueSignMessage:](self, "setMemberQueueSignMessage:", [v11 BOOLValue]);
 
   v5 = *MEMORY[0x277D24CA0];
-  v116 = [v4 objectForKey:*MEMORY[0x277D24CA0]];
+  v116 = [dictCopy objectForKey:*MEMORY[0x277D24CA0]];
   [(MDMServerCore *)self setMemberQueuePushMagic:v116];
 
-  v117 = [(MDMServerCore *)self memberQueuePushMagic];
-  if (!v117)
+  memberQueuePushMagic = [(MDMServerCore *)self memberQueuePushMagic];
+  if (!memberQueuePushMagic)
   {
     goto LABEL_83;
   }
 
-  v118 = v117;
-  v119 = [(MDMServerCore *)self memberQueuePushMagic];
+  v118 = memberQueuePushMagic;
+  memberQueuePushMagic2 = [(MDMServerCore *)self memberQueuePushMagic];
   objc_opt_class();
   v120 = objc_opt_isKindOfClass();
 
@@ -5128,14 +5128,14 @@ LABEL_40:
   }
 
   v5 = *MEMORY[0x277D24978];
-  v121 = [v4 objectForKey:*MEMORY[0x277D24978]];
+  v121 = [dictCopy objectForKey:*MEMORY[0x277D24978]];
   [(MDMServerCore *)self setMemberQueueOrganizationInfo:v121];
 
-  v122 = [(MDMServerCore *)self memberQueueOrganizationInfo];
-  if (v122)
+  memberQueueOrganizationInfo = [(MDMServerCore *)self memberQueueOrganizationInfo];
+  if (memberQueueOrganizationInfo)
   {
-    v123 = v122;
-    v124 = [(MDMServerCore *)self memberQueueOrganizationInfo];
+    v123 = memberQueueOrganizationInfo;
+    memberQueueOrganizationInfo2 = [(MDMServerCore *)self memberQueueOrganizationInfo];
     objc_opt_class();
     v125 = objc_opt_isKindOfClass();
 
@@ -5146,14 +5146,14 @@ LABEL_40:
   }
 
   v5 = *MEMORY[0x277D24970];
-  v126 = [v4 objectForKey:*MEMORY[0x277D24970]];
+  v126 = [dictCopy objectForKey:*MEMORY[0x277D24970]];
   [(MDMServerCore *)self setMemberQueueMDMOptions:v126];
 
-  v127 = [(MDMServerCore *)self memberQueueMDMOptions];
-  if (v127)
+  memberQueueMDMOptions = [(MDMServerCore *)self memberQueueMDMOptions];
+  if (memberQueueMDMOptions)
   {
-    v128 = v127;
-    v129 = [(MDMServerCore *)self memberQueueMDMOptions];
+    v128 = memberQueueMDMOptions;
+    memberQueueMDMOptions2 = [(MDMServerCore *)self memberQueueMDMOptions];
     objc_opt_class();
     v130 = objc_opt_isKindOfClass();
 
@@ -5164,24 +5164,24 @@ LABEL_40:
   }
 
   v10 = *MEMORY[0x277D24DF8];
-  v11 = [v4 objectForKey:*MEMORY[0x277D24DF8]];
+  v11 = [dictCopy objectForKey:*MEMORY[0x277D24DF8]];
   if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     -[MDMServerCore setMemberQueueUseEnrollmentID:](self, "setMemberQueueUseEnrollmentID:", [v11 BOOLValue]);
 
     v5 = *MEMORY[0x277D247C0];
-    v131 = [v4 objectForKey:*MEMORY[0x277D247C0]];
+    v131 = [dictCopy objectForKey:*MEMORY[0x277D247C0]];
     [(MDMServerCore *)self setMemberQueueEnrollmentID:v131];
 
-    v132 = [(MDMServerCore *)self memberQueueEnrollmentID];
-    if (!v132 || (v133 = v132, [(MDMServerCore *)self memberQueueEnrollmentID], v134 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v135 = objc_opt_isKindOfClass(), v134, v133, (v135 & 1) != 0))
+    memberQueueEnrollmentID = [(MDMServerCore *)self memberQueueEnrollmentID];
+    if (!memberQueueEnrollmentID || (v133 = memberQueueEnrollmentID, [(MDMServerCore *)self memberQueueEnrollmentID], v134 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v135 = objc_opt_isKindOfClass(), v134, v133, (v135 & 1) != 0))
     {
       v5 = *MEMORY[0x277D24CE0];
-      v136 = [v4 objectForKey:*MEMORY[0x277D24CE0]];
-      [(MDMServerCore *)self setMemberQueueServerCapabilities:v136];
+      memberQueueServerCapabilities2 = [dictCopy objectForKey:*MEMORY[0x277D24CE0]];
+      [(MDMServerCore *)self setMemberQueueServerCapabilities:memberQueueServerCapabilities2];
 
-      v137 = [(MDMServerCore *)self memberQueueServerCapabilities];
-      if (!v137 || (v136 = v137, [(MDMServerCore *)self memberQueueServerCapabilities], v138 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v139 = objc_opt_isKindOfClass(), v138, v136, (v139 & 1) != 0))
+      memberQueueServerCapabilities = [(MDMServerCore *)self memberQueueServerCapabilities];
+      if (!memberQueueServerCapabilities || (memberQueueServerCapabilities2 = memberQueueServerCapabilities, [(MDMServerCore *)self memberQueueServerCapabilities], v138 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v139 = objc_opt_isKindOfClass(), v138, memberQueueServerCapabilities2, (v139 & 1) != 0))
       {
         if ([(MDMServerCore *)self channelType]!= 1)
         {
@@ -5190,11 +5190,11 @@ LABEL_102:
           goto LABEL_96;
         }
 
-        v140 = [MEMORY[0x277D03538] isSharediPad];
-        if (v140)
+        isSharediPad = [MEMORY[0x277D03538] isSharediPad];
+        if (isSharediPad)
         {
-          v136 = [(MDMServerCore *)self memberQueueServerCapabilities];
-          if (([v136 containsObject:*MEMORY[0x277D24BE8]] & 1) == 0)
+          memberQueueServerCapabilities2 = [(MDMServerCore *)self memberQueueServerCapabilities];
+          if (([memberQueueServerCapabilities2 containsObject:*MEMORY[0x277D24BE8]] & 1) == 0)
           {
 
 LABEL_104:
@@ -5221,10 +5221,10 @@ LABEL_104:
           goto LABEL_102;
         }
 
-        v155 = [(MDMServerCore *)self memberQueueServerCapabilities];
-        v156 = [v155 containsObject:*MEMORY[0x277D24DF0]];
+        memberQueueServerCapabilities3 = [(MDMServerCore *)self memberQueueServerCapabilities];
+        v156 = [memberQueueServerCapabilities3 containsObject:*MEMORY[0x277D24DF0]];
 
-        if (v140)
+        if (isSharediPad)
         {
         }
 
@@ -5249,12 +5249,12 @@ LABEL_97:
 LABEL_85:
   if (v73)
   {
-    v142 = [v73 domain];
-    if ([v142 isEqualToString:v67])
+    domain = [v73 domain];
+    if ([domain isEqualToString:v67])
     {
-      v143 = [v73 code];
+      code = [v73 code];
 
-      if (v143 == 12079)
+      if (code == 12079)
       {
         v144 = *(DMCLogObjects() + 8);
         if (os_log_type_enabled(v144, OS_LOG_TYPE_DEFAULT))
@@ -5299,20 +5299,20 @@ LABEL_96:
   return v150;
 }
 
-- (void)_memberQueueUpdateOrganizationInfo:(id)a3
+- (void)_memberQueueUpdateOrganizationInfo:(id)info
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D030F0]];
-  v6 = [MEMORY[0x277D24648] sharedConfiguration];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D030F0]];
+  mEMORY[0x277D24648] = [MEMORY[0x277D24648] sharedConfiguration];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __52__MDMServerCore__memberQueueUpdateOrganizationInfo___block_invoke;
   v14[3] = &unk_27982C098;
-  v7 = v4;
+  v7 = infoCopy;
   v15 = v7;
   v13 = 0;
-  [v6 updateMDMConfigurationWithUpdateBlock:v14 error:&v13];
+  [mEMORY[0x277D24648] updateMDMConfigurationWithUpdateBlock:v14 error:&v13];
   v8 = v13;
   if (v8)
   {
@@ -5330,9 +5330,9 @@ LABEL_96:
     [(MDMServerCore *)self setMemberQueueOrganizationInfo:v7];
     if (v5)
     {
-      v10 = [v6 rmAccountID];
-      v11 = [v6 personaID];
-      [(MDMServerCore *)self _changeOrganizationNameForRMAccountIdentifier:v10 personaID:v11 organizationName:v5];
+      rmAccountID = [mEMORY[0x277D24648] rmAccountID];
+      personaID = [mEMORY[0x277D24648] personaID];
+      [(MDMServerCore *)self _changeOrganizationNameForRMAccountIdentifier:rmAccountID personaID:personaID organizationName:v5];
     }
   }
 
@@ -5347,14 +5347,14 @@ LABEL_96:
   v10 = __Block_byref_object_copy__10;
   v11 = __Block_byref_object_dispose__10;
   v12 = 0;
-  v3 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__MDMServerCore_organizationInfo__block_invoke;
   v6[3] = &unk_27982BB40;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -5371,10 +5371,10 @@ void __33__MDMServerCore_organizationInfo__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setOrganizationInfo:(id)a3
+- (void)setOrganizationInfo:(id)info
 {
-  v4 = [a3 copy];
-  v5 = [(MDMServerCore *)self memberQueue];
+  v4 = [info copy];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__MDMServerCore_setOrganizationInfo___block_invoke;
@@ -5382,7 +5382,7 @@ void __33__MDMServerCore_organizationInfo__block_invoke(uint64_t a1)
   v7[4] = self;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, v7);
+  dispatch_async(memberQueue, v7);
 }
 
 void __37__MDMServerCore_setOrganizationInfo___block_invoke(uint64_t a1)
@@ -5406,14 +5406,14 @@ void __37__MDMServerCore_setOrganizationInfo___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__10;
   v11 = __Block_byref_object_dispose__10;
   v12 = 0;
-  v3 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __27__MDMServerCore_MDMOptions__block_invoke;
   v6[3] = &unk_27982BB40;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -5430,28 +5430,28 @@ void __27__MDMServerCore_MDMOptions__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setMDMOptions:(id)a3
+- (void)setMDMOptions:(id)options
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = [a3 copy];
-  v5 = [(MDMServerCore *)self memberQueue];
+  v4 = [options copy];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__MDMServerCore_setMDMOptions___block_invoke;
   block[3] = &unk_27982BAC8;
   v6 = v4;
   v26 = v6;
-  v27 = self;
-  dispatch_barrier_async(v5, block);
+  selfCopy = self;
+  dispatch_barrier_async(memberQueue, block);
 
   v7 = *MEMORY[0x277D24968];
   v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277D24968]];
-  v9 = [v8 intValue];
+  intValue = [v8 intValue];
 
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   v11 = *(DMCLogObjects() + 8);
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (v9 < 1)
+  if (intValue < 1)
   {
     v13 = *MEMORY[0x277CBED10];
     if (!v12)
@@ -5503,14 +5503,14 @@ LABEL_7:
 
   CFRelease(Mutable);
   v19 = dispatch_semaphore_create(0);
-  v20 = [(MDMServerCore *)self memberQueue];
+  memberQueue2 = [(MDMServerCore *)self memberQueue];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __31__MDMServerCore_setMDMOptions___block_invoke_271;
   v23[3] = &unk_27982BA78;
   v24 = v19;
   v21 = v19;
-  dispatch_async(v20, v23);
+  dispatch_async(memberQueue2, v23);
 
   dispatch_semaphore_wait(v21, 0xFFFFFFFFFFFFFFFFLL);
   v22 = *MEMORY[0x277D85DE8];
@@ -5553,14 +5553,14 @@ void __31__MDMServerCore_setMDMOptions___block_invoke_271(uint64_t a1)
   v10 = 0;
   if ([MEMORY[0x277D03538] isSharediPad])
   {
-    v3 = [(MDMServerCore *)self memberQueue];
+    memberQueue = [(MDMServerCore *)self memberQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __43__MDMServerCore_userSwitchAlreadyInitiated__block_invoke;
     v6[3] = &unk_27982BB40;
     v6[4] = self;
     v6[5] = &v7;
-    dispatch_async_and_wait(v3, v6);
+    dispatch_async_and_wait(memberQueue, v6);
   }
 
   v4 = *(v8 + 24);
@@ -5575,16 +5575,16 @@ uint64_t __43__MDMServerCore_userSwitchAlreadyInitiated__block_invoke(uint64_t a
   return result;
 }
 
-- (void)setUserSwitchAlreadyInitiated:(BOOL)a3
+- (void)setUserSwitchAlreadyInitiated:(BOOL)initiated
 {
-  v5 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__MDMServerCore_setUserSwitchAlreadyInitiated___block_invoke;
   v6[3] = &unk_27982BB18;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  initiatedCopy = initiated;
+  dispatch_async(memberQueue, v6);
 }
 
 - (NSDictionary)softwareUpdatePathFromDisk
@@ -5600,8 +5600,8 @@ uint64_t __43__MDMServerCore_userSwitchAlreadyInitiated__block_invoke(uint64_t a
 
 - (NSString)organizationName
 {
-  v2 = [(MDMServerCore *)self organizationInfo];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D030F0]];
+  organizationInfo = [(MDMServerCore *)self organizationInfo];
+  v3 = [organizationInfo objectForKeyedSubscript:*MEMORY[0x277D030F0]];
 
   return v3;
 }
@@ -5614,19 +5614,19 @@ uint64_t __43__MDMServerCore_userSwitchAlreadyInitiated__block_invoke(uint64_t a
   v10 = __Block_byref_object_copy__10;
   v11 = __Block_byref_object_dispose__10;
   v12 = 0;
-  v3 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __27__MDMServerCore_serverName__block_invoke;
   v6[3] = &unk_27982BB40;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(memberQueue, v6);
 
-  v4 = [v8[5] host];
+  host = [v8[5] host];
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return host;
 }
 
 uint64_t __27__MDMServerCore_serverName__block_invoke(uint64_t a1)
@@ -5641,10 +5641,10 @@ uint64_t __27__MDMServerCore_serverName__block_invoke(uint64_t a1)
 
 - (NSString)daemonIdentifier
 {
-  v2 = [(MDMServerCore *)self channelType];
-  if (v2)
+  channelType = [(MDMServerCore *)self channelType];
+  if (channelType)
   {
-    if (v2 != 1)
+    if (channelType != 1)
     {
       goto LABEL_6;
     }
@@ -5657,16 +5657,16 @@ uint64_t __27__MDMServerCore_serverName__block_invoke(uint64_t a1)
     v3 = kMDMDIdentifier;
   }
 
-  v2 = *v3;
+  channelType = *v3;
 LABEL_6:
 
-  return v2;
+  return channelType;
 }
 
-- (void)_executeBlockWhenPushTokenIsAvailable:(id)a3
+- (void)_executeBlockWhenPushTokenIsAvailable:(id)available
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  availableCopy = available;
   v5 = objc_alloc(MEMORY[0x277D03558]);
   v6 = [(MDMServerCore *)self _reasonStringWithReason:@"PushToken"];
   v7 = [v5 initWithReason:v6];
@@ -5677,27 +5677,27 @@ LABEL_6:
   v25 = __Block_byref_object_copy__10;
   v26 = __Block_byref_object_dispose__10;
   v27 = 0;
-  v8 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__MDMServerCore__executeBlockWhenPushTokenIsAvailable___block_invoke;
   block[3] = &unk_27982BB40;
   block[4] = self;
   block[5] = &v22;
-  dispatch_async_and_wait(v8, block);
+  dispatch_async_and_wait(memberQueue, block);
 
   if (v23[5] || ([MEMORY[0x277D03498] sharedInstance], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "hrnMode") == 1, v9, !v10))
   {
-    if (v4)
+    if (availableCopy)
     {
-      v13 = [(MDMServerCore *)self jobQueue];
+      jobQueue = [(MDMServerCore *)self jobQueue];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __55__MDMServerCore__executeBlockWhenPushTokenIsAvailable___block_invoke_4;
       v15[3] = &unk_27982D360;
-      v16 = v4;
+      v16 = availableCopy;
       v17 = &v22;
-      [v13 queueBlock:v15];
+      [jobQueue queueBlock:v15];
     }
   }
 
@@ -5711,15 +5711,15 @@ LABEL_6:
       _os_log_impl(&dword_2561F5000, v11, OS_LOG_TYPE_DEFAULT, "%s: Waiting for push token...", buf, 0xCu);
     }
 
-    v12 = [(MDMServerCore *)self jobQueue];
+    jobQueue2 = [(MDMServerCore *)self jobQueue];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __55__MDMServerCore__executeBlockWhenPushTokenIsAvailable___block_invoke_274;
     v18[3] = &unk_27982BE10;
     v18[4] = self;
-    v20 = v4;
+    v20 = availableCopy;
     v19 = v7;
-    [v12 queueBlock:v18];
+    [jobQueue2 queueBlock:v18];
   }
 
   _Block_object_dispose(&v22, 8);
@@ -5805,13 +5805,13 @@ uint64_t __55__MDMServerCore__executeBlockWhenPushTokenIsAvailable___block_invok
 
 - (void)_executePushTokenWaitContinuationBlock
 {
-  v3 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __55__MDMServerCore__executePushTokenWaitContinuationBlock__block_invoke;
   v4[3] = &unk_27982BA78;
   v4[4] = self;
-  [v3 queueBlock:v4];
+  [jobQueue queueBlock:v4];
 }
 
 void __55__MDMServerCore__executePushTokenWaitContinuationBlock__block_invoke(uint64_t a1)
@@ -5847,10 +5847,10 @@ void __63__MDMServerCore__memberQueueSetupAPSConnectionIfNeeeded_valid___block_i
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_memberQueueSetupAPSConnectionIsMDMConfigurationValid:(BOOL)a3 isUserDaemon:(BOOL)a4
+- (void)_memberQueueSetupAPSConnectionIsMDMConfigurationValid:(BOOL)valid isUserDaemon:(BOOL)daemon
 {
   v31 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (valid)
   {
     v5 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -5860,11 +5860,11 @@ void __63__MDMServerCore__memberQueueSetupAPSConnectionIfNeeeded_valid___block_i
     }
 
     [(MDMServerCore *)self setMemberQueueIsUprooting:0];
-    v6 = [(MDMServerCore *)self memberQueueTopic];
+    memberQueueTopic = [(MDMServerCore *)self memberQueueTopic];
 
-    if (v6)
+    if (memberQueueTopic)
     {
-      v7 = [(MDMServerCore *)self memberQueueUseDevelopmentAPNS];
+      memberQueueUseDevelopmentAPNS = [(MDMServerCore *)self memberQueueUseDevelopmentAPNS];
       v8 = [(MDMServerCore *)self memberQueueUseDevelopmentAPNS]^ 1;
       v9 = *(DMCLogObjects() + 8);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -5880,23 +5880,23 @@ void __63__MDMServerCore__memberQueueSetupAPSConnectionIfNeeeded_valid___block_i
           v11 = @"Prod";
         }
 
-        v12 = [(MDMServerCore *)self memberQueueTopic];
+        memberQueueTopic2 = [(MDMServerCore *)self memberQueueTopic];
         *buf = 138543618;
         v28 = v11;
         v29 = 2114;
-        v30 = v12;
+        v30 = memberQueueTopic2;
         _os_log_impl(&dword_2561F5000, v10, OS_LOG_TYPE_DEFAULT, "MDMDServerCore using %{public}@ APS, enabling topic: %{public}@", buf, 0x16u);
       }
 
-      v13 = [(MDMServerCore *)self pushServiceManager];
-      v14 = [(MDMServerCore *)self memberQueueTopic];
-      [v13 startListeningForMDMPushMessageWithTopic:v14 environment:v7];
+      pushServiceManager = [(MDMServerCore *)self pushServiceManager];
+      memberQueueTopic3 = [(MDMServerCore *)self memberQueueTopic];
+      [pushServiceManager startListeningForMDMPushMessageWithTopic:memberQueueTopic3 environment:memberQueueUseDevelopmentAPNS];
 
-      v15 = [(MDMServerCore *)self pushServiceManager];
-      [v15 requestPublicTokenWithEnvironment:v7];
+      pushServiceManager2 = [(MDMServerCore *)self pushServiceManager];
+      [pushServiceManager2 requestPublicTokenWithEnvironment:memberQueueUseDevelopmentAPNS];
 
-      v16 = [(MDMServerCore *)self pushServiceManager];
-      [v16 stopListeningForAllMDMPushMessagesWithEnvironment:v8];
+      pushServiceManager3 = [(MDMServerCore *)self pushServiceManager];
+      [pushServiceManager3 stopListeningForAllMDMPushMessagesWithEnvironment:v8];
     }
 
     if ([MEMORY[0x277D03500] fakePushToken])
@@ -5912,18 +5912,18 @@ void __63__MDMServerCore__memberQueueSetupAPSConnectionIfNeeeded_valid___block_i
       [(MDMServerCore *)self setMemberQueuePushToken:v18];
     }
 
-    v19 = [(MDMServerCore *)self memberQueuePushToken];
+    memberQueuePushToken = [(MDMServerCore *)self memberQueuePushToken];
 
-    if (v19)
+    if (memberQueuePushToken)
     {
-      v20 = [(MDMServerCore *)self _memberQueueLastPushTokenHash];
-      v21 = [(MDMServerCore *)self memberQueuePushToken];
-      v22 = [v21 DMCSHA256Hash];
+      _memberQueueLastPushTokenHash = [(MDMServerCore *)self _memberQueueLastPushTokenHash];
+      memberQueuePushToken2 = [(MDMServerCore *)self memberQueuePushToken];
+      dMCSHA256Hash = [memberQueuePushToken2 DMCSHA256Hash];
 
-      if (([v20 isEqualToData:v22]& 1) == 0)
+      if (([_memberQueueLastPushTokenHash isEqualToData:dMCSHA256Hash]& 1) == 0)
       {
-        v23 = [(MDMServerCore *)self memberQueuePushToken];
-        [(MDMServerCore *)self _memberQueueLogLatestPushTokenIfNeeded:v23];
+        memberQueuePushToken3 = [(MDMServerCore *)self memberQueuePushToken];
+        [(MDMServerCore *)self _memberQueueLogLatestPushTokenIfNeeded:memberQueuePushToken3];
       }
     }
 
@@ -5936,13 +5936,13 @@ void __63__MDMServerCore__memberQueueSetupAPSConnectionIfNeeeded_valid___block_i
         _os_log_impl(&dword_2561F5000, v24, OS_LOG_TYPE_DEFAULT, "MDMDServerCore waiting for push token to be assigned to this device...", buf, 2u);
       }
 
-      v20 = dispatch_get_global_queue(0, 0);
+      _memberQueueLastPushTokenHash = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __84__MDMServerCore__memberQueueSetupAPSConnectionIsMDMConfigurationValid_isUserDaemon___block_invoke;
       block[3] = &unk_27982BA78;
       block[4] = self;
-      dispatch_async(v20, block);
+      dispatch_async(_memberQueueLastPushTokenHash, block);
     }
   }
 
@@ -5952,39 +5952,39 @@ void __63__MDMServerCore__memberQueueSetupAPSConnectionIfNeeeded_valid___block_i
 - (id)_memberQueuePushMagicMismatchDateMarker
 {
   v2 = [MEMORY[0x277D24650] sharedConfigurationForChannel:{-[MDMServerCore channelType](self, "channelType")}];
-  v3 = [v2 pushMagicMismatchDateMarker];
+  pushMagicMismatchDateMarker = [v2 pushMagicMismatchDateMarker];
 
-  return v3;
+  return pushMagicMismatchDateMarker;
 }
 
-- (void)_memberQueueSetPushMagicMismatchDateMarker:(id)a3
+- (void)_memberQueueSetPushMagicMismatchDateMarker:(id)marker
 {
-  v4 = a3;
+  markerCopy = marker;
   v5 = [MEMORY[0x277D24650] sharedConfigurationForChannel:{-[MDMServerCore channelType](self, "channelType")}];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__MDMServerCore__memberQueueSetPushMagicMismatchDateMarker___block_invoke;
   v7[3] = &unk_27982C098;
-  v8 = v4;
-  v6 = v4;
+  v8 = markerCopy;
+  v6 = markerCopy;
   [v5 updateMDMConfigurationWithCreateIfNeeded:1 updateBlock:v7 error:0];
 }
 
-- (void)_memberQueueLogLatestPushTokenIfNeeded:(id)a3
+- (void)_memberQueueLogLatestPushTokenIfNeeded:(id)needed
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MDMServerCore *)self memberQueueLastLoggedPushToken];
-  v6 = [(__CFString *)v4 isEqualToData:v5];
+  neededCopy = needed;
+  memberQueueLastLoggedPushToken = [(MDMServerCore *)self memberQueueLastLoggedPushToken];
+  v6 = [(__CFString *)neededCopy isEqualToData:memberQueueLastLoggedPushToken];
 
   if ((v6 & 1) == 0)
   {
-    [(MDMServerCore *)self setMemberQueueLastLoggedPushToken:v4];
+    [(MDMServerCore *)self setMemberQueueLastLoggedPushToken:neededCopy];
     v7 = objc_opt_new();
     v8 = *MEMORY[0x277D03328];
-    if (v4)
+    if (neededCopy)
     {
-      v9 = v4;
+      v9 = neededCopy;
     }
 
     else
@@ -6004,25 +6004,25 @@ void __63__MDMServerCore__memberQueueSetupAPSConnectionIfNeeeded_valid___block_i
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldListenToEnvironment:(unint64_t)a3
+- (BOOL)_shouldListenToEnvironment:(unint64_t)environment
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__MDMServerCore__shouldListenToEnvironment___block_invoke;
   block[3] = &unk_27982D388;
   block[4] = self;
   block[5] = &v8;
-  block[6] = a3;
-  dispatch_async_and_wait(v5, block);
+  block[6] = environment;
+  dispatch_async_and_wait(memberQueue, block);
 
-  LOBYTE(a3) = *(v9 + 24);
+  LOBYTE(environment) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return a3;
+  return environment;
 }
 
 uint64_t __44__MDMServerCore__shouldListenToEnvironment___block_invoke(uint64_t a1)
@@ -6032,19 +6032,19 @@ uint64_t __44__MDMServerCore__shouldListenToEnvironment___block_invoke(uint64_t 
   return result;
 }
 
-- (void)pushServiceManager:(id)a3 didReceivePublicToken:(id)a4 forEnvironment:(unint64_t)a5
+- (void)pushServiceManager:(id)manager didReceivePublicToken:(id)token forEnvironment:(unint64_t)environment
 {
-  v7 = a4;
-  if ([(MDMServerCore *)self _shouldListenToEnvironment:a5])
+  tokenCopy = token;
+  if ([(MDMServerCore *)self _shouldListenToEnvironment:environment])
   {
-    v8 = [(MDMServerCore *)self jobQueue];
+    jobQueue = [(MDMServerCore *)self jobQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __73__MDMServerCore_pushServiceManager_didReceivePublicToken_forEnvironment___block_invoke;
     v9[3] = &unk_27982BAC8;
-    v10 = v7;
-    v11 = self;
-    [v8 queueBlock:v9];
+    v10 = tokenCopy;
+    selfCopy = self;
+    [jobQueue queueBlock:v9];
   }
 }
 
@@ -6159,13 +6159,13 @@ void __73__MDMServerCore_pushServiceManager_didReceivePublicToken_forEnvironment
   [v4 _pollFromServerIfNeeded:0 isReachabilityEvent:0 completionHandler:v6];
 }
 
-- (void)pushServiceManager:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5 environment:(unint64_t)a6
+- (void)pushServiceManager:(id)manager didReceiveMessageForTopic:(id)topic userInfo:(id)info environment:(unint64_t)environment
 {
   v80 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([(MDMServerCore *)self _shouldListenToEnvironment:a6])
+  managerCopy = manager;
+  topicCopy = topic;
+  infoCopy = info;
+  if ([(MDMServerCore *)self _shouldListenToEnvironment:environment])
   {
     v13 = objc_alloc(MEMORY[0x277D035A0]);
     v14 = [(MDMServerCore *)self _reasonStringWithReason:@"ReceivedMessageForTopic"];
@@ -6182,7 +6182,7 @@ void __73__MDMServerCore_pushServiceManager_didReceivePublicToken_forEnvironment
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v12;
+      *(&buf + 4) = infoCopy;
       _os_log_impl(&dword_2561F5000, v16, OS_LOG_TYPE_DEBUG, "Push notification data: %{public}@", &buf, 0xCu);
     }
 
@@ -6202,7 +6202,7 @@ void __73__MDMServerCore_pushServiceManager_didReceivePublicToken_forEnvironment
     v57 = &v56;
     v58 = 0x2020000000;
     v59 = 0;
-    v17 = [(MDMServerCore *)self memberQueue];
+    memberQueue = [(MDMServerCore *)self memberQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __83__MDMServerCore_pushServiceManager_didReceiveMessageForTopic_userInfo_environment___block_invoke;
@@ -6211,7 +6211,7 @@ void __73__MDMServerCore_pushServiceManager_didReceivePublicToken_forEnvironment
     block[5] = &buf;
     block[6] = &v60;
     block[7] = &v56;
-    dispatch_async_and_wait(v17, block);
+    dispatch_async_and_wait(memberQueue, block);
 
     if (*(v57 + 24) == 1)
     {
@@ -6222,15 +6222,15 @@ void __73__MDMServerCore_pushServiceManager_didReceivePublicToken_forEnvironment
         _os_log_impl(&dword_2561F5000, v18, OS_LOG_TYPE_DEFAULT, "Ignoring push notification because MDM uproot already began", &v70, 2u);
       }
 
-      v19 = 0;
+      date2 = 0;
       v20 = 0;
       goto LABEL_43;
     }
 
-    if ([v11 isEqualToString:*(*(&buf + 1) + 40)])
+    if ([topicCopy isEqualToString:*(*(&buf + 1) + 40)])
     {
       v21 = *MEMORY[0x277D24C98];
-      v22 = [v12 objectForKey:*MEMORY[0x277D24C98]];
+      v22 = [infoCopy objectForKey:*MEMORY[0x277D24C98]];
       v23 = v22 == 0;
 
       if (v23)
@@ -6243,26 +6243,26 @@ void __73__MDMServerCore_pushServiceManager_didReceivePublicToken_forEnvironment
           _os_log_impl(&dword_2561F5000, v32, OS_LOG_TYPE_ERROR, "Rejecting MDM push dictionary because it does not contain the %{public}@ key", &v70, 0xCu);
         }
 
-        v19 = 0;
+        date2 = 0;
         v20 = 0;
       }
 
       else
       {
-        v24 = [v12 objectForKey:v21];
+        v24 = [infoCopy objectForKey:v21];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v26 = [v12 objectForKey:v21];
+          v26 = [infoCopy objectForKey:v21];
           v27 = [v26 isEqualToString:v61[5]];
 
           if (v27)
           {
-            if ([v12 count] >= 2)
+            if ([infoCopy count] >= 2)
             {
-              v28 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v12];
+              v28 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:infoCopy];
               [v28 removeObjectForKey:v21];
               v29 = *(DMCLogObjects() + 8);
               if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -6274,7 +6274,7 @@ void __73__MDMServerCore_pushServiceManager_didReceivePublicToken_forEnvironment
             }
 
             v20 = 0;
-            v19 = 0;
+            date2 = 0;
             v30 = 1;
             goto LABEL_45;
           }
@@ -6292,14 +6292,14 @@ void __73__MDMServerCore_pushServiceManager_didReceivePublicToken_forEnvironment
           v72 = __Block_byref_object_copy__10;
           v73 = __Block_byref_object_dispose__10;
           v74 = 0;
-          v35 = [(MDMServerCore *)self memberQueue];
+          memberQueue2 = [(MDMServerCore *)self memberQueue];
           v54[0] = MEMORY[0x277D85DD0];
           v54[1] = 3221225472;
           v54[2] = __83__MDMServerCore_pushServiceManager_didReceiveMessageForTopic_userInfo_environment___block_invoke_302;
           v54[3] = &unk_27982BB40;
           v54[4] = self;
           v54[5] = &v70;
-          dispatch_async_and_wait(v35, v54);
+          dispatch_async_and_wait(memberQueue2, v54);
 
           v36 = *(*(&v70 + 1) + 40);
           objc_opt_class();
@@ -6328,15 +6328,15 @@ void __73__MDMServerCore_pushServiceManager_didReceivePublicToken_forEnvironment
                 _os_log_impl(&dword_2561F5000, v41, OS_LOG_TYPE_DEFAULT, "Existing push magic mismatch marker is older than %f seconds (%f seconds old), scheduling token update", v66, 0x16u);
               }
 
-              v42 = [MEMORY[0x277D24638] sharedClient];
-              [v42 scheduleTokenUpdate];
+              mEMORY[0x277D24638] = [MEMORY[0x277D24638] sharedClient];
+              [mEMORY[0x277D24638] scheduleTokenUpdate];
 
-              v19 = 0;
+              date2 = 0;
               v20 = 1;
               goto LABEL_42;
             }
 
-            v19 = 0;
+            date2 = 0;
           }
 
           else
@@ -6344,13 +6344,13 @@ void __73__MDMServerCore_pushServiceManager_didReceivePublicToken_forEnvironment
             v43 = *(DMCLogObjects() + 8);
             if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
             {
-              v44 = [MEMORY[0x277CBEAA8] date];
+              date = [MEMORY[0x277CBEAA8] date];
               *v66 = 138543362;
-              v67 = v44;
+              v67 = date;
               _os_log_impl(&dword_2561F5000, v43, OS_LOG_TYPE_DEFAULT, "Setting push magic mismatch marker with date: %{public}@", v66, 0xCu);
             }
 
-            v19 = [MEMORY[0x277CBEAA8] date];
+            date2 = [MEMORY[0x277CBEAA8] date];
           }
 
           v20 = 0;
@@ -6368,7 +6368,7 @@ LABEL_42:
           _os_log_impl(&dword_2561F5000, v33, OS_LOG_TYPE_ERROR, "Rejecting MDM push dictionary because the %{public}@ key is not a string.", &v70, 0xCu);
         }
 
-        v19 = 0;
+        date2 = 0;
         v20 = 0;
       }
     }
@@ -6379,21 +6379,21 @@ LABEL_42:
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
         LODWORD(v70) = 138543362;
-        *(&v70 + 4) = v11;
+        *(&v70 + 4) = topicCopy;
         _os_log_impl(&dword_2561F5000, v31, OS_LOG_TYPE_ERROR, "Ignoring push notification with mismatched topic: %{public}@", &v70, 0xCu);
       }
 
-      v19 = 0;
+      date2 = 0;
       v20 = 0;
     }
 
 LABEL_43:
     v30 = 0;
-    if ((v20 & 1) == 0 && !v19)
+    if ((v20 & 1) == 0 && !date2)
     {
 LABEL_47:
-      v47 = [MEMORY[0x277D24648] sharedConfiguration];
-      [v47 isUserEnrollment];
+      mEMORY[0x277D24648] = [MEMORY[0x277D24648] sharedConfiguration];
+      [mEMORY[0x277D24648] isUserEnrollment];
       MDMAnalyticsSendPushEvent();
 
       _Block_object_dispose(&v56, 8);
@@ -6404,25 +6404,25 @@ LABEL_47:
     }
 
 LABEL_45:
-    v45 = [(MDMServerCore *)self memberQueue];
+    memberQueue3 = [(MDMServerCore *)self memberQueue];
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __83__MDMServerCore_pushServiceManager_didReceiveMessageForTopic_userInfo_environment___block_invoke_304;
     v52[3] = &unk_27982BAC8;
     v52[4] = self;
-    v19 = v19;
-    v53 = v19;
-    dispatch_barrier_async(v45, v52);
+    date2 = date2;
+    v53 = date2;
+    dispatch_barrier_async(memberQueue3, v52);
 
     if ((v30 | v20) == 1)
     {
-      v46 = [(MDMServerCore *)self jobQueue];
+      jobQueue = [(MDMServerCore *)self jobQueue];
       v51[0] = MEMORY[0x277D85DD0];
       v51[1] = 3221225472;
       v51[2] = __83__MDMServerCore_pushServiceManager_didReceiveMessageForTopic_userInfo_environment___block_invoke_2;
       v51[3] = &unk_27982CCB0;
       v51[4] = self;
-      [v46 fromFunction:"-[MDMServerCore pushServiceManager:didReceiveMessageForTopic:userInfo:environment:]" enqueueJob:v51];
+      [jobQueue fromFunction:"-[MDMServerCore pushServiceManager:didReceiveMessageForTopic:userInfo:environment:]" enqueueJob:v51];
     }
 
     goto LABEL_47;
@@ -6473,40 +6473,40 @@ void __83__MDMServerCore_pushServiceManager_didReceiveMessageForTopic_userInfo_e
   [v4 _pollFromServerIfNeeded:1 isReachabilityEvent:0 completionHandler:v6];
 }
 
-- (id)_httpErrorFromTransaction:(id)a3 assertion:(id)a4 rmAccountID:(id)a5 enrollmentMode:(id)a6 reauthQueue:(id)a7
+- (id)_httpErrorFromTransaction:(id)transaction assertion:(id)assertion rmAccountID:(id)d enrollmentMode:(id)mode reauthQueue:(id)queue
 {
   v29 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 error];
+  transactionCopy = transaction;
+  assertionCopy = assertion;
+  dCopy = d;
+  modeCopy = mode;
+  queueCopy = queue;
+  error = [transactionCopy error];
 
-  if (!v17)
+  if (!error)
   {
     v21 = 0;
     goto LABEL_19;
   }
 
-  v18 = [v12 statusCode];
-  if (v18 == 410)
+  statusCode = [transactionCopy statusCode];
+  if (statusCode == 410)
   {
     if ([(MDMServerCore *)self _handleHTTPStatusGoneResponse])
     {
-      v20 = [(MDMServerCore *)self _processTraditionalErrorFromTransaction:v12];
+      error3 = [(MDMServerCore *)self _processTraditionalErrorFromTransaction:transactionCopy];
       goto LABEL_18;
     }
 
     goto LABEL_17;
   }
 
-  if (v18 == 403)
+  if (statusCode == 403)
   {
-    v22 = [v12 error];
-    v23 = [v22 code];
+    error2 = [transactionCopy error];
+    code = [error2 code];
 
-    if (v23 == 23008)
+    if (code == 23008)
     {
       v24 = *(DMCLogObjects() + 8);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -6519,11 +6519,11 @@ void __83__MDMServerCore_pushServiceManager_didReceiveMessageForTopic_userInfo_e
     }
 
 LABEL_17:
-    v20 = [v12 error];
+    error3 = [transactionCopy error];
     goto LABEL_18;
   }
 
-  if (v18 != 401)
+  if (statusCode != 401)
   {
     goto LABEL_17;
   }
@@ -6532,20 +6532,20 @@ LABEL_17:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v27 = 138543362;
-    v28 = v15;
+    v28 = modeCopy;
     _os_log_impl(&dword_2561F5000, v19, OS_LOG_TYPE_DEFAULT, "Received 401 for transaction. EnrollmentMode: %{public}@", &v27, 0xCu);
   }
 
-  if (!v15 || [v15 isEqualToString:*MEMORY[0x277D247D8]])
+  if (!modeCopy || [modeCopy isEqualToString:*MEMORY[0x277D247D8]])
   {
 LABEL_14:
-    v20 = [(MDMServerCore *)self _processTraditionalUnauthorizedFromTransaction:v12 assertion:v13];
+    error3 = [(MDMServerCore *)self _processTraditionalUnauthorizedFromTransaction:transactionCopy assertion:assertionCopy];
     goto LABEL_18;
   }
 
-  v20 = [(MDMServerCore *)self _processAccountDrivenUnauthorizedFromTransaction:v12 rmAccountID:v14 reauthQueue:v16];
+  error3 = [(MDMServerCore *)self _processAccountDrivenUnauthorizedFromTransaction:transactionCopy rmAccountID:dCopy reauthQueue:queueCopy];
 LABEL_18:
-  v21 = v20;
+  v21 = error3;
 LABEL_19:
 
   v25 = *MEMORY[0x277D85DE8];
@@ -6555,8 +6555,8 @@ LABEL_19:
 
 - (BOOL)_handleHTTPStatusGoneResponse
 {
-  v2 = [(MDMServerCore *)self channelType];
-  if (v2 == 1)
+  channelType = [(MDMServerCore *)self channelType];
+  if (channelType == 1)
   {
     v3 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -6566,13 +6566,13 @@ LABEL_19:
     }
   }
 
-  return v2 == 1;
+  return channelType == 1;
 }
 
-- (id)_processTraditionalErrorFromTransaction:(id)a3
+- (id)_processTraditionalErrorFromTransaction:(id)transaction
 {
-  v4 = a3;
-  if ([v4 isCheckIn])
+  transactionCopy = transaction;
+  if ([transactionCopy isCheckIn])
   {
     [(MDMServerCore *)self _setTokenUpdateRequestCountToZero];
   }
@@ -6582,92 +6582,92 @@ LABEL_19:
     [(MDMServerCore *)self _clearCachedResponse];
   }
 
-  v5 = [v4 error];
+  error = [transactionCopy error];
 
-  return v5;
+  return error;
 }
 
-- (id)_processTraditionalUnauthorizedFromTransaction:(id)a3 assertion:(id)a4
+- (id)_processTraditionalUnauthorizedFromTransaction:(id)transaction assertion:(id)assertion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isCheckIn])
+  transactionCopy = transaction;
+  assertionCopy = assertion;
+  if ([transactionCopy isCheckIn])
   {
     v8 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = v8;
-      v10 = [v6 error];
-      v11 = [v10 DMCVerboseDescription];
+      error = [transactionCopy error];
+      dMCVerboseDescription = [error DMCVerboseDescription];
       v19 = 138543362;
-      v20 = v11;
+      v20 = dMCVerboseDescription;
       _os_log_impl(&dword_2561F5000, v9, OS_LOG_TYPE_ERROR, "Cannot tell MDM server about updated token. Error: %{public}@", &v19, 0xCu);
     }
   }
 
   v12 = objc_opt_new();
   v13 = *MEMORY[0x277D03330];
-  v14 = [MEMORY[0x277D24668] unauthorizedByServerError];
-  [v12 logErrorEventForTopic:v13 reason:@"Received 401 / 403(code: Unrecognized) error from server" error:v14 details:0];
+  unauthorizedByServerError = [MEMORY[0x277D24668] unauthorizedByServerError];
+  [v12 logErrorEventForTopic:v13 reason:@"Received 401 / 403(code: Unrecognized) error from server" error:unauthorizedByServerError details:0];
 
-  [(MDMServerCore *)self _executionQueueRemoveMDMProfileWithAssertion:v7];
-  v15 = [(MDMServerCore *)self _processTraditionalErrorFromTransaction:v6];
-  v16 = [MEMORY[0x277D24668] unauthorizedByServerError];
+  [(MDMServerCore *)self _executionQueueRemoveMDMProfileWithAssertion:assertionCopy];
+  v15 = [(MDMServerCore *)self _processTraditionalErrorFromTransaction:transactionCopy];
+  unauthorizedByServerError2 = [MEMORY[0x277D24668] unauthorizedByServerError];
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return unauthorizedByServerError2;
 }
 
-- (id)_processAccountDrivenUnauthorizedFromTransaction:(id)a3 rmAccountID:(id)a4 reauthQueue:(id)a5
+- (id)_processAccountDrivenUnauthorizedFromTransaction:(id)transaction rmAccountID:(id)d reauthQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  transactionCopy = transaction;
+  dCopy = d;
+  queueCopy = queue;
+  if (dCopy)
   {
     v23 = 0;
-    v11 = [MEMORY[0x277D24610] rmAccountWithIdentifier:v9 fromStore:0 error:&v23];
+    v11 = [MEMORY[0x277D24610] rmAccountWithIdentifier:dCopy fromStore:0 error:&v23];
     v12 = v23;
     v13 = v12;
     if (v11)
     {
-      v14 = [v8 responseHeaders];
-      v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277D03368]];
+      responseHeaders = [transactionCopy responseHeaders];
+      v15 = [responseHeaders objectForKeyedSubscript:*MEMORY[0x277D03368]];
 
       v22 = 0;
       v16 = [MEMORY[0x277D24618] enrollmentMethodFromAuthenticateString:v15 outParams:&v22];
       v17 = v22;
       if (v16 > 5 || ((1 << v16) & 0x26) == 0)
       {
-        v20 = [v8 error];
+        error = [transactionCopy error];
       }
 
       else
       {
-        v19 = [v11 username];
-        v20 = [(MDMServerCore *)self _processUnauthorizedFromTransaction:v8 authParams:v17 rmAccountID:v9 rmAccountUsername:v19 reauthQueue:v10];
+        username = [v11 username];
+        error = [(MDMServerCore *)self _processUnauthorizedFromTransaction:transactionCopy authParams:v17 rmAccountID:dCopy rmAccountUsername:username reauthQueue:queueCopy];
       }
     }
 
     else
     {
-      v20 = v12;
+      error = v12;
     }
   }
 
   else
   {
-    v20 = [v8 error];
+    error = [transactionCopy error];
   }
 
-  return v20;
+  return error;
 }
 
-- (void)_executionQueueRemoveMDMProfileWithAssertion:(id)a3
+- (void)_executionQueueRemoveMDMProfileWithAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -6682,7 +6682,7 @@ LABEL_19:
   v15 = __Block_byref_object_copy__10;
   v16 = __Block_byref_object_dispose__10;
   v17 = 0;
-  v5 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__MDMServerCore__executionQueueRemoveMDMProfileWithAssertion___block_invoke;
@@ -6691,7 +6691,7 @@ LABEL_19:
   block[5] = &v22;
   block[6] = &v12;
   block[7] = &v18;
-  dispatch_async_and_wait(v5, block);
+  dispatch_async_and_wait(memberQueue, block);
 
   if (*(v19 + 24) == 1)
   {
@@ -6715,8 +6715,8 @@ LABEL_19:
     v8 = objc_opt_new();
     [v8 setProfileIdentifier:v13[5]];
     [v8 setType:0];
-    v9 = [MEMORY[0x277D04BF8] systemConnection];
-    [v9 performRequest:v8 completion:&__block_literal_global_314];
+    systemConnection = [MEMORY[0x277D04BF8] systemConnection];
+    [systemConnection performRequest:v8 completion:&__block_literal_global_314];
 
     [(MDMServerCore *)self _readConfigurationOutError:0 isUproot:1];
     [(MDMServerCore *)self _setTokenUpdateRequestCountToZero];
@@ -6777,29 +6777,29 @@ void __62__MDMServerCore__executionQueueRemoveMDMProfileWithAssertion___block_in
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_processUnauthorizedFromTransaction:(id)a3 authParams:(id)a4 rmAccountID:(id)a5 rmAccountUsername:(id)a6 reauthQueue:(id)a7
+- (id)_processUnauthorizedFromTransaction:(id)transaction authParams:(id)params rmAccountID:(id)d rmAccountUsername:(id)username reauthQueue:(id)queue
 {
   v28 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 authenticator];
-  if ([v17 conformsToProtocol:&unk_286867B08])
+  transactionCopy = transaction;
+  paramsCopy = params;
+  dCopy = d;
+  usernameCopy = username;
+  queueCopy = queue;
+  authenticator = [transactionCopy authenticator];
+  if ([authenticator conformsToProtocol:&unk_286867B08])
   {
-    if ([v17 validAuthParams:v13])
+    if ([authenticator validAuthParams:paramsCopy])
     {
-      if ([v17 canRefreshToken])
+      if ([authenticator canRefreshToken])
       {
-        [(MDMServerCore *)self _triggerRefreshTokenForTransaction:v12 authenticator:v17 authParams:v13 rmAccountID:v14 rmAccountUsername:v15 reauthQueue:v16];
+        [(MDMServerCore *)self _triggerRefreshTokenForTransaction:transactionCopy authenticator:authenticator authParams:paramsCopy rmAccountID:dCopy rmAccountUsername:usernameCopy reauthQueue:queueCopy];
       }
 
       else
       {
-        [(MDMServerCore *)self _triggerReauthenticationForTransaction:v12 authenticator:v17 authParams:v13 rmAccountID:v14 rmAccountUsername:v15];
+        [(MDMServerCore *)self _triggerReauthenticationForTransaction:transactionCopy authenticator:authenticator authParams:paramsCopy rmAccountID:dCopy rmAccountUsername:usernameCopy];
       }
-      v18 = ;
+      error = ;
       goto LABEL_12;
     }
 
@@ -6807,7 +6807,7 @@ void __62__MDMServerCore__executionQueueRemoveMDMProfileWithAssertion___block_in
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *v27 = 138543362;
-      *&v27[4] = v13;
+      *&v27[4] = paramsCopy;
       v20 = "Invalid Bearer token refresh params: %{public}@";
       v21 = v23;
       v22 = 12;
@@ -6829,49 +6829,49 @@ LABEL_10:
     }
   }
 
-  v18 = [v12 error];
+  error = [transactionCopy error];
 LABEL_12:
-  v24 = v18;
+  v24 = error;
 
   v25 = *MEMORY[0x277D85DE8];
 
   return v24;
 }
 
-- (id)_triggerReauthenticationForTransaction:(id)a3 authenticator:(id)a4 authParams:(id)a5 rmAccountID:(id)a6 rmAccountUsername:(id)a7
+- (id)_triggerReauthenticationForTransaction:(id)transaction authenticator:(id)authenticator authParams:(id)params rmAccountID:(id)d rmAccountUsername:(id)username
 {
-  v11 = a4;
-  v12 = a7;
+  authenticatorCopy = authenticator;
+  usernameCopy = username;
   v19 = 0;
-  v13 = [v11 prepareForReauthenticationWithAuthParams:a5 accountID:a6 error:&v19];
+  v13 = [authenticatorCopy prepareForReauthenticationWithAuthParams:params accountID:d error:&v19];
   v14 = v19;
   v15 = v14;
   if (v13)
   {
     objc_opt_class();
-    [(MDMServerCore *)self _presentFollowUpForAuthURL:v13 accountUsername:v12 isMAIDAccount:objc_opt_isKindOfClass() & 1];
+    [(MDMServerCore *)self _presentFollowUpForAuthURL:v13 accountUsername:usernameCopy isMAIDAccount:objc_opt_isKindOfClass() & 1];
     [(MDMServerCore *)self _postReauthFollowUpChangedNotification];
-    v16 = [MEMORY[0x277D24668] reauthRequiredThirdPartyError];
+    reauthRequiredThirdPartyError = [MEMORY[0x277D24668] reauthRequiredThirdPartyError];
   }
 
   else
   {
-    v16 = v14;
+    reauthRequiredThirdPartyError = v14;
   }
 
-  v17 = v16;
+  v17 = reauthRequiredThirdPartyError;
 
   return v17;
 }
 
-- (id)_triggerRefreshTokenForTransaction:(id)a3 authenticator:(id)a4 authParams:(id)a5 rmAccountID:(id)a6 rmAccountUsername:(id)a7 reauthQueue:(id)a8
+- (id)_triggerRefreshTokenForTransaction:(id)transaction authenticator:(id)authenticator authParams:(id)params rmAccountID:(id)d rmAccountUsername:(id)username reauthQueue:(id)queue
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  transactionCopy = transaction;
+  authenticatorCopy = authenticator;
+  paramsCopy = params;
+  dCopy = d;
+  usernameCopy = username;
+  queueCopy = queue;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -6886,18 +6886,18 @@ LABEL_12:
   v40 = &v41;
   v21 = v20;
   v39 = v21;
-  [v15 refreshTokenWithAuthParams:v16 accountID:v17 completionHandler:v38];
+  [authenticatorCopy refreshTokenWithAuthParams:paramsCopy accountID:dCopy completionHandler:v38];
   [v21 waitForCompletion];
   v22 = v42[5];
   if (v22)
   {
-    v23 = [v22 domain];
-    v24 = v23;
-    if (v23 == *MEMORY[0x277D032F0])
+    domain = [v22 domain];
+    v24 = domain;
+    if (domain == *MEMORY[0x277D032F0])
     {
-      v27 = [v42[5] code];
+      code = [v42[5] code];
 
-      if (v27 == 15009)
+      if (code == 15009)
       {
         objc_initWeak(&buf, self);
         v30[0] = MEMORY[0x277D85DD0];
@@ -6905,11 +6905,11 @@ LABEL_12:
         v30[2] = __119__MDMServerCore__triggerRefreshTokenForTransaction_authenticator_authParams_rmAccountID_rmAccountUsername_reauthQueue___block_invoke_2;
         v30[3] = &unk_27982D400;
         objc_copyWeak(&v36, &buf);
-        v31 = v14;
-        v32 = v16;
-        v33 = v17;
-        v34 = v18;
-        v35 = v19;
+        v31 = transactionCopy;
+        v32 = paramsCopy;
+        v33 = dCopy;
+        v34 = usernameCopy;
+        v35 = queueCopy;
         [(MDMServerCore *)self _listenForManagedAppleAccountLongLivedTokenChangedNotificationsOnQueue:v35 perform:v30];
         v28 = v42[5];
 
@@ -6923,7 +6923,7 @@ LABEL_12:
     {
     }
 
-    v26 = [(MDMServerCore *)self _triggerReauthenticationForTransaction:v14 authenticator:v15 authParams:v16 rmAccountID:v17 rmAccountUsername:v18];
+    error = [(MDMServerCore *)self _triggerReauthenticationForTransaction:transactionCopy authenticator:authenticatorCopy authParams:paramsCopy rmAccountID:dCopy rmAccountUsername:usernameCopy];
   }
 
   else
@@ -6936,11 +6936,11 @@ LABEL_12:
     }
 
     [(MDMServerCore *)self _clearCoreFollowup];
-    [v14 performSynchronously];
-    v26 = [v14 error];
+    [transactionCopy performSynchronously];
+    error = [transactionCopy error];
   }
 
-  v28 = v26;
+  v28 = error;
 LABEL_11:
 
   _Block_object_dispose(&v41, 8);
@@ -6966,11 +6966,11 @@ void __119__MDMServerCore__triggerRefreshTokenForTransaction_authenticator_authP
   }
 }
 
-- (void)_listenForManagedAppleAccountLongLivedTokenChangedNotificationsOnQueue:(id)a3 perform:(id)a4
+- (void)_listenForManagedAppleAccountLongLivedTokenChangedNotificationsOnQueue:(id)queue perform:(id)perform
 {
-  v6 = a4;
+  performCopy = perform;
   v7 = *MEMORY[0x277D245F0];
-  v8 = a3;
+  queueCopy = queue;
   v9 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -6983,20 +6983,20 @@ void __119__MDMServerCore__triggerRefreshTokenForTransaction_authenticator_authP
   v12[2] = __96__MDMServerCore__listenForManagedAppleAccountLongLivedTokenChangedNotificationsOnQueue_perform___block_invoke;
   v12[3] = &unk_27982CA78;
   v12[4] = self;
-  v13 = v6;
-  v10 = v6;
-  v11 = [(MDMServerCore *)self _listenForOneTimeGlobalNotification:v7 callbackQueue:v8 notificationHandler:v12];
+  v13 = performCopy;
+  v10 = performCopy;
+  v11 = [(MDMServerCore *)self _listenForOneTimeGlobalNotification:v7 callbackQueue:queueCopy notificationHandler:v12];
 
   self->_reauthMAIDNotifyToken = v11;
 }
 
-- (void)_presentFollowUpForAuthURL:(id)a3 accountUsername:(id)a4 isMAIDAccount:(BOOL)a5
+- (void)_presentFollowUpForAuthURL:(id)l accountUsername:(id)username isMAIDAccount:(BOOL)account
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  lCopy = l;
   v8 = MEMORY[0x277CCACA8];
   v9 = *MEMORY[0x277D24D60];
-  v10 = [MEMORY[0x277D03230] itemSpecifierIDForReauthAccountUsername:a4];
+  v10 = [MEMORY[0x277D03230] itemSpecifierIDForReauthAccountUsername:username];
   v11 = [v8 stringWithFormat:@"%@/%@", v9, v10];
 
   v12 = [MEMORY[0x277CBEBC0] URLWithString:v11];
@@ -7005,13 +7005,13 @@ void __119__MDMServerCore__triggerRefreshTokenForTransaction_authenticator_authP
     v13 = DMCLocalizedString();
     v14 = DMCLocalizedString();
     v15 = objc_alloc(MEMORY[0x277D032C0]);
-    v16 = [(MDMServerCore *)self daemonIdentifier];
+    daemonIdentifier = [(MDMServerCore *)self daemonIdentifier];
     v26 = @"auth-url";
-    v24 = v7;
-    v17 = [v7 absoluteString];
-    v27 = v17;
+    v24 = lCopy;
+    absoluteString = [lCopy absoluteString];
+    v27 = absoluteString;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-    v19 = [v15 initWithStyle:0 identifier:@"com.apple.devicemanagementclient.followup.reauth" clientID:v16 userInfo:v18 title:v13 message:v14 notificationTitle:v13 notificationMessage:v14 actionTitle:v13 actionURL:v12 dismissTitle:0 dismissURL:0];
+    v19 = [v15 initWithStyle:0 identifier:@"com.apple.devicemanagementclient.followup.reauth" clientID:daemonIdentifier userInfo:v18 title:v13 message:v14 notificationTitle:v13 notificationMessage:v14 actionTitle:v13 actionURL:v12 dismissTitle:0 dismissURL:0];
 
     v25 = 0;
     [v19 presentAndReturnError:&v25];
@@ -7027,7 +7027,7 @@ void __119__MDMServerCore__triggerRefreshTokenForTransaction_authenticator_authP
       }
     }
 
-    v7 = v24;
+    lCopy = v24;
   }
 
   else
@@ -7048,9 +7048,9 @@ void __119__MDMServerCore__triggerRefreshTokenForTransaction_authenticator_authP
 {
   v10 = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D032C0];
-  v3 = [(MDMServerCore *)self daemonIdentifier];
+  daemonIdentifier = [(MDMServerCore *)self daemonIdentifier];
   v7 = 0;
-  [v2 clearWithClientID:v3 error:&v7];
+  [v2 clearWithClientID:daemonIdentifier error:&v7];
   v4 = v7;
 
   if (v4)
@@ -7069,14 +7069,14 @@ void __119__MDMServerCore__triggerRefreshTokenForTransaction_authenticator_authP
 
 - (void)_postReauthFollowUpChangedNotification
 {
-  v2 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v2 postNotificationName:*MEMORY[0x277D24CC8] object:0];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277D24CC8] object:0];
 }
 
-- (void)_memberQueueInactivityTaskFired:(id)a3
+- (void)_memberQueueInactivityTaskFired:(id)fired
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  firedCopy = fired;
   v5 = *(DMCLogObjects() + 48);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -7098,12 +7098,12 @@ void __119__MDMServerCore__triggerRefreshTokenForTransaction_authenticator_authP
   }
 
   v7 = v6;
-  v8 = [(MDMServerCore *)self rrtsLastInactivityTime];
+  rrtsLastInactivityTime = [(MDMServerCore *)self rrtsLastInactivityTime];
   v9 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
   v10 = v9;
-  if (v9 > v8)
+  if (v9 > rrtsLastInactivityTime)
   {
-    v11 = (v9 - v8) / 0x3B9ACA00;
+    v11 = (v9 - rrtsLastInactivityTime) / 0x3B9ACA00;
   }
 
   else
@@ -7115,7 +7115,7 @@ void __119__MDMServerCore__triggerRefreshTokenForTransaction_authenticator_authP
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v28 = *&v8;
+    v28 = *&rrtsLastInactivityTime;
     v29 = 2048;
     v30 = *&v10;
     _os_log_impl(&dword_2561F5000, v12, OS_LOG_TYPE_DEFAULT, "Last idle time: %llus; now: %llus", buf, 0x16u);
@@ -7142,7 +7142,7 @@ void __119__MDMServerCore__triggerRefreshTokenForTransaction_authenticator_authP
 
     [(MDMServerCore *)self _memberQueueRRTSTimeoutReached];
 LABEL_17:
-    [v4 setCompleted];
+    [firedCopy setCompleted];
     [(MDMServerCore *)self setRrtsInactivityTaskScheduled:0];
     goto LABEL_29;
   }
@@ -7172,7 +7172,7 @@ LABEL_17:
   }
 
   v26 = 0;
-  v21 = [v4 extendForInterval:&v26 error:v18];
+  v21 = [firedCopy extendForInterval:&v26 error:v18];
   v22 = v26;
   if ((v21 & 1) == 0)
   {
@@ -7198,26 +7198,26 @@ LABEL_29:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_memberQueueScheduleRRTSInactivityTaskWithInterval:(double)a3
+- (void)_memberQueueScheduleRRTSInactivityTaskWithInterval:(double)interval
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = *(DMCLogObjects() + 48);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v11 = a3;
+    intervalCopy = interval;
     _os_log_impl(&dword_2561F5000, v5, OS_LOG_TYPE_DEFAULT, "Scheduling idle timeout task with interval: %f", buf, 0xCu);
   }
 
-  [(MDMServerCore *)self setRrtsIdleTimeout:a3];
+  [(MDMServerCore *)self setRrtsIdleTimeout:interval];
   objc_initWeak(buf, self);
-  v6 = [(MDMServerCore *)self rrtsIdleTimeoutTask];
+  rrtsIdleTimeoutTask = [(MDMServerCore *)self rrtsIdleTimeoutTask];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __68__MDMServerCore__memberQueueScheduleRRTSInactivityTaskWithInterval___block_invoke;
   v8[3] = &unk_27982D428;
   objc_copyWeak(&v9, buf);
-  [v6 submitRequestWithInterval:24 tolerance:v8 requirements:a3 completion:5.0];
+  [rrtsIdleTimeoutTask submitRequestWithInterval:24 tolerance:v8 requirements:interval completion:5.0];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(buf);
@@ -7235,7 +7235,7 @@ void __68__MDMServerCore__memberQueueScheduleRRTSInactivityTaskWithInterval___bl
   }
 }
 
-- (void)_memberQueueDeviceDidBecomeIdleWithTimeoutInterval:(double)a3
+- (void)_memberQueueDeviceDidBecomeIdleWithTimeoutInterval:(double)interval
 {
   v5 = *(DMCLogObjects() + 48);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -7248,7 +7248,7 @@ void __68__MDMServerCore__memberQueueScheduleRRTSInactivityTaskWithInterval___bl
   if ([(MDMServerCore *)self isRRTSInactivityTaskScheduled])
   {
     [(MDMServerCore *)self rrtsIdleTimeout];
-    if (v6 > a3 + 5.0)
+    if (v6 > interval + 5.0)
     {
       v7 = *(DMCLogObjects() + 48);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -7257,16 +7257,16 @@ void __68__MDMServerCore__memberQueueScheduleRRTSInactivityTaskWithInterval___bl
         _os_log_impl(&dword_2561F5000, v7, OS_LOG_TYPE_DEFAULT, "Current active timeout task is significantly longer than the current timeout; cancelling. This may result in extended timeout delays", v9, 2u);
       }
 
-      v8 = [(MDMServerCore *)self rrtsIdleTimeoutTask];
-      [v8 cancel];
+      rrtsIdleTimeoutTask = [(MDMServerCore *)self rrtsIdleTimeoutTask];
+      [rrtsIdleTimeoutTask cancel];
 
-      [(MDMServerCore *)self _memberQueueScheduleRRTSInactivityTaskWithInterval:a3];
+      [(MDMServerCore *)self _memberQueueScheduleRRTSInactivityTaskWithInterval:interval];
     }
   }
 
   else
   {
-    [(MDMServerCore *)self _memberQueueScheduleRRTSInactivityTaskWithInterval:a3];
+    [(MDMServerCore *)self _memberQueueScheduleRRTSInactivityTaskWithInterval:interval];
     [(MDMServerCore *)self setRrtsInactivityTaskScheduled:1];
   }
 }
@@ -7287,13 +7287,13 @@ void __68__MDMServerCore__memberQueueScheduleRRTSInactivityTaskWithInterval___bl
 {
   if ([MEMORY[0x277D034F8] isRRTSMDMTimeoutEnabled])
   {
-    v3 = [MEMORY[0x277D24640] sharedConfiguration];
-    [v3 refreshDetailsFromDisk];
+    mEMORY[0x277D24640] = [MEMORY[0x277D24640] sharedConfiguration];
+    [mEMORY[0x277D24640] refreshDetailsFromDisk];
 
-    v4 = [MEMORY[0x277D24640] sharedConfiguration];
-    v5 = [v4 isRapidReturnToService];
+    mEMORY[0x277D24640]2 = [MEMORY[0x277D24640] sharedConfiguration];
+    isRapidReturnToService = [mEMORY[0x277D24640]2 isRapidReturnToService];
 
-    if (v5)
+    if (isRapidReturnToService)
     {
       v6 = *(DMCLogObjects() + 48);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -7310,7 +7310,7 @@ void __68__MDMServerCore__memberQueueScheduleRRTSInactivityTaskWithInterval___bl
         _os_log_impl(&dword_2561F5000, v7, OS_LOG_TYPE_DEFAULT, "Registering for IOKit power notifications", buf, 2u);
       }
 
-      v8 = [(MDMServerCore *)self memberQueue];
+      memberQueue = [(MDMServerCore *)self memberQueue];
       self->_userActivityHandle = IOPMScheduleUserActivityLevelNotificationWithTimeout();
 
       v9 = *(DMCLogObjects() + 48);
@@ -7371,8 +7371,8 @@ LABEL_10:
 {
   if (!self->_isObservingReachability)
   {
-    v3 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-    [v3 addNetworkReachableObserver:self selector:sel__networkReachabilityDidChange];
+    mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+    [mEMORY[0x277CEC5B8] addNetworkReachableObserver:self selector:sel__networkReachabilityDidChange];
 
     self->_isObservingReachability = 1;
   }
@@ -7380,13 +7380,13 @@ LABEL_10:
   if (self->_keybagEventToken == -1 && (![MEMORY[0x277D03538] isSharediPad] || objc_msgSend(MEMORY[0x277D03538], "inSharediPadUserSession")))
   {
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:*MEMORY[0x277D28B30]];
-    v5 = [(MDMServerCore *)self memberQueue];
+    memberQueue = [(MDMServerCore *)self memberQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __63__MDMServerCore__memberQueueStartListeningForInterestingEvents__block_invoke;
     v9[3] = &unk_27982CC38;
     v9[4] = self;
-    [(MDMServerCore *)self _registerForDispatchNotification:v4 outToken:&self->_keybagEventToken targetQueue:v5 handler:v9];
+    [(MDMServerCore *)self _registerForDispatchNotification:v4 outToken:&self->_keybagEventToken targetQueue:memberQueue handler:v9];
   }
 
   if (self->_buddyDoneEventToken == -1)
@@ -7394,13 +7394,13 @@ LABEL_10:
     v6 = DMCBYSetupAssistantFinishedDarwinNotification();
     if (v6)
     {
-      v7 = [(MDMServerCore *)self memberQueue];
+      memberQueue2 = [(MDMServerCore *)self memberQueue];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __63__MDMServerCore__memberQueueStartListeningForInterestingEvents__block_invoke_2;
       v8[3] = &unk_27982CC38;
       v8[4] = self;
-      [(MDMServerCore *)self _registerForDispatchNotification:v6 outToken:&self->_buddyDoneEventToken targetQueue:v7 handler:v8];
+      [(MDMServerCore *)self _registerForDispatchNotification:v6 outToken:&self->_buddyDoneEventToken targetQueue:memberQueue2 handler:v8];
     }
   }
 
@@ -7440,8 +7440,8 @@ LABEL_10:
       _os_log_impl(&dword_2561F5000, v6, OS_LOG_TYPE_DEFAULT, "Unregistering Rapid Return to Service Background tasks.", v8, 2u);
     }
 
-    v7 = [(MDMServerCore *)self rrtsIdleTimeoutTask];
-    [v7 cancel];
+    rrtsIdleTimeoutTask = [(MDMServerCore *)self rrtsIdleTimeoutTask];
+    [rrtsIdleTimeoutTask cancel];
   }
 }
 
@@ -7449,8 +7449,8 @@ LABEL_10:
 {
   if (self->_isObservingReachability)
   {
-    v3 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-    [v3 removeNetworkReachableObserver:self];
+    mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+    [mEMORY[0x277CEC5B8] removeNetworkReachableObserver:self];
 
     self->_isObservingReachability = 0;
   }
@@ -7478,13 +7478,13 @@ LABEL_10:
 
 - (void)_memberQueueRRTSTimeoutReached
 {
-  v3 = [MEMORY[0x277D24640] sharedConfiguration];
-  [v3 refreshDetailsFromDisk];
+  mEMORY[0x277D24640] = [MEMORY[0x277D24640] sharedConfiguration];
+  [mEMORY[0x277D24640] refreshDetailsFromDisk];
 
-  v4 = [MEMORY[0x277D24640] sharedConfiguration];
-  v5 = [v4 isRapidReturnToService];
+  mEMORY[0x277D24640]2 = [MEMORY[0x277D24640] sharedConfiguration];
+  isRapidReturnToService = [mEMORY[0x277D24640]2 isRapidReturnToService];
 
-  if (!v5)
+  if (!isRapidReturnToService)
   {
     v8 = *(DMCLogObjects() + 48);
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -7502,13 +7502,13 @@ LABEL_10:
   [MEMORY[0x277D03538] temporarySessionTimeout];
   if (v6 > 0.0)
   {
-    v7 = [(MDMServerCore *)self jobQueue];
+    jobQueue = [(MDMServerCore *)self jobQueue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __47__MDMServerCore__memberQueueRRTSTimeoutReached__block_invoke;
     v14[3] = &unk_27982CCB0;
     v14[4] = self;
-    [v7 fromFunction:"-[MDMServerCore _memberQueueRRTSTimeoutReached]" enqueueJob:v14];
+    [jobQueue fromFunction:"-[MDMServerCore _memberQueueRRTSTimeoutReached]" enqueueJob:v14];
 
     return;
   }
@@ -7621,13 +7621,13 @@ void __47__MDMServerCore__memberQueueRRTSTimeoutReached__block_invoke_367(uint64
     _os_log_impl(&dword_2561F5000, v3, OS_LOG_TYPE_DEFAULT, "Network reachability has changed.", buf, 2u);
   }
 
-  v4 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __46__MDMServerCore__networkReachabilityDidChange__block_invoke;
   v5[3] = &unk_27982CCB0;
   v5[4] = self;
-  [v4 fromFunction:"-[MDMServerCore _networkReachabilityDidChange]" enqueueJob:v5];
+  [jobQueue fromFunction:"-[MDMServerCore _networkReachabilityDidChange]" enqueueJob:v5];
 }
 
 void __46__MDMServerCore__networkReachabilityDidChange__block_invoke(uint64_t a1, void *a2)
@@ -7655,13 +7655,13 @@ void __46__MDMServerCore__networkReachabilityDidChange__block_invoke(uint64_t a1
   if ((DMCIsDeviceLocked() & 1) == 0)
   {
     v4 = dispatch_time(0, 3000000000);
-    v5 = [(MDMServerCore *)self memberQueue];
+    memberQueue = [(MDMServerCore *)self memberQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __38__MDMServerCore__keybagStateDidChange__block_invoke;
     block[3] = &unk_27982BA78;
     block[4] = self;
-    dispatch_after(v4, v5, block);
+    dispatch_after(v4, memberQueue, block);
   }
 }
 
@@ -7698,13 +7698,13 @@ void __38__MDMServerCore__keybagStateDidChange__block_invoke_2(uint64_t a1, void
     _os_log_impl(&dword_2561F5000, v3, OS_LOG_TYPE_DEFAULT, "Buddy did finish.", buf, 2u);
   }
 
-  v4 = [(MDMServerCore *)self jobQueue];
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __31__MDMServerCore_buddyDidFinish__block_invoke;
   v5[3] = &unk_27982CCB0;
   v5[4] = self;
-  [v4 fromFunction:"-[MDMServerCore buddyDidFinish]" enqueueJob:v5];
+  [jobQueue fromFunction:"-[MDMServerCore buddyDidFinish]" enqueueJob:v5];
 }
 
 void __31__MDMServerCore_buddyDidFinish__block_invoke(uint64_t a1, void *a2)
@@ -7720,14 +7720,14 @@ void __31__MDMServerCore_buddyDidFinish__block_invoke(uint64_t a1, void *a2)
   [v4 _pollFromServerIfNeeded:0 isReachabilityEvent:1 completionHandler:v6];
 }
 
-- (unsigned)_registerForDispatchNotification:(id)a3 outToken:(int *)a4 targetQueue:(id)a5 handler:(id)a6
+- (unsigned)_registerForDispatchNotification:(id)notification outToken:(int *)token targetQueue:(id)queue handler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  LODWORD(a4) = notify_register_dispatch([a3 UTF8String], a4, v12, v11);
+  notificationCopy = notification;
+  handlerCopy = handler;
+  queueCopy = queue;
+  LODWORD(token) = notify_register_dispatch([notification UTF8String], token, queueCopy, handlerCopy);
 
-  return a4;
+  return token;
 }
 
 - (void)_clearMAIDNotification
@@ -7769,7 +7769,7 @@ LABEL_7:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_currentLocaleDidChange:(id)a3
+- (void)_currentLocaleDidChange:(id)change
 {
   v3 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -7813,13 +7813,13 @@ LABEL_7:
   return v5;
 }
 
-- (id)_createEmptyTokenErrorWithUnderlyingError:(id)a3
+- (id)_createEmptyTokenErrorWithUnderlyingError:(id)error
 {
   v3 = MEMORY[0x277CCA9B8];
   v4 = *MEMORY[0x277D032F0];
-  v5 = a3;
+  errorCopy = error;
   v6 = DMCErrorArray();
-  v7 = [v3 DMCErrorWithDomain:v4 code:15033 descriptionArray:v6 underlyingError:v5 errorType:{*MEMORY[0x277D032F8], 0}];
+  v7 = [v3 DMCErrorWithDomain:v4 code:15033 descriptionArray:v6 underlyingError:errorCopy errorType:{*MEMORY[0x277D032F8], 0}];
 
   return v7;
 }
@@ -7838,34 +7838,34 @@ LABEL_7:
 {
   if (([MEMORY[0x277D03538] isSharediPad] & 1) == 0)
   {
-    v3 = [(MDMServerCore *)self memberQueue];
+    memberQueue = [(MDMServerCore *)self memberQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __46__MDMServerCore__pollOrScheduleNextPollForHRN__block_invoke;
     block[3] = &unk_27982BA78;
     block[4] = self;
-    dispatch_async_and_wait(v3, block);
+    dispatch_async_and_wait(memberQueue, block);
   }
 }
 
-- (void)_memberQueuePollOrScheduleNextPollForHRNFromBackgroundTask:(id)a3
+- (void)_memberQueuePollOrScheduleNextPollForHRNFromBackgroundTask:(id)task
 {
-  v4 = a3;
-  v5 = [(MDMServerCore *)self memberQueuePollingInterval];
-  v6 = [v5 unsignedIntegerValue];
+  taskCopy = task;
+  memberQueuePollingInterval = [(MDMServerCore *)self memberQueuePollingInterval];
+  unsignedIntegerValue = [memberQueuePollingInterval unsignedIntegerValue];
 
-  if (v6)
+  if (unsignedIntegerValue)
   {
     v7 = MEMORY[0x259C5F2C0]();
     v8 = TMGetRTCResetCount();
-    v9 = [(MDMServerCore *)self memberQueueLastPollingAttemptMonotonicTime];
-    [v9 doubleValue];
+    memberQueueLastPollingAttemptMonotonicTime = [(MDMServerCore *)self memberQueueLastPollingAttemptMonotonicTime];
+    [memberQueueLastPollingAttemptMonotonicTime doubleValue];
     v11 = v10;
-    v12 = [(MDMServerCore *)self memberQueueLastPollingAttemptRTCResetCount];
-    v13 = [v12 unsignedIntValue];
+    memberQueueLastPollingAttemptRTCResetCount = [(MDMServerCore *)self memberQueueLastPollingAttemptRTCResetCount];
+    unsignedIntValue = [memberQueueLastPollingAttemptRTCResetCount unsignedIntValue];
     v14 = *(DMCLogObjects() + 8);
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
-    if (v9 && v12 && v8 == v13 && (v16 = v11 + (60 * v6), v16 > v7))
+    if (memberQueueLastPollingAttemptMonotonicTime && memberQueueLastPollingAttemptRTCResetCount && v8 == unsignedIntValue && (v16 = v11 + (60 * unsignedIntegerValue), v16 > v7))
     {
       if (v15)
       {
@@ -7873,7 +7873,7 @@ LABEL_7:
         _os_log_impl(&dword_2561F5000, v14, OS_LOG_TYPE_INFO, "MDMServerCore HRN scheduling next poll...", buf, 2u);
       }
 
-      [v4 setCompleted];
+      [taskCopy setCompleted];
       [(MDMServerCore *)self _scheduleNextPollWithInterval:v16 - v7];
     }
 
@@ -7885,20 +7885,20 @@ LABEL_7:
         _os_log_impl(&dword_2561F5000, v14, OS_LOG_TYPE_INFO, "MDMServerCore HRN polling now...", buf, 2u);
       }
 
-      v17 = [(MDMServerCore *)self jobQueue];
+      jobQueue = [(MDMServerCore *)self jobQueue];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __76__MDMServerCore__memberQueuePollOrScheduleNextPollForHRNFromBackgroundTask___block_invoke;
       v18[3] = &unk_27982CC60;
       v18[4] = self;
-      v19 = v4;
-      [v17 fromFunction:"-[MDMServerCore _memberQueuePollOrScheduleNextPollForHRNFromBackgroundTask:]" enqueueJob:v18];
+      v19 = taskCopy;
+      [jobQueue fromFunction:"-[MDMServerCore _memberQueuePollOrScheduleNextPollForHRNFromBackgroundTask:]" enqueueJob:v18];
     }
   }
 
   else
   {
-    [v4 setCompleted];
+    [taskCopy setCompleted];
   }
 }
 
@@ -7924,33 +7924,33 @@ uint64_t __76__MDMServerCore__memberQueuePollOrScheduleNextPollForHRNFromBackgro
   return [v2 setCompleted];
 }
 
-- (void)_scheduleNextPollWithInterval:(double)a3
+- (void)_scheduleNextPollWithInterval:(double)interval
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [(MDMServerCore *)self pollTask];
-  [v5 targetDate];
+  pollTask = [(MDMServerCore *)self pollTask];
+  [pollTask targetDate];
   v6 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 
-  if (v6 == 0.0 || ([MEMORY[0x277CBEAA8] now], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "dateByAddingTimeInterval:", a3), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "compare:", *&v6), v8, v7, v9 != 1))
+  if (v6 == 0.0 || ([MEMORY[0x277CBEAA8] now], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "dateByAddingTimeInterval:", interval), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "compare:", *&v6), v8, v7, v9 != 1))
   {
     v11 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349312;
-      v17 = a3;
+      intervalCopy2 = interval;
       v18 = 2050;
-      v19 = a3 * 0.1;
+      v19 = interval * 0.1;
       _os_log_impl(&dword_2561F5000, v11, OS_LOG_TYPE_DEFAULT, "MDMServerCore scheduling poll in %{public}f (+%{public}f) seconds.", buf, 0x16u);
     }
 
     objc_initWeak(buf, self);
-    v12 = [(MDMServerCore *)self pollTask];
+    pollTask2 = [(MDMServerCore *)self pollTask];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __47__MDMServerCore__scheduleNextPollWithInterval___block_invoke;
     v14[3] = &unk_27982D428;
     objc_copyWeak(&v15, buf);
-    [v12 submitRequestWithInterval:4 tolerance:v14 requirements:a3 completion:a3 * 0.1];
+    [pollTask2 submitRequestWithInterval:4 tolerance:v14 requirements:interval completion:interval * 0.1];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(buf);
@@ -7962,7 +7962,7 @@ uint64_t __76__MDMServerCore__memberQueuePollOrScheduleNextPollForHRNFromBackgro
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349314;
-      v17 = a3;
+      intervalCopy2 = interval;
       v18 = 2114;
       v19 = v6;
       _os_log_impl(&dword_2561F5000, v10, OS_LOG_TYPE_DEFAULT, "MDMServerCore ignoring excessive poll scheduling (in %{public}f seconds). Next poll expected at: %{public}@.", buf, 0x16u);
@@ -7983,18 +7983,18 @@ void __47__MDMServerCore__scheduleNextPollWithInterval___block_invoke(uint64_t a
   }
 }
 
-- (void)_backgroundPollFromTask:(id)a3
+- (void)_backgroundPollFromTask:(id)task
 {
-  v4 = a3;
-  v5 = [(MDMServerCore *)self jobQueue];
+  taskCopy = task;
+  jobQueue = [(MDMServerCore *)self jobQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__MDMServerCore__backgroundPollFromTask___block_invoke;
   v7[3] = &unk_27982BAC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 queueBlock:v7];
+  v8 = taskCopy;
+  v6 = taskCopy;
+  [jobQueue queueBlock:v7];
 }
 
 void __41__MDMServerCore__backgroundPollFromTask___block_invoke(uint64_t a1)
@@ -8060,14 +8060,14 @@ uint64_t __41__MDMServerCore__backgroundPollFromTask___block_invoke_4(uint64_t a
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v3 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __34__MDMServerCore__pollingSucceeded__block_invoke;
   v4[3] = &unk_27982BB40;
   v4[4] = self;
   v4[5] = &v5;
-  dispatch_async_and_wait(v3, v4);
+  dispatch_async_and_wait(memberQueue, v4);
 
   if (*(v6 + 24) == 1)
   {
@@ -8087,34 +8087,34 @@ void __34__MDMServerCore__pollingSucceeded__block_invoke(uint64_t a1)
 
 - (void)_setLastPollingAttempt
 {
-  v3 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__MDMServerCore__setLastPollingAttempt__block_invoke;
   block[3] = &unk_27982BA78;
   block[4] = self;
-  dispatch_async_and_wait(v3, block);
+  dispatch_async_and_wait(memberQueue, block);
 }
 
 - (void)_setLastPollingSuccess
 {
-  v3 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__MDMServerCore__setLastPollingSuccess__block_invoke;
   block[3] = &unk_27982BA78;
   block[4] = self;
-  dispatch_async_and_wait(v3, block);
+  dispatch_async_and_wait(memberQueue, block);
 }
 
 - (void)_memberQueueSetLastPollingSuccess
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v4 = MEMORY[0x259C5F2C0]();
   v5 = TMGetRTCResetCount();
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:v4];
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v5];
-  [(MDMServerCore *)self setMemberQueueLastPollingSuccess:v3];
+  [(MDMServerCore *)self setMemberQueueLastPollingSuccess:date];
   [(MDMServerCore *)self setMemberQueueLastPollingSuccessMonotonicTime:v6];
   [(MDMServerCore *)self setMemberQueueLastPollingSuccessRTCResetCount:v7];
   v8 = [MEMORY[0x277D24650] sharedConfigurationForChannel:{-[MDMServerCore channelType](self, "channelType")}];
@@ -8122,12 +8122,12 @@ void __34__MDMServerCore__pollingSucceeded__block_invoke(uint64_t a1)
   v12[1] = 3221225472;
   v12[2] = __50__MDMServerCore__memberQueueSetLastPollingSuccess__block_invoke;
   v12[3] = &unk_27982D478;
-  v13 = v3;
+  v13 = date;
   v14 = v6;
   v15 = v7;
   v9 = v7;
   v10 = v6;
-  v11 = v3;
+  v11 = date;
   [v8 updateMDMConfigurationWithCreateIfNeeded:1 updateBlock:v12 error:0];
 }
 
@@ -8143,12 +8143,12 @@ void __50__MDMServerCore__memberQueueSetLastPollingSuccess__block_invoke(void *a
 
 - (void)_memberQueueSetLastPollingAttempt
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v4 = MEMORY[0x259C5F2C0]();
   v5 = TMGetRTCResetCount();
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:v4];
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v5];
-  [(MDMServerCore *)self setMemberQueueLastPollingAttempt:v3];
+  [(MDMServerCore *)self setMemberQueueLastPollingAttempt:date];
   [(MDMServerCore *)self setMemberQueueLastPollingAttemptMonotonicTime:v6];
   [(MDMServerCore *)self setMemberQueueLastPollingAttemptRTCResetCount:v7];
   v8 = [MEMORY[0x277D24650] sharedConfigurationForChannel:{-[MDMServerCore channelType](self, "channelType")}];
@@ -8156,12 +8156,12 @@ void __50__MDMServerCore__memberQueueSetLastPollingSuccess__block_invoke(void *a
   v12[1] = 3221225472;
   v12[2] = __50__MDMServerCore__memberQueueSetLastPollingAttempt__block_invoke;
   v12[3] = &unk_27982D478;
-  v13 = v3;
+  v13 = date;
   v14 = v6;
   v15 = v7;
   v9 = v7;
   v10 = v6;
-  v11 = v3;
+  v11 = date;
   [v8 updateMDMConfigurationWithCreateIfNeeded:1 updateBlock:v12 error:0];
 }
 
@@ -8184,7 +8184,7 @@ void __50__MDMServerCore__memberQueueSetLastPollingAttempt__block_invoke(void *a
     v14 = 0x2020000000;
     v15 = 0;
     v3 = dispatch_block_create(0, &__block_literal_global_380);
-    v4 = [MEMORY[0x277D77BF8] sharedManager];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
     v6 = MEMORY[0x277D85DD0];
     v7 = 3221225472;
     v8 = __49__MDMServerCore__registerAsUserSwitchStakeholder__block_invoke_2;
@@ -8192,7 +8192,7 @@ void __50__MDMServerCore__memberQueueSetLastPollingAttempt__block_invoke(void *a
     v11 = &v12;
     v5 = v3;
     v10 = v5;
-    [v4 registerUserSwitchStakeHolder:self completionHandler:&v6];
+    [mEMORY[0x277D77BF8] registerUserSwitchStakeHolder:self completionHandler:&v6];
 
     dispatch_block_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
     [(MDMServerCore *)self setMemberQueueUserSwitchAlreadyInitiated:*(v13 + 24), v6, v7, v8, v9];
@@ -8229,15 +8229,15 @@ void __49__MDMServerCore__registerAsUserSwitchStakeholder__block_invoke_2(uint64
 {
   v18 = *MEMORY[0x277D85DE8];
   [(MDMServerCore *)self setUserSwitchAlreadyInitiated:1];
-  v2 = [MEMORY[0x277D035A0] assertionDescriptions];
-  if (v2)
+  assertionDescriptions = [MEMORY[0x277D035A0] assertionDescriptions];
+  if (assertionDescriptions)
   {
     v3 = objc_opt_new();
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = v2;
+    v4 = assertionDescriptions;
     v5 = [v4 countByEnumeratingWithState:&v11 objects:v17 count:16];
     if (v5)
     {
@@ -8278,25 +8278,25 @@ void __49__MDMServerCore__registerAsUserSwitchStakeholder__block_invoke_2(uint64
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_eraseWatchFailedWithUnderlayingError:(id)a3
+- (id)_eraseWatchFailedWithUnderlayingError:(id)error
 {
   v3 = MEMORY[0x277CCA9B8];
   v4 = *MEMORY[0x277D03480];
-  v5 = a3;
+  errorCopy = error;
   v6 = DMCErrorArray();
-  v7 = [v3 DMCErrorWithDomain:v4 code:12089 descriptionArray:v6 underlyingError:v5 errorType:{*MEMORY[0x277D032F8], 0}];
+  v7 = [v3 DMCErrorWithDomain:v4 code:12089 descriptionArray:v6 underlyingError:errorCopy errorType:{*MEMORY[0x277D032F8], 0}];
 
   return v7;
 }
 
-- (id)_mdmOutstandingActivitiesFilePathForChannelType:(unint64_t)a3
+- (id)_mdmOutstandingActivitiesFilePathForChannelType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     self = MDMUserOutstandingActivitiesFilePath();
   }
 
-  else if (!a3)
+  else if (!type)
   {
     self = MDMOutstandingActivitiesFilePath();
   }
@@ -8304,14 +8304,14 @@ void __49__MDMServerCore__registerAsUserSwitchStakeholder__block_invoke_2(uint64
   return self;
 }
 
-- (id)_mdmFilePathForChannelType:(unint64_t)a3
+- (id)_mdmFilePathForChannelType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     self = MDMUserFilePath();
   }
 
-  else if (!a3)
+  else if (!type)
   {
     self = MDMFilePath();
   }
@@ -8319,14 +8319,14 @@ void __49__MDMServerCore__registerAsUserSwitchStakeholder__block_invoke_2(uint64
   return self;
 }
 
-- (id)_mdmPropertiesFilePathForChannelType:(unint64_t)a3
+- (id)_mdmPropertiesFilePathForChannelType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     self = MDMPropertiesUserFilePath();
   }
 
-  else if (!a3)
+  else if (!type)
   {
     self = MDMPropertiesFilePath();
   }
@@ -8334,9 +8334,9 @@ void __49__MDMServerCore__registerAsUserSwitchStakeholder__block_invoke_2(uint64
   return self;
 }
 
-- (id)_prefixNameForChannelType:(unint64_t)a3
+- (id)_prefixNameForChannelType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     return @"mdmuserd";
   }
@@ -8347,20 +8347,20 @@ void __49__MDMServerCore__registerAsUserSwitchStakeholder__block_invoke_2(uint64
   }
 }
 
-- (id)_reasonStringWithReason:(id)a3
+- (id)_reasonStringWithReason:(id)reason
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
+  reasonCopy = reason;
   v6 = [(MDMServerCore *)self _prefixNameForChannelType:[(MDMServerCore *)self channelType]];
-  v7 = [v4 stringWithFormat:@"%@-%@", v6, v5];
+  reasonCopy = [v4 stringWithFormat:@"%@-%@", v6, reasonCopy];
 
-  return v7;
+  return reasonCopy;
 }
 
-- (id)_requiredServerCapabilityForMessageType:(id)a3
+- (id)_requiredServerCapabilityForMessageType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277D24918]])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x277D24918]])
   {
     v4 = MEMORY[0x277D24788];
 LABEL_5:
@@ -8368,7 +8368,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277D24908]])
+  if ([typeCopy isEqualToString:*MEMORY[0x277D24908]])
   {
     v4 = MEMORY[0x277D24D90];
     goto LABEL_5;
@@ -8380,27 +8380,27 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)_serverHasCapabilityForMessageType:(id)a3
+- (BOOL)_serverHasCapabilityForMessageType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__MDMServerCore__serverHasCapabilityForMessageType___block_invoke;
   block[3] = &unk_27982CD50;
   block[4] = self;
-  v9 = v4;
+  v9 = typeCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_async_and_wait(v5, block);
+  v6 = typeCopy;
+  dispatch_async_and_wait(memberQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(typeCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return typeCopy;
 }
 
 void __52__MDMServerCore__serverHasCapabilityForMessageType___block_invoke(uint64_t a1)
@@ -8424,38 +8424,38 @@ void __52__MDMServerCore__serverHasCapabilityForMessageType___block_invoke(uint6
 - (id)_userEnrollmentAuthenticationDict
 {
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x277D03530] marketingVersion];
-  [v2 DMCSetObjectIfNotNil:v3 forKey:*MEMORY[0x277D248D0]];
+  marketingVersion = [MEMORY[0x277D03530] marketingVersion];
+  [v2 DMCSetObjectIfNotNil:marketingVersion forKey:*MEMORY[0x277D248D0]];
 
-  v4 = [MEMORY[0x277D03530] buildVersion];
-  [v2 DMCSetObjectIfNotNil:v4 forKey:*MEMORY[0x277D248C8]];
+  buildVersion = [MEMORY[0x277D03530] buildVersion];
+  [v2 DMCSetObjectIfNotNil:buildVersion forKey:*MEMORY[0x277D248C8]];
 
   v5 = MEMORY[0x277D03500];
-  v6 = [MEMORY[0x277D03530] productType];
-  v7 = [v5 productNameWithDefaultValue:v6];
+  productType = [MEMORY[0x277D03530] productType];
+  v7 = [v5 productNameWithDefaultValue:productType];
   [v2 DMCSetObjectIfNotNil:v7 forKey:*MEMORY[0x277D248E0]];
 
   return v2;
 }
 
-- (void)_sendCheckInRequestAndHandleErrorForMessageType:(id)a3 requestDict:(id)a4 completionHandler:(id)a5
+- (void)_sendCheckInRequestAndHandleErrorForMessageType:(id)type requestDict:(id)dict completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MDMServerCore *)self checkInQueue];
+  typeCopy = type;
+  dictCopy = dict;
+  handlerCopy = handler;
+  checkInQueue = [(MDMServerCore *)self checkInQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __95__MDMServerCore__sendCheckInRequestAndHandleErrorForMessageType_requestDict_completionHandler___block_invoke;
   v15[3] = &unk_27982D4F0;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = typeCopy;
+  selfCopy = self;
+  v18 = dictCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = dictCopy;
+  v14 = typeCopy;
+  dispatch_async(checkInQueue, v15);
 }
 
 void __95__MDMServerCore__sendCheckInRequestAndHandleErrorForMessageType_requestDict_completionHandler___block_invoke(uint64_t a1)
@@ -8520,18 +8520,18 @@ void __95__MDMServerCore__sendCheckInRequestAndHandleErrorForMessageType_request
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)_makeGetTokenRequestWithRequestDict:(id)a3 completionHandler:(id)a4
+- (void)_makeGetTokenRequestWithRequestDict:(id)dict completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = *MEMORY[0x277D24908];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__MDMServerCore__makeGetTokenRequestWithRequestDict_completionHandler___block_invoke;
   v9[3] = &unk_27982D518;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [(MDMServerCore *)self _sendCheckInRequestAndHandleErrorForMessageType:v7 requestDict:a3 completionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [(MDMServerCore *)self _sendCheckInRequestAndHandleErrorForMessageType:v7 requestDict:dict completionHandler:v9];
 }
 
 void __71__MDMServerCore__makeGetTokenRequestWithRequestDict_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -8605,14 +8605,14 @@ void __71__MDMServerCore__makeGetTokenRequestWithRequestDict_completionHandler__
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__MDMServerCore__tokenUpdateCount__block_invoke;
   v6[3] = &unk_27982BB40;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(memberQueue, v6);
 
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -8628,13 +8628,13 @@ uint64_t __34__MDMServerCore__tokenUpdateCount__block_invoke(uint64_t a1)
 
 - (void)_setTokenUpdateRequestCountToZero
 {
-  v3 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__MDMServerCore__setTokenUpdateRequestCountToZero__block_invoke;
   block[3] = &unk_27982BA78;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(memberQueue, block);
 }
 
 - (int64_t)_tokenUpdateRetryCount
@@ -8643,14 +8643,14 @@ uint64_t __34__MDMServerCore__tokenUpdateCount__block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__MDMServerCore__tokenUpdateRetryCount__block_invoke;
   v6[3] = &unk_27982BB40;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(memberQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -8666,13 +8666,13 @@ uint64_t __39__MDMServerCore__tokenUpdateRetryCount__block_invoke(uint64_t a1)
 
 - (void)_decreaseTokenUpdateRetryCount
 {
-  v3 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__MDMServerCore__decreaseTokenUpdateRetryCount__block_invoke;
   block[3] = &unk_27982BA78;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(memberQueue, block);
 }
 
 uint64_t __47__MDMServerCore__decreaseTokenUpdateRetryCount__block_invoke(uint64_t a1)
@@ -8696,14 +8696,14 @@ uint64_t __47__MDMServerCore__decreaseTokenUpdateRetryCount__block_invoke(uint64
   v4 = [v2 dictionaryWithContentsOfFile:v3];
 
   v5 = [v4 objectForKey:*MEMORY[0x277D246D8]];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
-- (void)_memberQueueSetTokenUpdateRequestCount:(int64_t)a3
+- (void)_memberQueueSetTokenUpdateRequestCount:(int64_t)count
 {
-  if (a3)
+  if (count)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithInteger:?];
     [(MDMServerCore *)self _memberQueueSetOutstandingActivity:v5 forKey:*MEMORY[0x277D246D8]];
@@ -8717,19 +8717,19 @@ uint64_t __47__MDMServerCore__decreaseTokenUpdateRetryCount__block_invoke(uint64
   }
 }
 
-- (void)_memberQueueSetLastPushTokenHash:(id)a3
+- (void)_memberQueueSetLastPushTokenHash:(id)hash
 {
-  v4 = a3;
+  hashCopy = hash;
   v5 = [MEMORY[0x277D24650] sharedConfigurationForChannel:{-[MDMServerCore channelType](self, "channelType")}];
-  v6 = [v5 lastPushTokenHash];
-  v7 = v6;
-  if ((v4 == 0) != (v6 == 0) || ([v6 isEqualToData:v4] & 1) == 0)
+  lastPushTokenHash = [v5 lastPushTokenHash];
+  v7 = lastPushTokenHash;
+  if ((hashCopy == 0) != (lastPushTokenHash == 0) || ([lastPushTokenHash isEqualToData:hashCopy] & 1) == 0)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __50__MDMServerCore__memberQueueSetLastPushTokenHash___block_invoke;
     v8[3] = &unk_27982C098;
-    v9 = v4;
+    v9 = hashCopy;
     [v5 updateMDMConfigurationWithCreateIfNeeded:1 updateBlock:v8 error:0];
   }
 }
@@ -8737,17 +8737,17 @@ uint64_t __47__MDMServerCore__decreaseTokenUpdateRetryCount__block_invoke(uint64
 - (id)_memberQueueLastPushTokenHash
 {
   v2 = [MEMORY[0x277D24650] sharedConfigurationForChannel:{-[MDMServerCore channelType](self, "channelType")}];
-  v3 = [v2 lastPushTokenHash];
+  lastPushTokenHash = [v2 lastPushTokenHash];
 
-  return v3;
+  return lastPushTokenHash;
 }
 
 - (void)_memberQueueIncrementTokenUpdateRequestCount
 {
-  v3 = [(MDMServerCore *)self _memberQueueTokenUpdateCount];
-  if (v3 <= 1)
+  _memberQueueTokenUpdateCount = [(MDMServerCore *)self _memberQueueTokenUpdateCount];
+  if (_memberQueueTokenUpdateCount <= 1)
   {
-    [(MDMServerCore *)self _memberQueueSetTokenUpdateRequestCount:v3 + 1];
+    [(MDMServerCore *)self _memberQueueSetTokenUpdateRequestCount:_memberQueueTokenUpdateCount + 1];
   }
 
   [(MDMServerCore *)self setMemberQueueTokenUpdateRetryCount:2];
@@ -8755,19 +8755,19 @@ uint64_t __47__MDMServerCore__decreaseTokenUpdateRetryCount__block_invoke(uint64
 
 - (void)_memberQueueDecrementTokenUpdateRequestCount
 {
-  v3 = [(MDMServerCore *)self _memberQueueTokenUpdateCount];
-  if (v3 >= 1)
+  _memberQueueTokenUpdateCount = [(MDMServerCore *)self _memberQueueTokenUpdateCount];
+  if (_memberQueueTokenUpdateCount >= 1)
   {
 
-    [(MDMServerCore *)self _memberQueueSetTokenUpdateRequestCount:v3 - 1];
+    [(MDMServerCore *)self _memberQueueSetTokenUpdateRequestCount:_memberQueueTokenUpdateCount - 1];
   }
 }
 
-- (id)responseFromBasicResponse:(id)a3
+- (id)responseFromBasicResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v4];
+  responseCopy = response;
+  v5 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:responseCopy];
   v6 = [v5 objectForKey:@"ErrorObject"];
   v7 = v6;
   if (v6)
@@ -8795,11 +8795,11 @@ uint64_t __47__MDMServerCore__decreaseTokenUpdateRetryCount__block_invoke(uint64
       {
         v16 = v15;
         v17 = [v5 objectForKey:@"Status"];
-        v18 = [v7 DMCVerboseDescription];
+        dMCVerboseDescription = [v7 DMCVerboseDescription];
         *buf = 138543618;
         *&buf[4] = v17;
         *&buf[12] = 2114;
-        *&buf[14] = v18;
+        *&buf[14] = dMCVerboseDescription;
         _os_log_impl(&dword_2561F5000, v16, OS_LOG_TYPE_ERROR, "Command Status: %{public}@\nError: %{public}@", buf, 0x16u);
       }
     }
@@ -8820,7 +8820,7 @@ uint64_t __47__MDMServerCore__decreaseTokenUpdateRetryCount__block_invoke(uint64
     }
   }
 
-  v19 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__MDMServerCore_responseFromBasicResponse___block_invoke;
@@ -8828,7 +8828,7 @@ uint64_t __47__MDMServerCore__decreaseTokenUpdateRetryCount__block_invoke(uint64
   block[4] = self;
   v20 = v5;
   v27 = v20;
-  dispatch_async_and_wait(v19, block);
+  dispatch_async_and_wait(memberQueue, block);
 
   *buf = 0;
   *&buf[8] = buf;
@@ -8836,14 +8836,14 @@ uint64_t __47__MDMServerCore__decreaseTokenUpdateRetryCount__block_invoke(uint64
   v29 = __Block_byref_object_copy__10;
   v30 = __Block_byref_object_dispose__10;
   v31 = 0;
-  v21 = [(MDMServerCore *)self memberQueue];
+  memberQueue2 = [(MDMServerCore *)self memberQueue];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __43__MDMServerCore_responseFromBasicResponse___block_invoke_2;
   v25[3] = &unk_27982BB40;
   v25[4] = self;
   v25[5] = buf;
-  dispatch_async_and_wait(v21, v25);
+  dispatch_async_and_wait(memberQueue2, v25);
 
   [v20 setObject:*(*&buf[8] + 40) forKey:@"CommandUUID"];
   v22 = v20;
@@ -8890,14 +8890,14 @@ uint64_t __43__MDMServerCore_responseFromBasicResponse___block_invoke_2(uint64_t
   v10 = __Block_byref_object_copy__10;
   v11 = __Block_byref_object_dispose__10;
   v12 = 0;
-  v3 = [(MDMServerCore *)self memberQueue];
+  memberQueue = [(MDMServerCore *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__MDMServerCore__cachedResponse__block_invoke;
   v6[3] = &unk_27982BB40;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -8915,18 +8915,18 @@ uint64_t __32__MDMServerCore__cachedResponse__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_setCachedResponse:(id)a3
+- (void)_setCachedResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(MDMServerCore *)self memberQueue];
+  responseCopy = response;
+  memberQueue = [(MDMServerCore *)self memberQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__MDMServerCore__setCachedResponse___block_invoke;
   v7[3] = &unk_27982BAC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = responseCopy;
+  v6 = responseCopy;
+  dispatch_async(memberQueue, v7);
 }
 
 - (id)_memberQueueCachedResponse
@@ -8938,11 +8938,11 @@ uint64_t __32__MDMServerCore__cachedResponse__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)_memberQueueSetCachedResponse:(id)a3
+- (void)_memberQueueSetCachedResponse:(id)response
 {
-  if (a3)
+  if (response)
   {
-    [(MDMServerCore *)self _memberQueueSetOutstandingActivity:a3 forKey:*MEMORY[0x277D246D0]];
+    [(MDMServerCore *)self _memberQueueSetOutstandingActivity:response forKey:*MEMORY[0x277D246D0]];
   }
 
   else
@@ -8957,9 +8957,9 @@ uint64_t __32__MDMServerCore__cachedResponse__block_invoke(uint64_t a1)
   if ([(MDMServerCore *)self memberQueueUseEnrollmentID])
   {
     v15[0] = *MEMORY[0x277D247C0];
-    v3 = [(MDMServerCore *)self memberQueueEnrollmentID];
+    memberQueueEnrollmentID = [(MDMServerCore *)self memberQueueEnrollmentID];
     v15[1] = @"Status";
-    v16[0] = v3;
+    v16[0] = memberQueueEnrollmentID;
     v16[1] = @"Idle";
     v4 = MEMORY[0x277CBEAC0];
     v5 = v16;
@@ -8968,15 +8968,15 @@ uint64_t __32__MDMServerCore__cachedResponse__block_invoke(uint64_t a1)
 
   else
   {
-    v3 = [MEMORY[0x277D03530] deviceUDID];
-    if (![v3 length])
+    memberQueueEnrollmentID = [MEMORY[0x277D03530] deviceUDID];
+    if (![memberQueueEnrollmentID length])
     {
-      v7 = [MEMORY[0x277D03530] deviceUDID];
+      deviceUDID = [MEMORY[0x277D03530] deviceUDID];
 
-      v3 = v7;
+      memberQueueEnrollmentID = deviceUDID;
     }
 
-    if (![v3 length])
+    if (![memberQueueEnrollmentID length])
     {
       v8 = *DMCLogObjects();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -8988,7 +8988,7 @@ uint64_t __32__MDMServerCore__cachedResponse__block_invoke(uint64_t a1)
 
     v13[0] = *MEMORY[0x277D24928];
     v13[1] = @"Status";
-    v14[0] = v3;
+    v14[0] = memberQueueEnrollmentID;
     v14[1] = @"Idle";
     v4 = MEMORY[0x277CBEAC0];
     v5 = v14;
@@ -9009,31 +9009,31 @@ uint64_t __32__MDMServerCore__cachedResponse__block_invoke(uint64_t a1)
   {
     DMCLKLogoutSupportClass();
     v3 = objc_opt_new();
-    v4 = [v3 isCurrentUserAnonymous];
+    isCurrentUserAnonymous = [v3 isCurrentUserAnonymous];
 
-    if (v4)
+    if (isCurrentUserAnonymous)
     {
-      v5 = *MEMORY[0x277D24D88];
+      memberQueueEnrollmentID = *MEMORY[0x277D24D88];
 LABEL_6:
-      v6 = v5;
+      username = memberQueueEnrollmentID;
       goto LABEL_9;
     }
 
-    v7 = [MEMORY[0x277D77BF8] sharedManager];
-    v8 = [v7 currentUser];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+    currentUser = [mEMORY[0x277D77BF8] currentUser];
 
-    v6 = [v8 username];
+    username = [currentUser username];
   }
 
   else
   {
     if ([(MDMServerCore *)self memberQueueUseEnrollmentID])
     {
-      v5 = [(MDMServerCore *)self memberQueueEnrollmentID];
+      memberQueueEnrollmentID = [(MDMServerCore *)self memberQueueEnrollmentID];
       goto LABEL_6;
     }
 
-    v6 = @"Device";
+    username = @"Device";
   }
 
 LABEL_9:
@@ -9042,7 +9042,7 @@ LABEL_9:
   v14[0] = *MEMORY[0x277D24938];
   v14[1] = v10;
   v15[0] = v9;
-  v15[1] = v6;
+  v15[1] = username;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -9050,27 +9050,27 @@ LABEL_9:
   return v11;
 }
 
-- (void)_memberQueueSetOutstandingActivity:(id)a3 forKey:(id)a4
+- (void)_memberQueueSetOutstandingActivity:(id)activity forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
+  activityCopy = activity;
+  keyCopy = key;
   v7 = [(MDMServerCore *)self _mdmOutstandingActivitiesFilePathForChannelType:[(MDMServerCore *)self channelType]];
-  v8 = [MEMORY[0x277CBEB38] dictionaryWithContentsOfFile:v7];
-  if (!v8)
+  dictionary = [MEMORY[0x277CBEB38] dictionaryWithContentsOfFile:v7];
+  if (!dictionary)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  [v8 setObject:v9 forKey:v6];
-  [v8 DMCWriteToBinaryFile:v7];
+  [dictionary setObject:activityCopy forKey:keyCopy];
+  [dictionary DMCWriteToBinaryFile:v7];
 }
 
-- (void)_memberQueueRemoveOutstandingActivityForKey:(id)a3
+- (void)_memberQueueRemoveOutstandingActivityForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = [(MDMServerCore *)self _mdmOutstandingActivitiesFilePathForChannelType:[(MDMServerCore *)self channelType]];
   v5 = [MEMORY[0x277CBEB38] dictionaryWithContentsOfFile:?];
-  [v5 removeObjectForKey:v4];
+  [v5 removeObjectForKey:keyCopy];
 
   if ([v5 count])
   {
@@ -9079,18 +9079,18 @@ LABEL_9:
 
   else
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    [v6 removeItemAtPath:v7 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager removeItemAtPath:v7 error:0];
   }
 }
 
-- (void)_changeOrganizationNameForRMAccountIdentifier:(id)a3 personaID:(id)a4 organizationName:(id)a5
+- (void)_changeOrganizationNameForRMAccountIdentifier:(id)identifier personaID:(id)d organizationName:(id)name
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (identifier)
   {
     v9 = 0;
-    v5 = [MEMORY[0x277D24610] updateOrganizationName:a5 rmAccountIdentifier:a3 personaID:a4 error:&v9];
+    v5 = [MEMORY[0x277D24610] updateOrganizationName:name rmAccountIdentifier:identifier personaID:d error:&v9];
     v6 = v9;
     if ((v5 & 1) == 0)
     {
@@ -9146,34 +9146,34 @@ void __82__MDMServerCore__listenForCleanupMigrationFinishedNotificationAndRetryT
   [v4 _pollFromServerIfNeeded:0 isReachabilityEvent:0 completionHandler:v6];
 }
 
-- (int)_listenForOneTimeGlobalNotification:(id)a3 callbackQueue:(id)a4 notificationHandler:(id)a5
+- (int)_listenForOneTimeGlobalNotification:(id)notification callbackQueue:(id)queue notificationHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  notificationCopy = notification;
+  queueCopy = queue;
+  handlerCopy = handler;
   v11 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v29 = v8;
+    v29 = notificationCopy;
     _os_log_impl(&dword_2561F5000, v11, OS_LOG_TYPE_INFO, "MDMServerCore listening for %{public}@ notification...", buf, 0xCu);
   }
 
   out_token = -1;
   objc_initWeak(&location, self);
-  v12 = v8;
-  v13 = [v8 UTF8String];
+  v12 = notificationCopy;
+  uTF8String = [notificationCopy UTF8String];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __87__MDMServerCore__listenForOneTimeGlobalNotification_callbackQueue_notificationHandler___block_invoke;
   handler[3] = &unk_27982D540;
-  v14 = v8;
+  v14 = notificationCopy;
   v23 = v14;
   objc_copyWeak(&v25, &location);
-  v15 = v10;
+  v15 = handlerCopy;
   v24 = v15;
-  v16 = notify_register_dispatch(v13, &out_token, v9, handler);
+  v16 = notify_register_dispatch(uTF8String, &out_token, queueCopy, handler);
   if (v16)
   {
     v17 = *(DMCLogObjects() + 8);
@@ -9246,9 +9246,9 @@ void __87__MDMServerCore__listenForOneTimeGlobalNotification_callbackQueue_notif
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prepareToObliterationWithCompletionHandler:(id)a3
+- (void)prepareToObliterationWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -9256,7 +9256,7 @@ void __87__MDMServerCore__listenForOneTimeGlobalNotification_callbackQueue_notif
     _os_log_impl(&dword_2561F5000, v4, OS_LOG_TYPE_DEFAULT, "MDMServerCore proceeding with obliteration", v5, 2u);
   }
 
-  v3[2](v3, 1);
+  handlerCopy[2](handlerCopy, 1);
 }
 
 - (void)startOutError:.cold.1()

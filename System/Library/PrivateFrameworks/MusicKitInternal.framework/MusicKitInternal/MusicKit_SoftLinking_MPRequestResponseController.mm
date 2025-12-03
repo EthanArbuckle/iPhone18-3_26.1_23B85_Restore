@@ -1,10 +1,10 @@
 @interface MusicKit_SoftLinking_MPRequestResponseController
-- (BOOL)controller:(id)a3 shouldRetryFailedRequestWithError:(id)a4;
+- (BOOL)controller:(id)controller shouldRetryFailedRequestWithError:(id)error;
 - (MusicKit_SoftLinking_MPCPlayerRequest)request;
 - (MusicKit_SoftLinking_MPRequestResponseController)init;
-- (MusicKit_SoftLinking_MPRequestResponseController)initWithUnderlyingRequestResponseController:(id)a3;
-- (void)controller:(id)a3 defersResponseReplacement:(id)a4;
-- (void)setRequest:(id)a3;
+- (MusicKit_SoftLinking_MPRequestResponseController)initWithUnderlyingRequestResponseController:(id)controller;
+- (void)controller:(id)controller defersResponseReplacement:(id)replacement;
+- (void)setRequest:(id)request;
 @end
 
 @implementation MusicKit_SoftLinking_MPRequestResponseController
@@ -44,16 +44,16 @@
   return v2;
 }
 
-- (MusicKit_SoftLinking_MPRequestResponseController)initWithUnderlyingRequestResponseController:(id)a3
+- (MusicKit_SoftLinking_MPRequestResponseController)initWithUnderlyingRequestResponseController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = MusicKit_SoftLinking_MPRequestResponseController;
   v6 = [(MusicKit_SoftLinking_MPRequestResponseController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingRequestResponseController, a3);
+    objc_storeStrong(&v6->_underlyingRequestResponseController, controller);
   }
 
   return v7;
@@ -62,36 +62,36 @@
 - (MusicKit_SoftLinking_MPCPlayerRequest)request
 {
   v3 = [MusicKit_SoftLinking_MPCPlayerRequest alloc];
-  v4 = [(MPRequestResponseController *)self->_underlyingRequestResponseController request];
-  v5 = [(MusicKit_SoftLinking_MPCPlayerRequest *)v3 initWithUnderlyingPlayerRequest:v4];
+  request = [(MPRequestResponseController *)self->_underlyingRequestResponseController request];
+  v5 = [(MusicKit_SoftLinking_MPCPlayerRequest *)v3 initWithUnderlyingPlayerRequest:request];
 
   return v5;
 }
 
-- (void)setRequest:(id)a3
+- (void)setRequest:(id)request
 {
   underlyingRequestResponseController = self->_underlyingRequestResponseController;
-  v4 = [a3 _underlyingPlayerRequest];
-  [(MPRequestResponseController *)underlyingRequestResponseController setRequest:v4];
+  _underlyingPlayerRequest = [request _underlyingPlayerRequest];
+  [(MPRequestResponseController *)underlyingRequestResponseController setRequest:_underlyingPlayerRequest];
 }
 
-- (void)controller:(id)a3 defersResponseReplacement:(id)a4
+- (void)controller:(id)controller defersResponseReplacement:(id)replacement
 {
-  v7 = a3;
-  (*(a4 + 2))(a4);
+  controllerCopy = controller;
+  (*(replacement + 2))(replacement);
   if (self->_responseHandler)
   {
-    v6 = [v7 response];
+    response = [controllerCopy response];
     (*(self->_responseHandler + 2))();
   }
 }
 
-- (BOOL)controller:(id)a3 shouldRetryFailedRequestWithError:(id)a4
+- (BOOL)controller:(id)controller shouldRetryFailedRequestWithError:(id)error
 {
   shouldRetryFailedRequestWithErrorHandler = self->_shouldRetryFailedRequestWithErrorHandler;
   if (shouldRetryFailedRequestWithErrorHandler)
   {
-    return shouldRetryFailedRequestWithErrorHandler[2](shouldRetryFailedRequestWithErrorHandler, a4);
+    return shouldRetryFailedRequestWithErrorHandler[2](shouldRetryFailedRequestWithErrorHandler, error);
   }
 
   else

@@ -1,30 +1,30 @@
 @interface NBPBBackupMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBackingColor:(BOOL)a3;
-- (void)setHasBackupType:(BOOL)a3;
-- (void)setHasBcmWindowMaterial:(BOOL)a3;
-- (void)setHasBottomEnclosureMaterial:(BOOL)a3;
-- (void)setHasCoverGlassColor:(BOOL)a3;
-- (void)setHasDiagnosticsOptInEnabled:(BOOL)a3;
-- (void)setHasFcmMaterial:(BOOL)a3;
-- (void)setHasHousingColor:(BOOL)a3;
-- (void)setHasLocationOptInEnabled:(BOOL)a3;
-- (void)setHasSizeInBytes:(BOOL)a3;
-- (void)setHasTopEnclosureMaterial:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBackingColor:(BOOL)color;
+- (void)setHasBackupType:(BOOL)type;
+- (void)setHasBcmWindowMaterial:(BOOL)material;
+- (void)setHasBottomEnclosureMaterial:(BOOL)material;
+- (void)setHasCoverGlassColor:(BOOL)color;
+- (void)setHasDiagnosticsOptInEnabled:(BOOL)enabled;
+- (void)setHasFcmMaterial:(BOOL)material;
+- (void)setHasHousingColor:(BOOL)color;
+- (void)setHasLocationOptInEnabled:(BOOL)enabled;
+- (void)setHasSizeInBytes:(BOOL)bytes;
+- (void)setHasTopEnclosureMaterial:(BOOL)material;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NBPBBackupMetadata
 
-- (void)setHasBottomEnclosureMaterial:(BOOL)a3
+- (void)setHasBottomEnclosureMaterial:(BOOL)material
 {
-  if (a3)
+  if (material)
   {
     v3 = 32;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasTopEnclosureMaterial:(BOOL)a3
+- (void)setHasTopEnclosureMaterial:(BOOL)material
 {
-  if (a3)
+  if (material)
   {
     v3 = 512;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasFcmMaterial:(BOOL)a3
+- (void)setHasFcmMaterial:(BOOL)material
 {
-  if (a3)
+  if (material)
   {
     v3 = 128;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasBcmWindowMaterial:(BOOL)a3
+- (void)setHasBcmWindowMaterial:(BOOL)material
 {
-  if (a3)
+  if (material)
   {
     v3 = 16;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasCoverGlassColor:(BOOL)a3
+- (void)setHasCoverGlassColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     v3 = 64;
   }
@@ -97,9 +97,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasHousingColor:(BOOL)a3
+- (void)setHasHousingColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     v3 = 256;
   }
@@ -112,9 +112,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasBackingColor:(BOOL)a3
+- (void)setHasBackingColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     v3 = 4;
   }
@@ -127,9 +127,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasLocationOptInEnabled:(BOOL)a3
+- (void)setHasLocationOptInEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2048;
   }
@@ -142,9 +142,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasDiagnosticsOptInEnabled:(BOOL)a3
+- (void)setHasDiagnosticsOptInEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 1024;
   }
@@ -157,9 +157,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasSizeInBytes:(BOOL)a3
+- (void)setHasSizeInBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 2;
   }
@@ -172,9 +172,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasBackupType:(BOOL)a3
+- (void)setHasBackupType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -192,8 +192,8 @@
   v7.receiver = self;
   v7.super_class = NBPBBackupMetadata;
   v3 = [(NBPBBackupMetadata *)&v7 description];
-  v4 = [(NBPBBackupMetadata *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NBPBBackupMetadata *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -445,62 +445,62 @@ LABEL_36:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v19 = v4;
+  toCopy = to;
+  v19 = toCopy;
   if (self->_uuid)
   {
     PBDataWriterWriteDataField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_productType)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_productName)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_systemVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_systemBuildVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_marketingVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_deviceColor)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_deviceEnclosureColor)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   has = self->_has;
@@ -508,7 +508,7 @@ LABEL_36:
   {
     bottomEnclosureMaterial = self->_bottomEnclosureMaterial;
     PBDataWriterWriteInt32Field();
-    v4 = v19;
+    toCopy = v19;
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -529,7 +529,7 @@ LABEL_21:
 
   topEnclosureMaterial = self->_topEnclosureMaterial;
   PBDataWriterWriteInt32Field();
-  v4 = v19;
+  toCopy = v19;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -545,7 +545,7 @@ LABEL_22:
 LABEL_49:
   fcmMaterial = self->_fcmMaterial;
   PBDataWriterWriteInt32Field();
-  v4 = v19;
+  toCopy = v19;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -561,7 +561,7 @@ LABEL_23:
 LABEL_50:
   bcmWindowMaterial = self->_bcmWindowMaterial;
   PBDataWriterWriteInt32Field();
-  v4 = v19;
+  toCopy = v19;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -577,7 +577,7 @@ LABEL_24:
 LABEL_51:
   coverGlassColor = self->_coverGlassColor;
   PBDataWriterWriteInt32Field();
-  v4 = v19;
+  toCopy = v19;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -593,26 +593,26 @@ LABEL_25:
 LABEL_52:
   housingColor = self->_housingColor;
   PBDataWriterWriteInt32Field();
-  v4 = v19;
+  toCopy = v19;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_26:
     backingColor = self->_backingColor;
     PBDataWriterWriteInt32Field();
-    v4 = v19;
+    toCopy = v19;
   }
 
 LABEL_27:
   if (self->_watchFace)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_watchFaceColor)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   v7 = self->_has;
@@ -620,7 +620,7 @@ LABEL_27:
   {
     locationOptInEnabled = self->_locationOptInEnabled;
     PBDataWriterWriteBOOLField();
-    v4 = v19;
+    toCopy = v19;
     v7 = self->_has;
     if ((v7 & 0x400) == 0)
     {
@@ -641,7 +641,7 @@ LABEL_33:
 
   diagnosticsOptInEnabled = self->_diagnosticsOptInEnabled;
   PBDataWriterWriteBOOLField();
-  v4 = v19;
+  toCopy = v19;
   v7 = self->_has;
   if ((v7 & 1) == 0)
   {
@@ -657,105 +657,105 @@ LABEL_34:
 LABEL_56:
   lastModificationDate = self->_lastModificationDate;
   PBDataWriterWriteDoubleField();
-  v4 = v19;
+  toCopy = v19;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_35:
     sizeInBytes = self->_sizeInBytes;
     PBDataWriterWriteInt64Field();
-    v4 = v19;
+    toCopy = v19;
   }
 
 LABEL_36:
   if (self->_activeWatchFaceFileContents)
   {
     PBDataWriterWriteDataField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if ((*&self->_has & 8) != 0)
   {
     backupType = self->_backupType;
     PBDataWriterWriteInt32Field();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_deviceCSN)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_watchFaceData)
   {
     PBDataWriterWriteDataField();
-    v4 = v19;
+    toCopy = v19;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v7;
+    [toCopy setUuid:?];
+    toCopy = v7;
   }
 
   if (self->_name)
   {
     [v7 setName:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_productType)
   {
     [v7 setProductType:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_productName)
   {
     [v7 setProductName:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_systemVersion)
   {
     [v7 setSystemVersion:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_systemBuildVersion)
   {
     [v7 setSystemBuildVersion:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_marketingVersion)
   {
     [v7 setMarketingVersion:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_deviceColor)
   {
     [v7 setDeviceColor:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_deviceEnclosureColor)
   {
     [v7 setDeviceEnclosureColor:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    *(v4 + 11) = self->_bottomEnclosureMaterial;
-    *(v4 + 90) |= 0x20u;
+    *(toCopy + 11) = self->_bottomEnclosureMaterial;
+    *(toCopy + 90) |= 0x20u;
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -774,8 +774,8 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  *(v4 + 34) = self->_topEnclosureMaterial;
-  *(v4 + 90) |= 0x200u;
+  *(toCopy + 34) = self->_topEnclosureMaterial;
+  *(toCopy + 90) |= 0x200u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -789,8 +789,8 @@ LABEL_22:
   }
 
 LABEL_49:
-  *(v4 + 20) = self->_fcmMaterial;
-  *(v4 + 90) |= 0x80u;
+  *(toCopy + 20) = self->_fcmMaterial;
+  *(toCopy + 90) |= 0x80u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -804,8 +804,8 @@ LABEL_23:
   }
 
 LABEL_50:
-  *(v4 + 10) = self->_bcmWindowMaterial;
-  *(v4 + 90) |= 0x10u;
+  *(toCopy + 10) = self->_bcmWindowMaterial;
+  *(toCopy + 90) |= 0x10u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -819,8 +819,8 @@ LABEL_24:
   }
 
 LABEL_51:
-  *(v4 + 12) = self->_coverGlassColor;
-  *(v4 + 90) |= 0x40u;
+  *(toCopy + 12) = self->_coverGlassColor;
+  *(toCopy + 90) |= 0x40u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -834,33 +834,33 @@ LABEL_25:
   }
 
 LABEL_52:
-  *(v4 + 21) = self->_housingColor;
-  *(v4 + 90) |= 0x100u;
+  *(toCopy + 21) = self->_housingColor;
+  *(toCopy + 90) |= 0x100u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_26:
-    *(v4 + 8) = self->_backingColor;
-    *(v4 + 90) |= 4u;
+    *(toCopy + 8) = self->_backingColor;
+    *(toCopy + 90) |= 4u;
   }
 
 LABEL_27:
   if (self->_watchFace)
   {
     [v7 setWatchFace:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_watchFaceColor)
   {
     [v7 setWatchFaceColor:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x800) != 0)
   {
-    *(v4 + 177) = self->_locationOptInEnabled;
-    *(v4 + 90) |= 0x800u;
+    *(toCopy + 177) = self->_locationOptInEnabled;
+    *(toCopy + 90) |= 0x800u;
     v6 = self->_has;
     if ((v6 & 0x400) == 0)
     {
@@ -879,8 +879,8 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  *(v4 + 176) = self->_diagnosticsOptInEnabled;
-  *(v4 + 90) |= 0x400u;
+  *(toCopy + 176) = self->_diagnosticsOptInEnabled;
+  *(toCopy + 90) |= 0x400u;
   v6 = self->_has;
   if ((v6 & 1) == 0)
   {
@@ -894,77 +894,77 @@ LABEL_34:
   }
 
 LABEL_56:
-  *(v4 + 1) = *&self->_lastModificationDate;
-  *(v4 + 90) |= 1u;
+  *(toCopy + 1) = *&self->_lastModificationDate;
+  *(toCopy + 90) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_35:
-    *(v4 + 2) = self->_sizeInBytes;
-    *(v4 + 90) |= 2u;
+    *(toCopy + 2) = self->_sizeInBytes;
+    *(toCopy + 90) |= 2u;
   }
 
 LABEL_36:
   if (self->_activeWatchFaceFileContents)
   {
     [v7 setActiveWatchFaceFileContents:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 9) = self->_backupType;
-    *(v4 + 90) |= 8u;
+    *(toCopy + 9) = self->_backupType;
+    *(toCopy + 90) |= 8u;
   }
 
   if (self->_deviceCSN)
   {
     [v7 setDeviceCSN:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_watchFaceData)
   {
     [v7 setWatchFaceData:?];
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_uuid copyWithZone:zone];
   v7 = v5[18];
   v5[18] = v6;
 
-  v8 = [(NSString *)self->_name copyWithZone:a3];
+  v8 = [(NSString *)self->_name copyWithZone:zone];
   v9 = v5[12];
   v5[12] = v8;
 
-  v10 = [(NSString *)self->_productType copyWithZone:a3];
+  v10 = [(NSString *)self->_productType copyWithZone:zone];
   v11 = v5[14];
   v5[14] = v10;
 
-  v12 = [(NSString *)self->_productName copyWithZone:a3];
+  v12 = [(NSString *)self->_productName copyWithZone:zone];
   v13 = v5[13];
   v5[13] = v12;
 
-  v14 = [(NSString *)self->_systemVersion copyWithZone:a3];
+  v14 = [(NSString *)self->_systemVersion copyWithZone:zone];
   v15 = v5[16];
   v5[16] = v14;
 
-  v16 = [(NSString *)self->_systemBuildVersion copyWithZone:a3];
+  v16 = [(NSString *)self->_systemBuildVersion copyWithZone:zone];
   v17 = v5[15];
   v5[15] = v16;
 
-  v18 = [(NSString *)self->_marketingVersion copyWithZone:a3];
+  v18 = [(NSString *)self->_marketingVersion copyWithZone:zone];
   v19 = v5[11];
   v5[11] = v18;
 
-  v20 = [(NSString *)self->_deviceColor copyWithZone:a3];
+  v20 = [(NSString *)self->_deviceColor copyWithZone:zone];
   v21 = v5[8];
   v5[8] = v20;
 
-  v22 = [(NSString *)self->_deviceEnclosureColor copyWithZone:a3];
+  v22 = [(NSString *)self->_deviceEnclosureColor copyWithZone:zone];
   v23 = v5[9];
   v5[9] = v22;
 
@@ -1061,11 +1061,11 @@ LABEL_8:
   }
 
 LABEL_9:
-  v25 = [(NSString *)self->_watchFace copyWithZone:a3];
+  v25 = [(NSString *)self->_watchFace copyWithZone:zone];
   v26 = v5[19];
   v5[19] = v25;
 
-  v27 = [(NSString *)self->_watchFaceColor copyWithZone:a3];
+  v27 = [(NSString *)self->_watchFaceColor copyWithZone:zone];
   v28 = v5[20];
   v5[20] = v27;
 
@@ -1117,7 +1117,7 @@ LABEL_13:
   }
 
 LABEL_14:
-  v30 = [(NSData *)self->_activeWatchFaceFileContents copyWithZone:a3];
+  v30 = [(NSData *)self->_activeWatchFaceFileContents copyWithZone:zone];
   v31 = v5[3];
   v5[3] = v30;
 
@@ -1127,27 +1127,27 @@ LABEL_14:
     *(v5 + 90) |= 8u;
   }
 
-  v32 = [(NSString *)self->_deviceCSN copyWithZone:a3];
+  v32 = [(NSString *)self->_deviceCSN copyWithZone:zone];
   v33 = v5[7];
   v5[7] = v32;
 
-  v34 = [(NSData *)self->_watchFaceData copyWithZone:a3];
+  v34 = [(NSData *)self->_watchFaceData copyWithZone:zone];
   v35 = v5[21];
   v5[21] = v34;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_97;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 18))
+  if (uuid | *(equalCopy + 18))
   {
     if (![(NSData *)uuid isEqual:?])
     {
@@ -1156,7 +1156,7 @@ LABEL_14:
   }
 
   name = self->_name;
-  if (name | *(v4 + 12))
+  if (name | *(equalCopy + 12))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -1165,7 +1165,7 @@ LABEL_14:
   }
 
   productType = self->_productType;
-  if (productType | *(v4 + 14))
+  if (productType | *(equalCopy + 14))
   {
     if (![(NSString *)productType isEqual:?])
     {
@@ -1174,7 +1174,7 @@ LABEL_14:
   }
 
   productName = self->_productName;
-  if (productName | *(v4 + 13))
+  if (productName | *(equalCopy + 13))
   {
     if (![(NSString *)productName isEqual:?])
     {
@@ -1183,7 +1183,7 @@ LABEL_14:
   }
 
   systemVersion = self->_systemVersion;
-  if (systemVersion | *(v4 + 16))
+  if (systemVersion | *(equalCopy + 16))
   {
     if (![(NSString *)systemVersion isEqual:?])
     {
@@ -1192,7 +1192,7 @@ LABEL_14:
   }
 
   systemBuildVersion = self->_systemBuildVersion;
-  if (systemBuildVersion | *(v4 + 15))
+  if (systemBuildVersion | *(equalCopy + 15))
   {
     if (![(NSString *)systemBuildVersion isEqual:?])
     {
@@ -1201,7 +1201,7 @@ LABEL_14:
   }
 
   marketingVersion = self->_marketingVersion;
-  if (marketingVersion | *(v4 + 11))
+  if (marketingVersion | *(equalCopy + 11))
   {
     if (![(NSString *)marketingVersion isEqual:?])
     {
@@ -1210,7 +1210,7 @@ LABEL_14:
   }
 
   deviceColor = self->_deviceColor;
-  if (deviceColor | *(v4 + 8))
+  if (deviceColor | *(equalCopy + 8))
   {
     if (![(NSString *)deviceColor isEqual:?])
     {
@@ -1219,7 +1219,7 @@ LABEL_14:
   }
 
   deviceEnclosureColor = self->_deviceEnclosureColor;
-  if (deviceEnclosureColor | *(v4 + 9))
+  if (deviceEnclosureColor | *(equalCopy + 9))
   {
     if (![(NSString *)deviceEnclosureColor isEqual:?])
     {
@@ -1228,10 +1228,10 @@ LABEL_14:
   }
 
   has = self->_has;
-  v15 = *(v4 + 90);
+  v15 = *(equalCopy + 90);
   if ((has & 0x20) != 0)
   {
-    if ((v15 & 0x20) == 0 || self->_bottomEnclosureMaterial != *(v4 + 11))
+    if ((v15 & 0x20) == 0 || self->_bottomEnclosureMaterial != *(equalCopy + 11))
     {
       goto LABEL_97;
     }
@@ -1244,20 +1244,20 @@ LABEL_14:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 90) & 0x200) == 0 || self->_topEnclosureMaterial != *(v4 + 34))
+    if ((*(equalCopy + 90) & 0x200) == 0 || self->_topEnclosureMaterial != *(equalCopy + 34))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 90) & 0x200) != 0)
+  else if ((*(equalCopy + 90) & 0x200) != 0)
   {
     goto LABEL_97;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v15 & 0x80) == 0 || self->_fcmMaterial != *(v4 + 20))
+    if ((v15 & 0x80) == 0 || self->_fcmMaterial != *(equalCopy + 20))
     {
       goto LABEL_97;
     }
@@ -1270,7 +1270,7 @@ LABEL_14:
 
   if ((has & 0x10) != 0)
   {
-    if ((v15 & 0x10) == 0 || self->_bcmWindowMaterial != *(v4 + 10))
+    if ((v15 & 0x10) == 0 || self->_bcmWindowMaterial != *(equalCopy + 10))
     {
       goto LABEL_97;
     }
@@ -1283,7 +1283,7 @@ LABEL_14:
 
   if ((has & 0x40) != 0)
   {
-    if ((v15 & 0x40) == 0 || self->_coverGlassColor != *(v4 + 12))
+    if ((v15 & 0x40) == 0 || self->_coverGlassColor != *(equalCopy + 12))
     {
       goto LABEL_97;
     }
@@ -1296,20 +1296,20 @@ LABEL_14:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 90) & 0x100) == 0 || self->_housingColor != *(v4 + 21))
+    if ((*(equalCopy + 90) & 0x100) == 0 || self->_housingColor != *(equalCopy + 21))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 90) & 0x100) != 0)
+  else if ((*(equalCopy + 90) & 0x100) != 0)
   {
     goto LABEL_97;
   }
 
   if ((has & 4) != 0)
   {
-    if ((v15 & 4) == 0 || self->_backingColor != *(v4 + 8))
+    if ((v15 & 4) == 0 || self->_backingColor != *(equalCopy + 8))
     {
       goto LABEL_97;
     }
@@ -1321,13 +1321,13 @@ LABEL_14:
   }
 
   watchFace = self->_watchFace;
-  if (watchFace | *(v4 + 19) && ![(NSString *)watchFace isEqual:?])
+  if (watchFace | *(equalCopy + 19) && ![(NSString *)watchFace isEqual:?])
   {
     goto LABEL_97;
   }
 
   watchFaceColor = self->_watchFaceColor;
-  if (watchFaceColor | *(v4 + 20))
+  if (watchFaceColor | *(equalCopy + 20))
   {
     if (![(NSString *)watchFaceColor isEqual:?])
     {
@@ -1336,64 +1336,64 @@ LABEL_14:
   }
 
   v18 = self->_has;
-  v19 = *(v4 + 90);
+  v19 = *(equalCopy + 90);
   if ((v18 & 0x800) != 0)
   {
-    if ((*(v4 + 90) & 0x800) == 0)
+    if ((*(equalCopy + 90) & 0x800) == 0)
     {
       goto LABEL_97;
     }
 
-    v20 = *(v4 + 177);
+    v20 = *(equalCopy + 177);
     if (self->_locationOptInEnabled)
     {
-      if ((*(v4 + 177) & 1) == 0)
+      if ((*(equalCopy + 177) & 1) == 0)
       {
         goto LABEL_97;
       }
     }
 
-    else if (*(v4 + 177))
+    else if (*(equalCopy + 177))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 90) & 0x800) != 0)
+  else if ((*(equalCopy + 90) & 0x800) != 0)
   {
     goto LABEL_97;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 90) & 0x400) == 0)
+    if ((*(equalCopy + 90) & 0x400) == 0)
     {
       goto LABEL_97;
     }
 
-    v21 = *(v4 + 176);
+    v21 = *(equalCopy + 176);
     if (self->_diagnosticsOptInEnabled)
     {
-      if ((*(v4 + 176) & 1) == 0)
+      if ((*(equalCopy + 176) & 1) == 0)
       {
         goto LABEL_97;
       }
     }
 
-    else if (*(v4 + 176))
+    else if (*(equalCopy + 176))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 90) & 0x400) != 0)
+  else if ((*(equalCopy + 90) & 0x400) != 0)
   {
     goto LABEL_97;
   }
 
   if (v18)
   {
-    if ((v19 & 1) == 0 || self->_lastModificationDate != *(v4 + 1))
+    if ((v19 & 1) == 0 || self->_lastModificationDate != *(equalCopy + 1))
     {
       goto LABEL_97;
     }
@@ -1406,7 +1406,7 @@ LABEL_14:
 
   if ((v18 & 2) != 0)
   {
-    if ((v19 & 2) == 0 || self->_sizeInBytes != *(v4 + 2))
+    if ((v19 & 2) == 0 || self->_sizeInBytes != *(equalCopy + 2))
     {
       goto LABEL_97;
     }
@@ -1418,7 +1418,7 @@ LABEL_14:
   }
 
   activeWatchFaceFileContents = self->_activeWatchFaceFileContents;
-  if (activeWatchFaceFileContents | *(v4 + 3))
+  if (activeWatchFaceFileContents | *(equalCopy + 3))
   {
     if ([(NSData *)activeWatchFaceFileContents isEqual:?])
     {
@@ -1432,10 +1432,10 @@ LABEL_97:
   }
 
 LABEL_88:
-  v23 = *(v4 + 90);
+  v23 = *(equalCopy + 90);
   if ((v18 & 8) != 0)
   {
-    if ((v23 & 8) == 0 || self->_backupType != *(v4 + 9))
+    if ((v23 & 8) == 0 || self->_backupType != *(equalCopy + 9))
     {
       goto LABEL_97;
     }
@@ -1447,13 +1447,13 @@ LABEL_88:
   }
 
   deviceCSN = self->_deviceCSN;
-  if (deviceCSN | *(v4 + 7) && ![(NSString *)deviceCSN isEqual:?])
+  if (deviceCSN | *(equalCopy + 7) && ![(NSString *)deviceCSN isEqual:?])
   {
     goto LABEL_97;
   }
 
   watchFaceData = self->_watchFaceData;
-  if (watchFaceData | *(v4 + 21))
+  if (watchFaceData | *(equalCopy + 21))
   {
     v26 = [(NSData *)watchFaceData isEqual:?];
   }
@@ -1661,70 +1661,70 @@ LABEL_26:
   return v19 ^ v20 ^ [(NSData *)self->_watchFaceData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 18))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 18))
   {
     [(NBPBBackupMetadata *)self setUuid:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(NBPBBackupMetadata *)self setName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(NBPBBackupMetadata *)self setProductType:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(NBPBBackupMetadata *)self setProductName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(NBPBBackupMetadata *)self setSystemVersion:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(NBPBBackupMetadata *)self setSystemBuildVersion:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(NBPBBackupMetadata *)self setMarketingVersion:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(NBPBBackupMetadata *)self setDeviceColor:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(NBPBBackupMetadata *)self setDeviceEnclosureColor:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 90);
+  v5 = *(fromCopy + 90);
   if ((v5 & 0x20) != 0)
   {
-    self->_bottomEnclosureMaterial = *(v4 + 11);
+    self->_bottomEnclosureMaterial = *(fromCopy + 11);
     *&self->_has |= 0x20u;
-    v5 = *(v4 + 90);
+    v5 = *(fromCopy + 90);
     if ((v5 & 0x200) == 0)
     {
 LABEL_21:
@@ -1737,14 +1737,14 @@ LABEL_21:
     }
   }
 
-  else if ((*(v4 + 90) & 0x200) == 0)
+  else if ((*(fromCopy + 90) & 0x200) == 0)
   {
     goto LABEL_21;
   }
 
-  self->_topEnclosureMaterial = *(v4 + 34);
+  self->_topEnclosureMaterial = *(fromCopy + 34);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 90);
+  v5 = *(fromCopy + 90);
   if ((v5 & 0x80) == 0)
   {
 LABEL_22:
@@ -1757,9 +1757,9 @@ LABEL_22:
   }
 
 LABEL_49:
-  self->_fcmMaterial = *(v4 + 20);
+  self->_fcmMaterial = *(fromCopy + 20);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 90);
+  v5 = *(fromCopy + 90);
   if ((v5 & 0x10) == 0)
   {
 LABEL_23:
@@ -1772,9 +1772,9 @@ LABEL_23:
   }
 
 LABEL_50:
-  self->_bcmWindowMaterial = *(v4 + 10);
+  self->_bcmWindowMaterial = *(fromCopy + 10);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 90);
+  v5 = *(fromCopy + 90);
   if ((v5 & 0x40) == 0)
   {
 LABEL_24:
@@ -1787,9 +1787,9 @@ LABEL_24:
   }
 
 LABEL_51:
-  self->_coverGlassColor = *(v4 + 12);
+  self->_coverGlassColor = *(fromCopy + 12);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 90);
+  v5 = *(fromCopy + 90);
   if ((v5 & 0x100) == 0)
   {
 LABEL_25:
@@ -1802,34 +1802,34 @@ LABEL_25:
   }
 
 LABEL_52:
-  self->_housingColor = *(v4 + 21);
+  self->_housingColor = *(fromCopy + 21);
   *&self->_has |= 0x100u;
-  if ((*(v4 + 90) & 4) != 0)
+  if ((*(fromCopy + 90) & 4) != 0)
   {
 LABEL_26:
-    self->_backingColor = *(v4 + 8);
+    self->_backingColor = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 
 LABEL_27:
-  if (*(v4 + 19))
+  if (*(fromCopy + 19))
   {
     [(NBPBBackupMetadata *)self setWatchFace:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
     [(NBPBBackupMetadata *)self setWatchFaceColor:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 90);
+  v6 = *(fromCopy + 90);
   if ((v6 & 0x800) != 0)
   {
-    self->_locationOptInEnabled = *(v4 + 177);
+    self->_locationOptInEnabled = *(fromCopy + 177);
     *&self->_has |= 0x800u;
-    v6 = *(v4 + 90);
+    v6 = *(fromCopy + 90);
     if ((v6 & 0x400) == 0)
     {
 LABEL_33:
@@ -1842,14 +1842,14 @@ LABEL_33:
     }
   }
 
-  else if ((*(v4 + 90) & 0x400) == 0)
+  else if ((*(fromCopy + 90) & 0x400) == 0)
   {
     goto LABEL_33;
   }
 
-  self->_diagnosticsOptInEnabled = *(v4 + 176);
+  self->_diagnosticsOptInEnabled = *(fromCopy + 176);
   *&self->_has |= 0x400u;
-  v6 = *(v4 + 90);
+  v6 = *(fromCopy + 90);
   if ((v6 & 1) == 0)
   {
 LABEL_34:
@@ -1862,38 +1862,38 @@ LABEL_34:
   }
 
 LABEL_56:
-  self->_lastModificationDate = *(v4 + 1);
+  self->_lastModificationDate = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 90) & 2) != 0)
+  if ((*(fromCopy + 90) & 2) != 0)
   {
 LABEL_35:
-    self->_sizeInBytes = *(v4 + 2);
+    self->_sizeInBytes = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_36:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NBPBBackupMetadata *)self setActiveWatchFaceFileContents:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if ((*(v4 + 90) & 8) != 0)
+  if ((*(fromCopy + 90) & 8) != 0)
   {
-    self->_backupType = *(v4 + 9);
+    self->_backupType = *(fromCopy + 9);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(NBPBBackupMetadata *)self setDeviceCSN:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 21))
+  if (*(fromCopy + 21))
   {
     [(NBPBBackupMetadata *)self setWatchFaceData:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 

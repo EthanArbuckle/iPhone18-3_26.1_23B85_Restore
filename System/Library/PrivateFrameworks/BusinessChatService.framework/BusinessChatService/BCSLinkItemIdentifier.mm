@@ -1,12 +1,12 @@
 @interface BCSLinkItemIdentifier
-+ (BCSLinkItemIdentifier)identifierWithHash:(uint64_t)a1;
-+ (id)identifierWithNormalizedURL:(uint64_t)a1;
-+ (id)identifierWithURL:(uint64_t)a1;
-- (BOOL)matchesItemIdentifying:(id)a3;
++ (BCSLinkItemIdentifier)identifierWithHash:(uint64_t)hash;
++ (id)identifierWithNormalizedURL:(uint64_t)l;
++ (id)identifierWithURL:(uint64_t)l;
+- (BOOL)matchesItemIdentifying:(id)identifying;
 - (NSObject)itemIdentifier;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)_initWithNormalizedURL:(id *)a1;
+- (id)_initWithNormalizedURL:(id *)l;
 - (id)succinctDescriptionBuilder;
 - (int64_t)_truncatedDomainHashForNormalizedURL:(int64_t)result;
 - (int64_t)truncatedHash;
@@ -14,7 +14,7 @@
 
 @implementation BCSLinkItemIdentifier
 
-+ (id)identifierWithURL:(uint64_t)a1
++ (id)identifierWithURL:(uint64_t)l
 {
   v2 = a2;
   objc_opt_self();
@@ -33,35 +33,35 @@
   return v4;
 }
 
-- (id)_initWithNormalizedURL:(id *)a1
+- (id)_initWithNormalizedURL:(id *)l
 {
   v4 = a2;
-  if (a1)
+  if (l)
   {
-    v12.receiver = a1;
+    v12.receiver = l;
     v12.super_class = BCSLinkItemIdentifier;
     v5 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v5;
+    l = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 2, a2);
-      v6 = [a1[2] absoluteString];
-      v7 = [BCSHashService SHA256HashForInputString:v6];
+      absoluteString = [l[2] absoluteString];
+      v7 = [BCSHashService SHA256HashForInputString:absoluteString];
 
-      v8 = a1[1];
-      a1[1] = v7;
+      v8 = l[1];
+      l[1] = v7;
 
-      v9 = [a1[2] absoluteString];
-      v10 = [BCSHashService SHA256TruncatedHashForInputString:v9 includedBytes:8];
+      absoluteString2 = [l[2] absoluteString];
+      v10 = [BCSHashService SHA256TruncatedHashForInputString:absoluteString2 includedBytes:8];
 
-      a1[4] = v10;
+      l[4] = v10;
     }
   }
 
-  return a1;
+  return l;
 }
 
-+ (id)identifierWithNormalizedURL:(uint64_t)a1
++ (id)identifierWithNormalizedURL:(uint64_t)l
 {
   v2 = a2;
   objc_opt_self();
@@ -70,7 +70,7 @@
   return v3;
 }
 
-+ (BCSLinkItemIdentifier)identifierWithHash:(uint64_t)a1
++ (BCSLinkItemIdentifier)identifierWithHash:(uint64_t)hash
 {
   v3 = a2;
   objc_opt_self();
@@ -104,16 +104,16 @@
 {
   if (self)
   {
-    v2 = [(BCSLinkItemIdentifier *)self succinctDescriptionBuilder];
-    v3 = [v2 build];
+    succinctDescriptionBuilder = [(BCSLinkItemIdentifier *)self succinctDescriptionBuilder];
+    build = [succinctDescriptionBuilder build];
   }
 
   else
   {
-    v3 = 0;
+    build = 0;
   }
 
-  return v3;
+  return build;
 }
 
 - (NSString)debugDescription
@@ -121,12 +121,12 @@
   p_isa = &self->super.isa;
   if (self)
   {
-    v3 = [(BCSLinkItemIdentifier *)self succinctDescriptionBuilder];
-    v4 = [v3 appendInt64:objc_msgSend(p_isa withName:{"truncatedHash"), @"truncatedHash"}];
+    succinctDescriptionBuilder = [(BCSLinkItemIdentifier *)self succinctDescriptionBuilder];
+    v4 = [succinctDescriptionBuilder appendInt64:objc_msgSend(p_isa withName:{"truncatedHash"), @"truncatedHash"}];
     v5 = [p_isa[1] copy];
-    v6 = [v3 appendObject:v5 withName:@"fullHash"];
+    v6 = [succinctDescriptionBuilder appendObject:v5 withName:@"fullHash"];
 
-    p_isa = [v3 build];
+    p_isa = [succinctDescriptionBuilder build];
   }
 
   return p_isa;
@@ -136,8 +136,8 @@
 {
   if (result)
   {
-    v2 = [a2 host];
-    v3 = [BCSHashService SHA256TruncatedHashForInputString:v2 includedBytes:8];
+    host = [a2 host];
+    v3 = [BCSHashService SHA256TruncatedHashForInputString:host includedBytes:8];
 
     return v3;
   }
@@ -166,15 +166,15 @@
   return self;
 }
 
-- (BOOL)matchesItemIdentifying:(id)a3
+- (BOOL)matchesItemIdentifying:(id)identifying
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == [(BCSLinkItemIdentifier *)self type])
+  identifyingCopy = identifying;
+  type = [identifyingCopy type];
+  if (type == [(BCSLinkItemIdentifier *)self type])
   {
-    v6 = [v4 itemIdentifier];
-    v7 = [(BCSLinkItemIdentifier *)self itemIdentifier];
-    v8 = [v6 isEqual:v7];
+    itemIdentifier = [identifyingCopy itemIdentifier];
+    itemIdentifier2 = [(BCSLinkItemIdentifier *)self itemIdentifier];
+    v8 = [itemIdentifier isEqual:itemIdentifier2];
   }
 
   else
@@ -187,10 +187,10 @@
 
 - (id)succinctDescriptionBuilder
 {
-  v2 = [MEMORY[0x277CF0C00] builderWithObject:a1];
-  v3 = [v2 appendObject:a1[2] withName:@"url" skipIfNil:1];
-  v4 = [a1 itemIdentifier];
-  v5 = [v2 appendObject:v4 withName:@"itemIdentifier"];
+  v2 = [MEMORY[0x277CF0C00] builderWithObject:self];
+  v3 = [v2 appendObject:self[2] withName:@"url" skipIfNil:1];
+  itemIdentifier = [self itemIdentifier];
+  v5 = [v2 appendObject:itemIdentifier withName:@"itemIdentifier"];
 
   return v2;
 }

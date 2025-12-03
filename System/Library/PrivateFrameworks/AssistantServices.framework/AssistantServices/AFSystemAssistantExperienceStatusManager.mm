@@ -15,7 +15,7 @@
 {
   v11 = *MEMORY[0x1E69E9840];
   v2 = +[AFSystemAssistantExperienceStatusManager sharedManager];
-  v3 = [v2 saeAvailable];
+  saeAvailable = [v2 saeAvailable];
 
   v4 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
@@ -23,12 +23,12 @@
     v7 = 136315394;
     v8 = "+[AFSystemAssistantExperienceStatusManager saeAvailable]";
     v9 = 1024;
-    v10 = v3;
+    v10 = saeAvailable;
     _os_log_debug_impl(&dword_1912FE000, v4, OS_LOG_TYPE_DEBUG, "%s #SAEStatus #cacheRead saeAvailable: %d", &v7, 0x12u);
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return saeAvailable;
 }
 
 + (id)sharedManager
@@ -47,7 +47,7 @@
 {
   v11 = *MEMORY[0x1E69E9840];
   v2 = +[AFSystemAssistantExperienceStatusManager sharedManager];
-  v3 = [v2 saeEnabled];
+  saeEnabled = [v2 saeEnabled];
 
   v4 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
@@ -55,19 +55,19 @@
     v7 = 136315394;
     v8 = "+[AFSystemAssistantExperienceStatusManager isSAEEnabled]";
     v9 = 1024;
-    v10 = v3;
+    v10 = saeEnabled;
     _os_log_debug_impl(&dword_1912FE000, v4, OS_LOG_TYPE_DEBUG, "%s #SAEStatus #cacheRead saeEnabled: %d", &v7, 0x12u);
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return saeEnabled;
 }
 
 + (BOOL)deviceSupportsSAE
 {
   v11 = *MEMORY[0x1E69E9840];
   v2 = +[AFSystemAssistantExperienceStatusManager sharedManager];
-  v3 = [v2 deviceSupportsSAE];
+  deviceSupportsSAE = [v2 deviceSupportsSAE];
 
   v4 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
@@ -75,12 +75,12 @@
     v7 = 136315394;
     v8 = "+[AFSystemAssistantExperienceStatusManager deviceSupportsSAE]";
     v9 = 1024;
-    v10 = v3;
+    v10 = deviceSupportsSAE;
     _os_log_debug_impl(&dword_1912FE000, v4, OS_LOG_TYPE_DEBUG, "%s #SAEStatus #cacheRead deviceSupportsSAE: %d", &v7, 0x12u);
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return deviceSupportsSAE;
 }
 
 - (void)fetchGenerativeModelsAvailability
@@ -112,23 +112,23 @@
       v14 = 1024;
       v15 = v3;
       v16 = 1024;
-      v17 = [(AFSystemAssistantExperienceStatusManager *)self deviceSupportsSAE];
+      deviceSupportsSAE = [(AFSystemAssistantExperienceStatusManager *)self deviceSupportsSAE];
       v18 = 1024;
       v19 = v4;
       v20 = 1024;
-      v21 = [(AFSystemAssistantExperienceStatusManager *)self saeEnabled];
+      saeEnabled = [(AFSystemAssistantExperienceStatusManager *)self saeEnabled];
       v22 = 1024;
       v23 = v5;
       v24 = 1024;
-      v25 = [(AFSystemAssistantExperienceStatusManager *)self saeAvailable];
+      saeAvailable = [(AFSystemAssistantExperienceStatusManager *)self saeAvailable];
       v26 = 1024;
       v27 = 0;
       v28 = 1024;
-      v29 = [(AFSystemAssistantExperienceStatusManager *)self swaiEnabled];
+      swaiEnabled = [(AFSystemAssistantExperienceStatusManager *)self swaiEnabled];
       v30 = 1024;
       v31 = v6;
       v32 = 1024;
-      v33 = [(AFSystemAssistantExperienceStatusManager *)self visualIntelligenceEnabled];
+      visualIntelligenceEnabled = [(AFSystemAssistantExperienceStatusManager *)self visualIntelligenceEnabled];
       _os_log_impl(&dword_1912FE000, v8, OS_LOG_TYPE_DEFAULT, "%s #SAEStatus #cacheUpdate Updating cache:\ndeviceSupportsSAE: %d (%d)\n       saeEnabled: %d (%d)\n     saeAvailable: %d (%d)\n      swaiEnabled: %d (%d)\n        viEnabled: %d (%d)", buf, 0x48u);
     }
 
@@ -197,7 +197,7 @@ void __77__AFSystemAssistantExperienceStatusManager_fetchGenerativeModelsAvailab
 {
   v11 = *MEMORY[0x1E69E9840];
   v2 = +[AFSystemAssistantExperienceStatusManager sharedManager];
-  v3 = [v2 visualIntelligenceEnabled];
+  visualIntelligenceEnabled = [v2 visualIntelligenceEnabled];
 
   v4 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
@@ -205,19 +205,19 @@ void __77__AFSystemAssistantExperienceStatusManager_fetchGenerativeModelsAvailab
     v7 = 136315394;
     v8 = "+[AFSystemAssistantExperienceStatusManager isVisualIntelligenceEnabled]";
     v9 = 1024;
-    v10 = v3;
+    v10 = visualIntelligenceEnabled;
     _os_log_debug_impl(&dword_1912FE000, v4, OS_LOG_TYPE_DEBUG, "%s #SAEStatus #cacheRead visualIntelligenceEnabled: %d", &v7, 0x12u);
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return visualIntelligenceEnabled;
 }
 
 + (BOOL)swaiEnabled
 {
   v11 = *MEMORY[0x1E69E9840];
   v2 = +[AFSystemAssistantExperienceStatusManager sharedManager];
-  v3 = [v2 swaiEnabled];
+  swaiEnabled = [v2 swaiEnabled];
 
   v4 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
@@ -225,12 +225,12 @@ void __77__AFSystemAssistantExperienceStatusManager_fetchGenerativeModelsAvailab
     v7 = 136315394;
     v8 = "+[AFSystemAssistantExperienceStatusManager swaiEnabled]";
     v9 = 1024;
-    v10 = v3;
+    v10 = swaiEnabled;
     _os_log_debug_impl(&dword_1912FE000, v4, OS_LOG_TYPE_DEBUG, "%s #SAEStatus #cacheRead swaiEnabled: %d", &v7, 0x12u);
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return swaiEnabled;
 }
 
 void __57__AFSystemAssistantExperienceStatusManager_sharedManager__block_invoke()

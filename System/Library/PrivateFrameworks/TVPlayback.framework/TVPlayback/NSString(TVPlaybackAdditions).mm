@@ -8,9 +8,9 @@
 
 - (id)tvp_languageCodeWithoutRegion
 {
-  v1 = a1;
-  v2 = [v1 rangeOfString:@"_"];
-  v3 = [v1 rangeOfString:@"-"];
+  selfCopy = self;
+  v2 = [selfCopy rangeOfString:@"_"];
+  v3 = [selfCopy rangeOfString:@"-"];
   if (v2 >= v3)
   {
     v4 = v3;
@@ -36,10 +36,10 @@
     v5 = v4;
   }
 
-  v6 = v1;
+  v6 = selfCopy;
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [v1 substringToIndex:?];
+    v6 = [selfCopy substringToIndex:?];
   }
 
   return v6;
@@ -47,7 +47,7 @@
 
 - (id)tvp_dataFromHexString
 {
-  v1 = [a1 cStringUsingEncoding:1];
+  v1 = [self cStringUsingEncoding:1];
   v2 = strlen(v1);
   v3 = 0;
   if (v2 && (v2 & 1) == 0)

@@ -6,14 +6,14 @@
 
 - (void)didEnter
 {
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v3 currentContext];
-  v5 = [v4 hasStateTransitionOrInitializing];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  currentContext = [stateMachine currentContext];
+  hasStateTransitionOrInitializing = [currentContext hasStateTransitionOrInitializing];
 
-  if (v5)
+  if (hasStateTransitionOrInitializing)
   {
-    v6 = [(HKSPStateMachineState *)self stateMachine];
-    [v6 environmentDidBecomeReady];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    [stateMachine2 environmentDidBecomeReady];
   }
 }
 

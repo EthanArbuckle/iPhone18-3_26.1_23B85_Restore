@@ -1,45 +1,45 @@
 @interface AllRefinementsViewModelMultiSelectElement
-- (AllRefinementsViewModelMultiSelectElement)initWithDisplayName:(id)a3 isSelected:(BOOL)a4 optionalLabelWidth:(id)a5 refinementKey:(id)a6 data:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AllRefinementsViewModelMultiSelectElement)initWithDisplayName:(id)name isSelected:(BOOL)selected optionalLabelWidth:(id)width refinementKey:(id)key data:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AllRefinementsViewModelMultiSelectElement
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AllRefinementsViewModelMultiSelectElement alloc];
-  v5 = [(AllRefinementsViewModelMultiSelectElement *)self displayName];
-  v6 = [(AllRefinementsViewModelMultiSelectElement *)self isSelected];
-  v7 = [(AllRefinementsViewModelMultiSelectElement *)self labelWidth];
-  v8 = [(AllRefinementsViewModelMultiSelectElement *)self refinementKey];
-  v9 = [(AllRefinementsViewModelMultiSelectElement *)self data];
-  v10 = [(AllRefinementsViewModelMultiSelectElement *)v4 initWithDisplayName:v5 isSelected:v6 optionalLabelWidth:v7 refinementKey:v8 data:v9];
+  displayName = [(AllRefinementsViewModelMultiSelectElement *)self displayName];
+  isSelected = [(AllRefinementsViewModelMultiSelectElement *)self isSelected];
+  labelWidth = [(AllRefinementsViewModelMultiSelectElement *)self labelWidth];
+  refinementKey = [(AllRefinementsViewModelMultiSelectElement *)self refinementKey];
+  data = [(AllRefinementsViewModelMultiSelectElement *)self data];
+  v10 = [(AllRefinementsViewModelMultiSelectElement *)v4 initWithDisplayName:displayName isSelected:isSelected optionalLabelWidth:labelWidth refinementKey:refinementKey data:data];
 
   return v10;
 }
 
-- (AllRefinementsViewModelMultiSelectElement)initWithDisplayName:(id)a3 isSelected:(BOOL)a4 optionalLabelWidth:(id)a5 refinementKey:(id)a6 data:(id)a7
+- (AllRefinementsViewModelMultiSelectElement)initWithDisplayName:(id)name isSelected:(BOOL)selected optionalLabelWidth:(id)width refinementKey:(id)key data:(id)data
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  nameCopy = name;
+  widthCopy = width;
+  keyCopy = key;
+  dataCopy = data;
   v22.receiver = self;
   v22.super_class = AllRefinementsViewModelMultiSelectElement;
   v16 = [(AllRefinementsViewModelMultiSelectElement *)&v22 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [nameCopy copy];
     displayName = v16->_displayName;
     v16->_displayName = v17;
 
-    v16->_isSelected = a4;
-    objc_storeStrong(&v16->_labelWidth, a5);
-    v19 = [v14 copy];
+    v16->_isSelected = selected;
+    objc_storeStrong(&v16->_labelWidth, width);
+    v19 = [keyCopy copy];
     refinementKey = v16->_refinementKey;
     v16->_refinementKey = v19;
 
-    objc_storeStrong(&v16->_data, a7);
+    objc_storeStrong(&v16->_data, data);
   }
 
   return v16;

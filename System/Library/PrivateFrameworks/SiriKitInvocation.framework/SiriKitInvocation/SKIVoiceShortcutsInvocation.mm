@@ -1,25 +1,25 @@
 @interface SKIVoiceShortcutsInvocation
-+ (id)cleanseTriggerIdIfNeeded:(id)a3;
-+ (id)startVoiceShortcutInCarPlayUsingTriggerId:(id)a3 withTriggerName:(id)a4 fromApp:(id)a5;
++ (id)cleanseTriggerIdIfNeeded:(id)needed;
++ (id)startVoiceShortcutInCarPlayUsingTriggerId:(id)id withTriggerName:(id)name fromApp:(id)app;
 @end
 
 @implementation SKIVoiceShortcutsInvocation
 
-+ (id)startVoiceShortcutInCarPlayUsingTriggerId:(id)a3 withTriggerName:(id)a4 fromApp:(id)a5
++ (id)startVoiceShortcutInCarPlayUsingTriggerId:(id)id withTriggerName:(id)name fromApp:(id)app
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  appCopy = app;
+  nameCopy = name;
+  idCopy = id;
   v10 = [[SKIDirectInvocationPayload alloc] initWithIdentifier:@"com.apple.siri.directInvocation.RunVoiceShortcut"];
   v18[0] = @"triggerId";
-  v11 = [SKIVoiceShortcutsInvocation cleanseTriggerIdIfNeeded:v9];
+  v11 = [SKIVoiceShortcutsInvocation cleanseTriggerIdIfNeeded:idCopy];
 
   v19[0] = v11;
-  v19[1] = v8;
+  v19[1] = nameCopy;
   v18[1] = @"triggerName";
   v18[2] = @"appBundleId";
-  v19[2] = v7;
+  v19[2] = appCopy;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
   [(SKIDirectInvocationPayload *)v10 setUserData:v12];
 
@@ -32,17 +32,17 @@
   return v15;
 }
 
-+ (id)cleanseTriggerIdIfNeeded:(id)a3
++ (id)cleanseTriggerIdIfNeeded:(id)needed
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"prompt:"])
+  neededCopy = needed;
+  if ([neededCopy hasPrefix:@"prompt:"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"prompt:", "length")}];
+    v4 = [neededCopy substringFromIndex:{objc_msgSend(@"prompt:", "length")}];
   }
 
   else
   {
-    v4 = v3;
+    v4 = neededCopy;
   }
 
   v5 = v4;

@@ -4,8 +4,8 @@
 - (NSString)error_str;
 - (NSString)session_id;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::CreateLanguageProfileResponse>)addObjectToBuffer:(void *)a3;
-- (QSSCreateLanguageProfileResponse)initWithFlatbuffData:(id)a3 root:(const CreateLanguageProfileResponse *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::CreateLanguageProfileResponse>)addObjectToBuffer:(void *)buffer;
+- (QSSCreateLanguageProfileResponse)initWithFlatbuffData:(id)data root:(const CreateLanguageProfileResponse *)root verify:(BOOL)verify;
 - (QSSUserLanguageProfile)user_language_profile;
 - (id)flatbuffData;
 - (int)error_code;
@@ -42,60 +42,60 @@ flatbuffers::DetachedBuffer *__48__QSSCreateLanguageProfileResponse_flatbuffData
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::CreateLanguageProfileResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::CreateLanguageProfileResponse>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSCreateLanguageProfileResponse *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(QSSCreateLanguageProfileResponse *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_2879AE8E0;
+    speech_id = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(QSSCreateLanguageProfileResponse *)self session_id];
-  v11 = v10;
-  if (!v10)
+  session_id = [(QSSCreateLanguageProfileResponse *)self session_id];
+  v11 = session_id;
+  if (!session_id)
   {
-    v10 = &stru_2879AE8E0;
+    session_id = &stru_2879AE8E0;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  v14 = flatbuffers::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v13 = strlen(uTF8String2);
+  v14 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  v15 = [(QSSCreateLanguageProfileResponse *)self error_code];
-  v16 = [(QSSCreateLanguageProfileResponse *)self error_str];
-  v17 = v16;
-  if (!v16)
+  error_code = [(QSSCreateLanguageProfileResponse *)self error_code];
+  error_str = [(QSSCreateLanguageProfileResponse *)self error_str];
+  v17 = error_str;
+  if (!error_str)
   {
-    v16 = &stru_2879AE8E0;
+    error_str = &stru_2879AE8E0;
   }
 
-  v18 = [(__CFString *)v16 UTF8String];
-  v19 = strlen(v18);
-  LODWORD(v18) = flatbuffers::FlatBufferBuilder::CreateString(a3, v18, v19);
+  uTF8String3 = [(__CFString *)error_str UTF8String];
+  v19 = strlen(uTF8String3);
+  LODWORD(uTF8String3) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v19);
 
-  v20 = [(QSSCreateLanguageProfileResponse *)self user_language_profile];
-  v21 = [v20 addObjectToBuffer:a3];
+  user_language_profile = [(QSSCreateLanguageProfileResponse *)self user_language_profile];
+  v21 = [user_language_profile addObjectToBuffer:buffer];
 
-  LODWORD(v20) = [(QSSCreateLanguageProfileResponse *)self incomplete_profile];
-  v22 = [(QSSCreateLanguageProfileResponse *)self recreate_apg_prons];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v23 = *(a3 + 10);
-  v24 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, v14);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v15);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 10, v18);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 12, v21);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 14, v20);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 16, v22);
+  LODWORD(user_language_profile) = [(QSSCreateLanguageProfileResponse *)self incomplete_profile];
+  recreate_apg_prons = [(QSSCreateLanguageProfileResponse *)self recreate_apg_prons];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v23 = *(buffer + 10);
+  v24 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, v14);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, error_code);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 10, uTF8String3);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 12, v21);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 14, user_language_profile);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 16, recreate_apg_prons);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v24 + v23);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v24 + v23);
 }
 
 - (BOOL)recreate_apg_prons
@@ -221,10 +221,10 @@ flatbuffers::DetachedBuffer *__48__QSSCreateLanguageProfileResponse_flatbuffData
   return v6;
 }
 
-- (QSSCreateLanguageProfileResponse)initWithFlatbuffData:(id)a3 root:(const CreateLanguageProfileResponse *)a4 verify:(BOOL)a5
+- (QSSCreateLanguageProfileResponse)initWithFlatbuffData:(id)data root:(const CreateLanguageProfileResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v43.receiver = self;
   v43.super_class = QSSCreateLanguageProfileResponse;
   v10 = [(QSSCreateLanguageProfileResponse *)&v43 init];
@@ -234,35 +234,35 @@ flatbuffers::DetachedBuffer *__48__QSSCreateLanguageProfileResponse_flatbuffData
     goto LABEL_52;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_53;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v12 = [(NSData *)v10->_data bytes];
-    a4 = v12 + *v12;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_51;
   }
 
-  v13 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v14 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v13 || root > v13 + v14)
+  if (root < bytes2 || root > bytes2 + v14)
   {
     goto LABEL_53;
   }
 
-  v17 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v18 = [(NSData *)v10->_data length];
-  v38 = v17;
+  v38 = bytes3;
   v39 = v18;
   v40 = xmmword_26914CD70;
   v41 = 0;
@@ -371,9 +371,9 @@ LABEL_53:
   }
 
 LABEL_51:
-  v34 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   storage = v11->_storage;
-  v11->_storage = v34;
+  v11->_storage = dictionary;
 
 LABEL_52:
   v36 = v11;

@@ -13,16 +13,16 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
     [(WebAccessibilityObjectWrapperAccessibility__MessageUI__WebCore *)self _accessibilitySetBoolValue:0 forKey:@"IsAttachmentType"];
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)accessibilityLabel
@@ -30,17 +30,17 @@
   if ([(WebAccessibilityObjectWrapperAccessibility__MessageUI__WebCore *)self _axIsAttachmentType])
   {
     v3 = [(WebAccessibilityObjectWrapperAccessibility__MessageUI__WebCore *)self _accessibilityValueForKey:@"AXAttachment"];
-    v4 = [v3 accessibilityLabel];
+    accessibilityLabel = [v3 accessibilityLabel];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = WebAccessibilityObjectWrapperAccessibility__MessageUI__WebCore;
-    v4 = [(WebAccessibilityObjectWrapperAccessibility__MessageUI__WebCore *)&v6 accessibilityLabel];
+    accessibilityLabel = [(WebAccessibilityObjectWrapperAccessibility__MessageUI__WebCore *)&v6 accessibilityLabel];
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
@@ -48,17 +48,17 @@
   if ([(WebAccessibilityObjectWrapperAccessibility__MessageUI__WebCore *)self _axIsAttachmentType])
   {
     v3 = [(WebAccessibilityObjectWrapperAccessibility__MessageUI__WebCore *)self _accessibilityValueForKey:@"AXAttachment"];
-    v4 = [v3 accessibilityValue];
+    accessibilityValue = [v3 accessibilityValue];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = WebAccessibilityObjectWrapperAccessibility__MessageUI__WebCore;
-    v4 = [(WebAccessibilityObjectWrapperAccessibility__MessageUI__WebCore *)&v6 accessibilityValue];
+    accessibilityValue = [(WebAccessibilityObjectWrapperAccessibility__MessageUI__WebCore *)&v6 accessibilityValue];
   }
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (id)accessibilityHint
@@ -66,17 +66,17 @@
   if ([(WebAccessibilityObjectWrapperAccessibility__MessageUI__WebCore *)self _axIsAttachmentType])
   {
     v3 = [(WebAccessibilityObjectWrapperAccessibility__MessageUI__WebCore *)self _accessibilityValueForKey:@"AXAttachment"];
-    v4 = [v3 accessibilityHint];
+    accessibilityHint = [v3 accessibilityHint];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = WebAccessibilityObjectWrapperAccessibility__MessageUI__WebCore;
-    v4 = [(WebAccessibilityObjectWrapperAccessibility__MessageUI__WebCore *)&v6 accessibilityHint];
+    accessibilityHint = [(WebAccessibilityObjectWrapperAccessibility__MessageUI__WebCore *)&v6 accessibilityHint];
   }
 
-  return v4;
+  return accessibilityHint;
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface VKMapGestureCameraController
 - (Matrix<double,)positionClampedToCameraRestriction:()Matrix<double;
 - (Matrix<double,)positionClampedToCameraRestriction:()Matrix<double delta:()3;
-- (VKMapGestureCameraController)initWithCameraController:(id)a3;
+- (VKMapGestureCameraController)initWithCameraController:(id)controller;
 - (VKMovableCamera)moveableCamera;
 - (id).cxx_construct;
-- (void)beginPitch:(CGPoint)a3;
-- (void)endZoom:(CGPoint)a3;
-- (void)updatePan:(CGPoint)a3 lastScreenPoint:(CGPoint)a4;
-- (void)updatePitch:(CGPoint)a3 degrees:(double)a4;
-- (void)updatePitch:(CGPoint)a3 translation:(double)a4;
-- (void)updateRotate:(double)a3 atScreenPoint:(CGPoint)a4;
-- (void)updateZoom:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5;
+- (void)beginPitch:(CGPoint)pitch;
+- (void)endZoom:(CGPoint)zoom;
+- (void)updatePan:(CGPoint)pan lastScreenPoint:(CGPoint)point;
+- (void)updatePitch:(CGPoint)pitch degrees:(double)degrees;
+- (void)updatePitch:(CGPoint)pitch translation:(double)translation;
+- (void)updateRotate:(double)rotate atScreenPoint:(CGPoint)point;
+- (void)updateZoom:(CGPoint)zoom oldFactor:(double)factor newFactor:(double)newFactor;
 @end
 
 @implementation VKMapGestureCameraController
@@ -34,11 +34,11 @@
   v9 = a3._e[0];
   *&v40.var1 = a3;
   *(&v40.var0._rotation._imaginary + 8) = a4;
-  v11 = [(VKMapGestureCameraController *)self moveableCamera];
-  v12 = [v11 regionRestriction];
-  v13 = [v12 isEmpty];
+  moveableCamera = [(VKMapGestureCameraController *)self moveableCamera];
+  regionRestriction = [moveableCamera regionRestriction];
+  isEmpty = [regionRestriction isEmpty];
 
-  if (v13)
+  if (isEmpty)
   {
     for (i = 0; i != 3; ++i)
     {
@@ -52,9 +52,9 @@
 
   else
   {
-    if (v11)
+    if (moveableCamera)
     {
-      [v11 cameraState];
+      [moveableCamera cameraState];
     }
 
     else
@@ -70,7 +70,7 @@
     [WeakRetained centerScreenPoint];
     VKCameraMakeGroundPoint(&v40, v41, v19, &v35);
 
-    [v11 groundPoint];
+    [moveableCamera groundPoint];
     v34[0] = v20;
     v34[1] = v21;
     v34[2] = v22;
@@ -87,8 +87,8 @@
     }
 
     v24 = v35;
-    v25 = [v11 regionRestriction];
-    [v25 clampedPositionForOrigin:*&v24 + v9 delta:{*(&v24 + 1) + v8, v6, v5}];
+    regionRestriction2 = [moveableCamera regionRestriction];
+    [regionRestriction2 clampedPositionForOrigin:*&v24 + v9 delta:{*(&v24 + 1) + v8, v6, v5}];
     v27 = v26;
     v29 = v28;
 
@@ -111,15 +111,15 @@
   v3 = a3._e[2];
   v4 = a3._e[1];
   v5 = a3._e[0];
-  v7 = [(VKMapGestureCameraController *)self moveableCamera];
-  v8 = [v7 regionRestriction];
-  v9 = [v8 isEmpty];
+  moveableCamera = [(VKMapGestureCameraController *)self moveableCamera];
+  regionRestriction = [moveableCamera regionRestriction];
+  isEmpty = [regionRestriction isEmpty];
 
-  if ((v9 & 1) == 0)
+  if ((isEmpty & 1) == 0)
   {
-    if (v7)
+    if (moveableCamera)
     {
-      [v7 cameraState];
+      [moveableCamera cameraState];
     }
 
     else
@@ -131,7 +131,7 @@
     [WeakRetained centerScreenPoint];
     VKCameraMakeGroundPoint(&v28, v29, v11, v27);
 
-    [v7 groundPoint];
+    [moveableCamera groundPoint];
     v26[0] = v12;
     v26[1] = v13;
     v26[2] = v14;
@@ -148,8 +148,8 @@
     }
 
     v16 = v27[0];
-    v17 = [v7 regionRestriction];
-    [v17 clampedPosition:{*&v16 + v5, *(&v16 + 1) + v4}];
+    regionRestriction2 = [moveableCamera regionRestriction];
+    [regionRestriction2 clampedPosition:{*&v16 + v5, *(&v16 + 1) + v4}];
     v19 = v18;
     v21 = v20;
 
@@ -166,11 +166,11 @@
   return result;
 }
 
-- (void)updatePitch:(CGPoint)a3 degrees:(double)a4
+- (void)updatePitch:(CGPoint)pitch degrees:(double)degrees
 {
-  v6 = [(VKMapGestureCameraController *)self moveableCamera:a3.x];
-  v7 = a4 * 0.0174532925;
-  self->_isPitchIncreasing = self->_currentPitch < a4 * 0.0174532925;
+  v6 = [(VKMapGestureCameraController *)self moveableCamera:pitch.x];
+  v7 = degrees * 0.0174532925;
+  self->_isPitchIncreasing = self->_currentPitch < degrees * 0.0174532925;
   [v6 maxPitchRadian];
   v9 = v8;
   [v6 maxPitchRadian];
@@ -189,7 +189,7 @@
 
   v15 = rubberBandOffsetForOffset(v7, v11, 0.0, v14);
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
-  v17 = [WeakRetained isPitched];
+  isPitched = [WeakRetained isPitched];
 
   [v6 pitchRadian];
   v19 = v18;
@@ -241,16 +241,16 @@
     if ((BYTE8(v44) & 1) == 0)
     {
       v39 = std::__throw_bad_optional_access[abi:nn200100]();
-      v40 = self;
+      selfCopy = self;
       v41 = v39;
 
       _Unwind_Resume(v41);
     }
 
-    v28 = [v6 position];
+    position = [v6 position];
     for (i = 0; i != 3; ++i)
     {
-      *&v49[i] = *(&v43 + i * 8) - *(v28 + i * 8);
+      *&v49[i] = *(&v43 + i * 8) - *(position + i * 8);
     }
 
     v31 = *v49;
@@ -266,31 +266,31 @@
 
   self->_currentPitch = v20;
   v35 = objc_loadWeakRetained(&self->super._cameraController);
-  v36 = [v35 isPitched];
+  isPitched2 = [v35 isPitched];
 
-  if (!(v17 & 1 | ((v36 & 1) == 0)))
+  if (!(isPitched & 1 | ((isPitched2 & 1) == 0)))
   {
     v37 = objc_loadWeakRetained(&self->super._cameraController);
-    v38 = [v37 cameraDelegate];
-    [v38 mapLayerDidBecomePitched:1];
+    cameraDelegate = [v37 cameraDelegate];
+    [cameraDelegate mapLayerDidBecomePitched:1];
     goto LABEL_20;
   }
 
-  if (!(v36 & 1 | ((v17 & 1) == 0)))
+  if (!(isPitched2 & 1 | ((isPitched & 1) == 0)))
   {
     v37 = objc_loadWeakRetained(&self->super._cameraController);
-    v38 = [v37 cameraDelegate];
-    [v38 mapLayerDidBecomePitched:0];
+    cameraDelegate = [v37 cameraDelegate];
+    [cameraDelegate mapLayerDidBecomePitched:0];
 LABEL_20:
   }
 }
 
-- (void)updatePitch:(CGPoint)a3 translation:(double)a4
+- (void)updatePitch:(CGPoint)pitch translation:(double)translation
 {
-  v6 = [(VKMapGestureCameraController *)self moveableCamera:a3.x];
+  v6 = [(VKMapGestureCameraController *)self moveableCamera:pitch.x];
   v7 = v6;
-  v8 = (a4 > 0.0) - (a4 < 0.0);
-  v9 = fabs(a4);
+  v8 = (translation > 0.0) - (translation < 0.0);
+  v9 = fabs(translation);
   self->_isPitchIncreasing = v8 < 0;
   beganPitch = self->_beganPitch;
   if (v8 >= 0)
@@ -321,7 +321,7 @@ LABEL_20:
 
   v19 = rubberBandOffsetForOffset(beganPitch + v11, v15, 0.0, v18);
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
-  v21 = [WeakRetained isPitched];
+  isPitched = [WeakRetained isPitched];
 
   [v7 pitchRadian];
   v23 = v22;
@@ -373,16 +373,16 @@ LABEL_20:
     if ((BYTE8(v48) & 1) == 0)
     {
       v43 = std::__throw_bad_optional_access[abi:nn200100]();
-      v44 = self;
+      selfCopy = self;
       v45 = v43;
 
       _Unwind_Resume(v45);
     }
 
-    v32 = [v7 position];
+    position = [v7 position];
     for (i = 0; i != 3; ++i)
     {
-      *&v53[i] = *(&v47 + i * 8) - *(v32 + i * 8);
+      *&v53[i] = *(&v47 + i * 8) - *(position + i * 8);
     }
 
     v35 = *v53;
@@ -398,44 +398,44 @@ LABEL_20:
 
   self->_currentPitch = v24;
   v39 = objc_loadWeakRetained(&self->super._cameraController);
-  v40 = [v39 isPitched];
+  isPitched2 = [v39 isPitched];
 
-  if (!(v21 & 1 | ((v40 & 1) == 0)))
+  if (!(isPitched & 1 | ((isPitched2 & 1) == 0)))
   {
     v41 = objc_loadWeakRetained(&self->super._cameraController);
-    v42 = [v41 cameraDelegate];
-    [v42 mapLayerDidBecomePitched:1];
+    cameraDelegate = [v41 cameraDelegate];
+    [cameraDelegate mapLayerDidBecomePitched:1];
     goto LABEL_23;
   }
 
-  if (!(v40 & 1 | ((v21 & 1) == 0)))
+  if (!(isPitched2 & 1 | ((isPitched & 1) == 0)))
   {
     v41 = objc_loadWeakRetained(&self->super._cameraController);
-    v42 = [v41 cameraDelegate];
-    [v42 mapLayerDidBecomePitched:0];
+    cameraDelegate = [v41 cameraDelegate];
+    [cameraDelegate mapLayerDidBecomePitched:0];
 LABEL_23:
   }
 }
 
-- (void)beginPitch:(CGPoint)a3
+- (void)beginPitch:(CGPoint)pitch
 {
-  v5 = [(VKMapGestureCameraController *)self moveableCamera:a3.x];
+  v5 = [(VKMapGestureCameraController *)self moveableCamera:pitch.x];
   [v5 pitchRadian];
   self->_beganPitch = v4;
 }
 
-- (void)updateRotate:(double)a3 atScreenPoint:(CGPoint)a4
+- (void)updateRotate:(double)rotate atScreenPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [(VKMapGestureCameraController *)self moveableCamera];
-  v9 = v8;
-  if (v8)
+  y = point.y;
+  x = point.x;
+  moveableCamera = [(VKMapGestureCameraController *)self moveableCamera];
+  v9 = moveableCamera;
+  if (moveableCamera)
   {
-    [v8 groundPointFromScreenPoint:{x, y}];
+    [moveableCamera groundPointFromScreenPoint:{x, y}];
     if (v24)
     {
-      v10 = a3 * 0.5;
+      v10 = rotate * 0.5;
       v11 = sin(v10);
       for (i = 0; i != 24; i += 8)
       {
@@ -445,7 +445,7 @@ LABEL_23:
       v20 = v25;
       v21 = v26;
       v22 = cos(v10);
-      v13 = [v9 position];
+      position = [v9 position];
       if ((v24 & 1) == 0)
       {
         v17 = std::__throw_bad_optional_access[abi:nn200100]();
@@ -453,7 +453,7 @@ LABEL_23:
         _Unwind_Resume(v17);
       }
 
-      [(VKMapGestureCameraController *)self positionClampedToCameraRestriction:gm::rotateAboutPoint<double>(v13, &v20, v23)];
+      [(VKMapGestureCameraController *)self positionClampedToCameraRestriction:gm::rotateAboutPoint<double>(position, &v20, v23)];
       v19[0] = v14;
       v19[1] = v15;
       v19[2] = v16;
@@ -463,32 +463,32 @@ LABEL_23:
   }
 }
 
-- (void)updatePan:(CGPoint)a3 lastScreenPoint:(CGPoint)a4
+- (void)updatePan:(CGPoint)pan lastScreenPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v9 = [(VKMapGestureCameraController *)self moveableCamera];
+  y = point.y;
+  x = point.x;
+  v6 = pan.y;
+  v7 = pan.x;
+  moveableCamera = [(VKMapGestureCameraController *)self moveableCamera];
   LOBYTE(v49) = 0;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
-  v11 = [WeakRetained isPitched];
+  isPitched = [WeakRetained isPitched];
 
-  if (v11)
+  if (isPitched)
   {
-    [v9 pitchRadian];
+    [moveableCamera pitchRadian];
     v13 = v12;
-    [v9 rightVector];
+    [moveableCamera rightVector];
     v36.var0._rotation._imaginary._e[1] = v14;
     v36.var0._rotation._imaginary._e[2] = v15;
     v36.var0._rotation._scalar = v16;
     gm::quaternionFromAngleAxis<double>(v46, &v36.var0._rotation._imaginary._e[1], -v13);
-    gm::Quaternion<double>::operator*(&v43, v46, [v9 orientation]);
+    gm::Quaternion<double>::operator*(&v43, v46, [moveableCamera orientation]);
     v17 = objc_loadWeakRetained(&self->super._cameraController);
     [v17 centerScreenPoint];
-    if (v9)
+    if (moveableCamera)
     {
-      [v9 groundPointFromScreenPoint:?];
+      [moveableCamera groundPointFromScreenPoint:?];
     }
 
     else
@@ -499,7 +499,7 @@ LABEL_23:
 
     if (BYTE8(v42))
     {
-      v20 = [v9 position];
+      position = [moveableCamera position];
       if ((BYTE8(v42) & 1) == 0)
       {
         v34 = std::__throw_bad_optional_access[abi:nn200100]();
@@ -507,12 +507,12 @@ LABEL_23:
         _Unwind_Resume(v34);
       }
 
-      v22 = gm::rotateAboutPoint<double>(v20, v46, &v41);
+      v22 = gm::rotateAboutPoint<double>(position, v46, &v41);
       v24 = v23;
       v25 = v21;
-      if (v9)
+      if (moveableCamera)
       {
-        [v9 cameraState];
+        [moveableCamera cameraState];
       }
 
       else
@@ -556,12 +556,12 @@ LABEL_19:
 
           v28 = v36.var0._rotation._imaginary._e[1];
           v29 = v36.var0._rotation._imaginary._e[2];
-          v30 = [v9 position];
-          [(VKMapGestureCameraController *)self positionClampedToCameraRestriction:*v30 delta:v30[1], v30[2], v28, v29, 0.0];
+          position2 = [moveableCamera position];
+          [(VKMapGestureCameraController *)self positionClampedToCameraRestriction:*position2 delta:position2[1], position2[2], v28, v29, 0.0];
           v35[0] = v31;
           v35[1] = v32;
           v35[2] = v33;
-          [v9 setPosition:v35];
+          [moveableCamera setPosition:v35];
           self->_panLastScreenPoint.x = v7;
           self->_panLastScreenPoint.y = v6;
         }
@@ -569,9 +569,9 @@ LABEL_19:
     }
   }
 
-  else if (v9)
+  else if (moveableCamera)
   {
-    [v9 groundPointFromScreenPoint:{v7, v6}];
+    [moveableCamera groundPointFromScreenPoint:{v7, v6}];
     var1_low = LOBYTE(v36.var1);
     if (LOBYTE(v36.var1))
     {
@@ -579,7 +579,7 @@ LABEL_19:
       scalar = v36.var0._rotation._scalar;
     }
 
-    [v9 groundPointFromScreenPoint:{x, y}];
+    [moveableCamera groundPointFromScreenPoint:{x, y}];
     if (LOBYTE(v36.var1))
     {
       v47 = *&v36.var0._rotation._imaginary._e[1];
@@ -589,7 +589,7 @@ LABEL_19:
   }
 }
 
-- (void)endZoom:(CGPoint)a3
+- (void)endZoom:(CGPoint)zoom
 {
   if (self->_zoomPreviousT.__engaged_)
   {
@@ -602,30 +602,30 @@ LABEL_19:
   }
 }
 
-- (void)updateZoom:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5
+- (void)updateZoom:(CGPoint)zoom oldFactor:(double)factor newFactor:(double)newFactor
 {
-  y = a3.y;
-  x = a3.x;
-  v10 = [(VKMapGestureCameraController *)self moveableCamera];
-  v11 = [(VKGestureCameraBehavior *)self allowsZoomRubberbanding];
-  val = 1.0 - 1.0 / a4;
-  if (v11 && self->_zoomPreviousT.__engaged_)
+  y = zoom.y;
+  x = zoom.x;
+  moveableCamera = [(VKMapGestureCameraController *)self moveableCamera];
+  allowsZoomRubberbanding = [(VKGestureCameraBehavior *)self allowsZoomRubberbanding];
+  val = 1.0 - 1.0 / factor;
+  if (allowsZoomRubberbanding && self->_zoomPreviousT.__engaged_)
   {
     val = self->_zoomPreviousT.var0.__val_;
   }
 
-  if (v10)
+  if (moveableCamera)
   {
-    [v10 groundPointFromScreenPoint:{x, y}];
+    [moveableCamera groundPointFromScreenPoint:{x, y}];
     if (v42)
     {
-      v13 = [v10 position];
+      position = [moveableCamera position];
       v14 = 0;
       v15 = val;
       v16 = v15;
-      v17 = (v13[1].f64[0] - v41 * v16) / (1.0 - v16);
-      v18 = 1.0 - 1.0 / a5;
-      v38 = vdivq_f64(vmlsq_lane_f64(*v13, v40, v16, 0), vdupq_lane_s64(COERCE__INT64(1.0 - v16), 0));
+      v17 = (position[1].f64[0] - v41 * v16) / (1.0 - v16);
+      v18 = 1.0 - 1.0 / newFactor;
+      v38 = vdivq_f64(vmlsq_lane_f64(*position, v40, v16, 0), vdupq_lane_s64(COERCE__INT64(1.0 - v16), 0));
       v43 = v38;
       v44 = v17;
       do
@@ -638,12 +638,12 @@ LABEL_19:
       v20 = v43.f64[1];
       v19 = v43.f64[0];
       v21 = v44;
-      if (v11 && (([v10 minHeight], v21 < v22) || (objc_msgSend(v10, "maxHeight"), v21 > v23)))
+      if (allowsZoomRubberbanding && (([moveableCamera minHeight], v21 < v22) || (objc_msgSend(moveableCamera, "maxHeight"), v21 > v23)))
       {
         p_rubberbandZoomStartFactor = &self->_rubberbandZoomStartFactor;
         if (self->_rubberbandZoomStartFactor.__engaged_)
         {
-          [v10 position];
+          [moveableCamera position];
           if (!self->_rubberbandZoomStartFactor.__engaged_ || (v25 = p_rubberbandZoomStartFactor->var0.__val_, GEOConfigGetDouble(), v27 = rubberBandOffsetForOffset(v18, 1.0 - 1.0 / v25, 1.0 - 1.0 / v25, v26), (v42 & 1) == 0))
           {
             v37 = std::__throw_bad_optional_access[abi:nn200100]();
@@ -668,11 +668,11 @@ LABEL_19:
           goto LABEL_22;
         }
 
-        p_rubberbandZoomStartFactor->var0.__val_ = a5;
+        p_rubberbandZoomStartFactor->var0.__val_ = newFactor;
         self->_rubberbandZoomStartFactor.__engaged_ = 1;
-        [v10 minHeight];
+        [moveableCamera minHeight];
         v31 = v33;
-        [v10 maxHeight];
+        [moveableCamera maxHeight];
       }
 
       else
@@ -682,32 +682,32 @@ LABEL_19:
           self->_rubberbandZoomStartFactor.__engaged_ = 0;
         }
 
-        [v10 minHeight];
+        [moveableCamera minHeight];
         v31 = v30;
-        [v10 maxHeight];
+        [moveableCamera maxHeight];
       }
 
       v29 = fmin(fmax(v21, v31), v32);
 LABEL_22:
       self->_zoomPreviousT.var0.__val_ = v18;
       self->_zoomPreviousT.__engaged_ = 1;
-      if (v29 != *([v10 position] + 16))
+      if (v29 != *([moveableCamera position] + 16))
       {
         [(VKMapGestureCameraController *)self positionClampedToCameraRestriction:v19, v20, v29];
         v39[0] = v34;
         v39[1] = v35;
         v39[2] = v36;
-        [v10 setPosition:v39];
+        [moveableCamera setPosition:v39];
       }
     }
   }
 }
 
-- (VKMapGestureCameraController)initWithCameraController:(id)a3
+- (VKMapGestureCameraController)initWithCameraController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = VKMapGestureCameraController;
-  return [(VKGestureCameraBehavior *)&v4 initWithCameraController:a3];
+  return [(VKGestureCameraBehavior *)&v4 initWithCameraController:controller];
 }
 
 - (VKMovableCamera)moveableCamera
@@ -715,16 +715,16 @@ LABEL_22:
   moveableCamera = self->_moveableCamera;
   if (moveableCamera)
   {
-    v3 = moveableCamera;
+    vkCamera = moveableCamera;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
-    v3 = [WeakRetained vkCamera];
+    vkCamera = [WeakRetained vkCamera];
   }
 
-  return v3;
+  return vkCamera;
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface MFAttachmentImageGenerator
-+ (CGRect)imageRectForAttachment:(id)a3;
-+ (id)imageForAttachment:(id)a3;
-+ (id)pngDataForAttachment:(id)a3;
++ (CGRect)imageRectForAttachment:(id)attachment;
++ (id)imageForAttachment:(id)attachment;
++ (id)pngDataForAttachment:(id)attachment;
 - (CGRect)imageRect;
-- (MFAttachmentImageGenerator)initWithAttachment:(id)a3;
+- (MFAttachmentImageGenerator)initWithAttachment:(id)attachment;
 - (id)pngData;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation MFAttachmentImageGenerator
 
-- (MFAttachmentImageGenerator)initWithAttachment:(id)a3
+- (MFAttachmentImageGenerator)initWithAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   [objc_opt_class() defaultHeight];
   v6 = v5;
-  v7 = [v4 isPass];
-  if (!v7)
+  isPass = [attachmentCopy isPass];
+  if (!isPass)
   {
     goto LABEL_6;
   }
 
-  v8 = [v4 passWithError:0];
+  v8 = [attachmentCopy passWithError:0];
   if (!v8)
   {
     goto LABEL_6;
@@ -47,23 +47,23 @@
   _Block_object_dispose(&v38, 8);
   v11 = [[v9 alloc] initWithPass:v8 content:5];
   [v11 setSuppressedContent:6];
-  v12 = [v11 snapshotOfFrontFace];
-  [v12 size];
+  snapshotOfFrontFace = [v11 snapshotOfFrontFace];
+  [snapshotOfFrontFace size];
   v6 = v13;
 
-  if (!v12)
+  if (!snapshotOfFrontFace)
   {
 LABEL_6:
-    v14 = [v4 contentTypeIdentifier];
-    if (!v14 || (v15 = objc_alloc_init(MEMORY[0x1E69CDA18]), [v4 fileName], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "setName:", v16), v16, objc_msgSend(v15, "setUTI:", v14), objc_msgSend(v15, "icons"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "firstObject"), v12 = objc_claimAutoreleasedReturnValue(), v17, v15, v14, !v12))
+    contentTypeIdentifier = [attachmentCopy contentTypeIdentifier];
+    if (!contentTypeIdentifier || (v15 = objc_alloc_init(MEMORY[0x1E69CDA18]), [attachmentCopy fileName], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "setName:", v16), v16, objc_msgSend(v15, "setUTI:", contentTypeIdentifier), objc_msgSend(v15, "icons"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "firstObject"), snapshotOfFrontFace = objc_claimAutoreleasedReturnValue(), v17, v15, contentTypeIdentifier, !snapshotOfFrontFace))
     {
       v18 = MEMORY[0x1E69DCAB8];
       v19 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v12 = [v18 imageNamed:@"downloadinprogress" inBundle:v19];
+      snapshotOfFrontFace = [v18 imageNamed:@"downloadinprogress" inBundle:v19];
     }
   }
 
-  [v12 size];
+  [snapshotOfFrontFace size];
   v21 = v20;
   v23 = v22;
   if (!sDownloadFont)
@@ -73,8 +73,8 @@ LABEL_6:
     sDownloadFont = v24;
   }
 
-  v26 = [v4 fileName];
-  [v26 _legacy_sizeWithFont:sDownloadFont forWidth:5 lineBreakMode:150.0];
+  fileName = [attachmentCopy fileName];
+  [fileName _legacy_sizeWithFont:sDownloadFont forWidth:5 lineBreakMode:150.0];
   v28 = v27;
   v30 = v29;
   if (v27 >= v21)
@@ -87,16 +87,16 @@ LABEL_6:
   v31 = [(MFAttachmentImageGenerator *)&v36 initWithFrame:0.0, 0.0, v21, v6];
   if (v31)
   {
-    [v4 setImageDimensions:{v21, v6}];
+    [attachmentCopy setImageDimensions:{v21, v6}];
     v31->_textSize.width = v28;
     v31->_textSize.height = v30;
-    v32 = [v26 copy];
+    v32 = [fileName copy];
     displayString = v31->_displayString;
     v31->_displayString = v32;
 
-    objc_storeStrong(&v31->_image, v12);
+    objc_storeStrong(&v31->_image, snapshotOfFrontFace);
     v34 = 48.0;
-    if (v7)
+    if (isPass)
     {
       v34 = v23;
     }
@@ -108,28 +108,28 @@ LABEL_6:
   return v31;
 }
 
-+ (id)pngDataForAttachment:(id)a3
++ (id)pngDataForAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithAttachment:v4];
-  v6 = [v5 pngData];
+  attachmentCopy = attachment;
+  v5 = [[self alloc] initWithAttachment:attachmentCopy];
+  pngData = [v5 pngData];
 
-  return v6;
+  return pngData;
 }
 
-+ (id)imageForAttachment:(id)a3
++ (id)imageForAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithAttachment:v4];
-  v6 = [v5 image];
+  attachmentCopy = attachment;
+  v5 = [[self alloc] initWithAttachment:attachmentCopy];
+  image = [v5 image];
 
-  return v6;
+  return image;
 }
 
-+ (CGRect)imageRectForAttachment:(id)a3
++ (CGRect)imageRectForAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithAttachment:v4];
+  attachmentCopy = attachment;
+  v5 = [[self alloc] initWithAttachment:attachmentCopy];
   [v5 imageRect];
   v7 = v6;
   v9 = v8;
@@ -153,8 +153,8 @@ LABEL_6:
   v10.width = v3;
   v10.height = v4;
   UIGraphicsBeginImageContextWithOptions(v10, 0, 0.0);
-  v5 = [(MFAttachmentImageGenerator *)self layer];
-  [v5 renderInContext:UIGraphicsGetCurrentContext()];
+  layer = [(MFAttachmentImageGenerator *)self layer];
+  [layer renderInContext:UIGraphicsGetCurrentContext()];
 
   v6 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -189,16 +189,16 @@ LABEL_6:
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(MFAttachmentImageGenerator *)self bounds:a3.origin.x];
+  [(MFAttachmentImageGenerator *)self bounds:rect.origin.x];
   v5 = v4;
   [(MFAttachmentImageGenerator *)self imageRect];
   v7 = v6;
   v9 = v8;
   [(UIImage *)self->_image drawInRect:?];
-  v10 = [MEMORY[0x1E69DC888] grayColor];
-  [v10 set];
+  grayColor = [MEMORY[0x1E69DC888] grayColor];
+  [grayColor set];
 
   displayString = self->_displayString;
   v12 = (v5 - self->_textSize.width) * 0.5;

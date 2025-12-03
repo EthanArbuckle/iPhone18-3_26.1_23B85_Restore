@@ -1,21 +1,21 @@
 @interface AccessoryBatteryState
 - (_TtC11DockKitCore21AccessoryBatteryState)init;
-- (_TtC11DockKitCore21AccessoryBatteryState)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC11DockKitCore21AccessoryBatteryState)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AccessoryBatteryState
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AccessoryBatteryState.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AccessoryBatteryState.encode(with:)(coderCopy);
 }
 
-- (_TtC11DockKitCore21AccessoryBatteryState)initWithCoder:(id)a3
+- (_TtC11DockKitCore21AccessoryBatteryState)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_224530A00();
 
   return v4;

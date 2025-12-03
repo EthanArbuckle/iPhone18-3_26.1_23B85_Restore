@@ -1,6 +1,6 @@
 @interface IMCloudKitSyncProgressRuntimeTestUploading
 - (void)setUp;
-- (void)willUpdateSyncState:(id)a3;
+- (void)willUpdateSyncState:(id)state;
 @end
 
 @implementation IMCloudKitSyncProgressRuntimeTestUploading
@@ -15,12 +15,12 @@
   objc_msgSend_setMaxProgressCount_(self, v6, 5);
 }
 
-- (void)willUpdateSyncState:(id)a3
+- (void)willUpdateSyncState:(id)state
 {
-  v6 = a3;
-  objc_msgSend_setIMCloudKitSyncDate_(v6, v3, 0);
-  objc_msgSend_setIMCloudKitSyncControllerSyncState_(v6, v4, 4);
-  objc_msgSend_setIMCloudKitSyncControllerSyncRecordType_(v6, v5, 1);
+  stateCopy = state;
+  objc_msgSend_setIMCloudKitSyncDate_(stateCopy, v3, 0);
+  objc_msgSend_setIMCloudKitSyncControllerSyncState_(stateCopy, v4, 4);
+  objc_msgSend_setIMCloudKitSyncControllerSyncRecordType_(stateCopy, v5, 1);
 }
 
 @end

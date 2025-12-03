@@ -14,15 +14,15 @@
     block[1] = 3221225472;
     block[2] = sub_1000175AC;
     block[3] = &unk_10010AF00;
-    block[4] = a1;
+    block[4] = self;
     if (qword_100126940 != -1)
     {
       dispatch_once(&qword_100126940, block);
     }
 
-    if (!+[TUCallCapabilities supportsThumperCalling](TUCallCapabilities, "supportsThumperCalling") || (+[TUCallCapabilities isThumperCallingEnabled](TUCallCapabilities, "isThumperCallingEnabled") & 1) != 0 || ([a1 _userHasAlreadyBeenPrompted] & 1) != 0)
+    if (!+[TUCallCapabilities supportsThumperCalling](TUCallCapabilities, "supportsThumperCalling") || (+[TUCallCapabilities isThumperCallingEnabled](TUCallCapabilities, "isThumperCallingEnabled") & 1) != 0 || ([self _userHasAlreadyBeenPrompted] & 1) != 0)
     {
-      [a1 _removeHasShownPromptDefaultIfNecessary];
+      [self _removeHasShownPromptDefaultIfNecessary];
     }
 
     else
@@ -45,8 +45,8 @@
       if (v10)
       {
         [v10 setUsesNotificationCenter:0];
-        v12 = [v4 bundleIdentifier];
-        [v11 setRepresentedApplicationBundle:v12];
+        bundleIdentifier = [v4 bundleIdentifier];
+        [v11 setRepresentedApplicationBundle:bundleIdentifier];
 
         v13 = +[IMUserNotificationCenter sharedInstance];
         [v13 addUserNotification:v11 listener:0 completionHandler:&stru_10010AF40];
@@ -68,14 +68,14 @@
 + (BOOL)_userHasAlreadyBeenPrompted
 {
   v2 = PHPreferencesGetValue();
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 + (void)_removeHasShownPromptDefaultIfNecessary
 {
-  if (+[TUCallCapabilities isThumperCallingEnabled](TUCallCapabilities, "isThumperCallingEnabled") && [a1 _userHasAlreadyBeenPrompted])
+  if (+[TUCallCapabilities isThumperCallingEnabled](TUCallCapabilities, "isThumperCallingEnabled") && [self _userHasAlreadyBeenPrompted])
   {
     v3 = sub_100003B9C();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

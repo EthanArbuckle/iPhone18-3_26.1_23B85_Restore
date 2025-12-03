@@ -1,19 +1,19 @@
 @interface PXGridInlinePlaybackController
 - (BOOL)_hasAnyPlaybackRecords;
-- (BOOL)canPlayAsset:(id)a3;
-- (BOOL)isDisplayAssetEligibleForAutoPlayback:(id)a3;
-- (BOOL)isPlayingDisplayAsset:(id)a3;
+- (BOOL)canPlayAsset:(id)asset;
+- (BOOL)isDisplayAssetEligibleForAutoPlayback:(id)playback;
+- (BOOL)isPlayingDisplayAsset:(id)asset;
 - (CGRect)currentVisibleRect;
-- (CGRect)frameForPlaybackRecord:(id)a3 minPlayableSize:(CGSize *)a4;
+- (CGRect)frameForPlaybackRecord:(id)record minPlayableSize:(CGSize *)size;
 - (NSArray)currentRecords;
 - (PXDisplayAsset)currentHoveredDisplayAsset;
 - (PXGridInlinePlaybackController)init;
 - (UIEdgeInsets)criticallyVisibleEdgeInsets;
-- (id)checkOutPlaybackRecordForDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5 spriteSize:(CGSize)a6 displayScale:(double)a7 configurationBlock:(id)a8;
-- (id)createPlaybackRecordForDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5 spriteSize:(CGSize)a6 displayScale:(double)a7;
+- (id)checkOutPlaybackRecordForDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference spriteSize:(CGSize)size displayScale:(double)scale configurationBlock:(id)block;
+- (id)createPlaybackRecordForDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference spriteSize:(CGSize)size displayScale:(double)scale;
 - (int64_t)maxNumberOfPlayingItems;
-- (void)_startPlaybackForRecords:(id)a3;
-- (void)_stopPlaybackForRecords:(id)a3;
+- (void)_startPlaybackForRecords:(id)records;
+- (void)_stopPlaybackForRecords:(id)records;
 - (void)_updateActive;
 - (void)_updateCanCreateRecords;
 - (void)_updateLowPowerModeEnabled;
@@ -21,20 +21,20 @@
 - (void)_updatePlayingRecords;
 - (void)_updatePlayingRecordsImmediately;
 - (void)_updateVisibilityOfRecords;
-- (void)checkInPlaybackRecordForDisplayAsset:(id)a3;
-- (void)checkInPlaybackRecordForDisplayAssets:(id)a3 record:(id)a4;
+- (void)checkInPlaybackRecordForDisplayAsset:(id)asset;
+- (void)checkInPlaybackRecordForDisplayAssets:(id)assets record:(id)record;
 - (void)removeAllRecords;
-- (void)setActive:(BOOL)a3;
-- (void)setApplicationActive:(BOOL)a3;
-- (void)setAutoplaySettingEnabled:(BOOL)a3;
-- (void)setIsContentViewVisible:(BOOL)a3;
-- (void)setIsContextMenuInteractionActive:(BOOL)a3;
-- (void)setIsDragSessionActive:(BOOL)a3;
-- (void)setIsOneUpVisible:(BOOL)a3;
-- (void)setLowPowerModeEnabled:(BOOL)a3;
+- (void)setActive:(BOOL)active;
+- (void)setApplicationActive:(BOOL)active;
+- (void)setAutoplaySettingEnabled:(BOOL)enabled;
+- (void)setIsContentViewVisible:(BOOL)visible;
+- (void)setIsContextMenuInteractionActive:(BOOL)active;
+- (void)setIsDragSessionActive:(BOOL)active;
+- (void)setIsOneUpVisible:(BOOL)visible;
+- (void)setLowPowerModeEnabled:(BOOL)enabled;
 - (void)setNeedsUpdate;
-- (void)setPlaybackEnabled:(BOOL)a3;
-- (void)willCheckInPlaybackRecordForDisplayAsset:(id)a3;
+- (void)setPlaybackEnabled:(BOOL)enabled;
+- (void)willCheckInPlaybackRecordForDisplayAsset:(id)asset;
 @end
 
 @implementation PXGridInlinePlaybackController
@@ -51,9 +51,9 @@
     v2->_recordsQueue = v3;
 
     v2->_lookupLock._os_unfair_lock_opaque = 0;
-    v5 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     lookupLock_recordsByDisplayAsset = v2->_lookupLock_recordsByDisplayAsset;
-    v2->_lookupLock_recordsByDisplayAsset = v5;
+    v2->_lookupLock_recordsByDisplayAsset = strongToStrongObjectsMapTable;
 
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     currentlyPlayingRecords = v2->_currentlyPlayingRecords;
@@ -63,8 +63,8 @@
     visibleRecords = v2->_visibleRecords;
     v2->_visibleRecords = v9;
 
-    v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_shouldCoalescePlayingRecordsUpdates = [v11 BOOLForKey:@"disableCoalescedPlayingRecordsUpdates"] ^ 1;
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_shouldCoalescePlayingRecordsUpdates = [standardUserDefaults BOOLForKey:@"disableCoalescedPlayingRecordsUpdates"] ^ 1;
 
     if ([(PXGridInlinePlaybackController *)v2 shouldCoalescePlayingRecordsUpdates])
     {
@@ -105,11 +105,11 @@
     [(PXGridInlinePlaybackController *)v2 _updateLowPowerModeEnabled];
     [(PXGridInlinePlaybackController *)v2 _updatePlaybackEnabled];
     [(PXGridInlinePlaybackController *)v2 _updateCanCreateRecords];
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v25 addObserver:v2 selector:sel__processInfoPowerStateDidChange_ name:*MEMORY[0x277CCA5E8] object:0];
-    [v25 addObserver:v2 selector:sel__applicationDidResignActive_ name:*MEMORY[0x277D76768] object:0];
-    [v25 addObserver:v2 selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
-    [v25 addObserver:v2 selector:sel__gridPreferencesDidChange_ name:@"PXGridZeroSettingsChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__processInfoPowerStateDidChange_ name:*MEMORY[0x277CCA5E8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__applicationDidResignActive_ name:*MEMORY[0x277D76768] object:0];
+    [defaultCenter addObserver:v2 selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
+    [defaultCenter addObserver:v2 selector:sel__gridPreferencesDidChange_ name:@"PXGridZeroSettingsChangedNotification" object:0];
   }
 
   return v2;
@@ -142,42 +142,42 @@
 
 - (void)_updateLowPowerModeEnabled
 {
-  v3 = [MEMORY[0x277CCAC38] processInfo];
-  -[PXGridInlinePlaybackController setLowPowerModeEnabled:](self, "setLowPowerModeEnabled:", [v3 isLowPowerModeEnabled]);
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  -[PXGridInlinePlaybackController setLowPowerModeEnabled:](self, "setLowPowerModeEnabled:", [processInfo isLowPowerModeEnabled]);
 }
 
 - (void)_updatePlaybackEnabled
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(PXGridInlinePlaybackController *)self autoplaySettingEnabled]&& [(PXGridInlinePlaybackController *)self isContentViewVisible]&& ![(PXGridInlinePlaybackController *)self isContextMenuInteractionActive]&& ![(PXGridInlinePlaybackController *)self isDragSessionActive]&& [(PXGridInlinePlaybackController *)self applicationActive]&& ![(PXGridInlinePlaybackController *)self lowPowerModeEnabled]&& [(PXGridInlinePlaybackController *)self shouldEnablePlayback];
-  [(PXGridInlinePlaybackController *)self setPlaybackEnabled:v3];
+  shouldEnablePlayback = [(PXGridInlinePlaybackController *)self autoplaySettingEnabled]&& [(PXGridInlinePlaybackController *)self isContentViewVisible]&& ![(PXGridInlinePlaybackController *)self isContextMenuInteractionActive]&& ![(PXGridInlinePlaybackController *)self isDragSessionActive]&& [(PXGridInlinePlaybackController *)self applicationActive]&& ![(PXGridInlinePlaybackController *)self lowPowerModeEnabled]&& [(PXGridInlinePlaybackController *)self shouldEnablePlayback];
+  [(PXGridInlinePlaybackController *)self setPlaybackEnabled:shouldEnablePlayback];
   v4 = PFGridInlinePlaybackGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [(PXGridInlinePlaybackController *)self autoplaySettingEnabled];
-    v6 = [(PXGridInlinePlaybackController *)self isContentViewVisible];
-    v7 = [(PXGridInlinePlaybackController *)self isContextMenuInteractionActive];
-    v8 = [(PXGridInlinePlaybackController *)self isDragSessionActive];
-    v9 = [(PXGridInlinePlaybackController *)self applicationActive];
-    v10 = [(PXGridInlinePlaybackController *)self lowPowerModeEnabled];
-    v11 = [(PXGridInlinePlaybackController *)self shouldEnablePlayback];
+    autoplaySettingEnabled = [(PXGridInlinePlaybackController *)self autoplaySettingEnabled];
+    isContentViewVisible = [(PXGridInlinePlaybackController *)self isContentViewVisible];
+    isContextMenuInteractionActive = [(PXGridInlinePlaybackController *)self isContextMenuInteractionActive];
+    isDragSessionActive = [(PXGridInlinePlaybackController *)self isDragSessionActive];
+    applicationActive = [(PXGridInlinePlaybackController *)self applicationActive];
+    lowPowerModeEnabled = [(PXGridInlinePlaybackController *)self lowPowerModeEnabled];
+    shouldEnablePlayback2 = [(PXGridInlinePlaybackController *)self shouldEnablePlayback];
     v12 = [(PXGridInlinePlaybackController *)self debugDescription];
     v13[0] = 67111170;
-    v13[1] = v3;
+    v13[1] = shouldEnablePlayback;
     v14 = 1024;
-    v15 = v5;
+    v15 = autoplaySettingEnabled;
     v16 = 1024;
-    v17 = v6;
+    v17 = isContentViewVisible;
     v18 = 1024;
-    v19 = v7;
+    v19 = isContextMenuInteractionActive;
     v20 = 1024;
-    v21 = v8;
+    v21 = isDragSessionActive;
     v22 = 1024;
-    v23 = v9;
+    v23 = applicationActive;
     v24 = 1024;
-    v25 = v10;
+    v25 = lowPowerModeEnabled;
     v26 = 1024;
-    v27 = v11;
+    v27 = shouldEnablePlayback2;
     v28 = 2112;
     v29 = v12;
     _os_log_impl(&dword_21ABF3000, v4, OS_LOG_TYPE_DEBUG, "Playback enabled = %d (autoplaySettingEnabled=%d, isContentViewVisible=%d, isContextMenuInteractionActive=%d, isDragSessionActive=%d, applicationActive=%d, lowPowerModeEnabled=%d, shouldEnablePlayback=%d) for %@", v13, 0x3Cu);
@@ -199,8 +199,8 @@
     {
       if ([(PXGridInlinePlaybackController *)self shouldCoalescePlayingRecordsUpdates])
       {
-        v4 = [(PXGridInlinePlaybackController *)self playingRecordsEventCoalescer];
-        [v4 inputEvent];
+        playingRecordsEventCoalescer = [(PXGridInlinePlaybackController *)self playingRecordsEventCoalescer];
+        [playingRecordsEventCoalescer inputEvent];
       }
 
       else
@@ -238,8 +238,8 @@
     v19 = 0uLL;
     v16 = 0uLL;
     v17 = 0uLL;
-    v3 = [(NSMapTable *)self->_lookupLock_recordsByDisplayAsset objectEnumerator];
-    v4 = [v3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    objectEnumerator = [(NSMapTable *)self->_lookupLock_recordsByDisplayAsset objectEnumerator];
+    v4 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v4)
     {
       v5 = v4;
@@ -250,13 +250,13 @@
         {
           if (*v17 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           [*(*(&v16 + 1) + 8 * i) prepareForVisible];
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v5 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v21 count:16];
       }
 
       while (v5);
@@ -269,8 +269,8 @@
     v15 = 0uLL;
     v12 = 0uLL;
     v13 = 0uLL;
-    v3 = [(NSMapTable *)self->_lookupLock_recordsByDisplayAsset objectEnumerator];
-    v8 = [v3 countByEnumeratingWithState:&v12 objects:v20 count:16];
+    objectEnumerator = [(NSMapTable *)self->_lookupLock_recordsByDisplayAsset objectEnumerator];
+    v8 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -281,13 +281,13 @@
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           [*(*(&v12 + 1) + 8 * j) prepareForInvisible];
         }
 
-        v9 = [v3 countByEnumeratingWithState:&v12 objects:v20 count:16];
+        v9 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v20 count:16];
       }
 
       while (v9);
@@ -313,40 +313,40 @@
 - (NSArray)currentRecords
 {
   os_unfair_lock_lock(&self->_lookupLock);
-  v3 = [(NSMapTable *)self->_lookupLock_recordsByDisplayAsset objectEnumerator];
-  v4 = [v3 allObjects];
+  objectEnumerator = [(NSMapTable *)self->_lookupLock_recordsByDisplayAsset objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
   os_unfair_lock_unlock(&self->_lookupLock);
 
-  return v4;
+  return allObjects;
 }
 
-- (BOOL)isDisplayAssetEligibleForAutoPlayback:(id)a3
+- (BOOL)isDisplayAssetEligibleForAutoPlayback:(id)playback
 {
-  v3 = a3;
+  playbackCopy = playback;
   v4 = +[PXPhotosGridSettings sharedInstance];
   if (([v4 forcePlayback] & 1) != 0 || (objc_msgSend(v4, "minAutoplaySuggestionScore"), v5 == 0.0))
   {
-    v6 = 1;
+    isEligibleForAutoPlayback = 1;
   }
 
   else
   {
-    v6 = [v3 isEligibleForAutoPlayback];
+    isEligibleForAutoPlayback = [playbackCopy isEligibleForAutoPlayback];
   }
 
-  return v6;
+  return isEligibleForAutoPlayback;
 }
 
-- (void)_stopPlaybackForRecords:(id)a3
+- (void)_stopPlaybackForRecords:(id)records
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  recordsCopy = records;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [recordsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -358,29 +358,29 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(recordsCopy);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) setDesiredPlayState:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [recordsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_startPlaybackForRecords:(id)a3
+- (void)_startPlaybackForRecords:(id)records
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  recordsCopy = records;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [recordsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -391,7 +391,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(recordsCopy);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -399,7 +399,7 @@
         [v8 setDiagnosticLog:@"▶ Playing"];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [recordsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -417,16 +417,16 @@
   os_unfair_lock_lock(&self->_lookupLock);
   v52 = self->_visibleRecords;
   [(NSMutableArray *)v52 removeAllObjects];
-  v54 = self;
+  selfCopy = self;
   if ([(PXGridInlinePlaybackController *)self shouldPlayOnHover])
   {
-    v3 = [(PXGridInlinePlaybackController *)self currentHoveredDisplayAsset];
-    v4 = v3;
-    if (v3)
+    currentHoveredDisplayAsset = [(PXGridInlinePlaybackController *)self currentHoveredDisplayAsset];
+    v4 = currentHoveredDisplayAsset;
+    if (currentHoveredDisplayAsset)
     {
       lookupLock_recordsByDisplayAsset = self->_lookupLock_recordsByDisplayAsset;
-      v6 = [v3 uuid];
-      v7 = [(NSMapTable *)lookupLock_recordsByDisplayAsset objectForKey:v6];
+      uuid = [currentHoveredDisplayAsset uuid];
+      v7 = [(NSMapTable *)lookupLock_recordsByDisplayAsset objectForKey:uuid];
 
       if (v7)
       {
@@ -449,8 +449,8 @@
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v16 = [(NSMapTable *)self->_lookupLock_recordsByDisplayAsset objectEnumerator];
-    v17 = [v16 countByEnumeratingWithState:&v63 objects:v70 count:16];
+    objectEnumerator = [(NSMapTable *)self->_lookupLock_recordsByDisplayAsset objectEnumerator];
+    v17 = [objectEnumerator countByEnumeratingWithState:&v63 objects:v70 count:16];
     if (v17)
     {
       v18 = v17;
@@ -462,7 +462,7 @@
         {
           if (*v64 != v20)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v22 = *(*(&v63 + 1) + 8 * i);
@@ -475,7 +475,7 @@
           else
           {
             *buf = *v19;
-            [(PXGridInlinePlaybackController *)v54 frameForPlaybackRecord:v22 minPlayableSize:buf];
+            [(PXGridInlinePlaybackController *)selfCopy frameForPlaybackRecord:v22 minPlayableSize:buf];
             x = v72.origin.x;
             y = v72.origin.y;
             width = v72.size.width;
@@ -543,20 +543,20 @@
           [v23 setDiagnosticLog:{v24, v51}];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v63 objects:v70 count:16];
+        v18 = [objectEnumerator countByEnumeratingWithState:&v63 objects:v70 count:16];
       }
 
       while (v18);
     }
 
-    self = v54;
+    self = selfCopy;
   }
 
   [(NSMutableArray *)v52 sortUsingDescriptors:_updatePlayingRecordsImmediately_recordSortDescriptors];
   v31 = [(PXGridInlinePlaybackController *)self filterSortedRecordsToPlay:v52];
   [(NSMutableArray *)self->_currentlyPlayingRecords removeAllObjects];
-  v32 = [(PXGridInlinePlaybackController *)self maxNumberOfPlayingItems];
-  if ([v31 count] && v32 >= 1)
+  maxNumberOfPlayingItems = [(PXGridInlinePlaybackController *)self maxNumberOfPlayingItems];
+  if ([v31 count] && maxNumberOfPlayingItems >= 1)
   {
     v33 = 1;
     do
@@ -571,7 +571,7 @@
       }
     }
 
-    while (v33++ < v32);
+    while (v33++ < maxNumberOfPlayingItems);
   }
 
   v53 = v31;
@@ -579,8 +579,8 @@
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v37 = [(NSMapTable *)self->_lookupLock_recordsByDisplayAsset objectEnumerator];
-  v38 = [v37 countByEnumeratingWithState:&v59 objects:v69 count:16];
+  objectEnumerator2 = [(NSMapTable *)self->_lookupLock_recordsByDisplayAsset objectEnumerator];
+  v38 = [objectEnumerator2 countByEnumeratingWithState:&v59 objects:v69 count:16];
   if (v38)
   {
     v39 = v38;
@@ -591,7 +591,7 @@
       {
         if (*v60 != v40)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(objectEnumerator2);
         }
 
         v42 = *(*(&v59 + 1) + 8 * j);
@@ -601,7 +601,7 @@
         }
       }
 
-      v39 = [v37 countByEnumeratingWithState:&v59 objects:v69 count:16];
+      v39 = [objectEnumerator2 countByEnumeratingWithState:&v59 objects:v69 count:16];
     }
 
     while (v39);
@@ -612,8 +612,8 @@
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v43 = [(NSMapTable *)self->_lookupLock_recordsByDisplayAsset objectEnumerator];
-  v44 = [v43 countByEnumeratingWithState:&v55 objects:v68 count:16];
+  objectEnumerator3 = [(NSMapTable *)self->_lookupLock_recordsByDisplayAsset objectEnumerator];
+  v44 = [objectEnumerator3 countByEnumeratingWithState:&v55 objects:v68 count:16];
   if (v44)
   {
     v45 = v44;
@@ -624,31 +624,31 @@
       {
         if (*v56 != v46)
         {
-          objc_enumerationMutation(v43);
+          objc_enumerationMutation(objectEnumerator3);
         }
 
         v48 = *(*(&v55 + 1) + 8 * k);
         v49 = PFGridInlinePlaybackGetLog();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
         {
-          v50 = [v48 diagnosticLog];
+          diagnosticLog = [v48 diagnosticLog];
           *buf = 138412546;
-          *&buf[4] = v50;
+          *&buf[4] = diagnosticLog;
           *&buf[12] = 2112;
           *&buf[14] = v48;
           _os_log_impl(&dword_21ABF3000, v49, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
         }
       }
 
-      v45 = [v43 countByEnumeratingWithState:&v55 objects:v68 count:16];
+      v45 = [objectEnumerator3 countByEnumeratingWithState:&v55 objects:v68 count:16];
     }
 
     while (v45);
   }
 
   [(NSMutableArray *)v52 removeAllObjects];
-  os_unfair_lock_unlock(&v54->_lookupLock);
-  [(PXGridInlinePlaybackController *)v54 didUpdatePlayingRecords];
+  os_unfair_lock_unlock(&selfCopy->_lookupLock);
+  [(PXGridInlinePlaybackController *)selfCopy didUpdatePlayingRecords];
 }
 
 void __66__PXGridInlinePlaybackController__updatePlayingRecordsImmediately__block_invoke()
@@ -684,29 +684,29 @@ void __60__PXGridInlinePlaybackController__gridPreferencesDidChange___block_invo
   [*(a1 + 32) setAutoplaySettingEnabled:{objc_msgSend(v2, "isVideoAutoplayEnabled")}];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updatePlayingRecords];
   }
 }
 
-- (void)setPlaybackEnabled:(BOOL)a3
+- (void)setPlaybackEnabled:(BOOL)enabled
 {
-  if (self->_playbackEnabled != a3)
+  if (self->_playbackEnabled != enabled)
   {
-    self->_playbackEnabled = a3;
+    self->_playbackEnabled = enabled;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updatePlayingRecords];
   }
 }
 
-- (void)setAutoplaySettingEnabled:(BOOL)a3
+- (void)setAutoplaySettingEnabled:(BOOL)enabled
 {
-  if (self->_autoplaySettingEnabled != a3)
+  if (self->_autoplaySettingEnabled != enabled)
   {
-    self->_autoplaySettingEnabled = a3;
+    self->_autoplaySettingEnabled = enabled;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateCanCreateRecords];
     updater = self->_updater;
 
@@ -714,11 +714,11 @@ void __60__PXGridInlinePlaybackController__gridPreferencesDidChange___block_invo
   }
 }
 
-- (void)setLowPowerModeEnabled:(BOOL)a3
+- (void)setLowPowerModeEnabled:(BOOL)enabled
 {
-  if (self->_lowPowerModeEnabled != a3)
+  if (self->_lowPowerModeEnabled != enabled)
   {
-    self->_lowPowerModeEnabled = a3;
+    self->_lowPowerModeEnabled = enabled;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateCanCreateRecords];
     updater = self->_updater;
 
@@ -726,38 +726,38 @@ void __60__PXGridInlinePlaybackController__gridPreferencesDidChange___block_invo
   }
 }
 
-- (void)setApplicationActive:(BOOL)a3
+- (void)setApplicationActive:(BOOL)active
 {
-  if (self->_applicationActive != a3)
+  if (self->_applicationActive != active)
   {
-    self->_applicationActive = a3;
+    self->_applicationActive = active;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updatePlaybackEnabled];
   }
 }
 
-- (void)setIsDragSessionActive:(BOOL)a3
+- (void)setIsDragSessionActive:(BOOL)active
 {
-  if (self->_isDragSessionActive != a3)
+  if (self->_isDragSessionActive != active)
   {
-    self->_isDragSessionActive = a3;
+    self->_isDragSessionActive = active;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updatePlaybackEnabled];
   }
 }
 
-- (void)setIsContextMenuInteractionActive:(BOOL)a3
+- (void)setIsContextMenuInteractionActive:(BOOL)active
 {
-  if (self->_isContextMenuInteractionActive != a3)
+  if (self->_isContextMenuInteractionActive != active)
   {
-    self->_isContextMenuInteractionActive = a3;
+    self->_isContextMenuInteractionActive = active;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updatePlaybackEnabled];
   }
 }
 
-- (void)setIsOneUpVisible:(BOOL)a3
+- (void)setIsOneUpVisible:(BOOL)visible
 {
-  if (self->_isOneUpVisible != a3)
+  if (self->_isOneUpVisible != visible)
   {
-    self->_isOneUpVisible = a3;
+    self->_isOneUpVisible = visible;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateActive];
     updater = self->_updater;
 
@@ -765,11 +765,11 @@ void __60__PXGridInlinePlaybackController__gridPreferencesDidChange___block_invo
   }
 }
 
-- (void)setIsContentViewVisible:(BOOL)a3
+- (void)setIsContentViewVisible:(BOOL)visible
 {
-  if (self->_isContentViewVisible != a3)
+  if (self->_isContentViewVisible != visible)
   {
-    self->_isContentViewVisible = a3;
+    self->_isContentViewVisible = visible;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updatePlaybackEnabled];
     updater = self->_updater;
 
@@ -790,74 +790,74 @@ void __60__PXGridInlinePlaybackController__gridPreferencesDidChange___block_invo
 - (int64_t)maxNumberOfPlayingItems
 {
   v2 = +[PXPhotosGridSettings sharedInstance];
-  v3 = [v2 maxNumberOfPlayingItems];
+  maxNumberOfPlayingItems = [v2 maxNumberOfPlayingItems];
 
-  return v3;
+  return maxNumberOfPlayingItems;
 }
 
-- (BOOL)canPlayAsset:(id)a3
+- (BOOL)canPlayAsset:(id)asset
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  assetCopy = asset;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXGridInlinePlaybackController.m" lineNumber:246 description:{@"Method %s is a responsibility of subclass %@", "-[PXGridInlinePlaybackController canPlayAsset:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGridInlinePlaybackController.m" lineNumber:246 description:{@"Method %s is a responsibility of subclass %@", "-[PXGridInlinePlaybackController canPlayAsset:]", v8}];
 
   abort();
 }
 
-- (CGRect)frameForPlaybackRecord:(id)a3 minPlayableSize:(CGSize *)a4
+- (CGRect)frameForPlaybackRecord:(id)record minPlayableSize:(CGSize *)size
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  recordCopy = record;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v7 handleFailureInMethod:a2 object:self file:@"PXGridInlinePlaybackController.m" lineNumber:226 description:{@"Method %s is a responsibility of subclass %@", "-[PXGridInlinePlaybackController frameForPlaybackRecord:minPlayableSize:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGridInlinePlaybackController.m" lineNumber:226 description:{@"Method %s is a responsibility of subclass %@", "-[PXGridInlinePlaybackController frameForPlaybackRecord:minPlayableSize:]", v9}];
 
   abort();
 }
 
 - (PXDisplayAsset)currentHoveredDisplayAsset
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGridInlinePlaybackController.m" lineNumber:222 description:{@"Method %s is a responsibility of subclass %@", "-[PXGridInlinePlaybackController currentHoveredDisplayAsset]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGridInlinePlaybackController.m" lineNumber:222 description:{@"Method %s is a responsibility of subclass %@", "-[PXGridInlinePlaybackController currentHoveredDisplayAsset]", v6}];
 
   abort();
 }
 
 - (CGRect)currentVisibleRect
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGridInlinePlaybackController.m" lineNumber:218 description:{@"Method %s is a responsibility of subclass %@", "-[PXGridInlinePlaybackController currentVisibleRect]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGridInlinePlaybackController.m" lineNumber:218 description:{@"Method %s is a responsibility of subclass %@", "-[PXGridInlinePlaybackController currentVisibleRect]", v6}];
 
   abort();
 }
 
-- (id)createPlaybackRecordForDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5 spriteSize:(CGSize)a6 displayScale:(double)a7
+- (id)createPlaybackRecordForDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference spriteSize:(CGSize)size displayScale:(double)scale
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [MEMORY[0x277CCA890] currentHandler];
+  assetCopy = asset;
+  providerCopy = provider;
+  referenceCopy = reference;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
-  [v14 handleFailureInMethod:a2 object:self file:@"PXGridInlinePlaybackController.m" lineNumber:214 description:{@"Method %s is a responsibility of subclass %@", "-[PXGridInlinePlaybackController createPlaybackRecordForDisplayAsset:mediaProvider:geometryReference:spriteSize:displayScale:]", v16}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGridInlinePlaybackController.m" lineNumber:214 description:{@"Method %s is a responsibility of subclass %@", "-[PXGridInlinePlaybackController createPlaybackRecordForDisplayAsset:mediaProvider:geometryReference:spriteSize:displayScale:]", v16}];
 
   abort();
 }
 
-- (BOOL)isPlayingDisplayAsset:(id)a3
+- (BOOL)isPlayingDisplayAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if ([(PXGridInlinePlaybackController *)self canPlayAsset:v4])
+  if ([(PXGridInlinePlaybackController *)self canPlayAsset:assetCopy])
   {
     recordsQueue = self->_recordsQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -865,7 +865,7 @@ void __60__PXGridInlinePlaybackController__gridPreferencesDidChange___block_invo
     block[2] = __56__PXGridInlinePlaybackController_isPlayingDisplayAsset___block_invoke;
     block[3] = &unk_278297F60;
     block[4] = self;
-    v9 = v4;
+    v9 = assetCopy;
     v10 = &v11;
     dispatch_sync(recordsQueue, block);
   }
@@ -887,20 +887,20 @@ void __56__PXGridInlinePlaybackController_isPlayingDisplayAsset___block_invoke(u
   os_unfair_lock_unlock((*(a1 + 32) + 16));
 }
 
-- (void)checkInPlaybackRecordForDisplayAssets:(id)a3 record:(id)a4
+- (void)checkInPlaybackRecordForDisplayAssets:(id)assets record:(id)record
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  recordCopy = record;
   recordsQueue = self->_recordsQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__PXGridInlinePlaybackController_checkInPlaybackRecordForDisplayAssets_record___block_invoke;
   block[3] = &unk_278298EE0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = assetsCopy;
+  v13 = recordCopy;
+  v9 = recordCopy;
+  v10 = assetsCopy;
   dispatch_sync(recordsQueue, block);
 }
 
@@ -950,17 +950,17 @@ void __79__PXGridInlinePlaybackController_checkInPlaybackRecordForDisplayAssets_
   os_unfair_lock_unlock((*(a1 + 32) + 16));
 }
 
-- (void)checkInPlaybackRecordForDisplayAsset:(id)a3
+- (void)checkInPlaybackRecordForDisplayAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   recordsQueue = self->_recordsQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__PXGridInlinePlaybackController_checkInPlaybackRecordForDisplayAsset___block_invoke;
   v7[3] = &unk_278298598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_sync(recordsQueue, v7);
 }
 
@@ -976,13 +976,13 @@ void __71__PXGridInlinePlaybackController_checkInPlaybackRecordForDisplayAsset__
   os_unfair_lock_unlock(v4);
 }
 
-- (void)willCheckInPlaybackRecordForDisplayAsset:(id)a3
+- (void)willCheckInPlaybackRecordForDisplayAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXGridInlinePlaybackController.m" lineNumber:150 description:{@"%s must be called on the main thread", "-[PXGridInlinePlaybackController willCheckInPlaybackRecordForDisplayAsset:]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGridInlinePlaybackController.m" lineNumber:150 description:{@"%s must be called on the main thread", "-[PXGridInlinePlaybackController willCheckInPlaybackRecordForDisplayAsset:]"}];
   }
 
   recordsQueue = self->_recordsQueue;
@@ -991,8 +991,8 @@ void __71__PXGridInlinePlaybackController_checkInPlaybackRecordForDisplayAsset__
   block[2] = __75__PXGridInlinePlaybackController_willCheckInPlaybackRecordForDisplayAsset___block_invoke;
   block[3] = &unk_278298598;
   block[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = assetCopy;
+  v7 = assetCopy;
   dispatch_sync(recordsQueue, block);
 }
 
@@ -1020,15 +1020,15 @@ void __75__PXGridInlinePlaybackController_willCheckInPlaybackRecordForDisplayAss
   os_unfair_lock_unlock((*(a1 + 32) + 16));
 }
 
-- (id)checkOutPlaybackRecordForDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5 spriteSize:(CGSize)a6 displayScale:(double)a7 configurationBlock:(id)a8
+- (id)checkOutPlaybackRecordForDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference spriteSize:(CGSize)size displayScale:(double)scale configurationBlock:(id)block
 {
-  height = a6.height;
-  width = a6.width;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  if ([(PXGridInlinePlaybackController *)self canCreateRecords]&& [(PXGridInlinePlaybackController *)self canPlayAsset:v15]&& [(PXGridInlinePlaybackController *)self isDisplayAssetEligibleForAutoPlayback:v15])
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  providerCopy = provider;
+  referenceCopy = reference;
+  blockCopy = block;
+  if ([(PXGridInlinePlaybackController *)self canCreateRecords]&& [(PXGridInlinePlaybackController *)self canPlayAsset:assetCopy]&& [(PXGridInlinePlaybackController *)self isDisplayAssetEligibleForAutoPlayback:assetCopy])
   {
     v31 = 0;
     v32 = &v31;
@@ -1043,13 +1043,13 @@ void __75__PXGridInlinePlaybackController_willCheckInPlaybackRecordForDisplayAss
     block[3] = &unk_278297F38;
     block[4] = self;
     v27 = &v31;
-    v23 = v15;
-    v24 = v16;
-    v25 = v17;
+    v23 = assetCopy;
+    v24 = providerCopy;
+    v25 = referenceCopy;
     v28 = width;
     v29 = height;
-    v30 = a7;
-    v26 = v18;
+    scaleCopy = scale;
+    v26 = blockCopy;
     dispatch_sync(recordsQueue, block);
     px_dispatch_on_main_queue();
     v20 = v32[5];

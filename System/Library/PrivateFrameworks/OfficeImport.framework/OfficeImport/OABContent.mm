@@ -1,20 +1,20 @@
 @interface OABContent
-+ (void)readFromContainer:(id)a3 toDrawable:(id)a4 state:(id)a5;
-+ (void)readFromContentObject:(id)a3 content:(EshContent *)a4 toDrawable:(id)a5 state:(id)a6;
-+ (void)readFromContentObject:(id)a3 toDrawable:(id)a4 state:(id)a5;
++ (void)readFromContainer:(id)container toDrawable:(id)drawable state:(id)state;
++ (void)readFromContentObject:(id)object content:(EshContent *)content toDrawable:(id)drawable state:(id)state;
++ (void)readFromContentObject:(id)object toDrawable:(id)drawable state:(id)state;
 @end
 
 @implementation OABContent
 
-+ (void)readFromContainer:(id)a3 toDrawable:(id)a4 state:(id)a5
++ (void)readFromContainer:(id)container toDrawable:(id)drawable state:(id)state
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v14 eshGroup];
-  if (v10)
+  containerCopy = container;
+  drawableCopy = drawable;
+  stateCopy = state;
+  eshGroup = [containerCopy eshGroup];
+  if (eshGroup)
   {
-    v11 = v10 + 272;
+    v11 = eshGroup + 272;
   }
 
   else
@@ -22,7 +22,7 @@
     v11 = 0;
   }
 
-  if (!v10)
+  if (!eshGroup)
   {
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[OABContent readFromContainer:toDrawable:state:]"];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/OfficeArt/Binary/Mapper/OABContent.mm"];
@@ -31,15 +31,15 @@
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  [a1 readFromContentObject:v14 content:v11 toDrawable:v8 state:v9];
+  [self readFromContentObject:containerCopy content:v11 toDrawable:drawableCopy state:stateCopy];
 }
 
-+ (void)readFromContentObject:(id)a3 toDrawable:(id)a4 state:(id)a5
++ (void)readFromContentObject:(id)object toDrawable:(id)drawable state:(id)state
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v14 eshObject];
+  objectCopy = object;
+  drawableCopy = drawable;
+  stateCopy = state;
+  eshObject = [objectCopy eshObject];
   {
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"+[OABContent readFromContentObject:toDrawable:state:]", v11}];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/OfficeArt/Binary/Mapper/OABContent.mm"];
@@ -49,33 +49,33 @@
     v11 = 0;
   }
 
-  [a1 readFromContentObject:v14 content:v11 toDrawable:v8 state:v9];
+  [self readFromContentObject:objectCopy content:v11 toDrawable:drawableCopy state:stateCopy];
 }
 
-+ (void)readFromContentObject:(id)a3 content:(EshContent *)a4 toDrawable:(id)a5 state:(id)a6
++ (void)readFromContentObject:(id)object content:(EshContent *)content toDrawable:(id)drawable state:(id)state
 {
-  v29 = a3;
-  v9 = a5;
-  v31 = a6;
+  objectCopy = object;
+  drawableCopy = drawable;
+  stateCopy = state;
   v32 = 0uLL;
-  v10 = (*(a4->var0 + 2))(a4);
+  v10 = (*(content->var0 + 2))(content);
   *&v11 = EshContentProperties::getBounds(v10, &v32).n128_u64[0];
   v13 = v32.n128_u32[0];
   v12 = v32.n128_i32[1];
   v14 = v32.n128_u32[2];
   v15 = v32.n128_u32[3];
-  v16 = [v9 drawableProperties];
+  drawableProperties = [drawableCopy drawableProperties];
   v17 = objc_alloc_init(OADOrientedBounds);
-  [v16 setOrientedBounds:v17];
-  v18 = (*(a4->var0 + 4))(a4);
+  [drawableProperties setOrientedBounds:v17];
+  v18 = (*(content->var0 + 4))(content);
   if (EshContentLocks::isAspectRatioSet(v18))
   {
-    [v16 setAspectRatioLocked:EshContentLocks::getAspectRatio(v18)];
+    [drawableProperties setAspectRatioLocked:EshContentLocks::getAspectRatio(v18)];
   }
 
   HIDWORD(v19) = HIDWORD(v33);
   *&v19 = v33;
-  [(OADOrientedBounds *)v17 setRotation:v19, v29];
+  [(OADOrientedBounds *)v17 setRotation:v19, objectCopy];
   [(OADOrientedBounds *)v17 setFlipX:v34];
   [(OADOrientedBounds *)v17 setFlipY:v35];
   [(OADOrientedBounds *)v17 rotation];
@@ -90,18 +90,18 @@
   }
 
   [(OADOrientedBounds *)v17 setBounds:v21, v22, v23, v24];
-  v25 = (*(a4->var0 + 2))(a4);
+  v25 = (*(content->var0 + 2))(content);
   if (EshContentProperties::isWrdInlineSet(v25))
   {
-    v26 = (*(a4->var0 + 2))(a4);
-    [v16 setWrdInline:EshContentProperties::getWrdInline(v26)];
+    v26 = (*(content->var0 + 2))(content);
+    [drawableProperties setWrdInline:EshContentProperties::getWrdInline(v26)];
   }
 
-  v27 = (*(a4->var0 + 2))(a4);
+  v27 = (*(content->var0 + 2))(content);
   ShapeID = EshContentProperties::getShapeID(v27);
-  [v31 setDrawable:v9 forShapeId:ShapeID];
-  [v31 setContentObject:v30 forId:ShapeID];
-  [v9 setId:ShapeID];
+  [stateCopy setDrawable:drawableCopy forShapeId:ShapeID];
+  [stateCopy setContentObject:v30 forId:ShapeID];
+  [drawableCopy setId:ShapeID];
 }
 
 @end

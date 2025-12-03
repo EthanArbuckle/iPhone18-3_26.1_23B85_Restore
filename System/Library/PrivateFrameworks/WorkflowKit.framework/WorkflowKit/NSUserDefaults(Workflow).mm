@@ -47,8 +47,8 @@
 
 + (uint64_t)forceSpotlightRunSource
 {
-  v1 = [a1 systemShortcutsUserDefaults];
-  v2 = [v1 BOOLForKey:@"WFForceSpotlightRunSource"];
+  systemShortcutsUserDefaults = [self systemShortcutsUserDefaults];
+  v2 = [systemShortcutsUserDefaults BOOLForKey:@"WFForceSpotlightRunSource"];
 
   return v2;
 }
@@ -58,8 +58,8 @@
   result = VCIsInternalBuild();
   if (result)
   {
-    v3 = [a1 systemShortcutsUserDefaults];
-    v4 = [v3 BOOLForKey:@"WFDisableSmartPrompts"];
+    systemShortcutsUserDefaults = [self systemShortcutsUserDefaults];
+    v4 = [systemShortcutsUserDefaults BOOLForKey:@"WFDisableSmartPrompts"];
 
     return v4;
   }
@@ -69,24 +69,24 @@
 
 + (uint64_t)parameterSummaryDebugOverlayEnabled
 {
-  v1 = [a1 systemShortcutsUserDefaults];
-  v2 = [v1 BOOLForKey:@"WFParameterSummaryDebugOverlayKey"];
+  systemShortcutsUserDefaults = [self systemShortcutsUserDefaults];
+  v2 = [systemShortcutsUserDefaults BOOLForKey:@"WFParameterSummaryDebugOverlayKey"];
 
   return v2;
 }
 
 + (uint64_t)forceSpotlightImplicitResult
 {
-  v1 = [a1 systemShortcutsUserDefaults];
-  v2 = [v1 BOOLForKey:@"WFForceSpotlightImplicitResult"];
+  systemShortcutsUserDefaults = [self systemShortcutsUserDefaults];
+  v2 = [systemShortcutsUserDefaults BOOLForKey:@"WFForceSpotlightImplicitResult"];
 
   return v2;
 }
 
 + (void)lastAppShortcutUpdateDate
 {
-  v1 = [a1 systemShortcutsUserDefaults];
-  v2 = [v1 objectForKey:@"WFLastAppShortcutUpdateDateKey"];
+  systemShortcutsUserDefaults = [self systemShortcutsUserDefaults];
+  v2 = [systemShortcutsUserDefaults objectForKey:@"WFLastAppShortcutUpdateDateKey"];
 
   if (v2)
   {
@@ -114,8 +114,8 @@
 
 + (uint64_t)showAllAppIntents
 {
-  v1 = [a1 systemShortcutsUserDefaults];
-  v2 = [v1 stringForKey:@"WFShortcutsDrawerVisibilityLevelKey"];
+  systemShortcutsUserDefaults = [self systemShortcutsUserDefaults];
+  v2 = [systemShortcutsUserDefaults stringForKey:@"WFShortcutsDrawerVisibilityLevelKey"];
   v3 = [v2 isEqualToString:@"Everything"];
 
   return v3;
@@ -127,23 +127,23 @@
   v1 = v0;
   if (v0)
   {
-    v2 = [v0 BOOLValue];
+    bOOLValue = [v0 BOOLValue];
   }
 
   else
   {
-    v2 = _os_feature_enabled_impl();
+    bOOLValue = _os_feature_enabled_impl();
   }
 
-  v3 = v2;
+  v3 = bOOLValue;
 
   return v3;
 }
 
 + (uint64_t)toolKitIndexingEnabled
 {
-  v1 = [a1 systemShortcutsUserDefaults];
-  v2 = [v1 BOOLForKey:@"WFToolKitIndexingEnabled"];
+  systemShortcutsUserDefaults = [self systemShortcutsUserDefaults];
+  v2 = [systemShortcutsUserDefaults BOOLForKey:@"WFToolKitIndexingEnabled"];
 
   return v2;
 }
@@ -154,15 +154,15 @@
   v1 = v0;
   if (v0)
   {
-    v2 = [v0 BOOLValue];
+    bOOLValue = [v0 BOOLValue];
   }
 
   else
   {
-    v2 = _os_feature_enabled_impl();
+    bOOLValue = _os_feature_enabled_impl();
   }
 
-  v3 = v2;
+  v3 = bOOLValue;
 
   return v3;
 }
@@ -173,23 +173,23 @@
   v1 = v0;
   if (v0)
   {
-    v2 = [v0 BOOLValue];
+    bOOLValue = [v0 BOOLValue];
   }
 
   else
   {
-    v2 = _os_feature_enabled_impl();
+    bOOLValue = _os_feature_enabled_impl();
   }
 
-  v3 = v2;
+  v3 = bOOLValue;
 
   return v3;
 }
 
 + (uint64_t)allowActionsFromAllBundles
 {
-  v1 = [a1 systemShortcutsUserDefaults];
-  v2 = [v1 BOOLForKey:@"WFAllowActionsFromAllBundles"];
+  systemShortcutsUserDefaults = [self systemShortcutsUserDefaults];
+  v2 = [systemShortcutsUserDefaults BOOLForKey:@"WFAllowActionsFromAllBundles"];
 
   return v2;
 }
@@ -200,15 +200,15 @@
   v1 = v0;
   if (v0)
   {
-    v2 = [v0 BOOLValue];
+    bOOLValue = [v0 BOOLValue];
   }
 
   else
   {
-    v2 = _os_feature_enabled_impl();
+    bOOLValue = _os_feature_enabled_impl();
   }
 
-  v3 = v2;
+  v3 = bOOLValue;
 
   return v3;
 }
@@ -219,15 +219,15 @@
   v1 = v0;
   if (v0)
   {
-    v2 = [v0 BOOLValue];
+    bOOLValue = [v0 BOOLValue];
   }
 
   else
   {
-    v2 = _os_feature_enabled_impl();
+    bOOLValue = _os_feature_enabled_impl();
   }
 
-  v3 = v2;
+  v3 = bOOLValue;
 
   return v3;
 }

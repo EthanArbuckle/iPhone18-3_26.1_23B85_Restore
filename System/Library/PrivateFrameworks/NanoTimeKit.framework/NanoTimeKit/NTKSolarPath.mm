@@ -1,19 +1,19 @@
 @interface NTKSolarPath
 - (CGRect)bounds;
-- (NTKSolarPath)initWithBounds:(CGRect)a3 solarTimeModel:(id)a4 verticallyFitsPathToBounds:(BOOL)a5 usePlaceholderData:(BOOL)a6;
-- (double)altitudeAtX:(double)a3;
+- (NTKSolarPath)initWithBounds:(CGRect)bounds solarTimeModel:(id)model verticallyFitsPathToBounds:(BOOL)toBounds usePlaceholderData:(BOOL)data;
+- (double)altitudeAtX:(double)x;
 - (id)_computeSolarPath;
 @end
 
 @implementation NTKSolarPath
 
-- (NTKSolarPath)initWithBounds:(CGRect)a3 solarTimeModel:(id)a4 verticallyFitsPathToBounds:(BOOL)a5 usePlaceholderData:(BOOL)a6
+- (NTKSolarPath)initWithBounds:(CGRect)bounds solarTimeModel:(id)model verticallyFitsPathToBounds:(BOOL)toBounds usePlaceholderData:(BOOL)data
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  modelCopy = model;
   v20.receiver = self;
   v20.super_class = NTKSolarPath;
   v15 = [(NTKSolarPath *)&v20 init];
@@ -24,12 +24,12 @@
     v15->_bounds.origin.y = y;
     v15->_bounds.size.width = width;
     v15->_bounds.size.height = height;
-    objc_storeStrong(&v15->_solarTimeModel, a4);
-    v16->_verticallyFitsPathToBounds = a5;
-    v16->_usePlaceholderData = a6;
-    v17 = [(NTKSolarPath *)v16 _computeSolarPath];
+    objc_storeStrong(&v15->_solarTimeModel, model);
+    v16->_verticallyFitsPathToBounds = toBounds;
+    v16->_usePlaceholderData = data;
+    _computeSolarPath = [(NTKSolarPath *)v16 _computeSolarPath];
     bezierPath = v16->_bezierPath;
-    v16->_bezierPath = v17;
+    v16->_bezierPath = _computeSolarPath;
   }
 
   return v16;
@@ -39,11 +39,11 @@
 {
   [(NTKSolarTimeModel *)self->_solarTimeModel effectiveSolarDayLength];
   v4 = v3;
-  v5 = [(NTKSolarTimeModel *)self->_solarTimeModel localSolarMidnightDate];
-  v6 = [(NTKSolarTimeModel *)self->_solarTimeModel referenceLocation];
-  [v6 coordinate];
+  localSolarMidnightDate = [(NTKSolarTimeModel *)self->_solarTimeModel localSolarMidnightDate];
+  referenceLocation = [(NTKSolarTimeModel *)self->_solarTimeModel referenceLocation];
+  [referenceLocation coordinate];
   v39 = v7;
-  [v6 coordinate];
+  [referenceLocation coordinate];
   v38 = v8;
   width = self->_bounds.size.width;
   v10 = self->_bounds.size.height * 0.5;
@@ -57,7 +57,7 @@
   do
   {
     v18 = v14 / 24.0;
-    v19 = [v5 dateByAddingTimeInterval:v4 * v18];
+    v19 = [localSolarMidnightDate dateByAddingTimeInterval:v4 * v18];
     if (self->_usePlaceholderData)
     {
       v20 = v18 * 6.28318531 + -1.57079633;
@@ -109,8 +109,8 @@
     while (v27 != 29);
   }
 
-  v29 = [MEMORY[0x277D75208] bezierPath];
-  [v29 moveToPoint:{self->_points[3].x, self->_points[3].y}];
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
+  [bezierPath moveToPoint:{self->_points[3].x, self->_points[3].y}];
   v30 = &self->_points[5];
   v31 = 24;
   __asm { FMOV            V0.2D, #6.0 }
@@ -118,17 +118,17 @@
   v40 = _Q0;
   do
   {
-    [v29 addCurveToPoint:v30[-1].f64[0] controlPoint1:v30[-1].f64[1] controlPoint2:{vaddq_f64(v30[-2], vdivq_f64(vsubq_f64(v30[-1], v30[-3]), v40)), vaddq_f64(v30[-1], vdivq_f64(vsubq_f64(v30[-2], *v30), v40))}];
+    [bezierPath addCurveToPoint:v30[-1].f64[0] controlPoint1:v30[-1].f64[1] controlPoint2:{vaddq_f64(v30[-2], vdivq_f64(vsubq_f64(v30[-1], v30[-3]), v40)), vaddq_f64(v30[-1], vdivq_f64(vsubq_f64(v30[-2], *v30), v40))}];
     ++v30;
     --v31;
   }
 
   while (v31);
 
-  return v29;
+  return bezierPath;
 }
 
-- (double)altitudeAtX:(double)a3
+- (double)altitudeAtX:(double)x
 {
   altitude = self->_altitude;
   v4 = &self->_points[1];
@@ -139,7 +139,7 @@
     ++v4;
     v8 = v7;
     ++altitude;
-    if (x <= a3 && v8 >= a3)
+    if (x <= x && v8 >= x)
     {
       CLKInterpolateBetweenFloatsClipped();
       return result;

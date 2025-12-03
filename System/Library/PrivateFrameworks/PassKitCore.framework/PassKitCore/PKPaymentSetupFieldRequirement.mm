@@ -1,12 +1,12 @@
 @interface PKPaymentSetupFieldRequirement
-- (PKPaymentSetupFieldRequirement)initWithDictionary:(id)a3;
+- (PKPaymentSetupFieldRequirement)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PKPaymentSetupFieldRequirement
 
-- (PKPaymentSetupFieldRequirement)initWithDictionary:(id)a3
+- (PKPaymentSetupFieldRequirement)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = PKPaymentSetupFieldRequirement;
   v5 = [(PKPaymentSetupFieldRequirement *)&v18 init];
@@ -15,7 +15,7 @@
     goto LABEL_10;
   }
 
-  v6 = [v4 PKStringForKey:@"type"];
+  v6 = [dictionaryCopy PKStringForKey:@"type"];
   v7 = v6;
   v9 = 1;
   if (v6 != @"field")
@@ -27,17 +27,17 @@
   }
 
   v5->_type = v9;
-  v10 = [v4 PKStringForKey:@"field"];
+  v10 = [dictionaryCopy PKStringForKey:@"field"];
   fieldIdentifier = v5->_fieldIdentifier;
   v5->_fieldIdentifier = v10;
 
-  v12 = [v4 PKStringForKey:@"value"];
+  v12 = [dictionaryCopy PKStringForKey:@"value"];
   value = v5->_value;
   v5->_value = v12;
 
   if (!v5->_value)
   {
-    v14 = [v4 PKDateForKey:@"value"];
+    v14 = [dictionaryCopy PKDateForKey:@"value"];
     v15 = v5->_value;
     v5->_value = v14;
   }

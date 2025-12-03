@@ -1,17 +1,17 @@
 @interface STXPCEventObserver
 - (NSDictionary)configuration;
 - (STXPCEventDispatcher)dispatcher;
-- (STXPCEventObserver)initWithIdentifier:(id)a3 dispatcher:(id)a4;
-- (void)setConfiguration:(id)a3;
+- (STXPCEventObserver)initWithIdentifier:(id)identifier dispatcher:(id)dispatcher;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation STXPCEventObserver
 
-- (STXPCEventObserver)initWithIdentifier:(id)a3 dispatcher:(id)a4
+- (STXPCEventObserver)initWithIdentifier:(id)identifier dispatcher:(id)dispatcher
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  dispatcherCopy = dispatcher;
+  if (!identifierCopy)
   {
     sub_10011A114(a2, self);
   }
@@ -21,24 +21,24 @@
   v9 = [(STXPCEventObserver *)&v13 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [identifierCopy copy];
     identifier = v9->_identifier;
     v9->_identifier = v10;
 
-    objc_storeWeak(&v9->_dispatcher, v8);
+    objc_storeWeak(&v9->_dispatcher, dispatcherCopy);
   }
 
   return v9;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
-  v8 = [(STXPCEventObserver *)self dispatcher];
-  v5 = [v8 stream];
-  [v5 UTF8String];
-  v6 = [(STXPCEventObserver *)self identifier];
-  [v6 UTF8String];
+  configurationCopy = configuration;
+  dispatcher = [(STXPCEventObserver *)self dispatcher];
+  stream = [dispatcher stream];
+  [stream UTF8String];
+  identifier = [(STXPCEventObserver *)self identifier];
+  [identifier UTF8String];
   v7 = _CFXPCCreateXPCObjectFromCFObject();
 
   xpc_set_event();
@@ -46,11 +46,11 @@
 
 - (NSDictionary)configuration
 {
-  v3 = [(STXPCEventObserver *)self dispatcher];
-  v4 = [v3 stream];
-  [v4 UTF8String];
-  v5 = [(STXPCEventObserver *)self identifier];
-  [v5 UTF8String];
+  dispatcher = [(STXPCEventObserver *)self dispatcher];
+  stream = [dispatcher stream];
+  [stream UTF8String];
+  identifier = [(STXPCEventObserver *)self identifier];
+  [identifier UTF8String];
   v6 = xpc_copy_event();
   v7 = _CFXPCCreateCFObjectFromXPCObject();
 

@@ -8,14 +8,14 @@
 {
   v4 = a3;
   v5 = CLFSortedCommunicationLimits();
-  v6 = [v5 indexOfObject:a1];
+  v6 = [v5 indexOfObject:self];
   v7 = [v5 indexOfObject:v4];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL || v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = +[CLFLog commonLog];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [(NSString(CLFCommunicationLimit) *)a1 isLessRestrictiveThanCommunicationLimit:v4, v9];
+      [(NSString(CLFCommunicationLimit) *)self isLessRestrictiveThanCommunicationLimit:v4, v9];
     }
 
     v8 = 0;

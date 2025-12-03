@@ -19,11 +19,11 @@
 - (BOOL)isVisualModeWindowed;
 - (BOOL)isWindowingModeEnabled;
 - (BOOL)popoverWillAdjust;
-- (BOOL)shouldAdjustPopoverPresentationController:(id)a3 toRect:(CGRect)a4;
+- (BOOL)shouldAdjustPopoverPresentationController:(id)controller toRect:(CGRect)rect;
 - (BOOL)shouldHostInAppSizedContainerView;
 - (BOOL)supportsHostingInAppSizedContainerView;
-- (CGRect)_cgRectForSelectionRects:(id)a3;
-- (CGRect)_textSelectionRectForSmartReplyPopoverForRange:(id)a3 selectionRects:(id)a4;
+- (CGRect)_cgRectForSelectionRects:(id)rects;
+- (CGRect)_textSelectionRectForSmartReplyPopoverForRange:(id)range selectionRects:(id)rects;
 - (CGRect)_textSelectionRectForTextInput;
 - (CGRect)_visibleApproximationOfTextSelectionRect;
 - (CGRect)suggestionPopoverSourceRect;
@@ -35,35 +35,35 @@
 - (WTPromptEntryViewController)currentPromptEntryViewController;
 - (WTProofreadCandidateBarView)proofreadCandidateBarView;
 - (WTSuggestionViewController)currentSuggestionViewController;
-- (WTWritingToolsController)initWithRequestedTool:(id)a3 inputContextHistory:(id)a4;
-- (WTWritingToolsController)initWithRequestedTool:(id)a3 prompt:(id)a4 smartReplyConfiguration:(id)a5;
-- (WTWritingToolsController)initWithTool:(int64_t)a3 prompt:(id)a4 smartReplyConfiguration:(id)a5;
+- (WTWritingToolsController)initWithRequestedTool:(id)tool inputContextHistory:(id)history;
+- (WTWritingToolsController)initWithRequestedTool:(id)tool prompt:(id)prompt smartReplyConfiguration:(id)configuration;
+- (WTWritingToolsController)initWithTool:(int64_t)tool prompt:(id)prompt smartReplyConfiguration:(id)configuration;
 - (WTWritingToolsDelegate)writingToolsDelegate;
-- (id)_assistantBarButtonCustomViewWithTitle:(id)a3 handler:(id)a4;
+- (id)_assistantBarButtonCustomViewWithTitle:(id)title handler:(id)handler;
 - (id)_assistantProofreadBarButton;
 - (id)_createCompositionInputDashboardViewController;
-- (id)_createProofreadingInputDashboardViewControllerForAssistant:(BOOL)a3;
+- (id)_createProofreadingInputDashboardViewControllerForAssistant:(BOOL)assistant;
 - (id)_createSmartReplyInputDashboardViewController;
-- (id)_initWithRequestedTool:(id)a3 baseResponse:(id)a4 entryPoint:(id)a5 inputContextHistory:(id)a6;
+- (id)_initWithRequestedTool:(id)tool baseResponse:(id)response entryPoint:(id)point inputContextHistory:(id)history;
 - (id)_inputDashboardViewController;
-- (id)_startupOptionsForSceneHostedViewControllerForRequestedTool:(int64_t)a3 isForInputDashboard:(BOOL)a4 isForAssistant:(BOOL)a5;
+- (id)_startupOptionsForSceneHostedViewControllerForRequestedTool:(int64_t)tool isForInputDashboard:(BOOL)dashboard isForAssistant:(BOOL)assistant;
 - (id)_textViewDelegate;
-- (id)assistantBarButtonItemWithStyle:(int64_t)a3;
-- (id)itemProviderForAttributedText:(id)a3;
-- (id)itemProviderForPlainText:(id)a3;
+- (id)assistantBarButtonItemWithStyle:(int64_t)style;
+- (id)itemProviderForAttributedText:(id)text;
+- (id)itemProviderForPlainText:(id)text;
 - (id)sourceResponderViewController;
 - (id)trailingPredictiveCandidate;
 - (unint64_t)_permittedPopoverArrowDirection;
 - (unint64_t)_resultOptions;
-- (void)__updateSuggestionPopoverWithCompletion:(id)a3;
+- (void)__updateSuggestionPopoverWithCompletion:(id)completion;
 - (void)_checkForPendingSuggestion;
 - (void)_createSmartReplyInputDashboardViewController;
-- (void)_dismissFullScreenViewControllerWithCompletion:(id)a3;
+- (void)_dismissFullScreenViewControllerWithCompletion:(id)completion;
 - (void)_dismissPromptEntryViewController;
-- (void)_dismissSuggestionViewControllerWithCompletion:(id)a3;
-- (void)_presentMainPopoverViewControllerWithCompletion:(id)a3;
+- (void)_dismissSuggestionViewControllerWithCompletion:(id)completion;
+- (void)_presentMainPopoverViewControllerWithCompletion:(id)completion;
 - (void)_presentPromptEntryViewController;
-- (void)_presentSuggestionViewControllerWithCompletion:(id)a3;
+- (void)_presentSuggestionViewControllerWithCompletion:(id)completion;
 - (void)_refreshSourceResponderHorizontalSizeClassState;
 - (void)_refreshWindowingModeEnabled;
 - (void)_revertAllSuggestions;
@@ -72,51 +72,51 @@
 - (void)_updatePromptEntryPopover;
 - (void)_updateSuggestionPopover;
 - (void)beginTextPlaceholder;
-- (void)compositionSession:(id)a3 didReceiveText:(id)a4 replacementRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7;
-- (void)copyText:(id)a3;
+- (void)compositionSession:(id)session didReceiveText:(id)text replacementRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished;
+- (void)copyText:(id)text;
 - (void)dealloc;
-- (void)didBeginWritingToolsSession:(id)a3 contexts:(id)a4;
-- (void)didEndWritingToolsSession:(id)a3 accepted:(BOOL)a4;
-- (void)didStartMontaraRefinementForSessionWithUUID:(id)a3;
-- (void)dismissFormsheetViewControllerWithCompletion:(id)a3;
+- (void)didBeginWritingToolsSession:(id)session contexts:(id)contexts;
+- (void)didEndWritingToolsSession:(id)session accepted:(BOOL)accepted;
+- (void)didStartMontaraRefinementForSessionWithUUID:(id)d;
+- (void)dismissFormsheetViewControllerWithCompletion:(id)completion;
 - (void)dismissShareSheet;
-- (void)endTextPlaceholderAndWillInsertText:(BOOL)a3 completion:(id)a4;
-- (void)endWritingToolsWithError:(id)a3;
+- (void)endTextPlaceholderAndWillInsertText:(BOOL)text completion:(id)completion;
+- (void)endWritingToolsWithError:(id)error;
 - (void)enrollmentBegan;
-- (void)enrollmentDismissedWithCompletion:(id)a3;
-- (void)handoffFromUCBFromTool:(int64_t)a3 withPrompt:(id)a4;
-- (void)presentError:(id)a3;
+- (void)enrollmentDismissedWithCompletion:(id)completion;
+- (void)handoffFromUCBFromTool:(int64_t)tool withPrompt:(id)prompt;
+- (void)presentError:(id)error;
 - (void)presentFullScreenViewController;
-- (void)proofreadingSession:(id)a3 didReceiveSuggestions:(id)a4 processedRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7;
-- (void)proofreadingSession:(id)a3 didUpdateState:(int64_t)a4 forSuggestionWithUUID:(id)a5 inContext:(id)a6;
-- (void)proofreadingSessionWithUUID:(id)a3 showDetailsForSuggestionWithUUID:(id)a4 relativeToRect:(CGRect)a5 inView:(id)a6;
-- (void)proofreadingSessionWithUUID:(id)a3 updateState:(int64_t)a4 forSuggestionWithUUID:(id)a5;
+- (void)proofreadingSession:(id)session didReceiveSuggestions:(id)suggestions processedRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished;
+- (void)proofreadingSession:(id)session didUpdateState:(int64_t)state forSuggestionWithUUID:(id)d inContext:(id)context;
+- (void)proofreadingSessionWithUUID:(id)d showDetailsForSuggestionWithUUID:(id)iD relativeToRect:(CGRect)rect inView:(id)view;
+- (void)proofreadingSessionWithUUID:(id)d updateState:(int64_t)state forSuggestionWithUUID:(id)iD;
 - (void)redo;
-- (void)remoteKeyboardChanged:(id)a3;
-- (void)replaceSelectionWithText:(id)a3;
+- (void)remoteKeyboardChanged:(id)changed;
+- (void)replaceSelectionWithText:(id)text;
 - (void)selectionDidUpdate;
-- (void)setInterfaceAutorotationDisabledIfNecessary:(BOOL)a3;
-- (void)setMinimizedIntoAssistant:(BOOL)a3;
-- (void)setRemainingRedoCount:(unint64_t)a3;
-- (void)setRemainingUndoCount:(unint64_t)a3;
-- (void)setSession:(id)a3;
-- (void)setSourceResponder:(id)a3 sourceTextInput:(id)a4;
-- (void)setSuppressSheetForKeyboardEditing:(BOOL)a3;
-- (void)setSuppressWritingToolsForRemoteKeyboard:(BOOL)a3;
-- (void)showAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 buttonAction:(id)a6;
-- (void)showContentWarningWithTitle:(id)a3 message:(id)a4;
-- (void)showSmartReplyQuestionnaireWithRect:(CGRect)a3;
+- (void)setInterfaceAutorotationDisabledIfNecessary:(BOOL)necessary;
+- (void)setMinimizedIntoAssistant:(BOOL)assistant;
+- (void)setRemainingRedoCount:(unint64_t)count;
+- (void)setRemainingUndoCount:(unint64_t)count;
+- (void)setSession:(id)session;
+- (void)setSourceResponder:(id)responder sourceTextInput:(id)input;
+- (void)setSuppressSheetForKeyboardEditing:(BOOL)editing;
+- (void)setSuppressWritingToolsForRemoteKeyboard:(BOOL)keyboard;
+- (void)showAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle buttonAction:(id)action;
+- (void)showContentWarningWithTitle:(id)title message:(id)message;
+- (void)showSmartReplyQuestionnaireWithRect:(CGRect)rect;
 - (void)startWritingTools;
-- (void)textSystemWillBeginEditingDuringSessionWithUUID:(id)a3;
-- (void)triggerShareSheetWithText:(id)a3;
+- (void)textSystemWillBeginEditingDuringSessionWithUUID:(id)d;
+- (void)triggerShareSheetWithText:(id)text;
 - (void)undo;
 - (void)updateInputDashboardViewController;
 - (void)updateKBSuppression;
-- (void)updatePromptEntryState:(int64_t)a3;
+- (void)updatePromptEntryState:(int64_t)state;
 - (void)updateSourceView;
-- (void)updateWritingToolsPopoverSuppressionWithCompletion:(id)a3;
-- (void)willBeginWritingToolsSession:(id)a3 requestContexts:(id)a4;
-- (void)writingToolsSession:(id)a3 didReceiveAction:(int64_t)a4;
+- (void)updateWritingToolsPopoverSuppressionWithCompletion:(id)completion;
+- (void)willBeginWritingToolsSession:(id)session requestContexts:(id)contexts;
+- (void)writingToolsSession:(id)session didReceiveAction:(int64_t)action;
 @end
 
 @implementation WTWritingToolsController
@@ -128,34 +128,34 @@
   return [v2 isAvailable];
 }
 
-- (WTWritingToolsController)initWithRequestedTool:(id)a3 inputContextHistory:(id)a4
+- (WTWritingToolsController)initWithRequestedTool:(id)tool inputContextHistory:(id)history
 {
   v6 = MEMORY[0x1E69E3160];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithInputContextHistory:v7];
+  historyCopy = history;
+  toolCopy = tool;
+  v9 = [[v6 alloc] initWithInputContextHistory:historyCopy];
 
-  v10 = [(WTWritingToolsController *)self initWithRequestedTool:v8 prompt:0 smartReplyConfiguration:v9];
+  v10 = [(WTWritingToolsController *)self initWithRequestedTool:toolCopy prompt:0 smartReplyConfiguration:v9];
   return v10;
 }
 
-- (id)_initWithRequestedTool:(id)a3 baseResponse:(id)a4 entryPoint:(id)a5 inputContextHistory:(id)a6
+- (id)_initWithRequestedTool:(id)tool baseResponse:(id)response entryPoint:(id)point inputContextHistory:(id)history
 {
   v10 = MEMORY[0x1E69E3160];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[v10 alloc] initWithInputContextHistory:v11];
+  historyCopy = history;
+  pointCopy = point;
+  responseCopy = response;
+  toolCopy = tool;
+  v15 = [[v10 alloc] initWithInputContextHistory:historyCopy];
 
-  [v15 setBaseResponse:v13];
-  [v15 setEntryPoint:v12];
+  [v15 setBaseResponse:responseCopy];
+  [v15 setEntryPoint:pointCopy];
 
-  v16 = [(WTWritingToolsController *)self initWithRequestedTool:v14 smartReplyConfiguration:v15];
+  v16 = [(WTWritingToolsController *)self initWithRequestedTool:toolCopy smartReplyConfiguration:v15];
   return v16;
 }
 
-- (WTWritingToolsController)initWithRequestedTool:(id)a3 prompt:(id)a4 smartReplyConfiguration:(id)a5
+- (WTWritingToolsController)initWithRequestedTool:(id)tool prompt:(id)prompt smartReplyConfiguration:(id)configuration
 {
   v18[14] = *MEMORY[0x1E69E9840];
   v17[0] = @"WTUIRequestedToolNone";
@@ -187,31 +187,31 @@
   v18[12] = &unk_1F4FCB620;
   v18[13] = &unk_1F4FCB638;
   v8 = MEMORY[0x1E695DF20];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  configurationCopy = configuration;
+  promptCopy = prompt;
+  toolCopy = tool;
   v12 = [v8 dictionaryWithObjects:v18 forKeys:v17 count:14];
-  v13 = [v12 objectForKeyedSubscript:v11];
+  v13 = [v12 objectForKeyedSubscript:toolCopy];
 
-  v14 = [v13 integerValue];
-  v15 = [(WTWritingToolsController *)self initWithTool:v14 prompt:v10 smartReplyConfiguration:v9];
+  integerValue = [v13 integerValue];
+  v15 = [(WTWritingToolsController *)self initWithTool:integerValue prompt:promptCopy smartReplyConfiguration:configurationCopy];
 
   return v15;
 }
 
-- (WTWritingToolsController)initWithTool:(int64_t)a3 prompt:(id)a4 smartReplyConfiguration:(id)a5
+- (WTWritingToolsController)initWithTool:(int64_t)tool prompt:(id)prompt smartReplyConfiguration:(id)configuration
 {
-  v9 = a4;
-  v10 = a5;
+  promptCopy = prompt;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = WTWritingToolsController;
   v11 = [(WTWritingToolsController *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_requestedTool = a3;
-    objc_storeStrong(&v11->_prompt, a4);
-    objc_storeStrong(&v12->_smartReplyConfig, a5);
+    v11->_requestedTool = tool;
+    objc_storeStrong(&v11->_prompt, prompt);
+    objc_storeStrong(&v12->_smartReplyConfig, configuration);
     v13 = dispatch_queue_create("com.apple.WritingToolsUIService.SuggestionQueue", 0);
     suggestionQueue = v12->_suggestionQueue;
     v12->_suggestionQueue = v13;
@@ -223,17 +223,17 @@
 - (void)dealloc
 {
   [(WTWritingToolsController *)self setInterfaceAutorotationDisabledIfNecessary:0];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE2E0] object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE2E0] object:self];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DE2D8] object:self];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69DE2D8] object:self];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x1E69DE2D0] object:self];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 removeObserver:self name:*MEMORY[0x1E69DE2D0] object:self];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x1E69DE2C8] object:self];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 removeObserver:self name:*MEMORY[0x1E69DE2C8] object:self];
 
   v7.receiver = self;
   v7.super_class = WTWritingToolsController;
@@ -242,18 +242,18 @@
 
 + (BOOL)_isArbiterClientReadyForWritingToolsToHandleKeyboardTracking
 {
-  v2 = [MEMORY[0x1E69DCC08] automaticKeyboardArbiterClient];
+  automaticKeyboardArbiterClient = [MEMORY[0x1E69DCC08] automaticKeyboardArbiterClient];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 _isArbiterClientReadyForWritingToolsToHandleKeyboardTracking];
+    _isArbiterClientReadyForWritingToolsToHandleKeyboardTracking = [automaticKeyboardArbiterClient _isArbiterClientReadyForWritingToolsToHandleKeyboardTracking];
   }
 
   else
   {
-    v3 = 0;
+    _isArbiterClientReadyForWritingToolsToHandleKeyboardTracking = 0;
   }
 
-  return v3;
+  return _isArbiterClientReadyForWritingToolsToHandleKeyboardTracking;
 }
 
 + (BOOL)_isWritingToolsHandlingKeyboardTracking
@@ -262,7 +262,7 @@
   block[1] = 3221225472;
   block[2] = __67__WTWritingToolsController__isWritingToolsHandlingKeyboardTracking__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_isWritingToolsHandlingKeyboardTracking_onceToken != -1)
   {
     dispatch_once(&_isWritingToolsHandlingKeyboardTracking_onceToken, block);
@@ -316,16 +316,16 @@ void __67__WTWritingToolsController__isWritingToolsHandlingKeyboardTracking__blo
   }
 }
 
-- (void)setSourceResponder:(id)a3 sourceTextInput:(id)a4
+- (void)setSourceResponder:(id)responder sourceTextInput:(id)input
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  objc_storeWeak(&self->_sourceResponder, v6);
-  objc_storeWeak(&self->_sourceTextInput, v7);
-  if ([v7 conformsToProtocol:&unk_1F4FEDF78])
+  responderCopy = responder;
+  inputCopy = input;
+  objc_storeWeak(&self->_sourceResponder, responderCopy);
+  objc_storeWeak(&self->_sourceTextInput, inputCopy);
+  if ([inputCopy conformsToProtocol:&unk_1F4FEDF78])
   {
-    v8 = v7;
+    v8 = inputCopy;
   }
 
   else
@@ -375,18 +375,18 @@ void __63__WTWritingToolsController_setSourceResponder_sourceTextInput___block_i
     _os_log_impl(&dword_1D451D000, v3, OS_LOG_TYPE_DEFAULT, "startWritingTools", v12, 2u);
   }
 
-  v4 = [MEMORY[0x1E69DC940] activeInstance];
-  [v4 cancelDictation];
+  activeInstance = [MEMORY[0x1E69DC940] activeInstance];
+  [activeInstance cancelDictation];
 
   v5 = [(WTWritingToolsController *)self requestedTool]== 101;
-  v6 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   analyticsUUID = self->_analyticsUUID;
-  self->_analyticsUUID = v6;
+  self->_analyticsUUID = uUID;
 
   v8 = [WTAnalyticsDelegate alloc];
-  v9 = [(WTWritingToolsController *)self smartReplyConfig];
-  v10 = [(WTWritingToolsController *)self analyticsUUID];
-  v11 = [(WTAnalyticsDelegate *)v8 initWithSmartReplyBool:v5 smartReplyConfig:v9 analyticsUUID:v10 requestedTool:[(WTWritingToolsController *)self requestedTool] isEditable:[(WTWritingToolsController *)self _isEditableResponder]];
+  smartReplyConfig = [(WTWritingToolsController *)self smartReplyConfig];
+  analyticsUUID = [(WTWritingToolsController *)self analyticsUUID];
+  v11 = [(WTAnalyticsDelegate *)v8 initWithSmartReplyBool:v5 smartReplyConfig:smartReplyConfig analyticsUUID:analyticsUUID requestedTool:[(WTWritingToolsController *)self requestedTool] isEditable:[(WTWritingToolsController *)self _isEditableResponder]];
   [(WTWritingToolsController *)self setAnalyticsDelegate:v11];
 
   [(WTWritingToolsController *)self setRemainingUndoCount:0];
@@ -400,15 +400,15 @@ void __63__WTWritingToolsController_setSourceResponder_sourceTextInput___block_i
   }
 }
 
-- (void)endWritingToolsWithError:(id)a3
+- (void)endWritingToolsWithError:(id)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = _WTVCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v34 = v4;
+    v34 = errorCopy;
     _os_log_impl(&dword_1D451D000, v5, OS_LOG_TYPE_DEFAULT, "endWritingToolsWithError %@", buf, 0xCu);
   }
 
@@ -428,13 +428,13 @@ void __63__WTWritingToolsController_setSourceResponder_sourceTextInput___block_i
 LABEL_4:
     v6 = 1;
 LABEL_8:
-    v7 = [(WTWritingToolsController *)self session];
-    [(WTWritingToolsController *)self didEndWritingToolsSession:v7 accepted:v6];
+    session = [(WTWritingToolsController *)self session];
+    [(WTWritingToolsController *)self didEndWritingToolsSession:session accepted:v6];
   }
 
-  v8 = [(WTWritingToolsController *)self mainPopoverViewController];
+  mainPopoverViewController = [(WTWritingToolsController *)self mainPopoverViewController];
 
-  if (v8)
+  if (mainPopoverViewController)
   {
     v9 = _WTVCLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -443,15 +443,15 @@ LABEL_8:
       _os_log_impl(&dword_1D451D000, v9, OS_LOG_TYPE_DEFAULT, "dismissViewController (Popover) for endWritingTools", buf, 2u);
     }
 
-    v10 = [(WTWritingToolsController *)self mainPopoverViewController];
-    v11 = [v10 presentingViewController];
+    mainPopoverViewController2 = [(WTWritingToolsController *)self mainPopoverViewController];
+    presentingViewController = [mainPopoverViewController2 presentingViewController];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __53__WTWritingToolsController_endWritingToolsWithError___block_invoke;
     v30[3] = &unk_1E8480C70;
-    v31 = v4;
-    v32 = self;
-    [v11 dismissViewControllerAnimated:1 completion:v30];
+    v31 = errorCopy;
+    selfCopy = self;
+    [presentingViewController dismissViewControllerAnimated:1 completion:v30];
 
     [(WTWritingToolsController *)self setMainPopoverViewController:0];
     v12 = v31;
@@ -460,9 +460,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v13 = [(WTWritingToolsController *)self fullScreenContainerViewController];
+  fullScreenContainerViewController = [(WTWritingToolsController *)self fullScreenContainerViewController];
 
-  if (v13)
+  if (fullScreenContainerViewController)
   {
     v14 = _WTVCLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -475,16 +475,16 @@ LABEL_21:
     v27[1] = 3221225472;
     v27[2] = __53__WTWritingToolsController_endWritingToolsWithError___block_invoke_475;
     v27[3] = &unk_1E8480C98;
-    v28 = v4;
-    v29 = self;
+    v28 = errorCopy;
+    selfCopy2 = self;
     [(WTWritingToolsController *)self _dismissFullScreenViewControllerWithCompletion:v27];
     v12 = v28;
     goto LABEL_21;
   }
 
-  v15 = [(WTWritingToolsController *)self formSheetViewController];
+  formSheetViewController = [(WTWritingToolsController *)self formSheetViewController];
 
-  if (v15)
+  if (formSheetViewController)
   {
     v16 = _WTVCLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -493,41 +493,41 @@ LABEL_21:
       _os_log_impl(&dword_1D451D000, v16, OS_LOG_TYPE_DEFAULT, "dismissViewController (Formsheet) for endWritingTools", buf, 2u);
     }
 
-    v17 = [(WTWritingToolsController *)self formSheetViewController];
+    formSheetViewController2 = [(WTWritingToolsController *)self formSheetViewController];
     v21 = MEMORY[0x1E69E9820];
     v22 = 3221225472;
     v23 = __53__WTWritingToolsController_endWritingToolsWithError___block_invoke_477;
     v24 = &unk_1E8480C70;
-    v25 = v4;
-    v26 = self;
-    [v17 dismissViewControllerAnimated:1 completion:&v21];
+    v25 = errorCopy;
+    selfCopy3 = self;
+    [formSheetViewController2 dismissViewControllerAnimated:1 completion:&v21];
 
     v12 = v25;
     goto LABEL_21;
   }
 
-  if (v4)
+  if (errorCopy)
   {
-    [(WTWritingToolsController *)self presentError:v4];
+    [(WTWritingToolsController *)self presentError:errorCopy];
   }
 
 LABEL_22:
-  v18 = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
-  [v18 removeVisibilityObserver:self];
+  activeKeyboardSceneDelegate = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
+  [activeKeyboardSceneDelegate removeVisibilityObserver:self];
 
   [(WTWritingToolsController *)self setIsPresentingPopoverFromEditableResponder:0];
   [(WTWritingToolsController *)self setWantsHostingInAppSizedContainerView:0];
   [(WTWritingToolsController *)self setMinimizedIntoAssistant:0];
   [(WTWritingToolsController *)self updateKBSuppression];
   [(WTWritingToolsController *)self updateInputDashboardViewController];
-  v19 = [(WTWritingToolsController *)self sourceResponder];
+  sourceResponder = [(WTWritingToolsController *)self sourceResponder];
   if (objc_opt_respondsToSelector())
   {
-    [v19 _writingToolsDidEnd];
+    [sourceResponder _writingToolsDidEnd];
   }
 
-  v20 = [(WTWritingToolsController *)self analyticsDelegate];
-  [v20 endWritingTools];
+  analyticsDelegate = [(WTWritingToolsController *)self analyticsDelegate];
+  [analyticsDelegate endWritingTools];
 
   [(WTWritingToolsController *)self setAnalyticsDelegate:0];
   [(WTWritingToolsController *)self setWritingToolsDelegate:0];
@@ -584,32 +584,32 @@ uint64_t __53__WTWritingToolsController_endWritingToolsWithError___block_invoke_
 - (void)_refreshSourceResponderHorizontalSizeClassState
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(WTWritingToolsController *)self sourceResponderViewController];
-  v4 = [v3 traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  sourceResponderViewController = [(WTWritingToolsController *)self sourceResponderViewController];
+  traitCollection = [sourceResponderViewController traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if ([(WTWritingToolsController *)self sourceResponderHorizontalSizeClass]!= v5)
+  if ([(WTWritingToolsController *)self sourceResponderHorizontalSizeClass]!= horizontalSizeClass)
   {
     v6 = _WTVCLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
+      v7 = [MEMORY[0x1E696AD98] numberWithInteger:horizontalSizeClass];
       v13 = 138412290;
       v14 = v7;
       _os_log_impl(&dword_1D451D000, v6, OS_LOG_TYPE_DEFAULT, "sourceResponderHorizontalSizeClass changed, new value: %@", &v13, 0xCu);
     }
 
-    [(WTWritingToolsController *)self setSourceResponderHorizontalSizeClass:v5];
-    v8 = [(WTWritingToolsController *)self sourceResponderViewController];
-    v9 = [v8 presentedViewController];
+    [(WTWritingToolsController *)self setSourceResponderHorizontalSizeClass:horizontalSizeClass];
+    sourceResponderViewController2 = [(WTWritingToolsController *)self sourceResponderViewController];
+    presentedViewController = [sourceResponderViewController2 presentedViewController];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(WTWritingToolsController *)self sourceResponderViewController];
-      v12 = [v11 presentedViewController];
+      sourceResponderViewController3 = [(WTWritingToolsController *)self sourceResponderViewController];
+      presentedViewController2 = [sourceResponderViewController3 presentedViewController];
 
-      [v12 sourceResponderHorizontalSizeClassChanged:v5];
+      [presentedViewController2 sourceResponderHorizontalSizeClassChanged:horizontalSizeClass];
     }
 
     [(WTWritingToolsController *)self updateSourceView];
@@ -619,42 +619,42 @@ uint64_t __53__WTWritingToolsController_endWritingToolsWithError___block_invoke_
 - (void)_refreshWindowingModeEnabled
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(WTWritingToolsController *)self isWindowingModeEnabled];
-  if (v3 != [(WTWritingToolsController *)self windowingModeEnabled])
+  isWindowingModeEnabled = [(WTWritingToolsController *)self isWindowingModeEnabled];
+  if (isWindowingModeEnabled != [(WTWritingToolsController *)self windowingModeEnabled])
   {
     v4 = _WTVCLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+      v5 = [MEMORY[0x1E696AD98] numberWithBool:isWindowingModeEnabled];
       v7 = 138412290;
       v8 = v5;
       _os_log_impl(&dword_1D451D000, v4, OS_LOG_TYPE_DEFAULT, "isWindowingModeEnabled changed, new value: %@", &v7, 0xCu);
     }
 
-    v6 = [(WTWritingToolsController *)self mainPopoverViewController];
-    [v6 windowingModeEnabledChanged:v3];
+    mainPopoverViewController = [(WTWritingToolsController *)self mainPopoverViewController];
+    [mainPopoverViewController windowingModeEnabledChanged:isWindowingModeEnabled];
   }
 }
 
 - (BOOL)isVisualModeWindowed
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
+  activeKeyboardSceneDelegate = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 useVisualModeWindowedUI];
+    useVisualModeWindowedUI = [activeKeyboardSceneDelegate useVisualModeWindowedUI];
   }
 
   else
   {
-    v3 = 0;
+    useVisualModeWindowedUI = 0;
   }
 
   v4 = _WTVCLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = "NO";
-    if (v3)
+    if (useVisualModeWindowedUI)
     {
       v5 = "YES";
     }
@@ -664,60 +664,60 @@ uint64_t __53__WTWritingToolsController_endWritingToolsWithError___block_invoke_
     _os_log_impl(&dword_1D451D000, v4, OS_LOG_TYPE_DEFAULT, "useVisualModeWindowedUI: %s", &v7, 0xCu);
   }
 
-  return v3;
+  return useVisualModeWindowedUI;
 }
 
 - (BOOL)isWindowingModeEnabled
 {
-  v2 = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
+  activeKeyboardSceneDelegate = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 windowingModeEnabled];
+    windowingModeEnabled = [activeKeyboardSceneDelegate windowingModeEnabled];
   }
 
   else
   {
-    v3 = 0;
+    windowingModeEnabled = 0;
   }
 
-  return v3;
+  return windowingModeEnabled;
 }
 
-- (void)presentError:(id)a3
+- (void)presentError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x1E69DC650];
-  v6 = [v4 localizedDescription];
-  v7 = [v4 localizedFailureReason];
-  v8 = [v5 alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+  localizedDescription = [errorCopy localizedDescription];
+  localizedFailureReason = [errorCopy localizedFailureReason];
+  v8 = [v5 alertControllerWithTitle:localizedDescription message:localizedFailureReason preferredStyle:1];
 
   v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   if (os_variant_has_internal_diagnostics())
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [v4 userInfo];
-    v12 = [v11 objectForKeyedSubscript:@"WTInternalDescriptionErrorKey"];
+    userInfo = [errorCopy userInfo];
+    v12 = [userInfo objectForKeyedSubscript:@"WTInternalDescriptionErrorKey"];
     v13 = [v10 stringWithFormat:@"[INTERNAL DEBUGGING] %@", v12];
 
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [v8 message];
-    v16 = v15;
+    message = [v8 message];
+    v16 = message;
     v17 = &stru_1F4FC5520;
-    if (v15)
+    if (message)
     {
-      v17 = v15;
+      v17 = message;
     }
 
     v18 = [v14 stringWithFormat:@"%@\n\n%@", v17, v13];
     [v8 setMessage:v18];
   }
 
-  v19 = [v4 userInfo];
-  v20 = [v19 objectForKeyedSubscript:@"WTRequireReauthenticationErrorKey"];
-  v21 = [v20 BOOLValue];
+  userInfo2 = [errorCopy userInfo];
+  v20 = [userInfo2 objectForKeyedSubscript:@"WTRequireReauthenticationErrorKey"];
+  bOOLValue = [v20 BOOLValue];
 
   v22 = &qword_1D455A000;
-  if (v21)
+  if (bOOLValue)
   {
     v23 = MEMORY[0x1E69DC648];
     v24 = [v9 localizedStringForKey:@"Cancel" value:&stru_1F4FC5520 table:@"Localizable"];
@@ -733,11 +733,11 @@ uint64_t __53__WTWritingToolsController_endWritingToolsWithError___block_invoke_
 
   else
   {
-    v31 = [v4 userInfo];
-    v32 = [v31 objectForKeyedSubscript:@"WTUnsupportedLanguageErrorKey"];
-    v33 = [v32 BOOLValue];
+    userInfo3 = [errorCopy userInfo];
+    v32 = [userInfo3 objectForKeyedSubscript:@"WTUnsupportedLanguageErrorKey"];
+    bOOLValue2 = [v32 BOOLValue];
 
-    if (v33)
+    if (bOOLValue2)
     {
       v34 = MEMORY[0x1E69DC648];
       v35 = [v9 localizedStringForKey:@"Learn More" value:&stru_1F4FC5520 table:@"Localizable"];
@@ -765,11 +765,11 @@ uint64_t __53__WTWritingToolsController_endWritingToolsWithError___block_invoke_
       goto LABEL_13;
     }
 
-    v40 = [v4 userInfo];
-    v41 = [v40 objectForKeyedSubscript:@"WTUnsafeInputErrorKey"];
-    v42 = [v41 BOOLValue];
+    userInfo4 = [errorCopy userInfo];
+    v41 = [userInfo4 objectForKeyedSubscript:@"WTUnsafeInputErrorKey"];
+    bOOLValue3 = [v41 BOOLValue];
 
-    if (v42)
+    if (bOOLValue3)
     {
       v43 = [_TtC14WritingToolsUI27WTAlertHeaderViewController alloc];
       v44 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"nosign.badge.shield.half.filled"];
@@ -794,15 +794,15 @@ LABEL_13:
     [WTWritingToolsController presentError:];
   }
 
-  v49 = [(WTWritingToolsController *)self sourceResponderViewController];
+  sourceResponderViewController = [(WTWritingToolsController *)self sourceResponderViewController];
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = v22[75];
   v51[2] = __41__WTWritingToolsController_presentError___block_invoke_542;
   v51[3] = &unk_1E8480C70;
-  v52 = v4;
-  v53 = self;
-  v50 = v4;
-  [v49 presentViewController:v8 animated:1 completion:v51];
+  v52 = errorCopy;
+  selfCopy = self;
+  v50 = errorCopy;
+  [sourceResponderViewController presentViewController:v8 animated:1 completion:v51];
 }
 
 void __41__WTWritingToolsController_presentError___block_invoke()
@@ -837,38 +837,38 @@ void __41__WTWritingToolsController_presentError___block_invoke_542(uint64_t a1)
   }
 }
 
-- (void)showContentWarningWithTitle:(id)a3 message:(id)a4
+- (void)showContentWarningWithTitle:(id)title message:(id)message
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(WTWritingToolsController *)self _inputDashboardViewController];
-  if ([(WTWritingToolsController *)self _wantsUCBUI]&& v7)
+  titleCopy = title;
+  messageCopy = message;
+  _inputDashboardViewController = [(WTWritingToolsController *)self _inputDashboardViewController];
+  if ([(WTWritingToolsController *)self _wantsUCBUI]&& _inputDashboardViewController)
   {
-    [v7 showContentWarningWithTitle:v8 message:v6];
+    [_inputDashboardViewController showContentWarningWithTitle:titleCopy message:messageCopy];
   }
 }
 
-- (void)showAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 buttonAction:(id)a6
+- (void)showAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle buttonAction:(id)action
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(WTWritingToolsController *)self _inputDashboardViewController];
-  if ([(WTWritingToolsController *)self _wantsUCBUI]&& v13)
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  actionCopy = action;
+  _inputDashboardViewController = [(WTWritingToolsController *)self _inputDashboardViewController];
+  if ([(WTWritingToolsController *)self _wantsUCBUI]&& _inputDashboardViewController)
   {
-    [v13 showAlertWithTitle:v14 message:v10 buttonTitle:v11 buttonAction:v12];
+    [_inputDashboardViewController showAlertWithTitle:titleCopy message:messageCopy buttonTitle:buttonTitleCopy buttonAction:actionCopy];
   }
 }
 
-- (void)handoffFromUCBFromTool:(int64_t)a3 withPrompt:(id)a4
+- (void)handoffFromUCBFromTool:(int64_t)tool withPrompt:(id)prompt
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  promptCopy = prompt;
   v7 = _WTVCLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:tool];
     *buf = 138412290;
     v13 = v8;
     _os_log_impl(&dword_1D451D000, v7, OS_LOG_TYPE_DEFAULT, "handoffFromUCBFromTool: %@", buf, 0xCu);
@@ -876,13 +876,13 @@ void __41__WTWritingToolsController_presentError___block_invoke_542(uint64_t a1)
 
   [(WTWritingToolsController *)self setIsFromHandoff:1];
   [(WTWritingToolsController *)self setRequestedTool:201];
-  [(WTWritingToolsController *)self setHandoffOriginatorTool:a3];
-  [(WTWritingToolsController *)self setPrompt:v6];
+  [(WTWritingToolsController *)self setHandoffOriginatorTool:tool];
+  [(WTWritingToolsController *)self setPrompt:promptCopy];
 
   [(WTWritingToolsController *)self setWantsHostingInAppSizedContainerView:1];
-  v9 = [(WTWritingToolsController *)self writingToolsDelegate];
-  v10 = [(WTWritingToolsController *)self session];
-  [v9 didEndWritingToolsSession:v10 accepted:0];
+  writingToolsDelegate = [(WTWritingToolsController *)self writingToolsDelegate];
+  session = [(WTWritingToolsController *)self session];
+  [writingToolsDelegate didEndWritingToolsSession:session accepted:0];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -892,30 +892,30 @@ void __41__WTWritingToolsController_presentError___block_invoke_542(uint64_t a1)
   [(WTWritingToolsController *)self _dismissFullScreenViewControllerWithCompletion:v11];
 }
 
-- (void)didStartMontaraRefinementForSessionWithUUID:(id)a3
+- (void)didStartMontaraRefinementForSessionWithUUID:(id)d
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = _WTVCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = dCopy;
     _os_log_impl(&dword_1D451D000, v5, OS_LOG_TYPE_DEFAULT, "Received didStartMontaraRefinement for %@", &v10, 0xCu);
   }
 
   if ([(WTWritingToolsController *)self supportsHostingInAppSizedContainerView])
   {
-    v6 = [(WTWritingToolsController *)self session];
+    session = [(WTWritingToolsController *)self session];
 
-    if (!v6)
+    if (!session)
     {
-      [(WTWritingToolsController *)self setNoninlineSessionUUID:v4];
+      [(WTWritingToolsController *)self setNoninlineSessionUUID:dCopy];
       v7 = _WTVCLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138412290;
-        v11 = v4;
+        v11 = dCopy;
         _os_log_impl(&dword_1D451D000, v7, OS_LOG_TYPE_DEFAULT, "Handling noninlineSessionUUID: %@ for noninline session", &v10, 0xCu);
       }
     }
@@ -949,8 +949,8 @@ void __41__WTWritingToolsController_presentError___block_invoke_542(uint64_t a1)
     return 0;
   }
 
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 1;
 
   return v3;
 }
@@ -1012,8 +1012,8 @@ void __41__WTWritingToolsController_presentError___block_invoke_542(uint64_t a1)
 
       else
       {
-        v6 = [(WTWritingToolsController *)self session];
-        if (v6 || ([(WTWritingToolsController *)self noninlineSessionUUID], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+        session = [(WTWritingToolsController *)self session];
+        if (session || ([(WTWritingToolsController *)self noninlineSessionUUID], (session = objc_claimAutoreleasedReturnValue()) != 0))
         {
         }
 
@@ -1028,10 +1028,10 @@ void __41__WTWritingToolsController_presentError___block_invoke_542(uint64_t a1)
           goto LABEL_7;
         }
 
-        v7 = [(WTWritingToolsController *)self isFromHandoff];
+        isFromHandoff = [(WTWritingToolsController *)self isFromHandoff];
         v3 = _WTVCLog();
         v8 = os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG);
-        if (!v7)
+        if (!isFromHandoff)
         {
           if (v8)
           {
@@ -1071,8 +1071,8 @@ LABEL_8:
   {
     v3 = [MEMORY[0x1E69D95F0] candidateWithCandidate:&stru_1F4FC5520 forInput:&stru_1F4FC5520 property:8];
     v4 = objc_alloc_init(WTProofreadCandidateBarView);
-    v5 = [(WTWritingToolsController *)self proofreadingSuggestions];
-    -[WTProofreadCandidateBarView setSuggestionCount:](v4, "setSuggestionCount:", [v5 count]);
+    proofreadingSuggestions = [(WTWritingToolsController *)self proofreadingSuggestions];
+    -[WTProofreadCandidateBarView setSuggestionCount:](v4, "setSuggestionCount:", [proofreadingSuggestions count]);
 
     [(WTWritingToolsController *)self setProofreadCandidateBarView:v4];
     [v3 setCustomView:v4];
@@ -1101,7 +1101,7 @@ void __55__WTWritingToolsController_trailingPredictiveCandidate__block_invoke(ui
   [WeakRetained setSuppressSheetForKeyboardEditing:0];
 }
 
-- (id)assistantBarButtonItemWithStyle:(int64_t)a3
+- (id)assistantBarButtonItemWithStyle:(int64_t)style
 {
   if (![(WTWritingToolsController *)self suppressSheetForKeyboardEditing]|| ([(WTWritingToolsController *)self session], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
@@ -1112,39 +1112,39 @@ void __55__WTWritingToolsController_trailingPredictiveCandidate__block_invoke(ui
   v6 = objc_alloc_init(MEMORY[0x1E69DC708]);
   [v6 setIsKeyboardItem:1];
   objc_initWeak(&location, self);
-  switch(a3)
+  switch(style)
   {
     case 24:
       if (![(WTWritingToolsController *)self minimizedIntoAssistant])
       {
-        v8 = [(WTWritingToolsController *)self _assistantProofreadBarButton];
-        [v6 setCustomView:v8];
+        _assistantProofreadBarButton = [(WTWritingToolsController *)self _assistantProofreadBarButton];
+        [v6 setCustomView:_assistantProofreadBarButton];
         goto LABEL_13;
       }
 
       break;
     case 23:
       v15 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v15 localizedStringForKey:@"Revert" value:&stru_1F4FC5520 table:@"Localizable"];
+      _assistantProofreadBarButton = [v15 localizedStringForKey:@"Revert" value:&stru_1F4FC5520 table:@"Localizable"];
 
-      v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v8];
+      v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:_assistantProofreadBarButton];
       v17 = MEMORY[0x1E69E9820];
       v18 = 3221225472;
       v19 = __60__WTWritingToolsController_assistantBarButtonItemWithStyle___block_invoke_2;
       v20 = &unk_1E8480D08;
       v12 = &v22;
       objc_copyWeak(&v22, &location);
-      v21 = self;
+      selfCopy = self;
       v13 = [(WTWritingToolsController *)self _assistantBarButtonCustomViewWithTitle:v9 handler:&v17];
       [v6 setCustomView:{v13, v17, v18, v19, v20}];
       goto LABEL_9;
     case 22:
       v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v7 localizedStringForKey:@"Done" value:&stru_1F4FC5520 table:@"Localizable"];
+      _assistantProofreadBarButton = [v7 localizedStringForKey:@"Done" value:&stru_1F4FC5520 table:@"Localizable"];
 
-      v9 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v8];
+      v9 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:_assistantProofreadBarButton];
       v10 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:15.0];
-      v11 = [v8 length];
+      v11 = [_assistantProofreadBarButton length];
       [v9 addAttribute:*MEMORY[0x1E69DB648] value:v10 range:{0, v11}];
 
       v23[0] = MEMORY[0x1E69E9820];
@@ -1189,9 +1189,9 @@ void __60__WTWritingToolsController_assistantBarButtonItemWithStyle___block_invo
   [v4 endWritingTools];
 }
 
-- (void)updatePromptEntryState:(int64_t)a3
+- (void)updatePromptEntryState:(int64_t)state
 {
-  switch(a3)
+  switch(state)
   {
     case 3:
       v5 = _WTVCLog();
@@ -1231,21 +1231,21 @@ LABEL_11:
   }
 }
 
-- (void)willBeginWritingToolsSession:(id)a3 requestContexts:(id)a4
+- (void)willBeginWritingToolsSession:(id)session requestContexts:(id)contexts
 {
   v64 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  contextsCopy = contexts;
   v8 = _WTVCLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 uuid];
+    uuid = [sessionCopy uuid];
     *buf = 138412290;
-    v63 = v9;
+    v63 = uuid;
     _os_log_impl(&dword_1D451D000, v8, OS_LOG_TYPE_DEFAULT, "willBeginWritingToolsSession: %@", buf, 0xCu);
   }
 
-  [v6 setTextViewDelegate:self];
+  [sessionCopy setTextViewDelegate:self];
   objc_initWeak(buf, self);
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
@@ -1253,54 +1253,54 @@ LABEL_11:
   v56[3] = &unk_1E8480D58;
   objc_copyWeak(&v59, buf);
   v56[4] = self;
-  v10 = v7;
+  v10 = contextsCopy;
   v58 = v10;
-  v11 = v6;
+  v11 = sessionCopy;
   v57 = v11;
   v55 = MEMORY[0x1DA6D90E0](v56);
-  v12 = [(WTWritingToolsController *)self analyticsDelegate];
-  [v12 willBeginWritingToolsSession:v11 requestContexts:v10];
+  analyticsDelegate = [(WTWritingToolsController *)self analyticsDelegate];
+  [analyticsDelegate willBeginWritingToolsSession:v11 requestContexts:v10];
 
   [(WTWritingToolsController *)self setSwitchedFromUCBToPopover:0];
-  v13 = [(WTWritingToolsController *)self writingToolsDelegate];
+  writingToolsDelegate = [(WTWritingToolsController *)self writingToolsDelegate];
 
-  if (v13)
+  if (writingToolsDelegate)
   {
-    v14 = [(WTWritingToolsController *)self writingToolsDelegate];
-    [v14 willBeginWritingToolsSession:v11 requestContexts:v55];
+    writingToolsDelegate2 = [(WTWritingToolsController *)self writingToolsDelegate];
+    [writingToolsDelegate2 willBeginWritingToolsSession:v11 requestContexts:v55];
   }
 
   else
   {
     if ([v11 compositionSessionType] == 10)
     {
-      v15 = [(WTWritingToolsController *)self sourceTextInput];
-      v54 = [v15 beginningOfDocument];
+      sourceTextInput = [(WTWritingToolsController *)self sourceTextInput];
+      beginningOfDocument = [sourceTextInput beginningOfDocument];
 
-      v16 = [(WTWritingToolsController *)self sourceTextInput];
-      v53 = [v16 endOfDocument];
+      sourceTextInput2 = [(WTWritingToolsController *)self sourceTextInput];
+      endOfDocument = [sourceTextInput2 endOfDocument];
 
-      v17 = [(WTWritingToolsController *)self sourceTextInput];
-      v52 = [v17 textRangeFromPosition:v54 toPosition:v53];
+      sourceTextInput3 = [(WTWritingToolsController *)self sourceTextInput];
+      v52 = [sourceTextInput3 textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
 
-      v18 = [(WTWritingToolsController *)self sourceTextInput];
+      sourceTextInput4 = [(WTWritingToolsController *)self sourceTextInput];
       v19 = objc_opt_respondsToSelector();
 
       if (v19)
       {
-        v20 = [(WTWritingToolsController *)self sourceTextInput];
-        v14 = [v20 attributedTextInRange:v52];
+        sourceTextInput5 = [(WTWritingToolsController *)self sourceTextInput];
+        writingToolsDelegate2 = [sourceTextInput5 attributedTextInRange:v52];
 
-        if (!v14)
+        if (!writingToolsDelegate2)
         {
-          v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1F4FC5520];
+          writingToolsDelegate2 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1F4FC5520];
         }
       }
 
       else
       {
-        v33 = [(WTWritingToolsController *)self sourceTextInput];
-        v34 = [v33 textInRange:v52];
+        sourceTextInput6 = [(WTWritingToolsController *)self sourceTextInput];
+        v34 = [sourceTextInput6 textInRange:v52];
 
         v35 = &stru_1F4FC5520;
         if (v34)
@@ -1310,56 +1310,56 @@ LABEL_11:
 
         v36 = v35;
 
-        v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v36];
+        writingToolsDelegate2 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v36];
       }
 
-      v37 = [(WTWritingToolsController *)self sourceTextInput];
-      v38 = [(WTWritingToolsController *)self sourceTextInput];
-      v39 = [v38 selectedTextRange];
-      v40 = [v39 start];
-      v51 = [v37 offsetFromPosition:v54 toPosition:v40];
+      sourceTextInput7 = [(WTWritingToolsController *)self sourceTextInput];
+      sourceTextInput8 = [(WTWritingToolsController *)self sourceTextInput];
+      selectedTextRange = [sourceTextInput8 selectedTextRange];
+      start = [selectedTextRange start];
+      v51 = [sourceTextInput7 offsetFromPosition:beginningOfDocument toPosition:start];
 
-      v41 = [(WTWritingToolsController *)self sourceTextInput];
-      v42 = [(WTWritingToolsController *)self sourceTextInput];
-      v43 = [v42 selectedTextRange];
-      v44 = [v43 start];
-      v45 = [(WTWritingToolsController *)self sourceTextInput];
-      v46 = [v45 selectedTextRange];
-      v47 = [v46 end];
-      v50 = [v41 offsetFromPosition:v44 toPosition:v47];
+      sourceTextInput9 = [(WTWritingToolsController *)self sourceTextInput];
+      sourceTextInput10 = [(WTWritingToolsController *)self sourceTextInput];
+      selectedTextRange2 = [sourceTextInput10 selectedTextRange];
+      start2 = [selectedTextRange2 start];
+      sourceTextInput11 = [(WTWritingToolsController *)self sourceTextInput];
+      selectedTextRange3 = [sourceTextInput11 selectedTextRange];
+      v47 = [selectedTextRange3 end];
+      v50 = [sourceTextInput9 offsetFromPosition:start2 toPosition:v47];
 
-      v48 = [objc_alloc(MEMORY[0x1E69E3158]) initWithAttributedText:v14 range:{v51, v50}];
+      v48 = [objc_alloc(MEMORY[0x1E69E3158]) initWithAttributedText:writingToolsDelegate2 range:{v51, v50}];
       v61 = v48;
       v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v61 count:1];
       (v55)[2](v55, v49);
 
-      v32 = v53;
+      v32 = endOfDocument;
     }
 
     else
     {
-      v21 = [(WTWritingToolsController *)self sourceTextInput];
+      sourceTextInput12 = [(WTWritingToolsController *)self sourceTextInput];
       v22 = objc_opt_respondsToSelector();
 
       if (v22)
       {
-        v23 = [(WTWritingToolsController *)self sourceTextInput];
-        v24 = [(WTWritingToolsController *)self sourceTextInput];
-        v25 = [v24 selectedTextRange];
-        v14 = [v23 attributedTextInRange:v25];
+        sourceTextInput13 = [(WTWritingToolsController *)self sourceTextInput];
+        sourceTextInput14 = [(WTWritingToolsController *)self sourceTextInput];
+        selectedTextRange4 = [sourceTextInput14 selectedTextRange];
+        writingToolsDelegate2 = [sourceTextInput13 attributedTextInRange:selectedTextRange4];
 
-        if (!v14)
+        if (!writingToolsDelegate2)
         {
-          v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1F4FC5520];
+          writingToolsDelegate2 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1F4FC5520];
         }
       }
 
       else
       {
-        v26 = [(WTWritingToolsController *)self sourceTextInput];
-        v27 = [(WTWritingToolsController *)self sourceTextInput];
-        v28 = [v27 selectedTextRange];
-        v29 = [v26 textInRange:v28];
+        sourceTextInput15 = [(WTWritingToolsController *)self sourceTextInput];
+        sourceTextInput16 = [(WTWritingToolsController *)self sourceTextInput];
+        selectedTextRange5 = [sourceTextInput16 selectedTextRange];
+        v29 = [sourceTextInput15 textInRange:selectedTextRange5];
 
         v30 = &stru_1F4FC5520;
         if (v29)
@@ -1369,11 +1369,11 @@ LABEL_11:
 
         v31 = v30;
 
-        v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v31];
+        writingToolsDelegate2 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v31];
       }
 
-      v54 = [objc_alloc(MEMORY[0x1E69E3158]) initWithAttributedText:v14 range:{0, objc_msgSend(v14, "length")}];
-      v60 = v54;
+      beginningOfDocument = [objc_alloc(MEMORY[0x1E69E3158]) initWithAttributedText:writingToolsDelegate2 range:{0, objc_msgSend(writingToolsDelegate2, "length")}];
+      v60 = beginningOfDocument;
       v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v60 count:1];
       (v55)[2](v55, v32);
     }
@@ -1506,17 +1506,17 @@ void __73__WTWritingToolsController_willBeginWritingToolsSession_requestContexts
   [v33 setSession:v32];
 }
 
-- (void)didBeginWritingToolsSession:(id)a3 contexts:(id)a4
+- (void)didBeginWritingToolsSession:(id)session contexts:(id)contexts
 {
   v50 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  contextsCopy = contexts;
   v6 = _WTVCLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(WTWritingToolsController *)self session];
-    v8 = [v7 uuid];
+    session = [(WTWritingToolsController *)self session];
+    uuid = [session uuid];
     *buf = 138412290;
-    v44 = v8;
+    v44 = uuid;
     _os_log_impl(&dword_1D451D000, v6, OS_LOG_TYPE_DEFAULT, "didBeginWritingToolsSession: %@", buf, 0xCu);
   }
 
@@ -1524,7 +1524,7 @@ void __73__WTWritingToolsController_willBeginWritingToolsSession_requestContexts
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v5;
+  obj = contextsCopy;
   v9 = [obj countByEnumeratingWithState:&v39 objects:v49 count:16];
   if (v9)
   {
@@ -1543,29 +1543,29 @@ void __73__WTWritingToolsController_willBeginWritingToolsSession_requestContexts
         }
 
         v14 = *(*(&v39 + 1) + 8 * v13);
-        v15 = [(WTWritingToolsController *)self uuidContextMapping];
-        v16 = [v14 uuid];
-        v17 = [v15 objectForKeyedSubscript:v16];
-        v18 = [v17 attributedText];
-        [v14 setAttributedText:v18];
+        uuidContextMapping = [(WTWritingToolsController *)self uuidContextMapping];
+        uuid2 = [v14 uuid];
+        v17 = [uuidContextMapping objectForKeyedSubscript:uuid2];
+        attributedText = [v17 attributedText];
+        [v14 setAttributedText:attributedText];
 
-        v19 = [v14 range];
+        range = [v14 range];
         v21 = v20;
-        v22 = [(WTWritingToolsController *)self uuidContextMapping];
-        v23 = [v14 uuid];
-        v24 = [v22 objectForKeyedSubscript:v23];
-        [v24 setRange:{v19, v21}];
+        uuidContextMapping2 = [(WTWritingToolsController *)self uuidContextMapping];
+        uuid3 = [v14 uuid];
+        v24 = [uuidContextMapping2 objectForKeyedSubscript:uuid3];
+        [v24 setRange:{range, v21}];
 
         v25 = _WTVCLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [v14 uuid];
-          v27 = [v14 attributedText];
-          v28 = [v27 length];
+          uuid4 = [v14 uuid];
+          attributedText2 = [v14 attributedText];
+          v28 = [attributedText2 length];
           v51.location = [v14 range];
           v29 = NSStringFromRange(v51);
           *buf = v37;
-          v44 = v26;
+          v44 = uuid4;
           v45 = 2048;
           v46 = v28;
           v47 = 2112;
@@ -1585,60 +1585,60 @@ void __73__WTWritingToolsController_willBeginWritingToolsSession_requestContexts
 
   if ([(WTWritingToolsController *)self _proofreadingSessionActive])
   {
-    v30 = [MEMORY[0x1E695DF70] array];
-    [(WTWritingToolsController *)self setProofreadingSuggestions:v30];
+    array = [MEMORY[0x1E695DF70] array];
+    [(WTWritingToolsController *)self setProofreadingSuggestions:array];
 
-    v31 = [MEMORY[0x1E695DF90] dictionary];
-    [(WTWritingToolsController *)self setUuidSuggestionMapping:v31];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(WTWritingToolsController *)self setUuidSuggestionMapping:dictionary];
 
-    v32 = [MEMORY[0x1E695DF90] dictionary];
-    [(WTWritingToolsController *)self setContextForSuggestions:v32];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [(WTWritingToolsController *)self setContextForSuggestions:dictionary2];
   }
 
-  v33 = [(WTWritingToolsController *)self analyticsDelegate];
-  v34 = [(WTWritingToolsController *)self session];
-  [v33 didBeginWritingToolsSession:v34 contexts:obj];
+  analyticsDelegate = [(WTWritingToolsController *)self analyticsDelegate];
+  session2 = [(WTWritingToolsController *)self session];
+  [analyticsDelegate didBeginWritingToolsSession:session2 contexts:obj];
 
-  v35 = [(WTWritingToolsController *)self writingToolsDelegate];
-  v36 = [(WTWritingToolsController *)self session];
-  [v35 didBeginWritingToolsSession:v36 contexts:obj];
+  writingToolsDelegate = [(WTWritingToolsController *)self writingToolsDelegate];
+  session3 = [(WTWritingToolsController *)self session];
+  [writingToolsDelegate didBeginWritingToolsSession:session3 contexts:obj];
 }
 
-- (void)writingToolsSession:(id)a3 didReceiveAction:(int64_t)a4
+- (void)writingToolsSession:(id)session didReceiveAction:(int64_t)action
 {
   v17 = *MEMORY[0x1E69E9840];
   v6 = _WTVCLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(WTWritingToolsController *)self session];
-    v8 = [v7 uuid];
+    session = [(WTWritingToolsController *)self session];
+    uuid = [session uuid];
     v13 = 138412546;
-    v14 = v8;
+    v14 = uuid;
     v15 = 2048;
-    v16 = a4;
+    actionCopy = action;
     _os_log_impl(&dword_1D451D000, v6, OS_LOG_TYPE_DEFAULT, "writingToolsSession:didReceiveAction: %@ [action = %ld]", &v13, 0x16u);
   }
 
-  v9 = [(WTWritingToolsController *)self analyticsDelegate];
-  v10 = [(WTWritingToolsController *)self session];
-  [v9 writingToolsSession:v10 didReceiveAction:a4];
+  analyticsDelegate = [(WTWritingToolsController *)self analyticsDelegate];
+  session2 = [(WTWritingToolsController *)self session];
+  [analyticsDelegate writingToolsSession:session2 didReceiveAction:action];
 
-  v11 = [(WTWritingToolsController *)self writingToolsDelegate];
-  v12 = [(WTWritingToolsController *)self session];
-  [v11 writingToolsSession:v12 didReceiveAction:a4];
+  writingToolsDelegate = [(WTWritingToolsController *)self writingToolsDelegate];
+  session3 = [(WTWritingToolsController *)self session];
+  [writingToolsDelegate writingToolsSession:session3 didReceiveAction:action];
 }
 
-- (void)didEndWritingToolsSession:(id)a3 accepted:(BOOL)a4
+- (void)didEndWritingToolsSession:(id)session accepted:(BOOL)accepted
 {
-  v4 = a4;
+  acceptedCopy = accepted;
   v16 = *MEMORY[0x1E69E9840];
   v6 = _WTVCLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(WTWritingToolsController *)self session];
-    v8 = [v7 uuid];
+    session = [(WTWritingToolsController *)self session];
+    uuid = [session uuid];
     *buf = 138412290;
-    v15 = v8;
+    v15 = uuid;
     _os_log_impl(&dword_1D451D000, v6, OS_LOG_TYPE_DEFAULT, "didEndWritingToolsSession: %@", buf, 0xCu);
   }
 
@@ -1650,13 +1650,13 @@ void __73__WTWritingToolsController_willBeginWritingToolsSession_requestContexts
   v13[3] = &unk_1E8480CE0;
   v13[4] = self;
   [(WTWritingToolsController *)self _dismissFullScreenViewControllerWithCompletion:v13];
-  v9 = [(WTWritingToolsController *)self analyticsDelegate];
-  v10 = [(WTWritingToolsController *)self session];
-  [v9 didEndWritingToolsSession:v10 accepted:v4];
+  analyticsDelegate = [(WTWritingToolsController *)self analyticsDelegate];
+  session2 = [(WTWritingToolsController *)self session];
+  [analyticsDelegate didEndWritingToolsSession:session2 accepted:acceptedCopy];
 
-  v11 = [(WTWritingToolsController *)self writingToolsDelegate];
-  v12 = [(WTWritingToolsController *)self session];
-  [v11 didEndWritingToolsSession:v12 accepted:v4];
+  writingToolsDelegate = [(WTWritingToolsController *)self writingToolsDelegate];
+  session3 = [(WTWritingToolsController *)self session];
+  [writingToolsDelegate didEndWritingToolsSession:session3 accepted:acceptedCopy];
 
   [(WTWritingToolsController *)self setRemainingUndoCount:0];
   [(WTWritingToolsController *)self setRemainingRedoCount:0];
@@ -1683,41 +1683,41 @@ void __63__WTWritingToolsController_didEndWritingToolsSession_accepted___block_i
   }
 }
 
-- (void)proofreadingSession:(id)a3 didReceiveSuggestions:(id)a4 processedRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7
+- (void)proofreadingSession:(id)session didReceiveSuggestions:(id)suggestions processedRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished
 {
-  v37 = a7;
-  length = a5.length;
-  location = a5.location;
+  finishedCopy = finished;
+  length = range.length;
+  location = range.location;
   v45 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
+  suggestionsCopy = suggestions;
+  contextCopy = context;
   v12 = _WTVCLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(WTWritingToolsController *)self session];
-    v14 = [v13 uuid];
+    session = [(WTWritingToolsController *)self session];
+    uuid = [session uuid];
     *buf = 138412290;
-    v44 = v14;
+    v44 = uuid;
     _os_log_impl(&dword_1D451D000, v12, OS_LOG_TYPE_DEFAULT, "proofreadingSession:didReceiveSuggestions: %@", buf, 0xCu);
   }
 
-  v15 = [(WTWritingToolsController *)self uuidContextMapping];
-  v16 = [v11 uuid];
+  uuidContextMapping = [(WTWritingToolsController *)self uuidContextMapping];
+  uuid2 = [contextCopy uuid];
 
-  v17 = [v15 objectForKeyedSubscript:v16];
+  v17 = [uuidContextMapping objectForKeyedSubscript:uuid2];
 
-  v18 = [(WTWritingToolsController *)self proofreadingSuggestions];
-  [v18 addObjectsFromArray:v10];
+  proofreadingSuggestions = [(WTWritingToolsController *)self proofreadingSuggestions];
+  [proofreadingSuggestions addObjectsFromArray:suggestionsCopy];
 
-  v19 = [(WTWritingToolsController *)self proofreadCandidateBarView];
-  v20 = [(WTWritingToolsController *)self proofreadingSuggestions];
-  [v19 setSuggestionCount:{objc_msgSend(v20, "count")}];
+  proofreadCandidateBarView = [(WTWritingToolsController *)self proofreadCandidateBarView];
+  proofreadingSuggestions2 = [(WTWritingToolsController *)self proofreadingSuggestions];
+  [proofreadCandidateBarView setSuggestionCount:{objc_msgSend(proofreadingSuggestions2, "count")}];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v21 = v10;
+  v21 = suggestionsCopy;
   v22 = [v21 countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v22)
   {
@@ -1734,14 +1734,14 @@ void __63__WTWritingToolsController_didEndWritingToolsSession_accepted___block_i
         }
 
         v26 = *(*(&v38 + 1) + 8 * v25);
-        v27 = [(WTWritingToolsController *)self uuidSuggestionMapping];
-        v28 = [v26 uuid];
-        [v27 setObject:v26 forKeyedSubscript:v28];
+        uuidSuggestionMapping = [(WTWritingToolsController *)self uuidSuggestionMapping];
+        uuid3 = [v26 uuid];
+        [uuidSuggestionMapping setObject:v26 forKeyedSubscript:uuid3];
 
-        v29 = [v17 uuid];
-        v30 = [(WTWritingToolsController *)self contextForSuggestions];
-        v31 = [v26 uuid];
-        [v30 setObject:v29 forKeyedSubscript:v31];
+        uuid4 = [v17 uuid];
+        contextForSuggestions = [(WTWritingToolsController *)self contextForSuggestions];
+        uuid5 = [v26 uuid];
+        [contextForSuggestions setObject:uuid4 forKeyedSubscript:uuid5];
 
         ++v25;
       }
@@ -1753,118 +1753,118 @@ void __63__WTWritingToolsController_didEndWritingToolsSession_accepted___block_i
     while (v23);
   }
 
-  v32 = [(WTWritingToolsController *)self analyticsDelegate];
-  v33 = [(WTWritingToolsController *)self session];
-  [v32 proofreadingSession:v33 didReceiveSuggestions:v21 processedRange:location inContext:length finished:{v17, v37}];
+  analyticsDelegate = [(WTWritingToolsController *)self analyticsDelegate];
+  session2 = [(WTWritingToolsController *)self session];
+  [analyticsDelegate proofreadingSession:session2 didReceiveSuggestions:v21 processedRange:location inContext:length finished:{v17, finishedCopy}];
 
-  v34 = [(WTWritingToolsController *)self writingToolsDelegate];
-  v35 = [(WTWritingToolsController *)self session];
-  [v34 proofreadingSession:v35 didReceiveSuggestions:v21 processedRange:location inContext:length finished:{v17, v37}];
+  writingToolsDelegate = [(WTWritingToolsController *)self writingToolsDelegate];
+  session3 = [(WTWritingToolsController *)self session];
+  [writingToolsDelegate proofreadingSession:session3 didReceiveSuggestions:v21 processedRange:location inContext:length finished:{v17, finishedCopy}];
 }
 
-- (void)proofreadingSession:(id)a3 didUpdateState:(int64_t)a4 forSuggestionWithUUID:(id)a5 inContext:(id)a6
+- (void)proofreadingSession:(id)session didUpdateState:(int64_t)state forSuggestionWithUUID:(id)d inContext:(id)context
 {
   v37 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a6;
+  dCopy = d;
+  contextCopy = context;
   v11 = _WTVCLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(WTWritingToolsController *)self session];
-    v13 = [v12 uuid];
-    v14 = [(WTWritingToolsController *)self popoverSuggestionUUID];
+    session = [(WTWritingToolsController *)self session];
+    uuid = [session uuid];
+    popoverSuggestionUUID = [(WTWritingToolsController *)self popoverSuggestionUUID];
     *buf = 138413058;
-    v30 = v13;
+    v30 = uuid;
     v31 = 2048;
-    v32 = a4;
+    stateCopy = state;
     v33 = 2112;
-    v34 = v9;
+    v34 = dCopy;
     v35 = 2112;
-    v36 = v14;
+    v36 = popoverSuggestionUUID;
     _os_log_impl(&dword_1D451D000, v11, OS_LOG_TYPE_DEFAULT, "proofreadingSession: %@ didUpdateState: %ld forSuggestionUUID: %@ (current suggestion: %@)", buf, 0x2Au);
   }
 
-  v15 = [(WTWritingToolsController *)self uuidContextMapping];
-  v16 = [v10 uuid];
+  uuidContextMapping = [(WTWritingToolsController *)self uuidContextMapping];
+  uuid2 = [contextCopy uuid];
 
-  v17 = [v15 objectForKeyedSubscript:v16];
+  v17 = [uuidContextMapping objectForKeyedSubscript:uuid2];
 
-  v18 = [(WTWritingToolsController *)self uuidSuggestionMapping];
-  v19 = [v18 objectForKeyedSubscript:v9];
-  [v19 setState:a4];
+  uuidSuggestionMapping = [(WTWritingToolsController *)self uuidSuggestionMapping];
+  v19 = [uuidSuggestionMapping objectForKeyedSubscript:dCopy];
+  [v19 setState:state];
 
-  v20 = [(WTWritingToolsController *)self popoverSuggestionUUID];
-  v21 = [v9 isEqual:v20];
+  popoverSuggestionUUID2 = [(WTWritingToolsController *)self popoverSuggestionUUID];
+  v21 = [dCopy isEqual:popoverSuggestionUUID2];
 
-  if (a4 != 1 && v21)
+  if (state != 1 && v21)
   {
-    v22 = [(WTWritingToolsController *)self suggestionQueue];
-    dispatch_assert_queue_not_V2(v22);
+    suggestionQueue = [(WTWritingToolsController *)self suggestionQueue];
+    dispatch_assert_queue_not_V2(suggestionQueue);
 
-    v23 = [(WTWritingToolsController *)self suggestionQueue];
+    suggestionQueue2 = [(WTWritingToolsController *)self suggestionQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __95__WTWritingToolsController_proofreadingSession_didUpdateState_forSuggestionWithUUID_inContext___block_invoke;
     block[3] = &unk_1E8480BF8;
     block[4] = self;
-    dispatch_sync(v23, block);
+    dispatch_sync(suggestionQueue2, block);
 
     [(WTWritingToolsController *)self _updateSuggestionPopover];
   }
 
-  v24 = [(WTWritingToolsController *)self analyticsDelegate];
-  v25 = [(WTWritingToolsController *)self session];
-  [v24 proofreadingSession:v25 didUpdateState:a4 forSuggestionWithUUID:v9 inContext:v17];
+  analyticsDelegate = [(WTWritingToolsController *)self analyticsDelegate];
+  session2 = [(WTWritingToolsController *)self session];
+  [analyticsDelegate proofreadingSession:session2 didUpdateState:state forSuggestionWithUUID:dCopy inContext:v17];
 
-  v26 = [(WTWritingToolsController *)self writingToolsDelegate];
-  v27 = [(WTWritingToolsController *)self session];
-  [v26 proofreadingSession:v27 didUpdateState:a4 forSuggestionWithUUID:v9 inContext:v17];
+  writingToolsDelegate = [(WTWritingToolsController *)self writingToolsDelegate];
+  session3 = [(WTWritingToolsController *)self session];
+  [writingToolsDelegate proofreadingSession:session3 didUpdateState:state forSuggestionWithUUID:dCopy inContext:v17];
 }
 
-- (void)compositionSession:(id)a3 didReceiveText:(id)a4 replacementRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7
+- (void)compositionSession:(id)session didReceiveText:(id)text replacementRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished
 {
-  v7 = a7;
-  length = a5.length;
-  location = a5.location;
+  finishedCopy = finished;
+  length = range.length;
+  location = range.location;
   v35 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a6;
+  textCopy = text;
+  contextCopy = context;
   v14 = _WTVCLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     [(WTWritingToolsController *)self session];
-    v15 = v28 = v7;
-    v16 = [v15 uuid];
-    v17 = [v12 length];
+    v15 = v28 = finishedCopy;
+    uuid = [v15 uuid];
+    v17 = [textCopy length];
     v36.location = location;
     v36.length = length;
     v18 = NSStringFromRange(v36);
     *buf = 138412802;
-    v30 = v16;
+    v30 = uuid;
     v31 = 2048;
     v32 = v17;
     v33 = 2112;
     v34 = v18;
     _os_log_impl(&dword_1D451D000, v14, OS_LOG_TYPE_DEFAULT, "compositionSession: [%@], didReceiveText: [length = %lu], range: %@", buf, 0x20u);
 
-    v7 = v28;
+    finishedCopy = v28;
   }
 
-  v19 = [(WTWritingToolsController *)self uuidContextMapping];
-  v20 = [v13 uuid];
+  uuidContextMapping = [(WTWritingToolsController *)self uuidContextMapping];
+  uuid2 = [contextCopy uuid];
 
-  v21 = [v19 objectForKeyedSubscript:v20];
+  v21 = [uuidContextMapping objectForKeyedSubscript:uuid2];
 
-  v22 = [(WTWritingToolsController *)self attributedStringController];
-  v23 = [v22 reconstitutedAttributedStringForContext:v21 digestedAttributedString:v12];
+  attributedStringController = [(WTWritingToolsController *)self attributedStringController];
+  v23 = [attributedStringController reconstitutedAttributedStringForContext:v21 digestedAttributedString:textCopy];
 
-  v24 = [(WTWritingToolsController *)self analyticsDelegate];
-  v25 = [(WTWritingToolsController *)self session];
-  [v24 compositionSession:v25 didReceiveText:v23 replacementRange:location inContext:length finished:{v21, v7}];
+  analyticsDelegate = [(WTWritingToolsController *)self analyticsDelegate];
+  session = [(WTWritingToolsController *)self session];
+  [analyticsDelegate compositionSession:session didReceiveText:v23 replacementRange:location inContext:length finished:{v21, finishedCopy}];
 
-  v26 = [(WTWritingToolsController *)self writingToolsDelegate];
-  v27 = [(WTWritingToolsController *)self session];
-  [v26 compositionSession:v27 didReceiveText:v23 replacementRange:location inContext:length finished:{v21, v7}];
+  writingToolsDelegate = [(WTWritingToolsController *)self writingToolsDelegate];
+  session2 = [(WTWritingToolsController *)self session];
+  [writingToolsDelegate compositionSession:session2 didReceiveText:v23 replacementRange:location inContext:length finished:{v21, finishedCopy}];
 
   if ([(WTWritingToolsController *)self _sessionSupportsPopoverAdjustment])
   {
@@ -1872,65 +1872,65 @@ void __63__WTWritingToolsController_didEndWritingToolsSession_accepted___block_i
     [(WTWritingToolsController *)self updateWritingToolsPopoverSuppression];
   }
 
-  if (v7)
+  if (finishedCopy)
   {
     [(WTWritingToolsController *)self setRemainingUndoCount:[(WTWritingToolsController *)self remainingUndoCount]+ 1];
     [(WTWritingToolsController *)self setRemainingRedoCount:0];
   }
 }
 
-- (void)showSmartReplyQuestionnaireWithRect:(CGRect)a3
+- (void)showSmartReplyQuestionnaireWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v24 = *MEMORY[0x1E69E9840];
-  v8 = [(WTWritingToolsController *)self _inputDashboardViewController];
+  _inputDashboardViewController = [(WTWritingToolsController *)self _inputDashboardViewController];
   v9 = _WTVCLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(WTWritingToolsController *)self session];
-    v11 = [v10 uuid];
+    session = [(WTWritingToolsController *)self session];
+    uuid = [session uuid];
     v12 = MEMORY[0x1E696AD98];
-    v13 = [(WTWritingToolsController *)self session];
-    v14 = [v12 numberWithInteger:{objc_msgSend(v13, "type")}];
+    session2 = [(WTWritingToolsController *)self session];
+    v14 = [v12 numberWithInteger:{objc_msgSend(session2, "type")}];
     v25.origin.x = x;
     v25.origin.y = y;
     v25.size.width = width;
     v25.size.height = height;
     v15 = NSStringFromCGRect(v25);
     v16 = 138413058;
-    v17 = v11;
+    v17 = uuid;
     v18 = 2112;
     v19 = v14;
     v20 = 2112;
     v21 = v15;
     v22 = 2112;
-    v23 = v8;
+    v23 = _inputDashboardViewController;
     _os_log_impl(&dword_1D451D000, v9, OS_LOG_TYPE_DEFAULT, "try -showSmartReplyQuestionnaire (sessionUUID: %@, sessionType: %@, rect: %@, inputDashboardVC: %@", &v16, 0x2Au);
   }
 
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (_inputDashboardViewController && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v8 showSmartReplyQuestionnaireWithRect:{x, y, width, height}];
+    [_inputDashboardViewController showSmartReplyQuestionnaireWithRect:{x, y, width, height}];
   }
 }
 
 - (void)undo
 {
-  v3 = [(WTWritingToolsController *)self sourceResponder];
-  v4 = [v3 undoManager];
-  v5 = [v4 canUndo];
+  sourceResponder = [(WTWritingToolsController *)self sourceResponder];
+  undoManager = [sourceResponder undoManager];
+  canUndo = [undoManager canUndo];
 
-  if (v5)
+  if (canUndo)
   {
-    v6 = [(WTWritingToolsController *)self sourceResponder];
-    v7 = [v6 undoManager];
-    [v7 undo];
+    sourceResponder2 = [(WTWritingToolsController *)self sourceResponder];
+    undoManager2 = [sourceResponder2 undoManager];
+    [undoManager2 undo];
 
-    v8 = [(WTWritingToolsController *)self analyticsDelegate];
-    [v8 undo];
+    analyticsDelegate = [(WTWritingToolsController *)self analyticsDelegate];
+    [analyticsDelegate undo];
 
     if ([(WTWritingToolsController *)self remainingUndoCount])
     {
@@ -1944,18 +1944,18 @@ void __63__WTWritingToolsController_didEndWritingToolsSession_accepted___block_i
 
 - (void)redo
 {
-  v3 = [(WTWritingToolsController *)self sourceResponder];
-  v4 = [v3 undoManager];
-  v5 = [v4 canRedo];
+  sourceResponder = [(WTWritingToolsController *)self sourceResponder];
+  undoManager = [sourceResponder undoManager];
+  canRedo = [undoManager canRedo];
 
-  if (v5)
+  if (canRedo)
   {
-    v6 = [(WTWritingToolsController *)self sourceResponder];
-    v7 = [v6 undoManager];
-    [v7 redo];
+    sourceResponder2 = [(WTWritingToolsController *)self sourceResponder];
+    undoManager2 = [sourceResponder2 undoManager];
+    [undoManager2 redo];
 
-    v8 = [(WTWritingToolsController *)self analyticsDelegate];
-    [v8 redo];
+    analyticsDelegate = [(WTWritingToolsController *)self analyticsDelegate];
+    [analyticsDelegate redo];
 
     [(WTWritingToolsController *)self setRemainingUndoCount:[(WTWritingToolsController *)self remainingUndoCount]+ 1];
     if ([(WTWritingToolsController *)self remainingRedoCount])
@@ -1970,35 +1970,35 @@ void __63__WTWritingToolsController_didEndWritingToolsSession_accepted___block_i
 - (void)_sendUpdatedUndoRedoCounts
 {
   [(WTWritingToolsController *)self setRemainingUndoCount:[(WTWritingToolsController *)self remainingUndoCount]];
-  v3 = [(WTWritingToolsController *)self remainingRedoCount];
+  remainingRedoCount = [(WTWritingToolsController *)self remainingRedoCount];
 
-  [(WTWritingToolsController *)self setRemainingRedoCount:v3];
+  [(WTWritingToolsController *)self setRemainingRedoCount:remainingRedoCount];
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   v5 = _WTVCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 uuid];
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "type")}];
-    v8 = [(WTSession *)self->_session uuid];
+    uuid = [sessionCopy uuid];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(sessionCopy, "type")}];
+    uuid2 = [(WTSession *)self->_session uuid];
     v11 = 138412802;
-    v12 = v6;
+    v12 = uuid;
     v13 = 2112;
     v14 = v7;
     v15 = 2112;
-    v16 = v8;
+    v16 = uuid2;
     _os_log_impl(&dword_1D451D000, v5, OS_LOG_TYPE_DEFAULT, "setSession: %@, type: %@, oldSession: %@", &v11, 0x20u);
   }
 
   session = self->_session;
-  self->_session = v4;
+  self->_session = sessionCopy;
 
   [(WTWritingToolsController *)self updateKBSuppression];
-  if (v4)
+  if (sessionCopy)
   {
     [(WTWritingToolsController *)self setEndingWritingToolsSession:0];
     [(WTWritingToolsController *)self updateSourceView];
@@ -2015,30 +2015,30 @@ void __63__WTWritingToolsController_didEndWritingToolsSession_accepted___block_i
   }
 }
 
-- (id)itemProviderForAttributedText:(id)a3
+- (id)itemProviderForAttributedText:(id)text
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  textCopy = text;
   v4 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v5 = [v3 length];
+  v5 = [textCopy length];
   v6 = *MEMORY[0x1E69DB628];
   v23 = *MEMORY[0x1E69DB628];
   v24[0] = *MEMORY[0x1E69DB698];
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-  v8 = [v3 dataFromRange:0 documentAttributes:v5 error:{v7, 0}];
+  v8 = [textCopy dataFromRange:0 documentAttributes:v5 error:{v7, 0}];
 
   if (v8)
   {
-    v9 = [*MEMORY[0x1E6982DC0] identifier];
+    identifier = [*MEMORY[0x1E6982DC0] identifier];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __58__WTWritingToolsController_itemProviderForAttributedText___block_invoke;
     v19[3] = &unk_1E8480D80;
     v20 = v8;
-    [v4 registerDataRepresentationForTypeIdentifier:v9 visibility:0 loadHandler:v19];
+    [v4 registerDataRepresentationForTypeIdentifier:identifier visibility:0 loadHandler:v19];
   }
 
-  v10 = [v3 length];
+  v10 = [textCopy length];
   v11 = *MEMORY[0x1E69DB690];
   v12 = *MEMORY[0x1E69DB618];
   v21[0] = v6;
@@ -2046,59 +2046,59 @@ void __63__WTWritingToolsController_didEndWritingToolsSession_accepted___block_i
   v22[0] = v11;
   v22[1] = &unk_1F4FCB650;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
-  v14 = [v3 dataFromRange:0 documentAttributes:v10 error:{v13, 0}];
+  v14 = [textCopy dataFromRange:0 documentAttributes:v10 error:{v13, 0}];
 
   if (v14)
   {
-    v15 = [*MEMORY[0x1E6983060] identifier];
+    identifier2 = [*MEMORY[0x1E6983060] identifier];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __58__WTWritingToolsController_itemProviderForAttributedText___block_invoke_571;
     v17[3] = &unk_1E8480D80;
     v18 = v14;
-    [v4 registerDataRepresentationForTypeIdentifier:v15 visibility:0 loadHandler:v17];
+    [v4 registerDataRepresentationForTypeIdentifier:identifier2 visibility:0 loadHandler:v17];
   }
 
   return v4;
 }
 
-- (id)itemProviderForPlainText:(id)a3
+- (id)itemProviderForPlainText:(id)text
 {
   v3 = MEMORY[0x1E696ACA0];
-  v4 = a3;
+  textCopy = text;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 dataUsingEncoding:4];
+  v6 = [textCopy dataUsingEncoding:4];
 
   if (v6)
   {
-    v7 = [*MEMORY[0x1E6983060] identifier];
+    identifier = [*MEMORY[0x1E6983060] identifier];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __53__WTWritingToolsController_itemProviderForPlainText___block_invoke;
     v9[3] = &unk_1E8480D80;
     v10 = v6;
-    [v5 registerDataRepresentationForTypeIdentifier:v7 visibility:0 loadHandler:v9];
+    [v5 registerDataRepresentationForTypeIdentifier:identifier visibility:0 loadHandler:v9];
   }
 
   return v5;
 }
 
-- (void)replaceSelectionWithText:(id)a3
+- (void)replaceSelectionWithText:(id)text
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WTWritingToolsController *)self attributedStringController];
-  v6 = [v5 reconstitutedAttributedStringForStitchedContext:v4];
+  textCopy = text;
+  attributedStringController = [(WTWritingToolsController *)self attributedStringController];
+  v6 = [attributedStringController reconstitutedAttributedStringForStitchedContext:textCopy];
 
-  v7 = [(WTWritingToolsController *)self sourceTextInput];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  sourceTextInput = [(WTWritingToolsController *)self sourceTextInput];
+  LOBYTE(attributedStringController) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (attributedStringController)
   {
-    v8 = [(WTWritingToolsController *)self sourceTextInput];
-    v9 = [v8 allowedWritingToolsResultOptions];
+    sourceTextInput2 = [(WTWritingToolsController *)self sourceTextInput];
+    allowedWritingToolsResultOptions = [sourceTextInput2 allowedWritingToolsResultOptions];
 
-    v10 = (v9 & 0xF) == 1;
+    v10 = (allowedWritingToolsResultOptions & 0xF) == 1;
   }
 
   else
@@ -2106,22 +2106,22 @@ void __63__WTWritingToolsController_didEndWritingToolsSession_accepted___block_i
     v10 = 0;
   }
 
-  v11 = [(WTWritingToolsController *)self beTextInput];
-  if (v11)
+  beTextInput = [(WTWritingToolsController *)self beTextInput];
+  if (beTextInput)
   {
     v12 = 1;
   }
 
   else
   {
-    v13 = [(WTWritingToolsController *)self sourceTextInput];
-    v12 = [v13 conformsToProtocol:&unk_1F4FEE360];
+    sourceTextInput3 = [(WTWritingToolsController *)self sourceTextInput];
+    v12 = [sourceTextInput3 conformsToProtocol:&unk_1F4FEE360];
   }
 
   if (v10)
   {
-    v14 = [v6 string];
-    v15 = [(WTWritingToolsController *)self itemProviderForPlainText:v14];
+    string = [v6 string];
+    v15 = [(WTWritingToolsController *)self itemProviderForPlainText:string];
 
     if (v12)
     {
@@ -2138,75 +2138,75 @@ void __63__WTWritingToolsController_didEndWritingToolsSession_accepted___block_i
     }
   }
 
-  v16 = [(WTWritingToolsController *)self sourceResponder];
+  sourceResponder = [(WTWritingToolsController *)self sourceResponder];
   v26[0] = v15;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-  v18 = [v16 canPasteItemProviders:v17];
+  v18 = [sourceResponder canPasteItemProviders:v17];
 
   if (v18)
   {
-    v19 = [(WTWritingToolsController *)self sourceResponder];
+    sourceResponder2 = [(WTWritingToolsController *)self sourceResponder];
     v25 = v15;
-    v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
-    [v19 pasteItemProviders:v20];
+    sourceTextInput5 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
+    [sourceResponder2 pasteItemProviders:sourceTextInput5];
     goto LABEL_20;
   }
 
 LABEL_13:
-  v21 = [(WTWritingToolsController *)self sourceTextInput];
-  v19 = [v21 selectedTextRange];
+  sourceTextInput4 = [(WTWritingToolsController *)self sourceTextInput];
+  sourceResponder2 = [sourceTextInput4 selectedTextRange];
 
-  v20 = [(WTWritingToolsController *)self sourceTextInput];
-  v22 = [(WTWritingToolsController *)self beTextInput];
+  sourceTextInput5 = [(WTWritingToolsController *)self sourceTextInput];
+  beTextInput2 = [(WTWritingToolsController *)self beTextInput];
 
-  if (v22)
+  if (beTextInput2)
   {
-    v23 = [(WTWritingToolsController *)self beTextInput];
-    v24 = [v6 string];
-    [v23 insertText:v24];
+    beTextInput3 = [(WTWritingToolsController *)self beTextInput];
+    string2 = [v6 string];
+    [beTextInput3 insertText:string2];
   }
 
-  else if ([v20 conformsToProtocol:&unk_1F4FEE360])
+  else if ([sourceTextInput5 conformsToProtocol:&unk_1F4FEE360])
   {
-    v23 = [v6 string];
-    [v20 insertText:v23];
+    beTextInput3 = [v6 string];
+    [sourceTextInput5 insertText:beTextInput3];
   }
 
   else
   {
     if (!(v10 | ((objc_opt_respondsToSelector() & 1) == 0)))
     {
-      [v20 replaceRange:v19 withAttributedText:v6];
+      [sourceTextInput5 replaceRange:sourceResponder2 withAttributedText:v6];
       goto LABEL_20;
     }
 
-    v23 = [v6 string];
-    [v20 replaceRange:v19 withText:v23];
+    beTextInput3 = [v6 string];
+    [sourceTextInput5 replaceRange:sourceResponder2 withText:beTextInput3];
   }
 
 LABEL_20:
 }
 
-- (void)copyText:(id)a3
+- (void)copyText:(id)text
 {
-  v4 = a3;
-  v5 = [(WTWritingToolsController *)self attributedStringController];
-  v6 = [v5 reconstitutedAttributedStringForStitchedContext:v4];
+  textCopy = text;
+  attributedStringController = [(WTWritingToolsController *)self attributedStringController];
+  v6 = [attributedStringController reconstitutedAttributedStringForStitchedContext:textCopy];
 
-  v7 = [MEMORY[0x1E69DCD50] generalPasteboard];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
   v8 = MEMORY[0x1E69DCD50];
-  v9 = [(WTWritingToolsController *)self sourceResponder];
-  v10 = [v9 _dataOwnerForCopy];
+  sourceResponder = [(WTWritingToolsController *)self sourceResponder];
+  _dataOwnerForCopy = [sourceResponder _dataOwnerForCopy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __37__WTWritingToolsController_copyText___block_invoke;
   v13[3] = &unk_1E8480DA8;
-  v14 = v7;
-  v15 = self;
+  v14 = generalPasteboard;
+  selfCopy = self;
   v16 = v6;
   v11 = v6;
-  v12 = v7;
-  [v8 _performAsDataOwner:v10 block:v13];
+  v12 = generalPasteboard;
+  [v8 _performAsDataOwner:_dataOwnerForCopy block:v13];
 }
 
 void __37__WTWritingToolsController_copyText___block_invoke(uint64_t a1)
@@ -2220,32 +2220,32 @@ void __37__WTWritingToolsController_copyText___block_invoke(uint64_t a1)
 
 - (void)beginTextPlaceholder
 {
-  v3 = [(WTWritingToolsController *)self sourceTextInput];
-  v2 = [_WTTextPlaceholderController placeholderControllerForDelegate:v3];
+  sourceTextInput = [(WTWritingToolsController *)self sourceTextInput];
+  v2 = [_WTTextPlaceholderController placeholderControllerForDelegate:sourceTextInput];
   [v2 setPattern:0];
   [v2 beginPlaceholder];
 }
 
-- (void)endTextPlaceholderAndWillInsertText:(BOOL)a3 completion:(id)a4
+- (void)endTextPlaceholderAndWillInsertText:(BOOL)text completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(WTWritingToolsController *)self sourceTextInput];
-  v8 = [_WTTextPlaceholderController placeholderControllerForDelegate:v7];
+  textCopy = text;
+  completionCopy = completion;
+  sourceTextInput = [(WTWritingToolsController *)self sourceTextInput];
+  v8 = [_WTTextPlaceholderController placeholderControllerForDelegate:sourceTextInput];
   if (v8)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __75__WTWritingToolsController_endTextPlaceholderAndWillInsertText_completion___block_invoke;
     v9[3] = &unk_1E8480DD0;
-    v10 = v7;
-    v11 = v6;
-    [v8 endPlaceholderAndWillInsertText:v4 completion:v9];
+    v10 = sourceTextInput;
+    v11 = completionCopy;
+    [v8 endPlaceholderAndWillInsertText:textCopy completion:v9];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -2263,76 +2263,76 @@ uint64_t __75__WTWritingToolsController_endTextPlaceholderAndWillInsertText_comp
   return result;
 }
 
-- (void)proofreadingSessionWithUUID:(id)a3 updateState:(int64_t)a4 forSuggestionWithUUID:(id)a5
+- (void)proofreadingSessionWithUUID:(id)d updateState:(int64_t)state forSuggestionWithUUID:(id)iD
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v10 = _WTVCLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:state];
     v13 = 138412802;
-    v14 = v8;
+    v14 = dCopy;
     v15 = 2112;
     v16 = v11;
     v17 = 2112;
-    v18 = v9;
+    v18 = iDCopy;
     _os_log_impl(&dword_1D451D000, v10, OS_LOG_TYPE_DEFAULT, "proofreadingSessionWithUUID: %@, updateState: %@, forSuggestionWithUUID: %@", &v13, 0x20u);
   }
 
-  v12 = [(WTWritingToolsController *)self _textViewDelegate];
-  [v12 proofreadingSessionWithUUID:v8 updateState:a4 forSuggestionWithUUID:v9];
+  _textViewDelegate = [(WTWritingToolsController *)self _textViewDelegate];
+  [_textViewDelegate proofreadingSessionWithUUID:dCopy updateState:state forSuggestionWithUUID:iDCopy];
 }
 
-- (void)proofreadingSessionWithUUID:(id)a3 showDetailsForSuggestionWithUUID:(id)a4 relativeToRect:(CGRect)a5 inView:(id)a6
+- (void)proofreadingSessionWithUUID:(id)d showDetailsForSuggestionWithUUID:(id)iD relativeToRect:(CGRect)rect inView:(id)view
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v35 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a6;
+  iDCopy = iD;
+  viewCopy = view;
   v14 = _WTVCLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(WTWritingToolsController *)self session];
-    v16 = [v15 uuid];
+    session = [(WTWritingToolsController *)self session];
+    uuid = [session uuid];
     v36.origin.x = x;
     v36.origin.y = y;
     v36.size.width = width;
     v36.size.height = height;
     v17 = NSStringFromCGRect(v36);
     *buf = 138413058;
-    v28 = v16;
+    v28 = uuid;
     v29 = 2112;
-    v30 = v12;
+    v30 = iDCopy;
     v31 = 2112;
     v32 = v17;
     v33 = 2112;
-    v34 = v13;
+    v34 = viewCopy;
     _os_log_impl(&dword_1D451D000, v14, OS_LOG_TYPE_DEFAULT, "session: %@, showDetailsForSuggestion: %@, relativeToRect: %@, inView: %@", buf, 0x2Au);
   }
 
   if ([(WTWritingToolsController *)self _wantsUCBUI]|| [(WTWritingToolsController *)self suppressSheetForKeyboardEditing]|| [(WTWritingToolsController *)self shouldHostInAppSizedContainerView])
   {
-    v18 = [(WTWritingToolsController *)self suggestionQueue];
-    dispatch_assert_queue_not_V2(v18);
+    suggestionQueue = [(WTWritingToolsController *)self suggestionQueue];
+    dispatch_assert_queue_not_V2(suggestionQueue);
 
-    v19 = [(WTWritingToolsController *)self suggestionQueue];
+    suggestionQueue2 = [(WTWritingToolsController *)self suggestionQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __111__WTWritingToolsController_proofreadingSessionWithUUID_showDetailsForSuggestionWithUUID_relativeToRect_inView___block_invoke;
     block[3] = &unk_1E8480DF8;
     block[4] = self;
-    v21 = v12;
+    v21 = iDCopy;
     v23 = x;
     v24 = y;
     v25 = width;
     v26 = height;
-    v22 = v13;
-    dispatch_sync(v19, block);
+    v22 = viewCopy;
+    dispatch_sync(suggestionQueue2, block);
 
     [(WTWritingToolsController *)self _updateSuggestionPopover];
   }
@@ -2348,74 +2348,74 @@ uint64_t __111__WTWritingToolsController_proofreadingSessionWithUUID_showDetails
   return [v3 setSuggestionPopoverSourceView:v2];
 }
 
-- (void)textSystemWillBeginEditingDuringSessionWithUUID:(id)a3
+- (void)textSystemWillBeginEditingDuringSessionWithUUID:(id)d
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = _WTVCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = dCopy;
     _os_log_impl(&dword_1D451D000, v5, OS_LOG_TYPE_DEFAULT, "textSystemWillBeginEditingDuringSessionWithUUID: %@", &v8, 0xCu);
   }
 
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v7 != 1 || ([MEMORY[0x1E69DCBB8] isInHardwareKeyboardMode] & 1) == 0)
+  if (userInterfaceIdiom != 1 || ([MEMORY[0x1E69DCBB8] isInHardwareKeyboardMode] & 1) == 0)
   {
     [(WTWritingToolsController *)self setSuppressSheetForKeyboardEditing:1];
     [(WTWritingToolsController *)self setMinimizedIntoAssistant:0];
   }
 }
 
-- (void)setRemainingUndoCount:(unint64_t)a3
+- (void)setRemainingUndoCount:(unint64_t)count
 {
-  self->_remainingUndoCount = a3;
-  v4 = [(WTWritingToolsController *)self _textViewDelegate];
+  self->_remainingUndoCount = count;
+  _textViewDelegate = [(WTWritingToolsController *)self _textViewDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setRemainingUndoCount:a3];
+    [_textViewDelegate setRemainingUndoCount:count];
   }
 }
 
-- (void)setRemainingRedoCount:(unint64_t)a3
+- (void)setRemainingRedoCount:(unint64_t)count
 {
-  self->_remainingRedoCount = a3;
-  v4 = [(WTWritingToolsController *)self _textViewDelegate];
+  self->_remainingRedoCount = count;
+  _textViewDelegate = [(WTWritingToolsController *)self _textViewDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setRemainingRedoCount:a3];
+    [_textViewDelegate setRemainingRedoCount:count];
   }
 }
 
-- (void)remoteKeyboardChanged:(id)a3
+- (void)remoteKeyboardChanged:(id)changed
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 bundleIdentifier];
-  v15[0] = v6;
+  changedCopy = changed;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v15[0] = bundleIdentifier;
   v15[1] = @"com.apple.Feedback.DraftingExtension";
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
-  v8 = [v4 sourceBundleIdentifier];
-  v9 = [v7 containsObject:v8];
+  sourceBundleIdentifier = [changedCopy sourceBundleIdentifier];
+  v9 = [v7 containsObject:sourceBundleIdentifier];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [v4 sourceBundleIdentifier];
-    v11 = [v10 isEqualToString:@"com.apple.WritingToolsUIService"];
+    sourceBundleIdentifier2 = [changedCopy sourceBundleIdentifier];
+    v11 = [sourceBundleIdentifier2 isEqualToString:@"com.apple.WritingToolsUIService"];
 
-    if (v11 || ([v4 hostBundleIdentifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"com.apple.WritingToolsUIService"), v12, v13))
+    if (v11 || ([changedCopy hostBundleIdentifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"com.apple.WritingToolsUIService"), v12, v13))
     {
-      v14 = [(WTWritingToolsController *)self mainPopoverViewController];
-      [v14 repositionWithKeyboardChangedInformation:v4];
+      mainPopoverViewController = [(WTWritingToolsController *)self mainPopoverViewController];
+      [mainPopoverViewController repositionWithKeyboardChangedInformation:changedCopy];
     }
 
     else
     {
-      -[WTWritingToolsController setSuppressWritingToolsForRemoteKeyboard:](self, "setSuppressWritingToolsForRemoteKeyboard:", [v4 keyboardOnScreen]);
+      -[WTWritingToolsController setSuppressWritingToolsForRemoteKeyboard:](self, "setSuppressWritingToolsForRemoteKeyboard:", [changedCopy keyboardOnScreen]);
     }
   }
 }
@@ -2423,11 +2423,11 @@ uint64_t __111__WTWritingToolsController_proofreadingSessionWithUUID_showDetails
 - (void)updateKBSuppression
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v5 = [(WTWritingToolsController *)self sourceResponderViewController];
-  v6 = [v5 presentedViewController];
+  sourceResponderViewController = [(WTWritingToolsController *)self sourceResponderViewController];
+  presentedViewController = [sourceResponderViewController presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2436,8 +2436,8 @@ uint64_t __111__WTWritingToolsController_proofreadingSessionWithUUID_showDetails
 
   else
   {
-    v8 = [(WTWritingToolsController *)self pendingError];
-    v7 = v8 != 0;
+    pendingError = [(WTWritingToolsController *)self pendingError];
+    v7 = pendingError != 0;
   }
 
   v9 = [(WTWritingToolsController *)self _wantsUCBUI]& !v7;
@@ -2448,8 +2448,8 @@ uint64_t __111__WTWritingToolsController_proofreadingSessionWithUUID_showDetails
 
   else
   {
-    v11 = [(WTWritingToolsController *)self mainPopoverViewController];
-    if (v11 || [(WTWritingToolsController *)self isPopoverTemporarilyDismissed]&& v4 == 1 && (_os_feature_enabled_impl() & 1) != 0)
+    mainPopoverViewController = [(WTWritingToolsController *)self mainPopoverViewController];
+    if (mainPopoverViewController || [(WTWritingToolsController *)self isPopoverTemporarilyDismissed]&& userInterfaceIdiom == 1 && (_os_feature_enabled_impl() & 1) != 0)
     {
       v10 = 1;
     }
@@ -2465,14 +2465,14 @@ uint64_t __111__WTWritingToolsController_proofreadingSessionWithUUID_showDetails
   {
     v13 = [MEMORY[0x1E696AD98] numberWithBool:v10 & 1];
     v14 = [MEMORY[0x1E696AD98] numberWithBool:v9];
-    v15 = [(WTWritingToolsController *)self mainPopoverViewController];
+    mainPopoverViewController2 = [(WTWritingToolsController *)self mainPopoverViewController];
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[WTWritingToolsController shouldHostInAppSizedContainerView](self, "shouldHostInAppSizedContainerView")}];
     v18 = 138413314;
     v19 = v13;
     v20 = 2112;
     v21 = v14;
     v22 = 2112;
-    v23 = v15;
+    v23 = mainPopoverViewController2;
     v24 = 2112;
     v25 = v16;
     v26 = 1024;
@@ -2480,8 +2480,8 @@ uint64_t __111__WTWritingToolsController_proofreadingSessionWithUUID_showDetails
     _os_log_impl(&dword_1D451D000, v12, OS_LOG_TYPE_DEFAULT, "updateKBSuppression shouldSuppress: %@, shouldSuppressForUCBUI: %@, sheet/popover: %@, appSizedContainerView %@, error: %d", &v18, 0x30u);
   }
 
-  v17 = [(WTWritingToolsController *)self sourceResponder];
-  [v17 _setWritingToolsWantsKeyboardSuppression:v10 & 1 suppressAssistant:{-[WTWritingToolsController _wantsUCBUI](self, "_wantsUCBUI") ^ 1}];
+  sourceResponder = [(WTWritingToolsController *)self sourceResponder];
+  [sourceResponder _setWritingToolsWantsKeyboardSuppression:v10 & 1 suppressAssistant:{-[WTWritingToolsController _wantsUCBUI](self, "_wantsUCBUI") ^ 1}];
 }
 
 - (void)updateSourceView
@@ -2501,9 +2501,9 @@ uint64_t __111__WTWritingToolsController_proofreadingSessionWithUUID_showDetails
 
     if ([(WTWritingToolsController *)self shouldHostInAppSizedContainerView])
     {
-      v4 = [(WTWritingToolsController *)self mainPopoverViewController];
+      mainPopoverViewController = [(WTWritingToolsController *)self mainPopoverViewController];
 
-      if (v4)
+      if (mainPopoverViewController)
       {
         objc_initWeak(&buf, self);
         v7[0] = MEMORY[0x1E69E9820];
@@ -2526,8 +2526,8 @@ uint64_t __111__WTWritingToolsController_proofreadingSessionWithUUID_showDetails
     else if ([(WTWritingToolsController *)self minimizedIntoUCB])
     {
       [(WTWritingToolsController *)self updateWritingToolsPopoverSuppression];
-      v5 = [(WTWritingToolsController *)self mainPopoverViewController];
-      v6 = v5 == 0;
+      mainPopoverViewController2 = [(WTWritingToolsController *)self mainPopoverViewController];
+      v6 = mainPopoverViewController2 == 0;
 
       if (v6)
       {
@@ -2598,27 +2598,27 @@ LABEL_11:
 - (void)updateInputDashboardViewController
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [(WTWritingToolsController *)self sourceResponder];
-  v4 = [(WTWritingToolsController *)self _wantsUCBUI];
-  v5 = [(WTWritingToolsController *)self minimizedIntoAssistant];
+  sourceResponder = [(WTWritingToolsController *)self sourceResponder];
+  _wantsUCBUI = [(WTWritingToolsController *)self _wantsUCBUI];
+  minimizedIntoAssistant = [(WTWritingToolsController *)self minimizedIntoAssistant];
   v6 = _WTVCLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    [MEMORY[0x1E696AD98] numberWithBool:v4];
-    v4 = v19 = v4;
+    [MEMORY[0x1E696AD98] numberWithBool:_wantsUCBUI];
+    _wantsUCBUI = v19 = _wantsUCBUI;
     v7 = [MEMORY[0x1E696AD98] numberWithBool:0];
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:v5];
-    v20 = v5;
-    v5 = [(WTWritingToolsController *)self requestedTool];
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:minimizedIntoAssistant];
+    v20 = minimizedIntoAssistant;
+    minimizedIntoAssistant = [(WTWritingToolsController *)self requestedTool];
     v9 = MEMORY[0x1E696AD98];
-    v10 = [(WTWritingToolsController *)self session];
-    v11 = [v9 numberWithInteger:{objc_msgSend(v10, "compositionSessionType")}];
-    v12 = [v3 _writingToolsInputDashboardViewController];
+    session = [(WTWritingToolsController *)self session];
+    v11 = [v9 numberWithInteger:{objc_msgSend(session, "compositionSessionType")}];
+    _writingToolsInputDashboardViewController = [sourceResponder _writingToolsInputDashboardViewController];
     v13 = @"NO";
     *buf = 138413570;
-    v22 = v4;
+    v22 = _wantsUCBUI;
     v23 = 2112;
-    if (!v12)
+    if (!_writingToolsInputDashboardViewController)
     {
       v13 = @"YES";
     }
@@ -2627,44 +2627,44 @@ LABEL_11:
     v25 = 2112;
     v26 = v8;
     v27 = 2048;
-    v28 = v5;
-    LODWORD(v5) = v20;
+    v28 = minimizedIntoAssistant;
+    LODWORD(minimizedIntoAssistant) = v20;
     v29 = 2112;
     v30 = v11;
     v31 = 2112;
     v32 = v13;
     _os_log_impl(&dword_1D451D000, v6, OS_LOG_TYPE_DEFAULT, "updateInputDashboardViewController. wantsUCB %@, wantsFloatingDashboard: %@, wantsAssistant %@, requestedTool: %ld, rewriteType: %@, WTIDVC is nil: %@", buf, 0x3Eu);
 
-    LODWORD(v4) = v19;
+    LODWORD(_wantsUCBUI) = v19;
   }
 
-  if (!v4)
+  if (!_wantsUCBUI)
   {
-    if (!v5)
+    if (!minimizedIntoAssistant)
     {
-      [v3 _setWritingToolsInputDashboardViewController:0];
+      [sourceResponder _setWritingToolsInputDashboardViewController:0];
       goto LABEL_21;
     }
 
     goto LABEL_10;
   }
 
-  v14 = [v3 _writingToolsInputDashboardViewController];
+  _writingToolsInputDashboardViewController2 = [sourceResponder _writingToolsInputDashboardViewController];
 
-  if (v14)
+  if (_writingToolsInputDashboardViewController2)
   {
-    if ((v5 & 1) == 0)
+    if ((minimizedIntoAssistant & 1) == 0)
     {
       goto LABEL_21;
     }
 
 LABEL_10:
-    v15 = [v3 _writingToolsInputDashboardViewController];
+    _writingToolsInputDashboardViewController3 = [sourceResponder _writingToolsInputDashboardViewController];
 
-    if (!v15)
+    if (!_writingToolsInputDashboardViewController3)
     {
       v16 = [(WTWritingToolsController *)self _createProofreadingInputDashboardViewControllerForAssistant:1];
-      [v3 _setWritingToolsInputDashboardViewController:v16];
+      [sourceResponder _setWritingToolsInputDashboardViewController:v16];
     }
 
     goto LABEL_21;
@@ -2672,24 +2672,24 @@ LABEL_10:
 
   if ([(WTWritingToolsController *)self _proofreadingSessionActiveOrRequested])
   {
-    v17 = [(WTWritingToolsController *)self _createProofreadingInputDashboardViewControllerForAssistant:0];
+    _createCompositionInputDashboardViewController = [(WTWritingToolsController *)self _createProofreadingInputDashboardViewControllerForAssistant:0];
     goto LABEL_17;
   }
 
   if ([(WTWritingToolsController *)self _rewritingSessionActiveOrRequested])
   {
-    v17 = [(WTWritingToolsController *)self _createCompositionInputDashboardViewController];
+    _createCompositionInputDashboardViewController = [(WTWritingToolsController *)self _createCompositionInputDashboardViewController];
     goto LABEL_17;
   }
 
   if ([objc_opt_class() iPadOSAlternateQuestionnaireEnabled] && -[WTWritingToolsController _smartReplySessionActiveOrRequested](self, "_smartReplySessionActiveOrRequested"))
   {
-    v17 = [(WTWritingToolsController *)self _createSmartReplyInputDashboardViewController];
+    _createCompositionInputDashboardViewController = [(WTWritingToolsController *)self _createSmartReplyInputDashboardViewController];
 LABEL_17:
-    v18 = v17;
-    if (v17)
+    v18 = _createCompositionInputDashboardViewController;
+    if (_createCompositionInputDashboardViewController)
     {
-      [v3 _setWritingToolsInputDashboardViewController:v17];
+      [sourceResponder _setWritingToolsInputDashboardViewController:_createCompositionInputDashboardViewController];
     }
   }
 
@@ -2701,14 +2701,14 @@ LABEL_17:
 LABEL_21:
 }
 
-- (void)updateWritingToolsPopoverSuppressionWithCompletion:(id)a3
+- (void)updateWritingToolsPopoverSuppressionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(WTWritingToolsController *)self isPopoverTemporarilyDismissed])
   {
-    v5 = [(WTWritingToolsController *)self mainPopoverViewController];
+    mainPopoverViewController = [(WTWritingToolsController *)self mainPopoverViewController];
 
-    if (v5)
+    if (mainPopoverViewController)
     {
       v6 = _WTVCLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2717,15 +2717,15 @@ LABEL_21:
         _os_log_impl(&dword_1D451D000, v6, OS_LOG_TYPE_DEFAULT, "dismissViewControllerAnimated for _updateWritingToolsSheetSuppression", buf, 2u);
       }
 
-      v7 = [(WTWritingToolsController *)self mainPopoverViewController];
-      v8 = [v7 presentingViewController];
+      mainPopoverViewController2 = [(WTWritingToolsController *)self mainPopoverViewController];
+      presentingViewController = [mainPopoverViewController2 presentingViewController];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __79__WTWritingToolsController_updateWritingToolsPopoverSuppressionWithCompletion___block_invoke;
       v13[3] = &unk_1E8480DD0;
       v13[4] = self;
-      v14 = v4;
-      [v8 dismissViewControllerAnimated:1 completion:v13];
+      v14 = completionCopy;
+      [presentingViewController dismissViewControllerAnimated:1 completion:v13];
 
       [(WTWritingToolsController *)self setMainPopoverViewController:0];
       v9 = v14;
@@ -2735,8 +2735,8 @@ LABEL_21:
 
   if (![(WTWritingToolsController *)self isPopoverTemporarilyDismissed])
   {
-    v10 = [(WTWritingToolsController *)self mainPopoverViewController];
-    if (v10 || [(WTWritingToolsController *)self endingWritingToolsSession])
+    mainPopoverViewController3 = [(WTWritingToolsController *)self mainPopoverViewController];
+    if (mainPopoverViewController3 || [(WTWritingToolsController *)self endingWritingToolsSession])
     {
     }
 
@@ -2747,7 +2747,7 @@ LABEL_21:
       v11[2] = __79__WTWritingToolsController_updateWritingToolsPopoverSuppressionWithCompletion___block_invoke_2;
       v11[3] = &unk_1E8480DD0;
       v11[4] = self;
-      v12 = v4;
+      v12 = completionCopy;
       [(WTWritingToolsController *)self _presentMainPopoverViewControllerWithCompletion:v11];
       v9 = v12;
 LABEL_6:
@@ -2756,9 +2756,9 @@ LABEL_6:
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_13:
@@ -2794,14 +2794,14 @@ uint64_t __79__WTWritingToolsController_updateWritingToolsPopoverSuppressionWith
   return result;
 }
 
-- (void)setInterfaceAutorotationDisabledIfNecessary:(BOOL)a3
+- (void)setInterfaceAutorotationDisabledIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v53 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v6)
+  if (!userInterfaceIdiom)
   {
     interfaceAutorotationDisabledAssertion = self->_interfaceAutorotationDisabledAssertion;
     if (interfaceAutorotationDisabledAssertion)
@@ -2809,23 +2809,23 @@ uint64_t __79__WTWritingToolsController_updateWritingToolsPopoverSuppressionWith
       LODWORD(interfaceAutorotationDisabledAssertion) = [(BSSimpleAssertion *)interfaceAutorotationDisabledAssertion isValid];
     }
 
-    if (v3 && (interfaceAutorotationDisabledAssertion & 1) == 0)
+    if (necessaryCopy && (interfaceAutorotationDisabledAssertion & 1) == 0)
     {
-      v8 = [(WTWritingToolsController *)self sourceResponderViewController];
-      v9 = [v8 view];
-      v10 = [v9 window];
+      sourceResponderViewController = [(WTWritingToolsController *)self sourceResponderViewController];
+      view = [sourceResponderViewController view];
+      window = [view window];
 
-      if (v10)
+      if (window)
       {
-        [v10 beginDisablingInterfaceAutorotation];
+        [window beginDisablingInterfaceAutorotation];
         v11 = MEMORY[0x1E696AEC0];
-        v12 = [(WTWritingToolsController *)self sourceResponderViewController];
-        if (v12)
+        sourceResponderViewController2 = [(WTWritingToolsController *)self sourceResponderViewController];
+        if (sourceResponderViewController2)
         {
           v13 = MEMORY[0x1E696AEC0];
           v14 = objc_opt_class();
           v15 = NSStringFromClass(v14);
-          v16 = [v13 stringWithFormat:@"<%@: %p>", v15, v12];
+          v16 = [v13 stringWithFormat:@"<%@: %p>", v15, sourceResponderViewController2];
         }
 
         else
@@ -2834,14 +2834,14 @@ uint64_t __79__WTWritingToolsController_updateWritingToolsPopoverSuppressionWith
         }
 
         v23 = MEMORY[0x1E696AEC0];
-        v10 = v10;
+        window = window;
         v24 = objc_opt_class();
         v25 = NSStringFromClass(v24);
-        v26 = [v23 stringWithFormat:@"<%@: %p>", v25, v10];
+        v26 = [v23 stringWithFormat:@"<%@: %p>", v25, window];
 
         v27 = [v11 stringWithFormat:@"WT dismiss disabling autorotation for window on behalf of controller=%@ window=%@", v16, v26];;
 
-        objc_initWeak(&location, v10);
+        objc_initWeak(&location, window);
         v28 = objc_alloc(MEMORY[0x1E698E778]);
         v43 = MEMORY[0x1E69E9820];
         v44 = 3221225472;
@@ -2855,13 +2855,13 @@ uint64_t __79__WTWritingToolsController_updateWritingToolsPopoverSuppressionWith
         v31 = _WTVCLog();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
-          v32 = [(WTWritingToolsController *)self sourceResponderViewController];
-          if (v32)
+          sourceResponderViewController3 = [(WTWritingToolsController *)self sourceResponderViewController];
+          if (sourceResponderViewController3)
           {
             v33 = MEMORY[0x1E696AEC0];
             v34 = objc_opt_class();
             v35 = NSStringFromClass(v34);
-            v36 = [v33 stringWithFormat:@"<%@: %p>", v35, v32, v43, v44, v45, v46];
+            v36 = [v33 stringWithFormat:@"<%@: %p>", v35, sourceResponderViewController3, v43, v44, v45, v46];
           }
 
           else
@@ -2870,7 +2870,7 @@ uint64_t __79__WTWritingToolsController_updateWritingToolsPopoverSuppressionWith
           }
 
           v37 = v36;
-          v38 = v10;
+          v38 = window;
           v39 = MEMORY[0x1E696AEC0];
           v40 = objc_opt_class();
           v41 = NSStringFromClass(v40);
@@ -2892,22 +2892,22 @@ LABEL_23:
       return;
     }
 
-    if (!v3 && ((interfaceAutorotationDisabledAssertion ^ 1) & 1) == 0)
+    if (!necessaryCopy && ((interfaceAutorotationDisabledAssertion ^ 1) & 1) == 0)
     {
       [(BSSimpleAssertion *)self->_interfaceAutorotationDisabledAssertion invalidate];
       v17 = self->_interfaceAutorotationDisabledAssertion;
       self->_interfaceAutorotationDisabledAssertion = 0;
 
-      v10 = _WTVCLog();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      window = _WTVCLog();
+      if (os_log_type_enabled(window, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [(WTWritingToolsController *)self sourceResponderViewController];
-        if (v18)
+        sourceResponderViewController4 = [(WTWritingToolsController *)self sourceResponderViewController];
+        if (sourceResponderViewController4)
         {
           v19 = MEMORY[0x1E696AEC0];
           v20 = objc_opt_class();
           v21 = NSStringFromClass(v20);
-          v22 = [v19 stringWithFormat:@"<%@: %p>", v21, v18];
+          v22 = [v19 stringWithFormat:@"<%@: %p>", v21, sourceResponderViewController4];
         }
 
         else
@@ -2917,7 +2917,7 @@ LABEL_23:
 
         *buf = 138412290;
         v50 = v22;
-        _os_log_impl(&dword_1D451D000, v10, OS_LOG_TYPE_DEFAULT, "Invalidated autorotation disable assertion for %@", buf, 0xCu);
+        _os_log_impl(&dword_1D451D000, window, OS_LOG_TYPE_DEFAULT, "Invalidated autorotation disable assertion for %@", buf, 0xCu);
       }
 
       goto LABEL_23;
@@ -2933,10 +2933,10 @@ void __72__WTWritingToolsController_setInterfaceAutorotationDisabledIfNecessary_
 
 - (id)sourceResponderViewController
 {
-  v2 = [(WTWritingToolsController *)self sourceResponder];
-  v3 = [v2 _viewControllerForWritingToolsSource];
+  sourceResponder = [(WTWritingToolsController *)self sourceResponder];
+  _viewControllerForWritingToolsSource = [sourceResponder _viewControllerForWritingToolsSource];
 
-  return v3;
+  return _viewControllerForWritingToolsSource;
 }
 
 - (BOOL)isPopoverTemporarilyDismissed
@@ -2957,13 +2957,13 @@ void __72__WTWritingToolsController_setInterfaceAutorotationDisabledIfNecessary_
     [WTWritingToolsController selectionDidUpdate];
   }
 
-  v4 = [(WTWritingToolsController *)self _sessionSupportsPopoverAdjustment];
+  _sessionSupportsPopoverAdjustment = [(WTWritingToolsController *)self _sessionSupportsPopoverAdjustment];
   if ([(WTWritingToolsController *)self _smartReplySessionActive])
   {
     [(WTWritingToolsController *)self updateSourceView];
   }
 
-  else if (v4)
+  else if (_sessionSupportsPopoverAdjustment)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -3018,15 +3018,15 @@ uint64_t __46__WTWritingToolsController_selectionDidUpdate__block_invoke(uint64_
 
 - (id)_inputDashboardViewController
 {
-  v2 = [(WTWritingToolsController *)self sourceResponder];
-  v3 = [v2 _writingToolsInputDashboardViewController];
+  sourceResponder = [(WTWritingToolsController *)self sourceResponder];
+  _writingToolsInputDashboardViewController = [sourceResponder _writingToolsInputDashboardViewController];
 
-  return v3;
+  return _writingToolsInputDashboardViewController;
 }
 
-- (id)_createProofreadingInputDashboardViewControllerForAssistant:(BOOL)a3
+- (id)_createProofreadingInputDashboardViewControllerForAssistant:(BOOL)assistant
 {
-  v4 = [(WTWritingToolsController *)self _startupOptionsForSceneHostedViewControllerForRequestedTool:1 isForInputDashboard:1 isForAssistant:a3];
+  v4 = [(WTWritingToolsController *)self _startupOptionsForSceneHostedViewControllerForRequestedTool:1 isForInputDashboard:1 isForAssistant:assistant];
   v5 = [[WTSceneHostedInputDashboardViewController alloc] initWithWritingToolsDelegate:self startupOptions:v4];
 
   return v5;
@@ -3069,8 +3069,8 @@ uint64_t __46__WTWritingToolsController_selectionDidUpdate__block_invoke(uint64_
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(WTWritingToolsController *)self proofreadingSuggestions];
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  proofreadingSuggestions = [(WTWritingToolsController *)self proofreadingSuggestions];
+  v4 = [proofreadingSuggestions countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3082,30 +3082,30 @@ uint64_t __46__WTWritingToolsController_selectionDidUpdate__block_invoke(uint64_
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(proofreadingSuggestions);
         }
 
         v8 = *(*(&v19 + 1) + 8 * v7);
-        v9 = [(WTWritingToolsController *)self session];
-        v10 = [v9 uuid];
-        v11 = [v8 uuid];
-        [(WTWritingToolsController *)self proofreadingSessionWithUUID:v10 updateState:3 forSuggestionWithUUID:v11];
+        session = [(WTWritingToolsController *)self session];
+        uuid = [session uuid];
+        uuid2 = [v8 uuid];
+        [(WTWritingToolsController *)self proofreadingSessionWithUUID:uuid updateState:3 forSuggestionWithUUID:uuid2];
 
-        v12 = [(WTWritingToolsController *)self contextForSuggestions];
-        v13 = [v8 uuid];
-        v14 = [v12 objectForKeyedSubscript:v13];
+        contextForSuggestions = [(WTWritingToolsController *)self contextForSuggestions];
+        uuid3 = [v8 uuid];
+        v14 = [contextForSuggestions objectForKeyedSubscript:uuid3];
 
-        v15 = [(WTWritingToolsController *)self session];
-        v16 = [v8 uuid];
-        v17 = [(WTWritingToolsController *)self uuidContextMapping];
-        v18 = [v17 objectForKeyedSubscript:v14];
-        [(WTWritingToolsController *)self proofreadingSession:v15 didUpdateState:3 forSuggestionWithUUID:v16 inContext:v18];
+        session2 = [(WTWritingToolsController *)self session];
+        uuid4 = [v8 uuid];
+        uuidContextMapping = [(WTWritingToolsController *)self uuidContextMapping];
+        v18 = [uuidContextMapping objectForKeyedSubscript:v14];
+        [(WTWritingToolsController *)self proofreadingSession:session2 didUpdateState:3 forSuggestionWithUUID:uuid4 inContext:v18];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v5 = [proofreadingSuggestions countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v5);
@@ -3114,11 +3114,11 @@ uint64_t __46__WTWritingToolsController_selectionDidUpdate__block_invoke(uint64_
 
 - (BOOL)_proofreadingSessionActive
 {
-  v3 = [(WTWritingToolsController *)self session];
-  if (v3)
+  session = [(WTWritingToolsController *)self session];
+  if (session)
   {
-    v4 = [(WTWritingToolsController *)self session];
-    v5 = [v4 type] == 1;
+    session2 = [(WTWritingToolsController *)self session];
+    v5 = [session2 type] == 1;
   }
 
   else
@@ -3131,34 +3131,34 @@ uint64_t __46__WTWritingToolsController_selectionDidUpdate__block_invoke(uint64_
 
 - (BOOL)_proofreadingSessionActiveOrRequested
 {
-  v3 = [(WTWritingToolsController *)self requestedTool];
-  if (v3 != 1)
+  requestedTool = [(WTWritingToolsController *)self requestedTool];
+  if (requestedTool != 1)
   {
 
-    LOBYTE(v3) = [(WTWritingToolsController *)self _proofreadingSessionActive];
+    LOBYTE(requestedTool) = [(WTWritingToolsController *)self _proofreadingSessionActive];
   }
 
-  return v3;
+  return requestedTool;
 }
 
 - (BOOL)_rewritingSessionActive
 {
-  v3 = [(WTWritingToolsController *)self session];
-  if (v3)
+  session = [(WTWritingToolsController *)self session];
+  if (session)
   {
-    v4 = [(WTWritingToolsController *)self session];
-    if ([v4 type] == 2)
+    session2 = [(WTWritingToolsController *)self session];
+    if ([session2 type] == 2)
     {
-      v5 = [(WTWritingToolsController *)self session];
-      if ([v5 compositionSessionType] == 11)
+      session3 = [(WTWritingToolsController *)self session];
+      if ([session3 compositionSessionType] == 11)
       {
         v6 = 0;
       }
 
       else
       {
-        v7 = [(WTWritingToolsController *)self session];
-        v6 = [v7 compositionSessionType] != 10;
+        session4 = [(WTWritingToolsController *)self session];
+        v6 = [session4 compositionSessionType] != 10;
       }
     }
 
@@ -3178,14 +3178,14 @@ uint64_t __46__WTWritingToolsController_selectionDidUpdate__block_invoke(uint64_
 
 - (BOOL)_smartReplySessionActive
 {
-  v3 = [(WTWritingToolsController *)self session];
-  if (v3)
+  session = [(WTWritingToolsController *)self session];
+  if (session)
   {
-    v4 = [(WTWritingToolsController *)self session];
-    if ([v4 type] == 2)
+    session2 = [(WTWritingToolsController *)self session];
+    if ([session2 type] == 2)
     {
-      v5 = [(WTWritingToolsController *)self session];
-      v6 = [v5 compositionSessionType] == 11;
+      session3 = [(WTWritingToolsController *)self session];
+      v6 = [session3 compositionSessionType] == 11;
     }
 
     else
@@ -3224,14 +3224,14 @@ uint64_t __46__WTWritingToolsController_selectionDidUpdate__block_invoke(uint64_
 
 - (BOOL)_compositionSessionActive
 {
-  v3 = [(WTWritingToolsController *)self session];
-  if (v3)
+  session = [(WTWritingToolsController *)self session];
+  if (session)
   {
-    v4 = [(WTWritingToolsController *)self session];
-    if ([v4 type] == 2)
+    session2 = [(WTWritingToolsController *)self session];
+    if ([session2 type] == 2)
     {
-      v5 = [(WTWritingToolsController *)self session];
-      v6 = [v5 compositionSessionType] == 10;
+      session3 = [(WTWritingToolsController *)self session];
+      v6 = [session3 compositionSessionType] == 10;
     }
 
     else
@@ -3250,20 +3250,20 @@ uint64_t __46__WTWritingToolsController_selectionDidUpdate__block_invoke(uint64_
 
 - (BOOL)_sessionSupportsPopoverAdjustment
 {
-  v3 = [(WTWritingToolsController *)self beTextInput];
-  if (v3)
+  beTextInput = [(WTWritingToolsController *)self beTextInput];
+  if (beTextInput)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(WTWritingToolsController *)self sourceTextInput];
-    v4 = [v5 conformsToProtocol:&unk_1F4FEE360] ^ 1;
+    sourceTextInput = [(WTWritingToolsController *)self sourceTextInput];
+    v4 = [sourceTextInput conformsToProtocol:&unk_1F4FEE360] ^ 1;
   }
 
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v6 userInterfaceIdiom] == 1 && -[WTWritingToolsController _compositionSessionActive](self, "_compositionSessionActive"))
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1 && -[WTWritingToolsController _compositionSessionActive](self, "_compositionSessionActive"))
   {
     v7 = _os_feature_enabled_impl() & v4;
   }
@@ -3278,10 +3278,10 @@ uint64_t __46__WTWritingToolsController_selectionDidUpdate__block_invoke(uint64_
 
 - (BOOL)_wantsUCBUI
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 != 1 || [(WTWritingToolsController *)self switchedFromUCBToPopover]|| ![(WTWritingToolsController *)self _smartReplySessionActiveOrRequested])
+  if (userInterfaceIdiom != 1 || [(WTWritingToolsController *)self switchedFromUCBToPopover]|| ![(WTWritingToolsController *)self _smartReplySessionActiveOrRequested])
   {
     return 0;
   }
@@ -3306,35 +3306,35 @@ uint64_t __46__WTWritingToolsController_selectionDidUpdate__block_invoke(uint64_
     goto LABEL_2;
   }
 
-  v3 = [(WTWritingToolsController *)self _wantsInlineEditing];
-  if (!v3)
+  _wantsInlineEditing = [(WTWritingToolsController *)self _wantsInlineEditing];
+  if (!_wantsInlineEditing)
   {
-    return v3;
+    return _wantsInlineEditing;
   }
 
   if (-[WTWritingToolsController _proofreadingSessionActiveOrRequested](self, "_proofreadingSessionActiveOrRequested") || !-[WTWritingToolsController shouldHostInAppSizedContainerView](self, "shouldHostInAppSizedContainerView") && -[WTWritingToolsController _rewritingSessionActiveOrRequested](self, "_rewritingSessionActiveOrRequested") || [objc_opt_class() iPadOSAlternateQuestionnaireEnabled] && -[WTWritingToolsController _smartReplySessionActiveOrRequested](self, "_smartReplySessionActiveOrRequested"))
   {
-    LOBYTE(v3) = 1;
-    return v3;
+    LOBYTE(_wantsInlineEditing) = 1;
+    return _wantsInlineEditing;
   }
 
-  v4 = [(WTWritingToolsController *)self session];
-  v5 = [v4 compositionSessionType];
+  session = [(WTWritingToolsController *)self session];
+  compositionSessionType = [session compositionSessionType];
 
-  if (v5 != 11)
+  if (compositionSessionType != 11)
   {
 LABEL_2:
-    LOBYTE(v3) = 0;
+    LOBYTE(_wantsInlineEditing) = 0;
   }
 
   else
   {
     v6 = objc_opt_class();
 
-    LOBYTE(v3) = [v6 iPadOSAlternateQuestionnaireEnabled];
+    LOBYTE(_wantsInlineEditing) = [v6 iPadOSAlternateQuestionnaireEnabled];
   }
 
-  return v3;
+  return _wantsInlineEditing;
 }
 
 - (BOOL)_wantsUCBUI_ucbSupportedStageManagerActive
@@ -3349,15 +3349,15 @@ LABEL_2:
 
 - (CGRect)_textSelectionRectForTextInput
 {
-  v3 = [(WTWritingToolsController *)self sourceTextInput];
-  v4 = [v3 selectedTextRange];
+  sourceTextInput = [(WTWritingToolsController *)self sourceTextInput];
+  selectedTextRange = [sourceTextInput selectedTextRange];
 
-  v5 = [(WTWritingToolsController *)self sourceTextInput];
-  v6 = [v5 selectionRectsForRange:v4];
+  sourceTextInput2 = [(WTWritingToolsController *)self sourceTextInput];
+  v6 = [sourceTextInput2 selectionRectsForRange:selectedTextRange];
 
   if ([(WTWritingToolsController *)self _smartReplySessionActiveOrRequested])
   {
-    [(WTWritingToolsController *)self _textSelectionRectForSmartReplyPopoverForRange:v4 selectionRects:v6];
+    [(WTWritingToolsController *)self _textSelectionRectForSmartReplyPopoverForRange:selectedTextRange selectionRects:v6];
   }
 
   else
@@ -3381,23 +3381,23 @@ LABEL_2:
   return result;
 }
 
-- (CGRect)_textSelectionRectForSmartReplyPopoverForRange:(id)a3 selectionRects:(id)a4
+- (CGRect)_textSelectionRectForSmartReplyPopoverForRange:(id)range selectionRects:(id)rects
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WTWritingToolsController *)self sourceTextInput];
-  v9 = [v8 textInputView];
-  [v9 frame];
+  rectsCopy = rects;
+  rangeCopy = range;
+  sourceTextInput = [(WTWritingToolsController *)self sourceTextInput];
+  textInputView = [sourceTextInput textInputView];
+  [textInputView frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  [(WTWritingToolsController *)self _cgRectForSelectionRects:v6];
+  [(WTWritingToolsController *)self _cgRectForSelectionRects:rectsCopy];
   v17 = v16;
   v19 = v18;
 
-  v20 = [v7 isEmpty];
-  if (v20)
+  isEmpty = [rangeCopy isEmpty];
+  if (isEmpty)
   {
     v21 = 1.0;
   }
@@ -3407,7 +3407,7 @@ LABEL_2:
     v21 = v19;
   }
 
-  if (v20)
+  if (isEmpty)
   {
     v22 = v13;
   }
@@ -3426,10 +3426,10 @@ LABEL_2:
   return result;
 }
 
-- (CGRect)_cgRectForSelectionRects:(id)a3
+- (CGRect)_cgRectForSelectionRects:(id)rects
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  rectsCopy = rects;
   x = *MEMORY[0x1E695F050];
   y = *(MEMORY[0x1E695F050] + 8);
   width = *(MEMORY[0x1E695F050] + 16);
@@ -3438,7 +3438,7 @@ LABEL_2:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [rectsCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -3450,7 +3450,7 @@ LABEL_2:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(rectsCopy);
         }
 
         [*(*(&v20 + 1) + 8 * v11) rect];
@@ -3471,7 +3471,7 @@ LABEL_2:
       }
 
       while (v9 != v11);
-      v9 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [rectsCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
@@ -3488,11 +3488,11 @@ LABEL_2:
   return result;
 }
 
-- (void)setSuppressSheetForKeyboardEditing:(BOOL)a3
+- (void)setSuppressSheetForKeyboardEditing:(BOOL)editing
 {
-  if (self->_suppressSheetForKeyboardEditing != a3)
+  if (self->_suppressSheetForKeyboardEditing != editing)
   {
-    self->_suppressSheetForKeyboardEditing = a3;
+    self->_suppressSheetForKeyboardEditing = editing;
     [(WTWritingToolsController *)self updateWritingToolsPopoverSuppression];
     [(WTWritingToolsController *)self updateKBSuppression];
 
@@ -3500,30 +3500,30 @@ LABEL_2:
   }
 }
 
-- (void)setMinimizedIntoAssistant:(BOOL)a3
+- (void)setMinimizedIntoAssistant:(BOOL)assistant
 {
-  if (self->_minimizedIntoAssistant != a3)
+  if (self->_minimizedIntoAssistant != assistant)
   {
-    self->_minimizedIntoAssistant = a3;
-    v5 = [(WTWritingToolsController *)self sourceResponder];
-    [v5 _setWritingToolsInputDashboardViewController:0];
+    self->_minimizedIntoAssistant = assistant;
+    sourceResponder = [(WTWritingToolsController *)self sourceResponder];
+    [sourceResponder _setWritingToolsInputDashboardViewController:0];
     [(WTWritingToolsController *)self updateInputDashboardViewController];
   }
 }
 
 - (BOOL)popoverWillAdjust
 {
-  v2 = self;
+  selfCopy = self;
   [(WTWritingToolsController *)self _visibleApproximationOfTextSelectionRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(WTWritingToolsController *)v2 mainPopoverViewController];
-  v12 = [v11 popoverPresentationController];
-  LOBYTE(v2) = [(WTWritingToolsController *)v2 shouldAdjustPopoverPresentationController:v12 toRect:v4, v6, v8, v10];
+  mainPopoverViewController = [(WTWritingToolsController *)selfCopy mainPopoverViewController];
+  popoverPresentationController = [mainPopoverViewController popoverPresentationController];
+  LOBYTE(selfCopy) = [(WTWritingToolsController *)selfCopy shouldAdjustPopoverPresentationController:popoverPresentationController toRect:v4, v6, v8, v10];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_updatePopoverAnchoring
@@ -3536,13 +3536,13 @@ LABEL_2:
     _os_log_impl(&dword_1D451D000, v3, OS_LOG_TYPE_DEFAULT, "_updatePopoverAnchoring", v20, 2u);
   }
 
-  v4 = [(WTWritingToolsController *)self mainPopoverViewController];
-  v5 = [v4 popoverPresentationController];
+  mainPopoverViewController = [(WTWritingToolsController *)self mainPopoverViewController];
+  popoverPresentationController = [mainPopoverViewController popoverPresentationController];
 
   if ([(WTWritingToolsController *)self _compositionSessionActive]&& _os_feature_enabled_impl())
   {
-    v6 = [MEMORY[0x1E69DC938] currentDevice];
-    v7 = [v6 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v7 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   else
@@ -3551,67 +3551,67 @@ LABEL_2:
   }
 
   [(WTWritingToolsController *)self _visibleApproximationOfTextSelectionRect];
-  if ([(WTWritingToolsController *)self shouldAdjustPopoverPresentationController:v5 toRect:?])
+  if ([(WTWritingToolsController *)self shouldAdjustPopoverPresentationController:popoverPresentationController toRect:?])
   {
     if (v7)
     {
-      [v5 setSourceView:0];
+      [popoverPresentationController setSourceView:0];
     }
 
-    [v5 setCanOverlapSourceViewRect:!v7];
-    v8 = [(WTWritingToolsController *)self sourceTextInput];
-    v9 = [v8 textInputView];
-    [v5 setSourceView:v9];
+    [popoverPresentationController setCanOverlapSourceViewRect:!v7];
+    sourceTextInput = [(WTWritingToolsController *)self sourceTextInput];
+    textInputView = [sourceTextInput textInputView];
+    [popoverPresentationController setSourceView:textInputView];
 
     [(WTWritingToolsController *)self _visibleApproximationOfTextSelectionRect];
-    [v5 setSourceRect:?];
-    [v5 setPermittedArrowDirections:{-[WTWritingToolsController _permittedPopoverArrowDirection](self, "_permittedPopoverArrowDirection")}];
-    v10 = [v5 containerView];
-    [v10 setNeedsLayout];
+    [popoverPresentationController setSourceRect:?];
+    [popoverPresentationController setPermittedArrowDirections:{-[WTWritingToolsController _permittedPopoverArrowDirection](self, "_permittedPopoverArrowDirection")}];
+    containerView = [popoverPresentationController containerView];
+    [containerView setNeedsLayout];
 
-    v11 = [v5 containerView];
-    [v11 layoutIfNeeded];
+    containerView2 = [popoverPresentationController containerView];
+    [containerView2 layoutIfNeeded];
 
-    v12 = [(WTWritingToolsController *)self session];
-    if (v12)
+    session = [(WTWritingToolsController *)self session];
+    if (session)
     {
     }
 
     else if (![(WTWritingToolsController *)self requestedTool])
     {
-      [v5 setPassthroughViews:0];
+      [popoverPresentationController setPassthroughViews:0];
       goto LABEL_17;
     }
 
-    v13 = [(WTWritingToolsController *)self sourceTextInput];
-    v14 = [v13 textInputView];
-    v15 = v14;
+    sourceTextInput2 = [(WTWritingToolsController *)self sourceTextInput];
+    textInputView2 = [sourceTextInput2 textInputView];
+    v15 = textInputView2;
     if (v7)
     {
-      v22[0] = v14;
-      v16 = [(WTWritingToolsController *)self sourceTextInput];
-      v17 = [v16 textInputView];
-      v18 = [v17 superview];
-      v22[1] = v18;
+      v22[0] = textInputView2;
+      sourceTextInput3 = [(WTWritingToolsController *)self sourceTextInput];
+      textInputView3 = [sourceTextInput3 textInputView];
+      superview = [textInputView3 superview];
+      v22[1] = superview;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
-      [v5 setPassthroughViews:v19];
+      [popoverPresentationController setPassthroughViews:v19];
     }
 
     else
     {
-      v21 = v14;
-      v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
-      [v5 setPassthroughViews:v16];
+      v21 = textInputView2;
+      sourceTextInput3 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
+      [popoverPresentationController setPassthroughViews:sourceTextInput3];
     }
   }
 
 LABEL_17:
 }
 
-- (BOOL)shouldAdjustPopoverPresentationController:(id)a3 toRect:(CGRect)a4
+- (BOOL)shouldAdjustPopoverPresentationController:(id)controller toRect:(CGRect)rect
 {
-  width = a4.size.width;
-  v6 = a3;
+  width = rect.size.width;
+  controllerCopy = controller;
   if ([(WTWritingToolsController *)self _compositionSessionActive])
   {
     v7 = _os_feature_enabled_impl() ^ 1;
@@ -3622,9 +3622,9 @@ LABEL_17:
     LOBYTE(v7) = 1;
   }
 
-  v8 = [v6 sourceView];
+  sourceView = [controllerCopy sourceView];
 
-  if (v8)
+  if (sourceView)
   {
     v9 = v7;
   }
@@ -3654,13 +3654,13 @@ LABEL_17:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(WTWritingToolsController *)self sourceTextInput];
-  v12 = [v11 textInputView];
+  sourceTextInput = [(WTWritingToolsController *)self sourceTextInput];
+  textInputView = [sourceTextInput textInputView];
 
-  v13 = [v12 window];
-  v14 = [v12 window];
-  [v14 bounds];
-  [v13 convertRect:v12 toView:?];
+  window = [textInputView window];
+  window2 = [textInputView window];
+  [window2 bounds];
+  [window convertRect:textInputView toView:?];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -3718,22 +3718,22 @@ LABEL_17:
   v4 = [MEMORY[0x1E69DC738] systemButtonWithPrimaryAction:?];
   v5 = objc_alloc_init(WTProofreadCandidateBarView);
   [(WTProofreadCandidateBarView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(WTWritingToolsController *)self proofreadingSuggestions];
-  -[WTProofreadCandidateBarView setSuggestionCount:](v5, "setSuggestionCount:", [v6 count]);
+  proofreadingSuggestions = [(WTWritingToolsController *)self proofreadingSuggestions];
+  -[WTProofreadCandidateBarView setSuggestionCount:](v5, "setSuggestionCount:", [proofreadingSuggestions count]);
 
   [(WTWritingToolsController *)self setProofreadCandidateBarView:v5];
   [v4 addSubview:v5];
   v17 = MEMORY[0x1E696ACD8];
-  v18 = [(WTProofreadCandidateBarView *)v5 centerXAnchor];
-  v7 = [v4 centerXAnchor];
-  v8 = [v18 constraintEqualToAnchor:v7];
+  centerXAnchor = [(WTProofreadCandidateBarView *)v5 centerXAnchor];
+  centerXAnchor2 = [v4 centerXAnchor];
+  v8 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v22[0] = v8;
-  v9 = [(WTProofreadCandidateBarView *)v5 topAnchor];
-  v10 = [v4 topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:4.0];
+  topAnchor = [(WTProofreadCandidateBarView *)v5 topAnchor];
+  topAnchor2 = [v4 topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:4.0];
   v22[1] = v11;
-  v12 = [v4 widthAnchor];
-  v13 = [v12 constraintEqualToConstant:60.0];
+  widthAnchor = [v4 widthAnchor];
+  v13 = [widthAnchor constraintEqualToConstant:60.0];
   v22[2] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:3];
   [v17 activateConstraints:v14];
@@ -3750,16 +3750,16 @@ void __56__WTWritingToolsController__assistantProofreadBarButton__block_invoke(u
   [WeakRetained setMinimizedIntoAssistant:1];
 }
 
-- (id)_assistantBarButtonCustomViewWithTitle:(id)a3 handler:(id)a4
+- (id)_assistantBarButtonCustomViewWithTitle:(id)title handler:(id)handler
 {
   v40[4] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  handlerCopy = handler;
   v6 = MEMORY[0x1E69DD298];
-  v7 = a3;
+  titleCopy = title;
   v8 = [v6 alloc];
   v9 = objc_alloc(MEMORY[0x1E69DD568]);
-  v10 = [MEMORY[0x1E69DD578] sharedLight];
-  v11 = [v9 initWithLightSource:v10];
+  mEMORY[0x1E69DD578] = [MEMORY[0x1E69DD578] sharedLight];
+  v11 = [v9 initWithLightSource:mEMORY[0x1E69DD578]];
   v12 = [v8 initWithEffect:v11];
 
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -3768,38 +3768,38 @@ void __56__WTWritingToolsController__assistantProofreadBarButton__block_invoke(u
   v38[1] = 3221225472;
   v38[2] = __75__WTWritingToolsController__assistantBarButtonCustomViewWithTitle_handler___block_invoke;
   v38[3] = &unk_1E8480E70;
-  v39 = v5;
-  v37 = v5;
+  v39 = handlerCopy;
+  v37 = handlerCopy;
   v36 = [v13 actionWithHandler:v38];
   v14 = [MEMORY[0x1E69DC738] systemButtonWithPrimaryAction:v36];
-  [v14 setAttributedTitle:v7 forState:0];
+  [v14 setAttributedTitle:titleCopy forState:0];
 
   [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v14 setContentEdgeInsets:{20.0, 6.0, 20.0, 6.0}];
-  v15 = [v12 contentView];
-  [v15 addSubview:v14];
+  contentView = [v12 contentView];
+  [contentView addSubview:v14];
 
   v28 = MEMORY[0x1E696ACD8];
-  v35 = [v12 contentView];
-  v34 = [v35 leadingAnchor];
-  v33 = [v14 leadingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  contentView2 = [v12 contentView];
+  leadingAnchor = [contentView2 leadingAnchor];
+  leadingAnchor2 = [v14 leadingAnchor];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v40[0] = v32;
-  v31 = [v12 contentView];
-  v30 = [v31 trailingAnchor];
-  v29 = [v14 trailingAnchor];
-  v27 = [v30 constraintEqualToAnchor:v29];
+  contentView3 = [v12 contentView];
+  trailingAnchor = [contentView3 trailingAnchor];
+  trailingAnchor2 = [v14 trailingAnchor];
+  v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v40[1] = v27;
-  v16 = [v12 contentView];
-  v17 = [v16 topAnchor];
-  v18 = [v14 topAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  contentView4 = [v12 contentView];
+  topAnchor = [contentView4 topAnchor];
+  topAnchor2 = [v14 topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v40[2] = v19;
   v26 = v12;
-  v20 = [v12 contentView];
-  v21 = [v20 bottomAnchor];
-  v22 = [v14 bottomAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  contentView5 = [v12 contentView];
+  bottomAnchor = [contentView5 bottomAnchor];
+  bottomAnchor2 = [v14 bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v40[3] = v23;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:4];
   [v28 activateConstraints:v24];
@@ -3807,15 +3807,15 @@ void __56__WTWritingToolsController__assistantProofreadBarButton__block_invoke(u
   return v26;
 }
 
-- (void)setSuppressWritingToolsForRemoteKeyboard:(BOOL)a3
+- (void)setSuppressWritingToolsForRemoteKeyboard:(BOOL)keyboard
 {
-  v3 = a3;
-  v5 = [(WTWritingToolsController *)self mainPopoverViewController];
-  v6 = [v5 presentedAsSheet];
+  keyboardCopy = keyboard;
+  mainPopoverViewController = [(WTWritingToolsController *)self mainPopoverViewController];
+  presentedAsSheet = [mainPopoverViewController presentedAsSheet];
 
-  if (v6)
+  if (presentedAsSheet)
   {
-    [(WTWritingToolsController *)self setSuppressingSheetForRemoteKeyboardOnScreen:v3];
+    [(WTWritingToolsController *)self setSuppressingSheetForRemoteKeyboardOnScreen:keyboardCopy];
 
     [(WTWritingToolsController *)self updateWritingToolsPopoverSuppression];
   }
@@ -3823,16 +3823,16 @@ void __56__WTWritingToolsController__assistantProofreadBarButton__block_invoke(u
 
 - (void)_updateSuggestionPopover
 {
-  v3 = [(WTWritingToolsController *)self suggestionQueue];
-  dispatch_assert_queue_not_V2(v3);
+  suggestionQueue = [(WTWritingToolsController *)self suggestionQueue];
+  dispatch_assert_queue_not_V2(suggestionQueue);
 
-  v4 = [(WTWritingToolsController *)self suggestionQueue];
+  suggestionQueue2 = [(WTWritingToolsController *)self suggestionQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__WTWritingToolsController__updateSuggestionPopover__block_invoke;
   block[3] = &unk_1E8480BF8;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(suggestionQueue2, block);
 }
 
 void __52__WTWritingToolsController__updateSuggestionPopover__block_invoke(uint64_t a1)
@@ -3876,11 +3876,11 @@ uint64_t __52__WTWritingToolsController__updateSuggestionPopover__block_invoke_3
   return [*(a1 + 32) _checkForPendingSuggestion];
 }
 
-- (void)__updateSuggestionPopoverWithCompletion:(id)a3
+- (void)__updateSuggestionPopoverWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v5 userInterfaceIdiom] == 6)
+  completionCopy = completion;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 6)
   {
     v6 = [objc_opt_class() isNativeRedesignForVisionOSEnabled] ^ 1;
   }
@@ -3890,15 +3890,15 @@ uint64_t __52__WTWritingToolsController__updateSuggestionPopover__block_invoke_3
     v6 = 0;
   }
 
-  v7 = [(WTWritingToolsController *)self popoverSuggestionUUID];
+  popoverSuggestionUUID = [(WTWritingToolsController *)self popoverSuggestionUUID];
 
-  if (!v7 || v6)
+  if (!popoverSuggestionUUID || v6)
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __68__WTWritingToolsController___updateSuggestionPopoverWithCompletion___block_invoke;
     v21[3] = &unk_1E8480E98;
-    v22 = v4;
+    v22 = completionCopy;
     [(WTWritingToolsController *)self _dismissSuggestionViewControllerWithCompletion:v21];
     v16 = v22;
 LABEL_13:
@@ -3906,11 +3906,11 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v8 = [(WTWritingToolsController *)self popoverSuggestionUUID];
-  v9 = [(WTWritingToolsController *)self currentSuggestionViewController];
-  v10 = [v9 suggestion];
-  v11 = [v10 uuid];
-  v12 = [v8 isEqual:v11];
+  popoverSuggestionUUID2 = [(WTWritingToolsController *)self popoverSuggestionUUID];
+  currentSuggestionViewController = [(WTWritingToolsController *)self currentSuggestionViewController];
+  suggestion = [currentSuggestionViewController suggestion];
+  uuid = [suggestion uuid];
+  v12 = [popoverSuggestionUUID2 isEqual:uuid];
 
   if ((v12 & 1) == 0)
   {
@@ -3919,34 +3919,34 @@ LABEL_13:
     v19[2] = __68__WTWritingToolsController___updateSuggestionPopoverWithCompletion___block_invoke_2;
     v19[3] = &unk_1E8480DD0;
     v19[4] = self;
-    v20 = v4;
+    v20 = completionCopy;
     [(WTWritingToolsController *)self _dismissSuggestionViewControllerWithCompletion:v19];
     v16 = v20;
     goto LABEL_13;
   }
 
-  v13 = [(WTWritingToolsController *)self popoverSuggestionUUID];
-  if (v13)
+  popoverSuggestionUUID3 = [(WTWritingToolsController *)self popoverSuggestionUUID];
+  if (popoverSuggestionUUID3)
   {
-    v14 = v13;
-    v15 = [(WTWritingToolsController *)self currentSuggestionViewController];
+    v14 = popoverSuggestionUUID3;
+    currentSuggestionViewController2 = [(WTWritingToolsController *)self currentSuggestionViewController];
 
-    if (!v15)
+    if (!currentSuggestionViewController2)
     {
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __68__WTWritingToolsController___updateSuggestionPopoverWithCompletion___block_invoke_4;
       v17[3] = &unk_1E8480E98;
-      v18 = v4;
+      v18 = completionCopy;
       [(WTWritingToolsController *)self _presentSuggestionViewControllerWithCompletion:v17];
       v16 = v18;
       goto LABEL_13;
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_14:
@@ -4012,17 +4012,17 @@ uint64_t __68__WTWritingToolsController___updateSuggestionPopoverWithCompletion_
   v8 = buf;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(WTWritingToolsController *)self suggestionQueue];
-  dispatch_assert_queue_not_V2(v4);
+  suggestionQueue = [(WTWritingToolsController *)self suggestionQueue];
+  dispatch_assert_queue_not_V2(suggestionQueue);
 
-  v5 = [(WTWritingToolsController *)self suggestionQueue];
+  suggestionQueue2 = [(WTWritingToolsController *)self suggestionQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__WTWritingToolsController__checkForPendingSuggestion__block_invoke;
   v6[3] = &unk_1E8480EC0;
   v6[4] = self;
   v6[5] = buf;
-  dispatch_sync(v5, v6);
+  dispatch_sync(suggestionQueue2, v6);
 
   if (v8[24] == 1)
   {
@@ -4062,17 +4062,17 @@ void __54__WTWritingToolsController__checkForPendingSuggestion__block_invoke(uin
   [(WTWritingToolsController *)self _presentPromptEntryViewController];
 }
 
-- (void)_presentSuggestionViewControllerWithCompletion:(id)a3
+- (void)_presentSuggestionViewControllerWithCompletion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WTWritingToolsController *)self uuidSuggestionMapping];
-  v6 = [(WTWritingToolsController *)self popoverSuggestionUUID];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  completionCopy = completion;
+  uuidSuggestionMapping = [(WTWritingToolsController *)self uuidSuggestionMapping];
+  popoverSuggestionUUID = [(WTWritingToolsController *)self popoverSuggestionUUID];
+  v7 = [uuidSuggestionMapping objectForKeyedSubscript:popoverSuggestionUUID];
 
-  v8 = [(WTWritingToolsController *)self contextForSuggestions];
-  v9 = [v7 uuid];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  contextForSuggestions = [(WTWritingToolsController *)self contextForSuggestions];
+  uuid = [v7 uuid];
+  v10 = [contextForSuggestions objectForKeyedSubscript:uuid];
 
   v33[0] = 0;
   v33[1] = v33;
@@ -4080,10 +4080,10 @@ void __54__WTWritingToolsController__checkForPendingSuggestion__block_invoke(uin
   v33[3] = __Block_byref_object_copy_;
   v33[4] = __Block_byref_object_dispose_;
   v34 = 0;
-  v11 = [(WTWritingToolsController *)self suggestionQueue];
-  dispatch_assert_queue_not_V2(v11);
+  suggestionQueue = [(WTWritingToolsController *)self suggestionQueue];
+  dispatch_assert_queue_not_V2(suggestionQueue);
 
-  v12 = [(WTWritingToolsController *)self suggestionQueue];
+  suggestionQueue2 = [(WTWritingToolsController *)self suggestionQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__WTWritingToolsController__presentSuggestionViewControllerWithCompletion___block_invoke;
@@ -4093,8 +4093,8 @@ void __54__WTWritingToolsController__checkForPendingSuggestion__block_invoke(uin
   v29 = v13;
   v14 = v10;
   v30 = v14;
-  v31 = self;
-  dispatch_sync(v12, block);
+  selfCopy = self;
+  dispatch_sync(suggestionQueue2, block);
 
   if ([(WTWritingToolsController *)self shouldHostInAppSizedContainerView])
   {
@@ -4114,18 +4114,18 @@ void __54__WTWritingToolsController__checkForPendingSuggestion__block_invoke(uin
   v27 = v33;
   v16 = v15;
   v25 = v16;
-  v17 = v4;
+  v17 = completionCopy;
   v26 = v17;
   v18 = MEMORY[0x1DA6D90E0](v24);
-  v19 = [v16 presentedViewController];
+  presentedViewController = [v16 presentedViewController];
 
-  if (v19)
+  if (presentedViewController)
   {
     v20 = _WTVCLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v16 presentedViewController];
-      [(WTWritingToolsController *)v21 _presentSuggestionViewControllerWithCompletion:buf, v20];
+      presentedViewController2 = [v16 presentedViewController];
+      [(WTWritingToolsController *)presentedViewController2 _presentSuggestionViewControllerWithCompletion:buf, v20];
     }
 
     v22[0] = MEMORY[0x1E69E9820];
@@ -4223,36 +4223,36 @@ uint64_t __75__WTWritingToolsController__presentSuggestionViewControllerWithComp
   [(WTWritingToolsController *)self setPresentingPromptEntry:1];
   [(WTWritingToolsController *)self updateWritingToolsPopoverSuppression];
   v4 = [WTPromptEntryViewController alloc];
-  v5 = [(WTWritingToolsController *)self session];
-  v6 = [(WTPromptEntryViewController *)v4 initWithWritingToolsController:self session:v5];
+  session = [(WTWritingToolsController *)self session];
+  v6 = [(WTPromptEntryViewController *)v4 initWithWritingToolsController:self session:session];
 
   [(WTPromptEntryViewController *)v6 setModalPresentationStyle:7];
-  v7 = [(WTWritingToolsController *)self sourceResponderViewController];
-  v8 = [v7 view];
-  v9 = [(WTPromptEntryViewController *)v6 popoverPresentationController];
-  [v9 setSourceView:v8];
+  sourceResponderViewController = [(WTWritingToolsController *)self sourceResponderViewController];
+  view = [sourceResponderViewController view];
+  popoverPresentationController = [(WTPromptEntryViewController *)v6 popoverPresentationController];
+  [popoverPresentationController setSourceView:view];
 
-  v10 = [(WTPromptEntryViewController *)v6 popoverPresentationController];
-  v11 = [v10 sourceView];
-  v12 = [v11 keyboardLayoutGuide];
-  [v12 layoutFrame];
+  popoverPresentationController2 = [(WTPromptEntryViewController *)v6 popoverPresentationController];
+  sourceView = [popoverPresentationController2 sourceView];
+  keyboardLayoutGuide = [sourceView keyboardLayoutGuide];
+  [keyboardLayoutGuide layoutFrame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(WTPromptEntryViewController *)v6 popoverPresentationController];
-  [v21 setSourceRect:{v14, v16, v18, v20}];
+  popoverPresentationController3 = [(WTPromptEntryViewController *)v6 popoverPresentationController];
+  [popoverPresentationController3 setSourceRect:{v14, v16, v18, v20}];
 
-  v22 = [(WTPromptEntryViewController *)v6 popoverPresentationController];
-  [v22 _setShouldHideArrow:1];
+  popoverPresentationController4 = [(WTPromptEntryViewController *)v6 popoverPresentationController];
+  [popoverPresentationController4 _setShouldHideArrow:1];
 
-  v23 = [(WTPromptEntryViewController *)v6 _popoverController];
-  [v23 setDelegate:v6];
+  _popoverController = [(WTPromptEntryViewController *)v6 _popoverController];
+  [_popoverController setDelegate:v6];
 
   [(WTWritingToolsController *)self setCurrentPromptEntryViewController:v6];
-  v24 = [(WTWritingToolsController *)self sourceResponderViewController];
-  v25 = [(WTWritingToolsController *)self currentPromptEntryViewController];
-  [v24 presentViewController:v25 animated:1 completion:0];
+  sourceResponderViewController2 = [(WTWritingToolsController *)self sourceResponderViewController];
+  currentPromptEntryViewController = [(WTWritingToolsController *)self currentPromptEntryViewController];
+  [sourceResponderViewController2 presentViewController:currentPromptEntryViewController animated:1 completion:0];
 }
 
 - (void)presentFullScreenViewController
@@ -4307,44 +4307,44 @@ void __59__WTWritingToolsController_presentFullScreenViewController__block_invok
   [v1 presentError:v2];
 }
 
-- (void)_dismissFullScreenViewControllerWithCompletion:(id)a3
+- (void)_dismissFullScreenViewControllerWithCompletion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WTWritingToolsController *)self fullScreenContainerViewController];
+  completionCopy = completion;
+  fullScreenContainerViewController = [(WTWritingToolsController *)self fullScreenContainerViewController];
 
-  if (v5)
+  if (fullScreenContainerViewController)
   {
     v6 = _WTVCLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(WTWritingToolsController *)self fullScreenContainerViewController];
-      v8 = [(WTWritingToolsController *)self sourceResponderViewController];
+      fullScreenContainerViewController2 = [(WTWritingToolsController *)self fullScreenContainerViewController];
+      sourceResponderViewController = [(WTWritingToolsController *)self sourceResponderViewController];
       *buf = 138412546;
-      v27 = v7;
+      v27 = fullScreenContainerViewController2;
       v28 = 2112;
-      v29 = v8;
+      v29 = sourceResponderViewController;
       _os_log_impl(&dword_1D451D000, v6, OS_LOG_TYPE_DEFAULT, "Requested dismissFullScreenViewController %@ (sourceResponderViewController: %@)", buf, 0x16u);
     }
   }
 
-  v9 = [(WTWritingToolsController *)self fullScreenContainerViewController];
-  if (!v9)
+  fullScreenContainerViewController3 = [(WTWritingToolsController *)self fullScreenContainerViewController];
+  if (!fullScreenContainerViewController3)
   {
     goto LABEL_10;
   }
 
-  v10 = v9;
-  v11 = [(WTWritingToolsController *)self fullScreenContainerViewController];
-  v12 = [v11 presentationController];
-  if ([v12 dismissed])
+  v10 = fullScreenContainerViewController3;
+  fullScreenContainerViewController4 = [(WTWritingToolsController *)self fullScreenContainerViewController];
+  presentationController = [fullScreenContainerViewController4 presentationController];
+  if ([presentationController dismissed])
   {
     goto LABEL_9;
   }
 
-  v13 = [(WTWritingToolsController *)self fullScreenContainerViewController];
-  v14 = [v13 presentationController];
-  if ([v14 dismissing])
+  fullScreenContainerViewController5 = [(WTWritingToolsController *)self fullScreenContainerViewController];
+  presentationController2 = [fullScreenContainerViewController5 presentationController];
+  if ([presentationController2 dismissing])
   {
 
 LABEL_9:
@@ -4356,26 +4356,26 @@ LABEL_10:
       _os_log_impl(&dword_1D451D000, v15, OS_LOG_TYPE_DEFAULT, "Skipping dismissFullScreenViewController due to already dismissing/dismissed", buf, 2u);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     goto LABEL_14;
   }
 
-  v16 = [(WTWritingToolsController *)self dismissingFullscreenViewController];
+  dismissingFullscreenViewController = [(WTWritingToolsController *)self dismissingFullscreenViewController];
 
-  if (v16)
+  if (dismissingFullscreenViewController)
   {
     goto LABEL_10;
   }
 
-  v17 = [(WTWritingToolsController *)self sourceResponderViewController];
-  v18 = [v17 presentedViewController];
+  sourceResponderViewController2 = [(WTWritingToolsController *)self sourceResponderViewController];
+  presentedViewController = [sourceResponderViewController2 presentedViewController];
 
-  v19 = [(WTWritingToolsController *)self fullScreenContainerViewController];
-  v20 = [v18 isEqual:v19];
+  fullScreenContainerViewController6 = [(WTWritingToolsController *)self fullScreenContainerViewController];
+  v20 = [presentedViewController isEqual:fullScreenContainerViewController6];
 
   if (v20)
   {
@@ -4386,14 +4386,14 @@ LABEL_10:
       [WTWritingToolsController _dismissFullScreenViewControllerWithCompletion:];
     }
 
-    v22 = [(WTWritingToolsController *)self sourceResponderViewController];
+    sourceResponderViewController3 = [(WTWritingToolsController *)self sourceResponderViewController];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __75__WTWritingToolsController__dismissFullScreenViewControllerWithCompletion___block_invoke;
     v24[3] = &unk_1E8480DD0;
     v24[4] = self;
-    v25 = v4;
-    [v22 dismissViewControllerAnimated:0 completion:v24];
+    v25 = completionCopy;
+    [sourceResponderViewController3 dismissViewControllerAnimated:0 completion:v24];
   }
 
   else
@@ -4404,9 +4404,9 @@ LABEL_10:
       [WTWritingToolsController _dismissFullScreenViewControllerWithCompletion:];
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -4433,44 +4433,44 @@ uint64_t __75__WTWritingToolsController__dismissFullScreenViewControllerWithComp
   return result;
 }
 
-- (void)_dismissSuggestionViewControllerWithCompletion:(id)a3
+- (void)_dismissSuggestionViewControllerWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _WTVCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(WTWritingToolsController *)self currentSuggestionViewController];
+    currentSuggestionViewController = [(WTWritingToolsController *)self currentSuggestionViewController];
     *buf = 138412290;
-    v21 = v6;
+    v21 = currentSuggestionViewController;
     _os_log_impl(&dword_1D451D000, v5, OS_LOG_TYPE_DEFAULT, "_dismissSuggestionViewController, %@", buf, 0xCu);
   }
 
-  v7 = [(WTWritingToolsController *)self currentSuggestionViewController];
-  if (!v7)
+  currentSuggestionViewController2 = [(WTWritingToolsController *)self currentSuggestionViewController];
+  if (!currentSuggestionViewController2)
   {
     goto LABEL_7;
   }
 
-  v8 = v7;
-  v9 = [(WTWritingToolsController *)self currentSuggestionViewController];
-  v10 = [v9 presentationController];
-  if ([v10 dismissed])
+  v8 = currentSuggestionViewController2;
+  currentSuggestionViewController3 = [(WTWritingToolsController *)self currentSuggestionViewController];
+  presentationController = [currentSuggestionViewController3 presentationController];
+  if ([presentationController dismissed])
   {
 
     goto LABEL_7;
   }
 
-  v11 = [(WTWritingToolsController *)self currentSuggestionViewController];
-  v12 = [v11 presentationController];
-  v13 = [v12 dismissing];
+  currentSuggestionViewController4 = [(WTWritingToolsController *)self currentSuggestionViewController];
+  presentationController2 = [currentSuggestionViewController4 presentationController];
+  dismissing = [presentationController2 dismissing];
 
-  if (v13)
+  if (dismissing)
   {
 LABEL_7:
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
 
     goto LABEL_19;
@@ -4486,7 +4486,7 @@ LABEL_7:
     [(WTWritingToolsController *)self sourceResponderViewController];
   }
   v14 = ;
-  v15 = [v14 presentedViewController];
+  presentedViewController = [v14 presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4497,7 +4497,7 @@ LABEL_7:
     v18[2] = __75__WTWritingToolsController__dismissSuggestionViewControllerWithCompletion___block_invoke;
     v18[3] = &unk_1E8480DD0;
     v18[4] = self;
-    v19 = v4;
+    v19 = completionCopy;
     [v14 dismissViewControllerAnimated:1 completion:v18];
   }
 
@@ -4509,9 +4509,9 @@ LABEL_7:
       [WTWritingToolsController _dismissSuggestionViewControllerWithCompletion:v14];
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -4554,37 +4554,37 @@ uint64_t __75__WTWritingToolsController__dismissSuggestionViewControllerWithComp
   return result;
 }
 
-- (void)dismissFormsheetViewControllerWithCompletion:(id)a3
+- (void)dismissFormsheetViewControllerWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WTWritingToolsController *)self formSheetViewController];
+  completionCopy = completion;
+  formSheetViewController = [(WTWritingToolsController *)self formSheetViewController];
 
-  if (v5)
+  if (formSheetViewController)
   {
     v6 = _WTVCLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(WTWritingToolsController *)self formSheetViewController];
-      v8 = [(WTWritingToolsController *)self formSheetViewController];
+      formSheetViewController2 = [(WTWritingToolsController *)self formSheetViewController];
+      formSheetViewController3 = [(WTWritingToolsController *)self formSheetViewController];
       *buf = 138412546;
-      v26 = v7;
+      v26 = formSheetViewController2;
       v27 = 2112;
-      v28 = v8;
+      v28 = formSheetViewController3;
       _os_log_impl(&dword_1D451D000, v6, OS_LOG_TYPE_DEFAULT, "Requested _dismissFormsheetViewControllerWithCompletion %@ (sourceResponderViewController: %@)", buf, 0x16u);
     }
   }
 
-  v9 = [(WTWritingToolsController *)self formSheetViewController];
-  if (!v9)
+  formSheetViewController4 = [(WTWritingToolsController *)self formSheetViewController];
+  if (!formSheetViewController4)
   {
     goto LABEL_9;
   }
 
-  v10 = v9;
-  v11 = [(WTWritingToolsController *)self formSheetViewController];
-  v12 = [v11 presentationController];
-  if ([v12 dismissed])
+  v10 = formSheetViewController4;
+  formSheetViewController5 = [(WTWritingToolsController *)self formSheetViewController];
+  presentationController = [formSheetViewController5 presentationController];
+  if ([presentationController dismissed])
   {
 
 LABEL_9:
@@ -4595,38 +4595,38 @@ LABEL_9:
       _os_log_impl(&dword_1D451D000, v16, OS_LOG_TYPE_DEFAULT, "Skipping dismissFormsheetViewControllerWithCompletion due to already dismissing/dismissed", buf, 2u);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
 
     goto LABEL_20;
   }
 
-  v13 = [(WTWritingToolsController *)self formSheetViewController];
-  v14 = [v13 presentationController];
-  v15 = [v14 dismissing];
+  formSheetViewController6 = [(WTWritingToolsController *)self formSheetViewController];
+  presentationController2 = [formSheetViewController6 presentationController];
+  dismissing = [presentationController2 dismissing];
 
-  if (v15)
+  if (dismissing)
   {
     goto LABEL_9;
   }
 
-  v17 = [(WTWritingToolsController *)self sourceResponderViewController];
-  v18 = [v17 presentedViewController];
+  sourceResponderViewController = [(WTWritingToolsController *)self sourceResponderViewController];
+  presentedViewController = [sourceResponderViewController presentedViewController];
 
-  v19 = [(WTWritingToolsController *)self formSheetViewController];
-  v20 = [v18 isEqual:v19];
+  formSheetViewController7 = [(WTWritingToolsController *)self formSheetViewController];
+  v20 = [presentedViewController isEqual:formSheetViewController7];
 
   if (v20)
   {
-    v21 = [(WTWritingToolsController *)self sourceResponderViewController];
+    sourceResponderViewController2 = [(WTWritingToolsController *)self sourceResponderViewController];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __73__WTWritingToolsController_dismissFormsheetViewControllerWithCompletion___block_invoke;
     v23[3] = &unk_1E8480E98;
-    v24 = v4;
-    [v21 dismissViewControllerAnimated:1 completion:v23];
+    v24 = completionCopy;
+    [sourceResponderViewController2 dismissViewControllerAnimated:1 completion:v23];
   }
 
   else
@@ -4637,9 +4637,9 @@ LABEL_9:
       [WTWritingToolsController _dismissFullScreenViewControllerWithCompletion:];
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -4667,8 +4667,8 @@ uint64_t __73__WTWritingToolsController_dismissFormsheetViewControllerWithComple
   }
 
   v4 = [WTFormSheetViewController alloc];
-  v5 = [(WTWritingToolsController *)self session];
-  v6 = [(WTFormSheetViewController *)v4 initWithWritingToolsController:self inSession:v5 formSheetUIType:1];
+  session = [(WTWritingToolsController *)self session];
+  v6 = [(WTFormSheetViewController *)v4 initWithWritingToolsController:self inSession:session formSheetUIType:1];
 
   [(WTFormSheetViewController *)v6 setModalPresentationStyle:2];
   [(WTWritingToolsController *)self setFormSheetViewController:v6];
@@ -4690,15 +4690,15 @@ void __43__WTWritingToolsController_enrollmentBegan__block_invoke(uint64_t a1)
   [v2 presentViewController:*(a1 + 40) animated:1 completion:0];
 }
 
-- (void)enrollmentDismissedWithCompletion:(id)a3
+- (void)enrollmentDismissedWithCompletion:(id)completion
 {
-  v4 = [(WTWritingToolsController *)self sourceResponderViewController];
+  sourceResponderViewController = [(WTWritingToolsController *)self sourceResponderViewController];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __62__WTWritingToolsController_enrollmentDismissedWithCompletion___block_invoke;
   v5[3] = &unk_1E8480BF8;
   v5[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  [sourceResponderViewController dismissViewControllerAnimated:1 completion:v5];
 }
 
 uint64_t __62__WTWritingToolsController_enrollmentDismissedWithCompletion___block_invoke(uint64_t a1)
@@ -4752,31 +4752,31 @@ uint64_t __62__WTWritingToolsController_enrollmentDismissedWithCompletion___bloc
   return [v8 dismissFormsheetViewControllerWithCompletion:v9];
 }
 
-- (void)triggerShareSheetWithText:(id)a3
+- (void)triggerShareSheetWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = [WTFormSheetViewController alloc];
-  v6 = [(WTWritingToolsController *)self session];
-  v8 = [(WTFormSheetViewController *)v5 initWithWritingToolsController:self inSession:v6 formSheetUIType:2 shareSheetPayload:v4];
+  session = [(WTWritingToolsController *)self session];
+  v8 = [(WTFormSheetViewController *)v5 initWithWritingToolsController:self inSession:session formSheetUIType:2 shareSheetPayload:textCopy];
 
   [(WTFormSheetViewController *)v8 setModalPresentationStyle:-2];
   [(WTWritingToolsController *)self setFormSheetViewController:v8];
   [(WTWritingToolsController *)self setPresentingFormSheet:1];
   [(WTWritingToolsController *)self endWritingTools];
-  v7 = [(WTWritingToolsController *)self sourceResponderViewController];
-  [v7 presentViewController:v8 animated:1 completion:0];
+  sourceResponderViewController = [(WTWritingToolsController *)self sourceResponderViewController];
+  [sourceResponderViewController presentViewController:v8 animated:1 completion:0];
 }
 
 - (void)dismissShareSheet
 {
   [(WTWritingToolsController *)self setEndingSharingSession:1];
-  v3 = [(WTWritingToolsController *)self sourceResponderViewController];
+  sourceResponderViewController = [(WTWritingToolsController *)self sourceResponderViewController];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __45__WTWritingToolsController_dismissShareSheet__block_invoke;
   v4[3] = &unk_1E8480BF8;
   v4[4] = self;
-  [v3 dismissViewControllerAnimated:1 completion:v4];
+  [sourceResponderViewController dismissViewControllerAnimated:1 completion:v4];
 }
 
 uint64_t __45__WTWritingToolsController_dismissShareSheet__block_invoke(uint64_t a1)
@@ -4791,49 +4791,49 @@ uint64_t __45__WTWritingToolsController_dismissShareSheet__block_invoke(uint64_t
 - (void)_dismissPromptEntryViewController
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(WTWritingToolsController *)self currentPromptEntryViewController];
+  currentPromptEntryViewController = [(WTWritingToolsController *)self currentPromptEntryViewController];
 
-  if (v3)
+  if (currentPromptEntryViewController)
   {
     v4 = _WTVCLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(WTWritingToolsController *)self currentPromptEntryViewController];
+      currentPromptEntryViewController2 = [(WTWritingToolsController *)self currentPromptEntryViewController];
       *buf = 138412290;
-      v15 = v5;
+      v15 = currentPromptEntryViewController2;
       _os_log_impl(&dword_1D451D000, v4, OS_LOG_TYPE_DEFAULT, "__dismissPromptEntryViewController, %@", buf, 0xCu);
     }
   }
 
   [(WTWritingToolsController *)self setPresentingPromptEntry:0];
-  v6 = [(WTWritingToolsController *)self currentPromptEntryViewController];
-  if (v6)
+  currentPromptEntryViewController3 = [(WTWritingToolsController *)self currentPromptEntryViewController];
+  if (currentPromptEntryViewController3)
   {
-    v7 = v6;
-    v8 = [(WTWritingToolsController *)self currentPromptEntryViewController];
-    v9 = [v8 presentationController];
-    if ([v9 dismissed])
+    sourceResponderViewController = currentPromptEntryViewController3;
+    currentPromptEntryViewController4 = [(WTWritingToolsController *)self currentPromptEntryViewController];
+    presentationController = [currentPromptEntryViewController4 presentationController];
+    if ([presentationController dismissed])
     {
     }
 
     else
     {
-      v10 = [(WTWritingToolsController *)self currentPromptEntryViewController];
-      v11 = [v10 presentationController];
-      v12 = [v11 dismissing];
+      currentPromptEntryViewController5 = [(WTWritingToolsController *)self currentPromptEntryViewController];
+      presentationController2 = [currentPromptEntryViewController5 presentationController];
+      dismissing = [presentationController2 dismissing];
 
-      if (v12)
+      if (dismissing)
       {
         return;
       }
 
-      v7 = [(WTWritingToolsController *)self sourceResponderViewController];
+      sourceResponderViewController = [(WTWritingToolsController *)self sourceResponderViewController];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __61__WTWritingToolsController__dismissPromptEntryViewController__block_invoke;
       v13[3] = &unk_1E8480BF8;
       v13[4] = self;
-      [v7 dismissViewControllerAnimated:1 completion:v13];
+      [sourceResponderViewController dismissViewControllerAnimated:1 completion:v13];
     }
   }
 }
@@ -4851,62 +4851,62 @@ uint64_t __61__WTWritingToolsController__dismissPromptEntryViewController__block
 
 - (BOOL)_wantsInlineEditing
 {
-  v3 = [(WTWritingToolsController *)self writingToolsDelegate];
+  writingToolsDelegate = [(WTWritingToolsController *)self writingToolsDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WTWritingToolsController *)self writingToolsDelegate];
-    v6 = [v5 writingToolsBehavior];
+    writingToolsDelegate2 = [(WTWritingToolsController *)self writingToolsDelegate];
+    writingToolsBehavior = [writingToolsDelegate2 writingToolsBehavior];
 
-    if (v6 == 2)
+    if (writingToolsBehavior == 2)
     {
       return 0;
     }
   }
 
-  v8 = [(WTWritingToolsController *)self writingToolsDelegate];
-  if (v8)
+  writingToolsDelegate3 = [(WTWritingToolsController *)self writingToolsDelegate];
+  if (writingToolsDelegate3)
   {
-    v7 = [(WTWritingToolsController *)self _isEditableResponder];
+    _isEditableResponder = [(WTWritingToolsController *)self _isEditableResponder];
   }
 
   else
   {
-    v7 = 0;
+    _isEditableResponder = 0;
   }
 
-  return v7;
+  return _isEditableResponder;
 }
 
 - (BOOL)_isEditableResponder
 {
-  v3 = [(WTWritingToolsController *)self beTextInput];
-  v4 = [v3 isEditable];
+  beTextInput = [(WTWritingToolsController *)self beTextInput];
+  isEditable = [beTextInput isEditable];
 
-  if (v4)
+  if (isEditable)
   {
     return 1;
   }
 
-  v6 = [(WTWritingToolsController *)self sourceTextInput];
+  sourceTextInput = [(WTWritingToolsController *)self sourceTextInput];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(WTWritingToolsController *)self sourceTextInput];
-    v5 = ([v8 isEditable] & 1) != 0 || -[WTWritingToolsController isPresentingPopoverFromEditableResponder](self, "isPresentingPopoverFromEditableResponder");
+    sourceTextInput2 = [(WTWritingToolsController *)self sourceTextInput];
+    v5 = ([sourceTextInput2 isEditable] & 1) != 0 || -[WTWritingToolsController isPresentingPopoverFromEditableResponder](self, "isPresentingPopoverFromEditableResponder");
     goto LABEL_9;
   }
 
-  v9 = [(WTWritingToolsController *)self sourceResponder];
-  v10 = [v9 _textInteraction];
+  sourceResponder = [(WTWritingToolsController *)self sourceResponder];
+  _textInteraction = [sourceResponder _textInteraction];
 
-  if (v10)
+  if (_textInteraction)
   {
-    v8 = [(WTWritingToolsController *)self sourceResponder];
-    v11 = [v8 _textInteraction];
-    v5 = [v11 textInteractionMode] == 0;
+    sourceTextInput2 = [(WTWritingToolsController *)self sourceResponder];
+    _textInteraction2 = [sourceTextInput2 _textInteraction];
+    v5 = [_textInteraction2 textInteractionMode] == 0;
 
 LABEL_9:
     return v5;
@@ -4915,32 +4915,32 @@ LABEL_9:
   return 1;
 }
 
-- (void)_presentMainPopoverViewControllerWithCompletion:(id)a3
+- (void)_presentMainPopoverViewControllerWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WTWritingToolsController *)self currentSuggestionViewController];
+  completionCopy = completion;
+  currentSuggestionViewController = [(WTWritingToolsController *)self currentSuggestionViewController];
 
-  if (v5)
+  if (currentSuggestionViewController)
   {
     [(WTWritingToolsController *)self _dismissSuggestionViewControllerWithCompletion:0];
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
-    [v6 addVisibilityObserver:self];
+    activeKeyboardSceneDelegate = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
+    [activeKeyboardSceneDelegate addVisibilityObserver:self];
 
-    v7 = [(WTWritingToolsController *)self sourceResponderViewController];
+    sourceResponderViewController = [(WTWritingToolsController *)self sourceResponderViewController];
     v8 = _WTVCLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v7;
+      v17 = sourceResponderViewController;
       _os_log_impl(&dword_1D451D000, v8, OS_LOG_TYPE_DEFAULT, "presentViewController in _updateWritingToolsSheetSuppression from %@", buf, 0xCu);
     }
 
@@ -4948,19 +4948,19 @@ LABEL_9:
     v10 = [[WTMainPopoverViewController alloc] initWithWritingToolsController:self startupOptions:v9];
     [(WTWritingToolsController *)self setMainPopoverViewController:v10];
 
-    v11 = [(WTWritingToolsController *)self mainPopoverViewController];
-    [v11 setPresenting:1];
+    mainPopoverViewController = [(WTWritingToolsController *)self mainPopoverViewController];
+    [mainPopoverViewController setPresenting:1];
 
     [(WTWritingToolsController *)self _updatePopoverAnchoring];
     objc_initWeak(buf, self);
-    v12 = [(WTWritingToolsController *)self mainPopoverViewController];
+    mainPopoverViewController2 = [(WTWritingToolsController *)self mainPopoverViewController];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __76__WTWritingToolsController__presentMainPopoverViewControllerWithCompletion___block_invoke;
     v13[3] = &unk_1E8480F88;
     objc_copyWeak(&v15, buf);
-    v14 = v4;
-    [v7 presentViewController:v12 animated:1 completion:v13];
+    v14 = completionCopy;
+    [sourceResponderViewController presentViewController:mainPopoverViewController2 animated:1 completion:v13];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(buf);
@@ -4986,19 +4986,19 @@ uint64_t __76__WTWritingToolsController__presentMainPopoverViewControllerWithCom
 
 - (unint64_t)_resultOptions
 {
-  v3 = [(WTWritingToolsController *)self writingToolsDelegate];
+  writingToolsDelegate = [(WTWritingToolsController *)self writingToolsDelegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(WTWritingToolsController *)self writingToolsDelegate];
-    v6 = [v5 resultOptions];
+    writingToolsDelegate2 = [(WTWritingToolsController *)self writingToolsDelegate];
+    resultOptions = [writingToolsDelegate2 resultOptions];
   }
 
   else
   {
-    v7 = [(WTWritingToolsController *)self sourceTextInput];
+    sourceTextInput = [(WTWritingToolsController *)self sourceTextInput];
     v8 = objc_opt_respondsToSelector();
 
     if ((v8 & 1) == 0)
@@ -5006,53 +5006,53 @@ uint64_t __76__WTWritingToolsController__presentMainPopoverViewControllerWithCom
       return 0;
     }
 
-    v5 = [(WTWritingToolsController *)self sourceTextInput];
-    v6 = [v5 allowedWritingToolsResultOptions];
+    writingToolsDelegate2 = [(WTWritingToolsController *)self sourceTextInput];
+    resultOptions = [writingToolsDelegate2 allowedWritingToolsResultOptions];
   }
 
-  v9 = v6;
+  v9 = resultOptions;
 
   return v9;
 }
 
-- (id)_startupOptionsForSceneHostedViewControllerForRequestedTool:(int64_t)a3 isForInputDashboard:(BOOL)a4 isForAssistant:(BOOL)a5
+- (id)_startupOptionsForSceneHostedViewControllerForRequestedTool:(int64_t)tool isForInputDashboard:(BOOL)dashboard isForAssistant:(BOOL)assistant
 {
-  v5 = a5;
-  v6 = a4;
+  assistantCopy = assistant;
+  dashboardCopy = dashboard;
   v9 = objc_alloc_init(_TtC14WritingToolsUI16WTStartupOptions);
-  [(WTStartupOptions *)v9 setRequestedTool:a3];
-  v10 = [(WTWritingToolsController *)self session];
-  v11 = [v10 uuid];
-  [(WTStartupOptions *)v9 setSessionUUID:v11];
+  [(WTStartupOptions *)v9 setRequestedTool:tool];
+  session = [(WTWritingToolsController *)self session];
+  uuid = [session uuid];
+  [(WTStartupOptions *)v9 setSessionUUID:uuid];
 
-  v12 = [(WTWritingToolsController *)self analyticsUUID];
-  [(WTStartupOptions *)v9 setAnalyticsUUID:v12];
+  analyticsUUID = [(WTWritingToolsController *)self analyticsUUID];
+  [(WTStartupOptions *)v9 setAnalyticsUUID:analyticsUUID];
 
-  v13 = [MEMORY[0x1E69DC938] currentDevice];
-  -[WTStartupOptions setSourceUserInterfaceIdiom:](v9, "setSourceUserInterfaceIdiom:", [v13 userInterfaceIdiom]);
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  -[WTStartupOptions setSourceUserInterfaceIdiom:](v9, "setSourceUserInterfaceIdiom:", [currentDevice userInterfaceIdiom]);
 
-  v14 = [(WTWritingToolsController *)self beTextInput];
-  if (v14)
+  beTextInput = [(WTWritingToolsController *)self beTextInput];
+  if (beTextInput)
   {
     [(WTStartupOptions *)v9 setIsWebKitView:1];
   }
 
   else
   {
-    v15 = [(WTWritingToolsController *)self sourceTextInput];
-    -[WTStartupOptions setIsWebKitView:](v9, "setIsWebKitView:", [v15 conformsToProtocol:&unk_1F4FEE360]);
+    sourceTextInput = [(WTWritingToolsController *)self sourceTextInput];
+    -[WTStartupOptions setIsWebKitView:](v9, "setIsWebKitView:", [sourceTextInput conformsToProtocol:&unk_1F4FEE360]);
   }
 
-  v16 = [(WTWritingToolsController *)self writingToolsDelegate];
+  writingToolsDelegate = [(WTWritingToolsController *)self writingToolsDelegate];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [(WTWritingToolsController *)self writingToolsDelegate];
-    -[WTStartupOptions setIncludesTextListMarkers:](v9, "setIncludesTextListMarkers:", [v18 includesTextListMarkers]);
+    writingToolsDelegate2 = [(WTWritingToolsController *)self writingToolsDelegate];
+    -[WTStartupOptions setIncludesTextListMarkers:](v9, "setIncludesTextListMarkers:", [writingToolsDelegate2 includesTextListMarkers]);
   }
 
-  if (v6)
+  if (dashboardCopy)
   {
     [(WTStartupOptions *)v9 setIsForInputDashboard:1];
     [(WTStartupOptions *)v9 setEditable:1];
@@ -5062,14 +5062,14 @@ uint64_t __76__WTWritingToolsController__presentMainPopoverViewControllerWithCom
   else
   {
     [(WTStartupOptions *)v9 setHandoffOriginatorTool:[(WTWritingToolsController *)self handoffOriginatorTool]];
-    v19 = [(WTWritingToolsController *)self prompt];
-    [(WTStartupOptions *)v9 setPrompt:v19];
+    prompt = [(WTWritingToolsController *)self prompt];
+    [(WTStartupOptions *)v9 setPrompt:prompt];
 
     [(WTStartupOptions *)v9 setEditable:[(WTWritingToolsController *)self _isEditableResponder]];
     [(WTStartupOptions *)v9 setWantsInlineEditing:[(WTWritingToolsController *)self _wantsInlineEditing]];
-    v20 = [(WTWritingToolsController *)self sourceResponderViewController];
-    v21 = [v20 traitCollection];
-    -[WTStartupOptions setSourceResponderHorizontalSizeClass:](v9, "setSourceResponderHorizontalSizeClass:", [v21 horizontalSizeClass]);
+    sourceResponderViewController = [(WTWritingToolsController *)self sourceResponderViewController];
+    traitCollection = [sourceResponderViewController traitCollection];
+    -[WTStartupOptions setSourceResponderHorizontalSizeClass:](v9, "setSourceResponderHorizontalSizeClass:", [traitCollection horizontalSizeClass]);
 
     [(WTStartupOptions *)v9 setIsWindowingModeEnabled:[(WTWritingToolsController *)self isWindowingModeEnabled]];
     [(WTStartupOptions *)v9 setAllowedResultOptions:[(WTWritingToolsController *)self _resultOptions]];
@@ -5087,58 +5087,58 @@ uint64_t __76__WTWritingToolsController__presentMainPopoverViewControllerWithCom
     }
   }
 
-  if (a3 == 101)
+  if (tool == 101)
   {
     goto LABEL_16;
   }
 
-  if (a3 == 1)
+  if (tool == 1)
   {
-    [(WTStartupOptions *)v9 setIsForAssistant:v5];
+    [(WTStartupOptions *)v9 setIsForAssistant:assistantCopy];
   }
 
-  if (!v6)
+  if (!dashboardCopy)
   {
 LABEL_16:
-    v22 = [(WTWritingToolsController *)self smartReplyConfig];
-    [(WTStartupOptions *)v9 setSmartReplyConfiguration:v22];
+    smartReplyConfig = [(WTWritingToolsController *)self smartReplyConfig];
+    [(WTStartupOptions *)v9 setSmartReplyConfiguration:smartReplyConfig];
   }
 
-  v23 = [(WTWritingToolsController *)self sourceResponder];
-  -[WTStartupOptions setSourceDataOwnerForCopy:](v9, "setSourceDataOwnerForCopy:", [v23 _dataOwnerForCopy]);
+  sourceResponder = [(WTWritingToolsController *)self sourceResponder];
+  -[WTStartupOptions setSourceDataOwnerForCopy:](v9, "setSourceDataOwnerForCopy:", [sourceResponder _dataOwnerForCopy]);
 
-  v24 = [(WTWritingToolsController *)self sourceResponder];
-  -[WTStartupOptions setSourceDataOwnerForPaste:](v9, "setSourceDataOwnerForPaste:", [v24 _dataOwnerForPaste]);
+  sourceResponder2 = [(WTWritingToolsController *)self sourceResponder];
+  -[WTStartupOptions setSourceDataOwnerForPaste:](v9, "setSourceDataOwnerForPaste:", [sourceResponder2 _dataOwnerForPaste]);
 
-  v25 = [(WTWritingToolsController *)self sourceResponder];
-  -[WTStartupOptions setSourceDataOwnerForDrag:](v9, "setSourceDataOwnerForDrag:", [v25 _dragDataOwner]);
+  sourceResponder3 = [(WTWritingToolsController *)self sourceResponder];
+  -[WTStartupOptions setSourceDataOwnerForDrag:](v9, "setSourceDataOwnerForDrag:", [sourceResponder3 _dragDataOwner]);
 
-  v26 = [(WTWritingToolsController *)self sourceResponder];
-  -[WTStartupOptions setSourceDataOwnerForDrop:](v9, "setSourceDataOwnerForDrop:", [v26 _dropDataOwner]);
+  sourceResponder4 = [(WTWritingToolsController *)self sourceResponder];
+  -[WTStartupOptions setSourceDataOwnerForDrop:](v9, "setSourceDataOwnerForDrop:", [sourceResponder4 _dropDataOwner]);
 
   return v9;
 }
 
 - (id)_textViewDelegate
 {
-  v3 = [(WTWritingToolsController *)self mainPopoverViewController];
+  mainPopoverViewController = [(WTWritingToolsController *)self mainPopoverViewController];
 
-  if (v3)
+  if (mainPopoverViewController)
   {
-    v4 = [(WTWritingToolsController *)self mainPopoverViewController];
+    mainPopoverViewController2 = [(WTWritingToolsController *)self mainPopoverViewController];
   }
 
   else
   {
-    v5 = [(WTWritingToolsController *)self _inputDashboardViewController];
-    v4 = v5;
-    if (v5)
+    _inputDashboardViewController = [(WTWritingToolsController *)self _inputDashboardViewController];
+    mainPopoverViewController2 = _inputDashboardViewController;
+    if (_inputDashboardViewController)
     {
-      v6 = v5;
+      v6 = _inputDashboardViewController;
     }
   }
 
-  return v4;
+  return mainPopoverViewController2;
 }
 
 - (WTWritingToolsDelegate)writingToolsDelegate

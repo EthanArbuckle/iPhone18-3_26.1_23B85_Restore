@@ -1,10 +1,10 @@
 @interface RMModelStatusManagementClientCapabilities_SupportedPayloads
 + (NSSet)allowedStatusKeys;
-+ (id)buildRequiredOnlyWithDeclarations:(id)a3 statusItems:(id)a4;
-+ (id)buildWithDeclarations:(id)a3 statusItems:(id)a4;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithDeclarations:(id)declarations statusItems:(id)items;
++ (id)buildWithDeclarations:(id)declarations statusItems:(id)items;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelStatusManagementClientCapabilities_SupportedPayloads
@@ -23,36 +23,36 @@
   return v4;
 }
 
-+ (id)buildWithDeclarations:(id)a3 statusItems:(id)a4
++ (id)buildWithDeclarations:(id)declarations statusItems:(id)items
 {
-  v5 = a4;
-  v6 = a3;
+  itemsCopy = items;
+  declarationsCopy = declarations;
   v7 = objc_opt_new();
-  [v7 setStatusDeclarations:v6];
+  [v7 setStatusDeclarations:declarationsCopy];
 
-  [v7 setStatusStatusItems:v5];
+  [v7 setStatusStatusItems:itemsCopy];
 
   return v7;
 }
 
-+ (id)buildRequiredOnlyWithDeclarations:(id)a3 statusItems:(id)a4
++ (id)buildRequiredOnlyWithDeclarations:(id)declarations statusItems:(id)items
 {
-  v5 = a4;
-  v6 = a3;
+  itemsCopy = items;
+  declarationsCopy = declarations;
   v7 = objc_opt_new();
-  [v7 setStatusDeclarations:v6];
+  [v7 setStatusDeclarations:declarationsCopy];
 
-  [v7 setStatusStatusItems:v5];
+  [v7 setStatusStatusItems:itemsCopy];
 
   return v7;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelStatusManagementClientCapabilities_SupportedPayloads allowedStatusKeys];
   [v11 minusSet:v12];
@@ -60,10 +60,10 @@
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  LOWORD(v16) = a4;
-  if ([(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"declarations" forKeyPath:@"statusDeclarations" classType:objc_opt_class() isRequired:1 defaultValue:0 serializationType:v16 error:a5])
+  LOWORD(v16) = type;
+  if ([(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"declarations" forKeyPath:@"statusDeclarations" classType:objc_opt_class() isRequired:1 defaultValue:0 serializationType:v16 error:error])
   {
-    v14 = [(RMModelPayloadBase *)self loadArrayFromDictionary:v8 usingKey:@"status-items" forKeyPath:@"statusStatusItems" validator:&__block_literal_global_127 isRequired:1 defaultValue:0 error:a5];
+    v14 = [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"status-items" forKeyPath:@"statusStatusItems" validator:&__block_literal_global_127 isRequired:1 defaultValue:0 error:error];
   }
 
   else
@@ -74,30 +74,30 @@
   return v14;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelStatusManagementClientCapabilities_SupportedPayloads *)self statusDeclarations];
+  statusDeclarations = [(RMModelStatusManagementClientCapabilities_SupportedPayloads *)self statusDeclarations];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __81__RMModelStatusManagementClientCapabilities_SupportedPayloads_serializeWithType___block_invoke;
   v10[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v11 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"declarations" value:v6 dictSerializer:v10 isRequired:1 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"declarations" value:statusDeclarations dictSerializer:v10 isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelStatusManagementClientCapabilities_SupportedPayloads *)self statusStatusItems];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"status-items" value:v7 itemSerializer:&__block_literal_global_129 isRequired:1 defaultValue:0];
+  statusStatusItems = [(RMModelStatusManagementClientCapabilities_SupportedPayloads *)self statusStatusItems];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"status-items" value:statusStatusItems itemSerializer:&__block_literal_global_129 isRequired:1 defaultValue:0];
 
   v8 = [v5 copy];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelStatusManagementClientCapabilities_SupportedPayloads;
-  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:zone];
   v5 = [(RMModelStatusManagementClientCapabilities_SupportedPayloadsDeclarations *)self->_statusDeclarations copy];
   v6 = v4[2];
   v4[2] = v5;

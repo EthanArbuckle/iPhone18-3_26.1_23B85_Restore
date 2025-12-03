@@ -2,11 +2,11 @@
 + (NSArray)deselectedCalendarIdentifiers;
 + (NSArray)unselectedCalendarIdentifiersForFocusMode;
 + (id)_defaultQueue;
-+ (id)reminderCalendarInEventStore:(id)a3;
-+ (id)unselectedCalendarsForFocusModeInEventStore:(id)a3;
-+ (void)setUnselectedCalendarIdentifiersForFocusMode:(id)a3;
-- (EKCalendarVisibilityManager)initWithEventStore:(id)a3 limitedToSource:(id)a4 visibilityChangedCallback:(id)a5 queue:(id)a6 activate:(BOOL)a7;
-- (id)_calendarsThatAreVisible:(BOOL)a3 filteredByIdentity:(BOOL)a4;
++ (id)reminderCalendarInEventStore:(id)store;
++ (id)unselectedCalendarsForFocusModeInEventStore:(id)store;
++ (void)setUnselectedCalendarIdentifiersForFocusMode:(id)mode;
+- (EKCalendarVisibilityManager)initWithEventStore:(id)store limitedToSource:(id)source visibilityChangedCallback:(id)callback queue:(id)queue activate:(BOOL)activate;
+- (id)_calendarsThatAreVisible:(BOOL)visible filteredByIdentity:(BOOL)identity;
 - (id)_deselectedCalendarIdentifiers;
 - (void)activate;
 - (void)deactivate;
@@ -18,10 +18,10 @@
 - (id)_deselectedCalendarIdentifiers
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() deselectedCalendarIdentifiers];
-  if (v3)
+  deselectedCalendarIdentifiers = [objc_opt_class() deselectedCalendarIdentifiers];
+  if (deselectedCalendarIdentifiers)
   {
-    v4 = v3;
+    v4 = deselectedCalendarIdentifiers;
     v5 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEFAULT))
     {
@@ -40,22 +40,22 @@
   else
   {
     v9 = +[EKPreferences shared];
-    v10 = [v9 selectedCalendarIdentifiers];
+    selectedCalendarIdentifiers = [v9 selectedCalendarIdentifiers];
 
     v11 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_INFO))
     {
       v12 = v11;
       *buf = 134217984;
-      v39 = [v10 count];
+      v39 = [selectedCalendarIdentifiers count];
       _os_log_impl(&dword_1A805E000, v12, OS_LOG_TYPE_INFO, "Store contains [%lu] selectedCalendarIdentifiers", buf, 0xCu);
     }
 
-    if (v10)
+    if (selectedCalendarIdentifiers)
     {
-      v32 = v10;
-      v13 = [(EKCalendarVisibilityManager *)self eventStore];
-      v14 = [v13 calendarsForEntityType:0];
+      v32 = selectedCalendarIdentifiers;
+      eventStore = [(EKCalendarVisibilityManager *)self eventStore];
+      v14 = [eventStore calendarsForEntityType:0];
 
       v15 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v33 = 0u;
@@ -78,10 +78,10 @@
             }
 
             v21 = *(*(&v33 + 1) + 8 * i);
-            v22 = [v21 calendarIdentifier];
-            if (v22)
+            calendarIdentifier = [v21 calendarIdentifier];
+            if (calendarIdentifier)
             {
-              [v15 addObject:v22];
+              [v15 addObject:calendarIdentifier];
             }
 
             else
@@ -102,23 +102,23 @@
         while (v18);
       }
 
-      v10 = v32;
+      selectedCalendarIdentifiers = v32;
       v24 = [MEMORY[0x1E695DFD8] setWithArray:v32];
       [v15 minusSet:v24];
-      v25 = [v15 allObjects];
+      allObjects = [v15 allObjects];
       v26 = EKLogHandle;
       if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         v27 = v26;
-        v28 = [v25 count];
+        v28 = [allObjects count];
         *buf = 134218242;
         v39 = v28;
         v40 = 2112;
-        v41 = v25;
+        v41 = allObjects;
         _os_log_impl(&dword_1A805E000, v27, OS_LOG_TYPE_DEFAULT, "Returning [%lu] computed deselectedCalendarIdentifiers: %@", buf, 0x16u);
       }
 
-      v7 = v25;
+      v7 = allObjects;
 
       v8 = v7;
     }
@@ -145,9 +145,9 @@
 + (NSArray)deselectedCalendarIdentifiers
 {
   v2 = +[EKPreferences shared];
-  v3 = [v2 deselectedCalendarIdentifiers];
+  deselectedCalendarIdentifiers = [v2 deselectedCalendarIdentifiers];
 
-  return v3;
+  return deselectedCalendarIdentifiers;
 }
 
 void __44__EKCalendarVisibilityManager__defaultQueue__block_invoke()
@@ -173,9 +173,9 @@ void __44__EKCalendarVisibilityManager__defaultQueue__block_invoke()
 + (NSArray)unselectedCalendarIdentifiersForFocusMode
 {
   v2 = +[EKPreferences shared];
-  v3 = [v2 unselectedCalendarIdentifiersForFocusMode];
+  unselectedCalendarIdentifiersForFocusMode = [v2 unselectedCalendarIdentifiersForFocusMode];
 
-  return v3;
+  return unselectedCalendarIdentifiersForFocusMode;
 }
 
 - (void)dealloc
@@ -189,32 +189,32 @@ void __44__EKCalendarVisibilityManager__defaultQueue__block_invoke()
 - (void)deactivate
 {
   [(EKCalendarVisibilityManager *)self setActive:0];
-  v3 = [(EKCalendarVisibilityManager *)self notificationListener];
-  [v3 deactivate];
+  notificationListener = [(EKCalendarVisibilityManager *)self notificationListener];
+  [notificationListener deactivate];
 }
 
-- (EKCalendarVisibilityManager)initWithEventStore:(id)a3 limitedToSource:(id)a4 visibilityChangedCallback:(id)a5 queue:(id)a6 activate:(BOOL)a7
+- (EKCalendarVisibilityManager)initWithEventStore:(id)store limitedToSource:(id)source visibilityChangedCallback:(id)callback queue:(id)queue activate:(BOOL)activate
 {
-  v7 = a7;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  activateCopy = activate;
+  storeCopy = store;
+  sourceCopy = source;
+  callbackCopy = callback;
+  queueCopy = queue;
   v32.receiver = self;
   v32.super_class = EKCalendarVisibilityManager;
   v17 = [(EKCalendarVisibilityManager *)&v32 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_eventStore, a3);
-    v19 = _Block_copy(v15);
+    objc_storeStrong(&v17->_eventStore, store);
+    v19 = _Block_copy(callbackCopy);
     visibilityChangedCallback = v18->_visibilityChangedCallback;
     v18->_visibilityChangedCallback = v19;
 
-    objc_storeStrong(&v18->_limitedToSource, a4);
-    if (v16)
+    objc_storeStrong(&v18->_limitedToSource, source);
+    if (queueCopy)
     {
-      if (!v15)
+      if (!callbackCopy)
       {
         goto LABEL_9;
       }
@@ -222,8 +222,8 @@ void __44__EKCalendarVisibilityManager__defaultQueue__block_invoke()
 
     else
     {
-      v16 = [objc_opt_class() _defaultQueue];
-      if (!v15)
+      queueCopy = [objc_opt_class() _defaultQueue];
+      if (!callbackCopy)
       {
         goto LABEL_9;
       }
@@ -231,17 +231,17 @@ void __44__EKCalendarVisibilityManager__defaultQueue__block_invoke()
 
     objc_initWeak(&location, v18);
     v21 = objc_alloc(MEMORY[0x1E6992F60]);
-    v22 = [objc_opt_class() visibilityChangedNotificationName];
+    visibilityChangedNotificationName = [objc_opt_class() visibilityChangedNotificationName];
     v26 = MEMORY[0x1E69E9820];
     v27 = 3221225472;
     v28 = __107__EKCalendarVisibilityManager_initWithEventStore_limitedToSource_visibilityChangedCallback_queue_activate___block_invoke;
     v29 = &unk_1E77FD3F0;
     objc_copyWeak(&v30, &location);
-    v23 = [v21 initWithNotificationName:v22 callback:&v26 queue:v16];
+    v23 = [v21 initWithNotificationName:visibilityChangedNotificationName callback:&v26 queue:queueCopy];
     notificationListener = v18->_notificationListener;
     v18->_notificationListener = v23;
 
-    if (v7)
+    if (activateCopy)
     {
       [(EKCalendarVisibilityManager *)v18 activate:v26];
     }
@@ -275,28 +275,28 @@ void __107__EKCalendarVisibilityManager_initWithEventStore_limitedToSource_visib
 - (void)activate
 {
   [(EKCalendarVisibilityManager *)self setActive:1];
-  v3 = [(EKCalendarVisibilityManager *)self notificationListener];
-  [v3 activate];
+  notificationListener = [(EKCalendarVisibilityManager *)self notificationListener];
+  [notificationListener activate];
 }
 
-- (id)_calendarsThatAreVisible:(BOOL)a3 filteredByIdentity:(BOOL)a4
+- (id)_calendarsThatAreVisible:(BOOL)visible filteredByIdentity:(BOOL)identity
 {
-  v5 = a3;
+  visibleCopy = visible;
   v56 = *MEMORY[0x1E69E9840];
-  v7 = [(EKCalendarVisibilityManager *)self eventStore];
-  v8 = [v7 calendarsForEntityType:0];
+  eventStore = [(EKCalendarVisibilityManager *)self eventStore];
+  v8 = [eventStore calendarsForEntityType:0];
 
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __75__EKCalendarVisibilityManager__calendarsThatAreVisible_filteredByIdentity___block_invoke;
   v39[3] = &unk_1E7800610;
-  v40 = a4;
+  identityCopy = identity;
   v39[4] = self;
   v9 = [MEMORY[0x1E696AE18] predicateWithBlock:v39];
   v10 = [v8 filteredArrayUsingPredicate:v9];
 
-  v29 = [(EKCalendarVisibilityManager *)self _deselectedCalendarIdentifiers];
-  v11 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v29];
+  _deselectedCalendarIdentifiers = [(EKCalendarVisibilityManager *)self _deselectedCalendarIdentifiers];
+  v11 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:_deselectedCalendarIdentifiers];
   v30 = v8;
   v34 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
   v35 = 0u;
@@ -331,18 +331,18 @@ void __107__EKCalendarVisibilityManager_initWithEventStore_limitedToSource_visib
       }
 
       v18 = *(*(&v35 + 1) + 8 * v17);
-      v19 = [v18 calendarIdentifier];
-      if (v19)
+      calendarIdentifier = [v18 calendarIdentifier];
+      if (calendarIdentifier)
       {
-        if ([v11 containsObject:v19])
+        if ([v11 containsObject:calendarIdentifier])
         {
-          if (v5)
+          if (visibleCopy)
           {
             goto LABEL_18;
           }
         }
 
-        else if (!v5)
+        else if (!visibleCopy)
         {
           goto LABEL_18;
         }
@@ -398,7 +398,7 @@ LABEL_26:
   {
     v23 = v22;
     v24 = [v34 count];
-    if (v5)
+    if (visibleCopy)
     {
       v25 = @"visibleCalendars";
     }
@@ -462,21 +462,21 @@ uint64_t __75__EKCalendarVisibilityManager__calendarsThatAreVisible_filteredById
   return v10;
 }
 
-+ (void)setUnselectedCalendarIdentifiersForFocusMode:(id)a3
++ (void)setUnselectedCalendarIdentifiersForFocusMode:(id)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v4 = +[EKPreferences shared];
-  [v4 setUnselectedCalendarIdentifiersForFocusMode:v3];
+  [v4 setUnselectedCalendarIdentifiersForFocusMode:modeCopy];
 }
 
-+ (id)unselectedCalendarsForFocusModeInEventStore:(id)a3
++ (id)unselectedCalendarsForFocusModeInEventStore:(id)store
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 unselectedCalendarIdentifiersForFocusMode];
-  if (v5)
+  storeCopy = store;
+  unselectedCalendarIdentifiersForFocusMode = [self unselectedCalendarIdentifiersForFocusMode];
+  if (unselectedCalendarIdentifiersForFocusMode)
   {
-    v6 = [v4 calendarsWithIdentifiers:v5];
+    v6 = [storeCopy calendarsWithIdentifiers:unselectedCalendarIdentifiersForFocusMode];
     v7 = [MEMORY[0x1E695DFD8] setWithArray:v6];
     v8 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -485,7 +485,7 @@ uint64_t __75__EKCalendarVisibilityManager__calendarsThatAreVisible_filteredById
       v13 = 134218242;
       v14 = [v7 count];
       v15 = 2112;
-      v16 = v5;
+      v16 = unselectedCalendarIdentifiersForFocusMode;
       _os_log_impl(&dword_1A805E000, v9, OS_LOG_TYPE_DEFAULT, "Returning [%lu] unselectedCalendarsForFocusMode: %@", &v13, 0x16u);
     }
   }
@@ -507,11 +507,11 @@ uint64_t __75__EKCalendarVisibilityManager__calendarsThatAreVisible_filteredById
   return v7;
 }
 
-+ (id)reminderCalendarInEventStore:(id)a3
++ (id)reminderCalendarInEventStore:(id)store
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 calendarsForEntityType:0];
+  storeCopy = store;
+  v4 = [storeCopy calendarsForEntityType:0];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;

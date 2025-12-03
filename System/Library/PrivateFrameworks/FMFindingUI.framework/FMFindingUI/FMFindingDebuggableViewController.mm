@@ -1,12 +1,12 @@
 @interface FMFindingDebuggableViewController
-- (_TtC11FMFindingUI33FMFindingDebuggableViewController)initWithCoder:(id)a3;
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4;
+- (_TtC11FMFindingUI33FMFindingDebuggableViewController)initWithCoder:(id)coder;
+- (void)motionEnded:(int64_t)ended withEvent:(id)event;
 - (void)viewDidLoad;
 @end
 
 @implementation FMFindingDebuggableViewController
 
-- (_TtC11FMFindingUI33FMFindingDebuggableViewController)initWithCoder:(id)a3
+- (_TtC11FMFindingUI33FMFindingDebuggableViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11FMFindingUI33FMFindingDebuggableViewController_debugViewController) = 0;
   v3 = OBJC_IVAR____TtC11FMFindingUI33FMFindingDebuggableViewController_debugViewContainer;
@@ -25,9 +25,9 @@
   sub_24A62D238();
 }
 
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4
+- (void)motionEnded:(int64_t)ended withEvent:(id)event
 {
-  if (a3 == 1)
+  if (ended == 1)
   {
     [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC11FMFindingUI33FMFindingDebuggableViewController_debugViewContainer) setHidden_];
   }

@@ -2,46 +2,46 @@
 + (id)serverInterface;
 + (id)setupStatusTaskIdentifier;
 + (id)taskIdentifier;
-- (HKMedicalIDStore)initWithHealthStore:(id)a3;
+- (HKMedicalIDStore)initWithHealthStore:(id)store;
 - (id)lastFetchedMedicalIDData;
 - (int64_t)medicalIDSetUpStatus;
-- (void)addEmergencyContact:(id)a3 completion:(id)a4;
-- (void)deleteMedicalIDDataWithCompletion:(id)a3;
-- (void)fetchMedicalIDClinicalContactsWithCompletion:(id)a3;
-- (void)fetchMedicalIDDataIfSetUpOrCreateDefaultWithCompletion:(id)a3;
-- (void)fetchMedicalIDDataWithCompletion:(id)a3;
-- (void)fetchMedicalIDEmergencyContactsWithCompletion:(id)a3;
-- (void)removeEmergencyContact:(id)a3 completion:(id)a4;
-- (void)setLastFetchedMedicalIDData:(id)a3;
-- (void)updateMedicalIDData:(id)a3 completion:(id)a4;
+- (void)addEmergencyContact:(id)contact completion:(id)completion;
+- (void)deleteMedicalIDDataWithCompletion:(id)completion;
+- (void)fetchMedicalIDClinicalContactsWithCompletion:(id)completion;
+- (void)fetchMedicalIDDataIfSetUpOrCreateDefaultWithCompletion:(id)completion;
+- (void)fetchMedicalIDDataWithCompletion:(id)completion;
+- (void)fetchMedicalIDEmergencyContactsWithCompletion:(id)completion;
+- (void)removeEmergencyContact:(id)contact completion:(id)completion;
+- (void)setLastFetchedMedicalIDData:(id)data;
+- (void)updateMedicalIDData:(id)data completion:(id)completion;
 @end
 
 @implementation HKMedicalIDStore
 
-- (HKMedicalIDStore)initWithHealthStore:(id)a3
+- (HKMedicalIDStore)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v21.receiver = self;
   v21.super_class = HKMedicalIDStore;
   v5 = [(HKMedicalIDStore *)&v21 init];
   if (v5)
   {
     v6 = [HKTaskServerProxyProvider alloc];
-    v7 = [objc_opt_class() taskIdentifier];
-    v8 = [objc_opt_class() clientInterface];
-    v9 = [objc_opt_class() serverInterface];
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 exportedInterface:v8 remoteInterface:v9 taskUUID:v10];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    clientInterface = [objc_opt_class() clientInterface];
+    serverInterface = [objc_opt_class() serverInterface];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v11 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 exportedInterface:clientInterface remoteInterface:serverInterface taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v11;
 
     [(HKProxyProvider *)v5->_proxyProvider setShouldRetryOnInterruption:0];
     v13 = [HKTaskServerProxyProvider alloc];
-    v14 = [objc_opt_class() setupStatusTaskIdentifier];
-    v15 = [objc_opt_class() setupStatusClientInterface];
-    v16 = [objc_opt_class() setupStatusServerInterface];
-    v17 = [MEMORY[0x1E696AFB0] UUID];
-    v18 = [(HKTaskServerProxyProvider *)v13 initWithHealthStore:v4 taskIdentifier:v14 exportedObject:v5 exportedInterface:v15 remoteInterface:v16 taskUUID:v17];
+    setupStatusTaskIdentifier = [objc_opt_class() setupStatusTaskIdentifier];
+    setupStatusClientInterface = [objc_opt_class() setupStatusClientInterface];
+    setupStatusServerInterface = [objc_opt_class() setupStatusServerInterface];
+    uUID2 = [MEMORY[0x1E696AFB0] UUID];
+    v18 = [(HKTaskServerProxyProvider *)v13 initWithHealthStore:storeCopy taskIdentifier:setupStatusTaskIdentifier exportedObject:v5 exportedInterface:setupStatusClientInterface remoteInterface:setupStatusServerInterface taskUUID:uUID2];
     setupStatusProxyProvider = v5->_setupStatusProxyProvider;
     v5->_setupStatusProxyProvider = v18;
 
@@ -51,11 +51,11 @@
   return v5;
 }
 
-- (void)setLastFetchedMedicalIDData:(id)a3
+- (void)setLastFetchedMedicalIDData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [dataCopy copy];
 
   lastFetchedMedicalIDData = self->_lastFetchedMedicalIDData;
   self->_lastFetchedMedicalIDData = v5;
@@ -128,10 +128,10 @@ void __40__HKMedicalIDStore_medicalIDSetUpStatus__block_invoke_3(uint64_t a1, vo
   }
 }
 
-- (void)fetchMedicalIDDataWithCompletion:(id)a3
+- (void)fetchMedicalIDDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s may not be nil", "completion"}];
   }
@@ -142,7 +142,7 @@ void __40__HKMedicalIDStore_medicalIDSetUpStatus__block_invoke_3(uint64_t a1, vo
   v13[2] = __53__HKMedicalIDStore_fetchMedicalIDDataWithCompletion___block_invoke;
   v13[3] = &unk_1E737F380;
   v13[4] = self;
-  v14 = v4;
+  v14 = completionCopy;
   v6 = [(HKProxyProvider *)proxyProvider clientQueueObjectHandlerWithCompletion:v13];
   v7 = self->_proxyProvider;
   v11[0] = MEMORY[0x1E69E9820];
@@ -181,10 +181,10 @@ void __53__HKMedicalIDStore_fetchMedicalIDDataWithCompletion___block_invoke_2(ui
   [a2 remote_fetchMedicalIDWithCompletion:v3];
 }
 
-- (void)fetchMedicalIDDataIfSetUpOrCreateDefaultWithCompletion:(id)a3
+- (void)fetchMedicalIDDataIfSetUpOrCreateDefaultWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s may not be nil", "completion"}];
   }
@@ -195,7 +195,7 @@ void __53__HKMedicalIDStore_fetchMedicalIDDataWithCompletion___block_invoke_2(ui
   v13[2] = __75__HKMedicalIDStore_fetchMedicalIDDataIfSetUpOrCreateDefaultWithCompletion___block_invoke;
   v13[3] = &unk_1E737F380;
   v13[4] = self;
-  v14 = v4;
+  v14 = completionCopy;
   v6 = [(HKProxyProvider *)proxyProvider clientQueueObjectHandlerWithCompletion:v13];
   v7 = self->_proxyProvider;
   v11[0] = MEMORY[0x1E69E9820];
@@ -234,15 +234,15 @@ void __75__HKMedicalIDStore_fetchMedicalIDDataIfSetUpOrCreateDefaultWithCompleti
   [a2 remote_fetchMedicalIDDataIfSetUpOrCreateDefaultWithCompletion:v3];
 }
 
-- (void)fetchMedicalIDEmergencyContactsWithCompletion:(id)a3
+- (void)fetchMedicalIDEmergencyContactsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s may not be nil", "completion"}];
   }
 
-  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:v4];
+  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v10[0] = MEMORY[0x1E69E9820];
@@ -269,15 +269,15 @@ void __66__HKMedicalIDStore_fetchMedicalIDEmergencyContactsWithCompletion___bloc
   [a2 remote_medicalIDEmergencyContactsWithCompletion:v3];
 }
 
-- (void)fetchMedicalIDClinicalContactsWithCompletion:(id)a3
+- (void)fetchMedicalIDClinicalContactsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s may not be nil", "completion"}];
   }
 
-  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:v4];
+  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v10[0] = MEMORY[0x1E69E9820];
@@ -304,20 +304,20 @@ void __65__HKMedicalIDStore_fetchMedicalIDClinicalContactsWithCompletion___block
   [a2 remote_medicalIDClinicalContactsWithCompletion:v3];
 }
 
-- (void)updateMedicalIDData:(id)a3 completion:(id)a4
+- (void)updateMedicalIDData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
-  v8 = [(HKMedicalIDStore *)self lastFetchedMedicalIDData];
-  [v6 setModificationDatesForUpdatedFieldsWithMedicalIDData:v8];
+  dataCopy = data;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
+  lastFetchedMedicalIDData = [(HKMedicalIDStore *)self lastFetchedMedicalIDData];
+  [dataCopy setModificationDatesForUpdatedFieldsWithMedicalIDData:lastFetchedMedicalIDData];
 
   proxyProvider = self->_proxyProvider;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __51__HKMedicalIDStore_updateMedicalIDData_completion___block_invoke;
   v14[3] = &unk_1E737F3F8;
-  v15 = v6;
-  v16 = self;
+  v15 = dataCopy;
+  selfCopy = self;
   v17 = v7;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -325,7 +325,7 @@ void __65__HKMedicalIDStore_fetchMedicalIDClinicalContactsWithCompletion___block
   v12[3] = &unk_1E7376960;
   v13 = v17;
   v10 = v17;
-  v11 = v6;
+  v11 = dataCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v14 errorHandler:v12];
 }
 
@@ -343,9 +343,9 @@ void __51__HKMedicalIDStore_updateMedicalIDData_completion___block_invoke(uint64
   [v5 remote_updateMedicalIDData:v3 lastFetchedMedicalIDData:v6 completion:v7];
 }
 
-- (void)deleteMedicalIDDataWithCompletion:(id)a3
+- (void)deleteMedicalIDDataWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   v5 = objc_alloc_init(_HKMedicalIDData);
   [(_HKMedicalIDData *)v5 setIsDisabled:1];
   [(_HKMedicalIDData *)v5 setModificationDatesForUpdatedFieldsWithMedicalIDData:0];
@@ -378,16 +378,16 @@ void __54__HKMedicalIDStore_deleteMedicalIDDataWithCompletion___block_invoke(uin
   [v4 remote_deleteMedicalIDDataWithLastFetchedMedicalIDData:v5 completion:v6];
 }
 
-- (void)addEmergencyContact:(id)a3 completion:(id)a4
+- (void)addEmergencyContact:(id)contact completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  contactCopy = contact;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51__HKMedicalIDStore_addEmergencyContact_completion___block_invoke;
   v13[3] = &unk_1E737F420;
-  v14 = v6;
+  v14 = contactCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -395,7 +395,7 @@ void __54__HKMedicalIDStore_deleteMedicalIDDataWithCompletion___block_invoke(uin
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = contactCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
@@ -410,16 +410,16 @@ void __51__HKMedicalIDStore_addEmergencyContact_completion___block_invoke(uint64
   [a2 remote_addEmergencyContact:v3 completion:v4];
 }
 
-- (void)removeEmergencyContact:(id)a3 completion:(id)a4
+- (void)removeEmergencyContact:(id)contact completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  contactCopy = contact;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __54__HKMedicalIDStore_removeEmergencyContact_completion___block_invoke;
   v13[3] = &unk_1E737F420;
-  v14 = v6;
+  v14 = contactCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -427,7 +427,7 @@ void __51__HKMedicalIDStore_addEmergencyContact_completion___block_invoke(uint64
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = contactCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 

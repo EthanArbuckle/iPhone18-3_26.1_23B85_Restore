@@ -1,26 +1,26 @@
 @interface STSchemaSTAnswerSynthesisResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (STSchemaSTAnswerSynthesisResult)initWithDictionary:(id)a3;
-- (STSchemaSTAnswerSynthesisResult)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (STSchemaSTAnswerSynthesisResult)initWithDictionary:(id)dictionary;
+- (STSchemaSTAnswerSynthesisResult)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation STSchemaSTAnswerSynthesisResult
 
-- (STSchemaSTAnswerSynthesisResult)initWithDictionary:(id)a3
+- (STSchemaSTAnswerSynthesisResult)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = STSchemaSTAnswerSynthesisResult;
   v5 = [(STSchemaSTAnswerSynthesisResult *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"modelNumber"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"modelNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(STSchemaSTAnswerSynthesisResult *)v5 setModelNumber:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"perfMetrics"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"perfMetrics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(STSchemaSTAnswerSynthesisResult *)v5 setPerfMetrics:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"dataMetrics"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"dataMetrics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(STSchemaSTAnswerSynthesisResult *)v5 setDataMetrics:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"isContentSearchFallback"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isContentSearchFallback"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (STSchemaSTAnswerSynthesisResult)initWithJSON:(id)a3
+- (STSchemaSTAnswerSynthesisResult)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(STSchemaSTAnswerSynthesisResult *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(STSchemaSTAnswerSynthesisResult *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(STSchemaSTAnswerSynthesisResult *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,55 +93,55 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_dataMetrics)
   {
-    v4 = [(STSchemaSTAnswerSynthesisResult *)self dataMetrics];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    dataMetrics = [(STSchemaSTAnswerSynthesisResult *)self dataMetrics];
+    dictionaryRepresentation = [dataMetrics dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"dataMetrics"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dataMetrics"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"dataMetrics"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"dataMetrics"];
     }
   }
 
   if (*(&self->_isContentSearchFallback + 1))
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[STSchemaSTAnswerSynthesisResult isContentSearchFallback](self, "isContentSearchFallback")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isContentSearchFallback"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isContentSearchFallback"];
   }
 
   if (self->_modelNumber)
   {
-    v8 = [(STSchemaSTAnswerSynthesisResult *)self modelNumber];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"modelNumber"];
+    modelNumber = [(STSchemaSTAnswerSynthesisResult *)self modelNumber];
+    v9 = [modelNumber copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"modelNumber"];
   }
 
   if (self->_perfMetrics)
   {
-    v10 = [(STSchemaSTAnswerSynthesisResult *)self perfMetrics];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    perfMetrics = [(STSchemaSTAnswerSynthesisResult *)self perfMetrics];
+    dictionaryRepresentation2 = [perfMetrics dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"perfMetrics"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"perfMetrics"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"perfMetrics"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"perfMetrics"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -162,28 +162,28 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(STSchemaSTAnswerSynthesisResult *)self modelNumber];
-  v6 = [v4 modelNumber];
-  if ((v5 != 0) == (v6 == 0))
+  modelNumber = [(STSchemaSTAnswerSynthesisResult *)self modelNumber];
+  modelNumber2 = [equalCopy modelNumber];
+  if ((modelNumber != 0) == (modelNumber2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(STSchemaSTAnswerSynthesisResult *)self modelNumber];
-  if (v7)
+  modelNumber3 = [(STSchemaSTAnswerSynthesisResult *)self modelNumber];
+  if (modelNumber3)
   {
-    v8 = v7;
-    v9 = [(STSchemaSTAnswerSynthesisResult *)self modelNumber];
-    v10 = [v4 modelNumber];
-    v11 = [v9 isEqual:v10];
+    v8 = modelNumber3;
+    modelNumber4 = [(STSchemaSTAnswerSynthesisResult *)self modelNumber];
+    modelNumber5 = [equalCopy modelNumber];
+    v11 = [modelNumber4 isEqual:modelNumber5];
 
     if (!v11)
     {
@@ -195,20 +195,20 @@
   {
   }
 
-  v5 = [(STSchemaSTAnswerSynthesisResult *)self perfMetrics];
-  v6 = [v4 perfMetrics];
-  if ((v5 != 0) == (v6 == 0))
+  modelNumber = [(STSchemaSTAnswerSynthesisResult *)self perfMetrics];
+  modelNumber2 = [equalCopy perfMetrics];
+  if ((modelNumber != 0) == (modelNumber2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(STSchemaSTAnswerSynthesisResult *)self perfMetrics];
-  if (v12)
+  perfMetrics = [(STSchemaSTAnswerSynthesisResult *)self perfMetrics];
+  if (perfMetrics)
   {
-    v13 = v12;
-    v14 = [(STSchemaSTAnswerSynthesisResult *)self perfMetrics];
-    v15 = [v4 perfMetrics];
-    v16 = [v14 isEqual:v15];
+    v13 = perfMetrics;
+    perfMetrics2 = [(STSchemaSTAnswerSynthesisResult *)self perfMetrics];
+    perfMetrics3 = [equalCopy perfMetrics];
+    v16 = [perfMetrics2 isEqual:perfMetrics3];
 
     if (!v16)
     {
@@ -220,22 +220,22 @@
   {
   }
 
-  v5 = [(STSchemaSTAnswerSynthesisResult *)self dataMetrics];
-  v6 = [v4 dataMetrics];
-  if ((v5 != 0) == (v6 == 0))
+  modelNumber = [(STSchemaSTAnswerSynthesisResult *)self dataMetrics];
+  modelNumber2 = [equalCopy dataMetrics];
+  if ((modelNumber != 0) == (modelNumber2 == 0))
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v17 = [(STSchemaSTAnswerSynthesisResult *)self dataMetrics];
-  if (v17)
+  dataMetrics = [(STSchemaSTAnswerSynthesisResult *)self dataMetrics];
+  if (dataMetrics)
   {
-    v18 = v17;
-    v19 = [(STSchemaSTAnswerSynthesisResult *)self dataMetrics];
-    v20 = [v4 dataMetrics];
-    v21 = [v19 isEqual:v20];
+    v18 = dataMetrics;
+    dataMetrics2 = [(STSchemaSTAnswerSynthesisResult *)self dataMetrics];
+    dataMetrics3 = [equalCopy dataMetrics];
+    v21 = [dataMetrics2 isEqual:dataMetrics3];
 
     if (!v21)
     {
@@ -247,9 +247,9 @@ LABEL_16:
   {
   }
 
-  if (*(&self->_isContentSearchFallback + 1) == (v4[33] & 1))
+  if (*(&self->_isContentSearchFallback + 1) == (equalCopy[33] & 1))
   {
-    if (!*(&self->_isContentSearchFallback + 1) || (isContentSearchFallback = self->_isContentSearchFallback, isContentSearchFallback == [v4 isContentSearchFallback]))
+    if (!*(&self->_isContentSearchFallback + 1) || (isContentSearchFallback = self->_isContentSearchFallback, isContentSearchFallback == [equalCopy isContentSearchFallback]))
     {
       v22 = 1;
       goto LABEL_18;
@@ -263,29 +263,29 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(STSchemaSTAnswerSynthesisResult *)self modelNumber];
+  toCopy = to;
+  modelNumber = [(STSchemaSTAnswerSynthesisResult *)self modelNumber];
 
-  if (v4)
+  if (modelNumber)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(STSchemaSTAnswerSynthesisResult *)self perfMetrics];
+  perfMetrics = [(STSchemaSTAnswerSynthesisResult *)self perfMetrics];
 
-  if (v5)
+  if (perfMetrics)
   {
-    v6 = [(STSchemaSTAnswerSynthesisResult *)self perfMetrics];
+    perfMetrics2 = [(STSchemaSTAnswerSynthesisResult *)self perfMetrics];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(STSchemaSTAnswerSynthesisResult *)self dataMetrics];
+  dataMetrics = [(STSchemaSTAnswerSynthesisResult *)self dataMetrics];
 
-  if (v7)
+  if (dataMetrics)
   {
-    v8 = [(STSchemaSTAnswerSynthesisResult *)self dataMetrics];
+    dataMetrics2 = [(STSchemaSTAnswerSynthesisResult *)self dataMetrics];
     PBDataWriterWriteSubmessage();
   }
 
@@ -295,26 +295,26 @@ LABEL_18:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = STSchemaSTAnswerSynthesisResult;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(STSchemaSTAnswerSynthesisResult *)self perfMetrics];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  perfMetrics = [(STSchemaSTAnswerSynthesisResult *)self perfMetrics];
+  v7 = [perfMetrics applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(STSchemaSTAnswerSynthesisResult *)self deletePerfMetrics];
   }
 
-  v9 = [(STSchemaSTAnswerSynthesisResult *)self dataMetrics];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  dataMetrics = [(STSchemaSTAnswerSynthesisResult *)self dataMetrics];
+  v10 = [dataMetrics applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(STSchemaSTAnswerSynthesisResult *)self deleteDataMetrics];
   }

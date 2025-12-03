@@ -1,12 +1,12 @@
 @interface STFamilyCircleViewControllerProvider
-+ (id)familyRootViewControllerPresentedAsModal:(BOOL)a3;
++ (id)familyRootViewControllerPresentedAsModal:(BOOL)modal;
 @end
 
 @implementation STFamilyCircleViewControllerProvider
 
-+ (id)familyRootViewControllerPresentedAsModal:(BOOL)a3
++ (id)familyRootViewControllerPresentedAsModal:(BOOL)modal
 {
-  v3 = [[STFamilyRootViewController alloc] initWithModalPresentation:a3];
+  v3 = [[STFamilyRootViewController alloc] initWithModalPresentation:modal];
 
   return v3;
 }

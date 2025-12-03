@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (VCPInternetReachability)init;
 - (void)dealloc;
-- (void)setReachabilityForFlags:(unsigned int)a3 update:(BOOL)a4;
+- (void)setReachabilityForFlags:(unsigned int)flags update:(BOOL)update;
 @end
 
 @implementation VCPInternetReachability
@@ -106,31 +106,31 @@ void __41__VCPInternetReachability_sharedInstance__block_invoke()
   [(VCPInternetReachability *)&v4 dealloc];
 }
 
-- (void)setReachabilityForFlags:(unsigned int)a3 update:(BOOL)a4
+- (void)setReachabilityForFlags:(unsigned int)flags update:(BOOL)update
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = (a3 & 0x28) != 0;
-  if ((a3 & 0x10) != 0)
+  v5 = (flags & 0x28) != 0;
+  if ((flags & 0x10) != 0)
   {
     v5 = 0;
   }
 
-  if ((a3 & 4) == 0)
+  if ((flags & 4) == 0)
   {
     v5 = 1;
   }
 
-  if ((a3 & 0x40000) != 0)
+  if ((flags & 0x40000) != 0)
   {
     v5 = 0;
   }
 
-  if ((a3 & 2) == 0)
+  if ((flags & 2) == 0)
   {
     v5 = 0;
   }
 
-  if (!a4 || self->_hasWifiOrEthernetConnection != v5)
+  if (!update || self->_hasWifiOrEthernetConnection != v5)
   {
     self->_hasWifiOrEthernetConnection = v5;
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))

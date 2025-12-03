@@ -1,23 +1,23 @@
 @interface AVAudioIONodeDescription
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AVAudioIONodeDescription
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     sourceSession = self->_sourceSession;
     if (sourceSession == [v5 sourceSession])
     {
       sessionOwnerPID = self->_sessionOwnerPID;
-      v8 = [v5 sessionOwnerPID];
-      if (sessionOwnerPID == v8)
+      sessionOwnerPID = [v5 sessionOwnerPID];
+      if (sessionOwnerPID == sessionOwnerPID)
       {
         playerType = self->_playerType;
         v9 = playerType == [v5 playerType];
@@ -43,7 +43,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AVAudioIONodeDescription);
   [(AVAudioIONodeDescription *)v4 setSourceSession:self->_sourceSession];

@@ -1,17 +1,17 @@
 @interface CREditTextTableCell
-- (CREditTextTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (CREditTextTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)layoutSubviews;
-- (void)setValue:(id)a3;
+- (void)setValue:(id)value;
 @end
 
 @implementation CREditTextTableCell
 
-- (CREditTextTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (CREditTextTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v21.receiver = self;
   v21.super_class = CREditTextTableCell;
-  v9 = [(CREditTextTableCell *)&v21 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(CREditTextTableCell *)&v21 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
@@ -37,21 +37,21 @@
     [v11 setScrollEnabled:0];
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CREditTextTableCell *)v10 setTextView:v11];
-    v18 = [(CREditTextTableCell *)v10 contentView];
-    [v18 addSubview:v11];
+    contentView = [(CREditTextTableCell *)v10 contentView];
+    [contentView addSubview:v11];
 
-    v19 = [v8 target];
-    [v11 setDelegate:v19];
+    target = [specifierCopy target];
+    [v11 setDelegate:target];
   }
 
   return v10;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
-  v5 = [(CREditTextTableCell *)self textView];
-  [v5 setText:v4];
+  valueCopy = value;
+  textView = [(CREditTextTableCell *)self textView];
+  [textView setText:valueCopy];
 
   [(CREditTextTableCell *)self setNeedsLayout];
 }
@@ -68,8 +68,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CREditTextTableCell *)self textView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  textView = [(CREditTextTableCell *)self textView];
+  [textView setFrame:{v4, v6, v8, v10}];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface CRLiCloudStatusObserver
-+ (void)qa_resetConnectICloudDialog:(id)a3;
++ (void)qa_resetConnectICloudDialog:(id)dialog;
 - (void)accountDidChange;
 @end
 
@@ -12,9 +12,9 @@
   sub_100C5D0B4();
 }
 
-+ (void)qa_resetConnectICloudDialog:(id)a3
++ (void)qa_resetConnectICloudDialog:(id)dialog
 {
-  if (a3)
+  if (dialog)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -26,9 +26,9 @@
     memset(v5, 0, sizeof(v5));
   }
 
-  v3 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v4 = String._bridgeToObjectiveC()();
-  [v3 removeObjectForKey:v4];
+  [standardUserDefaults removeObjectForKey:v4];
 
   sub_10000CAAC(v5, &unk_1019F4D00);
 }

@@ -1,8 +1,8 @@
 @interface JavaNioChannelsSocketChannel
 + (id)open;
-+ (id)openWithJavaNetSocketAddress:(id)a3;
-- (int64_t)readWithJavaNioByteBufferArray:(id)a3;
-- (int64_t)writeWithJavaNioByteBufferArray:(id)a3;
++ (id)openWithJavaNetSocketAddress:(id)address;
+- (int64_t)readWithJavaNioByteBufferArray:(id)array;
+- (int64_t)writeWithJavaNioByteBufferArray:(id)array;
 @end
 
 @implementation JavaNioChannelsSocketChannel
@@ -18,7 +18,7 @@
   return [v2 openSocketChannel];
 }
 
-+ (id)openWithJavaNetSocketAddress:(id)a3
++ (id)openWithJavaNetSocketAddress:(id)address
 {
   v4 = JavaNioChannelsSpiSelectorProvider_provider();
   if (!v4)
@@ -26,38 +26,38 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [v4 openSocketChannel];
-  v6 = v5;
-  if (v5)
+  openSocketChannel = [v4 openSocketChannel];
+  v6 = openSocketChannel;
+  if (openSocketChannel)
   {
-    [v5 connectWithJavaNetSocketAddress:a3];
+    [openSocketChannel connectWithJavaNetSocketAddress:address];
   }
 
   return v6;
 }
 
-- (int64_t)readWithJavaNioByteBufferArray:(id)a3
+- (int64_t)readWithJavaNioByteBufferArray:(id)array
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaNioChannelsSocketChannel *)self readWithJavaNioByteBufferArray:a3 withInt:0 withInt:*(a3 + 2)];
+  v5 = [(JavaNioChannelsSocketChannel *)self readWithJavaNioByteBufferArray:array withInt:0 withInt:*(array + 2)];
   objc_sync_exit(self);
   return v5;
 }
 
-- (int64_t)writeWithJavaNioByteBufferArray:(id)a3
+- (int64_t)writeWithJavaNioByteBufferArray:(id)array
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaNioChannelsSocketChannel *)self writeWithJavaNioByteBufferArray:a3 withInt:0 withInt:*(a3 + 2)];
+  v5 = [(JavaNioChannelsSocketChannel *)self writeWithJavaNioByteBufferArray:array withInt:0 withInt:*(array + 2)];
   objc_sync_exit(self);
   return v5;
 }

@@ -1,15 +1,15 @@
 @interface SUStorePageProtocol
 - (SUStorePageProtocol)init;
 - (id)_initCommon;
-- (id)_newNavigationButtonsFromArray:(id)a3;
-- (id)_newNavigationHistoryItemsFromArray:(id)a3;
-- (id)_newNavigationMenusFromArray:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)navigationButtonForLocation:(id)a3;
-- (id)navigationMenuForLocation:(int64_t)a3;
+- (id)_newNavigationButtonsFromArray:(id)array;
+- (id)_newNavigationHistoryItemsFromArray:(id)array;
+- (id)_newNavigationMenusFromArray:(id)array;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)navigationButtonForLocation:(id)location;
+- (id)navigationMenuForLocation:(int64_t)location;
 - (id)overlayBackgroundURLRequest;
-- (void)setOverlayBackgroundURLRequest:(id)a3;
-- (void)setValuesFromStorePageDictionary:(id)a3;
+- (void)setOverlayBackgroundURLRequest:(id)request;
+- (void)setValuesFromStorePageDictionary:(id)dictionary;
 @end
 
 @implementation SUStorePageProtocol
@@ -23,14 +23,14 @@
 
 - (SUStorePageProtocol)init
 {
-  v2 = [(SUStorePageProtocol *)self _initCommon];
-  if (v2)
+  _initCommon = [(SUStorePageProtocol *)self _initCommon];
+  if (_initCommon)
   {
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v5 = objc_alloc(MEMORY[0x1E695DEC8]);
-    if (v4 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v6 = [v5 initWithObjects:{@"portrait", @"portrait-upside-down", @"landscape-left", @"landscape-right", 0}];
     }
@@ -40,49 +40,49 @@
       v6 = [v5 initWithObjects:{@"portrait", 0, v9, v10, v11}];
     }
 
-    allowedOrientations = v2->_allowedOrientations;
-    v2->_allowedOrientations = v6;
+    allowedOrientations = _initCommon->_allowedOrientations;
+    _initCommon->_allowedOrientations = v6;
   }
 
-  return v2;
+  return _initCommon;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "_initCommon"}];
-  v6 = [(NSArray *)self->_allowedOrientations copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "_initCommon"}];
+  v6 = [(NSArray *)self->_allowedOrientations copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSString *)self->_copyright copyWithZone:a3];
+  v8 = [(NSString *)self->_copyright copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSArray *)self->_expectedClientIdentifiers copyWithZone:a3];
+  v10 = [(NSArray *)self->_expectedClientIdentifiers copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
-  v12 = [(NSNumber *)self->_focusedItemIdentifier copyWithZone:a3];
+  v12 = [(NSNumber *)self->_focusedItemIdentifier copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
-  v14 = [(NSArray *)self->_navigationButtons copyWithZone:a3];
+  v14 = [(NSArray *)self->_navigationButtons copyWithZone:zone];
   v15 = *(v5 + 40);
   *(v5 + 40) = v14;
 
-  v16 = [(NSArray *)self->_navigationMenus copyWithZone:a3];
+  v16 = [(NSArray *)self->_navigationMenus copyWithZone:zone];
   v17 = *(v5 + 56);
   *(v5 + 56) = v16;
 
-  v18 = [(SSURLRequestProperties *)self->_overlayBackgroundURLRequestProperties copyWithZone:a3];
+  v18 = [(SSURLRequestProperties *)self->_overlayBackgroundURLRequestProperties copyWithZone:zone];
   v19 = *(v5 + 64);
   *(v5 + 64) = v18;
 
-  v20 = [(NSArray *)self->_navigationHistoryItems copyWithZone:a3];
+  v20 = [(NSArray *)self->_navigationHistoryItems copyWithZone:zone];
   v21 = *(v5 + 48);
   *(v5 + 48) = v20;
 
-  v22 = [(NSString *)self->_rootSectionIdentifier copyWithZone:a3];
+  v22 = [(NSString *)self->_rootSectionIdentifier copyWithZone:zone];
   v23 = *(v5 + 72);
   *(v5 + 72) = v22;
 
@@ -92,10 +92,10 @@
   return v5;
 }
 
-- (id)navigationButtonForLocation:(id)a3
+- (id)navigationButtonForLocation:(id)location
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -115,8 +115,8 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 buttonLocation];
-        v11 = [v10 isEqualToString:v4];
+        buttonLocation = [v9 buttonLocation];
+        v11 = [buttonLocation isEqualToString:locationCopy];
 
         if (v11)
         {
@@ -140,7 +140,7 @@ LABEL_11:
   return v6;
 }
 
-- (id)navigationMenuForLocation:(int64_t)a3
+- (id)navigationMenuForLocation:(int64_t)location
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -163,7 +163,7 @@ LABEL_11:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 location] == a3)
+        if ([v9 location] == location)
         {
           v10 = v9;
           goto LABEL_11;
@@ -193,20 +193,20 @@ LABEL_11:
   return v2;
 }
 
-- (void)setOverlayBackgroundURLRequest:(id)a3
+- (void)setOverlayBackgroundURLRequest:(id)request
 {
-  self->_overlayBackgroundURLRequestProperties = [a3 requestProperties];
+  self->_overlayBackgroundURLRequestProperties = [request requestProperties];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setValuesFromStorePageDictionary:(id)a3
+- (void)setValuesFromStorePageDictionary:(id)dictionary
 {
-  v30 = a3;
-  v4 = [v30 objectForKey:@"protocol"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"protocol"];
   if (!v4)
   {
-    v4 = v30;
+    v4 = dictionaryCopy;
   }
 
   v5 = [v4 objectForKey:@"allowed-orientations"];
@@ -292,15 +292,15 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    v21 = [v20 BOOLValue];
+    bOOLValue = [v20 BOOLValue];
   }
 
   else
   {
-    v21 = 0;
+    bOOLValue = 0;
   }
 
-  [(SUStorePageProtocol *)self setShouldReplaceRootViewController:v21];
+  [(SUStorePageProtocol *)self setShouldReplaceRootViewController:bOOLValue];
   v22 = [v4 objectForKey:@"overlay-parent-url"];
 
   objc_opt_class();
@@ -320,22 +320,22 @@ LABEL_11:
   {
     if (objc_opt_respondsToSelector())
     {
-      v26 = [v25 BOOLValue];
+      bOOLValue2 = [v25 BOOLValue];
     }
 
     else
     {
-      v26 = 0;
+      bOOLValue2 = 0;
     }
 
-    [(SUStorePageProtocol *)self setShouldDisplayInOverlay:v26];
+    [(SUStorePageProtocol *)self setShouldDisplayInOverlay:bOOLValue2];
   }
 
   v27 = [v4 objectForKey:@"exclude-from-navigation-history"];
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v28 = [v30 objectForKey:@"exclude-from-navigation-history"];
+    v28 = [dictionaryCopy objectForKey:@"exclude-from-navigation-history"];
 
     v27 = v28;
   }
@@ -344,28 +344,28 @@ LABEL_11:
   {
     if (objc_opt_respondsToSelector())
     {
-      v29 = [v27 BOOLValue];
+      bOOLValue3 = [v27 BOOLValue];
     }
 
     else
     {
-      v29 = 0;
+      bOOLValue3 = 0;
     }
 
-    [(SUStorePageProtocol *)self setShouldExcludeFromNavigationHistory:v29];
+    [(SUStorePageProtocol *)self setShouldExcludeFromNavigationHistory:bOOLValue3];
   }
 }
 
-- (id)_newNavigationButtonsFromArray:(id)a3
+- (id)_newNavigationButtonsFromArray:(id)array
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -406,16 +406,16 @@ LABEL_11:
   return v4;
 }
 
-- (id)_newNavigationHistoryItemsFromArray:(id)a3
+- (id)_newNavigationHistoryItemsFromArray:(id)array
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -456,16 +456,16 @@ LABEL_11:
   return v4;
 }
 
-- (id)_newNavigationMenusFromArray:(id)a3
+- (id)_newNavigationMenusFromArray:(id)array
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {

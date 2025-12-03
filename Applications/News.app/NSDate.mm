@@ -14,7 +14,7 @@
 - (id)fr_gregorianShortDisplayStringPreferringToday;
 - (id)fr_localDate;
 - (id)fr_partOfDay;
-- (id)stringWithFormat:(id)a3;
+- (id)stringWithFormat:(id)format;
 - (id)stringWithTopStoriesFormat;
 @end
 
@@ -46,9 +46,9 @@
   return [NSDate dateWithTimeIntervalSinceReferenceDate:v5];
 }
 
-- (id)stringWithFormat:(id)a3
+- (id)stringWithFormat:(id)format
 {
-  v4 = [NSDateFormatter dateFormatterWithFormat:a3 forReuse:1];
+  v4 = [NSDateFormatter dateFormatterWithFormat:format forReuse:1];
   v5 = [v4 stringFromDate:self];
 
   return v5;
@@ -56,11 +56,11 @@
 
 - (id)stringWithTopStoriesFormat
 {
-  v3 = [(NSDate *)self fr_partOfDay];
+  fr_partOfDay = [(NSDate *)self fr_partOfDay];
   v4 = [NSString alloc];
   v5 = [NSDateFormatter dateFormatterWithFormat:@"EEEE '%@' forReuse:MMMM d", 1];
   v6 = [v5 stringFromDate:self];
-  v7 = [v4 initWithFormat:v6, v3];
+  v7 = [v4 initWithFormat:v6, fr_partOfDay];
 
   return v7;
 }

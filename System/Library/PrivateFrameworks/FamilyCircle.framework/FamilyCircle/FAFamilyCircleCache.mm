@@ -1,18 +1,18 @@
 @interface FAFamilyCircleCache
 + (id)cacheQueue;
-- (BOOL)_isCacheDate:(id)a3 withinDuration:(double)a4;
-- (FAFamilyCircleCache)initWithAccount:(id)a3;
-- (id)_cacheDataWithFamilyCircle:(id)a3 serverTag:(id)a4;
+- (BOOL)_isCacheDate:(id)date withinDuration:(double)duration;
+- (FAFamilyCircleCache)initWithAccount:(id)account;
+- (id)_cacheDataWithFamilyCircle:(id)circle serverTag:(id)tag;
 - (id)_cacheURL;
-- (id)_cacheURLWithError:(id *)a3;
+- (id)_cacheURLWithError:(id *)error;
 - (id)_createCacheFile;
-- (id)_fetchData:(id *)a3;
-- (id)_onQueue:(id)a3;
+- (id)_fetchData:(id *)data;
+- (id)_onQueue:(id)queue;
 - (id)_username;
 - (id)invalidate;
 - (id)load;
-- (id)loadWithError:(id *)a3;
-- (id)updateWithFamilyCircle:(id)a3 serverTag:(id)a4;
+- (id)loadWithError:(id *)error;
+- (id)updateWithFamilyCircle:(id)circle serverTag:(id)tag;
 @end
 
 @implementation FAFamilyCircleCache
@@ -43,28 +43,28 @@
 
 - (id)_username
 {
-  v2 = [(FAFamilyCircleCache *)self account];
-  v3 = [v2 aa_personID];
+  account = [(FAFamilyCircleCache *)self account];
+  aa_personID = [account aa_personID];
 
-  return v3;
+  return aa_personID;
 }
 
-- (FAFamilyCircleCache)initWithAccount:(id)a3
+- (FAFamilyCircleCache)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = FAFamilyCircleCache;
   v6 = [(FAFamilyCircleCache *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
 }
 
-- (id)_cacheURLWithError:(id *)a3
+- (id)_cacheURLWithError:(id *)error
 {
   v4 = +[NSFileManager defaultManager];
   v11 = 0;
@@ -79,10 +79,10 @@
       sub_100078B50();
     }
 
-    if (a3)
+    if (error)
     {
       v8 = v6;
-      *a3 = v6;
+      *error = v6;
     }
   }
 
@@ -91,7 +91,7 @@
   return v9;
 }
 
-- (id)_fetchData:(id *)a3
+- (id)_fetchData:(id *)data
 {
   v9 = 0;
   v10 = &v9;
@@ -99,15 +99,15 @@
   v12 = sub_100012218;
   v13 = sub_100012228;
   v14 = 0;
-  v5 = [objc_opt_class() cacheQueue];
+  cacheQueue = [objc_opt_class() cacheQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100012230;
   block[3] = &unk_1000A6618;
   block[4] = self;
   block[5] = &v9;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = data;
+  dispatch_sync(cacheQueue, block);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -115,7 +115,7 @@
   return v6;
 }
 
-- (id)loadWithError:(id *)a3
+- (id)loadWithError:(id *)error
 {
   v5 = _FASignpostLogSystem();
   v6 = _FASignpostCreate();
@@ -153,10 +153,10 @@
           sub_100078D10();
         }
 
-        if (a3)
+        if (error)
         {
           v20 = v17;
-          *a3 = v17;
+          *error = v17;
         }
 
         _FASignpostGetNanoseconds();
@@ -187,9 +187,9 @@ LABEL_28:
         v26 = [v18 objectForKeyedSubscript:@"timestamp"];
         v49 = v18;
         v27 = [v18 objectForKeyedSubscript:@"circle"];
-        v28 = [(FAFamilyCircleCache *)self _username];
+        _username = [(FAFamilyCircleCache *)self _username];
         v50 = v25;
-        v24 = [v25 isEqualToString:v28];
+        v24 = [v25 isEqualToString:_username];
 
         v52 = v26;
         v29 = v26 == 0;
@@ -317,10 +317,10 @@ LABEL_28:
     sub_100078C40();
   }
 
-  if (a3)
+  if (error)
   {
     v14 = v12;
-    *a3 = v12;
+    *error = v12;
   }
 
   _FASignpostGetNanoseconds();
@@ -345,19 +345,19 @@ LABEL_60:
   return v24;
 }
 
-- (BOOL)_isCacheDate:(id)a3 withinDuration:(double)a4
+- (BOOL)_isCacheDate:(id)date withinDuration:(double)duration
 {
-  v5 = a3;
-  [v5 timeIntervalSinceNow];
+  dateCopy = date;
+  [dateCopy timeIntervalSinceNow];
   v7 = fabs(v6);
   v8 = _FALogSystem();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7 >= a4)
+  if (v7 >= duration)
   {
     if (v9)
     {
       v12 = 138412290;
-      v13 = v5;
+      v13 = dateCopy;
       v10 = "Attempting to fetch the family circle from the server as the cache is stale (%@)";
       goto LABEL_6;
     }
@@ -366,29 +366,29 @@ LABEL_60:
   else if (v9)
   {
     v12 = 138412290;
-    v13 = v5;
+    v13 = dateCopy;
     v10 = "Skipping server fetch of family circle as the cache is fresh (%@)";
 LABEL_6:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, v10, &v12, 0xCu);
   }
 
-  return v7 < a4;
+  return v7 < duration;
 }
 
-- (id)_cacheDataWithFamilyCircle:(id)a3 serverTag:(id)a4
+- (id)_cacheDataWithFamilyCircle:(id)circle serverTag:(id)tag
 {
-  v6 = a3;
-  v7 = a4;
+  circleCopy = circle;
+  tagCopy = tag;
   v8 = [AAFPromise alloc];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100012C78;
   v13[3] = &unk_1000A62F0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
+  v14 = circleCopy;
+  v15 = tagCopy;
+  v9 = tagCopy;
+  v10 = circleCopy;
   v11 = [v8 initWithBlock:v13];
 
   return v11;
@@ -408,48 +408,48 @@ LABEL_6:
 
 - (id)_createCacheFile
 {
-  v3 = [(FAFamilyCircleCache *)self _cacheURL];
-  v4 = [v3 then];
+  _cacheURL = [(FAFamilyCircleCache *)self _cacheURL];
+  then = [_cacheURL then];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100012F7C;
   v7[3] = &unk_1000A65F0;
   v7[4] = self;
-  v5 = (v4)[2](v4, v7);
+  v5 = (then)[2](then, v7);
 
   return v5;
 }
 
-- (id)updateWithFamilyCircle:(id)a3 serverTag:(id)a4
+- (id)updateWithFamilyCircle:(id)circle serverTag:(id)tag
 {
-  v6 = a3;
-  v7 = a4;
+  circleCopy = circle;
+  tagCopy = tag;
   v8 = [AAFPromise alloc];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000131F8;
   v13[3] = &unk_1000A62F0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
+  v14 = circleCopy;
+  v15 = tagCopy;
+  v9 = tagCopy;
+  v10 = circleCopy;
   v11 = [v8 initWithBlock:v13];
 
   return v11;
 }
 
-- (id)_onQueue:(id)a3
+- (id)_onQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = [AAFPromise alloc];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000135E4;
   v9[3] = &unk_1000A6668;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = queueCopy;
+  v6 = queueCopy;
   v7 = [v5 initWithBlock:v9];
 
   return v7;
@@ -457,14 +457,14 @@ LABEL_6:
 
 - (id)invalidate
 {
-  v3 = [(FAFamilyCircleCache *)self _cacheURL];
-  v4 = [v3 then];
+  _cacheURL = [(FAFamilyCircleCache *)self _cacheURL];
+  then = [_cacheURL then];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100013808;
   v7[3] = &unk_1000A65F0;
   v7[4] = self;
-  v5 = (v4)[2](v4, v7);
+  v5 = (then)[2](then, v7);
 
   return v5;
 }

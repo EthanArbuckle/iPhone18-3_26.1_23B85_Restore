@@ -1,13 +1,13 @@
 @interface _ApplicationContext
-- (void)launchApplicationWithOptions:(id)a3 completionHandler:(id)a4;
+- (void)launchApplicationWithOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation _ApplicationContext
 
-- (void)launchApplicationWithOptions:(id)a3 completionHandler:(id)a4
+- (void)launchApplicationWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v8 = sub_100214D30(self);
   objc_opt_self();
   os_unfair_lock_lock_with_options();
@@ -26,7 +26,7 @@
   if (v14 < -15.0)
   {
 LABEL_7:
-    v36 = v6;
+    v36 = optionsCopy;
     v17 = v8;
     objc_opt_self();
     os_unfair_lock_lock_with_options();
@@ -44,8 +44,8 @@ LABEL_7:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v21 = [v18 allKeys];
-    v22 = [v21 countByEnumeratingWithState:&v41 objects:v45 count:16];
+    allKeys = [v18 allKeys];
+    v22 = [allKeys countByEnumeratingWithState:&v41 objects:v45 count:16];
     if (v22)
     {
       v23 = v22;
@@ -56,7 +56,7 @@ LABEL_7:
         {
           if (*v42 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(allKeys);
           }
 
           v26 = *(*(&v41 + 1) + 8 * i);
@@ -72,7 +72,7 @@ LABEL_7:
           }
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v41 objects:v45 count:16];
+        v23 = [allKeys countByEnumeratingWithState:&v41 objects:v45 count:16];
       }
 
       while (v23);
@@ -87,8 +87,8 @@ LABEL_7:
 
     os_unfair_lock_unlock(&unk_1005AA808);
 
-    v7 = v35;
-    v6 = v36;
+    handlerCopy = v35;
+    optionsCopy = v36;
     if (v36)
     {
       v16 = [FBSOpenApplicationOptions optionsWithDictionary:v36];
@@ -112,14 +112,14 @@ LABEL_7:
     goto LABEL_25;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v15 = dispatch_get_global_queue(21, 0);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100215218;
     block[3] = &unk_10051BD28;
-    v38 = v7;
+    v38 = handlerCopy;
     dispatch_async(v15, block);
 
     v16 = v38;

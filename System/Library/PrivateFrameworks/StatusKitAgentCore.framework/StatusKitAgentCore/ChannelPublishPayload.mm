@@ -1,26 +1,26 @@
 @interface ChannelPublishPayload
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPushPriority:(id)a3;
+- (int)StringAsPushPriority:(id)priority;
 - (int)pushPriority;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPendingPublishHint:(BOOL)a3;
-- (void)setHasPublishPayloadExpiryTtlMillis:(BOOL)a3;
-- (void)setHasPushPriority:(BOOL)a3;
-- (void)setHasRetryCount:(BOOL)a3;
-- (void)setHasScheduledPublishHint:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPendingPublishHint:(BOOL)hint;
+- (void)setHasPublishPayloadExpiryTtlMillis:(BOOL)millis;
+- (void)setHasPushPriority:(BOOL)priority;
+- (void)setHasRetryCount:(BOOL)count;
+- (void)setHasScheduledPublishHint:(BOOL)hint;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ChannelPublishPayload
 
-- (void)setHasPublishPayloadExpiryTtlMillis:(BOOL)a3
+- (void)setHasPublishPayloadExpiryTtlMillis:(BOOL)millis
 {
-  if (a3)
+  if (millis)
   {
     v3 = 2;
   }
@@ -46,9 +46,9 @@
   }
 }
 
-- (void)setHasPushPriority:(BOOL)a3
+- (void)setHasPushPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 4;
   }
@@ -61,20 +61,20 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsPushPriority:(id)a3
+- (int)StringAsPushPriority:(id)priority
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LOW"])
+  priorityCopy = priority;
+  if ([priorityCopy isEqualToString:@"LOW"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NORMAL"])
+  else if ([priorityCopy isEqualToString:@"NORMAL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"HIGH"])
+  else if ([priorityCopy isEqualToString:@"HIGH"])
   {
     v4 = 2;
   }
@@ -87,9 +87,9 @@
   return v4;
 }
 
-- (void)setHasPendingPublishHint:(BOOL)a3
+- (void)setHasPendingPublishHint:(BOOL)hint
 {
-  if (a3)
+  if (hint)
   {
     v3 = 16;
   }
@@ -102,9 +102,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasScheduledPublishHint:(BOOL)a3
+- (void)setHasScheduledPublishHint:(BOOL)hint
 {
-  if (a3)
+  if (hint)
   {
     v3 = 32;
   }
@@ -117,9 +117,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasRetryCount:(BOOL)a3
+- (void)setHasRetryCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -138,39 +138,39 @@
   v8.receiver = self;
   v8.super_class = ChannelPublishPayload;
   v4 = [(ChannelPublishPayload *)&v8 description];
-  v5 = [(ChannelPublishPayload *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ChannelPublishPayload *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_publishInitiateTimestampMillis];
-    [v3 setObject:v4 forKey:@"publish_initiate_timestamp_millis"];
+    [dictionary setObject:v4 forKey:@"publish_initiate_timestamp_millis"];
   }
 
   channelIdentity = self->_channelIdentity;
   if (channelIdentity)
   {
-    v6 = [(ChannelIdentity *)channelIdentity dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"channel_identity"];
+    dictionaryRepresentation = [(ChannelIdentity *)channelIdentity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"channel_identity"];
   }
 
   publishPayload = self->_publishPayload;
   if (publishPayload)
   {
-    [v3 setObject:publishPayload forKey:@"publish_payload"];
+    [dictionary setObject:publishPayload forKey:@"publish_payload"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_publishPayloadExpiryTtlMillis];
-    [v3 setObject:v12 forKey:@"publish_payload_expiry_ttl_millis"];
+    [dictionary setObject:v12 forKey:@"publish_payload_expiry_ttl_millis"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -201,7 +201,7 @@ LABEL_9:
     v14 = off_27843E060[pushPriority];
   }
 
-  [v3 setObject:v14 forKey:@"push_priority"];
+  [dictionary setObject:v14 forKey:@"push_priority"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -217,7 +217,7 @@ LABEL_10:
 
 LABEL_23:
   v15 = [MEMORY[0x277CCABB0] numberWithBool:self->_pendingPublishHint];
-  [v3 setObject:v15 forKey:@"pending_publish_hint"];
+  [dictionary setObject:v15 forKey:@"pending_publish_hint"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -233,46 +233,46 @@ LABEL_11:
 
 LABEL_24:
   v16 = [MEMORY[0x277CCABB0] numberWithBool:self->_scheduledPublishHint];
-  [v3 setObject:v16 forKey:@"scheduled_publish_hint"];
+  [dictionary setObject:v16 forKey:@"scheduled_publish_hint"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_12:
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_retryCount];
-    [v3 setObject:v9 forKey:@"retry_count"];
+    [dictionary setObject:v9 forKey:@"retry_count"];
   }
 
 LABEL_13:
   adopter = self->_adopter;
   if (adopter)
   {
-    [v3 setObject:adopter forKey:@"adopter"];
+    [dictionary setObject:adopter forKey:@"adopter"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (*&self->_has)
   {
     publishInitiateTimestampMillis = self->_publishInitiateTimestampMillis;
     PBDataWriterWriteUint64Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_channelIdentity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_publishPayload)
   {
     PBDataWriterWriteDataField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
@@ -280,7 +280,7 @@ LABEL_13:
   {
     publishPayloadExpiryTtlMillis = self->_publishPayloadExpiryTtlMillis;
     PBDataWriterWriteUint64Field();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -301,7 +301,7 @@ LABEL_9:
 
   pushPriority = self->_pushPriority;
   PBDataWriterWriteInt32Field();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -317,7 +317,7 @@ LABEL_10:
 LABEL_20:
   pendingPublishHint = self->_pendingPublishHint;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -333,50 +333,50 @@ LABEL_11:
 LABEL_21:
   scheduledPublishHint = self->_scheduledPublishHint;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_12:
     retryCount = self->_retryCount;
     PBDataWriterWriteUint32Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
 LABEL_13:
   if (self->_adopter)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_publishInitiateTimestampMillis;
-    *(v4 + 60) |= 1u;
+    toCopy[1] = self->_publishInitiateTimestampMillis;
+    *(toCopy + 60) |= 1u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_channelIdentity)
   {
-    [v4 setChannelIdentity:?];
-    v4 = v6;
+    [toCopy setChannelIdentity:?];
+    toCopy = v6;
   }
 
   if (self->_publishPayload)
   {
     [v6 setPublishPayload:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_publishPayloadExpiryTtlMillis;
-    *(v4 + 60) |= 2u;
+    toCopy[2] = self->_publishPayloadExpiryTtlMillis;
+    *(toCopy + 60) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -395,8 +395,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 12) = self->_pushPriority;
-  *(v4 + 60) |= 4u;
+  *(toCopy + 12) = self->_pushPriority;
+  *(toCopy + 60) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -410,8 +410,8 @@ LABEL_10:
   }
 
 LABEL_20:
-  *(v4 + 56) = self->_pendingPublishHint;
-  *(v4 + 60) |= 0x10u;
+  *(toCopy + 56) = self->_pendingPublishHint;
+  *(toCopy + 60) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -425,26 +425,26 @@ LABEL_11:
   }
 
 LABEL_21:
-  *(v4 + 57) = self->_scheduledPublishHint;
-  *(v4 + 60) |= 0x20u;
+  *(toCopy + 57) = self->_scheduledPublishHint;
+  *(toCopy + 60) |= 0x20u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_12:
-    *(v4 + 13) = self->_retryCount;
-    *(v4 + 60) |= 8u;
+    *(toCopy + 13) = self->_retryCount;
+    *(toCopy + 60) |= 8u;
   }
 
 LABEL_13:
   if (self->_adopter)
   {
     [v6 setAdopter:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -452,11 +452,11 @@ LABEL_13:
     *(v5 + 60) |= 1u;
   }
 
-  v7 = [(ChannelIdentity *)self->_channelIdentity copyWithZone:a3];
+  v7 = [(ChannelIdentity *)self->_channelIdentity copyWithZone:zone];
   v8 = *(v6 + 32);
   *(v6 + 32) = v7;
 
-  v9 = [(NSData *)self->_publishPayload copyWithZone:a3];
+  v9 = [(NSData *)self->_publishPayload copyWithZone:zone];
   v10 = *(v6 + 40);
   *(v6 + 40) = v9;
 
@@ -523,43 +523,43 @@ LABEL_8:
   }
 
 LABEL_9:
-  v12 = [(NSString *)self->_adopter copyWithZone:a3];
+  v12 = [(NSString *)self->_adopter copyWithZone:zone];
   v13 = *(v6 + 24);
   *(v6 + 24) = v12;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_43;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(equalCopy + 60);
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_publishInitiateTimestampMillis != *(v4 + 1))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_publishInitiateTimestampMillis != *(equalCopy + 1))
     {
       goto LABEL_43;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_43;
   }
 
   channelIdentity = self->_channelIdentity;
-  if (channelIdentity | *(v4 + 4) && ![(ChannelIdentity *)channelIdentity isEqual:?])
+  if (channelIdentity | *(equalCopy + 4) && ![(ChannelIdentity *)channelIdentity isEqual:?])
   {
     goto LABEL_43;
   }
 
   publishPayload = self->_publishPayload;
-  if (publishPayload | *(v4 + 5))
+  if (publishPayload | *(equalCopy + 5))
   {
     if (![(NSData *)publishPayload isEqual:?])
     {
@@ -567,63 +567,63 @@ LABEL_9:
     }
   }
 
-  v8 = *(v4 + 60);
+  v8 = *(equalCopy + 60);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_publishPayloadExpiryTtlMillis != *(v4 + 2))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_publishPayloadExpiryTtlMillis != *(equalCopy + 2))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_43;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 60) & 4) == 0 || self->_pushPriority != *(v4 + 12))
+    if ((*(equalCopy + 60) & 4) == 0 || self->_pushPriority != *(equalCopy + 12))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 60) & 4) != 0)
+  else if ((*(equalCopy + 60) & 4) != 0)
   {
     goto LABEL_43;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 60) & 0x10) == 0)
+    if ((*(equalCopy + 60) & 0x10) == 0)
     {
       goto LABEL_43;
     }
 
-    v9 = *(v4 + 56);
+    v9 = *(equalCopy + 56);
     if (self->_pendingPublishHint)
     {
-      if ((*(v4 + 56) & 1) == 0)
+      if ((*(equalCopy + 56) & 1) == 0)
       {
         goto LABEL_43;
       }
     }
 
-    else if (*(v4 + 56))
+    else if (*(equalCopy + 56))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 60) & 0x10) != 0)
+  else if ((*(equalCopy + 60) & 0x10) != 0)
   {
     goto LABEL_43;
   }
 
   if ((*&self->_has & 0x20) == 0)
   {
-    if ((*(v4 + 60) & 0x20) == 0)
+    if ((*(equalCopy + 60) & 0x20) == 0)
     {
       goto LABEL_25;
     }
@@ -633,21 +633,21 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  if ((*(v4 + 60) & 0x20) == 0)
+  if ((*(equalCopy + 60) & 0x20) == 0)
   {
     goto LABEL_43;
   }
 
-  v10 = *(v4 + 57);
+  v10 = *(equalCopy + 57);
   if (self->_scheduledPublishHint)
   {
-    if ((*(v4 + 57) & 1) == 0)
+    if ((*(equalCopy + 57) & 1) == 0)
     {
       goto LABEL_43;
     }
   }
 
-  else if (*(v4 + 57))
+  else if (*(equalCopy + 57))
   {
     goto LABEL_43;
   }
@@ -655,19 +655,19 @@ LABEL_43:
 LABEL_25:
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 60) & 8) == 0 || self->_retryCount != *(v4 + 13))
+    if ((*(equalCopy + 60) & 8) == 0 || self->_retryCount != *(equalCopy + 13))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 60) & 8) != 0)
+  else if ((*(equalCopy + 60) & 8) != 0)
   {
     goto LABEL_43;
   }
 
   adopter = self->_adopter;
-  if (adopter | *(v4 + 3))
+  if (adopter | *(equalCopy + 3))
   {
     v12 = [(NSString *)adopter isEqual:?];
   }
@@ -762,13 +762,13 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ [(NSString *)self->_adopter hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 60))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 60))
   {
-    self->_publishInitiateTimestampMillis = v4[1];
+    self->_publishInitiateTimestampMillis = fromCopy[1];
     *&self->_has |= 1u;
   }
 

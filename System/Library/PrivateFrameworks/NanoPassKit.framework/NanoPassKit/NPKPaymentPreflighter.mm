@@ -1,6 +1,6 @@
 @interface NPKPaymentPreflighter
 + (BOOL)watchConnected;
-- (NPKPaymentPreflighter)initWithWebService:(id)a3 targetDevice:(id)a4 companionAgentConnection:(id)a5;
+- (NPKPaymentPreflighter)initWithWebService:(id)service targetDevice:(id)device companionAgentConnection:(id)connection;
 - (PKPaymentWebServiceTargetDeviceProtocol)targetDevice;
 - (id)_errorForConnectionIssue;
 - (id)_errorForGizmoAccountNeeded;
@@ -8,16 +8,16 @@
 - (id)_errorForUnlockNeeded;
 - (id)_errorForWristDetectNeeded;
 - (void)_checkCompanioniCloudAccount;
-- (void)_checkPasscodeEnabledAndUnlockedStateRequiringPasscode:(BOOL)a3 requiringUnlock:(BOOL)a4;
+- (void)_checkPasscodeEnabledAndUnlockedStateRequiringPasscode:(BOOL)passcode requiringUnlock:(BOOL)unlock;
 - (void)_checkSpaceAvailableOnSecureElement;
 - (void)_checkWatchConnected;
 - (void)_checkWatchiCloudAccount;
 - (void)_checkWristDetectEnabledState;
 - (void)_setAuthRandomIfNecessary;
-- (void)addBiometricPassPreflightWithCompletion:(id)a3;
-- (void)addCardPreflightWithCompletion:(id)a3;
-- (void)addSecureElementPassPreflightWithCompletion:(id)a3;
-- (void)transferToCompanionPreflightWithCompletion:(id)a3;
+- (void)addBiometricPassPreflightWithCompletion:(id)completion;
+- (void)addCardPreflightWithCompletion:(id)completion;
+- (void)addSecureElementPassPreflightWithCompletion:(id)completion;
+- (void)transferToCompanionPreflightWithCompletion:(id)completion;
 @end
 
 @implementation NPKPaymentPreflighter
@@ -42,20 +42,20 @@
   return v6;
 }
 
-- (NPKPaymentPreflighter)initWithWebService:(id)a3 targetDevice:(id)a4 companionAgentConnection:(id)a5
+- (NPKPaymentPreflighter)initWithWebService:(id)service targetDevice:(id)device companionAgentConnection:(id)connection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  serviceCopy = service;
+  deviceCopy = device;
+  connectionCopy = connection;
   v20.receiver = self;
   v20.super_class = NPKPaymentPreflighter;
   v12 = [(NPKPaymentPreflighter *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_webService, a3);
-    objc_storeWeak(&v13->_targetDevice, v10);
-    objc_storeStrong(&v13->_companionAgentConnection, a5);
+    objc_storeStrong(&v12->_webService, service);
+    objc_storeWeak(&v13->_targetDevice, deviceCopy);
+    objc_storeStrong(&v13->_companionAgentConnection, connection);
     v22 = 0;
     v23 = &v22;
     v24 = 0x2050000000;
@@ -85,16 +85,16 @@
   return v13;
 }
 
-- (void)addCardPreflightWithCompletion:(id)a3
+- (void)addCardPreflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__NPKPaymentPreflighter_addCardPreflightWithCompletion___block_invoke;
   v6[3] = &unk_279945530;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -115,14 +115,14 @@ uint64_t __56__NPKPaymentPreflighter_addCardPreflightWithCompletion___block_invo
   return [v3 _finishPresentingSetupControllerIfReadyWithSuccess:1 error:0];
 }
 
-- (void)transferToCompanionPreflightWithCompletion:(id)a3
+- (void)transferToCompanionPreflightWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [objc_opt_class() watchConnected];
+  completionCopy = completion;
+  watchConnected = [objc_opt_class() watchConnected];
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
-  if (v5)
+  if (watchConnected)
   {
     if (v7)
     {
@@ -139,8 +139,8 @@ uint64_t __56__NPKPaymentPreflighter_addCardPreflightWithCompletion___block_invo
     v17[2] = __68__NPKPaymentPreflighter_transferToCompanionPreflightWithCompletion___block_invoke;
     v17[3] = &unk_279945198;
     v9 = &v18;
-    v18 = v4;
-    v10 = v4;
+    v18 = completionCopy;
+    v10 = completionCopy;
     v11 = MEMORY[0x277D85CD0];
     v12 = v17;
   }
@@ -163,8 +163,8 @@ uint64_t __56__NPKPaymentPreflighter_addCardPreflightWithCompletion___block_invo
     block[3] = &unk_279946670;
     v9 = &v16;
     block[4] = self;
-    v16 = v4;
-    v14 = v4;
+    v16 = completionCopy;
+    v14 = completionCopy;
     v11 = MEMORY[0x277D85CD0];
     v12 = block;
   }
@@ -179,16 +179,16 @@ void __68__NPKPaymentPreflighter_transferToCompanionPreflightWithCompletion___bl
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)addSecureElementPassPreflightWithCompletion:(id)a3
+- (void)addSecureElementPassPreflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__NPKPaymentPreflighter_addSecureElementPassPreflightWithCompletion___block_invoke;
   v6[3] = &unk_279945530;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -209,16 +209,16 @@ uint64_t __69__NPKPaymentPreflighter_addSecureElementPassPreflightWithCompletion
   return [v3 _finishPresentingSetupControllerIfReadyWithSuccess:1 error:0];
 }
 
-- (void)addBiometricPassPreflightWithCompletion:(id)a3
+- (void)addBiometricPassPreflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__NPKPaymentPreflighter_addBiometricPassPreflightWithCompletion___block_invoke;
   v6[3] = &unk_279945530;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -251,13 +251,13 @@ uint64_t __65__NPKPaymentPreflighter_addBiometricPassPreflightWithCompletion___b
 
   else
   {
-    v3 = [(NPKPaymentPreflighter *)self companionAgentConnection];
+    companionAgentConnection = [(NPKPaymentPreflighter *)self companionAgentConnection];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __60__NPKPaymentPreflighter__checkSpaceAvailableOnSecureElement__block_invoke;
     v4[3] = &unk_279946B08;
     v4[4] = self;
-    [v3 paymentPassUniqueIDsSynchronous:0 excludingDeactivated:1 reply:v4];
+    [companionAgentConnection paymentPassUniqueIDsSynchronous:0 excludingDeactivated:1 reply:v4];
   }
 }
 
@@ -326,12 +326,12 @@ void __60__NPKPaymentPreflighter__checkSpaceAvailableOnSecureElement__block_invo
     }
   }
 
-  v6 = [objc_opt_class() watchConnected];
-  [(NPKPaymentPreflighter *)self setWatchConnected:v6];
+  watchConnected = [objc_opt_class() watchConnected];
+  [(NPKPaymentPreflighter *)self setWatchConnected:watchConnected];
   v7 = pk_Payment_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
-  if (v6)
+  if (watchConnected)
   {
     if (v8)
     {
@@ -358,8 +358,8 @@ void __60__NPKPaymentPreflighter__checkSpaceAvailableOnSecureElement__block_invo
       }
     }
 
-    v11 = [(NPKPaymentPreflighter *)self _errorForConnectionIssue];
-    [(NPKPaymentPreflighter *)self _finishPresentingSetupControllerIfReadyWithSuccess:0 error:v11];
+    _errorForConnectionIssue = [(NPKPaymentPreflighter *)self _errorForConnectionIssue];
+    [(NPKPaymentPreflighter *)self _finishPresentingSetupControllerIfReadyWithSuccess:0 error:_errorForConnectionIssue];
   }
 }
 
@@ -411,8 +411,8 @@ void __60__NPKPaymentPreflighter__checkSpaceAvailableOnSecureElement__block_invo
       }
     }
 
-    v11 = [(NPKPaymentPreflighter *)self _errorForCompanionAccountNeeded];
-    [(NPKPaymentPreflighter *)self _finishPresentingSetupControllerIfReadyWithSuccess:0 error:v11];
+    _errorForCompanionAccountNeeded = [(NPKPaymentPreflighter *)self _errorForCompanionAccountNeeded];
+    [(NPKPaymentPreflighter *)self _finishPresentingSetupControllerIfReadyWithSuccess:0 error:_errorForCompanionAccountNeeded];
   }
 }
 
@@ -474,14 +474,14 @@ LABEL_17:
   }
 
   objc_initWeak(buf, self);
-  v12 = [(NPKPaymentPreflighter *)self systemSettingsManager];
+  systemSettingsManager = [(NPKPaymentPreflighter *)self systemSettingsManager];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __49__NPKPaymentPreflighter__checkWatchiCloudAccount__block_invoke;
   v13[3] = &unk_279946B30;
   objc_copyWeak(&v14, buf);
   v13[4] = self;
-  [v12 getiCloudInfo:v13];
+  [systemSettingsManager getiCloudInfo:v13];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
@@ -601,10 +601,10 @@ LABEL_25:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_checkPasscodeEnabledAndUnlockedStateRequiringPasscode:(BOOL)a3 requiringUnlock:(BOOL)a4
+- (void)_checkPasscodeEnabledAndUnlockedStateRequiringPasscode:(BOOL)passcode requiringUnlock:(BOOL)unlock
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v8 = NPKIsCurrentlyPairing();
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -636,19 +636,19 @@ LABEL_25:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v39 = v7;
+        v39 = date;
         _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: Checking passcode enabled and unlocked state with query date: %@", buf, 0xCu);
       }
     }
 
-    [(NPKPaymentPreflighter *)self setWatchPasscodeAndUnlockedQueryDate:v7];
+    [(NPKPaymentPreflighter *)self setWatchPasscodeAndUnlockedQueryDate:date];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __96__NPKPaymentPreflighter__checkPasscodeEnabledAndUnlockedStateRequiringPasscode_requiringUnlock___block_invoke;
     aBlock[3] = &unk_279946B80;
     aBlock[4] = self;
-    v36 = a3;
-    v37 = a4;
+    passcodeCopy = passcode;
+    unlockCopy = unlock;
     v13 = _Block_copy(aBlock);
     IsTinker = NPKPairedOrPairingDeviceIsTinker();
     v15 = pk_Payment_log();
@@ -666,20 +666,20 @@ LABEL_25:
         }
       }
 
-      v18 = [(NPKPaymentPreflighter *)self webService];
-      v19 = [v18 targetDevice];
-      v20 = v19;
-      if (v19)
+      webService = [(NPKPaymentPreflighter *)self webService];
+      targetDevice = [webService targetDevice];
+      v20 = targetDevice;
+      if (targetDevice)
       {
-        v21 = v19;
+        targetDevice2 = targetDevice;
       }
 
       else
       {
-        v21 = [(NPKPaymentPreflighter *)self targetDevice];
+        targetDevice2 = [(NPKPaymentPreflighter *)self targetDevice];
       }
 
-      v24 = v21;
+      v24 = targetDevice2;
 
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
@@ -701,13 +701,13 @@ LABEL_25:
         }
       }
 
-      v23 = [(NPKPaymentPreflighter *)self passcodeConnection];
+      passcodeConnection = [(NPKPaymentPreflighter *)self passcodeConnection];
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __96__NPKPaymentPreflighter__checkPasscodeEnabledAndUnlockedStateRequiringPasscode_requiringUnlock___block_invoke_81;
       v31[3] = &unk_279946BD0;
       v32 = v13;
-      [v23 getRemoteDeviceState:v31];
+      [passcodeConnection getRemoteDeviceState:v31];
 
       v24 = v32;
     }
@@ -719,8 +719,8 @@ LABEL_25:
     block[2] = __96__NPKPaymentPreflighter__checkPasscodeEnabledAndUnlockedStateRequiringPasscode_requiringUnlock___block_invoke_2_83;
     block[3] = &unk_279945290;
     objc_copyWeak(&v30, buf);
-    v28 = v7;
-    v29 = self;
+    v28 = date;
+    selfCopy = self;
     dispatch_after(v25, MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v30);
@@ -865,7 +865,7 @@ LABEL_8:
   v14 = *MEMORY[0x277D85DE8];
   v3 = NPKPairedOrPairingDevice();
   v4 = [v3 valueForProperty:*MEMORY[0x277D2BB10]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -876,12 +876,12 @@ LABEL_8:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v13 = v5;
+      v13 = bOOLValue;
       _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: Watch has SEP: %d", buf, 8u);
     }
   }
 
-  if (v5)
+  if (bOOLValue)
   {
     [(NPKPaymentPreflighter *)self setNeedsWristDetection:0];
   }
@@ -920,20 +920,20 @@ LABEL_8:
 
   if ([(NPKPaymentPreflighter *)self needsSetAuthRandom])
   {
-    v6 = [(NPKPaymentPreflighter *)self webService];
-    v7 = [v6 targetDevice];
-    v8 = v7;
-    if (v7)
+    webService = [(NPKPaymentPreflighter *)self webService];
+    targetDevice = [webService targetDevice];
+    v8 = targetDevice;
+    if (targetDevice)
     {
-      v9 = v7;
+      targetDevice2 = targetDevice;
     }
 
     else
     {
-      v9 = [(NPKPaymentPreflighter *)self targetDevice];
+      targetDevice2 = [(NPKPaymentPreflighter *)self targetDevice];
     }
 
-    v10 = v9;
+    v10 = targetDevice2;
 
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;

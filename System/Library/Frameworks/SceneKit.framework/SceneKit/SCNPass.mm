@@ -1,23 +1,23 @@
 @interface SCNPass
-- (SCNPass)initWithFXPass:(__C3DFXPass *)a3 technique:(id)a4;
-- (id)valueForPassPropertyKey:(int64_t)a3;
+- (SCNPass)initWithFXPass:(__C3DFXPass *)pass technique:(id)technique;
+- (id)valueForPassPropertyKey:(int64_t)key;
 - (void)dealloc;
-- (void)setExecutionHandler:(id)a3;
-- (void)setInitializationHandler:(id)a3;
-- (void)setValue:(id)a3 forPassPropertyKey:(int64_t)a4;
+- (void)setExecutionHandler:(id)handler;
+- (void)setInitializationHandler:(id)handler;
+- (void)setValue:(id)value forPassPropertyKey:(int64_t)key;
 @end
 
 @implementation SCNPass
 
-- (SCNPass)initWithFXPass:(__C3DFXPass *)a3 technique:(id)a4
+- (SCNPass)initWithFXPass:(__C3DFXPass *)pass technique:(id)technique
 {
   v8.receiver = self;
   v8.super_class = SCNPass;
   v6 = [(SCNPass *)&v8 init];
   if (v6)
   {
-    v6->_fxPass = CFRetain(a3);
-    v6->_technique = a4;
+    v6->_fxPass = CFRetain(pass);
+    v6->_technique = technique;
   }
 
   return v6;
@@ -31,34 +31,34 @@
   [(SCNPass *)&v3 dealloc];
 }
 
-- (void)setInitializationHandler:(id)a3
+- (void)setInitializationHandler:(id)handler
 {
-  C3DFXPassSetInitializeBlock(self->_fxPass, a3);
+  C3DFXPassSetInitializeBlock(self->_fxPass, handler);
   fxPass = self->_fxPass;
 
   C3DFXPassSetInitializeCallback(fxPass, SCNPassInitialize);
 }
 
-- (void)setExecutionHandler:(id)a3
+- (void)setExecutionHandler:(id)handler
 {
-  C3DFXPassSetExecuteBlock(self->_fxPass, a3);
+  C3DFXPassSetExecuteBlock(self->_fxPass, handler);
   fxPass = self->_fxPass;
 
   C3DFloorSetReflectionCategoryBitMask(fxPass, SCNPassExecute);
 }
 
-- (void)setValue:(id)a3 forPassPropertyKey:(int64_t)a4
+- (void)setValue:(id)value forPassPropertyKey:(int64_t)key
 {
-  v7 = [(SCNTechnique *)self->_technique sceneRef];
+  sceneRef = [(SCNTechnique *)self->_technique sceneRef];
   technique = self->_technique;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __39__SCNPass_setValue_forPassPropertyKey___block_invoke;
   v9[3] = &unk_2782FB630;
   v9[5] = self;
-  v9[6] = a4;
-  v9[4] = a3;
-  [SCNTransaction postCommandWithContext:v7 object:technique applyBlock:v9];
+  v9[6] = key;
+  v9[4] = value;
+  [SCNTransaction postCommandWithContext:sceneRef object:technique applyBlock:v9];
 }
 
 void __39__SCNPass_setValue_forPassPropertyKey___block_invoke(uint64_t a1)
@@ -107,12 +107,12 @@ void __39__SCNPass_setValue_forPassPropertyKey___block_invoke(uint64_t a1)
   C3DNotificationCenterPostNotification(SharedInstance, @"kC3DNotificationEngineContextInvalidatePasses", v6, 0, 1u);
 }
 
-- (id)valueForPassPropertyKey:(int64_t)a3
+- (id)valueForPassPropertyKey:(int64_t)key
 {
   +[SCNTransaction lock];
-  if ((a3 - 1) >= 5)
+  if ((key - 1) >= 5)
   {
-    if (a3 == 6)
+    if (key == 6)
     {
       v7 = MEMORY[0x277CCABB0];
       var3 = self->_fxPass->var49.var3;
@@ -120,7 +120,7 @@ void __39__SCNPass_setValue_forPassPropertyKey___block_invoke(uint64_t a1)
 
     else
     {
-      if (a3 != 7)
+      if (key != 7)
       {
         v9 = 0;
         goto LABEL_9;
@@ -135,7 +135,7 @@ void __39__SCNPass_setValue_forPassPropertyKey___block_invoke(uint64_t a1)
 
   else
   {
-    LODWORD(v5) = *(&self->_fxPass->var54 + (a3 - 1));
+    LODWORD(v5) = *(&self->_fxPass->var54 + (key - 1));
     v6 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
   }
 

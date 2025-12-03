@@ -1,7 +1,7 @@
 @interface IMDDistributedNotificationXPCEventStreamHandler
 + (id)sharedInstance;
 - (IMDDistributedNotificationXPCEventStreamHandler)init;
-- (IMDDistributedNotificationXPCEventStreamHandler)initWithEventStreamName:(const char *)a3;
+- (IMDDistributedNotificationXPCEventStreamHandler)initWithEventStreamName:(const char *)name;
 @end
 
 @implementation IMDDistributedNotificationXPCEventStreamHandler
@@ -25,7 +25,7 @@
   return [(IMDXPCEventStreamHandler *)&v3 initWithEventStreamName:"com.apple.distnoted.matching"];
 }
 
-- (IMDDistributedNotificationXPCEventStreamHandler)initWithEventStreamName:(const char *)a3
+- (IMDDistributedNotificationXPCEventStreamHandler)initWithEventStreamName:(const char *)name
 {
   [(IMDDistributedNotificationXPCEventStreamHandler *)self doesNotRecognizeSelector:a2];
 

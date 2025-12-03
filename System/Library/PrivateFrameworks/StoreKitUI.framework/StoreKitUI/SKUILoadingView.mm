@@ -1,22 +1,22 @@
 @interface SKUILoadingView
-+ (id)defaultLoadingTextWithClientContext:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUILoadingView)initWithFrame:(CGRect)a3;
++ (id)defaultLoadingTextWithClientContext:(id)context;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUILoadingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setLoadingText:(id)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setColorScheme:(id)scheme;
+- (void)setLoadingText:(id)text;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation SKUILoadingView
 
-- (SKUILoadingView)initWithFrame:(CGRect)a3
+- (SKUILoadingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUILoadingView initWithFrame:];
@@ -24,36 +24,36 @@
 
   v12.receiver = self;
   v12.super_class = SKUILoadingView;
-  v8 = [(SKUILoadingView *)&v12 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUILoadingView *)&v12 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
-    spinner = v8->_spinner;
-    v8->_spinner = v9;
+    spinner = height->_spinner;
+    height->_spinner = v9;
 
-    [(UIActivityIndicatorView *)v8->_spinner sizeToFit];
-    [(SKUILoadingView *)v8 addSubview:v8->_spinner];
+    [(UIActivityIndicatorView *)height->_spinner sizeToFit];
+    [(SKUILoadingView *)height addSubview:height->_spinner];
   }
 
-  return v8;
+  return height;
 }
 
-+ (id)defaultLoadingTextWithClientContext:(id)a3
++ (id)defaultLoadingTextWithClientContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     +[SKUILoadingView defaultLoadingTextWithClientContext:];
-    if (v3)
+    if (contextCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v3)
+  else if (contextCopy)
   {
 LABEL_5:
-    v4 = [v3 localizedStringForKey:@"DEFAULT_LOADING_TEXT"];
+    v4 = [contextCopy localizedStringForKey:@"DEFAULT_LOADING_TEXT"];
     goto LABEL_8;
   }
 
@@ -64,32 +64,32 @@ LABEL_8:
   return v5;
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  if (self->_colorScheme != a3)
+  if (self->_colorScheme != scheme)
   {
-    v4 = [a3 copy];
+    v4 = [scheme copy];
     colorScheme = self->_colorScheme;
     self->_colorScheme = v4;
 
-    v6 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (!v6)
+    primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (!primaryTextColor)
     {
-      v6 = [MEMORY[0x277D75348] labelColor];
+      primaryTextColor = [MEMORY[0x277D75348] labelColor];
     }
 
-    v7 = v6;
-    [(UIActivityIndicatorView *)self->_spinner setColor:v6];
+    v7 = primaryTextColor;
+    [(UIActivityIndicatorView *)self->_spinner setColor:primaryTextColor];
     [(UILabel *)self->_label setTextColor:v7];
   }
 }
 
-- (void)setLoadingText:(id)a3
+- (void)setLoadingText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   label = self->_label;
-  v16 = v4;
-  if (v4)
+  v16 = textCopy;
+  if (textCopy)
   {
     if (!label)
     {
@@ -98,33 +98,33 @@ LABEL_8:
       self->_label = v6;
 
       v8 = self->_label;
-      v9 = [(SKUILoadingView *)self backgroundColor];
-      [(UILabel *)v8 setBackgroundColor:v9];
+      backgroundColor = [(SKUILoadingView *)self backgroundColor];
+      [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
       v10 = self->_label;
       v11 = [MEMORY[0x277D74300] systemFontOfSize:11.0];
       [(UILabel *)v10 setFont:v11];
 
-      v12 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+      primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
       v13 = self->_label;
-      if (v12)
+      if (primaryTextColor)
       {
-        [(UILabel *)self->_label setTextColor:v12];
+        [(UILabel *)self->_label setTextColor:primaryTextColor];
       }
 
       else
       {
-        v15 = [MEMORY[0x277D75348] labelColor];
-        [(UILabel *)v13 setTextColor:v15];
+        labelColor = [MEMORY[0x277D75348] labelColor];
+        [(UILabel *)v13 setTextColor:labelColor];
       }
 
       [(SKUILoadingView *)self addSubview:self->_label];
 
       label = self->_label;
-      v4 = v16;
+      textCopy = v16;
     }
 
-    [(UILabel *)label setText:v4];
+    [(UILabel *)label setText:textCopy];
     [(UILabel *)self->_label sizeToFit];
     [(SKUILoadingView *)self setNeedsLayout];
   }
@@ -162,23 +162,23 @@ LABEL_8:
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   label = self->_label;
-  v5 = a3;
-  [(UILabel *)label setBackgroundColor:v5];
-  [(UIActivityIndicatorView *)self->_spinner setBackgroundColor:v5];
+  colorCopy = color;
+  [(UILabel *)label setBackgroundColor:colorCopy];
+  [(UIActivityIndicatorView *)self->_spinner setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUILoadingView;
-  [(SKUILoadingView *)&v6 setBackgroundColor:v5];
+  [(SKUILoadingView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   spinner = self->_spinner;
   if (spinner)
   {
-    [(UIActivityIndicatorView *)spinner frame:a3.width];
+    [(UIActivityIndicatorView *)spinner frame:fits.width];
     width = v5;
     [(UIActivityIndicatorView *)self->_spinner frame];
     v8 = v7 + 0.0;
@@ -186,7 +186,7 @@ LABEL_8:
 
   else
   {
-    width = a3.width;
+    width = fits.width;
     v8 = 0.0;
   }
 
@@ -209,26 +209,26 @@ LABEL_8:
   return result;
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v4 = a3;
-  v5 = [(UIActivityIndicatorView *)self->_spinner isAnimating];
-  if (v4)
+  superviewCopy = superview;
+  isAnimating = [(UIActivityIndicatorView *)self->_spinner isAnimating];
+  if (superviewCopy)
   {
-    if (!v5)
+    if (!isAnimating)
     {
       [(UIActivityIndicatorView *)self->_spinner startAnimating];
     }
   }
 
-  else if (v5)
+  else if (isAnimating)
   {
     [(UIActivityIndicatorView *)self->_spinner stopAnimating];
   }
 
   v6.receiver = self;
   v6.super_class = SKUILoadingView;
-  [(SKUILoadingView *)&v6 willMoveToSuperview:v4];
+  [(SKUILoadingView *)&v6 willMoveToSuperview:superviewCopy];
 }
 
 - (void)initWithFrame:.cold.1()

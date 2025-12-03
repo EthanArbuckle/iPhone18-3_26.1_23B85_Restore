@@ -1,20 +1,20 @@
 @interface CLServiceVendor
 + (CLServiceVendor)sharedInstance;
 + (void)initialize;
-+ (void)rereadConfiguration:(id)a3;
-- (BOOL)ensureServiceIsRunning:(id)a3;
-- (BOOL)isServiceEnabled:(id)a3;
-- (BOOL)isServiceRunning:(id)a3;
++ (void)rereadConfiguration:(id)configuration;
+- (BOOL)ensureServiceIsRunning:(id)running;
+- (BOOL)isServiceEnabled:(id)enabled;
+- (BOOL)isServiceRunning:(id)running;
 - (CLServiceVendor)init;
-- (id)getServiceWithName:(id)a3;
-- (id)proxyForService:(id)a3;
-- (id)proxyForService:(id)a3 forClient:(id)a4;
+- (id)getServiceWithName:(id)name;
+- (id)proxyForService:(id)service;
+- (id)proxyForService:(id)service forClient:(id)client;
 - (void)dealloc;
 - (void)enableTimeCoercion;
-- (void)intendToSyncServiceWithName:(id)a3;
-- (void)retireServiceWithName:(id)a3;
-- (void)setCurrentGlobalLatchedAbsoluteTimestamp:(double)a3;
-- (void)setServiceReplacementMap:(id)a3 missBehavior:(int)a4;
+- (void)intendToSyncServiceWithName:(id)name;
+- (void)retireServiceWithName:(id)name;
+- (void)setCurrentGlobalLatchedAbsoluteTimestamp:(double)timestamp;
+- (void)setServiceReplacementMap:(id)map missBehavior:(int)behavior;
 @end
 
 @implementation CLServiceVendor
@@ -46,9 +46,9 @@
   v2 = [(CLServiceVendor *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     catalog = v2->_catalog;
-    v2->_catalog = v3;
+    v2->_catalog = dictionary;
 
     v5 = [MEMORY[0x1E695DFA8] set];
     unavailableServiceNames = v2->_unavailableServiceNames;
@@ -60,10 +60,10 @@
   return v2;
 }
 
-+ (void)rereadConfiguration:(id)a3
++ (void)rereadConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [CLSettingsDictionary settingsWithDictionary:v3];
+  configurationCopy = configuration;
+  v4 = [CLSettingsDictionary settingsWithDictionary:configurationCopy];
   [v4 doubleForKey:@"CLServiceVendor.HeartbeatCheckInterval" defaultValue:60.0];
   v6 = v5;
   v7 = [v4 BOOLForKey:@"HeartAttackStackshot" defaultValue:0];
@@ -187,27 +187,27 @@ LABEL_19:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setServiceReplacementMap:(id)a3 missBehavior:(int)a4
+- (void)setServiceReplacementMap:(id)map missBehavior:(int)behavior
 {
-  v6 = a3;
+  mapCopy = map;
   v7 = qword_1ED5FADA0;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1DF81F47C;
   block[3] = &unk_1E86C86C8;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = mapCopy;
+  selfCopy = self;
+  behaviorCopy = behavior;
+  v8 = mapCopy;
   dispatch_barrier_sync(v7, block);
 }
 
-- (id)getServiceWithName:(id)a3
+- (id)getServiceWithName:(id)name
 {
   v65 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (byte_1ED5FAD98 == 1 && (([v4 containsString:@"Test"] & 1) != 0 || objc_msgSend(v5, "containsString:", @"Mock")))
+  nameCopy = name;
+  v5 = nameCopy;
+  if (byte_1ED5FAD98 == 1 && (([nameCopy containsString:@"Test"] & 1) != 0 || objc_msgSend(v5, "containsString:", @"Mock")))
   {
     if (qword_1ED5FAD40 != -1)
     {
@@ -313,7 +313,7 @@ LABEL_19:
         v27[3] = &unk_1E86C8740;
         v34 = v13;
         v28 = v10;
-        v29 = self;
+        selfCopy = self;
         v31 = &v48;
         v32 = buf;
         v33 = v15;
@@ -418,10 +418,10 @@ LABEL_19:
   return v8;
 }
 
-- (void)retireServiceWithName:(id)a3
+- (void)retireServiceWithName:(id)name
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -435,19 +435,19 @@ LABEL_19:
   block[3] = &unk_1E86C8768;
   v14 = &v15;
   block[4] = self;
-  v6 = v4;
+  v6 = nameCopy;
   v13 = v6;
   dispatch_barrier_sync(v5, block);
   v7 = v16[5];
   if (v7)
   {
-    v8 = [v7 silo];
+    silo = [v7 silo];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_1DF82179C;
     v11[3] = &unk_1E86C8790;
     v11[4] = &v15;
-    [v8 sync:v11];
+    [silo sync:v11];
   }
 
   else
@@ -473,14 +473,14 @@ LABEL_19:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isServiceEnabled:(id)a3
+- (BOOL)isServiceEnabled:(id)enabled
 {
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_1DF8090EC;
   v16 = sub_1DF809114;
-  v17 = a3;
+  enabledCopy = enabled;
   v4 = qword_1ED5FADA0;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -488,7 +488,7 @@ LABEL_19:
   block[3] = &unk_1E86C8768;
   v11 = &v12;
   block[4] = self;
-  v5 = v17;
+  v5 = enabledCopy;
   v10 = v5;
   dispatch_sync(v4, block);
   v7 = 0;
@@ -500,9 +500,9 @@ LABEL_19:
   return v4;
 }
 
-- (BOOL)isServiceRunning:(id)a3
+- (BOOL)isServiceRunning:(id)running
 {
-  v4 = a3;
+  runningCopy = running;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -512,10 +512,10 @@ LABEL_19:
   block[1] = 3221225472;
   block[2] = sub_1DF821A68;
   block[3] = &unk_1E86C8768;
-  v9 = v4;
+  v9 = runningCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = runningCopy;
   dispatch_sync(v5, block);
   LOBYTE(v5) = *(v12 + 24);
 
@@ -523,23 +523,23 @@ LABEL_19:
   return v5;
 }
 
-- (BOOL)ensureServiceIsRunning:(id)a3
+- (BOOL)ensureServiceIsRunning:(id)running
 {
-  v3 = [(CLServiceVendor *)self getServiceWithName:a3];
+  v3 = [(CLServiceVendor *)self getServiceWithName:running];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)proxyForService:(id)a3
+- (id)proxyForService:(id)service
 {
-  v4 = a3;
-  v5 = [(CLServiceVendor *)self getServiceWithName:v4];
+  serviceCopy = service;
+  v5 = [(CLServiceVendor *)self getServiceWithName:serviceCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 silo];
-    v8 = [CLIntersiloProxy proxyForRecipientObject:v6 inSilo:v7 recipientName:v4];
+    silo = [v5 silo];
+    v8 = [CLIntersiloProxy proxyForRecipientObject:v6 inSilo:silo recipientName:serviceCopy];
   }
 
   else
@@ -550,18 +550,18 @@ LABEL_19:
   return v8;
 }
 
-- (id)proxyForService:(id)a3 forClient:(id)a4
+- (id)proxyForService:(id)service forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CLServiceVendor *)self getServiceWithName:v7];
+  serviceCopy = service;
+  clientCopy = client;
+  v8 = [(CLServiceVendor *)self getServiceWithName:clientCopy];
   if (v8)
   {
-    v9 = [(CLServiceVendor *)self proxyForService:v6];
-    v10 = [v8 silo];
-    [v9 registerDelegate:v8 inSilo:v10];
+    v9 = [(CLServiceVendor *)self proxyForService:serviceCopy];
+    silo = [v8 silo];
+    [v9 registerDelegate:v8 inSilo:silo];
 
-    [v9 setDelegateEntityName:{objc_msgSend(v7, "UTF8String")}];
+    [v9 setDelegateEntityName:{objc_msgSend(clientCopy, "UTF8String")}];
   }
 
   else
@@ -572,13 +572,13 @@ LABEL_19:
   return v9;
 }
 
-- (void)setCurrentGlobalLatchedAbsoluteTimestamp:(double)a3
+- (void)setCurrentGlobalLatchedAbsoluteTimestamp:(double)timestamp
 {
   v36 = *MEMORY[0x1E69E9840];
   timeCoercibleSilos = self->_timeCoercibleSilos;
   if (timeCoercibleSilos)
   {
-    self->_currentGlobalLatchedAbsoluteTimestamp = a3;
+    self->_currentGlobalLatchedAbsoluteTimestamp = timestamp;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -633,7 +633,7 @@ LABEL_19:
           v24[2] = sub_1DF821F84;
           v24[3] = &unk_1E86C85E8;
           v24[4] = v14;
-          *&v24[5] = a3;
+          *&v24[5] = timestamp;
           [v14 async:v24];
           ++v13;
         }
@@ -678,13 +678,13 @@ LABEL_19:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)intendToSyncServiceWithName:(id)a3
+- (void)intendToSyncServiceWithName:(id)name
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   if (+[CLAutoCohortUtilities autoCohortingEnabled])
   {
-    if (-[CLServiceVendor isServiceEnabled:](self, "isServiceEnabled:", v4) && (-[CLServiceVendor getServiceWithName:](self, "getServiceWithName:", v4), v5 = objc_claimAutoreleasedReturnValue(), [v5 silo], v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
+    if (-[CLServiceVendor isServiceEnabled:](self, "isServiceEnabled:", nameCopy) && (-[CLServiceVendor getServiceWithName:](self, "getServiceWithName:", nameCopy), v5 = objc_claimAutoreleasedReturnValue(), [v5 silo], v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
     {
       [v6 intendToSync];
     }
@@ -704,7 +704,7 @@ LABEL_19:
         v10 = 2082;
         v11 = &unk_1DF8255EF;
         v12 = 2114;
-        v13 = v4;
+        v13 = nameCopy;
         _os_log_impl(&dword_1DF7FE000, v7, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#Cohorting Cannot deduce toSilo, serviceName:%{public, location:escape_only}@}", v9, 0x1Cu);
       }
 

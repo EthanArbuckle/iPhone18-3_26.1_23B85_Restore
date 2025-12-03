@@ -1,13 +1,13 @@
 @interface ICHandoffController
 + (id)sharedController;
-- (BOOL)sendMessage:(id)a3 toSource:(id)a4 error:(id *)a5;
+- (BOOL)sendMessage:(id)message toSource:(id)source error:(id *)error;
 - (ICHandoffController)init;
 - (ICPeerInputStream)inputStream;
-- (void)didDisconnectInputStream:(id)a3;
-- (void)didReceiveInputStream:(id)a3 outputStream:(id)a4;
-- (void)handleMessage:(id)a3 fromInputStream:(id)a4;
-- (void)requestNoteWithIdentifier:(id)a3;
-- (void)setInputStream:(id)a3;
+- (void)didDisconnectInputStream:(id)stream;
+- (void)didReceiveInputStream:(id)stream outputStream:(id)outputStream;
+- (void)handleMessage:(id)message fromInputStream:(id)stream;
+- (void)requestNoteWithIdentifier:(id)identifier;
+- (void)setInputStream:(id)stream;
 @end
 
 @implementation ICHandoffController
@@ -48,74 +48,74 @@ void __39__ICHandoffController_sharedController__block_invoke()
   return v2;
 }
 
-- (void)setInputStream:(id)a3
+- (void)setInputStream:(id)stream
 {
-  v7 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  inputStream = v5->_inputStream;
-  if (inputStream != v7)
+  streamCopy = stream;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  inputStream = selfCopy->_inputStream;
+  if (inputStream != streamCopy)
   {
     [(ICPeerInputStream *)inputStream setDelegate:0];
-    objc_storeStrong(&v5->_inputStream, a3);
-    [(ICPeerInputStream *)v5->_inputStream setDelegate:v5];
+    objc_storeStrong(&selfCopy->_inputStream, stream);
+    [(ICPeerInputStream *)selfCopy->_inputStream setDelegate:selfCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (ICPeerInputStream)inputStream
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_inputStream;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_inputStream;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)didReceiveInputStream:(id)a3 outputStream:(id)a4
+- (void)didReceiveInputStream:(id)stream outputStream:(id)outputStream
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [[ICPeerInputStream alloc] initWithInputStream:v7];
+  outputStreamCopy = outputStream;
+  streamCopy = stream;
+  v9 = [[ICPeerInputStream alloc] initWithInputStream:streamCopy];
 
-  v8 = [[ICPeerOutputStream alloc] initWithOutputStream:v6];
+  v8 = [[ICPeerOutputStream alloc] initWithOutputStream:outputStreamCopy];
   [(ICHandoffController *)self setInputStream:v9];
   [(ICHandoffController *)self setOutputStream:v8];
 }
 
-- (void)requestNoteWithIdentifier:(id)a3
+- (void)requestNoteWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = [(ICHandoffController *)self peerController];
-  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v4];
+  identifierCopy = identifier;
+  peerController = [(ICHandoffController *)self peerController];
+  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:identifierCopy];
 
-  [v6 requestNote:v5 from:0];
+  [peerController requestNote:v5 from:0];
 }
 
-- (BOOL)sendMessage:(id)a3 toSource:(id)a4 error:(id *)a5
+- (BOOL)sendMessage:(id)message toSource:(id)source error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ICHandoffController *)self outputStream];
-  [v7 writeMessageData:v6];
+  messageCopy = message;
+  outputStream = [(ICHandoffController *)self outputStream];
+  [outputStream writeMessageData:messageCopy];
 
   return 1;
 }
 
-- (void)handleMessage:(id)a3 fromInputStream:(id)a4
+- (void)handleMessage:(id)message fromInputStream:(id)stream
 {
-  v5 = a3;
-  v6 = [(ICHandoffController *)self peerController];
-  [v6 handleMessage:v5 fromSource:0];
+  messageCopy = message;
+  peerController = [(ICHandoffController *)self peerController];
+  [peerController handleMessage:messageCopy fromSource:0];
 }
 
-- (void)didDisconnectInputStream:(id)a3
+- (void)didDisconnectInputStream:(id)stream
 {
-  v4 = a3;
-  v5 = [(ICHandoffController *)self inputStream];
+  streamCopy = stream;
+  inputStream = [(ICHandoffController *)self inputStream];
 
-  if (v5 == v4)
+  if (inputStream == streamCopy)
   {
     [(ICHandoffController *)self setInputStream:0];
 

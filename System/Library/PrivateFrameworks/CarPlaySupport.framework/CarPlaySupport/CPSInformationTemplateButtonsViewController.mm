@@ -1,76 +1,76 @@
 @interface CPSInformationTemplateButtonsViewController
 - (CPSButtonDelegate)buttonDelegate;
-- (CPSInformationTemplateButtonsViewController)initWithButtons:(id)a3 buttonDelegate:(id)a4;
+- (CPSInformationTemplateButtonsViewController)initWithButtons:(id)buttons buttonDelegate:(id)delegate;
 - (id)preferredFocusEnvironments;
 - (void)_updateButtons;
 - (void)_updateHeight;
-- (void)setButtonIdentifier:(id)a3 enabled:(BOOL)a4;
-- (void)setButtons:(id)a3;
+- (void)setButtonIdentifier:(id)identifier enabled:(BOOL)enabled;
+- (void)setButtons:(id)buttons;
 - (void)viewDidLoad;
 @end
 
 @implementation CPSInformationTemplateButtonsViewController
 
-- (CPSInformationTemplateButtonsViewController)initWithButtons:(id)a3 buttonDelegate:(id)a4
+- (CPSInformationTemplateButtonsViewController)initWithButtons:(id)buttons buttonDelegate:(id)delegate
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, buttons);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v4 = v13;
-  v13 = 0;
+  objc_storeStrong(&v11, delegate);
+  v4 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v4;
   v10.super_class = CPSInformationTemplateButtonsViewController;
-  v13 = [(CPSInformationTemplateButtonsViewController *)&v10 initWithNibName:0 bundle:?];
-  objc_storeStrong(&v13, v13);
-  if (v13)
+  selfCopy = [(CPSInformationTemplateButtonsViewController *)&v10 initWithNibName:0 bundle:?];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v5 = [location[0] copy];
-    buttons = v13->_buttons;
-    v13->_buttons = v5;
+    buttons = selfCopy->_buttons;
+    selfCopy->_buttons = v5;
     MEMORY[0x277D82BD8](buttons);
-    objc_storeWeak(&v13->_buttonDelegate, v11);
-    v13->_preferredButtonIndex = 0x7FFFFFFFFFFFFFFFLL;
+    objc_storeWeak(&selfCopy->_buttonDelegate, v11);
+    selfCopy->_preferredButtonIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v8 = MEMORY[0x277D82BE0](v13);
+  v8 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (void)setButtons:(id)a3
+- (void)setButtons:(id)buttons
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, buttons);
   v3 = [location[0] copy];
-  buttons = v7->_buttons;
-  v7->_buttons = v3;
+  buttons = selfCopy->_buttons;
+  selfCopy->_buttons = v3;
   *&v5 = MEMORY[0x277D82BD8](buttons).n128_u64[0];
-  [(CPSInformationTemplateButtonsViewController *)v7 _updateButtons];
-  [(CPSInformationTemplateButtonsViewController *)v7 _updateHeight];
+  [(CPSInformationTemplateButtonsViewController *)selfCopy _updateButtons];
+  [(CPSInformationTemplateButtonsViewController *)selfCopy _updateHeight];
   objc_storeStrong(location, 0);
 }
 
-- (void)setButtonIdentifier:(id)a3 enabled:(BOOL)a4
+- (void)setButtonIdentifier:(id)identifier enabled:(BOOL)enabled
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
-  v6 = [(CPSInformationTemplateButtonsViewController *)v11 buttonStackView];
-  v5 = [(UIStackView *)v6 arrangedSubviews];
+  objc_storeStrong(location, identifier);
+  enabledCopy = enabled;
+  buttonStackView = [(CPSInformationTemplateButtonsViewController *)selfCopy buttonStackView];
+  arrangedSubviews = [(UIStackView *)buttonStackView arrangedSubviews];
   v7 = MEMORY[0x277D82BE0](location[0]);
-  v8 = v9;
-  [(NSArray *)v5 enumerateObjectsUsingBlock:?];
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
+  v8 = enabledCopy;
+  [(NSArray *)arrangedSubviews enumerateObjectsUsingBlock:?];
+  MEMORY[0x277D82BD8](arrangedSubviews);
+  MEMORY[0x277D82BD8](buttonStackView);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
@@ -101,12 +101,12 @@ void __75__CPSInformationTemplateButtonsViewController_setButtonIdentifier_enabl
 - (void)viewDidLoad
 {
   v34[6] = *MEMORY[0x277D85DE8];
-  v33 = self;
+  selfCopy = self;
   v32 = a2;
   v31.receiver = self;
   v31.super_class = CPSInformationTemplateButtonsViewController;
   [(CPSInformationTemplateButtonsViewController *)&v31 viewDidLoad];
-  v30 = [(CPSInformationTemplateButtonsViewController *)v33 view];
+  view = [(CPSInformationTemplateButtonsViewController *)selfCopy view];
   v29 = objc_alloc_init(MEMORY[0x277D75A68]);
   [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v29 setAxis:0];
@@ -114,17 +114,17 @@ void __75__CPSInformationTemplateButtonsViewController_setButtonIdentifier_enabl
   [v29 setDistribution:1];
   if (_UISolariumEnabled())
   {
-    v27 = [MEMORY[0x277D75348] clearColor];
-    [v30 setBackgroundColor:?];
-    v28 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [view setBackgroundColor:?];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
     [v29 setBackgroundColor:?];
-    MEMORY[0x277D82BD8](v28);
+    MEMORY[0x277D82BD8](clearColor2);
   }
 
-  [v30 addSubview:v29];
-  [(CPSInformationTemplateButtonsViewController *)v33 setButtonStackView:v29];
-  v8 = [(CPSInformationTemplateButtonsViewController *)v33 buttonStackView];
-  v7 = [(UIStackView *)v8 heightAnchor];
+  [view addSubview:v29];
+  [(CPSInformationTemplateButtonsViewController *)selfCopy setButtonStackView:v29];
+  buttonStackView = [(CPSInformationTemplateButtonsViewController *)selfCopy buttonStackView];
+  heightAnchor = [(UIStackView *)buttonStackView heightAnchor];
   v2 = _UISolariumEnabled();
   v3 = 36.0;
   if ((v2 & 1) == 0)
@@ -132,63 +132,63 @@ void __75__CPSInformationTemplateButtonsViewController_setButtonIdentifier_enabl
     v3 = 32.0;
   }
 
-  v6 = [v7 constraintEqualToConstant:v3];
-  [(CPSInformationTemplateButtonsViewController *)v33 setHeightConstraint:?];
+  v6 = [heightAnchor constraintEqualToConstant:v3];
+  [(CPSInformationTemplateButtonsViewController *)selfCopy setHeightConstraint:?];
   MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
-  *&v4 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+  MEMORY[0x277D82BD8](heightAnchor);
+  *&v4 = MEMORY[0x277D82BD8](buttonStackView).n128_u64[0];
   v9 = MEMORY[0x277CCAAD0];
-  v26 = [v30 leftAnchor];
-  v25 = [v29 leftAnchor];
-  v24 = [v26 constraintLessThanOrEqualToAnchor:?];
+  leftAnchor = [view leftAnchor];
+  leftAnchor2 = [v29 leftAnchor];
+  v24 = [leftAnchor constraintLessThanOrEqualToAnchor:?];
   v34[0] = v24;
-  v23 = [v30 rightAnchor];
-  v22 = [v29 rightAnchor];
-  v21 = [v23 constraintGreaterThanOrEqualToAnchor:?];
+  rightAnchor = [view rightAnchor];
+  rightAnchor2 = [v29 rightAnchor];
+  v21 = [rightAnchor constraintGreaterThanOrEqualToAnchor:?];
   v34[1] = v21;
-  v20 = [v30 topAnchor];
-  v19 = [v29 topAnchor];
-  v18 = [v20 constraintEqualToAnchor:?];
+  topAnchor = [view topAnchor];
+  topAnchor2 = [v29 topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:?];
   v34[2] = v18;
-  v17 = [v29 centerXAnchor];
-  v16 = [v30 centerXAnchor];
-  v15 = [v17 constraintEqualToAnchor:?];
+  centerXAnchor = [v29 centerXAnchor];
+  centerXAnchor2 = [view centerXAnchor];
+  v15 = [centerXAnchor constraintEqualToAnchor:?];
   v34[3] = v15;
-  v14 = [v30 bottomAnchor];
-  v13 = [v29 bottomAnchor];
-  v12 = [v14 constraintEqualToAnchor:?];
+  bottomAnchor = [view bottomAnchor];
+  bottomAnchor2 = [v29 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:?];
   v34[4] = v12;
-  v11 = [(CPSInformationTemplateButtonsViewController *)v33 heightConstraint];
-  v34[5] = v11;
+  heightConstraint = [(CPSInformationTemplateButtonsViewController *)selfCopy heightConstraint];
+  v34[5] = heightConstraint;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:6];
   [v9 activateConstraints:?];
   MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](heightConstraint);
   MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](bottomAnchor);
   MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
-  MEMORY[0x277D82BD8](v17);
+  MEMORY[0x277D82BD8](centerXAnchor2);
+  MEMORY[0x277D82BD8](centerXAnchor);
   MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v19);
-  MEMORY[0x277D82BD8](v20);
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](topAnchor);
   MEMORY[0x277D82BD8](v21);
-  MEMORY[0x277D82BD8](v22);
-  MEMORY[0x277D82BD8](v23);
+  MEMORY[0x277D82BD8](rightAnchor2);
+  MEMORY[0x277D82BD8](rightAnchor);
   MEMORY[0x277D82BD8](v24);
-  MEMORY[0x277D82BD8](v25);
-  *&v5 = MEMORY[0x277D82BD8](v26).n128_u64[0];
-  [(CPSInformationTemplateButtonsViewController *)v33 _updateButtons];
-  [(CPSInformationTemplateButtonsViewController *)v33 _updateHeight];
+  MEMORY[0x277D82BD8](leftAnchor2);
+  *&v5 = MEMORY[0x277D82BD8](leftAnchor).n128_u64[0];
+  [(CPSInformationTemplateButtonsViewController *)selfCopy _updateButtons];
+  [(CPSInformationTemplateButtonsViewController *)selfCopy _updateHeight];
   objc_storeStrong(&v29, 0);
-  objc_storeStrong(&v30, 0);
+  objc_storeStrong(&view, 0);
 }
 
 - (void)_updateHeight
 {
-  v6 = [(CPSInformationTemplateButtonsViewController *)self buttons];
-  if ([(NSArray *)v6 count])
+  buttons = [(CPSInformationTemplateButtonsViewController *)self buttons];
+  if ([(NSArray *)buttons count])
   {
     v2 = _UISolariumEnabled();
     v3 = 36.0;
@@ -205,25 +205,25 @@ void __75__CPSInformationTemplateButtonsViewController_setButtonIdentifier_enabl
     v5 = 0.0;
   }
 
-  v4 = [(CPSInformationTemplateButtonsViewController *)self heightConstraint];
-  [(NSLayoutConstraint *)v4 setConstant:v5];
-  MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v6);
+  heightConstraint = [(CPSInformationTemplateButtonsViewController *)self heightConstraint];
+  [(NSLayoutConstraint *)heightConstraint setConstant:v5];
+  MEMORY[0x277D82BD8](heightConstraint);
+  MEMORY[0x277D82BD8](buttons);
 }
 
 - (void)_updateButtons
 {
-  v25 = self;
+  selfCopy = self;
   v24[1] = a2;
-  v11 = [(CPSInformationTemplateButtonsViewController *)self buttonStackView];
-  v10 = [(UIStackView *)v11 arrangedSubviews];
-  v24[0] = [(NSArray *)v10 copy];
-  MEMORY[0x277D82BD8](v10);
-  v23 = [MEMORY[0x277D75518] focusSystemForEnvironment:{v25, MEMORY[0x277D82BD8](v11).n128_f64[0]}];
+  buttonStackView = [(CPSInformationTemplateButtonsViewController *)self buttonStackView];
+  arrangedSubviews = [(UIStackView *)buttonStackView arrangedSubviews];
+  v24[0] = [(NSArray *)arrangedSubviews copy];
+  MEMORY[0x277D82BD8](arrangedSubviews);
+  v23 = [MEMORY[0x277D75518] focusSystemForEnvironment:{selfCopy, MEMORY[0x277D82BD8](buttonStackView).n128_f64[0]}];
   v12 = objc_opt_class();
-  v13 = [v23 focusedItem];
-  v22 = CPSSafeCast_18(v12, v13);
-  *&v2 = MEMORY[0x277D82BD8](v13).n128_u64[0];
+  focusedItem = [v23 focusedItem];
+  v22 = CPSSafeCast_18(v12, focusedItem);
+  *&v2 = MEMORY[0x277D82BD8](focusedItem).n128_u64[0];
   if (v22)
   {
     v9 = [v24[0] indexOfObject:{v22, v2}];
@@ -236,21 +236,21 @@ void __75__CPSInformationTemplateButtonsViewController_setButtonIdentifier_enabl
 
   v21 = v9;
   [v24[0] enumerateObjectsUsingBlock:&__block_literal_global_12];
-  v8 = [(CPSInformationTemplateButtonsViewController *)v25 buttons];
+  buttons = [(CPSInformationTemplateButtonsViewController *)selfCopy buttons];
   v15 = MEMORY[0x277D85DD0];
   v16 = -1073741824;
   v17 = 0;
   v18 = __61__CPSInformationTemplateButtonsViewController__updateButtons__block_invoke_2;
   v19 = &unk_278D93950;
-  v20 = MEMORY[0x277D82BE0](v25);
-  [(NSArray *)v8 enumerateObjectsUsingBlock:&v15];
-  *&v3 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+  v20 = MEMORY[0x277D82BE0](selfCopy);
+  [(NSArray *)buttons enumerateObjectsUsingBlock:&v15];
+  *&v3 = MEMORY[0x277D82BD8](buttons).n128_u64[0];
   if (v21 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v14 = v21;
-    v6 = [(CPSInformationTemplateButtonsViewController *)v25 buttons];
-    v7 = [(NSArray *)v6 count]- 1;
-    *&v4 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+    buttons2 = [(CPSInformationTemplateButtonsViewController *)selfCopy buttons];
+    v7 = [(NSArray *)buttons2 count]- 1;
+    *&v4 = MEMORY[0x277D82BD8](buttons2).n128_u64[0];
     if (v14 >= v7)
     {
       v5 = v7;
@@ -261,8 +261,8 @@ void __75__CPSInformationTemplateButtonsViewController_setButtonIdentifier_enabl
       v5 = v14;
     }
 
-    [(CPSInformationTemplateButtonsViewController *)v25 setPreferredButtonIndex:v5, v4];
-    [(CPSInformationTemplateButtonsViewController *)v25 setNeedsFocusUpdate];
+    [(CPSInformationTemplateButtonsViewController *)selfCopy setPreferredButtonIndex:v5, v4];
+    [(CPSInformationTemplateButtonsViewController *)selfCopy setNeedsFocusUpdate];
   }
 
   objc_storeStrong(&v20, 0);
@@ -317,44 +317,44 @@ void __61__CPSInformationTemplateButtonsViewController__updateButtons__block_inv
   v8 = 0;
   if ([(CPSInformationTemplateButtonsViewController *)self preferredButtonIndex]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(CPSInformationTemplateButtonsViewController *)self preferredButtonIndex];
-    v12 = [(CPSInformationTemplateButtonsViewController *)self buttonStackView];
+    preferredButtonIndex = [(CPSInformationTemplateButtonsViewController *)self preferredButtonIndex];
+    buttonStackView = [(CPSInformationTemplateButtonsViewController *)self buttonStackView];
     v11 = 1;
-    v10 = [(UIStackView *)v12 arrangedSubviews];
+    arrangedSubviews = [(UIStackView *)buttonStackView arrangedSubviews];
     v9 = 1;
-    v8 = v7 < [(NSArray *)v10 count];
+    v8 = preferredButtonIndex < [(NSArray *)arrangedSubviews count];
   }
 
   if (v9)
   {
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](arrangedSubviews);
   }
 
   if (v11)
   {
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](buttonStackView);
   }
 
   if (v8)
   {
-    v6 = [(CPSInformationTemplateButtonsViewController *)self buttonStackView];
-    v5 = [(UIStackView *)v6 arrangedSubviews];
-    v4 = [(NSArray *)v5 objectAtIndexedSubscript:[(CPSInformationTemplateButtonsViewController *)self preferredButtonIndex]];
+    buttonStackView2 = [(CPSInformationTemplateButtonsViewController *)self buttonStackView];
+    arrangedSubviews2 = [(UIStackView *)buttonStackView2 arrangedSubviews];
+    v4 = [(NSArray *)arrangedSubviews2 objectAtIndexedSubscript:[(CPSInformationTemplateButtonsViewController *)self preferredButtonIndex]];
     v15[0] = v4;
-    v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
+    arrangedSubviews3 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
     MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](arrangedSubviews2);
+    MEMORY[0x277D82BD8](buttonStackView2);
   }
 
   else
   {
-    v3 = [(CPSInformationTemplateButtonsViewController *)self buttonStackView];
-    v14 = [(UIStackView *)v3 arrangedSubviews];
-    MEMORY[0x277D82BD8](v3);
+    buttonStackView3 = [(CPSInformationTemplateButtonsViewController *)self buttonStackView];
+    arrangedSubviews3 = [(UIStackView *)buttonStackView3 arrangedSubviews];
+    MEMORY[0x277D82BD8](buttonStackView3);
   }
 
-  return v14;
+  return arrangedSubviews3;
 }
 
 - (CPSButtonDelegate)buttonDelegate

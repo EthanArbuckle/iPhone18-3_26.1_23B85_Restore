@@ -1,36 +1,36 @@
 @interface VCPMADServicePublicClientHandler
-+ (id)clientHandlerWithXPCConnection:(id)a3;
++ (id)clientHandlerWithXPCConnection:(id)connection;
 - (CF<__SecTask)secTask;
-- (VCPMADServicePublicClientHandler)initWithXPCConnection:(id)a3;
-- (int64_t)consumeSandboxExtension:(id)a3 url:(id)a4;
-- (void)cacheHitWithQueryID:(unint64_t)a3 cachedResultQueryID:(unint64_t)a4 engagementSuggestionType:(id)a5;
+- (VCPMADServicePublicClientHandler)initWithXPCConnection:(id)connection;
+- (int64_t)consumeSandboxExtension:(id)extension url:(id)url;
+- (void)cacheHitWithQueryID:(unint64_t)d cachedResultQueryID:(unint64_t)iD engagementSuggestionType:(id)type;
 - (void)cancelAllRequests;
-- (void)cancelRequest:(int)a3;
-- (void)currentOutstandingTasksWithReply:(id)a3;
-- (void)queryUserSafetyEnablement:(id)a3;
-- (void)requestImageProcessing:(id)a3 forAssetURL:(id)a4 withSandboxToken:(id)a5 identifier:(id)a6 requestID:(int)a7 andReply:(id)a8;
-- (void)requestImageProcessing:(id)a3 forIOSurface:(id)a4 withOrientation:(unsigned int)a5 identifier:(id)a6 requestID:(int)a7 andReply:(id)a8;
-- (void)requestMultiModalPrewarming:(id)a3 requestID:(int)a4 reply:(id)a5;
-- (void)requestProcessing:(id)a3 multiModalInputs:(id)a4 requestID:(int)a5 reply:(id)a6;
-- (void)requestTextPrewarming:(id)a3 requestID:(int)a4 reply:(id)a5;
-- (void)requestTextProcessing:(id)a3 textInputs:(id)a4 requestID:(int)a5 reply:(id)a6;
-- (void)requestVideoProcessing:(id)a3 assetURL:(id)a4 sandboxToken:(id)a5 identifier:(id)a6 requestID:(int)a7 reply:(id)a8;
-- (void)submitSpotlightAssetURL:(id)a3 uniqueIdentifier:(id)a4 bundleIdentifier:(id)a5 typeIdentifier:(id)a6 sandboxToken:(id)a7 reply:(id)a8;
-- (void)subscribeUserSafety:(id)a3;
+- (void)cancelRequest:(int)request;
+- (void)currentOutstandingTasksWithReply:(id)reply;
+- (void)queryUserSafetyEnablement:(id)enablement;
+- (void)requestImageProcessing:(id)processing forAssetURL:(id)l withSandboxToken:(id)token identifier:(id)identifier requestID:(int)d andReply:(id)reply;
+- (void)requestImageProcessing:(id)processing forIOSurface:(id)surface withOrientation:(unsigned int)orientation identifier:(id)identifier requestID:(int)d andReply:(id)reply;
+- (void)requestMultiModalPrewarming:(id)prewarming requestID:(int)d reply:(id)reply;
+- (void)requestProcessing:(id)processing multiModalInputs:(id)inputs requestID:(int)d reply:(id)reply;
+- (void)requestTextPrewarming:(id)prewarming requestID:(int)d reply:(id)reply;
+- (void)requestTextProcessing:(id)processing textInputs:(id)inputs requestID:(int)d reply:(id)reply;
+- (void)requestVideoProcessing:(id)processing assetURL:(id)l sandboxToken:(id)token identifier:(id)identifier requestID:(int)d reply:(id)reply;
+- (void)submitSpotlightAssetURL:(id)l uniqueIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier typeIdentifier:(id)typeIdentifier sandboxToken:(id)token reply:(id)reply;
+- (void)subscribeUserSafety:(id)safety;
 @end
 
 @implementation VCPMADServicePublicClientHandler
 
-- (VCPMADServicePublicClientHandler)initWithXPCConnection:(id)a3
+- (VCPMADServicePublicClientHandler)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v42.receiver = self;
   v42.super_class = VCPMADServicePublicClientHandler;
   v6 = [(VCPMADServicePublicClientHandler *)&v42 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     objc_initWeak(&location, v7);
     [(NSXPCConnection *)v7->_connection setExportedObject:v7];
     connection = v7->_connection;
@@ -62,9 +62,9 @@
     userSafetyQueue = v7->_userSafetyQueue;
     v7->_userSafetyQueue = v15;
 
-    v17 = [(NSXPCConnection *)v7->_connection remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)v7->_connection remoteObjectProxy];
     clientProxy = v7->_clientProxy;
-    v7->_clientProxy = v17;
+    v7->_clientProxy = remoteObjectProxy;
 
     v35 = 0;
     cf = 0;
@@ -164,19 +164,19 @@
   return v7;
 }
 
-+ (id)clientHandlerWithXPCConnection:(id)a3
++ (id)clientHandlerWithXPCConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithXPCConnection:v3];
+  connectionCopy = connection;
+  v4 = [objc_alloc(objc_opt_class()) initWithXPCConnection:connectionCopy];
 
   return v4;
 }
 
-- (int64_t)consumeSandboxExtension:(id)a3 url:(id)a4
+- (int64_t)consumeSandboxExtension:(id)extension url:(id)url
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 fileSystemRepresentation];
+  extensionCopy = extension;
+  urlCopy = url;
+  fileSystemRepresentation = [urlCopy fileSystemRepresentation];
   connection = self->_connection;
   if (connection)
   {
@@ -204,7 +204,7 @@
     }
 
     *buf = 136315138;
-    *&buf[4] = v8;
+    *&buf[4] = fileSystemRepresentation;
     v12 = "[MADServicePublic] Failed to check for client read access to file %s";
     goto LABEL_12;
   }
@@ -223,7 +223,7 @@
     }
 
     *buf = 136315138;
-    *&buf[4] = v8;
+    *&buf[4] = fileSystemRepresentation;
     v12 = "[MADServicePublic] Client does not have read access to file %s";
 LABEL_12:
     _os_log_impl(&_mh_execute_header, &_os_log_default, v11, v12, buf, 0xCu);
@@ -232,8 +232,8 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  v14 = v6;
-  [v6 UTF8String];
+  v14 = extensionCopy;
+  [extensionCopy UTF8String];
   v13 = sandbox_extension_consume();
   if (v13 < 0 && MediaAnalysisLogLevel() >= 3)
   {
@@ -250,14 +250,14 @@ LABEL_18:
   return v13;
 }
 
-- (void)requestImageProcessing:(id)a3 forIOSurface:(id)a4 withOrientation:(unsigned int)a5 identifier:(id)a6 requestID:(int)a7 andReply:(id)a8
+- (void)requestImageProcessing:(id)processing forIOSurface:(id)surface withOrientation:(unsigned int)orientation identifier:(id)identifier requestID:(int)d andReply:(id)reply
 {
-  v9 = *&a7;
-  v11 = *&a5;
-  v14 = a3;
-  surface = a4;
-  v15 = a6;
-  v16 = a8;
+  v9 = *&d;
+  v11 = *&orientation;
+  processingCopy = processing;
+  surface = surface;
+  identifierCopy = identifier;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v17 = VCPLogToOSLogType[6];
@@ -270,7 +270,7 @@ LABEL_18:
   }
 
   v18 = objc_autoreleasePoolPush();
-  v32 = [NSString stringWithFormat:@"Request: %d Identifier: %@", v9, v15];
+  identifierCopy = [NSString stringWithFormat:@"Request: %d Identifier: %@", v9, identifierCopy];
   v19 = VCPSignPostLog();
   v20 = os_signpost_id_generate(v19);
 
@@ -279,7 +279,7 @@ LABEL_18:
   if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
   {
     *buf = 138412290;
-    *&buf[4] = v32;
+    *&buf[4] = identifierCopy;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v22, OS_SIGNPOST_INTERVAL_BEGIN, v20, "VCPMADServicePublicClientHandler_IOSurface", "%@", buf, 0xCu);
   }
 
@@ -292,12 +292,12 @@ LABEL_18:
     v43 = v24;
     v25 = [NSDictionary dictionaryWithObjects:&v43 forKeys:&v42 count:1];
     v26 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v23 userInfo:v25];
-    v16[2](v16, 0, v26);
+    replyCopy[2](replyCopy, 0, v26);
   }
 
   else
   {
-    v24 = [VCPMADServiceImageAsset assetWithPixelBuffer:*buf orientation:v11 identifier:v15 clientBundleID:self->_clientBundleID clientTeamID:self->_clientTeamID];
+    v24 = [VCPMADServiceImageAsset assetWithPixelBuffer:*buf orientation:v11 identifier:identifierCopy clientBundleID:self->_clientBundleID clientTeamID:self->_clientTeamID];
     v27 = self->_userSafetyEntitled && [MADUserSafetySettings isEnabledForTask:self->_secTask.value_];
     [v24 setUserSafetyEligible:v27];
     v36[0] = _NSConcreteStackBlock;
@@ -305,12 +305,12 @@ LABEL_18:
     v36[2] = sub_100007CC8;
     v36[3] = &unk_100282A98;
     v40 = v20;
-    v28 = v32;
+    v28 = identifierCopy;
     v37 = v28;
     v41 = 0;
-    v29 = v16;
+    v29 = replyCopy;
     v39 = v29;
-    v38 = v14;
+    v38 = processingCopy;
     v30 = [VCPMADServiceImageProcessingTask taskWithRequests:v38 forAsset:v24 cancelBlock:&stru_100282A70 andCompletionHandler:v36];
     [v30 setSignpostPayload:v28];
     queuingTaskScheduler = self->_queuingTaskScheduler;
@@ -328,14 +328,14 @@ LABEL_18:
   objc_autoreleasePoolPop(v18);
 }
 
-- (void)requestImageProcessing:(id)a3 forAssetURL:(id)a4 withSandboxToken:(id)a5 identifier:(id)a6 requestID:(int)a7 andReply:(id)a8
+- (void)requestImageProcessing:(id)processing forAssetURL:(id)l withSandboxToken:(id)token identifier:(id)identifier requestID:(int)d andReply:(id)reply
 {
-  v9 = *&a7;
-  v14 = a3;
-  v33 = a4;
-  v32 = a5;
-  v34 = a6;
-  v15 = a8;
+  v9 = *&d;
+  processingCopy = processing;
+  lCopy = l;
+  tokenCopy = token;
+  identifierCopy = identifier;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v16 = VCPLogToOSLogType[6];
@@ -348,7 +348,7 @@ LABEL_18:
   }
 
   v17 = objc_autoreleasePoolPush();
-  v31 = [NSString stringWithFormat:@"Request: %d Identifier: %@", v9, v34];
+  identifierCopy = [NSString stringWithFormat:@"Request: %d Identifier: %@", v9, identifierCopy];
   v18 = VCPSignPostLog();
   v19 = os_signpost_id_generate(v18);
 
@@ -357,11 +357,11 @@ LABEL_18:
   if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
   {
     *buf = 138412290;
-    v48 = v31;
+    v48 = identifierCopy;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v21, OS_SIGNPOST_INTERVAL_BEGIN, v19, "VCPMADServicePublicClientHandler_URL", "%@", buf, 0xCu);
   }
 
-  v22 = [(VCPMADServicePublicClientHandler *)self consumeSandboxExtension:v32 url:v33];
+  v22 = [(VCPMADServicePublicClientHandler *)self consumeSandboxExtension:tokenCopy url:lCopy];
   if (v22 < 0)
   {
     v45 = NSLocalizedDescriptionKey;
@@ -369,12 +369,12 @@ LABEL_18:
     v46 = v23;
     v25 = [NSDictionary dictionaryWithObjects:&v46 forKeys:&v45 count:1];
     v26 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-50 userInfo:v25];
-    v15[2](v15, 0, v26);
+    replyCopy[2](replyCopy, 0, v26);
   }
 
   else
   {
-    v23 = [VCPMADServiceImageAsset assetWithURL:v33 identifier:v34 clientBundleID:self->_clientBundleID clientTeamID:self->_clientTeamID];
+    v23 = [VCPMADServiceImageAsset assetWithURL:lCopy identifier:identifierCopy clientBundleID:self->_clientBundleID clientTeamID:self->_clientTeamID];
     v24 = self->_userSafetyEntitled && [MADUserSafetySettings isEnabledForTask:self->_secTask.value_];
     [v23 setUserSafetyEligible:v24];
     v38[0] = _NSConcreteStackBlock;
@@ -382,12 +382,12 @@ LABEL_18:
     v38[2] = sub_100008388;
     v38[3] = &unk_100282B08;
     v42 = v19;
-    v27 = v31;
+    v27 = identifierCopy;
     v39 = v27;
     v43 = 0;
-    v28 = v15;
+    v28 = replyCopy;
     v41 = v28;
-    v40 = v14;
+    v40 = processingCopy;
     v44 = v22;
     v29 = [VCPMADServiceImageProcessingTask taskWithRequests:v40 forAsset:v23 cancelBlock:&stru_100282AE0 andCompletionHandler:v38];
     [v29 setSignpostPayload:v27];
@@ -406,16 +406,16 @@ LABEL_18:
   objc_autoreleasePoolPop(v17);
 }
 
-- (void)requestVideoProcessing:(id)a3 assetURL:(id)a4 sandboxToken:(id)a5 identifier:(id)a6 requestID:(int)a7 reply:(id)a8
+- (void)requestVideoProcessing:(id)processing assetURL:(id)l sandboxToken:(id)token identifier:(id)identifier requestID:(int)d reply:(id)reply
 {
-  v9 = *&a7;
-  v31 = a3;
-  v14 = a4;
-  v34 = a5;
-  v15 = a6;
-  v35 = a8;
-  v32 = v15;
-  v33 = [NSString stringWithFormat:@"Request: %d Identifier: %@", v9, v15];
+  v9 = *&d;
+  processingCopy = processing;
+  lCopy = l;
+  tokenCopy = token;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  v32 = identifierCopy;
+  identifierCopy = [NSString stringWithFormat:@"Request: %d Identifier: %@", v9, identifierCopy];
   v16 = VCPSignPostLog();
   v17 = os_signpost_id_generate(v16);
 
@@ -424,11 +424,11 @@ LABEL_18:
   if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
   {
     *buf = 138412290;
-    v50 = v33;
+    v50 = identifierCopy;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v19, OS_SIGNPOST_INTERVAL_BEGIN, v17, "VCPMADServicePublicClientHandler_VideoE2E", "%@", buf, 0xCu);
   }
 
-  v20 = [(VCPMADServicePublicClientHandler *)self consumeSandboxExtension:v34 url:v14];
+  v20 = [(VCPMADServicePublicClientHandler *)self consumeSandboxExtension:tokenCopy url:lCopy];
   if (v20 < 0)
   {
     v47 = NSLocalizedDescriptionKey;
@@ -436,7 +436,7 @@ LABEL_18:
     v48 = v24;
     v25 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
     v26 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-50 userInfo:v25];
-    v35[2](v35, 0, v26);
+    replyCopy[2](replyCopy, 0, v26);
   }
 
   else
@@ -448,7 +448,7 @@ LABEL_18:
     v45[4] = self;
     v46 = v9;
     v21 = objc_retainBlock(v45);
-    v22 = [MADServiceVideoAsset assetWithURL:v14 identifier:v32 clientBundleID:self->_clientBundleID clientTeamID:self->_clientTeamID];
+    v22 = [MADServiceVideoAsset assetWithURL:lCopy identifier:v32 clientBundleID:self->_clientBundleID clientTeamID:self->_clientTeamID];
     v23 = self->_userSafetyEntitled && [MADUserSafetySettings isEnabledForTask:self->_secTask.value_];
     [v22 setUserSafetyEligible:v23];
     v39[0] = _NSConcreteStackBlock;
@@ -456,13 +456,13 @@ LABEL_18:
     v39[2] = sub_100008A9C;
     v39[3] = &unk_100282BA0;
     v42 = v17;
-    v27 = v33;
+    v27 = identifierCopy;
     v40 = v27;
     v43 = 0;
-    v28 = v35;
+    v28 = replyCopy;
     v41 = v28;
     v44 = v20;
-    v29 = [MADServiceVideoProcessingTask taskWithRequests:v31 forAsset:v22 cancelBlock:&stru_100282B78 progressHandler:v21 resultHandler:0 andCompletionHandler:v39];
+    v29 = [MADServiceVideoProcessingTask taskWithRequests:processingCopy forAsset:v22 cancelBlock:&stru_100282B78 progressHandler:v21 resultHandler:0 andCompletionHandler:v39];
     [v29 setSignpostPayload:v27];
     queuingTaskScheduler = self->_queuingTaskScheduler;
     v36[0] = _NSConcreteStackBlock;
@@ -475,13 +475,13 @@ LABEL_18:
   }
 }
 
-- (void)currentOutstandingTasksWithReply:(id)a3
+- (void)currentOutstandingTasksWithReply:(id)reply
 {
-  v4 = a3;
-  v4[2](v4, [(MADServiceClientTaskQueuingScheduler *)self->_queuingTaskScheduler currentOutstandingTasks]);
+  replyCopy = reply;
+  replyCopy[2](replyCopy, [(MADServiceClientTaskQueuingScheduler *)self->_queuingTaskScheduler currentOutstandingTasks]);
 }
 
-- (void)cancelRequest:(int)a3
+- (void)cancelRequest:(int)request
 {
   if (MediaAnalysisLogLevel() >= 6)
   {
@@ -489,19 +489,19 @@ LABEL_18:
     if (os_log_type_enabled(&_os_log_default, v5))
     {
       v7 = 67109120;
-      v8 = a3;
+      requestCopy2 = request;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[MADServicePublic] Service received call to cancel task for MADRequestID %d", &v7, 8u);
     }
   }
 
-  [(MADServiceClientTaskQueuingScheduler *)self->_queuingTaskScheduler cancelTaskWithRequestID:a3];
+  [(MADServiceClientTaskQueuingScheduler *)self->_queuingTaskScheduler cancelTaskWithRequestID:request];
   if (MediaAnalysisLogLevel() >= 6)
   {
     v6 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v6))
     {
       v7 = 67109120;
-      v8 = a3;
+      requestCopy2 = request;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v6, "[MADServicePublic] Canceled task for MADRequestID %d ", &v7, 8u);
     }
   }
@@ -519,22 +519,22 @@ LABEL_18:
     }
   }
 
-  v4 = [(MADServiceClientTaskQueuingScheduler *)self->_queuingTaskScheduler cancelAllTasks];
+  cancelAllTasks = [(MADServiceClientTaskQueuingScheduler *)self->_queuingTaskScheduler cancelAllTasks];
   if (MediaAnalysisLogLevel() >= 6)
   {
     v5 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v5))
     {
       v6 = 134217984;
-      v7 = v4;
+      v7 = cancelAllTasks;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[MADServicePublic] Service canceled all %lu tasks", &v6, 0xCu);
     }
   }
 }
 
-- (void)queryUserSafetyEnablement:(id)a3
+- (void)queryUserSafetyEnablement:(id)enablement
 {
-  v4 = a3;
+  enablementCopy = enablement;
   if (!self->_userSafetyEntitled)
   {
     v9 = NSLocalizedDescriptionKey;
@@ -542,16 +542,16 @@ LABEL_18:
     v10 = v5;
     v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v7 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v6];
-    v4[2](v4, 0, v7);
+    enablementCopy[2](enablementCopy, 0, v7);
   }
 
   v8 = [NSNumber numberWithUnsignedInteger:[MADUserSafetySettings policyForTask:self->_secTask.value_]];
-  (v4)[2](v4, v8, 0);
+  (enablementCopy)[2](enablementCopy, v8, 0);
 }
 
-- (void)subscribeUserSafety:(id)a3
+- (void)subscribeUserSafety:(id)safety
 {
-  v4 = a3;
+  safetyCopy = safety;
   if (!self->_userSafetyEntitledPolicySubscription)
   {
     v31 = NSLocalizedDescriptionKey;
@@ -559,7 +559,7 @@ LABEL_18:
     v32 = v5;
     v6 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v7 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v6];
-    v4[2](v4, 0, v7);
+    safetyCopy[2](safetyCopy, 0, v7);
   }
 
   if (self->_userSafetySubscription)
@@ -574,7 +574,7 @@ LABEL_18:
       }
     }
 
-    v4[2](v4, 1, 0);
+    safetyCopy[2](safetyCopy, 1, 0);
   }
 
   else
@@ -612,10 +612,10 @@ LABEL_18:
       }
     }
 
-    v4[2](v4, 1, 0);
+    safetyCopy[2](safetyCopy, 1, 0);
     v16 = objc_alloc_init(MOEffectiveSettingsStore);
-    v17 = [v16 userSafety];
-    v18 = [v17 scanningPolicy];
+    userSafety = [v16 userSafety];
+    scanningPolicy = [userSafety scanningPolicy];
 
     if (MediaAnalysisLogLevel() >= 5)
     {
@@ -623,13 +623,13 @@ LABEL_18:
       if (os_log_type_enabled(&_os_log_default, v19))
       {
         *buf = 138412290;
-        *&buf[4] = v18;
+        *&buf[4] = scanningPolicy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v19, "[MADServicePublic] Updated user safety scanning policy (%@)", buf, 0xCu);
       }
     }
 
     [(VCPMADServicePublicClientHandler *)self secTask];
-    v20 = [MADUserSafetySettings policyTypeForTask:*buf scanningPolicy:v18];
+    v20 = [MADUserSafetySettings policyTypeForTask:*buf scanningPolicy:scanningPolicy];
     sub_100002CBC(buf);
     if (MediaAnalysisLogLevel() >= 5)
     {
@@ -659,14 +659,14 @@ LABEL_18:
   }
 }
 
-- (void)cacheHitWithQueryID:(unint64_t)a3 cachedResultQueryID:(unint64_t)a4 engagementSuggestionType:(id)a5
+- (void)cacheHitWithQueryID:(unint64_t)d cachedResultQueryID:(unint64_t)iD engagementSuggestionType:(id)type
 {
-  v8 = a5;
+  typeCopy = type;
   v9 = +[NSMutableDictionary dictionary];
-  v10 = [NSNumber numberWithUnsignedLongLong:a3];
+  v10 = [NSNumber numberWithUnsignedLongLong:d];
   [v9 setObject:v10 forKeyedSubscript:VIACacheHitContextQueryIDKey];
 
-  v11 = [NSNumber numberWithUnsignedLongLong:a4];
+  v11 = [NSNumber numberWithUnsignedLongLong:iD];
   [v9 setObject:v11 forKeyedSubscript:VIACacheHitContextCachedResultQueryID];
 
   clientBundleID = self->_clientBundleID;
@@ -675,9 +675,9 @@ LABEL_18:
     [v9 setObject:clientBundleID forKeyedSubscript:VIACacheHitContextApplicationIdentifierKey];
   }
 
-  if (v8)
+  if (typeCopy)
   {
-    [v9 setObject:v8 forKeyedSubscript:VIACacheHitContextEngagementSuggestionTypeKey];
+    [v9 setObject:typeCopy forKeyedSubscript:VIACacheHitContextEngagementSuggestionTypeKey];
   }
 
   v16 = 0;
@@ -703,30 +703,30 @@ LABEL_18:
   }
 }
 
-- (void)submitSpotlightAssetURL:(id)a3 uniqueIdentifier:(id)a4 bundleIdentifier:(id)a5 typeIdentifier:(id)a6 sandboxToken:(id)a7 reply:(id)a8
+- (void)submitSpotlightAssetURL:(id)l uniqueIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier typeIdentifier:(id)typeIdentifier sandboxToken:(id)token reply:(id)reply
 {
-  v44 = a3;
-  v45 = a4;
-  v14 = a5;
-  v15 = a6;
-  v43 = a7;
-  v16 = a8;
+  lCopy = l;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  typeIdentifierCopy = typeIdentifier;
+  tokenCopy = token;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 5)
   {
     v17 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v17))
     {
       *buf = 138412802;
-      v60 = v45;
+      v60 = identifierCopy;
       v61 = 2112;
-      v62 = v14;
+      v62 = bundleIdentifierCopy;
       v63 = 2112;
-      v64 = v44;
+      v64 = lCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v17, "[MADServicePublic] Scheduling asset (UUID: %@ BundleID: %@ URL: %@)", buf, 0x20u);
     }
   }
 
-  v18 = [UTType typeWithIdentifier:v15];
+  v18 = [UTType typeWithIdentifier:typeIdentifierCopy];
   if ([v18 conformsToType:UTTypeMovie] & 1) != 0 || (objc_msgSend(v18, "conformsToType:", UTTypeVideo))
   {
     v42 = 0;
@@ -738,11 +738,11 @@ LABEL_18:
     if (([v18 conformsToType:UTTypeImage] & 1) == 0)
     {
       v57 = NSLocalizedDescriptionKey;
-      v29 = [NSString stringWithFormat:@"Type identifier (%@), does not resolve to image/video", v15];
-      v58 = v29;
+      typeIdentifierCopy = [NSString stringWithFormat:@"Type identifier (%@), does not resolve to image/video", typeIdentifierCopy];
+      v58 = typeIdentifierCopy;
       v24 = [NSDictionary dictionaryWithObjects:&v58 forKeys:&v57 count:1];
       v8 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-50 userInfo:v24];
-      v16[2](v16, v8);
+      replyCopy[2](replyCopy, v8);
       goto LABEL_44;
     }
 
@@ -750,16 +750,16 @@ LABEL_18:
     v19 = 1;
   }
 
-  v20 = [v14 lowercaseString];
-  v21 = [v20 containsString:@"apple"];
+  lowercaseString = [bundleIdentifierCopy lowercaseString];
+  v21 = [lowercaseString containsString:@"apple"];
 
-  v22 = [v14 lowercaseString];
-  v23 = [v22 isEqualToString:@"com.apple.jujubectl"];
+  lowercaseString2 = [bundleIdentifierCopy lowercaseString];
+  v23 = [lowercaseString2 isEqualToString:@"com.apple.jujubectl"];
 
   if (v23 & 1 | ((v21 & 1) == 0))
   {
     v50 = 0;
-    v24 = [MADManagedSpotlightEntry fetchEntryWithUniqueIdentifier:v45 error:&v50];
+    v24 = [MADManagedSpotlightEntry fetchEntryWithUniqueIdentifier:identifierCopy error:&v50];
     v25 = v50;
     if (v25)
     {
@@ -769,7 +769,7 @@ LABEL_18:
         if (os_log_type_enabled(&_os_log_default, v26))
         {
           *buf = 138412546;
-          v60 = v45;
+          v60 = identifierCopy;
           v61 = 2112;
           v62 = v25;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v26, "[MADServicePublic] Failed to fetch entry with %@ (%@). New entry will still be created", buf, 0x16u);
@@ -779,16 +779,16 @@ LABEL_18:
 
     if (v24)
     {
-      [v24 setUrl:v44];
-      [v24 setSandboxToken:v43];
+      [v24 setUrl:lCopy];
+      [v24 setSandboxToken:tokenCopy];
       v27 = +[MADSystemDataStore systemDataStore];
       v49 = v25;
       v28 = [v27 commitChangesOrRollback:&v49];
-      v29 = v49;
+      typeIdentifierCopy = v49;
 
       if (v28)
       {
-        v30 = v29;
+        v30 = typeIdentifierCopy;
         if (MediaAnalysisLogLevel() >= 6)
         {
           v31 = VCPLogToOSLogType[6];
@@ -806,13 +806,13 @@ LABEL_18:
       else
       {
         v53 = NSLocalizedDescriptionKey;
-        v8 = [NSString stringWithFormat:@"Failed to update entry (%@)", v29];
+        v8 = [NSString stringWithFormat:@"Failed to update entry (%@)", typeIdentifierCopy];
         v54 = v8;
         v30 = [NSDictionary dictionaryWithObjects:&v54 forKeys:&v53 count:1];
         v32 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v30];
       }
 
-      v16[2](v16, v32);
+      replyCopy[2](replyCopy, v32);
       if ((v28 & 1) == 0)
       {
 
@@ -823,8 +823,8 @@ LABEL_18:
     else
     {
       v48 = v25;
-      v33 = [MADManagedSpotlightEntry entryWithURL:v44 uniqueIdentifier:v45 bundleIdentifier:v14 typeIdentifier:v15 sandboxToken:v43 mediaType:v19 error:&v48];
-      v29 = v48;
+      v33 = [MADManagedSpotlightEntry entryWithURL:lCopy uniqueIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy typeIdentifier:typeIdentifierCopy sandboxToken:tokenCopy mediaType:v19 error:&v48];
+      typeIdentifierCopy = v48;
 
       if (v33)
       {
@@ -845,13 +845,13 @@ LABEL_18:
       else
       {
         v51 = NSLocalizedDescriptionKey;
-        v8 = [NSString stringWithFormat:@"Failed to store entry %@", v29];
+        v8 = [NSString stringWithFormat:@"Failed to store entry %@", typeIdentifierCopy];
         v52 = v8;
         v25 = [NSDictionary dictionaryWithObjects:&v52 forKeys:&v51 count:1];
         v35 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v25];
       }
 
-      v16[2](v16, v35);
+      replyCopy[2](replyCopy, v35);
       if (!v33)
       {
 
@@ -859,7 +859,7 @@ LABEL_18:
       }
     }
 
-    v36 = v29;
+    v36 = typeIdentifierCopy;
     if (MediaAnalysisLogLevel() >= 5)
     {
       v37 = VCPLogToOSLogType[5];
@@ -874,7 +874,7 @@ LABEL_18:
     {
       v38 = +[MADSpotlightImageBackgroundSystemTask identifier];
       v39 = +[MADSpotlightImageBackgroundSystemTask sharedTask];
-      v47 = v29;
+      v47 = typeIdentifierCopy;
       v40 = &v47;
       [v39 submitTask:&v47];
     }
@@ -883,15 +883,15 @@ LABEL_18:
     {
       v38 = +[MADSpotlightMovieBackgroundSystemTask identifier];
       v39 = +[MADSpotlightMovieBackgroundSystemTask sharedTask];
-      v46 = v29;
+      v46 = typeIdentifierCopy;
       v40 = &v46;
       [v39 submitTask:&v46];
     }
 
     v8 = v38;
-    v29 = *v40;
+    typeIdentifierCopy = *v40;
 
-    if (v29)
+    if (typeIdentifierCopy)
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
@@ -901,7 +901,7 @@ LABEL_18:
           *buf = 138412546;
           v60 = v8;
           v61 = 2112;
-          v62 = v29;
+          v62 = typeIdentifierCopy;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v41, "[MADServicePublic][%@] Failed to submit the BGST task with error: %@", buf, 0x16u);
         }
       }
@@ -911,21 +911,21 @@ LABEL_18:
   else
   {
     v55 = NSLocalizedDescriptionKey;
-    v29 = [NSString stringWithFormat:@"BundleID %@ is not supported", v14];
-    v56 = v29;
+    typeIdentifierCopy = [NSString stringWithFormat:@"BundleID %@ is not supported", bundleIdentifierCopy];
+    v56 = typeIdentifierCopy;
     v24 = [NSDictionary dictionaryWithObjects:&v56 forKeys:&v55 count:1];
     v8 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-50 userInfo:v24];
-    v16[2](v16, v8);
+    replyCopy[2](replyCopy, v8);
   }
 
 LABEL_44:
 }
 
-- (void)requestTextPrewarming:(id)a3 requestID:(int)a4 reply:(id)a5
+- (void)requestTextPrewarming:(id)prewarming requestID:(int)d reply:(id)reply
 {
-  v6 = *&a4;
-  v8 = a3;
-  v9 = a5;
+  v6 = *&d;
+  prewarmingCopy = prewarming;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v10 = VCPLogToOSLogType[6];
@@ -958,9 +958,9 @@ LABEL_44:
   v17 = v11;
   v26 = v17;
   v29 = 0;
-  v18 = v9;
+  v18 = replyCopy;
   v27 = v18;
-  v19 = [v16 initWithRequests:v8 cancelBlock:&stru_100282C10 completionHandler:v25];
+  v19 = [v16 initWithRequests:prewarmingCopy cancelBlock:&stru_100282C10 completionHandler:v25];
   [v19 setSignpostPayload:v17];
   queuingTaskScheduler = self->_queuingTaskScheduler;
   v21 = v6;
@@ -973,12 +973,12 @@ LABEL_44:
   [(MADServiceClientTaskQueuingScheduler *)queuingTaskScheduler submitClientTask:v19 withRequestID:v21 schedulingErrorHandler:v23];
 }
 
-- (void)requestTextProcessing:(id)a3 textInputs:(id)a4 requestID:(int)a5 reply:(id)a6
+- (void)requestTextProcessing:(id)processing textInputs:(id)inputs requestID:(int)d reply:(id)reply
 {
-  v7 = *&a5;
-  v26 = a3;
-  v10 = a4;
-  v11 = a6;
+  v7 = *&d;
+  processingCopy = processing;
+  inputsCopy = inputs;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v12 = VCPLogToOSLogType[6];
@@ -1002,7 +1002,7 @@ LABEL_44:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v17, OS_SIGNPOST_INTERVAL_BEGIN, v15, "VCPMADServicePublicClientHandler_TextProcessingE2E", "%@", buf, 0xCu);
   }
 
-  v18 = [MADServiceTextAsset assetWithTextInputs:v10 clientBundleID:self->_clientBundleID clientTeamID:self->_clientTeamID];
+  v18 = [MADServiceTextAsset assetWithTextInputs:inputsCopy clientBundleID:self->_clientBundleID clientTeamID:self->_clientTeamID];
   v19 = [MADServiceTextProcessingTask alloc];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
@@ -1012,9 +1012,9 @@ LABEL_44:
   v20 = v13;
   v30 = v20;
   v33 = 0;
-  v21 = v11;
+  v21 = replyCopy;
   v31 = v21;
-  v22 = [v19 initWithRequests:v26 asset:v18 cancelBlock:&stru_100282C58 completionHandler:v29];
+  v22 = [v19 initWithRequests:processingCopy asset:v18 cancelBlock:&stru_100282C58 completionHandler:v29];
   [v22 setSignpostPayload:v20];
   queuingTaskScheduler = self->_queuingTaskScheduler;
   v24 = v7;
@@ -1027,11 +1027,11 @@ LABEL_44:
   [(MADServiceClientTaskQueuingScheduler *)queuingTaskScheduler submitClientTask:v22 withRequestID:v24 schedulingErrorHandler:v27];
 }
 
-- (void)requestMultiModalPrewarming:(id)a3 requestID:(int)a4 reply:(id)a5
+- (void)requestMultiModalPrewarming:(id)prewarming requestID:(int)d reply:(id)reply
 {
-  v6 = *&a4;
-  v8 = a3;
-  v9 = a5;
+  v6 = *&d;
+  prewarmingCopy = prewarming;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v10 = VCPLogToOSLogType[6];
@@ -1064,9 +1064,9 @@ LABEL_44:
   v17 = v11;
   v26 = v17;
   v29 = 0;
-  v18 = v9;
+  v18 = replyCopy;
   v27 = v18;
-  v19 = [v16 initWithRequests:v8 cancelBlock:&stru_100282CA0 completionHandler:v25];
+  v19 = [v16 initWithRequests:prewarmingCopy cancelBlock:&stru_100282CA0 completionHandler:v25];
   [v19 setSignpostPayload:v17];
   queuingTaskScheduler = self->_queuingTaskScheduler;
   v21 = v6;
@@ -1079,12 +1079,12 @@ LABEL_44:
   [(MADServiceClientTaskQueuingScheduler *)queuingTaskScheduler submitClientTask:v19 withRequestID:v21 schedulingErrorHandler:v23];
 }
 
-- (void)requestProcessing:(id)a3 multiModalInputs:(id)a4 requestID:(int)a5 reply:(id)a6
+- (void)requestProcessing:(id)processing multiModalInputs:(id)inputs requestID:(int)d reply:(id)reply
 {
-  v7 = *&a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  v7 = *&d;
+  processingCopy = processing;
+  inputsCopy = inputs;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v13 = VCPLogToOSLogType[6];
@@ -1117,9 +1117,9 @@ LABEL_44:
   v20 = v14;
   v29 = v20;
   v32 = 0;
-  v21 = v12;
+  v21 = replyCopy;
   v30 = v21;
-  v22 = [v19 initWithRequests:v10 inputs:v11 cancelBlock:&stru_100282CC0 completionHandler:v28];
+  v22 = [v19 initWithRequests:processingCopy inputs:inputsCopy cancelBlock:&stru_100282CC0 completionHandler:v28];
   [v22 setSignpostPayload:v20];
   queuingTaskScheduler = self->_queuingTaskScheduler;
   v24 = v7;

@@ -1,12 +1,12 @@
 @interface _PFPersistentHistoryModel
-+ (id)_retainedTombstonesForEntity:(uint64_t)a1;
-+ (id)newPersistentHistoryManagedObjectModelForSQLModel:(uint64_t)a1 options:(void *)a2;
-+ (id)newPersistentHistorySQLModelForSQLModel:(uint64_t)a1 options:(void *)a2;
-+ (uint64_t)_hasTombstonesInUserInfo:(uint64_t)a1;
-+ (uint64_t)_tombstonesColumnsForEntity:(uint64_t)a1;
-+ (unint64_t)_maxCountOfTombstonesInModel:(uint64_t)a1;
-+ (void)_entitiesWithTooManyTombstonesInModel:(uint64_t)a1;
-+ (void)createModelsWithTombstoneCount:(uint64_t)a1 andOptions:(uint64_t)a2;
++ (id)_retainedTombstonesForEntity:(uint64_t)entity;
++ (id)newPersistentHistoryManagedObjectModelForSQLModel:(uint64_t)model options:(void *)options;
++ (id)newPersistentHistorySQLModelForSQLModel:(uint64_t)model options:(void *)options;
++ (uint64_t)_hasTombstonesInUserInfo:(uint64_t)info;
++ (uint64_t)_tombstonesColumnsForEntity:(uint64_t)entity;
++ (unint64_t)_maxCountOfTombstonesInModel:(uint64_t)model;
++ (void)_entitiesWithTooManyTombstonesInModel:(uint64_t)model;
++ (void)createModelsWithTombstoneCount:(uint64_t)count andOptions:(uint64_t)options;
 + (void)initialize;
 + (void)resetCaches;
 @end
@@ -34,13 +34,13 @@
   os_unfair_lock_unlock(&_historyModelLock);
 }
 
-+ (id)newPersistentHistoryManagedObjectModelForSQLModel:(uint64_t)a1 options:(void *)a2
++ (id)newPersistentHistoryManagedObjectModelForSQLModel:(uint64_t)model options:(void *)options
 {
   objc_opt_self();
-  v3 = [_PFPersistentHistoryModel _maxCountOfTombstonesInModel:a2];
+  v3 = [_PFPersistentHistoryModel _maxCountOfTombstonesInModel:options];
   if (v3 >= 0x65)
   {
-    v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPersistentHistoryTrackingKey only supports a max of 100 tombstones per entity in the Model" userInfo:{+[_PFPersistentHistoryModel _entitiesWithTooManyTombstonesInModel:](_PFPersistentHistoryModel, a2)}];
+    v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPersistentHistoryTrackingKey only supports a max of 100 tombstones per entity in the Model" userInfo:{+[_PFPersistentHistoryModel _entitiesWithTooManyTombstonesInModel:](_PFPersistentHistoryModel, options)}];
     objc_exception_throw(v8);
   }
 
@@ -57,7 +57,7 @@
   return v6;
 }
 
-+ (unint64_t)_maxCountOfTombstonesInModel:(uint64_t)a1
++ (unint64_t)_maxCountOfTombstonesInModel:(uint64_t)model
 {
   v16 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -107,11 +107,11 @@
   return v5;
 }
 
-+ (void)_entitiesWithTooManyTombstonesInModel:(uint64_t)a1
++ (void)_entitiesWithTooManyTombstonesInModel:(uint64_t)model
 {
   v18 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -140,7 +140,7 @@
         v10 = [v9 count];
         if (v10 >= 0x65)
         {
-          [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", v10), objc_msgSend(v8, "name")}];
+          [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", v10), objc_msgSend(v8, "name")}];
         }
       }
 
@@ -151,10 +151,10 @@
   }
 
   v11 = *MEMORY[0x1E69E9840];
-  return v3;
+  return dictionary;
 }
 
-+ (void)createModelsWithTombstoneCount:(uint64_t)a1 andOptions:(uint64_t)a2
++ (void)createModelsWithTombstoneCount:(uint64_t)count andOptions:(uint64_t)options
 {
   v55[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -193,8 +193,8 @@
   v55[0] = v10;
   -[NSEntityDescription setProperties:](v5, "setProperties:", [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:1]);
   v30 = v10;
-  v53 = [v10 name];
-  v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
+  name = [v10 name];
+  v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:&name count:1];
   v31 = v5;
   -[NSEntityDescription setUniquenessConstraints:](v5, "setUniquenessConstraints:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1]);
   v43 = [[NSAttributeDescription alloc] _initWithName:@"BUNDLEID" type:700];
@@ -211,9 +211,9 @@
   v34 = [[NSAttributeDescription alloc] _initWithName:@"COLUMNS" type:1000];
   v12 = v4;
   [(NSEntityDescription *)v4 setName:@"CHANGE"];
-  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a2];
-  v32 = a2;
-  if (a2 >= 1)
+  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:options];
+  optionsCopy = options;
+  if (options >= 1)
   {
     v14 = 0;
     do
@@ -225,7 +225,7 @@
       ++v14;
     }
 
-    while (a2 != v14);
+    while (options != v14);
   }
 
   v17 = [[NSRelationshipDescription alloc] _initWithName:@"CHANGES"];
@@ -278,7 +278,7 @@
   [v26 _setModelsReferenceIDOffset:{+[_PFPersistentHistoryModel ancillaryEntityOffset](_PFPersistentHistoryModel, "ancillaryEntityOffset")}];
   [v26 _setIsEditable:0];
   v27 = [[NSSQLModel alloc] initWithManagedObjectModel:v26];
-  v28 = [MEMORY[0x1E696AD98] numberWithInt:v32];
+  v28 = [MEMORY[0x1E696AD98] numberWithInt:optionsCopy];
   [_historyModelCache setObject:v26 forKey:v28];
   [_historySQLModelCache setObject:v27 forKey:v28];
 
@@ -286,10 +286,10 @@
   v29 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)newPersistentHistorySQLModelForSQLModel:(uint64_t)a1 options:(void *)a2
++ (id)newPersistentHistorySQLModelForSQLModel:(uint64_t)model options:(void *)options
 {
   objc_opt_self();
-  v3 = [_PFPersistentHistoryModel _maxCountOfTombstonesInModel:a2];
+  v3 = [_PFPersistentHistoryModel _maxCountOfTombstonesInModel:options];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v3];
   os_unfair_lock_lock_with_options();
   if (![_historySQLModelCache objectForKey:v4])
@@ -302,7 +302,7 @@
   return v5;
 }
 
-+ (id)_retainedTombstonesForEntity:(uint64_t)a1
++ (id)_retainedTombstonesForEntity:(uint64_t)entity
 {
   objc_opt_self();
   v3 = objc_autoreleasePoolPush();
@@ -324,13 +324,13 @@
     a2 = a2[20];
   }
 
-  v6 = [v4 array];
+  array = [v4 array];
 
   objc_autoreleasePoolPop(v3);
-  return v6;
+  return array;
 }
 
-+ (uint64_t)_hasTombstonesInUserInfo:(uint64_t)a1
++ (uint64_t)_hasTombstonesInUserInfo:(uint64_t)info
 {
   v15 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -387,7 +387,7 @@ LABEL_13:
   return result;
 }
 
-+ (uint64_t)_tombstonesColumnsForEntity:(uint64_t)a1
++ (uint64_t)_tombstonesColumnsForEntity:(uint64_t)entity
 {
   objc_opt_self();
   v3 = objc_alloc_init(MEMORY[0x1E695DFA0]);
@@ -409,9 +409,9 @@ LABEL_3:
   }
 
   __57___PFPersistentHistoryModel__tombstonesColumnsForEntity___block_invoke(a2, v3);
-  v4 = [v3 array];
+  array = [v3 array];
 
-  return v4;
+  return array;
 }
 
 @end

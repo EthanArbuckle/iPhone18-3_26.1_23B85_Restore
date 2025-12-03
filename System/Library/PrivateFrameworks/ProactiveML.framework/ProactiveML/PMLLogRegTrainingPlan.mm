@@ -1,42 +1,42 @@
 @interface PMLLogRegTrainingPlan
-+ (id)planWithStore:(id)a3 tracker:(id)a4 sessionDescriptor:(id)a5 arguments:(id)a6;
++ (id)planWithStore:(id)store tracker:(id)tracker sessionDescriptor:(id)descriptor arguments:(id)arguments;
 - (NSString)description;
-- (PMLLogRegTrainingPlan)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
-- (PMLLogRegTrainingPlan)initWithStore:(id)a3 tracker:(id)a4 noiseStrategy:(id)a5 planId:(id)a6 sessionDescriptor:(id)a7 maxSessionsLimit:(unint64_t)a8 sessionsInBatch:(unint64_t)a9 currentServerIteration:(unint64_t)a10 currentModelWeights:(id)a11 localLearningRate:(float)a12 stoppingThreshold:(float)a13 localMinimumIterations:(unint64_t)a14 localGradientIterations:(unint64_t)a15 useOnlyAppleInternalSessions:(BOOL)a16 skew:(double)a17 threshold:(double)a18 isMultiLabel:(BOOL)a19 intercept:(BOOL)a20 positiveLabel:(unint64_t)a21 evaluationLevel:(unint64_t)a22 reportScale:(BOOL)a23;
-- (id)evaluationMetricsForPredictions:(id)a3 objectives:(id)a4 predicate:(id)a5 start:(id)a6;
-- (id)normalizeRegressor:(id)a3;
-- (id)runWithError:(id *)a3;
-- (id)toPlistWithChunks:(id)a3;
-- (void)loadSessionsWithBlock:(id)a3;
+- (PMLLogRegTrainingPlan)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
+- (PMLLogRegTrainingPlan)initWithStore:(id)store tracker:(id)tracker noiseStrategy:(id)strategy planId:(id)id sessionDescriptor:(id)descriptor maxSessionsLimit:(unint64_t)limit sessionsInBatch:(unint64_t)batch currentServerIteration:(unint64_t)self0 currentModelWeights:(id)self1 localLearningRate:(float)self2 stoppingThreshold:(float)self3 localMinimumIterations:(unint64_t)self4 localGradientIterations:(unint64_t)self5 useOnlyAppleInternalSessions:(BOOL)self6 skew:(double)self7 threshold:(double)self8 isMultiLabel:(BOOL)self9 intercept:(BOOL)intercept positiveLabel:(unint64_t)positiveLabel evaluationLevel:(unint64_t)level reportScale:(BOOL)scale;
+- (id)evaluationMetricsForPredictions:(id)predictions objectives:(id)objectives predicate:(id)predicate start:(id)start;
+- (id)normalizeRegressor:(id)regressor;
+- (id)runWithError:(id *)error;
+- (id)toPlistWithChunks:(id)chunks;
+- (void)loadSessionsWithBlock:(id)block;
 @end
 
 @implementation PMLLogRegTrainingPlan
 
-- (PMLLogRegTrainingPlan)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (PMLLogRegTrainingPlan)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
   v95[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v11 objectForKeyedSubscript:@"TRAINING_STORE"];
+  plistCopy = plist;
+  chunksCopy = chunks;
+  contextCopy = context;
+  v12 = [contextCopy objectForKeyedSubscript:@"TRAINING_STORE"];
 
   if (!v12)
   {
-    v56 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v57 = objc_opt_class();
     v58 = NSStringFromClass(v57);
-    [v56 handleFailureInMethod:a2 object:self file:@"PMLLogRegTrainingPlan.m" lineNumber:369 description:{@"Can't instantiate %@. Missing store dependency.", v58}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLLogRegTrainingPlan.m" lineNumber:369 description:{@"Can't instantiate %@. Missing store dependency.", v58}];
   }
 
-  v13 = [v9 objectForKeyedSubscript:@"PLAN_ID"];
+  v13 = [plistCopy objectForKeyedSubscript:@"PLAN_ID"];
   v14 = [PMLSessionDescriptor alloc];
-  v15 = [v9 objectForKeyedSubscript:@"SESSIONS_MODEL_HANDLE"];
-  v16 = [(PMLSessionDescriptor *)v14 initWithPlist:v15 chunks:v10 context:v11];
+  v15 = [plistCopy objectForKeyedSubscript:@"SESSIONS_MODEL_HANDLE"];
+  v16 = [(PMLSessionDescriptor *)v14 initWithPlist:v15 chunks:chunksCopy context:contextCopy];
 
   if (v16)
   {
     v89 = a2;
-    v17 = [v9 objectForKeyedSubscript:@"NOISE_STRATEGY_TYPE"];
+    v17 = [plistCopy objectForKeyedSubscript:@"NOISE_STRATEGY_TYPE"];
     if (([MEMORY[0x277D42590] isInternalBuild] & 1) == 0 && (objc_msgSend(MEMORY[0x277D42590], "isBetaBuild") & 1) == 0 && objc_msgSend(@"PMLNoNoiseStrategy", "isEqualToString:", v17))
     {
 
@@ -45,17 +45,17 @@
 
     if ([@"PMLSeparatedDPNoiseStrategy" isEqualToString:v17])
     {
-      v18 = [v11 mutableCopy];
+      v18 = [contextCopy mutableCopy];
       [(PMLSessionDescriptor *)v16 name];
       v20 = v19 = v17;
       v21 = [PMLSeparatedDPNoiseStrategy getPFLIdentifier:v20];
       [v18 setObject:v21 forKey:@"PFL_ID"];
 
       v17 = v19;
-      v11 = v18;
+      contextCopy = v18;
     }
 
-    v22 = [v11 objectForKeyedSubscript:@"PLUGIN_SHOULD_ADD_NOISE_AND_ENCRYPT_RESULT"];
+    v22 = [contextCopy objectForKeyedSubscript:@"PLUGIN_SHOULD_ADD_NOISE_AND_ENCRYPT_RESULT"];
     v23 = v22;
     if (v22 && ([v22 BOOLValue] & 1) == 0)
     {
@@ -70,16 +70,16 @@
     }
 
     v25 = objc_alloc(NSClassFromString(&v17->isa));
-    v26 = [v9 objectForKeyedSubscript:@"NOISE_STRATEGY"];
-    v27 = [v25 initWithPlist:v26 chunks:v10 context:v11];
+    v26 = [plistCopy objectForKeyedSubscript:@"NOISE_STRATEGY"];
+    v27 = [v25 initWithPlist:v26 chunks:chunksCopy context:contextCopy];
 
     v28 = v27;
     if (v27)
     {
       v92 = v27;
       v29 = [PMLModelWeights alloc];
-      v30 = [v9 objectForKeyedSubscript:@"WEIGHTS"];
-      v27 = [(PMLModelWeights *)v29 initWithPlist:v30 chunks:v10 context:v11];
+      v30 = [plistCopy objectForKeyedSubscript:@"WEIGHTS"];
+      v27 = [(PMLModelWeights *)v29 initWithPlist:v30 chunks:chunksCopy context:contextCopy];
 
       v31 = v27;
       if (v27)
@@ -88,71 +88,71 @@
         v85 = v23;
         v86 = v17;
         v87 = v16;
-        v32 = [v9 objectForKeyedSubscript:@"TRACKER_TYPE"];
+        v32 = [plistCopy objectForKeyedSubscript:@"TRACKER_TYPE"];
         v33 = NSClassFromString(v32);
         if (!v33)
         {
-          v59 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
           v60 = objc_opt_class();
           v61 = NSStringFromClass(v60);
-          [v59 handleFailureInMethod:v89 object:self file:@"PMLLogRegTrainingPlan.m" lineNumber:407 description:{@"Can't instantiate %@. Unknown tracker class: %@", v61, v32}];
+          [currentHandler2 handleFailureInMethod:v89 object:self file:@"PMLLogRegTrainingPlan.m" lineNumber:407 description:{@"Can't instantiate %@. Unknown tracker class: %@", v61, v32}];
         }
 
         v34 = [v33 alloc];
-        v35 = [v9 objectForKeyedSubscript:@"TRACKER"];
+        v35 = [plistCopy objectForKeyedSubscript:@"TRACKER"];
         v94 = @"planId";
         v95[0] = v13;
         v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v95 forKeys:&v94 count:1];
-        v90 = [v34 initWithPlist:v35 chunks:v10 context:v36];
+        v90 = [v34 initWithPlist:v35 chunks:chunksCopy context:v36];
 
-        v88 = [v11 objectForKeyedSubscript:@"TRAINING_STORE"];
-        v84 = [v9 objectForKeyedSubscript:@"SESSIONS_LIMIT"];
-        v79 = [v84 unsignedIntegerValue];
-        v83 = [v9 objectForKeyedSubscript:@"SESSIONS_IN_BATCH"];
-        v76 = [v83 unsignedIntegerValue];
-        v82 = [v9 objectForKeyedSubscript:@"SERVER_ITERATION"];
-        v74 = [v82 unsignedIntegerValue];
-        v81 = [v9 objectForKeyedSubscript:@"LEARNING_RATE"];
+        v88 = [contextCopy objectForKeyedSubscript:@"TRAINING_STORE"];
+        v84 = [plistCopy objectForKeyedSubscript:@"SESSIONS_LIMIT"];
+        unsignedIntegerValue = [v84 unsignedIntegerValue];
+        v83 = [plistCopy objectForKeyedSubscript:@"SESSIONS_IN_BATCH"];
+        unsignedIntegerValue2 = [v83 unsignedIntegerValue];
+        v82 = [plistCopy objectForKeyedSubscript:@"SERVER_ITERATION"];
+        unsignedIntegerValue3 = [v82 unsignedIntegerValue];
+        v81 = [plistCopy objectForKeyedSubscript:@"LEARNING_RATE"];
         [v81 floatValue];
         v38 = v37;
-        v80 = [v9 objectForKeyedSubscript:@"STOPPING_THRESHOLD"];
+        v80 = [plistCopy objectForKeyedSubscript:@"STOPPING_THRESHOLD"];
         [v80 floatValue];
         v40 = v39;
-        v78 = [v9 objectForKeyedSubscript:@"MIN_ITERATIONS"];
-        v70 = [v78 unsignedIntegerValue];
-        v77 = [v9 objectForKeyedSubscript:@"GRADIENT_ITERATIONS"];
-        v68 = [v77 unsignedIntegerValue];
-        v75 = [v9 objectForKeyedSubscript:@"ONLY_INTERNAL_SESSIONS"];
-        v66 = [v75 BOOLValue];
-        v73 = [v9 objectForKeyedSubscript:@"SKEW"];
+        v78 = [plistCopy objectForKeyedSubscript:@"MIN_ITERATIONS"];
+        unsignedIntegerValue4 = [v78 unsignedIntegerValue];
+        v77 = [plistCopy objectForKeyedSubscript:@"GRADIENT_ITERATIONS"];
+        unsignedIntegerValue5 = [v77 unsignedIntegerValue];
+        v75 = [plistCopy objectForKeyedSubscript:@"ONLY_INTERNAL_SESSIONS"];
+        bOOLValue = [v75 BOOLValue];
+        v73 = [plistCopy objectForKeyedSubscript:@"SKEW"];
         [v73 doubleValue];
         v42 = v41;
-        v71 = [v9 objectForKeyedSubscript:@"THRESHOLD"];
+        v71 = [plistCopy objectForKeyedSubscript:@"THRESHOLD"];
         [v71 doubleValue];
         v44 = v43;
-        v69 = [v9 objectForKeyedSubscript:@"IS_MULTI_LABEL"];
-        v65 = self;
+        v69 = [plistCopy objectForKeyedSubscript:@"IS_MULTI_LABEL"];
+        selfCopy = self;
         HIDWORD(v64) = [v69 BOOLValue];
-        v67 = [v9 objectForKeyedSubscript:@"INTERCEPT"];
+        v67 = [plistCopy objectForKeyedSubscript:@"INTERCEPT"];
         LOBYTE(v35) = [v67 BOOLValue];
-        [v9 objectForKeyedSubscript:@"POSITIVE_LABEL"];
+        [plistCopy objectForKeyedSubscript:@"POSITIVE_LABEL"];
         v46 = v45 = v13;
-        v47 = v10;
-        v48 = [v46 unsignedIntegerValue];
-        [v9 objectForKeyedSubscript:@"EVALUATION_LEVEL"];
+        v47 = chunksCopy;
+        unsignedIntegerValue6 = [v46 unsignedIntegerValue];
+        [plistCopy objectForKeyedSubscript:@"EVALUATION_LEVEL"];
         v49 = v72 = v32;
-        v50 = [v49 unsignedIntegerValue];
-        v51 = [v9 objectForKeyedSubscript:@"REPORT_SCALE"];
+        unsignedIntegerValue7 = [v49 unsignedIntegerValue];
+        v51 = [plistCopy objectForKeyedSubscript:@"REPORT_SCALE"];
         LOBYTE(v64) = [v51 BOOLValue];
-        v63 = v48;
-        v10 = v47;
+        v63 = unsignedIntegerValue6;
+        chunksCopy = v47;
         BYTE2(v62) = v35;
         BYTE1(v62) = BYTE4(v64);
-        LOBYTE(v62) = v66;
+        LOBYTE(v62) = bOOLValue;
         LODWORD(v52) = v38;
         LODWORD(v53) = v40;
         v28 = v92;
-        v27 = [PMLLogRegTrainingPlan initWithStore:v65 tracker:"initWithStore:tracker:noiseStrategy:planId:sessionDescriptor:maxSessionsLimit:sessionsInBatch:currentServerIteration:currentModelWeights:localLearningRate:stoppingThreshold:localMinimumIterations:localGradientIterations:useOnlyAppleInternalSessions:skew:threshold:isMultiLabel:intercept:positiveLabel:evaluationLevel:reportScale:" noiseStrategy:v88 planId:v90 sessionDescriptor:v92 maxSessionsLimit:v45 sessionsInBatch:v87 currentServerIteration:v79 currentModelWeights:v52 localLearningRate:v53 stoppingThreshold:v42 localMinimumIterations:v44 localGradientIterations:v76 useOnlyAppleInternalSessions:v74 skew:v91 threshold:v70 isMultiLabel:v68 intercept:v62 positiveLabel:v63 evaluationLevel:v50 reportScale:v64];
+        v27 = [PMLLogRegTrainingPlan initWithStore:selfCopy tracker:"initWithStore:tracker:noiseStrategy:planId:sessionDescriptor:maxSessionsLimit:sessionsInBatch:currentServerIteration:currentModelWeights:localLearningRate:stoppingThreshold:localMinimumIterations:localGradientIterations:useOnlyAppleInternalSessions:skew:threshold:isMultiLabel:intercept:positiveLabel:evaluationLevel:reportScale:" noiseStrategy:v88 planId:v90 sessionDescriptor:v92 maxSessionsLimit:v45 sessionsInBatch:v87 currentServerIteration:unsignedIntegerValue currentModelWeights:v52 localLearningRate:v53 stoppingThreshold:v42 localMinimumIterations:v44 localGradientIterations:unsignedIntegerValue2 useOnlyAppleInternalSessions:unsignedIntegerValue3 skew:v91 threshold:unsignedIntegerValue4 isMultiLabel:unsignedIntegerValue5 intercept:v62 positiveLabel:v63 evaluationLevel:unsignedIntegerValue7 reportScale:v64];
 
         v16 = v87;
         v13 = v45;
@@ -179,7 +179,7 @@
   return v27;
 }
 
-- (id)toPlistWithChunks:(id)a3
+- (id)toPlistWithChunks:(id)chunks
 {
   v38[24] = *MEMORY[0x277D85DE8];
   planId = self->_planId;
@@ -189,8 +189,8 @@
   v38[1] = MEMORY[0x277CBEC38];
   v37[2] = @"SESSIONS_MODEL_HANDLE";
   sessionDescriptor = self->_sessionDescriptor;
-  v6 = a3;
-  v36 = [(PMLSessionDescriptor *)sessionDescriptor toPlistWithChunks:v6];
+  chunksCopy = chunks;
+  v36 = [(PMLSessionDescriptor *)sessionDescriptor toPlistWithChunks:chunksCopy];
   v38[2] = v36;
   v37[3] = @"SESSIONS_LIMIT";
   v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_maxSessionsLimit];
@@ -199,7 +199,7 @@
   v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_sessionsInBatch];
   v38[4] = v34;
   v37[5] = @"WEIGHTS";
-  v33 = [(PMLModelWeights *)self->_currentModelWeights toPlistWithChunks:v6];
+  v33 = [(PMLModelWeights *)self->_currentModelWeights toPlistWithChunks:chunksCopy];
   v38[5] = v33;
   v37[6] = @"LEARNING_RATE";
   *&v7 = self->_localLearningRate;
@@ -230,7 +230,7 @@
   v25 = NSStringFromClass(v10);
   v38[13] = v25;
   v37[14] = @"NOISE_STRATEGY";
-  v24 = [(PMLNoiseStrategy *)self->_noiseStrategy toPlistWithChunks:v6];
+  v24 = [(PMLNoiseStrategy *)self->_noiseStrategy toPlistWithChunks:chunksCopy];
   v38[14] = v24;
   v37[15] = @"ONLY_INTERNAL_SESSIONS";
   v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_useOnlyAppleInternalSessions];
@@ -239,7 +239,7 @@
   v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_intercept];
   v38[16] = v12;
   v37[17] = @"TRACKER";
-  v13 = [(PMLLogRegTrackerProtocol *)self->_tracker toPlistWithChunks:v6];
+  v13 = [(PMLLogRegTrackerProtocol *)self->_tracker toPlistWithChunks:chunksCopy];
 
   v38[17] = v13;
   v37[18] = @"TRACKER_TYPE";
@@ -268,14 +268,14 @@
   return v21;
 }
 
-- (id)runWithError:(id *)a3
+- (id)runWithError:(id *)error
 {
   v48[2] = *MEMORY[0x277D85DE8];
   noiseStrategy = self->_noiseStrategy;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) == 0 || (tracker = self->_tracker, objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     *&buf = 0;
     *(&buf + 1) = &buf;
     v43 = 0x3032000000;
@@ -299,28 +299,28 @@
     v28[4] = self;
     v30 = &v33;
     v31 = v39;
-    v8 = v7;
+    v8 = date;
     v29 = v8;
     p_buf = &buf;
     [(PMLLogRegTrainingPlan *)self loadSessionsWithBlock:v28];
-    if (a3 && (v9 = v34[5]) != 0)
+    if (error && (v9 = v34[5]) != 0)
     {
       v10 = 0;
-      *a3 = v9;
+      *error = v9;
     }
 
     else
     {
       v11 = [PMLPlanDescriptor descriptorFromPlanId:self->_planId];
       v40[0] = @"name";
-      v12 = [v11 name];
-      v41[0] = v12;
+      name = [v11 name];
+      v41[0] = name;
       v40[1] = @"version";
-      v13 = [v11 version];
-      v41[1] = v13;
+      version = [v11 version];
+      v41[1] = version;
       v40[2] = @"locale";
-      v14 = [v11 locale];
-      v41[2] = v14;
+      locale = [v11 locale];
+      v41[2] = locale;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:3];
       [*(*(&buf + 1) + 40) setObject:v15 forKeyedSubscript:@"plan"];
 
@@ -345,7 +345,7 @@
     _os_log_error_impl(&dword_260D68000, v18, OS_LOG_TYPE_ERROR, "Attempted to use PMLSeparatedDPNoiseStrategy with non-Fides tracker: %@.", &buf, 0xCu);
   }
 
-  if (a3)
+  if (error)
   {
     v19 = MEMORY[0x277CCA9B8];
     v47[0] = @"PlanClass";
@@ -358,7 +358,7 @@
     v23 = NSStringFromClass(v22);
     v48[1] = v23;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:2];
-    *a3 = [v19 errorWithDomain:@"ProactiveMLErrorDomain" code:6 userInfo:v24];
+    *error = [v19 errorWithDomain:@"ProactiveMLErrorDomain" code:6 userInfo:v24];
 
     v10 = MEMORY[0x277CBEC10];
 LABEL_8:
@@ -580,21 +580,21 @@ LABEL_33:
   return v6;
 }
 
-- (id)normalizeRegressor:(id)a3
+- (id)normalizeRegressor:(id)regressor
 {
-  v4 = a3;
-  v5 = v4;
+  regressorCopy = regressor;
+  v5 = regressorCopy;
   if (self->_isMultiLabel)
   {
-    v6 = -[PMLDenseVector initWithCount:]([PMLMutableDenseVector alloc], "initWithCount:", [v4 count]);
-    v7 = [v5 values];
-    v8 = [(PMLMutableDenseVector *)v6 mutablePtr];
+    v6 = -[PMLDenseVector initWithCount:]([PMLMutableDenseVector alloc], "initWithCount:", [regressorCopy count]);
+    values = [v5 values];
+    mutablePtr = [(PMLMutableDenseVector *)v6 mutablePtr];
     if ([v5 count])
     {
       v9 = 0;
       do
       {
-        if (*(v7 + 4 * v9) == self->_positiveLabel)
+        if (*(values + 4 * v9) == self->_positiveLabel)
         {
           v10 = 1.0;
         }
@@ -604,7 +604,7 @@ LABEL_33:
           v10 = 0.0;
         }
 
-        *(v8 + 4 * v9++) = v10;
+        *(mutablePtr + 4 * v9++) = v10;
       }
 
       while (v9 < [v5 count]);
@@ -615,43 +615,43 @@ LABEL_33:
 
   else
   {
-    v11 = v4;
+    v11 = regressorCopy;
   }
 
   return v11;
 }
 
-- (void)loadSessionsWithBlock:(id)a3
+- (void)loadSessionsWithBlock:(id)block
 {
   store = self->_store;
   sessionDescriptor = self->_sessionDescriptor;
-  v7 = a3;
+  blockCopy = block;
   +[PMLTrainingStore lastUsedTimestampLimit];
   skew = self->_skew;
-  [PMLTrainingStore loadSessionsForModel:"loadSessionsForModel:excludeItemIdsUsedWithin:limit:onlyAppleInternal:positiveLabel:skew:block:" excludeItemIdsUsedWithin:sessionDescriptor limit:self->_sessionsInBatch onlyAppleInternal:self->_useOnlyAppleInternalSessions positiveLabel:self->_positiveLabel skew:v7 block:?];
+  [PMLTrainingStore loadSessionsForModel:"loadSessionsForModel:excludeItemIdsUsedWithin:limit:onlyAppleInternal:positiveLabel:skew:block:" excludeItemIdsUsedWithin:sessionDescriptor limit:self->_sessionsInBatch onlyAppleInternal:self->_useOnlyAppleInternalSessions positiveLabel:self->_positiveLabel skew:blockCopy block:?];
 }
 
-- (id)evaluationMetricsForPredictions:(id)a3 objectives:(id)a4 predicate:(id)a5 start:(id)a6
+- (id)evaluationMetricsForPredictions:(id)predictions objectives:(id)objectives predicate:(id)predicate start:(id)start
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  predictionsCopy = predictions;
+  objectivesCopy = objectives;
+  predicateCopy = predicate;
+  startCopy = start;
   if (self->_evaluationLevel)
   {
-    [PMLClassificationEvaluationMetrics f1Score:v11 predictions:v10 predicate:v12];
+    [PMLClassificationEvaluationMetrics f1Score:objectivesCopy predictions:predictionsCopy predicate:predicateCopy];
     [PMLClassificationEvaluationMetrics roundFloatToSigFigs:3 sigFigs:?];
     v16 = v15;
-    *&v17 = [PMLClassificationEvaluationMetrics truePositives:v11 predictions:v10 predicate:v12];
+    *&v17 = [PMLClassificationEvaluationMetrics truePositives:objectivesCopy predictions:predictionsCopy predicate:predicateCopy];
     [PMLClassificationEvaluationMetrics roundFloatToSigFigs:3 sigFigs:v17];
     v19 = vcvtas_u32_f32(v18);
-    *&v20 = [PMLClassificationEvaluationMetrics trueNegatives:v11 predictions:v10 predicate:v12];
+    *&v20 = [PMLClassificationEvaluationMetrics trueNegatives:objectivesCopy predictions:predictionsCopy predicate:predicateCopy];
     [PMLClassificationEvaluationMetrics roundFloatToSigFigs:3 sigFigs:v20];
     v22 = vcvtas_u32_f32(v21);
-    *&v23 = [PMLClassificationEvaluationMetrics falsePositives:v11 predictions:v10 predicate:v12];
+    *&v23 = [PMLClassificationEvaluationMetrics falsePositives:objectivesCopy predictions:predictionsCopy predicate:predicateCopy];
     [PMLClassificationEvaluationMetrics roundFloatToSigFigs:3 sigFigs:v23];
     v25 = vcvtas_u32_f32(v24);
-    *&v26 = [PMLClassificationEvaluationMetrics falseNegatives:v11 predictions:v10 predicate:v12];
+    *&v26 = [PMLClassificationEvaluationMetrics falseNegatives:objectivesCopy predictions:predictionsCopy predicate:predicateCopy];
     [PMLClassificationEvaluationMetrics roundFloatToSigFigs:3 sigFigs:v26];
     v28 = vcvtas_u32_f32(v27);
   }
@@ -669,10 +669,10 @@ LABEL_33:
   v29 = [AWDProactiveModelFittingEvalMetrics evalMetricsWithRmse:v19 f1:v22 truePositives:v25 trueNegatives:v28 falsePositives:0.0 falseNegatives:v14];
   if (self->_evaluationLevel >= 2)
   {
-    [PMLClassificationEvaluationMetrics addScoresForOutcomes:v11 predictions:v10 predicate:v12 metrics:v29];
+    [PMLClassificationEvaluationMetrics addScoresForOutcomes:objectivesCopy predictions:predictionsCopy predicate:predicateCopy metrics:v29];
   }
 
-  [v13 timeIntervalSinceNow];
+  [startCopy timeIntervalSinceNow];
   *&v30 = v30;
   *&v30 = fabsf(*&v30);
   [PMLClassificationEvaluationMetrics roundFloatToSigFigs:3 sigFigs:v30];
@@ -681,18 +681,18 @@ LABEL_33:
   return v29;
 }
 
-- (PMLLogRegTrainingPlan)initWithStore:(id)a3 tracker:(id)a4 noiseStrategy:(id)a5 planId:(id)a6 sessionDescriptor:(id)a7 maxSessionsLimit:(unint64_t)a8 sessionsInBatch:(unint64_t)a9 currentServerIteration:(unint64_t)a10 currentModelWeights:(id)a11 localLearningRate:(float)a12 stoppingThreshold:(float)a13 localMinimumIterations:(unint64_t)a14 localGradientIterations:(unint64_t)a15 useOnlyAppleInternalSessions:(BOOL)a16 skew:(double)a17 threshold:(double)a18 isMultiLabel:(BOOL)a19 intercept:(BOOL)a20 positiveLabel:(unint64_t)a21 evaluationLevel:(unint64_t)a22 reportScale:(BOOL)a23
+- (PMLLogRegTrainingPlan)initWithStore:(id)store tracker:(id)tracker noiseStrategy:(id)strategy planId:(id)id sessionDescriptor:(id)descriptor maxSessionsLimit:(unint64_t)limit sessionsInBatch:(unint64_t)batch currentServerIteration:(unint64_t)self0 currentModelWeights:(id)self1 localLearningRate:(float)self2 stoppingThreshold:(float)self3 localMinimumIterations:(unint64_t)self4 localGradientIterations:(unint64_t)self5 useOnlyAppleInternalSessions:(BOOL)self6 skew:(double)self7 threshold:(double)self8 isMultiLabel:(BOOL)self9 intercept:(BOOL)intercept positiveLabel:(unint64_t)positiveLabel evaluationLevel:(unint64_t)level reportScale:(BOOL)scale
 {
-  v34 = a3;
-  v48 = a4;
-  v47 = a5;
-  v35 = a6;
-  v46 = a7;
-  v45 = a11;
-  if (![PMLPlanDescriptor isValidPlanId:v35])
+  storeCopy = store;
+  trackerCopy = tracker;
+  strategyCopy = strategy;
+  idCopy = id;
+  descriptorCopy = descriptor;
+  weightsCopy = weights;
+  if (![PMLPlanDescriptor isValidPlanId:idCopy])
   {
-    v43 = [MEMORY[0x277CCA890] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"PMLLogRegTrainingPlan.m" lineNumber:94 description:{@"Invalid planId. Must be <name>-<version>-<locale> but got %@", v35}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLLogRegTrainingPlan.m" lineNumber:94 description:{@"Invalid planId. Must be <name>-<version>-<locale> but got %@", idCopy}];
   }
 
   v49.receiver = self;
@@ -701,61 +701,61 @@ LABEL_33:
   v37 = v36;
   if (v36)
   {
-    v42 = v34;
-    v38 = a9;
-    objc_storeStrong(&v36->_store, a3);
-    objc_storeStrong(&v37->_tracker, a4);
-    objc_storeStrong(&v37->_noiseStrategy, a5);
-    objc_storeStrong(&v37->_planId, a6);
-    objc_storeStrong(&v37->_sessionDescriptor, a7);
+    v42 = storeCopy;
+    batchCopy = batch;
+    objc_storeStrong(&v36->_store, store);
+    objc_storeStrong(&v37->_tracker, tracker);
+    objc_storeStrong(&v37->_noiseStrategy, strategy);
+    objc_storeStrong(&v37->_planId, id);
+    objc_storeStrong(&v37->_sessionDescriptor, descriptor);
     if (([MEMORY[0x277D42590] isInternalBuild] & 1) == 0)
     {
-      v39 = [MEMORY[0x277D42590] isBetaBuild];
-      if (a9 <= 1)
+      isBetaBuild = [MEMORY[0x277D42590] isBetaBuild];
+      if (batch <= 1)
       {
-        v40 = 1;
+        batchCopy2 = 1;
       }
 
       else
       {
-        v40 = a9;
+        batchCopy2 = batch;
       }
 
-      if (!v39)
+      if (!isBetaBuild)
       {
-        v38 = v40;
+        batchCopy = batchCopy2;
       }
     }
 
-    v37->_maxSessionsLimit = a8;
-    v37->_sessionsInBatch = v38;
-    v37->_currentServerIteration = a10;
-    objc_storeStrong(&v37->_currentModelWeights, a11);
-    v37->_localLearningRate = a12;
-    v37->_stoppingThreshold = a13;
-    v37->_localMinimumIterations = a14;
-    v37->_localGradientIterations = a15;
-    v37->_useOnlyAppleInternalSessions = a16;
-    v37->_isMultiLabel = a19;
-    v37->_skew = a17;
+    v37->_maxSessionsLimit = limit;
+    v37->_sessionsInBatch = batchCopy;
+    v37->_currentServerIteration = iteration;
+    objc_storeStrong(&v37->_currentModelWeights, weights);
+    v37->_localLearningRate = rate;
+    v37->_stoppingThreshold = threshold;
+    v37->_localMinimumIterations = iterations;
+    v37->_localGradientIterations = gradientIterations;
+    v37->_useOnlyAppleInternalSessions = sessions;
+    v37->_isMultiLabel = label;
+    v37->_skew = skew;
     v37->_threshold = a18;
-    v37->_intercept = a20;
-    v37->_positiveLabel = a21;
-    v37->_evaluationLevel = a22;
-    v37->_reportScale = a23;
-    v34 = v42;
+    v37->_intercept = intercept;
+    v37->_positiveLabel = positiveLabel;
+    v37->_evaluationLevel = level;
+    v37->_reportScale = scale;
+    storeCopy = v42;
   }
 
   return v37;
 }
 
-+ (id)planWithStore:(id)a3 tracker:(id)a4 sessionDescriptor:(id)a5 arguments:(id)a6
++ (id)planWithStore:(id)store tracker:(id)tracker sessionDescriptor:(id)descriptor arguments:(id)arguments
 {
-  v9 = a6;
-  v57 = a5;
-  v56 = a4;
-  v10 = a3;
-  v11 = [v9 objectForKeyedSubscript:@"noiseStrategy"];
+  argumentsCopy = arguments;
+  descriptorCopy = descriptor;
+  trackerCopy = tracker;
+  storeCopy = store;
+  v11 = [argumentsCopy objectForKeyedSubscript:@"noiseStrategy"];
   v12 = v11;
   if (v11)
   {
@@ -769,7 +769,7 @@ LABEL_33:
 
   v64 = v13;
 
-  v14 = [v9 objectForKeyedSubscript:@"planId"];
+  v14 = [argumentsCopy objectForKeyedSubscript:@"planId"];
   v15 = v14;
   v16 = @"FiM_logreg-1.0-en";
   if (v14)
@@ -779,29 +779,29 @@ LABEL_33:
 
   v63 = v16;
 
-  v17 = [v9 objectForKeyedSubscript:@"serverIteration"];
+  v17 = [argumentsCopy objectForKeyedSubscript:@"serverIteration"];
   if (v17)
   {
-    v18 = [v9 objectForKeyedSubscript:@"serverIteration"];
-    v62 = [v18 unsignedIntegerValue];
+    v18 = [argumentsCopy objectForKeyedSubscript:@"serverIteration"];
+    unsignedIntegerValue = [v18 unsignedIntegerValue];
   }
 
   else
   {
-    v62 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  v19 = [v9 objectForKeyedSubscript:@"intercept"];
-  v60 = [v19 BOOLValue];
+  v19 = [argumentsCopy objectForKeyedSubscript:@"intercept"];
+  bOOLValue = [v19 BOOLValue];
 
-  v20 = [v9 objectForKeyedSubscript:@"generateWeightsOfLength"];
-  v21 = [v20 intValue];
+  v20 = [argumentsCopy objectForKeyedSubscript:@"generateWeightsOfLength"];
+  intValue = [v20 intValue];
 
-  v61 = [PMLModelWeights modelWeightsOfLength:v21 rngSeed:1234567];
-  v22 = [v9 objectForKeyedSubscript:@"localLearningRate"];
+  v61 = [PMLModelWeights modelWeightsOfLength:intValue rngSeed:1234567];
+  v22 = [argumentsCopy objectForKeyedSubscript:@"localLearningRate"];
   if (v22)
   {
-    v23 = [v9 objectForKeyedSubscript:@"localLearningRate"];
+    v23 = [argumentsCopy objectForKeyedSubscript:@"localLearningRate"];
     [v23 floatValue];
     v25 = v24;
   }
@@ -811,10 +811,10 @@ LABEL_33:
     v25 = 1017370378;
   }
 
-  v26 = [v9 objectForKeyedSubscript:@"stoppingThreshold"];
+  v26 = [argumentsCopy objectForKeyedSubscript:@"stoppingThreshold"];
   if (v26)
   {
-    v27 = [v9 objectForKeyedSubscript:@"stoppingThreshold"];
+    v27 = [argumentsCopy objectForKeyedSubscript:@"stoppingThreshold"];
     [v27 floatValue];
     v29 = v28;
   }
@@ -824,43 +824,43 @@ LABEL_33:
     v29 = 953267991;
   }
 
-  v30 = [v9 objectForKeyedSubscript:@"localMinimumIterations"];
+  v30 = [argumentsCopy objectForKeyedSubscript:@"localMinimumIterations"];
   if (v30)
   {
-    v31 = [v9 objectForKeyedSubscript:@"localMinimumIterations"];
-    v59 = [v31 unsignedIntegerValue];
+    v31 = [argumentsCopy objectForKeyedSubscript:@"localMinimumIterations"];
+    unsignedIntegerValue2 = [v31 unsignedIntegerValue];
   }
 
   else
   {
-    v59 = 100;
+    unsignedIntegerValue2 = 100;
   }
 
-  v32 = [v9 objectForKeyedSubscript:@"localGradientIterations"];
-  v33 = [v32 unsignedIntegerValue];
+  v32 = [argumentsCopy objectForKeyedSubscript:@"localGradientIterations"];
+  unsignedIntegerValue3 = [v32 unsignedIntegerValue];
 
-  v34 = [v9 objectForKeyedSubscript:@"reportScale"];
-  v58 = [v34 BOOLValue];
+  v34 = [argumentsCopy objectForKeyedSubscript:@"reportScale"];
+  bOOLValue2 = [v34 BOOLValue];
 
-  v35 = [v9 objectForKeyedSubscript:@"useOnlyAppleInternalSessions"];
-  v36 = [v35 BOOLValue];
+  v35 = [argumentsCopy objectForKeyedSubscript:@"useOnlyAppleInternalSessions"];
+  bOOLValue3 = [v35 BOOLValue];
 
-  v37 = [v9 objectForKeyedSubscript:@"sessionsInBatch"];
-  v38 = [v37 integerValue];
+  v37 = [argumentsCopy objectForKeyedSubscript:@"sessionsInBatch"];
+  integerValue = [v37 integerValue];
 
-  v39 = [v9 objectForKeyedSubscript:@"maxSessionsLimit"];
-  v40 = [v39 unsignedIntegerValue];
+  v39 = [argumentsCopy objectForKeyedSubscript:@"maxSessionsLimit"];
+  unsignedIntegerValue4 = [v39 unsignedIntegerValue];
 
-  v41 = [v9 objectForKeyedSubscript:@"positiveLabel"];
+  v41 = [argumentsCopy objectForKeyedSubscript:@"positiveLabel"];
 
   if (v41)
   {
-    [v9 objectForKeyedSubscript:@"positiveLabel"];
-    v43 = v42 = v33;
-    v44 = [v43 unsignedIntegerValue];
+    [argumentsCopy objectForKeyedSubscript:@"positiveLabel"];
+    v43 = v42 = unsignedIntegerValue3;
+    unsignedIntegerValue5 = [v43 unsignedIntegerValue];
 
-    v33 = v42;
-    v45 = v44;
+    unsignedIntegerValue3 = v42;
+    v45 = unsignedIntegerValue5;
   }
 
   else
@@ -869,39 +869,39 @@ LABEL_33:
   }
 
   v46 = v41 != 0;
-  if (!v40)
+  if (!unsignedIntegerValue4)
   {
-    v40 = 100;
+    unsignedIntegerValue4 = 100;
   }
 
-  if (v38 <= 1)
+  if (integerValue <= 1)
   {
     v47 = 1;
   }
 
   else
   {
-    v47 = v38;
+    v47 = integerValue;
   }
 
-  if (v33 <= 1)
+  if (unsignedIntegerValue3 <= 1)
   {
     v48 = 1;
   }
 
   else
   {
-    v48 = v33;
+    v48 = unsignedIntegerValue3;
   }
 
   v49 = [PMLLogRegTrainingPlan alloc];
-  LOBYTE(v55) = v58;
-  BYTE2(v54) = v60;
+  LOBYTE(v55) = bOOLValue2;
+  BYTE2(v54) = bOOLValue;
   BYTE1(v54) = v46;
-  LOBYTE(v54) = v36;
+  LOBYTE(v54) = bOOLValue3;
   LODWORD(v50) = v25;
   LODWORD(v51) = v29;
-  v52 = [PMLLogRegTrainingPlan initWithStore:v49 tracker:"initWithStore:tracker:noiseStrategy:planId:sessionDescriptor:maxSessionsLimit:sessionsInBatch:currentServerIteration:currentModelWeights:localLearningRate:stoppingThreshold:localMinimumIterations:localGradientIterations:useOnlyAppleInternalSessions:skew:threshold:isMultiLabel:intercept:positiveLabel:evaluationLevel:reportScale:" noiseStrategy:v10 planId:v56 sessionDescriptor:v64 maxSessionsLimit:v63 sessionsInBatch:v57 currentServerIteration:v40 currentModelWeights:v50 localLearningRate:v51 stoppingThreshold:0.5 localMinimumIterations:0.5 localGradientIterations:v47 useOnlyAppleInternalSessions:v62 skew:v61 threshold:v59 isMultiLabel:v48 intercept:v54 positiveLabel:v45 evaluationLevel:2 reportScale:v55];
+  v52 = [PMLLogRegTrainingPlan initWithStore:v49 tracker:"initWithStore:tracker:noiseStrategy:planId:sessionDescriptor:maxSessionsLimit:sessionsInBatch:currentServerIteration:currentModelWeights:localLearningRate:stoppingThreshold:localMinimumIterations:localGradientIterations:useOnlyAppleInternalSessions:skew:threshold:isMultiLabel:intercept:positiveLabel:evaluationLevel:reportScale:" noiseStrategy:storeCopy planId:trackerCopy sessionDescriptor:v64 maxSessionsLimit:v63 sessionsInBatch:descriptorCopy currentServerIteration:unsignedIntegerValue4 currentModelWeights:v50 localLearningRate:v51 stoppingThreshold:0.5 localMinimumIterations:0.5 localGradientIterations:v47 useOnlyAppleInternalSessions:unsignedIntegerValue skew:v61 threshold:unsignedIntegerValue2 isMultiLabel:v48 intercept:v54 positiveLabel:v45 evaluationLevel:2 reportScale:v55];
 
   return v52;
 }

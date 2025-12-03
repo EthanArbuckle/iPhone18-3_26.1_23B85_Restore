@@ -1,5 +1,5 @@
 @interface HapticServerConfig
-- (HapticServerConfig)initWithHapticPlayer:(id)a3 withOptions:(id)a4 error:(id *)a5;
+- (HapticServerConfig)initWithHapticPlayer:(id)player withOptions:(id)options error:(id *)error;
 - (id).cxx_construct;
 @end
 
@@ -15,11 +15,11 @@
   return self;
 }
 
-- (HapticServerConfig)initWithHapticPlayer:(id)a3 withOptions:(id)a4 error:(id *)a5
+- (HapticServerConfig)initWithHapticPlayer:(id)player withOptions:(id)options error:(id *)error
 {
   v70 = *MEMORY[0x277D85DE8];
-  v61 = a3;
-  v62 = a4;
+  playerCopy = player;
+  optionsCopy = options;
   v67.receiver = self;
   v67.super_class = HapticServerConfig;
   v53 = [(HapticServerConfig *)&v67 init];
@@ -29,7 +29,7 @@
     goto LABEL_73;
   }
 
-  v7 = [v62 objectForKey:@"Locality"];
+  v7 = [optionsCopy objectForKey:@"Locality"];
   v8 = v7;
   if (!v7)
   {
@@ -139,17 +139,17 @@ LABEL_18:
   v24 = [MEMORY[0x277CCABB0] numberWithFloat:0.0];
   v25 = [MEMORY[0x277CCABB0] numberWithFloat:0.0];
   v26 = [MEMORY[0x277CCABB0] numberWithFloat:0.0];
-  v27 = [MEMORY[0x277CBEA60] array];
-  v28 = [MEMORY[0x277CBEA60] array];
-  v29 = [MEMORY[0x277CBEA60] array];
-  v30 = [MEMORY[0x277CBEAC0] dictionary];
-  v31 = [v21 dictionaryWithObjectsAndKeys:{v60, @"RequestedLocality", v54, @"AllowBackgroundHaptics", v58, @"SupportsAudioPlayback", v57, @"SupportsHapticPlayback", v56, @"SupportsAdvancedPatternPlayers", v55, @"UsingInternalHaptics", v22, @"HapticContinuousTimeLimit", v23, @"HapticTransientDefaultIntensity", v24, @"HapticTransientDefaultSharpness", v25, @"HapticContinuousDefaultIntensity", v26, @"HapticContinuousDefaultSharpness", v27, @"HapticTransientEventIDs", v28, @"HapticContinuousSustainedEventIDs", v29, @"HapticContinuousNonsustainedEventIDs", v30, @"BuiltInAudioEventIDs", 0}];
+  array = [MEMORY[0x277CBEA60] array];
+  array2 = [MEMORY[0x277CBEA60] array];
+  array3 = [MEMORY[0x277CBEA60] array];
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
+  v31 = [v21 dictionaryWithObjectsAndKeys:{v60, @"RequestedLocality", v54, @"AllowBackgroundHaptics", v58, @"SupportsAudioPlayback", v57, @"SupportsHapticPlayback", v56, @"SupportsAdvancedPatternPlayers", v55, @"UsingInternalHaptics", v22, @"HapticContinuousTimeLimit", v23, @"HapticTransientDefaultIntensity", v24, @"HapticTransientDefaultSharpness", v25, @"HapticContinuousDefaultIntensity", v26, @"HapticContinuousDefaultSharpness", array, @"HapticTransientEventIDs", array2, @"HapticContinuousSustainedEventIDs", array3, @"HapticContinuousNonsustainedEventIDs", dictionary, @"BuiltInAudioEventIDs", 0}];
 
-  v32 = [v62 objectForKey:@"Priority"];
+  v32 = [optionsCopy objectForKey:@"Priority"];
   if (!v32)
   {
 LABEL_44:
-    v37 = [v62 objectForKey:@"HapticPowerUsage"];
+    v37 = [optionsCopy objectForKey:@"HapticPowerUsage"];
     if (!v37)
     {
       goto LABEL_57;
@@ -192,7 +192,7 @@ LABEL_56:
       [v31 setObject:v41 forKey:@"RequestedPowerUsage"];
 
 LABEL_57:
-      v42 = [v62 objectForKey:@"UsageCategory"];
+      v42 = [optionsCopy objectForKey:@"UsageCategory"];
       if (!v42)
       {
 LABEL_66:
@@ -210,10 +210,10 @@ LABEL_66:
         v10 = v53;
         v64 = v10;
         v65 = v60;
-        [v61 queryServerCapabilities:v31 reply:v63];
-        if (a5)
+        [playerCopy queryServerCapabilities:v31 reply:v63];
+        if (error)
         {
-          *a5 = *(*&buf[8] + 40);
+          *error = *(*&buf[8] + 40);
         }
 
         if (*(*&buf[8] + 40))
@@ -272,11 +272,11 @@ LABEL_65:
       if (!v49)
       {
 LABEL_83:
-        if (a5)
+        if (error)
         {
           [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreHaptics" code:-4816 userInfo:0];
           v45 = 0;
-          *a5 = v10 = 0;
+          *error = v10 = 0;
         }
 
         else
@@ -396,11 +396,11 @@ LABEL_91:
     }
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreHaptics" code:-4816 userInfo:0];
     v45 = 0;
-    *a5 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else

@@ -1,10 +1,10 @@
 @interface MUPhotoOptionsMenuButton
 + (BOOL)_supportsCamera;
-+ (id)buttonWithDelegate:(id)a3;
-+ (id)menuForPhotoOptionsMenuButtonWithTitle:(id)a3 symbol:(id)a4 cameraCompletion:(id)a5 libraryCompletion:(id)a6;
++ (id)buttonWithDelegate:(id)delegate;
++ (id)menuForPhotoOptionsMenuButtonWithTitle:(id)title symbol:(id)symbol cameraCompletion:(id)completion libraryCompletion:(id)libraryCompletion;
 + (int64_t)preferredEntryPoint;
 + (unint64_t)_numberOfSupportedSourceTypes;
-- (MUPhotoOptionsMenuButton)initWithFrame:(CGRect)a3;
+- (MUPhotoOptionsMenuButton)initWithFrame:(CGRect)frame;
 - (MUPhotoOptionsMenuButtonDelegate)delegate;
 - (void)_didSelectAddFromLibrary;
 - (void)_didSelectTakePhoto;
@@ -52,11 +52,11 @@
   }
 }
 
-- (MUPhotoOptionsMenuButton)initWithFrame:(CGRect)a3
+- (MUPhotoOptionsMenuButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUPhotoOptionsMenuButton;
-  v3 = [(MUPhotoOptionsMenuButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUPhotoOptionsMenuButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -158,18 +158,18 @@ void __42__MUPhotoOptionsMenuButton__setActionMenu__block_invoke_2(uint64_t a1)
     return 0;
   }
 
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom] != 5;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] != 5;
 
   return v3;
 }
 
-+ (id)menuForPhotoOptionsMenuButtonWithTitle:(id)a3 symbol:(id)a4 cameraCompletion:(id)a5 libraryCompletion:(id)a6
++ (id)menuForPhotoOptionsMenuButtonWithTitle:(id)title symbol:(id)symbol cameraCompletion:(id)completion libraryCompletion:(id)libraryCompletion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  titleCopy = title;
+  symbolCopy = symbol;
+  completionCopy = completion;
+  libraryCompletionCopy = libraryCompletion;
   v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
   v14 = +[MUPhotoOptionsMenuButton _supportsCamera];
   if (+[MUPhotoOptionsMenuButton _supportsPhotoLibrary])
@@ -181,7 +181,7 @@ void __42__MUPhotoOptionsMenuButton__setActionMenu__block_invoke_2(uint64_t a1)
     v30[1] = 3221225472;
     v30[2] = __109__MUPhotoOptionsMenuButton_menuForPhotoOptionsMenuButtonWithTitle_symbol_cameraCompletion_libraryCompletion___block_invoke;
     v30[3] = &unk_1E8219138;
-    v31 = v12;
+    v31 = libraryCompletionCopy;
     v18 = [v15 actionWithTitle:v16 image:v17 identifier:0 handler:v30];
 
     [v18 setAccessibilityIdentifier:@"ChooseExistingPhotoMenuAction"];
@@ -197,7 +197,7 @@ void __42__MUPhotoOptionsMenuButton__setActionMenu__block_invoke_2(uint64_t a1)
     v26 = 3221225472;
     v27 = __109__MUPhotoOptionsMenuButton_menuForPhotoOptionsMenuButtonWithTitle_symbol_cameraCompletion_libraryCompletion___block_invoke_2;
     v28 = &unk_1E8219138;
-    v29 = v11;
+    v29 = completionCopy;
     v22 = [v19 actionWithTitle:v20 image:v21 identifier:0 handler:&v25];
 
     [v22 setAccessibilityIdentifier:{@"TakeNewPhotoMenuAction", v25, v26, v27, v28}];
@@ -211,18 +211,18 @@ void __42__MUPhotoOptionsMenuButton__setActionMenu__block_invoke_2(uint64_t a1)
 
   else
   {
-    v23 = [MEMORY[0x1E69DCC60] menuWithTitle:v9 image:v10 identifier:0 options:0 children:v13];
+    v23 = [MEMORY[0x1E69DCC60] menuWithTitle:titleCopy image:symbolCopy identifier:0 options:0 children:v13];
     [v23 setAccessibilityIdentifier:@"AddPhotosMenuAction"];
   }
 
   return v23;
 }
 
-+ (id)buttonWithDelegate:(id)a3
++ (id)buttonWithDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = [MUPhotoOptionsMenuButton buttonWithType:0];
-  [v4 setDelegate:v3];
+  [v4 setDelegate:delegateCopy];
 
   if (+[MUPhotoOptionsMenuButton _numberOfSupportedSourceTypes]< 2)
   {

@@ -2,7 +2,7 @@
 + (id)sharedExtensionRegistry;
 - (DYExtensionRegistry)init;
 - (void)dealloc;
-- (void)registerExtension:(id)a3;
+- (void)registerExtension:(id)extension;
 @end
 
 @implementation DYExtensionRegistry
@@ -45,33 +45,33 @@ uint64_t __46__DYExtensionRegistry_sharedExtensionRegistry__block_invoke()
   [(DYExtensionRegistry *)&v3 dealloc];
 }
 
-- (void)registerExtension:(id)a3
+- (void)registerExtension:(id)extension
 {
-  v5 = -[NSMutableDictionary objectForKey:](self->_identifiersMap, "objectForKey:", [a3 identifier]);
+  v5 = -[NSMutableDictionary objectForKey:](self->_identifiersMap, "objectForKey:", [extension identifier]);
   if (v5)
   {
     v6 = v5;
     v7 = *MEMORY[0x277D0B240];
     [objc_msgSend(v5 "identifier")];
     [objc_msgSend(v6 "description")];
-    [objc_msgSend(a3 "description")];
+    [objc_msgSend(extension "description")];
     DYLog();
   }
 
   else
   {
-    v8 = -[NSMutableDictionary objectForKey:](self->_slotsMap, "objectForKey:", [a3 slot]);
+    v8 = -[NSMutableDictionary objectForKey:](self->_slotsMap, "objectForKey:", [extension slot]);
     if (!v8)
     {
       v8 = objc_opt_new();
-      -[NSMutableDictionary setObject:forKey:](self->_slotsMap, "setObject:forKey:", v8, [a3 slot]);
+      -[NSMutableDictionary setObject:forKey:](self->_slotsMap, "setObject:forKey:", v8, [extension slot]);
     }
 
-    [v8 addObject:a3];
+    [v8 addObject:extension];
     identifiersMap = self->_identifiersMap;
-    v10 = [a3 identifier];
+    identifier = [extension identifier];
 
-    [(NSMutableDictionary *)identifiersMap setObject:a3 forKey:v10];
+    [(NSMutableDictionary *)identifiersMap setObject:extension forKey:identifier];
   }
 }
 

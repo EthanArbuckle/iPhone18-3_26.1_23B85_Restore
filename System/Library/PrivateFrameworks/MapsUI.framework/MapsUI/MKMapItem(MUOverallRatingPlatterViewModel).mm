@@ -7,9 +7,9 @@
 - (id)attributionText
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  v2 = [a1 _reviewsAttribution];
+  _reviewsAttribution = [self _reviewsAttribution];
   v3 = +[MUInfoCardStyle attributionTintColor];
-  v4 = [a1 _attributionFor:v2 sourceStringFormat:&stru_1F44CA030 moreSourceStringFormat:&stru_1F44CA030 imageTintColor:v3];
+  v4 = [self _attributionFor:_reviewsAttribution sourceStringFormat:&stru_1F44CA030 moreSourceStringFormat:&stru_1F44CA030 imageTintColor:v3];
 
   v5 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v4];
   v15[0] = *MEMORY[0x1E69DB650];
@@ -20,9 +20,9 @@
   v8 = *MEMORY[0x1E69DB648];
   v15[1] = v7;
   v15[2] = v8;
-  v9 = [MEMORY[0x1E696F200] sharedManager];
-  v10 = [v9 smallAttributionFont];
-  v16[2] = v10;
+  mEMORY[0x1E696F200] = [MEMORY[0x1E696F200] sharedManager];
+  smallAttributionFont = [mEMORY[0x1E696F200] smallAttributionFont];
+  v16[2] = smallAttributionFont;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
   [v5 addAttributes:v11 range:{0, objc_msgSend(v5, "length")}];
 

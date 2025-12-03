@@ -6,10 +6,10 @@
 
 - (id)cacheKeyRepresentation
 {
-  v1 = [a1 absoluteString];
-  v2 = [v1 cacheKeyRepresentation];
+  absoluteString = [self absoluteString];
+  cacheKeyRepresentation = [absoluteString cacheKeyRepresentation];
 
-  return v2;
+  return cacheKeyRepresentation;
 }
 
 @end

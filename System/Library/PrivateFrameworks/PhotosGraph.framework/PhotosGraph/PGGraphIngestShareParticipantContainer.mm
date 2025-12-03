@@ -11,7 +11,7 @@
 - (NSString)fullName;
 - (NSString)localIdentifier;
 - (NSString)shareParticipantLocalIdentifier;
-- (PGGraphIngestShareParticipantContainer)initWithShareParticipant:(id)a3 person:(id)a4;
+- (PGGraphIngestShareParticipantContainer)initWithShareParticipant:(id)participant person:(id)person;
 - (unint64_t)ageCategory;
 - (unint64_t)relationship;
 - (unint64_t)sex;
@@ -19,19 +19,19 @@
 
 @implementation PGGraphIngestShareParticipantContainer
 
-- (PGGraphIngestShareParticipantContainer)initWithShareParticipant:(id)a3 person:(id)a4
+- (PGGraphIngestShareParticipantContainer)initWithShareParticipant:(id)participant person:(id)person
 {
-  v6 = a3;
-  v7 = a4;
+  participantCopy = participant;
+  personCopy = person;
   v11.receiver = self;
   v11.super_class = PGGraphIngestShareParticipantContainer;
   v8 = [(PGGraphIngestShareParticipantContainer *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(PGGraphIngestShareParticipantContainer *)v8 setShareParticipant:v6];
-    [(PGGraphIngestShareParticipantContainer *)v9 setLinkedPersonIdentity:v7];
-    [(PGGraphIngestShareParticipantContainer *)v9 setPersonIdentityFound:v7 != 0];
+    [(PGGraphIngestShareParticipantContainer *)v8 setShareParticipant:participantCopy];
+    [(PGGraphIngestShareParticipantContainer *)v9 setLinkedPersonIdentity:personCopy];
+    [(PGGraphIngestShareParticipantContainer *)v9 setPersonIdentityFound:personCopy != 0];
   }
 
   return v9;
@@ -41,16 +41,16 @@
 {
   if ([(PGGraphIngestShareParticipantContainer *)self personIdentityFound])
   {
-    v3 = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
-    v4 = [v3 locationsByAddressTypes];
+    linkedPersonIdentity = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
+    locationsByAddressTypes = [linkedPersonIdentity locationsByAddressTypes];
   }
 
   else
   {
-    v4 = MEMORY[0x277CBEC10];
+    locationsByAddressTypes = MEMORY[0x277CBEC10];
   }
 
-  return v4;
+  return locationsByAddressTypes;
 }
 
 - (unint64_t)sex
@@ -60,8 +60,8 @@
     return 0;
   }
 
-  v3 = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
-  v4 = [v3 sex];
+  linkedPersonIdentity = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
+  v4 = [linkedPersonIdentity sex];
 
   return v4;
 }
@@ -73,10 +73,10 @@
     return 0;
   }
 
-  v3 = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
-  v4 = [v3 ageCategory];
+  linkedPersonIdentity = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
+  ageCategory = [linkedPersonIdentity ageCategory];
 
-  return v4;
+  return ageCategory;
 }
 
 - (unint64_t)relationship
@@ -86,178 +86,178 @@
     return 0;
   }
 
-  v3 = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
-  v4 = [v3 relationship];
+  linkedPersonIdentity = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
+  relationship = [linkedPersonIdentity relationship];
 
-  return v4;
+  return relationship;
 }
 
 - (NSDate)anniversaryDate
 {
   if ([(PGGraphIngestShareParticipantContainer *)self personIdentityFound])
   {
-    v3 = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
-    v4 = [v3 anniversaryDate];
+    linkedPersonIdentity = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
+    anniversaryDate = [linkedPersonIdentity anniversaryDate];
   }
 
   else
   {
-    v4 = 0;
+    anniversaryDate = 0;
   }
 
-  return v4;
+  return anniversaryDate;
 }
 
 - (NSDate)potentialBirthdayDate
 {
   if ([(PGGraphIngestShareParticipantContainer *)self personIdentityFound])
   {
-    v3 = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
-    v4 = [v3 potentialBirthdayDate];
+    linkedPersonIdentity = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
+    potentialBirthdayDate = [linkedPersonIdentity potentialBirthdayDate];
   }
 
   else
   {
-    v4 = 0;
+    potentialBirthdayDate = 0;
   }
 
-  return v4;
+  return potentialBirthdayDate;
 }
 
 - (NSDate)birthdayDate
 {
   if ([(PGGraphIngestShareParticipantContainer *)self personIdentityFound])
   {
-    v3 = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
-    v4 = [v3 birthdayDate];
+    linkedPersonIdentity = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
+    birthdayDate = [linkedPersonIdentity birthdayDate];
   }
 
   else
   {
-    v4 = 0;
+    birthdayDate = 0;
   }
 
-  return v4;
+  return birthdayDate;
 }
 
 - (BOOL)isMe
 {
-  v2 = [(PGGraphIngestShareParticipantContainer *)self shareParticipant];
-  v3 = [v2 isCurrentUser];
+  shareParticipant = [(PGGraphIngestShareParticipantContainer *)self shareParticipant];
+  isCurrentUser = [shareParticipant isCurrentUser];
 
-  return v3;
+  return isCurrentUser;
 }
 
 - (BOOL)isUserCreated
 {
-  v3 = [(PGGraphIngestShareParticipantContainer *)self personIdentityFound];
-  if (v3)
+  personIdentityFound = [(PGGraphIngestShareParticipantContainer *)self personIdentityFound];
+  if (personIdentityFound)
   {
-    v4 = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
-    v5 = [v4 isUserCreated];
+    linkedPersonIdentity = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
+    isUserCreated = [linkedPersonIdentity isUserCreated];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(personIdentityFound) = isUserCreated;
   }
 
-  return v3;
+  return personIdentityFound;
 }
 
 - (BOOL)isHidden
 {
-  v3 = [(PGGraphIngestShareParticipantContainer *)self personIdentityFound];
-  if (v3)
+  personIdentityFound = [(PGGraphIngestShareParticipantContainer *)self personIdentityFound];
+  if (personIdentityFound)
   {
-    v4 = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
-    v5 = [v4 isHidden];
+    linkedPersonIdentity = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
+    isHidden = [linkedPersonIdentity isHidden];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(personIdentityFound) = isHidden;
   }
 
-  return v3;
+  return personIdentityFound;
 }
 
 - (BOOL)isFavorite
 {
-  v3 = [(PGGraphIngestShareParticipantContainer *)self personIdentityFound];
-  if (v3)
+  personIdentityFound = [(PGGraphIngestShareParticipantContainer *)self personIdentityFound];
+  if (personIdentityFound)
   {
-    v4 = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
-    v5 = [v4 isFavorite];
+    linkedPersonIdentity = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
+    isFavorite = [linkedPersonIdentity isFavorite];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(personIdentityFound) = isFavorite;
   }
 
-  return v3;
+  return personIdentityFound;
 }
 
 - (NSString)shareParticipantLocalIdentifier
 {
-  v2 = [(PGGraphIngestShareParticipantContainer *)self shareParticipant];
-  v3 = [v2 localIdentifier];
+  shareParticipant = [(PGGraphIngestShareParticipantContainer *)self shareParticipant];
+  localIdentifier = [shareParticipant localIdentifier];
 
-  return v3;
+  return localIdentifier;
 }
 
 - (NSString)contactID
 {
   if ([(PGGraphIngestShareParticipantContainer *)self personIdentityFound])
   {
-    v3 = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
-    v4 = [v3 contactID];
+    linkedPersonIdentity = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
+    contactID = [linkedPersonIdentity contactID];
   }
 
   else
   {
-    v4 = &stru_2843F5C58;
+    contactID = &stru_2843F5C58;
   }
 
-  return v4;
+  return contactID;
 }
 
 - (NSString)localIdentifier
 {
   if ([(PGGraphIngestShareParticipantContainer *)self personIdentityFound])
   {
-    v3 = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
-    v4 = [v3 localIdentifier];
+    linkedPersonIdentity = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
+    localIdentifier = [linkedPersonIdentity localIdentifier];
   }
 
   else
   {
-    v4 = &stru_2843F5C58;
+    localIdentifier = &stru_2843F5C58;
   }
 
-  return v4;
+  return localIdentifier;
 }
 
 - (NSString)fullName
 {
   if ([(PGGraphIngestShareParticipantContainer *)self personIdentityFound])
   {
-    v3 = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
-    v4 = [v3 fullName];
+    linkedPersonIdentity = [(PGGraphIngestShareParticipantContainer *)self linkedPersonIdentity];
+    fullName = [linkedPersonIdentity fullName];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v5 = [(PGGraphIngestShareParticipantContainer *)self shareParticipant];
-  v6 = [v5 nameComponents];
+  shareParticipant = [(PGGraphIngestShareParticipantContainer *)self shareParticipant];
+  nameComponents = [shareParticipant nameComponents];
 
-  if (v6)
+  if (nameComponents)
   {
     v7 = MEMORY[0x277CCAC08];
-    v3 = [(PGGraphIngestShareParticipantContainer *)self shareParticipant];
-    v8 = [v3 nameComponents];
-    v4 = [v7 localizedStringFromPersonNameComponents:v8 style:0 options:0];
+    linkedPersonIdentity = [(PGGraphIngestShareParticipantContainer *)self shareParticipant];
+    nameComponents2 = [linkedPersonIdentity nameComponents];
+    fullName = [v7 localizedStringFromPersonNameComponents:nameComponents2 style:0 options:0];
 
     goto LABEL_5;
   }
 
-  v4 = &stru_2843F5C58;
+  fullName = &stru_2843F5C58;
 LABEL_6:
 
-  return v4;
+  return fullName;
 }
 
 @end

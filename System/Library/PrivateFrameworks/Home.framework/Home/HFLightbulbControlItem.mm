@@ -1,12 +1,12 @@
 @interface HFLightbulbControlItem
-+ (id)optionsForPrimaryStateControlItem:(id)a3 incrementalCharacteristicType:(id)a4;
++ (id)optionsForPrimaryStateControlItem:(id)item incrementalCharacteristicType:(id)type;
 + (id)readOnlyCharacteristicTypes;
 - (BOOL)supportsRGBColor;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)_tintColorForNaturalLightFromResults:(id)a3;
-- (id)_tintColorFromResults:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)_tintColorForNaturalLightFromResults:(id)results;
+- (id)_tintColorFromResults:(id)results;
 - (id)readValueAndPopulateStandardResults;
-- (id)writeValue:(id)a3;
+- (id)writeValue:(id)value;
 @end
 
 @implementation HFLightbulbControlItem
@@ -38,8 +38,8 @@ void __53__HFLightbulbControlItem_readOnlyCharacteristicTypes__block_invoke_2()
   }
 
   v3 = qword_280E02388;
-  v4 = [(HFControlItem *)self characteristicOptions];
-  v5 = [v4 characteristicTypesForUsage:2];
+  characteristicOptions = [(HFControlItem *)self characteristicOptions];
+  v5 = [characteristicOptions characteristicTypesForUsage:2];
   v6 = [v3 isSubsetOfSet:v5];
 
   return v6;
@@ -52,24 +52,24 @@ void __42__HFLightbulbControlItem_supportsRGBColor__block_invoke_2()
   qword_280E02388 = v0;
 }
 
-+ (id)optionsForPrimaryStateControlItem:(id)a3 incrementalCharacteristicType:(id)a4
++ (id)optionsForPrimaryStateControlItem:(id)item incrementalCharacteristicType:(id)type
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___HFLightbulbControlItem;
-  v5 = objc_msgSendSuper2(&v9, sel_optionsForPrimaryStateControlItem_incrementalCharacteristicType_, a3, a4);
-  v6 = [a1 readOnlyCharacteristicTypes];
-  v7 = [v5 optionsByAddingCharacteristicTypes:v6 forUsage:2];
+  v5 = objc_msgSendSuper2(&v9, sel_optionsForPrimaryStateControlItem_incrementalCharacteristicType_, item, type);
+  readOnlyCharacteristicTypes = [self readOnlyCharacteristicTypes];
+  v7 = [v5 optionsByAddingCharacteristicTypes:readOnlyCharacteristicTypes forUsage:2];
 
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v10.receiver = self;
   v10.super_class = HFLightbulbControlItem;
-  v5 = [(HFControlItem *)&v10 _subclass_updateWithOptions:v4];
+  v5 = [(HFControlItem *)&v10 _subclass_updateWithOptions:optionsCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__HFLightbulbControlItem__subclass_updateWithOptions___block_invoke;
@@ -113,16 +113,16 @@ id __54__HFLightbulbControlItem__subclass_updateWithOptions___block_invoke(uint6
   return v12;
 }
 
-- (id)_tintColorFromResults:(id)a3
+- (id)_tintColorFromResults:(id)results
 {
-  v4 = [a3 objectForKey:@"characteristicValuesByType"];
+  v4 = [results objectForKey:@"characteristicValuesByType"];
   v5 = [v4 objectForKey:*MEMORY[0x277CCFA30]];
   v6 = [v4 objectForKey:*MEMORY[0x277CCF7D8]];
   v7 = [v4 objectForKey:*MEMORY[0x277CCF8D8]];
-  v8 = [(HFControlItem *)self valueSource];
-  v9 = [v8 primaryServiceDescriptor];
-  v10 = [v9 serviceType];
-  v11 = [v10 isEqualToString:*MEMORY[0x277CD0EA0]];
+  valueSource = [(HFControlItem *)self valueSource];
+  primaryServiceDescriptor = [valueSource primaryServiceDescriptor];
+  serviceType = [primaryServiceDescriptor serviceType];
+  v11 = [serviceType isEqualToString:*MEMORY[0x277CD0EA0]];
 
   if (v11)
   {
@@ -147,7 +147,7 @@ id __54__HFLightbulbControlItem__subclass_updateWithOptions___block_invoke(uint6
       v20 = 1.0;
       v21 = v15;
 LABEL_10:
-      v22 = [v18 colorWithHue:v21 saturation:v17 brightness:v19 alpha:v20];
+      uIColor = [v18 colorWithHue:v21 saturation:v17 brightness:v19 alpha:v20];
       goto LABEL_16;
     }
 
@@ -168,8 +168,8 @@ LABEL_9:
       v23 = [HFTemperatureColor alloc];
       [v6 floatValue];
       v24 = [(HFTemperatureColor *)v23 initWithTemperatureInMired:?];
-      v25 = [(HFTemperatureColor *)v24 hf_RGBColorRepresentation];
-      v22 = [v25 UIColor];
+      hf_RGBColorRepresentation = [(HFTemperatureColor *)v24 hf_RGBColorRepresentation];
+      uIColor = [hf_RGBColorRepresentation UIColor];
 
       goto LABEL_16;
     }
@@ -184,19 +184,19 @@ LABEL_9:
     }
   }
 
-  v22 = 0;
+  uIColor = 0;
 LABEL_16:
 
-  return v22;
+  return uIColor;
 }
 
-- (id)_tintColorForNaturalLightFromResults:(id)a3
+- (id)_tintColorForNaturalLightFromResults:(id)results
 {
-  v4 = a3;
-  v5 = [(HFControlItem *)self valueSource];
-  if ([v5 conformsToProtocol:&unk_28252FC50])
+  resultsCopy = results;
+  valueSource = [(HFControlItem *)self valueSource];
+  if ([valueSource conformsToProtocol:&unk_28252FC50])
   {
-    v6 = v5;
+    v6 = valueSource;
   }
 
   else
@@ -206,29 +206,29 @@ LABEL_16:
 
   v7 = v6;
 
-  v8 = [v4 objectForKey:@"characteristicValuesByType"];
+  v8 = [resultsCopy objectForKey:@"characteristicValuesByType"];
 
   v9 = [v8 objectForKey:*MEMORY[0x277CCF788]];
-  v10 = [MEMORY[0x277D2C900] futureWithNoResult];
-  v11 = [(HFControlItem *)self valueSource];
-  v12 = [v11 primaryServiceDescriptor];
-  v13 = [v12 serviceType];
-  if ([v13 isEqualToString:*MEMORY[0x277CD0EA0]])
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
+  valueSource2 = [(HFControlItem *)self valueSource];
+  primaryServiceDescriptor = [valueSource2 primaryServiceDescriptor];
+  serviceType = [primaryServiceDescriptor serviceType];
+  if ([serviceType isEqualToString:*MEMORY[0x277CD0EA0]])
   {
-    v14 = [v7 isNaturalLightingEnabled];
+    isNaturalLightingEnabled = [v7 isNaturalLightingEnabled];
 
-    if (v14)
+    if (isNaturalLightingEnabled)
     {
       v15 = objc_alloc_init(MEMORY[0x277D2C900]);
 
-      v16 = [v9 integerValue];
+      integerValue = [v9 integerValue];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __63__HFLightbulbControlItem__tintColorForNaturalLightFromResults___block_invoke;
       v18[3] = &unk_277DF5A30;
-      v10 = v15;
-      v19 = v10;
-      [v7 fetchNaturalLightColorTemperatureForBrightness:v16 completion:v18];
+      futureWithNoResult = v15;
+      v19 = futureWithNoResult;
+      [v7 fetchNaturalLightColorTemperatureForBrightness:integerValue completion:v18];
     }
   }
 
@@ -236,7 +236,7 @@ LABEL_16:
   {
   }
 
-  return v10;
+  return futureWithNoResult;
 }
 
 uint64_t __63__HFLightbulbControlItem__tintColorForNaturalLightFromResults___block_invoke(uint64_t a1, uint64_t a2)
@@ -257,13 +257,13 @@ uint64_t __63__HFLightbulbControlItem__tintColorForNaturalLightFromResults___blo
 {
   v7.receiver = self;
   v7.super_class = HFLightbulbControlItem;
-  v3 = [(HFControlItem *)&v7 readValueAndPopulateStandardResults];
+  readValueAndPopulateStandardResults = [(HFControlItem *)&v7 readValueAndPopulateStandardResults];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__HFLightbulbControlItem_readValueAndPopulateStandardResults__block_invoke;
   v6[3] = &unk_277DF3FD0;
   v6[4] = self;
-  v4 = [v3 flatMap:v6];
+  v4 = [readValueAndPopulateStandardResults flatMap:v6];
 
   return v4;
 }
@@ -302,17 +302,17 @@ id __61__HFLightbulbControlItem_readValueAndPopulateStandardResults__block_invok
   return v4;
 }
 
-- (id)writeValue:(id)a3
+- (id)writeValue:(id)value
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   if (+[HFUtilities isInternalInstall])
   {
     objc_opt_class();
-    v5 = [(HFControlItem *)self valueSource];
+    valueSource = [(HFControlItem *)self valueSource];
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = valueSource;
     }
 
     else
@@ -323,11 +323,11 @@ id __61__HFLightbulbControlItem_readValueAndPopulateStandardResults__block_invok
     v7 = v6;
 
     objc_opt_class();
-    v8 = [v7 valueSource];
+    valueSource2 = [v7 valueSource];
 
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = valueSource2;
     }
 
     else
@@ -337,17 +337,17 @@ id __61__HFLightbulbControlItem_readValueAndPopulateStandardResults__block_invok
 
     v10 = v9;
 
-    v11 = [v10 originalValueSource];
+    originalValueSource = [v10 originalValueSource];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v12 = +[HFFormatterManager sharedInstance];
-      v13 = [v12 percentFormatter];
+      percentFormatter = [v12 percentFormatter];
 
-      if (v4)
+      if (valueCopy)
       {
-        v14 = [v13 stringForNormalizedObjectValue:v4];
+        v14 = [percentFormatter stringForNormalizedObjectValue:valueCopy];
       }
 
       else
@@ -355,16 +355,16 @@ id __61__HFLightbulbControlItem_readValueAndPopulateStandardResults__block_invok
         v14 = @"<no value>";
       }
 
-      v15 = [(HFControlItem *)self valueSource];
-      v16 = [v15 allServices];
-      v17 = [v16 anyObject];
-      v18 = [v17 name];
+      valueSource3 = [(HFControlItem *)self valueSource];
+      allServices = [valueSource3 allServices];
+      anyObject = [allServices anyObject];
+      name = [anyObject name];
 
       v19 = HFLogForCategory(0x4BuLL);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v25 = v18;
+        v25 = name;
         v26 = 2112;
         v27 = v14;
         v28 = 2112;
@@ -376,7 +376,7 @@ id __61__HFLightbulbControlItem_readValueAndPopulateStandardResults__block_invok
 
   v23.receiver = self;
   v23.super_class = HFLightbulbControlItem;
-  v20 = [(HFIncrementalStateControlItem *)&v23 writeValue:v4];
+  v20 = [(HFIncrementalStateControlItem *)&v23 writeValue:valueCopy];
 
   v21 = *MEMORY[0x277D85DE8];
 

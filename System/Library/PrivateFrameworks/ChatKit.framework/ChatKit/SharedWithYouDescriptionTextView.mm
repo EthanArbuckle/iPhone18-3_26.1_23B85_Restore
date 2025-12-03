@@ -1,28 +1,28 @@
 @interface SharedWithYouDescriptionTextView
-- (_TtC7ChatKit32SharedWithYouDescriptionTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5;
+- (_TtC7ChatKit32SharedWithYouDescriptionTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action;
 @end
 
 @implementation SharedWithYouDescriptionTextView
 
-- (_TtC7ChatKit32SharedWithYouDescriptionTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC7ChatKit32SharedWithYouDescriptionTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  sub_190C69204(a4, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  containerCopy = container;
+  sub_190C69204(container, x, y, width, height);
   return result;
 }
 
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_190C6A198(v9, v10);
+  viewCopy = view;
+  itemCopy = item;
+  actionCopy = action;
+  selfCopy = self;
+  v12 = sub_190C6A198(itemCopy, actionCopy);
 
   return v12;
 }

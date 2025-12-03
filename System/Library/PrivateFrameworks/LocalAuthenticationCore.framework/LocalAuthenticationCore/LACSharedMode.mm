@@ -1,7 +1,7 @@
 @interface LACSharedMode
 + (id)defaultSharedMode;
-- (BOOL)isEqual:(id)a3;
-- (LACSharedMode)initWithActive:(BOOL)a3 confirmed:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (LACSharedMode)initWithActive:(BOOL)active confirmed:(BOOL)confirmed;
 - (id)description;
 @end
 
@@ -44,15 +44,15 @@
   return v8;
 }
 
-- (LACSharedMode)initWithActive:(BOOL)a3 confirmed:(BOOL)a4
+- (LACSharedMode)initWithActive:(BOOL)active confirmed:(BOOL)confirmed
 {
   v7.receiver = self;
   v7.super_class = LACSharedMode;
   result = [(LACSharedMode *)&v7 init];
   if (result)
   {
-    result->_active = a3;
-    result->_confirmed = a4;
+    result->_active = active;
+    result->_confirmed = confirmed;
   }
 
   return result;
@@ -65,18 +65,18 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(LACSharedMode *)self isActive];
-    if (v6 == [v5 isActive])
+    v5 = equalCopy;
+    isActive = [(LACSharedMode *)self isActive];
+    if (isActive == [v5 isActive])
     {
-      v8 = [(LACSharedMode *)self isConfirmed];
-      v7 = v8 ^ [v5 isConfirmed] ^ 1;
+      isConfirmed = [(LACSharedMode *)self isConfirmed];
+      v7 = isConfirmed ^ [v5 isConfirmed] ^ 1;
     }
 
     else

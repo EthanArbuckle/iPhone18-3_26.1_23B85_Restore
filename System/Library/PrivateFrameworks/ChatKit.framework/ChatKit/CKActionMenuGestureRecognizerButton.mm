@@ -1,94 +1,94 @@
 @interface CKActionMenuGestureRecognizerButton
-+ (id)actionMenuGestureRecognizerButtonWithButton:(id)a3;
-- (CKActionMenuGestureRecognizerButton)initWithGestureRecognizer:(id)a3 button:(id)a4;
++ (id)actionMenuGestureRecognizerButtonWithButton:(id)button;
+- (CKActionMenuGestureRecognizerButton)initWithGestureRecognizer:(id)recognizer button:(id)button;
 - (CKActionMenuGestureRecognizerButtonDelegate)delegate;
-- (void)gestureRecognized:(id)a3;
-- (void)touchDownButton:(id)a3;
-- (void)touchUpInsideButton:(id)a3;
-- (void)touchUpOutsideButton:(id)a3;
+- (void)gestureRecognized:(id)recognized;
+- (void)touchDownButton:(id)button;
+- (void)touchUpInsideButton:(id)button;
+- (void)touchUpOutsideButton:(id)button;
 @end
 
 @implementation CKActionMenuGestureRecognizerButton
 
-+ (id)actionMenuGestureRecognizerButtonWithButton:(id)a3
++ (id)actionMenuGestureRecognizerButtonWithButton:(id)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v4 = [CKActionMenuGestureRecognizerButton alloc];
   v5 = +[CKActionMenuGestureRecognizer actionMenuGestureRecognizer];
-  v6 = [(CKActionMenuGestureRecognizerButton *)v4 initWithGestureRecognizer:v5 button:v3];
+  v6 = [(CKActionMenuGestureRecognizerButton *)v4 initWithGestureRecognizer:v5 button:buttonCopy];
 
   return v6;
 }
 
-- (CKActionMenuGestureRecognizerButton)initWithGestureRecognizer:(id)a3 button:(id)a4
+- (CKActionMenuGestureRecognizerButton)initWithGestureRecognizer:(id)recognizer button:(id)button
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  buttonCopy = button;
   v10.receiver = self;
   v10.super_class = CKActionMenuGestureRecognizerButton;
   v8 = [(CKActionMenuGestureRecognizerButton *)&v10 init];
   if (v8)
   {
-    [v6 addTarget:v8 action:sel_gestureRecognized_];
-    [(CKActionMenuGestureRecognizerButton *)v8 setGestureRecognizer:v6];
-    [v7 addGestureRecognizer:v6];
-    [v7 addTarget:v8 action:sel_touchDownButton_ forControlEvents:1];
-    [v7 addTarget:v8 action:sel_touchUpInsideButton_ forControlEvents:64];
-    [v7 addTarget:v8 action:sel_touchUpOutsideButton_ forControlEvents:128];
-    [(CKActionMenuGestureRecognizerButton *)v8 setButton:v7];
+    [recognizerCopy addTarget:v8 action:sel_gestureRecognized_];
+    [(CKActionMenuGestureRecognizerButton *)v8 setGestureRecognizer:recognizerCopy];
+    [buttonCopy addGestureRecognizer:recognizerCopy];
+    [buttonCopy addTarget:v8 action:sel_touchDownButton_ forControlEvents:1];
+    [buttonCopy addTarget:v8 action:sel_touchUpInsideButton_ forControlEvents:64];
+    [buttonCopy addTarget:v8 action:sel_touchUpOutsideButton_ forControlEvents:128];
+    [(CKActionMenuGestureRecognizerButton *)v8 setButton:buttonCopy];
   }
 
   return v8;
 }
 
-- (void)touchDownButton:(id)a3
+- (void)touchDownButton:(id)button
 {
-  v4 = [(CKActionMenuGestureRecognizerButton *)self delegate];
-  [v4 actionMenuGestureRecognizerButtonDidTouchDownButton:self];
+  delegate = [(CKActionMenuGestureRecognizerButton *)self delegate];
+  [delegate actionMenuGestureRecognizerButtonDidTouchDownButton:self];
 }
 
-- (void)touchUpInsideButton:(id)a3
+- (void)touchUpInsideButton:(id)button
 {
-  v4 = [(CKActionMenuGestureRecognizerButton *)self delegate];
-  if ([v4 actionMenuGestureRecognizerButtonShouldShowHint:self])
+  delegate = [(CKActionMenuGestureRecognizerButton *)self delegate];
+  if ([delegate actionMenuGestureRecognizerButtonShouldShowHint:self])
   {
-    [v4 actionMenuGestureRecognizerButtonShowHint:self];
+    [delegate actionMenuGestureRecognizerButtonShowHint:self];
   }
 
   else
   {
-    [v4 actionMenuGestureRecognizerButtonDidTouchUpInsideButton:self];
+    [delegate actionMenuGestureRecognizerButtonDidTouchUpInsideButton:self];
   }
 }
 
-- (void)touchUpOutsideButton:(id)a3
+- (void)touchUpOutsideButton:(id)button
 {
-  v4 = [(CKActionMenuGestureRecognizerButton *)self delegate];
-  if ([v4 actionMenuGestureRecognizerButtonShouldShowHint:self])
+  delegate = [(CKActionMenuGestureRecognizerButton *)self delegate];
+  if ([delegate actionMenuGestureRecognizerButtonShouldShowHint:self])
   {
-    [v4 actionMenuGestureRecognizerButtonShowHint:self];
+    [delegate actionMenuGestureRecognizerButtonShowHint:self];
   }
 }
 
-- (void)gestureRecognized:(id)a3
+- (void)gestureRecognized:(id)recognized
 {
-  v12 = a3;
-  v4 = [(CKActionMenuGestureRecognizerButton *)self delegate];
-  if ([v4 actionMenuGestureRecognizerButtonIsShowingHint:self])
+  recognizedCopy = recognized;
+  delegate = [(CKActionMenuGestureRecognizerButton *)self delegate];
+  if ([delegate actionMenuGestureRecognizerButtonIsShowingHint:self])
   {
-    [v12 setEnabled:0];
-    [v12 setEnabled:1];
+    [recognizedCopy setEnabled:0];
+    [recognizedCopy setEnabled:1];
     goto LABEL_18;
   }
 
-  if ([v4 actionMenuGestureRecognizerButtonShouldRecognizeGesture:self])
+  if ([delegate actionMenuGestureRecognizerButtonShouldRecognizeGesture:self])
   {
-    v5 = [v12 state];
-    if (v5 == 5)
+    state = [recognizedCopy state];
+    if (state == 5)
     {
-      if ([v4 actionMenuGestureRecognizerButtonShouldShowHint:self])
+      if ([delegate actionMenuGestureRecognizerButtonShouldShowHint:self])
       {
-        [v4 actionMenuGestureRecognizerButtonShowHint:self];
+        [delegate actionMenuGestureRecognizerButtonShowHint:self];
       }
 
       [(CKActionMenuGestureRecognizerButton *)self setGestureDidBeginDate:0];
@@ -96,37 +96,37 @@
 
     else
     {
-      if (v5 == 3)
+      if (state == 3)
       {
-        v6 = [(CKActionMenuGestureRecognizerButton *)self gestureDidBeginDate];
-        if (v6 && ([MEMORY[0x1E695DF00] date], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "timeIntervalSinceDate:", v6), v11 = v10, v9, v11 > 0.25) || !objc_msgSend(v4, "actionMenuGestureRecognizerButtonShouldShowHint:", self))
+        gestureDidBeginDate = [(CKActionMenuGestureRecognizerButton *)self gestureDidBeginDate];
+        if (gestureDidBeginDate && ([MEMORY[0x1E695DF00] date], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "timeIntervalSinceDate:", gestureDidBeginDate), v11 = v10, v9, v11 > 0.25) || !objc_msgSend(delegate, "actionMenuGestureRecognizerButtonShouldShowHint:", self))
         {
-          [v4 actionMenuGestureRecognizerButtonGestureDidEnd:self];
+          [delegate actionMenuGestureRecognizerButtonGestureDidEnd:self];
         }
 
         else
         {
-          [v4 actionMenuGestureRecognizerButtonShowHint:self];
+          [delegate actionMenuGestureRecognizerButtonShowHint:self];
         }
 
-        v7 = self;
+        selfCopy2 = self;
         v8 = 0;
       }
 
       else
       {
-        if (v5 != 1)
+        if (state != 1)
         {
           goto LABEL_18;
         }
 
-        [v4 actionMenuGestureRecognizerButtonGestureDidBegin:self];
-        v6 = [MEMORY[0x1E695DF00] date];
-        v7 = self;
-        v8 = v6;
+        [delegate actionMenuGestureRecognizerButtonGestureDidBegin:self];
+        gestureDidBeginDate = [MEMORY[0x1E695DF00] date];
+        selfCopy2 = self;
+        v8 = gestureDidBeginDate;
       }
 
-      [(CKActionMenuGestureRecognizerButton *)v7 setGestureDidBeginDate:v8];
+      [(CKActionMenuGestureRecognizerButton *)selfCopy2 setGestureDidBeginDate:v8];
     }
   }
 

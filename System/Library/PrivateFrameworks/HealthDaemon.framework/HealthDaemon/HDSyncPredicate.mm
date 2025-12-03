@@ -1,49 +1,49 @@
 @interface HDSyncPredicate
-- (BOOL)isEqual:(id)a3;
-- (HDSyncPredicate)initWithCoder:(id)a3;
-- (HDSyncPredicate)initWithExcludedSyncProvenances:(id)a3 dateInterval:(id)a4 shouldIncludeDatelessObjects:(BOOL)a5 includedObjectTypes:(id)a6 defaultMaximumObjectAge:(id)a7 defaultMaximumTombstoneAge:(id)a8 maximumObjectAgeByType:(id)a9;
-- (id)maximumObjectAgeForType:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HDSyncPredicate)initWithCoder:(id)coder;
+- (HDSyncPredicate)initWithExcludedSyncProvenances:(id)provenances dateInterval:(id)interval shouldIncludeDatelessObjects:(BOOL)objects includedObjectTypes:(id)types defaultMaximumObjectAge:(id)age defaultMaximumTombstoneAge:(id)tombstoneAge maximumObjectAgeByType:(id)type;
+- (id)maximumObjectAgeForType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDSyncPredicate
 
-- (HDSyncPredicate)initWithExcludedSyncProvenances:(id)a3 dateInterval:(id)a4 shouldIncludeDatelessObjects:(BOOL)a5 includedObjectTypes:(id)a6 defaultMaximumObjectAge:(id)a7 defaultMaximumTombstoneAge:(id)a8 maximumObjectAgeByType:(id)a9
+- (HDSyncPredicate)initWithExcludedSyncProvenances:(id)provenances dateInterval:(id)interval shouldIncludeDatelessObjects:(BOOL)objects includedObjectTypes:(id)types defaultMaximumObjectAge:(id)age defaultMaximumTombstoneAge:(id)tombstoneAge maximumObjectAgeByType:(id)type
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  provenancesCopy = provenances;
+  intervalCopy = interval;
+  typesCopy = types;
+  ageCopy = age;
+  tombstoneAgeCopy = tombstoneAge;
+  typeCopy = type;
   v35.receiver = self;
   v35.super_class = HDSyncPredicate;
   v21 = [(HDSyncPredicate *)&v35 init];
   if (v21)
   {
-    v22 = [v15 copy];
+    v22 = [provenancesCopy copy];
     excludedSyncProvenances = v21->_excludedSyncProvenances;
     v21->_excludedSyncProvenances = v22;
 
-    v24 = [v16 copy];
+    v24 = [intervalCopy copy];
     dateInterval = v21->_dateInterval;
     v21->_dateInterval = v24;
 
-    v21->_shouldIncludeDatelessObjects = a5;
-    v26 = [v17 copy];
+    v21->_shouldIncludeDatelessObjects = objects;
+    v26 = [typesCopy copy];
     includedObjectTypes = v21->_includedObjectTypes;
     v21->_includedObjectTypes = v26;
 
-    v28 = [v18 copy];
+    v28 = [ageCopy copy];
     defaultMaximumObjectAge = v21->_defaultMaximumObjectAge;
     v21->_defaultMaximumObjectAge = v28;
 
-    v30 = [v19 copy];
+    v30 = [tombstoneAgeCopy copy];
     defaultMaximumTombstoneAge = v21->_defaultMaximumTombstoneAge;
     v21->_defaultMaximumTombstoneAge = v30;
 
-    v32 = [v20 copy];
+    v32 = [typeCopy copy];
     maximumObjectAgeByType = v21->_maximumObjectAgeByType;
     v21->_maximumObjectAgeByType = v32;
   }
@@ -51,9 +51,9 @@
   return v21;
 }
 
-- (id)maximumObjectAgeForType:(id)a3
+- (id)maximumObjectAgeForType:(id)type
 {
-  v4 = [(NSDictionary *)self->_maximumObjectAgeByType objectForKeyedSubscript:a3];
+  v4 = [(NSDictionary *)self->_maximumObjectAgeByType objectForKeyedSubscript:type];
   defaultMaximumObjectAge = v4;
   if (!v4)
   {
@@ -75,9 +75,9 @@
   return v6 ^ v7 ^ [(NSDictionary *)self->_maximumObjectAgeByType hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -85,47 +85,47 @@
   }
 
   excludedSyncProvenances = self->_excludedSyncProvenances;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (excludedSyncProvenances != v6 && (!v6 || ![(NSSet *)excludedSyncProvenances isEqual:?]))
   {
     goto LABEL_21;
   }
 
   dateInterval = self->_dateInterval;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (dateInterval != v8 && (!v8 || ![(NSDateInterval *)dateInterval isEqual:?]))
   {
     goto LABEL_21;
   }
 
-  if (self->_shouldIncludeDatelessObjects != *(v4 + 8))
+  if (self->_shouldIncludeDatelessObjects != *(equalCopy + 8))
   {
     goto LABEL_21;
   }
 
   includedObjectTypes = self->_includedObjectTypes;
-  v10 = v4[4];
+  v10 = equalCopy[4];
   if (includedObjectTypes != v10 && (!v10 || ![(NSSet *)includedObjectTypes isEqual:?]))
   {
     goto LABEL_21;
   }
 
   defaultMaximumObjectAge = self->_defaultMaximumObjectAge;
-  v12 = v4[5];
+  v12 = equalCopy[5];
   if (defaultMaximumObjectAge != v12 && (!v12 || ![(NSNumber *)defaultMaximumObjectAge isEqual:?]))
   {
     goto LABEL_21;
   }
 
   defaultMaximumTombstoneAge = self->_defaultMaximumTombstoneAge;
-  v14 = v4[6];
+  v14 = equalCopy[6];
   if (defaultMaximumTombstoneAge != v14 && (!v14 || ![(NSNumber *)defaultMaximumTombstoneAge isEqual:?]))
   {
     goto LABEL_21;
   }
 
   maximumObjectAgeByType = self->_maximumObjectAgeByType;
-  v16 = v4[7];
+  v16 = equalCopy[7];
   if (maximumObjectAgeByType == v16)
   {
     v17 = 1;
@@ -148,42 +148,42 @@ LABEL_22:
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   excludedSyncProvenances = self->_excludedSyncProvenances;
-  v5 = a3;
-  [v5 encodeObject:excludedSyncProvenances forKey:@"hdsp_esp"];
-  [v5 encodeObject:self->_dateInterval forKey:@"hdsp_interval"];
-  [v5 encodeBool:self->_shouldIncludeDatelessObjects forKey:@"hdsp_datelessobjects"];
-  [v5 encodeObject:self->_includedObjectTypes forKey:@"hdsp_types"];
-  [v5 encodeObject:self->_defaultMaximumObjectAge forKey:@"hdsp_oage"];
-  [v5 encodeObject:self->_defaultMaximumTombstoneAge forKey:@"hdsp_tage"];
-  [v5 encodeObject:self->_maximumObjectAgeByType forKey:@"hdsp_ages"];
+  coderCopy = coder;
+  [coderCopy encodeObject:excludedSyncProvenances forKey:@"hdsp_esp"];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"hdsp_interval"];
+  [coderCopy encodeBool:self->_shouldIncludeDatelessObjects forKey:@"hdsp_datelessobjects"];
+  [coderCopy encodeObject:self->_includedObjectTypes forKey:@"hdsp_types"];
+  [coderCopy encodeObject:self->_defaultMaximumObjectAge forKey:@"hdsp_oage"];
+  [coderCopy encodeObject:self->_defaultMaximumTombstoneAge forKey:@"hdsp_tage"];
+  [coderCopy encodeObject:self->_maximumObjectAgeByType forKey:@"hdsp_ages"];
 }
 
-- (HDSyncPredicate)initWithCoder:(id)a3
+- (HDSyncPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x277CBEB98] hk_typesForSetOf:objc_opt_class()];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"hdsp_esp"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"hdsp_esp"];
 
   if (v6)
   {
     v19 = [HDSyncPredicate alloc];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hdsp_interval"];
-    v18 = [v4 decodeBoolForKey:@"hdsp_datelessobjects"];
-    v20 = self;
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hdsp_interval"];
+    v18 = [coderCopy decodeBoolForKey:@"hdsp_datelessobjects"];
+    selfCopy = self;
     v8 = [MEMORY[0x277CBEB98] hk_typesForSetOf:objc_opt_class()];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"hdsp_types"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hdsp_oage"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hdsp_tage"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"hdsp_types"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hdsp_oage"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hdsp_tage"];
     v12 = MEMORY[0x277CBEB98];
     v13 = objc_opt_class();
     v14 = [v12 hk_typesForDictionaryMapping:v13 to:objc_opt_class()];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"hdsp_ages"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"hdsp_ages"];
     v16 = [(HDSyncPredicate *)v19 initWithExcludedSyncProvenances:v6 dateInterval:v7 shouldIncludeDatelessObjects:v18 includedObjectTypes:v9 defaultMaximumObjectAge:v10 defaultMaximumTombstoneAge:v11 maximumObjectAgeByType:v15];
 
-    self = v20;
+    self = selfCopy;
   }
 
   else

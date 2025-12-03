@@ -3,34 +3,34 @@
 - (GEOMapServiceTraits)currentTraits;
 - (_TtC4Maps28SearchResultsLogicController)init;
 - (id)logicControllerUpdateHandler;
-- (void)beginSearchWithUserInfo:(id)a3 refinementsQuery:(id)a4;
+- (void)beginSearchWithUserInfo:(id)info refinementsQuery:(id)query;
 - (void)endSearch;
 - (void)refreshCurrentSearchSession;
-- (void)searchSessionManagerReceiveEVChargersUpdate:(id)a3;
+- (void)searchSessionManagerReceiveEVChargersUpdate:(id)update;
 - (void)searchSessionManagerSessionDidFail;
 - (void)searchSessionManagerSessionDidInvalidate;
 - (void)searchSessionManagerSessionDidReceiveUpdate;
 - (void)searchSessionManagerSessionWillPerformSearch;
-- (void)setChromeViewController:(id)a3;
-- (void)setLogicControllerUpdateHandler:(id)a3;
-- (void)setRecentAutocompleteSearchSessionData:(id)a3;
-- (void)setSearchFieldItem:(id)a3;
+- (void)setChromeViewController:(id)controller;
+- (void)setLogicControllerUpdateHandler:(id)handler;
+- (void)setRecentAutocompleteSearchSessionData:(id)data;
+- (void)setSearchFieldItem:(id)item;
 @end
 
 @implementation SearchResultsLogicController
 
-- (void)setSearchFieldItem:(id)a3
+- (void)setSearchFieldItem:(id)item
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps28SearchResultsLogicController_searchFieldItem);
-  *(self + OBJC_IVAR____TtC4Maps28SearchResultsLogicController_searchFieldItem) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps28SearchResultsLogicController_searchFieldItem) = item;
+  itemCopy = item;
 }
 
-- (void)setRecentAutocompleteSearchSessionData:(id)a3
+- (void)setRecentAutocompleteSearchSessionData:(id)data
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps28SearchResultsLogicController_recentAutocompleteSearchSessionData);
-  *(self + OBJC_IVAR____TtC4Maps28SearchResultsLogicController_recentAutocompleteSearchSessionData) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps28SearchResultsLogicController_recentAutocompleteSearchSessionData) = data;
+  dataCopy = data;
 }
 
 - (id)logicControllerUpdateHandler
@@ -55,9 +55,9 @@
   return v3;
 }
 
-- (void)setLogicControllerUpdateHandler:(id)a3
+- (void)setLogicControllerUpdateHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -75,7 +75,7 @@
   v8 = *(self + OBJC_IVAR____TtC4Maps28SearchResultsLogicController_logicControllerUpdateHandler);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_1000588AC(v8);
 }
 
@@ -86,30 +86,30 @@
   return Strong;
 }
 
-- (void)setChromeViewController:(id)a3
+- (void)setChromeViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_1000FB44C(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1000FB44C(controller);
 }
 
-- (void)beginSearchWithUserInfo:(id)a3 refinementsQuery:(id)a4
+- (void)beginSearchWithUserInfo:(id)info refinementsQuery:(id)query
 {
   v6 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a4;
-  v8 = self;
-  sub_1000FB9E8(v6, a4);
+  queryCopy = query;
+  selfCopy = self;
+  sub_1000FB9E8(v6, query);
 }
 
 - (void)endSearch
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000FBE30();
 }
 
 - (void)refreshCurrentSearchSession
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000FBFF4();
 }
 
@@ -122,33 +122,33 @@
 
 - (void)searchSessionManagerSessionDidReceiveUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000FCC78("[SearchResultContext] searchSessionManagerSessionDidReceiveUpdate for %@", sub_1003F9BF8);
 }
 
 - (void)searchSessionManagerSessionDidFail
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000FCC78("[SearchResultContext] searchSessionManagerSessionDidFail for %@", sub_1003F9DF0);
 }
 
 - (void)searchSessionManagerSessionDidInvalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000FCC78("[SearchResultContext] searchSessionManagerSessionDidInvalidate for %@", sub_1003F9FD4);
 }
 
 - (void)searchSessionManagerSessionWillPerformSearch
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000FCC78("[SearchResultContext] searchSessionManagerSessionWillPerformSearch for %@", sub_1003FA1C0);
 }
 
-- (void)searchSessionManagerReceiveEVChargersUpdate:(id)a3
+- (void)searchSessionManagerReceiveEVChargersUpdate:(id)update
 {
   sub_100014C84(0, &qword_10190E160);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   sub_1000FCE98();
 }
 
@@ -158,15 +158,15 @@
   if (Strong)
   {
     v3 = Strong;
-    v4 = [Strong currentTraits];
+    currentTraits = [Strong currentTraits];
   }
 
   else
   {
-    v4 = 0;
+    currentTraits = 0;
   }
 
-  return v4;
+  return currentTraits;
 }
 
 @end

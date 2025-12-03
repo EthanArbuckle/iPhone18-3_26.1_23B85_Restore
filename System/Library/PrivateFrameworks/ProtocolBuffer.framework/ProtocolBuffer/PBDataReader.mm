@@ -1,12 +1,12 @@
 @interface PBDataReader
 - (BOOL)readBOOL;
-- (BOOL)seekToOffset:(unint64_t)a3;
-- (PBDataReader)initWithData:(id)a3;
+- (BOOL)seekToOffset:(unint64_t)offset;
+- (PBDataReader)initWithData:(id)data;
 - (char)readInt8;
 - (double)readDouble;
 - (float)readFloat;
 - (id)readBigEndianShortThenString;
-- (id)readBytes:(unsigned int)a3;
+- (id)readBytes:(unsigned int)bytes;
 - (id)readProtoBuffer;
 - (int)readInt32;
 - (int)readSfixed32;
@@ -19,19 +19,19 @@
 - (unint64_t)readUint64;
 - (unsigned)readFixed32;
 - (unsigned)readUint32;
-- (void)readTag:(unsigned __int16 *)a3 andType:(char *)a4;
-- (void)readTag:(unsigned int *)a3 type:(char *)a4;
-- (void)updateData:(id)a3;
+- (void)readTag:(unsigned __int16 *)tag andType:(char *)type;
+- (void)readTag:(unsigned int *)tag type:(char *)type;
+- (void)updateData:(id)data;
 @end
 
 @implementation PBDataReader
 
 - (id)readProtoBuffer
 {
-  v3 = [(PBDataReader *)self readBigEndianFixed32];
+  readBigEndianFixed32 = [(PBDataReader *)self readBigEndianFixed32];
   pos = self->_pos;
   length = self->_length;
-  if (pos + v3 <= length && (v6 = v3, length - pos >= v3))
+  if (pos + readBigEndianFixed32 <= length && (v6 = readBigEndianFixed32, length - pos >= readBigEndianFixed32))
   {
     v7 = [(NSData *)self->_data subdataWithRange:?];
     self->_pos += v6;
@@ -57,8 +57,8 @@
     v6 = [(PBDataReader *)self position]+ 1;
     if (v6 >= [(PBDataReader *)self position]&& (v7 = [(PBDataReader *)self position]+ 1, v7 <= [(PBDataReader *)self length]))
     {
-      v8 = [(PBDataReader *)self data];
-      [v8 getBytes:&v11 range:{-[PBDataReader position](self, "position"), 1}];
+      data = [(PBDataReader *)self data];
+      [data getBytes:&v11 range:{-[PBDataReader position](self, "position"), 1}];
 
       [(PBDataReader *)self setPosition:[(PBDataReader *)self position]+ 1];
     }
@@ -94,14 +94,14 @@
 
 - (id)readBigEndianShortThenString
 {
-  v3 = [(PBDataReader *)self readBigEndianFixed16];
+  readBigEndianFixed16 = [(PBDataReader *)self readBigEndianFixed16];
   if (self->_error)
   {
     goto LABEL_5;
   }
 
-  v4 = v3;
-  v5 = [(PBDataReader *)self position]+ v3;
+  v4 = readBigEndianFixed16;
+  v5 = [(PBDataReader *)self position]+ readBigEndianFixed16;
   if (v5 < [(PBDataReader *)self position]|| (v6 = [(PBDataReader *)self position]+ v4, v6 > [(PBDataReader *)self length]))
   {
     [(PBDataReader *)self _setError];
@@ -119,30 +119,30 @@ LABEL_6:
   return v7;
 }
 
-- (id)readBytes:(unsigned int)a3
+- (id)readBytes:(unsigned int)bytes
 {
   if (self->_error)
   {
-    v4 = 0;
+    bytes = 0;
   }
 
   else
   {
-    v8 = [(PBDataReader *)self position]+ a3;
-    if (v8 >= [(PBDataReader *)self position]&& (v9 = [(PBDataReader *)self position]+ a3, v9 <= [(PBDataReader *)self length]))
+    v8 = [(PBDataReader *)self position]+ bytes;
+    if (v8 >= [(PBDataReader *)self position]&& (v9 = [(PBDataReader *)self position]+ bytes, v9 <= [(PBDataReader *)self length]))
     {
-      v4 = [(NSData *)self->_data subdataWithRange:self->_pos, a3];
-      self->_pos += a3;
+      bytes = [(NSData *)self->_data subdataWithRange:self->_pos, bytes];
+      self->_pos += bytes;
     }
 
     else
     {
       [(PBDataReader *)self _setError];
-      v4 = 0;
+      bytes = 0;
     }
   }
 
-  return v4;
+  return bytes;
 }
 
 - (BOOL)readBOOL
@@ -156,8 +156,8 @@ LABEL_6:
     v6 = [(PBDataReader *)self position]+ 1;
     if (v6 >= [(PBDataReader *)self position]&& (v7 = [(PBDataReader *)self position]+ 1, v7 <= [(PBDataReader *)self length]))
     {
-      v8 = [(PBDataReader *)self data];
-      [v8 getBytes:&v11 range:{-[PBDataReader position](self, "position"), 1}];
+      data = [(PBDataReader *)self data];
+      [data getBytes:&v11 range:{-[PBDataReader position](self, "position"), 1}];
 
       [(PBDataReader *)self setPosition:[(PBDataReader *)self position]+ 1];
     }
@@ -189,8 +189,8 @@ LABEL_6:
   v3 = [(PBDataReader *)self position]+ 8;
   if (v3 >= [(PBDataReader *)self position]&& (v4 = [(PBDataReader *)self position]+ 8, v4 <= [(PBDataReader *)self length]))
   {
-    v6 = [(PBDataReader *)self data];
-    [v6 getBytes:&v7 range:{-[PBDataReader position](self, "position"), 8}];
+    data = [(PBDataReader *)self data];
+    [data getBytes:&v7 range:{-[PBDataReader position](self, "position"), 8}];
 
     [(PBDataReader *)self setPosition:[(PBDataReader *)self position]+ 8];
     return v7;
@@ -209,8 +209,8 @@ LABEL_6:
   v3 = [(PBDataReader *)self position]+ 4;
   if (v3 >= [(PBDataReader *)self position]&& (v4 = [(PBDataReader *)self position]+ 4, v4 <= [(PBDataReader *)self length]))
   {
-    v6 = [(PBDataReader *)self data];
-    [v6 getBytes:&v7 range:{-[PBDataReader position](self, "position"), 4}];
+    data = [(PBDataReader *)self data];
+    [data getBytes:&v7 range:{-[PBDataReader position](self, "position"), 4}];
 
     [(PBDataReader *)self setPosition:[(PBDataReader *)self position]+ 4];
     return v7;
@@ -229,8 +229,8 @@ LABEL_6:
   v3 = [(PBDataReader *)self position]+ 8;
   if (v3 >= [(PBDataReader *)self position]&& (v4 = [(PBDataReader *)self position]+ 8, v4 <= [(PBDataReader *)self length]))
   {
-    v6 = [(PBDataReader *)self data];
-    [v6 getBytes:&v7 range:{-[PBDataReader position](self, "position"), 8}];
+    data = [(PBDataReader *)self data];
+    [data getBytes:&v7 range:{-[PBDataReader position](self, "position"), 8}];
 
     [(PBDataReader *)self setPosition:[(PBDataReader *)self position]+ 8];
     return v7;
@@ -249,8 +249,8 @@ LABEL_6:
   v3 = [(PBDataReader *)self position]+ 4;
   if (v3 >= [(PBDataReader *)self position]&& (v4 = [(PBDataReader *)self position]+ 4, v4 <= [(PBDataReader *)self length]))
   {
-    v6 = [(PBDataReader *)self data];
-    [v6 getBytes:&v7 range:{-[PBDataReader position](self, "position"), 4}];
+    data = [(PBDataReader *)self data];
+    [data getBytes:&v7 range:{-[PBDataReader position](self, "position"), 4}];
 
     [(PBDataReader *)self setPosition:[(PBDataReader *)self position]+ 4];
     return v7;
@@ -274,8 +274,8 @@ LABEL_6:
     v6 = [(PBDataReader *)self position]+ 1;
     if (v6 >= [(PBDataReader *)self position]&& (v7 = [(PBDataReader *)self position]+ 1, v7 <= [(PBDataReader *)self length]))
     {
-      v8 = [(PBDataReader *)self data];
-      [v8 getBytes:&v12 range:{-[PBDataReader position](self, "position"), 1}];
+      data = [(PBDataReader *)self data];
+      [data getBytes:&v12 range:{-[PBDataReader position](self, "position"), 1}];
 
       [(PBDataReader *)self setPosition:[(PBDataReader *)self position]+ 1];
     }
@@ -323,8 +323,8 @@ LABEL_6:
     v6 = [(PBDataReader *)self position]+ 1;
     if (v6 >= [(PBDataReader *)self position]&& (v7 = [(PBDataReader *)self position]+ 1, v7 <= [(PBDataReader *)self length]))
     {
-      v8 = [(PBDataReader *)self data];
-      [v8 getBytes:&v12 range:{-[PBDataReader position](self, "position"), 1}];
+      data = [(PBDataReader *)self data];
+      [data getBytes:&v12 range:{-[PBDataReader position](self, "position"), 1}];
 
       [(PBDataReader *)self setPosition:[(PBDataReader *)self position]+ 1];
     }
@@ -372,8 +372,8 @@ LABEL_6:
     v6 = [(PBDataReader *)self position]+ 1;
     if (v6 >= [(PBDataReader *)self position]&& (v7 = [(PBDataReader *)self position]+ 1, v7 <= [(PBDataReader *)self length]))
     {
-      v8 = [(PBDataReader *)self data];
-      [v8 getBytes:&v11 range:{-[PBDataReader position](self, "position"), 1}];
+      data = [(PBDataReader *)self data];
+      [data getBytes:&v11 range:{-[PBDataReader position](self, "position"), 1}];
 
       [(PBDataReader *)self setPosition:[(PBDataReader *)self position]+ 1];
     }
@@ -418,8 +418,8 @@ LABEL_6:
     v6 = [(PBDataReader *)self position]+ 1;
     if (v6 >= [(PBDataReader *)self position]&& (v7 = [(PBDataReader *)self position]+ 1, v7 <= [(PBDataReader *)self length]))
     {
-      v8 = [(PBDataReader *)self data];
-      [v8 getBytes:&v11 range:{-[PBDataReader position](self, "position"), 1}];
+      data = [(PBDataReader *)self data];
+      [data getBytes:&v11 range:{-[PBDataReader position](self, "position"), 1}];
 
       [(PBDataReader *)self setPosition:[(PBDataReader *)self position]+ 1];
     }
@@ -464,8 +464,8 @@ LABEL_6:
     v6 = [(PBDataReader *)self position]+ 1;
     if (v6 >= [(PBDataReader *)self position]&& (v7 = [(PBDataReader *)self position]+ 1, v7 <= [(PBDataReader *)self length]))
     {
-      v8 = [(PBDataReader *)self data];
-      [v8 getBytes:&v11 range:{-[PBDataReader position](self, "position"), 1}];
+      data = [(PBDataReader *)self data];
+      [data getBytes:&v11 range:{-[PBDataReader position](self, "position"), 1}];
 
       [(PBDataReader *)self setPosition:[(PBDataReader *)self position]+ 1];
     }
@@ -505,8 +505,8 @@ LABEL_6:
   v3 = [(PBDataReader *)self position]+ 4;
   if (v3 >= [(PBDataReader *)self position]&& (v4 = [(PBDataReader *)self position]+ 4, v4 <= [(PBDataReader *)self length]))
   {
-    v6 = [(PBDataReader *)self data];
-    [v6 getBytes:&v7 range:{-[PBDataReader position](self, "position"), 4}];
+    data = [(PBDataReader *)self data];
+    [data getBytes:&v7 range:{-[PBDataReader position](self, "position"), 4}];
 
     [(PBDataReader *)self setPosition:[(PBDataReader *)self position]+ 4];
     return v7;
@@ -525,8 +525,8 @@ LABEL_6:
   v3 = [(PBDataReader *)self position]+ 8;
   if (v3 >= [(PBDataReader *)self position]&& (v4 = [(PBDataReader *)self position]+ 8, v4 <= [(PBDataReader *)self length]))
   {
-    v6 = [(PBDataReader *)self data];
-    [v6 getBytes:&v7 range:{-[PBDataReader position](self, "position"), 8}];
+    data = [(PBDataReader *)self data];
+    [data getBytes:&v7 range:{-[PBDataReader position](self, "position"), 8}];
 
     [(PBDataReader *)self setPosition:[(PBDataReader *)self position]+ 8];
     return v7;
@@ -550,8 +550,8 @@ LABEL_6:
     v6 = [(PBDataReader *)self position]+ 1;
     if (v6 >= [(PBDataReader *)self position]&& (v7 = [(PBDataReader *)self position]+ 1, v7 <= [(PBDataReader *)self length]))
     {
-      v8 = [(PBDataReader *)self data];
-      [v8 getBytes:&v11 range:{-[PBDataReader position](self, "position"), 1}];
+      data = [(PBDataReader *)self data];
+      [data getBytes:&v11 range:{-[PBDataReader position](self, "position"), 1}];
 
       [(PBDataReader *)self setPosition:[(PBDataReader *)self position]+ 1];
     }
@@ -591,8 +591,8 @@ LABEL_6:
   v3 = [(PBDataReader *)self position]+ 1;
   if (v3 >= [(PBDataReader *)self position]&& (v4 = [(PBDataReader *)self position]+ 1, v4 <= [(PBDataReader *)self length]))
   {
-    v6 = [(PBDataReader *)self data];
-    [v6 getBytes:&v8 range:{-[PBDataReader position](self, "position"), 1}];
+    data = [(PBDataReader *)self data];
+    [data getBytes:&v8 range:{-[PBDataReader position](self, "position"), 1}];
 
     [(PBDataReader *)self setPosition:[(PBDataReader *)self position]+ 1];
     return v8;
@@ -605,7 +605,7 @@ LABEL_6:
   }
 }
 
-- (void)readTag:(unsigned __int16 *)a3 andType:(char *)a4
+- (void)readTag:(unsigned __int16 *)tag andType:(char *)type
 {
   v7 = 0;
   v8 = 0;
@@ -616,8 +616,8 @@ LABEL_6:
     v10 = [(PBDataReader *)self position]+ 1;
     if (v10 >= [(PBDataReader *)self position]&& (v11 = [(PBDataReader *)self position]+ 1, v11 <= [(PBDataReader *)self length]))
     {
-      v12 = [(PBDataReader *)self data];
-      [v12 getBytes:&v15 range:{-[PBDataReader position](self, "position"), 1}];
+      data = [(PBDataReader *)self data];
+      [data getBytes:&v15 range:{-[PBDataReader position](self, "position"), 1}];
 
       [(PBDataReader *)self setPosition:[(PBDataReader *)self position]+ 1];
     }
@@ -652,11 +652,11 @@ LABEL_6:
   }
 
 LABEL_13:
-  *a4 = v14 & 7;
-  *a3 = v14 >> 3;
+  *type = v14 & 7;
+  *tag = v14 >> 3;
 }
 
-- (void)readTag:(unsigned int *)a3 type:(char *)a4
+- (void)readTag:(unsigned int *)tag type:(char *)type
 {
   v7 = 0;
   v8 = 0;
@@ -667,8 +667,8 @@ LABEL_13:
     v10 = [(PBDataReader *)self position]+ 1;
     if (v10 >= [(PBDataReader *)self position]&& (v11 = [(PBDataReader *)self position]+ 1, v11 <= [(PBDataReader *)self length]))
     {
-      v12 = [(PBDataReader *)self data];
-      [v12 getBytes:&v15 range:{-[PBDataReader position](self, "position"), 1}];
+      data = [(PBDataReader *)self data];
+      [data getBytes:&v15 range:{-[PBDataReader position](self, "position"), 1}];
 
       [(PBDataReader *)self setPosition:[(PBDataReader *)self position]+ 1];
     }
@@ -703,28 +703,28 @@ LABEL_13:
   }
 
 LABEL_13:
-  *a4 = v14 & 7;
-  *a3 = v14 >> 3;
+  *type = v14 & 7;
+  *tag = v14 >> 3;
 }
 
-- (BOOL)seekToOffset:(unint64_t)a3
+- (BOOL)seekToOffset:(unint64_t)offset
 {
   length = self->_length;
-  if (length >= a3)
+  if (length >= offset)
   {
     self->_error = 0;
-    self->_pos = a3;
+    self->_pos = offset;
   }
 
-  return length >= a3;
+  return length >= offset;
 }
 
-- (void)updateData:(id)a3
+- (void)updateData:(id)data
 {
   data = self->_data;
-  if (data != a3)
+  if (data != data)
   {
-    v5 = [a3 copy];
+    v5 = [data copy];
     v6 = self->_data;
     self->_data = v5;
 
@@ -734,15 +734,15 @@ LABEL_13:
   self->_length = [(NSData *)data length];
 }
 
-- (PBDataReader)initWithData:(id)a3
+- (PBDataReader)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = PBDataReader;
   v5 = [(PBDataReader *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dataCopy copy];
     data = v5->_data;
     v5->_data = v6;
 

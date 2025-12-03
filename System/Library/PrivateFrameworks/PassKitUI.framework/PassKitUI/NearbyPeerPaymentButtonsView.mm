@@ -1,6 +1,6 @@
 @interface NearbyPeerPaymentButtonsView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC9PassKitUI28NearbyPeerPaymentButtonsView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC9PassKitUI28NearbyPeerPaymentButtonsView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -8,15 +8,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD3BD018();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_1BD3BD40C(width, height);
   v8 = v7;
 
@@ -27,7 +27,7 @@
   return result;
 }
 
-- (_TtC9PassKitUI28NearbyPeerPaymentButtonsView)initWithFrame:(CGRect)a3
+- (_TtC9PassKitUI28NearbyPeerPaymentButtonsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

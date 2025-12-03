@@ -1,5 +1,5 @@
 @interface WFArrayParameter
-- (WFArrayParameter)initWithDefinition:(id)a3;
+- (WFArrayParameter)initWithDefinition:(id)definition;
 - (id)defaultSerializedRepresentation;
 - (id)defaultSupportedVariableTypes;
 @end
@@ -10,29 +10,29 @@
 {
   if ([(WFArrayParameter *)self supportsVariables])
   {
-    v2 = [objc_opt_class() allInsertableVariableTypes];
+    allInsertableVariableTypes = [objc_opt_class() allInsertableVariableTypes];
   }
 
   else
   {
-    v2 = 0;
+    allInsertableVariableTypes = 0;
   }
 
-  return v2;
+  return allInsertableVariableTypes;
 }
 
 - (id)defaultSerializedRepresentation
 {
   v6.receiver = self;
   v6.super_class = WFArrayParameter;
-  v2 = [(WFParameter *)&v6 defaultSerializedRepresentation];
-  v3 = v2;
-  if (!v2)
+  defaultSerializedRepresentation = [(WFParameter *)&v6 defaultSerializedRepresentation];
+  v3 = defaultSerializedRepresentation;
+  if (!defaultSerializedRepresentation)
   {
-    v2 = MEMORY[0x1E695E0F0];
+    defaultSerializedRepresentation = MEMORY[0x1E695E0F0];
   }
 
-  v4 = [v2 if_map:&__block_literal_global_23615];
+  v4 = [defaultSerializedRepresentation if_map:&__block_literal_global_23615];
 
   return v4;
 }
@@ -56,37 +56,37 @@ id __51__WFArrayParameter_defaultSerializedRepresentation__block_invoke(uint64_t
   return v4;
 }
 
-- (WFArrayParameter)initWithDefinition:(id)a3
+- (WFArrayParameter)initWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v18.receiver = self;
   v18.super_class = WFArrayParameter;
-  v5 = [(WFParameter *)&v18 initWithDefinition:v4];
+  v5 = [(WFParameter *)&v18 initWithDefinition:definitionCopy];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E695DFD8]);
-    v7 = [v4 objectForKey:@"AllowedValueTypes"];
+    v7 = [definitionCopy objectForKey:@"AllowedValueTypes"];
     v8 = objc_opt_class();
     v9 = WFEnforceClass_1501(v7, v8);
     v10 = [v6 initWithArray:v9];
     allowedValueTypes = v5->_allowedValueTypes;
     v5->_allowedValueTypes = v10;
 
-    v12 = [v4 objectForKey:@"SupportsVariables"];
+    v12 = [definitionCopy objectForKey:@"SupportsVariables"];
     v13 = objc_opt_class();
     v14 = WFEnforceClass_1501(v12, v13);
 
     if (v14)
     {
-      v15 = [v14 BOOLValue];
+      bOOLValue = [v14 BOOLValue];
     }
 
     else
     {
-      v15 = 1;
+      bOOLValue = 1;
     }
 
-    v5->_supportsVariables = v15;
+    v5->_supportsVariables = bOOLValue;
     v16 = v5;
   }
 

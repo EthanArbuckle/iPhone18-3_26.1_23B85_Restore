@@ -1,18 +1,18 @@
 @interface UIViewConfigurationState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (UIViewConfigurationState)initWithCoder:(NSCoder *)coder;
 - (UIViewConfigurationState)initWithTraitCollection:(UITraitCollection *)traitCollection;
-- (id)_initWithState:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithState:(id)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)_contextMenuGroupLocation;
 - (unint64_t)_viewConfigurationState;
 - (unint64_t)hash;
-- (void)_appendPropertiesForDescription:(id)a3;
-- (void)_configureWithViewConfigurationState:(unint64_t)a3;
-- (void)_setContextMenuGroupLocation:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCustomState:(id)a3 forKey:(id)a4;
+- (void)_appendPropertiesForDescription:(id)description;
+- (void)_configureWithViewConfigurationState:(unint64_t)state;
+- (void)_setContextMenuGroupLocation:(int64_t)location;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCustomState:(id)state forKey:(id)key;
 - (void)setDisabled:(BOOL)disabled;
 - (void)setFocused:(BOOL)focused;
 - (void)setHighlighted:(BOOL)highlighted;
@@ -37,9 +37,9 @@
 - (int64_t)_contextMenuGroupLocation
 {
   v2 = [(UIViewConfigurationState *)self customStateForKey:@"_UICompactContextMenuGroupLocation"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (UIViewConfigurationState)initWithTraitCollection:(UITraitCollection *)traitCollection
@@ -47,8 +47,8 @@
   v6 = traitCollection;
   if (!v6)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UIViewConfigurationState.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"traitCollection != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIViewConfigurationState.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"traitCollection != nil"}];
   }
 
   v11.receiver = self;
@@ -63,21 +63,21 @@
   return v8;
 }
 
-- (id)_initWithState:(id)a3
+- (id)_initWithState:(id)state
 {
-  v5 = a3;
-  if (!v5)
+  stateCopy = state;
+  if (!stateCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UIViewConfigurationState.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"state != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIViewConfigurationState.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"state != nil"}];
   }
 
-  v6 = [(UIViewConfigurationState *)self initWithTraitCollection:*(v5 + 4)];
+  v6 = [(UIViewConfigurationState *)self initWithTraitCollection:*(stateCopy + 4)];
   v7 = v6;
   if (v6)
   {
-    v6->_stateFlags = *(v5 + 6);
-    v8 = [*(v5 + 2) mutableCopy];
+    v6->_stateFlags = *(stateCopy + 6);
+    v8 = [*(stateCopy + 2) mutableCopy];
     customStates = v7->_customStates;
     v7->_customStates = v8;
   }
@@ -161,40 +161,40 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_traitCollection forKey:@"traitCollection"];
-  [v4 encodeBool:*&self->_stateFlags & 1 forKey:@"disabled"];
-  [v4 encodeBool:(*&self->_stateFlags >> 1) & 1 forKey:@"highlighted"];
-  [v4 encodeBool:(*&self->_stateFlags >> 2) & 1 forKey:@"selected"];
-  [v4 encodeBool:(*&self->_stateFlags >> 3) & 1 forKey:@"focused"];
-  [v4 encodeBool:(*&self->_stateFlags >> 4) & 1 forKey:@"pinned"];
-  if (([v4 requiresSecureCoding] & 1) == 0)
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_traitCollection forKey:@"traitCollection"];
+  [coderCopy encodeBool:*&self->_stateFlags & 1 forKey:@"disabled"];
+  [coderCopy encodeBool:(*&self->_stateFlags >> 1) & 1 forKey:@"highlighted"];
+  [coderCopy encodeBool:(*&self->_stateFlags >> 2) & 1 forKey:@"selected"];
+  [coderCopy encodeBool:(*&self->_stateFlags >> 3) & 1 forKey:@"focused"];
+  [coderCopy encodeBool:(*&self->_stateFlags >> 4) & 1 forKey:@"pinned"];
+  if (([coderCopy requiresSecureCoding] & 1) == 0)
   {
-    [v4 encodeObject:self->_customStates forKey:@"customStates"];
+    [coderCopy encodeObject:self->_customStates forKey:@"customStates"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 _initWithState:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v8) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -273,16 +273,16 @@ LABEL_21:
   return v4 ^ [(NSMutableDictionary *)self->_customStates hash];
 }
 
-- (void)_appendPropertiesForDescription:(id)a3
+- (void)_appendPropertiesForDescription:(id)description
 {
-  v6 = a3;
+  descriptionCopy = description;
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"traitCollection = %@", self->_traitCollection];
-  [v6 addObject:v4];
+  [descriptionCopy addObject:v4];
 
   stateFlags = self->_stateFlags;
   if (stateFlags)
   {
-    [v6 addObject:@"Disabled"];
+    [descriptionCopy addObject:@"Disabled"];
     stateFlags = self->_stateFlags;
     if ((stateFlags & 2) == 0)
     {
@@ -301,7 +301,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v6 addObject:@"Highlighted"];
+  [descriptionCopy addObject:@"Highlighted"];
   stateFlags = self->_stateFlags;
   if ((stateFlags & 4) == 0)
   {
@@ -315,7 +315,7 @@ LABEL_4:
   }
 
 LABEL_12:
-  [v6 addObject:@"Selected"];
+  [descriptionCopy addObject:@"Selected"];
   stateFlags = self->_stateFlags;
   if ((stateFlags & 8) == 0)
   {
@@ -329,11 +329,11 @@ LABEL_5:
   }
 
 LABEL_13:
-  [v6 addObject:@"Focused"];
+  [descriptionCopy addObject:@"Focused"];
   if ((*&self->_stateFlags & 0x10) != 0)
   {
 LABEL_6:
-    [v6 addObject:@"Pinned"];
+    [descriptionCopy addObject:@"Pinned"];
   }
 
 LABEL_7:
@@ -448,9 +448,9 @@ LABEL_7:
   }
 }
 
-- (void)_setContextMenuGroupLocation:(int64_t)a3
+- (void)_setContextMenuGroupLocation:(int64_t)location
 {
-  if (a3 || self->_customStates)
+  if (location || self->_customStates)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInteger:?];
     [(UIViewConfigurationState *)self setCustomState:v4 forKey:@"_UICompactContextMenuGroupLocation"];
@@ -462,8 +462,8 @@ LABEL_7:
   v6 = traitCollection;
   if (!v6)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIViewConfigurationState.m" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"traitCollection != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIViewConfigurationState.m" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"traitCollection != nil"}];
 
     v6 = 0;
   }
@@ -477,10 +477,10 @@ LABEL_7:
   }
 }
 
-- (void)setCustomState:(id)a3 forKey:(id)a4
+- (void)setCustomState:(id)state forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
+  stateCopy = state;
+  keyCopy = key;
   if (self)
   {
     ++self->_mutations;
@@ -496,18 +496,18 @@ LABEL_7:
     customStates = self->_customStates;
   }
 
-  [(NSMutableDictionary *)customStates setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)customStates setObject:stateCopy forKeyedSubscript:keyCopy];
 }
 
-- (void)_configureWithViewConfigurationState:(unint64_t)a3
+- (void)_configureWithViewConfigurationState:(unint64_t)state
 {
-  [(UIViewConfigurationState *)self setHighlighted:a3 & 1];
-  [(UIViewConfigurationState *)self setDisabled:(a3 >> 1) & 1];
-  [(UIViewConfigurationState *)self setSelected:(a3 >> 2) & 1];
-  [(UIViewConfigurationState *)self setFocused:(a3 >> 3) & 1];
-  [(UIViewConfigurationState *)self setPinned:(a3 >> 11) & 1];
+  [(UIViewConfigurationState *)self setHighlighted:state & 1];
+  [(UIViewConfigurationState *)self setDisabled:(state >> 1) & 1];
+  [(UIViewConfigurationState *)self setSelected:(state >> 2) & 1];
+  [(UIViewConfigurationState *)self setFocused:(state >> 3) & 1];
+  [(UIViewConfigurationState *)self setPinned:(state >> 11) & 1];
 
-  [(UIViewConfigurationState *)self _setContextMenuGroupLocation:(a3 >> 12) & 7];
+  [(UIViewConfigurationState *)self _setContextMenuGroupLocation:(state >> 12) & 7];
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface HTOrderedNSDict
 - (HTOrderedNSDict)init;
-- (HTOrderedNSDict)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)objectForKey:(id)a3;
-- (void)print:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (HTOrderedNSDict)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)objectForKey:(id)key;
+- (void)print:(id)print;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation HTOrderedNSDict
@@ -29,9 +29,9 @@
   return v2;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = [(NSMutableArray *)self->_keys indexOfObject:a3];
+  v4 = [(NSMutableArray *)self->_keys indexOfObject:key];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -45,34 +45,34 @@
   return v5;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableArray *)self->_keys indexOfObject:v6];
+  objectCopy = object;
+  keyCopy = key;
+  v7 = [(NSMutableArray *)self->_keys indexOfObject:keyCopy];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSMutableArray *)self->_keys addObject:v6];
-    [(NSMutableArray *)self->_values addObject:v8];
+    [(NSMutableArray *)self->_keys addObject:keyCopy];
+    [(NSMutableArray *)self->_values addObject:objectCopy];
   }
 
   else
   {
-    [(NSMutableArray *)self->_values setObject:v8 atIndexedSubscript:v7];
+    [(NSMutableArray *)self->_values setObject:objectCopy atIndexedSubscript:v7];
   }
 }
 
-- (void)print:(id)a3
+- (void)print:(id)print
 {
   keys = self->_keys;
-  v5 = a3;
-  v6 = [(NSMutableArray *)self->_values objectAtIndexedSubscript:[(NSMutableArray *)keys indexOfObject:v5]];
-  NSLog(@" key = %@, value  = %@", v5, v6);
+  printCopy = print;
+  v6 = [(NSMutableArray *)self->_values objectAtIndexedSubscript:[(NSMutableArray *)keys indexOfObject:printCopy]];
+  NSLog(@" key = %@, value  = %@", printCopy, v6);
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = [(NSMutableArray *)self->_keys indexOfObject:a3];
+  v4 = [(NSMutableArray *)self->_keys indexOfObject:key];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
@@ -83,7 +83,7 @@
   }
 }
 
-- (HTOrderedNSDict)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5
+- (HTOrderedNSDict)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
   v19.receiver = self;
   v19.super_class = HTOrderedNSDict;
@@ -99,10 +99,10 @@
     v8->_keys = v11;
   }
 
-  for (; a5; --a5)
+  for (; count; --count)
   {
-    v13 = *a4;
-    v14 = *a3;
+    v13 = *keys;
+    v14 = *objects;
     if (v13)
     {
       v15 = v14 == 0;
@@ -131,16 +131,16 @@
       [(NSMutableArray *)v8->_values setObject:v16 atIndexedSubscript:v17];
     }
 
-    ++a3;
-    ++a4;
+    ++objects;
+    ++keys;
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HTOrderedNSDict allocWithZone:a3];
+  v4 = [HTOrderedNSDict allocWithZone:zone];
   values = self->_values;
   keys = self->_keys;
 

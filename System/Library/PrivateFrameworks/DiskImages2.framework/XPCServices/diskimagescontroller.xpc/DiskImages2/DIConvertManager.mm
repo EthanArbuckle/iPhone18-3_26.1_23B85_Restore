@@ -1,24 +1,24 @@
 @interface DIConvertManager
-- (BOOL)runWithError:(id *)a3;
-- (BOOL)validateFormatsWithDiskImage:(void *)a3 error:(id *)a4;
+- (BOOL)runWithError:(id *)error;
+- (BOOL)validateFormatsWithDiskImage:(void *)image error:(id *)error;
 - (DIBaseParams)outputParams;
-- (DIConvertManager)initWithParams:(id)a3;
-- (void)convertUserDataWithDiskImage:(void *)a3 destination:(void *)a4;
+- (DIConvertManager)initWithParams:(id)params;
+- (void)convertUserDataWithDiskImage:(void *)image destination:(void *)destination;
 - (void)dealloc;
 @end
 
 @implementation DIConvertManager
 
-- (DIConvertManager)initWithParams:(id)a3
+- (DIConvertManager)initWithParams:(id)params
 {
-  v5 = a3;
+  paramsCopy = params;
   v11.receiver = self;
   v11.super_class = DIConvertManager;
   v6 = [(DIConvertManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_convertParams, a3);
+    objc_storeStrong(&v6->_convertParams, params);
     v8 = [NSProgress progressWithTotalUnitCount:100];
     progress = v7->_progress;
     v7->_progress = v8;
@@ -29,47 +29,47 @@
 
 - (DIBaseParams)outputParams
 {
-  v3 = [(DIConvertManager *)self convertParams];
-  if ([v3 inPlaceConversion])
+  convertParams = [(DIConvertManager *)self convertParams];
+  if ([convertParams inPlaceConversion])
   {
-    v4 = [(DIConvertManager *)self convertParams];
+    convertParams2 = [(DIConvertManager *)self convertParams];
   }
 
   else
   {
-    v5 = [(DIConvertManager *)self convertParams];
-    v4 = [v5 outputParams];
+    convertParams3 = [(DIConvertManager *)self convertParams];
+    convertParams2 = [convertParams3 outputParams];
   }
 
-  return v4;
+  return convertParams2;
 }
 
-- (BOOL)validateFormatsWithDiskImage:(void *)a3 error:(id *)a4
+- (BOOL)validateFormatsWithDiskImage:(void *)image error:(id *)error
 {
-  v7 = [(DIConvertManager *)self convertParams];
-  v8 = [v7 inPlaceConversion];
+  convertParams = [(DIConvertManager *)self convertParams];
+  inPlaceConversion = [convertParams inPlaceConversion];
 
-  if (!v8)
+  if (!inPlaceConversion)
   {
     return 1;
   }
 
-  v9 = [(DIConvertManager *)self convertParams];
-  v10 = [v9 outputFormat];
-  if ((v10 - 3) >= 4 && v10 != 8)
+  convertParams2 = [(DIConvertManager *)self convertParams];
+  outputFormat = [convertParams2 outputFormat];
+  if ((outputFormat - 3) >= 4 && outputFormat != 8)
   {
 
     v16 = @"In-place conversion to this image format is not supported";
     goto LABEL_16;
   }
 
-  if (!a3)
+  if (!image)
   {
     goto LABEL_10;
   }
 
-  v11 = *a3;
-  v12 = **a3;
+  v11 = *image;
+  v12 = **image;
   v14 = *v11;
   if (!v13)
   {
@@ -82,7 +82,7 @@ LABEL_10:
     v16 = @"In-place conversion from this image format is not supported";
 LABEL_16:
 
-    return [DIError failWithPOSIXCode:22 description:v16 error:a4];
+    return [DIError failWithPOSIXCode:22 description:v16 error:error];
   }
 
   if (!v15)
@@ -103,10 +103,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  return [DIError failWithPOSIXCode:22 verboseInfo:@"Cannot convert this image in-place error:as it contains unordered UDIF runs", a4];
+  return [DIError failWithPOSIXCode:22 verboseInfo:@"Cannot convert this image in-place error:as it contains unordered UDIF runs", error];
 }
 
-- (void)convertUserDataWithDiskImage:(void *)a3 destination:(void *)a4
+- (void)convertUserDataWithDiskImage:(void *)image destination:(void *)destination
 {
   v7 = *__error();
   if (sub_1000E044C())
@@ -140,36 +140,36 @@ LABEL_11:
   }
 
   *__error() = v7;
-  v11 = [(DIConvertManager *)self convertParams];
-  v12 = [v11 outputFormat];
-  if ((v12 - 3) < 4 || v12 == 8)
+  convertParams = [(DIConvertManager *)self convertParams];
+  outputFormat = [convertParams outputFormat];
+  if ((outputFormat - 3) < 4 || outputFormat == 8)
   {
   }
 
   else
   {
 
-    (*(**a3 + 112))(buf);
+    (*(**image + 112))(buf);
     if (CFDictionaryGetCount(*buf))
     {
-      (*(**a4 + 120))(*a4, *buf);
+      (*(**destination + 120))(*destination, *buf);
     }
 
     sub_10000C8E0(buf);
   }
 }
 
-- (BOOL)runWithError:(id *)a3
+- (BOOL)runWithError:(id *)error
 {
   v47 = 0;
-  v5 = [(DIConvertManager *)self convertParams];
-  v6 = [v5 diskImageParamsXPC];
-  v7 = [(DIConvertManager *)self outputParams];
-  v8 = [v7 shadowChain];
-  v9 = [v8 shouldValidate];
-  if (v6)
+  convertParams = [(DIConvertManager *)self convertParams];
+  diskImageParamsXPC = [convertParams diskImageParamsXPC];
+  outputParams = [(DIConvertManager *)self outputParams];
+  shadowChain = [outputParams shadowChain];
+  shouldValidate = [shadowChain shouldValidate];
+  if (diskImageParamsXPC)
   {
-    [v6 createDiskImageWithCache:0 shadowValidation:v9];
+    [diskImageParamsXPC createDiskImageWithCache:0 shadowValidation:shouldValidate];
     v10 = *buf;
   }
 
@@ -181,22 +181,22 @@ LABEL_11:
   v47 = v10;
   *buf = 0;
 
-  v11 = [(DIConvertManager *)self outputParams];
-  v12 = [v11 diskImageParamsXPC];
-  v13 = [v12 lockBackendsWithError:a3];
+  outputParams2 = [(DIConvertManager *)self outputParams];
+  diskImageParamsXPC2 = [outputParams2 diskImageParamsXPC];
+  v13 = [diskImageParamsXPC2 lockBackendsWithError:error];
 
   if (v13)
   {
-    v14 = [(DIConvertManager *)self convertParams];
-    if ([v14 inPlaceConversion])
+    convertParams2 = [(DIConvertManager *)self convertParams];
+    if ([convertParams2 inPlaceConversion])
     {
     }
 
     else
     {
-      v15 = [(DIConvertManager *)self convertParams];
-      v16 = [v15 diskImageParamsXPC];
-      v17 = [v16 lockBackendsWithError:a3];
+      convertParams3 = [(DIConvertManager *)self convertParams];
+      diskImageParamsXPC3 = [convertParams3 diskImageParamsXPC];
+      v17 = [diskImageParamsXPC3 lockBackendsWithError:error];
 
       if ((v17 & 1) == 0)
       {
@@ -210,8 +210,8 @@ LABEL_11:
       v56[0] = 0;
       v19 = sub_1000E03D8();
       os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
-      v20 = [(DIConvertManager *)self convertParams];
-      v21 = +[DIHelpers stringWithImageFormat:](DIHelpers, "stringWithImageFormat:", [v20 outputFormat]);
+      convertParams4 = [(DIConvertManager *)self convertParams];
+      v21 = +[DIHelpers stringWithImageFormat:](DIHelpers, "stringWithImageFormat:", [convertParams4 outputFormat]);
       *buf = 68158210;
       *&buf[4] = 33;
       *v49 = 2080;
@@ -234,8 +234,8 @@ LABEL_11:
       v23 = sub_1000E03D8();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [(DIConvertManager *)self convertParams];
-        v25 = +[DIHelpers stringWithImageFormat:](DIHelpers, "stringWithImageFormat:", [v24 outputFormat]);
+        convertParams5 = [(DIConvertManager *)self convertParams];
+        v25 = +[DIHelpers stringWithImageFormat:](DIHelpers, "stringWithImageFormat:", [convertParams5 outputFormat]);
         *buf = 0x2104100302;
         *v49 = 2080;
         *&v49[2] = "[DIConvertManager runWithError:]";
@@ -246,11 +246,11 @@ LABEL_11:
     }
 
     *__error() = v18;
-    if ([(DIConvertManager *)self validateFormatsWithDiskImage:v47 error:a3])
+    if ([(DIConvertManager *)self validateFormatsWithDiskImage:v47 error:error])
     {
-      v26 = [(DIConvertManager *)self progress];
+      progress = [(DIConvertManager *)self progress];
       v56[0] = off_100202948;
-      v56[1] = v26;
+      v56[1] = progress;
       v56[3] = v56;
       v43 = 0;
       v44 = &v43;
@@ -261,15 +261,15 @@ LABEL_11:
       v42[2] = sub_10000FC78;
       v42[3] = &unk_1002026F8;
       v42[4] = &v43;
-      [v26 setCancellationHandler:v42];
+      [progress setCancellationHandler:v42];
       *buf = &v47;
-      v27 = [(DIConvertManager *)self convertParams];
-      *v49 = [v27 outputFormat];
-      v28 = [(DIConvertManager *)self outputParams];
-      v29 = v28;
-      if (v28)
+      convertParams6 = [(DIConvertManager *)self convertParams];
+      *v49 = [convertParams6 outputFormat];
+      outputParams3 = [(DIConvertManager *)self outputParams];
+      v29 = outputParams3;
+      if (outputParams3)
       {
-        [v28 backend];
+        [outputParams3 backend];
       }
 
       else
@@ -278,29 +278,29 @@ LABEL_11:
       }
 
       v31 = [(DIConvertManager *)self convertParams:v40];
-      v50 = [v31 blockSize];
-      v32 = [(DIConvertManager *)self convertParams];
-      v51 = [v32 maxRawUDIFRunSize];
-      v33 = [(DIConvertManager *)self convertParams];
-      v52 = [v33 blockSize];
-      v34 = [(DIConvertManager *)self convertParams];
-      v53 = [v34 conversionMethod];
+      blockSize = [v31 blockSize];
+      convertParams7 = [(DIConvertManager *)self convertParams];
+      maxRawUDIFRunSize = [convertParams7 maxRawUDIFRunSize];
+      convertParams8 = [(DIConvertManager *)self convertParams];
+      blockSize2 = [convertParams8 blockSize];
+      convertParams9 = [(DIConvertManager *)self convertParams];
+      conversionMethod = [convertParams9 conversionMethod];
       v54 = 0;
       sub_100010DFC(v55, v56);
       v55[4] = v44 + 3;
 
-      v35 = [(DIConvertManager *)self convertParams];
-      v36 = [v35 useFormatMappingInfo];
+      convertParams10 = [(DIConvertManager *)self convertParams];
+      useFormatMappingInfo = [convertParams10 useFormatMappingInfo];
 
-      if (v36)
+      if (useFormatMappingInfo)
       {
         v54 |= 1u;
       }
 
-      v37 = [(DIConvertManager *)self outputParams];
-      v38 = [v37 hasUnlockedBackend];
+      outputParams4 = [(DIConvertManager *)self outputParams];
+      hasUnlockedBackend = [outputParams4 hasUnlockedBackend];
 
-      if (v38)
+      if (hasUnlockedBackend)
       {
         v54 |= 2u;
       }
@@ -322,11 +322,11 @@ LABEL_17:
 
 - (void)dealloc
 {
-  v3 = [(DIConvertManager *)self outputParams];
-  v4 = v3;
-  if (v3)
+  outputParams = [(DIConvertManager *)self outputParams];
+  v4 = outputParams;
+  if (outputParams)
   {
-    [v3 backend];
+    [outputParams backend];
   }
 
   else

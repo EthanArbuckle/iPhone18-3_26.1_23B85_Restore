@@ -1,10 +1,10 @@
 @interface CarETAExpandedSign
 - (CarETACardSignDelegate)delegate;
 - (NSArray)focusOrderSubItems;
-- (_TtC4Maps18CarETAExpandedSign)initWithDataSource:(id)a3 delegate:(id)a4 parentViewController:(id)a5;
-- (_TtC4Maps18CarETAExpandedSign)initWithParentViewController:(id)a3;
+- (_TtC4Maps18CarETAExpandedSign)initWithDataSource:(id)source delegate:(id)delegate parentViewController:(id)controller;
+- (_TtC4Maps18CarETAExpandedSign)initWithParentViewController:(id)controller;
 - (_TtP4Maps28CarETAExpandedSignDataSource_)dataSource;
-- (void)setLatestETA:(id)a3;
+- (void)setLatestETA:(id)a;
 - (void)updateContent;
 @end
 
@@ -17,11 +17,11 @@
   return Strong;
 }
 
-- (_TtC4Maps18CarETAExpandedSign)initWithDataSource:(id)a3 delegate:(id)a4 parentViewController:(id)a5
+- (_TtC4Maps18CarETAExpandedSign)initWithDataSource:(id)source delegate:(id)delegate parentViewController:(id)controller
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  sub_1000E64B8(a3, a4, a5);
+  sub_1000E64B8(source, delegate, controller);
   v9 = v8;
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
@@ -33,7 +33,7 @@
   v2 = *(self + OBJC_IVAR____TtC4Maps15MapsHostingView_hostingController);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = v2;
     sub_10017AF5C();
   }
@@ -46,7 +46,7 @@
 
 - (void)updateContent
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000E4AF4();
 }
 
@@ -57,14 +57,14 @@
   return Strong;
 }
 
-- (void)setLatestETA:(id)a3
+- (void)setLatestETA:(id)a
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps18CarETAExpandedSign_latestETA);
-  *(self + OBJC_IVAR____TtC4Maps18CarETAExpandedSign_latestETA) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps18CarETAExpandedSign_latestETA) = a;
+  aCopy = a;
 }
 
-- (_TtC4Maps18CarETAExpandedSign)initWithParentViewController:(id)a3
+- (_TtC4Maps18CarETAExpandedSign)initWithParentViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

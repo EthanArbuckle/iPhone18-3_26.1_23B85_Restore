@@ -1,37 +1,37 @@
 @interface MBBackgroundRestoreProgressUpdate
-- (MBBackgroundRestoreProgressUpdate)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MBBackgroundRestoreProgressUpdate)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MBBackgroundRestoreProgressUpdate
 
-- (MBBackgroundRestoreProgressUpdate)initWithCoder:(id)a3
+- (MBBackgroundRestoreProgressUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MBBackgroundRestoreProgressUpdate;
   v5 = [(MBBackgroundRestoreProgressUpdate *)&v7 init];
   if (v5)
   {
-    v5->_isThermallyThrottled = [v4 decodeBoolForKey:@"isThermallyThrottled"];
-    v5->_hasCellularPolicy = [v4 decodeBoolForKey:@"hasCellularPolicy"];
-    v5->_estimatedSize = [v4 decodeInt64ForKey:@"estimatedSize"];
-    v5->_isOnWiFi = [v4 decodeBoolForKey:@"isOnWiFi"];
-    v5->_isOnInexpensiveCellular = [v4 decodeBoolForKey:@"isOnInExpensiveCellular"];
+    v5->_isThermallyThrottled = [coderCopy decodeBoolForKey:@"isThermallyThrottled"];
+    v5->_hasCellularPolicy = [coderCopy decodeBoolForKey:@"hasCellularPolicy"];
+    v5->_estimatedSize = [coderCopy decodeInt64ForKey:@"estimatedSize"];
+    v5->_isOnWiFi = [coderCopy decodeBoolForKey:@"isOnWiFi"];
+    v5->_isOnInexpensiveCellular = [coderCopy decodeBoolForKey:@"isOnInExpensiveCellular"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isThermallyThrottled = self->_isThermallyThrottled;
-  v5 = a3;
-  [v5 encodeBool:isThermallyThrottled forKey:@"isThermallyThrottled"];
-  [v5 encodeBool:self->_hasCellularPolicy forKey:@"hasCellularPolicy"];
-  [v5 encodeInt64:self->_estimatedSize forKey:@"estimatedSize"];
-  [v5 encodeBool:self->_isOnWiFi forKey:@"isOnWiFi"];
-  [v5 encodeBool:self->_isOnInexpensiveCellular forKey:@"isOnInExpensiveCellular"];
+  coderCopy = coder;
+  [coderCopy encodeBool:isThermallyThrottled forKey:@"isThermallyThrottled"];
+  [coderCopy encodeBool:self->_hasCellularPolicy forKey:@"hasCellularPolicy"];
+  [coderCopy encodeInt64:self->_estimatedSize forKey:@"estimatedSize"];
+  [coderCopy encodeBool:self->_isOnWiFi forKey:@"isOnWiFi"];
+  [coderCopy encodeBool:self->_isOnInexpensiveCellular forKey:@"isOnInExpensiveCellular"];
 }
 
 @end

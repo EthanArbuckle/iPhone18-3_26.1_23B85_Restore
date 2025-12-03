@@ -1,60 +1,60 @@
 @interface PBFGalleryController
-- (BOOL)_stateLock_executeEnqueuedPushToProactive:(id)a3;
+- (BOOL)_stateLock_executeEnqueuedPushToProactive:(id)proactive;
 - (BOOL)_stateLock_isGalleryStale;
-- (BOOL)_stateLock_persistGalleryConfiguration:(id)a3 lastUpdateDate:(id *)a4 sessionId:(id)a5 error:(id *)a6;
-- (PBFGalleryController)initWithGalleryCacheURL:(id)a3 galleryLayoutProvider:(id)a4 runtimeAssertionProvider:(id)a5;
-- (PBFGalleryController)initWithGalleryCacheURL:(id)a3 runtimeAssertionProvider:(id)a4;
+- (BOOL)_stateLock_persistGalleryConfiguration:(id)configuration lastUpdateDate:(id *)date sessionId:(id)id error:(id *)error;
+- (PBFGalleryController)initWithGalleryCacheURL:(id)l galleryLayoutProvider:(id)provider runtimeAssertionProvider:(id)assertionProvider;
+- (PBFGalleryController)initWithGalleryCacheURL:(id)l runtimeAssertionProvider:(id)provider;
 - (PBFRuntimeAssertionProviding)runtimeAssertionProvider;
 - (PRSPosterGalleryLayout)currentGalleryConfiguration;
 - (id)_enqueuedPushToProactive;
-- (id)determineRefreshStateWithContext:(id)a3;
-- (id)galleryLayoutProviderWithError:(id *)a3;
-- (id)runtimeAssertionProviderWithError:(id *)a3;
-- (void)_pushFaceGalleryConfigurationUpdate:(id)a3 options:(unint64_t)a4 fetchError:(id)a5 sessionId:(id)a6 completion:(id)a7;
-- (void)_stateLock_enqueueGalleryConfigurationUpdateWithOptions:(unint64_t)a3 powerLogReason:(int64_t)a4 sessionId:(id)a5 completion:(id)a6;
-- (void)_stateLock_enqueuePushUpdatedPosterDescriptors:(id)a3 reason:(id)a4 force:(BOOL)a5 sessionId:(id)a6 completion:(id)a7;
+- (id)determineRefreshStateWithContext:(id)context;
+- (id)galleryLayoutProviderWithError:(id *)error;
+- (id)runtimeAssertionProviderWithError:(id *)error;
+- (void)_pushFaceGalleryConfigurationUpdate:(id)update options:(unint64_t)options fetchError:(id)error sessionId:(id)id completion:(id)completion;
+- (void)_stateLock_enqueueGalleryConfigurationUpdateWithOptions:(unint64_t)options powerLogReason:(int64_t)reason sessionId:(id)id completion:(id)completion;
+- (void)_stateLock_enqueuePushUpdatedPosterDescriptors:(id)descriptors reason:(id)reason force:(BOOL)force sessionId:(id)id completion:(id)completion;
 - (void)_stateLock_flushProactiveUpdateQueue;
-- (void)_stateLock_loadPersistedGalleryConfigurationWithLastUpdateDate:(id *)a3 error:(id *)a4;
-- (void)_stateLock_notifyGalleryControllerDidUpdateCurrentGalleryConfiguration:(id)a3;
+- (void)_stateLock_loadPersistedGalleryConfigurationWithLastUpdateDate:(id *)date error:(id *)error;
+- (void)_stateLock_notifyGalleryControllerDidUpdateCurrentGalleryConfiguration:(id)configuration;
 - (void)_stateLock_notifyGalleryControllerWillUpdateGalleryConfiguration;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)enqueueGalleryConfigurationUpdateWithOptions:(unint64_t)a3 powerLogReason:(int64_t)a4 completion:(id)a5;
+- (void)enqueueGalleryConfigurationUpdateWithOptions:(unint64_t)options powerLogReason:(int64_t)reason completion:(id)completion;
 - (void)invalidate;
-- (void)pushUpdatedPosterDescriptors:(id)a3 reason:(id)a4 force:(BOOL)a5 completion:(id)a6;
-- (void)removeObserver:(id)a3;
-- (void)updateGallery:(id)a3 completion:(id)a4;
+- (void)pushUpdatedPosterDescriptors:(id)descriptors reason:(id)reason force:(BOOL)force completion:(id)completion;
+- (void)removeObserver:(id)observer;
+- (void)updateGallery:(id)gallery completion:(id)completion;
 @end
 
 @implementation PBFGalleryController
 
-- (PBFGalleryController)initWithGalleryCacheURL:(id)a3 runtimeAssertionProvider:(id)a4
+- (PBFGalleryController)initWithGalleryCacheURL:(id)l runtimeAssertionProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  lCopy = l;
   v8 = objc_alloc_init(PBFProactivePosterGalleryLayoutProvider);
-  v9 = [(PBFGalleryController *)self initWithGalleryCacheURL:v7 galleryLayoutProvider:v8 runtimeAssertionProvider:v6];
+  v9 = [(PBFGalleryController *)self initWithGalleryCacheURL:lCopy galleryLayoutProvider:v8 runtimeAssertionProvider:providerCopy];
 
   return v9;
 }
 
-- (PBFGalleryController)initWithGalleryCacheURL:(id)a3 galleryLayoutProvider:(id)a4 runtimeAssertionProvider:(id)a5
+- (PBFGalleryController)initWithGalleryCacheURL:(id)l galleryLayoutProvider:(id)provider runtimeAssertionProvider:(id)assertionProvider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  lCopy = l;
+  providerCopy = provider;
+  assertionProviderCopy = assertionProvider;
+  if (!assertionProviderCopy)
   {
     [PBFGalleryController initWithGalleryCacheURL:a2 galleryLayoutProvider:? runtimeAssertionProvider:?];
   }
 
-  v12 = v11;
-  if (([v11 conformsToProtocol:&unk_282D45FB0] & 1) == 0)
+  v12 = assertionProviderCopy;
+  if (([assertionProviderCopy conformsToProtocol:&unk_282D45FB0] & 1) == 0)
   {
     [PBFGalleryController initWithGalleryCacheURL:a2 galleryLayoutProvider:? runtimeAssertionProvider:?];
   }
 
-  v13 = v10;
+  v13 = providerCopy;
   if (!v13)
   {
     [PBFGalleryController initWithGalleryCacheURL:a2 galleryLayoutProvider:? runtimeAssertionProvider:?];
@@ -66,7 +66,7 @@
     [PBFGalleryController initWithGalleryCacheURL:a2 galleryLayoutProvider:? runtimeAssertionProvider:?];
   }
 
-  if (([v9 checkResourceIsReachableAndReturnError:0] & 1) == 0)
+  if (([lCopy checkResourceIsReachableAndReturnError:0] & 1) == 0)
   {
     [PBFGalleryController initWithGalleryCacheURL:a2 galleryLayoutProvider:? runtimeAssertionProvider:?];
   }
@@ -76,7 +76,7 @@
   v15 = [(PBFGalleryController *)&v27 init];
   if (v15)
   {
-    v16 = [v9 copy];
+    v16 = [lCopy copy];
     galleryCacheURL = v15->_galleryCacheURL;
     v15->_galleryCacheURL = v16;
 
@@ -84,12 +84,12 @@
     fileManager = v15->_fileManager;
     v15->_fileManager = v18;
 
-    objc_storeStrong(&v15->_galleryLayoutProvider, a4);
+    objc_storeStrong(&v15->_galleryLayoutProvider, provider);
     v15->_stateLock._os_unfair_lock_opaque = 0;
     objc_storeWeak(&v15->_runtimeAssertionProvider, v12);
-    v20 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     stateLock_timestampOfLastGalleryPushRequestFromProactive = v15->_stateLock_timestampOfLastGalleryPushRequestFromProactive;
-    v15->_stateLock_timestampOfLastGalleryPushRequestFromProactive = v20;
+    v15->_stateLock_timestampOfLastGalleryPushRequestFromProactive = distantPast;
 
     v22 = [objc_alloc(MEMORY[0x277CF0B78]) initWithFlag:0];
     invalidationFlag = v15->_invalidationFlag;
@@ -116,7 +116,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21B526000, v3, OS_LOG_TYPE_DEFAULT, "Invalidating gallery controller %p during dealloc", buf, 0xCu);
     }
   }
@@ -144,18 +144,18 @@
   return v3;
 }
 
-- (id)runtimeAssertionProviderWithError:(id *)a3
+- (id)runtimeAssertionProviderWithError:(id *)error
 {
   v11[1] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_runtimeAssertionProvider);
 
-  if (a3 && !WeakRetained)
+  if (error && !WeakRetained)
   {
     v6 = MEMORY[0x277CCA9B8];
     v10 = *MEMORY[0x277CCA470];
     v11[0] = @"runtimeAssertionProvider was nil";
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    *a3 = [v6 pbf_generalErrorWithCode:3 userInfo:v7];
+    *error = [v6 pbf_generalErrorWithCode:3 userInfo:v7];
   }
 
   v8 = objc_loadWeakRetained(&self->_runtimeAssertionProvider);
@@ -163,17 +163,17 @@
   return v8;
 }
 
-- (id)galleryLayoutProviderWithError:(id *)a3
+- (id)galleryLayoutProviderWithError:(id *)error
 {
   v10[1] = *MEMORY[0x277D85DE8];
   galleryLayoutProvider = self->_galleryLayoutProvider;
-  if (a3 && !galleryLayoutProvider)
+  if (error && !galleryLayoutProvider)
   {
     v6 = MEMORY[0x277CCA9B8];
     v9 = *MEMORY[0x277CCA470];
     v10[0] = @"galleryProvider was nil";
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-    *a3 = [v6 pbf_generalErrorWithCode:3 userInfo:v7];
+    *error = [v6 pbf_generalErrorWithCode:3 userInfo:v7];
 
     galleryLayoutProvider = self->_galleryLayoutProvider;
   }
@@ -181,25 +181,25 @@
   return galleryLayoutProvider;
 }
 
-- (void)enqueueGalleryConfigurationUpdateWithOptions:(unint64_t)a3 powerLogReason:(int64_t)a4 completion:(id)a5
+- (void)enqueueGalleryConfigurationUpdateWithOptions:(unint64_t)options powerLogReason:(int64_t)reason completion:(id)completion
 {
-  v8 = a5;
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] enqueueGalleryConfigurationUpdateWithOptions:powerLogReason:completion:", v9];
+  completionCopy = completion;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] enqueueGalleryConfigurationUpdateWithOptions:powerLogReason:completion:", uUID];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __95__PBFGalleryController_enqueueGalleryConfigurationUpdateWithOptions_powerLogReason_completion___block_invoke;
   v13[3] = &unk_2782C9908;
   v13[4] = self;
-  v14 = v9;
-  v18 = (a3 & 4) != 0;
-  v19 = (a3 & 8) != 0;
-  v20 = (a3 & 2) != 0;
-  v15 = v8;
-  v16 = a3;
-  v17 = a4;
-  v11 = v8;
-  v12 = v9;
+  v14 = uUID;
+  v18 = (options & 4) != 0;
+  v19 = (options & 8) != 0;
+  v20 = (options & 2) != 0;
+  v15 = completionCopy;
+  optionsCopy = options;
+  reasonCopy = reason;
+  v11 = completionCopy;
+  v12 = uUID;
   PBFDispatchAsyncWithString(v10, QOS_CLASS_DEFAULT, v13);
 }
 
@@ -433,27 +433,27 @@ void __95__PBFGalleryController_enqueueGalleryConfigurationUpdateWithOptions_pow
   [*(a1 + 40) fireCompletionHandlersWithError:v11 faceGalleryConfiguration:v9 lastUpdateDate:v10 didUpdate:a4];
 }
 
-- (void)pushUpdatedPosterDescriptors:(id)a3 reason:(id)a4 force:(BOOL)a5 completion:(id)a6
+- (void)pushUpdatedPosterDescriptors:(id)descriptors reason:(id)reason force:(BOOL)force completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [MEMORY[0x277CCAD78] UUID];
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] pushUpdatedPosterDescriptors completion", v13];
+  descriptorsCopy = descriptors;
+  reasonCopy = reason;
+  completionCopy = completion;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] pushUpdatedPosterDescriptors completion", uUID];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __77__PBFGalleryController_pushUpdatedPosterDescriptors_reason_force_completion___block_invoke;
   v19[3] = &unk_2782C9930;
-  v20 = v13;
-  v21 = self;
-  v22 = v10;
-  v23 = v11;
-  v25 = a5;
-  v24 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = v13;
+  v20 = uUID;
+  selfCopy = self;
+  v22 = descriptorsCopy;
+  v23 = reasonCopy;
+  forceCopy = force;
+  v24 = completionCopy;
+  v15 = completionCopy;
+  v16 = reasonCopy;
+  v17 = descriptorsCopy;
+  v18 = uUID;
   PBFDispatchAsyncWithString(v14, QOS_CLASS_DEFAULT, v19);
 }
 
@@ -474,17 +474,17 @@ void __77__PBFGalleryController_pushUpdatedPosterDescriptors_reason_force_comple
   os_unfair_lock_unlock((*(a1 + 40) + 24));
 }
 
-- (void)updateGallery:(id)a3 completion:(id)a4
+- (void)updateGallery:(id)gallery completion:(id)completion
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  galleryCopy = gallery;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PBFGalleryController updateGallery:a2 completion:?];
   }
 
-  v9 = v8;
+  v9 = completionCopy;
   if ([MEMORY[0x277CBEBD0] pbf_keynoteModeEnabled])
   {
     v10 = MEMORY[0x277CCA9B8];
@@ -505,17 +505,17 @@ void __77__PBFGalleryController_pushUpdatedPosterDescriptors_reason_force_comple
 
     else
     {
-      v14 = [MEMORY[0x277CCAD78] UUID];
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] updateGallery:completion:", v14];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] updateGallery:completion:", uUID];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __49__PBFGalleryController_updateGallery_completion___block_invoke;
       v16[3] = &unk_2782C6338;
       v16[4] = self;
-      v17 = v14;
-      v18 = v7;
+      v17 = uUID;
+      v18 = galleryCopy;
       v19 = v9;
-      v13 = v14;
+      v13 = uUID;
       PBFDispatchAsyncWithString(v15, QOS_CLASS_DEFAULT, v16);
     }
   }
@@ -629,22 +629,22 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  if (!v5)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [PBFGalleryController addObserver:a2];
   }
 
-  v9 = v5;
+  v9 = observerCopy;
   os_unfair_lock_lock(&self->_stateLock);
   stateLock_observers = self->_stateLock_observers;
   if (!stateLock_observers)
   {
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v8 = self->_stateLock_observers;
-    self->_stateLock_observers = v7;
+    self->_stateLock_observers = weakObjectsHashTable;
 
     stateLock_observers = self->_stateLock_observers;
   }
@@ -653,11 +653,11 @@ LABEL_18:
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_stateLock);
-  [(NSHashTable *)self->_stateLock_observers removeObject:v4];
+  [(NSHashTable *)self->_stateLock_observers removeObject:observerCopy];
 
   if (![(NSHashTable *)self->_stateLock_observers count])
   {
@@ -681,40 +681,40 @@ LABEL_18:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 134217984;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21B526000, v4, OS_LOG_TYPE_DEFAULT, "PBFGalleryController Invalidated %p", &v5, 0xCu);
     }
   }
 }
 
-- (void)_stateLock_enqueuePushUpdatedPosterDescriptors:(id)a3 reason:(id)a4 force:(BOOL)a5 sessionId:(id)a6 completion:(id)a7
+- (void)_stateLock_enqueuePushUpdatedPosterDescriptors:(id)descriptors reason:(id)reason force:(BOOL)force sessionId:(id)id completion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  descriptorsCopy = descriptors;
+  reasonCopy = reason;
+  idCopy = id;
+  completionCopy = completion;
   PBFDebug_os_unfair_lock_assert_owner(&self->_stateLock);
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (v15)
+    if (completionCopy)
     {
       v16 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-      v15[2](v15, 0, v16);
+      completionCopy[2](completionCopy, 0, v16);
     }
 
     v17 = PBFLogGallery();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v39 = 138543362;
-      v40 = v14;
+      v40 = idCopy;
       _os_log_impl(&dword_21B526000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@] pushUpdatedPosterDescriptors; invalidated", &v39, 0xCu);
     }
 
     goto LABEL_32;
   }
 
-  if (a5)
+  if (force)
   {
     goto LABEL_8;
   }
@@ -723,15 +723,15 @@ LABEL_18:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     v39 = 138543362;
-    v40 = v14;
+    v40 = idCopy;
     _os_log_impl(&dword_21B526000, v25, OS_LOG_TYPE_DEFAULT, "[%{public}@] pushUpdatedPosterDescriptors; checking if descriptors have already been sent", &v39, 0xCu);
   }
 
   stateLock_enqueuedPushToProactive = self->_stateLock_enqueuedPushToProactive;
   if (stateLock_enqueuedPushToProactive)
   {
-    v27 = [(_PBFGalleryEnqueuedPushToProactiveRequest *)stateLock_enqueuedPushToProactive updatedDescriptors];
-    v28 = [v27 isEqual:v12];
+    updatedDescriptors = [(_PBFGalleryEnqueuedPushToProactiveRequest *)stateLock_enqueuedPushToProactive updatedDescriptors];
+    v28 = [updatedDescriptors isEqual:descriptorsCopy];
 
     if (v28)
     {
@@ -739,13 +739,13 @@ LABEL_18:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         v39 = 138543362;
-        v40 = v14;
+        v40 = idCopy;
         _os_log_impl(&dword_21B526000, v29, OS_LOG_TYPE_DEFAULT, "[%{public}@] pushUpdatedPosterDescriptors; descriptors match already enqueued push to proactive.  Bailing.", &v39, 0xCu);
       }
 
       v30 = self->_stateLock_enqueuedPushToProactive;
 LABEL_31:
-      [(_PBFGalleryEnqueuedPushToProactiveRequest *)v30 addCompletionHandler:v15];
+      [(_PBFGalleryEnqueuedPushToProactiveRequest *)v30 addCompletionHandler:completionCopy];
       goto LABEL_32;
     }
   }
@@ -753,8 +753,8 @@ LABEL_31:
   stateLock_activePushToProactive = self->_stateLock_activePushToProactive;
   if (stateLock_activePushToProactive)
   {
-    v32 = [(_PBFGalleryEnqueuedPushToProactiveRequest *)stateLock_activePushToProactive updatedDescriptors];
-    v33 = [v32 isEqual:v12];
+    updatedDescriptors2 = [(_PBFGalleryEnqueuedPushToProactiveRequest *)stateLock_activePushToProactive updatedDescriptors];
+    v33 = [updatedDescriptors2 isEqual:descriptorsCopy];
 
     if (v33)
     {
@@ -762,7 +762,7 @@ LABEL_31:
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
         v39 = 138543362;
-        v40 = v14;
+        v40 = idCopy;
         _os_log_impl(&dword_21B526000, v34, OS_LOG_TYPE_DEFAULT, "[%{public}@] pushUpdatedPosterDescriptors; descriptors match already active push to proactive.  Bailing.", &v39, 0xCu);
       }
 
@@ -772,29 +772,29 @@ LABEL_31:
   }
 
   stateLock_lastSuccessfulPushToProactive = self->_stateLock_lastSuccessfulPushToProactive;
-  if (!stateLock_lastSuccessfulPushToProactive || (-[_PBFGalleryEnqueuedPushToProactiveRequest updatedDescriptors](stateLock_lastSuccessfulPushToProactive, "updatedDescriptors"), v36 = objc_claimAutoreleasedReturnValue(), v37 = [v36 isEqual:v12], v36, !v37))
+  if (!stateLock_lastSuccessfulPushToProactive || (-[_PBFGalleryEnqueuedPushToProactiveRequest updatedDescriptors](stateLock_lastSuccessfulPushToProactive, "updatedDescriptors"), v36 = objc_claimAutoreleasedReturnValue(), v37 = [v36 isEqual:descriptorsCopy], v36, !v37))
   {
 LABEL_8:
     v18 = PBFLogGallery();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v39 = 138543362;
-      v40 = v14;
+      v40 = idCopy;
       _os_log_impl(&dword_21B526000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] pushUpdatedPosterDescriptors; Crafting new _PBFGalleryEnqueuedPushToProactiveRequest", &v39, 0xCu);
     }
 
-    v19 = [[_PBFGalleryEnqueuedPushToProactiveRequest alloc] initWithUpdatedDescriptors:v12 reason:v13 sessionId:v14];
-    [(_PBFGalleryEnqueuedPushToProactiveRequest *)v19 addCompletionHandler:v15];
+    v19 = [[_PBFGalleryEnqueuedPushToProactiveRequest alloc] initWithUpdatedDescriptors:descriptorsCopy reason:reasonCopy sessionId:idCopy];
+    [(_PBFGalleryEnqueuedPushToProactiveRequest *)v19 addCompletionHandler:completionCopy];
     if (self->_stateLock_enqueuedPushToProactive)
     {
       v20 = PBFLogGallery();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(_PBFGalleryEnqueuedPushToProactiveRequest *)self->_stateLock_enqueuedPushToProactive sessionId];
+        sessionId = [(_PBFGalleryEnqueuedPushToProactiveRequest *)self->_stateLock_enqueuedPushToProactive sessionId];
         v39 = 138543618;
-        v40 = v14;
+        v40 = idCopy;
         v41 = 2114;
-        v42 = v21;
+        v42 = sessionId;
         _os_log_impl(&dword_21B526000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] pushUpdatedPosterDescriptors; stealing completion handlers for existing enqueued request (sessionId %{public}@) and replacing.", &v39, 0x16u);
       }
 
@@ -805,7 +805,7 @@ LABEL_8:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v39 = 138543362;
-      v40 = v14;
+      v40 = idCopy;
       _os_log_impl(&dword_21B526000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] pushUpdatedPosterDescriptors; enqueuing", &v39, 0xCu);
     }
 
@@ -816,7 +816,7 @@ LABEL_8:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       v39 = 138543362;
-      v40 = v14;
+      v40 = idCopy;
       _os_log_impl(&dword_21B526000, v24, OS_LOG_TYPE_DEFAULT, "[%{public}@] pushUpdatedPosterDescriptors; flush", &v39, 0xCu);
     }
 
@@ -828,13 +828,13 @@ LABEL_8:
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
   {
     v39 = 138543362;
-    v40 = v14;
+    v40 = idCopy;
     _os_log_impl(&dword_21B526000, v38, OS_LOG_TYPE_DEFAULT, "[%{public}@] pushUpdatedPosterDescriptors; descriptors have already been sent in prior send.  Bailing.", &v39, 0xCu);
   }
 
-  if (v15)
+  if (completionCopy)
   {
-    v15[2](v15, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
 LABEL_32:
@@ -851,12 +851,12 @@ LABEL_32:
       v3 = PBFLogGallery();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
-        v4 = [(_PBFGalleryEnqueuedPushToProactiveRequest *)self->_stateLock_activePushToProactive sessionId];
-        v5 = [(_PBFGalleryEnqueuedPushToProactiveRequest *)self->_stateLock_enqueuedPushToProactive sessionId];
+        sessionId = [(_PBFGalleryEnqueuedPushToProactiveRequest *)self->_stateLock_activePushToProactive sessionId];
+        sessionId2 = [(_PBFGalleryEnqueuedPushToProactiveRequest *)self->_stateLock_enqueuedPushToProactive sessionId];
         v9 = 138543618;
-        v10 = v4;
+        v10 = sessionId;
         v11 = 2114;
-        v12 = v5;
+        v12 = sessionId2;
         _os_log_impl(&dword_21B526000, v3, OS_LOG_TYPE_DEFAULT, "_flushProactiveUpdateQueue; nothing to do; active session id %{public}@; enqueued session id %{public}@", &v9, 0x16u);
       }
     }
@@ -866,9 +866,9 @@ LABEL_32:
       v6 = PBFLogGallery();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(_PBFGalleryEnqueuedPushToProactiveRequest *)self->_stateLock_enqueuedPushToProactive sessionId];
+        sessionId3 = [(_PBFGalleryEnqueuedPushToProactiveRequest *)self->_stateLock_enqueuedPushToProactive sessionId];
         v9 = 138543362;
-        v10 = v7;
+        v10 = sessionId3;
         _os_log_impl(&dword_21B526000, v6, OS_LOG_TYPE_DEFAULT, "_flushProactiveUpdateQueue; moving session id %{public}@ to active", &v9, 0xCu);
       }
 
@@ -881,12 +881,12 @@ LABEL_32:
   }
 }
 
-- (BOOL)_stateLock_executeEnqueuedPushToProactive:(id)a3
+- (BOOL)_stateLock_executeEnqueuedPushToProactive:(id)proactive
 {
   v82 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  proactiveCopy = proactive;
   PBFDebug_os_unfair_lock_assert_owner(&self->_stateLock);
-  v5 = [v4 sessionId];
+  sessionId = [proactiveCopy sessionId];
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
     v66 = 0;
@@ -900,7 +900,7 @@ LABEL_32:
         [PBFGalleryController _stateLock_executeEnqueuedPushToProactive:];
       }
 
-      [v4 fireCompletionHandlersWithError:v7 didUpdate:0];
+      [proactiveCopy fireCompletionHandlersWithError:v7 didUpdate:0];
       v8 = 0;
       goto LABEL_35;
     }
@@ -916,28 +916,28 @@ LABEL_32:
         [PBFGalleryController _stateLock_executeEnqueuedPushToProactive:];
       }
 
-      [v4 fireCompletionHandlersWithError:v42 didUpdate:0];
+      [proactiveCopy fireCompletionHandlersWithError:v42 didUpdate:0];
       v8 = 0;
       goto LABEL_34;
     }
 
-    v12 = [v4 reason];
-    v13 = [v4 updatedDescriptors];
+    reason = [proactiveCopy reason];
+    updatedDescriptors = [proactiveCopy updatedDescriptors];
     *&buf = 0;
     *(&buf + 1) = &buf;
     v78 = 0x3032000000;
     v79 = __Block_byref_object_copy__13;
     v80 = __Block_byref_object_dispose__13;
-    v14 = [MEMORY[0x277D47008] currentProcess];
-    v81 = [v9 acquirePrewarmRuntimeAssertionForReason:@"Push To Proactive" target:v14 invalidationHandler:0];
+    currentProcess = [MEMORY[0x277D47008] currentProcess];
+    v81 = [v9 acquirePrewarmRuntimeAssertionForReason:@"Push To Proactive" target:currentProcess invalidationHandler:0];
 
     v15 = PBFLogGallery();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *v71 = 138543618;
-      *&v71[4] = v5;
+      *&v71[4] = sessionId;
       *&v71[12] = 2114;
-      *&v71[14] = v12;
+      *&v71[14] = reason;
       _os_log_impl(&dword_21B526000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] _stateLock_executeEnqueuedPushToProactive:reason:'%{public}@'; begin", v71, 0x16u);
     }
 
@@ -945,7 +945,7 @@ LABEL_32:
     v76[0] = @"Proactive indicated it was not successful in receiving our updatedPosterDescriptorsForExtensionBundleIdentifier";
     v75[0] = v16;
     v75[1] = @"updatedPosterDescriptorsForExtensionBundleIdentifier";
-    v17 = [v13 description];
+    v17 = [updatedDescriptors description];
     v18 = v17;
     v19 = @"(NULL)";
     if (v17)
@@ -955,16 +955,16 @@ LABEL_32:
 
     v75[2] = @"reason";
     v20 = @"(null)";
-    if (v12)
+    if (reason)
     {
-      v20 = v12;
+      v20 = reason;
     }
 
     v76[1] = v19;
     v76[2] = v20;
     v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v76 forKeys:v75 count:3];
 
-    v21 = v13;
+    v21 = updatedDescriptors;
     v22 = objc_opt_new();
     *v71 = 0;
     *&v71[8] = v71;
@@ -975,14 +975,14 @@ LABEL_32:
     aBlock[1] = 3221225472;
     aBlock[2] = __66__PBFGalleryController__stateLock_executeEnqueuedPushToProactive___block_invoke;
     aBlock[3] = &unk_2782C99A8;
-    v36 = v5;
+    v36 = sessionId;
     v57 = v36;
     v37 = v22;
     v58 = v37;
-    v39 = v12;
+    v39 = reason;
     v59 = v39;
-    v60 = self;
-    v61 = v4;
+    selfCopy = self;
+    v61 = proactiveCopy;
     v40 = v21;
     v62 = v40;
     p_buf = &buf;
@@ -1093,12 +1093,12 @@ LABEL_35:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v5;
+    *(&buf + 4) = sessionId;
     _os_log_impl(&dword_21B526000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] _stateLock_executeEnqueuedPushToProactive; invalidated", &buf, 0xCu);
   }
 
   v7 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-  [v4 fireCompletionHandlersWithError:v7 didUpdate:0];
+  [proactiveCopy fireCompletionHandlersWithError:v7 didUpdate:0];
   v8 = 0;
 LABEL_36:
 
@@ -1277,19 +1277,19 @@ void __66__PBFGalleryController__stateLock_executeEnqueuedPushToProactive___bloc
 - (BOOL)_stateLock_isGalleryStale
 {
   PBFDebug_os_unfair_lock_assert_owner(&self->_stateLock);
-  v3 = [(PBFGalleryControllerState *)self->_state lastUsefulGalleryConfigurationPersistDate];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [v4 timeIntervalSinceDate:v3];
+  lastUsefulGalleryConfigurationPersistDate = [(PBFGalleryControllerState *)self->_state lastUsefulGalleryConfigurationPersistDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:lastUsefulGalleryConfigurationPersistDate];
   v6 = v5;
 
   return v6 >= 14400.0;
 }
 
-- (void)_stateLock_enqueueGalleryConfigurationUpdateWithOptions:(unint64_t)a3 powerLogReason:(int64_t)a4 sessionId:(id)a5 completion:(id)a6
+- (void)_stateLock_enqueueGalleryConfigurationUpdateWithOptions:(unint64_t)options powerLogReason:(int64_t)reason sessionId:(id)id completion:(id)completion
 {
   v73[1] = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
+  idCopy = id;
+  completionCopy = completion;
   PBFDebug_os_unfair_lock_assert_owner(&self->_stateLock);
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
@@ -1304,9 +1304,9 @@ void __66__PBFGalleryController__stateLock_executeEnqueuedPushToProactive___bloc
         [PBFGalleryController _stateLock_enqueueGalleryConfigurationUpdateWithOptions:powerLogReason:sessionId:completion:];
       }
 
-      if (v11)
+      if (completionCopy)
       {
-        (*(v11 + 2))(v11, 0, 0, 0, v13);
+        (*(completionCopy + 2))(completionCopy, 0, 0, 0, v13);
       }
 
       goto LABEL_47;
@@ -1323,33 +1323,33 @@ void __66__PBFGalleryController__stateLock_executeEnqueuedPushToProactive___bloc
         [PBFGalleryController _stateLock_enqueueGalleryConfigurationUpdateWithOptions:powerLogReason:sessionId:completion:];
       }
 
-      if (v11)
+      if (completionCopy)
       {
-        (*(v11 + 2))(v11, 0, 0, 0, v46);
+        (*(completionCopy + 2))(completionCopy, 0, 0, 0, v46);
       }
 
       goto LABEL_46;
     }
 
     v44 = self->_stateLock_lastUsefulGalleryConfiguration;
-    v43 = [(PBFGalleryControllerState *)self->_state lastUsefulGalleryConfigurationPersistDate];
-    [PBFPowerLogger logUpdate:3 reason:a4];
+    lastUsefulGalleryConfigurationPersistDate = [(PBFGalleryControllerState *)self->_state lastUsefulGalleryConfigurationPersistDate];
+    [PBFPowerLogger logUpdate:3 reason:reason];
     v42 = objc_opt_new();
     v41 = objc_opt_new();
     v17 = PBFLogGallery();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v10;
+      *&buf[4] = idCopy;
       _os_log_impl(&dword_21B526000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@] _stateLock_enqueueGalleryConfigurationUpdateWithOptions:; begin", buf, 0xCu);
     }
 
-    if ((a3 & 8) == 0)
+    if ((options & 8) == 0)
     {
       goto LABEL_35;
     }
 
-    if (v43)
+    if (lastUsefulGalleryConfigurationPersistDate)
     {
       v18 = v44 == 0;
     }
@@ -1367,12 +1367,12 @@ void __66__PBFGalleryController__stateLock_executeEnqueuedPushToProactive___bloc
       if (v21)
       {
         *buf = 138543362;
-        *&buf[4] = v10;
+        *&buf[4] = idCopy;
         _os_log_impl(&dword_21B526000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] _stateLock_enqueueGalleryConfigurationUpdateWithOptions:; Checking if gallery is stale... ", buf, 0xCu);
       }
 
-      v22 = [MEMORY[0x277CBEAA8] date];
-      [v22 timeIntervalSinceDate:v43];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceDate:lastUsefulGalleryConfigurationPersistDate];
       v24 = v23;
 
       v20 = PBFLogGallery();
@@ -1384,13 +1384,13 @@ void __66__PBFGalleryController__stateLock_executeEnqueuedPushToProactive___bloc
           *buf = 138543874;
           *&buf[4] = v42;
           *&buf[12] = 2114;
-          *&buf[14] = v43;
+          *&buf[14] = lastUsefulGalleryConfigurationPersistDate;
           *&buf[22] = 2048;
           v69 = 0x40CC200000000000;
           _os_log_impl(&dword_21B526000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] _stateLock_enqueueGalleryConfigurationUpdateWithOptions:; gallery was last refreshed at @ %{public}@, which means it is younger than %f seconds, so we're going to not update.", buf, 0x20u);
         }
 
-        (*(v11 + 2))(v11, v44, v43, 0, 0);
+        (*(completionCopy + 2))(completionCopy, v44, lastUsefulGalleryConfigurationPersistDate, 0, 0);
         goto LABEL_45;
       }
 
@@ -1400,9 +1400,9 @@ void __66__PBFGalleryController__stateLock_executeEnqueuedPushToProactive___bloc
       }
 
       *buf = 138543874;
-      *&buf[4] = v10;
+      *&buf[4] = idCopy;
       *&buf[12] = 2114;
-      *&buf[14] = v43;
+      *&buf[14] = lastUsefulGalleryConfigurationPersistDate;
       *&buf[22] = 2048;
       v69 = 0x40CC200000000000;
       v26 = "[%{public}@] _stateLock_enqueueGalleryConfigurationUpdateWithOptions:; gallery was last refreshed at @ %{public}@, which means it is OLDER than %f seconds, so we're going to proceed";
@@ -1423,17 +1423,17 @@ LABEL_35:
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            *&buf[4] = v10;
+            *&buf[4] = idCopy;
             _os_log_impl(&dword_21B526000, v29, OS_LOG_TYPE_DEFAULT, "[%{public}@] _stateLock_enqueueGalleryConfigurationUpdateWithOptions:; not querying, just using local (keynote mode)", buf, 0xCu);
           }
 
-          v30 = [(PBFGalleryControllerState *)self->_state lastUsefulGalleryConfigurationPersistDate];
+          lastUsefulGalleryConfigurationPersistDate2 = [(PBFGalleryControllerState *)self->_state lastUsefulGalleryConfigurationPersistDate];
           v31 = MEMORY[0x277CCA9B8];
           v72 = *MEMORY[0x277CCA470];
           v73[0] = @"Keynote mode has been engaged; disabled fetching new gallery configuration.";
           v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v73 forKeys:&v72 count:1];
           v33 = [v31 pbf_generalErrorWithCode:6 userInfo:v32];
-          (*(v11 + 2))(v11, v44, v30, 0, v33);
+          (*(completionCopy + 2))(completionCopy, v44, lastUsefulGalleryConfigurationPersistDate2, 0, v33);
         }
 
         else
@@ -1443,8 +1443,8 @@ LABEL_35:
           *&buf[16] = 0x3032000000;
           v69 = __Block_byref_object_copy__13;
           v70 = __Block_byref_object_dispose__13;
-          v34 = [MEMORY[0x277D47008] currentProcess];
-          v71 = [v14 acquirePrewarmRuntimeAssertionForReason:@"Gallery Async Fetch" target:v34 invalidationHandler:0];
+          currentProcess = [MEMORY[0x277D47008] currentProcess];
+          v71 = [v14 acquirePrewarmRuntimeAssertionForReason:@"Gallery Async Fetch" target:currentProcess invalidationHandler:0];
 
           v62[0] = 0;
           v62[1] = v62;
@@ -1455,11 +1455,11 @@ LABEL_35:
           aBlock[1] = 3221225472;
           aBlock[2] = __116__PBFGalleryController__stateLock_enqueueGalleryConfigurationUpdateWithOptions_powerLogReason_sessionId_completion___block_invoke;
           aBlock[3] = &unk_2782C9A70;
-          v35 = v10;
+          v35 = idCopy;
           v58 = v35;
           v36 = v41;
           v59 = v36;
-          v60 = v11;
+          v60 = completionCopy;
           v61 = buf;
           v63 = _Block_copy(aBlock);
           v37 = PBFLogGallery();
@@ -1477,12 +1477,12 @@ LABEL_35:
           v38 = v35;
           v52 = v38;
           v53 = v42;
-          v54 = self;
+          selfCopy = self;
           v55 = v62;
-          v56 = a3;
+          optionsCopy = options;
           [v45 fetchGalleryLayoutWithCompletion:v51];
           v39 = dispatch_time(0, 10000000000);
-          v40 = [MEMORY[0x277D3EBA8] sharedWorkloop];
+          mEMORY[0x277D3EBA8] = [MEMORY[0x277D3EBA8] sharedWorkloop];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __116__PBFGalleryController__stateLock_enqueueGalleryConfigurationUpdateWithOptions_powerLogReason_sessionId_completion___block_invoke_2_199;
@@ -1490,7 +1490,7 @@ LABEL_35:
           v48 = v36;
           v49 = v38;
           v50 = v62;
-          dispatch_after(v39, v40, block);
+          dispatch_after(v39, mEMORY[0x277D3EBA8], block);
 
           _Block_object_dispose(v62, 8);
           _Block_object_dispose(buf, 8);
@@ -1505,7 +1505,7 @@ LABEL_47:
       }
 
       *buf = 138543362;
-      *&buf[4] = v10;
+      *&buf[4] = idCopy;
       v26 = "[%{public}@] _stateLock_enqueueGalleryConfigurationUpdateWithOptions:; Checked if gallery is stale... but we don't have a gallery, so we're going to proceed.";
       v27 = v20;
       v28 = 12;
@@ -1519,14 +1519,14 @@ LABEL_47:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *&buf[4] = v10;
+    *&buf[4] = idCopy;
     _os_log_impl(&dword_21B526000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] _stateLock_enqueueGalleryConfigurationUpdateWithOptions; invalidated", buf, 0xCu);
   }
 
-  if (v11)
+  if (completionCopy)
   {
     v13 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    (*(v11 + 2))(v11, 0, 0, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, v13);
 LABEL_48:
   }
 }
@@ -1700,70 +1700,70 @@ void __116__PBFGalleryController__stateLock_enqueueGalleryConfigurationUpdateWit
   }
 }
 
-- (void)_pushFaceGalleryConfigurationUpdate:(id)a3 options:(unint64_t)a4 fetchError:(id)a5 sessionId:(id)a6 completion:(id)a7
+- (void)_pushFaceGalleryConfigurationUpdate:(id)update options:(unint64_t)options fetchError:(id)error sessionId:(id)id completion:(id)completion
 {
-  v10 = a4;
+  optionsCopy = options;
   v48[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  updateCopy = update;
+  errorCopy = error;
+  idCopy = id;
+  completionCopy = completion;
   v17 = PBFLogGallery();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v13 locale];
-    v19 = [v18 localeIdentifier];
+    locale = [updateCopy locale];
+    localeIdentifier = [locale localeIdentifier];
     *buf = 138543618;
-    v44 = v15;
+    v44 = idCopy;
     v45 = 2112;
-    *v46 = v19;
+    *v46 = localeIdentifier;
     _os_log_impl(&dword_21B526000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@] _pushFaceGalleryConfigurationUpdate: received gallery w/ locale %@", buf, 0x16u);
   }
 
-  if (v13)
+  if (updateCopy)
   {
     v20 = PBFLogGallery();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v44 = v15;
+      v44 = idCopy;
       v45 = 1024;
-      *v46 = (v10 & 2) >> 1;
+      *v46 = (optionsCopy & 2) >> 1;
       *&v46[4] = 2114;
-      *&v46[6] = v13;
+      *&v46[6] = updateCopy;
       _os_log_impl(&dword_21B526000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] _pushFaceGalleryConfigurationUpdate: should Persist? %{BOOL}u '%{public}@'", buf, 0x1Cu);
     }
 
     os_unfair_lock_lock(&self->_stateLock);
-    v21 = [(PRSPosterGalleryLayout *)self->_stateLock_lastUsefulGalleryConfiguration isEqual:v13];
-    v40 = v14;
-    v22 = v14;
+    v21 = [(PRSPosterGalleryLayout *)self->_stateLock_lastUsefulGalleryConfiguration isEqual:updateCopy];
+    v40 = errorCopy;
+    v22 = errorCopy;
     v23 = v22;
     v39 = v21;
-    if (v10 & 2) == 0 || v22 || (v21)
+    if (optionsCopy & 2) == 0 || v22 || (v21)
     {
-      v25 = [(PBFGalleryControllerState *)self->_state lastUsefulGalleryConfigurationPersistDate];
+      lastUsefulGalleryConfigurationPersistDate = [(PBFGalleryControllerState *)self->_state lastUsefulGalleryConfigurationPersistDate];
       v24 = self->_stateLock_lastUsefulGalleryConfiguration;
       v35 = PBFLogGallery();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v44 = v15;
+        v44 = idCopy;
         v45 = 2114;
-        *v46 = v13;
+        *v46 = updateCopy;
         *&v46[8] = 2114;
-        *&v46[10] = v25;
+        *&v46[10] = lastUsefulGalleryConfigurationPersistDate;
         _os_log_impl(&dword_21B526000, v35, OS_LOG_TYPE_DEFAULT, "[%{public}@] _pushFaceGalleryConfigurationUpdate: received new gallery but not persisting '%{public}@'/%{public}@", buf, 0x20u);
       }
     }
 
     else
     {
-      v24 = v13;
+      v24 = updateCopy;
       v41 = 0;
       v42 = 0;
-      [(PBFGalleryController *)self _stateLock_persistGalleryConfiguration:v24 lastUpdateDate:&v42 sessionId:v15 error:&v41];
-      v25 = v42;
+      [(PBFGalleryController *)self _stateLock_persistGalleryConfiguration:v24 lastUpdateDate:&v42 sessionId:idCopy error:&v41];
+      lastUsefulGalleryConfigurationPersistDate = v42;
       v23 = v41;
       v26 = PBFLogGallery();
       v27 = v26;
@@ -1772,7 +1772,7 @@ void __116__PBFGalleryController__stateLock_enqueueGalleryConfigurationUpdateWit
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543874;
-          v44 = v15;
+          v44 = idCopy;
           v45 = 2114;
           *v46 = v24;
           *&v46[8] = 2114;
@@ -1784,27 +1784,27 @@ void __116__PBFGalleryController__stateLock_enqueueGalleryConfigurationUpdateWit
       else if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v44 = v15;
+        v44 = idCopy;
         v45 = 2114;
         *v46 = v24;
         *&v46[8] = 2114;
-        *&v46[10] = v25;
+        *&v46[10] = lastUsefulGalleryConfigurationPersistDate;
         _os_log_impl(&dword_21B526000, v27, OS_LOG_TYPE_DEFAULT, "[%{public}@] _pushFaceGalleryConfigurationUpdate: persisting %{public}@ -- last update date? %{public}@", buf, 0x20u);
       }
 
       [(PBFGalleryController *)self _stateLock_notifyGalleryControllerWillUpdateGalleryConfiguration];
-      [(PBFGalleryControllerState *)self->_state setLastUsefulGalleryConfigurationPersistDate:v25];
-      objc_storeStrong(&self->_stateLock_lastUsefulGalleryConfiguration, a3);
+      [(PBFGalleryControllerState *)self->_state setLastUsefulGalleryConfigurationPersistDate:lastUsefulGalleryConfigurationPersistDate];
+      objc_storeStrong(&self->_stateLock_lastUsefulGalleryConfiguration, update);
       [(PBFGalleryController *)self _stateLock_notifyGalleryControllerDidUpdateCurrentGalleryConfiguration:v24];
     }
 
     os_unfair_lock_unlock(&self->_stateLock);
-    if (v16)
+    if (completionCopy)
     {
-      v16[2](v16, v24, v25, v39 ^ 1u, v23);
+      completionCopy[2](completionCopy, v24, lastUsefulGalleryConfigurationPersistDate, v39 ^ 1u, v23);
     }
 
-    v14 = v40;
+    errorCopy = v40;
   }
 
   else
@@ -1812,14 +1812,14 @@ void __116__PBFGalleryController__stateLock_enqueueGalleryConfigurationUpdateWit
     v28 = PBFLogGallery();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      [(PBFGalleryController *)v15 _pushFaceGalleryConfigurationUpdate:v28 options:v29 fetchError:v30 sessionId:v31 completion:v32, v33, v34];
+      [(PBFGalleryController *)idCopy _pushFaceGalleryConfigurationUpdate:v28 options:v29 fetchError:v30 sessionId:v31 completion:v32, v33, v34];
     }
 
-    if (v16)
+    if (completionCopy)
     {
-      if (v14)
+      if (errorCopy)
       {
-        v16[2](v16, 0, 0, 0, v14);
+        completionCopy[2](completionCopy, 0, 0, 0, errorCopy);
       }
 
       else
@@ -1829,34 +1829,34 @@ void __116__PBFGalleryController__stateLock_enqueueGalleryConfigurationUpdateWit
         v48[0] = @"Nil gallery was rejected.";
         v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:&v47 count:1];
         v38 = [v36 pbf_generalErrorWithCode:1 userInfo:v37];
-        v16[2](v16, 0, 0, 0, v38);
+        completionCopy[2](completionCopy, 0, 0, 0, v38);
       }
     }
   }
 }
 
-- (BOOL)_stateLock_persistGalleryConfiguration:(id)a3 lastUpdateDate:(id *)a4 sessionId:(id)a5 error:(id *)a6
+- (BOOL)_stateLock_persistGalleryConfiguration:(id)configuration lastUpdateDate:(id *)date sessionId:(id)id error:(id *)error
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
+  configurationCopy = configuration;
+  idCopy = id;
   PBFDebug_os_unfair_lock_assert_owner(&self->_stateLock);
-  v12 = [(PBFGalleryController *)self galleryCacheURL];
-  if (!v12)
+  galleryCacheURL = [(PBFGalleryController *)self galleryCacheURL];
+  if (!galleryCacheURL)
   {
-    if (a6)
+    if (error)
     {
       v25 = MEMORY[0x277CCA9B8];
       v41 = *MEMORY[0x277CCA470];
       v42[0] = @"Gallery cache URL is invalid.  Bailing.";
       v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:&v41 count:1];
-      *a6 = [v25 pbf_dataStoreErrorWithCode:-2214 userInfo:v26];
+      *error = [v25 pbf_dataStoreErrorWithCode:-2214 userInfo:v26];
     }
 
     v16 = PBFLogGallery();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [(PBFGalleryController *)v11 _stateLock_persistGalleryConfiguration:v16 lastUpdateDate:v27 sessionId:v28 error:v29, v30, v31, v32];
+      [(PBFGalleryController *)idCopy _stateLock_persistGalleryConfiguration:v16 lastUpdateDate:v27 sessionId:v28 error:v29, v30, v31, v32];
     }
 
     goto LABEL_19;
@@ -1865,7 +1865,7 @@ void __116__PBFGalleryController__stateLock_enqueueGalleryConfigurationUpdateWit
   fileManager = self->_fileManager;
   v14 = PFFileProtectionNoneAttributes();
   v38 = 0;
-  v15 = [(NSFileManager *)fileManager createDirectoryAtURL:v12 withIntermediateDirectories:1 attributes:v14 error:&v38];
+  v15 = [(NSFileManager *)fileManager createDirectoryAtURL:galleryCacheURL withIntermediateDirectories:1 attributes:v14 error:&v38];
   v16 = v38;
 
   if (!v15)
@@ -1876,11 +1876,11 @@ void __116__PBFGalleryController__stateLock_enqueueGalleryConfigurationUpdateWit
       [PBFGalleryController _stateLock_persistGalleryConfiguration:lastUpdateDate:sessionId:error:];
     }
 
-    if (a6)
+    if (error)
     {
       v34 = v16;
       LOBYTE(v18) = 0;
-      *a6 = v16;
+      *error = v16;
       goto LABEL_23;
     }
 
@@ -1889,22 +1889,22 @@ LABEL_19:
     goto LABEL_23;
   }
 
-  v17 = [[PBFPosterGalleryLayoutPersistence alloc] initWithURL:v12];
+  v17 = [[PBFPosterGalleryLayoutPersistence alloc] initWithURL:galleryCacheURL];
   v36 = 0;
   v37 = 0;
-  v18 = [(PBFPosterGalleryLayoutPersistence *)v17 saveGalleryLayout:v10 returningPersistenceDate:&v37 error:&v36];
+  v18 = [(PBFPosterGalleryLayoutPersistence *)v17 saveGalleryLayout:configurationCopy returningPersistenceDate:&v37 error:&v36];
   v19 = v37;
   v20 = v36;
-  if (a4 && v18)
+  if (date && v18)
   {
     v21 = v19;
-    *a4 = v19;
+    *date = v19;
   }
 
-  if (a6)
+  if (error)
   {
     v22 = v20;
-    *a6 = v20;
+    *error = v20;
   }
 
   v23 = PBFLogGallery();
@@ -1920,7 +1920,7 @@ LABEL_19:
   else if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v40 = v11;
+    v40 = idCopy;
     _os_log_impl(&dword_21B526000, v24, OS_LOG_TYPE_DEFAULT, "[%{public}@] _stateLock_persistGalleryConfiguration: successfully persisted gallery", buf, 0xCu);
   }
 
@@ -1928,14 +1928,14 @@ LABEL_23:
   return v18;
 }
 
-- (void)_stateLock_loadPersistedGalleryConfigurationWithLastUpdateDate:(id *)a3 error:(id *)a4
+- (void)_stateLock_loadPersistedGalleryConfigurationWithLastUpdateDate:(id *)date error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
   PBFDebug_os_unfair_lock_assert_owner(&self->_stateLock);
-  v6 = [(PBFGalleryController *)self galleryCacheURL];
-  if (v6)
+  galleryCacheURL = [(PBFGalleryController *)self galleryCacheURL];
+  if (galleryCacheURL)
   {
-    v7 = [[PBFPosterGalleryLayoutPersistence alloc] initWithURL:v6];
+    v7 = [[PBFPosterGalleryLayoutPersistence alloc] initWithURL:galleryCacheURL];
     v37 = 0;
     v38 = 0;
     v36 = 0;
@@ -1947,14 +1947,14 @@ LABEL_23:
     objc_storeStrong(&self->_stateLock_lastUsefulGalleryConfiguration, v8);
     [(PBFGalleryControllerState *)self->_state setLastUsefulGalleryConfigurationPersistDate:v9];
     v30 = v7;
-    v31 = v6;
+    v31 = galleryCacheURL;
     v29 = v9;
     if (v11)
     {
-      if (a4)
+      if (error)
       {
         v12 = v11;
-        *a4 = v11;
+        *error = v11;
       }
 
       v13 = PBFLogGallery();
@@ -2002,8 +2002,8 @@ LABEL_23:
             _os_log_impl(&dword_21B526000, v26, OS_LOG_TYPE_DEFAULT, "Cleaning up old gallery configurations: %{public}@", buf, 0xCu);
           }
 
-          v27 = [MEMORY[0x277CCAA00] defaultManager];
-          [v27 removeItemAtURL:v25 error:a4];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+          [defaultManager removeItemAtURL:v25 error:error];
         }
 
         v22 = [v20 countByEnumeratingWithState:&v32 objects:v41 count:16];
@@ -2012,7 +2012,7 @@ LABEL_23:
       while (v22);
     }
 
-    v6 = v31;
+    galleryCacheURL = v31;
   }
 }
 
@@ -2057,10 +2057,10 @@ LABEL_23:
   }
 }
 
-- (void)_stateLock_notifyGalleryControllerDidUpdateCurrentGalleryConfiguration:(id)a3
+- (void)_stateLock_notifyGalleryControllerDidUpdateCurrentGalleryConfiguration:(id)configuration
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   PBFDebug_os_unfair_lock_assert_owner(&self->_stateLock);
   v13 = 0u;
   v14 = 0u;
@@ -2085,7 +2085,7 @@ LABEL_23:
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 galleryController:self didUpdateCurrentGalleryConfiguration:{v4, v11}];
+          [v10 galleryController:self didUpdateCurrentGalleryConfiguration:{configurationCopy, v11}];
         }
 
         ++v9;
@@ -2099,53 +2099,53 @@ LABEL_23:
   }
 }
 
-- (id)determineRefreshStateWithContext:(id)a3
+- (id)determineRefreshStateWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 component];
-  if ([v5 isEqual:@"PBFDataComponentGallery"])
+  contextCopy = context;
+  component = [contextCopy component];
+  if ([component isEqual:@"PBFDataComponentGallery"])
   {
-    v6 = [(PBFGalleryControllerState *)self->_state lastUsefulGalleryConfigurationPersistDate];
-    v7 = v6;
-    if (v6)
+    lastUsefulGalleryConfigurationPersistDate = [(PBFGalleryControllerState *)self->_state lastUsefulGalleryConfigurationPersistDate];
+    v7 = lastUsefulGalleryConfigurationPersistDate;
+    if (lastUsefulGalleryConfigurationPersistDate)
     {
-      v8 = v6;
+      distantPast = lastUsefulGalleryConfigurationPersistDate;
     }
 
     else
     {
-      v8 = [MEMORY[0x277CBEAA8] distantPast];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
     }
 
-    v10 = v8;
+    v10 = distantPast;
 
     stateLock_lastUsefulGalleryConfiguration = self->_stateLock_lastUsefulGalleryConfiguration;
     if (stateLock_lastUsefulGalleryConfiguration)
     {
-      v12 = stateLock_lastUsefulGalleryConfiguration;
+      null = stateLock_lastUsefulGalleryConfiguration;
     }
 
     else
     {
-      v12 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v13 = v12;
+    v13 = null;
     v14 = [PBFDataComponentObjectEntity alloc];
     v15 = [PBFDataRefreshContext alloc];
-    v16 = [v4 now];
+    v16 = [contextCopy now];
     v17 = [(PBFDataRefreshContext *)v15 initWithComponent:@"PBFDataComponentGallery" now:v16 lastRefreshDate:v10 userInfo:0];
     v18 = [(PBFDataComponentObjectEntity *)v14 initWithComponent:@"PBFDataComponentGallery" object:v13 context:v17];
 
-    v9 = [(PBFDataComponentObjectEntity *)v18 determineRefreshState];
+    determineRefreshState = [(PBFDataComponentObjectEntity *)v18 determineRefreshState];
   }
 
   else
   {
-    v9 = [[PBFDataRefreshState alloc] initWithNeedsRefresh:1 reason:@"Unable to ascertain status; just reload anyway..."];
+    determineRefreshState = [[PBFDataRefreshState alloc] initWithNeedsRefresh:1 reason:@"Unable to ascertain status; just reload anyway..."];
   }
 
-  return v9;
+  return determineRefreshState;
 }
 
 - (PBFRuntimeAssertionProviding)runtimeAssertionProvider

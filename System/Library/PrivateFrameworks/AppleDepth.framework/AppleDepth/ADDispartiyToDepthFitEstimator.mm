@@ -1,12 +1,12 @@
 @interface ADDispartiyToDepthFitEstimator
 - (ADDispartiyToDepthFitEstimator)init;
-- (ADDispartiyToDepthFitEstimator)initWithParameters:(id)a3;
+- (ADDispartiyToDepthFitEstimator)initWithParameters:(id)parameters;
 - (id).cxx_construct;
-- (id)estimateWithDisparity:(__n128)a3 calibration:(__n128)a4 pose:(__n128)a5 disparityTimestamp:(double)a6;
-- (id)estimateWithDisparityFile:(id)a3 disparityWidth:(unsigned int)a4 disparityHeight:(unsigned int)a5 calibration:(id)a6 poseArray:(id)a7 disparityTimestamp:(double)a8;
+- (id)estimateWithDisparity:(__n128)disparity calibration:(__n128)calibration pose:(__n128)pose disparityTimestamp:(double)timestamp;
+- (id)estimateWithDisparityFile:(id)file disparityWidth:(unsigned int)width disparityHeight:(unsigned int)height calibration:(id)calibration poseArray:(id)array disparityTimestamp:(double)timestamp;
 - (id)queryIntermediateResults;
-- (void)updateWorldPoints:(ADDisparityToDepthFitWorldPoint *)a3 pointCount:(unsigned int)a4 pointsTimestamp:(double)a5;
-- (void)updateWorldPointsArray:(id)a3 pointsTimestamp:(double)a4;
+- (void)updateWorldPoints:(ADDisparityToDepthFitWorldPoint *)points pointCount:(unsigned int)count pointsTimestamp:(double)timestamp;
+- (void)updateWorldPointsArray:(id)array pointsTimestamp:(double)timestamp;
 @end
 
 @implementation ADDispartiyToDepthFitEstimator
@@ -63,22 +63,22 @@
   return v17;
 }
 
-- (id)estimateWithDisparityFile:(id)a3 disparityWidth:(unsigned int)a4 disparityHeight:(unsigned int)a5 calibration:(id)a6 poseArray:(id)a7 disparityTimestamp:(double)a8
+- (id)estimateWithDisparityFile:(id)file disparityWidth:(unsigned int)width disparityHeight:(unsigned int)height calibration:(id)calibration poseArray:(id)array disparityTimestamp:(double)timestamp
 {
   v27 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v19 = a6;
-  v18 = a7;
-  v20 = v13;
-  v14 = v13;
-  v15 = PixelBufferUtils::pixelBufferFromRawFile([v13 cStringUsingEncoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}], a4, a5, 0x68646973u);
+  fileCopy = file;
+  calibrationCopy = calibration;
+  arrayCopy = array;
+  v20 = fileCopy;
+  v14 = fileCopy;
+  v15 = PixelBufferUtils::pixelBufferFromRawFile([fileCopy cStringUsingEncoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}], width, height, 0x68646973u);
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v23 = __132__ADDispartiyToDepthFitEstimator_estimateWithDisparityFile_disparityWidth_disparityHeight_calibration_poseArray_disparityTimestamp___block_invoke;
   v24 = &__block_descriptor_40_e5_v8__0l;
   v25 = v15;
   memset(v21, 0, sizeof(v21));
-  v16 = v18;
+  v16 = arrayCopy;
   if ([v16 countByEnumeratingWithState:v21 objects:v26 count:16])
   {
     [**(&v21[0] + 1) floatValue];
@@ -90,11 +90,11 @@
   return 0;
 }
 
-- (void)updateWorldPointsArray:(id)a3 pointsTimestamp:(double)a4
+- (void)updateWorldPointsArray:(id)array pointsTimestamp:(double)timestamp
 {
   v15 = *MEMORY[0x277D85DE8];
   memset(v13, 0, sizeof(v13));
-  obj = a3;
+  obj = array;
   if ([obj countByEnumeratingWithState:v13 objects:v14 count:16])
   {
     v6 = **(&v13[0] + 1);
@@ -116,15 +116,15 @@
     operator new();
   }
 
-  [(ADDispartiyToDepthFitEstimator *)self updateWorldPoints:0 pointCount:0 pointsTimestamp:a4];
+  [(ADDispartiyToDepthFitEstimator *)self updateWorldPoints:0 pointCount:0 pointsTimestamp:timestamp];
 }
 
-- (id)estimateWithDisparity:(__n128)a3 calibration:(__n128)a4 pose:(__n128)a5 disparityTimestamp:(double)a6
+- (id)estimateWithDisparity:(__n128)disparity calibration:(__n128)calibration pose:(__n128)pose disparityTimestamp:(double)timestamp
 {
   v75[4] = *MEMORY[0x277D85DE8];
   v12 = a9;
-  ++*(a1 + 20);
-  if (*(a1 + 8))
+  ++*(self + 20);
+  if (*(self + 8))
   {
     Width = CVPixelBufferGetWidth(a8);
     Height = CVPixelBufferGetHeight(a8);
@@ -135,7 +135,7 @@
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
-          v16 = *(a1 + 20);
+          v16 = *(self + 20);
           *buf = 67109888;
           *&buf[4] = v16;
           *&buf[8] = 2048;
@@ -143,14 +143,14 @@
           *&buf[18] = 2048;
           *&buf[20] = Height;
           *&buf[28] = 2048;
-          *&buf[30] = a6;
+          *&buf[30] = timestamp;
           _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "DisparityToDepth [Debug  ] estimateWithDisparity %u with width: %lu height: %lu disparityTimestamp: %f", buf, 0x26u);
         }
       }
 
       else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
-        v54 = *(a1 + 20);
+        v54 = *(self + 20);
         *buf = 67109888;
         *&buf[4] = v54;
         *&buf[8] = 2048;
@@ -158,7 +158,7 @@
         *&buf[18] = 2048;
         *&buf[20] = Height;
         *&buf[28] = 2048;
-        *&buf[30] = a6;
+        *&buf[30] = timestamp;
         _os_log_debug_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "DisparityToDepth [Debug  ] estimateWithDisparity %u with width: %lu height: %lu disparityTimestamp: %f", buf, 0x26u);
       }
 
@@ -170,7 +170,7 @@
       v73[2] = a8;
       if (CVPixelBufferGetBaseAddress(a8))
       {
-        std::to_string(buf, *(a1 + 20));
+        std::to_string(buf, *(self + 20));
         v19 = std::string::append(buf, "_ad_calibration", 0xFuLL);
         v20 = *&v19->__r_.__value_.__l.__data_;
         v71 = v19->__r_.__value_.__r.__words[2];
@@ -193,8 +193,8 @@
           v21 = v70[0];
         }
 
-        [*(a1 + 96) logCalibration:v12 name:v21 priority:0];
-        std::to_string(&v63, *(a1 + 20));
+        [*(self + 96) logCalibration:v12 name:v21 priority:0];
+        std::to_string(&v63, *(self + 20));
         v22 = std::string::insert(&v63, 0, "frame_", 6uLL);
         v23 = *&v22->__r_.__value_.__l.__data_;
         v64.__r_.__value_.__r.__words[2] = v22->__r_.__value_.__r.__words[2];
@@ -393,8 +393,8 @@ LABEL_38:
             v40 = __p[0];
           }
 
-          [*(a1 + 96) logPixelBuffer:a8 name:v40 priority:0];
-          std::to_string(v59, *(a1 + 20));
+          [*(self + 96) logPixelBuffer:a8 name:v40 priority:0];
+          std::to_string(v59, *(self + 20));
           v41 = std::string::insert(v59, 0, "frame_", 6uLL);
           v42 = *&v41->__r_.__value_.__l.__data_;
           *&buf[16] = *(&v41->__r_.__value_.__l + 2);
@@ -409,17 +409,17 @@ LABEL_38:
           v43->__r_.__value_.__l.__size_ = 0;
           v43->__r_.__value_.__r.__words[2] = 0;
           v43->__r_.__value_.__r.__words[0] = 0;
-          v45 = a4.n128_f64[0];
-          v46 = a5.n128_f64[0];
+          v45 = calibration.n128_f64[0];
+          v46 = pose.n128_f64[0];
           v47 = a2.n128_f64[0];
-          v48 = a3.n128_f64[0];
+          v48 = disparity.n128_f64[0];
           if ((buf[23] & 0x80000000) != 0)
           {
             operator delete(*buf);
             v47 = a2.n128_f64[0];
-            v48 = a3.n128_f64[0];
-            v45 = a4.n128_f64[0];
-            v46 = a5.n128_f64[0];
+            v48 = disparity.n128_f64[0];
+            v45 = calibration.n128_f64[0];
+            v46 = pose.n128_f64[0];
             if ((v59[23] & 0x80000000) == 0)
             {
               goto LABEL_43;
@@ -433,9 +433,9 @@ LABEL_38:
 
           operator delete(*v59);
           v47 = a2.n128_f64[0];
-          v48 = a3.n128_f64[0];
-          v45 = a4.n128_f64[0];
-          v46 = a5.n128_f64[0];
+          v48 = disparity.n128_f64[0];
+          v45 = calibration.n128_f64[0];
+          v46 = pose.n128_f64[0];
 LABEL_43:
           if ((v67.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
           {
@@ -447,12 +447,12 @@ LABEL_43:
             v49 = v67.__r_.__value_.__r.__words[0];
           }
 
-          [*(a1 + 96) logMatrix4x4:v49 name:0 priority:{v47, v48, v45, v46}];
+          [*(self + 96) logMatrix4x4:v49 name:0 priority:{v47, v48, v45, v46}];
           v50 = v12;
           *v59 = a2;
-          *&v59[16] = a3;
-          v60 = a4;
-          *&v66.__r_.__value_.__l.__data_ = a5;
+          *&v59[16] = disparity;
+          calibrationCopy = calibration;
+          *&v66.__r_.__value_.__l.__data_ = pose;
           [v50 referenceDimensions];
           [v50 referenceDimensions];
           v51 = v50;
@@ -474,7 +474,7 @@ LABEL_57:
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v52 = *(a1 + 20);
+        v52 = *(self + 20);
         *buf = 67109888;
         *&buf[4] = v52;
         *&buf[8] = 2048;
@@ -482,7 +482,7 @@ LABEL_57:
         *&buf[18] = 2048;
         *&buf[20] = Height;
         *&buf[28] = 2048;
-        *&buf[30] = a6;
+        *&buf[30] = timestamp;
         _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "DisparityToDepth [Always ] estimateWithDisparity %u failed to get the base address of the disparity buffer width: %lu height: %lu disparityTimestamp: %f", buf, 0x26u);
       }
 
@@ -494,7 +494,7 @@ LABEL_57:
       v17 = PixelFormatType;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v18 = *(a1 + 20);
+        v18 = *(self + 20);
         *buf = 67110144;
         *&buf[4] = v18;
         *&buf[8] = 1024;
@@ -504,7 +504,7 @@ LABEL_57:
         *&buf[24] = 2048;
         *&buf[26] = Height;
         *&buf[34] = 2048;
-        *&buf[36] = a6;
+        *&buf[36] = timestamp;
         _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "DisparityToDepth [Always ] estimateWithDisparity %u is only supported with hdis format (DisparityFloat16). obtained buffer type: %u buffer width: %lu height: %lu disparityTimestamp: %f", buf, 0x2Cu);
       }
     }
@@ -513,7 +513,7 @@ LABEL_57:
   return 0;
 }
 
-- (void)updateWorldPoints:(ADDisparityToDepthFitWorldPoint *)a3 pointCount:(unsigned int)a4 pointsTimestamp:(double)a5
+- (void)updateWorldPoints:(ADDisparityToDepthFitWorldPoint *)points pointCount:(unsigned int)count pointsTimestamp:(double)timestamp
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = self->_updateWorldPointsCounter + 1;
@@ -527,9 +527,9 @@ LABEL_57:
         *buf = 67109632;
         *&buf[4] = v5;
         *&buf[8] = 1024;
-        *&buf[10] = a4;
+        *&buf[10] = count;
         *&buf[14] = 2048;
-        v17 = a5;
+        timestampCopy2 = timestamp;
         _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "DisparityToDepth [Debug  ] updateWorldPoints %u with pointCount: %d pointsTimestamp: %f", buf, 0x18u);
       }
     }
@@ -539,9 +539,9 @@ LABEL_57:
       *buf = 67109632;
       *&buf[4] = v5;
       *&buf[8] = 1024;
-      *&buf[10] = a4;
+      *&buf[10] = count;
       *&buf[14] = 2048;
-      v17 = a5;
+      timestampCopy2 = timestamp;
       _os_log_debug_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "DisparityToDepth [Debug  ] updateWorldPoints %u with pointCount: %d pointsTimestamp: %f", buf, 0x18u);
     }
 
@@ -550,7 +550,7 @@ LABEL_57:
     std::to_string(&v15, updateWorldPointsCounter);
     v12 = std::string::insert(&v15, 0, "world_points_frame_", 0x13uLL);
     v13 = *&v12->__r_.__value_.__l.__data_;
-    v17 = *&v12->__r_.__value_.__r.__words[2];
+    timestampCopy2 = *&v12->__r_.__value_.__r.__words[2];
     *buf = v13;
     v12->__r_.__value_.__l.__size_ = 0;
     v12->__r_.__value_.__r.__words[2] = 0;
@@ -560,7 +560,7 @@ LABEL_57:
       operator delete(v15.__r_.__value_.__l.__data_);
     }
 
-    if (v17 >= 0.0)
+    if (timestampCopy2 >= 0.0)
     {
       v14 = buf;
     }
@@ -570,22 +570,22 @@ LABEL_57:
       v14 = *buf;
     }
 
-    [(ADLogManager *)v11 logRawBuffer:a3 size:32 * a4 name:v14 priority:0];
-    if (SHIBYTE(v17) < 0)
+    [(ADLogManager *)v11 logRawBuffer:points size:32 * count name:v14 priority:0];
+    if (SHIBYTE(timestampCopy2) < 0)
     {
       operator delete(*buf);
     }
 
-    DisparityToDepth::WorldPointsContainer::push(self->_impl.__ptr_, a3, a4);
+    DisparityToDepth::WorldPointsContainer::push(self->_impl.__ptr_, points, count);
   }
 }
 
-- (ADDispartiyToDepthFitEstimator)initWithParameters:(id)a3
+- (ADDispartiyToDepthFitEstimator)initWithParameters:(id)parameters
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  parametersCopy = parameters;
   *&self->_updateWorldPointsCounter = 0;
-  if (v4)
+  if (parametersCopy)
   {
     v16.receiver = self;
     v16.super_class = ADDispartiyToDepthFitEstimator;
@@ -594,18 +594,18 @@ LABEL_57:
     {
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
-      v8 = [v7 lowercaseString];
+      lowercaseString = [v7 lowercaseString];
 
-      if ([v8 hasPrefix:@"ad"])
+      if ([lowercaseString hasPrefix:@"ad"])
       {
-        v9 = [v8 substringFromIndex:2];
+        v9 = [lowercaseString substringFromIndex:2];
 
         v10 = v9;
       }
 
       else
       {
-        v10 = v8;
+        v10 = lowercaseString;
       }
 
       v12 = [v10 stringByReplacingOccurrencesOfString:@"parameters" withString:&stru_285231EA0];
@@ -618,15 +618,15 @@ LABEL_57:
     }
 
     self = 0;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (ADDispartiyToDepthFitEstimator)init

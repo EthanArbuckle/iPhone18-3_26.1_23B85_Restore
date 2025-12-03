@@ -30,16 +30,16 @@ void __68__ICSearchRankingStrategySwitch_ICSearchRankingStrategyDisplayNames__bl
 
 + (unint64_t)currentStrategy
 {
-  v2 = [a1 defaultStrategy];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 objectForKey:@"searchRankingCurrentStrategyKey"];
+  defaultStrategy = [self defaultStrategy];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"searchRankingCurrentStrategyKey"];
 
   if (v4)
   {
-    v2 = [v4 unsignedIntegerValue];
+    defaultStrategy = [v4 unsignedIntegerValue];
   }
 
-  return v2;
+  return defaultStrategy;
 }
 
 @end

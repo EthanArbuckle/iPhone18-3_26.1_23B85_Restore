@@ -1,21 +1,21 @@
 @interface UIDebuggingInformationVCHierarchyViewController
-- (UIDebuggingInformationVCHierarchyViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)getViewControllersRecursiveWithLevel:(int)a3 forView:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 indentationLevelForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (UIDebuggingInformationVCHierarchyViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)getViewControllersRecursiveWithLevel:(int)level forView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view indentationLevelForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation UIDebuggingInformationVCHierarchyViewController
 
-- (UIDebuggingInformationVCHierarchyViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (UIDebuggingInformationVCHierarchyViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = UIDebuggingInformationVCHierarchyViewController;
-  v4 = [(UIViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(UIViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [UITableView alloc];
@@ -34,53 +34,53 @@
   v11.receiver = self;
   v11.super_class = UIDebuggingInformationVCHierarchyViewController;
   [(UIViewController *)&v11 viewDidLoad];
-  v3 = [(UIViewController *)self view];
-  [v3 setAutoresizingMask:18];
+  view = [(UIViewController *)self view];
+  [view setAutoresizingMask:18];
 
-  v4 = [(UIDebuggingInformationVCHierarchyViewController *)self tableView];
-  [v4 setAutoresizingMask:18];
+  tableView = [(UIDebuggingInformationVCHierarchyViewController *)self tableView];
+  [tableView setAutoresizingMask:18];
 
-  v5 = [(UIViewController *)self view];
-  v6 = [(UIDebuggingInformationVCHierarchyViewController *)self tableView];
-  [v5 addSubview:v6];
+  view2 = [(UIViewController *)self view];
+  tableView2 = [(UIDebuggingInformationVCHierarchyViewController *)self tableView];
+  [view2 addSubview:tableView2];
 
-  v7 = [(UIDebuggingInformationVCHierarchyViewController *)self tableView];
-  v8 = [(UIViewController *)self view];
-  [v8 bounds];
-  [v7 setFrame:?];
+  tableView3 = [(UIDebuggingInformationVCHierarchyViewController *)self tableView];
+  view3 = [(UIViewController *)self view];
+  [view3 bounds];
+  [tableView3 setFrame:?];
 
-  v9 = [(UIViewController *)self view];
+  view4 = [(UIViewController *)self view];
   v10 = +[UIColor whiteColor];
-  [v9 setBackgroundColor:v10];
+  [view4 setBackgroundColor:v10];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = UIDebuggingInformationVCHierarchyViewController;
-  [(UIViewController *)&v9 viewWillAppear:a3];
+  [(UIViewController *)&v9 viewWillAppear:appear];
   v4 = +[UIDebuggingInformationOverlay overlay];
-  v5 = [v4 inspectedWindow];
-  v6 = [v5 rootViewController];
-  v7 = [(UIDebuggingInformationVCHierarchyViewController *)self getViewControllersRecursiveWithLevel:0 forView:v6];
+  inspectedWindow = [v4 inspectedWindow];
+  rootViewController = [inspectedWindow rootViewController];
+  v7 = [(UIDebuggingInformationVCHierarchyViewController *)self getViewControllersRecursiveWithLevel:0 forView:rootViewController];
   [(UIDebuggingInformationVCHierarchyViewController *)self setData:v7];
 
-  v8 = [(UIDebuggingInformationVCHierarchyViewController *)self tableView];
-  [v8 reloadData];
+  tableView = [(UIDebuggingInformationVCHierarchyViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (id)getViewControllersRecursiveWithLevel:(int)a3 forView:(id)a4
+- (id)getViewControllersRecursiveWithLevel:(int)level forView:(id)view
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [[UIDebuggingInformationVCHierarchyDataContainer alloc] initWithViewController:v6 atLevel:a3];
+  viewCopy = view;
+  v7 = [[UIDebuggingInformationVCHierarchyDataContainer alloc] initWithViewController:viewCopy atLevel:level];
   v8 = [MEMORY[0x1E695DF70] arrayWithObjects:{v7, 0}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [v6 childViewControllers];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  childViewControllers = [viewCopy childViewControllers];
+  v10 = [childViewControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -91,14 +91,14 @@
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(childViewControllers);
         }
 
-        v14 = [(UIDebuggingInformationVCHierarchyViewController *)self getViewControllersRecursiveWithLevel:(a3 + 1) forView:*(*(&v17 + 1) + 8 * i)];
+        v14 = [(UIDebuggingInformationVCHierarchyViewController *)self getViewControllersRecursiveWithLevel:(level + 1) forView:*(*(&v17 + 1) + 8 * i)];
         [v8 addObjectsFromArray:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [childViewControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
@@ -109,32 +109,32 @@
   return v15;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(UIDebuggingInformationVCHierarchyViewController *)self data];
-  v7 = [v5 row];
+  pathCopy = path;
+  data = [(UIDebuggingInformationVCHierarchyViewController *)self data];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
-  v11 = [v8 viewController];
+  v8 = [data objectAtIndexedSubscript:v7];
+  viewController = [v8 viewController];
 
   v9 = objc_alloc_init(UIDebuggingInformationVCDetailViewController);
-  [(UIDebuggingInformationVCDetailViewController *)v9 inspectVC:v11];
-  v10 = [(UIViewController *)self navigationController];
-  [v10 pushViewController:v9 animated:1];
+  [(UIDebuggingInformationVCDetailViewController *)v9 inspectVC:viewController];
+  navigationController = [(UIViewController *)self navigationController];
+  [navigationController pushViewController:v9 animated:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"kCellReuseIdentifier"];
-  v7 = [(UIDebuggingInformationVCHierarchyViewController *)self data];
-  v8 = [v5 row];
+  data = [(UIDebuggingInformationVCHierarchyViewController *)self data];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndexedSubscript:v8];
-  v10 = [v9 viewController];
+  v9 = [data objectAtIndexedSubscript:v8];
+  viewController = [v9 viewController];
 
-  if (v10)
+  if (viewController)
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
@@ -145,8 +145,8 @@
     v12 = @"Deallocated";
   }
 
-  v13 = [(UITableViewCell *)v6 textLabel];
-  [v13 setText:v12];
+  textLabel = [(UITableViewCell *)v6 textLabel];
+  [textLabel setText:v12];
 
   [(UITableViewCell *)v6 setSelectionStyle:3];
   [(UITableViewCell *)v6 setAccessoryType:1];
@@ -154,21 +154,21 @@
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 indentationLevelForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view indentationLevelForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(UIDebuggingInformationVCHierarchyViewController *)self data];
-  v7 = [v5 row];
+  pathCopy = path;
+  data = [(UIDebuggingInformationVCHierarchyViewController *)self data];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
-  v9 = [v8 level];
+  v8 = [data objectAtIndexedSubscript:v7];
+  level = [v8 level];
 
-  return v9;
+  return level;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(UIDebuggingInformationVCHierarchyViewController *)self data:a3];
+  v4 = [(UIDebuggingInformationVCHierarchyViewController *)self data:view];
   v5 = [v4 count];
 
   return v5;

@@ -1,10 +1,10 @@
 @interface OverrideSettingsExtensionContext
 + (id)_allowedItemPayloadClasses;
 - (_TtC15ManagedSettings32OverrideSettingsExtensionContext)init;
-- (_TtC15ManagedSettings32OverrideSettingsExtensionContext)initWithInputItems:(id)a3;
-- (_TtC15ManagedSettings32OverrideSettingsExtensionContext)initWithInputItems:(id)a3 contextUUID:(id)a4;
-- (_TtC15ManagedSettings32OverrideSettingsExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5;
-- (void)askToOverrideUnremovabilityOfApplicationWithBundleIdentifier:(id)a3 teamIdentifier:(id)a4 replyHandler:(id)a5;
+- (_TtC15ManagedSettings32OverrideSettingsExtensionContext)initWithInputItems:(id)items;
+- (_TtC15ManagedSettings32OverrideSettingsExtensionContext)initWithInputItems:(id)items contextUUID:(id)d;
+- (_TtC15ManagedSettings32OverrideSettingsExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d;
+- (void)askToOverrideUnremovabilityOfApplicationWithBundleIdentifier:(id)identifier teamIdentifier:(id)teamIdentifier replyHandler:(id)handler;
 @end
 
 @implementation OverrideSettingsExtensionContext
@@ -26,16 +26,16 @@
   return v5;
 }
 
-- (void)askToOverrideUnremovabilityOfApplicationWithBundleIdentifier:(id)a3 teamIdentifier:(id)a4 replyHandler:(id)a5
+- (void)askToOverrideUnremovabilityOfApplicationWithBundleIdentifier:(id)identifier teamIdentifier:(id)teamIdentifier replyHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   v7 = sub_20E4C64C0();
   v9 = v8;
   v10 = sub_20E4C64C0();
   v12 = v11;
   v13 = swift_allocObject();
   *(v13 + 16) = v6;
-  v14 = self;
+  selfCopy = self;
   _Block_copy(v6);
   v15 = sub_20E4BCBC8();
   if (v15)
@@ -70,9 +70,9 @@
   return [(OverrideSettingsExtensionContext *)&v3 init];
 }
 
-- (_TtC15ManagedSettings32OverrideSettingsExtensionContext)initWithInputItems:(id)a3
+- (_TtC15ManagedSettings32OverrideSettingsExtensionContext)initWithInputItems:(id)items
 {
-  if (a3)
+  if (items)
   {
     v3 = sub_20E4C65C0();
   }
@@ -85,18 +85,18 @@
   return sub_20E4BCEDC(v3);
 }
 
-- (_TtC15ManagedSettings32OverrideSettingsExtensionContext)initWithInputItems:(id)a3 contextUUID:(id)a4
+- (_TtC15ManagedSettings32OverrideSettingsExtensionContext)initWithInputItems:(id)items contextUUID:(id)d
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C8CED28, &qword_20E4C7E30);
   v7 = *(*(v6 - 8) + 64);
   MEMORY[0x28223BE20](v6 - 8, v8);
   v10 = &v14 - v9;
-  if (a3)
+  if (items)
   {
-    a3 = sub_20E4C65C0();
+    items = sub_20E4C65C0();
   }
 
-  if (a4)
+  if (d)
   {
     sub_20E4C6190();
     v11 = sub_20E4C61A0();
@@ -109,21 +109,21 @@
     (*(*(v12 - 8) + 56))(v10, 1, 1, v12);
   }
 
-  return sub_20E4BCFC0(a3, v10);
+  return sub_20E4BCFC0(items, v10);
 }
 
-- (_TtC15ManagedSettings32OverrideSettingsExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5
+- (_TtC15ManagedSettings32OverrideSettingsExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C8CED28, &qword_20E4C7E30);
   v9 = *(*(v8 - 8) + 64);
   MEMORY[0x28223BE20](v8 - 8, v10);
   v12 = &v17 - v11;
-  if (a3)
+  if (items)
   {
-    a3 = sub_20E4C65C0();
+    items = sub_20E4C65C0();
   }
 
-  if (a5)
+  if (d)
   {
     sub_20E4C6190();
     v13 = sub_20E4C61A0();
@@ -136,8 +136,8 @@
     (*(*(v14 - 8) + 56))(v12, 1, 1, v14);
   }
 
-  v15 = a4;
-  return sub_20E4BD290(a3, a4, v12);
+  endpointCopy = endpoint;
+  return sub_20E4BD290(items, endpoint, v12);
 }
 
 @end

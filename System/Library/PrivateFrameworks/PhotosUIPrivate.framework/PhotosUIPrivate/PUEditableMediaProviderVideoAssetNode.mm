@@ -1,17 +1,17 @@
 @interface PUEditableMediaProviderVideoAssetNode
-- (PUEditableMediaProviderVideoAssetNode)initWithAsset:(id)a3 mediaProvider:(id)a4 version:(int64_t)a5;
-- (void)_handleDidLoadVideo:(id)a3 info:(id)a4;
+- (PUEditableMediaProviderVideoAssetNode)initWithAsset:(id)asset mediaProvider:(id)provider version:(int64_t)version;
+- (void)_handleDidLoadVideo:(id)video info:(id)info;
 - (void)run;
 @end
 
 @implementation PUEditableMediaProviderVideoAssetNode
 
-- (void)_handleDidLoadVideo:(id)a3 info:(id)a4
+- (void)_handleDidLoadVideo:(id)video info:(id)info
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6978DF0]];
-  if (!v6)
+  videoCopy = video;
+  v7 = [info objectForKeyedSubscript:*MEMORY[0x1E6978DF0]];
+  if (!videoCopy)
   {
     v8 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -23,7 +23,7 @@
   }
 
   videoAsset = self->_videoAsset;
-  self->_videoAsset = v6;
+  self->_videoAsset = videoCopy;
 
   [(PXRunNode *)self completeWithError:v7];
 }
@@ -37,15 +37,15 @@
   [v4 setDeliveryMode:1];
   [v4 setVideoComplementAllowed:1];
   [v4 setVersion:{-[PUEditableMediaProviderVideoAssetNode version](self, "version")}];
-  v5 = [(PUEditableMediaProviderVideoAssetNode *)self asset];
-  v6 = [(PUEditableMediaProviderVideoAssetNode *)self mediaProvider];
+  asset = [(PUEditableMediaProviderVideoAssetNode *)self asset];
+  mediaProvider = [(PUEditableMediaProviderVideoAssetNode *)self mediaProvider];
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__PUEditableMediaProviderVideoAssetNode_run__block_invoke;
   v7[3] = &unk_1E7B76E30;
   objc_copyWeak(&v8, &location);
-  self->_requestID = [v6 requestAVAssetForVideo:v5 options:v4 resultHandler:v7];
+  self->_requestID = [mediaProvider requestAVAssetForVideo:asset options:v4 resultHandler:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
@@ -58,19 +58,19 @@ void __44__PUEditableMediaProviderVideoAssetNode_run__block_invoke(uint64_t a1, 
   [WeakRetained _handleDidLoadVideo:v7 info:v6];
 }
 
-- (PUEditableMediaProviderVideoAssetNode)initWithAsset:(id)a3 mediaProvider:(id)a4 version:(int64_t)a5
+- (PUEditableMediaProviderVideoAssetNode)initWithAsset:(id)asset mediaProvider:(id)provider version:(int64_t)version
 {
-  v9 = a3;
-  v10 = a4;
+  assetCopy = asset;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = PUEditableMediaProviderVideoAssetNode;
   v11 = [(PXRunNode *)&v14 initWithDependencies:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_asset, a3);
-    objc_storeStrong(&v12->_mediaProvider, a4);
-    v12->_version = a5;
+    objc_storeStrong(&v11->_asset, asset);
+    objc_storeStrong(&v12->_mediaProvider, provider);
+    v12->_version = version;
   }
 
   return v12;

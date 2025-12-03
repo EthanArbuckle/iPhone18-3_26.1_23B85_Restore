@@ -1,6 +1,6 @@
 @interface MTRCameraAVStreamManagementClusterVideoSensorParamsStruct
 - (MTRCameraAVStreamManagementClusterVideoSensorParamsStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVStreamManagementClusterVideoSensorParamsStruct);
-  v5 = [(MTRCameraAVStreamManagementClusterVideoSensorParamsStruct *)self sensorWidth];
-  [(MTRCameraAVStreamManagementClusterVideoSensorParamsStruct *)v4 setSensorWidth:v5];
+  sensorWidth = [(MTRCameraAVStreamManagementClusterVideoSensorParamsStruct *)self sensorWidth];
+  [(MTRCameraAVStreamManagementClusterVideoSensorParamsStruct *)v4 setSensorWidth:sensorWidth];
 
-  v6 = [(MTRCameraAVStreamManagementClusterVideoSensorParamsStruct *)self sensorHeight];
-  [(MTRCameraAVStreamManagementClusterVideoSensorParamsStruct *)v4 setSensorHeight:v6];
+  sensorHeight = [(MTRCameraAVStreamManagementClusterVideoSensorParamsStruct *)self sensorHeight];
+  [(MTRCameraAVStreamManagementClusterVideoSensorParamsStruct *)v4 setSensorHeight:sensorHeight];
 
-  v7 = [(MTRCameraAVStreamManagementClusterVideoSensorParamsStruct *)self maxFPS];
-  [(MTRCameraAVStreamManagementClusterVideoSensorParamsStruct *)v4 setMaxFPS:v7];
+  maxFPS = [(MTRCameraAVStreamManagementClusterVideoSensorParamsStruct *)self maxFPS];
+  [(MTRCameraAVStreamManagementClusterVideoSensorParamsStruct *)v4 setMaxFPS:maxFPS];
 
-  v8 = [(MTRCameraAVStreamManagementClusterVideoSensorParamsStruct *)self maxHDRFPS];
-  [(MTRCameraAVStreamManagementClusterVideoSensorParamsStruct *)v4 setMaxHDRFPS:v8];
+  maxHDRFPS = [(MTRCameraAVStreamManagementClusterVideoSensorParamsStruct *)self maxHDRFPS];
+  [(MTRCameraAVStreamManagementClusterVideoSensorParamsStruct *)v4 setMaxHDRFPS:maxHDRFPS];
 
   return v4;
 }

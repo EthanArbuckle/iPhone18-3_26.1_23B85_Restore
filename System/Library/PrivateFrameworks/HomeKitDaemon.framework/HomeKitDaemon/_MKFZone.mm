@@ -1,24 +1,24 @@
 @interface _MKFZone
 + (NSPredicate)homeRelation;
-+ (id)modelIDForParentRelationshipTo:(id)a3;
-- (BOOL)shouldIncludeForRestrictedGuestWithContext:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
+- (BOOL)shouldIncludeForRestrictedGuestWithContext:(id)context;
 - (MKFZoneDatabaseID)databaseID;
 - (NSArray)rooms;
 @end
 
 @implementation _MKFZone
 
-- (BOOL)shouldIncludeForRestrictedGuestWithContext:(id)a3
+- (BOOL)shouldIncludeForRestrictedGuestWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(_MKFZone *)self rooms];
+  contextCopy = context;
+  rooms = [(_MKFZone *)self rooms];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __75___MKFZone_ResidentSyncCoding__shouldIncludeForRestrictedGuestWithContext___block_invoke;
   v9[3] = &unk_27867CD40;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_any:v9];
+  v10 = contextCopy;
+  v6 = contextCopy;
+  v7 = [rooms na_any:v9];
 
   return v7;
 }
@@ -35,9 +35,9 @@
   return v3;
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -52,9 +52,9 @@
 - (NSArray)rooms
 {
   v2 = [(_MKFZone *)self valueForKey:@"rooms_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (MKFZoneDatabaseID)databaseID

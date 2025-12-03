@@ -1,22 +1,22 @@
 @interface ASTSuiteResult
-- (ASTSuiteResult)initWithDictionary:(id)a3 error:(id *)a4;
-- (ASTSuiteResult)initWithName:(id)a3 components:(id)a4;
+- (ASTSuiteResult)initWithDictionary:(id)dictionary error:(id *)error;
+- (ASTSuiteResult)initWithName:(id)name components:(id)components;
 @end
 
 @implementation ASTSuiteResult
 
-- (ASTSuiteResult)initWithName:(id)a3 components:(id)a4
+- (ASTSuiteResult)initWithName:(id)name components:(id)components
 {
   v5.receiver = self;
   v5.super_class = ASTSuiteResult;
-  return [(ASTSuiteResult *)&v5 init:a3];
+  return [(ASTSuiteResult *)&v5 init:name];
 }
 
-- (ASTSuiteResult)initWithDictionary:(id)a3 error:(id *)a4
+- (ASTSuiteResult)initWithDictionary:(id)dictionary error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = ASTSuiteResult;
-  return [(ASTSuiteResult *)&v5 init:a3];
+  return [(ASTSuiteResult *)&v5 init:dictionary];
 }
 
 @end

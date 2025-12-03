@@ -1,26 +1,26 @@
 @interface WKDigitalCredentialsPicker
-- (WKDigitalCredentialsPicker)initWithView:(id)a3 page:(void *)a4;
+- (WKDigitalCredentialsPicker)initWithView:(id)view page:(void *)page;
 - (WKDigitalCredentialsPickerDelegate)delegate;
 - (id).cxx_construct;
 - (id)presentationAnchor;
-- (uint64_t)fetchRawRequestsWithCompletionHandler:(const void *)a1;
-- (uint64_t)fetchRawRequestsWithCompletionHandler:(uint64_t)a1;
-- (void)completeWith:(void *)a3;
+- (uint64_t)fetchRawRequestsWithCompletionHandler:(const void *)handler;
+- (uint64_t)fetchRawRequestsWithCompletionHandler:(uint64_t)handler;
+- (void)completeWith:(void *)with;
 - (void)dismiss;
-- (void)dismissWithCompletionHandler:(void *)a3;
-- (void)fetchRawRequestsWithCompletionHandler:(id)a3;
-- (void)fetchRawRequestsWithCompletionHandler:(uint64_t)a1;
-- (void)handleNSError:(id)a3;
-- (void)handlePresentmentCompletionWithResponse:(id)a3 error:(id)a4;
+- (void)dismissWithCompletionHandler:(void *)handler;
+- (void)fetchRawRequestsWithCompletionHandler:(id)handler;
+- (void)fetchRawRequestsWithCompletionHandler:(uint64_t)handler;
+- (void)handleNSError:(id)error;
+- (void)handlePresentmentCompletionWithResponse:(id)response error:(id)error;
 - (void)performRequest:;
-- (void)performRequest:(const void *)a3;
-- (void)presentWithRequestData:(const void *)a3 completionHandler:(void *)a4;
+- (void)performRequest:(const void *)request;
+- (void)presentWithRequestData:(const void *)data completionHandler:(void *)handler;
 - (void)setupPresentmentController;
 @end
 
 @implementation WKDigitalCredentialsPicker
 
-- (WKDigitalCredentialsPicker)initWithView:(id)a3 page:(void *)a4
+- (WKDigitalCredentialsPicker)initWithView:(id)view page:(void *)page
 {
   v12.receiver = self;
   v12.super_class = WKDigitalCredentialsPicker;
@@ -28,11 +28,11 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_webView.m_weakReference, a3);
-    if (a4)
+    objc_storeWeak(&v6->_webView.m_weakReference, view);
+    if (page)
     {
-      WTF::WeakPtrFactory<IPC::MessageReceiver,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(a4 + 6, a4 + 16);
-      v9 = *(a4 + 3);
+      WTF::WeakPtrFactory<IPC::MessageReceiver,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(page + 6, page + 16);
+      v9 = *(page + 3);
       if (v9)
       {
         atomic_fetch_add(v9, 1u);
@@ -74,12 +74,12 @@
   return [Weak window];
 }
 
-- (void)fetchRawRequestsWithCompletionHandler:(id)a3
+- (void)fetchRawRequestsWithCompletionHandler:(id)handler
 {
   m_ptr = self->_page.m_impl.m_ptr;
   if (m_ptr && (v4 = *(m_ptr + 1)) != 0)
   {
-    v5 = _Block_copy(a3);
+    v5 = _Block_copy(handler);
     v6 = WTF::fastMalloc(0x10);
     *v6 = &unk_1F11079A0;
     v6[1] = v5;
@@ -101,10 +101,10 @@
   }
 }
 
-- (void)presentWithRequestData:(const void *)a3 completionHandler:(void *)a4
+- (void)presentWithRequestData:(const void *)data completionHandler:(void *)handler
 {
-  v6 = *a4;
-  *a4 = 0;
+  v6 = *handler;
+  *handler = 0;
   ptr = self->_completionHandler.m_function.m_callableWrapper.__ptr_;
   self->_completionHandler.m_function.m_callableWrapper.__ptr_ = v6;
   if (ptr)
@@ -120,33 +120,33 @@
   {
   }
 
-  [(WKDigitalCredentialsPicker *)self performRequest:a3];
+  [(WKDigitalCredentialsPicker *)self performRequest:data];
   [(WKDigitalCredentialsPicker *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(WKDigitalCredentialsPicker *)self delegate];
+    delegate = [(WKDigitalCredentialsPicker *)self delegate];
 
-    [(WKDigitalCredentialsPickerDelegate *)v10 digitalCredentialsPickerDidPresent:self];
+    [(WKDigitalCredentialsPickerDelegate *)delegate digitalCredentialsPickerDidPresent:self];
   }
 }
 
-- (void)dismissWithCompletionHandler:(void *)a3
+- (void)dismissWithCompletionHandler:(void *)handler
 {
   [(WKDigitalCredentialsPicker *)self dismiss];
 
-  WTF::CompletionHandler<void ()(BOOL)>::operator()(a3, 1);
+  WTF::CompletionHandler<void ()(BOOL)>::operator()(handler, 1);
 }
 
-- (void)performRequest:(const void *)a3
+- (void)performRequest:(const void *)request
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v63 = a3;
-  v5 = *(a3 + 3);
+  requestCopy = request;
+  v5 = *(request + 3);
   v74 = v4;
   if (!v5)
   {
 LABEL_85:
-    WebCore::SecurityOriginData::toURL(&to, (v63 + 2));
+    WebCore::SecurityOriginData::toURL(&to, (requestCopy + 2));
     WTF::URL::createCFURL(&v84, &to);
     v51 = to;
     to = 0;
@@ -214,8 +214,8 @@ LABEL_85:
     return;
   }
 
-  v6 = *a3;
-  v64 = *v63 + 40 * v5;
+  v6 = *request;
+  v64 = *requestCopy + 40 * v5;
   while (*(v6 + 32))
   {
 LABEL_4:
@@ -572,9 +572,9 @@ LABEL_72:
   [(WKIdentityDocumentPresentmentController *)v3 setDelegate:self];
 }
 
-- (void)handlePresentmentCompletionWithResponse:(id)a3 error:(id)a4
+- (void)handlePresentmentCompletionWithResponse:(id)response error:(id)error
 {
-  if (!(a3 | a4))
+  if (!(response | error))
   {
     WTF::StringImpl::createWithoutCopyingNonEmpty();
     v18 = v41;
@@ -590,14 +590,14 @@ LABEL_72:
     goto LABEL_16;
   }
 
-  if (!a3)
+  if (!response)
   {
 LABEL_60:
-    [(WKDigitalCredentialsPicker *)self handleNSError:a4];
+    [(WKDigitalCredentialsPicker *)self handleNSError:error];
     return;
   }
 
-  if (![objc_msgSend(a3 "responseData")])
+  if (![objc_msgSend(response "responseData")])
   {
     WTF::StringImpl::createWithoutCopyingNonEmpty();
     v18 = v41;
@@ -620,11 +620,11 @@ LABEL_16:
     return;
   }
 
-  v7 = [a3 responseData];
-  if (v7)
+  responseData = [response responseData];
+  if (responseData)
   {
-    v8 = v7;
-    [v7 bytes];
+    v8 = responseData;
+    [responseData bytes];
     [v8 length];
   }
 
@@ -652,11 +652,11 @@ LABEL_16:
     goto LABEL_56;
   }
 
-  v10 = [a3 protocolString];
-  v11 = v10;
-  if (v10)
+  protocolString = [response protocolString];
+  v11 = protocolString;
+  if (protocolString)
   {
-    v12 = v10;
+    v12 = protocolString;
   }
 
   v13 = [v11 isEqualToString:@"org.iso.mdoc"];
@@ -816,12 +816,12 @@ LABEL_56:
   }
 }
 
-- (void)handleNSError:(id)a3
+- (void)handleNSError:(id)error
 {
-  v5 = [a3 code];
-  if (v5 > 2)
+  code = [error code];
+  if (code > 2)
   {
-    if (v5 == 3)
+    if (code == 3)
     {
       WTF::StringImpl::createWithoutCopyingNonEmpty();
       v6 = v36;
@@ -830,7 +830,7 @@ LABEL_56:
       goto LABEL_15;
     }
 
-    if (v5 == 4)
+    if (code == 4)
     {
       WTF::StringImpl::createWithoutCopyingNonEmpty();
       v6 = v36;
@@ -841,9 +841,9 @@ LABEL_56:
 LABEL_8:
     WTF::StringImpl::createWithoutCopyingNonEmpty();
     v6 = v36;
-    v8 = [a3 userInfo];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696A278]];
-    if (v9 || (v10 = [a3 userInfo], (v9 = objc_msgSend(v10, "objectForKeyedSubscript:", *MEMORY[0x1E696A578])) != 0))
+    userInfo = [error userInfo];
+    v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A278]];
+    if (v9 || (v10 = [error userInfo], (v9 = objc_msgSend(v10, "objectForKeyedSubscript:", *MEMORY[0x1E696A578])) != 0))
     {
       v11 = v9;
     }
@@ -852,7 +852,7 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  if (v5 == 1)
+  if (code == 1)
   {
     WTF::StringImpl::createWithoutCopyingNonEmpty();
     v6 = v36;
@@ -860,7 +860,7 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  if (v5 != 2)
+  if (code != 2)
   {
     goto LABEL_8;
   }
@@ -888,8 +888,8 @@ LABEL_52:
     atomic_fetch_add_explicit(v6, 2u, memory_order_relaxed);
   }
 
-  v14 = [a3 userInfo];
-  v15 = WTF::dynamic_objc_cast<NSString>([v14 objectForKeyedSubscript:*MEMORY[0x1E696A278]]);
+  userInfo2 = [error userInfo];
+  v15 = WTF::dynamic_objc_cast<NSString>([userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696A278]]);
   v16 = v15;
   if (v15)
   {
@@ -1043,13 +1043,13 @@ LABEL_54:
   [(WKDigitalCredentialsPicker *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(WKDigitalCredentialsPicker *)self delegate];
+    delegate = [(WKDigitalCredentialsPicker *)self delegate];
 
-    [(WKDigitalCredentialsPickerDelegate *)v4 digitalCredentialsPickerDidDismiss:self];
+    [(WKDigitalCredentialsPickerDelegate *)delegate digitalCredentialsPickerDidDismiss:self];
   }
 }
 
-- (void)completeWith:(void *)a3
+- (void)completeWith:(void *)with
 {
   ptr = self->_completionHandler.m_function.m_callableWrapper.__ptr_;
   p_completionHandler = &self->_completionHandler;
@@ -1071,7 +1071,7 @@ LABEL_54:
 
 - (void)performRequest:
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  WeakRetained = objc_loadWeakRetained((self + 32));
   if (WeakRetained)
   {
     v6 = WeakRetained;
@@ -1079,22 +1079,22 @@ LABEL_54:
   }
 }
 
-- (uint64_t)fetchRawRequestsWithCompletionHandler:(uint64_t)a1
+- (uint64_t)fetchRawRequestsWithCompletionHandler:(uint64_t)handler
 {
-  *a1 = &unk_1F11079A0;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *handler = &unk_1F11079A0;
+  _Block_release(*(handler + 8));
+  return handler;
 }
 
-- (uint64_t)fetchRawRequestsWithCompletionHandler:(const void *)a1
+- (uint64_t)fetchRawRequestsWithCompletionHandler:(const void *)handler
 {
-  *a1 = &unk_1F11079A0;
-  _Block_release(a1[1]);
+  *handler = &unk_1F11079A0;
+  _Block_release(handler[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(handler, v2);
 }
 
-- (void)fetchRawRequestsWithCompletionHandler:(uint64_t)a1
+- (void)fetchRawRequestsWithCompletionHandler:(uint64_t)handler
 {
   v27[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1189,7 +1189,7 @@ LABEL_54:
     while (v5);
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(handler + 8) + 16))();
   if (v3)
   {
   }

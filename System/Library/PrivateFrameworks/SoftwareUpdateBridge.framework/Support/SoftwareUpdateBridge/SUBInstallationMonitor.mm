@@ -1,10 +1,10 @@
 @interface SUBInstallationMonitor
 + (id)sharedInstallationMonitor;
-- (BOOL)_installIntervalHasPassedSinceDate:(id)a3;
+- (BOOL)_installIntervalHasPassedSinceDate:(id)date;
 - (SUBInstallationMonitor)init;
 - (id)_installMarkerPath;
 - (id)descriptorBeingInstalled;
-- (void)gizmoDidBeginInstallingDescriptor:(id)a3;
+- (void)gizmoDidBeginInstallingDescriptor:(id)descriptor;
 - (void)gizmoUpdateCompleted;
 @end
 
@@ -42,15 +42,15 @@
 
 - (id)_installMarkerPath
 {
-  v3 = [(SUBInstallationMonitor *)self getActiveDevice];
-  v4 = v3;
+  getActiveDevice = [(SUBInstallationMonitor *)self getActiveDevice];
+  v4 = getActiveDevice;
   activeDeviceUUID = self->_activeDeviceUUID;
-  if (!activeDeviceUUID || ([v3 pairingID], v6 = objc_claimAutoreleasedReturnValue(), v7 = -[NSUUID isEqual:](activeDeviceUUID, "isEqual:", v6), v6, (v7 & 1) == 0))
+  if (!activeDeviceUUID || ([getActiveDevice pairingID], v6 = objc_claimAutoreleasedReturnValue(), v7 = -[NSUUID isEqual:](activeDeviceUUID, "isEqual:", v6), v6, (v7 & 1) == 0))
   {
     self->_didCheckInstallMarker = 0;
-    v8 = [v4 pairingID];
+    pairingID = [v4 pairingID];
     v9 = self->_activeDeviceUUID;
-    self->_activeDeviceUUID = v8;
+    self->_activeDeviceUUID = pairingID;
   }
 
   if (v4)
@@ -90,17 +90,17 @@
   return v12;
 }
 
-- (void)gizmoDidBeginInstallingDescriptor:(id)a3
+- (void)gizmoDidBeginInstallingDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000FF7C;
   v7[3] = &unk_10002D210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = descriptorCopy;
+  v6 = descriptorCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -115,14 +115,14 @@
   dispatch_sync(queue, block);
 }
 
-- (BOOL)_installIntervalHasPassedSinceDate:(id)a3
+- (BOOL)_installIntervalHasPassedSinceDate:(id)date
 {
-  if (!a3)
+  if (!date)
   {
     return 1;
   }
 
-  v3 = [a3 dateByAddingTimeInterval:self->_installTimeout];
+  v3 = [date dateByAddingTimeInterval:self->_installTimeout];
   v4 = +[NSDate date];
   v5 = [v4 compare:v3] != -1;
 

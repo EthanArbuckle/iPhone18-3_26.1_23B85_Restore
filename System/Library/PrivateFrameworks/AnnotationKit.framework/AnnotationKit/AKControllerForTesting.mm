@@ -1,11 +1,11 @@
 @interface AKControllerForTesting
-+ (void)renderAnnotation:(id)a3 inContext:(CGContext *)a4;
++ (void)renderAnnotation:(id)annotation inContext:(CGContext *)context;
 - (AKControllerForTesting)init;
-- (BOOL)validateSender:(id)a3;
-- (void)performActionForSender:(id)a3;
+- (BOOL)validateSender:(id)sender;
+- (void)performActionForSender:(id)sender;
 - (void)reloadVisibleToolbarItemIdentifiers;
-- (void)setOverlayShouldPixelate:(BOOL)a3;
-- (void)updateOverlayViewAtIndex:(unint64_t)a3;
+- (void)setOverlayShouldPixelate:(BOOL)pixelate;
+- (void)updateOverlayViewAtIndex:(unint64_t)index;
 @end
 
 @implementation AKControllerForTesting
@@ -17,50 +17,50 @@
   return [(AKController *)&v3 initForTesting];
 }
 
-- (void)updateOverlayViewAtIndex:(unint64_t)a3
+- (void)updateOverlayViewAtIndex:(unint64_t)index
 {
   NSLog(&cfstr_SCalledDuringT.isa, a2, "[AKControllerForTesting updateOverlayViewAtIndex:]");
   v5.receiver = self;
   v5.super_class = AKControllerForTesting;
-  [(AKController *)&v5 updateOverlayViewAtIndex:a3];
+  [(AKController *)&v5 updateOverlayViewAtIndex:index];
 }
 
-- (void)setOverlayShouldPixelate:(BOOL)a3
+- (void)setOverlayShouldPixelate:(BOOL)pixelate
 {
-  v3 = a3;
+  pixelateCopy = pixelate;
   NSLog(&cfstr_SCalledDuringT.isa, a2, "[AKControllerForTesting setOverlayShouldPixelate:]");
   v5.receiver = self;
   v5.super_class = AKControllerForTesting;
-  [(AKController *)&v5 setOverlayShouldPixelate:v3];
+  [(AKController *)&v5 setOverlayShouldPixelate:pixelateCopy];
 }
 
-- (void)performActionForSender:(id)a3
+- (void)performActionForSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   NSLog(&cfstr_SCalledDuringT.isa, "[AKControllerForTesting performActionForSender:]");
   v5.receiver = self;
   v5.super_class = AKControllerForTesting;
-  [(AKController *)&v5 performActionForSender:v4];
+  [(AKController *)&v5 performActionForSender:senderCopy];
 }
 
-- (BOOL)validateSender:(id)a3
+- (BOOL)validateSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   NSLog(&cfstr_SCalledDuringT.isa, "[AKControllerForTesting validateSender:]");
   v6.receiver = self;
   v6.super_class = AKControllerForTesting;
-  LOBYTE(self) = [(AKController *)&v6 validateSender:v4];
+  LOBYTE(self) = [(AKController *)&v6 validateSender:senderCopy];
 
   return self;
 }
 
-+ (void)renderAnnotation:(id)a3 inContext:(CGContext *)a4
++ (void)renderAnnotation:(id)annotation inContext:(CGContext *)context
 {
-  v6 = a3;
+  annotationCopy = annotation;
   NSLog(&cfstr_SCalledDuringT.isa, "+[AKControllerForTesting renderAnnotation:inContext:]");
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___AKControllerForTesting;
-  objc_msgSendSuper2(&v7, sel_renderAnnotation_inContext_, v6, a4);
+  objc_msgSendSuper2(&v7, sel_renderAnnotation_inContext_, annotationCopy, context);
 }
 
 - (void)reloadVisibleToolbarItemIdentifiers

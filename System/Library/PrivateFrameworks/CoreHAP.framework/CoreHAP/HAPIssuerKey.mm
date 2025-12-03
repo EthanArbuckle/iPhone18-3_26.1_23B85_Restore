@@ -1,12 +1,12 @@
 @interface HAPIssuerKey
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPIssuerKey)init;
-- (HAPIssuerKey)initWithType:(id)a3 key:(id)a4;
+- (HAPIssuerKey)initWithType:(id)type key:(id)key;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPIssuerKey
@@ -14,17 +14,17 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPIssuerKey *)self type];
+  type = [(HAPIssuerKey *)self type];
   v5 = [(HAPIssuerKey *)self key];
-  v6 = [v3 stringWithFormat:@"<HAPIssuerKey type=%@, key=%@>", v4, v5];
+  v6 = [v3 stringWithFormat:@"<HAPIssuerKey type=%@, key=%@>", type, v5];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -34,14 +34,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPIssuerKey *)self type];
-      v8 = [(HAPIssuerKey *)v6 type];
-      if (v7 != v8)
+      v6 = equalCopy;
+      type = [(HAPIssuerKey *)self type];
+      type2 = [(HAPIssuerKey *)v6 type];
+      if (type != type2)
       {
-        v9 = [(HAPIssuerKey *)self type];
-        v3 = [(HAPIssuerKey *)v6 type];
-        if (![v9 isEqual:v3])
+        type3 = [(HAPIssuerKey *)self type];
+        type4 = [(HAPIssuerKey *)v6 type];
+        if (![type3 isEqual:type4])
         {
           v10 = 0;
 LABEL_13:
@@ -50,7 +50,7 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = type3;
       }
 
       v11 = [(HAPIssuerKey *)self key];
@@ -67,8 +67,8 @@ LABEL_14:
         v10 = [v13 isEqual:v14];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      type3 = v16;
+      if (type == type2)
       {
         goto LABEL_14;
       }
@@ -84,17 +84,17 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPIssuerKey allocWithZone:a3];
-  v5 = [(HAPIssuerKey *)self type];
+  v4 = [HAPIssuerKey allocWithZone:zone];
+  type = [(HAPIssuerKey *)self type];
   v6 = [(HAPIssuerKey *)self key];
-  v7 = [(HAPIssuerKey *)v4 initWithType:v5 key:v6];
+  v7 = [(HAPIssuerKey *)v4 initWithType:type key:v6];
 
   return v7;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
   v43 = 0u;
@@ -119,13 +119,13 @@ LABEL_15:
   v26 = 0u;
   v24 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPIssuerKey *)self type];
+  type = [(HAPIssuerKey *)self type];
 
-  if (v5)
+  if (type)
   {
-    v6 = [(HAPIssuerKey *)self type];
+    type2 = [(HAPIssuerKey *)self type];
     v23 = 0;
-    v7 = [v6 serializeWithError:&v23];
+    v7 = [type2 serializeWithError:&v23];
     v8 = v23;
 
     if (v8)
@@ -140,11 +140,11 @@ LABEL_15:
     if (v9)
     {
 LABEL_21:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus(v9);
         v8 = 0;
-        *a3 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_26;
       }
 
@@ -170,18 +170,18 @@ LABEL_23:
 
   if (!v8)
   {
-    v14 = [v7 bytes];
-    v15 = v14 + [v7 length];
+    bytes = [v7 bytes];
+    v15 = bytes + [v7 length];
     do
     {
-      if ((v15 - v14) >= 255)
+      if ((v15 - bytes) >= 255)
       {
         v16 = 255;
       }
 
       else
       {
-        v16 = v15 - v14;
+        v16 = v15 - bytes;
       }
 
       v17 = TLV8BufferAppend();
@@ -195,7 +195,7 @@ LABEL_23:
         v18 = v16;
       }
 
-      v14 += v18;
+      bytes += v18;
       if (v17)
       {
         v19 = 1;
@@ -203,7 +203,7 @@ LABEL_23:
 
       else
       {
-        v19 = v14 >= v15;
+        v19 = bytes >= v15;
       }
     }
 
@@ -220,11 +220,11 @@ LABEL_23:
 
 LABEL_6:
 
-  if (a3)
+  if (error)
   {
     v12 = v8;
     v13 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_26;
   }
 
@@ -238,28 +238,28 @@ LABEL_26:
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v9 = 0;
     v10 = 0;
 LABEL_16:
-    [(HAPIssuerKey *)self setType:v10, v23];
+    [(HAPIssuerKey *)self setType:v10, errorCopy];
     [(HAPIssuerKey *)self setKey:v9];
     v11 = 0;
     v19 = 1;
     goto LABEL_23;
   }
 
-  v23 = a4;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  v12 = v7 + v8;
+  v12 = bytes + v8;
   while (1)
   {
     v29 = 0;
@@ -269,10 +269,10 @@ LABEL_16:
     Next = TLV8GetNext();
     if (Next)
     {
-      if (v23)
+      if (errorCopy)
       {
         HMErrorFromOSStatus(Next);
-        *v23 = v19 = 0;
+        *errorCopy = v19 = 0;
         goto LABEL_23;
       }
 
@@ -287,7 +287,7 @@ LABEL_16:
     if (v29 == 2)
     {
       v25 = v11;
-      v14 = HAPTLVParseContiguousTlvs(2, v7, v12, v27, &v25);
+      v14 = HAPTLVParseContiguousTlvs(2, bytes, v12, v27, &v25);
       v16 = v25;
 
       if (!v16)
@@ -317,7 +317,7 @@ LABEL_10:
     }
 
 LABEL_12:
-    v7 = v27[0];
+    bytes = v27[0];
     if (v27[0] >= v12)
     {
       if (!v11)
@@ -338,11 +338,11 @@ LABEL_12:
   }
 
 LABEL_20:
-  if (v23)
+  if (errorCopy)
   {
     v21 = v11;
     v19 = 0;
-    *v23 = v11;
+    *errorCopy = v11;
     goto LABEL_23;
   }
 
@@ -353,18 +353,18 @@ LABEL_23:
   return v19;
 }
 
-- (HAPIssuerKey)initWithType:(id)a3 key:(id)a4
+- (HAPIssuerKey)initWithType:(id)type key:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  keyCopy = key;
   v12.receiver = self;
   v12.super_class = HAPIssuerKey;
   v9 = [(HAPIssuerKey *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_type, a3);
-    objc_storeStrong(&v10->_key, a4);
+    objc_storeStrong(&v9->_type, type);
+    objc_storeStrong(&v10->_key, key);
   }
 
   return v10;
@@ -377,24 +377,24 @@ LABEL_23:
   return [(HAPIssuerKey *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPIssuerKey);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPIssuerKey *)v6 parseFromData:v5 error:&v11];
+    [(HAPIssuerKey *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

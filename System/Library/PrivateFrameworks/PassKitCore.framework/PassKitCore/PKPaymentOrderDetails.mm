@@ -1,7 +1,7 @@
 @interface PKPaymentOrderDetails
-- (PKPaymentOrderDetails)initWithCoder:(id)a3;
+- (PKPaymentOrderDetails)initWithCoder:(id)coder;
 - (PKPaymentOrderDetails)initWithOrderTypeIdentifier:(NSString *)orderTypeIdentifier orderIdentifier:(NSString *)orderIdentifier webServiceURL:(NSURL *)webServiceURL authenticationToken:(NSString *)authenticationToken;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOrderDetails
@@ -34,27 +34,27 @@
   return v14;
 }
 
-- (PKPaymentOrderDetails)initWithCoder:(id)a3
+- (PKPaymentOrderDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKPaymentOrderDetails;
   v5 = [(PKPaymentOrderDetails *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"orderTypeIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"orderTypeIdentifier"];
     orderTypeIdentifier = v5->_orderTypeIdentifier;
     v5->_orderTypeIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"orderIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"orderIdentifier"];
     orderIdentifier = v5->_orderIdentifier;
     v5->_orderIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"webServiceURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"webServiceURL"];
     webServiceURL = v5->_webServiceURL;
     v5->_webServiceURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authenticationToken"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authenticationToken"];
     authenticationToken = v5->_authenticationToken;
     v5->_authenticationToken = v12;
   }
@@ -62,14 +62,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   orderTypeIdentifier = self->_orderTypeIdentifier;
-  v5 = a3;
-  [v5 encodeObject:orderTypeIdentifier forKey:@"orderTypeIdentifier"];
-  [v5 encodeObject:self->_orderIdentifier forKey:@"orderIdentifier"];
-  [v5 encodeObject:self->_webServiceURL forKey:@"webServiceURL"];
-  [v5 encodeObject:self->_authenticationToken forKey:@"authenticationToken"];
+  coderCopy = coder;
+  [coderCopy encodeObject:orderTypeIdentifier forKey:@"orderTypeIdentifier"];
+  [coderCopy encodeObject:self->_orderIdentifier forKey:@"orderIdentifier"];
+  [coderCopy encodeObject:self->_webServiceURL forKey:@"webServiceURL"];
+  [coderCopy encodeObject:self->_authenticationToken forKey:@"authenticationToken"];
 }
 
 @end

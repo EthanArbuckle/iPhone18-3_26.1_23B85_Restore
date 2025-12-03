@@ -1,50 +1,50 @@
 @interface SBEscrowOperationStartEvent
-- (SBEscrowOperationStartEvent)initWithRequest:(id)a3 type:(unint64_t)a4;
-- (SBEscrowOperationStartEvent)initWithRequest:(id)a3 type:(unint64_t)a4 context:(id)a5;
-- (id)endEventWithResults:(id)a3 error:(id)a4;
-- (id)endEventWithResults:(id)a3 error:(id)a4 context:(id)a5;
+- (SBEscrowOperationStartEvent)initWithRequest:(id)request type:(unint64_t)type;
+- (SBEscrowOperationStartEvent)initWithRequest:(id)request type:(unint64_t)type context:(id)context;
+- (id)endEventWithResults:(id)results error:(id)error;
+- (id)endEventWithResults:(id)results error:(id)error context:(id)context;
 @end
 
 @implementation SBEscrowOperationStartEvent
 
-- (SBEscrowOperationStartEvent)initWithRequest:(id)a3 type:(unint64_t)a4 context:(id)a5
+- (SBEscrowOperationStartEvent)initWithRequest:(id)request type:(unint64_t)type context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  requestCopy = request;
   v10 = +[NSUUID UUID];
-  v11 = [v9 activityUUID];
-  v12 = [v9 activityLabel];
-  v13 = [v9 recordID];
+  activityUUID = [requestCopy activityUUID];
+  activityLabel = [requestCopy activityLabel];
+  recordID = [requestCopy recordID];
 
-  v14 = [(SBEscrowOperationEvent *)self initWithOperationId:v10 activityId:v11 activityLabel:v12 recordId:v13 type:a4 context:v8];
+  v14 = [(SBEscrowOperationEvent *)self initWithOperationId:v10 activityId:activityUUID activityLabel:activityLabel recordId:recordID type:type context:contextCopy];
   return v14;
 }
 
-- (SBEscrowOperationStartEvent)initWithRequest:(id)a3 type:(unint64_t)a4
+- (SBEscrowOperationStartEvent)initWithRequest:(id)request type:(unint64_t)type
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = objc_alloc_init(ESADefaultOperationLoggingContext);
-  v8 = [(SBEscrowOperationStartEvent *)self initWithRequest:v6 type:a4 context:v7];
+  v8 = [(SBEscrowOperationStartEvent *)self initWithRequest:requestCopy type:type context:v7];
 
   return v8;
 }
 
-- (id)endEventWithResults:(id)a3 error:(id)a4 context:(id)a5
+- (id)endEventWithResults:(id)results error:(id)error context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[SBEscrowOperationEndEvent alloc] initWithStartEvent:self results:v10 error:v9 context:v8];
+  contextCopy = context;
+  errorCopy = error;
+  resultsCopy = results;
+  v11 = [[SBEscrowOperationEndEvent alloc] initWithStartEvent:self results:resultsCopy error:errorCopy context:contextCopy];
 
   return v11;
 }
 
-- (id)endEventWithResults:(id)a3 error:(id)a4
+- (id)endEventWithResults:(id)results error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  resultsCopy = results;
   v8 = objc_alloc_init(ESADefaultOperationLoggingContext);
-  v9 = [(SBEscrowOperationStartEvent *)self endEventWithResults:v7 error:v6 context:v8];
+  v9 = [(SBEscrowOperationStartEvent *)self endEventWithResults:resultsCopy error:errorCopy context:v8];
 
   return v9;
 }

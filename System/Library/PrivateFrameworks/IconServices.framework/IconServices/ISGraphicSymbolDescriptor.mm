@@ -1,23 +1,23 @@
 @interface ISGraphicSymbolDescriptor
-+ (id)descriptorFromGraphicIconConfiguration:(id)a3;
-+ (id)descriptorFromGraphicSymbolRecipe:(id)a3;
++ (id)descriptorFromGraphicIconConfiguration:(id)configuration;
++ (id)descriptorFromGraphicSymbolRecipe:(id)recipe;
 - (BOOL)placeholder;
 - (id)description;
 @end
 
 @implementation ISGraphicSymbolDescriptor
 
-+ (id)descriptorFromGraphicSymbolRecipe:(id)a3
++ (id)descriptorFromGraphicSymbolRecipe:(id)recipe
 {
-  v3 = a3;
+  recipeCopy = recipe;
   v4 = objc_alloc_init(ISGraphicSymbolDescriptor);
   v5 = _ISDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(ISGraphicSymbolDescriptor *)v3 descriptorFromGraphicSymbolRecipe:v5];
+    [(ISGraphicSymbolDescriptor *)recipeCopy descriptorFromGraphicSymbolRecipe:v5];
   }
 
-  if (!v3)
+  if (!recipeCopy)
   {
     v6 = _ISDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -27,9 +27,9 @@
     }
   }
 
-  v7 = [(ISIconConfigurationMarkupParser *)[ISGraphicIconConfigurationParser alloc] initWithConfigurationDictionary:v3];
-  v8 = [(ISGraphicIconConfigurationParser *)v7 aliasedConfigurationDictionary];
-  if (v8)
+  v7 = [(ISIconConfigurationMarkupParser *)[ISGraphicIconConfigurationParser alloc] initWithConfigurationDictionary:recipeCopy];
+  aliasedConfigurationDictionary = [(ISGraphicIconConfigurationParser *)v7 aliasedConfigurationDictionary];
+  if (aliasedConfigurationDictionary)
   {
     v9 = _ISDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -37,18 +37,18 @@
       +[ISGraphicSymbolDescriptor descriptorFromGraphicSymbolRecipe:];
     }
 
-    v10 = [(ISIconConfigurationMarkupParser *)[ISGraphicIconConfigurationParser alloc] initWithConfigurationDictionary:v8];
+    v10 = [(ISIconConfigurationMarkupParser *)[ISGraphicIconConfigurationParser alloc] initWithConfigurationDictionary:aliasedConfigurationDictionary];
     v7 = v10;
   }
 
-  v11 = [(ISGraphicIconConfigurationParser *)v7 symbolName];
-  [(IFGraphicSymbolDescriptor *)v4 setName:v11];
+  symbolName = [(ISGraphicIconConfigurationParser *)v7 symbolName];
+  [(IFGraphicSymbolDescriptor *)v4 setName:symbolName];
 
-  v12 = [(ISGraphicIconConfigurationParser *)v7 symbolColors];
-  [(IFGraphicSymbolDescriptor *)v4 setSymbolColors:v12];
+  symbolColors = [(ISGraphicIconConfigurationParser *)v7 symbolColors];
+  [(IFGraphicSymbolDescriptor *)v4 setSymbolColors:symbolColors];
 
-  v13 = [(ISGraphicIconConfigurationParser *)v7 enclosureColors];
-  [(IFGraphicSymbolDescriptor *)v4 setEnclosureColors:v13];
+  enclosureColors = [(ISGraphicIconConfigurationParser *)v7 enclosureColors];
+  [(IFGraphicSymbolDescriptor *)v4 setEnclosureColors:enclosureColors];
 
   [(IFGraphicSymbolDescriptor *)v4 setRenderingMode:[(ISGraphicIconConfigurationParser *)v7 renderingMode]];
   v14 = _ISDefaultLog();
@@ -60,17 +60,17 @@
   return v4;
 }
 
-+ (id)descriptorFromGraphicIconConfiguration:(id)a3
++ (id)descriptorFromGraphicIconConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = objc_alloc_init(ISGraphicSymbolDescriptor);
-  v5 = [v3 symbolColors];
-  [(IFGraphicSymbolDescriptor *)v4 setSymbolColors:v5];
+  symbolColors = [configurationCopy symbolColors];
+  [(IFGraphicSymbolDescriptor *)v4 setSymbolColors:symbolColors];
 
-  v6 = [v3 enclosureColors];
-  [(IFGraphicSymbolDescriptor *)v4 setEnclosureColors:v6];
+  enclosureColors = [configurationCopy enclosureColors];
+  [(IFGraphicSymbolDescriptor *)v4 setEnclosureColors:enclosureColors];
 
-  -[IFGraphicSymbolDescriptor setRenderingMode:](v4, "setRenderingMode:", [v3 renderingMode]);
+  -[IFGraphicSymbolDescriptor setRenderingMode:](v4, "setRenderingMode:", [configurationCopy renderingMode]);
   v7 = _ISDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -82,11 +82,11 @@
 
 - (BOOL)placeholder
 {
-  v5 = [(IFGraphicSymbolDescriptor *)self symbolColors];
-  if (v5)
+  symbolColors = [(IFGraphicSymbolDescriptor *)self symbolColors];
+  if (symbolColors)
   {
-    v2 = [(IFGraphicSymbolDescriptor *)self symbolColors];
-    if ([v2 count])
+    symbolColors2 = [(IFGraphicSymbolDescriptor *)self symbolColors];
+    if ([symbolColors2 count])
     {
       LOBYTE(v6) = 1;
 LABEL_12:
@@ -95,11 +95,11 @@ LABEL_12:
     }
   }
 
-  v7 = [(IFGraphicSymbolDescriptor *)self enclosureColors];
-  if (v7)
+  enclosureColors = [(IFGraphicSymbolDescriptor *)self enclosureColors];
+  if (enclosureColors)
   {
-    v3 = [(IFGraphicSymbolDescriptor *)self enclosureColors];
-    if ([v3 count] || -[IFGraphicSymbolDescriptor renderingMode](self, "renderingMode"))
+    enclosureColors2 = [(IFGraphicSymbolDescriptor *)self enclosureColors];
+    if ([enclosureColors2 count] || -[IFGraphicSymbolDescriptor renderingMode](self, "renderingMode"))
     {
       LOBYTE(v6) = 1;
 LABEL_8:
@@ -114,14 +114,14 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v9 = [(IFGraphicSymbolDescriptor *)self name];
-  if (v9)
+  name = [(IFGraphicSymbolDescriptor *)self name];
+  if (name)
   {
-    v10 = v9;
-    v11 = [(IFGraphicSymbolDescriptor *)self name];
-    v6 = [v11 isEqual:0x1F1A4EC20] ^ 1;
+    v10 = name;
+    name2 = [(IFGraphicSymbolDescriptor *)self name];
+    v6 = [name2 isEqual:0x1F1A4EC20] ^ 1;
 
-    if (v7)
+    if (enclosureColors)
     {
       goto LABEL_8;
     }
@@ -130,14 +130,14 @@ LABEL_8:
   else
   {
     LOBYTE(v6) = 0;
-    if (v7)
+    if (enclosureColors)
     {
       goto LABEL_8;
     }
   }
 
 LABEL_11:
-  if (v5)
+  if (symbolColors)
   {
     goto LABEL_12;
   }
@@ -151,13 +151,13 @@ LABEL_13:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IFGraphicSymbolDescriptor *)self name];
+  name = [(IFGraphicSymbolDescriptor *)self name];
   [(IFGraphicSymbolDescriptor *)self size];
   v7 = v6;
   [(IFGraphicSymbolDescriptor *)self size];
   v9 = v8;
   [(IFSymbolImageDescriptor *)self scale];
-  v11 = [v3 stringWithFormat:@"<%@ %p> %@ - (%0.2f, %0.2f)@%.0fx", v4, self, v5, v7, v9, v10];
+  v11 = [v3 stringWithFormat:@"<%@ %p> %@ - (%0.2f, %0.2f)@%.0fx", v4, self, name, v7, v9, v10];
 
   return v11;
 }

@@ -1,33 +1,33 @@
 @interface MRIDSCompanionTransportConnection
-- (MRIDSCompanionTransportConnection)initWithConnection:(id)a3 type:(id)a4 destination:(id)a5 session:(id)a6;
-- (id)_exportDescriptorForOutputDevice:(id)a3 endpoint:(id)a4 remoteControl:(BOOL)a5;
+- (MRIDSCompanionTransportConnection)initWithConnection:(id)connection type:(id)type destination:(id)destination session:(id)session;
+- (id)_exportDescriptorForOutputDevice:(id)device endpoint:(id)endpoint remoteControl:(BOOL)control;
 - (id)error;
-- (id)exportEndpoint:(id)a3;
-- (id)exportOutputDevice:(id)a3 endpoint:(id)a4;
-- (int64_t)_idsPriorityFromPriority:(int64_t)a3;
-- (unint64_t)sendTransportData:(id)a3 options:(id)a4;
-- (void)closeWithError:(id)a3;
+- (id)exportEndpoint:(id)endpoint;
+- (id)exportOutputDevice:(id)device endpoint:(id)endpoint;
+- (int64_t)_idsPriorityFromPriority:(int64_t)priority;
+- (unint64_t)sendTransportData:(id)data options:(id)options;
+- (void)closeWithError:(id)error;
 - (void)dealloc;
 @end
 
 @implementation MRIDSCompanionTransportConnection
 
-- (MRIDSCompanionTransportConnection)initWithConnection:(id)a3 type:(id)a4 destination:(id)a5 session:(id)a6
+- (MRIDSCompanionTransportConnection)initWithConnection:(id)connection type:(id)type destination:(id)destination session:(id)session
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  connectionCopy = connection;
+  typeCopy = type;
+  destinationCopy = destination;
+  sessionCopy = session;
   v22.receiver = self;
   v22.super_class = MRIDSCompanionTransportConnection;
   v15 = [(MRExternalDeviceTransportConnection *)&v22 initWithDataSource:self];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_connection, a3);
-    objc_storeStrong(&v16->_type, a4);
-    objc_storeStrong(&v16->_destination, a5);
-    objc_storeStrong(&v16->_session, a6);
+    objc_storeStrong(&v15->_connection, connection);
+    objc_storeStrong(&v16->_type, type);
+    objc_storeStrong(&v16->_destination, destination);
+    objc_storeStrong(&v16->_session, session);
     objc_initWeak(&location, v16);
     connection = v16->_connection;
     v19[0] = MEMORY[0x1E69E9820];
@@ -35,7 +35,7 @@
     v19[2] = __81__MRIDSCompanionTransportConnection_initWithConnection_type_destination_session___block_invoke;
     v19[3] = &unk_1E769CC80;
     objc_copyWeak(&v20, &location);
-    [(MRIDSCompanionConnection *)connection setMessageHandler:v19 forType:v16->_type destination:v16->_destination session:v14];
+    [(MRIDSCompanionConnection *)connection setMessageHandler:v19 forType:v16->_type destination:v16->_destination session:sessionCopy];
     objc_destroyWeak(&v20);
     objc_destroyWeak(&location);
   }
@@ -64,23 +64,23 @@ void __81__MRIDSCompanionTransportConnection_initWithConnection_type_destination
 
 - (id)error
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSError *)v2->_error copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSError *)selfCopy->_error copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (unint64_t)sendTransportData:(id)a3 options:(id)a4
+- (unint64_t)sendTransportData:(id)data options:(id)options
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = -[MRIDSCompanionTransportConnection _idsPriorityFromPriority:](self, "_idsPriorityFromPriority:", [v6 priority]);
-  v9 = [v6 isWaking];
+  optionsCopy = options;
+  dataCopy = data;
+  v8 = -[MRIDSCompanionTransportConnection _idsPriorityFromPriority:](self, "_idsPriorityFromPriority:", [optionsCopy priority]);
+  isWaking = [optionsCopy isWaking];
 
-  if (v9)
+  if (isWaking)
   {
     v10 = 0;
   }
@@ -92,69 +92,69 @@ void __81__MRIDSCompanionTransportConnection_initWithConnection_type_destination
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   }
 
-  [(MRIDSCompanionConnection *)self->_connection sendMessage:v7 type:self->_type destination:self->_destination session:self->_session options:v10 priority:v8];
-  v11 = [v7 length];
+  [(MRIDSCompanionConnection *)self->_connection sendMessage:dataCopy type:self->_type destination:self->_destination session:self->_session options:v10 priority:v8];
+  v11 = [dataCopy length];
 
   v12 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (void)closeWithError:(id)a3
+- (void)closeWithError:(id)error
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  connection = v4->_connection;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connection = selfCopy->_connection;
   if (connection)
   {
-    [(MRIDSCompanionConnection *)connection removeMessageHandlerForType:v4->_type destination:v4->_destination session:v4->_session];
-    v6 = v8;
-    if (!v8)
+    [(MRIDSCompanionConnection *)connection removeMessageHandlerForType:selfCopy->_type destination:selfCopy->_destination session:selfCopy->_session];
+    v6 = errorCopy;
+    if (!errorCopy)
     {
       v6 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithMRError:104];
     }
 
-    v8 = v6;
-    objc_storeStrong(&v4->_error, v6);
-    v7 = v4->_connection;
-    v4->_connection = 0;
+    errorCopy = v6;
+    objc_storeStrong(&selfCopy->_error, v6);
+    v7 = selfCopy->_connection;
+    selfCopy->_connection = 0;
 
-    objc_sync_exit(v4);
-    [(MRExternalDeviceTransportConnection *)v4 _notifyDelegateDidCloseWithError:v8];
+    objc_sync_exit(selfCopy);
+    [(MRExternalDeviceTransportConnection *)selfCopy _notifyDelegateDidCloseWithError:errorCopy];
   }
 
   else
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (id)exportEndpoint:(id)a3
+- (id)exportEndpoint:(id)endpoint
 {
-  v4 = a3;
-  if ([v4 isLocalEndpoint])
+  endpointCopy = endpoint;
+  if ([endpointCopy isLocalEndpoint])
   {
-    v5 = [v4 groupLeader];
-    v6 = [(MRIDSCompanionTransportConnection *)self _exportDescriptorForOutputDevice:v5 endpoint:v4 remoteControl:1];
+    groupLeader = [endpointCopy groupLeader];
+    v6 = [(MRIDSCompanionTransportConnection *)self _exportDescriptorForOutputDevice:groupLeader endpoint:endpointCopy remoteControl:1];
 
     if (v6)
     {
-      v7 = [v4 outputDevices];
+      outputDevices = [endpointCopy outputDevices];
       v15 = MEMORY[0x1E69E9820];
       v16 = 3221225472;
       v17 = __52__MRIDSCompanionTransportConnection_exportEndpoint___block_invoke;
       v18 = &unk_1E769CCA8;
-      v19 = self;
-      v8 = v4;
+      selfCopy = self;
+      v8 = endpointCopy;
       v20 = v8;
-      v9 = [v7 mr_compactMap:&v15];
+      v9 = [outputDevices mr_compactMap:&v15];
       v10 = [v9 mutableCopy];
 
       [v10 addObject:v6];
-      v11 = [v8 descriptor];
-      [v11 setDesignatedGroupLeader:v6];
-      [v11 setOutputDevices:v10];
-      v12 = [[MRAVDistantEndpoint alloc] initWithDescriptor:v11];
+      descriptor = [v8 descriptor];
+      [descriptor setDesignatedGroupLeader:v6];
+      [descriptor setOutputDevices:v10];
+      v12 = [[MRAVDistantEndpoint alloc] initWithDescriptor:descriptor];
     }
 
     else
@@ -165,12 +165,12 @@ void __81__MRIDSCompanionTransportConnection_initWithConnection_type_destination
 
   else
   {
-    v13 = [v4 designatedGroupLeader];
-    v12 = [v13 uid];
+    designatedGroupLeader = [endpointCopy designatedGroupLeader];
+    v12 = [designatedGroupLeader uid];
 
     if (v12)
     {
-      v12 = v4;
+      v12 = endpointCopy;
     }
   }
 
@@ -193,118 +193,118 @@ id __52__MRIDSCompanionTransportConnection_exportEndpoint___block_invoke(uint64_
   return v4;
 }
 
-- (id)exportOutputDevice:(id)a3 endpoint:(id)a4
+- (id)exportOutputDevice:(id)device endpoint:(id)endpoint
 {
-  v4 = [(MRIDSCompanionTransportConnection *)self _exportDescriptorForOutputDevice:a3 endpoint:a4 remoteControl:0];
+  v4 = [(MRIDSCompanionTransportConnection *)self _exportDescriptorForOutputDevice:device endpoint:endpoint remoteControl:0];
   v5 = [[MRAVDistantOutputDevice alloc] initWithDescriptor:v4];
 
   return v5;
 }
 
-- (int64_t)_idsPriorityFromPriority:(int64_t)a3
+- (int64_t)_idsPriorityFromPriority:(int64_t)priority
 {
-  if (a3 > 5)
+  if (priority > 5)
   {
     return 100;
   }
 
   else
   {
-    return qword_1A2B80E08[a3];
+    return qword_1A2B80E08[priority];
   }
 }
 
-- (id)_exportDescriptorForOutputDevice:(id)a3 endpoint:(id)a4 remoteControl:(BOOL)a5
+- (id)_exportDescriptorForOutputDevice:(id)device endpoint:(id)endpoint remoteControl:(BOOL)control
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 descriptor];
-  [v9 setTransportType:3];
+  controlCopy = control;
+  deviceCopy = device;
+  endpointCopy = endpoint;
+  descriptor = [deviceCopy descriptor];
+  [descriptor setTransportType:3];
   v10 = +[MROrigin localOrigin];
   v11 = [MRDeviceInfoRequest deviceInfoForOrigin:v10];
 
-  if (v5)
+  if (controlCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v13 = [v7 uid];
-    v12 = [v8 containsOutputDeviceWithUID:v13];
+    v13 = [deviceCopy uid];
+    v12 = [endpointCopy containsOutputDeviceWithUID:v13];
   }
 
-  if ([v7 isLocalDevice])
+  if ([deviceCopy isLocalDevice])
   {
-    [v9 setHostDeviceClass:{_MRDeviceInfoMessageProtobuf_DeviceClassFromModel(objc_msgSend(v11, "deviceClass"))}];
-    v14 = [v11 WHAIdentifier];
-    [v9 setPrimaryUID:v14];
+    [descriptor setHostDeviceClass:{_MRDeviceInfoMessageProtobuf_DeviceClassFromModel(objc_msgSend(v11, "deviceClass"))}];
+    wHAIdentifier = [v11 WHAIdentifier];
+    [descriptor setPrimaryUID:wHAIdentifier];
 
     if (v12)
     {
-      v15 = [v11 groupUID];
-      [v9 setGroupID:v15];
+      groupUID = [v11 groupUID];
+      [descriptor setGroupID:groupUID];
 
-      [v9 setGroupContainsGroupLeader:1];
-      [v9 setIsRemoteControllable:1];
-      [v9 setIsGroupLeader:1];
-      [v9 setIsLocalDevice:0];
-      v16 = [v8 outputDevices];
-      [v9 setIsProxyGroupPlayer:{objc_msgSend(v16, "mr_any:", &__block_literal_global_28)}];
+      [descriptor setGroupContainsGroupLeader:1];
+      [descriptor setIsRemoteControllable:1];
+      [descriptor setIsGroupLeader:1];
+      [descriptor setIsLocalDevice:0];
+      outputDevices = [endpointCopy outputDevices];
+      [descriptor setIsProxyGroupPlayer:{objc_msgSend(outputDevices, "mr_any:", &__block_literal_global_28)}];
     }
 
     else
     {
-      [v9 setGroupID:0];
-      [v9 setGroupContainsGroupLeader:0];
-      [v9 setIsRemoteControllable:0];
-      [v9 setIsGroupLeader:0];
-      [v9 setIsLocalDevice:0];
-      [v9 setIsProxyGroupPlayer:0];
+      [descriptor setGroupID:0];
+      [descriptor setGroupContainsGroupLeader:0];
+      [descriptor setIsRemoteControllable:0];
+      [descriptor setIsGroupLeader:0];
+      [descriptor setIsLocalDevice:0];
+      [descriptor setIsProxyGroupPlayer:0];
     }
 
-    if ([v7 deviceType] == 4)
+    if ([deviceCopy deviceType] == 4)
     {
-      v19 = [v7 sourceInfo];
-      v20 = [v19 multipleBuiltInDevices];
+      sourceInfo = [deviceCopy sourceInfo];
+      multipleBuiltInDevices = [sourceInfo multipleBuiltInDevices];
 
-      if ((v20 & 1) == 0)
+      if ((multipleBuiltInDevices & 1) == 0)
       {
-        v21 = [v11 localizedModelName];
-        [v9 setName:v21];
+        localizedModelName = [v11 localizedModelName];
+        [descriptor setName:localizedModelName];
 
-        v22 = [v11 modelID];
-        [v9 setModelID:v22];
+        modelID = [v11 modelID];
+        [descriptor setModelID:modelID];
       }
     }
 
-    if (v5)
+    if (controlCopy)
     {
-      v23 = [v11 WHAIdentifier];
-      [v9 setUniqueIdentifier:v23];
+      wHAIdentifier2 = [v11 WHAIdentifier];
+      [descriptor setUniqueIdentifier:wHAIdentifier2];
 
-      v18 = [v11 localizedModelName];
-      [v9 setName:v18];
+      localizedModelName2 = [v11 localizedModelName];
+      [descriptor setName:localizedModelName2];
       goto LABEL_16;
     }
   }
 
-  else if (([v8 isLocalEndpoint] & v12) == 1)
+  else if (([endpointCopy isLocalEndpoint] & v12) == 1)
   {
-    [v9 setIsRemoteControllable:1];
-    [v9 setIsGroupLeader:0];
-    v17 = [v7 groupID];
+    [descriptor setIsRemoteControllable:1];
+    [descriptor setIsGroupLeader:0];
+    groupID = [deviceCopy groupID];
 
-    if (!v17)
+    if (!groupID)
     {
-      v18 = [v11 groupUID];
-      [v9 setGroupID:v18];
+      localizedModelName2 = [v11 groupUID];
+      [descriptor setGroupID:localizedModelName2];
 LABEL_16:
     }
   }
 
-  return v9;
+  return descriptor;
 }
 
 @end

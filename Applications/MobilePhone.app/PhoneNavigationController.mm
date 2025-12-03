@@ -1,7 +1,7 @@
 @interface PhoneNavigationController
 + ($1FF454C5B48E436092D281DABF654916)badge;
 - (BOOL)shouldSnapshot;
-- (PhoneNavigationController)initWithRootViewController:(id)a3;
+- (PhoneNavigationController)initWithRootViewController:(id)controller;
 - (VMPlayerController)playerController;
 - (id)selectedMessage;
 - (id)selectedMessageTableViewCell;
@@ -9,17 +9,17 @@
 - (id)tabBarIconName;
 - (void)_updateRootViewController;
 - (void)dealloc;
-- (void)handleURL:(id)a3;
-- (void)playerController:(id)a3 didChangeToCurrentTime:(float)a4;
-- (void)playerController:(id)a3 didChangeToDuration:(double)a4;
-- (void)playerController:(id)a3 didChangeToStatus:(int64_t)a4;
-- (void)playerController:(id)a3 didChangeToTimeControlStatus:(int64_t)a4;
-- (void)playerController:(id)a3 didSeekToTime:(float)a4;
-- (void)playerController:(id)a3 willSeekToTime:(float)a4;
+- (void)handleURL:(id)l;
+- (void)playerController:(id)controller didChangeToCurrentTime:(float)time;
+- (void)playerController:(id)controller didChangeToDuration:(double)duration;
+- (void)playerController:(id)controller didChangeToStatus:(int64_t)status;
+- (void)playerController:(id)controller didChangeToTimeControlStatus:(int64_t)status;
+- (void)playerController:(id)controller didSeekToTime:(float)time;
+- (void)playerController:(id)controller willSeekToTime:(float)time;
 - (void)prepareForSnapshot;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)setViewControllers:(id)a3;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)setViewControllers:(id)controllers;
 @end
 
 @implementation PhoneNavigationController
@@ -35,60 +35,60 @@
 
 - (id)tabBarIconName
 {
-  v2 = [(PhoneNavigationController *)self viewControllers];
-  v3 = [v2 firstObject];
+  viewControllers = [(PhoneNavigationController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 tabBarIconName];
+    tabBarIconName = [firstObject tabBarIconName];
   }
 
   else
   {
-    v4 = &stru_10028F310;
+    tabBarIconName = &stru_10028F310;
   }
 
-  return v4;
+  return tabBarIconName;
 }
 
 - (id)tabBarIconImage
 {
-  v2 = [(PhoneNavigationController *)self viewControllers];
-  v3 = [v2 firstObject];
+  viewControllers = [(PhoneNavigationController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 tabBarIconImage];
+    tabBarIconImage = [firstObject tabBarIconImage];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    tabBarIconImage = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = tabBarIconImage;
 
   return v5;
 }
 
-- (PhoneNavigationController)initWithRootViewController:(id)a3
+- (PhoneNavigationController)initWithRootViewController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = PhoneNavigationController;
-  v3 = [(PhoneNavigationController *)&v9 initWithRootViewController:a3];
+  v3 = [(PhoneNavigationController *)&v9 initWithRootViewController:controller];
   if (v3)
   {
     if ([UIApp userInterfaceStyle] == 1)
     {
       v4 = objc_alloc_init(UIImage);
-      v5 = [(PhoneNavigationController *)v3 navigationBar];
-      [v5 setBackgroundImage:v4 forBarPosition:0 barMetrics:0];
+      navigationBar = [(PhoneNavigationController *)v3 navigationBar];
+      [navigationBar setBackgroundImage:v4 forBarPosition:0 barMetrics:0];
 
-      v6 = [(PhoneNavigationController *)v3 navigationBar];
-      [v6 setBarStyle:1];
+      navigationBar2 = [(PhoneNavigationController *)v3 navigationBar];
+      [navigationBar2 setBarStyle:1];
 
-      v7 = [(PhoneNavigationController *)v3 navigationBar];
-      [v7 setTranslucent:1];
+      navigationBar3 = [(PhoneNavigationController *)v3 navigationBar];
+      [navigationBar3 setTranslucent:1];
 
       [(PhoneNavigationController *)v3 _setClipUnderlapWhileTransitioning:1];
     }
@@ -111,13 +111,13 @@
 
 - (void)_updateRootViewController
 {
-  v5 = [(PhoneNavigationController *)self viewControllers];
-  if (![v5 count])
+  viewControllers = [(PhoneNavigationController *)self viewControllers];
+  if (![viewControllers count])
   {
     goto LABEL_5;
   }
 
-  v3 = [v5 objectAtIndex:0];
+  v3 = [viewControllers objectAtIndex:0];
   v4 = v3;
   if (v3 && ([(PhoneTabViewController *)v3 conformsToProtocol:&OBJC_PROTOCOL___PhoneTabViewController]& 1) == 0)
   {
@@ -132,28 +132,28 @@ LABEL_5:
   }
 }
 
-- (void)setViewControllers:(id)a3
+- (void)setViewControllers:(id)controllers
 {
   v4.receiver = self;
   v4.super_class = PhoneNavigationController;
-  [(PhoneNavigationController *)&v4 setViewControllers:a3];
+  [(PhoneNavigationController *)&v4 setViewControllers:controllers];
   [(PhoneNavigationController *)self _updateRootViewController];
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   if ([UIApp userInterfaceStyle] == 1)
   {
-    [v6 setEdgesForExtendedLayout:0];
+    [controllerCopy setEdgesForExtendedLayout:0];
   }
 
   v9.receiver = self;
   v9.super_class = PhoneNavigationController;
-  [(PhoneNavigationController *)&v9 pushViewController:v6 animated:v4];
-  v7 = [(PhoneNavigationController *)self viewControllers];
-  v8 = [v7 count];
+  [(PhoneNavigationController *)&v9 pushViewController:controllerCopy animated:animatedCopy];
+  viewControllers = [(PhoneNavigationController *)self viewControllers];
+  v8 = [viewControllers count];
 
   if (v8 == 1)
   {
@@ -161,51 +161,51 @@ LABEL_5:
   }
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
   if ([UIApp userInterfaceStyle] == 1)
   {
-    [v8 setEdgesForExtendedLayout:0];
+    [controllerCopy setEdgesForExtendedLayout:0];
   }
 
   v10.receiver = self;
   v10.super_class = PhoneNavigationController;
-  [(PhoneNavigationController *)&v10 presentViewController:v8 animated:v6 completion:v9];
+  [(PhoneNavigationController *)&v10 presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
 - (BOOL)shouldSnapshot
 {
-  v3 = [(PhoneNavigationController *)self rootViewController];
-  v4 = [(PhoneNavigationController *)self visibleViewController];
-  if (v4 == v3)
+  rootViewController = [(PhoneNavigationController *)self rootViewController];
+  visibleViewController = [(PhoneNavigationController *)self visibleViewController];
+  if (visibleViewController == rootViewController)
   {
-    v5 = [v3 shouldSnapshot];
+    shouldSnapshot = [rootViewController shouldSnapshot];
   }
 
   else
   {
-    v5 = 0;
+    shouldSnapshot = 0;
   }
 
-  return v5;
+  return shouldSnapshot;
 }
 
 - (void)prepareForSnapshot
 {
-  v2 = [(PhoneNavigationController *)self rootViewController];
-  [v2 prepareForSnapshot];
+  rootViewController = [(PhoneNavigationController *)self rootViewController];
+  [rootViewController prepareForSnapshot];
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v5 = a3;
-  v4 = [(PhoneNavigationController *)self rootViewController];
+  lCopy = l;
+  rootViewController = [(PhoneNavigationController *)self rootViewController];
   if (objc_opt_respondsToSelector())
   {
-    [v4 handleURL:v5];
+    [rootViewController handleURL:lCopy];
   }
 }
 
@@ -227,18 +227,18 @@ LABEL_5:
 
 - (id)selectedMessage
 {
-  v3 = [(PhoneNavigationController *)self topViewController];
+  topViewController = [(PhoneNavigationController *)self topViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 detailIndexPath];
-    if (v5)
+    v4 = topViewController;
+    detailIndexPath = [v4 detailIndexPath];
+    if (detailIndexPath)
     {
-      v6 = v5;
-      v7 = [v4 messageAtIndex:{objc_msgSend(v5, "row")}];
+      v6 = detailIndexPath;
+      displayedMessage2 = [v4 messageAtIndex:{objc_msgSend(detailIndexPath, "row")}];
 
-      if (v7)
+      if (displayedMessage2)
       {
         goto LABEL_9;
       }
@@ -249,49 +249,49 @@ LABEL_5:
     }
   }
 
-  v8 = [(PhoneNavigationController *)self displayedMessage];
+  displayedMessage = [(PhoneNavigationController *)self displayedMessage];
 
-  if (v8)
+  if (displayedMessage)
   {
-    v7 = [(PhoneNavigationController *)self displayedMessage];
+    displayedMessage2 = [(PhoneNavigationController *)self displayedMessage];
   }
 
   else
   {
-    v7 = 0;
+    displayedMessage2 = 0;
   }
 
 LABEL_9:
 
-  return v7;
+  return displayedMessage2;
 }
 
 - (id)selectedMessageTableViewCell
 {
-  v3 = [(PhoneNavigationController *)self topViewController];
+  topViewController = [(PhoneNavigationController *)self topViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 detailIndexPath];
-    if (v5)
+    v4 = topViewController;
+    detailIndexPath = [v4 detailIndexPath];
+    if (detailIndexPath)
     {
-      v6 = v5;
-      v7 = [v4 tableView];
-      v8 = [v7 cellForRowAtIndexPath:v6];
+      v6 = detailIndexPath;
+      tableView = [v4 tableView];
+      v8 = [tableView cellForRowAtIndexPath:v6];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = v8;
+        displayedTableViewCell2 = v8;
       }
 
       else
       {
-        v9 = 0;
+        displayedTableViewCell2 = 0;
       }
 
-      if (v9)
+      if (displayedTableViewCell2)
       {
         goto LABEL_11;
       }
@@ -302,43 +302,43 @@ LABEL_9:
     }
   }
 
-  v10 = [(PhoneNavigationController *)self displayedTableViewCell];
+  displayedTableViewCell = [(PhoneNavigationController *)self displayedTableViewCell];
 
-  if (v10)
+  if (displayedTableViewCell)
   {
-    v9 = [(PhoneNavigationController *)self displayedTableViewCell];
+    displayedTableViewCell2 = [(PhoneNavigationController *)self displayedTableViewCell];
   }
 
   else
   {
-    v9 = 0;
+    displayedTableViewCell2 = 0;
   }
 
 LABEL_11:
 
-  return v9;
+  return displayedTableViewCell2;
 }
 
-- (void)playerController:(id)a3 didChangeToCurrentTime:(float)a4
+- (void)playerController:(id)controller didChangeToCurrentTime:(float)time
 {
-  v6 = [(PhoneNavigationController *)self selectedMessageTableViewCell];
-  v7 = v6;
-  if (v6)
+  selectedMessageTableViewCell = [(PhoneNavigationController *)self selectedMessageTableViewCell];
+  v7 = selectedMessageTableViewCell;
+  if (selectedMessageTableViewCell)
   {
-    v8 = a4;
-    v9 = [v6 playerControlsView];
-    [v9 setElapsedTime:v8];
+    timeCopy = time;
+    playerControlsView = [selectedMessageTableViewCell playerControlsView];
+    [playerControlsView setElapsedTime:timeCopy];
 
-    v10 = [(PhoneNavigationController *)self selectedMessage];
-    v11 = v10;
-    if (v10)
+    selectedMessage = [(PhoneNavigationController *)self selectedMessage];
+    v11 = selectedMessage;
+    if (selectedMessage)
     {
-      if ([v10 shouldMarkAsReadForPlaybackCurrentTime:v8])
+      if ([selectedMessage shouldMarkAsReadForPlaybackCurrentTime:timeCopy])
       {
-        v12 = [(PhoneNavigationController *)self voicemailController];
+        voicemailController = [(PhoneNavigationController *)self voicemailController];
         v14 = v11;
         v13 = [NSArray arrayWithObjects:&v14 count:1];
-        [v12 markMessagesAsRead:v13];
+        [voicemailController markMessagesAsRead:v13];
 
         if (([v7 isRead] & 1) == 0)
         {
@@ -349,87 +349,87 @@ LABEL_11:
   }
 }
 
-- (void)playerController:(id)a3 didChangeToDuration:(double)a4
+- (void)playerController:(id)controller didChangeToDuration:(double)duration
 {
-  v15 = a3;
-  v6 = [(PhoneNavigationController *)self selectedMessageTableViewCell];
-  v7 = v6;
-  if (v6)
+  controllerCopy = controller;
+  selectedMessageTableViewCell = [(PhoneNavigationController *)self selectedMessageTableViewCell];
+  v7 = selectedMessageTableViewCell;
+  if (selectedMessageTableViewCell)
   {
-    v8 = [v6 playerControlsView];
-    v9 = [v8 timelineSlider];
-    [v9 setDuration:a4];
+    playerControlsView = [selectedMessageTableViewCell playerControlsView];
+    timelineSlider = [playerControlsView timelineSlider];
+    [timelineSlider setDuration:duration];
 
-    if ([v15 status] == 1)
+    if ([controllerCopy status] == 1)
     {
-      [v15 duration];
+      [controllerCopy duration];
       v11 = v10;
-      v12 = [v7 playerControlsView];
-      [v12 setDuration:v11];
+      playerControlsView2 = [v7 playerControlsView];
+      [playerControlsView2 setDuration:v11];
 
-      v13 = [v7 playerControlsView];
-      [v13 setElapsedTime:0.0];
+      playerControlsView3 = [v7 playerControlsView];
+      [playerControlsView3 setElapsedTime:0.0];
 
-      v14 = [v7 playerControlsView];
-      [v14 setEnabled:1];
+      playerControlsView4 = [v7 playerControlsView];
+      [playerControlsView4 setEnabled:1];
     }
   }
 }
 
-- (void)playerController:(id)a3 didChangeToStatus:(int64_t)a4
+- (void)playerController:(id)controller didChangeToStatus:(int64_t)status
 {
-  v5 = [(PhoneNavigationController *)self selectedMessageTableViewCell];
-  if (v5)
+  selectedMessageTableViewCell = [(PhoneNavigationController *)self selectedMessageTableViewCell];
+  if (selectedMessageTableViewCell)
   {
-    if (a4 == 2)
+    if (status == 2)
     {
-      v9 = v5;
+      v9 = selectedMessageTableViewCell;
       [UIApp setIdleTimerDisabled:0];
     }
 
     else
     {
-      if (a4 == 1)
+      if (status == 1)
       {
-        v9 = v5;
-        v6 = [v5 playerControlsView];
-        v7 = v6;
+        v9 = selectedMessageTableViewCell;
+        playerControlsView = [selectedMessageTableViewCell playerControlsView];
+        v7 = playerControlsView;
         v8 = 1;
       }
 
       else
       {
-        if (a4)
+        if (status)
         {
           goto LABEL_10;
         }
 
-        v9 = v5;
-        v6 = [v5 playerControlsView];
-        v7 = v6;
+        v9 = selectedMessageTableViewCell;
+        playerControlsView = [selectedMessageTableViewCell playerControlsView];
+        v7 = playerControlsView;
         v8 = 0;
       }
 
-      [v6 setEnabled:v8];
+      [playerControlsView setEnabled:v8];
     }
 
-    v5 = v9;
+    selectedMessageTableViewCell = v9;
   }
 
 LABEL_10:
 }
 
-- (void)playerController:(id)a3 didChangeToTimeControlStatus:(int64_t)a4
+- (void)playerController:(id)controller didChangeToTimeControlStatus:(int64_t)status
 {
-  v5 = [(PhoneNavigationController *)self selectedMessageTableViewCell];
-  if (v5)
+  selectedMessageTableViewCell = [(PhoneNavigationController *)self selectedMessageTableViewCell];
+  if (selectedMessageTableViewCell)
   {
-    if (a4 == 2)
+    if (status == 2)
     {
-      v14 = v5;
-      v12 = [v5 toolbar];
-      v13 = [v12 playerControlButton];
-      [v13 setPlayerState:1 enabled:1];
+      v14 = selectedMessageTableViewCell;
+      toolbar = [selectedMessageTableViewCell toolbar];
+      playerControlButton = [toolbar playerControlButton];
+      [playerControlButton setPlayerState:1 enabled:1];
 
       v8 = UIApp;
       v9 = 1;
@@ -437,27 +437,27 @@ LABEL_10:
 
     else
     {
-      if (a4 == 1)
+      if (status == 1)
       {
-        v14 = v5;
-        v10 = [v5 toolbar];
-        v11 = [v10 playerControlButton];
-        [v11 setPlayerState:1 enabled:1];
+        v14 = selectedMessageTableViewCell;
+        toolbar2 = [selectedMessageTableViewCell toolbar];
+        playerControlButton2 = [toolbar2 playerControlButton];
+        [playerControlButton2 setPlayerState:1 enabled:1];
 
 LABEL_9:
-        v5 = v14;
+        selectedMessageTableViewCell = v14;
         goto LABEL_10;
       }
 
-      if (a4)
+      if (status)
       {
         goto LABEL_10;
       }
 
-      v14 = v5;
-      v6 = [v5 toolbar];
-      v7 = [v6 playerControlButton];
-      [v7 setPlayerState:0 enabled:1];
+      v14 = selectedMessageTableViewCell;
+      toolbar3 = [selectedMessageTableViewCell toolbar];
+      playerControlButton3 = [toolbar3 playerControlButton];
+      [playerControlButton3 setPlayerState:0 enabled:1];
 
       v8 = UIApp;
       v9 = 0;
@@ -470,29 +470,29 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)playerController:(id)a3 willSeekToTime:(float)a4
+- (void)playerController:(id)controller willSeekToTime:(float)time
 {
-  v11 = a3;
-  v5 = [(PhoneNavigationController *)self selectedMessage];
-  v6 = [v5 dataURL];
+  controllerCopy = controller;
+  selectedMessage = [(PhoneNavigationController *)self selectedMessage];
+  dataURL = [selectedMessage dataURL];
 
-  v7 = [v11 URL];
-  if (!v7 || (v8 = v7, [v11 URL], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqual:", v6), v9, v8, (v10 & 1) == 0))
+  v7 = [controllerCopy URL];
+  if (!v7 || (v8 = v7, [controllerCopy URL], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqual:", dataURL), v9, v8, (v10 & 1) == 0))
   {
-    [v11 setURL:v6];
+    [controllerCopy setURL:dataURL];
   }
 }
 
-- (void)playerController:(id)a3 didSeekToTime:(float)a4
+- (void)playerController:(id)controller didSeekToTime:(float)time
 {
-  v5 = [(PhoneNavigationController *)self selectedMessageTableViewCell];
-  if (v5)
+  selectedMessageTableViewCell = [(PhoneNavigationController *)self selectedMessageTableViewCell];
+  if (selectedMessageTableViewCell)
   {
-    v7 = v5;
-    v6 = [v5 playerControlsView];
-    [v6 setElapsedTime:0 animated:a4];
+    v7 = selectedMessageTableViewCell;
+    playerControlsView = [selectedMessageTableViewCell playerControlsView];
+    [playerControlsView setElapsedTime:0 animated:time];
 
-    v5 = v7;
+    selectedMessageTableViewCell = v7;
   }
 }
 

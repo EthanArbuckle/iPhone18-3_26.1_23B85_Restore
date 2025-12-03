@@ -1,29 +1,29 @@
 @interface FHSuggestedEvent
-- (FHSuggestedEvent)initWithPPSuggestedEvent:(id)a3;
+- (FHSuggestedEvent)initWithPPSuggestedEvent:(id)event;
 - (id)description;
 @end
 
 @implementation FHSuggestedEvent
 
-- (FHSuggestedEvent)initWithPPSuggestedEvent:(id)a3
+- (FHSuggestedEvent)initWithPPSuggestedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = FHSuggestedEvent;
   v5 = [(FHSuggestedEvent *)&v11 init];
   if (v5)
   {
-    v6 = [v4 title];
-    [(FHSuggestedEvent *)v5 setTitle:v6];
+    title = [eventCopy title];
+    [(FHSuggestedEvent *)v5 setTitle:title];
 
-    v7 = [v4 startDate];
-    [(FHSuggestedEvent *)v5 setStartDate:v7];
+    startDate = [eventCopy startDate];
+    [(FHSuggestedEvent *)v5 setStartDate:startDate];
 
-    v8 = [v4 endDate];
-    [(FHSuggestedEvent *)v5 setEndDate:v8];
+    endDate = [eventCopy endDate];
+    [(FHSuggestedEvent *)v5 setEndDate:endDate];
 
-    v9 = [v4 eventIdentifier];
-    [(FHSuggestedEvent *)v5 setEventIdentifier:v9];
+    eventIdentifier = [eventCopy eventIdentifier];
+    [(FHSuggestedEvent *)v5 setEventIdentifier:eventIdentifier];
   }
 
   return v5;

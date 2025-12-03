@@ -1,26 +1,26 @@
 @interface MRSupportedProtocolMessages
-- (MRSupportedProtocolMessages)initWithCoder:(id)a3;
-- (MRSupportedProtocolMessages)initWithLastSupportedMessageType:(unint64_t)a3;
+- (MRSupportedProtocolMessages)initWithCoder:(id)coder;
+- (MRSupportedProtocolMessages)initWithLastSupportedMessageType:(unint64_t)type;
 @end
 
 @implementation MRSupportedProtocolMessages
 
-- (MRSupportedProtocolMessages)initWithLastSupportedMessageType:(unint64_t)a3
+- (MRSupportedProtocolMessages)initWithLastSupportedMessageType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = MRSupportedProtocolMessages;
   result = [(MRSupportedProtocolMessages *)&v5 init];
   if (result)
   {
-    result->_lastSupportedMessageType = a3;
+    result->_lastSupportedMessageType = type;
   }
 
   return result;
 }
 
-- (MRSupportedProtocolMessages)initWithCoder:(id)a3
+- (MRSupportedProtocolMessages)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"lastSupportedMessageType"];
+  v4 = [coder decodeIntegerForKey:@"lastSupportedMessageType"];
 
   return [(MRSupportedProtocolMessages *)self initWithLastSupportedMessageType:v4];
 }

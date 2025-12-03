@@ -1,48 +1,48 @@
 @interface SBRendererServiceConnection
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (SBRendererServiceConnection)initWithRenderService:(id)a3 analysisServer:(id)a4;
-- (id)activateWithListener:(id)a3;
-- (id)executeAnalysisRequest:(id)a3 error:(id *)a4;
-- (id)executeAnalysisRequest:(id)a3 reply:(id)a4;
-- (void)cancelRequest:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (SBRendererServiceConnection)initWithRenderService:(id)service analysisServer:(id)server;
+- (id)activateWithListener:(id)listener;
+- (id)executeAnalysisRequest:(id)request error:(id *)error;
+- (id)executeAnalysisRequest:(id)request reply:(id)reply;
+- (void)cancelRequest:(id)request;
 @end
 
 @implementation SBRendererServiceConnection
 
-- (SBRendererServiceConnection)initWithRenderService:(id)a3 analysisServer:(id)a4
+- (SBRendererServiceConnection)initWithRenderService:(id)service analysisServer:(id)server
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  serverCopy = server;
   v9 = [(SBRendererServiceConnection *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_renderService, a3);
-    objc_storeStrong(&v10->_analysisServer, a4);
+    objc_storeStrong(&v9->_renderService, service);
+    objc_storeStrong(&v10->_analysisServer, server);
   }
 
   return v10;
 }
 
-- (id)activateWithListener:(id)a3
+- (id)activateWithListener:(id)listener
 {
-  v5 = a3;
-  if (!v5)
+  listenerCopy = listener;
+  if (!listenerCopy)
   {
     sub_10000347C(a2, self);
   }
 
-  v6 = v5;
-  [v5 setDelegate:self];
+  v6 = listenerCopy;
+  [listenerCopy setDelegate:self];
   [v6 activate];
-  v7 = self;
+  selfCopy = self;
   v8 = [BSSimpleAssertion alloc];
   v9 = [v6 description];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100002DD8;
   v13[3] = &unk_100008450;
-  v13[4] = v7;
+  v13[4] = selfCopy;
   v14 = v6;
   v10 = v6;
   v11 = [v8 initWithIdentifier:v9 forReason:@"SBRendererServiceConnection stay-alive" invalidationBlock:v13];
@@ -50,9 +50,9 @@
   return v11;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___PUIServicesInterface];
   v7 = +[PUICARemoteRenderer secureCodableRequestClasses];
   [v6 setClasses:v7 forSelector:"renderRequest:reply:" argumentIndex:0 ofReply:0];
@@ -75,25 +75,25 @@
   v13 = +[SBImageAnalysisServer secureCodableRequestClasses];
   [v6 setClasses:v13 forSelector:"cancelRequest:" argumentIndex:0 ofReply:0];
 
-  [v5 setExportedInterface:v6];
-  [v5 setExportedObject:self];
-  [v5 activate];
+  [connectionCopy setExportedInterface:v6];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy activate];
   v14 = SBRSLogXPC();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v16[0] = 67109120;
-    v16[1] = [v5 processIdentifier];
+    v16[1] = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Accepting connection from PID=%d", v16, 8u);
   }
 
   return 1;
 }
 
-- (id)executeAnalysisRequest:(id)a3 reply:(id)a4
+- (id)executeAnalysisRequest:(id)request reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = dword_10000DD18++;
-  v8 = a3;
+  requestCopy = request;
   Current = CFAbsoluteTimeGetCurrent();
   v10 = SBRSLogXPC();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -106,19 +106,19 @@
   v21[1] = 3221225472;
   v21[2] = sub_100003170;
   v21[3] = &unk_100008478;
-  v22 = v6;
+  v22 = replyCopy;
   v24 = v7;
   v23 = Current;
-  v18 = v6;
-  v19 = [(SBImageAnalysisServer *)analysisServer executeAnalysisRequest:v8 reply:v21];
+  v18 = replyCopy;
+  v19 = [(SBImageAnalysisServer *)analysisServer executeAnalysisRequest:requestCopy reply:v21];
 
   return v19;
 }
 
-- (void)cancelRequest:(id)a3
+- (void)cancelRequest:(id)request
 {
   ++dword_10000DD1C;
-  v4 = a3;
+  requestCopy = request;
   CFAbsoluteTimeGetCurrent();
   v5 = SBRSLogXPC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -126,7 +126,7 @@
     sub_1000036B8();
   }
 
-  [(SBImageAnalysisServer *)self->_analysisServer cancelRequest:v4];
+  [(SBImageAnalysisServer *)self->_analysisServer cancelRequest:requestCopy];
   v6 = SBRSLogXPC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -134,10 +134,10 @@
   }
 }
 
-- (id)executeAnalysisRequest:(id)a3 error:(id *)a4
+- (id)executeAnalysisRequest:(id)request error:(id *)error
 {
   ++dword_10000DD20;
-  v6 = a3;
+  requestCopy = request;
   CFAbsoluteTimeGetCurrent();
   v7 = SBRSLogXPC();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -145,7 +145,7 @@
     sub_1000037D4();
   }
 
-  v8 = [(SBImageAnalysisServer *)self->_analysisServer executeAnalysisRequest:v6 error:a4];
+  v8 = [(SBImageAnalysisServer *)self->_analysisServer executeAnalysisRequest:requestCopy error:error];
 
   v9 = SBRSLogXPC();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))

@@ -1,6 +1,6 @@
 @interface PIPosterLayoutRequest
 - (CGRect)normalizedLayoutBounds;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 - (void)_commonInit;
 @end
@@ -27,28 +27,28 @@
   return [(_PIPosterLayoutJob *)v3 initWithPosterLayoutRequest:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23.receiver = self;
   v23.super_class = PIPosterLayoutRequest;
-  v4 = [(NURenderRequest *)&v23 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v23 copyWithZone:zone];
   if (v4)
   {
-    v5 = [(PIPosterLayoutRequest *)self layoutConfiguration];
+    layoutConfiguration = [(PIPosterLayoutRequest *)self layoutConfiguration];
     v6 = v4[21];
-    v4[21] = v5;
+    v4[21] = layoutConfiguration;
 
-    v7 = [(PIPosterLayoutRequest *)self layoutRegions];
+    layoutRegions = [(PIPosterLayoutRequest *)self layoutRegions];
     v8 = v4[22];
-    v4[22] = v7;
+    v4[22] = layoutRegions;
 
-    v9 = [(PIPosterLayoutRequest *)self segmentationMatte];
+    segmentationMatte = [(PIPosterLayoutRequest *)self segmentationMatte];
     v10 = v4[23];
-    v4[23] = v9;
+    v4[23] = segmentationMatte;
 
-    v11 = [(PIPosterLayoutRequest *)self segmentationConfidenceMap];
+    segmentationConfidenceMap = [(PIPosterLayoutRequest *)self segmentationConfidenceMap];
     v12 = v4[24];
-    v4[24] = v11;
+    v4[24] = segmentationConfidenceMap;
 
     v4[25] = [(PIPosterLayoutRequest *)self segmentationClassification];
     *(v4 + 160) = [(PIPosterLayoutRequest *)self shouldConstrainLayoutToBounds];
@@ -60,17 +60,17 @@
     v4[34] = v16;
     *(v4 + 162) = [(PIPosterLayoutRequest *)self shouldComputeAllScores];
     *(v4 + 163) = [(PIPosterLayoutRequest *)self shouldConsiderHeadroom];
-    v17 = [(PIPosterLayoutRequest *)self layoutProvider];
+    layoutProvider = [(PIPosterLayoutRequest *)self layoutProvider];
     v18 = v4[29];
-    v4[29] = v17;
+    v4[29] = layoutProvider;
 
     v4[27] = [(PIPosterLayoutRequest *)self allowedLayoutStrategies];
     *(v4 + 164) = [(PIPosterLayoutRequest *)self shouldComputeSpatialLayout];
     [(PIPosterLayoutRequest *)self spatialPadding];
     v4[26] = v19;
-    v20 = [(PIPosterLayoutRequest *)self allowedClockStretch];
+    allowedClockStretch = [(PIPosterLayoutRequest *)self allowedClockStretch];
     v21 = v4[28];
-    v4[28] = v20;
+    v4[28] = allowedClockStretch;
 
     v4[30] = [(PIPosterLayoutRequest *)self role];
   }

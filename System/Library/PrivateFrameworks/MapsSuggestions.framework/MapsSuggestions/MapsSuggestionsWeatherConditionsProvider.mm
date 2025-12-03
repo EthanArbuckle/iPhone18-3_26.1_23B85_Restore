@@ -1,22 +1,22 @@
 @interface MapsSuggestionsWeatherConditionsProvider
 - (_TtC12destinationd40MapsSuggestionsWeatherConditionsProvider)init;
-- (_TtC12destinationd40MapsSuggestionsWeatherConditionsProvider)initWithQueue:(id)a3 locationRange:(double)a4;
+- (_TtC12destinationd40MapsSuggestionsWeatherConditionsProvider)initWithQueue:(id)queue locationRange:(double)range;
 - (void)didUpdateLocation;
 @end
 
 @implementation MapsSuggestionsWeatherConditionsProvider
 
-- (_TtC12destinationd40MapsSuggestionsWeatherConditionsProvider)initWithQueue:(id)a3 locationRange:(double)a4
+- (_TtC12destinationd40MapsSuggestionsWeatherConditionsProvider)initWithQueue:(id)queue locationRange:(double)range
 {
-  v5 = a3;
-  v6 = sub_1000485FC(v5, a4);
+  queueCopy = queue;
+  v6 = sub_1000485FC(queueCopy, range);
 
   return v6;
 }
 
 - (void)didUpdateLocation
 {
-  v2 = self;
+  selfCopy = self;
   MapsSuggestionsWeatherConditionsProvider.didUpdateLocation()();
 }
 

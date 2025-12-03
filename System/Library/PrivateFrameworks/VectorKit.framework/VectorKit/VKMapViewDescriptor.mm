@@ -1,5 +1,5 @@
 @interface VKMapViewDescriptor
-+ (id)descriptorWithShouldRasterize:(BOOL)a3 inBackground:(BOOL)a4 contentScale:(double)a5 auditToken:(id)a6 mapViewPurpose:(int64_t)a7 allowsAntialiasing:(BOOL)a8;
++ (id)descriptorWithShouldRasterize:(BOOL)rasterize inBackground:(BOOL)background contentScale:(double)scale auditToken:(id)token mapViewPurpose:(int64_t)purpose allowsAntialiasing:(BOOL)antialiasing;
 - (VKMapViewDescriptor)init;
 @end
 
@@ -20,19 +20,19 @@
   return result;
 }
 
-+ (id)descriptorWithShouldRasterize:(BOOL)a3 inBackground:(BOOL)a4 contentScale:(double)a5 auditToken:(id)a6 mapViewPurpose:(int64_t)a7 allowsAntialiasing:(BOOL)a8
++ (id)descriptorWithShouldRasterize:(BOOL)rasterize inBackground:(BOOL)background contentScale:(double)scale auditToken:(id)token mapViewPurpose:(int64_t)purpose allowsAntialiasing:(BOOL)antialiasing
 {
-  v8 = a8;
-  v11 = a4;
-  v12 = a3;
-  v14 = a6;
-  v15 = objc_alloc_init(a1);
-  [v15 setShouldRasterize:v12];
-  [v15 setInBackground:v11];
-  [v15 setContentScale:a5];
-  [v15 setAuditToken:v14];
-  [v15 setMapViewPurpose:a7];
-  [v15 setAllowsAntialiasing:v8];
+  antialiasingCopy = antialiasing;
+  backgroundCopy = background;
+  rasterizeCopy = rasterize;
+  tokenCopy = token;
+  v15 = objc_alloc_init(self);
+  [v15 setShouldRasterize:rasterizeCopy];
+  [v15 setInBackground:backgroundCopy];
+  [v15 setContentScale:scale];
+  [v15 setAuditToken:tokenCopy];
+  [v15 setMapViewPurpose:purpose];
+  [v15 setAllowsAntialiasing:antialiasingCopy];
 
   return v15;
 }

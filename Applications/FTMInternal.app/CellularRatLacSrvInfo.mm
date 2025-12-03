@@ -1,48 +1,48 @@
 @interface CellularRatLacSrvInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRoamStatus:(id)a3;
+- (int)StringAsRoamStatus:(id)status;
 - (int)roamStatus;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAsubsId:(BOOL)a3;
-- (void)setHasCellId2nd:(BOOL)a3;
-- (void)setHasCellId:(BOOL)a3;
-- (void)setHasCompanionType:(BOOL)a3;
-- (void)setHasDynNr5gEnabling:(BOOL)a3;
-- (void)setHasElapsedMs:(BOOL)a3;
-- (void)setHasGizmoMode:(BOOL)a3;
-- (void)setHasHdrPersonality:(BOOL)a3;
-- (void)setHasLac2nd:(BOOL)a3;
-- (void)setHasLac:(BOOL)a3;
-- (void)setHasNid:(BOOL)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasRoamStatus:(BOOL)a3;
-- (void)setHasScgEverConfigured:(BOOL)a3;
-- (void)setHasSid:(BOOL)a3;
-- (void)setHasSrvDomain2nd:(BOOL)a3;
-- (void)setHasSrvDomain:(BOOL)a3;
-- (void)setHasSrvStatus2nd:(BOOL)a3;
-- (void)setHasSrvStatus:(BOOL)a3;
-- (void)setHasStandbyPref:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasSysMode2nd:(BOOL)a3;
-- (void)setHasSysMode:(BOOL)a3;
-- (void)setHasUiNr5gSwitch:(BOOL)a3;
-- (void)setHasUpperLayerIndication:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAsubsId:(BOOL)id;
+- (void)setHasCellId2nd:(BOOL)id2nd;
+- (void)setHasCellId:(BOOL)id;
+- (void)setHasCompanionType:(BOOL)type;
+- (void)setHasDynNr5gEnabling:(BOOL)enabling;
+- (void)setHasElapsedMs:(BOOL)ms;
+- (void)setHasGizmoMode:(BOOL)mode;
+- (void)setHasHdrPersonality:(BOOL)personality;
+- (void)setHasLac2nd:(BOOL)lac2nd;
+- (void)setHasLac:(BOOL)lac;
+- (void)setHasNid:(BOOL)nid;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasRoamStatus:(BOOL)status;
+- (void)setHasScgEverConfigured:(BOOL)configured;
+- (void)setHasSid:(BOOL)sid;
+- (void)setHasSrvDomain2nd:(BOOL)domain2nd;
+- (void)setHasSrvDomain:(BOOL)domain;
+- (void)setHasSrvStatus2nd:(BOOL)status2nd;
+- (void)setHasSrvStatus:(BOOL)status;
+- (void)setHasStandbyPref:(BOOL)pref;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasSysMode2nd:(BOOL)mode2nd;
+- (void)setHasSysMode:(BOOL)mode;
+- (void)setHasUiNr5gSwitch:(BOOL)switch;
+- (void)setHasUpperLayerIndication:(BOOL)indication;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularRatLacSrvInfo
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 0x2000000;
   }
@@ -55,9 +55,9 @@
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 0x200000;
   }
@@ -70,9 +70,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasStandbyPref:(BOOL)a3
+- (void)setHasStandbyPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 0x100000;
   }
@@ -85,9 +85,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasSid:(BOOL)a3
+- (void)setHasSid:(BOOL)sid
 {
-  if (a3)
+  if (sid)
   {
     v3 = 0x8000;
   }
@@ -100,9 +100,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasNid:(BOOL)a3
+- (void)setHasNid:(BOOL)nid
 {
-  if (a3)
+  if (nid)
   {
     v3 = 2048;
   }
@@ -115,9 +115,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasCellId:(BOOL)a3
+- (void)setHasCellId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -130,9 +130,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasLac:(BOOL)a3
+- (void)setHasLac:(BOOL)lac
 {
-  if (a3)
+  if (lac)
   {
     v3 = 512;
   }
@@ -145,9 +145,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasGizmoMode:(BOOL)a3
+- (void)setHasGizmoMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 128;
   }
@@ -160,9 +160,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasCompanionType:(BOOL)a3
+- (void)setHasCompanionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -175,9 +175,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasSysMode:(BOOL)a3
+- (void)setHasSysMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 0x400000;
   }
@@ -190,9 +190,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasSrvStatus:(BOOL)a3
+- (void)setHasSrvStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x40000;
   }
@@ -205,9 +205,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasSrvDomain:(BOOL)a3
+- (void)setHasSrvDomain:(BOOL)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = 0x10000;
   }
@@ -233,9 +233,9 @@
   }
 }
 
-- (void)setHasRoamStatus:(BOOL)a3
+- (void)setHasRoamStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x4000;
   }
@@ -248,80 +248,80 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (int)StringAsRoamStatus:(id)a3
+- (int)StringAsRoamStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_ROAM_STATUS_NONE"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_NONE"])
   {
     v4 = -1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_OFF"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_OFF"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_ON"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_ON"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_BLINK"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_BLINK"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_OUT_OF_NEIGHBORHOOD"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_OUT_OF_NEIGHBORHOOD"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_OUT_OF_BLDG"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_OUT_OF_BLDG"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_PREF_SYS"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_PREF_SYS"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_AVAIL_SYS"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_AVAIL_SYS"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_ALLIANCE_PARTNER"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_ALLIANCE_PARTNER"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_PREMIUM_PARTNER"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_PREMIUM_PARTNER"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_FULL_SVC"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_FULL_SVC"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_PARTIAL_SVC"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_PARTIAL_SVC"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_BANNER_ON"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_BANNER_ON"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_BANNER_OFF"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_BANNER_OFF"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_HOME_SYSTEM"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_HOME_SYSTEM"])
   {
     v4 = 64;
   }
@@ -334,9 +334,9 @@
   return v4;
 }
 
-- (void)setHasAsubsId:(BOOL)a3
+- (void)setHasAsubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -349,9 +349,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasLac2nd:(BOOL)a3
+- (void)setHasLac2nd:(BOOL)lac2nd
 {
-  if (a3)
+  if (lac2nd)
   {
     v3 = 1024;
   }
@@ -364,9 +364,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasSysMode2nd:(BOOL)a3
+- (void)setHasSysMode2nd:(BOOL)mode2nd
 {
-  if (a3)
+  if (mode2nd)
   {
     v3 = 0x800000;
   }
@@ -379,9 +379,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasSrvStatus2nd:(BOOL)a3
+- (void)setHasSrvStatus2nd:(BOOL)status2nd
 {
-  if (a3)
+  if (status2nd)
   {
     v3 = 0x80000;
   }
@@ -394,9 +394,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasSrvDomain2nd:(BOOL)a3
+- (void)setHasSrvDomain2nd:(BOOL)domain2nd
 {
-  if (a3)
+  if (domain2nd)
   {
     v3 = 0x20000;
   }
@@ -409,9 +409,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasCellId2nd:(BOOL)a3
+- (void)setHasCellId2nd:(BOOL)id2nd
 {
-  if (a3)
+  if (id2nd)
   {
     v3 = 8;
   }
@@ -424,9 +424,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasHdrPersonality:(BOOL)a3
+- (void)setHasHdrPersonality:(BOOL)personality
 {
-  if (a3)
+  if (personality)
   {
     v3 = 256;
   }
@@ -439,9 +439,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasElapsedMs:(BOOL)a3
+- (void)setHasElapsedMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 64;
   }
@@ -454,9 +454,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 4096;
   }
@@ -469,9 +469,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasUpperLayerIndication:(BOOL)a3
+- (void)setHasUpperLayerIndication:(BOOL)indication
 {
-  if (a3)
+  if (indication)
   {
     v3 = 0x8000000;
   }
@@ -484,9 +484,9 @@
   self->_has = (*&self->_has & 0xF7FFFFFF | v3);
 }
 
-- (void)setHasScgEverConfigured:(BOOL)a3
+- (void)setHasScgEverConfigured:(BOOL)configured
 {
-  if (a3)
+  if (configured)
   {
     v3 = 0x4000000;
   }
@@ -499,9 +499,9 @@
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 0x2000;
   }
@@ -514,9 +514,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasUiNr5gSwitch:(BOOL)a3
+- (void)setHasUiNr5gSwitch:(BOOL)switch
 {
-  if (a3)
+  if (switch)
   {
     v3 = 0x1000000;
   }
@@ -529,9 +529,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasDynNr5gEnabling:(BOOL)a3
+- (void)setHasDynNr5gEnabling:(BOOL)enabling
 {
-  if (a3)
+  if (enabling)
   {
     v3 = 32;
   }
@@ -549,8 +549,8 @@
   v7.receiver = self;
   v7.super_class = CellularRatLacSrvInfo;
   v3 = [(CellularRatLacSrvInfo *)&v7 description];
-  v4 = [(CellularRatLacSrvInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularRatLacSrvInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -1044,9 +1044,9 @@ LABEL_41:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v35 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
@@ -1444,14 +1444,14 @@ LABEL_40:
 LABEL_41:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 39) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 39) |= 1u;
     has = self->_has;
     if ((*&has & 0x2000000) == 0)
     {
@@ -1470,40 +1470,40 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 37) = self->_version;
-  *(v4 + 39) |= 0x2000000u;
+  *(toCopy + 37) = self->_version;
+  *(toCopy + 39) |= 0x2000000u;
   if ((*&self->_has & 0x200000) != 0)
   {
 LABEL_4:
-    *(v4 + 33) = self->_subsId;
-    *(v4 + 39) |= 0x200000u;
+    *(toCopy + 33) = self->_subsId;
+    *(toCopy + 39) |= 0x200000u;
   }
 
 LABEL_5:
-  v8 = v4;
+  v8 = toCopy;
   if (self->_simHplmn)
   {
-    [v4 setSimHplmn:?];
-    v4 = v8;
+    [toCopy setSimHplmn:?];
+    toCopy = v8;
   }
 
   if ((*(&self->_has + 2) & 0x10) != 0)
   {
-    *(v4 + 32) = self->_standbyPref;
-    *(v4 + 39) |= 0x100000u;
+    *(toCopy + 32) = self->_standbyPref;
+    *(toCopy + 39) |= 0x100000u;
   }
 
   if (self->_plmn)
   {
     [v8 setPlmn:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x8000) != 0)
   {
-    *(v4 + 22) = self->_sid;
-    *(v4 + 39) |= 0x8000u;
+    *(toCopy + 22) = self->_sid;
+    *(toCopy + 39) |= 0x8000u;
     v6 = self->_has;
     if ((*&v6 & 0x800) == 0)
     {
@@ -1522,8 +1522,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  *(v4 + 14) = self->_nid;
-  *(v4 + 39) |= 0x800u;
+  *(toCopy + 14) = self->_nid;
+  *(toCopy + 39) |= 0x800u;
   v6 = self->_has;
   if ((*&v6 & 4) == 0)
   {
@@ -1537,8 +1537,8 @@ LABEL_14:
   }
 
 LABEL_49:
-  *(v4 + 5) = self->_cellId;
-  *(v4 + 39) |= 4u;
+  *(toCopy + 5) = self->_cellId;
+  *(toCopy + 39) |= 4u;
   v6 = self->_has;
   if ((*&v6 & 0x200) == 0)
   {
@@ -1552,8 +1552,8 @@ LABEL_15:
   }
 
 LABEL_50:
-  *(v4 + 12) = self->_lac;
-  *(v4 + 39) |= 0x200u;
+  *(toCopy + 12) = self->_lac;
+  *(toCopy + 39) |= 0x200u;
   v6 = self->_has;
   if ((*&v6 & 0x80) == 0)
   {
@@ -1567,8 +1567,8 @@ LABEL_16:
   }
 
 LABEL_51:
-  *(v4 + 10) = self->_gizmoMode;
-  *(v4 + 39) |= 0x80u;
+  *(toCopy + 10) = self->_gizmoMode;
+  *(toCopy + 39) |= 0x80u;
   v6 = self->_has;
   if ((*&v6 & 0x10) == 0)
   {
@@ -1582,8 +1582,8 @@ LABEL_17:
   }
 
 LABEL_52:
-  *(v4 + 7) = self->_companionType;
-  *(v4 + 39) |= 0x10u;
+  *(toCopy + 7) = self->_companionType;
+  *(toCopy + 39) |= 0x10u;
   v6 = self->_has;
   if ((*&v6 & 0x400000) == 0)
   {
@@ -1597,8 +1597,8 @@ LABEL_18:
   }
 
 LABEL_53:
-  *(v4 + 34) = self->_sysMode;
-  *(v4 + 39) |= 0x400000u;
+  *(toCopy + 34) = self->_sysMode;
+  *(toCopy + 39) |= 0x400000u;
   v6 = self->_has;
   if ((*&v6 & 0x40000) == 0)
   {
@@ -1612,8 +1612,8 @@ LABEL_19:
   }
 
 LABEL_54:
-  *(v4 + 30) = self->_srvStatus;
-  *(v4 + 39) |= 0x40000u;
+  *(toCopy + 30) = self->_srvStatus;
+  *(toCopy + 39) |= 0x40000u;
   v6 = self->_has;
   if ((*&v6 & 0x10000) == 0)
   {
@@ -1627,8 +1627,8 @@ LABEL_20:
   }
 
 LABEL_55:
-  *(v4 + 28) = self->_srvDomain;
-  *(v4 + 39) |= 0x10000u;
+  *(toCopy + 28) = self->_srvDomain;
+  *(toCopy + 39) |= 0x10000u;
   v6 = self->_has;
   if ((*&v6 & 0x4000) == 0)
   {
@@ -1642,33 +1642,33 @@ LABEL_21:
   }
 
 LABEL_56:
-  *(v4 + 21) = self->_roamStatus;
-  *(v4 + 39) |= 0x4000u;
+  *(toCopy + 21) = self->_roamStatus;
+  *(toCopy + 39) |= 0x4000u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_22:
-    *(v4 + 4) = self->_asubsId;
-    *(v4 + 39) |= 2u;
+    *(toCopy + 4) = self->_asubsId;
+    *(toCopy + 39) |= 2u;
   }
 
 LABEL_23:
   if (self->_simPlmn)
   {
     [v8 setSimPlmn:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_plmn2nd)
   {
     [v8 setPlmn2nd:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v7 = self->_has;
   if ((*&v7 & 0x400) != 0)
   {
-    *(v4 + 13) = self->_lac2nd;
-    *(v4 + 39) |= 0x400u;
+    *(toCopy + 13) = self->_lac2nd;
+    *(toCopy + 39) |= 0x400u;
     v7 = self->_has;
     if ((*&v7 & 0x800000) == 0)
     {
@@ -1687,8 +1687,8 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  *(v4 + 35) = self->_sysMode2nd;
-  *(v4 + 39) |= 0x800000u;
+  *(toCopy + 35) = self->_sysMode2nd;
+  *(toCopy + 39) |= 0x800000u;
   v7 = self->_has;
   if ((*&v7 & 0x80000) == 0)
   {
@@ -1702,8 +1702,8 @@ LABEL_30:
   }
 
 LABEL_60:
-  *(v4 + 31) = self->_srvStatus2nd;
-  *(v4 + 39) |= 0x80000u;
+  *(toCopy + 31) = self->_srvStatus2nd;
+  *(toCopy + 39) |= 0x80000u;
   v7 = self->_has;
   if ((*&v7 & 0x20000) == 0)
   {
@@ -1717,8 +1717,8 @@ LABEL_31:
   }
 
 LABEL_61:
-  *(v4 + 29) = self->_srvDomain2nd;
-  *(v4 + 39) |= 0x20000u;
+  *(toCopy + 29) = self->_srvDomain2nd;
+  *(toCopy + 39) |= 0x20000u;
   v7 = self->_has;
   if ((*&v7 & 8) == 0)
   {
@@ -1732,8 +1732,8 @@ LABEL_32:
   }
 
 LABEL_62:
-  *(v4 + 6) = self->_cellId2nd;
-  *(v4 + 39) |= 8u;
+  *(toCopy + 6) = self->_cellId2nd;
+  *(toCopy + 39) |= 8u;
   v7 = self->_has;
   if ((*&v7 & 0x100) == 0)
   {
@@ -1747,8 +1747,8 @@ LABEL_33:
   }
 
 LABEL_63:
-  *(v4 + 11) = self->_hdrPersonality;
-  *(v4 + 39) |= 0x100u;
+  *(toCopy + 11) = self->_hdrPersonality;
+  *(toCopy + 39) |= 0x100u;
   v7 = self->_has;
   if ((*&v7 & 0x40) == 0)
   {
@@ -1762,8 +1762,8 @@ LABEL_34:
   }
 
 LABEL_64:
-  *(v4 + 9) = self->_elapsedMs;
-  *(v4 + 39) |= 0x40u;
+  *(toCopy + 9) = self->_elapsedMs;
+  *(toCopy + 39) |= 0x40u;
   v7 = self->_has;
   if ((*&v7 & 0x1000) == 0)
   {
@@ -1777,8 +1777,8 @@ LABEL_35:
   }
 
 LABEL_65:
-  *(v4 + 15) = self->_numSubs;
-  *(v4 + 39) |= 0x1000u;
+  *(toCopy + 15) = self->_numSubs;
+  *(toCopy + 39) |= 0x1000u;
   v7 = self->_has;
   if ((*&v7 & 0x8000000) == 0)
   {
@@ -1792,8 +1792,8 @@ LABEL_36:
   }
 
 LABEL_66:
-  *(v4 + 153) = self->_upperLayerIndication;
-  *(v4 + 39) |= 0x8000000u;
+  *(toCopy + 153) = self->_upperLayerIndication;
+  *(toCopy + 39) |= 0x8000000u;
   v7 = self->_has;
   if ((*&v7 & 0x4000000) == 0)
   {
@@ -1807,8 +1807,8 @@ LABEL_37:
   }
 
 LABEL_67:
-  *(v4 + 152) = self->_scgEverConfigured;
-  *(v4 + 39) |= 0x4000000u;
+  *(toCopy + 152) = self->_scgEverConfigured;
+  *(toCopy + 39) |= 0x4000000u;
   v7 = self->_has;
   if ((*&v7 & 0x2000) == 0)
   {
@@ -1822,8 +1822,8 @@ LABEL_38:
   }
 
 LABEL_68:
-  *(v4 + 20) = self->_psPref;
-  *(v4 + 39) |= 0x2000u;
+  *(toCopy + 20) = self->_psPref;
+  *(toCopy + 39) |= 0x2000u;
   v7 = self->_has;
   if ((*&v7 & 0x1000000) == 0)
   {
@@ -1837,21 +1837,21 @@ LABEL_39:
   }
 
 LABEL_69:
-  *(v4 + 36) = self->_uiNr5gSwitch;
-  *(v4 + 39) |= 0x1000000u;
+  *(toCopy + 36) = self->_uiNr5gSwitch;
+  *(toCopy + 39) |= 0x1000000u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_40:
-    *(v4 + 8) = self->_dynNr5gEnabling;
-    *(v4 + 39) |= 0x20u;
+    *(toCopy + 8) = self->_dynNr5gEnabling;
+    *(toCopy + 39) |= 0x20u;
   }
 
 LABEL_41:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (*&has)
@@ -1886,7 +1886,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSData *)self->_simHplmn copyWithZone:a3];
+  v8 = [(NSData *)self->_simHplmn copyWithZone:zone];
   v9 = v6[12];
   v6[12] = v8;
 
@@ -1896,7 +1896,7 @@ LABEL_5:
     *(v6 + 39) |= 0x100000u;
   }
 
-  v10 = [(NSData *)self->_plmn copyWithZone:a3];
+  v10 = [(NSData *)self->_plmn copyWithZone:zone];
   v11 = v6[8];
   v6[8] = v10;
 
@@ -2053,11 +2053,11 @@ LABEL_18:
   }
 
 LABEL_19:
-  v13 = [(NSData *)self->_simPlmn copyWithZone:a3];
+  v13 = [(NSData *)self->_simPlmn copyWithZone:zone];
   v14 = v6[13];
   v6[13] = v13;
 
-  v15 = [(NSData *)self->_plmn2nd copyWithZone:a3];
+  v15 = [(NSData *)self->_plmn2nd copyWithZone:zone];
   v16 = v6[9];
   v6[9] = v15;
 
@@ -2246,19 +2246,19 @@ LABEL_32:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_158;
   }
 
   has = self->_has;
-  v6 = *(v4 + 39);
+  v6 = *(equalCopy + 39);
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_158;
     }
@@ -2271,7 +2271,7 @@ LABEL_32:
 
   if ((*&has & 0x2000000) != 0)
   {
-    if ((v6 & 0x2000000) == 0 || self->_version != *(v4 + 37))
+    if ((v6 & 0x2000000) == 0 || self->_version != *(equalCopy + 37))
     {
       goto LABEL_158;
     }
@@ -2284,7 +2284,7 @@ LABEL_32:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v6 & 0x200000) == 0 || self->_subsId != *(v4 + 33))
+    if ((v6 & 0x200000) == 0 || self->_subsId != *(equalCopy + 33))
     {
       goto LABEL_158;
     }
@@ -2296,7 +2296,7 @@ LABEL_32:
   }
 
   simHplmn = self->_simHplmn;
-  if (simHplmn | *(v4 + 12))
+  if (simHplmn | *(equalCopy + 12))
   {
     if (![(NSData *)simHplmn isEqual:?])
     {
@@ -2306,10 +2306,10 @@ LABEL_32:
     has = self->_has;
   }
 
-  v8 = *(v4 + 39);
+  v8 = *(equalCopy + 39);
   if ((*&has & 0x100000) != 0)
   {
-    if ((v8 & 0x100000) == 0 || self->_standbyPref != *(v4 + 32))
+    if ((v8 & 0x100000) == 0 || self->_standbyPref != *(equalCopy + 32))
     {
       goto LABEL_158;
     }
@@ -2321,7 +2321,7 @@ LABEL_32:
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 8))
+  if (plmn | *(equalCopy + 8))
   {
     if (![(NSData *)plmn isEqual:?])
     {
@@ -2331,10 +2331,10 @@ LABEL_32:
     has = self->_has;
   }
 
-  v10 = *(v4 + 39);
+  v10 = *(equalCopy + 39);
   if ((*&has & 0x8000) != 0)
   {
-    if ((v10 & 0x8000) == 0 || self->_sid != *(v4 + 22))
+    if ((v10 & 0x8000) == 0 || self->_sid != *(equalCopy + 22))
     {
       goto LABEL_158;
     }
@@ -2347,7 +2347,7 @@ LABEL_32:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v10 & 0x800) == 0 || self->_nid != *(v4 + 14))
+    if ((v10 & 0x800) == 0 || self->_nid != *(equalCopy + 14))
     {
       goto LABEL_158;
     }
@@ -2360,7 +2360,7 @@ LABEL_32:
 
   if ((*&has & 4) != 0)
   {
-    if ((v10 & 4) == 0 || self->_cellId != *(v4 + 5))
+    if ((v10 & 4) == 0 || self->_cellId != *(equalCopy + 5))
     {
       goto LABEL_158;
     }
@@ -2373,7 +2373,7 @@ LABEL_32:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v10 & 0x200) == 0 || self->_lac != *(v4 + 12))
+    if ((v10 & 0x200) == 0 || self->_lac != *(equalCopy + 12))
     {
       goto LABEL_158;
     }
@@ -2386,7 +2386,7 @@ LABEL_32:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v10 & 0x80) == 0 || self->_gizmoMode != *(v4 + 10))
+    if ((v10 & 0x80) == 0 || self->_gizmoMode != *(equalCopy + 10))
     {
       goto LABEL_158;
     }
@@ -2399,7 +2399,7 @@ LABEL_32:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v10 & 0x10) == 0 || self->_companionType != *(v4 + 7))
+    if ((v10 & 0x10) == 0 || self->_companionType != *(equalCopy + 7))
     {
       goto LABEL_158;
     }
@@ -2412,7 +2412,7 @@ LABEL_32:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v10 & 0x400000) == 0 || self->_sysMode != *(v4 + 34))
+    if ((v10 & 0x400000) == 0 || self->_sysMode != *(equalCopy + 34))
     {
       goto LABEL_158;
     }
@@ -2425,7 +2425,7 @@ LABEL_32:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v10 & 0x40000) == 0 || self->_srvStatus != *(v4 + 30))
+    if ((v10 & 0x40000) == 0 || self->_srvStatus != *(equalCopy + 30))
     {
       goto LABEL_158;
     }
@@ -2438,7 +2438,7 @@ LABEL_32:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v10 & 0x10000) == 0 || self->_srvDomain != *(v4 + 28))
+    if ((v10 & 0x10000) == 0 || self->_srvDomain != *(equalCopy + 28))
     {
       goto LABEL_158;
     }
@@ -2451,7 +2451,7 @@ LABEL_32:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v10 & 0x4000) == 0 || self->_roamStatus != *(v4 + 21))
+    if ((v10 & 0x4000) == 0 || self->_roamStatus != *(equalCopy + 21))
     {
       goto LABEL_158;
     }
@@ -2464,7 +2464,7 @@ LABEL_32:
 
   if ((*&has & 2) != 0)
   {
-    if ((v10 & 2) == 0 || self->_asubsId != *(v4 + 4))
+    if ((v10 & 2) == 0 || self->_asubsId != *(equalCopy + 4))
     {
       goto LABEL_158;
     }
@@ -2476,13 +2476,13 @@ LABEL_32:
   }
 
   simPlmn = self->_simPlmn;
-  if (simPlmn | *(v4 + 13) && ![(NSData *)simPlmn isEqual:?])
+  if (simPlmn | *(equalCopy + 13) && ![(NSData *)simPlmn isEqual:?])
   {
     goto LABEL_158;
   }
 
   plmn2nd = self->_plmn2nd;
-  if (plmn2nd | *(v4 + 9))
+  if (plmn2nd | *(equalCopy + 9))
   {
     if (![(NSData *)plmn2nd isEqual:?])
     {
@@ -2491,10 +2491,10 @@ LABEL_32:
   }
 
   v13 = self->_has;
-  v14 = *(v4 + 39);
+  v14 = *(equalCopy + 39);
   if ((*&v13 & 0x400) != 0)
   {
-    if ((v14 & 0x400) == 0 || self->_lac2nd != *(v4 + 13))
+    if ((v14 & 0x400) == 0 || self->_lac2nd != *(equalCopy + 13))
     {
       goto LABEL_158;
     }
@@ -2507,7 +2507,7 @@ LABEL_32:
 
   if ((*&v13 & 0x800000) != 0)
   {
-    if ((v14 & 0x800000) == 0 || self->_sysMode2nd != *(v4 + 35))
+    if ((v14 & 0x800000) == 0 || self->_sysMode2nd != *(equalCopy + 35))
     {
       goto LABEL_158;
     }
@@ -2520,7 +2520,7 @@ LABEL_32:
 
   if ((*&v13 & 0x80000) != 0)
   {
-    if ((v14 & 0x80000) == 0 || self->_srvStatus2nd != *(v4 + 31))
+    if ((v14 & 0x80000) == 0 || self->_srvStatus2nd != *(equalCopy + 31))
     {
       goto LABEL_158;
     }
@@ -2533,7 +2533,7 @@ LABEL_32:
 
   if ((*&v13 & 0x20000) != 0)
   {
-    if ((v14 & 0x20000) == 0 || self->_srvDomain2nd != *(v4 + 29))
+    if ((v14 & 0x20000) == 0 || self->_srvDomain2nd != *(equalCopy + 29))
     {
       goto LABEL_158;
     }
@@ -2546,7 +2546,7 @@ LABEL_32:
 
   if ((*&v13 & 8) != 0)
   {
-    if ((v14 & 8) == 0 || self->_cellId2nd != *(v4 + 6))
+    if ((v14 & 8) == 0 || self->_cellId2nd != *(equalCopy + 6))
     {
       goto LABEL_158;
     }
@@ -2559,7 +2559,7 @@ LABEL_32:
 
   if ((*&v13 & 0x100) != 0)
   {
-    if ((v14 & 0x100) == 0 || self->_hdrPersonality != *(v4 + 11))
+    if ((v14 & 0x100) == 0 || self->_hdrPersonality != *(equalCopy + 11))
     {
       goto LABEL_158;
     }
@@ -2572,7 +2572,7 @@ LABEL_32:
 
   if ((*&v13 & 0x40) != 0)
   {
-    if ((v14 & 0x40) == 0 || self->_elapsedMs != *(v4 + 9))
+    if ((v14 & 0x40) == 0 || self->_elapsedMs != *(equalCopy + 9))
     {
       goto LABEL_158;
     }
@@ -2585,7 +2585,7 @@ LABEL_32:
 
   if ((*&v13 & 0x1000) != 0)
   {
-    if ((v14 & 0x1000) == 0 || self->_numSubs != *(v4 + 15))
+    if ((v14 & 0x1000) == 0 || self->_numSubs != *(equalCopy + 15))
     {
       goto LABEL_158;
     }
@@ -2603,16 +2603,16 @@ LABEL_32:
       goto LABEL_158;
     }
 
-    v15 = *(v4 + 153);
+    v15 = *(equalCopy + 153);
     if (self->_upperLayerIndication)
     {
-      if ((*(v4 + 153) & 1) == 0)
+      if ((*(equalCopy + 153) & 1) == 0)
       {
         goto LABEL_158;
       }
     }
 
-    else if (*(v4 + 153))
+    else if (*(equalCopy + 153))
     {
       goto LABEL_158;
     }
@@ -2640,16 +2640,16 @@ LABEL_158:
     goto LABEL_158;
   }
 
-  v16 = *(v4 + 152);
+  v16 = *(equalCopy + 152);
   if (self->_scgEverConfigured)
   {
-    if ((*(v4 + 152) & 1) == 0)
+    if ((*(equalCopy + 152) & 1) == 0)
     {
       goto LABEL_158;
     }
   }
 
-  else if (*(v4 + 152))
+  else if (*(equalCopy + 152))
   {
     goto LABEL_158;
   }
@@ -2657,7 +2657,7 @@ LABEL_158:
 LABEL_131:
   if ((*&v13 & 0x2000) != 0)
   {
-    if ((v14 & 0x2000) == 0 || self->_psPref != *(v4 + 20))
+    if ((v14 & 0x2000) == 0 || self->_psPref != *(equalCopy + 20))
     {
       goto LABEL_158;
     }
@@ -2670,7 +2670,7 @@ LABEL_131:
 
   if ((*&v13 & 0x1000000) != 0)
   {
-    if ((v14 & 0x1000000) == 0 || self->_uiNr5gSwitch != *(v4 + 36))
+    if ((v14 & 0x1000000) == 0 || self->_uiNr5gSwitch != *(equalCopy + 36))
     {
       goto LABEL_158;
     }
@@ -2683,7 +2683,7 @@ LABEL_131:
 
   if ((*&v13 & 0x20) != 0)
   {
-    if ((v14 & 0x20) == 0 || self->_dynNr5gEnabling != *(v4 + 8))
+    if ((v14 & 0x20) == 0 || self->_dynNr5gEnabling != *(equalCopy + 8))
     {
       goto LABEL_158;
     }
@@ -2693,7 +2693,7 @@ LABEL_131:
 
   else
   {
-    v17 = (*(v4 + 39) & 0x20) == 0;
+    v17 = (*(equalCopy + 39) & 0x20) == 0;
   }
 
 LABEL_159:
@@ -3082,15 +3082,15 @@ LABEL_47:
   return v37 ^ v38 ^ v36 ^ v34 ^ v35 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 39);
+  fromCopy = from;
+  v5 = *(fromCopy + 39);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 39);
+    v5 = *(fromCopy + 39);
     if ((v5 & 0x2000000) == 0)
     {
 LABEL_3:
@@ -3108,41 +3108,41 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_version = *(v4 + 37);
+  self->_version = *(fromCopy + 37);
   *&self->_has |= 0x2000000u;
-  if ((*(v4 + 39) & 0x200000) != 0)
+  if ((*(fromCopy + 39) & 0x200000) != 0)
   {
 LABEL_4:
-    self->_subsId = *(v4 + 33);
+    self->_subsId = *(fromCopy + 33);
     *&self->_has |= 0x200000u;
   }
 
 LABEL_5:
-  v8 = v4;
-  if (*(v4 + 12))
+  v8 = fromCopy;
+  if (*(fromCopy + 12))
   {
     [(CellularRatLacSrvInfo *)self setSimHplmn:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if ((*(v4 + 158) & 0x10) != 0)
+  if ((*(fromCopy + 158) & 0x10) != 0)
   {
-    self->_standbyPref = *(v4 + 32);
+    self->_standbyPref = *(fromCopy + 32);
     *&self->_has |= 0x100000u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(CellularRatLacSrvInfo *)self setPlmn:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v6 = *(v4 + 39);
+  v6 = *(fromCopy + 39);
   if ((v6 & 0x8000) != 0)
   {
-    self->_sid = *(v4 + 22);
+    self->_sid = *(fromCopy + 22);
     *&self->_has |= 0x8000u;
-    v6 = *(v4 + 39);
+    v6 = *(fromCopy + 39);
     if ((v6 & 0x800) == 0)
     {
 LABEL_13:
@@ -3160,9 +3160,9 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  self->_nid = *(v4 + 14);
+  self->_nid = *(fromCopy + 14);
   *&self->_has |= 0x800u;
-  v6 = *(v4 + 39);
+  v6 = *(fromCopy + 39);
   if ((v6 & 4) == 0)
   {
 LABEL_14:
@@ -3175,9 +3175,9 @@ LABEL_14:
   }
 
 LABEL_49:
-  self->_cellId = *(v4 + 5);
+  self->_cellId = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v6 = *(v4 + 39);
+  v6 = *(fromCopy + 39);
   if ((v6 & 0x200) == 0)
   {
 LABEL_15:
@@ -3190,9 +3190,9 @@ LABEL_15:
   }
 
 LABEL_50:
-  self->_lac = *(v4 + 12);
+  self->_lac = *(fromCopy + 12);
   *&self->_has |= 0x200u;
-  v6 = *(v4 + 39);
+  v6 = *(fromCopy + 39);
   if ((v6 & 0x80) == 0)
   {
 LABEL_16:
@@ -3205,9 +3205,9 @@ LABEL_16:
   }
 
 LABEL_51:
-  self->_gizmoMode = *(v4 + 10);
+  self->_gizmoMode = *(fromCopy + 10);
   *&self->_has |= 0x80u;
-  v6 = *(v4 + 39);
+  v6 = *(fromCopy + 39);
   if ((v6 & 0x10) == 0)
   {
 LABEL_17:
@@ -3220,9 +3220,9 @@ LABEL_17:
   }
 
 LABEL_52:
-  self->_companionType = *(v4 + 7);
+  self->_companionType = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  v6 = *(v4 + 39);
+  v6 = *(fromCopy + 39);
   if ((v6 & 0x400000) == 0)
   {
 LABEL_18:
@@ -3235,9 +3235,9 @@ LABEL_18:
   }
 
 LABEL_53:
-  self->_sysMode = *(v4 + 34);
+  self->_sysMode = *(fromCopy + 34);
   *&self->_has |= 0x400000u;
-  v6 = *(v4 + 39);
+  v6 = *(fromCopy + 39);
   if ((v6 & 0x40000) == 0)
   {
 LABEL_19:
@@ -3250,9 +3250,9 @@ LABEL_19:
   }
 
 LABEL_54:
-  self->_srvStatus = *(v4 + 30);
+  self->_srvStatus = *(fromCopy + 30);
   *&self->_has |= 0x40000u;
-  v6 = *(v4 + 39);
+  v6 = *(fromCopy + 39);
   if ((v6 & 0x10000) == 0)
   {
 LABEL_20:
@@ -3265,9 +3265,9 @@ LABEL_20:
   }
 
 LABEL_55:
-  self->_srvDomain = *(v4 + 28);
+  self->_srvDomain = *(fromCopy + 28);
   *&self->_has |= 0x10000u;
-  v6 = *(v4 + 39);
+  v6 = *(fromCopy + 39);
   if ((v6 & 0x4000) == 0)
   {
 LABEL_21:
@@ -3280,34 +3280,34 @@ LABEL_21:
   }
 
 LABEL_56:
-  self->_roamStatus = *(v4 + 21);
+  self->_roamStatus = *(fromCopy + 21);
   *&self->_has |= 0x4000u;
-  if ((*(v4 + 39) & 2) != 0)
+  if ((*(fromCopy + 39) & 2) != 0)
   {
 LABEL_22:
-    self->_asubsId = *(v4 + 4);
+    self->_asubsId = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 
 LABEL_23:
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(CellularRatLacSrvInfo *)self setSimPlmn:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(CellularRatLacSrvInfo *)self setPlmn2nd:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 39);
+  v7 = *(fromCopy + 39);
   if ((v7 & 0x400) != 0)
   {
-    self->_lac2nd = *(v4 + 13);
+    self->_lac2nd = *(fromCopy + 13);
     *&self->_has |= 0x400u;
-    v7 = *(v4 + 39);
+    v7 = *(fromCopy + 39);
     if ((v7 & 0x800000) == 0)
     {
 LABEL_29:
@@ -3325,9 +3325,9 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  self->_sysMode2nd = *(v4 + 35);
+  self->_sysMode2nd = *(fromCopy + 35);
   *&self->_has |= 0x800000u;
-  v7 = *(v4 + 39);
+  v7 = *(fromCopy + 39);
   if ((v7 & 0x80000) == 0)
   {
 LABEL_30:
@@ -3340,9 +3340,9 @@ LABEL_30:
   }
 
 LABEL_60:
-  self->_srvStatus2nd = *(v4 + 31);
+  self->_srvStatus2nd = *(fromCopy + 31);
   *&self->_has |= 0x80000u;
-  v7 = *(v4 + 39);
+  v7 = *(fromCopy + 39);
   if ((v7 & 0x20000) == 0)
   {
 LABEL_31:
@@ -3355,9 +3355,9 @@ LABEL_31:
   }
 
 LABEL_61:
-  self->_srvDomain2nd = *(v4 + 29);
+  self->_srvDomain2nd = *(fromCopy + 29);
   *&self->_has |= 0x20000u;
-  v7 = *(v4 + 39);
+  v7 = *(fromCopy + 39);
   if ((v7 & 8) == 0)
   {
 LABEL_32:
@@ -3370,9 +3370,9 @@ LABEL_32:
   }
 
 LABEL_62:
-  self->_cellId2nd = *(v4 + 6);
+  self->_cellId2nd = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v7 = *(v4 + 39);
+  v7 = *(fromCopy + 39);
   if ((v7 & 0x100) == 0)
   {
 LABEL_33:
@@ -3385,9 +3385,9 @@ LABEL_33:
   }
 
 LABEL_63:
-  self->_hdrPersonality = *(v4 + 11);
+  self->_hdrPersonality = *(fromCopy + 11);
   *&self->_has |= 0x100u;
-  v7 = *(v4 + 39);
+  v7 = *(fromCopy + 39);
   if ((v7 & 0x40) == 0)
   {
 LABEL_34:
@@ -3400,9 +3400,9 @@ LABEL_34:
   }
 
 LABEL_64:
-  self->_elapsedMs = *(v4 + 9);
+  self->_elapsedMs = *(fromCopy + 9);
   *&self->_has |= 0x40u;
-  v7 = *(v4 + 39);
+  v7 = *(fromCopy + 39);
   if ((v7 & 0x1000) == 0)
   {
 LABEL_35:
@@ -3415,9 +3415,9 @@ LABEL_35:
   }
 
 LABEL_65:
-  self->_numSubs = *(v4 + 15);
+  self->_numSubs = *(fromCopy + 15);
   *&self->_has |= 0x1000u;
-  v7 = *(v4 + 39);
+  v7 = *(fromCopy + 39);
   if ((v7 & 0x8000000) == 0)
   {
 LABEL_36:
@@ -3430,9 +3430,9 @@ LABEL_36:
   }
 
 LABEL_66:
-  self->_upperLayerIndication = *(v4 + 153);
+  self->_upperLayerIndication = *(fromCopy + 153);
   *&self->_has |= 0x8000000u;
-  v7 = *(v4 + 39);
+  v7 = *(fromCopy + 39);
   if ((v7 & 0x4000000) == 0)
   {
 LABEL_37:
@@ -3445,9 +3445,9 @@ LABEL_37:
   }
 
 LABEL_67:
-  self->_scgEverConfigured = *(v4 + 152);
+  self->_scgEverConfigured = *(fromCopy + 152);
   *&self->_has |= 0x4000000u;
-  v7 = *(v4 + 39);
+  v7 = *(fromCopy + 39);
   if ((v7 & 0x2000) == 0)
   {
 LABEL_38:
@@ -3460,9 +3460,9 @@ LABEL_38:
   }
 
 LABEL_68:
-  self->_psPref = *(v4 + 20);
+  self->_psPref = *(fromCopy + 20);
   *&self->_has |= 0x2000u;
-  v7 = *(v4 + 39);
+  v7 = *(fromCopy + 39);
   if ((v7 & 0x1000000) == 0)
   {
 LABEL_39:
@@ -3475,12 +3475,12 @@ LABEL_39:
   }
 
 LABEL_69:
-  self->_uiNr5gSwitch = *(v4 + 36);
+  self->_uiNr5gSwitch = *(fromCopy + 36);
   *&self->_has |= 0x1000000u;
-  if ((*(v4 + 39) & 0x20) != 0)
+  if ((*(fromCopy + 39) & 0x20) != 0)
   {
 LABEL_40:
-    self->_dynNr5gEnabling = *(v4 + 8);
+    self->_dynNr5gEnabling = *(fromCopy + 8);
     *&self->_has |= 0x20u;
   }
 

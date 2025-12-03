@@ -4,22 +4,22 @@
 + (id)baselineCrashCount;
 + (id)baselineUptime;
 + (id)baselineVersions;
-+ (id)calculateStabilityRateWithAppUsage:(id)a3 crashCounts:(id)a4;
++ (id)calculateStabilityRateWithAppUsage:(id)usage crashCounts:(id)counts;
 + (id)monitorQueue;
-+ (void)dateRangeOnBuild:(id)a3 from:(id)a4 to:(id)a5 completionHandler:(id)a6;
-+ (void)evaluateStabilityWithParameters:(id)a3 targetBundleID:(id)a4 coalitionName:(id)a5 completionHandler:(id)a6;
++ (void)dateRangeOnBuild:(id)build from:(id)from to:(id)to completionHandler:(id)handler;
++ (void)evaluateStabilityWithParameters:(id)parameters targetBundleID:(id)d coalitionName:(id)name completionHandler:(id)handler;
 - (BOOL)excludeThirdParty;
-- (BOOL)isRollbackEnabledForBundleID:(id)a3;
-- (BOOL)isRollbackSupportedForBundleID:(id)a3 reason:(unint64_t *)a4;
-- (BOOL)isValidBundleID:(id)a3;
-- (BOOL)recommendRollbackForBundleID:(id)a3 reason:(unint64_t *)a4;
-- (OSAStabilityMonitor)initWithParameters:(id)a3 targetBundleID:(id)a4 completionHandler:(id)a5;
+- (BOOL)isRollbackEnabledForBundleID:(id)d;
+- (BOOL)isRollbackSupportedForBundleID:(id)d reason:(unint64_t *)reason;
+- (BOOL)isValidBundleID:(id)d;
+- (BOOL)recommendRollbackForBundleID:(id)d reason:(unint64_t *)reason;
+- (OSAStabilityMonitor)initWithParameters:(id)parameters targetBundleID:(id)d completionHandler:(id)handler;
 - (id)coalitionBasedBundleIDs;
-- (id)loadParameterForKey:(id)a3;
-- (void)addCrashEvent:(id)a3 to:(id)a4;
+- (id)loadParameterForKey:(id)key;
+- (void)addCrashEvent:(id)event to:(id)to;
 - (void)checkForOSUpdate;
 - (void)evaluateStability;
-- (void)totalUptimeFrom:(id)a3 to:(id)a4 targetBundleID:(id)a5 targetAppVersions:(id)a6 firstPartyBundleIDs:(id)a7 completionHandler:(id)a8;
+- (void)totalUptimeFrom:(id)from to:(id)to targetBundleID:(id)d targetAppVersions:(id)versions firstPartyBundleIDs:(id)ds completionHandler:(id)handler;
 @end
 
 @implementation OSAStabilityMonitor
@@ -73,17 +73,17 @@
   v2 = _CFCopySystemVersionDictionary();
   v3 = [v2 objectForKeyedSubscript:_kCFSystemVersionBuildVersionKey];
   v4 = +[OSASystemConfiguration sharedInstance];
-  v5 = [v4 buildVersion];
-  v6 = [v3 isEqualToString:v5];
+  buildVersion = [v4 buildVersion];
+  v6 = [v3 isEqualToString:buildVersion];
 
   return v6 ^ 1;
 }
 
-- (OSAStabilityMonitor)initWithParameters:(id)a3 targetBundleID:(id)a4 completionHandler:(id)a5
+- (OSAStabilityMonitor)initWithParameters:(id)parameters targetBundleID:(id)d completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  parametersCopy = parameters;
+  dCopy = d;
+  handlerCopy = handler;
   if (+[OSAStabilityMonitor isAvailable])
   {
     v17.receiver = self;
@@ -92,9 +92,9 @@
     v13 = v12;
     if (v12)
     {
-      objc_storeStrong(&v12->_parameters, a3);
-      objc_storeStrong(&v13->_targetBundleID, a4);
-      v14 = objc_retainBlock(v11);
+      objc_storeStrong(&v12->_parameters, parameters);
+      objc_storeStrong(&v13->_targetBundleID, d);
+      v14 = objc_retainBlock(handlerCopy);
       completionHandler = v13->_completionHandler;
       v13->_completionHandler = v14;
     }
@@ -109,32 +109,32 @@
   return v13;
 }
 
-+ (void)evaluateStabilityWithParameters:(id)a3 targetBundleID:(id)a4 coalitionName:(id)a5 completionHandler:(id)a6
++ (void)evaluateStabilityWithParameters:(id)parameters targetBundleID:(id)d coalitionName:(id)name completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  parametersCopy = parameters;
+  dCopy = d;
+  nameCopy = name;
+  handlerCopy = handler;
   v13 = +[OSAStabilityMonitor monitorQueue];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100005334;
   v18[3] = &unk_100024D88;
-  v19 = v9;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
-  v17 = v9;
+  v19 = parametersCopy;
+  v20 = dCopy;
+  v21 = nameCopy;
+  v22 = handlerCopy;
+  v14 = nameCopy;
+  v15 = handlerCopy;
+  v16 = dCopy;
+  v17 = parametersCopy;
   dispatch_sync(v13, v18);
 }
 
 - (void)checkForOSUpdate
 {
-  v3 = [(OSAStabilityMonitor *)self maximumDays];
-  if (v3)
+  maximumDays = [(OSAStabilityMonitor *)self maximumDays];
+  if (maximumDays)
   {
     v4 = +[NSUserDefaults standardUserDefaults];
     v5 = [v4 BOOLForKey:@"stability-monitor.lastBuild-hasSupplementalBuild"];
@@ -143,7 +143,7 @@
     v7 = [v6 objectForKey:@"stability-monitor.lastBuild"];
 
     v8 = +[OSASystemConfiguration sharedInstance];
-    v9 = [v8 buildVersion];
+    buildVersion = [v8 buildVersion];
 
     v10 = OSAStabilityMonitorLogDomain();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -152,7 +152,7 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Checking for OS update.", buf, 2u);
     }
 
-    if (([v7 isEqualToString:v9] & 1) == 0)
+    if (([v7 isEqualToString:buildVersion] & 1) == 0)
     {
       v11 = OSAStabilityMonitorLogDomain();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -160,12 +160,12 @@
         *buf = 138543618;
         v30 = v7;
         v31 = 2114;
-        v32 = v9;
+        v32 = buildVersion;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Detected build version change from (%{public}@) to (%{public}@)", buf, 0x16u);
       }
 
       v12 = +[NSUserDefaults standardUserDefaults];
-      [v12 setObject:v9 forKey:@"stability-monitor.lastBuild"];
+      [v12 setObject:buildVersion forKey:@"stability-monitor.lastBuild"];
 
       v13 = +[NSUserDefaults standardUserDefaults];
       [v13 setBool:+[OSAStabilityMonitor hasSupplementalBuild](OSAStabilityMonitor forKey:{"hasSupplementalBuild"), @"stability-monitor.lastBuild-hasSupplementalBuild"}];
@@ -192,8 +192,8 @@
         v25[1] = 3221225472;
         v25[2] = sub_1000058F0;
         v25[3] = &unk_100024E00;
-        v26 = v3;
-        v27 = self;
+        v26 = maximumDays;
+        selfCopy = self;
         v28 = v7;
         [OSAStabilityMonitor dateRangeOnBuild:v28 from:0 to:0 completionHandler:v25];
       }
@@ -206,14 +206,14 @@
   }
 }
 
-- (BOOL)isRollbackSupportedForBundleID:(id)a3 reason:(unint64_t *)a4
+- (BOOL)isRollbackSupportedForBundleID:(id)d reason:(unint64_t *)reason
 {
-  v6 = a3;
+  dCopy = d;
   if (![objc_opt_class() hasSupplementalBuild])
   {
     v9 = 0;
     v10 = 3;
-    if (!a4)
+    if (!reason)
     {
       goto LABEL_9;
     }
@@ -221,11 +221,11 @@
     goto LABEL_8;
   }
 
-  if (![(OSAStabilityMonitor *)self isRollbackEnabledForBundleID:v6])
+  if (![(OSAStabilityMonitor *)self isRollbackEnabledForBundleID:dCopy])
   {
     v9 = 0;
     v10 = 4;
-    if (!a4)
+    if (!reason)
     {
       goto LABEL_9;
     }
@@ -242,10 +242,10 @@
     v10 = 0;
   }
 
-  if (a4)
+  if (reason)
   {
 LABEL_8:
-    *a4 = v10;
+    *reason = v10;
   }
 
 LABEL_9:
@@ -253,20 +253,20 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)recommendRollbackForBundleID:(id)a3 reason:(unint64_t *)a4
+- (BOOL)recommendRollbackForBundleID:(id)d reason:(unint64_t *)reason
 {
-  v6 = a3;
+  dCopy = d;
   targetBundleID = self->_targetBundleID;
   if (!targetBundleID)
   {
     goto LABEL_15;
   }
 
-  if ([(NSString *)targetBundleID isEqualToString:v6])
+  if ([(NSString *)targetBundleID isEqualToString:dCopy])
   {
     if (objc_opt_class() && objc_opt_class() && objc_opt_class())
     {
-      v8 = [[SURollbackSuggestionProcessInfo alloc] initWithProcessID:v6];
+      v8 = [[SURollbackSuggestionProcessInfo alloc] initWithProcessID:dCopy];
       v9 = [NSError errorWithDomain:@"OSAnalytics" code:1 userInfo:0];
       [v8 setRollbackSuggestionError:v9];
 
@@ -290,19 +290,19 @@ LABEL_9:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v25 = v6;
+          v25 = dCopy;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Recommended rollback for %{public}@.", buf, 0xCu);
         }
 
         v17 = 1;
-        if (!a4)
+        if (!reason)
         {
           goto LABEL_24;
         }
 
         v18 = 1;
 LABEL_23:
-        *a4 = v18;
+        *reason = v18;
 LABEL_24:
 
         goto LABEL_25;
@@ -328,7 +328,7 @@ LABEL_24:
     }
 
     v17 = 0;
-    if (!a4)
+    if (!reason)
     {
       goto LABEL_24;
     }
@@ -351,7 +351,7 @@ LABEL_24:
   else
   {
 LABEL_15:
-    [(OSAStabilityMonitor *)self isRollbackSupportedForBundleID:v6 reason:a4];
+    [(OSAStabilityMonitor *)self isRollbackSupportedForBundleID:dCopy reason:reason];
     v17 = 1;
   }
 
@@ -379,21 +379,21 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Evaluating stability for %{public}@ with parameters: %{public}@", buf, 0x16u);
   }
 
-  v6 = [(OSAStabilityMonitor *)self maximumDays];
-  v7 = [(OSAStabilityMonitor *)self minimumUptime];
-  v8 = [(OSAStabilityMonitor *)self minimumCrashCount];
-  v9 = [(OSAStabilityMonitor *)self maximumMTBF];
-  v10 = [(OSAStabilityMonitor *)self maximumMTBFIfNoBaselineCrashes];
-  v11 = [(OSAStabilityMonitor *)self minimumMTBFDelta];
-  v12 = [(OSAStabilityMonitor *)self minimumMTBFFactor];
-  v13 = v12;
-  if (v6 && v7 && v8 && v9 && v11 && v12 && v10)
+  maximumDays = [(OSAStabilityMonitor *)self maximumDays];
+  minimumUptime = [(OSAStabilityMonitor *)self minimumUptime];
+  minimumCrashCount = [(OSAStabilityMonitor *)self minimumCrashCount];
+  maximumMTBF = [(OSAStabilityMonitor *)self maximumMTBF];
+  maximumMTBFIfNoBaselineCrashes = [(OSAStabilityMonitor *)self maximumMTBFIfNoBaselineCrashes];
+  minimumMTBFDelta = [(OSAStabilityMonitor *)self minimumMTBFDelta];
+  minimumMTBFFactor = [(OSAStabilityMonitor *)self minimumMTBFFactor];
+  v13 = minimumMTBFFactor;
+  if (maximumDays && minimumUptime && minimumCrashCount && maximumMTBF && minimumMTBFDelta && minimumMTBFFactor && maximumMTBFIfNoBaselineCrashes)
   {
-    v33 = v9;
-    v34 = v8;
-    v30 = v7;
+    v33 = maximumMTBF;
+    v34 = minimumCrashCount;
+    v30 = minimumUptime;
     v32 = +[NSDate now];
-    v31 = [v32 dateByAddingTimeInterval:{-(86400 * objc_msgSend(v6, "unsignedIntegerValue"))}];
+    v31 = [v32 dateByAddingTimeInterval:{-(86400 * objc_msgSend(maximumDays, "unsignedIntegerValue"))}];
     v14 = +[OSAStabilityMonitor baselineCrashCount];
     v15 = +[OSAStabilityMonitor baselineUptime];
     v16 = +[OSAStabilityMonitor baselineVersions];
@@ -415,13 +415,13 @@ LABEL_25:
       v36 = v16;
       v37 = v14;
       v38 = v15;
-      v7 = v30;
+      minimumUptime = v30;
       v39 = v30;
       v40 = v34;
       v41 = v33;
-      v42 = v11;
+      v42 = minimumMTBFDelta;
       v43 = v13;
-      v44 = v10;
+      v44 = maximumMTBFIfNoBaselineCrashes;
       v21 = v31;
       v20 = v32;
       [OSAStabilityMonitor dateRangeOnBuild:0 from:v31 to:v32 completionHandler:v35];
@@ -437,11 +437,11 @@ LABEL_25:
       [(OSAStabilityMonitor *)self reportResultsForBundleID:0 crashes:0 uptime:0 MTBF:0 result:0 status:@"Error retrieving baseline values"];
       v21 = v31;
       v20 = v32;
-      v7 = v30;
+      minimumUptime = v30;
     }
 
-    v9 = v33;
-    v8 = v34;
+    maximumMTBF = v33;
+    minimumCrashCount = v34;
   }
 
   else
@@ -460,25 +460,25 @@ LABEL_25:
   }
 }
 
-- (void)totalUptimeFrom:(id)a3 to:(id)a4 targetBundleID:(id)a5 targetAppVersions:(id)a6 firstPartyBundleIDs:(id)a7 completionHandler:(id)a8
+- (void)totalUptimeFrom:(id)from to:(id)to targetBundleID:(id)d targetAppVersions:(id)versions firstPartyBundleIDs:(id)ds completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = [[OSAAppUsageAccumulator alloc] initWithStartDate:v13 endDate:v14 targetAppVersions:v18 firstPartyBundleIDs:v17];
+  fromCopy = from;
+  toCopy = to;
+  dCopy = d;
+  handlerCopy = handler;
+  dsCopy = ds;
+  versionsCopy = versions;
+  v19 = [[OSAAppUsageAccumulator alloc] initWithStartDate:fromCopy endDate:toCopy targetAppVersions:versionsCopy firstPartyBundleIDs:dsCopy];
 
-  if (v15)
+  if (dCopy)
   {
-    [(OSAAccumulator *)v19 setTargetKey:v15];
+    [(OSAAccumulator *)v19 setTargetKey:dCopy];
   }
 
-  v20 = [_DKQuery predicateForEventsIntersectingDateRangeFrom:v13 to:v14, self];
+  v20 = [_DKQuery predicateForEventsIntersectingDateRangeFrom:fromCopy to:toCopy, self];
   v21 = +[_DKSystemEventStreams appInFocusStream];
   v44 = v21;
-  v36 = v15;
+  v36 = dCopy;
   v22 = [NSArray arrayWithObjects:&v44 count:1];
   v23 = [NSSortDescriptor sortDescriptorWithKey:@"startDate" ascending:1];
   v43 = v23;
@@ -500,7 +500,7 @@ LABEL_25:
   v39[1] = 3221225472;
   v39[2] = sub_100007894;
   v39[3] = &unk_100024EC8;
-  v41 = v16;
+  v41 = handlerCopy;
   v40 = v19;
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
@@ -508,52 +508,52 @@ LABEL_25:
   v37[3] = &unk_100024EF0;
   v38 = v40;
   v31 = v40;
-  v32 = v16;
+  v32 = handlerCopy;
   v33 = [v30 sinkWithCompletion:v39 receiveInput:v37];
 }
 
-- (void)addCrashEvent:(id)a3 to:(id)a4
+- (void)addCrashEvent:(id)event to:(id)to
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(OSAStabilityMonitor *)self coalitionBasedBundleIDs];
-  v8 = [v16 eventBody];
-  v9 = [v8 bundleID];
-  v10 = [v7 containsObject:v9];
-  v11 = [v16 eventBody];
-  v12 = v11;
+  eventCopy = event;
+  toCopy = to;
+  coalitionBasedBundleIDs = [(OSAStabilityMonitor *)self coalitionBasedBundleIDs];
+  eventBody = [eventCopy eventBody];
+  bundleID = [eventBody bundleID];
+  v10 = [coalitionBasedBundleIDs containsObject:bundleID];
+  eventBody2 = [eventCopy eventBody];
+  v12 = eventBody2;
   if (v10)
   {
-    [v11 coalitionName];
+    [eventBody2 coalitionName];
   }
 
   else
   {
-    [v11 bundleID];
+    [eventBody2 bundleID];
   }
   v13 = ;
 
   if ([(OSAStabilityMonitor *)self isValidBundleID:v13])
   {
-    if (!-[OSAStabilityMonitor excludeThirdParty](self, "excludeThirdParty") || ([v16 eventBody], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isFirstParty"), v14, v15))
+    if (!-[OSAStabilityMonitor excludeThirdParty](self, "excludeThirdParty") || ([eventCopy eventBody], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isFirstParty"), v14, v15))
     {
-      [v6 addEvent:v16 withBundleID:v13];
+      [toCopy addEvent:eventCopy withBundleID:v13];
     }
   }
 }
 
-+ (void)dateRangeOnBuild:(id)a3 from:(id)a4 to:(id)a5 completionHandler:(id)a6
++ (void)dateRangeOnBuild:(id)build from:(id)from to:(id)to completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  buildCopy = build;
+  fromCopy = from;
+  toCopy = to;
+  handlerCopy = handler;
   v13 = +[BMStreams deviceMetadataStream];
-  if (v11)
+  if (toCopy)
   {
-    [v11 timeIntervalSinceReferenceDate];
+    [toCopy timeIntervalSinceReferenceDate];
     v14 = [NSNumber numberWithDouble:?];
-    if (v10)
+    if (fromCopy)
     {
       goto LABEL_3;
     }
@@ -562,14 +562,14 @@ LABEL_25:
   else
   {
     v14 = 0;
-    if (v10)
+    if (fromCopy)
     {
 LABEL_3:
-      [v10 timeIntervalSinceReferenceDate];
+      [fromCopy timeIntervalSinceReferenceDate];
       v15 = [NSNumber numberWithDouble:?];
       v16 = [v13 publisherWithStartTime:v14 endTime:v15 maxEvents:0 reversed:1];
 
-      if (!v11)
+      if (!toCopy)
       {
         goto LABEL_5;
       }
@@ -579,7 +579,7 @@ LABEL_3:
   }
 
   v16 = [v13 publisherWithStartTime:v14 endTime:0 maxEvents:0 reversed:1];
-  if (v11)
+  if (toCopy)
   {
 LABEL_4:
   }
@@ -602,24 +602,24 @@ LABEL_5:
   v31[1] = v31;
   v31[2] = 0x2020000000;
   v32 = 0;
-  if (v9)
+  if (buildCopy)
   {
-    v17 = v9;
+    buildVersion = buildCopy;
   }
 
   else
   {
     v18 = +[OSASystemConfiguration sharedInstance];
-    v17 = [v18 buildVersion];
+    buildVersion = [v18 buildVersion];
 
-    objc_storeStrong(v34 + 5, a5);
+    objc_storeStrong(v34 + 5, to);
   }
 
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_10000808C;
   v27[3] = &unk_100024F40;
-  v19 = v12;
+  v19 = handlerCopy;
   v28 = v19;
   v29 = v39;
   v30 = &v33;
@@ -627,7 +627,7 @@ LABEL_5:
   v22[1] = 3221225472;
   v22[2] = sub_10000813C;
   v22[3] = &unk_100024F68;
-  v20 = v17;
+  v20 = buildVersion;
   v23 = v20;
   v24 = &v33;
   v25 = v31;
@@ -640,15 +640,15 @@ LABEL_5:
   _Block_object_dispose(v39, 8);
 }
 
-+ (id)calculateStabilityRateWithAppUsage:(id)a3 crashCounts:(id)a4
++ (id)calculateStabilityRateWithAppUsage:(id)usage crashCounts:(id)counts
 {
-  v5 = a3;
-  v6 = a4;
+  usageCopy = usage;
+  countsCopy = counts;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  v7 = [usageCopy countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v7)
   {
     v8 = v7;
@@ -661,20 +661,20 @@ LABEL_5:
       {
         if (*v38 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(usageCopy);
         }
 
         v13 = *(*(&v37 + 1) + 8 * i);
-        v14 = [v5 objectForKeyedSubscript:v13];
+        v14 = [usageCopy objectForKeyedSubscript:v13];
         [v14 doubleValue];
         v16 = v15;
 
-        v17 = [v6 objectForKeyedSubscript:v13];
-        v18 = [v17 unsignedIntegerValue];
+        v17 = [countsCopy objectForKeyedSubscript:v13];
+        unsignedIntegerValue = [v17 unsignedIntegerValue];
 
-        if (v18)
+        if (unsignedIntegerValue)
         {
-          v19 = v16 / v18;
+          v19 = v16 / unsignedIntegerValue;
           if (!v9 || v19 < v11)
           {
             v20 = v13;
@@ -685,7 +685,7 @@ LABEL_5:
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v8 = [usageCopy countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v8);
@@ -700,7 +700,7 @@ LABEL_5:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v21 = v5;
+  v21 = usageCopy;
   v22 = [v21 countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v22)
   {
@@ -724,7 +724,7 @@ LABEL_5:
           [v29 doubleValue];
           v26 = v26 + v30;
 
-          v31 = [v6 objectForKeyedSubscript:v28];
+          v31 = [countsCopy objectForKeyedSubscript:v28];
           v24 = (v24 + [v31 unsignedIntegerValue]);
         }
       }
@@ -749,14 +749,14 @@ LABEL_5:
   return v24;
 }
 
-- (BOOL)isValidBundleID:(id)a3
+- (BOOL)isValidBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = [NSMutableSet setWithObjects:@"com.apple.AirPlayUIAgent", @"com.apple.AppStoreDaemon.StoreUIService", @"com.apple.BluetoothUIServer", @"com.apple.CoreLocationAgent", @"com.apple.Diagnostics", @"com.apple.DiskImageMounter", @"com.apple.FileProviderUI.ServerAuthUIExtension", @"com.apple.FindMyMacMessenger", @"com.apple.mobileslideshow.photospicker", @"com.apple.SecurityAgent", @"com.apple.ssinvitationagent", @"com.apple.systemevents", @"com.apple.tv.TVNotificationContentExtension", @"com.apple.universalcontrol", @"com.apple.UserNotificationCenter", @"com.apple.VoiceMemos.VoiceMemosShareExtension", @"com.apple.VoiceOver", @"com.apple.wifi.WiFiAgent", 0];
   [v4 addObjectsFromArray:&off_100027418];
-  if (v3 && ([v4 containsObject:v3] & 1) == 0)
+  if (dCopy && ([v4 containsObject:dCopy] & 1) == 0)
   {
-    v5 = [v3 containsString:@"/"] ^ 1;
+    v5 = [dCopy containsString:@"/"] ^ 1;
   }
 
   else
@@ -791,17 +791,17 @@ LABEL_5:
   return v3;
 }
 
-- (id)loadParameterForKey:(id)a3
+- (id)loadParameterForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = +[OSASystemConfiguration sharedInstance];
-  v6 = [v5 buildVersion];
+  buildVersion = [v5 buildVersion];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v20[0] = v6;
+  v20[0] = buildVersion;
   v20[1] = @"default";
   v7 = [NSArray arrayWithObjects:v20 count:2, 0];
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -824,7 +824,7 @@ LABEL_5:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v13 = [v12 objectForKeyedSubscript:v4];
+            v13 = [v12 objectForKeyedSubscript:keyCopy];
             if (v13)
             {
               v14 = v13;
@@ -851,11 +851,11 @@ LABEL_13:
   return v14;
 }
 
-- (BOOL)isRollbackEnabledForBundleID:(id)a3
+- (BOOL)isRollbackEnabledForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [(OSAStabilityMonitor *)self loadParameterForKey:@"enabledBundleIDs"];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:dCopy];
 
   return v6;
 }
@@ -863,9 +863,9 @@ LABEL_13:
 - (BOOL)excludeThirdParty
 {
   v2 = [(OSAStabilityMonitor *)self loadParameterForKey:@"excludeThirdParty"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface IDSLinkPreferencesManager
 + (id)sharedInstance;
-- (BOOL)_validatePreferences:(id)a3 forService:(id)a4;
+- (BOOL)_validatePreferences:(id)preferences forService:(id)service;
 - (IDSLinkPreferencesManager)init;
 - (id)accumulativePreferencesForAllServices;
-- (id)preferencesForService:(id)a3;
-- (void)_logRequestInPowerDictionaryForService:(id)a3 preferences:(id)a4;
+- (id)preferencesForService:(id)service;
+- (void)_logRequestInPowerDictionaryForService:(id)service preferences:(id)preferences;
 - (void)dealloc;
 - (void)resetPreferencesForAllServices;
-- (void)updateService:(id)a3 withPreferences:(id)a4;
+- (void)updateService:(id)service withPreferences:(id)preferences;
 @end
 
 @implementation IDSLinkPreferencesManager
@@ -60,25 +60,25 @@
   [(IDSLinkPreferencesManager *)&v5 dealloc];
 }
 
-- (void)updateService:(id)a3 withPreferences:(id)a4
+- (void)updateService:(id)service withPreferences:(id)preferences
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(IDSLinkPreferencesManager *)self _validatePreferences:v7 forService:v6])
+  serviceCopy = service;
+  preferencesCopy = preferences;
+  if ([(IDSLinkPreferencesManager *)self _validatePreferences:preferencesCopy forService:serviceCopy])
   {
-    v8 = [v7 mutableCopy];
+    v8 = [preferencesCopy mutableCopy];
     v9 = +[NSDate date];
     [v8 setObject:v9 forKey:@"Timestamp"];
     v10 = [NSDictionary dictionaryWithDictionary:v8];
 
     pthread_mutex_lock(&self->_preferencesLock);
-    [(NSMutableDictionary *)self->_servicesWithPreferences setObject:v10 forKey:v6];
+    [(NSMutableDictionary *)self->_servicesWithPreferences setObject:v10 forKey:serviceCopy];
     pthread_mutex_unlock(&self->_preferencesLock);
     v11 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v15 = v6;
+      v15 = serviceCopy;
       v16 = 2114;
       v17 = v10;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "updateService: %{public}@, withPreferences: %{public}@.", buf, 0x16u);
@@ -86,17 +86,17 @@
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v12 = v6;
+      v12 = serviceCopy;
       v13 = v10;
       _IDSLogV();
     }
 
-    [(IDSLinkPreferencesManager *)self _logRequestInPowerDictionaryForService:v6 preferences:v8, v12, v13];
+    [(IDSLinkPreferencesManager *)self _logRequestInPowerDictionaryForService:serviceCopy preferences:v8, v12, v13];
   }
 
   else
   {
-    v10 = v7;
+    v10 = preferencesCopy;
   }
 }
 
@@ -163,24 +163,24 @@
   pthread_mutex_unlock(&self->_preferencesLock);
 }
 
-- (BOOL)_validatePreferences:(id)a3 forService:(id)a4
+- (BOOL)_validatePreferences:(id)preferences forService:(id)service
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  preferencesCopy = preferences;
+  serviceCopy = service;
+  if (serviceCopy)
   {
-    v7 = [v5 objectForKey:@"PacketsPerSecond"];
-    v8 = [v5 objectForKey:@"InputBytesPerSecond"];
-    v9 = [v5 objectForKey:@"OutputBytesPerSecond"];
+    v7 = [preferencesCopy objectForKey:@"PacketsPerSecond"];
+    v8 = [preferencesCopy objectForKey:@"InputBytesPerSecond"];
+    v9 = [preferencesCopy objectForKey:@"OutputBytesPerSecond"];
     if (([v7 intValue] & 0x80000000) != 0 || (objc_msgSend(v8, "intValue") & 0x80000000) != 0 || (objc_msgSend(v9, "intValue") & 0x80000000) != 0)
     {
       v11 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v14 = v6;
+        v14 = serviceCopy;
         v15 = 2114;
-        v16 = v5;
+        v16 = preferencesCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Cannot update preferences for service: %{public}@ with negative values, preferences: %{public}@.", buf, 0x16u);
       }
 
@@ -206,11 +206,11 @@
   return v10;
 }
 
-- (id)preferencesForService:(id)a3
+- (id)preferencesForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   pthread_mutex_lock(&self->_preferencesLock);
-  v5 = [(NSMutableDictionary *)self->_servicesWithPreferences objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_servicesWithPreferences objectForKey:serviceCopy];
 
   pthread_mutex_unlock(&self->_preferencesLock);
 
@@ -225,7 +225,7 @@
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v28 = self;
+  selfCopy = self;
   obj = self->_servicesWithPreferences;
   v29 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v29)
@@ -245,7 +245,7 @@
         }
 
         v5 = *(*(&v32 + 1) + 8 * i);
-        v6 = [(NSMutableDictionary *)v28->_servicesWithPreferences objectForKey:v5];
+        v6 = [(NSMutableDictionary *)selfCopy->_servicesWithPreferences objectForKey:v5];
         v7 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
@@ -267,9 +267,9 @@
         v9 = [v6 objectForKey:@"InputBytesPerSecond"];
         v10 = [v6 objectForKey:@"OutputBytesPerSecond"];
         v11 = [v6 objectForKey:@"Intent"];
-        v12 = [v8 unsignedIntValue];
-        v13 = [v9 unsignedIntValue];
-        v14 = [v10 unsignedIntValue];
+        unsignedIntValue = [v8 unsignedIntValue];
+        unsignedIntValue2 = [v9 unsignedIntValue];
+        unsignedIntValue3 = [v10 unsignedIntValue];
         if ((v31 & 0x100000000) != 0)
         {
           BYTE4(v31) = 1;
@@ -287,9 +287,9 @@
           v27 = v15;
         }
 
-        v3 = v12 + v3;
-        v30 += v13;
-        LODWORD(v31) = v14 + v31;
+        v3 = unsignedIntValue + v3;
+        v30 += unsignedIntValue2;
+        LODWORD(v31) = unsignedIntValue3 + v31;
       }
 
       v29 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v32 objects:v40 count:16];
@@ -306,7 +306,7 @@
     v3 = 0;
   }
 
-  pthread_mutex_unlock(&v28->_preferencesLock);
+  pthread_mutex_unlock(&selfCopy->_preferencesLock);
   v16 = [NSNumber numberWithUnsignedInt:v3];
   [v24 setObject:v16 forKeyedSubscript:@"PacketsPerSecond"];
 
@@ -325,17 +325,17 @@
   return v20;
 }
 
-- (void)_logRequestInPowerDictionaryForService:(id)a3 preferences:(id)a4
+- (void)_logRequestInPowerDictionaryForService:(id)service preferences:(id)preferences
 {
-  v6 = a4;
-  [v6 setObject:a3 forKey:@"ServiceName"];
+  preferencesCopy = preferences;
+  [preferencesCopy setObject:service forKey:@"ServiceName"];
   power_log_queue = self->_power_log_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10043FCE0;
   block[3] = &unk_100BD6ED0;
-  v10 = v6;
-  v8 = v6;
+  v10 = preferencesCopy;
+  v8 = preferencesCopy;
   dispatch_async(power_log_queue, block);
 }
 

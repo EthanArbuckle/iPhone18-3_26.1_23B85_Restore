@@ -8,9 +8,9 @@
 {
   v23[4] = *MEMORY[0x277D85DE8];
   v6 = a4;
-  [a1 extent];
+  [self extent];
   v8 = v7;
-  [a1 extent];
+  [self extent];
   v10 = v9;
   v11 = objc_alloc(MEMORY[0x277CD2930]);
   v22[0] = *MEMORY[0x277CD2928];
@@ -30,8 +30,8 @@
 
   v18 = CGColorSpaceCreateWithName(v6);
   v19 = objc_opt_new();
-  [a1 extent];
-  [v19 render:a1 toIOSurface:v17 bounds:v18 colorSpace:?];
+  [self extent];
+  [v19 render:self toIOSurface:v17 bounds:v18 colorSpace:?];
   CGColorSpaceRelease(v18);
 
   v20 = *MEMORY[0x277D85DE8];

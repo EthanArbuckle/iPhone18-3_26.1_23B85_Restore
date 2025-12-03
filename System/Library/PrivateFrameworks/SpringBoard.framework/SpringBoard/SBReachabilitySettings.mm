@@ -23,16 +23,16 @@ LABEL_9:
     goto LABEL_41;
   }
 
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  if ([v5 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
 
     goto LABEL_10;
   }
 
-  v2 = SBFEffectiveHomeButtonType();
+  currentDevice2 = SBFEffectiveHomeButtonType();
 
-  if (v2 == 2)
+  if (currentDevice2 == 2)
   {
     goto LABEL_9;
   }
@@ -57,8 +57,8 @@ LABEL_16:
 
     else
     {
-      v3 = [MEMORY[0x277D759A0] mainScreen];
-      [v3 _referenceBounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -81,8 +81,8 @@ LABEL_16:
     goto LABEL_25;
   }
 
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  if (![v2 userInterfaceIdiom])
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  if (![currentDevice2 userInterfaceIdiom])
   {
     goto LABEL_16;
   }
@@ -100,8 +100,8 @@ LABEL_25:
 
   else
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    if ([v2 userInterfaceIdiom])
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom])
     {
 
 LABEL_40:
@@ -119,8 +119,8 @@ LABEL_40:
 
   else
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -152,10 +152,10 @@ LABEL_41:
   animationSettings = self->_animationSettings;
   v33 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
   [(SBFFluidBehaviorSettings *)animationSettings setFrameRateRange:1114136 highFrameRateReason:*&v33.minimum, *&v33.maximum, *&v33.preferred];
-  v22 = [objc_alloc(MEMORY[0x277D65E20]) initWithDefaultValues];
-  [(SBReachabilitySettings *)self setJindoTintColorMatrixSettings:v22];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E20]) initWithDefaultValues];
+  [(SBReachabilitySettings *)self setJindoTintColorMatrixSettings:initWithDefaultValues];
 
-  v23 = [(SBReachabilitySettings *)self jindoTintColorMatrixSettings];
+  jindoTintColorMatrixSettings = [(SBReachabilitySettings *)self jindoTintColorMatrixSettings];
   v24[0] = 0;
   v24[1] = 0;
   v25 = 1065353216;
@@ -166,7 +166,7 @@ LABEL_41:
   v30 = 0;
   v31 = xmmword_21F8A81F0;
   v32 = 1034147594;
-  [v23 setColorMatrix:v24];
+  [jindoTintColorMatrixSettings setColorMatrix:v24];
 
   [(SBReachabilitySettings *)self setJindoInertDisableOffset:0.12];
 }
@@ -285,8 +285,8 @@ LABEL_41:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   [(SBReachabilitySettings *)self yOffsetFactor];

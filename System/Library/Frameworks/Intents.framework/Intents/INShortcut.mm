@@ -1,56 +1,56 @@
 @interface INShortcut
 + (NSArray)readableTypeIdentifiersForItemProvider;
 + (NSArray)writableTypeIdentifiersForItemProvider;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (INImage)_keyImage;
-- (INShortcut)initWithActivityData:(id)a3 activityImage:(id)a4 activitySubtitle:(id)a5 activityBundleIdentifier:(id)a6;
-- (INShortcut)initWithCoder:(id)a3;
+- (INShortcut)initWithActivityData:(id)data activityImage:(id)image activitySubtitle:(id)subtitle activityBundleIdentifier:(id)identifier;
+- (INShortcut)initWithCoder:(id)coder;
 - (INShortcut)initWithIntent:(INIntent *)intent;
-- (INShortcut)initWithUserActivity:(id)a3 bundleIdentifier:(id)a4;
-- (INShortcut)shortcutWithActivityBundleIdentifier:(id)a3;
-- (INShortcut)shortcutWithActivityImage:(id)a3;
+- (INShortcut)initWithUserActivity:(id)activity bundleIdentifier:(id)identifier;
+- (INShortcut)shortcutWithActivityBundleIdentifier:(id)identifier;
+- (INShortcut)shortcutWithActivityImage:(id)image;
 - (NSData)activityData;
 - (NSString)_associatedAppBundleIdentifier;
 - (NSString)_subtitle;
 - (NSString)_title;
 - (NSString)description;
-- (id)_initWithIntent:(id)a3;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)_initWithIntent:(id)intent;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
+- (void)_injectProxiesForImages:(id)images completion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INShortcut
 
 - (INImage)_keyImage
 {
-  v3 = [(INShortcut *)self intent];
-  v4 = [v3 _keyImage];
-  v5 = v4;
-  if (v4)
+  intent = [(INShortcut *)self intent];
+  _keyImage = [intent _keyImage];
+  v5 = _keyImage;
+  if (_keyImage)
   {
-    v6 = v4;
+    activityImage = _keyImage;
   }
 
   else
   {
-    v6 = [(INShortcut *)self activityImage];
+    activityImage = [(INShortcut *)self activityImage];
   }
 
-  v7 = v6;
+  v7 = activityImage;
 
   return v7;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
   v5 = MEMORY[0x1E696ACC8];
   v11 = 0;
-  v6 = a4;
+  handlerCopy = handler;
   v7 = [v5 archivedDataWithRootObject:self requiringSecureCoding:1 error:&v11];
   v8 = v11;
-  v6[2](v6, v7, v8);
+  handlerCopy[2](handlerCopy, v7, v8);
 
   v9 = objc_opt_new();
 
@@ -77,20 +77,20 @@
   return v2;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
   v6 = MEMORY[0x1E696ACD0];
-  v7 = a3;
-  v8 = [v6 _in_safeUnarchivedObjectOfClass:objc_opt_class() fromData:v7 error:a5];
+  dataCopy = data;
+  v8 = [v6 _in_safeUnarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:error];
 
   return v8;
 }
 
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4
+- (void)_injectProxiesForImages:(id)images completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  imagesCopy = images;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     v9 = INImageProxyInjectionQueue();
@@ -103,29 +103,29 @@
     v22[2] = 0x3032000000;
     v22[3] = __Block_byref_object_copy__65246;
     v22[4] = __Block_byref_object_dispose__65247;
-    v10 = self;
-    v23 = v10;
+    selfCopy = self;
+    v23 = selfCopy;
     v11 = MEMORY[0x1E696AAE0];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __72__INShortcut_INImageProxyInjecting___injectProxiesForImages_completion___block_invoke;
     v19[3] = &unk_1E7285E10;
-    v20 = v7;
+    v20 = completionCopy;
     v21 = v22;
     v12 = [v11 blockOperationWithBlock:v19];
-    v13 = [(INShortcut *)v10 intent];
-    v14 = [(INShortcut *)v10 activityImage];
-    v15 = v14;
-    if (v13)
+    intent = [(INShortcut *)selfCopy intent];
+    activityImage = [(INShortcut *)selfCopy activityImage];
+    v15 = activityImage;
+    if (intent)
     {
       v16 = objc_alloc_init(INImageProxyInjectionOperation);
-      [(INImageProxyInjectionOperation *)v16 setInjector:v13];
-      [(INImageProxyInjectionOperation *)v16 setImageProxyRequestBlock:v6];
+      [(INImageProxyInjectionOperation *)v16 setInjector:intent];
+      [(INImageProxyInjectionOperation *)v16 setImageProxyRequestBlock:imagesCopy];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __72__INShortcut_INImageProxyInjecting___injectProxiesForImages_completion___block_invoke_2;
       v18[3] = &unk_1E7282200;
-      v18[4] = v10;
+      v18[4] = selfCopy;
       v18[5] = v22;
       [(INImageProxyInjectionOperation *)v16 setCopyReturnBlock:v18];
       [v12 addDependency:v16];
@@ -134,7 +134,7 @@
 
     else
     {
-      if (!v14)
+      if (!activityImage)
       {
 LABEL_7:
         [v8 addOperation:v12];
@@ -146,12 +146,12 @@ LABEL_7:
 
       v16 = objc_alloc_init(INImageProxyInjectionOperation);
       [(INImageProxyInjectionOperation *)v16 setInjector:v15];
-      [(INImageProxyInjectionOperation *)v16 setImageProxyRequestBlock:v6];
+      [(INImageProxyInjectionOperation *)v16 setImageProxyRequestBlock:imagesCopy];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __72__INShortcut_INImageProxyInjecting___injectProxiesForImages_completion___block_invoke_3;
       v17[3] = &unk_1E7282228;
-      v17[4] = v10;
+      v17[4] = selfCopy;
       v17[5] = v22;
       [(INImageProxyInjectionOperation *)v16 setCopyReturnBlock:v17];
       [v12 addDependency:v16];
@@ -188,68 +188,68 @@ uint64_t __72__INShortcut_INImageProxyInjecting___injectProxiesForImages_complet
   return MEMORY[0x1EEE66BB8](v3, v5);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(INShortcut *)self intent];
-  v6 = INIntentWithTypedIntent(v5);
-  [v4 encodeObject:v6 forKey:@"intent"];
+  coderCopy = coder;
+  intent = [(INShortcut *)self intent];
+  v6 = INIntentWithTypedIntent(intent);
+  [coderCopy encodeObject:v6 forKey:@"intent"];
 
-  v7 = [(INShortcut *)self activityData];
-  [v4 encodeObject:v7 forKey:@"userActivity"];
+  activityData = [(INShortcut *)self activityData];
+  [coderCopy encodeObject:activityData forKey:@"userActivity"];
 
-  v8 = [(INShortcut *)self activityImage];
-  [v4 encodeObject:v8 forKey:@"activityImage"];
+  activityImage = [(INShortcut *)self activityImage];
+  [coderCopy encodeObject:activityImage forKey:@"activityImage"];
 
-  v9 = [(INShortcut *)self activitySubtitle];
-  [v4 encodeObject:v9 forKey:@"activitySubtitle"];
+  activitySubtitle = [(INShortcut *)self activitySubtitle];
+  [coderCopy encodeObject:activitySubtitle forKey:@"activitySubtitle"];
 
-  v10 = [(INShortcut *)self activityBundleIdentifier];
-  [v4 encodeObject:v10 forKey:@"activityBundleIdentifier"];
+  activityBundleIdentifier = [(INShortcut *)self activityBundleIdentifier];
+  [coderCopy encodeObject:activityBundleIdentifier forKey:@"activityBundleIdentifier"];
 }
 
-- (INShortcut)initWithCoder:(id)a3
+- (INShortcut)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
   v6 = INTypedIntentWithIntent(v5);
 
   if (v6)
   {
     self = [(INShortcut *)self _initWithIntent:v6];
-    v7 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userActivity"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userActivity"];
     if ([v8 length])
     {
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityImage"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityImage"];
       v10 = MEMORY[0x1E695DFD8];
       v11 = objc_opt_class();
       v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-      v13 = [v4 decodeObjectOfClasses:v12 forKey:@"activitySubtitle"];
+      v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"activitySubtitle"];
 
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityBundleIdentifier"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityBundleIdentifier"];
       self = [(INShortcut *)self initWithActivityData:v8 activityImage:v9 activitySubtitle:v13 activityBundleIdentifier:v14];
 
-      v7 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy2 = 0;
     }
   }
 
-  return v7;
+  return selfCopy2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -259,34 +259,34 @@ uint64_t __72__INShortcut_INImageProxyInjecting___injectProxiesForImages_complet
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(INShortcut *)self intent];
-      v8 = [(INShortcut *)v6 intent];
-      if (v7 != v8)
+      v6 = equalCopy;
+      intent = [(INShortcut *)self intent];
+      intent2 = [(INShortcut *)v6 intent];
+      if (intent != intent2)
       {
-        v9 = [(INShortcut *)self intent];
+        intent3 = [(INShortcut *)self intent];
         [(INShortcut *)v6 intent];
-        v33 = v32 = v9;
-        if (![v9 isEqual:?])
+        v33 = v32 = intent3;
+        if (![intent3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_24;
         }
       }
 
-      v11 = [(INShortcut *)self userActivity];
-      v12 = [(INShortcut *)v6 userActivity];
-      if (v11 != v12)
+      userActivity = [(INShortcut *)self userActivity];
+      userActivity2 = [(INShortcut *)v6 userActivity];
+      if (userActivity != userActivity2)
       {
-        v3 = [(INShortcut *)self userActivity];
-        v30 = [(INShortcut *)v6 userActivity];
-        if (![v3 isEqual:?])
+        userActivity3 = [(INShortcut *)self userActivity];
+        userActivity4 = [(INShortcut *)v6 userActivity];
+        if (![userActivity3 isEqual:?])
         {
           v10 = 0;
 LABEL_22:
 
 LABEL_23:
-          if (v7 == v8)
+          if (intent == intent2)
           {
 LABEL_25:
 
@@ -299,38 +299,38 @@ LABEL_24:
         }
       }
 
-      v13 = [(INShortcut *)self activityImage];
-      v14 = [(INShortcut *)v6 activityImage];
-      v31 = v13;
-      v15 = v13 == v14;
-      v16 = v14;
+      activityImage = [(INShortcut *)self activityImage];
+      activityImage2 = [(INShortcut *)v6 activityImage];
+      v31 = activityImage;
+      v15 = activityImage == activityImage2;
+      v16 = activityImage2;
       if (v15)
       {
-        v28 = v3;
-        v29 = v12;
+        v28 = userActivity3;
+        v29 = userActivity2;
       }
 
       else
       {
-        v17 = [(INShortcut *)self activityImage];
-        v25 = [(INShortcut *)v6 activityImage];
-        v26 = v17;
-        if (![v17 isEqual:?])
+        activityImage3 = [(INShortcut *)self activityImage];
+        activityImage4 = [(INShortcut *)v6 activityImage];
+        v26 = activityImage3;
+        if (![activityImage3 isEqual:?])
         {
           v10 = 0;
           v23 = v31;
           goto LABEL_20;
         }
 
-        v28 = v3;
-        v29 = v12;
+        v28 = userActivity3;
+        v29 = userActivity2;
       }
 
       v27 = v16;
-      v18 = [(INShortcut *)self activitySubtitle];
-      v19 = [(INShortcut *)v6 activitySubtitle];
-      v20 = v19;
-      if (v18 == v19)
+      activitySubtitle = [(INShortcut *)self activitySubtitle];
+      activitySubtitle2 = [(INShortcut *)v6 activitySubtitle];
+      v20 = activitySubtitle2;
+      if (activitySubtitle == activitySubtitle2)
       {
 
         v10 = 1;
@@ -338,20 +338,20 @@ LABEL_24:
 
       else
       {
-        v21 = [(INShortcut *)self activitySubtitle];
-        v22 = [(INShortcut *)v6 activitySubtitle];
-        v10 = [v21 isEqualToString:v22];
+        activitySubtitle3 = [(INShortcut *)self activitySubtitle];
+        activitySubtitle4 = [(INShortcut *)v6 activitySubtitle];
+        v10 = [activitySubtitle3 isEqualToString:activitySubtitle4];
       }
 
       v23 = v31;
       v16 = v27;
-      v3 = v28;
-      v12 = v29;
+      userActivity3 = v28;
+      userActivity2 = v29;
       if (v31 == v27)
       {
 LABEL_21:
 
-        if (v11 == v12)
+        if (userActivity == userActivity2)
         {
           goto LABEL_23;
         }
@@ -400,88 +400,88 @@ LABEL_6:
 
 - (NSString)_associatedAppBundleIdentifier
 {
-  v3 = [(INShortcut *)self intent];
-  v4 = v3;
-  if (v3)
+  intent = [(INShortcut *)self intent];
+  v4 = intent;
+  if (intent)
   {
-    v5 = [v3 _intents_bundleIdForDisplay];
+    _intents_bundleIdForDisplay = [intent _intents_bundleIdForDisplay];
   }
 
   else
   {
-    v6 = [(INShortcut *)self userActivity];
-    if (v6)
+    userActivity = [(INShortcut *)self userActivity];
+    if (userActivity)
     {
-      v7 = [(INShortcut *)self activityBundleIdentifier];
-      v5 = INDisplayableOrLaunchableBundleIdForBundleIdFromUserActivity(v7);
+      activityBundleIdentifier = [(INShortcut *)self activityBundleIdentifier];
+      _intents_bundleIdForDisplay = INDisplayableOrLaunchableBundleIdForBundleIdFromUserActivity(activityBundleIdentifier);
     }
 
     else
     {
-      v5 = 0;
+      _intents_bundleIdForDisplay = 0;
     }
   }
 
-  return v5;
+  return _intents_bundleIdForDisplay;
 }
 
 - (NSString)_subtitle
 {
-  v3 = [(INShortcut *)self intent];
-  v4 = v3;
-  if (v3)
+  intent = [(INShortcut *)self intent];
+  v4 = intent;
+  if (intent)
   {
-    v5 = [v3 _subtitle];
+    _subtitle = [intent _subtitle];
   }
 
   else
   {
-    v6 = [(INShortcut *)self userActivity];
-    if (v6)
+    userActivity = [(INShortcut *)self userActivity];
+    if (userActivity)
     {
-      v5 = [(INShortcut *)self activitySubtitle];
+      _subtitle = [(INShortcut *)self activitySubtitle];
     }
 
     else
     {
-      v5 = 0;
+      _subtitle = 0;
     }
   }
 
-  return v5;
+  return _subtitle;
 }
 
 - (NSString)_title
 {
-  v3 = [(INShortcut *)self intent];
-  v4 = v3;
-  if (v3)
+  intent = [(INShortcut *)self intent];
+  v4 = intent;
+  if (intent)
   {
-    v5 = [v3 _title];
+    _title = [intent _title];
   }
 
   else
   {
-    v6 = [(INShortcut *)self userActivity];
-    v7 = v6;
-    if (v6)
+    userActivity = [(INShortcut *)self userActivity];
+    v7 = userActivity;
+    if (userActivity)
     {
-      v5 = [v6 title];
+      _title = [userActivity title];
     }
 
     else
     {
-      v5 = 0;
+      _title = 0;
     }
   }
 
-  return v5;
+  return _title;
 }
 
 - (NSData)activityData
 {
-  v3 = [(INShortcut *)self userActivity];
-  v4 = v3;
+  userActivity = [(INShortcut *)self userActivity];
+  v4 = userActivity;
   activityData = self->_activityData;
   if (activityData)
   {
@@ -490,23 +490,23 @@ LABEL_6:
 
   else
   {
-    v6 = v3 == 0;
+    v6 = userActivity == 0;
   }
 
   if (!v6)
   {
-    v7 = [v3 contentAttributeSet];
-    v8 = [v7 thumbnailData];
+    contentAttributeSet = [userActivity contentAttributeSet];
+    thumbnailData = [contentAttributeSet thumbnailData];
 
-    v9 = [v4 contentAttributeSet];
-    [v9 setThumbnailData:0];
+    contentAttributeSet2 = [v4 contentAttributeSet];
+    [contentAttributeSet2 setThumbnailData:0];
 
     v10 = INUserActivitySerializeToData(v4);
     v11 = self->_activityData;
     self->_activityData = v10;
 
-    v12 = [v4 contentAttributeSet];
-    [v12 setThumbnailData:v8];
+    contentAttributeSet3 = [v4 contentAttributeSet];
+    [contentAttributeSet3 setThumbnailData:thumbnailData];
 
     activityData = self->_activityData;
   }
@@ -516,85 +516,85 @@ LABEL_6:
   return activityData;
 }
 
-- (INShortcut)shortcutWithActivityBundleIdentifier:(id)a3
+- (INShortcut)shortcutWithActivityBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INShortcut *)self userActivity];
+  identifierCopy = identifier;
+  userActivity = [(INShortcut *)self userActivity];
 
-  if (v5)
+  if (userActivity)
   {
     v6 = objc_alloc(objc_opt_class());
-    v7 = [(INShortcut *)self activityData];
-    v8 = [(INShortcut *)self activityImage];
-    v9 = [(INShortcut *)self activitySubtitle];
-    v10 = [v6 initWithActivityData:v7 activityImage:v8 activitySubtitle:v9 activityBundleIdentifier:v4];
+    activityData = [(INShortcut *)self activityData];
+    activityImage = [(INShortcut *)self activityImage];
+    activitySubtitle = [(INShortcut *)self activitySubtitle];
+    selfCopy = [v6 initWithActivityData:activityData activityImage:activityImage activitySubtitle:activitySubtitle activityBundleIdentifier:identifierCopy];
   }
 
   else
   {
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (INShortcut)shortcutWithActivityImage:(id)a3
+- (INShortcut)shortcutWithActivityImage:(id)image
 {
-  v4 = a3;
-  v5 = [(INShortcut *)self userActivity];
+  imageCopy = image;
+  userActivity = [(INShortcut *)self userActivity];
 
-  if (v5)
+  if (userActivity)
   {
     v6 = objc_alloc(objc_opt_class());
-    v7 = [(INShortcut *)self activityData];
-    v8 = [(INShortcut *)self activitySubtitle];
-    v9 = [(INShortcut *)self activityBundleIdentifier];
-    v10 = [v6 initWithActivityData:v7 activityImage:v4 activitySubtitle:v8 activityBundleIdentifier:v9];
+    activityData = [(INShortcut *)self activityData];
+    activitySubtitle = [(INShortcut *)self activitySubtitle];
+    activityBundleIdentifier = [(INShortcut *)self activityBundleIdentifier];
+    selfCopy = [v6 initWithActivityData:activityData activityImage:imageCopy activitySubtitle:activitySubtitle activityBundleIdentifier:activityBundleIdentifier];
   }
 
   else
   {
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (INShortcut)initWithActivityData:(id)a3 activityImage:(id)a4 activitySubtitle:(id)a5 activityBundleIdentifier:(id)a6
+- (INShortcut)initWithActivityData:(id)data activityImage:(id)image activitySubtitle:(id)subtitle activityBundleIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  imageCopy = image;
+  subtitleCopy = subtitle;
+  identifierCopy = identifier;
   v31.receiver = self;
   v31.super_class = INShortcut;
   v14 = [(INShortcut *)&v31 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [dataCopy copy];
     activityData = v14->_activityData;
     v14->_activityData = v15;
 
-    v17 = [v11 copy];
+    v17 = [imageCopy copy];
     activityImage = v14->_activityImage;
     v14->_activityImage = v17;
 
-    v19 = [v12 length];
+    v19 = [subtitleCopy length];
     if (v19)
     {
-      v19 = [v12 copy];
+      v19 = [subtitleCopy copy];
     }
 
     activitySubtitle = v14->_activitySubtitle;
     v14->_activitySubtitle = v19;
 
-    v21 = [v13 copy];
+    v21 = [identifierCopy copy];
     activityBundleIdentifier = v14->_activityBundleIdentifier;
     v14->_activityBundleIdentifier = v21;
 
-    if ([v10 length])
+    if ([dataCopy length])
     {
-      v23 = INUserActivityDeserializeFromData(v10);
+      v23 = INUserActivityDeserializeFromData(dataCopy);
       userActivity = v14->_userActivity;
       v14->_userActivity = v23;
 
@@ -617,8 +617,8 @@ LABEL_6:
       v26 = v25;
       _Block_object_dispose(&v33, 8);
       v27 = objc_alloc_init(v25);
-      v28 = [(INImage *)v14->_activityImage _imageData];
-      [v27 setThumbnailData:v28];
+      _imageData = [(INImage *)v14->_activityImage _imageData];
+      [v27 setThumbnailData:_imageData];
 
       [(NSUserActivity *)v14->_userActivity setContentAttributeSet:v27];
     }
@@ -629,33 +629,33 @@ LABEL_6:
   return v14;
 }
 
-- (INShortcut)initWithUserActivity:(id)a3 bundleIdentifier:(id)a4
+- (INShortcut)initWithUserActivity:(id)activity bundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  if (v7)
+  activityCopy = activity;
+  if (activityCopy)
   {
-    v8 = a4;
-    v9 = [v7 title];
-    v10 = [v9 length];
+    identifierCopy = identifier;
+    title = [activityCopy title];
+    v10 = [title length];
 
     if (!v10)
     {
-      NSLog(@"Shortcut created from user activity (%@) is invalid because it is missing a title", v7);
+      NSLog(@"Shortcut created from user activity (%@) is invalid because it is missing a title", activityCopy);
     }
 
-    v11 = [v7 contentAttributeSet];
-    v12 = [v11 thumbnailURL];
-    if ([v12 isFileURL])
+    contentAttributeSet = [activityCopy contentAttributeSet];
+    thumbnailURL = [contentAttributeSet thumbnailURL];
+    if ([thumbnailURL isFileURL])
     {
-      v13 = [INImage imageWithURL:v12];
+      v13 = [INImage imageWithURL:thumbnailURL];
     }
 
     else
     {
-      v15 = [v11 thumbnailData];
-      if ([v15 length])
+      thumbnailData = [contentAttributeSet thumbnailData];
+      if ([thumbnailData length])
       {
-        v13 = [INImage imageWithImageData:v15];
+        v13 = [INImage imageWithImageData:thumbnailData];
       }
 
       else
@@ -664,35 +664,35 @@ LABEL_6:
       }
     }
 
-    v16 = [v11 contentDescription];
-    self = [(INShortcut *)self initWithActivityData:0 activityImage:v13 activitySubtitle:v16 activityBundleIdentifier:v8];
+    contentDescription = [contentAttributeSet contentDescription];
+    self = [(INShortcut *)self initWithActivityData:0 activityImage:v13 activitySubtitle:contentDescription activityBundleIdentifier:identifierCopy];
 
     if (self)
     {
-      objc_storeStrong(&self->_userActivity, a3);
-      v17 = self;
+      objc_storeStrong(&self->_userActivity, activity);
+      selfCopy = self;
     }
 
-    v14 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy2 = 0;
   }
 
-  return v14;
+  return selfCopy2;
 }
 
-- (id)_initWithIntent:(id)a3
+- (id)_initWithIntent:(id)intent
 {
-  v4 = a3;
+  intentCopy = intent;
   v10.receiver = self;
   v10.super_class = INShortcut;
   v5 = [(INShortcut *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [intentCopy copy];
     intent = v5->_intent;
     v5->_intent = v6;
 
@@ -709,15 +709,15 @@ LABEL_6:
   if (v4 && ([(INIntent *)v4 _isConfigurable]|| _INIsIntentValidForSuggestion(v5)))
   {
     self = [(INShortcut *)self _initWithIntent:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

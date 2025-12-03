@@ -1,22 +1,22 @@
 @interface TSDMutableStroke
 + (id)emptyStroke;
 + (id)stroke;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setWidth:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setWidth:(double)width;
 @end
 
 @implementation TSDMutableStroke
 
-- (void)setWidth:(double)a3
+- (void)setWidth:(double)width
 {
   objc_msgSend_setI_width_(self, a2, v3);
 
-  objc_msgSend_setI_actualWidth_(self, v6, v7, a3);
+  objc_msgSend_setI_actualWidth_(self, v6, v7, width);
 }
 
 + (id)stroke
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___TSDMutableStroke;
   v2 = objc_msgSendSuper2(&v4, sel_i_newStroke);
 
@@ -25,14 +25,14 @@
 
 + (id)emptyStroke
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___TSDMutableStroke;
   v2 = objc_msgSendSuper2(&v4, sel_i_newEmptyStroke);
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSDStroke alloc];
   v7 = objc_msgSend_color(self, v5, v6);

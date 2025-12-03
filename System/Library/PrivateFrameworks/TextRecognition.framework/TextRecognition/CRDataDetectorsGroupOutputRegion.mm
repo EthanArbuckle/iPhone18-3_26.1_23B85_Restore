@@ -1,22 +1,22 @@
 @interface CRDataDetectorsGroupOutputRegion
-- (CRDataDetectorsGroupOutputRegion)initWithDDRegions:(id)a3 children:(id)a4 groupType:(unint64_t)a5;
+- (CRDataDetectorsGroupOutputRegion)initWithDDRegions:(id)regions children:(id)children groupType:(unint64_t)type;
 - (id)debugDescription;
 @end
 
 @implementation CRDataDetectorsGroupOutputRegion
 
-- (CRDataDetectorsGroupOutputRegion)initWithDDRegions:(id)a3 children:(id)a4 groupType:(unint64_t)a5
+- (CRDataDetectorsGroupOutputRegion)initWithDDRegions:(id)regions children:(id)children groupType:(unint64_t)type
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  regionsCopy = regions;
+  childrenCopy = children;
+  if ([regionsCopy count])
   {
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v10 = v9;
+    v10 = childrenCopy;
     v11 = [v10 countByEnumeratingWithState:&v48 objects:v53 count:16];
     v12 = 0.0;
     if (v11)
@@ -37,10 +37,10 @@
           v18 = *(*(&v48 + 1) + 8 * i);
           [v18 baselineAngle];
           v15 = v15 + v19;
-          v20 = [v18 confidence];
-          if (v20 < v16)
+          confidence = [v18 confidence];
+          if (confidence < v16)
           {
-            v16 = v20;
+            v16 = confidence;
           }
         }
 
@@ -66,24 +66,24 @@
     v22 = [(CROutputRegion *)&v47 initWithConfidence:v16 baselineAngle:v12];
     if (v22)
     {
-      v42 = v9;
+      v42 = childrenCopy;
       v23 = [v10 copy];
       [(CROutputRegion *)v22 setChildren:v23];
 
-      v24 = [v8 copy];
+      v24 = [regionsCopy copy];
       [(CROutputRegion *)v22 setDataDetectorRegions:v24];
 
-      v22->_groupType = a5;
+      v22->_groupType = type;
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v25 = [(CROutputRegion *)v22 dataDetectorRegions];
-      v26 = [v25 countByEnumeratingWithState:&v43 objects:v52 count:16];
+      dataDetectorRegions = [(CROutputRegion *)v22 dataDetectorRegions];
+      v26 = [dataDetectorRegions countByEnumeratingWithState:&v43 objects:v52 count:16];
       if (v26)
       {
         v27 = v26;
-        v28 = 0;
+        boundingQuad2 = 0;
         v29 = 0;
         v30 = *v44;
         do
@@ -92,32 +92,32 @@
           {
             if (*v44 != v30)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(dataDetectorRegions);
             }
 
             v32 = *(*(&v43 + 1) + 8 * j);
-            if (v28)
+            if (boundingQuad2)
             {
-              [v28 baselineAngle];
+              [boundingQuad2 baselineAngle];
               v34 = v33;
               [v32 baselineAngle];
               v36 = v35 + v34 * v29++;
               v37 = v36 / v29;
-              v38 = [v32 boundingQuad];
+              boundingQuad = [v32 boundingQuad];
               *&v39 = v37;
-              v40 = [v28 unionWithNormalizedQuad:v38 baselineAngle:v39];
+              v40 = [boundingQuad2 unionWithNormalizedQuad:boundingQuad baselineAngle:v39];
 
-              v28 = v40;
+              boundingQuad2 = v40;
             }
 
             else
             {
-              v28 = [*(*(&v43 + 1) + 8 * j) boundingQuad];
+              boundingQuad2 = [*(*(&v43 + 1) + 8 * j) boundingQuad];
               ++v29;
             }
           }
 
-          v27 = [v25 countByEnumeratingWithState:&v43 objects:v52 count:16];
+          v27 = [dataDetectorRegions countByEnumeratingWithState:&v43 objects:v52 count:16];
         }
 
         while (v27);
@@ -125,23 +125,23 @@
 
       else
       {
-        v28 = 0;
+        boundingQuad2 = 0;
       }
 
-      [(CROutputRegion *)v22 setBoundingQuad:v28];
-      v9 = v42;
+      [(CROutputRegion *)v22 setBoundingQuad:boundingQuad2];
+      childrenCopy = v42;
     }
 
     self = v22;
-    v21 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
 - (id)debugDescription
@@ -151,19 +151,19 @@
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(CRDataDetectorsGroupOutputRegion *)self groupType];
-  v8 = [(CROutputRegion *)self dataDetectorRegions];
-  v9 = [v8 count];
-  v10 = [(CROutputRegion *)self children];
-  v11 = [v4 stringWithFormat:@"[%@] type:%lu #DD:%lu #Non-DD:%lu", v6, v7, v9, objc_msgSend(v10, "count")];
+  groupType = [(CRDataDetectorsGroupOutputRegion *)self groupType];
+  dataDetectorRegions = [(CROutputRegion *)self dataDetectorRegions];
+  v9 = [dataDetectorRegions count];
+  children = [(CROutputRegion *)self children];
+  v11 = [v4 stringWithFormat:@"[%@] type:%lu #DD:%lu #Non-DD:%lu", v6, groupType, v9, objc_msgSend(children, "count")];
   [v3 addObject:v11];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v12 = [(CROutputRegion *)self dataDetectorRegions];
-  v13 = [v12 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  dataDetectorRegions2 = [(CROutputRegion *)self dataDetectorRegions];
+  v13 = [dataDetectorRegions2 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v13)
   {
     v14 = v13;
@@ -174,7 +174,7 @@
       {
         if (*v35 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(dataDetectorRegions2);
         }
 
         v17 = MEMORY[0x1E696AEC0];
@@ -183,7 +183,7 @@
         [v3 addObject:v19];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v14 = [dataDetectorRegions2 countByEnumeratingWithState:&v34 objects:v39 count:16];
     }
 
     while (v14);
@@ -193,8 +193,8 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v20 = [(CROutputRegion *)self dataDetectorRegions];
-  v21 = [v20 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  dataDetectorRegions3 = [(CROutputRegion *)self dataDetectorRegions];
+  v21 = [dataDetectorRegions3 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v21)
   {
     v22 = v21;
@@ -205,7 +205,7 @@
       {
         if (*v31 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(dataDetectorRegions3);
         }
 
         v25 = MEMORY[0x1E696AEC0];
@@ -214,7 +214,7 @@
         [v3 addObject:v27];
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v22 = [dataDetectorRegions3 countByEnumeratingWithState:&v30 objects:v38 count:16];
     }
 
     while (v22);

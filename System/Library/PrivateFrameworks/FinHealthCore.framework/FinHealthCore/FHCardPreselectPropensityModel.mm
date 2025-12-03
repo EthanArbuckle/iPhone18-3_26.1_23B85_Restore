@@ -1,19 +1,19 @@
 @interface FHCardPreselectPropensityModel
-- (id)init:(BOOL)a3;
-- (id)predict:(id)a3;
+- (id)init:(BOOL)init;
+- (id)predict:(id)predict;
 @end
 
 @implementation FHCardPreselectPropensityModel
 
-- (id)init:(BOOL)a3
+- (id)init:(BOOL)init
 {
-  v3 = a3;
+  initCopy = init;
   v5 = MEMORY[0x277CBEBC0];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 pathForResource:@"ModelResources/assets_WPC_ANALYTICS_OFFLINE_LAB/card_preselect_propensity_model/card_preselect_model" ofType:@"mlmodelc"];
   v8 = [v5 fileURLWithPath:v7];
 
-  if (v3)
+  if (initCopy)
   {
     v13.receiver = self;
     v13.super_class = FHCardPreselectPropensityModel;
@@ -32,9 +32,9 @@
   return v10;
 }
 
-- (id)predict:(id)a3
+- (id)predict:(id)predict
 {
-  v3 = [(FHModel *)self predictClassProbabilitiesWithDict:a3];
+  v3 = [(FHModel *)self predictClassProbabilitiesWithDict:predict];
   v4 = v3;
   if (v3 && ([v3 objectForKey:&unk_283A88338], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {

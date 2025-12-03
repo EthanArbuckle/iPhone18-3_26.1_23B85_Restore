@@ -27,30 +27,30 @@
 
 - (id)accessibilityAttributedValue
 {
-  v2 = [a1 storage];
-  v3 = [a1 range];
-  v5 = [v2 substringWithRange:{v3, v4}];
+  storage = [self storage];
+  range = [self range];
+  v5 = [storage substringWithRange:{range, v4}];
 
   v6 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v5];
-  v7 = [a1 storage];
-  v8 = [a1 range];
+  storage2 = [self storage];
+  range2 = [self range];
   v10 = v9;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __56__TSWPRep_SXAccessibility__accessibilityAttributedValue__block_invoke;
   v27[3] = &unk_1E84FF8A0;
-  v27[4] = a1;
+  v27[4] = self;
   v11 = v6;
   v28 = v11;
-  [v7 enumerateSmartFieldsWithAttributeKind:6 inRange:v8 usingBlock:{v10, v27}];
+  [storage2 enumerateSmartFieldsWithAttributeKind:6 inRange:range2 usingBlock:{v10, v27}];
 
   v12 = [v5 length];
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x2020000000;
   v26[3] = 0;
-  v13 = [a1 storage];
-  v14 = [a1 range];
+  storage3 = [self storage];
+  range3 = [self range];
   v16 = v15;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -61,7 +61,7 @@
   v25 = v12;
   v22 = v17;
   v23 = v26;
-  [v13 enumerateWithAttributeKind:2 inRange:v14 usingBlock:{v16, v21}];
+  [storage3 enumerateWithAttributeKind:2 inRange:range3 usingBlock:{v16, v21}];
 
   v18 = v22;
   v19 = v17;
@@ -73,9 +73,9 @@
 
 - (id)accessibilityLanguage
 {
-  v2 = [a1 storage];
-  v3 = [a1 range];
-  v5 = [v2 languageForTextRange:v3 useStringTokenizer:v4 useCreationLanguage:{0, 0}];
+  storage = [self storage];
+  range = [self range];
+  v5 = [storage languageForTextRange:range useStringTokenizer:v4 useCreationLanguage:{0, 0}];
 
   v6 = MEMORY[0x1DA7166A0](v5);
 
@@ -85,13 +85,13 @@
 - (id)_accessibilityNextElementsForSpeakThis
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 interactiveCanvasController];
-  [v2 layoutIfNeeded];
+  interactiveCanvasController = [self interactiveCanvasController];
+  [interactiveCanvasController layoutIfNeeded];
 
-  v3 = [a1 interactiveCanvasController];
-  v4 = [v3 canvasView];
+  interactiveCanvasController2 = [self interactiveCanvasController];
+  canvasView = [interactiveCanvasController2 canvasView];
 
-  v5 = [v4 sxaxNextSpeakThisElementFromElement:a1];
+  v5 = [canvasView sxaxNextSpeakThisElementFromElement:self];
   v6 = v5;
   if (v5)
   {
@@ -101,7 +101,7 @@
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = TSWPRep_0;
     v7 = objc_msgSendSuper2(&v10, sel__accessibilityNextElementsForSpeakThis);
   }
@@ -118,8 +118,8 @@
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [a1 columns];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  columns = [self columns];
+  v6 = [columns countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -131,16 +131,16 @@
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(columns);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 countLines];
-        if (v12 >= 1)
+        countLines = [v11 countLines];
+        if (countLines >= 1)
         {
-          v13 = v12;
+          v13 = countLines;
           v14 = 0;
-          v15 = v12 + v8;
+          v15 = countLines + v8;
           while (1)
           {
             [v11 boundsOfLineFragmentAtIndex:v14];
@@ -161,7 +161,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v7 = [columns countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v7)
       {
         continue;
@@ -171,13 +171,13 @@
     }
   }
 
-  v5 = [MEMORY[0x1E69D5768] currentHandler];
+  columns = [MEMORY[0x1E69D5768] currentHandler];
   v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[TSWPRep(SXAccessibility) accessibilityLineNumberForPoint:]"];
   v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/FeldsparServicesUI/Modules/silex/Silex/Text/Tangier/TSWPRep+SXAccessibility.m"];
   v26.x = a2;
   v26.y = a3;
   v18 = NSStringFromCGPoint(v26);
-  [v5 handleFailureInFunction:v16 file:v17 lineNumber:92 description:{@"Line not found for natural point: %@", v18}];
+  [columns handleFailureInFunction:v16 file:v17 lineNumber:92 description:{@"Line not found for natural point: %@", v18}];
 
   v8 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_14:
@@ -187,20 +187,20 @@ LABEL_14:
 
 - (id)accessibilityContentForLineNumber:()SXAccessibility
 {
-  v5 = [a1 _STAXColumnForLineIndex:?];
+  v5 = [self _STAXColumnForLineIndex:?];
   v6 = [v5 rangeOfLineFragmentAtIndex:a3];
   v8 = v7;
-  v9 = [a1 storage];
-  v10 = [v9 substringWithRange:{v6, v8}];
+  storage = [self storage];
+  v10 = [storage substringWithRange:{v6, v8}];
 
   return v10;
 }
 
 - (double)accessibilityFrameForLineNumber:()SXAccessibility
 {
-  v5 = [a1 _STAXColumnForLineIndex:?];
+  v5 = [self _STAXColumnForLineIndex:?];
   [v5 boundsOfLineFragmentAtIndex:a3];
-  [a1 SXAXConvertNaturalRectToScreenSpace:?];
+  [self SXAXConvertNaturalRectToScreenSpace:?];
   v7 = v6;
 
   return v7;
@@ -211,18 +211,18 @@ LABEL_14:
   v22 = *MEMORY[0x1E69E9840];
   if (a3 >= 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [MEMORY[0x1E69D5768] currentHandler];
+    currentHandler = [MEMORY[0x1E69D5768] currentHandler];
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[TSWPRep(SXAccessibility) _STAXColumnForLineIndex:]"];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/FeldsparServicesUI/Modules/silex/Silex/Text/Tangier/TSWPRep+SXAccessibility.m"];
-    [v5 handleFailureInFunction:v6 file:v7 lineNumber:116 description:@"Invalid line index"];
+    [currentHandler handleFailureInFunction:v6 file:v7 lineNumber:116 description:@"Invalid line index"];
   }
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [a1 columns];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  columns = [self columns];
+  v9 = [columns countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -234,7 +234,7 @@ LABEL_14:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(columns);
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
@@ -246,7 +246,7 @@ LABEL_14:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [columns countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v10)
       {
         continue;
@@ -264,21 +264,21 @@ LABEL_13:
 
 - (double)_accessibilityFrameForRange:()SXAccessibility
 {
-  v2 = [a1 sxaxStorageRelativeRangeFromRepRelativeRange:?];
+  v2 = [self sxaxStorageRelativeRangeFromRepRelativeRange:?];
   v4 = v3;
-  v5 = [a1 _STAXColumnForStorageRelativeCharIndex:v2];
+  v5 = [self _STAXColumnForStorageRelativeCharIndex:v2];
   if (v5)
   {
     v6 = [MEMORY[0x1E69D5728] selectionWithRange:{v2, v4}];
     v7 = [v5 rectsForSelection:v6];
-    v8 = [v7 firstObject];
-    [v8 CGRectValue];
+    firstObject = [v7 firstObject];
+    [firstObject CGRectValue];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
 
-    [a1 SXAXConvertNaturalRectToScreenSpace:{v10, v12, v14, v16}];
+    [self SXAXConvertNaturalRectToScreenSpace:{v10, v12, v14, v16}];
     v18 = v17;
   }
 
@@ -292,20 +292,20 @@ LABEL_13:
 
 - (uint64_t)_accessibilitySelectedTextRange
 {
-  v2 = [a1 selection];
-  v3 = [v2 range];
-  v5 = [a1 sxaxRepRelativeRangeFromStorageRelativeRange:{v3, v4}];
+  selection = [self selection];
+  range = [selection range];
+  v5 = [self sxaxRepRelativeRangeFromStorageRelativeRange:{range, v4}];
 
   return v5;
 }
 
 - (void)_accessibilitySetSelectedTextRange:()SXAccessibility
 {
-  v2 = [a1 sxaxStorageRelativeRangeFromRepRelativeRange:?];
+  v2 = [self sxaxStorageRelativeRangeFromRepRelativeRange:?];
   v7 = [MEMORY[0x1E69D5728] selectionWithRange:{v2, v3}];
   objc_opt_class();
-  v4 = [a1 interactiveCanvasController];
-  v5 = [v4 beginEditingRep:a1];
+  interactiveCanvasController = [self interactiveCanvasController];
+  v5 = [interactiveCanvasController beginEditingRep:self];
   v6 = TSUDynamicCast();
 
   [v6 setSelection:v7];
@@ -314,28 +314,28 @@ LABEL_13:
 
 - (uint64_t)_accessibilityLineStartPosition
 {
-  v2 = [a1 selection];
-  v3 = [v2 range];
+  selection = [self selection];
+  range = [selection range];
   v5 = v4;
   v6 = *MEMORY[0x1E69D5760];
   v7 = *(MEMORY[0x1E69D5760] + 8);
 
-  if (v6 == v3 && v7 == v5)
+  if (v6 == range && v7 == v5)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v9 = [a1 selection];
-  v10 = [v9 range];
-  v12 = v11 + v10 - 1;
+  selection2 = [self selection];
+  range2 = [selection2 range];
+  v12 = v11 + range2 - 1;
 
-  v13 = [a1 _sxaxStorageRelativeRangeOfLineFragmentAtStorageRelativeCharIndex:v12];
-  return [a1 sxaxRepRelativeRangeFromStorageRelativeRange:{v13, v14}];
+  v13 = [self _sxaxStorageRelativeRangeOfLineFragmentAtStorageRelativeCharIndex:v12];
+  return [self sxaxRepRelativeRangeFromStorageRelativeRange:{v13, v14}];
 }
 
 - (uint64_t)_accessibilityLineRangeForPosition:()SXAccessibility
 {
-  [a1 range];
+  [self range];
   if (v5 < a3)
   {
     return *MEMORY[0x1E69D5760];
@@ -343,7 +343,7 @@ LABEL_13:
 
   if (a3)
   {
-    [a1 range];
+    [self range];
     v8 = a3 - (v7 == a3);
   }
 
@@ -352,32 +352,32 @@ LABEL_13:
     v8 = 0;
   }
 
-  v9 = [a1 _sxaxStorageRelativeRangeOfLineFragmentAtStorageRelativeCharIndex:{objc_msgSend(a1, "sxaxStorageRelativeRangeFromRepRelativeRange:", v8, 0)}];
-  return [a1 sxaxRepRelativeRangeFromStorageRelativeRange:{v9, v10}];
+  v9 = [self _sxaxStorageRelativeRangeOfLineFragmentAtStorageRelativeCharIndex:{objc_msgSend(self, "sxaxStorageRelativeRangeFromRepRelativeRange:", v8, 0)}];
+  return [self sxaxRepRelativeRangeFromStorageRelativeRange:{v9, v10}];
 }
 
 - (uint64_t)_accessibilityLineEndPosition
 {
-  v2 = [a1 selection];
-  v3 = [v2 range];
+  selection = [self selection];
+  range = [selection range];
   v5 = v4;
 
-  v6 = [a1 _sxaxStorageRelativeRangeOfLineFragmentAtStorageRelativeCharIndex:v3 + v5];
-  v8 = [a1 sxaxRepRelativeRangeFromStorageRelativeRange:{v6, v7}];
+  v6 = [self _sxaxStorageRelativeRangeOfLineFragmentAtStorageRelativeCharIndex:range + v5];
+  v8 = [self sxaxRepRelativeRangeFromStorageRelativeRange:{v6, v7}];
   return v8 + v9;
 }
 
 - (unint64_t)_sxaxStorageRelativeRangeOfLineFragmentAtStorageRelativeCharIndex:()SXAccessibility
 {
   v4 = *MEMORY[0x1E69D5760];
-  v5 = [a1 _STAXColumnForStorageRelativeCharIndex:?];
+  v5 = [self _STAXColumnForStorageRelativeCharIndex:?];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 countLines];
-    if (v7 >= 1)
+    countLines = [v5 countLines];
+    if (countLines >= 1)
     {
-      v8 = v7;
+      v8 = countLines;
       v9 = 0;
       while (1)
       {
@@ -409,8 +409,8 @@ LABEL_9:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [a1 columns];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  columns = [self columns];
+  v5 = [columns countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -421,14 +421,14 @@ LABEL_9:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(columns);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         if ([v9 range] <= a3)
         {
-          v10 = [v9 range];
-          if (v10 + v11 > a3)
+          range = [v9 range];
+          if (range + v11 > a3)
           {
             v12 = v9;
             goto LABEL_12;
@@ -436,7 +436,7 @@ LABEL_9:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [columns countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -455,9 +455,9 @@ LABEL_12:
 - (uint64_t)_accessibilityRangeForLineNumber:()SXAccessibility
 {
   v4 = a3 & ~(a3 >> 63);
-  v5 = [a1 _STAXColumnForLineIndex:v4];
+  v5 = [self _STAXColumnForLineIndex:v4];
   v6 = [v5 rangeOfLineFragmentAtIndex:v4];
-  v8 = [a1 sxaxRepRelativeRangeFromStorageRelativeRange:{v6, v7}];
+  v8 = [self sxaxRepRelativeRangeFromStorageRelativeRange:{v6, v7}];
 
   return v8;
 }
@@ -465,20 +465,20 @@ LABEL_12:
 - (id)_accessibilityTextRectsForSpeakThisStringRange:()SXAccessibility
 {
   v39 = *MEMORY[0x1E69E9840];
-  if (a4 && ([a1 hasBeenRemoved] & 1) == 0)
+  if (a4 && ([self hasBeenRemoved] & 1) == 0)
   {
     v33 = objc_opt_new();
-    [a1 range];
+    [self range];
     if (a3 <= v8)
     {
-      v15 = [a1 sxaxStorageRelativeRangeFromRepRelativeRange:{a3, a4}];
+      v15 = [self sxaxStorageRelativeRangeFromRepRelativeRange:{a3, a4}];
       v30 = v16;
       v31 = v15;
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
-      obj = [a1 columns];
+      obj = [self columns];
       v32 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v32)
       {
@@ -509,10 +509,10 @@ LABEL_12:
                   v42.location = [v18 rangeOfLineFragmentAtIndex:v20];
                   v44 = v19;
                   v23 = [objc_alloc(MEMORY[0x1E69D5728]) initWithRange:{NSIntersectionRange(v42, v44).location, v42.length}];
-                  [a1 rectForSelection:v23];
+                  [self rectForSelection:v23];
                   if (v24 * v25 > 0.0)
                   {
-                    [a1 SXAXConvertNaturalRectToScreenSpace:?];
+                    [self SXAXConvertNaturalRectToScreenSpace:?];
                     v26 = [MEMORY[0x1E696B098] valueWithCGRect:?];
                     [v33 addObject:v26];
                   }
@@ -534,23 +534,23 @@ LABEL_12:
 
     else
     {
-      v9 = [a1 _accessibilityNextElementsForSpeakThis];
-      v10 = [v9 firstObject];
+      _accessibilityNextElementsForSpeakThis = [self _accessibilityNextElementsForSpeakThis];
+      firstObject = [_accessibilityNextElementsForSpeakThis firstObject];
 
-      if (v10)
+      if (firstObject)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [a1 range];
-          v12 = [v10 _accessibilityTextRectsForSpeakThisStringRange:{a3 - v11, a4}];
+          [self range];
+          v12 = [firstObject _accessibilityTextRectsForSpeakThisStringRange:{a3 - v11, a4}];
           [v33 addObjectsFromArray:v12];
         }
 
         if (![v33 count])
         {
           v13 = MEMORY[0x1E696B098];
-          [v10 accessibilityFrame];
+          [firstObject accessibilityFrame];
           v14 = [v13 valueWithCGRect:?];
           [v33 addObject:v14];
         }
@@ -576,17 +576,17 @@ LABEL_12:
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 range];
+    range = [v5 range];
   }
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = TSWPRep_0;
-    v7 = objc_msgSendSuper2(&v10, sel__accessibilityRawRangeForUITextRange_, v4);
+    range = objc_msgSendSuper2(&v10, sel__accessibilityRawRangeForUITextRange_, v4);
   }
 
-  v8 = v7;
+  v8 = range;
 
   return v8;
 }
@@ -594,14 +594,14 @@ LABEL_12:
 - (id)_accessibilityTextOperations
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
-  v3 = [a1 _sxaxTextInputEditor];
-  v4 = [a1 sxaxSupportedEditRotorActions];
+  array = [MEMORY[0x1E695DF70] array];
+  _sxaxTextInputEditor = [self _sxaxTextInputEditor];
+  sxaxSupportedEditRotorActions = [self sxaxSupportedEditRotorActions];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [sxaxSupportedEditRotorActions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -612,24 +612,24 @@ LABEL_12:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sxaxSupportedEditRotorActions);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v3 canPerformEditorAction:NSSelectorFromString(v9) withSender:0])
+        if ([_sxaxTextInputEditor canPerformEditorAction:NSSelectorFromString(v9) withSender:0])
         {
-          v10 = [a1 sxaxNameForEditRotorAction:v9];
-          [v2 addObject:v10];
+          v10 = [self sxaxNameForEditRotorAction:v9];
+          [array addObject:v10];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [sxaxSupportedEditRotorActions countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [v2 copy];
+  v11 = [array copy];
 
   return v11;
 }
@@ -638,7 +638,7 @@ LABEL_12:
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 sxaxSupportedEditRotorActions];
+  [self sxaxSupportedEditRotorActions];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -658,7 +658,7 @@ LABEL_3:
       }
 
       v10 = *(*(&v17 + 1) + 8 * v9);
-      v11 = [a1 sxaxNameForEditRotorAction:{v10, v17}];
+      v11 = [self sxaxNameForEditRotorAction:{v10, v17}];
       v12 = [v11 isEqualToString:v4];
 
       if (v12)
@@ -682,8 +682,8 @@ LABEL_3:
 
     if (v15)
     {
-      v14 = [a1 interactiveCanvasController];
-      [v14 makeEditorPerformAction:v15 withSender:0];
+      interactiveCanvasController = [self interactiveCanvasController];
+      [interactiveCanvasController makeEditorPerformAction:v15 withSender:0];
       v13 = 1;
       goto LABEL_12;
     }
@@ -695,7 +695,7 @@ LABEL_3:
   {
 LABEL_9:
     v13 = 0;
-    v14 = v5;
+    interactiveCanvasController = v5;
 LABEL_12:
   }
 
@@ -705,9 +705,9 @@ LABEL_12:
 - (id)_sxaxTextInputEditor
 {
   objc_opt_class();
-  v2 = [a1 interactiveCanvasController];
-  v3 = [v2 editorController];
-  v4 = [v3 textInputEditor];
+  interactiveCanvasController = [self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
+  textInputEditor = [editorController textInputEditor];
   v5 = TSUDynamicCast();
 
   return v5;
@@ -720,8 +720,8 @@ LABEL_12:
   {
     v4 = @"Copy";
 LABEL_5:
-    v5 = [MEMORY[0x1E696AAE8] mainBundle];
-    v6 = [v5 localizedStringForKey:v4 value:&stru_1F532F6C0 table:0];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:v4 value:&stru_1F532F6C0 table:0];
 
     goto LABEL_7;
   }

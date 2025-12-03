@@ -1,12 +1,12 @@
 @interface NPKWatchSubcredentialProvisioningService
 - (NPKWatchSubcredentialProvisioningService)init;
-- (void)canAcceptInvitationOnRemoteDeviceResponse:(id)a3;
-- (void)fetchAccountAttestationAnonymizationSaltOnRemoteDeviceWithCompletion:(id)a3;
-- (void)fetchAccountAttestationAnonymizationSaltResponse:(id)a3;
-- (void)registerProtobufActionsForService:(id)a3;
-- (void)sendAcceptSubcredentialProvisioningRequestForInvitation:(id)a3 metadata:(id)a4;
-- (void)sendAcceptSubcredentialProvisioningRequestForMailboxAddress:(id)a3 activationCode:(id)a4;
-- (void)sendCanAcceptInvitationOnRemoteDeviceRequestForInvitation:(id)a3 completion:(id)a4;
+- (void)canAcceptInvitationOnRemoteDeviceResponse:(id)response;
+- (void)fetchAccountAttestationAnonymizationSaltOnRemoteDeviceWithCompletion:(id)completion;
+- (void)fetchAccountAttestationAnonymizationSaltResponse:(id)response;
+- (void)registerProtobufActionsForService:(id)service;
+- (void)sendAcceptSubcredentialProvisioningRequestForInvitation:(id)invitation metadata:(id)metadata;
+- (void)sendAcceptSubcredentialProvisioningRequestForMailboxAddress:(id)address activationCode:(id)code;
+- (void)sendCanAcceptInvitationOnRemoteDeviceRequestForInvitation:(id)invitation completion:(id)completion;
 @end
 
 @implementation NPKWatchSubcredentialProvisioningService
@@ -29,18 +29,18 @@
   return 0;
 }
 
-- (void)registerProtobufActionsForService:(id)a3
+- (void)registerProtobufActionsForService:(id)service
 {
-  v3 = a3;
-  [v3 setProtobufAction:sel_canAcceptInvitationOnRemoteDeviceResponse_ forIncomingResponsesOfType:73];
-  [v3 setProtobufAction:sel_fetchAccountAttestationAnonymizationSaltResponse_ forIncomingResponsesOfType:74];
+  serviceCopy = service;
+  [serviceCopy setProtobufAction:sel_canAcceptInvitationOnRemoteDeviceResponse_ forIncomingResponsesOfType:73];
+  [serviceCopy setProtobufAction:sel_fetchAccountAttestationAnonymizationSaltResponse_ forIncomingResponsesOfType:74];
 }
 
-- (void)sendCanAcceptInvitationOnRemoteDeviceRequestForInvitation:(id)a3 completion:(id)a4
+- (void)sendCanAcceptInvitationOnRemoteDeviceRequestForInvitation:(id)invitation completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  invitationCopy = invitation;
+  completionCopy = completion;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -51,7 +51,7 @@
     {
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
-      v13 = _Block_copy(v7);
+      v13 = _Block_copy(completionCopy);
       *buf = 138543618;
       v24 = v12;
       v25 = 2112;
@@ -61,18 +61,18 @@
   }
 
   objc_initWeak(buf, self);
-  v14 = [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue];
+  subcredentialProvisioningQueue = [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __113__NPKWatchSubcredentialProvisioningService_sendCanAcceptInvitationOnRemoteDeviceRequestForInvitation_completion___block_invoke;
   v18[3] = &unk_279946CF8;
   objc_copyWeak(&v22, buf);
-  v20 = self;
-  v21 = v7;
-  v19 = v6;
-  v15 = v7;
-  v16 = v6;
-  dispatch_async(v14, v18);
+  selfCopy = self;
+  v21 = completionCopy;
+  v19 = invitationCopy;
+  v15 = completionCopy;
+  v16 = invitationCopy;
+  dispatch_async(subcredentialProvisioningQueue, v18);
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(buf);
@@ -174,10 +174,10 @@ void __113__NPKWatchSubcredentialProvisioningService_sendCanAcceptInvitationOnRe
   }
 }
 
-- (void)canAcceptInvitationOnRemoteDeviceResponse:(id)a3
+- (void)canAcceptInvitationOnRemoteDeviceResponse:(id)response
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -188,19 +188,19 @@ void __113__NPKWatchSubcredentialProvisioningService_sendCanAcceptInvitationOnRe
     {
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       v35 = 138543618;
       v36 = v9;
       v37 = 2112;
-      v38 = v10;
+      v38 = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: Received canAcceptInvitationOnRemoteDeviceResponse: incoming protobuf %@", &v35, 0x16u);
     }
   }
 
-  v11 = [v4 context];
-  v12 = [v11 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
-  if (!v12)
+  if (!incomingResponseIdentifier)
   {
     v23 = pk_Payment_log();
     v24 = os_log_type_enabled(v23, OS_LOG_TYPE_ERROR);
@@ -225,13 +225,13 @@ LABEL_16:
     }
 
 LABEL_17:
-    v19 = 0;
+    completionHandler = 0;
     v22 = 0;
     goto LABEL_18;
   }
 
-  v13 = [(NPKSubcredentialProvisioningService *)self outstandingRequests];
-  v14 = [v13 objectForKey:v12];
+  outstandingRequests = [(NPKSubcredentialProvisioningService *)self outstandingRequests];
+  v14 = [outstandingRequests objectForKey:incomingResponseIdentifier];
 
   if (!v14)
   {
@@ -260,20 +260,20 @@ LABEL_17:
   }
 
   v15 = [NPKProtoCanAcceptInvitationResponse alloc];
-  v16 = [v4 data];
-  v17 = [(NPKProtoCanAcceptInvitationResponse *)v15 initWithData:v16];
+  data = [responseCopy data];
+  v17 = [(NPKProtoCanAcceptInvitationResponse *)v15 initWithData:data];
 
-  v18 = [(NPKSubcredentialProvisioningService *)self outstandingRequests];
-  [v18 removeObjectForKey:v12];
+  outstandingRequests2 = [(NPKSubcredentialProvisioningService *)self outstandingRequests];
+  [outstandingRequests2 removeObjectForKey:incomingResponseIdentifier];
 
-  v19 = [v14 completionHandler];
-  v20 = [(NPKProtoCanAcceptInvitationResponse *)v17 errorData];
+  completionHandler = [v14 completionHandler];
+  errorData = [(NPKProtoCanAcceptInvitationResponse *)v17 errorData];
   v21 = objc_opt_class();
-  v22 = NPKSecureUnarchiveObject(v20, v21);
+  v22 = NPKSecureUnarchiveObject(errorData, v21);
 
-  if (v19)
+  if (completionHandler)
   {
-    (v19)[2](v19, v22 == 0, v22);
+    (completionHandler)[2](completionHandler, v22 == 0, v22);
   }
 
 LABEL_18:
@@ -281,11 +281,11 @@ LABEL_18:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendAcceptSubcredentialProvisioningRequestForInvitation:(id)a3 metadata:(id)a4
+- (void)sendAcceptSubcredentialProvisioningRequestForInvitation:(id)invitation metadata:(id)metadata
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  invitationCopy = invitation;
+  metadataCopy = metadata;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -299,23 +299,23 @@ LABEL_18:
       *buf = 138543618;
       v22 = v12;
       v23 = 2112;
-      v24 = v6;
+      v24 = invitationCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: Sending subcredential provisioning request for invitation: %@", buf, 0x16u);
     }
   }
 
   objc_initWeak(buf, self);
-  v13 = [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue];
+  subcredentialProvisioningQueue = [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __109__NPKWatchSubcredentialProvisioningService_sendAcceptSubcredentialProvisioningRequestForInvitation_metadata___block_invoke;
   block[3] = &unk_279945290;
   objc_copyWeak(&v20, buf);
-  v18 = v6;
-  v19 = v7;
-  v14 = v7;
-  v15 = v6;
-  dispatch_async(v13, block);
+  v18 = invitationCopy;
+  v19 = metadataCopy;
+  v14 = metadataCopy;
+  v15 = invitationCopy;
+  dispatch_async(subcredentialProvisioningQueue, block);
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(buf);
@@ -369,12 +369,12 @@ void __109__NPKWatchSubcredentialProvisioningService_sendAcceptSubcredentialProv
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendAcceptSubcredentialProvisioningRequestForMailboxAddress:(id)a3 activationCode:(id)a4
+- (void)sendAcceptSubcredentialProvisioningRequestForMailboxAddress:(id)address activationCode:(id)code
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length] == 0;
+  addressCopy = address;
+  codeCopy = code;
+  v8 = [addressCopy length] == 0;
   v9 = pk_General_log();
   v10 = v9;
   if (v8)
@@ -409,23 +409,23 @@ void __109__NPKWatchSubcredentialProvisioningService_sendAcceptSubcredentialProv
         *buf = 138543875;
         v26 = v14;
         v27 = 2113;
-        v28 = v6;
+        v28 = addressCopy;
         v29 = 2113;
-        v30 = v7;
+        v30 = codeCopy;
         _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: Sending subcredential provisioning request for mailbox address: %{private}@, activationCode: %{private}@", buf, 0x20u);
       }
     }
 
     objc_initWeak(buf, self);
-    v15 = [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue];
+    subcredentialProvisioningQueue = [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __119__NPKWatchSubcredentialProvisioningService_sendAcceptSubcredentialProvisioningRequestForMailboxAddress_activationCode___block_invoke;
     block[3] = &unk_279945290;
     objc_copyWeak(&v24, buf);
-    v22 = v6;
-    v23 = v7;
-    dispatch_async(v15, block);
+    v22 = addressCopy;
+    v23 = codeCopy;
+    dispatch_async(subcredentialProvisioningQueue, block);
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(buf);
@@ -474,10 +474,10 @@ void __119__NPKWatchSubcredentialProvisioningService_sendAcceptSubcredentialProv
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchAccountAttestationAnonymizationSaltOnRemoteDeviceWithCompletion:(id)a3
+- (void)fetchAccountAttestationAnonymizationSaltOnRemoteDeviceWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -488,7 +488,7 @@ void __119__NPKWatchSubcredentialProvisioningService_sendAcceptSubcredentialProv
     {
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = _Block_copy(v4);
+      v10 = _Block_copy(completionCopy);
       *buf = 138543618;
       v18 = v9;
       v19 = 2112;
@@ -498,16 +498,16 @@ void __119__NPKWatchSubcredentialProvisioningService_sendAcceptSubcredentialProv
   }
 
   objc_initWeak(buf, self);
-  v11 = [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue];
+  subcredentialProvisioningQueue = [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __113__NPKWatchSubcredentialProvisioningService_fetchAccountAttestationAnonymizationSaltOnRemoteDeviceWithCompletion___block_invoke;
   block[3] = &unk_279946D20;
   objc_copyWeak(&v16, buf);
   block[4] = self;
-  v15 = v4;
-  v12 = v4;
-  dispatch_async(v11, block);
+  v15 = completionCopy;
+  v12 = completionCopy;
+  dispatch_async(subcredentialProvisioningQueue, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -609,10 +609,10 @@ void __113__NPKWatchSubcredentialProvisioningService_fetchAccountAttestationAnon
   }
 }
 
-- (void)fetchAccountAttestationAnonymizationSaltResponse:(id)a3
+- (void)fetchAccountAttestationAnonymizationSaltResponse:(id)response
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -623,19 +623,19 @@ void __113__NPKWatchSubcredentialProvisioningService_fetchAccountAttestationAnon
     {
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       v36 = 138543618;
       v37 = v9;
       v38 = 2112;
-      v39 = v10;
+      v39 = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: Received accountAttestationAnonymizationSaltResponse: incoming protobuf %@", &v36, 0x16u);
     }
   }
 
-  v11 = [v4 context];
-  v12 = [v11 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
-  if (!v12)
+  if (!incomingResponseIdentifier)
   {
     v24 = pk_Payment_log();
     v25 = os_log_type_enabled(v24, OS_LOG_TYPE_ERROR);
@@ -660,14 +660,14 @@ LABEL_16:
     }
 
 LABEL_17:
-    v19 = 0;
-    v20 = 0;
+    completionHandler = 0;
+    anonymizationSalt = 0;
     v23 = 0;
     goto LABEL_18;
   }
 
-  v13 = [(NPKSubcredentialProvisioningService *)self outstandingRequests];
-  v14 = [v13 objectForKey:v12];
+  outstandingRequests = [(NPKSubcredentialProvisioningService *)self outstandingRequests];
+  v14 = [outstandingRequests objectForKey:incomingResponseIdentifier];
 
   if (!v14)
   {
@@ -696,21 +696,21 @@ LABEL_17:
   }
 
   v15 = [NPKProtoAccountAttestationAnonymizationSaltResponse alloc];
-  v16 = [v4 data];
-  v17 = [(NPKProtoAccountAttestationAnonymizationSaltResponse *)v15 initWithData:v16];
+  data = [responseCopy data];
+  v17 = [(NPKProtoAccountAttestationAnonymizationSaltResponse *)v15 initWithData:data];
 
-  v18 = [(NPKSubcredentialProvisioningService *)self outstandingRequests];
-  [v18 removeObjectForKey:v12];
+  outstandingRequests2 = [(NPKSubcredentialProvisioningService *)self outstandingRequests];
+  [outstandingRequests2 removeObjectForKey:incomingResponseIdentifier];
 
-  v19 = [v14 completionHandler];
-  v20 = [(NPKProtoAccountAttestationAnonymizationSaltResponse *)v17 anonymizationSalt];
-  v21 = [(NPKProtoAccountAttestationAnonymizationSaltResponse *)v17 errorData];
+  completionHandler = [v14 completionHandler];
+  anonymizationSalt = [(NPKProtoAccountAttestationAnonymizationSaltResponse *)v17 anonymizationSalt];
+  errorData = [(NPKProtoAccountAttestationAnonymizationSaltResponse *)v17 errorData];
   v22 = objc_opt_class();
-  v23 = NPKSecureUnarchiveObject(v21, v22);
+  v23 = NPKSecureUnarchiveObject(errorData, v22);
 
-  if (v19)
+  if (completionHandler)
   {
-    (v19)[2](v19, v20, v23);
+    (completionHandler)[2](completionHandler, anonymizationSalt, v23);
   }
 
 LABEL_18:

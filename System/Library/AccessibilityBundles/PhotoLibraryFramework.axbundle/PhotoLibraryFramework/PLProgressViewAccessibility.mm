@@ -2,8 +2,8 @@
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axUpdateValueBasedOnPercentComplete:(float)a3;
-- (void)setPercentComplete:(float)a3;
+- (void)_axUpdateValueBasedOnPercentComplete:(float)complete;
+- (void)setPercentComplete:(float)complete;
 @end
 
 @implementation PLProgressViewAccessibility
@@ -20,12 +20,12 @@
 - (id)accessibilityLabel
 {
   v2 = [(PLProgressViewAccessibility *)self safeValueForKey:@"_labelView"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
-- (void)_axUpdateValueBasedOnPercentComplete:(float)a3
+- (void)_axUpdateValueBasedOnPercentComplete:(float)complete
 {
   v4 = objc_allocWithZone(MEMORY[0x29EDBA0F8]);
   v5 = UIKitAccessibilityLocalizedString();
@@ -35,7 +35,7 @@
   [(PLProgressViewAccessibility *)self setAccessibilityValue:v7];
 }
 
-- (void)setPercentComplete:(float)a3
+- (void)setPercentComplete:(float)complete
 {
   v8.receiver = self;
   v8.super_class = PLProgressViewAccessibility;

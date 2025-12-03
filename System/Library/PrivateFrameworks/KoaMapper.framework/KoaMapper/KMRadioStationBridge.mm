@@ -1,6 +1,6 @@
 @interface KMRadioStationBridge
-+ (void)bootstrapListenerWithHandler:(id)a3;
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4;
++ (void)bootstrapListenerWithHandler:(id)handler;
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block;
 - (KMRadioStationBridge)init;
 - (RadioListener)radioStore;
 @end
@@ -14,16 +14,16 @@
   return WeakRetained;
 }
 
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  blockCopy = block;
   v6 = +[CarPlayConnectionManager shared];
-  v7 = [v6 radioStore];
-  [(KMRadioStationBridge *)self setRadioStore:v7];
+  radioStore = [v6 radioStore];
+  [(KMRadioStationBridge *)self setRadioStore:radioStore];
 
-  v8 = [(KMRadioStationBridge *)self radioStore];
-  v9 = [v8 radioStations];
+  radioStore2 = [(KMRadioStationBridge *)self radioStore];
+  radioStations = [radioStore2 radioStations];
 
   v10 = KMLogContextCore;
   if (os_log_type_enabled(KMLogContextCore, OS_LOG_TYPE_DEBUG))
@@ -32,7 +32,7 @@
     *buf = 136315394;
     v27 = "[KMRadioStationBridge enumerateItemsWithError:usingBlock:]";
     v28 = 2048;
-    v29 = [v9 count];
+    v29 = [radioStations count];
     _os_log_debug_impl(&dword_2559DF000, v20, OS_LOG_TYPE_DEBUG, "%s #radio: %li radio stations found for donation.", buf, 0x16u);
   }
 
@@ -40,7 +40,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v9;
+  v11 = radioStations;
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
@@ -55,7 +55,7 @@
           objc_enumerationMutation(v11);
         }
 
-        if (!*(*(&v21 + 1) + 8 * i) || (v5[2](v5) & 1) == 0)
+        if (!*(*(&v21 + 1) + 8 * i) || (blockCopy[2](blockCopy) & 1) == 0)
         {
           v17 = KMLogContextCore;
           if (os_log_type_enabled(KMLogContextCore, OS_LOG_TYPE_ERROR))
@@ -109,11 +109,11 @@ LABEL_17:
   return v2;
 }
 
-+ (void)bootstrapListenerWithHandler:(id)a3
++ (void)bootstrapListenerWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[CarPlayConnectionManager shared];
-  [v4 registerUpdateHandler:v3];
+  [v4 registerUpdateHandler:handlerCopy];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface HKTimePeriodNumberFormatter
 - (HKTimePeriodNumberFormatter)init;
-- (id)stringFromNumber:(id)a3 displayType:(id)a4 unitController:(id)a5;
+- (id)stringFromNumber:(id)number displayType:(id)type unitController:(id)controller;
 @end
 
 @implementation HKTimePeriodNumberFormatter
@@ -18,21 +18,21 @@
   return result;
 }
 
-- (id)stringFromNumber:(id)a3 displayType:(id)a4 unitController:(id)a5
+- (id)stringFromNumber:(id)number displayType:(id)type unitController:(id)controller
 {
-  v6 = a3;
-  v7 = [(HKTimePeriodNumberFormatter *)self shouldRoundToHours];
+  numberCopy = number;
+  shouldRoundToHours = [(HKTimePeriodNumberFormatter *)self shouldRoundToHours];
   if ([(HKTimePeriodNumberFormatter *)self shouldShowDays])
   {
-    v8 = v7;
+    v8 = shouldRoundToHours;
   }
 
   else
   {
-    v8 = v7 | 0x80;
+    v8 = shouldRoundToHours | 0x80;
   }
 
-  v9 = HKTimePeriodString(v6, v8);
+  v9 = HKTimePeriodString(numberCopy, v8);
 
   return v9;
 }

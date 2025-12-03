@@ -1,7 +1,7 @@
 @interface RSDRemoteBonjourPeerDevice
-- (RSDRemoteBonjourPeerDevice)initWithBrowsedEndpointUUID:(id)a3 uuid:(unsigned __int8)a4[16];
+- (RSDRemoteBonjourPeerDevice)initWithBrowsedEndpointUUID:(id)d uuid:(unsigned __int8)uuid[16];
 - (RSDRemoteBonjourPeerDevice)initWithGeneratedName;
-- (RSDRemoteBonjourPeerDevice)initWithIncomingEndpoint:(id)a3;
+- (RSDRemoteBonjourPeerDevice)initWithIncomingEndpoint:(id)endpoint;
 - (const)local_address;
 - (const)remote_address;
 - (void)attach;
@@ -25,14 +25,14 @@
   return [(RSDRemoteDevice *)&v6 initWithName:__str];
 }
 
-- (RSDRemoteBonjourPeerDevice)initWithIncomingEndpoint:(id)a3
+- (RSDRemoteBonjourPeerDevice)initWithIncomingEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [(RSDRemoteBonjourPeerDevice *)self initWithGeneratedName];
-  v6 = v5;
-  if (v5)
+  endpointCopy = endpoint;
+  initWithGeneratedName = [(RSDRemoteBonjourPeerDevice *)self initWithGeneratedName];
+  v6 = initWithGeneratedName;
+  if (initWithGeneratedName)
   {
-    [(RSDRemoteBonjourPeerDevice *)v5 setAddress_endpoint:v4];
+    [(RSDRemoteBonjourPeerDevice *)initWithGeneratedName setAddress_endpoint:endpointCopy];
     v6->saysHelloFirst = 0;
     v7 = v6;
   }
@@ -40,20 +40,20 @@
   return v6;
 }
 
-- (RSDRemoteBonjourPeerDevice)initWithBrowsedEndpointUUID:(id)a3 uuid:(unsigned __int8)a4[16]
+- (RSDRemoteBonjourPeerDevice)initWithBrowsedEndpointUUID:(id)d uuid:(unsigned __int8)uuid[16]
 {
-  v6 = a3;
-  if (nw_endpoint_get_type(v6) != nw_endpoint_type_bonjour_service)
+  dCopy = d;
+  if (nw_endpoint_get_type(dCopy) != nw_endpoint_type_bonjour_service)
   {
     sub_100042214(&v11, v12);
   }
 
-  v7 = [(RSDRemoteBonjourPeerDevice *)self initWithGeneratedName];
-  v8 = v7;
-  if (v7)
+  initWithGeneratedName = [(RSDRemoteBonjourPeerDevice *)self initWithGeneratedName];
+  v8 = initWithGeneratedName;
+  if (initWithGeneratedName)
   {
-    [(RSDRemoteBonjourPeerDevice *)v7 setBonjour_endpoint:v6];
-    uuid_copy(v8->remote_device_uuid, a4);
+    [(RSDRemoteBonjourPeerDevice *)initWithGeneratedName setBonjour_endpoint:dCopy];
+    uuid_copy(v8->remote_device_uuid, uuid);
     if (uuid_is_null(v8->remote_device_uuid))
     {
       sub_100042280(&v11, v12);
@@ -87,12 +87,12 @@
 
 - (void)connected
 {
-  v3 = [(RSDRemoteDevice *)self connection];
+  connection = [(RSDRemoteDevice *)self connection];
   v4 = xpc_remote_connection_copy_remote_endpoint();
   [(RSDRemoteBonjourPeerDevice *)self setAddress_endpoint:v4];
 
-  v5 = [(RSDRemoteBonjourPeerDevice *)self address_endpoint];
-  if (!v5)
+  address_endpoint = [(RSDRemoteBonjourPeerDevice *)self address_endpoint];
+  if (!address_endpoint)
   {
     sub_100042358(&v6, v7);
   }
@@ -152,13 +152,13 @@
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@> connecting to remote remoted", buf, 0xCu);
       }
 
-      v9 = [(RSDRemoteBonjourPeerDevice *)self bonjour_endpoint];
-      if (!v9)
+      bonjour_endpoint = [(RSDRemoteBonjourPeerDevice *)self bonjour_endpoint];
+      if (!bonjour_endpoint)
       {
         sub_1000424D0(&v25, buf);
       }
 
-      v10 = [(RSDRemoteBonjourPeerDevice *)self bonjour_endpoint];
+      bonjour_endpoint2 = [(RSDRemoteBonjourPeerDevice *)self bonjour_endpoint];
       v11 = nw_endpoint_copy_interface();
 
       v12 = v11;
@@ -183,8 +183,8 @@
       }
 
       v16 = v15;
-      v17 = [(RSDRemoteBonjourPeerDevice *)self bonjour_endpoint];
-      v18 = nw_connection_create(v17, v16);
+      bonjour_endpoint3 = [(RSDRemoteBonjourPeerDevice *)self bonjour_endpoint];
+      v18 = nw_connection_create(bonjour_endpoint3, v16);
 
       goto LABEL_36;
     }
@@ -212,11 +212,11 @@ LABEL_43:
 
   if (self->_peerconn)
   {
-    v19 = [(RSDRemoteDevice *)self connection];
+    connection = [(RSDRemoteDevice *)self connection];
 
     peerconn = sub_10002F03C();
     v20 = os_log_type_enabled(peerconn, OS_LOG_TYPE_DEFAULT);
-    if (!v19)
+    if (!connection)
     {
       if (v20)
       {
@@ -307,8 +307,8 @@ LABEL_45:
 
 - (const)remote_address
 {
-  v2 = [(RSDRemoteBonjourPeerDevice *)self address_endpoint];
-  address = nw_endpoint_get_address(v2);
+  address_endpoint = [(RSDRemoteBonjourPeerDevice *)self address_endpoint];
+  address = nw_endpoint_get_address(address_endpoint);
 
   return &address->sa_data[6];
 }

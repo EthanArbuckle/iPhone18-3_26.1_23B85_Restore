@@ -1,7 +1,7 @@
 @interface _HDOntologyFeatureCoordinatorRequireOperation
 - (_HDOntologyFeatureCoordinatorRequireOperation)init;
-- (_HDOntologyFeatureCoordinatorRequireOperation)initWithCoder:(id)a3;
-- (id)initWithItems:(id *)a1;
+- (_HDOntologyFeatureCoordinatorRequireOperation)initWithCoder:(id)coder;
+- (id)initWithItems:(id *)items;
 - (id)transactionContext;
 @end
 
@@ -9,9 +9,9 @@
 
 - (id)transactionContext
 {
-  v2 = [MEMORY[0x277D10788] contextForReadingProtectedData];
-  [v2 setAllowsJournalingDuringProtectedRead:1];
-  v3 = [v2 copy];
+  contextForReadingProtectedData = [MEMORY[0x277D10788] contextForReadingProtectedData];
+  [contextForReadingProtectedData setAllowsJournalingDuringProtectedRead:1];
+  v3 = [contextForReadingProtectedData copy];
 
   return v3;
 }
@@ -26,16 +26,16 @@
   return 0;
 }
 
-- (_HDOntologyFeatureCoordinatorRequireOperation)initWithCoder:(id)a3
+- (_HDOntologyFeatureCoordinatorRequireOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = _HDOntologyFeatureCoordinatorRequireOperation;
   v5 = [(_HDOntologyFeatureCoordinatorRequireOperation *)&v10 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"items"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"items"];
     items = v5->_items;
     v5->_items = v7;
   }
@@ -43,22 +43,22 @@
   return v5;
 }
 
-- (id)initWithItems:(id *)a1
+- (id)initWithItems:(id *)items
 {
   v4 = a2;
-  if (a1)
+  if (items)
   {
-    v7.receiver = a1;
+    v7.receiver = items;
     v7.super_class = _HDOntologyFeatureCoordinatorRequireOperation;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    items = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 2, a2);
     }
   }
 
-  return a1;
+  return items;
 }
 
 @end

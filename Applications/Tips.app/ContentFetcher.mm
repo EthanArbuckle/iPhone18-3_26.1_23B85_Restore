@@ -1,15 +1,15 @@
 @interface ContentFetcher
 - (_TtC4Tips14ContentFetcher)init;
-- (void)appController:(id)a3 loadingContent:(BOOL)a4;
+- (void)appController:(id)controller loadingContent:(BOOL)content;
 @end
 
 @implementation ContentFetcher
 
-- (void)appController:(id)a3 loadingContent:(BOOL)a4
+- (void)appController:(id)controller loadingContent:(BOOL)content
 {
-  v6 = a3;
-  v7 = self;
-  sub_100063CC0(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_100063CC0(controllerCopy, content);
 }
 
 - (_TtC4Tips14ContentFetcher)init

@@ -1,39 +1,39 @@
 @interface UTTypeRecord
-+ (BOOL)_typeIdentifier:(id)a3 conformsToTypeIdentifier:(id)a4;
-+ (UTTypeRecord)typeRecordWithTag:(id)a3 ofClass:(id)a4 conformingToIdentifier:(id)a5;
-+ (UTTypeRecord)typeRecordWithTag:(id)a3 ofClass:(id)a4 conformingToTypeRecord:(id)a5;
-+ (id)_typeRecordWithContext:(LSContext *)a3 forPromiseAtNode:(id)a4 error:(id *)a5;
-+ (id)_typeRecordWithContext:(LSContext *)a3 forPromiseResourceValues:(id)a4 error:(id *)a5;
-+ (id)_typeRecordWithContext:(LSContext *)a3 identifier:(id)a4 allowUndeclared:(BOOL)a5;
++ (BOOL)_typeIdentifier:(id)identifier conformsToTypeIdentifier:(id)typeIdentifier;
++ (UTTypeRecord)typeRecordWithTag:(id)tag ofClass:(id)class conformingToIdentifier:(id)identifier;
++ (UTTypeRecord)typeRecordWithTag:(id)tag ofClass:(id)class conformingToTypeRecord:(id)record;
++ (id)_typeRecordWithContext:(LSContext *)context forPromiseAtNode:(id)node error:(id *)error;
++ (id)_typeRecordWithContext:(LSContext *)context forPromiseResourceValues:(id)values error:(id *)error;
++ (id)_typeRecordWithContext:(LSContext *)context identifier:(id)identifier allowUndeclared:(BOOL)undeclared;
 + (id)enumerator;
-+ (id)typeRecordForImportedTypeWithIdentifier:(id)a3 conformingToIdentifier:(id)a4;
-+ (id)typeRecordForPromiseAtURL:(id)a3 error:(id *)a4;
-+ (id)typeRecordsWithIdentifiers:(id)a3;
-+ (id)typeRecordsWithTag:(id)a3 ofClass:(id)a4 conformingToIdentifier:(id)a5;
-+ (id)typeRecordsWithTag:(id)a3 ofClass:(id)a4 conformingToTypeRecord:(id)a5;
-- (BOOL)conformsToTypeRecord:(id)a3;
-- (BOOL)isChildOfTypeIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)typeRecordForImportedTypeWithIdentifier:(id)identifier conformingToIdentifier:(id)toIdentifier;
++ (id)typeRecordForPromiseAtURL:(id)l error:(id *)error;
++ (id)typeRecordsWithIdentifiers:(id)identifiers;
++ (id)typeRecordsWithTag:(id)tag ofClass:(id)class conformingToIdentifier:(id)identifier;
++ (id)typeRecordsWithTag:(id)tag ofClass:(id)class conformingToTypeRecord:(id)record;
+- (BOOL)conformsToTypeRecord:(id)record;
+- (BOOL)isChildOfTypeIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)localizedDescriptionDictionary;
 - (NSOrderedSet)parentTypeIdentifiers;
 - (NSSet)childTypeIdentifiers;
 - (NSSet)pedigree;
 - (NSString)localizedDescription;
 - (NSURL)referenceAccessoryURL;
-- (id)_initWithContext:(LSContext *)a3 persistentIdentifierData:(const LSPersistentIdentifierData *)a4 length:(unint64_t)a5;
+- (id)_initWithContext:(LSContext *)context persistentIdentifierData:(const LSPersistentIdentifierData *)data length:(unint64_t)length;
 - (id)debugDescription;
-- (id)localizedDescriptionWithPreferredLocalizations:(id)a3;
-- (id)preferredTagOfClass:(id)a3;
+- (id)localizedDescriptionWithPreferredLocalizations:(id)localizations;
+- (id)preferredTagOfClass:(id)class;
 - (unint64_t)hash;
-- (void)_enumerateRelatedTypesWithMaximumDegreeOfSeparation:(int64_t)a3 block:(id)a4;
+- (void)_enumerateRelatedTypesWithMaximumDegreeOfSeparation:(int64_t)separation block:(id)block;
 @end
 
 @implementation UTTypeRecord
 
 - (unint64_t)hash
 {
-  v2 = [(UTTypeRecord *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(UTTypeRecord *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -54,7 +54,7 @@ void __58__UTTypeRecord__typeRecordWithIdentifier_allowUndeclared___block_invoke
   }
 }
 
-+ (id)typeRecordsWithIdentifiers:(id)a3
++ (id)typeRecordsWithIdentifiers:(id)identifiers
 {
   v40 = *MEMORY[0x1E69E9840];
   v33 = 0;
@@ -75,13 +75,13 @@ void __58__UTTypeRecord__typeRecordWithIdentifier_allowUndeclared___block_invoke
 
     if (v7)
     {
-      v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a3, "count")}];
+      v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(identifiers, "count")}];
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v9 = a3;
-      v10 = [v9 countByEnumeratingWithState:&v25 objects:v39 count:16];
+      identifiersCopy = identifiers;
+      v10 = [identifiersCopy countByEnumeratingWithState:&v25 objects:v39 count:16];
       if (v10)
       {
         v11 = *v26;
@@ -91,18 +91,18 @@ void __58__UTTypeRecord__typeRecordWithIdentifier_allowUndeclared___block_invoke
           {
             if (*v26 != v11)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(identifiersCopy);
             }
 
             v13 = *(*(&v25 + 1) + 8 * i);
-            v14 = [a1 _typeRecordWithContext:v7 identifier:v13 allowUndeclared:0];
+            v14 = [self _typeRecordWithContext:v7 identifier:v13 allowUndeclared:0];
             if (v14)
             {
               [v8 setObject:v14 forKeyedSubscript:v13];
             }
           }
 
-          v10 = [v9 countByEnumeratingWithState:&v25 objects:v39 count:16];
+          v10 = [identifiersCopy countByEnumeratingWithState:&v25 objects:v39 count:16];
         }
 
         while (v10);
@@ -135,7 +135,7 @@ void __58__UTTypeRecord__typeRecordWithIdentifier_allowUndeclared___block_invoke
     v24[2] = __43__UTTypeRecord_typeRecordsWithIdentifiers___block_invoke_2;
     v24[3] = &unk_1E6A1F028;
     v24[4] = &v33;
-    [v19 getTypeRecordsWithIdentifiers:a3 completionHandler:v24];
+    [v19 getTypeRecordsWithIdentifiers:identifiers completionHandler:v24];
   }
 
   v20 = v34[5];
@@ -154,23 +154,23 @@ void __58__UTTypeRecord__typeRecordWithIdentifier_allowUndeclared___block_invoke
   return v21;
 }
 
-+ (UTTypeRecord)typeRecordWithTag:(id)a3 ofClass:(id)a4 conformingToTypeRecord:(id)a5
++ (UTTypeRecord)typeRecordWithTag:(id)tag ofClass:(id)class conformingToTypeRecord:(id)record
 {
-  v8 = [a5 identifier];
-  v9 = [a1 typeRecordWithTag:a3 ofClass:a4 conformingToIdentifier:v8];
+  identifier = [record identifier];
+  v9 = [self typeRecordWithTag:tag ofClass:class conformingToIdentifier:identifier];
 
   return v9;
 }
 
-+ (id)typeRecordsWithTag:(id)a3 ofClass:(id)a4 conformingToTypeRecord:(id)a5
++ (id)typeRecordsWithTag:(id)tag ofClass:(id)class conformingToTypeRecord:(id)record
 {
-  v8 = [a5 identifier];
-  v9 = [a1 typeRecordsWithTag:a3 ofClass:a4 conformingToIdentifier:v8];
+  identifier = [record identifier];
+  v9 = [self typeRecordsWithTag:tag ofClass:class conformingToIdentifier:identifier];
 
   return v9;
 }
 
-+ (UTTypeRecord)typeRecordWithTag:(id)a3 ofClass:(id)a4 conformingToIdentifier:(id)a5
++ (UTTypeRecord)typeRecordWithTag:(id)tag ofClass:(id)class conformingToIdentifier:(id)identifier
 {
   v28 = 0;
   v29 = &v28;
@@ -187,7 +187,7 @@ void __58__UTTypeRecord__typeRecordWithIdentifier_allowUndeclared___block_invoke
     v21[2] = __65__UTTypeRecord_typeRecordWithTag_ofClass_conformingToIdentifier___block_invoke_2;
     v21[3] = &unk_1E6A1F000;
     v21[4] = &v28;
-    [v12 getTypeRecordWithTag:a3 ofClass:a4 conformingToIdentifier:a5 completionHandler:v21];
+    [v12 getTypeRecordWithTag:tag ofClass:class conformingToIdentifier:identifier completionHandler:v21];
 
     goto LABEL_16;
   }
@@ -202,9 +202,9 @@ void __58__UTTypeRecord__typeRecordWithIdentifier_allowUndeclared___block_invoke
   if (v10)
   {
     v23 = 0;
-    if (a5)
+    if (identifier)
     {
-      if (!_UTGetActiveTypeForCFStringIdentifier(v10->db, a5, &v23))
+      if (!_UTGetActiveTypeForCFStringIdentifier(v10->db, identifier, &v23))
       {
         goto LABEL_10;
       }
@@ -218,11 +218,11 @@ void __58__UTTypeRecord__typeRecordWithIdentifier_allowUndeclared___block_invoke
     }
 
     v22 = 0;
-    if (_UTTypeGetActiveIdentifierForTag(v10->db, a4, a3, v11, &v22))
+    if (_UTTypeGetActiveIdentifierForTag(v10->db, class, tag, v11, &v22))
     {
       v13 = [_UTDeclaredTypeRecord alloc];
-      v14 = [(_LSDatabase *)v10->db schema];
-      v15 = [(LSRecord *)v13 _initWithContext:v10 tableID:*(v14 + 16) unitID:v22];
+      schema = [(_LSDatabase *)v10->db schema];
+      v15 = [(LSRecord *)v13 _initWithContext:v10 tableID:*(schema + 16) unitID:v22];
 LABEL_11:
       v16 = v29[5];
       v29[5] = v15;
@@ -231,7 +231,7 @@ LABEL_11:
     }
 
 LABEL_10:
-    v15 = fallbackDynamicOrBaseTypeRecord(v10, a3, a4, a5);
+    v15 = fallbackDynamicOrBaseTypeRecord(v10, tag, class, identifier);
     goto LABEL_11;
   }
 
@@ -256,7 +256,7 @@ LABEL_16:
   return v19;
 }
 
-+ (id)typeRecordsWithTag:(id)a3 ofClass:(id)a4 conformingToIdentifier:(id)a5
++ (id)typeRecordsWithTag:(id)tag ofClass:(id)class conformingToIdentifier:(id)identifier
 {
   v32 = 0;
   v33 = &v32;
@@ -277,7 +277,7 @@ LABEL_16:
     if (v10)
     {
       v27 = 0;
-      if (!a5 || _UTGetActiveTypeForCFStringIdentifier(v10->db, a5, &v27))
+      if (!identifier || _UTGetActiveTypeForCFStringIdentifier(v10->db, identifier, &v27))
       {
         v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
         db = v10->db;
@@ -289,10 +289,10 @@ LABEL_16:
         v25 = v10;
         v13 = v11;
         v24 = v13;
-        _UTEnumerateTypesForTag(db, a4, a3, v23);
+        _UTEnumerateTypesForTag(db, class, tag, v23);
         if (![v13 count])
         {
-          v14 = fallbackDynamicOrBaseTypeRecord(v10, a3, a4, a5);
+          v14 = fallbackDynamicOrBaseTypeRecord(v10, tag, class, identifier);
           if (v14)
           {
             [v13 addObject:v14];
@@ -327,7 +327,7 @@ LABEL_16:
     v22[2] = __66__UTTypeRecord_typeRecordsWithTag_ofClass_conformingToIdentifier___block_invoke_3;
     v22[3] = &unk_1E6A1F078;
     v22[4] = &v32;
-    [v19 getTypeRecordsWithTag:a3 ofClass:a4 conformingToIdentifier:a5 completionHandler:v22];
+    [v19 getTypeRecordsWithTag:tag ofClass:class conformingToIdentifier:identifier completionHandler:v22];
   }
 
   v20 = v33[5];
@@ -354,9 +354,9 @@ void __66__UTTypeRecord_typeRecordsWithTag_ofClass_conformingToIdentifier___bloc
   }
 }
 
-+ (id)typeRecordForImportedTypeWithIdentifier:(id)a3 conformingToIdentifier:(id)a4
++ (id)typeRecordForImportedTypeWithIdentifier:(id)identifier conformingToIdentifier:(id)toIdentifier
 {
-  v5 = a4;
+  toIdentifierCopy = toIdentifier;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -372,7 +372,7 @@ void __66__UTTypeRecord_typeRecordsWithTag_ofClass_conformingToIdentifier___bloc
     v30[2] = __79__UTTypeRecord_typeRecordForImportedTypeWithIdentifier_conformingToIdentifier___block_invoke_2;
     v30[3] = &unk_1E6A1F000;
     v30[4] = &v38;
-    [v13 getTypeRecordForImportedTypeWithIdentifier:a3 conformingToIdentifier:v5 completionHandler:v30];
+    [v13 getTypeRecordForImportedTypeWithIdentifier:identifier conformingToIdentifier:toIdentifierCopy completionHandler:v30];
 
     goto LABEL_25;
   }
@@ -387,15 +387,15 @@ void __66__UTTypeRecord_typeRecordsWithTag_ofClass_conformingToIdentifier___bloc
   if (v8)
   {
     v33 = 0;
-    active = _UTGetActiveTypeForCFStringIdentifier(*v8, a3, &v33);
+    active = _UTGetActiveTypeForCFStringIdentifier(*v8, identifier, &v33);
     if (!active || (v10 = [(_LSDatabase *)*v8 schema], (EntryWithClass = _LSBindingListGetEntryWithClass(*v8, *(active + 80), *(v10 + 320))) == 0) || !EntryWithClass[1] || !EntryWithClass[2])
     {
 LABEL_19:
       if (v33)
       {
         v22 = [_UTDeclaredTypeRecord alloc];
-        v23 = [(_LSDatabase *)*v8 schema];
-        v24 = [(LSRecord *)v22 _initWithContext:v8 tableID:*(v23 + 16) unitID:v33];
+        schema = [(_LSDatabase *)*v8 schema];
+        v24 = [(LSRecord *)v22 _initWithContext:v8 tableID:*(schema + 16) unitID:v33];
         v25 = v39[5];
         v39[5] = v24;
       }
@@ -405,9 +405,9 @@ LABEL_19:
 
     v32 = 0;
     v12 = *v8;
-    if (v5)
+    if (toIdentifierCopy)
     {
-      _UTGetActiveTypeForCFStringIdentifier(*v8, v5, &v32);
+      _UTGetActiveTypeForCFStringIdentifier(*v8, toIdentifierCopy, &v32);
       goto LABEL_15;
     }
 
@@ -469,9 +469,9 @@ LABEL_25:
   return v28;
 }
 
-+ (id)typeRecordForPromiseAtURL:(id)a3 error:(id *)a4
++ (id)typeRecordForPromiseAtURL:(id)l error:(id *)error
 {
-  v6 = [[FSNode alloc] initWithURL:a3 flags:0 error:a4];
+  v6 = [[FSNode alloc] initWithURL:l flags:0 error:error];
   v7 = v6;
   if (v6)
   {
@@ -484,10 +484,10 @@ LABEL_25:
 
     if (v9)
     {
-      v10 = [a1 _typeRecordWithContext:v9 forPromiseAtNode:v7 error:a4];
+      v10 = [self _typeRecordWithContext:v9 forPromiseAtNode:v7 error:error];
     }
 
-    else if (a4)
+    else if (error)
     {
       v11 = +[_LSDServiceDomain defaultServiceDomain];
       v12 = LaunchServices::Database::Context::_get(&CurrentContext, v11, 0);
@@ -503,7 +503,7 @@ LABEL_25:
       }
 
       v10 = 0;
-      *a4 = v13;
+      *error = v13;
     }
 
     else
@@ -533,28 +533,28 @@ LABEL_25:
   return v10;
 }
 
-- (id)preferredTagOfClass:(id)a3
+- (id)preferredTagOfClass:(id)class
 {
-  v4 = [(UTTypeRecord *)self tagSpecification];
+  tagSpecification = [(UTTypeRecord *)self tagSpecification];
   v5 = objc_opt_class();
-  v6 = [v4 objectForKey:a3 ofClass:v5 valuesOfClass:objc_opt_class()];
-  v7 = [v6 firstObject];
+  v6 = [tagSpecification objectForKey:class ofClass:v5 valuesOfClass:objc_opt_class()];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
-- (BOOL)conformsToTypeRecord:(id)a3
+- (BOOL)conformsToTypeRecord:(id)record
 {
-  v4 = [a3 identifier];
-  LOBYTE(self) = [(UTTypeRecord *)self conformsToTypeIdentifier:v4];
+  identifier = [record identifier];
+  LOBYTE(self) = [(UTTypeRecord *)self conformsToTypeIdentifier:identifier];
 
   return self;
 }
 
 - (NSSet)pedigree
 {
-  v4 = [(UTTypeRecord *)self identifier];
-  v2 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:&v4 count:1];
+  identifier = [(UTTypeRecord *)self identifier];
+  v2 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:&identifier count:1];
 
   return v2;
 }
@@ -573,41 +573,41 @@ LABEL_25:
   return v2;
 }
 
-- (BOOL)isChildOfTypeIdentifier:(id)a3
+- (BOOL)isChildOfTypeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 lowercaseString];
+  identifierCopy = identifier;
+  lowercaseString = [identifierCopy lowercaseString];
 
-  v6 = [(UTTypeRecord *)self parentTypeIdentifiers];
-  LOBYTE(v4) = [v6 containsObject:v5];
+  parentTypeIdentifiers = [(UTTypeRecord *)self parentTypeIdentifiers];
+  LOBYTE(identifierCopy) = [parentTypeIdentifiers containsObject:lowercaseString];
 
-  return v4;
+  return identifierCopy;
 }
 
 - (NSString)localizedDescription
 {
-  v2 = [(UTTypeRecord *)self _localizedDescription];
-  v3 = [v2 stringValue];
+  _localizedDescription = [(UTTypeRecord *)self _localizedDescription];
+  stringValue = [_localizedDescription stringValue];
 
-  return v3;
+  return stringValue;
 }
 
-- (id)localizedDescriptionWithPreferredLocalizations:(id)a3
+- (id)localizedDescriptionWithPreferredLocalizations:(id)localizations
 {
-  v4 = [(UTTypeRecord *)self _localizedDescription];
-  v5 = [v4 stringValueWithPreferredLocalizations:a3];
+  _localizedDescription = [(UTTypeRecord *)self _localizedDescription];
+  v5 = [_localizedDescription stringValueWithPreferredLocalizations:localizations];
 
   return v5;
 }
 
 - (NSDictionary)localizedDescriptionDictionary
 {
-  v2 = [(UTTypeRecord *)self _localizedDescription];
-  v3 = [v2 allStringValues];
-  v4 = v3;
-  if (v3)
+  _localizedDescription = [(UTTypeRecord *)self _localizedDescription];
+  allStringValues = [_localizedDescription allStringValues];
+  v4 = allStringValues;
+  if (allStringValues)
   {
-    v5 = v3;
+    v5 = allStringValues;
   }
 
   else
@@ -620,25 +620,25 @@ LABEL_25:
   return v5;
 }
 
-+ (id)_typeRecordWithContext:(LSContext *)a3 identifier:(id)a4 allowUndeclared:(BOOL)a5
++ (id)_typeRecordWithContext:(LSContext *)context identifier:(id)identifier allowUndeclared:(BOOL)undeclared
 {
-  v5 = a5;
+  undeclaredCopy = undeclared;
   v12 = 0;
-  if (_UTTypeIdentifierIsDynamic(a4))
+  if (_UTTypeIdentifierIsDynamic(identifier))
   {
-    v8 = [[_UTDynamicTypeRecord alloc] _initWithContext:a3 dynamicUTI:a4];
+    v8 = [[_UTDynamicTypeRecord alloc] _initWithContext:context dynamicUTI:identifier];
   }
 
-  else if (_UTGetActiveTypeForCFStringIdentifier(a3->db, a4, &v12))
+  else if (_UTGetActiveTypeForCFStringIdentifier(context->db, identifier, &v12))
   {
     v9 = [_UTDeclaredTypeRecord alloc];
-    v10 = [(_LSDatabase *)a3->db schema];
-    v8 = [(LSRecord *)v9 _initWithContext:a3 tableID:*(v10 + 16) unitID:v12];
+    schema = [(_LSDatabase *)context->db schema];
+    v8 = [(LSRecord *)v9 _initWithContext:context tableID:*(schema + 16) unitID:v12];
   }
 
-  else if (v5)
+  else if (undeclaredCopy)
   {
-    v8 = [[_UTUndeclaredTypeRecord alloc] _initWithContext:a3 identifier:a4];
+    v8 = [[_UTUndeclaredTypeRecord alloc] _initWithContext:context identifier:identifier];
   }
 
   else
@@ -649,7 +649,7 @@ LABEL_25:
   return v8;
 }
 
-- (void)_enumerateRelatedTypesWithMaximumDegreeOfSeparation:(int64_t)a3 block:(id)a4
+- (void)_enumerateRelatedTypesWithMaximumDegreeOfSeparation:(int64_t)separation block:(id)block
 {
   v28 = 0;
   v29 = &v28;
@@ -671,13 +671,13 @@ LABEL_25:
   v20[4] = self;
   v20[5] = &v28;
   v20[6] = &v21;
-  v20[7] = a3;
+  v20[7] = separation;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __74__UTTypeRecord__enumerateRelatedTypesWithMaximumDegreeOfSeparation_block___block_invoke_3;
   v19[3] = &unk_1E6A1A4F8;
-  v19[5] = a4;
-  v19[6] = a3;
+  v19[5] = block;
+  v19[6] = separation;
   v19[4] = self;
   [(LSRecord *)self _ifAttached:v20 else:v19];
   v5 = v29[5];
@@ -714,7 +714,7 @@ LABEL_25:
         }
 
 LABEL_10:
-        (*(a4 + 2))(a4, v14, *(v9 - 16), &v18);
+        (*(block + 2))(block, v14, *(v9 - 16), &v18);
         goto LABEL_11;
       }
     }
@@ -851,7 +851,7 @@ void __74__UTTypeRecord__enumerateRelatedTypesWithMaximumDegreeOfSeparation_bloc
   }
 }
 
-+ (BOOL)_typeIdentifier:(id)a3 conformsToTypeIdentifier:(id)a4
++ (BOOL)_typeIdentifier:(id)identifier conformsToTypeIdentifier:(id)typeIdentifier
 {
   v13 = 0;
   v14 = &v13;
@@ -860,11 +860,11 @@ void __74__UTTypeRecord__enumerateRelatedTypesWithMaximumDegreeOfSeparation_bloc
   v6 = objc_autoreleasePoolPush();
   if (_LSCurrentProcessMayMapDatabase())
   {
-    v7 = [UTTypeRecord typeRecordWithIdentifier:a3];
+    v7 = [UTTypeRecord typeRecordWithIdentifier:identifier];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 conformsToTypeIdentifier:a4];
+      v9 = [v7 conformsToTypeIdentifier:typeIdentifier];
       *(v14 + 24) = v9;
     }
   }
@@ -877,7 +877,7 @@ void __74__UTTypeRecord__enumerateRelatedTypesWithMaximumDegreeOfSeparation_bloc
     v12[2] = __57__UTTypeRecord__typeIdentifier_conformsToTypeIdentifier___block_invoke_2;
     v12[3] = &unk_1E6A1F118;
     v12[4] = &v13;
-    [v8 getWhetherTypeIdentifier:a3 conformsToTypeIdentifier:a4 completionHandler:v12];
+    [v8 getWhetherTypeIdentifier:identifier conformsToTypeIdentifier:typeIdentifier completionHandler:v12];
   }
 
   objc_autoreleasePoolPop(v6);
@@ -886,11 +886,11 @@ void __74__UTTypeRecord__enumerateRelatedTypesWithMaximumDegreeOfSeparation_bloc
   return v10;
 }
 
-+ (id)_typeRecordWithContext:(LSContext *)a3 forPromiseAtNode:(id)a4 error:(id *)a5
++ (id)_typeRecordWithContext:(LSContext *)context forPromiseAtNode:(id)node error:(id *)error
 {
-  if (a3)
+  if (context)
   {
-    if (a4)
+    if (node)
     {
       goto LABEL_3;
     }
@@ -898,19 +898,19 @@ void __74__UTTypeRecord__enumerateRelatedTypesWithMaximumDegreeOfSeparation_bloc
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[UTTypeRecord _typeRecordWithContext:forPromiseAtNode:error:]"];
-    [v12 handleFailureInFunction:v13 file:@"UTTypeRecord.mm" lineNumber:738 description:{@"Invalid parameter not satisfying: %@", @"ctx != NULL"}];
+    [currentHandler handleFailureInFunction:v13 file:@"UTTypeRecord.mm" lineNumber:738 description:{@"Invalid parameter not satisfying: %@", @"ctx != NULL"}];
 
-    if (a4)
+    if (node)
     {
       goto LABEL_3;
     }
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
   v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[UTTypeRecord _typeRecordWithContext:forPromiseAtNode:error:]"];
-  [v14 handleFailureInFunction:v15 file:@"UTTypeRecord.mm" lineNumber:739 description:{@"Invalid parameter not satisfying: %@", @"node != nil"}];
+  [currentHandler2 handleFailureInFunction:v15 file:@"UTTypeRecord.mm" lineNumber:739 description:{@"Invalid parameter not satisfying: %@", @"node != nil"}];
 
 LABEL_3:
   v23 = 0;
@@ -929,22 +929,22 @@ LABEL_3:
   v16[1] = 3221225472;
   v16[2] = __62__UTTypeRecord__typeRecordWithContext_forPromiseAtNode_error___block_invoke;
   v16[3] = &unk_1E6A19158;
-  v16[4] = a4;
+  v16[4] = node;
   v16[5] = &v23;
   v16[6] = &v17;
   __LSRECORD_IS_PERFORMING_IO_FOR_A_CALLER__(v16);
   v9 = v24[5];
   if (v9)
   {
-    v10 = [a1 _typeRecordWithContext:a3 forPromiseResourceValues:v9 error:a5];
+    v10 = [self _typeRecordWithContext:context forPromiseResourceValues:v9 error:error];
   }
 
   else
   {
     v10 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v18[5];
+      *error = v18[5];
     }
   }
 
@@ -970,12 +970,12 @@ void __62__UTTypeRecord__typeRecordWithContext_forPromiseAtNode_error___block_in
   *(v7 + 40) = v4;
 }
 
-+ (id)_typeRecordWithContext:(LSContext *)a3 forPromiseResourceValues:(id)a4 error:(id *)a5
++ (id)_typeRecordWithContext:(LSContext *)context forPromiseResourceValues:(id)values error:(id *)error
 {
   v32 = 0;
-  if (a3)
+  if (context)
   {
-    if (a4)
+    if (values)
     {
       goto LABEL_3;
     }
@@ -983,23 +983,23 @@ void __62__UTTypeRecord__typeRecordWithContext_forPromiseAtNode_error___block_in
 
   else
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v28 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[UTTypeRecord _typeRecordWithContext:forPromiseResourceValues:error:]"];
-    [v27 handleFailureInFunction:v28 file:@"UTTypeRecord.mm" lineNumber:767 description:{@"Invalid parameter not satisfying: %@", @"ctx != NULL"}];
+    [currentHandler handleFailureInFunction:v28 file:@"UTTypeRecord.mm" lineNumber:767 description:{@"Invalid parameter not satisfying: %@", @"ctx != NULL"}];
 
-    if (a4)
+    if (values)
     {
       goto LABEL_3;
     }
   }
 
-  v29 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
   v30 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[UTTypeRecord _typeRecordWithContext:forPromiseResourceValues:error:]"];
-  [v29 handleFailureInFunction:v30 file:@"UTTypeRecord.mm" lineNumber:768 description:{@"Invalid parameter not satisfying: %@", @"props != nil"}];
+  [currentHandler2 handleFailureInFunction:v30 file:@"UTTypeRecord.mm" lineNumber:768 description:{@"Invalid parameter not satisfying: %@", @"props != nil"}];
 
 LABEL_3:
   v31 = 0;
-  v8 = [a4 objectForKeyedSubscript:*MEMORY[0x1E695DB20]];
+  v8 = [values objectForKeyedSubscript:*MEMORY[0x1E695DB20]];
   v9 = v8;
   if (!v8)
   {
@@ -1010,11 +1010,11 @@ LABEL_13:
 
   if ([v8 isEqual:*MEMORY[0x1E695DB30]])
   {
-    v10 = [a4 objectForKeyedSubscript:*MEMORY[0x1E695DB68]];
-    v11 = [v10 BOOLValue];
+    v10 = [values objectForKeyedSubscript:*MEMORY[0x1E695DB68]];
+    bOOLValue = [v10 BOOLValue];
 
-    db = a3->db;
-    if (v11)
+    db = context->db;
+    if (bOOLValue)
     {
       v13 = &kUTTypeAliasFile;
 LABEL_12:
@@ -1031,7 +1031,7 @@ LABEL_12:
   {
     if ([v9 isEqual:*MEMORY[0x1E695DB40]])
     {
-      db = a3->db;
+      db = context->db;
       v13 = &kUTTypeSymLink;
       goto LABEL_12;
     }
@@ -1039,23 +1039,23 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v14 = [a4 objectForKeyedSubscript:*MEMORY[0x1E695DBA0]];
-  v15 = [v14 BOOLValue];
+  v14 = [values objectForKeyedSubscript:*MEMORY[0x1E695DBA0]];
+  bOOLValue2 = [v14 BOOLValue];
 
-  if (v15)
+  if (bOOLValue2)
   {
-    TypeData = _UTTypeGetTypePackage(a3->db);
+    TypeData = _UTTypeGetTypePackage(context->db);
 LABEL_15:
     v31 = TypeData;
     v17 = 1;
     goto LABEL_20;
   }
 
-  v18 = [a4 objectForKeyedSubscript:*MEMORY[0x1E695DBE8]];
-  v19 = [v18 BOOLValue];
+  v18 = [values objectForKeyedSubscript:*MEMORY[0x1E695DBE8]];
+  bOOLValue3 = [v18 BOOLValue];
 
-  v20 = a3->db;
-  if (v19)
+  v20 = context->db;
+  if (bOOLValue3)
   {
     TypeVolume = _UTTypeGetTypeVolume(v20);
   }
@@ -1073,7 +1073,7 @@ LABEL_20:
   {
     if (v17)
     {
-      v22 = [a4 objectForKeyedSubscript:*MEMORY[0x1E695DC30]];
+      v22 = [values objectForKeyedSubscript:*MEMORY[0x1E695DC30]];
       if (v22)
       {
         _CFGetPathExtensionRangesFromPathComponent();
@@ -1092,34 +1092,34 @@ LABEL_20:
   if (v32)
   {
     v24 = [_UTDeclaredTypeRecord alloc];
-    v25 = [(_LSDatabase *)a3->db schema];
-    v23 = [(LSRecord *)v24 _initWithContext:a3 tableID:*(v25 + 16) unitID:v32];
+    schema = [(_LSDatabase *)context->db schema];
+    v23 = [(LSRecord *)v24 _initWithContext:context tableID:*(schema + 16) unitID:v32];
   }
 
-  if (a5 && !v23)
+  if (error && !v23)
   {
-    *a5 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10813, 0, "+[UTTypeRecord _typeRecordWithContext:forPromiseResourceValues:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/UTTypeRecord.mm", 841);
+    *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10813, 0, "+[UTTypeRecord _typeRecordWithContext:forPromiseResourceValues:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/UTTypeRecord.mm", 841);
   }
 
   return v23;
 }
 
-- (id)_initWithContext:(LSContext *)a3 persistentIdentifierData:(const LSPersistentIdentifierData *)a4 length:(unint64_t)a5
+- (id)_initWithContext:(LSContext *)context persistentIdentifierData:(const LSPersistentIdentifierData *)data length:(unint64_t)length
 {
   v25 = *MEMORY[0x1E69E9840];
-  var3 = a4->var3;
-  if (var3 != *([(_LSDatabase *)a3->db schema]+ 16))
+  var3 = data->var3;
+  if (var3 != *([(_LSDatabase *)context->db schema]+ 16))
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"UTTypeRecord.mm" lineNumber:862 description:{@"Invalid parameter not satisfying: %@", @"pi->tableID == ctx->db.schema->utypeTable"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTTypeRecord.mm" lineNumber:862 description:{@"Invalid parameter not satisfying: %@", @"pi->tableID == ctx->db.schema->utypeTable"}];
   }
 
-  if (a5 < 0x1D)
+  if (length < 0x1D)
   {
-    var2 = a4->var2;
-    if (_UTTypeGet(a3->db))
+    var2 = data->var2;
+    if (_UTTypeGet(context->db))
     {
-      v15 = [(LSRecord *)[_UTDeclaredTypeRecord alloc] _initWithContext:a3 tableID:a4->var3 unitID:a4->var2];
+      v15 = [(LSRecord *)[_UTDeclaredTypeRecord alloc] _initWithContext:context tableID:data->var3 unitID:data->var2];
     }
 
     else
@@ -1127,7 +1127,7 @@ LABEL_20:
       v16 = _LSRecordLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        v17 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:a4 length:a5 freeWhenDone:0];
+        v17 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:data length:length freeWhenDone:0];
         *buf = 138412290;
         v24 = v17;
         _os_log_impl(&dword_18162D000, v16, OS_LOG_TYPE_DEBUG, "Failed to initialize type record with persistent identifier %@ because the type could not be found.", buf, 0xCu);
@@ -1139,18 +1139,18 @@ LABEL_20:
 
   else
   {
-    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:a4->var5 length:a5 - 28 encoding:4 freeWhenDone:0];
+    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:data->var5 length:length - 28 encoding:4 freeWhenDone:0];
     v12 = v11;
     if (v11)
     {
       if (UTTypeIsDynamic(v11))
       {
-        v13 = [[_UTDynamicTypeRecord alloc] _initWithContext:a3 dynamicUTI:v12];
+        v13 = [[_UTDynamicTypeRecord alloc] _initWithContext:context dynamicUTI:v12];
       }
 
       else
       {
-        v13 = [[_UTUndeclaredTypeRecord alloc] _initWithContext:a3 identifier:v12];
+        v13 = [[_UTUndeclaredTypeRecord alloc] _initWithContext:context identifier:v12];
       }
 
       v15 = v13;
@@ -1161,7 +1161,7 @@ LABEL_20:
       v18 = _LSRecordLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        v19 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:a4 length:a5 freeWhenDone:0];
+        v19 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:data length:length freeWhenDone:0];
         *buf = 138412290;
         v24 = v19;
         _os_log_impl(&dword_18162D000, v18, OS_LOG_TYPE_DEBUG, "Failed to initialize type record with persistent identifier %@ because the stored type was not valid UTF-8.", buf, 0xCu);
@@ -1179,15 +1179,15 @@ LABEL_20:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(UTTypeRecord *)self identifier];
-  v6 = [v3 initWithFormat:@"<%@ %p> { identifier: %@ }", v4, self, v5];
+  identifier = [(UTTypeRecord *)self identifier];
+  v6 = [v3 initWithFormat:@"<%@ %p> { identifier: %@ }", v4, self, identifier];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -1198,8 +1198,8 @@ LABEL_20:
     return 0;
   }
 
-  v5 = [(UTTypeRecord *)self identifier];
-  v6 = UTTypeEqual(v5, [a3 identifier]) != 0;
+  identifier = [(UTTypeRecord *)self identifier];
+  v6 = UTTypeEqual(identifier, [equal identifier]) != 0;
 
   return v6;
 }
@@ -1212,10 +1212,10 @@ LABEL_20:
   v10 = __Block_byref_object_copy__55;
   v11 = __Block_byref_object_dispose__55;
   v12 = 0;
-  v3 = [(UTTypeRecord *)self _referenceAccessoryURLNoConformances];
-  if (v3)
+  _referenceAccessoryURLNoConformances = [(UTTypeRecord *)self _referenceAccessoryURLNoConformances];
+  if (_referenceAccessoryURLNoConformances)
   {
-    objc_storeStrong(v8 + 5, v3);
+    objc_storeStrong(v8 + 5, _referenceAccessoryURLNoConformances);
   }
 
   else

@@ -10,10 +10,10 @@
 - (void)clear;
 - (void)deactivate;
 - (void)purgeMemory;
-- (void)setForceStableResults:(BOOL)a3;
-- (void)setInfinitePatience:(BOOL)a3;
-- (void)setMaxUISuggestions:(int64_t)a3;
-- (void)updateWithQueryContext:(id)a3;
+- (void)setForceStableResults:(BOOL)results;
+- (void)setInfinitePatience:(BOOL)patience;
+- (void)setMaxUISuggestions:(int64_t)suggestions;
+- (void)updateWithQueryContext:(id)context;
 - (void)updatesDisabled;
 - (void)updatesEnabled;
 @end
@@ -76,7 +76,7 @@ uint64_t __31__SPUISearchModelGeneral_clear__block_invoke(uint64_t a1)
   return [v3 setQueryTask:0];
 }
 
-- (void)setInfinitePatience:(BOOL)a3
+- (void)setInfinitePatience:(BOOL)patience
 {
   objc_initWeak(&location, self);
   workQueue = self->_workQueue;
@@ -85,7 +85,7 @@ uint64_t __31__SPUISearchModelGeneral_clear__block_invoke(uint64_t a1)
   block[2] = __46__SPUISearchModelGeneral_setInfinitePatience___block_invoke;
   block[3] = &unk_279D07068;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  patienceCopy = patience;
   dispatch_async(workQueue, block);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -123,7 +123,7 @@ uint64_t __42__SPUISearchModelGeneral_infinitePatience__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)setForceStableResults:(BOOL)a3
+- (void)setForceStableResults:(BOOL)results
 {
   workQueue = self->_workQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -131,7 +131,7 @@ uint64_t __42__SPUISearchModelGeneral_infinitePatience__block_invoke(uint64_t a1
   v4[2] = __48__SPUISearchModelGeneral_setForceStableResults___block_invoke;
   v4[3] = &unk_279D06D40;
   v4[4] = self;
-  v5 = a3;
+  resultsCopy = results;
   dispatch_async(workQueue, v4);
 }
 
@@ -301,18 +301,18 @@ void __36__SPUISearchModelGeneral_deactivate__block_invoke(uint64_t a1)
   [v5 loadAllParametersForClient:@"Mail"];
 }
 
-- (void)setMaxUISuggestions:(int64_t)a3
+- (void)setMaxUISuggestions:(int64_t)suggestions
 {
-  v4 = [(SPUISearchModelGeneral *)self session];
-  [v4 setMaxUISuggestions:a3];
+  session = [(SPUISearchModelGeneral *)self session];
+  [session setMaxUISuggestions:suggestions];
 }
 
 - (int64_t)maxUISuggestions
 {
-  v2 = [(SPUISearchModelGeneral *)self session];
-  v3 = [v2 maxUISuggestions];
+  session = [(SPUISearchModelGeneral *)self session];
+  maxUISuggestions = [session maxUISuggestions];
 
-  return v3;
+  return maxUISuggestions;
 }
 
 - (BOOL)shouldEnableOCR
@@ -345,8 +345,8 @@ void __36__SPUISearchModelGeneral_deactivate__block_invoke(uint64_t a1)
         }
 
         v8 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:*(*(&v30 + 1) + 8 * i)];
-        v9 = [v8 languageCode];
-        v10 = [v9 isEqualToString:@"yue"];
+        languageCode = [v8 languageCode];
+        v10 = [languageCode isEqualToString:@"yue"];
 
         if (v10)
         {
@@ -364,8 +364,8 @@ void __36__SPUISearchModelGeneral_deactivate__block_invoke(uint64_t a1)
 
   v12 = [MEMORY[0x277CCA8D8] preferredLocalizationsFromArray:shouldEnableOCR_supportedLocaleStrings forPreferences:v4];
   v13 = MEMORY[0x277CBEAF8];
-  v14 = [v12 firstObject];
-  v15 = [v13 localeWithLocaleIdentifier:v14];
+  firstObject = [v12 firstObject];
+  v15 = [v13 localeWithLocaleIdentifier:firstObject];
 
   v28 = 0u;
   v29 = 0u;
@@ -386,9 +386,9 @@ void __36__SPUISearchModelGeneral_deactivate__block_invoke(uint64_t a1)
         }
 
         v20 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:{*(*(&v26 + 1) + 8 * j), v26}];
-        v21 = [v20 languageCode];
-        v22 = [v15 languageCode];
-        v23 = [v21 isEqualToString:v22];
+        languageCode2 = [v20 languageCode];
+        languageCode3 = [v15 languageCode];
+        v23 = [languageCode2 isEqualToString:languageCode3];
 
         if (v23)
         {
@@ -421,17 +421,17 @@ void __41__SPUISearchModelGeneral_shouldEnableOCR__block_invoke()
   shouldEnableOCR_supportedLocaleStrings = v0;
 }
 
-- (void)updateWithQueryContext:(id)a3
+- (void)updateWithQueryContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   workQueue = self->_workQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__SPUISearchModelGeneral_updateWithQueryContext___block_invoke;
   v8[3] = &unk_279D070B8;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = contextCopy;
+  v6 = contextCopy;
   v7 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INTERACTIVE, 0, v8);
   dispatch_async(workQueue, v7);
 }
@@ -503,10 +503,10 @@ void __37__SPUISearchModelGeneral_purgeMemory__block_invoke(uint64_t a1)
 
 - (NSString)rankingDebugLog
 {
-  v2 = [(SPUISearchModel *)self queryTask];
-  v3 = [v2 rankingDebugLog];
+  queryTask = [(SPUISearchModel *)self queryTask];
+  rankingDebugLog = [queryTask rankingDebugLog];
 
-  return v3;
+  return rankingDebugLog;
 }
 
 @end

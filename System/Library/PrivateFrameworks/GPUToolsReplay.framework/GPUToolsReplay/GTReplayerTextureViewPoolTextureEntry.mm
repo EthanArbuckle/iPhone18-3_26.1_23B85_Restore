@@ -1,7 +1,7 @@
 @interface GTReplayerTextureViewPoolTextureEntry
-+ (id)entryWithTexture:(id)a3;
-+ (id)entryWithTexture:(id)a3 descriptor:(id)a4;
-- (GTReplayerTextureViewPoolTextureEntry)initWithTexture:(id)a3 descriptor:(id)a4;
++ (id)entryWithTexture:(id)texture;
++ (id)entryWithTexture:(id)texture descriptor:(id)descriptor;
+- (GTReplayerTextureViewPoolTextureEntry)initWithTexture:(id)texture descriptor:(id)descriptor;
 - (id)materializeTextureView;
 @end
 
@@ -10,22 +10,22 @@
 - (id)materializeTextureView
 {
   v3 = [(MTLTextureViewDescriptor *)self->_descriptor copy];
-  v4 = [v3 levelRange];
+  levelRange = [v3 levelRange];
   v6 = v5;
-  v7 = [(MTLTexture *)self->_texture mipmapLevelCount];
-  if (v4 >= v7)
+  mipmapLevelCount = [(MTLTexture *)self->_texture mipmapLevelCount];
+  if (levelRange >= mipmapLevelCount)
   {
-    v8 = v7;
+    v8 = mipmapLevelCount;
   }
 
   else
   {
-    v8 = v4;
+    v8 = levelRange;
   }
 
-  if (v6 >= v7 - v8)
+  if (v6 >= mipmapLevelCount - v8)
   {
-    v9 = v7 - v8;
+    v9 = mipmapLevelCount - v8;
   }
 
   else
@@ -34,22 +34,22 @@
   }
 
   [v3 setLevelRange:{v8, v9}];
-  v10 = [v3 sliceRange];
+  sliceRange = [v3 sliceRange];
   v12 = v11;
-  v13 = [(MTLTexture *)self->_texture arrayLength];
-  if (v10 >= v13)
+  arrayLength = [(MTLTexture *)self->_texture arrayLength];
+  if (sliceRange >= arrayLength)
   {
-    v14 = v13;
+    v14 = arrayLength;
   }
 
   else
   {
-    v14 = v10;
+    v14 = sliceRange;
   }
 
-  if (v12 >= v13 - v14)
+  if (v12 >= arrayLength - v14)
   {
-    v15 = v13 - v14;
+    v15 = arrayLength - v14;
   }
 
   else
@@ -63,36 +63,36 @@
   return v16;
 }
 
-- (GTReplayerTextureViewPoolTextureEntry)initWithTexture:(id)a3 descriptor:(id)a4
+- (GTReplayerTextureViewPoolTextureEntry)initWithTexture:(id)texture descriptor:(id)descriptor
 {
-  v7 = a3;
-  v8 = a4;
+  textureCopy = texture;
+  descriptorCopy = descriptor;
   v12.receiver = self;
   v12.super_class = GTReplayerTextureViewPoolTextureEntry;
   v9 = [(GTReplayerTextureViewPoolTextureEntry *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_texture, a3);
-    objc_storeStrong(&v10->_descriptor, a4);
+    objc_storeStrong(&v9->_texture, texture);
+    objc_storeStrong(&v10->_descriptor, descriptor);
   }
 
   return v10;
 }
 
-+ (id)entryWithTexture:(id)a3
++ (id)entryWithTexture:(id)texture
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithTexture:v4];
+  textureCopy = texture;
+  v5 = [[self alloc] initWithTexture:textureCopy];
 
   return v5;
 }
 
-+ (id)entryWithTexture:(id)a3 descriptor:(id)a4
++ (id)entryWithTexture:(id)texture descriptor:(id)descriptor
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithTexture:v7 descriptor:v6];
+  descriptorCopy = descriptor;
+  textureCopy = texture;
+  v8 = [[self alloc] initWithTexture:textureCopy descriptor:descriptorCopy];
 
   return v8;
 }

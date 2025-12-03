@@ -1,17 +1,17 @@
 @interface _ACSBatteryServiceBookingCoordinator
-- (void)launchBatteryServiceBookingFlowWithCompletionHandler:(id)a3;
-- (void)prepareBatteryServiceBookingFlowWithCompletionHandler:(id)a3;
+- (void)launchBatteryServiceBookingFlowWithCompletionHandler:(id)handler;
+- (void)prepareBatteryServiceBookingFlowWithCompletionHandler:(id)handler;
 @end
 
 @implementation _ACSBatteryServiceBookingCoordinator
 
-- (void)prepareBatteryServiceBookingFlowWithCompletionHandler:(id)a3
+- (void)prepareBatteryServiceBookingFlowWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E3C8DA8, &qword_2402A8DC8);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8, v7);
   v9 = &v15 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = self;
@@ -31,13 +31,13 @@
   sub_240298CF4(0, 0, v9, &unk_2402A8E30, v14);
 }
 
-- (void)launchBatteryServiceBookingFlowWithCompletionHandler:(id)a3
+- (void)launchBatteryServiceBookingFlowWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E3C8DA8, &qword_2402A8DC8);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8, v7);
   v9 = &v15 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = self;

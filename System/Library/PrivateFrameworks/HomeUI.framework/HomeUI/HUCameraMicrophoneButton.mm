@@ -1,22 +1,22 @@
 @interface HUCameraMicrophoneButton
 - (CGSize)intrinsicContentSize;
-- (HUCameraMicrophoneButton)initWithFrame:(CGRect)a3;
+- (HUCameraMicrophoneButton)initWithFrame:(CGRect)frame;
 - (id)_circleColor;
 - (void)_updateAlpha;
 - (void)_updateImage;
-- (void)drawRect:(CGRect)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setOn:(BOOL)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setOn:(BOOL)on;
 @end
 
 @implementation HUCameraMicrophoneButton
 
-- (HUCameraMicrophoneButton)initWithFrame:(CGRect)a3
+- (HUCameraMicrophoneButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HUCameraMicrophoneButton;
-  v3 = [(HUCameraMicrophoneButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUCameraMicrophoneButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -28,31 +28,31 @@
   return v4;
 }
 
-- (void)setOn:(BOOL)a3
+- (void)setOn:(BOOL)on
 {
-  if (self->_on != a3)
+  if (self->_on != on)
   {
-    self->_on = a3;
+    self->_on = on;
     [(HUCameraMicrophoneButton *)self _updateImage];
 
     [(HUCameraMicrophoneButton *)self setNeedsDisplay];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = HUCameraMicrophoneButton;
-  [(HUCameraMicrophoneButton *)&v4 setEnabled:a3];
+  [(HUCameraMicrophoneButton *)&v4 setEnabled:enabled];
   [(HUCameraMicrophoneButton *)self _updateAlpha];
   [(HUCameraMicrophoneButton *)self setNeedsDisplay];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v5.receiver = self;
   v5.super_class = HUCameraMicrophoneButton;
-  [(HUCameraMicrophoneButton *)&v5 setHighlighted:a3];
+  [(HUCameraMicrophoneButton *)&v5 setHighlighted:highlighted];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __43__HUCameraMicrophoneButton_setHighlighted___block_invoke;
@@ -65,9 +65,9 @@
 {
   if ([(HUCameraMicrophoneButton *)self isEnabled])
   {
-    v3 = [(HUCameraMicrophoneButton *)self isHighlighted];
+    isHighlighted = [(HUCameraMicrophoneButton *)self isHighlighted];
     v4 = 0.3;
-    if (!v3)
+    if (!isHighlighted)
     {
       v4 = 1.0;
     }
@@ -96,8 +96,8 @@
   v7 = HUImageNamed(v3);
   if ([(HUCameraMicrophoneButton *)self hu_isHomeAffordancePresent])
   {
-    v4 = [MEMORY[0x277D75348] systemWhiteColor];
-    v5 = [v7 _flatImageWithColor:v4];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    v5 = [v7 _flatImageWithColor:systemWhiteColor];
 
     v6 = v5;
   }
@@ -115,8 +115,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(HUCameraMicrophoneButton *)self microphoneImage];
-  [v2 size];
+  microphoneImage = [(HUCameraMicrophoneButton *)self microphoneImage];
+  [microphoneImage size];
   v4 = v3;
   v6 = v5;
 
@@ -137,10 +137,10 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v14 = [(HUCameraMicrophoneButton *)self microphoneImage:a3.origin.x];
-  v4 = [(HUCameraMicrophoneButton *)self hu_isHomeAffordancePresent];
+  v14 = [(HUCameraMicrophoneButton *)self microphoneImage:rect.origin.x];
+  hu_isHomeAffordancePresent = [(HUCameraMicrophoneButton *)self hu_isHomeAffordancePresent];
   if ([(HUCameraMicrophoneButton *)self isEnabled])
   {
     if ([(HUCameraMicrophoneButton *)self isOn])
@@ -153,11 +153,11 @@
       [MEMORY[0x277D75348] systemBlackColor];
     }
     v5 = ;
-    if (v4)
+    if (hu_isHomeAffordancePresent)
     {
-      v6 = [MEMORY[0x277D75348] systemWhiteColor];
+      systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
 
-      v5 = v6;
+      v5 = systemWhiteColor;
     }
 
     v7 = [v14 _flatImageWithColor:v5];
@@ -170,15 +170,15 @@
   [(HUCameraMicrophoneButton *)self bounds];
   v17 = CGRectInset(v16, v9, v9);
   [v14 drawInRect:{v17.origin.x, v17.origin.y, v17.size.width, v17.size.height}];
-  if ((v4 & 1) == 0)
+  if ((hu_isHomeAffordancePresent & 1) == 0)
   {
     v10 = MEMORY[0x277D75208];
     [(HUCameraMicrophoneButton *)self bounds];
     v11 = [v10 bezierPathWithOvalInRect:?];
     [v11 addClip];
 
-    v12 = [(HUCameraMicrophoneButton *)self _circleColor];
-    [v12 setFill];
+    _circleColor = [(HUCameraMicrophoneButton *)self _circleColor];
+    [_circleColor setFill];
 
     if ([(HUCameraMicrophoneButton *)self isEnabled])
     {

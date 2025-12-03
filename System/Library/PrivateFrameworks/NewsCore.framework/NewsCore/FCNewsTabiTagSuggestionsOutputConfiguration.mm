@@ -1,5 +1,5 @@
 @interface FCNewsTabiTagSuggestionsOutputConfiguration
-- (FCNewsTabiTagSuggestionsOutputConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiTagSuggestionsOutputConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -8,42 +8,42 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiTagSuggestionsOutputConfiguration *)self channelIDsOutputName];
-  [v3 appendFormat:@"\n\tchannelIDsOutputName: %@;", v4];
+  channelIDsOutputName = [(FCNewsTabiTagSuggestionsOutputConfiguration *)self channelIDsOutputName];
+  [v3 appendFormat:@"\n\tchannelIDsOutputName: %@;", channelIDsOutputName];
 
-  v5 = [(FCNewsTabiTagSuggestionsOutputConfiguration *)self topicIDsOutputName];
-  [v3 appendFormat:@"\n\ttopicIDsOutputName: %@;", v5];
+  topicIDsOutputName = [(FCNewsTabiTagSuggestionsOutputConfiguration *)self topicIDsOutputName];
+  [v3 appendFormat:@"\n\ttopicIDsOutputName: %@;", topicIDsOutputName];
 
-  v6 = [(FCNewsTabiTagSuggestionsOutputConfiguration *)self channelScoresOutputName];
-  [v3 appendFormat:@"\n\tchannelScoresOutputName: %@;", v6];
+  channelScoresOutputName = [(FCNewsTabiTagSuggestionsOutputConfiguration *)self channelScoresOutputName];
+  [v3 appendFormat:@"\n\tchannelScoresOutputName: %@;", channelScoresOutputName];
 
-  v7 = [(FCNewsTabiTagSuggestionsOutputConfiguration *)self topicScoresOutputName];
-  [v3 appendFormat:@"\n\ttopicScoresOutputName: %@;", v7];
+  topicScoresOutputName = [(FCNewsTabiTagSuggestionsOutputConfiguration *)self topicScoresOutputName];
+  [v3 appendFormat:@"\n\ttopicScoresOutputName: %@;", topicScoresOutputName];
 
   [v3 appendString:@"\n>"];
 
   return v3;
 }
 
-- (FCNewsTabiTagSuggestionsOutputConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiTagSuggestionsOutputConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = FCAppConfigurationStringValue(v4, @"channelIDsOutputName", 0);
+  dictionaryCopy = dictionary;
+  v5 = FCAppConfigurationStringValue(dictionaryCopy, @"channelIDsOutputName", 0);
   v6 = v5;
   if (v5)
   {
     v7 = v5;
-    v8 = FCAppConfigurationStringValue(v4, @"topicIDsOutputName", 0);
+    v8 = FCAppConfigurationStringValue(dictionaryCopy, @"topicIDsOutputName", 0);
     v9 = v8;
     if (v8)
     {
       v10 = v8;
-      v11 = FCAppConfigurationStringValue(v4, @"channelScoresOutputName", 0);
+      v11 = FCAppConfigurationStringValue(dictionaryCopy, @"channelScoresOutputName", 0);
       v12 = v11;
       if (v11)
       {
         v21 = v11;
-        v13 = FCAppConfigurationStringValue(v4, @"topicScoresOutputName", 0);
+        v13 = FCAppConfigurationStringValue(dictionaryCopy, @"topicScoresOutputName", 0);
         v14 = v13;
         if (v13)
         {
@@ -61,7 +61,7 @@
           }
 
           self = p_isa;
-          v18 = self;
+          selfCopy = self;
         }
 
         else
@@ -70,8 +70,8 @@
           v23[1] = 3221225472;
           v23[2] = __66__FCNewsTabiTagSuggestionsOutputConfiguration_initWithDictionary___block_invoke_13;
           v23[3] = &unk_1E7C36F98;
-          v24 = v4;
-          v18 = __66__FCNewsTabiTagSuggestionsOutputConfiguration_initWithDictionary___block_invoke_13(v23);
+          v24 = dictionaryCopy;
+          selfCopy = __66__FCNewsTabiTagSuggestionsOutputConfiguration_initWithDictionary___block_invoke_13(v23);
           v15 = v24;
         }
 
@@ -84,8 +84,8 @@
         v25[1] = 3221225472;
         v25[2] = __66__FCNewsTabiTagSuggestionsOutputConfiguration_initWithDictionary___block_invoke_12;
         v25[3] = &unk_1E7C36F98;
-        v26 = v4;
-        v18 = __66__FCNewsTabiTagSuggestionsOutputConfiguration_initWithDictionary___block_invoke_12(v25);
+        v26 = dictionaryCopy;
+        selfCopy = __66__FCNewsTabiTagSuggestionsOutputConfiguration_initWithDictionary___block_invoke_12(v25);
         v19 = v26;
       }
     }
@@ -96,8 +96,8 @@
       v27[1] = 3221225472;
       v27[2] = __66__FCNewsTabiTagSuggestionsOutputConfiguration_initWithDictionary___block_invoke_11;
       v27[3] = &unk_1E7C36F98;
-      v28 = v4;
-      v18 = __66__FCNewsTabiTagSuggestionsOutputConfiguration_initWithDictionary___block_invoke_11(v27);
+      v28 = dictionaryCopy;
+      selfCopy = __66__FCNewsTabiTagSuggestionsOutputConfiguration_initWithDictionary___block_invoke_11(v27);
       v10 = v28;
     }
   }
@@ -108,12 +108,12 @@
     v29[1] = 3221225472;
     v29[2] = __66__FCNewsTabiTagSuggestionsOutputConfiguration_initWithDictionary___block_invoke;
     v29[3] = &unk_1E7C36F98;
-    v30 = v4;
-    v18 = __66__FCNewsTabiTagSuggestionsOutputConfiguration_initWithDictionary___block_invoke(v29);
+    v30 = dictionaryCopy;
+    selfCopy = __66__FCNewsTabiTagSuggestionsOutputConfiguration_initWithDictionary___block_invoke(v29);
     v7 = v30;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 uint64_t __66__FCNewsTabiTagSuggestionsOutputConfiguration_initWithDictionary___block_invoke(uint64_t a1)

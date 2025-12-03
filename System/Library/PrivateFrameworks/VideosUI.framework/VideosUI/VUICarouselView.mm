@@ -1,18 +1,18 @@
 @interface VUICarouselView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)vuiCollectionView:(id)a3 didEndDisplaying:(id)a4 for:(id)a5;
-- (void)vuiCollectionView:(id)a3 didSelectItemAt:(id)a4;
-- (void)vuiCollectionView:(id)a3 willDisplay:(id)a4 for:(id)a5;
-- (void)vuiCollectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 at:(id)a6;
-- (void)vuiScrollViewDidEndScrollingAnimation:(id)a3;
-- (void)vuiScrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)vuiCollectionView:(id)view didEndDisplaying:(id)displaying for:(id)for;
+- (void)vuiCollectionView:(id)view didSelectItemAt:(id)at;
+- (void)vuiCollectionView:(id)view willDisplay:(id)display for:(id)for;
+- (void)vuiCollectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind at:(id)at;
+- (void)vuiScrollViewDidEndScrollingAnimation:(id)animation;
+- (void)vuiScrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation VUICarouselView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
   OUTLINED_FUNCTION_5_16();
   v5 = v4;
@@ -26,16 +26,16 @@
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   v7 = sub_1E3AFDD08();
 
   return v7;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   OUTLINED_FUNCTION_118();
   sub_1E41FE874();
@@ -43,7 +43,7 @@
   MEMORY[0x1EEE9AC00](v7);
   OUTLINED_FUNCTION_4_12();
   sub_1E41FE804();
-  v8 = a3;
+  viewCopy = view;
   v9 = v4;
   v10 = sub_1E3AFDDA0(v9, v5);
 
@@ -53,7 +53,7 @@
   return v10;
 }
 
-- (void)vuiCollectionView:(id)a3 didSelectItemAt:(id)a4
+- (void)vuiCollectionView:(id)view didSelectItemAt:(id)at
 {
   OUTLINED_FUNCTION_118();
   sub_1E41FE874();
@@ -61,7 +61,7 @@
   MEMORY[0x1EEE9AC00](v7);
   OUTLINED_FUNCTION_4_12();
   sub_1E41FE804();
-  v8 = a3;
+  viewCopy = view;
   v9 = v4;
   sub_1E3AFE1CC(v9, v5);
 
@@ -69,7 +69,7 @@
   v11(v10);
 }
 
-- (void)vuiCollectionView:(id)a3 willDisplay:(id)a4 for:(id)a5
+- (void)vuiCollectionView:(id)view willDisplay:(id)display for:(id)for
 {
   v8 = sub_1E41FE874();
   OUTLINED_FUNCTION_0_10();
@@ -78,15 +78,15 @@
   OUTLINED_FUNCTION_5();
   v14 = v13 - v12;
   sub_1E41FE804();
-  v15 = a3;
-  v16 = a4;
-  v17 = self;
-  sub_1E3AFE5B0(v17, v16);
+  viewCopy = view;
+  displayCopy = display;
+  selfCopy = self;
+  sub_1E3AFE5B0(selfCopy, displayCopy);
 
   (*(v10 + 8))(v14, v8);
 }
 
-- (void)vuiCollectionView:(id)a3 didEndDisplaying:(id)a4 for:(id)a5
+- (void)vuiCollectionView:(id)view didEndDisplaying:(id)displaying for:(id)for
 {
   v5 = sub_1E41FE874();
   OUTLINED_FUNCTION_0_10();
@@ -98,7 +98,7 @@
   (*(v7 + 8))(v11, v5);
 }
 
-- (void)vuiCollectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 at:(id)a6
+- (void)vuiCollectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind at:(id)at
 {
   v6 = sub_1E41FE874();
   OUTLINED_FUNCTION_0_10();
@@ -112,14 +112,14 @@
   (*(v8 + 8))(v12, v6);
 }
 
-- (void)vuiScrollViewDidEndScrollingAnimation:(id)a3
+- (void)vuiScrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
+  animationCopy = animation;
+  selfCopy = self;
   sub_1E3AFE8F0();
 }
 
-- (void)vuiScrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)vuiScrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   OUTLINED_FUNCTION_5_16();
   v6 = v5;

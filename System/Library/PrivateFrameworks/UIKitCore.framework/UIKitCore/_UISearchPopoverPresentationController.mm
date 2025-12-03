@@ -1,29 +1,29 @@
 @interface _UISearchPopoverPresentationController
 - (CGRect)finalFrameForContainerView;
-- (_UISearchPopoverPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (_UISearchPopoverPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (id)_popoverHostingWindow;
-- (id)_presentationControllerForTraitCollection:(id)a3;
+- (id)_presentationControllerForTraitCollection:(id)collection;
 - (void)_transitionToWillBegin;
 - (void)presentationTransitionWillBegin;
-- (void)setContentVisible:(BOOL)a3;
+- (void)setContentVisible:(BOOL)visible;
 @end
 
 @implementation _UISearchPopoverPresentationController
 
-- (_UISearchPopoverPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_UISearchPopoverPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UISearchPopoverPresentationController.m" lineNumber:35 description:@"_UISearchPopoverPresentationController must present a UISearchController"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISearchPopoverPresentationController.m" lineNumber:35 description:@"_UISearchPopoverPresentationController must present a UISearchController"];
   }
 
   v14.receiver = self;
   v14.super_class = _UISearchPopoverPresentationController;
-  v9 = [(UIPopoverPresentationController *)&v14 initWithPresentedViewController:v7 presentingViewController:v8];
+  v9 = [(UIPopoverPresentationController *)&v14 initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
   if (v9)
   {
     v10 = [[_UISearchPresentationAssistant alloc] initWithSearchPresentationController:v9];
@@ -36,26 +36,26 @@
 
 - (id)_popoverHostingWindow
 {
-  v3 = [(UIPresentationController *)self sourceView];
+  sourceView = [(UIPresentationController *)self sourceView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = [(UIPresentationController *)self sourceView];
-  v6 = v5;
+  sourceView2 = [(UIPresentationController *)self sourceView];
+  window2 = sourceView2;
   if ((isKindOfClass & 1) == 0)
   {
-    v7 = [v5 window];
+    window = [sourceView2 window];
 
-    v6 = v7;
+    window2 = window;
   }
 
-  if (!v6)
+  if (!window2)
   {
-    v8 = [(UIPresentationController *)self presentingViewController];
-    v9 = [v8 view];
-    v6 = [v9 window];
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
+    view = [presentingViewController view];
+    window2 = [view window];
   }
 
-  return v6;
+  return window2;
 }
 
 - (void)presentationTransitionWillBegin
@@ -63,8 +63,8 @@
   v4.receiver = self;
   v4.super_class = _UISearchPopoverPresentationController;
   [(UIPopoverPresentationController *)&v4 presentationTransitionWillBegin];
-  v3 = [(UIPresentationController *)self presentedViewController];
-  -[_UISearchPopoverPresentationController setContentVisible:](self, "setContentVisible:", [v3 _showsSearchResultsController]);
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  -[_UISearchPopoverPresentationController setContentVisible:](self, "setContentVisible:", [presentedViewController _showsSearchResultsController]);
 }
 
 - (void)_transitionToWillBegin
@@ -74,27 +74,27 @@
   [(UIPresentationController *)self _presentationTransitionWillBegin];
 }
 
-- (id)_presentationControllerForTraitCollection:(id)a3
+- (id)_presentationControllerForTraitCollection:(id)collection
 {
-  v4 = self;
-  if ([a3 horizontalSizeClass] == 1)
+  selfCopy = self;
+  if ([collection horizontalSizeClass] == 1)
   {
     v5 = [_UISearchPresentationController alloc];
-    v6 = [(UIPresentationController *)v4 presentedViewController];
-    v7 = [(UIPresentationController *)v4 presentingViewController];
-    v8 = [(_UISearchPresentationController *)v5 initWithPresentedViewController:v6 presentingViewController:v7];
+    presentedViewController = [(UIPresentationController *)selfCopy presentedViewController];
+    presentingViewController = [(UIPresentationController *)selfCopy presentingViewController];
+    v8 = [(_UISearchPresentationController *)v5 initWithPresentedViewController:presentedViewController presentingViewController:presentingViewController];
 
-    v4 = v8;
+    selfCopy = v8;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)setContentVisible:(BOOL)a3
+- (void)setContentVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(UIPopoverPresentationController *)self presentedView];
-  [v4 setHidden:!v3];
+  visibleCopy = visible;
+  presentedView = [(UIPopoverPresentationController *)self presentedView];
+  [presentedView setHidden:!visibleCopy];
 }
 
 - (CGRect)finalFrameForContainerView

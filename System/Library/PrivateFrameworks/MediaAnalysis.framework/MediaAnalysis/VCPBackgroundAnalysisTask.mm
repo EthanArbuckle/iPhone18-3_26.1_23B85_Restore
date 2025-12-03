@@ -1,18 +1,18 @@
 @interface VCPBackgroundAnalysisTask
-- (VCPBackgroundAnalysisTask)initWithPhotoLibrary:(id)a3;
-- (unint64_t)missingAnalysisForAsset:(id)a3 existingAnalysis:(id *)a4 resources:(id)a5 forLocalResourcesOnly:(BOOL)a6;
-- (unint64_t)missingAnalysisForAsset:(id)a3 withExistingComputeSyncAnalysis:(id *)a4 resources:(id)a5 forLocalResourcesOnly:(BOOL)a6;
-- (unint64_t)possibleAnalysisForAsset:(id)a3 withResources:(id)a4 forLocalResourcesOnly:(BOOL)a5;
+- (VCPBackgroundAnalysisTask)initWithPhotoLibrary:(id)library;
+- (unint64_t)missingAnalysisForAsset:(id)asset existingAnalysis:(id *)analysis resources:(id)resources forLocalResourcesOnly:(BOOL)only;
+- (unint64_t)missingAnalysisForAsset:(id)asset withExistingComputeSyncAnalysis:(id *)analysis resources:(id)resources forLocalResourcesOnly:(BOOL)only;
+- (unint64_t)possibleAnalysisForAsset:(id)asset withResources:(id)resources forLocalResourcesOnly:(BOOL)only;
 @end
 
 @implementation VCPBackgroundAnalysisTask
 
-- (VCPBackgroundAnalysisTask)initWithPhotoLibrary:(id)a3
+- (VCPBackgroundAnalysisTask)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = VCPBackgroundAnalysisTask;
-  v5 = [(VCPTask *)&v9 initWithPhotoLibrary:v4];
+  v5 = [(VCPTask *)&v9 initWithPhotoLibrary:libraryCopy];
   if (v5)
   {
     v6 = _os_feature_enabled_impl();
@@ -28,30 +28,30 @@
   return v5;
 }
 
-- (unint64_t)possibleAnalysisForAsset:(id)a3 withResources:(id)a4 forLocalResourcesOnly:(BOOL)a5
+- (unint64_t)possibleAnalysisForAsset:(id)asset withResources:(id)resources forLocalResourcesOnly:(BOOL)only
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 vcp_fullAnalysisTypesForResources:v8];
-  if (!a5 && (![v7 isPhoto] || objc_msgSend(v8, "vcp_hasLocalPhoto:", objc_msgSend(v7, "hasAdjustments"))))
+  assetCopy = asset;
+  resourcesCopy = resources;
+  v9 = [assetCopy vcp_fullAnalysisTypesForResources:resourcesCopy];
+  if (!only && (![assetCopy isPhoto] || objc_msgSend(resourcesCopy, "vcp_hasLocalPhoto:", objc_msgSend(assetCopy, "hasAdjustments"))))
   {
-    v9 |= [v7 vcp_fullAnalysisTypes] & 0xFFFFFFFFFFEFFFFFLL;
+    v9 |= [assetCopy vcp_fullAnalysisTypes] & 0xFFFFFFFFFFEFFFFFLL;
   }
 
   return v9;
 }
 
-- (unint64_t)missingAnalysisForAsset:(id)a3 withExistingComputeSyncAnalysis:(id *)a4 resources:(id)a5 forLocalResourcesOnly:(BOOL)a6
+- (unint64_t)missingAnalysisForAsset:(id)asset withExistingComputeSyncAnalysis:(id *)analysis resources:(id)resources forLocalResourcesOnly:(BOOL)only
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a5;
+  onlyCopy = only;
+  assetCopy = asset;
+  resourcesCopy = resources;
   v12 = objc_autoreleasePoolPush();
-  v13 = [v10 localIdentifier];
-  v14 = [NSString stringWithFormat:@"  [%@][ComputeSync]", v13];
-  v15 = [v10 vcp_modificationDate];
+  localIdentifier = [assetCopy localIdentifier];
+  v14 = [NSString stringWithFormat:@"  [%@][ComputeSync]", localIdentifier];
+  vcp_modificationDate = [assetCopy vcp_modificationDate];
 
-  if (!v15)
+  if (!vcp_modificationDate)
   {
     if (MediaAnalysisLogLevel() >= 5)
     {
@@ -67,30 +67,30 @@
     goto LABEL_26;
   }
 
-  v16 = [(VCPBackgroundAnalysisTask *)self possibleAnalysisForAsset:v10 withResources:v11 forLocalResourcesOnly:v6];
+  v16 = [(VCPBackgroundAnalysisTask *)self possibleAnalysisForAsset:assetCopy withResources:resourcesCopy forLocalResourcesOnly:onlyCopy];
   if ((v16 & 0x40000) != 0)
   {
-    v17 = StripMovieCurationResultsForEligibleAsset(v10, *a4, v14);
-    v18 = *a4;
-    *a4 = v17;
+    v17 = StripMovieCurationResultsForEligibleAsset(assetCopy, *analysis, v14);
+    v18 = *analysis;
+    *analysis = v17;
   }
 
   if ((v16 & 0x8000000000000) != 0)
   {
-    v19 = StripVideoThumbnailResultsForEligibleAsset(v10, *a4, v14);
-    v20 = *a4;
-    *a4 = v19;
+    v19 = StripVideoThumbnailResultsForEligibleAsset(assetCopy, *analysis, v14);
+    v20 = *analysis;
+    *analysis = v19;
   }
 
   v21 = v16 & 0xFFFFFFFFDFFFFFFFLL;
-  if (*a4)
+  if (*analysis)
   {
     if (MediaAnalysisLogLevel() >= 7)
     {
       v22 = VCPLogToOSLogType[7];
       if (os_log_type_enabled(&_os_log_default, v22))
       {
-        [*a4 vcp_types];
+        [*analysis vcp_types];
         v23 = MediaAnalysisTypeShortDescription();
         *buf = 138412546;
         v36 = v14;
@@ -100,17 +100,17 @@
       }
     }
 
-    if ([v10 vcp_isAnalysisValid:*a4])
+    if ([assetCopy vcp_isAnalysisValid:*analysis])
     {
-      v24 = [*a4 vcp_types];
-      if ([v10 isVideo] & (v24 >> 45))
+      vcp_types = [*analysis vcp_types];
+      if ([assetCopy isVideo] & (vcp_types >> 45))
       {
-        v24 |= 0x2000000000000uLL;
+        vcp_types |= 0x2000000000000uLL;
       }
 
-      [*a4 vcp_version];
-      v25 = v21 & MediaAnalysisTypesUpdatedSince() & v24;
-      v26 = (v24 ^ v16) & v21;
+      [*analysis vcp_version];
+      v25 = v21 & MediaAnalysisTypesUpdatedSince() & vcp_types;
+      v26 = (vcp_types ^ v16) & v21;
       if (v25 | v26)
       {
         if (v25)
@@ -167,8 +167,8 @@ LABEL_26:
       }
     }
 
-    v33 = *a4;
-    *a4 = 0;
+    v33 = *analysis;
+    *analysis = 0;
   }
 
 LABEL_31:
@@ -177,14 +177,14 @@ LABEL_31:
   return v21;
 }
 
-- (unint64_t)missingAnalysisForAsset:(id)a3 existingAnalysis:(id *)a4 resources:(id)a5 forLocalResourcesOnly:(BOOL)a6
+- (unint64_t)missingAnalysisForAsset:(id)asset existingAnalysis:(id *)analysis resources:(id)resources forLocalResourcesOnly:(BOOL)only
 {
-  v6 = a6;
-  v10 = a3;
-  v55 = a5;
+  onlyCopy = only;
+  assetCopy = asset;
+  resourcesCopy = resources;
   context = objc_autoreleasePoolPush();
-  v11 = [v10 localIdentifier];
-  v56 = [NSString stringWithFormat:@"[BackgroundAnalysisTask][%@]", v11];
+  localIdentifier = [assetCopy localIdentifier];
+  v56 = [NSString stringWithFormat:@"[BackgroundAnalysisTask][%@]", localIdentifier];
   if (MediaAnalysisLogLevel() >= 7)
   {
     v12 = VCPLogToOSLogType[7];
@@ -196,8 +196,8 @@ LABEL_31:
     }
   }
 
-  v13 = [v10 vcp_modificationDate];
-  v14 = v13 == 0;
+  vcp_modificationDate = [assetCopy vcp_modificationDate];
+  v14 = vcp_modificationDate == 0;
 
   if (v14)
   {
@@ -217,23 +217,23 @@ LABEL_31:
 
   else
   {
-    v15 = [(VCPTask *)self photoLibrary];
-    v53 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v15];
+    photoLibrary = [(VCPTask *)self photoLibrary];
+    v53 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:photoLibrary];
 
     v64 = 0;
     if (+[MADManagedProcessingStatus isMACDReadEnabled])
     {
-      v16 = [(VCPTask *)self photoLibrary];
-      v17 = [v16 mad_fetchRequest];
+      photoLibrary2 = [(VCPTask *)self photoLibrary];
+      mad_fetchRequest = [photoLibrary2 mad_fetchRequest];
       v63 = 0;
-      [v17 fetchProcessingStatus:0 attempts:&v64 lastAttemptDate:0 nextAttemptDate:&v63 localIdentifier:v11 taskID:self->_taskID];
+      [mad_fetchRequest fetchProcessingStatus:0 attempts:&v64 lastAttemptDate:0 nextAttemptDate:&v63 localIdentifier:localIdentifier taskID:self->_taskID];
       v18 = v63;
     }
 
     else
     {
       v62 = 0;
-      [v53 queryProcessingStatus:0 attempts:&v64 lastAttemptDate:0 andNextAttemptDate:&v62 forLocalIdentifier:v11 andTaskID:self->_taskID];
+      [v53 queryProcessingStatus:0 attempts:&v64 lastAttemptDate:0 andNextAttemptDate:&v62 forLocalIdentifier:localIdentifier andTaskID:self->_taskID];
       v18 = v62;
     }
 
@@ -262,48 +262,48 @@ LABEL_31:
 
     else
     {
-      v27 = [(VCPBackgroundAnalysisTask *)self possibleAnalysisForAsset:v10 withResources:v55 forLocalResourcesOnly:v6];
+      v27 = [(VCPBackgroundAnalysisTask *)self possibleAnalysisForAsset:assetCopy withResources:resourcesCopy forLocalResourcesOnly:onlyCopy];
       if (+[MADManagedPhotosAsset isMACDReadEnabled])
       {
-        v28 = [(VCPTask *)self photoLibrary];
-        v29 = [v28 mad_fetchRequest];
-        v30 = [v29 fetchAnalysisWithLocalIdentifier:v11 predicate:0];
-        v31 = *a4;
-        *a4 = v30;
+        photoLibrary3 = [(VCPTask *)self photoLibrary];
+        mad_fetchRequest2 = [photoLibrary3 mad_fetchRequest];
+        v30 = [mad_fetchRequest2 fetchAnalysisWithLocalIdentifier:localIdentifier predicate:0];
+        v31 = *analysis;
+        *analysis = v30;
       }
 
       else
       {
         v61 = 0;
-        [v53 analysisForAsset:v11 analysis:&v61];
+        [v53 analysisForAsset:localIdentifier analysis:&v61];
         v32 = v61;
-        v28 = *a4;
-        *a4 = v32;
+        photoLibrary3 = *analysis;
+        *analysis = v32;
       }
 
       if ((v27 & 0x40000) != 0)
       {
-        v33 = StripMovieCurationResultsForEligibleAsset(v10, *a4, v56);
-        v34 = *a4;
-        *a4 = v33;
+        v33 = StripMovieCurationResultsForEligibleAsset(assetCopy, *analysis, v56);
+        v34 = *analysis;
+        *analysis = v33;
       }
 
       if ((v27 & 0x8000000000000) != 0)
       {
-        v35 = StripVideoThumbnailResultsForEligibleAsset(v10, *a4, v56);
-        v36 = *a4;
-        *a4 = v35;
+        v35 = StripVideoThumbnailResultsForEligibleAsset(assetCopy, *analysis, v56);
+        v36 = *analysis;
+        *analysis = v35;
       }
 
       v20 = v27 & 0xFFFFFFFFDFFFFFFFLL;
-      if (*a4)
+      if (*analysis)
       {
         if (MediaAnalysisLogLevel() >= 7)
         {
           v37 = VCPLogToOSLogType[7];
           if (os_log_type_enabled(&_os_log_default, v37))
           {
-            [*a4 vcp_types];
+            [*analysis vcp_types];
             v38 = MediaAnalysisTypeShortDescription();
             *buf = 138412546;
             v66 = v56;
@@ -313,17 +313,17 @@ LABEL_31:
           }
         }
 
-        if ([v10 vcp_isAnalysisValid:*a4])
+        if ([assetCopy vcp_isAnalysisValid:*analysis])
         {
-          v39 = [*a4 vcp_types];
-          if ([v10 isVideo] & (v39 >> 45))
+          vcp_types = [*analysis vcp_types];
+          if ([assetCopy isVideo] & (vcp_types >> 45))
           {
-            v39 |= 0x2000000000000uLL;
+            vcp_types |= 0x2000000000000uLL;
           }
 
-          [*a4 vcp_version];
-          v40 = v20 & MediaAnalysisTypesUpdatedSince() & v39;
-          v41 = (v39 ^ v27) & v20;
+          [*analysis vcp_version];
+          v40 = v20 & MediaAnalysisTypesUpdatedSince() & vcp_types;
+          v41 = (vcp_types ^ v27) & v20;
           if (v40 | v41)
           {
             if (v40)
@@ -363,23 +363,23 @@ LABEL_31:
 
           else
           {
-            v49 = [*a4 vcp_version];
-            if (v49 < MediaAnalysisVersion)
+            vcp_version = [*analysis vcp_version];
+            if (vcp_version < MediaAnalysisVersion)
             {
               if (+[MADManagedPhotosAsset isMACDPersistEnabled])
               {
-                v50 = [(VCPTask *)self photoLibrary];
+                photoLibrary4 = [(VCPTask *)self photoLibrary];
                 v57[0] = _NSConcreteStackBlock;
                 v57[1] = 3221225472;
                 v57[2] = sub_1000C0010;
                 v57[3] = &unk_100283AD0;
-                v58 = v11;
-                [v50 mad_performAnalysisDataStoreChanges:v57 error:0];
+                v58 = localIdentifier;
+                [photoLibrary4 mad_performAnalysisDataStoreChanges:v57 error:0];
               }
 
               if (+[VCPDatabaseWriter isLegacyPersistEnabled])
               {
-                [v53 bumpAnalysisVersionForAsset:v11];
+                [v53 bumpAnalysisVersionForAsset:localIdentifier];
               }
             }
 
@@ -413,22 +413,22 @@ LABEL_31:
 
           if (+[MADManagedPhotosAsset isMACDPersistEnabled])
           {
-            v47 = [(VCPTask *)self photoLibrary];
+            photoLibrary5 = [(VCPTask *)self photoLibrary];
             v59[0] = _NSConcreteStackBlock;
             v59[1] = 3221225472;
             v59[2] = sub_1000BFF54;
             v59[3] = &unk_100283AD0;
-            v60 = v11;
-            [v47 mad_performAnalysisDataStoreChanges:v59 error:0];
+            v60 = localIdentifier;
+            [photoLibrary5 mad_performAnalysisDataStoreChanges:v59 error:0];
           }
 
           if (+[VCPDatabaseWriter isLegacyPersistEnabled])
           {
-            [v53 deleteAnalysisForAsset:v11];
+            [v53 deleteAnalysisForAsset:localIdentifier];
           }
 
-          v48 = *a4;
-          *a4 = 0;
+          v48 = *analysis;
+          *analysis = 0;
         }
       }
     }

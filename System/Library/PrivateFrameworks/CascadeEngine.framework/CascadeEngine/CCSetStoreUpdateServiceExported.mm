@@ -1,9 +1,9 @@
 @interface CCSetStoreUpdateServiceExported
 - (BOOL)_setupAdminConnection;
-- (CCSetStoreUpdateServiceExported)initWithQueue:(id)a3 process:(id)a4 connection:(id)a5 writeAccess:(id)a6 donateConnectionFactory:(id)a7;
+- (CCSetStoreUpdateServiceExported)initWithQueue:(id)queue process:(id)process connection:(id)connection writeAccess:(id)access donateConnectionFactory:(id)factory;
 - (id)useCase;
-- (void)performMaintenanceOnAllSets:(id)a3 completion:(id)a4;
-- (void)removeAllSets:(id)a3 completion:(id)a4;
+- (void)performMaintenanceOnAllSets:(id)sets completion:(id)completion;
+- (void)removeAllSets:(id)sets completion:(id)completion;
 - (void)useCase;
 @end
 
@@ -11,15 +11,15 @@
 
 - (id)useCase
 {
-  v3 = [MEMORY[0x1E696B0B8] currentConnection];
-  v4 = [v3 bm_remoteUseCase];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  bm_remoteUseCase = [currentConnection bm_remoteUseCase];
 
   useCase = self->_useCase;
   p_useCase = &self->_useCase;
   v5 = useCase;
   if (useCase)
   {
-    if (v4 && ([(NSString *)v5 isEqual:v4]& 1) == 0)
+    if (bm_remoteUseCase && ([(NSString *)v5 isEqual:bm_remoteUseCase]& 1) == 0)
     {
       v8 = __biome_log_for_category();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -33,8 +33,8 @@
 
   else
   {
-    objc_storeStrong(p_useCase, v4);
-    v9 = v4;
+    objc_storeStrong(p_useCase, bm_remoteUseCase);
+    v9 = bm_remoteUseCase;
   }
 
   v10 = v9;
@@ -42,24 +42,24 @@
   return v9;
 }
 
-- (CCSetStoreUpdateServiceExported)initWithQueue:(id)a3 process:(id)a4 connection:(id)a5 writeAccess:(id)a6 donateConnectionFactory:(id)a7
+- (CCSetStoreUpdateServiceExported)initWithQueue:(id)queue process:(id)process connection:(id)connection writeAccess:(id)access donateConnectionFactory:(id)factory
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  queueCopy = queue;
+  processCopy = process;
+  connectionCopy = connection;
+  accessCopy = access;
+  factoryCopy = factory;
   v21.receiver = self;
   v21.super_class = CCSetStoreUpdateServiceExported;
   v17 = [(CCSetStoreUpdateServiceExported *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_process, a4);
-    objc_storeStrong(&v18->_writeAccess, a6);
-    objc_storeStrong(&v18->_donateConnectionFactory, a7);
-    objc_storeStrong(&v18->_queue, a3);
-    objc_storeStrong(&v18->_connection, a5);
+    objc_storeStrong(&v17->_process, process);
+    objc_storeStrong(&v18->_writeAccess, access);
+    objc_storeStrong(&v18->_donateConnectionFactory, factory);
+    objc_storeStrong(&v18->_queue, queue);
+    objc_storeStrong(&v18->_connection, connection);
   }
 
   return v18;
@@ -69,8 +69,8 @@
 {
   v3 = MEMORY[0x1E698E970];
   process = self->_process;
-  v5 = [(CCSetStoreUpdateServiceExported *)self useCase];
-  v6 = [v3 policyForProcess:process connectionFlags:0 useCase:v5];
+  useCase = [(CCSetStoreUpdateServiceExported *)self useCase];
+  v6 = [v3 policyForProcess:process connectionFlags:0 useCase:useCase];
 
   v7 = [v6 allowsAccessToAllSetsWithMode:3];
   if (v7)
@@ -92,40 +92,40 @@
   return v7;
 }
 
-- (void)performMaintenanceOnAllSets:(id)a3 completion:(id)a4
+- (void)performMaintenanceOnAllSets:(id)sets completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
+  setsCopy = sets;
+  completionCopy = completion;
   if ([(CCSetStoreUpdateServiceExported *)self _setupAdminConnection])
   {
-    [(CCSetStoreAdminConnection *)self->_adminConnection performMaintenanceOnAllSets:v7 completion:v6];
+    [(CCSetStoreAdminConnection *)self->_adminConnection performMaintenanceOnAllSets:setsCopy completion:completionCopy];
   }
 
   else
   {
-    v6[2](v6, 2);
+    completionCopy[2](completionCopy, 2);
   }
 }
 
-- (void)removeAllSets:(id)a3 completion:(id)a4
+- (void)removeAllSets:(id)sets completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
+  setsCopy = sets;
+  completionCopy = completion;
   if ([(CCSetStoreUpdateServiceExported *)self _setupAdminConnection])
   {
-    [(CCSetStoreAdminConnection *)self->_adminConnection removeAllSets:v7 completion:v6];
+    [(CCSetStoreAdminConnection *)self->_adminConnection removeAllSets:setsCopy completion:completionCopy];
   }
 
   else
   {
-    v6[2](v6, 2);
+    completionCopy[2](completionCopy, 2);
   }
 }
 
 - (void)useCase
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = *a1;
+  v3 = *self;
   v5 = 138412546;
   v6 = v3;
   v7 = 2112;

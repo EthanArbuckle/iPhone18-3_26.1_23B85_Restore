@@ -5,7 +5,7 @@
 - (id)specifiers;
 - (void)_askForReenableConfirmation;
 - (void)dealloc;
-- (void)setOverride:(id)a3;
+- (void)setOverride:(id)override;
 @end
 
 @implementation MCUIBlockedAppViewController
@@ -17,8 +17,8 @@
   v2 = [(MCUIBlockedAppViewController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__blockedAppsUpdated name:*MEMORY[0x277D25CA0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__blockedAppsUpdated name:*MEMORY[0x277D25CA0] object:0];
   }
 
   return v2;
@@ -26,8 +26,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D25CA0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D25CA0] object:0];
 
   v4.receiver = self;
   v4.super_class = MCUIBlockedAppViewController;
@@ -60,9 +60,9 @@ void __51__MCUIBlockedAppViewController__blockedAppsUpdated__block_invoke(uint64
   return v6;
 }
 
-- (void)setOverride:(id)a3
+- (void)setOverride:(id)override
 {
-  v7 = a3;
+  overrideCopy = override;
   v4 = *MEMORY[0x277D3FD20];
   v5 = [*(&self->super.super.super.super.super.isa + v4) propertyForKey:@"MCUIBlockedAppCdHash"];
   if (v5)
@@ -70,7 +70,7 @@ void __51__MCUIBlockedAppViewController__blockedAppsUpdated__block_invoke(uint64
     v6 = [*(&self->super.super.super.super.super.isa + v4) propertyForKey:@"MCUIBlockedAppHashType"];
     [v6 intValue];
 
-    [v7 BOOLValue];
+    [overrideCopy BOOLValue];
     MISBlacklistSetOverride();
   }
 }
@@ -128,11 +128,11 @@ void __59__MCUIBlockedAppViewController__askForReenableConfirmation__block_invok
   v5 = MCUILocalizedString(v4);
   v6 = [v3 preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:13 edit:0];
 
-  v7 = [MEMORY[0x277D262A0] sharedConnection];
-  v8 = [v7 isOnDeviceAppInstallationAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isOnDeviceAppInstallationAllowed = [mEMORY[0x277D262A0] isOnDeviceAppInstallationAllowed];
 
   v9 = MEMORY[0x277CBEC28];
-  if (!self->_reenabled && v8)
+  if (!self->_reenabled && isOnDeviceAppInstallationAllowed)
   {
     [v6 setButtonAction:sel__askForReenableConfirmation];
     v9 = MEMORY[0x277CBEC38];
@@ -181,8 +181,8 @@ void __59__MCUIBlockedAppViewController__askForReenableConfirmation__block_invok
 
       [v10 setProperty:v15 forKey:*MEMORY[0x277D3FF88]];
       v21[0] = v10;
-      v16 = [(MCUIBlockedAppViewController *)self _reenableButtonSpecifier];
-      v21[1] = v16;
+      _reenableButtonSpecifier = [(MCUIBlockedAppViewController *)self _reenableButtonSpecifier];
+      v21[1] = _reenableButtonSpecifier;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
       v18 = *(&self->super.super.super.super.super.isa + v2);
       *(&self->super.super.super.super.super.isa + v2) = v17;

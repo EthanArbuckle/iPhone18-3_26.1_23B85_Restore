@@ -1,15 +1,15 @@
 @interface ATXHomeScreenConfigurationComponents
-- (ATXHomeScreenConfigurationComponents)initWithConfigurations:(id)a3;
-- (BOOL)containsWidgetWithBundleId:(id)a3 kind:(id)a4 size:(unint64_t)a5;
-- (id)stackForStackedWidget:(id)a3;
+- (ATXHomeScreenConfigurationComponents)initWithConfigurations:(id)configurations;
+- (BOOL)containsWidgetWithBundleId:(id)id kind:(id)kind size:(unint64_t)size;
+- (id)stackForStackedWidget:(id)widget;
 @end
 
 @implementation ATXHomeScreenConfigurationComponents
 
-- (ATXHomeScreenConfigurationComponents)initWithConfigurations:(id)a3
+- (ATXHomeScreenConfigurationComponents)initWithConfigurations:(id)configurations
 {
   v87 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationsCopy = configurations;
   v80.receiver = self;
   v80.super_class = ATXHomeScreenConfigurationComponents;
   v5 = [(ATXHomeScreenConfigurationComponents *)&v80 init];
@@ -27,8 +27,8 @@
     v77 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v49 = v4;
-    obj = v4;
+    v49 = configurationsCopy;
+    obj = configurationsCopy;
     v53 = [obj countByEnumeratingWithState:&v76 objects:v86 count:16];
     if (v53)
     {
@@ -51,14 +51,14 @@
           v75 = 0u;
           v54 = v10;
           v55 = v11;
-          v12 = [v11 stacks];
-          v13 = [v12 countByEnumeratingWithState:&v72 objects:v85 count:16];
+          stacks = [v11 stacks];
+          v13 = [stacks countByEnumeratingWithState:&v72 objects:v85 count:16];
           if (v13)
           {
             v14 = v13;
             v15 = *v73;
             v58 = *v73;
-            v59 = v12;
+            v59 = stacks;
             do
             {
               v16 = 0;
@@ -67,25 +67,25 @@
               {
                 if (*v73 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(stacks);
                 }
 
                 v17 = *(*(&v72 + 1) + 8 * v16);
-                v18 = [v17 widgets];
-                v19 = [v18 count];
+                widgets = [v17 widgets];
+                v19 = [widgets count];
 
-                v20 = [v17 widgets];
-                v21 = v20;
+                widgets2 = [v17 widgets];
+                v21 = widgets2;
                 if (v19 == 1)
                 {
-                  v22 = [v20 firstObject];
+                  firstObject = [widgets2 firstObject];
 
-                  [v8 addObject:v22];
+                  [v8 addObject:firstObject];
                 }
 
                 else
                 {
-                  v23 = [v20 count];
+                  v23 = [widgets2 count];
 
                   if (v23 >= 2)
                   {
@@ -94,8 +94,8 @@
                     v71 = 0u;
                     v68 = 0u;
                     v69 = 0u;
-                    v24 = [v17 widgets];
-                    v25 = [v24 countByEnumeratingWithState:&v68 objects:v84 count:16];
+                    widgets3 = [v17 widgets];
+                    v25 = [widgets3 countByEnumeratingWithState:&v68 objects:v84 count:16];
                     if (v25)
                     {
                       v26 = v25;
@@ -106,33 +106,33 @@
                         {
                           if (*v69 != v27)
                           {
-                            objc_enumerationMutation(v24);
+                            objc_enumerationMutation(widgets3);
                           }
 
                           v29 = *(*(&v68 + 1) + 8 * i);
                           [v9 addObject:v29];
-                          v30 = [v29 widgetUniqueId];
+                          widgetUniqueId = [v29 widgetUniqueId];
 
-                          if (v30)
+                          if (widgetUniqueId)
                           {
                             v31 = v5->_stackForStackedWidgetIdDictionary;
-                            v32 = [v29 widgetUniqueId];
-                            [(NSMutableDictionary *)v31 setObject:v17 forKeyedSubscript:v32];
+                            widgetUniqueId2 = [v29 widgetUniqueId];
+                            [(NSMutableDictionary *)v31 setObject:v17 forKeyedSubscript:widgetUniqueId2];
                           }
 
                           else
                           {
-                            v32 = __atxlog_handle_home_screen();
-                            if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
+                            widgetUniqueId2 = __atxlog_handle_home_screen();
+                            if (os_log_type_enabled(widgetUniqueId2, OS_LOG_TYPE_FAULT))
                             {
                               *buf = 138412290;
                               v83 = v29;
-                              _os_log_fault_impl(&dword_1BF549000, v32, OS_LOG_TYPE_FAULT, "ATXHomeScreenConfigurationComponents: stacked widget has no widgetUniqueId: %@", buf, 0xCu);
+                              _os_log_fault_impl(&dword_1BF549000, widgetUniqueId2, OS_LOG_TYPE_FAULT, "ATXHomeScreenConfigurationComponents: stacked widget has no widgetUniqueId: %@", buf, 0xCu);
                             }
                           }
                         }
 
-                        v26 = [v24 countByEnumeratingWithState:&v68 objects:v84 count:16];
+                        v26 = [widgets3 countByEnumeratingWithState:&v68 objects:v84 count:16];
                       }
 
                       while (v26);
@@ -141,7 +141,7 @@
                     [v57 addObject:v17];
                     v8 = v56;
                     v15 = v58;
-                    v12 = v59;
+                    stacks = v59;
                     v14 = v60;
                     v16 = v61;
                   }
@@ -151,7 +151,7 @@
               }
 
               while (v16 != v14);
-              v14 = [v12 countByEnumeratingWithState:&v72 objects:v85 count:16];
+              v14 = [stacks countByEnumeratingWithState:&v72 objects:v85 count:16];
             }
 
             while (v14);
@@ -161,8 +161,8 @@
           v67 = 0u;
           v64 = 0u;
           v65 = 0u;
-          v33 = [v55 panels];
-          v34 = [v33 countByEnumeratingWithState:&v64 objects:v81 count:16];
+          panels = [v55 panels];
+          v34 = [panels countByEnumeratingWithState:&v64 objects:v81 count:16];
           if (v34)
           {
             v35 = v34;
@@ -173,16 +173,16 @@
               {
                 if (*v65 != v36)
                 {
-                  objc_enumerationMutation(v33);
+                  objc_enumerationMutation(panels);
                 }
 
-                v38 = [*(*(&v64 + 1) + 8 * j) widgets];
-                v39 = [v38 firstObject];
+                widgets4 = [*(*(&v64 + 1) + 8 * j) widgets];
+                firstObject2 = [widgets4 firstObject];
 
-                [v8 addObject:v39];
+                [v8 addObject:firstObject2];
               }
 
-              v35 = [v33 countByEnumeratingWithState:&v64 objects:v81 count:16];
+              v35 = [panels countByEnumeratingWithState:&v64 objects:v81 count:16];
             }
 
             while (v35);
@@ -222,7 +222,7 @@
     apps = v5->_apps;
     v5->_apps = v46;
 
-    v4 = v49;
+    configurationsCopy = v49;
   }
 
   return v5;
@@ -236,16 +236,16 @@ void __63__ATXHomeScreenConfigurationComponents_initWithConfigurations___block_i
   [*(a1 + 40) addObject:v4];
 }
 
-- (id)stackForStackedWidget:(id)a3
+- (id)stackForStackedWidget:(id)widget
 {
-  v4 = a3;
-  v5 = [v4 widgetUniqueId];
+  widgetCopy = widget;
+  widgetUniqueId = [widgetCopy widgetUniqueId];
 
-  if (v5)
+  if (widgetUniqueId)
   {
     stackForStackedWidgetIdDictionary = self->_stackForStackedWidgetIdDictionary;
-    v7 = [v4 widgetUniqueId];
-    v8 = [(NSMutableDictionary *)stackForStackedWidgetIdDictionary objectForKeyedSubscript:v7];
+    widgetUniqueId2 = [widgetCopy widgetUniqueId];
+    v8 = [(NSMutableDictionary *)stackForStackedWidgetIdDictionary objectForKeyedSubscript:widgetUniqueId2];
   }
 
   else
@@ -256,11 +256,11 @@ void __63__ATXHomeScreenConfigurationComponents_initWithConfigurations___block_i
   return v8;
 }
 
-- (BOOL)containsWidgetWithBundleId:(id)a3 kind:(id)a4 size:(unint64_t)a5
+- (BOOL)containsWidgetWithBundleId:(id)id kind:(id)kind size:(unint64_t)size
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  idCopy = id;
+  kindCopy = kind;
   [(NSArray *)self->_pinnedWidgets arrayByAddingObjectsFromArray:self->_stackedWidgets];
   v21 = 0u;
   v22 = 0u;
@@ -284,14 +284,14 @@ void __63__ATXHomeScreenConfigurationComponents_initWithConfigurations___block_i
       }
 
       v15 = *(*(&v21 + 1) + 8 * i);
-      v16 = [v15 extensionBundleId];
-      if (![v16 isEqualToString:v8])
+      extensionBundleId = [v15 extensionBundleId];
+      if (![extensionBundleId isEqualToString:idCopy])
       {
         goto LABEL_11;
       }
 
-      v17 = [v15 widgetKind];
-      if (([v17 isEqualToString:v9] & 1) == 0)
+      widgetKind = [v15 widgetKind];
+      if (([widgetKind isEqualToString:kindCopy] & 1) == 0)
       {
 
 LABEL_11:
@@ -300,7 +300,7 @@ LABEL_11:
 
       v18 = [v15 size];
 
-      if (v18 == a5)
+      if (v18 == size)
       {
         v19 = 1;
         goto LABEL_15;

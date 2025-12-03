@@ -1,20 +1,20 @@
 @interface PSBrightnessSettingsDetail
-+ (double)incrementedBrightnessValue:(double)a3;
++ (double)incrementedBrightnessValue:(double)value;
 + (void)beginBrightnessAdjustmentTransaction;
-+ (void)beginObservingExternalBrightnessChanges:(id)a3 changedAction:(id)a4;
++ (void)beginObservingExternalBrightnessChanges:(id)changes changedAction:(id)action;
 + (void)endBrightnessAdjustmentTransaction;
 + (void)endObservingExternalBrightnessChanges;
-+ (void)incrementBrightnessValue:(double)a3;
-+ (void)setAutoBrightnessEnabled:(BOOL)a3;
-+ (void)setValue:(double)a3;
++ (void)incrementBrightnessValue:(double)value;
++ (void)setAutoBrightnessEnabled:(BOOL)enabled;
++ (void)setValue:(double)value;
 @end
 
 @implementation PSBrightnessSettingsDetail
 
-+ (double)incrementedBrightnessValue:(double)a3
++ (double)incrementedBrightnessValue:(double)value
 {
   PSBKSDisplayBrightnessGetCurrent();
-  result = fmax(v4 + a3, 0.0);
+  result = fmax(v4 + value, 0.0);
   if (result > 1.0)
   {
     return 1.0;
@@ -23,10 +23,10 @@
   return result;
 }
 
-+ (void)incrementBrightnessValue:(double)a3
++ (void)incrementBrightnessValue:(double)value
 {
   PSBKSDisplayBrightnessGetCurrent();
-  v5 = fmax(v4 + a3, 0.0);
+  v5 = fmax(v4 + value, 0.0);
   if (v5 > 1.0)
   {
     v5 = 1.0;
@@ -37,18 +37,18 @@
   PSBKSDisplayBrightnessSet(v6);
 }
 
-+ (void)setValue:(double)a3
++ (void)setValue:(double)value
 {
   if (__transactionRef)
   {
-    v4 = a3;
+    valueCopy = value;
 
-    PSBKSDisplayBrightnessSet(v4);
+    PSBKSDisplayBrightnessSet(valueCopy);
   }
 
   else
   {
-    NSLog(&cfstr_DSWarningThere.isa, a2, a3, 684, "+[PSBrightnessSettingsDetail setValue:]");
+    NSLog(&cfstr_DSWarningThere.isa, a2, value, 684, "+[PSBrightnessSettingsDetail setValue:]");
   }
 }
 
@@ -90,14 +90,14 @@
   }
 }
 
-+ (void)beginObservingExternalBrightnessChanges:(id)a3 changedAction:(id)a4
++ (void)beginObservingExternalBrightnessChanges:(id)changes changedAction:(id)action
 {
-  v5 = a4;
-  v6 = a3;
+  actionCopy = action;
+  changesCopy = changes;
   observer = +[PSBrightnessController sharedController];
-  [observer setIsTracking:v6];
+  [observer setIsTracking:changesCopy];
 
-  [observer setBrightnessChangedExternally:v5];
+  [observer setBrightnessChangedExternally:actionCopy];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, observer, _BrightnessChangedExternally, *MEMORY[0x1E69DE368], 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
@@ -111,7 +111,7 @@
   [observer setBrightnessChangedExternally:0];
 }
 
-+ (void)setAutoBrightnessEnabled:(BOOL)a3
++ (void)setAutoBrightnessEnabled:(BOOL)enabled
 {
   CFPreferencesSetAppValue(@"BKEnableALS", [MEMORY[0x1E696AD98] numberWithBool:0], @"com.apple.backboardd");
 

@@ -2,9 +2,9 @@
 - (CGPoint)_flippedFocusPoint;
 - (CGPoint)focusPoint;
 - (CGRect)messageRect;
-- (id)flipImage:(id)a3;
-- (id)rotateImage:(id)a3 clockwise:(BOOL)a4;
-- (void)setFocusPoint:(CGPoint)a3;
+- (id)flipImage:(id)image;
+- (id)rotateImage:(id)image clockwise:(BOOL)clockwise;
+- (void)setFocusPoint:(CGPoint)point;
 - (void)startAnimation;
 - (void)stopAnimation;
 @end
@@ -18,17 +18,17 @@
 
   v5 = [CAPackage packageWithContentsOfURL:v4 type:kCAPackageTypeCAMLBundle options:0 error:0];
   v6 = [NSNumber numberWithInteger:[(CKEchoEffectView *)self zIndex]];
-  v7 = [v6 stringValue];
+  stringValue = [v6 stringValue];
 
-  v8 = [v5 publishedObjectWithName:v7];
+  v8 = [v5 publishedObjectWithName:stringValue];
   [(CKEchoEffectView *)self bounds];
   v10 = v9;
   v12 = v11;
-  v13 = [v8 sublayers];
-  v147 = [v13 objectAtIndexedSubscript:0];
+  sublayers = [v8 sublayers];
+  v147 = [sublayers objectAtIndexedSubscript:0];
 
-  v14 = [(CKEchoEffectView *)self layer];
-  [v14 convertTime:0 fromLayer:CACurrentMediaTime()];
+  layer = [(CKEchoEffectView *)self layer];
+  [layer convertTime:0 fromLayer:CACurrentMediaTime()];
   [v8 setBeginTime:?];
 
   v15 = v12 * 0.5;
@@ -41,12 +41,12 @@
   }
 
   v140 = v8;
-  v141 = v7;
+  v141 = stringValue;
   v142 = v5;
   v143 = v4;
-  v16 = [(CKEchoEffectView *)self layer];
-  v17 = [v16 superlayer];
-  [v17 setMasksToBounds:1];
+  layer2 = [(CKEchoEffectView *)self layer];
+  superlayer = [layer2 superlayer];
+  [superlayer setMasksToBounds:1];
 
   [v147 setGeometryFlipped:1];
   [v147 setSeed:arc4random()];
@@ -92,9 +92,9 @@
   [v20 setDuration:4.5];
   v146 = kCAAnimationAbsolute;
   [v20 setBeginTimeMode:?];
-  v26 = [v147 superlayer];
+  superlayer2 = [v147 superlayer];
   v139 = v20;
-  [v26 addAnimation:v20 forKey:@"sublayerTransform"];
+  [superlayer2 addAnimation:v20 forKey:@"sublayerTransform"];
 
   v27 = [NSNumber numberWithDouble:v10];
   [v147 setValue:v27 forKeyPath:@"emitterSize.width"];
@@ -213,27 +213,27 @@
   [v74 setBeginTimeMode:v146];
   v124 = v74;
   [v147 addAnimation:v74 forKey:@"transform"];
-  v84 = [(CKEchoEffectView *)self messageImage];
+  messageImage = [(CKEchoEffectView *)self messageImage];
   if (!self->_hasRotated)
   {
-    v85 = [(CKEchoEffectView *)self window];
-    v86 = [v85 windowScene];
-    v87 = [v86 screen];
-    v88 = [v87 displayConfiguration];
+    window = [(CKEchoEffectView *)self window];
+    windowScene = [window windowScene];
+    screen = [windowScene screen];
+    displayConfiguration = [screen displayConfiguration];
 
-    [v88 nativeOrientation];
+    [displayConfiguration nativeOrientation];
     v89 = FBSDisplayRotationFromRadians();
-    v90 = [(CKEchoEffectView *)self window];
-    v91 = [v90 windowScene];
-    v92 = [v91 interfaceOrientation];
+    window2 = [(CKEchoEffectView *)self window];
+    windowScene2 = [window2 windowScene];
+    interfaceOrientation = [windowScene2 interfaceOrientation];
 
     if (v89 == 3)
     {
-      if (v92 != &dword_4)
+      if (interfaceOrientation != &dword_4)
       {
-        if (v92 != (&dword_0 + 2))
+        if (interfaceOrientation != (&dword_0 + 2))
         {
-          if (v92 != (&dword_0 + 1))
+          if (interfaceOrientation != (&dword_0 + 1))
           {
             goto LABEL_16;
           }
@@ -247,29 +247,29 @@
 
     else
     {
-      if (v92 == &dword_4)
+      if (interfaceOrientation == &dword_4)
       {
 LABEL_13:
-        v93 = [(CKEchoEffectView *)self messageImage];
-        v95 = self;
-        v96 = v93;
+        messageImage2 = [(CKEchoEffectView *)self messageImage];
+        selfCopy2 = self;
+        v96 = messageImage2;
         v97 = 0;
         goto LABEL_14;
       }
 
-      if (v92 == (&dword_0 + 3))
+      if (interfaceOrientation == (&dword_0 + 3))
       {
 LABEL_12:
-        v93 = [(CKEchoEffectView *)self messageImage];
-        v95 = self;
-        v96 = v93;
+        messageImage2 = [(CKEchoEffectView *)self messageImage];
+        selfCopy2 = self;
+        v96 = messageImage2;
         v97 = 1;
 LABEL_14:
-        v94 = [(CKEchoEffectView *)v95 rotateImage:v96 clockwise:v97];
+        v94 = [(CKEchoEffectView *)selfCopy2 rotateImage:v96 clockwise:v97];
         goto LABEL_15;
       }
 
-      if (v92 != (&dword_0 + 2))
+      if (interfaceOrientation != (&dword_0 + 2))
       {
 LABEL_16:
         self->_hasRotated = 1;
@@ -278,23 +278,23 @@ LABEL_16:
       }
     }
 
-    v93 = [(CKEchoEffectView *)self messageImage];
-    v94 = [(CKEchoEffectView *)self flipImage:v93];
+    messageImage2 = [(CKEchoEffectView *)self messageImage];
+    v94 = [(CKEchoEffectView *)self flipImage:messageImage2];
 LABEL_15:
     v98 = v94;
 
-    v84 = v98;
+    messageImage = v98;
     goto LABEL_16;
   }
 
 LABEL_17:
-  [(CKEchoEffectView *)self setMessageImage:v84];
+  [(CKEchoEffectView *)self setMessageImage:messageImage];
   v152 = 0u;
   v153 = 0u;
   v150 = 0u;
   v151 = 0u;
-  v99 = [v147 emitterCells];
-  v100 = [v99 countByEnumeratingWithState:&v150 objects:v155 count:16];
+  emitterCells = [v147 emitterCells];
+  v100 = [emitterCells countByEnumeratingWithState:&v150 objects:v155 count:16];
   if (v100)
   {
     v101 = v100;
@@ -305,15 +305,15 @@ LABEL_17:
       {
         if (*v151 != v102)
         {
-          objc_enumerationMutation(v99);
+          objc_enumerationMutation(emitterCells);
         }
 
         v104 = *(*(&v150 + 1) + 8 * i);
-        v105 = [(CKEchoEffectView *)self messageImage];
-        [v104 setContents:{objc_msgSend(v105, "CGImage")}];
+        messageImage3 = [(CKEchoEffectView *)self messageImage];
+        [v104 setContents:{objc_msgSend(messageImage3, "CGImage")}];
       }
 
-      v101 = [v99 countByEnumeratingWithState:&v150 objects:v155 count:16];
+      v101 = [emitterCells countByEnumeratingWithState:&v150 objects:v155 count:16];
     }
 
     while (v101);
@@ -355,10 +355,10 @@ LABEL_17:
   v5 = v142;
   v4 = v143;
   v8 = v140;
-  v7 = v141;
+  stringValue = v141;
 LABEL_25:
-  v120 = [(CKEchoEffectView *)self layer];
-  [v120 addSublayer:v8];
+  layer3 = [(CKEchoEffectView *)self layer];
+  [layer3 addSublayer:v8];
 
   objc_storeStrong(&self->_lasersLayer, v8);
   v121 = dispatch_time(0, 4500000000);
@@ -371,22 +371,22 @@ LABEL_25:
   dispatch_after(v121, &_dispatch_main_q, block);
 }
 
-- (id)rotateImage:(id)a3 clockwise:(BOOL)a4
+- (id)rotateImage:(id)image clockwise:(BOOL)clockwise
 {
-  v4 = a4;
-  v5 = a3;
-  [v5 size];
+  clockwiseCopy = clockwise;
+  imageCopy = image;
+  [imageCopy size];
   v7 = v6;
   v9 = v8;
   height = CGSizeZero.height;
   if (CGSizeZero.width == v6 && height == v9)
   {
-    v19 = v5;
+    v19 = imageCopy;
   }
 
   else
   {
-    [v5 scale];
+    [imageCopy scale];
     *&v12 = v12;
     v13 = *&v12;
     v14 = v9 * v13;
@@ -394,9 +394,9 @@ LABEL_25:
     v22.width = v14;
     v22.height = v15;
     UIGraphicsBeginImageContext(v22);
-    v16 = [v5 CGImage];
-    [v5 scale];
-    if (v4)
+    cGImage = [imageCopy CGImage];
+    [imageCopy scale];
+    if (clockwiseCopy)
     {
       v17 = 3;
     }
@@ -406,7 +406,7 @@ LABEL_25:
       v17 = 2;
     }
 
-    v18 = [UIImage imageWithCGImage:v16 scale:v17 orientation:?];
+    v18 = [UIImage imageWithCGImage:cGImage scale:v17 orientation:?];
     [v18 drawInRect:{0.0, 0.0, v14, v15}];
 
     v19 = UIGraphicsGetImageFromCurrentImageContext();
@@ -416,21 +416,21 @@ LABEL_25:
   return v19;
 }
 
-- (id)flipImage:(id)a3
+- (id)flipImage:(id)image
 {
-  v3 = a3;
-  [v3 size];
+  imageCopy = image;
+  [imageCopy size];
   v5 = v4;
   v7 = v6;
   height = CGSizeZero.height;
   if (CGSizeZero.width == v4 && height == v7)
   {
-    v16 = v3;
+    v16 = imageCopy;
   }
 
   else
   {
-    [v3 scale];
+    [imageCopy scale];
     *&v10 = v10;
     v11 = *&v10;
     v12 = v7 * v11;
@@ -438,9 +438,9 @@ LABEL_25:
     v19.width = v13;
     v19.height = v12;
     UIGraphicsBeginImageContext(v19);
-    v14 = [v3 CGImage];
-    [v3 scale];
-    v15 = [UIImage imageWithCGImage:v14 scale:1 orientation:?];
+    cGImage = [imageCopy CGImage];
+    [imageCopy scale];
+    v15 = [UIImage imageWithCGImage:cGImage scale:1 orientation:?];
     [v15 drawInRect:{0.0, 0.0, v13, v12}];
 
     v16 = UIGraphicsGetImageFromCurrentImageContext();
@@ -463,11 +463,11 @@ LABEL_25:
   return result;
 }
 
-- (void)setFocusPoint:(CGPoint)a3
+- (void)setFocusPoint:(CGPoint)point
 {
-  if (self->_focusPoint.x != a3.x || self->_focusPoint.y != a3.y)
+  if (self->_focusPoint.x != point.x || self->_focusPoint.y != point.y)
   {
-    self->_focusPoint = a3;
+    self->_focusPoint = point;
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
 

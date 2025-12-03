@@ -1,8 +1,8 @@
 @interface HMAccessoryInvitation
-- (BOOL)mergeFromNewObject:(id)a3;
+- (BOOL)mergeFromNewObject:(id)object;
 - (HMAccessory)accessory;
-- (HMAccessoryInvitation)initWithAccessory:(id)a3 identifier:(id)a4 state:(int64_t)a5;
-- (HMAccessoryInvitation)initWithCoder:(id)a3;
+- (HMAccessoryInvitation)initWithAccessory:(id)accessory identifier:(id)identifier state:(int64_t)state;
+- (HMAccessoryInvitation)initWithCoder:(id)coder;
 @end
 
 @implementation HMAccessoryInvitation
@@ -14,17 +14,17 @@
   return WeakRetained;
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(HMAccessoryInvitation *)self state];
-    v7 = [v5 state];
-    v8 = v6 == v7;
-    v9 = v6 != v7;
+    v5 = objectCopy;
+    state = [(HMAccessoryInvitation *)self state];
+    state2 = [v5 state];
+    v8 = state == state2;
+    v9 = state != state2;
     if (!v8)
     {
       self->_state = [v5 state];
@@ -39,51 +39,51 @@
   return v9;
 }
 
-- (HMAccessoryInvitation)initWithCoder:(id)a3
+- (HMAccessoryInvitation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HMAccessoryInvitation;
   v5 = [(HMAccessoryInvitation *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.accessoryInvitationIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.accessoryInvitationIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessory"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessory"];
     objc_storeWeak(&v5->_accessory, v8);
 
-    v5->_state = [v4 decodeInt32ForKey:@"HM.accessoryInvitationState"];
+    v5->_state = [coderCopy decodeInt32ForKey:@"HM.accessoryInvitationState"];
   }
 
   return v5;
 }
 
-- (HMAccessoryInvitation)initWithAccessory:(id)a3 identifier:(id)a4 state:(int64_t)a5
+- (HMAccessoryInvitation)initWithAccessory:(id)accessory identifier:(id)identifier state:(int64_t)state
 {
-  v8 = a3;
-  v9 = a4;
+  accessoryCopy = accessory;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = HMAccessoryInvitation;
   v10 = [(HMAccessoryInvitation *)&v14 init];
   if (v10)
   {
-    if (v9)
+    if (identifierCopy)
     {
-      v11 = v9;
+      uUID = identifierCopy;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E696AFB0] UUID];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
     }
 
     identifier = v10->_identifier;
-    v10->_identifier = v11;
+    v10->_identifier = uUID;
 
-    objc_storeWeak(&v10->_accessory, v8);
-    v10->_state = a5;
+    objc_storeWeak(&v10->_accessory, accessoryCopy);
+    v10->_state = state;
   }
 
   return v10;

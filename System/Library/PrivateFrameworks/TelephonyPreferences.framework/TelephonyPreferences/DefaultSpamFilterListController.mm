@@ -1,24 +1,24 @@
 @interface DefaultSpamFilterListController
 - (BOOL)canEditExtensions;
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
-- (DefaultSpamFilterListController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
+- (DefaultSpamFilterListController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
 - (void)_updateExtensions;
-- (void)addCallDirectorySpecifierIfNecessary:(id)a3;
-- (void)addLiveLookupSpecifierIfNecessary:(id)a3;
+- (void)addCallDirectorySpecifierIfNecessary:(id)necessary;
+- (void)addLiveLookupSpecifierIfNecessary:(id)necessary;
 - (void)refreshView;
 - (void)reloadSpecifiers;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 @end
 
 @implementation DefaultSpamFilterListController
 
-- (DefaultSpamFilterListController)initWithNibName:(id)a3 bundle:(id)a4
+- (DefaultSpamFilterListController)initWithNibName:(id)name bundle:(id)bundle
 {
   v12.receiver = self;
   v12.super_class = DefaultSpamFilterListController;
-  v4 = [(DefaultSpamFilterListController *)&v12 initWithNibName:a3 bundle:a4];
+  v4 = [(DefaultSpamFilterListController *)&v12 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [[PHCallDirectorySettingsController alloc] initWithParent:v4];
@@ -37,75 +37,75 @@
   return v4;
 }
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  if (v6 == [(DefaultSpamFilterListController *)self callDirectoryIdentificationIndex])
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == [(DefaultSpamFilterListController *)self callDirectoryIdentificationIndex])
   {
     v7 = &OBJC_IVAR___DefaultSpamFilterListController__callDirectorySettingsController;
   }
 
   else
   {
-    v8 = [v5 section];
-    if (v8 != [(DefaultSpamFilterListController *)self liveLookupIdentificationIndex])
+    section2 = [pathCopy section];
+    if (section2 != [(DefaultSpamFilterListController *)self liveLookupIdentificationIndex])
     {
-      v9 = 0;
+      canEditExtensions = 0;
       goto LABEL_7;
     }
 
     v7 = &OBJC_IVAR___DefaultSpamFilterListController__liveLookupSettingsController;
   }
 
-  v9 = [*(&self->super.super.super.super.super.isa + *v7) canEditExtensions];
+  canEditExtensions = [*(&self->super.super.super.super.super.isa + *v7) canEditExtensions];
 LABEL_7:
 
-  return v9;
+  return canEditExtensions;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 section];
-  if (v10 == [v9 section])
+  viewCopy = view;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  section = [pathCopy section];
+  if (section == [indexPathCopy section])
   {
-    v11 = [v8 section];
-    if (v11 == [(DefaultSpamFilterListController *)self callDirectoryIdentificationIndex])
+    section2 = [pathCopy section];
+    if (section2 == [(DefaultSpamFilterListController *)self callDirectoryIdentificationIndex])
     {
-      v12 = [(DefaultSpamFilterListController *)self callDirectorySettingsController];
+      callDirectorySettingsController = [(DefaultSpamFilterListController *)self callDirectorySettingsController];
     }
 
     else
     {
-      v13 = [v8 section];
-      if (v13 != [(DefaultSpamFilterListController *)self liveLookupIdentificationIndex])
+      section3 = [pathCopy section];
+      if (section3 != [(DefaultSpamFilterListController *)self liveLookupIdentificationIndex])
       {
         goto LABEL_7;
       }
 
-      v12 = [(DefaultSpamFilterListController *)self liveLookupSettingsController];
+      callDirectorySettingsController = [(DefaultSpamFilterListController *)self liveLookupSettingsController];
     }
 
-    v14 = v12;
-    [v12 tableView:v15 moveRowAtIndexPath:v8 toIndexPath:v9];
+    v14 = callDirectorySettingsController;
+    [callDirectorySettingsController tableView:viewCopy moveRowAtIndexPath:pathCopy toIndexPath:indexPathCopy];
   }
 
 LABEL_7:
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v6 = a4;
-  v7 = a5;
-  v8 = v6;
-  v9 = [v8 section];
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  v8 = pathCopy;
+  section = [v8 section];
   v10 = v8;
-  if (v9 == [v7 section])
+  if (section == [indexPathCopy section])
   {
-    v10 = v7;
+    v10 = indexPathCopy;
   }
 
   return v10;
@@ -148,9 +148,9 @@ LABEL_7:
   [(DefaultSpamFilterListController *)self setNavigationItemsForEditing:[(DefaultSpamFilterListController *)self isEditing] animated:0];
 }
 
-- (void)addCallDirectorySpecifierIfNecessary:(id)a3
+- (void)addCallDirectorySpecifierIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   v5 = TPSLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -158,16 +158,16 @@ LABEL_7:
     _os_log_impl(&dword_21B8E9000, v5, OS_LOG_TYPE_DEFAULT, "Call Directory addCallDirectorySpecifierIfNecessary", v7, 2u);
   }
 
-  v6 = [(PHCallDirectorySettingsController *)self->_callDirectorySettingsController specifiers];
-  if (v6)
+  specifiers = [(PHCallDirectorySettingsController *)self->_callDirectorySettingsController specifiers];
+  if (specifiers)
   {
-    [v4 addObjectsFromArray:v6];
+    [necessaryCopy addObjectsFromArray:specifiers];
   }
 }
 
-- (void)addLiveLookupSpecifierIfNecessary:(id)a3
+- (void)addLiveLookupSpecifierIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   v5 = TPSLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -175,28 +175,28 @@ LABEL_7:
     _os_log_impl(&dword_21B8E9000, v5, OS_LOG_TYPE_DEFAULT, "live lookup addLiveLookupSpecifierIfNecessary", v7, 2u);
   }
 
-  v6 = [(PHLiveLookupSettingsController *)self->_liveLookupSettingsController specifiers];
-  if (v6)
+  specifiers = [(PHLiveLookupSettingsController *)self->_liveLookupSettingsController specifiers];
+  if (specifiers)
   {
-    [v4 addObjectsFromArray:v6];
+    [necessaryCopy addObjectsFromArray:specifiers];
   }
 }
 
 - (BOOL)canEditExtensions
 {
-  v3 = [(DefaultSpamFilterListController *)self callDirectorySettingsController];
-  if ([v3 canEditExtensions])
+  callDirectorySettingsController = [(DefaultSpamFilterListController *)self callDirectorySettingsController];
+  if ([callDirectorySettingsController canEditExtensions])
   {
-    v4 = 1;
+    canEditExtensions = 1;
   }
 
   else
   {
-    v5 = [(DefaultSpamFilterListController *)self liveLookupSettingsController];
-    v4 = [v5 canEditExtensions];
+    liveLookupSettingsController = [(DefaultSpamFilterListController *)self liveLookupSettingsController];
+    canEditExtensions = [liveLookupSettingsController canEditExtensions];
   }
 
-  return v4;
+  return canEditExtensions;
 }
 
 - (void)refreshView
@@ -204,9 +204,9 @@ LABEL_7:
   if (([(DefaultSpamFilterListController *)self isEditing]& 1) == 0 && [(DefaultSpamFilterListController *)self isViewLoaded])
   {
     [(DefaultSpamFilterListController *)self reloadSpecifiers];
-    v3 = [(DefaultSpamFilterListController *)self isEditing];
+    isEditing = [(DefaultSpamFilterListController *)self isEditing];
 
-    [(DefaultSpamFilterListController *)self setNavigationItemsForEditing:v3 animated:0];
+    [(DefaultSpamFilterListController *)self setNavigationItemsForEditing:isEditing animated:0];
   }
 }
 

@@ -1,24 +1,24 @@
 @interface PKPaymentInformationEventExtensionContext
-- (void)handleConfigurationRequest:(id)a3 completion:(id)a4;
-- (void)handleInformationRequest:(id)a3 completion:(id)a4;
-- (void)handleSignatureRequest:(id)a3 completion:(id)a4;
+- (void)handleConfigurationRequest:(id)request completion:(id)completion;
+- (void)handleInformationRequest:(id)request completion:(id)completion;
+- (void)handleSignatureRequest:(id)request completion:(id)completion;
 @end
 
 @implementation PKPaymentInformationEventExtensionContext
 
-- (void)handleInformationRequest:(id)a3 completion:(id)a4
+- (void)handleInformationRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentInformationEventExtensionContext *)self _principalObject];
-  if ([v8 conformsToProtocol:&unk_1F247C968])
+  requestCopy = request;
+  completionCopy = completion;
+  _principalObject = [(PKPaymentInformationEventExtensionContext *)self _principalObject];
+  if ([_principalObject conformsToProtocol:&unk_1F247C968])
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __81__PKPaymentInformationEventExtensionContext_handleInformationRequest_completion___block_invoke;
     v11[3] = &unk_1E79D3FB0;
-    v12 = v7;
-    [v8 handleInformationRequest:v6 completion:v11];
+    v12 = completionCopy;
+    [_principalObject handleInformationRequest:requestCopy completion:v11];
   }
 
   else
@@ -30,9 +30,9 @@
       _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "handleInformationRequest: principalObject does not conform to PKPaymentInformationRequestHandling", v10, 2u);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -48,19 +48,19 @@ uint64_t __81__PKPaymentInformationEventExtensionContext_handleInformationReques
   return result;
 }
 
-- (void)handleSignatureRequest:(id)a3 completion:(id)a4
+- (void)handleSignatureRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentInformationEventExtensionContext *)self _principalObject];
-  if ([v8 conformsToProtocol:&unk_1F247C968])
+  requestCopy = request;
+  completionCopy = completion;
+  _principalObject = [(PKPaymentInformationEventExtensionContext *)self _principalObject];
+  if ([_principalObject conformsToProtocol:&unk_1F247C968])
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __79__PKPaymentInformationEventExtensionContext_handleSignatureRequest_completion___block_invoke;
     v11[3] = &unk_1E79D3FD8;
-    v12 = v7;
-    [v8 handleSignatureRequest:v6 completion:v11];
+    v12 = completionCopy;
+    [_principalObject handleSignatureRequest:requestCopy completion:v11];
   }
 
   else
@@ -72,9 +72,9 @@ uint64_t __81__PKPaymentInformationEventExtensionContext_handleInformationReques
       _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "handleSignatureRequest: principalObject does not conform to PKPaymentInformationRequestHandling", v10, 2u);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -90,19 +90,19 @@ uint64_t __79__PKPaymentInformationEventExtensionContext_handleSignatureRequest_
   return result;
 }
 
-- (void)handleConfigurationRequest:(id)a3 completion:(id)a4
+- (void)handleConfigurationRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentInformationEventExtensionContext *)self _principalObject];
-  if ([v8 conformsToProtocol:&unk_1F247C968])
+  requestCopy = request;
+  completionCopy = completion;
+  _principalObject = [(PKPaymentInformationEventExtensionContext *)self _principalObject];
+  if ([_principalObject conformsToProtocol:&unk_1F247C968])
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __83__PKPaymentInformationEventExtensionContext_handleConfigurationRequest_completion___block_invoke;
     v11[3] = &unk_1E79C4428;
-    v12 = v7;
-    [v8 handleConfigurationRequest:v6 completion:v11];
+    v12 = completionCopy;
+    [_principalObject handleConfigurationRequest:requestCopy completion:v11];
   }
 
   else
@@ -114,9 +114,9 @@ uint64_t __79__PKPaymentInformationEventExtensionContext_handleSignatureRequest_
       _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "handleConfigurationRequest: principalObject does not conform to PKPaymentInformationRequestHandling", v10, 2u);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
   }
 }

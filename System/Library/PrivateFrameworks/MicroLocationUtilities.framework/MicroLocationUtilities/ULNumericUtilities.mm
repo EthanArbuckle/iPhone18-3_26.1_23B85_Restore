@@ -1,35 +1,35 @@
 @interface ULNumericUtilities
-+ (double)magnitudeOfVector:(id)a3;
-+ (double)sumOfVector:(id)a3;
-+ (id)dotProduct:(id)a3 vectorB:(id)a4;
++ (double)magnitudeOfVector:(id)vector;
++ (double)sumOfVector:(id)vector;
++ (id)dotProduct:(id)product vectorB:(id)b;
 @end
 
 @implementation ULNumericUtilities
 
-+ (id)dotProduct:(id)a3 vectorB:(id)a4
++ (id)dotProduct:(id)product vectorB:(id)b
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 == [v6 count] && objc_msgSend(v5, "count"))
+  productCopy = product;
+  bCopy = b;
+  v7 = [productCopy count];
+  if (v7 == [bCopy count] && objc_msgSend(productCopy, "count"))
   {
-    if ([v5 count])
+    if ([productCopy count])
     {
       v8 = 0;
       v9 = 0.0;
       do
       {
-        v10 = [v5 objectAtIndexedSubscript:v8];
+        v10 = [productCopy objectAtIndexedSubscript:v8];
         [v10 doubleValue];
         v12 = v11;
-        v13 = [v6 objectAtIndexedSubscript:v8];
+        v13 = [bCopy objectAtIndexedSubscript:v8];
         [v13 doubleValue];
         v9 = v9 + v12 * v14;
 
         ++v8;
       }
 
-      while (v8 < [v5 count]);
+      while (v8 < [productCopy count]);
     }
 
     else
@@ -48,15 +48,15 @@
   return v15;
 }
 
-+ (double)sumOfVector:(id)a3
++ (double)sumOfVector:(id)vector
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  vectorCopy = vector;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [vectorCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -68,14 +68,14 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(vectorCopy);
         }
 
         [*(*(&v12 + 1) + 8 * i) doubleValue];
         v7 = v7 + v9;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [vectorCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -90,15 +90,15 @@
   return v7;
 }
 
-+ (double)magnitudeOfVector:(id)a3
++ (double)magnitudeOfVector:(id)vector
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  vectorCopy = vector;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [vectorCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -110,14 +110,14 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(vectorCopy);
         }
 
         [*(*(&v12 + 1) + 8 * i) doubleValue];
         v7 = v7 + v9 * v9;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [vectorCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);

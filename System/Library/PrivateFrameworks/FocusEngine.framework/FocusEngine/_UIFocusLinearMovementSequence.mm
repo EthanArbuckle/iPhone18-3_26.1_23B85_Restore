@@ -1,27 +1,27 @@
 @interface _UIFocusLinearMovementSequence
-+ (id)sequenceWithItems:(id)a3 loops:(BOOL)a4 restrictEnteringSequence:(BOOL)a5;
-- (_UIFocusLinearMovementSequence)initWithItems:(id)a3 loops:(BOOL)a4 restrictEnteringSequence:(BOOL)a5;
++ (id)sequenceWithItems:(id)items loops:(BOOL)loops restrictEnteringSequence:(BOOL)sequence;
+- (_UIFocusLinearMovementSequence)initWithItems:(id)items loops:(BOOL)loops restrictEnteringSequence:(BOOL)sequence;
 @end
 
 @implementation _UIFocusLinearMovementSequence
 
-+ (id)sequenceWithItems:(id)a3 loops:(BOOL)a4 restrictEnteringSequence:(BOOL)a5
++ (id)sequenceWithItems:(id)items loops:(BOOL)loops restrictEnteringSequence:(BOOL)sequence
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_UIFocusLinearMovementSequence alloc] initWithItems:v7 loops:v6 restrictEnteringSequence:v5];
+  sequenceCopy = sequence;
+  loopsCopy = loops;
+  itemsCopy = items;
+  v8 = [[_UIFocusLinearMovementSequence alloc] initWithItems:itemsCopy loops:loopsCopy restrictEnteringSequence:sequenceCopy];
 
   return v8;
 }
 
-- (_UIFocusLinearMovementSequence)initWithItems:(id)a3 loops:(BOOL)a4 restrictEnteringSequence:(BOOL)a5
+- (_UIFocusLinearMovementSequence)initWithItems:(id)items loops:(BOOL)loops restrictEnteringSequence:(BOOL)sequence
 {
-  v9 = a3;
-  if (!v9)
+  itemsCopy = items;
+  if (!itemsCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"_UIFocusLinearMovementSequence.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"items"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusLinearMovementSequence.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"items"}];
   }
 
   v15.receiver = self;
@@ -29,12 +29,12 @@
   v10 = [(_UIFocusLinearMovementSequence *)&v15 init];
   if (v10)
   {
-    v11 = [v9 copy];
+    v11 = [itemsCopy copy];
     items = v10->_items;
     v10->_items = v11;
 
-    v10->_looping = a4;
-    v10->_restrictEnteringSequence = a5;
+    v10->_looping = loops;
+    v10->_restrictEnteringSequence = sequence;
   }
 
   return v10;

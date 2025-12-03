@@ -1,35 +1,35 @@
 @interface DMFStopManagingAppRequest
 - (DMFStopManagingAppRequest)init;
-- (DMFStopManagingAppRequest)initWithCoder:(id)a3;
+- (DMFStopManagingAppRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFStopManagingAppRequest
 
-- (DMFStopManagingAppRequest)initWithCoder:(id)a3
+- (DMFStopManagingAppRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = DMFStopManagingAppRequest;
-  v5 = [(DMFAppRequest *)&v8 initWithCoder:v4];
+  v5 = [(DMFAppRequest *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shouldPreserveAppBinary"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shouldPreserveAppBinary"];
     v5->_shouldPreserveAppBinary = [v6 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DMFStopManagingAppRequest;
-  v4 = a3;
-  [(DMFAppRequest *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(DMFAppRequest *)&v6 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFStopManagingAppRequest shouldPreserveAppBinary](self, "shouldPreserveAppBinary", v6.receiver, v6.super_class)}];
-  [v4 encodeObject:v5 forKey:@"shouldPreserveAppBinary"];
+  [coderCopy encodeObject:v5 forKey:@"shouldPreserveAppBinary"];
 }
 
 - (id)description

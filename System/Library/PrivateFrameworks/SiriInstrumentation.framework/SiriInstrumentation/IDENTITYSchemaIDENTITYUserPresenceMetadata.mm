@@ -1,27 +1,27 @@
 @interface IDENTITYSchemaIDENTITYUserPresenceMetadata
-- (BOOL)isEqual:(id)a3;
-- (IDENTITYSchemaIDENTITYUserPresenceMetadata)initWithDictionary:(id)a3;
-- (IDENTITYSchemaIDENTITYUserPresenceMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IDENTITYSchemaIDENTITYUserPresenceMetadata)initWithDictionary:(id)dictionary;
+- (IDENTITYSchemaIDENTITYUserPresenceMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasUserLocationSource:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasUserLocationSource:(BOOL)source;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDENTITYSchemaIDENTITYUserPresenceMetadata
 
-- (IDENTITYSchemaIDENTITYUserPresenceMetadata)initWithDictionary:(id)a3
+- (IDENTITYSchemaIDENTITYUserPresenceMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = IDENTITYSchemaIDENTITYUserPresenceMetadata;
   v5 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"loggableMultiUserSharedUserId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"loggableMultiUserSharedUserId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,21 +29,21 @@
       [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)v5 setLoggableMultiUserSharedUserId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"userLocation"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"userLocation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IDENTITYSchemaIDENTITYUserPresenceMetadata setUserLocation:](v5, "setUserLocation:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"userLocationSource"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"userLocationSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IDENTITYSchemaIDENTITYUserPresenceMetadata setUserLocationSource:](v5, "setUserLocationSource:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"userEphemeralId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"userEphemeralId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (IDENTITYSchemaIDENTITYUserPresenceMetadata)initWithJSON:(id)a3
+- (IDENTITYSchemaIDENTITYUserPresenceMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,41 +93,41 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_loggableMultiUserSharedUserId)
   {
-    v4 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self loggableMultiUserSharedUserId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"loggableMultiUserSharedUserId"];
+    loggableMultiUserSharedUserId = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self loggableMultiUserSharedUserId];
+    v5 = [loggableMultiUserSharedUserId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"loggableMultiUserSharedUserId"];
   }
 
   if (self->_userEphemeralId)
   {
-    v6 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self userEphemeralId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    userEphemeralId = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self userEphemeralId];
+    dictionaryRepresentation = [userEphemeralId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"userEphemeralId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"userEphemeralId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"userEphemeralId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"userEphemeralId"];
     }
   }
 
   has = self->_has;
   if (has)
   {
-    v10 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self userLocation];
+    userLocation = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self userLocation];
     v11 = @"IDENTITYUSERLOCATION_UNKNOWN";
-    if (v10 == 1)
+    if (userLocation == 1)
     {
       v11 = @"IDENTITYUSERLOCATION_HOME";
     }
 
-    if (v10 == 2)
+    if (userLocation == 2)
     {
       v12 = @"IDENTITYUSERLOCATION_AWAY";
     }
@@ -137,20 +137,20 @@
       v12 = v11;
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"userLocation"];
+    [dictionary setObject:v12 forKeyedSubscript:@"userLocation"];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v13 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self userLocationSource];
+    userLocationSource = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self userLocationSource];
     v14 = @"IDENTITYUSERPRESENCESOURCE_UNKNOWN";
-    if (v13 == 1)
+    if (userLocationSource == 1)
     {
       v14 = @"IDENTITYUSERPRESENCESOURCE_GEO_FENCE";
     }
 
-    if (v13 == 2)
+    if (userLocationSource == 2)
     {
       v15 = @"IDENTITYUSERPRESENCESOURCE_DEVICE_DISCOVERY";
     }
@@ -160,12 +160,12 @@
       v15 = v14;
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"userLocationSource"];
+    [dictionary setObject:v15 forKeyedSubscript:@"userLocationSource"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -195,28 +195,28 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ [(SISchemaUUID *)self->_userEphemeralId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self loggableMultiUserSharedUserId];
-  v6 = [v4 loggableMultiUserSharedUserId];
-  if ((v5 != 0) == (v6 == 0))
+  loggableMultiUserSharedUserId = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self loggableMultiUserSharedUserId];
+  loggableMultiUserSharedUserId2 = [equalCopy loggableMultiUserSharedUserId];
+  if ((loggableMultiUserSharedUserId != 0) == (loggableMultiUserSharedUserId2 == 0))
   {
     goto LABEL_18;
   }
 
-  v7 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self loggableMultiUserSharedUserId];
-  if (v7)
+  loggableMultiUserSharedUserId3 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self loggableMultiUserSharedUserId];
+  if (loggableMultiUserSharedUserId3)
   {
-    v8 = v7;
-    v9 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self loggableMultiUserSharedUserId];
-    v10 = [v4 loggableMultiUserSharedUserId];
-    v11 = [v9 isEqual:v10];
+    v8 = loggableMultiUserSharedUserId3;
+    loggableMultiUserSharedUserId4 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self loggableMultiUserSharedUserId];
+    loggableMultiUserSharedUserId5 = [equalCopy loggableMultiUserSharedUserId];
+    v11 = [loggableMultiUserSharedUserId4 isEqual:loggableMultiUserSharedUserId5];
 
     if (!v11)
     {
@@ -229,7 +229,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v13 = v4[32];
+  v13 = equalCopy[32];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_19;
@@ -238,13 +238,13 @@ LABEL_3:
   if (*&has)
   {
     userLocation = self->_userLocation;
-    if (userLocation != [v4 userLocation])
+    if (userLocation != [equalCopy userLocation])
     {
       goto LABEL_19;
     }
 
     has = self->_has;
-    v13 = v4[32];
+    v13 = equalCopy[32];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -256,23 +256,23 @@ LABEL_3:
   if (v15)
   {
     userLocationSource = self->_userLocationSource;
-    if (userLocationSource != [v4 userLocationSource])
+    if (userLocationSource != [equalCopy userLocationSource])
     {
       goto LABEL_19;
     }
   }
 
-  v5 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self userEphemeralId];
-  v6 = [v4 userEphemeralId];
-  if ((v5 != 0) == (v6 == 0))
+  loggableMultiUserSharedUserId = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self userEphemeralId];
+  loggableMultiUserSharedUserId2 = [equalCopy userEphemeralId];
+  if ((loggableMultiUserSharedUserId != 0) == (loggableMultiUserSharedUserId2 == 0))
   {
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v17 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self userEphemeralId];
-  if (!v17)
+  userEphemeralId = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self userEphemeralId];
+  if (!userEphemeralId)
   {
 
 LABEL_22:
@@ -280,10 +280,10 @@ LABEL_22:
     goto LABEL_20;
   }
 
-  v18 = v17;
-  v19 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self userEphemeralId];
-  v20 = [v4 userEphemeralId];
-  v21 = [v19 isEqual:v20];
+  v18 = userEphemeralId;
+  userEphemeralId2 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self userEphemeralId];
+  userEphemeralId3 = [equalCopy userEphemeralId];
+  v21 = [userEphemeralId2 isEqual:userEphemeralId3];
 
   if (v21)
   {
@@ -297,12 +297,12 @@ LABEL_20:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self loggableMultiUserSharedUserId];
+  toCopy = to;
+  loggableMultiUserSharedUserId = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self loggableMultiUserSharedUserId];
 
-  if (v4)
+  if (loggableMultiUserSharedUserId)
   {
     PBDataWriterWriteStringField();
   }
@@ -319,21 +319,21 @@ LABEL_20:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self userEphemeralId];
+  userEphemeralId = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self userEphemeralId];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (userEphemeralId)
   {
-    v8 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self userEphemeralId];
+    userEphemeralId2 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self userEphemeralId];
     PBDataWriterWriteSubmessage();
 
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasUserLocationSource:(BOOL)a3
+- (void)setHasUserLocationSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 2;
   }
@@ -346,17 +346,17 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = IDENTITYSchemaIDENTITYUserPresenceMetadata;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self userEphemeralId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(IDENTITYSchemaIDENTITYUserPresenceMetadata *)self deleteUserEphemeralId];
   }

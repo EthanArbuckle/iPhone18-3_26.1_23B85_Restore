@@ -1,19 +1,19 @@
 @interface SKUIEditorialCollectionViewCell
-- (SKUIEditorialCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (SKUIEditorialCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SKUIEditorialCollectionViewCell
 
-- (SKUIEditorialCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUIEditorialCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIEditorialCollectionViewCell initWithFrame:];
@@ -21,33 +21,33 @@
 
   v12.receiver = self;
   v12.super_class = SKUIEditorialCollectionViewCell;
-  v8 = [(SKUICollectionViewCell *)&v12 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUICollectionViewCell *)&v12 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v9 = [[SKUIEditorialCellLayout alloc] initWithCollectionViewCell:v8];
-    layout = v8->_layout;
-    v8->_layout = v9;
+    v9 = [[SKUIEditorialCellLayout alloc] initWithCollectionViewCell:height];
+    layout = height->_layout;
+    height->_layout = v9;
   }
 
-  return v8;
+  return height;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = SKUIEditorialCollectionViewCell;
-  v4 = a3;
-  [(SKUICollectionViewCell *)&v7 applyLayoutAttributes:v4];
+  attributesCopy = attributes;
+  [(SKUICollectionViewCell *)&v7 applyLayoutAttributes:attributesCopy];
   v5 = [(SKUIEditorialCollectionViewCell *)self layout:v7.receiver];
-  v6 = [v4 backgroundColor];
+  backgroundColor = [attributesCopy backgroundColor];
 
-  [v5 setBackgroundColor:v6];
+  [v5 setBackgroundColor:backgroundColor];
 }
 
 - (void)prepareForReuse
 {
-  v3 = [(SKUIEditorialCollectionViewCell *)self layout];
-  [v3 prepareForReuse];
+  layout = [(SKUIEditorialCollectionViewCell *)self layout];
+  [layout prepareForReuse];
 
   v4.receiver = self;
   v4.super_class = SKUIEditorialCollectionViewCell;
@@ -56,30 +56,30 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(SKUIEditorialCollectionViewCell *)self contentView];
-  [v3 frame];
+  contentView = [(SKUIEditorialCollectionViewCell *)self contentView];
+  [contentView frame];
   v5 = v4;
   v7 = v6;
   v12.receiver = self;
   v12.super_class = SKUIEditorialCollectionViewCell;
   [(SKUICollectionViewCell *)&v12 layoutSubviews];
-  if (self->_layoutNeedsLayout || (([v3 frame], v9 == v5) ? (v10 = v8 == v7) : (v10 = 0), !v10))
+  if (self->_layoutNeedsLayout || (([contentView frame], v9 == v5) ? (v10 = v8 == v7) : (v10 = 0), !v10))
   {
-    v11 = [(SKUIEditorialCollectionViewCell *)self layout];
-    [v11 layoutSubviews];
+    layout = [(SKUIEditorialCollectionViewCell *)self layout];
+    [layout layoutSubviews];
   }
 
   self->_layoutNeedsLayout = 0;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = SKUIEditorialCollectionViewCell;
-  v4 = a3;
-  [(SKUICollectionViewCell *)&v6 setBackgroundColor:v4];
+  colorCopy = color;
+  [(SKUICollectionViewCell *)&v6 setBackgroundColor:colorCopy];
   v5 = [(SKUIEditorialCollectionViewCell *)self layout:v6.receiver];
-  [v5 setBackgroundColor:v4];
+  [v5 setBackgroundColor:colorCopy];
 }
 
 - (void)initWithFrame:.cold.1()

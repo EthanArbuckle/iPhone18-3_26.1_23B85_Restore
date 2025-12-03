@@ -1,34 +1,34 @@
 @interface PKAccountFundingSourceVerification
-- (BOOL)isEqual:(id)a3;
-- (PKAccountFundingSourceVerification)initWithCoder:(id)a3;
-- (PKAccountFundingSourceVerification)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountFundingSourceVerification)initWithCoder:(id)coder;
+- (PKAccountFundingSourceVerification)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setRecoveryActions:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setRecoveryActions:(id)actions;
 @end
 
 @implementation PKAccountFundingSourceVerification
 
-- (PKAccountFundingSourceVerification)initWithDictionary:(id)a3
+- (PKAccountFundingSourceVerification)initWithDictionary:(id)dictionary
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v31.receiver = self;
   v31.super_class = PKAccountFundingSourceVerification;
   v5 = [(PKAccountFundingSourceVerification *)&v31 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"status"];
+    v6 = [dictionaryCopy PKStringForKey:@"status"];
     v5->_status = PKAccountFundingSourceVerificationStatusFromString(v6);
 
-    v7 = [v4 PKArrayContaining:objc_opt_class() forKey:@"options"];
+    v7 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"options"];
     v8 = [v7 pk_arrayByApplyingBlock:&__block_literal_global_161_0];
     options = v5->_options;
     v5->_options = v8;
 
-    v10 = [v4 PKDictionaryForKey:@"pendingAttempt"];
+    v10 = [dictionaryCopy PKDictionaryForKey:@"pendingAttempt"];
     if ([v10 count])
     {
       v11 = [[PKAccountFundingSourceVerificationAttempt alloc] initWithDictionary:v10];
@@ -36,7 +36,7 @@
       v5->_pendingAttempt = v11;
     }
 
-    v13 = [v4 PKDictionaryForKey:@"failedAttempt"];
+    v13 = [dictionaryCopy PKDictionaryForKey:@"failedAttempt"];
     if ([v13 count])
     {
       v14 = [[PKAccountFundingSourceVerificationAttempt alloc] initWithDictionary:v13];
@@ -44,7 +44,7 @@
       v5->_failedAttempt = v14;
     }
 
-    v16 = [v4 PKArrayContaining:objc_opt_class() forKey:@"recoveryActions"];
+    v16 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"recoveryActions"];
     if ([v16 count])
     {
       v25 = v13;
@@ -100,9 +100,9 @@ uint64_t __57__PKAccountFundingSourceVerification_initWithDictionary___block_inv
   return [v2 numberWithUnsignedInteger:v3];
 }
 
-- (void)setRecoveryActions:(id)a3
+- (void)setRecoveryActions:(id)actions
 {
-  v4 = [a3 sortedArrayUsingComparator:&__block_literal_global_165];
+  v4 = [actions sortedArrayUsingComparator:&__block_literal_global_165];
   recoveryActions = self->_recoveryActions;
   self->_recoveryActions = v4;
 }
@@ -124,34 +124,34 @@ uint64_t __57__PKAccountFundingSourceVerification_setRecoveryActions___block_inv
   }
 }
 
-- (PKAccountFundingSourceVerification)initWithCoder:(id)a3
+- (PKAccountFundingSourceVerification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = PKAccountFundingSourceVerification;
   v5 = [(PKAccountFundingSourceVerification *)&v21 init];
   if (v5)
   {
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"status"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"options"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"options"];
     options = v5->_options;
     v5->_options = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pendingAttempt"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pendingAttempt"];
     pendingAttempt = v5->_pendingAttempt;
     v5->_pendingAttempt = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"failedAttempt"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"failedAttempt"];
     failedAttempt = v5->_failedAttempt;
     v5->_failedAttempt = v13;
 
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"recoveryActions"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"recoveryActions"];
     recoveryActions = v5->_recoveryActions;
     v5->_recoveryActions = v18;
   }
@@ -159,20 +159,20 @@ uint64_t __57__PKAccountFundingSourceVerification_setRecoveryActions___block_inv
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   status = self->_status;
-  v5 = a3;
-  [v5 encodeInteger:status forKey:@"status"];
-  [v5 encodeObject:self->_options forKey:@"options"];
-  [v5 encodeObject:self->_pendingAttempt forKey:@"pendingAttempt"];
-  [v5 encodeObject:self->_failedAttempt forKey:@"failedAttempt"];
-  [v5 encodeObject:self->_recoveryActions forKey:@"recoveryActions"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:status forKey:@"status"];
+  [coderCopy encodeObject:self->_options forKey:@"options"];
+  [coderCopy encodeObject:self->_pendingAttempt forKey:@"pendingAttempt"];
+  [coderCopy encodeObject:self->_failedAttempt forKey:@"failedAttempt"];
+  [coderCopy encodeObject:self->_recoveryActions forKey:@"recoveryActions"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -180,7 +180,7 @@ uint64_t __57__PKAccountFundingSourceVerification_setRecoveryActions___block_inv
   }
 
   options = self->_options;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (options && v6)
   {
     if (([(NSArray *)options isEqual:?]& 1) == 0)
@@ -195,7 +195,7 @@ uint64_t __57__PKAccountFundingSourceVerification_setRecoveryActions___block_inv
   }
 
   pendingAttempt = self->_pendingAttempt;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (pendingAttempt && v8)
   {
     if (![(PKAccountFundingSourceVerificationAttempt *)pendingAttempt isEqual:?])
@@ -210,7 +210,7 @@ uint64_t __57__PKAccountFundingSourceVerification_setRecoveryActions___block_inv
   }
 
   failedAttempt = self->_failedAttempt;
-  v10 = v4[4];
+  v10 = equalCopy[4];
   if (failedAttempt && v10)
   {
     if (![(PKAccountFundingSourceVerificationAttempt *)failedAttempt isEqual:?])
@@ -225,7 +225,7 @@ uint64_t __57__PKAccountFundingSourceVerification_setRecoveryActions___block_inv
   }
 
   recoveryActions = self->_recoveryActions;
-  v12 = v4[5];
+  v12 = equalCopy[5];
   if (!recoveryActions || !v12)
   {
     if (recoveryActions == v12)
@@ -244,7 +244,7 @@ LABEL_22:
   }
 
 LABEL_20:
-  v13 = self->_status == v4[1];
+  v13 = self->_status == equalCopy[1];
 LABEL_23:
 
   return v13;
@@ -252,12 +252,12 @@ LABEL_23:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_options];
-  [v3 safelyAddObject:self->_pendingAttempt];
-  [v3 safelyAddObject:self->_failedAttempt];
-  [v3 safelyAddObject:self->_recoveryActions];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_options];
+  [array safelyAddObject:self->_pendingAttempt];
+  [array safelyAddObject:self->_failedAttempt];
+  [array safelyAddObject:self->_recoveryActions];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_status - v4 + 32 * v4;
 
   return v5;
@@ -288,23 +288,23 @@ LABEL_23:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKAccountFundingSourceVerification allocWithZone:](PKAccountFundingSourceVerification init];
   v5->_status = self->_status;
-  v6 = [(NSArray *)self->_options copyWithZone:a3];
+  v6 = [(NSArray *)self->_options copyWithZone:zone];
   options = v5->_options;
   v5->_options = v6;
 
-  v8 = [(PKAccountFundingSourceVerificationAttempt *)self->_pendingAttempt copyWithZone:a3];
+  v8 = [(PKAccountFundingSourceVerificationAttempt *)self->_pendingAttempt copyWithZone:zone];
   pendingAttempt = v5->_pendingAttempt;
   v5->_pendingAttempt = v8;
 
-  v10 = [(PKAccountFundingSourceVerificationAttempt *)self->_failedAttempt copyWithZone:a3];
+  v10 = [(PKAccountFundingSourceVerificationAttempt *)self->_failedAttempt copyWithZone:zone];
   failedAttempt = v5->_failedAttempt;
   v5->_failedAttempt = v10;
 
-  v12 = [(NSArray *)self->_recoveryActions copyWithZone:a3];
+  v12 = [(NSArray *)self->_recoveryActions copyWithZone:zone];
   recoveryActions = v5->_recoveryActions;
   v5->_recoveryActions = v12;
 

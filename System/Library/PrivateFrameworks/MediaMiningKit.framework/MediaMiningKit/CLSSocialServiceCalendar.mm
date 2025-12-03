@@ -1,38 +1,38 @@
 @interface CLSSocialServiceCalendar
-+ (BOOL)_isCalendarRelevant:(id)a3;
-+ (BOOL)_isEventInMeetingRoom:(id)a3;
-+ (BOOL)eventAtLocation:(id)a3 withAttendeeNames:(id)a4 matchesClueCollection:(id)a5;
-+ (BOOL)shouldKeepEvent:(id)a3 withClueCollection:(id)a4;
-+ (id)relevantCalendars:(id)a3;
-- (BOOL)_hasAlreadyPrefetchedEventsFromUniversalDate:(id)a3 toUniversalDate:(id)a4;
-- (BOOL)_sortedAssetCollections:(id)a3 containsEvent:(id)a4;
++ (BOOL)_isCalendarRelevant:(id)relevant;
++ (BOOL)_isEventInMeetingRoom:(id)room;
++ (BOOL)eventAtLocation:(id)location withAttendeeNames:(id)names matchesClueCollection:(id)collection;
++ (BOOL)shouldKeepEvent:(id)event withClueCollection:(id)collection;
++ (id)relevantCalendars:(id)calendars;
+- (BOOL)_hasAlreadyPrefetchedEventsFromUniversalDate:(id)date toUniversalDate:(id)universalDate;
+- (BOOL)_sortedAssetCollections:(id)collections containsEvent:(id)event;
 - (CLSSocialServiceCalendar)init;
-- (id)_fullNameWithContact:(id)a3;
-- (id)eventFromProxyEvent:(id)a3;
-- (id)eventsForClueCollection:(id)a3;
-- (id)eventsForDates:(id)a3;
+- (id)_fullNameWithContact:(id)contact;
+- (id)eventFromProxyEvent:(id)event;
+- (id)eventsForClueCollection:(id)collection;
+- (id)eventsForDates:(id)dates;
 - (id)meContact;
-- (id)personsFromEventParticipants:(id)a3 excludeCurrentUser:(BOOL)a4 serviceManager:(id)a5;
-- (id)workCalendarEventsMatchingContactIdentifiers:(id)a3 fromUniversalDate:(id)a4 toUniversalDate:(id)a5 contactsService:(id)a6;
-- (void)_enumerateEventsFromDate:(id)a3 toDate:(id)a4 fetchIfNeeded:(BOOL)a5 usingBlock:(id)a6;
+- (id)personsFromEventParticipants:(id)participants excludeCurrentUser:(BOOL)user serviceManager:(id)manager;
+- (id)workCalendarEventsMatchingContactIdentifiers:(id)identifiers fromUniversalDate:(id)date toUniversalDate:(id)universalDate contactsService:(id)service;
+- (void)_enumerateEventsFromDate:(id)date toDate:(id)toDate fetchIfNeeded:(BOOL)needed usingBlock:(id)block;
 - (void)invalidateMemoryCaches;
-- (void)prefetchEventsFromUniversalDate:(id)a3 toUniversalDate:(id)a4 forAssetCollectionsSortedByStartDate:(id)a5 usingBlock:(id)a6;
+- (void)prefetchEventsFromUniversalDate:(id)date toUniversalDate:(id)universalDate forAssetCollectionsSortedByStartDate:(id)startDate usingBlock:(id)block;
 @end
 
 @implementation CLSSocialServiceCalendar
 
-- (id)personsFromEventParticipants:(id)a3 excludeCurrentUser:(BOOL)a4 serviceManager:(id)a5
+- (id)personsFromEventParticipants:(id)participants excludeCurrentUser:(BOOL)user serviceManager:(id)manager
 {
-  v6 = a4;
+  userCopy = user;
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  participantsCopy = participants;
+  managerCopy = manager;
   v19 = [MEMORY[0x277CBEB58] set];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v7;
+  obj = participantsCopy;
   v9 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v9)
   {
@@ -48,30 +48,30 @@
         }
 
         v12 = *(*(&v29 + 1) + 8 * i);
-        if (!v6 || ([*(*(&v29 + 1) + 8 * i) isCurrentUser] & 1) == 0)
+        if (!userCopy || ([*(*(&v29 + 1) + 8 * i) isCurrentUser] & 1) == 0)
         {
           v23 = 0;
           v24 = &v23;
           v25 = 0x3032000000;
           v26 = __Block_byref_object_copy__77;
           v27 = __Block_byref_object_dispose__78;
-          v13 = [v12 emailAddress];
-          v28 = [v8 personForPersonHandle:v13];
+          emailAddress = [v12 emailAddress];
+          v28 = [managerCopy personForPersonHandle:emailAddress];
 
           if (!v24[5])
           {
-            v14 = [v12 name];
-            v15 = v14 == 0;
+            name = [v12 name];
+            v15 = name == 0;
 
             if (!v15)
             {
-              v16 = [v12 name];
+              name2 = [v12 name];
               v21[0] = MEMORY[0x277D85DD0];
               v21[1] = 3221225472;
               v22[0] = __91__CLSSocialServiceCalendar_personsFromEventParticipants_excludeCurrentUser_serviceManager___block_invoke;
               v22[1] = &unk_2788A83A0;
               v22[2] = &v23;
-              [v8 enumeratePersonsForFullname:v16 usingBlock:v21];
+              [managerCopy enumeratePersonsForFullname:name2 usingBlock:v21];
             }
           }
 
@@ -93,22 +93,22 @@
   return v19;
 }
 
-- (id)workCalendarEventsMatchingContactIdentifiers:(id)a3 fromUniversalDate:(id)a4 toUniversalDate:(id)a5 contactsService:(id)a6
+- (id)workCalendarEventsMatchingContactIdentifiers:(id)identifiers fromUniversalDate:(id)date toUniversalDate:(id)universalDate contactsService:(id)service
 {
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  universalDateCopy = universalDate;
   v12 = MEMORY[0x277CC5A40];
-  v13 = a6;
-  v14 = a3;
+  serviceCopy = service;
+  identifiersCopy = identifiers;
   v15 = objc_alloc_init(v12);
-  v16 = [v13 contactsForIdentifiers:v14];
+  v16 = [serviceCopy contactsForIdentifiers:identifiersCopy];
 
   if ([v16 count])
   {
     v17 = [objc_opt_class() relevantCalendars:v15];
     v18 = [MEMORY[0x277CBEB58] set];
-    v19 = [v16 allObjects];
-    v20 = [v15 predicateForEventsWithStartDate:v10 endDate:v11 calendars:v17 matchingContacts:v19];
+    allObjects = [v16 allObjects];
+    v20 = [v15 predicateForEventsWithStartDate:dateCopy endDate:universalDateCopy calendars:v17 matchingContacts:allObjects];
 
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
@@ -143,25 +143,25 @@ void __123__CLSSocialServiceCalendar_workCalendarEventsMatchingContactIdentifier
   objc_autoreleasePoolPop(v3);
 }
 
-- (id)eventsForClueCollection:(id)a3
+- (id)eventsForClueCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [v4 universalStartDate];
-  v6 = [v4 universalEndDate];
-  v7 = v6;
+  collectionCopy = collection;
+  universalStartDate = [collectionCopy universalStartDate];
+  universalEndDate = [collectionCopy universalEndDate];
+  v7 = universalEndDate;
   v8 = 0;
-  if (v5 && v6)
+  if (universalStartDate && universalEndDate)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __52__CLSSocialServiceCalendar_eventsForClueCollection___block_invoke;
     v13[3] = &unk_2788A6D98;
     v13[4] = self;
-    v14 = v4;
-    v10 = v9;
+    v14 = collectionCopy;
+    v10 = array;
     v15 = v10;
-    [(CLSSocialServiceCalendar *)self _enumerateEventsFromDate:v5 toDate:v7 fetchIfNeeded:1 usingBlock:v13];
+    [(CLSSocialServiceCalendar *)self _enumerateEventsFromDate:universalStartDate toDate:v7 fetchIfNeeded:1 usingBlock:v13];
     v11 = v15;
     v8 = v10;
   }
@@ -179,14 +179,14 @@ void __52__CLSSocialServiceCalendar_eventsForClueCollection___block_invoke(uint6
   }
 }
 
-- (void)_enumerateEventsFromDate:(id)a3 toDate:(id)a4 fetchIfNeeded:(BOOL)a5 usingBlock:(id)a6
+- (void)_enumerateEventsFromDate:(id)date toDate:(id)toDate fetchIfNeeded:(BOOL)needed usingBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (v11)
+  dateCopy = date;
+  toDateCopy = toDate;
+  blockCopy = block;
+  if (blockCopy)
   {
-    if ([(CLSSocialServiceCalendar *)self _hasAlreadyPrefetchedEventsFromUniversalDate:v9 toUniversalDate:v10])
+    if ([(CLSSocialServiceCalendar *)self _hasAlreadyPrefetchedEventsFromUniversalDate:dateCopy toUniversalDate:toDateCopy])
     {
       calendarEventsCache = self->_calendarEventsCache;
       v16[0] = MEMORY[0x277D85DD0];
@@ -194,8 +194,8 @@ void __52__CLSSocialServiceCalendar_eventsForClueCollection___block_invoke(uint6
       v16[2] = __85__CLSSocialServiceCalendar__enumerateEventsFromDate_toDate_fetchIfNeeded_usingBlock___block_invoke;
       v16[3] = &unk_2788A6D48;
       v13 = &v17;
-      v17 = v11;
-      [(CLSCalendarEventsCache *)calendarEventsCache enumerateEventsFromStartDate:v9 toEndDate:v10 usingBlock:v16];
+      v17 = blockCopy;
+      [(CLSCalendarEventsCache *)calendarEventsCache enumerateEventsFromStartDate:dateCopy toEndDate:toDateCopy usingBlock:v16];
     }
 
     else
@@ -205,8 +205,8 @@ void __52__CLSSocialServiceCalendar_eventsForClueCollection___block_invoke(uint6
       v14[2] = __85__CLSSocialServiceCalendar__enumerateEventsFromDate_toDate_fetchIfNeeded_usingBlock___block_invoke_2;
       v14[3] = &unk_2788A6D70;
       v13 = &v15;
-      v15 = v11;
-      [(CLSSocialServiceCalendar *)self prefetchEventsFromUniversalDate:v9 toUniversalDate:v10 forAssetCollectionsSortedByStartDate:0 usingBlock:v14];
+      v15 = blockCopy;
+      [(CLSSocialServiceCalendar *)self prefetchEventsFromUniversalDate:dateCopy toUniversalDate:toDateCopy forAssetCollectionsSortedByStartDate:0 usingBlock:v14];
     }
   }
 }
@@ -228,14 +228,14 @@ void __85__CLSSocialServiceCalendar__enumerateEventsFromDate_toDate_fetchIfNeede
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)prefetchEventsFromUniversalDate:(id)a3 toUniversalDate:(id)a4 forAssetCollectionsSortedByStartDate:(id)a5 usingBlock:(id)a6
+- (void)prefetchEventsFromUniversalDate:(id)date toUniversalDate:(id)universalDate forAssetCollectionsSortedByStartDate:(id)startDate usingBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dateCopy = date;
+  universalDateCopy = universalDate;
+  startDateCopy = startDate;
+  blockCopy = block;
   context = objc_autoreleasePoolPush();
-  v14 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v10 endDate:v11];
+  v14 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:dateCopy endDate:universalDateCopy];
   v15 = self->_prefetchedDateIntervals;
   objc_sync_enter(v15);
   [(NSMutableSet *)self->_prefetchedDateIntervals addObject:v14];
@@ -243,7 +243,7 @@ void __85__CLSSocialServiceCalendar__enumerateEventsFromDate_toDate_fetchIfNeede
 
   v16 = objc_alloc_init(MEMORY[0x277CC5A40]);
   v17 = [objc_opt_class() relevantCalendars:v16];
-  v18 = [v16 predicateForNonrecurringEventsWithStartDate:v10 endDate:v11 calendars:v17];
+  v18 = [v16 predicateForNonrecurringEventsWithStartDate:dateCopy endDate:universalDateCopy calendars:v17];
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -256,11 +256,11 @@ void __85__CLSSocialServiceCalendar__enumerateEventsFromDate_toDate_fetchIfNeede
   v22[1] = 3221225472;
   v22[2] = __124__CLSSocialServiceCalendar_prefetchEventsFromUniversalDate_toUniversalDate_forAssetCollectionsSortedByStartDate_usingBlock___block_invoke;
   v22[3] = &unk_2788A6D20;
-  v27 = v12 != 0;
+  v27 = startDateCopy != 0;
   v22[4] = self;
-  v19 = v12;
+  v19 = startDateCopy;
   v23 = v19;
-  v20 = v13;
+  v20 = blockCopy;
   v24 = v20;
   v25 = v28;
   v26 = &v29;
@@ -307,11 +307,11 @@ LABEL_8:
   }
 }
 
-- (BOOL)_hasAlreadyPrefetchedEventsFromUniversalDate:(id)a3 toUniversalDate:(id)a4
+- (BOOL)_hasAlreadyPrefetchedEventsFromUniversalDate:(id)date toUniversalDate:(id)universalDate
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  universalDateCopy = universalDate;
   v8 = self->_prefetchedDateIntervals;
   objc_sync_enter(v8);
   v15 = 0u;
@@ -333,7 +333,7 @@ LABEL_8:
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        if ([v13 containsDate:{v6, v15}] && (objc_msgSend(v13, "containsDate:", v7) & 1) != 0)
+        if ([v13 containsDate:{dateCopy, v15}] && (objc_msgSend(v13, "containsDate:", universalDateCopy) & 1) != 0)
         {
           LOBYTE(v10) = 1;
           goto LABEL_12;
@@ -356,22 +356,22 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)_sortedAssetCollections:(id)a3 containsEvent:(id)a4
+- (BOOL)_sortedAssetCollections:(id)collections containsEvent:(id)event
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 startDate];
-  v8 = [v5 endDate];
+  eventCopy = event;
+  collectionsCopy = collections;
+  startDate = [eventCopy startDate];
+  endDate = [eventCopy endDate];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __66__CLSSocialServiceCalendar__sortedAssetCollections_containsEvent___block_invoke;
   v13[3] = &unk_2788A6CF8;
-  v14 = v7;
-  v15 = v8;
-  v9 = v8;
-  v10 = v7;
-  v11 = [v6 indexOfObjectWithOptions:1 passingTest:v13];
+  v14 = startDate;
+  v15 = endDate;
+  v9 = endDate;
+  v10 = startDate;
+  v11 = [collectionsCopy indexOfObjectWithOptions:1 passingTest:v13];
 
   return v11 != 0x7FFFFFFFFFFFFFFFLL;
 }
@@ -414,24 +414,24 @@ BOOL __66__CLSSocialServiceCalendar__sortedAssetCollections_containsEvent___bloc
   MEMORY[0x2821F96F8]();
 }
 
-- (id)eventsForDates:(id)a3
+- (id)eventsForDates:(id)dates
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  datesCopy = dates;
+  v5 = datesCopy;
+  if (datesCopy && [datesCopy count])
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v7 = [v5 sortedArrayUsingSelector:sel_compare_];
-    v8 = [v7 firstObject];
-    v9 = [v7 lastObject];
+    firstObject = [v7 firstObject];
+    lastObject = [v7 lastObject];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __43__CLSSocialServiceCalendar_eventsForDates___block_invoke;
     v13[3] = &unk_2788A6C58;
-    v10 = v6;
+    v10 = array;
     v14 = v10;
-    v15 = self;
-    [(CLSSocialServiceCalendar *)self _enumerateEventsFromDate:v8 toDate:v9 fetchIfNeeded:1 usingBlock:v13];
+    selfCopy = self;
+    [(CLSSocialServiceCalendar *)self _enumerateEventsFromDate:firstObject toDate:lastObject fetchIfNeeded:1 usingBlock:v13];
 
     v11 = v10;
   }
@@ -454,33 +454,33 @@ void __43__CLSSocialServiceCalendar_eventsForDates___block_invoke(uint64_t a1, u
   }
 }
 
-- (id)eventFromProxyEvent:(id)a3
+- (id)eventFromProxyEvent:(id)event
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CLSSocialServiceCalendar *)self meContact];
+  eventCopy = event;
+  meContact = [(CLSSocialServiceCalendar *)self meContact];
   v6 = objc_alloc_init(CLSEvent);
-  v7 = [v4 title];
-  [(CLSEvent *)v6 setTitle:v7];
+  title = [eventCopy title];
+  [(CLSEvent *)v6 setTitle:title];
 
-  v8 = [v4 startDate];
-  [(CLSEvent *)v6 setStartDate:v8];
+  startDate = [eventCopy startDate];
+  [(CLSEvent *)v6 setStartDate:startDate];
 
-  v9 = [v4 endDate];
+  endDate = [eventCopy endDate];
   v52 = v6;
-  [(CLSEvent *)v6 setEndDate:v9];
+  [(CLSEvent *)v6 setEndDate:endDate];
 
-  v54 = [MEMORY[0x277CBEB18] array];
-  v10 = (v5 != 0) & ~[v4 hasAttendees];
+  array = [MEMORY[0x277CBEB18] array];
+  v10 = (meContact != 0) & ~[eventCopy hasAttendees];
   if (v10 == 1)
   {
-    v11 = [objc_alloc(MEMORY[0x277CBEB38]) initWithObjectsAndKeys:{v5, @"person", 0}];
-    v12 = [v5 emailAddresses];
-    v13 = [MEMORY[0x277CBDA78] stringFromContact:v5 style:0];
-    if ([v12 count])
+    v11 = [objc_alloc(MEMORY[0x277CBEB38]) initWithObjectsAndKeys:{meContact, @"person", 0}];
+    emailAddresses = [meContact emailAddresses];
+    v13 = [MEMORY[0x277CBDA78] stringFromContact:meContact style:0];
+    if ([emailAddresses count])
     {
-      v14 = [v12 anyObject];
-      [v11 setObject:v14 forKeyedSubscript:@"email"];
+      anyObject = [emailAddresses anyObject];
+      [v11 setObject:anyObject forKeyedSubscript:@"email"];
     }
 
     if (v13)
@@ -488,16 +488,16 @@ void __43__CLSSocialServiceCalendar_eventsForDates___block_invoke(uint64_t a1, u
       [v11 setObject:v13 forKeyedSubscript:@"name"];
     }
 
-    [v54 addObject:v11];
+    [array addObject:v11];
   }
 
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v53 = v4;
-  v15 = [v4 attendees];
-  v16 = [v15 countByEnumeratingWithState:&v61 objects:v66 count:16];
+  v53 = eventCopy;
+  attendees = [eventCopy attendees];
+  v16 = [attendees countByEnumeratingWithState:&v61 objects:v66 count:16];
   if (v16)
   {
     v17 = v16;
@@ -508,30 +508,30 @@ void __43__CLSSocialServiceCalendar_eventsForDates___block_invoke(uint64_t a1, u
       {
         if (*v62 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(attendees);
         }
 
         v20 = *(*(&v61 + 1) + 8 * i);
         if ([v20 participantStatus] == 2)
         {
-          v21 = [MEMORY[0x277CBEB38] dictionary];
-          v22 = [v20 emailAddress];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          emailAddress = [v20 emailAddress];
 
-          if (v22)
+          if (emailAddress)
           {
-            v23 = [v20 emailAddress];
-            [v21 setObject:v23 forKeyedSubscript:@"email"];
+            emailAddress2 = [v20 emailAddress];
+            [dictionary setObject:emailAddress2 forKeyedSubscript:@"email"];
           }
 
-          v24 = [v20 name];
+          name = [v20 name];
 
-          if (v24)
+          if (name)
           {
-            v25 = [v20 name];
-            [v21 setObject:v25 forKeyedSubscript:@"name"];
+            name2 = [v20 name];
+            [dictionary setObject:name2 forKeyedSubscript:@"name"];
           }
 
-          if ([v20 isCurrentUser] && v5)
+          if ([v20 isCurrentUser] && meContact)
           {
             if (v10)
             {
@@ -541,33 +541,33 @@ LABEL_24:
               continue;
             }
 
-            [v21 setObject:v5 forKeyedSubscript:@"person"];
+            [dictionary setObject:meContact forKeyedSubscript:@"person"];
             LOBYTE(v10) = 1;
           }
 
-          v26 = [v21 allKeys];
-          v27 = [v26 count];
+          allKeys = [dictionary allKeys];
+          v27 = [allKeys count];
 
           if (v27)
           {
-            [v54 addObject:v21];
+            [array addObject:dictionary];
           }
 
           goto LABEL_24;
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v61 objects:v66 count:16];
+      v17 = [attendees countByEnumeratingWithState:&v61 objects:v66 count:16];
     }
 
     while (v17);
   }
 
   v28 = v53;
-  v29 = [v53 calendar];
-  v30 = [v29 hasSharees];
+  calendar = [v53 calendar];
+  hasSharees = [calendar hasSharees];
 
-  if (!v30)
+  if (!hasSharees)
   {
     goto LABEL_47;
   }
@@ -576,10 +576,10 @@ LABEL_24:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v31 = [v53 calendar];
-  v32 = [v31 shareesAndOwner];
+  calendar2 = [v53 calendar];
+  shareesAndOwner = [calendar2 shareesAndOwner];
 
-  v33 = [v32 countByEnumeratingWithState:&v57 objects:v65 count:16];
+  v33 = [shareesAndOwner countByEnumeratingWithState:&v57 objects:v65 count:16];
   if (!v33)
   {
     goto LABEL_46;
@@ -593,56 +593,56 @@ LABEL_24:
     {
       if (*v58 != v35)
       {
-        objc_enumerationMutation(v32);
+        objc_enumerationMutation(shareesAndOwner);
       }
 
       v37 = *(*(&v57 + 1) + 8 * j);
-      v38 = [MEMORY[0x277CBEB38] dictionary];
-      v39 = [v37 emailAddress];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      emailAddress3 = [v37 emailAddress];
 
-      if (v39)
+      if (emailAddress3)
       {
-        v40 = [v37 emailAddress];
-        [v38 setObject:v40 forKeyedSubscript:@"email"];
+        emailAddress4 = [v37 emailAddress];
+        [dictionary2 setObject:emailAddress4 forKeyedSubscript:@"email"];
       }
 
-      v41 = [v37 name];
+      name3 = [v37 name];
 
-      if (v41)
+      if (name3)
       {
-        v42 = [v37 name];
-        [v38 setObject:v42 forKeyedSubscript:@"name"];
+        name4 = [v37 name];
+        [dictionary2 setObject:name4 forKeyedSubscript:@"name"];
       }
 
       if (([v37 isCurrentUserForScheduling] & 1) != 0 || objc_msgSend(v37, "isCurrentUserForSharing"))
       {
-        if (v10 & 1 | (v5 == 0))
+        if (v10 & 1 | (meContact == 0))
         {
           goto LABEL_44;
         }
 
-        [v38 setObject:v5 forKeyedSubscript:@"person"];
+        [dictionary2 setObject:meContact forKeyedSubscript:@"person"];
         LOBYTE(v10) = 1;
       }
 
       else
       {
-        v43 = [v37 name];
-        [v38 setObject:v43 forKeyedSubscript:@"person"];
+        name5 = [v37 name];
+        [dictionary2 setObject:name5 forKeyedSubscript:@"person"];
       }
 
-      v44 = [v38 allKeys];
-      v45 = [v44 count];
+      allKeys2 = [dictionary2 allKeys];
+      v45 = [allKeys2 count];
 
       if (v45)
       {
-        [v54 addObject:v38];
+        [array addObject:dictionary2];
       }
 
 LABEL_44:
     }
 
-    v34 = [v32 countByEnumeratingWithState:&v57 objects:v65 count:16];
+    v34 = [shareesAndOwner countByEnumeratingWithState:&v57 objects:v65 count:16];
   }
 
   while (v34);
@@ -650,28 +650,28 @@ LABEL_46:
 
   v28 = v53;
 LABEL_47:
-  [(CLSEvent *)v52 setAttendees:v54];
-  v46 = [v28 geoLocation];
-  if (v46)
+  [(CLSEvent *)v52 setAttendees:array];
+  geoLocation = [v28 geoLocation];
+  if (geoLocation)
   {
-    [(CLSEvent *)v52 setLocation:v46];
+    [(CLSEvent *)v52 setLocation:geoLocation];
   }
 
-  v47 = [v28 attendees];
+  attendees2 = [v28 attendees];
   v55[0] = MEMORY[0x277D85DD0];
   v55[1] = 3221225472;
   v55[2] = __48__CLSSocialServiceCalendar_eventFromProxyEvent___block_invoke;
   v55[3] = &unk_2788A6C30;
   v48 = v52;
   v56 = v48;
-  [v47 enumerateObjectsUsingBlock:v55];
+  [attendees2 enumerateObjectsUsingBlock:v55];
 
   -[CLSEvent setOrganizedByMe:](v48, "setOrganizedByMe:", [v28 organizedByMe]);
-  v49 = [v28 selfAttendee];
-  if (v49)
+  selfAttendee = [v28 selfAttendee];
+  if (selfAttendee)
   {
-    v50 = [v28 selfAttendee];
-    -[CLSEvent setAccepted:](v48, "setAccepted:", [v50 participantStatus] == 2);
+    selfAttendee2 = [v28 selfAttendee];
+    -[CLSEvent setAccepted:](v48, "setAccepted:", [selfAttendee2 participantStatus] == 2);
   }
 
   else
@@ -694,26 +694,26 @@ uint64_t __48__CLSSocialServiceCalendar_eventFromProxyEvent___block_invoke(uint6
   return result;
 }
 
-- (id)_fullNameWithContact:(id)a3
+- (id)_fullNameWithContact:(id)contact
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contactCopy = contact;
   v4 = [MEMORY[0x277CBDA78] descriptorForRequiredKeysForStyle:0];
   v12[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  v6 = [v3 areKeysAvailable:v5];
+  v6 = [contactCopy areKeysAvailable:v5];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CBDA78] stringFromContact:v3 style:0];
+    v7 = [MEMORY[0x277CBDA78] stringFromContact:contactCopy style:0];
   }
 
   else
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [v3 givenName];
-    v10 = [v3 familyName];
-    v7 = [v8 stringWithFormat:@"%@ %@", v9, v10];
+    givenName = [contactCopy givenName];
+    familyName = [contactCopy familyName];
+    v7 = [v8 stringWithFormat:@"%@ %@", givenName, familyName];
   }
 
   return v7;
@@ -775,12 +775,12 @@ uint64_t __48__CLSSocialServiceCalendar_eventFromProxyEvent___block_invoke(uint6
   return v2;
 }
 
-+ (BOOL)eventAtLocation:(id)a3 withAttendeeNames:(id)a4 matchesClueCollection:(id)a5
++ (BOOL)eventAtLocation:(id)location withAttendeeNames:(id)names matchesClueCollection:(id)collection
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  locationCopy = location;
+  namesCopy = names;
+  collectionCopy = collection;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -789,11 +789,11 @@ uint64_t __48__CLSSocialServiceCalendar_eventFromProxyEvent___block_invoke(uint6
   v31[1] = 3221225472;
   v31[2] = __84__CLSSocialServiceCalendar_eventAtLocation_withAttendeeNames_matchesClueCollection___block_invoke;
   v31[3] = &unk_2788A6CD0;
-  v10 = v8;
+  v10 = namesCopy;
   v32 = v10;
   v33 = &v34;
-  [v9 enumeratePeopleClues:v31];
-  if (!v7)
+  [collectionCopy enumeratePeopleClues:v31];
+  if (!locationCopy)
   {
     v23 = 0;
 LABEL_14:
@@ -801,13 +801,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v11 = [v9 locations];
-  v26 = [v11 count];
+  locations = [collectionCopy locations];
+  v26 = [locations count];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = v11;
+  v12 = locations;
   v13 = [v12 countByEnumeratingWithState:&v27 objects:v38 count:16];
   if (v13)
   {
@@ -822,7 +822,7 @@ LABEL_14:
         }
 
         v16 = *(*(&v27 + 1) + 8 * i);
-        [v7 coordinate];
+        [locationCopy coordinate];
         v18 = v17;
         v20 = v19;
         [v16 coordinate];
@@ -905,83 +905,83 @@ void __84__CLSSocialServiceCalendar_eventAtLocation_withAttendeeNames_matchesClu
   }
 }
 
-+ (BOOL)shouldKeepEvent:(id)a3 withClueCollection:(id)a4
++ (BOOL)shouldKeepEvent:(id)event withClueCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 selfAttendee];
-  if (v8)
+  eventCopy = event;
+  collectionCopy = collection;
+  selfAttendee = [eventCopy selfAttendee];
+  if (selfAttendee)
   {
-    v9 = v8;
-    v10 = [v6 selfAttendee];
-    if ([v10 participantStatus] == 2)
+    v9 = selfAttendee;
+    selfAttendee2 = [eventCopy selfAttendee];
+    if ([selfAttendee2 participantStatus] == 2)
     {
-      v11 = 1;
+      organizedByMe = 1;
     }
 
     else
     {
-      v11 = [v6 organizedByMe];
+      organizedByMe = [eventCopy organizedByMe];
     }
   }
 
   else
   {
-    v11 = 1;
+    organizedByMe = 1;
   }
 
-  LODWORD(v12) = v11 & ([a1 _isEventInMeetingRoom:v6] ^ 1);
-  if (v7 && v12)
+  LODWORD(attendees) = organizedByMe & ([self _isEventInMeetingRoom:eventCopy] ^ 1);
+  if (collectionCopy && attendees)
   {
-    v12 = [v6 attendees];
-    v13 = [v12 valueForKey:@"name"];
+    attendees = [eventCopy attendees];
+    v13 = [attendees valueForKey:@"name"];
 
     v14 = objc_opt_class();
-    v15 = [v6 geoLocation];
-    LOBYTE(v12) = [v14 eventAtLocation:v15 withAttendeeNames:v13 matchesClueCollection:v7];
+    geoLocation = [eventCopy geoLocation];
+    LOBYTE(attendees) = [v14 eventAtLocation:geoLocation withAttendeeNames:v13 matchesClueCollection:collectionCopy];
   }
 
-  v16 = [v6 isSuggestedAndAccepted];
-  v17 = [v6 isBirthday];
-  v18 = [v6 endDate];
-  [v18 timeIntervalSinceReferenceDate];
+  isSuggestedAndAccepted = [eventCopy isSuggestedAndAccepted];
+  isBirthday = [eventCopy isBirthday];
+  endDate = [eventCopy endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v20 = v19;
-  v21 = [v6 startDate];
-  [v21 timeIntervalSinceReferenceDate];
+  startDate = [eventCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v23 = v22;
 
-  if (([v6 hasRecurrenceRules] & 1) != 0 || objc_msgSend(v6, "isAllDay", v20 - v23))
+  if (([eventCopy hasRecurrenceRules] & 1) != 0 || objc_msgSend(eventCopy, "isAllDay", v20 - v23))
   {
     v24 = 0;
   }
 
   else
   {
-    v24 = (v20 - v23 <= 21600.0) & (v17 ^ 1) & (v16 | v12);
+    v24 = (v20 - v23 <= 21600.0) & (isBirthday ^ 1) & (isSuggestedAndAccepted | attendees);
   }
 
   return v24;
 }
 
-+ (BOOL)_isEventInMeetingRoom:(id)a3
++ (BOOL)_isEventInMeetingRoom:(id)room
 {
-  v3 = a3;
+  roomCopy = room;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [v3 attendees];
+  attendees = [roomCopy attendees];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__CLSSocialServiceCalendar__isEventInMeetingRoom___block_invoke;
   v6[3] = &unk_2788A6C80;
   v6[4] = &v7;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [attendees enumerateObjectsUsingBlock:v6];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(attendees) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return attendees;
 }
 
 uint64_t __50__CLSSocialServiceCalendar__isEventInMeetingRoom___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -996,11 +996,11 @@ uint64_t __50__CLSSocialServiceCalendar__isEventInMeetingRoom___block_invoke(uin
   return result;
 }
 
-+ (id)relevantCalendars:(id)a3
++ (id)relevantCalendars:(id)calendars
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [a3 calendarsForEntityType:0];
-  v5 = [MEMORY[0x277CBEB18] array];
+  v4 = [calendars calendarsForEntityType:0];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1021,9 +1021,9 @@ uint64_t __50__CLSSocialServiceCalendar__isEventInMeetingRoom___block_invoke(uin
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([a1 _isCalendarRelevant:{v11, v13}])
+        if ([self _isCalendarRelevant:{v11, v13}])
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -1033,13 +1033,13 @@ uint64_t __50__CLSSocialServiceCalendar__isEventInMeetingRoom___block_invoke(uin
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-+ (BOOL)_isCalendarRelevant:(id)a3
++ (BOOL)_isCalendarRelevant:(id)relevant
 {
-  v3 = a3;
-  v4 = ([v3 isFacebookBirthdayCalendar] & 1) == 0 && (objc_msgSend(v3, "isSubscribed") & 1) == 0 && (objc_msgSend(v3, "isSubscribedHolidayCalendar") & 1) == 0 && objc_msgSend(v3, "type") != 4;
+  relevantCopy = relevant;
+  v4 = ([relevantCopy isFacebookBirthdayCalendar] & 1) == 0 && (objc_msgSend(relevantCopy, "isSubscribed") & 1) == 0 && (objc_msgSend(relevantCopy, "isSubscribedHolidayCalendar") & 1) == 0 && objc_msgSend(relevantCopy, "type") != 4;
 
   return v4;
 }

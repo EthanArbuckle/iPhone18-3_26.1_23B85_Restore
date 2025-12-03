@@ -5,21 +5,21 @@
 - (BOOL)bootstrap;
 - (BOOL)hasNext;
 - (BOOL)rewind;
-- (MIBUFilePacketProvider)initWithPayloadSize:(unint64_t)a3 inputFile:(id)a4;
-- (id)_encodePacketWithPayload:(id)a3 packetCount:(unint64_t)a4 packetUID:(unint64_t)a5;
+- (MIBUFilePacketProvider)initWithPayloadSize:(unint64_t)size inputFile:(id)file;
+- (id)_encodePacketWithPayload:(id)payload packetCount:(unint64_t)count packetUID:(unint64_t)d;
 - (void)_closeIOChannel;
 - (void)_openIOChannel;
-- (void)_readIOChannelOfPacketCount:(unint64_t)a3 withCompletion:(id)a4 inQueue:(id)a5;
+- (void)_readIOChannelOfPacketCount:(unint64_t)count withCompletion:(id)completion inQueue:(id)queue;
 - (void)invalidate;
-- (void)providePacketsOfCount:(unint64_t)a3 withCompletion:(id)a4 inQueue:(id)a5;
+- (void)providePacketsOfCount:(unint64_t)count withCompletion:(id)completion inQueue:(id)queue;
 @end
 
 @implementation MIBUFilePacketProvider
 
-- (MIBUFilePacketProvider)initWithPayloadSize:(unint64_t)a3 inputFile:(id)a4
+- (MIBUFilePacketProvider)initWithPayloadSize:(unint64_t)size inputFile:(id)file
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  fileCopy = file;
   v15.receiver = self;
   v15.super_class = MIBUFilePacketProvider;
   v8 = [(MIBUFilePacketProvider *)&v15 init];
@@ -34,9 +34,9 @@
     if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v17 = a3;
+      sizeCopy = size;
       v18 = 2114;
-      v19 = v7;
+      v19 = fileCopy;
       _os_log_impl(&dword_259B04000, v9, OS_LOG_TYPE_DEFAULT, "Initialize packet provider with payload size: %lu input file: %{public}@", buf, 0x16u);
     }
 
@@ -45,8 +45,8 @@
     queue = v8->_queue;
     v8->_queue = v11;
 
-    v8->_payloadSize = a3;
-    objc_storeStrong(&v8->_inputFile, a4);
+    v8->_payloadSize = size;
+    objc_storeStrong(&v8->_inputFile, file);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -95,21 +95,21 @@ uint64_t __35__MIBUFilePacketProvider_bootstrap__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)providePacketsOfCount:(unint64_t)a3 withCompletion:(id)a4 inQueue:(id)a5
+- (void)providePacketsOfCount:(unint64_t)count withCompletion:(id)completion inQueue:(id)queue
 {
-  v8 = a4;
-  v9 = a5;
+  completionCopy = completion;
+  queueCopy = queue;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __71__MIBUFilePacketProvider_providePacketsOfCount_withCompletion_inQueue___block_invoke;
   v13[3] = &unk_2798EBB18;
-  v15 = v8;
-  v16 = a3;
+  v15 = completionCopy;
+  countCopy = count;
   v13[4] = self;
-  v14 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = queueCopy;
+  v11 = queueCopy;
+  v12 = completionCopy;
   dispatch_async(queue, v13);
 }
 
@@ -196,7 +196,7 @@ uint64_t __32__MIBUFilePacketProvider_rewind__block_invoke(uint64_t a1)
 
   if (!self->_fileChannel)
   {
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v10 = dispatch_io_create_with_path(0, [(NSString *)self->_inputFile fileSystemRepresentation], 0, 0, self->_queue, &__block_literal_global_12_0);
     fileChannel = self->_fileChannel;
     self->_fileChannel = v10;
@@ -210,11 +210,11 @@ uint64_t __32__MIBUFilePacketProvider_rewind__block_invoke(uint64_t a1)
 
     v12 = self->_inputFile;
     v21 = 0;
-    v13 = [v9 attributesOfItemAtPath:v12 error:&v21];
+    v13 = [defaultManager attributesOfItemAtPath:v12 error:&v21];
     v14 = v21;
-    v15 = [v13 fileSize];
+    fileSize = [v13 fileSize];
 
-    if (!v15)
+    if (!fileSize)
     {
       [(MIBUFilePacketProvider *)v14 _openIOChannel];
       v6 = 0;
@@ -222,8 +222,8 @@ uint64_t __32__MIBUFilePacketProvider_rewind__block_invoke(uint64_t a1)
     }
 
     payloadSize = self->_payloadSize;
-    v17 = v15 / payloadSize;
-    if (v15 % payloadSize)
+    v17 = fileSize / payloadSize;
+    if (fileSize % payloadSize)
     {
       ++v17;
     }
@@ -258,7 +258,7 @@ LABEL_19:
 
     packetCount = self->_packetCount;
     *buf = 134218752;
-    v23 = v15;
+    v23 = fileSize;
     v24 = 2048;
     v25 = payloadSize + 16;
     v26 = 2048;
@@ -546,10 +546,10 @@ void __41__MIBUFilePacketProvider__closeIOChannel__block_invoke_29()
   return fileChannel & 1;
 }
 
-- (void)_readIOChannelOfPacketCount:(unint64_t)a3 withCompletion:(id)a4 inQueue:(id)a5
+- (void)_readIOChannelOfPacketCount:(unint64_t)count withCompletion:(id)completion inQueue:(id)queue
 {
-  v8 = a4;
-  v9 = a5;
+  completionCopy = completion;
+  queueCopy = queue;
   dispatch_assert_queue_V2(self->_queue);
   packetCount = self->_packetCount;
   if (self->_packetID >= packetCount)
@@ -558,9 +558,9 @@ void __41__MIBUFilePacketProvider__closeIOChannel__block_invoke_29()
     block[1] = 3221225472;
     block[2] = __77__MIBUFilePacketProvider__readIOChannelOfPacketCount_withCompletion_inQueue___block_invoke;
     block[3] = &unk_2798EBD68;
-    v27 = v8;
-    v14 = v8;
-    dispatch_async(v9, block);
+    v27 = completionCopy;
+    v14 = completionCopy;
+    dispatch_async(queueCopy, block);
     v15 = v27;
   }
 
@@ -579,15 +579,15 @@ void __41__MIBUFilePacketProvider__closeIOChannel__block_invoke_29()
     v16[1] = 3221225472;
     v16[2] = __77__MIBUFilePacketProvider__readIOChannelOfPacketCount_withCompletion_inQueue___block_invoke_32;
     v16[3] = &unk_2798EBDB8;
-    v21 = payloadSize * a3;
-    v17 = v9;
-    v18 = self;
-    v19 = v8;
+    v21 = payloadSize * count;
+    v17 = queueCopy;
+    selfCopy = self;
+    v19 = completionCopy;
     v20 = v24;
     v22 = payloadSize;
     v23 = packetCount;
-    v14 = v8;
-    dispatch_io_read(fileChannel, 0, payloadSize * a3, queue, v16);
+    v14 = completionCopy;
+    dispatch_io_read(fileChannel, 0, payloadSize * count, queue, v16);
 
     _Block_object_dispose(v24, 8);
     v15 = v25;
@@ -742,19 +742,19 @@ void __77__MIBUFilePacketProvider__readIOChannelOfPacketCount_withCompletion_inQ
   (*(v1 + 16))(v1, 1, 0, v2);
 }
 
-- (id)_encodePacketWithPayload:(id)a3 packetCount:(unint64_t)a4 packetUID:(unint64_t)a5
+- (id)_encodePacketWithPayload:(id)payload packetCount:(unint64_t)count packetUID:(unint64_t)d
 {
-  v7 = a3;
+  payloadCopy = payload;
   v8 = malloc_type_calloc(2uLL, 8uLL, 0x100004000313F17uLL);
   if (v8)
   {
-    *v8 = a4;
-    v8[1] = a5;
+    *v8 = count;
+    v8[1] = d;
     v9 = dispatch_data_create(v8, 0x10uLL, 0, *MEMORY[0x277D85CB0]);
     v10 = v9;
     if (v9)
     {
-      concat = dispatch_data_create_concat(v9, v7);
+      concat = dispatch_data_create_concat(v9, payloadCopy);
     }
 
     else
@@ -839,7 +839,7 @@ void __73__MIBUFilePacketProvider__encodePacketWithPayload_packetCount_packetUID
     _os_log_error_impl(&dword_259B04000, v2, OS_LOG_TYPE_ERROR, "Failed to open IO channel.", v3, 2u);
   }
 
-  *a1 = 0;
+  *self = 0;
 }
 
 void __40__MIBUFilePacketProvider__openIOChannel__block_invoke_9_cold_2(int a1, NSObject *a2)

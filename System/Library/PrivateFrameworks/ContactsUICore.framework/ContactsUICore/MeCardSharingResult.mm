@@ -1,23 +1,23 @@
 @interface MeCardSharingResult
 - (_TtC14ContactsUICore19MeCardSharingResult)init;
-- (void)setContactImage:(id)a3;
-- (void)setWallpaper:(id)a3;
+- (void)setContactImage:(id)image;
+- (void)setWallpaper:(id)wallpaper;
 @end
 
 @implementation MeCardSharingResult
 
-- (void)setContactImage:(id)a3
+- (void)setContactImage:(id)image
 {
   v4 = *(self + OBJC_IVAR____TtC14ContactsUICore19MeCardSharingResult_contactImage);
-  *(self + OBJC_IVAR____TtC14ContactsUICore19MeCardSharingResult_contactImage) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC14ContactsUICore19MeCardSharingResult_contactImage) = image;
+  imageCopy = image;
 }
 
-- (void)setWallpaper:(id)a3
+- (void)setWallpaper:(id)wallpaper
 {
   v4 = *(self + OBJC_IVAR____TtC14ContactsUICore19MeCardSharingResult_wallpaper);
-  *(self + OBJC_IVAR____TtC14ContactsUICore19MeCardSharingResult_wallpaper) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC14ContactsUICore19MeCardSharingResult_wallpaper) = wallpaper;
+  wallpaperCopy = wallpaper;
 }
 
 - (_TtC14ContactsUICore19MeCardSharingResult)init

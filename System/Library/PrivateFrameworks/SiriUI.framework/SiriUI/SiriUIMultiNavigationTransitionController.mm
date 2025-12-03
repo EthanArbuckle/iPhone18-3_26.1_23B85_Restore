@@ -1,27 +1,27 @@
 @interface SiriUIMultiNavigationTransitionController
 - (NSArray)additionalCoordinationControllers;
-- (SiriUIMultiNavigationTransitionController)initWithPrimaryTransitionController:(id)a3;
+- (SiriUIMultiNavigationTransitionController)initWithPrimaryTransitionController:(id)controller;
 - (UINavigationController)_navigationController;
 - (UIViewControllerAnimatedTransitioning)animationController;
-- (id)interactionControllerForAnimationController:(id)a3;
-- (void)addAdditionalCoordinationController:(id)a3;
-- (void)configureWithNavigationController:(id)a3;
-- (void)coordinateAdditionalTransitionsWithTransitionCoordinator:(id)a3;
-- (void)setOperation:(int64_t)a3;
+- (id)interactionControllerForAnimationController:(id)controller;
+- (void)addAdditionalCoordinationController:(id)controller;
+- (void)configureWithNavigationController:(id)controller;
+- (void)coordinateAdditionalTransitionsWithTransitionCoordinator:(id)coordinator;
+- (void)setOperation:(int64_t)operation;
 @end
 
 @implementation SiriUIMultiNavigationTransitionController
 
-- (SiriUIMultiNavigationTransitionController)initWithPrimaryTransitionController:(id)a3
+- (SiriUIMultiNavigationTransitionController)initWithPrimaryTransitionController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = SiriUIMultiNavigationTransitionController;
   v6 = [(SiriUIMultiNavigationTransitionController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_primaryTransitionController, a3);
+    objc_storeStrong(&v6->_primaryTransitionController, controller);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     mutableAdditionalCoordinationControllers = v7->_mutableAdditionalCoordinationControllers;
     v7->_mutableAdditionalCoordinationControllers = v8;
@@ -32,47 +32,47 @@
 
 - (NSArray)additionalCoordinationControllers
 {
-  v2 = [(SiriUIMultiNavigationTransitionController *)self _mutableAdditionalCoordinationControllers];
-  v3 = [v2 copy];
+  _mutableAdditionalCoordinationControllers = [(SiriUIMultiNavigationTransitionController *)self _mutableAdditionalCoordinationControllers];
+  v3 = [_mutableAdditionalCoordinationControllers copy];
 
   return v3;
 }
 
-- (void)addAdditionalCoordinationController:(id)a3
+- (void)addAdditionalCoordinationController:(id)controller
 {
-  v6 = a3;
+  controllerCopy = controller;
   [(NSMutableArray *)self->_mutableAdditionalCoordinationControllers addObject:?];
-  v4 = [(SiriUIMultiNavigationTransitionController *)self _navigationController];
-  if (v4)
+  _navigationController = [(SiriUIMultiNavigationTransitionController *)self _navigationController];
+  if (_navigationController)
   {
-    [v6 configureWithNavigationController:v4];
+    [controllerCopy configureWithNavigationController:_navigationController];
   }
 
-  v5 = [(SiriUIMultiNavigationTransitionController *)self operation];
+  operation = [(SiriUIMultiNavigationTransitionController *)self operation];
   if (objc_opt_respondsToSelector())
   {
-    [v6 setOperation:v5];
+    [controllerCopy setOperation:operation];
   }
 }
 
-- (void)setOperation:(int64_t)a3
+- (void)setOperation:(int64_t)operation
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (self->_operation != a3)
+  if (self->_operation != operation)
   {
-    self->_operation = a3;
-    v5 = [(SiriUIMultiNavigationTransitionController *)self primaryTransitionController];
+    self->_operation = operation;
+    primaryTransitionController = [(SiriUIMultiNavigationTransitionController *)self primaryTransitionController];
     if (objc_opt_respondsToSelector())
     {
-      [v5 setOperation:a3];
+      [primaryTransitionController setOperation:operation];
     }
 
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(SiriUIMultiNavigationTransitionController *)self additionalCoordinationControllers];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    additionalCoordinationControllers = [(SiriUIMultiNavigationTransitionController *)self additionalCoordinationControllers];
+    v7 = [additionalCoordinationControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -84,20 +84,20 @@
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(additionalCoordinationControllers);
           }
 
           v11 = *(*(&v12 + 1) + 8 * v10);
           if (objc_opt_respondsToSelector())
           {
-            [v11 setOperation:a3];
+            [v11 setOperation:operation];
           }
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [additionalCoordinationControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -105,22 +105,22 @@
   }
 }
 
-- (void)configureWithNavigationController:(id)a3
+- (void)configureWithNavigationController:(id)controller
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SiriUIMultiNavigationTransitionController *)self primaryTransitionController];
+  controllerCopy = controller;
+  primaryTransitionController = [(SiriUIMultiNavigationTransitionController *)self primaryTransitionController];
   if (objc_opt_respondsToSelector())
   {
-    [v5 configureWithNavigationController:v4];
+    [primaryTransitionController configureWithNavigationController:controllerCopy];
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(SiriUIMultiNavigationTransitionController *)self additionalCoordinationControllers];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  additionalCoordinationControllers = [(SiriUIMultiNavigationTransitionController *)self additionalCoordinationControllers];
+  v7 = [additionalCoordinationControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -132,51 +132,51 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(additionalCoordinationControllers);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 configureWithNavigationController:v4];
+          [v11 configureWithNavigationController:controllerCopy];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [additionalCoordinationControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 
-  [(SiriUIMultiNavigationTransitionController *)self _setNavigationController:v4];
+  [(SiriUIMultiNavigationTransitionController *)self _setNavigationController:controllerCopy];
 }
 
 - (UIViewControllerAnimatedTransitioning)animationController
 {
-  v2 = [(SiriUIMultiNavigationTransitionController *)self primaryTransitionController];
+  primaryTransitionController = [(SiriUIMultiNavigationTransitionController *)self primaryTransitionController];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 animationController];
+    animationController = [primaryTransitionController animationController];
   }
 
   else
   {
-    v3 = 0;
+    animationController = 0;
   }
 
-  return v3;
+  return animationController;
 }
 
-- (id)interactionControllerForAnimationController:(id)a3
+- (id)interactionControllerForAnimationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SiriUIMultiNavigationTransitionController *)self primaryTransitionController];
+  controllerCopy = controller;
+  primaryTransitionController = [(SiriUIMultiNavigationTransitionController *)self primaryTransitionController];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 interactionControllerForAnimationController:v4];
+    v6 = [primaryTransitionController interactionControllerForAnimationController:controllerCopy];
   }
 
   else
@@ -187,22 +187,22 @@
   return v6;
 }
 
-- (void)coordinateAdditionalTransitionsWithTransitionCoordinator:(id)a3
+- (void)coordinateAdditionalTransitionsWithTransitionCoordinator:(id)coordinator
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SiriUIMultiNavigationTransitionController *)self primaryTransitionController];
+  coordinatorCopy = coordinator;
+  primaryTransitionController = [(SiriUIMultiNavigationTransitionController *)self primaryTransitionController];
   if (objc_opt_respondsToSelector())
   {
-    [v5 coordinateAdditionalTransitionsWithTransitionCoordinator:v4];
+    [primaryTransitionController coordinateAdditionalTransitionsWithTransitionCoordinator:coordinatorCopy];
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(SiriUIMultiNavigationTransitionController *)self additionalCoordinationControllers];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  additionalCoordinationControllers = [(SiriUIMultiNavigationTransitionController *)self additionalCoordinationControllers];
+  v7 = [additionalCoordinationControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -214,20 +214,20 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(additionalCoordinationControllers);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 coordinateAdditionalTransitionsWithTransitionCoordinator:v4];
+          [v11 coordinateAdditionalTransitionsWithTransitionCoordinator:coordinatorCopy];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [additionalCoordinationControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);

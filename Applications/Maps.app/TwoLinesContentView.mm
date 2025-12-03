@@ -1,12 +1,12 @@
 @interface TwoLinesContentView
-- (TwoLinesContentView)initWithFrame:(CGRect)a3;
-- (TwoLinesContentView)initWithFrame:(CGRect)a3 contentViewType:(int)a4;
+- (TwoLinesContentView)initWithFrame:(CGRect)frame;
+- (TwoLinesContentView)initWithFrame:(CGRect)frame contentViewType:(int)type;
 - (double)_imageDimension;
 - (double)_imageToTextSpacing;
 - (double)_labelVerticalSpacing;
 - (double)_verticalMargin;
 - (id)_labelColor;
-- (id)_renderAttachmentImageWithImage:(id)a3 vibrant:(BOOL)a4;
+- (id)_renderAttachmentImageWithImage:(id)image vibrant:(BOOL)vibrant;
 - (id)_selectedLabelColor;
 - (id)_subtitleFont;
 - (id)_titleFont;
@@ -15,15 +15,15 @@
 - (void)_updateConstraints;
 - (void)_updateDebugLabel;
 - (void)_updateFonts;
-- (void)_updateImage:(id)a3;
+- (void)_updateImage:(id)image;
 - (void)_updateLabelColors;
 - (void)_updateNumberOfLines;
-- (void)_updateViewsWithViewModel:(id)a3;
-- (void)setIsParentCellSelected:(BOOL)a3;
-- (void)setVibrant:(BOOL)a3;
-- (void)setViewModel:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)twoLinesTableViewCellModelDidUpdate:(id)a3;
+- (void)_updateViewsWithViewModel:(id)model;
+- (void)setIsParentCellSelected:(BOOL)selected;
+- (void)setVibrant:(BOOL)vibrant;
+- (void)setViewModel:(id)model;
+- (void)traitCollectionDidChange:(id)change;
+- (void)twoLinesTableViewCellModelDidUpdate:(id)update;
 @end
 
 @implementation TwoLinesContentView
@@ -82,36 +82,36 @@
 
 - (void)_updateFonts
 {
-  v3 = [(TwoLinesContentView *)self _titleFont];
-  [(UILabel *)self->_mainTitleLabel setFont:v3];
+  _titleFont = [(TwoLinesContentView *)self _titleFont];
+  [(UILabel *)self->_mainTitleLabel setFont:_titleFont];
 
-  v4 = [(TwoLinesContentView *)self _subtitleFont];
-  [(UILabel *)self->_secondTitleLabel setFont:v4];
+  _subtitleFont = [(TwoLinesContentView *)self _subtitleFont];
+  [(UILabel *)self->_secondTitleLabel setFont:_subtitleFont];
 
-  v5 = [(TwoLinesContentView *)self _subtitleFont];
-  [(UILabel *)self->_thirdTitleLabel setFont:v5];
+  _subtitleFont2 = [(TwoLinesContentView *)self _subtitleFont];
+  [(UILabel *)self->_thirdTitleLabel setFont:_subtitleFont2];
 }
 
 - (id)_subtitleFont
 {
-  v3 = [(TwoLinesContentView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(TwoLinesContentView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 5)
+  if (userInterfaceIdiom == 5)
   {
     v5 = +[UIFont system15];
   }
 
   else
   {
-    v6 = [(TwoLinesContentViewModel *)self->_viewModel subtitleUsesMonospacedNumbers];
+    subtitleUsesMonospacedNumbers = [(TwoLinesContentViewModel *)self->_viewModel subtitleUsesMonospacedNumbers];
     v7 = +[UIFont system15];
     v5 = v7;
-    if (v6)
+    if (subtitleUsesMonospacedNumbers)
     {
-      v8 = [v7 _maps_fontWithMonospacedNumbers];
+      _maps_fontWithMonospacedNumbers = [v7 _maps_fontWithMonospacedNumbers];
 
-      v5 = v8;
+      v5 = _maps_fontWithMonospacedNumbers;
     }
   }
 
@@ -120,8 +120,8 @@
 
 - (id)_titleRegularFont
 {
-  v2 = [(TwoLinesContentView *)self traitCollection];
-  [v2 userInterfaceIdiom];
+  traitCollection = [(TwoLinesContentView *)self traitCollection];
+  [traitCollection userInterfaceIdiom];
 
   v3 = +[UIFont system17];
 
@@ -130,10 +130,10 @@
 
 - (id)_titleFont
 {
-  v2 = [(TwoLinesContentView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(TwoLinesContentView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v3 == 5)
+  if (userInterfaceIdiom == 5)
   {
     +[UIFont system17];
   }
@@ -149,10 +149,10 @@
 
 - (void)_updateDebugLabel
 {
-  v3 = [(TwoLinesContentViewModel *)self->_viewModel debugString];
+  debugString = [(TwoLinesContentViewModel *)self->_viewModel debugString];
 
   debugLabel = self->_debugLabel;
-  if (v3)
+  if (debugString)
   {
     if (!debugLabel)
     {
@@ -173,20 +173,20 @@
       [(UILabel *)self->_debugLabel setBackgroundColor:v9];
 
       [(TwoLinesContentView *)self addSubview:self->_debugLabel];
-      v10 = [(UILabel *)self->_debugLabel leadingAnchor];
-      v11 = [(TwoLinesContentView *)self leadingAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11 constant:10.0];
+      leadingAnchor = [(UILabel *)self->_debugLabel leadingAnchor];
+      leadingAnchor2 = [(TwoLinesContentView *)self leadingAnchor];
+      v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
       [v12 setActive:1];
 
-      v13 = [(UILabel *)self->_debugLabel bottomAnchor];
-      v14 = [(TwoLinesContentView *)self bottomAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14 constant:-2.0];
+      bottomAnchor = [(UILabel *)self->_debugLabel bottomAnchor];
+      bottomAnchor2 = [(TwoLinesContentView *)self bottomAnchor];
+      v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-2.0];
       [v15 setActive:1];
     }
 
-    v17 = [(TwoLinesContentViewModel *)self->_viewModel debugString];
-    [(UILabel *)self->_debugLabel setText:v17];
-    v16 = v17;
+    debugString2 = [(TwoLinesContentViewModel *)self->_viewModel debugString];
+    [(UILabel *)self->_debugLabel setText:debugString2];
+    v16 = debugString2;
   }
 
   else
@@ -202,28 +202,28 @@
   }
 }
 
-- (void)twoLinesTableViewCellModelDidUpdate:(id)a3
+- (void)twoLinesTableViewCellModelDidUpdate:(id)update
 {
-  if (self->_viewModel == a3)
+  if (self->_viewModel == update)
   {
     [(TwoLinesContentView *)self _updateViewsWithViewModel:?];
   }
 }
 
-- (void)_updateViewsWithViewModel:(id)a3
+- (void)_updateViewsWithViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   [(TwoLinesContentView *)self _updateImage:0];
-  v101 = [v4 titleText];
-  v99 = [v4 subtitleText];
-  v102 = [v4 attributedSubtitleText];
-  if (![v101 length])
+  titleText = [modelCopy titleText];
+  subtitleText = [modelCopy subtitleText];
+  attributedSubtitleText = [modelCopy attributedSubtitleText];
+  if (![titleText length])
   {
     goto LABEL_7;
   }
 
-  v5 = [v4 titleHighlightRanges];
-  v6 = [v5 count];
+  titleHighlightRanges = [modelCopy titleHighlightRanges];
+  v6 = [titleHighlightRanges count];
 
   if (v6)
   {
@@ -233,9 +233,9 @@
       if (contentViewType == 1)
       {
         isParentCellSelected = self->_isParentCellSelected;
-        v9 = [v4 titleHighlightRanges];
-        v10 = [(TwoLinesContentView *)self _titleFont];
-        v11 = [(TwoLinesContentView *)self _titleFont];
+        titleHighlightRanges2 = [modelCopy titleHighlightRanges];
+        _titleFont = [(TwoLinesContentView *)self _titleFont];
+        _titleFont2 = [(TwoLinesContentView *)self _titleFont];
         if (isParentCellSelected)
         {
           +[UIColor whiteColor];
@@ -246,7 +246,7 @@
           +[UIColor labelColor];
         }
         v12 = ;
-        v13 = [NSAttributedString attributedStringWithText:v101 highlightRanges:v9 font:v10 highlightedFont:v11 highlightedTextColor:v12];
+        v13 = [NSAttributedString attributedStringWithText:titleText highlightRanges:titleHighlightRanges2 font:_titleFont highlightedFont:_titleFont2 highlightedTextColor:v12];
 
         goto LABEL_17;
       }
@@ -256,34 +256,34 @@ LABEL_7:
       goto LABEL_18;
     }
 
-    if (![v4 shouldEnableGrayscaleHighlighting] || (-[TwoLinesContentView traitCollection](self, "traitCollection"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "userInterfaceIdiom"), v17, v18 == 5))
+    if (![modelCopy shouldEnableGrayscaleHighlighting] || (-[TwoLinesContentView traitCollection](self, "traitCollection"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "userInterfaceIdiom"), v17, v18 == 5))
     {
-      v9 = [v4 titleHighlightRanges];
-      v10 = [(TwoLinesContentView *)self _titleRegularFont];
-      v11 = [(TwoLinesContentView *)self _titleFont];
-      v13 = [NSAttributedString attributedStringWithText:v101 boldInRange:v9 font:v10 bold:v11];
+      titleHighlightRanges2 = [modelCopy titleHighlightRanges];
+      _titleFont = [(TwoLinesContentView *)self _titleRegularFont];
+      _titleFont2 = [(TwoLinesContentView *)self _titleFont];
+      v13 = [NSAttributedString attributedStringWithText:titleText boldInRange:titleHighlightRanges2 font:_titleFont bold:_titleFont2];
 LABEL_17:
 
       goto LABEL_18;
     }
 
-    v94 = [v4 titleHighlightRanges];
-    v95 = [(TwoLinesContentView *)self _titleFont];
-    v96 = [(TwoLinesContentView *)self _titleFont];
+    titleHighlightRanges3 = [modelCopy titleHighlightRanges];
+    _titleFont3 = [(TwoLinesContentView *)self _titleFont];
+    _titleFont4 = [(TwoLinesContentView *)self _titleFont];
     v97 = +[UIColor labelColor];
     v98 = +[UIColor secondaryLabelColor];
-    v13 = [NSAttributedString attributedStringWithText:v101 highlightRanges:v94 font:v95 highlightedFont:v96 highlightedTextColor:v97 unhighlightedTextColor:v98];
+    v13 = [NSAttributedString attributedStringWithText:titleText highlightRanges:titleHighlightRanges3 font:_titleFont3 highlightedFont:_titleFont4 highlightedTextColor:v97 unhighlightedTextColor:v98];
   }
 
   else
   {
-    v14 = [v4 titleTextFont];
+    titleTextFont = [modelCopy titleTextFont];
 
-    if (v14)
+    if (titleTextFont)
     {
       v107 = NSFontAttributeName;
-      v15 = [v4 titleTextFont];
-      v108 = v15;
+      titleTextFont2 = [modelCopy titleTextFont];
+      v108 = titleTextFont2;
       v16 = [NSDictionary dictionaryWithObjects:&v108 forKeys:&v107 count:1];
     }
 
@@ -292,31 +292,31 @@ LABEL_17:
       v16 = 0;
     }
 
-    v13 = [[NSMutableAttributedString alloc] initWithString:v101 attributes:v16];
+    v13 = [[NSMutableAttributedString alloc] initWithString:titleText attributes:v16];
   }
 
 LABEL_18:
-  if ([v102 length])
+  if ([attributedSubtitleText length])
   {
-    v100 = v102;
+    v100 = attributedSubtitleText;
   }
 
-  else if ([v99 length])
+  else if ([subtitleText length])
   {
-    v34 = [v4 subtitleHighlightRanges];
-    v35 = [v34 count] == 0;
+    subtitleHighlightRanges = [modelCopy subtitleHighlightRanges];
+    v35 = [subtitleHighlightRanges count] == 0;
 
     if (v35)
     {
-      v100 = [[NSAttributedString alloc] initWithString:v99];
+      v100 = [[NSAttributedString alloc] initWithString:subtitleText];
     }
 
     else
     {
-      v36 = [v4 subtitleHighlightRanges];
+      subtitleHighlightRanges2 = [modelCopy subtitleHighlightRanges];
       v37 = +[UIFont system15];
       v38 = +[UIFont system15Bold];
-      v100 = [NSAttributedString attributedStringWithText:v99 boldInRange:v36 font:v37 bold:v38];
+      v100 = [NSAttributedString attributedStringWithText:subtitleText boldInRange:subtitleHighlightRanges2 font:v37 bold:v38];
     }
   }
 
@@ -325,24 +325,24 @@ LABEL_18:
     v100 = 0;
   }
 
-  v19 = [(TwoLinesContentView *)self traitCollection];
-  v20 = [v19 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v20);
+  traitCollection = [(TwoLinesContentView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
     v22 = [NSAttributedString attributedStringWithAttachment:self->_attachment];
     v23 = [[NSMutableAttributedString alloc] initWithAttributedString:v22];
-    v24 = [v4 titleText];
+    titleText2 = [modelCopy titleText];
 
-    if (v24)
+    if (titleText2)
     {
       v25 = [[NSAttributedString alloc] initWithString:@" "];
       [v23 appendAttributedString:v25];
 
       v26 = [NSAttributedString alloc];
-      v27 = [v4 titleText];
-      v28 = [v26 initWithString:v27];
+      titleText3 = [modelCopy titleText];
+      v28 = [v26 initWithString:titleText3];
       [v23 appendAttributedString:v28];
     }
 
@@ -357,13 +357,13 @@ LABEL_18:
 
   [(UILabel *)self->_mainTitleLabel setAttributedText:v23];
   [(UILabel *)self->_secondTitleLabel setAttributedText:v100];
-  -[UIView setHidden:](self->_badgeView, "setHidden:", [v4 showBadgeView] ^ 1);
-  v29 = [(TwoLinesContentView *)self window];
-  v30 = [v29 screen];
-  v31 = v30;
-  if (v30)
+  -[UIView setHidden:](self->_badgeView, "setHidden:", [modelCopy showBadgeView] ^ 1);
+  window = [(TwoLinesContentView *)self window];
+  screen = [window screen];
+  v31 = screen;
+  if (screen)
   {
-    [v30 scale];
+    [screen scale];
     v33 = v32;
   }
 
@@ -374,8 +374,8 @@ LABEL_18:
     v33 = v40;
   }
 
-  v41 = [v4 imageShadowStyle];
-  if (v41 == 1)
+  imageShadowStyle = [modelCopy imageShadowStyle];
+  if (imageShadowStyle == 1)
   {
     leftImageShadowView = self->_leftImageShadowView;
     if (!leftImageShadowView)
@@ -385,50 +385,50 @@ LABEL_18:
       self->_leftImageShadowView = v44;
 
       [(UIView *)self->_leftImageShadowView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v46 = [(UIView *)self->_leftImageShadowView layer];
-      [v46 setShadowPathIsBounds:1];
+      layer = [(UIView *)self->_leftImageShadowView layer];
+      [layer setShadowPathIsBounds:1];
 
-      v47 = [(UIView *)self->_leftImageShadowView layer];
-      [v47 setPunchoutShadow:1];
+      layer2 = [(UIView *)self->_leftImageShadowView layer];
+      [layer2 setPunchoutShadow:1];
 
       [(TwoLinesContentView *)self addSubview:self->_leftImageShadowView];
       LODWORD(v48) = 1148846080;
       v49 = [(UIView *)self->_leftImageShadowView _maps_constraintsEqualToEdgesOfView:self->_leftImageView priority:v48];
-      v50 = [v49 allConstraints];
-      [NSLayoutConstraint activateConstraints:v50];
+      allConstraints = [v49 allConstraints];
+      [NSLayoutConstraint activateConstraints:allConstraints];
 
       leftImageShadowView = self->_leftImageShadowView;
     }
 
-    v51 = [(UIView *)leftImageShadowView layer];
-    [v51 setBorderWidth:1.0 / v33];
+    layer3 = [(UIView *)leftImageShadowView layer];
+    [layer3 setBorderWidth:1.0 / v33];
 
     v52 = [UIColor colorWithRed:0.454901963 green:0.454901963 blue:0.501960814 alpha:0.200000003];
     v53 = v52;
-    v54 = [v52 CGColor];
-    v55 = [(UIView *)self->_leftImageShadowView layer];
-    [v55 setBorderColor:v54];
+    cGColor = [v52 CGColor];
+    layer4 = [(UIView *)self->_leftImageShadowView layer];
+    [layer4 setBorderColor:cGColor];
 
-    v56 = [(UIView *)self->_leftImageShadowView layer];
-    [v56 setShadowOffset:{0.0, 1.0}];
+    layer5 = [(UIView *)self->_leftImageShadowView layer];
+    [layer5 setShadowOffset:{0.0, 1.0}];
 
-    v57 = [(UIView *)self->_leftImageShadowView layer];
-    [v57 setShadowRadius:5.0];
+    layer6 = [(UIView *)self->_leftImageShadowView layer];
+    [layer6 setShadowRadius:5.0];
 
-    v58 = [(UIView *)self->_leftImageShadowView layer];
+    layer7 = [(UIView *)self->_leftImageShadowView layer];
     LODWORD(v59) = 1036831949;
-    [v58 setShadowOpacity:v59];
+    [layer7 setShadowOpacity:v59];
 
     v42 = +[UIColor blackColor];
     v60 = v42;
-    v61 = [v42 CGColor];
-    v62 = [(UIView *)self->_leftImageShadowView layer];
-    [v62 setShadowColor:v61];
+    cGColor2 = [v42 CGColor];
+    layer8 = [(UIView *)self->_leftImageShadowView layer];
+    [layer8 setShadowColor:cGColor2];
   }
 
   else
   {
-    if (v41)
+    if (imageShadowStyle)
     {
       goto LABEL_38;
     }
@@ -440,18 +440,18 @@ LABEL_18:
 
 LABEL_38:
   [(UIView *)self->_leftImageShadowView setHidden:[(UIImageView *)self->_leftImageView isHidden]];
-  v63 = [v4 imageStyle];
-  if (v63 <= 1)
+  imageStyle = [modelCopy imageStyle];
+  if (imageStyle <= 1)
   {
-    if (v63)
+    if (imageStyle)
     {
-      if (v63 == 1)
+      if (imageStyle == 1)
       {
-        v66 = [(UIImageView *)self->_leftImageView layer];
-        [v66 setCornerRadius:5.0];
+        layer9 = [(UIImageView *)self->_leftImageView layer];
+        [layer9 setCornerRadius:5.0];
 
-        v67 = [(UIView *)self->_leftImageShadowView layer];
-        [v67 setCornerRadius:5.0];
+        layer10 = [(UIView *)self->_leftImageShadowView layer];
+        [layer10 setCornerRadius:5.0];
       }
     }
 
@@ -459,19 +459,19 @@ LABEL_38:
     {
       [(TwoLinesContentView *)self _imageDimension];
       v69 = v68;
-      v70 = [(UIImageView *)self->_leftImageView layer];
-      [v70 setCornerRadius:v69 * 0.5];
+      layer11 = [(UIImageView *)self->_leftImageView layer];
+      [layer11 setCornerRadius:v69 * 0.5];
 
       [(TwoLinesContentView *)self _imageDimension];
       v72 = v71;
-      v73 = [(UIView *)self->_leftImageShadowView layer];
-      [v73 setCornerRadius:v72 * 0.5];
+      layer12 = [(UIView *)self->_leftImageShadowView layer];
+      [layer12 setCornerRadius:v72 * 0.5];
     }
   }
 
   else
   {
-    switch(v63)
+    switch(imageStyle)
     {
       case 2:
         [(UIImageView *)self->_leftImageView _setContinuousCornerRadius:4.0];
@@ -482,42 +482,42 @@ LABEL_38:
         [(UIView *)self->_leftImageShadowView _setContinuousCornerRadius:7.0];
         break;
       case 4:
-        v64 = [(UIImageView *)self->_leftImageView layer];
-        [v64 setCornerRadius:0.0];
+        layer13 = [(UIImageView *)self->_leftImageView layer];
+        [layer13 setCornerRadius:0.0];
 
-        v65 = [(UIView *)self->_leftImageShadowView layer];
-        [v65 setCornerRadius:0.0];
+        layer14 = [(UIView *)self->_leftImageShadowView layer];
+        [layer14 setCornerRadius:0.0];
 
         break;
     }
   }
 
-  [v4 imageSize];
+  [modelCopy imageSize];
   if (CGSizeZero.width != v75 || CGSizeZero.height != v74)
   {
-    [v4 imageSize];
+    [modelCopy imageSize];
     [(NSLayoutConstraint *)self->_imageWidthConstraint setConstant:?];
-    [v4 imageSize];
+    [modelCopy imageSize];
     [(NSLayoutConstraint *)self->_imageHeightConstraint setConstant:v76];
   }
 
-  v77 = [v4 leftImageTintColor];
+  leftImageTintColor = [modelCopy leftImageTintColor];
 
-  if (v77)
+  if (leftImageTintColor)
   {
-    v78 = [v4 leftImageTintColor];
-    [(UIImageView *)self->_leftImageView setTintColor:v78];
+    leftImageTintColor2 = [modelCopy leftImageTintColor];
+    [(UIImageView *)self->_leftImageView setTintColor:leftImageTintColor2];
   }
 
   v79 = +[UIColor clearColor];
   [(UIImageView *)self->_leftImageView setBackgroundColor:v79];
 
-  v80 = [v4 leadingImageBackgroundColor];
+  leadingImageBackgroundColor = [modelCopy leadingImageBackgroundColor];
 
-  if (v80)
+  if (leadingImageBackgroundColor)
   {
-    v81 = [v4 leadingImageBackgroundColor];
-    [(UIImageView *)self->_leftImageView setBackgroundColor:v81];
+    leadingImageBackgroundColor2 = [modelCopy leadingImageBackgroundColor];
+    [(UIImageView *)self->_leftImageView setBackgroundColor:leadingImageBackgroundColor2];
   }
 
   v82 = self->_imageState + 1;
@@ -529,32 +529,32 @@ LABEL_38:
   v103[3] = &unk_101637BD8;
   objc_copyWeak(&v104, &location);
   v105 = v82;
-  [v4 fetchImageForScreenScale:v103 withCompletionHandler:v33];
-  v83 = [v4 placeContextViewModel];
+  [modelCopy fetchImageForScreenScale:v103 withCompletionHandler:v33];
+  placeContextViewModel = [modelCopy placeContextViewModel];
 
   thirdTitleLabel = self->_thirdTitleLabel;
-  if (v83)
+  if (placeContextViewModel)
   {
     [(UILabel *)thirdTitleLabel setHidden:0];
     [(UILabel *)self->_thirdTitleLabel setUserInteractionEnabled:0];
-    v85 = [v4 placeContextViewModel];
-    v86 = [v85 attributedString];
-    [(UILabel *)self->_thirdTitleLabel setAttributedText:v86];
+    placeContextViewModel2 = [modelCopy placeContextViewModel];
+    attributedString = [placeContextViewModel2 attributedString];
+    [(UILabel *)self->_thirdTitleLabel setAttributedText:attributedString];
 
-    v87 = [v4 placeContextViewModel];
-    v88 = [v87 image];
-    [(UIImageView *)self->_thirdLabelImageView setHidden:v88 == 0];
+    placeContextViewModel3 = [modelCopy placeContextViewModel];
+    image = [placeContextViewModel3 image];
+    [(UIImageView *)self->_thirdLabelImageView setHidden:image == 0];
 
-    v89 = [v4 placeContextViewModel];
-    v90 = [v89 image];
-    [(UIImageView *)self->_thirdLabelImageView setImage:v90];
+    placeContextViewModel4 = [modelCopy placeContextViewModel];
+    image2 = [placeContextViewModel4 image];
+    [(UIImageView *)self->_thirdLabelImageView setImage:image2];
 
-    v91 = [v4 placeContextViewModel];
-    v92 = [v91 imageTintColor];
-    [(UIImageView *)self->_thirdLabelImageView setTintColor:v92];
+    placeContextViewModel5 = [modelCopy placeContextViewModel];
+    imageTintColor = [placeContextViewModel5 imageTintColor];
+    [(UIImageView *)self->_thirdLabelImageView setTintColor:imageTintColor];
 
-    v93 = [v4 placeContextViewModel];
-    [v93 imageContinuousCornerRadius];
+    placeContextViewModel6 = [modelCopy placeContextViewModel];
+    [placeContextViewModel6 imageContinuousCornerRadius];
     [(UIImageView *)self->_thirdLabelImageView _setContinuousCornerRadius:?];
   }
 
@@ -572,22 +572,22 @@ LABEL_38:
   objc_destroyWeak(&location);
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_viewModel != v5)
+  modelCopy = model;
+  if (self->_viewModel != modelCopy)
   {
-    v10 = v5;
-    v6 = [(TwoLinesContentViewModel *)v5 shouldCenterImage];
-    v7 = [(TwoLinesContentViewModel *)self->_viewModel shouldCenterImage];
-    v8 = [(TwoLinesContentViewModel *)self->_viewModel observers];
-    [v8 unregisterObserver:self];
+    v10 = modelCopy;
+    shouldCenterImage = [(TwoLinesContentViewModel *)modelCopy shouldCenterImage];
+    shouldCenterImage2 = [(TwoLinesContentViewModel *)self->_viewModel shouldCenterImage];
+    observers = [(TwoLinesContentViewModel *)self->_viewModel observers];
+    [observers unregisterObserver:self];
 
-    objc_storeStrong(&self->_viewModel, a3);
-    v9 = [(TwoLinesContentViewModel *)self->_viewModel observers];
-    [v9 registerObserver:self];
+    objc_storeStrong(&self->_viewModel, model);
+    observers2 = [(TwoLinesContentViewModel *)self->_viewModel observers];
+    [observers2 registerObserver:self];
 
-    if (v6 != v7)
+    if (shouldCenterImage != shouldCenterImage2)
     {
       [(TwoLinesContentView *)self _updateConstraints];
     }
@@ -597,48 +597,48 @@ LABEL_38:
     [(TwoLinesContentView *)self _updateFonts];
     [(TwoLinesContentView *)self _updateNumberOfLines];
     [(TwoLinesContentView *)self _updateConstraintConstants];
-    v5 = v10;
+    modelCopy = v10;
   }
 }
 
-- (id)_renderAttachmentImageWithImage:(id)a3 vibrant:(BOOL)a4
+- (id)_renderAttachmentImageWithImage:(id)image vibrant:(BOOL)vibrant
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  vibrantCopy = vibrant;
+  imageCopy = image;
+  if (vibrantCopy)
   {
-    v7 = [(TwoLinesContentView *)self traitCollection];
-    v8 = [v7 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v8);
+    traitCollection = [(TwoLinesContentView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
       [(TwoLinesContentView *)self _imageDimension];
       v11 = v10;
       v12 = [UIGraphicsImageRenderer alloc];
-      v13 = [(TwoLinesContentView *)self traitCollection];
-      v14 = [UIGraphicsImageRendererFormat formatForTraitCollection:v13];
+      traitCollection2 = [(TwoLinesContentView *)self traitCollection];
+      v14 = [UIGraphicsImageRendererFormat formatForTraitCollection:traitCollection2];
       v15 = [v12 initWithSize:v14 format:{v11, v11}];
 
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_10071D270;
       v18[3] = &unk_101650960;
-      v19 = v6;
-      v16 = v6;
-      v6 = [v15 imageWithActions:v18];
+      v19 = imageCopy;
+      v16 = imageCopy;
+      imageCopy = [v15 imageWithActions:v18];
     }
   }
 
-  return v6;
+  return imageCopy;
 }
 
-- (void)setVibrant:(BOOL)a3
+- (void)setVibrant:(BOOL)vibrant
 {
-  if (self->_vibrant != a3)
+  if (self->_vibrant != vibrant)
   {
-    self->_vibrant = a3;
-    if (a3)
+    self->_vibrant = vibrant;
+    if (vibrant)
     {
       [(TwoLinesContentView *)self _imageDimension];
       v5 = v4;
@@ -651,21 +651,21 @@ LABEL_38:
       v8 = v6;
 
       [(TwoLinesContentView *)self _updateVibrantColor];
-      v22 = [v8 centerXAnchor];
-      v21 = [(UIImageView *)self->_leftImageView centerXAnchor];
-      v20 = [v22 constraintEqualToAnchor:v21];
+      centerXAnchor = [v8 centerXAnchor];
+      centerXAnchor2 = [(UIImageView *)self->_leftImageView centerXAnchor];
+      v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v23[0] = v20;
-      v19 = [v8 centerYAnchor];
-      v9 = [(UIImageView *)self->_leftImageView centerYAnchor];
-      v10 = [v19 constraintEqualToAnchor:v9];
+      centerYAnchor = [v8 centerYAnchor];
+      centerYAnchor2 = [(UIImageView *)self->_leftImageView centerYAnchor];
+      v10 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v23[1] = v10;
-      v11 = [v8 widthAnchor];
-      v12 = [(UIImageView *)self->_leftImageView widthAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12];
+      widthAnchor = [v8 widthAnchor];
+      widthAnchor2 = [(UIImageView *)self->_leftImageView widthAnchor];
+      v13 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       v23[2] = v13;
-      v14 = [v8 heightAnchor];
-      v15 = [(UIImageView *)self->_leftImageView heightAnchor];
-      v16 = [v14 constraintEqualToAnchor:v15];
+      heightAnchor = [v8 heightAnchor];
+      heightAnchor2 = [(UIImageView *)self->_leftImageView heightAnchor];
+      v16 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
       v23[3] = v16;
       v17 = [NSArray arrayWithObjects:v23 count:4];
       [NSLayoutConstraint activateConstraints:v17];
@@ -680,42 +680,42 @@ LABEL_38:
   }
 }
 
-- (void)_updateImage:(id)a3
+- (void)_updateImage:(id)image
 {
-  v4 = a3;
-  v5 = [(TwoLinesContentView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+  imageCopy = image;
+  traitCollection = [(TwoLinesContentView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
-    if (!v4)
+    if (!imageCopy)
     {
-      v4 = objc_opt_new();
+      imageCopy = objc_opt_new();
     }
 
-    v8 = [(TwoLinesContentView *)self _renderAttachmentImageWithImage:v4 vibrant:[(TwoLinesContentViewModel *)self->_viewModel hasVibrantBackground]];
+    v8 = [(TwoLinesContentView *)self _renderAttachmentImageWithImage:imageCopy vibrant:[(TwoLinesContentViewModel *)self->_viewModel hasVibrantBackground]];
 
     [(NSTextAttachment *)self->_attachment setImage:v8];
-    v9 = [(UILabel *)self->_mainTitleLabel attributedText];
-    v10 = [v9 mutableCopy];
+    attributedText = [(UILabel *)self->_mainTitleLabel attributedText];
+    v10 = [attributedText mutableCopy];
 
-    v11 = [(UILabel *)self->_mainTitleLabel attributedText];
-    v12 = [(UILabel *)self->_mainTitleLabel attributedText];
-    v13 = [v12 length];
+    attributedText2 = [(UILabel *)self->_mainTitleLabel attributedText];
+    attributedText3 = [(UILabel *)self->_mainTitleLabel attributedText];
+    v13 = [attributedText3 length];
     v20 = _NSConcreteStackBlock;
     v21 = 3221225472;
     v22 = sub_10071D870;
     v23 = &unk_101627798;
-    v24 = self;
+    selfCopy = self;
     v25 = v10;
     v14 = v10;
-    [v11 enumerateAttribute:NSAttachmentAttributeName inRange:0 options:v13 usingBlock:{0, &v20}];
+    [attributedText2 enumerateAttribute:NSAttachmentAttributeName inRange:0 options:v13 usingBlock:{0, &v20}];
 
-    [(UILabel *)self->_mainTitleLabel setAttributedText:v14, v20, v21, v22, v23, v24];
+    [(UILabel *)self->_mainTitleLabel setAttributedText:v14, v20, v21, v22, v23, selfCopy];
     [(UILabel *)self->_mainTitleLabel setNeedsDisplay];
 
-    v4 = v8;
+    imageCopy = v8;
     if (!v8)
     {
       goto LABEL_11;
@@ -724,7 +724,7 @@ LABEL_38:
 
   else
   {
-    if ([v4 isSymbolImage])
+    if ([imageCopy isSymbolImage])
     {
       v15 = 4;
     }
@@ -735,27 +735,27 @@ LABEL_38:
     }
 
     [(UIImageView *)self->_leftImageView setContentMode:v15];
-    [(UIImageView *)self->_leftImageView setImage:v4];
-    if (!v4)
+    [(UIImageView *)self->_leftImageView setImage:imageCopy];
+    if (!imageCopy)
     {
       goto LABEL_11;
     }
   }
 
-  v16 = [(TwoLinesContentView *)self traitCollection];
-  v17 = [v16 preferredContentSizeCategory];
-  v18 = UIContentSizeCategoryIsAccessibilityCategory(v17);
+  traitCollection2 = [(TwoLinesContentView *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+  v18 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
 
   if (!v18)
   {
-    v19 = [(TwoLinesContentViewModel *)self->_viewModel hasVibrantBackground];
+    hasVibrantBackground = [(TwoLinesContentViewModel *)self->_viewModel hasVibrantBackground];
     goto LABEL_13;
   }
 
 LABEL_11:
-  v19 = 0;
+  hasVibrantBackground = 0;
 LABEL_13:
-  [(TwoLinesContentView *)self setVibrant:v19];
+  [(TwoLinesContentView *)self setVibrant:hasVibrantBackground];
 }
 
 - (id)_labelColor
@@ -770,11 +770,11 @@ LABEL_13:
 
     if (([(TwoLinesContentViewModel *)self->_viewModel isDisabled]& 1) == 0)
     {
-      v5 = [(TwoLinesContentViewModel *)self->_viewModel titleTextColor];
-      v6 = v5;
-      if (v5)
+      titleTextColor = [(TwoLinesContentViewModel *)self->_viewModel titleTextColor];
+      v6 = titleTextColor;
+      if (titleTextColor)
       {
-        v7 = v5;
+        v7 = titleTextColor;
       }
 
       else
@@ -823,28 +823,28 @@ LABEL_9:
 
     if (sub_10000FA08(self) != 5 || !self->_isParentCellSelected)
     {
-      v4 = [(TwoLinesContentView *)self _labelColor];
-      [(UILabel *)self->_mainTitleLabel setTextColor:v4];
+      _labelColor = [(TwoLinesContentView *)self _labelColor];
+      [(UILabel *)self->_mainTitleLabel setTextColor:_labelColor];
 
       v5 = +[UIColor secondaryLabelColor];
       [(UILabel *)self->_secondTitleLabel setTextColor:v5];
 
-      v6 = +[UIColor secondaryLabelColor];
+      _selectedLabelColor3 = +[UIColor secondaryLabelColor];
 LABEL_9:
-      v9 = v6;
-      v19 = v6;
+      v9 = _selectedLabelColor3;
+      v19 = _selectedLabelColor3;
       thirdTitleLabel = self->_thirdTitleLabel;
       goto LABEL_10;
     }
 
 LABEL_8:
-    v7 = [(TwoLinesContentView *)self _selectedLabelColor];
-    [(UILabel *)self->_mainTitleLabel setTextColor:v7];
+    _selectedLabelColor = [(TwoLinesContentView *)self _selectedLabelColor];
+    [(UILabel *)self->_mainTitleLabel setTextColor:_selectedLabelColor];
 
-    v8 = [(TwoLinesContentView *)self _selectedLabelColor];
-    [(UILabel *)self->_secondTitleLabel setTextColor:v8];
+    _selectedLabelColor2 = [(TwoLinesContentView *)self _selectedLabelColor];
+    [(UILabel *)self->_secondTitleLabel setTextColor:_selectedLabelColor2];
 
-    v6 = [(TwoLinesContentView *)self _selectedLabelColor];
+    _selectedLabelColor3 = [(TwoLinesContentView *)self _selectedLabelColor];
     goto LABEL_9;
   }
 
@@ -853,13 +853,13 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v12 = [(TwoLinesContentView *)self _labelColor];
-  [(UILabel *)self->_mainTitleLabel setTextColor:v12];
+  _labelColor2 = [(TwoLinesContentView *)self _labelColor];
+  [(UILabel *)self->_mainTitleLabel setTextColor:_labelColor2];
 
-  v13 = [(TwoLinesContentViewModel *)self->_viewModel subtitleTextColor];
-  if (v13)
+  subtitleTextColor = [(TwoLinesContentViewModel *)self->_viewModel subtitleTextColor];
+  if (subtitleTextColor)
   {
-    [(UILabel *)self->_secondTitleLabel setTextColor:v13];
+    [(UILabel *)self->_secondTitleLabel setTextColor:subtitleTextColor];
   }
 
   else
@@ -868,12 +868,12 @@ LABEL_8:
     [(UILabel *)self->_secondTitleLabel setTextColor:v14];
   }
 
-  v15 = [(TwoLinesContentViewModel *)self->_viewModel placeContextViewModel];
+  placeContextViewModel = [(TwoLinesContentViewModel *)self->_viewModel placeContextViewModel];
 
-  if (!v15)
+  if (!placeContextViewModel)
   {
-    v16 = [(TwoLinesContentViewModel *)self->_viewModel subtitleTextColor];
-    if (!v16)
+    subtitleTextColor2 = [(TwoLinesContentViewModel *)self->_viewModel subtitleTextColor];
+    if (!subtitleTextColor2)
     {
       v18 = +[UIColor secondaryLabelColor];
       [(UILabel *)self->_thirdTitleLabel setTextColor:v18];
@@ -882,7 +882,7 @@ LABEL_8:
       goto LABEL_11;
     }
 
-    v17 = v16;
+    v17 = subtitleTextColor2;
     thirdTitleLabel = self->_thirdTitleLabel;
     v19 = v17;
     v9 = v17;
@@ -895,9 +895,9 @@ LABEL_11:
 
 - (void)_updateNumberOfLines
 {
-  v3 = [(TwoLinesContentView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(TwoLinesContentView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -907,13 +907,13 @@ LABEL_11:
 
   else
   {
-    v6 = [(TwoLinesContentViewModel *)self->_viewModel allowsSubtitleWrapping];
+    allowsSubtitleWrapping = [(TwoLinesContentViewModel *)self->_viewModel allowsSubtitleWrapping];
     [(UILabel *)self->_mainTitleLabel setNumberOfLines:1];
-    [(UILabel *)self->_secondTitleLabel setNumberOfLines:v6 == 0];
+    [(UILabel *)self->_secondTitleLabel setNumberOfLines:allowsSubtitleWrapping == 0];
   }
 
-  v7 = [(TwoLinesContentViewModel *)self->_viewModel placeContextViewModel];
-  if (v7 && (v8 = v7, -[TwoLinesContentViewModel placeContextViewModel](self->_viewModel, "placeContextViewModel"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 type], v9, v8, v10 == 1))
+  placeContextViewModel = [(TwoLinesContentViewModel *)self->_viewModel placeContextViewModel];
+  if (placeContextViewModel && (v8 = placeContextViewModel, -[TwoLinesContentViewModel placeContextViewModel](self->_viewModel, "placeContextViewModel"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 type], v9, v8, v10 == 1))
   {
     v11 = 2;
   }
@@ -930,36 +930,36 @@ LABEL_11:
 
 - (void)_updateConstraintConstants
 {
-  v3 = [(TwoLinesContentView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(TwoLinesContentView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (!IsAccessibilityCategory)
   {
-    v6 = [(UILabel *)self->_mainTitleLabel font];
-    v7 = [(TwoLinesContentView *)self traitCollection];
-    [v7 displayScale];
-    [UILabel _maps_maximumHeightWithFont:v6 numberOfLines:1 displayScale:?];
+    font = [(UILabel *)self->_mainTitleLabel font];
+    traitCollection2 = [(TwoLinesContentView *)self traitCollection];
+    [traitCollection2 displayScale];
+    [UILabel _maps_maximumHeightWithFont:font numberOfLines:1 displayScale:?];
     v9 = v8;
 
-    v10 = [(UILabel *)self->_secondTitleLabel font];
-    v11 = [(TwoLinesContentView *)self traitCollection];
-    [v11 displayScale];
-    [UILabel _maps_maximumHeightWithFont:v10 numberOfLines:1 displayScale:?];
+    font2 = [(UILabel *)self->_secondTitleLabel font];
+    traitCollection3 = [(TwoLinesContentView *)self traitCollection];
+    [traitCollection3 displayScale];
+    [UILabel _maps_maximumHeightWithFont:font2 numberOfLines:1 displayScale:?];
     v13 = v12;
 
     [(TwoLinesContentView *)self _verticalMargin];
     v15 = v14;
     [(TwoLinesContentView *)self _labelVerticalSpacing];
     v17 = v13 + v9 + v15 * 2.0 + v16;
-    v18 = [(TwoLinesContentView *)self viewModel];
-    v19 = [v18 placeContextViewModel];
-    v20 = [v19 type];
+    viewModel = [(TwoLinesContentView *)self viewModel];
+    placeContextViewModel = [viewModel placeContextViewModel];
+    type = [placeContextViewModel type];
 
-    v21 = [(TwoLinesContentView *)self viewModel];
-    v22 = [v21 placeContextViewModel];
-    v23 = [v22 attributedString];
-    v24 = [v23 length];
+    viewModel2 = [(TwoLinesContentView *)self viewModel];
+    placeContextViewModel2 = [viewModel2 placeContextViewModel];
+    attributedString = [placeContextViewModel2 attributedString];
+    v24 = [attributedString length];
 
     thirdLabelToLayoutGuideLeadingConstraint = self->_thirdLabelToLayoutGuideLeadingConstraint;
     v35[0] = self->_thirdLabelImageViewBottomConstraint;
@@ -968,7 +968,7 @@ LABEL_11:
     v26 = [NSArray arrayWithObjects:v35 count:3];
     [NSLayoutConstraint deactivateConstraints:v26];
 
-    if (v20 == 1 && v24)
+    if (type == 1 && v24)
     {
       v34 = self->_thirdLabelToLayoutGuideLeadingConstraint;
       v27 = [NSArray arrayWithObjects:&v34 count:1];
@@ -1017,20 +1017,20 @@ LABEL_8:
   minimumHeightConstraint = self->_minimumHeightConstraint;
   self->_minimumHeightConstraint = 0;
 
-  v5 = [(UIImageView *)self->_thirdLabelImageView heightAnchor];
-  v6 = [v5 constraintEqualToConstant:0.0];
+  heightAnchor = [(UIImageView *)self->_thirdLabelImageView heightAnchor];
+  v6 = [heightAnchor constraintEqualToConstant:0.0];
   thirdLabelImageViewHeightConstraint = self->_thirdLabelImageViewHeightConstraint;
   self->_thirdLabelImageViewHeightConstraint = v6;
 
-  v8 = [(UILabel *)self->_thirdTitleLabel topAnchor];
-  v9 = [(UILabel *)self->_secondTitleLabel bottomAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  topAnchor = [(UILabel *)self->_thirdTitleLabel topAnchor];
+  bottomAnchor = [(UILabel *)self->_secondTitleLabel bottomAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   thirdLabelTopConstraint = self->_thirdLabelTopConstraint;
   self->_thirdLabelTopConstraint = v10;
 
-  LODWORD(v9) = [(TwoLinesContentViewModel *)self->_viewModel shouldCenterImage];
-  v12 = [(UIImageView *)self->_leftImageView centerYAnchor];
-  if (v9)
+  LODWORD(bottomAnchor) = [(TwoLinesContentViewModel *)self->_viewModel shouldCenterImage];
+  centerYAnchor = [(UIImageView *)self->_leftImageView centerYAnchor];
+  if (bottomAnchor)
   {
     [(TwoLinesContentView *)self centerYAnchor];
   }
@@ -1040,183 +1040,183 @@ LABEL_8:
     [(TwoLinesContentView *)self topAnchor];
   }
   v13 = ;
-  v14 = [v12 constraintEqualToAnchor:{v13, 104}];
+  v14 = [centerYAnchor constraintEqualToAnchor:{v13, 104}];
   imageVerticalConstraint = self->_imageVerticalConstraint;
   self->_imageVerticalConstraint = v14;
 
-  v16 = [(UIImageView *)self->_leftImageView heightAnchor];
+  heightAnchor2 = [(UIImageView *)self->_leftImageView heightAnchor];
   [(TwoLinesContentView *)self _imageDimension];
-  v17 = [v16 constraintEqualToConstant:?];
+  v17 = [heightAnchor2 constraintEqualToConstant:?];
   imageHeightConstraint = self->_imageHeightConstraint;
   self->_imageHeightConstraint = v17;
 
-  v19 = [(UIImageView *)self->_leftImageView widthAnchor];
+  widthAnchor = [(UIImageView *)self->_leftImageView widthAnchor];
   [(TwoLinesContentView *)self _imageDimension];
-  v20 = [v19 constraintEqualToConstant:?];
+  v20 = [widthAnchor constraintEqualToConstant:?];
   imageWidthConstraint = self->_imageWidthConstraint;
   self->_imageWidthConstraint = v20;
 
-  v22 = [(UIImageView *)self->_thirdLabelImageView bottomAnchor];
-  v23 = [(UILabel *)self->_thirdTitleLabel bottomAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  bottomAnchor2 = [(UIImageView *)self->_thirdLabelImageView bottomAnchor];
+  bottomAnchor3 = [(UILabel *)self->_thirdTitleLabel bottomAnchor];
+  v24 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   thirdLabelImageViewBottomConstraint = self->_thirdLabelImageViewBottomConstraint;
   self->_thirdLabelImageViewBottomConstraint = v24;
 
-  v26 = [(UIImageView *)self->_thirdLabelImageView trailingAnchor];
-  v27 = [(UILabel *)self->_thirdTitleLabel leadingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27 constant:-4.0];
+  trailingAnchor = [(UIImageView *)self->_thirdLabelImageView trailingAnchor];
+  leadingAnchor = [(UILabel *)self->_thirdTitleLabel leadingAnchor];
+  v28 = [trailingAnchor constraintEqualToAnchor:leadingAnchor constant:-4.0];
   thirdLabelToThirdImageViewLeadingConstraint = self->_thirdLabelToThirdImageViewLeadingConstraint;
   self->_thirdLabelToThirdImageViewLeadingConstraint = v28;
 
-  v30 = [(UILabel *)self->_thirdTitleLabel leadingAnchor];
-  v31 = [(UILayoutGuide *)self->_titleLayoutGuide leadingAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  leadingAnchor2 = [(UILabel *)self->_thirdTitleLabel leadingAnchor];
+  leadingAnchor3 = [(UILayoutGuide *)self->_titleLayoutGuide leadingAnchor];
+  v32 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
   thirdLabelToLayoutGuideLeadingConstraint = self->_thirdLabelToLayoutGuideLeadingConstraint;
   self->_thirdLabelToLayoutGuideLeadingConstraint = v32;
 
   v118 = +[NSMutableArray array];
-  v115 = [(UILabel *)self->_mainTitleLabel topAnchor];
-  v113 = [(UILayoutGuide *)self->_titleLayoutGuide topAnchor];
-  v112 = [v115 constraintEqualToAnchor:v113];
+  topAnchor2 = [(UILabel *)self->_mainTitleLabel topAnchor];
+  topAnchor3 = [(UILayoutGuide *)self->_titleLayoutGuide topAnchor];
+  v112 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   v121[0] = v112;
-  v111 = [(UILabel *)self->_secondTitleLabel topAnchor];
-  v110 = [(UILabel *)self->_mainTitleLabel bottomAnchor];
+  topAnchor4 = [(UILabel *)self->_secondTitleLabel topAnchor];
+  bottomAnchor4 = [(UILabel *)self->_mainTitleLabel bottomAnchor];
   [(TwoLinesContentView *)self _labelVerticalSpacing];
-  v109 = [v111 constraintEqualToAnchor:v110 constant:?];
+  v109 = [topAnchor4 constraintEqualToAnchor:bottomAnchor4 constant:?];
   v34 = self->_thirdLabelTopConstraint;
   v121[1] = v109;
   v121[2] = v34;
-  v108 = [(UILabel *)self->_thirdTitleLabel bottomAnchor];
-  v107 = [(UILayoutGuide *)self->_titleLayoutGuide bottomAnchor];
-  v106 = [v108 constraintEqualToAnchor:v107];
+  bottomAnchor5 = [(UILabel *)self->_thirdTitleLabel bottomAnchor];
+  bottomAnchor6 = [(UILayoutGuide *)self->_titleLayoutGuide bottomAnchor];
+  v106 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v121[3] = v106;
-  v105 = [(UIImageView *)self->_thirdLabelImageView topAnchor];
-  v104 = [(UILabel *)self->_thirdTitleLabel topAnchor];
-  v103 = [v105 constraintEqualToAnchor:v104];
+  topAnchor5 = [(UIImageView *)self->_thirdLabelImageView topAnchor];
+  topAnchor6 = [(UILabel *)self->_thirdTitleLabel topAnchor];
+  v103 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v35 = self->_thirdLabelImageViewBottomConstraint;
   v121[4] = v103;
   v121[5] = v35;
   v36 = self->_imageHeightConstraint;
   v121[6] = self->_imageVerticalConstraint;
   v121[7] = v36;
-  v102 = [(UIView *)self->_badgeView centerYAnchor];
-  v101 = [(TwoLinesContentView *)self centerYAnchor];
-  v100 = [v102 constraintEqualToAnchor:v101];
+  centerYAnchor2 = [(UIView *)self->_badgeView centerYAnchor];
+  centerYAnchor3 = [(TwoLinesContentView *)self centerYAnchor];
+  v100 = [centerYAnchor2 constraintEqualToAnchor:centerYAnchor3];
   v121[8] = v100;
-  v99 = [(UIView *)self->_badgeView heightAnchor];
-  v98 = [v99 constraintEqualToConstant:10.0];
+  heightAnchor3 = [(UIView *)self->_badgeView heightAnchor];
+  v98 = [heightAnchor3 constraintEqualToConstant:10.0];
   v37 = self->_thirdLabelImageViewHeightConstraint;
   v121[9] = v98;
   v121[10] = v37;
-  v97 = [(UILabel *)self->_mainTitleLabel leadingAnchor];
-  v96 = [(UILayoutGuide *)self->_titleLayoutGuide leadingAnchor];
-  v95 = [v97 constraintEqualToAnchor:v96];
+  leadingAnchor4 = [(UILabel *)self->_mainTitleLabel leadingAnchor];
+  leadingAnchor5 = [(UILayoutGuide *)self->_titleLayoutGuide leadingAnchor];
+  v95 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   v121[11] = v95;
-  v94 = [(UILabel *)self->_mainTitleLabel trailingAnchor];
-  v93 = [(UILayoutGuide *)self->_titleLayoutGuide trailingAnchor];
-  v92 = [v94 constraintEqualToAnchor:v93];
+  trailingAnchor2 = [(UILabel *)self->_mainTitleLabel trailingAnchor];
+  trailingAnchor3 = [(UILayoutGuide *)self->_titleLayoutGuide trailingAnchor];
+  v92 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v121[12] = v92;
-  v91 = [(UILabel *)self->_secondTitleLabel leadingAnchor];
-  v90 = [(UILayoutGuide *)self->_titleLayoutGuide leadingAnchor];
-  v89 = [v91 constraintEqualToAnchor:v90];
+  leadingAnchor6 = [(UILabel *)self->_secondTitleLabel leadingAnchor];
+  leadingAnchor7 = [(UILayoutGuide *)self->_titleLayoutGuide leadingAnchor];
+  v89 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   v121[13] = v89;
-  v87 = [(UILabel *)self->_secondTitleLabel trailingAnchor];
-  v86 = [(UILayoutGuide *)self->_titleLayoutGuide trailingAnchor];
-  v85 = [v87 constraintEqualToAnchor:v86];
+  trailingAnchor4 = [(UILabel *)self->_secondTitleLabel trailingAnchor];
+  trailingAnchor5 = [(UILayoutGuide *)self->_titleLayoutGuide trailingAnchor];
+  v85 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v121[14] = v85;
-  v84 = [(UIImageView *)self->_thirdLabelImageView leadingAnchor];
-  v83 = [(UILayoutGuide *)self->_titleLayoutGuide leadingAnchor];
-  v82 = [v84 constraintEqualToAnchor:v83];
+  leadingAnchor8 = [(UIImageView *)self->_thirdLabelImageView leadingAnchor];
+  leadingAnchor9 = [(UILayoutGuide *)self->_titleLayoutGuide leadingAnchor];
+  v82 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
   v38 = self->_thirdLabelToThirdImageViewLeadingConstraint;
   v121[15] = v82;
   v121[16] = v38;
-  v88 = [(UILabel *)self->_thirdTitleLabel trailingAnchor];
-  v81 = [(UILayoutGuide *)self->_titleLayoutGuide trailingAnchor];
-  v80 = [v88 constraintEqualToAnchor:v81];
+  trailingAnchor6 = [(UILabel *)self->_thirdTitleLabel trailingAnchor];
+  trailingAnchor7 = [(UILayoutGuide *)self->_titleLayoutGuide trailingAnchor];
+  v80 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
   v121[17] = v80;
-  v79 = [(UIImageView *)self->_leftImageView leadingAnchor];
-  v78 = [(TwoLinesContentView *)self leadingAnchor];
-  v77 = [v79 constraintEqualToAnchor:v78];
+  leadingAnchor10 = [(UIImageView *)self->_leftImageView leadingAnchor];
+  leadingAnchor11 = [(TwoLinesContentView *)self leadingAnchor];
+  v77 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
   v121[18] = v77;
-  v76 = [(UILayoutGuide *)self->_titleLayoutGuide trailingAnchor];
-  v75 = [(TwoLinesContentView *)self trailingAnchor];
-  v74 = [v76 constraintEqualToAnchor:v75];
+  trailingAnchor8 = [(UILayoutGuide *)self->_titleLayoutGuide trailingAnchor];
+  trailingAnchor9 = [(TwoLinesContentView *)self trailingAnchor];
+  v74 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
   v121[19] = v74;
-  v73 = [(UIImageView *)self->_leftImageView leadingAnchor];
-  v72 = [(TwoLinesContentView *)self leadingAnchor];
-  v39 = [v73 constraintEqualToAnchor:v72];
+  leadingAnchor12 = [(UIImageView *)self->_leftImageView leadingAnchor];
+  leadingAnchor13 = [(TwoLinesContentView *)self leadingAnchor];
+  v39 = [leadingAnchor12 constraintEqualToAnchor:leadingAnchor13];
   v40 = self->_imageWidthConstraint;
   v121[20] = v39;
   v121[21] = v40;
-  v41 = [(UIView *)self->_badgeView centerXAnchor];
-  v42 = [(TwoLinesContentView *)self trailingAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42];
+  centerXAnchor = [(UIView *)self->_badgeView centerXAnchor];
+  trailingAnchor10 = [(TwoLinesContentView *)self trailingAnchor];
+  v43 = [centerXAnchor constraintEqualToAnchor:trailingAnchor10];
   v121[22] = v43;
-  v44 = [(UIView *)self->_badgeView widthAnchor];
-  v45 = [v44 constraintEqualToConstant:10.0];
+  widthAnchor2 = [(UIView *)self->_badgeView widthAnchor];
+  v45 = [widthAnchor2 constraintEqualToConstant:10.0];
   v121[23] = v45;
-  v46 = [(UIImageView *)self->_thirdLabelImageView widthAnchor];
-  v47 = [v46 constraintEqualToConstant:20.0];
+  widthAnchor3 = [(UIImageView *)self->_thirdLabelImageView widthAnchor];
+  v47 = [widthAnchor3 constraintEqualToConstant:20.0];
   v121[24] = v47;
   v48 = [NSArray arrayWithObjects:v121 count:25];
   [v118 addObjectsFromArray:v48];
 
-  v49 = [(TwoLinesContentView *)self traitCollection];
-  v50 = [v49 preferredContentSizeCategory];
-  LODWORD(v42) = UIContentSizeCategoryIsAccessibilityCategory(v50);
+  traitCollection = [(TwoLinesContentView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  LODWORD(trailingAnchor10) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  if (v42)
+  if (trailingAnchor10)
   {
-    v51 = [(UILayoutGuide *)self->_titleLayoutGuide topAnchor];
-    v52 = [(TwoLinesContentView *)self topAnchor];
+    topAnchor7 = [(UILayoutGuide *)self->_titleLayoutGuide topAnchor];
+    topAnchor8 = [(TwoLinesContentView *)self topAnchor];
     [(TwoLinesContentView *)self _verticalMargin];
-    v117 = [v51 constraintEqualToAnchor:v52 constant:?];
+    v117 = [topAnchor7 constraintEqualToAnchor:topAnchor8 constant:?];
     v120[0] = v117;
-    v53 = [(UILayoutGuide *)self->_titleLayoutGuide bottomAnchor];
-    v54 = [(TwoLinesContentView *)self bottomAnchor];
+    bottomAnchor7 = [(UILayoutGuide *)self->_titleLayoutGuide bottomAnchor];
+    bottomAnchor8 = [(TwoLinesContentView *)self bottomAnchor];
     [(TwoLinesContentView *)self _verticalMargin];
-    v56 = [v53 constraintEqualToAnchor:v54 constant:-v55];
+    v56 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8 constant:-v55];
     v120[1] = v56;
-    v57 = [(UILayoutGuide *)self->_titleLayoutGuide leadingAnchor];
-    v58 = [(TwoLinesContentView *)self leadingAnchor];
-    v59 = [v57 constraintEqualToAnchor:v58];
-    v120[2] = v59;
-    v60 = [NSArray arrayWithObjects:v120 count:3];
-    [v118 addObjectsFromArray:v60];
+    leadingAnchor14 = [(UILayoutGuide *)self->_titleLayoutGuide leadingAnchor];
+    leadingAnchor15 = [(TwoLinesContentView *)self leadingAnchor];
+    heightAnchor5 = [leadingAnchor14 constraintEqualToAnchor:leadingAnchor15];
+    v120[2] = heightAnchor5;
+    heightAnchor6 = [NSArray arrayWithObjects:v120 count:3];
+    [v118 addObjectsFromArray:heightAnchor6];
   }
 
   else
   {
-    v61 = [(TwoLinesContentView *)self heightAnchor];
-    v62 = [v61 constraintGreaterThanOrEqualToConstant:0.0];
+    heightAnchor4 = [(TwoLinesContentView *)self heightAnchor];
+    v62 = [heightAnchor4 constraintGreaterThanOrEqualToConstant:0.0];
     v63 = *(&self->super.super.super.super.isa + v71);
     *(&self->super.super.super.super.isa + v71) = v62;
 
-    v116 = [(UILayoutGuide *)self->_titleLayoutGuide leadingAnchor];
-    v114 = [(UIImageView *)self->_leftImageView trailingAnchor];
+    leadingAnchor16 = [(UILayoutGuide *)self->_titleLayoutGuide leadingAnchor];
+    trailingAnchor11 = [(UIImageView *)self->_leftImageView trailingAnchor];
     [(TwoLinesContentView *)self _imageToTextSpacing];
-    v117 = [v116 constraintEqualToAnchor:v114 constant:?];
+    v117 = [leadingAnchor16 constraintEqualToAnchor:trailingAnchor11 constant:?];
     v119[0] = v117;
-    v53 = [(UILayoutGuide *)self->_titleLayoutGuide centerYAnchor];
-    v54 = [(TwoLinesContentView *)self centerYAnchor];
-    v56 = [v53 constraintEqualToAnchor:v54];
+    bottomAnchor7 = [(UILayoutGuide *)self->_titleLayoutGuide centerYAnchor];
+    bottomAnchor8 = [(TwoLinesContentView *)self centerYAnchor];
+    v56 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
     v64 = *(&self->super.super.super.super.isa + v71);
     v119[1] = v56;
     v119[2] = v64;
-    v57 = [(TwoLinesContentView *)self heightAnchor];
+    leadingAnchor14 = [(TwoLinesContentView *)self heightAnchor];
     LODWORD(v65) = 1140457472;
-    v58 = [v57 constraintEqualToConstant:0.0 priority:v65];
-    v119[3] = v58;
-    v59 = [(TwoLinesContentView *)self heightAnchor];
-    v60 = [(UILayoutGuide *)self->_titleLayoutGuide heightAnchor];
+    leadingAnchor15 = [leadingAnchor14 constraintEqualToConstant:0.0 priority:v65];
+    v119[3] = leadingAnchor15;
+    heightAnchor5 = [(TwoLinesContentView *)self heightAnchor];
+    heightAnchor6 = [(UILayoutGuide *)self->_titleLayoutGuide heightAnchor];
     [(TwoLinesContentView *)self _verticalMargin];
-    v67 = [v59 constraintGreaterThanOrEqualToAnchor:v60 constant:v66 + v66];
+    v67 = [heightAnchor5 constraintGreaterThanOrEqualToAnchor:heightAnchor6 constant:v66 + v66];
     v119[4] = v67;
     v68 = [NSArray arrayWithObjects:v119 count:5];
     [v118 addObjectsFromArray:v68];
 
-    v52 = v114;
-    v51 = v116;
+    topAnchor8 = trailingAnchor11;
+    topAnchor7 = leadingAnchor16;
   }
 
   v69 = [v118 copy];
@@ -1226,11 +1226,11 @@ LABEL_8:
   [NSLayoutConstraint activateConstraints:self->_constraints];
 }
 
-- (void)setIsParentCellSelected:(BOOL)a3
+- (void)setIsParentCellSelected:(BOOL)selected
 {
-  if (self->_isParentCellSelected != a3)
+  if (self->_isParentCellSelected != selected)
   {
-    self->_isParentCellSelected = a3;
+    self->_isParentCellSelected = selected;
     [(TwoLinesContentView *)self _updateLabelColors];
     [(TwoLinesContentView *)self _updateVibrantColor];
     viewModel = self->_viewModel;
@@ -1239,33 +1239,33 @@ LABEL_8:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v26.receiver = self;
   v26.super_class = TwoLinesContentView;
-  [(MapsThemeView *)&v26 traitCollectionDidChange:v4];
-  v5 = [(TwoLinesContentView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
-  v8 = sub_10008FB5C(v6, v7);
+  [(MapsThemeView *)&v26 traitCollectionDidChange:changeCopy];
+  traitCollection = [(TwoLinesContentView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+  v8 = sub_10008FB5C(preferredContentSizeCategory, preferredContentSizeCategory2);
 
   if (v8)
   {
     [(TwoLinesContentView *)self _updateFonts];
   }
 
-  v9 = [(TwoLinesContentView *)self traitCollection];
-  v10 = [v9 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v10);
-  v12 = [v4 preferredContentSizeCategory];
-  if (IsAccessibilityCategory == UIContentSizeCategoryIsAccessibilityCategory(v12))
+  traitCollection2 = [(TwoLinesContentView *)self traitCollection];
+  preferredContentSizeCategory3 = [traitCollection2 preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory3);
+  preferredContentSizeCategory4 = [changeCopy preferredContentSizeCategory];
+  if (IsAccessibilityCategory == UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory4))
   {
-    v13 = [(TwoLinesContentView *)self traitCollection];
-    v14 = [v13 userInterfaceStyle];
-    v15 = [v4 userInterfaceStyle];
+    traitCollection3 = [(TwoLinesContentView *)self traitCollection];
+    userInterfaceStyle = [traitCollection3 userInterfaceStyle];
+    userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-    if (v14 == v15)
+    if (userInterfaceStyle == userInterfaceStyle2)
     {
       goto LABEL_7;
     }
@@ -1275,15 +1275,15 @@ LABEL_8:
   {
   }
 
-  v16 = [(TwoLinesContentView *)self viewModel];
-  [(TwoLinesContentView *)self _updateViewsWithViewModel:v16];
+  viewModel = [(TwoLinesContentView *)self viewModel];
+  [(TwoLinesContentView *)self _updateViewsWithViewModel:viewModel];
 
 LABEL_7:
-  v17 = [(TwoLinesContentView *)self traitCollection];
-  v18 = [v17 preferredContentSizeCategory];
-  v19 = UIContentSizeCategoryIsAccessibilityCategory(v18);
-  v20 = [v4 preferredContentSizeCategory];
-  v21 = UIContentSizeCategoryIsAccessibilityCategory(v20);
+  traitCollection4 = [(TwoLinesContentView *)self traitCollection];
+  preferredContentSizeCategory5 = [traitCollection4 preferredContentSizeCategory];
+  v19 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory5);
+  preferredContentSizeCategory6 = [changeCopy preferredContentSizeCategory];
+  v21 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory6);
 
   if (v19 != v21)
   {
@@ -1291,10 +1291,10 @@ LABEL_7:
     [(TwoLinesContentView *)self _updateConstraints];
   }
 
-  v22 = [(TwoLinesContentView *)self traitCollection];
-  v23 = [v22 preferredContentSizeCategory];
-  v24 = [v4 preferredContentSizeCategory];
-  v25 = sub_10008FB5C(v23, v24);
+  traitCollection5 = [(TwoLinesContentView *)self traitCollection];
+  preferredContentSizeCategory7 = [traitCollection5 preferredContentSizeCategory];
+  preferredContentSizeCategory8 = [changeCopy preferredContentSizeCategory];
+  v25 = sub_10008FB5C(preferredContentSizeCategory7, preferredContentSizeCategory8);
 
   if (v25)
   {
@@ -1302,11 +1302,11 @@ LABEL_7:
   }
 }
 
-- (TwoLinesContentView)initWithFrame:(CGRect)a3
+- (TwoLinesContentView)initWithFrame:(CGRect)frame
 {
   v32.receiver = self;
   v32.super_class = TwoLinesContentView;
-  v3 = [(TwoLinesContentView *)&v32 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TwoLinesContentView *)&v32 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UILayoutGuide);
@@ -1341,8 +1341,8 @@ LABEL_7:
     v19 = +[UIColor redColor];
     [(UIView *)v3->_badgeView setBackgroundColor:v19];
 
-    v20 = [(UIView *)v3->_badgeView layer];
-    [v20 setCornerRadius:5.0];
+    layer = [(UIView *)v3->_badgeView layer];
+    [layer setCornerRadius:5.0];
 
     [(UIView *)v3->_badgeView setHidden:1];
     [(UIView *)v3->_badgeView setAccessibilityIdentifier:@"Badge"];
@@ -1394,13 +1394,13 @@ LABEL_7:
   return v3;
 }
 
-- (TwoLinesContentView)initWithFrame:(CGRect)a3 contentViewType:(int)a4
+- (TwoLinesContentView)initWithFrame:(CGRect)frame contentViewType:(int)type
 {
-  v5 = [(TwoLinesContentView *)self initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(TwoLinesContentView *)self initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_contentViewType = a4;
+    v5->_contentViewType = type;
     [(TwoLinesContentView *)v5 _updateLabelColors];
   }
 

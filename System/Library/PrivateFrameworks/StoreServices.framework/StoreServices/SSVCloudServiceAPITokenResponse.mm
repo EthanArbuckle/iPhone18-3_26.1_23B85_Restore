@@ -1,25 +1,25 @@
 @interface SSVCloudServiceAPITokenResponse
-- (SSVCloudServiceAPITokenResponse)initWithToken:(id)a3 error:(id)a4;
-- (SSVCloudServiceAPITokenResponse)initWithXPCEncoding:(id)a3;
+- (SSVCloudServiceAPITokenResponse)initWithToken:(id)token error:(id)error;
+- (SSVCloudServiceAPITokenResponse)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 @end
 
 @implementation SSVCloudServiceAPITokenResponse
 
-- (SSVCloudServiceAPITokenResponse)initWithToken:(id)a3 error:(id)a4
+- (SSVCloudServiceAPITokenResponse)initWithToken:(id)token error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  errorCopy = error;
   v14.receiver = self;
   v14.super_class = SSVCloudServiceAPITokenResponse;
   v8 = [(SSVCloudServiceAPITokenResponse *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [tokenCopy copy];
     apiToken = v8->_apiToken;
     v8->_apiToken = v9;
 
-    v11 = [v7 copy];
+    v11 = [errorCopy copy];
     error = v8->_error;
     v8->_error = v11;
   }
@@ -27,11 +27,11 @@
   return v8;
 }
 
-- (SSVCloudServiceAPITokenResponse)initWithXPCEncoding:(id)a3
+- (SSVCloudServiceAPITokenResponse)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v14.receiver = self;
     v14.super_class = SSVCloudServiceAPITokenResponse;

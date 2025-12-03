@@ -1,22 +1,22 @@
 @interface SKUIStarHistogramCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForLabelViewElement:(id)a3;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (SKUIStarHistogramCollectionViewCell)initWithFrame:(CGRect)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForLabelViewElement:(id)element;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (SKUIStarHistogramCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SKUIStarHistogramCollectionViewCell
 
-- (SKUIStarHistogramCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUIStarHistogramCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -31,16 +31,16 @@
 
   v18.receiver = self;
   v18.super_class = SKUIStarHistogramCollectionViewCell;
-  v16 = [(SKUIViewReuseCollectionViewCell *)&v18 initWithFrame:x, y, width, height];
-  if (v16)
+  height = [(SKUIViewReuseCollectionViewCell *)&v18 initWithFrame:x, y, width, height];
+  if (height)
   {
-    [(SKUIViewReuseCollectionViewCell *)v16 registerClass:objc_opt_class() forViewWithReuseIdentifier:@"starBar"];
+    [(SKUIViewReuseCollectionViewCell *)height registerClass:objc_opt_class() forViewWithReuseIdentifier:@"starBar"];
   }
 
-  return v16;
+  return height;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -57,10 +57,10 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -73,8 +73,8 @@
     }
   }
 
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v17 = v16;
   v19 = v18;
 
@@ -85,10 +85,10 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -105,11 +105,11 @@
   v19[1] = 3221225472;
   v19[2] = __81__SKUIStarHistogramCollectionViewCell_requestLayoutForViewElement_width_context___block_invoke;
   v19[3] = &unk_2781FF580;
-  v21 = a4;
-  v20 = v9;
-  v22 = a1;
-  v18 = v9;
-  [v8 enumerateChildrenUsingBlock:v19];
+  widthCopy = width;
+  v20 = contextCopy;
+  selfCopy = self;
+  v18 = contextCopy;
+  [elementCopy enumerateChildrenUsingBlock:v19];
 }
 
 uint64_t __81__SKUIStarHistogramCollectionViewCell_requestLayoutForViewElement_width_context___block_invoke(uint64_t a1, void *a2)
@@ -140,10 +140,10 @@ LABEL_6:
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -161,19 +161,19 @@ LABEL_6:
   v31 = 0x3010000000;
   v32 = &unk_215F8ACD7;
   v34 = *(MEMORY[0x277CBF3A8] + 8);
-  v33 = a3;
-  v17 = [v8 labelLayoutCache];
+  widthCopy = width;
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __77__SKUIStarHistogramCollectionViewCell_sizeThatFitsWidth_viewElement_context___block_invoke;
   v24[3] = &unk_2781FF5A8;
   v27 = &v29;
-  v18 = v8;
+  v18 = contextCopy;
   v25 = v18;
-  v28 = a3;
-  v19 = v17;
+  widthCopy2 = width;
+  v19 = labelLayoutCache;
   v26 = v19;
-  [v7 enumerateChildrenUsingBlock:v24];
+  [elementCopy enumerateChildrenUsingBlock:v24];
   v20 = v30[4];
   v21 = v30[5];
 
@@ -216,19 +216,19 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __75__SKUIStarHistogramCollectionViewCell_reloadWithViewElement_width_context___block_invoke;
   v12[3] = &unk_2781FC1C8;
-  v15 = a4;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  widthCopy = width;
+  v13 = elementCopy;
+  v14 = contextCopy;
+  v10 = contextCopy;
+  v11 = elementCopy;
   [(SKUIViewReuseCollectionViewCell *)self modifyUsingBlock:v12];
 }
 
@@ -288,8 +288,8 @@ LABEL_9:
   v44.receiver = self;
   v44.super_class = SKUIStarHistogramCollectionViewCell;
   [(SKUICollectionViewCell *)&v44 layoutSubviews];
-  v3 = [(SKUIStarHistogramCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SKUIStarHistogramCollectionViewCell *)self contentView];
+  [contentView bounds];
   v37 = v5;
   v38 = v4;
   rect = v6;
@@ -299,13 +299,13 @@ LABEL_9:
   MaxY = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(SKUIViewReuseCollectionViewCell *)self allExistingViews];
+  allExistingViews = [(SKUIViewReuseCollectionViewCell *)self allExistingViews];
   ShouldReverseLayoutDirection = storeShouldReverseLayoutDirection();
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v17 = v15;
+  v17 = allExistingViews;
   v18 = [v17 countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v18)
   {
@@ -363,12 +363,12 @@ LABEL_9:
   }
 }
 
-+ (id)_attributedStringForLabelViewElement:(id)a3
++ (id)_attributedStringForLabelViewElement:(id)element
 {
-  v3 = [a3 text];
+  text = [element text];
   v4 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-  v5 = [MEMORY[0x277D75348] blackColor];
-  v6 = [v3 attributedStringWithDefaultFont:v4 foregroundColor:v5];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v6 = [text attributedStringWithDefaultFont:v4 foregroundColor:blackColor];
 
   return v6;
 }

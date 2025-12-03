@@ -1,39 +1,39 @@
 @interface SearchResultsNavigationController
 + (id)_todayLocalizedString;
-- (SearchResultsNavigationController)initWithModel:(id)a3 window:(id)a4;
+- (SearchResultsNavigationController)initWithModel:(id)model window:(id)window;
 - (UISearchBar)searchBar;
 - (void)_hideSearchBar;
-- (void)_setSearchBarEnabledState:(BOOL)a3;
+- (void)_setSearchBarEnabledState:(BOOL)state;
 - (void)_showSearchBar;
 - (void)_updateTodayButtonPosition;
-- (void)animateShowingSearchBarAnimated:(BOOL)a3 withCompletion:(id)a4;
+- (void)animateShowingSearchBarAnimated:(BOOL)animated withCompletion:(id)completion;
 - (void)dealloc;
-- (void)hideSearchBarForNavigationTransitionAnimated:(BOOL)a3;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setSearchBar:(id)a3;
+- (void)hideSearchBarForNavigationTransitionAnimated:(BOOL)animated;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setSearchBar:(id)bar;
 - (void)todayPressed;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SearchResultsNavigationController
 
-- (SearchResultsNavigationController)initWithModel:(id)a3 window:(id)a4
+- (SearchResultsNavigationController)initWithModel:(id)model window:(id)window
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  windowCopy = window;
   v19.receiver = self;
   v19.super_class = SearchResultsNavigationController;
   v8 = [(SearchResultsNavigationController *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    [(SearchResultsNavigationController *)v8 setModel:v6];
+    [(SearchResultsNavigationController *)v8 setModel:modelCopy];
     v10 = [SearchResultsViewController alloc];
-    v11 = [(SearchResultsNavigationController *)v9 model];
-    v12 = [(SearchResultsViewController *)v10 initWithModel:v11 window:v7];
+    model = [(SearchResultsNavigationController *)v9 model];
+    v12 = [(SearchResultsViewController *)v10 initWithModel:model window:windowCopy];
     [(SearchResultsNavigationController *)v9 setSearchResultsViewController:v12];
 
     [(SearchResultsNavigationController *)v9 setDelegate:v9];
@@ -68,38 +68,38 @@
 {
   [(SearchResultsNavigationController *)self setToolbarHidden:1 animated:0];
   [(SearchResultsNavigationController *)self setNavigationBarHidden:1 animated:0];
-  v3 = [(SearchResultsNavigationController *)self searchResultsViewController];
-  [(SearchResultsNavigationController *)self pushViewController:v3 animated:0];
+  searchResultsViewController = [(SearchResultsNavigationController *)self searchResultsViewController];
+  [(SearchResultsNavigationController *)self pushViewController:searchResultsViewController animated:0];
 
   v4.receiver = self;
   v4.super_class = SearchResultsNavigationController;
   [(SearchResultsNavigationController *)&v4 viewDidLoad];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v23.receiver = self;
   v23.super_class = SearchResultsNavigationController;
-  [(SearchResultsNavigationController *)&v23 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(SearchResultsNavigationController *)&v23 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x4010000000;
   v20[3] = &unk_1001EBD39;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(SearchResultsNavigationController *)self searchBar];
-  [v8 frame];
+  searchBar = [(SearchResultsNavigationController *)self searchBar];
+  [searchBar frame];
   *&v21 = v9;
   *(&v21 + 1) = v10;
   *&v22 = v11;
   *(&v22 + 1) = v12;
 
-  v13 = [(SearchResultsNavigationController *)self searchBar];
-  v14 = [v13 superview];
-  [v14 bounds];
+  searchBar2 = [(SearchResultsNavigationController *)self searchBar];
+  superview = [searchBar2 superview];
+  [superview bounds];
   v16 = v15;
   v18 = v17;
 
@@ -117,32 +117,32 @@
   _Block_object_dispose(v20, 8);
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v7.receiver = self;
   v7.super_class = SearchResultsNavigationController;
-  v4 = a3;
-  [(SearchResultsNavigationController *)&v7 preferredContentSizeDidChangeForChildContentContainer:v4];
+  containerCopy = container;
+  [(SearchResultsNavigationController *)&v7 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
   v5 = [(SearchResultsNavigationController *)self searchResultsViewController:v7.receiver];
 
-  if (v5 == v4)
+  if (v5 == containerCopy)
   {
-    v6 = [(SearchResultsNavigationController *)self searchResultsViewController];
-    [v6 preferredContentSize];
+    searchResultsViewController = [(SearchResultsNavigationController *)self searchResultsViewController];
+    [searchResultsViewController preferredContentSize];
     [(SearchResultsNavigationController *)self setPreferredContentSize:?];
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v18 = a4;
-  v6 = [(SearchResultsNavigationController *)self searchResultsViewController];
-  if (v6 == v18 && [(SearchResultsNavigationController *)self initialPresentationHasCompleted])
+  viewControllerCopy = viewController;
+  searchResultsViewController = [(SearchResultsNavigationController *)self searchResultsViewController];
+  if (searchResultsViewController == viewControllerCopy && [(SearchResultsNavigationController *)self initialPresentationHasCompleted])
   {
-    v7 = [(SearchResultsNavigationController *)self traitCollection];
-    v8 = [v7 horizontalSizeClass];
+    traitCollection = [(SearchResultsNavigationController *)self traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if (v8 == 1)
+    if (horizontalSizeClass == 1)
     {
       [(SearchResultsNavigationController *)self animateShowingSearchBarAnimated:1 withCompletion:0];
     }
@@ -153,59 +153,59 @@
   }
 
   [(SearchResultsNavigationController *)self setInitialPresentationHasCompleted:1];
-  v9 = [(SearchResultsNavigationController *)self searchResultsViewController];
-  v10 = v9 == v18;
+  searchResultsViewController2 = [(SearchResultsNavigationController *)self searchResultsViewController];
+  v10 = searchResultsViewController2 == viewControllerCopy;
 
   [(SearchResultsNavigationController *)self _setSearchBarEnabledState:v10];
   [(SearchResultsNavigationController *)self setNavigationBarHidden:v10 animated:1];
-  v11 = v18;
-  if (v9 == v18)
+  v11 = viewControllerCopy;
+  if (searchResultsViewController2 == viewControllerCopy)
   {
-    v12 = [(SearchResultsNavigationController *)self presentingViewController];
-    v13 = [v12 view];
-    v14 = [v13 window];
+    presentingViewController = [(SearchResultsNavigationController *)self presentingViewController];
+    view = [presentingViewController view];
+    window = [view window];
     EKUIPushFallbackSizingContextWithViewHierarchy();
 
     [(SearchResultsNavigationController *)self _updateTodayButtonPosition];
-    v15 = [(SearchResultsNavigationController *)self presentingViewController];
-    v16 = [v15 view];
-    v17 = [v16 window];
+    presentingViewController2 = [(SearchResultsNavigationController *)self presentingViewController];
+    view2 = [presentingViewController2 view];
+    window2 = [view2 window];
     EKUIPopFallbackSizingContextWithViewHierarchy();
 
-    v11 = v18;
+    v11 = viewControllerCopy;
   }
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a4;
-  v10 = [(SearchResultsNavigationController *)self searchResultsViewController];
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
+  searchResultsViewController = [(SearchResultsNavigationController *)self searchResultsViewController];
 
-  if (v10 == v7 || ![(SearchResultsNavigationController *)self initialPresentationHasCompleted])
+  if (searchResultsViewController == viewControllerCopy || ![(SearchResultsNavigationController *)self initialPresentationHasCompleted])
   {
   }
 
   else
   {
-    v8 = [(SearchResultsNavigationController *)self traitCollection];
-    v9 = [v8 horizontalSizeClass];
+    traitCollection = [(SearchResultsNavigationController *)self traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if (v9 == 1)
+    if (horizontalSizeClass == 1)
     {
 
-      [(SearchResultsNavigationController *)self hideSearchBarForNavigationTransitionAnimated:v5];
+      [(SearchResultsNavigationController *)self hideSearchBarForNavigationTransitionAnimated:animatedCopy];
     }
   }
 }
 
-- (void)hideSearchBarForNavigationTransitionAnimated:(BOOL)a3
+- (void)hideSearchBarForNavigationTransitionAnimated:(BOOL)animated
 {
-  if (a3 && ([(SearchResultsNavigationController *)self transitionCoordinator], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  if (animated && ([(SearchResultsNavigationController *)self transitionCoordinator], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [(SearchResultsNavigationController *)self transitionCoordinator];
-    v6 = [(SearchResultsNavigationController *)self searchBar];
-    v7 = [v6 superview];
+    transitionCoordinator = [(SearchResultsNavigationController *)self transitionCoordinator];
+    searchBar = [(SearchResultsNavigationController *)self searchBar];
+    superview = [searchBar superview];
     v9[4] = self;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
@@ -216,26 +216,26 @@
     v9[1] = 3221225472;
     v9[2] = sub_10013BBD4;
     v9[3] = &unk_10020F240;
-    [v5 animateAlongsideTransitionInView:v7 animation:v10 completion:v9];
+    [transitionCoordinator animateAlongsideTransitionInView:superview animation:v10 completion:v9];
   }
 
   else
   {
     [(SearchResultsNavigationController *)self _hideSearchBar];
-    v8 = [(SearchResultsNavigationController *)self searchBar];
-    [v8 setHidden:1];
+    searchBar2 = [(SearchResultsNavigationController *)self searchBar];
+    [searchBar2 setHidden:1];
   }
 }
 
-- (void)animateShowingSearchBarAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)animateShowingSearchBarAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4)
+  animatedCopy = animated;
+  completionCopy = completion;
+  if (animatedCopy)
   {
-    v7 = [(SearchResultsNavigationController *)self transitionCoordinator];
-    v8 = [(SearchResultsNavigationController *)self searchBar];
-    v9 = [v8 superview];
+    transitionCoordinator = [(SearchResultsNavigationController *)self transitionCoordinator];
+    searchBar = [(SearchResultsNavigationController *)self searchBar];
+    superview = [searchBar superview];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10013BD68;
@@ -245,24 +245,24 @@
     v10[1] = 3221225472;
     v10[2] = sub_10013BD70;
     v10[3] = &unk_10020F1C8;
-    v11 = v6;
-    [v7 animateAlongsideTransitionInView:v9 animation:v12 completion:v10];
+    v11 = completionCopy;
+    [transitionCoordinator animateAlongsideTransitionInView:superview animation:v12 completion:v10];
   }
 
   else
   {
     [(SearchResultsNavigationController *)self _showSearchBar];
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
 - (void)_hideSearchBar
 {
-  v3 = [(SearchResultsNavigationController *)self searchBar];
-  [v3 frame];
+  searchBar = [(SearchResultsNavigationController *)self searchBar];
+  [searchBar frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -273,17 +273,17 @@
   v16.size.width = v9;
   v16.size.height = v11;
   v12 = v5 - CGRectGetWidth(v16);
-  v13 = [(SearchResultsNavigationController *)self searchBar];
-  [v13 setFrame:{v12, v7, v9, v11}];
+  searchBar2 = [(SearchResultsNavigationController *)self searchBar];
+  [searchBar2 setFrame:{v12, v7, v9, v11}];
 
-  v14 = [(SearchResultsNavigationController *)self searchBar];
-  [v14 resignFirstResponder];
+  searchBar3 = [(SearchResultsNavigationController *)self searchBar];
+  [searchBar3 resignFirstResponder];
 }
 
 - (void)_showSearchBar
 {
-  v3 = [(SearchResultsNavigationController *)self searchBar];
-  [v3 frame];
+  searchBar = [(SearchResultsNavigationController *)self searchBar];
+  [searchBar frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -303,84 +303,84 @@
   *&v14[7] = v9;
   *&v14[8] = v11;
   [UIView performWithoutAnimation:v14];
-  v12 = [(SearchResultsNavigationController *)self searchBar];
-  [v12 setFrame:{0.0, v7, v9, v11}];
+  searchBar2 = [(SearchResultsNavigationController *)self searchBar];
+  [searchBar2 setFrame:{0.0, v7, v9, v11}];
 
-  v13 = [(SearchResultsNavigationController *)self searchBar];
-  [v13 becomeFirstResponder];
+  searchBar3 = [(SearchResultsNavigationController *)self searchBar];
+  [searchBar3 becomeFirstResponder];
 }
 
-- (void)setSearchBar:(id)a3
+- (void)setSearchBar:(id)bar
 {
-  v4 = a3;
-  objc_storeWeak(&self->_searchBar, v4);
-  v5 = [(SearchResultsNavigationController *)self searchResultsViewController];
-  [v5 setSearchBar:v4];
+  barCopy = bar;
+  objc_storeWeak(&self->_searchBar, barCopy);
+  searchResultsViewController = [(SearchResultsNavigationController *)self searchResultsViewController];
+  [searchResultsViewController setSearchBar:barCopy];
 }
 
 - (void)_updateTodayButtonPosition
 {
-  v3 = [(SearchResultsNavigationController *)self view];
+  view = [(SearchResultsNavigationController *)self view];
   IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy();
 
   if (IsRegularInViewHierarchy)
   {
-    v5 = [(SearchResultsNavigationController *)self searchBar];
-    v14 = [v5 _leftButton];
+    searchBar = [(SearchResultsNavigationController *)self searchBar];
+    _leftButton = [searchBar _leftButton];
 
     v6 = CalendarAppTintColor();
-    [v14 setTitleColor:v6 forState:0];
+    [_leftButton setTitleColor:v6 forState:0];
 
-    v7 = [objc_opt_class() _todayLocalizedString];
-    [v14 setTitle:v7 forState:0];
+    _todayLocalizedString = [objc_opt_class() _todayLocalizedString];
+    [_leftButton setTitle:_todayLocalizedString forState:0];
 
-    [v14 addTarget:self action:"todayPressed" forControlEvents:64];
+    [_leftButton addTarget:self action:"todayPressed" forControlEvents:64];
     [(SearchResultsNavigationController *)self setToolbarHidden:1 animated:0];
   }
 
   else
   {
     v8 = [UIBarButtonItem alloc];
-    v9 = [objc_opt_class() _todayLocalizedString];
-    v10 = [v8 initWithTitle:v9 style:0 target:self action:"todayPressed"];
+    _todayLocalizedString2 = [objc_opt_class() _todayLocalizedString];
+    v10 = [v8 initWithTitle:_todayLocalizedString2 style:0 target:self action:"todayPressed"];
 
     v11 = CalendarAppTintColor();
     [v10 setTintColor:v11];
 
-    v12 = [(SearchResultsNavigationController *)self searchResultsViewController];
+    searchResultsViewController = [(SearchResultsNavigationController *)self searchResultsViewController];
     v15 = v10;
     v13 = [NSArray arrayWithObjects:&v15 count:1];
-    [v12 setToolbarItems:v13 animated:1];
+    [searchResultsViewController setToolbarItems:v13 animated:1];
 
     [(SearchResultsNavigationController *)self setToolbarHidden:0 animated:0];
   }
 }
 
-- (void)_setSearchBarEnabledState:(BOOL)a3
+- (void)_setSearchBarEnabledState:(BOOL)state
 {
-  v5 = [(SearchResultsNavigationController *)self transitionCoordinator];
-  v6 = [(SearchResultsNavigationController *)self searchBar];
-  v7 = [v6 superview];
+  transitionCoordinator = [(SearchResultsNavigationController *)self transitionCoordinator];
+  searchBar = [(SearchResultsNavigationController *)self searchBar];
+  superview = [searchBar superview];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10013C348;
   v8[3] = &unk_10020F218;
   v8[4] = self;
-  v9 = a3;
-  [v5 animateAlongsideTransitionInView:v7 animation:v8 completion:0];
+  stateCopy = state;
+  [transitionCoordinator animateAlongsideTransitionInView:superview animation:v8 completion:0];
 }
 
 - (void)todayPressed
 {
   CalAnalyticsSendEvent();
   v8 = CUIKTodayDate();
-  v3 = [(SearchResultsNavigationController *)self model];
-  v4 = [v3 eventStore];
-  v5 = [v4 timeZone];
+  model = [(SearchResultsNavigationController *)self model];
+  eventStore = [model eventStore];
+  timeZone = [eventStore timeZone];
 
-  v6 = [[EKCalendarDate alloc] initWithDate:v8 timeZone:v5];
-  v7 = [(SearchResultsNavigationController *)self searchResultsViewController];
-  [v7 selectDate:v6 animated:1];
+  v6 = [[EKCalendarDate alloc] initWithDate:v8 timeZone:timeZone];
+  searchResultsViewController = [(SearchResultsNavigationController *)self searchResultsViewController];
+  [searchResultsViewController selectDate:v6 animated:1];
 }
 
 + (id)_todayLocalizedString

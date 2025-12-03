@@ -2,10 +2,10 @@
 - (ARPersonOcclusionTechnique)init;
 - (id).cxx_construct;
 - (id)_fullDescription;
-- (int)_minFilterDepthMap:(__CVBuffer *)a3 kernelSize:(unint64_t)a4 pResultBuffer:(__CVBuffer *)a5;
-- (int)postProcessSegmentation:(__CVBuffer *)a3 depthData:(id)a4 depthDataSource:(int64_t)a5 detectionData:(id)a6 pResultingDepthBuffer:(__CVBuffer *)a7;
+- (int)_minFilterDepthMap:(__CVBuffer *)map kernelSize:(unint64_t)size pResultBuffer:(__CVBuffer *)buffer;
+- (int)postProcessSegmentation:(__CVBuffer *)segmentation depthData:(id)data depthDataSource:(int64_t)source detectionData:(id)detectionData pResultingDepthBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4;
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context;
 @end
 
 @implementation ARPersonOcclusionTechnique
@@ -36,37 +36,37 @@
   [(ARPersonOcclusionTechnique *)&v4 dealloc];
 }
 
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context
 {
   v111 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 resultDataOfClass:objc_opt_class()];
-  v8 = [v7 firstObject];
+  contextCopy = context;
+  v7 = [contextCopy resultDataOfClass:objc_opt_class()];
+  firstObject = [v7 firstObject];
 
-  v9 = [v6 resultDataOfClass:objc_opt_class()];
-  v10 = [v9 firstObject];
+  v9 = [contextCopy resultDataOfClass:objc_opt_class()];
+  firstObject2 = [v9 firstObject];
 
-  v11 = [v6 resultDataOfClass:objc_opt_class()];
-  v96 = [v11 firstObject];
+  v11 = [contextCopy resultDataOfClass:objc_opt_class()];
+  firstObject3 = [v11 firstObject];
 
-  v12 = [v6 resultDataOfClass:objc_opt_class()];
-  v13 = [v12 firstObject];
+  v12 = [contextCopy resultDataOfClass:objc_opt_class()];
+  firstObject4 = [v12 firstObject];
 
-  if ([v8 segmentationBuffer] && objc_msgSend(v10, "depthBuffer") && v96 && !v13)
+  if ([firstObject segmentationBuffer] && objc_msgSend(firstObject2, "depthBuffer") && firstObject3 && !firstObject4)
   {
-    [v8 timestamp];
+    [firstObject timestamp];
     v15 = v14;
-    [v10 timestamp];
+    [firstObject2 timestamp];
     if (v15 != v16)
     {
-      [v10 timestamp];
+      [firstObject2 timestamp];
       v18 = v17;
-      [v96 timestamp];
+      [firstObject3 timestamp];
       if (v18 != v19)
       {
-        [v8 timestamp];
-        [v10 timestamp];
-        [v96 timestamp];
+        [firstObject timestamp];
+        [firstObject2 timestamp];
+        [firstObject3 timestamp];
         kdebug_trace();
         if (ARShouldUseLogTypeError(void)::onceToken != -1)
         {
@@ -82,15 +82,15 @@
           {
             v23 = objc_opt_class();
             v24 = NSStringFromClass(v23);
-            [v8 timestamp];
+            [firstObject timestamp];
             v26 = v25;
-            [v10 timestamp];
+            [firstObject2 timestamp];
             v28 = v27;
-            [v96 timestamp];
+            [firstObject3 timestamp];
             *buf = 138544386;
             v102 = v24;
             v103 = 2048;
-            v104 = self;
+            selfCopy9 = self;
             v105 = 2048;
             v106 = v26;
             v107 = 2048;
@@ -105,15 +105,15 @@
         {
           v66 = objc_opt_class();
           v67 = NSStringFromClass(v66);
-          [v8 timestamp];
+          [firstObject timestamp];
           v69 = v68;
-          [v10 timestamp];
+          [firstObject2 timestamp];
           v71 = v70;
-          [v96 timestamp];
+          [firstObject3 timestamp];
           *buf = 138544386;
           v102 = v67;
           v103 = 2048;
-          v104 = self;
+          selfCopy9 = self;
           v105 = 2048;
           v106 = v69;
           v107 = 2048;
@@ -123,20 +123,20 @@
           _os_log_impl(&dword_1C241C000, v22, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Mismatched timestamps. (Segmentation data: %f, Depth data: %f, Detection data: %f) ", buf, 0x34u);
         }
 
-        v73 = [(ARTechnique *)self delegate];
-        [v73 technique:self didOutputResultData:MEMORY[0x1E695E0F0] timestamp:v6 context:a3];
+        delegate = [(ARTechnique *)self delegate];
+        [delegate technique:self didOutputResultData:MEMORY[0x1E695E0F0] timestamp:contextCopy context:timestamp];
 
         goto LABEL_70;
       }
     }
 
-    [v8 timestamp];
+    [firstObject timestamp];
     kdebug_trace();
-    v37 = [v8 segmentationBuffer];
-    v38 = v37;
-    if (v37)
+    segmentationBuffer = [firstObject segmentationBuffer];
+    v38 = segmentationBuffer;
+    if (segmentationBuffer)
     {
-      Width = CVPixelBufferGetWidth(v37);
+      Width = CVPixelBufferGetWidth(segmentationBuffer);
       Height = CVPixelBufferGetHeight(v38);
       v41 = Width;
       v42 = Height;
@@ -151,8 +151,8 @@
     v98 = ARCreateCVPixelBufferFromPool(&self->_depthPixelBufferPool, 1717855600, self, @"Result Depth Map", v41, v42);
     if (v98)
     {
-      v95 = [v6 imageData];
-      if ([v95 deviceOrientation] != self->_lastDeviceOrientation)
+      imageData = [contextCopy imageData];
+      if ([imageData deviceOrientation] != self->_lastDeviceOrientation)
       {
         v50 = _ARLogTechnique();
         if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
@@ -162,7 +162,7 @@
           *buf = 138543618;
           v102 = v52;
           v103 = 2048;
-          v104 = self;
+          selfCopy9 = self;
           _os_log_impl(&dword_1C241C000, v50, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Resetting exponential filter due to device rotation.", buf, 0x16u);
         }
 
@@ -171,18 +171,18 @@
         ptr[4] = ptr[3];
       }
 
-      self->_lastDeviceOrientation = [v95 deviceOrientation];
-      v54 = [v10 singleFrameDepthBuffer];
-      if ([v10 source] == 2)
+      self->_lastDeviceOrientation = [imageData deviceOrientation];
+      singleFrameDepthBuffer = [firstObject2 singleFrameDepthBuffer];
+      if ([firstObject2 source] == 2)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          [v96 timestamp];
+          [firstObject3 timestamp];
           kdebug_trace();
           texture = 0;
-          v55 = [(ARPersonOcclusionTechnique *)self _minFilterDepthMap:v54 kernelSize:3 pResultBuffer:&texture];
-          [v96 timestamp];
+          v55 = [(ARPersonOcclusionTechnique *)self _minFilterDepthMap:singleFrameDepthBuffer kernelSize:3 pResultBuffer:&texture];
+          [firstObject3 timestamp];
           kdebug_trace();
           if (v55)
           {
@@ -203,7 +203,7 @@
                 *buf = 138543618;
                 v102 = v60;
                 v103 = 2048;
-                v104 = self;
+                selfCopy9 = self;
                 _os_log_impl(&dword_1C241C000, v58, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Error creating result depth buffer", buf, 0x16u);
               }
             }
@@ -215,14 +215,14 @@
               *buf = 138543618;
               v102 = v93;
               v103 = 2048;
-              v104 = self;
+              selfCopy9 = self;
               _os_log_impl(&dword_1C241C000, v58, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Error creating result depth buffer", buf, 0x16u);
             }
 
-            v94 = [(ARTechnique *)self delegate];
-            [v94 technique:self didOutputResultData:MEMORY[0x1E695E0F0] timestamp:v6 context:a3];
+            delegate2 = [(ARTechnique *)self delegate];
+            [delegate2 technique:self didOutputResultData:MEMORY[0x1E695E0F0] timestamp:contextCopy context:timestamp];
 
-            [v8 timestamp];
+            [firstObject timestamp];
             kdebug_trace();
             CVPixelBufferRelease(v98);
 LABEL_69:
@@ -231,15 +231,15 @@ LABEL_69:
           }
 
           v77 = [ARMLDepthData alloc];
-          [v10 timestamp];
-          v79 = -[ARMLDepthData initWithTimestamp:depthBuffer:confidenceBuffer:source:](v77, "initWithTimestamp:depthBuffer:confidenceBuffer:source:", texture, [v10 singleFrameConfidenceBuffer], 2, v78);
+          [firstObject2 timestamp];
+          v79 = -[ARMLDepthData initWithTimestamp:depthBuffer:confidenceBuffer:source:](v77, "initWithTimestamp:depthBuffer:confidenceBuffer:source:", texture, [firstObject2 singleFrameConfidenceBuffer], 2, v78);
 
           CVPixelBufferRelease(texture);
-          v10 = v79;
+          firstObject2 = v79;
         }
       }
 
-      if (-[ARPersonOcclusionTechnique postProcessSegmentation:depthData:depthDataSource:detectionData:pResultingDepthBuffer:](self, "postProcessSegmentation:depthData:depthDataSource:detectionData:pResultingDepthBuffer:", [v8 segmentationBuffer], v10, objc_msgSend(v10, "source"), v96, &v98))
+      if (-[ARPersonOcclusionTechnique postProcessSegmentation:depthData:depthDataSource:detectionData:pResultingDepthBuffer:](self, "postProcessSegmentation:depthData:depthDataSource:detectionData:pResultingDepthBuffer:", [firstObject segmentationBuffer], firstObject2, objc_msgSend(firstObject2, "source"), firstObject3, &v98))
       {
         if (ARShouldUseLogTypeError(void)::onceToken != -1)
         {
@@ -258,7 +258,7 @@ LABEL_69:
             *buf = 138543618;
             v102 = v84;
             v103 = 2048;
-            v104 = self;
+            selfCopy9 = self;
             _os_log_impl(&dword_1C241C000, v82, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Processing segmentation and depth buffer failed", buf, 0x16u);
           }
         }
@@ -270,19 +270,19 @@ LABEL_69:
           *buf = 138543618;
           v102 = v90;
           v103 = 2048;
-          v104 = self;
+          selfCopy9 = self;
           _os_log_impl(&dword_1C241C000, v82, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Processing segmentation and depth buffer failed", buf, 0x16u);
         }
 
-        v87 = [(ARTechnique *)self delegate];
-        [v87 technique:self didOutputResultData:MEMORY[0x1E695E0F0] timestamp:v6 context:a3];
+        delegate3 = [(ARTechnique *)self delegate];
+        [delegate3 technique:self didOutputResultData:MEMORY[0x1E695E0F0] timestamp:contextCopy context:timestamp];
       }
 
       else
       {
         v85 = [ARFilteredMLDepthData alloc];
-        v86 = -[ARMLDepthData initWithTimestamp:depthBuffer:source:](v85, "initWithTimestamp:depthBuffer:source:", v98, [v10 source], a3);
-        v87 = v86;
+        v86 = -[ARMLDepthData initWithTimestamp:depthBuffer:source:](v85, "initWithTimestamp:depthBuffer:source:", v98, [firstObject2 source], timestamp);
+        delegate3 = v86;
         if (v86)
         {
           v100 = v86;
@@ -294,12 +294,12 @@ LABEL_69:
           v88 = MEMORY[0x1E695E0F0];
         }
 
-        v91 = [(ARTechnique *)self delegate];
-        [v91 technique:self didOutputResultData:v88 timestamp:v6 context:a3];
+        delegate4 = [(ARTechnique *)self delegate];
+        [delegate4 technique:self didOutputResultData:v88 timestamp:contextCopy context:timestamp];
       }
 
       CVPixelBufferRelease(v98);
-      [v8 timestamp];
+      [firstObject timestamp];
       kdebug_trace();
       goto LABEL_69;
     }
@@ -321,7 +321,7 @@ LABEL_69:
         *buf = 138543618;
         v102 = v65;
         v103 = 2048;
-        v104 = self;
+        selfCopy9 = self;
         _os_log_impl(&dword_1C241C000, v63, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Error creating result depth buffer", buf, 0x16u);
       }
     }
@@ -333,24 +333,24 @@ LABEL_69:
       *buf = 138543618;
       v102 = v75;
       v103 = 2048;
-      v104 = self;
+      selfCopy9 = self;
       _os_log_impl(&dword_1C241C000, v63, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Error creating result depth buffer", buf, 0x16u);
     }
 
-    v76 = [(ARTechnique *)self delegate];
-    [v76 technique:self didOutputResultData:MEMORY[0x1E695E0F0] timestamp:v6 context:a3];
+    delegate5 = [(ARTechnique *)self delegate];
+    [delegate5 technique:self didOutputResultData:MEMORY[0x1E695E0F0] timestamp:contextCopy context:timestamp];
 
-    [v8 timestamp];
+    [firstObject timestamp];
     kdebug_trace();
   }
 
-  else if ([v8 segmentationBuffer] && v13)
+  else if ([firstObject segmentationBuffer] && firstObject4)
   {
-    v30 = [v8 segmentationBuffer];
-    v31 = v30;
-    if (v30)
+    segmentationBuffer2 = [firstObject segmentationBuffer];
+    v31 = segmentationBuffer2;
+    if (segmentationBuffer2)
     {
-      v32 = CVPixelBufferGetWidth(v30);
+      v32 = CVPixelBufferGetWidth(segmentationBuffer2);
       v33 = CVPixelBufferGetHeight(v31);
       v34 = v32;
       v35 = v33;
@@ -371,7 +371,7 @@ LABEL_69:
       BytesPerRow = CVPixelBufferGetBytesPerRow(v44);
       bzero(BaseAddress, (v35 * BytesPerRow));
       CVPixelBufferUnlockBaseAddress(v44, 0);
-      v47 = -[ARMLDepthData initWithTimestamp:depthBuffer:source:]([ARFilteredMLDepthData alloc], "initWithTimestamp:depthBuffer:source:", v44, [v13 source], a3);
+      v47 = -[ARMLDepthData initWithTimestamp:depthBuffer:source:]([ARFilteredMLDepthData alloc], "initWithTimestamp:depthBuffer:source:", v44, [firstObject4 source], timestamp);
       CVPixelBufferRelease(v44);
     }
 
@@ -380,7 +380,7 @@ LABEL_69:
       v47 = 0;
     }
 
-    v48 = [(ARTechnique *)self delegate];
+    delegate6 = [(ARTechnique *)self delegate];
     if (v47)
     {
       v99 = v47;
@@ -392,7 +392,7 @@ LABEL_69:
       v49 = MEMORY[0x1E695E0F0];
     }
 
-    [v48 technique:self didOutputResultData:v49 timestamp:v6 context:a3];
+    [delegate6 technique:self didOutputResultData:v49 timestamp:contextCopy context:timestamp];
     if (v47)
     {
     }
@@ -401,8 +401,8 @@ LABEL_69:
   else
   {
     kdebug_trace();
-    v36 = [(ARTechnique *)self delegate];
-    [v36 technique:self didOutputResultData:MEMORY[0x1E695E0F0] timestamp:v6 context:a3];
+    delegate7 = [(ARTechnique *)self delegate];
+    [delegate7 technique:self didOutputResultData:MEMORY[0x1E695E0F0] timestamp:contextCopy context:timestamp];
 
     kdebug_trace();
   }
@@ -410,14 +410,14 @@ LABEL_69:
 LABEL_70:
 }
 
-- (int)postProcessSegmentation:(__CVBuffer *)a3 depthData:(id)a4 depthDataSource:(int64_t)a5 detectionData:(id)a6 pResultingDepthBuffer:(__CVBuffer *)a7
+- (int)postProcessSegmentation:(__CVBuffer *)segmentation depthData:(id)data depthDataSource:(int64_t)source detectionData:(id)detectionData pResultingDepthBuffer:(__CVBuffer *)buffer
 {
   buf[5] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a6;
-  v14 = v13;
-  pixelBuffer = a3;
-  if (!a3)
+  dataCopy = data;
+  detectionDataCopy = detectionData;
+  v14 = detectionDataCopy;
+  pixelBuffer = segmentation;
+  if (!segmentation)
   {
     if (ARShouldUseLogTypeError(void)::onceToken != -1)
     {
@@ -455,7 +455,7 @@ LABEL_70:
     goto LABEL_44;
   }
 
-  if (!v12)
+  if (!dataCopy)
   {
     if (ARShouldUseLogTypeError(void)::onceToken != -1)
     {
@@ -493,7 +493,7 @@ LABEL_70:
     goto LABEL_44;
   }
 
-  if (!v13)
+  if (!detectionDataCopy)
   {
     if (ARShouldUseLogTypeError(void)::onceToken != -1)
     {
@@ -531,7 +531,7 @@ LABEL_70:
     goto LABEL_44;
   }
 
-  if (!a7 || !*a7)
+  if (!buffer || !*buffer)
   {
     if (ARShouldUseLogTypeError(void)::onceToken != -1)
     {
@@ -570,8 +570,8 @@ LABEL_70:
     goto LABEL_45;
   }
 
-  v15 = [v12 singleFrameDepthBuffer];
-  if (!v15)
+  singleFrameDepthBuffer = [dataCopy singleFrameDepthBuffer];
+  if (!singleFrameDepthBuffer)
   {
     if (ARShouldUseLogTypeError(void)::onceToken != -1)
     {
@@ -612,12 +612,12 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  v218 = v15;
+  v218 = singleFrameDepthBuffer;
   if (self->_useBoundingBoxes)
   {
     v206 = v14;
-    v16 = [v14 detectedObjects];
-    v17 = [v16 count] != 0;
+    detectedObjects = [v14 detectedObjects];
+    v17 = [detectedObjects count] != 0;
 
     v14 = v206;
   }
@@ -627,9 +627,9 @@ LABEL_44:
     v17 = 0;
   }
 
-  v50 = a5 != 2 && self->_doExpFiltering;
-  v209 = *a7;
-  CVPixelBufferLockBaseAddress(*a7, 0);
+  v50 = source != 2 && self->_doExpFiltering;
+  v209 = *buffer;
+  CVPixelBufferLockBaseAddress(*buffer, 0);
   CVPixelBufferLockBaseAddress(pixelBuffer, 1uLL);
   CVPixelBufferLockBaseAddress(v218, (v50 & 1) == 0);
   memset(buf, 0, 32);
@@ -711,11 +711,11 @@ LABEL_44:
     arkit::computeBoundingBoxes(v228, v14, &__p, &v221, v229);
     arkit::fillInstanceDepthBufferOutsideAllDetections(buf, v228, v227, v229);
     v202 = ~v50;
-    v205 = [v12 singleFrameConfidenceBuffer];
-    if (v205)
+    singleFrameConfidenceBuffer = [dataCopy singleFrameConfidenceBuffer];
+    if (singleFrameConfidenceBuffer)
     {
-      CVPixelBufferLockBaseAddress(v205, 1uLL);
-      ARWrapCVPixelBufferVImage(v205, v220);
+      CVPixelBufferLockBaseAddress(singleFrameConfidenceBuffer, 1uLL);
+      ARWrapCVPixelBufferVImage(singleFrameConfidenceBuffer, v220);
       v64 = v220[0];
       v65 = v220[3];
     }
@@ -904,7 +904,7 @@ LABEL_119:
     v212 = v227[3];
     v213 = v227[0];
     v119 = v221;
-    v216 = v12;
+    v216 = dataCopy;
     v210 = buf[3];
     v211 = buf[0];
 LABEL_121:
@@ -1136,7 +1136,7 @@ LABEL_190:
             }
 
 LABEL_191:
-            v12 = v216;
+            dataCopy = v216;
             v79 = v218;
             if (v120 == v121)
             {
@@ -1279,9 +1279,9 @@ LABEL_212:
                 }
               }
 
-              if (v205)
+              if (singleFrameConfidenceBuffer)
               {
-                CVPixelBufferUnlockBaseAddress(v205, 1uLL);
+                CVPixelBufferUnlockBaseAddress(singleFrameConfidenceBuffer, 1uLL);
               }
 
               CVPixelBufferUnlockBaseAddress(v79, v202 & 1);
@@ -1428,13 +1428,13 @@ LABEL_45:
   return v42;
 }
 
-- (int)_minFilterDepthMap:(__CVBuffer *)a3 kernelSize:(unint64_t)a4 pResultBuffer:(__CVBuffer *)a5
+- (int)_minFilterDepthMap:(__CVBuffer *)map kernelSize:(unint64_t)size pResultBuffer:(__CVBuffer *)buffer
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (map)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(map);
+    Height = CVPixelBufferGetHeight(map);
   }
 
   else
@@ -1450,14 +1450,14 @@ LABEL_45:
   }
 
   v12 = v11;
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
+  CVPixelBufferLockBaseAddress(map, 1uLL);
   CVPixelBufferLockBaseAddress(v12, 0);
   memset(&src, 0, sizeof(src));
-  ARWrapCVPixelBufferVImage(a3, &src.data);
+  ARWrapCVPixelBufferVImage(map, &src.data);
   memset(&v22, 0, sizeof(v22));
   ARWrapCVPixelBufferVImage(v12, &v22.data);
   kdebug_trace();
-  v13 = vImageMin_PlanarF(&src, &v22, 0, 0, 0, a4, a4, 0x80u);
+  v13 = vImageMin_PlanarF(&src, &v22, 0, 0, 0, size, size, 0x80u);
   if (v13 == self->_minFilterIntermediateBufferSize)
   {
     minFilterIntermediatePooledBuffer = self->_minFilterIntermediatePooledBuffer;
@@ -1474,7 +1474,7 @@ LABEL_45:
       *buf = 138544130;
       v25 = v18;
       v26 = 2048;
-      v27 = self;
+      selfCopy = self;
       v28 = 2048;
       v29 = minFilterIntermediateBufferSize;
       v30 = 2048;
@@ -1493,9 +1493,9 @@ LABEL_45:
     self->_minFilterIntermediatePooledBuffer = minFilterIntermediatePooledBuffer;
   }
 
-  v21 = vImageMin_PlanarF(&src, &v22, minFilterIntermediatePooledBuffer, 0, 0, a4, a4, 0x10u);
+  v21 = vImageMin_PlanarF(&src, &v22, minFilterIntermediatePooledBuffer, 0, 0, size, size, 0x10u);
   kdebug_trace();
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(map, 1uLL);
   CVPixelBufferUnlockBaseAddress(v12, 0);
   if (v21)
   {
@@ -1506,7 +1506,7 @@ LABEL_45:
   else
   {
     result = 0;
-    *a5 = v12;
+    *buffer = v12;
   }
 
   return result;
@@ -1517,8 +1517,8 @@ LABEL_45:
   v3 = MEMORY[0x1E696AD60];
   v11.receiver = self;
   v11.super_class = ARPersonOcclusionTechnique;
-  v4 = [(ARTechnique *)&v11 _fullDescription];
-  v5 = [v3 stringWithFormat:@"%@\n", v4];
+  _fullDescription = [(ARTechnique *)&v11 _fullDescription];
+  v5 = [v3 stringWithFormat:@"%@\n", _fullDescription];
 
   v6 = CVPixelBufferPoolGetPixelBufferAttributes(self->_depthPixelBufferPool);
   v7 = [v6 description];

@@ -1,9 +1,9 @@
 @interface JavaIoByteArrayInputStream
 - (int)available;
 - (int)read;
-- (int64_t)skipWithLong:(int64_t)a3;
+- (int64_t)skipWithLong:(int64_t)long;
 - (void)dealloc;
-- (void)markWithInt:(int)a3;
+- (void)markWithInt:(int)int;
 - (void)reset;
 @end
 
@@ -17,7 +17,7 @@
   return v3;
 }
 
-- (void)markWithInt:(int)a3
+- (void)markWithInt:(int)int
 {
   objc_sync_enter(self);
   self->mark_ = self->pos_;
@@ -64,10 +64,10 @@
   objc_sync_exit(self);
 }
 
-- (int64_t)skipWithLong:(int64_t)a3
+- (int64_t)skipWithLong:(int64_t)long
 {
   objc_sync_enter(self);
-  if (a3 < 1)
+  if (long < 1)
   {
     v7 = 0;
   }
@@ -76,9 +76,9 @@
   {
     pos = self->pos_;
     count = self->count_;
-    if (count - pos >= a3)
+    if (count - pos >= long)
     {
-      count = pos + a3;
+      count = pos + long;
     }
 
     self->pos_ = count;

@@ -1,54 +1,54 @@
 @interface VehicleMonitoringTask
 - (VehicleMonitoringTask)init;
-- (void)_checkBatteryStateWithGarage:(id)a3;
-- (void)_loadGarageWithCompletion:(id)a3;
-- (void)_syncSelectedVehicleStateWithGarage:(id)a3;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5;
-- (void)setRoutePlanningSession:(id)a3;
-- (void)virtualGarageDidUpdate:(id)a3;
+- (void)_checkBatteryStateWithGarage:(id)garage;
+- (void)_loadGarageWithCompletion:(id)completion;
+- (void)_syncSelectedVehicleStateWithGarage:(id)garage;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type;
+- (void)setRoutePlanningSession:(id)session;
+- (void)virtualGarageDidUpdate:(id)update;
 @end
 
 @implementation VehicleMonitoringTask
 
-- (void)_checkBatteryStateWithGarage:(id)a3
+- (void)_checkBatteryStateWithGarage:(id)garage
 {
-  v4 = [a3 selectedVehicle];
-  v25 = [v4 currentVehicleState];
+  selectedVehicle = [garage selectedVehicle];
+  currentVehicleState = [selectedVehicle currentVehicleState];
 
-  v5 = v25;
-  if (self->_hasReportedBatteryState || !v25)
+  v5 = currentVehicleState;
+  if (self->_hasReportedBatteryState || !currentVehicleState)
   {
     v24 = +[VGVirtualGarageService sharedService];
     [v24 unregisterObserver:self];
 
-    v5 = v25;
+    v5 = currentVehicleState;
   }
 
   else if (self->_isNavigating)
   {
-    v6 = [v25 maxBatteryCapacity];
-    [v6 doubleValue];
+    maxBatteryCapacity = [currentVehicleState maxBatteryCapacity];
+    [maxBatteryCapacity doubleValue];
     v8 = v7;
-    v9 = [v25 minBatteryCapacity];
-    [v9 doubleValue];
+    minBatteryCapacity = [currentVehicleState minBatteryCapacity];
+    [minBatteryCapacity doubleValue];
     v11 = vabdd_f64(v8, v10);
 
-    v5 = v25;
+    v5 = currentVehicleState;
     if (v11 > 2.22044605e-16)
     {
-      v12 = [v25 currentBatteryCapacity];
-      [v12 doubleValue];
+      currentBatteryCapacity = [currentVehicleState currentBatteryCapacity];
+      [currentBatteryCapacity doubleValue];
       v14 = v13;
-      v15 = [v25 maxBatteryCapacity];
-      [v15 doubleValue];
+      maxBatteryCapacity2 = [currentVehicleState maxBatteryCapacity];
+      [maxBatteryCapacity2 doubleValue];
       v17 = v16;
-      v18 = [v25 minBatteryCapacity];
-      [v18 doubleValue];
+      minBatteryCapacity2 = [currentVehicleState minBatteryCapacity];
+      [minBatteryCapacity2 doubleValue];
       v20 = v14 / (v17 - v19);
 
       GEOConfigGetDouble();
-      v5 = v25;
+      v5 = currentVehicleState;
       if (v20 < v21)
       {
         v22 = +[MKMapService sharedService];
@@ -57,19 +57,19 @@
         v23 = +[NavigationFeedbackCollector sharedFeedbackCollector];
         [v23 vehicleBatteryDied];
 
-        v5 = v25;
+        v5 = currentVehicleState;
         self->_hasReportedBatteryState = 1;
       }
     }
   }
 }
 
-- (void)_syncSelectedVehicleStateWithGarage:(id)a3
+- (void)_syncSelectedVehicleStateWithGarage:(id)garage
 {
-  if (a3)
+  if (garage)
   {
-    v3 = [a3 selectedVehicle];
-    sub_1008083B0(v3, v3);
+    selectedVehicle = [garage selectedVehicle];
+    sub_1008083B0(selectedVehicle, selectedVehicle);
   }
 
   else
@@ -83,9 +83,9 @@
   }
 }
 
-- (void)virtualGarageDidUpdate:(id)a3
+- (void)virtualGarageDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -93,17 +93,17 @@
   block[2] = sub_100808608;
   block[3] = &unk_101661340;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = updateCopy;
+  v6 = updateCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_loadGarageWithCompletion:(id)a3
+- (void)_loadGarageWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = +[VGVirtualGarageService sharedService];
   v7[0] = _NSConcreteStackBlock;
@@ -111,7 +111,7 @@
   v7[2] = sub_100808760;
   v7[3] = &unk_10162B150;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [v5 virtualGarageGetGarageWithReply:v7];
 
@@ -119,12 +119,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a5 == 1 && !self->_hasReportedRoutePlanningSession)
+  sessionCopy = session;
+  resultCopy = result;
+  v10 = resultCopy;
+  if (type == 1 && !self->_hasReportedRoutePlanningSession)
   {
     v19 = 0;
     v20 = &v19;
@@ -137,14 +137,14 @@
     v18[2] = sub_100808B10;
     v18[3] = &unk_10165E5B8;
     v18[4] = &v19;
-    [v9 withValue:v18 orError:&stru_10162B100];
-    v11 = [v20[5] currentRoute];
-    if ([v11 isEVRoute])
+    [resultCopy withValue:v18 orError:&stru_10162B100];
+    currentRoute = [v20[5] currentRoute];
+    if ([currentRoute isEVRoute])
     {
       v12 = +[VGVirtualGarageService sharedService];
-      v13 = [v12 activeVehicleIdentifier];
+      activeVehicleIdentifier = [v12 activeVehicleIdentifier];
 
-      if (v13)
+      if (activeVehicleIdentifier)
       {
         objc_initWeak(&location, self);
         v14[0] = _NSConcreteStackBlock;
@@ -152,7 +152,7 @@
         v14[2] = sub_100808B20;
         v14[3] = &unk_10162B128;
         objc_copyWeak(&v16, &location);
-        v15 = v13;
+        v15 = activeVehicleIdentifier;
         [(VehicleMonitoringTask *)self _loadGarageWithCompletion:v14];
 
         objc_destroyWeak(&v16);
@@ -164,10 +164,10 @@
   }
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v7 = a4;
-  v8 = a5;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v12[0] = _NSConcreteStackBlock;
@@ -175,25 +175,25 @@
   v12[2] = sub_100808DF0;
   v12[3] = &unk_101661480;
   objc_copyWeak(&v15, &location);
-  v13 = v8;
-  v14 = v7;
-  v10 = v7;
-  v11 = v8;
+  v13 = toSessionCopy;
+  v14 = sessionCopy;
+  v10 = sessionCopy;
+  v11 = toSessionCopy;
   dispatch_async(queue, v12);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 }
 
-- (void)setRoutePlanningSession:(id)a3
+- (void)setRoutePlanningSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   routePlanningSession = self->_routePlanningSession;
-  v7 = v5;
-  if (routePlanningSession != v5)
+  v7 = sessionCopy;
+  if (routePlanningSession != sessionCopy)
   {
     [(RoutePlanningSession *)routePlanningSession unregisterObserver:self];
-    objc_storeStrong(&self->_routePlanningSession, a3);
+    objc_storeStrong(&self->_routePlanningSession, session);
     [(RoutePlanningSession *)self->_routePlanningSession registerObserver:self];
     self->_hasReportedRoutePlanningSession = 0;
     if (self->_routePlanningSession)

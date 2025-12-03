@@ -1,27 +1,27 @@
 @interface HDLocationSeriesHFDMigrationEntity
-+ (BOOL)migrateDataFromDataStore:(const void *)a3 to:(void *)a4 database:(id)a5 recoveryAnalytics:(id)a6 error:(id *)a7;
-+ (BOOL)migrateDataToSQLFromStore:(const void *)a3 database:(id)a4 error:(id *)a5;
++ (BOOL)migrateDataFromDataStore:(const void *)store to:(void *)to database:(id)database recoveryAnalytics:(id)analytics error:(id *)error;
++ (BOOL)migrateDataToSQLFromStore:(const void *)store database:(id)database error:(id *)error;
 + (__n128)migrateDataFromDataStore:to:database:recoveryAnalytics:error:;
 + (double)migrateDataFromDataStore:to:database:recoveryAnalytics:error:;
-+ (uint64_t)enumerateAllKeys:(uint64_t)a3 error:(void *)a4 enumerationHandler:;
++ (uint64_t)enumerateAllKeys:(uint64_t)keys error:(void *)error enumerationHandler:;
 + (uint64_t)migrateDataFromDataStore:to:database:recoveryAnalytics:error:;
 + (void)migrateDataFromDataStore:to:database:recoveryAnalytics:error:;
 @end
 
 @implementation HDLocationSeriesHFDMigrationEntity
 
-+ (uint64_t)enumerateAllKeys:(uint64_t)a3 error:(void *)a4 enumerationHandler:
++ (uint64_t)enumerateAllKeys:(uint64_t)keys error:(void *)error enumerationHandler:
 {
   v6 = a2;
-  v7 = a4;
+  errorCopy = error;
   objc_opt_self();
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __80__HDLocationSeriesHFDMigrationEntity_enumerateAllKeys_error_enumerationHandler___block_invoke;
   v11[3] = &unk_2786159F8;
-  v8 = v7;
+  v8 = errorCopy;
   v12 = v8;
-  v9 = [v6 executeUncachedSQL:@"SELECT data_series.hfd_key error:samples.start_date bindingHandler:samples.end_date FROM data_series LEFT JOIN samples ON data_series.data_id = samples.data_id WHERE (data_series.hfd_key IS NOT NULL)" enumerationHandler:{a3, 0, v11}];
+  v9 = [v6 executeUncachedSQL:@"SELECT data_series.hfd_key error:samples.start_date bindingHandler:samples.end_date FROM data_series LEFT JOIN samples ON data_series.data_id = samples.data_id WHERE (data_series.hfd_key IS NOT NULL)" enumerationHandler:{keys, 0, v11}];
 
   return v9;
 }
@@ -38,9 +38,9 @@ uint64_t __80__HDLocationSeriesHFDMigrationEntity_enumerateAllKeys_error_enumera
   return v5(v7, v6);
 }
 
-+ (BOOL)migrateDataFromDataStore:(const void *)a3 to:(void *)a4 database:(id)a5 recoveryAnalytics:(id)a6 error:(id *)a7
++ (BOOL)migrateDataFromDataStore:(const void *)store to:(void *)to database:(id)database recoveryAnalytics:(id)analytics error:(id *)error
 {
-  v12 = a6;
+  analyticsCopy = analytics;
   v35 = 0;
   v36 = 0;
   v33[0] = MEMORY[0x277D85DD0];
@@ -49,32 +49,32 @@ uint64_t __80__HDLocationSeriesHFDMigrationEntity_enumerateAllKeys_error_enumera
   v33[3] = &__block_descriptor_72_ea8_32c112_ZTSKZ99__HDLocationSeriesHFDMigrationEntity_migrateDataFromDataStore_to_database_recoveryAnalytics_error__E3__0_e18_B40__0q8d16d24__32l;
   v33[4] = &v34;
   v33[5] = &v35;
-  v33[6] = a3;
-  v33[7] = a4;
+  v33[6] = store;
+  v33[7] = to;
   v33[8] = &v36;
   v34 = 0;
-  v13 = [(HDLocationSeriesHFDMigrationEntity *)a1 enumerateAllKeys:a5 error:a7 enumerationHandler:v33];
+  v13 = [(HDLocationSeriesHFDMigrationEntity *)self enumerateAllKeys:database error:error enumerationHandler:v33];
   if (v13)
   {
     v14 = MEMORY[0x277CCABB0];
-    v15 = [v12 objectForKeyedSubscript:@"workoutRouteRecoveredCount"];
-    v16 = [v15 longLongValue];
-    v17 = [v14 numberWithLongLong:v36 + v16];
-    [v12 setObject:v17 forKeyedSubscript:@"workoutRouteRecoveredCount"];
+    v15 = [analyticsCopy objectForKeyedSubscript:@"workoutRouteRecoveredCount"];
+    longLongValue = [v15 longLongValue];
+    v17 = [v14 numberWithLongLong:v36 + longLongValue];
+    [analyticsCopy setObject:v17 forKeyedSubscript:@"workoutRouteRecoveredCount"];
 
     v18 = MEMORY[0x277CCABB0];
-    v19 = [v12 objectForKeyedSubscript:@"workoutRouteDiscardedCount"];
-    v20 = [v19 longLongValue];
-    v21 = [v18 numberWithLongLong:v35 + v20];
-    [v12 setObject:v21 forKeyedSubscript:@"workoutRouteDiscardedCount"];
+    v19 = [analyticsCopy objectForKeyedSubscript:@"workoutRouteDiscardedCount"];
+    longLongValue2 = [v19 longLongValue];
+    v21 = [v18 numberWithLongLong:v35 + longLongValue2];
+    [analyticsCopy setObject:v21 forKeyedSubscript:@"workoutRouteDiscardedCount"];
 
     v22 = MEMORY[0x277CCABB0];
     v23 = v34;
     if (v34)
     {
-      v19 = [v12 objectForKeyedSubscript:@"workoutRouteRecoveredCount"];
-      v24 = [v19 longLongValue];
-      v25 = v24 / v34;
+      v19 = [analyticsCopy objectForKeyedSubscript:@"workoutRouteRecoveredCount"];
+      longLongValue3 = [v19 longLongValue];
+      v25 = longLongValue3 / v34;
     }
 
     else
@@ -83,7 +83,7 @@ uint64_t __80__HDLocationSeriesHFDMigrationEntity_enumerateAllKeys_error_enumera
     }
 
     v26 = [v22 numberWithDouble:v25];
-    [v12 setObject:v26 forKeyedSubscript:@"workoutRouteMigrationFraction"];
+    [analyticsCopy setObject:v26 forKeyedSubscript:@"workoutRouteMigrationFraction"];
 
     if (v23)
     {
@@ -93,7 +93,7 @@ uint64_t __80__HDLocationSeriesHFDMigrationEntity_enumerateAllKeys_error_enumera
     v28 = v34;
     if (v34)
     {
-      v19 = [v12 objectForKeyedSubscript:@"workoutRouteDiscardedCount"];
+      v19 = [analyticsCopy objectForKeyedSubscript:@"workoutRouteDiscardedCount"];
       [v19 doubleValue];
       v30 = v29 / v34;
     }
@@ -104,7 +104,7 @@ uint64_t __80__HDLocationSeriesHFDMigrationEntity_enumerateAllKeys_error_enumera
     }
 
     v31 = [v27 numberWithDouble:v30];
-    [v12 setObject:v31 forKeyedSubscript:@"workoutRouteDiscardFraction"];
+    [analyticsCopy setObject:v31 forKeyedSubscript:@"workoutRouteDiscardFraction"];
 
     if (v28)
     {
@@ -236,22 +236,22 @@ void __90__HDLocationSeriesHFDMigrationEntity__migrateSeriesWithKey_toSQLFromSto
   operator new();
 }
 
-+ (BOOL)migrateDataToSQLFromStore:(const void *)a3 database:(id)a4 error:(id *)a5
++ (BOOL)migrateDataToSQLFromStore:(const void *)store database:(id)database error:(id *)error
 {
-  v8 = a4;
-  if ([v8 executeUncachedSQL:@"DELETE FROM location_series_data" error:a5])
+  databaseCopy = database;
+  if ([databaseCopy executeUncachedSQL:@"DELETE FROM location_series_data" error:error])
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __79__HDLocationSeriesHFDMigrationEntity_migrateDataToSQLFromStore_database_error___block_invoke;
     v12[3] = &unk_278628560;
-    v14 = a3;
-    v15 = a1;
-    v9 = v8;
+    storeCopy = store;
+    selfCopy = self;
+    v9 = databaseCopy;
     v13 = v9;
-    if (([(HDLocationSeriesHFDMigrationEntity *)a1 enumerateAllKeys:v9 error:a5 enumerationHandler:v12]& 1) != 0)
+    if (([(HDLocationSeriesHFDMigrationEntity *)self enumerateAllKeys:v9 error:error enumerationHandler:v12]& 1) != 0)
     {
-      v10 = [v9 executeUncachedSQL:@"UPDATE data_series SET series_location = 2" error:a5];
+      v10 = [v9 executeUncachedSQL:@"UPDATE data_series SET series_location = 2" error:error];
     }
 
     else
@@ -327,7 +327,7 @@ uint64_t __79__HDLocationSeriesHFDMigrationEntity_migrateDataToSQLFromStore_data
 + (__n128)migrateDataFromDataStore:to:database:recoveryAnalytics:error:
 {
   *a2 = &unk_283BEC1D0;
-  result = *(a1 + 8);
+  result = *(self + 8);
   *(a2 + 8) = result;
   return result;
 }
@@ -335,26 +335,26 @@ uint64_t __79__HDLocationSeriesHFDMigrationEntity_migrateDataToSQLFromStore_data
 + (void)migrateDataFromDataStore:to:database:recoveryAnalytics:error:
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = (a1 + 8);
-  v4 = **(a1 + 8);
+  v3 = (self + 8);
+  v4 = **(self + 8);
   v20 = 0;
   v21 = v4;
   v23 = *(a2 + 32);
   v24 = a2;
   health::bplustree::Tree<health::BlockAccessFile::ReadTransaction::BPlusTreeConfiguration<health::DataStore::ObjectIdentifier,health::BlockPointer>>::valueForKey<health::DataStore::ObjectIdentifier>(&v23, &v20, 0, buf);
-  v5 = *(a1 + 24);
-  v6 = *(a1 + 32);
+  v5 = *(self + 24);
+  v6 = *(self + 32);
   v7 = *v3;
   v8 = **v3;
-  v9 = *(a1 + 40);
+  v9 = *(self + 40);
   if (v32 == 1)
   {
     *&v23 = &unk_283BEBE00;
     *(&v23 + 1) = v9;
     v24 = v7;
     v25 = &v23;
-    v11 = *(a1 + 48);
-    v10 = *(a1 + 56);
+    v11 = *(self + 48);
+    v10 = *(self + 56);
     v20 = &unk_283BEBE90;
     v21 = v11;
     v22 = &v20;
@@ -381,8 +381,8 @@ uint64_t __79__HDLocationSeriesHFDMigrationEntity_migrateDataToSQLFromStore_data
   *(&v23 + 1) = v9;
   v24 = v7;
   v25 = &v23;
-  v15 = *(a1 + 48);
-  v14 = *(a1 + 56);
+  v15 = *(self + 48);
+  v14 = *(self + 56);
   v20 = &unk_283BEC260;
   v21 = v15;
   v22 = &v20;
@@ -408,7 +408,7 @@ uint64_t __79__HDLocationSeriesHFDMigrationEntity_migrateDataToSQLFromStore_data
 + (uint64_t)migrateDataFromDataStore:to:database:recoveryAnalytics:error:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -424,7 +424,7 @@ uint64_t __79__HDLocationSeriesHFDMigrationEntity_migrateDataToSQLFromStore_data
   *a4 = *a3;
   a4[1] = v5;
   a4[2] = a3[2];
-  return +[HDLocationSeriesHFDMigrationEntity migrateDataFromDataStore:to:database:recoveryAnalytics:error:]::$_0::operator() const(long long,double,double,NSError * {__autoreleasing}*)::{lambda(double,long long)#1}::operator()(*(a1 + 8), **(a1 + 16), v4);
+  return +[HDLocationSeriesHFDMigrationEntity migrateDataFromDataStore:to:database:recoveryAnalytics:error:]::$_0::operator() const(long long,double,double,NSError * {__autoreleasing}*)::{lambda(double,long long)#1}::operator()(*(self + 8), **(self + 16), v4);
 }
 
 @end

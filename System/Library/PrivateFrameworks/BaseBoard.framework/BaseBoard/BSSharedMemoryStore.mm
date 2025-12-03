@@ -1,32 +1,32 @@
 @interface BSSharedMemoryStore
-+ (id)deserializeDataOfClass:(Class)a3 withSerializedFromData:(id)a4;
-+ (void)_unlinkAllForIdentifier:(id)a3;
++ (id)deserializeDataOfClass:(Class)class withSerializedFromData:(id)data;
++ (void)_unlinkAllForIdentifier:(id)identifier;
 - (BSSharedMemoryStore)init;
-- (BSSharedMemoryStore)initWithIdentifier:(id)a3 dataClass:(Class)a4;
+- (BSSharedMemoryStore)initWithIdentifier:(id)identifier dataClass:(Class)class;
 - (BSSharedMemoryStoreData)data;
 - (unsigned)_lastState;
-- (void)_setFailureModeForNextWrite:(unsigned __int8)a3;
+- (void)_setFailureModeForNextWrite:(unsigned __int8)write;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setData:(id)a3;
+- (void)setData:(id)data;
 @end
 
 @implementation BSSharedMemoryStore
 
 - (BSSharedMemoryStore)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"BSSharedMemoryStore.m" lineNumber:103 description:@"init is not allowed on BSSharedMemoryStore"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BSSharedMemoryStore.m" lineNumber:103 description:@"init is not allowed on BSSharedMemoryStore"];
 
   return 0;
 }
 
-- (BSSharedMemoryStore)initWithIdentifier:(id)a3 dataClass:(Class)a4
+- (BSSharedMemoryStore)initWithIdentifier:(id)identifier dataClass:(Class)class
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  identifierCopy = identifier;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v7)
+  if (!identifierCopy)
   {
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_bs_assert_object != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -39,7 +39,7 @@
       v41 = 2114;
       v42 = v26;
       v43 = 2048;
-      v44 = self;
+      selfCopy2 = self;
       v45 = 2114;
       v46 = @"BSSharedMemoryStore.m";
       v47 = 1024;
@@ -68,7 +68,7 @@
       v41 = 2114;
       v42 = v31;
       v43 = 2048;
-      v44 = self;
+      selfCopy2 = self;
       v45 = 2114;
       v46 = @"BSSharedMemoryStore.m";
       v47 = 1024;
@@ -84,9 +84,9 @@
     JUMPOUT(0x18FF2AB04);
   }
 
-  if ([v7 length])
+  if ([identifierCopy length])
   {
-    if (a4)
+    if (class)
     {
       goto LABEL_5;
     }
@@ -94,17 +94,17 @@
 
   else
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"BSSharedMemoryStore.m" lineNumber:109 description:{@"identifier is too short : %@", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSSharedMemoryStore.m" lineNumber:109 description:{@"identifier is too short : %@", identifierCopy}];
 
-    if (a4)
+    if (class)
     {
       goto LABEL_5;
     }
   }
 
-  v34 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v34 handleFailureInMethod:a2 object:self file:@"BSSharedMemoryStore.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"dataClass"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"BSSharedMemoryStore.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"dataClass"}];
 
 LABEL_5:
   v38.receiver = self;
@@ -113,7 +113,7 @@ LABEL_5:
   v9 = v8;
   if (v8)
   {
-    _initializePath(v8->_queue_path.path, v7);
+    _initializePath(v8->_queue_path.path, identifierCopy);
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:&v9->_queue_path];
     basePath = v9->_basePath;
     v9->_basePath = v10;
@@ -133,8 +133,8 @@ LABEL_5:
     if ([__allShms containsObject:v9->_basePath])
     {
       os_unfair_lock_unlock(&__allShmsLock);
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:v9 file:@"BSSharedMemoryStore.m" lineNumber:127 description:{@"%@: competing with another shm for the same buffers", v9->_basePath}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:v9 file:@"BSSharedMemoryStore.m" lineNumber:127 description:{@"%@: competing with another shm for the same buffers", v9->_basePath}];
     }
 
     else
@@ -161,7 +161,7 @@ LABEL_5:
     block[2] = __52__BSSharedMemoryStore_initWithIdentifier_dataClass___block_invoke;
     block[3] = &unk_1E72CAED8;
     v36 = v9;
-    v37 = a4;
+    classCopy = class;
     dispatch_async(v21, block);
   }
 
@@ -359,8 +359,8 @@ LABEL_31:
 {
   if (!self->_queue_invalidated)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"BSSharedMemoryStore.m" lineNumber:207 description:@"must invalidate before dealloc"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSSharedMemoryStore.m" lineNumber:207 description:@"must invalidate before dealloc"];
   }
 
   v5.receiver = self;
@@ -430,10 +430,10 @@ void __33__BSSharedMemoryStore_invalidate__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 copyWithZone:0];
+  dataCopy = data;
+  v5 = [dataCopy copyWithZone:0];
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -556,14 +556,14 @@ LABEL_11:
   }
 }
 
-+ (id)deserializeDataOfClass:(Class)a3 withSerializedFromData:(id)a4
++ (id)deserializeDataOfClass:(Class)class withSerializedFromData:(id)data
 {
   v73 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
-  if (a3)
+  dataCopy = data;
+  v8 = dataCopy;
+  if (class)
   {
-    if (v7)
+    if (dataCopy)
     {
       goto LABEL_3;
     }
@@ -571,8 +571,8 @@ LABEL_11:
 
   else
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:a1 file:@"BSSharedMemoryStore.m" lineNumber:278 description:{@"Invalid parameter not satisfying: %@", @"dataClass"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSSharedMemoryStore.m" lineNumber:278 description:{@"Invalid parameter not satisfying: %@", @"dataClass"}];
 
     if (v8)
     {
@@ -580,20 +580,20 @@ LABEL_11:
     }
   }
 
-  v27 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v27 handleFailureInMethod:a2 object:a1 file:@"BSSharedMemoryStore.m" lineNumber:279 description:{@"Invalid parameter not satisfying: %@", @"source"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"BSSharedMemoryStore.m" lineNumber:279 description:{@"Invalid parameter not satisfying: %@", @"source"}];
 
 LABEL_3:
-  v9 = [v8 serializedDataLength];
-  v10 = v9;
-  if (v9 >= 0x7FFFFFFFFFFFFFF0)
+  serializedDataLength = [v8 serializedDataLength];
+  v10 = serializedDataLength;
+  if (serializedDataLength >= 0x7FFFFFFFFFFFFFF0)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v29 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[BSSharedMemoryStore deserializeDataOfClass:withSerializedFromData:]"];
-    [v28 handleFailureInFunction:v29 file:@"BSSharedMemoryStore.m" lineNumber:287 description:@"shmLength out of range"];
+    [currentHandler3 handleFailureInFunction:v29 file:@"BSSharedMemoryStore.m" lineNumber:287 description:@"shmLength out of range"];
   }
 
-  else if (!v9)
+  else if (!serializedDataLength)
   {
     v11 = 0;
     goto LABEL_9;
@@ -602,9 +602,9 @@ LABEL_3:
   v11 = malloc_type_malloc(v10, 0xEF036D3FuLL);
   if (!v11)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
     v31 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[BSSharedMemoryStore deserializeDataOfClass:withSerializedFromData:]"];
-    [v30 handleFailureInFunction:v31 file:@"BSSharedMemoryStore.m" lineNumber:291 description:@"failed to allocate serializing buffers"];
+    [currentHandler4 handleFailureInFunction:v31 file:@"BSSharedMemoryStore.m" lineNumber:291 description:@"failed to allocate serializing buffers"];
   }
 
   bzero(v11, v10);
@@ -621,12 +621,12 @@ LABEL_9:
   v55 = &v54;
   v56 = 0x2020000000;
   v57 = 0;
-  v12 = [MEMORY[0x1E696AF00] currentThread];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
   v47[2] = __69__BSSharedMemoryStore_deserializeDataOfClass_withSerializedFromData___block_invoke;
   v47[3] = &unk_1E72CAF50;
-  v13 = v12;
+  v13 = currentThread;
   v48 = v13;
   v49 = &v62;
   v52 = v10;
@@ -690,7 +690,7 @@ LABEL_20:
     v38 = v11;
     v35 = &v43;
     v36 = &v39;
-    v18 = [(objc_class *)a3 deserializeFromReader:v32];
+    v18 = [(objc_class *)class deserializeFromReader:v32];
     *(*(&v70 + 1) + 24) = 0;
     if (v18)
     {
@@ -939,7 +939,7 @@ uint64_t __69__BSSharedMemoryStore_deserializeDataOfClass_withSerializedFromData
   return v3;
 }
 
-- (void)_setFailureModeForNextWrite:(unsigned __int8)a3
+- (void)_setFailureModeForNextWrite:(unsigned __int8)write
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -947,16 +947,16 @@ uint64_t __69__BSSharedMemoryStore_deserializeDataOfClass_withSerializedFromData
   v4[2] = __51__BSSharedMemoryStore__setFailureModeForNextWrite___block_invoke;
   v4[3] = &unk_1E72CAFA0;
   v4[4] = self;
-  v5 = a3;
+  writeCopy = write;
   dispatch_async_and_wait(queue, v4);
 }
 
-+ (void)_unlinkAllForIdentifier:(id)a3
++ (void)_unlinkAllForIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v5)
+  if (!identifierCopy)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_bs_assert_object != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -969,7 +969,7 @@ uint64_t __69__BSSharedMemoryStore_deserializeDataOfClass_withSerializedFromData
       *&buf[12] = 2114;
       *&buf[14] = v9;
       *&buf[22] = 2048;
-      *&buf[24] = a1;
+      *&buf[24] = self;
       v17 = 2114;
       v18 = @"BSSharedMemoryStore.m";
       v19 = 1024;
@@ -998,7 +998,7 @@ uint64_t __69__BSSharedMemoryStore_deserializeDataOfClass_withSerializedFromData
       *&buf[12] = 2114;
       *&buf[14] = v14;
       *&buf[22] = 2048;
-      *&buf[24] = a1;
+      *&buf[24] = self;
       v17 = 2114;
       v18 = @"BSSharedMemoryStore.m";
       v19 = 1024;
@@ -1016,7 +1016,7 @@ uint64_t __69__BSSharedMemoryStore_deserializeDataOfClass_withSerializedFromData
 
   LOBYTE(v17) = 0;
   memset(buf, 0, sizeof(buf));
-  _initializePath(buf, v5);
+  _initializePath(buf, identifierCopy);
   buf[v17] = 49;
   BSShmDelete(buf, 1);
   buf[v17] = 50;

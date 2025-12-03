@@ -3,16 +3,16 @@
 - (id).cxx_construct;
 - (id)fpError;
 - (id)fpItems;
-- (void)collection:(id)a3 didEncounterError:(id)a4;
-- (void)collection:(id)a3 didUpdateItems:(id)a4 replaceItemsByFormerID:(id)a5 deleteItemsWithIDs:(id)a6;
-- (void)collection:(id)a3 didUpdateObservedItem:(id)a4;
-- (void)collectionDidFinishGathering:(id)a3;
-- (void)dataForCollectionShouldBeReloaded:(id)a3;
+- (void)collection:(id)collection didEncounterError:(id)error;
+- (void)collection:(id)collection didUpdateItems:(id)items replaceItemsByFormerID:(id)d deleteItemsWithIDs:(id)ds;
+- (void)collection:(id)collection didUpdateObservedItem:(id)item;
+- (void)collectionDidFinishGathering:(id)gathering;
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded;
 - (void)resetError;
-- (void)startObserving:(id)a3 forParent:(const TNodePtr *)a4 withQueue:(id)a5;
+- (void)startObserving:(id)observing forParent:(const TNodePtr *)parent withQueue:(id)queue;
 - (void)stopObserving;
-- (void)updateFPItems:(id)a3;
-- (void)updateNodesFPItemsFromCollection:(const void *)a3;
+- (void)updateFPItems:(id)items;
+- (void)updateNodesFPItemsFromCollection:(const void *)collection;
 @end
 
 @implementation DSFPItemStatusObserver
@@ -46,8 +46,8 @@
 
 LABEL_15:
     TNode::StPopulating::StPopulating(v32, v3, 0);
-    v18 = [*(self + 3) items];
-    v11 = [v18 copy];
+    items = [*(self + 3) items];
+    v11 = [items copy];
 
     TNode::StPopulating::~StPopulating(v32);
     goto LABEL_16;
@@ -55,12 +55,12 @@ LABEL_15:
 
   TNode::StPopulating::StPopulating(v20, v3, 0);
   v6 = objc_alloc(MEMORY[0x1E695DF70]);
-  v7 = [*(self + 3) items];
-  v8 = [v6 initWithCapacity:{objc_msgSend(v7, "count")}];
+  items2 = [*(self + 3) items];
+  v8 = [v6 initWithCapacity:{objc_msgSend(items2, "count")}];
 
-  v9 = [*(self + 3) items];
-  IDContainerIteratorAdaptor<NSArray<FPItem *>>::NSForwardIterator<NSArray<FPItem *>>::NSForwardIterator(v22, v9);
-  IDContainerIteratorAdaptor<NSArray<FPItem *>>::IDContainerIteratorAdaptor(v21, -1, v9);
+  items3 = [*(self + 3) items];
+  IDContainerIteratorAdaptor<NSArray<FPItem *>>::NSForwardIterator<NSArray<FPItem *>>::NSForwardIterator(v22, items3);
+  IDContainerIteratorAdaptor<NSArray<FPItem *>>::IDContainerIteratorAdaptor(v21, -1, items3);
   v10 = v8;
   IDContainerIteratorAdaptor<NSArray<FPItem *>>::NSForwardIterator<NSArray<FPItem *>>::NSForwardIterator(&obj, v22);
   IDContainerIteratorAdaptor<NSArray<FPItem *>>::NSForwardIterator<NSArray<FPItem *>>::NSForwardIterator(v23, v21);
@@ -68,8 +68,8 @@ LABEL_15:
   while (obj != v23[0] || v31 != v23[16])
   {
     v12 = *(v26 + 8 * v30);
-    v13 = [v12 fp_appContainerBundleIdentifier];
-    v14 = [v5 containsObject:v13];
+    fp_appContainerBundleIdentifier = [v12 fp_appContainerBundleIdentifier];
+    v14 = [v5 containsObject:fp_appContainerBundleIdentifier];
 
     if ((v14 & 1) == 0)
     {
@@ -116,18 +116,18 @@ LABEL_16:
   return v2;
 }
 
-- (void)startObserving:(id)a3 forParent:(const TNodePtr *)a4 withQueue:(id)a5
+- (void)startObserving:(id)observing forParent:(const TNodePtr *)parent withQueue:(id)queue
 {
   to[3] = *MEMORY[0x1E69E9840];
-  v53 = self;
-  v8 = a3;
-  v9 = a5;
+  selfCopy = self;
+  observingCopy = observing;
+  queueCopy = queue;
   std::mutex::lock((self + 40));
-  v10 = TNodeFromFINode(a4->fFINode);
+  v10 = TNodeFromFINode(parent->fFINode);
   if ((TNode::VirtualType(v10) & 0xFE) == 0x18)
   {
     v11 = *(self + 3);
-    if (v11 != v8)
+    if (v11 != observingCopy)
     {
       *(self + 3) = 0;
     }
@@ -146,7 +146,7 @@ LABEL_16:
     *buf = 138543618;
     *&buf[4] = v14;
     *&buf[12] = 2114;
-    *&buf[14] = v8;
+    *&buf[14] = observingCopy;
     _os_log_impl(&dword_1E5674000, v13, OS_LOG_TYPE_INFO, "Reusing existing collection. Existing: %{public}@, Ignored: %{public}@", buf, 0x16u);
   }
 
@@ -171,14 +171,14 @@ LABEL_16:
   else
   {
 LABEL_13:
-    v17 = v8;
+    v17 = observingCopy;
     v15 = *v12;
     *v12 = v17;
   }
 
   if (*v12)
   {
-    [*v12 setWorkingQueue:v9];
+    [*v12 setWorkingQueue:queueCopy];
     [*(self + 3) setDelegate:self];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3321888768;
@@ -186,9 +186,9 @@ LABEL_13:
     block[3] = &__block_descriptor_40_ea8_32c74_ZTSKZ61__DSFPItemStatusObserver_startObserving_forParent_withQueue__E3__9_e5_v8__0l;
     v18 = *v12;
     v52 = v18;
-    dispatch_async(v9, block);
+    dispatch_async(queueCopy, block);
 
-    v19 = TNodeFromFINode(a4->fFINode);
+    v19 = TNodeFromFINode(parent->fFINode);
     if ((TNode::VirtualType(v19) & 0xFE) == 0x18 && ICloudDriveFPFSEnabled())
     {
       objc_initWeak(buf, self);
@@ -199,26 +199,26 @@ LABEL_13:
       v49[3] = &__block_descriptor_40_ea8_32c75_ZTSKZ61__DSFPItemStatusObserver_startObserving_forParent_withQueue__E4__10_e5_v8__0l;
       objc_copyWeak(to, buf);
       objc_copyWeak(&v50, to);
-      dispatch_after(v20, v9, v49);
+      dispatch_after(v20, queueCopy, v49);
       objc_destroyWeak(to);
       objc_destroyWeak(&v50);
       objc_destroyWeak(buf);
     }
   }
 
-  objc_storeStrong(self + 1, a4->fFINode);
+  objc_storeStrong(self + 1, parent->fFINode);
   v21 = objc_cast<FPExtensionCollection,FPItemCollection * {__strong}>(*(self + 3));
   v22 = v21;
   if (v21)
   {
-    v23 = [v21 settings];
-    v24 = [(TString *)v23 enumeratedURL];
-    *(self + 104) = v24 != 0;
+    settings = [v21 settings];
+    enumeratedURL = [(TString *)settings enumeratedURL];
+    *(self + 104) = enumeratedURL != 0;
   }
 
   else
   {
-    v25 = TNodeFromFINode(a4->fFINode);
+    v25 = TNodeFromFINode(parent->fFINode);
     v26 = TNode::InfoLock(v25);
     os_unfair_lock_lock(v26);
     v28 = *(v25 + 16);
@@ -229,13 +229,13 @@ LABEL_13:
     }
 
     os_unfair_lock_unlock(v26);
-    v23 = TFSInfo::GetFPItem(v28);
+    settings = TFSInfo::GetFPItem(v28);
     if (v27)
     {
       std::__shared_weak_count::__release_shared[abi:ne200100](v27);
     }
 
-    *(self + 104) = v23 == 0;
+    *(self + 104) = settings == 0;
   }
 
   v30 = *(self + 104);
@@ -249,7 +249,7 @@ LABEL_13:
 
   else
   {
-    v32 = TNodeFromFINode(a4->fFINode);
+    v32 = TNodeFromFINode(parent->fFINode);
     v33 = TNode::InfoLock(v32);
     os_unfair_lock_lock(v33);
     v35 = *(v32 + 16);
@@ -266,10 +266,10 @@ LABEL_13:
       std::__shared_weak_count::__release_shared[abi:ne200100](v34);
     }
 
-    v23 = [v31 itemIdentifier];
+    settings = [v31 itemIdentifier];
     *buf = &stru_1F5F42870;
     CFRetain(&stru_1F5F42870);
-    TString::SetStringRefAsImmutable(buf, v23);
+    TString::SetStringRefAsImmutable(buf, settings);
   }
 
   if (self + 16 != buf)
@@ -343,8 +343,8 @@ LABEL_13:
     }
   }
 
-  v44 = [*v12 isGathering];
-  if (v44)
+  isGathering = [*v12 isGathering];
+  if (isGathering)
   {
     v45 = TNodeFromFINode(*(self + 1));
     FINodeFromTNode(v45);
@@ -360,9 +360,9 @@ LABEL_13:
     operator new();
   }
 
-  if (TNode::IsContextOpen(v44))
+  if (TNode::IsContextOpen(isGathering))
   {
-    TNodeFromFINode(*(v53 + 1));
+    TNodeFromFINode(*(selfCopy + 1));
     *&buf[16] = 0;
     std::__variant_detail::__dtor<std::__variant_detail::__traits<std::monostate,BOOL,unsigned char,short,int,long long,unsigned int,double,Point,Blob,NSObject * {__strong},TString,TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>,TRef<__CFNumber const*,TRetainReleasePolicy<__CFNumber const*>>,TRef<__CFData const*,TRetainReleasePolicy<__CFData const*>>,TRef<__CFDictionary const*,TRetainReleasePolicy<__CFDictionary const*>>,TRef<__CFURL const*,TRetainReleasePolicy<__CFURL const*>>,TRef<__CFArray const*,TRetainReleasePolicy<__CFArray const*>>,TRef<__CFFileSecurity *,TRetainReleasePolicy<__CFFileSecurity *>>,TRef<TReferenceCounted *,TRetainReleasePolicy<TReferenceCounted *>>,Property,NodeRequestOptions,NodeDSStoreStatus,DSBladeRunnerFlags>,(std::__variant_detail::_Trait)1>::__destroy[abi:ne200100](buf);
     *&buf[16] = 21;
@@ -453,19 +453,19 @@ void __61__DSFPItemStatusObserver_startObserving_forParent_withQueue___block_inv
   v11 = *(self + 3);
   if (v11)
   {
-    v12 = [v11 delegate];
-    v13 = v12 == 0;
+    delegate = [v11 delegate];
+    v13 = delegate == 0;
 
     if (!v13)
     {
-      v14 = [*(self + 3) workingQueue];
+      workingQueue = [*(self + 3) workingQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3321888768;
       block[2] = __39__DSFPItemStatusObserver_stopObserving__block_invoke;
       block[3] = &__block_descriptor_40_ea8_32c53_ZTSKZ39__DSFPItemStatusObserver_stopObserving_E4__11_e5_v8__0l;
       v15 = *(self + 3);
       v18 = v15;
-      dispatch_async(v14, block);
+      dispatch_async(workingQueue, block);
 
       [*(self + 3) setDelegate:0];
       std::unique_ptr<AutoSignpostInterval_FPProvider_Gathering>::reset[abi:ne200100](self + 14, 0);
@@ -476,10 +476,10 @@ void __61__DSFPItemStatusObserver_startObserving_forParent_withQueue___block_inv
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateFPItems:(id)a3
+- (void)updateFPItems:(id)items
 {
   v47 = *MEMORY[0x1E69E9840];
-  v29 = a3;
+  itemsCopy = items;
   v3 = LogObj(4);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
@@ -519,7 +519,7 @@ void __61__DSFPItemStatusObserver_startObserving_forParent_withQueue___block_inv
 
     TString::SetFromUTF8(&v34, p_p, v9);
     v10 = SanitizedPath(&v34);
-    v11 = [v29 count];
+    v11 = [itemsCopy count];
     *buf = 138543618;
     *&buf[4] = v10;
     v45 = 2048;
@@ -555,7 +555,7 @@ void __61__DSFPItemStatusObserver_startObserving_forParent_withQueue___block_inv
     }
   }
 
-  if ([v29 count])
+  if ([itemsCopy count])
   {
     __p = 0;
     v41 = 0;
@@ -567,7 +567,7 @@ void __61__DSFPItemStatusObserver_startObserving_forParent_withQueue___block_inv
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    obj = v29;
+    obj = itemsCopy;
     v19 = [obj countByEnumeratingWithState:&v36 objects:v43 count:16];
     if (!v19)
     {
@@ -585,17 +585,17 @@ void __61__DSFPItemStatusObserver_startObserving_forParent_withQueue___block_inv
         }
 
         v22 = *(*(&v36 + 1) + 8 * i);
-        v23 = [v22 itemIdentifier];
-        if (operator==(self + 2, v23))
+        itemIdentifier = [v22 itemIdentifier];
+        if (operator==(self + 2, itemIdentifier))
         {
-          v24 = [v22 domainIdentifier];
+          domainIdentifier = [v22 domainIdentifier];
           v34.fString.fRef = &stru_1F5F42870;
           CFRetain(&stru_1F5F42870);
-          TString::SetStringRefAsImmutable(&v34, v24);
+          TString::SetStringRefAsImmutable(&v34, domainIdentifier);
 
-          v25 = [*v31 fpItem];
-          v26 = [v25 domainIdentifier];
-          v27 = operator==(&v34.fString.fRef, v26);
+          fpItem = [*v31 fpItem];
+          domainIdentifier2 = [fpItem domainIdentifier];
+          v27 = operator==(&v34.fString.fRef, domainIdentifier2);
 
           TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(&v34.fString.fRef);
           if (v27)
@@ -638,10 +638,10 @@ LABEL_36:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)collection:(id)a3 didUpdateObservedItem:(id)a4
+- (void)collection:(id)collection didUpdateObservedItem:(id)item
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  itemCopy = item;
   v6 = LogObj(4);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -663,9 +663,9 @@ LABEL_36:
     }
 
     v11 = SanitizedStr(&v18);
-    v12 = [*(self + 3) isGathering];
+    isGathering = [*(self + 3) isGathering];
     v13 = "no";
-    if (v12)
+    if (isGathering)
     {
       v13 = "yes";
     }
@@ -682,15 +682,15 @@ LABEL_36:
   {
     if (*(self + 104) == 1 && !CFStringGetLength(*(self + 2)))
     {
-      v15 = [v5 itemIdentifier];
-      if (*(self + 2) != v15)
+      itemIdentifier = [itemCopy itemIdentifier];
+      if (*(self + 2) != itemIdentifier)
       {
-        TString::SetStringRefAsImmutable(self + 2, v15);
+        TString::SetStringRefAsImmutable(self + 2, itemIdentifier);
       }
     }
 
     v18.fString.fRef = *(self + 1);
-    v19 = v5;
+    v19 = itemCopy;
     memset(buf, 0, sizeof(buf));
     std::vector<std::pair<TNodePtr,FPItem * {__strong}>>::__init_with_size[abi:ne200100]<std::pair<TNodePtr,FPItem * {__strong}> const*,std::pair<TNodePtr,FPItem * {__strong}> const*>(buf, &v18, buf, 1uLL);
     TNode::AttachFPItemsMetadata(buf, 1, 1);
@@ -701,10 +701,10 @@ LABEL_36:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)collectionDidFinishGathering:(id)a3
+- (void)collectionDidFinishGathering:(id)gathering
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  gatheringCopy = gathering;
   v5 = LogObj(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -726,9 +726,9 @@ LABEL_36:
     }
 
     v10 = SanitizedStr(&v19);
-    v11 = [*(self + 3) isGathering];
+    isGathering = [*(self + 3) isGathering];
     v12 = "no";
-    if (v11)
+    if (isGathering)
     {
       v12 = "yes";
     }
@@ -741,8 +741,8 @@ LABEL_36:
     TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(&v19.fString.fRef);
   }
 
-  v13 = [v4 items];
-  [(DSFPItemStatusObserver *)self updateFPItems:v13];
+  items = [gatheringCopy items];
+  [(DSFPItemStatusObserver *)self updateFPItems:items];
 
   if (TNode::IsContextOpen(v14))
   {
@@ -771,10 +771,10 @@ LABEL_36:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dataForCollectionShouldBeReloaded:(id)a3
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reloadedCopy = reloaded;
   v5 = LogObj(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -796,9 +796,9 @@ LABEL_36:
     }
 
     v10 = SanitizedStr(&v16);
-    v11 = [*(self + 3) isGathering];
+    isGathering = [*(self + 3) isGathering];
     v12 = "no";
-    if (v11)
+    if (isGathering)
     {
       v12 = "yes";
     }
@@ -811,8 +811,8 @@ LABEL_36:
     TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(&v16.fString.fRef);
   }
 
-  v13 = [v4 items];
-  [(DSFPItemStatusObserver *)self updateFPItems:v13];
+  items = [reloadedCopy items];
+  [(DSFPItemStatusObserver *)self updateFPItems:items];
 
   if (TNode::IsContextOpen(v14))
   {
@@ -827,10 +827,10 @@ LABEL_36:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateNodesFPItemsFromCollection:(const void *)a3
+- (void)updateNodesFPItemsFromCollection:(const void *)collection
 {
-  v4 = [*(self + 3) items];
-  [(DSFPItemStatusObserver *)self updateFPItems:v4];
+  items = [*(self + 3) items];
+  [(DSFPItemStatusObserver *)self updateFPItems:items];
 
   if (TNode::IsContextOpen(v5))
   {
@@ -843,12 +843,12 @@ LABEL_36:
   }
 }
 
-- (void)collection:(id)a3 didUpdateItems:(id)a4 replaceItemsByFormerID:(id)a5 deleteItemsWithIDs:(id)a6
+- (void)collection:(id)collection didUpdateItems:(id)items replaceItemsByFormerID:(id)d deleteItemsWithIDs:(id)ds
 {
   v28 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  itemsCopy = items;
+  dCopy = d;
+  dsCopy = ds;
   v12 = LogObj(4);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -870,9 +870,9 @@ LABEL_36:
     }
 
     v17 = SanitizedStr(&v23);
-    v18 = [*(self + 3) isGathering];
+    isGathering = [*(self + 3) isGathering];
     v19 = "no";
-    if (v18)
+    if (isGathering)
     {
       v19 = "yes";
     }
@@ -885,12 +885,12 @@ LABEL_36:
     TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(&v23.fString.fRef);
   }
 
-  [(DSFPItemStatusObserver *)self updateFPItems:v9];
-  v20 = [v10 allValues];
-  [(DSFPItemStatusObserver *)self updateFPItems:v20];
+  [(DSFPItemStatusObserver *)self updateFPItems:itemsCopy];
+  allValues = [dCopy allValues];
+  [(DSFPItemStatusObserver *)self updateFPItems:allValues];
 
-  v21 = [v9 count];
-  if ((v21 || (v21 = [v11 count]) != 0) && TNode::IsContextOpen(v21))
+  v21 = [itemsCopy count];
+  if ((v21 || (v21 = [dsCopy count]) != 0) && TNode::IsContextOpen(v21))
   {
     TNodeFromFINode(*(self + 1));
     *(&v27 + 2) = 0;
@@ -903,34 +903,34 @@ LABEL_36:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)collection:(id)a3 didEncounterError:(id)a4
+- (void)collection:(id)collection didEncounterError:(id)error
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  errorCopy = error;
   v8 = LogObj(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     LODWORD(v21[0].fString.fRef) = 138543618;
-    *(&v21[0].fString.fRef + 4) = v6;
+    *(&v21[0].fString.fRef + 4) = collectionCopy;
     WORD2(v21[1].fString.fRef) = 2112;
-    *(&v21[1].fString.fRef + 6) = v7;
+    *(&v21[1].fString.fRef + 6) = errorCopy;
     _os_log_impl(&dword_1E5674000, v8, OS_LOG_TYPE_ERROR, "collection didEncounterError: %{public}@: %@", v21, 0x16u);
   }
 
   IsContextOpen = TNode::IsContextOpen(v9);
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [(__CFString *)v7 domain];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  domain = [(__CFString *)errorCopy domain];
   FileProviderErrorDomain(v21);
-  if (operator==(&v21[0].fString.fRef, v12))
+  if (operator==(&v21[0].fString.fRef, domain))
   {
-    v13 = [(__CFString *)v7 code]== -2001;
+    v13 = [(__CFString *)errorCopy code]== -2001;
     TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(&v21[0].fString.fRef);
 
     if (v13)
     {
-      objc_sync_exit(v11);
+      objc_sync_exit(selfCopy);
 
       goto LABEL_17;
     }
@@ -941,32 +941,32 @@ LABEL_36:
     TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(&v21[0].fString.fRef);
   }
 
-  if (*(v11 + 4) == v7)
+  if (*(selfCopy + 4) == errorCopy)
   {
     IsContextOpen = 0;
   }
 
   else
   {
-    v14 = Copy<NSMutableArray<FILocalAppContainerNode *>>(v7);
-    v15 = *(v11 + 4);
-    *(v11 + 4) = v14;
+    v14 = Copy<NSMutableArray<FILocalAppContainerNode *>>(errorCopy);
+    v15 = *(selfCopy + 4);
+    *(selfCopy + 4) = v14;
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 
   if (TNode::IsContextOpen(v16))
   {
-    v17 = [(__CFString *)v7 domain];
+    domain2 = [(__CFString *)errorCopy domain];
     FileProviderInternalErrorDomain(v21);
-    if (operator==(&v21[0].fString.fRef, v17))
+    if (operator==(&v21[0].fString.fRef, domain2))
     {
-      v18 = [(__CFString *)v7 code]== 15;
+      v18 = [(__CFString *)errorCopy code]== 15;
       TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(&v21[0].fString.fRef);
 
       if (v18)
       {
-        v19 = TNodeFromFINode(*(v11 + 1));
+        v19 = TNodeFromFINode(*(selfCopy + 1));
         TNode::ClearFPItems(v19);
         goto LABEL_17;
       }
@@ -979,7 +979,7 @@ LABEL_36:
 
     if (IsContextOpen)
     {
-      TNodeFromFINode(*(v11 + 1));
+      TNodeFromFINode(*(selfCopy + 1));
       memset(v21, 0, 24);
       TNode::RequestInternalTask();
     }
@@ -992,15 +992,15 @@ LABEL_17:
 
 - (void)resetError
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = *(v2 + 4);
-  *(v2 + 4) = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = *(selfCopy + 4);
+  *(selfCopy + 4) = 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   if (v3)
   {
-    TNodeFromFINode(*(v2 + 1));
+    TNodeFromFINode(*(selfCopy + 1));
     memset(&v4, 0, sizeof(v4));
     TNode::RequestInternalTask();
   }
@@ -1008,10 +1008,10 @@ LABEL_17:
 
 - (id)fpError
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = *(v2 + 4);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = *(selfCopy + 4);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

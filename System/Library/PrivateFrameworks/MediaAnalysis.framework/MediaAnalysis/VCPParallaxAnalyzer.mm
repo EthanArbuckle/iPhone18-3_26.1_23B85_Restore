@@ -1,34 +1,34 @@
 @interface VCPParallaxAnalyzer
-- (VCPParallaxAnalyzer)initWithOptions:(id)a3 andExistingResults:(id)a4;
-- (int)analyzeAsset:(id)a3 cancel:(id)a4 results:(id *)a5;
-- (int)exportWallpaperForAsset:(id)a3 withOptions:(id)a4 cancel:(id)a5 results:(id *)a6;
-- (int)upgradeWallPaperAtURL:(id)a3 toURL:(id)a4 cancel:(id)a5 results:(id *)a6;
+- (VCPParallaxAnalyzer)initWithOptions:(id)options andExistingResults:(id)results;
+- (int)analyzeAsset:(id)asset cancel:(id)cancel results:(id *)results;
+- (int)exportWallpaperForAsset:(id)asset withOptions:(id)options cancel:(id)cancel results:(id *)results;
+- (int)upgradeWallPaperAtURL:(id)l toURL:(id)rL cancel:(id)cancel results:(id *)results;
 @end
 
 @implementation VCPParallaxAnalyzer
 
-- (VCPParallaxAnalyzer)initWithOptions:(id)a3 andExistingResults:(id)a4
+- (VCPParallaxAnalyzer)initWithOptions:(id)options andExistingResults:(id)results
 {
   v57 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  v42 = a4;
+  optionsCopy = options;
+  resultsCopy = results;
   v54.receiver = self;
   v54.super_class = VCPParallaxAnalyzer;
   v43 = [(VCPParallaxAnalyzer *)&v54 init];
   if (v43)
   {
-    v41 = [v40 mutableCopy];
-    v6 = [v42 objectForKeyedSubscript:@"PetsResults"];
+    v41 = [optionsCopy mutableCopy];
+    v6 = [resultsCopy objectForKeyedSubscript:@"PetsResults"];
     v7 = v6 == 0;
 
     if (!v7)
     {
-      v8 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v52 = 0u;
       v53 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v9 = [v42 objectForKeyedSubscript:@"PetsResults"];
+      v9 = [resultsCopy objectForKeyedSubscript:@"PetsResults"];
       v10 = [v9 countByEnumeratingWithState:&v50 objects:v56 count:16];
       if (v10)
       {
@@ -44,7 +44,7 @@
               objc_enumerationMutation(v9);
             }
 
-            v14 = [*(*(&v50 + 1) + 8 * v13) objectForKeyedSubscript:{@"attributes", v40}];
+            v14 = [*(*(&v50 + 1) + 8 * v13) objectForKeyedSubscript:{@"attributes", optionsCopy}];
             v15 = [v14 objectForKeyedSubscript:@"petsBounds"];
             v58 = NSRectFromString(v15);
             x = v58.origin.x;
@@ -63,7 +63,7 @@
               *&v49[2] = width;
               *&v49[3] = height;
               v20 = [MEMORY[0x1E696B098] valueWithBytes:v49 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-              [v8 addObject:v20];
+              [array addObject:v20];
             }
 
             ++v13;
@@ -76,23 +76,23 @@
         while (v10);
       }
 
-      if ([v8 count])
+      if ([array count])
       {
-        [v41 setObject:v8 forKeyedSubscript:@"PetsRegions"];
+        [v41 setObject:array forKeyedSubscript:@"PetsRegions"];
       }
     }
 
-    v21 = [v42 objectForKeyedSubscript:{@"PetsFaceResults", v40}];
+    v21 = [resultsCopy objectForKeyedSubscript:{@"PetsFaceResults", optionsCopy}];
     v22 = v21 == 0;
 
     if (!v22)
     {
-      v23 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v47 = 0u;
       v48 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v24 = [v42 objectForKeyedSubscript:@"PetsFaceResults"];
+      v24 = [resultsCopy objectForKeyedSubscript:@"PetsFaceResults"];
       v25 = [v24 countByEnumeratingWithState:&v45 objects:v55 count:16];
       if (v25)
       {
@@ -127,7 +127,7 @@
               *&v44[2] = v33;
               *&v44[3] = v34;
               v35 = [MEMORY[0x1E696B098] valueWithBytes:v44 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-              [v23 addObject:v35];
+              [array2 addObject:v35];
             }
 
             ++v28;
@@ -140,24 +140,24 @@
         while (v25);
       }
 
-      if ([v23 count])
+      if ([array2 count])
       {
-        [v41 setObject:v23 forKeyedSubscript:@"PetsFaceRegions"];
+        [v41 setObject:array2 forKeyedSubscript:@"PetsFaceRegions"];
       }
     }
 
     if ([v41 count])
     {
-      v36 = [v41 copy];
+      dictionary = [v41 copy];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DF20] dictionary];
+      dictionary = [MEMORY[0x1E695DF20] dictionary];
     }
 
     options = v43->_options;
-    v43->_options = v36;
+    v43->_options = dictionary;
 
     v38 = v43;
   }
@@ -165,13 +165,13 @@
   return v43;
 }
 
-- (int)analyzeAsset:(id)a3 cancel:(id)a4 results:(id *)a5
+- (int)analyzeAsset:(id)asset cancel:(id)cancel results:(id *)results
 {
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v9 || ((v9[2])(v9) & 1) == 0)
+  assetCopy = asset;
+  cancelCopy = cancel;
+  v10 = cancelCopy;
+  if (!cancelCopy || ((cancelCopy[2])(cancelCopy) & 1) == 0)
   {
     v35 = 0;
     v36 = &v35;
@@ -196,7 +196,7 @@
     v26 = v13;
     v14 = _Block_copy(&v22);
     v15 = objc_alloc(MEMORY[0x1E6978B28]);
-    v16 = [v15 initWithPhotoAsset:{v8, v22, v23, v24, v25}];
+    v16 = [v15 initWithPhotoAsset:{assetCopy, v22, v23, v24, v25}];
     [getPISegmentationClass() computeSegmentationScoresForAsset:v16 options:self->_options completion:v14];
     v17 = dispatch_time(0, 100000000);
     if (dispatch_semaphore_wait(v13, v17))
@@ -235,7 +235,7 @@ LABEL_8:
         v42 = @"ParallaxResults";
         v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v41 count:1];
         v43 = v20;
-        *a5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
+        *results = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
 
         v11 = 0;
 LABEL_19:
@@ -276,16 +276,16 @@ void __51__VCPParallaxAnalyzer_analyzeAsset_cancel_results___block_invoke(uint64
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (int)exportWallpaperForAsset:(id)a3 withOptions:(id)a4 cancel:(id)a5 results:(id *)a6
+- (int)exportWallpaperForAsset:(id)asset withOptions:(id)options cancel:(id)cancel results:(id *)results
 {
   v55 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v36 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v10 || ((v10[2])(v10) & 1) == 0)
+  assetCopy = asset;
+  optionsCopy = options;
+  cancelCopy = cancel;
+  v11 = cancelCopy;
+  if (!cancelCopy || ((cancelCopy[2])(cancelCopy) & 1) == 0)
   {
-    v34 = a6;
+    resultsCopy = results;
     v44 = 0;
     v45 = &v44;
     v46 = 0x3032000000;
@@ -301,8 +301,8 @@ void __51__VCPParallaxAnalyzer_analyzeAsset_cancel_results___block_invoke(uint64
     v14 = v13;
     v42 = v14;
     v35 = _Block_copy(aBlock);
-    v15 = [MEMORY[0x1E696AC08] defaultManager];
-    if ([v15 fileExistsAtPath:@"/tmp/com.apple.mediaanalysisd/"])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if ([defaultManager fileExistsAtPath:@"/tmp/com.apple.mediaanalysisd/"])
     {
       v38 = 0;
     }
@@ -310,7 +310,7 @@ void __51__VCPParallaxAnalyzer_analyzeAsset_cancel_results___block_invoke(uint64
     else
     {
       v40 = 0;
-      v16 = [v15 createDirectoryAtPath:@"/tmp/com.apple.mediaanalysisd/" withIntermediateDirectories:1 attributes:0 error:&v40];
+      v16 = [defaultManager createDirectoryAtPath:@"/tmp/com.apple.mediaanalysisd/" withIntermediateDirectories:1 attributes:0 error:&v40];
       v38 = v40;
       if ((v16 & 1) == 0)
       {
@@ -331,17 +331,17 @@ LABEL_30:
     }
 
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [MEMORY[0x1E696AFB0] UUID];
-    v19 = [v18 UUIDString];
-    v20 = [v17 stringWithFormat:@"%@wp-%@", @"/tmp/com.apple.mediaanalysisd/", v19];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v20 = [v17 stringWithFormat:@"%@wp-%@", @"/tmp/com.apple.mediaanalysisd/", uUIDString];
 
     v21 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v20 isDirectory:1];
-    v22 = [v21 path];
-    v23 = [v15 fileExistsAtPath:v22];
+    path = [v21 path];
+    v23 = [defaultManager fileExistsAtPath:path];
 
     if ((v23 & 1) != 0 || ([MEMORY[0x1E696AC08] defaultManager], v24 = objc_claimAutoreleasedReturnValue(), v39 = 0, objc_msgSend(v24, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v21, 1, 0, &v39), v25 = v39, v24, !v25))
     {
-      v27 = [objc_alloc(MEMORY[0x1E6978B28]) initWithPhotoAsset:v37];
+      v27 = [objc_alloc(MEMORY[0x1E6978B28]) initWithPhotoAsset:assetCopy];
       [getPISegmentationClass() exportWallpaperForAsset:v27 toURL:v21 options:self->_options completion:v35];
       v28 = dispatch_time(0, 100000000);
       if (dispatch_semaphore_wait(v14, v28))
@@ -381,7 +381,7 @@ LABEL_17:
           v51 = @"WallpaperExportResults";
           v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1];
           v52 = v32;
-          *v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
+          *resultsCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
 
           v12 = 0;
         }
@@ -419,16 +419,16 @@ void __74__VCPParallaxAnalyzer_exportWallpaperForAsset_withOptions_cancel_result
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (int)upgradeWallPaperAtURL:(id)a3 toURL:(id)a4 cancel:(id)a5 results:(id *)a6
+- (int)upgradeWallPaperAtURL:(id)l toURL:(id)rL cancel:(id)cancel results:(id *)results
 {
   v48 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  v42 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (a6)
+  lCopy = l;
+  rLCopy = rL;
+  cancelCopy = cancel;
+  v11 = cancelCopy;
+  if (results)
   {
-    if (v10 && ((*(v10 + 2))(v10) & 1) != 0)
+    if (cancelCopy && ((*(cancelCopy + 2))(cancelCopy) & 1) != 0)
     {
       v12 = -128;
     }
@@ -467,8 +467,8 @@ void __74__VCPParallaxAnalyzer_exportWallpaperForAsset_withOptions_cancel_result
         getPISegmentationClass();
         [v17 setTarget:objc_opt_class()];
         [v17 setSelector:v15];
-        [v17 setArgument:&v43 atIndex:2];
-        [v17 setArgument:&v42 atIndex:3];
+        [v17 setArgument:&lCopy atIndex:2];
+        [v17 setArgument:&rLCopy atIndex:3];
         [v17 setArgument:&self->_options atIndex:4];
         [v17 setArgument:&v29 atIndex:5];
         [v17 invoke];
@@ -510,7 +510,7 @@ void __74__VCPParallaxAnalyzer_exportWallpaperForAsset_withOptions_cancel_result
             v44 = @"WallpaperPosterConfigDataResults";
             v45 = v20;
             [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
-            *a6 = v12 = 0;
+            *results = v12 = 0;
           }
         }
       }

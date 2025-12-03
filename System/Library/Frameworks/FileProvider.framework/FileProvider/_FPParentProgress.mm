@@ -1,6 +1,6 @@
 @interface _FPParentProgress
 - (void)dealloc;
-- (void)setProgressProxy:(id)a3;
+- (void)setProgressProxy:(id)proxy;
 @end
 
 @implementation _FPParentProgress
@@ -13,16 +13,16 @@
   [(_FPParentProgress *)&v3 dealloc];
 }
 
-- (void)setProgressProxy:(id)a3
+- (void)setProgressProxy:(id)proxy
 {
-  v5 = a3;
+  proxyCopy = proxy;
   [(FPProgressProxy *)self->_progressProxy stopTrackingIfStarted];
-  objc_storeStrong(&self->_progressProxy, a3);
+  objc_storeStrong(&self->_progressProxy, proxy);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __38___FPParentProgress_setProgressProxy___block_invoke;
   v13[3] = &unk_1E79399B0;
-  v6 = v5;
+  v6 = proxyCopy;
   v14 = v6;
   [(_FPParentProgress *)self setCancellationHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];

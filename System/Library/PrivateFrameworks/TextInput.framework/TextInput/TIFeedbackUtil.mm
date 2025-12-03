@@ -6,7 +6,7 @@
 + (BOOL)migratePreviousStudyStateAndCheckPreviousEnrollment;
 + (BOOL)shouldOverrideLanguageRegionCheck;
 + (BOOL)shouldPublishCAEventsImmediately;
-+ (BOOL)supportedLanguagesHaveRegions:(id)a3;
++ (BOOL)supportedLanguagesHaveRegions:(id)regions;
 + (id)getCompletionEventTimestamp;
 + (id)getFinalInputModes;
 + (id)getFinalTimestamp;
@@ -15,19 +15,19 @@
 + (id)getInitialInputModes;
 + (id)getInitialTimestamp;
 + (id)getInitiationEventTimestamp;
-+ (id)getKeyNameFor:(id)a3;
++ (id)getKeyNameFor:(id)for;
 + (id)getRequestSurveyEventTimestamp;
 + (id)getRetryTimestamp;
 + (id)getStudyEnrollment;
 + (id)getStudyID;
 + (id)getStudyLanguageAndRegion;
 + (id)getSupportedLangRegion;
-+ (id)getSupportedLangRegionFromSupportedFeedbackLanguages:(id)a3;
++ (id)getSupportedLangRegionFromSupportedFeedbackLanguages:(id)languages;
 + (int64_t)getBucketedDuration;
 + (int64_t)getFeedbackState;
 + (int64_t)getSurveyOutcome;
 + (void)clearStudyState;
-+ (void)clearStudyState:(id)a3;
++ (void)clearStudyState:(id)state;
 + (void)removeCompletionEventTimestamp;
 + (void)removeFeedbackState;
 + (void)removeFinalInputModes;
@@ -41,30 +41,30 @@
 + (void)removeRetryTimestamp;
 + (void)removeStudyLanguageAndRegion;
 + (void)removeSurveyOutcome;
-+ (void)setCompletionEventTimestamp:(id)a3;
-+ (void)setFeedbackState:(int64_t)a3;
-+ (void)setFinalInputModes:(id)a3;
-+ (void)setFinalPreferenceValue:(BOOL)a3;
-+ (void)setFinalTimestamp:(id)a3;
-+ (void)setInitialInputModes:(id)a3;
-+ (void)setInitialPreferenceValue:(BOOL)a3;
-+ (void)setInitialTimestamp:(id)a3;
-+ (void)setInitiationEventTimestamp:(id)a3;
-+ (void)setRequestSurveyEventTimestamp:(id)a3;
-+ (void)setRetryTimestamp:(id)a3;
-+ (void)setStudyEnrollment:(id)a3;
-+ (void)setStudyLanguageAndRegion:(id)a3;
-+ (void)setSurveyOutcome:(int64_t)a3;
++ (void)setCompletionEventTimestamp:(id)timestamp;
++ (void)setFeedbackState:(int64_t)state;
++ (void)setFinalInputModes:(id)modes;
++ (void)setFinalPreferenceValue:(BOOL)value;
++ (void)setFinalTimestamp:(id)timestamp;
++ (void)setInitialInputModes:(id)modes;
++ (void)setInitialPreferenceValue:(BOOL)value;
++ (void)setInitialTimestamp:(id)timestamp;
++ (void)setInitiationEventTimestamp:(id)timestamp;
++ (void)setRequestSurveyEventTimestamp:(id)timestamp;
++ (void)setRetryTimestamp:(id)timestamp;
++ (void)setStudyEnrollment:(id)enrollment;
++ (void)setStudyLanguageAndRegion:(id)region;
++ (void)setSurveyOutcome:(int64_t)outcome;
 @end
 
 @implementation TIFeedbackUtil
 
 + (id)getFormMetadata
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = +[TIFeedbackUtil getBucketedDuration];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", v3];
-  [v2 setObject:v4 forKey:@":duration"];
+  [dictionary setObject:v4 forKey:@":duration"];
   if (+[TIFeedbackUtil getInitialPreferenceValue])
   {
     v5 = @"1";
@@ -75,9 +75,9 @@
     v5 = @"0";
   }
 
-  [v2 setObject:v5 forKey:@":initialPreferenceValue"];
+  [dictionary setObject:v5 forKey:@":initialPreferenceValue"];
 
-  return v2;
+  return dictionary;
 }
 
 + (void)removeStudyLanguageAndRegion
@@ -88,13 +88,13 @@
   [v4 removeObjectForKey:v3];
 }
 
-+ (void)setStudyLanguageAndRegion:(id)a3
++ (void)setStudyLanguageAndRegion:(id)region
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
+  regionCopy = region;
   v6 = [[v3 alloc] initWithSuiteName:@"com.apple.keyboard"];
   v5 = [TIFeedbackUtil getKeyNameFor:@"feedbackStudyLanguageRegionKey"];
-  [v6 setObject:v4 forKey:v5];
+  [v6 setObject:regionCopy forKey:v5];
 }
 
 + (id)getStudyLanguageAndRegion
@@ -171,13 +171,13 @@
   [v3 removeObjectForKey:v2];
 }
 
-+ (void)setRetryTimestamp:(id)a3
++ (void)setRetryTimestamp:(id)timestamp
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
+  timestampCopy = timestamp;
   v6 = [[v3 alloc] initWithSuiteName:@"com.apple.keyboard"];
   v5 = [TIFeedbackUtil getKeyNameFor:@"feedbackRetryTimestamp_"];
-  [v6 setObject:v4 forKey:v5];
+  [v6 setObject:timestampCopy forKey:v5];
 }
 
 + (id)getRetryTimestamp
@@ -196,11 +196,11 @@
   [v3 removeObjectForKey:v2];
 }
 
-+ (void)setSurveyOutcome:(int64_t)a3
++ (void)setSurveyOutcome:(int64_t)outcome
 {
   v5 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.keyboard"];
   v4 = [TIFeedbackUtil getKeyNameFor:@"feedbackSurveyOutcome_"];
-  [v5 setInteger:a3 forKey:v4];
+  [v5 setInteger:outcome forKey:v4];
 }
 
 + (int64_t)getSurveyOutcome
@@ -219,13 +219,13 @@
   [v3 removeObjectForKey:v2];
 }
 
-+ (void)setCompletionEventTimestamp:(id)a3
++ (void)setCompletionEventTimestamp:(id)timestamp
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
+  timestampCopy = timestamp;
   v6 = [[v3 alloc] initWithSuiteName:@"com.apple.keyboard"];
   v5 = [TIFeedbackUtil getKeyNameFor:@"feedbackCompletionEventTimestamp_"];
-  [v6 setObject:v4 forKey:v5];
+  [v6 setObject:timestampCopy forKey:v5];
 }
 
 + (id)getCompletionEventTimestamp
@@ -244,13 +244,13 @@
   [v3 removeObjectForKey:v2];
 }
 
-+ (void)setRequestSurveyEventTimestamp:(id)a3
++ (void)setRequestSurveyEventTimestamp:(id)timestamp
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
+  timestampCopy = timestamp;
   v6 = [[v3 alloc] initWithSuiteName:@"com.apple.keyboard"];
   v5 = [TIFeedbackUtil getKeyNameFor:@"feedbackSurveyRequestEventTimestamp_"];
-  [v6 setObject:v4 forKey:v5];
+  [v6 setObject:timestampCopy forKey:v5];
 }
 
 + (id)getRequestSurveyEventTimestamp
@@ -269,13 +269,13 @@
   [v3 removeObjectForKey:v2];
 }
 
-+ (void)setInitiationEventTimestamp:(id)a3
++ (void)setInitiationEventTimestamp:(id)timestamp
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
+  timestampCopy = timestamp;
   v6 = [[v3 alloc] initWithSuiteName:@"com.apple.keyboard"];
   v5 = [TIFeedbackUtil getKeyNameFor:@"feedbackInitiationEventTimestamp_"];
-  [v6 setObject:v4 forKey:v5];
+  [v6 setObject:timestampCopy forKey:v5];
 }
 
 + (id)getInitiationEventTimestamp
@@ -294,13 +294,13 @@
   [v3 removeObjectForKey:v2];
 }
 
-+ (void)setFinalTimestamp:(id)a3
++ (void)setFinalTimestamp:(id)timestamp
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
+  timestampCopy = timestamp;
   v6 = [[v3 alloc] initWithSuiteName:@"com.apple.keyboard"];
   v5 = [TIFeedbackUtil getKeyNameFor:@"feedbackFinalTimestamp_"];
-  [v6 setObject:v4 forKey:v5];
+  [v6 setObject:timestampCopy forKey:v5];
 }
 
 + (id)getFinalTimestamp
@@ -319,13 +319,13 @@
   [v3 removeObjectForKey:v2];
 }
 
-+ (void)setInitialTimestamp:(id)a3
++ (void)setInitialTimestamp:(id)timestamp
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
+  timestampCopy = timestamp;
   v6 = [[v3 alloc] initWithSuiteName:@"com.apple.keyboard"];
   v5 = [TIFeedbackUtil getKeyNameFor:@"feedbackInitialTimestamp_"];
-  [v6 setObject:v4 forKey:v5];
+  [v6 setObject:timestampCopy forKey:v5];
 }
 
 + (id)getInitialTimestamp
@@ -344,13 +344,13 @@
   [v3 removeObjectForKey:v2];
 }
 
-+ (void)setFinalInputModes:(id)a3
++ (void)setFinalInputModes:(id)modes
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
+  modesCopy = modes;
   v6 = [[v3 alloc] initWithSuiteName:@"com.apple.keyboard"];
   v5 = [TIFeedbackUtil getKeyNameFor:@"feedbackFinalInputModes_"];
-  [v6 setObject:v4 forKey:v5];
+  [v6 setObject:modesCopy forKey:v5];
 }
 
 + (id)getFinalInputModes
@@ -369,13 +369,13 @@
   [v3 removeObjectForKey:v2];
 }
 
-+ (void)setInitialInputModes:(id)a3
++ (void)setInitialInputModes:(id)modes
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
+  modesCopy = modes;
   v6 = [[v3 alloc] initWithSuiteName:@"com.apple.keyboard"];
   v5 = [TIFeedbackUtil getKeyNameFor:@"feedbackInitialInputModes_"];
-  [v6 setObject:v4 forKey:v5];
+  [v6 setObject:modesCopy forKey:v5];
 }
 
 + (id)getInitialInputModes
@@ -394,12 +394,12 @@
   [v3 removeObjectForKey:v2];
 }
 
-+ (void)setFinalPreferenceValue:(BOOL)a3
++ (void)setFinalPreferenceValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   v5 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.keyboard"];
   v4 = [TIFeedbackUtil getKeyNameFor:@"feedbackFinalPreferenceValue_"];
-  [v5 setBool:v3 forKey:v4];
+  [v5 setBool:valueCopy forKey:v4];
 }
 
 + (BOOL)getFinalPreferenceValue
@@ -418,12 +418,12 @@
   [v3 removeObjectForKey:v2];
 }
 
-+ (void)setInitialPreferenceValue:(BOOL)a3
++ (void)setInitialPreferenceValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   v5 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.keyboard"];
   v4 = [TIFeedbackUtil getKeyNameFor:@"feedbackInitialPreferenceValue_"];
-  [v5 setBool:v3 forKey:v4];
+  [v5 setBool:valueCopy forKey:v4];
 }
 
 + (BOOL)getInitialPreferenceValue
@@ -442,11 +442,11 @@
   [v3 removeObjectForKey:v2];
 }
 
-+ (void)setFeedbackState:(int64_t)a3
++ (void)setFeedbackState:(int64_t)state
 {
   v5 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.keyboard"];
   v4 = +[TIFeedbackUtil getStateKey];
-  [v5 setInteger:a3 forKey:v4];
+  [v5 setInteger:state forKey:v4];
 }
 
 + (int64_t)getFeedbackState
@@ -466,56 +466,56 @@
   return v3;
 }
 
-+ (void)setStudyEnrollment:(id)a3
++ (void)setStudyEnrollment:(id)enrollment
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
+  enrollmentCopy = enrollment;
   v5 = [[v3 alloc] initWithSuiteName:@"com.apple.keyboard"];
-  [v5 setObject:v4 forKey:@"feedbackLastStudyEnrollment"];
+  [v5 setObject:enrollmentCopy forKey:@"feedbackLastStudyEnrollment"];
 }
 
-+ (void)clearStudyState:(id)a3
++ (void)clearStudyState:(id)state
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
+  stateCopy = state;
   v18 = [[v3 alloc] initWithSuiteName:@"com.apple.keyboard"];
-  v5 = [@"feedbackState_KeyboardAutocorrection_" stringByAppendingString:v4];
+  v5 = [@"feedbackState_KeyboardAutocorrection_" stringByAppendingString:stateCopy];
   [v18 removeObjectForKey:v5];
 
-  v6 = [@"feedbackInitialInputModes_KeyboardAutocorrection_" stringByAppendingString:v4];
+  v6 = [@"feedbackInitialInputModes_KeyboardAutocorrection_" stringByAppendingString:stateCopy];
   [v18 removeObjectForKey:v6];
 
-  v7 = [@"feedbackInitialTimestamp_KeyboardAutocorrection_" stringByAppendingString:v4];
+  v7 = [@"feedbackInitialTimestamp_KeyboardAutocorrection_" stringByAppendingString:stateCopy];
   [v18 removeObjectForKey:v7];
 
-  v8 = [@"feedbackInitialPreferenceValue_KeyboardAutocorrection_" stringByAppendingString:v4];
+  v8 = [@"feedbackInitialPreferenceValue_KeyboardAutocorrection_" stringByAppendingString:stateCopy];
   [v18 removeObjectForKey:v8];
 
-  v9 = [@"feedbackFinalInputModes_KeyboardAutocorrection_" stringByAppendingString:v4];
+  v9 = [@"feedbackFinalInputModes_KeyboardAutocorrection_" stringByAppendingString:stateCopy];
   [v18 removeObjectForKey:v9];
 
-  v10 = [@"feedbackFinalTimestamp_KeyboardAutocorrection_" stringByAppendingString:v4];
+  v10 = [@"feedbackFinalTimestamp_KeyboardAutocorrection_" stringByAppendingString:stateCopy];
   [v18 removeObjectForKey:v10];
 
-  v11 = [@"feedbackFinalPreferenceValue_KeyboardAutocorrection_" stringByAppendingString:v4];
+  v11 = [@"feedbackFinalPreferenceValue_KeyboardAutocorrection_" stringByAppendingString:stateCopy];
   [v18 removeObjectForKey:v11];
 
-  v12 = [@"feedbackSurveyOutcome_KeyboardAutocorrection_" stringByAppendingString:v4];
+  v12 = [@"feedbackSurveyOutcome_KeyboardAutocorrection_" stringByAppendingString:stateCopy];
   [v18 removeObjectForKey:v12];
 
-  v13 = [@"feedbackCompletionEventTimestamp_KeyboardAutocorrection_" stringByAppendingString:v4];
+  v13 = [@"feedbackCompletionEventTimestamp_KeyboardAutocorrection_" stringByAppendingString:stateCopy];
   [v18 removeObjectForKey:v13];
 
-  v14 = [@"feedbackInitiationEventTimestamp_KeyboardAutocorrection_" stringByAppendingString:v4];
+  v14 = [@"feedbackInitiationEventTimestamp_KeyboardAutocorrection_" stringByAppendingString:stateCopy];
   [v18 removeObjectForKey:v14];
 
-  v15 = [@"feedbackSurveyRequestEventTimestamp_KeyboardAutocorrection_" stringByAppendingString:v4];
+  v15 = [@"feedbackSurveyRequestEventTimestamp_KeyboardAutocorrection_" stringByAppendingString:stateCopy];
   [v18 removeObjectForKey:v15];
 
-  v16 = [@"feedbackRetryTimestamp_KeyboardAutocorrection_" stringByAppendingString:v4];
+  v16 = [@"feedbackRetryTimestamp_KeyboardAutocorrection_" stringByAppendingString:stateCopy];
   [v18 removeObjectForKey:v16];
 
-  v17 = [@"feedbackStudyLanguageRegionKeyKeyboardAutocorrection_" stringByAppendingString:v4];
+  v17 = [@"feedbackStudyLanguageRegionKeyKeyboardAutocorrection_" stringByAppendingString:stateCopy];
 
   [v18 removeObjectForKey:v17];
 }
@@ -607,24 +607,24 @@
   return v2;
 }
 
-+ (id)getSupportedLangRegionFromSupportedFeedbackLanguages:(id)a3
++ (id)getSupportedLangRegionFromSupportedFeedbackLanguages:(id)languages
 {
-  v4 = a3;
+  languagesCopy = languages;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__251;
   v21 = __Block_byref_object_dispose__252;
   v22 = &stru_1EF56D550;
-  v5 = [TIFeedbackUtil supportedLanguagesHaveRegions:v4];
+  v5 = [TIFeedbackUtil supportedLanguagesHaveRegions:languagesCopy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __71__TIFeedbackUtil_getSupportedLangRegionFromSupportedFeedbackLanguages___block_invoke;
   v12[3] = &unk_1E6F4BB30;
   v14 = &v17;
-  v15 = a1;
+  selfCopy = self;
   v16 = v5;
-  v6 = v4;
+  v6 = languagesCopy;
   v13 = v6;
   v7 = MEMORY[0x1866068F0](v12);
   if ([MEMORY[0x1E696AF00] isMainThread])
@@ -705,13 +705,13 @@ LABEL_14:
 {
   v27 = *MEMORY[0x1E69E9840];
   v2 = +[TIInputModeController sharedInputModeController];
-  v3 = [v2 enabledInputModeIdentifiers];
+  enabledInputModeIdentifiers = [v2 enabledInputModeIdentifiers];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = v3;
+  v4 = enabledInputModeIdentifiers;
   v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
@@ -806,19 +806,19 @@ LABEL_19:
   return v3;
 }
 
-+ (BOOL)supportedLanguagesHaveRegions:(id)a3
++ (BOOL)supportedLanguagesHaveRegions:(id)regions
 {
-  v3 = [a3 objectAtIndex:0];
+  v3 = [regions objectAtIndex:0];
   v4 = [v3 containsString:@"_"];
 
   return v4;
 }
 
-+ (id)getKeyNameFor:(id)a3
++ (id)getKeyNameFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v4 = +[TIFeedbackUtil getStudyID];
-  v5 = [v3 stringByAppendingString:v4];
+  v5 = [forCopy stringByAppendingString:v4];
 
   return v5;
 }

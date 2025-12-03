@@ -1,12 +1,12 @@
 @interface AFAnalyticsObserverConnection
-- (AFAnalyticsObserverConnection)initWithObservation:(id)a3;
+- (AFAnalyticsObserverConnection)initWithObservation:(id)observation;
 - (id)_connection;
 - (void)_cleanUpConnection;
 - (void)_connectionInterrupted;
 - (void)_connectionInvalidated;
 - (void)dealloc;
-- (void)didObserveEvents:(id)a3 completion:(id)a4;
-- (void)flushWithCompletion:(id)a3;
+- (void)didObserveEvents:(id)events completion:(id)completion;
+- (void)flushWithCompletion:(id)completion;
 - (void)invalidate;
 @end
 
@@ -126,19 +126,19 @@ void __44__AFAnalyticsObserverConnection__connection__block_invoke_2(uint64_t a1
   dispatch_semaphore_signal(semaphore);
 }
 
-- (void)didObserveEvents:(id)a3 completion:(id)a4
+- (void)didObserveEvents:(id)events completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  eventsCopy = events;
+  completionCopy = completion;
   observationHandler = self->_observationHandler;
   if (observationHandler)
   {
-    observationHandler[2](observationHandler, v8);
+    observationHandler[2](observationHandler, eventsCopy);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -161,10 +161,10 @@ void __44__AFAnalyticsObserverConnection__connection__block_invoke_2(uint64_t a1
   [(AFAnalyticsObserverConnection *)&v3 dealloc];
 }
 
-- (void)flushWithCompletion:(id)a3
+- (void)flushWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextAnalytics;
   if (os_log_type_enabled(AFSiriLogContextAnalytics, OS_LOG_TYPE_INFO))
   {
@@ -179,8 +179,8 @@ void __44__AFAnalyticsObserverConnection__connection__block_invoke_2(uint64_t a1
   v9[2] = __53__AFAnalyticsObserverConnection_flushWithCompletion___block_invoke;
   v9[3] = &unk_1E7349838;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x1E69E9840];
@@ -236,9 +236,9 @@ void __53__AFAnalyticsObserverConnection_flushWithCompletion___block_invoke_2(ui
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (AFAnalyticsObserverConnection)initWithObservation:(id)a3
+- (AFAnalyticsObserverConnection)initWithObservation:(id)observation
 {
-  v4 = a3;
+  observationCopy = observation;
   v18.receiver = self;
   v18.super_class = AFAnalyticsObserverConnection;
   v5 = [(AFAnalyticsObserverConnection *)&v18 init];
@@ -255,7 +255,7 @@ void __53__AFAnalyticsObserverConnection_flushWithCompletion___block_invoke_2(ui
     queue = v5->_queue;
     v5->_queue = v10;
 
-    v12 = MEMORY[0x193AFB7B0](v4);
+    v12 = MEMORY[0x193AFB7B0](observationCopy);
     observationHandler = v5->_observationHandler;
     v5->_observationHandler = v12;
 

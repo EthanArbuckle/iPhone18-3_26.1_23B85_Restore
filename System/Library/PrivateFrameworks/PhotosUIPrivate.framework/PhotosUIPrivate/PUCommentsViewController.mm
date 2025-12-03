@@ -1,22 +1,22 @@
 @interface PUCommentsViewController
-+ (BOOL)canShowCommentsForAsset:(id)a3;
-- (BOOL)contentAreaContainsPoint:(CGPoint)a3 inCoordinateSpace:(id)a4;
-- (CGRect)contentBoundsInCoordinateSpace:(id)a3;
++ (BOOL)canShowCommentsForAsset:(id)asset;
+- (BOOL)contentAreaContainsPoint:(CGPoint)point inCoordinateSpace:(id)space;
+- (CGRect)contentBoundsInCoordinateSpace:(id)space;
 - (CGSize)minimumContentSize;
 - (CGSize)preferredContentSize;
 - (PUAccessoryContentViewControllerDelegate)accessoryContentViewControllerDelegate;
-- (PUCommentsViewController)initWithAssetViewModel:(id)a3;
-- (PUCommentsViewController)initWithCoder:(id)a3;
-- (PUCommentsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PUCommentsViewController)initWithAssetViewModel:(id)model;
+- (PUCommentsViewController)initWithCoder:(id)coder;
+- (PUCommentsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIEdgeInsets)contentInsets;
 - (void)_updateTableDataController;
-- (void)commentsTableDataController:(id)a3 didChangeEditing:(BOOL)a4;
-- (void)commentsTableDataController:(id)a3 tableViewDidScroll:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setContentInsets:(UIEdgeInsets)a3 changeReason:(int64_t)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)commentsTableDataController:(id)controller didChangeEditing:(BOOL)editing;
+- (void)commentsTableDataController:(id)controller tableViewDidScroll:(id)scroll;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setContentInsets:(UIEdgeInsets)insets changeReason:(int64_t)reason;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUCommentsViewController
@@ -41,29 +41,29 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PUExtendedTraitCollectionObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PUExtendedTraitCollectionObservationContext != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUCommentsViewController.m" lineNumber:206 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCommentsViewController.m" lineNumber:206 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 2) != 0)
+  if ((changeCopy & 2) != 0)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(PUCommentsViewController *)self _updateTableDataController];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  if ([a4 isInEditModeChanged])
+  if ([change isInEditModeChanged])
   {
 
     [(PUCommentsViewController *)self _updateTableDataController];
@@ -73,8 +73,8 @@
 - (CGSize)minimumContentSize
 {
   v2 = *MEMORY[0x1E695F060];
-  v3 = [(PUCommentsViewController *)self _tableDataController];
-  [v3 minimumHeight];
+  _tableDataController = [(PUCommentsViewController *)self _tableDataController];
+  [_tableDataController minimumHeight];
   v5 = v4;
 
   v6 = v2;
@@ -84,18 +84,18 @@
   return result;
 }
 
-- (CGRect)contentBoundsInCoordinateSpace:(id)a3
+- (CGRect)contentBoundsInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(PUCommentsViewController *)self _tableView];
-  [v5 bounds];
+  spaceCopy = space;
+  _tableView = [(PUCommentsViewController *)self _tableView];
+  [_tableView bounds];
   v7 = v6;
   v9 = v8;
-  [v5 contentOffset];
+  [_tableView contentOffset];
   v11 = v7 - v10;
   v13 = v9 - v12;
-  [v5 contentSize];
-  [v5 convertRect:v4 toCoordinateSpace:{v11, v13, v14, v15}];
+  [_tableView contentSize];
+  [_tableView convertRect:spaceCopy toCoordinateSpace:{v11, v13, v14, v15}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -120,18 +120,18 @@
   return result;
 }
 
-- (BOOL)contentAreaContainsPoint:(CGPoint)a3 inCoordinateSpace:(id)a4
+- (BOOL)contentAreaContainsPoint:(CGPoint)point inCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PUCommentsViewController *)self view];
-  [v8 bounds];
+  y = point.y;
+  x = point.x;
+  spaceCopy = space;
+  view = [(PUCommentsViewController *)self view];
+  [view bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [v8 convertPoint:v7 fromCoordinateSpace:{x, y}];
+  [view convertPoint:spaceCopy fromCoordinateSpace:{x, y}];
   v18 = v17;
   v20 = v19;
 
@@ -141,95 +141,95 @@
   v23.size.height = v16;
   v22.x = v18;
   v22.y = v20;
-  LOBYTE(v7) = CGRectContainsPoint(v23, v22);
+  LOBYTE(spaceCopy) = CGRectContainsPoint(v23, v22);
 
-  return v7;
+  return spaceCopy;
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3 changeReason:(int64_t)a4
+- (void)setContentInsets:(UIEdgeInsets)insets changeReason:(int64_t)reason
 {
-  v4.f64[0] = a3.top;
-  v4.f64[1] = a3.left;
-  v5.f64[0] = a3.bottom;
-  v5.f64[1] = a3.right;
+  v4.f64[0] = insets.top;
+  v4.f64[1] = insets.left;
+  v5.f64[0] = insets.bottom;
+  v5.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v4, *&self->_contentInsets.top), vceqq_f64(v5, *&self->_contentInsets.bottom)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
-    right = a3.right;
-    top = a3.top;
-    left = a3.left;
-    bottom = a3.bottom;
-    v8 = [(PUCommentsViewController *)self _tableView];
-    [v8 setContentInset:{top, left, bottom, right}];
-    if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    self->_contentInsets = insets;
+    right = insets.right;
+    top = insets.top;
+    left = insets.left;
+    bottom = insets.bottom;
+    _tableView = [(PUCommentsViewController *)self _tableView];
+    [_tableView setContentInset:{top, left, bottom, right}];
+    if ((reason & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       v9 = MEMORY[0x1E69DD250];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __58__PUCommentsViewController_setContentInsets_changeReason___block_invoke;
       v17[3] = &unk_1E7B80DD0;
-      v18 = v8;
+      v18 = _tableView;
       [v9 _animateUsingDefaultDampedSpringWithDelay:0 initialSpringVelocity:v17 options:0 animations:0.0 completion:0.0];
-      v10 = [(PUCommentsViewController *)self accessoryContentViewControllerDelegate];
-      [v10 accessoryContentViewControllerContentBoundsDidChange:self];
+      accessoryContentViewControllerDelegate = [(PUCommentsViewController *)self accessoryContentViewControllerDelegate];
+      [accessoryContentViewControllerDelegate accessoryContentViewControllerContentBoundsDidChange:self];
     }
 
     else
     {
-      v11 = [(PUCommentsViewController *)self _needsUpdateTableViewScrollPosition];
-      if (a4 == 1 || v11)
+      _needsUpdateTableViewScrollPosition = [(PUCommentsViewController *)self _needsUpdateTableViewScrollPosition];
+      if (reason == 1 || _needsUpdateTableViewScrollPosition)
       {
         [(PUCommentsViewController *)self _setNeedsUpdateTableViewScrollPosition:0];
-        [v8 setContentOffset:{0.0, -top}];
-        v12 = [(PUCommentsViewController *)self accessoryContentViewControllerDelegate];
-        [v12 accessoryContentViewControllerContentBoundsDidChange:self];
+        [_tableView setContentOffset:{0.0, -top}];
+        accessoryContentViewControllerDelegate2 = [(PUCommentsViewController *)self accessoryContentViewControllerDelegate];
+        [accessoryContentViewControllerDelegate2 accessoryContentViewControllerContentBoundsDidChange:self];
       }
     }
   }
 }
 
-- (void)commentsTableDataController:(id)a3 tableViewDidScroll:(id)a4
+- (void)commentsTableDataController:(id)controller tableViewDidScroll:(id)scroll
 {
-  v6 = a4;
-  if (([v6 isDragging] & 1) != 0 || objc_msgSend(v6, "isDecelerating"))
+  scrollCopy = scroll;
+  if (([scrollCopy isDragging] & 1) != 0 || objc_msgSend(scrollCopy, "isDecelerating"))
   {
-    v5 = [(PUCommentsViewController *)self accessoryContentViewControllerDelegate];
-    [v5 accessoryContentViewControllerContentBoundsDidChange:self];
+    accessoryContentViewControllerDelegate = [(PUCommentsViewController *)self accessoryContentViewControllerDelegate];
+    [accessoryContentViewControllerDelegate accessoryContentViewControllerContentBoundsDidChange:self];
   }
 }
 
-- (void)commentsTableDataController:(id)a3 didChangeEditing:(BOOL)a4
+- (void)commentsTableDataController:(id)controller didChangeEditing:(BOOL)editing
 {
-  v5 = [(PUCommentsViewController *)self assetViewModel];
+  assetViewModel = [(PUCommentsViewController *)self assetViewModel];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__PUCommentsViewController_commentsTableDataController_didChangeEditing___block_invoke;
   v7[3] = &unk_1E7B7FF98;
-  v9 = a4;
-  v8 = v5;
-  v6 = v5;
+  editingCopy = editing;
+  v8 = assetViewModel;
+  v6 = assetViewModel;
   [v6 performChanges:v7];
 }
 
 - (void)_updateTableDataController
 {
-  v3 = [(PUCommentsViewController *)self px_extendedTraitCollection];
-  v4 = [v3 layoutSizeClass] == 2;
+  px_extendedTraitCollection = [(PUCommentsViewController *)self px_extendedTraitCollection];
+  v4 = [px_extendedTraitCollection layoutSizeClass] == 2;
 
-  v5 = [(PUCommentsViewController *)self assetViewModel];
-  v6 = [v5 isInEditMode];
+  assetViewModel = [(PUCommentsViewController *)self assetViewModel];
+  isInEditMode = [assetViewModel isInEditMode];
 
-  v7 = [(PUCommentsViewController *)self _tableDataController];
-  [v7 setShouldUseCompactCommentSeparators:v4];
-  [v7 setEditing:v6];
+  _tableDataController = [(PUCommentsViewController *)self _tableDataController];
+  [_tableDataController setShouldUseCompactCommentSeparators:v4];
+  [_tableDataController setEditing:isInEditMode];
 }
 
 - (CGSize)preferredContentSize
 {
   if ([(PUCommentsViewController *)self isViewLoaded])
   {
-    v3 = [(PUCommentsViewController *)self view];
-    [(PUCommentsViewController *)self contentBoundsInCoordinateSpace:v3];
+    view = [(PUCommentsViewController *)self view];
+    [(PUCommentsViewController *)self contentBoundsInCoordinateSpace:view];
     v5 = v4;
     v7 = v6;
   }
@@ -247,11 +247,11 @@
   return result;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PUCommentsViewController;
-  [(PUCommentsViewController *)&v4 viewDidDisappear:a3];
+  [(PUCommentsViewController *)&v4 viewDidDisappear:disappear];
   [(PUCommentsViewController *)self _setNeedsUpdateTableViewScrollPosition:1];
 }
 
@@ -260,9 +260,9 @@
   v14.receiver = self;
   v14.super_class = PUCommentsViewController;
   [(PUCommentsViewController *)&v14 viewDidLoad];
-  v4 = [(PUCommentsViewController *)self view];
+  view = [(PUCommentsViewController *)self view];
   v5 = objc_alloc(MEMORY[0x1E69DD020]);
-  [v4 bounds];
+  [view bounds];
   v6 = [v5 initWithFrame:0 style:?];
   tableView = self->__tableView;
   self->__tableView = v6;
@@ -275,33 +275,33 @@
   [(UITableView *)self->__tableView setContentInsetAdjustmentBehavior:2];
   [(UITableView *)self->__tableView _setIndicatorInsetAdjustmentBehavior:1];
   [(UITableView *)self->__tableView setAutoresizingMask:18];
-  [v4 addSubview:self->__tableView];
-  v8 = [(PUCommentsViewController *)self assetViewModel];
-  v9 = [v8 asset];
+  [view addSubview:self->__tableView];
+  assetViewModel = [(PUCommentsViewController *)self assetViewModel];
+  asset = [assetViewModel asset];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PUCommentsViewController.m" lineNumber:77 description:@"Comments can only be displayed for PHAsset"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCommentsViewController.m" lineNumber:77 description:@"Comments can only be displayed for PHAsset"];
   }
 
   v10 = [[PUCommentsTableDataController alloc] initWithTableView:self->__tableView];
   tableDataController = self->__tableDataController;
   self->__tableDataController = v10;
 
-  [(PUCommentsTableDataController *)self->__tableDataController setAsset:v9];
+  [(PUCommentsTableDataController *)self->__tableDataController setAsset:asset];
   [(PUCommentsTableDataController *)self->__tableDataController setDelegate:self];
   [(PUCommentsViewController *)self _updateTableDataController];
-  v12 = [(PUCommentsViewController *)self parentViewController];
-  [v12 preferredContentSizeDidChangeForChildContentContainer:self];
+  parentViewController = [(PUCommentsViewController *)self parentViewController];
+  [parentViewController preferredContentSizeDidChangeForChildContentContainer:self];
 
   [(PUCommentsViewController *)self _setNeedsUpdateTableViewScrollPosition:1];
 }
 
-- (PUCommentsViewController)initWithAssetViewModel:(id)a3
+- (PUCommentsViewController)initWithAssetViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v10.receiver = self;
   v10.super_class = PUCommentsViewController;
   v6 = [(PUCommentsViewController *)&v10 initWithNibName:0 bundle:0];
@@ -309,50 +309,50 @@
   if (v6)
   {
     [(PUCommentsViewController *)v6 px_enableExtendedTraitCollection];
-    v8 = [(PUCommentsViewController *)v7 px_extendedTraitCollection];
-    [v8 registerChangeObserver:v7 context:PUExtendedTraitCollectionObservationContext];
+    px_extendedTraitCollection = [(PUCommentsViewController *)v7 px_extendedTraitCollection];
+    [px_extendedTraitCollection registerChangeObserver:v7 context:PUExtendedTraitCollectionObservationContext];
 
-    objc_storeStrong(&v7->_assetViewModel, a3);
+    objc_storeStrong(&v7->_assetViewModel, model);
     [(PUAssetViewModel *)v7->_assetViewModel registerChangeObserver:v7];
   }
 
   return v7;
 }
 
-- (PUCommentsViewController)initWithCoder:(id)a3
+- (PUCommentsViewController)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PUCommentsViewController.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PUCommentsViewController initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUCommentsViewController.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PUCommentsViewController initWithCoder:]"}];
 
   abort();
 }
 
-- (PUCommentsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PUCommentsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PUCommentsViewController.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PUCommentsViewController initWithNibName:bundle:]"}];
+  nameCopy = name;
+  bundleCopy = bundle;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUCommentsViewController.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PUCommentsViewController initWithNibName:bundle:]"}];
 
   abort();
 }
 
-+ (BOOL)canShowCommentsForAsset:(id)a3
++ (BOOL)canShowCommentsForAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 px_isSharedAlbumAsset];
+    px_isSharedAlbumAsset = [assetCopy px_isSharedAlbumAsset];
   }
 
   else
   {
-    v4 = 0;
+    px_isSharedAlbumAsset = 0;
   }
 
-  return v4;
+  return px_isSharedAlbumAsset;
 }
 
 @end

@@ -1,41 +1,41 @@
 @interface CoreIRLearningSession
-- (CoreIRLearningSession)initWithCoder:(id)a3;
-- (CoreIRLearningSession)initWithReason:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CoreIRLearningSession)initWithCoder:(id)coder;
+- (CoreIRLearningSession)initWithReason:(unint64_t)reason;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)endLearning;
 @end
 
 @implementation CoreIRLearningSession
 
-- (CoreIRLearningSession)initWithReason:(unint64_t)a3
+- (CoreIRLearningSession)initWithReason:(unint64_t)reason
 {
   v5.receiver = self;
   v5.super_class = CoreIRLearningSession;
   result = [(CoreIRLearningSession *)&v5 init];
   if (result)
   {
-    result->_reason = a3;
+    result->_reason = reason;
   }
 
   return result;
 }
 
-- (CoreIRLearningSession)initWithCoder:(id)a3
+- (CoreIRLearningSession)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CoreIRLearningSession;
   v4 = [(CoreIRLearningSession *)&v6 init];
   if (v4)
   {
-    v4->_reason = [a3 decodeInt32ForKey:@"Reason"];
+    v4->_reason = [coder decodeInt32ForKey:@"Reason"];
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   reason = self->_reason;
 
   return [v4 initWithReason:reason];

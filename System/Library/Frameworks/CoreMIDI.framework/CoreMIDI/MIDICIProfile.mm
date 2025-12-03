@@ -1,8 +1,8 @@
 @interface MIDICIProfile
-- (MIDICIProfile)initWithCoder:(id)a3;
+- (MIDICIProfile)initWithCoder:(id)coder;
 - (MIDICIProfile)initWithData:(NSData *)data;
 - (MIDICIProfile)initWithData:(NSData *)data name:(NSString *)inName;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MIDICIProfile
@@ -53,26 +53,26 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_profileID forKey:@"profileID"];
-  [v4 encodeObject:self->_name forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_profileID forKey:@"profileID"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
 }
 
-- (MIDICIProfile)initWithCoder:(id)a3
+- (MIDICIProfile)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MIDICIProfile;
   v5 = [(MIDICIProfile *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"profileID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"profileID"];
     profileID = v5->_profileID;
     v5->_profileID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v8;
   }

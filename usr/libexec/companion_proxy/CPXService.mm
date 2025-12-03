@@ -1,9 +1,9 @@
 @interface CPXService
-- (CPXService)initWithLockdownContext:(_lockdown_connection *)a3;
-- (id)receiveMessageWithError:(int *)a3;
-- (void)checkNearbyDevices:(id)a3;
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5;
-- (void)handlePairingNotification:(id)a3;
+- (CPXService)initWithLockdownContext:(_lockdown_connection *)context;
+- (id)receiveMessageWithError:(int *)error;
+- (void)checkNearbyDevices:(id)devices;
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value;
+- (void)handlePairingNotification:(id)notification;
 - (void)startService;
 - (void)stopService;
 @end
@@ -43,7 +43,7 @@
   }
 }
 
-- (CPXService)initWithLockdownContext:(_lockdown_connection *)a3
+- (CPXService)initWithLockdownContext:(_lockdown_connection *)context
 {
   v13.receiver = self;
   v13.super_class = CPXService;
@@ -51,9 +51,9 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (context)
     {
-      v4->_conn = a3;
+      v4->_conn = context;
       socket = lockdown_get_socket();
       v7 = sub_100007BD0(socket, &v5->_ipV6);
       clientHostIPAddress = v5->_clientHostIPAddress;
@@ -98,12 +98,12 @@ LABEL_12:
   return v11;
 }
 
-- (void)handlePairingNotification:(id)a3
+- (void)handlePairingNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v15 = 0;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:NRPairedDeviceRegistryDeviceDidPairNotification];
+  name = [notificationCopy name];
+  v6 = [name isEqualToString:NRPairedDeviceRegistryDeviceDidPairNotification];
 
   if (v6)
   {
@@ -112,8 +112,8 @@ LABEL_12:
 
   else
   {
-    v8 = [v4 name];
-    v9 = [v8 isEqualToString:NRPairedDeviceRegistryDeviceDidUnpairNotification];
+    name2 = [notificationCopy name];
+    v9 = [name2 isEqualToString:NRPairedDeviceRegistryDeviceDidUnpairNotification];
 
     if (v9)
     {
@@ -126,8 +126,8 @@ LABEL_12:
     }
   }
 
-  v10 = [v4 userInfo];
-  v11 = [v10 objectForKeyedSubscript:@"NRPairedDeviceRegistryDevice"];
+  userInfo = [notificationCopy userInfo];
+  v11 = [userInfo objectForKeyedSubscript:@"NRPairedDeviceRegistryDevice"];
   v12 = [v11 valueForProperty:NRDevicePropertyUDID];
   v13 = v12;
   v14 = 0;
@@ -163,17 +163,17 @@ LABEL_12:
     v3 = [[IDSService alloc] initWithService:@"com.apple.private.alloy.companionproxy"];
     [(CPXService *)self setService:v3];
 
-    v4 = [(CPXService *)self service];
-    [v4 addDelegate:self queue:&_dispatch_main_q];
+    service = [(CPXService *)self service];
+    [service addDelegate:self queue:&_dispatch_main_q];
 
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
     v5 = +[NRPairedDeviceRegistry sharedInstance];
-    v6 = [v5 getPairedDevices];
+    getPairedDevices = [v5 getPairedDevices];
 
-    v7 = [v6 countByEnumeratingWithState:&v43 objects:v50 count:16];
+    v7 = [getPairedDevices countByEnumeratingWithState:&v43 objects:v50 count:16];
     if (v7)
     {
       v9 = *v44;
@@ -188,7 +188,7 @@ LABEL_12:
         {
           if (*v44 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(getPairedDevices);
           }
 
           v12 = *(*(&v43 + 1) + 8 * v11);
@@ -234,15 +234,15 @@ LABEL_12:
         }
 
         while (v7 != v11);
-        v7 = [v6 countByEnumeratingWithState:&v43 objects:v50 count:16];
+        v7 = [getPairedDevices countByEnumeratingWithState:&v43 objects:v50 count:16];
       }
 
       while (v7);
     }
 
-    v18 = [(CPXService *)self service];
-    v19 = [v18 devices];
-    [(CPXService *)self checkNearbyDevices:v19];
+    service2 = [(CPXService *)self service];
+    devices = [service2 devices];
+    [(CPXService *)self checkNearbyDevices:devices];
 
     objc_initWeak(&buf, self);
     v20 = +[NSNotificationCenter defaultCenter];
@@ -294,88 +294,88 @@ LABEL_12:
   }
 }
 
-- (id)receiveMessageWithError:(int *)a3
+- (id)receiveMessageWithError:(int *)error
 {
-  v4 = [(CPXService *)self conn];
+  conn = [(CPXService *)self conn];
 
-  return sub_100000F9C(v4, a3);
+  return sub_100000F9C(conn, error);
 }
 
-- (void)checkNearbyDevices:(id)a3
+- (void)checkNearbyDevices:(id)devices
 {
   v28 = 0;
-  v4 = [(CPXService *)self device];
+  device = [(CPXService *)self device];
 
-  if (v4)
+  if (device)
   {
-    v5 = [(CPXService *)self device];
+    device2 = [(CPXService *)self device];
     [(CPXService *)self udid];
   }
 
   else
   {
     v7 = +[NRPairedDeviceRegistry sharedInstance];
-    v5 = [v7 getActivePairedDevice];
+    device2 = [v7 getActivePairedDevice];
 
-    [v5 valueForProperty:NRDevicePropertyUDID];
+    [device2 valueForProperty:NRDevicePropertyUDID];
   }
   v6 = ;
   v8 = v6;
-  if (v5 && v6)
+  if (device2 && v6)
   {
     v9 = +[NRPairedDeviceRegistry sharedInstance];
-    v10 = [(CPXService *)self service];
-    v11 = [v10 devices];
-    v12 = [v9 deviceForNRDevice:v5 fromIDSDevices:v11];
+    service = [(CPXService *)self service];
+    devices = [service devices];
+    v12 = [v9 deviceForNRDevice:device2 fromIDSDevices:devices];
 
     if ([v12 isNearby])
     {
-      v13 = [v12 isActive];
+      isActive = [v12 isActive];
     }
 
     else
     {
-      v13 = 0;
+      isActive = 0;
     }
 
-    if (![(CPXService *)self nearby]|| (v13 & 1) != 0)
+    if (![(CPXService *)self nearby]|| (isActive & 1) != 0)
     {
       v17 = 0;
-      if ([(CPXService *)self nearby]|| ((v13 ^ 1) & 1) != 0)
+      if ([(CPXService *)self nearby]|| ((isActive ^ 1) & 1) != 0)
       {
         goto LABEL_30;
       }
 
       [(CPXService *)self setNearby:1];
-      [(CPXService *)self setDevice:v5];
+      [(CPXService *)self setDevice:device2];
       [(CPXService *)self setUdid:v8];
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
       {
         sub_10000A5E8(self);
       }
 
-      v20 = [(CPXService *)self device];
+      device3 = [(CPXService *)self device];
       v33[0] = NRDevicePropertyName;
       v33[1] = NRDevicePropertyUDID;
       v21 = [NSArray arrayWithObjects:v33 count:2];
-      [v20 addPropertyObserver:self forPropertyChanges:v21];
+      [device3 addPropertyObserver:self forPropertyChanges:v21];
 
       v31[0] = @"GizmoUDIDKey";
-      v22 = [(CPXService *)self udid];
+      udid = [(CPXService *)self udid];
       v31[1] = @"Command";
-      v32[0] = v22;
+      v32[0] = udid;
       v32[1] = @"GizmoAttach";
       v23 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:2];
       v17 = [NSMutableDictionary dictionaryWithDictionary:v23];
 
-      v24 = [(CPXService *)self device];
+      device4 = [(CPXService *)self device];
       LODWORD(v23) = NRWatchOSVersionForRemoteDevice();
 
       if (v23 >= 0x20000)
       {
         v25 = +[CPXIDSRelayCompanion defaultCPXIDSRelayCompanion];
-        v26 = [(CPXService *)self clientHostIPAddress];
-        v27 = [v25 copyLockdownPortNumWithRequireHostIP:v26 ipV6:{-[CPXService ipV6](self, "ipV6")}];
+        clientHostIPAddress = [(CPXService *)self clientHostIPAddress];
+        v27 = [v25 copyLockdownPortNumWithRequireHostIP:clientHostIPAddress ipV6:{-[CPXService ipV6](self, "ipV6")}];
         [v17 setObject:v27 forKey:@"CompanionLockdownProxyPort"];
       }
     }
@@ -389,18 +389,18 @@ LABEL_12:
       }
 
       v35[0] = @"GizmoUDIDKey";
-      v15 = [(CPXService *)self udid];
+      udid2 = [(CPXService *)self udid];
       v35[1] = @"Command";
-      v36[0] = v15;
+      v36[0] = udid2;
       v36[1] = @"GizmoDetach";
       v16 = [NSDictionary dictionaryWithObjects:v36 forKeys:v35 count:2];
       v17 = [NSMutableDictionary dictionaryWithDictionary:v16];
 
-      v18 = [(CPXService *)self device];
+      device5 = [(CPXService *)self device];
       v34[0] = NRDevicePropertyName;
       v34[1] = NRDevicePropertyUDID;
       v19 = [NSArray arrayWithObjects:v34 count:2];
-      [v18 removePropertyObserver:self forPropertyChanges:v19];
+      [device5 removePropertyObserver:self forPropertyChanges:v19];
 
       [(CPXService *)self setDevice:0];
       [(CPXService *)self setUdid:0];
@@ -417,7 +417,7 @@ LABEL_12:
   else
   {
     v14 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG);
-    if (v5)
+    if (device2)
     {
       if (v14)
       {
@@ -437,19 +437,19 @@ LABEL_12:
 LABEL_30:
 }
 
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  changeCopy = change;
+  valueCopy = value;
   v11 = NRDevicePropertyName;
-  if ([v9 isEqualToString:NRDevicePropertyName])
+  if ([changeCopy isEqualToString:NRDevicePropertyName])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v8 valueForProperty:v11];
+      v12 = [deviceCopy valueForProperty:v11];
       v18 = 138412546;
-      v19 = v10;
+      v19 = valueCopy;
       v20 = 2112;
       v21 = v12;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Watch Name changed from: %@ to %@", &v18, 0x16u);
@@ -462,21 +462,21 @@ LABEL_30:
   else
   {
     v14 = NRDevicePropertyUDID;
-    if ([v9 isEqualToString:NRDevicePropertyUDID])
+    if ([changeCopy isEqualToString:NRDevicePropertyUDID])
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v8 valueForProperty:v14];
+        v15 = [deviceCopy valueForProperty:v14];
         v18 = 138412546;
-        v19 = v10;
+        v19 = valueCopy;
         v20 = 2112;
         v21 = v15;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Watch UDID changed from: %@ to %@", &v18, 0x16u);
       }
 
-      v16 = [(CPXService *)self service];
-      v17 = [v16 devices];
-      [(CPXService *)self checkNearbyDevices:v17];
+      service = [(CPXService *)self service];
+      devices = [service devices];
+      [(CPXService *)self checkNearbyDevices:devices];
     }
   }
 }

@@ -7,15 +7,15 @@
 
 - (void)animateDismissTransition
 {
-  v3 = [(PUViewControllerTransition *)self containerView];
-  v4 = [(PUViewControllerTransition *)self toViewController];
-  v5 = [v4 view];
-  v6 = [(PUViewControllerTransition *)self fromViewController];
-  v7 = [v6 view];
+  containerView = [(PUViewControllerTransition *)self containerView];
+  toViewController = [(PUViewControllerTransition *)self toViewController];
+  view = [toViewController view];
+  fromViewController = [(PUViewControllerTransition *)self fromViewController];
+  view2 = [fromViewController view];
   [(PUViewControllerTransition *)self finalToViewFrame];
-  [v5 setFrame:?];
-  [v3 insertSubview:v5 aboveSubview:v7];
-  [v5 setAlpha:0.0];
+  [view setFrame:?];
+  [containerView insertSubview:view aboveSubview:view2];
+  [view setAlpha:0.0];
   v8 = MEMORY[0x1E69DD250];
   [(PUViewControllerTransition *)self duration];
   v10 = v9;
@@ -23,13 +23,13 @@
   v13[1] = 3221225472;
   v13[2] = __54__PUCrossfadeModalTransition_animateDismissTransition__block_invoke;
   v13[3] = &unk_1E7B80DD0;
-  v14 = v5;
+  v14 = view;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __54__PUCrossfadeModalTransition_animateDismissTransition__block_invoke_2;
   v12[3] = &unk_1E7B7F020;
   v12[4] = self;
-  v11 = v5;
+  v11 = view;
   [v8 animateWithDuration:v13 animations:v12 completion:v10];
 }
 
@@ -45,24 +45,24 @@ uint64_t __54__PUCrossfadeModalTransition_animateDismissTransition__block_invoke
 
 - (void)animatePresentTransition
 {
-  v3 = [(PUViewControllerTransition *)self containerView];
-  v4 = [(PUViewControllerTransition *)self toViewController];
-  v5 = [v4 view];
-  v6 = [(PUViewControllerTransition *)self fromViewController];
-  v7 = [v6 view];
+  containerView = [(PUViewControllerTransition *)self containerView];
+  toViewController = [(PUViewControllerTransition *)self toViewController];
+  view = [toViewController view];
+  fromViewController = [(PUViewControllerTransition *)self fromViewController];
+  view2 = [fromViewController view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 snapshotViewAfterScreenUpdates:0];
+    v8 = [view2 snapshotViewAfterScreenUpdates:0];
     [v8 setAutoresizingMask:18];
-    [v5 insertSubview:v8 atIndex:0];
+    [view insertSubview:v8 atIndex:0];
   }
 
-  v9 = [v7 snapshotViewAfterScreenUpdates:0];
+  v9 = [view2 snapshotViewAfterScreenUpdates:0];
   [(PUViewControllerTransition *)self finalToViewFrame];
-  [v5 setFrame:?];
-  [v3 insertSubview:v5 aboveSubview:v7];
-  [v3 addSubview:v9];
+  [view setFrame:?];
+  [containerView insertSubview:view aboveSubview:view2];
+  [containerView addSubview:v9];
   v10 = MEMORY[0x1E69DD250];
   [(PUViewControllerTransition *)self duration];
   v12 = v11;
@@ -76,7 +76,7 @@ uint64_t __54__PUCrossfadeModalTransition_animateDismissTransition__block_invoke
   v14[2] = __54__PUCrossfadeModalTransition_animatePresentTransition__block_invoke_2;
   v14[3] = &unk_1E7B80088;
   v15 = v18;
-  v16 = self;
+  selfCopy = self;
   v13 = v18;
   [v10 animateWithDuration:v17 animations:v14 completion:v12];
 }

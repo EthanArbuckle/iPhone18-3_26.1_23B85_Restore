@@ -1,53 +1,53 @@
 @interface _MKBalloonCalloutView
-- (BOOL)calloutContainsPoint:(CGPoint)a3;
+- (BOOL)calloutContainsPoint:(CGPoint)point;
 - (CGRect)_centerFrame;
 - (CGRect)_idealFrame;
 - (CGSize)intrinsicContentSize;
-- (_MKBalloonCalloutView)initWithAnnotationView:(id)a3;
+- (_MKBalloonCalloutView)initWithAnnotationView:(id)view;
 - (double)_innerDiameter;
 - (void)_commonInit;
-- (void)_configureForArrowStateWithDuration:(double)a3;
-- (void)_handleTapOnCallout:(id)a3;
-- (void)_mkObserveValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)_showAnimated:(BOOL)a3 completionBlock:(id)a4;
+- (void)_configureForArrowStateWithDuration:(double)duration;
+- (void)_handleTapOnCallout:(id)callout;
+- (void)_mkObserveValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)_showAnimated:(BOOL)animated completionBlock:(id)block;
 - (void)_startObservingAnnotationView;
 - (void)_stopObservingAnnotationView;
 - (void)_updateCroppedImage;
 - (void)_updateStyle;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)dismissAnimated:(BOOL)a3 completionBlock:(id)a4;
+- (void)dismissAnimated:(BOOL)animated completionBlock:(id)block;
 - (void)layoutSubviews;
-- (void)setBalloonTintColor:(id)a3;
-- (void)setContentView:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setInnerStrokeColor:(id)a3;
-- (void)setShowsArrow:(BOOL)a3 animated:(BOOL)a4;
-- (void)setStrokeColor:(id)a3;
-- (void)showAnimated:(BOOL)a3 completionBlock:(id)a4;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)setBalloonTintColor:(id)color;
+- (void)setContentView:(id)view;
+- (void)setImage:(id)image;
+- (void)setInnerStrokeColor:(id)color;
+- (void)setShowsArrow:(BOOL)arrow animated:(BOOL)animated;
+- (void)setStrokeColor:(id)color;
+- (void)showAnimated:(BOOL)animated completionBlock:(id)block;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 - (void)updateWithNewCalloutOffset;
 @end
 
 @implementation _MKBalloonCalloutView
 
-- (void)_mkObserveValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)_mkObserveValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
-  if (([v7 isEqualToString:@"balloonImage"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"balloonImageTintColor"))
+  pathCopy = path;
+  if (([pathCopy isEqualToString:@"balloonImage"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"balloonImageTintColor"))
   {
     [(_MKBalloonCalloutView *)self _updateStyle];
   }
 }
 
-- (BOOL)calloutContainsPoint:(CGPoint)a3
+- (BOOL)calloutContainsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   backgroundShapeView = self->_backgroundShapeView;
   if (backgroundShapeView)
   {
-    [(_MKBezierPathView *)backgroundShapeView convertPoint:self fromView:a3.x, a3.y];
+    [(_MKBezierPathView *)backgroundShapeView convertPoint:self fromView:point.x, point.y];
     v7 = self->_backgroundShapeView;
 
     LOBYTE(balloonBodyImageView) = [(_MKBezierPathView *)v7 containsPoint:?];
@@ -69,24 +69,24 @@
   return balloonBodyImageView;
 }
 
-- (void)dismissAnimated:(BOOL)a3 completionBlock:(id)a4
+- (void)dismissAnimated:(BOOL)animated completionBlock:(id)block
 {
-  v4 = a3;
+  animatedCopy = animated;
   v39[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   self->_dismissed = 1;
-  v7 = [(MKCalloutView *)self annotationView];
-  [v7 calloutOffset];
+  annotationView = [(MKCalloutView *)self annotationView];
+  [annotationView calloutOffset];
   v9 = v8;
 
   if (!self->_originatesAsSmallBalloon)
   {
-    v10 = [(_MKBalloonCalloutView *)self layer];
-    [v10 setOpacity:0.0];
+    layer = [(_MKBalloonCalloutView *)self layer];
+    [layer setOpacity:0.0];
   }
 
-  v11 = [(_MKBalloonCalloutView *)self traitCollection];
-  v12 = [v11 userInterfaceIdiom];
+  traitCollection = [(_MKBalloonCalloutView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   v13 = *(MEMORY[0x1E695EFD0] + 16);
   *&v38.m11 = *MEMORY[0x1E695EFD0];
@@ -94,13 +94,13 @@
   *&v38.m21 = *(MEMORY[0x1E695EFD0] + 32);
   [(_MKBalloonCalloutView *)self setTransform:&v38];
   memset(&v38, 0, sizeof(v38));
-  if (v12 == 3)
+  if (userInterfaceIdiom == 3)
   {
     CATransform3DMakeScale(&v38, 0.75, 0.75, 1.0);
-    if (!v4)
+    if (!animatedCopy)
     {
 LABEL_5:
-      v6[2](v6);
+      blockCopy[2](blockCopy);
       goto LABEL_11;
     }
   }
@@ -119,7 +119,7 @@ LABEL_5:
     v17 = *(MEMORY[0x1E69792E8] + 48);
     *&v38.m21 = *(MEMORY[0x1E69792E8] + 32);
     *&v38.m23 = v17;
-    if (!v4)
+    if (!animatedCopy)
     {
       goto LABEL_5;
     }
@@ -148,17 +148,17 @@ LABEL_5:
     [v18 settlingDuration];
     [v18 setDuration:?];
     v34 = v37;
-    v21 = [(_MKBalloonCalloutView *)self layer];
+    layer2 = [(_MKBalloonCalloutView *)self layer];
     v36 = v34;
-    [v21 setTransform:&v36];
+    [layer2 setTransform:&v36];
 
-    v22 = [(_MKBalloonCalloutView *)self layer];
+    layer3 = [(_MKBalloonCalloutView *)self layer];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __57___MKBalloonCalloutView_dismissAnimated_completionBlock___block_invoke;
     v32[3] = &unk_1E76C9DD8;
-    v33 = v6;
-    [v22 _mapkit_addAnimation:v18 forKey:@"hide" completion:v32];
+    v33 = blockCopy;
+    [layer3 _mapkit_addAnimation:v18 forKey:@"hide" completion:v32];
   }
 
   else
@@ -180,48 +180,48 @@ LABEL_5:
     v25 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
     [v25 setFromValue:&unk_1F1611548];
     [v25 setToValue:&unk_1F1611530];
-    v26 = [MEMORY[0x1E6979308] animation];
+    animation = [MEMORY[0x1E6979308] animation];
     v27 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED8]];
-    [v26 setTimingFunction:v27];
+    [animation setTimingFunction:v27];
 
-    [v26 setDuration:0.13333];
+    [animation setDuration:0.13333];
     v39[0] = v18;
     v39[1] = v25;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
-    [v26 setAnimations:v28];
+    [animation setAnimations:v28];
 
-    [v26 setRemovedOnCompletion:1];
-    v29 = [(_MKBalloonCalloutView *)self layer];
+    [animation setRemovedOnCompletion:1];
+    layer4 = [(_MKBalloonCalloutView *)self layer];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __57___MKBalloonCalloutView_dismissAnimated_completionBlock___block_invoke_2;
     v30[3] = &unk_1E76C9DD8;
-    v31 = v6;
-    [v29 _mapkit_addAnimation:v26 forKey:@"hide" completion:v30];
+    v31 = blockCopy;
+    [layer4 _mapkit_addAnimation:animation forKey:@"hide" completion:v30];
   }
 
 LABEL_11:
 }
 
-- (void)_showAnimated:(BOOL)a3 completionBlock:(id)a4
+- (void)_showAnimated:(BOOL)animated completionBlock:(id)block
 {
-  v4 = a3;
+  animatedCopy = animated;
   v42[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(MKCalloutView *)self annotationView];
-  [v7 addSubview:self];
-  [v7 calloutOffset];
+  blockCopy = block;
+  annotationView = [(MKCalloutView *)self annotationView];
+  [annotationView addSubview:self];
+  [annotationView calloutOffset];
   v9 = v8;
   [(_MKBalloonCalloutView *)self _idealFrame];
   [(_MKBalloonCalloutView *)self setFrame:?];
-  v10 = [(_MKBalloonCalloutView *)self layer];
+  layer = [(_MKBalloonCalloutView *)self layer];
   LODWORD(v11) = 1.0;
-  [v10 setOpacity:v11];
+  [layer setOpacity:v11];
 
-  v12 = [(_MKBalloonCalloutView *)self traitCollection];
-  v13 = [v12 userInterfaceIdiom];
+  traitCollection = [(_MKBalloonCalloutView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v13 == 3)
+  if (userInterfaceIdiom == 3)
   {
     CGAffineTransformMakeScale(&v41, 0.75, 0.75);
   }
@@ -239,13 +239,13 @@ LABEL_11:
   *&v40.m21 = *&v41.tx;
   [(_MKBalloonCalloutView *)self setTransform:&v40];
   memset(&v40, 0, sizeof(v40));
-  if (v13 == 3)
+  if (userInterfaceIdiom == 3)
   {
     CATransform3DMakeScale(&v40, 0.75, 0.75, 1.0);
-    if (!v4)
+    if (!animatedCopy)
     {
 LABEL_6:
-      v6[2](v6);
+      blockCopy[2](blockCopy);
       goto LABEL_15;
     }
   }
@@ -264,7 +264,7 @@ LABEL_6:
     v18 = *(MEMORY[0x1E69792E8] + 48);
     *&v40.m21 = *(MEMORY[0x1E69792E8] + 32);
     *&v40.m23 = v18;
-    if (!v4)
+    if (!animatedCopy)
     {
       goto LABEL_6;
     }
@@ -292,14 +292,14 @@ LABEL_6:
 
     [v20 settlingDuration];
     [v20 setDuration:?];
-    v23 = [(_MKBalloonCalloutView *)self layer];
+    layer2 = [(_MKBalloonCalloutView *)self layer];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __55___MKBalloonCalloutView__showAnimated_completionBlock___block_invoke;
     v35[3] = &unk_1E76C9B20;
     v35[4] = self;
-    v36 = v6;
-    [v23 _mapkit_addAnimation:v20 forKey:@"show" completion:v35];
+    v36 = blockCopy;
+    [layer2 _mapkit_addAnimation:v20 forKey:@"show" completion:v35];
   }
 
   else
@@ -319,26 +319,26 @@ LABEL_6:
     [v26 setFromValue:&unk_1F1611530];
     [v26 setToValue:&unk_1F1611548];
     [v26 setDuration:0.24];
-    v27 = [MEMORY[0x1E6979308] animation];
-    [v27 setRemovedOnCompletion:1];
+    animation = [MEMORY[0x1E6979308] animation];
+    [animation setRemovedOnCompletion:1];
     [v20 settlingDuration];
-    [v27 setDuration:?];
+    [animation setDuration:?];
     v28 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED8]];
-    [v27 setTimingFunction:v28];
+    [animation setTimingFunction:v28];
 
     v42[0] = v20;
     v42[1] = v26;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:2];
-    [v27 setAnimations:v29];
+    [animation setAnimations:v29];
 
-    v30 = [(_MKBalloonCalloutView *)self layer];
+    layer3 = [(_MKBalloonCalloutView *)self layer];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __55___MKBalloonCalloutView__showAnimated_completionBlock___block_invoke_164;
     v33[3] = &unk_1E76C9B20;
     v33[4] = self;
-    v34 = v6;
-    [v30 _mapkit_addAnimation:v27 forKey:@"show" completion:v33];
+    v34 = blockCopy;
+    [layer3 _mapkit_addAnimation:animation forKey:@"show" completion:v33];
   }
 
   if (_MKMarkerAnnotationViewSelectionShouldSway())
@@ -346,28 +346,28 @@ LABEL_6:
     v31 = _MKMarkerAnnotationViewSelectionSwayAnimation();
     if (v31)
     {
-      v32 = [(_MKBalloonCalloutView *)self layer];
-      [v32 addAnimation:v31 forKey:@"sway"];
+      layer4 = [(_MKBalloonCalloutView *)self layer];
+      [layer4 addAnimation:v31 forKey:@"sway"];
     }
   }
 
 LABEL_15:
 }
 
-- (void)showAnimated:(BOOL)a3 completionBlock:(id)a4
+- (void)showAnimated:(BOOL)animated completionBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
-  if (!self->_centerAnnotationWhenOffscreen || !v4)
+  animatedCopy = animated;
+  blockCopy = block;
+  if (!self->_centerAnnotationWhenOffscreen || !animatedCopy)
   {
-    [(_MKBalloonCalloutView *)self _showAnimated:v4 completionBlock:v6];
+    [(_MKBalloonCalloutView *)self _showAnimated:animatedCopy completionBlock:blockCopy];
   }
 
   else
   {
-    v8 = [(MKCalloutView *)self annotationView];
-    v9 = [v8 _containerView];
-    [v9 _visibleCenteringRectInView:v8];
+    annotationView = [(MKCalloutView *)self annotationView];
+    _containerView = [annotationView _containerView];
+    [_containerView _visibleCenteringRectInView:annotationView];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -384,16 +384,16 @@ LABEL_15:
     v34.size.height = v17;
     if (CGRectContainsRect(v34, v35))
     {
-      [(_MKBalloonCalloutView *)self _showAnimated:1 completionBlock:v6];
+      [(_MKBalloonCalloutView *)self _showAnimated:1 completionBlock:blockCopy];
     }
 
     else
     {
-      v23 = [v8 _mapView];
-      v24 = [v8 _containerView];
-      v25 = [(MKCalloutView *)self annotationView];
-      v26 = [v25 annotation];
-      [v26 coordinate];
+      _mapView = [annotationView _mapView];
+      _containerView2 = [annotationView _containerView];
+      annotationView2 = [(MKCalloutView *)self annotationView];
+      annotation = [annotationView2 annotation];
+      [annotation coordinate];
       v28 = v27;
       v30 = v29;
       v31[0] = MEMORY[0x1E69E9820];
@@ -401,19 +401,19 @@ LABEL_15:
       v31[2] = __54___MKBalloonCalloutView_showAnimated_completionBlock___block_invoke;
       v31[3] = &unk_1E76C9AF8;
       v31[4] = self;
-      v33 = v4;
-      v32 = v6;
-      [v23 annotationContainer:v24 scrollToRevealCalloutWithOffset:v31 annotationCoordinate:1.79769313e308 completionHandler:{1.79769313e308, v28, v30}];
+      v33 = animatedCopy;
+      v32 = blockCopy;
+      [_mapView annotationContainer:_containerView2 scrollToRevealCalloutWithOffset:v31 annotationCoordinate:1.79769313e308 completionHandler:{1.79769313e308, v28, v30}];
     }
   }
 }
 
-- (void)setBalloonTintColor:(id)a3
+- (void)setBalloonTintColor:(id)color
 {
-  v7 = a3;
-  if (([v7 isEqual:self->_balloonTintColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_balloonTintColor] & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [colorCopy copy];
     balloonTintColor = self->_balloonTintColor;
     self->_balloonTintColor = v4;
 
@@ -443,9 +443,9 @@ LABEL_7:
 
 - (void)_updateCroppedImage
 {
-  v3 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  v4 = [(_MKBalloonCalloutView *)self traitCollection];
-  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v4];
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  traitCollection = [(_MKBalloonCalloutView *)self traitCollection];
+  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:traitCollection];
 
   [(UIView *)self _mapkit_currentScreenScale];
   v6 = v5;
@@ -491,26 +491,26 @@ LABEL_7:
   if (style == 1)
   {
     v14 = [MEMORY[0x1E69DCAB8] _mapkit_imageNamed:@"square_balloon_inner_mask"];
-    v15 = [v14 CGImage];
+    cGImage = [v14 CGImage];
     v26.origin.x = 0.0;
     v26.origin.y = 0.0;
     v26.size.width = v8;
     v26.size.height = v8;
-    CGContextClipToMask(v12, v26, v15);
+    CGContextClipToMask(v12, v26, cGImage);
   }
 
 LABEL_8:
-  v17 = [(UIImage *)self->_image CGImage];
-  v18 = (v9 - CGImageGetWidth(v17)) * 0.5;
-  v19 = (v9 - CGImageGetHeight(v17)) * 0.5;
-  Width = CGImageGetWidth(v17);
-  Height = CGImageGetHeight(v17);
+  cGImage2 = [(UIImage *)self->_image CGImage];
+  v18 = (v9 - CGImageGetWidth(cGImage2)) * 0.5;
+  v19 = (v9 - CGImageGetHeight(cGImage2)) * 0.5;
+  Width = CGImageGetWidth(cGImage2);
+  Height = CGImageGetHeight(cGImage2);
   CGContextResetCTM();
   v28.origin.x = v18;
   v28.origin.y = v19;
   v28.size.width = Width;
   v28.size.height = Height;
-  CGContextDrawImage(v12, v28, v17);
+  CGContextDrawImage(v12, v28, cGImage2);
   if (self->_imageTintColor)
   {
     CGContextSaveGState(v12);
@@ -531,7 +531,7 @@ LABEL_8:
   CGContextRelease(v12);
   CGColorSpaceRelease(DeviceRGB);
   CGImageRelease(Image);
-  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v3];
+  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:currentTraitCollection];
 }
 
 - (void)didMoveToWindow
@@ -546,9 +546,9 @@ LABEL_8:
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  objc_storeStrong(&self->_image, a3);
+  objc_storeStrong(&self->_image, image);
 
   [(_MKBalloonCalloutView *)self _updateCroppedImage];
 }
@@ -571,7 +571,7 @@ LABEL_8:
   v17.size.height = v10;
   if (!CGRectEqualToRect(v17, v18))
   {
-    v15 = [MEMORY[0x1E6979518] disableActions];
+    disableActions = [MEMORY[0x1E6979518] disableActions];
     [MEMORY[0x1E6979518] setDisableActions:0];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -579,21 +579,21 @@ LABEL_8:
     v16[3] = &unk_1E76CDB38;
     v16[4] = self;
     [MEMORY[0x1E69DD250] _mapkit_animateWithDuration:v16 animations:0 completion:0.25];
-    [MEMORY[0x1E6979518] setDisableActions:v15];
+    [MEMORY[0x1E6979518] setDisableActions:disableActions];
   }
 }
 
 - (CGRect)_idealFrame
 {
-  v3 = [(MKCalloutView *)self annotationView];
-  [v3 bounds];
+  annotationView = [(MKCalloutView *)self annotationView];
+  [annotationView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(MKCalloutView *)self annotationView];
-  [v12 calloutOffset];
+  annotationView2 = [(MKCalloutView *)self annotationView];
+  [annotationView2 calloutOffset];
   v14 = v13;
 
   v15 = 30.0;
@@ -623,14 +623,14 @@ LABEL_8:
   return result;
 }
 
-- (void)setShowsArrow:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowsArrow:(BOOL)arrow animated:(BOOL)animated
 {
-  if (self->_showsArrow != a3)
+  if (self->_showsArrow != arrow)
   {
-    self->_showsArrow = a3;
-    if (a4)
+    self->_showsArrow = arrow;
+    if (animated)
     {
-      v5 = [MEMORY[0x1E6979518] disableActions];
+      disableActions = [MEMORY[0x1E6979518] disableActions];
       [MEMORY[0x1E6979518] setDisableActions:0];
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
@@ -639,7 +639,7 @@ LABEL_8:
       v6[4] = self;
       v6[5] = 0x3FD0000000000000;
       [MEMORY[0x1E69DD250] _mapkit_animateWithDuration:v6 animations:0 completion:0.25];
-      [MEMORY[0x1E6979518] setDisableActions:v5];
+      [MEMORY[0x1E6979518] setDisableActions:disableActions];
     }
 
     else
@@ -651,19 +651,19 @@ LABEL_8:
   }
 }
 
-- (void)_configureForArrowStateWithDuration:(double)a3
+- (void)_configureForArrowStateWithDuration:(double)duration
 {
   showsArrow = self->_showsArrow;
-  v6 = [(_MKBalloonCalloutView *)self layer];
-  v7 = v6;
+  layer = [(_MKBalloonCalloutView *)self layer];
+  v7 = layer;
   if (showsArrow)
   {
-    [v6 setAnchorPoint:{0.5, 1.0}];
+    [layer setAnchorPoint:{0.5, 1.0}];
 
     [(_MKBalloonCalloutView *)self _idealFrame];
     [(_MKBalloonCalloutView *)self setFrame:?];
     v8 = [_MKBezierPathView _createSmoothTransitionPathForBalloonRadius:30.0 tailLength:6.0];
-    [(_MKBezierPathView *)self->_backgroundShapeView setPath:v8 duration:a3];
+    [(_MKBezierPathView *)self->_backgroundShapeView setPath:v8 duration:duration];
     CGPathRelease(v8);
     [(UIView *)self->_shadowView setAlpha:1.0];
     backgroundView = self->_backgroundView;
@@ -677,12 +677,12 @@ LABEL_8:
 
   else
   {
-    [v6 setAnchorPoint:{0.5, 0.5}];
+    [layer setAnchorPoint:{0.5, 0.5}];
 
     [(_MKBalloonCalloutView *)self _idealFrame];
     [(_MKBalloonCalloutView *)self setFrame:?];
     v11 = [_MKBezierPathView _createPathForBalloonRadius:30.0 tailLength:0.0];
-    [(_MKBezierPathView *)self->_backgroundShapeView setPath:v11 duration:a3];
+    [(_MKBezierPathView *)self->_backgroundShapeView setPath:v11 duration:duration];
     CGPathRelease(v11);
     [(UIView *)self->_shadowView setAlpha:0.0];
     backgroundView = self->_backgroundView;
@@ -694,27 +694,27 @@ LABEL_8:
     v10 = 1045220557;
   }
 
-  v13 = [(UIView *)backgroundView layer];
+  layer2 = [(UIView *)backgroundView layer];
   LODWORD(v12) = v10;
-  [v13 setShadowOpacity:v12];
+  [layer2 setShadowOpacity:v12];
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView == v5)
+  if (contentView == viewCopy)
   {
     goto LABEL_11;
   }
 
-  v30 = v5;
+  v30 = viewCopy;
   [(UIView *)contentView removeFromSuperview];
   contentViewMaskView = self->_contentViewMaskView;
   self->_contentViewMaskView = 0;
 
-  objc_storeStrong(&self->_contentView, a3);
-  v5 = v30;
+  objc_storeStrong(&self->_contentView, view);
+  viewCopy = v30;
   if (!v30)
   {
     goto LABEL_11;
@@ -732,9 +732,9 @@ LABEL_8:
       self->_contentViewMaskView = v16;
 
       [(UIImageView *)self->_contentViewMaskView setFrame:0.0, 0.0, 60.0, 60.0];
-      v10 = [(UIImageView *)self->_contentViewMaskView layer];
-      v13 = [(UIView *)v30 layer];
-      [v13 setMask:v10];
+      layer = [(UIImageView *)self->_contentViewMaskView layer];
+      layer2 = [(UIView *)v30 layer];
+      [layer2 setMask:layer];
       goto LABEL_8;
     }
 
@@ -744,20 +744,20 @@ LABEL_8:
     }
   }
 
-  v9 = [(UIView *)v30 layer];
-  [v9 setMasksToBounds:1];
+  layer3 = [(UIView *)v30 layer];
+  [layer3 setMasksToBounds:1];
 
-  v10 = [(UIView *)self->_innerBackgroundView layer];
-  [v10 cornerRadius];
+  layer = [(UIView *)self->_innerBackgroundView layer];
+  [layer cornerRadius];
   v12 = v11;
-  v13 = [(UIView *)v30 layer];
-  [v13 setCornerRadius:v12];
+  layer2 = [(UIView *)v30 layer];
+  [layer2 setCornerRadius:v12];
 LABEL_8:
 
 LABEL_9:
   [(UIView *)self->_containerView _mapkit_insertSubviewAboveAllOtherSubviews:v30];
   [(_MKBalloonCalloutView *)self _innerDiameter];
-  v5 = v30;
+  viewCopy = v30;
   if (self->_style == 1)
   {
     v19 = v18;
@@ -785,19 +785,19 @@ LABEL_9:
     [(UIImageView *)self->_balloonBodyImageView frame];
     [(UIView *)self->_containerView setFrame:0.0, 0.0, CGRectGetMaxX(v35), 60.0];
     [(UIView *)self _mapkit_setNeedsLayout];
-    v5 = v30;
+    viewCopy = v30;
   }
 
 LABEL_11:
 }
 
-- (void)setInnerStrokeColor:(id)a3
+- (void)setInnerStrokeColor:(id)color
 {
-  v5 = a3;
-  if (self->_innerStrokeColor != v5)
+  colorCopy = color;
+  if (self->_innerStrokeColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_innerStrokeColor, a3);
+    v7 = colorCopy;
+    objc_storeStrong(&self->_innerStrokeColor, color);
     innerStrokeColor = self->_innerStrokeColor;
     if (!innerStrokeColor)
     {
@@ -805,14 +805,14 @@ LABEL_11:
     }
 
     [(_MKBezierPathView *)self->_backgroundShapeView setFillColor:innerStrokeColor];
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v9 = a3;
-  v4 = [v9 copy];
+  colorCopy = color;
+  v4 = [colorCopy copy];
   strokeColor = self->_strokeColor;
   self->_strokeColor = v4;
 
@@ -821,7 +821,7 @@ LABEL_11:
 
   [(UIImageView *)self->_tailView setImage:v7];
   [(UIImageView *)self->_balloonBodyImageView setTintColor:self->_strokeColor];
-  if (v9)
+  if (colorCopy)
   {
     v8 = 0.5;
   }
@@ -867,20 +867,20 @@ LABEL_11:
 
   if (self->_style == 1)
   {
-    v7 = [(UIView *)self->_shadowView layer];
-    [v7 bounds];
+    layer = [(UIView *)self->_shadowView layer];
+    [layer bounds];
     v9 = v8;
     v11 = v10;
 
-    v12 = [(UIView *)self->_shadowView layer];
-    v13 = [v12 sublayers];
-    v14 = [v13 objectAtIndexedSubscript:0];
+    layer2 = [(UIView *)self->_shadowView layer];
+    sublayers = [layer2 sublayers];
+    v14 = [sublayers objectAtIndexedSubscript:0];
     v15 = v9 * 0.5;
     [v14 setFrame:{0.0, 0.0, v15, v11}];
 
-    v16 = [(UIView *)self->_shadowView layer];
-    v17 = [v16 sublayers];
-    v18 = [v17 objectAtIndexedSubscript:1];
+    layer3 = [(UIView *)self->_shadowView layer];
+    sublayers2 = [layer3 sublayers];
+    v18 = [sublayers2 objectAtIndexedSubscript:1];
     [v18 setFrame:{v15, 0.0, v15, v11}];
   }
 
@@ -918,21 +918,21 @@ LABEL_11:
   return result;
 }
 
-- (void)_handleTapOnCallout:(id)a3
+- (void)_handleTapOnCallout:(id)callout
 {
-  v8 = [(MKCalloutView *)self annotationView];
-  v4 = [v8 _mapView];
-  v5 = [(MKCalloutView *)self annotationView];
-  v6 = [v5 _annotationContainer];
-  v7 = [(MKCalloutView *)self annotationView];
-  [v4 annotationContainer:v6 calloutPrimaryActionTriggeredForAnnotationView:v7];
+  annotationView = [(MKCalloutView *)self annotationView];
+  _mapView = [annotationView _mapView];
+  annotationView2 = [(MKCalloutView *)self annotationView];
+  _annotationContainer = [annotationView2 _annotationContainer];
+  annotationView3 = [(MKCalloutView *)self annotationView];
+  [_mapView annotationContainer:_annotationContainer calloutPrimaryActionTriggeredForAnnotationView:annotationView3];
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(_MKBalloonCalloutView *)self traitCollection];
-  v7 = [v6 hasDifferentColorAppearanceComparedToTraitCollection:v5];
+  collectionCopy = collection;
+  traitCollection = [(_MKBalloonCalloutView *)self traitCollection];
+  v7 = [traitCollection hasDifferentColorAppearanceComparedToTraitCollection:collectionCopy];
 
   if (v7)
   {
@@ -944,19 +944,19 @@ LABEL_11:
 - (void)_updateStyle
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(MKCalloutView *)self annotationView];
-  if ([v3 conformsToProtocol:&unk_1F1673870])
+  annotationView = [(MKCalloutView *)self annotationView];
+  if ([annotationView conformsToProtocol:&unk_1F1673870])
   {
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v3 _balloonContentView], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([annotationView _balloonContentView], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v5 = v4;
+      _balloonImage = v4;
       [(_MKBalloonCalloutView *)self setContentView:v4];
     }
 
     else
     {
-      v5 = [v3 _balloonImage];
-      [(_MKBalloonCalloutView *)self setImage:v5];
+      _balloonImage = [annotationView _balloonImage];
+      [(_MKBalloonCalloutView *)self setImage:_balloonImage];
     }
 
     style = self->_style;
@@ -964,9 +964,9 @@ LABEL_11:
     {
       rectangularImageView = self->_rectangularImageView;
       v18 = [_MKMarkerAnnotationBaseImageContent alloc];
-      v6 = [v3 _balloonTintColor];
-      v13 = [v3 _balloonStrokeColor];
-      v19 = [(_MKMarkerAnnotationBaseImageContent *)v18 initWithFillColor:v6 strokeColor:v13 strokeWidth:3 blendMode:6 baseImageType:0.0];
+      _balloonTintColor = [annotationView _balloonTintColor];
+      _balloonStrokeColor = [annotationView _balloonStrokeColor];
+      v19 = [(_MKMarkerAnnotationBaseImageContent *)v18 initWithFillColor:_balloonTintColor strokeColor:_balloonStrokeColor strokeWidth:3 blendMode:6 baseImageType:0.0];
       [(_MKMarkerAnnotationBaseImageView *)rectangularImageView _setBaseImageContent:v19];
 
 LABEL_16:
@@ -977,38 +977,38 @@ LABEL_16:
     {
       backgroundShapeGradientView = self->_backgroundShapeGradientView;
       v12 = [_MKMarkerAnnotationBaseImageContent alloc];
-      v6 = [v3 _balloonTintColor];
-      v13 = [v3 _balloonStrokeColor];
-      v14 = [v3 _balloonStrokeColor];
+      _balloonTintColor = [annotationView _balloonTintColor];
+      _balloonStrokeColor = [annotationView _balloonStrokeColor];
+      _balloonStrokeColor2 = [annotationView _balloonStrokeColor];
       v15 = 0.5;
-      if (!v14)
+      if (!_balloonStrokeColor2)
       {
         v15 = 0.0;
       }
 
-      v16 = [(_MKMarkerAnnotationBaseImageContent *)v12 initWithFillColor:v6 strokeColor:v13 strokeWidth:3 blendMode:5 baseImageType:v15];
+      v16 = [(_MKMarkerAnnotationBaseImageContent *)v12 initWithFillColor:_balloonTintColor strokeColor:_balloonStrokeColor strokeWidth:3 blendMode:5 baseImageType:v15];
       [(_MKMarkerAnnotationBaseImageView *)backgroundShapeGradientView _setBaseImageContent:v16];
 
       goto LABEL_16;
     }
 
-    v6 = [v3 _balloonTintColor];
-    [(_MKBalloonCalloutView *)self setBalloonTintColor:v6];
-    v20 = [v3 _balloonStrokeColor];
-    [(_MKBalloonCalloutView *)self setStrokeColor:v20];
+    _balloonTintColor = [annotationView _balloonTintColor];
+    [(_MKBalloonCalloutView *)self setBalloonTintColor:_balloonTintColor];
+    _balloonStrokeColor3 = [annotationView _balloonStrokeColor];
+    [(_MKBalloonCalloutView *)self setStrokeColor:_balloonStrokeColor3];
 
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v3 _balloonInnerStrokeColor];
-      [(_MKBalloonCalloutView *)self setInnerStrokeColor:v13];
+      _balloonStrokeColor = [annotationView _balloonInnerStrokeColor];
+      [(_MKBalloonCalloutView *)self setInnerStrokeColor:_balloonStrokeColor];
       goto LABEL_16;
     }
   }
 
   else
   {
-    v6 = MKGetAnnotationsLog();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    _balloonTintColor = MKGetAnnotationsLog();
+    if (os_log_type_enabled(_balloonTintColor, OS_LOG_TYPE_DEBUG))
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
@@ -1017,7 +1017,7 @@ LABEL_16:
       v22 = v8;
       v23 = 2114;
       v24 = v9;
-      _os_log_impl(&dword_1A2EA0000, v6, OS_LOG_TYPE_DEBUG, "%{public}@ does not conform to %{public}@", &v21, 0x16u);
+      _os_log_impl(&dword_1A2EA0000, _balloonTintColor, OS_LOG_TYPE_DEBUG, "%{public}@ does not conform to %{public}@", &v21, 0x16u);
     }
   }
 
@@ -1040,11 +1040,11 @@ LABEL_17:
 
 - (void)_startObservingAnnotationView
 {
-  v3 = [(MKCalloutView *)self annotationView];
-  if (v3)
+  annotationView = [(MKCalloutView *)self annotationView];
+  if (annotationView)
   {
     kvoProxy = self->_kvoProxy;
-    obj = v3;
+    obj = annotationView;
     if (!kvoProxy)
     {
       v5 = [[_MKKVOProxy alloc] initWithDelegate:self];
@@ -1057,34 +1057,34 @@ LABEL_17:
     [(_MKKVOProxy *)kvoProxy addObserverForObject:obj forKeyPath:@"balloonImage" options:0 context:0];
     [(_MKKVOProxy *)self->_kvoProxy addObserverForObject:obj forKeyPath:@"balloonImageTintColor" options:0 context:0];
     objc_storeStrong(&self->_observedAnnotationView, obj);
-    v3 = obj;
+    annotationView = obj;
   }
 }
 
 - (void)_commonInit
 {
   v89 = *MEMORY[0x1E69E9840];
-  v3 = [(MKCalloutView *)self annotationView];
-  if ([v3 conformsToProtocol:&unk_1F1673870])
+  annotationView = [(MKCalloutView *)self annotationView];
+  if ([annotationView conformsToProtocol:&unk_1F1673870])
   {
     [(_MKBalloonCalloutView *)self _startObservingAnnotationView];
-    self->_style = [v3 _balloonCalloutStyle];
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
+    self->_style = [annotationView _balloonCalloutStyle];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     strokeColor = self->_strokeColor;
-    self->_strokeColor = v4;
+    self->_strokeColor = whiteColor;
 
     self->_showsArrow = 1;
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v3 _balloonImageTintColor];
-      v7 = [v6 copy];
+      _balloonImageTintColor = [annotationView _balloonImageTintColor];
+      v7 = [_balloonImageTintColor copy];
       imageTintColor = self->_imageTintColor;
       self->_imageTintColor = v7;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      self->_centerAnnotationWhenOffscreen = [v3 _balloonCalloutShouldCenterWhenOffscreen];
+      self->_centerAnnotationWhenOffscreen = [annotationView _balloonCalloutShouldCenterWhenOffscreen];
     }
 
     v9 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -1092,11 +1092,11 @@ LABEL_17:
     containerView = self->_containerView;
     self->_containerView = v10;
 
-    v12 = [(_MKBalloonCalloutView *)self layer];
-    [v12 setAnchorPoint:{0.5, 1.0}];
+    layer = [(_MKBalloonCalloutView *)self layer];
+    [layer setAnchorPoint:{0.5, 1.0}];
 
-    v13 = [(UIView *)self->_containerView layer];
-    [v13 setAnchorPoint:{0.5, 1.0}];
+    layer2 = [(UIView *)self->_containerView layer];
+    [layer2 setAnchorPoint:{0.5, 1.0}];
 
     if (self->_style == 1)
     {
@@ -1106,17 +1106,17 @@ LABEL_17:
       self->_shadowSize.height = v16;
       [v14 scale];
       v18 = v17;
-      v19 = [v14 CGImage];
+      cGImage = [v14 CGImage];
       v90.size.width = v18 * self->_shadowSize.width * 0.5;
       v90.size.height = v18 * self->_shadowSize.height;
       v90.origin.x = 0.0;
       v90.origin.y = 0.0;
-      v20 = CGImageCreateWithImageInRect(v19, v90);
+      v20 = CGImageCreateWithImageInRect(cGImage, v90);
       v91.origin.x = v18 * self->_shadowSize.width * 0.5;
       v91.size.height = v18 * self->_shadowSize.height;
       v91.origin.y = 0.0;
       v91.size.width = v91.origin.x;
-      v21 = CGImageCreateWithImageInRect(v19, v91);
+      v21 = CGImageCreateWithImageInRect(cGImage, v91);
       v22 = objc_opt_new();
       [v22 setContents:v20];
       [v22 setContentsScale:v18];
@@ -1128,11 +1128,11 @@ LABEL_17:
       CGImageRelease(v20);
       CGImageRelease(v21);
       v24 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, self->_shadowSize.width, self->_shadowSize.height}];
-      v25 = [(UIView *)v24 layer];
-      [v25 addSublayer:v22];
+      layer3 = [(UIView *)v24 layer];
+      [layer3 addSublayer:v22];
 
-      v26 = [(UIView *)v24 layer];
-      [v26 addSublayer:v23];
+      layer4 = [(UIView *)v24 layer];
+      [layer4 addSublayer:v23];
 
       shadowView = self->_shadowView;
       self->_shadowView = v24;
@@ -1149,8 +1149,8 @@ LABEL_17:
       self->_shadowView = v34;
     }
 
-    v35 = [(UIView *)self->_shadowView layer];
-    [v35 setAnchorPoint:{0.5, 1.0}];
+    layer5 = [(UIView *)self->_shadowView layer];
+    [layer5 setAnchorPoint:{0.5, 1.0}];
 
     [(UIView *)self->_shadowView _mapkit_sizeToFit];
     [(_MKBalloonCalloutView *)self addSubview:self->_shadowView];
@@ -1191,16 +1191,16 @@ LABEL_19:
           backgroundShapeView = self->_backgroundShapeView;
           self->_backgroundShapeView = v46;
 
-          v48 = [(_MKBezierPathView *)self->_backgroundShapeView layer];
-          [v48 setShadowOffset:{0.0, 4.0}];
+          layer6 = [(_MKBezierPathView *)self->_backgroundShapeView layer];
+          [layer6 setShadowOffset:{0.0, 4.0}];
 
-          v49 = [(_MKBezierPathView *)self->_backgroundShapeView layer];
-          [v49 setShadowRadius:4.0];
+          layer7 = [(_MKBezierPathView *)self->_backgroundShapeView layer];
+          [layer7 setShadowRadius:4.0];
 
-          v50 = [(_MKBezierPathView *)self->_backgroundShapeView layer];
-          [v50 setShadowOpacity:0.0];
+          layer8 = [(_MKBezierPathView *)self->_backgroundShapeView layer];
+          [layer8 setShadowOpacity:0.0];
 
-          if ((objc_opt_respondsToSelector() & 1) != 0 && ([v3 _balloonMaterial], (v51 = objc_claimAutoreleasedReturnValue()) != 0))
+          if ((objc_opt_respondsToSelector() & 1) != 0 && ([annotationView _balloonMaterial], (v51 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             v52 = v51;
             v53 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v51];
@@ -1219,7 +1219,7 @@ LABEL_19:
             [(_MKBezierPathView *)self->_backgroundShapeView setFillColor:self->_strokeColor];
           }
 
-          v45 = self->_containerView;
+          selfCopy = self->_containerView;
           backgroundView = self->_backgroundView;
           goto LABEL_27;
         default:
@@ -1250,11 +1250,11 @@ LABEL_28:
             v72 = self->_innerBackgroundView;
             self->_innerBackgroundView = v71;
 
-            v73 = [(UIView *)self->_innerBackgroundView layer];
-            [v73 setMasksToBounds:1];
+            layer9 = [(UIView *)self->_innerBackgroundView layer];
+            [layer9 setMasksToBounds:1];
 
-            v74 = [(UIView *)self->_innerBackgroundView layer];
-            [v74 setCornerRadius:floor(v64 * 0.5)];
+            layer10 = [(UIView *)self->_innerBackgroundView layer];
+            [layer10 setCornerRadius:floor(v64 * 0.5)];
           }
 
           [(UIView *)self->_containerView addSubview:self->_innerBackgroundView];
@@ -1290,29 +1290,29 @@ LABEL_28:
           v82 = 1.0;
           if (v81)
           {
-            -[_MKBalloonCalloutView setOriginatesAsSmallBalloon:](self, "setOriginatesAsSmallBalloon:", [v3 _balloonCalloutShouldOriginateFromSmallSize:{buf, 1.0}]);
+            -[_MKBalloonCalloutView setOriginatesAsSmallBalloon:](self, "setOriginatesAsSmallBalloon:", [annotationView _balloonCalloutShouldOriginateFromSmallSize:{buf, 1.0}]);
             v82 = *buf;
           }
 
           [(_MKBalloonCalloutView *)self setSmallBalloonScale:v82];
           if (objc_opt_respondsToSelector())
           {
-            -[_MKBalloonCalloutView setShowsArrow:animated:](self, "setShowsArrow:animated:", [v3 _balloonCalloutShouldShowArrow], 0);
+            -[_MKBalloonCalloutView setShowsArrow:animated:](self, "setShowsArrow:animated:", [annotationView _balloonCalloutShouldShowArrow], 0);
           }
 
           v83 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTapOnCallout_];
           [(_MKBalloonCalloutView *)self addGestureRecognizer:v83];
           [(_MKBalloonCalloutView *)self _updateStyle];
-          v84 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-          v85 = [(_MKBalloonCalloutView *)self registerForTraitChanges:v84 withAction:sel_traitEnvironment_didChangeTraitCollection_];
+          systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+          v85 = [(_MKBalloonCalloutView *)self registerForTraitChanges:systemTraitsAffectingColorAppearance withAction:sel_traitEnvironment_didChangeTraitCollection_];
 
           goto LABEL_42;
       }
 
-      v45 = self->_containerView;
+      selfCopy = self->_containerView;
       backgroundView = *(&self->super.super.super.super.isa + v58);
 LABEL_27:
-      [(_MKBalloonCalloutView *)v45 addSubview:backgroundView];
+      [(_MKBalloonCalloutView *)selfCopy addSubview:backgroundView];
       goto LABEL_28;
     }
 
@@ -1333,7 +1333,7 @@ LABEL_27:
       [(UIImageView *)self->_balloonBodyImageView setTintColor:self->_strokeColor];
       [(UIView *)self->_containerView addSubview:self->_balloonBodyImageView];
       backgroundView = self->_tailView;
-      v45 = self;
+      selfCopy = self;
       goto LABEL_27;
     }
 
@@ -1364,11 +1364,11 @@ LABEL_42:
   [(_MKBalloonCalloutView *)&v3 dealloc];
 }
 
-- (_MKBalloonCalloutView)initWithAnnotationView:(id)a3
+- (_MKBalloonCalloutView)initWithAnnotationView:(id)view
 {
   v6.receiver = self;
   v6.super_class = _MKBalloonCalloutView;
-  v3 = [(MKCalloutView *)&v6 initWithAnnotationView:a3];
+  v3 = [(MKCalloutView *)&v6 initWithAnnotationView:view];
   v4 = v3;
   if (v3)
   {

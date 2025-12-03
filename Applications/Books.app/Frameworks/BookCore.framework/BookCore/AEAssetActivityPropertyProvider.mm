@@ -1,5 +1,5 @@
 @interface AEAssetActivityPropertyProvider
-- (AEAssetActivityPropertyProvider)initWithPropertySource:(id)a3;
+- (AEAssetActivityPropertyProvider)initWithPropertySource:(id)source;
 - (BOOL)contentProtected;
 - (BOOL)isOwned;
 - (BOOL)isStoreAsset;
@@ -22,25 +22,25 @@
 - (NSURL)storeURL;
 - (NSURL)storeURLPreferShort;
 - (UIImage)assetCover;
-- (id)checkOutBookStringWithCharacterLimit:(unint64_t)a3;
+- (id)checkOutBookStringWithCharacterLimit:(unint64_t)limit;
 - (id)previewAssetCoverFuture;
 - (id)previewAssetCoverItemProvider;
-- (id)userPublishing:(id)a3 storeShortURLForStoreId:(id)a4;
-- (id)userPublishing:(id)a3 storeURLForStoreId:(id)a4;
+- (id)userPublishing:(id)publishing storeShortURLForStoreId:(id)id;
+- (id)userPublishing:(id)publishing storeURLForStoreId:(id)id;
 - (int64_t)assetType;
 @end
 
 @implementation AEAssetActivityPropertyProvider
 
-- (AEAssetActivityPropertyProvider)initWithPropertySource:(id)a3
+- (AEAssetActivityPropertyProvider)initWithPropertySource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = AEAssetActivityPropertyProvider;
   v5 = [(AEAssetActivityPropertyProvider *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [sourceCopy copy];
     propertySource = v5->_propertySource;
     v5->_propertySource = v6;
   }
@@ -53,18 +53,18 @@
   assetID = self->_assetID;
   if (!assetID)
   {
-    v4 = [(AEAssetActivityPropertyProvider *)self propertySource];
-    v5 = [(AEAssetActivityPropertyProvider *)self activityType];
-    v6 = (v4)[2](v4, v5, AEAssetActivityItemProviderPropertyAssetId);
+    propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+    activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+    v6 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyAssetId);
     v7 = self->_assetID;
     self->_assetID = v6;
 
     assetID = self->_assetID;
     if (!assetID)
     {
-      v8 = [(AEAssetActivityPropertyProvider *)self storeID];
+      storeID = [(AEAssetActivityPropertyProvider *)self storeID];
       v9 = self->_assetID;
-      self->_assetID = v8;
+      self->_assetID = storeID;
 
       assetID = self->_assetID;
     }
@@ -78,9 +78,9 @@
   storeID = self->_storeID;
   if (!storeID)
   {
-    v4 = [(AEAssetActivityPropertyProvider *)self propertySource];
-    v5 = [(AEAssetActivityPropertyProvider *)self activityType];
-    v6 = (v4)[2](v4, v5, AEAssetActivityItemProviderPropertyStoreId);
+    propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+    activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+    v6 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyStoreId);
     v7 = self->_storeID;
     self->_storeID = v6;
 
@@ -92,9 +92,9 @@
 
 - (NSString)readingDirection
 {
-  v3 = [(AEAssetActivityPropertyProvider *)self propertySource];
-  v4 = [(AEAssetActivityPropertyProvider *)self activityType];
-  v5 = (v3)[2](v3, v4, AEAssetActivityItemProviderPropertyLanguage);
+  propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+  activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+  v5 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyLanguage);
 
   if ([NSLocale characterDirectionForLanguage:v5]== &dword_0 + 2)
   {
@@ -116,9 +116,9 @@
   storeURL = self->_storeURL;
   if (!storeURL)
   {
-    v4 = [(AEAssetActivityPropertyProvider *)self propertySource];
-    v5 = [(AEAssetActivityPropertyProvider *)self activityType];
-    v6 = (v4)[2](v4, v5, AEAssetActivityItemProviderPropertyStoreUrl);
+    propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+    activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+    v6 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyStoreUrl);
     v7 = self->_storeURL;
     self->_storeURL = v6;
 
@@ -133,9 +133,9 @@
   storeShortURL = self->_storeShortURL;
   if (!storeShortURL)
   {
-    v4 = [(AEAssetActivityPropertyProvider *)self propertySource];
-    v5 = [(AEAssetActivityPropertyProvider *)self activityType];
-    v6 = (v4)[2](v4, v5, AEAssetActivityItemProviderPropertyStoreShortUrl);
+    propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+    activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+    v6 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyStoreShortUrl);
     v7 = self->_storeShortURL;
     self->_storeShortURL = v6;
 
@@ -147,28 +147,28 @@
 
 - (NSURL)storeURLPreferShort
 {
-  v3 = [(AEAssetActivityPropertyProvider *)self storeShortURL];
-  v4 = v3;
-  if (v3)
+  storeShortURL = [(AEAssetActivityPropertyProvider *)self storeShortURL];
+  v4 = storeShortURL;
+  if (storeShortURL)
   {
-    v5 = v3;
+    storeURL = storeShortURL;
   }
 
   else
   {
-    v5 = [(AEAssetActivityPropertyProvider *)self storeURL];
+    storeURL = [(AEAssetActivityPropertyProvider *)self storeURL];
   }
 
-  v6 = v5;
+  v6 = storeURL;
 
   return v6;
 }
 
 - (NSURL)bookURL
 {
-  v3 = [(AEAssetActivityPropertyProvider *)self propertySource];
-  v4 = [(AEAssetActivityPropertyProvider *)self activityType];
-  v5 = (v3)[2](v3, v4, AEAssetActivityItemProviderPropertyBookPath);
+  propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+  activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+  v5 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyBookPath);
 
   if (v5)
   {
@@ -188,9 +188,9 @@
   epubID = self->_epubID;
   if (!epubID)
   {
-    v4 = [(AEAssetActivityPropertyProvider *)self propertySource];
-    v5 = [(AEAssetActivityPropertyProvider *)self activityType];
-    v6 = (v4)[2](v4, v5, AEAssetActivityItemProviderPropertyEpubId);
+    propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+    activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+    v6 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyEpubId);
     v7 = self->_epubID;
     self->_epubID = v6;
 
@@ -205,9 +205,9 @@
   assetCover = self->_assetCover;
   if (!assetCover)
   {
-    v4 = [(AEAssetActivityPropertyProvider *)self propertySource];
-    v5 = [(AEAssetActivityPropertyProvider *)self activityType];
-    v6 = (v4)[2](v4, v5, AEAssetActivityItemProviderPropertyAssetCover);
+    propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+    activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+    v6 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyAssetCover);
     v7 = self->_assetCover;
     self->_assetCover = v6;
 
@@ -219,83 +219,83 @@
 
 - (NSString)title
 {
-  v3 = [(AEAssetActivityPropertyProvider *)self propertySource];
-  v4 = [(AEAssetActivityPropertyProvider *)self activityType];
-  v5 = (v3)[2](v3, v4, AEAssetActivityItemProviderPropertyTitle);
+  propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+  activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+  v5 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyTitle);
 
   return v5;
 }
 
 - (NSString)author
 {
-  v3 = [(AEAssetActivityPropertyProvider *)self propertySource];
-  v4 = [(AEAssetActivityPropertyProvider *)self activityType];
-  v5 = (v3)[2](v3, v4, AEAssetActivityItemProviderPropertyAuthor);
+  propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+  activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+  v5 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyAuthor);
 
   return v5;
 }
 
 - (NSString)publisherLocation
 {
-  v3 = [(AEAssetActivityPropertyProvider *)self propertySource];
-  v4 = [(AEAssetActivityPropertyProvider *)self activityType];
-  v5 = (v3)[2](v3, v4, AEAssetActivityItemProviderPropertyPublisherLocation);
+  propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+  activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+  v5 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyPublisherLocation);
 
   return v5;
 }
 
 - (NSString)publisherName
 {
-  v3 = [(AEAssetActivityPropertyProvider *)self propertySource];
-  v4 = [(AEAssetActivityPropertyProvider *)self activityType];
-  v5 = (v3)[2](v3, v4, AEAssetActivityItemProviderPropertyPublisherName);
+  propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+  activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+  v5 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyPublisherName);
 
   return v5;
 }
 
 - (NSString)publisherYear
 {
-  v3 = [(AEAssetActivityPropertyProvider *)self propertySource];
-  v4 = [(AEAssetActivityPropertyProvider *)self activityType];
-  v5 = (v3)[2](v3, v4, AEAssetActivityItemProviderPropertyPublisherYear);
+  propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+  activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+  v5 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyPublisherYear);
 
   return v5;
 }
 
 - (NSString)genre
 {
-  v3 = [(AEAssetActivityPropertyProvider *)self propertySource];
-  v4 = [(AEAssetActivityPropertyProvider *)self activityType];
-  v5 = (v3)[2](v3, v4, AEAssetActivityItemProviderPropertyGenre);
+  propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+  activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+  v5 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyGenre);
 
   return v5;
 }
 
 - (BOOL)contentProtected
 {
-  v3 = [(AEAssetActivityPropertyProvider *)self propertySource];
-  v4 = [(AEAssetActivityPropertyProvider *)self activityType];
-  v5 = (v3)[2](v3, v4, AEAssetActivityItemProviderPropertyIsContentProtected);
-  v6 = [v5 BOOLValue];
+  propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+  activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+  v5 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyIsContentProtected);
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (NSString)assetTypeString
 {
-  v3 = [(AEAssetActivityPropertyProvider *)self propertySource];
-  v4 = [(AEAssetActivityPropertyProvider *)self activityType];
-  v5 = (v3)[2](v3, v4, AEAssetActivityItemProviderPropertyAssetType);
+  propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+  activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+  v5 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyAssetType);
 
-  v6 = [v5 lastPathComponent];
+  lastPathComponent = [v5 lastPathComponent];
 
-  return v6;
+  return lastPathComponent;
 }
 
 - (int64_t)assetType
 {
-  v2 = [(AEAssetActivityPropertyProvider *)self assetTypeString];
-  v3 = BCAssetContentTypeFromAssetTypeString(v2);
+  assetTypeString = [(AEAssetActivityPropertyProvider *)self assetTypeString];
+  v3 = BCAssetContentTypeFromAssetTypeString(assetTypeString);
 
   return v3;
 }
@@ -303,69 +303,69 @@
 - (BOOL)isOwned
 {
   objc_opt_class();
-  v3 = [(AEAssetActivityPropertyProvider *)self propertySource];
-  v4 = [(AEAssetActivityPropertyProvider *)self activityType];
-  v5 = (v3)[2](v3, v4, AEAssetActivityItemProviderPropertyIsOwned);
+  propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+  activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+  v5 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyIsOwned);
   v6 = BUDynamicCast();
 
-  LOBYTE(v4) = [v6 BOOLValue];
-  return v4;
+  LOBYTE(activityType) = [v6 BOOLValue];
+  return activityType;
 }
 
 - (BOOL)isStoreAsset
 {
-  v2 = [(AEAssetActivityPropertyProvider *)self storeID];
-  v3 = [v2 longLongValue] != 0;
+  storeID = [(AEAssetActivityPropertyProvider *)self storeID];
+  v3 = [storeID longLongValue] != 0;
 
   return v3;
 }
 
 - (NSString)bookDescription
 {
-  v3 = [(AEAssetActivityPropertyProvider *)self propertySource];
-  v4 = [(AEAssetActivityPropertyProvider *)self activityType];
-  v5 = (v3)[2](v3, v4, AEAssetActivityItemProviderPropertyBookDescription);
+  propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+  activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+  v5 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyBookDescription);
 
   return v5;
 }
 
 - (NSString)seriesTitle
 {
-  v3 = [(AEAssetActivityPropertyProvider *)self propertySource];
-  v4 = [(AEAssetActivityPropertyProvider *)self activityType];
-  v5 = (v3)[2](v3, v4, AEAssetActivityItemProviderPropertySeriesTitle);
+  propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+  activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+  v5 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertySeriesTitle);
 
   return v5;
 }
 
 - (NSString)version
 {
-  v3 = [(AEAssetActivityPropertyProvider *)self propertySource];
-  v4 = [(AEAssetActivityPropertyProvider *)self activityType];
-  v5 = (v3)[2](v3, v4, AEAssetActivityItemProviderPropertyVersion);
+  propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+  activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+  v5 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyVersion);
 
   return v5;
 }
 
-- (id)checkOutBookStringWithCharacterLimit:(unint64_t)a3
+- (id)checkOutBookStringWithCharacterLimit:(unint64_t)limit
 {
-  v5 = [(AEAssetActivityPropertyProvider *)self assetType];
-  v6 = [(AEAssetActivityPropertyProvider *)self isStoreAsset];
+  assetType = [(AEAssetActivityPropertyProvider *)self assetType];
+  isStoreAsset = [(AEAssetActivityPropertyProvider *)self isStoreAsset];
   v7 = IMCommonCoreBundle();
   v8 = v7;
   v9 = @"Check out this book on Apple Books:";
-  if (v5 == 6)
+  if (assetType == 6)
   {
     v9 = @"Check out this audiobook on Apple Books:";
   }
 
   v10 = @"Check out this audiobook:";
-  if (v5 != 6)
+  if (assetType != 6)
   {
     v10 = @"Check out this book:";
   }
 
-  if (v6)
+  if (isStoreAsset)
   {
     v11 = v9;
   }
@@ -379,32 +379,32 @@
 
   v13 = IMCommonCoreBundle();
   v14 = [v13 localizedStringForKey:@"\\U201C%@\\U201D by %@" value:&stru_2D2930 table:@"BCCommonCoreLocalizable"];
-  v15 = [(AEAssetActivityPropertyProvider *)self title];
-  v16 = [(AEAssetActivityPropertyProvider *)self author];
-  v17 = [NSString stringWithFormat:v14, v15, v16];
+  title = [(AEAssetActivityPropertyProvider *)self title];
+  author = [(AEAssetActivityPropertyProvider *)self author];
+  v17 = [NSString stringWithFormat:v14, title, author];
 
   v18 = [NSString stringWithFormat:@"%@ %@", v12, v17];
-  if ([v18 length] > a3)
+  if ([v18 length] > limit)
   {
-    v19 = [(AEAssetActivityPropertyProvider *)self title];
-    v20 = [NSString stringWithFormat:@"%@ %@", v12, v19];
+    title2 = [(AEAssetActivityPropertyProvider *)self title];
+    v20 = [NSString stringWithFormat:@"%@ %@", v12, title2];
 
     v18 = v20;
   }
 
-  if ([v18 length] > a3)
+  if ([v18 length] > limit)
   {
-    v21 = [(AEAssetActivityPropertyProvider *)self title];
+    title3 = [(AEAssetActivityPropertyProvider *)self title];
 
-    v18 = v21;
+    v18 = title3;
   }
 
-  if ([v18 length] > a3)
+  if ([v18 length] > limit)
   {
-    v22 = [(AEAssetActivityPropertyProvider *)self title];
+    title4 = [(AEAssetActivityPropertyProvider *)self title];
     v23 = IMCommonCoreBundle();
     v24 = [v23 localizedStringForKey:@"\\U2026" value:&stru_2D2930 table:@"BCCommonCoreLocalizable"];
-    v25 = [v22 stringByTruncatingToLength:a3 options:3 truncationString:v24];
+    v25 = [title4 stringByTruncatingToLength:limit options:3 truncationString:v24];
 
     v18 = v25;
   }
@@ -414,21 +414,21 @@
 
 - (id)previewAssetCoverItemProvider
 {
-  v3 = [(AEAssetActivityPropertyProvider *)self previewAssetCoverFuture];
+  previewAssetCoverFuture = [(AEAssetActivityPropertyProvider *)self previewAssetCoverFuture];
 
-  if (v3)
+  if (previewAssetCoverFuture)
   {
-    v3 = objc_alloc_init(NSItemProvider);
-    v4 = [UTTypePNG identifier];
+    previewAssetCoverFuture = objc_alloc_init(NSItemProvider);
+    identifier = [UTTypePNG identifier];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_7D7E8;
     v6[3] = &unk_2CB178;
     v6[4] = self;
-    [v3 registerItemForTypeIdentifier:v4 loadHandler:v6];
+    [previewAssetCoverFuture registerItemForTypeIdentifier:identifier loadHandler:v6];
   }
 
-  return v3;
+  return previewAssetCoverFuture;
 }
 
 - (id)previewAssetCoverFuture
@@ -436,9 +436,9 @@
   previewAssetCoverFuture = self->_previewAssetCoverFuture;
   if (!previewAssetCoverFuture)
   {
-    v4 = [(AEAssetActivityPropertyProvider *)self propertySource];
-    v5 = [(AEAssetActivityPropertyProvider *)self activityType];
-    v6 = (v4)[2](v4, v5, AEAssetActivityItemProviderPropertyPreviewAssetCoverFuture);
+    propertySource = [(AEAssetActivityPropertyProvider *)self propertySource];
+    activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+    v6 = (propertySource)[2](propertySource, activityType, AEAssetActivityItemProviderPropertyPreviewAssetCoverFuture);
     v7 = self->_previewAssetCoverFuture;
     self->_previewAssetCoverFuture = v6;
 
@@ -448,20 +448,20 @@
   return previewAssetCoverFuture;
 }
 
-- (id)userPublishing:(id)a3 storeURLForStoreId:(id)a4
+- (id)userPublishing:(id)publishing storeURLForStoreId:(id)id
 {
-  v5 = [(AEAssetActivityPropertyProvider *)self propertySource:a3];
-  v6 = [(AEAssetActivityPropertyProvider *)self activityType];
-  v7 = (v5)[2](v5, v6, AEAssetActivityItemProviderPropertyStoreUrl);
+  v5 = [(AEAssetActivityPropertyProvider *)self propertySource:publishing];
+  activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+  v7 = (v5)[2](v5, activityType, AEAssetActivityItemProviderPropertyStoreUrl);
 
   return v7;
 }
 
-- (id)userPublishing:(id)a3 storeShortURLForStoreId:(id)a4
+- (id)userPublishing:(id)publishing storeShortURLForStoreId:(id)id
 {
-  v5 = [(AEAssetActivityPropertyProvider *)self propertySource:a3];
-  v6 = [(AEAssetActivityPropertyProvider *)self activityType];
-  v7 = (v5)[2](v5, v6, AEAssetActivityItemProviderPropertyStoreShortUrl);
+  v5 = [(AEAssetActivityPropertyProvider *)self propertySource:publishing];
+  activityType = [(AEAssetActivityPropertyProvider *)self activityType];
+  v7 = (v5)[2](v5, activityType, AEAssetActivityItemProviderPropertyStoreShortUrl);
 
   return v7;
 }

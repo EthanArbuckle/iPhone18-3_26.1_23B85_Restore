@@ -1,44 +1,44 @@
 @interface AMSFollowUpItem
-+ (id)_dateFromString:(id)a3;
-+ (id)backingIdentifierForIdentifier:(id)a3 DSID:(id)a4;
-+ (id)backingIdentifierForIdentifier:(id)a3 account:(id)a4;
-+ (id)componentsFromBackingIdentifier:(id)a3;
++ (id)_dateFromString:(id)string;
++ (id)backingIdentifierForIdentifier:(id)identifier DSID:(id)d;
++ (id)backingIdentifierForIdentifier:(id)identifier account:(id)account;
++ (id)componentsFromBackingIdentifier:(id)identifier;
 - (ACAccount)account;
-- (AMSFollowUpItem)initWithFollowUpItem:(id)a3;
-- (AMSFollowUpItem)initWithIdentifier:(id)a3 account:(id)a4 priority:(int64_t)a5;
-- (AMSFollowUpItem)initWithIdentifier:(id)a3 jsonDictionary:(id)a4 account:(id)a5 priority:(int64_t)a6 logKey:(id)a7;
+- (AMSFollowUpItem)initWithFollowUpItem:(id)item;
+- (AMSFollowUpItem)initWithIdentifier:(id)identifier account:(id)account priority:(int64_t)priority;
+- (AMSFollowUpItem)initWithIdentifier:(id)identifier jsonDictionary:(id)dictionary account:(id)account priority:(int64_t)priority logKey:(id)key;
 - (BOOL)active;
-- (BOOL)shouldOverwriteItem:(id)a3;
+- (BOOL)shouldOverwriteItem:(id)item;
 - (NSMutableDictionary)userInfo;
 - (NSString)backingIdentifier;
 - (NSString)groupIdentifier;
 - (NSString)identifier;
 - (NSString)logKey;
 - (id)generateItem;
-- (id)postMetricsWithBag:(id)a3;
-- (id)postMetricsWithBagContract:(id)a3;
+- (id)postMetricsWithBag:(id)bag;
+- (id)postMetricsWithBagContract:(id)contract;
 - (int64_t)priority;
-- (void)setAccount:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setLogKey:(id)a3;
-- (void)setPriority:(int64_t)a3;
-- (void)setUserInfo:(id)a3;
+- (void)setAccount:(id)account;
+- (void)setIdentifier:(id)identifier;
+- (void)setLogKey:(id)key;
+- (void)setPriority:(int64_t)priority;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation AMSFollowUpItem
 
-- (AMSFollowUpItem)initWithIdentifier:(id)a3 account:(id)a4 priority:(int64_t)a5
+- (AMSFollowUpItem)initWithIdentifier:(id)identifier account:(id)account priority:(int64_t)priority
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  accountCopy = account;
   v21.receiver = self;
   v21.super_class = AMSFollowUpItem;
   v11 = [(AMSFollowUpItem *)&v21 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_account, a4);
-    objc_storeStrong(&v12->_identifier, a3);
+    objc_storeStrong(&v11->_account, account);
+    objc_storeStrong(&v12->_identifier, identifier);
     v13 = dispatch_queue_create("com.apple.AppleMediaServices.FollowUpItem", 0);
     internalQueue = v12->_internalQueue;
     v12->_internalQueue = v13;
@@ -51,23 +51,23 @@
     userInfo = v12->_userInfo;
     v12->_userInfo = v17;
 
-    v19 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+    v19 = [MEMORY[0x1E696AD98] numberWithInteger:priority];
     [(NSMutableDictionary *)v12->_userInfo setObject:v19 forKeyedSubscript:@"AMSPriority"];
   }
 
   return v12;
 }
 
-- (AMSFollowUpItem)initWithIdentifier:(id)a3 jsonDictionary:(id)a4 account:(id)a5 priority:(int64_t)a6 logKey:(id)a7
+- (AMSFollowUpItem)initWithIdentifier:(id)identifier jsonDictionary:(id)dictionary account:(id)account priority:(int64_t)priority logKey:(id)key
 {
   v83 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [v13 objectForKeyedSubscript:@"deviceGroup"];
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
+  accountCopy = account;
+  keyCopy = key;
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"deviceGroup"];
   v17 = objc_opt_respondsToSelector();
-  v18 = v14;
+  v18 = accountCopy;
   if (v17)
   {
     if ([v16 BOOLValue])
@@ -77,14 +77,14 @@
 
     else
     {
-      v18 = v14;
+      v18 = accountCopy;
     }
   }
 
-  v19 = [(AMSFollowUpItem *)self initWithIdentifier:v12 account:v18 priority:a6];
+  v19 = [(AMSFollowUpItem *)self initWithIdentifier:identifierCopy account:v18 priority:priority];
   if (v19)
   {
-    v20 = [v13 objectForKeyedSubscript:@"title"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     v21 = v20;
     if (v20)
     {
@@ -98,22 +98,22 @@
 
     v70 = v22;
 
-    v77 = [v13 objectForKeyedSubscript:@"text"];
-    v23 = [v13 objectForKeyedSubscript:@"expirationDateHidden"];
+    v77 = [dictionaryCopy objectForKeyedSubscript:@"text"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"expirationDateHidden"];
     v69 = v23;
     if (objc_opt_respondsToSelector())
     {
-      v24 = [v23 BOOLValue];
+      bOOLValue = [v23 BOOLValue];
     }
 
     else
     {
-      v24 = 0;
+      bOOLValue = 0;
     }
 
-    v25 = [v13 objectForKeyedSubscript:@"expirationDate"];
-    obj = [v13 objectForKeyedSubscript:@"footer"];
-    v75 = [v13 objectForKeyedSubscript:@"metrics"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"expirationDate"];
+    obj = [dictionaryCopy objectForKeyedSubscript:@"footer"];
+    v75 = [dictionaryCopy objectForKeyedSubscript:@"metrics"];
     v68 = v25;
     if ([v25 length])
     {
@@ -126,29 +126,29 @@
     }
 
     v71 = v16;
-    v27 = [v13 objectForKeyedSubscript:@"disableGrouping"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"disableGrouping"];
     v66 = v27;
     if (objc_opt_respondsToSelector())
     {
-      v28 = [v27 BOOLValue];
+      bOOLValue2 = [v27 BOOLValue];
     }
 
     else
     {
-      v28 = 0;
+      bOOLValue2 = 0;
     }
 
-    v29 = [v13 objectForKeyedSubscript:@"iconImageName"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"iconImageName"];
     bundleIconName = v19->_bundleIconName;
     v19->_bundleIconName = v29;
 
-    v19->_expirationDateHidden = v24;
-    v19->_disableGrouping = v28;
+    v19->_expirationDateHidden = bOOLValue;
+    v19->_disableGrouping = bOOLValue2;
     objc_storeStrong(&v19->_expirationDate, v26);
     objc_storeStrong(&v19->_footer, obj);
     objc_storeStrong(&v19->_informativeText, v77);
     objc_storeStrong(&v19->_title, v22);
-    [(AMSFollowUpItem *)v19 setLogKey:v15];
+    [(AMSFollowUpItem *)v19 setLogKey:keyCopy];
     if (v75)
     {
       v31 = [[AMSMetricsEvent alloc] initWithUnderlyingDictionary:v75];
@@ -156,19 +156,19 @@
       v19->_metricsEvent = v31;
     }
 
-    v33 = [v13 objectForKeyedSubscript:@"notification"];
-    v72 = v14;
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"notification"];
+    v72 = accountCopy;
     if (objc_opt_respondsToSelector())
     {
-      v34 = [v33 BOOLValue];
+      bOOLValue3 = [v33 BOOLValue];
     }
 
     else
     {
-      v34 = 0;
+      bOOLValue3 = 0;
     }
 
-    [(AMSFollowUpItem *)v19 setShouldPostNotification:v34];
+    [(AMSFollowUpItem *)v19 setShouldPostNotification:bOOLValue3];
     v35 = v33;
     objc_opt_class();
     v65 = v35;
@@ -186,7 +186,7 @@
     {
     }
 
-    v37 = [v13 objectForKeyedSubscript:@"notificationOptions"];
+    informativeText2 = [dictionaryCopy objectForKeyedSubscript:@"notificationOptions"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -196,49 +196,49 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    v36 = v37;
+    v36 = informativeText2;
 
     if (!v36)
     {
 LABEL_35:
-      v45 = [v13 objectForKeyedSubscript:@"hardwareOffer"];
+      v45 = [dictionaryCopy objectForKeyedSubscript:@"hardwareOffer"];
       if (objc_opt_respondsToSelector())
       {
-        v46 = [v45 BOOLValue];
+        bOOLValue4 = [v45 BOOLValue];
       }
 
       else
       {
-        v46 = 0;
+        bOOLValue4 = 0;
       }
 
-      v19->_hardwareOffer = v46;
-      v47 = [v13 objectForKeyedSubscript:@"newDeviceOutreach"];
+      v19->_hardwareOffer = bOOLValue4;
+      v47 = [dictionaryCopy objectForKeyedSubscript:@"newDeviceOutreach"];
       if (objc_opt_respondsToSelector())
       {
-        v48 = [v47 BOOLValue];
+        bOOLValue5 = [v47 BOOLValue];
       }
 
       else
       {
-        v48 = 0;
+        bOOLValue5 = 0;
       }
 
-      v19->_newDeviceOutreach = v48;
-      v49 = [v13 objectForKeyedSubscript:@"omitBadge"];
+      v19->_newDeviceOutreach = bOOLValue5;
+      v49 = [dictionaryCopy objectForKeyedSubscript:@"omitBadge"];
       if ((objc_opt_respondsToSelector() & 1) != 0 && [v49 BOOLValue])
       {
         v19->_displayStyle |= 0x10uLL;
       }
 
-      v74 = [v13 objectForKeyedSubscript:@"omitAppBadge"];
+      v74 = [dictionaryCopy objectForKeyedSubscript:@"omitAppBadge"];
       if ((objc_opt_respondsToSelector() & 1) != 0 && [v74 BOOLValue])
       {
         v19->_displayStyle |= 0x20uLL;
       }
 
       v64 = v45;
-      v50 = [v13 objectForKeyedSubscript:@"notificationOnly"];
+      v50 = [dictionaryCopy objectForKeyedSubscript:@"notificationOnly"];
       if ((objc_opt_respondsToSelector() & 1) != 0 && [v50 BOOLValue])
       {
         v19->_displayStyle |= 0x18uLL;
@@ -248,7 +248,7 @@ LABEL_35:
       v62 = v49;
       v63 = v47;
       v67 = v26;
-      v51 = [v13 objectForKeyedSubscript:@"zeroAction"];
+      v51 = [dictionaryCopy objectForKeyedSubscript:@"zeroAction"];
       if ((objc_opt_respondsToSelector() & 1) != 0 && [v51 BOOLValue])
       {
         v19->_displayStyle |= 2uLL;
@@ -256,8 +256,8 @@ LABEL_35:
 
       v60 = v51;
       v52 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v73 = v13;
-      v53 = [v13 objectForKeyedSubscript:@"actions"];
+      v73 = dictionaryCopy;
+      v53 = [dictionaryCopy objectForKeyedSubscript:@"actions"];
       v78 = 0u;
       v79 = 0u;
       v80 = 0u;
@@ -276,8 +276,8 @@ LABEL_35:
               objc_enumerationMutation(v53);
             }
 
-            v58 = [[AMSFollowUpAction alloc] initWithJSONDictionary:*(*(&v78 + 1) + 8 * i) parentIdentifier:v12];
-            [(AMSFollowUpAction *)v58 setLogKey:v15];
+            v58 = [[AMSFollowUpAction alloc] initWithJSONDictionary:*(*(&v78 + 1) + 8 * i) parentIdentifier:identifierCopy];
+            [(AMSFollowUpAction *)v58 setLogKey:keyCopy];
             [v52 addObject:v58];
           }
 
@@ -292,36 +292,36 @@ LABEL_35:
         objc_storeStrong(&v19->_actions, v52);
       }
 
-      v14 = v72;
-      v13 = v73;
+      accountCopy = v72;
+      dictionaryCopy = v73;
       v16 = v71;
       goto LABEL_63;
     }
 
 LABEL_29:
-    v38 = [[AMSFollowUpNotification alloc] initWithJSONDictionary:v36 parentIdentifier:v12 logKey:v15];
+    v38 = [[AMSFollowUpNotification alloc] initWithJSONDictionary:v36 parentIdentifier:identifierCopy logKey:keyCopy];
     notification = v19->_notification;
     v19->_notification = v38;
 
-    v40 = [(AMSFollowUpItem *)v19 title];
+    title = [(AMSFollowUpItem *)v19 title];
 
-    if (v40)
+    if (title)
     {
-      v41 = [(AMSFollowUpItem *)v19 title];
-      v42 = [(AMSFollowUpItem *)v19 notification];
-      [v42 setTitle:v41];
+      title2 = [(AMSFollowUpItem *)v19 title];
+      notification = [(AMSFollowUpItem *)v19 notification];
+      [notification setTitle:title2];
     }
 
-    v43 = [(AMSFollowUpItem *)v19 informativeText];
+    informativeText = [(AMSFollowUpItem *)v19 informativeText];
 
-    if (!v43)
+    if (!informativeText)
     {
       goto LABEL_35;
     }
 
-    v37 = [(AMSFollowUpItem *)v19 informativeText];
-    v44 = [(AMSFollowUpItem *)v19 notification];
-    [v44 setInformativeText:v37];
+    informativeText2 = [(AMSFollowUpItem *)v19 informativeText];
+    notification2 = [(AMSFollowUpItem *)v19 notification];
+    [notification2 setInformativeText:informativeText2];
 
     goto LABEL_34;
   }
@@ -331,24 +331,24 @@ LABEL_63:
   return v19;
 }
 
-- (AMSFollowUpItem)initWithFollowUpItem:(id)a3
+- (AMSFollowUpItem)initWithFollowUpItem:(id)item
 {
   v63 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 uniqueIdentifier];
-  v6 = [objc_opt_class() componentsFromBackingIdentifier:v5];
+  itemCopy = item;
+  uniqueIdentifier = [itemCopy uniqueIdentifier];
+  v6 = [objc_opt_class() componentsFromBackingIdentifier:uniqueIdentifier];
   v7 = [v6 objectForKeyedSubscript:@"identifier"];
   v8 = [v6 objectForKeyedSubscript:@"dsid"];
   if (v8)
   {
-    v9 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-    v10 = [v9 ams_iTunesAccountWithDSID:v8];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    v10 = [ams_sharedAccountStore ams_iTunesAccountWithDSID:v8];
   }
 
   else
   {
-    v11 = [v4 userInfo];
-    v12 = [v11 objectForKeyedSubscript:@"AMSLogKey"];
+    userInfo = [itemCopy userInfo];
+    v12 = [userInfo objectForKeyedSubscript:@"AMSLogKey"];
 
     v13 = +[AMSLogConfig sharedFollowUpConfig];
     if (!v13)
@@ -356,8 +356,8 @@ LABEL_63:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v15 = objc_opt_class();
       v50 = v15;
@@ -369,7 +369,7 @@ LABEL_63:
       v60 = v12;
       v61 = 2112;
       v62 = v16;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch account with DSID: %@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch account with DSID: %@", buf, 0x20u);
     }
 
     v10 = 0;
@@ -380,33 +380,33 @@ LABEL_63:
   {
     v48 = v10;
     v49 = v8;
-    v17->_displayStyle = [v4 displayStyle];
-    v18 = [v4 bundleIconName];
+    v17->_displayStyle = [itemCopy displayStyle];
+    bundleIconName = [itemCopy bundleIconName];
     bundleIconName = v17->_bundleIconName;
-    v17->_bundleIconName = v18;
+    v17->_bundleIconName = bundleIconName;
 
-    v20 = [v4 informativeText];
+    informativeText = [itemCopy informativeText];
     informativeText = v17->_informativeText;
-    v17->_informativeText = v20;
+    v17->_informativeText = informativeText;
 
-    v22 = [v4 expirationDate];
+    expirationDate = [itemCopy expirationDate];
     expirationDate = v17->_expirationDate;
-    v17->_expirationDate = v22;
+    v17->_expirationDate = expirationDate;
 
-    v24 = [v4 informativeFooterText];
+    informativeFooterText = [itemCopy informativeFooterText];
     footer = v17->_footer;
-    v17->_footer = v24;
+    v17->_footer = informativeFooterText;
 
-    v26 = [v4 title];
+    title = [itemCopy title];
     title = v17->_title;
-    v17->_title = v26;
+    v17->_title = title;
 
-    v28 = [v4 userInfo];
+    userInfo2 = [itemCopy userInfo];
 
-    if (v28)
+    if (userInfo2)
     {
-      v29 = [v4 userInfo];
-      v30 = [v29 mutableCopy];
+      userInfo3 = [itemCopy userInfo];
+      v30 = [userInfo3 mutableCopy];
 
       v31 = [(NSMutableDictionary *)v30 objectForKeyedSubscript:@"AMSMetrics"];
       objc_opt_class();
@@ -435,27 +435,27 @@ LABEL_63:
 
       if (objc_opt_respondsToSelector())
       {
-        v37 = [v36 BOOLValue];
+        bOOLValue = [v36 BOOLValue];
       }
 
       else
       {
-        v37 = 0;
+        bOOLValue = 0;
       }
 
-      [(AMSFollowUpItem *)v17 setExpirationDateHidden:v37];
+      [(AMSFollowUpItem *)v17 setExpirationDateHidden:bOOLValue];
       userInfo = v17->_userInfo;
       v17->_userInfo = v30;
     }
 
-    v51 = v5;
+    v51 = uniqueIdentifier;
     v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v40 = [v4 actions];
-    v41 = [v40 countByEnumeratingWithState:&v52 objects:v56 count:16];
+    actions = [itemCopy actions];
+    v41 = [actions countByEnumeratingWithState:&v52 objects:v56 count:16];
     if (v41)
     {
       v42 = v41;
@@ -466,14 +466,14 @@ LABEL_63:
         {
           if (*v53 != v43)
           {
-            objc_enumerationMutation(v40);
+            objc_enumerationMutation(actions);
           }
 
           v45 = [[AMSFollowUpAction alloc] initWithAction:*(*(&v52 + 1) + 8 * i) parentIdentifier:v7];
           [(NSArray *)v39 addObject:v45];
         }
 
-        v42 = [v40 countByEnumeratingWithState:&v52 objects:v56 count:16];
+        v42 = [actions countByEnumeratingWithState:&v52 objects:v56 count:16];
       }
 
       while (v42);
@@ -482,7 +482,7 @@ LABEL_63:
     actions = v17->_actions;
     v17->_actions = v39;
 
-    v5 = v51;
+    uniqueIdentifier = v51;
     v10 = v48;
     v8 = v49;
   }
@@ -498,14 +498,14 @@ LABEL_63:
   v10 = __Block_byref_object_copy__32;
   v11 = __Block_byref_object_dispose__32;
   v12 = 0;
-  v3 = [(AMSFollowUpItem *)self internalQueue];
+  internalQueue = [(AMSFollowUpItem *)self internalQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __26__AMSFollowUpItem_account__block_invoke;
   v6[3] = &unk_1E73B3EA8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(internalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -517,9 +517,9 @@ LABEL_63:
 {
   v31 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(AMSFollowUp);
-  v4 = [(AMSFollowUp *)v3 pendingFollowUps];
+  pendingFollowUps = [(AMSFollowUp *)v3 pendingFollowUps];
   v25 = 0;
-  v5 = [v4 resultWithError:&v25];
+  v5 = [pendingFollowUps resultWithError:&v25];
   v6 = v25;
 
   if (v6)
@@ -530,8 +530,8 @@ LABEL_63:
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
       *buf = 138543618;
@@ -539,7 +539,7 @@ LABEL_63:
       v29 = 2114;
       v30 = v6;
       v10 = v9;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch pending followups for determining active status. Error: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch pending followups for determining active status. Error: %{public}@", buf, 0x16u);
     }
   }
 
@@ -562,9 +562,9 @@ LABEL_63:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v21 + 1) + 8 * i) backingIdentifier];
-        v17 = [(AMSFollowUpItem *)self backingIdentifier];
-        v18 = [v16 isEqualToString:v17];
+        backingIdentifier = [*(*(&v21 + 1) + 8 * i) backingIdentifier];
+        backingIdentifier2 = [(AMSFollowUpItem *)self backingIdentifier];
+        v18 = [backingIdentifier isEqualToString:backingIdentifier2];
 
         if (v18)
         {
@@ -592,9 +592,9 @@ LABEL_17:
 - (NSString)backingIdentifier
 {
   v3 = objc_opt_class();
-  v4 = [(AMSFollowUpItem *)self identifier];
-  v5 = [(AMSFollowUpItem *)self account];
-  v6 = [v3 backingIdentifierForIdentifier:v4 account:v5];
+  identifier = [(AMSFollowUpItem *)self identifier];
+  account = [(AMSFollowUpItem *)self account];
+  v6 = [v3 backingIdentifierForIdentifier:identifier account:account];
 
   return v6;
 }
@@ -607,14 +607,14 @@ LABEL_17:
   v10 = __Block_byref_object_copy__32;
   v11 = __Block_byref_object_dispose__32;
   v12 = 0;
-  v3 = [(AMSFollowUpItem *)self internalQueue];
+  internalQueue = [(AMSFollowUpItem *)self internalQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __29__AMSFollowUpItem_identifier__block_invoke;
   v6[3] = &unk_1E73B3EA8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(internalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -677,9 +677,9 @@ LABEL_17:
 
   else
   {
-    v7 = [(AMSFollowUpItem *)self account];
+    account = [(AMSFollowUpItem *)self account];
 
-    if (v7)
+    if (account)
     {
       v13 = 0;
       v14 = &v13;
@@ -738,14 +738,14 @@ LABEL_16:
   v10 = __Block_byref_object_copy__32;
   v11 = __Block_byref_object_dispose__32;
   v12 = 0;
-  v3 = [(AMSFollowUpItem *)self internalQueue];
+  internalQueue = [(AMSFollowUpItem *)self internalQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __25__AMSFollowUpItem_logKey__block_invoke;
   v6[3] = &unk_1E73B3EA8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(internalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -777,14 +777,14 @@ void __25__AMSFollowUpItem_logKey__block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(AMSFollowUpItem *)self internalQueue];
+  internalQueue = [(AMSFollowUpItem *)self internalQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __27__AMSFollowUpItem_priority__block_invoke;
   v6[3] = &unk_1E73B82D0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(internalQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -808,14 +808,14 @@ void __27__AMSFollowUpItem_priority__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__32;
   v11 = __Block_byref_object_dispose__32;
   v12 = 0;
-  v3 = [(AMSFollowUpItem *)self internalQueue];
+  internalQueue = [(AMSFollowUpItem *)self internalQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __27__AMSFollowUpItem_userInfo__block_invoke;
   v6[3] = &unk_1E73B3EA8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(internalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -823,58 +823,58 @@ void __27__AMSFollowUpItem_priority__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(AMSFollowUpItem *)self internalQueue];
+  accountCopy = account;
+  internalQueue = [(AMSFollowUpItem *)self internalQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__AMSFollowUpItem_setAccount___block_invoke;
   v7[3] = &unk_1E73B3DE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = accountCopy;
+  v6 = accountCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AMSFollowUpItem *)self internalQueue];
+  identifierCopy = identifier;
+  internalQueue = [(AMSFollowUpItem *)self internalQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__AMSFollowUpItem_setIdentifier___block_invoke;
   v7[3] = &unk_1E73B3DE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
-- (void)setLogKey:(id)a3
+- (void)setLogKey:(id)key
 {
-  v4 = a3;
-  v5 = [(AMSFollowUpItem *)self internalQueue];
+  keyCopy = key;
+  internalQueue = [(AMSFollowUpItem *)self internalQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __29__AMSFollowUpItem_setLogKey___block_invoke;
   v7[3] = &unk_1E73B3DE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = keyCopy;
+  v6 = keyCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
-- (void)setPriority:(int64_t)a3
+- (void)setPriority:(int64_t)priority
 {
-  v5 = [(AMSFollowUpItem *)self internalQueue];
+  internalQueue = [(AMSFollowUpItem *)self internalQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __31__AMSFollowUpItem_setPriority___block_invoke;
   v6[3] = &unk_1E73B40A8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = priority;
+  dispatch_sync(internalQueue, v6);
 }
 
 void __31__AMSFollowUpItem_setPriority___block_invoke(uint64_t a1)
@@ -883,18 +883,18 @@ void __31__AMSFollowUpItem_setPriority___block_invoke(uint64_t a1)
   [*(*(a1 + 32) + 24) setObject:v2 forKeyedSubscript:@"AMSPriority"];
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(AMSFollowUpItem *)self internalQueue];
+  infoCopy = info;
+  internalQueue = [(AMSFollowUpItem *)self internalQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__AMSFollowUpItem_setUserInfo___block_invoke;
   v7[3] = &unk_1E73B3DE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = infoCopy;
+  v6 = infoCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
 void __31__AMSFollowUpItem_setUserInfo___block_invoke(uint64_t a1)
@@ -913,43 +913,43 @@ void __31__AMSFollowUpItem_setUserInfo___block_invoke(uint64_t a1)
   }
 }
 
-+ (id)backingIdentifierForIdentifier:(id)a3 account:(id)a4
++ (id)backingIdentifierForIdentifier:(id)identifier account:(id)account
 {
-  v5 = a4;
-  v6 = a3;
+  accountCopy = account;
+  identifierCopy = identifier;
   v7 = objc_opt_class();
-  v8 = [v5 ams_DSID];
+  ams_DSID = [accountCopy ams_DSID];
 
-  v9 = [v7 backingIdentifierForIdentifier:v6 DSID:v8];
+  v9 = [v7 backingIdentifierForIdentifier:identifierCopy DSID:ams_DSID];
 
   return v9;
 }
 
-+ (id)backingIdentifierForIdentifier:(id)a3 DSID:(id)a4
++ (id)backingIdentifierForIdentifier:(id)identifier DSID:(id)d
 {
-  v5 = a3;
-  if (a4)
+  identifierCopy = identifier;
+  if (d)
   {
-    a4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"++", a4];
+    d = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"++", d];
   }
 
-  v6 = &stru_1F071BA78;
-  if (a4)
+  dCopy = &stru_1F071BA78;
+  if (d)
   {
-    v6 = a4;
+    dCopy = d;
   }
 
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"AMS_", v5, v6];
+  dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"AMS_", identifierCopy, dCopy];
 
-  return v7;
+  return dCopy;
 }
 
-+ (id)componentsFromBackingIdentifier:(id)a3
++ (id)componentsFromBackingIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 stringByReplacingOccurrencesOfString:@"AMS_" withString:&stru_1F071BA78];
+  v6 = [identifierCopy stringByReplacingOccurrencesOfString:@"AMS_" withString:&stru_1F071BA78];
 
   v7 = [v6 componentsSeparatedByString:@"++"];
   if ([v7 count])
@@ -971,16 +971,16 @@ void __31__AMSFollowUpItem_setUserInfo___block_invoke(uint64_t a1)
   return v5;
 }
 
-+ (id)_dateFromString:(id)a3
++ (id)_dateFromString:(id)string
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AB78] ams_serverFriendlyFormatter];
-  v5 = [v4 dateFromString:v3];
+  stringCopy = string;
+  ams_serverFriendlyFormatter = [MEMORY[0x1E696AB78] ams_serverFriendlyFormatter];
+  v5 = [ams_serverFriendlyFormatter dateFromString:stringCopy];
 
   if (!v5)
   {
-    v6 = [MEMORY[0x1E696AB78] ams_serverFriendlyLocalTimeZoneFormatter];
-    v5 = [v6 dateFromString:v3];
+    ams_serverFriendlyLocalTimeZoneFormatter = [MEMORY[0x1E696AB78] ams_serverFriendlyLocalTimeZoneFormatter];
+    v5 = [ams_serverFriendlyLocalTimeZoneFormatter dateFromString:stringCopy];
   }
 
   return v5;
@@ -1009,45 +1009,45 @@ void __31__AMSFollowUpItem_setUserInfo___block_invoke(uint64_t a1)
   _Block_object_dispose(&v47, 8);
   v5 = objc_alloc_init(v3);
   [v5 setDisplayStyle:{-[AMSFollowUpItem displayStyle](self, "displayStyle")}];
-  v6 = [(AMSFollowUpItem *)self expirationDate];
-  [v5 setExpirationDate:v6];
+  expirationDate = [(AMSFollowUpItem *)self expirationDate];
+  [v5 setExpirationDate:expirationDate];
 
   [v5 setExtensionIdentifier:@"com.apple.AppleMediaServices.FollowUpExtension"];
-  v7 = [(AMSFollowUpItem *)self groupIdentifier];
-  [v5 setGroupIdentifier:v7];
+  groupIdentifier = [(AMSFollowUpItem *)self groupIdentifier];
+  [v5 setGroupIdentifier:groupIdentifier];
 
-  v8 = [(AMSFollowUpItem *)self footer];
-  [v5 setInformativeFooterText:v8];
+  footer = [(AMSFollowUpItem *)self footer];
+  [v5 setInformativeFooterText:footer];
 
-  v9 = [(AMSFollowUpItem *)self informativeText];
-  [v5 setInformativeText:v9];
+  informativeText = [(AMSFollowUpItem *)self informativeText];
+  [v5 setInformativeText:informativeText];
 
-  v10 = [(AMSFollowUpItem *)self title];
-  [v5 setTitle:v10];
+  title = [(AMSFollowUpItem *)self title];
+  [v5 setTitle:title];
 
-  v11 = [(AMSFollowUpItem *)self backingIdentifier];
-  [v5 setUniqueIdentifier:v11];
+  backingIdentifier = [(AMSFollowUpItem *)self backingIdentifier];
+  [v5 setUniqueIdentifier:backingIdentifier];
 
-  v12 = [(AMSFollowUpItem *)self bundleIconName];
-  LOBYTE(v11) = v12 == 0;
+  bundleIconName = [(AMSFollowUpItem *)self bundleIconName];
+  LOBYTE(backingIdentifier) = bundleIconName == 0;
 
-  if ((v11 & 1) == 0)
+  if ((backingIdentifier & 1) == 0)
   {
     [v5 setRepresentingBundlePath:@"/System/Library/PrivateFrameworks/AppleMediaServicesUI.framework"];
-    v13 = [(AMSFollowUpItem *)self bundleIconName];
-    [v5 setBundleIconName:v13];
+    bundleIconName2 = [(AMSFollowUpItem *)self bundleIconName];
+    [v5 setBundleIconName:bundleIconName2];
   }
 
-  v14 = [(AMSFollowUpItem *)self userInfo];
-  v15 = [v14 mutableCopy];
+  userInfo = [(AMSFollowUpItem *)self userInfo];
+  v15 = [userInfo mutableCopy];
 
-  v16 = [(AMSFollowUpItem *)self metricsEvent];
+  metricsEvent = [(AMSFollowUpItem *)self metricsEvent];
 
-  if (v16)
+  if (metricsEvent)
   {
-    v17 = [(AMSFollowUpItem *)self metricsEvent];
-    v18 = [v17 underlyingDictionary];
-    [v15 setObject:v18 forKeyedSubscript:@"AMSMetrics"];
+    metricsEvent2 = [(AMSFollowUpItem *)self metricsEvent];
+    underlyingDictionary = [metricsEvent2 underlyingDictionary];
+    [v15 setObject:underlyingDictionary forKeyedSubscript:@"AMSMetrics"];
   }
 
   if ([(AMSFollowUpItem *)self isExpirationDateHidden])
@@ -1065,56 +1065,56 @@ void __31__AMSFollowUpItem_setUserInfo___block_invoke(uint64_t a1)
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v22 = objc_opt_class();
       v23 = v22;
-      v24 = [(AMSFollowUpItem *)self logKey];
+      logKey = [(AMSFollowUpItem *)self logKey];
       *buf = 138543618;
       *&buf[4] = v22;
       *&buf[12] = 2114;
-      *&buf[14] = v24;
-      _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting notification", buf, 0x16u);
+      *&buf[14] = logKey;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting notification", buf, 0x16u);
     }
 
-    v25 = objc_alloc_init(AMSFollowUpNotification);
-    v26 = [(AMSFollowUpItem *)self title];
-    v27 = v26 == 0;
+    generateNotification2 = objc_alloc_init(AMSFollowUpNotification);
+    title2 = [(AMSFollowUpItem *)self title];
+    v27 = title2 == 0;
 
     if (!v27)
     {
-      v28 = [(AMSFollowUpItem *)self title];
-      [(AMSFollowUpNotification *)v25 setTitle:v28];
+      title3 = [(AMSFollowUpItem *)self title];
+      [(AMSFollowUpNotification *)generateNotification2 setTitle:title3];
     }
 
-    v29 = [(AMSFollowUpItem *)self informativeText];
-    v30 = v29 == 0;
+    informativeText2 = [(AMSFollowUpItem *)self informativeText];
+    v30 = informativeText2 == 0;
 
     if (!v30)
     {
-      v31 = [(AMSFollowUpItem *)self informativeText];
-      [(AMSFollowUpNotification *)v25 setInformativeText:v31];
+      informativeText3 = [(AMSFollowUpItem *)self informativeText];
+      [(AMSFollowUpNotification *)generateNotification2 setInformativeText:informativeText3];
     }
 
-    v32 = [(AMSFollowUpNotification *)v25 generateNotification];
-    [v5 setNotification:v32];
+    generateNotification = [(AMSFollowUpNotification *)generateNotification2 generateNotification];
+    [v5 setNotification:generateNotification];
   }
 
   else
   {
-    v33 = [(AMSFollowUpItem *)self notification];
-    v34 = v33 == 0;
+    notification = [(AMSFollowUpItem *)self notification];
+    v34 = notification == 0;
 
     if (v34)
     {
       goto LABEL_22;
     }
 
-    v35 = [(AMSFollowUpItem *)self notification];
-    v25 = [v35 generateNotification];
+    notification2 = [(AMSFollowUpItem *)self notification];
+    generateNotification2 = [notification2 generateNotification];
 
-    [v5 setNotification:v25];
+    [v5 setNotification:generateNotification2];
   }
 
 LABEL_22:
@@ -1123,8 +1123,8 @@ LABEL_22:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v37 = [(AMSFollowUpItem *)self actions];
-  v38 = [v37 countByEnumeratingWithState:&v43 objects:v51 count:16];
+  actions = [(AMSFollowUpItem *)self actions];
+  v38 = [actions countByEnumeratingWithState:&v43 objects:v51 count:16];
   if (v38)
   {
     v39 = *v44;
@@ -1134,14 +1134,14 @@ LABEL_22:
       {
         if (*v44 != v39)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(actions);
         }
 
-        v41 = [*(*(&v43 + 1) + 8 * i) generateAction];
-        [v36 addObject:v41];
+        generateAction = [*(*(&v43 + 1) + 8 * i) generateAction];
+        [v36 addObject:generateAction];
       }
 
-      v38 = [v37 countByEnumeratingWithState:&v43 objects:v51 count:16];
+      v38 = [actions countByEnumeratingWithState:&v43 objects:v51 count:16];
     }
 
     while (v38);
@@ -1155,10 +1155,10 @@ LABEL_22:
   return v5;
 }
 
-- (id)postMetricsWithBag:(id)a3
+- (id)postMetricsWithBag:(id)bag
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bagCopy = bag;
   if (_MergedGlobals_115 != -1)
   {
     dispatch_once(&_MergedGlobals_115, &__block_literal_global_65);
@@ -1166,17 +1166,17 @@ LABEL_22:
 
   v5 = qword_1ED6E2A20;
   v6 = objc_alloc_init(AMSMutablePromise);
-  v7 = [(AMSFollowUpItem *)self metricsEvent];
-  if (v7 && (v8 = v7, -[AMSFollowUpItem metricsEvent](self, "metricsEvent"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v5 containsObject:v9], v9, v8, !v10))
+  metricsEvent = [(AMSFollowUpItem *)self metricsEvent];
+  if (metricsEvent && (v8 = metricsEvent, -[AMSFollowUpItem metricsEvent](self, "metricsEvent"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v5 containsObject:v9], v9, v8, !v10))
   {
-    v11 = [(AMSFollowUpItem *)self metricsEvent];
-    v12 = [v11 underlyingDictionary];
-    v13 = [AMSFollowUpMetricsEvent eventFromMetricsDictionary:v12];
+    metricsEvent2 = [(AMSFollowUpItem *)self metricsEvent];
+    underlyingDictionary = [metricsEvent2 underlyingDictionary];
+    v13 = [AMSFollowUpMetricsEvent eventFromMetricsDictionary:underlyingDictionary];
 
-    v14 = [AMSMetrics internalInstanceUsingBag:v4];
+    v14 = [AMSMetrics internalInstanceUsingBag:bagCopy];
     [v14 enqueueEvent:v13];
-    v15 = [(AMSFollowUpItem *)self metricsEvent];
-    [v5 addObject:v15];
+    metricsEvent3 = [(AMSFollowUpItem *)self metricsEvent];
+    [v5 addObject:metricsEvent3];
 
     v16 = +[AMSLogConfig sharedFollowUpConfig];
     if (!v16)
@@ -1184,17 +1184,17 @@ LABEL_22:
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v17 = [v16 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v18 = objc_opt_class();
       v19 = v18;
-      v20 = [(AMSFollowUpItem *)self logKey];
+      logKey = [(AMSFollowUpItem *)self logKey];
       v22 = 138543618;
       v23 = v18;
       v24 = 2114;
-      v25 = v20;
-      _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Metrics event enqueued (impression)", &v22, 0x16u);
+      v25 = logKey;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Metrics event enqueued (impression)", &v22, 0x16u);
     }
 
     [(AMSMutablePromise *)v6 finishWithResult:MEMORY[0x1E695E118]];
@@ -1215,38 +1215,38 @@ uint64_t __38__AMSFollowUpItem_postMetricsWithBag___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)shouldOverwriteItem:(id)a3
+- (BOOL)shouldOverwriteItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy)
   {
-    v6 = [v4 identifier];
-    if ([v6 length])
+    identifier = [itemCopy identifier];
+    if ([identifier length])
     {
-      v7 = [v5 identifier];
-      v8 = [(AMSFollowUpItem *)self identifier];
-      v9 = [v7 isEqualToString:v8];
+      identifier2 = [v5 identifier];
+      identifier3 = [(AMSFollowUpItem *)self identifier];
+      v9 = [identifier2 isEqualToString:identifier3];
 
       if (v9)
       {
-        v10 = [v5 account];
-        v11 = [(AMSFollowUpItem *)self account];
-        v12 = v11;
-        if (v10 == v11)
+        account = [v5 account];
+        account2 = [(AMSFollowUpItem *)self account];
+        v12 = account2;
+        if (account == account2)
         {
 
 LABEL_11:
-          v19 = [(AMSFollowUpItem *)self priority];
-          v18 = v19 <= [v5 priority];
+          priority = [(AMSFollowUpItem *)self priority];
+          v18 = priority <= [v5 priority];
           goto LABEL_12;
         }
 
-        v13 = [v5 account];
-        v14 = [v13 ams_DSID];
-        v15 = [(AMSFollowUpItem *)self account];
-        v16 = [v15 ams_DSID];
-        v17 = [v14 isEqualToNumber:v16];
+        account3 = [v5 account];
+        ams_DSID = [account3 ams_DSID];
+        account4 = [(AMSFollowUpItem *)self account];
+        ams_DSID2 = [account4 ams_DSID];
+        v17 = [ams_DSID isEqualToNumber:ams_DSID2];
 
         if (v17)
         {
@@ -1272,10 +1272,10 @@ LABEL_12:
   return v18;
 }
 
-- (id)postMetricsWithBagContract:(id)a3
+- (id)postMetricsWithBagContract:(id)contract
 {
-  v4 = a3;
-  v5 = [[AMSContractBagShim alloc] initWithBagContract:v4];
+  contractCopy = contract;
+  v5 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
 
   v6 = [(AMSFollowUpItem *)self postMetricsWithBag:v5];
 

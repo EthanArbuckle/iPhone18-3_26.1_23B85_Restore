@@ -1,5 +1,5 @@
 @interface TSDDisplayLinkDispatch
-- (void)performBlockNextFrame:(id)a3;
+- (void)performBlockNextFrame:(id)frame;
 - (void)teardown;
 @end
 
@@ -16,9 +16,9 @@
   objc_sync_exit(self);
 }
 
-- (void)performBlockNextFrame:(id)a3
+- (void)performBlockNextFrame:(id)frame
 {
-  v4 = [a3 copy];
+  v4 = [frame copy];
   objc_sync_enter(self);
   blocks = self->_blocks;
   if (!blocks)

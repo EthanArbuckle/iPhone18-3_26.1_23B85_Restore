@@ -4,43 +4,43 @@
 - (Class)footerViewClass;
 - (Class)headerViewClass;
 - (NSString)subtitle;
-- (SiriUISnippetViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SiriUISnippetViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIEdgeInsets)defaultViewInsets;
 - (UIView)containingView;
 - (double)desiredHeightForFooterView;
 - (double)desiredHeightForHeaderView;
 - (double)desiredHeightForTransparentFooterView;
 - (double)desiredHeightForTransparentHeaderView;
-- (id)_createReusableViewIfNeededWithClass:(Class)a3;
+- (id)_createReusableViewIfNeededWithClass:(Class)class;
 - (id)_footerView;
 - (id)_headerView;
 - (id)_privateDelegate;
 - (id)_transparentFooterView;
 - (id)_transparentHeaderView;
 - (void)_cellDidLayoutSubviews;
-- (void)_instrumentConfirmationOptionInteractionWithPreviousTurn:(id)a3;
+- (void)_instrumentConfirmationOptionInteractionWithPreviousTurn:(id)turn;
 - (void)_snippetPunchOutButtonTapped;
-- (void)cancelButtonTapped:(id)a3;
-- (void)configureForConversationStorable:(id)a3;
-- (void)configureReusableFooterView:(id)a3;
-- (void)configureReusableHeaderView:(id)a3;
-- (void)confirmButtonTapped:(id)a3;
+- (void)cancelButtonTapped:(id)tapped;
+- (void)configureForConversationStorable:(id)storable;
+- (void)configureReusableFooterView:(id)view;
+- (void)configureReusableHeaderView:(id)view;
+- (void)confirmButtonTapped:(id)tapped;
 - (void)confirmSnippet;
-- (void)headerTapped:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setUserConfirmationEnabled:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)headerTapped:(id)tapped;
+- (void)setSubtitle:(id)subtitle;
+- (void)setUserConfirmationEnabled:(BOOL)enabled;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation SiriUISnippetViewController
 
-- (SiriUISnippetViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SiriUISnippetViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = SiriUISnippetViewController;
-  v4 = [(SiriUISnippetViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(SiriUISnippetViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -52,46 +52,46 @@
   return v5;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SiriUISnippetViewController;
-  [(SiriUISnippetViewController *)&v5 viewDidAppear:a3];
-  v4 = [(SiriUIBaseSnippetViewController *)self delegate];
-  [v4 siriViewControllerViewDidAppear:self isTopLevelViewController:1];
+  [(SiriUISnippetViewController *)&v5 viewDidAppear:appear];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+  [delegate siriViewControllerViewDidAppear:self isTopLevelViewController:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SiriUISnippetViewController;
-  [(SiriUISnippetViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(SiriUIBaseSnippetViewController *)self delegate];
-  [v4 siriViewControllerViewDidDisappear:self isTopLevelViewController:1];
+  [(SiriUISnippetViewController *)&v5 viewDidDisappear:disappear];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+  [delegate siriViewControllerViewDidDisappear:self isTopLevelViewController:1];
 }
 
 - (BOOL)_hasConfirmationOrCancelledInsets
 {
-  v3 = [(SiriUISnippetViewController *)self _isProvisional];
-  v4 = [(SiriUISnippetViewController *)self _willAnimateConfirmation];
-  v5 = [(SiriUISnippetViewController *)self wantsConfirmationInsets];
-  if (v5 && !v3 && !v4)
+  _isProvisional = [(SiriUISnippetViewController *)self _isProvisional];
+  _willAnimateConfirmation = [(SiriUISnippetViewController *)self _willAnimateConfirmation];
+  wantsConfirmationInsets = [(SiriUISnippetViewController *)self wantsConfirmationInsets];
+  if (wantsConfirmationInsets && !_isProvisional && !_willAnimateConfirmation)
   {
 
-    LOBYTE(v5) = [(SiriUISnippetViewController *)self isCancelled];
+    LOBYTE(wantsConfirmationInsets) = [(SiriUISnippetViewController *)self isCancelled];
   }
 
-  return v5;
+  return wantsConfirmationInsets;
 }
 
 - (BOOL)_hasConfirmationButtons
 {
-  v4 = [(SiriUISnippetViewController *)self _hasConfirmationOrCancelledInsets];
-  if (v4)
+  _hasConfirmationOrCancelledInsets = [(SiriUISnippetViewController *)self _hasConfirmationOrCancelledInsets];
+  if (_hasConfirmationOrCancelledInsets)
   {
-    v2 = [(SiriUIBaseSnippetViewController *)self snippet];
-    v5 = [v2 confirmationOptions];
-    if (v5)
+    snippet = [(SiriUIBaseSnippetViewController *)self snippet];
+    confirmationOptions = [snippet confirmationOptions];
+    if (confirmationOptions)
     {
       v6 = 1;
 LABEL_6:
@@ -100,12 +100,12 @@ LABEL_6:
     }
   }
 
-  v7 = [(SiriUISnippetViewController *)self _previousConfirmationOptions];
-  v6 = v7 != 0;
+  _previousConfirmationOptions = [(SiriUISnippetViewController *)self _previousConfirmationOptions];
+  v6 = _previousConfirmationOptions != 0;
 
-  if (v4)
+  if (_hasConfirmationOrCancelledInsets)
   {
-    v5 = 0;
+    confirmationOptions = 0;
     goto LABEL_6;
   }
 
@@ -114,29 +114,29 @@ LABEL_6:
 
 - (id)_privateDelegate
 {
-  v3 = [(SiriUIBaseSnippetViewController *)self delegate];
-  v4 = [v3 conformsToProtocol:&unk_287A3AA40];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+  v4 = [delegate conformsToProtocol:&unk_287A3AA40];
 
   if (v4)
   {
-    v5 = [(SiriUIBaseSnippetViewController *)self delegate];
+    delegate2 = [(SiriUIBaseSnippetViewController *)self delegate];
   }
 
   else
   {
-    v5 = 0;
+    delegate2 = 0;
   }
 
-  return v5;
+  return delegate2;
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  if (a3)
+  if (subtitle)
   {
     v4 = MEMORY[0x277CCA898];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithString:v5];
+    subtitleCopy = subtitle;
+    v6 = [[v4 alloc] initWithString:subtitleCopy];
   }
 
   else
@@ -149,25 +149,25 @@ LABEL_6:
 
 - (NSString)subtitle
 {
-  v2 = [(SiriUISnippetViewController *)self attributedSubtitle];
-  v3 = [v2 string];
+  attributedSubtitle = [(SiriUISnippetViewController *)self attributedSubtitle];
+  string = [attributedSubtitle string];
 
-  return v3;
+  return string;
 }
 
-- (void)setUserConfirmationEnabled:(BOOL)a3
+- (void)setUserConfirmationEnabled:(BOOL)enabled
 {
-  if (self->_userConfirmationEnabled != a3)
+  if (self->_userConfirmationEnabled != enabled)
   {
-    v3 = a3;
-    self->_userConfirmationEnabled = a3;
+    enabledCopy = enabled;
+    self->_userConfirmationEnabled = enabled;
     if (self->_footerView)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [(SiriUIReusableView *)self->_footerView confirmButton];
-        [v5 setEnabled:v3];
+        confirmButton = [(SiriUIReusableView *)self->_footerView confirmButton];
+        [confirmButton setEnabled:enabledCopy];
       }
     }
   }
@@ -175,9 +175,9 @@ LABEL_6:
 
 - (Class)headerViewClass
 {
-  v3 = [(SiriUISnippetViewController *)self title];
+  title = [(SiriUISnippetViewController *)self title];
 
-  if (v3)
+  if (title)
   {
     [(SiriUISnippetViewController *)self attributedSubtitle];
 
@@ -224,75 +224,75 @@ LABEL_6:
   }
 }
 
-- (void)configureReusableHeaderView:(id)a3
+- (void)configureReusableHeaderView:(id)view
 {
-  v11 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v11;
-    v5 = [(SiriUISnippetViewController *)self titleTextColor];
-    [v4 setTitleTextColor:v5];
+    v4 = viewCopy;
+    titleTextColor = [(SiriUISnippetViewController *)self titleTextColor];
+    [v4 setTitleTextColor:titleTextColor];
 
-    v6 = [(SiriUISnippetViewController *)self title];
-    [v4 setTitleText:v6];
+    title = [(SiriUISnippetViewController *)self title];
+    [v4 setTitleText:title];
 
-    v7 = [(SiriUISnippetViewController *)self titleBackgroundColor];
-    [v4 setBackgroundColor:v7];
+    titleBackgroundColor = [(SiriUISnippetViewController *)self titleBackgroundColor];
+    [v4 setBackgroundColor:titleBackgroundColor];
 
-    v8 = [v4 headerAreaButton];
+    headerAreaButton = [v4 headerAreaButton];
 
-    [v8 addTarget:self action:sel_headerTapped_ forControlEvents:64];
+    [headerAreaButton addTarget:self action:sel_headerTapped_ forControlEvents:64];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v11;
-    v10 = [(SiriUISnippetViewController *)self attributedSubtitle];
-    [v9 setAttributedSubtitleText:v10];
+    v9 = viewCopy;
+    attributedSubtitle = [(SiriUISnippetViewController *)self attributedSubtitle];
+    [v9 setAttributedSubtitleText:attributedSubtitle];
   }
 }
 
-- (void)configureReusableFooterView:(id)a3
+- (void)configureReusableFooterView:(id)view
 {
-  v15 = a3;
+  viewCopy = view;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = v15;
+  v5 = viewCopy;
   if (isKindOfClass)
   {
-    v6 = v15;
-    v7 = [(SiriUISnippetViewController *)self _previousConfirmationOptions];
+    v6 = viewCopy;
+    _previousConfirmationOptions = [(SiriUISnippetViewController *)self _previousConfirmationOptions];
 
-    if (v7)
+    if (_previousConfirmationOptions)
     {
-      v8 = [(SiriUISnippetViewController *)self _previousConfirmationOptions];
-      [v6 setConfirmationOptions:v8];
+      _previousConfirmationOptions2 = [(SiriUISnippetViewController *)self _previousConfirmationOptions];
+      [v6 setConfirmationOptions:_previousConfirmationOptions2];
 
       [v6 setUserInteractionEnabled:0];
     }
 
     else
     {
-      v9 = [(SiriUIBaseSnippetViewController *)self snippet];
-      v10 = [v9 confirmationOptions];
-      [v6 setConfirmationOptions:v10];
+      snippet = [(SiriUIBaseSnippetViewController *)self snippet];
+      confirmationOptions = [snippet confirmationOptions];
+      [v6 setConfirmationOptions:confirmationOptions];
 
-      v11 = [v6 cancelButton];
-      [v11 addTarget:self action:sel_cancelButtonTapped_ forControlEvents:64];
+      cancelButton = [v6 cancelButton];
+      [cancelButton addTarget:self action:sel_cancelButtonTapped_ forControlEvents:64];
 
-      v12 = [v6 confirmButton];
-      [v12 addTarget:self action:sel_confirmButtonTapped_ forControlEvents:64];
+      confirmButton = [v6 confirmButton];
+      [confirmButton addTarget:self action:sel_confirmButtonTapped_ forControlEvents:64];
 
-      v13 = [v6 confirmButton];
-      [v13 setEnabled:self->_userConfirmationEnabled];
+      confirmButton2 = [v6 confirmButton];
+      [confirmButton2 setEnabled:self->_userConfirmationEnabled];
     }
 
     footerView = self->_footerView;
     self->_footerView = v6;
 
-    v5 = v15;
+    v5 = viewCopy;
   }
 
   MEMORY[0x2821F96F8](isKindOfClass, v5);
@@ -300,19 +300,19 @@ LABEL_6:
 
 - (double)desiredHeightForHeaderView
 {
-  v3 = [(SiriUISnippetViewController *)self _headerView];
+  _headerView = [(SiriUISnippetViewController *)self _headerView];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(SiriUIBaseSnippetViewController *)self delegate];
-    [v4 siriViewControllerExpectedWidth:self];
+    delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+    [delegate siriViewControllerExpectedWidth:self];
     v6 = v5;
 
     [(SiriUISnippetViewController *)self defaultViewInsets];
     v8 = v7;
     [(SiriUISnippetViewController *)self defaultViewInsets];
     v10 = v6 + v8 + v9;
-    [(SiriUISnippetViewController *)self configureReusableHeaderView:v3];
-    [v3 desiredHeightForWidth:v10];
+    [(SiriUISnippetViewController *)self configureReusableHeaderView:_headerView];
+    [_headerView desiredHeightForWidth:v10];
   }
 
   else
@@ -332,27 +332,27 @@ LABEL_6:
     return 0.0;
   }
 
-  v4 = [(SiriUISnippetViewController *)self footerViewClass];
+  footerViewClass = [(SiriUISnippetViewController *)self footerViewClass];
 
-  [(objc_class *)v4 defaultHeight];
+  [(objc_class *)footerViewClass defaultHeight];
   return result;
 }
 
 - (double)desiredHeightForTransparentHeaderView
 {
-  v3 = [(SiriUISnippetViewController *)self _transparentHeaderView];
+  _transparentHeaderView = [(SiriUISnippetViewController *)self _transparentHeaderView];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(SiriUIBaseSnippetViewController *)self delegate];
-    [v4 siriViewControllerExpectedWidth:self];
+    delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+    [delegate siriViewControllerExpectedWidth:self];
     v6 = v5;
 
     [(SiriUISnippetViewController *)self defaultViewInsets];
     v8 = v7;
     [(SiriUISnippetViewController *)self defaultViewInsets];
     v10 = v6 + v8 + v9;
-    [(SiriUISnippetViewController *)self configureReusableTransparentHeaderView:v3];
-    [v3 desiredHeightForWidth:v10];
+    [(SiriUISnippetViewController *)self configureReusableTransparentHeaderView:_transparentHeaderView];
+    [_transparentHeaderView desiredHeightForWidth:v10];
   }
 
   else
@@ -367,9 +367,9 @@ LABEL_6:
 
 - (double)desiredHeightForTransparentFooterView
 {
-  v2 = [(SiriUISnippetViewController *)self transparentFooterViewClass];
+  transparentFooterViewClass = [(SiriUISnippetViewController *)self transparentFooterViewClass];
 
-  [(objc_class *)v2 defaultHeight];
+  [(objc_class *)transparentFooterViewClass defaultHeight];
   return result;
 }
 
@@ -433,9 +433,9 @@ LABEL_6:
   return transparentFooterView;
 }
 
-- (id)_createReusableViewIfNeededWithClass:(Class)a3
+- (id)_createReusableViewIfNeededWithClass:(Class)class
 {
-  v4 = [a3 alloc];
+  v4 = [class alloc];
   v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   if (objc_opt_respondsToSelector())
   {
@@ -448,65 +448,65 @@ LABEL_6:
 - (void)_snippetPunchOutButtonTapped
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SiriUIBaseSnippetViewController *)self delegate];
-  v4 = [(SiriUISnippetViewController *)self snippetPunchOut];
-  v6[0] = v4;
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+  snippetPunchOut = [(SiriUISnippetViewController *)self snippetPunchOut];
+  v6[0] = snippetPunchOut;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  [v3 siriViewController:self performAceCommands:v5];
+  [delegate siriViewController:self performAceCommands:v5];
 }
 
-- (void)headerTapped:(id)a3
+- (void)headerTapped:(id)tapped
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v4 = [(SiriUIBaseSnippetViewController *)self delegate];
-  v5 = [(SiriUISnippetViewController *)self headerPunchOut];
-  v7[0] = v5;
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+  headerPunchOut = [(SiriUISnippetViewController *)self headerPunchOut];
+  v7[0] = headerPunchOut;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
-  [v4 siriViewController:self performAceCommands:v6];
+  [delegate siriViewController:self performAceCommands:v6];
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
-  v4 = [(SiriUIReusableView *)self->_footerView cancelButton];
-  [v4 setEnabled:0];
+  cancelButton = [(SiriUIReusableView *)self->_footerView cancelButton];
+  [cancelButton setEnabled:0];
 
-  v5 = [(SiriUIReusableView *)self->_footerView confirmButton];
-  [v5 setEnabled:0];
+  confirmButton = [(SiriUIReusableView *)self->_footerView confirmButton];
+  [confirmButton setEnabled:0];
 
-  v6 = [(SiriUISnippetViewController *)self view];
-  [v6 setUserInteractionEnabled:0];
+  view = [(SiriUISnippetViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
   [(SiriUISnippetViewController *)self willCancel];
-  v7 = [(SiriUIBaseSnippetViewController *)self instrumentationTurnIdentifier];
-  [(SiriUISnippetViewController *)self _instrumentConfirmationOptionInteractionWithPreviousTurn:v7];
+  instrumentationTurnIdentifier = [(SiriUIBaseSnippetViewController *)self instrumentationTurnIdentifier];
+  [(SiriUISnippetViewController *)self _instrumentConfirmationOptionInteractionWithPreviousTurn:instrumentationTurnIdentifier];
 
-  v11 = [(SiriUIBaseSnippetViewController *)self delegate];
-  v8 = [(SiriUIBaseSnippetViewController *)self snippet];
-  v9 = [v8 confirmationOptions];
-  v10 = [v9 denyCommands];
-  [v11 siriViewController:self performAceCommands:v10];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+  snippet = [(SiriUIBaseSnippetViewController *)self snippet];
+  confirmationOptions = [snippet confirmationOptions];
+  denyCommands = [confirmationOptions denyCommands];
+  [delegate siriViewController:self performAceCommands:denyCommands];
 }
 
-- (void)confirmButtonTapped:(id)a3
+- (void)confirmButtonTapped:(id)tapped
 {
-  v4 = [(SiriUIReusableView *)self->_footerView cancelButton];
-  [v4 setEnabled:0];
+  cancelButton = [(SiriUIReusableView *)self->_footerView cancelButton];
+  [cancelButton setEnabled:0];
 
-  v5 = [(SiriUIReusableView *)self->_footerView confirmButton];
-  [v5 setEnabled:0];
+  confirmButton = [(SiriUIReusableView *)self->_footerView confirmButton];
+  [confirmButton setEnabled:0];
 
-  v6 = [(SiriUISnippetViewController *)self view];
-  [v6 setUserInteractionEnabled:0];
+  view = [(SiriUISnippetViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
   [(SiriUISnippetViewController *)self willConfirm];
-  v7 = [(SiriUIBaseSnippetViewController *)self instrumentationTurnIdentifier];
-  [(SiriUISnippetViewController *)self _instrumentConfirmationOptionInteractionWithPreviousTurn:v7];
+  instrumentationTurnIdentifier = [(SiriUIBaseSnippetViewController *)self instrumentationTurnIdentifier];
+  [(SiriUISnippetViewController *)self _instrumentConfirmationOptionInteractionWithPreviousTurn:instrumentationTurnIdentifier];
 
-  v11 = [(SiriUIBaseSnippetViewController *)self delegate];
-  v8 = [(SiriUIBaseSnippetViewController *)self snippet];
-  v9 = [v8 confirmationOptions];
-  v10 = [v9 confirmCommands];
-  [v11 siriViewController:self performAceCommands:v10];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+  snippet = [(SiriUIBaseSnippetViewController *)self snippet];
+  confirmationOptions = [snippet confirmationOptions];
+  confirmCommands = [confirmationOptions confirmCommands];
+  [delegate siriViewController:self performAceCommands:confirmCommands];
 }
 
 - (void)confirmSnippet
@@ -517,33 +517,33 @@ LABEL_6:
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SiriUISnippetViewController;
-  [(SiriUISnippetViewController *)&v8 touchesBegan:a3 withEvent:a4];
-  v5 = [(SiriUIBaseSnippetViewController *)self delegate];
+  [(SiriUISnippetViewController *)&v8 touchesBegan:began withEvent:event];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SiriUIBaseSnippetViewController *)self delegate];
-    [v7 userTouchedSnippet];
+    delegate2 = [(SiriUIBaseSnippetViewController *)self delegate];
+    [delegate2 userTouchedSnippet];
   }
 }
 
-- (void)_instrumentConfirmationOptionInteractionWithPreviousTurn:(id)a3
+- (void)_instrumentConfirmationOptionInteractionWithPreviousTurn:(id)turn
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  turnCopy = turn;
   v5 = objc_alloc_init(MEMORY[0x277D5ACB0]);
-  v6 = [(SiriUIBaseSnippetViewController *)self snippet];
-  v7 = [v6 confirmationOptions];
-  v8 = [v7 aceId];
-  [v5 setViewID:v8];
+  snippet = [(SiriUIBaseSnippetViewController *)self snippet];
+  confirmationOptions = [snippet confirmationOptions];
+  aceId = [confirmationOptions aceId];
+  [v5 setViewID:aceId];
 
-  v9 = [(SiriUIBaseSnippetViewController *)self snippet];
-  v10 = [v9 confirmationOptions];
+  snippet2 = [(SiriUIBaseSnippetViewController *)self snippet];
+  confirmationOptions2 = [snippet2 confirmationOptions];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
   [v5 setSnippetClass:v12];
@@ -551,35 +551,35 @@ LABEL_6:
   v13 = objc_alloc_init(MEMORY[0x277D5A928]);
   [v13 setInvocationSource:11];
   [v13 setViewContainer:v5];
-  v14 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:v4];
+  v14 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:turnCopy];
   v15 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = [v14 turnIdentifier];
+    turnIdentifier = [v14 turnIdentifier];
     v20 = 136315650;
     v21 = "[SiriUISnippetViewController _instrumentConfirmationOptionInteractionWithPreviousTurn:]";
     v22 = 2112;
-    v23 = v17;
+    v23 = turnIdentifier;
     v24 = 2112;
-    v25 = v4;
+    v25 = turnCopy;
     _os_log_impl(&dword_26948D000, v16, OS_LOG_TYPE_DEFAULT, "%s #instrumentation New Turn %@ <-> Old Turn %@ ", &v20, 0x20u);
   }
 
-  v18 = [(SiriUISnippetViewController *)self _instrumentationManager];
-  [v18 storeCurrentInstrumentationTurnContext:v14];
+  _instrumentationManager = [(SiriUISnippetViewController *)self _instrumentationManager];
+  [_instrumentationManager storeCurrentInstrumentationTurnContext:v14];
 
-  v19 = [(SiriUISnippetViewController *)self _instrumentationManager];
-  [v19 emitInstrumentation:v13];
+  _instrumentationManager2 = [(SiriUISnippetViewController *)self _instrumentationManager];
+  [_instrumentationManager2 emitInstrumentation:v13];
 }
 
-- (void)configureForConversationStorable:(id)a3
+- (void)configureForConversationStorable:(id)storable
 {
-  v4 = a3;
-  -[SiriUISnippetViewController _setVirgin:](self, "_setVirgin:", [v4 isVirgin]);
-  v5 = [v4 presentationState];
+  storableCopy = storable;
+  -[SiriUISnippetViewController _setVirgin:](self, "_setVirgin:", [storableCopy isVirgin]);
+  presentationState = [storableCopy presentationState];
 
-  if (v5 == 2)
+  if (presentationState == 2)
   {
 
     [(SiriUISnippetViewController *)self _setProvisional:1];

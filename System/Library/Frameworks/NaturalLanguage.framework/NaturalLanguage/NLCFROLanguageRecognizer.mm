@@ -1,10 +1,10 @@
 @interface NLCFROLanguageRecognizer
-+ (id)dominantLanguageForString:(id)a3;
++ (id)dominantLanguageForString:(id)string;
 - (NLCFROLanguageRecognizer)init;
 - (id)dominantLanguage;
-- (id)languageHypothesesWithMaximum:(unint64_t)a3;
+- (id)languageHypothesesWithMaximum:(unint64_t)maximum;
 - (void)dealloc;
-- (void)processString:(id)a3;
+- (void)processString:(id)string;
 - (void)reset;
 @end
 
@@ -49,13 +49,13 @@
   [(NLLanguageRecognizer *)&v4 dealloc];
 }
 
-+ (id)dominantLanguageForString:(id)a3
++ (id)dominantLanguageForString:(id)string
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E6998248];
   v11[0] = *MEMORY[0x1E6998248];
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  stringCopy = string;
   [v4 arrayWithObjects:v11 count:1];
   v6 = NLTaggerCreate();
   NLTaggerSetString();
@@ -68,15 +68,15 @@
   return v8;
 }
 
-- (void)processString:(id)a3
+- (void)processString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(NSMutableString *)self->_string length])
   {
     [(NSMutableString *)self->_string appendString:@" "];
   }
 
-  [(NSMutableString *)self->_string appendString:v4];
+  [(NSMutableString *)self->_string appendString:stringCopy];
 }
 
 - (void)reset
@@ -101,19 +101,19 @@
   return v7;
 }
 
-- (id)languageHypothesesWithMaximum:(unint64_t)a3
+- (id)languageHypothesesWithMaximum:(unint64_t)maximum
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  if (a3)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (maximum)
   {
-    v6 = [(NLCFROLanguageRecognizer *)self dominantLanguage];
-    if (v6)
+    dominantLanguage = [(NLCFROLanguageRecognizer *)self dominantLanguage];
+    if (dominantLanguage)
     {
-      [v5 setObject:&unk_1F10D1490 forKey:v6];
+      [dictionary setObject:&unk_1F10D1490 forKey:dominantLanguage];
     }
   }
 
-  return v5;
+  return dictionary;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface BatteryLevelStatusPowerState
-- (BatteryLevelStatusPowerState)initWithPtr:(const char *)a3;
+- (BatteryLevelStatusPowerState)initWithPtr:(const char *)ptr;
 - (id)description;
 @end
 
 @implementation BatteryLevelStatusPowerState
 
-- (BatteryLevelStatusPowerState)initWithPtr:(const char *)a3
+- (BatteryLevelStatusPowerState)initWithPtr:(const char *)ptr
 {
   if (!self)
   {
@@ -14,8 +14,8 @@
     self = [(BatteryLevelStatusPowerState *)&v6 init];
   }
 
-  v4 = *a3;
-  v5 = *(a3 + 1);
+  v4 = *ptr;
+  v5 = *(ptr + 1);
   self->_batteryPresent = v4 & 1;
   self->_externalPowerSourceWired = (v4 >> 1) & 3;
   self->_externalPowerSourceWireless = (v4 >> 3) & 3;

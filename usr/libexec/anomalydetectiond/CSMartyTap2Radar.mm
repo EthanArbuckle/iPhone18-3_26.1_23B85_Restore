@@ -1,21 +1,21 @@
 @interface CSMartyTap2Radar
-- (BOOL)createNotification:(id)a3 confirmation:(__CFUserNotification *)a4 error:(id *)a5;
-- (BOOL)showPrivacyNotificationWithError:(id *)a3;
-- (BOOL)startMonitoringWithError:(id *)a3;
-- (CSMartyTap2Radar)initWithSpoolerFolder:(id)a3 andConfiguration:(id)a4;
-- (CSMartyTap2RadarConfirmation_struct)showConfirmationWithError:(id *)a3 withEventType:(int64_t)a4;
-- (unint64_t)getNotificationResponse:(__CFUserNotification *)a3 error:(id *)a4;
-- (void)deletePendingFiles:(id)a3 ttrManagedMsl:(BOOL)a4;
-- (void)deletePendingMSLFile:(id)a3;
-- (void)showTTRWithTriggerUUID:(id)a3 ttrManagedFiles:(BOOL)a4 withEventType:(int64_t)a5;
+- (BOOL)createNotification:(id)notification confirmation:(__CFUserNotification *)confirmation error:(id *)error;
+- (BOOL)showPrivacyNotificationWithError:(id *)error;
+- (BOOL)startMonitoringWithError:(id *)error;
+- (CSMartyTap2Radar)initWithSpoolerFolder:(id)folder andConfiguration:(id)configuration;
+- (CSMartyTap2RadarConfirmation_struct)showConfirmationWithError:(id *)error withEventType:(int64_t)type;
+- (unint64_t)getNotificationResponse:(__CFUserNotification *)response error:(id *)error;
+- (void)deletePendingFiles:(id)files ttrManagedMsl:(BOOL)msl;
+- (void)deletePendingMSLFile:(id)file;
+- (void)showTTRWithTriggerUUID:(id)d ttrManagedFiles:(BOOL)files withEventType:(int64_t)type;
 @end
 
 @implementation CSMartyTap2Radar
 
-- (void)deletePendingMSLFile:(id)a3
+- (void)deletePendingMSLFile:(id)file
 {
-  v3 = a3;
-  v4 = [CSAnomalyEventService generateMslUrl:v3 andSessionType:2 ttrManagedMsl:1];
+  fileCopy = file;
+  v4 = [CSAnomalyEventService generateMslUrl:fileCopy andSessionType:2 ttrManagedMsl:1];
   if (qword_100456918 != -1)
   {
     sub_1003585EC();
@@ -30,9 +30,9 @@
   }
 
   v6 = +[NSFileManager defaultManager];
-  v7 = [v4 path];
+  path = [v4 path];
   v13 = 0;
-  v8 = [v6 removeItemAtPath:v7 error:&v13];
+  v8 = [v6 removeItemAtPath:path error:&v13];
   v9 = v13;
 
   if ((v8 & 1) == 0)
@@ -56,29 +56,29 @@
   }
 }
 
-- (void)deletePendingFiles:(id)a3 ttrManagedMsl:(BOOL)a4
+- (void)deletePendingFiles:(id)files ttrManagedMsl:(BOOL)msl
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  mslCopy = msl;
+  filesCopy = files;
+  if (mslCopy)
   {
-    [(CSMartyTap2Radar *)self deletePendingMSLFile:v6];
+    [(CSMartyTap2Radar *)self deletePendingMSLFile:filesCopy];
   }
 
-  [(CSMartyTap2Radar *)self deletePendingMetadatafile:v6 ttrManagedMsl:1];
+  [(CSMartyTap2Radar *)self deletePendingMetadatafile:filesCopy ttrManagedMsl:1];
 }
 
-- (CSMartyTap2Radar)initWithSpoolerFolder:(id)a3 andConfiguration:(id)a4
+- (CSMartyTap2Radar)initWithSpoolerFolder:(id)folder andConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  folderCopy = folder;
+  configurationCopy = configuration;
   v19.receiver = self;
   v19.super_class = CSMartyTap2Radar;
   v8 = [(CSMartyTap2Radar *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_config, a4);
+    objc_storeStrong(&v8->_config, configuration);
     v9->_monitoring = 0;
     ttrMonitor = v9->_ttrMonitor;
     v9->_ttrMonitor = 0;
@@ -86,7 +86,7 @@
     ttrCleanupMonitor = v9->_ttrCleanupMonitor;
     v9->_ttrCleanupMonitor = 0;
 
-    v12 = [[NSURL alloc] initFileURLWithPath:v6 isDirectory:1];
+    v12 = [[NSURL alloc] initFileURLWithPath:folderCopy isDirectory:1];
     folderURL = v9->_folderURL;
     v9->_folderURL = v12;
 
@@ -112,7 +112,7 @@
   return v9;
 }
 
-- (BOOL)startMonitoringWithError:(id *)a3
+- (BOOL)startMonitoringWithError:(id *)error
 {
   v5 = +[CSPlatformInfo sharedInstance];
   if ([v5 getSystemReleaseType] != 2)
@@ -120,14 +120,14 @@
     v23 = NSLocalizedDescriptionKey;
     v24 = @"TTR not available because this is not an internal install";
     v20 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    *a3 = [NSError errorWithDomain:NSCocoaErrorDomain code:3328 userInfo:v20];
+    *error = [NSError errorWithDomain:NSCocoaErrorDomain code:3328 userInfo:v20];
 
     goto LABEL_7;
   }
 
   if (![(CSMartyTap2Radar *)self monitoring])
   {
-    if (sub_10001B724(self, a3, @"starter"))
+    if (sub_10001B724(self, error, @"starter"))
     {
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
@@ -135,28 +135,28 @@
       v22[3] = &unk_100413240;
       v22[4] = self;
       v6 = objc_retainBlock(v22);
-      v7 = self;
-      objc_sync_enter(v7);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       v8 = [CSFolderMonitor alloc];
-      v9 = [(CSMartyTap2Radar *)v7 folderURL];
-      v10 = [v9 path];
-      v11 = [(CSFolderMonitor *)v8 initWithFolder:v10 fileExtension:@"ttr" queue:v7->_dispatchQueue postfix:@"Marty" andAction:v6];
-      ttrMonitor = v7->_ttrMonitor;
-      v7->_ttrMonitor = v11;
+      folderURL = [(CSMartyTap2Radar *)selfCopy folderURL];
+      path = [folderURL path];
+      v11 = [(CSFolderMonitor *)v8 initWithFolder:path fileExtension:@"ttr" queue:selfCopy->_dispatchQueue postfix:@"Marty" andAction:v6];
+      ttrMonitor = selfCopy->_ttrMonitor;
+      selfCopy->_ttrMonitor = v11;
 
-      v13 = [[CSFolderMonitorBackgroundScanningConfiguration alloc] initWithFileProtectionType:NSFileProtectionCompleteUnlessOpen allowBattery:[(CSMartyTap2RadarConfiguration *)v7->_config allowOnBattery] periodInseconds:[(CSMartyTap2RadarConfiguration *)v7->_config checkIntervalInSeconds]];
-      [(CSFolderMonitor *)v7->_ttrMonitor setupRecurringScanningWithConfiguration:v13 runNow:0];
-      [(CSMartyTap2Radar *)v7 setMonitoring:1];
+      v13 = [[CSFolderMonitorBackgroundScanningConfiguration alloc] initWithFileProtectionType:NSFileProtectionCompleteUnlessOpen allowBattery:[(CSMartyTap2RadarConfiguration *)selfCopy->_config allowOnBattery] periodInseconds:[(CSMartyTap2RadarConfiguration *)selfCopy->_config checkIntervalInSeconds]];
+      [(CSFolderMonitor *)selfCopy->_ttrMonitor setupRecurringScanningWithConfiguration:v13 runNow:0];
+      [(CSMartyTap2Radar *)selfCopy setMonitoring:1];
       v14 = [CSAnomalyEventService generateMslUrl:&stru_100436548 andSessionType:2 ttrManagedMsl:1];
-      v15 = [v14 URLByDeletingPathExtension];
-      v16 = [v15 path];
+      uRLByDeletingPathExtension = [v14 URLByDeletingPathExtension];
+      path2 = [uRLByDeletingPathExtension path];
 
-      v17 = [[CSFolderMonitor alloc] initWithFolder:v16 fileExtension:&stru_100436548 queue:v7->_dispatchQueue postfix:@"MartyCleanup" andAction:&stru_1004142C8];
-      ttrCleanupMonitor = v7->_ttrCleanupMonitor;
-      v7->_ttrCleanupMonitor = v17;
+      v17 = [[CSFolderMonitor alloc] initWithFolder:path2 fileExtension:&stru_100436548 queue:selfCopy->_dispatchQueue postfix:@"MartyCleanup" andAction:&stru_1004142C8];
+      ttrCleanupMonitor = selfCopy->_ttrCleanupMonitor;
+      selfCopy->_ttrCleanupMonitor = v17;
 
-      [(CSFolderMonitor *)v7->_ttrCleanupMonitor setupRecurringScanningWithConfiguration:v13 runNow:1];
-      objc_sync_exit(v7);
+      [(CSFolderMonitor *)selfCopy->_ttrCleanupMonitor setupRecurringScanningWithConfiguration:v13 runNow:1];
+      objc_sync_exit(selfCopy);
 
       goto LABEL_5;
     }
@@ -173,28 +173,28 @@ LABEL_8:
   return v19;
 }
 
-- (void)showTTRWithTriggerUUID:(id)a3 ttrManagedFiles:(BOOL)a4 withEventType:(int64_t)a5
+- (void)showTTRWithTriggerUUID:(id)d ttrManagedFiles:(BOOL)files withEventType:(int64_t)type
 {
-  v8 = a3;
+  dCopy = d;
   dispatchQueue = self->_dispatchQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100027AE0;
   v11[3] = &unk_1004142F0;
-  v12 = v8;
-  v13 = a5;
-  v14 = a4;
+  v12 = dCopy;
+  typeCopy = type;
+  filesCopy = files;
   v11[4] = self;
-  v10 = v8;
+  v10 = dCopy;
   dispatch_async(dispatchQueue, v11);
 }
 
-- (BOOL)createNotification:(id)a3 confirmation:(__CFUserNotification *)a4 error:(id *)a5
+- (BOOL)createNotification:(id)notification confirmation:(__CFUserNotification *)confirmation error:(id *)error
 {
-  v7 = a3;
+  notificationCopy = notification;
   error = 0;
-  v8 = CFUserNotificationCreate(0, 0.0, 3uLL, &error, v7);
-  *a4 = v8;
+  v8 = CFUserNotificationCreate(0, 0.0, 3uLL, &error, notificationCopy);
+  *confirmation = v8;
   if (v8)
   {
     if (!error)
@@ -203,13 +203,13 @@ LABEL_8:
       goto LABEL_18;
     }
 
-    if (a5)
+    if (error)
     {
       v19 = NSLocalizedDescriptionKey;
-      v9 = [NSString stringWithFormat:@"Error %d", error];
-      v20 = v9;
+      error = [NSString stringWithFormat:@"Error %d", error];
+      v20 = error;
       v10 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-      *a5 = [NSError errorWithDomain:NSCocoaErrorDomain code:256 userInfo:v10];
+      *error = [NSError errorWithDomain:NSCocoaErrorDomain code:256 userInfo:v10];
     }
 
     if (qword_100456918 != -1)
@@ -224,18 +224,18 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Error showing confirmation window", buf, 2u);
     }
 
-    CFRelease(*a4);
+    CFRelease(*confirmation);
   }
 
   else
   {
-    if (a5)
+    if (error)
     {
       v21 = NSLocalizedDescriptionKey;
-      v12 = [NSString stringWithFormat:@"Error %d", error];
-      v22 = v12;
+      error2 = [NSString stringWithFormat:@"Error %d", error];
+      v22 = error2;
       v13 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-      *a5 = [NSError errorWithDomain:NSCocoaErrorDomain code:4 userInfo:v13];
+      *error = [NSError errorWithDomain:NSCocoaErrorDomain code:4 userInfo:v13];
     }
 
     if (qword_100456918 != -1)
@@ -257,7 +257,7 @@ LABEL_18:
   return v15;
 }
 
-- (CSMartyTap2RadarConfirmation_struct)showConfirmationWithError:(id *)a3 withEventType:(int64_t)a4
+- (CSMartyTap2RadarConfirmation_struct)showConfirmationWithError:(id *)error withEventType:(int64_t)type
 {
   v7 = objc_alloc_init(NSDateFormatter);
   [v7 setDateFormat:@"EEE h:mm a"];
@@ -266,9 +266,9 @@ LABEL_18:
 
   v10 = objc_alloc_init(NSMutableDictionary);
   v11 = v10;
-  if ((a4 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
-    if (a4 == 4)
+    if (type == 4)
     {
       v12 = @"\nRecently, your device sensed a potential crash event.";
       [v10 setObject:@"Was NOT in an accident. File radar." forKeyedSubscript:kCFUserNotificationDefaultButtonTitleKey];
@@ -296,9 +296,9 @@ LABEL_18:
   [v11 setObject:&__kCFBooleanTrue forKeyedSubscript:SBUserNotificationIgnoresQuietMode];
   [v11 setObject:&__kCFBooleanFalse forKeyedSubscript:SBUserNotificationDisableIdleSleepWhileVisible];
   cf = 0;
-  if ([(CSMartyTap2Radar *)self createNotification:v11 confirmation:&cf error:a3])
+  if ([(CSMartyTap2Radar *)self createNotification:v11 confirmation:&cf error:error])
   {
-    v13 = [(CSMartyTap2Radar *)self getNotificationResponse:cf error:a3]& 3;
+    v13 = [(CSMartyTap2Radar *)self getNotificationResponse:cf error:error]& 3;
     if (v13 > 1)
     {
       if (v13 == 2)
@@ -310,7 +310,7 @@ LABEL_18:
 
     else if (!v13)
     {
-      v14 = 2 * (a4 == 4);
+      v14 = 2 * (type == 4);
 LABEL_14:
       CFRelease(cf);
       goto LABEL_15;
@@ -330,17 +330,17 @@ LABEL_15:
   return result;
 }
 
-- (unint64_t)getNotificationResponse:(__CFUserNotification *)a3 error:(id *)a4
+- (unint64_t)getNotificationResponse:(__CFUserNotification *)response error:(id *)error
 {
   responseFlags = 0;
-  if (CFUserNotificationReceiveResponse(a3, 0.0, &responseFlags))
+  if (CFUserNotificationReceiveResponse(response, 0.0, &responseFlags))
   {
-    if (a4)
+    if (error)
     {
       v14 = NSLocalizedDescriptionKey;
       v15 = @"Error receiving notification response";
       v5 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-      *a4 = [NSError errorWithDomain:NSCocoaErrorDomain code:3072 userInfo:v5];
+      *error = [NSError errorWithDomain:NSCocoaErrorDomain code:3072 userInfo:v5];
     }
 
     if (qword_100456918 != -1)
@@ -381,7 +381,7 @@ LABEL_12:
   return responseFlags;
 }
 
-- (BOOL)showPrivacyNotificationWithError:(id *)a3
+- (BOOL)showPrivacyNotificationWithError:(id *)error
 {
   v5 = objc_alloc_init(NSMutableDictionary);
   [v5 setObject:@"Collected Sensor Data" forKeyedSubscript:kCFUserNotificationAlertHeaderKey];
@@ -394,9 +394,9 @@ LABEL_12:
   [v5 setObject:&__kCFBooleanTrue forKeyedSubscript:SBUserNotificationIgnoresQuietMode];
   [v5 setObject:&__kCFBooleanFalse forKeyedSubscript:SBUserNotificationDisableIdleSleepWhileVisible];
   cf = 0;
-  if ([(CSMartyTap2Radar *)self createNotification:v5 confirmation:&cf error:a3])
+  if ([(CSMartyTap2Radar *)self createNotification:v5 confirmation:&cf error:error])
   {
-    v6 = [(CSMartyTap2Radar *)self getNotificationResponse:cf error:a3];
+    v6 = [(CSMartyTap2Radar *)self getNotificationResponse:cf error:error];
     CFRelease(cf);
     v7 = v6 == 0;
   }

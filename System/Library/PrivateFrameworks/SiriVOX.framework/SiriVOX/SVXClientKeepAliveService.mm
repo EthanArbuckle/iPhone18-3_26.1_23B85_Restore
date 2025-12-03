@@ -1,23 +1,23 @@
 @interface SVXClientKeepAliveService
-- (SVXClientKeepAliveService)initWithClientServiceProvider:(id)a3 analytics:(id)a4 performer:(id)a5;
-- (void)_connectWithRetryCount:(unint64_t)a3 completion:(id)a4;
-- (void)clientServiceDidChange:(BOOL)a3;
-- (void)connectWithCompletion:(id)a3;
+- (SVXClientKeepAliveService)initWithClientServiceProvider:(id)provider analytics:(id)analytics performer:(id)performer;
+- (void)_connectWithRetryCount:(unint64_t)count completion:(id)completion;
+- (void)clientServiceDidChange:(BOOL)change;
+- (void)connectWithCompletion:(id)completion;
 @end
 
 @implementation SVXClientKeepAliveService
 
-- (void)_connectWithRetryCount:(unint64_t)a3 completion:(id)a4
+- (void)_connectWithRetryCount:(unint64_t)count completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v19 = "[SVXClientKeepAliveService _connectWithRetryCount:completion:]";
     v20 = 2048;
-    v21 = a3;
+    countCopy = count;
     _os_log_debug_impl(&dword_2695B9000, v7, OS_LOG_TYPE_DEBUG, "%s retryCount = %tu", buf, 0x16u);
   }
 
@@ -25,10 +25,10 @@
   v15[1] = 3221225472;
   v15[2] = __63__SVXClientKeepAliveService__connectWithRetryCount_completion___block_invoke;
   v15[3] = &unk_279C67628;
-  v16 = v6;
-  v17 = a3;
+  v16 = completionCopy;
+  countCopy2 = count;
   v15[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   v9 = MEMORY[0x26D642680](v15);
   clientServiceProvider = self->_clientServiceProvider;
   v13[0] = MEMORY[0x277D85DD0];
@@ -93,14 +93,14 @@ uint64_t __63__SVXClientKeepAliveService__connectWithRetryCount_completion___blo
   return result;
 }
 
-- (void)clientServiceDidChange:(BOOL)a3
+- (void)clientServiceDidChange:(BOOL)change
 {
   performer = self->_performer;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __52__SVXClientKeepAliveService_clientServiceDidChange___block_invoke;
   v4[3] = &unk_279C681F8;
-  v5 = a3;
+  changeCopy = change;
   v4[4] = self;
   [(SVXPerforming *)performer performBlock:v4];
 }
@@ -115,27 +115,27 @@ uint64_t __52__SVXClientKeepAliveService_clientServiceDidChange___block_invoke(u
   return result;
 }
 
-- (SVXClientKeepAliveService)initWithClientServiceProvider:(id)a3 analytics:(id)a4 performer:(id)a5
+- (SVXClientKeepAliveService)initWithClientServiceProvider:(id)provider analytics:(id)analytics performer:(id)performer
 {
-  v8 = a3;
-  v9 = a5;
+  providerCopy = provider;
+  performerCopy = performer;
   v13.receiver = self;
   v13.super_class = SVXClientKeepAliveService;
   v10 = [(SVXClientKeepAliveService *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_performer, a5);
-    objc_storeStrong(&v11->_clientServiceProvider, a3);
+    objc_storeStrong(&v10->_performer, performer);
+    objc_storeStrong(&v11->_clientServiceProvider, provider);
   }
 
   return v11;
 }
 
-- (void)connectWithCompletion:(id)a3
+- (void)connectWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
@@ -150,8 +150,8 @@ uint64_t __52__SVXClientKeepAliveService_clientServiceDidChange___block_invoke(u
   v9[2] = __51__SVXClientKeepAliveService_connectWithCompletion___block_invoke;
   v9[3] = &unk_279C68EF8;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = completionCopy;
+  v7 = completionCopy;
   [(SVXPerforming *)performer performBlock:v9];
 
   v8 = *MEMORY[0x277D85DE8];

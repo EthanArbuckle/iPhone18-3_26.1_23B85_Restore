@@ -1,16 +1,16 @@
 @interface RTLearnedLocationReconcilerPerDevice
-+ (id)sortReconciledVisitsByMapItemQuality:(id)a3;
-- (RTLearnedLocationReconcilerPerDevice)initWithPersistenceManager:(id)a3;
-- (void)collapseReconciledVisitsToLocationsOfInterest:(id)a3 context:(id)a4 handler:(id)a5;
-- (void)performReconciliationWithHandler:(id)a3;
++ (id)sortReconciledVisitsByMapItemQuality:(id)quality;
+- (RTLearnedLocationReconcilerPerDevice)initWithPersistenceManager:(id)manager;
+- (void)collapseReconciledVisitsToLocationsOfInterest:(id)interest context:(id)context handler:(id)handler;
+- (void)performReconciliationWithHandler:(id)handler;
 @end
 
 @implementation RTLearnedLocationReconcilerPerDevice
 
-- (RTLearnedLocationReconcilerPerDevice)initWithPersistenceManager:(id)a3
+- (RTLearnedLocationReconcilerPerDevice)initWithPersistenceManager:(id)manager
 {
-  v5 = a3;
-  if (v5)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v17.receiver = self;
     v17.super_class = RTLearnedLocationReconcilerPerDevice;
@@ -23,25 +23,25 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [(RTLearnedLocationReconcilerPerDevice *)v8 UTF8String];
+        uTF8String = [(RTLearnedLocationReconcilerPerDevice *)v8 UTF8String];
       }
 
       else
       {
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v8];
-        v10 = [v13 UTF8String];
+        uTF8String = [v13 UTF8String];
       }
 
-      v14 = dispatch_queue_create(v10, v9);
+      v14 = dispatch_queue_create(uTF8String, v9);
 
       queue = v8->_queue;
       v8->_queue = v14;
 
-      objc_storeStrong(&v8->_persistenceManager, a3);
+      objc_storeStrong(&v8->_persistenceManager, manager);
     }
 
     self = v7;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -53,10 +53,10 @@
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: persistenceManager", buf, 2u);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 uint64_t __72__RTLearnedLocationReconcilerPerDevice__sortDescriptorForReconciliation__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -132,18 +132,18 @@ LABEL_19:
   return v6;
 }
 
-- (void)performReconciliationWithHandler:(id)a3
+- (void)performReconciliationWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__RTLearnedLocationReconcilerPerDevice_performReconciliationWithHandler___block_invoke;
   block[3] = &unk_2788C6300;
   block[4] = self;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -556,11 +556,11 @@ LABEL_6:
   return v12;
 }
 
-+ (id)sortReconciledVisitsByMapItemQuality:(id)a3
++ (id)sortReconciledVisitsByMapItemQuality:(id)quality
 {
   v16[8] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAC98];
-  v4 = a3;
+  qualityCopy = quality;
   v15 = [v3 sortDescriptorWithKey:@"place" ascending:1 comparator:&__block_literal_global_67];
   v5 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"place" ascending:1 comparator:&__block_literal_global_69];
   v6 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"place" ascending:1 comparator:&__block_literal_global_71];
@@ -578,7 +578,7 @@ LABEL_6:
   v16[6] = v10;
   v16[7] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:8];
-  v13 = [v4 sortedArrayUsingDescriptors:v12];
+  v13 = [qualityCopy sortedArrayUsingDescriptors:v12];
 
   return v13;
 }
@@ -957,14 +957,14 @@ uint64_t __77__RTLearnedLocationReconcilerPerDevice_sortReconciledVisitsByMapIte
   return v9;
 }
 
-- (void)collapseReconciledVisitsToLocationsOfInterest:(id)a3 context:(id)a4 handler:(id)a5
+- (void)collapseReconciledVisitsToLocationsOfInterest:(id)interest context:(id)context handler:(id)handler
 {
   v99 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v64 = a5;
-  v65 = v9;
-  if (!v9)
+  interestCopy = interest;
+  contextCopy = context;
+  handlerCopy = handler;
+  v65 = contextCopy;
+  if (!contextCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -977,8 +977,8 @@ uint64_t __77__RTLearnedLocationReconcilerPerDevice_sortReconciledVisitsByMapIte
     }
   }
 
-  v11 = [objc_opt_class() sortReconciledVisitsByMapItemQuality:v8];
-  v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  v11 = [objc_opt_class() sortReconciledVisitsByMapItemQuality:interestCopy];
+  v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(interestCopy, "count")}];
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
@@ -989,8 +989,8 @@ uint64_t __77__RTLearnedLocationReconcilerPerDevice_sortReconciledVisitsByMapIte
   {
     v14 = v13;
     v15 = *v91;
-    v69 = self;
-    v70 = v8;
+    selfCopy = self;
+    v70 = interestCopy;
     v67 = *v91;
     v68 = v12;
     do
@@ -1015,40 +1015,40 @@ uint64_t __77__RTLearnedLocationReconcilerPerDevice_sortReconciledVisitsByMapIte
         if ([v12 indexOfObjectPassingTest:v89] == 0x7FFFFFFFFFFFFFFFLL)
         {
           v18 = objc_alloc(MEMORY[0x277D01160]);
-          v19 = [v17 locationLatitude];
-          [v19 doubleValue];
+          locationLatitude = [v17 locationLatitude];
+          [locationLatitude doubleValue];
           v21 = v20;
-          v22 = [v17 locationLongitude];
-          [v22 doubleValue];
+          locationLongitude = [v17 locationLongitude];
+          [locationLongitude doubleValue];
           v24 = v23;
-          v25 = [v17 locationHorizontalUncertainty];
-          [v25 doubleValue];
+          locationHorizontalUncertainty = [v17 locationHorizontalUncertainty];
+          [locationHorizontalUncertainty doubleValue];
           v27 = v26;
-          v28 = [v17 locationAltitude];
-          [v28 doubleValue];
+          locationAltitude = [v17 locationAltitude];
+          [locationAltitude doubleValue];
           v30 = v29;
-          v31 = [v17 locationVerticalUncertainty];
-          [v31 doubleValue];
+          locationVerticalUncertainty = [v17 locationVerticalUncertainty];
+          [locationVerticalUncertainty doubleValue];
           v33 = v32;
-          v34 = [v17 locationReferenceFrame];
-          v35 = [v34 intValue];
-          v36 = [v17 locationSourceAccuracy];
-          v37 = [v18 initWithLatitude:0 longitude:v35 horizontalUncertainty:objc_msgSend(v36 altitude:"intValue") verticalUncertainty:v21 date:v24 referenceFrame:v27 speed:v30 sourceAccuracy:{v33, 0.0}];
+          locationReferenceFrame = [v17 locationReferenceFrame];
+          intValue = [locationReferenceFrame intValue];
+          locationSourceAccuracy = [v17 locationSourceAccuracy];
+          v37 = [v18 initWithLatitude:0 longitude:intValue horizontalUncertainty:objc_msgSend(locationSourceAccuracy altitude:"intValue") verticalUncertainty:v21 date:v24 referenceFrame:v27 speed:v30 sourceAccuracy:{v33, 0.0}];
 
           v38 = [RTLearnedLocation alloc];
-          v39 = [v17 locationSourceAccuracy];
+          locationSourceAccuracy2 = [v17 locationSourceAccuracy];
           v78 = v37;
-          v80 = -[RTLearnedLocation initWithLocation:dataPointCount:type:](v38, "initWithLocation:dataPointCount:type:", v37, [v39 intValue] == 2, 2);
+          v80 = -[RTLearnedLocation initWithLocation:dataPointCount:type:](v38, "initWithLocation:dataPointCount:type:", v37, [locationSourceAccuracy2 intValue] == 2, 2);
 
-          v40 = [v17 place];
-          v41 = [v40 mapItem];
+          place = [v17 place];
+          mapItem = [place mapItem];
 
-          if (v41)
+          if (mapItem)
           {
             v42 = MEMORY[0x277D011A0];
-            v43 = [v17 place];
-            v44 = [v43 mapItem];
-            v79 = [v42 createWithManagedObject:v44];
+            place2 = [v17 place];
+            mapItem2 = [place2 mapItem];
+            v79 = [v42 createWithManagedObject:mapItem2];
           }
 
           else
@@ -1057,37 +1057,37 @@ uint64_t __77__RTLearnedLocationReconcilerPerDevice_sortReconciledVisitsByMapIte
           }
 
           v75 = [RTLearnedPlace alloc];
-          v77 = [v17 place];
-          v45 = [v77 identifier];
-          v46 = v45;
-          if (!v45)
+          place3 = [v17 place];
+          identifier = [place3 identifier];
+          v46 = identifier;
+          if (!identifier)
           {
-            v45 = [MEMORY[0x277CCAD78] UUID];
-            v66 = v45;
+            identifier = [MEMORY[0x277CCAD78] UUID];
+            v66 = identifier;
           }
 
-          v73 = v45;
-          v76 = [v17 place];
-          v74 = [v76 type];
-          v47 = [v74 unsignedIntegerValue];
-          v48 = [v17 place];
-          v49 = [v48 typeSource];
-          v50 = [v49 unsignedIntegerValue];
-          v51 = [v17 place];
-          v52 = [v51 customLabel];
-          v53 = [MEMORY[0x277CBEAA8] date];
-          v54 = [v17 expirationDate];
-          v55 = [(RTLearnedPlace *)v75 initWithIdentifier:v73 type:v47 typeSource:v50 mapItem:v79 customLabel:v52 creationDate:v53 expirationDate:v54];
+          v73 = identifier;
+          place4 = [v17 place];
+          type = [place4 type];
+          unsignedIntegerValue = [type unsignedIntegerValue];
+          place5 = [v17 place];
+          typeSource = [place5 typeSource];
+          unsignedIntegerValue2 = [typeSource unsignedIntegerValue];
+          place6 = [v17 place];
+          customLabel = [place6 customLabel];
+          date = [MEMORY[0x277CBEAA8] date];
+          expirationDate = [v17 expirationDate];
+          v55 = [(RTLearnedPlace *)v75 initWithIdentifier:v73 type:unsignedIntegerValue typeSource:unsignedIntegerValue2 mapItem:v79 customLabel:customLabel creationDate:date expirationDate:expirationDate];
 
           if (!v46)
           {
           }
 
           v56 = [RTLearnedLocationOfInterest alloc];
-          v57 = [(RTLearnedPlace *)v55 identifier];
-          v58 = [(RTLearnedLocationOfInterest *)v56 initWithIdentifier:v57 location:v80 place:v55 visits:0 transitions:0];
+          identifier2 = [(RTLearnedPlace *)v55 identifier];
+          v58 = [(RTLearnedLocationOfInterest *)v56 initWithIdentifier:identifier2 location:v80 place:v55 visits:0 transitions:0];
 
-          v8 = v70;
+          interestCopy = v70;
           v14 = v71;
           v12 = v68;
           if (v58)
@@ -1106,7 +1106,7 @@ uint64_t __77__RTLearnedLocationReconcilerPerDevice_sortReconciledVisitsByMapIte
             }
           }
 
-          self = v69;
+          self = selfCopy;
           v15 = v67;
         }
 
@@ -1125,15 +1125,15 @@ uint64_t __77__RTLearnedLocationReconcilerPerDevice_sortReconciledVisitsByMapIte
   v83[1] = 3221225472;
   v83[2] = __102__RTLearnedLocationReconcilerPerDevice_collapseReconciledVisitsToLocationsOfInterest_context_handler___block_invoke_91;
   v83[3] = &unk_2788C5580;
-  v84 = v8;
+  v84 = interestCopy;
   v85 = v12;
-  v86 = self;
+  selfCopy2 = self;
   v87 = v65;
-  v88 = v64;
-  v60 = v64;
+  v88 = handlerCopy;
+  v60 = handlerCopy;
   v61 = v65;
   v62 = v12;
-  v63 = v8;
+  v63 = interestCopy;
   [v61 performBlock:v83];
 }
 

@@ -1,34 +1,34 @@
 @interface CRKRenewAppleIDCredentialsRequest
-- (CRKRenewAppleIDCredentialsRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CRKRenewAppleIDCredentialsRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKRenewAppleIDCredentialsRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithBool:{-[CRKRenewAppleIDCredentialsRequest force](self, "force")}];
-  [v5 encodeObject:v6 forKey:@"force"];
+  [coderCopy encodeObject:v6 forKey:@"force"];
 
-  v7 = [(CRKRenewAppleIDCredentialsRequest *)self reason];
-  [v5 encodeObject:v7 forKey:@"reason"];
+  reason = [(CRKRenewAppleIDCredentialsRequest *)self reason];
+  [coderCopy encodeObject:reason forKey:@"reason"];
 }
 
-- (CRKRenewAppleIDCredentialsRequest)initWithCoder:(id)a3
+- (CRKRenewAppleIDCredentialsRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CRKRenewAppleIDCredentialsRequest;
-  v5 = [(CATTaskRequest *)&v11 initWithCoder:v4];
+  v5 = [(CATTaskRequest *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"force"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"force"];
     v5->_force = [v6 BOOLValue];
 
     v7 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"reason"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"reason"];
     reason = v5->_reason;
     v5->_reason = v8;
   }

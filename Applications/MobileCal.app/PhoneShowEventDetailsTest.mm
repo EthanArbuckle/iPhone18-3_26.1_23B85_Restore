@@ -1,6 +1,6 @@
 @interface PhoneShowEventDetailsTest
 - (id)_eventForTest;
-- (void)_detailViewControllerAppeared:(id)a3;
+- (void)_detailViewControllerAppeared:(id)appeared;
 - (void)runTest;
 @end
 
@@ -8,55 +8,55 @@
 
 - (void)runTest
 {
-  v3 = [objc_opt_class() testName];
-  v4 = [objc_opt_class() _delaySubTestName];
-  v5 = [objc_opt_class() _animationSubTestName];
-  v6 = [(PhoneShowEventDetailsTest *)self _eventForTest];
-  v7 = [(ApplicationTest *)self application];
-  v8 = v7;
-  if (v6)
+  testName = [objc_opt_class() testName];
+  _delaySubTestName = [objc_opt_class() _delaySubTestName];
+  _animationSubTestName = [objc_opt_class() _animationSubTestName];
+  _eventForTest = [(PhoneShowEventDetailsTest *)self _eventForTest];
+  application = [(ApplicationTest *)self application];
+  v8 = application;
+  if (_eventForTest)
   {
-    v9 = [v7 rootNavigationController];
-    v10 = [v9 resetToDayView];
+    rootNavigationController = [application rootNavigationController];
+    resetToDayView = [rootNavigationController resetToDayView];
 
-    [v10 reloadData];
+    [resetToDayView reloadData];
     v11 = dispatch_time(0, 1000000000);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100032C14;
     block[3] = &unk_10020F2B8;
     block[4] = self;
-    v15 = v3;
-    v16 = v4;
-    v17 = v6;
-    v18 = v5;
+    v15 = testName;
+    v16 = _delaySubTestName;
+    v17 = _eventForTest;
+    v18 = _animationSubTestName;
     dispatch_after(v11, &_dispatch_main_q, block);
   }
 
   else
   {
-    [v7 startedTest:v3];
+    [application startedTest:testName];
 
-    v12 = [(ApplicationTest *)self application];
+    application2 = [(ApplicationTest *)self application];
     v13 = [NSString stringWithFormat:@"Failed to create event"];
-    [v12 failedTest:v3 withFailure:v13];
+    [application2 failedTest:testName withFailure:v13];
   }
 }
 
-- (void)_detailViewControllerAppeared:(id)a3
+- (void)_detailViewControllerAppeared:(id)appeared
 {
-  v11 = [objc_opt_class() testName];
-  v4 = [objc_opt_class() _animationSubTestName];
-  v5 = [(ApplicationTest *)self application];
-  [v5 finishedSubTest:v4 forTest:v11];
+  testName = [objc_opt_class() testName];
+  _animationSubTestName = [objc_opt_class() _animationSubTestName];
+  application = [(ApplicationTest *)self application];
+  [application finishedSubTest:_animationSubTestName forTest:testName];
 
-  v6 = [(ApplicationTest *)self application];
-  [v6 finishedTest:v11 extraResults:0];
+  application2 = [(ApplicationTest *)self application];
+  [application2 finishedTest:testName extraResults:0];
 
-  v7 = [(ApplicationTest *)self model];
-  v8 = [v7 eventStore];
-  v9 = [(PhoneShowEventDetailsTest *)self _eventForTest];
-  [v8 removeEvent:v9 span:0 error:0];
+  model = [(ApplicationTest *)self model];
+  eventStore = [model eventStore];
+  _eventForTest = [(PhoneShowEventDetailsTest *)self _eventForTest];
+  [eventStore removeEvent:_eventForTest span:0 error:0];
 
   v10 = +[NSNotificationCenter defaultCenter];
   [v10 removeObserver:self name:EKEventViewControllerDidAppearNotification object:0];

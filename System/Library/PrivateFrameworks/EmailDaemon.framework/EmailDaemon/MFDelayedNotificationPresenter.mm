@@ -2,17 +2,17 @@
 - (MFDelayedNotificationPresenter)init;
 - (MFDelayedNotificationsPresenterDelegate)delegate;
 - (double)postingDelay;
-- (void)_delegateProcessMessages:(id)a3;
+- (void)_delegateProcessMessages:(id)messages;
 - (void)_processSufficientlyDelayedMessages;
 - (void)_removeProcessedMessages;
 - (void)_scheduleNextFireEvent;
 - (void)clearPendingMessages;
 - (void)dealloc;
-- (void)immediatelyProcessPendingMessagesWithIdentifiers:(id)a3;
-- (void)removePendingMessagesWithAccountIdentifiers:(id)a3;
-- (void)removePendingMessagesWithIdentifiers:(id)a3;
-- (void)schedulePendingNotificationMessage:(id)a3 identifier:(id)a4 context:(id)a5;
-- (void)setPostingDelay:(double)a3;
+- (void)immediatelyProcessPendingMessagesWithIdentifiers:(id)identifiers;
+- (void)removePendingMessagesWithAccountIdentifiers:(id)identifiers;
+- (void)removePendingMessagesWithIdentifiers:(id)identifiers;
+- (void)schedulePendingNotificationMessage:(id)message identifier:(id)identifier context:(id)context;
+- (void)setPostingDelay:(double)delay;
 @end
 
 @implementation MFDelayedNotificationPresenter
@@ -25,19 +25,19 @@
   if (v2)
   {
     v3 = [NSString stringWithFormat:@"com.apple.mobilemail.notificationcenter.delayedpresenter.%p", v2];
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     queue = v2->_queue;
     v2->_queue = v6;
 
     v8 = [v3 stringByAppendingString:@".delegate"];
 
     v9 = v8;
-    v10 = [v8 UTF8String];
+    uTF8String2 = [v8 UTF8String];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_attr_make_with_qos_class(v11, QOS_CLASS_USER_INITIATED, 0);
-    v13 = dispatch_queue_create(v10, v12);
+    v13 = dispatch_queue_create(uTF8String2, v12);
     delegateQueue = v2->_delegateQueue;
     v2->_delegateQueue = v13;
 
@@ -62,7 +62,7 @@
   [(MFDelayedNotificationPresenter *)&v4 dealloc];
 }
 
-- (void)setPostingDelay:(double)a3
+- (void)setPostingDelay:(double)delay
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -70,7 +70,7 @@
   v4[2] = sub_10005551C;
   v4[3] = &unk_100156360;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = delay;
   dispatch_async(queue, v4);
 }
 
@@ -104,39 +104,39 @@
   dispatch_async(queue, block);
 }
 
-- (void)removePendingMessagesWithIdentifiers:(id)a3
+- (void)removePendingMessagesWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005583C;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)removePendingMessagesWithAccountIdentifiers:(id)a3
+- (void)removePendingMessagesWithAccountIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100055B34;
   v7[3] = &unk_1001563D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifiersCopy;
+  selfCopy = self;
+  v6 = identifiersCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)schedulePendingNotificationMessage:(id)a3 identifier:(id)a4 context:(id)a5
+- (void)schedulePendingNotificationMessage:(id)message identifier:(id)identifier context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  identifierCopy = identifier;
+  contextCopy = context;
   +[NSDate timeIntervalSinceReferenceDate];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -144,27 +144,27 @@
   block[2] = sub_10005609C;
   block[3] = &unk_100158230;
   block[4] = self;
-  v17 = v9;
+  v17 = identifierCopy;
   v20 = v12;
-  v18 = v8;
-  v19 = v10;
-  v13 = v10;
-  v14 = v8;
-  v15 = v9;
+  v18 = messageCopy;
+  v19 = contextCopy;
+  v13 = contextCopy;
+  v14 = messageCopy;
+  v15 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (void)immediatelyProcessPendingMessagesWithIdentifiers:(id)a3
+- (void)immediatelyProcessPendingMessagesWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000563DC;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_async(queue, v7);
 }
 
@@ -212,12 +212,12 @@
     v16 = MSUserNotificationsLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v9 identifier];
+      identifier = [v9 identifier];
       v18 = self->_fireSource;
       *buf = 134218498;
       v26 = v14;
       v27 = 2112;
-      v28 = v17;
+      v28 = identifier;
       v29 = 2112;
       v30 = v18;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "scheduling next delayed dequeue in %gs for '%@' (%@)", buf, 0x20u);
@@ -260,14 +260,14 @@
   }
 }
 
-- (void)_delegateProcessMessages:(id)a3
+- (void)_delegateProcessMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   v5 = MSUserNotificationsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 count];
-    v7 = [v4 valueForKey:@"identifier"];
+    v6 = [messagesCopy count];
+    v7 = [messagesCopy valueForKey:@"identifier"];
     v8 = [v7 componentsJoinedByString:{@"', '"}];
     *buf = 134218242;
     v14 = v6;
@@ -282,8 +282,8 @@
   v11[2] = sub_100056D04;
   v11[3] = &unk_1001563D8;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = messagesCopy;
+  v10 = messagesCopy;
   dispatch_async(delegateQueue, v11);
 }
 

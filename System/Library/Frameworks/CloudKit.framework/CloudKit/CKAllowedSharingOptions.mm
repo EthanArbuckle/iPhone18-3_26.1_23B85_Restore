@@ -2,23 +2,23 @@
 + (CKAllowedSharingOptions)standardOptions;
 + (NSArray)readableTypeIdentifiersForItemProvider;
 + (NSArray)writableTypeIdentifiersForItemProvider;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-+ (id)resolvedOptionsFromOptions:(id)a3 forExistingShare:(id)a4;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
++ (id)resolvedOptionsFromOptions:(id)options forExistingShare:(id)share;
 + (void)initialize;
-- (BOOL)_optionsGroupsOnlyContainsSingleOptionInPermissionArrayAndWhoCanAccessArray:(id)a3;
+- (BOOL)_optionsGroupsOnlyContainsSingleOptionInPermissionArrayAndWhoCanAccessArray:(id)array;
 - (CKAllowedSharingOptions)initWithAllowedParticipantPermissionOptions:(CKSharingParticipantPermissionOption)allowedParticipantPermissionOptions allowedParticipantAccessOptions:(CKSharingParticipantAccessOption)allowedParticipantAccessOptions;
-- (CKAllowedSharingOptions)initWithCoder:(id)a3;
+- (CKAllowedSharingOptions)initWithCoder:(id)coder;
 - (id)_uncachedCollaborationOptionsGroupsFromAllowedOptions;
 - (id)_uncachedShareOptionsFromAllowedOptions;
 - (id)collaborationOptionsGroupsFromAllowedOptions;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
 - (id)shareOptionsFromAllowedOptions;
-- (void)_addOptions:(id)a3 toExistingGroupWithID:(id)a4 inOptionsGroups:(id)a5;
-- (void)_removeOptionGroupWithID:(id)a3 fromOptionsGroups:(id)a4;
-- (void)_resolveCollaborationOptionsGroupsForExistingShare:(id)a3;
-- (void)_selectOptionWithIdentifier:(id)a3 inGroups:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_addOptions:(id)options toExistingGroupWithID:(id)d inOptionsGroups:(id)groups;
+- (void)_removeOptionGroupWithID:(id)d fromOptionsGroups:(id)groups;
+- (void)_resolveCollaborationOptionsGroupsForExistingShare:(id)share;
+- (void)_selectOptionWithIdentifier:(id)identifier inGroups:(id)groups;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKAllowedSharingOptions
@@ -74,20 +74,20 @@
 
 - (id)shareOptionsFromAllowedOptions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  mutableShareOptions = v2->_mutableShareOptions;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  mutableShareOptions = selfCopy->_mutableShareOptions;
   if (!mutableShareOptions)
   {
-    v6 = objc_msgSend__uncachedShareOptionsFromAllowedOptions(v2, v3, v4);
-    v7 = v2->_mutableShareOptions;
-    v2->_mutableShareOptions = v6;
+    v6 = objc_msgSend__uncachedShareOptionsFromAllowedOptions(selfCopy, v3, v4);
+    v7 = selfCopy->_mutableShareOptions;
+    selfCopy->_mutableShareOptions = v6;
 
-    mutableShareOptions = v2->_mutableShareOptions;
+    mutableShareOptions = selfCopy->_mutableShareOptions;
   }
 
   v8 = mutableShareOptions;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
@@ -138,7 +138,7 @@ LABEL_6:
   if ((v44 & 2) != 0)
   {
     v46 = objc_alloc(MEMORY[0x1E697B708]);
-    v53 = CKLocalizedString(@"COLLABORATION_OPTIONS_ACCESS_INVITED", &stru_1EFA32970, v47, v48, v49, v50, v51, v52, v138);
+    v53 = CKLocalizedString(@"COLLABORATION_OPTIONS_ACCESS_INVITED", &stru_1EFA32970, v47, v48, v49, v50, v51, v52, selfCopy);
     v55 = objc_msgSend_initWithTitle_identifier_(v46, v54, v53, @"CKSharingAccessSpecifiedRecipientsOnlyOptionID");
 
     objc_msgSend_addObject_(v41, v56, v55);
@@ -146,11 +146,11 @@ LABEL_6:
     if (objc_msgSend_supportAllowingAddedParticipantsToInviteOthers(self, v57, v58) && v55 && v141)
     {
       v59 = objc_alloc(MEMORY[0x1E697B708]);
-      v66 = CKLocalizedString(@"COLLABORATION_OPTIONS_ADDING_PEOPLE_ALLOW_OTHERS", &stru_1EFA32970, v60, v61, v62, v63, v64, v65, v138);
+      v66 = CKLocalizedString(@"COLLABORATION_OPTIONS_ADDING_PEOPLE_ALLOW_OTHERS", &stru_1EFA32970, v60, v61, v62, v63, v64, v65, selfCopy);
       v69 = objc_msgSend_identifier(v55, v67, v68);
       v144[0] = v69;
       objc_msgSend_identifier(v141, v70, v71);
-      v138 = self;
+      selfCopy = self;
       v72 = v41;
       v74 = v73 = v40;
       v144[1] = v74;
@@ -159,7 +159,7 @@ LABEL_6:
 
       v40 = v73;
       v41 = v72;
-      self = v138;
+      self = selfCopy;
     }
 
     v4 = v140;
@@ -168,14 +168,14 @@ LABEL_6:
   if (v44)
   {
     v78 = objc_alloc(MEMORY[0x1E697B708]);
-    v85 = CKLocalizedString(@"COLLABORATION_OPTIONS_ACCESS_ANYONE", &stru_1EFA32970, v79, v80, v81, v82, v83, v84, v138);
+    v85 = CKLocalizedString(@"COLLABORATION_OPTIONS_ACCESS_ANYONE", &stru_1EFA32970, v79, v80, v81, v82, v83, v84, selfCopy);
     v87 = objc_msgSend_initWithTitle_identifier_(v78, v86, v85, @"CKSharingAccessAnyoneWithLinkOptionID");
 
     objc_msgSend_addObject_(v41, v88, v87);
   }
 
   v89 = objc_alloc(MEMORY[0x1E697B718]);
-  v96 = CKLocalizedString(@"COLLABORATION_OPTIONS_ACCESS_TITLE", &stru_1EFA32970, v90, v91, v92, v93, v94, v95, v138);
+  v96 = CKLocalizedString(@"COLLABORATION_OPTIONS_ACCESS_TITLE", &stru_1EFA32970, v90, v91, v92, v93, v94, v95, selfCopy);
   v98 = objc_msgSend_initWithTitle_identifier_footer_options_(v89, v97, v96, @"CKSharingWhoCanAccessGroupID", 0, v41);
 
   objc_msgSend_addObject_(v3, v99, v98);
@@ -222,15 +222,15 @@ LABEL_6:
   return v134;
 }
 
-- (BOOL)_optionsGroupsOnlyContainsSingleOptionInPermissionArrayAndWhoCanAccessArray:(id)a3
+- (BOOL)_optionsGroupsOnlyContainsSingleOptionInPermissionArrayAndWhoCanAccessArray:(id)array
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v31, v35, 16);
+  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v4, &v31, v35, 16);
   if (v7)
   {
     v8 = 0;
@@ -242,7 +242,7 @@ LABEL_6:
       {
         if (*v32 != v9)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v11 = *(*(&v31 + 1) + 8 * i);
@@ -273,7 +273,7 @@ LABEL_6:
         }
       }
 
-      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v5, &v31, v35, 16);
+      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v5, &v31, v35, 16);
       if (!v7)
       {
         LOBYTE(v7) = v30 & v8;
@@ -288,46 +288,46 @@ LABEL_6:
 
 - (id)collaborationOptionsGroupsFromAllowedOptions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  mutableOptionsGroups = v2->_mutableOptionsGroups;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  mutableOptionsGroups = selfCopy->_mutableOptionsGroups;
   if (!mutableOptionsGroups)
   {
-    v6 = objc_msgSend__uncachedCollaborationOptionsGroupsFromAllowedOptions(v2, v3, v4);
-    v7 = v2->_mutableOptionsGroups;
-    v2->_mutableOptionsGroups = v6;
+    v6 = objc_msgSend__uncachedCollaborationOptionsGroupsFromAllowedOptions(selfCopy, v3, v4);
+    v7 = selfCopy->_mutableOptionsGroups;
+    selfCopy->_mutableOptionsGroups = v6;
 
-    mutableOptionsGroups = v2->_mutableOptionsGroups;
+    mutableOptionsGroups = selfCopy->_mutableOptionsGroups;
   }
 
   v8 = mutableOptionsGroups;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (void)_resolveCollaborationOptionsGroupsForExistingShare:(id)a3
+- (void)_resolveCollaborationOptionsGroupsForExistingShare:(id)share
 {
   v99[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  shareCopy = share;
   v7 = objc_msgSend_shareOptions(self, v5, v6);
   v10 = objc_msgSend_optionsGroups(v7, v8, v9);
   v13 = objc_msgSend_mutableCopy(v10, v11, v12);
 
-  if (objc_msgSend_publicPermission(v4, v14, v15) == 1)
+  if (objc_msgSend_publicPermission(shareCopy, v14, v15) == 1)
   {
     objc_msgSend__selectOptionWithIdentifier_inGroups_(self, v16, @"CKSharingAccessSpecifiedRecipientsOnlyOptionID", v13);
-    v19 = objc_msgSend_participants(v4, v17, v18);
+    v19 = objc_msgSend_participants(shareCopy, v17, v18);
     v22 = objc_msgSend_count(v19, v20, v21);
 
     if (v22 >= 2)
     {
-      if (objc_msgSend_allNonOwnerParticipantsHavePermission_(v4, v23, 2))
+      if (objc_msgSend_allNonOwnerParticipantsHavePermission_(shareCopy, v23, 2))
       {
         objc_msgSend__selectOptionWithIdentifier_inGroups_(self, v25, @"CKSharingPermissionViewOnlyOptionID", v13);
       }
 
-      else if (objc_msgSend_allNonOwnerParticipantsHavePermission_(v4, v25, 3))
+      else if (objc_msgSend_allNonOwnerParticipantsHavePermission_(shareCopy, v25, 3))
       {
         objc_msgSend__selectOptionWithIdentifier_inGroups_(self, v31, @"CKSharingPermissionCanMakeChangesOptionID", v13);
       }
@@ -345,7 +345,7 @@ LABEL_6:
 
       if (objc_msgSend_supportAllowingAddedParticipantsToInviteOthers(self, v26, v27))
       {
-        if (objc_msgSend_allNonOwnerParticipantsHaveRole_(v4, v45, 2))
+        if (objc_msgSend_allNonOwnerParticipantsHaveRole_(shareCopy, v45, 2))
         {
           objc_msgSend__selectOptionWithIdentifier_inGroups_(self, v46, @"CKSharingAllowOthersToInviteOptionID", v13);
         }
@@ -377,14 +377,14 @@ LABEL_6:
     {
       v71 = objc_alloc(MEMORY[0x1E697B708]);
       v78 = CKLocalizedString(@"COLLABORATION_OPTIONS_DISALLOW_ACCESS_REQUESTS_TITLE", &stru_1EFA32970, v72, v73, v74, v75, v76, v77, v95);
-      v81 = objc_msgSend_allowsAccessRequests(v4, v79, v80);
+      v81 = objc_msgSend_allowsAccessRequests(shareCopy, v79, v80);
       v83 = objc_msgSend_initWithTitle_identifier_selected_(v71, v82, v78, @"CKSharingDisallowAccessRequestsOptionID", v81 ^ 1u);
 
       v97 = v83;
       v85 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v84, &v97, 1);
       objc_msgSend__addOptions_toExistingGroupWithID_inOptionsGroups_(self, v86, v85, @"CKSharingAllowAccessRequestsGroupID", v13);
 
-      if (objc_msgSend_allowsAccessRequests(v4, v87, v88))
+      if (objc_msgSend_allowsAccessRequests(shareCopy, v87, v88))
       {
         objc_msgSend__selectOptionWithIdentifier_inGroups_(self, v89, @"CKSharingAllowAccessRequestsOptionID", v13);
       }
@@ -404,7 +404,7 @@ LABEL_6:
   else
   {
     objc_msgSend__selectOptionWithIdentifier_inGroups_(self, v16, @"CKSharingAccessAnyoneWithLinkOptionID", v13);
-    if (objc_msgSend_publicPermission(v4, v28, v29) == 3)
+    if (objc_msgSend_publicPermission(shareCopy, v28, v29) == 3)
     {
       objc_msgSend__selectOptionWithIdentifier_inGroups_(self, v30, @"CKSharingPermissionCanMakeChangesOptionID", v13);
     }
@@ -415,28 +415,28 @@ LABEL_6:
     }
   }
 
-  v90 = self;
-  objc_sync_enter(v90);
-  mutableOptionsGroups = v90->_mutableOptionsGroups;
-  v90->_mutableOptionsGroups = v13;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  mutableOptionsGroups = selfCopy->_mutableOptionsGroups;
+  selfCopy->_mutableOptionsGroups = v13;
   v92 = v13;
 
-  mutableShareOptions = v90->_mutableShareOptions;
-  v90->_mutableShareOptions = 0;
+  mutableShareOptions = selfCopy->_mutableShareOptions;
+  selfCopy->_mutableShareOptions = 0;
 
-  objc_sync_exit(v90);
+  objc_sync_exit(selfCopy);
   v94 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_selectOptionWithIdentifier:(id)a3 inGroups:(id)a4
+- (void)_selectOptionWithIdentifier:(id)identifier inGroups:(id)groups
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = a4;
+  obj = groups;
   v28 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v6, &v34, v39, 16);
   if (v28)
   {
@@ -474,7 +474,7 @@ LABEL_6:
 
               v19 = *(*(&v30 + 1) + 8 * i);
               v20 = objc_msgSend_identifier(v19, v14, v15);
-              isEqualToString = objc_msgSend_isEqualToString_(v20, v21, v5);
+              isEqualToString = objc_msgSend_isEqualToString_(v20, v21, identifierCopy);
 
               if (isEqualToString)
               {
@@ -507,16 +507,16 @@ LABEL_6:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeOptionGroupWithID:(id)a3 fromOptionsGroups:(id)a4
+- (void)_removeOptionGroupWithID:(id)d fromOptionsGroups:(id)groups
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  groupsCopy = groups;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v21, v25, 16);
+  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(groupsCopy, v7, &v21, v25, 16);
   if (v8)
   {
     v11 = v8;
@@ -528,12 +528,12 @@ LABEL_6:
       {
         if (*v22 != v13)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(groupsCopy);
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
         v16 = objc_msgSend_identifier(v15, v9, v10);
-        isEqualToString = objc_msgSend_isEqualToString_(v16, v17, v5);
+        isEqualToString = objc_msgSend_isEqualToString_(v16, v17, dCopy);
 
         if (isEqualToString)
         {
@@ -543,34 +543,34 @@ LABEL_6:
         }
       }
 
-      v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v9, &v21, v25, 16);
+      v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(groupsCopy, v9, &v21, v25, 16);
     }
 
     while (v11);
     if (v12)
     {
-      objc_msgSend_removeObject_(v6, v9, v12);
+      objc_msgSend_removeObject_(groupsCopy, v9, v12);
     }
   }
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addOptions:(id)a3 toExistingGroupWithID:(id)a4 inOptionsGroups:(id)a5
+- (void)_addOptions:(id)options toExistingGroupWithID:(id)d inOptionsGroups:(id)groups
 {
   v75 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  dCopy = d;
+  groupsCopy = groups;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v69, v74, 16);
+  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(groupsCopy, v11, &v69, v74, 16);
   if (v12)
   {
     v15 = v12;
-    v64 = v8;
+    v64 = optionsCopy;
     v16 = 0;
     v17 = *v70;
     do
@@ -579,12 +579,12 @@ LABEL_6:
       {
         if (*v70 != v17)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(groupsCopy);
         }
 
         v19 = *(*(&v69 + 1) + 8 * i);
         v20 = objc_msgSend_identifier(v19, v13, v14);
-        isEqualToString = objc_msgSend_isEqualToString_(v20, v21, v9);
+        isEqualToString = objc_msgSend_isEqualToString_(v20, v21, dCopy);
 
         if (isEqualToString)
         {
@@ -594,18 +594,18 @@ LABEL_6:
         }
       }
 
-      v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v13, &v69, v74, 16);
+      v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(groupsCopy, v13, &v69, v74, 16);
     }
 
     while (v15);
-    v8 = v64;
+    optionsCopy = v64;
     if (v16)
     {
       v24 = objc_msgSend_title(v16, v13, v14);
       v27 = objc_msgSend_identifier(v16, v25, v26);
       v29 = objc_msgSend_isEqualToString_(v27, v28, @"CKSharingAllowOthersToInviteGroupID");
 
-      if (v29 && (objc_msgSend__optionsGroupsOnlyContainsSingleOptionInPermissionArrayAndWhoCanAccessArray_(self, v30, v10) & 1) == 0)
+      if (v29 && (objc_msgSend__optionsGroupsOnlyContainsSingleOptionInPermissionArrayAndWhoCanAccessArray_(self, v30, groupsCopy) & 1) == 0)
       {
         v37 = CKLocalizedString(@"COLLABORATION_OPTIONS_ADDING_PEOPLE_TITLE", &stru_1EFA32970, v31, v32, v33, v34, v35, v36, v63);
 
@@ -655,7 +655,7 @@ LABEL_6:
       v49 = objc_alloc(MEMORY[0x1E697B718]);
       v52 = objc_msgSend_options(v16, v50, v51);
       v54 = objc_msgSend_arrayByAddingObjectsFromArray_(v52, v53, v38);
-      v56 = objc_msgSend_initWithTitle_identifier_footer_options_(v49, v55, v24, v9, 0, v54);
+      v56 = objc_msgSend_initWithTitle_identifier_footer_options_(v49, v55, v24, dCopy, 0, v54);
 
       if (v44)
       {
@@ -663,21 +663,21 @@ LABEL_6:
         objc_msgSend_setSelectedOptionIdentifier_(v56, v60, v59);
       }
 
-      objc_msgSend_removeObject_(v10, v57, v16);
-      objc_msgSend_addObject_(v10, v61, v56);
+      objc_msgSend_removeObject_(groupsCopy, v57, v16);
+      objc_msgSend_addObject_(groupsCopy, v61, v56);
 
-      v8 = v64;
+      optionsCopy = v64;
     }
   }
 
   v62 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)resolvedOptionsFromOptions:(id)a3 forExistingShare:(id)a4
++ (id)resolvedOptionsFromOptions:(id)options forExistingShare:(id)share
 {
-  v5 = a4;
-  v8 = objc_msgSend_copy(a3, v6, v7);
-  if (objc_msgSend_publicPermission(v5, v9, v10) != 1)
+  shareCopy = share;
+  v8 = objc_msgSend_copy(options, v6, v7);
+  if (objc_msgSend_publicPermission(shareCopy, v9, v10) != 1)
   {
     objc_msgSend_setSupportAllowingAddedParticipantsToInviteOthers_(v8, v11, 0);
 LABEL_9:
@@ -685,7 +685,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v13 = objc_msgSend_currentUserParticipant(v5, v11, v12);
+  v13 = objc_msgSend_currentUserParticipant(shareCopy, v11, v12);
   v16 = objc_msgSend_role(v13, v14, v15);
 
   if ((v16 - 1) >= 2)
@@ -693,7 +693,7 @@ LABEL_9:
     objc_msgSend_setSupportAllowingAddedParticipantsToInviteOthers_(v8, v17, 0);
   }
 
-  if (objc_msgSend_allNonOwnerParticipantsHavePermission_(v5, v17, 2))
+  if (objc_msgSend_allNonOwnerParticipantsHavePermission_(shareCopy, v17, 2))
   {
     objc_msgSend_setSupportAllowingAddedParticipantsToInviteOthers_(v8, v18, 0);
   }
@@ -704,7 +704,7 @@ LABEL_9:
   }
 
 LABEL_10:
-  objc_msgSend__resolveCollaborationOptionsGroupsForExistingShare_(v8, v18, v5);
+  objc_msgSend__resolveCollaborationOptionsGroupsForExistingShare_(v8, v18, shareCopy);
 
   return v8;
 }
@@ -719,12 +719,12 @@ LABEL_10:
   return v2;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
   v6 = MEMORY[0x1E696ACD0];
-  v7 = a3;
+  dataCopy = data;
   v8 = objc_opt_class();
-  v10 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v6, v9, v8, v7, a5);
+  v10 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v6, v9, v8, dataCopy, error);
 
   return v10;
 }
@@ -739,53 +739,53 @@ LABEL_10:
   return v2;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v10 = 0;
   v7 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v6, self, 1, &v10);
   v8 = v10;
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, v7, v8);
+    handlerCopy[2](handlerCopy, v7, v8);
   }
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v31 = a3;
+  coderCopy = coder;
   v6 = objc_msgSend_allowedParticipantPermissionOptions(self, v4, v5);
-  objc_msgSend_encodeInteger_forKey_(v31, v7, v6, @"CKSharingAllowedParticipantPermissionOptionsKey");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v7, v6, @"CKSharingAllowedParticipantPermissionOptionsKey");
   v10 = objc_msgSend_allowedParticipantAccessOptions(self, v8, v9);
-  objc_msgSend_encodeInteger_forKey_(v31, v11, v10, @"CKSharingAllowedParticipantAccessOptionsKey");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v11, v10, @"CKSharingAllowedParticipantAccessOptionsKey");
   v14 = objc_msgSend_supportAllowingAddedParticipantsToInviteOthers(self, v12, v13);
-  objc_msgSend_encodeBool_forKey_(v31, v15, v14, @"CKSharingSupportAllowingAddedParticipantsToInviteOthersKey");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v15, v14, @"CKSharingSupportAllowingAddedParticipantsToInviteOthersKey");
   v18 = objc_msgSend_shareOptions(self, v16, v17);
-  objc_msgSend_encodeObject_forKey_(v31, v19, v18, @"CKSharingCollaborationShareOptionsKey");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v19, v18, @"CKSharingCollaborationShareOptionsKey");
 
   v22 = objc_msgSend_shareOptions(self, v20, v21);
   v25 = objc_msgSend_optionsGroups(v22, v23, v24);
-  objc_msgSend_encodeObject_forKey_(v31, v26, v25, @"CKSharingCollaborationOptionsGroupsKey");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v26, v25, @"CKSharingCollaborationOptionsGroupsKey");
 
   v29 = objc_msgSend_supportAllowingAccessRequests(self, v27, v28);
-  objc_msgSend_encodeBool_forKey_(v31, v30, v29, @"CKSharingSupportAllowingAccessRequestsKey");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v30, v29, @"CKSharingSupportAllowingAccessRequestsKey");
 }
 
-- (CKAllowedSharingOptions)initWithCoder:(id)a3
+- (CKAllowedSharingOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = CKAllowedSharingOptions;
   v6 = [(CKAllowedSharingOptions *)&v25 init];
   if (v6)
   {
-    v6->_allowedParticipantPermissionOptions = objc_msgSend_decodeIntegerForKey_(v4, v5, @"CKSharingAllowedParticipantPermissionOptionsKey");
-    v6->_allowedParticipantAccessOptions = objc_msgSend_decodeIntegerForKey_(v4, v7, @"CKSharingAllowedParticipantAccessOptionsKey");
-    v6->_supportAllowingAddedParticipantsToInviteOthers = objc_msgSend_decodeBoolForKey_(v4, v8, @"CKSharingSupportAllowingAddedParticipantsToInviteOthersKey");
+    v6->_allowedParticipantPermissionOptions = objc_msgSend_decodeIntegerForKey_(coderCopy, v5, @"CKSharingAllowedParticipantPermissionOptionsKey");
+    v6->_allowedParticipantAccessOptions = objc_msgSend_decodeIntegerForKey_(coderCopy, v7, @"CKSharingAllowedParticipantAccessOptionsKey");
+    v6->_supportAllowingAddedParticipantsToInviteOthers = objc_msgSend_decodeBoolForKey_(coderCopy, v8, @"CKSharingSupportAllowingAddedParticipantsToInviteOthersKey");
     v9 = objc_opt_class();
-    v11 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v10, v9, @"CKSharingCollaborationShareOptionsKey");
+    v11 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v10, v9, @"CKSharingCollaborationShareOptionsKey");
     mutableShareOptions = v6->_mutableShareOptions;
     v6->_mutableShareOptions = v11;
 
@@ -795,17 +795,17 @@ LABEL_10:
     v16 = objc_opt_class();
     v17 = objc_opt_class();
     v19 = objc_msgSend_setWithObjects_(v13, v18, v14, v15, v16, v17, 0);
-    v21 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v20, v19, @"CKSharingCollaborationOptionsGroupsKey");
+    v21 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v20, v19, @"CKSharingCollaborationOptionsGroupsKey");
     mutableOptionsGroups = v6->_mutableOptionsGroups;
     v6->_mutableOptionsGroups = v21;
 
-    v6->_supportAllowingAccessRequests = objc_msgSend_decodeBoolForKey_(v4, v23, @"CKSharingSupportAllowingAccessRequestsKey");
+    v6->_supportAllowingAccessRequests = objc_msgSend_decodeBoolForKey_(coderCopy, v23, @"CKSharingSupportAllowingAccessRequestsKey");
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CKAllowedSharingOptions);
   v4->_allowedParticipantPermissionOptions = objc_msgSend_allowedParticipantPermissionOptions(self, v5, v6);

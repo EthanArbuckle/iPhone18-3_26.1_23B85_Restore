@@ -6,7 +6,7 @@
 
 - (uint64_t)localDeviceSupportsService:()BluetoothManagerGKExtensions
 {
-  if (!*(a1 + *MEMORY[0x277CF3250]))
+  if (!*(self + *MEMORY[0x277CF3250]))
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {

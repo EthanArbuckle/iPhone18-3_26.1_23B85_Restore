@@ -1,38 +1,38 @@
 @interface GeoRequestResponseLogTableViewController
-- (GeoRequestResponseLogTableViewController)initWithStyle:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (GeoRequestResponseLogTableViewController)initWithStyle:(int64_t)style;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_confirmFlushDB;
 - (void)_reallyFlushDB;
-- (void)_rebuildComplete:(unsigned int)a3 error:(id)a4;
+- (void)_rebuildComplete:(unsigned int)complete error:(id)error;
 - (void)_rebuildDB;
 - (void)_reloadLogsAsync;
 - (void)_reloadLogsSync;
-- (void)_showDatePickerFrom:(id)a3;
-- (void)_showError:(id)a3 forTask:(id)a4;
+- (void)_showDatePickerFrom:(id)from;
+- (void)_showError:(id)error forTask:(id)task;
 - (void)_toggleLogging;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)valueChangedForGEOConfigKey:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)valueChangedForGEOConfigKey:(id)key;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation GeoRequestResponseLogTableViewController
 
-- (void)_showDatePickerFrom:(id)a3
+- (void)_showDatePickerFrom:(id)from
 {
-  v4 = a3;
-  v5 = [(GeoRequestResponseLogTableViewController *)self tableView];
-  v6 = [v5 cellForRowAtIndexPath:v4];
+  fromCopy = from;
+  tableView = [(GeoRequestResponseLogTableViewController *)self tableView];
+  v6 = [tableView cellForRowAtIndexPath:fromCopy];
 
-  v7 = [(GeoRequestResponseLogTableViewController *)self title];
-  v8 = [UIAlertController alertControllerWithTitle:v7 message:0 preferredStyle:0];
+  title = [(GeoRequestResponseLogTableViewController *)self title];
+  v8 = [UIAlertController alertControllerWithTitle:title message:0 preferredStyle:0];
 
   v9 = objc_alloc_init(GeoRequestResponseLogDatePickerViewController);
   v10 = GEOConfigGetDate();
-  v11 = [(GeoRequestResponseLogDatePickerViewController *)v9 datePicker];
-  [v11 setDate:v10];
+  datePicker = [(GeoRequestResponseLogDatePickerViewController *)v9 datePicker];
+  [datePicker setDate:v10];
 
   [v8 setContentViewController:v9];
   v25[0] = _NSConcreteStackBlock;
@@ -41,8 +41,8 @@
   v25[3] = &unk_101630B88;
   v12 = v9;
   v26 = v12;
-  v27 = self;
-  v13 = v4;
+  selfCopy = self;
+  v13 = fromCopy;
   v28 = v13;
   v14 = [UIAlertAction actionWithTitle:@"Ok" style:0 handler:v25];
   [v8 addAction:v14];
@@ -50,24 +50,24 @@
   v15 = [UIAlertAction actionWithTitle:@"Cancel" style:1 handler:0];
   [v8 addAction:v15];
 
-  v16 = [v8 popoverPresentationController];
-  v17 = [v6 contentView];
-  [v17 bounds];
-  [v16 setSourceRect:?];
+  popoverPresentationController = [v8 popoverPresentationController];
+  contentView = [v6 contentView];
+  [contentView bounds];
+  [popoverPresentationController setSourceRect:?];
 
-  v18 = [v6 contentView];
-  [v16 setSourceView:v18];
+  contentView2 = [v6 contentView];
+  [popoverPresentationController setSourceView:contentView2];
 
   v19 = v6;
   v20 = v19;
   if (v19)
   {
-    v21 = v19;
+    superview = v19;
     do
     {
-      v22 = v21;
-      v23 = [UIViewController viewControllerForView:v21];
-      v21 = [v21 superview];
+      v22 = superview;
+      v23 = [UIViewController viewControllerForView:superview];
+      superview = [superview superview];
 
       if (v23)
       {
@@ -76,7 +76,7 @@
 
       else
       {
-        v24 = v21 == 0;
+        v24 = superview == 0;
       }
     }
 
@@ -91,32 +91,32 @@
   [v23 presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v6 section];
-  if (v7 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == 1)
   {
-    v9 = -[NSArray objectAtIndexedSubscript:](self->_logEntries, "objectAtIndexedSubscript:", [v6 row]);
+    v9 = -[NSArray objectAtIndexedSubscript:](self->_logEntries, "objectAtIndexedSubscript:", [pathCopy row]);
     v10 = [[GeoRequestResponseLogDetailViewController alloc] initWithEvent:v9];
-    v11 = [(GeoRequestResponseLogTableViewController *)self navigationController];
-    [v11 pushViewController:v10 animated:1];
+    navigationController = [(GeoRequestResponseLogTableViewController *)self navigationController];
+    [navigationController pushViewController:v10 animated:1];
 
     goto LABEL_9;
   }
 
-  if (v7)
+  if (section)
   {
     goto LABEL_17;
   }
 
-  v8 = [v6 row];
+  v8 = [pathCopy row];
   if (v8 <= 2)
   {
     if (v8 == 1)
     {
-      [(GeoRequestResponseLogTableViewController *)self _showDatePickerFrom:v6];
+      [(GeoRequestResponseLogTableViewController *)self _showDatePickerFrom:pathCopy];
       goto LABEL_17;
     }
 
@@ -126,8 +126,8 @@
     }
 
     v9 = objc_alloc_init(GeoRequestResponseLogBundleIdTableViewController);
-    v12 = [(GeoRequestResponseLogTableViewController *)self navigationController];
-    [v12 pushViewController:v9 animated:1];
+    navigationController2 = [(GeoRequestResponseLogTableViewController *)self navigationController];
+    [navigationController2 pushViewController:v9 animated:1];
 
 LABEL_9:
     goto LABEL_17;
@@ -155,24 +155,24 @@ LABEL_9:
       [(GeoRequestResponseLogTableViewController *)self _confirmFlushDB];
     }
 
-    [v13 deselectRowAtIndexPath:v6 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 
 LABEL_17:
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  if (v6 == 1)
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == 1)
   {
     v8 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:0];
-    v12 = -[NSArray objectAtIndexedSubscript:](self->_logEntries, "objectAtIndexedSubscript:", [v5 row]);
-    v20 = [v12 messageType];
-    if (v20 > 57)
+    v12 = -[NSArray objectAtIndexedSubscript:](self->_logEntries, "objectAtIndexedSubscript:", [pathCopy row]);
+    messageType = [v12 messageType];
+    if (messageType > 57)
     {
-      switch(v20)
+      switch(messageType)
       {
         case 1005:
           v21 = @"GEOPlaceSearchFeedback";
@@ -228,14 +228,14 @@ LABEL_17:
           v21 = @"GEOPBOfflineDataKeys";
           goto LABEL_81;
         default:
-          if (v20 == 58)
+          if (messageType == 58)
           {
             v21 = @"GEOBusinessResolution";
           }
 
           else
           {
-            if (v20 != 60)
+            if (messageType != 60)
             {
               goto LABEL_66;
             }
@@ -249,17 +249,17 @@ LABEL_17:
       goto LABEL_81;
     }
 
-    if (v20 > 48)
+    if (messageType > 48)
     {
-      if (v20 <= 51)
+      if (messageType <= 51)
       {
-        if (v20 == 49)
+        if (messageType == 49)
         {
           v21 = @"GEOBatchRevGeocode";
           goto LABEL_81;
         }
 
-        if (v20 == 50)
+        if (messageType == 50)
         {
           v21 = @"GEOPolyLocationShift";
           goto LABEL_81;
@@ -268,7 +268,7 @@ LABEL_17:
 
       else
       {
-        switch(v20)
+        switch(messageType)
         {
           case '4':
             v21 = @"GEOETA";
@@ -283,15 +283,15 @@ LABEL_17:
       }
     }
 
-    else if (v20 <= 43)
+    else if (messageType <= 43)
     {
-      if (!v20)
+      if (!messageType)
       {
         v21 = @"Unknown";
         goto LABEL_81;
       }
 
-      if (v20 == 43)
+      if (messageType == 43)
       {
         v21 = @"GEOPlaceSearch";
         goto LABEL_81;
@@ -300,7 +300,7 @@ LABEL_17:
 
     else
     {
-      switch(v20)
+      switch(messageType)
       {
         case ',':
           v21 = @"GEODirections";
@@ -311,29 +311,29 @@ LABEL_17:
         case '0':
           v21 = @"GEOETATrafficUpdate";
 LABEL_81:
-          v36 = [v12 eventType];
-          if (v36 >= 3)
+          eventType = [v12 eventType];
+          if (eventType >= 3)
           {
-            v37 = [NSString stringWithFormat:@"(unknown: %i)", v36];
+            v37 = [NSString stringWithFormat:@"(unknown: %i)", eventType];
           }
 
           else
           {
-            v37 = *(&off_101622F20 + v36);
+            v37 = *(&off_101622F20 + eventType);
           }
 
           v38 = -[NSByteCountFormatter stringFromByteCount:](self->_byteFormatter, "stringFromByteCount:", [v12 size]);
           v39 = [NSString stringWithFormat:@"%@ - %@ %@", v21, v37, v38];
-          v40 = [v8 textLabel];
-          [v40 setText:v39];
+          textLabel = [v8 textLabel];
+          [textLabel setText:v39];
 
           dateFormatter = self->_dateFormatter;
-          v42 = [v12 timestamp];
-          v43 = [(NSISO8601DateFormatter *)dateFormatter stringFromDate:v42];
-          v44 = [v12 appId];
-          v45 = [NSString stringWithFormat:@"%@ - %@", v43, v44];
-          v46 = [v8 detailTextLabel];
-          [v46 setText:v45];
+          timestamp = [v12 timestamp];
+          v43 = [(NSISO8601DateFormatter *)dateFormatter stringFromDate:timestamp];
+          appId = [v12 appId];
+          v45 = [NSString stringWithFormat:@"%@ - %@", v43, appId];
+          detailTextLabel = [v8 detailTextLabel];
+          [detailTextLabel setText:v45];
 
 LABEL_85:
           [v8 setAccessoryType:1];
@@ -342,17 +342,17 @@ LABEL_85:
     }
 
 LABEL_66:
-    v21 = [NSString stringWithFormat:@"(unknown: %i)", v20];
+    v21 = [NSString stringWithFormat:@"(unknown: %i)", messageType];
     goto LABEL_81;
   }
 
-  if (v6)
+  if (section)
   {
     v8 = 0;
     goto LABEL_90;
   }
 
-  v7 = [v5 row];
+  v7 = [pathCopy row];
   v8 = 0;
   if (v7 > 2)
   {
@@ -362,8 +362,8 @@ LABEL_66:
       {
         v8 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
         [v8 setSelectionStyle:3];
-        v34 = [v8 textLabel];
-        [v34 setText:@"Rebuild Database"];
+        textLabel2 = [v8 textLabel];
+        [textLabel2 setText:@"Rebuild Database"];
 
         v28 = +[UIColor systemBlueColor];
       }
@@ -387,8 +387,8 @@ LABEL_66:
         }
 
         [v8 setSelectionStyle:v26];
-        v27 = [v8 textLabel];
-        [v27 setText:@"Delete All Logs"];
+        textLabel3 = [v8 textLabel];
+        [textLabel3 setText:@"Delete All Logs"];
 
         if ([(NSArray *)self->_logEntries count])
         {
@@ -403,7 +403,7 @@ LABEL_66:
       }
 
       v12 = v28;
-      v33 = [v8 textLabel];
+      textLabel4 = [v8 textLabel];
     }
 
     else
@@ -413,29 +413,29 @@ LABEL_66:
         v8 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:0];
         [v8 setSelectionStyle:0];
         v9 = self->_dateFormatter;
-        v10 = [(NSArray *)self->_logEntries firstObject];
-        v11 = [v10 timestamp];
-        v12 = [(NSISO8601DateFormatter *)v9 stringFromDate:v11];
+        firstObject = [(NSArray *)self->_logEntries firstObject];
+        timestamp2 = [firstObject timestamp];
+        v12 = [(NSISO8601DateFormatter *)v9 stringFromDate:timestamp2];
 
         v13 = self->_dateFormatter;
-        v14 = [(NSArray *)self->_logEntries lastObject];
-        v15 = [v14 timestamp];
-        v16 = [(NSISO8601DateFormatter *)v13 stringFromDate:v15];
+        lastObject = [(NSArray *)self->_logEntries lastObject];
+        timestamp3 = [lastObject timestamp];
+        v16 = [(NSISO8601DateFormatter *)v13 stringFromDate:timestamp3];
 
-        v17 = [v8 textLabel];
-        [v17 setText:@"Time Range"];
+        textLabel5 = [v8 textLabel];
+        [textLabel5 setText:@"Time Range"];
 
         if (v12 && v16)
         {
-          v18 = [NSString stringWithFormat:@"%@ - %@", v12, v16];
-          v19 = [v8 detailTextLabel];
-          [v19 setText:v18];
+          detailTextLabel3 = [NSString stringWithFormat:@"%@ - %@", v12, v16];
+          detailTextLabel2 = [v8 detailTextLabel];
+          [detailTextLabel2 setText:detailTextLabel3];
         }
 
         else
         {
-          v18 = [v8 detailTextLabel];
-          [v18 setText:@"no logs found"];
+          detailTextLabel3 = [v8 detailTextLabel];
+          [detailTextLabel3 setText:@"no logs found"];
         }
 
         goto LABEL_88;
@@ -444,18 +444,18 @@ LABEL_66:
       v8 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:0];
       [v8 setSelectionStyle:3];
       v30 = [NSString stringWithFormat:@"Entries: %u", [(NSArray *)self->_logEntries count]];
-      v31 = [v8 textLabel];
-      [v31 setText:v30];
+      textLabel6 = [v8 textLabel];
+      [textLabel6 setText:v30];
 
-      v32 = [v8 detailTextLabel];
-      [v32 setText:@"(tap to refresh)"];
+      detailTextLabel4 = [v8 detailTextLabel];
+      [detailTextLabel4 setText:@"(tap to refresh)"];
 
       v12 = +[UIColor systemBlueColor];
-      v33 = [v8 detailTextLabel];
+      textLabel4 = [v8 detailTextLabel];
     }
 
-    v16 = v33;
-    [(__CFString *)v33 setTextColor:v12];
+    v16 = textLabel4;
+    [(__CFString *)textLabel4 setTextColor:v12];
 LABEL_88:
 
     goto LABEL_89;
@@ -488,8 +488,8 @@ LABEL_88:
       v8 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
       [v8 setSelectionStyle:3];
       v47 = [NSString stringWithFormat:@"Turn off at: %@", v16];
-      v48 = [v8 textLabel];
-      [v48 setText:v47];
+      textLabel7 = [v8 textLabel];
+      [textLabel7 setText:v47];
 
       [v8 setAccessoryType:1];
       goto LABEL_88;
@@ -503,21 +503,21 @@ LABEL_88:
     v12 = GEOConfigGetSet();
     v8 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:0];
     [v8 setSelectionStyle:3];
-    v22 = [v8 textLabel];
-    [v22 setText:@"Limit to BundleIds"];
+    textLabel8 = [v8 textLabel];
+    [textLabel8 setText:@"Limit to BundleIds"];
 
     if ([v12 count])
     {
-      v23 = [v12 allObjects];
-      v24 = [v23 componentsJoinedByString:{@", "}];
-      v25 = [v8 detailTextLabel];
-      [v25 setText:v24];
+      allObjects = [v12 allObjects];
+      v24 = [allObjects componentsJoinedByString:{@", "}];
+      detailTextLabel5 = [v8 detailTextLabel];
+      [detailTextLabel5 setText:v24];
     }
 
     else
     {
-      v23 = [v8 detailTextLabel];
-      [v23 setText:@"<all>"];
+      allObjects = [v8 detailTextLabel];
+      [allObjects setText:@"<all>"];
     }
 
     goto LABEL_85;
@@ -525,8 +525,8 @@ LABEL_88:
 
   v8 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
   [v8 setSelectionStyle:0];
-  v29 = [v8 textLabel];
-  [v29 setText:@"Enable Full Request Response Logging"];
+  textLabel9 = [v8 textLabel];
+  [textLabel9 setText:@"Enable Full Request Response Logging"];
 
   v12 = objc_alloc_init(UISwitch);
   [v12 setOn:self->_isLoggingEnabled];
@@ -539,9 +539,9 @@ LABEL_90:
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 == 1)
+  if (section == 1)
   {
     return @"Logs";
   }
@@ -552,12 +552,12 @@ LABEL_90:
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
-    if (a4 == 1)
+    if (section == 1)
     {
       v7 = [(NSArray *)self->_logEntries count];
     }
@@ -576,10 +576,10 @@ LABEL_90:
   return v7;
 }
 
-- (void)_showError:(id)a3 forTask:(id)a4
+- (void)_showError:(id)error forTask:(id)task
 {
-  v7 = [NSString stringWithFormat:@"Received error while %@: %@", a4, a3];
-  v5 = [UIAlertController alertControllerWithTitle:@"Operation Failed" message:v7 preferredStyle:0];
+  error = [NSString stringWithFormat:@"Received error while %@: %@", task, error];
+  v5 = [UIAlertController alertControllerWithTitle:@"Operation Failed" message:error preferredStyle:0];
   v6 = [UIAlertAction actionWithTitle:@"Ok" style:0 handler:0];
   [v5 addAction:v6];
 
@@ -588,9 +588,9 @@ LABEL_90:
 
 - (void)_reallyFlushDB
 {
-  v3 = [(NSArray *)self->_logEntries lastObject];
-  v4 = [v3 timestamp];
-  v5 = [v4 dateByAddingTimeInterval:1.0];
+  lastObject = [(NSArray *)self->_logEntries lastObject];
+  timestamp = [lastObject timestamp];
+  v5 = [timestamp dateByAddingTimeInterval:1.0];
 
   v6 = dispatch_get_global_queue(25, 0);
   v8[0] = _NSConcreteStackBlock;
@@ -623,14 +623,14 @@ LABEL_90:
   }
 }
 
-- (void)_rebuildComplete:(unsigned int)a3 error:(id)a4
+- (void)_rebuildComplete:(unsigned int)complete error:(id)error
 {
-  v4 = *&a3;
-  v6 = a4;
-  v10 = v6;
-  if (v6)
+  v4 = *&complete;
+  errorCopy = error;
+  v10 = errorCopy;
+  if (errorCopy)
   {
-    [(GeoRequestResponseLogTableViewController *)self _showError:v6 forTask:@"Rebuilding DB"];
+    [(GeoRequestResponseLogTableViewController *)self _showError:errorCopy forTask:@"Rebuilding DB"];
   }
 
   else
@@ -668,18 +668,18 @@ LABEL_90:
 - (void)_toggleLogging
 {
   GEOConfigSetBOOL();
-  v3 = [(GeoRequestResponseLogTableViewController *)self tableView];
+  tableView = [(GeoRequestResponseLogTableViewController *)self tableView];
   v4 = [NSIndexPath indexPathForRow:1 inSection:0];
   v6 = v4;
   v5 = [NSArray arrayWithObjects:&v6 count:1];
-  [v3 reloadRowsAtIndexPaths:v5 withRowAnimation:100];
+  [tableView reloadRowsAtIndexPaths:v5 withRowAnimation:100];
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
   self->_isLoggingEnabled = GEOConfigGetBOOL();
-  v4 = [(GeoRequestResponseLogTableViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(GeoRequestResponseLogTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_reloadLogsSync
@@ -721,11 +721,11 @@ LABEL_90:
   dispatch_async(v3, block);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = GeoRequestResponseLogTableViewController;
-  [(GeoRequestResponseLogTableViewController *)&v6 viewDidDisappear:a3];
+  [(GeoRequestResponseLogTableViewController *)&v6 viewDidDisappear:disappear];
   GEOConfigRemoveDelegateListenerForAllKeys();
   logPersister = self->_logPersister;
   self->_logPersister = 0;
@@ -734,21 +734,21 @@ LABEL_90:
   self->_logEntries = 0;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = GeoRequestResponseLogTableViewController;
-  [(GeoRequestResponseLogTableViewController *)&v4 viewWillAppear:a3];
+  [(GeoRequestResponseLogTableViewController *)&v4 viewWillAppear:appear];
   self->_isLoggingEnabled = GEOConfigGetBOOL();
   _GEOConfigAddDelegateListenerForKey();
   [(GeoRequestResponseLogTableViewController *)self _reloadLogsAsync];
 }
 
-- (GeoRequestResponseLogTableViewController)initWithStyle:(int64_t)a3
+- (GeoRequestResponseLogTableViewController)initWithStyle:(int64_t)style
 {
   v10.receiver = self;
   v10.super_class = GeoRequestResponseLogTableViewController;
-  v3 = [(GeoRequestResponseLogTableViewController *)&v10 initWithStyle:a3];
+  v3 = [(GeoRequestResponseLogTableViewController *)&v10 initWithStyle:style];
   if (v3)
   {
     v4 = objc_alloc_init(NSISO8601DateFormatter);

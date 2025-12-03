@@ -1,6 +1,6 @@
 @interface MPStoreModelCuratorBuilder
 + (id)allSupportedProperties;
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5;
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity;
 @end
 
 @implementation MPStoreModelCuratorBuilder
@@ -22,16 +22,16 @@
   return v3;
 }
 
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  objectCopy = object;
+  identityCopy = identity;
   if ((*&self->_requestedCuratorProperties & 1) == 0)
   {
-    v11 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-    v12 = [v11 properties];
-    if ([v12 containsObject:@"MPModelPropertyPersonName"])
+    requestedPropertySet = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+    properties = [requestedPropertySet properties];
+    if ([properties containsObject:@"MPModelPropertyPersonName"])
     {
       v13 = 2;
     }
@@ -42,7 +42,7 @@
     }
 
     *&self->_requestedCuratorProperties = *&self->_requestedCuratorProperties & 0xFFFD | v13;
-    if ([v12 containsObject:@"MPModelPropertyCuratorShortName"])
+    if ([properties containsObject:@"MPModelPropertyCuratorShortName"])
     {
       v14 = 4;
     }
@@ -53,7 +53,7 @@
     }
 
     *&self->_requestedCuratorProperties = *&self->_requestedCuratorProperties & 0xFFFB | v14;
-    if ([v12 containsObject:@"MPModelPropertyPersonHasSocialPosts"])
+    if ([properties containsObject:@"MPModelPropertyPersonHasSocialPosts"])
     {
       v15 = 8;
     }
@@ -64,7 +64,7 @@
     }
 
     *&self->_requestedCuratorProperties = *&self->_requestedCuratorProperties & 0xFFF7 | v15;
-    if ([v12 containsObject:@"MPModelPropertyCuratorEditorNotes"])
+    if ([properties containsObject:@"MPModelPropertyCuratorEditorNotes"])
     {
       v16 = 16;
     }
@@ -75,7 +75,7 @@
     }
 
     *&self->_requestedCuratorProperties = *&self->_requestedCuratorProperties & 0xFFEF | v16;
-    if ([v12 containsObject:@"MPModelPropertyCuratorShortEditorNotes"])
+    if ([properties containsObject:@"MPModelPropertyCuratorShortEditorNotes"])
     {
       v17 = 32;
     }
@@ -86,7 +86,7 @@
     }
 
     *&self->_requestedCuratorProperties = *&self->_requestedCuratorProperties & 0xFFDF | v17;
-    if ([v12 containsObject:@"MPModelPropertyCuratorKind"])
+    if ([properties containsObject:@"MPModelPropertyCuratorKind"])
     {
       v18 = 64;
     }
@@ -97,7 +97,7 @@
     }
 
     *&self->_requestedCuratorProperties = *&self->_requestedCuratorProperties & 0xFFBF | v18;
-    if ([v12 containsObject:@"MPModelPropertyCuratorSubKind"])
+    if ([properties containsObject:@"MPModelPropertyCuratorSubKind"])
     {
       v19 = 128;
     }
@@ -108,7 +108,7 @@
     }
 
     *&self->_requestedCuratorProperties = *&self->_requestedCuratorProperties & 0xFF7F | v19;
-    if ([v12 containsObject:@"MPModelPropertyCuratorEditorialArtwork"])
+    if ([properties containsObject:@"MPModelPropertyCuratorEditorialArtwork"])
     {
       v20 = 256;
     }
@@ -119,7 +119,7 @@
     }
 
     *&self->_requestedCuratorProperties = *&self->_requestedCuratorProperties & 0xFEFF | v20;
-    if ([v12 containsObject:@"MPModelPropertyCuratorBrandLogoArtwork"])
+    if ([properties containsObject:@"MPModelPropertyCuratorBrandLogoArtwork"])
     {
       v21 = 513;
     }
@@ -132,13 +132,13 @@
     *&self->_requestedCuratorProperties = v21 | *&self->_requestedCuratorProperties & 0xFDFE;
   }
 
-  v22 = [v8 storeID];
-  v23 = MPStoreItemMetadataInt64NormalizeStoreIDValue(v22);
+  storeID = [metadataCopy storeID];
+  v23 = MPStoreItemMetadataInt64NormalizeStoreIDValue(storeID);
 
   if (!v23)
   {
-    v24 = [v8 curatorID];
-    v23 = MPStoreItemMetadataInt64NormalizeStoreIDValue(v24);
+    curatorID = [metadataCopy curatorID];
+    v23 = MPStoreItemMetadataInt64NormalizeStoreIDValue(curatorID);
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -152,33 +152,33 @@
   v38[2] = __94__MPStoreModelCuratorBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke_3;
   v38[3] = &unk_1E767EB88;
   v38[4] = self;
-  v26 = v8;
+  v26 = metadataCopy;
   v39 = v26;
   v27 = _Block_copy(v38);
-  if (v9)
+  if (objectCopy)
   {
-    v28 = [v9 identifiers];
-    v29 = [v28 copyWithSource:@"StorePlatform" block:v25];
-    v30 = [v9 copyWithIdentifiers:v29 block:v27];
+    identifiers = [objectCopy identifiers];
+    v29 = [identifiers copyWithSource:@"StorePlatform" block:v25];
+    v30 = [objectCopy copyWithIdentifiers:v29 block:v27];
   }
 
   else
   {
-    v28 = [v26 itemKind];
-    if ([v28 isEqualToString:@"iTunesBrand"])
+    identifiers = [v26 itemKind];
+    if ([identifiers isEqualToString:@"iTunesBrand"])
     {
-      v31 = [v26 iTunesBrandType];
-      if ([v31 isEqualToString:@"Curator"])
+      iTunesBrandType = [v26 iTunesBrandType];
+      if ([iTunesBrandType isEqualToString:@"Curator"])
       {
         v32 = 1;
       }
 
-      else if ([v31 isEqualToString:@"Genre"])
+      else if ([iTunesBrandType isEqualToString:@"Genre"])
       {
         v32 = 2;
       }
 
-      else if ([v31 isEqualToString:@"Show"])
+      else if ([iTunesBrandType isEqualToString:@"Show"])
       {
         v32 = 4;
       }
@@ -189,12 +189,12 @@
       }
     }
 
-    else if ([v28 isEqualToString:@"brand"])
+    else if ([identifiers isEqualToString:@"brand"])
     {
       v32 = 8;
     }
 
-    else if ([v28 isEqualToString:@"activity"])
+    else if ([identifiers isEqualToString:@"activity"])
     {
       v32 = 16;
     }

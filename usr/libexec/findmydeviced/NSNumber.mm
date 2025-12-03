@@ -1,24 +1,24 @@
 @interface NSNumber
-- (BOOL)encodeWithFMDCoder:(id)a3 error:(id *)a4;
-- (NSNumber)initWithFMDCoder:(id)a3 error:(id *)a4;
+- (BOOL)encodeWithFMDCoder:(id)coder error:(id *)error;
+- (NSNumber)initWithFMDCoder:(id)coder error:(id *)error;
 @end
 
 @implementation NSNumber
 
-- (BOOL)encodeWithFMDCoder:(id)a3 error:(id *)a4
+- (BOOL)encodeWithFMDCoder:(id)coder error:(id *)error
 {
-  v5 = a3;
+  coderCopy = coder;
   v6 = +[NSNumber objectType];
-  [v5 encodeNumber:self forKey:v6];
+  [coderCopy encodeNumber:self forKey:v6];
 
   return 1;
 }
 
-- (NSNumber)initWithFMDCoder:(id)a3 error:(id *)a4
+- (NSNumber)initWithFMDCoder:(id)coder error:(id *)error
 {
-  v6 = a3;
+  coderCopy = coder;
   v7 = +[NSNumber objectType];
-  v8 = [v6 decodeNumberForKey:v7];
+  v8 = [coderCopy decodeNumberForKey:v7];
 
   if (v8)
   {
@@ -33,20 +33,20 @@
       v9 = 0;
     }
 
-    a4 = v9;
+    error = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = NSLocalizedFailureReasonErrorKey;
     v13 = @"Key FM.number not found.";
     v10 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-    *a4 = [NSError errorWithDomain:@"FMNumberErrorDomain" code:0 userInfo:v10];
+    *error = [NSError errorWithDomain:@"FMNumberErrorDomain" code:0 userInfo:v10];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
 @end

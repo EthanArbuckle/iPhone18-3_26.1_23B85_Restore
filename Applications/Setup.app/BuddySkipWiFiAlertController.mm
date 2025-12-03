@@ -6,7 +6,7 @@
 
 + (id)alertController
 {
-  v32[2] = a1;
+  v32[2] = self;
   v32[1] = a2;
   v2 = +[NSBundle mainBundle];
   v3 = SFLocalizableWAPIStringKeyForKey();

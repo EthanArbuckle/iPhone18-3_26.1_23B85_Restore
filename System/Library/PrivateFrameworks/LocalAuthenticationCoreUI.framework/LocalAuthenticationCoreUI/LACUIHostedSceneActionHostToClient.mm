@@ -1,21 +1,21 @@
 @interface LACUIHostedSceneActionHostToClient
-- (LACUIHostedSceneActionHostToClient)initWithAction:(id)a3 completion:(id)a4;
-- (void)performActionForHostedWindowScene:(id)a3;
+- (LACUIHostedSceneActionHostToClient)initWithAction:(id)action completion:(id)completion;
+- (void)performActionForHostedWindowScene:(id)scene;
 @end
 
 @implementation LACUIHostedSceneActionHostToClient
 
-- (LACUIHostedSceneActionHostToClient)initWithAction:(id)a3 completion:(id)a4
+- (LACUIHostedSceneActionHostToClient)initWithAction:(id)action completion:(id)completion
 {
-  v6 = a4;
-  v7 = BSSettingsFromHostedSceneAction(a3);
+  completionCopy = completion;
+  v7 = BSSettingsFromHostedSceneAction(action);
   v8 = MEMORY[0x277CF0B60];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __64__LACUIHostedSceneActionHostToClient_initWithAction_completion___block_invoke;
   v14[3] = &unk_27981E798;
-  v15 = v6;
-  v9 = v6;
+  v15 = completionCopy;
+  v9 = completionCopy;
   v10 = [v8 responderWithHandler:v14];
   v13.receiver = self;
   v13.super_class = LACUIHostedSceneActionHostToClient;
@@ -31,30 +31,30 @@ void __64__LACUIHostedSceneActionHostToClient_initWithAction_completion___block_
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)performActionForHostedWindowScene:(id)a3
+- (void)performActionForHostedWindowScene:(id)scene
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sceneCopy = scene;
   v5 = LACLogUI();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(LACUIHostedSceneActionHostToClient *)self info];
+    info = [(LACUIHostedSceneActionHostToClient *)self info];
     *buf = 138412546;
-    v14 = v4;
+    v14 = sceneCopy;
     v15 = 2112;
-    v16 = v6;
+    v16 = info;
     _os_log_impl(&dword_256063000, v5, OS_LOG_TYPE_DEFAULT, "performActionForHostedWindowScene %@ info: %@", buf, 0x16u);
   }
 
-  v7 = [(LACUIHostedSceneActionHostToClient *)self info];
+  info2 = [(LACUIHostedSceneActionHostToClient *)self info];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__LACUIHostedSceneActionHostToClient_performActionForHostedWindowScene___block_invoke;
   v10[3] = &unk_27981E7C0;
-  v11 = v4;
-  v12 = self;
-  v8 = v4;
-  BSActionResponseForHandlerAndSettings(v8, v7, v10);
+  v11 = sceneCopy;
+  selfCopy = self;
+  v8 = sceneCopy;
+  BSActionResponseForHandlerAndSettings(v8, info2, v10);
 
   v9 = *MEMORY[0x277D85DE8];
 }

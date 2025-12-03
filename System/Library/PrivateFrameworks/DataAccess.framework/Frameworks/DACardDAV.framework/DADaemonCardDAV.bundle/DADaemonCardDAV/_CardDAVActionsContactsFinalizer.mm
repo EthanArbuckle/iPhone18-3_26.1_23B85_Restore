@@ -1,9 +1,9 @@
 @interface _CardDAVActionsContactsFinalizer
 + (OS_os_log)os_log;
-- (BOOL)clearChangeHistoriesWithChangeIdContext:(id)a3 pushedActions:(id)a4 inContainer:(id)a5 changeTrackingID:(id)a6;
-- (_CardDAVActionsContactsFinalizer)initWithContactStore:(id)a3;
-- (void)clearChangesForActions:(id)a3 inContainer:(id)a4 changeTrackingID:(id)a5;
-- (void)clearChangesToAnchor:(id)a3 changeTrackingID:(id)a4 inContainer:(id)a5;
+- (BOOL)clearChangeHistoriesWithChangeIdContext:(id)context pushedActions:(id)actions inContainer:(id)container changeTrackingID:(id)d;
+- (_CardDAVActionsContactsFinalizer)initWithContactStore:(id)store;
+- (void)clearChangesForActions:(id)actions inContainer:(id)container changeTrackingID:(id)d;
+- (void)clearChangesToAnchor:(id)anchor changeTrackingID:(id)d inContainer:(id)container;
 @end
 
 @implementation _CardDAVActionsContactsFinalizer
@@ -20,97 +20,97 @@
   return v3;
 }
 
-- (_CardDAVActionsContactsFinalizer)initWithContactStore:(id)a3
+- (_CardDAVActionsContactsFinalizer)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = _CardDAVActionsContactsFinalizer;
   v6 = [(_CardDAVActionsContactsFinalizer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
   }
 
   return v7;
 }
 
-- (BOOL)clearChangeHistoriesWithChangeIdContext:(id)a3 pushedActions:(id)a4 inContainer:(id)a5 changeTrackingID:(id)a6
+- (BOOL)clearChangeHistoriesWithChangeIdContext:(id)context pushedActions:(id)actions inContainer:(id)container changeTrackingID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v11 count])
+  contextCopy = context;
+  actionsCopy = actions;
+  containerCopy = container;
+  dCopy = d;
+  if ([actionsCopy count])
   {
-    [(_CardDAVActionsContactsFinalizer *)self clearChangesForActions:v11 inContainer:v12 changeTrackingID:v13];
+    [(_CardDAVActionsContactsFinalizer *)self clearChangesForActions:actionsCopy inContainer:containerCopy changeTrackingID:dCopy];
   }
 
-  v14 = [v10 cnChangeAnchor];
-  if (v14)
+  cnChangeAnchor = [contextCopy cnChangeAnchor];
+  if (cnChangeAnchor)
   {
-    [(_CardDAVActionsContactsFinalizer *)self clearChangesToAnchor:v14 changeTrackingID:v13 inContainer:v12];
+    [(_CardDAVActionsContactsFinalizer *)self clearChangesToAnchor:cnChangeAnchor changeTrackingID:dCopy inContainer:containerCopy];
   }
 
   return 0;
 }
 
-- (void)clearChangesToAnchor:(id)a3 changeTrackingID:(id)a4 inContainer:(id)a5
+- (void)clearChangesToAnchor:(id)anchor changeTrackingID:(id)d inContainer:(id)container
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[CNChangeHistoryClearRequest alloc] initWithClientIdentifier:v9];
+  containerCopy = container;
+  dCopy = d;
+  anchorCopy = anchor;
+  v11 = [[CNChangeHistoryClearRequest alloc] initWithClientIdentifier:dCopy];
 
-  [v11 setToChangeAnchor:v10];
-  v12 = [v8 asContainer];
+  [v11 setToChangeAnchor:anchorCopy];
+  asContainer = [containerCopy asContainer];
 
-  v13 = [v12 identifier];
+  identifier = [asContainer identifier];
 
-  if (!v13)
+  if (!identifier)
   {
-    v14 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      sub_25754(v14);
+      sub_25754(os_log);
     }
   }
 
-  [v11 setContainerIdentifier:v13];
-  v15 = [(_CardDAVActionsContactsFinalizer *)self contactStore];
+  [v11 setContainerIdentifier:identifier];
+  contactStore = [(_CardDAVActionsContactsFinalizer *)self contactStore];
   v19 = 0;
-  v16 = [v15 executeChangeHistoryClearRequest:v11 error:&v19];
+  v16 = [contactStore executeChangeHistoryClearRequest:v11 error:&v19];
   v17 = v19;
 
   if ((v16 & 1) == 0)
   {
-    v18 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    os_log2 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
     {
       sub_25798();
     }
   }
 }
 
-- (void)clearChangesForActions:(id)a3 inContainer:(id)a4 changeTrackingID:(id)a5
+- (void)clearChangesForActions:(id)actions inContainer:(id)container changeTrackingID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v41 = a5;
-  v10 = [[CNChangeHistoryClearRequest alloc] initWithClientIdentifier:v41];
-  v42 = v9;
-  v11 = [v9 asContainer];
-  v12 = [v11 identifier];
+  actionsCopy = actions;
+  containerCopy = container;
+  dCopy = d;
+  v10 = [[CNChangeHistoryClearRequest alloc] initWithClientIdentifier:dCopy];
+  v42 = containerCopy;
+  asContainer = [containerCopy asContainer];
+  identifier = [asContainer identifier];
   v40 = v10;
-  [v10 setContainerIdentifier:v12];
+  [v10 setContainerIdentifier:identifier];
 
-  v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+  v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(actionsCopy, "count")}];
   v43 = objc_alloc_init(NSMutableArray);
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v14 = v8;
+  v14 = actionsCopy;
   v15 = [v14 countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v15)
   {
@@ -130,33 +130,33 @@
         {
           if ([v19 itemChangeType] == &dword_0 + 2)
           {
-            v20 = [objc_opt_class() os_log];
-            if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+            os_log = [objc_opt_class() os_log];
+            if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
             {
-              v21 = [v19 changeId];
+              changeId = [v19 changeId];
               *buf = 67109120;
-              LODWORD(v50) = v21;
-              _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Clearing Person change index %d", buf, 8u);
+              LODWORD(v50) = changeId;
+              _os_log_impl(&dword_0, os_log, OS_LOG_TYPE_DEFAULT, "Clearing Person change index %d", buf, 8u);
             }
 
-            v22 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v19 changeId]);
-            [v13 addObject:v22];
+            changedItem = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v19 changeId]);
+            [v13 addObject:changedItem];
             goto LABEL_23;
           }
 
-          v22 = [v19 changedItem];
-          v23 = [v22 cardDAVRecordItem];
-          v24 = [v23 isContact];
+          changedItem = [v19 changedItem];
+          cardDAVRecordItem = [changedItem cardDAVRecordItem];
+          isContact = [cardDAVRecordItem isContact];
 
-          if (v24)
+          if (isContact)
           {
-            v25 = [objc_opt_class() os_log];
-            if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+            os_log2 = [objc_opt_class() os_log];
+            if (os_log_type_enabled(os_log2, OS_LOG_TYPE_DEFAULT))
             {
-              v26 = [v19 changeId];
+              changeId2 = [v19 changeId];
               *buf = 67109120;
-              LODWORD(v50) = v26;
-              _os_log_impl(&dword_0, v25, OS_LOG_TYPE_DEFAULT, "Clearing Person change index %d", buf, 8u);
+              LODWORD(v50) = changeId2;
+              _os_log_impl(&dword_0, os_log2, OS_LOG_TYPE_DEFAULT, "Clearing Person change index %d", buf, 8u);
             }
 
             v27 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v19 changeId]);
@@ -164,18 +164,18 @@
             goto LABEL_19;
           }
 
-          v29 = [v22 cardDAVRecordItem];
-          v30 = [v29 isGroup];
+          cardDAVRecordItem2 = [changedItem cardDAVRecordItem];
+          isGroup = [cardDAVRecordItem2 isGroup];
 
-          v31 = [objc_opt_class() os_log];
-          v27 = v31;
-          if (v30)
+          os_log3 = [objc_opt_class() os_log];
+          v27 = os_log3;
+          if (isGroup)
           {
-            if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(os_log3, OS_LOG_TYPE_DEFAULT))
             {
-              v32 = [v19 changeId];
+              changeId3 = [v19 changeId];
               *buf = 67109120;
-              LODWORD(v50) = v32;
+              LODWORD(v50) = changeId3;
               _os_log_impl(&dword_0, v27, OS_LOG_TYPE_DEFAULT, "Clearing Group change index %d", buf, 8u);
             }
 
@@ -185,10 +185,10 @@ LABEL_19:
             [v28 addObject:v27];
           }
 
-          else if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+          else if (os_log_type_enabled(os_log3, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v50 = v22;
+            v50 = changedItem;
             _os_log_error_impl(&dword_0, v27, OS_LOG_TYPE_ERROR, "Malformed CardDAVVCardItem: %@", buf, 0xCu);
           }
 
@@ -205,28 +205,28 @@ LABEL_23:
 
   [v40 setContactChangeIDs:v13];
   [v40 setGroupChangeIDs:v43];
-  v33 = [v40 contactChangeIDs];
-  if ([v33 count])
+  contactChangeIDs = [v40 contactChangeIDs];
+  if ([contactChangeIDs count])
   {
 
     goto LABEL_29;
   }
 
-  v34 = [v40 contactChangeIDs];
-  v35 = [v34 count];
+  contactChangeIDs2 = [v40 contactChangeIDs];
+  v35 = [contactChangeIDs2 count];
 
   if (v35)
   {
 LABEL_29:
-    v36 = [(_CardDAVActionsContactsFinalizer *)self contactStore];
+    contactStore = [(_CardDAVActionsContactsFinalizer *)self contactStore];
     v44 = 0;
-    v37 = [v36 executeChangeHistoryClearRequest:v40 error:&v44];
-    v38 = v44;
+    v37 = [contactStore executeChangeHistoryClearRequest:v40 error:&v44];
+    os_log5 = v44;
 
     if ((v37 & 1) == 0)
     {
-      v39 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
+      os_log4 = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log4, OS_LOG_TYPE_ERROR))
       {
         sub_25800();
       }
@@ -235,10 +235,10 @@ LABEL_29:
     goto LABEL_35;
   }
 
-  v38 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
+  os_log5 = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log5, OS_LOG_TYPE_ERROR))
   {
-    sub_25868(v38);
+    sub_25868(os_log5);
   }
 
 LABEL_35:

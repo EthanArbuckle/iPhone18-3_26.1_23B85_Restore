@@ -1,9 +1,9 @@
 @interface _NSXPCConnectionExpectedReplies
 - (_NSXPCConnectionExpectedReplies)init;
-- (char)sequenceForProgress:(uint64_t)a1;
+- (char)sequenceForProgress:(uint64_t)progress;
 - (id)progressForSequence:(id)result;
 - (void)dealloc;
-- (void)removeProgressSequence:(uint64_t)a1;
+- (void)removeProgressSequence:(uint64_t)sequence;
 @end
 
 @implementation _NSXPCConnectionExpectedReplies
@@ -29,47 +29,47 @@
   return self;
 }
 
-- (char)sequenceForProgress:(uint64_t)a1
+- (char)sequenceForProgress:(uint64_t)progress
 {
-  if (!a1)
+  if (!progress)
   {
     return 0;
   }
 
   os_unfair_lock_lock_with_options();
-  v4 = *(a1 + 16);
-  *(a1 + 16) = v4 + 1;
+  v4 = *(progress + 16);
+  *(progress + 16) = v4 + 1;
   if (a2)
   {
-    Mutable = *(a1 + 8);
+    Mutable = *(progress + 8);
     if (!Mutable)
     {
       Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E4A8], 0, 0, MEMORY[0x1E695E9E8]);
-      *(a1 + 8) = Mutable;
+      *(progress + 8) = Mutable;
     }
 
     CFDictionarySetValue(Mutable, v4, a2);
   }
 
-  os_unfair_lock_unlock((a1 + 24));
+  os_unfair_lock_unlock((progress + 24));
   return v4;
 }
 
-- (void)removeProgressSequence:(uint64_t)a1
+- (void)removeProgressSequence:(uint64_t)sequence
 {
-  if (a1)
+  if (sequence)
   {
     os_unfair_lock_lock_with_options();
-    Mutable = *(a1 + 8);
+    Mutable = *(sequence + 8);
     if (!Mutable)
     {
       Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E4A8], 0, 0, MEMORY[0x1E695E9E8]);
-      *(a1 + 8) = Mutable;
+      *(sequence + 8) = Mutable;
     }
 
     CFDictionaryRemoveValue(Mutable, a2);
 
-    os_unfair_lock_unlock((a1 + 24));
+    os_unfair_lock_unlock((sequence + 24));
   }
 }
 

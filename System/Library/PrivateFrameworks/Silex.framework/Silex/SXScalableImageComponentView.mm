@@ -1,103 +1,103 @@
 @interface SXScalableImageComponentView
 - (BOOL)allowHierarchyRemoval;
-- (BOOL)fullScreenCanvasController:(id)a3 showable:(id)a4 gestureRecognizerShouldBegin:(id)a5;
-- (BOOL)fullScreenCanvasController:(id)a3 willShowShowable:(id)a4 viewIndex:(unint64_t)a5;
-- (BOOL)gestureShouldBegin:(id)a3;
-- (BOOL)requestInteractivityFocusForFullScreenCanvasController:(id)a3;
-- (BOOL)usesThumbnailWithImageIdentifier:(id)a3;
-- (CGRect)fullScreenCanvasController:(id)a3 fullScreenFrameForShowable:(id)a4 viewIndex:(unint64_t)a5 withinRect:(CGRect)a6;
-- (CGRect)fullScreenCanvasController:(id)a3 originalFrameForShowable:(id)a4 onCanvasView:(id)a5 viewIndex:(unint64_t)a6;
+- (BOOL)fullScreenCanvasController:(id)controller showable:(id)showable gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)fullScreenCanvasController:(id)controller willShowShowable:(id)showable viewIndex:(unint64_t)index;
+- (BOOL)gestureShouldBegin:(id)begin;
+- (BOOL)requestInteractivityFocusForFullScreenCanvasController:(id)controller;
+- (BOOL)usesThumbnailWithImageIdentifier:(id)identifier;
+- (CGRect)fullScreenCanvasController:(id)controller fullScreenFrameForShowable:(id)showable viewIndex:(unint64_t)index withinRect:(CGRect)rect;
+- (CGRect)fullScreenCanvasController:(id)controller originalFrameForShowable:(id)showable onCanvasView:(id)view viewIndex:(unint64_t)index;
 - (CGRect)previousContentFrame;
 - (CGRect)transitionContentFrame;
 - (NSString)description;
-- (SXScalableImageComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 analyticsReporting:(id)a7 appStateMonitor:(id)a8 imageViewFactory:(id)a9 canvasControllerFactory:(id)a10 mediaSharingPolicyProvider:(id)a11;
+- (SXScalableImageComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory analyticsReporting:(id)reporting appStateMonitor:(id)monitor imageViewFactory:(id)viewFactory canvasControllerFactory:(id)self0 mediaSharingPolicyProvider:(id)self1;
 - (UIView)gestureView;
-- (id)componentTextStyleForIdentifier:(id)a3 inheritingFromComponentTextStyle:(id)a4;
-- (id)contentSizeCategoryForCaption:(id)a3;
-- (id)fullScreenCanvasController:(id)a3 canvasViewControllerForShowable:(id)a4 completionBlock:(id)a5;
-- (id)fullScreenCanvasController:(id)a3 captionForShowable:(id)a4 viewIndex:(unint64_t)a5;
-- (id)textResizerForCaption:(id)a3;
-- (id)textRulesForCaption:(id)a3;
-- (id)textStyleForIdentifier:(id)a3;
+- (id)componentTextStyleForIdentifier:(id)identifier inheritingFromComponentTextStyle:(id)style;
+- (id)contentSizeCategoryForCaption:(id)caption;
+- (id)fullScreenCanvasController:(id)controller canvasViewControllerForShowable:(id)showable completionBlock:(id)block;
+- (id)fullScreenCanvasController:(id)controller captionForShowable:(id)showable viewIndex:(unint64_t)index;
+- (id)textResizerForCaption:(id)caption;
+- (id)textRulesForCaption:(id)caption;
+- (id)textStyleForIdentifier:(id)identifier;
 - (void)createMediaViewEvent;
 - (void)discardContents;
 - (void)finishMediaViewEvent;
-- (void)fullScreenCanvasController:(id)a3 didHideShowable:(id)a4 viewIndex:(unint64_t)a5;
-- (void)fullScreenCanvasController:(id)a3 shouldAddGestureView:(id)a4 forShowable:(id)a5;
-- (void)fullScreenCanvasController:(id)a3 showable:(id)a4 shouldTransferToOriginalViewWithIndex:(unint64_t)a5;
-- (void)fullScreenCanvasController:(id)a3 willHideShowable:(id)a4 viewIndex:(unint64_t)a5;
-- (void)fullScreenCanvasController:(id)a3 willReturnToFullscreenForShowable:(id)a4 viewIndex:(unint64_t)a5;
-- (void)imageView:(id)a3 didLoadAnimatedImage:(id)a4;
+- (void)fullScreenCanvasController:(id)controller didHideShowable:(id)showable viewIndex:(unint64_t)index;
+- (void)fullScreenCanvasController:(id)controller shouldAddGestureView:(id)view forShowable:(id)showable;
+- (void)fullScreenCanvasController:(id)controller showable:(id)showable shouldTransferToOriginalViewWithIndex:(unint64_t)index;
+- (void)fullScreenCanvasController:(id)controller willHideShowable:(id)showable viewIndex:(unint64_t)index;
+- (void)fullScreenCanvasController:(id)controller willReturnToFullscreenForShowable:(id)showable viewIndex:(unint64_t)index;
+- (void)imageView:(id)view didLoadAnimatedImage:(id)image;
 - (void)layoutImageView;
-- (void)loadComponent:(id)a3;
-- (void)presentComponentWithChanges:(id)a3;
+- (void)loadComponent:(id)component;
+- (void)presentComponentWithChanges:(id)changes;
 - (void)renderContents;
 - (void)submitEvents;
-- (void)visibilityStateDidChangeFromState:(int64_t)a3;
+- (void)visibilityStateDidChangeFromState:(int64_t)state;
 @end
 
 @implementation SXScalableImageComponentView
 
-- (SXScalableImageComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 analyticsReporting:(id)a7 appStateMonitor:(id)a8 imageViewFactory:(id)a9 canvasControllerFactory:(id)a10 mediaSharingPolicyProvider:(id)a11
+- (SXScalableImageComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory analyticsReporting:(id)reporting appStateMonitor:(id)monitor imageViewFactory:(id)viewFactory canvasControllerFactory:(id)self0 mediaSharingPolicyProvider:(id)self1
 {
-  v23 = a9;
-  v22 = a10;
-  v21 = a11;
+  viewFactoryCopy = viewFactory;
+  controllerFactoryCopy = controllerFactory;
+  policyProviderCopy = policyProvider;
   v24.receiver = self;
   v24.super_class = SXScalableImageComponentView;
-  v18 = [(SXMediaComponentView *)&v24 initWithDOMObjectProvider:a3 viewport:a4 presentationDelegate:a5 componentStyleRendererFactory:a6 analyticsReporting:a7 appStateMonitor:a8];
+  v18 = [(SXMediaComponentView *)&v24 initWithDOMObjectProvider:provider viewport:viewport presentationDelegate:delegate componentStyleRendererFactory:factory analyticsReporting:reporting appStateMonitor:monitor];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_imageViewFactory, a9);
-    objc_storeStrong(&v19->_canvasControllerFactory, a10);
-    objc_storeStrong(&v19->_mediaSharingPolicyProvider, a11);
+    objc_storeStrong(&v18->_imageViewFactory, viewFactory);
+    objc_storeStrong(&v19->_canvasControllerFactory, controllerFactory);
+    objc_storeStrong(&v19->_mediaSharingPolicyProvider, policyProvider);
   }
 
   return v19;
 }
 
-- (void)loadComponent:(id)a3
+- (void)loadComponent:(id)component
 {
   v25.receiver = self;
   v25.super_class = SXScalableImageComponentView;
-  [(SXComponentView *)&v25 loadComponent:a3];
+  [(SXComponentView *)&v25 loadComponent:component];
   if (!self->_imageView)
   {
-    v4 = [(SXComponentView *)self DOMObjectProvider];
-    v5 = [(SXComponentView *)self component];
-    v6 = [v5 imageIdentifier];
-    v7 = [v4 imageResourceForIdentifier:v6];
+    dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+    component = [(SXComponentView *)self component];
+    imageIdentifier = [component imageIdentifier];
+    v7 = [dOMObjectProvider imageResourceForIdentifier:imageIdentifier];
 
     imageResource = self->_imageResource;
     self->_imageResource = v7;
     v9 = v7;
 
-    v10 = [(SXScalableImageComponentView *)self imageViewFactory];
-    v11 = [v10 imageViewForResource:v9];
+    imageViewFactory = [(SXScalableImageComponentView *)self imageViewFactory];
+    v11 = [imageViewFactory imageViewForResource:v9];
     imageView = self->_imageView;
     self->_imageView = v11;
 
     v13 = self->_imageView;
-    v14 = [MEMORY[0x1E69DC888] clearColor];
-    [(SXImageView *)v13 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SXImageView *)v13 setBackgroundColor:clearColor];
 
     [(SXImageView *)self->_imageView setDelegate:self];
-    v15 = [(SXComponentView *)self component];
-    v16 = [v15 accessibilityCaption];
-    [(SXImageView *)self->_imageView setAccessibilityLabel:v16];
+    component2 = [(SXComponentView *)self component];
+    accessibilityCaption = [component2 accessibilityCaption];
+    [(SXImageView *)self->_imageView setAccessibilityLabel:accessibilityCaption];
 
-    v17 = [(SXComponentView *)self contentView];
-    [v17 addSubview:self->_imageView];
+    contentView = [(SXComponentView *)self contentView];
+    [contentView addSubview:self->_imageView];
 
-    v18 = [(SXScalableImageComponentView *)self canvasControllerFactory];
-    v19 = [v18 fullscreenCanvasControllerForShowable:self];
+    canvasControllerFactory = [(SXScalableImageComponentView *)self canvasControllerFactory];
+    v19 = [canvasControllerFactory fullscreenCanvasControllerForShowable:self];
     fullScreenCanvasController = self->_fullScreenCanvasController;
     self->_fullScreenCanvasController = v19;
 
     v21 = [SXDragManager alloc];
-    v22 = [(SXScalableImageComponentView *)self mediaSharingPolicyProvider];
-    v23 = -[SXDragManager initWithSharingPolicy:dataSource:](v21, "initWithSharingPolicy:dataSource:", [v22 mediaSharingPolicy], self);
+    mediaSharingPolicyProvider = [(SXScalableImageComponentView *)self mediaSharingPolicyProvider];
+    v23 = -[SXDragManager initWithSharingPolicy:dataSource:](v21, "initWithSharingPolicy:dataSource:", [mediaSharingPolicyProvider mediaSharingPolicy], self);
     dragManager = self->_dragManager;
     self->_dragManager = v23;
 
@@ -105,50 +105,50 @@
   }
 }
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
   v29.receiver = self;
   v29.super_class = SXScalableImageComponentView;
-  [(SXComponentView *)&v29 presentComponentWithChanges:*&a3.var0 & 0xFFFFFFLL];
+  [(SXComponentView *)&v29 presentComponentWithChanges:*&changes.var0 & 0xFFFFFFLL];
   [(SXScalableImageComponentView *)self previousContentFrame];
   v5 = v4;
   v7 = v6;
   [(SXComponentView *)self contentFrame];
   if (v5 != v9 || v7 != v8)
   {
-    v11 = [(SXScalableImageComponentView *)self fullScreenCanvasController];
-    if ([v11 isFullscreen])
+    fullScreenCanvasController = [(SXScalableImageComponentView *)self fullScreenCanvasController];
+    if ([fullScreenCanvasController isFullscreen])
     {
     }
 
     else
     {
-      v12 = [(SXScalableImageComponentView *)self fullScreenCanvasController];
-      v13 = [v12 isTransitioning];
+      fullScreenCanvasController2 = [(SXScalableImageComponentView *)self fullScreenCanvasController];
+      isTransitioning = [fullScreenCanvasController2 isTransitioning];
 
-      if ((v13 & 1) == 0)
+      if ((isTransitioning & 1) == 0)
       {
         [(SXScalableImageComponentView *)self layoutImageView];
       }
     }
 
-    v14 = [(SXScalableImageComponentView *)self imageView];
+    imageView = [(SXScalableImageComponentView *)self imageView];
     [(SXComponentView *)self contentFrame];
-    [v14 setPreferredImageSize:{v15, v16}];
+    [imageView setPreferredImageSize:{v15, v16}];
 
-    v17 = [(SXScalableImageComponentView *)self fullScreenCanvasController];
-    v18 = [v17 isFullscreen];
+    fullScreenCanvasController3 = [(SXScalableImageComponentView *)self fullScreenCanvasController];
+    isFullscreen = [fullScreenCanvasController3 isFullscreen];
 
-    if ((v18 & 1) == 0)
+    if ((isFullscreen & 1) == 0)
     {
-      v19 = [(SXScalableImageComponentView *)self imageView];
-      [v19 bounds];
+      imageView2 = [(SXScalableImageComponentView *)self imageView];
+      [imageView2 bounds];
       v21 = v20;
       v23 = v22;
       v25 = v24;
       v27 = v26;
-      v28 = [(SXScalableImageComponentView *)self gestureView];
-      [v28 setFrame:{v21, v23, v25, v27}];
+      gestureView = [(SXScalableImageComponentView *)self gestureView];
+      [gestureView setFrame:{v21, v23, v25, v27}];
     }
   }
 
@@ -161,8 +161,8 @@
   v4.receiver = self;
   v4.super_class = SXScalableImageComponentView;
   [(SXComponentView *)&v4 renderContents];
-  v3 = [(SXScalableImageComponentView *)self imageView];
-  [v3 addInterestInImageQuality:0 forObject:self];
+  imageView = [(SXScalableImageComponentView *)self imageView];
+  [imageView addInterestInImageQuality:0 forObject:self];
 }
 
 - (void)discardContents
@@ -170,109 +170,109 @@
   v7.receiver = self;
   v7.super_class = SXScalableImageComponentView;
   [(SXComponentView *)&v7 discardContents];
-  v3 = [(SXScalableImageComponentView *)self imageView];
-  v4 = [v3 objectHasQualityInterest:self quality:0];
+  imageView = [(SXScalableImageComponentView *)self imageView];
+  v4 = [imageView objectHasQualityInterest:self quality:0];
 
   if (v4)
   {
-    v5 = [(SXScalableImageComponentView *)self imageView];
-    [v5 giveUpInterestForObject:self];
+    imageView2 = [(SXScalableImageComponentView *)self imageView];
+    [imageView2 giveUpInterestForObject:self];
   }
 
-  v6 = [(SXScalableImageComponentView *)self imageView];
-  [v6 setImage:0];
+  imageView3 = [(SXScalableImageComponentView *)self imageView];
+  [imageView3 setImage:0];
 }
 
-- (void)visibilityStateDidChangeFromState:(int64_t)a3
+- (void)visibilityStateDidChangeFromState:(int64_t)state
 {
   v7.receiver = self;
   v7.super_class = SXScalableImageComponentView;
   [(SXMediaComponentView *)&v7 visibilityStateDidChangeFromState:?];
   if ([(SXComponentView *)self visibilityState]== 1)
   {
-    v5 = [(SXScalableImageComponentView *)self imageView];
-    [v5 resume];
+    imageView = [(SXScalableImageComponentView *)self imageView];
+    [imageView resume];
 LABEL_6:
 
     return;
   }
 
-  v6 = [(SXComponentView *)self visibilityState];
-  if (a3 == 1 && v6 == 2)
+  visibilityState = [(SXComponentView *)self visibilityState];
+  if (state == 1 && visibilityState == 2)
   {
-    v5 = [(SXScalableImageComponentView *)self imageView];
-    [v5 pause];
+    imageView = [(SXScalableImageComponentView *)self imageView];
+    [imageView pause];
     goto LABEL_6;
   }
 }
 
-- (void)imageView:(id)a3 didLoadAnimatedImage:(id)a4
+- (void)imageView:(id)view didLoadAnimatedImage:(id)image
 {
-  [(SXMediaComponentView *)self setIsDisplayingMedia:1, a4];
+  [(SXMediaComponentView *)self setIsDisplayingMedia:1, image];
   if ([(SXComponentView *)self visibilityState]== 1)
   {
-    v5 = [(SXScalableImageComponentView *)self imageView];
-    [v5 resume];
+    imageView = [(SXScalableImageComponentView *)self imageView];
+    [imageView resume];
   }
 
-  v6 = [(SXScalableImageComponentView *)self imageView];
-  [v6 setScrubbingEnabled:1];
+  imageView2 = [(SXScalableImageComponentView *)self imageView];
+  [imageView2 setScrubbingEnabled:1];
 }
 
-- (BOOL)requestInteractivityFocusForFullScreenCanvasController:(id)a3
+- (BOOL)requestInteractivityFocusForFullScreenCanvasController:(id)controller
 {
-  v3 = self;
-  v4 = [(SXComponentView *)self presentationDelegate];
-  LOBYTE(v3) = [v4 allowInteractivityFocusForComponent:v3];
+  selfCopy = self;
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  LOBYTE(selfCopy) = [presentationDelegate allowInteractivityFocusForComponent:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)fullScreenCanvasController:(id)a3 canvasViewControllerForShowable:(id)a4 completionBlock:(id)a5
+- (id)fullScreenCanvasController:(id)controller canvasViewControllerForShowable:(id)showable completionBlock:(id)block
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(SXComponentView *)self presentationDelegate];
-  v10 = [v9 requestFullScreenCanvasViewControllerForComponent:self canvasController:v8 withCompletionBlock:v7];
+  blockCopy = block;
+  controllerCopy = controller;
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  v10 = [presentationDelegate requestFullScreenCanvasViewControllerForComponent:self canvasController:controllerCopy withCompletionBlock:blockCopy];
 
   return v10;
 }
 
-- (void)fullScreenCanvasController:(id)a3 showable:(id)a4 shouldTransferToOriginalViewWithIndex:(unint64_t)a5
+- (void)fullScreenCanvasController:(id)controller showable:(id)showable shouldTransferToOriginalViewWithIndex:(unint64_t)index
 {
-  v6 = [(SXComponentView *)self contentView:a3];
-  v7 = [(SXScalableImageComponentView *)self imageView];
-  [v6 addSubview:v7];
+  v6 = [(SXComponentView *)self contentView:controller];
+  imageView = [(SXScalableImageComponentView *)self imageView];
+  [v6 addSubview:imageView];
 
   [(SXScalableImageComponentView *)self layoutImageView];
 }
 
-- (id)fullScreenCanvasController:(id)a3 captionForShowable:(id)a4 viewIndex:(unint64_t)a5
+- (id)fullScreenCanvasController:(id)controller captionForShowable:(id)showable viewIndex:(unint64_t)index
 {
-  v6 = [(SXComponentView *)self component:a3];
-  v7 = [v6 captionComponent];
+  v6 = [(SXComponentView *)self component:controller];
+  captionComponent = [v6 captionComponent];
 
-  if (v7)
+  if (captionComponent)
   {
     v8 = [SXFullscreenCaption alloc];
-    v9 = [(SXComponentView *)self component];
-    v10 = [v9 captionComponent];
-    v11 = [(SXFullscreenCaption *)&v8->super.isa initWithCaption:v10 dataSource:self];
+    component = [(SXComponentView *)self component];
+    captionComponent2 = [component captionComponent];
+    v11 = [(SXFullscreenCaption *)&v8->super.isa initWithCaption:captionComponent2 dataSource:self];
 LABEL_5:
     v15 = v11;
 
     goto LABEL_6;
   }
 
-  v12 = [(SXComponentView *)self component];
-  v13 = [v12 caption];
+  component2 = [(SXComponentView *)self component];
+  caption = [component2 caption];
 
-  if (v13)
+  if (caption)
   {
     v14 = [SXFullscreenCaption alloc];
-    v9 = [(SXComponentView *)self component];
-    v10 = [v9 caption];
-    v11 = [(SXFullscreenCaption *)&v14->super.isa initWithText:v10 dataSource:self];
+    component = [(SXComponentView *)self component];
+    captionComponent2 = [component caption];
+    v11 = [(SXFullscreenCaption *)&v14->super.isa initWithText:captionComponent2 dataSource:self];
     goto LABEL_5;
   }
 
@@ -282,27 +282,27 @@ LABEL_6:
   return v15;
 }
 
-- (BOOL)fullScreenCanvasController:(id)a3 willShowShowable:(id)a4 viewIndex:(unint64_t)a5
+- (BOOL)fullScreenCanvasController:(id)controller willShowShowable:(id)showable viewIndex:(unint64_t)index
 {
-  v6 = [(SXScalableImageComponentView *)self imageView:a3];
-  v7 = [v6 hasLoadedImage];
+  v6 = [(SXScalableImageComponentView *)self imageView:controller];
+  hasLoadedImage = [v6 hasLoadedImage];
 
-  if (v7)
+  if (hasLoadedImage)
   {
-    v8 = [(SXComponentView *)self presentationDelegate];
-    v9 = [v8 addInteractivityFocusForComponent:self];
+    presentationDelegate = [(SXComponentView *)self presentationDelegate];
+    v9 = [presentationDelegate addInteractivityFocusForComponent:self];
 
     if (v9)
     {
-      v10 = [(SXScalableImageComponentView *)self imageView];
-      [v10 addInterestInImageQuality:1 forObject:self];
+      imageView = [(SXScalableImageComponentView *)self imageView];
+      [imageView addInterestInImageQuality:1 forObject:self];
 
       [(SXScalableImageComponentView *)self createMediaViewEvent];
     }
 
-    v11 = [(SXComponentView *)self presentationDelegate];
-    v12 = [v11 animationController];
-    [v12 stopUpdatingAnimationForComponentView:self finishAnimation:1];
+    presentationDelegate2 = [(SXComponentView *)self presentationDelegate];
+    animationController = [presentationDelegate2 animationController];
+    [animationController stopUpdatingAnimationForComponentView:self finishAnimation:1];
   }
 
   else
@@ -313,51 +313,51 @@ LABEL_6:
   return v9;
 }
 
-- (void)fullScreenCanvasController:(id)a3 willReturnToFullscreenForShowable:(id)a4 viewIndex:(unint64_t)a5
+- (void)fullScreenCanvasController:(id)controller willReturnToFullscreenForShowable:(id)showable viewIndex:(unint64_t)index
 {
-  v6 = [(SXComponentView *)self presentationDelegate:a3];
+  v6 = [(SXComponentView *)self presentationDelegate:controller];
   [v6 willReturnToFullscreenForComponent:self];
 }
 
-- (void)fullScreenCanvasController:(id)a3 didHideShowable:(id)a4 viewIndex:(unint64_t)a5
+- (void)fullScreenCanvasController:(id)controller didHideShowable:(id)showable viewIndex:(unint64_t)index
 {
-  v6 = [(SXComponentView *)self presentationDelegate:a3];
+  v6 = [(SXComponentView *)self presentationDelegate:controller];
   [v6 removeInteractivityFocusForComponent:self];
 
-  v7 = [(SXComponentView *)self presentationDelegate];
-  [v7 dismissFullscreenCanvasForComponent:self];
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  [presentationDelegate dismissFullscreenCanvasForComponent:self];
 
   [(SXComponentView *)self restoreBehavior];
-  v8 = [(SXScalableImageComponentView *)self imageView];
-  [v8 giveUpInterestForObject:self];
+  imageView = [(SXScalableImageComponentView *)self imageView];
+  [imageView giveUpInterestForObject:self];
 
-  v9 = [(SXScalableImageComponentView *)self imageView];
-  [v9 addInterestInImageQuality:0 forObject:self];
+  imageView2 = [(SXScalableImageComponentView *)self imageView];
+  [imageView2 addInterestInImageQuality:0 forObject:self];
 
   [(SXScalableImageComponentView *)self finishMediaViewEvent];
 }
 
-- (void)fullScreenCanvasController:(id)a3 willHideShowable:(id)a4 viewIndex:(unint64_t)a5
+- (void)fullScreenCanvasController:(id)controller willHideShowable:(id)showable viewIndex:(unint64_t)index
 {
-  v6 = [(SXComponentView *)self presentationDelegate:a3];
+  v6 = [(SXComponentView *)self presentationDelegate:controller];
   [v6 willDismissFullscreenCanvasForComponent:self];
 }
 
-- (CGRect)fullScreenCanvasController:(id)a3 fullScreenFrameForShowable:(id)a4 viewIndex:(unint64_t)a5 withinRect:(CGRect)a6
+- (CGRect)fullScreenCanvasController:(id)controller fullScreenFrameForShowable:(id)showable viewIndex:(unint64_t)index withinRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v11 = a3;
-  v12 = [(SXScalableImageComponentView *)self imageView];
-  [v12 bounds];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  imageView = [(SXScalableImageComponentView *)self imageView];
+  [imageView bounds];
   v14 = v13;
   rect = v15;
 
-  v16 = [(SXScalableImageComponentView *)self imageView];
-  [v16 bounds];
-  [v11 fitSizeForRect:?];
+  imageView2 = [(SXScalableImageComponentView *)self imageView];
+  [imageView2 bounds];
+  [controllerCopy fitSizeForRect:?];
   v18 = v17;
   v20 = v19;
 
@@ -391,29 +391,29 @@ LABEL_6:
   return result;
 }
 
-- (void)fullScreenCanvasController:(id)a3 shouldAddGestureView:(id)a4 forShowable:(id)a5
+- (void)fullScreenCanvasController:(id)controller shouldAddGestureView:(id)view forShowable:(id)showable
 {
-  v8 = a4;
-  v6 = [(SXScalableImageComponentView *)self imageView];
-  [v6 bounds];
-  [v8 setFrame:?];
+  viewCopy = view;
+  imageView = [(SXScalableImageComponentView *)self imageView];
+  [imageView bounds];
+  [viewCopy setFrame:?];
 
-  v7 = [(SXScalableImageComponentView *)self imageView];
-  [v7 addSubview:v8];
+  imageView2 = [(SXScalableImageComponentView *)self imageView];
+  [imageView2 addSubview:viewCopy];
 
-  [(SXScalableImageComponentView *)self setGestureView:v8];
+  [(SXScalableImageComponentView *)self setGestureView:viewCopy];
 }
 
-- (CGRect)fullScreenCanvasController:(id)a3 originalFrameForShowable:(id)a4 onCanvasView:(id)a5 viewIndex:(unint64_t)a6
+- (CGRect)fullScreenCanvasController:(id)controller originalFrameForShowable:(id)showable onCanvasView:(id)view viewIndex:(unint64_t)index
 {
-  v7 = a5;
+  viewCopy = view;
   [(SXComponentView *)self contentFrame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(SXComponentView *)self contentView];
-  [v7 convertRect:v16 fromView:{v9, v11, v13, v15}];
+  contentView = [(SXComponentView *)self contentView];
+  [viewCopy convertRect:contentView fromView:{v9, v11, v13, v15}];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -430,23 +430,23 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)fullScreenCanvasController:(id)a3 showable:(id)a4 gestureRecognizerShouldBegin:(id)a5
+- (BOOL)fullScreenCanvasController:(id)controller showable:(id)showable gestureRecognizerShouldBegin:(id)begin
 {
-  v5 = [(SXComponentView *)self presentationDelegate:a3];
-  v6 = [v5 isScrolling];
+  v5 = [(SXComponentView *)self presentationDelegate:controller];
+  isScrolling = [v5 isScrolling];
 
-  return v6 ^ 1;
+  return isScrolling ^ 1;
 }
 
 - (void)layoutImageView
 {
-  v3 = [(SXScalableImageComponentView *)self fullScreenCanvasController];
-  if ([v3 isFullscreen])
+  fullScreenCanvasController = [(SXScalableImageComponentView *)self fullScreenCanvasController];
+  if ([fullScreenCanvasController isFullscreen])
   {
-    v4 = [(SXScalableImageComponentView *)self fullScreenCanvasController];
-    v5 = [v4 isTransitioning];
+    fullScreenCanvasController2 = [(SXScalableImageComponentView *)self fullScreenCanvasController];
+    isTransitioning = [fullScreenCanvasController2 isTransitioning];
 
-    if (!v5)
+    if (!isTransitioning)
     {
       return;
     }
@@ -456,24 +456,24 @@ LABEL_6:
   {
   }
 
-  v6 = [(SXScalableImageComponentView *)self imageView];
+  imageView = [(SXScalableImageComponentView *)self imageView];
   [(SXComponentView *)self contentFrame];
-  [v6 setFrame:?];
+  [imageView setFrame:?];
 }
 
-- (BOOL)gestureShouldBegin:(id)a3
+- (BOOL)gestureShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(SXScalableImageComponentView *)self fullScreenCanvasController];
-  v6 = [v5 otherInteractivityGestureShouldBegin:v4];
+  beginCopy = begin;
+  fullScreenCanvasController = [(SXScalableImageComponentView *)self fullScreenCanvasController];
+  v6 = [fullScreenCanvasController otherInteractivityGestureShouldBegin:beginCopy];
 
   return v6;
 }
 
 - (CGRect)transitionContentFrame
 {
-  v2 = [(SXScalableImageComponentView *)self imageView];
-  [v2 frame];
+  imageView = [(SXScalableImageComponentView *)self imageView];
+  [imageView frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -490,99 +490,99 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)usesThumbnailWithImageIdentifier:(id)a3
+- (BOOL)usesThumbnailWithImageIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SXComponentView *)self component];
-  v6 = [v5 imageIdentifier];
-  v7 = [v4 isEqualToString:v6];
+  identifierCopy = identifier;
+  component = [(SXComponentView *)self component];
+  imageIdentifier = [component imageIdentifier];
+  v7 = [identifierCopy isEqualToString:imageIdentifier];
 
   return v7;
 }
 
-- (id)textResizerForCaption:(id)a3
+- (id)textResizerForCaption:(id)caption
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SXComponentView *)self DOMObjectProvider];
+  captionCopy = caption;
+  dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
   v6 = SXDefaultTextStyleIdentifierForRole(@"body");
   v26[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-  v8 = [(SXComponentView *)self component];
-  v9 = [v5 componentTextStyleForIdentifiers:v7 component:v8];
+  component = [(SXComponentView *)self component];
+  v9 = [dOMObjectProvider componentTextStyleForIdentifiers:v7 component:component];
 
   if (!v9)
   {
-    v10 = [(SXComponentView *)self DOMObjectProvider];
+    dOMObjectProvider2 = [(SXComponentView *)self DOMObjectProvider];
     v25 = @"default";
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
-    v12 = [(SXComponentView *)self component];
-    v9 = [v10 componentTextStyleForIdentifiers:v11 component:v12];
+    component2 = [(SXComponentView *)self component];
+    v9 = [dOMObjectProvider2 componentTextStyleForIdentifiers:v11 component:component2];
   }
 
-  v13 = [(SXComponentView *)self DOMObjectProvider];
-  v14 = [(SXFullscreenCaption *)v4 caption];
+  dOMObjectProvider3 = [(SXComponentView *)self DOMObjectProvider];
+  caption = [(SXFullscreenCaption *)captionCopy caption];
 
-  v15 = [v14 textStyle];
-  v16 = [(SXComponentView *)self component];
-  v17 = [v16 classification];
-  v18 = [(SXComponentView *)self component];
-  v19 = [v13 componentTextStyleForIdentifier:v15 classification:v17 component:v18];
+  textStyle = [caption textStyle];
+  component3 = [(SXComponentView *)self component];
+  classification = [component3 classification];
+  component4 = [(SXComponentView *)self component];
+  v19 = [dOMObjectProvider3 componentTextStyleForIdentifier:textStyle classification:classification component:component4];
 
   if (v19)
   {
-    v20 = [v19 fontScaling];
+    fontScaling = [v19 fontScaling];
   }
 
   else
   {
-    v20 = 1;
+    fontScaling = 1;
   }
 
   v21 = [SXTextResizer alloc];
-  v22 = [(SXComponentView *)self documentColumnLayout];
-  v23 = [(SXTextResizer *)&v21->super.isa initWithColumnLayout:v22 defaultTextStyle:v9 fontScalingEnabled:v20];
+  documentColumnLayout = [(SXComponentView *)self documentColumnLayout];
+  v23 = [(SXTextResizer *)&v21->super.isa initWithColumnLayout:documentColumnLayout defaultTextStyle:v9 fontScalingEnabled:fontScaling];
 
   return v23;
 }
 
-- (id)textRulesForCaption:(id)a3
+- (id)textRulesForCaption:(id)caption
 {
-  v3 = [(SXComponentView *)self component];
-  v4 = [v3 classification];
-  v5 = [v4 textRules];
+  component = [(SXComponentView *)self component];
+  classification = [component classification];
+  textRules = [classification textRules];
 
-  return v5;
+  return textRules;
 }
 
-- (id)textStyleForIdentifier:(id)a3
+- (id)textStyleForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SXComponentView *)self DOMObjectProvider];
-  v6 = [(SXComponentView *)self component];
-  v7 = [v5 textStyleForIdentifier:v4 component:v6];
+  identifierCopy = identifier;
+  dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+  component = [(SXComponentView *)self component];
+  v7 = [dOMObjectProvider textStyleForIdentifier:identifierCopy component:component];
 
   return v7;
 }
 
-- (id)componentTextStyleForIdentifier:(id)a3 inheritingFromComponentTextStyle:(id)a4
+- (id)componentTextStyleForIdentifier:(id)identifier inheritingFromComponentTextStyle:(id)style
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SXComponentView *)self DOMObjectProvider];
-  v9 = [(SXComponentView *)self component];
-  v10 = [v8 componentTextStyleForIdentifier:v7 inheritingFromComponentTextStyle:v6 component:v9];
+  styleCopy = style;
+  identifierCopy = identifier;
+  dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+  component = [(SXComponentView *)self component];
+  v10 = [dOMObjectProvider componentTextStyleForIdentifier:identifierCopy inheritingFromComponentTextStyle:styleCopy component:component];
 
   return v10;
 }
 
-- (id)contentSizeCategoryForCaption:(id)a3
+- (id)contentSizeCategoryForCaption:(id)caption
 {
-  v3 = [(SXComponentView *)self presentationDelegate];
-  v4 = [v3 presentationAttributes];
-  v5 = [v4 contentSizeCategory];
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  presentationAttributes = [presentationDelegate presentationAttributes];
+  contentSizeCategory = [presentationAttributes contentSizeCategory];
 
-  return v5;
+  return contentSizeCategory;
 }
 
 - (void)submitEvents
@@ -595,35 +595,35 @@ LABEL_6:
 
 - (void)createMediaViewEvent
 {
-  v3 = [(SXScalableImageComponentView *)self activeViewEvent];
-  if (!v3)
+  activeViewEvent = [(SXScalableImageComponentView *)self activeViewEvent];
+  if (!activeViewEvent)
   {
-    v4 = [(SXScalableImageComponentView *)self imageView];
-    v5 = [v4 image];
+    imageView = [(SXScalableImageComponentView *)self imageView];
+    image = [imageView image];
 
-    if (!v5)
+    if (!image)
     {
       return;
     }
 
     v6 = [(SXMediaComponentView *)self mediaEventForClass:objc_opt_class()];
     [(SXScalableImageComponentView *)self setActiveViewEvent:v6];
-    v3 = v6;
+    activeViewEvent = v6;
   }
 }
 
 - (void)finishMediaViewEvent
 {
-  v3 = [(SXScalableImageComponentView *)self activeViewEvent];
+  activeViewEvent = [(SXScalableImageComponentView *)self activeViewEvent];
 
-  if (v3)
+  if (activeViewEvent)
   {
-    v4 = [(SXScalableImageComponentView *)self activeViewEvent];
-    [v4 determineEndDate];
+    activeViewEvent2 = [(SXScalableImageComponentView *)self activeViewEvent];
+    [activeViewEvent2 determineEndDate];
 
-    v5 = [(SXMediaComponentView *)self analyticsReporting];
-    v6 = [(SXScalableImageComponentView *)self activeViewEvent];
-    [v5 reportEvent:v6];
+    analyticsReporting = [(SXMediaComponentView *)self analyticsReporting];
+    activeViewEvent3 = [(SXScalableImageComponentView *)self activeViewEvent];
+    [analyticsReporting reportEvent:activeViewEvent3];
 
     [(SXScalableImageComponentView *)self setActiveViewEvent:0];
   }
@@ -633,8 +633,8 @@ LABEL_6:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(SXScalableImageComponentView *)self imageResource];
-  [v5 dimensions];
+  imageResource = [(SXScalableImageComponentView *)self imageResource];
+  [imageResource dimensions];
   v6 = NSStringFromCGSize(v10);
   v7 = [v3 stringWithFormat:@"<%@: %p>: %@", v4, self, v6];
 
@@ -645,11 +645,11 @@ LABEL_6:
 {
   v7.receiver = self;
   v7.super_class = SXScalableImageComponentView;
-  v3 = [(SXComponentView *)&v7 allowHierarchyRemoval];
-  v4 = [(SXScalableImageComponentView *)self fullScreenCanvasController];
-  v5 = [v4 isFullscreen];
+  allowHierarchyRemoval = [(SXComponentView *)&v7 allowHierarchyRemoval];
+  fullScreenCanvasController = [(SXScalableImageComponentView *)self fullScreenCanvasController];
+  isFullscreen = [fullScreenCanvasController isFullscreen];
 
-  return (v5 ^ 1) & v3;
+  return (isFullscreen ^ 1) & allowHierarchyRemoval;
 }
 
 - (CGRect)previousContentFrame

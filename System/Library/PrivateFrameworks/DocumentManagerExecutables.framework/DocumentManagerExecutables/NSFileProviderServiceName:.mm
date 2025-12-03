@@ -7,7 +7,7 @@
 - (uint64_t)NSFileProviderService
 {
   v4 = a2;
-  v5 = *(a1 + 32);
+  v5 = *(self + 32);
   if (a2)
   {
     type metadata accessor for NSFileProviderServiceName(0);

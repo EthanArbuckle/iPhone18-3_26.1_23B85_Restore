@@ -1,6 +1,6 @@
 @interface _PLLazyPreheatData
-+ (id)dataWithContentsOfFile:(id)a3;
-- (_PLLazyPreheatData)initWithContentsOfFile:(id)a3;
++ (id)dataWithContentsOfFile:(id)file;
+- (_PLLazyPreheatData)initWithContentsOfFile:(id)file;
 - (const)bytes;
 - (unint64_t)length;
 - (void)_loadData;
@@ -38,25 +38,25 @@
   }
 }
 
-- (_PLLazyPreheatData)initWithContentsOfFile:(id)a3
+- (_PLLazyPreheatData)initWithContentsOfFile:(id)file
 {
-  v5 = a3;
+  fileCopy = file;
   v9.receiver = self;
   v9.super_class = _PLLazyPreheatData;
   v6 = [(_PLLazyPreheatData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_path, a3);
+    objc_storeStrong(&v6->_path, file);
   }
 
   return v7;
 }
 
-+ (id)dataWithContentsOfFile:(id)a3
++ (id)dataWithContentsOfFile:(id)file
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithContentsOfFile:v3];
+  fileCopy = file;
+  v4 = [objc_alloc(objc_opt_class()) initWithContentsOfFile:fileCopy];
 
   return v4;
 }

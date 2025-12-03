@@ -7,13 +7,13 @@
 
 - (void)pressedSegmentControl
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionCollectionViewBlankEntrySectionHeaderView.pressedSegmentControl()();
 }
 
 - (void)pressedNewEntryButton
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionCollectionViewBlankEntrySectionHeaderView.pressedNewEntryButton()();
 }
 

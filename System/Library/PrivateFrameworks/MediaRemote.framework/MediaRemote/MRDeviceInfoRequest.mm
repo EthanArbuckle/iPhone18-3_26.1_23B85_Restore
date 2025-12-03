@@ -1,9 +1,9 @@
 @interface MRDeviceInfoRequest
 + (MRDeviceInfo)localDeviceInfo;
-+ (id)cachedDeviceInfoForOrigin:(id)a3;
-+ (id)deviceInfoForOrigin:(id)a3;
-+ (void)deviceInfoForOrigin:(id)a3 queue:(id)a4 completion:(id)a5;
-+ (void)deviceInfoForUID:(id)a3 queue:(id)a4 completion:(id)a5;
++ (id)cachedDeviceInfoForOrigin:(id)origin;
++ (id)deviceInfoForOrigin:(id)origin;
++ (void)deviceInfoForOrigin:(id)origin queue:(id)queue completion:(id)completion;
++ (void)deviceInfoForUID:(id)d queue:(id)queue completion:(id)completion;
 @end
 
 @implementation MRDeviceInfoRequest
@@ -17,30 +17,30 @@
   return v4;
 }
 
-+ (id)deviceInfoForOrigin:(id)a3
++ (id)deviceInfoForOrigin:(id)origin
 {
-  v4 = a3;
-  if (v4)
+  originCopy = origin;
+  if (originCopy)
   {
-    v5 = v4;
+    origin = originCopy;
     goto LABEL_4;
   }
 
   v6 = +[MRMediaRemoteServiceClient sharedServiceClient];
-  v7 = [v6 activePlayerPath];
-  v5 = [v7 origin];
+  activePlayerPath = [v6 activePlayerPath];
+  origin = [activePlayerPath origin];
 
-  if (v5)
+  if (origin)
   {
 LABEL_4:
-    v8 = [a1 cachedDeviceInfoForOrigin:v5];
+    v8 = [self cachedDeviceInfoForOrigin:origin];
     if (v8)
     {
       goto LABEL_6;
     }
   }
 
-  v9 = [[MRPlayerPath alloc] initWithOrigin:v5 client:0 player:0];
+  v9 = [[MRPlayerPath alloc] initWithOrigin:origin client:0 player:0];
   v10 = MRGetSharedService();
   v8 = MRMediaRemoteServiceCopyDeviceInfo(v10, v9);
 
@@ -50,34 +50,34 @@ LABEL_6:
   return v11;
 }
 
-+ (id)cachedDeviceInfoForOrigin:(id)a3
++ (id)cachedDeviceInfoForOrigin:(id)origin
 {
-  v5 = a3;
-  if (!v5)
+  originCopy = origin;
+  if (!originCopy)
   {
-    [(MRDeviceInfoRequest *)a2 cachedDeviceInfoForOrigin:a1];
+    [(MRDeviceInfoRequest *)a2 cachedDeviceInfoForOrigin:self];
   }
 
-  v6 = [[MRPlayerPath alloc] initWithOrigin:v5 client:0 player:0];
+  v6 = [[MRPlayerPath alloc] initWithOrigin:originCopy client:0 player:0];
   v7 = +[MRNowPlayingOriginClientManager sharedManager];
   v8 = [v7 originClientRequestsForPlayerPath:v6];
 
-  v9 = [v8 deviceInfo];
-  if (!v9)
+  deviceInfo = [v8 deviceInfo];
+  if (!deviceInfo)
   {
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __49__MRDeviceInfoRequest_cachedDeviceInfoForOrigin___block_invoke;
     v15 = &unk_1E769C018;
-    v17 = a1;
-    v16 = v5;
+    selfCopy = self;
+    v16 = originCopy;
     if (cachedDeviceInfoForOrigin__onceToken != -1)
     {
       dispatch_once(&cachedDeviceInfoForOrigin__onceToken, &v12);
     }
   }
 
-  v10 = [v9 copy];
+  v10 = [deviceInfo copy];
 
   return v10;
 }
@@ -130,16 +130,16 @@ void __49__MRDeviceInfoRequest_cachedDeviceInfoForOrigin___block_invoke_3(uint64
   [v5 postNotification:@"kMRDeviceInfoDidChangeNotification" userInfo:v6 object:0];
 }
 
-+ (void)deviceInfoForOrigin:(id)a3 queue:(id)a4 completion:(id)a5
++ (void)deviceInfoForOrigin:(id)origin queue:(id)queue completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  originCopy = origin;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v8)
+    if (!queueCopy)
     {
-      v8 = MEMORY[0x1E69E96A0];
+      queueCopy = MEMORY[0x1E69E96A0];
       v10 = MEMORY[0x1E69E96A0];
     }
 
@@ -148,12 +148,12 @@ void __49__MRDeviceInfoRequest_cachedDeviceInfoForOrigin___block_invoke_3(uint64
     v21[1] = 3221225472;
     v21[2] = __60__MRDeviceInfoRequest_deviceInfoForOrigin_queue_completion___block_invoke;
     v21[3] = &unk_1E76A4728;
-    v8 = v8;
-    v22 = v8;
-    v23 = v9;
+    queueCopy = queueCopy;
+    v22 = queueCopy;
+    v23 = completionCopy;
     v11 = MEMORY[0x1A58E3570](v21);
     v12 = v11;
-    if (v7)
+    if (originCopy)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -161,9 +161,9 @@ void __49__MRDeviceInfoRequest_cachedDeviceInfoForOrigin___block_invoke_3(uint64
       block[3] = &unk_1E769AB28;
       v13 = &v20;
       v20 = v11;
-      v19 = v7;
+      v19 = originCopy;
       v14 = v12;
-      dispatch_async(v8, block);
+      dispatch_async(queueCopy, block);
     }
 
     else
@@ -175,7 +175,7 @@ void __49__MRDeviceInfoRequest_cachedDeviceInfoForOrigin___block_invoke_3(uint64
       v13 = &v17;
       v17 = v11;
       v15 = v11;
-      MRMediaRemoteGetActiveOrigin(v8, v16);
+      MRMediaRemoteGetActiveOrigin(queueCopy, v16);
     }
   }
 }
@@ -227,15 +227,15 @@ void __60__MRDeviceInfoRequest_deviceInfoForOrigin_queue_completion___block_invo
   dispatch_async(v7, block);
 }
 
-+ (void)deviceInfoForUID:(id)a3 queue:(id)a4 completion:(id)a5
++ (void)deviceInfoForUID:(id)d queue:(id)queue completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  dCopy = d;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    [MRDeviceInfoRequest deviceInfoForUID:a2 queue:a1 completion:?];
-    if (v10)
+    [MRDeviceInfoRequest deviceInfoForUID:a2 queue:self completion:?];
+    if (queueCopy)
     {
       goto LABEL_4;
     }
@@ -243,23 +243,23 @@ void __60__MRDeviceInfoRequest_deviceInfoForOrigin_queue_completion___block_invo
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!queueCopy)
   {
 LABEL_3:
-    v10 = MEMORY[0x1E69E96A0];
+    queueCopy = MEMORY[0x1E69E96A0];
     v12 = MEMORY[0x1E69E96A0];
   }
 
 LABEL_4:
-  v13 = [[MRDestination alloc] initWithOutputDeviceUID:v9];
+  v13 = [[MRDestination alloc] initWithOutputDeviceUID:dCopy];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __57__MRDeviceInfoRequest_deviceInfoForUID_queue_completion___block_invoke;
   v16[3] = &unk_1E76A4778;
-  v17 = v10;
-  v18 = v11;
-  v14 = v11;
-  v15 = v10;
+  v17 = queueCopy;
+  v18 = completionCopy;
+  v14 = completionCopy;
+  v15 = queueCopy;
   [MRDestinationResolver resolveDestination:v13 level:0 timeout:v16 completion:7.0];
 }
 

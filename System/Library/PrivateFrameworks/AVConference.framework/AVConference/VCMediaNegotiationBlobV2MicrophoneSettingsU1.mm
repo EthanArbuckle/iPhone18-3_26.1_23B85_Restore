@@ -1,31 +1,31 @@
 @interface VCMediaNegotiationBlobV2MicrophoneSettingsU1
-+ (int)flagFromPayload:(int)a3;
-+ (int)payloadFromFlag:(int)a3;
-- (BOOL)isEqual:(id)a3;
++ (int)flagFromPayload:(int)payload;
++ (int)payloadFromFlag:(int)flag;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)audioPayloads;
-- (VCMediaNegotiationBlobV2MicrophoneSettingsU1)initWithSSRC:(unsigned int)a3 audioPayloads:(id)a4 u1AuthTagEnabled:(BOOL)a5;
-- (id)cipherSuitesAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VCMediaNegotiationBlobV2MicrophoneSettingsU1)initWithSSRC:(unsigned int)c audioPayloads:(id)payloads u1AuthTagEnabled:(BOOL)enabled;
+- (id)cipherSuitesAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCipherSuites:(id)a3;
+- (int)StringAsCipherSuites:(id)suites;
 - (int)cipherSuites;
 - (unint64_t)hash;
-- (unsigned)payloadBitmapWithAudioPayloads:(id)a3;
+- (unsigned)payloadBitmapWithAudioPayloads:(id)payloads;
 - (unsigned)payloads;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)printWithLogFile:(void *)a3 prefix:(id)a4;
-- (void)setHasPayloads:(BOOL)a3;
-- (void)setHasRtpSSRC:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)printWithLogFile:(void *)file prefix:(id)prefix;
+- (void)setHasPayloads:(BOOL)payloads;
+- (void)setHasRtpSSRC:(BOOL)c;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobV2MicrophoneSettingsU1
 
-- (void)setHasRtpSSRC:(BOOL)a3
+- (void)setHasRtpSSRC:(BOOL)c
 {
-  if (a3)
+  if (c)
   {
     v3 = 4;
   }
@@ -51,9 +51,9 @@
   }
 }
 
-- (void)setHasPayloads:(BOOL)a3
+- (void)setHasPayloads:(BOOL)payloads
 {
-  if (a3)
+  if (payloads)
   {
     v3 = 2;
   }
@@ -79,23 +79,23 @@
   }
 }
 
-- (id)cipherSuitesAsString:(int)a3
+- (id)cipherSuitesAsString:(int)string
 {
-  if (a3 > 7)
+  if (string > 7)
   {
-    if (a3 == 8)
+    if (string == 8)
     {
       return @"CipherAES256AuthSHA280RCCM2Deferred";
     }
 
-    if (a3 != 16)
+    if (string != 16)
     {
-      if (a3 == 31)
+      if (string == 31)
       {
         return @"SupportedMask";
       }
 
-      return [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+      return [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
     }
 
     return @"CipherAES256AuthSHA232RCCM2Deferred";
@@ -103,53 +103,53 @@
 
   else
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       return @"CipherAES128AuthNoneRCCM3";
     }
 
-    if (a3 != 2)
+    if (string != 2)
     {
-      if (a3 == 4)
+      if (string == 4)
       {
         return @"CipherAES128AuthSHA232RCCM2Deferred";
       }
 
-      return [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+      return [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
     }
 
     return @"CipherAES128AuthSHA280RCCM2Deferred";
   }
 }
 
-- (int)StringAsCipherSuites:(id)a3
+- (int)StringAsCipherSuites:(id)suites
 {
-  if ([a3 isEqualToString:@"CipherAES128AuthNoneRCCM3"])
+  if ([suites isEqualToString:@"CipherAES128AuthNoneRCCM3"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"CipherAES128AuthSHA280RCCM2Deferred"])
+  if ([suites isEqualToString:@"CipherAES128AuthSHA280RCCM2Deferred"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"CipherAES128AuthSHA232RCCM2Deferred"])
+  if ([suites isEqualToString:@"CipherAES128AuthSHA232RCCM2Deferred"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"CipherAES256AuthSHA280RCCM2Deferred"])
+  if ([suites isEqualToString:@"CipherAES256AuthSHA280RCCM2Deferred"])
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"CipherAES256AuthSHA232RCCM2Deferred"])
+  if ([suites isEqualToString:@"CipherAES256AuthSHA232RCCM2Deferred"])
   {
     return 16;
   }
 
-  if ([a3 isEqualToString:@"SupportedMask"])
+  if ([suites isEqualToString:@"SupportedMask"])
   {
     return 31;
   }
@@ -167,18 +167,18 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_rtpSSRC), @"rtpSSRC"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_rtpSSRC), @"rtpSSRC"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
 LABEL_3:
       if ((has & 1) == 0)
       {
-        return v3;
+        return dictionary;
       }
 
 LABEL_7:
@@ -212,8 +212,8 @@ LABEL_7:
           case 4:
             v6 = @"CipherAES128AuthSHA232RCCM2Deferred";
 LABEL_21:
-            [v3 setObject:v6 forKey:@"cipherSuites"];
-            return v3;
+            [dictionary setObject:v6 forKey:@"cipherSuites"];
+            return dictionary;
         }
       }
 
@@ -227,16 +227,16 @@ LABEL_21:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_payloads), @"payloads"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_payloads), @"payloads"}];
   if (*&self->_has)
   {
     goto LABEL_7;
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 4) == 0)
@@ -274,13 +274,13 @@ LABEL_7:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 4) = self->_rtpSSRC;
-    *(a3 + 20) |= 4u;
+    *(to + 4) = self->_rtpSSRC;
+    *(to + 20) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -291,8 +291,8 @@ LABEL_3:
       }
 
 LABEL_7:
-      *(a3 + 2) = self->_cipherSuites;
-      *(a3 + 20) |= 1u;
+      *(to + 2) = self->_cipherSuites;
+      *(to + 20) |= 1u;
       return;
     }
   }
@@ -302,17 +302,17 @@ LABEL_7:
     goto LABEL_3;
   }
 
-  *(a3 + 3) = self->_payloads;
-  *(a3 + 20) |= 2u;
+  *(to + 3) = self->_payloads;
+  *(to + 20) |= 2u;
   if (*&self->_has)
   {
     goto LABEL_7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -349,20 +349,20 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 20) & 4) == 0 || self->_rtpSSRC != *(a3 + 4))
+      if ((*(equal + 20) & 4) == 0 || self->_rtpSSRC != *(equal + 4))
       {
         goto LABEL_16;
       }
     }
 
-    else if ((*(a3 + 20) & 4) != 0)
+    else if ((*(equal + 20) & 4) != 0)
     {
 LABEL_16:
       LOBYTE(v5) = 0;
@@ -371,21 +371,21 @@ LABEL_16:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 20) & 2) == 0 || self->_payloads != *(a3 + 3))
+      if ((*(equal + 20) & 2) == 0 || self->_payloads != *(equal + 3))
       {
         goto LABEL_16;
       }
     }
 
-    else if ((*(a3 + 20) & 2) != 0)
+    else if ((*(equal + 20) & 2) != 0)
     {
       goto LABEL_16;
     }
 
-    LOBYTE(v5) = (*(a3 + 20) & 1) == 0;
+    LOBYTE(v5) = (*(equal + 20) & 1) == 0;
     if (*&self->_has)
     {
-      if ((*(a3 + 20) & 1) == 0 || self->_cipherSuites != *(a3 + 2))
+      if ((*(equal + 20) & 1) == 0 || self->_cipherSuites != *(equal + 2))
       {
         goto LABEL_16;
       }
@@ -437,14 +437,14 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 20);
+  v3 = *(from + 20);
   if ((v3 & 4) != 0)
   {
-    self->_rtpSSRC = *(a3 + 4);
+    self->_rtpSSRC = *(from + 4);
     *&self->_has |= 4u;
-    v3 = *(a3 + 20);
+    v3 = *(from + 20);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -454,36 +454,36 @@ LABEL_3:
       }
 
 LABEL_7:
-      self->_cipherSuites = *(a3 + 2);
+      self->_cipherSuites = *(from + 2);
       *&self->_has |= 1u;
       return;
     }
   }
 
-  else if ((*(a3 + 20) & 2) == 0)
+  else if ((*(from + 20) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_payloads = *(a3 + 3);
+  self->_payloads = *(from + 3);
   *&self->_has |= 2u;
-  if (*(a3 + 20))
+  if (*(from + 20))
   {
     goto LABEL_7;
   }
 }
 
-- (VCMediaNegotiationBlobV2MicrophoneSettingsU1)initWithSSRC:(unsigned int)a3 audioPayloads:(id)a4 u1AuthTagEnabled:(BOOL)a5
+- (VCMediaNegotiationBlobV2MicrophoneSettingsU1)initWithSSRC:(unsigned int)c audioPayloads:(id)payloads u1AuthTagEnabled:(BOOL)enabled
 {
-  v5 = a5;
-  v7 = *&a3;
+  enabledCopy = enabled;
+  v7 = *&c;
   v8 = [(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)self init];
   if (!v8)
   {
     return v8;
   }
 
-  if (![a4 count])
+  if (![payloads count])
   {
     [VCMediaNegotiationBlobV2MicrophoneSettingsU1(Utils) initWithSSRC:audioPayloads:u1AuthTagEnabled:];
 LABEL_13:
@@ -496,10 +496,10 @@ LABEL_13:
     [(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)v8 setRtpSSRC:v7];
   }
 
-  v9 = [(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)v8 payloadBitmapWithAudioPayloads:a4];
+  v9 = [(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)v8 payloadBitmapWithAudioPayloads:payloads];
   if (!v9)
   {
-    [VCMediaNegotiationBlobV2MicrophoneSettingsU1(Utils) initWithSSRC:a4 audioPayloads:? u1AuthTagEnabled:?];
+    [VCMediaNegotiationBlobV2MicrophoneSettingsU1(Utils) initWithSSRC:payloads audioPayloads:? u1AuthTagEnabled:?];
     goto LABEL_13;
   }
 
@@ -509,7 +509,7 @@ LABEL_13:
     [(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)v8 setPayloads:v10];
   }
 
-  v11 = [VCMediaNegotiationBlobV2 pruneDisabledCipherSuites:[VCMediaNegotiationBlobV2SettingsU1 negotiationCipherSuitesFromMediaStreamCipherSuites:[VCEncryptionRules supportedCipherSuitesForStreamGroupID:1835623282 isOneToOne:1]] u1AuthTagEnabled:v5];
+  v11 = [VCMediaNegotiationBlobV2 pruneDisabledCipherSuites:[VCMediaNegotiationBlobV2SettingsU1 negotiationCipherSuitesFromMediaStreamCipherSuites:[VCEncryptionRules supportedCipherSuitesForStreamGroupID:1835623282 isOneToOne:1]] u1AuthTagEnabled:enabledCopy];
   if (v11 != [(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)v8 cipherSuites])
   {
     [(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)v8 setCipherSuites:v11];
@@ -521,10 +521,10 @@ LABEL_13:
 - (NSSet)audioPayloads
 {
   v3 = [MEMORY[0x1E695DFA8] set];
-  v4 = [(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)self payloads];
-  if (v4)
+  payloads = [(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)self payloads];
+  if (payloads)
   {
-    v5 = v4;
+    v5 = payloads;
     v6 = 1;
     do
     {
@@ -549,19 +549,19 @@ LABEL_13:
   return v3;
 }
 
-- (void)printWithLogFile:(void *)a3 prefix:(id)a4
+- (void)printWithLogFile:(void *)file prefix:(id)prefix
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E696AD60] stringWithFormat:@"[%lu] %@", objc_msgSend(-[VCMediaNegotiationBlobV2MicrophoneSettingsU1 data](self, "data"), "length"), a4];
-  [v6 appendFormat:@"Mic settings (U+1): "];
+  prefix = [MEMORY[0x1E696AD60] stringWithFormat:@"[%lu] %@", objc_msgSend(-[VCMediaNegotiationBlobV2MicrophoneSettingsU1 data](self, "data"), "length"), prefix];
+  [prefix appendFormat:@"Mic settings (U+1): "];
   if ((*&self->_has & 4) != 0)
   {
-    [v6 appendFormat:@"ssrc=%08x ", -[VCMediaNegotiationBlobV2MicrophoneSettingsU1 rtpSSRC](self, "rtpSSRC")];
+    [prefix appendFormat:@"ssrc=%08x ", -[VCMediaNegotiationBlobV2MicrophoneSettingsU1 rtpSSRC](self, "rtpSSRC")];
   }
 
-  v7 = [(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)self payloads];
-  v8 = v7;
-  [v6 appendFormat:@"payloads=0x%x [", v7];
+  payloads = [(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)self payloads];
+  v8 = payloads;
+  [prefix appendFormat:@"payloads=0x%x [", payloads];
   if (v8)
   {
     v9 = @"%@";
@@ -626,7 +626,7 @@ LABEL_19:
       }
 
 LABEL_23:
-      [v6 appendFormat:v9, v11];
+      [prefix appendFormat:v9, v11];
       v9 = @",%@";
 LABEL_24:
       v8 &= ~v10;
@@ -644,10 +644,10 @@ LABEL_24:
     }
   }
 
-  [v6 appendString:@"] "];
-  [VCMediaNegotiationBlobV2SettingsU1 appendCipherSuiteFlags:[(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)self cipherSuites] toDescription:v6];
-  v13 = [v6 UTF8String];
-  VRLogfilePrintWithTimestamp(a3, "%s\n", v14, v15, v16, v17, v18, v19, v13);
+  [prefix appendString:@"] "];
+  [VCMediaNegotiationBlobV2SettingsU1 appendCipherSuiteFlags:[(VCMediaNegotiationBlobV2MicrophoneSettingsU1 *)self cipherSuites] toDescription:prefix];
+  uTF8String = [prefix UTF8String];
+  VRLogfilePrintWithTimestamp(file, "%s\n", v14, v15, v16, v17, v18, v19, uTF8String);
   if (VRTraceGetErrorLogLevelForModule() > 5)
   {
     v20 = VRTraceErrorLogLevelToCSTR();
@@ -661,24 +661,24 @@ LABEL_24:
       v26 = 1024;
       v27 = 85;
       v28 = 2112;
-      v29 = v6;
+      v29 = prefix;
       _os_log_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %@", buf, 0x26u);
     }
   }
 }
 
-+ (int)flagFromPayload:(int)a3
++ (int)flagFromPayload:(int)payload
 {
-  if (a3 > 103)
+  if (payload > 103)
   {
-    if (a3 == 104)
+    if (payload == 104)
     {
       return 1;
     }
 
-    if (a3 != 108)
+    if (payload != 108)
     {
-      if (a3 == 113)
+      if (payload == 113)
       {
         return 32;
       }
@@ -691,14 +691,14 @@ LABEL_24:
 
   else
   {
-    if (a3 == 13)
+    if (payload == 13)
     {
       return 4;
     }
 
-    if (a3 != 20)
+    if (payload != 20)
     {
-      if (a3 == 101)
+      if (payload == 101)
       {
         return 64;
       }
@@ -710,18 +710,18 @@ LABEL_24:
   }
 }
 
-+ (int)payloadFromFlag:(int)a3
++ (int)payloadFromFlag:(int)flag
 {
-  if (a3 > 7)
+  if (flag > 7)
   {
-    if (a3 == 8)
+    if (flag == 8)
     {
       return 20;
     }
 
-    if (a3 != 32)
+    if (flag != 32)
     {
-      if (a3 == 64)
+      if (flag == 64)
       {
         return 101;
       }
@@ -734,14 +734,14 @@ LABEL_24:
 
   else
   {
-    if (a3 == 1)
+    if (flag == 1)
     {
       return 104;
     }
 
-    if (a3 != 2)
+    if (flag != 2)
     {
-      if (a3 == 4)
+      if (flag == 4)
       {
         return 13;
       }
@@ -753,14 +753,14 @@ LABEL_24:
   }
 }
 
-- (unsigned)payloadBitmapWithAudioPayloads:(id)a3
+- (unsigned)payloadBitmapWithAudioPayloads:(id)payloads
 {
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  v4 = [payloads countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (!v4)
   {
     return 0;
@@ -775,13 +775,13 @@ LABEL_24:
     {
       if (*v12 != v7)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(payloads);
       }
 
       v6 |= +[VCMediaNegotiationBlobV2MicrophoneSettingsU1 flagFromPayload:](VCMediaNegotiationBlobV2MicrophoneSettingsU1, "flagFromPayload:", [*(*(&v11 + 1) + 8 * i) unsignedIntValue]);
     }
 
-    v5 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+    v5 = [payloads countByEnumeratingWithState:&v11 objects:v10 count:16];
   }
 
   while (v5);

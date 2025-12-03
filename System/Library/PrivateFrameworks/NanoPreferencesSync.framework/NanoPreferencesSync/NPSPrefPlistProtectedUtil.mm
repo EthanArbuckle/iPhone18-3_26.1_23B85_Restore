@@ -1,20 +1,20 @@
 @interface NPSPrefPlistProtectedUtil
-+ (BOOL)isPlistProtectedAtPath:(id)a3;
++ (BOOL)isPlistProtectedAtPath:(id)path;
 @end
 
 @implementation NPSPrefPlistProtectedUtil
 
-+ (BOOL)isPlistProtectedAtPath:(id)a3
++ (BOOL)isPlistProtectedAtPath:(id)path
 {
-  v3 = a3;
-  if (!v3)
+  pathCopy = path;
+  if (!pathCopy)
   {
     v11 = [MEMORY[0x1E695DF30] exceptionWithName:@"NPSPrefPlistProtectedUtil" reason:@"Path cannot be nil" userInfo:0];
     objc_exception_throw(v11);
   }
 
-  v4 = v3;
-  v5 = open_dprotected_np([v3 UTF8String], 0, 0, 1);
+  v4 = pathCopy;
+  v5 = open_dprotected_np([pathCopy UTF8String], 0, 0, 1);
   if (v5 == -1)
   {
     v7 = 0xFFFFFFFFLL;

@@ -1,5 +1,5 @@
 @interface B389LinkingViewController
-- (_TtC18SharingViewService25B389LinkingViewController)initWithContentView:(id)a3;
+- (_TtC18SharingViewService25B389LinkingViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100014F34();
 }
 
-- (_TtC18SharingViewService25B389LinkingViewController)initWithContentView:(id)a3
+- (_TtC18SharingViewService25B389LinkingViewController)initWithContentView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

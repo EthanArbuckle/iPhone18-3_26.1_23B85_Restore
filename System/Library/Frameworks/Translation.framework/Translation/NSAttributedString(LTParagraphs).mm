@@ -11,9 +11,9 @@
 - (id)_ltAttributedStringByTrimmingCharactersInSet:()LTParagraphs
 {
   v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:a1];
-  v6 = [v5 string];
-  v7 = [v6 rangeOfCharacterFromSet:v4];
+  v5 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:self];
+  string = [v5 string];
+  v7 = [string rangeOfCharacterFromSet:v4];
   v9 = v8;
 
   if (!v7)
@@ -21,22 +21,22 @@
     do
     {
       [v5 replaceCharactersInRange:0 withString:{v9, &stru_284DBB9B8}];
-      v10 = [v5 string];
-      v11 = [v10 rangeOfCharacterFromSet:v4];
+      string2 = [v5 string];
+      v11 = [string2 rangeOfCharacterFromSet:v4];
       v9 = v12;
     }
 
     while (!v11);
   }
 
-  v13 = [v5 string];
-  v14 = [v13 rangeOfCharacterFromSet:v4 options:4];
+  string3 = [v5 string];
+  v14 = [string3 rangeOfCharacterFromSet:v4 options:4];
   v16 = v15;
 
   while (v14 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v17 = [v5 string];
-    v18 = [v17 length] - 1;
+    string4 = [v5 string];
+    v18 = [string4 length] - 1;
 
     if (v14 != v18)
     {
@@ -44,8 +44,8 @@
     }
 
     [v5 replaceCharactersInRange:v14 withString:{v16, &stru_284DBB9B8}];
-    v19 = [v5 string];
-    v14 = [v19 rangeOfCharacterFromSet:v4 options:4];
+    string5 = [v5 string];
+    v14 = [string5 rangeOfCharacterFromSet:v4 options:4];
     v16 = v20;
   }
 
@@ -56,11 +56,11 @@
 {
   v30 = *MEMORY[0x277D85DE8];
   v2 = [objc_alloc(MEMORY[0x277CD89E0]) initWithUnit:2];
-  v3 = [a1 string];
-  [v2 setString:v3];
+  string = [self string];
+  [v2 setString:string];
 
   v23 = v2;
-  v4 = [v2 tokensForRange:{0, objc_msgSend(a1, "length")}];
+  v4 = [v2 tokensForRange:{0, objc_msgSend(self, "length")}];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
@@ -81,10 +81,10 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * i) rangeValue];
-        v13 = [a1 attributedSubstringFromRange:{v11, v12}];
-        v14 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-        v15 = [v13 _ltAttributedStringByTrimmingCharactersInSet:v14];
+        rangeValue = [*(*(&v24 + 1) + 8 * i) rangeValue];
+        v13 = [self attributedSubstringFromRange:{rangeValue, v12}];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+        v15 = [v13 _ltAttributedStringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
         if ([v15 length])
         {
@@ -103,16 +103,16 @@
     if ([v5 count])
     {
       v17 = [v5 objectAtIndexedSubscript:0];
-      v18 = [v17 sentences];
-      if ([v18 count] < 2)
+      sentences = [v17 sentences];
+      if ([sentences count] < 2)
       {
         v16 = MEMORY[0x277CBEBF8];
       }
 
       else
       {
-        v19 = [v5 firstObject];
-        v28 = v19;
+        firstObject = [v5 firstObject];
+        v28 = firstObject;
         v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
       }
 
@@ -141,11 +141,11 @@ LABEL_19:
 {
   v24 = *MEMORY[0x277D85DE8];
   v2 = [objc_alloc(MEMORY[0x277CD89E0]) initWithUnit:1];
-  v3 = [a1 string];
-  [v2 setString:v3];
+  string = [self string];
+  [v2 setString:string];
 
   v18 = v2;
-  v4 = [v2 tokensForRange:{0, objc_msgSend(a1, "length")}];
+  v4 = [v2 tokensForRange:{0, objc_msgSend(self, "length")}];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19 = 0u;
   v20 = 0u;
@@ -166,10 +166,10 @@ LABEL_19:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v19 + 1) + 8 * i) rangeValue];
-        v13 = [a1 attributedSubstringFromRange:{v11, v12}];
-        v14 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-        v15 = [v13 _ltAttributedStringByTrimmingCharactersInSet:v14];
+        rangeValue = [*(*(&v19 + 1) + 8 * i) rangeValue];
+        v13 = [self attributedSubstringFromRange:{rangeValue, v12}];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+        v15 = [v13 _ltAttributedStringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
         if ([v15 length])
         {
@@ -195,7 +195,7 @@ LABEL_19:
   v8 = a3;
   v9 = [[v6 alloc] initWithString:v7];
 
-  v10 = [a1 lt_attributedStringByJoiningComponents:v8 withAttributedString:v9];
+  v10 = [self lt_attributedStringByJoiningComponents:v8 withAttributedString:v9];
 
   return v10;
 }

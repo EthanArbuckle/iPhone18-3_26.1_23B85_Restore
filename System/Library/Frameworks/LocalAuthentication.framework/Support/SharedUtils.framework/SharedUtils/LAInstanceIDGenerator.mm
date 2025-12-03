@@ -1,7 +1,7 @@
 @interface LAInstanceIDGenerator
 + (LAInstanceIDGenerator)sharedInstance;
 - (LAInstanceIDGenerator)init;
-- (unint64_t)nextInstanceIDInDomain:(id)a3;
+- (unint64_t)nextInstanceIDInDomain:(id)domain;
 @end
 
 @implementation LAInstanceIDGenerator
@@ -40,31 +40,31 @@ uint64_t __39__LAInstanceIDGenerator_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (unint64_t)nextInstanceIDInDomain:(id)a3
+- (unint64_t)nextInstanceIDInDomain:(id)domain
 {
   currentIDs = self->_currentIDs;
-  v5 = a3;
-  v6 = [(NSMutableDictionary *)currentIDs objectForKeyedSubscript:v5];
+  domainCopy = domain;
+  v6 = [(NSMutableDictionary *)currentIDs objectForKeyedSubscript:domainCopy];
   v7 = v6;
   if (!v6)
   {
     v6 = &unk_1F5A79320;
   }
 
-  v8 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  if (v8 == -1)
+  if (unsignedIntegerValue == -1)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = v8 + 1;
+    v9 = unsignedIntegerValue + 1;
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v9];
-  [(NSMutableDictionary *)self->_currentIDs setObject:v10 forKeyedSubscript:v5];
+  [(NSMutableDictionary *)self->_currentIDs setObject:v10 forKeyedSubscript:domainCopy];
 
   return v9;
 }

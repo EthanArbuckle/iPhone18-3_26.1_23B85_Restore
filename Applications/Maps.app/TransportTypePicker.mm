@@ -1,21 +1,21 @@
 @interface TransportTypePicker
 - (NSArray)types;
-- (TransportTypePicker)initWithCoder:(id)a3;
-- (TransportTypePicker)initWithFrame:(CGRect)a3;
+- (TransportTypePicker)initWithCoder:(id)coder;
+- (TransportTypePicker)initWithFrame:(CGRect)frame;
 - (TransportTypePickerDelegate)delegate;
 - (id)_types;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)_customInit;
-- (void)_didSelectSegment:(id)a3;
-- (void)_didSelectSegmentInControl:(id)a3;
-- (void)_didSelectType:(int64_t)a3;
-- (void)_updateSegmentsForSelectedTransportType:(int64_t)a3;
+- (void)_didSelectSegment:(id)segment;
+- (void)_didSelectSegmentInControl:(id)control;
+- (void)_didSelectType:(int64_t)type;
+- (void)_updateSegmentsForSelectedTransportType:(int64_t)type;
 - (void)_updateSubviews;
 - (void)dealloc;
-- (void)offlineStatusChanged:(id)a3;
-- (void)setSelectedType:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)offlineStatusChanged:(id)changed;
+- (void)setSelectedType:(int64_t)type;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TransportTypePicker
@@ -27,14 +27,14 @@
   return WeakRetained;
 }
 
-- (void)_updateSegmentsForSelectedTransportType:(int64_t)a3
+- (void)_updateSegmentsForSelectedTransportType:(int64_t)type
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(TransportTypePicker *)self segments];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  segments = [(TransportTypePicker *)self segments];
+  v6 = [segments countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -46,68 +46,68 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(segments);
         }
 
-        [*(*(&v12 + 1) + 8 * v9) setSelected:{objc_msgSend(*(*(&v12 + 1) + 8 * v9), "transportType") == a3}];
+        [*(*(&v12 + 1) + 8 * v9) setSelected:{objc_msgSend(*(*(&v12 + 1) + 8 * v9), "transportType") == type}];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [segments countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(TransportTypePicker *)self types];
-  v11 = [NSNumber numberWithInteger:a3];
-  -[UISegmentedControl setSelectedSegmentIndex:](self->_segmentedControl, "setSelectedSegmentIndex:", [v10 indexOfObject:v11]);
+  types = [(TransportTypePicker *)self types];
+  v11 = [NSNumber numberWithInteger:type];
+  -[UISegmentedControl setSelectedSegmentIndex:](self->_segmentedControl, "setSelectedSegmentIndex:", [types indexOfObject:v11]);
 }
 
-- (void)_didSelectType:(int64_t)a3
+- (void)_didSelectType:(int64_t)type
 {
   [(TransportTypePicker *)self setSelectedType:?];
-  v5 = [(TransportTypePicker *)self delegate];
-  [v5 transportTypePicker:self typeSelected:a3];
+  delegate = [(TransportTypePicker *)self delegate];
+  [delegate transportTypePicker:self typeSelected:type];
 }
 
-- (void)_didSelectSegmentInControl:(id)a3
+- (void)_didSelectSegmentInControl:(id)control
 {
-  v4 = [a3 selectedSegmentIndex];
-  v5 = [(TransportTypePicker *)self types];
-  v6 = [v5 objectAtIndexedSubscript:v4];
-  v7 = [v6 integerValue];
+  selectedSegmentIndex = [control selectedSegmentIndex];
+  types = [(TransportTypePicker *)self types];
+  v6 = [types objectAtIndexedSubscript:selectedSegmentIndex];
+  integerValue = [v6 integerValue];
 
-  [(TransportTypePicker *)self _didSelectType:v7];
+  [(TransportTypePicker *)self _didSelectType:integerValue];
 }
 
-- (void)_didSelectSegment:(id)a3
+- (void)_didSelectSegment:(id)segment
 {
-  v4 = [a3 transportType];
+  transportType = [segment transportType];
 
-  [(TransportTypePicker *)self _didSelectType:v4];
+  [(TransportTypePicker *)self _didSelectType:transportType];
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = a4;
-  v6 = [v5 identifier];
+  regionCopy = region;
+  identifier = [regionCopy identifier];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v5 identifier];
-    v9 = [v8 unsignedIntegerValue];
-    if (v9 >= [(NSMutableArray *)self->_segments count])
+    identifier2 = [regionCopy identifier];
+    unsignedIntegerValue = [identifier2 unsignedIntegerValue];
+    if (unsignedIntegerValue >= [(NSMutableArray *)self->_segments count])
     {
       v14 = 0;
     }
 
     else
     {
-      v10 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:v9];
+      v10 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:unsignedIntegerValue];
       v11 = [[UITargetedPreview alloc] initWithView:v10];
       v12 = [UIPointerEffect effectWithPreview:v11];
       [v10 frame];
@@ -124,9 +124,9 @@
   return v14;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a4;
+  requestCopy = request;
   v7 = [(NSMutableArray *)self->_segments count];
   if (v7)
   {
@@ -141,7 +141,7 @@
       y = v23.origin.y;
       width = v23.size.width;
       height = v23.size.height;
-      [v6 location];
+      [requestCopy location];
       v21.x = v15;
       v21.y = v16;
       v24.origin.x = x;
@@ -160,32 +160,32 @@
     }
 
     v18 = [NSNumber numberWithUnsignedInteger:v9];
-    v17 = [UIPointerRegion regionWithRect:v18 identifier:x, y, width, height];
+    height = [UIPointerRegion regionWithRect:v18 identifier:x, y, width, height];
   }
 
   else
   {
 LABEL_5:
-    v17 = 0;
+    height = 0;
   }
 
-  return v17;
+  return height;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v12.receiver = self;
   v12.super_class = TransportTypePicker;
-  [(TransportTypePicker *)&v12 traitCollectionDidChange:v4];
-  v5 = [(TransportTypePicker *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
-  if (v6 == [v4 userInterfaceIdiom])
+  [(TransportTypePicker *)&v12 traitCollectionDidChange:changeCopy];
+  traitCollection = [(TransportTypePicker *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+  if (userInterfaceIdiom == [changeCopy userInterfaceIdiom])
   {
-    v7 = [(TransportTypePicker *)self traitCollection];
-    [v7 displayScale];
+    traitCollection2 = [(TransportTypePicker *)self traitCollection];
+    [traitCollection2 displayScale];
     v9 = v8;
-    [v4 displayScale];
+    [changeCopy displayScale];
     v11 = v10;
 
     if (v9 == v11)
@@ -202,7 +202,7 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)offlineStatusChanged:(id)a3
+- (void)offlineStatusChanged:(id)changed
 {
   types = self->_types;
   self->_types = 0;
@@ -210,11 +210,11 @@ LABEL_6:
   [(TransportTypePicker *)self _updateSubviews];
 }
 
-- (void)setSelectedType:(int64_t)a3
+- (void)setSelectedType:(int64_t)type
 {
-  if (self->_selectedType != a3)
+  if (self->_selectedType != type)
   {
-    self->_selectedType = a3;
+    self->_selectedType = type;
     [(TransportTypePicker *)self _updateSegmentsForSelectedTransportType:?];
   }
 }
@@ -224,9 +224,9 @@ LABEL_6:
   v2 = [[NSMutableArray alloc] initWithObjects:{&off_1016E9BC0, &off_1016E9BD8, &off_1016E9BF0, &off_1016E9C08, 0}];
   v3 = sub_100016C50();
   v4 = +[MapsOfflineUIHelper sharedHelper];
-  v5 = [v4 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v4 isUsingOfflineMaps];
 
-  if (v5)
+  if (isUsingOfflineMaps)
   {
     v6 = 1;
   }
@@ -251,9 +251,9 @@ LABEL_6:
   types = self->_types;
   if (!types)
   {
-    v4 = [(TransportTypePicker *)self _types];
+    _types = [(TransportTypePicker *)self _types];
     v5 = self->_types;
-    self->_types = v4;
+    self->_types = _types;
 
     types = self->_types;
   }
@@ -272,13 +272,13 @@ LABEL_6:
     segmentStackView = self->_segmentStackView;
     self->_segmentStackView = 0;
 
-    v5 = [(TransportTypePicker *)self types];
+    types = [(TransportTypePicker *)self types];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_100D66B48;
     v34[3] = &unk_101652D40;
     v34[4] = self;
-    v6 = sub_100021DB0(v5, v34);
+    v6 = sub_100021DB0(types, v34);
 
     segmentedControl = self->_segmentedControl;
     if (segmentedControl)
@@ -318,8 +318,8 @@ LABEL_6:
       v13 = objc_alloc_init(NSMutableArray);
       LODWORD(v14) = 1148846080;
       v15 = [(UISegmentedControl *)self->_segmentedControl _maps_constraintsEqualToEdgesOfView:self priority:v14];
-      v16 = [v15 allConstraints];
-      [v13 addObjectsFromArray:v16];
+      allConstraints = [v15 allConstraints];
+      [v13 addObjectsFromArray:allConstraints];
 
       [NSLayoutConstraint activateConstraints:v13];
     }
@@ -337,13 +337,13 @@ LABEL_6:
     v19 = self->_segments;
     self->_segments = v18;
 
-    v20 = [(TransportTypePicker *)self types];
+    types2 = [(TransportTypePicker *)self types];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_100D66DD8;
     v32[3] = &unk_101652D90;
     v32[4] = self;
-    [v20 enumerateObjectsUsingBlock:v32];
+    [types2 enumerateObjectsUsingBlock:v32];
 
     v21 = self->_segmentStackView;
     if (v21)
@@ -374,8 +374,8 @@ LABEL_6:
       v28 = objc_alloc_init(NSMutableArray);
       LODWORD(v29) = 1148846080;
       v30 = [(UIStackView *)self->_segmentStackView _maps_constraintsEqualToEdgesOfView:self priority:v29];
-      v31 = [v30 allConstraints];
-      [v28 addObjectsFromArray:v31];
+      allConstraints2 = [v30 allConstraints];
+      [v28 addObjectsFromArray:allConstraints2];
 
       [NSLayoutConstraint activateConstraints:v28];
     }
@@ -392,9 +392,9 @@ LABEL_6:
 
   [(TransportTypePicker *)self setTranslatesAutoresizingMaskIntoConstraints:0];
   v4 = +[UIColor clearColor];
-  v5 = [v4 CGColor];
-  v6 = [(TransportTypePicker *)self layer];
-  [v6 setBackgroundColor:v5];
+  cGColor = [v4 CGColor];
+  layer = [(TransportTypePicker *)self layer];
+  [layer setBackgroundColor:cGColor];
 
   LODWORD(v7) = 1148846080;
   [(TransportTypePicker *)self setContentCompressionResistancePriority:1 forAxis:v7];
@@ -412,11 +412,11 @@ LABEL_6:
   }
 }
 
-- (TransportTypePicker)initWithCoder:(id)a3
+- (TransportTypePicker)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TransportTypePicker;
-  v3 = [(TransportTypePicker *)&v6 initWithCoder:a3];
+  v3 = [(TransportTypePicker *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -426,11 +426,11 @@ LABEL_6:
   return v4;
 }
 
-- (TransportTypePicker)initWithFrame:(CGRect)a3
+- (TransportTypePicker)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TransportTypePicker;
-  v3 = [(TransportTypePicker *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TransportTypePicker *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

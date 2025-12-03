@@ -1,129 +1,129 @@
 @interface IDSURIEncrypter
-- (BOOL)_isReplayError:(id)a3;
+- (BOOL)_isReplayError:(id)error;
 - (BOOL)_serverDisabledDupeReadReceipts;
-- (IDSURIEncrypter)initWithPeerIDManager:(id)a3 fullDeviceIdentityContainerEncrypter:(id)a4 rateLimiter:(id)a5 replayCommitter:(id)a6 publicIdentityCache:(id)a7 avoidMainQueue:(BOOL)a8;
-- (IDSURIEncrypter)initWithPeerIDManager:(id)a3 fullDeviceIdentitySigner:(id)a4 rateLimiter:(id)a5 publicIdentityCache:(id)a6 avoidMainQueue:(BOOL)a7;
+- (IDSURIEncrypter)initWithPeerIDManager:(id)manager fullDeviceIdentityContainerEncrypter:(id)encrypter rateLimiter:(id)limiter replayCommitter:(id)committer publicIdentityCache:(id)cache avoidMainQueue:(BOOL)queue;
+- (IDSURIEncrypter)initWithPeerIDManager:(id)manager fullDeviceIdentitySigner:(id)signer rateLimiter:(id)limiter publicIdentityCache:(id)cache avoidMainQueue:(BOOL)queue;
 - (__SecKey)_copyLookupSecVerificationIdentity;
 - (id)_lookupEndpoint;
-- (id)_lookupIdentityWithLastResortFallback:(BOOL *)a3;
-- (id)_lookupNGMVerificationIdentityShouldUseLastResort:(BOOL)a3 usedLastResort:(BOOL *)a4;
-- (id)legacyEncryptData:(id)a3 withEncryptedAttributes:(id)a4 usedIdentifier:(id *)a5 error:(id *)a6;
-- (void)decryptData:(id)a3 decryptionContext:(id)a4 usingIdentifier:(id)a5 onQueue:(id)a6 isRetry:(BOOL)a7 replayKey:(id)a8 withCompletion:(id)a9;
-- (void)legacyEncryptData:(id)a3 withEncryptedAttributes:(id)a4 onQueue:(id)a5 withCompletion:(id)a6;
-- (void)setupWithLocalURI:(id)a3 remoteURI:(id)a4 pushToken:(id)a5 service:(id)a6 cert:(id)a7;
-- (void)setupWithLocalURI:(id)a3 remoteURI:(id)a4 pushToken:(id)a5 service:(id)a6 cert:(id)a7 keyType:(unsigned int)a8 keyDiversifier:(id)obj;
-- (void)verifySignedData:(id)a3 matchesData:(id)a4 forType:(int64_t)a5 onQueue:(id)a6 withCompletion:(id)a7;
+- (id)_lookupIdentityWithLastResortFallback:(BOOL *)fallback;
+- (id)_lookupNGMVerificationIdentityShouldUseLastResort:(BOOL)resort usedLastResort:(BOOL *)lastResort;
+- (id)legacyEncryptData:(id)data withEncryptedAttributes:(id)attributes usedIdentifier:(id *)identifier error:(id *)error;
+- (void)decryptData:(id)data decryptionContext:(id)context usingIdentifier:(id)identifier onQueue:(id)queue isRetry:(BOOL)retry replayKey:(id)key withCompletion:(id)completion;
+- (void)legacyEncryptData:(id)data withEncryptedAttributes:(id)attributes onQueue:(id)queue withCompletion:(id)completion;
+- (void)setupWithLocalURI:(id)i remoteURI:(id)rI pushToken:(id)token service:(id)service cert:(id)cert;
+- (void)setupWithLocalURI:(id)i remoteURI:(id)rI pushToken:(id)token service:(id)service cert:(id)cert keyType:(unsigned int)type keyDiversifier:(id)obj;
+- (void)verifySignedData:(id)data matchesData:(id)matchesData forType:(int64_t)type onQueue:(id)queue withCompletion:(id)completion;
 @end
 
 @implementation IDSURIEncrypter
 
-- (IDSURIEncrypter)initWithPeerIDManager:(id)a3 fullDeviceIdentityContainerEncrypter:(id)a4 rateLimiter:(id)a5 replayCommitter:(id)a6 publicIdentityCache:(id)a7 avoidMainQueue:(BOOL)a8
+- (IDSURIEncrypter)initWithPeerIDManager:(id)manager fullDeviceIdentityContainerEncrypter:(id)encrypter rateLimiter:(id)limiter replayCommitter:(id)committer publicIdentityCache:(id)cache avoidMainQueue:(BOOL)queue
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  managerCopy = manager;
+  encrypterCopy = encrypter;
+  limiterCopy = limiter;
+  committerCopy = committer;
+  cacheCopy = cache;
   v23.receiver = self;
   v23.super_class = IDSURIEncrypter;
   v18 = [(IDSURIEncrypter *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_peerIDManager, a3);
-    objc_storeStrong(&v19->_fullDeviceIdentityContainerEncrypter, a4);
-    objc_storeStrong(&v19->_rateLimiter, a5);
-    objc_storeStrong(&v19->_replayCommitter, a6);
-    objc_storeStrong(&v19->_publicIdentityCache, a7);
-    v19->_avoidMainQueue = a8;
+    objc_storeStrong(&v18->_peerIDManager, manager);
+    objc_storeStrong(&v19->_fullDeviceIdentityContainerEncrypter, encrypter);
+    objc_storeStrong(&v19->_rateLimiter, limiter);
+    objc_storeStrong(&v19->_replayCommitter, committer);
+    objc_storeStrong(&v19->_publicIdentityCache, cache);
+    v19->_avoidMainQueue = queue;
     v19->_forceLegacy = 0;
   }
 
   return v19;
 }
 
-- (IDSURIEncrypter)initWithPeerIDManager:(id)a3 fullDeviceIdentitySigner:(id)a4 rateLimiter:(id)a5 publicIdentityCache:(id)a6 avoidMainQueue:(BOOL)a7
+- (IDSURIEncrypter)initWithPeerIDManager:(id)manager fullDeviceIdentitySigner:(id)signer rateLimiter:(id)limiter publicIdentityCache:(id)cache avoidMainQueue:(BOOL)queue
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  managerCopy = manager;
+  signerCopy = signer;
+  limiterCopy = limiter;
+  cacheCopy = cache;
   v20.receiver = self;
   v20.super_class = IDSURIEncrypter;
   v17 = [(IDSURIEncrypter *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_peerIDManager, a3);
-    objc_storeStrong(&v18->_fullDeviceIdentitySigner, a4);
-    objc_storeStrong(&v18->_rateLimiter, a5);
-    objc_storeStrong(&v18->_publicIdentityCache, a6);
-    v18->_avoidMainQueue = a7;
+    objc_storeStrong(&v17->_peerIDManager, manager);
+    objc_storeStrong(&v18->_fullDeviceIdentitySigner, signer);
+    objc_storeStrong(&v18->_rateLimiter, limiter);
+    objc_storeStrong(&v18->_publicIdentityCache, cache);
+    v18->_avoidMainQueue = queue;
   }
 
   return v18;
 }
 
-- (void)setupWithLocalURI:(id)a3 remoteURI:(id)a4 pushToken:(id)a5 service:(id)a6 cert:(id)a7
+- (void)setupWithLocalURI:(id)i remoteURI:(id)rI pushToken:(id)token service:(id)service cert:(id)cert
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  iCopy = i;
+  rICopy = rI;
+  tokenCopy = token;
+  serviceCopy = service;
+  certCopy = cert;
   localURI = self->_localURI;
-  self->_localURI = v12;
-  v25 = v12;
+  self->_localURI = iCopy;
+  v25 = iCopy;
 
   remoteURI = self->_remoteURI;
-  self->_remoteURI = v13;
-  v19 = v13;
+  self->_remoteURI = rICopy;
+  v19 = rICopy;
 
   pushToken = self->_pushToken;
-  self->_pushToken = v14;
-  v21 = v14;
+  self->_pushToken = tokenCopy;
+  v21 = tokenCopy;
 
   service = self->_service;
-  self->_service = v15;
-  v23 = v15;
+  self->_service = serviceCopy;
+  v23 = serviceCopy;
 
   cert = self->_cert;
-  self->_cert = v16;
+  self->_cert = certCopy;
 }
 
-- (void)setupWithLocalURI:(id)a3 remoteURI:(id)a4 pushToken:(id)a5 service:(id)a6 cert:(id)a7 keyType:(unsigned int)a8 keyDiversifier:(id)obj
+- (void)setupWithLocalURI:(id)i remoteURI:(id)rI pushToken:(id)token service:(id)service cert:(id)cert keyType:(unsigned int)type keyDiversifier:(id)obj
 {
-  self->_keyType = a8;
+  self->_keyType = type;
   objc_storeStrong(&self->_keyDiversifier, obj);
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  [(IDSURIEncrypter *)self setupWithLocalURI:v19 remoteURI:v18 pushToken:v17 service:v16 cert:v15];
+  certCopy = cert;
+  serviceCopy = service;
+  tokenCopy = token;
+  rICopy = rI;
+  iCopy = i;
+  [(IDSURIEncrypter *)self setupWithLocalURI:iCopy remoteURI:rICopy pushToken:tokenCopy service:serviceCopy cert:certCopy];
 }
 
 - (id)_lookupEndpoint
 {
-  v3 = [(IDSURIEncrypter *)self peerIDManager];
-  v4 = [(IDSURIEncrypter *)self pushToken];
-  v5 = [IDSPushToken pushTokenWithData:v4 withServiceLoggingHint:self->_service];
-  v6 = [(IDSURIEncrypter *)self remoteURI];
-  v7 = [(IDSURIEncrypter *)self service];
-  v8 = [(IDSURIEncrypter *)self localURI];
-  v9 = [v3 endpointForPushToken:v5 URI:v6 service:v7 fromURI:v8];
+  peerIDManager = [(IDSURIEncrypter *)self peerIDManager];
+  pushToken = [(IDSURIEncrypter *)self pushToken];
+  v5 = [IDSPushToken pushTokenWithData:pushToken withServiceLoggingHint:self->_service];
+  remoteURI = [(IDSURIEncrypter *)self remoteURI];
+  service = [(IDSURIEncrypter *)self service];
+  localURI = [(IDSURIEncrypter *)self localURI];
+  v9 = [peerIDManager endpointForPushToken:v5 URI:remoteURI service:service fromURI:localURI];
 
   return v9;
 }
 
-- (id)_lookupIdentityWithLastResortFallback:(BOOL *)a3
+- (id)_lookupIdentityWithLastResortFallback:(BOOL *)fallback
 {
-  v5 = [(IDSURIEncrypter *)self _lookupEndpoint];
-  v6 = [v5 publicDeviceIdentityContainer];
-  if (v5)
+  _lookupEndpoint = [(IDSURIEncrypter *)self _lookupEndpoint];
+  publicDeviceIdentityContainer = [_lookupEndpoint publicDeviceIdentityContainer];
+  if (_lookupEndpoint)
   {
     v7 = 0;
-    if (!a3)
+    if (!fallback)
     {
       goto LABEL_4;
     }
@@ -131,12 +131,12 @@
     goto LABEL_3;
   }
 
-  v9 = [(IDSURIEncrypter *)self publicIdentityCache];
-  v10 = [(IDSURIEncrypter *)self pushToken];
-  v11 = [(IDSURIEncrypter *)self remoteURI];
-  v12 = [(IDSURIEncrypter *)self service];
+  publicIdentityCache = [(IDSURIEncrypter *)self publicIdentityCache];
+  pushToken = [(IDSURIEncrypter *)self pushToken];
+  remoteURI = [(IDSURIEncrypter *)self remoteURI];
+  service = [(IDSURIEncrypter *)self service];
   v16 = 0;
-  v13 = [v9 identityForToken:v10 uri:v11 service:v12 error:&v16];
+  v13 = [publicIdentityCache identityForToken:pushToken uri:remoteURI service:service error:&v16];
   v14 = v16;
 
   if (v14)
@@ -157,30 +157,30 @@
 
   v7 = v13 != 0;
 
-  v6 = v13;
-  if (a3)
+  publicDeviceIdentityContainer = v13;
+  if (fallback)
   {
 LABEL_3:
-    *a3 = v7;
+    *fallback = v7;
   }
 
 LABEL_4:
 
-  return v6;
+  return publicDeviceIdentityContainer;
 }
 
-- (BOOL)_isReplayError:(id)a3
+- (BOOL)_isReplayError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-  v6 = [v3 domain];
+  domain = [errorCopy domain];
   v7 = IDSDecryptionErrorDomain;
-  if ([v6 isEqualToString:IDSDecryptionErrorDomain] && objc_msgSend(v3, "code") == 15)
+  if ([domain isEqualToString:IDSDecryptionErrorDomain] && objc_msgSend(errorCopy, "code") == 15)
   {
-    v8 = [v5 domain];
-    if ([v8 isEqualToString:@"com.apple.messageprotection"])
+    domain2 = [v5 domain];
+    if ([domain2 isEqualToString:@"com.apple.messageprotection"])
     {
       v9 = [v5 code] == 5;
     }
@@ -196,10 +196,10 @@ LABEL_4:
     v9 = 0;
   }
 
-  v10 = [v3 domain];
-  if ([v10 isEqualToString:v7])
+  domain3 = [errorCopy domain];
+  if ([domain3 isEqualToString:v7])
   {
-    v11 = [v3 code] == 5;
+    v11 = [errorCopy code] == 5;
   }
 
   else
@@ -210,57 +210,57 @@ LABEL_4:
   return v9 || v11;
 }
 
-- (id)legacyEncryptData:(id)a3 withEncryptedAttributes:(id)a4 usedIdentifier:(id *)a5 error:(id *)a6
+- (id)legacyEncryptData:(id)data withEncryptedAttributes:(id)attributes usedIdentifier:(id *)identifier error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [(IDSURIEncrypter *)self _lookupEndpoint];
-  if (a5)
+  attributesCopy = attributes;
+  dataCopy = data;
+  _lookupEndpoint = [(IDSURIEncrypter *)self _lookupEndpoint];
+  if (identifier)
   {
-    *a5 = IDSMPLegacyIdentityIdentifier;
+    *identifier = IDSMPLegacyIdentityIdentifier;
   }
 
   fullDeviceIdentityContainerEncrypter = self->_fullDeviceIdentityContainerEncrypter;
-  v14 = [v12 publicDeviceIdentityContainer];
-  v15 = [(IDSMPFullDeviceIdentityContainerEncrypter *)fullDeviceIdentityContainerEncrypter legacyEncryptData:v11 withEncryptedAttributes:v10 withPublicDeviceIdentityContainer:v14 error:a6];
+  publicDeviceIdentityContainer = [_lookupEndpoint publicDeviceIdentityContainer];
+  v15 = [(IDSMPFullDeviceIdentityContainerEncrypter *)fullDeviceIdentityContainerEncrypter legacyEncryptData:dataCopy withEncryptedAttributes:attributesCopy withPublicDeviceIdentityContainer:publicDeviceIdentityContainer error:error];
 
   return v15;
 }
 
-- (void)legacyEncryptData:(id)a3 withEncryptedAttributes:(id)a4 onQueue:(id)a5 withCompletion:(id)a6
+- (void)legacyEncryptData:(id)data withEncryptedAttributes:(id)attributes onQueue:(id)queue withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
+  dataCopy = data;
+  attributesCopy = attributes;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10037AB08;
   v16[3] = &unk_100BD9620;
   v16[4] = self;
-  v17 = v10;
-  v19 = a5;
-  v20 = a6;
-  v18 = v11;
-  v12 = v19;
-  v13 = v20;
-  v14 = v11;
-  v15 = v10;
+  v17 = dataCopy;
+  queueCopy = queue;
+  completionCopy = completion;
+  v18 = attributesCopy;
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v14 = attributesCopy;
+  v15 = dataCopy;
   [v12 performAsyncBlock:v16];
 }
 
-- (void)decryptData:(id)a3 decryptionContext:(id)a4 usingIdentifier:(id)a5 onQueue:(id)a6 isRetry:(BOOL)a7 replayKey:(id)a8 withCompletion:(id)a9
+- (void)decryptData:(id)data decryptionContext:(id)context usingIdentifier:(id)identifier onQueue:(id)queue isRetry:(BOOL)retry replayKey:(id)key withCompletion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
-  v21 = [v16 incomingMetric];
+  dataCopy = data;
+  contextCopy = context;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  keyCopy = key;
+  completionCopy = completion;
+  incomingMetric = [contextCopy incomingMetric];
   if (CUTIsInternalInstall())
   {
-    v31 = a7;
-    v22 = [v16 command];
-    if ([v22 isEqualToNumber:&off_100C3BBC0])
+    retryCopy = retry;
+    command = [contextCopy command];
+    if ([command isEqualToNumber:&off_100C3BBC0])
     {
       v23 = ![(IDSURIEncrypter *)self _serverDisabledDupeReadReceipts];
     }
@@ -270,7 +270,7 @@ LABEL_4:
       v23 = 0;
     }
 
-    a7 = v31;
+    retry = retryCopy;
   }
 
   else
@@ -284,70 +284,70 @@ LABEL_4:
   v32[3] = &unk_100BD97B0;
   v40 = v23;
   v32[4] = self;
-  v33 = v19;
-  v34 = v21;
-  v35 = v15;
-  v36 = v16;
-  v37 = v17;
-  v41 = a7;
-  v38 = v18;
-  v39 = v20;
-  v24 = v18;
-  v25 = v17;
-  v26 = v16;
-  v27 = v15;
-  v28 = v21;
-  v29 = v20;
-  v30 = v19;
+  v33 = keyCopy;
+  v34 = incomingMetric;
+  v35 = dataCopy;
+  v36 = contextCopy;
+  v37 = identifierCopy;
+  retryCopy2 = retry;
+  v38 = queueCopy;
+  v39 = completionCopy;
+  v24 = queueCopy;
+  v25 = identifierCopy;
+  v26 = contextCopy;
+  v27 = dataCopy;
+  v28 = incomingMetric;
+  v29 = completionCopy;
+  v30 = keyCopy;
   [v24 performAsyncBlock:v32];
 }
 
-- (void)verifySignedData:(id)a3 matchesData:(id)a4 forType:(int64_t)a5 onQueue:(id)a6 withCompletion:(id)a7
+- (void)verifySignedData:(id)data matchesData:(id)matchesData forType:(int64_t)type onQueue:(id)queue withCompletion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  dataCopy = data;
+  matchesDataCopy = matchesData;
+  queueCopy = queue;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10037D4AC;
   v19[3] = &unk_100BD98C8;
   v19[4] = self;
-  v20 = v12;
-  v23 = a7;
-  v24 = a5;
-  v21 = v13;
-  v22 = v14;
-  v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  v18 = v23;
+  v20 = dataCopy;
+  completionCopy = completion;
+  typeCopy = type;
+  v21 = matchesDataCopy;
+  v22 = queueCopy;
+  v15 = queueCopy;
+  v16 = matchesDataCopy;
+  v17 = dataCopy;
+  v18 = completionCopy;
   [v15 performAsyncBlock:v19];
 }
 
-- (id)_lookupNGMVerificationIdentityShouldUseLastResort:(BOOL)a3 usedLastResort:(BOOL *)a4
+- (id)_lookupNGMVerificationIdentityShouldUseLastResort:(BOOL)resort usedLastResort:(BOOL *)lastResort
 {
   if ([(IDSURIEncrypter *)self keyType])
   {
-    v7 = 0;
+    ngmPublicDeviceIdentity = 0;
   }
 
   else
   {
-    if (a3)
+    if (resort)
     {
-      v8 = [(IDSURIEncrypter *)self _lookupIdentityWithLastResortFallback:a4];
-      v7 = [v8 ngmPublicDeviceIdentity];
+      _lookupEndpoint = [(IDSURIEncrypter *)self _lookupIdentityWithLastResortFallback:lastResort];
+      ngmPublicDeviceIdentity = [_lookupEndpoint ngmPublicDeviceIdentity];
     }
 
     else
     {
-      v8 = [(IDSURIEncrypter *)self _lookupEndpoint];
-      v9 = [v8 publicDeviceIdentityContainer];
-      v7 = [v9 ngmPublicDeviceIdentity];
+      _lookupEndpoint = [(IDSURIEncrypter *)self _lookupEndpoint];
+      publicDeviceIdentityContainer = [_lookupEndpoint publicDeviceIdentityContainer];
+      ngmPublicDeviceIdentity = [publicDeviceIdentityContainer ngmPublicDeviceIdentity];
     }
   }
 
-  return v7;
+  return ngmPublicDeviceIdentity;
 }
 
 - (__SecKey)_copyLookupSecVerificationIdentity
@@ -357,11 +357,11 @@ LABEL_4:
     return 0;
   }
 
-  v3 = [(IDSURIEncrypter *)self _lookupEndpoint];
-  if ([v3 applicationPublicDeviceIdentity])
+  _lookupEndpoint = [(IDSURIEncrypter *)self _lookupEndpoint];
+  if ([_lookupEndpoint applicationPublicDeviceIdentity])
   {
-    v4 = [(IDSURIEncrypter *)self _lookupEndpoint];
-    v5 = CFRetain([v4 applicationPublicDeviceIdentity]);
+    _lookupEndpoint2 = [(IDSURIEncrypter *)self _lookupEndpoint];
+    v5 = CFRetain([_lookupEndpoint2 applicationPublicDeviceIdentity]);
   }
 
   else
@@ -379,15 +379,15 @@ LABEL_4:
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface StepByStepUIViewController_ExtendWireless_Config
-- (BOOL)shouldChangeTextField:(id)a3 atIndexPath:(id)a4 forTextIndex:(unint64_t)a5 toString:(id)a6;
-- (StepByStepUIViewController_ExtendWireless_Config)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)shouldChangeTextField:(id)field atIndexPath:(id)path forTextIndex:(unint64_t)index toString:(id)string;
+- (StepByStepUIViewController_ExtendWireless_Config)initWithNibName:(id)name bundle:(id)bundle;
 - (id)deviceTableLabel;
-- (void)primaryActionSelected:(BOOL)a3;
+- (void)primaryActionSelected:(BOOL)selected;
 - (void)selectedDeviceUpdated;
 - (void)setupAndShowEditableBaseStationName;
 - (void)setupDevices;
 - (void)setupHeaderAndFooter;
 - (void)validateAndUpdateNextButton;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation StepByStepUIViewController_ExtendWireless_Config
 
-- (StepByStepUIViewController_ExtendWireless_Config)initWithNibName:(id)a3 bundle:(id)a4
+- (StepByStepUIViewController_ExtendWireless_Config)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = StepByStepUIViewController_ExtendWireless_Config;
-  result = [(StepByStepUIViewController_DevicePicker *)&v5 initWithNibName:a3 bundle:a4];
+  result = [(StepByStepUIViewController_DevicePicker *)&v5 initWithNibName:name bundle:bundle];
   if (result)
   {
     result->connectionType = &off_27E3830E8[0]->isa;
@@ -28,10 +28,10 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = objc_msgSend_inParamDict(self, a2, a3);
+  appearCopy = appear;
+  v5 = objc_msgSend_inParamDict(self, a2, appear);
   v7 = objc_msgSend_valueForKey_(v5, v6, @"kSBSKey_SelectorChoice");
   if (v7 && objc_msgSend_integerValue(v7, v8, v9) == 212)
   {
@@ -41,7 +41,7 @@
 
   v10.receiver = self;
   v10.super_class = StepByStepUIViewController_ExtendWireless_Config;
-  [(StepByStepUIViewController_DevicePicker *)&v10 viewWillAppear:v3];
+  [(StepByStepUIViewController_DevicePicker *)&v10 viewWillAppear:appearCopy];
 }
 
 - (void)setupAndShowEditableBaseStationName
@@ -97,17 +97,17 @@
   MEMORY[0x2821F9670](self, sel_setupAndShowEditableBaseStationName, v25);
 }
 
-- (void)primaryActionSelected:(BOOL)a3
+- (void)primaryActionSelected:(BOOL)selected
 {
-  if (a3)
+  if (selected)
   {
 
-    MEMORY[0x2821F9670](self, sel_setupAndShowEditableBaseStationName, a3);
+    MEMORY[0x2821F9670](self, sel_setupAndShowEditableBaseStationName, selected);
   }
 
   else
   {
-    v4 = objc_msgSend_tableManager(self, a2, a3);
+    v4 = objc_msgSend_tableManager(self, a2, selected);
 
     objc_msgSend_deleteSectionWithIdentifier_(v4, v5, @"WiFiName");
   }
@@ -176,10 +176,10 @@
   }
 }
 
-- (BOOL)shouldChangeTextField:(id)a3 atIndexPath:(id)a4 forTextIndex:(unint64_t)a5 toString:(id)a6
+- (BOOL)shouldChangeTextField:(id)field atIndexPath:(id)path forTextIndex:(unint64_t)index toString:(id)string
 {
-  v8 = objc_msgSend_outResultsDict(self, a2, a3, a4, a5);
-  objc_msgSend_setValue_forKey_(v8, v9, a6, @"kSBSKey_BaseName");
+  v8 = objc_msgSend_outResultsDict(self, a2, field, path, index);
+  objc_msgSend_setValue_forKey_(v8, v9, string, @"kSBSKey_BaseName");
   objc_msgSend_validateAndUpdateNextButton(self, v10, v11);
   return 1;
 }

@@ -1,47 +1,47 @@
 @interface MTTimerDuration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDuration:(id)a3;
-- (MTTimerDuration)initWithCoder:(id)a3;
-- (MTTimerDuration)initWithMTCDDuration:(id)a3;
-- (MTTimerDuration)initWithTitle:(id)a3 duration:(double)a4 sound:(id)a5;
-- (MTTimerDuration)initWithTitle:(id)a3 duration:(double)a4 sound:(id)a5 lastModified:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDuration:(id)duration;
+- (MTTimerDuration)initWithCoder:(id)coder;
+- (MTTimerDuration)initWithMTCDDuration:(id)duration;
+- (MTTimerDuration)initWithTitle:(id)title duration:(double)duration sound:(id)sound;
+- (MTTimerDuration)initWithTitle:(id)title duration:(double)duration sound:(id)sound lastModified:(id)modified;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)hashString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTTimerDuration
 
-- (MTTimerDuration)initWithTitle:(id)a3 duration:(double)a4 sound:(id)a5
+- (MTTimerDuration)initWithTitle:(id)title duration:(double)duration sound:(id)sound
 {
   v8 = MEMORY[0x1E695DF00];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 date];
-  v12 = [(MTTimerDuration *)self initWithTitle:v10 duration:v9 sound:v11 lastModified:a4];
+  soundCopy = sound;
+  titleCopy = title;
+  date = [v8 date];
+  v12 = [(MTTimerDuration *)self initWithTitle:titleCopy duration:soundCopy sound:date lastModified:duration];
 
   return v12;
 }
 
-- (MTTimerDuration)initWithTitle:(id)a3 duration:(double)a4 sound:(id)a5 lastModified:(id)a6
+- (MTTimerDuration)initWithTitle:(id)title duration:(double)duration sound:(id)sound lastModified:(id)modified
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  titleCopy = title;
+  soundCopy = sound;
+  modifiedCopy = modified;
   v17.receiver = self;
   v17.super_class = MTTimerDuration;
   v13 = [(MTTimerDuration *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    [(MTTimerDuration *)v13 setTitle:v10];
-    [(MTTimerDuration *)v14 setDuration:a4];
-    [(MTTimerDuration *)v14 setLastModified:v12];
-    if (v11)
+    [(MTTimerDuration *)v13 setTitle:titleCopy];
+    [(MTTimerDuration *)v14 setDuration:duration];
+    [(MTTimerDuration *)v14 setLastModified:modifiedCopy];
+    if (soundCopy)
     {
-      [(MTTimerDuration *)v14 setSound:v11];
+      [(MTTimerDuration *)v14 setSound:soundCopy];
     }
 
     else
@@ -54,35 +54,35 @@
   return v14;
 }
 
-- (MTTimerDuration)initWithMTCDDuration:(id)a3
+- (MTTimerDuration)initWithMTCDDuration:(id)duration
 {
-  v4 = a3;
+  durationCopy = duration;
   v12.receiver = self;
   v12.super_class = MTTimerDuration;
   v5 = [(MTTimerDuration *)&v12 init];
   if (v5)
   {
-    v6 = [v4 title];
-    [(MTTimerDuration *)v5 setTitle:v6];
+    title = [durationCopy title];
+    [(MTTimerDuration *)v5 setTitle:title];
 
-    [v4 duration];
+    [durationCopy duration];
     [(MTTimerDuration *)v5 setDuration:?];
-    v7 = [v4 lastModified];
-    [(MTTimerDuration *)v5 setLastModified:v7];
+    lastModified = [durationCopy lastModified];
+    [(MTTimerDuration *)v5 setLastModified:lastModified];
 
     v8 = [MTSound alloc];
-    v9 = [v4 sound];
-    v10 = [(MTSound *)v8 initWithMTCDSound:v9];
+    sound = [durationCopy sound];
+    v10 = [(MTSound *)v8 initWithMTCDSound:sound];
     [(MTTimerDuration *)v5 setSound:v10];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -90,7 +90,7 @@
   else
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -117,17 +117,17 @@
   return v8;
 }
 
-- (BOOL)isEqualToDuration:(id)a3
+- (BOOL)isEqualToDuration:(id)duration
 {
-  v4 = a3;
+  durationCopy = duration;
   [(MTTimerDuration *)self duration];
   v6 = v5;
-  [v4 duration];
+  [durationCopy duration];
   if (v6 == v7)
   {
-    v8 = [(MTTimerDuration *)self title];
-    v9 = [v4 title];
-    v10 = [v8 caseInsensitiveCompare:v9] == 0;
+    title = [(MTTimerDuration *)self title];
+    title2 = [durationCopy title];
+    v10 = [title caseInsensitiveCompare:title2] == 0;
   }
 
   else
@@ -138,42 +138,42 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   [(MTTimerDuration *)self duration];
   v6 = [v4 numberWithDouble:?];
-  [v5 encodeObject:v6 forKey:@"kMTTimerDurationInterval"];
+  [coderCopy encodeObject:v6 forKey:@"kMTTimerDurationInterval"];
 
-  v7 = [(MTTimerDuration *)self title];
-  [v5 encodeObject:v7 forKey:@"kMTTimerDurationTitle"];
+  title = [(MTTimerDuration *)self title];
+  [coderCopy encodeObject:title forKey:@"kMTTimerDurationTitle"];
 
-  v8 = [(MTTimerDuration *)self lastModified];
-  [v5 encodeObject:v8 forKey:@"kMTTimerDurationLastModified"];
+  lastModified = [(MTTimerDuration *)self lastModified];
+  [coderCopy encodeObject:lastModified forKey:@"kMTTimerDurationLastModified"];
 
-  v9 = [(MTTimerDuration *)self sound];
-  [v5 encodeObject:v9 forKey:@"kMTTimerDurationSound"];
+  sound = [(MTTimerDuration *)self sound];
+  [coderCopy encodeObject:sound forKey:@"kMTTimerDurationSound"];
 }
 
-- (MTTimerDuration)initWithCoder:(id)a3
+- (MTTimerDuration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MTTimerDuration;
   v5 = [(MTTimerDuration *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kMTTimerDurationInterval"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kMTTimerDurationInterval"];
     [v6 doubleValue];
     [(MTTimerDuration *)v5 setDuration:?];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kMTTimerDurationTitle"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kMTTimerDurationTitle"];
     [(MTTimerDuration *)v5 setTitle:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kMTTimerDurationLastModified"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kMTTimerDurationLastModified"];
     [(MTTimerDuration *)v5 setLastModified:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kMTTimerDurationSound"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kMTTimerDurationSound"];
     [(MTTimerDuration *)v5 setSound:v9];
   }
 
@@ -183,19 +183,19 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MTTimerDuration *)self title];
+  title = [(MTTimerDuration *)self title];
   [(MTTimerDuration *)self duration];
   v6 = v5;
-  v7 = [(MTTimerDuration *)self lastModified];
-  v8 = [v3 stringWithFormat:@"duration with title: %@, duration: %f, lastModified: %@", v4, v6, v7];
+  lastModified = [(MTTimerDuration *)self lastModified];
+  v8 = [v3 stringWithFormat:@"duration with title: %@, duration: %f, lastModified: %@", title, v6, lastModified];
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(MTTimerDuration *)self hashString];
-  v3 = [v2 hash];
+  hashString = [(MTTimerDuration *)self hashString];
+  v3 = [hashString hash];
 
   return v3;
 }
@@ -203,14 +203,14 @@
 - (id)hashString
 {
   v3 = objc_opt_new();
-  v4 = [(MTTimerDuration *)self title];
-  v5 = [v4 length];
+  title = [(MTTimerDuration *)self title];
+  v5 = [title length];
 
   if (v5)
   {
-    v6 = [(MTTimerDuration *)self title];
-    v7 = [v6 lowercaseString];
-    [v3 appendFormat:@"%@", v7];
+    title2 = [(MTTimerDuration *)self title];
+    lowercaseString = [title2 lowercaseString];
+    [v3 appendFormat:@"%@", lowercaseString];
   }
 
   [(MTTimerDuration *)self duration];
@@ -220,15 +220,15 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MTTimerDuration alloc];
-  v5 = [(MTTimerDuration *)self title];
+  title = [(MTTimerDuration *)self title];
   [(MTTimerDuration *)self duration];
   v7 = v6;
-  v8 = [(MTTimerDuration *)self sound];
-  v9 = [(MTTimerDuration *)self lastModified];
-  v10 = [(MTTimerDuration *)v4 initWithTitle:v5 duration:v8 sound:v9 lastModified:v7];
+  sound = [(MTTimerDuration *)self sound];
+  lastModified = [(MTTimerDuration *)self lastModified];
+  v10 = [(MTTimerDuration *)v4 initWithTitle:title duration:sound sound:lastModified lastModified:v7];
 
   return v10;
 }

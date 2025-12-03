@@ -1,6 +1,6 @@
 @interface NSDataAsset
-+ (id)_namedDataPrivateAccessorWithName:(id)a3 bundle:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)_namedDataPrivateAccessorWithName:(id)name bundle:(id)bundle;
+- (BOOL)isEqual:(id)equal;
 - (NSData)data;
 - (NSDataAsset)initWithName:(NSDataAssetName)name;
 - (NSDataAsset)initWithName:(NSDataAssetName)name bundle:(NSBundle *)bundle;
@@ -34,16 +34,16 @@
 
 - (NSDataAsset)initWithName:(NSDataAssetName)name
 {
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
 
-  return [(NSDataAsset *)self initWithName:name bundle:v5];
+  return [(NSDataAsset *)self initWithName:name bundle:mainBundle];
 }
 
-+ (id)_namedDataPrivateAccessorWithName:(id)a3 bundle:(id)a4
++ (id)_namedDataPrivateAccessorWithName:(id)name bundle:(id)bundle
 {
-  v5 = [MEMORY[0x1E6999368] defaultUICatalogForBundle:a4];
+  v5 = [MEMORY[0x1E6999368] defaultUICatalogForBundle:bundle];
 
-  return [v5 dataWithName:a3];
+  return [v5 dataWithName:name];
 }
 
 - (NSDataAsset)initWithName:(NSDataAssetName)name bundle:(NSBundle *)bundle
@@ -109,7 +109,7 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -118,19 +118,19 @@
   }
 
   namedData = self->_namedData;
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
 
   return [(CUINamedData *)namedData isEqual:v6];
 }
 
 - (id)description
 {
-  v3 = [(NSDataAsset *)self name];
-  v4 = [(NSDataAsset *)self typeIdentifier];
-  v5 = [(NSDataAsset *)self data];
+  name = [(NSDataAsset *)self name];
+  typeIdentifier = [(NSDataAsset *)self typeIdentifier];
+  data = [(NSDataAsset *)self data];
   v7.receiver = self;
   v7.super_class = NSDataAsset;
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ name:'%@' typeIdentifier='%@' data=%p (length=%lu)", -[NSDataAsset description](&v7, sel_description), v3, v4, v5, -[NSData length](v5, "length")];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ name:'%@' typeIdentifier='%@' data=%p (length=%lu)", -[NSDataAsset description](&v7, sel_description), name, typeIdentifier, data, -[NSData length](data, "length")];
 }
 
 @end

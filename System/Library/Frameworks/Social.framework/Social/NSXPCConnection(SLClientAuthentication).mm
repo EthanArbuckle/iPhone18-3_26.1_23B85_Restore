@@ -9,7 +9,7 @@
 - (const)sl_clientHasEntitlement:()SLClientAuthentication
 {
   v5 = a3;
-  v6 = [a1 valueForEntitlement:v5];
+  v6 = [self valueForEntitlement:v5];
   v7 = v6;
   if (v6)
   {
@@ -31,12 +31,12 @@
     _SLLog(v3, 3, @"Unable to get entitlement '%@'");
   }
 
-  v9 = [a1 sl_localizedClientName];
-  if (!v9)
+  sl_localizedClientName = [self sl_localizedClientName];
+  if (!sl_localizedClientName)
   {
     v10 = MEMORY[0x1E696AEC0];
     v16 = 648;
-    dword_1EBF3D394 = [a1 processIdentifier];
+    dword_1EBF3D394 = [self processIdentifier];
     byte_1EBF3DB1B = 0;
     v11 = sysctl(getprocname_name, 4u, &getprocname_kp, &v16, 0, 0);
     if (byte_1EBF3DB1B)
@@ -59,7 +59,7 @@
       v13 = v12;
     }
 
-    v9 = [v10 stringWithCString:v13 encoding:4];
+    sl_localizedClientName = [v10 stringWithCString:v13 encoding:4];
   }
 
   _SLLog(v3, 6, @"Entitlement %@ verified for %@: %@");
@@ -69,7 +69,7 @@
 
 - (id)sl_localizedClientName
 {
-  [a1 processIdentifier];
+  [self processIdentifier];
   v1 = SBSCopyDisplayIdentifiersForProcessID();
   if (v1)
   {
@@ -98,7 +98,7 @@
 
 - (id)_clientBundleID
 {
-  [a1 processIdentifier];
+  [self processIdentifier];
   v1 = SBSCopyBundleInfoValueForKeyAndProcessID();
 
   return v1;

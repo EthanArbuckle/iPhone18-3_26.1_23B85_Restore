@@ -1,55 +1,55 @@
 @interface MRDMutableExternalDeviceAuthTokenRecord
-- (void)setDateCreated:(id)a3;
-- (void)setDeviceID:(id)a3;
-- (void)setExpirationDate:(id)a3;
-- (void)setToken:(id)a3;
+- (void)setDateCreated:(id)created;
+- (void)setDeviceID:(id)d;
+- (void)setExpirationDate:(id)date;
+- (void)setToken:(id)token;
 @end
 
 @implementation MRDMutableExternalDeviceAuthTokenRecord
 
-- (void)setDeviceID:(id)a3
+- (void)setDeviceID:(id)d
 {
-  if (self->super._deviceID != a3)
+  if (self->super._deviceID != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     deviceID = self->super._deviceID;
     self->super._deviceID = v5;
   }
 }
 
-- (void)setToken:(id)a3
+- (void)setToken:(id)token
 {
-  if (self->super._token != a3)
+  if (self->super._token != token)
   {
-    v5 = [a3 copy];
+    v5 = [token copy];
     token = self->super._token;
     self->super._token = v5;
   }
 }
 
-- (void)setDateCreated:(id)a3
+- (void)setDateCreated:(id)created
 {
-  v5 = a3;
+  createdCopy = created;
   dateCreated = self->super._dateCreated;
   p_dateCreated = &self->super._dateCreated;
-  if (dateCreated != v5)
+  if (dateCreated != createdCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_dateCreated, a3);
-    v5 = v8;
+    v8 = createdCopy;
+    objc_storeStrong(p_dateCreated, created);
+    createdCopy = v8;
   }
 }
 
-- (void)setExpirationDate:(id)a3
+- (void)setExpirationDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   expirationDate = self->super._expirationDate;
   p_expirationDate = &self->super._expirationDate;
-  if (expirationDate != v5)
+  if (expirationDate != dateCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_expirationDate, a3);
-    v5 = v8;
+    v8 = dateCopy;
+    objc_storeStrong(p_expirationDate, date);
+    dateCopy = v8;
   }
 }
 

@@ -1,11 +1,11 @@
 @interface WLDFederatedPunchoutReporter
 + (id)sharedFederatedPunchoutReporter;
 - (WLDFederatedPunchoutReporter)init;
-- (id)_metadataForEventWithPunchout:(id)a3 playbackSummary:(id)a4;
-- (void)_configureTimerWithDate:(id)a3;
-- (void)_reportPunchoutEvent:(id)a3 withPlaybackSummary:(id)a4;
-- (void)recordPlaybackSummary:(id)a3;
-- (void)recordPunchout:(id)a3;
+- (id)_metadataForEventWithPunchout:(id)punchout playbackSummary:(id)summary;
+- (void)_configureTimerWithDate:(id)date;
+- (void)_reportPunchoutEvent:(id)event withPlaybackSummary:(id)summary;
+- (void)recordPlaybackSummary:(id)summary;
+- (void)recordPunchout:(id)punchout;
 @end
 
 @implementation WLDFederatedPunchoutReporter
@@ -53,18 +53,18 @@ void __63__WLDFederatedPunchoutReporter_sharedFederatedPunchoutReporter__block_i
   return v2;
 }
 
-- (void)recordPunchout:(id)a3
+- (void)recordPunchout:(id)punchout
 {
-  v4 = a3;
-  v5 = [(WLDFederatedPunchoutReporter *)self queue];
+  punchoutCopy = punchout;
+  queue = [(WLDFederatedPunchoutReporter *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __47__WLDFederatedPunchoutReporter_recordPunchout___block_invoke;
   v7[3] = &unk_100044E38;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = punchoutCopy;
+  selfCopy = self;
+  v6 = punchoutCopy;
+  [queue addOperationWithBlock:v7];
 }
 
 void __47__WLDFederatedPunchoutReporter_recordPunchout___block_invoke(uint64_t a1)
@@ -142,18 +142,18 @@ void __47__WLDFederatedPunchoutReporter_recordPunchout___block_invoke(uint64_t a
   }
 }
 
-- (void)recordPlaybackSummary:(id)a3
+- (void)recordPlaybackSummary:(id)summary
 {
-  v4 = a3;
-  v5 = [(WLDFederatedPunchoutReporter *)self queue];
+  summaryCopy = summary;
+  queue = [(WLDFederatedPunchoutReporter *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __54__WLDFederatedPunchoutReporter_recordPlaybackSummary___block_invoke;
   v7[3] = &unk_100044E38;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = summaryCopy;
+  selfCopy = self;
+  v6 = summaryCopy;
+  [queue addOperationWithBlock:v7];
 }
 
 void __54__WLDFederatedPunchoutReporter_recordPlaybackSummary___block_invoke(uint64_t a1)
@@ -311,13 +311,13 @@ void __54__WLDFederatedPunchoutReporter_recordPlaybackSummary___block_invoke(uin
   }
 }
 
-- (void)_reportPunchoutEvent:(id)a3 withPlaybackSummary:(id)a4
+- (void)_reportPunchoutEvent:(id)event withPlaybackSummary:(id)summary
 {
-  v6 = a3;
-  v7 = [(WLDFederatedPunchoutReporter *)self _metadataForEventWithPunchout:v6 playbackSummary:a4];
-  if ([v6 failureReason])
+  eventCopy = event;
+  v7 = [(WLDFederatedPunchoutReporter *)self _metadataForEventWithPunchout:eventCopy playbackSummary:summary];
+  if ([eventCopy failureReason])
   {
-    v8 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"WLKFederatedPunchoutErrorDomain", [v6 failureReason], 0);
+    v8 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"WLKFederatedPunchoutErrorDomain", [eventCopy failureReason], 0);
   }
 
   else
@@ -336,55 +336,55 @@ void __54__WLDFederatedPunchoutReporter_recordPlaybackSummary___block_invoke(uin
   [VSMetricsManagerObjC recordFederatedPunchoutEventWithError:v8 metadata:v7];
 }
 
-- (id)_metadataForEventWithPunchout:(id)a3 playbackSummary:(id)a4
+- (id)_metadataForEventWithPunchout:(id)punchout playbackSummary:(id)summary
 {
-  v4 = a3;
+  punchoutCopy = punchout;
   v5 = objc_alloc_init(NSMutableDictionary);
-  v6 = [v4 punchoutTime];
-  v7 = [v4 matchTime];
-  v8 = v7;
+  punchoutTime = [punchoutCopy punchoutTime];
+  matchTime = [punchoutCopy matchTime];
+  v8 = matchTime;
   v9 = 0.0;
-  if (v6 && v7)
+  if (punchoutTime && matchTime)
   {
-    [v7 timeIntervalSinceDate:v6];
+    [matchTime timeIntervalSinceDate:punchoutTime];
     v9 = round(v10 * 10.0) / 10.0;
   }
 
-  v11 = [v4 channelID];
-  [v5 wlk_setObjectUnlessNil:v11 forKey:@"channelID"];
+  channelID = [punchoutCopy channelID];
+  [v5 wlk_setObjectUnlessNil:channelID forKey:@"channelID"];
 
-  v12 = [v4 bundleID];
-  [v5 wlk_setObjectUnlessNil:v12 forKey:VSMetricFlexibleFieldBundleID];
+  bundleID = [punchoutCopy bundleID];
+  [v5 wlk_setObjectUnlessNil:bundleID forKey:VSMetricFlexibleFieldBundleID];
 
   v13 = [NSNumber numberWithDouble:v9];
   [v5 wlk_setObjectUnlessNil:v13 forKey:@"matchTimeSeconds"];
 
-  v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 ttl]);
+  v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [punchoutCopy ttl]);
   [v5 wlk_setObjectUnlessNil:v14 forKey:@"ttl"];
 
-  v15 = [v4 appAdamID];
-  [v5 wlk_setObjectUnlessNil:v15 forKey:@"adamID"];
+  appAdamID = [punchoutCopy appAdamID];
+  [v5 wlk_setObjectUnlessNil:appAdamID forKey:@"adamID"];
 
-  v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isConsented]);
+  v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [punchoutCopy isConsented]);
   [v5 wlk_setObjectUnlessNil:v16 forKey:@"consented"];
 
-  if ([v4 failureReason])
+  if ([punchoutCopy failureReason])
   {
-    v17 = [v4 canonicalID];
-    [v5 wlk_setObjectUnlessNil:v17 forKey:@"canonicalID"];
+    canonicalID = [punchoutCopy canonicalID];
+    [v5 wlk_setObjectUnlessNil:canonicalID forKey:@"canonicalID"];
 
-    v18 = [v4 externalContentID];
-    [v5 wlk_setObjectUnlessNil:v18 forKey:@"externalID"];
+    externalContentID = [punchoutCopy externalContentID];
+    [v5 wlk_setObjectUnlessNil:externalContentID forKey:@"externalID"];
   }
 
   return v5;
 }
 
-- (void)_configureTimerWithDate:(id)a3
+- (void)_configureTimerWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [(WLDFederatedPunchoutReporter *)self timer];
-  if (v5)
+  dateCopy = date;
+  timer = [(WLDFederatedPunchoutReporter *)self timer];
+  if (timer)
   {
     v6 = WLKPushNotificationsLogObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -393,14 +393,14 @@ void __54__WLDFederatedPunchoutReporter_recordPlaybackSummary___block_invoke(uin
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "WLDFederatedPunchoutReporter - New punchout recorded with pre-existing timer.", buf, 2u);
     }
 
-    dispatch_source_cancel(v5);
+    dispatch_source_cancel(timer);
   }
 
-  v7 = [(WLDFederatedPunchoutReporter *)self queue];
-  v8 = [v7 underlyingQueue];
-  v9 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v8);
+  queue = [(WLDFederatedPunchoutReporter *)self queue];
+  underlyingQueue = [queue underlyingQueue];
+  v9 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, underlyingQueue);
 
-  [v4 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   v11 = dispatch_time(0, (v10 * 1000000000.0));
   dispatch_source_set_timer(v9, v11, 0xFFFFFFFFFFFFFFFFLL, 0);
   objc_initWeak(buf, self);

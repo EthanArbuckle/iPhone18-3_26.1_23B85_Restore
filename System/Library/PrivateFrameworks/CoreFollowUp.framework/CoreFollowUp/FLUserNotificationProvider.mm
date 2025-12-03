@@ -2,18 +2,18 @@
 - (FLUserNotificationProvider)init;
 - (NotificationProviderDelegate)delegate;
 - (id)_notificationDeliveryQueue;
-- (id)actionsForFollowUpItem:(id)a3;
-- (id)createNotificationCenterWithBundleIdentifier:(id)a3;
-- (id)getNotificationCenterForBundleIdentifier:(id)a3;
-- (id)getNotificationCenterForItem:(id)a3;
-- (id)userNotificationRequestForFollowUpItem:(id)a3;
-- (void)addCategoryForFollowUpItem:(id)a3;
-- (void)postNotificationForFollowUpItem:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)shouldUpdateExistingForItem:(id)a3 completionHandler:(id)a4;
+- (id)actionsForFollowUpItem:(id)item;
+- (id)createNotificationCenterWithBundleIdentifier:(id)identifier;
+- (id)getNotificationCenterForBundleIdentifier:(id)identifier;
+- (id)getNotificationCenterForItem:(id)item;
+- (id)userNotificationRequestForFollowUpItem:(id)item;
+- (void)addCategoryForFollowUpItem:(id)item;
+- (void)postNotificationForFollowUpItem:(id)item;
+- (void)setDelegate:(id)delegate;
+- (void)shouldUpdateExistingForItem:(id)item completionHandler:(id)handler;
 - (void)start;
-- (void)tearDownNotificationsForFollowUpItem:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)tearDownNotificationsForFollowUpItem:(id)item;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation FLUserNotificationProvider
@@ -63,78 +63,78 @@
   return v3;
 }
 
-- (void)postNotificationForFollowUpItem:(id)a3
+- (void)postNotificationForFollowUpItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = os_transaction_create();
-  v6 = [(FLUserNotificationProvider *)self _notificationDeliveryQueue];
+  _notificationDeliveryQueue = [(FLUserNotificationProvider *)self _notificationDeliveryQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000045D0;
   block[3] = &unk_100020870;
-  v10 = v4;
-  v11 = self;
+  v10 = itemCopy;
+  selfCopy = self;
   v12 = v5;
   v7 = v5;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v8 = itemCopy;
+  dispatch_async(_notificationDeliveryQueue, block);
 }
 
-- (void)shouldUpdateExistingForItem:(id)a3 completionHandler:(id)a4
+- (void)shouldUpdateExistingForItem:(id)item completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 notification];
-  v9 = [v8 options];
-  v10 = [v9 containsObject:FLNotificationOptionSpringboardAlert];
+  itemCopy = item;
+  handlerCopy = handler;
+  notification = [itemCopy notification];
+  options = [notification options];
+  v10 = [options containsObject:FLNotificationOptionSpringboardAlert];
 
   if (v10)
   {
-    [(FLFoundationNotificationController *)self->_foundationNotificationController shouldUpdateExistingForItem:v6 completionHandler:v7];
+    [(FLFoundationNotificationController *)self->_foundationNotificationController shouldUpdateExistingForItem:itemCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v11 = [(FLUserNotificationProvider *)self _notificationDeliveryQueue];
+    _notificationDeliveryQueue = [(FLUserNotificationProvider *)self _notificationDeliveryQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000049C0;
     block[3] = &unk_1000208C0;
-    v13 = v6;
-    v14 = self;
-    v15 = v7;
-    dispatch_async(v11, block);
+    v13 = itemCopy;
+    selfCopy = self;
+    v15 = handlerCopy;
+    dispatch_async(_notificationDeliveryQueue, block);
   }
 }
 
-- (void)addCategoryForFollowUpItem:(id)a3
+- (void)addCategoryForFollowUpItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 categoryIdentifier];
+  itemCopy = item;
+  categoryIdentifier = [itemCopy categoryIdentifier];
 
-  if (v5)
+  if (categoryIdentifier)
   {
-    v6 = [v4 categoryIdentifier];
-    v7 = [v4 notification];
-    v8 = [v7 options];
-    if ([v8 containsObject:FLNotificationOptionLockscreen])
+    categoryIdentifier2 = [itemCopy categoryIdentifier];
+    notification = [itemCopy notification];
+    options = [notification options];
+    if ([options containsObject:FLNotificationOptionLockscreen])
     {
-      v9 = [v4 notification];
-      v10 = [v9 options];
-      v11 = [v10 containsObject:FLNotificationOptionKeepOnLockscreen];
+      notification2 = [itemCopy notification];
+      options2 = [notification2 options];
+      v11 = [options2 containsObject:FLNotificationOptionKeepOnLockscreen];
 
       if (v11)
       {
         v12 = _FLLogSystem();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
-          sub_1000103F0(v4, v12);
+          sub_1000103F0(itemCopy, v12);
         }
 
-        v13 = [v6 stringByAppendingString:@"_keepOnLockscreen"];
+        v13 = [categoryIdentifier2 stringByAppendingString:@"_keepOnLockscreen"];
 
         v14 = 131073;
-        v6 = v13;
+        categoryIdentifier2 = v13;
         goto LABEL_9;
       }
     }
@@ -145,103 +145,103 @@
 
     v14 = 1;
 LABEL_9:
-    v15 = [(FLUserNotificationProvider *)self actionsForFollowUpItem:v4];
-    v16 = [UNNotificationCategory categoryWithIdentifier:v6 actions:v15 intentIdentifiers:&__NSArray0__struct options:v14];
+    v15 = [(FLUserNotificationProvider *)self actionsForFollowUpItem:itemCopy];
+    v16 = [UNNotificationCategory categoryWithIdentifier:categoryIdentifier2 actions:v15 intentIdentifiers:&__NSArray0__struct options:v14];
 
-    v17 = [(FLUserNotificationProvider *)self getNotificationCenterForItem:v4];
-    v18 = [v17 notificationCategories];
-    v19 = [NSMutableSet setWithSet:v18];
+    v17 = [(FLUserNotificationProvider *)self getNotificationCenterForItem:itemCopy];
+    notificationCategories = [v17 notificationCategories];
+    v19 = [NSMutableSet setWithSet:notificationCategories];
 
     [v19 addObject:v16];
     [v17 setNotificationCategories:v19];
   }
 }
 
-- (id)actionsForFollowUpItem:(id)a3
+- (id)actionsForFollowUpItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = [[NSMutableArray alloc] initWithCapacity:2];
-  v5 = [v3 notification];
-  v6 = [v5 activateAction];
-  v7 = [v6 label];
+  notification = [itemCopy notification];
+  activateAction = [notification activateAction];
+  label = [activateAction label];
 
-  if ([v7 length])
+  if ([label length])
   {
-    v8 = [UNNotificationAction actionWithIdentifier:UNNotificationDefaultActionIdentifier title:v7 options:1];
+    v8 = [UNNotificationAction actionWithIdentifier:UNNotificationDefaultActionIdentifier title:label options:1];
     [v4 addObject:v8];
   }
 
-  v9 = [v3 notification];
-  v10 = [v9 clearAction];
-  v11 = [v10 label];
+  notification2 = [itemCopy notification];
+  clearAction = [notification2 clearAction];
+  label2 = [clearAction label];
 
-  if ([v11 length])
+  if ([label2 length])
   {
-    v12 = [UNNotificationAction actionWithIdentifier:UNNotificationDismissActionIdentifier title:v11 options:1];
+    v12 = [UNNotificationAction actionWithIdentifier:UNNotificationDismissActionIdentifier title:label2 options:1];
     [v4 addObject:v12];
   }
 
   return v4;
 }
 
-- (void)tearDownNotificationsForFollowUpItem:(id)a3
+- (void)tearDownNotificationsForFollowUpItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = os_transaction_create();
-  v6 = [(FLUserNotificationProvider *)self _notificationDeliveryQueue];
+  _notificationDeliveryQueue = [(FLUserNotificationProvider *)self _notificationDeliveryQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000051D4;
   block[3] = &unk_100020870;
   block[4] = self;
-  v10 = v4;
+  v10 = itemCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v8 = itemCopy;
+  dispatch_async(_notificationDeliveryQueue, block);
 }
 
-- (id)userNotificationRequestForFollowUpItem:(id)a3
+- (id)userNotificationRequestForFollowUpItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 targetBundleIdentifier];
-  v5 = [v4 isEqualToString:FLFollowUpPreferencesBundleIdentifier];
+  itemCopy = item;
+  targetBundleIdentifier = [itemCopy targetBundleIdentifier];
+  v5 = [targetBundleIdentifier isEqualToString:FLFollowUpPreferencesBundleIdentifier];
 
   if (v5)
   {
-    v6 = [v3 notification];
+    notification = [itemCopy notification];
     v7 = objc_alloc_init(UNMutableNotificationContent);
-    v8 = [v6 title];
-    [v7 setTitle:v8];
+    title = [notification title];
+    [v7 setTitle:title];
 
-    v9 = [v3 _informativeNotificationTextOrDate];
-    [v7 setBody:v9];
+    _informativeNotificationTextOrDate = [itemCopy _informativeNotificationTextOrDate];
+    [v7 setBody:_informativeNotificationTextOrDate];
 
-    v10 = [v6 subtitleText];
-    [v7 setSubtitle:v10];
+    subtitleText = [notification subtitleText];
+    [v7 setSubtitle:subtitleText];
 
-    v11 = [v3 categoryIdentifier];
-    [v7 setCategoryIdentifier:v11];
+    categoryIdentifier = [itemCopy categoryIdentifier];
+    [v7 setCategoryIdentifier:categoryIdentifier];
 
-    v12 = [v3 targetBundleIdentifier];
-    [v7 setThreadIdentifier:v12];
+    targetBundleIdentifier2 = [itemCopy targetBundleIdentifier];
+    [v7 setThreadIdentifier:targetBundleIdentifier2];
 
     [v7 setShouldPreventNotificationDismissalAfterDefaultAction:1];
-    LOBYTE(v12) = ~[v3 displayStyle];
-    v13 = [v6 shouldBackgroundDefaultAction];
-    if ((v12 & 0x1A) != 0)
+    LOBYTE(targetBundleIdentifier2) = ~[itemCopy displayStyle];
+    shouldBackgroundDefaultAction = [notification shouldBackgroundDefaultAction];
+    if ((targetBundleIdentifier2 & 0x1A) != 0)
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = v13;
+      v14 = shouldBackgroundDefaultAction;
     }
 
     [v7 setShouldBackgroundDefaultAction:v14];
-    v15 = [v3 userInfo];
-    v16 = [v15 objectForKeyedSubscript:FLFollowUpNotifyingAppIdKey];
+    userInfo = [itemCopy userInfo];
+    v16 = [userInfo objectForKeyedSubscript:FLFollowUpNotifyingAppIdKey];
     v17 = [v16 isEqualToString:FLFollowUpiCloudBundleIdentifier];
 
     if (v17)
@@ -260,31 +260,31 @@ LABEL_9:
       }
     }
 
-    v20 = [v3 expirationDate];
+    expirationDate = [itemCopy expirationDate];
 
-    if (v20)
+    if (expirationDate)
     {
-      v21 = [v3 _midnightAdjustedDate];
-      [v7 setExpirationDate:v21];
+      _midnightAdjustedDate = [itemCopy _midnightAdjustedDate];
+      [v7 setExpirationDate:_midnightAdjustedDate];
     }
 
     [v7 setShouldSuppressScreenLightUp:1];
-    v22 = [v3 notification];
-    v23 = [v22 activateAction];
+    notification2 = [itemCopy notification];
+    activateAction = [notification2 activateAction];
 
-    v24 = [v23 url];
+    v24 = [activateAction url];
 
     if (v24)
     {
-      v25 = [v23 url];
+      v25 = [activateAction url];
       [v7 setDefaultActionURL:v25];
 
       v26 = _FLLogSystem();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [v7 defaultActionURL];
+        defaultActionURL = [v7 defaultActionURL];
         *v56 = 138412290;
-        *&v56[4] = v27;
+        *&v56[4] = defaultActionURL;
         v28 = "Using the activate action URL as the default URL: %@";
 LABEL_22:
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, v28, v56, 0xCu);
@@ -297,55 +297,55 @@ LABEL_22:
       {
 LABEL_24:
         v31 = objc_alloc_init(NSMutableDictionary);
-        v32 = [v6 activateAction];
-        v33 = [v32 identifier];
+        activateAction2 = [notification activateAction];
+        identifier = [activateAction2 identifier];
 
-        if (v33)
+        if (identifier)
         {
-          v34 = [v6 activateAction];
-          v35 = [v34 identifier];
-          [v31 setObject:v35 forKey:UNNotificationDefaultActionIdentifier];
+          activateAction3 = [notification activateAction];
+          identifier2 = [activateAction3 identifier];
+          [v31 setObject:identifier2 forKey:UNNotificationDefaultActionIdentifier];
         }
 
-        v36 = [v6 clearAction];
-        v37 = [v36 identifier];
+        clearAction = [notification clearAction];
+        identifier3 = [clearAction identifier];
 
-        if (v37)
+        if (identifier3)
         {
-          v38 = [v6 clearAction];
-          v39 = [v38 identifier];
-          [v31 setObject:v39 forKey:UNNotificationDismissActionIdentifier];
+          clearAction2 = [notification clearAction];
+          identifier4 = [clearAction2 identifier];
+          [v31 setObject:identifier4 forKey:UNNotificationDismissActionIdentifier];
         }
 
         [v7 setUserInfo:v31];
-        v40 = [v6 options];
-        v41 = [v40 containsObject:FLNotificationOptionBannerAlert];
+        options = [notification options];
+        v41 = [options containsObject:FLNotificationOptionBannerAlert];
 
         v42 = v41;
-        v43 = [v6 options];
-        v44 = [v43 containsObject:FLNotificationOptionLockscreen];
+        options2 = [notification options];
+        v44 = [options2 containsObject:FLNotificationOptionLockscreen];
 
         if (v44)
         {
           v42 |= 2uLL;
-          v45 = [v3 categoryIdentifier];
-          if (v45)
+          categoryIdentifier2 = [itemCopy categoryIdentifier];
+          if (categoryIdentifier2)
           {
-            v46 = v45;
-            v47 = [v6 options];
-            v48 = [v47 containsObject:FLNotificationOptionKeepOnLockscreen];
+            v46 = categoryIdentifier2;
+            options3 = [notification options];
+            v48 = [options3 containsObject:FLNotificationOptionKeepOnLockscreen];
 
             if (v48)
             {
-              v49 = [v3 categoryIdentifier];
-              v50 = [v49 stringByAppendingString:@"_keepOnLockscreen"];
+              categoryIdentifier3 = [itemCopy categoryIdentifier];
+              v50 = [categoryIdentifier3 stringByAppendingString:@"_keepOnLockscreen"];
               [v7 setCategoryIdentifier:v50];
             }
           }
         }
 
-        v51 = [v6 options];
-        v52 = [v51 containsObject:FLNotificationOptionNotificationCenter];
+        options4 = [notification options];
+        v52 = [options4 containsObject:FLNotificationOptionNotificationCenter];
 
         if (v52)
         {
@@ -357,21 +357,21 @@ LABEL_24:
           v53 = v42;
         }
 
-        v54 = [v3 uniqueIdentifier];
-        v29 = [UNNotificationRequest requestWithIdentifier:v54 content:v7 trigger:0 destinations:v53];
+        uniqueIdentifier = [itemCopy uniqueIdentifier];
+        v29 = [UNNotificationRequest requestWithIdentifier:uniqueIdentifier content:v7 trigger:0 destinations:v53];
 
         goto LABEL_36;
       }
 
-      v30 = [FLTopLevelViewModel redirectURLForItem:v3 withAction:v23];
+      v30 = [FLTopLevelViewModel redirectURLForItem:itemCopy withAction:activateAction];
       [v7 setDefaultActionURL:v30];
 
       v26 = _FLLogSystem();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [v7 defaultActionURL];
+        defaultActionURL = [v7 defaultActionURL];
         *v56 = 138412290;
-        *&v56[4] = v27;
+        *&v56[4] = defaultActionURL;
         v28 = "No activate action URL specified, default action will use redirect URL: %@";
         goto LABEL_22;
       }
@@ -380,11 +380,11 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v6 = _FLLogSystem();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  notification = _FLLogSystem();
+  if (os_log_type_enabled(notification, OS_LOG_TYPE_DEFAULT))
   {
     *v56 = 0;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Target bundle provided identifier is not permitted for notifications, returning nil", v56, 2u);
+    _os_log_impl(&_mh_execute_header, notification, OS_LOG_TYPE_DEFAULT, "Target bundle provided identifier is not permitted for notifications, returning nil", v56, 2u);
   }
 
   v29 = 0;
@@ -393,47 +393,47 @@ LABEL_36:
   return v29;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
-  [(FLFoundationNotificationController *)self->_foundationNotificationController setDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  [(FLFoundationNotificationController *)self->_foundationNotificationController setDelegate:delegateCopy];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(FLUserNotificationProvider *)self delegate];
-  v10 = [v7 notification];
-  v11 = [v10 request];
+  responseCopy = response;
+  handlerCopy = handler;
+  delegate = [(FLUserNotificationProvider *)self delegate];
+  notification = [responseCopy notification];
+  request = [notification request];
 
-  v12 = [v11 content];
-  v13 = [v12 userInfo];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v14 = [v11 identifier];
+  identifier = [request identifier];
   v15 = _FLLogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v7 actionIdentifier];
+    actionIdentifier = [responseCopy actionIdentifier];
     *buf = 138412546;
-    v26 = v16;
+    v26 = actionIdentifier;
     v27 = 2112;
-    v28 = v14;
+    v28 = identifier;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Notification response received with id: %@ (uid: %@)", buf, 0x16u);
   }
 
-  v17 = [v7 actionIdentifier];
-  if ([v17 isEqualToString:UNNotificationDefaultActionIdentifier])
+  actionIdentifier2 = [responseCopy actionIdentifier];
+  if ([actionIdentifier2 isEqualToString:UNNotificationDefaultActionIdentifier])
   {
-    v18 = [v7 actionIdentifier];
-    v19 = [v13 objectForKeyedSubscript:v18];
+    actionIdentifier3 = [responseCopy actionIdentifier];
+    v19 = [userInfo objectForKeyedSubscript:actionIdentifier3];
 
     if (v19)
     {
-      v20 = [v7 actionIdentifier];
-      v21 = [v13 objectForKeyedSubscript:v20];
-      [v9 provider:0 didActivateNotification:v21 forFollowUpItemWithIdentifier:v14 activationSource:5];
+      actionIdentifier4 = [responseCopy actionIdentifier];
+      v21 = [userInfo objectForKeyedSubscript:actionIdentifier4];
+      [delegate provider:0 didActivateNotification:v21 forFollowUpItemWithIdentifier:identifier activationSource:5];
 
       goto LABEL_9;
     }
@@ -443,36 +443,36 @@ LABEL_36:
   {
   }
 
-  v22 = [v7 actionIdentifier];
-  v23 = [v22 isEqualToString:UNNotificationDismissActionIdentifier];
+  actionIdentifier5 = [responseCopy actionIdentifier];
+  v23 = [actionIdentifier5 isEqualToString:UNNotificationDismissActionIdentifier];
 
   if (!v23)
   {
-    [v9 provider:0 didActivateNotificationForFollowUpItemWithIdentifier:v14 activationSource:5];
+    [delegate provider:0 didActivateNotificationForFollowUpItemWithIdentifier:identifier activationSource:5];
     goto LABEL_11;
   }
 
-  v24 = v14;
-  v20 = [NSArray arrayWithObjects:&v24 count:1];
-  [v9 provider:0 didClearNotificationsForFollowUpItemsWithIdentifiers:v20 activationSource:5];
+  v24 = identifier;
+  actionIdentifier4 = [NSArray arrayWithObjects:&v24 count:1];
+  [delegate provider:0 didClearNotificationsForFollowUpItemsWithIdentifiers:actionIdentifier4 activationSource:5];
 LABEL_9:
 
 LABEL_11:
-  v8[2](v8);
+  handlerCopy[2](handlerCopy);
 }
 
-- (id)createNotificationCenterWithBundleIdentifier:(id)a3
+- (id)createNotificationCenterWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _FLLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Creating UNUserNotificationCenter for bundle identifier %@", &v9, 0xCu);
   }
 
-  v6 = [[UNUserNotificationCenter alloc] initWithBundleIdentifier:v4];
+  v6 = [[UNUserNotificationCenter alloc] initWithBundleIdentifier:identifierCopy];
   [v6 setDelegate:self];
   [v6 setWantsNotificationResponsesDelivered];
   v7 = +[NSSet set];
@@ -481,15 +481,15 @@ LABEL_11:
   return v6;
 }
 
-- (id)getNotificationCenterForBundleIdentifier:(id)a3
+- (id)getNotificationCenterForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_noteCentersLock);
-  v5 = [(NSMutableDictionary *)self->_noteCenters objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_noteCenters objectForKeyedSubscript:identifierCopy];
   if (!v5)
   {
-    v5 = [(FLUserNotificationProvider *)self createNotificationCenterWithBundleIdentifier:v4];
-    [(NSMutableDictionary *)self->_noteCenters setObject:v5 forKey:v4];
+    v5 = [(FLUserNotificationProvider *)self createNotificationCenterWithBundleIdentifier:identifierCopy];
+    [(NSMutableDictionary *)self->_noteCenters setObject:v5 forKey:identifierCopy];
   }
 
   os_unfair_lock_unlock(&self->_noteCentersLock);
@@ -497,10 +497,10 @@ LABEL_11:
   return v5;
 }
 
-- (id)getNotificationCenterForItem:(id)a3
+- (id)getNotificationCenterForItem:(id)item
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:FLFollowUpNotifyingAppIdKey];
+  userInfo = [item userInfo];
+  v5 = [userInfo objectForKeyedSubscript:FLFollowUpNotifyingAppIdKey];
 
   if (!v5)
   {
@@ -515,8 +515,8 @@ LABEL_11:
   }
 
   v7 = +[FLEnvironment currentEnvironment];
-  v8 = [v7 supportedNotifyingAppIds];
-  v9 = [v8 containsObject:v5];
+  supportedNotifyingAppIds = [v7 supportedNotifyingAppIds];
+  v9 = [supportedNotifyingAppIds containsObject:v5];
 
   if ((v9 & 1) == 0)
   {

@@ -1,21 +1,21 @@
 @interface ICQOpportunitySheetDetailsSpecification
-- (id)messageForKey:(id)a3;
-- (void)makeMessageFromServerDict:(id)a3;
+- (id)messageForKey:(id)key;
+- (void)makeMessageFromServerDict:(id)dict;
 @end
 
 @implementation ICQOpportunitySheetDetailsSpecification
 
-- (void)makeMessageFromServerDict:(id)a3
+- (void)makeMessageFromServerDict:(id)dict
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"message"];
+  dictCopy = dict;
+  v5 = [dictCopy objectForKeyedSubscript:@"message"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v21 = self;
+    selfCopy = self;
     v22 = v5;
-    v23 = v4;
+    v23 = dictCopy;
     v6 = v5;
     v24 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
     v25 = 0u;
@@ -38,7 +38,7 @@
           }
 
           v12 = *(*(&v25 + 1) + 8 * i);
-          v13 = [v12 objectForKeyedSubscript:{@"key", v21}];
+          v13 = [v12 objectForKeyedSubscript:{@"key", selfCopy}];
           v14 = [v12 objectForKeyedSubscript:@"format"];
           v15 = v14;
           if (v13)
@@ -75,11 +75,11 @@
     }
 
     v18 = [v24 copy];
-    messagesInfo = v21->_messagesInfo;
-    v21->_messagesInfo = v18;
+    messagesInfo = selfCopy->_messagesInfo;
+    selfCopy->_messagesInfo = v18;
 
     v5 = v22;
-    v4 = v23;
+    dictCopy = v23;
   }
 
   else
@@ -90,7 +90,7 @@
       *buf = 138412546;
       v31 = @"message";
       v32 = 2112;
-      v33 = v4;
+      v33 = dictCopy;
       _os_log_impl(&dword_275572000, v7, OS_LOG_TYPE_DEFAULT, "Missing message property %@ in opportunityBubble: %@", buf, 0x16u);
     }
   }
@@ -98,16 +98,16 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)messageForKey:(id)a3
+- (id)messageForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ICQOpportunitySheetDetailsSpecification *)self messagesInfo];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  messagesInfo = [(ICQOpportunitySheetDetailsSpecification *)self messagesInfo];
+  v6 = [messagesInfo objectForKeyedSubscript:keyCopy];
 
   if (!v6)
   {
-    v7 = [(ICQOpportunitySheetDetailsSpecification *)self messagesInfo];
-    v6 = [v7 objectForKeyedSubscript:@"default"];
+    messagesInfo2 = [(ICQOpportunitySheetDetailsSpecification *)self messagesInfo];
+    v6 = [messagesInfo2 objectForKeyedSubscript:@"default"];
   }
 
   return v6;

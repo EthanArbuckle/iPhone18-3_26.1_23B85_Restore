@@ -1,5 +1,5 @@
 @interface HMParsedEventTopic
-- (HMParsedEventTopic)initWithTopic:(id)a3;
+- (HMParsedEventTopic)initWithTopic:(id)topic;
 - (id)asAccessorySettingTopic;
 - (id)asAccessoryTopic;
 - (id)asHomeEventTopic;
@@ -17,11 +17,11 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(HMParsedEventTopic *)self homeUUID];
-  v5 = v4;
-  if (v4)
+  homeUUID = [(HMParsedEventTopic *)self homeUUID];
+  v5 = homeUUID;
+  if (homeUUID)
   {
-    v6 = v4;
+    v6 = homeUUID;
   }
 
   else
@@ -29,11 +29,11 @@
     v6 = @"-";
   }
 
-  v7 = [(HMParsedEventTopic *)self accessoryUUID];
-  v8 = v7;
-  if (v7)
+  accessoryUUID = [(HMParsedEventTopic *)self accessoryUUID];
+  v8 = accessoryUUID;
+  if (accessoryUUID)
   {
-    v9 = v7;
+    v9 = accessoryUUID;
   }
 
   else
@@ -41,11 +41,11 @@
     v9 = @"-";
   }
 
-  v10 = [(HMParsedEventTopic *)self topicSuffix];
-  v11 = v10;
-  if (v10)
+  topicSuffix = [(HMParsedEventTopic *)self topicSuffix];
+  v11 = topicSuffix;
+  if (topicSuffix)
   {
-    v12 = v10;
+    v12 = topicSuffix;
   }
 
   else
@@ -60,16 +60,16 @@
 
 - (unint64_t)homeEventTopicSuffixID
 {
-  v2 = [(HMParsedEventTopic *)self topicSuffix];
-  v3 = [HMHomeEventTopic suffixIDFromTopicSuffix:v2];
+  topicSuffix = [(HMParsedEventTopic *)self topicSuffix];
+  v3 = [HMHomeEventTopic suffixIDFromTopicSuffix:topicSuffix];
 
   return v3;
 }
 
 - (unint64_t)accessoryEventTopicSuffixID
 {
-  v2 = [(HMParsedEventTopic *)self topicSuffix];
-  v3 = [HMAccessoryEventTopic suffixIDFromTopicSuffix:v2];
+  topicSuffix = [(HMParsedEventTopic *)self topicSuffix];
+  v3 = [HMAccessoryEventTopic suffixIDFromTopicSuffix:topicSuffix];
 
   return v3;
 }
@@ -81,29 +81,29 @@
     goto LABEL_5;
   }
 
-  v3 = [(HMParsedEventTopic *)self homeUUID];
-  if (!v3)
+  selfCopy = [(HMParsedEventTopic *)self homeUUID];
+  if (!selfCopy)
   {
     goto LABEL_6;
   }
 
-  v4 = v3;
-  v5 = [(HMParsedEventTopic *)self accessoryUUID];
+  v4 = selfCopy;
+  accessoryUUID = [(HMParsedEventTopic *)self accessoryUUID];
 
-  if (v5)
+  if (accessoryUUID)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
 LABEL_5:
-    v3 = 0;
+    selfCopy = 0;
   }
 
 LABEL_6:
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)asIndexHomeTopic
@@ -113,29 +113,29 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  v3 = [(HMParsedEventTopic *)self homeUUID];
-  if (!v3)
+  selfCopy = [(HMParsedEventTopic *)self homeUUID];
+  if (!selfCopy)
   {
     goto LABEL_5;
   }
 
-  v4 = v3;
-  v5 = [(HMParsedEventTopic *)self accessoryUUID];
+  v4 = selfCopy;
+  accessoryUUID = [(HMParsedEventTopic *)self accessoryUUID];
 
-  if (!v5)
+  if (!accessoryUUID)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
 LABEL_4:
-    v3 = 0;
+    selfCopy = 0;
   }
 
 LABEL_5:
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)asHomeEventTopic
@@ -145,29 +145,29 @@ LABEL_5:
     goto LABEL_4;
   }
 
-  v3 = [(HMParsedEventTopic *)self homeUUID];
-  if (!v3)
+  selfCopy = [(HMParsedEventTopic *)self homeUUID];
+  if (!selfCopy)
   {
     goto LABEL_5;
   }
 
-  v4 = v3;
-  v5 = [(HMParsedEventTopic *)self accessoryUUID];
+  v4 = selfCopy;
+  accessoryUUID = [(HMParsedEventTopic *)self accessoryUUID];
 
-  if (v5)
+  if (accessoryUUID)
   {
 LABEL_4:
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
 LABEL_5:
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)asMediaGroupSettingTopic
@@ -177,19 +177,19 @@ LABEL_5:
     goto LABEL_2;
   }
 
-  v3 = [(HMParsedEventTopic *)self homeUUID];
-  if (v3)
+  selfCopy = [(HMParsedEventTopic *)self homeUUID];
+  if (selfCopy)
   {
-    v4 = v3;
-    v5 = [(HMParsedEventTopic *)self mediaGroupUUID];
-    if (v5)
+    v4 = selfCopy;
+    mediaGroupUUID = [(HMParsedEventTopic *)self mediaGroupUUID];
+    if (mediaGroupUUID)
     {
-      v6 = v5;
-      v7 = [(HMParsedEventTopic *)self mediaGroupSettingKeyPath];
+      v6 = mediaGroupUUID;
+      mediaGroupSettingKeyPath = [(HMParsedEventTopic *)self mediaGroupSettingKeyPath];
 
-      if (v7)
+      if (mediaGroupSettingKeyPath)
       {
-        v3 = self;
+        selfCopy = self;
         goto LABEL_7;
       }
     }
@@ -199,12 +199,12 @@ LABEL_5:
     }
 
 LABEL_2:
-    v3 = 0;
+    selfCopy = 0;
   }
 
 LABEL_7:
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)asMediaSystemSettingTopic
@@ -214,19 +214,19 @@ LABEL_7:
     goto LABEL_2;
   }
 
-  v3 = [(HMParsedEventTopic *)self homeUUID];
-  if (v3)
+  selfCopy = [(HMParsedEventTopic *)self homeUUID];
+  if (selfCopy)
   {
-    v4 = v3;
-    v5 = [(HMParsedEventTopic *)self mediaSystemUUID];
-    if (v5)
+    v4 = selfCopy;
+    mediaSystemUUID = [(HMParsedEventTopic *)self mediaSystemUUID];
+    if (mediaSystemUUID)
     {
-      v6 = v5;
-      v7 = [(HMParsedEventTopic *)self mediaSystemSettingKeyPath];
+      v6 = mediaSystemUUID;
+      mediaSystemSettingKeyPath = [(HMParsedEventTopic *)self mediaSystemSettingKeyPath];
 
-      if (v7)
+      if (mediaSystemSettingKeyPath)
       {
-        v3 = self;
+        selfCopy = self;
         goto LABEL_7;
       }
     }
@@ -236,34 +236,34 @@ LABEL_7:
     }
 
 LABEL_2:
-    v3 = 0;
+    selfCopy = 0;
   }
 
 LABEL_7:
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)asAccessorySettingTopic
 {
-  v3 = [(HMParsedEventTopic *)self asAccessoryTopic];
-  if (v3)
+  selfCopy = [(HMParsedEventTopic *)self asAccessoryTopic];
+  if (selfCopy)
   {
-    v4 = v3;
-    v5 = [(HMParsedEventTopic *)self accessorySettingKeyPath];
+    v4 = selfCopy;
+    accessorySettingKeyPath = [(HMParsedEventTopic *)self accessorySettingKeyPath];
 
-    if (v5)
+    if (accessorySettingKeyPath)
     {
-      v3 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v3 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)asAccessoryTopic
@@ -273,37 +273,37 @@ LABEL_7:
     goto LABEL_2;
   }
 
-  v3 = [(HMParsedEventTopic *)self accessoryUUID];
-  if (v3)
+  selfCopy = [(HMParsedEventTopic *)self accessoryUUID];
+  if (selfCopy)
   {
-    v4 = v3;
-    v5 = [(HMParsedEventTopic *)self homeUUID];
+    v4 = selfCopy;
+    homeUUID = [(HMParsedEventTopic *)self homeUUID];
 
-    if (!v5)
+    if (!homeUUID)
     {
 LABEL_2:
-      v3 = 0;
+      selfCopy = 0;
       goto LABEL_6;
     }
 
-    v3 = self;
+    selfCopy = self;
   }
 
 LABEL_6:
 
-  return v3;
+  return selfCopy;
 }
 
-- (HMParsedEventTopic)initWithTopic:(id)a3
+- (HMParsedEventTopic)initWithTopic:(id)topic
 {
-  v5 = a3;
+  topicCopy = topic;
   v9.receiver = self;
   v9.super_class = HMParsedEventTopic;
   v6 = [(HMParsedEventTopic *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_originalTopic, a3);
+    objc_storeStrong(&v6->_originalTopic, topic);
   }
 
   return v7;

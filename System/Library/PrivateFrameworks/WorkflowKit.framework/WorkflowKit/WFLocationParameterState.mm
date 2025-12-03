@@ -1,46 +1,46 @@
 @interface WFLocationParameterState
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFLocationParameterState)initWithValue:(id)a3;
-- (void)getContentCollectionWithContext:(id)a3 completionHandler:(id)a4;
-- (void)getContentItemFromValue:(id)a3 withContext:(id)a4 completionHandler:(id)a5;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFLocationParameterState)initWithValue:(id)value;
+- (void)getContentCollectionWithContext:(id)context completionHandler:(id)handler;
+- (void)getContentItemFromValue:(id)value withContext:(id)context completionHandler:(id)handler;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFLocationParameterState
 
-- (void)getContentItemFromValue:(id)a3 withContext:(id)a4 completionHandler:(id)a5
+- (void)getContentItemFromValue:(id)value withContext:(id)context completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 parameter];
+  valueCopy = value;
+  contextCopy = context;
+  handlerCopy = handler;
+  parameter = [contextCopy parameter];
   v11 = objc_opt_class();
-  v12 = WFEnforceClass_1501(v10, v11);
+  v12 = WFEnforceClass_1501(parameter, v11);
 
-  if (![v12 allowsCurrentLocation] || !objc_msgSend(v7, "isCurrentLocation"))
+  if (![v12 allowsCurrentLocation] || !objc_msgSend(valueCopy, "isCurrentLocation"))
   {
-    v17 = [v7 legacyVariableString];
+    legacyVariableString = [valueCopy legacyVariableString];
 
-    if (v17)
+    if (legacyVariableString)
     {
-      v18 = [v7 legacyVariableString];
+      legacyVariableString2 = [valueCopy legacyVariableString];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __82__WFLocationParameterState_getContentItemFromValue_withContext_completionHandler___block_invoke_2;
       v25[3] = &unk_1E8376DD8;
-      v26 = v9;
-      [v18 processWithContext:v8 completionHandler:v25];
+      v26 = handlerCopy;
+      [legacyVariableString2 processWithContext:contextCopy completionHandler:v25];
 
       v16 = v26;
       goto LABEL_7;
     }
 
-    v19 = [v7 placemark];
+    placemark = [valueCopy placemark];
 
-    if (v19)
+    if (placemark)
     {
       v20 = MEMORY[0x1E6996D58];
-      v21 = [v7 placemark];
+      placemark2 = [valueCopy placemark];
     }
 
     else
@@ -50,40 +50,40 @@
         goto LABEL_14;
       }
 
-      v24 = [v7 locationName];
+      locationName = [valueCopy locationName];
 
-      if (!v24)
+      if (!locationName)
       {
         goto LABEL_14;
       }
 
       v20 = MEMORY[0x1E6996D58];
-      v21 = [v7 locationName];
+      placemark2 = [valueCopy locationName];
     }
 
-    v22 = v21;
-    v23 = [v20 itemWithObject:v21];
+    v22 = placemark2;
+    v23 = [v20 itemWithObject:placemark2];
 
-    (*(v9 + 2))(v9, v23, 0);
+    (*(handlerCopy + 2))(handlerCopy, v23, 0);
     goto LABEL_15;
   }
 
   if ([v12 skipsProcessingCurrentLocation])
   {
 LABEL_14:
-    (*(v9 + 2))(v9, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
     goto LABEL_15;
   }
 
-  v13 = [v8 environment];
+  environment = [contextCopy environment];
   [v12 currentLocationAccuracy];
   v15 = v14;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __82__WFLocationParameterState_getContentItemFromValue_withContext_completionHandler___block_invoke;
   v27[3] = &unk_1E83769F0;
-  v28 = v9;
-  [WFLocator determineLocationWithWorkflowEnvironment:v13 desiredAccuracy:v27 completion:v15];
+  v28 = handlerCopy;
+  [WFLocator determineLocationWithWorkflowEnvironment:environment desiredAccuracy:v27 completion:v15];
   v16 = v28;
 LABEL_7:
 
@@ -125,27 +125,27 @@ void __82__WFLocationParameterState_getContentItemFromValue_withContext_completi
   }
 }
 
-- (void)getContentCollectionWithContext:(id)a3 completionHandler:(id)a4
+- (void)getContentCollectionWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFVariableSubstitutableParameterState *)self variable];
+  handlerCopy = handler;
+  contextCopy = context;
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
 
-  if (v8)
+  if (variable)
   {
-    v9 = [(WFVariableSubstitutableParameterState *)self variable];
-    [v9 getContentWithContext:v7 completionHandler:v6];
+    variable2 = [(WFVariableSubstitutableParameterState *)self variable];
+    [variable2 getContentWithContext:contextCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v10 = [(WFVariableSubstitutableParameterState *)self value];
+    value = [(WFVariableSubstitutableParameterState *)self value];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __78__WFLocationParameterState_getContentCollectionWithContext_completionHandler___block_invoke;
     v11[3] = &unk_1E83769C8;
-    v12 = v6;
-    [(WFLocationParameterState *)self getContentItemFromValue:v10 withContext:v7 completionHandler:v11];
+    v12 = handlerCopy;
+    [(WFLocationParameterState *)self getContentItemFromValue:value withContext:contextCopy completionHandler:v11];
   }
 }
 
@@ -173,16 +173,16 @@ void __78__WFLocationParameterState_getContentCollectionWithContext_completionHa
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFVariableSubstitutableParameterState *)self variable];
-  if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
+  if (variable && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v12 = [v11 prompt];
-    v9[2](v9, v12, 0);
+    prompt = [variable prompt];
+    handlerCopy[2](handlerCopy, prompt, 0);
   }
 
   else
@@ -192,11 +192,11 @@ void __78__WFLocationParameterState_getContentCollectionWithContext_completionHa
     v13[1] = 3221225472;
     v13[2] = __85__WFLocationParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
     v13[3] = &unk_1E837DAB0;
-    v15 = v10;
-    v14 = v8;
+    v15 = valueHandlerCopy;
+    v14 = contextCopy;
     [(WFLocationParameterState *)self getContentCollectionWithContext:v14 completionHandler:v13];
 
-    v11 = v15;
+    variable = v15;
   }
 }
 
@@ -237,34 +237,34 @@ void __85__WFLocationParameterState_processWithContext_userInputRequiredHandler_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (WFLocationParameterState)initWithValue:(id)a3
+- (WFLocationParameterState)initWithValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 legacyVariableString];
-  v6 = v5;
-  if (v5 && [v5 representsSingleContentVariable])
+  valueCopy = value;
+  legacyVariableString = [valueCopy legacyVariableString];
+  v6 = legacyVariableString;
+  if (legacyVariableString && [legacyVariableString representsSingleContentVariable])
   {
-    v7 = [v6 variables];
-    v8 = [v7 firstObject];
+    variables = [v6 variables];
+    firstObject = [variables firstObject];
 
-    v9 = [(WFVariableSubstitutableParameterState *)self initWithVariable:v8];
+    v9 = [(WFVariableSubstitutableParameterState *)self initWithVariable:firstObject];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = WFLocationParameterState;
-    v9 = [(WFVariableSubstitutableParameterState *)&v11 initWithValue:v4];
+    v9 = [(WFVariableSubstitutableParameterState *)&v11 initWithValue:valueCopy];
   }
 
   return v9;
 }
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  representationCopy = representation;
+  providerCopy = provider;
+  parameterCopy = parameter;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -274,14 +274,14 @@ void __85__WFLocationParameterState_processWithContext_userInputRequiredHandler_
       goto LABEL_7;
     }
 
-    v10 = [[WFVariableString alloc] initWithString:v7];
+    v10 = [[WFVariableString alloc] initWithString:representationCopy];
 LABEL_6:
     v11 = [[WFLocationValue alloc] initWithLegacyVariableString:v10];
 
     goto LABEL_8;
   }
 
-  v10 = WFDeserializedVariableObject(v7, v8, v9);
+  v10 = WFDeserializedVariableObject(representationCopy, providerCopy, parameterCopy);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -289,7 +289,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  v11 = [[WFLocationValue alloc] initWithSerializedRepresentation:v7 variableProvider:v8 parameter:v9];
+  v11 = [[WFLocationValue alloc] initWithSerializedRepresentation:representationCopy variableProvider:providerCopy parameter:parameterCopy];
 LABEL_8:
 
   return v11;

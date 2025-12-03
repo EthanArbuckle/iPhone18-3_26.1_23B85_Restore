@@ -1,11 +1,11 @@
 @interface IOGPUMTLFence
-- (IOGPUMTLFence)initWithDevice:(__IOGPUDevice *)a3;
+- (IOGPUMTLFence)initWithDevice:(__IOGPUDevice *)device;
 - (void)dealloc;
 @end
 
 @implementation IOGPUMTLFence
 
-- (IOGPUMTLFence)initWithDevice:(__IOGPUDevice *)a3
+- (IOGPUMTLFence)initWithDevice:(__IOGPUDevice *)device
 {
   v9.receiver = self;
   v9.super_class = IOGPUMTLFence;
@@ -13,8 +13,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_deviceRef = a3;
-    CFRetain(a3);
+    v4->_deviceRef = device;
+    CFRetain(device);
     outputStruct = 0;
     v7 = 4;
     if (IOConnectCallMethod(v5->_deviceRef->var2, 0x11u, 0, 0, 0, 0, 0, 0, &outputStruct, &v7))

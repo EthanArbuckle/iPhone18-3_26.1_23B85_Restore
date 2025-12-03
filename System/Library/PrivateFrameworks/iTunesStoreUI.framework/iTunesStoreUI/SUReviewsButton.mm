@@ -1,21 +1,21 @@
 @interface SUReviewsButton
-- (CGRect)contentRectForBounds:(CGRect)a3;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
-- (SUReviewsButton)initWithFrame:(CGRect)a3;
+- (CGRect)contentRectForBounds:(CGRect)bounds;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
+- (SUReviewsButton)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)reloadView;
-- (void)setUserRatingCountString:(id)a3;
+- (void)setUserRatingCountString:(id)string;
 @end
 
 @implementation SUReviewsButton
 
-- (SUReviewsButton)initWithFrame:(CGRect)a3
+- (SUReviewsButton)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SUReviewsButton;
-  v3 = [(SUGradientButton *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUGradientButton *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -44,21 +44,21 @@
 
 - (void)reloadView
 {
-  v3 = [(SUReviewsButton *)self userRatingCountString];
-  if (![(NSString *)v3 length])
+  userRatingCountString = [(SUReviewsButton *)self userRatingCountString];
+  if (![(NSString *)userRatingCountString length])
   {
 
-    v3 = SUCopyLocalizedReviewsStringForCount(self->_userRatingCount, 1);
+    userRatingCountString = SUCopyLocalizedReviewsStringForCount(self->_userRatingCount, 1);
   }
 
-  [(SUReviewsButton *)self setTitle:v3 forState:0];
+  [(SUReviewsButton *)self setTitle:userRatingCountString forState:0];
 
   if (self->_userRatingCount)
   {
     userRating = self->_userRating;
-    v5 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
     *&v6 = userRating;
-    v7 = [SUUserRatingView copyImageForRating:v5 backgroundColor:1 style:v6];
+    v7 = [SUUserRatingView copyImageForRating:clearColor backgroundColor:1 style:v6];
     [(SUReviewsButton *)self setImage:v7 forState:0];
   }
 
@@ -69,24 +69,24 @@
   }
 }
 
-- (void)setUserRatingCountString:(id)a3
+- (void)setUserRatingCountString:(id)string
 {
   userRatingCountString = self->_userRatingCountString;
-  if (userRatingCountString != a3)
+  if (userRatingCountString != string)
   {
 
-    self->_userRatingCountString = a3;
+    self->_userRatingCountString = string;
 
     [(SUReviewsButton *)self reloadView];
   }
 }
 
-- (CGRect)contentRectForBounds:(CGRect)a3
+- (CGRect)contentRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v24.receiver = self;
   v24.super_class = SUReviewsButton;
   [(SUReviewsButton *)&v24 contentRectForBounds:?];
@@ -149,15 +149,15 @@
     disclosureView = self->_disclosureView;
     if (([(SUReviewsButton *)self isHighlighted]& 1) != 0)
     {
-      v18 = 1;
+      isSelected = 1;
     }
 
     else
     {
-      v18 = [(SUReviewsButton *)self isSelected];
+      isSelected = [(SUReviewsButton *)self isSelected];
     }
 
-    [(UIImageView *)disclosureView setHighlighted:v18];
+    [(UIImageView *)disclosureView setHighlighted:isSelected];
   }
 
   v19.receiver = self;
@@ -165,12 +165,12 @@
   [(SUReviewsButton *)&v19 layoutSubviews];
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v24.receiver = self;
   v24.super_class = SUReviewsButton;
   [(SUReviewsButton *)&v24 imageRectForContentRect:?];
@@ -209,12 +209,12 @@
   return result;
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  x = a3.origin.x;
+  x = rect.origin.x;
   v8.receiver = self;
   v8.super_class = SUReviewsButton;
-  [(SUReviewsButton *)&v8 titleRectForContentRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SUReviewsButton *)&v8 titleRectForContentRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v7 = x;
   result.size.height = v6;
   result.size.width = v5;

@@ -1,28 +1,28 @@
 @interface AugmentedBatteryHealth
-+ (id)algorithmWithData:(id)a3;
++ (id)algorithmWithData:(id)data;
 - (ABHWeekly)bdc_output_cache;
 - (basic_string<char,)program_code;
 - (id).cxx_construct;
-- (id)init:(id)a3;
+- (id)init:(id)init;
 - (id)output;
-- (id)preRun:(id)a3;
-- (int)runWithData:(id)a3;
-- (void)setBdc_output_cache:(ABHWeekly *)a3;
+- (id)preRun:(id)run;
+- (int)runWithData:(id)data;
+- (void)setBdc_output_cache:(ABHWeekly *)bdc_output_cache;
 @end
 
 @implementation AugmentedBatteryHealth
 
-+ (id)algorithmWithData:(id)a3
++ (id)algorithmWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44__AugmentedBatteryHealth_algorithmWithData___block_invoke;
   v10[3] = &unk_278D050D8;
-  v11 = v4;
-  v12 = a1;
+  v11 = dataCopy;
+  selfCopy = self;
   v5 = +[AugmentedBatteryHealth algorithmWithData:]::onceToken;
-  v6 = v4;
+  v6 = dataCopy;
   if (v5 != -1)
   {
     dispatch_once(&+[AugmentedBatteryHealth algorithmWithData:]::onceToken, v10);
@@ -41,9 +41,9 @@ uint64_t __44__AugmentedBatteryHealth_algorithmWithData___block_invoke(uint64_t 
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v3 = MEMORY[0x28223BE20](self, a2, a3);
+  v3 = MEMORY[0x28223BE20](self, a2, init);
   v89 = *MEMORY[0x277D85DE8];
   v26 = v4;
   v38 = [v26 objectForKey:@"smcData"];
@@ -781,9 +781,9 @@ uint64_t __44__AugmentedBatteryHealth_algorithmWithData___block_invoke(uint64_t 
   operator new();
 }
 
-- (int)runWithData:(id)a3
+- (int)runWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   [(AugmentedBatteryHealth *)self program_code];
   ACAMUtility::ACAMParameterPack::ACAMParameterPack(v8, &__p, v5);
 }
@@ -791,10 +791,10 @@ uint64_t __44__AugmentedBatteryHealth_algorithmWithData___block_invoke(uint64_t 
 - (id)output
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v3 = [(AugmentedBatteryHealth *)self bdc_output_ready];
+  bdc_output_ready = [(AugmentedBatteryHealth *)self bdc_output_ready];
   v4 = MEMORY[0x277CBEC10];
   v5 = MEMORY[0x277CBEC10];
-  if (v3)
+  if (bdc_output_ready)
   {
     v19 = @"Weekly";
     [(AugmentedBatteryHealth *)self bdc_output_cache];
@@ -834,14 +834,14 @@ uint64_t __44__AugmentedBatteryHealth_algorithmWithData___block_invoke(uint64_t 
   return v8;
 }
 
-- (id)preRun:(id)a3
+- (id)preRun:(id)run
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"streamLastRunDate"];
-  v5 = [v3 objectForKeyedSubscript:@"streamCurrentDate"];
-  v6 = [MEMORY[0x277CBEB68] null];
-  v7 = [v5 isEqual:v6];
+  runCopy = run;
+  v4 = [runCopy objectForKeyedSubscript:@"streamLastRunDate"];
+  v5 = [runCopy objectForKeyedSubscript:@"streamCurrentDate"];
+  null = [MEMORY[0x277CBEB68] null];
+  v7 = [v5 isEqual:null];
 
   if (v7)
   {
@@ -850,18 +850,18 @@ uint64_t __44__AugmentedBatteryHealth_algorithmWithData___block_invoke(uint64_t 
 
   else
   {
-    [v3 objectForKeyedSubscript:@"streamCurrentDate"];
+    [runCopy objectForKeyedSubscript:@"streamCurrentDate"];
   }
   v8 = ;
-  v9 = [MEMORY[0x277CBEB68] null];
-  v10 = [v4 isEqual:v9];
+  null2 = [MEMORY[0x277CBEB68] null];
+  v10 = [v4 isEqual:null2];
 
   if (v10)
   {
-    v11 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v12 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [v12 setDay:-30];
-    v13 = [v11 dateByAddingComponents:v12 toDate:v8 options:0];
+    v13 = [currentCalendar dateByAddingComponents:v12 toDate:v8 options:0];
 
     if (!v4)
     {
@@ -886,8 +886,8 @@ LABEL_10:
     }
   }
 
-  v14 = [MEMORY[0x277CBEB68] null];
-  v15 = [v4 isEqual:v14];
+  null3 = [MEMORY[0x277CBEB68] null];
+  v15 = [v4 isEqual:null3];
 
   if (v15)
   {
@@ -925,22 +925,22 @@ LABEL_11:
   return result;
 }
 
-- (void)setBdc_output_cache:(ABHWeekly *)a3
+- (void)setBdc_output_cache:(ABHWeekly *)bdc_output_cache
 {
-  self->_bdc_output_cache.deltaQmax = a3->deltaQmax;
-  if (&self->_bdc_output_cache == a3)
+  self->_bdc_output_cache.deltaQmax = bdc_output_cache->deltaQmax;
+  if (&self->_bdc_output_cache == bdc_output_cache)
   {
-    *&self->_bdc_output_cache.deltaNCC = *&a3->deltaNCC;
+    *&self->_bdc_output_cache.deltaNCC = *&bdc_output_cache->deltaNCC;
   }
 
   else
   {
-    std::vector<double>::__assign_with_size[abi:ne200100]<double *,double *>(&self->_bdc_output_cache.deltaRdc.__begin_, a3->deltaRdc.__begin_, a3->deltaRdc.__end_, a3->deltaRdc.__end_ - a3->deltaRdc.__begin_);
-    *&self->_bdc_output_cache.deltaNCC = *&a3->deltaNCC;
-    std::vector<double>::__assign_with_size[abi:ne200100]<double *,double *>(&self->_bdc_output_cache.augmentedRdc.__begin_, a3->augmentedRdc.__begin_, a3->augmentedRdc.__end_, a3->augmentedRdc.__end_ - a3->augmentedRdc.__begin_);
+    std::vector<double>::__assign_with_size[abi:ne200100]<double *,double *>(&self->_bdc_output_cache.deltaRdc.__begin_, bdc_output_cache->deltaRdc.__begin_, bdc_output_cache->deltaRdc.__end_, bdc_output_cache->deltaRdc.__end_ - bdc_output_cache->deltaRdc.__begin_);
+    *&self->_bdc_output_cache.deltaNCC = *&bdc_output_cache->deltaNCC;
+    std::vector<double>::__assign_with_size[abi:ne200100]<double *,double *>(&self->_bdc_output_cache.augmentedRdc.__begin_, bdc_output_cache->augmentedRdc.__begin_, bdc_output_cache->augmentedRdc.__end_, bdc_output_cache->augmentedRdc.__end_ - bdc_output_cache->augmentedRdc.__begin_);
   }
 
-  self->_bdc_output_cache.augmentedNCC = a3->augmentedNCC;
+  self->_bdc_output_cache.augmentedNCC = bdc_output_cache->augmentedNCC;
 }
 
 - (basic_string<char,)program_code

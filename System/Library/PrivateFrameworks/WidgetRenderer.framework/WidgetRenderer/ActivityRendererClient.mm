@@ -1,22 +1,22 @@
 @interface ActivityRendererClient
-- (void)currentRemoteSubscriptionTypeDidChange:(id)a3;
-- (void)extensionsDidChange:(id)a3;
+- (void)currentRemoteSubscriptionTypeDidChange:(id)change;
+- (void)extensionsDidChange:(id)change;
 @end
 
 @implementation ActivityRendererClient
 
-- (void)extensionsDidChange:(id)a3
+- (void)extensionsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_1DAE85914(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1DAE85914(changeCopy);
 }
 
-- (void)currentRemoteSubscriptionTypeDidChange:(id)a3
+- (void)currentRemoteSubscriptionTypeDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_1DAE862F8(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1DAE862F8(changeCopy);
 }
 
 @end

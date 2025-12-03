@@ -1,14 +1,14 @@
 @interface CoreDAVLogging
 + (id)sharedLogging;
-- (BOOL)_shouldOutputAtLevel:(int64_t)a3 forAccountInfoProvider:(id)a4;
-- (BOOL)shouldLogAtLevel:(int64_t)a3 forAccountInfoProvider:(id)a4;
+- (BOOL)_shouldOutputAtLevel:(int64_t)level forAccountInfoProvider:(id)provider;
+- (BOOL)shouldLogAtLevel:(int64_t)level forAccountInfoProvider:(id)provider;
 - (CoreDAVLogging)init;
-- (id)_delegatesToLogForProvider:(id)a3;
-- (id)delegatesToLogTransmittedDataForAccountInfoProvider:(id)a3;
-- (id)logHandleForAccountInfoProvider:(id)a3;
-- (void)addLogDelegate:(id)a3 forAccountInfoProvider:(id)a4;
-- (void)logDiagnosticForProvider:(id)a3 withLevel:(int64_t)a4 format:(id)a5 args:(char *)a6;
-- (void)removeLogDelegate:(id)a3 forAccountInfoProvider:(id)a4;
+- (id)_delegatesToLogForProvider:(id)provider;
+- (id)delegatesToLogTransmittedDataForAccountInfoProvider:(id)provider;
+- (id)logHandleForAccountInfoProvider:(id)provider;
+- (void)addLogDelegate:(id)delegate forAccountInfoProvider:(id)provider;
+- (void)logDiagnosticForProvider:(id)provider withLevel:(int64_t)level format:(id)format args:(char *)args;
+- (void)removeLogDelegate:(id)delegate forAccountInfoProvider:(id)provider;
 @end
 
 @implementation CoreDAVLogging
@@ -45,9 +45,9 @@ uint64_t __31__CoreDAVLogging_sharedLogging__block_invoke()
     logDelegates = v2->_logDelegates;
     v2->_logDelegates = v3;
 
-    v5 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     primaryLogDelegate = v2->_primaryLogDelegate;
-    v2->_primaryLogDelegate = v5;
+    v2->_primaryLogDelegate = strongToWeakObjectsMapTable;
 
     v7 = dispatch_queue_create("com.apple.coredav.logdelegate", 0);
     delegateMuckingQueue = v2->_delegateMuckingQueue;
@@ -57,15 +57,15 @@ uint64_t __31__CoreDAVLogging_sharedLogging__block_invoke()
   return v2;
 }
 
-- (void)addLogDelegate:(id)a3 forAccountInfoProvider:(id)a4
+- (void)addLogDelegate:(id)delegate forAccountInfoProvider:(id)provider
 {
-  v6 = a3;
-  v7 = [a4 accountID];
-  v8 = v7;
+  delegateCopy = delegate;
+  accountID = [provider accountID];
+  v8 = accountID;
   v9 = @"GenericDelegate";
-  if (v7)
+  if (accountID)
   {
-    v9 = v7;
+    v9 = accountID;
   }
 
   v10 = v9;
@@ -82,8 +82,8 @@ uint64_t __31__CoreDAVLogging_sharedLogging__block_invoke()
   block[3] = &unk_278E30FB8;
   block[4] = self;
   v15 = v10;
-  v16 = v6;
-  v12 = v6;
+  v16 = delegateCopy;
+  v12 = delegateCopy;
   v13 = v10;
   dispatch_sync(delegateMuckingQueue, block);
 }
@@ -115,15 +115,15 @@ void __56__CoreDAVLogging_addLogDelegate_forAccountInfoProvider___block_invoke(v
   }
 }
 
-- (void)removeLogDelegate:(id)a3 forAccountInfoProvider:(id)a4
+- (void)removeLogDelegate:(id)delegate forAccountInfoProvider:(id)provider
 {
-  v6 = a3;
-  v7 = [a4 accountID];
-  v8 = v7;
+  delegateCopy = delegate;
+  accountID = [provider accountID];
+  v8 = accountID;
   v9 = @"GenericDelegate";
-  if (v7)
+  if (accountID)
   {
-    v9 = v7;
+    v9 = accountID;
   }
 
   v10 = v9;
@@ -135,8 +135,8 @@ void __56__CoreDAVLogging_addLogDelegate_forAccountInfoProvider___block_invoke(v
   block[3] = &unk_278E30FB8;
   block[4] = self;
   v15 = v10;
-  v16 = v6;
-  v12 = v6;
+  v16 = delegateCopy;
+  v12 = delegateCopy;
   v13 = v10;
   dispatch_sync(delegateMuckingQueue, block);
 }
@@ -204,9 +204,9 @@ LABEL_15:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_delegatesToLogForProvider:(id)a3
+- (id)_delegatesToLogForProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -218,10 +218,10 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = __45__CoreDAVLogging__delegatesToLogForProvider___block_invoke;
   block[3] = &unk_278E31090;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
-  v10 = v4;
-  v6 = v4;
+  v10 = providerCopy;
+  v6 = providerCopy;
   dispatch_sync(delegateMuckingQueue, block);
   v7 = v14[5];
 
@@ -266,10 +266,10 @@ void __45__CoreDAVLogging__delegatesToLogForProvider___block_invoke(void *a1)
   *(v12 + 40) = v11;
 }
 
-- (BOOL)shouldLogAtLevel:(int64_t)a3 forAccountInfoProvider:(id)a4
+- (BOOL)shouldLogAtLevel:(int64_t)level forAccountInfoProvider:(id)provider
 {
   v19 = *MEMORY[0x277D85DE8];
-  [(CoreDAVLogging *)self _delegatesToLogForProvider:a4];
+  [(CoreDAVLogging *)self _delegatesToLogForProvider:provider];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -289,7 +289,7 @@ void __45__CoreDAVLogging__delegatesToLogForProvider___block_invoke(void *a1)
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        if ((objc_opt_respondsToSelector() & 1) != 0 && [v10 coreDAVLogLevel] >= a3)
+        if ((objc_opt_respondsToSelector() & 1) != 0 && [v10 coreDAVLogLevel] >= level)
         {
           v11 = 1;
           goto LABEL_12;
@@ -313,10 +313,10 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)_shouldOutputAtLevel:(int64_t)a3 forAccountInfoProvider:(id)a4
+- (BOOL)_shouldOutputAtLevel:(int64_t)level forAccountInfoProvider:(id)provider
 {
   v19 = *MEMORY[0x277D85DE8];
-  [(CoreDAVLogging *)self _delegatesToLogForProvider:a4];
+  [(CoreDAVLogging *)self _delegatesToLogForProvider:provider];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -336,7 +336,7 @@ LABEL_12:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        if ((objc_opt_respondsToSelector() & 1) != 0 && [v10 coreDAVOutputLevel] >= a3)
+        if ((objc_opt_respondsToSelector() & 1) != 0 && [v10 coreDAVOutputLevel] >= level)
         {
           v11 = 1;
           goto LABEL_12;
@@ -360,9 +360,9 @@ LABEL_12:
   return v11;
 }
 
-- (id)delegatesToLogTransmittedDataForAccountInfoProvider:(id)a3
+- (id)delegatesToLogTransmittedDataForAccountInfoProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -374,10 +374,10 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = __70__CoreDAVLogging_delegatesToLogTransmittedDataForAccountInfoProvider___block_invoke;
   block[3] = &unk_278E31090;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
-  v10 = v4;
-  v6 = v4;
+  v10 = providerCopy;
+  v6 = providerCopy;
   dispatch_sync(delegateMuckingQueue, block);
   v7 = v14[5];
 
@@ -411,21 +411,21 @@ void __70__CoreDAVLogging_delegatesToLogTransmittedDataForAccountInfoProvider___
   }
 }
 
-- (id)logHandleForAccountInfoProvider:(id)a3
+- (id)logHandleForAccountInfoProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
-  v5 = [v4 accountID];
-  v6 = v5;
+  accountID = [providerCopy accountID];
+  v6 = accountID;
   v7 = @"GenericDelegate";
-  if (v5)
+  if (accountID)
   {
-    v7 = v5;
+    v7 = accountID;
   }
 
   v8 = v7;
@@ -440,11 +440,11 @@ void __70__CoreDAVLogging_delegatesToLogTransmittedDataForAccountInfoProvider___
   v10 = v8;
   v14 = v10;
   dispatch_sync(delegateMuckingQueue, block);
-  v11 = [v17[5] logHandle];
+  logHandle = [v17[5] logHandle];
 
   _Block_object_dispose(&v16, 8);
 
-  return v11;
+  return logHandle;
 }
 
 void __50__CoreDAVLogging_logHandleForAccountInfoProvider___block_invoke(void *a1)
@@ -467,17 +467,17 @@ void __50__CoreDAVLogging_logHandleForAccountInfoProvider___block_invoke(void *a
   }
 }
 
-- (void)logDiagnosticForProvider:(id)a3 withLevel:(int64_t)a4 format:(id)a5 args:(char *)a6
+- (void)logDiagnosticForProvider:(id)provider withLevel:(int64_t)level format:(id)format args:(char *)args
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = [(CoreDAVLogging *)self shouldLogAtLevel:a4 forAccountInfoProvider:v10];
-  v13 = [(CoreDAVLogging *)self _shouldOutputAtLevel:a4 forAccountInfoProvider:v10];
+  providerCopy = provider;
+  formatCopy = format;
+  v12 = [(CoreDAVLogging *)self shouldLogAtLevel:level forAccountInfoProvider:providerCopy];
+  v13 = [(CoreDAVLogging *)self _shouldOutputAtLevel:level forAccountInfoProvider:providerCopy];
   v14 = v13;
   if (v12 || v13)
   {
-    v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v11 arguments:a6];
+    v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:formatCopy arguments:args];
     v16 = v15;
     if (v14)
     {
@@ -486,9 +486,9 @@ void __50__CoreDAVLogging_logHandleForAccountInfoProvider___block_invoke(void *a
 
     if (v12)
     {
-      v26 = v11;
-      v27 = v10;
-      v17 = [(CoreDAVLogging *)self _delegatesToLogForProvider:v10];
+      v26 = formatCopy;
+      v27 = providerCopy;
+      v17 = [(CoreDAVLogging *)self _delegatesToLogForProvider:providerCopy];
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
@@ -510,18 +510,18 @@ void __50__CoreDAVLogging_logHandleForAccountInfoProvider___block_invoke(void *a
             v22 = *(*(&v28 + 1) + 8 * i);
             if (objc_opt_respondsToSelector())
             {
-              [v22 coreDAVLogDiagnosticMessage:v16 atLevel:a4];
+              [v22 coreDAVLogDiagnosticMessage:v16 atLevel:level];
             }
 
             else if (objc_opt_respondsToSelector())
             {
-              v23 = [v22 logHandle];
-              v24 = oldLevelToOSLogLevel[a4];
-              if (os_log_type_enabled(v23, v24))
+              logHandle = [v22 logHandle];
+              v24 = oldLevelToOSLogLevel[level];
+              if (os_log_type_enabled(logHandle, v24))
               {
                 *buf = 138412290;
                 v33 = v16;
-                _os_log_impl(&dword_2452FB000, v23, v24, "%@", buf, 0xCu);
+                _os_log_impl(&dword_2452FB000, logHandle, v24, "%@", buf, 0xCu);
               }
             }
           }
@@ -532,8 +532,8 @@ void __50__CoreDAVLogging_logHandleForAccountInfoProvider___block_invoke(void *a
         while (v19);
       }
 
-      v11 = v26;
-      v10 = v27;
+      formatCopy = v26;
+      providerCopy = v27;
     }
   }
 

@@ -1,45 +1,45 @@
 @interface HMAccessoryCategory
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isTelevisionAccessoryCategory;
 - (BOOL)isWiFiRouterAccessoryCategory;
 - (HMAccessoryCategory)init;
-- (HMAccessoryCategory)initWithCoder:(id)a3;
-- (HMAccessoryCategory)initWithType:(id)a3 name:(id)a4;
+- (HMAccessoryCategory)initWithCoder:(id)coder;
+- (HMAccessoryCategory)initWithType:(id)type name:(id)name;
 - (NSString)description;
 - (NSString)localizedDescription;
 - (id)dumpState;
 - (id)localizedDescriptionPlural;
 - (id)uniqueIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMAccessoryCategory
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMAccessoryCategory *)self categoryType];
-  [v4 encodeObject:v5 forKey:@"HM.accessoryCategoryType"];
+  coderCopy = coder;
+  categoryType = [(HMAccessoryCategory *)self categoryType];
+  [coderCopy encodeObject:categoryType forKey:@"HM.accessoryCategoryType"];
 
-  v6 = [(HMAccessoryCategory *)self name];
-  [v4 encodeObject:v6 forKey:@"HM.accessoryCategoryName"];
+  name = [(HMAccessoryCategory *)self name];
+  [coderCopy encodeObject:name forKey:@"HM.accessoryCategoryName"];
 }
 
-- (HMAccessoryCategory)initWithCoder:(id)a3
+- (HMAccessoryCategory)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.accessoryCategoryType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.accessoryCategoryName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.accessoryCategoryType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.accessoryCategoryName"];
 
   v7 = [(HMAccessoryCategory *)self initWithType:v5 name:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -49,7 +49,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -60,13 +60,13 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMAccessoryCategory *)self categoryType];
-      v8 = [(HMAccessoryCategory *)v6 categoryType];
-      if ([v7 isEqualToString:v8])
+      categoryType = [(HMAccessoryCategory *)self categoryType];
+      categoryType2 = [(HMAccessoryCategory *)v6 categoryType];
+      if ([categoryType isEqualToString:categoryType2])
       {
-        v9 = [(HMAccessoryCategory *)self name];
-        v10 = [(HMAccessoryCategory *)v6 name];
-        v11 = [v9 isEqualToString:v10];
+        name = [(HMAccessoryCategory *)self name];
+        name2 = [(HMAccessoryCategory *)v6 name];
+        v11 = [name isEqualToString:name2];
       }
 
       else
@@ -86,8 +86,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMAccessoryCategory *)self categoryType];
-  v3 = [v2 hash];
+  categoryType = [(HMAccessoryCategory *)self categoryType];
+  v3 = [categoryType hash];
 
   return v3;
 }
@@ -96,9 +96,9 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(HMAccessoryCategory *)self name];
-  v6 = [(HMAccessoryCategory *)self categoryType];
-  v7 = [v3 stringWithFormat:@"<%@ name = %@, type = %@>", v4, v5, v6];
+  name = [(HMAccessoryCategory *)self name];
+  categoryType = [(HMAccessoryCategory *)self categoryType];
+  v7 = [v3 stringWithFormat:@"<%@ name = %@, type = %@>", v4, name, categoryType];
 
   return v7;
 }
@@ -106,10 +106,10 @@
 - (id)dumpState
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(HMAccessoryCategory *)self name];
-  v5 = [(HMAccessoryCategory *)self localizedDescription];
-  v6 = [(HMAccessoryCategory *)self categoryType];
-  v7 = [v3 stringWithFormat:@"name: %@  type: %@(%@)", v4, v5, v6];
+  name = [(HMAccessoryCategory *)self name];
+  localizedDescription = [(HMAccessoryCategory *)self localizedDescription];
+  categoryType = [(HMAccessoryCategory *)self categoryType];
+  v7 = [v3 stringWithFormat:@"name: %@  type: %@(%@)", name, localizedDescription, categoryType];
 
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObject:v7 forKey:*MEMORY[0x1E69A2970]];
 
@@ -118,32 +118,32 @@
 
 - (BOOL)isWiFiRouterAccessoryCategory
 {
-  v2 = [(HMAccessoryCategory *)self categoryType];
-  v3 = [v2 isEqualToString:@"337635B4-552A-48AD-A38D-DD2D5E826C9A"];
+  categoryType = [(HMAccessoryCategory *)self categoryType];
+  v3 = [categoryType isEqualToString:@"337635B4-552A-48AD-A38D-DD2D5E826C9A"];
 
   return v3;
 }
 
 - (BOOL)isTelevisionAccessoryCategory
 {
-  v3 = [(HMAccessoryCategory *)self categoryType];
-  if ([v3 isEqualToString:@"830C0952-7CD8-44FB-B0C0-DA4EDB0F32A9"])
+  categoryType = [(HMAccessoryCategory *)self categoryType];
+  if ([categoryType isEqualToString:@"830C0952-7CD8-44FB-B0C0-DA4EDB0F32A9"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(HMAccessoryCategory *)self categoryType];
-    if ([v5 isEqualToString:@"FB953A08-6CDD-44E0-B011-CFAC559A3CFB"])
+    categoryType2 = [(HMAccessoryCategory *)self categoryType];
+    if ([categoryType2 isEqualToString:@"FB953A08-6CDD-44E0-B011-CFAC559A3CFB"])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(HMAccessoryCategory *)self categoryType];
-      v4 = [v6 isEqualToString:@"B0C866C4-3E25-4F6A-8476-A8A3B579A86E"];
+      categoryType3 = [(HMAccessoryCategory *)self categoryType];
+      v4 = [categoryType3 isEqualToString:@"B0C866C4-3E25-4F6A-8476-A8A3B579A86E"];
     }
   }
 
@@ -152,8 +152,8 @@
 
 - (id)localizedDescriptionPlural
 {
-  v2 = [(HMAccessoryCategory *)self categoryType];
-  v3 = pluralLocalizationKeyForAccessoryCategoryType(v2);
+  categoryType = [(HMAccessoryCategory *)self categoryType];
+  v3 = pluralLocalizationKeyForAccessoryCategoryType(categoryType);
 
   v4 = +[HMLocalization sharedManager];
   v5 = [v4 getLocalizedOrCustomString:v3];
@@ -163,8 +163,8 @@
 
 - (NSString)localizedDescription
 {
-  v2 = [(HMAccessoryCategory *)self categoryType];
-  v3 = localizationKeyForAccessoryCategoryType(v2);
+  categoryType = [(HMAccessoryCategory *)self categoryType];
+  v3 = localizationKeyForAccessoryCategoryType(categoryType);
 
   v4 = +[HMLocalization sharedManager];
   v5 = [v4 getLocalizedOrCustomString:v3];
@@ -175,24 +175,24 @@
 - (id)uniqueIdentifier
 {
   v3 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v4 = [(HMAccessoryCategory *)self categoryType];
-  v5 = [v3 initWithUUIDString:v4];
+  categoryType = [(HMAccessoryCategory *)self categoryType];
+  v5 = [v3 initWithUUIDString:categoryType];
 
   return v5;
 }
 
-- (HMAccessoryCategory)initWithType:(id)a3 name:(id)a4
+- (HMAccessoryCategory)initWithType:(id)type name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(__CFString *)v6 isEqualToString:@"8C1F6C9C-18D3-4C74-BA43-9380B6ACF64"])
+  typeCopy = type;
+  nameCopy = name;
+  if ([(__CFString *)typeCopy isEqualToString:@"8C1F6C9C-18D3-4C74-BA43-9380B6ACF64"])
   {
     v8 = @"830C0952-7CD8-44FB-B0C0-DA4EDB0F32A9";
   }
 
   else
   {
-    v8 = v6;
+    v8 = typeCopy;
   }
 
   v9 = v8;
@@ -203,7 +203,7 @@
   if (v10)
   {
     objc_storeStrong(&v10->_categoryType, v8);
-    objc_storeStrong(&v11->_name, a4);
+    objc_storeStrong(&v11->_name, name);
   }
 
   return v11;

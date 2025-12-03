@@ -1,21 +1,21 @@
 @interface ShadowView
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ShadowView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E30A6CC();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E30A894(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24E30A894(change);
 }
 
 @end

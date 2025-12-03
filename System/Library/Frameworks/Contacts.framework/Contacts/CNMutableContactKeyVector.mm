@@ -1,14 +1,14 @@
 @interface CNMutableContactKeyVector
-- (CNMutableContactKeyVector)initWithKeyVector:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CNMutableContactKeyVector)initWithKeyVector:(id)vector;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)freeze;
-- (void)addKey:(id)a3;
-- (void)addKeys:(id)a3;
-- (void)intersectKeyVector:(id)a3;
-- (void)minusKeyVector:(id)a3;
-- (void)subtractKey:(id)a3;
-- (void)subtractKeys:(id)a3;
-- (void)unionKeyVector:(id)a3;
+- (void)addKey:(id)key;
+- (void)addKeys:(id)keys;
+- (void)intersectKeyVector:(id)vector;
+- (void)minusKeyVector:(id)vector;
+- (void)subtractKey:(id)key;
+- (void)subtractKeys:(id)keys;
+- (void)unionKeyVector:(id)vector;
 @end
 
 @implementation CNMutableContactKeyVector
@@ -20,17 +20,17 @@
   return self;
 }
 
-- (CNMutableContactKeyVector)initWithKeyVector:(id)a3
+- (CNMutableContactKeyVector)initWithKeyVector:(id)vector
 {
-  v4 = a3;
+  vectorCopy = vector;
   v8.receiver = self;
   v8.super_class = CNMutableContactKeyVector;
   v5 = [(CNContactKeyVector *)&v8 initWithKeys:MEMORY[0x1E695E0F0]];
   if (v5)
   {
-    if (v4)
+    if (vectorCopy)
     {
-      *(v5 + 8) = *[v4 _bitBuckets];
+      *(v5 + 8) = *[vectorCopy _bitBuckets];
     }
 
     v6 = v5;
@@ -39,7 +39,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = +[CNContactKeyVector keyVector];
   if ([(CNContactKeyVector *)self isEqualToKeyVector:v4])
@@ -52,7 +52,7 @@
     if (![(CNContactKeyVector *)self containsAllKeys])
     {
       v7 = [(CNMutableContactKeyVector *)self mutableCopy];
-      v6 = [v7 freeze];
+      freeze = [v7 freeze];
 
       goto LABEL_7;
     }
@@ -60,53 +60,53 @@
     v5 = +[CNContactKeyVector keyVectorWithAllKeys];
   }
 
-  v6 = v5;
+  freeze = v5;
 LABEL_7:
 
-  return v6;
+  return freeze;
 }
 
-- (void)unionKeyVector:(id)a3
+- (void)unionKeyVector:(id)vector
 {
-  v4 = a3;
-  v7 = v4;
-  if (!v4)
+  vectorCopy = vector;
+  v7 = vectorCopy;
+  if (!vectorCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"key vector to union must be non-nil"];
-    v4 = 0;
+    vectorCopy = 0;
   }
 
-  v5 = [v4 _bitBuckets];
+  _bitBuckets = [vectorCopy _bitBuckets];
   v6 = self->super._bitBuckets[1];
-  self->super._bitBuckets[0] |= *v5;
-  self->super._bitBuckets[1] = v6 | v5[1];
+  self->super._bitBuckets[0] |= *_bitBuckets;
+  self->super._bitBuckets[1] = v6 | _bitBuckets[1];
 }
 
-- (void)intersectKeyVector:(id)a3
+- (void)intersectKeyVector:(id)vector
 {
-  v4 = a3;
-  v7 = v4;
-  if (!v4)
+  vectorCopy = vector;
+  v7 = vectorCopy;
+  if (!vectorCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"key vector to intersect must be non-nil"];
-    v4 = 0;
+    vectorCopy = 0;
   }
 
-  v5 = [v4 _bitBuckets];
+  _bitBuckets = [vectorCopy _bitBuckets];
   v6 = self->super._bitBuckets[1];
-  self->super._bitBuckets[0] &= *v5;
-  self->super._bitBuckets[1] = v6 & v5[1];
+  self->super._bitBuckets[0] &= *_bitBuckets;
+  self->super._bitBuckets[1] = v6 & _bitBuckets[1];
 }
 
-- (void)addKeys:(id)a3
+- (void)addKeys:(id)keys
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [keysCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -119,7 +119,7 @@ LABEL_7:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keysCopy);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -153,31 +153,31 @@ LABEL_13:
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [keysCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)addKey:(id)a3
+- (void)addKey:(id)key
 {
-  v4 = a3;
-  key = v4;
-  if (v4)
+  keyCopy = key;
+  key = keyCopy;
+  if (keyCopy)
   {
     if (CNContactKeyVectorPropertyKeysToIndicesByPointer_onceToken == -1)
     {
-      v5 = v4;
+      keyCopy2 = keyCopy;
     }
 
     else
     {
       [CNContactKeyVector containsKey:];
-      v5 = key;
+      keyCopy2 = key;
     }
 
-    Value = CFDictionaryGetValue(CNContactKeyVectorPropertyKeysToIndicesByPointer_map, v5);
+    Value = CFDictionaryGetValue(CNContactKeyVectorPropertyKeysToIndicesByPointer_map, keyCopy2);
     if (Value)
     {
       goto LABEL_8;
@@ -197,40 +197,40 @@ LABEL_8:
   }
 }
 
-- (void)minusKeyVector:(id)a3
+- (void)minusKeyVector:(id)vector
 {
-  v4 = a3;
-  v7 = v4;
-  if (!v4)
+  vectorCopy = vector;
+  v7 = vectorCopy;
+  if (!vectorCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"key vector to subtract must be non-nil"];
-    v4 = 0;
+    vectorCopy = 0;
   }
 
-  v5 = [v4 _bitBuckets];
+  _bitBuckets = [vectorCopy _bitBuckets];
   v6 = self->super._bitBuckets[1];
-  self->super._bitBuckets[0] &= ~*v5;
-  self->super._bitBuckets[1] = v6 & ~v5[1];
+  self->super._bitBuckets[0] &= ~*_bitBuckets;
+  self->super._bitBuckets[1] = v6 & ~_bitBuckets[1];
 }
 
-- (void)subtractKey:(id)a3
+- (void)subtractKey:(id)key
 {
-  v4 = a3;
-  key = v4;
-  if (v4)
+  keyCopy = key;
+  key = keyCopy;
+  if (keyCopy)
   {
     if (CNContactKeyVectorPropertyKeysToIndicesByPointer_onceToken == -1)
     {
-      v5 = v4;
+      keyCopy2 = keyCopy;
     }
 
     else
     {
       [CNContactKeyVector containsKey:];
-      v5 = key;
+      keyCopy2 = key;
     }
 
-    Value = CFDictionaryGetValue(CNContactKeyVectorPropertyKeysToIndicesByPointer_map, v5);
+    Value = CFDictionaryGetValue(CNContactKeyVectorPropertyKeysToIndicesByPointer_map, keyCopy2);
     if (Value)
     {
       goto LABEL_8;
@@ -250,15 +250,15 @@ LABEL_8:
   }
 }
 
-- (void)subtractKeys:(id)a3
+- (void)subtractKeys:(id)keys
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [keysCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -271,7 +271,7 @@ LABEL_8:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keysCopy);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -305,7 +305,7 @@ LABEL_13:
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [keysCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);

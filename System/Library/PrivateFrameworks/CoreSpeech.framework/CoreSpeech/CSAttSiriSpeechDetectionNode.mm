@@ -2,12 +2,12 @@
 - (CSAttSiriController)attSiriController;
 - (CSAttSiriOSDNode)osdNode;
 - (CSAttSiriSpeechDetectionNode)init;
-- (CSAttSiriSpeechDetectionNode)initWithAttSiriController:(id)a3;
+- (CSAttSiriSpeechDetectionNode)initWithAttSiriController:(id)controller;
 - (CSAttSiriSpeechDetectionNodeDelegate)delegate;
 - (void)_startActivation;
-- (void)addReceiver:(id)a3;
-- (void)attSiriNode:(id)a3 didUpdateOSDFeatures:(id)a4 withFrameDurationMs:(double)a5 withMHID:(id)a6;
-- (void)registerOSDNode:(id)a3;
+- (void)addReceiver:(id)receiver;
+- (void)attSiriNode:(id)node didUpdateOSDFeatures:(id)features withFrameDurationMs:(double)ms withMHID:(id)d;
+- (void)registerOSDNode:(id)node;
 - (void)start;
 - (void)stop;
 @end
@@ -51,9 +51,9 @@
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_osdNode);
-    v5 = [WeakRetained audioStartSampleCount];
+    audioStartSampleCount = [WeakRetained audioStartSampleCount];
     +[CSConfig inputRecordingSampleRate];
-    v7 = (v5 + v3 * v6);
+    v7 = (audioStartSampleCount + v3 * v6);
 
     v8 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -71,11 +71,11 @@
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [(CSAttSiriSpeechDetectionNode *)self startDetectionTime];
+      startDetectionTime = [(CSAttSiriSpeechDetectionNode *)self startDetectionTime];
       v15 = 136315650;
       v16 = "[CSAttSiriSpeechDetectionNode _startActivation]";
       v17 = 2048;
-      v18 = v12;
+      v18 = startDetectionTime;
       v19 = 2048;
       v20 = v9;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s audio started at %llu, speech started at: %llu", &v15, 0x20u);
@@ -84,22 +84,22 @@
     v13 = objc_alloc_init(CSAttSiriAttendingTriggerEventInfo);
     [(CSAttSiriAttendingTriggerEventInfo *)v13 setTriggerMachTime:v9];
     [(CSAttSiriAttendingTriggerEventInfo *)v13 setTriggerAbsStartSampleId:v7];
-    v14 = [(CSAttSiriSpeechDetectionNode *)self delegate];
-    [v14 attSiriNode:self didDetectSpeechWithTriggerInfo:v13];
+    delegate = [(CSAttSiriSpeechDetectionNode *)self delegate];
+    [delegate attSiriNode:self didDetectSpeechWithTriggerInfo:v13];
   }
 }
 
-- (void)attSiriNode:(id)a3 didUpdateOSDFeatures:(id)a4 withFrameDurationMs:(double)a5 withMHID:(id)a6
+- (void)attSiriNode:(id)node didUpdateOSDFeatures:(id)features withFrameDurationMs:(double)ms withMHID:(id)d
 {
-  v7 = a4;
+  featuresCopy = features;
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100039CF0;
   v10[3] = &unk_100253C48;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = featuresCopy;
+  v9 = featuresCopy;
   dispatch_async(queue, v10);
 }
 
@@ -125,28 +125,28 @@
   dispatch_async(queue, block);
 }
 
-- (void)registerOSDNode:(id)a3
+- (void)registerOSDNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003A060;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nodeCopy;
+  v6 = nodeCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addReceiver:(id)a3
+- (void)addReceiver:(id)receiver
 {
-  v4 = a3;
-  if (![(NSHashTable *)self->_receivers containsObject:v4])
+  receiverCopy = receiver;
+  if (![(NSHashTable *)self->_receivers containsObject:receiverCopy])
   {
-    if ([v4 conformsToProtocol:&OBJC_PROTOCOL___CSAttSiriSpeechDetectionNodeDelegate])
+    if ([receiverCopy conformsToProtocol:&OBJC_PROTOCOL___CSAttSiriSpeechDetectionNodeDelegate])
     {
-      [(NSHashTable *)self->_receivers addObject:v4];
+      [(NSHashTable *)self->_receivers addObject:receiverCopy];
     }
 
     else
@@ -157,21 +157,21 @@
         v6 = 136315394;
         v7 = "[CSAttSiriSpeechDetectionNode addReceiver:]";
         v8 = 2112;
-        v9 = v4;
+        v9 = receiverCopy;
         _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%s Unsupported receiver: %@", &v6, 0x16u);
       }
     }
   }
 }
 
-- (CSAttSiriSpeechDetectionNode)initWithAttSiriController:(id)a3
+- (CSAttSiriSpeechDetectionNode)initWithAttSiriController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(CSAttSiriSpeechDetectionNode *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_attSiriController, v4);
+    objc_storeWeak(&v5->_attSiriController, controllerCopy);
   }
 
   return v6;

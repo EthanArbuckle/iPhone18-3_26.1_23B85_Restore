@@ -1,30 +1,30 @@
 @interface MPCallsSearchController
 - (BOOL)sectionNeedsIndexing;
 - (MPCallsSearchController)init;
-- (MPCallsSearchController)initWithRecentsController:(id)a3 searchResultsController:(id)a4;
+- (MPCallsSearchController)initWithRecentsController:(id)controller searchResultsController:(id)resultsController;
 - (NSArray)resultIDs;
 - (NSArray)results;
 - (NSString)sectionTitle;
-- (id)tableView:(id)a3 cellForRowAt:(id)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAt:(id)at;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
 - (id)viewForDetails;
-- (int64_t)configureWith:(id)a3 presentationResultForIndex:(id)a4;
+- (int64_t)configureWith:(id)with presentationResultForIndex:(id)index;
 - (int64_t)maximumNumberOfRowsInSection;
 - (int64_t)numberOfRowsInConsolidatedView;
 - (int64_t)sectionIndex;
 - (unsigned)sectionType;
 - (void)cancelPreviousSearchRequests;
-- (void)highlightMatchedTextIn:(id)a3;
-- (void)registerCellWith:(id)a3;
-- (void)searchWith:(NSString *)a3 searchTokens:(NSArray *)a4 completion:(id)a5;
-- (void)setMaximumNumberOfRowsInSection:(int64_t)a3;
-- (void)setResultIDs:(id)a3;
-- (void)setResults:(id)a3;
-- (void)setSectionIndex:(int64_t)a3;
-- (void)setSectionTitle:(id)a3;
-- (void)setSectionType:(unsigned int)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)highlightMatchedTextIn:(id)in;
+- (void)registerCellWith:(id)with;
+- (void)searchWith:(NSString *)with searchTokens:(NSArray *)tokens completion:(id)completion;
+- (void)setMaximumNumberOfRowsInSection:(int64_t)section;
+- (void)setResultIDs:(id)ds;
+- (void)setResults:(id)results;
+- (void)setSectionIndex:(int64_t)index;
+- (void)setSectionTitle:(id)title;
+- (void)setSectionType:(unsigned int)type;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation MPCallsSearchController
@@ -38,7 +38,7 @@
   return v2;
 }
 
-- (void)setSectionTitle:(id)a3
+- (void)setSectionTitle:(id)title
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -55,11 +55,11 @@
   return *(self + v3);
 }
 
-- (void)setSectionIndex:(int64_t)a3
+- (void)setSectionIndex:(int64_t)index
 {
   v5 = OBJC_IVAR___MPCallsSearchController_sectionIndex;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = index;
 }
 
 - (unsigned)sectionType
@@ -69,11 +69,11 @@
   return *(self + v3);
 }
 
-- (void)setSectionType:(unsigned int)a3
+- (void)setSectionType:(unsigned int)type
 {
   v5 = OBJC_IVAR___MPCallsSearchController_sectionType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (NSArray)resultIDs
@@ -85,7 +85,7 @@
   return v2.super.isa;
 }
 
-- (void)setResultIDs:(id)a3
+- (void)setResultIDs:(id)ds
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = OBJC_IVAR___MPCallsSearchController_resultIDs;
@@ -96,7 +96,7 @@
 - (NSArray)results
 {
   swift_beginAccess();
-  v3 = self;
+  selfCopy = self;
 
   specialized _arrayForceCast<A, B>(_:)(v4);
 
@@ -105,15 +105,15 @@
   return v5.super.isa;
 }
 
-- (void)setResults:(id)a3
+- (void)setResults:(id)results
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   v6 = specialized _arrayForceCast<A, B>(_:)(v4);
 
   v7 = OBJC_IVAR___MPCallsSearchController_recentCalls;
   swift_beginAccess();
-  *(v5 + v7) = v6;
+  *(selfCopy + v7) = v6;
 }
 
 - (int64_t)maximumNumberOfRowsInSection
@@ -123,37 +123,37 @@
   return *(self + v3);
 }
 
-- (void)setMaximumNumberOfRowsInSection:(int64_t)a3
+- (void)setMaximumNumberOfRowsInSection:(int64_t)section
 {
   v5 = OBJC_IVAR___MPCallsSearchController_maximumNumberOfRowsInSection;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = section;
 }
 
-- (MPCallsSearchController)initWithRecentsController:(id)a3 searchResultsController:(id)a4
+- (MPCallsSearchController)initWithRecentsController:(id)controller searchResultsController:(id)resultsController
 {
   ObjectType = swift_getObjectType();
   v7 = objc_allocWithZone(TUFeatureFlags);
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  resultsControllerCopy = resultsController;
   v10 = [v7 init];
   v11 = objc_allocWithZone(ObjectType);
-  v12 = CallsSearchController.init(recentsController:featureFlags:)(v8, v10);
+  v12 = CallsSearchController.init(recentsController:featureFlags:)(controllerCopy, v10);
 
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v12;
 }
 
-- (void)searchWith:(NSString *)a3 searchTokens:(NSArray *)a4 completion:(id)a5
+- (void)searchWith:(NSString *)with searchTokens:(NSArray *)tokens completion:(id)completion
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v9 - 8);
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = with;
+  v13[3] = tokens;
   v13[4] = v12;
   v13[5] = self;
   v14 = type metadata accessor for TaskPriority();
@@ -168,34 +168,34 @@
   v16[3] = 0;
   v16[4] = &_sIeghH_IeAgH_TRTATu;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  withCopy = with;
+  tokensCopy = tokens;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v11, &_sIeAgH_ytIeAgHr_TRTATu, v16);
 }
 
 - (void)cancelPreviousSearchRequests
 {
-  v2 = self;
+  selfCopy = self;
   CallsSearchController.cancelPreviousSearchRequests()();
 }
 
 - (int64_t)numberOfRowsInConsolidatedView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CallsSearchController.numberOfRowsInConsolidatedView()();
 
   return v3;
 }
 
-- (void)registerCellWith:(id)a3
+- (void)registerCellWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  v6 = CallsSearchController.cellConfigurator(for:)(v4);
+  withCopy = with;
+  selfCopy = self;
+  v6 = CallsSearchController.cellConfigurator(for:)(withCopy);
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -203,62 +203,62 @@
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = *(self + OBJC_IVAR___MPCallsSearchController_recentsController);
-  v11 = self;
+  selfCopy = self;
   [v10 continuousScrollingReachedIndexPath:IndexPath.row.getter()];
   (*(v7 + 8))(v9, v6);
 }
 
-- (id)tableView:(id)a3 cellForRowAt:(id)a4
+- (id)tableView:(id)view cellForRowAt:(id)at
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = CallsSearchController.tableView(_:cellForRowAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = CallsSearchController.tableView(_:cellForRowAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  CallsSearchController.tableView(_:didSelectRowAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  CallsSearchController.tableView(_:didSelectRowAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = CallsSearchController.tableView(_:trailingSwipeActionsConfigurationForRowAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = CallsSearchController.tableView(_:trailingSwipeActionsConfigurationForRowAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)highlightMatchedTextIn:(id)a3
+- (void)highlightMatchedTextIn:(id)in
 {
-  v4 = a3;
-  v5 = self;
-  CallsSearchController.highlightMatchedText(in:)(v4);
+  inCopy = in;
+  selfCopy = self;
+  CallsSearchController.highlightMatchedText(in:)(inCopy);
 }
 
 - (BOOL)sectionNeedsIndexing
@@ -272,16 +272,16 @@
   return [v2 shouldReindexCallsDueToDeferredReindexing];
 }
 
-- (int64_t)configureWith:(id)a3 presentationResultForIndex:(id)a4
+- (int64_t)configureWith:(id)with presentationResultForIndex:(id)index
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = CallsSearchController.configure(cardController:presentationResultForIndex:)(v10, v9);
+  withCopy = with;
+  selfCopy = self;
+  v12 = CallsSearchController.configure(cardController:presentationResultForIndex:)(withCopy, v9);
 
   (*(v7 + 8))(v9, v6);
   return v12;
@@ -289,7 +289,7 @@
 
 - (id)viewForDetails
 {
-  v2 = self;
+  selfCopy = self;
   v3.super.super.isa = CallsSearchController.viewForDetails()().super.super.isa;
 
   return v3.super.super.isa;

@@ -7,10 +7,10 @@
 
 - (id)bundleDirectory
 {
-  v2 = [(_MUWebBasedPlacecardResourceManager *)self->_manager directoryURL];
-  v3 = [v2 path];
+  directoryURL = [(_MUWebBasedPlacecardResourceManager *)self->_manager directoryURL];
+  path = [directoryURL path];
 
-  return v3;
+  return path;
 }
 
 + (id)sharedInstance

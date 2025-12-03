@@ -1,54 +1,54 @@
 @interface PMLProtoBufTracker
-+ (id)awdTrackerForPlanId:(id)a3;
-+ (id)messageForGradient:(id)a3 scaleFactor:(float)a4 minibatchStats:(id)a5 evaluationMetrics:(id)a6 serverIteration:(unint64_t)a7 modelInfo:(id)a8 numberOfBuckets:(unint64_t)a9;
-+ (id)messageForWeights:(id)a3 scaleFactor:(float)a4 minibatchStats:(id)a5 evaluationMetrics:(id)a6 modelInfo:(id)a7 numberOfBuckets:(unint64_t)a8;
-+ (id)parsecTrackerForPlanId:(id)a3;
-- (PMLProtoBufTracker)initWithAdapter:(id)a3 modelInfo:(id)a4 quantizationBuckets:(unint64_t)a5;
-- (PMLProtoBufTracker)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
-- (id)toPlistWithChunks:(id)a3;
-- (id)trackEvaluationMetrics:(id)a3 minibatchStats:(id)a4;
-- (id)trackGradient:(id)a3 scaleFactor:(float)a4 minibatchStats:(id)a5 evaluationMetrics:(id)a6 serverIteration:(unint64_t)a7;
-- (id)trackPrecisionAtK:(id)a3;
-- (id)trackPrecisionAtK:(id)a3 minibatchStats:(id)a4;
-- (id)trackWeights:(id)a3 scaleFactor:(float)a4 minibatchStats:(id)a5 evaluationMetrics:(id)a6;
++ (id)awdTrackerForPlanId:(id)id;
++ (id)messageForGradient:(id)gradient scaleFactor:(float)factor minibatchStats:(id)stats evaluationMetrics:(id)metrics serverIteration:(unint64_t)iteration modelInfo:(id)info numberOfBuckets:(unint64_t)buckets;
++ (id)messageForWeights:(id)weights scaleFactor:(float)factor minibatchStats:(id)stats evaluationMetrics:(id)metrics modelInfo:(id)info numberOfBuckets:(unint64_t)buckets;
++ (id)parsecTrackerForPlanId:(id)id;
+- (PMLProtoBufTracker)initWithAdapter:(id)adapter modelInfo:(id)info quantizationBuckets:(unint64_t)buckets;
+- (PMLProtoBufTracker)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
+- (id)toPlistWithChunks:(id)chunks;
+- (id)trackEvaluationMetrics:(id)metrics minibatchStats:(id)stats;
+- (id)trackGradient:(id)gradient scaleFactor:(float)factor minibatchStats:(id)stats evaluationMetrics:(id)metrics serverIteration:(unint64_t)iteration;
+- (id)trackPrecisionAtK:(id)k;
+- (id)trackPrecisionAtK:(id)k minibatchStats:(id)stats;
+- (id)trackWeights:(id)weights scaleFactor:(float)factor minibatchStats:(id)stats evaluationMetrics:(id)metrics;
 @end
 
 @implementation PMLProtoBufTracker
 
-- (PMLProtoBufTracker)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (PMLProtoBufTracker)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 objectForKeyedSubscript:@"TRACKER_ADAPTER_CLASS"];
+  contextCopy = context;
+  plistCopy = plist;
+  v10 = [plistCopy objectForKeyedSubscript:@"TRACKER_ADAPTER_CLASS"];
   if (!NSClassFromString(v10))
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    [v18 handleFailureInMethod:a2 object:self file:@"PMLProtoBufTracker.m" lineNumber:218 description:{@"Can't instantiate %@. Unknown class: %@", v20, v10}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLProtoBufTracker.m" lineNumber:218 description:{@"Can't instantiate %@. Unknown class: %@", v20, v10}];
   }
 
-  v11 = [v8 objectForKeyedSubscript:@"planId"];
+  v11 = [contextCopy objectForKeyedSubscript:@"planId"];
 
   if (!v11)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
-    [v21 handleFailureInMethod:a2 object:self file:@"PMLProtoBufTracker.m" lineNumber:219 description:{@"Can't instantiate %@. Missing planId dependency.", v23}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PMLProtoBufTracker.m" lineNumber:219 description:{@"Can't instantiate %@. Missing planId dependency.", v23}];
   }
 
-  v12 = [v8 objectForKeyedSubscript:@"planId"];
+  v12 = [contextCopy objectForKeyedSubscript:@"planId"];
   v13 = [AWDProactiveModelFittingModelInfo modelInfoFromPlanId:v12];
 
   v14 = objc_opt_new();
-  v15 = [v9 objectForKeyedSubscript:@"TRACKER_QUANTIZATION_BUCKETS"];
+  v15 = [plistCopy objectForKeyedSubscript:@"TRACKER_QUANTIZATION_BUCKETS"];
 
   v16 = -[PMLProtoBufTracker initWithAdapter:modelInfo:quantizationBuckets:](self, "initWithAdapter:modelInfo:quantizationBuckets:", v14, v13, [v15 unsignedLongLongValue]);
   return v16;
 }
 
-- (id)toPlistWithChunks:(id)a3
+- (id)toPlistWithChunks:(id)chunks
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v11[0] = @"TRACKER_ADAPTER_CLASS";
@@ -66,27 +66,27 @@
   return v8;
 }
 
-- (id)trackPrecisionAtK:(id)a3 minibatchStats:(id)a4
+- (id)trackPrecisionAtK:(id)k minibatchStats:(id)stats
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  statsCopy = stats;
+  kCopy = k;
   v8 = objc_opt_new();
   v9 = [(AWDProactiveModelFittingModelInfo *)self->_modelInfo copy];
   [v8 setModelInfo:v9];
 
-  v10 = [MEMORY[0x277CBEAA8] date];
-  [v10 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   [v8 setTimestamp:v11];
 
-  [v8 setMinibatchStats:v6];
+  [v8 setMinibatchStats:statsCopy];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __55__PMLProtoBufTracker_trackPrecisionAtK_minibatchStats___block_invoke;
   v17[3] = &unk_279AC06A0;
   v12 = v8;
   v18 = v12;
-  [v7 enumerateKeysAndObjectsUsingBlock:v17];
+  [kCopy enumerateKeysAndObjectsUsingBlock:v17];
 
   v13 = PML_LogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -118,30 +118,30 @@ void __55__PMLProtoBufTracker_trackPrecisionAtK_minibatchStats___block_invoke(ui
   [*(a1 + 32) addPrecisionAtK:v11];
 }
 
-- (id)trackPrecisionAtK:(id)a3
+- (id)trackPrecisionAtK:(id)k
 {
-  v4 = a3;
+  kCopy = k;
   v5 = [AWDProactiveModelFittingMinibatchStats statsWithSize:0 support:0.0];
-  v6 = [(PMLProtoBufTracker *)self trackPrecisionAtK:v4 minibatchStats:v5];
+  v6 = [(PMLProtoBufTracker *)self trackPrecisionAtK:kCopy minibatchStats:v5];
 
   return v6;
 }
 
-- (id)trackEvaluationMetrics:(id)a3 minibatchStats:(id)a4
+- (id)trackEvaluationMetrics:(id)metrics minibatchStats:(id)stats
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  statsCopy = stats;
+  metricsCopy = metrics;
   v8 = objc_opt_new();
   v9 = [(AWDProactiveModelFittingModelInfo *)self->_modelInfo copy];
   [v8 setModelInfo:v9];
 
-  v10 = [MEMORY[0x277CBEAA8] date];
-  [v10 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   [v8 setTimestamp:v11];
 
-  [v8 setMinibatchStats:v6];
-  [v8 setEvaluationMetrics:v7];
+  [v8 setMinibatchStats:statsCopy];
+  [v8 setEvaluationMetrics:metricsCopy];
 
   v12 = PML_LogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -157,16 +157,16 @@ void __55__PMLProtoBufTracker_trackPrecisionAtK_minibatchStats___block_invoke(ui
   return 0;
 }
 
-- (id)trackGradient:(id)a3 scaleFactor:(float)a4 minibatchStats:(id)a5 evaluationMetrics:(id)a6 serverIteration:(unint64_t)a7
+- (id)trackGradient:(id)gradient scaleFactor:(float)factor minibatchStats:(id)stats evaluationMetrics:(id)metrics serverIteration:(unint64_t)iteration
 {
   v25 = *MEMORY[0x277D85DE8];
   modelInfo = self->_modelInfo;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
+  metricsCopy = metrics;
+  statsCopy = stats;
+  gradientCopy = gradient;
   v16 = [(AWDProactiveModelFittingModelInfo *)modelInfo copy];
-  *&v17 = a4;
-  v18 = [PMLProtoBufTracker messageForGradient:v15 scaleFactor:v14 minibatchStats:v13 evaluationMetrics:a7 serverIteration:v16 modelInfo:self->_quantizationNumberOfBuckets numberOfBuckets:v17];
+  *&v17 = factor;
+  v18 = [PMLProtoBufTracker messageForGradient:gradientCopy scaleFactor:statsCopy minibatchStats:metricsCopy evaluationMetrics:iteration serverIteration:v16 modelInfo:self->_quantizationNumberOfBuckets numberOfBuckets:v17];
 
   v19 = PML_LogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -182,16 +182,16 @@ void __55__PMLProtoBufTracker_trackPrecisionAtK_minibatchStats___block_invoke(ui
   return 0;
 }
 
-- (id)trackWeights:(id)a3 scaleFactor:(float)a4 minibatchStats:(id)a5 evaluationMetrics:(id)a6
+- (id)trackWeights:(id)weights scaleFactor:(float)factor minibatchStats:(id)stats evaluationMetrics:(id)metrics
 {
   v23 = *MEMORY[0x277D85DE8];
   modelInfo = self->_modelInfo;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
+  metricsCopy = metrics;
+  statsCopy = stats;
+  weightsCopy = weights;
   v14 = [(AWDProactiveModelFittingModelInfo *)modelInfo copy];
-  *&v15 = a4;
-  v16 = [PMLProtoBufTracker messageForWeights:v13 scaleFactor:v12 minibatchStats:v11 evaluationMetrics:v14 modelInfo:self->_quantizationNumberOfBuckets numberOfBuckets:v15];
+  *&v15 = factor;
+  v16 = [PMLProtoBufTracker messageForWeights:weightsCopy scaleFactor:statsCopy minibatchStats:metricsCopy evaluationMetrics:v14 modelInfo:self->_quantizationNumberOfBuckets numberOfBuckets:v15];
 
   v17 = PML_LogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -207,14 +207,14 @@ void __55__PMLProtoBufTracker_trackPrecisionAtK_minibatchStats___block_invoke(ui
   return 0;
 }
 
-- (PMLProtoBufTracker)initWithAdapter:(id)a3 modelInfo:(id)a4 quantizationBuckets:(unint64_t)a5
+- (PMLProtoBufTracker)initWithAdapter:(id)adapter modelInfo:(id)info quantizationBuckets:(unint64_t)buckets
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (v10)
+  adapterCopy = adapter;
+  infoCopy = info;
+  v12 = infoCopy;
+  if (adapterCopy)
   {
-    if (v11)
+    if (infoCopy)
     {
       goto LABEL_3;
     }
@@ -222,8 +222,8 @@ void __55__PMLProtoBufTracker_trackPrecisionAtK_minibatchStats___block_invoke(ui
 
   else
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PMLProtoBufTracker.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"adapter"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLProtoBufTracker.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"adapter"}];
 
     if (v12)
     {
@@ -231,8 +231,8 @@ void __55__PMLProtoBufTracker_trackPrecisionAtK_minibatchStats___block_invoke(ui
     }
   }
 
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"PMLProtoBufTracker.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"modelInfo"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PMLProtoBufTracker.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"modelInfo"}];
 
 LABEL_3:
   v18.receiver = self;
@@ -241,44 +241,44 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_adapter, a3);
-    objc_storeStrong(&v14->_modelInfo, a4);
-    v14->_quantizationNumberOfBuckets = a5;
+    objc_storeStrong(&v13->_adapter, adapter);
+    objc_storeStrong(&v14->_modelInfo, info);
+    v14->_quantizationNumberOfBuckets = buckets;
   }
 
   return v14;
 }
 
-+ (id)messageForGradient:(id)a3 scaleFactor:(float)a4 minibatchStats:(id)a5 evaluationMetrics:(id)a6 serverIteration:(unint64_t)a7 modelInfo:(id)a8 numberOfBuckets:(unint64_t)a9
++ (id)messageForGradient:(id)gradient scaleFactor:(float)factor minibatchStats:(id)stats evaluationMetrics:(id)metrics serverIteration:(unint64_t)iteration modelInfo:(id)info numberOfBuckets:(unint64_t)buckets
 {
-  v15 = a8;
-  v16 = a6;
-  v17 = a5;
-  v18 = a3;
+  infoCopy = info;
+  metricsCopy = metrics;
+  statsCopy = stats;
+  gradientCopy = gradient;
   v19 = objc_opt_new();
-  [v19 setModelInfo:v15];
+  [v19 setModelInfo:infoCopy];
 
-  v20 = [MEMORY[0x277CBEAA8] date];
-  [v20 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   [v19 setTimestamp:v21];
 
-  [v19 setMinibatchStats:v17];
-  [v19 setEvaluationMetrics:v16];
+  [v19 setMinibatchStats:statsCopy];
+  [v19 setEvaluationMetrics:metricsCopy];
 
-  *&v22 = a4;
+  *&v22 = factor;
   [v19 setGradientScaleFactor:v22];
-  [v19 setIteration:a7];
-  [v18 density];
+  [v19 setIteration:iteration];
+  [gradientCopy density];
   if (v23 >= 0.5)
   {
-    v24 = [AWDProactiveModelFittingQuantizedDenseVector quantizedDenseVectorFromDenseVector:v18 numberOfBuckets:a9];
+    v24 = [AWDProactiveModelFittingQuantizedDenseVector quantizedDenseVectorFromDenseVector:gradientCopy numberOfBuckets:buckets];
 
     [v19 setDenseQuantizedGradient:v24];
   }
 
   else
   {
-    v24 = [AWDProactiveModelFittingQuantizedSparseVector quantizedSparseVectorFromDenseVector:v18 numberOfBuckets:a9];
+    v24 = [AWDProactiveModelFittingQuantizedSparseVector quantizedSparseVectorFromDenseVector:gradientCopy numberOfBuckets:buckets];
 
     [v19 setSparseQuantizedGradient:v24];
   }
@@ -286,35 +286,35 @@ LABEL_3:
   return v19;
 }
 
-+ (id)messageForWeights:(id)a3 scaleFactor:(float)a4 minibatchStats:(id)a5 evaluationMetrics:(id)a6 modelInfo:(id)a7 numberOfBuckets:(unint64_t)a8
++ (id)messageForWeights:(id)weights scaleFactor:(float)factor minibatchStats:(id)stats evaluationMetrics:(id)metrics modelInfo:(id)info numberOfBuckets:(unint64_t)buckets
 {
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a3;
+  infoCopy = info;
+  metricsCopy = metrics;
+  statsCopy = stats;
+  weightsCopy = weights;
   v17 = objc_opt_new();
-  [v17 setModelInfo:v13];
+  [v17 setModelInfo:infoCopy];
 
-  v18 = [MEMORY[0x277CBEAA8] date];
-  [v18 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   [v17 setTimestamp:v19];
 
-  [v17 setMinibatchStats:v15];
-  [v17 setEvaluationMetrics:v14];
+  [v17 setMinibatchStats:statsCopy];
+  [v17 setEvaluationMetrics:metricsCopy];
 
-  *&v20 = a4;
+  *&v20 = factor;
   [v17 setWeightsScaleFactor:v20];
-  [v16 density];
+  [weightsCopy density];
   if (v21 >= 0.5)
   {
-    v22 = [AWDProactiveModelFittingQuantizedDenseVector quantizedDenseVectorFromDenseVector:v16 numberOfBuckets:a8];
+    v22 = [AWDProactiveModelFittingQuantizedDenseVector quantizedDenseVectorFromDenseVector:weightsCopy numberOfBuckets:buckets];
 
     [v17 setDenseQuantizedWeights:v22];
   }
 
   else
   {
-    v22 = [AWDProactiveModelFittingQuantizedSparseVector quantizedSparseVectorFromDenseVector:v16 numberOfBuckets:a8];
+    v22 = [AWDProactiveModelFittingQuantizedSparseVector quantizedSparseVectorFromDenseVector:weightsCopy numberOfBuckets:buckets];
 
     [v17 setSparseQuantizedWeights:v22];
   }
@@ -322,24 +322,24 @@ LABEL_3:
   return v17;
 }
 
-+ (id)parsecTrackerForPlanId:(id)a3
++ (id)parsecTrackerForPlanId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_opt_new();
-  v6 = [AWDProactiveModelFittingModelInfo modelInfoFromPlanId:v4];
+  v6 = [AWDProactiveModelFittingModelInfo modelInfoFromPlanId:idCopy];
 
-  v7 = [[a1 alloc] initWithAdapter:v5 modelInfo:v6];
+  v7 = [[self alloc] initWithAdapter:v5 modelInfo:v6];
 
   return v7;
 }
 
-+ (id)awdTrackerForPlanId:(id)a3
++ (id)awdTrackerForPlanId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_opt_new();
-  v6 = [AWDProactiveModelFittingModelInfo modelInfoFromPlanId:v4];
+  v6 = [AWDProactiveModelFittingModelInfo modelInfoFromPlanId:idCopy];
 
-  v7 = [[a1 alloc] initWithAdapter:v5 modelInfo:v6];
+  v7 = [[self alloc] initWithAdapter:v5 modelInfo:v6];
 
   return v7;
 }

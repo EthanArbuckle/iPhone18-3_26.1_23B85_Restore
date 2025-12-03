@@ -19,51 +19,51 @@
   }
 
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [MEMORY[0x277D75348] labelColor];
-  [v9 setTextColor:v10];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [v9 setTextColor:labelColor];
 
-  v11 = [MEMORY[0x277D75348] clearColor];
-  [v9 setBackgroundColor:v11];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v9 setBackgroundColor:clearColor];
 
-  v12 = [a1 _detailFont];
-  [v9 setFont:v12];
+  _detailFont = [self _detailFont];
+  [v9 setFont:_detailFont];
 
   [v9 setNumberOfLines:0];
   [v9 setText:v8];
 
-  v13 = [MEMORY[0x277D75348] systemGrayColor];
-  [v9 setColor:v13 toSubstring:v7];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [v9 setColor:systemGrayColor toSubstring:v7];
 
-  [a1 addSubview:v9];
+  [self addSubview:v9];
   v14 = MEMORY[0x277CCAAD0];
-  v15 = [a1 detailLabelConstraints];
-  [v14 deactivateConstraints:v15];
+  detailLabelConstraints = [self detailLabelConstraints];
+  [v14 deactivateConstraints:detailLabelConstraints];
 
-  v33 = [v9 widthAnchor];
-  v32 = [a1 widthAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  widthAnchor = [v9 widthAnchor];
+  widthAnchor2 = [self widthAnchor];
+  v31 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v34[0] = v31;
-  v30 = [v9 leftAnchor];
-  v29 = [a1 leftAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  leftAnchor = [v9 leftAnchor];
+  leftAnchor2 = [self leftAnchor];
+  v28 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v34[1] = v28;
-  v16 = [v9 topAnchor];
-  v17 = [a1 headerLabel];
-  v18 = [v17 bottomAnchor];
-  [a1 _labelToDetailPadding];
-  v19 = [v16 constraintEqualToAnchor:v18 constant:?];
+  topAnchor = [v9 topAnchor];
+  headerLabel = [self headerLabel];
+  bottomAnchor = [headerLabel bottomAnchor];
+  [self _labelToDetailPadding];
+  v19 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:?];
   v34[2] = v19;
-  v20 = [v9 bottomAnchor];
-  v21 = [a1 bottomAnchor];
-  [a1 bottomPadding];
-  v23 = [v20 constraintEqualToAnchor:v21 constant:-v22];
+  bottomAnchor2 = [v9 bottomAnchor];
+  bottomAnchor3 = [self bottomAnchor];
+  [self bottomPadding];
+  v23 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-v22];
   v34[3] = v23;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:4];
-  [a1 setDetailLabelConstraints:v24];
+  [self setDetailLabelConstraints:v24];
 
   v25 = MEMORY[0x277CCAAD0];
-  v26 = [a1 detailLabelConstraints];
-  [v25 activateConstraints:v26];
+  detailLabelConstraints2 = [self detailLabelConstraints];
+  [v25 activateConstraints:detailLabelConstraints2];
 
   v27 = *MEMORY[0x277D85DE8];
 }
@@ -73,13 +73,13 @@
   if (objc_opt_respondsToSelector())
   {
 
-    return [a1 headerLabelToDetailLabelPadding];
+    return [self headerLabelToDetailLabelPadding];
   }
 
   else
   {
 
-    return [a1 headerLabelToDetailAndSubtitleLabelPadding];
+    return [self headerLabelToDetailAndSubtitleLabelPadding];
   }
 }
 
@@ -96,49 +96,49 @@
   }
 
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [MEMORY[0x277D75348] labelColor];
-  [v9 setTextColor:v10];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [v9 setTextColor:labelColor];
 
-  v11 = [MEMORY[0x277D75348] clearColor];
-  [v9 setBackgroundColor:v11];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v9 setBackgroundColor:clearColor];
 
-  v12 = [a1 _detailFont];
-  [v9 setFont:v12];
+  _detailFont = [self _detailFont];
+  [v9 setFont:_detailFont];
 
   [v9 setNumberOfLines:0];
   [v9 setText:v8];
 
   [v9 setBoldSubString:v7];
-  [a1 addSubview:v9];
+  [self addSubview:v9];
   v13 = MEMORY[0x277CCAAD0];
-  v14 = [a1 detailLabelConstraints];
-  [v13 deactivateConstraints:v14];
+  detailLabelConstraints = [self detailLabelConstraints];
+  [v13 deactivateConstraints:detailLabelConstraints];
 
-  v32 = [v9 widthAnchor];
-  v31 = [a1 widthAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  widthAnchor = [v9 widthAnchor];
+  widthAnchor2 = [self widthAnchor];
+  v30 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v33[0] = v30;
-  v29 = [v9 leftAnchor];
-  v28 = [a1 leftAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  leftAnchor = [v9 leftAnchor];
+  leftAnchor2 = [self leftAnchor];
+  v27 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v33[1] = v27;
-  v15 = [v9 topAnchor];
-  v16 = [a1 headerLabel];
-  v17 = [v16 bottomAnchor];
-  [a1 _labelToDetailPadding];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:?];
+  topAnchor = [v9 topAnchor];
+  headerLabel = [self headerLabel];
+  bottomAnchor = [headerLabel bottomAnchor];
+  [self _labelToDetailPadding];
+  v18 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:?];
   v33[2] = v18;
-  v19 = [v9 bottomAnchor];
-  v20 = [a1 bottomAnchor];
-  [a1 bottomPadding];
-  v22 = [v19 constraintEqualToAnchor:v20 constant:-v21];
+  bottomAnchor2 = [v9 bottomAnchor];
+  bottomAnchor3 = [self bottomAnchor];
+  [self bottomPadding];
+  v22 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-v21];
   v33[3] = v22;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:4];
-  [a1 setDetailLabelConstraints:v23];
+  [self setDetailLabelConstraints:v23];
 
   v24 = MEMORY[0x277CCAAD0];
-  v25 = [a1 detailLabelConstraints];
-  [v24 activateConstraints:v25];
+  detailLabelConstraints2 = [self detailLabelConstraints];
+  [v24 activateConstraints:detailLabelConstraints2];
 
   v26 = *MEMORY[0x277D85DE8];
 }

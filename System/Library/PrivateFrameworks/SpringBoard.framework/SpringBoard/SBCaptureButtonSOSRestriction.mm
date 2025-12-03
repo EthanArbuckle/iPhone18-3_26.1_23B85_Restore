@@ -1,16 +1,16 @@
 @interface SBCaptureButtonSOSRestriction
-- (SBCaptureButtonSOSRestriction)initWithCoordinator:(id)a3;
-- (void)SOSEventHandlerStateDidChange:(id)a3;
+- (SBCaptureButtonSOSRestriction)initWithCoordinator:(id)coordinator;
+- (void)SOSEventHandlerStateDidChange:(id)change;
 - (void)invalidate;
 @end
 
 @implementation SBCaptureButtonSOSRestriction
 
-- (SBCaptureButtonSOSRestriction)initWithCoordinator:(id)a3
+- (SBCaptureButtonSOSRestriction)initWithCoordinator:(id)coordinator
 {
   v9.receiver = self;
   v9.super_class = SBCaptureButtonSOSRestriction;
-  v3 = [(SBCaptureButtonInternalRestrictionGlue *)&v9 initWithCoordinator:a3];
+  v3 = [(SBCaptureButtonInternalRestrictionGlue *)&v9 initWithCoordinator:coordinator];
   if (v3)
   {
     v4 = +[SBSOSEventHandler sharedInstance];
@@ -35,9 +35,9 @@
   self->_SOSMonitoringAssertion = 0;
 }
 
-- (void)SOSEventHandlerStateDidChange:(id)a3
+- (void)SOSEventHandlerStateDidChange:(id)change
 {
-  if ([a3 isSOSActive])
+  if ([change isSOSActive])
   {
 
     [(SBCaptureButtonInternalRestrictionGlue *)self acquireRestriction:@"SOSIsActive"];

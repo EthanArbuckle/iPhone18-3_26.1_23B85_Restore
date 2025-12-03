@@ -1,15 +1,15 @@
 @interface SGStructuredEventCoreMLInputWrapper
-- (SGStructuredEventCoreMLInputWrapper)initWithL:(id)a3 D:(id)a4 I:(id)a5 N:(id)a6 W:(id)a7;
-- (SGStructuredEventCoreMLInputWrapper)initWithL:(id)a3 D:(id)a4 I:(id)a5 N:(id)a6 W:(id)a7 bi_lstm_0_h_in:(id)a8 bi_lstm_0_c_in:(id)a9 bi_lstm_0_h_in_rev:(id)a10 bi_lstm_0_c_in_rev:(id)a11;
-- (id)featureValueForName:(id)a3;
+- (SGStructuredEventCoreMLInputWrapper)initWithL:(id)l D:(id)d I:(id)i N:(id)n W:(id)w;
+- (SGStructuredEventCoreMLInputWrapper)initWithL:(id)l D:(id)d I:(id)i N:(id)n W:(id)w bi_lstm_0_h_in:(id)bi_lstm_0_h_in bi_lstm_0_c_in:(id)bi_lstm_0_c_in bi_lstm_0_h_in_rev:(id)self0 bi_lstm_0_c_in_rev:(id)self1;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation SGStructuredEventCoreMLInputWrapper
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"L"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"L"])
   {
     v5 = 8;
 LABEL_19:
@@ -17,49 +17,49 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ([v4 isEqualToString:@"D"])
+  if ([nameCopy isEqualToString:@"D"])
   {
     v5 = 16;
     goto LABEL_19;
   }
 
-  if ([v4 isEqualToString:@"I"])
+  if ([nameCopy isEqualToString:@"I"])
   {
     v5 = 24;
     goto LABEL_19;
   }
 
-  if ([v4 isEqualToString:@"N"])
+  if ([nameCopy isEqualToString:@"N"])
   {
     v5 = 32;
     goto LABEL_19;
   }
 
-  if ([v4 isEqualToString:@"W"])
+  if ([nameCopy isEqualToString:@"W"])
   {
     v5 = 40;
     goto LABEL_19;
   }
 
-  if ([v4 isEqualToString:@"bi_lstm_0_h_in"])
+  if ([nameCopy isEqualToString:@"bi_lstm_0_h_in"])
   {
     v5 = 48;
     goto LABEL_19;
   }
 
-  if ([v4 isEqualToString:@"bi_lstm_0_c_in"])
+  if ([nameCopy isEqualToString:@"bi_lstm_0_c_in"])
   {
     v5 = 56;
     goto LABEL_19;
   }
 
-  if ([v4 isEqualToString:@"bi_lstm_0_h_in_rev"])
+  if ([nameCopy isEqualToString:@"bi_lstm_0_h_in_rev"])
   {
     v5 = 64;
     goto LABEL_19;
   }
 
-  if ([v4 isEqualToString:@"bi_lstm_0_c_in_rev"])
+  if ([nameCopy isEqualToString:@"bi_lstm_0_c_in_rev"])
   {
     v5 = 72;
     goto LABEL_19;
@@ -71,47 +71,47 @@ LABEL_20:
   return v6;
 }
 
-- (SGStructuredEventCoreMLInputWrapper)initWithL:(id)a3 D:(id)a4 I:(id)a5 N:(id)a6 W:(id)a7 bi_lstm_0_h_in:(id)a8 bi_lstm_0_c_in:(id)a9 bi_lstm_0_h_in_rev:(id)a10 bi_lstm_0_c_in_rev:(id)a11
+- (SGStructuredEventCoreMLInputWrapper)initWithL:(id)l D:(id)d I:(id)i N:(id)n W:(id)w bi_lstm_0_h_in:(id)bi_lstm_0_h_in bi_lstm_0_c_in:(id)bi_lstm_0_c_in bi_lstm_0_h_in_rev:(id)self0 bi_lstm_0_c_in_rev:(id)self1
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v21 = a9;
-  v18 = a10;
-  v19 = a11;
+  lCopy = l;
+  dCopy = d;
+  iCopy = i;
+  nCopy = n;
+  wCopy = w;
+  bi_lstm_0_h_inCopy = bi_lstm_0_h_in;
+  bi_lstm_0_c_inCopy = bi_lstm_0_c_in;
+  bi_lstm_0_h_in_revCopy = bi_lstm_0_h_in_rev;
+  bi_lstm_0_c_in_revCopy = bi_lstm_0_c_in_rev;
   if (self)
   {
-    objc_storeStrong(&self->_L, a3);
-    objc_storeStrong(&self->_D, a4);
-    objc_storeStrong(&self->_I, a5);
-    objc_storeStrong(&self->_N, a6);
-    objc_storeStrong(&self->_W, a7);
-    objc_storeStrong(&self->_bi_lstm_0_h_in, a8);
-    objc_storeStrong(&self->_bi_lstm_0_c_in, a9);
-    objc_storeStrong(&self->_bi_lstm_0_h_in_rev, a10);
-    objc_storeStrong(&self->_bi_lstm_0_c_in_rev, a11);
+    objc_storeStrong(&self->_L, l);
+    objc_storeStrong(&self->_D, d);
+    objc_storeStrong(&self->_I, i);
+    objc_storeStrong(&self->_N, n);
+    objc_storeStrong(&self->_W, w);
+    objc_storeStrong(&self->_bi_lstm_0_h_in, bi_lstm_0_h_in);
+    objc_storeStrong(&self->_bi_lstm_0_c_in, bi_lstm_0_c_in);
+    objc_storeStrong(&self->_bi_lstm_0_h_in_rev, bi_lstm_0_h_in_rev);
+    objc_storeStrong(&self->_bi_lstm_0_c_in_rev, bi_lstm_0_c_in_rev);
   }
 
   return self;
 }
 
-- (SGStructuredEventCoreMLInputWrapper)initWithL:(id)a3 D:(id)a4 I:(id)a5 N:(id)a6 W:(id)a7
+- (SGStructuredEventCoreMLInputWrapper)initWithL:(id)l D:(id)d I:(id)i N:(id)n W:(id)w
 {
-  v18 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  dCopy = d;
+  iCopy = i;
+  nCopy = n;
+  wCopy = w;
   if (self)
   {
-    objc_storeStrong(&self->_L, a3);
-    objc_storeStrong(&self->_D, a4);
-    objc_storeStrong(&self->_I, a5);
-    objc_storeStrong(&self->_N, a6);
-    objc_storeStrong(&self->_W, a7);
+    objc_storeStrong(&self->_L, l);
+    objc_storeStrong(&self->_D, d);
+    objc_storeStrong(&self->_I, i);
+    objc_storeStrong(&self->_N, n);
+    objc_storeStrong(&self->_W, w);
   }
 
   return self;

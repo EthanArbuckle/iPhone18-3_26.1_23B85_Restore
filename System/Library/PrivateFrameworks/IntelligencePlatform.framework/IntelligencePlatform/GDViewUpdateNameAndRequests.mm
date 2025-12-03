@@ -1,8 +1,8 @@
 @interface GDViewUpdateNameAndRequests
-- (GDViewUpdateNameAndRequests)initWithCoder:(id)a3;
-- (GDViewUpdateNameAndRequests)initWithName:(id)a3 requests:(id)a4;
+- (GDViewUpdateNameAndRequests)initWithCoder:(id)coder;
+- (GDViewUpdateNameAndRequests)initWithName:(id)name requests:(id)requests;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GDViewUpdateNameAndRequests
@@ -14,16 +14,16 @@
   return v2;
 }
 
-- (GDViewUpdateNameAndRequests)initWithCoder:(id)a3
+- (GDViewUpdateNameAndRequests)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6 = MEMORY[0x1E69C5D78];
   v7 = objc_opt_class();
   v8 = NSStringFromSelector(sel_name);
-  v9 = [v6 robustDecodeObjectOfClass:v7 forKey:v8 withCoder:v4 expectNonNull:1 errorDomain:@"GDViewUpdateSourceKeyError" errorCode:9 logHandle:0];
+  v9 = [v6 robustDecodeObjectOfClass:v7 forKey:v8 withCoder:coderCopy expectNonNull:1 errorDomain:@"GDViewUpdateSourceKeyError" errorCode:9 logHandle:0];
 
-  if (v9 && ([v4 error], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
+  if (v9 && ([coderCopy error], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
   {
     v12 = MEMORY[0x1E69C5D78];
     v13 = objc_autoreleasePoolPush();
@@ -32,56 +32,56 @@
     v16 = [v14 initWithObjects:{v15, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v13);
     v17 = NSStringFromSelector(sel_requests);
-    v18 = [v12 robustDecodeObjectOfClasses:v16 forKey:v17 withCoder:v4 expectNonNull:1 errorDomain:@"GDViewUpdateSourceKeyError" errorCode:9 logHandle:0];
+    v18 = [v12 robustDecodeObjectOfClasses:v16 forKey:v17 withCoder:coderCopy expectNonNull:1 errorDomain:@"GDViewUpdateSourceKeyError" errorCode:9 logHandle:0];
 
-    if (v18 && ([v4 error], v19 = objc_claimAutoreleasedReturnValue(), v19, !v19))
+    if (v18 && ([coderCopy error], v19 = objc_claimAutoreleasedReturnValue(), v19, !v19))
     {
       self = [(GDViewUpdateNameAndRequests *)self initWithName:v9 requests:v18];
-      v11 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
   objc_autoreleasePoolPop(v5);
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   name = self->_name;
   v6 = NSStringFromSelector(sel_name);
-  [v9 encodeObject:name forKey:v6];
+  [coderCopy encodeObject:name forKey:v6];
 
   requests = self->_requests;
   v8 = NSStringFromSelector(sel_requests);
-  [v9 encodeObject:requests forKey:v8];
+  [coderCopy encodeObject:requests forKey:v8];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (GDViewUpdateNameAndRequests)initWithName:(id)a3 requests:(id)a4
+- (GDViewUpdateNameAndRequests)initWithName:(id)name requests:(id)requests
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  requestsCopy = requests;
   v12.receiver = self;
   v12.super_class = GDViewUpdateNameAndRequests;
   v9 = [(GDViewUpdateNameAndRequests *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_requests, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_requests, requests);
   }
 
   return v10;

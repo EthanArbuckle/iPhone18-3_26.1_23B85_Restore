@@ -1,13 +1,13 @@
 @interface SelfServiceViewCell
 - (CGSize)intrinsicContentSize;
-- (_TtC11Diagnostics19SelfServiceViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC11Diagnostics19SelfServiceViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation SelfServiceViewCell
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000BAD38();
   v5 = v4;
 
@@ -18,11 +18,11 @@
   return result;
 }
 
-- (_TtC11Diagnostics19SelfServiceViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC11Diagnostics19SelfServiceViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -31,7 +31,7 @@
     v6 = 0;
   }
 
-  return sub_1000BAE58(a3, a4, v6);
+  return sub_1000BAE58(style, identifier, v6);
 }
 
 @end

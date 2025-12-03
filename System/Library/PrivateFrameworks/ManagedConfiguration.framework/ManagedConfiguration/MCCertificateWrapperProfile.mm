@@ -1,11 +1,11 @@
 @interface MCCertificateWrapperProfile
-+ (id)_basicWrapperProfileDictForCertificateName:(id)a3 fileName:(id)a4 identifier:(id)a5;
-+ (id)_identifierHashFromData:(id)a3;
-+ (id)_wrapperPayloadDictWithCertData:(id)a3 fileName:(id)a4 name:(id)a5 identifier:(id)a6 type:(id)a7;
-+ (id)_wrapperProfileDictForCertificate:(__SecCertificate *)a3 fileName:(id)a4 certData:(id)a5 type:(id)a6;
-+ (id)_wrapperProfileForWAPICertificate:(__SecCertificate *)a3 fileName:(id)a4 PEMData:(id)a5;
-+ (id)_wrapperWAPIPayloadDictWithPEMData:(id)a3 fileName:(id)a4 name:(id)a5 identifier:(id)a6;
-+ (id)wrapperProfileDictionaryWithCertificateData:(id)a3 fileName:(id)a4 outSignerCerts:(id *)a5;
++ (id)_basicWrapperProfileDictForCertificateName:(id)name fileName:(id)fileName identifier:(id)identifier;
++ (id)_identifierHashFromData:(id)data;
++ (id)_wrapperPayloadDictWithCertData:(id)data fileName:(id)name name:(id)a5 identifier:(id)identifier type:(id)type;
++ (id)_wrapperProfileDictForCertificate:(__SecCertificate *)certificate fileName:(id)name certData:(id)data type:(id)type;
++ (id)_wrapperProfileForWAPICertificate:(__SecCertificate *)certificate fileName:(id)name PEMData:(id)data;
++ (id)_wrapperWAPIPayloadDictWithPEMData:(id)data fileName:(id)name name:(id)a5 identifier:(id)identifier;
++ (id)wrapperProfileDictionaryWithCertificateData:(id)data fileName:(id)name outSignerCerts:(id *)certs;
 - (BOOL)isSigned;
 - (id)_certificatePayload;
 - (id)earliestCertificateExpiryDate;
@@ -17,8 +17,8 @@
 
 - (id)_certificatePayload
 {
-  v2 = [(MCConfigurationProfile *)self payloads];
-  v3 = [v2 objectAtIndex:0];
+  payloads = [(MCConfigurationProfile *)self payloads];
+  v3 = [payloads objectAtIndex:0];
 
   return v3;
 }
@@ -27,19 +27,19 @@
 {
   v4.receiver = self;
   v4.super_class = MCCertificateWrapperProfile;
-  v2 = [(MCConfigurationProfile *)&v4 stubDictionary];
-  [v2 setObject:@"CertificateWrapper" forKey:@"PayloadType"];
+  stubDictionary = [(MCConfigurationProfile *)&v4 stubDictionary];
+  [stubDictionary setObject:@"CertificateWrapper" forKey:@"PayloadType"];
 
-  return v2;
+  return stubDictionary;
 }
 
 - (int)trustLevel
 {
-  v2 = [(MCCertificateWrapperProfile *)self _certificatePayload];
-  v3 = [v2 copyCertificate];
-  if (v3)
+  _certificatePayload = [(MCCertificateWrapperProfile *)self _certificatePayload];
+  copyCertificate = [_certificatePayload copyCertificate];
+  if (copyCertificate)
   {
-    v4 = v3;
+    v4 = copyCertificate;
     if (SecCertificateIsSelfSignedCA())
     {
       v5 = 2;
@@ -105,56 +105,56 @@
 
 - (BOOL)isSigned
 {
-  v2 = [(MCCertificateWrapperProfile *)self _certificatePayload];
-  v3 = [v2 isSigned];
+  _certificatePayload = [(MCCertificateWrapperProfile *)self _certificatePayload];
+  isSigned = [_certificatePayload isSigned];
 
-  return v3;
+  return isSigned;
 }
 
 - (id)earliestCertificateExpiryDate
 {
-  v2 = [(MCCertificateWrapperProfile *)self _certificatePayload];
-  v3 = [v2 expiry];
+  _certificatePayload = [(MCCertificateWrapperProfile *)self _certificatePayload];
+  expiry = [_certificatePayload expiry];
 
-  return v3;
+  return expiry;
 }
 
-+ (id)_identifierHashFromData:(id)a3
++ (id)_identifierHashFromData:(id)data
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CC_SHA256([v3 bytes], objc_msgSend(v3, "length"), md);
-  v4 = [MEMORY[0x1E696AD60] string];
+  dataCopy = data;
+  CC_SHA256([dataCopy bytes], objc_msgSend(dataCopy, "length"), md);
+  string = [MEMORY[0x1E696AD60] string];
   for (i = 0; i != 32; ++i)
   {
-    [v4 appendFormat:@"%02x", md[i]];
+    [string appendFormat:@"%02x", md[i]];
   }
 
-  [v4 appendString:@"a"];
+  [string appendString:@"a"];
 
   v6 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return string;
 }
 
-+ (id)_wrapperPayloadDictWithCertData:(id)a3 fileName:(id)a4 name:(id)a5 identifier:(id)a6 type:(id)a7
++ (id)_wrapperPayloadDictWithCertData:(id)data fileName:(id)name name:(id)a5 identifier:(id)identifier type:(id)type
 {
-  v11 = a4;
+  nameCopy = name;
   v12 = a5;
   v13 = MEMORY[0x1E696AEC0];
-  v14 = a7;
-  v15 = a6;
-  v16 = a3;
-  v17 = [v13 MCMakeUUID];
+  typeCopy = type;
+  identifierCopy = identifier;
+  dataCopy = data;
+  mCMakeUUID = [v13 MCMakeUUID];
   v18 = +[MCPayload wrapperPayloadDictionary];
-  [v18 setObject:v14 forKey:@"PayloadType"];
+  [v18 setObject:typeCopy forKey:@"PayloadType"];
 
-  [v18 setObject:v15 forKey:@"PayloadIdentifier"];
-  [v18 setObject:v17 forKey:@"PayloadUUID"];
+  [v18 setObject:identifierCopy forKey:@"PayloadIdentifier"];
+  [v18 setObject:mCMakeUUID forKey:@"PayloadUUID"];
   [v18 setObject:v12 forKey:@"PayloadDisplayName"];
-  if (v11)
+  if (nameCopy)
   {
-    v19 = v11;
+    v19 = nameCopy;
   }
 
   else
@@ -163,103 +163,103 @@
   }
 
   [v18 setObject:v19 forKey:@"PayloadCertificateFileName"];
-  [v18 setObject:v16 forKey:@"PayloadContent"];
+  [v18 setObject:dataCopy forKey:@"PayloadContent"];
 
   return v18;
 }
 
-+ (id)_wrapperWAPIPayloadDictWithPEMData:(id)a3 fileName:(id)a4 name:(id)a5 identifier:(id)a6
++ (id)_wrapperWAPIPayloadDictWithPEMData:(id)data fileName:(id)name name:(id)a5 identifier:(id)identifier
 {
   v8 = MEMORY[0x1E696AEC0];
-  v9 = a6;
+  identifierCopy = identifier;
   v10 = a5;
-  v11 = a3;
-  v12 = [v8 MCMakeUUID];
+  dataCopy = data;
+  mCMakeUUID = [v8 MCMakeUUID];
   v13 = +[MCPayload wrapperPayloadDictionary];
   [v13 setObject:@"com.apple.security.wapi-identity" forKey:@"PayloadType"];
-  [v13 setObject:v9 forKey:@"PayloadIdentifier"];
+  [v13 setObject:identifierCopy forKey:@"PayloadIdentifier"];
 
-  [v13 setObject:v12 forKey:@"PayloadUUID"];
+  [v13 setObject:mCMakeUUID forKey:@"PayloadUUID"];
   [v13 setObject:v10 forKey:@"PayloadDisplayName"];
 
-  [v13 setObject:v11 forKey:@"PEMData"];
+  [v13 setObject:dataCopy forKey:@"PEMData"];
 
   return v13;
 }
 
-+ (id)_basicWrapperProfileDictForCertificateName:(id)a3 fileName:(id)a4 identifier:(id)a5
++ (id)_basicWrapperProfileDictForCertificateName:(id)name fileName:(id)fileName identifier:(id)identifier
 {
   v6 = MEMORY[0x1E695DF90];
-  v7 = a5;
-  v8 = a3;
-  v9 = [v6 dictionary];
+  identifierCopy = identifier;
+  nameCopy = name;
+  dictionary = [v6 dictionary];
   v10 = [MEMORY[0x1E696AD98] numberWithInt:1];
-  [v9 setObject:v10 forKey:@"PayloadVersion"];
+  [dictionary setObject:v10 forKey:@"PayloadVersion"];
 
-  [v9 setObject:@"CertificateWrapper" forKey:@"PayloadType"];
-  [v9 setObject:v7 forKey:@"PayloadIdentifier"];
+  [dictionary setObject:@"CertificateWrapper" forKey:@"PayloadType"];
+  [dictionary setObject:identifierCopy forKey:@"PayloadIdentifier"];
 
-  v11 = [MEMORY[0x1E696AEC0] MCMakeUUID];
-  [v9 setObject:v11 forKey:@"PayloadUUID"];
+  mCMakeUUID = [MEMORY[0x1E696AEC0] MCMakeUUID];
+  [dictionary setObject:mCMakeUUID forKey:@"PayloadUUID"];
 
-  [v9 setObject:v8 forKey:@"PayloadDisplayName"];
+  [dictionary setObject:nameCopy forKey:@"PayloadDisplayName"];
 
-  return v9;
+  return dictionary;
 }
 
-+ (id)_wrapperProfileDictForCertificate:(__SecCertificate *)a3 fileName:(id)a4 certData:(id)a5 type:(id)a6
++ (id)_wrapperProfileDictForCertificate:(__SecCertificate *)certificate fileName:(id)name certData:(id)data type:(id)type
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = SecCertificateCopySubjectSummary(a3);
-  v14 = [a1 _identifierHashFromData:v11];
-  v15 = [a1 _basicWrapperProfileDictForCertificateName:v13 fileName:v12 identifier:v14];
-  v16 = [MEMORY[0x1E695DF70] array];
-  v17 = [a1 _wrapperPayloadDictWithCertData:v11 fileName:v12 name:v13 identifier:v14 type:v10];
+  typeCopy = type;
+  dataCopy = data;
+  nameCopy = name;
+  v13 = SecCertificateCopySubjectSummary(certificate);
+  v14 = [self _identifierHashFromData:dataCopy];
+  v15 = [self _basicWrapperProfileDictForCertificateName:v13 fileName:nameCopy identifier:v14];
+  array = [MEMORY[0x1E695DF70] array];
+  v17 = [self _wrapperPayloadDictWithCertData:dataCopy fileName:nameCopy name:v13 identifier:v14 type:typeCopy];
 
-  [v16 addObject:v17];
-  [v15 setObject:v16 forKey:@"PayloadContent"];
+  [array addObject:v17];
+  [v15 setObject:array forKey:@"PayloadContent"];
 
   return v15;
 }
 
-+ (id)_wrapperProfileForWAPICertificate:(__SecCertificate *)a3 fileName:(id)a4 PEMData:(id)a5
++ (id)_wrapperProfileForWAPICertificate:(__SecCertificate *)certificate fileName:(id)name PEMData:(id)data
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = SecCertificateCopySubjectSummary(a3);
-  v11 = [a1 _identifierHashFromData:v8];
-  v12 = [a1 _basicWrapperProfileDictForCertificateName:v10 fileName:v9 identifier:v11];
-  v13 = [MEMORY[0x1E695DF70] array];
-  v14 = [a1 _wrapperWAPIPayloadDictWithPEMData:v8 fileName:v9 name:v10 identifier:v11];
+  dataCopy = data;
+  nameCopy = name;
+  v10 = SecCertificateCopySubjectSummary(certificate);
+  v11 = [self _identifierHashFromData:dataCopy];
+  v12 = [self _basicWrapperProfileDictForCertificateName:v10 fileName:nameCopy identifier:v11];
+  array = [MEMORY[0x1E695DF70] array];
+  v14 = [self _wrapperWAPIPayloadDictWithPEMData:dataCopy fileName:nameCopy name:v10 identifier:v11];
 
-  [v13 addObject:v14];
-  [v12 setObject:v13 forKey:@"PayloadContent"];
+  [array addObject:v14];
+  [v12 setObject:array forKey:@"PayloadContent"];
 
   return v12;
 }
 
-+ (id)wrapperProfileDictionaryWithCertificateData:(id)a3 fileName:(id)a4 outSignerCerts:(id *)a5
++ (id)wrapperProfileDictionaryWithCertificateData:(id)data fileName:(id)name outSignerCerts:(id *)certs
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  dataCopy = data;
+  nameCopy = name;
+  if (dataCopy)
   {
-    v10 = [MCCrypto copyCertificateRefFromPEMData:v8];
+    v10 = [MCCrypto copyCertificateRefFromPEMData:dataCopy];
     if (v10)
     {
       v11 = v10;
-      v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v8 encoding:1];
+      v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:dataCopy encoding:1];
       if ([v12 rangeOfString:@"-----BEGIN EC PRIVATE KEY-----"] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        [a1 _wrapperProfileDictForCertificate:v11 fileName:v9 certData:v8 type:@"com.apple.security.pem"];
+        [self _wrapperProfileDictForCertificate:v11 fileName:nameCopy certData:dataCopy type:@"com.apple.security.pem"];
       }
 
       else
       {
-        [a1 _wrapperProfileForWAPICertificate:v11 fileName:v9 PEMData:v8];
+        [self _wrapperProfileForWAPICertificate:v11 fileName:nameCopy PEMData:dataCopy];
       }
       v13 = ;
       v38[0] = v11;
@@ -269,11 +269,11 @@
 
     else
     {
-      v14 = [MCCrypto copyCertificateRefFromPKCS1Data:v8];
+      v14 = [MCCrypto copyCertificateRefFromPKCS1Data:dataCopy];
       if (v14)
       {
         v15 = v14;
-        v13 = [a1 _wrapperProfileDictForCertificate:v14 fileName:v9 certData:v8 type:@"com.apple.security.pkcs1"];
+        v13 = [self _wrapperProfileDictForCertificate:v14 fileName:nameCopy certData:dataCopy type:@"com.apple.security.pkcs1"];
         v37 = v15;
         v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
         CFRelease(v15);
@@ -281,15 +281,15 @@
 
       else
       {
-        if ([MCCrypto isValidPKCS12Data:v8])
+        if ([MCCrypto isValidPKCS12Data:dataCopy])
         {
           v27 = MCLocalizedString(@"PKCS12_CERTIFICATE_DESCRIPTION_SINGULAR_FORMAT");
-          v28 = [a1 _identifierHashFromData:v8];
-          v13 = [a1 _basicWrapperProfileDictForCertificateName:v27 fileName:v9 identifier:v28];
-          v29 = [MEMORY[0x1E695DF70] array];
-          v30 = [a1 _wrapperPayloadDictWithCertData:v8 fileName:v9 name:v27 identifier:v28 type:@"com.apple.security.pkcs12"];
-          [v29 addObject:v30];
-          [v13 setObject:v29 forKey:@"PayloadContent"];
+          v28 = [self _identifierHashFromData:dataCopy];
+          v13 = [self _basicWrapperProfileDictForCertificateName:v27 fileName:nameCopy identifier:v28];
+          array = [MEMORY[0x1E695DF70] array];
+          v30 = [self _wrapperPayloadDictWithCertData:dataCopy fileName:nameCopy name:v27 identifier:v28 type:@"com.apple.security.pkcs12"];
+          [array addObject:v30];
+          [v13 setObject:array forKey:@"PayloadContent"];
         }
 
         else
@@ -303,7 +303,7 @@
 
     if ([v16 count])
     {
-      v31 = a5;
+      certsCopy = certs;
       v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v16, "count")}];
       v32 = 0u;
       v33 = 0u;
@@ -337,10 +337,10 @@
         while (v20);
       }
 
-      if (v31)
+      if (certsCopy)
       {
         v24 = v17;
-        *v31 = v17;
+        *certsCopy = v17;
       }
     }
   }

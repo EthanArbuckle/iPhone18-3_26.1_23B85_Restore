@@ -1,44 +1,44 @@
 @interface MAAutoAssetLockReason
-- (MAAutoAssetLockReason)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initForClientName:(id)a3 forLockReason:(id)a4;
+- (MAAutoAssetLockReason)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initForClientName:(id)name forLockReason:(id)reason;
 - (id)newSummaryDictionary;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MAAutoAssetLockReason
 
-- (id)initForClientName:(id)a3 forLockReason:(id)a4
+- (id)initForClientName:(id)name forLockReason:(id)reason
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  reasonCopy = reason;
   v12.receiver = self;
   v12.super_class = MAAutoAssetLockReason;
   v9 = [(MAAutoAssetLockReason *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_autoAssetClientName, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_autoAssetClientName, name);
+    objc_storeStrong(p_isa + 2, reason);
   }
 
   return p_isa;
 }
 
-- (MAAutoAssetLockReason)initWithCoder:(id)a3
+- (MAAutoAssetLockReason)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MAAutoAssetLockReason;
   v5 = [(MAAutoAssetLockReason *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"autoAssetClientName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"autoAssetClientName"];
     autoAssetClientName = v5->_autoAssetClientName;
     v5->_autoAssetClientName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lockReason"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lockReason"];
     lockReason = v5->_lockReason;
     v5->_lockReason = v8;
   }
@@ -46,24 +46,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MAAutoAssetLockReason *)self autoAssetClientName];
-  [v4 encodeObject:v5 forKey:@"autoAssetClientName"];
+  coderCopy = coder;
+  autoAssetClientName = [(MAAutoAssetLockReason *)self autoAssetClientName];
+  [coderCopy encodeObject:autoAssetClientName forKey:@"autoAssetClientName"];
 
-  v6 = [(MAAutoAssetLockReason *)self lockReason];
-  [v4 encodeObject:v6 forKey:@"lockReason"];
+  lockReason = [(MAAutoAssetLockReason *)self lockReason];
+  [coderCopy encodeObject:lockReason forKey:@"lockReason"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(MAAutoAssetLockReason *)self autoAssetClientName];
-  [v4 setAutoAssetClientName:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  autoAssetClientName = [(MAAutoAssetLockReason *)self autoAssetClientName];
+  [v4 setAutoAssetClientName:autoAssetClientName];
 
-  v6 = [(MAAutoAssetLockReason *)self lockReason];
-  [v4 setLockReason:v6];
+  lockReason = [(MAAutoAssetLockReason *)self lockReason];
+  [v4 setLockReason:lockReason];
 
   return v4;
 }
@@ -71,9 +71,9 @@
 - (id)summary
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MAAutoAssetLockReason *)self autoAssetClientName];
-  v5 = [(MAAutoAssetLockReason *)self lockReason];
-  v6 = [v3 stringWithFormat:@"client:%@|reason:%@", v4, v5];
+  autoAssetClientName = [(MAAutoAssetLockReason *)self autoAssetClientName];
+  lockReason = [(MAAutoAssetLockReason *)self lockReason];
+  v6 = [v3 stringWithFormat:@"client:%@|reason:%@", autoAssetClientName, lockReason];
 
   return v6;
 }
@@ -81,11 +81,11 @@
 - (id)newSummaryDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(MAAutoAssetLockReason *)self autoAssetClientName];
-  [v3 setSafeObject:v4 forKey:@"autoAssetClientName"];
+  autoAssetClientName = [(MAAutoAssetLockReason *)self autoAssetClientName];
+  [v3 setSafeObject:autoAssetClientName forKey:@"autoAssetClientName"];
 
-  v5 = [(MAAutoAssetLockReason *)self lockReason];
-  [v3 setSafeObject:v5 forKey:@"lockReason"];
+  lockReason = [(MAAutoAssetLockReason *)self lockReason];
+  [v3 setSafeObject:lockReason forKey:@"lockReason"];
 
   return v3;
 }

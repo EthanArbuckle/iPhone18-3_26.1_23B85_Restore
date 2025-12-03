@@ -1,5 +1,5 @@
 @interface CRLGroupRepAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)crlaxAllowedToEditChildren;
 - (CRLGroupItemAccessibility)crlaxInfoAccessibility;
 - (NSArray)crlaxChildReps;
@@ -9,31 +9,31 @@
 
 @implementation CRLGroupRepAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (NSArray)crlaxChildReps
 {
-  v2 = [(CRLGroupRepAccessibility *)self crlaxTarget];
-  v3 = [v2 childReps];
+  crlaxTarget = [(CRLGroupRepAccessibility *)self crlaxTarget];
+  childReps = [crlaxTarget childReps];
 
-  return v3;
+  return childReps;
 }
 
 - (id)crlaxLabel
 {
   v14 = 0;
-  v2 = [(CRLGroupRepAccessibility *)self crlaxTarget];
-  v3 = [v2 info];
+  crlaxTarget = [(CRLGroupRepAccessibility *)self crlaxTarget];
+  info = [crlaxTarget info];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsClass(v4, v3, 1, &v14);
+  v5 = __CRLAccessibilityCastAsClass(v4, info, 1, &v14);
   if (v14 == 1)
   {
     abort();
@@ -41,16 +41,16 @@
 
   v6 = v5;
 
-  v7 = [v6 accessibilityDescription];
+  accessibilityDescription = [v6 accessibilityDescription];
 
-  v8 = [v7 length];
+  v8 = [accessibilityDescription length];
   v9 = +[NSBundle mainBundle];
   v10 = v9;
   if (v8)
   {
     v11 = [v9 localizedStringForKey:@"%@ value:group" table:{0, 0}];
 
-    v12 = [NSString localizedStringWithFormat:v11, v7];
+    v12 = [NSString localizedStringWithFormat:v11, accessibilityDescription];
     v10 = v11;
   }
 
@@ -87,11 +87,11 @@
 - (CRLGroupItemAccessibility)crlaxInfoAccessibility
 {
   v8 = 0;
-  v2 = [(CRLGroupRepAccessibility *)self crlaxTarget];
-  v3 = [v2 info];
+  crlaxTarget = [(CRLGroupRepAccessibility *)self crlaxTarget];
+  info = [crlaxTarget info];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, info, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -106,24 +106,24 @@
 {
   v7.receiver = self;
   v7.super_class = CRLGroupRepAccessibility;
-  v3 = [(CRLGroupRepAccessibility *)&v7 childRepsForHitTesting];
+  childRepsForHitTesting = [(CRLGroupRepAccessibility *)&v7 childRepsForHitTesting];
   v4 = +[CRLAccessibility sharedInstance];
   if ([v4 needsAccessibilityElements])
   {
-    v5 = [(CRLGroupRepAccessibility *)self crlaxAllowedToEditChildren];
+    crlaxAllowedToEditChildren = [(CRLGroupRepAccessibility *)self crlaxAllowedToEditChildren];
 
-    if (v5)
+    if (crlaxAllowedToEditChildren)
     {
       goto LABEL_5;
     }
 
-    v4 = v3;
-    v3 = 0;
+    v4 = childRepsForHitTesting;
+    childRepsForHitTesting = 0;
   }
 
 LABEL_5:
 
-  return v3;
+  return childRepsForHitTesting;
 }
 
 @end

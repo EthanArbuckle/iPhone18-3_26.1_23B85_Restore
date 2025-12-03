@@ -1,30 +1,30 @@
 @interface CredentialProviderExtensionHelper
-- (BOOL)_connection:(id)a3 hasEntitlementToProceedWithAccessType:(int64_t)a4;
-- (BOOL)_hasEntitlementToProceedWithAccessType:(int64_t)a3;
+- (BOOL)_connection:(id)_connection hasEntitlementToProceedWithAccessType:(int64_t)type;
+- (BOOL)_hasEntitlementToProceedWithAccessType:(int64_t)type;
 - (CredentialProviderExtensionHelper)init;
-- (void)_credentialIdentityStoreForCaller:(id)a3 withCompletion:(id)a4;
-- (void)_fetchCredentialIdentitiesMatchingCriteria:(id)a3 credentialIdentityType:(int64_t)a4 forExtension:(id)a5 connection:(id)a6 accessType:(int64_t)a7 completion:(id)a8;
-- (void)_fetchCredentialIdentitiesMatchingCriteria:(id)a3 credentialIdentityType:(int64_t)a4 fromStoreWithIdentifier:(id)a5 forExtension:(id)a6 completion:(id)a7;
-- (void)_fetchCredentialIdentitiesMatchingCriteriaSync:(id)a3 credentialIdentityType:(int64_t)a4 accessType:(int64_t)a5 completion:(id)a6;
-- (void)_fetchXPCCallerInformationWithCompletion:(id)a3;
-- (void)_prepareAndOpenCredentialIdentityStoreForCaller:(id)a3 createIfNeeded:(BOOL)a4 completion:(id)a5;
-- (void)_queue_prepareAndOpenCredentialIdentityStoreForCaller:(id)a3 createIfNeeded:(BOOL)a4 completion:(id)a5;
+- (void)_credentialIdentityStoreForCaller:(id)caller withCompletion:(id)completion;
+- (void)_fetchCredentialIdentitiesMatchingCriteria:(id)criteria credentialIdentityType:(int64_t)type forExtension:(id)extension connection:(id)connection accessType:(int64_t)accessType completion:(id)completion;
+- (void)_fetchCredentialIdentitiesMatchingCriteria:(id)criteria credentialIdentityType:(int64_t)type fromStoreWithIdentifier:(id)identifier forExtension:(id)extension completion:(id)completion;
+- (void)_fetchCredentialIdentitiesMatchingCriteriaSync:(id)sync credentialIdentityType:(int64_t)type accessType:(int64_t)accessType completion:(id)completion;
+- (void)_fetchXPCCallerInformationWithCompletion:(id)completion;
+- (void)_prepareAndOpenCredentialIdentityStoreForCaller:(id)caller createIfNeeded:(BOOL)needed completion:(id)completion;
+- (void)_queue_prepareAndOpenCredentialIdentityStoreForCaller:(id)caller createIfNeeded:(BOOL)needed completion:(id)completion;
 - (void)dealloc;
-- (void)fetchAllCredentialIdentitiesMatchingDomains:(id)a3 completion:(id)a4;
-- (void)fetchAllCredentialIdentitiesMatchingDomains:(id)a3 forExtension:(id)a4 completion:(id)a5;
-- (void)fetchAllPaskeyCredentialIdentitiesWithCompletion:(id)a3;
-- (void)fetchCredentialIdentitiesForService:(id)a3 serviceIdentifierType:(int64_t)a4 credentialIdentityTypes:(int64_t)a5 completion:(id)a6;
-- (void)fetchOneTimeCodeCredentialIdentitiesMatchingDomains:(id)a3 completion:(id)a4;
-- (void)fetchOneTimeCodeCredentialIdentitiesMatchingDomains:(id)a3 forExtension:(id)a4 completion:(id)a5;
-- (void)fetchPasskeyCredentialIdentitiesMatchingDomains:(id)a3 completion:(id)a4;
-- (void)fetchPasswordCredentialIdentitiesMatchingDomains:(id)a3 completion:(id)a4;
-- (void)fetchPasswordCredentialIdentitiesMatchingDomains:(id)a3 forExtension:(id)a4 completion:(id)a5;
-- (void)getCredentialProviderExtensionStateWithCompletion:(id)a3;
-- (void)removeAllCredentialIdentitiesWithCompletion:(id)a3;
-- (void)removeCredentialIdentities:(id)a3 completion:(id)a4;
-- (void)removeCredentialIdentityStoreForApplication:(id)a3 completion:(id)a4;
-- (void)replaceCredentialIdentitiesWithIdentities:(id)a3 completion:(id)a4;
-- (void)saveCredentialIdentities:(id)a3 completion:(id)a4;
+- (void)fetchAllCredentialIdentitiesMatchingDomains:(id)domains completion:(id)completion;
+- (void)fetchAllCredentialIdentitiesMatchingDomains:(id)domains forExtension:(id)extension completion:(id)completion;
+- (void)fetchAllPaskeyCredentialIdentitiesWithCompletion:(id)completion;
+- (void)fetchCredentialIdentitiesForService:(id)service serviceIdentifierType:(int64_t)type credentialIdentityTypes:(int64_t)types completion:(id)completion;
+- (void)fetchOneTimeCodeCredentialIdentitiesMatchingDomains:(id)domains completion:(id)completion;
+- (void)fetchOneTimeCodeCredentialIdentitiesMatchingDomains:(id)domains forExtension:(id)extension completion:(id)completion;
+- (void)fetchPasskeyCredentialIdentitiesMatchingDomains:(id)domains completion:(id)completion;
+- (void)fetchPasswordCredentialIdentitiesMatchingDomains:(id)domains completion:(id)completion;
+- (void)fetchPasswordCredentialIdentitiesMatchingDomains:(id)domains forExtension:(id)extension completion:(id)completion;
+- (void)getCredentialProviderExtensionStateWithCompletion:(id)completion;
+- (void)removeAllCredentialIdentitiesWithCompletion:(id)completion;
+- (void)removeCredentialIdentities:(id)identities completion:(id)completion;
+- (void)removeCredentialIdentityStoreForApplication:(id)application completion:(id)completion;
+- (void)replaceCredentialIdentitiesWithIdentities:(id)identities completion:(id)completion;
+- (void)saveCredentialIdentities:(id)identities completion:(id)completion;
 @end
 
 @implementation CredentialProviderExtensionHelper
@@ -61,63 +61,63 @@
   [(CredentialProviderExtensionHelper *)&v3 dealloc];
 }
 
-- (void)fetchPasswordCredentialIdentitiesMatchingDomains:(id)a3 completion:(id)a4
+- (void)fetchPasswordCredentialIdentitiesMatchingDomains:(id)domains completion:(id)completion
 {
-  v6 = a4;
-  v7 = [_SFMatchCriteria matchDomains:a3];
-  [(CredentialProviderExtensionHelper *)self _fetchCredentialIdentitiesMatchingCriteriaSync:v7 credentialIdentityType:1 accessType:0 completion:v6];
+  completionCopy = completion;
+  v7 = [_SFMatchCriteria matchDomains:domains];
+  [(CredentialProviderExtensionHelper *)self _fetchCredentialIdentitiesMatchingCriteriaSync:v7 credentialIdentityType:1 accessType:0 completion:completionCopy];
 }
 
-- (void)fetchPasswordCredentialIdentitiesMatchingDomains:(id)a3 forExtension:(id)a4 completion:(id)a5
+- (void)fetchPasswordCredentialIdentitiesMatchingDomains:(id)domains forExtension:(id)extension completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  extensionCopy = extension;
+  domainsCopy = domains;
   v12 = +[NSXPCConnection currentConnection];
-  v11 = [_SFMatchCriteria matchDomains:v10];
+  v11 = [_SFMatchCriteria matchDomains:domainsCopy];
 
-  [(CredentialProviderExtensionHelper *)self _fetchCredentialIdentitiesMatchingCriteria:v11 credentialIdentityType:1 forExtension:v9 connection:v12 accessType:0 completion:v8];
+  [(CredentialProviderExtensionHelper *)self _fetchCredentialIdentitiesMatchingCriteria:v11 credentialIdentityType:1 forExtension:extensionCopy connection:v12 accessType:0 completion:completionCopy];
 }
 
-- (void)fetchPasskeyCredentialIdentitiesMatchingDomains:(id)a3 completion:(id)a4
+- (void)fetchPasskeyCredentialIdentitiesMatchingDomains:(id)domains completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [_SFMatchCriteria matchDomains:v6];
+  domainsCopy = domains;
+  completionCopy = completion;
+  v8 = [_SFMatchCriteria matchDomains:domainsCopy];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000011C4;
   v11[3] = &unk_10000C328;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = domainsCopy;
+  v13 = completionCopy;
+  v9 = domainsCopy;
+  v10 = completionCopy;
   [(CredentialProviderExtensionHelper *)self _fetchCredentialIdentitiesMatchingCriteriaSync:v8 credentialIdentityType:2 accessType:0 completion:v11];
 }
 
-- (void)fetchAllPaskeyCredentialIdentitiesWithCompletion:(id)a3
+- (void)fetchAllPaskeyCredentialIdentitiesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[_SFMatchCriteria matchAll];
-  [(CredentialProviderExtensionHelper *)self _fetchCredentialIdentitiesMatchingCriteriaSync:v5 credentialIdentityType:2 accessType:0 completion:v4];
+  [(CredentialProviderExtensionHelper *)self _fetchCredentialIdentitiesMatchingCriteriaSync:v5 credentialIdentityType:2 accessType:0 completion:completionCopy];
 }
 
-- (void)fetchAllCredentialIdentitiesMatchingDomains:(id)a3 completion:(id)a4
+- (void)fetchAllCredentialIdentitiesMatchingDomains:(id)domains completion:(id)completion
 {
-  v6 = a4;
-  v7 = [_SFMatchCriteria matchDomains:a3];
-  [(CredentialProviderExtensionHelper *)self _fetchCredentialIdentitiesMatchingCriteriaSync:v7 credentialIdentityType:3 accessType:0 completion:v6];
+  completionCopy = completion;
+  v7 = [_SFMatchCriteria matchDomains:domains];
+  [(CredentialProviderExtensionHelper *)self _fetchCredentialIdentitiesMatchingCriteriaSync:v7 credentialIdentityType:3 accessType:0 completion:completionCopy];
 }
 
-- (void)fetchAllCredentialIdentitiesMatchingDomains:(id)a3 forExtension:(id)a4 completion:(id)a5
+- (void)fetchAllCredentialIdentitiesMatchingDomains:(id)domains forExtension:(id)extension completion:(id)completion
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = a4;
+  domainsCopy = domains;
+  completionCopy = completion;
+  extensionCopy = extension;
   v10 = +[NSXPCConnection currentConnection];
-  if ([v12 count])
+  if ([domainsCopy count])
   {
-    [_SFMatchCriteria matchDomains:v12];
+    [_SFMatchCriteria matchDomains:domainsCopy];
   }
 
   else
@@ -125,32 +125,32 @@
     +[_SFMatchCriteria matchAll];
   }
   v11 = ;
-  [(CredentialProviderExtensionHelper *)self _fetchCredentialIdentitiesMatchingCriteria:v11 credentialIdentityType:3 forExtension:v9 connection:v10 accessType:0 completion:v8];
+  [(CredentialProviderExtensionHelper *)self _fetchCredentialIdentitiesMatchingCriteria:v11 credentialIdentityType:3 forExtension:extensionCopy connection:v10 accessType:0 completion:completionCopy];
 }
 
-- (void)fetchOneTimeCodeCredentialIdentitiesMatchingDomains:(id)a3 forExtension:(id)a4 completion:(id)a5
+- (void)fetchOneTimeCodeCredentialIdentitiesMatchingDomains:(id)domains forExtension:(id)extension completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  extensionCopy = extension;
+  domainsCopy = domains;
   v12 = +[NSXPCConnection currentConnection];
-  v11 = [_SFMatchCriteria matchDomains:v10];
+  v11 = [_SFMatchCriteria matchDomains:domainsCopy];
 
-  [(CredentialProviderExtensionHelper *)self _fetchCredentialIdentitiesMatchingCriteria:v11 credentialIdentityType:4 forExtension:v9 connection:v12 accessType:0 completion:v8];
+  [(CredentialProviderExtensionHelper *)self _fetchCredentialIdentitiesMatchingCriteria:v11 credentialIdentityType:4 forExtension:extensionCopy connection:v12 accessType:0 completion:completionCopy];
 }
 
-- (void)fetchOneTimeCodeCredentialIdentitiesMatchingDomains:(id)a3 completion:(id)a4
+- (void)fetchOneTimeCodeCredentialIdentitiesMatchingDomains:(id)domains completion:(id)completion
 {
-  v6 = a4;
-  v7 = [_SFMatchCriteria matchDomains:a3];
-  [(CredentialProviderExtensionHelper *)self _fetchCredentialIdentitiesMatchingCriteriaSync:v7 credentialIdentityType:4 accessType:0 completion:v6];
+  completionCopy = completion;
+  v7 = [_SFMatchCriteria matchDomains:domains];
+  [(CredentialProviderExtensionHelper *)self _fetchCredentialIdentitiesMatchingCriteriaSync:v7 credentialIdentityType:4 accessType:0 completion:completionCopy];
 }
 
-- (void)fetchCredentialIdentitiesForService:(id)a3 serviceIdentifierType:(int64_t)a4 credentialIdentityTypes:(int64_t)a5 completion:(id)a6
+- (void)fetchCredentialIdentitiesForService:(id)service serviceIdentifierType:(int64_t)type credentialIdentityTypes:(int64_t)types completion:(id)completion
 {
-  v27 = a4;
-  v30 = a3;
-  v7 = a6;
+  typeCopy = type;
+  serviceCopy = service;
+  completionCopy = completion;
   v8 = +[NSXPCConnection currentConnection];
   v9 = v8;
   if (v8)
@@ -170,9 +170,9 @@
   v33 = 0u;
   v34 = 0u;
   v11 = +[SFCredentialProviderExtensionManager sharedManager];
-  v12 = [v11 extensionsSync];
+  extensionsSync = [v11 extensionsSync];
 
-  v13 = [v12 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  v13 = [extensionsSync countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (!v13)
   {
     goto LABEL_12;
@@ -186,46 +186,46 @@
     {
       if (*v32 != v15)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(extensionsSync);
       }
 
       v17 = *(*(&v31 + 1) + 8 * i);
-      v18 = [v17 sf_bundleIdentifierForContainingApp];
-      v19 = [v18 isEqualToString:v10];
+      sf_bundleIdentifierForContainingApp = [v17 sf_bundleIdentifierForContainingApp];
+      v19 = [sf_bundleIdentifierForContainingApp isEqualToString:v10];
 
       if (v19)
       {
-        v20 = [v17 identifier];
+        identifier = [v17 identifier];
 
-        if (!v20)
+        if (!identifier)
         {
           goto LABEL_18;
         }
 
-        v21 = v30;
-        if ([v30 length])
+        v21 = serviceCopy;
+        if ([serviceCopy length])
         {
-          if (v27 == 1)
+          if (typeCopy == 1)
           {
-            v22 = [NSURL URLWithString:v30];
-            v24 = [v22 host];
-            v25 = [v24 safari_highLevelDomainForPasswordManager];
-            v37 = v25;
+            v22 = [NSURL URLWithString:serviceCopy];
+            host = [v22 host];
+            safari_highLevelDomainForPasswordManager = [host safari_highLevelDomainForPasswordManager];
+            v37 = safari_highLevelDomainForPasswordManager;
             v26 = [NSArray arrayWithObjects:&v37 count:1];
             v23 = [_SFMatchCriteria matchDomains:v26];
 
-            v21 = v30;
+            v21 = serviceCopy;
           }
 
           else
           {
-            if (v27)
+            if (typeCopy)
             {
               v23 = 0;
               goto LABEL_23;
             }
 
-            v38 = v30;
+            v38 = serviceCopy;
             v22 = [NSArray arrayWithObjects:&v38 count:1];
             v23 = [_SFMatchCriteria matchDomains:v22];
           }
@@ -237,13 +237,13 @@
         }
 
 LABEL_23:
-        [(CredentialProviderExtensionHelper *)self _fetchCredentialIdentitiesMatchingCriteria:v23 credentialIdentityType:a5 forExtension:v10 connection:v9 accessType:1 completion:v7];
+        [(CredentialProviderExtensionHelper *)self _fetchCredentialIdentitiesMatchingCriteria:v23 credentialIdentityType:types forExtension:v10 connection:v9 accessType:1 completion:completionCopy];
 
         goto LABEL_24;
       }
     }
 
-    v14 = [v12 countByEnumeratingWithState:&v31 objects:v39 count:16];
+    v14 = [extensionsSync countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v14)
     {
       continue;
@@ -255,15 +255,15 @@ LABEL_23:
 LABEL_12:
 
 LABEL_18:
-  v7[2](v7, &__NSArray0__struct);
-  v21 = v30;
+  completionCopy[2](completionCopy, &__NSArray0__struct);
+  v21 = serviceCopy;
 LABEL_24:
 }
 
-- (void)_fetchCredentialIdentitiesMatchingCriteriaSync:(id)a3 credentialIdentityType:(int64_t)a4 accessType:(int64_t)a5 completion:(id)a6
+- (void)_fetchCredentialIdentitiesMatchingCriteriaSync:(id)sync credentialIdentityType:(int64_t)type accessType:(int64_t)accessType completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  syncCopy = sync;
+  completionCopy = completion;
   v12 = +[NSXPCConnection currentConnection];
   v13 = +[SFCredentialProviderExtensionManager sharedManager];
   v17[0] = _NSConcreteStackBlock;
@@ -271,37 +271,37 @@ LABEL_24:
   v17[2] = sub_100001AD4;
   v17[3] = &unk_10000C3A0;
   v17[4] = self;
-  v18 = v10;
-  v21 = a4;
-  v22 = a5;
+  v18 = syncCopy;
+  typeCopy = type;
+  accessTypeCopy = accessType;
   v19 = v12;
-  v20 = v11;
-  v14 = v11;
+  v20 = completionCopy;
+  v14 = completionCopy;
   v15 = v12;
-  v16 = v10;
+  v16 = syncCopy;
   [v13 getEnabledExtensionsWithCompletion:v17];
 }
 
-- (void)_fetchCredentialIdentitiesMatchingCriteria:(id)a3 credentialIdentityType:(int64_t)a4 forExtension:(id)a5 connection:(id)a6 accessType:(int64_t)a7 completion:(id)a8
+- (void)_fetchCredentialIdentitiesMatchingCriteria:(id)criteria credentialIdentityType:(int64_t)type forExtension:(id)extension connection:(id)connection accessType:(int64_t)accessType completion:(id)completion
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  if (v17)
+  criteriaCopy = criteria;
+  extensionCopy = extension;
+  connectionCopy = connection;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([(CredentialProviderExtensionHelper *)self _connection:v16 hasEntitlementToProceedWithAccessType:a7])
+    if ([(CredentialProviderExtensionHelper *)self _connection:connectionCopy hasEntitlementToProceedWithAccessType:accessType])
     {
       v18 = +[SFCredentialProviderExtensionManager sharedManager];
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
       v20[2] = sub_100001F04;
       v20[3] = &unk_10000C3F0;
-      v22 = v17;
-      v23 = a4;
+      v22 = completionCopy;
+      typeCopy = type;
       v20[4] = self;
-      v21 = v14;
-      [v18 getExtensionWithBundleID:v15 completion:v20];
+      v21 = criteriaCopy;
+      [v18 getExtensionWithBundleID:extensionCopy completion:v20];
     }
 
     else
@@ -312,42 +312,42 @@ LABEL_24:
         sub_100005828();
       }
 
-      (*(v17 + 2))(v17, &__NSArray0__struct);
+      (*(completionCopy + 2))(completionCopy, &__NSArray0__struct);
     }
   }
 }
 
-- (void)_fetchCredentialIdentitiesMatchingCriteria:(id)a3 credentialIdentityType:(int64_t)a4 fromStoreWithIdentifier:(id)a5 forExtension:(id)a6 completion:(id)a7
+- (void)_fetchCredentialIdentitiesMatchingCriteria:(id)criteria credentialIdentityType:(int64_t)type fromStoreWithIdentifier:(id)identifier forExtension:(id)extension completion:(id)completion
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = a5;
+  criteriaCopy = criteria;
+  extensionCopy = extension;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v16 = +[SFExternalCredentialIdentityStoreManager sharedManager];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10000237C;
   v20[3] = &unk_10000C540;
-  v24 = v14;
-  v25 = a4;
-  v21 = v12;
-  v22 = v13;
-  v23 = self;
-  v17 = v13;
-  v18 = v12;
-  v19 = v14;
-  [v16 getCredentialIdentityStoreWithIdentifier:v15 completion:v20];
+  v24 = completionCopy;
+  typeCopy = type;
+  v21 = criteriaCopy;
+  v22 = extensionCopy;
+  selfCopy = self;
+  v17 = extensionCopy;
+  v18 = criteriaCopy;
+  v19 = completionCopy;
+  [v16 getCredentialIdentityStoreWithIdentifier:identifierCopy completion:v20];
 }
 
-- (void)replaceCredentialIdentitiesWithIdentities:(id)a3 completion:(id)a4
+- (void)replaceCredentialIdentitiesWithIdentities:(id)identities completion:(id)completion
 {
-  v6 = a3;
+  identitiesCopy = identities;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100002E9C;
   v14[3] = &unk_10000C568;
-  v7 = a4;
-  v15 = v7;
+  completionCopy = completion;
+  v15 = completionCopy;
   v8 = objc_retainBlock(v14);
   if ([(CredentialProviderExtensionHelper *)self _hasEntitlementToProceedWithAccessType:1])
   {
@@ -357,7 +357,7 @@ LABEL_24:
     v11[3] = &unk_10000C608;
     v11[4] = self;
     v13 = v8;
-    v12 = v6;
+    v12 = identitiesCopy;
     [(CredentialProviderExtensionHelper *)self _fetchXPCCallerInformationWithCompletion:v11];
   }
 
@@ -374,31 +374,31 @@ LABEL_24:
   }
 }
 
-- (void)getCredentialProviderExtensionStateWithCompletion:(id)a3
+- (void)getCredentialProviderExtensionStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000032E0;
     v6[3] = &unk_10000C680;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [(CredentialProviderExtensionHelper *)self _fetchXPCCallerInformationWithCompletion:v6];
   }
 }
 
-- (void)saveCredentialIdentities:(id)a3 completion:(id)a4
+- (void)saveCredentialIdentities:(id)identities completion:(id)completion
 {
-  v6 = a3;
+  identitiesCopy = identities;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10000380C;
   v14[3] = &unk_10000C568;
-  v7 = a4;
-  v15 = v7;
+  completionCopy = completion;
+  v15 = completionCopy;
   v8 = objc_retainBlock(v14);
   if ([(CredentialProviderExtensionHelper *)self _hasEntitlementToProceedWithAccessType:1])
   {
@@ -408,7 +408,7 @@ LABEL_24:
     v11[3] = &unk_10000C608;
     v11[4] = self;
     v13 = v8;
-    v12 = v6;
+    v12 = identitiesCopy;
     [(CredentialProviderExtensionHelper *)self _fetchXPCCallerInformationWithCompletion:v11];
   }
 
@@ -425,15 +425,15 @@ LABEL_24:
   }
 }
 
-- (void)removeCredentialIdentities:(id)a3 completion:(id)a4
+- (void)removeCredentialIdentities:(id)identities completion:(id)completion
 {
-  v6 = a3;
+  identitiesCopy = identities;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100003CC4;
   v14[3] = &unk_10000C568;
-  v7 = a4;
-  v15 = v7;
+  completionCopy = completion;
+  v15 = completionCopy;
   v8 = objc_retainBlock(v14);
   if ([(CredentialProviderExtensionHelper *)self _hasEntitlementToProceedWithAccessType:1])
   {
@@ -443,7 +443,7 @@ LABEL_24:
     v11[3] = &unk_10000C608;
     v11[4] = self;
     v13 = v8;
-    v12 = v6;
+    v12 = identitiesCopy;
     [(CredentialProviderExtensionHelper *)self _fetchXPCCallerInformationWithCompletion:v11];
   }
 
@@ -460,14 +460,14 @@ LABEL_24:
   }
 }
 
-- (void)removeAllCredentialIdentitiesWithCompletion:(id)a3
+- (void)removeAllCredentialIdentitiesWithCompletion:(id)completion
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000415C;
   v10[3] = &unk_10000C568;
-  v4 = a3;
-  v11 = v4;
+  completionCopy = completion;
+  v11 = completionCopy;
   v5 = objc_retainBlock(v10);
   if ([(CredentialProviderExtensionHelper *)self _hasEntitlementToProceedWithAccessType:1])
   {
@@ -493,28 +493,28 @@ LABEL_24:
   }
 }
 
-- (void)_prepareAndOpenCredentialIdentityStoreForCaller:(id)a3 createIfNeeded:(BOOL)a4 completion:(id)a5
+- (void)_prepareAndOpenCredentialIdentityStoreForCaller:(id)caller createIfNeeded:(BOOL)needed completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  callerCopy = caller;
+  completionCopy = completion;
   storeAccessQueue = self->_storeAccessQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100004534;
   v13[3] = &unk_10000C6F8;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = callerCopy;
+  neededCopy = needed;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = callerCopy;
   dispatch_async(storeAccessQueue, v13);
 }
 
-- (void)_queue_prepareAndOpenCredentialIdentityStoreForCaller:(id)a3 createIfNeeded:(BOOL)a4 completion:(id)a5
+- (void)_queue_prepareAndOpenCredentialIdentityStoreForCaller:(id)caller createIfNeeded:(BOOL)needed completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  callerCopy = caller;
+  completionCopy = completion;
   dispatch_suspend(self->_storeAccessQueue);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
@@ -522,16 +522,16 @@ LABEL_24:
   v16[3] = &unk_10000C720;
   v16[4] = self;
   v10 = objc_retainBlock(v16);
-  if ([v8 associatedExtensionEnabled])
+  if ([callerCopy associatedExtensionEnabled])
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000046D8;
     v12[3] = &unk_10000C770;
-    v13 = v9;
+    v13 = completionCopy;
     v14 = v10;
-    v15 = a4;
-    [(CredentialProviderExtensionHelper *)self _credentialIdentityStoreForCaller:v8 withCompletion:v12];
+    neededCopy = needed;
+    [(CredentialProviderExtensionHelper *)self _credentialIdentityStoreForCaller:callerCopy withCompletion:v12];
 
     v11 = v13;
   }
@@ -539,23 +539,23 @@ LABEL_24:
   else
   {
     v11 = [NSError errorWithDomain:SFExternalCredentialIdentityStoreErrorDomain code:1 userInfo:0];
-    (*(v9 + 2))(v9, 0, v11, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v11, v10);
   }
 }
 
-- (void)_credentialIdentityStoreForCaller:(id)a3 withCompletion:(id)a4
+- (void)_credentialIdentityStoreForCaller:(id)caller withCompletion:(id)completion
 {
-  v5 = a4;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v6 = a3;
-    v7 = [v6 credentialIdentityStoreIdentifier];
-    v8 = [v6 associatedExtensionEnabled];
+    callerCopy = caller;
+    credentialIdentityStoreIdentifier = [callerCopy credentialIdentityStoreIdentifier];
+    associatedExtensionEnabled = [callerCopy associatedExtensionEnabled];
 
-    if (v7 && (v8 & 1) != 0)
+    if (credentialIdentityStoreIdentifier && (associatedExtensionEnabled & 1) != 0)
     {
       v9 = +[SFExternalCredentialIdentityStoreManager sharedManager];
-      [v9 getCredentialIdentityStoreWithIdentifier:v7 completion:v5];
+      [v9 getCredentialIdentityStoreWithIdentifier:credentialIdentityStoreIdentifier completion:completionCopy];
     }
 
     else
@@ -564,36 +564,36 @@ LABEL_24:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v11 = 138543618;
-        v12 = v7;
+        v12 = credentialIdentityStoreIdentifier;
         v13 = 1024;
-        v14 = v8;
+        v14 = associatedExtensionEnabled;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Did not provide identity store for bundleIdentifier: %{public}@ extension enabled: %d", &v11, 0x12u);
       }
 
-      v5[2](v5, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (void)_fetchXPCCallerInformationWithCompletion:(id)a3
+- (void)_fetchXPCCallerInformationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[NSXPCConnection currentConnection];
-  v6 = [v5 processIdentifier];
+  processIdentifier = [v5 processIdentifier];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100004BD8;
   v15[3] = &unk_10000C7C0;
-  v7 = v4;
+  v7 = completionCopy;
   v16 = v7;
   v8 = objc_retainBlock(v15);
   v9 = +[PKManager defaultManager];
-  v10 = [v9 containingAppForPlugInWithPid:v6];
+  v10 = [v9 containingAppForPlugInWithPid:processIdentifier];
 
   if (v10)
   {
-    (v8[2])(v8, v6, v10);
+    (v8[2])(v8, processIdentifier, v10);
   }
 
   else
@@ -604,20 +604,20 @@ LABEL_24:
     v12[2] = sub_100004D8C;
     v12[3] = &unk_10000C7E8;
     v13 = v8;
-    v14 = v6;
-    [(BKSApplicationStateMonitor *)applicationStateMonitor applicationInfoForPID:v6 completion:v12];
+    v14 = processIdentifier;
+    [(BKSApplicationStateMonitor *)applicationStateMonitor applicationInfoForPID:processIdentifier completion:v12];
   }
 }
 
-- (void)removeCredentialIdentityStoreForApplication:(id)a3 completion:(id)a4
+- (void)removeCredentialIdentityStoreForApplication:(id)application completion:(id)completion
 {
-  v6 = a3;
+  applicationCopy = application;
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_100004F74;
   v16 = &unk_10000C568;
-  v7 = a4;
-  v17 = v7;
+  completionCopy = completion;
+  v17 = completionCopy;
   v8 = objc_retainBlock(&v13);
   if ([(CredentialProviderExtensionHelper *)self _hasEntitlementToProceedWithAccessType:0])
   {
@@ -641,23 +641,23 @@ LABEL_24:
   }
 }
 
-- (BOOL)_hasEntitlementToProceedWithAccessType:(int64_t)a3
+- (BOOL)_hasEntitlementToProceedWithAccessType:(int64_t)type
 {
   v5 = +[NSXPCConnection currentConnection];
-  LOBYTE(a3) = [(CredentialProviderExtensionHelper *)self _connection:v5 hasEntitlementToProceedWithAccessType:a3];
+  LOBYTE(type) = [(CredentialProviderExtensionHelper *)self _connection:v5 hasEntitlementToProceedWithAccessType:type];
 
-  return a3;
+  return type;
 }
 
-- (BOOL)_connection:(id)a3 hasEntitlementToProceedWithAccessType:(int64_t)a4
+- (BOOL)_connection:(id)_connection hasEntitlementToProceedWithAccessType:(int64_t)type
 {
-  if (!a4)
+  if (!type)
   {
     v5 = &SFCredentialProviderSystemEntitlement;
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v5 = &SFCredentialProviderDeveloperEntitlement;
 LABEL_5:
@@ -667,19 +667,19 @@ LABEL_5:
 
   v6 = &stru_10000C868;
 LABEL_7:
-  v7 = [a3 valueForEntitlement:v6];
+  v7 = [_connection valueForEntitlement:v6];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 @end

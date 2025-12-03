@@ -1,17 +1,17 @@
 @interface SKOverlay
-+ (id)unsupportedPlatformErrorWithAPIName:(id)a3;
++ (id)unsupportedPlatformErrorWithAPIName:(id)name;
 + (void)dismissOverlayInScene:(UIWindowScene *)scene;
 - (ASOOverlayConfiguration)overlayConfiguration;
-- (BOOL)isReadyToPresentInScene:(id)a3;
+- (BOOL)isReadyToPresentInScene:(id)scene;
 - (SKOverlay)initWithConfiguration:(SKOverlayConfiguration *)configuration;
 - (id)delegate;
-- (id)tranformToPublicError:(id)a3;
+- (id)tranformToPublicError:(id)error;
 - (void)presentInScene:(UIWindowScene *)scene;
-- (void)storeOverlay:(id)a3 didFailToLoadWithError:(id)a4;
-- (void)storeOverlay:(id)a3 didFinishDismissal:(id)a4;
-- (void)storeOverlay:(id)a3 didFinishPresentation:(id)a4;
-- (void)storeOverlay:(id)a3 willStartDismissal:(id)a4;
-- (void)storeOverlay:(id)a3 willStartPresentation:(id)a4;
+- (void)storeOverlay:(id)overlay didFailToLoadWithError:(id)error;
+- (void)storeOverlay:(id)overlay didFinishDismissal:(id)dismissal;
+- (void)storeOverlay:(id)overlay didFinishPresentation:(id)presentation;
+- (void)storeOverlay:(id)overlay willStartDismissal:(id)dismissal;
+- (void)storeOverlay:(id)overlay willStartPresentation:(id)presentation;
 @end
 
 @implementation SKOverlay
@@ -36,132 +36,132 @@
   v5 = scene;
   if ([(SKOverlay *)self isReadyToPresentInScene:?])
   {
-    v4 = [(UIWindowScene *)v5 _aso_appOverlayManager];
-    [v4 presentOverlay:self];
+    _aso_appOverlayManager = [(UIWindowScene *)v5 _aso_appOverlayManager];
+    [_aso_appOverlayManager presentOverlay:self];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ASOErrorDomain" code:7 userInfo:0];
-    [(SKOverlay *)self storeOverlay:self didFailToLoadWithError:v4];
+    _aso_appOverlayManager = [MEMORY[0x1E696ABC0] errorWithDomain:@"ASOErrorDomain" code:7 userInfo:0];
+    [(SKOverlay *)self storeOverlay:self didFailToLoadWithError:_aso_appOverlayManager];
   }
 }
 
 + (void)dismissOverlayInScene:(UIWindowScene *)scene
 {
-  v3 = [(UIWindowScene *)scene _aso_appOverlayManager];
-  [v3 dismissOverlay];
+  _aso_appOverlayManager = [(UIWindowScene *)scene _aso_appOverlayManager];
+  [_aso_appOverlayManager dismissOverlay];
 }
 
-- (BOOL)isReadyToPresentInScene:(id)a3
+- (BOOL)isReadyToPresentInScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(SKOverlay *)self configuration];
+  sceneCopy = scene;
+  configuration = [(SKOverlay *)self configuration];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v7 = (isKindOfClass & 1) == 0 || ![v4 activationState] || objc_msgSend(v4, "activationState") == 1;
+  v7 = (isKindOfClass & 1) == 0 || ![sceneCopy activationState] || objc_msgSend(sceneCopy, "activationState") == 1;
   return v7;
 }
 
 - (ASOOverlayConfiguration)overlayConfiguration
 {
-  v2 = [(SKOverlay *)self configuration];
-  v3 = [v2 _backing];
+  configuration = [(SKOverlay *)self configuration];
+  _backing = [configuration _backing];
 
-  return v3;
+  return _backing;
 }
 
-- (void)storeOverlay:(id)a3 willStartPresentation:(id)a4
+- (void)storeOverlay:(id)overlay willStartPresentation:(id)presentation
 {
-  v9 = a4;
-  v5 = [(SKOverlay *)self delegate];
+  presentationCopy = presentation;
+  delegate = [(SKOverlay *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SKOverlay *)self delegate];
-    v8 = [[SKOverlayTransitionContext alloc] initWithASOOverlayTransitionContext:v9];
-    [v7 storeOverlay:self willStartPresentation:v8];
+    delegate2 = [(SKOverlay *)self delegate];
+    v8 = [[SKOverlayTransitionContext alloc] initWithASOOverlayTransitionContext:presentationCopy];
+    [delegate2 storeOverlay:self willStartPresentation:v8];
   }
 }
 
-- (void)storeOverlay:(id)a3 didFinishPresentation:(id)a4
+- (void)storeOverlay:(id)overlay didFinishPresentation:(id)presentation
 {
-  v9 = a4;
-  v5 = [(SKOverlay *)self delegate];
+  presentationCopy = presentation;
+  delegate = [(SKOverlay *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SKOverlay *)self delegate];
-    v8 = [[SKOverlayTransitionContext alloc] initWithASOOverlayTransitionContext:v9];
-    [v7 storeOverlay:self didFinishPresentation:v8];
+    delegate2 = [(SKOverlay *)self delegate];
+    v8 = [[SKOverlayTransitionContext alloc] initWithASOOverlayTransitionContext:presentationCopy];
+    [delegate2 storeOverlay:self didFinishPresentation:v8];
   }
 }
 
-- (void)storeOverlay:(id)a3 willStartDismissal:(id)a4
+- (void)storeOverlay:(id)overlay willStartDismissal:(id)dismissal
 {
-  v9 = a4;
-  v5 = [(SKOverlay *)self delegate];
+  dismissalCopy = dismissal;
+  delegate = [(SKOverlay *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SKOverlay *)self delegate];
-    v8 = [[SKOverlayTransitionContext alloc] initWithASOOverlayTransitionContext:v9];
-    [v7 storeOverlay:self willStartDismissal:v8];
+    delegate2 = [(SKOverlay *)self delegate];
+    v8 = [[SKOverlayTransitionContext alloc] initWithASOOverlayTransitionContext:dismissalCopy];
+    [delegate2 storeOverlay:self willStartDismissal:v8];
   }
 }
 
-- (void)storeOverlay:(id)a3 didFinishDismissal:(id)a4
+- (void)storeOverlay:(id)overlay didFinishDismissal:(id)dismissal
 {
-  v9 = a4;
-  v5 = [(SKOverlay *)self delegate];
+  dismissalCopy = dismissal;
+  delegate = [(SKOverlay *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SKOverlay *)self delegate];
-    v8 = [[SKOverlayTransitionContext alloc] initWithASOOverlayTransitionContext:v9];
-    [v7 storeOverlay:self didFinishDismissal:v8];
+    delegate2 = [(SKOverlay *)self delegate];
+    v8 = [[SKOverlayTransitionContext alloc] initWithASOOverlayTransitionContext:dismissalCopy];
+    [delegate2 storeOverlay:self didFinishDismissal:v8];
   }
 }
 
-- (void)storeOverlay:(id)a3 didFailToLoadWithError:(id)a4
+- (void)storeOverlay:(id)overlay didFailToLoadWithError:(id)error
 {
-  v5 = [(SKOverlay *)self tranformToPublicError:a4];
+  v5 = [(SKOverlay *)self tranformToPublicError:error];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     [SKOverlay storeOverlay:v5 didFailToLoadWithError:?];
   }
 
-  v6 = [(SKOverlay *)self delegate];
+  delegate = [(SKOverlay *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SKOverlay *)self delegate];
-    [v8 storeOverlay:self didFailToLoadWithError:v5];
+    delegate2 = [(SKOverlay *)self delegate];
+    [delegate2 storeOverlay:self didFailToLoadWithError:v5];
   }
 }
 
-- (id)tranformToPublicError:(id)a3
+- (id)tranformToPublicError:(id)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:@"ASOErrorDomain"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:@"ASOErrorDomain"];
 
   if (!v5)
   {
     goto LABEL_12;
   }
 
-  v6 = [v3 code];
-  if (v6 > 3)
+  code = [errorCopy code];
+  if (code > 3)
   {
-    switch(v6)
+    switch(code)
     {
       case 4:
         v7 = MEMORY[0x1E696ABC0];
@@ -192,9 +192,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ((v6 - 1) >= 2)
+  if ((code - 1) >= 2)
   {
-    if (v6 == 3)
+    if (code == 3)
     {
       v15 = MEMORY[0x1E696ABC0];
       v20 = *MEMORY[0x1E696A578];
@@ -219,11 +219,11 @@ LABEL_14:
   return v16;
 }
 
-+ (id)unsupportedPlatformErrorWithAPIName:(id)a3
++ (id)unsupportedPlatformErrorWithAPIName:(id)name
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696ABC0];
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not supported on this platform.", a3, *MEMORY[0x1E696A578]];
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not supported on this platform.", name, *MEMORY[0x1E696A578]];
   v9[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [v3 errorWithDomain:@"SKErrorDomain" code:19 userInfo:v5];

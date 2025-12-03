@@ -1,6 +1,6 @@
 @interface PLSearchOCRTextLine
 - (CGRect)textBounds;
-- (PLSearchOCRTextLine)initWithTextBounds:(CGRect)a3 isTitle:(BOOL)a4 candidates:(id)a5;
+- (PLSearchOCRTextLine)initWithTextBounds:(CGRect)bounds isTitle:(BOOL)title candidates:(id)candidates;
 - (id)description;
 @end
 
@@ -21,13 +21,13 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@:%p> ", v5, self];
+  [string appendFormat:@"<%@:%p> ", v5, self];
 
   v6 = NSStringFromRect(self->_textBounds);
-  [v3 appendFormat:@"textBounds: %@, ", v6];
+  [string appendFormat:@"textBounds: %@, ", v6];
 
   if (self->_isTitle)
   {
@@ -39,25 +39,25 @@
     v7 = @"NO";
   }
 
-  [v3 appendFormat:@"isTitle: %@, ", v7];
-  [v3 appendFormat:@"candidates: %@", self->_candidates];
+  [string appendFormat:@"isTitle: %@, ", v7];
+  [string appendFormat:@"candidates: %@", self->_candidates];
 
-  return v3;
+  return string;
 }
 
-- (PLSearchOCRTextLine)initWithTextBounds:(CGRect)a3 isTitle:(BOOL)a4 candidates:(id)a5
+- (PLSearchOCRTextLine)initWithTextBounds:(CGRect)bounds isTitle:(BOOL)title candidates:(id)candidates
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  candidatesCopy = candidates;
   v16.receiver = self;
   v16.super_class = PLSearchOCRTextLine;
   v12 = [(PLSearchOCRTextLine *)&v16 init];
   if (v12)
   {
-    v13 = [v11 copy];
+    v13 = [candidatesCopy copy];
     candidates = v12->_candidates;
     v12->_candidates = v13;
 
@@ -65,7 +65,7 @@
     v12->_textBounds.origin.y = y;
     v12->_textBounds.size.width = width;
     v12->_textBounds.size.height = height;
-    v12->_isTitle = a4;
+    v12->_isTitle = title;
   }
 
   return v12;

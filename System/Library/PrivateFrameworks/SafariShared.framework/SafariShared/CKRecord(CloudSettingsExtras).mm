@@ -9,25 +9,25 @@
 
 - (uint64_t)safari_isCloudPerSiteSettingRecord
 {
-  v1 = [a1 recordType];
-  v2 = [v1 isEqualToString:@"PerSiteSetting"];
+  recordType = [self recordType];
+  v2 = [recordType isEqualToString:@"PerSiteSetting"];
 
   return v2;
 }
 
 - (uint64_t)safari_isCloudSettingRecord
 {
-  v1 = [a1 recordType];
-  v2 = [v1 isEqualToString:@"Setting"];
+  recordType = [self recordType];
+  v2 = [recordType isEqualToString:@"Setting"];
 
   return v2;
 }
 
 - (uint64_t)safari_isCloudBackgroundImageRecord
 {
-  v1 = [a1 recordID];
-  v2 = [v1 recordName];
-  v3 = [v2 isEqualToString:@"StartPageBackgroundImage"];
+  recordID = [self recordID];
+  recordName = [recordID recordName];
+  v3 = [recordName isEqualToString:@"StartPageBackgroundImage"];
 
   return v3;
 }
@@ -35,10 +35,10 @@
 - (id)safari_encodedRecordData
 {
   v2 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
-  [a1 encodeWithCoder:v2];
-  v3 = [v2 encodedData];
+  [self encodeWithCoder:v2];
+  encodedData = [v2 encodedData];
 
-  return v3;
+  return encodedData;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface ATXModeEntityStore
 - (ATXModeEntityStore)init;
-- (ATXModeEntityStore)initWithModeMetadataConstants:(id)a3;
-- (id)appEntityForBundleId:(id)a3;
+- (ATXModeEntityStore)initWithModeMetadataConstants:(id)constants;
+- (id)appEntityForBundleId:(id)id;
 @end
 
 @implementation ATXModeEntityStore
@@ -14,9 +14,9 @@
   return v4;
 }
 
-- (ATXModeEntityStore)initWithModeMetadataConstants:(id)a3
+- (ATXModeEntityStore)initWithModeMetadataConstants:(id)constants
 {
-  v5 = a3;
+  constantsCopy = constants;
   v10.receiver = self;
   v10.super_class = ATXModeEntityStore;
   v6 = [(ATXModeEntityStore *)&v10 init];
@@ -26,34 +26,34 @@
     entityStore = v6->_entityStore;
     v6->_entityStore = v7;
 
-    objc_storeStrong(&v6->_modeMetadataConstants, a3);
+    objc_storeStrong(&v6->_modeMetadataConstants, constants);
   }
 
   return v6;
 }
 
-- (id)appEntityForBundleId:(id)a3
+- (id)appEntityForBundleId:(id)id
 {
-  v4 = a3;
-  if (v4)
+  idCopy = id;
+  if (idCopy)
   {
-    v5 = [ATXSessionTaggingAppEntity keyForBundleId:v4];
-    v6 = self;
-    objc_sync_enter(v6);
-    v7 = [(NSMutableDictionary *)v6->_entityStore objectForKeyedSubscript:v5];
+    v5 = [ATXSessionTaggingAppEntity keyForBundleId:idCopy];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v7 = [(NSMutableDictionary *)selfCopy->_entityStore objectForKeyedSubscript:v5];
 
     if (v7)
     {
-      v8 = [(NSMutableDictionary *)v6->_entityStore objectForKeyedSubscript:v5];
+      v8 = [(NSMutableDictionary *)selfCopy->_entityStore objectForKeyedSubscript:v5];
     }
 
     else
     {
-      v8 = [[ATXSessionTaggingAppEntity alloc] initWithBundleId:v4 modeMetadataConstants:v6->_modeMetadataConstants];
-      [(NSMutableDictionary *)v6->_entityStore setObject:v8 forKeyedSubscript:v5];
+      v8 = [[ATXSessionTaggingAppEntity alloc] initWithBundleId:idCopy modeMetadataConstants:selfCopy->_modeMetadataConstants];
+      [(NSMutableDictionary *)selfCopy->_entityStore setObject:v8 forKeyedSubscript:v5];
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   else

@@ -6,9 +6,9 @@
 
 - (NSString)assetPackIdentifier
 {
-  v2 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  return [(CUIThemeRendition *)v2 assetPackIdentifier];
+  return [(CUIThemeRendition *)_rendition assetPackIdentifier];
 }
 
 @end

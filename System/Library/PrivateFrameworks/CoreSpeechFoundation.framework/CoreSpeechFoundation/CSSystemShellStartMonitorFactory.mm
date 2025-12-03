@@ -25,17 +25,17 @@
   v3 = v2;
   _Block_object_dispose(&v10, 8);
   v4 = objc_opt_new();
-  v5 = [v4 isClarityBoardEnabled];
+  isClarityBoardEnabled = [v4 isClarityBoardEnabled];
 
   v6 = off_1E86597B8;
-  if (!v5)
+  if (!isClarityBoardEnabled)
   {
     v6 = off_1E8659A98;
   }
 
-  v7 = [(__objc2_class *)*v6 sharedInstance];
+  sharedInstance = [(__objc2_class *)*v6 sharedInstance];
 
-  return v7;
+  return sharedInstance;
 }
 
 @end

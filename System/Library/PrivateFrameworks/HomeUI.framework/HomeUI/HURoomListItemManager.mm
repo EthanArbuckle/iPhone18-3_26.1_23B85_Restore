@@ -1,39 +1,39 @@
 @interface HURoomListItemManager
 - (HFReorderableHomeKitItemList)reorderableRoomList;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_comparatorForSectionIdentifier:(id)a3;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_comparatorForSectionIdentifier:(id)identifier;
 @end
 
 @implementation HURoomListItemManager
 
 - (HFReorderableHomeKitItemList)reorderableRoomList
 {
-  v3 = [(HURoomListItemManager *)self clientReorderableRoomList];
+  clientReorderableRoomList = [(HURoomListItemManager *)self clientReorderableRoomList];
 
-  if (v3)
+  if (clientReorderableRoomList)
   {
-    v4 = [(HURoomListItemManager *)self clientReorderableRoomList];
+    clientReorderableRoomList2 = [(HURoomListItemManager *)self clientReorderableRoomList];
   }
 
   else
   {
-    v5 = [(HFItemManager *)self sourceItem];
-    v6 = [v5 latestResults];
-    v4 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13EE0]];
+    sourceItem = [(HFItemManager *)self sourceItem];
+    latestResults = [sourceItem latestResults];
+    clientReorderableRoomList2 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EE0]];
   }
 
-  return v4;
+  return clientReorderableRoomList2;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D149E8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithHome:v5];
-  v7 = [v5 hf_currentUserIsAdministrator];
+  homeCopy = home;
+  v6 = [[v4 alloc] initWithHome:homeCopy];
+  hf_currentUserIsAdministrator = [homeCopy hf_currentUserIsAdministrator];
 
-  if (v7)
+  if (hf_currentUserIsAdministrator)
   {
     v8 = objc_alloc(MEMORY[0x277D14B38]);
     v20 = *MEMORY[0x277D13F60];
@@ -46,8 +46,8 @@
 
   v12 = objc_alloc(MEMORY[0x277D14B40]);
   v13 = MEMORY[0x277CBEB98];
-  v14 = [(HURoomListItemManager *)self addRoomItem];
-  v15 = [v13 na_setWithSafeObject:v14];
+  addRoomItem = [(HURoomListItemManager *)self addRoomItem];
+  v15 = [v13 na_setWithSafeObject:addRoomItem];
   v16 = [v12 initWithItems:v15];
 
   v19[0] = v6;
@@ -57,21 +57,21 @@
   return v17;
 }
 
-- (id)_comparatorForSectionIdentifier:(id)a3
+- (id)_comparatorForSectionIdentifier:(id)identifier
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = HURoomListItemManager;
-  v4 = [(HFItemManager *)&v13 _comparatorForSectionIdentifier:a3];
-  v5 = [(HURoomListItemManager *)self reorderableRoomList];
-  v6 = [v5 sortedHomeKitItemComparator];
-  v7 = v6;
-  if (!v6)
+  v4 = [(HFItemManager *)&v13 _comparatorForSectionIdentifier:identifier];
+  reorderableRoomList = [(HURoomListItemManager *)self reorderableRoomList];
+  sortedHomeKitItemComparator = [reorderableRoomList sortedHomeKitItemComparator];
+  v7 = sortedHomeKitItemComparator;
+  if (!sortedHomeKitItemComparator)
   {
-    v6 = v4;
+    sortedHomeKitItemComparator = v4;
   }
 
-  v8 = _Block_copy(v6);
+  v8 = _Block_copy(sortedHomeKitItemComparator);
 
   v9 = MEMORY[0x277D14CE8];
   v14[0] = objc_opt_class();

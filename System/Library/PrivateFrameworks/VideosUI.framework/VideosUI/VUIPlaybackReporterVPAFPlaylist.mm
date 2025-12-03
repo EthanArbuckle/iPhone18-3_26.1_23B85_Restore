@@ -1,16 +1,16 @@
 @interface VUIPlaybackReporterVPAFPlaylist
 - (TVPPlayback)player;
-- (VUIPlaybackReporterVPAFPlaylist)initWithPlayer:(id)a3;
-- (id)itemAtOverallPosition:(unint64_t)a3 rangeOptions:(int64_t)a4;
-- (id)itemsBetweenStartOverallPosition:(unint64_t)a3 endOverallPosition:(unint64_t)a4;
+- (VUIPlaybackReporterVPAFPlaylist)initWithPlayer:(id)player;
+- (id)itemAtOverallPosition:(unint64_t)position rangeOptions:(int64_t)options;
+- (id)itemsBetweenStartOverallPosition:(unint64_t)position endOverallPosition:(unint64_t)overallPosition;
 @end
 
 @implementation VUIPlaybackReporterVPAFPlaylist
 
-- (VUIPlaybackReporterVPAFPlaylist)initWithPlayer:(id)a3
+- (VUIPlaybackReporterVPAFPlaylist)initWithPlayer:(id)player
 {
   v99[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  playerCopy = player;
   v90.receiver = self;
   v90.super_class = VUIPlaybackReporterVPAFPlaylist;
   v5 = [(VUIPlaybackReporterVPAFPlaylist *)&v90 init];
@@ -19,8 +19,8 @@
     goto LABEL_47;
   }
 
-  v6 = [v4 currentMediaItem];
-  v7 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DE0]];
+  currentMediaItem = [playerCopy currentMediaItem];
+  v7 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5DE0]];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || ![v7 count])
   {
@@ -42,28 +42,28 @@
     _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "VUIPlaybackReporterVPAFPlaylist - Media item has VPAF dictionary. Will track. %@", buf, 0xCu);
   }
 
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  objc_storeWeak(&v5->_player, v4);
-  v10 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
-  v11 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D50]];
-  v12 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D28]];
-  [v9 addEntriesFromDictionary:v7];
-  [v9 vui_setObjectIfNotNil:v10 forKey:@"featureCanonicalId"];
-  v13 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CD8]];
-  [v9 vui_setObjectIfNotNil:v13 forKey:@"featureReferenceId"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  objc_storeWeak(&v5->_player, playerCopy);
+  v10 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
+  v11 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5D50]];
+  v12 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5D28]];
+  [dictionary addEntriesFromDictionary:v7];
+  [dictionary vui_setObjectIfNotNil:v10 forKey:@"featureCanonicalId"];
+  v13 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5CD8]];
+  [dictionary vui_setObjectIfNotNil:v13 forKey:@"featureReferenceId"];
 
-  v14 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B98]];
-  [v9 vui_setObjectIfNotNil:v14 forKey:@"featureExternalId"];
+  v14 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5B98]];
+  [dictionary vui_setObjectIfNotNil:v14 forKey:@"featureExternalId"];
 
-  v15 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD0]];
-  [v9 vui_setObjectIfNotNil:v15 forKey:@"brandId"];
+  v15 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD0]];
+  [dictionary vui_setObjectIfNotNil:v15 forKey:@"brandId"];
 
-  v76 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
-  [v9 vui_setObjectIfNotNil:? forKey:?];
+  v76 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
+  [dictionary vui_setObjectIfNotNil:? forKey:?];
   v78 = v11;
-  [v9 vui_setObjectIfNotNil:v11 forKey:@"canonicalShowId"];
+  [dictionary vui_setObjectIfNotNil:v11 forKey:@"canonicalShowId"];
   v77 = v12;
-  [v9 vui_setObjectIfNotNil:v12 forKey:@"canonicalSeasonId"];
+  [dictionary vui_setObjectIfNotNil:v12 forKey:@"canonicalSeasonId"];
   v16 = +[VUIMetricsJetEngine sharedInstance];
   v75 = v10;
   if ([v16 isSharedContent:v10])
@@ -78,7 +78,7 @@
 LABEL_9:
 LABEL_10:
     v18 = [MEMORY[0x1E696AD98] numberWithBool:1];
-    [v9 setObject:v18 forKey:@"sharedContent"];
+    [dictionary setObject:v18 forKey:@"sharedContent"];
 
     goto LABEL_11;
   }
@@ -92,17 +92,17 @@ LABEL_10:
   }
 
 LABEL_11:
-  v19 = [VUIPlaybackUtilities playerIsLive:v4];
+  v19 = [VUIPlaybackUtilities playerIsLive:playerCopy];
   v5->_isLive = v19;
   if (v19)
   {
-    [v9 setObject:@"live" forKeyedSubscript:@"programmingType"];
-    v20 = [v9 objectForKey:@"serviceId"];
+    [dictionary setObject:@"live" forKeyedSubscript:@"programmingType"];
+    v20 = [dictionary objectForKey:@"serviceId"];
 
     if (!v20)
     {
-      v21 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C48]];
-      [v9 vui_setObjectIfNotNil:v21 forKey:@"serviceId"];
+      v21 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5C48]];
+      [dictionary vui_setObjectIfNotNil:v21 forKey:@"serviceId"];
     }
 
     v22 = [[VUIPlaybackReporterVPAFPlaylistItem alloc] initWithPosition:0 duration:-1 eventData:0];
@@ -114,10 +114,10 @@ LABEL_11:
     goto LABEL_42;
   }
 
-  v74 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
-  [v4 duration];
+  v74 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
+  [playerCopy duration];
   v29 = vcvtad_u64_f64(v28 * 1000.0);
-  v73 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5BC0]];
+  v73 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5BC0]];
   [(NSArray *)v73 doubleValue];
   v31 = vcvtad_u64_f64(v30 * 1000.0);
   v32 = v29 - v31;
@@ -141,16 +141,16 @@ LABEL_18:
   }
 
   v71 = v5;
-  v72 = v4;
-  [v9 setObject:@"videoOnDemand" forKeyedSubscript:@"programmingType"];
+  v72 = playerCopy;
+  [dictionary setObject:@"videoOnDemand" forKeyedSubscript:@"programmingType"];
   v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v29];
-  v69 = v9;
-  [v9 setObject:v33 forKeyedSubscript:@"overallLength"];
+  v69 = dictionary;
+  [dictionary setObject:v33 forKeyedSubscript:@"overallLength"];
 
   v81 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{v31, v32}];
-  v80 = [MEMORY[0x1E695DF70] array];
-  v70 = v6;
-  [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D08]];
+  array = [MEMORY[0x1E695DF70] array];
+  v70 = currentMediaItem;
+  [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5D08]];
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
@@ -174,30 +174,30 @@ LABEL_18:
 
       v37 = *(*(&v86 + 1) + 8 * i);
       v38 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v39 = [v37 adamID];
-      v40 = [v37 dynamicSlotDataSetId];
-      if (v39)
+      adamID = [v37 adamID];
+      dynamicSlotDataSetId = [v37 dynamicSlotDataSetId];
+      if (adamID)
       {
-        [v38 setObject:v39 forKeyedSubscript:@"assetId"];
+        [v38 setObject:adamID forKeyedSubscript:@"assetId"];
       }
 
-      if (v40)
+      if (dynamicSlotDataSetId)
       {
-        [v38 setObject:v40 forKeyedSubscript:@"data.dynamicSlot.dataSetId"];
+        [v38 setObject:dynamicSlotDataSetId forKeyedSubscript:@"data.dynamicSlot.dataSetId"];
       }
 
       v41 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v37, "isSkippable")}];
       [v38 setObject:v41 forKeyedSubscript:@"isSkippable"];
 
       v42 = @"unknown";
-      v43 = [v37 type];
+      type = [v37 type];
       v44 = @"preroll";
-      if (v43 == 1)
+      if (type == 1)
       {
         goto LABEL_34;
       }
 
-      if (v43 == 3)
+      if (type == 3)
       {
         v44 = @"postroll";
 LABEL_34:
@@ -208,7 +208,7 @@ LABEL_34:
       }
 
       v44 = @"midroll";
-      if (v43 == 2)
+      if (type == 2)
       {
         goto LABEL_34;
       }
@@ -223,9 +223,9 @@ LABEL_35:
       v51 = v50;
       if (v50)
       {
-        v52 = [(VUIPlaybackReporterVPAFPlaylistItem *)v50 timeRange];
-        [v81 removeIndexesInRange:{v52, v53}];
-        [v80 addObject:v51];
+        timeRange = [(VUIPlaybackReporterVPAFPlaylistItem *)v50 timeRange];
+        [v81 removeIndexesInRange:{timeRange, v53}];
+        [array addObject:v51];
       }
     }
 
@@ -250,7 +250,7 @@ LABEL_39:
   v83[2] = __50__VUIPlaybackReporterVPAFPlaylist_initWithPlayer___block_invoke;
   v83[3] = &unk_1E8734C90;
   v84 = v54;
-  v56 = v80;
+  v56 = array;
   v85 = v56;
   v57 = v54;
   [v81 enumerateRangesUsingBlock:v83];
@@ -259,20 +259,20 @@ LABEL_39:
   v71->_items = v56;
   v59 = v56;
 
-  v4 = v72;
+  playerCopy = v72;
   items = v73;
-  v6 = v70;
-  v9 = v69;
+  currentMediaItem = v70;
+  dictionary = v69;
   v22 = v74;
   v25 = v75;
 LABEL_42:
 
-  v91 = v9;
+  v91 = dictionary;
   v60 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v91 count:1];
   eventData = v5->_eventData;
   v5->_eventData = v60;
 
-  v5->_hasInterstitials = [v4 hasInterstitials];
+  v5->_hasInterstitials = [playerCopy hasInterstitials];
   v62 = VUIDefaultLogObject();
   if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
   {
@@ -286,7 +286,7 @@ LABEL_42:
   if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v94 = v9;
+    v94 = dictionary;
     _os_log_impl(&dword_1E323F000, v64, OS_LOG_TYPE_DEFAULT, "VUIPlaybackReporterVPAFPlaylist - Playlist metrics: %@", buf, 0xCu);
   }
 
@@ -308,16 +308,16 @@ void __50__VUIPlaybackReporterVPAFPlaylist_initWithPlayer___block_invoke(uint64_
   }
 }
 
-- (id)itemAtOverallPosition:(unint64_t)a3 rangeOptions:(int64_t)a4
+- (id)itemAtOverallPosition:(unint64_t)position rangeOptions:(int64_t)options
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = [(VUIPlaybackReporterVPAFPlaylist *)self items:a3];
-  v7 = [v6 firstObject];
+  v6 = [(VUIPlaybackReporterVPAFPlaylist *)self items:position];
+  firstObject = [v6 firstObject];
 
-  v8 = [(VUIPlaybackReporterVPAFPlaylist *)self player];
-  v9 = [v8 currentMediaItem];
-  v10 = [v9 mediaItemMetadataForProperty:@"VUIMediaItemMetadataClipId"];
-  v11 = [v9 mediaItemMetadataForProperty:@"VUIMediaItemMetadataClipDuration"];
+  player = [(VUIPlaybackReporterVPAFPlaylist *)self player];
+  currentMediaItem = [player currentMediaItem];
+  v10 = [currentMediaItem mediaItemMetadataForProperty:@"VUIMediaItemMetadataClipId"];
+  v11 = [currentMediaItem mediaItemMetadataForProperty:@"VUIMediaItemMetadataClipDuration"];
   if (!-[VUIPlaybackReporterVPAFPlaylist isLive](self, "isLive") || ([v10 length] ? (v12 = v11 == 0) : (v12 = 1), v12))
   {
     if (![(VUIPlaybackReporterVPAFPlaylist *)self isLive])
@@ -326,8 +326,8 @@ void __50__VUIPlaybackReporterVPAFPlaylist_initWithPlayer___block_invoke(uint64_
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v13 = [(VUIPlaybackReporterVPAFPlaylist *)self items];
-      v14 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      items = [(VUIPlaybackReporterVPAFPlaylist *)self items];
+      v14 = [items countByEnumeratingWithState:&v33 objects:v37 count:16];
       if (v14)
       {
         v15 = v14;
@@ -339,21 +339,21 @@ void __50__VUIPlaybackReporterVPAFPlaylist_initWithPlayer___block_invoke(uint64_
           {
             if (*v34 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(items);
             }
 
             v18 = *(*(&v33 + 1) + 8 * i);
-            v19 = [v18 timeRange];
-            if (a3 >= v19 && a3 - v19 < v20)
+            timeRange = [v18 timeRange];
+            if (position >= timeRange && position - timeRange < v20)
             {
               v30 = v18;
 
-              v7 = v30;
+              firstObject = v30;
               goto LABEL_24;
             }
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
+          v15 = [items countByEnumeratingWithState:&v33 objects:v37 count:16];
         }
 
         while (v15);
@@ -362,36 +362,36 @@ LABEL_24:
       }
     }
 
-    v7 = v7;
-    v29 = v7;
+    firstObject = firstObject;
+    v29 = firstObject;
   }
 
   else
   {
-    v22 = [MEMORY[0x1E695DF90] dictionary];
-    [v22 vui_setObjectIfNotNil:*MEMORY[0x1E69AB740] forKey:@"assetPlacement"];
-    [v22 vui_setObjectIfNotNil:@"CatchUpToLive" forKey:@"extraType"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary vui_setObjectIfNotNil:*MEMORY[0x1E69AB740] forKey:@"assetPlacement"];
+    [dictionary vui_setObjectIfNotNil:@"CatchUpToLive" forKey:@"extraType"];
     v23 = VUIDefaultLogObject();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       v39 = v10;
       v40 = 2112;
-      v41 = v22;
+      v41 = dictionary;
       _os_log_impl(&dword_1E323F000, v23, OS_LOG_TYPE_DEFAULT, "VUIPlaybackReporterVPAFPlaylist - Clip (%@) metadata %@", buf, 0x16u);
     }
 
     v25 = [VUIPlaybackReporterVPAFPlaylistItem alloc];
     [v11 doubleValue];
     v27 = (v26 * 1000.0);
-    v28 = [v22 copy];
+    v28 = [dictionary copy];
     v29 = [(VUIPlaybackReporterVPAFPlaylistItem *)v25 initWithPosition:0 duration:v27 eventData:v28];
   }
 
   return v29;
 }
 
-- (id)itemsBetweenStartOverallPosition:(unint64_t)a3 endOverallPosition:(unint64_t)a4
+- (id)itemsBetweenStartOverallPosition:(unint64_t)position endOverallPosition:(unint64_t)overallPosition
 {
   v34 = *MEMORY[0x1E69E9840];
   v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -399,27 +399,27 @@ LABEL_24:
   {
     v29 = 0u;
     v30 = 0u;
-    if (a4 >= a3)
+    if (overallPosition >= position)
     {
-      v7 = a4 - a3;
+      v7 = overallPosition - position;
     }
 
     else
     {
-      v7 = a3 - a4;
+      v7 = position - overallPosition;
     }
 
-    if (a4 >= a3)
+    if (overallPosition >= position)
     {
-      v8 = a3;
+      overallPositionCopy = position;
     }
 
     else
     {
-      v8 = a4;
+      overallPositionCopy = overallPosition;
     }
 
-    v24.location = v8;
+    v24.location = overallPositionCopy;
     v24.length = v7;
     v27 = 0uLL;
     v28 = 0uLL;
@@ -435,20 +435,20 @@ LABEL_24:
       {
         for (i = 0; i != v11; ++i)
         {
-          v13 = self;
+          selfCopy = self;
           if (*v28 != v26)
           {
             objc_enumerationMutation(obj);
           }
 
           v14 = *(*(&v27 + 1) + 8 * i);
-          v15 = [v14 eventData];
-          v16 = [v15 lastObject];
-          v17 = [v16 vui_stringForKey:@"assetPlacement"];
+          eventData = [v14 eventData];
+          lastObject = [eventData lastObject];
+          v17 = [lastObject vui_stringForKey:@"assetPlacement"];
           v18 = [v17 isEqualToString:@"preroll"];
 
-          self = v13;
-          if ([(VUIPlaybackReporterVPAFPlaylist *)v13 hasInterstitials]&& v18)
+          self = selfCopy;
+          if ([(VUIPlaybackReporterVPAFPlaylist *)selfCopy hasInterstitials]&& v18)
           {
             v19 = VUIDefaultLogObject();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))

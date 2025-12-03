@@ -6,39 +6,39 @@
 
 - (__CFString)unc_pushTypeDescription
 {
-  v1 = [a1 pushType];
+  pushType = [self pushType];
   v2 = @"Unknown";
-  if (v1 <= 15)
+  if (pushType <= 15)
   {
     v3 = @"VoIP";
     v7 = @"Background";
     v8 = @"Alert";
-    if (v1 != 8)
+    if (pushType != 8)
     {
       v8 = @"Unknown";
     }
 
-    if (v1 != 4)
+    if (pushType != 4)
     {
       v7 = v8;
     }
 
-    if (v1 != 2)
+    if (pushType != 2)
     {
       v3 = v7;
     }
 
-    if (v1 == 1)
+    if (pushType == 1)
     {
       v2 = @"Complication";
     }
 
-    if (!v1)
+    if (!pushType)
     {
       v2 = @"None";
     }
 
-    v6 = v1 <= 1;
+    v6 = pushType <= 1;
   }
 
   else
@@ -46,37 +46,37 @@
     v3 = @"Wallet";
     v4 = @"LiveActivity";
     v5 = @"Widget";
-    if (v1 != 2048)
+    if (pushType != 2048)
     {
       v5 = @"Unknown";
     }
 
-    if (v1 != 1024)
+    if (pushType != 1024)
     {
       v4 = v5;
     }
 
-    if (v1 != 512)
+    if (pushType != 512)
     {
       v3 = v4;
     }
 
-    if (v1 == 128)
+    if (pushType == 128)
     {
       v2 = @"Location";
     }
 
-    if (v1 == 32)
+    if (pushType == 32)
     {
       v2 = @"MDM";
     }
 
-    if (v1 == 16)
+    if (pushType == 16)
     {
       v2 = @"FileProvider";
     }
 
-    v6 = v1 <= 511;
+    v6 = pushType <= 511;
   }
 
   if (v6)

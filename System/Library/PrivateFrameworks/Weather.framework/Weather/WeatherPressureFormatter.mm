@@ -1,18 +1,18 @@
 @interface WeatherPressureFormatter
 + (id)convenienceFormatter;
 - (WeatherPressureFormatter)init;
-- (float)convertInchesHGPressure:(float)result toUnit:(int)a4;
-- (float)convertMBarPressure:(float)result toUnit:(int)a4;
-- (id)fallbackStringForPressure:(float)a3;
-- (id)formatStringForPressure:(float)a3 inUnit:(int)a4;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringFromInchesHG:(float)a3;
-- (id)stringFromMillibars:(float)a3;
-- (id)stringFromPressure:(float)a3 isDataMetric:(BOOL)a4;
+- (float)convertInchesHGPressure:(float)result toUnit:(int)unit;
+- (float)convertMBarPressure:(float)result toUnit:(int)unit;
+- (id)fallbackStringForPressure:(float)pressure;
+- (id)formatStringForPressure:(float)pressure inUnit:(int)unit;
+- (id)stringForObjectValue:(id)value;
+- (id)stringFromInchesHG:(float)g;
+- (id)stringFromMillibars:(float)millibars;
+- (id)stringFromPressure:(float)pressure isDataMetric:(BOOL)metric;
 - (int)pressureUnit;
 - (void)createNumberFormatter;
 - (void)dealloc;
-- (void)setLocale:(id)a3;
+- (void)setLocale:(id)locale;
 @end
 
 @implementation WeatherPressureFormatter
@@ -48,13 +48,13 @@ void __48__WeatherPressureFormatter_convenienceFormatter__block_invoke()
   v2 = [(WeatherPressureFormatter *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
     locale = v2->_locale;
-    v2->_locale = v3;
+    v2->_locale = autoupdatingCurrentLocale;
 
     numberFormatter = [(WeatherPressureFormatter *)v2 createNumberFormatter];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_resetFormatter name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_resetFormatter name:*MEMORY[0x277CBE620] object:0];
   }
 
   return v2;
@@ -68,16 +68,16 @@ void __48__WeatherPressureFormatter_convenienceFormatter__block_invoke()
   [(WeatherPressureFormatter *)&v3 dealloc];
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  objc_storeStrong(&self->_locale, a3);
+  objc_storeStrong(&self->_locale, locale);
 
   [(WeatherPressureFormatter *)self resetFormatter];
 }
 
-- (id)stringFromPressure:(float)a3 isDataMetric:(BOOL)a4
+- (id)stringFromPressure:(float)pressure isDataMetric:(BOOL)metric
 {
-  if (a4)
+  if (metric)
   {
     [(WeatherPressureFormatter *)self stringFromMillibars:?];
   }
@@ -91,12 +91,12 @@ void __48__WeatherPressureFormatter_convenienceFormatter__block_invoke()
   return v4;
 }
 
-- (id)stringFromMillibars:(float)a3
+- (id)stringFromMillibars:(float)millibars
 {
-  v5 = [(WeatherPressureFormatter *)self pressureUnit];
-  *&v6 = a3;
-  [(WeatherPressureFormatter *)self convertMBarPressure:v5 toUnit:v6];
-  v7 = [(WeatherPressureFormatter *)self formatStringForPressure:v5 inUnit:?];
+  pressureUnit = [(WeatherPressureFormatter *)self pressureUnit];
+  *&v6 = millibars;
+  [(WeatherPressureFormatter *)self convertMBarPressure:pressureUnit toUnit:v6];
+  v7 = [(WeatherPressureFormatter *)self formatStringForPressure:pressureUnit inUnit:?];
   v9 = v7;
   if (v7)
   {
@@ -105,7 +105,7 @@ void __48__WeatherPressureFormatter_convenienceFormatter__block_invoke()
 
   else
   {
-    *&v8 = a3;
+    *&v8 = millibars;
     v10 = [(WeatherPressureFormatter *)self fallbackStringForPressure:v8];
   }
 
@@ -114,12 +114,12 @@ void __48__WeatherPressureFormatter_convenienceFormatter__block_invoke()
   return v11;
 }
 
-- (id)stringFromInchesHG:(float)a3
+- (id)stringFromInchesHG:(float)g
 {
-  v5 = [(WeatherPressureFormatter *)self pressureUnit];
-  *&v6 = a3;
-  [(WeatherPressureFormatter *)self convertInchesHGPressure:v5 toUnit:v6];
-  v7 = [(WeatherPressureFormatter *)self formatStringForPressure:v5 inUnit:?];
+  pressureUnit = [(WeatherPressureFormatter *)self pressureUnit];
+  *&v6 = g;
+  [(WeatherPressureFormatter *)self convertInchesHGPressure:pressureUnit toUnit:v6];
+  v7 = [(WeatherPressureFormatter *)self formatStringForPressure:pressureUnit inUnit:?];
   v9 = v7;
   if (v7)
   {
@@ -128,7 +128,7 @@ void __48__WeatherPressureFormatter_convenienceFormatter__block_invoke()
 
   else
   {
-    *&v8 = a3;
+    *&v8 = g;
     [(WeatherPressureFormatter *)self convertInchesHGPressure:2050 toUnit:v8];
     v10 = [(WeatherPressureFormatter *)self fallbackStringForPressure:?];
   }
@@ -138,16 +138,16 @@ void __48__WeatherPressureFormatter_convenienceFormatter__block_invoke()
   return v11;
 }
 
-- (id)formatStringForPressure:(float)a3 inUnit:(int)a4
+- (id)formatStringForPressure:(float)pressure inUnit:(int)unit
 {
   v18 = *MEMORY[0x277D85DE8];
   pErrorCode = U_ZERO_ERROR;
-  v4 = [(WeatherPressureFormatter *)self locale];
-  v5 = [v4 localeIdentifier];
+  locale = [(WeatherPressureFormatter *)self locale];
+  localeIdentifier = [locale localeIdentifier];
 
-  if (v5)
+  if (localeIdentifier)
   {
-    [v5 UTF8String];
+    [localeIdentifier UTF8String];
     unum_clone();
     uameasfmt_open();
     uameasfmt_format();
@@ -185,23 +185,23 @@ void __48__WeatherPressureFormatter_convenienceFormatter__block_invoke()
   return v8;
 }
 
-- (id)fallbackStringForPressure:(float)a3
+- (id)fallbackStringForPressure:(float)pressure
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
+  pressureCopy = pressure;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"HECTOPASCAL" value:&stru_2882270E8 table:@"WeatherFrameworkLocalizableStrings"];
-  v7 = [v3 localizedStringWithFormat:@"%d %@", v4, v6];
+  v7 = [v3 localizedStringWithFormat:@"%d %@", pressureCopy, v6];
 
   return v7;
 }
 
 - (void)createNumberFormatter
 {
-  v3 = [(WeatherPressureFormatter *)self locale];
-  v4 = [v3 localeIdentifier];
+  locale = [(WeatherPressureFormatter *)self locale];
+  localeIdentifier = [locale localeIdentifier];
 
-  [v4 UTF8String];
+  [localeIdentifier UTF8String];
   numberFormatter = unum_open();
   unum_setAttribute();
   [(WeatherPressureFormatter *)self pressureUnit];
@@ -213,20 +213,20 @@ void __48__WeatherPressureFormatter_convenienceFormatter__block_invoke()
 
 - (int)pressureUnit
 {
-  v3 = [(WeatherPressureFormatter *)self locale];
+  locale = [(WeatherPressureFormatter *)self locale];
 
   v4 = 2048;
-  if (v3)
+  if (locale)
   {
-    v5 = [(WeatherPressureFormatter *)self locale];
-    v6 = [v5 objectForKey:*MEMORY[0x277CBE718]];
-    v7 = [v6 BOOLValue];
+    locale2 = [(WeatherPressureFormatter *)self locale];
+    v6 = [locale2 objectForKey:*MEMORY[0x277CBE718]];
+    bOOLValue = [v6 BOOLValue];
 
-    v8 = [(WeatherPressureFormatter *)self locale];
-    v9 = [v8 objectForKey:*MEMORY[0x277CBE690]];
+    locale3 = [(WeatherPressureFormatter *)self locale];
+    v9 = [locale3 objectForKey:*MEMORY[0x277CBE690]];
 
     v10 = [&unk_288235640 containsObject:v9];
-    if (v7)
+    if (bOOLValue)
     {
       v11 = 2048;
     }
@@ -250,16 +250,16 @@ void __48__WeatherPressureFormatter_convenienceFormatter__block_invoke()
   return v4;
 }
 
-- (float)convertMBarPressure:(float)result toUnit:(int)a4
+- (float)convertMBarPressure:(float)result toUnit:(int)unit
 {
-  if (a4 == 2051)
+  if (unit == 2051)
   {
     v4 = 1.3332;
   }
 
   else
   {
-    if (a4 != 2049)
+    if (unit != 2049)
     {
       return result;
     }
@@ -270,16 +270,16 @@ void __48__WeatherPressureFormatter_convenienceFormatter__block_invoke()
   return result / v4;
 }
 
-- (float)convertInchesHGPressure:(float)result toUnit:(int)a4
+- (float)convertInchesHGPressure:(float)result toUnit:(int)unit
 {
-  if (a4 == 2051)
+  if (unit == 2051)
   {
     v4 = 25.4;
   }
 
   else
   {
-    if (a4 != 2048)
+    if (unit != 2048)
     {
       return result;
     }
@@ -290,13 +290,13 @@ void __48__WeatherPressureFormatter_convenienceFormatter__block_invoke()
   return result * v4;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [v4 floatValue];
+    [valueCopy floatValue];
     v5 = [(WeatherPressureFormatter *)self stringFromMillibars:?];
   }
 

@@ -1,14 +1,14 @@
 @interface SKGPhoneNode
-+ (id)phoneWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4;
-- (SKGPhoneNode)initWithPhoneNumber:(id)a3;
++ (id)phoneWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph;
+- (SKGPhoneNode)initWithPhoneNumber:(id)number;
 @end
 
 @implementation SKGPhoneNode
 
-+ (id)phoneWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4
++ (id)phoneWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
-  v5 = [a4 graph];
-  v6 = [v5 nodeForIdentifier:a3];
+  graph = [graph graph];
+  v6 = [graph nodeForIdentifier:identifier];
 
   v7 = [SKGPhoneNode alloc];
   v8 = [v6 propertyForKey:@"value"];
@@ -17,11 +17,11 @@
   return v9;
 }
 
-- (SKGPhoneNode)initWithPhoneNumber:(id)a3
+- (SKGPhoneNode)initWithPhoneNumber:(id)number
 {
   v4.receiver = self;
   v4.super_class = SKGPhoneNode;
-  return [(SKGNode *)&v4 initWithValue:a3];
+  return [(SKGNode *)&v4 initWithValue:number];
 }
 
 @end

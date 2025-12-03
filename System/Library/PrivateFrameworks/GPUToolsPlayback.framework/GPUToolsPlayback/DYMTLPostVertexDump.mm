@@ -1,25 +1,25 @@
 @interface DYMTLPostVertexDump
-- (BOOL)createAndSetPostVertexDumpPipelineState:(unint64_t)a3 commandEncoderId:(unint64_t)a4 pipelineId:(unint64_t)a5;
-- (DYMTLPostVertexDump)initWithDebugFunctionPlayer:(id)a3;
-- (void)_reservePostVertexDumpBufferWithLength:(unint64_t)a3;
+- (BOOL)createAndSetPostVertexDumpPipelineState:(unint64_t)state commandEncoderId:(unint64_t)id pipelineId:(unint64_t)pipelineId;
+- (DYMTLPostVertexDump)initWithDebugFunctionPlayer:(id)player;
+- (void)_reservePostVertexDumpBufferWithLength:(unint64_t)length;
 - (void)notifyReplayerTargetCommandBuffersFinished;
 @end
 
 @implementation DYMTLPostVertexDump
 
-- (DYMTLPostVertexDump)initWithDebugFunctionPlayer:(id)a3
+- (DYMTLPostVertexDump)initWithDebugFunctionPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   v10.receiver = self;
   v10.super_class = DYMTLPostVertexDump;
   v6 = [(DYMTLPostVertexDump *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_player, a3);
-    v8 = [(DYMTLFunctionPlayer *)v7->_player device];
+    objc_storeStrong(&v6->_player, player);
+    device = [(DYMTLFunctionPlayer *)v7->_player device];
 
-    if (!v8)
+    if (!device)
     {
 
       v7 = 0;
@@ -29,13 +29,13 @@
   return v7;
 }
 
-- (BOOL)createAndSetPostVertexDumpPipelineState:(unint64_t)a3 commandEncoderId:(unint64_t)a4 pipelineId:(unint64_t)a5
+- (BOOL)createAndSetPostVertexDumpPipelineState:(unint64_t)state commandEncoderId:(unint64_t)id pipelineId:(unint64_t)pipelineId
 {
   v54 = *MEMORY[0x277D85DE8];
   p_player = &self->_player;
-  v9 = [(DYMTLFunctionPlayer *)self->_player objectForKey:a3];
-  v10 = [(DYMTLFunctionPlayer *)*p_player objectForKey:a4];
-  v11 = [(DYMTLFunctionPlayer *)self->_player objectForKey:a5];
+  v9 = [(DYMTLFunctionPlayer *)self->_player objectForKey:state];
+  v10 = [(DYMTLFunctionPlayer *)*p_player objectForKey:id];
+  v11 = [(DYMTLFunctionPlayer *)self->_player objectForKey:pipelineId];
   v12 = v11;
   if (v9)
   {
@@ -61,30 +61,30 @@
       v18 = DYMTLGetAssociatedObject(v12, 0);
       for (i = 0; ; ++i)
       {
-        v20 = [(DYMTLFunctionPlayer *)self->_player device];
-        v21 = [v20 maxColorAttachments];
+        device = [(DYMTLFunctionPlayer *)self->_player device];
+        maxColorAttachments = [device maxColorAttachments];
 
-        if (v21 <= i)
+        if (maxColorAttachments <= i)
         {
           break;
         }
 
-        v22 = [v18 colorAttachments];
-        v23 = [v22 objectAtIndexedSubscript:i];
-        v24 = [v16 colorAttachments];
-        [v24 setObject:v23 atIndexedSubscript:i];
+        colorAttachments = [v18 colorAttachments];
+        v23 = [colorAttachments objectAtIndexedSubscript:i];
+        colorAttachments2 = [v16 colorAttachments];
+        [colorAttachments2 setObject:v23 atIndexedSubscript:i];
       }
 
-      v25 = [objc_opt_class() internalPipelineStateLabel];
-      [v16 setLabel:v25];
+      internalPipelineStateLabel = [objc_opt_class() internalPipelineStateLabel];
+      [v16 setLabel:internalPipelineStateLabel];
 
       [v16 setDepthAttachmentPixelFormat:objc_msgSend(v18, "depthAttachmentPixelFormat")];
       [v16 setStencilAttachmentPixelFormat:objc_msgSend(v18, "stencilAttachmentPixelFormat")];
-      v26 = [v18 vertexDescriptor];
-      [v16 setVertexDescriptor:v26];
+      vertexDescriptor = [v18 vertexDescriptor];
+      [v16 setVertexDescriptor:vertexDescriptor];
 
-      v27 = [v18 vertexFunction];
-      [v16 setVertexFunction:v27];
+      vertexFunction = [v18 vertexFunction];
+      [v16 setVertexFunction:vertexFunction];
 
       [v16 setRasterizationEnabled:0];
       if (objc_opt_respondsToSelector())
@@ -122,10 +122,10 @@
       v48[3] = &unk_27930F430;
       v48[4] = &v49;
       [v10 enumerateVertexBuffersUsingBlock:v48];
-      v28 = [(DYMTLFunctionPlayer *)self->_player device];
-      v29 = [v28 maxVertexBuffers];
+      device2 = [(DYMTLFunctionPlayer *)self->_player device];
+      maxVertexBuffers = [device2 maxVertexBuffers];
 
-      if (v50[3] >= v29)
+      if (v50[3] >= maxVertexBuffers)
       {
         v15 = 0;
       }
@@ -133,10 +133,10 @@
       else
       {
         [v16 setPostVertexDumpBufferIndex:?];
-        v30 = [(DYMTLFunctionPlayer *)self->_player device];
+        device3 = [(DYMTLFunctionPlayer *)self->_player device];
         v46 = 0;
         v47 = 0;
-        v45 = [v30 newRenderPipelineStateWithDescriptor:v16 options:524291 reflection:&v47 error:&v46];
+        v45 = [device3 newRenderPipelineStateWithDescriptor:v16 options:524291 reflection:&v47 error:&v46];
         v31 = v47;
         v44 = v46;
 
@@ -145,14 +145,14 @@
         if (v45)
         {
           [(DYMTLPostVertexDump *)self _reservePostVertexDumpBufferWithLength:0x1000000];
-          v43 = [v31 postVertexDumpOutputs];
+          postVertexDumpOutputs = [v31 postVertexDumpOutputs];
           v42 = v31;
           MEMORY[0x253031C70](v53);
-          v32 = [(MTLBuffer *)self->_postVertexDumpBuffer contents];
+          contents = [(MTLBuffer *)self->_postVertexDumpBuffer contents];
           [v31 postVertexDumpStride];
           v33 = vcvtpd_u64_f64(vcvtd_n_f64_u64(GPUTools::MTL::CaptureHelper::SaveObject() + 4, 8uLL)) << 8;
           self->_reflectionSizeAligned256 = v33;
-          *v32 = v33;
+          *contents = v33;
           self->_reflectionPostVertexDumpStride = [v31 postVertexDumpStride];
           v34 = [(MTLBuffer *)self->_postVertexDumpBuffer length];
           reflectionSizeAligned256 = self->_reflectionSizeAligned256;
@@ -161,8 +161,8 @@
           *v37 = 0;
           v37[1] = (v34 - reflectionSizeAligned256 - 8) / reflectionPostVertexDumpStride;
           v31 = v42;
-          v38 = [(DYMTLFunctionPlayer *)self->_player device];
-          LODWORD(reflectionPostVertexDumpStride) = [v38 supportsFeatureSet:7];
+          device4 = [(DYMTLFunctionPlayer *)self->_player device];
+          LODWORD(reflectionPostVertexDumpStride) = [device4 supportsFeatureSet:7];
 
           if (reflectionPostVertexDumpStride)
           {
@@ -211,14 +211,14 @@ uint64_t __91__DYMTLPostVertexDump_createAndSetPostVertexDumpPipelineState_comma
   postVertexDumpBuffer = self->_postVertexDumpBuffer;
   if (postVertexDumpBuffer && self->_reflectionSizeAligned256 && self->_reflectionPostVertexDumpStride)
   {
-    v5 = [(MTLBuffer *)postVertexDumpBuffer contents];
+    contents = [(MTLBuffer *)postVertexDumpBuffer contents];
     reflectionSizeAligned256 = self->_reflectionSizeAligned256;
-    v7 = (v5 + (reflectionSizeAligned256 & 0xFFFFFFFFFFFFFFFCLL));
+    v7 = (contents + (reflectionSizeAligned256 & 0xFFFFFFFFFFFFFFFCLL));
     v9 = *v7;
     v8 = v7[1];
     reflectionPostVertexDumpStride = self->_reflectionPostVertexDumpStride;
-    v11 = [(DYMTLFunctionPlayer *)self->_player device];
-    v12 = [(MTLBuffer *)self->_postVertexDumpBuffer contents];
+    device = [(DYMTLFunctionPlayer *)self->_player device];
+    contents2 = [(MTLBuffer *)self->_postVertexDumpBuffer contents];
     if (v8 >= v9)
     {
       v13 = v9;
@@ -229,30 +229,30 @@ uint64_t __91__DYMTLPostVertexDump_createAndSetPostVertexDumpPipelineState_comma
       v13 = v8;
     }
 
-    v14 = [v11 newBufferWithBytes:v12 length:(reflectionSizeAligned256 + reflectionPostVertexDumpStride * v13 + 263) & 0xFFFFFFFFFFFFFF00 options:0];
+    v14 = [device newBufferWithBytes:contents2 length:(reflectionSizeAligned256 + reflectionPostVertexDumpStride * v13 + 263) & 0xFFFFFFFFFFFFFF00 options:0];
 
     objc_storeStrong(p_postVertexDumpBuffer, v14);
     v15 = self->_postVertexDumpBuffer;
-    v16 = [(DYMTLFunctionPlayer *)self->_player objectMap];
-    v17 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(v16, MEMORY[0x277D0B268]);
+    objectMap = [(DYMTLFunctionPlayer *)self->_player objectMap];
+    v17 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(objectMap, MEMORY[0x277D0B268]);
     objc_storeStrong(v17 + 3, v15);
     self->_reflectionSizeAligned256 = 0;
     self->_reflectionPostVertexDumpStride = 0;
   }
 }
 
-- (void)_reservePostVertexDumpBufferWithLength:(unint64_t)a3
+- (void)_reservePostVertexDumpBufferWithLength:(unint64_t)length
 {
-  if ([(MTLBuffer *)self->_postVertexDumpBuffer length]< a3)
+  if ([(MTLBuffer *)self->_postVertexDumpBuffer length]< length)
   {
-    v5 = [(DYMTLFunctionPlayer *)self->_player device];
-    v6 = [v5 newBufferWithLength:a3 options:0];
+    device = [(DYMTLFunctionPlayer *)self->_player device];
+    v6 = [device newBufferWithLength:length options:0];
     postVertexDumpBuffer = self->_postVertexDumpBuffer;
     self->_postVertexDumpBuffer = v6;
 
     v8 = self->_postVertexDumpBuffer;
-    v9 = [(DYMTLFunctionPlayer *)self->_player objectMap];
-    v10 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(v9, MEMORY[0x277D0B268]);
+    objectMap = [(DYMTLFunctionPlayer *)self->_player objectMap];
+    v10 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(objectMap, MEMORY[0x277D0B268]);
     objc_storeStrong(v10 + 3, v8);
   }
 }

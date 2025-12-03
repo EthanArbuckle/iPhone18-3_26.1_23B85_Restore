@@ -1,6 +1,6 @@
 @interface CATStateMachineEvent
-+ (id)eventWithTrigger:(id)a3 context:(id)a4;
-- (CATStateMachineEvent)initWithEventTrigger:(id)a3 context:(id)a4;
++ (id)eventWithTrigger:(id)trigger context:(id)context;
+- (CATStateMachineEvent)initWithEventTrigger:(id)trigger context:(id)context;
 - (id)description;
 @end
 
@@ -8,26 +8,26 @@
 
 - (id)description
 {
-  v2 = [(CATStateMachineEvent *)self trigger];
-  v3 = [v2 description];
+  trigger = [(CATStateMachineEvent *)self trigger];
+  v3 = [trigger description];
 
   return v3;
 }
 
-+ (id)eventWithTrigger:(id)a3 context:(id)a4
++ (id)eventWithTrigger:(id)trigger context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithEventTrigger:v7 context:v6];
+  contextCopy = context;
+  triggerCopy = trigger;
+  v8 = [[self alloc] initWithEventTrigger:triggerCopy context:contextCopy];
 
   return v8;
 }
 
-- (CATStateMachineEvent)initWithEventTrigger:(id)a3 context:(id)a4
+- (CATStateMachineEvent)initWithEventTrigger:(id)trigger context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  triggerCopy = trigger;
+  contextCopy = context;
+  if (!triggerCopy)
   {
     [CATStateMachineEvent initWithEventTrigger:context:];
   }
@@ -37,11 +37,11 @@
   v8 = [(CATStateMachineEvent *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [triggerCopy copy];
     trigger = v8->_trigger;
     v8->_trigger = v9;
 
-    objc_storeStrong(&v8->_context, a4);
+    objc_storeStrong(&v8->_context, context);
   }
 
   return v8;

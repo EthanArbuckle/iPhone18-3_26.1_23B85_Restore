@@ -1,7 +1,7 @@
 @interface JavaTextFieldPosition
-- (BOOL)isEqual:(id)a3;
-- (JavaTextFieldPosition)initWithJavaTextFormat_Field:(id)a3;
-- (JavaTextFieldPosition)initWithJavaTextFormat_Field:(id)a3 withInt:(int)a4;
+- (BOOL)isEqual:(id)equal;
+- (JavaTextFieldPosition)initWithJavaTextFormat_Field:(id)field;
+- (JavaTextFieldPosition)initWithJavaTextFormat_Field:(id)field withInt:(int)int;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -9,21 +9,21 @@
 
 @implementation JavaTextFieldPosition
 
-- (JavaTextFieldPosition)initWithJavaTextFormat_Field:(id)a3
+- (JavaTextFieldPosition)initWithJavaTextFormat_Field:(id)field
 {
-  JreStrongAssign(&self->attribute_, a3);
+  JreStrongAssign(&self->attribute_, field);
   self->field_ = -1;
   return self;
 }
 
-- (JavaTextFieldPosition)initWithJavaTextFormat_Field:(id)a3 withInt:(int)a4
+- (JavaTextFieldPosition)initWithJavaTextFormat_Field:(id)field withInt:(int)int
 {
-  JreStrongAssign(&self->attribute_, a3);
-  self->field_ = a4;
+  JreStrongAssign(&self->attribute_, field);
+  self->field_ = int;
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -32,7 +32,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -42,7 +42,7 @@
     JreThrowClassCastException();
   }
 
-  return self->field_ == *(a3 + 2) && self->attribute_ == *(a3 + 3) && self->beginIndex_ == *(a3 + 3) && self->endIndex_ == *(a3 + 4);
+  return self->field_ == *(equal + 2) && self->attribute_ == *(equal + 3) && self->beginIndex_ == *(equal + 3) && self->endIndex_ == *(equal + 4);
 }
 
 - (unint64_t)hash

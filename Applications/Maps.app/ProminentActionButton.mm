@@ -1,9 +1,9 @@
 @interface ProminentActionButton
 + (id)button;
 + (id)invertedButton;
-+ (void)_setAttributesForProminentActionButton:(id)a3 inverted:(BOOL)a4;
++ (void)_setAttributesForProminentActionButton:(id)button inverted:(BOOL)inverted;
 - (void)awakeFromNib;
-- (void)setSpinnerHidden:(BOOL)a3;
+- (void)setSpinnerHidden:(BOOL)hidden;
 - (void)tintColorDidChange;
 - (void)updateTheme;
 @end
@@ -12,72 +12,72 @@
 
 + (id)invertedButton
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___ProminentActionButton;
   v3 = objc_msgSendSuper2(&v5, "buttonWithType:", 1);
-  [a1 _setAttributesForProminentActionButton:v3 inverted:1];
+  [self _setAttributesForProminentActionButton:v3 inverted:1];
 
   return v3;
 }
 
 + (id)button
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___ProminentActionButton;
   v3 = objc_msgSendSuper2(&v5, "buttonWithType:", 1);
-  [a1 _setAttributesForProminentActionButton:v3 inverted:0];
+  [self _setAttributesForProminentActionButton:v3 inverted:0];
 
   return v3;
 }
 
-+ (void)_setAttributesForProminentActionButton:(id)a3 inverted:(BOOL)a4
++ (void)_setAttributesForProminentActionButton:(id)button inverted:(BOOL)inverted
 {
-  v4 = a4;
-  v17 = a3;
-  [v17 setInverted:v4];
-  v5 = [v17 layer];
-  [v5 setCornerRadius:8.0];
+  invertedCopy = inverted;
+  buttonCopy = button;
+  [buttonCopy setInverted:invertedCopy];
+  layer = [buttonCopy layer];
+  [layer setCornerRadius:8.0];
 
-  [v17 setClipsToBounds:1];
-  [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [v17 titleLabel];
-  [DynamicTypeWizard autorefreshLabel:v6 withFontProvider:&stru_10165DAC8];
+  [buttonCopy setClipsToBounds:1];
+  [buttonCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [buttonCopy titleLabel];
+  [DynamicTypeWizard autorefreshLabel:titleLabel withFontProvider:&stru_10165DAC8];
 
-  if (v4)
+  if (invertedCopy)
   {
     v7 = +[UIColor clearColor];
-    [v17 setBackgroundColor:v7];
+    [buttonCopy setBackgroundColor:v7];
 
-    v8 = [v17 layer];
-    [v8 setBorderWidth:1.0];
+    layer2 = [buttonCopy layer];
+    [layer2 setBorderWidth:1.0];
 
-    v9 = [v17 tintColor];
-    v10 = [v9 CGColor];
-    v11 = [v17 layer];
-    [v11 setBorderColor:v10];
+    tintColor = [buttonCopy tintColor];
+    cGColor = [tintColor CGColor];
+    layer3 = [buttonCopy layer];
+    [layer3 setBorderColor:cGColor];
 
-    [v17 tintColor];
+    [buttonCopy tintColor];
   }
 
   else
   {
-    v12 = [v17 tintColor];
-    [v17 setBackgroundColor:v12];
+    tintColor2 = [buttonCopy tintColor];
+    [buttonCopy setBackgroundColor:tintColor2];
 
     +[UIColor whiteColor];
   }
   v13 = ;
-  [v17 setTitleColor:v13 forState:0];
+  [buttonCopy setTitleColor:v13 forState:0];
 
-  [v17 setContentEdgeInsets:{5.0, 15.0, 5.0, 15.0}];
-  v14 = [v17 titleLabel];
-  [v14 setLineBreakMode:0];
+  [buttonCopy setContentEdgeInsets:{5.0, 15.0, 5.0, 15.0}];
+  titleLabel2 = [buttonCopy titleLabel];
+  [titleLabel2 setLineBreakMode:0];
 
-  v15 = [v17 titleLabel];
-  [v15 setTextAlignment:1];
+  titleLabel3 = [buttonCopy titleLabel];
+  [titleLabel3 setTextAlignment:1];
 
-  v16 = [v17 titleLabel];
-  [v16 setNumberOfLines:0];
+  titleLabel4 = [buttonCopy titleLabel];
+  [titleLabel4 setNumberOfLines:0];
 }
 
 - (void)updateTheme
@@ -85,24 +85,24 @@
   v9.receiver = self;
   v9.super_class = ProminentActionButton;
   [(MapsThemeButton *)&v9 updateTheme];
-  v3 = [(ProminentActionButton *)self inverted];
-  v4 = [(ProminentActionButton *)self theme];
-  v5 = [v4 keyColor];
-  v6 = v5;
-  if (v3)
+  inverted = [(ProminentActionButton *)self inverted];
+  theme = [(ProminentActionButton *)self theme];
+  keyColor = [theme keyColor];
+  keyColor2 = keyColor;
+  if (inverted)
   {
-    v7 = [v5 CGColor];
-    v8 = [(ProminentActionButton *)self layer];
-    [v8 setBorderColor:v7];
+    cGColor = [keyColor CGColor];
+    layer = [(ProminentActionButton *)self layer];
+    [layer setBorderColor:cGColor];
 
-    v4 = [(ProminentActionButton *)self theme];
-    v6 = [v4 keyColor];
-    [(ProminentActionButton *)self setTitleColor:v6 forState:0];
+    theme = [(ProminentActionButton *)self theme];
+    keyColor2 = [theme keyColor];
+    [(ProminentActionButton *)self setTitleColor:keyColor2 forState:0];
   }
 
   else
   {
-    [(ProminentActionButton *)self setBackgroundColor:v5];
+    [(ProminentActionButton *)self setBackgroundColor:keyColor];
   }
 }
 
@@ -119,28 +119,28 @@
   v8.receiver = self;
   v8.super_class = ProminentActionButton;
   [(ProminentActionButton *)&v8 tintColorDidChange];
-  v3 = [(ProminentActionButton *)self inverted];
-  v4 = [(ProminentActionButton *)self tintColor];
-  v5 = v4;
-  if (v3)
+  inverted = [(ProminentActionButton *)self inverted];
+  tintColor = [(ProminentActionButton *)self tintColor];
+  tintColor2 = tintColor;
+  if (inverted)
   {
-    v6 = [v4 CGColor];
-    v7 = [(ProminentActionButton *)self layer];
-    [v7 setBorderColor:v6];
+    cGColor = [tintColor CGColor];
+    layer = [(ProminentActionButton *)self layer];
+    [layer setBorderColor:cGColor];
 
-    v5 = [(ProminentActionButton *)self tintColor];
-    [(ProminentActionButton *)self setTitleColor:v5 forState:0];
+    tintColor2 = [(ProminentActionButton *)self tintColor];
+    [(ProminentActionButton *)self setTitleColor:tintColor2 forState:0];
   }
 
   else
   {
-    [(ProminentActionButton *)self setBackgroundColor:v4];
+    [(ProminentActionButton *)self setBackgroundColor:tintColor];
   }
 }
 
-- (void)setSpinnerHidden:(BOOL)a3
+- (void)setSpinnerHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   if (!self->_spinner)
   {
     v5 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
@@ -154,7 +154,7 @@
     [NSLayoutConstraint activateConstraints:v7];
   }
 
-  if (v3)
+  if (hiddenCopy)
   {
     [(ProminentActionButton *)self setEnabled:1];
     if ([(ProminentActionButton *)self inverted])

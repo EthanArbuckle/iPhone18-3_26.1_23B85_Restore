@@ -1,18 +1,18 @@
 @interface MSSenderBlockingTriageAction
-- (MSSenderBlockingTriageAction)initWithMessageListSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6 blockSender:(BOOL)a7;
+- (MSSenderBlockingTriageAction)initWithMessageListSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate blockSender:(BOOL)sender;
 - (id)_changeAction;
 @end
 
 @implementation MSSenderBlockingTriageAction
 
-- (MSSenderBlockingTriageAction)initWithMessageListSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6 blockSender:(BOOL)a7
+- (MSSenderBlockingTriageAction)initWithMessageListSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate blockSender:(BOOL)sender
 {
   v9.receiver = self;
   v9.super_class = MSSenderBlockingTriageAction;
-  result = [(MSTriageAction *)&v9 initWithMessageListSelection:a3 origin:a4 actor:a5 delegate:a6];
+  result = [(MSTriageAction *)&v9 initWithMessageListSelection:selection origin:origin actor:actor delegate:delegate];
   if (result)
   {
-    result->_blockSender = a7;
+    result->_blockSender = sender;
   }
 
   return result;
@@ -21,10 +21,10 @@
 - (id)_changeAction
 {
   v3 = objc_alloc(MEMORY[0x277D06EB0]);
-  v4 = [(MSTriageAction *)self messageListItemSelection];
-  v5 = [v4 messageListItems];
-  v6 = [(MSTriageAction *)self origin];
-  v7 = [(MSTriageAction *)self actor];
+  messageListItemSelection = [(MSTriageAction *)self messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
+  origin = [(MSTriageAction *)self origin];
+  actor = [(MSTriageAction *)self actor];
   if (self)
   {
     blockSender = self->_blockSender;
@@ -35,7 +35,7 @@
     blockSender = 0;
   }
 
-  v9 = [v3 initWithMessageListItems:v5 origin:v6 actor:v7 blockSender:blockSender];
+  v9 = [v3 initWithMessageListItems:messageListItems origin:origin actor:actor blockSender:blockSender];
 
   return v9;
 }

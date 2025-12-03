@@ -1,15 +1,15 @@
 @interface ChannelBannerCollectionViewCell
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (void)onSystemTraitCollectionDidChange:(id)a3;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (void)onSystemTraitCollectionDidChange:(id)change;
 @end
 
 @implementation ChannelBannerCollectionViewCell
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v5 = self;
+  selfCopy = self;
   v6 = OUTLINED_FUNCTION_6_12();
-  sub_1E3D5DAF0(a4, v6);
+  sub_1E3D5DAF0(only, v6);
   v8 = v7;
   v10 = v9;
 
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (void)onSystemTraitCollectionDidChange:(id)a3
+- (void)onSystemTraitCollectionDidChange:(id)change
 {
   v4 = sub_1E41FDF34();
   OUTLINED_FUNCTION_0_10();
@@ -28,7 +28,7 @@
   MEMORY[0x1EEE9AC00](v7);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1E41FDEE4();
-  v10 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_31_4();
   sub_1E3D5F93C();
 

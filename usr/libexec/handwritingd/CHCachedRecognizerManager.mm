@@ -1,16 +1,16 @@
 @interface CHCachedRecognizerManager
-+ (void)configureRecognizer:(id)a3 forRequest:(id)a4 locale:(id)a5;
-+ (void)configureRecognizer:(id)a3 forRequest:(id)a4 locale:(id)a5 transientLexicon:(_LXLexicon *)a6 transientPhraseLexicon:(_LXLexicon *)a7 vocabulary:(void *)a8 textReplacements:(id)a9 addressBookLexicon:(id)a10;
++ (void)configureRecognizer:(id)recognizer forRequest:(id)request locale:(id)locale;
++ (void)configureRecognizer:(id)recognizer forRequest:(id)request locale:(id)locale transientLexicon:(_LXLexicon *)lexicon transientPhraseLexicon:(_LXLexicon *)phraseLexicon vocabulary:(void *)vocabulary textReplacements:(id)replacements addressBookLexicon:(id)self0;
 - (CHCachedRecognizerManager)init;
-- (id)_recognizerConfigurationKeyForRequest:(id)a3 locale:(id)a4;
-- (id)_recognizerWrapperForRequest:(id)a3 locale:(id)a4;
-- (id)checkOutRecognizerForMathRequest:(id)a3;
-- (id)checkOutRecognizerForSketchRequest:(id)a3;
-- (id)checkOutRecognizerForTextRequest:(id)a3 locale:(id)a4;
-- (id)writingStatsForRequest:(id)a3 locale:(id)a4;
-- (void)_cleanupCachedRecognizersTargetLifetime:(id)a3;
-- (void)checkInRecognizerForRequest:(id)a3 locale:(id)a4 onQueue:(id)a5 idleCallbackBlock:(id)a6;
-- (void)optimizeResourceUsageWithTimeout:(double)a3 onQueue:(id)a4 idleCallbackBlock:(id)a5;
+- (id)_recognizerConfigurationKeyForRequest:(id)request locale:(id)locale;
+- (id)_recognizerWrapperForRequest:(id)request locale:(id)locale;
+- (id)checkOutRecognizerForMathRequest:(id)request;
+- (id)checkOutRecognizerForSketchRequest:(id)request;
+- (id)checkOutRecognizerForTextRequest:(id)request locale:(id)locale;
+- (id)writingStatsForRequest:(id)request locale:(id)locale;
+- (void)_cleanupCachedRecognizersTargetLifetime:(id)lifetime;
+- (void)checkInRecognizerForRequest:(id)request locale:(id)locale onQueue:(id)queue idleCallbackBlock:(id)block;
+- (void)optimizeResourceUsageWithTimeout:(double)timeout onQueue:(id)queue idleCallbackBlock:(id)block;
 @end
 
 @implementation CHCachedRecognizerManager
@@ -38,37 +38,37 @@
   return v2;
 }
 
-- (id)checkOutRecognizerForTextRequest:(id)a3 locale:(id)a4
+- (id)checkOutRecognizerForTextRequest:(id)request locale:(id)locale
 {
-  v4 = [(CHCachedRecognizerManager *)self _recognizerWrapperForRequest:a3 locale:a4];
-  v5 = [v4 checkOutRecognizer];
+  v4 = [(CHCachedRecognizerManager *)self _recognizerWrapperForRequest:request locale:locale];
+  checkOutRecognizer = [v4 checkOutRecognizer];
 
-  return v5;
+  return checkOutRecognizer;
 }
 
-- (id)checkOutRecognizerForMathRequest:(id)a3
+- (id)checkOutRecognizerForMathRequest:(id)request
 {
-  v3 = [(CHCachedRecognizerManager *)self _recognizerWrapperForRequest:a3 locale:0];
-  v4 = [v3 checkOutRecognizer];
+  v3 = [(CHCachedRecognizerManager *)self _recognizerWrapperForRequest:request locale:0];
+  checkOutRecognizer = [v3 checkOutRecognizer];
 
-  return v4;
+  return checkOutRecognizer;
 }
 
-- (id)checkOutRecognizerForSketchRequest:(id)a3
+- (id)checkOutRecognizerForSketchRequest:(id)request
 {
-  v3 = [(CHCachedRecognizerManager *)self _recognizerWrapperForRequest:a3 locale:0];
-  v4 = [v3 checkOutRecognizer];
+  v3 = [(CHCachedRecognizerManager *)self _recognizerWrapperForRequest:request locale:0];
+  checkOutRecognizer = [v3 checkOutRecognizer];
 
-  return v4;
+  return checkOutRecognizer;
 }
 
-- (void)checkInRecognizerForRequest:(id)a3 locale:(id)a4 onQueue:(id)a5 idleCallbackBlock:(id)a6
+- (void)checkInRecognizerForRequest:(id)request locale:(id)locale onQueue:(id)queue idleCallbackBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(CHCachedRecognizerManager *)self _recognizerWrapperForRequest:v10 locale:v11];
+  requestCopy = request;
+  localeCopy = locale;
+  queueCopy = queue;
+  blockCopy = block;
+  v14 = [(CHCachedRecognizerManager *)self _recognizerWrapperForRequest:requestCopy locale:localeCopy];
   [v14 checkInRecognizer];
   [v14 targetIdleLifetime];
   v16 = dispatch_time(0, (v15 * 1000000000.0));
@@ -76,11 +76,11 @@
   v22 = 3221225472;
   v23 = sub_100005878;
   v24 = &unk_100024980;
-  v25 = self;
-  v17 = v13;
+  selfCopy = self;
+  v17 = blockCopy;
   v26 = v17;
-  dispatch_after(v16, v12, &v21);
-  v18 = [(CHCachedRecognizerManager *)self _recognizerConfigurationKeyForRequest:v10 locale:v11, v21, v22, v23, v24, v25];
+  dispatch_after(v16, queueCopy, &v21);
+  selfCopy = [(CHCachedRecognizerManager *)self _recognizerConfigurationKeyForRequest:requestCopy locale:localeCopy, v21, v22, v23, v24, selfCopy];
   if (qword_10002AD20 != -1)
   {
     dispatch_once(&qword_10002AD20, &stru_1000249F0);
@@ -89,18 +89,18 @@
   v19 = qword_10002ACC8;
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
-    v20 = [v14 activeRequestCount];
+    activeRequestCount = [v14 activeRequestCount];
     *buf = 138412546;
-    v28 = v18;
+    v28 = selfCopy;
     v29 = 2048;
-    v30 = v20;
+    v30 = activeRequestCount;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "Finished request for recognizer %@. Remaining processing requests: %li", buf, 0x16u);
   }
 }
 
-- (id)writingStatsForRequest:(id)a3 locale:(id)a4
+- (id)writingStatsForRequest:(id)request locale:(id)locale
 {
-  v5 = [(CHCachedRecognizerManager *)self _recognizerConfigurationKeyForRequest:a3 locale:a4];
+  v5 = [(CHCachedRecognizerManager *)self _recognizerConfigurationKeyForRequest:request locale:locale];
   v6 = [(NSMutableDictionary *)self->_writingStatsByConfigurationKey objectForKey:v5];
   if (!v6)
   {
@@ -111,14 +111,14 @@
   return v6;
 }
 
-- (id)_recognizerConfigurationKeyForRequest:(id)a3 locale:(id)a4
+- (id)_recognizerConfigurationKeyForRequest:(id)request locale:(id)locale
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  localeCopy = locale;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 recognizerConfigurationKeyWithLocale:v6];
+    v7 = [requestCopy recognizerConfigurationKeyWithLocale:localeCopy];
     goto LABEL_15;
   }
 
@@ -176,11 +176,11 @@ LABEL_15:
   return v7;
 }
 
-- (id)_recognizerWrapperForRequest:(id)a3 locale:(id)a4
+- (id)_recognizerWrapperForRequest:(id)request locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CHCachedRecognizerManager *)self _recognizerConfigurationKeyForRequest:v6 locale:v7];
+  requestCopy = request;
+  localeCopy = locale;
+  v8 = [(CHCachedRecognizerManager *)self _recognizerConfigurationKeyForRequest:requestCopy locale:localeCopy];
   v9 = [(NSMutableDictionary *)self->_cachedRecognizersByConfigurationKey objectForKey:v8];
   if (v9)
   {
@@ -207,12 +207,12 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v6;
+    v16 = requestCopy;
     v17 = objc_alloc_init(CHRecognizerOptions);
     [v17 setEnableCachingIfAvailable:{objc_msgSend(v16, "enableCachingIfAvailable")}];
     [v17 setEnableGen2ModelIfAvailable:{objc_msgSend(v16, "enableGen2ModelIfAvailable")}];
     [v17 setEnableGen2CharacterLMIfAvailable:{objc_msgSend(v16, "enableGen2CharacterLMIfAvailable")}];
-    v18 = [[CHRecognizer alloc] initWithMode:objc_msgSend(v16 locale:"recognitionMode") recognizerOptions:{v7, v17}];
+    v18 = [[CHRecognizer alloc] initWithMode:objc_msgSend(v16 locale:"recognitionMode") recognizerOptions:{localeCopy, v17}];
 
     goto LABEL_22;
   }
@@ -335,9 +335,9 @@ LABEL_7:
   return v15;
 }
 
-- (void)_cleanupCachedRecognizersTargetLifetime:(id)a3
+- (void)_cleanupCachedRecognizersTargetLifetime:(id)lifetime
 {
-  v20 = a3;
+  lifetimeCopy = lifetime;
   +[NSDate timeIntervalSinceReferenceDate];
   v5 = v4;
   if (qword_10002AD20 != -1)
@@ -359,7 +359,7 @@ LABEL_7:
   v25[1] = 3221225472;
   v25[2] = sub_100006574;
   v25[3] = &unk_1000249A8;
-  v19 = v20;
+  v19 = lifetimeCopy;
   v26 = v19;
   v28 = v5;
   v9 = v7;
@@ -455,28 +455,28 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)optimizeResourceUsageWithTimeout:(double)a3 onQueue:(id)a4 idleCallbackBlock:(id)a5
+- (void)optimizeResourceUsageWithTimeout:(double)timeout onQueue:(id)queue idleCallbackBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = dispatch_time(0, (a3 * 1000000000.0));
+  blockCopy = block;
+  queueCopy = queue;
+  v10 = dispatch_time(0, (timeout * 1000000000.0));
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100006808;
   block[3] = &unk_1000249D0;
-  v14 = a3;
+  timeoutCopy = timeout;
   block[4] = self;
-  v13 = v8;
-  v11 = v8;
-  dispatch_after(v10, v9, block);
+  v13 = blockCopy;
+  v11 = blockCopy;
+  dispatch_after(v10, queueCopy, block);
 }
 
-+ (void)configureRecognizer:(id)a3 forRequest:(id)a4 locale:(id)a5
++ (void)configureRecognizer:(id)recognizer forRequest:(id)request locale:(id)locale
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  recognizerCopy = recognizer;
+  requestCopy = request;
+  localeCopy = locale;
+  if (!recognizerCopy)
   {
     if (qword_10002AD20 != -1)
     {
@@ -507,7 +507,7 @@ LABEL_25:
       {
 LABEL_11:
 
-        if (!v8)
+        if (!requestCopy)
         {
           goto LABEL_12;
         }
@@ -521,7 +521,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v8)
+  if (!requestCopy)
   {
 LABEL_12:
     if (qword_10002AD20 != -1)
@@ -563,33 +563,33 @@ LABEL_19:
   }
 
 LABEL_20:
-  [v7 setMaxRecognitionResultCount:{objc_msgSend(v8, "maxRecognitionResultCount")}];
-  [v8 minimumDrawingSize];
-  [v7 setMinimumDrawingSize:?];
-  v14 = [v8 activeCharacterSetPerLocale];
-  v15 = [v14 objectForKeyedSubscript:v9];
-  [v7 setActiveCharacterSet:v15];
+  [recognizerCopy setMaxRecognitionResultCount:{objc_msgSend(requestCopy, "maxRecognitionResultCount")}];
+  [requestCopy minimumDrawingSize];
+  [recognizerCopy setMinimumDrawingSize:?];
+  activeCharacterSetPerLocale = [requestCopy activeCharacterSetPerLocale];
+  v15 = [activeCharacterSetPerLocale objectForKeyedSubscript:localeCopy];
+  [recognizerCopy setActiveCharacterSet:v15];
 
-  [v7 setContentType:{objc_msgSend(v8, "contentType")}];
-  [v7 setAutoCapitalizationMode:{objc_msgSend(v8, "autoCapitalizationMode")}];
-  [v7 setAutoCorrectionMode:{objc_msgSend(v8, "autoCorrectionMode")}];
-  [v7 setBaseWritingDirection:{objc_msgSend(v8, "baseWritingDirection")}];
-  [v7 setEnableCachingIfAvailable:{objc_msgSend(v8, "enableCachingIfAvailable")}];
-  [v7 setEnableGen2ModelIfAvailable:{objc_msgSend(v8, "enableGen2ModelIfAvailable")}];
-  [v7 setEnableGen2CharacterLMIfAvailable:{objc_msgSend(v8, "enableGen2CharacterLMIfAvailable")}];
+  [recognizerCopy setContentType:{objc_msgSend(requestCopy, "contentType")}];
+  [recognizerCopy setAutoCapitalizationMode:{objc_msgSend(requestCopy, "autoCapitalizationMode")}];
+  [recognizerCopy setAutoCorrectionMode:{objc_msgSend(requestCopy, "autoCorrectionMode")}];
+  [recognizerCopy setBaseWritingDirection:{objc_msgSend(requestCopy, "baseWritingDirection")}];
+  [recognizerCopy setEnableCachingIfAvailable:{objc_msgSend(requestCopy, "enableCachingIfAvailable")}];
+  [recognizerCopy setEnableGen2ModelIfAvailable:{objc_msgSend(requestCopy, "enableGen2ModelIfAvailable")}];
+  [recognizerCopy setEnableGen2CharacterLMIfAvailable:{objc_msgSend(requestCopy, "enableGen2CharacterLMIfAvailable")}];
 }
 
-+ (void)configureRecognizer:(id)a3 forRequest:(id)a4 locale:(id)a5 transientLexicon:(_LXLexicon *)a6 transientPhraseLexicon:(_LXLexicon *)a7 vocabulary:(void *)a8 textReplacements:(id)a9 addressBookLexicon:(id)a10
++ (void)configureRecognizer:(id)recognizer forRequest:(id)request locale:(id)locale transientLexicon:(_LXLexicon *)lexicon transientPhraseLexicon:(_LXLexicon *)phraseLexicon vocabulary:(void *)vocabulary textReplacements:(id)replacements addressBookLexicon:(id)self0
 {
-  v20 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a9;
-  v18 = a10;
-  [objc_opt_class() configureRecognizer:v20 forRequest:v15 locale:v16];
-  if ([v15 shouldUseTextReplacements])
+  recognizerCopy = recognizer;
+  requestCopy = request;
+  localeCopy = locale;
+  replacementsCopy = replacements;
+  bookLexiconCopy = bookLexicon;
+  [objc_opt_class() configureRecognizer:recognizerCopy forRequest:requestCopy locale:localeCopy];
+  if ([requestCopy shouldUseTextReplacements])
   {
-    v19 = v17;
+    v19 = replacementsCopy;
   }
 
   else
@@ -597,10 +597,10 @@ LABEL_20:
     v19 = 0;
   }
 
-  [v20 setTextReplacements:v19];
-  [v20 setCustomLexicon:a6 customVocabulary:a8];
-  [v20 updateAddressBookLexicon:v18];
-  [v20 setCustomPhraseLexicon:a7];
+  [recognizerCopy setTextReplacements:v19];
+  [recognizerCopy setCustomLexicon:lexicon customVocabulary:vocabulary];
+  [recognizerCopy updateAddressBookLexicon:bookLexiconCopy];
+  [recognizerCopy setCustomPhraseLexicon:phraseLexicon];
 }
 
 @end

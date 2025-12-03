@@ -1,32 +1,32 @@
 @interface HFControlItem
 + (Class)valueClass;
 + (NAIdentity)na_identity;
-- (BOOL)canCopyWithCharacteristicOptions:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)supportsItemRepresentingServices:(id)a3;
+- (BOOL)canCopyWithCharacteristicOptions:(id)options;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)supportsItemRepresentingServices:(id)services;
 - (HFControlItem)init;
-- (HFControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5;
-- (HFControlItem)initWithValueSource:(id)a3 characteristicTypes:(id)a4 displayResults:(id)a5;
+- (HFControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results;
+- (HFControlItem)initWithValueSource:(id)source characteristicTypes:(id)types displayResults:(id)results;
 - (NSSet)characteristicTypes;
-- (id)_descriptionWithCharacteristicOptions:(BOOL)a3 includeResults:(BOOL)a4;
-- (id)_standardResultsForResultValue:(id)a3 characteristicValuesByType:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_descriptionWithCharacteristicOptions:(BOOL)options includeResults:(BOOL)results;
+- (id)_standardResultsForResultValue:(id)value characteristicValuesByType:(id)type;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)_tintColor;
-- (id)characteristicValuesByTypeForBatchReadResponse:(id)a3;
-- (id)characteristicValuesForValue:(id)a3;
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4;
-- (id)copyWithValueSource:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)metadataForCharacteristicType:(id)a3;
-- (id)normalizedCharacteristicValuesForValues:(id)a3;
-- (id)normalizedValueForCharacteristicValue:(id)a3 ofType:(id)a4;
-- (id)normalizedValueForValue:(id)a3;
+- (id)characteristicValuesByTypeForBatchReadResponse:(id)response;
+- (id)characteristicValuesForValue:(id)value;
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source;
+- (id)copyWithValueSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)metadataForCharacteristicType:(id)type;
+- (id)normalizedCharacteristicValuesForValues:(id)values;
+- (id)normalizedValueForCharacteristicValue:(id)value ofType:(id)type;
+- (id)normalizedValueForValue:(id)value;
 - (id)readValueAndPopulateStandardResults;
-- (id)resultsForBatchReadResponse:(id)a3;
-- (id)valueForCharacteristicType:(id)a3 inBatchReadResponse:(id)a4;
-- (id)valueForCharacteristicValues:(id)a3;
-- (id)writeValue:(id)a3;
-- (int64_t)_primaryStateForValue:(id)a3;
+- (id)resultsForBatchReadResponse:(id)response;
+- (id)valueForCharacteristicType:(id)type inBatchReadResponse:(id)response;
+- (id)valueForCharacteristicValues:(id)values;
+- (id)writeValue:(id)value;
+- (int64_t)_primaryStateForValue:(id)value;
 - (int64_t)sortPriority;
 - (unint64_t)_accessorySuspendedState;
 - (unint64_t)hash;
@@ -36,44 +36,44 @@
 
 + (Class)valueClass
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFControlItem.m" lineNumber:46 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFControlItem valueClass]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFControlItem.m" lineNumber:46 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFControlItem valueClass]", objc_opt_class()}];
 
   return 0;
 }
 
-- (HFControlItem)initWithValueSource:(id)a3 characteristicTypes:(id)a4 displayResults:(id)a5
+- (HFControlItem)initWithValueSource:(id)source characteristicTypes:(id)types displayResults:(id)results
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  resultsCopy = results;
+  typesCopy = types;
+  sourceCopy = source;
   v11 = [HFControlItemCharacteristicOptions alloc];
   v17 = &unk_282523B80;
-  v18[0] = v9;
+  v18[0] = typesCopy;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
 
   v13 = [(HFControlItemCharacteristicOptions *)v11 initWithCharacteristicTypesByUsage:v12];
-  v14 = [(HFControlItem *)self initWithValueSource:v10 characteristicOptions:v13 displayResults:v8];
+  v14 = [(HFControlItem *)self initWithValueSource:sourceCopy characteristicOptions:v13 displayResults:resultsCopy];
 
   v15 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (HFControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5
+- (HFControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sourceCopy = source;
+  optionsCopy = options;
+  resultsCopy = results;
   v17.receiver = self;
   v17.super_class = HFControlItem;
   v12 = [(HFControlItem *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_valueSource, a3);
-    objc_storeStrong(&v13->_characteristicOptions, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_valueSource, source);
+    objc_storeStrong(&v13->_characteristicOptions, options);
+    v14 = [resultsCopy copy];
     displayResults = v13->_displayResults;
     v13->_displayResults = v14;
   }
@@ -83,40 +83,40 @@
 
 - (HFControlItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithValueSource_characteristicOptions_displayResults_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFControlItem.m" lineNumber:69 description:{@"%s is unavailable; use %@ instead", "-[HFControlItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFControlItem.m" lineNumber:69 description:{@"%s is unavailable; use %@ instead", "-[HFControlItem init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(HFControlItem *)self valueSource];
-  v5 = [(HFControlItem *)self copyWithValueSource:v4];
+  valueSource = [(HFControlItem *)self valueSource];
+  v5 = [(HFControlItem *)self copyWithValueSource:valueSource];
 
   return v5;
 }
 
-- (id)copyWithValueSource:(id)a3
+- (id)copyWithValueSource:(id)source
 {
-  v4 = a3;
-  v5 = [(HFControlItem *)self characteristicOptions];
-  v6 = [(HFControlItem *)self copyWithCharacteristicOptions:v5 valueSource:v4];
+  sourceCopy = source;
+  characteristicOptions = [(HFControlItem *)self characteristicOptions];
+  v6 = [(HFControlItem *)self copyWithCharacteristicOptions:characteristicOptions valueSource:sourceCopy];
 
   return v6;
 }
 
-- (BOOL)canCopyWithCharacteristicOptions:(id)a3
+- (BOOL)canCopyWithCharacteristicOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 characteristicTypesForUsage:0];
+  optionsCopy = options;
+  v5 = [optionsCopy characteristicTypesForUsage:0];
   if ([v5 count])
   {
-    v6 = [v4 allRequiredCharacteristicTypes];
-    v7 = [(HFControlItem *)self characteristicOptions];
-    v8 = [v7 allRequiredCharacteristicTypes];
-    v9 = [v6 isSubsetOfSet:v8];
+    allRequiredCharacteristicTypes = [optionsCopy allRequiredCharacteristicTypes];
+    characteristicOptions = [(HFControlItem *)self characteristicOptions];
+    allRequiredCharacteristicTypes2 = [characteristicOptions allRequiredCharacteristicTypes];
+    v9 = [allRequiredCharacteristicTypes isSubsetOfSet:allRequiredCharacteristicTypes2];
   }
 
   else
@@ -127,13 +127,13 @@
   return v9;
 }
 
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
+  sourceCopy = source;
+  optionsCopy = options;
   v8 = objc_alloc(objc_opt_class());
-  v9 = [(HFControlItem *)self displayResults];
-  v10 = [v8 initWithValueSource:v6 characteristicOptions:v7 displayResults:v9];
+  displayResults = [(HFControlItem *)self displayResults];
+  v10 = [v8 initWithValueSource:sourceCopy characteristicOptions:optionsCopy displayResults:displayResults];
 
   [v10 copyLatestResultsFromItem:self];
   return v10;
@@ -141,26 +141,26 @@
 
 - (NSSet)characteristicTypes
 {
-  v2 = [(HFControlItem *)self characteristicOptions];
-  v3 = [v2 characteristicTypesForUsage:0];
+  characteristicOptions = [(HFControlItem *)self characteristicOptions];
+  v3 = [characteristicOptions characteristicTypesForUsage:0];
 
   return v3;
 }
 
-- (id)writeValue:(id)a3
+- (id)writeValue:(id)value
 {
-  v4 = a3;
-  if (v4)
+  valueCopy = value;
+  if (valueCopy)
   {
     [objc_opt_class() valueClass];
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = [objc_opt_class() valueClass];
-      NSLog(&cfstr_ValueIsNotComp.isa, v4, self, v5);
+      valueClass = [objc_opt_class() valueClass];
+      NSLog(&cfstr_ValueIsNotComp.isa, valueCopy, self, valueClass);
     }
   }
 
-  v6 = [(HFControlItem *)self characteristicValuesForValue:v4];
+  v6 = [(HFControlItem *)self characteristicValuesForValue:valueCopy];
   if ([v6 count])
   {
     v7 = objc_opt_new();
@@ -172,16 +172,16 @@
     v13 = v7;
     v8 = v7;
     [v6 enumerateKeysAndObjectsUsingBlock:v12];
-    v9 = [(HFControlItem *)self valueSource];
-    v10 = [v9 writeValuesForCharacteristicRecipes:v8];
+    valueSource = [(HFControlItem *)self valueSource];
+    futureWithNoResult = [valueSource writeValuesForCharacteristicRecipes:v8];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v10;
+  return futureWithNoResult;
 }
 
 void __28__HFControlItem_writeValue___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -195,19 +195,19 @@ void __28__HFControlItem_writeValue___block_invoke(uint64_t a1, void *a2, void *
   [*(a1 + 40) setObject:v6 forKeyedSubscript:v8];
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = [a3 objectForKeyedSubscript:HFItemUpdateOptionDisableOptionalData];
-  v5 = [v4 BOOLValue];
+  v4 = [options objectForKeyedSubscript:HFItemUpdateOptionDisableOptionalData];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = MEMORY[0x277D2C900];
-    v7 = [(HFControlItem *)self displayResults];
-    v8 = v7;
-    if (v7)
+    displayResults = [(HFControlItem *)self displayResults];
+    readValueAndPopulateStandardResults = displayResults;
+    if (displayResults)
     {
-      v9 = v7;
+      v9 = displayResults;
     }
 
     else
@@ -221,8 +221,8 @@ void __28__HFControlItem_writeValue___block_invoke(uint64_t a1, void *a2, void *
 
   else
   {
-    v8 = [(HFControlItem *)self readValueAndPopulateStandardResults];
-    v11 = [v8 flatMap:&__block_literal_global_60];
+    readValueAndPopulateStandardResults = [(HFControlItem *)self readValueAndPopulateStandardResults];
+    v11 = [readValueAndPopulateStandardResults flatMap:&__block_literal_global_60];
   }
 
   return v11;
@@ -245,20 +245,20 @@ id __45__HFControlItem__subclass_updateWithOptions___block_invoke(uint64_t a1, u
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = NSStringFromSelector(a2);
-    v6 = [(HFControlItem *)self valueSource];
+    valueSource = [(HFControlItem *)self valueSource];
     *buf = 138412802;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = v5;
     v21 = 2112;
-    v22 = v6;
+    v22 = valueSource;
     _os_log_impl(&dword_20D9BF000, v4, OS_LOG_TYPE_DEFAULT, "%@:%@ valueSource = %@", buf, 0x20u);
   }
 
-  v7 = [(HFControlItem *)self valueSource];
-  v8 = [(HFControlItem *)self characteristicOptions];
-  v9 = [v8 allCharacteristicTypes];
-  v10 = [v7 readValuesForCharacteristicTypes:v9];
+  valueSource2 = [(HFControlItem *)self valueSource];
+  characteristicOptions = [(HFControlItem *)self characteristicOptions];
+  allCharacteristicTypes = [characteristicOptions allCharacteristicTypes];
+  v10 = [valueSource2 readValuesForCharacteristicTypes:allCharacteristicTypes];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __52__HFControlItem_readValueAndPopulateStandardResults__block_invoke;
@@ -292,11 +292,11 @@ id __52__HFControlItem_readValueAndPopulateStandardResults__block_invoke(uint64_
   return v7;
 }
 
-- (id)resultsForBatchReadResponse:(id)a3
+- (id)resultsForBatchReadResponse:(id)response
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFControlItem *)self characteristicValuesByTypeForBatchReadResponse:v4];
+  responseCopy = response;
+  v5 = [(HFControlItem *)self characteristicValuesByTypeForBatchReadResponse:responseCopy];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __45__HFControlItem_resultsForBatchReadResponse___block_invoke;
@@ -310,26 +310,26 @@ id __52__HFControlItem_readValueAndPopulateStandardResults__block_invoke(uint64_
     [objc_opt_class() valueClass];
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [objc_opt_class() valueClass];
-      NSLog(&cfstr_ValueIsNotComp.isa, v7, self, v8);
+      valueClass = [objc_opt_class() valueClass];
+      NSLog(&cfstr_ValueIsNotComp.isa, v7, self, valueClass);
     }
   }
 
   v9 = [(HFControlItem *)self _standardResultsForResultValue:v7 characteristicValuesByType:v6];
   v10 = [v9 mutableCopy];
 
-  v11 = [(HFControlItem *)self _accessorySuspendedState];
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
+  _accessorySuspendedState = [(HFControlItem *)self _accessorySuspendedState];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:_accessorySuspendedState];
   [v10 setObject:v12 forKeyedSubscript:@"suspendedState"];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v13 = [(HFControlItem *)self characteristicOptions];
-  v14 = [v13 allRequiredCharacteristicTypes];
+  characteristicOptions = [(HFControlItem *)self characteristicOptions];
+  allRequiredCharacteristicTypes = [characteristicOptions allRequiredCharacteristicTypes];
 
-  v15 = [v14 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  v15 = [allRequiredCharacteristicTypes countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v15)
   {
     v16 = v15;
@@ -340,24 +340,24 @@ id __52__HFControlItem_readValueAndPopulateStandardResults__block_invoke(uint64_
       {
         if (*v29 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allRequiredCharacteristicTypes);
         }
 
-        v19 = [v4 responseForCharacteristicType:*(*(&v28 + 1) + 8 * i)];
-        v20 = [v19 error];
-        if (v20)
+        v19 = [responseCopy responseForCharacteristicType:*(*(&v28 + 1) + 8 * i)];
+        error = [v19 error];
+        if (error)
         {
-          v21 = v20;
-          v22 = [v19 readTraits];
-          v23 = [v4 contextProvider];
-          v24 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v21 readTraits:v22 contextProvider:v23];
+          v21 = error;
+          readTraits = [v19 readTraits];
+          contextProvider = [responseCopy contextProvider];
+          v24 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v21 readTraits:readTraits contextProvider:contextProvider];
 
           [v10 na_safeSetObject:v24 forKey:@"underlyingError"];
           goto LABEL_14;
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v28 objects:v34 count:16];
+      v16 = [allRequiredCharacteristicTypes countByEnumeratingWithState:&v28 objects:v34 count:16];
       if (v16)
       {
         continue;
@@ -397,20 +397,20 @@ id __45__HFControlItem_resultsForBatchReadResponse___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (id)characteristicValuesByTypeForBatchReadResponse:(id)a3
+- (id)characteristicValuesByTypeForBatchReadResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v24 = [MEMORY[0x277CBEB38] dictionary];
+  responseCopy = response;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [(HFControlItem *)self characteristicOptions];
-  v6 = [v5 allCharacteristicTypes];
+  characteristicOptions = [(HFControlItem *)self characteristicOptions];
+  allCharacteristicTypes = [characteristicOptions allCharacteristicTypes];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  obj = allCharacteristicTypes;
+  v7 = [allCharacteristicTypes countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v7)
   {
     v9 = v7;
@@ -427,18 +427,18 @@ id __45__HFControlItem_resultsForBatchReadResponse___block_invoke(uint64_t a1)
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [(HFControlItem *)self valueForCharacteristicType:v12 inBatchReadResponse:v4, v22];
+        v13 = [(HFControlItem *)self valueForCharacteristicType:v12 inBatchReadResponse:responseCopy, v22];
         if (v13)
         {
           v14 = [(HFControlItem *)self normalizedValueForCharacteristicValue:v13 ofType:v12];
-          [v24 setObject:v14 forKeyedSubscript:v12];
+          [dictionary setObject:v14 forKeyedSubscript:v12];
         }
 
         else
         {
-          v15 = [(HFControlItem *)self characteristicOptions];
-          v16 = [v15 allRequiredCharacteristicTypes];
-          v17 = [v16 containsObject:v12];
+          characteristicOptions2 = [(HFControlItem *)self characteristicOptions];
+          allRequiredCharacteristicTypes = [characteristicOptions2 allRequiredCharacteristicTypes];
+          v17 = [allRequiredCharacteristicTypes containsObject:v12];
 
           if (!v17)
           {
@@ -469,64 +469,64 @@ LABEL_12:
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v24;
+  return dictionary;
 }
 
-- (id)_standardResultsForResultValue:(id)a3 characteristicValuesByType:(id)a4
+- (id)_standardResultsForResultValue:(id)value characteristicValuesByType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [(HFControlItem *)self displayResults];
+  valueCopy = value;
+  typeCopy = type;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  displayResults = [(HFControlItem *)self displayResults];
 
-  if (v9)
+  if (displayResults)
   {
-    v10 = [(HFControlItem *)self displayResults];
-    [v8 addEntriesFromDictionary:v10];
+    displayResults2 = [(HFControlItem *)self displayResults];
+    [dictionary addEntriesFromDictionary:displayResults2];
   }
 
-  if (v6)
+  if (valueCopy)
   {
-    [v8 setObject:v6 forKeyedSubscript:@"value"];
+    [dictionary setObject:valueCopy forKeyedSubscript:@"value"];
   }
 
-  if (v7)
+  if (typeCopy)
   {
-    [v8 setObject:v7 forKeyedSubscript:@"characteristicValuesByType"];
+    [dictionary setObject:typeCopy forKeyedSubscript:@"characteristicValuesByType"];
   }
 
-  v11 = [(HFControlItem *)self characteristicOptions];
-  v12 = [v11 allCharacteristicTypes];
+  characteristicOptions = [(HFControlItem *)self characteristicOptions];
+  allCharacteristicTypes = [characteristicOptions allCharacteristicTypes];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __75__HFControlItem__standardResultsForResultValue_characteristicValuesByType___block_invoke;
   v28[3] = &unk_277DF2DD8;
   v28[4] = self;
-  v13 = [v12 na_map:v28];
-  v14 = [v13 na_setByFlattening];
+  v13 = [allCharacteristicTypes na_map:v28];
+  na_setByFlattening = [v13 na_setByFlattening];
 
-  [v8 setObject:v14 forKeyedSubscript:@"dependentHomeKitObjects"];
-  v15 = [(HFControlItem *)self characteristicOptions];
-  v16 = [v15 allCharacteristicTypes];
-  [v8 setObject:v16 forKeyedSubscript:@"characteristicTypes"];
+  [dictionary setObject:na_setByFlattening forKeyedSubscript:@"dependentHomeKitObjects"];
+  characteristicOptions2 = [(HFControlItem *)self characteristicOptions];
+  allCharacteristicTypes2 = [characteristicOptions2 allCharacteristicTypes];
+  [dictionary setObject:allCharacteristicTypes2 forKeyedSubscript:@"characteristicTypes"];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v14, "na_any:", &__block_literal_global_61_0)}];
-  [v8 setObject:v17 forKeyedSubscript:@"actionRequiresDeviceUnlock"];
+  v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(na_setByFlattening, "na_any:", &__block_literal_global_61_0)}];
+  [dictionary setObject:v17 forKeyedSubscript:@"actionRequiresDeviceUnlock"];
 
-  v18 = [(HFControlItem *)self characteristicOptions];
-  v19 = [v18 characteristicTypesForUsage:0];
-  v20 = [v19 allObjects];
-  v21 = [v20 firstObject];
+  characteristicOptions3 = [(HFControlItem *)self characteristicOptions];
+  v19 = [characteristicOptions3 characteristicTypesForUsage:0];
+  allObjects = [v19 allObjects];
+  firstObject = [allObjects firstObject];
 
-  v22 = [(HFControlItem *)self valueSource];
-  v23 = [v22 allServices];
-  v24 = [v23 anyObject];
-  v25 = [v24 hf_effectiveServiceType];
+  valueSource = [(HFControlItem *)self valueSource];
+  allServices = [valueSource allServices];
+  anyObject = [allServices anyObject];
+  hf_effectiveServiceType = [anyObject hf_effectiveServiceType];
 
-  v26 = [HFDecorationIconFactory iconDescriptorForCharacteristicType:v21 effectiveServiceType:v25 primaryState:[(HFControlItem *)self _primaryStateForValue:v6]];
-  [v8 setObject:v26 forKeyedSubscript:@"decorationIconDescriptor"];
+  v26 = [HFDecorationIconFactory iconDescriptorForCharacteristicType:firstObject effectiveServiceType:hf_effectiveServiceType primaryState:[(HFControlItem *)self _primaryStateForValue:valueCopy]];
+  [dictionary setObject:v26 forKeyedSubscript:@"decorationIconDescriptor"];
 
-  return v8;
+  return dictionary;
 }
 
 id __75__HFControlItem__standardResultsForResultValue_characteristicValuesByType___block_invoke(uint64_t a1, void *a2)
@@ -539,13 +539,13 @@ id __75__HFControlItem__standardResultsForResultValue_characteristicValuesByType
   return v5;
 }
 
-- (int64_t)_primaryStateForValue:(id)a3
+- (int64_t)_primaryStateForValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (valueCopy)
   {
-    v6 = v4;
+    v6 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -558,12 +558,12 @@ id __75__HFControlItem__standardResultsForResultValue_characteristicValuesByType
 
       if (v7 > 0.0)
       {
-        v9 = v8;
+        integerValue = v8;
       }
 
       else
       {
-        v9 = 1;
+        integerValue = 1;
       }
     }
 
@@ -574,33 +574,33 @@ id __75__HFControlItem__standardResultsForResultValue_characteristicValuesByType
       {
         if ([v6 integerValue])
         {
-          v9 = 1;
+          integerValue = 1;
         }
 
         else
         {
-          v9 = 2;
+          integerValue = 2;
         }
       }
 
       else if ([(HFControlItem *)self conformsToProtocol:&unk_2825368B0])
       {
-        v9 = [v6 integerValue];
+        integerValue = [v6 integerValue];
       }
 
       else
       {
-        v9 = 1;
+        integerValue = 1;
       }
     }
   }
 
   else
   {
-    v9 = 1;
+    integerValue = 1;
   }
 
-  return v9;
+  return integerValue;
 }
 
 - (id)_tintColor
@@ -610,33 +610,33 @@ id __75__HFControlItem__standardResultsForResultValue_characteristicValuesByType
     dispatch_once(&qword_280E02398, &__block_literal_global_114_0);
   }
 
-  v3 = [(HFControlItem *)self valueSource];
-  v4 = [v3 primaryServiceDescriptor];
-  v5 = [v4 serviceType];
+  valueSource = [(HFControlItem *)self valueSource];
+  primaryServiceDescriptor = [valueSource primaryServiceDescriptor];
+  serviceType = [primaryServiceDescriptor serviceType];
 
-  if (([v5 isEqualToString:*MEMORY[0x277CD0ED0]] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CD0F08]))
+  if (([serviceType isEqualToString:*MEMORY[0x277CD0ED0]] & 1) != 0 || objc_msgSend(serviceType, "isEqualToString:", *MEMORY[0x277CD0F08]))
   {
-    v6 = [(HFControlItem *)self valueSource];
-    v7 = [v6 allServices];
-    v8 = [v7 anyObject];
-    v9 = [v8 hf_effectiveServiceType];
+    valueSource2 = [(HFControlItem *)self valueSource];
+    allServices = [valueSource2 allServices];
+    anyObject = [allServices anyObject];
+    hf_effectiveServiceType = [anyObject hf_effectiveServiceType];
 
-    v5 = v9;
+    serviceType = hf_effectiveServiceType;
   }
 
-  v10 = [_MergedGlobals_5_0 objectForKeyedSubscript:v5];
+  v10 = [_MergedGlobals_5_0 objectForKeyedSubscript:serviceType];
   v11 = v10;
   if (v10)
   {
-    v12 = v10;
+    systemYellowColor = v10;
   }
 
   else
   {
-    v12 = [MEMORY[0x277D75348] systemYellowColor];
+    systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
   }
 
-  v13 = v12;
+  v13 = systemYellowColor;
 
   return v13;
 }
@@ -714,54 +714,54 @@ void __27__HFControlItem__tintColor__block_invoke()
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)valueForCharacteristicValues:(id)a3
+- (id)valueForCharacteristicValues:(id)values
 {
   v5 = MEMORY[0x277CCA890];
-  v6 = a3;
-  v7 = [v5 currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"HFControlItem.m" lineNumber:318 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFControlItem valueForCharacteristicValues:]", objc_opt_class()}];
+  valuesCopy = values;
+  currentHandler = [v5 currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFControlItem.m" lineNumber:318 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFControlItem valueForCharacteristicValues:]", objc_opt_class()}];
 
-  v8 = [v6 allValues];
+  allValues = [valuesCopy allValues];
 
-  v9 = [v8 firstObject];
+  firstObject = [allValues firstObject];
 
-  return v9;
+  return firstObject;
 }
 
-- (id)characteristicValuesForValue:(id)a3
+- (id)characteristicValuesForValue:(id)value
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HFControlItem.m" lineNumber:324 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFControlItem characteristicValuesForValue:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFControlItem.m" lineNumber:324 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFControlItem characteristicValuesForValue:]", objc_opt_class()}];
 
   return MEMORY[0x277CBEC10];
 }
 
-- (id)valueForCharacteristicType:(id)a3 inBatchReadResponse:(id)a4
+- (id)valueForCharacteristicType:(id)type inBatchReadResponse:(id)response
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFControlItem *)self servicePredicateForCharacteristicType:v7 withUsage:0];
-  v9 = [[HFServiceStateCharacteristicRecipe alloc] initWithCharacteristicType:v7 servicePredicate:v8 required:1];
+  responseCopy = response;
+  typeCopy = type;
+  v8 = [(HFControlItem *)self servicePredicateForCharacteristicType:typeCopy withUsage:0];
+  v9 = [[HFServiceStateCharacteristicRecipe alloc] initWithCharacteristicType:typeCopy servicePredicate:v8 required:1];
 
-  v10 = [v6 responseForCharacteristicRecipe:v9];
+  v10 = [responseCopy responseForCharacteristicRecipe:v9];
 
-  v11 = [v10 value];
+  value = [v10 value];
 
-  return v11;
+  return value;
 }
 
-- (id)metadataForCharacteristicType:(id)a3
+- (id)metadataForCharacteristicType:(id)type
 {
-  v4 = a3;
-  v5 = [(HFControlItem *)self valueSource];
-  v6 = [v5 metadataForCharacteristicType:v4];
+  typeCopy = type;
+  valueSource = [(HFControlItem *)self valueSource];
+  v6 = [valueSource metadataForCharacteristicType:typeCopy];
 
   return v6;
 }
 
-- (id)normalizedValueForValue:(id)a3
+- (id)normalizedValueForValue:(id)value
 {
-  v4 = [(HFControlItem *)self characteristicValuesForValue:a3];
+  v4 = [(HFControlItem *)self characteristicValuesForValue:value];
   v5 = [(HFControlItem *)self valueForCharacteristicValues:v4];
 
   return v5;
@@ -774,10 +774,10 @@ void __27__HFControlItem__tintColor__block_invoke()
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(HFControlItem *)self characteristicOptions];
-  v3 = [v2 allCharacteristicTypes];
+  characteristicOptions = [(HFControlItem *)self characteristicOptions];
+  allCharacteristicTypes = [characteristicOptions allCharacteristicTypes];
 
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [allCharacteristicTypes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -789,7 +789,7 @@ void __27__HFControlItem__tintColor__block_invoke()
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allCharacteristicTypes);
         }
 
         v9 = [MEMORY[0x277CD1970] hf_sortPriorityForCharacteristicType:*(*(&v12 + 1) + 8 * i)];
@@ -799,7 +799,7 @@ void __27__HFControlItem__tintColor__block_invoke()
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [allCharacteristicTypes countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -814,18 +814,18 @@ void __27__HFControlItem__tintColor__block_invoke()
   return v7;
 }
 
-- (BOOL)supportsItemRepresentingServices:(id)a3
+- (BOOL)supportsItemRepresentingServices:(id)services
 {
-  v4 = a3;
-  v5 = [(HFControlItem *)self characteristicOptions];
-  v6 = [v5 allRequiredCharacteristicTypes];
+  servicesCopy = services;
+  characteristicOptions = [(HFControlItem *)self characteristicOptions];
+  allRequiredCharacteristicTypes = [characteristicOptions allRequiredCharacteristicTypes];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __50__HFControlItem_supportsItemRepresentingServices___block_invoke;
   v10[3] = &unk_277DF3130;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 na_all:v10];
+  v11 = servicesCopy;
+  v7 = servicesCopy;
+  v8 = [allRequiredCharacteristicTypes na_all:v10];
 
   return v8;
 }
@@ -853,26 +853,26 @@ BOOL __50__HFControlItem_supportsItemRepresentingServices___block_invoke_2(uint6
   return v3;
 }
 
-- (id)normalizedValueForCharacteristicValue:(id)a3 ofType:(id)a4
+- (id)normalizedValueForCharacteristicValue:(id)value ofType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFControlItem *)self valueSource];
-  v9 = [v8 metadataForCharacteristicType:v6];
+  typeCopy = type;
+  valueCopy = value;
+  valueSource = [(HFControlItem *)self valueSource];
+  v9 = [valueSource metadataForCharacteristicType:typeCopy];
 
-  v10 = [v9 hf_normalizedValueForValue:v7];
+  v10 = [v9 hf_normalizedValueForValue:valueCopy];
 
   return v10;
 }
 
-- (id)normalizedCharacteristicValuesForValues:(id)a3
+- (id)normalizedCharacteristicValuesForValues:(id)values
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __57__HFControlItem_normalizedCharacteristicValuesForValues___block_invoke;
   v5[3] = &unk_277DF7900;
   v5[4] = self;
-  v3 = [a3 na_dictionaryByMappingValues:v5];
+  v3 = [values na_dictionaryByMappingValues:v5];
 
   return v3;
 }
@@ -880,18 +880,18 @@ BOOL __50__HFControlItem_supportsItemRepresentingServices___block_invoke_2(uint6
 - (unint64_t)_accessorySuspendedState
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v2 = [(HFControlItem *)self valueSource];
-  v3 = [v2 allServices];
-  v4 = [v3 na_map:&__block_literal_global_121_0];
+  valueSource = [(HFControlItem *)self valueSource];
+  allServices = [valueSource allServices];
+  v4 = [allServices na_map:&__block_literal_global_121_0];
   v5 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"self" ascending:1];
   v12[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
   v7 = [v4 sortedArrayUsingDescriptors:v6];
-  v8 = [v7 lastObject];
-  v9 = [v8 unsignedIntegerValue];
+  lastObject = [v7 lastObject];
+  unsignedIntegerValue = [lastObject unsignedIntegerValue];
 
   v10 = *MEMORY[0x277D85DE8];
-  return v9;
+  return unsignedIntegerValue;
 }
 
 id __41__HFControlItem__accessorySuspendedState__block_invoke(uint64_t a1, void *a2)
@@ -903,26 +903,26 @@ id __41__HFControlItem__accessorySuspendedState__block_invoke(uint64_t a1, void 
   return v4;
 }
 
-- (id)_descriptionWithCharacteristicOptions:(BOOL)a3 includeResults:(BOOL)a4
+- (id)_descriptionWithCharacteristicOptions:(BOOL)options includeResults:(BOOL)results
 {
-  v4 = a4;
-  v5 = a3;
+  resultsCopy = results;
+  optionsCopy = options;
   v7 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  if (v5)
+  if (optionsCopy)
   {
-    v8 = [(HFControlItem *)self characteristicOptions];
-    v9 = [v7 appendObject:v8 withName:@"characteristics"];
+    characteristicOptions = [(HFControlItem *)self characteristicOptions];
+    v9 = [v7 appendObject:characteristicOptions withName:@"characteristics"];
   }
 
-  if (v4)
+  if (resultsCopy)
   {
-    v10 = [(HFItem *)self latestResults];
-    v11 = [v7 appendObject:v10 withName:@"latestResults"];
+    latestResults = [(HFItem *)self latestResults];
+    v11 = [v7 appendObject:latestResults withName:@"latestResults"];
   }
 
-  v12 = [v7 build];
+  build = [v7 build];
 
-  return v12;
+  return build;
 }
 
 + (NAIdentity)na_identity
@@ -985,19 +985,19 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

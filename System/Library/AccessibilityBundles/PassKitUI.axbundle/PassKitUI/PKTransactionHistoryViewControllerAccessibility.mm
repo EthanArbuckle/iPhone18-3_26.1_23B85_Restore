@@ -1,18 +1,18 @@
 @interface PKTransactionHistoryViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_barButtonItems;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation PKTransactionHistoryViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKTransactionHistoryViewController" hasInstanceVariable:@"_detailsButton" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"PKTransactionHistoryViewController" hasInstanceVariable:@"_phoneButton" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"PKTransactionHistoryViewController" hasInstanceVariable:@"_messageButton" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"PKTransactionHistoryViewController" hasInstanceMethod:@"_barButtonItems" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKTransactionHistoryViewController" hasInstanceVariable:@"_detailsButton" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"PKTransactionHistoryViewController" hasInstanceVariable:@"_phoneButton" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"PKTransactionHistoryViewController" hasInstanceVariable:@"_messageButton" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"PKTransactionHistoryViewController" hasInstanceMethod:@"_barButtonItems" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -37,10 +37,10 @@
 {
   v5.receiver = self;
   v5.super_class = PKTransactionHistoryViewControllerAccessibility;
-  v3 = [(PKTransactionHistoryViewControllerAccessibility *)&v5 _barButtonItems];
+  _barButtonItems = [(PKTransactionHistoryViewControllerAccessibility *)&v5 _barButtonItems];
   [(PKTransactionHistoryViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 
-  return v3;
+  return _barButtonItems;
 }
 
 @end

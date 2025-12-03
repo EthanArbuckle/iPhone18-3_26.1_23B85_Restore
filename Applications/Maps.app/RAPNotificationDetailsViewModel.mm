@@ -3,8 +3,8 @@
 - (NSArray)mapItems;
 - (NSString)reportId;
 - (_TtC4Maps31RAPNotificationDetailsViewModel)init;
-- (_TtC4Maps31RAPNotificationDetailsViewModel)initWithDescriptionInfo:(id)a3 displayStyle:(int64_t)a4 mapType:(int)a5 mapRegion:(id)a6 mapItems:(id)a7 reportId:(id)a8 updatedLabel:(id)a9 hasButton:(BOOL)a10 button:(id)a11 rapRecord:(id)a12;
-- (void)setRapRecord:(id)a3;
+- (_TtC4Maps31RAPNotificationDetailsViewModel)initWithDescriptionInfo:(id)info displayStyle:(int64_t)style mapType:(int)type mapRegion:(id)region mapItems:(id)items reportId:(id)id updatedLabel:(id)label hasButton:(BOOL)self0 button:(id)self1 rapRecord:(id)self2;
+- (void)setRapRecord:(id)record;
 @end
 
 @implementation RAPNotificationDetailsViewModel
@@ -26,11 +26,11 @@
   return v2;
 }
 
-- (void)setRapRecord:(id)a3
+- (void)setRapRecord:(id)record
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps31RAPNotificationDetailsViewModel_rapRecord);
-  *(self + OBJC_IVAR____TtC4Maps31RAPNotificationDetailsViewModel_rapRecord) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps31RAPNotificationDetailsViewModel_rapRecord) = record;
+  recordCopy = record;
 }
 
 - (BOOL)editMode
@@ -44,18 +44,18 @@
   return v2;
 }
 
-- (_TtC4Maps31RAPNotificationDetailsViewModel)initWithDescriptionInfo:(id)a3 displayStyle:(int64_t)a4 mapType:(int)a5 mapRegion:(id)a6 mapItems:(id)a7 reportId:(id)a8 updatedLabel:(id)a9 hasButton:(BOOL)a10 button:(id)a11 rapRecord:(id)a12
+- (_TtC4Maps31RAPNotificationDetailsViewModel)initWithDescriptionInfo:(id)info displayStyle:(int64_t)style mapType:(int)type mapRegion:(id)region mapItems:(id)items reportId:(id)id updatedLabel:(id)label hasButton:(BOOL)self0 button:(id)self1 rapRecord:(id)self2
 {
   sub_100014C84(0, &unk_101918390);
   v15 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v18 = v17;
-  v19 = a3;
-  v20 = a6;
-  v21 = a9;
+  infoCopy = info;
+  regionCopy = region;
+  labelCopy = label;
   v22 = a11;
-  v23 = a12;
-  return sub_10023323C(v19, a4, a5, v20, v15, v16, v18, a9, a10, a11, a12);
+  recordCopy = record;
+  return sub_10023323C(infoCopy, style, type, regionCopy, v15, v16, v18, label, button, a11, record);
 }
 
 - (_TtC4Maps31RAPNotificationDetailsViewModel)init

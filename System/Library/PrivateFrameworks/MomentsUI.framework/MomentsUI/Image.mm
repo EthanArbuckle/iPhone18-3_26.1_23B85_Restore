@@ -1,15 +1,15 @@
 @interface Image
 - (_TtC9MomentsUI5Image)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation Image
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  Image.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  Image.encode(with:)(coderCopy);
 }
 
 - (_TtC9MomentsUI5Image)init

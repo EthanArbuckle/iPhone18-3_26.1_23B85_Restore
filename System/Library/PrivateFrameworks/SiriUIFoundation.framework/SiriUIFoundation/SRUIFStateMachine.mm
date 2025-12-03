@@ -1,12 +1,12 @@
 @interface SRUIFStateMachine
-- (SRUIFStateMachine)initWithInitialState:(int64_t)a3;
+- (SRUIFStateMachine)initWithInitialState:(int64_t)state;
 - (SRUIFStateMachineDelegate)delegate;
-- (id)_descriptionForEvent:(int64_t)a3;
-- (id)_endStateNumberFromDictionary:(id)a3 forEvent:(int64_t)a4;
-- (void)_setState:(int64_t)a3 forEvent:(int64_t)a4 eventTimeStamp:(double)a5;
-- (void)addTransitionFromState:(int64_t)a3 toState:(int64_t)a4 forEvent:(int64_t)a5;
-- (void)performTransitionForEvent:(int64_t)a3;
-- (void)performTransitionForEvent:(int64_t)a3 eventTimeStamp:(double)a4;
+- (id)_descriptionForEvent:(int64_t)event;
+- (id)_endStateNumberFromDictionary:(id)dictionary forEvent:(int64_t)event;
+- (void)_setState:(int64_t)state forEvent:(int64_t)event eventTimeStamp:(double)stamp;
+- (void)addTransitionFromState:(int64_t)state toState:(int64_t)toState forEvent:(int64_t)event;
+- (void)performTransitionForEvent:(int64_t)event;
+- (void)performTransitionForEvent:(int64_t)event eventTimeStamp:(double)stamp;
 @end
 
 @implementation SRUIFStateMachine
@@ -18,7 +18,7 @@
   return WeakRetained;
 }
 
-- (SRUIFStateMachine)initWithInitialState:(int64_t)a3
+- (SRUIFStateMachine)initWithInitialState:(int64_t)state
 {
   v9.receiver = self;
   v9.super_class = SRUIFStateMachine;
@@ -26,86 +26,86 @@
   v5 = v4;
   if (v4)
   {
-    v4->_state = a3;
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    v4->_state = state;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     endStatesByEventByStartState = v5->_endStatesByEventByStartState;
-    v5->_endStatesByEventByStartState = v6;
+    v5->_endStatesByEventByStartState = dictionary;
   }
 
   return v5;
 }
 
-- (void)_setState:(int64_t)a3 forEvent:(int64_t)a4 eventTimeStamp:(double)a5
+- (void)_setState:(int64_t)state forEvent:(int64_t)event eventTimeStamp:(double)stamp
 {
-  v9 = [(SRUIFStateMachine *)self state];
-  [(SRUIFStateMachine *)self _setState:a3];
-  v10 = [(SRUIFStateMachine *)self delegate];
+  state = [(SRUIFStateMachine *)self state];
+  [(SRUIFStateMachine *)self _setState:state];
+  delegate = [(SRUIFStateMachine *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
-  v12 = [(SRUIFStateMachine *)self delegate];
-  v13 = v12;
+  delegate2 = [(SRUIFStateMachine *)self delegate];
+  v13 = delegate2;
   if (v11)
   {
-    [v12 stateMachine:self didTransitionFromState:v9 forEvent:a4 eventTimeStamp:a5];
+    [delegate2 stateMachine:self didTransitionFromState:state forEvent:event eventTimeStamp:stamp];
   }
 
   else
   {
-    [v12 stateMachine:self didTransitionFromState:v9 forEvent:a4];
+    [delegate2 stateMachine:self didTransitionFromState:state forEvent:event];
   }
 }
 
-- (id)_descriptionForEvent:(int64_t)a3
+- (id)_descriptionForEvent:(int64_t)event
 {
-  v5 = [(SRUIFStateMachine *)self delegate];
+  delegate = [(SRUIFStateMachine *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SRUIFStateMachine *)self delegate];
-    v8 = [v7 stateMachine:self descriptionForEvent:a3];
+    delegate2 = [(SRUIFStateMachine *)self delegate];
+    event = [delegate2 stateMachine:self descriptionForEvent:event];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", a3];
+    event = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", event];
   }
 
-  return v8;
+  return event;
 }
 
-- (void)addTransitionFromState:(int64_t)a3 toState:(int64_t)a4 forEvent:(int64_t)a5
+- (void)addTransitionFromState:(int64_t)state toState:(int64_t)toState forEvent:(int64_t)event
 {
-  v9 = [(SRUIFStateMachine *)self _endStatesByEventByStartState];
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v15 = [v9 objectForKey:v10];
+  _endStatesByEventByStartState = [(SRUIFStateMachine *)self _endStatesByEventByStartState];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:state];
+  dictionary = [_endStatesByEventByStartState objectForKey:v10];
 
-  if (!v15)
+  if (!dictionary)
   {
-    v15 = [MEMORY[0x277CBEB38] dictionary];
-    v11 = [(SRUIFStateMachine *)self _endStatesByEventByStartState];
-    v12 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    [v11 setObject:v15 forKey:v12];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    _endStatesByEventByStartState2 = [(SRUIFStateMachine *)self _endStatesByEventByStartState];
+    v12 = [MEMORY[0x277CCABB0] numberWithInteger:state];
+    [_endStatesByEventByStartState2 setObject:dictionary forKey:v12];
   }
 
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-  [v15 setObject:v13 forKey:v14];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:toState];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:event];
+  [dictionary setObject:v13 forKey:v14];
 }
 
-- (id)_endStateNumberFromDictionary:(id)a3 forEvent:(int64_t)a4
+- (id)_endStateNumberFromDictionary:(id)dictionary forEvent:(int64_t)event
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithInteger:a4];
-  v9 = [v7 objectForKey:v8];
+  dictionaryCopy = dictionary;
+  v8 = [v6 numberWithInteger:event];
+  v9 = [dictionaryCopy objectForKey:v8];
 
   if (!v9)
   {
     v10 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
     {
-      [(SRUIFStateMachine *)v10 _endStateNumberFromDictionary:a4 forEvent:?];
+      [(SRUIFStateMachine *)v10 _endStateNumberFromDictionary:event forEvent:?];
     }
 
     v9 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SRUIFStateMachine state](self, "state")}];
@@ -114,21 +114,21 @@
   return v9;
 }
 
-- (void)performTransitionForEvent:(int64_t)a3
+- (void)performTransitionForEvent:(int64_t)event
 {
   v5 = mach_absolute_time();
 
-  [(SRUIFStateMachine *)self performTransitionForEvent:a3 eventTimeStamp:v5];
+  [(SRUIFStateMachine *)self performTransitionForEvent:event eventTimeStamp:v5];
 }
 
-- (void)performTransitionForEvent:(int64_t)a3 eventTimeStamp:(double)a4
+- (void)performTransitionForEvent:(int64_t)event eventTimeStamp:(double)stamp
 {
-  v7 = [(SRUIFStateMachine *)self _endStatesByEventByStartState];
+  _endStatesByEventByStartState = [(SRUIFStateMachine *)self _endStatesByEventByStartState];
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SRUIFStateMachine state](self, "state")}];
-  v10 = [v7 objectForKey:v8];
+  v10 = [_endStatesByEventByStartState objectForKey:v8];
 
-  v9 = [(SRUIFStateMachine *)self _endStateNumberFromDictionary:v10 forEvent:a3];
-  -[SRUIFStateMachine _setState:forEvent:eventTimeStamp:](self, "_setState:forEvent:eventTimeStamp:", [v9 integerValue], a3, a4);
+  v9 = [(SRUIFStateMachine *)self _endStateNumberFromDictionary:v10 forEvent:event];
+  -[SRUIFStateMachine _setState:forEvent:eventTimeStamp:](self, "_setState:forEvent:eventTimeStamp:", [v9 integerValue], event, stamp);
 }
 
 - (void)_endStateNumberFromDictionary:(uint64_t)a3 forEvent:.cold.1(void *a1, void *a2, uint64_t a3)

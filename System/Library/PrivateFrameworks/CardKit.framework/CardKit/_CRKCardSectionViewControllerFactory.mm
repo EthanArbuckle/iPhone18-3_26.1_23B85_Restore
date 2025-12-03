@@ -1,10 +1,10 @@
 @interface _CRKCardSectionViewControllerFactory
 + (id)_sharedInstance;
-+ (id)cardSectionViewControllerForCardSection:(id)a3;
-+ (void)registerCardSectionViewControllerClass:(Class)a3;
++ (id)cardSectionViewControllerForCardSection:(id)section;
++ (void)registerCardSectionViewControllerClass:(Class)class;
 - (_CRKCardSectionViewControllerFactory)init;
-- (id)_cardSectionViewControllerForCardSection:(id)a3;
-- (void)_registerCardSectionViewControllerClass:(Class)a3;
+- (id)_cardSectionViewControllerForCardSection:(id)section;
+- (void)_registerCardSectionViewControllerClass:(Class)class;
 @end
 
 @implementation _CRKCardSectionViewControllerFactory
@@ -36,21 +36,21 @@
   return v3;
 }
 
-+ (void)registerCardSectionViewControllerClass:(Class)a3
++ (void)registerCardSectionViewControllerClass:(Class)class
 {
-  v4 = [a1 _sharedInstance];
-  [v4 _registerCardSectionViewControllerClass:a3];
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _registerCardSectionViewControllerClass:class];
 }
 
-- (void)_registerCardSectionViewControllerClass:(Class)a3
+- (void)_registerCardSectionViewControllerClass:(Class)class
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(objc_class *)a3 cardSectionClasses];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  cardSectionClasses = [(objc_class *)class cardSectionClasses];
+  v6 = [cardSectionClasses countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -62,34 +62,34 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(cardSectionClasses);
         }
 
-        [(_CRKCardSectionViewControllerRegistry *)self->_registry registerCardSectionViewControllerClass:a3 forCardSectionClass:*(*(&v10 + 1) + 8 * v9++)];
+        [(_CRKCardSectionViewControllerRegistry *)self->_registry registerCardSectionViewControllerClass:class forCardSectionClass:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [cardSectionClasses countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-+ (id)cardSectionViewControllerForCardSection:(id)a3
++ (id)cardSectionViewControllerForCardSection:(id)section
 {
-  v4 = a3;
-  v5 = [a1 _sharedInstance];
-  v6 = [v5 _cardSectionViewControllerForCardSection:v4];
+  sectionCopy = section;
+  _sharedInstance = [self _sharedInstance];
+  v6 = [_sharedInstance _cardSectionViewControllerForCardSection:sectionCopy];
 
   return v6;
 }
 
-- (id)_cardSectionViewControllerForCardSection:(id)a3
+- (id)_cardSectionViewControllerForCardSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   registry = self->_registry;
-  v6 = v4;
+  v6 = sectionCopy;
   if ((objc_opt_respondsToSelector() & 1) != 0 && ([v6 backingCardSection], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;

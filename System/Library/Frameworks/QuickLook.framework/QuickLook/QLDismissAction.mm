@@ -1,27 +1,27 @@
 @interface QLDismissAction
-- (QLDismissAction)initWithTitle:(id)a3 image:(id)a4 shouldDismissQuickLookAutomatically:(BOOL)a5 handler:(id)a6;
+- (QLDismissAction)initWithTitle:(id)title image:(id)image shouldDismissQuickLookAutomatically:(BOOL)automatically handler:(id)handler;
 @end
 
 @implementation QLDismissAction
 
-- (QLDismissAction)initWithTitle:(id)a3 image:(id)a4 shouldDismissQuickLookAutomatically:(BOOL)a5 handler:(id)a6
+- (QLDismissAction)initWithTitle:(id)title image:(id)image shouldDismissQuickLookAutomatically:(BOOL)automatically handler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  titleCopy = title;
+  imageCopy = image;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = QLDismissAction;
   v14 = [(QLDismissAction *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_title, a3);
-    objc_storeStrong(&v15->_image, a4);
-    v16 = _Block_copy(v13);
+    objc_storeStrong(&v14->_title, title);
+    objc_storeStrong(&v15->_image, image);
+    v16 = _Block_copy(handlerCopy);
     completionHandler = v15->_completionHandler;
     v15->_completionHandler = v16;
 
-    v15->_shouldDismissQuickLookAutomatically = a5;
+    v15->_shouldDismissQuickLookAutomatically = automatically;
     v18 = v15;
   }
 

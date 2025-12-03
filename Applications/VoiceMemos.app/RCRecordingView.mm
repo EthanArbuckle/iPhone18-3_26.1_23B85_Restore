@@ -1,9 +1,9 @@
 @interface RCRecordingView
 - ($F24F406B2B787EFB06265DBA3D28CBD5)currentTrackTimeRange;
-- (BOOL)_touchIsInExcludedView:(id)a3;
+- (BOOL)_touchIsInExcludedView:(id)view;
 - (BOOL)accessibilityPerformMagicTap;
 - (BOOL)canSaveTrimChanges;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)hasCustomizedPlaybackSettings;
 - (BOOL)shouldSelectFullTitleAtBeginEditing;
 - (BOOL)textFieldIsBeingEdited;
@@ -12,7 +12,7 @@
 - (RCBottomControlsContainerView)bottomControlsContainerView;
 - (RCCardPresentationDelegate)cardPresentationDelegate;
 - (RCRecordingDescriptionView)descriptionView;
-- (RCRecordingView)initWithRecordButtonRepository:(id)a3 interactionHandler:(id)a4;
+- (RCRecordingView)initWithRecordButtonRepository:(id)repository interactionHandler:(id)handler;
 - (RCRecordingViewDelegate)viewDelegate;
 - (RCShuttleBar)shuttleBar;
 - (RCTimeLabel)currentTimeLabel;
@@ -33,38 +33,38 @@
 - (UIView)transcriptView;
 - (_TtC10VoiceMemos12RCDoneButton)doneButton;
 - (double)bottomAccessoryDisplayStyleFixedHeight;
-- (double)customDetentFixedHeight:(BOOL)a3 includeBottomSafeArea:(BOOL)a4;
+- (double)customDetentFixedHeight:(BOOL)height includeBottomSafeArea:(BOOL)area;
 - (float)editingProgress;
 - (id)_bottomElementsToHide;
 - (id)createTranscriptViewExpansionAnimator;
-- (int64_t)_recordButtonStateForRecordingControlState:(int64_t)a3;
-- (int64_t)_recordingControlStateForRecordButtonState:(int64_t)a3;
+- (int64_t)_recordButtonStateForRecordingControlState:(int64_t)state;
+- (int64_t)_recordingControlStateForRecordButtonState:(int64_t)state;
 - (int64_t)playControlState;
 - (int64_t)recordingControlState;
-- (unint64_t)_displayOptionForView:(id)a3;
+- (unint64_t)_displayOptionForView:(id)view;
 - (void)_addDoneAndCancelButtonsToBottomControlsContainerView;
-- (void)_addLabelsToWaveformOverview:(id)a3 containerView:(id)a4;
+- (void)_addLabelsToWaveformOverview:(id)overview containerView:(id)view;
 - (void)_addPlaybackSettingsButtonToBottomControlsContainerView;
 - (void)_addRecordButtonToBottomControlsContainerView;
 - (void)_addShuttleBarToBottomControlsContainerView;
-- (void)_addSubviewsOfView:(id)a3 includingTopLevelView:(BOOL)a4 toMutableArray:(id)a5;
+- (void)_addSubviewsOfView:(id)view includingTopLevelView:(BOOL)levelView toMutableArray:(id)array;
 - (void)_addTranscriptionButtonToBottomControlsContainerView;
 - (void)_addTrimDeleteButtonsToBottomControlsContainerView;
 - (void)_addTrimDeleteButtonsToLeadingAndTrailingEdge;
 - (void)_addTrimDeleteButtonsToLeadingEdge;
-- (void)_adjustBackgroundColorForDisplayStyle:(int64_t)a3;
+- (void)_adjustBackgroundColorForDisplayStyle:(int64_t)style;
 - (void)_adjustCancelAndDoneButtonsWidth;
-- (void)_adjustTraitOverridesForDisplayStyle:(int64_t)a3;
+- (void)_adjustTraitOverridesForDisplayStyle:(int64_t)style;
 - (void)_adjustTrimAndDeleteSelectionButtonsSize;
 - (void)_applyOverviewWaveformViewConstraints;
 - (void)_classSpecificReset;
-- (void)_classSpecificSetDisplayStyle:(int64_t)a3;
-- (void)_dimRecordingDescriptionView:(BOOL)a3 animated:(BOOL)a4;
+- (void)_classSpecificSetDisplayStyle:(int64_t)style;
+- (void)_dimRecordingDescriptionView:(BOOL)view animated:(BOOL)animated;
 - (void)_displayPlaybackSettings;
-- (void)_dropView:(id)a3;
-- (void)_dropView:(id)a3 fromAncestor:(id)a4;
+- (void)_dropView:(id)view;
+- (void)_dropView:(id)view fromAncestor:(id)ancestor;
 - (void)_handleDeleteSelection;
-- (void)_handleTapToFullscreen:(id)a3;
+- (void)_handleTapToFullscreen:(id)fullscreen;
 - (void)_handleTrimToSelection;
 - (void)_primeFramesOfHiddenItems;
 - (void)_setupBottomControlsContainerViewConstraints;
@@ -76,12 +76,12 @@
 - (void)_setupOverviewWaveformContainerViewConstraints;
 - (void)_setupTapGestureRecognizer;
 - (void)_setupTopSpacerViewConstraints;
-- (void)_showHideViewsForDisplayOptions:(unint64_t)a3;
-- (void)_showTrimDeleteSelectionButtonsIfNeeded:(BOOL)a3;
+- (void)_showHideViewsForDisplayOptions:(unint64_t)options;
+- (void)_showTrimDeleteSelectionButtonsIfNeeded:(BOOL)needed;
 - (void)_styleCurrentTimeLabel;
 - (void)_styleShuttleBar;
 - (void)_styleView;
-- (void)_swapCenterContentTimeIndices:(BOOL)a3;
+- (void)_swapCenterContentTimeIndices:(BOOL)indices;
 - (void)_switchToCompact;
 - (void)_switchToFullScreen;
 - (void)_syncCenterContentContainerViewState;
@@ -92,76 +92,76 @@
 - (void)_updateArrangedSubviews;
 - (void)_updateBottomControlsContainerViewSubviews;
 - (void)_updateCenterContentContainerSubviewConstraints;
-- (void)_updateCurrentTimeLabelForTime:(double)a3;
+- (void)_updateCurrentTimeLabelForTime:(double)time;
 - (void)_updateDisplayStyleForHorizontalSizeClassChanges;
 - (void)_updateDoneButtonState;
 - (void)_updateMoreButtonMenu;
-- (void)_updateRecordButtonStateForRecordingViewState:(int64_t)a3;
-- (void)_updateRecordingDescriptionViewForDuration:(double)a3;
+- (void)_updateRecordButtonStateForRecordingViewState:(int64_t)state;
+- (void)_updateRecordingDescriptionViewForDuration:(double)duration;
 - (void)_updateShuttleBarEnablement;
 - (void)_updateSpacingBetweenArrangedSubviews;
 - (void)_updateSubviewVisibility;
-- (void)_updateToolbarsActivityMode:(int64_t)a3;
+- (void)_updateToolbarsActivityMode:(int64_t)mode;
 - (void)_updateTranscriptionButtonVisibility;
 - (void)_updateVerticalContentHuggingAndCompressionResistancePriorities;
 - (void)applyDimmingColorToProgressOverlay;
-- (void)assignActionOnDoneButton:(id)a3;
+- (void)assignActionOnDoneButton:(id)button;
 - (void)assignActionOnDoneButtonForModernToolbar;
 - (void)cancelButtonTapped;
 - (void)cancelTextEditing;
 - (void)cleanupAfterDismiss;
 - (void)completePresent;
-- (void)deviceTranscriptionSupportDidChange:(BOOL)a3;
-- (void)didBeginEditingInTextField:(id)a3;
-- (void)handleUpdateTitle:(id)a3;
+- (void)deviceTranscriptionSupportDidChange:(BOOL)change;
+- (void)didBeginEditingInTextField:(id)field;
+- (void)handleUpdateTitle:(id)title;
 - (void)layoutSubviews;
-- (void)performControlsAction:(int64_t)a3 position:(double)a4 source:(id)a5;
+- (void)performControlsAction:(int64_t)action position:(double)position source:(id)source;
 - (void)prepareForDismiss;
-- (void)prepareForPresent:(BOOL)a3;
+- (void)prepareForPresent:(BOOL)present;
 - (void)reset;
 - (void)resetTopBottomSpacers;
 - (void)restyle;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenterContentViewState:(int64_t)a3;
-- (void)setCreationDate:(id)a3;
-- (void)setCurrentTime:(double)a3;
-- (void)setDisplayStyle:(int64_t)a3;
-- (void)setEditingInFlight:(BOOL)a3;
-- (void)setEditingProgress:(float)a3;
-- (void)setHasCustomizedPlaybackSettings:(BOOL)a3;
-- (void)setHasMultipleTracks:(BOOL)a3;
-- (void)setHasNoTranscribableContent:(BOOL)a3;
-- (void)setHasSpatialRecording:(BOOL)a3;
-- (void)setHasTranscription:(BOOL)a3;
-- (void)setMoreActionsAndPlaybackSettingsButtonsHidden:(BOOL)a3;
-- (void)setOverviewWaveformView:(id)a3;
-- (void)setPlayControlState:(int64_t)a3;
-- (void)setRecordingControlState:(int64_t)a3;
-- (void)setRecordingDuration:(double)a3;
-- (void)setRecordingTitle:(id)a3;
-- (void)setRecordingViewState:(int64_t)a3;
-- (void)setRecordingViewState:(int64_t)a3 animated:(BOOL)a4 force:(BOOL)a5;
-- (void)setSaveRecordingAction:(id)a3;
-- (void)setTranscriptView:(id)a3;
-- (void)setTranscriptViewState:(int64_t)a3;
-- (void)setTrimEnabled:(BOOL)a3;
-- (void)setWaveformView:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenterContentViewState:(int64_t)state;
+- (void)setCreationDate:(id)date;
+- (void)setCurrentTime:(double)time;
+- (void)setDisplayStyle:(int64_t)style;
+- (void)setEditingInFlight:(BOOL)flight;
+- (void)setEditingProgress:(float)progress;
+- (void)setHasCustomizedPlaybackSettings:(BOOL)settings;
+- (void)setHasMultipleTracks:(BOOL)tracks;
+- (void)setHasNoTranscribableContent:(BOOL)content;
+- (void)setHasSpatialRecording:(BOOL)recording;
+- (void)setHasTranscription:(BOOL)transcription;
+- (void)setMoreActionsAndPlaybackSettingsButtonsHidden:(BOOL)hidden;
+- (void)setOverviewWaveformView:(id)view;
+- (void)setPlayControlState:(int64_t)state;
+- (void)setRecordingControlState:(int64_t)state;
+- (void)setRecordingDuration:(double)duration;
+- (void)setRecordingTitle:(id)title;
+- (void)setRecordingViewState:(int64_t)state;
+- (void)setRecordingViewState:(int64_t)state animated:(BOOL)animated force:(BOOL)force;
+- (void)setSaveRecordingAction:(id)action;
+- (void)setTranscriptView:(id)view;
+- (void)setTranscriptViewState:(int64_t)state;
+- (void)setTrimEnabled:(BOOL)enabled;
+- (void)setWaveformView:(id)view;
 - (void)setupSubviews;
-- (void)showAlertForSaveAsNew:(id)a3;
+- (void)showAlertForSaveAsNew:(id)new;
 - (void)toggleFullCompact;
-- (void)toggleTranscriptView:(id)a3;
-- (void)trimSaveStateChanged:(BOOL)a3;
-- (void)undoStateChanged:(BOOL)a3 isNewRecording:(BOOL)a4;
-- (void)updateAccessibilityForRecordingViewState:(int64_t)a3;
+- (void)toggleTranscriptView:(id)view;
+- (void)trimSaveStateChanged:(BOOL)changed;
+- (void)undoStateChanged:(BOOL)changed isNewRecording:(BOOL)recording;
+- (void)updateAccessibilityForRecordingViewState:(int64_t)state;
 - (void)updateForEditingStart;
-- (void)updateForRecordingEnd:(BOOL)a3;
+- (void)updateForRecordingEnd:(BOOL)end;
 - (void)updateForRecordingStart;
 - (void)updateForSizeChange;
 - (void)updateMoreActionsAndPlaybackSettingButtonVisibility;
-- (void)updateRecordButtonViewStateWithCurrentTime:(double)a3;
+- (void)updateRecordButtonViewStateWithCurrentTime:(double)time;
 - (void)updateTopBottomSpacersForDismiss;
 - (void)updateTopBottomSpacersForPresent;
-- (void)updateTrackState:(unint64_t)a3;
+- (void)updateTrackState:(unint64_t)state;
 @end
 
 @implementation RCRecordingView
@@ -174,8 +174,8 @@
     v4 = +[RCRecorderStyleProvider sharedStyleProvider];
     v5 = +[_TtC10VoiceMemos21RCToggleButtonFactory createPlaybackSettingsButton];
     [(UIButton *)v5 setAccessibilityIdentifier:@"RecordingView/PlaybackSettingsButton"];
-    v6 = [v4 editingToolbarMaximumContentSizeCategory];
-    [(UIButton *)v5 setMaximumContentSizeCategory:v6];
+    editingToolbarMaximumContentSizeCategory = [v4 editingToolbarMaximumContentSizeCategory];
+    [(UIButton *)v5 setMaximumContentSizeCategory:editingToolbarMaximumContentSizeCategory];
 
     [(UIButton *)v5 setSelected:[(RCRecordingView *)self hasCustomizedPlaybackSettings]];
     [(RCRecordingView *)self setClipsToBounds:0];
@@ -193,10 +193,10 @@
 
 - (BOOL)hasCustomizedPlaybackSettings
 {
-  v2 = [(RCRecordingView *)self editingToolbarProvider];
-  v3 = [v2 hasCustomizedPlaybackSettings];
+  editingToolbarProvider = [(RCRecordingView *)self editingToolbarProvider];
+  hasCustomizedPlaybackSettings = [editingToolbarProvider hasCustomizedPlaybackSettings];
 
-  return v3;
+  return hasCustomizedPlaybackSettings;
 }
 
 - (UIButton)moreActionsButton
@@ -206,13 +206,13 @@
   {
     v4 = [UIButton buttonWithType:1];
     v5 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v6 = [v5 editingToolbarImageSymbolConfiguration];
-    v7 = [v5 ellipsisCircleImage];
-    v8 = [v7 imageWithConfiguration:v6];
+    editingToolbarImageSymbolConfiguration = [v5 editingToolbarImageSymbolConfiguration];
+    ellipsisCircleImage = [v5 ellipsisCircleImage];
+    v8 = [ellipsisCircleImage imageWithConfiguration:editingToolbarImageSymbolConfiguration];
 
     [(UIButton *)v4 setImage:v8 forState:0];
-    v9 = [v5 editingToolbarMaximumContentSizeCategory];
-    [(UIButton *)v4 setMaximumContentSizeCategory:v9];
+    editingToolbarMaximumContentSizeCategory = [v5 editingToolbarMaximumContentSizeCategory];
+    [(UIButton *)v4 setMaximumContentSizeCategory:editingToolbarMaximumContentSizeCategory];
 
     v10 = +[NSBundle mainBundle];
     v11 = [v10 localizedStringForKey:@"AX_MORE_ACTIONS" value:&stru_100295BB8 table:0];
@@ -231,37 +231,37 @@
 
 - (void)_updateMoreButtonMenu
 {
-  v3 = [(RCRecordingView *)self editingToolbarProvider];
+  editingToolbarProvider = [(RCRecordingView *)self editingToolbarProvider];
 
-  if (v3)
+  if (editingToolbarProvider)
   {
     v4 = +[_TtC10VoiceMemos33TranscriptionAvailabilityProvider shared];
-    v5 = [v4 deviceIsSupported];
+    deviceIsSupported = [v4 deviceIsSupported];
 
-    if (v5)
+    if (deviceIsSupported)
     {
-      v6 = [(RCRecordingView *)self hasTranscription];
+      hasTranscription = [(RCRecordingView *)self hasTranscription];
     }
 
     else
     {
-      v6 = 0;
+      hasTranscription = 0;
     }
 
     v7 = [(RCRecordingView *)self centerContentViewState]== 1;
     v8 = [_TtC10VoiceMemos36RCRecordingCardMoreButtonMenuCreator alloc];
-    v9 = [(RCRecordingView *)self descriptionView];
-    v10 = [v9 UUID];
-    v11 = [(RCRecordingCardMoreButtonMenuCreator *)v8 initWithRecordingUUID:v10 actionDelegate:self];
+    descriptionView = [(RCRecordingView *)self descriptionView];
+    uUID = [descriptionView UUID];
+    v11 = [(RCRecordingCardMoreButtonMenuCreator *)v8 initWithRecordingUUID:uUID actionDelegate:self];
     [(RCRecordingView *)self setMoreButtonMenuCreator:v11];
 
-    v12 = [(RCRecordingView *)self moreButtonMenuCreator];
-    v13 = [(RCRecordingView *)self hasMultipleTracks];
-    v14 = [(RCRecordingView *)self editingToolbarProvider];
-    v16 = [v12 createMenuWithDisplayCopyTranscriptAction:v6 hideTrimItem:v7 hasMultipleTracks:v13 showUndoItem:objc_msgSend(v14 showShareItem:{"canUndo"), 0}];
+    moreButtonMenuCreator = [(RCRecordingView *)self moreButtonMenuCreator];
+    hasMultipleTracks = [(RCRecordingView *)self hasMultipleTracks];
+    editingToolbarProvider2 = [(RCRecordingView *)self editingToolbarProvider];
+    v16 = [moreButtonMenuCreator createMenuWithDisplayCopyTranscriptAction:hasTranscription hideTrimItem:v7 hasMultipleTracks:hasMultipleTracks showUndoItem:objc_msgSend(editingToolbarProvider2 showShareItem:{"canUndo"), 0}];
 
-    v15 = [(RCRecordingView *)self editingToolbarProvider];
-    [v15 setMoreActionsMenu:v16];
+    editingToolbarProvider3 = [(RCRecordingView *)self editingToolbarProvider];
+    [editingToolbarProvider3 setMoreActionsMenu:v16];
   }
 }
 
@@ -293,19 +293,19 @@
 - (void)_updateTranscriptionButtonVisibility
 {
   v3 = +[_TtC10VoiceMemos33TranscriptionAvailabilityProvider shared];
-  v4 = [v3 deviceIsSupported];
+  deviceIsSupported = [v3 deviceIsSupported];
 
   v5 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v6 = [v5 hostsTranscriptionButtonInToolbar];
+  hostsTranscriptionButtonInToolbar = [v5 hostsTranscriptionButtonInToolbar];
 
   v7 = 1;
-  if (v4 && (v6 & 1) == 0 && [(RCRecordingView *)self displayStyle]== 3)
+  if (deviceIsSupported && (hostsTranscriptionButtonInToolbar & 1) == 0 && [(RCRecordingView *)self displayStyle]== 3)
   {
     v7 = [(RCRecordingView *)self recordingViewState]== 8;
   }
 
-  v8 = [(RCRecordingView *)self transcriptionButton];
-  [v8 setHidden:v7];
+  transcriptionButton = [(RCRecordingView *)self transcriptionButton];
+  [transcriptionButton setHidden:v7];
 }
 
 - (UIButton)transcriptionButton
@@ -317,8 +317,8 @@
     v5 = +[_TtC10VoiceMemos21RCToggleButtonFactory createTranscriptionButton];
     [(UIButton *)v5 setAccessibilityIdentifier:@"RecordingView/TranscriptionButton"];
     [(UIButton *)v5 addTarget:self action:"toggleTranscriptView:" forControlEvents:64];
-    v6 = [v4 editingToolbarMaximumContentSizeCategory];
-    [(UIButton *)v5 setMaximumContentSizeCategory:v6];
+    editingToolbarMaximumContentSizeCategory = [v4 editingToolbarMaximumContentSizeCategory];
+    [(UIButton *)v5 setMaximumContentSizeCategory:editingToolbarMaximumContentSizeCategory];
 
     v7 = self->_transcriptionButton;
     self->_transcriptionButton = v5;
@@ -369,8 +369,8 @@
     [(UIButton *)v4 setHidden:1];
     [(UIButton *)v4 addTarget:self action:"cancelButtonTapped" forControlEvents:64];
     v9 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v10 = [v9 buttonsMaximumContentSizeCategory];
-    [(UIButton *)v4 setMaximumContentSizeCategory:v10];
+    buttonsMaximumContentSizeCategory = [v9 buttonsMaximumContentSizeCategory];
+    [(UIButton *)v4 setMaximumContentSizeCategory:buttonsMaximumContentSizeCategory];
 
     v11 = self->_cancelButton;
     self->_cancelButton = v4;
@@ -390,8 +390,8 @@
     [(RCTrimButton *)v4 setAccessibilityIdentifier:@"RecordingView/TrimToSelectionButton"];
     [(RCTrimButton *)v4 addTarget:self action:"_handleTrimToSelection" forControlEvents:64];
     v5 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v6 = [v5 buttonsMaximumContentSizeCategory];
-    [(RCTrimButton *)v4 setMaximumContentSizeCategory:v6];
+    buttonsMaximumContentSizeCategory = [v5 buttonsMaximumContentSizeCategory];
+    [(RCTrimButton *)v4 setMaximumContentSizeCategory:buttonsMaximumContentSizeCategory];
 
     v7 = self->_trimToSelectionButton;
     self->_trimToSelectionButton = &v4->super.super;
@@ -411,8 +411,8 @@
     [(RCDeleteButton *)v4 setAccessibilityIdentifier:@"RecordingView/DeleteSelectionButton"];
     [(RCDeleteButton *)v4 addTarget:self action:"_handleDeleteSelection" forControlEvents:64];
     v5 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v6 = [v5 buttonsMaximumContentSizeCategory];
-    [(RCDeleteButton *)v4 setMaximumContentSizeCategory:v6];
+    buttonsMaximumContentSizeCategory = [v5 buttonsMaximumContentSizeCategory];
+    [(RCDeleteButton *)v4 setMaximumContentSizeCategory:buttonsMaximumContentSizeCategory];
 
     v7 = self->_deleteSelectionButton;
     self->_deleteSelectionButton = &v4->super.super;
@@ -436,11 +436,11 @@
     v7 = +[RCRecorderStyleProvider sharedStyleProvider];
     [(RCShuttleBar *)v6 setPresentedControlsOptions:0];
     [(RCShuttleBar *)v6 setActionDelegate:self];
-    v8 = [v7 transportControlsColorForRecordingCard];
-    [(RCShuttleBar *)v6 setControlsColor:v8];
+    transportControlsColorForRecordingCard = [v7 transportControlsColorForRecordingCard];
+    [(RCShuttleBar *)v6 setControlsColor:transportControlsColorForRecordingCard];
 
-    v9 = [v7 transportButtonAnimationCircleColor];
-    [(RCShuttleBar *)v6 setControlsAnimationColor:v9];
+    transportButtonAnimationCircleColor = [v7 transportButtonAnimationCircleColor];
+    [(RCShuttleBar *)v6 setControlsAnimationColor:transportButtonAnimationCircleColor];
 
     [(RCRecordingView *)self _updateShuttleBarEnablement];
     [(RCRecordingView *)self _primeFramesOfHiddenItems];
@@ -455,21 +455,21 @@
 {
   v3 = [(RCRecordingView *)self recordingViewState]!= 0;
   v4 = ![(RCRecordingView *)self _doingSomeKindOfCapture];
-  v5 = [(RCRecordingView *)self shuttleBar];
-  [v5 setEnabled:v3 & v4];
+  shuttleBar = [(RCRecordingView *)self shuttleBar];
+  [shuttleBar setEnabled:v3 & v4];
 }
 
 - (void)_primeFramesOfHiddenItems
 {
-  v3 = [(RCRecordingView *)self bottomControlsContainerView];
-  [v3 frame];
+  bottomControlsContainerView = [(RCRecordingView *)self bottomControlsContainerView];
+  [bottomControlsContainerView frame];
   v5 = v4;
   [(RCRecordingView *)self frame];
   v7 = v6;
 
-  v8 = [(RCRecordingView *)self shuttleBar];
-  [v8 setFrame:{0.0, v5, v7, 1.0}];
-  [v8 layoutSubviews];
+  shuttleBar = [(RCRecordingView *)self shuttleBar];
+  [shuttleBar setFrame:{0.0, v5, v7, 1.0}];
+  [shuttleBar layoutSubviews];
 }
 
 - (RCBottomControlsContainerView)bottomControlsContainerView
@@ -492,15 +492,15 @@
 
 - (void)assignActionOnDoneButtonForModernToolbar
 {
-  v3 = [(RCRecordingView *)self shouldSaveAsNew];
-  v4 = [(RCRecordingView *)self editingToolbarProvider];
-  [v4 setDoneButtonItemShowsMenu:v3];
+  shouldSaveAsNew = [(RCRecordingView *)self shouldSaveAsNew];
+  editingToolbarProvider = [(RCRecordingView *)self editingToolbarProvider];
+  [editingToolbarProvider setDoneButtonItemShowsMenu:shouldSaveAsNew];
 }
 
 - (void)_updateBottomControlsContainerViewSubviews
 {
   v20 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [(RCRecordingView *)self recordingViewState];
+  recordingViewState = [(RCRecordingView *)self recordingViewState];
   if ([v20 hostsTransportAndDoneButtonInBottomSection])
   {
     [(RCRecordingView *)self _addShuttleBarToBottomControlsContainerView];
@@ -508,16 +508,16 @@
 
   else
   {
-    v4 = [(RCRecordingView *)self shuttleBar];
-    v5 = [(RCRecordingView *)self bottomControlsContainerView];
-    [(RCRecordingView *)self _dropView:v4 fromAncestor:v5];
+    shuttleBar = [(RCRecordingView *)self shuttleBar];
+    bottomControlsContainerView = [(RCRecordingView *)self bottomControlsContainerView];
+    [(RCRecordingView *)self _dropView:shuttleBar fromAncestor:bottomControlsContainerView];
   }
 
-  if (![(RCRecordingView *)self _bottomControlsSupportRecording]|| v3 == 8)
+  if (![(RCRecordingView *)self _bottomControlsSupportRecording]|| recordingViewState == 8)
   {
-    v6 = [(RCRecordingView *)self recordButton];
-    v7 = [(RCRecordingView *)self bottomControlsContainerView];
-    [(RCRecordingView *)self _dropView:v6 fromAncestor:v7];
+    recordButton = [(RCRecordingView *)self recordButton];
+    bottomControlsContainerView2 = [(RCRecordingView *)self bottomControlsContainerView];
+    [(RCRecordingView *)self _dropView:recordButton fromAncestor:bottomControlsContainerView2];
   }
 
   else
@@ -532,22 +532,22 @@
 
   else
   {
-    v8 = [(RCRecordingView *)self doneButton];
-    v9 = [(RCRecordingView *)self bottomControlsContainerView];
-    [(RCRecordingView *)self _dropView:v8 fromAncestor:v9];
+    doneButton = [(RCRecordingView *)self doneButton];
+    bottomControlsContainerView3 = [(RCRecordingView *)self bottomControlsContainerView];
+    [(RCRecordingView *)self _dropView:doneButton fromAncestor:bottomControlsContainerView3];
 
-    v10 = [(RCRecordingView *)self cancelButton];
-    v11 = [(RCRecordingView *)self bottomControlsContainerView];
-    [(RCRecordingView *)self _dropView:v10 fromAncestor:v11];
+    cancelButton = [(RCRecordingView *)self cancelButton];
+    bottomControlsContainerView4 = [(RCRecordingView *)self bottomControlsContainerView];
+    [(RCRecordingView *)self _dropView:cancelButton fromAncestor:bottomControlsContainerView4];
   }
 
-  if (!-[RCRecordingView _bottomControlsSupportRecording](self, "_bottomControlsSupportRecording") || [v20 hostsTransportAndDoneButtonInBottomSection] || v3 == 8)
+  if (!-[RCRecordingView _bottomControlsSupportRecording](self, "_bottomControlsSupportRecording") || [v20 hostsTransportAndDoneButtonInBottomSection] || recordingViewState == 8)
   {
-    v12 = [(RCRecordingView *)self playbackSettingsButton];
-    v13 = [(RCRecordingView *)self bottomControlsContainerView];
-    [(RCRecordingView *)self _dropView:v12 fromAncestor:v13];
+    playbackSettingsButton = [(RCRecordingView *)self playbackSettingsButton];
+    bottomControlsContainerView5 = [(RCRecordingView *)self bottomControlsContainerView];
+    [(RCRecordingView *)self _dropView:playbackSettingsButton fromAncestor:bottomControlsContainerView5];
 
-    if (v3 == 8)
+    if (recordingViewState == 8)
     {
       [(RCRecordingView *)self _addTrimDeleteButtonsToBottomControlsContainerView];
       [v20 hostsTransportAndDoneButtonInBottomSection];
@@ -560,13 +560,13 @@
     [(RCRecordingView *)self _addPlaybackSettingsButtonToBottomControlsContainerView];
   }
 
-  v14 = [(RCRecordingView *)self deleteSelectionButton];
-  v15 = [(RCRecordingView *)self bottomControlsContainerView];
-  [(RCRecordingView *)self _dropView:v14 fromAncestor:v15];
+  deleteSelectionButton = [(RCRecordingView *)self deleteSelectionButton];
+  bottomControlsContainerView6 = [(RCRecordingView *)self bottomControlsContainerView];
+  [(RCRecordingView *)self _dropView:deleteSelectionButton fromAncestor:bottomControlsContainerView6];
 
-  v16 = [(RCRecordingView *)self trimToSelectionButton];
-  v17 = [(RCRecordingView *)self bottomControlsContainerView];
-  [(RCRecordingView *)self _dropView:v16 fromAncestor:v17];
+  trimToSelectionButton = [(RCRecordingView *)self trimToSelectionButton];
+  bottomControlsContainerView7 = [(RCRecordingView *)self bottomControlsContainerView];
+  [(RCRecordingView *)self _dropView:trimToSelectionButton fromAncestor:bottomControlsContainerView7];
 
   if (([v20 hostsTransportAndDoneButtonInBottomSection] & 1) == 0)
   {
@@ -575,9 +575,9 @@
   }
 
 LABEL_21:
-  v18 = [(RCRecordingView *)self transcriptionButton];
-  v19 = [(RCRecordingView *)self bottomControlsContainerView];
-  [(RCRecordingView *)self _dropView:v18 fromAncestor:v19];
+  transcriptionButton = [(RCRecordingView *)self transcriptionButton];
+  bottomControlsContainerView8 = [(RCRecordingView *)self bottomControlsContainerView];
+  [(RCRecordingView *)self _dropView:transcriptionButton fromAncestor:bottomControlsContainerView8];
 
 LABEL_22:
 }
@@ -587,46 +587,46 @@ LABEL_22:
   v3 = +[RCRecorderStyleProvider sharedStyleProvider];
   if ([v3 hostsTransportAndDoneButtonInBottomSection] && -[RCRecordingView displayStyle](self, "displayStyle") == 3)
   {
-    v4 = [(RCRecordingView *)self bottomControlsContainerView];
-    v5 = [v4 leadingContainerView];
+    bottomControlsContainerView = [(RCRecordingView *)self bottomControlsContainerView];
+    leadingContainerView = [bottomControlsContainerView leadingContainerView];
   }
 
   else
   {
-    v4 = [(RCRecordingView *)self bottomControlsContainerView];
-    v5 = [v4 centerContainerView];
+    bottomControlsContainerView = [(RCRecordingView *)self bottomControlsContainerView];
+    leadingContainerView = [bottomControlsContainerView centerContainerView];
   }
 
-  v6 = v5;
+  v6 = leadingContainerView;
 
-  v7 = [(RCRecordingView *)self recordButton];
-  v8 = [v7 superview];
+  recordButton = [(RCRecordingView *)self recordButton];
+  superview = [recordButton superview];
 
-  if (v8 != v6)
+  if (superview != v6)
   {
-    v9 = [(RCRecordingView *)self recordButton];
-    [(RCRecordingView *)self _dropView:v9];
+    recordButton2 = [(RCRecordingView *)self recordButton];
+    [(RCRecordingView *)self _dropView:recordButton2];
 
-    v10 = [(RCRecordingView *)self recordButton];
-    [v6 addSubview:v10];
+    recordButton3 = [(RCRecordingView *)self recordButton];
+    [v6 addSubview:recordButton3];
 
-    v11 = [(RCRecordingView *)self recordButton];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    recordButton4 = [(RCRecordingView *)self recordButton];
+    [recordButton4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v24 = [(RCRecordingView *)self recordButton];
-    v23 = [v24 leadingAnchor];
-    v22 = [v6 leadingAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    recordButton5 = [(RCRecordingView *)self recordButton];
+    leadingAnchor = [recordButton5 leadingAnchor];
+    leadingAnchor2 = [v6 leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v25[0] = v21;
-    v20 = [(RCRecordingView *)self recordButton];
-    v12 = [v20 trailingAnchor];
-    v13 = [v6 trailingAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    recordButton6 = [(RCRecordingView *)self recordButton];
+    trailingAnchor = [recordButton6 trailingAnchor];
+    trailingAnchor2 = [v6 trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v25[1] = v14;
-    v15 = [(RCRecordingView *)self recordButton];
-    v16 = [v15 centerYAnchor];
-    v17 = [v6 centerYAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    recordButton7 = [(RCRecordingView *)self recordButton];
+    centerYAnchor = [recordButton7 centerYAnchor];
+    centerYAnchor2 = [v6 centerYAnchor];
+    v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v25[2] = v18;
     v19 = [NSArray arrayWithObjects:v25 count:3];
     [NSLayoutConstraint activateConstraints:v19];
@@ -638,11 +638,11 @@ LABEL_22:
   recordButton = self->_recordButton;
   if (!recordButton)
   {
-    v4 = [(RCRecordingView *)self recordButtonFactory];
-    v5 = [v4 createRecordButtonContainer];
-    v6 = [v5 view];
+    recordButtonFactory = [(RCRecordingView *)self recordButtonFactory];
+    createRecordButtonContainer = [recordButtonFactory createRecordButtonContainer];
+    view = [createRecordButtonContainer view];
     v7 = self->_recordButton;
-    self->_recordButton = v6;
+    self->_recordButton = view;
 
     [(UIView *)self->_recordButton setAccessibilityIdentifier:@"RecordingView/RecordButton"];
     recordButton = self->_recordButton;
@@ -653,49 +653,49 @@ LABEL_22:
 
 - (void)_addPlaybackSettingsButtonToBottomControlsContainerView
 {
-  v3 = [(RCRecordingView *)self bottomControlsContainerView];
-  v4 = [v3 trailingContainerView];
+  bottomControlsContainerView = [(RCRecordingView *)self bottomControlsContainerView];
+  trailingContainerView = [bottomControlsContainerView trailingContainerView];
 
-  v5 = [(RCRecordingView *)self playbackSettingsButton];
-  v6 = [v5 superview];
+  playbackSettingsButton = [(RCRecordingView *)self playbackSettingsButton];
+  superview = [playbackSettingsButton superview];
 
-  if (v6 != v4)
+  if (superview != trailingContainerView)
   {
-    v7 = [(RCRecordingView *)self playbackSettingsButton];
-    [(RCRecordingView *)self _dropView:v7];
+    playbackSettingsButton2 = [(RCRecordingView *)self playbackSettingsButton];
+    [(RCRecordingView *)self _dropView:playbackSettingsButton2];
 
-    v8 = [(RCRecordingView *)self playbackSettingsButton];
-    [v4 addSubview:v8];
+    playbackSettingsButton3 = [(RCRecordingView *)self playbackSettingsButton];
+    [trailingContainerView addSubview:playbackSettingsButton3];
 
     v9 = +[RCRecorderStyleProvider sharedStyleProvider];
     [v9 bottomControlsTranscriptionAndPlaybackSettingsButtonHeight];
     v11 = v10;
 
-    v12 = [(RCRecordingView *)self playbackSettingsButton];
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+    playbackSettingsButton4 = [(RCRecordingView *)self playbackSettingsButton];
+    [playbackSettingsButton4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v31 = [(RCRecordingView *)self playbackSettingsButton];
-    v30 = [v31 centerYAnchor];
-    v29 = [v4 centerYAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29];
+    playbackSettingsButton5 = [(RCRecordingView *)self playbackSettingsButton];
+    centerYAnchor = [playbackSettingsButton5 centerYAnchor];
+    centerYAnchor2 = [trailingContainerView centerYAnchor];
+    v28 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v32[0] = v28;
-    v27 = [(RCRecordingView *)self playbackSettingsButton];
-    v26 = [v27 leadingAnchor];
-    v25 = [v4 leadingAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    playbackSettingsButton6 = [(RCRecordingView *)self playbackSettingsButton];
+    leadingAnchor = [playbackSettingsButton6 leadingAnchor];
+    leadingAnchor2 = [trailingContainerView leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v32[1] = v24;
-    v23 = [(RCRecordingView *)self playbackSettingsButton];
-    v22 = [v23 trailingAnchor];
-    v13 = [v4 trailingAnchor];
-    v14 = [v22 constraintEqualToAnchor:v13];
+    playbackSettingsButton7 = [(RCRecordingView *)self playbackSettingsButton];
+    trailingAnchor = [playbackSettingsButton7 trailingAnchor];
+    trailingAnchor2 = [trailingContainerView trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v32[2] = v14;
-    v15 = [(RCRecordingView *)self playbackSettingsButton];
-    v16 = [v15 widthAnchor];
-    v17 = [v16 constraintGreaterThanOrEqualToConstant:v11];
+    playbackSettingsButton8 = [(RCRecordingView *)self playbackSettingsButton];
+    widthAnchor = [playbackSettingsButton8 widthAnchor];
+    v17 = [widthAnchor constraintGreaterThanOrEqualToConstant:v11];
     v32[3] = v17;
-    v18 = [(RCRecordingView *)self playbackSettingsButton];
-    v19 = [v18 heightAnchor];
-    v20 = [v19 constraintGreaterThanOrEqualToConstant:v11];
+    playbackSettingsButton9 = [(RCRecordingView *)self playbackSettingsButton];
+    heightAnchor = [playbackSettingsButton9 heightAnchor];
+    v20 = [heightAnchor constraintGreaterThanOrEqualToConstant:v11];
     v32[4] = v20;
     v21 = [NSArray arrayWithObjects:v32 count:5];
     [NSLayoutConstraint activateConstraints:v21];
@@ -704,49 +704,49 @@ LABEL_22:
 
 - (void)_addTranscriptionButtonToBottomControlsContainerView
 {
-  v3 = [(RCRecordingView *)self bottomControlsContainerView];
-  v4 = [v3 leadingContainerView];
+  bottomControlsContainerView = [(RCRecordingView *)self bottomControlsContainerView];
+  leadingContainerView = [bottomControlsContainerView leadingContainerView];
 
-  v5 = [(RCRecordingView *)self transcriptionButton];
-  v6 = [v5 superview];
+  transcriptionButton = [(RCRecordingView *)self transcriptionButton];
+  superview = [transcriptionButton superview];
 
-  if (v6 != v4)
+  if (superview != leadingContainerView)
   {
-    v7 = [(RCRecordingView *)self transcriptionButton];
-    [(RCRecordingView *)self _dropView:v7];
+    transcriptionButton2 = [(RCRecordingView *)self transcriptionButton];
+    [(RCRecordingView *)self _dropView:transcriptionButton2];
 
-    v8 = [(RCRecordingView *)self transcriptionButton];
-    [v4 addSubview:v8];
+    transcriptionButton3 = [(RCRecordingView *)self transcriptionButton];
+    [leadingContainerView addSubview:transcriptionButton3];
 
     v9 = +[RCRecorderStyleProvider sharedStyleProvider];
     [v9 bottomControlsTranscriptionAndPlaybackSettingsButtonHeight];
     v11 = v10;
 
-    v12 = [(RCRecordingView *)self transcriptionButton];
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+    transcriptionButton4 = [(RCRecordingView *)self transcriptionButton];
+    [transcriptionButton4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v31 = [(RCRecordingView *)self transcriptionButton];
-    v30 = [v31 centerYAnchor];
-    v29 = [v4 centerYAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29];
+    transcriptionButton5 = [(RCRecordingView *)self transcriptionButton];
+    centerYAnchor = [transcriptionButton5 centerYAnchor];
+    centerYAnchor2 = [leadingContainerView centerYAnchor];
+    v28 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v32[0] = v28;
-    v27 = [(RCRecordingView *)self transcriptionButton];
-    v26 = [v27 leadingAnchor];
-    v25 = [v4 leadingAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    transcriptionButton6 = [(RCRecordingView *)self transcriptionButton];
+    leadingAnchor = [transcriptionButton6 leadingAnchor];
+    leadingAnchor2 = [leadingContainerView leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v32[1] = v24;
-    v23 = [(RCRecordingView *)self transcriptionButton];
-    v22 = [v23 trailingAnchor];
-    v13 = [v4 trailingAnchor];
-    v14 = [v22 constraintEqualToAnchor:v13];
+    transcriptionButton7 = [(RCRecordingView *)self transcriptionButton];
+    trailingAnchor = [transcriptionButton7 trailingAnchor];
+    trailingAnchor2 = [leadingContainerView trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v32[2] = v14;
-    v15 = [(RCRecordingView *)self transcriptionButton];
-    v16 = [v15 widthAnchor];
-    v17 = [v16 constraintGreaterThanOrEqualToConstant:v11];
+    transcriptionButton8 = [(RCRecordingView *)self transcriptionButton];
+    widthAnchor = [transcriptionButton8 widthAnchor];
+    v17 = [widthAnchor constraintGreaterThanOrEqualToConstant:v11];
     v32[3] = v17;
-    v18 = [(RCRecordingView *)self transcriptionButton];
-    v19 = [v18 heightAnchor];
-    v20 = [v19 constraintGreaterThanOrEqualToConstant:v11];
+    transcriptionButton9 = [(RCRecordingView *)self transcriptionButton];
+    heightAnchor = [transcriptionButton9 heightAnchor];
+    v20 = [heightAnchor constraintGreaterThanOrEqualToConstant:v11];
     v32[4] = v20;
     v21 = [NSArray arrayWithObjects:v32 count:5];
     [NSLayoutConstraint activateConstraints:v21];
@@ -755,18 +755,18 @@ LABEL_22:
 
 - (void)_updateVerticalContentHuggingAndCompressionResistancePriorities
 {
-  v3 = [(RCRecordingView *)self topSpacerView];
-  v26[0] = v3;
-  v4 = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
-  v26[1] = v4;
-  v5 = [(RCRecordingView *)self overviewWaveformContainerView];
-  v26[2] = v5;
-  v6 = [(RCRecordingView *)self currentTimeLabel];
-  v26[3] = v6;
-  v7 = [(RCRecordingView *)self bottomControlsContainerView];
-  v26[4] = v7;
-  v8 = [(RCRecordingView *)self bottomSpacerView];
-  v26[5] = v8;
+  topSpacerView = [(RCRecordingView *)self topSpacerView];
+  v26[0] = topSpacerView;
+  buttonsAndDescriptionContainerView = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
+  v26[1] = buttonsAndDescriptionContainerView;
+  overviewWaveformContainerView = [(RCRecordingView *)self overviewWaveformContainerView];
+  v26[2] = overviewWaveformContainerView;
+  currentTimeLabel = [(RCRecordingView *)self currentTimeLabel];
+  v26[3] = currentTimeLabel;
+  bottomControlsContainerView = [(RCRecordingView *)self bottomControlsContainerView];
+  v26[4] = bottomControlsContainerView;
+  bottomSpacerView = [(RCRecordingView *)self bottomSpacerView];
+  v26[5] = bottomSpacerView;
   v9 = [NSArray arrayWithObjects:v26 count:6];
 
   v23 = 0u;
@@ -801,13 +801,13 @@ LABEL_22:
     while (v13);
   }
 
-  v18 = [(RCRecordingView *)self centerContentContainerView];
+  centerContentContainerView = [(RCRecordingView *)self centerContentContainerView];
   [(RCRecordingView *)self centerContentVerticalHuggingPriority];
-  [v18 setContentHuggingPriority:1 forAxis:?];
+  [centerContentContainerView setContentHuggingPriority:1 forAxis:?];
 
-  v19 = [(RCRecordingView *)self centerContentContainerView];
+  centerContentContainerView2 = [(RCRecordingView *)self centerContentContainerView];
   LODWORD(v20) = 1132068864;
-  [v19 setContentCompressionResistancePriority:1 forAxis:v20];
+  [centerContentContainerView2 setContentCompressionResistancePriority:1 forAxis:v20];
 }
 
 - (UIView)topSpacerView
@@ -930,9 +930,9 @@ LABEL_22:
   [(RCRecordingView *)self _updateBottomControlsContainerViewSubviews];
   [(RCRecordingView *)self _updateArrangedSubviews];
   v3 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v4 = [v3 hostsTransportAndDoneButtonInBottomSection];
+  hostsTransportAndDoneButtonInBottomSection = [v3 hostsTransportAndDoneButtonInBottomSection];
 
-  if (v4)
+  if (hostsTransportAndDoneButtonInBottomSection)
   {
     [(RCRecordingView *)self _updateAccessibilityElements];
   }
@@ -944,141 +944,141 @@ LABEL_22:
 
 - (void)_setupTapGestureRecognizer
 {
-  v5 = [(RCRecordingView *)self tapGestureRecognizer];
+  tapGestureRecognizer = [(RCRecordingView *)self tapGestureRecognizer];
   v3 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v4 = [v3 allowsInteractiveCardSizing];
+  allowsInteractiveCardSizing = [v3 allowsInteractiveCardSizing];
 
-  if (v4)
+  if (allowsInteractiveCardSizing)
   {
-    if (!v5)
+    if (!tapGestureRecognizer)
     {
-      v5 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_handleTapToFullscreen:"];
-      [(RCRecordingView *)self setTapGestureRecognizer:v5];
-      [(RCRecordingView *)self addGestureRecognizer:v5];
+      tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_handleTapToFullscreen:"];
+      [(RCRecordingView *)self setTapGestureRecognizer:tapGestureRecognizer];
+      [(RCRecordingView *)self addGestureRecognizer:tapGestureRecognizer];
     }
 
-    [v5 setEnabled:1];
-    [v5 setDelegate:self];
+    [tapGestureRecognizer setEnabled:1];
+    [tapGestureRecognizer setDelegate:self];
   }
 
   else
   {
-    [v5 setEnabled:0];
+    [tapGestureRecognizer setEnabled:0];
   }
 }
 
 - (void)_setupOverviewBeginEndTimeLabel
 {
   v11 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [v11 hasBeginAndEndTimeLabelAtOverviewWaveform];
-  v4 = [(RCRecordingView *)self overviewBeginTimeLabel];
-  v5 = v4;
-  if (v3)
+  hasBeginAndEndTimeLabelAtOverviewWaveform = [v11 hasBeginAndEndTimeLabelAtOverviewWaveform];
+  overviewBeginTimeLabel = [(RCRecordingView *)self overviewBeginTimeLabel];
+  overviewEndTimeLabel2 = overviewBeginTimeLabel;
+  if (hasBeginAndEndTimeLabelAtOverviewWaveform)
   {
-    if (!v4)
+    if (!overviewBeginTimeLabel)
     {
-      v5 = objc_opt_new();
-      [(RCRecordingView *)self setOverviewBeginTimeLabel:v5];
+      overviewEndTimeLabel2 = objc_opt_new();
+      [(RCRecordingView *)self setOverviewBeginTimeLabel:overviewEndTimeLabel2];
     }
 
-    v6 = [v11 beginEndLabelsColor];
-    [v5 setTextColor:v6];
+    beginEndLabelsColor = [v11 beginEndLabelsColor];
+    [overviewEndTimeLabel2 setTextColor:beginEndLabelsColor];
 
-    [v5 setTextAlignment:4];
-    [v5 setNumberOfLines:0];
-    v7 = [v11 beginEndLabelsFont];
-    [v5 setFont:v7];
+    [overviewEndTimeLabel2 setTextAlignment:4];
+    [overviewEndTimeLabel2 setNumberOfLines:0];
+    beginEndLabelsFont = [v11 beginEndLabelsFont];
+    [overviewEndTimeLabel2 setFont:beginEndLabelsFont];
 
-    v8 = [(RCRecordingView *)self overviewEndTimeLabel];
-    if (!v8)
+    overviewEndTimeLabel = [(RCRecordingView *)self overviewEndTimeLabel];
+    if (!overviewEndTimeLabel)
     {
-      v8 = objc_opt_new();
-      [(RCRecordingView *)self setOverviewEndTimeLabel:v8];
+      overviewEndTimeLabel = objc_opt_new();
+      [(RCRecordingView *)self setOverviewEndTimeLabel:overviewEndTimeLabel];
     }
 
-    v9 = [v11 beginEndLabelsColor];
-    [v8 setTextColor:v9];
+    beginEndLabelsColor2 = [v11 beginEndLabelsColor];
+    [overviewEndTimeLabel setTextColor:beginEndLabelsColor2];
 
-    [v8 setTextAlignment:4];
-    [v8 setNumberOfLines:0];
-    v10 = [v11 timeLineLabelFont];
-    [v8 setFont:v10];
+    [overviewEndTimeLabel setTextAlignment:4];
+    [overviewEndTimeLabel setNumberOfLines:0];
+    timeLineLabelFont = [v11 timeLineLabelFont];
+    [overviewEndTimeLabel setFont:timeLineLabelFont];
   }
 
   else
   {
-    [v4 removeAllConstraints];
+    [overviewBeginTimeLabel removeAllConstraints];
 
-    v5 = [(RCRecordingView *)self overviewEndTimeLabel];
-    [v5 removeAllConstraints];
+    overviewEndTimeLabel2 = [(RCRecordingView *)self overviewEndTimeLabel];
+    [overviewEndTimeLabel2 removeAllConstraints];
   }
 }
 
 - (void)_styleCurrentTimeLabel
 {
-  v5 = [(RCRecordingView *)self currentTimeLabel];
+  currentTimeLabel = [(RCRecordingView *)self currentTimeLabel];
   v2 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [v2 playbackCardTimeLabelFontColor];
-  [v5 setTextColor:v3];
+  playbackCardTimeLabelFontColor = [v2 playbackCardTimeLabelFontColor];
+  [currentTimeLabel setTextColor:playbackCardTimeLabelFontColor];
 
-  v4 = [v2 playbackViewTimeLabelFont];
-  [v5 setFont:v4];
+  playbackViewTimeLabelFont = [v2 playbackViewTimeLabelFont];
+  [currentTimeLabel setFont:playbackViewTimeLabelFont];
 
   [v2 positionReadoutLabelYOffset];
-  [v5 setLabelYOffset:?];
+  [currentTimeLabel setLabelYOffset:?];
 }
 
 - (void)_styleShuttleBar
 {
   v6 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [(RCRecordingView *)self shuttleBar];
-  [v3 setStyle:1];
-  v4 = [v6 transportControlsColorForRecordingCard];
-  [v3 setControlsColor:v4];
+  shuttleBar = [(RCRecordingView *)self shuttleBar];
+  [shuttleBar setStyle:1];
+  transportControlsColorForRecordingCard = [v6 transportControlsColorForRecordingCard];
+  [shuttleBar setControlsColor:transportControlsColorForRecordingCard];
 
-  v5 = [v6 transportButtonAnimationCircleColor];
-  [v3 setControlsAnimationColor:v5];
+  transportButtonAnimationCircleColor = [v6 transportButtonAnimationCircleColor];
+  [shuttleBar setControlsAnimationColor:transportButtonAnimationCircleColor];
 }
 
 - (void)_updateArrangedSubviews
 {
   v3 = objc_opt_new();
   v4 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v5 = [(RCRecordingView *)self topSpacerView];
-  [v3 addObject:v5];
+  topSpacerView = [(RCRecordingView *)self topSpacerView];
+  [v3 addObject:topSpacerView];
 
-  v6 = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
-  [v3 addObject:v6];
+  buttonsAndDescriptionContainerView = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
+  [v3 addObject:buttonsAndDescriptionContainerView];
 
-  v7 = [(RCRecordingView *)self centerContentContainerView];
-  [v3 addObject:v7];
+  centerContentContainerView = [(RCRecordingView *)self centerContentContainerView];
+  [v3 addObject:centerContentContainerView];
 
-  v8 = [(RCRecordingView *)self overviewWaveformContainerView];
-  [v3 addObject:v8];
+  overviewWaveformContainerView = [(RCRecordingView *)self overviewWaveformContainerView];
+  [v3 addObject:overviewWaveformContainerView];
 
-  v9 = [(RCRecordingView *)self currentTimeLabel];
-  [v3 addObject:v9];
+  currentTimeLabel = [(RCRecordingView *)self currentTimeLabel];
+  [v3 addObject:currentTimeLabel];
 
-  v10 = [(RCRecordingView *)self shuttleBar];
+  shuttleBar = [(RCRecordingView *)self shuttleBar];
   if (([v4 hostsTransportAndDoneButtonInBottomSection] & 1) == 0)
   {
-    [v3 addObject:v10];
-    [v10 setHidden:1];
+    [v3 addObject:shuttleBar];
+    [shuttleBar setHidden:1];
   }
 
-  v11 = [(RCRecordingView *)self bottomControlsContainerView];
-  [v3 addObject:v11];
+  bottomControlsContainerView = [(RCRecordingView *)self bottomControlsContainerView];
+  [v3 addObject:bottomControlsContainerView];
 
-  v12 = [(RCRecordingView *)self bottomSpacerView];
-  [v3 addObject:v12];
+  bottomSpacerView = [(RCRecordingView *)self bottomSpacerView];
+  [v3 addObject:bottomSpacerView];
 
-  v13 = [(RCRecordingView *)self mainContainerStackView];
+  mainContainerStackView = [(RCRecordingView *)self mainContainerStackView];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v14 = [v13 arrangedSubviews];
-  v15 = [v14 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  arrangedSubviews = [mainContainerStackView arrangedSubviews];
+  v15 = [arrangedSubviews countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v15)
   {
     v16 = v15;
@@ -1090,15 +1090,15 @@ LABEL_22:
       {
         if (*v29 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
-        [v13 removeArrangedSubview:*(*(&v28 + 1) + 8 * v18)];
+        [mainContainerStackView removeArrangedSubview:*(*(&v28 + 1) + 8 * v18)];
         v18 = v18 + 1;
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v16 = [arrangedSubviews countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v16);
@@ -1124,7 +1124,7 @@ LABEL_22:
           objc_enumerationMutation(v19);
         }
 
-        [v13 addArrangedSubview:{*(*(&v24 + 1) + 8 * v23), v24}];
+        [mainContainerStackView addArrangedSubview:{*(*(&v24 + 1) + 8 * v23), v24}];
         v23 = v23 + 1;
       }
 
@@ -1141,9 +1141,9 @@ LABEL_22:
   v4 = +[RCRecorderStyleProvider sharedStyleProvider];
   if ([v4 hostsTransportAndDoneButtonInBottomSection])
   {
-    v3 = [(RCRecordingView *)self displayStyle];
+    displayStyle = [(RCRecordingView *)self displayStyle];
 
-    if (v3 == 2)
+    if (displayStyle == 2)
     {
 
       [(RCRecordingView *)self setDisplayStyle:3];
@@ -1165,27 +1165,27 @@ LABEL_22:
     v3 = v4;
   }
 
-  v5 = [(RCRecordingView *)self mainContainerStackView];
-  v6 = [(RCRecordingView *)self topSpacerView];
-  [v5 setCustomSpacing:v6 afterView:v3];
+  mainContainerStackView = [(RCRecordingView *)self mainContainerStackView];
+  topSpacerView = [(RCRecordingView *)self topSpacerView];
+  [mainContainerStackView setCustomSpacing:topSpacerView afterView:v3];
 
-  v7 = [(RCRecordingView *)self displayStyle];
-  v8 = [(RCRecordingView *)self centerContentViewState];
-  v9 = v8 == 1 && [(RCRecordingView *)self transcriptViewState]== 1;
-  v10 = v8 == 1;
-  v11 = v7 == 2;
+  displayStyle = [(RCRecordingView *)self displayStyle];
+  centerContentViewState = [(RCRecordingView *)self centerContentViewState];
+  v9 = centerContentViewState == 1 && [(RCRecordingView *)self transcriptViewState]== 1;
+  v10 = centerContentViewState == 1;
+  v11 = displayStyle == 2;
   v12 = [(RCRecordingView *)self recordingViewState]== 8;
   [v33 verticalSpaceBetweenTitleAndCenterContentContainer:v11 isDisplayingTranscriptView:v10];
   v14 = v13;
-  v15 = [(RCRecordingView *)self mainContainerStackView];
-  v16 = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
-  [v15 setCustomSpacing:v16 afterView:v14];
+  mainContainerStackView2 = [(RCRecordingView *)self mainContainerStackView];
+  buttonsAndDescriptionContainerView = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
+  [mainContainerStackView2 setCustomSpacing:buttonsAndDescriptionContainerView afterView:v14];
 
   [v33 verticalSpaceAfterCenterContentContainer:v11 isDisplayingTranscriptView:v10 isTranscriptViewExpanded:v9 isTrimMode:v12];
   v18 = v17;
-  v19 = [(RCRecordingView *)self mainContainerStackView];
-  v20 = [(RCRecordingView *)self centerContentContainerView];
-  [v19 setCustomSpacing:v20 afterView:v18];
+  mainContainerStackView3 = [(RCRecordingView *)self mainContainerStackView];
+  centerContentContainerView = [(RCRecordingView *)self centerContentContainerView];
+  [mainContainerStackView3 setCustomSpacing:centerContentContainerView afterView:v18];
 
   if (v9)
   {
@@ -1198,9 +1198,9 @@ LABEL_22:
   }
 
   v22 = v21;
-  v23 = [(RCRecordingView *)self mainContainerStackView];
-  v24 = [(RCRecordingView *)self overviewWaveformContainerView];
-  [v23 setCustomSpacing:v24 afterView:v22];
+  mainContainerStackView4 = [(RCRecordingView *)self mainContainerStackView];
+  overviewWaveformContainerView = [(RCRecordingView *)self overviewWaveformContainerView];
+  [mainContainerStackView4 setCustomSpacing:overviewWaveformContainerView afterView:v22];
 
   if ([v33 hostsTransportAndDoneButtonInBottomSection])
   {
@@ -1213,17 +1213,17 @@ LABEL_22:
   }
 
   v26 = v25;
-  v27 = [(RCRecordingView *)self mainContainerStackView];
-  v28 = [(RCRecordingView *)self currentTimeLabel];
-  [v27 setCustomSpacing:v28 afterView:v26];
+  mainContainerStackView5 = [(RCRecordingView *)self mainContainerStackView];
+  currentTimeLabel = [(RCRecordingView *)self currentTimeLabel];
+  [mainContainerStackView5 setCustomSpacing:currentTimeLabel afterView:v26];
 
   if (([v33 hostsTransportAndDoneButtonInBottomSection] & 1) == 0)
   {
     [v33 verticalSpaceBetweenShuttleBarAndBottomControlsContainerView];
     v30 = v29;
-    v31 = [(RCRecordingView *)self mainContainerStackView];
-    v32 = [(RCRecordingView *)self shuttleBar];
-    [v31 setCustomSpacing:v32 afterView:v30];
+    mainContainerStackView6 = [(RCRecordingView *)self mainContainerStackView];
+    shuttleBar = [(RCRecordingView *)self shuttleBar];
+    [mainContainerStackView6 setCustomSpacing:shuttleBar afterView:v30];
   }
 }
 
@@ -1232,18 +1232,18 @@ LABEL_22:
   if ([(RCRecordingView *)self recordingViewState]!= 8 && [(RCRecordingView *)self displayStyle]== 2 && [(RCRecordingView *)self didCompletePresent])
   {
     v6 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v3 = [v6 allowsInteractiveCardSizing];
+    allowsInteractiveCardSizing = [v6 allowsInteractiveCardSizing];
     v4 = 1;
   }
 
   else
   {
     v4 = 0;
-    v3 = 0;
+    allowsInteractiveCardSizing = 0;
   }
 
-  v5 = [(RCRecordingView *)self tapGestureRecognizer];
-  [v5 setEnabled:v3];
+  tapGestureRecognizer = [(RCRecordingView *)self tapGestureRecognizer];
+  [tapGestureRecognizer setEnabled:allowsInteractiveCardSizing];
 
   if (v4)
   {
@@ -1255,16 +1255,16 @@ LABEL_22:
   v17 = +[RCRecorderStyleProvider sharedStyleProvider];
   if ([(RCRecordingView *)self displayStyle]&& [(RCRecordingView *)self displayStyle]!= 1)
   {
-    v4 = [v17 hostsTransportAndDoneButtonInBottomSection];
-    if (v4)
+    hostsTransportAndDoneButtonInBottomSection = [v17 hostsTransportAndDoneButtonInBottomSection];
+    if (hostsTransportAndDoneButtonInBottomSection)
     {
-      v5 = [(RCRecordingView *)self doneButton];
-      [(RCRecordingView *)self assignActionOnDoneButton:v5];
+      doneButton = [(RCRecordingView *)self doneButton];
+      [(RCRecordingView *)self assignActionOnDoneButton:doneButton];
 
-      v6 = [(RCRecordingView *)self recordingViewState];
+      recordingViewState = [(RCRecordingView *)self recordingViewState];
       v7 = +[NSBundle mainBundle];
       v8 = v7;
-      if (v6 == 8)
+      if (recordingViewState == 8)
       {
         v9 = @"APPLY";
       }
@@ -1276,27 +1276,27 @@ LABEL_22:
 
       v10 = [v7 localizedStringForKey:v9 value:&stru_100295BB8 table:0];
 
-      v11 = [(RCRecordingView *)self doneButton];
-      [v11 setTitle:v10];
+      doneButton2 = [(RCRecordingView *)self doneButton];
+      [doneButton2 setTitle:v10];
 
       if ([(RCRecordingView *)self recordingViewState]== 8)
       {
-        v12 = [(RCRecordingView *)self editingToolbarProvider];
-        v13 = [v12 canSave];
-        v14 = [(RCRecordingView *)self doneButton];
-        [v14 setEnabled:v13];
+        editingToolbarProvider = [(RCRecordingView *)self editingToolbarProvider];
+        canSave = [editingToolbarProvider canSave];
+        doneButton3 = [(RCRecordingView *)self doneButton];
+        [doneButton3 setEnabled:canSave];
 
         [(RCRecordingView *)self setShouldSaveAsNew:0];
       }
 
       else
       {
-        v15 = [(RCRecordingView *)self doneButton];
-        [v15 setEnabled:1];
+        doneButton4 = [(RCRecordingView *)self doneButton];
+        [doneButton4 setEnabled:1];
       }
     }
 
-    v3 = v4 ^ 1;
+    v3 = hostsTransportAndDoneButtonInBottomSection ^ 1;
   }
 
   else
@@ -1304,8 +1304,8 @@ LABEL_22:
     v3 = 1;
   }
 
-  v16 = [(RCRecordingView *)self doneButton];
-  [v16 setHidden:v3];
+  doneButton5 = [(RCRecordingView *)self doneButton];
+  [doneButton5 setHidden:v3];
 }
 
 - (RCRecordingViewDelegate)viewDelegate
@@ -1320,8 +1320,8 @@ LABEL_22:
   v3 = 1;
   [(RCRecordingView *)self setIsSyncingViewsToState:1];
   [(RCRecordingView *)self _updateSubviewVisibility];
-  v4 = [(RCRecordingView *)self displayStyle];
-  if (v4 < 2)
+  displayStyle = [(RCRecordingView *)self displayStyle];
+  if (displayStyle < 2)
   {
     v5 = 0;
     v3 = 0;
@@ -1329,14 +1329,14 @@ LABEL_22:
 
   else
   {
-    if (v4 == 3)
+    if (displayStyle == 3)
     {
       v5 = 2;
     }
 
     else
     {
-      if (v4 != 2)
+      if (displayStyle != 2)
       {
         goto LABEL_9;
       }
@@ -1348,11 +1348,11 @@ LABEL_22:
     [(RCRecordingView *)self _updateDoneButtonActionForModernToolbar];
   }
 
-  v6 = [(RCRecordingView *)self editingToolbarProvider];
-  [v6 setDisplayMode:v5];
+  editingToolbarProvider = [(RCRecordingView *)self editingToolbarProvider];
+  [editingToolbarProvider setDisplayMode:v5];
 
-  v7 = [(RCRecordingView *)self descriptionView];
-  [v7 updateForDisplayMode:v3];
+  descriptionView = [(RCRecordingView *)self descriptionView];
+  [descriptionView updateForDisplayMode:v3];
 
 LABEL_9:
   [(RCRecordingView *)self _swapCenterContentTimeIndices:[(RCRecordingView *)self displayStyle]== 3];
@@ -1360,8 +1360,8 @@ LABEL_9:
   [(RCRecordingView *)self _updateDoneButtonState];
   [(RCRecordingView *)self _updateCenterContentContainerSubviewConstraints];
   [(RCRecordingView *)self _updateSpacingBetweenArrangedSubviews];
-  v8 = [(RCRecordingView *)self viewDelegate];
-  [v8 visualStateChanged];
+  viewDelegate = [(RCRecordingView *)self viewDelegate];
+  [viewDelegate visualStateChanged];
 
   [(RCRecordingView *)self setIsSyncingViewsToState:0];
 }
@@ -1369,16 +1369,16 @@ LABEL_9:
 - (void)_updateSubviewVisibility
 {
   v3 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v4 = [(RCRecordingView *)self displayStyle];
+  displayStyle = [(RCRecordingView *)self displayStyle];
   v5 = 192;
-  if (v4 > 1)
+  if (displayStyle > 1)
   {
-    if (v4 == 2)
+    if (displayStyle == 2)
     {
-      v7 = [(RCRecordingView *)self viewDelegate];
-      v8 = [v7 shouldHideNavigationBar];
+      viewDelegate = [(RCRecordingView *)self viewDelegate];
+      shouldHideNavigationBar = [viewDelegate shouldHideNavigationBar];
 
-      if (v8)
+      if (shouldHideNavigationBar)
       {
         v5 = 211;
       }
@@ -1389,7 +1389,7 @@ LABEL_9:
       }
     }
 
-    else if (v4 == 3)
+    else if (displayStyle == 3)
     {
       v5 = [v3 supportsTopSpacerViewWhenFullscreen] ? 251 : 250;
       if (([v3 shouldAlwaysShowOverviewWaveform] & 1) != 0 || -[RCRecordingView recordingViewState](self, "recordingViewState") == 8)
@@ -1402,12 +1402,12 @@ LABEL_9:
   else
   {
     v6 = 193;
-    if (v4 != 1)
+    if (displayStyle != 1)
     {
       v6 = 192;
     }
 
-    if (v4)
+    if (displayStyle)
     {
       v5 = v6;
     }
@@ -1424,8 +1424,8 @@ LABEL_9:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = [(RCRecordingView *)self _bottomElementsToHide];
-    v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    _bottomElementsToHide = [(RCRecordingView *)self _bottomElementsToHide];
+    v10 = [_bottomElementsToHide countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1436,13 +1436,13 @@ LABEL_9:
         {
           if (*v15 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(_bottomElementsToHide);
           }
 
           v5 &= ~[(RCRecordingView *)self _displayOptionForView:*(*(&v14 + 1) + 8 * i)];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v11 = [_bottomElementsToHide countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v11);
@@ -1459,41 +1459,41 @@ LABEL_9:
   [(RCRecordingView *)self setPlayControlState:0];
   [(RCRecordingView *)self setCenterContentViewState:0];
   [(RCRecordingView *)self setCurrentTime:0.0];
-  v3 = [(RCRecordingView *)self currentTimeLabel];
-  [v3 setText:&stru_100295BB8];
+  currentTimeLabel = [(RCRecordingView *)self currentTimeLabel];
+  [currentTimeLabel setText:&stru_100295BB8];
 
-  v4 = [(RCRecordingView *)self editingToolbarProvider];
-  [v4 setCanUndo:0];
+  editingToolbarProvider = [(RCRecordingView *)self editingToolbarProvider];
+  [editingToolbarProvider setCanUndo:0];
 
   [(RCRecordingView *)self setShouldSaveAsNew:0];
-  v5 = [(RCRecordingView *)self doneButton];
-  [v5 setHidden:1];
+  doneButton = [(RCRecordingView *)self doneButton];
+  [doneButton setHidden:1];
 
-  v6 = [(RCRecordingView *)self currentTimeLabel];
-  [v6 setIsAccessibilityElement:0];
+  currentTimeLabel2 = [(RCRecordingView *)self currentTimeLabel];
+  [currentTimeLabel2 setIsAccessibilityElement:0];
 
   [(RCRecordingView *)self setEditingInFlight:0];
-  v7 = [(RCRecordingView *)self progressOverlay];
-  [v7 setProgress:0.0];
+  progressOverlay = [(RCRecordingView *)self progressOverlay];
+  [progressOverlay setProgress:0.0];
 
   if ([(RCRecordingView *)self textFieldIsBeingEdited])
   {
-    v8 = [(RCRecordingView *)self descriptionView];
-    [v8 endEditingTitle];
+    descriptionView = [(RCRecordingView *)self descriptionView];
+    [descriptionView endEditingTitle];
   }
 }
 
 - (void)_classSpecificReset
 {
-  v3 = [(RCRecordingView *)self dismissalDisplayStyle];
+  dismissalDisplayStyle = [(RCRecordingView *)self dismissalDisplayStyle];
 
-  [(RCRecordingView *)self setDisplayStyle:v3];
+  [(RCRecordingView *)self setDisplayStyle:dismissalDisplayStyle];
 }
 
 - (BOOL)textFieldIsBeingEdited
 {
-  v2 = [(RCRecordingView *)self textFieldBeingEdited];
-  v3 = v2 != 0;
+  textFieldBeingEdited = [(RCRecordingView *)self textFieldBeingEdited];
+  v3 = textFieldBeingEdited != 0;
 
   return v3;
 }
@@ -1507,8 +1507,8 @@ LABEL_9:
 
 - (void)updateForSizeChange
 {
-  v2 = [(RCRecordingView *)self shuttleBar];
-  [v2 updateWidthOnSizeChange];
+  shuttleBar = [(RCRecordingView *)self shuttleBar];
+  [shuttleBar updateWidthOnSizeChange];
 }
 
 - (void)_syncCenterContentContainerViewState
@@ -1548,14 +1548,14 @@ LABEL_9:
     v10[3] = &unk_10028B058;
     WeakRetained = WeakRetained;
     v11 = WeakRetained;
-    v12 = self;
+    selfCopy = self;
     v7 = v6;
     v13 = v7;
     v8 = objc_retainBlock(v10);
     if ([(RCRecordingView *)self displayStyle]== 3)
     {
-      v9 = [(RCRecordingView *)self centerContentContainerView];
-      [UIView transitionWithView:v9 duration:5242880 options:v8 animations:0 completion:0.4];
+      centerContentContainerView = [(RCRecordingView *)self centerContentContainerView];
+      [UIView transitionWithView:centerContentContainerView duration:5242880 options:v8 animations:0 completion:0.4];
     }
 
     else
@@ -1569,12 +1569,12 @@ LABEL_9:
 LABEL_13:
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(RCRecordingView *)self bounds];
   v9 = v8;
   v11.receiver = self;
@@ -1582,60 +1582,60 @@ LABEL_13:
   [(RCRecordingView *)&v11 setBounds:x, y, width, height];
   if (v9 != width)
   {
-    v10 = [(RCRecordingView *)self viewDelegate];
-    [v10 recordingViewWidthDidChange:width];
+    viewDelegate = [(RCRecordingView *)self viewDelegate];
+    [viewDelegate recordingViewWidthDidChange:width];
   }
 }
 
-- (void)setDisplayStyle:(int64_t)a3
+- (void)setDisplayStyle:(int64_t)style
 {
   displayStyle = self->_displayStyle;
-  if (displayStyle != a3)
+  if (displayStyle != style)
   {
-    if (a3 != 3 && displayStyle == 3)
+    if (style != 3 && displayStyle == 3)
     {
       [(RCRecordingView *)self cancelTextEditing];
     }
 
-    self->_displayStyle = a3;
-    [(RCRecordingView *)self _classSpecificSetDisplayStyle:a3];
-    [(RCRecordingView *)self _adjustTraitOverridesForDisplayStyle:a3];
-    [(RCRecordingView *)self _adjustBackgroundColorForDisplayStyle:a3];
+    self->_displayStyle = style;
+    [(RCRecordingView *)self _classSpecificSetDisplayStyle:style];
+    [(RCRecordingView *)self _adjustTraitOverridesForDisplayStyle:style];
+    [(RCRecordingView *)self _adjustBackgroundColorForDisplayStyle:style];
     [(RCRecordingView *)self _updateBottomControlsContainerViewSubviews];
     [(RCRecordingView *)self _updateArrangedSubviews];
     [(RCRecordingView *)self _syncViewsToState];
     [(RCRecordingView *)self _syncTapGestureRecognizerEnablement];
     [(RCRecordingView *)self setAccessibilityViewIsModal:self->_displayStyle != 1];
-    v6 = [(RCRecordingView *)self viewDelegate];
-    [v6 didUpdateRecordingViewDisplayStyle];
+    viewDelegate = [(RCRecordingView *)self viewDelegate];
+    [viewDelegate didUpdateRecordingViewDisplayStyle];
   }
 }
 
-- (void)_classSpecificSetDisplayStyle:(int64_t)a3
+- (void)_classSpecificSetDisplayStyle:(int64_t)style
 {
-  if (a3 == 3)
+  if (style == 3)
   {
-    v7 = [(RCRecordingView *)self centerContentContainerView];
-    v8 = [RCPassthroughViewsSpec passthroughViewsSpecWithTopLevelView:v7 includeTopLevelView:1];
-    v9 = [(RCRecordingView *)self shuttleBar];
-    v10 = [RCPassthroughViewsSpec passthroughViewsSpecWithTopLevelView:v9 includeTopLevelView:0];
+    centerContentContainerView = [(RCRecordingView *)self centerContentContainerView];
+    v8 = [RCPassthroughViewsSpec passthroughViewsSpecWithTopLevelView:centerContentContainerView includeTopLevelView:1];
+    shuttleBar = [(RCRecordingView *)self shuttleBar];
+    v10 = [RCPassthroughViewsSpec passthroughViewsSpecWithTopLevelView:shuttleBar includeTopLevelView:0];
     v14[1] = v10;
-    v11 = [(RCRecordingView *)self bottomControlsContainerView];
-    v12 = [RCPassthroughViewsSpec passthroughViewsSpecWithTopLevelView:v11 includeTopLevelView:1];
+    bottomControlsContainerView = [(RCRecordingView *)self bottomControlsContainerView];
+    v12 = [RCPassthroughViewsSpec passthroughViewsSpecWithTopLevelView:bottomControlsContainerView includeTopLevelView:1];
     v14[2] = v12;
     v13 = [NSArray arrayWithObjects:v14 count:3];
     [(RCRecordingView *)self setDragGesturePassthroughSpecs:v13];
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
-    v4 = [(RCRecordingView *)self waveformView];
-    if (v4)
+    waveformView = [(RCRecordingView *)self waveformView];
+    if (waveformView)
     {
-      v5 = v4;
-      v6 = [(RCRecordingView *)self descriptionView];
+      v5 = waveformView;
+      descriptionView = [(RCRecordingView *)self descriptionView];
 
-      if (v6)
+      if (descriptionView)
       {
 
         [(RCRecordingView *)self setDragGesturePassthroughSpecs:&__NSArray0__struct];
@@ -1644,11 +1644,11 @@ LABEL_13:
   }
 }
 
-- (void)_adjustBackgroundColorForDisplayStyle:(int64_t)a3
+- (void)_adjustBackgroundColorForDisplayStyle:(int64_t)style
 {
   v5 = +[RCRecorderStyleProvider sharedStyleProvider];
   v6 = v5;
-  if (a3 > 2)
+  if (style > 2)
   {
     [v5 recordingCardDefaultBackgroundColor];
   }
@@ -1664,14 +1664,14 @@ LABEL_13:
   }
 }
 
-- (void)_adjustTraitOverridesForDisplayStyle:(int64_t)a3
+- (void)_adjustTraitOverridesForDisplayStyle:(int64_t)style
 {
-  v5 = [(RCRecordingView *)self traitOverrides];
+  traitOverrides = [(RCRecordingView *)self traitOverrides];
   v6 = objc_opt_self();
-  v7 = [v5 containsTrait:v6];
+  v7 = [traitOverrides containsTrait:v6];
 
   v8 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v9 = [v8 supportsRecordingViewElevatedUserInterfaceLevelOverride];
+  supportsRecordingViewElevatedUserInterfaceLevelOverride = [v8 supportsRecordingViewElevatedUserInterfaceLevelOverride];
 
   if (v7)
   {
@@ -1680,139 +1680,139 @@ LABEL_13:
 
   else
   {
-    v10 = a3 == 1;
+    v10 = style == 1;
   }
 
-  if (!v10 || v9 == 0)
+  if (!v10 || supportsRecordingViewElevatedUserInterfaceLevelOverride == 0)
   {
     if (!v7)
     {
       return;
     }
 
-    v13 = [(RCRecordingView *)self traitOverrides];
+    traitOverrides2 = [(RCRecordingView *)self traitOverrides];
     v12 = objc_opt_self();
-    [v13 removeTrait:v12];
+    [traitOverrides2 removeTrait:v12];
   }
 
   else
   {
-    v13 = [(RCRecordingView *)self traitOverrides];
-    [v13 setUserInterfaceLevel:1];
+    traitOverrides2 = [(RCRecordingView *)self traitOverrides];
+    [traitOverrides2 setUserInterfaceLevel:1];
   }
 }
 
-- (void)setRecordingControlState:(int64_t)a3
+- (void)setRecordingControlState:(int64_t)state
 {
-  v4 = [(RCRecordingView *)self _recordButtonStateForRecordingControlState:a3];
-  v5 = [(RCRecordingView *)self recordButtonRepository];
-  [v5 setState:v4];
+  v4 = [(RCRecordingView *)self _recordButtonStateForRecordingControlState:state];
+  recordButtonRepository = [(RCRecordingView *)self recordButtonRepository];
+  [recordButtonRepository setState:v4];
 }
 
 - (int64_t)recordingControlState
 {
-  v3 = [(RCRecordingView *)self recordButtonRepository];
-  v4 = -[RCRecordingView _recordingControlStateForRecordButtonState:](self, "_recordingControlStateForRecordButtonState:", [v3 state]);
+  recordButtonRepository = [(RCRecordingView *)self recordButtonRepository];
+  v4 = -[RCRecordingView _recordingControlStateForRecordButtonState:](self, "_recordingControlStateForRecordButtonState:", [recordButtonRepository state]);
 
   return v4;
 }
 
-- (int64_t)_recordButtonStateForRecordingControlState:(int64_t)a3
+- (int64_t)_recordButtonStateForRecordingControlState:(int64_t)state
 {
-  if ((a3 - 1) >= 4)
+  if ((state - 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return state;
   }
 }
 
-- (int64_t)_recordingControlStateForRecordButtonState:(int64_t)a3
+- (int64_t)_recordingControlStateForRecordButtonState:(int64_t)state
 {
-  if ((a3 - 1) >= 4)
+  if ((state - 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return state;
   }
 }
 
-- (void)setPlayControlState:(int64_t)a3
+- (void)setPlayControlState:(int64_t)state
 {
-  v5 = a3 == 0;
-  v6 = [(RCRecordingView *)self recordButtonRepository];
-  [v6 setIsEnabled:{-[RCRecordingView _shouldEnableRecordingControlForState:](self, "_shouldEnableRecordingControlForState:", a3)}];
+  v5 = state == 0;
+  recordButtonRepository = [(RCRecordingView *)self recordButtonRepository];
+  [recordButtonRepository setIsEnabled:{-[RCRecordingView _shouldEnableRecordingControlForState:](self, "_shouldEnableRecordingControlForState:", state)}];
 
-  v7 = [(RCRecordingView *)self cancelButton];
-  [v7 setEnabled:v5];
+  cancelButton = [(RCRecordingView *)self cancelButton];
+  [cancelButton setEnabled:v5];
 
-  v8 = [(RCRecordingView *)self editingToolbarProvider];
-  [v8 setCanCancel:v5];
+  editingToolbarProvider = [(RCRecordingView *)self editingToolbarProvider];
+  [editingToolbarProvider setCanCancel:v5];
 
-  v9 = [(RCRecordingView *)self shuttleBar];
-  [v9 setPlayControlState:a3];
+  shuttleBar = [(RCRecordingView *)self shuttleBar];
+  [shuttleBar setPlayControlState:state];
 }
 
 - (int64_t)playControlState
 {
-  v2 = [(RCRecordingView *)self shuttleBar];
-  v3 = [v2 playControlState];
+  shuttleBar = [(RCRecordingView *)self shuttleBar];
+  playControlState = [shuttleBar playControlState];
 
-  return v3;
+  return playControlState;
 }
 
-- (void)_updateToolbarsActivityMode:(int64_t)a3
+- (void)_updateToolbarsActivityMode:(int64_t)mode
 {
-  v4 = [(RCRecordingView *)self editingToolbarProvider];
-  [v4 setActivityMode:a3];
+  editingToolbarProvider = [(RCRecordingView *)self editingToolbarProvider];
+  [editingToolbarProvider setActivityMode:mode];
 }
 
-- (void)setRecordingViewState:(int64_t)a3
+- (void)setRecordingViewState:(int64_t)state
 {
   v5 = +[RCRecorderStyleProvider sharedStyleProvider];
   v7 = v5;
-  if (a3 == 1)
+  if (state == 1)
   {
-    v6 = [v5 allowsInteractiveCardSizing];
+    allowsInteractiveCardSizing = [v5 allowsInteractiveCardSizing];
   }
 
   else
   {
-    v6 = 0;
+    allowsInteractiveCardSizing = 0;
   }
 
-  [(RCRecordingView *)self setRecordingViewState:a3 animated:v6 force:0];
+  [(RCRecordingView *)self setRecordingViewState:state animated:allowsInteractiveCardSizing force:0];
 }
 
-- (void)setRecordingViewState:(int64_t)a3 animated:(BOOL)a4 force:(BOOL)a5
+- (void)setRecordingViewState:(int64_t)state animated:(BOOL)animated force:(BOOL)force
 {
-  v5 = a4;
+  animatedCopy = animated;
   recordingViewState = self->_recordingViewState;
-  if (!a5 && recordingViewState == a3)
+  if (!force && recordingViewState == state)
   {
     return;
   }
 
   v9 = +[CATransaction disableActions];
   +[CATransaction begin];
-  [CATransaction setDisableActions:v9 | !v5];
-  self->_recordingViewState = a3;
-  v10 = [(RCRecordingView *)self recordButton];
-  [v10 setHidden:0];
+  [CATransaction setDisableActions:v9 | !animatedCopy];
+  self->_recordingViewState = state;
+  recordButton = [(RCRecordingView *)self recordButton];
+  [recordButton setHidden:0];
 
   [(RCRecordingView *)self _showTrimDeleteSelectionButtonsIfNeeded:0];
   [(RCRecordingView *)self _updateShuttleBarEnablement];
   [(RCRecordingView *)self _syncTapGestureRecognizerEnablement];
   [(RCRecordingView *)self _updateDoneButtonActionForModernToolbar];
-  if (a3 <= 2)
+  if (state <= 2)
   {
-    if (!a3)
+    if (!state)
     {
 LABEL_7:
       [(RCRecordingView *)self _updateToolbarsActivityMode:0];
@@ -1820,9 +1820,9 @@ LABEL_7:
       goto LABEL_17;
     }
 
-    if (a3 != 1)
+    if (state != 1)
     {
-      if (a3 != 2)
+      if (state != 2)
       {
         goto LABEL_17;
       }
@@ -1830,85 +1830,85 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v14 = self;
+    selfCopy2 = self;
     v15 = 1;
     goto LABEL_13;
   }
 
-  if ((a3 - 3) < 3)
+  if ((state - 3) < 3)
   {
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2;
 LABEL_13:
-    [(RCRecordingView *)v14 _updateToolbarsActivityMode:v15];
+    [(RCRecordingView *)selfCopy2 _updateToolbarsActivityMode:v15];
     [(RCRecordingView *)self updateMoreActionsAndPlaybackSettingButtonVisibility];
     goto LABEL_17;
   }
 
-  if ((a3 - 6) >= 2)
+  if ((state - 6) >= 2)
   {
-    if (a3 != 8)
+    if (state != 8)
     {
       goto LABEL_17;
     }
 
     [(RCRecordingView *)self _updateToolbarsActivityMode:3];
-    v16 = [(RCRecordingView *)self recordButton];
-    [v16 setHidden:1];
+    recordButton2 = [(RCRecordingView *)self recordButton];
+    [recordButton2 setHidden:1];
 
     [(RCRecordingView *)self setMoreActionsAndPlaybackSettingsButtonsHidden:1];
     [(RCRecordingView *)self _showTrimDeleteSelectionButtonsIfNeeded:1];
-    v13 = +[NSBundle mainBundle];
-    v17 = [v13 localizedStringForKey:@"APPLY" value:&stru_100295BB8 table:0];
-    v18 = [(RCRecordingView *)self doneButton];
-    [v18 setTitle:v17];
+    playbackSettingsButton = +[NSBundle mainBundle];
+    v17 = [playbackSettingsButton localizedStringForKey:@"APPLY" value:&stru_100295BB8 table:0];
+    doneButton = [(RCRecordingView *)self doneButton];
+    [doneButton setTitle:v17];
   }
 
   else
   {
-    v11 = [(RCRecordingView *)self editingToolbarProvider];
-    [v11 setActivityMode:1];
+    editingToolbarProvider = [(RCRecordingView *)self editingToolbarProvider];
+    [editingToolbarProvider setActivityMode:1];
 
-    v12 = [(RCRecordingView *)self moreActionsButton];
-    [v12 setEnabled:0];
+    moreActionsButton = [(RCRecordingView *)self moreActionsButton];
+    [moreActionsButton setEnabled:0];
 
-    v13 = [(RCRecordingView *)self playbackSettingsButton];
-    [v13 setEnabled:0];
+    playbackSettingsButton = [(RCRecordingView *)self playbackSettingsButton];
+    [playbackSettingsButton setEnabled:0];
   }
 
 LABEL_17:
-  v19 = [(RCRecordingView *)self cancelButton];
-  [v19 setHidden:a3 != 8];
+  cancelButton = [(RCRecordingView *)self cancelButton];
+  [cancelButton setHidden:state != 8];
 
   [(RCRecordingView *)self _updateDoneButtonState];
-  [(RCRecordingView *)self _updateRecordButtonStateForRecordingViewState:a3];
-  [(RCRecordingView *)self updateAccessibilityForRecordingViewState:a3];
+  [(RCRecordingView *)self _updateRecordButtonStateForRecordingViewState:state];
+  [(RCRecordingView *)self updateAccessibilityForRecordingViewState:state];
   [(RCRecordingView *)self _updateBottomControlsContainerViewSubviews];
   [(RCRecordingView *)self setNeedsLayout];
   [(RCRecordingView *)self _syncViewsToState];
   +[CATransaction commit];
-  v20 = [(RCRecordingView *)self recordButton];
-  LODWORD(v19) = [v20 isHidden];
+  recordButton3 = [(RCRecordingView *)self recordButton];
+  LODWORD(cancelButton) = [recordButton3 isHidden];
 
-  if (!v19)
+  if (!cancelButton)
   {
     v23 = UIAccessibilityScreenChangedNotification;
-    v24 = [(RCRecordingView *)self recordButton];
+    recordButton4 = [(RCRecordingView *)self recordButton];
     goto LABEL_22;
   }
 
-  if (a3 == 8)
+  if (state == 8)
   {
-    v21 = [(RCRecordingView *)self doneButton];
-    v22 = [v21 isEnabled];
+    doneButton2 = [(RCRecordingView *)self doneButton];
+    isEnabled = [doneButton2 isEnabled];
 
-    if (v22)
+    if (isEnabled)
     {
       v23 = UIAccessibilityScreenChangedNotification;
-      v24 = [(RCRecordingView *)self doneButton];
+      recordButton4 = [(RCRecordingView *)self doneButton];
 LABEL_22:
-      v25 = v24;
-      UIAccessibilityPostNotification(v23, v24);
+      v25 = recordButton4;
+      UIAccessibilityPostNotification(v23, recordButton4);
 
       goto LABEL_24;
     }
@@ -1916,57 +1916,57 @@ LABEL_22:
 
   UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self);
 LABEL_24:
-  if (recordingViewState != a3)
+  if (recordingViewState != state)
   {
-    v26 = [(RCRecordingView *)self viewDelegate];
-    [v26 didUpdateRecordingViewState:recordingViewState newState:a3];
+    viewDelegate = [(RCRecordingView *)self viewDelegate];
+    [viewDelegate didUpdateRecordingViewState:recordingViewState newState:state];
   }
 }
 
-- (void)updateAccessibilityForRecordingViewState:(int64_t)a3
+- (void)updateAccessibilityForRecordingViewState:(int64_t)state
 {
-  v5 = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
-  [v5 setAccessibilityElementsHidden:a3 == 0];
+  buttonsAndDescriptionContainerView = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
+  [buttonsAndDescriptionContainerView setAccessibilityElementsHidden:state == 0];
 
-  v6 = [(RCRecordingView *)self centerContentContainerView];
-  [v6 setAccessibilityElementsHidden:a3 == 0];
+  centerContentContainerView = [(RCRecordingView *)self centerContentContainerView];
+  [centerContentContainerView setAccessibilityElementsHidden:state == 0];
 
-  v7 = [(RCRecordingView *)self shuttleBar];
-  [v7 setAccessibilityElementsHidden:a3 == 0];
+  shuttleBar = [(RCRecordingView *)self shuttleBar];
+  [shuttleBar setAccessibilityElementsHidden:state == 0];
 
-  v8 = [(RCRecordingView *)self doneButton];
-  [v8 setIsAccessibilityElement:a3 != 0];
+  doneButton = [(RCRecordingView *)self doneButton];
+  [doneButton setIsAccessibilityElement:state != 0];
 
-  v9 = [(RCRecordingView *)self cancelButton];
-  v10 = [v9 isHidden];
-  v11 = [(RCRecordingView *)self cancelButton];
-  [v11 setIsAccessibilityElement:v10 ^ 1];
+  cancelButton = [(RCRecordingView *)self cancelButton];
+  isHidden = [cancelButton isHidden];
+  cancelButton2 = [(RCRecordingView *)self cancelButton];
+  [cancelButton2 setIsAccessibilityElement:isHidden ^ 1];
 
   v12 = +[RCRecorderStyleProvider sharedStyleProvider];
-  LOBYTE(v10) = [v12 hostsTransportAndDoneButtonInBottomSection];
+  LOBYTE(isHidden) = [v12 hostsTransportAndDoneButtonInBottomSection];
 
-  [(RCRecordingView *)self setAccessibilityIgnoresInvertColors:(a3 != 2) | ((v10 & 1) == 0)];
-  v13 = [(RCRecordingView *)self descriptionView];
-  v14 = v13;
-  if (a3 == 1)
+  [(RCRecordingView *)self setAccessibilityIgnoresInvertColors:(state != 2) | ((isHidden & 1) == 0)];
+  descriptionView = [(RCRecordingView *)self descriptionView];
+  v14 = descriptionView;
+  if (state == 1)
   {
-    [v13 addTitleAccessibilityTraits:UIAccessibilityTraitStaticText];
+    [descriptionView addTitleAccessibilityTraits:UIAccessibilityTraitStaticText];
   }
 
   else
   {
-    [v13 removeTitleAccessibilityTraits:UIAccessibilityTraitStaticText];
+    [descriptionView removeTitleAccessibilityTraits:UIAccessibilityTraitStaticText];
   }
 }
 
-- (void)setMoreActionsAndPlaybackSettingsButtonsHidden:(BOOL)a3
+- (void)setMoreActionsAndPlaybackSettingsButtonsHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(RCRecordingView *)self playbackSettingsButton];
-  [v5 setHidden:v3];
+  hiddenCopy = hidden;
+  playbackSettingsButton = [(RCRecordingView *)self playbackSettingsButton];
+  [playbackSettingsButton setHidden:hiddenCopy];
 
-  v6 = [(RCRecordingView *)self moreActionsButton];
-  [v6 setHidden:v3];
+  moreActionsButton = [(RCRecordingView *)self moreActionsButton];
+  [moreActionsButton setHidden:hiddenCopy];
 }
 
 - (void)updateMoreActionsAndPlaybackSettingButtonVisibility
@@ -1974,31 +1974,31 @@ LABEL_24:
   v3 = +[RCRecorderStyleProvider sharedStyleProvider];
   if ([v3 showsDescriptionViewInLineWithTrimAndPlaybackSettingsButtons])
   {
-    v4 = [(RCRecordingView *)self displayStyle];
+    displayStyle = [(RCRecordingView *)self displayStyle];
 
-    if (v4 == 3)
+    if (displayStyle == 3)
     {
       [(RCRecordingView *)self setMoreActionsAndPlaybackSettingsButtonsHidden:0];
       if ([(RCRecordingView *)self recordingControlState]== 1)
       {
-        v5 = [(RCRecordingView *)self playbackSettingsButton];
-        [v5 setEnabled:0];
+        playbackSettingsButton = [(RCRecordingView *)self playbackSettingsButton];
+        [playbackSettingsButton setEnabled:0];
 
-        v10 = [(RCRecordingView *)self moreActionsButton];
-        [v10 setEnabled:0];
+        moreActionsButton = [(RCRecordingView *)self moreActionsButton];
+        [moreActionsButton setEnabled:0];
       }
 
       else
       {
-        v6 = [(RCRecordingView *)self recordingControlState];
-        v7 = v6 != 2;
-        v8 = [(RCRecordingView *)self playbackSettingsButton];
-        [v8 setEnabled:v7];
+        recordingControlState = [(RCRecordingView *)self recordingControlState];
+        v7 = recordingControlState != 2;
+        playbackSettingsButton2 = [(RCRecordingView *)self playbackSettingsButton];
+        [playbackSettingsButton2 setEnabled:v7];
 
-        v9 = [(RCRecordingView *)self moreActionsButton];
-        [v9 setEnabled:v7];
+        moreActionsButton2 = [(RCRecordingView *)self moreActionsButton];
+        [moreActionsButton2 setEnabled:v7];
 
-        if (v6 != 2)
+        if (recordingControlState != 2)
         {
 
           [(RCRecordingView *)self _updateMoreButtonMenu];
@@ -2016,12 +2016,12 @@ LABEL_24:
   [(RCRecordingView *)self setMoreActionsAndPlaybackSettingsButtonsHidden:1];
 }
 
-- (void)setHasNoTranscribableContent:(BOOL)a3
+- (void)setHasNoTranscribableContent:(BOOL)content
 {
-  v3 = a3;
-  self->_hasNoTranscribableContent = a3;
-  v4 = [(RCRecordingView *)self editingToolbarProvider];
-  [v4 setHasNoTranscribableContent:v3];
+  contentCopy = content;
+  self->_hasNoTranscribableContent = content;
+  editingToolbarProvider = [(RCRecordingView *)self editingToolbarProvider];
+  [editingToolbarProvider setHasNoTranscribableContent:contentCopy];
 }
 
 - (void)restyle
@@ -2031,11 +2031,11 @@ LABEL_24:
   [(RCRecordingView *)self setTrimEnabled:[(RCRecordingView *)self trimEnabled]];
   [(RCRecordingView *)self setRecordingViewState:[(RCRecordingView *)self recordingViewState] animated:1 force:1];
   [(RCRecordingView *)self _syncViewsToState];
-  v3 = [(RCRecordingView *)self progressOverlay];
-  [v3 restyle];
+  progressOverlay = [(RCRecordingView *)self progressOverlay];
+  [progressOverlay restyle];
 
-  v4 = [(RCRecordingView *)self shuttleBar];
-  [v4 restyle];
+  shuttleBar = [(RCRecordingView *)self shuttleBar];
+  [shuttleBar restyle];
 
   [(RCRecordingView *)self setNeedsLayout];
 }
@@ -2043,151 +2043,151 @@ LABEL_24:
 - (void)applyDimmingColorToProgressOverlay
 {
   v5 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [v5 progressViewBackgroundColorEditingCard];
-  v4 = [(RCRecordingView *)self progressOverlay];
-  [v4 setDimmingBackgroundColor:v3];
+  progressViewBackgroundColorEditingCard = [v5 progressViewBackgroundColorEditingCard];
+  progressOverlay = [(RCRecordingView *)self progressOverlay];
+  [progressOverlay setDimmingBackgroundColor:progressViewBackgroundColorEditingCard];
 }
 
 - (void)_adjustCancelAndDoneButtonsWidth
 {
-  v3 = [(RCRecordingView *)self doneButton];
-  v4 = [v3 widthAnchor];
-  v5 = [(RCRecordingView *)self cancelButton];
-  v6 = [v5 widthAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  doneButton = [(RCRecordingView *)self doneButton];
+  widthAnchor = [doneButton widthAnchor];
+  cancelButton = [(RCRecordingView *)self cancelButton];
+  widthAnchor2 = [cancelButton widthAnchor];
+  v7 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
 
   [v7 setActive:1];
 }
 
 - (void)_adjustTrimAndDeleteSelectionButtonsSize
 {
-  v3 = [(RCRecordingView *)self trimToSelectionButton];
-  v4 = [v3 widthAnchor];
-  v5 = [(RCRecordingView *)self deleteSelectionButton];
-  v6 = [v5 widthAnchor];
-  v16 = [v4 constraintEqualToAnchor:v6];
+  trimToSelectionButton = [(RCRecordingView *)self trimToSelectionButton];
+  widthAnchor = [trimToSelectionButton widthAnchor];
+  deleteSelectionButton = [(RCRecordingView *)self deleteSelectionButton];
+  widthAnchor2 = [deleteSelectionButton widthAnchor];
+  v16 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
 
   [v16 setActive:1];
-  v7 = [(RCRecordingView *)self trimToSelectionButton];
-  v8 = [v7 heightAnchor];
+  trimToSelectionButton2 = [(RCRecordingView *)self trimToSelectionButton];
+  heightAnchor = [trimToSelectionButton2 heightAnchor];
   v9 = +[RCRecorderStyleProvider sharedStyleProvider];
   [v9 trimDeleteButtonHeight];
-  v10 = [v8 constraintEqualToConstant:?];
+  v10 = [heightAnchor constraintEqualToConstant:?];
 
   [v10 setActive:1];
-  v11 = [(RCRecordingView *)self deleteSelectionButton];
-  v12 = [v11 heightAnchor];
-  v13 = [(RCRecordingView *)self trimToSelectionButton];
-  v14 = [v13 heightAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  deleteSelectionButton2 = [(RCRecordingView *)self deleteSelectionButton];
+  heightAnchor2 = [deleteSelectionButton2 heightAnchor];
+  trimToSelectionButton3 = [(RCRecordingView *)self trimToSelectionButton];
+  heightAnchor3 = [trimToSelectionButton3 heightAnchor];
+  v15 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
 
   [v15 setActive:1];
 }
 
 - (void)_setupButtonsAndDescriptionContainerViewConstraints
 {
-  v3 = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  buttonsAndDescriptionContainerView = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
+  [buttonsAndDescriptionContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(RCRecordingView *)self descriptionView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  descriptionView = [(RCRecordingView *)self descriptionView];
+  [descriptionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
-  v6 = [(RCRecordingView *)self descriptionView];
-  [v5 addSubview:v6];
+  buttonsAndDescriptionContainerView2 = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
+  descriptionView2 = [(RCRecordingView *)self descriptionView];
+  [buttonsAndDescriptionContainerView2 addSubview:descriptionView2];
 
-  v7 = [(RCRecordingView *)self descriptionView];
-  v8 = [v7 topAnchor];
-  v9 = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
-  v10 = [v9 topAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  descriptionView3 = [(RCRecordingView *)self descriptionView];
+  topAnchor = [descriptionView3 topAnchor];
+  buttonsAndDescriptionContainerView3 = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
+  topAnchor2 = [buttonsAndDescriptionContainerView3 topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v11 setActive:1];
 
-  v12 = [(RCRecordingView *)self descriptionView];
-  v13 = [v12 bottomAnchor];
-  v14 = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  descriptionView4 = [(RCRecordingView *)self descriptionView];
+  bottomAnchor = [descriptionView4 bottomAnchor];
+  buttonsAndDescriptionContainerView4 = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
+  bottomAnchor2 = [buttonsAndDescriptionContainerView4 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v16 setActive:1];
 
-  v17 = [(RCRecordingView *)self descriptionView];
-  v18 = [v17 centerXAnchor];
-  v19 = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
-  v20 = [v19 centerXAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  descriptionView5 = [(RCRecordingView *)self descriptionView];
+  centerXAnchor = [descriptionView5 centerXAnchor];
+  buttonsAndDescriptionContainerView5 = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
+  centerXAnchor2 = [buttonsAndDescriptionContainerView5 centerXAnchor];
+  v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v21 setActive:1];
 
-  v23 = [(RCRecordingView *)self descriptionView];
-  v22 = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
-  [v23 addLeadingToLeadingConstraintWithView:v22 padding:0.0];
+  descriptionView6 = [(RCRecordingView *)self descriptionView];
+  buttonsAndDescriptionContainerView6 = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
+  [descriptionView6 addLeadingToLeadingConstraintWithView:buttonsAndDescriptionContainerView6 padding:0.0];
 }
 
 - (void)_displayPlaybackSettings
 {
-  v3 = [(RCRecordingView *)self playbackSettingsButton];
-  [(RCRecordingView *)self performControlsAction:41 position:v3 source:0.0];
+  playbackSettingsButton = [(RCRecordingView *)self playbackSettingsButton];
+  [(RCRecordingView *)self performControlsAction:41 position:playbackSettingsButton source:0.0];
 }
 
-- (void)setHasMultipleTracks:(BOOL)a3
+- (void)setHasMultipleTracks:(BOOL)tracks
 {
-  v3 = a3;
-  self->_hasMultipleTracks = a3;
+  tracksCopy = tracks;
+  self->_hasMultipleTracks = tracks;
   [(RCRecordingView *)self _updateMoreButtonMenu];
-  v5 = [(RCRecordingView *)self descriptionView];
-  [v5 setHasMultipleTracks:v3];
+  descriptionView = [(RCRecordingView *)self descriptionView];
+  [descriptionView setHasMultipleTracks:tracksCopy];
 }
 
-- (void)setHasSpatialRecording:(BOOL)a3
+- (void)setHasSpatialRecording:(BOOL)recording
 {
-  v3 = a3;
-  self->_hasSpatialRecording = a3;
+  recordingCopy = recording;
+  self->_hasSpatialRecording = recording;
   [(RCRecordingView *)self _updateMoreButtonMenu];
-  v5 = [(RCRecordingView *)self descriptionView];
-  [v5 setIsSpatialRecording:v3];
+  descriptionView = [(RCRecordingView *)self descriptionView];
+  [descriptionView setIsSpatialRecording:recordingCopy];
 }
 
-- (void)_dropView:(id)a3
+- (void)_dropView:(id)view
 {
-  v3 = a3;
-  [v3 removeAllConstraints];
-  [v3 removeFromSuperview];
+  viewCopy = view;
+  [viewCopy removeAllConstraints];
+  [viewCopy removeFromSuperview];
 }
 
-- (void)_dropView:(id)a3 fromAncestor:(id)a4
+- (void)_dropView:(id)view fromAncestor:(id)ancestor
 {
-  v6 = a3;
-  if ([v6 isDescendantOfView:a4])
+  viewCopy = view;
+  if ([viewCopy isDescendantOfView:ancestor])
   {
-    [(RCRecordingView *)self _dropView:v6];
+    [(RCRecordingView *)self _dropView:viewCopy];
   }
 }
 
-- (void)_showTrimDeleteSelectionButtonsIfNeeded:(BOOL)a3
+- (void)_showTrimDeleteSelectionButtonsIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v5 = [(RCRecordingView *)self deleteSelectionButton];
-  [v5 setHidden:!v3];
+  neededCopy = needed;
+  deleteSelectionButton = [(RCRecordingView *)self deleteSelectionButton];
+  [deleteSelectionButton setHidden:!neededCopy];
 
-  v6 = [(RCRecordingView *)self trimToSelectionButton];
-  [v6 setHidden:!v3];
+  trimToSelectionButton = [(RCRecordingView *)self trimToSelectionButton];
+  [trimToSelectionButton setHidden:!neededCopy];
 }
 
-- (void)_swapCenterContentTimeIndices:(BOOL)a3
+- (void)_swapCenterContentTimeIndices:(BOOL)indices
 {
-  v3 = a3;
-  v5 = [(RCRecordingView *)self mainContainerStackView];
-  v6 = [v5 subviews];
-  v7 = [(RCRecordingView *)self centerContentContainerView];
-  v8 = [v6 indexOfObject:v7];
+  indicesCopy = indices;
+  mainContainerStackView = [(RCRecordingView *)self mainContainerStackView];
+  subviews = [mainContainerStackView subviews];
+  centerContentContainerView = [(RCRecordingView *)self centerContentContainerView];
+  v8 = [subviews indexOfObject:centerContentContainerView];
 
-  v9 = [(RCRecordingView *)self mainContainerStackView];
-  v10 = [v9 subviews];
-  v11 = [(RCRecordingView *)self currentTimeLabel];
-  v12 = [v10 indexOfObject:v11];
+  mainContainerStackView2 = [(RCRecordingView *)self mainContainerStackView];
+  subviews2 = [mainContainerStackView2 subviews];
+  currentTimeLabel = [(RCRecordingView *)self currentTimeLabel];
+  v12 = [subviews2 indexOfObject:currentTimeLabel];
 
-  v13 = [(RCRecordingView *)self mainContainerStackView];
-  v14 = [v13 subviews];
-  v15 = [v14 count];
+  mainContainerStackView3 = [(RCRecordingView *)self mainContainerStackView];
+  subviews3 = [mainContainerStackView3 subviews];
+  v15 = [subviews3 count];
 
   if (v8 >= v15 || v12 >= v15)
   {
@@ -2201,83 +2201,83 @@ LABEL_24:
   else
   {
     v16 = v8 >= v12;
-    if (!v3)
+    if (!indicesCopy)
     {
       v16 = v8 <= v12;
     }
 
     if (!v16)
     {
-      v25 = [(RCRecordingView *)self mainContainerStackView];
-      [v25 exchangeSubviewAtIndex:v8 withSubviewAtIndex:v12];
+      mainContainerStackView4 = [(RCRecordingView *)self mainContainerStackView];
+      [mainContainerStackView4 exchangeSubviewAtIndex:v8 withSubviewAtIndex:v12];
     }
   }
 }
 
-- (unint64_t)_displayOptionForView:(id)a3
+- (unint64_t)_displayOptionForView:(id)view
 {
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v5 = [(RCRecordingView *)self topSpacerView];
+    topSpacerView = [(RCRecordingView *)self topSpacerView];
 
-    if (v5 == v4)
+    if (topSpacerView == viewCopy)
     {
       v21 = 1;
       goto LABEL_22;
     }
 
-    v6 = [(RCRecordingView *)self centerContentContainerView];
+    centerContentContainerView = [(RCRecordingView *)self centerContentContainerView];
 
-    if (v6 == v4)
+    if (centerContentContainerView == viewCopy)
     {
       v21 = 2;
       goto LABEL_22;
     }
 
-    v7 = [(RCRecordingView *)self overviewWaveformContainerView];
+    overviewWaveformContainerView = [(RCRecordingView *)self overviewWaveformContainerView];
 
-    if (v7 == v4)
+    if (overviewWaveformContainerView == viewCopy)
     {
       v21 = 4;
       goto LABEL_22;
     }
 
-    v8 = [(RCRecordingView *)self currentTimeLabel];
+    currentTimeLabel = [(RCRecordingView *)self currentTimeLabel];
 
-    if (v8 == v4)
+    if (currentTimeLabel == viewCopy)
     {
       v21 = 8;
       goto LABEL_22;
     }
 
-    v9 = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
+    buttonsAndDescriptionContainerView = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
 
-    if (v9 == v4)
+    if (buttonsAndDescriptionContainerView == viewCopy)
     {
       v21 = 16;
       goto LABEL_22;
     }
 
-    v10 = [(RCRecordingView *)self shuttleBar];
+    shuttleBar = [(RCRecordingView *)self shuttleBar];
 
-    if (v10 == v4)
+    if (shuttleBar == viewCopy)
     {
       v21 = 32;
       goto LABEL_22;
     }
 
-    v11 = [(RCRecordingView *)self bottomControlsContainerView];
+    bottomControlsContainerView = [(RCRecordingView *)self bottomControlsContainerView];
 
-    if (v11 == v4)
+    if (bottomControlsContainerView == viewCopy)
     {
       v21 = 64;
       goto LABEL_22;
     }
 
-    v12 = [(RCRecordingView *)self bottomSpacerView];
+    bottomSpacerView = [(RCRecordingView *)self bottomSpacerView];
 
-    if (v12 == v4)
+    if (bottomSpacerView == viewCopy)
     {
       v21 = 128;
       goto LABEL_22;
@@ -2296,86 +2296,86 @@ LABEL_22:
   return v21;
 }
 
-- (void)undoStateChanged:(BOOL)a3 isNewRecording:(BOOL)a4
+- (void)undoStateChanged:(BOOL)changed isNewRecording:(BOOL)recording
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(RCRecordingView *)self editingToolbarProvider];
-  [v7 setCanUndo:v5];
+  recordingCopy = recording;
+  changedCopy = changed;
+  editingToolbarProvider = [(RCRecordingView *)self editingToolbarProvider];
+  [editingToolbarProvider setCanUndo:changedCopy];
 
   [(RCRecordingView *)self _updateMoreButtonMenu];
-  [(RCRecordingView *)self setShouldSaveAsNew:v5 & ~v4];
-  v8 = [(RCRecordingView *)self doneButton];
-  [(RCRecordingView *)self assignActionOnDoneButton:v8];
+  [(RCRecordingView *)self setShouldSaveAsNew:changedCopy & ~recordingCopy];
+  doneButton = [(RCRecordingView *)self doneButton];
+  [(RCRecordingView *)self assignActionOnDoneButton:doneButton];
 
   [(RCRecordingView *)self _updateDoneButtonActionForModernToolbar];
 }
 
-- (void)trimSaveStateChanged:(BOOL)a3
+- (void)trimSaveStateChanged:(BOOL)changed
 {
-  v3 = a3;
-  v5 = [(RCRecordingView *)self editingToolbarProvider];
-  [v5 setCanSave:v3];
+  changedCopy = changed;
+  editingToolbarProvider = [(RCRecordingView *)self editingToolbarProvider];
+  [editingToolbarProvider setCanSave:changedCopy];
 
-  v6 = [(RCRecordingView *)self recordingViewState];
+  recordingViewState = [(RCRecordingView *)self recordingViewState];
 
-  [(RCRecordingView *)self setRecordingViewState:v6 animated:0 force:1];
+  [(RCRecordingView *)self setRecordingViewState:recordingViewState animated:0 force:1];
 }
 
-- (void)setTrimEnabled:(BOOL)a3
+- (void)setTrimEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_trimEnabled = a3;
-  v5 = [(RCRecordingView *)self trimToSelectionButton];
-  [v5 setEnabled:v3];
+  enabledCopy = enabled;
+  self->_trimEnabled = enabled;
+  trimToSelectionButton = [(RCRecordingView *)self trimToSelectionButton];
+  [trimToSelectionButton setEnabled:enabledCopy];
 
-  v6 = [(RCRecordingView *)self deleteSelectionButton];
-  [v6 setEnabled:v3];
+  deleteSelectionButton = [(RCRecordingView *)self deleteSelectionButton];
+  [deleteSelectionButton setEnabled:enabledCopy];
 }
 
 - (BOOL)canSaveTrimChanges
 {
-  v2 = [(RCRecordingView *)self editingToolbarProvider];
-  v3 = [v2 canSave];
+  editingToolbarProvider = [(RCRecordingView *)self editingToolbarProvider];
+  canSave = [editingToolbarProvider canSave];
 
-  return v3;
+  return canSave;
 }
 
-- (void)setHasCustomizedPlaybackSettings:(BOOL)a3
+- (void)setHasCustomizedPlaybackSettings:(BOOL)settings
 {
-  v3 = a3;
-  v5 = [(RCRecordingView *)self editingToolbarProvider];
-  [v5 setHasCustomizedPlaybackSettings:v3];
+  settingsCopy = settings;
+  editingToolbarProvider = [(RCRecordingView *)self editingToolbarProvider];
+  [editingToolbarProvider setHasCustomizedPlaybackSettings:settingsCopy];
 
-  v6 = [(RCRecordingView *)self playbackSettingsButton];
-  [v6 setSelected:v3];
+  playbackSettingsButton = [(RCRecordingView *)self playbackSettingsButton];
+  [playbackSettingsButton setSelected:settingsCopy];
 }
 
-- (void)setHasTranscription:(BOOL)a3
+- (void)setHasTranscription:(BOOL)transcription
 {
-  v3 = a3;
-  self->_hasTranscription = a3;
-  v5 = [(RCRecordingView *)self descriptionView];
-  [v5 setDisplayTranscriptAvailableIcon:v3];
+  transcriptionCopy = transcription;
+  self->_hasTranscription = transcription;
+  descriptionView = [(RCRecordingView *)self descriptionView];
+  [descriptionView setDisplayTranscriptAvailableIcon:transcriptionCopy];
 
   [(RCRecordingView *)self _updateMoreButtonMenu];
 }
 
-- (void)setEditingInFlight:(BOOL)a3
+- (void)setEditingInFlight:(BOOL)flight
 {
-  v3 = a3;
-  self->_editingInFlight = a3;
-  v5 = [(RCRecordingView *)self displayStyle];
-  v6 = [(RCRecordingView *)self progressOverlay];
-  if (!v3 || v5 == 1)
+  flightCopy = flight;
+  self->_editingInFlight = flight;
+  displayStyle = [(RCRecordingView *)self displayStyle];
+  progressOverlay = [(RCRecordingView *)self progressOverlay];
+  if (!flightCopy || displayStyle == 1)
   {
-    v9 = v6;
-    [v6 dismiss];
+    v9 = progressOverlay;
+    [progressOverlay dismiss];
   }
 
   else
   {
-    if (!v6)
+    if (!progressOverlay)
     {
       v8 = objc_opt_new();
       v7 = +[UIColor secondaryLabelColor];
@@ -2384,113 +2384,113 @@ LABEL_22:
       [(RCRecordingView *)self setProgressOverlay:v8];
       [(RCRecordingView *)self applyDimmingColorToProgressOverlay];
       [v8 setStyle:1];
-      v6 = v8;
+      progressOverlay = v8;
     }
 
-    v9 = v6;
-    [v6 presentInView:self];
+    v9 = progressOverlay;
+    [progressOverlay presentInView:self];
   }
 }
 
-- (void)setEditingProgress:(float)a3
+- (void)setEditingProgress:(float)progress
 {
-  v5 = [(RCRecordingView *)self progressOverlay];
-  *&v4 = a3;
-  [v5 setProgress:v4];
+  progressOverlay = [(RCRecordingView *)self progressOverlay];
+  *&v4 = progress;
+  [progressOverlay setProgress:v4];
 }
 
 - (float)editingProgress
 {
-  v2 = [(RCRecordingView *)self progressOverlay];
-  [v2 progress];
+  progressOverlay = [(RCRecordingView *)self progressOverlay];
+  [progressOverlay progress];
   v4 = v3;
 
   return v4;
 }
 
-- (void)_showHideViewsForDisplayOptions:(unint64_t)a3
+- (void)_showHideViewsForDisplayOptions:(unint64_t)options
 {
-  v3 = a3;
-  v5 = (a3 & 1) == 0;
-  v6 = [(RCRecordingView *)self topSpacerView];
-  [v6 setHidden:v5];
+  optionsCopy = options;
+  v5 = (options & 1) == 0;
+  topSpacerView = [(RCRecordingView *)self topSpacerView];
+  [topSpacerView setHidden:v5];
 
-  v7 = [(RCRecordingView *)self centerContentContainerView];
-  [v7 setHidden:(v3 & 2) == 0];
+  centerContentContainerView = [(RCRecordingView *)self centerContentContainerView];
+  [centerContentContainerView setHidden:(optionsCopy & 2) == 0];
 
-  v8 = [(RCRecordingView *)self overviewWaveformContainerView];
-  [v8 setHidden:(v3 & 4) == 0];
+  overviewWaveformContainerView = [(RCRecordingView *)self overviewWaveformContainerView];
+  [overviewWaveformContainerView setHidden:(optionsCopy & 4) == 0];
 
-  v9 = [(RCRecordingView *)self currentTimeLabel];
-  [v9 setHidden:(v3 & 8) == 0];
+  currentTimeLabel = [(RCRecordingView *)self currentTimeLabel];
+  [currentTimeLabel setHidden:(optionsCopy & 8) == 0];
 
-  v10 = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
-  [v10 setHidden:(v3 & 0x10) == 0];
+  buttonsAndDescriptionContainerView = [(RCRecordingView *)self buttonsAndDescriptionContainerView];
+  [buttonsAndDescriptionContainerView setHidden:(optionsCopy & 0x10) == 0];
 
-  v11 = [(RCRecordingView *)self shuttleBar];
-  [v11 setHidden:(v3 & 0x20) == 0];
+  shuttleBar = [(RCRecordingView *)self shuttleBar];
+  [shuttleBar setHidden:(optionsCopy & 0x20) == 0];
 
-  v12 = [(RCRecordingView *)self bottomControlsContainerView];
-  [v12 setHidden:(v3 & 0x40) == 0];
+  bottomControlsContainerView = [(RCRecordingView *)self bottomControlsContainerView];
+  [bottomControlsContainerView setHidden:(optionsCopy & 0x40) == 0];
 
-  v13 = [(RCRecordingView *)self bottomSpacerView];
-  [v13 setHidden:(v3 & 0x80) == 0];
+  bottomSpacerView = [(RCRecordingView *)self bottomSpacerView];
+  [bottomSpacerView setHidden:(optionsCopy & 0x80) == 0];
 }
 
-- (void)setRecordingTitle:(id)a3
+- (void)setRecordingTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(RCRecordingView *)self descriptionView];
-  [v5 setRecordingTitle:v4];
+  titleCopy = title;
+  descriptionView = [(RCRecordingView *)self descriptionView];
+  [descriptionView setRecordingTitle:titleCopy];
 }
 
 - (NSString)recordingTitle
 {
-  v2 = [(RCRecordingView *)self descriptionView];
-  v3 = [v2 recordingTitle];
+  descriptionView = [(RCRecordingView *)self descriptionView];
+  recordingTitle = [descriptionView recordingTitle];
 
-  return v3;
+  return recordingTitle;
 }
 
-- (void)setCreationDate:(id)a3
+- (void)setCreationDate:(id)date
 {
-  v4 = a3;
-  v5 = [(RCRecordingView *)self descriptionView];
-  [v5 setCreationDate:v4];
+  dateCopy = date;
+  descriptionView = [(RCRecordingView *)self descriptionView];
+  [descriptionView setCreationDate:dateCopy];
 }
 
 - (NSDate)creationDate
 {
-  v2 = [(RCRecordingView *)self descriptionView];
-  v3 = [v2 creationDate];
+  descriptionView = [(RCRecordingView *)self descriptionView];
+  creationDate = [descriptionView creationDate];
 
-  return v3;
+  return creationDate;
 }
 
-- (void)setRecordingDuration:(double)a3
+- (void)setRecordingDuration:(double)duration
 {
-  if (self->_recordingDuration != a3)
+  if (self->_recordingDuration != duration)
   {
-    self->_recordingDuration = a3;
-    [(RCRecordingView *)self _updateRecordingDescriptionViewForDuration:a3];
+    self->_recordingDuration = duration;
+    [(RCRecordingView *)self _updateRecordingDescriptionViewForDuration:duration];
     v5 = RCLocalizedDuration();
-    v6 = [(RCRecordingView *)self overviewEndTimeLabel];
-    [v6 setText:v5];
+    overviewEndTimeLabel = [(RCRecordingView *)self overviewEndTimeLabel];
+    [overviewEndTimeLabel setText:v5];
 
-    v7 = [(RCRecordingView *)self overviewEndTimeLabel];
-    [v7 sizeToFit];
+    overviewEndTimeLabel2 = [(RCRecordingView *)self overviewEndTimeLabel];
+    [overviewEndTimeLabel2 sizeToFit];
   }
 
-  if (a3 == 0.0)
+  if (duration == 0.0)
   {
-    v8 = [(RCRecordingView *)self descriptionView];
-    [v8 setDurationLabelAccessible:0];
+    descriptionView = [(RCRecordingView *)self descriptionView];
+    [descriptionView setDurationLabelAccessible:0];
   }
 }
 
-- (void)_updateRecordingDescriptionViewForDuration:(double)a3
+- (void)_updateRecordingDescriptionViewForDuration:(double)duration
 {
-  v5 = [(RCRecordingView *)self displayStyle];
+  displayStyle = [(RCRecordingView *)self displayStyle];
   if ([(RCRecordingView *)self recordingViewState])
   {
     v6 = 1;
@@ -2501,42 +2501,42 @@ LABEL_22:
     v6 = self->_recordingDuration != 0.0;
   }
 
-  v7 = [(RCRecordingView *)self descriptionView];
-  [v7 setRecordingDuration:v5 == 2 withHiddenLabel:v6 isDurationLabelAX:a3];
+  descriptionView = [(RCRecordingView *)self descriptionView];
+  [descriptionView setRecordingDuration:displayStyle == 2 withHiddenLabel:v6 isDurationLabelAX:duration];
 }
 
-- (void)setCurrentTime:(double)a3
+- (void)setCurrentTime:(double)time
 {
-  self->_currentTime = a3;
+  self->_currentTime = time;
   [(RCRecordingView *)self _updateCurrentTimeLabelForTime:?];
   v5 = [(RCRecordingView *)self recordingViewState]!= 0;
-  v6 = [(RCRecordingView *)self currentTimeLabel];
-  [v6 setIsAccessibilityElement:v5];
+  currentTimeLabel = [(RCRecordingView *)self currentTimeLabel];
+  [currentTimeLabel setIsAccessibilityElement:v5];
 
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"CURRENT_POSITION" value:&stru_100295BB8 table:0];
-  v9 = [(RCRecordingView *)self currentTimeLabel];
-  [v9 setAccessibilityLabel:v8];
+  currentTimeLabel2 = [(RCRecordingView *)self currentTimeLabel];
+  [currentTimeLabel2 setAccessibilityLabel:v8];
 
   v10 = UIAXTimeStringForDuration();
-  v11 = [(RCRecordingView *)self currentTimeLabel];
-  [v11 setAccessibilityValue:v10];
+  currentTimeLabel3 = [(RCRecordingView *)self currentTimeLabel];
+  [currentTimeLabel3 setAccessibilityValue:v10];
 
-  [(RCRecordingView *)self updateRecordButtonViewStateWithCurrentTime:a3];
+  [(RCRecordingView *)self updateRecordButtonViewStateWithCurrentTime:time];
 }
 
-- (void)_updateCurrentTimeLabelForTime:(double)a3
+- (void)_updateCurrentTimeLabelForTime:(double)time
 {
   [(RCRecordingView *)self recordingDuration];
   v5 = RCLocalizedPlaybackTime();
-  v4 = [(RCRecordingView *)self currentTimeLabel];
-  [v4 setText:v5];
+  currentTimeLabel = [(RCRecordingView *)self currentTimeLabel];
+  [currentTimeLabel setText:v5];
 }
 
-- (void)updateRecordButtonViewStateWithCurrentTime:(double)a3
+- (void)updateRecordButtonViewStateWithCurrentTime:(double)time
 {
-  v5 = [(RCRecordingView *)self recordingViewState];
-  if (v5 > 8 || ((1 << v5) & 0x1C3) == 0)
+  recordingViewState = [(RCRecordingView *)self recordingViewState];
+  if (recordingViewState > 8 || ((1 << recordingViewState) & 0x1C3) == 0)
   {
     [(RCRecordingView *)self recordingDuration];
     v8 = v7;
@@ -2552,7 +2552,7 @@ LABEL_22:
       }
     }
 
-    if (v8 + -0.06 <= a3)
+    if (v8 + -0.06 <= time)
     {
       v11 = 5;
     }
@@ -2576,49 +2576,49 @@ LABEL_22:
   }
 }
 
-- (void)_updateRecordButtonStateForRecordingViewState:(int64_t)a3
+- (void)_updateRecordButtonStateForRecordingViewState:(int64_t)state
 {
-  v3 = a3;
-  if (a3 <= 8)
+  stateCopy = state;
+  if (state <= 8)
   {
-    if (((1 << a3) & 0x38) != 0)
+    if (((1 << state) & 0x38) != 0)
     {
-      v7 = [(RCRecordingView *)self viewDelegate];
-      v8 = [v7 willRecordIntoTrackTwo];
+      viewDelegate = [(RCRecordingView *)self viewDelegate];
+      willRecordIntoTrackTwo = [viewDelegate willRecordIntoTrackTwo];
 
       v9 = 3;
-      if (v3 == 5)
+      if (stateCopy == 5)
       {
         v9 = 4;
       }
 
-      if (v8)
+      if (willRecordIntoTrackTwo)
       {
-        v3 = 0;
+        stateCopy = 0;
       }
 
       else
       {
-        v3 = v9;
+        stateCopy = v9;
       }
 
       goto LABEL_20;
     }
 
-    if (((1 << a3) & 0xC0) != 0)
+    if (((1 << state) & 0xC0) != 0)
     {
       goto LABEL_19;
     }
 
-    if (((1 << a3) & 0x104) != 0)
+    if (((1 << state) & 0x104) != 0)
     {
       return;
     }
   }
 
-  if (a3)
+  if (state)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       v10 = OSLogForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2626,18 +2626,18 @@ LABEL_22:
         sub_1001BA3EC(v10, v11, v12, v13, v14, v15, v16, v17);
       }
 
-      v3 = 0;
+      stateCopy = 0;
       goto LABEL_20;
     }
 
     v5 = +[RCRecorderStyleProvider sharedStyleProvider];
     if ([v5 supportsCompactRecordingCard])
     {
-      v6 = [(RCRecordingView *)self displayStyle];
+      displayStyle = [(RCRecordingView *)self displayStyle];
 
-      if (v6 != 3)
+      if (displayStyle != 3)
       {
-        v3 = 2;
+        stateCopy = 2;
         goto LABEL_20;
       }
     }
@@ -2647,33 +2647,33 @@ LABEL_22:
     }
 
 LABEL_19:
-    v3 = 1;
+    stateCopy = 1;
   }
 
 LABEL_20:
-  v18 = [(RCRecordingView *)self recordButtonRepository];
-  [v18 setState:v3];
+  recordButtonRepository = [(RCRecordingView *)self recordButtonRepository];
+  [recordButtonRepository setState:stateCopy];
 
-  v19 = [(RCRecordingView *)self viewDelegate];
-  [v19 didUpdateRecordButtonState];
+  viewDelegate2 = [(RCRecordingView *)self viewDelegate];
+  [viewDelegate2 didUpdateRecordButtonState];
 }
 
-- (double)customDetentFixedHeight:(BOOL)a3 includeBottomSafeArea:(BOOL)a4
+- (double)customDetentFixedHeight:(BOOL)height includeBottomSafeArea:(BOOL)area
 {
-  v4 = a4;
-  v5 = a3;
+  areaCopy = area;
+  heightCopy = height;
   v7 = +[RCRecorderStyleProvider sharedStyleProvider];
   [v7 customDetentMainContainerStackViewHeight];
   v9 = v8;
 
   v10 = 0.0;
-  if (v5)
+  if (heightCopy)
   {
     [(RCRecordingView *)self safeAreaInsets];
     v10 = v11 + 0.0;
   }
 
-  if (v4)
+  if (areaCopy)
   {
     [(RCRecordingView *)self safeAreaInsets];
     v10 = v10 + v12;
@@ -2694,47 +2694,47 @@ LABEL_20:
   return v5 + v7 + v8;
 }
 
-- (void)setWaveformView:(id)a3
+- (void)setWaveformView:(id)view
 {
-  self->_waveformView = a3;
-  [a3 setAccessibilityIgnoresInvertColors:0];
+  self->_waveformView = view;
+  [view setAccessibilityIgnoresInvertColors:0];
 
   [(RCRecordingView *)self _syncCenterContentContainerViewState];
 }
 
-- (void)setTranscriptView:(id)a3
+- (void)setTranscriptView:(id)view
 {
-  objc_storeWeak(&self->_transcriptView, a3);
+  objc_storeWeak(&self->_transcriptView, view);
 
   [(RCRecordingView *)self _syncCenterContentContainerViewState];
 }
 
-- (void)setCenterContentViewState:(int64_t)a3
+- (void)setCenterContentViewState:(int64_t)state
 {
-  if (self->_centerContentViewState != a3)
+  if (self->_centerContentViewState != state)
   {
-    v5 = [(RCRecordingView *)self viewDelegate];
-    [v5 willUpdateRecordingCenterContentViewState:a3];
+    viewDelegate = [(RCRecordingView *)self viewDelegate];
+    [viewDelegate willUpdateRecordingCenterContentViewState:state];
 
-    self->_centerContentViewState = a3;
-    v6 = [(RCRecordingView *)self transcriptionButton];
-    [v6 setSelected:a3 == 1];
+    self->_centerContentViewState = state;
+    transcriptionButton = [(RCRecordingView *)self transcriptionButton];
+    [transcriptionButton setSelected:state == 1];
 
-    v7 = [(RCRecordingView *)self editingToolbarProvider];
-    [v7 setIsTranscriptViewDisplayed:a3 == 1];
+    editingToolbarProvider = [(RCRecordingView *)self editingToolbarProvider];
+    [editingToolbarProvider setIsTranscriptViewDisplayed:state == 1];
 
     [(RCRecordingView *)self updateMoreActionsAndPlaybackSettingButtonVisibility];
     [(RCRecordingView *)self _syncCenterContentContainerViewState];
     [(RCRecordingView *)self setTranscriptViewState:0];
     [(RCRecordingView *)self _updateSpacingBetweenArrangedSubviews];
-    v8 = [(RCRecordingView *)self viewDelegate];
-    [v8 didUpdateRecordingCenterContentViewState];
+    viewDelegate2 = [(RCRecordingView *)self viewDelegate];
+    [viewDelegate2 didUpdateRecordingCenterContentViewState];
 
-    if (a3 == 1)
+    if (state == 1)
     {
       v9 = UIAccessibilityScreenChangedNotification;
-      v10 = [(RCRecordingView *)self transcriptView];
-      UIAccessibilityPostNotification(v9, v10);
+      transcriptView = [(RCRecordingView *)self transcriptView];
+      UIAccessibilityPostNotification(v9, transcriptView);
     }
   }
 }
@@ -2760,24 +2760,24 @@ LABEL_20:
   }
 
   v11 = WeakRetained;
-  v4 = [(RCRecordingView *)self centerContentContainerView];
-  v5 = [v4 subviews];
-  v6 = [v5 containsObject:v11];
+  centerContentContainerView = [(RCRecordingView *)self centerContentContainerView];
+  subviews = [centerContentContainerView subviews];
+  v6 = [subviews containsObject:v11];
 
   WeakRetained = v11;
   if (v6)
   {
-    v7 = [(RCRecordingView *)self centerContentContainerView];
-    [(UIView *)v11 addTopToTopConstraintWithView:v7 padding:0.0];
+    centerContentContainerView2 = [(RCRecordingView *)self centerContentContainerView];
+    [(UIView *)v11 addTopToTopConstraintWithView:centerContentContainerView2 padding:0.0];
 
-    v8 = [(RCRecordingView *)self centerContentContainerView];
-    [(UIView *)v11 addBottomToBottomConstraintWithView:v8 padding:0.0];
+    centerContentContainerView3 = [(RCRecordingView *)self centerContentContainerView];
+    [(UIView *)v11 addBottomToBottomConstraintWithView:centerContentContainerView3 padding:0.0];
 
-    v9 = [(RCRecordingView *)self centerContentContainerView];
-    [(UIView *)v11 addLeadingToLeadingConstraintWithView:v9 padding:0.0];
+    centerContentContainerView4 = [(RCRecordingView *)self centerContentContainerView];
+    [(UIView *)v11 addLeadingToLeadingConstraintWithView:centerContentContainerView4 padding:0.0];
 
-    v10 = [(RCRecordingView *)self centerContentContainerView];
-    [(UIView *)v11 addTrailingToTrailingConstraintWithView:v10 padding:0.0];
+    centerContentContainerView5 = [(RCRecordingView *)self centerContentContainerView];
+    [(UIView *)v11 addTrailingToTrailingConstraintWithView:centerContentContainerView5 padding:0.0];
 
     WeakRetained = v11;
   }
@@ -2785,13 +2785,13 @@ LABEL_20:
 LABEL_7:
 }
 
-- (void)setTranscriptViewState:(int64_t)a3
+- (void)setTranscriptViewState:(int64_t)state
 {
-  if (self->_transcriptViewState != a3)
+  if (self->_transcriptViewState != state)
   {
-    self->_transcriptViewState = a3;
-    v6 = [(RCRecordingView *)self viewDelegate];
-    [v6 willUpdateRecordingViewTranscriptState:a3];
+    self->_transcriptViewState = state;
+    viewDelegate = [(RCRecordingView *)self viewDelegate];
+    [viewDelegate willUpdateRecordingViewTranscriptState:state];
 
     [(RCRecordingView *)self _syncTranscriptViewState];
 
@@ -2801,9 +2801,9 @@ LABEL_7:
 
 - (void)_syncTranscriptViewState
 {
-  v3 = [(RCRecordingView *)self shouldHideBottomElements];
-  v4 = v3;
-  if (v3)
+  shouldHideBottomElements = [(RCRecordingView *)self shouldHideBottomElements];
+  v4 = shouldHideBottomElements;
+  if (shouldHideBottomElements)
   {
     v5 = 0.0;
   }
@@ -2813,7 +2813,7 @@ LABEL_7:
     v5 = 1.0;
   }
 
-  v6 = [(RCRecordingView *)self createTranscriptViewExpansionAnimator];
+  createTranscriptViewExpansionAnimator = [(RCRecordingView *)self createTranscriptViewExpansionAnimator];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008FF5C;
@@ -2821,17 +2821,17 @@ LABEL_7:
   v7[4] = self;
   v8 = v4;
   *&v7[5] = v5;
-  [v6 addAnimations:v7];
-  [v6 startAnimation];
+  [createTranscriptViewExpansionAnimator addAnimations:v7];
+  [createTranscriptViewExpansionAnimator startAnimation];
 }
 
 - (id)_bottomElementsToHide
 {
-  v3 = [(RCRecordingView *)self currentTimeLabel];
-  v4 = [(RCRecordingView *)self shuttleBar];
-  v8[1] = v4;
-  v5 = [(RCRecordingView *)self bottomControlsContainerView];
-  v8[2] = v5;
+  currentTimeLabel = [(RCRecordingView *)self currentTimeLabel];
+  shuttleBar = [(RCRecordingView *)self shuttleBar];
+  v8[1] = shuttleBar;
+  bottomControlsContainerView = [(RCRecordingView *)self bottomControlsContainerView];
+  v8[2] = bottomControlsContainerView;
   v6 = [NSArray arrayWithObjects:v8 count:3];
 
   return v6;
@@ -2845,103 +2845,103 @@ LABEL_7:
   return v3;
 }
 
-- (void)setOverviewWaveformView:(id)a3
+- (void)setOverviewWaveformView:(id)view
 {
-  v7 = a3;
-  self->_overviewWaveformView = v7;
-  v4 = [(RCRecordingView *)self overviewWaveformContainerView];
-  if (v4)
+  viewCopy = view;
+  self->_overviewWaveformView = viewCopy;
+  overviewWaveformContainerView = [(RCRecordingView *)self overviewWaveformContainerView];
+  if (overviewWaveformContainerView)
   {
     [(UIView *)self->_overviewWaveformView removeFromSuperview];
-    [v4 addSubview:v7];
+    [overviewWaveformContainerView addSubview:viewCopy];
     [(RCRecordingView *)self _applyOverviewWaveformViewConstraints];
-    [(UIView *)v7 setAccessibilityIgnoresInvertColors:0];
+    [(UIView *)viewCopy setAccessibilityIgnoresInvertColors:0];
     v5 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v6 = [v5 hasBeginAndEndTimeLabelAtOverviewWaveform];
+    hasBeginAndEndTimeLabelAtOverviewWaveform = [v5 hasBeginAndEndTimeLabelAtOverviewWaveform];
 
-    if (v6)
+    if (hasBeginAndEndTimeLabelAtOverviewWaveform)
     {
-      [(RCRecordingView *)self _addLabelsToWaveformOverview:v7 containerView:v4];
+      [(RCRecordingView *)self _addLabelsToWaveformOverview:viewCopy containerView:overviewWaveformContainerView];
     }
   }
 }
 
 - (void)_applyOverviewWaveformViewConstraints
 {
-  v7 = [(RCRecordingView *)self overviewWaveformView];
-  [v7 removeAllConstraints];
-  v3 = [(RCRecordingView *)self overviewWaveformContainerView];
+  overviewWaveformView = [(RCRecordingView *)self overviewWaveformView];
+  [overviewWaveformView removeAllConstraints];
+  overviewWaveformContainerView = [(RCRecordingView *)self overviewWaveformContainerView];
   v4 = +[RCRecorderStyleProvider sharedStyleProvider];
   [v4 recordingViewOverviewWaveformSidePadding];
   v6 = v5;
-  [v7 alignCenterTopToCenterTopOfView:v3 padding:0.0];
-  [v7 alignCenterBottomToCenterBottomOfView:v3 padding:0.0];
-  [v7 constrainWidthWithView:v3 padding:v6 * -2.0];
+  [overviewWaveformView alignCenterTopToCenterTopOfView:overviewWaveformContainerView padding:0.0];
+  [overviewWaveformView alignCenterBottomToCenterBottomOfView:overviewWaveformContainerView padding:0.0];
+  [overviewWaveformView constrainWidthWithView:overviewWaveformContainerView padding:v6 * -2.0];
 }
 
-- (void)_addLabelsToWaveformOverview:(id)a3 containerView:(id)a4
+- (void)_addLabelsToWaveformOverview:(id)overview containerView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RCRecordingView *)self overviewBeginTimeLabel];
-  [v8 removeFromSuperview];
+  viewCopy = view;
+  overviewCopy = overview;
+  overviewBeginTimeLabel = [(RCRecordingView *)self overviewBeginTimeLabel];
+  [overviewBeginTimeLabel removeFromSuperview];
 
-  v9 = [(RCRecordingView *)self overviewEndTimeLabel];
-  [v9 removeFromSuperview];
+  overviewEndTimeLabel = [(RCRecordingView *)self overviewEndTimeLabel];
+  [overviewEndTimeLabel removeFromSuperview];
 
-  v10 = [(RCRecordingView *)self overviewBeginTimeLabel];
-  [v10 removeAllConstraints];
+  overviewBeginTimeLabel2 = [(RCRecordingView *)self overviewBeginTimeLabel];
+  [overviewBeginTimeLabel2 removeAllConstraints];
 
-  v11 = [(RCRecordingView *)self overviewEndTimeLabel];
-  [v11 removeAllConstraints];
+  overviewEndTimeLabel2 = [(RCRecordingView *)self overviewEndTimeLabel];
+  [overviewEndTimeLabel2 removeAllConstraints];
 
-  v12 = [(RCRecordingView *)self overviewBeginTimeLabel];
-  [v6 addSubview:v12];
+  overviewBeginTimeLabel3 = [(RCRecordingView *)self overviewBeginTimeLabel];
+  [viewCopy addSubview:overviewBeginTimeLabel3];
 
-  v13 = [(RCRecordingView *)self overviewEndTimeLabel];
-  [v6 addSubview:v13];
+  overviewEndTimeLabel3 = [(RCRecordingView *)self overviewEndTimeLabel];
+  [viewCopy addSubview:overviewEndTimeLabel3];
 
   v14 = +[RCRecorderStyleProvider sharedStyleProvider];
   [v14 beginEndLabelsTopPadding];
   v16 = v15;
 
-  v17 = [(RCRecordingView *)self overviewBeginTimeLabel];
-  [v17 addTopToBottomConstraintWithView:v7 padding:v16];
+  overviewBeginTimeLabel4 = [(RCRecordingView *)self overviewBeginTimeLabel];
+  [overviewBeginTimeLabel4 addTopToBottomConstraintWithView:overviewCopy padding:v16];
 
-  v18 = [(RCRecordingView *)self overviewBeginTimeLabel];
-  [v18 addLeftToLeftConstraintWithView:v7 padding:0.0];
+  overviewBeginTimeLabel5 = [(RCRecordingView *)self overviewBeginTimeLabel];
+  [overviewBeginTimeLabel5 addLeftToLeftConstraintWithView:overviewCopy padding:0.0];
 
-  v19 = [(RCRecordingView *)self overviewEndTimeLabel];
-  [v19 addTopToBottomConstraintWithView:v7 padding:v16];
+  overviewEndTimeLabel4 = [(RCRecordingView *)self overviewEndTimeLabel];
+  [overviewEndTimeLabel4 addTopToBottomConstraintWithView:overviewCopy padding:v16];
 
-  v20 = [(RCRecordingView *)self overviewEndTimeLabel];
-  [v20 addRightToRightConstraintWithView:v7 padding:0.0];
+  overviewEndTimeLabel5 = [(RCRecordingView *)self overviewEndTimeLabel];
+  [overviewEndTimeLabel5 addRightToRightConstraintWithView:overviewCopy padding:0.0];
 
   v21 = RCLocalizedDuration();
-  v22 = [(RCRecordingView *)self overviewBeginTimeLabel];
-  [v22 setText:v21];
+  overviewBeginTimeLabel6 = [(RCRecordingView *)self overviewBeginTimeLabel];
+  [overviewBeginTimeLabel6 setText:v21];
 
-  v23 = [(RCRecordingView *)self overviewBeginTimeLabel];
-  [v23 sizeToFit];
+  overviewBeginTimeLabel7 = [(RCRecordingView *)self overviewBeginTimeLabel];
+  [overviewBeginTimeLabel7 sizeToFit];
 
   v24 = RCLocalizedDuration();
-  v25 = [(RCRecordingView *)self overviewEndTimeLabel];
-  [v25 setText:v24];
+  overviewEndTimeLabel6 = [(RCRecordingView *)self overviewEndTimeLabel];
+  [overviewEndTimeLabel6 setText:v24];
 
-  v26 = [(RCRecordingView *)self overviewEndTimeLabel];
-  [v26 sizeToFit];
+  overviewEndTimeLabel7 = [(RCRecordingView *)self overviewEndTimeLabel];
+  [overviewEndTimeLabel7 sizeToFit];
 
-  v27 = [(RCRecordingView *)self overviewBeginTimeLabel];
-  [v27 setIsAccessibilityElement:0];
+  overviewBeginTimeLabel8 = [(RCRecordingView *)self overviewBeginTimeLabel];
+  [overviewBeginTimeLabel8 setIsAccessibilityElement:0];
 
-  v28 = [(RCRecordingView *)self overviewEndTimeLabel];
-  [v28 setIsAccessibilityElement:0];
+  overviewEndTimeLabel8 = [(RCRecordingView *)self overviewEndTimeLabel];
+  [overviewEndTimeLabel8 setIsAccessibilityElement:0];
 }
 
-- (RCRecordingView)initWithRecordButtonRepository:(id)a3 interactionHandler:(id)a4
+- (RCRecordingView)initWithRecordButtonRepository:(id)repository interactionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  repositoryCopy = repository;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = RCRecordingView;
   v8 = [(RCRecordingView *)&v14 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -2949,12 +2949,12 @@ LABEL_7:
   if (v8)
   {
     [(RCRecordingView *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(RCRecordingView *)v9 setRecordButtonRepository:v6];
-    v10 = [(RCRecordingView *)v9 recordButtonRepository];
+    [(RCRecordingView *)v9 setRecordButtonRepository:repositoryCopy];
+    recordButtonRepository = [(RCRecordingView *)v9 recordButtonRepository];
 
-    if (v10)
+    if (recordButtonRepository)
     {
-      v11 = [[_TtC10VoiceMemos24RCRecordButtonAppFactory alloc] initWithRecordButtonRepository:v6 interactionHandler:v7];
+      v11 = [[_TtC10VoiceMemos24RCRecordButtonAppFactory alloc] initWithRecordButtonRepository:repositoryCopy interactionHandler:handlerCopy];
       [(RCRecordingView *)v9 setRecordButtonFactory:v11];
     }
 
@@ -2975,9 +2975,9 @@ LABEL_7:
   [v3 overviewWaveformHeight];
   v5 = v4;
 
-  v8 = [(RCRecordingView *)self overviewWaveformContainerView];
-  v6 = [v8 heightAnchor];
-  v7 = [v6 constraintEqualToConstant:v5];
+  overviewWaveformContainerView = [(RCRecordingView *)self overviewWaveformContainerView];
+  heightAnchor = [overviewWaveformContainerView heightAnchor];
+  v7 = [heightAnchor constraintEqualToConstant:v5];
   [v7 setActive:1];
 }
 
@@ -2988,72 +2988,72 @@ LABEL_7:
   v4 = v3;
   [v10 annotationViewHeight];
   v6 = v4 + v5;
-  v7 = [(RCRecordingView *)self centerContentContainerView];
-  v8 = [v7 heightAnchor];
-  v9 = [v8 constraintGreaterThanOrEqualToConstant:v6];
+  centerContentContainerView = [(RCRecordingView *)self centerContentContainerView];
+  heightAnchor = [centerContentContainerView heightAnchor];
+  v9 = [heightAnchor constraintGreaterThanOrEqualToConstant:v6];
   [v9 setActive:1];
 }
 
 - (void)_addDoneAndCancelButtonsToBottomControlsContainerView
 {
-  v3 = [(RCRecordingView *)self bottomControlsContainerView];
-  v4 = [v3 trailingContainerView];
+  bottomControlsContainerView = [(RCRecordingView *)self bottomControlsContainerView];
+  trailingContainerView = [bottomControlsContainerView trailingContainerView];
 
-  v5 = [(RCRecordingView *)self doneButton];
-  v6 = [v5 superview];
-  v7 = v6;
-  if (v6 != v4)
+  doneButton = [(RCRecordingView *)self doneButton];
+  superview = [doneButton superview];
+  v7 = superview;
+  if (superview != trailingContainerView)
   {
 
 LABEL_4:
-    v10 = [(RCRecordingView *)self doneButton];
-    [(RCRecordingView *)self _dropView:v10];
+    doneButton2 = [(RCRecordingView *)self doneButton];
+    [(RCRecordingView *)self _dropView:doneButton2];
 
-    v11 = [(RCRecordingView *)self cancelButton];
-    [(RCRecordingView *)self _dropView:v11];
+    cancelButton = [(RCRecordingView *)self cancelButton];
+    [(RCRecordingView *)self _dropView:cancelButton];
 
-    v12 = [(RCRecordingView *)self doneButton];
-    [v4 addSubview:v12];
+    doneButton3 = [(RCRecordingView *)self doneButton];
+    [trailingContainerView addSubview:doneButton3];
 
-    v13 = [(RCRecordingView *)self cancelButton];
-    [v4 addSubview:v13];
+    cancelButton2 = [(RCRecordingView *)self cancelButton];
+    [trailingContainerView addSubview:cancelButton2];
 
-    v14 = [(RCRecordingView *)self doneButton];
-    [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+    doneButton4 = [(RCRecordingView *)self doneButton];
+    [doneButton4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v15 = [(RCRecordingView *)self cancelButton];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    cancelButton3 = [(RCRecordingView *)self cancelButton];
+    [cancelButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v16 = +[RCRecorderStyleProvider sharedStyleProvider];
     [v16 bottomControlsContainerInterElementPadding];
     v18 = v17;
 
-    v45 = [(RCRecordingView *)self doneButton];
-    v44 = [v45 centerYAnchor];
-    v43 = [v4 centerYAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    doneButton5 = [(RCRecordingView *)self doneButton];
+    centerYAnchor = [doneButton5 centerYAnchor];
+    centerYAnchor2 = [trailingContainerView centerYAnchor];
+    v42 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v47[0] = v42;
-    v41 = [(RCRecordingView *)self cancelButton];
-    v40 = [v41 centerYAnchor];
-    v39 = [v4 centerYAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39];
+    cancelButton4 = [(RCRecordingView *)self cancelButton];
+    centerYAnchor3 = [cancelButton4 centerYAnchor];
+    centerYAnchor4 = [trailingContainerView centerYAnchor];
+    v38 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v47[1] = v38;
-    v37 = [(RCRecordingView *)self cancelButton];
-    v36 = [v37 leadingAnchor];
-    v35 = [v4 leadingAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    cancelButton5 = [(RCRecordingView *)self cancelButton];
+    leadingAnchor = [cancelButton5 leadingAnchor];
+    leadingAnchor2 = [trailingContainerView leadingAnchor];
+    v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v47[2] = v34;
-    v33 = [(RCRecordingView *)self cancelButton];
-    v19 = [v33 trailingAnchor];
-    v20 = [(RCRecordingView *)self doneButton];
-    v21 = [v20 leadingAnchor];
-    v22 = [v19 constraintEqualToAnchor:v21 constant:-v18];
+    cancelButton6 = [(RCRecordingView *)self cancelButton];
+    trailingAnchor = [cancelButton6 trailingAnchor];
+    doneButton6 = [(RCRecordingView *)self doneButton];
+    leadingAnchor3 = [doneButton6 leadingAnchor];
+    v22 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:-v18];
     v47[3] = v22;
-    v23 = [(RCRecordingView *)self doneButton];
-    v24 = [v23 trailingAnchor];
-    [v4 trailingAnchor];
-    v25 = v46 = v4;
-    v26 = [v24 constraintEqualToAnchor:v25];
+    doneButton7 = [(RCRecordingView *)self doneButton];
+    trailingAnchor2 = [doneButton7 trailingAnchor];
+    [trailingContainerView trailingAnchor];
+    v25 = v46 = trailingContainerView;
+    v26 = [trailingAnchor2 constraintEqualToAnchor:v25];
     v47[4] = v26;
     v27 = [NSArray arrayWithObjects:v47 count:5];
     [NSLayoutConstraint activateConstraints:v27];
@@ -3063,20 +3063,20 @@ LABEL_4:
     v30 = v29;
 
     [(RCRecordingView *)self _adjustCancelAndDoneButtonsWidth];
-    v31 = [(RCRecordingView *)self doneButton];
-    [v31 constrainHeight:v30];
+    doneButton8 = [(RCRecordingView *)self doneButton];
+    [doneButton8 constrainHeight:v30];
 
-    v32 = [(RCRecordingView *)self cancelButton];
-    [v32 constrainHeight:v30];
+    cancelButton7 = [(RCRecordingView *)self cancelButton];
+    [cancelButton7 constrainHeight:v30];
 
-    v4 = v46;
+    trailingContainerView = v46;
     goto LABEL_5;
   }
 
-  v8 = [(RCRecordingView *)self cancelButton];
-  v9 = [v8 superview];
+  cancelButton8 = [(RCRecordingView *)self cancelButton];
+  superview2 = [cancelButton8 superview];
 
-  if (v9 != v4)
+  if (superview2 != trailingContainerView)
   {
     goto LABEL_4;
   }
@@ -3100,63 +3100,63 @@ LABEL_5:
 
 - (void)_addTrimDeleteButtonsToLeadingEdge
 {
-  v3 = [(RCRecordingView *)self bottomControlsContainerView];
-  v4 = [v3 leadingContainerView];
+  bottomControlsContainerView = [(RCRecordingView *)self bottomControlsContainerView];
+  leadingContainerView = [bottomControlsContainerView leadingContainerView];
 
-  v5 = [(RCRecordingView *)self trimToSelectionButton];
-  v6 = [v5 superview];
-  v7 = v6;
-  if (v6 != v4)
+  trimToSelectionButton = [(RCRecordingView *)self trimToSelectionButton];
+  superview = [trimToSelectionButton superview];
+  v7 = superview;
+  if (superview != leadingContainerView)
   {
 
 LABEL_4:
-    v10 = [(RCRecordingView *)self trimToSelectionButton];
-    [(RCRecordingView *)self _dropView:v10];
+    trimToSelectionButton2 = [(RCRecordingView *)self trimToSelectionButton];
+    [(RCRecordingView *)self _dropView:trimToSelectionButton2];
 
-    v11 = [(RCRecordingView *)self deleteSelectionButton];
-    [(RCRecordingView *)self _dropView:v11];
+    deleteSelectionButton = [(RCRecordingView *)self deleteSelectionButton];
+    [(RCRecordingView *)self _dropView:deleteSelectionButton];
 
-    v12 = [(RCRecordingView *)self trimToSelectionButton];
-    [v4 addSubview:v12];
+    trimToSelectionButton3 = [(RCRecordingView *)self trimToSelectionButton];
+    [leadingContainerView addSubview:trimToSelectionButton3];
 
-    v13 = [(RCRecordingView *)self deleteSelectionButton];
-    [v4 addSubview:v13];
+    deleteSelectionButton2 = [(RCRecordingView *)self deleteSelectionButton];
+    [leadingContainerView addSubview:deleteSelectionButton2];
 
-    v14 = [(RCRecordingView *)self trimToSelectionButton];
-    [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+    trimToSelectionButton4 = [(RCRecordingView *)self trimToSelectionButton];
+    [trimToSelectionButton4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v15 = [(RCRecordingView *)self deleteSelectionButton];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    deleteSelectionButton3 = [(RCRecordingView *)self deleteSelectionButton];
+    [deleteSelectionButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v16 = +[RCRecorderStyleProvider sharedStyleProvider];
     [v16 bottomControlsContainerInterElementPadding];
     v18 = v17;
 
-    v40 = [(RCRecordingView *)self trimToSelectionButton];
-    v39 = [v40 centerYAnchor];
-    v38 = [v4 centerYAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    trimToSelectionButton5 = [(RCRecordingView *)self trimToSelectionButton];
+    centerYAnchor = [trimToSelectionButton5 centerYAnchor];
+    centerYAnchor2 = [leadingContainerView centerYAnchor];
+    v37 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v41[0] = v37;
-    v36 = [(RCRecordingView *)self deleteSelectionButton];
-    v35 = [v36 centerYAnchor];
-    v34 = [v4 centerYAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    deleteSelectionButton4 = [(RCRecordingView *)self deleteSelectionButton];
+    centerYAnchor3 = [deleteSelectionButton4 centerYAnchor];
+    centerYAnchor4 = [leadingContainerView centerYAnchor];
+    v33 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v41[1] = v33;
-    v32 = [(RCRecordingView *)self trimToSelectionButton];
-    v31 = [v32 leadingAnchor];
-    v30 = [v4 leadingAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    trimToSelectionButton6 = [(RCRecordingView *)self trimToSelectionButton];
+    leadingAnchor = [trimToSelectionButton6 leadingAnchor];
+    leadingAnchor2 = [leadingContainerView leadingAnchor];
+    v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v41[2] = v29;
-    v28 = [(RCRecordingView *)self trimToSelectionButton];
-    v27 = [v28 trailingAnchor];
-    v19 = [(RCRecordingView *)self deleteSelectionButton];
-    v20 = [v19 leadingAnchor];
-    v21 = [v27 constraintEqualToAnchor:v20 constant:-v18];
+    trimToSelectionButton7 = [(RCRecordingView *)self trimToSelectionButton];
+    trailingAnchor = [trimToSelectionButton7 trailingAnchor];
+    deleteSelectionButton5 = [(RCRecordingView *)self deleteSelectionButton];
+    leadingAnchor3 = [deleteSelectionButton5 leadingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:-v18];
     v41[3] = v21;
-    v22 = [(RCRecordingView *)self deleteSelectionButton];
-    v23 = [v22 trailingAnchor];
-    v24 = [v4 trailingAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    deleteSelectionButton6 = [(RCRecordingView *)self deleteSelectionButton];
+    trailingAnchor2 = [deleteSelectionButton6 trailingAnchor];
+    trailingAnchor3 = [leadingContainerView trailingAnchor];
+    v25 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v41[4] = v25;
     v26 = [NSArray arrayWithObjects:v41 count:5];
     [NSLayoutConstraint activateConstraints:v26];
@@ -3165,10 +3165,10 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v8 = [(RCRecordingView *)self deleteSelectionButton];
-  v9 = [v8 superview];
+  deleteSelectionButton7 = [(RCRecordingView *)self deleteSelectionButton];
+  superview2 = [deleteSelectionButton7 superview];
 
-  if (v9 != v4)
+  if (superview2 != leadingContainerView)
   {
     goto LABEL_4;
   }
@@ -3178,87 +3178,87 @@ LABEL_5:
 
 - (void)_addTrimDeleteButtonsToLeadingAndTrailingEdge
 {
-  v3 = [(RCRecordingView *)self bottomControlsContainerView];
-  v4 = [v3 leadingContainerView];
+  bottomControlsContainerView = [(RCRecordingView *)self bottomControlsContainerView];
+  leadingContainerView = [bottomControlsContainerView leadingContainerView];
 
-  v5 = [(RCRecordingView *)self bottomControlsContainerView];
-  v6 = [v5 trailingContainerView];
+  bottomControlsContainerView2 = [(RCRecordingView *)self bottomControlsContainerView];
+  trailingContainerView = [bottomControlsContainerView2 trailingContainerView];
 
-  v7 = [(RCRecordingView *)self trimToSelectionButton];
-  v8 = [v7 superview];
-  v9 = v8;
-  if (v8 != v4)
+  trimToSelectionButton = [(RCRecordingView *)self trimToSelectionButton];
+  superview = [trimToSelectionButton superview];
+  v9 = superview;
+  if (superview != leadingContainerView)
   {
 
 LABEL_4:
-    v12 = [(RCRecordingView *)self trimToSelectionButton];
-    [(RCRecordingView *)self _dropView:v12];
+    trimToSelectionButton2 = [(RCRecordingView *)self trimToSelectionButton];
+    [(RCRecordingView *)self _dropView:trimToSelectionButton2];
 
-    v13 = [(RCRecordingView *)self deleteSelectionButton];
-    [(RCRecordingView *)self _dropView:v13];
+    deleteSelectionButton = [(RCRecordingView *)self deleteSelectionButton];
+    [(RCRecordingView *)self _dropView:deleteSelectionButton];
 
     v14 = +[RCRecorderStyleProvider sharedStyleProvider];
     [v14 bottomControlsContainerInterElementPadding];
     v16 = v15;
 
-    v17 = [(RCRecordingView *)self trimToSelectionButton];
-    [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+    trimToSelectionButton3 = [(RCRecordingView *)self trimToSelectionButton];
+    [trimToSelectionButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v18 = [(RCRecordingView *)self trimToSelectionButton];
-    [v4 addSubview:v18];
+    trimToSelectionButton4 = [(RCRecordingView *)self trimToSelectionButton];
+    [leadingContainerView addSubview:trimToSelectionButton4];
 
-    v45 = [(RCRecordingView *)self trimToSelectionButton];
-    v43 = [v45 centerYAnchor];
-    v41 = [v4 centerYAnchor];
-    v39 = [v43 constraintEqualToAnchor:v41];
+    trimToSelectionButton5 = [(RCRecordingView *)self trimToSelectionButton];
+    centerYAnchor = [trimToSelectionButton5 centerYAnchor];
+    centerYAnchor2 = [leadingContainerView centerYAnchor];
+    v39 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v49[0] = v39;
-    v37 = [(RCRecordingView *)self trimToSelectionButton];
-    v19 = [v37 leadingAnchor];
-    v20 = [v4 leadingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    trimToSelectionButton6 = [(RCRecordingView *)self trimToSelectionButton];
+    leadingAnchor = [trimToSelectionButton6 leadingAnchor];
+    leadingAnchor2 = [leadingContainerView leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v49[1] = v21;
-    v22 = [(RCRecordingView *)self trimToSelectionButton];
-    v23 = [v22 trailingAnchor];
-    v24 = [v4 trailingAnchor];
-    [v23 constraintEqualToAnchor:v24 constant:v16 * -0.5];
-    v25 = v47 = v4;
+    trimToSelectionButton7 = [(RCRecordingView *)self trimToSelectionButton];
+    trailingAnchor = [trimToSelectionButton7 trailingAnchor];
+    trailingAnchor2 = [leadingContainerView trailingAnchor];
+    [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v16 * -0.5];
+    v25 = v47 = leadingContainerView;
     v49[2] = v25;
     v26 = [NSArray arrayWithObjects:v49 count:3];
     [NSLayoutConstraint activateConstraints:v26];
 
-    v27 = [(RCRecordingView *)self deleteSelectionButton];
-    [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+    deleteSelectionButton2 = [(RCRecordingView *)self deleteSelectionButton];
+    [deleteSelectionButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v28 = [(RCRecordingView *)self deleteSelectionButton];
-    [v6 addSubview:v28];
+    deleteSelectionButton3 = [(RCRecordingView *)self deleteSelectionButton];
+    [trailingContainerView addSubview:deleteSelectionButton3];
 
-    v46 = [(RCRecordingView *)self deleteSelectionButton];
-    v44 = [v46 centerYAnchor];
-    v42 = [v6 centerYAnchor];
-    v40 = [v44 constraintEqualToAnchor:v42];
+    deleteSelectionButton4 = [(RCRecordingView *)self deleteSelectionButton];
+    centerYAnchor3 = [deleteSelectionButton4 centerYAnchor];
+    centerYAnchor4 = [trailingContainerView centerYAnchor];
+    v40 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v48[0] = v40;
-    v38 = [(RCRecordingView *)self deleteSelectionButton];
-    v29 = [v38 leadingAnchor];
-    v30 = [v6 leadingAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30 constant:v16 * 0.5];
+    deleteSelectionButton5 = [(RCRecordingView *)self deleteSelectionButton];
+    leadingAnchor3 = [deleteSelectionButton5 leadingAnchor];
+    leadingAnchor4 = [trailingContainerView leadingAnchor];
+    v31 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v16 * 0.5];
     v48[1] = v31;
-    v32 = [(RCRecordingView *)self deleteSelectionButton];
-    v33 = [v32 trailingAnchor];
-    v34 = [v6 trailingAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    deleteSelectionButton6 = [(RCRecordingView *)self deleteSelectionButton];
+    trailingAnchor3 = [deleteSelectionButton6 trailingAnchor];
+    trailingAnchor4 = [trailingContainerView trailingAnchor];
+    v35 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v48[2] = v35;
     v36 = [NSArray arrayWithObjects:v48 count:3];
     [NSLayoutConstraint activateConstraints:v36];
 
-    v4 = v47;
+    leadingContainerView = v47;
     [(RCRecordingView *)self _adjustTrimAndDeleteSelectionButtonsSize];
     goto LABEL_5;
   }
 
-  v10 = [(RCRecordingView *)self deleteSelectionButton];
-  v11 = [v10 superview];
+  deleteSelectionButton7 = [(RCRecordingView *)self deleteSelectionButton];
+  superview2 = [deleteSelectionButton7 superview];
 
-  if (v11 != v6)
+  if (superview2 != trailingContainerView)
   {
     goto LABEL_4;
   }
@@ -3268,16 +3268,16 @@ LABEL_5:
 
 - (void)_setupBottomControlsContainerViewConstraints
 {
-  v3 = [(RCRecordingView *)self bottomControlsContainerView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bottomControlsContainerView = [(RCRecordingView *)self bottomControlsContainerView];
+  [bottomControlsContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v4 = +[RCRecorderStyleProvider sharedStyleProvider];
   [v4 bottomControlsContainerHeight];
   v6 = v5;
 
-  v7 = [(RCRecordingView *)self bottomControlsContainerView];
-  v8 = [v7 heightAnchor];
-  v9 = [v8 constraintEqualToConstant:v6];
+  bottomControlsContainerView2 = [(RCRecordingView *)self bottomControlsContainerView];
+  heightAnchor = [bottomControlsContainerView2 heightAnchor];
+  v9 = [heightAnchor constraintEqualToConstant:v6];
   [v9 setActive:1];
 
   [(RCRecordingView *)self _updateBottomControlsContainerViewSubviews];
@@ -3289,13 +3289,13 @@ LABEL_5:
   [v3 topSpacerViewHeight];
   v5 = v4;
 
-  v6 = [(RCRecordingView *)self topSpacerView];
-  v7 = [v6 heightAnchor];
-  v8 = [v7 constraintEqualToConstant:v5];
+  topSpacerView = [(RCRecordingView *)self topSpacerView];
+  heightAnchor = [topSpacerView heightAnchor];
+  v8 = [heightAnchor constraintEqualToConstant:v5];
   [(RCRecordingView *)self setTopSpacerViewHeightConstraint:v8];
 
-  v9 = [(RCRecordingView *)self topSpacerViewHeightConstraint];
-  [v9 setActive:1];
+  topSpacerViewHeightConstraint = [(RCRecordingView *)self topSpacerViewHeightConstraint];
+  [topSpacerViewHeightConstraint setActive:1];
 }
 
 - (void)_setupBottomSpacerViewConstraints
@@ -3304,13 +3304,13 @@ LABEL_5:
   [v3 bottomSpacerViewHeight];
   v5 = v4;
 
-  v6 = [(RCRecordingView *)self bottomSpacerView];
-  v7 = [v6 heightAnchor];
-  v8 = [v7 constraintEqualToConstant:v5];
+  bottomSpacerView = [(RCRecordingView *)self bottomSpacerView];
+  heightAnchor = [bottomSpacerView heightAnchor];
+  v8 = [heightAnchor constraintEqualToConstant:v5];
   [(RCRecordingView *)self setBottomSpacerViewHeightConstraint:v8];
 
-  v9 = [(RCRecordingView *)self bottomSpacerViewHeightConstraint];
-  [v9 setActive:1];
+  bottomSpacerViewHeightConstraint = [(RCRecordingView *)self bottomSpacerViewHeightConstraint];
+  [bottomSpacerViewHeightConstraint setActive:1];
 }
 
 - (void)setupSubviews
@@ -3325,35 +3325,35 @@ LABEL_5:
     [(RCRecordingView *)self _setupCenterContentContainerViewConstraints];
     [(RCRecordingView *)self _setupBottomControlsContainerViewConstraints];
     [(RCRecordingView *)self _updateVerticalContentHuggingAndCompressionResistancePriorities];
-    v3 = [(RCRecordingView *)self mainContainerStackView];
-    [(RCRecordingView *)self addSubview:v3];
+    mainContainerStackView = [(RCRecordingView *)self mainContainerStackView];
+    [(RCRecordingView *)self addSubview:mainContainerStackView];
 
-    v4 = [(RCRecordingView *)self mainContainerStackView];
-    [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+    mainContainerStackView2 = [(RCRecordingView *)self mainContainerStackView];
+    [mainContainerStackView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v25 = [(RCRecordingView *)self mainContainerStackView];
-    v23 = [v25 topAnchor];
-    v24 = [(RCRecordingView *)self safeAreaLayoutGuide];
-    v22 = [v24 topAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    mainContainerStackView3 = [(RCRecordingView *)self mainContainerStackView];
+    topAnchor = [mainContainerStackView3 topAnchor];
+    safeAreaLayoutGuide = [(RCRecordingView *)self safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v26[0] = v21;
-    v20 = [(RCRecordingView *)self mainContainerStackView];
-    v18 = [v20 bottomAnchor];
-    v19 = [(RCRecordingView *)self safeAreaLayoutGuide];
-    v17 = [v19 bottomAnchor];
-    v16 = [v18 constraintEqualToAnchor:v17];
+    mainContainerStackView4 = [(RCRecordingView *)self mainContainerStackView];
+    bottomAnchor = [mainContainerStackView4 bottomAnchor];
+    safeAreaLayoutGuide2 = [(RCRecordingView *)self safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v26[1] = v16;
-    v15 = [(RCRecordingView *)self mainContainerStackView];
-    v14 = [v15 leadingAnchor];
-    v5 = [(RCRecordingView *)self safeAreaLayoutGuide];
-    v6 = [v5 leadingAnchor];
-    v7 = [v14 constraintEqualToAnchor:v6];
+    mainContainerStackView5 = [(RCRecordingView *)self mainContainerStackView];
+    leadingAnchor = [mainContainerStackView5 leadingAnchor];
+    safeAreaLayoutGuide3 = [(RCRecordingView *)self safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide3 leadingAnchor];
+    v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v26[2] = v7;
-    v8 = [(RCRecordingView *)self mainContainerStackView];
-    v9 = [v8 trailingAnchor];
-    v10 = [(RCRecordingView *)self safeAreaLayoutGuide];
-    v11 = [v10 trailingAnchor];
-    v12 = [v9 constraintEqualToAnchor:v11];
+    mainContainerStackView6 = [(RCRecordingView *)self mainContainerStackView];
+    trailingAnchor = [mainContainerStackView6 trailingAnchor];
+    safeAreaLayoutGuide4 = [(RCRecordingView *)self safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide4 trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v26[3] = v12;
     v13 = [NSArray arrayWithObjects:v26 count:4];
     [NSLayoutConstraint activateConstraints:v13];
@@ -3366,72 +3366,72 @@ LABEL_5:
 
 - (void)_addShuttleBarToBottomControlsContainerView
 {
-  v3 = [(RCRecordingView *)self shuttleBar];
-  v4 = [v3 superview];
-  v5 = [(RCRecordingView *)self bottomControlsContainerView];
-  v6 = [v4 isEqual:v5];
+  shuttleBar = [(RCRecordingView *)self shuttleBar];
+  superview = [shuttleBar superview];
+  bottomControlsContainerView = [(RCRecordingView *)self bottomControlsContainerView];
+  v6 = [superview isEqual:bottomControlsContainerView];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(RCRecordingView *)self shuttleBar];
-    [(RCRecordingView *)self _dropView:v7];
+    shuttleBar2 = [(RCRecordingView *)self shuttleBar];
+    [(RCRecordingView *)self _dropView:shuttleBar2];
 
-    v28 = [(RCRecordingView *)self shuttleBar];
-    v8 = [(RCRecordingView *)self bottomControlsContainerView];
-    v9 = [v8 centerContainerView];
+    shuttleBar3 = [(RCRecordingView *)self shuttleBar];
+    bottomControlsContainerView2 = [(RCRecordingView *)self bottomControlsContainerView];
+    centerContainerView = [bottomControlsContainerView2 centerContainerView];
 
-    [v9 addSubview:v28];
-    v10 = [(RCRecordingView *)self shuttleBar];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [centerContainerView addSubview:shuttleBar3];
+    shuttleBar4 = [(RCRecordingView *)self shuttleBar];
+    [shuttleBar4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v27 = [(RCRecordingView *)self shuttleBar];
-    v26 = [v27 topAnchor];
-    v25 = [v9 topAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    shuttleBar5 = [(RCRecordingView *)self shuttleBar];
+    topAnchor = [shuttleBar5 topAnchor];
+    topAnchor2 = [centerContainerView topAnchor];
+    v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v29[0] = v24;
-    v23 = [(RCRecordingView *)self shuttleBar];
-    v22 = [v23 bottomAnchor];
-    v21 = [v9 bottomAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    shuttleBar6 = [(RCRecordingView *)self shuttleBar];
+    bottomAnchor = [shuttleBar6 bottomAnchor];
+    bottomAnchor2 = [centerContainerView bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v29[1] = v20;
-    v11 = [(RCRecordingView *)self shuttleBar];
-    v12 = [v11 leadingAnchor];
-    v13 = [v9 leadingAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    shuttleBar7 = [(RCRecordingView *)self shuttleBar];
+    leadingAnchor = [shuttleBar7 leadingAnchor];
+    leadingAnchor2 = [centerContainerView leadingAnchor];
+    v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v29[2] = v14;
-    v15 = [(RCRecordingView *)self shuttleBar];
-    v16 = [v15 trailingAnchor];
-    v17 = [v9 trailingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    shuttleBar8 = [(RCRecordingView *)self shuttleBar];
+    trailingAnchor = [shuttleBar8 trailingAnchor];
+    trailingAnchor2 = [centerContainerView trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v29[3] = v18;
     v19 = [NSArray arrayWithObjects:v29 count:4];
     [NSLayoutConstraint activateConstraints:v19];
 
-    [v28 setHidden:0];
+    [shuttleBar3 setHidden:0];
   }
 }
 
-- (void)prepareForPresent:(BOOL)a3
+- (void)prepareForPresent:(BOOL)present
 {
   [(RCRecordingView *)self setDidCompletePresent:0];
   v9 = +[RCRecorderStyleProvider sharedStyleProvider];
   if ([v9 animatesRecordingCardPresentation])
   {
     [(RCRecordingView *)self updateTopBottomSpacersForPresent];
-    if (!a3)
+    if (!present)
     {
       [(RCRecordingView *)self _dimRecordingDescriptionView:1 animated:0];
     }
   }
 
-  v5 = [(RCRecordingView *)self viewDelegate];
-  v6 = [v5 recordingCardNavigationItem];
-  v7 = [(RCRecordingView *)self editingToolbarProvider];
-  [v7 setNavigationItem:v6];
+  viewDelegate = [(RCRecordingView *)self viewDelegate];
+  recordingCardNavigationItem = [viewDelegate recordingCardNavigationItem];
+  editingToolbarProvider = [(RCRecordingView *)self editingToolbarProvider];
+  [editingToolbarProvider setNavigationItem:recordingCardNavigationItem];
 
   [(RCRecordingView *)self _updateMoreButtonMenu];
-  v8 = [(RCRecordingView *)self recordButtonRepository];
-  [v8 setAnimationsAreDisabled:1];
+  recordButtonRepository = [(RCRecordingView *)self recordButtonRepository];
+  [recordButtonRepository setAnimationsAreDisabled:1];
 }
 
 - (void)completePresent
@@ -3446,11 +3446,11 @@ LABEL_5:
 
   [(RCRecordingView *)self _syncTapGestureRecognizerEnablement];
   v3 = UIAccessibilityLayoutChangedNotification;
-  v4 = [(RCRecordingView *)self recordButton];
-  UIAccessibilityPostNotification(v3, v4);
+  recordButton = [(RCRecordingView *)self recordButton];
+  UIAccessibilityPostNotification(v3, recordButton);
 
-  v5 = [(RCRecordingView *)self recordButtonRepository];
-  [v5 setAnimationsAreDisabled:0];
+  recordButtonRepository = [(RCRecordingView *)self recordButtonRepository];
+  [recordButtonRepository setAnimationsAreDisabled:0];
 }
 
 - (void)prepareForDismiss
@@ -3462,8 +3462,8 @@ LABEL_5:
     [(RCRecordingView *)self updateTopBottomSpacersForDismiss];
   }
 
-  v3 = [(RCRecordingView *)self recordButtonRepository];
-  [v3 setAnimationsAreDisabled:1];
+  recordButtonRepository = [(RCRecordingView *)self recordButtonRepository];
+  [recordButtonRepository setAnimationsAreDisabled:1];
 }
 
 - (void)cleanupAfterDismiss
@@ -3471,19 +3471,19 @@ LABEL_5:
   [(RCRecordingView *)self setDidCompletePresent:0];
   [(RCRecordingView *)self setRecordingViewState:0];
   v3 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v4 = [v3 animatesRecordingCardPresentation];
+  animatesRecordingCardPresentation = [v3 animatesRecordingCardPresentation];
 
-  if (v4)
+  if (animatesRecordingCardPresentation)
   {
     [(RCRecordingView *)self resetTopBottomSpacers];
   }
 
-  v5 = [(RCRecordingView *)self recordButtonRepository];
-  [v5 setAnimationsAreDisabled:0];
+  recordButtonRepository = [(RCRecordingView *)self recordButtonRepository];
+  [recordButtonRepository setAnimationsAreDisabled:0];
 
-  LODWORD(v5) = UIAccessibilityLayoutChangedNotification;
-  v6 = [(RCRecordingView *)self recordButton];
-  UIAccessibilityPostNotification(v5, v6);
+  LODWORD(recordButtonRepository) = UIAccessibilityLayoutChangedNotification;
+  recordButton = [(RCRecordingView *)self recordButton];
+  UIAccessibilityPostNotification(recordButtonRepository, recordButton);
 }
 
 - (void)updateForRecordingStart
@@ -3502,13 +3502,13 @@ LABEL_5:
   [(RCRecordingView *)self setRecordingViewState:v4];
 }
 
-- (void)updateForRecordingEnd:(BOOL)a3
+- (void)updateForRecordingEnd:(BOOL)end
 {
-  v5 = [(RCRecordingView *)self displayStyle];
-  v6 = [(RCRecordingView *)self dismissalDisplayStyle];
-  if (v5 == 3 || a3)
+  displayStyle = [(RCRecordingView *)self displayStyle];
+  dismissalDisplayStyle = [(RCRecordingView *)self dismissalDisplayStyle];
+  if (displayStyle == 3 || end)
   {
-    if (v5 != v6)
+    if (displayStyle != dismissalDisplayStyle)
     {
 
       [(RCRecordingView *)self setRecordingViewState:5];
@@ -3517,7 +3517,7 @@ LABEL_5:
 
   else
   {
-    [(RCRecordingView *)self setDisplayStyle:v6];
+    [(RCRecordingView *)self setDisplayStyle:dismissalDisplayStyle];
     [(RCRecordingView *)self setRecordingViewState:0];
 
     [(RCRecordingView *)self setCurrentTime:0.0];
@@ -3540,8 +3540,8 @@ LABEL_5:
   [(RCRecordingView *)&v8 layoutSubviews];
   [(RCRecordingView *)self bounds];
   v4 = v3;
-  v5 = [(RCRecordingView *)self window];
-  if (!v5 || [(RCRecordingView *)self isSyncingViewsToState])
+  window = [(RCRecordingView *)self window];
+  if (!window || [(RCRecordingView *)self isSyncingViewsToState])
   {
     goto LABEL_5;
   }
@@ -3551,8 +3551,8 @@ LABEL_5:
 
   if (v7 != v4)
   {
-    v5 = [(RCRecordingView *)self cardPresentationDelegate];
-    [v5 recordingView:self didUpdateViewHeight:v4];
+    window = [(RCRecordingView *)self cardPresentationDelegate];
+    [window recordingView:self didUpdateViewHeight:v4];
 LABEL_5:
   }
 
@@ -3562,27 +3562,27 @@ LABEL_5:
 
 - (void)cancelTextEditing
 {
-  v2 = [(RCRecordingView *)self textFieldBeingEdited];
-  [v2 resignFirstResponder];
+  textFieldBeingEdited = [(RCRecordingView *)self textFieldBeingEdited];
+  [textFieldBeingEdited resignFirstResponder];
 }
 
-- (void)updateTrackState:(unint64_t)a3
+- (void)updateTrackState:(unint64_t)state
 {
-  v5 = [(RCRecordingView *)self recordButtonRepository];
-  [v5 setTrackState:a3];
+  recordButtonRepository = [(RCRecordingView *)self recordButtonRepository];
+  [recordButtonRepository setTrackState:state];
 
-  v6 = [(RCRecordingView *)self transcriptionButton];
-  [v6 setEnabled:a3 != 2];
+  transcriptionButton = [(RCRecordingView *)self transcriptionButton];
+  [transcriptionButton setEnabled:state != 2];
 }
 
-- (void)toggleTranscriptView:(id)a3
+- (void)toggleTranscriptView:(id)view
 {
-  v4 = a3;
-  v5 = [(RCRecordingView *)self viewDelegate];
-  [v5 performControlsAction:42 position:v4 source:0.0];
+  viewCopy = view;
+  viewDelegate = [(RCRecordingView *)self viewDelegate];
+  [viewDelegate performControlsAction:42 position:viewCopy source:0.0];
 }
 
-- (void)deviceTranscriptionSupportDidChange:(BOOL)a3
+- (void)deviceTranscriptionSupportDidChange:(BOOL)change
 {
   if ([(RCRecordingView *)self didSetupSubviews])
   {
@@ -3592,16 +3592,16 @@ LABEL_5:
   }
 }
 
-- (void)setSaveRecordingAction:(id)a3
+- (void)setSaveRecordingAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = [_TtC10VoiceMemos22RCSaveAsNewMenuFactory saveRecordingActionWithActionHandler:self];
-  [v4 addAction:v5 forControlEvents:64];
+  [actionCopy addAction:v5 forControlEvents:64];
 }
 
-- (void)showAlertForSaveAsNew:(id)a3
+- (void)showAlertForSaveAsNew:(id)new
 {
-  v4 = a3;
+  newCopy = new;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"SAVE_RECORDING" value:&stru_100295BB8 table:0];
   v7 = +[NSBundle mainBundle];
@@ -3624,7 +3624,7 @@ LABEL_5:
   v31[2] = sub_1000929EC;
   v31[3] = &unk_10028BE38;
   v31[4] = self;
-  v15 = v4;
+  v15 = newCopy;
   v32 = v15;
   v16 = [UIAlertAction actionWithTitle:v14 style:2 handler:v31];
 
@@ -3676,85 +3676,85 @@ LABEL_5:
   objc_destroyWeak(&location);
 }
 
-- (void)assignActionOnDoneButton:(id)a3
+- (void)assignActionOnDoneButton:(id)button
 {
-  v4 = a3;
-  [(RCRecordingView *)self resetDoneButtonSaveAction:v4];
+  buttonCopy = button;
+  [(RCRecordingView *)self resetDoneButtonSaveAction:buttonCopy];
   if ([(RCRecordingView *)self shouldSaveAsNew])
   {
     v5 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v6 = [v5 presentsSaveAsNewAlert];
+    presentsSaveAsNewAlert = [v5 presentsSaveAsNewAlert];
 
-    if (v6)
+    if (presentsSaveAsNewAlert)
     {
       v11 = _NSConcreteStackBlock;
       v12 = 3221225472;
       v13 = sub_100092BC0;
       v14 = &unk_10028BE88;
-      v15 = self;
-      v7 = v4;
+      selfCopy = self;
+      v7 = buttonCopy;
       v16 = v7;
       v8 = [UIAction actionWithHandler:&v11];
-      [v7 addAction:v8 forControlEvents:{64, v11, v12, v13, v14, v15}];
+      [v7 addAction:v8 forControlEvents:{64, v11, v12, v13, v14, selfCopy}];
     }
 
     else
     {
-      v9 = [v4 menu];
+      menu = [buttonCopy menu];
 
-      if (!v9)
+      if (!menu)
       {
         v10 = [_TtC10VoiceMemos22RCSaveAsNewMenuFactory createMenuWithAutomaticallyPause:1 actionHandler:self];
-        [v4 setMenu:v10];
-        [v4 setShowsMenuAsPrimaryAction:1];
+        [buttonCopy setMenu:v10];
+        [buttonCopy setShowsMenuAsPrimaryAction:1];
       }
     }
   }
 
   else
   {
-    [v4 setMenu:0];
-    [v4 setShowsMenuAsPrimaryAction:0];
-    [(RCRecordingView *)self setSaveRecordingAction:v4];
+    [buttonCopy setMenu:0];
+    [buttonCopy setShowsMenuAsPrimaryAction:0];
+    [(RCRecordingView *)self setSaveRecordingAction:buttonCopy];
   }
 }
 
 - (void)cancelButtonTapped
 {
-  v4 = [(RCRecordingView *)self viewDelegate];
-  v3 = [(RCRecordingView *)self cancelButton];
-  [v4 performControlsAction:26 position:v3 source:0.0];
+  viewDelegate = [(RCRecordingView *)self viewDelegate];
+  cancelButton = [(RCRecordingView *)self cancelButton];
+  [viewDelegate performControlsAction:26 position:cancelButton source:0.0];
 }
 
 - (void)_handleTrimToSelection
 {
-  v4 = [(RCRecordingView *)self viewDelegate];
-  v3 = [(RCRecordingView *)self deleteSelectionButton];
-  [v4 performControlsAction:31 position:v3 source:0.0];
+  viewDelegate = [(RCRecordingView *)self viewDelegate];
+  deleteSelectionButton = [(RCRecordingView *)self deleteSelectionButton];
+  [viewDelegate performControlsAction:31 position:deleteSelectionButton source:0.0];
 }
 
 - (void)_handleDeleteSelection
 {
-  v4 = [(RCRecordingView *)self viewDelegate];
-  v3 = [(RCRecordingView *)self deleteSelectionButton];
-  [v4 performControlsAction:32 position:v3 source:0.0];
+  viewDelegate = [(RCRecordingView *)self viewDelegate];
+  deleteSelectionButton = [(RCRecordingView *)self deleteSelectionButton];
+  [viewDelegate performControlsAction:32 position:deleteSelectionButton source:0.0];
 }
 
-- (void)_handleTapToFullscreen:(id)a3
+- (void)_handleTapToFullscreen:(id)fullscreen
 {
-  v4 = a3;
-  if (-[RCRecordingView displayStyle](self, "displayStyle") == 2 && [v4 state] == 3)
+  fullscreenCopy = fullscreen;
+  if (-[RCRecordingView displayStyle](self, "displayStyle") == 2 && [fullscreenCopy state] == 3)
   {
     [(RCRecordingView *)self _switchToFullScreen];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
+  touchCopy = touch;
   if ([(RCRecordingView *)self _stateSupportsDragGesture])
   {
-    v6 = ![(RCRecordingView *)self _touchIsInExcludedView:v5];
+    v6 = ![(RCRecordingView *)self _touchIsInExcludedView:touchCopy];
   }
 
   else
@@ -3765,16 +3765,16 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)_touchIsInExcludedView:(id)a3
+- (BOOL)_touchIsInExcludedView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(RCRecordingView *)self dragGesturePassthroughSpecs];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  dragGesturePassthroughSpecs = [(RCRecordingView *)self dragGesturePassthroughSpecs];
+  v7 = [dragGesturePassthroughSpecs countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3785,44 +3785,44 @@ LABEL_5:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dragGesturePassthroughSpecs);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 topLevelView];
-        -[RCRecordingView _addSubviewsOfView:includingTopLevelView:toMutableArray:](self, "_addSubviewsOfView:includingTopLevelView:toMutableArray:", v12, [v11 includeTopLevelView], v5);
+        topLevelView = [v11 topLevelView];
+        -[RCRecordingView _addSubviewsOfView:includingTopLevelView:toMutableArray:](self, "_addSubviewsOfView:includingTopLevelView:toMutableArray:", topLevelView, [v11 includeTopLevelView], v5);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [dragGesturePassthroughSpecs countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 
-  [v4 locationInView:self];
+  [viewCopy locationInView:self];
   v13 = [(RCRecordingView *)self hitTest:0 withEvent:?];
   v14 = [v5 containsObject:v13];
 
   return v14;
 }
 
-- (void)_addSubviewsOfView:(id)a3 includingTopLevelView:(BOOL)a4 toMutableArray:(id)a5
+- (void)_addSubviewsOfView:(id)view includingTopLevelView:(BOOL)levelView toMutableArray:(id)array
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v6)
+  levelViewCopy = levelView;
+  viewCopy = view;
+  arrayCopy = array;
+  v10 = arrayCopy;
+  if (levelViewCopy)
   {
-    [v9 addObject:v8];
+    [arrayCopy addObject:viewCopy];
   }
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = [v8 subviews];
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  subviews = [viewCopy subviews];
+  v12 = [subviews countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = v12;
@@ -3833,7 +3833,7 @@ LABEL_5:
       {
         if (*v18 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(subviews);
         }
 
         v16 = *(*(&v17 + 1) + 8 * i);
@@ -3841,7 +3841,7 @@ LABEL_5:
         [(RCRecordingView *)self _addSubviewsOfView:v16 includingTopLevelView:0 toMutableArray:v10];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v13 = [subviews countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v13);
@@ -3851,9 +3851,9 @@ LABEL_5:
 - (void)toggleFullCompact
 {
   v3 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v4 = [v3 supportsCompactRecordingCard];
+  supportsCompactRecordingCard = [v3 supportsCompactRecordingCard];
 
-  if (v4)
+  if (supportsCompactRecordingCard)
   {
     if ([(RCRecordingView *)self displayStyle]== 2)
     {
@@ -3897,10 +3897,10 @@ LABEL_5:
   }
 }
 
-- (void)_dimRecordingDescriptionView:(BOOL)a3 animated:(BOOL)a4
+- (void)_dimRecordingDescriptionView:(BOOL)view animated:(BOOL)animated
 {
   v6 = 0.0;
-  if (a4)
+  if (animated)
   {
     v7 = +[RCRecorderStyleProvider sharedStyleProvider];
     [v7 dimDescriptionViewAnimationDuration];
@@ -3912,139 +3912,139 @@ LABEL_5:
   v9[2] = sub_1000933CC;
   v9[3] = &unk_10028A988;
   v9[4] = self;
-  v10 = a3;
+  viewCopy = view;
   [UIView animateWithDuration:v9 animations:v6];
 }
 
 - (void)updateTopBottomSpacersForDismiss
 {
-  v3 = [(RCRecordingView *)self topSpacerViewHeightConstraint];
+  topSpacerViewHeightConstraint = [(RCRecordingView *)self topSpacerViewHeightConstraint];
   LODWORD(v4) = 1132003328;
-  [v3 setPriority:v4];
+  [topSpacerViewHeightConstraint setPriority:v4];
 
-  v5 = [(RCRecordingView *)self topSpacerView];
+  topSpacerView = [(RCRecordingView *)self topSpacerView];
   LODWORD(v6) = 1132068864;
-  [v5 setContentHuggingPriority:1 forAxis:v6];
+  [topSpacerView setContentHuggingPriority:1 forAxis:v6];
 
-  v7 = [(RCRecordingView *)self topSpacerView];
+  topSpacerView2 = [(RCRecordingView *)self topSpacerView];
   LODWORD(v8) = 1132068864;
-  [v7 setContentCompressionResistancePriority:1 forAxis:v8];
+  [topSpacerView2 setContentCompressionResistancePriority:1 forAxis:v8];
 
-  v10 = [(RCRecordingView *)self bottomSpacerViewHeightConstraint];
+  bottomSpacerViewHeightConstraint = [(RCRecordingView *)self bottomSpacerViewHeightConstraint];
   LODWORD(v9) = 1148846080;
-  [v10 setPriority:v9];
+  [bottomSpacerViewHeightConstraint setPriority:v9];
 }
 
 - (void)updateTopBottomSpacersForPresent
 {
-  v3 = [(RCRecordingView *)self bottomSpacerViewHeightConstraint];
+  bottomSpacerViewHeightConstraint = [(RCRecordingView *)self bottomSpacerViewHeightConstraint];
   LODWORD(v4) = 1132003328;
-  [v3 setPriority:v4];
+  [bottomSpacerViewHeightConstraint setPriority:v4];
 
-  v5 = [(RCRecordingView *)self bottomSpacerView];
+  bottomSpacerView = [(RCRecordingView *)self bottomSpacerView];
   LODWORD(v6) = 1132068864;
-  [v5 setContentHuggingPriority:1 forAxis:v6];
+  [bottomSpacerView setContentHuggingPriority:1 forAxis:v6];
 
-  v7 = [(RCRecordingView *)self bottomSpacerView];
+  bottomSpacerView2 = [(RCRecordingView *)self bottomSpacerView];
   LODWORD(v8) = 1132068864;
-  [v7 setContentCompressionResistancePriority:1 forAxis:v8];
+  [bottomSpacerView2 setContentCompressionResistancePriority:1 forAxis:v8];
 
-  v10 = [(RCRecordingView *)self topSpacerViewHeightConstraint];
+  topSpacerViewHeightConstraint = [(RCRecordingView *)self topSpacerViewHeightConstraint];
   LODWORD(v9) = 1148846080;
-  [v10 setPriority:v9];
+  [topSpacerViewHeightConstraint setPriority:v9];
 }
 
 - (void)resetTopBottomSpacers
 {
-  v3 = [(RCRecordingView *)self bottomSpacerViewHeightConstraint];
+  bottomSpacerViewHeightConstraint = [(RCRecordingView *)self bottomSpacerViewHeightConstraint];
   LODWORD(v4) = 1148846080;
-  [v3 setPriority:v4];
+  [bottomSpacerViewHeightConstraint setPriority:v4];
 
-  v5 = [(RCRecordingView *)self topSpacerViewHeightConstraint];
+  topSpacerViewHeightConstraint = [(RCRecordingView *)self topSpacerViewHeightConstraint];
   LODWORD(v6) = 1148846080;
-  [v5 setPriority:v6];
+  [topSpacerViewHeightConstraint setPriority:v6];
 
   [(RCRecordingView *)self _updateVerticalContentHuggingAndCompressionResistancePriorities];
 }
 
-- (void)performControlsAction:(int64_t)a3 position:(double)a4 source:(id)a5
+- (void)performControlsAction:(int64_t)action position:(double)position source:(id)source
 {
-  v7 = a5;
-  v8 = [(RCRecordingView *)self viewDelegate];
+  sourceCopy = source;
+  viewDelegate = [(RCRecordingView *)self viewDelegate];
   [(RCRecordingView *)self currentTime];
-  [v8 performControlsAction:a3 position:v7 source:?];
+  [viewDelegate performControlsAction:action position:sourceCopy source:?];
 }
 
-- (void)handleUpdateTitle:(id)a3
+- (void)handleUpdateTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(RCRecordingView *)self viewDelegate];
-  [v5 performRenameWithNewTitle:v4];
+  titleCopy = title;
+  viewDelegate = [(RCRecordingView *)self viewDelegate];
+  [viewDelegate performRenameWithNewTitle:titleCopy];
 }
 
-- (void)didBeginEditingInTextField:(id)a3
+- (void)didBeginEditingInTextField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   if ([(RCRecordingView *)self displayStyle]== 2)
   {
     [(RCRecordingView *)self toggleFullCompact];
   }
 
-  [(RCRecordingView *)self setTextFieldBeingEdited:v4];
+  [(RCRecordingView *)self setTextFieldBeingEdited:fieldCopy];
 }
 
 - (BOOL)shouldSelectFullTitleAtBeginEditing
 {
-  v2 = [(RCRecordingView *)self viewDelegate];
-  v3 = [v2 recordingTitleHasBeenEdited];
+  viewDelegate = [(RCRecordingView *)self viewDelegate];
+  recordingTitleHasBeenEdited = [viewDelegate recordingTitleHasBeenEdited];
 
-  return v3 ^ 1;
+  return recordingTitleHasBeenEdited ^ 1;
 }
 
 - (void)_updateAccessibilityElements
 {
-  v3 = [(RCRecordingView *)self descriptionView];
-  v19[0] = v3;
-  v4 = [(RCRecordingView *)self centerContentContainerView];
-  v19[1] = v4;
-  v5 = [(RCRecordingView *)self overviewWaveformContainerView];
-  v19[2] = v5;
-  v6 = [(RCRecordingView *)self currentTimeLabel];
-  v19[3] = v6;
-  v7 = [(RCRecordingView *)self trimToSelectionButton];
-  v19[4] = v7;
-  v8 = [(RCRecordingView *)self deleteSelectionButton];
-  v19[5] = v8;
+  descriptionView = [(RCRecordingView *)self descriptionView];
+  v19[0] = descriptionView;
+  centerContentContainerView = [(RCRecordingView *)self centerContentContainerView];
+  v19[1] = centerContentContainerView;
+  overviewWaveformContainerView = [(RCRecordingView *)self overviewWaveformContainerView];
+  v19[2] = overviewWaveformContainerView;
+  currentTimeLabel = [(RCRecordingView *)self currentTimeLabel];
+  v19[3] = currentTimeLabel;
+  trimToSelectionButton = [(RCRecordingView *)self trimToSelectionButton];
+  v19[4] = trimToSelectionButton;
+  deleteSelectionButton = [(RCRecordingView *)self deleteSelectionButton];
+  v19[5] = deleteSelectionButton;
   v9 = [NSArray arrayWithObjects:v19 count:6];
   v10 = [NSMutableArray arrayWithArray:v9];
 
-  v11 = [(RCRecordingView *)self recordButton];
+  recordButton = [(RCRecordingView *)self recordButton];
 
-  if (v11)
+  if (recordButton)
   {
-    v12 = [(RCRecordingView *)self recordButton];
-    [v10 addObject:v12];
+    recordButton2 = [(RCRecordingView *)self recordButton];
+    [v10 addObject:recordButton2];
   }
 
-  v13 = [(RCRecordingView *)self shuttleBar];
+  shuttleBar = [(RCRecordingView *)self shuttleBar];
 
-  if (v13)
+  if (shuttleBar)
   {
-    v14 = [(RCRecordingView *)self shuttleBar];
-    [v10 addObject:v14];
+    shuttleBar2 = [(RCRecordingView *)self shuttleBar];
+    [v10 addObject:shuttleBar2];
   }
 
   v15 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v16 = [v15 hostsCancelButtonInBottomSection];
+  hostsCancelButtonInBottomSection = [v15 hostsCancelButtonInBottomSection];
 
-  if (v16)
+  if (hostsCancelButtonInBottomSection)
   {
-    v17 = [(RCRecordingView *)self cancelButton];
-    [v10 addObject:v17];
+    cancelButton = [(RCRecordingView *)self cancelButton];
+    [v10 addObject:cancelButton];
   }
 
-  v18 = [(RCRecordingView *)self doneButton];
-  [v10 addObject:v18];
+  doneButton = [(RCRecordingView *)self doneButton];
+  [v10 addObject:doneButton];
 
   [(RCRecordingView *)self setAccessibilityElements:v10];
 }
@@ -4069,8 +4069,8 @@ LABEL_5:
 
   v3 = 1;
 LABEL_10:
-  v5 = [(RCRecordingView *)self shuttleBar];
-  [(RCRecordingView *)self performControlsAction:v3 position:v5 source:0.0];
+  shuttleBar = [(RCRecordingView *)self shuttleBar];
+  [(RCRecordingView *)self performControlsAction:v3 position:shuttleBar source:0.0];
 
   return 1;
 }

@@ -10,40 +10,40 @@
 
 + (id)mtui_startResumeButtonTintColor
 {
-  v0 = [MEMORY[0x277D75348] mtui_startResumeButtonTextColor];
-  v1 = [v0 colorWithAlphaComponent:0.2];
+  mtui_startResumeButtonTextColor = [MEMORY[0x277D75348] mtui_startResumeButtonTextColor];
+  v1 = [mtui_startResumeButtonTextColor colorWithAlphaComponent:0.2];
 
   return v1;
 }
 
 + (id)mtui_pauseButtonTintColor
 {
-  v0 = [MEMORY[0x277D75348] mtui_pauseButtonTextColor];
-  v1 = [v0 colorWithAlphaComponent:0.2];
+  mtui_pauseButtonTextColor = [MEMORY[0x277D75348] mtui_pauseButtonTextColor];
+  v1 = [mtui_pauseButtonTextColor colorWithAlphaComponent:0.2];
 
   return v1;
 }
 
 + (id)mtui_stopButtonTintColor
 {
-  v0 = [MEMORY[0x277D75348] mtui_stopButtonTextColor];
-  v1 = [v0 colorWithAlphaComponent:0.2];
+  mtui_stopButtonTextColor = [MEMORY[0x277D75348] mtui_stopButtonTextColor];
+  v1 = [mtui_stopButtonTextColor colorWithAlphaComponent:0.2];
 
   return v1;
 }
 
 + (id)mtui_lapResetButtonTintColor
 {
-  v0 = [MEMORY[0x277D75348] mtui_lapResetButtonTextColor];
-  v1 = [v0 colorWithAlphaComponent:0.2];
+  mtui_lapResetButtonTextColor = [MEMORY[0x277D75348] mtui_lapResetButtonTextColor];
+  v1 = [mtui_lapResetButtonTextColor colorWithAlphaComponent:0.2];
 
   return v1;
 }
 
 + (id)mtui_disabledStartButtonTintColor
 {
-  v0 = [MEMORY[0x277D75348] mtui_startResumeButtonTextColor];
-  v1 = [v0 colorWithAlphaComponent:0.1];
+  mtui_startResumeButtonTextColor = [MEMORY[0x277D75348] mtui_startResumeButtonTextColor];
+  v1 = [mtui_startResumeButtonTextColor colorWithAlphaComponent:0.1];
 
   return v1;
 }

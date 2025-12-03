@@ -1,13 +1,13 @@
 @interface VCMediaStreamStats
 - (VCMediaStreamStats)init;
 - (double)framerate;
-- (double)getFramerateSinceTime:(double)a3;
+- (double)getFramerateSinceTime:(double)time;
 - (unsigned)bitrateKbps;
-- (unsigned)getBitrateKbpsSinceTime:(double)a3;
+- (unsigned)getBitrateKbpsSinceTime:(double)time;
 - (void)dealloc;
 - (void)init;
-- (void)recordDataWithSize:(double)a3 atTime:(double)a4;
-- (void)updateMinMaxSinceTime:(double)a3;
+- (void)recordDataWithSize:(double)size atTime:(double)time;
+- (void)updateMinMaxSinceTime:(double)time;
 @end
 
 @implementation VCMediaStreamStats
@@ -51,20 +51,20 @@
   [(VCMediaStreamStats *)&v3 dealloc];
 }
 
-- (void)recordDataWithSize:(double)a3 atTime:(double)a4
+- (void)recordDataWithSize:(double)size atTime:(double)time
 {
-  SummerAdd(a3, a4);
+  SummerAdd(size, time);
   lastRecordingTime = self->_lastRecordingTime;
   if (lastRecordingTime != 0.0)
   {
-    v7 = ((a4 - lastRecordingTime) * 1000.0 + 0.5);
+    v7 = ((time - lastRecordingTime) * 1000.0 + 0.5);
     if (self->_maxFrameDurationMillis < v7)
     {
       self->_maxFrameDurationMillis = v7;
     }
   }
 
-  self->_lastRecordingTime = a4;
+  self->_lastRecordingTime = time;
 }
 
 - (double)framerate
@@ -82,7 +82,7 @@
   return [(VCMediaStreamStats *)self getBitrateKbpsSinceTime:v3];
 }
 
-- (void)updateMinMaxSinceTime:(double)a3
+- (void)updateMinMaxSinceTime:(double)time
 {
   [(VCMediaStreamStats *)self getFramerateSinceTime:?];
   if (self->_maxFramerate < v5)
@@ -95,7 +95,7 @@
     self->_minFramerate = v5;
   }
 
-  v6 = [(VCMediaStreamStats *)self getBitrateKbpsSinceTime:a3];
+  v6 = [(VCMediaStreamStats *)self getBitrateKbpsSinceTime:time];
   if (self->_maxBitrateKbps < v6)
   {
     self->_maxBitrateKbps = v6;
@@ -107,12 +107,12 @@
   }
 }
 
-- (double)getFramerateSinceTime:(double)a3
+- (double)getFramerateSinceTime:(double)time
 {
   v7 = *MEMORY[0x1E69E9840];
   v6 = -1431655766;
   v5 = NAN;
-  v3 = SummerLengthPred(a3, self->_summerHandle, SummerGreaterThan, &v5, &v6);
+  v3 = SummerLengthPred(time, self->_summerHandle, SummerGreaterThan, &v5, &v6);
   result = 0.0;
   if ((v3 & 0x80000000) == 0 && v5 > 0.0)
   {
@@ -122,13 +122,13 @@
   return result;
 }
 
-- (unsigned)getBitrateKbpsSinceTime:(double)a3
+- (unsigned)getBitrateKbpsSinceTime:(double)time
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v5 = NAN;
   v6[0] = NAN;
   v3 = 0.0;
-  if ((SummerSumPred(a3, 0.0, self->_summerHandle, SummerGreaterThan, SummerIdentity, &v5, v6) & 0x80000000) == 0 && v5 > 0.0)
+  if ((SummerSumPred(time, 0.0, self->_summerHandle, SummerGreaterThan, SummerIdentity, &v5, v6) & 0x80000000) == 0 && v5 > 0.0)
   {
     v3 = v6[0] * 8.0 / v5;
   }
@@ -140,7 +140,7 @@
 {
   v8 = *MEMORY[0x1E69E9840];
   v2 = 136315650;
-  v3 = a1;
+  selfCopy = self;
   v4 = 2080;
   v5 = "[VCMediaStreamStats init]";
   v6 = 1024;

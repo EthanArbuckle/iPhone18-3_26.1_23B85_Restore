@@ -1,5 +1,5 @@
 @interface PXGVisionRecordingSkippedRenderEventSerializable
-- (PXGVisionRecordingSkippedRenderEventSerializable)initWithSerializableObject:(id)a3;
+- (PXGVisionRecordingSkippedRenderEventSerializable)initWithSerializableObject:(id)object;
 - (id)createSerializableObject;
 @end
 
@@ -16,15 +16,15 @@
   return v3;
 }
 
-- (PXGVisionRecordingSkippedRenderEventSerializable)initWithSerializableObject:(id)a3
+- (PXGVisionRecordingSkippedRenderEventSerializable)initWithSerializableObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = PXGVisionRecordingSkippedRenderEventSerializable;
   v5 = [(PXGVisionRecordingSkippedRenderEventSerializable *)&v8 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"reason"];
+    v6 = [objectCopy objectForKeyedSubscript:@"reason"];
     v5->_reason = [v6 unsignedIntValue];
   }
 

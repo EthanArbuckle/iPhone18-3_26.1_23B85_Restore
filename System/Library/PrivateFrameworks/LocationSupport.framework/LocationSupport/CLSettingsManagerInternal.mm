@@ -1,21 +1,21 @@
 @interface CLSettingsManagerInternal
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
-- (id)syncgetSetValue:(id)a3 forKey:(id)a4 withoutNotifying:(id)a5;
-- (id)syncgetSettingsAndRegisterForUpdates:(id)a3;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
+- (id)syncgetSetValue:(id)value forKey:(id)key withoutNotifying:(id)notifying;
+- (id)syncgetSettingsAndRegisterForUpdates:(id)updates;
 - (void)beginService;
 - (void)endService;
-- (void)updateClientsWithDictionary:(id)a3;
+- (void)updateClientsWithDictionary:(id)dictionary;
 @end
 
 @implementation CLSettingsManagerInternal
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -43,16 +43,16 @@
   [(CLSettingsManagerInternal *)self setClients:0];
 }
 
-- (id)syncgetSettingsAndRegisterForUpdates:(id)a3
+- (id)syncgetSettingsAndRegisterForUpdates:(id)updates
 {
-  [(NSMutableSet *)self->_clients addObject:a3];
+  [(NSMutableSet *)self->_clients addObject:updates];
   v4 = MEMORY[0x1E695DF20];
   settingsDictionary = self->_settingsDictionary;
 
   return [v4 dictionaryWithDictionary:settingsDictionary];
 }
 
-- (void)updateClientsWithDictionary:(id)a3
+- (void)updateClientsWithDictionary:(id)dictionary
 {
   v16 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -81,7 +81,7 @@
           objc_enumerationMutation(clients);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) didUpdateSettings:a3];
+        [*(*(&v11 + 1) + 8 * v9++) didUpdateSettings:dictionary];
       }
 
       while (v7 != v9);
@@ -94,10 +94,10 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)syncgetSetValue:(id)a3 forKey:(id)a4 withoutNotifying:(id)a5
+- (id)syncgetSetValue:(id)value forKey:(id)key withoutNotifying:(id)notifying
 {
   v21 = *MEMORY[0x1E69E9840];
-  [(NSMutableDictionary *)self->_settingsDictionary setValue:a3 forKey:a4];
+  [(NSMutableDictionary *)self->_settingsDictionary setValue:value forKey:key];
   v7 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:self->_settingsDictionary];
   v16 = 0u;
   v17 = 0u;
@@ -120,7 +120,7 @@
         }
 
         v13 = *(*(&v16 + 1) + 8 * v12);
-        if (v13 != a5)
+        if (v13 != notifying)
         {
           [v13 didUpdateSettings:v7];
         }

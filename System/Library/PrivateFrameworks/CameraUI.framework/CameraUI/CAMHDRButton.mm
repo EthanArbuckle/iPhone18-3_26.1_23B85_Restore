@@ -1,17 +1,17 @@
 @interface CAMHDRButton
-- (CAMHDRButton)initWithFrame:(CGRect)a3;
-- (CAMHDRButton)initWithLayoutStyle:(int64_t)a3;
-- (id)_currentGlyphImageForAccessibilityHUD:(BOOL)a3;
-- (id)titleForMenuItemAtIndex:(int64_t)a3;
+- (CAMHDRButton)initWithFrame:(CGRect)frame;
+- (CAMHDRButton)initWithLayoutStyle:(int64_t)style;
+- (id)_currentGlyphImageForAccessibilityHUD:(BOOL)d;
+- (id)titleForMenuItemAtIndex:(int64_t)index;
 - (int64_t)HDRMode;
-- (int64_t)modeForIndex:(int64_t)a3;
+- (int64_t)modeForIndex:(int64_t)index;
 - (int64_t)numberOfMenuItems;
-- (unint64_t)indexForMode:(int64_t)a3;
+- (unint64_t)indexForMode:(int64_t)mode;
 - (void)_commonCAMHDRButtonInitialization;
 - (void)_updateAllowedModes;
 - (void)_updateCurrentGlyphImage;
 - (void)reloadData;
-- (void)setHDRMode:(int64_t)a3;
+- (void)setHDRMode:(int64_t)mode;
 @end
 
 @implementation CAMHDRButton
@@ -29,9 +29,9 @@
 
 - (int64_t)HDRMode
 {
-  v3 = [(CAMExpandableMenuButton *)self selectedIndex];
+  selectedIndex = [(CAMExpandableMenuButton *)self selectedIndex];
 
-  return [(CAMHDRButton *)self modeForIndex:v3];
+  return [(CAMHDRButton *)self modeForIndex:selectedIndex];
 }
 
 - (void)_updateAllowedModes
@@ -62,8 +62,8 @@
 
 - (int64_t)numberOfMenuItems
 {
-  v2 = [(CAMHDRButton *)self _allowedModes];
-  v3 = [v2 count];
+  _allowedModes = [(CAMHDRButton *)self _allowedModes];
+  v3 = [_allowedModes count];
 
   return v3;
 }
@@ -71,15 +71,15 @@
 - (void)_updateCurrentGlyphImage
 {
   v4 = [(CAMHDRButton *)self _currentGlyphImageForAccessibilityHUD:0];
-  v3 = [(CAMHDRButton *)self _glyphView];
-  [v3 setImage:v4];
+  _glyphView = [(CAMHDRButton *)self _glyphView];
+  [_glyphView setImage:v4];
 }
 
-- (CAMHDRButton)initWithLayoutStyle:(int64_t)a3
+- (CAMHDRButton)initWithLayoutStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = CAMHDRButton;
-  v3 = [(CAMExpandableMenuButton *)&v7 initWithLayoutStyle:a3];
+  v3 = [(CAMExpandableMenuButton *)&v7 initWithLayoutStyle:style];
   v4 = v3;
   if (v3)
   {
@@ -90,17 +90,17 @@
   return v4;
 }
 
-- (CAMHDRButton)initWithFrame:(CGRect)a3
+- (CAMHDRButton)initWithFrame:(CGRect)frame
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  return [(CAMHDRButton *)self initWithLayoutStyle:v5];
+  return [(CAMHDRButton *)self initWithLayoutStyle:cam_initialLayoutStyle];
 }
 
-- (void)setHDRMode:(int64_t)a3
+- (void)setHDRMode:(int64_t)mode
 {
-  v4 = [(CAMHDRButton *)self indexForMode:a3];
+  v4 = [(CAMHDRButton *)self indexForMode:mode];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = [(CAMHDRButton *)self indexForMode:0];
@@ -111,31 +111,31 @@
   [(CAMHDRButton *)self _updateCurrentGlyphImage];
 }
 
-- (int64_t)modeForIndex:(int64_t)a3
+- (int64_t)modeForIndex:(int64_t)index
 {
-  v4 = [(CAMHDRButton *)self _allowedModes];
-  v5 = v4;
-  if (a3 < 0 || [v4 count] <= a3)
+  _allowedModes = [(CAMHDRButton *)self _allowedModes];
+  v5 = _allowedModes;
+  if (index < 0 || [_allowedModes count] <= index)
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndex:a3];
-    v7 = [v6 integerValue];
+    v6 = [v5 objectAtIndex:index];
+    integerValue = [v6 integerValue];
   }
 
-  return v7;
+  return integerValue;
 }
 
-- (unint64_t)indexForMode:(int64_t)a3
+- (unint64_t)indexForMode:(int64_t)mode
 {
-  v4 = [(CAMHDRButton *)self _allowedModes];
-  if ([v4 count])
+  _allowedModes = [(CAMHDRButton *)self _allowedModes];
+  if ([_allowedModes count])
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v6 = [v4 indexOfObject:v5];
+    v5 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
+    v6 = [_allowedModes indexOfObject:v5];
   }
 
   else
@@ -146,9 +146,9 @@
   return v6;
 }
 
-- (id)titleForMenuItemAtIndex:(int64_t)a3
+- (id)titleForMenuItemAtIndex:(int64_t)index
 {
-  v3 = [(CAMHDRButton *)self modeForIndex:a3];
+  v3 = [(CAMHDRButton *)self modeForIndex:index];
   if (!v3)
   {
     v4 = @"HDR_OFF";
@@ -171,25 +171,25 @@ LABEL_7:
   return v6;
 }
 
-- (id)_currentGlyphImageForAccessibilityHUD:(BOOL)a3
+- (id)_currentGlyphImageForAccessibilityHUD:(BOOL)d
 {
-  v3 = a3;
-  v5 = [(CAMHDRButton *)self HDRMode];
-  v6 = [(CAMExpandableMenuButton *)self isExpanded];
-  v7 = [(CAMExpandableMenuButton *)self wantsSelectedItemToBeVisible];
-  v8 = [(CAMExpandableMenuButton *)self layoutStyle];
-  if (v5)
+  dCopy = d;
+  hDRMode = [(CAMHDRButton *)self HDRMode];
+  isExpanded = [(CAMExpandableMenuButton *)self isExpanded];
+  wantsSelectedItemToBeVisible = [(CAMExpandableMenuButton *)self wantsSelectedItemToBeVisible];
+  layoutStyle = [(CAMExpandableMenuButton *)self layoutStyle];
+  if (hDRMode)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = v6;
+    v9 = isExpanded;
   }
 
-  v10 = v9 | v7;
-  switch(v8)
+  v10 = v9 | wantsSelectedItemToBeVisible;
+  switch(layoutStyle)
   {
     case 3:
       goto LABEL_7;
@@ -208,7 +208,7 @@ LABEL_9:
       }
 
       v14 = v13;
-      if (v3)
+      if (dCopy)
       {
         goto LABEL_13;
       }
@@ -222,7 +222,7 @@ LABEL_7:
   }
 
   v14 = 0;
-  if (v3)
+  if (dCopy)
   {
 LABEL_13:
     v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-AXHUD", v14];

@@ -3,16 +3,16 @@
 - (id)be_redactedCFIString;
 - (id)be_sanitizedFontFamilyName;
 - (id)be_stringByRemovingPercentEscapes;
-- (int64_t)be_compareToJSVersionString:(id)a3;
+- (int64_t)be_compareToJSVersionString:(id)string;
 @end
 
 @implementation NSString
 
-- (int64_t)be_compareToJSVersionString:(id)a3
+- (int64_t)be_compareToJSVersionString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [(NSString *)self componentsSeparatedByString:@"."];
-  v6 = [v4 componentsSeparatedByString:@"."];
+  v6 = [stringCopy componentsSeparatedByString:@"."];
   if (![v5 count])
   {
     goto LABEL_7;
@@ -93,8 +93,8 @@ LABEL_7:
 
 - (id)be_redactedCFIString
 {
-  v2 = self;
-  if ([(NSString *)v2 hasPrefix:@"epubcfi(")]
+  selfCopy = self;
+  if ([(NSString *)selfCopy hasPrefix:@"epubcfi(")]
   {
     v10 = 0;
     v3 = [NSRegularExpression regularExpressionWithPattern:@"\\[\\w+\\]" options:1 error:&v10];
@@ -110,7 +110,7 @@ LABEL_7:
       }
     }
 
-    v6 = [v3 stringByReplacingMatchesInString:v2 options:0 range:0 withTemplate:{-[NSString length](v2, "length"), @"[redacted]"}];
+    v6 = [v3 stringByReplacingMatchesInString:selfCopy options:0 range:0 withTemplate:{-[NSString length](selfCopy, "length"), @"[redacted]"}];
   }
 
   else
@@ -125,7 +125,7 @@ LABEL_7:
 
   else
   {
-    v7 = v2;
+    v7 = selfCopy;
   }
 
   v8 = v7;

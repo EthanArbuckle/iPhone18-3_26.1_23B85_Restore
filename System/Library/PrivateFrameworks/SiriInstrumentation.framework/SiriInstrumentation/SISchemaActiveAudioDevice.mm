@@ -1,24 +1,24 @@
 @interface SISchemaActiveAudioDevice
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaActiveAudioDevice)initWithDictionary:(id)a3;
-- (SISchemaActiveAudioDevice)initWithJSON:(id)a3;
+- (SISchemaActiveAudioDevice)initWithDictionary:(id)dictionary;
+- (SISchemaActiveAudioDevice)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaActiveAudioDevice
 
-- (SISchemaActiveAudioDevice)initWithDictionary:(id)a3
+- (SISchemaActiveAudioDevice)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SISchemaActiveAudioDevice;
   v5 = [(SISchemaActiveAudioDevice *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"vendorIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"vendorIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -26,7 +26,7 @@
       [(SISchemaActiveAudioDevice *)v5 setVendorIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"productIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"productIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (SISchemaActiveAudioDevice)initWithJSON:(id)a3
+- (SISchemaActiveAudioDevice)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaActiveAudioDevice *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaActiveAudioDevice *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaActiveAudioDevice *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,48 +76,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_productIdentifier)
   {
-    v4 = [(SISchemaActiveAudioDevice *)self productIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"productIdentifier"];
+    productIdentifier = [(SISchemaActiveAudioDevice *)self productIdentifier];
+    v5 = [productIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"productIdentifier"];
   }
 
   if (self->_vendorIdentifier)
   {
-    v6 = [(SISchemaActiveAudioDevice *)self vendorIdentifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"vendorIdentifier"];
+    vendorIdentifier = [(SISchemaActiveAudioDevice *)self vendorIdentifier];
+    v7 = [vendorIdentifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"vendorIdentifier"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SISchemaActiveAudioDevice *)self vendorIdentifier];
-  v6 = [v4 vendorIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  vendorIdentifier = [(SISchemaActiveAudioDevice *)self vendorIdentifier];
+  vendorIdentifier2 = [equalCopy vendorIdentifier];
+  if ((vendorIdentifier != 0) == (vendorIdentifier2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(SISchemaActiveAudioDevice *)self vendorIdentifier];
-  if (v7)
+  vendorIdentifier3 = [(SISchemaActiveAudioDevice *)self vendorIdentifier];
+  if (vendorIdentifier3)
   {
-    v8 = v7;
-    v9 = [(SISchemaActiveAudioDevice *)self vendorIdentifier];
-    v10 = [v4 vendorIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = vendorIdentifier3;
+    vendorIdentifier4 = [(SISchemaActiveAudioDevice *)self vendorIdentifier];
+    vendorIdentifier5 = [equalCopy vendorIdentifier];
+    v11 = [vendorIdentifier4 isEqual:vendorIdentifier5];
 
     if (!v11)
     {
@@ -129,12 +129,12 @@
   {
   }
 
-  v5 = [(SISchemaActiveAudioDevice *)self productIdentifier];
-  v6 = [v4 productIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  vendorIdentifier = [(SISchemaActiveAudioDevice *)self productIdentifier];
+  vendorIdentifier2 = [equalCopy productIdentifier];
+  if ((vendorIdentifier != 0) != (vendorIdentifier2 == 0))
   {
-    v12 = [(SISchemaActiveAudioDevice *)self productIdentifier];
-    if (!v12)
+    productIdentifier = [(SISchemaActiveAudioDevice *)self productIdentifier];
+    if (!productIdentifier)
     {
 
 LABEL_15:
@@ -142,10 +142,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(SISchemaActiveAudioDevice *)self productIdentifier];
-    v15 = [v4 productIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = productIdentifier;
+    productIdentifier2 = [(SISchemaActiveAudioDevice *)self productIdentifier];
+    productIdentifier3 = [equalCopy productIdentifier];
+    v16 = [productIdentifier2 isEqual:productIdentifier3];
 
     if (v16)
     {
@@ -165,19 +165,19 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(SISchemaActiveAudioDevice *)self vendorIdentifier];
+  toCopy = to;
+  vendorIdentifier = [(SISchemaActiveAudioDevice *)self vendorIdentifier];
 
-  if (v4)
+  if (vendorIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SISchemaActiveAudioDevice *)self productIdentifier];
+  productIdentifier = [(SISchemaActiveAudioDevice *)self productIdentifier];
 
-  if (v5)
+  if (productIdentifier)
   {
     PBDataWriterWriteStringField();
   }

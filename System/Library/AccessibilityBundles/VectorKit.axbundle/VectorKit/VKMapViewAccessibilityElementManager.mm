@@ -1,68 +1,68 @@
 @interface VKMapViewAccessibilityElementManager
-- ($01BB1521EC52D44A8E7628F5261DCEC8)_boundsForMapView:(id)a3;
+- ($01BB1521EC52D44A8E7628F5261DCEC8)_boundsForMapView:(id)view;
 - ($01BB1521EC52D44A8E7628F5261DCEC8)bounds;
-- ($01BB1521EC52D44A8E7628F5261DCEC8)boundsForMapView:(id)a3;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_centerForMapView:(id)a3;
+- ($01BB1521EC52D44A8E7628F5261DCEC8)boundsForMapView:(id)view;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_centerForMapView:(id)view;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)center;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)centerForMapView:(id)a3;
-- (BOOL)_isValidBoundsForMapView:(id)a3 bounds:(id)a4;
-- (BOOL)_isValidYawForMapView:(id)a3 yaw:(double)a4;
-- (BOOL)hitPointHasMapAncestor:(CGPoint)a3 inWindow:(id)a4;
-- (BOOL)roadHasMapAncestor:(id)a3 inWindow:(id)a4;
-- (CGPoint)adjacentPointToPoint:(CGPoint)a3 withOtherPoint:(CGPoint)a4 onRoad:(id)a5;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)centerForMapView:(id)view;
+- (BOOL)_isValidBoundsForMapView:(id)view bounds:(id)bounds;
+- (BOOL)_isValidYawForMapView:(id)view yaw:(double)yaw;
+- (BOOL)hitPointHasMapAncestor:(CGPoint)ancestor inWindow:(id)window;
+- (BOOL)roadHasMapAncestor:(id)ancestor inWindow:(id)window;
+- (CGPoint)adjacentPointToPoint:(CGPoint)point withOtherPoint:(CGPoint)otherPoint onRoad:(id)road;
 - (CGPoint)explorationLastTouchPoint;
 - (VKMapView)currentMapView;
 - (VKMapViewAccessibilityElementManager)init;
 - (VKMapViewAccessibilityElementManagerDelegate)delegate;
-- (double)accessibilityAngleWithThreePointsFirst:(CGPoint)a3 second:(CGPoint)a4 third:(CGPoint)a5 inRadians:(BOOL)a6;
-- (double)accessibilityDistanceBetweenPoint:(CGPoint)a3 andPoint:(CGPoint)a4 onRoad:(id)a5;
-- (double)yawForMapView:(id)a3;
-- (id)_accessibilityElementsForMapView:(id)a3 mapViewBounds:(id)a4 visibleLabels:(id)a5 visibleTiles:(id)a6 existingElements:(id)a7;
-- (id)_descriptionForRouteTransitNodeLabel:(id)a3;
-- (id)_descriptionForTransitLineLabel:(id)a3;
-- (id)_descriptionForTransitNodeLabel:(id)a3;
-- (id)_gatherVisibleLabelMarkersForMapView:(id)a3;
-- (id)_gatherVisibleTilesForMapView:(id)a3;
-- (id)accessibilityElementsForMapView:(id)a3;
-- (id)accessibilityMapsExplorationChangeVerbosityIncreasing:(BOOL)a3;
+- (double)accessibilityAngleWithThreePointsFirst:(CGPoint)first second:(CGPoint)second third:(CGPoint)third inRadians:(BOOL)radians;
+- (double)accessibilityDistanceBetweenPoint:(CGPoint)point andPoint:(CGPoint)andPoint onRoad:(id)road;
+- (double)yawForMapView:(id)view;
+- (id)_accessibilityElementsForMapView:(id)view mapViewBounds:(id)bounds visibleLabels:(id)labels visibleTiles:(id)tiles existingElements:(id)elements;
+- (id)_descriptionForRouteTransitNodeLabel:(id)label;
+- (id)_descriptionForTransitLineLabel:(id)label;
+- (id)_descriptionForTransitNodeLabel:(id)label;
+- (id)_gatherVisibleLabelMarkersForMapView:(id)view;
+- (id)_gatherVisibleTilesForMapView:(id)view;
+- (id)accessibilityElementsForMapView:(id)view;
+- (id)accessibilityMapsExplorationChangeVerbosityIncreasing:(BOOL)increasing;
 - (id)accessibilityMapsExplorationCurrentIntersectionDescription;
 - (id)accessibilityMapsExplorationCurrentRoadsWithAngles;
-- (id)accessibilityMapsExplorationDescriptionForAdjacentPOIs:(id)a3;
-- (id)accessibilityMapsExplorationStringForElement:(id)a3 withRelativeAngle:(double)a4;
-- (id)accessibilityVisiblePOIsBetweenPoint:(CGPoint)a3 andPoint:(CGPoint)a4 onRoad:(id)a5;
-- (id)edgeBetweenVertex:(id)a3 andVertex:(id)a4;
-- (id)roadElementForFeatureWrapper:(id)a3;
-- (id)roadsForVertex:(id)a3;
-- (int64_t)orientationForMapView:(id)a3;
-- (void)_consolidateAccessibilityElements:(id)a3;
-- (void)_filterAccessibilityElements:(id)a3 zoomLevel:(float)a4 mapView:(id)a5;
-- (void)_processVisibleTile:(id)a3 accessibilityElements:(id *)a4 mapViewBounds:(id)a5 mapView:(id)a6 roadLabels:(id)a7;
-- (void)_sortAccessibilityElements:(id)a3 mapView:(id)a4;
+- (id)accessibilityMapsExplorationDescriptionForAdjacentPOIs:(id)is;
+- (id)accessibilityMapsExplorationStringForElement:(id)element withRelativeAngle:(double)angle;
+- (id)accessibilityVisiblePOIsBetweenPoint:(CGPoint)point andPoint:(CGPoint)andPoint onRoad:(id)road;
+- (id)edgeBetweenVertex:(id)vertex andVertex:(id)andVertex;
+- (id)roadElementForFeatureWrapper:(id)wrapper;
+- (id)roadsForVertex:(id)vertex;
+- (int64_t)orientationForMapView:(id)view;
+- (void)_consolidateAccessibilityElements:(id)elements;
+- (void)_filterAccessibilityElements:(id)elements zoomLevel:(float)level mapView:(id)view;
+- (void)_processVisibleTile:(id)tile accessibilityElements:(id *)elements mapViewBounds:(id)bounds mapView:(id)view roadLabels:(id)labels;
+- (void)_sortAccessibilityElements:(id)elements mapView:(id)view;
 - (void)accessibilityMapsExplorationBacktrack;
 - (void)accessibilityMapsExplorationBeginFromCurrentLocation;
-- (void)accessibilityMapsExplorationBeginFromLocationCoordinate:(id)a3;
-- (void)accessibilityMapsExplorationBeginFromPoint:(CGPoint)a3 withRoad:(id)a4;
-- (void)accessibilityMapsExplorationBeginFromRoad:(id)a3;
-- (void)accessibilityMapsExplorationContinueWithVertex:(id)a3 fromVertex:(id)a4;
-- (void)accessibilityMapsExplorationContinueWithVertexIndex:(unint64_t)a3;
+- (void)accessibilityMapsExplorationBeginFromLocationCoordinate:(id)coordinate;
+- (void)accessibilityMapsExplorationBeginFromPoint:(CGPoint)point withRoad:(id)road;
+- (void)accessibilityMapsExplorationBeginFromRoad:(id)road;
+- (void)accessibilityMapsExplorationContinueWithVertex:(id)vertex fromVertex:(id)fromVertex;
+- (void)accessibilityMapsExplorationContinueWithVertexIndex:(unint64_t)index;
 - (void)accessibilityMapsExplorationEnd;
-- (void)addNeighborsAsRelevantFeaturesForVertex:(id)a3;
-- (void)computeVertex:(id)a3;
-- (void)setCurrentExplorationVertex:(id)a3;
-- (void)setExplorationState:(int64_t)a3;
-- (void)updateAccessibilityElementsForMapView:(id)a3 isRetry:(BOOL)a4;
+- (void)addNeighborsAsRelevantFeaturesForVertex:(id)vertex;
+- (void)computeVertex:(id)vertex;
+- (void)setCurrentExplorationVertex:(id)vertex;
+- (void)setExplorationState:(int64_t)state;
+- (void)updateAccessibilityElementsForMapView:(id)view isRetry:(BOOL)retry;
 @end
 
 @implementation VKMapViewAccessibilityElementManager
 
-- (id)_gatherVisibleLabelMarkersForMapView:(id)a3
+- (id)_gatherVisibleLabelMarkersForMapView:(id)view
 {
-  v3 = [a3 safeValueForKey:@"labelMarkers"];
+  v3 = [view safeValueForKey:@"labelMarkers"];
 
   return v3;
 }
 
-- (id)_gatherVisibleTilesForMapView:(id)a3
+- (id)_gatherVisibleTilesForMapView:(id)view
 {
   v7 = 0;
   v8 = &v7;
@@ -70,8 +70,8 @@
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v6 = a3;
-  v3 = v6;
+  viewCopy = view;
+  v3 = viewCopy;
   AXPerformSafeBlock();
   v4 = v8[5];
 
@@ -88,18 +88,18 @@ void __70__VKMapViewAccessibilityElementManager__gatherVisibleTilesForMapView___
   *(v3 + 40) = v2;
 }
 
-- (id)_descriptionForTransitNodeLabel:(id)a3
+- (id)_descriptionForTransitNodeLabel:(id)label
 {
   v34 = *MEMORY[0x29EDCA608];
-  v27 = a3;
-  v3 = [MEMORY[0x29EDB8DE8] array];
-  v28 = [MEMORY[0x29EDB8DE8] array];
+  labelCopy = label;
+  array = [MEMORY[0x29EDB8DE8] array];
+  array2 = [MEMORY[0x29EDB8DE8] array];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = [v27 imageKeys];
-  v5 = [v4 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  imageKeys = [labelCopy imageKeys];
+  v5 = [imageKeys countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v5)
   {
     v6 = *v30;
@@ -109,51 +109,51 @@ void __70__VKMapViewAccessibilityElementManager__gatherVisibleTilesForMapView___
       {
         if (*v30 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(imageKeys);
         }
 
         v8 = *(*(&v29 + 1) + 8 * i);
         if ([v8 dataType] == 2)
         {
-          v9 = [v8 relatedText];
-          if ([v9 length])
+          relatedText = [v8 relatedText];
+          if ([relatedText length])
           {
-            v10 = [v3 indexOfObject:v9];
+            v10 = [array indexOfObject:relatedText];
             if (v10 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v11 = [MEMORY[0x29EDB8DE8] array];
-              [v3 addObject:v9];
-              [v28 addObject:v11];
+              array3 = [MEMORY[0x29EDB8DE8] array];
+              [array addObject:relatedText];
+              [array2 addObject:array3];
             }
 
             else
             {
-              v11 = [v28 objectAtIndexedSubscript:v10];
+              array3 = [array2 objectAtIndexedSubscript:v10];
             }
 
-            v12 = [v8 text];
-            if ([v12 length])
+            text = [v8 text];
+            if ([text length])
             {
-              [v11 addObject:v12];
+              [array3 addObject:text];
             }
           }
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v5 = [imageKeys countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v5);
   }
 
-  v13 = [v3 count];
+  v13 = [array count];
   if (v13)
   {
     v14 = 0;
     for (j = 0; j != v13; ++j)
     {
-      v16 = [v3 objectAtIndexedSubscript:{j, v25, v26}];
-      v17 = [v28 objectAtIndexedSubscript:j];
+      v16 = [array objectAtIndexedSubscript:{j, v25, v26}];
+      v17 = [array2 objectAtIndexedSubscript:j];
       v18 = MEMORY[0x29EDBA0F8];
       if ([v17 count] == 1)
       {
@@ -185,18 +185,18 @@ void __70__VKMapViewAccessibilityElementManager__gatherVisibleTilesForMapView___
   return v23;
 }
 
-- (id)_descriptionForTransitLineLabel:(id)a3
+- (id)_descriptionForTransitLineLabel:(id)label
 {
   v23 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v4 = [v3 relatedTexts];
-  v5 = [MEMORY[0x29EDB8DE8] array];
+  labelCopy = label;
+  relatedTexts = [labelCopy relatedTexts];
+  array = [MEMORY[0x29EDB8DE8] array];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v3 imageKeys];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  imageKeys = [labelCopy imageKeys];
+  v7 = [imageKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = *v19;
@@ -206,24 +206,24 @@ void __70__VKMapViewAccessibilityElementManager__gatherVisibleTilesForMapView___
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(imageKeys);
         }
 
-        v10 = [*(*(&v18 + 1) + 8 * i) shieldText];
-        if ([v10 length])
+        shieldText = [*(*(&v18 + 1) + 8 * i) shieldText];
+        if ([shieldText length])
         {
-          [v5 addObject:v10];
+          [array addObject:shieldText];
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [imageKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
   }
 
   v11 = MEMORY[0x29EDBA0F8];
-  if ([v5 count] >= 2)
+  if ([array count] >= 2)
   {
     v12 = @"TRANSIT_LINE_FORMAT_PLURAL";
   }
@@ -241,19 +241,19 @@ void __70__VKMapViewAccessibilityElementManager__gatherVisibleTilesForMapView___
   return v16;
 }
 
-- (id)_descriptionForRouteTransitNodeLabel:(id)a3
+- (id)_descriptionForRouteTransitNodeLabel:(id)label
 {
   v29 = *MEMORY[0x29EDCA608];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v22 = a3;
-  v3 = [v22 imageKeys];
+  labelCopy = label;
+  imageKeys = [labelCopy imageKeys];
   v4 = 0;
   v5 = 0;
   v6 = 0;
-  v7 = [v3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v7 = [imageKeys countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
     v23 = 0;
@@ -264,17 +264,17 @@ void __70__VKMapViewAccessibilityElementManager__gatherVisibleTilesForMapView___
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(imageKeys);
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
         if ([v10 dataType] == 3)
         {
-          v11 = [v10 relatedText];
+          relatedText = [v10 relatedText];
 
-          v12 = [v10 text];
+          text = [v10 text];
           v13 = v5;
-          v5 = v12;
+          v5 = text;
         }
 
         else
@@ -284,19 +284,19 @@ void __70__VKMapViewAccessibilityElementManager__gatherVisibleTilesForMapView___
             continue;
           }
 
-          v14 = [v10 relatedText];
+          relatedText2 = [v10 relatedText];
 
-          v15 = [v10 text];
+          text2 = [v10 text];
           v13 = v23;
-          v11 = v4;
-          v6 = v14;
-          v23 = v15;
+          relatedText = v4;
+          v6 = relatedText2;
+          v23 = text2;
         }
 
-        v4 = v11;
+        v4 = relatedText;
       }
 
-      v7 = [v3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v7 = [imageKeys countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (!v7)
       {
         goto LABEL_15;
@@ -326,48 +326,48 @@ LABEL_15:
   return v19;
 }
 
-- (id)_accessibilityElementsForMapView:(id)a3 mapViewBounds:(id)a4 visibleLabels:(id)a5 visibleTiles:(id)a6 existingElements:(id)a7
+- (id)_accessibilityElementsForMapView:(id)view mapViewBounds:(id)bounds visibleLabels:(id)labels visibleTiles:(id)tiles existingElements:(id)elements
 {
-  var3 = a4.var3;
-  var2 = a4.var2;
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var3 = bounds.var3;
+  var2 = bounds.var2;
+  var1 = bounds.var1;
+  var0 = bounds.var0;
   v71 = *MEMORY[0x29EDCA608];
-  v15 = a3;
-  v35 = a5;
-  v34 = a6;
-  v33 = a7;
+  viewCopy = view;
+  labelsCopy = labels;
+  tilesCopy = tiles;
+  elementsCopy = elements;
   v63 = 0;
   v64 = &v63;
   v65 = 0x3032000000;
   v66 = __Block_byref_object_copy__3;
   v67 = __Block_byref_object_dispose__3;
   v68 = objc_opt_new();
-  if (UIAccessibilityIsVoiceOverRunning() && ([v15 accessibilityMapTypeSupportsAccessibility] & 1) == 0)
+  if (UIAccessibilityIsVoiceOverRunning() && ([viewCopy accessibilityMapTypeSupportsAccessibility] & 1) == 0)
   {
     v31 = v64[5];
   }
 
   else
   {
-    v16 = [v15 accessibilityMapTypeShouldShowTransit];
-    v17 = [v15 accessibilityOnlyShowRouteNodesDuringTransit];
+    accessibilityMapTypeShouldShowTransit = [viewCopy accessibilityMapTypeShouldShowTransit];
+    accessibilityOnlyShowRouteNodesDuringTransit = [viewCopy accessibilityOnlyShowRouteNodesDuringTransit];
     v52[0] = MEMORY[0x29EDCA5F8];
     v52[1] = 3221225472;
     v52[2] = __131__VKMapViewAccessibilityElementManager__accessibilityElementsForMapView_mapViewBounds_visibleLabels_visibleTiles_existingElements___block_invoke;
     v52[3] = &unk_29F318A10;
-    v61 = v16;
-    v62 = v17;
+    v61 = accessibilityMapTypeShouldShowTransit;
+    v62 = accessibilityOnlyShowRouteNodesDuringTransit;
     v57 = var0;
     v58 = var1;
     v59 = var2;
     v60 = var3;
-    v18 = v15;
+    v18 = viewCopy;
     v53 = v18;
-    v54 = self;
-    v55 = v33;
+    selfCopy = self;
+    v55 = elementsCopy;
     v56 = &v63;
-    [v35 enumerateObjectsUsingBlock:v52];
+    [labelsCopy enumerateObjectsUsingBlock:v52];
     if (UIAccessibilityIsVoiceOverRunning())
     {
       v19 = [MEMORY[0x29EDB8E20] set];
@@ -375,7 +375,7 @@ LABEL_15:
       v51 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v20 = v35;
+      v20 = labelsCopy;
       v21 = [v20 countByEnumeratingWithState:&v48 objects:v70 count:16];
       if (v21)
       {
@@ -390,10 +390,10 @@ LABEL_15:
             }
 
             v24 = *(*(&v48 + 1) + 8 * i);
-            v25 = [v24 text];
-            if ([v25 length] && (objc_msgSend(v24, "hasBusinessID") & 1) == 0 && (objc_msgSend(v24, "isOneWayArrow") & 1) == 0 && (objc_msgSend(v24, "isTrafficIncident") & 1) == 0 && (objc_msgSend(v24, "isTransit") & 1) == 0 && (objc_msgSend(v24, "isTransitLine") & 1) == 0)
+            text = [v24 text];
+            if ([text length] && (objc_msgSend(v24, "hasBusinessID") & 1) == 0 && (objc_msgSend(v24, "isOneWayArrow") & 1) == 0 && (objc_msgSend(v24, "isTrafficIncident") & 1) == 0 && (objc_msgSend(v24, "isTransit") & 1) == 0 && (objc_msgSend(v24, "isTransitLine") & 1) == 0)
             {
-              [v19 addObject:v25];
+              [v19 addObject:text];
             }
           }
 
@@ -416,14 +416,14 @@ LABEL_15:
       v41 = v18;
       v26 = v19;
       v42 = v26;
-      [v34 enumerateObjectsUsingBlock:v40];
+      [tilesCopy enumerateObjectsUsingBlock:v40];
     }
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v27 = v34;
+    v27 = tilesCopy;
     v28 = [v27 countByEnumeratingWithState:&v36 objects:v69 count:16];
     if (v28)
     {
@@ -905,18 +905,18 @@ void __131__VKMapViewAccessibilityElementManager__accessibilityElementsForMapVie
   objc_setAssociatedObject(v2, &_TileInScene, 0, 0);
 }
 
-- (void)_processVisibleTile:(id)a3 accessibilityElements:(id *)a4 mapViewBounds:(id)a5 mapView:(id)a6 roadLabels:(id)a7
+- (void)_processVisibleTile:(id)tile accessibilityElements:(id *)elements mapViewBounds:(id)bounds mapView:(id)view roadLabels:(id)labels
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a7;
-  v13 = [v11 safeValueForKey:@"localizeLabels"];
+  tileCopy = tile;
+  viewCopy = view;
+  labelsCopy = labels;
+  v13 = [viewCopy safeValueForKey:@"localizeLabels"];
   [v13 BOOLValue];
 
   [(VKMapViewAccessibilityElementManager *)self explorationState];
-  v14 = v10;
-  v15 = v12;
-  v16 = v11;
+  v14 = tileCopy;
+  v15 = labelsCopy;
+  v16 = viewCopy;
   AXPerformSafeBlock();
 }
 
@@ -990,40 +990,40 @@ LABEL_11:
 LABEL_15:
 }
 
-- (void)_consolidateAccessibilityElements:(id)a3
+- (void)_consolidateAccessibilityElements:(id)elements
 {
-  v9 = a3;
+  elementsCopy = elements;
   v3 = objc_opt_new();
-  for (i = 0; i < [v9 count]; ++i)
+  for (i = 0; i < [elementsCopy count]; ++i)
   {
-    v5 = [v9 objectAtIndex:i];
+    v5 = [elementsCopy objectAtIndex:i];
     if ([v5 isRoad])
     {
-      v6 = [v5 trueLabel];
-      if ([v6 length])
+      trueLabel = [v5 trueLabel];
+      if ([trueLabel length])
       {
-        v7 = [v3 objectForKey:v6];
+        v7 = [v3 objectForKey:trueLabel];
         v8 = v7;
         if (v7)
         {
           [v7 addFeaturesFromElement:v5];
-          [v9 removeObjectAtIndex:i--];
+          [elementsCopy removeObjectAtIndex:i--];
         }
 
         else
         {
-          [v3 setObject:v5 forKey:v6];
+          [v3 setObject:v5 forKey:trueLabel];
         }
       }
     }
   }
 }
 
-- (void)_sortAccessibilityElements:(id)a3 mapView:(id)a4
+- (void)_sortAccessibilityElements:(id)elements mapView:(id)view
 {
-  v7 = a3;
-  v5 = a4;
-  if ([v5 accessibilityMapTypeShouldShowTransit])
+  elementsCopy = elements;
+  viewCopy = view;
+  if ([viewCopy accessibilityMapTypeShouldShowTransit])
   {
     AXVKTransitRouteElementComparator();
   }
@@ -1033,27 +1033,27 @@ LABEL_15:
     AXVKMapElementComparator();
   }
   v6 = ;
-  [v7 sortUsingComparator:v6];
+  [elementsCopy sortUsingComparator:v6];
 }
 
-- (void)_filterAccessibilityElements:(id)a3 zoomLevel:(float)a4 mapView:(id)a5
+- (void)_filterAccessibilityElements:(id)elements zoomLevel:(float)level mapView:(id)view
 {
   v49 = *MEMORY[0x29EDCA608];
-  v7 = a3;
-  v8 = a5;
+  elementsCopy = elements;
+  viewCopy = view;
   v39 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   v40 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   v41 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   v43 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-  v9 = [MEMORY[0x29EDB9F48] mainBundle];
-  v10 = [v9 bundleIdentifier];
-  v11 = [v10 isEqualToString:@"com.apple.Maps"];
+  mainBundle = [MEMORY[0x29EDB9F48] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v11 = [bundleIdentifier isEqualToString:@"com.apple.Maps"];
 
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v12 = v7;
+  v12 = elementsCopy;
   v13 = [v12 countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v13)
   {
@@ -1073,28 +1073,28 @@ LABEL_15:
         v20 = v19;
         v22 = v21;
         v24 = v23;
-        v25 = [v16 accessibilityPath];
-        v26 = v25;
-        v27 = [v25 CGPath];
+        accessibilityPath = [v16 accessibilityPath];
+        v26 = accessibilityPath;
+        cGPath = [accessibilityPath CGPath];
 
         v50.origin.x = v18;
         v50.origin.y = v20;
         v50.size.width = v22;
         v50.size.height = v24;
-        LODWORD(v25) = CGRectIsEmpty(v50);
+        LODWORD(accessibilityPath) = CGRectIsEmpty(v50);
         v51.origin.x = v18;
         v51.origin.y = v20;
         v51.size.width = v22;
         v51.size.height = v24;
-        if (((v25 | CGRectIsNull(v51)) & 1) == 0 && v27)
+        if (((accessibilityPath | CGRectIsNull(v51)) & 1) == 0 && cGPath)
         {
-          v28 = [v8 _accessibilityParentView];
-          v29 = [v28 window];
+          _accessibilityParentView = [viewCopy _accessibilityParentView];
+          window = [_accessibilityParentView window];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             v30 = v16;
-            if (!v11 || [(VKMapViewAccessibilityElementManager *)self roadHasMapAncestor:v30 inWindow:v29])
+            if (!v11 || [(VKMapViewAccessibilityElementManager *)self roadHasMapAncestor:v30 inWindow:window])
             {
               [v41 addObject:v30];
             }
@@ -1112,7 +1112,7 @@ LABEL_15:
             v53.size.width = v22;
             v53.size.height = v24;
             MidY = CGRectGetMidY(v53);
-            if (!v11 || [(VKMapViewAccessibilityElementManager *)self hitPointHasMapAncestor:v29 inWindow:MidX, MidY])
+            if (!v11 || [(VKMapViewAccessibilityElementManager *)self hitPointHasMapAncestor:window inWindow:MidX, MidY])
             {
               objc_opt_class();
               isKindOfClass = objc_opt_isKindOfClass();
@@ -1142,7 +1142,7 @@ LABEL_15:
     while (v13);
   }
 
-  v35 = _maximumVisiblePOIs(a4);
+  v35 = _maximumVisiblePOIs(level);
   if ([v40 count] <= v35)
   {
     [v39 addObjectsFromArray:v40];
@@ -1155,7 +1155,7 @@ LABEL_15:
     [v39 addObjectsFromArray:v36];
   }
 
-  v37 = _maximumVisibleRoads(a4);
+  v37 = _maximumVisibleRoads(level);
   if ([v41 count] <= v37)
   {
     [v39 addObjectsFromArray:v41];
@@ -1279,15 +1279,15 @@ uint64_t __87__VKMapViewAccessibilityElementManager__filterAccessibilityElements
   return v26;
 }
 
-- (BOOL)roadHasMapAncestor:(id)a3 inWindow:(id)a4
+- (BOOL)roadHasMapAncestor:(id)ancestor inWindow:(id)window
 {
   v28 = *MEMORY[0x29EDCA608];
-  v6 = a4;
+  windowCopy = window;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = *(a3 + 19);
+  v7 = *(ancestor + 19);
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {
@@ -1321,7 +1321,7 @@ uint64_t __87__VKMapViewAccessibilityElementManager__filterAccessibilityElements
               }
 
               [*(*(&v18 + 1) + 8 * j) CGPointValue];
-              if ([(VKMapViewAccessibilityElementManager *)self hitPointHasMapAncestor:v6 inWindow:?])
+              if ([(VKMapViewAccessibilityElementManager *)self hitPointHasMapAncestor:windowCopy inWindow:?])
               {
 
                 v16 = 1;
@@ -1357,14 +1357,14 @@ LABEL_19:
   return v16;
 }
 
-- (BOOL)hitPointHasMapAncestor:(CGPoint)a3 inWindow:(id)a4
+- (BOOL)hitPointHasMapAncestor:(CGPoint)ancestor inWindow:(id)window
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
-  [v6 _convertPointToSceneReferenceSpace:{x, y}];
+  y = ancestor.y;
+  x = ancestor.x;
+  windowCopy = window;
+  [windowCopy _convertPointToSceneReferenceSpace:{x, y}];
   EventForSceneReferencePoint = UIAccessibilityCreateEventForSceneReferencePoint();
-  v8 = [v6 hitTest:EventForSceneReferencePoint withEvent:{x, y}];
+  v8 = [windowCopy hitTest:EventForSceneReferencePoint withEvent:{x, y}];
   v9 = NSClassFromString(&cfstr_Mkmapview.isa);
   v13[0] = MEMORY[0x29EDCA5F8];
   v13[1] = 3221225472;
@@ -1377,9 +1377,9 @@ LABEL_19:
   return v11;
 }
 
-- ($01BB1521EC52D44A8E7628F5261DCEC8)_boundsForMapView:(id)a3
+- ($01BB1521EC52D44A8E7628F5261DCEC8)_boundsForMapView:(id)view
 {
-  [a3 accessibilityBounds];
+  [view accessibilityBounds];
   result.var3 = v6;
   result.var2 = v5;
   result.var1 = v4;
@@ -1387,59 +1387,59 @@ LABEL_19:
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_centerForMapView:(id)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_centerForMapView:(id)view
 {
-  [a3 accessibilityCenter];
+  [view accessibilityCenter];
   result.var1 = v4;
   result.var0 = v3;
   return result;
 }
 
-- (BOOL)_isValidBoundsForMapView:(id)a3 bounds:(id)a4
+- (BOOL)_isValidBoundsForMapView:(id)view bounds:(id)bounds
 {
-  var3 = a4.var3;
-  var2 = a4.var2;
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v9 = a3;
-  [(VKMapViewAccessibilityElementManager *)self _boundsForMapView:v9];
+  var3 = bounds.var3;
+  var2 = bounds.var2;
+  var1 = bounds.var1;
+  var0 = bounds.var0;
+  viewCopy = view;
+  [(VKMapViewAccessibilityElementManager *)self _boundsForMapView:viewCopy];
   LOBYTE(self) = AXVKRectEqualToRect(var0, var1, var2, var3, v10, v11, v12, v13);
 
   return self;
 }
 
-- (BOOL)_isValidYawForMapView:(id)a3 yaw:(double)a4
+- (BOOL)_isValidYawForMapView:(id)view yaw:(double)yaw
 {
-  v6 = a3;
-  [(VKMapViewAccessibilityElementManager *)self _yawForMapView:v6];
+  viewCopy = view;
+  [(VKMapViewAccessibilityElementManager *)self _yawForMapView:viewCopy];
   v8 = v7;
-  v9 = (![v6 accessibilityIsInTourGuideMode] || !AXVKIsInvalidLocationDegrees(a4) && !AXVKIsInvalidLocationDegrees(v8)) && AXVKLocationDegreesEqualToLocationDegrees(a4, v8);
+  v9 = (![viewCopy accessibilityIsInTourGuideMode] || !AXVKIsInvalidLocationDegrees(yaw) && !AXVKIsInvalidLocationDegrees(v8)) && AXVKLocationDegreesEqualToLocationDegrees(yaw, v8);
 
   return v9;
 }
 
 - (void)accessibilityMapsExplorationBeginFromCurrentLocation
 {
-  v3 = [MEMORY[0x29EDBB270] sharedLocationManager];
-  v10 = [v3 currentLocation];
+  mEMORY[0x29EDBB270] = [MEMORY[0x29EDBB270] sharedLocationManager];
+  currentLocation = [mEMORY[0x29EDBB270] currentLocation];
 
-  v4 = [v10 latLng];
-  [v4 lat];
+  latLng = [currentLocation latLng];
+  [latLng lat];
   v6 = v5;
-  v7 = [v10 latLng];
-  [v7 lng];
+  latLng2 = [currentLocation latLng];
+  [latLng2 lng];
   v9 = v8;
 
   [(VKMapViewAccessibilityElementManager *)self accessibilityMapsExplorationBeginFromLocationCoordinate:v6, v9];
 }
 
-- (void)accessibilityMapsExplorationBeginFromLocationCoordinate:(id)a3
+- (void)accessibilityMapsExplorationBeginFromLocationCoordinate:(id)coordinate
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   v66 = *MEMORY[0x29EDCA608];
-  v7 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
-  [v7 accessibilityConvertCoordinateToWindow:{var0, var1}];
+  currentMapView = [(VKMapViewAccessibilityElementManager *)self currentMapView];
+  [currentMapView accessibilityConvertCoordinateToWindow:{var0, var1}];
   v9 = v8;
   v11 = v10;
 
@@ -1468,14 +1468,14 @@ LABEL_19:
         if (objc_opt_isKindOfClass())
         {
           v49 = v13;
-          v14 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
-          v15 = v14 == 0;
+          currentMapView2 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
+          v15 = currentMapView2 == 0;
 
           if (v15)
           {
             v58 = 0;
             objc_opt_class();
-            v16 = [v49 accessibilityContainer];
+            accessibilityContainer = [v49 accessibilityContainer];
             v17 = __UIAccessibilityCastAsClass();
 
             if (v58 == 1)
@@ -1498,9 +1498,9 @@ LABEL_19:
           v57 = 0u;
           v54 = 0u;
           v55 = 0u;
-          v20 = [v49 featureSet];
-          v48 = v20;
-          v21 = [v20 countByEnumeratingWithState:&v54 objects:v64 count:16];
+          featureSet = [v49 featureSet];
+          v48 = featureSet;
+          v21 = [featureSet countByEnumeratingWithState:&v54 objects:v64 count:16];
           if (v21)
           {
             v22 = *v55;
@@ -1534,9 +1534,9 @@ LABEL_19:
                       }
 
                       v30 = *(*(&v50 + 1) + 8 * k);
-                      v31 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
+                      currentMapView3 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
                       [v30 CGPointValue];
-                      [v31 accessibilityRealDistanceBetweenPoint:v9 screenPoint2:{v11, v32, v33}];
+                      [currentMapView3 accessibilityRealDistanceBetweenPoint:v9 screenPoint2:{v11, v32, v33}];
                       v35 = v34;
 
                       v36 = v35;
@@ -1556,7 +1556,7 @@ LABEL_19:
                 }
               }
 
-              v20 = v48;
+              featureSet = v48;
               v21 = [v48 countByEnumeratingWithState:&v54 objects:v64 count:16];
             }
 
@@ -1600,13 +1600,13 @@ LABEL_19:
   [(VKMapViewAccessibilityElementManager *)self accessibilityMapsExplorationBeginFromPoint:v42 withRoad:v41, v40];
 }
 
-- (void)accessibilityMapsExplorationBeginFromRoad:(id)a3
+- (void)accessibilityMapsExplorationBeginFromRoad:(id)road
 {
   v46 = *MEMORY[0x29EDCA608];
   v43 = 0;
-  v33 = a3;
+  roadCopy = road;
   objc_opt_class();
-  v4 = [v33 accessibilityContainer];
+  accessibilityContainer = [roadCopy accessibilityContainer];
   v34 = __UIAccessibilityCastAsClass();
 
   if (!v34)
@@ -1624,7 +1624,7 @@ LABEL_19:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = v33[19];
+    obj = roadCopy[19];
     v10 = [obj countByEnumeratingWithState:&v39 objects:v45 count:16];
     if (v10)
     {
@@ -1659,8 +1659,8 @@ LABEL_19:
                 }
 
                 v17 = *(*(&v35 + 1) + 8 * j);
-                v18 = [MEMORY[0x29EDC7C40] mainScreen];
-                [v18 bounds];
+                mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+                [mainScreen bounds];
                 v20 = v19;
                 v22 = v21;
                 v24 = v23;
@@ -1677,7 +1677,7 @@ LABEL_19:
                 if (v29)
                 {
                   [v17 CGPointValue];
-                  [(VKMapViewAccessibilityElementManager *)self accessibilityMapsExplorationBeginFromPoint:v33 withRoad:?];
+                  [(VKMapViewAccessibilityElementManager *)self accessibilityMapsExplorationBeginFromPoint:roadCopy withRoad:?];
 
                   goto LABEL_26;
                 }
@@ -1701,31 +1701,31 @@ LABEL_19:
     }
   }
 
-  [(VKMapViewAccessibilityElementManager *)self accessibilityMapsExplorationBeginFromPoint:v33 withRoad:v7, v8];
+  [(VKMapViewAccessibilityElementManager *)self accessibilityMapsExplorationBeginFromPoint:roadCopy withRoad:v7, v8];
 LABEL_26:
 }
 
-- (void)accessibilityMapsExplorationBeginFromPoint:(CGPoint)a3 withRoad:(id)a4
+- (void)accessibilityMapsExplorationBeginFromPoint:(CGPoint)point withRoad:(id)road
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v24[2] = *MEMORY[0x29EDCA608];
-  v7 = a4;
-  v8 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v8 postNotificationName:@"AXCollapseMapsChromeNotification" object:0];
+  roadCopy = road;
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter postNotificationName:@"AXCollapseMapsChromeNotification" object:0];
 
   [(VKMapViewAccessibilityElementManager *)self accessibilityMapsExplorationEnd];
   [(VKMapViewAccessibilityElementManager *)self setExplorationState:1];
-  v9 = [v7 adjacentIntersectorsForPoint:1 isStart:{x, y}];
+  v9 = [roadCopy adjacentIntersectorsForPoint:1 isStart:{x, y}];
   if ([v9 count])
   {
-    v10 = [v9 firstObject];
-    v11 = [v10 featureWrapper];
-    v12 = [(VKMapViewAccessibilityElementManager *)self roadElementForFeatureWrapper:v11];
+    firstObject = [v9 firstObject];
+    featureWrapper = [firstObject featureWrapper];
+    v12 = [(VKMapViewAccessibilityElementManager *)self roadElementForFeatureWrapper:featureWrapper];
 
     if (v12)
     {
-      if (!v7)
+      if (!roadCopy)
       {
         goto LABEL_9;
       }
@@ -1734,12 +1734,12 @@ LABEL_26:
     else
     {
       v13 = [VKRoadFeatureAccessibilityElement alloc];
-      v14 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
-      v15 = [v10 featureWrapper];
-      v16 = [v15 feature];
-      v12 = [(VKMultiSectionFeatureAccessibilityElement *)v13 initWithAccessibilityContainer:v14 feature:v16 ignoreMissingName:1 useLocalizedLabels:1];
+      currentMapView = [(VKMapViewAccessibilityElementManager *)self currentMapView];
+      featureWrapper2 = [firstObject featureWrapper];
+      feature = [featureWrapper2 feature];
+      v12 = [(VKMultiSectionFeatureAccessibilityElement *)v13 initWithAccessibilityContainer:currentMapView feature:feature ignoreMissingName:1 useLocalizedLabels:1];
 
-      if (!v7)
+      if (!roadCopy)
       {
 LABEL_9:
 
@@ -1750,10 +1750,10 @@ LABEL_9:
     if (v12)
     {
       v17 = [AXVKExplorationVertexElement alloc];
-      [v10 coordinates];
+      [firstObject coordinates];
       v19 = v18;
       v21 = v20;
-      v24[0] = v7;
+      v24[0] = roadCopy;
       v24[1] = v12;
       v22 = [MEMORY[0x29EDB8D80] arrayWithObjects:v24 count:2];
       v23 = [(AXVKExplorationVertexElement *)v17 initWithCoordinates:v22 betweenRoads:v19, v21];
@@ -1768,44 +1768,44 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)accessibilityMapsExplorationContinueWithVertexIndex:(unint64_t)a3
+- (void)accessibilityMapsExplorationContinueWithVertexIndex:(unint64_t)index
 {
-  v8 = [(VKMapViewAccessibilityElementManager *)self neighborExplorationElements];
-  v5 = [v8 count];
+  neighborExplorationElements = [(VKMapViewAccessibilityElementManager *)self neighborExplorationElements];
+  v5 = [neighborExplorationElements count];
 
-  if (v5 > a3)
+  if (v5 > index)
   {
-    v9 = [(VKMapViewAccessibilityElementManager *)self neighborExplorationElements];
-    v6 = [v9 objectAtIndex:a3];
-    v7 = [v6 vertex];
-    [(VKMapViewAccessibilityElementManager *)self accessibilityMapsExplorationContinueWithVertex:v7];
+    neighborExplorationElements2 = [(VKMapViewAccessibilityElementManager *)self neighborExplorationElements];
+    v6 = [neighborExplorationElements2 objectAtIndex:index];
+    vertex = [v6 vertex];
+    [(VKMapViewAccessibilityElementManager *)self accessibilityMapsExplorationContinueWithVertex:vertex];
   }
 }
 
-- (void)accessibilityMapsExplorationContinueWithVertex:(id)a3 fromVertex:(id)a4
+- (void)accessibilityMapsExplorationContinueWithVertex:(id)vertex fromVertex:(id)fromVertex
 {
-  v12 = a3;
+  vertexCopy = vertex;
   [(VKMapViewAccessibilityElementManager *)self setExplorationState:1];
-  [(VKMapViewAccessibilityElementManager *)self setCurrentExplorationVertex:v12];
-  [v12 setIsComputed:0];
-  v5 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
+  [(VKMapViewAccessibilityElementManager *)self setCurrentExplorationVertex:vertexCopy];
+  [vertexCopy setIsComputed:0];
+  currentMapView = [(VKMapViewAccessibilityElementManager *)self currentMapView];
   [(VKMapViewAccessibilityElementManager *)self explorationZoomLevel];
   v7 = v6;
-  [v12 coordinates];
-  [v5 accessibilitySetMapZoomLevel:0 center:v7 yaw:v8 completionHandler:{v9, 0.0}];
+  [vertexCopy coordinates];
+  [currentMapView accessibilitySetMapZoomLevel:0 center:v7 yaw:v8 completionHandler:{v9, 0.0}];
 
   v10 = +[VKMapDebugView sharedInstance];
-  v11 = [(VKMapViewAccessibilityElementManager *)self currentExplorationVertex];
-  [v10 setCurrentExplorationVertex:v11];
+  currentExplorationVertex = [(VKMapViewAccessibilityElementManager *)self currentExplorationVertex];
+  [v10 setCurrentExplorationVertex:currentExplorationVertex];
 }
 
 - (void)accessibilityMapsExplorationBacktrack
 {
-  v4 = [(NSMutableArray *)self->_lastExplorationVertices lastObject];
+  lastObject = [(NSMutableArray *)self->_lastExplorationVertices lastObject];
   if ([(NSMutableArray *)self->_lastExplorationVertices count]>= 2)
   {
     v3 = [(NSMutableArray *)self->_lastExplorationVertices objectAtIndexedSubscript:[(NSMutableArray *)self->_lastExplorationVertices count]- 2];
-    if (!v4)
+    if (!lastObject)
     {
       goto LABEL_8;
     }
@@ -1813,7 +1813,7 @@ LABEL_10:
     if (v3)
     {
       [(NSMutableArray *)self->_lastExplorationVertices removeLastObject];
-      [(VKMapViewAccessibilityElementManager *)self accessibilityMapsExplorationContinueWithVertex:v4 fromVertex:v3];
+      [(VKMapViewAccessibilityElementManager *)self accessibilityMapsExplorationContinueWithVertex:lastObject fromVertex:v3];
       [(NSMutableArray *)self->_lastExplorationVertices removeLastObject];
       goto LABEL_8;
     }
@@ -1821,11 +1821,11 @@ LABEL_10:
     goto LABEL_6;
   }
 
-  if (v4)
+  if (lastObject)
   {
 LABEL_6:
     v3 = 0;
-    [(VKMapViewAccessibilityElementManager *)self accessibilityMapsExplorationContinueWithVertex:v4];
+    [(VKMapViewAccessibilityElementManager *)self accessibilityMapsExplorationContinueWithVertex:lastObject];
     goto LABEL_8;
   }
 
@@ -1833,19 +1833,19 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)addNeighborsAsRelevantFeaturesForVertex:(id)a3
+- (void)addNeighborsAsRelevantFeaturesForVertex:(id)vertex
 {
   v20 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = [(VKMapViewAccessibilityElementManager *)self neighborExplorationElements];
-  [v5 removeAllObjects];
+  vertexCopy = vertex;
+  neighborExplorationElements = [(VKMapViewAccessibilityElementManager *)self neighborExplorationElements];
+  [neighborExplorationElements removeAllObjects];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v4 neighbors];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  neighbors = [vertexCopy neighbors];
+  v7 = [neighbors countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -1856,22 +1856,22 @@ LABEL_8:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(neighbors);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
         v11 = [VKExplorationAccessibilityElement alloc];
-        v12 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
-        v13 = [(VKExplorationAccessibilityElement *)v11 initWithAccessibilityContainer:v12 andVertex:v10];
+        currentMapView = [(VKMapViewAccessibilityElementManager *)self currentMapView];
+        v13 = [(VKExplorationAccessibilityElement *)v11 initWithAccessibilityContainer:currentMapView andVertex:v10];
 
-        v14 = [(VKMapViewAccessibilityElementManager *)self neighborExplorationElements];
-        [v14 addObject:v13];
+        neighborExplorationElements2 = [(VKMapViewAccessibilityElementManager *)self neighborExplorationElements];
+        [neighborExplorationElements2 addObject:v13];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [neighbors countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -1880,28 +1880,28 @@ LABEL_8:
 
 - (void)accessibilityMapsExplorationEnd
 {
-  v3 = [(VKMapViewAccessibilityElementManager *)self neighborExplorationElements];
-  [v3 removeAllObjects];
+  neighborExplorationElements = [(VKMapViewAccessibilityElementManager *)self neighborExplorationElements];
+  [neighborExplorationElements removeAllObjects];
 
   [(VKMapViewAccessibilityElementManager *)self setCurrentExplorationVertex:0];
   [(NSMutableArray *)self->_lastExplorationVertices removeAllObjects];
   [(VKMapViewAccessibilityElementManager *)self setExplorationState:0];
-  v4 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
+  currentMapView = [(VKMapViewAccessibilityElementManager *)self currentMapView];
   [(VKMapViewAccessibilityElementManager *)self updateAccessibilityElementsForMapView:?];
 }
 
-- (void)computeVertex:(id)a3
+- (void)computeVertex:(id)vertex
 {
   v67 = *MEMORY[0x29EDCA608];
-  v49 = a3;
-  v4 = [(VKMapViewAccessibilityElementManager *)self roadsForVertex:v49];
-  [v49 setRoads:v4];
+  vertexCopy = vertex;
+  v4 = [(VKMapViewAccessibilityElementManager *)self roadsForVertex:vertexCopy];
+  [vertexCopy setRoads:v4];
 
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  obj = [v49 roads];
+  obj = [vertexCopy roads];
   v43 = [obj countByEnumeratingWithState:&v58 objects:v66 count:16];
   if (v43)
   {
@@ -1917,7 +1917,7 @@ LABEL_8:
         }
 
         v5 = *(*(&v58 + 1) + 8 * v45);
-        [v49 getScreenPoint];
+        [vertexCopy getScreenPoint];
         v44 = [v5 adjacentIntersectorsForPoint:0 isStart:?];
         if ([v44 count])
         {
@@ -1946,8 +1946,8 @@ LABEL_8:
                 v51 = 0u;
                 v52 = 0u;
                 v53 = 0u;
-                v9 = [v49 neighbors];
-                v10 = [(AXVKExplorationVertexElement *)v9 countByEnumeratingWithState:&v50 objects:v64 count:16];
+                neighbors = [vertexCopy neighbors];
+                v10 = [(AXVKExplorationVertexElement *)neighbors countByEnumeratingWithState:&v50 objects:v64 count:16];
                 if (v10)
                 {
                   v11 = *v51;
@@ -1957,13 +1957,13 @@ LABEL_14:
                   {
                     if (*v51 != v11)
                     {
-                      objc_enumerationMutation(v9);
+                      objc_enumerationMutation(neighbors);
                     }
 
                     v13 = *(*(&v50 + 1) + 8 * v12);
-                    v14 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
+                    currentMapView = [(VKMapViewAccessibilityElementManager *)self currentMapView];
                     [v8 coordinates];
-                    [v14 accessibilityConvertCoordinateToWindow:?];
+                    [currentMapView accessibilityConvertCoordinateToWindow:?];
                     v16 = v15;
                     v18 = v17;
 
@@ -1975,7 +1975,7 @@ LABEL_14:
 
                     if (v10 == ++v12)
                     {
-                      v10 = [(AXVKExplorationVertexElement *)v9 countByEnumeratingWithState:&v50 objects:v64 count:16];
+                      v10 = [(AXVKExplorationVertexElement *)neighbors countByEnumeratingWithState:&v50 objects:v64 count:16];
                       if (v10)
                       {
                         goto LABEL_14;
@@ -1998,21 +1998,21 @@ LABEL_21:
                     v25 = v24;
                     v62 = v47;
                     v26 = [MEMORY[0x29EDB8D80] arrayWithObjects:&v62 count:1];
-                    v9 = [(AXVKExplorationVertexElement *)v21 initWithCoordinates:v26 betweenRoads:v23, v25];
+                    neighbors = [(AXVKExplorationVertexElement *)v21 initWithCoordinates:v26 betweenRoads:v23, v25];
                   }
 
                   else
                   {
-                    v27 = [v8 featureWrapper];
-                    v26 = [(VKMapViewAccessibilityElementManager *)self roadElementForFeatureWrapper:v27];
+                    featureWrapper = [v8 featureWrapper];
+                    v26 = [(VKMapViewAccessibilityElementManager *)self roadElementForFeatureWrapper:featureWrapper];
 
                     if (!v26)
                     {
                       v28 = [VKRoadFeatureAccessibilityElement alloc];
-                      v29 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
-                      v30 = [v8 featureWrapper];
-                      v31 = [v30 feature];
-                      v26 = [(VKMultiSectionFeatureAccessibilityElement *)v28 initWithAccessibilityContainer:v29 feature:v31 ignoreMissingName:1 useLocalizedLabels:1];
+                      currentMapView2 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
+                      featureWrapper2 = [v8 featureWrapper];
+                      feature = [featureWrapper2 feature];
+                      v26 = [(VKMultiSectionFeatureAccessibilityElement *)v28 initWithAccessibilityContainer:currentMapView2 feature:feature ignoreMissingName:1 useLocalizedLabels:1];
                     }
 
                     v32 = [AXVKExplorationVertexElement alloc];
@@ -2022,15 +2022,15 @@ LABEL_21:
                     v63[0] = v47;
                     v63[1] = v26;
                     v37 = [MEMORY[0x29EDB8D80] arrayWithObjects:v63 count:2];
-                    v9 = [(AXVKExplorationVertexElement *)v32 initWithCoordinates:v37 betweenRoads:v34, v36];
+                    neighbors = [(AXVKExplorationVertexElement *)v32 initWithCoordinates:v37 betweenRoads:v34, v36];
                   }
 
-                  v38 = [[AXVKExplorationEdgeElement alloc] initWithRoad:v47 betweenFirstVertex:v49 andSecondVertex:v9];
-                  v39 = [v49 edges];
-                  [v39 addObject:v38];
+                  v38 = [[AXVKExplorationEdgeElement alloc] initWithRoad:v47 betweenFirstVertex:vertexCopy andSecondVertex:neighbors];
+                  edges = [vertexCopy edges];
+                  [edges addObject:v38];
 
-                  v40 = [(AXVKExplorationVertexElement *)v9 edges];
-                  [v40 addObject:v38];
+                  edges2 = [(AXVKExplorationVertexElement *)neighbors edges];
+                  [edges2 addObject:v38];
                 }
 
                 ++v7;
@@ -2054,15 +2054,15 @@ LABEL_21:
     while (v43);
   }
 
-  [v49 setIsComputed:1];
+  [vertexCopy setIsComputed:1];
 }
 
-- (void)setCurrentExplorationVertex:(id)a3
+- (void)setCurrentExplorationVertex:(id)vertex
 {
-  v5 = a3;
+  vertexCopy = vertex;
   currentExplorationVertex = self->_currentExplorationVertex;
-  v12 = v5;
-  if (currentExplorationVertex != v5)
+  v12 = vertexCopy;
+  if (currentExplorationVertex != vertexCopy)
   {
     if (currentExplorationVertex)
     {
@@ -2074,19 +2074,19 @@ LABEL_21:
       }
     }
 
-    objc_storeStrong(&self->_currentExplorationVertex, a3);
+    objc_storeStrong(&self->_currentExplorationVertex, vertex);
     if (v12)
     {
       v7 = [VKExplorationAccessibilityElement alloc];
-      v8 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
-      v9 = [(VKExplorationAccessibilityElement *)v7 initWithAccessibilityContainer:v8 andVertex:v12];
+      currentMapView = [(VKMapViewAccessibilityElementManager *)self currentMapView];
+      v9 = [(VKExplorationAccessibilityElement *)v7 initWithAccessibilityContainer:currentMapView andVertex:v12];
       currentExplorationElement = self->_currentExplorationElement;
       self->_currentExplorationElement = v9;
     }
 
     else
     {
-      v8 = self->_currentExplorationElement;
+      currentMapView = self->_currentExplorationElement;
       self->_currentExplorationElement = 0;
     }
 
@@ -2096,17 +2096,17 @@ LABEL_21:
   }
 }
 
-- (void)setExplorationState:(int64_t)a3
+- (void)setExplorationState:(int64_t)state
 {
-  self->_explorationState = a3;
-  v4 = [(VKMapViewAccessibilityElementManager *)self delegate];
-  [v4 explorationStateChanged:a3];
+  self->_explorationState = state;
+  delegate = [(VKMapViewAccessibilityElementManager *)self delegate];
+  [delegate explorationStateChanged:state];
 }
 
-- (id)roadElementForFeatureWrapper:(id)a3
+- (id)roadElementForFeatureWrapper:(id)wrapper
 {
   v30 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  wrapperCopy = wrapper;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -2135,8 +2135,8 @@ LABEL_21:
           v21 = 0u;
           v22 = 0u;
           v23 = 0u;
-          v9 = [v8 featureSet];
-          v10 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
+          featureSet = [v8 featureSet];
+          v10 = [featureSet countByEnumeratingWithState:&v20 objects:v28 count:16];
           if (v10)
           {
             v11 = *v21;
@@ -2146,11 +2146,11 @@ LABEL_21:
               {
                 if (*v21 != v11)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(featureSet);
                 }
 
-                v13 = [*(*(&v20 + 1) + 8 * j) feature];
-                v14 = [v4 feature];
+                feature = [*(*(&v20 + 1) + 8 * j) feature];
+                feature2 = [wrapperCopy feature];
                 IsSameRoad = GEOMultiSectionFeatureIsSameRoad();
 
                 if (IsSameRoad)
@@ -2160,7 +2160,7 @@ LABEL_21:
                 }
               }
 
-              v10 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
+              v10 = [featureSet countByEnumeratingWithState:&v20 objects:v28 count:16];
               if (v10)
               {
                 continue;
@@ -2189,21 +2189,21 @@ LABEL_21:
   return v8;
 }
 
-- (CGPoint)adjacentPointToPoint:(CGPoint)a3 withOtherPoint:(CGPoint)a4 onRoad:(id)a5
+- (CGPoint)adjacentPointToPoint:(CGPoint)point withOtherPoint:(CGPoint)otherPoint onRoad:(id)road
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3.y;
-  v8 = a3.x;
-  v9 = a5;
-  v10 = [v9 consolidatedAndOrderedFeatures];
-  v11 = [v9 featureAndPointIndicesForPoint:{v8, v7}];
+  y = otherPoint.y;
+  x = otherPoint.x;
+  v7 = point.y;
+  v8 = point.x;
+  roadCopy = road;
+  consolidatedAndOrderedFeatures = [roadCopy consolidatedAndOrderedFeatures];
+  v11 = [roadCopy featureAndPointIndicesForPoint:{v8, v7}];
   v13 = v12;
-  v14 = [v9 featureAndPointIndicesForPoint:{x, y}];
+  v14 = [roadCopy featureAndPointIndicesForPoint:{x, y}];
   if (v11 != -1 && v11 == v14)
   {
     v16 = v15;
-    v17 = [v10 objectAtIndex:v11];
+    v17 = [consolidatedAndOrderedFeatures objectAtIndex:v11];
     v18 = v17;
     if (v16 <= v13)
     {
@@ -2246,33 +2246,33 @@ LABEL_11:
 - (id)accessibilityMapsExplorationCurrentRoadsWithAngles
 {
   v69 = *MEMORY[0x29EDCA608];
-  v3 = [(VKMapViewAccessibilityElementManager *)self currentExplorationVertex];
-  [v3 getScreenPoint];
+  currentExplorationVertex = [(VKMapViewAccessibilityElementManager *)self currentExplorationVertex];
+  [currentExplorationVertex getScreenPoint];
   v5 = v4;
   v7 = v6;
 
   v8 = *MEMORY[0x29EDB90B8];
   v9 = *(MEMORY[0x29EDB90B8] + 8);
-  v10 = [(VKMapViewAccessibilityElementManager *)self lastExplorationVertices];
-  v11 = [v10 lastObject];
+  lastExplorationVertices = [(VKMapViewAccessibilityElementManager *)self lastExplorationVertices];
+  lastObject = [lastExplorationVertices lastObject];
 
   v12 = MEMORY[0x29EDB90B8];
-  if (v11)
+  if (lastObject)
   {
-    v13 = [(VKMapViewAccessibilityElementManager *)self currentExplorationVertex];
-    v14 = [(VKMapViewAccessibilityElementManager *)self edgeBetweenVertex:v13 andVertex:v11];
+    currentExplorationVertex2 = [(VKMapViewAccessibilityElementManager *)self currentExplorationVertex];
+    v14 = [(VKMapViewAccessibilityElementManager *)self edgeBetweenVertex:currentExplorationVertex2 andVertex:lastObject];
 
-    [v11 getScreenPoint];
+    [lastObject getScreenPoint];
     v16 = v15;
     v18 = v17;
-    v19 = [v14 road];
-    [(VKMapViewAccessibilityElementManager *)self adjacentPointToPoint:v19 withOtherPoint:v5 onRoad:v7, v16, v18];
+    road = [v14 road];
+    [(VKMapViewAccessibilityElementManager *)self adjacentPointToPoint:road withOtherPoint:v5 onRoad:v7, v16, v18];
     v8 = v20;
     v9 = v21;
 
     if (v8 == *v12 && v9 == v12[1])
     {
-      [v11 getScreenPoint];
+      [lastObject getScreenPoint];
       v8 = v22;
       v9 = v23;
     }
@@ -2298,25 +2298,25 @@ LABEL_11:
         }
 
         v28 = *(*(&v63 + 1) + 8 * i);
-        if (v11)
+        if (lastObject)
         {
-          v29 = [(VKMapViewAccessibilityElementManager *)self currentExplorationVertex];
-          v30 = [v28 vertex];
-          v31 = [(VKMapViewAccessibilityElementManager *)self edgeBetweenVertex:v29 andVertex:v30];
+          currentExplorationVertex3 = [(VKMapViewAccessibilityElementManager *)self currentExplorationVertex];
+          vertex = [v28 vertex];
+          v31 = [(VKMapViewAccessibilityElementManager *)self edgeBetweenVertex:currentExplorationVertex3 andVertex:vertex];
 
-          v32 = [v28 vertex];
-          [v32 getScreenPoint];
+          vertex2 = [v28 vertex];
+          [vertex2 getScreenPoint];
           v34 = v33;
           v36 = v35;
-          v37 = [v31 road];
-          [(VKMapViewAccessibilityElementManager *)self adjacentPointToPoint:v37 withOtherPoint:v5 onRoad:v7, v34, v36];
+          road2 = [v31 road];
+          [(VKMapViewAccessibilityElementManager *)self adjacentPointToPoint:road2 withOtherPoint:v5 onRoad:v7, v34, v36];
           v39 = v38;
           v41 = v40;
 
           if (v39 == *MEMORY[0x29EDB90B8] && v41 == *(MEMORY[0x29EDB90B8] + 8))
           {
-            v43 = [v28 vertex];
-            [v43 getScreenPoint];
+            vertex3 = [v28 vertex];
+            [vertex3 getScreenPoint];
             v39 = v44;
             v41 = v45;
           }
@@ -2332,8 +2332,8 @@ LABEL_11:
 
         else
         {
-          v51 = [v28 vertex];
-          [v51 getScreenPoint];
+          vertex4 = [v28 vertex];
+          [vertex4 getScreenPoint];
           v53 = v52;
           v55 = v54;
 
@@ -2360,31 +2360,31 @@ LABEL_11:
   return v24;
 }
 
-- (id)accessibilityMapsExplorationStringForElement:(id)a3 withRelativeAngle:(double)a4
+- (id)accessibilityMapsExplorationStringForElement:(id)element withRelativeAngle:(double)angle
 {
-  v6 = a3;
+  elementCopy = element;
   v7 = objc_opt_new();
-  v8 = [(VKMapViewAccessibilityElementManager *)self lastExplorationVertices];
-  v9 = [v8 count];
+  lastExplorationVertices = [(VKMapViewAccessibilityElementManager *)self lastExplorationVertices];
+  v9 = [lastExplorationVertices count];
 
   if (v9)
   {
     v10 = @"DOUBLE_BACK";
-    if (a4 >= 0.392699082 && a4 < 5.89048623)
+    if (angle >= 0.392699082 && angle < 5.89048623)
     {
-      if (a4 >= 1.17809725)
+      if (angle >= 1.17809725)
       {
-        if (a4 >= 1.96349541)
+        if (angle >= 1.96349541)
         {
-          if (a4 >= 2.74889357)
+          if (angle >= 2.74889357)
           {
-            if (a4 >= 3.53429174)
+            if (angle >= 3.53429174)
             {
-              if (a4 >= 4.3196899)
+              if (angle >= 4.3196899)
               {
-                if (a4 >= 5.10508806)
+                if (angle >= 5.10508806)
                 {
-                  if (a4 >= 5.89048623)
+                  if (angle >= 5.89048623)
                   {
                     v11 = 0;
                     goto LABEL_19;
@@ -2437,22 +2437,22 @@ LABEL_19:
     [v7 appendString:v14];
   }
 
-  v15 = [v6 accessibilityLabel];
-  [v7 appendString:v15];
+  accessibilityLabel = [elementCopy accessibilityLabel];
+  [v7 appendString:accessibilityLabel];
 
   return v7;
 }
 
-- (id)edgeBetweenVertex:(id)a3 andVertex:(id)a4
+- (id)edgeBetweenVertex:(id)vertex andVertex:(id)andVertex
 {
   v27 = *MEMORY[0x29EDCA608];
-  v5 = a4;
+  andVertexCopy = andVertex;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [a3 edges];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  edges = [vertex edges];
+  v7 = [edges countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
     v8 = *v22;
@@ -2462,7 +2462,7 @@ LABEL_19:
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(edges);
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
@@ -2470,8 +2470,8 @@ LABEL_19:
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v11 = [v10 vertices];
-        v12 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        vertices = [v10 vertices];
+        v12 = [vertices countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v12)
         {
           v13 = *v18;
@@ -2481,10 +2481,10 @@ LABEL_19:
             {
               if (*v18 != v13)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(vertices);
               }
 
-              if (*(*(&v17 + 1) + 8 * j) == v5)
+              if (*(*(&v17 + 1) + 8 * j) == andVertexCopy)
               {
                 v15 = v10;
 
@@ -2492,7 +2492,7 @@ LABEL_19:
               }
             }
 
-            v12 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v12 = [vertices countByEnumeratingWithState:&v17 objects:v25 count:16];
             if (v12)
             {
               continue;
@@ -2503,7 +2503,7 @@ LABEL_19:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v7 = [edges countByEnumeratingWithState:&v21 objects:v26 count:16];
       v15 = 0;
     }
 
@@ -2520,22 +2520,22 @@ LABEL_19:
   return v15;
 }
 
-- (double)accessibilityDistanceBetweenPoint:(CGPoint)a3 andPoint:(CGPoint)a4 onRoad:(id)a5
+- (double)accessibilityDistanceBetweenPoint:(CGPoint)point andPoint:(CGPoint)andPoint onRoad:(id)road
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3.y;
-  v8 = a3.x;
-  v10 = a5;
-  v11 = [v10 consolidatedAndOrderedFeatures];
-  v12 = [v10 featureAndPointIndicesForPoint:{v8, v7}];
+  y = andPoint.y;
+  x = andPoint.x;
+  v7 = point.y;
+  v8 = point.x;
+  roadCopy = road;
+  consolidatedAndOrderedFeatures = [roadCopy consolidatedAndOrderedFeatures];
+  v12 = [roadCopy featureAndPointIndicesForPoint:{v8, v7}];
   v14 = v13;
-  v15 = [v10 featureAndPointIndicesForPoint:{x, y}];
+  v15 = [roadCopy featureAndPointIndicesForPoint:{x, y}];
   v17 = -1.0;
   if (v12 != -1 && v12 == v15)
   {
     v18 = v16;
-    v19 = [v11 objectAtIndex:v12];
+    v19 = [consolidatedAndOrderedFeatures objectAtIndex:v12];
     if (v14 >= v18)
     {
       v20 = v18;
@@ -2566,8 +2566,8 @@ LABEL_19:
         v28 = v27;
         v30 = v29;
 
-        v31 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
-        [v31 accessibilityRealDistanceBetweenPoint:v23 screenPoint2:{v25, v28, v30}];
+        currentMapView = [(VKMapViewAccessibilityElementManager *)self currentMapView];
+        [currentMapView accessibilityRealDistanceBetweenPoint:v23 screenPoint2:{v25, v28, v30}];
         v17 = v17 + v32;
       }
 
@@ -2578,26 +2578,26 @@ LABEL_19:
   return v17;
 }
 
-- (id)accessibilityVisiblePOIsBetweenPoint:(CGPoint)a3 andPoint:(CGPoint)a4 onRoad:(id)a5
+- (id)accessibilityVisiblePOIsBetweenPoint:(CGPoint)point andPoint:(CGPoint)andPoint onRoad:(id)road
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3.y;
-  v8 = a3.x;
+  y = andPoint.y;
+  x = andPoint.x;
+  v7 = point.y;
+  v8 = point.x;
   v75 = *MEMORY[0x29EDCA608];
-  v57 = a5;
+  roadCopy = road;
   v64 = objc_opt_new();
   v68 = objc_opt_new();
-  v59 = [v57 consolidatedAndOrderedFeatures];
-  v10 = [v57 featureAndPointIndicesForPoint:{v8, v7}];
+  consolidatedAndOrderedFeatures = [roadCopy consolidatedAndOrderedFeatures];
+  v10 = [roadCopy featureAndPointIndicesForPoint:{v8, v7}];
   v65 = v11;
   v12 = v10;
-  v13 = [v57 featureAndPointIndicesForPoint:{x, y}];
+  v13 = [roadCopy featureAndPointIndicesForPoint:{x, y}];
   v60 = v14;
   v15 = 0;
   if (v12 != -1 && v12 == v13)
   {
-    v61 = [v59 objectAtIndex:v12];
+    v61 = [consolidatedAndOrderedFeatures objectAtIndex:v12];
     if (v65 != v60)
     {
       v17 = 1;
@@ -2621,8 +2621,8 @@ LABEL_19:
         v25 = v24;
         v27 = v26;
 
-        v28 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
-        [v28 accessibilityRealDistanceBetweenPoint:v67 screenPoint2:{v22, v25, v27}];
+        currentMapView = [(VKMapViewAccessibilityElementManager *)self currentMapView];
+        [currentMapView accessibilityRealDistanceBetweenPoint:v67 screenPoint2:{v22, v25, v27}];
         v30 = v29;
 
         v31 = v67;
@@ -2640,8 +2640,8 @@ LABEL_19:
           v72 = 0u;
           v69 = 0u;
           v70 = 0u;
-          v34 = [(VKMapViewAccessibilityElementManager *)self accessibilityElements];
-          v35 = [v34 countByEnumeratingWithState:&v69 objects:v74 count:16];
+          accessibilityElements = [(VKMapViewAccessibilityElementManager *)self accessibilityElements];
+          v35 = [accessibilityElements countByEnumeratingWithState:&v69 objects:v74 count:16];
           if (v35)
           {
             v36 = *v70;
@@ -2651,7 +2651,7 @@ LABEL_19:
               {
                 if (*v70 != v36)
                 {
-                  objc_enumerationMutation(v34);
+                  objc_enumerationMutation(accessibilityElements);
                 }
 
                 v38 = *(*(&v69 + 1) + 8 * j);
@@ -2665,13 +2665,13 @@ LABEL_19:
                     VKLocationCoordinate2DForVKPoint();
                     v41 = v40;
                     v43 = v42;
-                    v44 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
-                    [v44 accessibilityConvertCoordinateToWindow:{v41, v43}];
+                    currentMapView2 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
+                    [currentMapView2 accessibilityConvertCoordinateToWindow:{v41, v43}];
                     v46 = v45;
                     v48 = v47;
 
-                    v49 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
-                    [v49 accessibilityRealDistanceBetweenPoint:v46 screenPoint2:{v48, v31, i}];
+                    currentMapView3 = [(VKMapViewAccessibilityElementManager *)self currentMapView];
+                    [currentMapView3 accessibilityRealDistanceBetweenPoint:v46 screenPoint2:{v48, v31, i}];
                     if (v50 <= 50.0)
                     {
                       v51 = [v68 containsObject:v39];
@@ -2700,7 +2700,7 @@ LABEL_19:
                 }
               }
 
-              v35 = [v34 countByEnumeratingWithState:&v69 objects:v74 count:16];
+              v35 = [accessibilityElements countByEnumeratingWithState:&v69 objects:v74 count:16];
             }
 
             while (v35);
@@ -2721,24 +2721,24 @@ LABEL_19:
   return v15;
 }
 
-- (id)accessibilityMapsExplorationDescriptionForAdjacentPOIs:(id)a3
+- (id)accessibilityMapsExplorationDescriptionForAdjacentPOIs:(id)is
 {
-  v3 = a3;
+  isCopy = is;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
-  v6 = [v3 count];
+  v6 = [isCopy count];
   if (v6 >= 1)
   {
     for (i = 0; i != v6; ++i)
     {
-      v8 = [v3 objectAtIndex:i];
-      v9 = [v8 firstObject];
-      [v9 floatValue];
+      v8 = [isCopy objectAtIndex:i];
+      firstObject = [v8 firstObject];
+      [firstObject floatValue];
       v11 = v10;
 
-      v12 = [v3 objectAtIndex:i];
+      v12 = [isCopy objectAtIndex:i];
       v13 = [v12 objectAtIndex:1];
-      v14 = [v13 accessibilityLabel];
+      accessibilityLabel = [v13 accessibilityLabel];
 
       if (v11 <= 3.14159265)
       {
@@ -2751,7 +2751,7 @@ LABEL_19:
       }
 
       v16 = v15;
-      [v16 addObject:v14];
+      [v16 addObject:accessibilityLabel];
     }
   }
 
@@ -2808,24 +2808,24 @@ LABEL_19:
   return v2;
 }
 
-- (id)accessibilityMapsExplorationChangeVerbosityIncreasing:(BOOL)a3
+- (id)accessibilityMapsExplorationChangeVerbosityIncreasing:(BOOL)increasing
 {
-  v3 = a3;
-  v5 = [(VKMapViewAccessibilityElementManager *)self verbosityLevel];
-  if (v5 == 2)
+  increasingCopy = increasing;
+  verbosityLevel = [(VKMapViewAccessibilityElementManager *)self verbosityLevel];
+  if (verbosityLevel == 2)
   {
     v7 = AXVectorKitLocString(@"VERBOSITY_HIGH");
-    v6 = !v3;
+    v6 = !increasingCopy;
 LABEL_11:
     v8 = v7;
     goto LABEL_13;
   }
 
-  v6 = v5;
-  if (v5 == 1)
+  v6 = verbosityLevel;
+  if (verbosityLevel == 1)
   {
     v7 = AXVectorKitLocString(@"VERBOSITY_AVERAGE");
-    if (v3)
+    if (increasingCopy)
     {
       v6 = 2;
     }
@@ -2838,10 +2838,10 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v5)
+  if (!verbosityLevel)
   {
     v7 = AXVectorKitLocString(@"VERBOSITY_LOW");
-    if (v3)
+    if (increasingCopy)
     {
       v6 = 1;
     }
@@ -2861,16 +2861,16 @@ LABEL_13:
   return v8;
 }
 
-- (double)accessibilityAngleWithThreePointsFirst:(CGPoint)a3 second:(CGPoint)a4 third:(CGPoint)a5 inRadians:(BOOL)a6
+- (double)accessibilityAngleWithThreePointsFirst:(CGPoint)first second:(CGPoint)second third:(CGPoint)third inRadians:(BOOL)radians
 {
-  v6 = a6;
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
+  radiansCopy = radians;
+  y = third.y;
+  x = third.x;
+  v9 = second.y;
+  v10 = second.x;
   v14 = 0.0;
   v15 = 0.0;
-  AXVKMathGetVectorAndDistanceForPoints(&v15, &v14, a3, a4);
+  AXVKMathGetVectorAndDistanceForPoints(&v15, &v14, first, second);
   v12 = 0;
   v13 = 0.0;
   v16.x = x;
@@ -2884,7 +2884,7 @@ LABEL_13:
     result = v15 - v13 + 360.0;
   }
 
-  if (v6)
+  if (radiansCopy)
   {
     return result / 180.0 * 3.14159265;
   }
@@ -2892,14 +2892,14 @@ LABEL_13:
   return result;
 }
 
-- (id)roadsForVertex:(id)a3
+- (id)roadsForVertex:(id)vertex
 {
-  v4 = a3;
-  [v4 getScreenPoint];
+  vertexCopy = vertex;
+  [vertexCopy getScreenPoint];
   v6 = v5;
   v8 = v7;
-  v9 = [(VKMapViewAccessibilityElementManager *)self accessibilityElements];
-  v10 = [v9 copy];
+  accessibilityElements = [(VKMapViewAccessibilityElementManager *)self accessibilityElements];
+  v10 = [accessibilityElements copy];
 
   v15 = 0;
   v16 = &v15;
@@ -2922,15 +2922,15 @@ LABEL_13:
 
   if ([v16[5] count])
   {
-    v11 = v16[5];
+    roads = v16[5];
   }
 
   else
   {
-    v11 = [v4 roads];
+    roads = [vertexCopy roads];
   }
 
-  v12 = v11;
+  v12 = roads;
   _Block_object_dispose(&v15, 8);
 
   return v12;
@@ -2946,7 +2946,7 @@ void __55__VKMapViewAccessibilityElementManager_roadsForVertex___block_invoke(ui
   }
 }
 
-- (id)accessibilityElementsForMapView:(id)a3
+- (id)accessibilityElementsForMapView:(id)view
 {
   v7 = 0;
   v8 = &v7;
@@ -2977,7 +2977,7 @@ void __72__VKMapViewAccessibilityElementManager_accessibilityElementsForMapView_
   *(v3 + 40) = v2;
 }
 
-- ($01BB1521EC52D44A8E7628F5261DCEC8)boundsForMapView:(id)a3
+- ($01BB1521EC52D44A8E7628F5261DCEC8)boundsForMapView:(id)view
 {
   v13 = 0;
   v14 = &v13;
@@ -3022,7 +3022,7 @@ uint64_t __57__VKMapViewAccessibilityElementManager_boundsForMapView___block_inv
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)centerForMapView:(id)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)centerForMapView:(id)view
 {
   v12 = 0;
   v13 = &v12;
@@ -3062,7 +3062,7 @@ uint64_t __57__VKMapViewAccessibilityElementManager_centerForMapView___block_inv
   return result;
 }
 
-- (int64_t)orientationForMapView:(id)a3
+- (int64_t)orientationForMapView:(id)view
 {
   v7 = 0;
   v8 = &v7;
@@ -3088,7 +3088,7 @@ uint64_t __62__VKMapViewAccessibilityElementManager_orientationForMapView___bloc
   return result;
 }
 
-- (double)yawForMapView:(id)a3
+- (double)yawForMapView:(id)view
 {
   v7 = 0;
   v8 = &v7;
@@ -3114,16 +3114,16 @@ uint64_t __54__VKMapViewAccessibilityElementManager_yawForMapView___block_invoke
   return result;
 }
 
-- (void)updateAccessibilityElementsForMapView:(id)a3 isRetry:(BOOL)a4
+- (void)updateAccessibilityElementsForMapView:(id)view isRetry:(BOOL)retry
 {
-  v4 = a3;
-  if (!v4)
+  viewCopy = view;
+  if (!viewCopy)
   {
     _AXAssert();
   }
 
   _AXLogWithFacility();
-  v5 = v4;
+  v5 = viewCopy;
   AXPerformBlockAsynchronouslyOnMainThread();
 }
 

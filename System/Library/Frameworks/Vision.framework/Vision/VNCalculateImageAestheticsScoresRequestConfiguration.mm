@@ -1,22 +1,22 @@
 @interface VNCalculateImageAestheticsScoresRequestConfiguration
-- (VNCalculateImageAestheticsScoresRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNCalculateImageAestheticsScoresRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNCalculateImageAestheticsScoresRequestConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = VNCalculateImageAestheticsScoresRequestConfiguration;
-  return [(VNImageBasedRequestConfiguration *)&v4 copyWithZone:a3];
+  return [(VNImageBasedRequestConfiguration *)&v4 copyWithZone:zone];
 }
 
-- (VNCalculateImageAestheticsScoresRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNCalculateImageAestheticsScoresRequestConfiguration)initWithRequestClass:(Class)class
 {
   v4.receiver = self;
   v4.super_class = VNCalculateImageAestheticsScoresRequestConfiguration;
-  return [(VNImageBasedRequestConfiguration *)&v4 initWithRequestClass:a3];
+  return [(VNImageBasedRequestConfiguration *)&v4 initWithRequestClass:class];
 }
 
 @end

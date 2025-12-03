@@ -11,7 +11,7 @@
   inited = swift_initStackObject();
   *(inited + 16) = xmmword_222B05260;
   v4 = qword_280CB4CB0;
-  v5 = self;
+  selfCopy = self;
   if (v4 != -1)
   {
     swift_once();

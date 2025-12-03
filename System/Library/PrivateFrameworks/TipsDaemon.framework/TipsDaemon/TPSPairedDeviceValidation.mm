@@ -4,13 +4,13 @@
 + (id)watchDeviceInfo;
 - (NSArray)cachedDevices;
 - (NSArray)cachedPeers;
-- (TPSPairedDeviceValidation)initWithTargetDevices:(id)a3 excludeDevices:(id)a4;
-- (id)_bluetoothValidationForProductID:(unsigned int)a3 deviceType:(int64_t)a4;
-- (id)_bluetoothValidationForProductIDs:(id)a3 deviceType:(int64_t)a4 joinType:(int64_t)a5;
-- (id)_bluetoothValidationForTag:(id)a3 deviceType:(int64_t)a4;
-- (id)_validationForDeviceNumber:(int64_t)a3;
-- (id)_validationsForDevices:(id)a3;
-- (void)validateWithCompletion:(id)a3;
+- (TPSPairedDeviceValidation)initWithTargetDevices:(id)devices excludeDevices:(id)excludeDevices;
+- (id)_bluetoothValidationForProductID:(unsigned int)d deviceType:(int64_t)type;
+- (id)_bluetoothValidationForProductIDs:(id)ds deviceType:(int64_t)type joinType:(int64_t)joinType;
+- (id)_bluetoothValidationForTag:(id)tag deviceType:(int64_t)type;
+- (id)_validationForDeviceNumber:(int64_t)number;
+- (id)_validationsForDevices:(id)devices;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSPairedDeviceValidation
@@ -18,9 +18,9 @@
 + (id)airPodsDeviceInfo
 {
   v17[14] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D71740] ignoreTargetingValidator];
-  v3 = v2;
-  if (v2)
+  ignoreTargetingValidator = [MEMORY[0x277D71740] ignoreTargetingValidator];
+  v3 = ignoreTargetingValidator;
+  if (ignoreTargetingValidator)
   {
     v4 = &unk_2848309D8;
   }
@@ -53,8 +53,8 @@
   v17[13] = &unk_284830B10;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:14];
   v8 = +[TPSBluetoothChecker sharedInstance];
-  v9 = [v8 pairedDevices];
-  v6 = [TPSBluetoothChecker bluetoothPairedForProductIDs:v7 withPairedDevices:v9];
+  pairedDevices = [v8 pairedDevices];
+  v6 = [TPSBluetoothChecker bluetoothPairedForProductIDs:v7 withPairedDevices:pairedDevices];
 
   if (v6)
   {
@@ -142,16 +142,16 @@ LABEL_9:
 
 + (id)watchDeviceInfo
 {
-  v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
-  if (v3 || [MEMORY[0x277D71740] ignoreTargetingValidator])
+  if (getActivePairedDevice || [MEMORY[0x277D71740] ignoreTargetingValidator])
   {
     v4 = [[TPSCloudDeviceInfo alloc] initWithModel:@"watch"];
     v5 = v4;
-    if (v3)
+    if (getActivePairedDevice)
     {
-      v6 = [v3 valueForProperty:*MEMORY[0x277D2BC20]];
+      v6 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BC20]];
       [(TPSCloudDeviceInfo *)v5 setMaxOSVersion:v6];
     }
 
@@ -173,31 +173,31 @@ LABEL_9:
   return v5;
 }
 
-- (TPSPairedDeviceValidation)initWithTargetDevices:(id)a3 excludeDevices:(id)a4
+- (TPSPairedDeviceValidation)initWithTargetDevices:(id)devices excludeDevices:(id)excludeDevices
 {
   v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v8 = a4;
-  v9 = a3;
+  excludeDevicesCopy = excludeDevices;
+  devicesCopy = devices;
   v10 = dispatch_queue_create(0, v7);
   syncQueue = self->_syncQueue;
   self->_syncQueue = v10;
 
   v14.receiver = self;
   v14.super_class = TPSPairedDeviceValidation;
-  v12 = [(TPSInclusivityValidation *)&v14 initWithTargetValues:v9 excludeValues:v8];
+  v12 = [(TPSInclusivityValidation *)&v14 initWithTargetValues:devicesCopy excludeValues:excludeDevicesCopy];
 
   return v12;
 }
 
 - (NSArray)cachedPeers
 {
-  v3 = [(TPSPairedDeviceValidation *)self syncQueue];
+  syncQueue = [(TPSPairedDeviceValidation *)self syncQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__TPSPairedDeviceValidation_cachedPeers__block_invoke;
   block[3] = &unk_2789AFAB0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(syncQueue, block);
 
   return self->_cachedPeers;
 }
@@ -216,13 +216,13 @@ void __40__TPSPairedDeviceValidation_cachedPeers__block_invoke(uint64_t a1)
 
 - (NSArray)cachedDevices
 {
-  v3 = [(TPSPairedDeviceValidation *)self syncQueue];
+  syncQueue = [(TPSPairedDeviceValidation *)self syncQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__TPSPairedDeviceValidation_cachedDevices__block_invoke;
   block[3] = &unk_2789AFAB0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(syncQueue, block);
 
   return self->_cachedDevices;
 }
@@ -239,43 +239,43 @@ void __42__TPSPairedDeviceValidation_cachedDevices__block_invoke(uint64_t a1)
   }
 }
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_new();
-  v6 = [(TPSPairedDeviceValidation *)self targetDevices];
-  v7 = [v6 count];
+  targetDevices = [(TPSPairedDeviceValidation *)self targetDevices];
+  v7 = [targetDevices count];
 
   if (v7)
   {
-    v8 = [(TPSPairedDeviceValidation *)self targetDevices];
-    v9 = [(TPSPairedDeviceValidation *)self _validationsForDevices:v8];
+    targetDevices2 = [(TPSPairedDeviceValidation *)self targetDevices];
+    v9 = [(TPSPairedDeviceValidation *)self _validationsForDevices:targetDevices2];
 
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __52__TPSPairedDeviceValidation_validateWithCompletion___block_invoke;
     v25[3] = &unk_2789B0AA8;
     v26 = v9;
-    v27 = self;
+    selfCopy = self;
     v10 = v9;
     v11 = [TPSBlockValidation blockValidationWithBlock:v25];
     [v5 addObject:v11];
   }
 
-  v12 = [(TPSPairedDeviceValidation *)self excludeDevices];
-  v13 = [v12 count];
+  excludeDevices = [(TPSPairedDeviceValidation *)self excludeDevices];
+  v13 = [excludeDevices count];
 
   if (v13)
   {
-    v14 = [(TPSPairedDeviceValidation *)self excludeDevices];
-    v15 = [(TPSPairedDeviceValidation *)self _validationsForDevices:v14];
+    excludeDevices2 = [(TPSPairedDeviceValidation *)self excludeDevices];
+    v15 = [(TPSPairedDeviceValidation *)self _validationsForDevices:excludeDevices2];
 
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __52__TPSPairedDeviceValidation_validateWithCompletion___block_invoke_3;
     v22[3] = &unk_2789B0AA8;
     v23 = v15;
-    v24 = self;
+    selfCopy2 = self;
     v16 = v15;
     v17 = [TPSBlockValidation blockValidationWithBlock:v22];
     [v5 addObject:v17];
@@ -283,20 +283,20 @@ void __42__TPSPairedDeviceValidation_cachedDevices__block_invoke(uint64_t a1)
 
   if ([v5 count])
   {
-    v18 = [(TPSTargetingValidation *)self name];
-    v19 = [(TPSPairedDeviceValidation *)self completionQueue];
+    name = [(TPSTargetingValidation *)self name];
+    completionQueue = [(TPSPairedDeviceValidation *)self completionQueue];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __52__TPSPairedDeviceValidation_validateWithCompletion___block_invoke_5;
     v20[3] = &unk_2789B0AD0;
     v20[4] = self;
-    v21 = v4;
-    [TPSTargetingValidator validateConditions:v5 joinType:0 context:v18 cache:0 completionQueue:v19 completionHandler:v20];
+    v21 = completionCopy;
+    [TPSTargetingValidator validateConditions:v5 joinType:0 context:name cache:0 completionQueue:completionQueue completionHandler:v20];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
@@ -343,19 +343,19 @@ void __52__TPSPairedDeviceValidation_validateWithCompletion___block_invoke_5(uin
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_validationsForDevices:(id)a3
+- (id)_validationsForDevices:(id)devices
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  devicesCopy = devices;
+  v6 = [v4 arrayWithCapacity:{objc_msgSend(devicesCopy, "count")}];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __52__TPSPairedDeviceValidation__validationsForDevices___block_invoke;
   v13 = &unk_2789B0AF8;
-  v14 = self;
+  selfCopy = self;
   v15 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:&v10];
+  [devicesCopy enumerateObjectsUsingBlock:&v10];
 
   v8 = [v7 copy];
 
@@ -368,9 +368,9 @@ void __52__TPSPairedDeviceValidation__validationsForDevices___block_invoke(uint6
   [*(a1 + 40) addObject:v3];
 }
 
-- (id)_validationForDeviceNumber:(int64_t)a3
+- (id)_validationForDeviceNumber:(int64_t)number
 {
-  switch(a3)
+  switch(number)
   {
     case 0:
       v4 = [TPSPairedWatchValidation alloc];
@@ -469,10 +469,10 @@ LABEL_30:
 
       goto LABEL_32;
     default:
-      v15 = [MEMORY[0x277D71778] targeting];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      targeting = [MEMORY[0x277D71778] targeting];
+      if (os_log_type_enabled(targeting, OS_LOG_TYPE_ERROR))
       {
-        [(TPSPairedDeviceValidation *)a3 _validationForDeviceNumber:v15];
+        [(TPSPairedDeviceValidation *)number _validationForDeviceNumber:targeting];
       }
 
 LABEL_31:
@@ -500,17 +500,17 @@ void __56__TPSPairedDeviceValidation__validationForDeviceNumber___block_invoke(u
   v3[2](v3, v9, 0);
 }
 
-- (id)_bluetoothValidationForTag:(id)a3 deviceType:(int64_t)a4
+- (id)_bluetoothValidationForTag:(id)tag deviceType:(int64_t)type
 {
-  v6 = a3;
+  tagCopy = tag;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __67__TPSPairedDeviceValidation__bluetoothValidationForTag_deviceType___block_invoke;
   v10[3] = &unk_2789B0B40;
-  v11 = v6;
-  v12 = self;
-  v13 = a4;
-  v7 = v6;
+  v11 = tagCopy;
+  selfCopy = self;
+  typeCopy = type;
+  v7 = tagCopy;
   v8 = [TPSBlockValidation blockValidationWithBlock:v10];
 
   return v8;
@@ -533,15 +533,15 @@ void __67__TPSPairedDeviceValidation__bluetoothValidationForTag_deviceType___blo
   v5[2](v5, v7, 0);
 }
 
-- (id)_bluetoothValidationForProductID:(unsigned int)a3 deviceType:(int64_t)a4
+- (id)_bluetoothValidationForProductID:(unsigned int)d deviceType:(int64_t)type
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__TPSPairedDeviceValidation__bluetoothValidationForProductID_deviceType___block_invoke;
   v6[3] = &unk_2789B0B68;
-  v7 = a3;
+  dCopy = d;
   v6[4] = self;
-  v6[5] = a4;
+  v6[5] = type;
   v4 = [TPSBlockValidation blockValidationWithBlock:v6];
 
   return v4;
@@ -564,18 +564,18 @@ void __73__TPSPairedDeviceValidation__bluetoothValidationForProductID_deviceType
   v5[2](v5, v7, 0);
 }
 
-- (id)_bluetoothValidationForProductIDs:(id)a3 deviceType:(int64_t)a4 joinType:(int64_t)a5
+- (id)_bluetoothValidationForProductIDs:(id)ds deviceType:(int64_t)type joinType:(int64_t)joinType
 {
-  v8 = a3;
+  dsCopy = ds;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__TPSPairedDeviceValidation__bluetoothValidationForProductIDs_deviceType_joinType___block_invoke;
   v12[3] = &unk_2789B0BB8;
-  v13 = v8;
-  v14 = self;
-  v15 = a5;
-  v16 = a4;
-  v9 = v8;
+  v13 = dsCopy;
+  selfCopy = self;
+  joinTypeCopy = joinType;
+  typeCopy = type;
+  v9 = dsCopy;
   v10 = [TPSBlockValidation blockValidationWithBlock:v12];
 
   return v10;

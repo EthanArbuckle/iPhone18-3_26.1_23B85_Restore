@@ -2,18 +2,18 @@
 - (BOOL)canVendPhotoStorage;
 - (BOOL)isPhotoStorageAvailable;
 - (BOOL)shouldVendPhotoStorage;
-- (BOOL)updateProtectionStatus:(int64_t)a3;
+- (BOOL)updateProtectionStatus:(int64_t)status;
 - (PTPSecurityModel)init;
 - (id)delegate;
-- (id)prettyAccess:(int64_t)a3 value:(BOOL)a4;
+- (id)prettyAccess:(int64_t)access value:(BOOL)value;
 - (id)prettyHostID;
 - (void)dealloc;
 - (void)handleInternalSettingsChanged;
-- (void)handleProtectionStatusChanged:(int64_t)a3;
+- (void)handleProtectionStatusChanged:(int64_t)changed;
 - (void)handleThrottleChanged;
 - (void)registerForSecurityNotifications;
-- (void)setDelegate:(id)a3;
-- (void)setHasVended:(BOOL)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setHasVended:(BOOL)vended;
 - (void)start;
 - (void)stop;
 - (void)unregisterForSecurityNotifications;
@@ -59,7 +59,7 @@
     v7 = v3;
     v8 = v6;
     *buf = 136446466;
-    v11 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v12 = 2114;
     v13 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -91,7 +91,7 @@
       v7 = v3;
       v8 = v6;
       v9 = 136446466;
-      v10 = [(__CFString *)v3 UTF8String];
+      uTF8String = [(__CFString *)v3 UTF8String];
       v11 = 2114;
       v12 = v5;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v9, 0x16u);
@@ -125,7 +125,7 @@
       v7 = v3;
       v8 = v6;
       v9 = 136446466;
-      v10 = [(__CFString *)v3 UTF8String];
+      uTF8String = [(__CFString *)v3 UTF8String];
       v11 = 2114;
       v12 = v5;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v9, 0x16u);
@@ -136,10 +136,10 @@
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = objc_storeWeak(&self->_delegate, a3);
-  if (a3)
+  v4 = objc_storeWeak(&self->_delegate, delegate);
+  if (delegate)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     self->_sessionID = [WeakRetained currentInternalSessionID];
@@ -151,9 +151,9 @@
   }
 }
 
-- (void)setHasVended:(BOOL)a3
+- (void)setHasVended:(BOOL)vended
 {
-  self->_hasVended = a3;
+  self->_hasVended = vended;
   __ICOSLogCreate();
   v4 = &stru_100038B48;
   if ([&stru_100038B48 length] >= 0x15)
@@ -179,14 +179,14 @@
     v9 = v4;
     v10 = v8;
     *buf = 136446466;
-    v12 = [(__CFString *)v4 UTF8String];
+    uTF8String = [(__CFString *)v4 UTF8String];
     v13 = 2114;
     v14 = v7;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 }
 
-- (BOOL)updateProtectionStatus:(int64_t)a3
+- (BOOL)updateProtectionStatus:(int64_t)status
 {
   deviceWasUnlocked = self->_deviceWasUnlocked;
   photoLibraryIsAvailable = self->_photoLibraryIsAvailable;
@@ -194,18 +194,18 @@
   photoStorageIsAvailable = self->_photoStorageIsAvailable;
   v9 = sub_10000C470();
   v10 = v9;
-  if (a3 > 2)
+  if (status > 2)
   {
-    if (a3 == 3)
+    if (status == 3)
     {
       self->_hostIsTrusted = 1;
       v13 = hostIsTrusted == 0;
       goto LABEL_25;
     }
 
-    if (a3 != 4)
+    if (status != 4)
     {
-      v13 = a3 == 5;
+      v13 = status == 5;
       goto LABEL_25;
     }
 
@@ -231,18 +231,18 @@
     v12 = deviceWasUnlocked == v19;
   }
 
-  else if (a3)
+  else if (status)
   {
-    if (a3 == 1)
+    if (status == 1)
     {
-      v15 = [(PTPSecurityModel *)self isPhotoStorageAvailable];
-      self->_photoStorageIsAvailable = v15;
-      v12 = photoStorageIsAvailable == v15;
+      isPhotoStorageAvailable = [(PTPSecurityModel *)self isPhotoStorageAvailable];
+      self->_photoStorageIsAvailable = isPhotoStorageAvailable;
+      v12 = photoStorageIsAvailable == isPhotoStorageAvailable;
     }
 
     else
     {
-      if (a3 != 2)
+      if (status != 2)
       {
         v13 = 0;
         goto LABEL_25;
@@ -256,9 +256,9 @@
 
   else
   {
-    v14 = [v9 libraryIsAvailable];
-    self->_photoLibraryIsAvailable = v14;
-    v12 = photoLibraryIsAvailable == v14;
+    libraryIsAvailable = [v9 libraryIsAvailable];
+    self->_photoLibraryIsAvailable = libraryIsAvailable;
+    v12 = photoLibraryIsAvailable == libraryIsAvailable;
   }
 
   v13 = !v12;
@@ -277,25 +277,25 @@ LABEL_25:
   }
 
   v4 = objc_loadWeakRetained(&self->_delegate);
-  v5 = [v4 hostIsWindows];
+  hostIsWindows = [v4 hostIsWindows];
 
-  if (v5)
+  if (hostIsWindows)
   {
     return @"Windows";
   }
 
   v7 = objc_loadWeakRetained(&self->_delegate);
-  v8 = [v7 hostIsMacOS];
+  hostIsMacOS = [v7 hostIsMacOS];
 
-  if (v8)
+  if (hostIsMacOS)
   {
     return @"macOS";
   }
 
   v9 = objc_loadWeakRetained(&self->_delegate);
-  v10 = [v9 hostIsLegacyOS];
+  hostIsLegacyOS = [v9 hostIsLegacyOS];
 
-  if (v10)
+  if (hostIsLegacyOS)
   {
     return @"OSX";
   }
@@ -306,30 +306,30 @@ LABEL_25:
   }
 }
 
-- (id)prettyAccess:(int64_t)a3 value:(BOOL)a4
+- (id)prettyAccess:(int64_t)access value:(BOOL)value
 {
-  if (a3 > 5)
+  if (access > 5)
   {
     v6 = @"Undefined";
   }
 
   else
   {
-    v4 = off_1000387B8[a3];
-    v5 = sub_1000025B4(a4);
+    v4 = off_1000387B8[access];
+    v5 = sub_1000025B4(value);
     v6 = [NSString stringWithFormat:v4, v5];
   }
 
   return v6;
 }
 
-- (void)handleProtectionStatusChanged:(int64_t)a3
+- (void)handleProtectionStatusChanged:(int64_t)changed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
     v6 = WeakRetained;
-    v7 = [(PTPSecurityModel *)self updateProtectionStatus:a3];
+    v7 = [(PTPSecurityModel *)self updateProtectionStatus:changed];
 
     if (v7)
     {
@@ -373,7 +373,7 @@ LABEL_25:
     v7 = v3;
     v8 = v6;
     v11 = 136446466;
-    v12 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v13 = 2114;
     v14 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v11, 0x16u);
@@ -419,7 +419,7 @@ LABEL_11:
       v12 = v8;
       v13 = v11;
       *buf = 136446466;
-      v15 = [(__CFString *)v8 UTF8String];
+      uTF8String = [(__CFString *)v8 UTF8String];
       v16 = 2114;
       v17 = v10;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -458,27 +458,27 @@ LABEL_11:
 
   v4 = WeakRetained;
   v5 = objc_loadWeakRetained(&self->_delegate);
-  v6 = [v5 photoStorageAvailable];
+  photoStorageAvailable = [v5 photoStorageAvailable];
 
-  if (!v6)
+  if (!photoStorageAvailable)
   {
     return 0;
   }
 
-  v7 = [v6 BOOLValue];
+  bOOLValue = [photoStorageAvailable BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)shouldVendPhotoStorage
 {
-  v3 = [(PTPSecurityModel *)self canVendPhotoStorage];
-  if (v3)
+  canVendPhotoStorage = [(PTPSecurityModel *)self canVendPhotoStorage];
+  if (canVendPhotoStorage)
   {
-    LOBYTE(v3) = !self->_hasVended;
+    LOBYTE(canVendPhotoStorage) = !self->_hasVended;
   }
 
-  return v3;
+  return canVendPhotoStorage;
 }
 
 - (BOOL)canVendPhotoStorage
@@ -511,7 +511,7 @@ LABEL_11:
     v14 = v8;
     v15 = v13;
     *buf = 136446466;
-    v18 = [(__CFString *)v8 UTF8String];
+    uTF8String = [(__CFString *)v8 UTF8String];
     v19 = 2114;
     v20 = v12;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -527,8 +527,8 @@ LABEL_11:
   v11[2] = 0x3032000000;
   v11[3] = sub_100003EF0;
   v11[4] = sub_100003F00;
-  v2 = self;
-  v12 = v2;
+  selfCopy = self;
+  v12 = selfCopy;
   v3 = [kLockdownNotificationTrustedPTPAttached cStringUsingEncoding:4];
   v4 = &_dispatch_main_q;
   handler[0] = _NSConcreteStackBlock;
@@ -536,42 +536,42 @@ LABEL_11:
   handler[2] = sub_100003F08;
   handler[3] = &unk_100038798;
   handler[4] = v11;
-  notify_register_dispatch(v3, &v2->_trustedHostToken, &_dispatch_main_q, handler);
+  notify_register_dispatch(v3, &selfCopy->_trustedHostToken, &_dispatch_main_q, handler);
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100003F64;
   v9[3] = &unk_100038798;
   v9[4] = v11;
-  notify_register_dispatch(kMobileKeyBagLockStatusNotifyToken, &v2->_lockStatusToken, &_dispatch_main_q, v9);
+  notify_register_dispatch(kMobileKeyBagLockStatusNotifyToken, &selfCopy->_lockStatusToken, &_dispatch_main_q, v9);
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100003FC0;
   v8[3] = &unk_100038798;
   v8[4] = v11;
-  notify_register_dispatch("com.apple.ptpd.photoStorageChanged", &v2->_photoStorageToken, &_dispatch_main_q, v8);
+  notify_register_dispatch("com.apple.ptpd.photoStorageChanged", &selfCopy->_photoStorageToken, &_dispatch_main_q, v8);
 
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000401C;
   v7[3] = &unk_100038798;
   v7[4] = v11;
-  notify_register_dispatch("com.apple.ptpd.photoLibraryChanged", &v2->_photoLibraryToken, &_dispatch_main_q, v7);
+  notify_register_dispatch("com.apple.ptpd.photoLibraryChanged", &selfCopy->_photoLibraryToken, &_dispatch_main_q, v7);
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100004078;
   v6[3] = &unk_100038798;
   v6[4] = v11;
-  notify_register_dispatch("com.apple.ImageCaptureFramework.prefsChanged", &v2->_prefsChangedToken, &_dispatch_main_q, v6);
+  notify_register_dispatch("com.apple.ImageCaptureFramework.prefsChanged", &selfCopy->_prefsChangedToken, &_dispatch_main_q, v6);
 
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000040D0;
   v5[3] = &unk_100038798;
   v5[4] = v11;
-  notify_register_dispatch("com.apple.ImageCaptureFramework.throttleRateChanged", &v2->_throttleChangedToken, &_dispatch_main_q, v5);
+  notify_register_dispatch("com.apple.ImageCaptureFramework.throttleRateChanged", &selfCopy->_throttleChangedToken, &_dispatch_main_q, v5);
 
   _Block_object_dispose(v11, 8);
 }

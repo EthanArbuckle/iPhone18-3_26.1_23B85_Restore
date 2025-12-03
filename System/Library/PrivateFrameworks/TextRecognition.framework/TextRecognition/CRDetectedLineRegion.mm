@@ -2,10 +2,10 @@
 - (CGSize)rectifiedSize;
 - (CRDetectedLineRegion)init;
 - (double)aspectRatio;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)rotated180;
-- (void)_copyContentsToObject:(id)a3;
+- (void)_copyContentsToObject:(id)object;
 - (void)_rotate180;
 @end
 
@@ -18,15 +18,15 @@
   v2 = [(CRDetectedLineRegion *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     uuid = v2->_uuid;
-    v2->_uuid = v3;
+    v2->_uuid = uUID;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   if (v4)
@@ -37,7 +37,7 @@
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CRMutableDetectedLineRegion);
   if (v4)
@@ -58,20 +58,20 @@
 
 - (CGSize)rectifiedSize
 {
-  v3 = [(CRDetectedLineRegion *)self polygon];
+  polygon = [(CRDetectedLineRegion *)self polygon];
 
-  if (v3)
+  if (polygon)
   {
-    v4 = [(CRDetectedLineRegion *)self polygon];
-    v5 = [v4 denormalizedPolyline];
-    [v5 estimatedLineSizeForPairedPointPolygon];
+    polygon2 = [(CRDetectedLineRegion *)self polygon];
+    denormalizedPolyline = [polygon2 denormalizedPolyline];
+    [denormalizedPolyline estimatedLineSizeForPairedPointPolygon];
   }
 
   else
   {
-    v4 = [(CRDetectedLineRegion *)self boundingQuad];
-    v5 = [v4 denormalizedQuad];
-    [v5 size];
+    polygon2 = [(CRDetectedLineRegion *)self boundingQuad];
+    denormalizedPolyline = [polygon2 denormalizedQuad];
+    [denormalizedPolyline size];
   }
 
   v8 = v6;
@@ -100,46 +100,46 @@
 
 - (void)_rotate180
 {
-  v3 = [(CRDetectedLineRegion *)self boundingQuad];
-  v4 = [v3 rotated180];
-  [(CRDetectedLineRegion *)self setBoundingQuad:v4];
+  boundingQuad = [(CRDetectedLineRegion *)self boundingQuad];
+  rotated180 = [boundingQuad rotated180];
+  [(CRDetectedLineRegion *)self setBoundingQuad:rotated180];
 
-  v6 = [(CRDetectedLineRegion *)self polygon];
-  v5 = [v6 rotated180];
-  [(CRDetectedLineRegion *)self setPolygon:v5];
+  polygon = [(CRDetectedLineRegion *)self polygon];
+  rotated1802 = [polygon rotated180];
+  [(CRDetectedLineRegion *)self setPolygon:rotated1802];
 }
 
-- (void)_copyContentsToObject:(id)a3
+- (void)_copyContentsToObject:(id)object
 {
-  v11 = a3;
-  v4 = [(CRDetectedLineRegion *)self boundingQuad];
-  [v11 setBoundingQuad:v4];
+  objectCopy = object;
+  boundingQuad = [(CRDetectedLineRegion *)self boundingQuad];
+  [objectCopy setBoundingQuad:boundingQuad];
 
-  [v11 setLayoutDirection:{-[CRDetectedLineRegion layoutDirection](self, "layoutDirection")}];
-  [v11 setIsCurved:{-[CRDetectedLineRegion isCurved](self, "isCurved")}];
-  v5 = [(CRDetectedLineRegion *)self uuid];
-  [v11 setUuid:v5];
+  [objectCopy setLayoutDirection:{-[CRDetectedLineRegion layoutDirection](self, "layoutDirection")}];
+  [objectCopy setIsCurved:{-[CRDetectedLineRegion isCurved](self, "isCurved")}];
+  uuid = [(CRDetectedLineRegion *)self uuid];
+  [objectCopy setUuid:uuid];
 
-  v6 = [(CRDetectedLineRegion *)self polygon];
-  [v11 setPolygon:v6];
+  polygon = [(CRDetectedLineRegion *)self polygon];
+  [objectCopy setPolygon:polygon];
 
-  v7 = [(CRDetectedLineRegion *)self scriptCategoryResults];
-  [v11 setScriptCategoryResults:v7];
+  scriptCategoryResults = [(CRDetectedLineRegion *)self scriptCategoryResults];
+  [objectCopy setScriptCategoryResults:scriptCategoryResults];
 
-  v8 = [(CRDetectedLineRegion *)self topScriptCategory];
-  [v11 setTopScriptCategory:v8];
+  topScriptCategory = [(CRDetectedLineRegion *)self topScriptCategory];
+  [objectCopy setTopScriptCategory:topScriptCategory];
 
-  v9 = [(CRDetectedLineRegion *)self scriptCategoryCounts];
-  [v11 setScriptCategoryCounts:v9];
+  scriptCategoryCounts = [(CRDetectedLineRegion *)self scriptCategoryCounts];
+  [objectCopy setScriptCategoryCounts:scriptCategoryCounts];
 
-  v10 = [(CRDetectedLineRegion *)self sequenceScriptOutputResult];
-  [v11 setSequenceScriptOutputResult:v10];
+  sequenceScriptOutputResult = [(CRDetectedLineRegion *)self sequenceScriptOutputResult];
+  [objectCopy setSequenceScriptOutputResult:sequenceScriptOutputResult];
 
-  [v11 setNmsOutputScale:{-[CRDetectedLineRegion nmsOutputScale](self, "nmsOutputScale")}];
-  [v11 setShouldRunSequenceScript:{-[CRDetectedLineRegion shouldRunSequenceScript](self, "shouldRunSequenceScript")}];
-  [v11 setShouldRunSequenceOrientation:{-[CRDetectedLineRegion shouldRunSequenceOrientation](self, "shouldRunSequenceOrientation")}];
-  [v11 setShouldRotate180DetectorOrientationFallback:{-[CRDetectedLineRegion shouldRotate180DetectorOrientationFallback](self, "shouldRotate180DetectorOrientationFallback")}];
-  [v11 setTextType:{-[CRDetectedLineRegion textType](self, "textType")}];
+  [objectCopy setNmsOutputScale:{-[CRDetectedLineRegion nmsOutputScale](self, "nmsOutputScale")}];
+  [objectCopy setShouldRunSequenceScript:{-[CRDetectedLineRegion shouldRunSequenceScript](self, "shouldRunSequenceScript")}];
+  [objectCopy setShouldRunSequenceOrientation:{-[CRDetectedLineRegion shouldRunSequenceOrientation](self, "shouldRunSequenceOrientation")}];
+  [objectCopy setShouldRotate180DetectorOrientationFallback:{-[CRDetectedLineRegion shouldRotate180DetectorOrientationFallback](self, "shouldRotate180DetectorOrientationFallback")}];
+  [objectCopy setTextType:{-[CRDetectedLineRegion textType](self, "textType")}];
 }
 
 @end

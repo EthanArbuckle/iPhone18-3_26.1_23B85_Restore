@@ -8,16 +8,16 @@
 
 - (id)hf_iconDescriptor
 {
-  v1 = [a1 accessory];
-  v2 = [HFServiceIconFactory iconDescriptorForAccessory:v1];
+  accessory = [self accessory];
+  v2 = [HFServiceIconFactory iconDescriptorForAccessory:accessory];
 
   return v2;
 }
 
 - (uint64_t)hf_hasNonStandardTileUI
 {
-  v0 = [objc_opt_class() _profilesWithNonStandardTileUI];
-  v1 = [v0 containsObject:objc_opt_class()];
+  _profilesWithNonStandardTileUI = [objc_opt_class() _profilesWithNonStandardTileUI];
+  v1 = [_profilesWithNonStandardTileUI containsObject:objc_opt_class()];
 
   return v1;
 }

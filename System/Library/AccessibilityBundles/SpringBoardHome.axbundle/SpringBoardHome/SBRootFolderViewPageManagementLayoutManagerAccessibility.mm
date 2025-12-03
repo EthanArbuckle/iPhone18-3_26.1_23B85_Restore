@@ -1,32 +1,32 @@
 @interface SBRootFolderViewPageManagementLayoutManagerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)transitionToActive:(BOOL)a3 inFolderView:(id)a4 usingAnimator:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)transitionToActive:(BOOL)active inFolderView:(id)view usingAnimator:(id)animator;
 @end
 
 @implementation SBRootFolderViewPageManagementLayoutManagerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBRootFolderViewPageManagementLayoutManager" hasInstanceMethod:@"transitionToActive:inFolderView:usingAnimator:" withFullSignature:{"v", "B", "@", "@", 0}];
-  [v3 validateClass:@"SBRootFolderViewPageManagementLayoutManager" hasInstanceMethod:@"focusModeSymbolView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DNDStateService" hasInstanceMethod:@"queryCurrentStateWithError:" withFullSignature:{"@", "^@", 0}];
-  [v3 validateClass:@"DNDState" hasInstanceMethod:@"activeModeConfiguration" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DNDModeConfiguration" hasInstanceMethod:@"mode" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DNDMode" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBRootFolderViewPageManagementLayoutManager" hasInstanceMethod:@"transitionToActive:inFolderView:usingAnimator:" withFullSignature:{"v", "B", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBRootFolderViewPageManagementLayoutManager" hasInstanceMethod:@"focusModeSymbolView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DNDStateService" hasInstanceMethod:@"queryCurrentStateWithError:" withFullSignature:{"@", "^@", 0}];
+  [validationsCopy validateClass:@"DNDState" hasInstanceMethod:@"activeModeConfiguration" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DNDModeConfiguration" hasInstanceMethod:@"mode" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DNDMode" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
 }
 
-- (void)transitionToActive:(BOOL)a3 inFolderView:(id)a4 usingAnimator:(id)a5
+- (void)transitionToActive:(BOOL)active inFolderView:(id)view usingAnimator:(id)animator
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  activeCopy = active;
+  viewCopy = view;
+  animatorCopy = animator;
   v19.receiver = self;
   v19.super_class = SBRootFolderViewPageManagementLayoutManagerAccessibility;
-  [(SBRootFolderViewPageManagementLayoutManagerAccessibility *)&v19 transitionToActive:v6 inFolderView:v8 usingAnimator:v9];
+  [(SBRootFolderViewPageManagementLayoutManagerAccessibility *)&v19 transitionToActive:activeCopy inFolderView:viewCopy usingAnimator:animatorCopy];
   v10 = [(SBRootFolderViewPageManagementLayoutManagerAccessibility *)self safeUIViewForKey:@"focusModeSymbolView"];
   v11 = v10;
-  if (v6 && v10)
+  if (activeCopy && v10)
   {
     objc_initWeak(&location, v10);
     v12 = dispatch_get_global_queue(0, 0);

@@ -1,43 +1,43 @@
 @interface _PASSqliteNSOrderedSetCursor
-+ (id)planningInfoForValueConstraint:(int)a3;
++ (id)planningInfoForValueConstraint:(int)constraint;
 - (id)currentIndexedValue;
-- (void)applyConstraint:(int)a3 withArgument:(id)a4;
-- (void)setCollection:(id)a3;
+- (void)applyConstraint:(int)constraint withArgument:(id)argument;
+- (void)setCollection:(id)collection;
 @end
 
 @implementation _PASSqliteNSOrderedSetCursor
 
-- (void)applyConstraint:(int)a3 withArgument:(id)a4
+- (void)applyConstraint:(int)constraint withArgument:(id)argument
 {
-  v6 = a4;
-  if (a3 == 71)
+  argumentCopy = argument;
+  if (constraint == 71)
   {
-    v13 = v6;
-    v7 = [MEMORY[0x1E695DFB0] null];
+    v13 = argumentCopy;
+    null = [MEMORY[0x1E695DFB0] null];
 
     v8 = 1;
-    v6 = v7;
+    argumentCopy = null;
   }
 
   else
   {
-    v8 = a3 == 2;
-    if (a3 != 72 && a3 != 2)
+    v8 = constraint == 2;
+    if (constraint != 72 && constraint != 2)
     {
       goto LABEL_12;
     }
   }
 
-  v14 = v6;
-  if (!v6)
+  v14 = argumentCopy;
+  if (!argumentCopy)
   {
     goto LABEL_10;
   }
 
-  v9 = [MEMORY[0x1E695DFB0] null];
+  null2 = [MEMORY[0x1E695DFB0] null];
 
   v10 = !v8;
-  if (v14 != v9)
+  if (v14 != null2)
   {
     v10 = 1;
   }
@@ -53,18 +53,18 @@ LABEL_10:
     [(_PASSqliteRowIdIndexSetCursor *)self matchNoRows];
   }
 
-  v6 = v14;
+  argumentCopy = v14;
 LABEL_12:
 }
 
-- (void)setCollection:(id)a3
+- (void)setCollection:(id)collection
 {
   v8.receiver = self;
   v8.super_class = _PASSqliteNSOrderedSetCursor;
-  v4 = a3;
-  [(_PASSqliteCollectionsCursor *)&v8 setCollection:v4];
+  collectionCopy = collection;
+  [(_PASSqliteCollectionsCursor *)&v8 setCollection:collectionCopy];
   v5 = objc_alloc(MEMORY[0x1E696AC90]);
-  v6 = [v4 count];
+  v6 = [collectionCopy count];
 
   v7 = [v5 initWithIndexesInRange:{0, v6}];
   [(_PASSqliteRowIdIndexSetCursor *)self setIndexSet:v7];
@@ -72,15 +72,15 @@ LABEL_12:
 
 - (id)currentIndexedValue
 {
-  v3 = [(_PASSqliteCollectionsCursor *)self collection];
-  v4 = [v3 objectAtIndexedSubscript:{-[_PASSqliteRowIdIndexSetCursor currentIndexedRowId](self, "currentIndexedRowId")}];
+  collection = [(_PASSqliteCollectionsCursor *)self collection];
+  v4 = [collection objectAtIndexedSubscript:{-[_PASSqliteRowIdIndexSetCursor currentIndexedRowId](self, "currentIndexedRowId")}];
 
   return v4;
 }
 
-+ (id)planningInfoForValueConstraint:(int)a3
++ (id)planningInfoForValueConstraint:(int)constraint
 {
-  if ((a3 - 71) < 2 || a3 == 2)
+  if ((constraint - 71) < 2 || constraint == 2)
   {
     v6 = [[_PASSqliteCollectionsConstraintPlanInfo alloc] initWithEstimatedRows:1 estimatedCost:1 unique:0.00001 omit:0.00001, v3];
   }

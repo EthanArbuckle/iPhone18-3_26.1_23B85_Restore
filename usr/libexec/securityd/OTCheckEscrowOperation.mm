@@ -1,40 +1,40 @@
 @interface OTCheckEscrowOperation
-- (BOOL)enablePasscodeCacheFlow:(id *)a3;
-- (OTCheckEscrowOperation)initWithDependencies:(id)a3 followupHandler:(id)a4 isBackgroundCheck:(BOOL)a5;
+- (BOOL)enablePasscodeCacheFlow:(id *)flow;
+- (OTCheckEscrowOperation)initWithDependencies:(id)dependencies followupHandler:(id)handler isBackgroundCheck:(BOOL)check;
 - (id)getPasscodeGeneration;
-- (void)handleRepairSuggestions:(id)a3;
-- (void)performEscrowCheck:(id)a3;
+- (void)handleRepairSuggestions:(id)suggestions;
+- (void)performEscrowCheck:(id)check;
 @end
 
 @implementation OTCheckEscrowOperation
 
-- (BOOL)enablePasscodeCacheFlow:(id *)a3
+- (BOOL)enablePasscodeCacheFlow:(id *)flow
 {
-  v5 = [(OTCheckEscrowOperation *)self deps];
-  v6 = [v5 stateHolder];
+  deps = [(OTCheckEscrowOperation *)self deps];
+  stateHolder = [deps stateHolder];
   v60 = 0;
-  v7 = [v6 loadOrCreateAccountMetadata:&v60];
+  v7 = [stateHolder loadOrCreateAccountMetadata:&v60];
   v8 = v60;
 
   if (v7 && !v8)
   {
-    v55 = a3;
-    v56 = [v7 altDSID];
+    flowCopy = flow;
+    altDSID = [v7 altDSID];
     v9 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [v7 lastEscrowRepairAttempted] / 1000.0);
-    v10 = [(OTCheckEscrowOperation *)self results];
-    if ([(__CFString *)v10 repairReason]!= 5)
+    results = [(OTCheckEscrowOperation *)self results];
+    if ([(__CFString *)results repairReason]!= 5)
     {
 LABEL_7:
 
 LABEL_8:
-      v10 = +[NSDate date];
-      [(__CFString *)v10 timeIntervalSinceDate:v9];
+      results = +[NSDate date];
+      [(__CFString *)results timeIntervalSinceDate:v9];
       if (v19 < 15552000.0)
       {
-        v20 = [v7 escrowRepairAttemptVersion];
+        escrowRepairAttemptVersion = [v7 escrowRepairAttemptVersion];
         v21 = sub_100006274("octagon-escrow-repair");
         v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-        if (v20 == 1)
+        if (escrowRepairAttemptVersion == 1)
         {
           if (v22)
           {
@@ -42,12 +42,12 @@ LABEL_8:
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "rate limited, will not perform silent repair", buf, 2u);
           }
 
-          if (a3)
+          if (flow)
           {
             v23 = 88;
 LABEL_27:
             [NSError errorWithDomain:@"com.apple.security.octagon" code:v23 userInfo:0];
-            *a3 = v26 = 0;
+            *flow = v26 = 0;
 LABEL_59:
 
             goto LABEL_60;
@@ -63,12 +63,12 @@ LABEL_59:
         }
       }
 
-      v27 = [(OTCheckEscrowOperation *)self results];
-      v28 = [v27 repairDisabled];
+      results2 = [(OTCheckEscrowOperation *)self results];
+      repairDisabled = [results2 repairDisabled];
 
       v29 = sub_100006274("octagon-escrow-repair");
       v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
-      if (!v28)
+      if (!repairDisabled)
       {
         v31 = v9;
         if (v30)
@@ -79,10 +79,10 @@ LABEL_59:
 
         v54 = v8;
 
-        v32 = [(OTCheckEscrowOperation *)self deps];
-        v33 = [v32 stateHolder];
+        deps2 = [(OTCheckEscrowOperation *)self deps];
+        stateHolder2 = [deps2 stateHolder];
         v57 = 0;
-        v34 = [v33 persistLastEscrowRepairTriggered:v10 error:&v57];
+        v34 = [stateHolder2 persistLastEscrowRepairTriggered:results error:&v57];
         v35 = v57;
 
         if (!v34 || v35)
@@ -110,9 +110,9 @@ LABEL_59:
             _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "aks_enable_cache_flow failed: %x", buf, 8u);
           }
 
-          if (v55)
+          if (flowCopy)
           {
-            *v55 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v38 userInfo:0];
+            *flowCopy = [NSError errorWithDomain:NSOSStatusErrorDomain code:v38 userInfo:0];
           }
         }
 
@@ -126,7 +126,7 @@ LABEL_59:
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "repair disabled, will not perform silent repair", buf, 2u);
       }
 
-      if (a3)
+      if (flow)
       {
         v23 = 29;
         goto LABEL_27;
@@ -137,23 +137,23 @@ LABEL_58:
       goto LABEL_59;
     }
 
-    v11 = [(OTCheckEscrowOperation *)self results];
-    v12 = [v11 moveRequest];
+    results3 = [(OTCheckEscrowOperation *)self results];
+    moveRequest = [results3 moveRequest];
 
-    if (!v12)
+    if (!moveRequest)
     {
       goto LABEL_8;
     }
 
     v53 = v9;
-    v13 = [(OTCheckEscrowOperation *)self deps];
-    v14 = [v13 secureBackupAdapter];
-    v15 = [(OTCheckEscrowOperation *)self results];
-    v16 = [v15 moveRequest];
-    v17 = [v16 intendedFederation];
+    deps3 = [(OTCheckEscrowOperation *)self deps];
+    secureBackupAdapter = [deps3 secureBackupAdapter];
+    results4 = [(OTCheckEscrowOperation *)self results];
+    moveRequest2 = [results4 moveRequest];
+    intendedFederation = [moveRequest2 intendedFederation];
     v59 = 0;
-    v18 = [v14 moveToFederationAllowed:v17 altDSID:v56 error:&v59];
-    v10 = v59;
+    v18 = [secureBackupAdapter moveToFederationAllowed:intendedFederation altDSID:altDSID error:&v59];
+    results = v59;
 
     if (v18)
     {
@@ -164,14 +164,14 @@ LABEL_58:
 
     v9 = v53;
     v8 = 0;
-    if (v10)
+    if (results)
     {
-      v40 = [(__CFString *)v10 domain];
-      if ([v40 isEqualToString:kCloudServicesErrorDomain])
+      domain = [(__CFString *)results domain];
+      if ([domain isEqualToString:kCloudServicesErrorDomain])
       {
-        v41 = [(__CFString *)v10 code];
+        code = [(__CFString *)results code];
 
-        if (v41 == 601)
+        if (code == 601)
         {
           goto LABEL_44;
         }
@@ -185,15 +185,15 @@ LABEL_58:
       if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v62 = v10;
+        v62 = results;
         _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "failed to determine if federation move is allowed: %@", buf, 0xCu);
       }
 
-      if (a3)
+      if (flow)
       {
-        v51 = v10;
+        v51 = results;
         v26 = 0;
-        *a3 = v10;
+        *flow = results;
         goto LABEL_59;
       }
 
@@ -208,11 +208,11 @@ LABEL_44:
       _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "terms acceptance needed, will post follow up", buf, 2u);
     }
 
-    v43 = [(OTCheckEscrowOperation *)self followupHandler];
-    v44 = [(OTCheckEscrowOperation *)self deps];
-    v45 = [v44 activeAccount];
+    followupHandler = [(OTCheckEscrowOperation *)self followupHandler];
+    deps4 = [(OTCheckEscrowOperation *)self deps];
+    activeAccount = [deps4 activeAccount];
     v58 = 0;
-    v46 = [v43 postFollowUp:4 activeAccount:v45 error:&v58];
+    v46 = [followupHandler postFollowUp:4 activeAccount:activeAccount error:&v58];
     v47 = v58;
 
     v9 = v53;
@@ -230,9 +230,9 @@ LABEL_44:
       }
     }
 
-    if (a3)
+    if (flow)
     {
-      *a3 = [NSError errorWithDomain:@"com.apple.security.octagon" code:89 userInfo:0];
+      *flow = [NSError errorWithDomain:@"com.apple.security.octagon" code:89 userInfo:0];
     }
 
     goto LABEL_58;
@@ -246,11 +246,11 @@ LABEL_44:
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "failed to get account metadata: %@", buf, 0xCu);
   }
 
-  if (a3)
+  if (flow)
   {
     v25 = v8;
     v26 = 0;
-    *a3 = v8;
+    *flow = v8;
   }
 
   else
@@ -263,20 +263,20 @@ LABEL_60:
   return v26;
 }
 
-- (void)handleRepairSuggestions:(id)a3
+- (void)handleRepairSuggestions:(id)suggestions
 {
-  [(OTCheckEscrowOperation *)self setResults:a3];
-  v4 = [(OTCheckEscrowOperation *)self results];
-  v5 = [v4 octagonTrusted];
+  [(OTCheckEscrowOperation *)self setResults:suggestions];
+  results = [(OTCheckEscrowOperation *)self results];
+  octagonTrusted = [results octagonTrusted];
 
-  if (v5)
+  if (octagonTrusted)
   {
-    v6 = [(OTCheckEscrowOperation *)self results];
-    v7 = [v6 needsReenroll];
+    results2 = [(OTCheckEscrowOperation *)self results];
+    needsReenroll = [results2 needsReenroll];
 
     v8 = sub_100006274("octagon-health");
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-    if ((v7 & 1) == 0)
+    if ((needsReenroll & 1) == 0)
     {
       if (v9)
       {
@@ -284,11 +284,11 @@ LABEL_60:
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "iCSC Doesn't need Reenroll", buf, 2u);
       }
 
-      v13 = [(OTCheckEscrowOperation *)self followupHandler];
-      v14 = [(OTCheckEscrowOperation *)self deps];
-      v15 = [v14 activeAccount];
+      followupHandler = [(OTCheckEscrowOperation *)self followupHandler];
+      deps = [(OTCheckEscrowOperation *)self deps];
+      activeAccount = [deps activeAccount];
       v30 = 0;
-      v16 = [v13 clearAllRepairFollowUps:v15 error:&v30];
+      v16 = [followupHandler clearAllRepairFollowUps:activeAccount error:&v30];
       v12 = v30;
 
       if ((v16 & 1) == 0)
@@ -311,8 +311,8 @@ LABEL_60:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "iCSC Needs Reenroll", buf, 2u);
     }
 
-    v10 = [(OTCheckEscrowOperation *)self results];
-    if ([v10 repairReason] == 5)
+    results3 = [(OTCheckEscrowOperation *)self results];
+    if ([results3 repairReason] == 5)
     {
       v11 = _os_feature_enabled_impl();
 
@@ -334,15 +334,15 @@ LABEL_60:
     }
 
     v18 = [AAFAnalyticsEventSecurity alloc];
-    v19 = [(OTCheckEscrowOperation *)self deps];
-    v20 = [v19 activeAccount];
-    v21 = [v20 altDSID];
-    v22 = [(OTCheckEscrowOperation *)self deps];
-    v23 = [v22 flowID];
-    v24 = [(OTCheckEscrowOperation *)self deps];
-    v25 = [v24 deviceSessionID];
+    deps2 = [(OTCheckEscrowOperation *)self deps];
+    activeAccount2 = [deps2 activeAccount];
+    altDSID = [activeAccount2 altDSID];
+    deps3 = [(OTCheckEscrowOperation *)self deps];
+    flowID = [deps3 flowID];
+    deps4 = [(OTCheckEscrowOperation *)self deps];
+    deviceSessionID = [deps4 deviceSessionID];
     LOBYTE(v28) = 1;
-    v12 = [v18 initWithKeychainCircleMetrics:0 altDSID:v21 flowID:v23 deviceSessionID:v25 eventName:kSecurityRTCEventNameEscrowPasscodeEnableCacheFlow testsAreEnabled:0 canSendMetrics:v28 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
+    v12 = [v18 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:kSecurityRTCEventNameEscrowPasscodeEnableCacheFlow testsAreEnabled:0 canSendMetrics:v28 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
 
     v29 = 0;
     v26 = [(OTCheckEscrowOperation *)self enablePasscodeCacheFlow:&v29];
@@ -353,9 +353,9 @@ LABEL_17:
   }
 }
 
-- (void)performEscrowCheck:(id)a3
+- (void)performEscrowCheck:(id)check
 {
-  v20 = a3;
+  checkCopy = check;
   v4 = sub_100006274("octagon-escrowcheck");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -363,29 +363,29 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Beginning cuttlefish escrow check", &buf, 2u);
   }
 
-  v21 = [(OTCheckEscrowOperation *)self getPasscodeGeneration];
-  if (v21)
+  getPasscodeGeneration = [(OTCheckEscrowOperation *)self getPasscodeGeneration];
+  if (getPasscodeGeneration)
   {
     objc_initWeak(&buf, self);
-    v5 = [(OTCheckEscrowOperation *)self deps];
-    v18 = [v5 cuttlefishXPCWrapper];
-    v19 = [(OTCheckEscrowOperation *)self deps];
-    v6 = [v19 activeAccount];
+    deps = [(OTCheckEscrowOperation *)self deps];
+    cuttlefishXPCWrapper = [deps cuttlefishXPCWrapper];
+    deps2 = [(OTCheckEscrowOperation *)self deps];
+    activeAccount = [deps2 activeAccount];
     v7 = +[OTCheckHealthOperation checkIfPasscodeIsSetForDevice];
-    v8 = [v21 unsignedLongLongValue];
+    unsignedLongLongValue = [getPasscodeGeneration unsignedLongLongValue];
     v9 = [SecureBackup knownICDPFederations:0];
-    v10 = [(OTCheckEscrowOperation *)self isBackgroundCheck];
-    v11 = [(OTCheckEscrowOperation *)self deps];
-    v12 = [v11 flowID];
-    v13 = [(OTCheckEscrowOperation *)self deps];
-    v14 = [v13 deviceSessionID];
+    isBackgroundCheck = [(OTCheckEscrowOperation *)self isBackgroundCheck];
+    deps3 = [(OTCheckEscrowOperation *)self deps];
+    flowID = [deps3 flowID];
+    deps4 = [(OTCheckEscrowOperation *)self deps];
+    deviceSessionID = [deps4 deviceSessionID];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_1000AF608;
     v22[3] = &unk_100336670;
     objc_copyWeak(&v24, &buf);
-    v23 = v20;
-    [v18 requestEscrowCheckWithSpecificUser:v6 requiresEscrowCheck:v7 passcodeGeneration:v8 knownFederations:v9 isBackgroundCheck:v10 flowID:v12 deviceSessionID:v14 reply:v22];
+    v23 = checkCopy;
+    [cuttlefishXPCWrapper requestEscrowCheckWithSpecificUser:activeAccount requiresEscrowCheck:v7 passcodeGeneration:unsignedLongLongValue knownFederations:v9 isBackgroundCheck:isBackgroundCheck flowID:flowID deviceSessionID:deviceSessionID reply:v22];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&buf);
@@ -405,7 +405,7 @@ LABEL_17:
     v16 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v17 = [NSError errorWithDomain:@"com.apple.security.octagon" code:82 userInfo:v16];
 
-    (*(v20 + 2))(v20, 0, v17);
+    (*(checkCopy + 2))(checkCopy, 0, v17);
   }
 }
 
@@ -443,22 +443,22 @@ LABEL_17:
   return v5;
 }
 
-- (OTCheckEscrowOperation)initWithDependencies:(id)a3 followupHandler:(id)a4 isBackgroundCheck:(BOOL)a5
+- (OTCheckEscrowOperation)initWithDependencies:(id)dependencies followupHandler:(id)handler isBackgroundCheck:(BOOL)check
 {
-  v9 = a3;
-  v10 = a4;
+  dependenciesCopy = dependencies;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = OTCheckEscrowOperation;
   v11 = [(OTCheckEscrowOperation *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_deps, a3);
-    objc_storeStrong(&v12->_followupHandler, a4);
+    objc_storeStrong(&v11->_deps, dependencies);
+    objc_storeStrong(&v12->_followupHandler, handler);
     results = v12->_results;
     v12->_results = 0;
 
-    v12->_isBackgroundCheck = a5;
+    v12->_isBackgroundCheck = check;
   }
 
   return v12;

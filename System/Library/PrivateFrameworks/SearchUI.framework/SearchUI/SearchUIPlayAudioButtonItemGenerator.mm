@@ -1,52 +1,52 @@
 @interface SearchUIPlayAudioButtonItemGenerator
-+ (BOOL)mayRequireAsyncGenerationForButtonItem:(id)a3;
-- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)a3 completion:(id)a4;
++ (BOOL)mayRequireAsyncGenerationForButtonItem:(id)item;
+- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)item completion:(id)completion;
 @end
 
 @implementation SearchUIPlayAudioButtonItemGenerator
 
-+ (BOOL)mayRequireAsyncGenerationForButtonItem:(id)a3
++ (BOOL)mayRequireAsyncGenerationForButtonItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 audioData];
-  if (v4)
+  itemCopy = item;
+  audioData = [itemCopy audioData];
+  if (audioData)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v3 mediaMetadata];
-    v5 = [v6 mediaType] != 100;
+    mediaMetadata = [itemCopy mediaMetadata];
+    v5 = [mediaMetadata mediaType] != 100;
   }
 
   return v5;
 }
 
-- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)a3 completion:(id)a4
+- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)item completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 mediaMetadata];
-  v8 = [v7 mediaIdentifier];
-  v9 = [v7 mediaType];
+  itemCopy = item;
+  completionCopy = completion;
+  mediaMetadata = [itemCopy mediaMetadata];
+  mediaIdentifier = [mediaMetadata mediaIdentifier];
+  mediaType = [mediaMetadata mediaType];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __95__SearchUIPlayAudioButtonItemGenerator_generateSearchUIButtonItemsWithSFButtonItem_completion___block_invoke;
   aBlock[3] = &unk_1E85B2F38;
-  v10 = v5;
+  v10 = itemCopy;
   v36 = v10;
-  v11 = v7;
+  v11 = mediaMetadata;
   v37 = v11;
-  v12 = v6;
+  v12 = completionCopy;
   v38 = v12;
   v13 = _Block_copy(aBlock);
-  v14 = [v10 audioData];
+  audioData = [v10 audioData];
 
-  if (!v14)
+  if (!audioData)
   {
-    if ([SearchUIMediaUtilities isCoreSpotlightMedia:v8])
+    if ([SearchUIMediaUtilities isCoreSpotlightMedia:mediaIdentifier])
     {
       v19 = SearchUIButtonItemLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -59,7 +59,7 @@
       v32[1] = 3221225472;
       v32[2] = __95__SearchUIPlayAudioButtonItemGenerator_generateSearchUIButtonItemsWithSFButtonItem_completion___block_invoke_14;
       v32[3] = &unk_1E85B2E70;
-      v33 = v8;
+      v33 = mediaIdentifier;
       v34 = v13;
       [SearchUIMediaUtilities getMusicUserDisclosureApprovalStatusWithCompletionHandler:v32];
 
@@ -67,7 +67,7 @@
       goto LABEL_10;
     }
 
-    if (v8 && v9 == 100)
+    if (mediaIdentifier && mediaType == 100)
     {
       v15 = SearchUIButtonItemLog();
       if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -76,7 +76,7 @@
       }
 
       *buf = 138412290;
-      v40 = v8;
+      v40 = mediaIdentifier;
       v16 = "Generating a button for voicemail: %@";
       v17 = v15;
       v18 = 12;
@@ -88,9 +88,9 @@
       v23 = SearchUIButtonItemLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [v11 bundleIdentifiersToExclude];
+        bundleIdentifiersToExclude = [v11 bundleIdentifiersToExclude];
         *buf = 138412290;
-        v40 = v24;
+        v40 = bundleIdentifiersToExclude;
         _os_log_impl(&dword_1DA169000, v23, OS_LOG_TYPE_DEFAULT, "Figuring out best play button path with SAAudioAppPrediction with bundleIDs to exclude: %@", buf, 0xCu);
       }
 
@@ -110,16 +110,16 @@
 
     v21 = SearchUIButtonItemLog();
     v22 = v21;
-    if (v8)
+    if (mediaIdentifier)
     {
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v40 = v8;
+        v40 = mediaIdentifier;
         _os_log_impl(&dword_1DA169000, v22, OS_LOG_TYPE_DEFAULT, "Generating a button for media identifier: %@", buf, 0xCu);
       }
 
-      if (v9 <= 5 && ((1 << v9) & 0x2E) != 0)
+      if (mediaType <= 5 && ((1 << mediaType) & 0x2E) != 0)
       {
         v25[0] = MEMORY[0x1E69E9820];
         v25[1] = 3221225472;

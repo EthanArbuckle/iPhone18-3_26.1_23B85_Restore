@@ -7,8 +7,8 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLDuetActivitySchedulerUsageSnapshot *)self startDate];
-  v5 = [(PLDuetActivitySchedulerUsageSnapshot *)self stopDate];
+  startDate = [(PLDuetActivitySchedulerUsageSnapshot *)self startDate];
+  stopDate = [(PLDuetActivitySchedulerUsageSnapshot *)self stopDate];
   [(PLDuetActivitySchedulerUsageSnapshot *)self numberOfBytesUploadedCell];
   v7 = v6;
   [(PLDuetActivitySchedulerUsageSnapshot *)self numberOfBytesDownloadedCell];
@@ -17,8 +17,8 @@
   v11 = v10;
   [(PLDuetActivitySchedulerUsageSnapshot *)self numberOfBytesDownloadedWiFi];
   v13 = v12;
-  v14 = [(PLDuetActivitySchedulerUsageSnapshot *)self bundleID];
-  v15 = [v3 stringWithFormat:@"PLDuetActivitySchedulerUsageSnapshot (%@, %@, %f, %f, %f, %f, %@)", v4, v5, v7, v9, v11, v13, v14];
+  bundleID = [(PLDuetActivitySchedulerUsageSnapshot *)self bundleID];
+  v15 = [v3 stringWithFormat:@"PLDuetActivitySchedulerUsageSnapshot (%@, %@, %f, %f, %f, %f, %@)", startDate, stopDate, v7, v9, v11, v13, bundleID];
 
   return v15;
 }

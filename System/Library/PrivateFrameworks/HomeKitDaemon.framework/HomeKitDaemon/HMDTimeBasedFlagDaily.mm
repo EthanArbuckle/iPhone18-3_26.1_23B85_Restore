@@ -1,16 +1,16 @@
 @interface HMDTimeBasedFlagDaily
-+ (id)convertLegacyFlagBits:(id)a3 lastSaveTIme:(id)a4;
++ (id)convertLegacyFlagBits:(id)bits lastSaveTIme:(id)ime;
 - (HMDTimeBasedFlagContext)context;
-- (HMDTimeBasedFlagDaily)initWithContext:(id)a3 dateProvider:(id)a4;
-- (HMDTimeBasedFlagDaily)initWithSerializedFlag:(id)a3 context:(id)a4 dateProvider:(id)a5;
+- (HMDTimeBasedFlagDaily)initWithContext:(id)context dateProvider:(id)provider;
+- (HMDTimeBasedFlagDaily)initWithSerializedFlag:(id)flag context:(id)context dateProvider:(id)provider;
 - (id)description;
 - (id)serializeToDictionary;
-- (unint64_t)_bitMaskForDate:(id)a3;
-- (unint64_t)bitsForDate:(id)a3 bitCount:(int64_t)a4 outValidBitCount:(int64_t *)a5;
+- (unint64_t)_bitMaskForDate:(id)date;
+- (unint64_t)bitsForDate:(id)date bitCount:(int64_t)count outValidBitCount:(int64_t *)bitCount;
 - (unint64_t)currentBits;
-- (void)clearBitForDate:(id)a3;
+- (void)clearBitForDate:(id)date;
 - (void)clearCurrentBit;
-- (void)setBitForDate:(id)a3;
+- (void)setBitForDate:(id)date;
 - (void)setCurrentBit;
 @end
 
@@ -26,9 +26,9 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDTimeBasedFlagDaily *)self bits];
-  v5 = [(HMDTimeBasedFlagDaily *)self bit0Date];
-  v6 = [v3 stringWithFormat:@"Daily flags: bits=0x%llx, date=%@", v4, v5];
+  bits = [(HMDTimeBasedFlagDaily *)self bits];
+  bit0Date = [(HMDTimeBasedFlagDaily *)self bit0Date];
+  v6 = [v3 stringWithFormat:@"Daily flags: bits=0x%llx, date=%@", bits, bit0Date];
 
   return v6;
 }
@@ -41,9 +41,9 @@
   v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[HMDTimeBasedFlagDaily bits](self, "bits")}];
   v9[0] = v3;
   v8[1] = @"bit0date";
-  v4 = [(HMDTimeBasedFlagDaily *)self bit0Date];
+  bit0Date = [(HMDTimeBasedFlagDaily *)self bit0Date];
   v8[2] = @"periodicity";
-  v9[1] = v4;
+  v9[1] = bit0Date;
   v9[2] = &unk_283E72278;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:3];
 
@@ -53,28 +53,28 @@
   return v5;
 }
 
-- (unint64_t)bitsForDate:(id)a3 bitCount:(int64_t)a4 outValidBitCount:(int64_t *)a5
+- (unint64_t)bitsForDate:(id)date bitCount:(int64_t)count outValidBitCount:(int64_t *)bitCount
 {
-  v8 = a3;
+  dateCopy = date;
   os_unfair_lock_lock_with_options();
   v9 = MEMORY[0x277D17DB0];
-  v10 = [(HMDTimeBasedFlagDaily *)self bit0Date];
-  v11 = [v9 daysFromDate:v10 toDate:v8];
+  bit0Date = [(HMDTimeBasedFlagDaily *)self bit0Date];
+  v11 = [v9 daysFromDate:bit0Date toDate:dateCopy];
 
   if (v11 == 0 || v11 >= 0xFFFFFFFFFFFFFFC1)
   {
-    if (a5)
+    if (bitCount)
     {
-      v12 = v11 + 64;
-      if (v11 + 64 >= a4)
+      countCopy = v11 + 64;
+      if (v11 + 64 >= count)
       {
-        v12 = a4;
+        countCopy = count;
       }
 
-      *a5 = v12;
+      *bitCount = countCopy;
     }
 
-    if (a4 >= 64)
+    if (count >= 64)
     {
       v13 = [(HMDTimeBasedFlagDaily *)self bits]>> -v11;
       goto LABEL_26;
@@ -82,24 +82,24 @@
 
     v15 = [(HMDTimeBasedFlagDaily *)self bits]>> -v11;
 LABEL_22:
-    v13 = v15 & ~(-1 << a4);
+    v13 = v15 & ~(-1 << count);
     goto LABEL_26;
   }
 
   if ((v11 - 1) <= 0x3E)
   {
-    if (a5)
+    if (bitCount)
     {
-      v14 = 64;
-      if (a4 < 64)
+      countCopy2 = 64;
+      if (count < 64)
       {
-        v14 = a4;
+        countCopy2 = count;
       }
 
-      *a5 = v14;
+      *bitCount = countCopy2;
     }
 
-    if (a4 >= 64)
+    if (count >= 64)
     {
       v13 = [(HMDTimeBasedFlagDaily *)self bits]<< v11;
       goto LABEL_26;
@@ -111,10 +111,10 @@ LABEL_22:
 
   if (v11 < 64)
   {
-    if (a5)
+    if (bitCount)
     {
       v13 = 0;
-      *a5 = 0;
+      *bitCount = 0;
       goto LABEL_26;
     }
 
@@ -123,19 +123,19 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (!a5)
+  if (!bitCount)
   {
     goto LABEL_25;
   }
 
   v13 = 0;
-  v16 = 64;
-  if (a4 < 64)
+  countCopy3 = 64;
+  if (count < 64)
   {
-    v16 = a4;
+    countCopy3 = count;
   }
 
-  *a5 = v16;
+  *bitCount = countCopy3;
 LABEL_26:
   os_unfair_lock_unlock(&self->_lock);
 
@@ -144,19 +144,19 @@ LABEL_26:
 
 - (unint64_t)currentBits
 {
-  v3 = [(HMDTimeBasedFlagDaily *)self dateProvider];
-  v4 = [v3 startOfCurrentDay];
-  v5 = [(HMDTimeBasedFlagDaily *)self bitsForDate:v4 bitCount:64 outValidBitCount:0];
+  dateProvider = [(HMDTimeBasedFlagDaily *)self dateProvider];
+  startOfCurrentDay = [dateProvider startOfCurrentDay];
+  v5 = [(HMDTimeBasedFlagDaily *)self bitsForDate:startOfCurrentDay bitCount:64 outValidBitCount:0];
 
   return v5;
 }
 
-- (unint64_t)_bitMaskForDate:(id)a3
+- (unint64_t)_bitMaskForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = MEMORY[0x277D17DB0];
-  v6 = [(HMDTimeBasedFlagDaily *)self bit0Date];
-  v7 = [v5 daysFromDate:v6 toDate:v4];
+  bit0Date = [(HMDTimeBasedFlagDaily *)self bit0Date];
+  v7 = [v5 daysFromDate:bit0Date toDate:dateCopy];
 
   if (v7 != 0 && v7 < 0xFFFFFFFFFFFFFFC1)
   {
@@ -165,25 +165,25 @@ LABEL_26:
       if (v7 + 127 <= 0x3F)
       {
         [(HMDTimeBasedFlagDaily *)self setBits:[(HMDTimeBasedFlagDaily *)self bits]>> (-63 - v7)];
-        v11 = [MEMORY[0x277D17DB0] startOfDateByAddingDayCount:63 toDate:v4];
+        v11 = [MEMORY[0x277D17DB0] startOfDateByAddingDayCount:63 toDate:dateCopy];
         [(HMDTimeBasedFlagDaily *)self setBit0Date:v11];
 
         v8 = 0x8000000000000000;
         goto LABEL_9;
       }
 
-      v10 = self;
+      selfCopy2 = self;
       v9 = 0;
     }
 
     else
     {
       v9 = [(HMDTimeBasedFlagDaily *)self bits]<< v7;
-      v10 = self;
+      selfCopy2 = self;
     }
 
-    [(HMDTimeBasedFlagDaily *)v10 setBits:v9];
-    [(HMDTimeBasedFlagDaily *)self setBit0Date:v4];
+    [(HMDTimeBasedFlagDaily *)selfCopy2 setBits:v9];
+    [(HMDTimeBasedFlagDaily *)self setBit0Date:dateCopy];
     v8 = 1;
     goto LABEL_9;
   }
@@ -194,64 +194,64 @@ LABEL_9:
   return v8;
 }
 
-- (void)clearBitForDate:(id)a3
+- (void)clearBitForDate:(id)date
 {
-  v7 = a3;
+  dateCopy = date;
   if ([minAllowedDate compare:?] != 1)
   {
     os_unfair_lock_lock_with_options();
-    v4 = [(HMDTimeBasedFlagDaily *)self _bitMaskForDate:v7];
-    v5 = [(HMDTimeBasedFlagDaily *)self bits];
+    v4 = [(HMDTimeBasedFlagDaily *)self _bitMaskForDate:dateCopy];
+    bits = [(HMDTimeBasedFlagDaily *)self bits];
     [(HMDTimeBasedFlagDaily *)self setBits:[(HMDTimeBasedFlagDaily *)self bits]& ~v4];
     os_unfair_lock_unlock(&self->_lock);
-    if ((v5 & v4) != 0)
+    if ((bits & v4) != 0)
     {
-      v6 = [(HMDTimeBasedFlagDaily *)self context];
-      [v6 flagChanged];
+      context = [(HMDTimeBasedFlagDaily *)self context];
+      [context flagChanged];
     }
   }
 }
 
 - (void)clearCurrentBit
 {
-  v4 = [(HMDTimeBasedFlagDaily *)self dateProvider];
-  v3 = [v4 startOfCurrentDay];
-  [(HMDTimeBasedFlagDaily *)self clearBitForDate:v3];
+  dateProvider = [(HMDTimeBasedFlagDaily *)self dateProvider];
+  startOfCurrentDay = [dateProvider startOfCurrentDay];
+  [(HMDTimeBasedFlagDaily *)self clearBitForDate:startOfCurrentDay];
 }
 
-- (void)setBitForDate:(id)a3
+- (void)setBitForDate:(id)date
 {
-  v7 = a3;
+  dateCopy = date;
   if ([minAllowedDate compare:?] != 1)
   {
     os_unfair_lock_lock_with_options();
-    v4 = [(HMDTimeBasedFlagDaily *)self _bitMaskForDate:v7];
-    v5 = [(HMDTimeBasedFlagDaily *)self bits];
+    v4 = [(HMDTimeBasedFlagDaily *)self _bitMaskForDate:dateCopy];
+    bits = [(HMDTimeBasedFlagDaily *)self bits];
     [(HMDTimeBasedFlagDaily *)self setBits:[(HMDTimeBasedFlagDaily *)self bits]| v4];
     os_unfair_lock_unlock(&self->_lock);
-    if ((v5 & v4) == 0)
+    if ((bits & v4) == 0)
     {
-      v6 = [(HMDTimeBasedFlagDaily *)self context];
-      [v6 flagChanged];
+      context = [(HMDTimeBasedFlagDaily *)self context];
+      [context flagChanged];
     }
   }
 }
 
 - (void)setCurrentBit
 {
-  v4 = [(HMDTimeBasedFlagDaily *)self dateProvider];
-  v3 = [v4 startOfCurrentDay];
-  [(HMDTimeBasedFlagDaily *)self setBitForDate:v3];
+  dateProvider = [(HMDTimeBasedFlagDaily *)self dateProvider];
+  startOfCurrentDay = [dateProvider startOfCurrentDay];
+  [(HMDTimeBasedFlagDaily *)self setBitForDate:startOfCurrentDay];
 }
 
-- (HMDTimeBasedFlagDaily)initWithSerializedFlag:(id)a3 context:(id)a4 dateProvider:(id)a5
+- (HMDTimeBasedFlagDaily)initWithSerializedFlag:(id)flag context:(id)context dateProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HMDTimeBasedFlagDaily *)self initWithContext:a4 dateProvider:v9];
+  flagCopy = flag;
+  providerCopy = provider;
+  v10 = [(HMDTimeBasedFlagDaily *)self initWithContext:context dateProvider:providerCopy];
   if (v10)
   {
-    v11 = [v8 objectForKeyedSubscript:@"bits"];
+    v11 = [flagCopy objectForKeyedSubscript:@"bits"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -265,9 +265,9 @@ LABEL_9:
 
     v13 = v12;
 
-    v14 = [v13 unsignedLongLongValue];
-    v10->_bits = v14;
-    v15 = [v8 objectForKeyedSubscript:@"bit0date"];
+    unsignedLongLongValue = [v13 unsignedLongLongValue];
+    v10->_bits = unsignedLongLongValue;
+    v15 = [flagCopy objectForKeyedSubscript:@"bit0date"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -283,25 +283,25 @@ LABEL_9:
 
     if (v17)
     {
-      v18 = v15;
+      startOfCurrentDay = v15;
     }
 
     else
     {
-      v18 = [v9 startOfCurrentDay];
+      startOfCurrentDay = [providerCopy startOfCurrentDay];
     }
 
     bit0Date = v10->_bit0Date;
-    v10->_bit0Date = v18;
+    v10->_bit0Date = startOfCurrentDay;
   }
 
   return v10;
 }
 
-- (HMDTimeBasedFlagDaily)initWithContext:(id)a3 dateProvider:(id)a4
+- (HMDTimeBasedFlagDaily)initWithContext:(id)context dateProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  providerCopy = provider;
   if (initWithContext_dateProvider__onceToken != -1)
   {
     dispatch_once(&initWithContext_dateProvider__onceToken, &__block_literal_global_56726);
@@ -313,12 +313,12 @@ LABEL_9:
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_context, v6);
-    objc_storeStrong(&v9->_dateProvider, a4);
+    objc_storeWeak(&v8->_context, contextCopy);
+    objc_storeStrong(&v9->_dateProvider, provider);
     v9->_bits = 0;
-    v10 = [v7 startOfCurrentDay];
+    startOfCurrentDay = [providerCopy startOfCurrentDay];
     bit0Date = v9->_bit0Date;
-    v9->_bit0Date = v10;
+    v9->_bit0Date = startOfCurrentDay;
   }
 
   return v9;
@@ -340,18 +340,18 @@ void __54__HMDTimeBasedFlagDaily_initWithContext_dateProvider___block_invoke()
   minAllowedDate = v3;
 }
 
-+ (id)convertLegacyFlagBits:(id)a3 lastSaveTIme:(id)a4
++ (id)convertLegacyFlagBits:(id)bits lastSaveTIme:(id)ime
 {
   v12[3] = *MEMORY[0x277D85DE8];
   v11[0] = @"bits";
   v11[1] = @"bit0date";
-  v12[0] = a3;
-  v12[1] = a4;
+  v12[0] = bits;
+  v12[1] = ime;
   v11[2] = @"periodicity";
   v12[2] = &unk_283E72278;
   v5 = MEMORY[0x277CBEAC0];
-  v6 = a4;
-  v7 = a3;
+  imeCopy = ime;
+  bitsCopy = bits;
   v8 = [v5 dictionaryWithObjects:v12 forKeys:v11 count:3];
 
   v9 = *MEMORY[0x277D85DE8];

@@ -1,15 +1,15 @@
 @interface StocksAssistantStockSearch
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation StocksAssistantStockSearch
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[NSMutableArray array];
-  v6 = [(StocksAssistantStockSearch *)self stockReferences];
-  v7 = [v6 count];
+  stockReferences = [(StocksAssistantStockSearch *)self stockReferences];
+  v7 = [stockReferences count];
 
   if (v7)
   {
@@ -18,14 +18,14 @@
     v39 = 0uLL;
     v40 = 0uLL;
     v8 = +[StockManager sharedManager];
-    v9 = [v8 stocksList];
+    stocksList = [v8 stocksList];
 
-    obj = v9;
-    v10 = [v9 countByEnumeratingWithState:&v39 objects:v44 count:16];
+    obj = stocksList;
+    v10 = [stocksList countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v10)
     {
       v11 = v10;
-      v32 = v4;
+      v32 = completionCopy;
       v12 = *v40;
       do
       {
@@ -37,22 +37,22 @@
           }
 
           v14 = *(*(&v39 + 1) + 8 * i);
-          v15 = [(StocksAssistantStockSearch *)self stockReferences];
+          stockReferences2 = [(StocksAssistantStockSearch *)self stockReferences];
           v38[0] = _NSConcreteStackBlock;
           v38[1] = 3221225472;
           v38[2] = sub_1558;
           v38[3] = &unk_4130;
           v38[4] = v14;
-          v16 = [v15 indexesOfObjectsPassingTest:v38];
+          v16 = [stockReferences2 indexesOfObjectsPassingTest:v38];
 
           if ([v16 count])
           {
             v17 = +[SAStockReference reference];
-            v18 = [v14 companyName];
-            [v17 setCompanyName:v18];
+            companyName = [v14 companyName];
+            [v17 setCompanyName:companyName];
 
-            v19 = [v14 symbol];
-            [v17 setSymbol:v19];
+            symbol = [v14 symbol];
+            [v17 setSymbol:symbol];
 
             [v5 addObject:v17];
           }
@@ -62,7 +62,7 @@
       }
 
       while (v11);
-      v4 = v32;
+      completionCopy = v32;
     }
   }
 
@@ -73,10 +73,10 @@
     v34 = 0uLL;
     v35 = 0uLL;
     v20 = +[StockManager sharedManager];
-    v21 = [v20 stocksList];
+    stocksList2 = [v20 stocksList];
 
-    obj = v21;
-    v22 = [v21 countByEnumeratingWithState:&v34 objects:v43 count:16];
+    obj = stocksList2;
+    v22 = [stocksList2 countByEnumeratingWithState:&v34 objects:v43 count:16];
     if (v22)
     {
       v23 = v22;
@@ -92,11 +92,11 @@
 
           v26 = *(*(&v34 + 1) + 8 * j);
           v27 = +[SAStockReference reference];
-          v28 = [v26 companyName];
-          [v27 setCompanyName:v28];
+          companyName2 = [v26 companyName];
+          [v27 setCompanyName:companyName2];
 
-          v29 = [v26 symbol];
-          [v27 setSymbol:v29];
+          symbol2 = [v26 symbol];
+          [v27 setSymbol:symbol2];
 
           [v5 addObject:v27];
         }
@@ -110,8 +110,8 @@
 
   v30 = +[SAStockSearchCompleted searchCompleted];
   [v30 setStockReferences:v5];
-  v31 = [v30 dictionary];
-  v4[2](v4, v31);
+  dictionary = [v30 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

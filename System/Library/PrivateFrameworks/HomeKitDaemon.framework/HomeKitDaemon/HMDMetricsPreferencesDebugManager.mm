@@ -1,17 +1,17 @@
 @interface HMDMetricsPreferencesDebugManager
-- (HMDMetricsPreferencesDebugManager)initWithDataSource:(id)a3;
-- (void)submitPreferencesSizeLogEventsForApplicationID:(id)a3 submissionTrigger:(unint64_t)a4;
+- (HMDMetricsPreferencesDebugManager)initWithDataSource:(id)source;
+- (void)submitPreferencesSizeLogEventsForApplicationID:(id)d submissionTrigger:(unint64_t)trigger;
 @end
 
 @implementation HMDMetricsPreferencesDebugManager
 
-- (void)submitPreferencesSizeLogEventsForApplicationID:(id)a3 submissionTrigger:(unint64_t)a4
+- (void)submitPreferencesSizeLogEventsForApplicationID:(id)d submissionTrigger:(unint64_t)trigger
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   if (isInternalBuild())
   {
-    v7 = CFPreferencesCopyMultiple(0, v6, *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
+    v7 = CFPreferencesCopyMultiple(0, dCopy, *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -21,7 +21,7 @@
     if (v23)
     {
       v22 = *v27;
-      v21 = self;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v23; ++i)
@@ -36,13 +36,13 @@
           v10 = [(__CFDictionary *)obj objectForKeyedSubscript:v9];
           v11 = HMFApproximateSizeOfPlistValue();
           v12 = objc_autoreleasePoolPush();
-          v13 = self;
+          selfCopy2 = self;
           v14 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
           {
             HMFGetLogIdentifier();
-            v15 = a4;
-            v17 = v16 = v6;
+            triggerCopy = trigger;
+            v17 = v16 = dCopy;
             *buf = 138543874;
             v31 = v17;
             v32 = 2114;
@@ -51,15 +51,15 @@
             v35 = v11;
             _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@Preferences Key: %{public}@ Size of value: %ld", buf, 0x20u);
 
-            v6 = v16;
-            a4 = v15;
-            self = v21;
+            dCopy = v16;
+            trigger = triggerCopy;
+            self = selfCopy;
           }
 
           objc_autoreleasePoolPop(v12);
-          v18 = [[HMDPreferencesSizeLogEvent alloc] initWithApplicationID:v6 preferencesKey:v9 preferencesSize:v11 eventTrigger:a4];
-          v19 = [(HMDMetricsPreferencesDebugManager *)v13 logEventSubmitter];
-          [v19 submitLogEvent:v18];
+          v18 = [[HMDPreferencesSizeLogEvent alloc] initWithApplicationID:dCopy preferencesKey:v9 preferencesSize:v11 eventTrigger:trigger];
+          logEventSubmitter = [(HMDMetricsPreferencesDebugManager *)selfCopy2 logEventSubmitter];
+          [logEventSubmitter submitLogEvent:v18];
 
           objc_autoreleasePoolPop(context);
         }
@@ -74,20 +74,20 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMetricsPreferencesDebugManager)initWithDataSource:(id)a3
+- (HMDMetricsPreferencesDebugManager)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = HMDMetricsPreferencesDebugManager;
   v5 = [(HMDMetricsPreferencesDebugManager *)&v10 init];
   if (v5)
   {
-    v6 = [v4 logEventSubmitter];
+    logEventSubmitter = [sourceCopy logEventSubmitter];
     logEventSubmitter = v5->_logEventSubmitter;
-    v5->_logEventSubmitter = v6;
+    v5->_logEventSubmitter = logEventSubmitter;
 
-    v8 = [v4 dailyScheduler];
-    [v8 registerDailyTaskRunner:v5];
+    dailyScheduler = [sourceCopy dailyScheduler];
+    [dailyScheduler registerDailyTaskRunner:v5];
   }
 
   return v5;

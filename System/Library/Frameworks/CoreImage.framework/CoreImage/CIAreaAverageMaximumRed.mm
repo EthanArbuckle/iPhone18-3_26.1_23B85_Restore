@@ -25,8 +25,8 @@
 - (id)outputImage
 {
   v76[3] = *MEMORY[0x1E69E9840];
-  v3 = [(CIReductionFilter *)self offsetAndCrop];
-  if (v3 && (v4 = v3, [v3 extent], !CGRectIsEmpty(v78)))
+  offsetAndCrop = [(CIReductionFilter *)self offsetAndCrop];
+  if (offsetAndCrop && (v4 = offsetAndCrop, [offsetAndCrop extent], !CGRectIsEmpty(v78)))
   {
     [v4 extent];
     v67 = v6;
@@ -50,7 +50,7 @@
         v18 = v17;
         v20 = v19;
         v8 = v8 * 16.0;
-        v21 = [(CIAreaAverageMaximumRed *)self _reduce4X4];
+        _reduce4X4 = [(CIAreaAverageMaximumRed *)self _reduce4X4];
         v71[0] = MEMORY[0x1E69E9820];
         v71[1] = 3221225472;
         v71[2] = __38__CIAreaAverageMaximumRed_outputImage__block_invoke;
@@ -66,7 +66,7 @@
         v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:3];
         v24 = v14;
         v9 = 2.0;
-        v4 = [v21 applyWithExtent:v71 roiCallback:v23 arguments:{v24, v16, ceil(v18 * 0.25), ceil(v20 * 0.25)}];
+        v4 = [_reduce4X4 applyWithExtent:v71 roiCallback:v23 arguments:{v24, v16, ceil(v18 * 0.25), ceil(v20 * 0.25)}];
         [v4 extent];
         v11 = v22;
         if (v25 <= 2.0)
@@ -103,7 +103,7 @@ LABEL_13:
           v33 = v32;
           v35 = v34;
           v8 = v8 * 4.0;
-          v36 = [(CIAreaAverageMaximumRed *)self _reduce2X2];
+          _reduce2X2 = [(CIAreaAverageMaximumRed *)self _reduce2X2];
           v70[0] = MEMORY[0x1E69E9820];
           v70[1] = 3221225472;
           v70[2] = __38__CIAreaAverageMaximumRed_outputImage__block_invoke_2;
@@ -116,7 +116,7 @@ LABEL_13:
           v75[1] = [CIVector vectorWithX:v33 Y:v35];
           v37 = (v22 + 1);
           v75[2] = [MEMORY[0x1E696AD98] numberWithInt:v22];
-          v4 = [v36 applyWithExtent:v70 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v75, 3), v29, v31, ceil(v33 * 0.5), ceil(v35 * 0.5)}];
+          v4 = [_reduce2X2 applyWithExtent:v70 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v75, 3), v29, v31, ceil(v33 * 0.5), ceil(v35 * 0.5)}];
           [v4 extent];
           v22 = v37;
           if (v38 <= 1.0)
@@ -146,7 +146,7 @@ LABEL_19:
         v46 = v45;
         v48 = v47;
         v8 = v8 * 4.0;
-        v49 = [(CIAreaAverageMaximumRed *)self _reduce1X4];
+        _reduce1X4 = [(CIAreaAverageMaximumRed *)self _reduce1X4];
         v69[0] = MEMORY[0x1E69E9820];
         v69[1] = 3221225472;
         v69[2] = __38__CIAreaAverageMaximumRed_outputImage__block_invoke_3;
@@ -162,7 +162,7 @@ LABEL_19:
         v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:3];
         v52 = v42;
         v39 = 1.0;
-        v4 = [v49 applyWithExtent:v69 roiCallback:v51 arguments:{v52, v44, v46, ceil(v48 * 0.25)}];
+        v4 = [_reduce1X4 applyWithExtent:v69 roiCallback:v51 arguments:{v52, v44, v46, ceil(v48 * 0.25)}];
         [v4 extent];
         v37 = v50;
       }
@@ -181,7 +181,7 @@ LABEL_19:
         v60 = v59;
         v62 = v61;
         v8 = v8 * 4.0;
-        v63 = [(CIAreaAverageMaximumRed *)self _reduce4X1];
+        _reduce4X1 = [(CIAreaAverageMaximumRed *)self _reduce4X1];
         v68[0] = MEMORY[0x1E69E9820];
         v68[1] = 3221225472;
         v68[2] = __38__CIAreaAverageMaximumRed_outputImage__block_invoke_4;
@@ -193,7 +193,7 @@ LABEL_19:
         v73[0] = v4;
         v73[1] = [MEMORY[0x1E696AD98] numberWithDouble:v60];
         v73[2] = [MEMORY[0x1E696AD98] numberWithInt:v50];
-        v4 = [v63 applyWithExtent:v68 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v73, 3), v56, v58, ceil(v60 * 0.25), v62}];
+        v4 = [_reduce4X1 applyWithExtent:v68 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v73, 3), v56, v58, ceil(v60 * 0.25), v62}];
         [v4 extent];
         v50 = (v50 + 1);
       }
@@ -201,10 +201,10 @@ LABEL_19:
       while (v64 > 1.0);
     }
 
-    v65 = [(CIAreaAverageMaximumRed *)self _reduceCrop];
+    _reduceCrop = [(CIAreaAverageMaximumRed *)self _reduceCrop];
     v72[0] = v4;
     v72[1] = [MEMORY[0x1E696AD98] numberWithDouble:v8 / (v67 * v66)];
-    return [v65 applyWithExtent:&__block_literal_global_202 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v72, 2), 0.0, 0.0, 1.0, 1.0}];
+    return [_reduceCrop applyWithExtent:&__block_literal_global_202 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v72, 2), 0.0, 0.0, 1.0, 1.0}];
   }
 
   else

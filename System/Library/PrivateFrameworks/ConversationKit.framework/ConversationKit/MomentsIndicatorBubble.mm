@@ -7,13 +7,13 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   MomentsIndicatorBubble.start()();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MomentsIndicatorBubble.description.getter();
   v5 = v4;
 

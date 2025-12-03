@@ -1,9 +1,9 @@
 @interface IDSReportGeneralUnknownSenderMessage
 - (IDSReportGeneralUnknownSenderMessage)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSReportGeneralUnknownSenderMessage
@@ -22,16 +22,16 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = IDSReportGeneralUnknownSenderMessage;
-  v4 = [(IDSReportGeneralUnknownSenderMessage *)&v8 copyWithZone:a3];
-  v5 = [(IDSReportGeneralUnknownSenderMessage *)self unknownSenderInfo];
-  [v4 setUnknownSenderInfo:v5];
+  v4 = [(IDSReportGeneralUnknownSenderMessage *)&v8 copyWithZone:zone];
+  unknownSenderInfo = [(IDSReportGeneralUnknownSenderMessage *)self unknownSenderInfo];
+  [v4 setUnknownSenderInfo:unknownSenderInfo];
 
-  v6 = [(IDSReportGeneralUnknownSenderMessage *)self responseMessage];
-  [v4 setResponseMessage:v6];
+  responseMessage = [(IDSReportGeneralUnknownSenderMessage *)self responseMessage];
+  [v4 setResponseMessage:responseMessage];
 
   return v4;
 }
@@ -47,10 +47,10 @@
 - (id)messageBody
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(IDSReportGeneralUnknownSenderMessage *)self unknownSenderInfo];
-  if (v4)
+  unknownSenderInfo = [(IDSReportGeneralUnknownSenderMessage *)self unknownSenderInfo];
+  if (unknownSenderInfo)
   {
-    CFDictionarySetValue(v3, @"unknown-sender-info", v4);
+    CFDictionarySetValue(v3, @"unknown-sender-info", unknownSenderInfo);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -61,27 +61,27 @@
   return v3;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = dictionaryCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "General unknown sender response: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v7 = v4;
+    v7 = dictionaryCopy;
     _IDSLogV();
   }
 
   v8.receiver = self;
   v8.super_class = IDSReportGeneralUnknownSenderMessage;
-  [(IDSReportGeneralUnknownSenderMessage *)&v8 handleResponseDictionary:v4, v7];
-  v6 = [v4 objectForKey:@"message"];
+  [(IDSReportGeneralUnknownSenderMessage *)&v8 handleResponseDictionary:dictionaryCopy, v7];
+  v6 = [dictionaryCopy objectForKey:@"message"];
   [(IDSReportGeneralUnknownSenderMessage *)self setResponseMessage:v6];
 }
 

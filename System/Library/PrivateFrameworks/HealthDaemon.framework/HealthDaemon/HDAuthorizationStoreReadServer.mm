@@ -1,27 +1,27 @@
 @interface HDAuthorizationStoreReadServer
-+ (BOOL)validateClient:(id)a3 error:(id *)a4;
-- (void)remote_fetchAuthorizationContextForPromptSession:(id)a3 completion:(id)a4;
-- (void)remote_fetchAuthorizationRecordsForSourceBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)remote_fetchAuthorizationRecordsForType:(id)a3 completion:(id)a4;
-- (void)remote_fetchAuthorizationStatusesForDocumentType:(id)a3 sourceBundleIdentifier:(id)a4 completion:(id)a5;
-- (void)remote_fetchAuthorizationStatusesForHealthConceptIdentifier:(id)a3 completion:(id)a4;
-- (void)remote_fetchAuthorizationStatusesForSampleUUID:(id)a3 completion:(id)a4;
-- (void)remote_fetchConceptAuthorizationContextForPromptSession:(id)a3 completion:(id)a4;
-- (void)remote_fetchConceptAuthorizationRecordsForSource:(id)a3 completion:(id)a4;
-- (void)remote_fetchSourcesRequestingAuthorizationForTypes:(id)a3 completion:(id)a4;
-- (void)remote_fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:(id)a3 completion:(id)a4;
-- (void)remote_validateRecalibrateEstimatesRequestRecord:(id)a3 completion:(id)a4;
++ (BOOL)validateClient:(id)client error:(id *)error;
+- (void)remote_fetchAuthorizationContextForPromptSession:(id)session completion:(id)completion;
+- (void)remote_fetchAuthorizationRecordsForSourceBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)remote_fetchAuthorizationRecordsForType:(id)type completion:(id)completion;
+- (void)remote_fetchAuthorizationStatusesForDocumentType:(id)type sourceBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)remote_fetchAuthorizationStatusesForHealthConceptIdentifier:(id)identifier completion:(id)completion;
+- (void)remote_fetchAuthorizationStatusesForSampleUUID:(id)d completion:(id)completion;
+- (void)remote_fetchConceptAuthorizationContextForPromptSession:(id)session completion:(id)completion;
+- (void)remote_fetchConceptAuthorizationRecordsForSource:(id)source completion:(id)completion;
+- (void)remote_fetchSourcesRequestingAuthorizationForTypes:(id)types completion:(id)completion;
+- (void)remote_fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:(id)domain completion:(id)completion;
+- (void)remote_validateRecalibrateEstimatesRequestRecord:(id)record completion:(id)completion;
 @end
 
 @implementation HDAuthorizationStoreReadServer
 
-+ (BOOL)validateClient:(id)a3 error:(id *)a4
++ (BOOL)validateClient:(id)client error:(id *)error
 {
-  v5 = a3;
+  clientCopy = client;
   v6 = *MEMORY[0x277CCB888];
-  if ([v5 hasRequiredEntitlement:*MEMORY[0x277CCB888] error:a4])
+  if ([clientCopy hasRequiredEntitlement:*MEMORY[0x277CCB888] error:error])
   {
-    v7 = [v5 valueForEntitlement:v6];
+    v7 = [clientCopy valueForEntitlement:v6];
     objc_opt_class();
     v8 = objc_opt_isKindOfClass() ^ 1;
   }
@@ -31,121 +31,121 @@
     LOBYTE(v8) = 0;
   }
 
-  v9 = v8 | [v5 hasRequiredArrayEntitlement:v6 containing:*MEMORY[0x277CCBD58] error:a4];
+  v9 = v8 | [clientCopy hasRequiredArrayEntitlement:v6 containing:*MEMORY[0x277CCBD58] error:error];
 
   return v9 & 1;
 }
 
-- (void)remote_fetchAuthorizationRecordsForSourceBundleIdentifier:(id)a3 completion:(id)a4
+- (void)remote_fetchAuthorizationRecordsForSourceBundleIdentifier:(id)identifier completion:(id)completion
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v9 = [v6 set];
-  v10 = [(HDStandardTaskServer *)self profile];
+  profile = [(HDStandardTaskServer *)self profile];
   v13 = 0;
-  v11 = [HDAuthorizationEntity authorizationRecordsByTypeForBundleIdentifier:v8 types:v9 profile:v10 error:&v13];
+  v11 = [HDAuthorizationEntity authorizationRecordsByTypeForBundleIdentifier:identifierCopy types:v9 profile:profile error:&v13];
 
   v12 = v13;
-  v7[2](v7, v11, v12);
+  completionCopy[2](completionCopy, v11, v12);
 }
 
-- (void)remote_fetchAuthorizationRecordsForType:(id)a3 completion:(id)a4
+- (void)remote_fetchAuthorizationRecordsForType:(id)type completion:(id)completion
 {
-  v7 = a3;
-  if (v7)
+  typeCopy = type;
+  if (typeCopy)
   {
-    v8 = a4;
-    v9 = [(HDStandardTaskServer *)self profile];
+    completionCopy = completion;
+    profile = [(HDStandardTaskServer *)self profile];
     v14 = 0;
-    v10 = [HDAuthorizationEntity authorizationRecordsBySourceForType:v7 profile:v9 error:&v14];
+    v10 = [HDAuthorizationEntity authorizationRecordsBySourceForType:typeCopy profile:profile error:&v14];
     v11 = v14;
 
-    v8[2](v8, v10, v11);
+    completionCopy[2](completionCopy, v10, v11);
   }
 
   else
   {
     v12 = MEMORY[0x277CCA9B8];
-    v13 = a4;
+    completionCopy2 = completion;
     v10 = [v12 hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"type may not be nil"];
-    (*(a4 + 2))(v13, 0, v10);
+    (*(completion + 2))(completionCopy2, 0, v10);
   }
 }
 
-- (void)remote_fetchAuthorizationContextForPromptSession:(id)a3 completion:(id)a4
+- (void)remote_fetchAuthorizationContextForPromptSession:(id)session completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 authorizationManager];
+  completionCopy = completion;
+  sessionCopy = session;
+  profile = [(HDStandardTaskServer *)self profile];
+  authorizationManager = [profile authorizationManager];
   v12 = 0;
-  v10 = [v9 fetchAuthorizationContextForPromptSession:v7 error:&v12];
+  v10 = [authorizationManager fetchAuthorizationContextForPromptSession:sessionCopy error:&v12];
 
   v11 = v12;
-  v6[2](v6, v10, v11);
+  completionCopy[2](completionCopy, v10, v11);
 }
 
-- (void)remote_fetchConceptAuthorizationRecordsForSource:(id)a3 completion:(id)a4
+- (void)remote_fetchConceptAuthorizationRecordsForSource:(id)source completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(HDStandardTaskServer *)self profile];
-  v8 = [v9 authorizationManager];
-  [v8 fetchConceptAuthorizationRecordsForSource:v7 completion:v6];
+  completionCopy = completion;
+  sourceCopy = source;
+  profile = [(HDStandardTaskServer *)self profile];
+  authorizationManager = [profile authorizationManager];
+  [authorizationManager fetchConceptAuthorizationRecordsForSource:sourceCopy completion:completionCopy];
 }
 
-- (void)remote_fetchConceptAuthorizationContextForPromptSession:(id)a3 completion:(id)a4
+- (void)remote_fetchConceptAuthorizationContextForPromptSession:(id)session completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 authorizationManager];
+  completionCopy = completion;
+  sessionCopy = session;
+  profile = [(HDStandardTaskServer *)self profile];
+  authorizationManager = [profile authorizationManager];
   v12 = 0;
-  v10 = [v9 fetchConceptAuthorizationContextForPromptSession:v7 error:&v12];
+  v10 = [authorizationManager fetchConceptAuthorizationContextForPromptSession:sessionCopy error:&v12];
 
   v11 = v12;
-  v6[2](v6, v10, v11);
+  completionCopy[2](completionCopy, v10, v11);
 }
 
-- (void)remote_fetchSourcesRequestingAuthorizationForTypes:(id)a3 completion:(id)a4
+- (void)remote_fetchSourcesRequestingAuthorizationForTypes:(id)types completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDStandardTaskServer *)self profile];
+  completionCopy = completion;
+  typesCopy = types;
+  profile = [(HDStandardTaskServer *)self profile];
   v11 = 0;
-  v9 = [HDAuthorizationEntity allSourcesRequestingTypes:v7 profile:v8 error:&v11];
+  v9 = [HDAuthorizationEntity allSourcesRequestingTypes:typesCopy profile:profile error:&v11];
 
   v10 = v11;
-  v6[2](v6, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 }
 
-- (void)remote_fetchAuthorizationStatusesForDocumentType:(id)a3 sourceBundleIdentifier:(id)a4 completion:(id)a5
+- (void)remote_fetchAuthorizationStatusesForDocumentType:(id)type sourceBundleIdentifier:(id)identifier completion:(id)completion
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v10)
+  typeCopy = type;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (identifierCopy)
   {
-    v12 = [(HDStandardTaskServer *)self profile];
-    v13 = [v12 sourceManager];
+    profile = [(HDStandardTaskServer *)self profile];
+    sourceManager = [profile sourceManager];
     v45 = 0;
-    v14 = [v13 localSourceForBundleIdentifier:v10 error:&v45];
+    v14 = [sourceManager localSourceForBundleIdentifier:identifierCopy error:&v45];
     v15 = v45;
 
     if (v14)
     {
       v44 = v15;
-      v16 = [HDObjectAuthorizationEntity authorizationStatusForSamplesOfType:v9 sourceEntity:v14 profile:v12 error:&v44];
+      v16 = [HDObjectAuthorizationEntity authorizationStatusForSamplesOfType:typeCopy sourceEntity:v14 profile:profile error:&v44];
       v17 = v44;
 
       if (v16)
       {
         v33 = v14;
-        v34 = v11;
-        v35 = v10;
-        v36 = v9;
+        v34 = completionCopy;
+        v35 = identifierCopy;
+        v36 = typeCopy;
         v37 = objc_alloc_init(MEMORY[0x277CBEB38]);
         v47 = 0x283C2F1C8;
         v48[0] = MEMORY[0x277CBEC38];
@@ -173,19 +173,19 @@
               v23 = *(*(&v40 + 1) + 8 * i);
               if ([v23 status])
               {
-                v24 = [v23 objectUUID];
+                objectUUID = [v23 objectUUID];
                 v39 = v17;
-                v25 = v12;
-                v26 = [(HDDataEntity *)HDCDASampleEntity objectWithUUID:v24 encodingOptions:v38 profile:v12 error:&v39];
+                v25 = profile;
+                v26 = [(HDDataEntity *)HDCDASampleEntity objectWithUUID:objectUUID encodingOptions:v38 profile:profile error:&v39];
                 v27 = v39;
 
                 if (!v26)
                 {
-                  v11 = v34;
+                  completionCopy = v34;
                   v34[2](v34, 0, v27);
 
                   v17 = v27;
-                  v12 = v25;
+                  profile = v25;
                   v29 = v37;
                   goto LABEL_19;
                 }
@@ -194,7 +194,7 @@
                 [v37 setObject:v28 forKeyedSubscript:v26];
 
                 v17 = v27;
-                v12 = v25;
+                profile = v25;
               }
             }
 
@@ -208,20 +208,20 @@
           }
         }
 
-        v11 = v34;
+        completionCopy = v34;
         v29 = v37;
         (v34)[2](v34, v37, 0);
 LABEL_19:
 
-        v10 = v35;
-        v9 = v36;
+        identifierCopy = v35;
+        typeCopy = v36;
         v16 = v32;
         v14 = v33;
       }
 
       else
       {
-        v11[2](v11, 0, v17);
+        completionCopy[2](completionCopy, 0, v17);
       }
 
       v15 = v17;
@@ -229,39 +229,39 @@ LABEL_19:
 
     else
     {
-      v11[2](v11, 0, v15);
+      completionCopy[2](completionCopy, 0, v15);
     }
   }
 
   else
   {
     v30 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"sourceBundleIdentifier may not be nil"];
-    v11[2](v11, 0, v30);
+    completionCopy[2](completionCopy, 0, v30);
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_fetchAuthorizationStatusesForSampleUUID:(id)a3 completion:(id)a4
+- (void)remote_fetchAuthorizationStatusesForSampleUUID:(id)d completion:(id)completion
 {
   v46 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (dCopy)
   {
-    v9 = [(HDStandardTaskServer *)self profile];
+    profile = [(HDStandardTaskServer *)self profile];
     v40 = 0;
-    v10 = [HDObjectAuthorizationEntity authorizationRecordsBySourceForSampleWithUUID:v7 profile:v9 error:&v40];
+    v10 = [HDObjectAuthorizationEntity authorizationRecordsBySourceForSampleWithUUID:dCopy profile:profile error:&v40];
     v11 = v40;
 
     if (v10)
     {
       v30 = v11;
-      v32 = v8;
-      v33 = v7;
+      v32 = completionCopy;
+      v33 = dCopy;
       v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v13 = [(HDStandardTaskServer *)self profile];
-      v34 = [v13 sourceManager];
+      profile2 = [(HDStandardTaskServer *)self profile];
+      sourceManager = [profile2 sourceManager];
 
       v38 = 0u;
       v39 = 0u;
@@ -285,7 +285,7 @@ LABEL_19:
 
             v19 = *(*(&v36 + 1) + 8 * i);
             v35 = 0;
-            v20 = [v34 clientSourceForUUID:v19 error:{&v35, v30}];
+            v20 = [sourceManager clientSourceForUUID:v19 error:{&v35, v30}];
             v21 = v35;
             if (v20)
             {
@@ -304,8 +304,8 @@ LABEL_19:
               {
                 v27 = os_log_type_enabled(v25, OS_LOG_TYPE_INFO);
 
-                v8 = v32;
-                v7 = v33;
+                completionCopy = v32;
+                dCopy = v33;
                 if (v27)
                 {
                   v28 = HKLogAuthorization();
@@ -343,9 +343,9 @@ LABEL_19:
         }
       }
 
-      v8 = v32;
+      completionCopy = v32;
       (v32)[2](v32, v12, 0);
-      v7 = v33;
+      dCopy = v33;
 LABEL_23:
 
       v11 = v30;
@@ -354,44 +354,44 @@ LABEL_23:
 
     else
     {
-      v8[2](v8, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
     }
   }
 
   else
   {
     v26 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"sampleUUID may not be nil"];
-    v8[2](v8, 0, v26);
+    completionCopy[2](completionCopy, 0, v26);
   }
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_fetchAuthorizationStatusesForHealthConceptIdentifier:(id)a3 completion:(id)a4
+- (void)remote_fetchAuthorizationStatusesForHealthConceptIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(HDStandardTaskServer *)self profile];
-  v8 = [v9 authorizationManager];
-  [v8 fetchAuthorizationStatusesForHealthConceptIdentifier:v7 completion:v6];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  profile = [(HDStandardTaskServer *)self profile];
+  authorizationManager = [profile authorizationManager];
+  [authorizationManager fetchAuthorizationStatusesForHealthConceptIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)remote_fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:(id)a3 completion:(id)a4
+- (void)remote_fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:(id)domain completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(HDStandardTaskServer *)self profile];
-  v8 = [v9 authorizationManager];
-  [v8 fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:v7 completion:v6];
+  completionCopy = completion;
+  domainCopy = domain;
+  profile = [(HDStandardTaskServer *)self profile];
+  authorizationManager = [profile authorizationManager];
+  [authorizationManager fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:domainCopy completion:completionCopy];
 }
 
-- (void)remote_validateRecalibrateEstimatesRequestRecord:(id)a3 completion:(id)a4
+- (void)remote_validateRecalibrateEstimatesRequestRecord:(id)record completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(HDStandardTaskServer *)self profile];
-  v8 = [v9 authorizationManager];
-  [v8 validateRecalibrateEstimatesRequestRecord:v7 completion:v6];
+  completionCopy = completion;
+  recordCopy = record;
+  profile = [(HDStandardTaskServer *)self profile];
+  authorizationManager = [profile authorizationManager];
+  [authorizationManager validateRecalibrateEstimatesRequestRecord:recordCopy completion:completionCopy];
 }
 
 @end

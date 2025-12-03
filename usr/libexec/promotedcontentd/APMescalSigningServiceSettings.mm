@@ -1,37 +1,37 @@
 @interface APMescalSigningServiceSettings
-+ (id)storageWithDefaultValues:(id)a3;
++ (id)storageWithDefaultValues:(id)values;
 - (BOOL)useAMSMescal;
-- (void)setUseAMSMescal:(BOOL)a3;
+- (void)setUseAMSMescal:(BOOL)mescal;
 @end
 
 @implementation APMescalSigningServiceSettings
 
-+ (id)storageWithDefaultValues:(id)a3
++ (id)storageWithDefaultValues:(id)values
 {
-  v3 = a3;
-  v4 = [[APSettingsStorageKeychain alloc] initWithDefaultValues:v3];
+  valuesCopy = values;
+  v4 = [[APSettingsStorageKeychain alloc] initWithDefaultValues:valuesCopy];
 
   return v4;
 }
 
 - (BOOL)useAMSMescal
 {
-  v3 = [(APMescalSigningServiceSettings *)self useAMSMescalObject];
+  useAMSMescalObject = [(APMescalSigningServiceSettings *)self useAMSMescalObject];
 
-  if (!v3)
+  if (!useAMSMescalObject)
   {
     return 1;
   }
 
-  v4 = [(APMescalSigningServiceSettings *)self useAMSMescalObject];
-  v5 = [v4 BOOLValue];
+  useAMSMescalObject2 = [(APMescalSigningServiceSettings *)self useAMSMescalObject];
+  bOOLValue = [useAMSMescalObject2 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setUseAMSMescal:(BOOL)a3
+- (void)setUseAMSMescal:(BOOL)mescal
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:mescal];
   [(APMescalSigningServiceSettings *)self setUseAMSMescalObject:v4];
 }
 

@@ -1,26 +1,26 @@
 @interface _DASProgressTracker
 + (void)initialize;
 - (BOOL)isStalled;
-- (BOOL)isValidProgressUpdate:(id)a3;
+- (BOOL)isValidProgressUpdate:(id)update;
 - (NSDate)lastUpdateDate;
 - (NSProgress)lastProgress;
-- (_DASProgressTracker)initWithActivity:(id)a3;
-- (_DASProgressTracker)initWithActivity:(id)a3 startingProgress:(id)a4;
+- (_DASProgressTracker)initWithActivity:(id)activity;
+- (_DASProgressTracker)initWithActivity:(id)activity startingProgress:(id)progress;
 - (double)computeInstantaneousProgressRate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)descriptionForConfigurationField:(int64_t)a3;
-- (id)descriptionForState:(int64_t)a3;
+- (id)descriptionForConfigurationField:(int64_t)field;
+- (id)descriptionForState:(int64_t)state;
 - (int64_t)health;
-- (void)eventResultReceivedForEvent:(int64_t)a3 result:(int64_t)a4;
+- (void)eventResultReceivedForEvent:(int64_t)event result:(int64_t)result;
 - (void)handleSlowBaselineROP;
 - (void)handleSlowExtendedROP;
 - (void)handleStalled;
-- (void)processUpdate:(id)a3;
-- (void)setHasReported:(BOOL)a3;
-- (void)setLastProgress:(id)a3;
-- (void)setLastUpdateDate:(id)a3;
-- (void)transitionTo:(int64_t)a3;
+- (void)processUpdate:(id)update;
+- (void)setHasReported:(BOOL)reported;
+- (void)setLastProgress:(id)progress;
+- (void)setLastUpdateDate:(id)date;
+- (void)transitionTo:(int64_t)to;
 - (void)unsafe_step;
 - (void)unsafe_stepForBaselineDeviationMonitoring;
 - (void)unsafe_stepForBaselineWarmup;
@@ -55,16 +55,16 @@
   qword_10020B2A0 = *&v5;
 }
 
-- (_DASProgressTracker)initWithActivity:(id)a3
+- (_DASProgressTracker)initWithActivity:(id)activity
 {
-  v5 = a3;
+  activityCopy = activity;
   v18.receiver = self;
   v18.super_class = _DASProgressTracker;
   v6 = [(_DASProgressTracker *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_activity, a3);
+    objc_storeStrong(&v6->_activity, activity);
     v7->_health = 0;
     v8 = +[NSProgress indeterminateProgress];
     lastProgress = v7->_lastProgress;
@@ -91,19 +91,19 @@
   return v7;
 }
 
-- (_DASProgressTracker)initWithActivity:(id)a3 startingProgress:(id)a4
+- (_DASProgressTracker)initWithActivity:(id)activity startingProgress:(id)progress
 {
-  v7 = a3;
-  v8 = a4;
+  activityCopy = activity;
+  progressCopy = progress;
   v21.receiver = self;
   v21.super_class = _DASProgressTracker;
   v9 = [(_DASProgressTracker *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_activity, a3);
+    objc_storeStrong(&v9->_activity, activity);
     v10->_health = 0;
-    objc_storeStrong(&v10->_lastProgress, a4);
+    objc_storeStrong(&v10->_lastProgress, progress);
     v11 = +[NSDate now];
     lastUpdateDate = v10->_lastUpdateDate;
     v10->_lastUpdateDate = v11;
@@ -129,31 +129,31 @@
   return v10;
 }
 
-- (void)processUpdate:(id)a3
+- (void)processUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   stateQueue = self->_stateQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005B4A8;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updateCopy;
+  v6 = updateCopy;
   dispatch_async(stateQueue, v7);
 }
 
-- (void)eventResultReceivedForEvent:(int64_t)a3 result:(int64_t)a4
+- (void)eventResultReceivedForEvent:(int64_t)event result:(int64_t)result
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     activity = self->_activity;
     v9 = log;
-    v10 = [NSNumber numberWithInteger:a3];
-    v11 = [NSNumber numberWithInteger:a4];
+    v10 = [NSNumber numberWithInteger:event];
+    v11 = [NSNumber numberWithInteger:result];
     v18 = 134218754;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2112;
     v21 = activity;
     v22 = 2112;
@@ -163,7 +163,7 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%p:%@] Received event result %@ for %@", &v18, 0x2Au);
   }
 
-  if (a4 == 2)
+  if (result == 2)
   {
     v12 = +[_DASDaemon sharedInstance];
     v13 = [NSSet setWithObject:self->_activity];
@@ -177,9 +177,9 @@
     {
       v15 = self->_activity;
       v16 = v14;
-      v17 = [NSNumber numberWithInteger:a4];
+      v17 = [NSNumber numberWithInteger:result];
       v18 = 134218498;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2112;
       v21 = v15;
       v22 = 2112;
@@ -296,15 +296,15 @@ LABEL_21:
   if ([(_DASProgressTracker *)self isStalled])
   {
     [(_DASProgressTracker *)self handleStalled];
-    v3 = self;
+    selfCopy2 = self;
     v4 = 4;
 LABEL_9:
-    [(_DASProgressTracker *)v3 transitionTo:v4];
+    [(_DASProgressTracker *)selfCopy2 transitionTo:v4];
     return;
   }
 
-  v5 = [(_DASActivity *)self->_activity startDate];
-  v6 = [v5 haveNSecondsElapsed:*&qword_10020B298];
+  startDate = [(_DASActivity *)self->_activity startDate];
+  v6 = [startDate haveNSecondsElapsed:*&qword_10020B298];
 
   if (v6)
   {
@@ -314,7 +314,7 @@ LABEL_9:
       [(_DASProgressTracker *)self handleSlowBaselineROP];
     }
 
-    v3 = self;
+    selfCopy2 = self;
     v4 = 2;
     goto LABEL_9;
   }
@@ -345,8 +345,8 @@ LABEL_12:
 
   if (_os_feature_enabled_impl())
   {
-    v4 = [(_DASActivity *)self->_activity startDate];
-    v5 = [v4 haveNSecondsElapsed:*&qword_10020B2A0];
+    startDate = [(_DASActivity *)self->_activity startDate];
+    v5 = [startDate haveNSecondsElapsed:*&qword_10020B2A0];
 
     if (v5)
     {
@@ -407,7 +407,7 @@ LABEL_11:
   }
 }
 
-- (void)transitionTo:(int64_t)a3
+- (void)transitionTo:(int64_t)to
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -415,9 +415,9 @@ LABEL_11:
     activity = self->_activity;
     v7 = log;
     v8 = [(_DASProgressTracker *)self descriptionForState:[(_DASProgressTracker *)self currentState]];
-    v9 = [(_DASProgressTracker *)self descriptionForState:a3];
+    v9 = [(_DASProgressTracker *)self descriptionForState:to];
     v10 = 134218754;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = activity;
     v14 = 2112;
@@ -427,7 +427,7 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%p:%@] Performing transition: %@ -> %@", &v10, 0x2Au);
   }
 
-  [(_DASProgressTracker *)self setCurrentState:a3];
+  [(_DASProgressTracker *)self setCurrentState:to];
 }
 
 - (void)handleSlowBaselineROP
@@ -442,8 +442,8 @@ LABEL_11:
   [(_DASProgressTracker *)self computeInstantaneousProgressRate];
   [(_DASProgressTrackerStrategy *)deviationStrategy updateExpectedRate:?];
   v4 = +[_DASContinuedProcessingTaskUIClient sharedClient];
-  v5 = [(_DASActivity *)self->_activity uuid];
-  [v4 postActivityEvent:0 forIdentifier:v5];
+  uuid = [(_DASActivity *)self->_activity uuid];
+  [v4 postActivityEvent:0 forIdentifier:uuid];
 }
 
 - (void)handleSlowExtendedROP
@@ -458,18 +458,18 @@ LABEL_11:
   self->_deviationStrategy = 0;
 
   v4 = +[_DASContinuedProcessingTaskUIClient sharedClient];
-  v5 = [(_DASActivity *)self->_activity uuid];
-  [v4 postActivityEvent:0 forIdentifier:v5];
+  uuid = [(_DASActivity *)self->_activity uuid];
+  [v4 postActivityEvent:0 forIdentifier:uuid];
 }
 
 - (double)computeInstantaneousProgressRate
 {
-  v3 = [(_DASActivity *)self->_activity startDate];
-  [v3 timeIntervalSinceNow];
+  startDate = [(_DASActivity *)self->_activity startDate];
+  [startDate timeIntervalSinceNow];
   v5 = fabs(v4) / 60.0;
 
-  v6 = [(_DASProgressTracker *)self lastProgress];
-  [v6 fractionCompleted];
+  lastProgress = [(_DASProgressTracker *)self lastProgress];
+  [lastProgress fractionCompleted];
   v8 = fmin(v7 / v5, 1.0);
 
   return v8;
@@ -480,10 +480,10 @@ LABEL_11:
   v3 = 30.0;
   if (!self->_hasReported)
   {
-    v4 = [(_DASProgressTracker *)self lastProgress];
-    v5 = [v4 isIndeterminate];
+    lastProgress = [(_DASProgressTracker *)self lastProgress];
+    isIndeterminate = [lastProgress isIndeterminate];
 
-    if (v5)
+    if (isIndeterminate)
     {
       v3 = 45.0;
     }
@@ -494,8 +494,8 @@ LABEL_11:
     }
   }
 
-  v6 = [(_DASProgressTracker *)self lastUpdateDate];
-  [v6 timeIntervalSinceNow];
+  lastUpdateDate = [(_DASProgressTracker *)self lastUpdateDate];
+  [lastUpdateDate timeIntervalSinceNow];
   v8 = fabs(v7) > v3;
 
   return v8;
@@ -512,90 +512,90 @@ LABEL_11:
   self->_health = 2;
 }
 
-- (BOOL)isValidProgressUpdate:(id)a3
+- (BOOL)isValidProgressUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(_DASProgressTracker *)self lastProgress];
-  v6 = [v5 completedUnitCount];
-  v7 = [v4 completedUnitCount];
+  updateCopy = update;
+  lastProgress = [(_DASProgressTracker *)self lastProgress];
+  completedUnitCount = [lastProgress completedUnitCount];
+  completedUnitCount2 = [updateCopy completedUnitCount];
 
-  return v6 < v7;
+  return completedUnitCount < completedUnitCount2;
 }
 
 - (int64_t)health
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(_DASProgressTracker *)v2 isStalled]&& v2->_health != 2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(_DASProgressTracker *)selfCopy isStalled]&& selfCopy->_health != 2)
   {
-    [(_DASProgressTracker *)v2 handleStalled];
+    [(_DASProgressTracker *)selfCopy handleStalled];
   }
 
-  health = v2->_health;
-  objc_sync_exit(v2);
+  health = selfCopy->_health;
+  objc_sync_exit(selfCopy);
 
   return health;
 }
 
-- (void)setHasReported:(BOOL)a3
+- (void)setHasReported:(BOOL)reported
 {
   if (!self->_hasReported)
   {
-    self->_hasReported = a3;
+    self->_hasReported = reported;
   }
 }
 
 - (NSDate)lastUpdateDate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_lastUpdateDate;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_lastUpdateDate;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setLastUpdateDate:(id)a3
+- (void)setLastUpdateDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   obj = self;
   objc_sync_enter(obj);
   lastUpdateDate = obj->_lastUpdateDate;
-  obj->_lastUpdateDate = v4;
+  obj->_lastUpdateDate = dateCopy;
 
   objc_sync_exit(obj);
 }
 
 - (NSProgress)lastProgress
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_lastProgress;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_lastProgress;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setLastProgress:(id)a3
+- (void)setLastProgress:(id)progress
 {
-  v7 = a3;
+  progressCopy = progress;
   if ([(_DASProgressTracker *)self isValidProgressUpdate:?])
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    objc_storeStrong(&v5->_lastProgress, a3);
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_lastProgress, progress);
+    objc_sync_exit(selfCopy);
 
     v6 = +[NSDate now];
-    [(_DASProgressTracker *)v5 setLastUpdateDate:v6];
+    [(_DASProgressTracker *)selfCopy setLastUpdateDate:v6];
 
-    [(_DASProgressTracker *)v5 setHasReported:1];
+    [(_DASProgressTracker *)selfCopy setHasReported:1];
   }
 }
 
-- (id)descriptionForState:(int64_t)a3
+- (id)descriptionForState:(int64_t)state
 {
-  if (a3 >= 7)
+  if (state >= 7)
   {
     v4 = [NSNumber numberWithInteger:?];
     v3 = [NSString stringWithFormat:@"Unknown (%@)", v4];
@@ -603,24 +603,24 @@ LABEL_11:
 
   else
   {
-    v3 = *(&off_1001B6960 + a3);
+    v3 = *(&off_1001B6960 + state);
   }
 
   return v3;
 }
 
-- (id)descriptionForConfigurationField:(int64_t)a3
+- (id)descriptionForConfigurationField:(int64_t)field
 {
-  v3 = a3;
+  fieldCopy = field;
   v4 = +[NSMutableArray array];
   v5 = v4;
-  if (v3)
+  if (fieldCopy)
   {
     [v4 addObject:@"FirstROPPrompt"];
-    if ((v3 & 2) == 0)
+    if ((fieldCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((fieldCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -629,16 +629,16 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 2) == 0)
+  else if ((fieldCopy & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 addObject:@"SecondROPPrompt"];
-  if ((v3 & 4) == 0)
+  if ((fieldCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v3 & 8) == 0)
+    if ((fieldCopy & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -648,7 +648,7 @@ LABEL_4:
 
 LABEL_11:
   [v5 addObject:@"ExtendedDurationPrompt"];
-  if ((v3 & 8) != 0)
+  if ((fieldCopy & 8) != 0)
   {
 LABEL_5:
     [v5 addObject:@"BypassROPPrompts"];
@@ -664,20 +664,20 @@ LABEL_6:
 - (id)description
 {
   activity = self->_activity;
-  v4 = [(_DASProgressTracker *)self lastProgress];
+  lastProgress = [(_DASProgressTracker *)self lastProgress];
   v5 = [(_DASProgressTracker *)self descriptionForState:self->_currentState];
   v6 = [(_DASProgressTracker *)self descriptionForConfigurationField:self->_configurationField];
-  v7 = [NSString stringWithFormat:@"<_DASProgressTracker [%p:%@] %@, State: %@, ConfigurationField: %@>", self, activity, v4, v5, v6];
+  v7 = [NSString stringWithFormat:@"<_DASProgressTracker [%p:%@] %@, State: %@, ConfigurationField: %@>", self, activity, lastProgress, v5, v6];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_DASProgressTracker alloc];
   activity = self->_activity;
-  v6 = [(_DASProgressTracker *)self lastProgress];
-  v7 = [v6 copy];
+  lastProgress = [(_DASProgressTracker *)self lastProgress];
+  v7 = [lastProgress copy];
   v8 = [(_DASProgressTracker *)v4 initWithActivity:activity startingProgress:v7];
 
   [(_DASProgressTracker *)v8 setHealth:self->_health];

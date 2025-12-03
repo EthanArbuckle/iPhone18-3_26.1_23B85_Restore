@@ -1,16 +1,16 @@
 @interface AVBehaviorStorage
-- (AVBehaviorStorage)initWithAVKitOwner:(id)a3;
+- (AVBehaviorStorage)initWithAVKitOwner:(id)owner;
 - (id)AVKitOwner;
-- (id)behaviorContextOfClass:(Class)a3;
-- (id)behaviorOfClass:(Class)a3;
+- (id)behaviorContextOfClass:(Class)class;
+- (id)behaviorOfClass:(Class)class;
 - (id)behaviors;
-- (void)addBehavior:(id)a3;
-- (void)enumerateAllBehaviorContextsConformingToProtocol:(id)a3 usingBlock:(id)a4;
-- (void)enumerateAllBehaviorContextsImplementingSelector:(SEL)a3 forProtocol:(id)a4 usingBlock:(id)a5;
-- (void)enumerateAllBehaviorContextsUsingBlock:(id)a3;
-- (void)enumerateAllBehaviorsConformingToProtocol:(id)a3 usingBlock:(id)a4;
-- (void)enumerateAllBehaviorsUsingBlock:(id)a3;
-- (void)removeBehavior:(id)a3;
+- (void)addBehavior:(id)behavior;
+- (void)enumerateAllBehaviorContextsConformingToProtocol:(id)protocol usingBlock:(id)block;
+- (void)enumerateAllBehaviorContextsImplementingSelector:(SEL)selector forProtocol:(id)protocol usingBlock:(id)block;
+- (void)enumerateAllBehaviorContextsUsingBlock:(id)block;
+- (void)enumerateAllBehaviorsConformingToProtocol:(id)protocol usingBlock:(id)block;
+- (void)enumerateAllBehaviorsUsingBlock:(id)block;
+- (void)removeBehavior:(id)behavior;
 @end
 
 @implementation AVBehaviorStorage
@@ -22,17 +22,17 @@
   return WeakRetained;
 }
 
-- (id)behaviorContextOfClass:(Class)a3
+- (id)behaviorContextOfClass:(Class)class
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
-  v4 = [v3 objectEnumerator];
+  behaviorsAndBehaviorContexts = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
+  objectEnumerator = [behaviorsAndBehaviorContexts objectEnumerator];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -43,7 +43,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -54,7 +54,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -70,17 +70,17 @@ LABEL_11:
   return v10;
 }
 
-- (void)enumerateAllBehaviorContextsImplementingSelector:(SEL)a3 forProtocol:(id)a4 usingBlock:(id)a5
+- (void)enumerateAllBehaviorContextsImplementingSelector:(SEL)selector forProtocol:(id)protocol usingBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __93__AVBehaviorStorage_enumerateAllBehaviorContextsImplementingSelector_forProtocol_usingBlock___block_invoke;
   v10[3] = &unk_1E7209690;
-  v11 = v8;
-  v12 = a3;
-  v9 = v8;
-  [(AVBehaviorStorage *)self enumerateAllBehaviorContextsConformingToProtocol:a4 usingBlock:v10];
+  v11 = blockCopy;
+  selectorCopy = selector;
+  v9 = blockCopy;
+  [(AVBehaviorStorage *)self enumerateAllBehaviorContextsConformingToProtocol:protocol usingBlock:v10];
 }
 
 void __93__AVBehaviorStorage_enumerateAllBehaviorContextsImplementingSelector_forProtocol_usingBlock___block_invoke(uint64_t a1, void *a2)
@@ -92,18 +92,18 @@ void __93__AVBehaviorStorage_enumerateAllBehaviorContextsImplementingSelector_fo
   }
 }
 
-- (void)enumerateAllBehaviorContextsConformingToProtocol:(id)a3 usingBlock:(id)a4
+- (void)enumerateAllBehaviorContextsConformingToProtocol:(id)protocol usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  protocolCopy = protocol;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__AVBehaviorStorage_enumerateAllBehaviorContextsConformingToProtocol_usingBlock___block_invoke;
   v10[3] = &unk_1E7209668;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = protocolCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = protocolCopy;
   [(AVBehaviorStorage *)self enumerateAllBehaviorContextsUsingBlock:v10];
 }
 
@@ -116,18 +116,18 @@ void __81__AVBehaviorStorage_enumerateAllBehaviorContextsConformingToProtocol_us
   }
 }
 
-- (void)enumerateAllBehaviorContextsUsingBlock:(id)a3
+- (void)enumerateAllBehaviorContextsUsingBlock:(id)block
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
-  v6 = [v5 objectEnumerator];
+  behaviorsAndBehaviorContexts = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
+  objectEnumerator = [behaviorsAndBehaviorContexts objectEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -139,31 +139,31 @@ void __81__AVBehaviorStorage_enumerateAllBehaviorContextsConformingToProtocol_us
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v10++));
+        blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v10++));
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (id)behaviorOfClass:(Class)a3
+- (id)behaviorOfClass:(Class)class
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
-  v4 = [v3 keyEnumerator];
+  behaviorsAndBehaviorContexts = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
+  keyEnumerator = [behaviorsAndBehaviorContexts keyEnumerator];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [keyEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -174,7 +174,7 @@ void __81__AVBehaviorStorage_enumerateAllBehaviorContextsConformingToProtocol_us
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -185,7 +185,7 @@ void __81__AVBehaviorStorage_enumerateAllBehaviorContextsConformingToProtocol_us
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [keyEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -201,18 +201,18 @@ LABEL_11:
   return v10;
 }
 
-- (void)enumerateAllBehaviorsConformingToProtocol:(id)a3 usingBlock:(id)a4
+- (void)enumerateAllBehaviorsConformingToProtocol:(id)protocol usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  protocolCopy = protocol;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __74__AVBehaviorStorage_enumerateAllBehaviorsConformingToProtocol_usingBlock___block_invoke;
   v10[3] = &unk_1E7209640;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = protocolCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = protocolCopy;
   [(AVBehaviorStorage *)self enumerateAllBehaviorsUsingBlock:v10];
 }
 
@@ -225,18 +225,18 @@ void __74__AVBehaviorStorage_enumerateAllBehaviorsConformingToProtocol_usingBloc
   }
 }
 
-- (void)enumerateAllBehaviorsUsingBlock:(id)a3
+- (void)enumerateAllBehaviorsUsingBlock:(id)block
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
-  v6 = [v5 keyEnumerator];
+  behaviorsAndBehaviorContexts = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
+  keyEnumerator = [behaviorsAndBehaviorContexts keyEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -248,67 +248,67 @@ void __74__AVBehaviorStorage_enumerateAllBehaviorsConformingToProtocol_usingBloc
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v10++));
+        blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v10++));
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)removeBehavior:(id)a3
+- (void)removeBehavior:(id)behavior
 {
-  v8 = a3;
-  v4 = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
-  v5 = [v4 objectForKey:v8];
+  behaviorCopy = behavior;
+  behaviorsAndBehaviorContexts = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
+  v5 = [behaviorsAndBehaviorContexts objectForKey:behaviorCopy];
 
   if ([v5 conformsToProtocol:&unk_1EFF322D8])
   {
-    v6 = v5;
-    [v6 willRemoveBehavior:v8];
-    v7 = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
-    [v7 removeObjectForKey:v8];
+    behaviorsAndBehaviorContexts3 = v5;
+    [behaviorsAndBehaviorContexts3 willRemoveBehavior:behaviorCopy];
+    behaviorsAndBehaviorContexts2 = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
+    [behaviorsAndBehaviorContexts2 removeObjectForKey:behaviorCopy];
 
-    [v6 setBehavior:0];
-    if ([v8 conformsToProtocol:&unk_1EFF33E20])
+    [behaviorsAndBehaviorContexts3 setBehavior:0];
+    if ([behaviorCopy conformsToProtocol:&unk_1EFF33E20])
     {
-      [v8 setBehaviorContext:0];
+      [behaviorCopy setBehaviorContext:0];
     }
 
-    [v6 didRemoveBehavior:v8];
+    [behaviorsAndBehaviorContexts3 didRemoveBehavior:behaviorCopy];
   }
 
   else
   {
-    v6 = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
-    [v6 removeObjectForKey:v8];
+    behaviorsAndBehaviorContexts3 = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
+    [behaviorsAndBehaviorContexts3 removeObjectForKey:behaviorCopy];
   }
 }
 
-- (void)addBehavior:(id)a3
+- (void)addBehavior:(id)behavior
 {
-  v4 = a3;
-  if (v4)
+  behaviorCopy = behavior;
+  if (behaviorCopy)
   {
-    v16 = v4;
-    v5 = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
-    v6 = [v5 objectForKey:v16];
+    v16 = behaviorCopy;
+    behaviorsAndBehaviorContexts = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
+    v6 = [behaviorsAndBehaviorContexts objectForKey:v16];
 
-    v4 = v16;
+    behaviorCopy = v16;
     if (!v6)
     {
       if ([v16 conformsToProtocol:&unk_1EFF33E20])
       {
         v7 = v16;
         v8 = objc_alloc([objc_opt_class() behaviorContextClass]);
-        v9 = [(AVBehaviorStorage *)self AVKitOwner];
-        v10 = [v8 initWithAVKitOwner:v9];
+        aVKitOwner = [(AVBehaviorStorage *)self AVKitOwner];
+        v10 = [v8 initWithAVKitOwner:aVKitOwner];
 
         if (v10)
         {
@@ -317,14 +317,14 @@ void __74__AVBehaviorStorage_enumerateAllBehaviorsConformingToProtocol_usingBloc
 LABEL_8:
           [(AVDefaultBehaviorContext *)v12 willAddBehavior:v16];
           [v16 willMoveToContext:v11];
-          v15 = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
-          [v15 setObject:v11 forKey:v16];
+          behaviorsAndBehaviorContexts2 = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
+          [behaviorsAndBehaviorContexts2 setObject:v11 forKey:v16];
 
           [(AVDefaultBehaviorContext *)v12 setBehavior:v16];
           [v7 setBehaviorContext:v11];
           [(AVDefaultBehaviorContext *)v12 didAddBehavior:v16];
 
-          v4 = v16;
+          behaviorCopy = v16;
           goto LABEL_9;
         }
       }
@@ -335,8 +335,8 @@ LABEL_8:
       }
 
       v13 = [AVDefaultBehaviorContext alloc];
-      v14 = [(AVBehaviorStorage *)self AVKitOwner];
-      v11 = [(AVDefaultBehaviorContext *)v13 initWithAVKitOwner:v14];
+      aVKitOwner2 = [(AVBehaviorStorage *)self AVKitOwner];
+      v11 = [(AVDefaultBehaviorContext *)v13 initWithAVKitOwner:aVKitOwner2];
 
       v12 = 0;
       goto LABEL_8;
@@ -348,26 +348,26 @@ LABEL_9:
 
 - (id)behaviors
 {
-  v2 = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
-  v3 = [v2 keyEnumerator];
-  v4 = [v3 allObjects];
+  behaviorsAndBehaviorContexts = [(AVBehaviorStorage *)self behaviorsAndBehaviorContexts];
+  keyEnumerator = [behaviorsAndBehaviorContexts keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  return v4;
+  return allObjects;
 }
 
-- (AVBehaviorStorage)initWithAVKitOwner:(id)a3
+- (AVBehaviorStorage)initWithAVKitOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v10.receiver = self;
   v10.super_class = AVBehaviorStorage;
   v5 = [(AVBehaviorStorage *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_AVKitOwner, v4);
-    v7 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    objc_storeWeak(&v5->_AVKitOwner, ownerCopy);
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     behaviorsAndBehaviorContexts = v6->_behaviorsAndBehaviorContexts;
-    v6->_behaviorsAndBehaviorContexts = v7;
+    v6->_behaviorsAndBehaviorContexts = strongToStrongObjectsMapTable;
   }
 
   return v6;

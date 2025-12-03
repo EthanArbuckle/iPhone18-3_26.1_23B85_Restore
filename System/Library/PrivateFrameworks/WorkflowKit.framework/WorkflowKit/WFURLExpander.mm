@@ -1,22 +1,22 @@
 @interface WFURLExpander
-+ (void)expandURL:(id)a3 completionHandler:(id)a4;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)finishWithURL:(id)a3 error:(id)a4;
++ (void)expandURL:(id)l completionHandler:(id)handler;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)finishWithURL:(id)l error:(id)error;
 - (void)start;
 @end
 
 @implementation WFURLExpander
 
-+ (void)expandURL:(id)a3 completionHandler:(id)a4
++ (void)expandURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   v7 = objc_opt_new();
   v8 = WFAppTransportSecuredURL();
 
   [v7 setURL:v8];
-  [v7 setCompletionHandler:v5];
+  [v7 setCompletionHandler:handlerCopy];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -27,19 +27,19 @@
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  [a4 cancel];
+  [task cancel];
   v7 = [(WFURLExpander *)self URL];
   [(WFURLExpander *)self finishWithURL:v7 error:0];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v9 = a7;
-  v10 = a6;
-  v14 = [v10 mutableCopy];
-  v11 = [v10 URL];
+  handlerCopy = handler;
+  requestCopy = request;
+  v14 = [requestCopy mutableCopy];
+  v11 = [requestCopy URL];
 
   v12 = WFAppTransportSecuredURL();
   [v14 setURL:v12];
@@ -47,17 +47,17 @@
   v13 = [v14 URL];
   [(WFURLExpander *)self setURL:v13];
 
-  v9[2](v9, v14);
+  handlerCopy[2](handlerCopy, v14);
 }
 
-- (void)finishWithURL:(id)a3 error:(id)a4
+- (void)finishWithURL:(id)l error:(id)error
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = [(WFURLExpander *)self completionHandler];
+  lCopy = l;
+  errorCopy = error;
+  completionHandler = [(WFURLExpander *)self completionHandler];
   [(WFURLExpander *)self setCompletionHandler:0];
-  v8 = [v19 host];
-  v9 = [v8 hasSuffix:@"medium.com"];
+  host = [lCopy host];
+  v9 = [host hasSuffix:@"medium.com"];
 
   if (v9)
   {
@@ -69,15 +69,15 @@
     v10 = &unk_1F4A9B860;
   }
 
-  v11 = [v19 dc_queryDictionary];
-  v12 = [v11 allKeys];
-  v13 = [v12 firstObjectCommonWithArray:v10];
+  dc_queryDictionary = [lCopy dc_queryDictionary];
+  allKeys = [dc_queryDictionary allKeys];
+  v13 = [allKeys firstObjectCommonWithArray:v10];
 
   if (v13)
   {
-    v14 = [v11 mutableCopy];
+    v14 = [dc_queryDictionary mutableCopy];
     [v14 removeObjectsForKeys:v10];
-    v15 = [MEMORY[0x1E696AF20] componentsWithURL:v19 resolvingAgainstBaseURL:0];
+    v15 = [MEMORY[0x1E696AF20] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
     if ([v14 count])
     {
       v16 = [MEMORY[0x1E695DFF8] dc_queryStringWithQueryDictionary:v14];
@@ -96,11 +96,11 @@
 
   else
   {
-    v17 = v19;
+    v17 = lCopy;
   }
 
   v20 = v17;
-  v7[2](v7);
+  completionHandler[2](completionHandler);
 }
 
 - (void)start
@@ -111,9 +111,9 @@
 
   [v10 _setNonAppInitiated:1];
   v5 = MEMORY[0x1E696AF78];
-  v6 = [MEMORY[0x1E696AF80] wf_defaultSessionConfiguration];
-  v7 = [MEMORY[0x1E696ADC8] mainQueue];
-  v8 = [v5 sessionWithConfiguration:v6 delegate:self delegateQueue:v7];
+  wf_defaultSessionConfiguration = [MEMORY[0x1E696AF80] wf_defaultSessionConfiguration];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
+  v8 = [v5 sessionWithConfiguration:wf_defaultSessionConfiguration delegate:self delegateQueue:mainQueue];
 
   v9 = [v8 dataTaskWithRequest:v10];
   [v9 resume];

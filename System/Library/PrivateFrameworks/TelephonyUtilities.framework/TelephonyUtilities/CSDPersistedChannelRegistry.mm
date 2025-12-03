@@ -1,21 +1,21 @@
 @interface CSDPersistedChannelRegistry
 + (id)sharedInstance;
-- (BOOL)_queue_tearDownPersistedChannelForBundleIdentifier:(id)a3 teardownType:(int)a4;
-- (BOOL)tearDownPersistedChannelForBundleIdentifier:(id)a3 teardownType:(int)a4;
-- (BOOL)tearDownPersistedChannelForCall:(id)a3 teardownType:(int)a4;
-- (CSDPersistedChannelRegistry)initWithUserDefaults:(id)a3;
-- (CSDPersistedChannelRegistry)initWithUserDefaults:(id)a3 observerQueue:(id)a4;
+- (BOOL)_queue_tearDownPersistedChannelForBundleIdentifier:(id)identifier teardownType:(int)type;
+- (BOOL)tearDownPersistedChannelForBundleIdentifier:(id)identifier teardownType:(int)type;
+- (BOOL)tearDownPersistedChannelForCall:(id)call teardownType:(int)type;
+- (CSDPersistedChannelRegistry)initWithUserDefaults:(id)defaults;
+- (CSDPersistedChannelRegistry)initWithUserDefaults:(id)defaults observerQueue:(id)queue;
 - (id)_queue_activePersistedChannelIdentity;
 - (id)activePersistedChannelIdentity;
-- (id)persistedTornDownChannelUUIDForBundleIdentifier:(id)a3;
-- (void)_queue_addPendingTeardownAcknowledgement:(id)a3;
-- (void)_queue_clearPendingChannelTeardownAcknowledgementsForBundleIdentfier:(id)a3;
-- (void)_queue_notePushToTalkChannelConnectedForCall:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)clearPendingChannelTeardownAcknowledgementsForBundleIdentfier:(id)a3;
-- (void)handleAppUninstall:(id)a3;
-- (void)notePushToTalkChannelConnectedForCall:(id)a3;
-- (void)removeObserver:(id)a3;
+- (id)persistedTornDownChannelUUIDForBundleIdentifier:(id)identifier;
+- (void)_queue_addPendingTeardownAcknowledgement:(id)acknowledgement;
+- (void)_queue_clearPendingChannelTeardownAcknowledgementsForBundleIdentfier:(id)identfier;
+- (void)_queue_notePushToTalkChannelConnectedForCall:(id)call;
+- (void)addObserver:(id)observer;
+- (void)clearPendingChannelTeardownAcknowledgementsForBundleIdentfier:(id)identfier;
+- (void)handleAppUninstall:(id)uninstall;
+- (void)notePushToTalkChannelConnectedForCall:(id)call;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CSDPersistedChannelRegistry
@@ -32,31 +32,31 @@
   return v3;
 }
 
-- (CSDPersistedChannelRegistry)initWithUserDefaults:(id)a3
+- (CSDPersistedChannelRegistry)initWithUserDefaults:(id)defaults
 {
-  v4 = a3;
+  defaultsCopy = defaults;
   v5 = dispatch_queue_create("com.apple.csd.persistedChannelRegistryObserver", 0);
-  v6 = [(CSDPersistedChannelRegistry *)self initWithUserDefaults:v4 observerQueue:v5];
+  v6 = [(CSDPersistedChannelRegistry *)self initWithUserDefaults:defaultsCopy observerQueue:v5];
 
   return v6;
 }
 
-- (CSDPersistedChannelRegistry)initWithUserDefaults:(id)a3 observerQueue:(id)a4
+- (CSDPersistedChannelRegistry)initWithUserDefaults:(id)defaults observerQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  defaultsCopy = defaults;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = CSDPersistedChannelRegistry;
   v9 = [(CSDPersistedChannelRegistry *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_defaults, a3);
+    objc_storeStrong(&v9->_defaults, defaults);
     v11 = +[NSHashTable weakObjectsHashTable];
     observers = v10->_observers;
     v10->_observers = v11;
 
-    objc_storeStrong(&v10->_observerQueue, a4);
+    objc_storeStrong(&v10->_observerQueue, queue);
     v13 = dispatch_queue_create("com.apple.csd.persistedChannelRegistryIvars", 0);
     ivarQueue = v10->_ivarQueue;
     v10->_ivarQueue = v13;
@@ -68,79 +68,79 @@
   return v10;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   ivarQueue = self->_ivarQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CC96C;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(ivarQueue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   ivarQueue = self->_ivarQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CCA58;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(ivarQueue, v7);
 }
 
-- (void)notePushToTalkChannelConnectedForCall:(id)a3
+- (void)notePushToTalkChannelConnectedForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   ivarQueue = self->_ivarQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CCB44;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = callCopy;
+  v6 = callCopy;
   dispatch_sync(ivarQueue, v7);
 }
 
-- (void)_queue_notePushToTalkChannelConnectedForCall:(id)a3
+- (void)_queue_notePushToTalkChannelConnectedForCall:(id)call
 {
   ivarQueue = self->_ivarQueue;
-  v6 = a3;
+  callCopy = call;
   dispatch_assert_queue_V2(ivarQueue);
-  v7 = [(CSDPersistedChannelRegistry *)self _queue_activePersistedChannelIdentity];
+  _queue_activePersistedChannelIdentity = [(CSDPersistedChannelRegistry *)self _queue_activePersistedChannelIdentity];
   v8 = [CSDPersistedChannelIdentity alloc];
-  v9 = [v6 providerIdentifier];
-  v10 = [v6 provider];
-  v11 = [v10 bundleIdentifier];
-  v12 = [v6 uniqueProxyIdentifierUUID];
+  providerIdentifier = [callCopy providerIdentifier];
+  provider = [callCopy provider];
+  bundleIdentifier = [provider bundleIdentifier];
+  uniqueProxyIdentifierUUID = [callCopy uniqueProxyIdentifierUUID];
 
-  v13 = [(CSDPersistedChannelIdentity *)v8 initWithApplicationIdentifier:v9 bundleIdentifier:v11 channelUUID:v12];
-  if (v7)
+  v13 = [(CSDPersistedChannelIdentity *)v8 initWithApplicationIdentifier:providerIdentifier bundleIdentifier:bundleIdentifier channelUUID:uniqueProxyIdentifierUUID];
+  if (_queue_activePersistedChannelIdentity)
   {
-    if ([(CSDPersistedChannelIdentity *)v7 isEqualToPersistedChannelIdentity:v13])
+    if ([(CSDPersistedChannelIdentity *)_queue_activePersistedChannelIdentity isEqualToPersistedChannelIdentity:v13])
     {
       v14 = sub_100004778();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v30 = v7;
+        v30 = _queue_activePersistedChannelIdentity;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "CXPersistedChannelRegistry newly connected channel matches persisted channel %@", buf, 0xCu);
       }
 
       goto LABEL_17;
     }
 
-    v15 = [(CSDPersistedChannelIdentity *)v7 bundleIdentifier];
-    v16 = [(CSDPersistedChannelIdentity *)v13 bundleIdentifier];
-    v17 = [v15 isEqualToString:v16];
+    bundleIdentifier2 = [(CSDPersistedChannelIdentity *)_queue_activePersistedChannelIdentity bundleIdentifier];
+    bundleIdentifier3 = [(CSDPersistedChannelIdentity *)v13 bundleIdentifier];
+    v17 = [bundleIdentifier2 isEqualToString:bundleIdentifier3];
 
     if (v17)
     {
@@ -156,9 +156,9 @@
     else
     {
       v19 = +[NSAssertionHandler currentHandler];
-      v20 = [(CSDPersistedChannelIdentity *)v7 bundleIdentifier];
-      v21 = [(CSDPersistedChannelIdentity *)v13 bundleIdentifier];
-      [v19 handleFailureInMethod:a2 object:self file:@"CSDPersistedChannelRegistry.m" lineNumber:101 description:{@"only one active channel application allowed at a time. persisted:%@ active:%@", v20, v21}];
+      bundleIdentifier4 = [(CSDPersistedChannelIdentity *)_queue_activePersistedChannelIdentity bundleIdentifier];
+      bundleIdentifier5 = [(CSDPersistedChannelIdentity *)v13 bundleIdentifier];
+      [v19 handleFailureInMethod:a2 object:self file:@"CSDPersistedChannelRegistry.m" lineNumber:101 description:{@"only one active channel application allowed at a time. persisted:%@ active:%@", bundleIdentifier4, bundleIdentifier5}];
     }
   }
 
@@ -191,9 +191,9 @@
 LABEL_17:
 }
 
-- (BOOL)tearDownPersistedChannelForCall:(id)a3 teardownType:(int)a4
+- (BOOL)tearDownPersistedChannelForCall:(id)call teardownType:(int)type
 {
-  v6 = a3;
+  callCopy = call;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -203,11 +203,11 @@ LABEL_17:
   v10[1] = 3221225472;
   v10[2] = sub_1000CD07C;
   v10[3] = &unk_10061ADF8;
-  v11 = v6;
+  v11 = callCopy;
   v12 = &v14;
   v10[4] = self;
-  v13 = a4;
-  v8 = v6;
+  typeCopy = type;
+  v8 = callCopy;
   dispatch_sync(ivarQueue, v10);
   LOBYTE(self) = *(v15 + 24);
 
@@ -215,14 +215,14 @@ LABEL_17:
   return self;
 }
 
-- (BOOL)tearDownPersistedChannelForBundleIdentifier:(id)a3 teardownType:(int)a4
+- (BOOL)tearDownPersistedChannelForBundleIdentifier:(id)identifier teardownType:(int)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  if ([v6 length])
+  if ([identifierCopy length])
   {
     ivarQueue = self->_ivarQueue;
     v10[0] = _NSConcreteStackBlock;
@@ -231,8 +231,8 @@ LABEL_17:
     v10[3] = &unk_10061ADF8;
     v12 = &v14;
     v10[4] = self;
-    v11 = v6;
-    v13 = a4;
+    v11 = identifierCopy;
+    typeCopy = type;
     dispatch_sync(ivarQueue, v10);
   }
 
@@ -242,34 +242,34 @@ LABEL_17:
   return v8;
 }
 
-- (BOOL)_queue_tearDownPersistedChannelForBundleIdentifier:(id)a3 teardownType:(int)a4
+- (BOOL)_queue_tearDownPersistedChannelForBundleIdentifier:(id)identifier teardownType:(int)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_ivarQueue);
-  v7 = [(CSDPersistedChannelRegistry *)self _queue_activePersistedChannelIdentity];
-  v8 = [v7 bundleIdentifier];
-  v9 = [v8 isEqualToString:v6];
+  _queue_activePersistedChannelIdentity = [(CSDPersistedChannelRegistry *)self _queue_activePersistedChannelIdentity];
+  bundleIdentifier = [_queue_activePersistedChannelIdentity bundleIdentifier];
+  v9 = [bundleIdentifier isEqualToString:identifierCopy];
 
   if (v9)
   {
     [(NSUserDefaults *)self->_defaults setObject:0 forKey:@"CSDPersistedChannel"];
     v18 = v9;
-    if (a4 == 3)
+    if (type == 3)
     {
-      [(CSDPersistedChannelRegistry *)self _queue_addPendingTeardownAcknowledgement:v7];
+      [(CSDPersistedChannelRegistry *)self _queue_addPendingTeardownAcknowledgement:_queue_activePersistedChannelIdentity];
     }
 
     else
     {
-      [(CSDPersistedChannelRegistry *)self _queue_clearPendingChannelTeardownAcknowledgementsForBundleIdentfier:v6];
+      [(CSDPersistedChannelRegistry *)self _queue_clearPendingChannelTeardownAcknowledgementsForBundleIdentfier:identifierCopy];
     }
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [(CSDPersistedChannelRegistry *)self observers];
-    v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    observers = [(CSDPersistedChannelRegistry *)self observers];
+    v11 = [observers countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v11)
     {
       v12 = v11;
@@ -280,7 +280,7 @@ LABEL_17:
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(observers);
           }
 
           v15 = *(*(&v20 + 1) + 8 * i);
@@ -293,7 +293,7 @@ LABEL_17:
           dispatch_async(observerQueue, block);
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v12 = [observers countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v12);
@@ -305,17 +305,17 @@ LABEL_17:
   return v9;
 }
 
-- (void)handleAppUninstall:(id)a3
+- (void)handleAppUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   ivarQueue = self->_ivarQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CD564;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = uninstallCopy;
+  v6 = uninstallCopy;
   dispatch_sync(ivarQueue, v7);
 }
 
@@ -380,10 +380,10 @@ LABEL_17:
   return v4;
 }
 
-- (void)_queue_addPendingTeardownAcknowledgement:(id)a3
+- (void)_queue_addPendingTeardownAcknowledgement:(id)acknowledgement
 {
-  v5 = a3;
-  if (!v5)
+  acknowledgementCopy = acknowledgement;
+  if (!acknowledgementCopy)
   {
     sub_100473D34(a2, self);
   }
@@ -403,13 +403,13 @@ LABEL_17:
 
   v9 = v8;
   v14 = 0;
-  v10 = [v5 archivedDataWithError:&v14];
+  v10 = [acknowledgementCopy archivedDataWithError:&v14];
   v11 = v14;
   v12 = v11;
   if (v10)
   {
-    v13 = [v5 bundleIdentifier];
-    [v9 setObject:v10 forKey:v13];
+    bundleIdentifier = [acknowledgementCopy bundleIdentifier];
+    [v9 setObject:v10 forKey:bundleIdentifier];
 LABEL_11:
 
     goto LABEL_12;
@@ -417,8 +417,8 @@ LABEL_11:
 
   if (v11)
   {
-    v13 = sub_100004778();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    bundleIdentifier = sub_100004778();
+    if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_ERROR))
     {
       sub_100473DA8();
     }
@@ -430,10 +430,10 @@ LABEL_12:
   [(NSUserDefaults *)self->_defaults setObject:v9 forKey:@"CSDPersistedTornDownChannelIdentities"];
 }
 
-- (id)persistedTornDownChannelUUIDForBundleIdentifier:(id)a3
+- (id)persistedTornDownChannelUUIDForBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     sub_100473E10(a2, self);
   }
@@ -451,9 +451,9 @@ LABEL_12:
   block[2] = sub_1000CDA68;
   block[3] = &unk_10061AE20;
   block[4] = self;
-  v11 = v5;
+  v11 = identifierCopy;
   v12 = &v13;
-  v7 = v5;
+  v7 = identifierCopy;
   dispatch_sync(ivarQueue, block);
   v8 = v14[5];
 
@@ -462,11 +462,11 @@ LABEL_12:
   return v8;
 }
 
-- (void)_queue_clearPendingChannelTeardownAcknowledgementsForBundleIdentfier:(id)a3
+- (void)_queue_clearPendingChannelTeardownAcknowledgementsForBundleIdentfier:(id)identfier
 {
-  v8 = a3;
+  identfierCopy = identfier;
   dispatch_assert_queue_V2(self->_ivarQueue);
-  if (!v8)
+  if (!identfierCopy)
   {
     sub_100473E84(a2, self);
   }
@@ -476,14 +476,14 @@ LABEL_12:
   if (v5)
   {
     v7 = [v5 mutableCopy];
-    [v7 removeObjectForKey:v8];
+    [v7 removeObjectForKey:identfierCopy];
     [(NSUserDefaults *)self->_defaults setObject:v7 forKey:@"CSDPersistedTornDownChannelIdentities"];
   }
 }
 
-- (void)clearPendingChannelTeardownAcknowledgementsForBundleIdentfier:(id)a3
+- (void)clearPendingChannelTeardownAcknowledgementsForBundleIdentfier:(id)identfier
 {
-  v4 = a3;
+  identfierCopy = identfier;
   dispatch_assert_queue_not_V2(self->_ivarQueue);
   ivarQueue = self->_ivarQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -491,8 +491,8 @@ LABEL_12:
   v7[2] = sub_1000CDD0C;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identfierCopy;
+  v6 = identfierCopy;
   dispatch_sync(ivarQueue, v7);
 }
 

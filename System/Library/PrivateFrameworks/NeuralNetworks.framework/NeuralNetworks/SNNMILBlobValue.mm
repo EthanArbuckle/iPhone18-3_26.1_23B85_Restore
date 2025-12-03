@@ -1,30 +1,30 @@
 @interface SNNMILBlobValue
-- (SNNMILBlobValue)initWithFilename:(id)a3 shape:(id)a4 dataType:(unint64_t)a5 offset:(id)a6;
+- (SNNMILBlobValue)initWithFilename:(id)filename shape:(id)shape dataType:(unint64_t)type offset:(id)offset;
 - (unint64_t)length;
-- (unique_ptr<const)milValueWithContext:(id)a3;
+- (unique_ptr<const)milValueWithContext:(id)context;
 @end
 
 @implementation SNNMILBlobValue
 
-- (SNNMILBlobValue)initWithFilename:(id)a3 shape:(id)a4 dataType:(unint64_t)a5 offset:(id)a6
+- (SNNMILBlobValue)initWithFilename:(id)filename shape:(id)shape dataType:(unint64_t)type offset:(id)offset
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  filenameCopy = filename;
+  shapeCopy = shape;
+  offsetCopy = offset;
   v20.receiver = self;
   v20.super_class = SNNMILBlobValue;
   v13 = [(SNNMILValue *)&v20 init];
   filename = v13->_filename;
-  v13->_filename = v10;
-  v15 = v10;
+  v13->_filename = filenameCopy;
+  v15 = filenameCopy;
 
   dimensions = v13->_dimensions;
-  v13->_dimensions = v11;
-  v17 = v11;
+  v13->_dimensions = shapeCopy;
+  v17 = shapeCopy;
 
-  v13->_dataType = a5;
+  v13->_dataType = type;
   offset = v13->_offset;
-  v13->_offset = v12;
+  v13->_offset = offsetCopy;
 
   return v13;
 }
@@ -36,8 +36,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(SNNMILBlobValue *)self dimensions];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  dimensions = [(SNNMILBlobValue *)self dimensions];
+  v4 = [dimensions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = *v14;
@@ -48,13 +48,13 @@
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dimensions);
         }
 
         v6 *= [*(*(&v13 + 1) + 8 * i) unsignedIntegerValue];
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [dimensions countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);
@@ -66,32 +66,32 @@
     v8 = 1;
   }
 
-  v9 = [(SNNMILBlobValue *)self dataType];
-  if (v9 - 2 > 0xA)
+  dataType = [(SNNMILBlobValue *)self dataType];
+  if (dataType - 2 > 0xA)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = qword_25BCBAA40[v9 - 2];
+    v10 = qword_25BCBAA40[dataType - 2];
   }
 
   v11 = *MEMORY[0x277D85DE8];
   return v10 * v8;
 }
 
-- (unique_ptr<const)milValueWithContext:(id)a3
+- (unique_ptr<const)milValueWithContext:(id)context
 {
   v5 = v3;
-  v11 = a3;
-  v6 = [(SNNMILBlobValue *)self filename];
-  v7 = [(SNNMILBlobValue *)self dimensions];
-  v8 = [(SNNMILBlobValue *)self dataType];
-  v9 = [(SNNMILBlobValue *)self offset];
-  if (v11)
+  contextCopy = context;
+  filename = [(SNNMILBlobValue *)self filename];
+  dimensions = [(SNNMILBlobValue *)self dimensions];
+  dataType = [(SNNMILBlobValue *)self dataType];
+  offset = [(SNNMILBlobValue *)self offset];
+  if (contextCopy)
   {
-    [v11 milValueForTensorBlobWithFilename:v6 shape:v7 dataType:v8 offset:v9];
+    [contextCopy milValueForTensorBlobWithFilename:filename shape:dimensions dataType:dataType offset:offset];
   }
 
   else

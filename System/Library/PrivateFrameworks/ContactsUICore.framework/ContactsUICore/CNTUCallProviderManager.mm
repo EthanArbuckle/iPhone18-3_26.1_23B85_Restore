@@ -1,20 +1,20 @@
 @interface CNTUCallProviderManager
 - (BOOL)hasDefaultCallProvider;
-- (BOOL)isActionType:(id)a3 supportedByProvider:(id)a4;
-- (BOOL)isFirstPartyCallProvider:(id)a3;
+- (BOOL)isActionType:(id)type supportedByProvider:(id)provider;
+- (BOOL)isFirstPartyCallProvider:(id)provider;
 - (CNTUCallProviderManager)init;
 - (NSDictionary)defaultVideoAppsBundleIdentifierScorer;
 - (id)defaultVideoAppsBundleIdentifierScorerImpl;
 - (id)hasDefaultCallProviderImpl;
-- (id)observableForCallProvidersChangedWithSchedulerProvider:(id)a3;
+- (id)observableForCallProvidersChangedWithSchedulerProvider:(id)provider;
 - (id)otherThirdPartyCallProviders;
 - (id)otherThirdPartyCallProvidersImpl;
 - (id)providerManagerQueue;
-- (id)thirdPartyCallProviderWithBundleIdentifier:(id)a3;
-- (id)thirdPartyCallProvidersForActionType:(id)a3;
+- (id)thirdPartyCallProviderWithBundleIdentifier:(id)identifier;
+- (id)thirdPartyCallProvidersForActionType:(id)type;
 - (id)thirdPartyDefaultAppCallProviders;
 - (id)thirdPartyDefaultAppCallProvidersImpl;
-- (void)createDefaultCallingAppsBundleIdentifierScorer:(id)a3;
+- (void)createDefaultCallingAppsBundleIdentifierScorer:(id)scorer;
 - (void)emptyDefaultAppsCaches;
 @end
 
@@ -93,15 +93,15 @@ id __60__CNTUCallProviderManager_thirdPartyDefaultAppCallProviders__block_invoke
   v13 = __Block_byref_object_copy__4;
   v14 = __Block_byref_object_dispose__4;
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [(CNTUCallProviderManager *)self callProviderManager];
-  v4 = [v3 sortedProviders];
+  callProviderManager = [(CNTUCallProviderManager *)self callProviderManager];
+  sortedProviders = [callProviderManager sortedProviders];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__CNTUCallProviderManager_thirdPartyDefaultAppCallProvidersImpl__block_invoke;
   v9[3] = &unk_1E76E9618;
   v9[4] = self;
   v9[5] = &v10;
-  v5 = [v4 _cn_filter:v9];
+  v5 = [sortedProviders _cn_filter:v9];
 
   v6 = [MEMORY[0x1E695DFD8] setWithArray:v11[5]];
   [(CNTUCallProviderManager *)self setDefaultCallingAppsBundleIdentifiersCache:v6];
@@ -174,13 +174,13 @@ id __55__CNTUCallProviderManager_otherThirdPartyCallProviders__block_invoke(uint
 
 - (id)otherThirdPartyCallProvidersImpl
 {
-  v3 = [(CNTUCallProviderManager *)self callProviderManager];
+  callProviderManager = [(CNTUCallProviderManager *)self callProviderManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__CNTUCallProviderManager_otherThirdPartyCallProvidersImpl__block_invoke;
   v7[3] = &unk_1E76E9660;
   v7[4] = self;
-  v4 = [v3 providersPassingTest:v7];
+  v4 = [callProviderManager providersPassingTest:v7];
 
   v5 = [v4 _cn_map:&__block_literal_global_45];
 
@@ -225,18 +225,18 @@ CNTUCallProvider *__59__CNTUCallProviderManager_otherThirdPartyCallProvidersImpl
   return v3;
 }
 
-- (void)createDefaultCallingAppsBundleIdentifierScorer:(id)a3
+- (void)createDefaultCallingAppsBundleIdentifierScorer:(id)scorer
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+  scorerCopy = scorer;
+  v6 = [[v4 alloc] initWithCapacity:{objc_msgSend(scorerCopy, "count")}];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __74__CNTUCallProviderManager_createDefaultCallingAppsBundleIdentifierScorer___block_invoke;
   v8[3] = &unk_1E76E9688;
   v9 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [scorerCopy enumerateObjectsUsingBlock:v8];
 
   [(CNTUCallProviderManager *)self setDefaultCallingAppsBundleIdentifierScorerCache:v7];
 }
@@ -276,28 +276,28 @@ id __65__CNTUCallProviderManager_defaultVideoAppsBundleIdentifierScorer__block_i
 
 - (id)defaultVideoAppsBundleIdentifierScorerImpl
 {
-  v3 = [(CNTUCallProviderManager *)self callProviderManager];
-  v4 = [v3 defaultAppProvider];
+  callProviderManager = [(CNTUCallProviderManager *)self callProviderManager];
+  defaultAppProvider = [callProviderManager defaultAppProvider];
 
-  v5 = [(CNTUCallProviderManager *)self defaultCallingAppsBundleIdentifierScorer];
-  if (([v4 supportsAudioAndVideo] & 1) == 0)
+  defaultCallingAppsBundleIdentifierScorer = [(CNTUCallProviderManager *)self defaultCallingAppsBundleIdentifierScorer];
+  if (([defaultAppProvider supportsAudioAndVideo] & 1) == 0)
   {
 
-    v6 = [(CNTUCallProviderManager *)self defaultCallingAppsBundleIdentifierScorer];
-    v5 = [v6 mutableCopy];
+    defaultCallingAppsBundleIdentifierScorer2 = [(CNTUCallProviderManager *)self defaultCallingAppsBundleIdentifierScorer];
+    defaultCallingAppsBundleIdentifierScorer = [defaultCallingAppsBundleIdentifierScorer2 mutableCopy];
 
-    [v5 setObject:&unk_1F1645D48 forKeyedSubscript:*MEMORY[0x1E695C118]];
+    [defaultCallingAppsBundleIdentifierScorer setObject:&unk_1F1645D48 forKeyedSubscript:*MEMORY[0x1E695C118]];
   }
 
-  return v5;
+  return defaultCallingAppsBundleIdentifierScorer;
 }
 
 - (BOOL)hasDefaultCallProvider
 {
   v2 = cn_objectResultWithObjectLock();
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 id __49__CNTUCallProviderManager_hasDefaultCallProvider__block_invoke(uint64_t a1)
@@ -328,8 +328,8 @@ id __49__CNTUCallProviderManager_hasDefaultCallProvider__block_invoke(uint64_t a
   }
 
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(CNTUCallProviderManager *)self launchServices];
-  v6 = [v5 defaultApplicationForDefaultAppCategory:1];
+  launchServices = [(CNTUCallProviderManager *)self launchServices];
+  v6 = [launchServices defaultApplicationForDefaultAppCategory:1];
   v7 = [v4 numberWithInt:v6 != 0];
 
   v8 = +[CNUICoreLogProvider actions_os_log];
@@ -362,17 +362,17 @@ uint64_t __47__CNTUCallProviderManager_providerManagerQueue__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)observableForCallProvidersChangedWithSchedulerProvider:(id)a3
+- (id)observableForCallProvidersChangedWithSchedulerProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = MEMORY[0x1E6996798];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __82__CNTUCallProviderManager_observableForCallProvidersChangedWithSchedulerProvider___block_invoke;
   v9[3] = &unk_1E76E96D8;
-  v10 = v4;
-  v11 = self;
-  v6 = v4;
+  v10 = providerCopy;
+  selfCopy = self;
+  v6 = providerCopy;
   v7 = [v5 observableWithBlock:v9];
 
   return v7;
@@ -427,21 +427,21 @@ void __82__CNTUCallProviderManager_observableForCallProvidersChangedWithSchedule
   [v2 removeDelegate:*(a1 + 40)];
 }
 
-- (id)thirdPartyCallProvidersForActionType:(id)a3
+- (id)thirdPartyCallProvidersForActionType:(id)type
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNTUCallProviderManager *)self thirdPartyDefaultAppCallProviders];
+  typeCopy = type;
+  thirdPartyDefaultAppCallProviders = [(CNTUCallProviderManager *)self thirdPartyDefaultAppCallProviders];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __64__CNTUCallProviderManager_thirdPartyCallProvidersForActionType___block_invoke;
   v16[3] = &unk_1E76E9700;
   v16[4] = self;
-  v6 = v4;
+  v6 = typeCopy;
   v17 = v6;
-  v7 = [v5 _cn_filter:v16];
+  v7 = [thirdPartyDefaultAppCallProviders _cn_filter:v16];
 
-  v8 = [(CNTUCallProviderManager *)self otherThirdPartyCallProviders];
+  otherThirdPartyCallProviders = [(CNTUCallProviderManager *)self otherThirdPartyCallProviders];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __64__CNTUCallProviderManager_thirdPartyCallProvidersForActionType___block_invoke_2;
@@ -449,14 +449,14 @@ void __82__CNTUCallProviderManager_observableForCallProvidersChangedWithSchedule
   v14[4] = self;
   v15 = v6;
   v9 = v6;
-  v10 = [v8 _cn_filter:v14];
+  v10 = [otherThirdPartyCallProviders _cn_filter:v14];
 
   v18[0] = v7;
   v18[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-  v12 = [v11 _cn_flatten];
+  _cn_flatten = [v11 _cn_flatten];
 
-  return v12;
+  return _cn_flatten;
 }
 
 uint64_t __64__CNTUCallProviderManager_thirdPartyCallProvidersForActionType___block_invoke(uint64_t a1, void *a2)
@@ -479,29 +479,29 @@ uint64_t __64__CNTUCallProviderManager_thirdPartyCallProvidersForActionType___bl
   return v5;
 }
 
-- (id)thirdPartyCallProviderWithBundleIdentifier:(id)a3
+- (id)thirdPartyCallProviderWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CNTUCallProviderManager *)self thirdPartyDefaultAppCallProviders];
+  identifierCopy = identifier;
+  thirdPartyDefaultAppCallProviders = [(CNTUCallProviderManager *)self thirdPartyDefaultAppCallProviders];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __70__CNTUCallProviderManager_thirdPartyCallProviderWithBundleIdentifier___block_invoke;
   v14[3] = &unk_1E76E9728;
-  v6 = v4;
+  v6 = identifierCopy;
   v15 = v6;
-  v7 = [v5 _cn_firstObjectPassingTest:v14];
+  v7 = [thirdPartyDefaultAppCallProviders _cn_firstObjectPassingTest:v14];
 
   v8 = v7;
   v9 = v8;
   if (!v8)
   {
-    v10 = [(CNTUCallProviderManager *)self otherThirdPartyCallProviders];
+    otherThirdPartyCallProviders = [(CNTUCallProviderManager *)self otherThirdPartyCallProviders];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __70__CNTUCallProviderManager_thirdPartyCallProviderWithBundleIdentifier___block_invoke_2;
     v12[3] = &unk_1E76E9728;
     v13 = v6;
-    v9 = [v10 _cn_firstObjectPassingTest:v12];
+    v9 = [otherThirdPartyCallProviders _cn_firstObjectPassingTest:v12];
   }
 
   return v9;
@@ -523,52 +523,52 @@ uint64_t __70__CNTUCallProviderManager_thirdPartyCallProviderWithBundleIdentifie
   return v4;
 }
 
-- (BOOL)isFirstPartyCallProvider:(id)a3
+- (BOOL)isFirstPartyCallProvider:(id)provider
 {
-  v3 = a3;
-  if ([v3 isTelephonyProvider] & 1) != 0 || (objc_msgSend(v3, "isFaceTimeProvider"))
+  providerCopy = provider;
+  if ([providerCopy isTelephonyProvider] & 1) != 0 || (objc_msgSend(providerCopy, "isFaceTimeProvider"))
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [v3 identifier];
-    if ([v5 isEqualToString:@"com.apple.telephonyutilities.callservicesd.TinCan"])
+    identifier = [providerCopy identifier];
+    if ([identifier isEqualToString:@"com.apple.telephonyutilities.callservicesd.TinCan"])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [v3 identifier];
-      v4 = [v6 isEqualToString:@"com.apple.internal.suiuntool"];
+      identifier2 = [providerCopy identifier];
+      v4 = [identifier2 isEqualToString:@"com.apple.internal.suiuntool"];
     }
   }
 
   return v4;
 }
 
-- (BOOL)isActionType:(id)a3 supportedByProvider:(id)a4
+- (BOOL)isActionType:(id)type supportedByProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:*MEMORY[0x1E695C150]] && (objc_msgSend(v6, "supportsAudioOnly") & 1) != 0)
+  typeCopy = type;
+  providerCopy = provider;
+  if ([typeCopy isEqualToString:*MEMORY[0x1E695C150]] && (objc_msgSend(providerCopy, "supportsAudioOnly") & 1) != 0)
   {
-    v7 = 1;
+    supportsAudioAndVideo = 1;
   }
 
-  else if ([v5 isEqualToString:*MEMORY[0x1E695C1B8]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x1E695C1B8]])
   {
-    v7 = [v6 supportsAudioAndVideo];
+    supportsAudioAndVideo = [providerCopy supportsAudioAndVideo];
   }
 
   else
   {
-    v7 = 0;
+    supportsAudioAndVideo = 0;
   }
 
-  return v7;
+  return supportsAudioAndVideo;
 }
 
 - (void)emptyDefaultAppsCaches

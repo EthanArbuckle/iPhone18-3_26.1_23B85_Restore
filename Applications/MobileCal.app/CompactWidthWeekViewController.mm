@@ -1,36 +1,36 @@
 @interface CompactWidthWeekViewController
 - (BOOL)_focusBannerVisible;
-- (CompactWidthWeekViewController)initWithModel:(id)a3 window:(id)a4;
+- (CompactWidthWeekViewController)initWithModel:(id)model window:(id)window;
 - (double)headerVerticalOffset;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)interactionControllerForPresentation:(id)a3;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)interactionControllerForPresentation:(id)presentation;
 - (void)_focusConfigurationChanged;
-- (void)editorDidSaveEvent:(id)a3;
-- (void)focusBannerViewToggled:(id)a3;
-- (void)layoutCellsAnimated:(BOOL)a3;
+- (void)editorDidSaveEvent:(id)event;
+- (void)focusBannerViewToggled:(id)toggled;
+- (void)layoutCellsAnimated:(BOOL)animated;
 - (void)loadView;
 - (void)overlayCalendarDidChange;
-- (void)showEvents:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6;
-- (void)showReminderDetail:(id)a3;
-- (void)showViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)updateBannerDateStrings:(id)a3;
+- (void)showEvents:(id)events animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context;
+- (void)showReminderDetail:(id)detail;
+- (void)showViewController:(id)controller sender:(id)sender animated:(BOOL)animated completion:(id)completion;
+- (void)updateBannerDateStrings:(id)strings;
 - (void)updateTimeViewBaseline;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)weekGroupViewDidLayout:(id)a3;
+- (void)weekGroupViewDidLayout:(id)layout;
 @end
 
 @implementation CompactWidthWeekViewController
 
-- (CompactWidthWeekViewController)initWithModel:(id)a3 window:(id)a4
+- (CompactWidthWeekViewController)initWithModel:(id)model window:(id)window
 {
   v7.receiver = self;
   v7.super_class = CompactWidthWeekViewController;
-  v4 = [(WeekViewController *)&v7 initWithModel:a3 window:a4];
+  v4 = [(WeekViewController *)&v7 initWithModel:model window:window];
   if (v4)
   {
     v5 = +[NSNotificationCenter defaultCenter];
@@ -40,53 +40,53 @@
   return v4;
 }
 
-- (void)showEvents:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6
+- (void)showEvents:(id)events animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context
 {
-  v6 = a4;
-  v8 = a3;
-  v12 = [[EKExpandedReminderStackViewController alloc] initWithEvents:v8 delegate:self];
+  animatedCopy = animated;
+  eventsCopy = events;
+  v12 = [[EKExpandedReminderStackViewController alloc] initWithEvents:eventsCopy delegate:self];
   [v12 setPreferModalPresentation:1];
   [v12 setTransitioningDelegate:self];
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"Week" value:&stru_1002133B8 table:0];
-  v11 = [(CompactWidthWeekViewController *)self navigationItem];
-  [v11 setBackButtonTitle:v10];
+  navigationItem = [(CompactWidthWeekViewController *)self navigationItem];
+  [navigationItem setBackButtonTitle:v10];
 
-  [(CUIKCalendarModel *)self->super.super._model setSelectedOccurrences:v8];
-  [(CompactWidthWeekViewController *)self showViewController:v12 sender:self animated:v6 completion:0];
+  [(CUIKCalendarModel *)self->super.super._model setSelectedOccurrences:eventsCopy];
+  [(CompactWidthWeekViewController *)self showViewController:v12 sender:self animated:animatedCopy completion:0];
 }
 
-- (void)showViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)showViewController:(id)controller sender:(id)sender animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  senderCopy = sender;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v10 setPreferModalPresentation:1];
+    [controllerCopy setPreferModalPresentation:1];
   }
 
-  v13 = [(CompactWidthWeekViewController *)self presentedViewController];
+  presentedViewController = [(CompactWidthWeekViewController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v15 = [(CompactWidthWeekViewController *)self presentedViewController];
-    v16 = [v10 presentationController];
-    [v16 setDelegate:v15];
+    presentedViewController2 = [(CompactWidthWeekViewController *)self presentedViewController];
+    presentationController = [controllerCopy presentationController];
+    [presentationController setDelegate:presentedViewController2];
 
-    v17 = [(CompactWidthWeekViewController *)self presentedViewController];
-    [v17 presentViewController:v10 animated:1 completion:0];
+    presentedViewController3 = [(CompactWidthWeekViewController *)self presentedViewController];
+    [presentedViewController3 presentViewController:controllerCopy animated:1 completion:0];
   }
 
   else
   {
     v18.receiver = self;
     v18.super_class = CompactWidthWeekViewController;
-    [(MainViewController *)&v18 showViewController:v10 sender:v11 animated:v7 completion:v12];
+    [(MainViewController *)&v18 showViewController:controllerCopy sender:senderCopy animated:animatedCopy completion:completionCopy];
   }
 }
 
@@ -97,54 +97,54 @@
   v4.receiver = self;
   v4.super_class = CompactWidthWeekViewController;
   [(WeekViewController *)&v4 loadView];
-  v3 = [(WeekViewController *)self timeView];
-  [v3 setUseCompactWidthStyle:1];
+  timeView = [(WeekViewController *)self timeView];
+  [timeView setUseCompactWidthStyle:1];
 
   [(CompactWidthWeekViewController *)self _focusConfigurationChanged];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = CompactWidthWeekViewController;
   [(WeekViewController *)&v7 viewWillAppear:?];
-  v5 = [(CompactWidthWeekViewController *)self navigationController];
-  [v5 setNavigationBarHidden:1 animated:v3];
+  navigationController = [(CompactWidthWeekViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:1 animated:appearCopy];
 
-  v6 = [(CompactWidthWeekViewController *)self navigationController];
-  [v6 setToolbarHidden:1];
+  navigationController2 = [(CompactWidthWeekViewController *)self navigationController];
+  [navigationController2 setToolbarHidden:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = CompactWidthWeekViewController;
-  [(WeekViewController *)&v10 viewDidAppear:a3];
+  [(WeekViewController *)&v10 viewDidAppear:appear];
   v4 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
   {
     v5 = v4;
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [(WeekViewController *)self displayedDate];
-    v9 = [v8 date];
+    displayedDate = [(WeekViewController *)self displayedDate];
+    date = [displayedDate date];
     *buf = 138543618;
     v12 = v7;
     v13 = 2114;
-    v14 = v9;
+    v14 = date;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[UserStateLog] State -> %{public}@ viewDidAppear. date = %{public}@", buf, 0x16u);
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = CompactWidthWeekViewController;
   [(WeekViewController *)&v6 viewWillDisappear:?];
-  v5 = [(CompactWidthWeekViewController *)self navigationController];
-  [v5 setNavigationBarHidden:0 animated:v3];
+  navigationController = [(CompactWidthWeekViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:0 animated:disappearCopy];
 }
 
 - (void)viewWillLayoutSubviews
@@ -156,8 +156,8 @@
     v4 = v3;
     v6 = v5;
     v8 = v7;
-    v9 = [(CompactWidthWeekViewController *)self view];
-    [v9 bounds];
+    view = [(CompactWidthWeekViewController *)self view];
+    [view bounds];
     v11 = v10;
 
     [(EKUIFocusBannerView *)self->_focusBanner setFrame:v4, v6, v11, v8];
@@ -170,36 +170,36 @@
 
 - (void)updateTimeViewBaseline
 {
-  v3 = [(WeekViewController *)self visibleWeeks];
-  v4 = [v3 lastObject];
-  v19 = [v4 weekView];
+  visibleWeeks = [(WeekViewController *)self visibleWeeks];
+  lastObject = [visibleWeeks lastObject];
+  weekView = [lastObject weekView];
 
-  v5 = [v19 allDayView];
-  [v5 baselineForWeekdayNumbers];
+  allDayView = [weekView allDayView];
+  [allDayView baselineForWeekdayNumbers];
   v7 = v6;
 
   if (v7 > 0.0)
   {
-    v8 = [(WeekViewController *)self timeView];
-    v9 = [v19 allDayView];
-    [v9 frame];
+    timeView = [(WeekViewController *)self timeView];
+    allDayView2 = [weekView allDayView];
+    [allDayView2 frame];
     v11 = v10;
     v13 = v12;
-    v14 = [v19 allDayView];
-    v15 = [v14 superview];
-    [v8 convertPoint:v15 fromView:{v11, v13}];
+    allDayView3 = [weekView allDayView];
+    superview = [allDayView3 superview];
+    [timeView convertPoint:superview fromView:{v11, v13}];
     v17 = v16;
 
-    v18 = [(WeekViewController *)self timeView];
-    [v18 setMonthTextBaselineOffset:v7 + v17];
+    timeView2 = [(WeekViewController *)self timeView];
+    [timeView2 setMonthTextBaselineOffset:v7 + v17];
   }
 }
 
-- (void)layoutCellsAnimated:(BOOL)a3
+- (void)layoutCellsAnimated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = CompactWidthWeekViewController;
-  [(WeekViewController *)&v4 layoutCellsAnimated:a3];
+  [(WeekViewController *)&v4 layoutCellsAnimated:animated];
   [(CompactWidthWeekViewController *)self updateTimeViewBaseline];
 }
 
@@ -211,19 +211,19 @@
   [(CompactWidthWeekViewController *)self updateTimeViewBaseline];
 }
 
-- (void)weekGroupViewDidLayout:(id)a3
+- (void)weekGroupViewDidLayout:(id)layout
 {
   v4.receiver = self;
   v4.super_class = CompactWidthWeekViewController;
-  [(WeekViewController *)&v4 weekGroupViewDidLayout:a3];
+  [(WeekViewController *)&v4 weekGroupViewDidLayout:layout];
   [(CompactWidthWeekViewController *)self updateTimeViewBaseline];
 }
 
 - (double)headerVerticalOffset
 {
-  v3 = [(CompactWidthWeekViewController *)self _focusBannerVisible];
+  _focusBannerVisible = [(CompactWidthWeekViewController *)self _focusBannerVisible];
   result = 0.0;
-  if (v3)
+  if (_focusBannerVisible)
   {
     [(EKUIFocusBannerView *)self->_focusBanner frame];
     return v5;
@@ -232,17 +232,17 @@
   return result;
 }
 
-- (void)updateBannerDateStrings:(id)a3
+- (void)updateBannerDateStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   v21 = +[CalChronometry activeCalendar];
-  v5 = [v4 date];
+  date = [stringsCopy date];
 
-  v6 = [v21 components:2097278 fromDate:v5];
+  v6 = [v21 components:2097278 fromDate:date];
 
   v7 = CUIKTodayComponents();
-  v8 = [v6 month];
-  if (v8 == [v7 month] && (v9 = objc_msgSend(v6, "year"), v9 == objc_msgSend(v7, "year")))
+  month = [v6 month];
+  if (month == [v7 month] && (v9 = objc_msgSend(v6, "year"), v9 == objc_msgSend(v7, "year")))
   {
     v10 = [v6 era];
     v11 = v10 == [v7 era];
@@ -266,8 +266,8 @@
     self->_currentlyDisplayedMonth = [v6 month];
     [v6 month];
     v12 = CUIKStringAbbreviationForMonth();
-    v13 = [(WeekViewController *)self timeView];
-    [v13 setMonthText:v12 isCurrentMonth:v11];
+    timeView = [(WeekViewController *)self timeView];
+    [timeView setMonthText:v12 isCurrentMonth:v11];
   }
 
 LABEL_8:
@@ -275,16 +275,16 @@ LABEL_8:
   if ([(WeekViewController *)self showOverlayCalendar]&& v14)
   {
     v15 = CUIKCalendar();
-    v16 = [(WeekViewController *)self centerDateComponents];
-    v17 = [v15 dateFromComponents:v16];
+    centerDateComponents = [(WeekViewController *)self centerDateComponents];
+    v17 = [v15 dateFromComponents:centerDateComponents];
 
     v18 = [v14 component:8 fromDate:v17];
     if (v18 != self->_currentlyDisplayedMonthInOverlayCalendar)
     {
       self->_currentlyDisplayedMonthInOverlayCalendar = v18;
       v19 = [CUIKDateStrings overlayYearStringForDate:v17 inCalendar:v14];
-      v20 = [(WeekViewController *)self timeView];
-      [v20 setOverlayMonthText:v19];
+      timeView2 = [(WeekViewController *)self timeView];
+      [timeView2 setOverlayMonthText:v19];
     }
   }
 }
@@ -297,18 +297,18 @@ LABEL_8:
   if ([(WeekViewController *)self showOverlayCalendar])
   {
     v3 = +[CalChronometry activeCalendar];
-    v4 = [(WeekViewController *)self centerDateComponents];
+    centerDateComponents = [(WeekViewController *)self centerDateComponents];
     v5 = [EKCalendarDate alloc];
-    v6 = [v3 timeZone];
-    v7 = [v5 initWithDateComponents:v4 timeZone:v6];
+    timeZone = [v3 timeZone];
+    v7 = [v5 initWithDateComponents:centerDateComponents timeZone:timeZone];
 
     [(CompactWidthWeekViewController *)self updateBannerDateStrings:v7];
   }
 
   else
   {
-    v8 = [(WeekViewController *)self timeView];
-    [v8 setOverlayMonthText:0];
+    timeView = [(WeekViewController *)self timeView];
+    [timeView setOverlayMonthText:0];
 
     self->_currentlyDisplayedMonthInOverlayCalendar = -1;
   }
@@ -316,8 +316,8 @@ LABEL_8:
 
 - (BOOL)_focusBannerVisible
 {
-  v2 = [(WeekViewController *)self model];
-  if ([v2 focusFilterMode])
+  model = [(WeekViewController *)self model];
+  if ([model focusFilterMode])
   {
     v3 = CalSolariumEnabled() ^ 1;
   }
@@ -332,13 +332,13 @@ LABEL_8:
 
 - (void)_focusConfigurationChanged
 {
-  v3 = [(CompactWidthWeekViewController *)self _focusBannerVisible];
-  v4 = [(EKUIFocusBannerView *)self->_focusBanner superview];
+  _focusBannerVisible = [(CompactWidthWeekViewController *)self _focusBannerVisible];
+  superview = [(EKUIFocusBannerView *)self->_focusBanner superview];
 
-  if (((v3 ^ (v4 == 0)) & 1) == 0)
+  if (((_focusBannerVisible ^ (superview == 0)) & 1) == 0)
   {
     focusBanner = self->_focusBanner;
-    if (v3)
+    if (_focusBannerVisible)
     {
       if (!focusBanner)
       {
@@ -350,11 +350,11 @@ LABEL_8:
         [(EKUIFocusBannerView *)self->_focusBanner setLayout:1];
       }
 
-      v8 = [(CompactWidthWeekViewController *)self view];
-      [v8 addSubview:self->_focusBanner];
+      view = [(CompactWidthWeekViewController *)self view];
+      [view addSubview:self->_focusBanner];
 
-      v9 = [(WeekViewController *)self model];
-      -[EKUIFocusBannerView setOn:](self->_focusBanner, "setOn:", [v9 focusFilterMode] == 1);
+      model = [(WeekViewController *)self model];
+      -[EKUIFocusBannerView setOn:](self->_focusBanner, "setOn:", [model focusFilterMode] == 1);
     }
 
     else
@@ -363,20 +363,20 @@ LABEL_8:
     }
   }
 
-  v10 = [(CompactWidthWeekViewController *)self view];
-  [v10 setNeedsLayout];
+  view2 = [(CompactWidthWeekViewController *)self view];
+  [view2 setNeedsLayout];
 }
 
-- (void)editorDidSaveEvent:(id)a3
+- (void)editorDidSaveEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(WeekViewController *)self model];
-  [v5 addOccurrenceAwaitingRefresh:v4];
+  eventCopy = event;
+  model = [(WeekViewController *)self model];
+  [model addOccurrenceAwaitingRefresh:eventCopy];
 
   [(WeekViewController *)self reloadData];
 }
 
-- (void)focusBannerViewToggled:(id)a3
+- (void)focusBannerViewToggled:(id)toggled
 {
   if ([(EKUIFocusBannerView *)self->_focusBanner on])
   {
@@ -388,16 +388,16 @@ LABEL_8:
     v4 = 2;
   }
 
-  v5 = [(WeekViewController *)self model];
-  [v5 setFocusFilterMode:v4];
+  model = [(WeekViewController *)self model];
+  [model setFocusFilterMode:v4];
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v5 = a3;
-  if ([v5 conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerAnimatedTransitioning])
+  controllerCopy = controller;
+  if ([controllerCopy conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerAnimatedTransitioning])
   {
-    v6 = v5;
+    v6 = controllerCopy;
   }
 
   else
@@ -408,12 +408,12 @@ LABEL_8:
   return v6;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerAnimatedTransitioning])
+  controllerCopy = controller;
+  if ([controllerCopy conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerAnimatedTransitioning])
   {
-    v4 = v3;
+    v4 = controllerCopy;
   }
 
   else
@@ -424,12 +424,12 @@ LABEL_8:
   return v4;
 }
 
-- (id)interactionControllerForPresentation:(id)a3
+- (id)interactionControllerForPresentation:(id)presentation
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerInteractiveTransitioning])
+  presentationCopy = presentation;
+  if ([presentationCopy conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerInteractiveTransitioning])
   {
-    v4 = v3;
+    v4 = presentationCopy;
   }
 
   else
@@ -440,12 +440,12 @@ LABEL_8:
   return v4;
 }
 
-- (void)showReminderDetail:(id)a3
+- (void)showReminderDetail:(id)detail
 {
-  v4 = a3;
+  detailCopy = detail;
   v7 = [(MainViewController *)self augmentEventDetailsContext:0];
   v5 = objc_alloc_init(UINavigationController);
-  v6 = [EKEventViewController eventDetailViewControllerWithEvent:v4 delegate:self context:v7 canvasView:1];
+  v6 = [EKEventViewController eventDetailViewControllerWithEvent:detailCopy delegate:self context:v7 canvasView:1];
 
   [v5 pushViewController:v6 animated:0];
   [(CompactWidthWeekViewController *)self showViewController:v5 sender:self animated:1 completion:0];

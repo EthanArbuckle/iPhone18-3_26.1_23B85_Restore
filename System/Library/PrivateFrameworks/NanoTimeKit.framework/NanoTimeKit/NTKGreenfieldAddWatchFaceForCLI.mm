@@ -1,19 +1,19 @@
 @interface NTKGreenfieldAddWatchFaceForCLI
-- (void)addWatchFaceManager:(id)a3 didFinishAddingFaceWithError:(id)a4;
-- (void)addWatchFaceManager:(id)a3 updateStateToAddComplicationWithItemId:(id)a4 installMode:(int64_t)a5 skippedComplicationSlots:(id)a6;
-- (void)addWatchFaceManager:(id)a3 updateStateToCompletedWithSkippedComplicationSlots:(id)a4 canRevisit:(BOOL)a5;
-- (void)addWatchFaceManager:(id)a3 updateStateToComplicationsNotAvailableWithSlots:(id)a4 unavailableTitle:(id)a5 unavailableDescription:(id)a6;
-- (void)addWatchFaceManager:(id)a3 updateStateToRevisitComplicationWithItemId:(id)a4 installMode:(int64_t)a5 skippedComplicationSlots:(id)a6;
-- (void)addWatchFaceManager:(id)a3 updateStateToWelcomeWithCanAddFaceDirectly:(BOOL)a4;
-- (void)addWatchFaceWithURL:(id)a3 withCompletion:(id)a4;
+- (void)addWatchFaceManager:(id)manager didFinishAddingFaceWithError:(id)error;
+- (void)addWatchFaceManager:(id)manager updateStateToAddComplicationWithItemId:(id)id installMode:(int64_t)mode skippedComplicationSlots:(id)slots;
+- (void)addWatchFaceManager:(id)manager updateStateToCompletedWithSkippedComplicationSlots:(id)slots canRevisit:(BOOL)revisit;
+- (void)addWatchFaceManager:(id)manager updateStateToComplicationsNotAvailableWithSlots:(id)slots unavailableTitle:(id)title unavailableDescription:(id)description;
+- (void)addWatchFaceManager:(id)manager updateStateToRevisitComplicationWithItemId:(id)id installMode:(int64_t)mode skippedComplicationSlots:(id)slots;
+- (void)addWatchFaceManager:(id)manager updateStateToWelcomeWithCanAddFaceDirectly:(BOOL)directly;
+- (void)addWatchFaceWithURL:(id)l withCompletion:(id)completion;
 @end
 
 @implementation NTKGreenfieldAddWatchFaceForCLI
 
-- (void)addWatchFaceWithURL:(id)a3 withCompletion:(id)a4
+- (void)addWatchFaceWithURL:(id)l withCompletion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
+  lCopy = l;
+  completionCopy = completion;
   addWatchFaceManager = self->_addWatchFaceManager;
   if (!addWatchFaceManager)
   {
@@ -25,16 +25,16 @@
     addWatchFaceManager = self->_addWatchFaceManager;
   }
 
-  [(NTKGreenfieldAddWatchFaceManager *)addWatchFaceManager decodeWatchFaceWithURL:v12 sourceApplicationBundleIdentifier:0];
-  v10 = [v6 copy];
+  [(NTKGreenfieldAddWatchFaceManager *)addWatchFaceManager decodeWatchFaceWithURL:lCopy sourceApplicationBundleIdentifier:0];
+  v10 = [completionCopy copy];
   completion = self->_completion;
   self->_completion = v10;
 }
 
-- (void)addWatchFaceManager:(id)a3 didFinishAddingFaceWithError:(id)a4
+- (void)addWatchFaceManager:(id)manager didFinishAddingFaceWithError:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -43,18 +43,18 @@
     v10 = 138412546;
     v11 = v8;
     v12 = 2112;
-    v13 = v5;
+    v13 = errorCopy;
     _os_log_impl(&dword_22D9C5000, v6, OS_LOG_TYPE_DEFAULT, "[%@] addWatchFaceManager finished with error:%@", &v10, 0x16u);
   }
 
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, v5);
+    completion[2](completion, errorCopy);
   }
 }
 
-- (void)addWatchFaceManager:(id)a3 updateStateToAddComplicationWithItemId:(id)a4 installMode:(int64_t)a5 skippedComplicationSlots:(id)a6
+- (void)addWatchFaceManager:(id)manager updateStateToAddComplicationWithItemId:(id)id installMode:(int64_t)mode skippedComplicationSlots:(id)slots
 {
   v14 = *MEMORY[0x277D85DE8];
   v7 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
@@ -75,7 +75,7 @@
   }
 }
 
-- (void)addWatchFaceManager:(id)a3 updateStateToCompletedWithSkippedComplicationSlots:(id)a4 canRevisit:(BOOL)a5
+- (void)addWatchFaceManager:(id)manager updateStateToCompletedWithSkippedComplicationSlots:(id)slots canRevisit:(BOOL)revisit
 {
   v13 = *MEMORY[0x277D85DE8];
   v6 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
@@ -96,7 +96,7 @@
   }
 }
 
-- (void)addWatchFaceManager:(id)a3 updateStateToComplicationsNotAvailableWithSlots:(id)a4 unavailableTitle:(id)a5 unavailableDescription:(id)a6
+- (void)addWatchFaceManager:(id)manager updateStateToComplicationsNotAvailableWithSlots:(id)slots unavailableTitle:(id)title unavailableDescription:(id)description
 {
   v14 = *MEMORY[0x277D85DE8];
   v7 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
@@ -117,7 +117,7 @@
   }
 }
 
-- (void)addWatchFaceManager:(id)a3 updateStateToRevisitComplicationWithItemId:(id)a4 installMode:(int64_t)a5 skippedComplicationSlots:(id)a6
+- (void)addWatchFaceManager:(id)manager updateStateToRevisitComplicationWithItemId:(id)id installMode:(int64_t)mode skippedComplicationSlots:(id)slots
 {
   v14 = *MEMORY[0x277D85DE8];
   v7 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
@@ -138,16 +138,16 @@
   }
 }
 
-- (void)addWatchFaceManager:(id)a3 updateStateToWelcomeWithCanAddFaceDirectly:(BOOL)a4
+- (void)addWatchFaceManager:(id)manager updateStateToWelcomeWithCanAddFaceDirectly:(BOOL)directly
 {
-  v4 = a4;
+  directlyCopy = directly;
   v14 = *MEMORY[0x277D85DE8];
   v6 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+    v9 = [MEMORY[0x277CCABB0] numberWithBool:directlyCopy];
     v10 = 138412546;
     v11 = v8;
     v12 = 2112;
@@ -155,7 +155,7 @@
     _os_log_impl(&dword_22D9C5000, v6, OS_LOG_TYPE_DEFAULT, "[%@] updateStateToWelcomeWithCanAddFaceDirectly canAddFaceDirectly:%@", &v10, 0x16u);
   }
 
-  if (v4)
+  if (directlyCopy)
   {
     [(NTKGreenfieldAddWatchFaceManager *)self->_addWatchFaceManager handleAddToMyFacesAction];
   }

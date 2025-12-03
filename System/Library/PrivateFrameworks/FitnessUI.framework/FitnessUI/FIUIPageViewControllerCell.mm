@@ -1,25 +1,25 @@
 @interface FIUIPageViewControllerCell
-- (void)setViewController:(id)a3;
+- (void)setViewController:(id)controller;
 @end
 
 @implementation FIUIPageViewControllerCell
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   viewController = self->_viewController;
-  if (viewController != v5)
+  if (viewController != controllerCopy)
   {
-    v9 = v5;
+    v9 = controllerCopy;
     v7 = viewController;
     [(UIViewController *)v7 willMoveToParentViewController:0];
-    v8 = [(UIViewController *)v7 view];
-    [v8 removeFromSuperview];
+    view = [(UIViewController *)v7 view];
+    [view removeFromSuperview];
 
     [(UIViewController *)v7 removeFromParentViewController];
-    objc_storeStrong(&self->_viewController, a3);
+    objc_storeStrong(&self->_viewController, controller);
 
-    v5 = v9;
+    controllerCopy = v9;
   }
 }
 

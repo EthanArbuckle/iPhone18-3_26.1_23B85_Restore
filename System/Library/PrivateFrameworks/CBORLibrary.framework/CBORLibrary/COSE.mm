@@ -1,47 +1,47 @@
 @interface COSE
 - (CBOR)tag;
-- (COSE)initWithCBOR:(id)a3;
-- (COSE)initWithData:(id)a3;
-- (COSE)initWithData:(id)a3 type:(int64_t)a4;
+- (COSE)initWithCBOR:(id)r;
+- (COSE)initWithData:(id)data;
+- (COSE)initWithData:(id)data type:(int64_t)type;
 - (NSData)content;
 - (NSData)protectedHeaderParameters;
 - (NSDictionary)unprotectedHeaderParameters;
-- (id)_searchForHeaderLabel:(id)a1;
-- (id)initWithProtectedHeaders:(void *)a3 unprotectedHeaders:(void *)a4 payload:(uint64_t)a5 type:(void *)a6 additionalCBORs:;
+- (id)_searchForHeaderLabel:(id)label;
+- (id)initWithProtectedHeaders:(void *)headers unprotectedHeaders:(void *)unprotectedHeaders payload:(uint64_t)payload type:(void *)type additionalCBORs:;
 - (id)sourceObject;
-- (void)_parseCommonHeaderParameters:(void *)a1;
-- (void)setType:(uint64_t)a1;
+- (void)_parseCommonHeaderParameters:(void *)parameters;
+- (void)setType:(uint64_t)type;
 @end
 
 @implementation COSE
 
-- (COSE)initWithData:(id)a3
+- (COSE)initWithData:(id)data
 {
-  v4 = [CBOR decodeFromData:a3];
+  v4 = [CBOR decodeFromData:data];
   v5 = [(COSE *)self initWithCBOR:v4];
 
   return v5;
 }
 
-- (COSE)initWithData:(id)a3 type:(int64_t)a4
+- (COSE)initWithData:(id)data type:(int64_t)type
 {
-  v6 = [CBOR decodeFromData:a3];
+  v6 = [CBOR decodeFromData:data];
   v7 = [v6 tag];
 
   if (v7)
   {
     v8 = [v6 tag];
-    v9 = [v8 numeric];
-    if (v9)
+    numeric = [v8 numeric];
+    if (numeric)
     {
-      v10 = v9;
+      v10 = numeric;
       v11 = [v6 tag];
-      v12 = [v11 numeric];
-      v13 = [v12 integerValue];
+      numeric2 = [v11 numeric];
+      integerValue = [numeric2 integerValue];
 
-      if (v13 != a4)
+      if (integerValue != type)
       {
-        v14 = 0;
+        selfCopy = 0;
         goto LABEL_9;
       }
     }
@@ -54,19 +54,19 @@
   v15 = [(COSE *)self initWithCBOR:v6];
   if (v15)
   {
-    v15->_type = a4;
+    v15->_type = type;
   }
 
   self = v15;
-  v14 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v14;
+  return selfCopy;
 }
 
-- (COSE)initWithCBOR:(id)a3
+- (COSE)initWithCBOR:(id)r
 {
-  v5 = a3;
+  rCopy = r;
   v28.receiver = self;
   v28.super_class = COSE;
   v6 = [(COSE *)&v28 init];
@@ -75,14 +75,14 @@ LABEL_9:
     goto LABEL_22;
   }
 
-  if ([v5 type] == 4)
+  if ([rCopy type] == 4)
   {
-    v7 = [v5 array];
-    v8 = [v7 count];
+    array = [rCopy array];
+    v8 = [array count];
 
     if (v8 >= 2)
     {
-      objc_storeStrong(&v6->_cborObj, a3);
+      objc_storeStrong(&v6->_cborObj, r);
       v10 = [(CBOR *)v6->_cborObj tag];
 
       if (!v10)
@@ -91,8 +91,8 @@ LABEL_9:
       }
 
       v11 = [(CBOR *)v6->_cborObj tag];
-      v12 = [v11 numeric];
-      v6->_type = [v12 integerValue];
+      numeric = [v11 numeric];
+      v6->_type = [numeric integerValue];
 
       type = v6->_type;
       if ((type - 96) < 3 || (type - 16) <= 2)
@@ -108,21 +108,21 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        v15 = [(CBOR *)v14 array];
-        if ([v15 count] < 2)
+        array2 = [(CBOR *)v14 array];
+        if ([array2 count] < 2)
         {
 LABEL_20:
 
           goto LABEL_21;
         }
 
-        v16 = [(CBOR *)v14 array];
-        v17 = [v16 objectAtIndexedSubscript:0];
+        array3 = [(CBOR *)v14 array];
+        v17 = [array3 objectAtIndexedSubscript:0];
 
         if ([v17 type] == 2)
         {
-          v18 = [v17 data];
-          if (![v18 length])
+          data = [v17 data];
+          if (![data length])
           {
             v22 = 0;
 LABEL_19:
@@ -131,36 +131,36 @@ LABEL_19:
             v6->_protectedHeadererDictionary = v22;
 
             [(COSE *)v6 _parseCommonHeaderParameters:?];
-            v24 = [v15 objectAtIndexedSubscript:1];
-            v25 = [v24 dictionary];
+            v24 = [array2 objectAtIndexedSubscript:1];
+            dictionary = [v24 dictionary];
 
-            [(COSE *)v6 _parseCommonHeaderParameters:v25];
-            v26 = [v15 objectAtIndexedSubscript:2];
+            [(COSE *)v6 _parseCommonHeaderParameters:dictionary];
+            v26 = [array2 objectAtIndexedSubscript:2];
             [v26 type];
 
             goto LABEL_20;
           }
 
-          v19 = [CBOR decodeFromData:v18];
-          v20 = [v19 dictionary];
+          v19 = [CBOR decodeFromData:data];
+          dictionary2 = [v19 dictionary];
 
-          v18 = v20;
+          data = dictionary2;
         }
 
         else if ([v17 type] == 5)
         {
-          v18 = [v17 dictionary];
+          data = [v17 dictionary];
         }
 
         else
         {
-          v18 = 0;
+          data = 0;
         }
 
         v21 = MEMORY[0x277CBEC10];
-        if (v18)
+        if (data)
         {
-          v21 = v18;
+          v21 = data;
         }
 
         v22 = v21;
@@ -175,15 +175,15 @@ LABEL_23:
   return v9;
 }
 
-- (id)initWithProtectedHeaders:(void *)a3 unprotectedHeaders:(void *)a4 payload:(uint64_t)a5 type:(void *)a6 additionalCBORs:
+- (id)initWithProtectedHeaders:(void *)headers unprotectedHeaders:(void *)unprotectedHeaders payload:(uint64_t)payload type:(void *)type additionalCBORs:
 {
   v11 = a2;
-  v12 = a4;
-  v13 = a6;
-  if (a1)
+  unprotectedHeadersCopy = unprotectedHeaders;
+  typeCopy = type;
+  if (self)
   {
     v14 = MEMORY[0x277CBEB18];
-    v15 = a3;
+    headersCopy = headers;
     v16 = objc_alloc_init(v14);
     if ([v11 count])
     {
@@ -199,12 +199,12 @@ LABEL_23:
     v19 = [CBOR cborWithData:v18];
     [v16 addObject:v19];
 
-    v20 = [CBOR cborWithDictionary:v15];
+    v20 = [CBOR cborWithDictionary:headersCopy];
 
     [v16 addObject:v20];
-    if (v12)
+    if (unprotectedHeadersCopy)
     {
-      [CBOR cborWithData:v12];
+      [CBOR cborWithData:unprotectedHeadersCopy];
     }
 
     else
@@ -214,58 +214,58 @@ LABEL_23:
     v21 = ;
     [v16 addObject:v21];
 
-    if (v13)
+    if (typeCopy)
     {
-      [v16 addObjectsFromArray:v13];
+      [v16 addObjectsFromArray:typeCopy];
     }
 
     v22 = [CBOR cborWithArray:v16];
-    if (a5 != -1)
+    if (payload != -1)
     {
-      v23 = [CBOR cborWithInteger:a5];
+      v23 = [CBOR cborWithInteger:payload];
       [v22 setTag:v23];
     }
 
-    a1 = [a1 initWithCBOR:v22];
+    self = [self initWithCBOR:v22];
   }
 
-  return a1;
+  return self;
 }
 
 - (NSData)protectedHeaderParameters
 {
-  v2 = [(CBOR *)self->_cborObj array];
-  v3 = [v2 objectAtIndexedSubscript:0];
-  v4 = [v3 data];
+  array = [(CBOR *)self->_cborObj array];
+  v3 = [array objectAtIndexedSubscript:0];
+  data = [v3 data];
 
-  return v4;
+  return data;
 }
 
 - (NSDictionary)unprotectedHeaderParameters
 {
-  v2 = [(CBOR *)self->_cborObj array];
-  v3 = [v2 objectAtIndexedSubscript:1];
-  v4 = [v3 dictionary];
+  array = [(CBOR *)self->_cborObj array];
+  v3 = [array objectAtIndexedSubscript:1];
+  dictionary = [v3 dictionary];
 
-  return v4;
+  return dictionary;
 }
 
 - (NSData)content
 {
-  v2 = [(CBOR *)self->_cborObj array];
-  v3 = [v2 objectAtIndexedSubscript:2];
+  array = [(CBOR *)self->_cborObj array];
+  v3 = [array objectAtIndexedSubscript:2];
 
   if ([v3 type] == 2)
   {
-    v4 = [v3 data];
+    data = [v3 data];
   }
 
   else
   {
-    v4 = 0;
+    data = 0;
   }
 
-  return v4;
+  return data;
 }
 
 - (CBOR)tag
@@ -280,7 +280,7 @@ LABEL_23:
   return cborObj;
 }
 
-- (void)_parseCommonHeaderParameters:(void *)a1
+- (void)_parseCommonHeaderParameters:(void *)parameters
 {
   v66 = *MEMORY[0x277D85DE8];
   v3 = a2;
@@ -295,7 +295,7 @@ LABEL_23:
     v6 = *v61;
     v55 = *v61;
     v52 = v3;
-    v53 = a1;
+    parametersCopy = parameters;
     do
     {
       v7 = 0;
@@ -309,69 +309,69 @@ LABEL_23:
 
         v8 = *(*(&v60 + 1) + 8 * v7);
         v9 = [v3 objectForKeyedSubscript:{v8, v52}];
-        v10 = [v8 type];
-        if (v10 < 2)
+        type = [v8 type];
+        if (type < 2)
         {
           goto LABEL_9;
         }
 
-        if (v10 != 3)
+        if (type != 3)
         {
-          if (v10 != 13)
+          if (type != 13)
           {
             goto LABEL_67;
           }
 
 LABEL_9:
-          v11 = [v8 numeric];
+          numeric = [v8 numeric];
           goto LABEL_11;
         }
 
-        v11 = [v8 string];
+        numeric = [v8 string];
 LABEL_11:
-        v12 = v11;
-        v13 = [v11 integerValue];
+        v12 = numeric;
+        integerValue = [numeric integerValue];
 
-        if (v13 > 3)
+        if (integerValue > 3)
         {
-          if (v13 == 4)
+          if (integerValue == 4)
           {
             if ([v9 type] == 2)
             {
-              v20 = [v9 data];
-              v18 = a1[7];
-              a1[7] = v20;
+              data = [v9 data];
+              numeric3 = parameters[7];
+              parameters[7] = data;
               goto LABEL_66;
             }
           }
 
-          else if (v13 == 5)
+          else if (integerValue == 5)
           {
             if ([v9 type] == 2)
             {
-              v33 = [v9 data];
-              v18 = a1[8];
-              a1[8] = v33;
+              data2 = [v9 data];
+              numeric3 = parameters[8];
+              parameters[8] = data2;
               goto LABEL_66;
             }
           }
 
-          else if (v13 == 6 && [v9 type] == 2)
+          else if (integerValue == 6 && [v9 type] == 2)
           {
-            v17 = [v9 data];
-            v18 = a1[9];
-            a1[9] = v17;
+            data3 = [v9 data];
+            numeric3 = parameters[9];
+            parameters[9] = data3;
             goto LABEL_66;
           }
 
           goto LABEL_67;
         }
 
-        if (v13 == 1)
+        if (integerValue == 1)
         {
           if ([v9 type] == 3)
           {
-            v19 = [v9 string];
+            string = [v9 string];
           }
 
           else
@@ -381,28 +381,28 @@ LABEL_11:
               goto LABEL_67;
             }
 
-            v19 = [v9 numeric];
+            string = [v9 numeric];
           }
 
-          v18 = v19;
-          a1[4] = [v19 integerValue];
+          numeric3 = string;
+          parameters[4] = [string integerValue];
           goto LABEL_66;
         }
 
-        if (v13 == 2)
+        if (integerValue == 2)
         {
           if ([v9 type] != 4)
           {
             goto LABEL_67;
           }
 
-          v18 = objc_opt_new();
+          numeric3 = objc_opt_new();
           v56 = 0u;
           v57 = 0u;
           v58 = 0u;
           v59 = 0u;
-          v21 = [v9 array];
-          v22 = [v21 countByEnumeratingWithState:&v56 objects:v64 count:16];
+          array = [v9 array];
+          v22 = [array countByEnumeratingWithState:&v56 objects:v64 count:16];
           if (!v22)
           {
             goto LABEL_40;
@@ -416,48 +416,48 @@ LABEL_11:
             {
               if (*v57 != v24)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(array);
               }
 
               v26 = *(*(&v56 + 1) + 8 * i);
               if ([v26 isWholeNumber])
               {
-                v27 = [v26 numeric];
-                [v18 addObject:v27];
+                numeric2 = [v26 numeric];
+                [numeric3 addObject:numeric2];
               }
 
               else
               {
-                v28 = [v26 string];
+                string2 = [v26 string];
 
-                if (!v28)
+                if (!string2)
                 {
                   continue;
                 }
 
                 v29 = MEMORY[0x277CCABB0];
-                v27 = [v26 string];
-                v30 = [v29 numberWithInteger:{objc_msgSend(v27, "integerValue")}];
-                [v18 addObject:v30];
+                numeric2 = [v26 string];
+                v30 = [v29 numberWithInteger:{objc_msgSend(numeric2, "integerValue")}];
+                [numeric3 addObject:v30];
               }
             }
 
-            v23 = [v21 countByEnumeratingWithState:&v56 objects:v64 count:16];
+            v23 = [array countByEnumeratingWithState:&v56 objects:v64 count:16];
             if (!v23)
             {
 LABEL_40:
 
-              if ([v18 count])
+              if ([numeric3 count])
               {
-                v31 = [v18 copy];
-                a1 = v53;
-                v32 = v53[5];
-                v53[5] = v31;
+                v31 = [numeric3 copy];
+                parameters = parametersCopy;
+                v32 = parametersCopy[5];
+                parametersCopy[5] = v31;
               }
 
               else
               {
-                a1 = v53;
+                parameters = parametersCopy;
               }
 
               v3 = v52;
@@ -470,15 +470,15 @@ LABEL_66:
           }
         }
 
-        if (v13 != 3)
+        if (integerValue != 3)
         {
           goto LABEL_67;
         }
 
         if ([v9 type] == 3)
         {
-          v14 = [v9 string];
-          v15 = [v14 isEqualToString:@"application/cose; cose-type=cose-sign"];
+          string3 = [v9 string];
+          v15 = [string3 isEqualToString:@"application/cose; cose-type=cose-sign"];
 
           if (v15)
           {
@@ -487,8 +487,8 @@ LABEL_66:
 
           else
           {
-            v36 = [v9 string];
-            v37 = [v36 isEqualToString:@"application/cose; cose-type=cose-sign1"];
+            string4 = [v9 string];
+            v37 = [string4 isEqualToString:@"application/cose; cose-type=cose-sign1"];
 
             if (v37)
             {
@@ -497,8 +497,8 @@ LABEL_66:
 
             else
             {
-              v38 = [v9 string];
-              v39 = [v38 isEqualToString:@"application/cose; cose-type=cose-encrypt"];
+              string5 = [v9 string];
+              v39 = [string5 isEqualToString:@"application/cose; cose-type=cose-encrypt"];
 
               if (v39)
               {
@@ -507,8 +507,8 @@ LABEL_66:
 
               else
               {
-                v40 = [v9 string];
-                v41 = [v40 isEqualToString:@"application/cose; cose-type=cose-encrypt0"];
+                string6 = [v9 string];
+                v41 = [string6 isEqualToString:@"application/cose; cose-type=cose-encrypt0"];
 
                 if (v41)
                 {
@@ -517,8 +517,8 @@ LABEL_66:
 
                 else
                 {
-                  v42 = [v9 string];
-                  v43 = [v42 isEqualToString:@"application/cose; cose-type=cose-mac"];
+                  string7 = [v9 string];
+                  v43 = [string7 isEqualToString:@"application/cose; cose-type=cose-mac"];
 
                   if (v43)
                   {
@@ -527,8 +527,8 @@ LABEL_66:
 
                   else
                   {
-                    v44 = [v9 string];
-                    v45 = [v44 isEqualToString:@"application/cose; cose-type=cose-mac0"];
+                    string8 = [v9 string];
+                    v45 = [string8 isEqualToString:@"application/cose; cose-type=cose-mac0"];
 
                     if (v45)
                     {
@@ -537,8 +537,8 @@ LABEL_66:
 
                     else
                     {
-                      v46 = [v9 string];
-                      v47 = [v46 isEqualToString:@"application/cose-key"];
+                      string9 = [v9 string];
+                      v47 = [string9 isEqualToString:@"application/cose-key"];
 
                       if (v47)
                       {
@@ -547,8 +547,8 @@ LABEL_66:
 
                       else
                       {
-                        v48 = [v9 string];
-                        v49 = [v48 isEqualToString:@"application/cose-key-set"];
+                        string10 = [v9 string];
+                        v49 = [string10 isEqualToString:@"application/cose-key-set"];
 
                         if (!v49)
                         {
@@ -564,18 +564,18 @@ LABEL_66:
             }
           }
 
-          v50 = [v16 stringValue];
-          v18 = a1[6];
-          a1[6] = v50;
+          stringValue = [v16 stringValue];
+          numeric3 = parameters[6];
+          parameters[6] = stringValue;
           goto LABEL_66;
         }
 
         if ([v9 isWholeNumber])
         {
-          v18 = [v9 numeric];
-          v34 = [v18 stringValue];
-          v35 = a1[6];
-          a1[6] = v34;
+          numeric3 = [v9 numeric];
+          stringValue2 = [numeric3 stringValue];
+          v35 = parameters[6];
+          parameters[6] = stringValue2;
 
           goto LABEL_66;
         }
@@ -595,11 +595,11 @@ LABEL_67:
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_searchForHeaderLabel:(id)a1
+- (id)_searchForHeaderLabel:(id)label
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (label)
   {
     v25 = 0;
     v26 = &v25;
@@ -611,7 +611,7 @@ LABEL_67:
     v22 = __Block_byref_object_copy_;
     v23 = __Block_byref_object_dispose_;
     v24 = 0;
-    v5 = *(a1 + 3);
+    v5 = *(label + 3);
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __30__COSE__searchForHeaderLabel___block_invoke;
@@ -623,14 +623,14 @@ LABEL_67:
     [v5 enumerateKeysAndObjectsUsingBlock:v15];
     if (*(v26 + 24) == 1)
     {
-      a1 = v20[5];
+      label = v20[5];
     }
 
     else
     {
-      v7 = [*(a1 + 1) array];
-      v8 = [v7 objectAtIndexedSubscript:1];
-      v9 = [v8 dictionary];
+      array = [*(label + 1) array];
+      v8 = [array objectAtIndexedSubscript:1];
+      dictionary = [v8 dictionary];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __30__COSE__searchForHeaderLabel___block_invoke_2;
@@ -638,16 +638,16 @@ LABEL_67:
       v12 = v6;
       v13 = &v25;
       v14 = &v19;
-      [v9 enumerateKeysAndObjectsUsingBlock:v11];
+      [dictionary enumerateKeysAndObjectsUsingBlock:v11];
 
-      a1 = v20[5];
+      label = v20[5];
     }
 
     _Block_object_dispose(&v19, 8);
     _Block_object_dispose(&v25, 8);
   }
 
-  return a1;
+  return label;
 }
 
 void __30__COSE__searchForHeaderLabel___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -724,30 +724,30 @@ LABEL_6:
 LABEL_9:
 }
 
-- (void)setType:(uint64_t)a1
+- (void)setType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
-    v4 = [*(a1 + 8) tag];
+    v4 = [*(type + 8) tag];
     if (v4)
     {
-      v5 = [*(a1 + 8) tag];
+      v5 = [*(type + 8) tag];
       [v5 numeric];
     }
 
-    *(a1 + 16) = a2;
+    *(type + 16) = a2;
   }
 }
 
 - (id)sourceObject
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[1];
+    self = self[1];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

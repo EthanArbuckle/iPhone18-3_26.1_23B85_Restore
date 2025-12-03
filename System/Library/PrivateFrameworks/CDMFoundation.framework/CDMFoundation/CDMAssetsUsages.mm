@@ -1,6 +1,6 @@
 @interface CDMAssetsUsages
-+ (id)cdmAssetsUsageKeyToString:(int64_t)a3;
-- (BOOL)addUsageForKey:(int64_t)a3 withAssetUsageValue:(id)a4;
++ (id)cdmAssetsUsageKeyToString:(int64_t)string;
+- (BOOL)addUsageForKey:(int64_t)key withAssetUsageValue:(id)value;
 - (CDMAssetsUsages)init;
 - (id)getUsages;
 @end
@@ -14,9 +14,9 @@
   v2 = [(CDMAssetsUsages *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     usages = v2->_usages;
-    v2->_usages = v3;
+    v2->_usages = dictionary;
   }
 
   return v2;
@@ -62,17 +62,17 @@
   return v3;
 }
 
-- (BOOL)addUsageForKey:(int64_t)a3 withAssetUsageValue:(id)a4
+- (BOOL)addUsageForKey:(int64_t)key withAssetUsageValue:(id)value
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [CDMAssetsUsages cdmAssetsUsageKeyToString:a3];
+  valueCopy = value;
+  v7 = [CDMAssetsUsages cdmAssetsUsageKeyToString:key];
 
   if (v7)
   {
     usages = self->_usages;
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    [(NSMutableDictionary *)usages setObject:v6 forKey:v9];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:key];
+    [(NSMutableDictionary *)usages setObject:valueCopy forKey:v9];
   }
 
   else
@@ -80,7 +80,7 @@
     v10 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v13 = [MEMORY[0x1E696AD98] numberWithInteger:key];
       v14 = 136315394;
       v15 = "[CDMAssetsUsages addUsageForKey:withAssetUsageValue:]";
       v16 = 2112;
@@ -93,16 +93,16 @@
   return v7 != 0;
 }
 
-+ (id)cdmAssetsUsageKeyToString:(int64_t)a3
++ (id)cdmAssetsUsageKeyToString:(int64_t)string
 {
-  if (a3 > 4)
+  if (string > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E862F908[a3];
+    return off_1E862F908[string];
   }
 }
 

@@ -1,28 +1,28 @@
 @interface ENUserAuthorization
-- (ENUserAuthorization)initWithCoder:(id)a3;
-- (ENUserAuthorization)initWithIdentifier:(id)a3;
+- (ENUserAuthorization)initWithCoder:(id)coder;
+- (ENUserAuthorization)initWithIdentifier:(id)identifier;
 - (id)description;
 - (int64_t)expirationStatus;
 - (int64_t)userAuthorization;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)expirationStatus;
-- (void)setUserAuthorization:(int64_t)a3;
-- (void)setUserAuthorization:(int64_t)a3 withExpiration:(id)a4;
+- (void)setUserAuthorization:(int64_t)authorization;
+- (void)setUserAuthorization:(int64_t)authorization withExpiration:(id)expiration;
 - (void)userAuthorization;
 @end
 
 @implementation ENUserAuthorization
 
-- (ENUserAuthorization)initWithIdentifier:(id)a3
+- (ENUserAuthorization)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8.receiver = self;
   v8.super_class = ENUserAuthorization;
   v5 = [(ENUserAuthorization *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ENUserAuthorization *)v5 setIdentifier:v4];
+    [(ENUserAuthorization *)v5 setIdentifier:identifierCopy];
   }
 
   return v6;
@@ -32,72 +32,72 @@
 {
   NSAppendPrintF_safe();
   v39 = 0;
-  v29 = [(ENUserAuthorization *)self identifier];
+  identifier = [(ENUserAuthorization *)self identifier];
   NSAppendPrintF_safe();
   v3 = v39;
 
-  v4 = [(ENUserAuthorization *)self userAuthorization];
-  if (v4 > 2)
+  userAuthorization = [(ENUserAuthorization *)self userAuthorization];
+  if (userAuthorization > 2)
   {
     v5 = "?";
   }
 
   else
   {
-    v5 = off_278A4BCC8[v4];
+    v5 = off_278A4BCC8[userAuthorization];
   }
 
   v30 = v5;
   NSAppendPrintF_safe();
   v6 = v3;
 
-  v31 = [(ENUserAuthorization *)self expirationDate];
+  expirationDate = [(ENUserAuthorization *)self expirationDate];
   NSAppendPrintF_safe();
   v7 = v6;
 
-  v8 = [(ENUserAuthorization *)self expirationStatus];
-  if (v8 > 2)
+  expirationStatus = [(ENUserAuthorization *)self expirationStatus];
+  if (expirationStatus > 2)
   {
     v9 = "?";
   }
 
   else
   {
-    v9 = off_278A4BCE0[v8];
+    v9 = off_278A4BCE0[expirationStatus];
   }
 
   v32 = v9;
   NSAppendPrintF_safe();
   v10 = v7;
 
-  v11 = [(ENUserAuthorization *)self testDateToday];
+  testDateToday = [(ENUserAuthorization *)self testDateToday];
 
-  if (v11)
+  if (testDateToday)
   {
-    v33 = [(ENUserAuthorization *)self testDateToday];
+    testDateToday2 = [(ENUserAuthorization *)self testDateToday];
     NSAppendPrintF_safe();
     v12 = v10;
 
     v10 = v12;
   }
 
-  v13 = [(ENUserAuthorization *)self symptomOnsetDate];
+  symptomOnsetDate = [(ENUserAuthorization *)self symptomOnsetDate];
 
-  if (v13)
+  if (symptomOnsetDate)
   {
-    v34 = [(ENUserAuthorization *)self symptomOnsetDate];
+    symptomOnsetDate2 = [(ENUserAuthorization *)self symptomOnsetDate];
     NSAppendPrintF_safe();
     v14 = v10;
 
     v10 = v14;
   }
 
-  v15 = [(ENUserAuthorization *)self didUserTravel];
+  didUserTravel = [(ENUserAuthorization *)self didUserTravel];
 
-  if (v15)
+  if (didUserTravel)
   {
-    v16 = [(ENUserAuthorization *)self didUserTravel];
-    if ([v16 BOOLValue])
+    didUserTravel2 = [(ENUserAuthorization *)self didUserTravel];
+    if ([didUserTravel2 BOOLValue])
     {
       v17 = "yes";
     }
@@ -114,12 +114,12 @@
     v10 = v18;
   }
 
-  v19 = [(ENUserAuthorization *)self isUserVaccinated];
+  isUserVaccinated = [(ENUserAuthorization *)self isUserVaccinated];
 
-  if (v19)
+  if (isUserVaccinated)
   {
-    v20 = [(ENUserAuthorization *)self isUserVaccinated];
-    if ([v20 BOOLValue])
+    isUserVaccinated2 = [(ENUserAuthorization *)self isUserVaccinated];
+    if ([isUserVaccinated2 BOOLValue])
     {
       v21 = "yes";
     }
@@ -138,15 +138,15 @@
 
   if ([(ENUserAuthorization *)self reportType])
   {
-    v23 = [(ENUserAuthorization *)self reportType];
-    if (v23 > 5)
+    reportType = [(ENUserAuthorization *)self reportType];
+    if (reportType > 5)
     {
       v24 = "?";
     }
 
     else
     {
-      v24 = off_278A4BCF8[v23];
+      v24 = off_278A4BCF8[reportType];
     }
 
     v37 = v24;
@@ -156,11 +156,11 @@
     v10 = v25;
   }
 
-  v26 = [(ENUserAuthorization *)self verificationCode];
+  verificationCode = [(ENUserAuthorization *)self verificationCode];
 
-  if (v26)
+  if (verificationCode)
   {
-    v38 = [(ENUserAuthorization *)self verificationCode];
+    verificationCode2 = [(ENUserAuthorization *)self verificationCode];
     NSAppendPrintF_safe();
     v27 = v10;
 
@@ -170,57 +170,57 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v16 = a3;
-  v4 = [(ENUserAuthorization *)self identifier];
-  [v16 encodeObject:v4 forKey:@"UserAuthorizationKeyIdentifier"];
+  coderCopy = coder;
+  identifier = [(ENUserAuthorization *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"UserAuthorizationKeyIdentifier"];
 
-  [v16 encodeInteger:-[ENUserAuthorization userAuthorization](self forKey:{"userAuthorization"), @"UserAuthorizationKeyAuthorization"}];
+  [coderCopy encodeInteger:-[ENUserAuthorization userAuthorization](self forKey:{"userAuthorization"), @"UserAuthorizationKeyAuthorization"}];
   [(ENUserAuthorization *)self lastUpdatedTimestamp];
-  [v16 encodeDouble:@"UserAuthorizationKeyAuthorizationTimestamp" forKey:?];
-  v5 = [(ENUserAuthorization *)self expirationDate];
-  [v5 timeIntervalSince1970];
-  [v16 encodeDouble:@"UserAuthorizationKeyExpiration" forKey:?];
+  [coderCopy encodeDouble:@"UserAuthorizationKeyAuthorizationTimestamp" forKey:?];
+  expirationDate = [(ENUserAuthorization *)self expirationDate];
+  [expirationDate timeIntervalSince1970];
+  [coderCopy encodeDouble:@"UserAuthorizationKeyExpiration" forKey:?];
 
-  v6 = [(ENUserAuthorization *)self testDateToday];
-  if (v6)
+  testDateToday = [(ENUserAuthorization *)self testDateToday];
+  if (testDateToday)
   {
-    v7 = [(ENUserAuthorization *)self testDateToday];
-    [v16 encodeObject:v7 forKey:@"UserAuthorizationKeyTestDateToday"];
+    testDateToday2 = [(ENUserAuthorization *)self testDateToday];
+    [coderCopy encodeObject:testDateToday2 forKey:@"UserAuthorizationKeyTestDateToday"];
   }
 
-  v8 = [(ENUserAuthorization *)self symptomOnsetDate];
-  if (v8)
+  symptomOnsetDate = [(ENUserAuthorization *)self symptomOnsetDate];
+  if (symptomOnsetDate)
   {
-    v9 = [(ENUserAuthorization *)self symptomOnsetDate];
-    [v16 encodeObject:v9 forKey:@"PreArmSymptomOnsetDate"];
+    symptomOnsetDate2 = [(ENUserAuthorization *)self symptomOnsetDate];
+    [coderCopy encodeObject:symptomOnsetDate2 forKey:@"PreArmSymptomOnsetDate"];
   }
 
-  v10 = [(ENUserAuthorization *)self didUserTravel];
-  if (v10)
+  didUserTravel = [(ENUserAuthorization *)self didUserTravel];
+  if (didUserTravel)
   {
-    v11 = [(ENUserAuthorization *)self didUserTravel];
-    [v16 encodeObject:v11 forKey:@"PreArmDidUserTravel"];
+    didUserTravel2 = [(ENUserAuthorization *)self didUserTravel];
+    [coderCopy encodeObject:didUserTravel2 forKey:@"PreArmDidUserTravel"];
   }
 
-  v12 = [(ENUserAuthorization *)self isUserVaccinated];
-  if (v12)
+  isUserVaccinated = [(ENUserAuthorization *)self isUserVaccinated];
+  if (isUserVaccinated)
   {
-    v13 = [(ENUserAuthorization *)self isUserVaccinated];
-    [v16 encodeObject:v13 forKey:@"PreArmIsUserVaccinated"];
+    isUserVaccinated2 = [(ENUserAuthorization *)self isUserVaccinated];
+    [coderCopy encodeObject:isUserVaccinated2 forKey:@"PreArmIsUserVaccinated"];
   }
 
   if ([(ENUserAuthorization *)self reportType])
   {
-    [v16 encodeInt64:-[ENUserAuthorization reportType](self forKey:{"reportType"), @"PreArmReportType"}];
+    [coderCopy encodeInt64:-[ENUserAuthorization reportType](self forKey:{"reportType"), @"PreArmReportType"}];
   }
 
-  v14 = [(ENUserAuthorization *)self verificationCode];
-  if (v14)
+  verificationCode = [(ENUserAuthorization *)self verificationCode];
+  if (verificationCode)
   {
-    v15 = [(ENUserAuthorization *)self verificationCode];
-    [v16 encodeObject:v15 forKey:@"PreArmVerificationCode"];
+    verificationCode2 = [(ENUserAuthorization *)self verificationCode];
+    [coderCopy encodeObject:verificationCode2 forKey:@"PreArmVerificationCode"];
   }
 }
 
@@ -239,11 +239,11 @@
   return self->_authorization;
 }
 
-- (void)setUserAuthorization:(int64_t)a3
+- (void)setUserAuthorization:(int64_t)authorization
 {
-  self->_authorization = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [v5 timeIntervalSince1970];
+  self->_authorization = authorization;
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   self->_lastUpdatedTimestamp = v4;
 }
 
@@ -259,34 +259,34 @@
   return result;
 }
 
-- (void)setUserAuthorization:(int64_t)a3 withExpiration:(id)a4
+- (void)setUserAuthorization:(int64_t)authorization withExpiration:(id)expiration
 {
-  v6 = a4;
-  [(ENUserAuthorization *)self setUserAuthorization:a3];
-  [(ENUserAuthorization *)self setExpirationDate:v6];
+  expirationCopy = expiration;
+  [(ENUserAuthorization *)self setUserAuthorization:authorization];
+  [(ENUserAuthorization *)self setExpirationDate:expirationCopy];
 }
 
-- (ENUserAuthorization)initWithCoder:(id)a3
+- (ENUserAuthorization)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = ENUserAuthorization;
   v5 = [(ENUserAuthorization *)&v24 init];
   if (!v5)
   {
 LABEL_18:
-    v7 = v5;
+    identifier = v5;
     goto LABEL_19;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserAuthorizationKeyIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserAuthorizationKeyIdentifier"];
   [(ENUserAuthorization *)v5 setIdentifier:v6];
 
-  v7 = [(ENUserAuthorization *)v5 identifier];
+  identifier = [(ENUserAuthorization *)v5 identifier];
 
-  if (v7)
+  if (identifier)
   {
-    [v4 decodeDoubleForKey:@"UserAuthorizationKeyExpiration"];
+    [coderCopy decodeDoubleForKey:@"UserAuthorizationKeyExpiration"];
     if (v8 != 0.0)
     {
       v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:?];
@@ -294,49 +294,49 @@ LABEL_18:
       v5->_expirationDate = v9;
     }
 
-    if ([v4 containsValueForKey:@"UserAuthorizationKeyTestDateToday"])
+    if ([coderCopy containsValueForKey:@"UserAuthorizationKeyTestDateToday"])
     {
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserAuthorizationKeyTestDateToday"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserAuthorizationKeyTestDateToday"];
       testDateToday = v5->_testDateToday;
       v5->_testDateToday = v11;
     }
 
-    [v4 decodeDoubleForKey:@"UserAuthorizationKeyAuthorizationTimestamp"];
+    [coderCopy decodeDoubleForKey:@"UserAuthorizationKeyAuthorizationTimestamp"];
     v5->_lastUpdatedTimestamp = v13;
-    -[ENUserAuthorization setUserAuthorization:](v5, "setUserAuthorization:", [v4 decodeIntegerForKey:@"UserAuthorizationKeyAuthorization"]);
-    if ([v4 containsValueForKey:@"PreArmSymptomOnsetDate"])
+    -[ENUserAuthorization setUserAuthorization:](v5, "setUserAuthorization:", [coderCopy decodeIntegerForKey:@"UserAuthorizationKeyAuthorization"]);
+    if ([coderCopy containsValueForKey:@"PreArmSymptomOnsetDate"])
     {
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PreArmSymptomOnsetDate"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PreArmSymptomOnsetDate"];
       symptomOnsetDate = v5->_symptomOnsetDate;
       v5->_symptomOnsetDate = v14;
     }
 
-    if ([v4 containsValueForKey:@"PreArmDidUserTravel"])
+    if ([coderCopy containsValueForKey:@"PreArmDidUserTravel"])
     {
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PreArmDidUserTravel"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PreArmDidUserTravel"];
       didUserTravel = v5->_didUserTravel;
       v5->_didUserTravel = v16;
     }
 
-    if ([v4 containsValueForKey:@"PreArmIsUserVaccinated"])
+    if ([coderCopy containsValueForKey:@"PreArmIsUserVaccinated"])
     {
-      v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PreArmIsUserVaccinated"];
+      v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PreArmIsUserVaccinated"];
       isUserVaccinated = v5->_isUserVaccinated;
       v5->_isUserVaccinated = v18;
     }
 
-    if ([v4 containsValueForKey:@"PreArmReportType"])
+    if ([coderCopy containsValueForKey:@"PreArmReportType"])
     {
-      v20 = [v4 decodeInt64ForKey:@"PreArmReportType"];
+      v20 = [coderCopy decodeInt64ForKey:@"PreArmReportType"];
       if (v20 <= 5)
       {
         v5->_reportType = v20;
       }
     }
 
-    if ([v4 containsValueForKey:@"PreArmVerificationCode"])
+    if ([coderCopy containsValueForKey:@"PreArmVerificationCode"])
     {
-      v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PreArmVerificationCode"];
+      v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PreArmVerificationCode"];
       verificationCode = v5->_verificationCode;
       v5->_verificationCode = v21;
     }
@@ -346,33 +346,33 @@ LABEL_18:
 
 LABEL_19:
 
-  return v7;
+  return identifier;
 }
 
 - (void)userAuthorization
 {
-  v1 = [a1 identifier];
+  identifier = [self identifier];
   LogPrintF_safe();
 }
 
 - (void)expirationStatus
 {
-  v5 = [a1 testDateToday];
-  v6 = v5;
-  if (v5)
+  testDateToday = [self testDateToday];
+  v6 = testDateToday;
+  if (testDateToday)
   {
-    v7 = v5;
+    date = testDateToday;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  v8 = v7;
+  v8 = date;
 
   [v8 timeIntervalSince1970];
-  if (v9 <= a1[5])
+  if (v9 <= self[5])
   {
     v11 = 1;
   }

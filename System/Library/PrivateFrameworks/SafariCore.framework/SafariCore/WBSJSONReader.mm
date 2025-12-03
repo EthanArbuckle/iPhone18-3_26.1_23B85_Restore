@@ -1,24 +1,24 @@
 @interface WBSJSONReader
-- (BOOL)parseData:(id)a3 error:(id *)a4;
-- (BOOL)parseFileHandle:(id)a3 error:(id *)a4;
-- (BOOL)parseURL:(id)a3 error:(id *)a4;
+- (BOOL)parseData:(id)data error:(id *)error;
+- (BOOL)parseFileHandle:(id)handle error:(id *)error;
+- (BOOL)parseURL:(id)l error:(id *)error;
 - (WBSJSONReaderDelegate)delegate;
 @end
 
 @implementation WBSJSONReader
 
-- (BOOL)parseData:(id)a3 error:(id *)a4
+- (BOOL)parseData:(id)data error:(id *)error
 {
   v49[9] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dataCopy = data;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v33 = &unk_1F30601A0;
-  v34 = self;
+  selfCopy = self;
   v35 = WeakRetained;
-  v7 = v5;
-  v8 = [v5 bytes];
+  v7 = dataCopy;
+  bytes = [dataCopy bytes];
   v44 = 0;
-  nlohmann::basic_json<std::map,std::vector,std::string,BOOL,long long,unsigned long long,double,std::allocator,nlohmann::adl_serializer,std::vector<unsigned char>>::parser<nlohmann::detail::iterator_input_adapter<char const*>>(v8, v8 + [v5 length], v43, 1, v45);
+  nlohmann::basic_json<std::map,std::vector,std::string,BOOL,long long,unsigned long long,double,std::allocator,nlohmann::adl_serializer,std::vector<unsigned char>>::parser<nlohmann::detail::iterator_input_adapter<char const*>>(bytes, bytes + [dataCopy length], v43, 1, v45);
   memset(&__p, 0, sizeof(__p));
   while (1)
   {
@@ -381,17 +381,17 @@ LABEL_52:
   return 1;
 }
 
-- (BOOL)parseURL:(id)a3 error:(id *)a4
+- (BOOL)parseURL:(id)l error:(id *)error
 {
   v22[18] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v12 = &unk_1F30601A0;
-  v13 = self;
+  selfCopy = self;
   v14 = WeakRetained;
-  v7 = [v5 path];
-  v8 = v7;
-  [v7 fileSystemRepresentation];
+  path = [lCopy path];
+  v8 = path;
+  [path fileSystemRepresentation];
   std::ifstream::basic_ifstream(v16);
 
   v9 = *&v17[*(v16[0] - 24) + 24];
@@ -419,15 +419,15 @@ LABEL_52:
   return 1;
 }
 
-- (BOOL)parseFileHandle:(id)a3 error:(id *)a4
+- (BOOL)parseFileHandle:(id)handle error:(id *)error
 {
   v26[18] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  handleCopy = handle;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v15 = &unk_1F30601A0;
-  v16 = self;
+  selfCopy = self;
   v17 = WeakRetained;
-  LODWORD(WeakRetained) = [v5 fileDescriptor];
+  LODWORD(WeakRetained) = [handleCopy fileDescriptor];
   v7 = MEMORY[0x1E69E5538] + 16;
   __sb = (MEMORY[0x1E69E5538] + 16);
   MEMORY[0x1B8CC01E0](v20);

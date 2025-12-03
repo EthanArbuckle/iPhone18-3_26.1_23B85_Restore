@@ -6,10 +6,10 @@
 - (BOOL)includedPath;
 - (BOOL)includedUserManagedAssetsPath;
 - (BOOL)preflightClientAllowed;
-- (MCMCommandRegenerateDirectoryUUID)initWithConcreteContainerIdentity:(id)a3 context:(id)a4 resultPromise:(id)a5;
-- (MCMCommandRegenerateDirectoryUUID)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandRegenerateDirectoryUUID)initWithConcreteContainerIdentity:(id)identity context:(id)context resultPromise:(id)promise;
+- (MCMCommandRegenerateDirectoryUUID)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (MCMConcreteContainerIdentity)concreteContainerIdentity;
-- (id)regenerateDirectoryUUIDNoCacheUpdateWithMetadata:(id)a3 error:(id *)a4;
+- (id)regenerateDirectoryUUIDNoCacheUpdateWithMetadata:(id)metadata error:(id *)error;
 - (void)execute;
 @end
 
@@ -55,13 +55,13 @@
   return result;
 }
 
-- (id)regenerateDirectoryUUIDNoCacheUpdateWithMetadata:(id)a3 error:(id *)a4
+- (id)regenerateDirectoryUUIDNoCacheUpdateWithMetadata:(id)metadata error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  [v5 platform];
-  [v5 containerClass];
-  [v5 transient];
+  metadataCopy = metadata;
+  [metadataCopy platform];
+  [metadataCopy containerClass];
+  [metadataCopy transient];
   if ((container_class_supports_randomized_path() & 1) == 0)
   {
     v25 = [[MCMError alloc] initWithErrorType:72];
@@ -69,9 +69,9 @@
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109378;
-      *v47 = [v5 platform];
+      *v47 = [metadataCopy platform];
       *&v47[4] = 2112;
-      *&v47[6] = v5;
+      *&v47[6] = metadataCopy;
       _os_log_error_impl(&dword_1DF2C3000, v26, OS_LOG_TYPE_ERROR, "UUID container paths are unsupported on (%u) for: %@", buf, 0x12u);
     }
 
@@ -79,9 +79,9 @@
   }
 
   v6 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v7 = [v5 containerPath];
-  v8 = [v7 containerPathIdentifier];
-  v9 = [v6 initWithUUIDString:v8];
+  containerPath = [metadataCopy containerPath];
+  containerPathIdentifier = [containerPath containerPathIdentifier];
+  v9 = [v6 initWithUUIDString:containerPathIdentifier];
 
   if (!v9)
   {
@@ -89,12 +89,12 @@
     v26 = container_log_handle_for_category();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v40 = [v5 containerPath];
-      v41 = [v40 containerPathIdentifier];
+      containerPath2 = [metadataCopy containerPath];
+      containerPathIdentifier2 = [containerPath2 containerPathIdentifier];
       *buf = 138412546;
-      *v47 = v41;
+      *v47 = containerPathIdentifier2;
       *&v47[8] = 2112;
-      *&v47[10] = v5;
+      *&v47[10] = metadataCopy;
       _os_log_error_impl(&dword_1DF2C3000, v26, OS_LOG_TYPE_ERROR, "Non-UUID last path component: %@ for %@", buf, 0x16u);
     }
 
@@ -104,11 +104,11 @@ LABEL_13:
     v16 = 0;
 LABEL_14:
 
-    if (a4)
+    if (error)
     {
       v27 = v25;
       v24 = 0;
-      *a4 = v25;
+      *error = v25;
     }
 
     else
@@ -121,34 +121,34 @@ LABEL_14:
   }
 
   v10 = objc_opt_class();
-  if ([v5 transient])
+  if ([metadataCopy transient])
   {
     v10 = objc_opt_class();
   }
 
-  v11 = [v5 containerIdentity];
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [v12 UUIDString];
-  v14 = [v10 containerPathForContainerIdentity:v11 containerPathIdentifier:v13];
+  containerIdentity = [metadataCopy containerIdentity];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v14 = [v10 containerPathForContainerIdentity:containerIdentity containerPathIdentifier:uUIDString];
 
-  v15 = [v14 containerClassPath];
+  containerClassPath = [v14 containerClassPath];
   v45 = 0;
-  LOBYTE(v12) = [v15 createIfNecessaryWithError:&v45];
+  LOBYTE(uUID) = [containerClassPath createIfNecessaryWithError:&v45];
   v16 = v45;
 
-  if ((v12 & 1) == 0)
+  if ((uUID & 1) == 0)
   {
     v30 = [MCMError alloc];
-    v31 = [v14 containerClassPath];
-    v32 = [v31 classURL];
-    v25 = [(MCMError *)v30 initWithNSError:v16 url:v32 defaultErrorType:48];
+    containerClassPath2 = [v14 containerClassPath];
+    classURL = [containerClassPath2 classURL];
+    v25 = [(MCMError *)v30 initWithNSError:v16 url:classURL defaultErrorType:48];
 
     v26 = container_log_handle_for_category();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v33 = [v14 containerClassPath];
+      containerClassPath3 = [v14 containerClassPath];
       *buf = 138412546;
-      *v47 = v33;
+      *v47 = containerClassPath3;
       *&v47[8] = 2112;
       *&v47[10] = v16;
       _os_log_error_impl(&dword_1DF2C3000, v26, OS_LOG_TYPE_ERROR, "Failed to create class path at: %@; error = %@", buf, 0x16u);
@@ -157,46 +157,46 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v43 = a4;
+  errorCopy = error;
   v17 = +[MCMFileManager defaultManager];
-  v18 = [v5 containerPath];
-  v19 = [v18 containerRootURL];
-  v20 = [v14 containerRootURL];
+  containerPath3 = [metadataCopy containerPath];
+  containerRootURL = [containerPath3 containerRootURL];
+  containerRootURL2 = [v14 containerRootURL];
   v44 = v16;
-  v21 = [v17 moveItemAtURL:v19 toURL:v20 error:&v44];
+  v21 = [v17 moveItemAtURL:containerRootURL toURL:containerRootURL2 error:&v44];
   v22 = v44;
 
   if ((v21 & 1) == 0)
   {
     v34 = [MCMError alloc];
-    v35 = [v14 containerRootURL];
-    v25 = [(MCMError *)v34 initWithNSError:v22 url:v35 defaultErrorType:48];
+    containerRootURL3 = [v14 containerRootURL];
+    v25 = [(MCMError *)v34 initWithNSError:v22 url:containerRootURL3 defaultErrorType:48];
 
     v26 = container_log_handle_for_category();
-    a4 = v43;
+    error = errorCopy;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v42 = [v5 containerPath];
-      v36 = [v42 containerRootURL];
-      v37 = [v36 path];
-      v38 = [v14 containerRootURL];
-      v39 = [v38 path];
+      containerPath4 = [metadataCopy containerPath];
+      containerRootURL4 = [containerPath4 containerRootURL];
+      path = [containerRootURL4 path];
+      containerRootURL5 = [v14 containerRootURL];
+      path2 = [containerRootURL5 path];
       *buf = 138412802;
-      *v47 = v37;
+      *v47 = path;
       *&v47[8] = 2112;
-      *&v47[10] = v39;
+      *&v47[10] = path2;
       v48 = 2112;
       v49 = v22;
       _os_log_error_impl(&dword_1DF2C3000, v26, OS_LOG_TYPE_ERROR, "Failed to move dir: %@ to new UUID dir: %@; error = %@", buf, 0x20u);
 
-      a4 = v43;
+      error = errorCopy;
     }
 
     goto LABEL_27;
   }
 
-  v23 = [v5 metadataByChangingContainerPath:v14];
-  a4 = v43;
+  v23 = [metadataCopy metadataByChangingContainerPath:v14];
+  error = errorCopy;
   if (!v23)
   {
     v25 = [[MCMError alloc] initWithErrorType:73];
@@ -226,26 +226,26 @@ LABEL_18:
 {
   v30 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(MCMCommand *)self context];
-  v5 = [v4 containerCache];
-  v6 = [(MCMCommandRegenerateDirectoryUUID *)self concreteContainerIdentity];
+  context = [(MCMCommand *)self context];
+  containerCache = [context containerCache];
+  concreteContainerIdentity = [(MCMCommandRegenerateDirectoryUUID *)self concreteContainerIdentity];
   v25 = 0;
-  v7 = [v5 entryForContainerIdentity:v6 error:&v25];
+  v7 = [containerCache entryForContainerIdentity:concreteContainerIdentity error:&v25];
   v8 = v25;
 
-  v9 = [v7 metadataMinimal];
-  if (v9)
+  metadataMinimal = [v7 metadataMinimal];
+  if (metadataMinimal)
   {
     v24 = v8;
-    v10 = [(MCMCommandRegenerateDirectoryUUID *)self regenerateDirectoryUUIDNoCacheUpdateWithMetadata:v9 error:&v24];
+    v10 = [(MCMCommandRegenerateDirectoryUUID *)self regenerateDirectoryUUIDNoCacheUpdateWithMetadata:metadataMinimal error:&v24];
     v11 = v24;
 
     if (v10)
     {
-      v12 = [(MCMCommand *)self context];
-      v13 = [v12 containerCache];
+      context2 = [(MCMCommand *)self context];
+      containerCache2 = [context2 containerCache];
       v23 = 0;
-      v14 = [v13 addContainerMetadata:v10 error:&v23];
+      v14 = [containerCache2 addContainerMetadata:v10 error:&v23];
       v15 = v23;
 
       if (!v14)
@@ -299,8 +299,8 @@ LABEL_18:
   }
 
   v20 = v19;
-  v21 = [(MCMCommand *)self resultPromise];
-  [v21 completeWithResult:v20];
+  resultPromise = [(MCMCommand *)self resultPromise];
+  [resultPromise completeWithResult:v20];
 
   objc_autoreleasePoolPop(v3);
   v22 = *MEMORY[0x1E69E9840];
@@ -309,43 +309,43 @@ LABEL_18:
 - (BOOL)preflightClientAllowed
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMCommand *)self context];
-  v3 = [v2 clientIdentity];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
 
-  LOBYTE(v2) = [v3 isAllowedToRegenerateDirectoryUUIDs];
+  LOBYTE(context) = [clientIdentity isAllowedToRegenerateDirectoryUUIDs];
   v4 = *MEMORY[0x1E69E9840];
-  return v2;
+  return context;
 }
 
-- (MCMCommandRegenerateDirectoryUUID)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandRegenerateDirectoryUUID)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = MCMCommandRegenerateDirectoryUUID;
-  v9 = [(MCMCommand *)&v14 initWithMessage:v8 context:a4 reply:a5];
+  v9 = [(MCMCommand *)&v14 initWithMessage:messageCopy context:context reply:reply];
   if (v9)
   {
-    v10 = [v8 concreteContainerIdentity];
+    concreteContainerIdentity = [messageCopy concreteContainerIdentity];
     concreteContainerIdentity = v9->_concreteContainerIdentity;
-    v9->_concreteContainerIdentity = v10;
+    v9->_concreteContainerIdentity = concreteContainerIdentity;
   }
 
   v12 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (MCMCommandRegenerateDirectoryUUID)initWithConcreteContainerIdentity:(id)a3 context:(id)a4 resultPromise:(id)a5
+- (MCMCommandRegenerateDirectoryUUID)initWithConcreteContainerIdentity:(id)identity context:(id)context resultPromise:(id)promise
 {
   v15 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  identityCopy = identity;
   v14.receiver = self;
   v14.super_class = MCMCommandRegenerateDirectoryUUID;
-  v10 = [(MCMCommand *)&v14 initWithContext:a4 resultPromise:a5];
+  v10 = [(MCMCommand *)&v14 initWithContext:context resultPromise:promise];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_concreteContainerIdentity, a3);
+    objc_storeStrong(&v10->_concreteContainerIdentity, identity);
   }
 
   v12 = *MEMORY[0x1E69E9840];

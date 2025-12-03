@@ -1,21 +1,21 @@
 @interface TUIReportToAppleAdditionalDetailsTextViewTableCell
 - (BOOL)resignFirstResponder;
-- (BOOL)textContentViewShouldBeginEditing:(id)a3;
-- (TUIReportToAppleAdditionalDetailsTextViewTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (BOOL)textContentViewShouldBeginEditing:(id)editing;
+- (TUIReportToAppleAdditionalDetailsTextViewTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)_updateInterfaceColorForTextView;
 - (void)layoutSubviews;
-- (void)setPlaceholderDisplayed:(BOOL)a3;
-- (void)textContentViewDidChange:(id)a3;
+- (void)setPlaceholderDisplayed:(BOOL)displayed;
+- (void)textContentViewDidChange:(id)change;
 @end
 
 @implementation TUIReportToAppleAdditionalDetailsTextViewTableCell
 
-- (TUIReportToAppleAdditionalDetailsTextViewTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (TUIReportToAppleAdditionalDetailsTextViewTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v20.receiver = self;
   v20.super_class = TUIReportToAppleAdditionalDetailsTextViewTableCell;
-  v9 = [(PSTextViewTableCell *)&v20 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(PSTextViewTableCell *)&v20 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   if (v9)
   {
     v10 = objc_alloc_init(MEMORY[0x277D759D8]);
@@ -39,7 +39,7 @@
     [*(&v9->super.super.super.super.super.super.isa + v12) setFont:v16];
 
     [(UIScrollView *)v9->_scrollView addSubview:*(&v9->super.super.super.super.super.super.isa + v12)];
-    v17 = [v8 propertyForKey:*MEMORY[0x277D40170]];
+    v17 = [specifierCopy propertyForKey:*MEMORY[0x277D40170]];
     placeholderText = v9->_placeholderText;
     v9->_placeholderText = v17;
 
@@ -71,10 +71,10 @@
   return [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FCF8]) resignFirstResponder];
 }
 
-- (void)setPlaceholderDisplayed:(BOOL)a3
+- (void)setPlaceholderDisplayed:(BOOL)displayed
 {
-  self->_placeholderDisplayed = a3;
-  if (a3)
+  self->_placeholderDisplayed = displayed;
+  if (displayed)
   {
     [MEMORY[0x277D75348] placeholderTextColor];
   }
@@ -87,25 +87,25 @@
   [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FCF8]) setTextColor:v4];
 }
 
-- (void)textContentViewDidChange:(id)a3
+- (void)textContentViewDidChange:(id)change
 {
-  v8 = a3;
-  [v8 rectForScrollToVisible];
+  changeCopy = change;
+  [changeCopy rectForScrollToVisible];
   x = v10.origin.x;
   y = v10.origin.y;
   width = v10.size.width;
   height = v10.size.height;
   if (!CGRectIsEmpty(v10))
   {
-    [v8 convertRect:self->_scrollView toView:{x, y, width, height}];
+    [changeCopy convertRect:self->_scrollView toView:{x, y, width, height}];
     [(UIScrollView *)self->_scrollView scrollRectToVisible:1 animated:?];
   }
 }
 
-- (BOOL)textContentViewShouldBeginEditing:(id)a3
+- (BOOL)textContentViewShouldBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = v4;
+  editingCopy = editing;
+  v5 = editingCopy;
   placeholderDisplayed = self->_placeholderDisplayed;
   if (placeholderDisplayed)
   {
@@ -117,8 +117,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [v4 text];
-  v10 = [v9 length];
+  text = [editingCopy text];
+  v10 = [text length];
 
   if (!v10)
   {
@@ -134,21 +134,21 @@ LABEL_6:
 
 - (void)_updateInterfaceColorForTextView
 {
-  v3 = [(TUIReportToAppleAdditionalDetailsTextViewTableCell *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(TUIReportToAppleAdditionalDetailsTextViewTableCell *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
-    v5 = [MEMORY[0x277D75348] tableCellGroupedBackgroundColor];
-    [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FCF8]) setBackgroundColor:v5];
+    tableCellGroupedBackgroundColor = [MEMORY[0x277D75348] tableCellGroupedBackgroundColor];
+    [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FCF8]) setBackgroundColor:tableCellGroupedBackgroundColor];
 
     [MEMORY[0x277D75348] tableCellGroupedBackgroundColor];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FCF8]) setBackgroundColor:v6];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FCF8]) setBackgroundColor:systemBackgroundColor];
 
     [MEMORY[0x277D75348] systemBackgroundColor];
   }

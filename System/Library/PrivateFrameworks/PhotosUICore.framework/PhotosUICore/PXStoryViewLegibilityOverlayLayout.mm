@@ -1,16 +1,16 @@
 @interface PXStoryViewLegibilityOverlayLayout
 - (PXStoryViewLegibilityOverlayLayout)init;
-- (PXStoryViewLegibilityOverlayLayout)initWithViewModel:(id)a3;
+- (PXStoryViewLegibilityOverlayLayout)initWithViewModel:(id)model;
 - (id)axSpriteIndexes;
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)imageConfigurationAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)imageConfigurationAtIndex:(unsigned int)index inLayout:(id)layout;
 - (void)_invalidateContent;
 - (void)_updateContent;
-- (void)getDetailedPresentedPlacement:(id)a3 forItemReference:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)getDetailedPresentedPlacement:(id)placement forItemReference:(id)reference;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceSizeDidChange;
-- (void)setAlphaOverride:(id)a3;
-- (void)setDetailedPlacementOverride:(id)a3 forItemReference:(id)a4;
+- (void)setAlphaOverride:(id)override;
+- (void)setDetailedPlacementOverride:(id)override forItemReference:(id)reference;
 - (void)update;
 @end
 
@@ -23,31 +23,31 @@
   return v2;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (ViewModelObservationContext_173407 != a5)
+  observableCopy = observable;
+  if (ViewModelObservationContext_173407 != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStoryViewLegibilityOverlayLayout.m" lineNumber:177 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryViewLegibilityOverlayLayout.m" lineNumber:177 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((a4 & 0x18000002A020) != 0)
+  if ((change & 0x18000002A020) != 0)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(PXStoryViewLegibilityOverlayLayout *)self _invalidateContent];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
-- (void)setDetailedPlacementOverride:(id)a3 forItemReference:(id)a4
+- (void)setDetailedPlacementOverride:(id)override forItemReference:(id)reference
 {
-  if (a3)
+  if (override)
   {
     v5 = MEMORY[0x1E696AD98];
-    [a3 legibilityOverlayAlpha];
+    [override legibilityOverlayAlpha];
     v6 = [v5 numberWithDouble:?];
     [(PXStoryViewLegibilityOverlayLayout *)self setAlphaOverride:v6];
   }
@@ -59,38 +59,38 @@
   }
 }
 
-- (void)getDetailedPresentedPlacement:(id)a3 forItemReference:(id)a4
+- (void)getDetailedPresentedPlacement:(id)placement forItemReference:(id)reference
 {
-  v5 = a3;
+  placementCopy = placement;
   [(PXStoryViewLegibilityOverlayLayout *)self alpha];
-  [v5 setLegibilityOverlayAlpha:?];
+  [placementCopy setLegibilityOverlayAlpha:?];
 }
 
-- (id)imageConfigurationAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)imageConfigurationAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = [(PXStoryViewLegibilityOverlayLayout *)self viewModel:*&a3];
-  v5 = [v4 viewLayoutSpec];
-  v6 = [v5 legibilityGradientImageConfiguration];
+  v4 = [(PXStoryViewLegibilityOverlayLayout *)self viewModel:*&index];
+  viewLayoutSpec = [v4 viewLayoutSpec];
+  legibilityGradientImageConfiguration = [viewLayoutSpec legibilityGradientImageConfiguration];
 
-  return v6;
+  return legibilityGradientImageConfiguration;
 }
 
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_solidDimmingSpriteIndex != a3)
+  layoutCopy = layout;
+  if (self->_solidDimmingSpriteIndex != index)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXStoryViewLegibilityOverlayLayout.m" lineNumber:149 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryViewLegibilityOverlayLayout.m" lineNumber:149 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v8 = v7;
+  v8 = layoutCopy;
   v9 = +[PXStorySettings sharedInstance];
-  v10 = [v9 wantsHighContrastColors];
+  wantsHighContrastColors = [v9 wantsHighContrastColors];
 
-  if (v10)
+  if (wantsHighContrastColors)
   {
     [MEMORY[0x1E69DC888] yellowColor];
   }
@@ -108,11 +108,11 @@
 {
   [(PXStoryViewLegibilityOverlayLayout *)self alpha];
   v4 = v3;
-  v5 = [(PXStoryViewLegibilityOverlayLayout *)self alphaOverride];
-  v6 = v5;
-  if (v5)
+  alphaOverride = [(PXStoryViewLegibilityOverlayLayout *)self alphaOverride];
+  v6 = alphaOverride;
+  if (alphaOverride)
   {
-    [v5 floatValue];
+    [alphaOverride floatValue];
     v4 = v7;
   }
 
@@ -120,22 +120,22 @@
   v9 = v8;
   v11 = v10;
   [(PXStoryViewLegibilityOverlayLayout *)self setContentSize:?];
-  v12 = [(PXStoryViewLegibilityOverlayLayout *)self viewModel];
+  viewModel = [(PXStoryViewLegibilityOverlayLayout *)self viewModel];
   [(PXStoryViewLegibilityOverlayLayout *)self referenceDepth];
   v14 = v13;
-  v15 = [(PXStoryViewLegibilityOverlayLayout *)self localNumberOfSprites];
+  localNumberOfSprites = [(PXStoryViewLegibilityOverlayLayout *)self localNumberOfSprites];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __52__PXStoryViewLegibilityOverlayLayout__updateContent__block_invoke;
   v18[3] = &unk_1E773FC80;
-  v16 = v15 << 32;
+  v16 = localNumberOfSprites << 32;
   v21 = v9;
   v22 = v11;
-  v19 = v12;
-  v20 = self;
+  v19 = viewModel;
+  selfCopy = self;
   v23 = v4;
   v24 = v14;
-  v17 = v12;
+  v17 = viewModel;
   [(PXStoryViewLegibilityOverlayLayout *)self modifySpritesInRange:v16 state:v18];
 }
 
@@ -162,9 +162,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryViewLegibilityOverlayLayout _invalidateContent]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryViewLegibilityOverlayLayout.m" lineNumber:105 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryViewLegibilityOverlayLayout.m" lineNumber:105 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -195,9 +195,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryViewLegibilityOverlayLayout update]"];
-      [v5 handleFailureInFunction:v6 file:@"PXStoryViewLegibilityOverlayLayout.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v6 file:@"PXStoryViewLegibilityOverlayLayout.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -214,9 +214,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (needsUpdate)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryViewLegibilityOverlayLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXStoryViewLegibilityOverlayLayout.m" lineNumber:100 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXStoryViewLegibilityOverlayLayout.m" lineNumber:100 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -225,18 +225,18 @@ LABEL_5:
   [(PXStoryViewLegibilityOverlayLayout *)&v9 update];
 }
 
-- (void)setAlphaOverride:(id)a3
+- (void)setAlphaOverride:(id)override
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_alphaOverride != v5)
+  overrideCopy = override;
+  v6 = overrideCopy;
+  if (self->_alphaOverride != overrideCopy)
   {
-    v8 = v5;
-    v7 = [(NSNumber *)v5 isEqual:?];
+    v8 = overrideCopy;
+    v7 = [(NSNumber *)overrideCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_alphaOverride, a3);
+      objc_storeStrong(&self->_alphaOverride, override);
       [(PXStoryViewLegibilityOverlayLayout *)self _invalidateContent];
       v6 = v8;
     }
@@ -251,16 +251,16 @@ LABEL_5:
   [(PXStoryViewLegibilityOverlayLayout *)self _invalidateContent];
 }
 
-- (PXStoryViewLegibilityOverlayLayout)initWithViewModel:(id)a3
+- (PXStoryViewLegibilityOverlayLayout)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v14.receiver = self;
   v14.super_class = PXStoryViewLegibilityOverlayLayout;
   v6 = [(PXStoryViewLegibilityOverlayLayout *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     [(PXStoryViewModel *)v7->_viewModel registerChangeObserver:v7 context:ViewModelObservationContext_173407];
     [(PXStoryViewLegibilityOverlayLayout *)v7 setContentSource:v7];
     v7->_solidDimmingSpriteIndex = [(PXStoryViewLegibilityOverlayLayout *)v7 addSpriteWithInitialState:&__block_literal_global_173436];
@@ -359,8 +359,8 @@ double __56__PXStoryViewLegibilityOverlayLayout_initWithViewModel___block_invoke
 
 - (PXStoryViewLegibilityOverlayLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryViewLegibilityOverlayLayout.m" lineNumber:44 description:{@"%s is not available as initializer", "-[PXStoryViewLegibilityOverlayLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryViewLegibilityOverlayLayout.m" lineNumber:44 description:{@"%s is not available as initializer", "-[PXStoryViewLegibilityOverlayLayout init]"}];
 
   abort();
 }

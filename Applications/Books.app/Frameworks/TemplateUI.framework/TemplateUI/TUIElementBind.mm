@@ -1,8 +1,8 @@
 @interface TUIElementBind
 + (id)attributesToIgnoreWhenResolving;
 + (id)supportedAttributes;
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
-+ (void)instantiateChildrenOfNode:(id)a3 object:(id)a4 containingBuilder:(id)a5 context:(id)a6 block:(id)a7;
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context;
++ (void)instantiateChildrenOfNode:(id)node object:(id)object containingBuilder:(id)builder context:(id)context block:(id)block;
 @end
 
 @implementation TUIElementBind
@@ -19,20 +19,20 @@
   return v3;
 }
 
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a5;
-  v9 = a3;
-  [v9 setSelect:{objc_msgSend(v8, "enumeratorWithAttribute:node:", 185, var0)}];
-  v10 = [v8 unsignedIntegerForAttribute:85 withDefault:0x7FFFFFFFFFFFFFFFLL node:var0];
-  v11 = [v8 unsignedIntegerForAttribute:83 withDefault:0x7FFFFFFFFFFFFFFFLL node:var0];
-  v12 = [v8 unsignedIntegerForAttribute:82 withDefault:0x7FFFFFFFFFFFFFFFLL node:var0];
-  v13 = [v8 unsignedIntegerForAttribute:84 withDefault:0x7FFFFFFFFFFFFFFFLL node:var0];
-  LODWORD(var0) = [v8 unconditionalValueForAttribute:70 node:var0];
+  var0 = node.var0;
+  attributesCopy = attributes;
+  objectCopy = object;
+  [objectCopy setSelect:{objc_msgSend(attributesCopy, "enumeratorWithAttribute:node:", 185, var0)}];
+  v10 = [attributesCopy unsignedIntegerForAttribute:85 withDefault:0x7FFFFFFFFFFFFFFFLL node:var0];
+  v11 = [attributesCopy unsignedIntegerForAttribute:83 withDefault:0x7FFFFFFFFFFFFFFFLL node:var0];
+  v12 = [attributesCopy unsignedIntegerForAttribute:82 withDefault:0x7FFFFFFFFFFFFFFFLL node:var0];
+  v13 = [attributesCopy unsignedIntegerForAttribute:84 withDefault:0x7FFFFFFFFFFFFFFFLL node:var0];
+  LODWORD(var0) = [attributesCopy unconditionalValueForAttribute:70 node:var0];
 
   v14 = [TUIDynamicInstantiateOptions optionsWithFetchWindow:v10 fetchInitial:v11 fetchDelta:v12 fetchPadding:v13 uniqueID:var0];
-  [v9 setOptions:v14];
+  [objectCopy setOptions:v14];
 }
 
 + (id)attributesToIgnoreWhenResolving
@@ -47,19 +47,19 @@
   return v3;
 }
 
-+ (void)instantiateChildrenOfNode:(id)a3 object:(id)a4 containingBuilder:(id)a5 context:(id)a6 block:(id)a7
++ (void)instantiateChildrenOfNode:(id)node object:(id)object containingBuilder:(id)builder context:(id)context block:(id)block
 {
-  v14 = a5;
-  v10 = a6;
-  v11 = a4;
-  LODWORD(a4) = [v11 select];
-  v12 = [v11 options];
+  builderCopy = builder;
+  contextCopy = context;
+  objectCopy = object;
+  LODWORD(object) = [objectCopy select];
+  options = [objectCopy options];
 
-  v13 = [v10 instantiateEnumerator:a4 withChildrenOfNode:a3.var0 options:v12];
+  v13 = [contextCopy instantiateEnumerator:object withChildrenOfNode:node.var0 options:options];
 
   if (v13)
   {
-    [v14 addModel:v13];
+    [builderCopy addModel:v13];
   }
 }
 

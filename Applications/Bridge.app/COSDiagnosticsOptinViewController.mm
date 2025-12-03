@@ -8,8 +8,8 @@
 - (id)learnMoreButtonTitle;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)applyConfirmedOptin:(BOOL)a3;
-- (void)learnMoreButtonPressed:(id)a3;
+- (void)applyConfirmedOptin:(BOOL)optin;
+- (void)learnMoreButtonPressed:(id)pressed;
 @end
 
 @implementation COSDiagnosticsOptinViewController
@@ -68,18 +68,18 @@
   return v3;
 }
 
-- (void)applyConfirmedOptin:(BOOL)a3
+- (void)applyConfirmedOptin:(BOOL)optin
 {
-  v3 = a3;
+  optinCopy = optin;
   v5 = +[MCProfileConnection sharedConnection];
-  [v5 setBoolValue:v3 forSetting:MCFeatureDiagnosticsSubmissionAllowed];
+  [v5 setBoolValue:optinCopy forSetting:MCFeatureDiagnosticsSubmissionAllowed];
 
   v6 = +[UIApplication sharedApplication];
-  v7 = [v6 bridgeController];
-  [v7 tellGizmoToSetDiagnosticsEnabled:v3];
+  bridgeController = [v6 bridgeController];
+  [bridgeController tellGizmoToSetDiagnosticsEnabled:optinCopy];
 
-  v8 = [(COSDiagnosticsOptinViewController *)self delegate];
-  [v8 buddyControllerDone:self];
+  delegate = [(COSDiagnosticsOptinViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (id)suggestedButtonTitle
@@ -114,7 +114,7 @@
   return v3;
 }
 
-- (void)learnMoreButtonPressed:(id)a3
+- (void)learnMoreButtonPressed:(id)pressed
 {
   v9 = objc_alloc_init(COSAboutTextViewController);
   v4 = +[NSBundle mainBundle];

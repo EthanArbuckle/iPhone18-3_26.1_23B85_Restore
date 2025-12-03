@@ -1,44 +1,44 @@
 @interface NPSSettingAccessor
-+ (id)serializeObject:(id)a3 error:(id *)a4;
-+ (id)unserializeObject:(id)a3 error:(id *)a4;
++ (id)serializeObject:(id)object error:(id *)error;
++ (id)unserializeObject:(id)object error:(id *)error;
 - (BOOL)requiresDeviceUnlockedSinceBoot;
 - (BOOL)sizeSafeToLoadInMemory;
 - (BOOL)sizeSafeToWrite;
 - (BOOL)synchronize;
 - (BOOL)synchronizeForWriting;
-- (NPSSettingAccessor)initWithNanoDomain:(id)a3;
-- (NPSSettingAccessor)initWithUserDefaultsDomain:(id)a3 container:(id)a4 appGroupContainer:(id)a5;
-- (NPSSettingAccessor)initWithUserDefaultsDomain:(id)a3 containerPath:(id)a4;
+- (NPSSettingAccessor)initWithNanoDomain:(id)domain;
+- (NPSSettingAccessor)initWithUserDefaultsDomain:(id)domain container:(id)container appGroupContainer:(id)groupContainer;
+- (NPSSettingAccessor)initWithUserDefaultsDomain:(id)domain containerPath:(id)path;
 - (NSString)containerPath;
 - (id)copyKeyList;
-- (id)objectForKey:(id)a3;
-- (id)serializedObjectForKey:(id)a3 error:(id *)a4;
+- (id)objectForKey:(id)key;
+- (id)serializedObjectForKey:(id)key error:(id *)error;
 - (id)typeString;
 - (unint64_t)domainPlistSize;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation NPSSettingAccessor
 
-- (NPSSettingAccessor)initWithUserDefaultsDomain:(id)a3 container:(id)a4 appGroupContainer:(id)a5
+- (NPSSettingAccessor)initWithUserDefaultsDomain:(id)domain container:(id)container appGroupContainer:(id)groupContainer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = sub_1000239F0(v9, v10);
+  domainCopy = domain;
+  containerCopy = container;
+  groupContainerCopy = groupContainer;
+  v11 = sub_1000239F0(containerCopy, groupContainerCopy);
   v12 = v11;
-  if (!v9 || v11)
+  if (!containerCopy || v11)
   {
-    v15 = [(NPSSettingAccessor *)self initWithUserDefaultsDomain:v8 containerPath:v11];
+    v15 = [(NPSSettingAccessor *)self initWithUserDefaultsDomain:domainCopy containerPath:v11];
     p_isa = &v15->super.isa;
     if (v15)
     {
-      objc_storeStrong(&v15->_container, a4);
-      objc_storeStrong(p_isa + 5, a5);
+      objc_storeStrong(&v15->_container, container);
+      objc_storeStrong(p_isa + 5, groupContainer);
     }
 
     self = p_isa;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -47,21 +47,21 @@
     if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412290;
-      v19 = v9;
+      v19 = containerCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Could not resolve containerPath for container (%@)", &v18, 0xCu);
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (NPSSettingAccessor)initWithUserDefaultsDomain:(id)a3 containerPath:(id)a4
+- (NPSSettingAccessor)initWithUserDefaultsDomain:(id)domain containerPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  domainCopy = domain;
+  pathCopy = path;
+  if (domainCopy)
   {
     v13.receiver = self;
     v13.super_class = NPSSettingAccessor;
@@ -69,28 +69,28 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_domain, a3);
-      objc_storeStrong(&v10->_containerPath, a4);
+      objc_storeStrong(&v9->_domain, domain);
+      objc_storeStrong(&v10->_containerPath, path);
       v10->_type = 0;
       v10->_hasChangesToWrite = 0;
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (NPSSettingAccessor)initWithNanoDomain:(id)a3
+- (NPSSettingAccessor)initWithNanoDomain:(id)domain
 {
-  v5 = a3;
-  v6 = [[NPSDomainAccessor alloc] initWithDomain:v5];
+  domainCopy = domain;
+  v6 = [[NPSDomainAccessor alloc] initWithDomain:domainCopy];
   if (v6)
   {
     v11.receiver = self;
@@ -99,21 +99,21 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_domain, a3);
+      objc_storeStrong(&v7->_domain, domain);
       objc_storeStrong(&v8->_nanoDomainAccessor, v6);
       v8->_type = 1;
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (NSString)containerPath
@@ -179,8 +179,8 @@ LABEL_8:
   type = self->_type;
   if (type == 1)
   {
-    v9 = [(NPSDomainAccessor *)self->_nanoDomainAccessor synchronize];
-    v6 = v9 != 0;
+    synchronize = [(NPSDomainAccessor *)self->_nanoDomainAccessor synchronize];
+    v6 = synchronize != 0;
 
     v10 = nps_daemon_log;
     if (!os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
@@ -192,7 +192,7 @@ LABEL_8:
     v16 = 138412546;
     v17 = domain;
     v18 = 1024;
-    LODWORD(v19) = v9 != 0;
+    LODWORD(v19) = synchronize != 0;
     v12 = "Synchronized nano-setting domain (%@); ret: (%d).";
 LABEL_12:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, v12, &v16, 0x12u);
@@ -204,8 +204,8 @@ LABEL_12:
     return 0;
   }
 
-  v4 = [(NPSSettingAccessor *)self containerPath];
-  if (!v4)
+  containerPath = [(NPSSettingAccessor *)self containerPath];
+  if (!containerPath)
   {
     v13 = CFPreferencesSynchronize(self->_domain, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
     v6 = v13 != 0;
@@ -233,7 +233,7 @@ LABEL_12:
     v16 = 138412802;
     v17 = v8;
     v18 = 2112;
-    v19 = v4;
+    v19 = containerPath;
     v20 = 1024;
     v21 = v5 != 0;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Synchronized user defaults domain (%@) for containerPath: (%@); ret: (%d).", &v16, 0x1Cu);
@@ -242,13 +242,13 @@ LABEL_12:
   return v6;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   type = self->_type;
   if (type == 1)
   {
-    v8 = [(NPSDomainAccessor *)self->_nanoDomainAccessor objectForKey:v4];
+    v8 = [(NPSDomainAccessor *)self->_nanoDomainAccessor objectForKey:keyCopy];
     v12 = nps_daemon_log;
     if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
     {
@@ -262,7 +262,7 @@ LABEL_12:
 
       v20 = domain;
       v21 = 2112;
-      v22 = v4;
+      v22 = keyCopy;
       v23 = 2114;
       v24 = v14;
       v15 = "Read nano-setting <%@, %@>; value: (%{public}@)";
@@ -281,10 +281,10 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v6 = [(NPSSettingAccessor *)self containerPath];
-  if (!v6)
+  containerPath = [(NPSSettingAccessor *)self containerPath];
+  if (!containerPath)
   {
-    v8 = CFPreferencesCopyValue(v4, self->_domain, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+    v8 = CFPreferencesCopyValue(keyCopy, self->_domain, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
     v12 = nps_daemon_log;
     if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
     {
@@ -298,7 +298,7 @@ LABEL_18:
 
       v20 = v16;
       v21 = 2112;
-      v22 = v4;
+      v22 = keyCopy;
       v23 = 2114;
       v24 = v17;
       v15 = "Read user default <%@, %@>; value: (%{public}@)";
@@ -310,7 +310,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v7 = v6;
+  v7 = containerPath;
   v8 = _CFPreferencesCopyValueWithContainer();
   v9 = nps_daemon_log;
   if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
@@ -325,7 +325,7 @@ LABEL_17:
 
     v20 = v10;
     v21 = 2112;
-    v22 = v4;
+    v22 = keyCopy;
     v23 = 2112;
     v24 = v7;
     v25 = 2114;
@@ -338,16 +338,16 @@ LABEL_19:
   return v8;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   if ([(NPSSettingAccessor *)self sizeSafeToWrite])
   {
     type = self->_type;
     if (type == 1)
     {
-      [(NPSDomainAccessor *)self->_nanoDomainAccessor setObject:v6 forKey:v7];
+      [(NPSDomainAccessor *)self->_nanoDomainAccessor setObject:objectCopy forKey:keyCopy];
       v16 = nps_daemon_log;
       if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
       {
@@ -355,9 +355,9 @@ LABEL_19:
         v20 = 138412802;
         v21 = domain;
         v22 = 2112;
-        v23 = v7;
+        v23 = keyCopy;
         v24 = 2112;
-        v25 = v6;
+        domainPlistSize = objectCopy;
         v18 = "Written nano-setting <%@, %@>; value: (%@)";
 LABEL_14:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, v18, &v20, 0x20u);
@@ -366,10 +366,10 @@ LABEL_14:
 
     else if (!type)
     {
-      v9 = [(NPSSettingAccessor *)self containerPath];
-      if (v9)
+      containerPath = [(NPSSettingAccessor *)self containerPath];
+      if (containerPath)
       {
-        v10 = v9;
+        v10 = containerPath;
         _CFPreferencesSetValueWithContainer();
         v11 = nps_daemon_log;
         if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
@@ -378,18 +378,18 @@ LABEL_14:
           v20 = 138413058;
           v21 = v12;
           v22 = 2112;
-          v23 = v7;
+          v23 = keyCopy;
           v24 = 2112;
-          v25 = v10;
+          domainPlistSize = v10;
           v26 = 2112;
-          v27 = v6;
+          v27 = objectCopy;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Written containerized user default <%@, %@> for containerPath: (%@); value: (%@)", &v20, 0x2Au);
         }
 
         goto LABEL_15;
       }
 
-      CFPreferencesSetValue(v7, v6, self->_domain, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+      CFPreferencesSetValue(keyCopy, objectCopy, self->_domain, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
       v16 = nps_daemon_log;
       if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
       {
@@ -397,9 +397,9 @@ LABEL_14:
         v20 = 138412802;
         v21 = v19;
         v22 = 2112;
-        v23 = v7;
+        v23 = keyCopy;
         v24 = 2112;
-        v25 = v6;
+        domainPlistSize = objectCopy;
         v18 = "Written user default <%@, %@>; value: (%@)";
         goto LABEL_14;
       }
@@ -418,9 +418,9 @@ LABEL_15:
     v20 = 138412802;
     v21 = v14;
     v22 = 2112;
-    v23 = v7;
+    v23 = keyCopy;
     v24 = 2048;
-    v25 = [(NPSSettingAccessor *)self domainPlistSize];
+    domainPlistSize = [(NPSSettingAccessor *)self domainPlistSize];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Not safe to write value into domain %@ for key %@. (size %lld Bytes is beyond what we can handle)", &v20, 0x20u);
   }
 
@@ -441,40 +441,40 @@ LABEL_16:
   {
     if (!type)
     {
-      v5 = [(NPSSettingAccessor *)self containerPath];
-      if (v5)
+      containerPath = [(NPSSettingAccessor *)self containerPath];
+      if (containerPath)
       {
         v6 = _CFPrefsCopyAppDictionaryWithContainer();
-        v7 = [v6 allKeys];
+        allKeys = [v6 allKeys];
       }
 
       else
       {
-        v7 = CFPreferencesCopyKeyList(self->_domain, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+        allKeys = CFPreferencesCopyKeyList(self->_domain, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
       }
 
-      v2 = [NSSet setWithArray:v7];
+      v2 = [NSSet setWithArray:allKeys];
     }
 
     return v2;
   }
 }
 
-- (id)serializedObjectForKey:(id)a3 error:(id *)a4
+- (id)serializedObjectForKey:(id)key error:(id *)error
 {
-  v5 = [(NPSSettingAccessor *)self objectForKey:a3];
-  v6 = [objc_opt_class() serializeObject:v5 error:a4];
+  v5 = [(NPSSettingAccessor *)self objectForKey:key];
+  v6 = [objc_opt_class() serializeObject:v5 error:error];
 
   return v6;
 }
 
-+ (id)serializeObject:(id)a3 error:(id *)a4
++ (id)serializeObject:(id)object error:(id *)error
 {
-  v5 = a3;
-  if (v5)
+  objectCopy = object;
+  if (objectCopy)
   {
     error = 0;
-    v6 = CFPropertyListCreateData(kCFAllocatorDefault, v5, kCFPropertyListBinaryFormat_v1_0, 0, &error);
+    v6 = CFPropertyListCreateData(kCFAllocatorDefault, objectCopy, kCFPropertyListBinaryFormat_v1_0, 0, &error);
     v7 = v6;
     if (error)
     {
@@ -492,15 +492,15 @@ LABEL_16:
       if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v13 = v5;
+        v13 = objectCopy;
         v14 = 2112;
-        v15 = error;
+        errorCopy = error;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Failed to serialized value (%@) with error: %@ ", buf, 0x16u);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = error;
+        *error = error;
       }
 
       CFRelease(error);
@@ -515,13 +515,13 @@ LABEL_16:
   return v7;
 }
 
-+ (id)unserializeObject:(id)a3 error:(id *)a4
++ (id)unserializeObject:(id)object error:(id *)error
 {
-  v5 = a3;
-  if (v5)
+  objectCopy = object;
+  if (objectCopy)
   {
     error = 0;
-    v6 = CFPropertyListCreateWithData(kCFAllocatorDefault, v5, 0, 0, &error);
+    v6 = CFPropertyListCreateWithData(kCFAllocatorDefault, objectCopy, 0, 0, &error);
     v7 = v6;
     if (error)
     {
@@ -539,15 +539,15 @@ LABEL_16:
       if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v13 = v5;
+        v13 = objectCopy;
         v14 = 2112;
-        v15 = error;
+        errorCopy = error;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Failed to unserialized data (%@) with error: %@", buf, 0x16u);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = error;
+        *error = error;
       }
 
       CFRelease(error);
@@ -594,7 +594,7 @@ LABEL_16:
 
 - (BOOL)sizeSafeToWrite
 {
-  v3 = [(NPSSettingAccessor *)self domainPlistSize];
+  domainPlistSize = [(NPSSettingAccessor *)self domainPlistSize];
   type = self->_type;
   p_type = &self->_type;
   v4 = type;
@@ -602,7 +602,7 @@ LABEL_16:
   {
     if (!v4)
     {
-      return v3 <= 0x300000;
+      return domainPlistSize <= 0x300000;
     }
 
     if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_FAULT))
@@ -616,12 +616,12 @@ LABEL_16:
 
 - (BOOL)sizeSafeToLoadInMemory
 {
-  v3 = [(NPSSettingAccessor *)self domainPlistSize];
+  domainPlistSize = [(NPSSettingAccessor *)self domainPlistSize];
   v4 = nps_daemon_log;
   if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = v3;
+    v10 = domainPlistSize;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "domain size: %llu", &v9, 0xCu);
   }
 
@@ -630,7 +630,7 @@ LABEL_16:
   v5 = type;
   if (type == 1 || !v5)
   {
-    return v3 <= 0x80000;
+    return domainPlistSize <= 0x80000;
   }
 
   if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_FAULT))
@@ -668,12 +668,12 @@ LABEL_16:
   type = self->_type;
   if (type == 1)
   {
-    v11 = [(NPSDomainAccessor *)self->_nanoDomainAccessor requiresDeviceUnlockedSinceBoot];
+    requiresDeviceUnlockedSinceBoot = [(NPSDomainAccessor *)self->_nanoDomainAccessor requiresDeviceUnlockedSinceBoot];
   }
 
   else if (type)
   {
-    v11 = 0;
+    requiresDeviceUnlockedSinceBoot = 0;
   }
 
   else
@@ -697,7 +697,7 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: Protection Class for %@ at path %@ is %d", &v16, 0x26u);
     }
 
-    v11 = FileProtectionClass != -1 && FileProtectionClass < 4;
+    requiresDeviceUnlockedSinceBoot = FileProtectionClass != -1 && FileProtectionClass < 4;
   }
 
   v12 = nps_daemon_log;
@@ -705,7 +705,7 @@ LABEL_16:
   {
     v13 = @"NO";
     v14 = self->_domain;
-    if (v11)
+    if (requiresDeviceUnlockedSinceBoot)
     {
       v13 = @"YES";
     }
@@ -717,7 +717,7 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Is user defaults domain %@ protected: %@", &v16, 0x16u);
   }
 
-  return v11;
+  return requiresDeviceUnlockedSinceBoot;
 }
 
 @end

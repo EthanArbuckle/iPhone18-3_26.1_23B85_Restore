@@ -1,29 +1,29 @@
 @interface UNCFileHandleContentProtectionStrategy
-- (BOOL)dataIsAvailableAtPath:(id)a3;
-- (BOOL)removeAllDataAtPath:(id)a3 error:(id *)a4;
-- (BOOL)removeItemAtPath:(id)a3 error:(id *)a4;
-- (BOOL)writeData:(id)a3 atPath:(id)a4 error:(id *)a5;
-- (UNCFileHandleContentProtectionStrategy)initWithFileProtectionType:(id)a3 excludeFromBackup:(BOOL)a4;
-- (id)_fileHandleForCreatingStoreAtPath:(id)a3 protectionType:(id)a4;
-- (id)allDataAtPath:(id)a3;
-- (id)dataAtPath:(id)a3;
-- (void)_excludeItemFromBackupAtPath:(id)a3;
-- (void)migrateDataAtPath:(id)a3 toPath:(id)a4;
+- (BOOL)dataIsAvailableAtPath:(id)path;
+- (BOOL)removeAllDataAtPath:(id)path error:(id *)error;
+- (BOOL)removeItemAtPath:(id)path error:(id *)error;
+- (BOOL)writeData:(id)data atPath:(id)path error:(id *)error;
+- (UNCFileHandleContentProtectionStrategy)initWithFileProtectionType:(id)type excludeFromBackup:(BOOL)backup;
+- (id)_fileHandleForCreatingStoreAtPath:(id)path protectionType:(id)type;
+- (id)allDataAtPath:(id)path;
+- (id)dataAtPath:(id)path;
+- (void)_excludeItemFromBackupAtPath:(id)path;
+- (void)migrateDataAtPath:(id)path toPath:(id)toPath;
 @end
 
 @implementation UNCFileHandleContentProtectionStrategy
 
-- (UNCFileHandleContentProtectionStrategy)initWithFileProtectionType:(id)a3 excludeFromBackup:(BOOL)a4
+- (UNCFileHandleContentProtectionStrategy)initWithFileProtectionType:(id)type excludeFromBackup:(BOOL)backup
 {
-  v7 = a3;
+  typeCopy = type;
   v13.receiver = self;
   v13.super_class = UNCFileHandleContentProtectionStrategy;
   v8 = [(UNCFileHandleContentProtectionStrategy *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v8->_excludeFromBackup = a4;
-    objc_storeStrong(&v8->_fileProtectionType, a3);
+    v8->_excludeFromBackup = backup;
+    objc_storeStrong(&v8->_fileProtectionType, type);
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     keyedFileHandles = v9->_keyedFileHandles;
     v9->_keyedFileHandles = v10;
@@ -32,24 +32,24 @@
   return v9;
 }
 
-- (id)allDataAtPath:(id)a3
+- (id)allDataAtPath:(id)path
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(UNCFileHandleContentProtectionStrategy *)self dataAtPath:v4];
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v4 stringByDeletingPathExtension];
-  v8 = [v7 stringByDeletingLastPathComponent];
-  v9 = [v8 stringByAppendingPathComponent:@"staging"];
+  v5 = [(UNCFileHandleContentProtectionStrategy *)self dataAtPath:pathCopy];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  stringByDeletingPathExtension = [pathCopy stringByDeletingPathExtension];
+  stringByDeletingLastPathComponent = [stringByDeletingPathExtension stringByDeletingLastPathComponent];
+  v9 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:@"staging"];
 
-  if ([v6 fileExistsAtPath:v9])
+  if ([defaultManager fileExistsAtPath:v9])
   {
-    v27 = v6;
+    v27 = defaultManager;
     v28 = v5;
     v35 = 0;
     v26 = v9;
-    v10 = [v6 unc_contentsSortedByLastModificationDateOfDirectoryAtPath:v9 error:&v35];
+    v10 = [defaultManager unc_contentsSortedByLastModificationDateOfDirectoryAtPath:v9 error:&v35];
     v25 = v35;
     v31 = 0u;
     v32 = 0u;
@@ -72,9 +72,9 @@
           }
 
           v16 = *(*(&v31 + 1) + 8 * v15);
-          v17 = [(NSMutableDictionary *)self->_keyedFileHandles objectForKey:v4, v25];
-          v18 = [v17 path];
-          v19 = [v16 isEqualToString:v18];
+          v17 = [(NSMutableDictionary *)self->_keyedFileHandles objectForKey:pathCopy, v25];
+          path = [v17 path];
+          v19 = [v16 isEqualToString:path];
 
           if ((v19 & 1) == 0)
           {
@@ -92,7 +92,7 @@
               if (os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_ERROR))
               {
                 *buf = 138543618;
-                v37 = v4;
+                v37 = pathCopy;
                 v38 = 2114;
                 v39 = v21;
                 _os_log_error_impl(&dword_1DA7A9000, v22, OS_LOG_TYPE_ERROR, "Could not access data at %{public}@: %{public}@", buf, 0x16u);
@@ -110,7 +110,7 @@
       while (v13);
     }
 
-    v6 = v27;
+    defaultManager = v27;
     v5 = v28;
     v9 = v26;
   }
@@ -125,21 +125,21 @@
   return v29;
 }
 
-- (BOOL)removeAllDataAtPath:(id)a3 error:(id *)a4
+- (BOOL)removeAllDataAtPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  if ([(UNCFileHandleContentProtectionStrategy *)self removeItemAtPath:v6 error:a4])
+  pathCopy = path;
+  if ([(UNCFileHandleContentProtectionStrategy *)self removeItemAtPath:pathCopy error:error])
   {
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [v6 stringByDeletingPathExtension];
-    v9 = [v8 stringByDeletingLastPathComponent];
-    v10 = [v9 stringByAppendingPathComponent:@"staging"];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    stringByDeletingPathExtension = [pathCopy stringByDeletingPathExtension];
+    stringByDeletingLastPathComponent = [stringByDeletingPathExtension stringByDeletingLastPathComponent];
+    v10 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:@"staging"];
 
-    if ([v7 fileExistsAtPath:v10] && (objc_msgSend(v7, "removeItemAtPath:error:", v10, a4) & 1) == 0)
+    if ([defaultManager fileExistsAtPath:v10] && (objc_msgSend(defaultManager, "removeItemAtPath:error:", v10, error) & 1) == 0)
     {
       if (os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_ERROR))
       {
-        [UNCFileHandleContentProtectionStrategy removeAllDataAtPath:v6 error:a4];
+        [UNCFileHandleContentProtectionStrategy removeAllDataAtPath:pathCopy error:error];
       }
 
       v11 = 0;
@@ -159,24 +159,24 @@
   return v11;
 }
 
-- (BOOL)dataIsAvailableAtPath:(id)a3
+- (BOOL)dataIsAvailableAtPath:(id)path
 {
-  v3 = [(NSMutableDictionary *)self->_keyedFileHandles objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_keyedFileHandles objectForKey:path];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)dataAtPath:(id)a3
+- (id)dataAtPath:(id)path
 {
-  v3 = [(NSMutableDictionary *)self->_keyedFileHandles objectForKey:a3];
-  v4 = [v3 fileHandle];
+  v3 = [(NSMutableDictionary *)self->_keyedFileHandles objectForKey:path];
+  fileHandle = [v3 fileHandle];
 
-  [v4 seekToFileOffset:0];
-  v5 = [v4 availableData];
-  if ([v5 length])
+  [fileHandle seekToFileOffset:0];
+  availableData = [fileHandle availableData];
+  if ([availableData length])
   {
-    v6 = v5;
+    v6 = availableData;
   }
 
   else
@@ -189,22 +189,22 @@
   return v6;
 }
 
-- (BOOL)writeData:(id)a3 atPath:(id)a4 error:(id *)a5
+- (BOOL)writeData:(id)data atPath:(id)path error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(NSMutableDictionary *)self->_keyedFileHandles objectForKey:v8];
+  dataCopy = data;
+  pathCopy = path;
+  v9 = [(NSMutableDictionary *)self->_keyedFileHandles objectForKey:pathCopy];
   if (!v9)
   {
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [v8 stringByDeletingPathExtension];
-    v12 = [v11 stringByDeletingLastPathComponent];
-    v13 = [v12 stringByAppendingPathComponent:@"staging"];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    stringByDeletingPathExtension = [pathCopy stringByDeletingPathExtension];
+    stringByDeletingLastPathComponent = [stringByDeletingPathExtension stringByDeletingLastPathComponent];
+    fileHandle = [stringByDeletingLastPathComponent stringByAppendingPathComponent:@"staging"];
 
-    if (([v10 fileExistsAtPath:v13] & 1) == 0)
+    if (([defaultManager fileExistsAtPath:fileHandle] & 1) == 0)
     {
       v24 = 0;
-      [v10 createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:&v24];
+      [defaultManager createDirectoryAtPath:fileHandle withIntermediateDirectories:1 attributes:0 error:&v24];
       v14 = v24;
       if (v14 && os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_ERROR))
       {
@@ -214,37 +214,37 @@
 
     if (self->_excludeFromBackup)
     {
-      [(UNCFileHandleContentProtectionStrategy *)self _excludeItemFromBackupAtPath:v13];
+      [(UNCFileHandleContentProtectionStrategy *)self _excludeItemFromBackupAtPath:fileHandle];
     }
 
-    v15 = [v8 lastPathComponent];
-    v16 = [v15 stringByDeletingPathExtension];
-    v17 = [v16 stringByAppendingString:@"XXXXXX"];
-    v18 = [v13 stringByAppendingPathComponent:v17];
+    lastPathComponent = [pathCopy lastPathComponent];
+    stringByDeletingPathExtension2 = [lastPathComponent stringByDeletingPathExtension];
+    v17 = [stringByDeletingPathExtension2 stringByAppendingString:@"XXXXXX"];
+    v18 = [fileHandle stringByAppendingPathComponent:v17];
 
     v19 = [(UNCFileHandleContentProtectionStrategy *)self _fileHandleForCreatingStoreAtPath:v18 protectionType:self->_fileProtectionType];
     if (!v19)
     {
 
       v22 = 0;
-      v9 = v10;
+      v9 = defaultManager;
       goto LABEL_14;
     }
 
     v9 = v19;
-    [(NSMutableDictionary *)self->_keyedFileHandles setObject:v19 forKey:v8];
+    [(NSMutableDictionary *)self->_keyedFileHandles setObject:v19 forKey:pathCopy];
     if (self->_excludeFromBackup)
     {
-      v20 = [v9 path];
-      [(UNCFileHandleContentProtectionStrategy *)self _excludeItemFromBackupAtPath:v20];
+      path = [v9 path];
+      [(UNCFileHandleContentProtectionStrategy *)self _excludeItemFromBackupAtPath:path];
     }
   }
 
-  v13 = [v9 fileHandle];
-  [v13 truncateFileAtOffset:0];
-  [v13 writeData:v7];
-  v21 = [v9 fileHandle];
-  [v21 synchronizeFile];
+  fileHandle = [v9 fileHandle];
+  [fileHandle truncateFileAtOffset:0];
+  [fileHandle writeData:dataCopy];
+  fileHandle2 = [v9 fileHandle];
+  [fileHandle2 synchronizeFile];
 
   v22 = 1;
 LABEL_14:
@@ -252,27 +252,27 @@ LABEL_14:
   return v22;
 }
 
-- (BOOL)removeItemAtPath:(id)a3 error:(id *)a4
+- (BOOL)removeItemAtPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [(NSMutableDictionary *)self->_keyedFileHandles objectForKey:v6];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [(NSMutableDictionary *)self->_keyedFileHandles objectForKey:pathCopy];
   if (v8)
   {
-    [(NSMutableDictionary *)self->_keyedFileHandles removeObjectForKey:v6];
-    v9 = [v8 fileHandle];
-    [v9 synchronizeFile];
+    [(NSMutableDictionary *)self->_keyedFileHandles removeObjectForKey:pathCopy];
+    fileHandle = [v8 fileHandle];
+    [fileHandle synchronizeFile];
 
-    v10 = [v8 fileHandle];
-    [v10 closeFile];
+    fileHandle2 = [v8 fileHandle];
+    [fileHandle2 closeFile];
 
-    v11 = [v8 path];
+    path = [v8 path];
 
-    if ([v7 fileExistsAtPath:v11] && (objc_msgSend(v7, "removeItemAtPath:error:", v11, a4) & 1) == 0)
+    if ([defaultManager fileExistsAtPath:path] && (objc_msgSend(defaultManager, "removeItemAtPath:error:", path, error) & 1) == 0)
     {
       if (os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_ERROR))
       {
-        [UNCFileHandleContentProtectionStrategy removeAllDataAtPath:v11 error:a4];
+        [UNCFileHandleContentProtectionStrategy removeAllDataAtPath:path error:error];
       }
 
       v12 = 0;
@@ -286,11 +286,11 @@ LABEL_14:
 
   else
   {
-    if ([v7 fileExistsAtPath:v6] && (objc_msgSend(v7, "removeItemAtPath:error:", v6, a4) & 1) == 0)
+    if ([defaultManager fileExistsAtPath:pathCopy] && (objc_msgSend(defaultManager, "removeItemAtPath:error:", pathCopy, error) & 1) == 0)
     {
       if (os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_ERROR))
       {
-        [UNCFileHandleContentProtectionStrategy removeAllDataAtPath:v6 error:a4];
+        [UNCFileHandleContentProtectionStrategy removeAllDataAtPath:pathCopy error:error];
       }
 
       v12 = 0;
@@ -301,20 +301,20 @@ LABEL_14:
       v12 = 1;
     }
 
-    v11 = v6;
+    path = pathCopy;
   }
 
   return v12;
 }
 
-- (void)migrateDataAtPath:(id)a3 toPath:(id)a4
+- (void)migrateDataAtPath:(id)path toPath:(id)toPath
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v6];
+  pathCopy = path;
+  toPathCopy = toPath;
+  v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:pathCopy];
   v15 = 0;
-  [(UNCFileHandleContentProtectionStrategy *)self writeData:v8 atPath:v7 error:&v15];
+  [(UNCFileHandleContentProtectionStrategy *)self writeData:v8 atPath:toPathCopy error:&v15];
   v9 = v15;
   if (v9)
   {
@@ -323,9 +323,9 @@ LABEL_14:
     if (os_log_type_enabled(*MEMORY[0x1E6983380], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v17 = v6;
+      v17 = pathCopy;
       v18 = 2114;
-      v19 = v7;
+      v19 = toPathCopy;
       v20 = 2114;
       v21 = v10;
       _os_log_error_impl(&dword_1DA7A9000, v11, OS_LOG_TYPE_ERROR, "Migrating repository from: %{public}@ to: %{public}@ failed %{public}@", buf, 0x20u);
@@ -337,7 +337,7 @@ LABEL_7:
   }
 
   v14 = 0;
-  [(UNCFileHandleContentProtectionStrategy *)self removeItemAtPath:v6 error:&v14];
+  [(UNCFileHandleContentProtectionStrategy *)self removeItemAtPath:pathCopy error:&v14];
   v12 = v14;
   if (v12)
   {
@@ -355,28 +355,28 @@ LABEL_8:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_fileHandleForCreatingStoreAtPath:(id)a3 protectionType:(id)a4
+- (id)_fileHandleForCreatingStoreAtPath:(id)path protectionType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isEqual:*MEMORY[0x1E696A378]])
+  pathCopy = path;
+  typeCopy = type;
+  if ([typeCopy isEqual:*MEMORY[0x1E696A378]])
   {
     v7 = 1;
   }
 
-  else if ([v6 isEqual:*MEMORY[0x1E696A380]])
+  else if ([typeCopy isEqual:*MEMORY[0x1E696A380]])
   {
     v7 = 2;
   }
 
-  else if ([v6 isEqual:*MEMORY[0x1E696A388]])
+  else if ([typeCopy isEqual:*MEMORY[0x1E696A388]])
   {
     v7 = 3;
   }
 
   else
   {
-    if (![v6 isEqual:*MEMORY[0x1E696A3A8]])
+    if (![typeCopy isEqual:*MEMORY[0x1E696A3A8]])
     {
       goto LABEL_14;
     }
@@ -384,9 +384,9 @@ LABEL_8:
     v7 = 4;
   }
 
-  v8 = [v5 lengthOfBytesUsingEncoding:4];
+  v8 = [pathCopy lengthOfBytesUsingEncoding:4];
   v9 = malloc_type_malloc(v8 + 1, 0x983BEACDuLL);
-  if ([v5 getCString:v9 maxLength:v8 + 1 encoding:4])
+  if ([pathCopy getCString:v9 maxLength:v8 + 1 encoding:4])
   {
     v10 = mkstemp_dprotected_np(v9, v7, 0);
     if ((v10 & 0x80000000) == 0)
@@ -419,10 +419,10 @@ LABEL_17:
   return v12;
 }
 
-- (void)_excludeItemFromBackupAtPath:(id)a3
+- (void)_excludeItemFromBackupAtPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3];
+  pathCopy = path;
+  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy];
   v5 = *MEMORY[0x1E695DB80];
   v8 = 0;
   v6 = [v4 setResourceValue:MEMORY[0x1E695E118] forKey:v5 error:&v8];

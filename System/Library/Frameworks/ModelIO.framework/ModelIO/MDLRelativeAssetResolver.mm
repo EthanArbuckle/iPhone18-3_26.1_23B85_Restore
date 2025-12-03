@@ -1,8 +1,8 @@
 @interface MDLRelativeAssetResolver
-- (BOOL)canResolveAssetNamed:(id)a3;
+- (BOOL)canResolveAssetNamed:(id)named;
 - (MDLAsset)asset;
 - (MDLRelativeAssetResolver)initWithAsset:(MDLAsset *)asset;
-- (id)resolveAssetNamed:(id)a3;
+- (id)resolveAssetNamed:(id)named;
 @end
 
 @implementation MDLRelativeAssetResolver
@@ -23,15 +23,15 @@
   return v6;
 }
 
-- (BOOL)canResolveAssetNamed:(id)a3
+- (BOOL)canResolveAssetNamed:(id)named
 {
-  v4 = a3;
-  if (v4)
+  namedCopy = named;
+  if (namedCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_asset);
     if (WeakRetained)
     {
-      v7 = objc_msgSend_resolveAssetNamed_(self, v5, v4);
+      v7 = objc_msgSend_resolveAssetNamed_(self, v5, namedCopy);
       v8 = v7 != 0;
     }
 
@@ -49,13 +49,13 @@
   return v8;
 }
 
-- (id)resolveAssetNamed:(id)a3
+- (id)resolveAssetNamed:(id)named
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  namedCopy = named;
+  v7 = namedCopy;
+  if (namedCopy)
   {
-    if (objc_msgSend_isAbsolutePath(v4, v5, v6))
+    if (objc_msgSend_isAbsolutePath(namedCopy, v5, v6))
     {
       v9 = objc_msgSend_fileURLWithPath_(MEMORY[0x277CBEBC0], v8, v7);
     }

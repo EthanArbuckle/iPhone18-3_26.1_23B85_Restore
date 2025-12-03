@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (BOOL)isQuickSwitchingToAnotherDevice;
 - (IDSQuickSwitchHelper)init;
-- (void)_resetCommunicationStateBeforeQuickSwitchDeactivatePairedDevices:(BOOL)a3 withCompletionBlock:(id)a4;
-- (void)_setIsQuickSwitchingToAnotherDevice:(BOOL)a3;
+- (void)_resetCommunicationStateBeforeQuickSwitchDeactivatePairedDevices:(BOOL)devices withCompletionBlock:(id)block;
+- (void)_setIsQuickSwitchingToAnotherDevice:(BOOL)device;
 - (void)dealloc;
-- (void)initiateQuickSwitchToDeviceWithCBUUID:(id)a3 force:(BOOL)a4 completionBlock:(id)a5;
+- (void)initiateQuickSwitchToDeviceWithCBUUID:(id)d force:(BOOL)force completionBlock:(id)block;
 @end
 
 @implementation IDSQuickSwitchHelper
@@ -52,14 +52,14 @@
   [(IDSQuickSwitchHelper *)&v3 dealloc];
 }
 
-- (void)_setIsQuickSwitchingToAnotherDevice:(BOOL)a3
+- (void)_setIsQuickSwitchingToAnotherDevice:(BOOL)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v5 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (deviceCopy)
     {
       v6 = @"YES";
     }
@@ -70,28 +70,28 @@
   }
 
   pthread_mutex_lock(&self->_isQuickSwitchingMutex);
-  self->_isQuickSwitchingToAnotherDevice = v3;
+  self->_isQuickSwitchingToAnotherDevice = deviceCopy;
   pthread_mutex_unlock(&self->_isQuickSwitchingMutex);
 }
 
-- (void)initiateQuickSwitchToDeviceWithCBUUID:(id)a3 force:(BOOL)a4 completionBlock:(id)a5
+- (void)initiateQuickSwitchToDeviceWithCBUUID:(id)d force:(BOOL)force completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  blockCopy = block;
   v10 = +[IDSPairingManager sharedInstance];
-  v11 = [v10 pairedDeviceUUIDString];
+  pairedDeviceUUIDString = [v10 pairedDeviceUUIDString];
 
-  v12 = [v8 isEqualToIgnoringCase:v11];
+  v12 = [dCopy isEqualToIgnoringCase:pairedDeviceUUIDString];
   v13 = v12;
-  if (a4)
+  if (force)
   {
     v14 = +[IMRGLog watchPairing];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138478083;
-      v26 = v11;
+      v26 = pairedDeviceUUIDString;
       v27 = 2113;
-      v28 = v8;
+      v28 = dCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Forcing QuickSwitch {activeCBUUID: %{private}@, cbuuid: %{private}@}", buf, 0x16u);
     }
 
@@ -105,7 +105,7 @@ LABEL_10:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v8;
+      v26 = dCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Initiating QuickSwitch to (cbuuid %@)", buf, 0xCu);
     }
 
@@ -120,10 +120,10 @@ LABEL_10:
     v19[1] = 3221225472;
     v19[2] = sub_1003F5B28;
     v19[3] = &unk_100BDADF8;
-    v22 = v9;
+    v22 = blockCopy;
     v24 = v13;
-    v20 = v8;
-    v21 = self;
+    v20 = dCopy;
+    selfCopy = self;
     v23 = v18;
     [(IDSQuickSwitchHelper *)self _resetCommunicationStateBeforeQuickSwitchDeactivatePairedDevices:v13 ^ 1 withCompletionBlock:v19];
 
@@ -134,27 +134,27 @@ LABEL_10:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v8;
+    v26 = dCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "We're already switched to (cbuuid %@), ignoring request to switch...", buf, 0xCu);
   }
 
-  if (v9)
+  if (blockCopy)
   {
-    (*(v9 + 2))(v9, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 
 LABEL_15:
 }
 
-- (void)_resetCommunicationStateBeforeQuickSwitchDeactivatePairedDevices:(BOOL)a3 withCompletionBlock:(id)a4
+- (void)_resetCommunicationStateBeforeQuickSwitchDeactivatePairedDevices:(BOOL)devices withCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = a4;
+  devicesCopy = devices;
+  blockCopy = block;
   v6 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (v4)
+    if (devicesCopy)
     {
       v7 = @"YES";
     }
@@ -169,9 +169,9 @@ LABEL_15:
   v10[1] = 3221225472;
   v10[2] = sub_1003F604C;
   v10[3] = &unk_100BDAE20;
-  v12 = v4;
-  v11 = v5;
-  v9 = v5;
+  v12 = devicesCopy;
+  v11 = blockCopy;
+  v9 = blockCopy;
   dispatch_async(v8, v10);
 }
 

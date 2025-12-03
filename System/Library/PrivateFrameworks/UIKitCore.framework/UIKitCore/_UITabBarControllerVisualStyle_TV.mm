@@ -1,34 +1,34 @@
 @interface _UITabBarControllerVisualStyle_TV
 - (BOOL)_isModernBar;
-- (BOOL)_shouldAdjustContentViewFrameForOffscreenFocus:(id)a3 adjustedTabBarFrame:(CGRect)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)_shouldAdjustContentViewFrameForOffscreenFocus:(id)focus adjustedTabBarFrame:(CGRect)frame;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)isScrollViewObservationInCompatibilityMode;
 - (BOOL)prefersTabBarFocusedOnViewDidLoad;
-- (BOOL)shouldForgetRememberedFocusItemForSelectedViewController:(id)a3 context:(id)a4;
-- (BOOL)shouldTrackContentScrollView:(id)a3 viewController:(id)a4 tabBarBackgroundRequired:(BOOL)a5;
-- (CGRect)adjustedContentViewFrame:(CGRect)a3 viewController:(id)a4;
-- (CGRect)adjustedTabBarFrame:(CGRect)a3;
-- (UIEdgeInsets)edgeInsetsForChildViewController:(id)a3;
+- (BOOL)shouldForgetRememberedFocusItemForSelectedViewController:(id)controller context:(id)context;
+- (BOOL)shouldTrackContentScrollView:(id)view viewController:(id)controller tabBarBackgroundRequired:(BOOL)required;
+- (CGRect)adjustedContentViewFrame:(CGRect)frame viewController:(id)controller;
+- (CGRect)adjustedTabBarFrame:(CGRect)frame;
+- (UIEdgeInsets)edgeInsetsForChildViewController:(id)controller;
 - (UIEdgeInsets)overlayInsetsAdjustment;
 - (double)_childViewControllerModernBarTopInset;
-- (id)defaultAnimatorForFromViewController:(id)a3 toViewController:(id)a4;
+- (id)defaultAnimatorForFromViewController:(id)controller toViewController:(id)viewController;
 - (id)tabBarView;
-- (id)viewControllerForObservableScrollViewFromViewController:(id)a3;
-- (void)_performTouchDetectionGesture:(id)a3;
-- (void)_scrollViewManagerDidFinishScrolling:(id)a3;
-- (void)_updateOffscreenState:(BOOL)a3 withFocusAnimationCoordinator:(id)a4;
-- (void)adjustTabBarForContentScrollView:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (id)viewControllerForObservableScrollViewFromViewController:(id)controller;
+- (void)_performTouchDetectionGesture:(id)gesture;
+- (void)_scrollViewManagerDidFinishScrolling:(id)scrolling;
+- (void)_updateOffscreenState:(BOOL)state withFocusAnimationCoordinator:(id)coordinator;
+- (void)adjustTabBarForContentScrollView:(id)view;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)loadViews;
-- (void)tabContentDidChange:(id)a3;
+- (void)tabContentDidChange:(id)change;
 - (void)teardown;
 - (void)updateFocusForSelectedViewControllerChange;
 - (void)updateGestureRecognizers;
 - (void)updateTabBarLayout;
-- (void)updateViewControllers:(BOOL)a3;
+- (void)updateViewControllers:(BOOL)controllers;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation _UITabBarControllerVisualStyle_TV
@@ -37,10 +37,10 @@
 {
   if (self->_touchDetectionGestureRecognizer)
   {
-    v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-    v5 = [v3 _containerView];
+    tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+    _containerView = [tabBarController _containerView];
 
-    [v5 removeGestureRecognizer:self->_touchDetectionGestureRecognizer];
+    [_containerView removeGestureRecognizer:self->_touchDetectionGestureRecognizer];
     touchDetectionGestureRecognizer = self->_touchDetectionGestureRecognizer;
     self->_touchDetectionGestureRecognizer = 0;
   }
@@ -51,35 +51,35 @@
   tabBarContainerView = self->_tabBarContainerView;
   if (tabBarContainerView)
   {
-    v3 = tabBarContainerView;
+    tabBarView = tabBarContainerView;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = _UITabBarControllerVisualStyle_TV;
-    v3 = [(_UITabBarControllerVisualStyle *)&v5 tabBarView];
+    tabBarView = [(_UITabBarControllerVisualStyle *)&v5 tabBarView];
   }
 
-  return v3;
+  return tabBarView;
 }
 
 - (void)loadViews
 {
-  v13 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v2 = [(UITabBarController *)v13 _internalTabBar];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _internalTabBar = [(UITabBarController *)tabBarController _internalTabBar];
 
-  if (!v2)
+  if (!_internalTabBar)
   {
-    v3 = [v13 view];
-    [v3 bounds];
+    view = [tabBarController view];
+    [view bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
     v12 = [[UITabBar alloc] initWithFrame:v5, v7, v9, v11];
-    [v13 setTabBar:v12];
+    [tabBarController setTabBar:v12];
   }
 }
 
@@ -88,99 +88,99 @@
   v23[4] = *MEMORY[0x1E69E9840];
   if (!self->_contentFocusContainerGuide)
   {
-    v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-    v4 = [v3 _containerView];
+    tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+    _containerView = [tabBarController _containerView];
 
-    v5 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-    v22 = [(UITabBarController *)v5 _internalTabBar];
+    tabBarController2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
+    _internalTabBar = [(UITabBarController *)tabBarController2 _internalTabBar];
 
     v6 = objc_alloc_init(UIFocusContainerGuide);
     contentFocusContainerGuide = self->_contentFocusContainerGuide;
     self->_contentFocusContainerGuide = v6;
 
-    [v4 addLayoutGuide:self->_contentFocusContainerGuide];
+    [_containerView addLayoutGuide:self->_contentFocusContainerGuide];
     [(UILayoutGuide *)self->_contentFocusContainerGuide setIdentifier:@"UITabBarControllerFocusContentContainerGuide"];
     v17 = MEMORY[0x1E69977A0];
-    v21 = [(UILayoutGuide *)self->_contentFocusContainerGuide topAnchor];
-    v20 = [v22 bottomAnchor];
-    v19 = [v21 constraintEqualToAnchor:v20];
+    topAnchor = [(UILayoutGuide *)self->_contentFocusContainerGuide topAnchor];
+    bottomAnchor = [_internalTabBar bottomAnchor];
+    v19 = [topAnchor constraintEqualToAnchor:bottomAnchor];
     v23[0] = v19;
-    v18 = [(UILayoutGuide *)self->_contentFocusContainerGuide leadingAnchor];
-    v8 = [v4 leadingAnchor];
-    v9 = [v18 constraintEqualToAnchor:v8];
+    leadingAnchor = [(UILayoutGuide *)self->_contentFocusContainerGuide leadingAnchor];
+    leadingAnchor2 = [_containerView leadingAnchor];
+    v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v23[1] = v9;
-    v10 = [(UILayoutGuide *)self->_contentFocusContainerGuide trailingAnchor];
-    v11 = [v4 trailingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    trailingAnchor = [(UILayoutGuide *)self->_contentFocusContainerGuide trailingAnchor];
+    trailingAnchor2 = [_containerView trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v23[2] = v12;
-    v13 = [(UILayoutGuide *)self->_contentFocusContainerGuide bottomAnchor];
-    v14 = [v4 bottomAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    bottomAnchor2 = [(UILayoutGuide *)self->_contentFocusContainerGuide bottomAnchor];
+    bottomAnchor3 = [_containerView bottomAnchor];
+    v15 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v23[3] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:4];
     [v17 activateConstraints:v16];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v8 = [v5 navigationController];
+  appearCopy = appear;
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  navigationController = [tabBarController navigationController];
 
-  v6 = v8;
-  if (v8)
+  v6 = navigationController;
+  if (navigationController)
   {
-    v7 = [v8 isNavigationBarHidden];
-    v6 = v8;
-    if ((v7 & 1) == 0)
+    isNavigationBarHidden = [navigationController isNavigationBarHidden];
+    v6 = navigationController;
+    if ((isNavigationBarHidden & 1) == 0)
     {
-      [v8 setNavigationBarHidden:1 animated:v3];
-      v6 = v8;
+      [navigationController setNavigationBarHidden:1 animated:appearCopy];
+      v6 = navigationController;
       *&self->_flags |= 1u;
     }
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   if (*&self->_flags)
   {
-    v3 = a3;
-    v5 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-    v6 = [v5 navigationController];
+    disappearCopy = disappear;
+    tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+    navigationController = [tabBarController navigationController];
 
-    [v6 setNavigationBarHidden:0 animated:v3];
+    [navigationController setNavigationBarHidden:0 animated:disappearCopy];
     *&self->_flags &= ~1u;
   }
 }
 
-- (void)updateViewControllers:(BOOL)a3
+- (void)updateViewControllers:(BOOL)controllers
 {
-  v3 = a3;
-  v4 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  [v4 _rebuildTabBarItemsAnimated:v3];
+  controllersCopy = controllers;
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  [tabBarController _rebuildTabBarItemsAnimated:controllersCopy];
 }
 
-- (void)tabContentDidChange:(id)a3
+- (void)tabContentDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v7 = [(UITabBarController *)v5 _internalTabBar];
+  changeCopy = change;
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _internalTabBar = [(UITabBarController *)tabBarController _internalTabBar];
 
-  v6 = [v7 isLocked];
-  [v7 setLocked:0];
-  [v4 _updateView];
+  isLocked = [_internalTabBar isLocked];
+  [_internalTabBar setLocked:0];
+  [changeCopy _updateView];
 
-  [v7 setLocked:v6];
+  [_internalTabBar setLocked:isLocked];
 }
 
 - (BOOL)prefersTabBarFocusedOnViewDidLoad
 {
   if ([(_UITabBarControllerVisualStyle_TV *)self _isModernBar])
   {
-    v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-    v4 = [v3 _shouldFocusViewControllerAfterTransition] ^ 1;
+    tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+    v4 = [tabBarController _shouldFocusViewControllerAfterTransition] ^ 1;
   }
 
   else
@@ -198,8 +198,8 @@
   [(_UITabBarControllerVisualStyle *)&v7 updateGestureRecognizers];
   if (!self->_touchDetectionGestureRecognizer && ![(_UITabBarControllerVisualStyle_TV *)self _isModernBar])
   {
-    v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-    v4 = [v3 _containerView];
+    tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+    _containerView = [tabBarController _containerView];
 
     v5 = [(UIGestureRecognizer *)[_UITabBarTouchDetectionGestureRecognizer alloc] initWithTarget:self action:sel__performTouchDetectionGesture_];
     touchDetectionGestureRecognizer = self->_touchDetectionGestureRecognizer;
@@ -209,39 +209,39 @@
     [(UIGestureRecognizer *)self->_touchDetectionGestureRecognizer setCancelsTouchesInView:0];
     [(UIGestureRecognizer *)self->_touchDetectionGestureRecognizer setDelaysTouchesBegan:0];
     [(UIGestureRecognizer *)self->_touchDetectionGestureRecognizer setDelaysTouchesEnded:0];
-    [v4 addGestureRecognizer:self->_touchDetectionGestureRecognizer];
+    [_containerView addGestureRecognizer:self->_touchDetectionGestureRecognizer];
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v21 = a3;
-  v6 = a4;
-  v7 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v8 = [v7 _isTabBarFocused];
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _isTabBarFocused = [tabBarController _isTabBarFocused];
 
-  LOBYTE(v7) = v8 ^ 1;
-  [(_UITabBarControllerVisualStyle_TV *)self _updateOffscreenState:v8 ^ 1u withFocusAnimationCoordinator:v6];
+  LOBYTE(tabBarController) = _isTabBarFocused ^ 1;
+  [(_UITabBarControllerVisualStyle_TV *)self _updateOffscreenState:_isTabBarFocused ^ 1u withFocusAnimationCoordinator:coordinatorCopy];
 
-  v9 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v10 = [v9 _observingScrollView];
+  tabBarController2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _observingScrollView = [tabBarController2 _observingScrollView];
 
-  [v10 adjustedContentInset];
+  [_observingScrollView adjustedContentInset];
   v12 = v11;
-  [v10 adjustedContentInset];
-  if ((v7 & 1) == 0)
+  [_observingScrollView adjustedContentInset];
+  if ((tabBarController & 1) == 0)
   {
-    if (v10)
+    if (_observingScrollView)
     {
       v14 = v13;
-      if (![v21 focusHeading])
+      if (![contextCopy focusHeading])
       {
         v15 = -v12;
         v16 = -v14;
-        [v10 contentOffset];
+        [_observingScrollView contentOffset];
         if (v18 != v15 || v17 != v16)
         {
-          v19 = [[_UITVScrollViewManager alloc] initWithScrollView:v10 scrollStyle:1];
+          v19 = [[_UITVScrollViewManager alloc] initWithScrollView:_observingScrollView scrollStyle:1];
           scrollViewManager = self->_scrollViewManager;
           self->_scrollViewManager = v19;
 
@@ -257,36 +257,36 @@
 {
   if (![(_UITabBarControllerVisualStyle_TV *)self _isModernBar])
   {
-    v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-    [v3 _setPreferTabBarFocused:1];
+    tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+    [tabBarController _setPreferTabBarFocused:1];
   }
 
-  v4 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v5 = [v4 _focusSystem];
-  v6 = [v5 focusedItem];
-  v8 = _UIFocusEnvironmentContainingView(v6);
+  tabBarController2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _focusSystem = [tabBarController2 _focusSystem];
+  focusedItem = [_focusSystem focusedItem];
+  v8 = _UIFocusEnvironmentContainingView(focusedItem);
 
-  v7 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  [v7 setPreferredFocusedItem:v8];
+  tabBarController3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  [tabBarController3 setPreferredFocusedItem:v8];
 }
 
-- (BOOL)shouldForgetRememberedFocusItemForSelectedViewController:(id)a3 context:(id)a4
+- (BOOL)shouldForgetRememberedFocusItemForSelectedViewController:(id)controller context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = _UITabBarControllerVisualStyle_TV;
-  v7 = a3;
-  IsAncestorOfEnvironment = [(_UITabBarControllerVisualStyle *)&v13 shouldForgetRememberedFocusItemForSelectedViewController:v7 context:v6];
-  v9 = [v7 presentedViewController];
+  controllerCopy = controller;
+  IsAncestorOfEnvironment = [(_UITabBarControllerVisualStyle *)&v13 shouldForgetRememberedFocusItemForSelectedViewController:controllerCopy context:contextCopy];
+  presentedViewController = [controllerCopy presentedViewController];
 
-  if ((IsAncestorOfEnvironment & 1) == 0 && v9)
+  if ((IsAncestorOfEnvironment & 1) == 0 && presentedViewController)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 modalPresentationStyle] == 4)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [presentedViewController modalPresentationStyle] == 4)
     {
-      v10 = [v9 view];
-      v11 = [v6 nextFocusedItem];
-      IsAncestorOfEnvironment = _UIFocusEnvironmentIsAncestorOfEnvironment(v10, v11);
+      view = [presentedViewController view];
+      nextFocusedItem = [contextCopy nextFocusedItem];
+      IsAncestorOfEnvironment = _UIFocusEnvironmentIsAncestorOfEnvironment(view, nextFocusedItem);
     }
 
     else
@@ -298,21 +298,21 @@
   return IsAncestorOfEnvironment;
 }
 
-- (void)_updateOffscreenState:(BOOL)a3 withFocusAnimationCoordinator:(id)a4
+- (void)_updateOffscreenState:(BOOL)state withFocusAnimationCoordinator:(id)coordinator
 {
-  v5 = a3;
+  stateCopy = state;
   v83[1] = *MEMORY[0x1E69E9840];
-  v7 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v8 = [v7 selectedViewController];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  selectedViewController = [tabBarController selectedViewController];
   if ([(_UITabBarControllerVisualStyle_TV *)self _isModernBar])
   {
-    v9 = [v7 _observingScrollView];
-    if (v9)
+    _observingScrollView = [tabBarController _observingScrollView];
+    if (_observingScrollView)
     {
-      v10 = v9;
-      v11 = [v8 _tvTabBarShouldAutohide];
+      v10 = _observingScrollView;
+      _tvTabBarShouldAutohide = [selectedViewController _tvTabBarShouldAutohide];
 
-      if (v11)
+      if (_tvTabBarShouldAutohide)
       {
         if (os_variant_has_internal_diagnostics())
         {
@@ -334,42 +334,42 @@
           }
         }
 
-        v5 = 0;
+        stateCopy = 0;
       }
     }
   }
 
-  v13 = v5 & [v8 _tvTabBarShouldAutohide];
-  v14 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v15 = [v14 _isTabBarOffscreen];
+  v13 = stateCopy & [selectedViewController _tvTabBarShouldAutohide];
+  tabBarController2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _isTabBarOffscreen = [tabBarController2 _isTabBarOffscreen];
 
-  [v7 _setTabBarOffscreen:v13];
+  [tabBarController _setTabBarOffscreen:v13];
   [(UIView *)self->_tabBarContainerView setUserInteractionEnabled:v13 ^ 1];
-  if ((v13 ^ 1) == v15)
+  if ((v13 ^ 1) == _isTabBarOffscreen)
   {
-    v16 = [(UITabBarController *)v7 _internalTabBar];
-    v17 = [v7 _containerView];
-    if (![v7 _isBarLayoutValid])
+    _internalTabBar = [(UITabBarController *)tabBarController _internalTabBar];
+    _containerView = [tabBarController _containerView];
+    if (![tabBarController _isBarLayoutValid])
     {
 LABEL_31:
 
       goto LABEL_32;
     }
 
-    [v16 frame];
+    [_internalTabBar frame];
     [(_UITabBarControllerVisualStyle_TV *)self adjustedTabBarFrame:?];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    v26 = [(_UITabBarControllerVisualStyle_TV *)self _isModernBar];
-    if (!a4 || !v26)
+    _isModernBar = [(_UITabBarControllerVisualStyle_TV *)self _isModernBar];
+    if (!coordinator || !_isModernBar)
     {
-      v34 = [v7 navigationController];
-      if (v34)
+      navigationController = [tabBarController navigationController];
+      if (navigationController)
       {
-        v35 = [v7 navigationController];
-        v36 = [v35 isNavigationBarHidden] ^ 1;
+        navigationController2 = [tabBarController navigationController];
+        v36 = [navigationController2 isNavigationBarHidden] ^ 1;
       }
 
       else
@@ -377,7 +377,7 @@ LABEL_31:
         v36 = 0;
       }
 
-      if (v15)
+      if (_isTabBarOffscreen)
       {
         v37 = 0.0;
       }
@@ -387,12 +387,12 @@ LABEL_31:
         v37 = 1.0;
       }
 
-      [v16 setHidden:0];
-      [v16 _setShadowAlpha:v37];
-      [v16 _setHidesShadow:0];
+      [_internalTabBar setHidden:0];
+      [_internalTabBar _setShadowAlpha:v37];
+      [_internalTabBar _setHidesShadow:0];
       if (v36)
       {
-        [v16 setAlpha:v37];
+        [_internalTabBar setAlpha:v37];
       }
 
       if (v13)
@@ -409,15 +409,15 @@ LABEL_31:
       v61[1] = 3221225472;
       v61[2] = __89___UITabBarControllerVisualStyle_TV__updateOffscreenState_withFocusAnimationCoordinator___block_invoke_3;
       v61[3] = &unk_1E7116280;
-      v62 = v16;
+      v62 = _internalTabBar;
       v65 = v19;
       v66 = v21;
       v67 = v23;
       v68 = v25;
       v69 = v37;
       v70 = v36;
-      v63 = v7;
-      v64 = v8;
+      v63 = tabBarController;
+      v64 = selectedViewController;
       v58[0] = MEMORY[0x1E69E9820];
       v58[1] = 3221225472;
       v58[2] = __89___UITabBarControllerVisualStyle_TV__updateOffscreenState_withFocusAnimationCoordinator___block_invoke_4;
@@ -450,7 +450,7 @@ LABEL_29:
         v75[1] = 3221225472;
         v75[2] = __89___UITabBarControllerVisualStyle_TV__updateOffscreenState_withFocusAnimationCoordinator___block_invoke;
         v75[3] = &unk_1E70F3B20;
-        v46 = v16;
+        v46 = _internalTabBar;
         v76 = v46;
         v77 = v19;
         v78 = v21;
@@ -463,7 +463,7 @@ LABEL_29:
         v71[3] = &unk_1E71049E0;
         v74 = v13;
         v72 = v46;
-        v73 = self;
+        selfCopy = self;
         [(UIViewPropertyAnimator *)v45 addCompletion:v71];
         [(UIViewPropertyAnimator *)v45 startAnimation];
 
@@ -475,32 +475,32 @@ LABEL_30:
     else
     {
       v27 = objc_alloc_init(UIFocusGuide);
-      v83[0] = v16;
+      v83[0] = _internalTabBar;
       v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:1];
       [(UIFocusGuide *)v27 setPreferredFocusEnvironments:v39];
 
-      [v17 addLayoutGuide:v27];
+      [_containerView addLayoutGuide:v27];
       v51 = MEMORY[0x1E69977A0];
-      v56 = [(UILayoutGuide *)v27 topAnchor];
-      v55 = [v17 topAnchor];
-      v54 = [v56 constraintEqualToAnchor:v55];
+      topAnchor = [(UILayoutGuide *)v27 topAnchor];
+      topAnchor2 = [_containerView topAnchor];
+      v54 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v82[0] = v54;
-      v53 = [(UILayoutGuide *)v27 leadingAnchor];
-      v52 = [v17 leadingAnchor];
-      v50 = [v53 constraintEqualToAnchor:v52];
+      leadingAnchor = [(UILayoutGuide *)v27 leadingAnchor];
+      leadingAnchor2 = [_containerView leadingAnchor];
+      v50 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v82[1] = v50;
-      v49 = [v17 trailingAnchor];
-      v48 = [(UILayoutGuide *)v27 trailingAnchor];
-      [v49 constraintEqualToAnchor:v48];
-      v40 = v57 = v17;
+      trailingAnchor = [_containerView trailingAnchor];
+      trailingAnchor2 = [(UILayoutGuide *)v27 trailingAnchor];
+      [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+      v40 = v57 = _containerView;
       v82[2] = v40;
-      v41 = [(UILayoutGuide *)v27 heightAnchor];
-      v42 = [v41 constraintEqualToConstant:1.0];
+      heightAnchor = [(UILayoutGuide *)v27 heightAnchor];
+      v42 = [heightAnchor constraintEqualToConstant:1.0];
       v82[3] = v42;
       v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:4];
       [v51 activateConstraints:v43];
 
-      v17 = v57;
+      _containerView = v57;
       objc_storeStrong(&self->_tabBarOffscreenFocusGuide, v27);
       if (v13)
       {
@@ -517,7 +517,7 @@ LABEL_30:
 LABEL_32:
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
   touchDetectionGestureRecognizer = self->_touchDetectionGestureRecognizer;
   if (!touchDetectionGestureRecognizer)
@@ -525,24 +525,24 @@ LABEL_32:
     return 0;
   }
 
-  return touchDetectionGestureRecognizer == a3 || touchDetectionGestureRecognizer == a4;
+  return touchDetectionGestureRecognizer == recognizer || touchDetectionGestureRecognizer == gestureRecognizer;
 }
 
-- (void)_performTouchDetectionGesture:(id)a3
+- (void)_performTouchDetectionGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v8 = [(UITabBarController *)v5 _internalTabBar];
+  gestureCopy = gesture;
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _internalTabBar = [(UITabBarController *)tabBarController _internalTabBar];
 
-  v6 = [v4 state];
-  if (v6 == 1)
+  state = [gestureCopy state];
+  if (state == 1)
   {
     v7 = 1;
   }
 
   else
   {
-    if (v6 == 2)
+    if (state == 2)
     {
       goto LABEL_6;
     }
@@ -550,29 +550,29 @@ LABEL_32:
     v7 = 0;
   }
 
-  [v8 _setFocusedItemHightlightShouldBeVisible:v7];
+  [_internalTabBar _setFocusedItemHightlightShouldBeVisible:v7];
 LABEL_6:
 }
 
 - (void)updateTabBarLayout
 {
-  v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v15 = [(UITabBarController *)v3 _internalTabBar];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _internalTabBar = [(UITabBarController *)tabBarController _internalTabBar];
 
-  v4 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v5 = [v4 _containerView];
+  tabBarController2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _containerView = [tabBarController2 _containerView];
 
   if ([(_UITabBarControllerVisualStyle_TV *)self _isModernBar])
   {
-    [v5 frame];
+    [_containerView frame];
     v7 = v6;
-    [v15 frame];
+    [_internalTabBar frame];
     v9 = v8;
     tabBarContainerView = self->_tabBarContainerView;
     if (!tabBarContainerView)
     {
-      [v15 setAutoresizingMask:0];
-      v11 = [[_UITabBarContainerView_TV alloc] initWithTabBar:v15];
+      [_internalTabBar setAutoresizingMask:0];
+      v11 = [[_UITabBarContainerView_TV alloc] initWithTabBar:_internalTabBar];
       v12 = self->_tabBarContainerView;
       self->_tabBarContainerView = &v11->super;
 
@@ -580,39 +580,39 @@ LABEL_6:
     }
 
     [(UIView *)tabBarContainerView setFrame:0.0, 46.0, v7, v9];
-    v13 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-    v14 = [v13 _observingScrollView];
+    tabBarController3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
+    _observingScrollView = [tabBarController3 _observingScrollView];
 
-    if (v14)
+    if (_observingScrollView)
     {
-      [(_UITabBarControllerVisualStyle_TV *)self adjustTabBarForContentScrollView:v14];
+      [(_UITabBarControllerVisualStyle_TV *)self adjustTabBarForContentScrollView:_observingScrollView];
     }
 
-    [v15 frame];
+    [_internalTabBar frame];
     [(_UITabBarControllerVisualStyle_TV *)self adjustedTabBarFrame:?];
-    [v15 setFrame:?];
+    [_internalTabBar setFrame:?];
   }
 
   else
   {
-    [v15 frame];
-    [v15 setFrame:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+    [_internalTabBar frame];
+    [_internalTabBar setFrame:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
   }
 }
 
-- (CGRect)adjustedTabBarFrame:(CGRect)a3
+- (CGRect)adjustedTabBarFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v9 = [v8 _isTabBarOffscreen];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _isTabBarOffscreen = [tabBarController _isTabBarOffscreen];
 
-  v10 = [(_UITabBarControllerVisualStyle_TV *)self _isModernBar];
+  _isModernBar = [(_UITabBarControllerVisualStyle_TV *)self _isModernBar];
   if (y >= 0.0)
   {
-    v11 = v9;
+    v11 = _isTabBarOffscreen;
   }
 
   else
@@ -627,7 +627,7 @@ LABEL_6:
 
   else
   {
-    v12 = v9;
+    v12 = _isTabBarOffscreen;
   }
 
   v13 = 0.0;
@@ -644,7 +644,7 @@ LABEL_6:
   v14 = height + 46.0;
   if (y >= 0.0)
   {
-    v15 = v9;
+    v15 = _isTabBarOffscreen;
   }
 
   else
@@ -659,7 +659,7 @@ LABEL_6:
 
   else
   {
-    v16 = v9;
+    v16 = _isTabBarOffscreen;
   }
 
   v17 = y + v14;
@@ -674,7 +674,7 @@ LABEL_6:
     v18 = v17;
   }
 
-  if (!v10)
+  if (!_isModernBar)
   {
     v18 = v13;
   }
@@ -689,15 +689,15 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)adjustedContentViewFrame:(CGRect)a3 viewController:(id)a4
+- (CGRect)adjustedContentViewFrame:(CGRect)frame viewController:(id)controller
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(_UITabBarControllerVisualStyle_TV *)self tabBarView];
-  [v10 frame];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  controllerCopy = controller;
+  tabBarView = [(_UITabBarControllerVisualStyle_TV *)self tabBarView];
+  [tabBarView frame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -708,18 +708,18 @@ LABEL_6:
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  LODWORD(v10) = [(_UITabBarControllerVisualStyle_TV *)self _shouldAdjustContentViewFrameForOffscreenFocus:v9 adjustedTabBarFrame:?];
+  LODWORD(tabBarView) = [(_UITabBarControllerVisualStyle_TV *)self _shouldAdjustContentViewFrameForOffscreenFocus:controllerCopy adjustedTabBarFrame:?];
 
-  if (v10)
+  if (tabBarView)
   {
     v34.origin.x = v20;
     v34.origin.y = v22;
     v34.size.width = v24;
     v34.size.height = v26;
     y = CGRectGetMaxY(v34);
-    v27 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-    v28 = [v27 _containerView];
-    [v28 bounds];
+    tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+    _containerView = [tabBarController _containerView];
+    [_containerView bounds];
     v29 = CGRectGetHeight(v35);
     v36.origin.x = v20;
     v36.origin.y = v22;
@@ -739,12 +739,12 @@ LABEL_6:
   return result;
 }
 
-- (UIEdgeInsets)edgeInsetsForChildViewController:(id)a3
+- (UIEdgeInsets)edgeInsetsForChildViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v6 = [(UITabBarController *)v5 _internalTabBar];
-  [v6 frame];
+  controllerCopy = controller;
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _internalTabBar = [(UITabBarController *)tabBarController _internalTabBar];
+  [_internalTabBar frame];
   [(_UITabBarControllerVisualStyle_TV *)self adjustedTabBarFrame:?];
   v8 = v7;
   v10 = v9;
@@ -760,7 +760,7 @@ LABEL_5:
   }
 
   v16 = 0.0;
-  if ([(_UITabBarControllerVisualStyle_TV *)self _shouldAdjustContentViewFrameForOffscreenFocus:v4 adjustedTabBarFrame:v8, v10, v12, v14])
+  if ([(_UITabBarControllerVisualStyle_TV *)self _shouldAdjustContentViewFrameForOffscreenFocus:controllerCopy adjustedTabBarFrame:v8, v10, v12, v14])
   {
     v21.origin.x = v8;
     v21.origin.y = v10;
@@ -785,10 +785,10 @@ LABEL_6:
 
 - (UIEdgeInsets)overlayInsetsAdjustment
 {
-  v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  if (v3)
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  if (tabBarController)
   {
-    v4 = (v3[94] & 3) - 1;
+    v4 = (tabBarController[94] & 3) - 1;
 
     v5 = 0.0;
     if (v4 <= 1)
@@ -801,12 +801,12 @@ LABEL_6:
 
       else
       {
-        v9 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-        v10 = [v9 selectedViewController];
-        v11 = [v10 view];
-        v12 = [v11 superview];
+        tabBarController2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
+        selectedViewController = [tabBarController2 selectedViewController];
+        view = [selectedViewController view];
+        superview = [view superview];
 
-        if (!v12)
+        if (!superview)
         {
           [(_UITabBarControllerVisualStyle_TV *)self _childViewControllerModernBarTopInset];
           v5 = v13;
@@ -831,11 +831,11 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)_shouldAdjustContentViewFrameForOffscreenFocus:(id)a3 adjustedTabBarFrame:(CGRect)a4
+- (BOOL)_shouldAdjustContentViewFrameForOffscreenFocus:(id)focus adjustedTabBarFrame:(CGRect)frame
 {
-  height = a4.size.height;
+  height = frame.size.height;
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  focusCopy = focus;
   if (os_variant_has_internal_diagnostics())
   {
     v9 = __UIFaultDebugAssertLog();
@@ -875,14 +875,14 @@ LABEL_6:
   else
   {
     v11 = 1;
-    v12 = [v7 _contentOrObservableScrollViewForEdge:1];
-    v13 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-    v14 = [v13 _isTabBarOffscreen];
+    v12 = [focusCopy _contentOrObservableScrollViewForEdge:1];
+    tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+    _isTabBarOffscreen = [tabBarController _isTabBarOffscreen];
 
-    if ((v14 & 1) == 0)
+    if ((_isTabBarOffscreen & 1) == 0)
     {
       v11 = 0;
-      if (([v7 _tvTabBarShouldOverlap] & 1) == 0)
+      if (([focusCopy _tvTabBarShouldOverlap] & 1) == 0)
       {
         if (!v12 || ([v12 _focusTargetOffset], v15 <= height))
         {
@@ -897,23 +897,23 @@ LABEL_6:
 
 - (double)_childViewControllerModernBarTopInset
 {
-  v2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  [v2 _contentOverlayInsets];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  [tabBarController _contentOverlayInsets];
   v4 = 157.0 - v3;
 
   return v4;
 }
 
-- (BOOL)shouldTrackContentScrollView:(id)a3 viewController:(id)a4 tabBarBackgroundRequired:(BOOL)a5
+- (BOOL)shouldTrackContentScrollView:(id)view viewController:(id)controller tabBarBackgroundRequired:(BOOL)required
 {
-  v7 = a3;
-  v8 = a4;
-  if (-[_UITabBarControllerVisualStyle_TV _isModernBar](self, "_isModernBar") && (v9 = [v8 _tvTabBarShouldAutohide], (v9 & 1) == 0))
+  viewCopy = view;
+  controllerCopy = controller;
+  if (-[_UITabBarControllerVisualStyle_TV _isModernBar](self, "_isModernBar") && (v9 = [controllerCopy _tvTabBarShouldAutohide], (v9 & 1) == 0))
   {
     v11 = v9;
-    v12 = [v7 _viewControllerForAncestor];
+    _viewControllerForAncestor = [viewCopy _viewControllerForAncestor];
     v13 = objc_opt_class();
-    v14 = [(UIViewController *)v12 _ancestorViewControllerOfClass:v13 allowModalParent:0];
+    v14 = [(UIViewController *)_viewControllerForAncestor _ancestorViewControllerOfClass:v13 allowModalParent:0];
     v15 = v14;
     if (v14)
     {
@@ -934,54 +934,54 @@ LABEL_6:
   return v10;
 }
 
-- (void)adjustTabBarForContentScrollView:(id)a3
+- (void)adjustTabBarForContentScrollView:(id)view
 {
-  v6 = a3;
-  v4 = [(_UITabBarControllerVisualStyle_TV *)self _isModernBar];
-  v5 = v6;
-  if (v4)
+  viewCopy = view;
+  _isModernBar = [(_UITabBarControllerVisualStyle_TV *)self _isModernBar];
+  v5 = viewCopy;
+  if (_isModernBar)
   {
-    if (v6)
+    if (viewCopy)
     {
-      [v6 contentOffset];
-      [v6 adjustedContentInset];
+      [viewCopy contentOffset];
+      [viewCopy adjustedContentInset];
     }
 
     [(UIView *)self->_tabBarContainerView bounds];
     [(UIView *)self->_tabBarContainerView setFrame:?];
-    v5 = v6;
+    v5 = viewCopy;
   }
 }
 
-- (id)viewControllerForObservableScrollViewFromViewController:(id)a3
+- (id)viewControllerForObservableScrollViewFromViewController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = _UITabBarControllerVisualStyle_TV;
-  v3 = [(_UITabBarControllerVisualStyle *)&v9 viewControllerForObservableScrollViewFromViewController:a3];
+  v3 = [(_UITabBarControllerVisualStyle *)&v9 viewControllerForObservableScrollViewFromViewController:controller];
   if (_UIViewControllerUseContentScrollViewAPI())
   {
     if ([v3 _isSearchController])
     {
-      v4 = [v3 searchResultsController];
+      searchResultsController = [v3 searchResultsController];
     }
 
     else
     {
-      v5 = [v3 presentedViewController];
-      v6 = [v5 _isSearchController];
+      presentedViewController = [v3 presentedViewController];
+      _isSearchController = [presentedViewController _isSearchController];
 
-      if (!v6)
+      if (!_isSearchController)
       {
         goto LABEL_7;
       }
 
-      v7 = [v3 presentedViewController];
-      v4 = [v7 searchResultsController];
+      presentedViewController2 = [v3 presentedViewController];
+      searchResultsController = [presentedViewController2 searchResultsController];
 
-      v3 = v7;
+      v3 = presentedViewController2;
     }
 
-    v3 = v4;
+    v3 = searchResultsController;
   }
 
 LABEL_7:
@@ -999,29 +999,29 @@ LABEL_7:
   return [(_UITabBarControllerVisualStyle_TV *)self _isModernBar];
 }
 
-- (void)_scrollViewManagerDidFinishScrolling:(id)a3
+- (void)_scrollViewManagerDidFinishScrolling:(id)scrolling
 {
   scrollViewManager = self->_scrollViewManager;
   self->_scrollViewManager = 0;
 }
 
-- (id)defaultAnimatorForFromViewController:(id)a3 toViewController:(id)a4
+- (id)defaultAnimatorForFromViewController:(id)controller toViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v8 = objc_alloc_init(_UITabBarTVTransitioner);
-  v9 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v10 = [(UITabBarController *)v9 _viewControllersForTabs];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _viewControllersForTabs = [(UITabBarController *)tabBarController _viewControllersForTabs];
 
-  v11 = [v10 indexOfObject:v6];
+  v11 = [_viewControllersForTabs indexOfObject:controllerCopy];
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [v6 parentModalViewController];
+    parentModalViewController = [controllerCopy parentModalViewController];
 
-    if (v12)
+    if (parentModalViewController)
     {
-      v13 = [v6 parentModalViewController];
-      v11 = [v10 indexOfObject:v13];
+      parentModalViewController2 = [controllerCopy parentModalViewController];
+      v11 = [_viewControllersForTabs indexOfObject:parentModalViewController2];
     }
 
     else
@@ -1030,15 +1030,15 @@ LABEL_7:
     }
   }
 
-  v14 = [v10 indexOfObject:v7];
+  v14 = [_viewControllersForTabs indexOfObject:viewControllerCopy];
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [v7 parentModalViewController];
+    parentModalViewController3 = [viewControllerCopy parentModalViewController];
 
-    if (v15)
+    if (parentModalViewController3)
     {
-      v16 = [v7 parentModalViewController];
-      v14 = [v10 indexOfObject:v16];
+      parentModalViewController4 = [viewControllerCopy parentModalViewController];
+      v14 = [_viewControllersForTabs indexOfObject:parentModalViewController4];
     }
 
     else
@@ -1049,13 +1049,13 @@ LABEL_7:
 
   v19 = v11 == 0x7FFFFFFFFFFFFFFFLL || v14 == 0x7FFFFFFFFFFFFFFFLL || v11 <= v14;
   [(_UITabBarTVTransitioner *)v8 setTransitionFromRight:v19];
-  v20 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v21 = [(UITabBarController *)v20 _internalTabBar];
-  v22 = [v21 _displayStyle];
+  tabBarController2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _internalTabBar = [(UITabBarController *)tabBarController2 _internalTabBar];
+  _displayStyle = [_internalTabBar _displayStyle];
 
-  if (v22 <= 1)
+  if (_displayStyle <= 1)
   {
-    [(_UITabBarTVTransitioner *)v8 setTransitionStyle:v22];
+    [(_UITabBarTVTransitioner *)v8 setTransitionStyle:_displayStyle];
   }
 
   return v8;
@@ -1063,9 +1063,9 @@ LABEL_7:
 
 - (BOOL)_isModernBar
 {
-  v2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v3 = [(UITabBarController *)v2 _internalTabBar];
-  v4 = [v3 _displayStyle] == 1;
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _internalTabBar = [(UITabBarController *)tabBarController _internalTabBar];
+  v4 = [_internalTabBar _displayStyle] == 1;
 
   return v4;
 }

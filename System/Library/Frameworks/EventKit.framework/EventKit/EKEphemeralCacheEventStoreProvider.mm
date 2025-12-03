@@ -1,12 +1,12 @@
 @interface EKEphemeralCacheEventStoreProvider
-- (EKEphemeralCacheEventStoreProvider)initWithCreationBlock:(id)a3;
+- (EKEphemeralCacheEventStoreProvider)initWithCreationBlock:(id)block;
 @end
 
 @implementation EKEphemeralCacheEventStoreProvider
 
-- (EKEphemeralCacheEventStoreProvider)initWithCreationBlock:(id)a3
+- (EKEphemeralCacheEventStoreProvider)initWithCreationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = EKEphemeralCacheEventStoreProvider;
   v5 = [(EKEphemeralCacheEventStoreProvider *)&v9 init];
@@ -18,7 +18,7 @@
 
     [(EKTimedEventStorePurger *)v5->_eventStorePurger setPurgingAllowed:1];
     [(EKTimedEventStorePurger *)v5->_eventStorePurger setTimeout:10.0];
-    [(EKTimedEventStorePurger *)v5->_eventStorePurger setCreationBlock:v4];
+    [(EKTimedEventStorePurger *)v5->_eventStorePurger setCreationBlock:blockCopy];
   }
 
   return v5;

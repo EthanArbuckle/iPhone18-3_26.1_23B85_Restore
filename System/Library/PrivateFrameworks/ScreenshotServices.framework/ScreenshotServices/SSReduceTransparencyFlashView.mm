@@ -1,16 +1,16 @@
 @interface SSReduceTransparencyFlashView
-- (SSReduceTransparencyFlashView)initWithFrame:(CGRect)a3;
-- (void)flashWithCompletion:(id)a3;
+- (SSReduceTransparencyFlashView)initWithFrame:(CGRect)frame;
+- (void)flashWithCompletion:(id)completion;
 - (void)layoutSubviews;
 @end
 
 @implementation SSReduceTransparencyFlashView
 
-- (SSReduceTransparencyFlashView)initWithFrame:(CGRect)a3
+- (SSReduceTransparencyFlashView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SSReduceTransparencyFlashView;
-  v3 = [(SSFlashView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SSFlashView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
   colorView = v3->_colorView;
   v3->_colorView = v4;
@@ -37,9 +37,9 @@
   [(UIView *)self->_colorView setBackgroundColor:v4];
 }
 
-- (void)flashWithCompletion:(id)a3
+- (void)flashWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   oldCompletionBlock = self->_oldCompletionBlock;
   if (oldCompletionBlock)
   {
@@ -61,8 +61,8 @@
   v11[1] = 3221225472;
   v11[2] = __53__SSReduceTransparencyFlashView_flashWithCompletion___block_invoke_2;
   v11[3] = &unk_1E8590800;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [v7 animateWithDuration:6 delay:v13 options:v11 animations:v9 completion:0.0];
 }
 

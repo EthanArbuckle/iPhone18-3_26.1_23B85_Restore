@@ -1,19 +1,19 @@
 @interface GQPProcessorFactory
-+ (BOOL)isTangierTEFDocumentUti:(__CFString *)a3;
-+ (BOOL)isTemplateUti:(__CFString *)a3;
-+ (__CFString)createUtiForDocument:(__CFString *)a3;
-+ (__CFURL)newEmbeddedSageUrlForTangierDocumentUrl:(__CFURL *)a3 uti:(__CFString *)a4 isBundle:(BOOL *)a5;
-+ (int)applicationForDocumentUti:(__CFString *)a3;
++ (BOOL)isTangierTEFDocumentUti:(__CFString *)uti;
++ (BOOL)isTemplateUti:(__CFString *)uti;
++ (__CFString)createUtiForDocument:(__CFString *)document;
++ (__CFURL)newEmbeddedSageUrlForTangierDocumentUrl:(__CFURL *)url uti:(__CFString *)uti isBundle:(BOOL *)bundle;
++ (int)applicationForDocumentUti:(__CFString *)uti;
 @end
 
 @implementation GQPProcessorFactory
 
-+ (BOOL)isTangierTEFDocumentUti:(__CFString *)a3
++ (BOOL)isTangierTEFDocumentUti:(__CFString *)uti
 {
   v4 = 0;
   do
   {
-    v5 = CFStringCompare(a3, off_80878[v4], 0);
+    v5 = CFStringCompare(uti, off_80878[v4], 0);
     if (v5)
     {
       v6 = v4 > 1;
@@ -31,12 +31,12 @@
   return v5 == kCFCompareEqualTo;
 }
 
-+ (BOOL)isTemplateUti:(__CFString *)a3
++ (BOOL)isTemplateUti:(__CFString *)uti
 {
   v4 = 0;
   do
   {
-    v5 = CFStringCompare(a3, off_80890[v4], 0);
+    v5 = CFStringCompare(uti, off_80890[v4], 0);
     if (v5)
     {
       v6 = v4 > 4;
@@ -54,23 +54,23 @@
   return v5 == kCFCompareEqualTo;
 }
 
-+ (__CFURL)newEmbeddedSageUrlForTangierDocumentUrl:(__CFURL *)a3 uti:(__CFString *)a4 isBundle:(BOOL *)a5
++ (__CFURL)newEmbeddedSageUrlForTangierDocumentUrl:(__CFURL *)url uti:(__CFString *)uti isBundle:(BOOL *)bundle
 {
   if (qword_A4320 != -1)
   {
     sub_57DE8();
   }
 
-  result = [qword_A4328 objectForKey:a4];
+  result = [qword_A4328 objectForKey:uti];
   if (result)
   {
-    v9 = [-[__CFURL path](a3 "path")];
+    v9 = [-[__CFURL path](url "path")];
     v10 = 0;
     if ([+[NSFileManager fileExistsAtPath:"fileExistsAtPath:isDirectory:"]
     {
-      if (a5)
+      if (bundle)
       {
-        *a5 = v10;
+        *bundle = v10;
       }
 
       return [NSURL fileURLWithPath:v9];
@@ -85,9 +85,9 @@
   return result;
 }
 
-+ (__CFString)createUtiForDocument:(__CFString *)a3
++ (__CFString)createUtiForDocument:(__CFString *)document
 {
-  v3 = CFURLCreateWithFileSystemPath(0, a3, kCFURLPOSIXPathStyle, 1u);
+  v3 = CFURLCreateWithFileSystemPath(0, document, kCFURLPOSIXPathStyle, 1u);
   v4 = CFURLCopyPathExtension(v3);
   CFRelease(v3);
   if (v4)
@@ -125,7 +125,7 @@ LABEL_11:
   return 0;
 }
 
-+ (int)applicationForDocumentUti:(__CFString *)a3
++ (int)applicationForDocumentUti:(__CFString *)uti
 {
   v4 = qword_A4330;
   if (!qword_A4330)
@@ -138,7 +138,7 @@ LABEL_11:
     v4 = qword_A4330;
   }
 
-  v8 = [v4 objectForKey:{-[__CFString lowercaseString](a3, "lowercaseString")}];
+  v8 = [v4 objectForKey:{-[__CFString lowercaseString](uti, "lowercaseString")}];
   if (v8)
   {
 

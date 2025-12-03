@@ -1,17 +1,17 @@
 @interface AXUIPlatterContainerView
-- (AXUIPlatterContainerView)initWithFrame:(CGRect)a3;
+- (AXUIPlatterContainerView)initWithFrame:(CGRect)frame;
 - (double)platterWidth;
 - (void)layoutSubviews;
 @end
 
 @implementation AXUIPlatterContainerView
 
-- (AXUIPlatterContainerView)initWithFrame:(CGRect)a3
+- (AXUIPlatterContainerView)initWithFrame:(CGRect)frame
 {
   v107[5] = *MEMORY[0x1E69E9840];
   v105.receiver = self;
   v105.super_class = AXUIPlatterContainerView;
-  v3 = [(AXUIPlatterContainerView *)&v105 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AXUIPlatterContainerView *)&v105 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (!v3)
   {
     return v3;
@@ -28,26 +28,26 @@
   v5 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v4];
   [(UIView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   v6 = MEMORY[0x1E69DCA40];
-  v7 = [(AXUIPlatterContainerView *)v3 primaryTextStyle];
-  v8 = [v6 metricsForTextStyle:v7];
+  primaryTextStyle = [(AXUIPlatterContainerView *)v3 primaryTextStyle];
+  v8 = [v6 metricsForTextStyle:primaryTextStyle];
 
   v100 = v8;
   [v8 scaledValueForValue:14.0];
   [(UIView *)v5 _setContinuousCornerRadius:?];
-  v9 = [MEMORY[0x1E69DC888] blackColor];
-  v10 = [v9 CGColor];
-  v11 = [(UIView *)v5 layer];
-  [v11 setShadowColor:v10];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  cGColor = [blackColor CGColor];
+  layer = [(UIView *)v5 layer];
+  [layer setShadowColor:cGColor];
 
-  v12 = [(UIView *)v5 layer];
-  [v12 setShadowOffset:{0.0, 5.0}];
+  layer2 = [(UIView *)v5 layer];
+  [layer2 setShadowOffset:{0.0, 5.0}];
 
-  v13 = [(UIView *)v5 layer];
+  layer3 = [(UIView *)v5 layer];
   LODWORD(v14) = 1045220557;
-  [v13 setShadowOpacity:v14];
+  [layer3 setShadowOpacity:v14];
 
-  v15 = [(UIView *)v5 layer];
-  [v15 setShadowRadius:10.0];
+  layer4 = [(UIView *)v5 layer];
+  [layer4 setShadowRadius:10.0];
 
   if (_UISolariumEnabled())
   {
@@ -57,39 +57,39 @@
   [(AXUIPlatterContainerView *)v3 addSubview:v5];
   if ([(AXUIPlatterContainerView *)v3 shouldMimicNotificationBannerTopOffset])
   {
-    v16 = [(AXUIPlatterContainerView *)v3 safeAreaLayoutGuide];
+    safeAreaLayoutGuide = [(AXUIPlatterContainerView *)v3 safeAreaLayoutGuide];
   }
 
   else
   {
-    v16 = v3;
+    safeAreaLayoutGuide = v3;
   }
 
-  v17 = v16;
+  v17 = safeAreaLayoutGuide;
   v104 = v3;
   if ([(AXUIPlatterContainerView *)v3 shouldMimicNotificationBannerTopOffset])
   {
     if (MEMORY[0x1C68E7D90]())
     {
       v18 = v5;
-      v19 = [getAXUIDisplayManagerClass() sharedDisplayManager];
-      v20 = [v19 activeWindows];
-      v21 = [v20 allValues];
-      v22 = [v21 lastObject];
-      v23 = [v22 allValues];
-      v24 = [v23 lastObject];
+      sharedDisplayManager = [getAXUIDisplayManagerClass() sharedDisplayManager];
+      activeWindows = [sharedDisplayManager activeWindows];
+      allValues = [activeWindows allValues];
+      lastObject = [allValues lastObject];
+      allValues2 = [lastObject allValues];
+      lastObject2 = [allValues2 lastObject];
 
-      if (!v24)
+      if (!lastObject2)
       {
-        v25 = [getAXUIDisplayManagerClass() sharedDisplayManager];
-        v26 = [v25 passiveWindows];
-        v27 = [v26 allValues];
-        v28 = [v27 lastObject];
-        v29 = [v28 allValues];
-        v24 = [v29 lastObject];
+        sharedDisplayManager2 = [getAXUIDisplayManagerClass() sharedDisplayManager];
+        passiveWindows = [sharedDisplayManager2 passiveWindows];
+        allValues3 = [passiveWindows allValues];
+        lastObject3 = [allValues3 lastObject];
+        allValues4 = [lastObject3 allValues];
+        lastObject2 = [allValues4 lastObject];
       }
 
-      [v24 safeAreaInsets];
+      [lastObject2 safeAreaInsets];
       if (v30 == 0.0)
       {
         v31 = 10.0;
@@ -103,8 +103,8 @@
 
     else
     {
-      v24 = [MEMORY[0x1E69DC668] sharedApplication];
-      v32 = [v24 delegate];
+      lastObject2 = [MEMORY[0x1E69DC668] sharedApplication];
+      delegate = [lastObject2 delegate];
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
 
@@ -113,17 +113,17 @@
       }
 
       v18 = v5;
-      v33 = [MEMORY[0x1E69DC668] sharedApplication];
-      v34 = [v33 delegate];
-      v35 = [v34 window];
-      [v35 safeAreaInsets];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      delegate2 = [mEMORY[0x1E69DC668] delegate];
+      window = [delegate2 window];
+      [window safeAreaInsets];
       v31 = 10.0;
       if (v36 != 0.0)
       {
-        v37 = [MEMORY[0x1E69DC938] currentDevice];
-        v38 = [v37 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-        if (v38 == 1)
+        if (userInterfaceIdiom == 1)
         {
           v31 = 10.0;
         }
@@ -144,26 +144,26 @@ LABEL_25:
   v31 = 68.0;
 LABEL_26:
   v103 = v5;
-  v97 = [(UIView *)v5 leadingAnchor];
-  v95 = [(AXUIPlatterContainerView *)v17 leadingAnchor];
-  v93 = [v97 constraintGreaterThanOrEqualToAnchor:v95 constant:32.0];
+  leadingAnchor = [(UIView *)v5 leadingAnchor];
+  leadingAnchor2 = [(AXUIPlatterContainerView *)v17 leadingAnchor];
+  v93 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:32.0];
   v107[0] = v93;
-  v91 = [(UIView *)v5 trailingAnchor];
-  v89 = [(AXUIPlatterContainerView *)v17 trailingAnchor];
-  v87 = [v91 constraintLessThanOrEqualToAnchor:v89 constant:-32.0];
+  trailingAnchor = [(UIView *)v5 trailingAnchor];
+  trailingAnchor2 = [(AXUIPlatterContainerView *)v17 trailingAnchor];
+  v87 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-32.0];
   v107[1] = v87;
-  v39 = [(UIView *)v5 topAnchor];
-  v40 = [(AXUIPlatterContainerView *)v17 topAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40 constant:v31];
+  topAnchor = [(UIView *)v5 topAnchor];
+  topAnchor2 = [(AXUIPlatterContainerView *)v17 topAnchor];
+  v41 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v31];
   v107[2] = v41;
-  v42 = [(UIView *)v5 bottomAnchor];
-  v43 = [(AXUIPlatterContainerView *)v17 bottomAnchor];
-  v44 = [v42 constraintLessThanOrEqualToAnchor:v43 constant:-v31];
+  bottomAnchor = [(UIView *)v5 bottomAnchor];
+  bottomAnchor2 = [(AXUIPlatterContainerView *)v17 bottomAnchor];
+  v44 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-v31];
   v107[3] = v44;
-  v45 = [(UIView *)v5 centerXAnchor];
+  centerXAnchor = [(UIView *)v5 centerXAnchor];
   v99 = v17;
-  v46 = [(AXUIPlatterContainerView *)v17 centerXAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
+  centerXAnchor2 = [(AXUIPlatterContainerView *)v17 centerXAnchor];
+  v47 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v107[4] = v47;
   v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v107 count:5];
   v102 = [v48 mutableCopy];
@@ -174,8 +174,8 @@ LABEL_26:
   if (v50 > 0.0)
   {
     v51 = v50;
-    v52 = [(UIView *)v103 widthAnchor];
-    v53 = [v52 constraintEqualToConstant:v51];
+    widthAnchor = [(UIView *)v103 widthAnchor];
+    v53 = [widthAnchor constraintEqualToConstant:v51];
 
     LODWORD(v54) = 1144766464;
     [v53 setPriority:v54];
@@ -186,39 +186,39 @@ LABEL_26:
   [(UIView *)v55 setTranslatesAutoresizingMaskIntoConstraints:0];
   if ([(AXUIPlatterContainerView *)v104 allowsScrolling])
   {
-    v56 = objc_opt_new();
-    [v56 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v56 addSubview:v55];
-    v57 = [(UIView *)v103 contentView];
-    [v57 addSubview:v56];
+    contentView4 = objc_opt_new();
+    [contentView4 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [contentView4 addSubview:v55];
+    contentView = [(UIView *)v103 contentView];
+    [contentView addSubview:contentView4];
 
-    v58 = [v56 heightAnchor];
-    v59 = [(UIView *)v55 heightAnchor];
-    v60 = [v58 constraintEqualToAnchor:v59];
+    heightAnchor = [contentView4 heightAnchor];
+    heightAnchor2 = [(UIView *)v55 heightAnchor];
+    v60 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
 
     LODWORD(v61) = 1132003328;
     v62 = v60;
     v86 = v60;
     [v60 setPriority:v61];
-    v98 = [(UIView *)v55 topAnchor];
-    v96 = [v56 topAnchor];
-    v94 = [v98 constraintEqualToAnchor:v96];
+    topAnchor3 = [(UIView *)v55 topAnchor];
+    topAnchor4 = [contentView4 topAnchor];
+    v94 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v106[0] = v94;
-    v92 = [(UIView *)v55 bottomAnchor];
-    v90 = [v56 bottomAnchor];
-    v88 = [v92 constraintEqualToAnchor:v90];
+    bottomAnchor3 = [(UIView *)v55 bottomAnchor];
+    bottomAnchor4 = [contentView4 bottomAnchor];
+    v88 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v106[1] = v88;
-    v85 = [(UIView *)v55 leadingAnchor];
-    v84 = [v56 leadingAnchor];
-    v83 = [v85 constraintEqualToAnchor:v84];
+    leadingAnchor3 = [(UIView *)v55 leadingAnchor];
+    leadingAnchor4 = [contentView4 leadingAnchor];
+    v83 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v106[2] = v83;
-    v63 = [(UIView *)v55 trailingAnchor];
-    v64 = [v56 trailingAnchor];
-    v65 = [v63 constraintEqualToAnchor:v64];
+    trailingAnchor3 = [(UIView *)v55 trailingAnchor];
+    trailingAnchor4 = [contentView4 trailingAnchor];
+    v65 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v106[3] = v65;
-    v66 = [(UIView *)v55 widthAnchor];
-    v67 = [v56 widthAnchor];
-    v68 = [v66 constraintEqualToAnchor:v67];
+    widthAnchor2 = [(UIView *)v55 widthAnchor];
+    widthAnchor3 = [contentView4 widthAnchor];
+    v68 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
     v106[4] = v68;
     v106[5] = v62;
     v69 = [MEMORY[0x1E695DEC8] arrayWithObjects:v106 count:6];
@@ -229,8 +229,8 @@ LABEL_26:
     v3 = v104;
 
     v71 = MEMORY[0x1E696ACD8];
-    v72 = [(UIView *)v103 contentView];
-    v73 = [v71 ax_constraintsToMakeView:v56 sameDimensionsAsView:v72];
+    contentView2 = [(UIView *)v103 contentView];
+    v73 = [v71 ax_constraintsToMakeView:contentView4 sameDimensionsAsView:contentView2];
     [v102 addObjectsFromArray:v73];
 
     v74 = v86;
@@ -238,12 +238,12 @@ LABEL_26:
 
   else
   {
-    v75 = [(UIView *)v103 contentView];
-    [v75 addSubview:v55];
+    contentView3 = [(UIView *)v103 contentView];
+    [contentView3 addSubview:v55];
 
     v76 = MEMORY[0x1E696ACD8];
-    v56 = [(UIView *)v103 contentView];
-    v74 = [v76 ax_constraintsToMakeView:v55 sameDimensionsAsView:v56];
+    contentView4 = [(UIView *)v103 contentView];
+    v74 = [v76 ax_constraintsToMakeView:v55 sameDimensionsAsView:contentView4];
     v70 = v102;
     [v102 addObjectsFromArray:v74];
   }
@@ -272,17 +272,17 @@ LABEL_26:
   {
     [(AXUIPlatterContainerView *)self frame];
     v5 = AXCornerRadiusForBackgroundWithSize(v3, v4);
-    v6 = [(AXUIPlatterContainerView *)self platterView];
-    v7 = [v6 layer];
-    [v7 setCornerRadius:v5];
+    platterView = [(AXUIPlatterContainerView *)self platterView];
+    layer = [platterView layer];
+    [layer setCornerRadius:v5];
   }
 }
 
 - (double)platterWidth
 {
   v2 = MEMORY[0x1E69DCA40];
-  v3 = [(AXUIPlatterContainerView *)self primaryTextStyle];
-  v4 = [v2 metricsForTextStyle:v3];
+  primaryTextStyle = [(AXUIPlatterContainerView *)self primaryTextStyle];
+  v4 = [v2 metricsForTextStyle:primaryTextStyle];
 
   [v4 scaledValueForValue:316.0];
   v6 = v5;

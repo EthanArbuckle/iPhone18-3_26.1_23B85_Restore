@@ -2,20 +2,20 @@
 - ($F24F406B2B787EFB06265DBA3D28CBD5)allowedTimeRange;
 - (NSHashTable)timeObservers;
 - (RCTimeController)activeTimeController;
-- (id)createNewWaveformViewControllerWithDataSource:(id)a3 isOverview:(BOOL)a4;
-- (void)_configureWaveformViewWithDataSource:(id)a3;
+- (id)createNewWaveformViewControllerWithDataSource:(id)source isOverview:(BOOL)overview;
+- (void)_configureWaveformViewWithDataSource:(id)source;
 - (void)_syncWaveformCompactness;
-- (void)addTimeObserver:(id)a3;
-- (void)removeTimeObserver:(id)a3;
+- (void)addTimeObserver:(id)observer;
+- (void)removeTimeObserver:(id)observer;
 - (void)reset;
-- (void)setCurrentRate:(float)a3;
-- (void)setCurrentTime:(double)a3;
-- (void)setTargetTime:(double)a3;
-- (void)setTimeControllerState:(int64_t)a3;
-- (void)updatePowerLevel:(float)a3 startTime:(double)a4 endTime:(double)a5;
-- (void)updatePowerLevels:(id)a3 startTime:(double)a4 endTime:(double)a5;
+- (void)setCurrentRate:(float)rate;
+- (void)setCurrentTime:(double)time;
+- (void)setTargetTime:(double)time;
+- (void)setTimeControllerState:(int64_t)state;
+- (void)updatePowerLevel:(float)level startTime:(double)time endTime:(double)endTime;
+- (void)updatePowerLevels:(id)levels startTime:(double)time endTime:(double)endTime;
 - (void)viewDidLoad;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation AMVMWaveformViewController
@@ -33,34 +33,34 @@
   [(AMVMWaveformViewController *)self _configureWaveformViewWithDataSource:self->_waveformDataSource];
 }
 
-- (void)updatePowerLevels:(id)a3 startTime:(double)a4 endTime:(double)a5
+- (void)updatePowerLevels:(id)levels startTime:(double)time endTime:(double)endTime
 {
-  v19 = a3;
-  v8 = +[NSMutableData dataWithLength:](NSMutableData, "dataWithLength:", 4 * [v19 count]);
-  v9 = [v8 mutableBytes];
-  v10 = [v19 count];
+  levelsCopy = levels;
+  v8 = +[NSMutableData dataWithLength:](NSMutableData, "dataWithLength:", 4 * [levelsCopy count]);
+  mutableBytes = [v8 mutableBytes];
+  v10 = [levelsCopy count];
   if (v10 >= 1)
   {
     v11 = v10;
     for (i = 0; i != v11; i = i + 1)
     {
-      v13 = [v19 objectAtIndexedSubscript:i];
+      v13 = [levelsCopy objectAtIndexedSubscript:i];
       [v13 floatValue];
-      v9[i] = v14;
+      mutableBytes[i] = v14;
     }
   }
 
-  v15 = RCTimeRangeMake(a4, a5);
+  v15 = RCTimeRangeMake(time, endTime);
   v17 = [[RCWaveformSegment alloc] initWithTimeRange:v8 averagePowerLevelData:v15, v16];
-  v18 = [(AMVMWaveformViewController *)self waveformDataSource];
-  [v18 appendAveragePowerLevelsByDigestingWaveformSegment:v17];
+  waveformDataSource = [(AMVMWaveformViewController *)self waveformDataSource];
+  [waveformDataSource appendAveragePowerLevelsByDigestingWaveformSegment:v17];
 
   [(AMVMWaveformViewController *)self setCurrentTime:0.0];
 }
 
-- (void)updatePowerLevel:(float)a3 startTime:(double)a4 endTime:(double)a5
+- (void)updatePowerLevel:(float)level startTime:(double)time endTime:(double)endTime
 {
-  v14 = a3 + 3.0;
+  v14 = level + 3.0;
   v8 = +[NSMutableData data];
   v9 = 8;
   do
@@ -70,46 +70,46 @@
   }
 
   while (v9);
-  v10 = RCTimeRangeMake(a4, a5);
+  v10 = RCTimeRangeMake(time, endTime);
   v12 = [[RCWaveformSegment alloc] initWithTimeRange:v8 averagePowerLevelData:v10, v11];
-  v13 = [(AMVMWaveformViewController *)self waveformDataSource];
-  [v13 appendAveragePowerLevelsByDigestingWaveformSegment:v12];
+  waveformDataSource = [(AMVMWaveformViewController *)self waveformDataSource];
+  [waveformDataSource appendAveragePowerLevelsByDigestingWaveformSegment:v12];
 
-  [(AMVMWaveformViewController *)self setCurrentTime:a5];
+  [(AMVMWaveformViewController *)self setCurrentTime:endTime];
 }
 
 - (void)reset
 {
   [(AMVMWaveformViewController *)self setCurrentTime:0.0];
-  v4 = [(AMVMWaveformViewController *)self waveformViewController];
-  v3 = [v4 waveformViewController];
-  [v3 setDataSource:0];
+  waveformViewController = [(AMVMWaveformViewController *)self waveformViewController];
+  v4WaveformViewController = [waveformViewController waveformViewController];
+  [v4WaveformViewController setDataSource:0];
 }
 
-- (void)setTimeControllerState:(int64_t)a3
+- (void)setTimeControllerState:(int64_t)state
 {
-  self->_timeControllerState = a3;
-  if (a3 == 2)
+  self->_timeControllerState = state;
+  if (state == 2)
   {
     v4 = [[RCWaveformGenerator alloc] initWithSegmentFlushInterval:30.0];
     v5 = [[AMWaveformDataSource alloc] initWithWaveformGenerator:v4];
     [(AMVMWaveformViewController *)self setWaveformDataSource:v5];
 
-    v6 = [(AMVMWaveformViewController *)self waveformDataSource];
-    [v6 beginLoading];
+    waveformDataSource = [(AMVMWaveformViewController *)self waveformDataSource];
+    [waveformDataSource beginLoading];
 
-    v7 = [(AMVMWaveformViewController *)self waveformViewController];
-    v8 = [v7 waveformViewController];
-    v9 = [(AMVMWaveformViewController *)self waveformDataSource];
-    [v8 setDataSource:v9];
+    waveformViewController = [(AMVMWaveformViewController *)self waveformViewController];
+    v7WaveformViewController = [waveformViewController waveformViewController];
+    waveformDataSource2 = [(AMVMWaveformViewController *)self waveformDataSource];
+    [v7WaveformViewController setDataSource:waveformDataSource2];
   }
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(NSHashTable *)self->_timeObservers allObjects];
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allObjects = [(NSHashTable *)self->_timeObservers allObjects];
+  v11 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
     v12 = v11;
@@ -121,7 +121,7 @@
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allObjects);
         }
 
         [*(*(&v17 + 1) + 8 * v14) timeController:self didChangeState:self->_timeControllerState];
@@ -129,7 +129,7 @@
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v12);
@@ -137,9 +137,9 @@
 
   if (self->_timeControllerState <= 1uLL)
   {
-    v15 = [(AMVMWaveformViewController *)self waveformViewController];
-    v16 = [v15 waveformViewController];
-    [v16 setScrubbingEnabled:0];
+    waveformViewController2 = [(AMVMWaveformViewController *)self waveformViewController];
+    v15WaveformViewController = [waveformViewController2 waveformViewController];
+    [v15WaveformViewController setScrubbingEnabled:0];
   }
 }
 
@@ -158,29 +158,29 @@
   return timeObservers;
 }
 
-- (void)addTimeObserver:(id)a3
+- (void)addTimeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(AMVMWaveformViewController *)self timeObservers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  timeObservers = [(AMVMWaveformViewController *)self timeObservers];
+  [timeObservers addObject:observerCopy];
 }
 
-- (void)removeTimeObserver:(id)a3
+- (void)removeTimeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(AMVMWaveformViewController *)self timeObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  timeObservers = [(AMVMWaveformViewController *)self timeObservers];
+  [timeObservers removeObject:observerCopy];
 }
 
-- (void)setCurrentTime:(double)a3
+- (void)setCurrentTime:(double)time
 {
-  self->_currentTime = a3;
+  self->_currentTime = time;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSHashTable *)self->_timeObservers allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allObjects = [(NSHashTable *)self->_timeObservers allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -192,30 +192,30 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) timeController:self didChangeCurrentTime:a3];
+        [*(*(&v10 + 1) + 8 * v9) timeController:self didChangeCurrentTime:time];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setCurrentRate:(float)a3
+- (void)setCurrentRate:(float)rate
 {
-  self->_currentRate = a3;
+  self->_currentRate = rate;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSHashTable *)self->_timeObservers allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allObjects = [(NSHashTable *)self->_timeObservers allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v8 = v6;
@@ -227,64 +227,64 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
-        *&v7 = a3;
+        *&v7 = rate;
         [*(*(&v11 + 1) + 8 * v10) timeController:self didChangeRate:v7];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)setTargetTime:(double)a3
+- (void)setTargetTime:(double)time
 {
-  self->_targetTime = a3;
+  self->_targetTime = time;
   if ([(AMVMWaveformViewController *)self timeControllerState]!= &dword_0 + 2)
   {
 
-    [(AMVMWaveformViewController *)self setCurrentTime:a3];
+    [(AMVMWaveformViewController *)self setCurrentTime:time];
   }
 }
 
-- (id)createNewWaveformViewControllerWithDataSource:(id)a3 isOverview:(BOOL)a4
+- (id)createNewWaveformViewControllerWithDataSource:(id)source isOverview:(BOOL)overview
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[RCAVWaveformViewController alloc] initWithWaveformDataSource:v6 isOverview:v4 isLockScreen:0 delegate:self];
+  overviewCopy = overview;
+  sourceCopy = source;
+  v7 = [[RCAVWaveformViewController alloc] initWithWaveformDataSource:sourceCopy isOverview:overviewCopy isLockScreen:0 delegate:self];
 
   [(AMVMWaveformViewController *)self setCurrentTime:0.0];
   [(AMVMWaveformViewController *)self setCurrentDuration:600.0];
   [(AMVMWaveformViewController *)self setActiveTimeController:self];
-  v8 = [(AMVMWaveformViewController *)self activeTimeController];
-  [(RCAVWaveformViewController *)v7 setActiveTimeController:v8];
+  activeTimeController = [(AMVMWaveformViewController *)self activeTimeController];
+  [(RCAVWaveformViewController *)v7 setActiveTimeController:activeTimeController];
 
-  v9 = [(RCAVWaveformViewController *)v7 waveformViewController];
-  [v9 setIsPlayback:1];
+  waveformViewController = [(RCAVWaveformViewController *)v7 waveformViewController];
+  [waveformViewController setIsPlayback:1];
 
   return v7;
 }
 
-- (void)_configureWaveformViewWithDataSource:(id)a3
+- (void)_configureWaveformViewWithDataSource:(id)source
 {
-  v11 = a3;
+  sourceCopy = source;
   waveformViewController = self->_waveformViewController;
   if (!waveformViewController)
   {
-    v5 = [(AMVMWaveformViewController *)self createNewWaveformViewControllerWithDataSource:v11 isOverview:0];
+    v5 = [(AMVMWaveformViewController *)self createNewWaveformViewControllerWithDataSource:sourceCopy isOverview:0];
     [(AMVMWaveformViewController *)self setWaveformViewController:v5];
-    v6 = [(AMVMWaveformViewController *)self view];
-    v7 = [v5 view];
-    [v6 addSubview:v7];
+    view = [(AMVMWaveformViewController *)self view];
+    view2 = [v5 view];
+    [view addSubview:view2];
 
-    v8 = [v5 waveformViewController];
-    [v8 setIsOverview:0];
+    waveformViewController = [v5 waveformViewController];
+    [waveformViewController setIsOverview:0];
 
     [(AMVMWaveformViewController *)self addChildViewController:v5];
     [(RCAVWaveformViewController *)self->_waveformViewController didMoveToParentViewController:self];
@@ -293,38 +293,38 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_activeTimeController);
-  [(RCAVWaveformViewController *)waveformViewController reloadWaveformDataSource:v11 withActiveTimeController:WeakRetained];
+  [(RCAVWaveformViewController *)waveformViewController reloadWaveformDataSource:sourceCopy withActiveTimeController:WeakRetained];
 
-  v10 = [(RCAVWaveformViewController *)self->_waveformViewController waveformViewController];
-  [v10 setIsOverview:0];
+  waveformViewController2 = [(RCAVWaveformViewController *)self->_waveformViewController waveformViewController];
+  [waveformViewController2 setIsOverview:0];
 
   [(AMVMWaveformViewController *)self _syncWaveformCompactness];
 }
 
 - (void)_syncWaveformCompactness
 {
-  v3 = [(AMVMWaveformViewController *)self waveformViewController];
-  v4 = [v3 waveformViewController];
-  [v4 setShowPlayBarOnly:0];
+  waveformViewController = [(AMVMWaveformViewController *)self waveformViewController];
+  v3WaveformViewController = [waveformViewController waveformViewController];
+  [v3WaveformViewController setShowPlayBarOnly:0];
 
-  v5 = [(AMVMWaveformViewController *)self waveformViewController];
-  v6 = [v5 waveformViewController];
-  [v6 setIsCompactView:0];
+  waveformViewController2 = [(AMVMWaveformViewController *)self waveformViewController];
+  v5WaveformViewController = [waveformViewController2 waveformViewController];
+  [v5WaveformViewController setIsCompactView:0];
 
-  v7 = [(AMVMWaveformViewController *)self waveformViewController];
-  [v7 setUserInteractionEnabled:0];
+  waveformViewController3 = [(AMVMWaveformViewController *)self waveformViewController];
+  [waveformViewController3 setUserInteractionEnabled:0];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = AMVMWaveformViewController;
   [(AMVMWaveformViewController *)&v7 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     [(RCAVWaveformViewController *)self->_waveformViewController willMoveToParentViewController:0];
-    v5 = [(RCAVWaveformViewController *)self->_waveformViewController view];
-    [v5 removeFromSuperview];
+    view = [(RCAVWaveformViewController *)self->_waveformViewController view];
+    [view removeFromSuperview];
 
     [(RCAVWaveformViewController *)self->_waveformViewController removeFromParentViewController];
     waveformViewController = self->_waveformViewController;

@@ -1,49 +1,49 @@
 @interface SHSheetRemoteSceneViewController
 - (SHSheetContentPresenter)presenter;
-- (SHSheetRemoteSceneViewController)initWithSession:(id)a3;
-- (id)_localCustomizationForRemoteProxy:(id)a3;
+- (SHSheetRemoteSceneViewController)initWithSession:(id)session;
+- (id)_localCustomizationForRemoteProxy:(id)proxy;
 - (int64_t)_hostProcessType;
-- (void)_applyValueFromRemoteCustomization:(id)a3 toLocalCustomization:(id)a4;
+- (void)_applyValueFromRemoteCustomization:(id)customization toLocalCustomization:(id)localCustomization;
 - (void)_handleCollaborationOptions;
 - (void)_handleLocalOptions;
 - (void)_handleOptions;
 - (void)dealloc;
-- (void)didUpdateAirDropTransferWithChange:(id)a3;
+- (void)didUpdateAirDropTransferWithChange:(id)change;
 - (void)installSceneHostingView;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)reloadActivity:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)reloadActivity:(id)activity;
 - (void)reloadContent;
-- (void)reloadMetadata:(id)a3;
-- (void)runScrollingTestWithName:(id)a3 type:(int64_t)a4 completionHandler:(id)a5;
-- (void)scene:(id)a3 didReceiveAction:(id)a4;
-- (void)scene:(id)a3 didReceiveCollaborationOptionUpdateAction:(id)a4;
-- (void)scene:(id)a3 didReceiveMetadataUpdateAction:(id)a4;
-- (void)scene:(id)a3 didReceiveOptionUpdateAction:(id)a4;
-- (void)scene:(id)a3 didReceiveSizeUpdateAction:(id)a4;
-- (void)scene:(id)a3 didReceiveSuggestionAction:(id)a4;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)startPulsingActivity:(id)a3 localizedTitle:(id)a4;
-- (void)stopPulsingActivity:(id)a3;
-- (void)updateWithViewModel:(id)a3;
+- (void)reloadMetadata:(id)metadata;
+- (void)runScrollingTestWithName:(id)name type:(int64_t)type completionHandler:(id)handler;
+- (void)scene:(id)scene didReceiveAction:(id)action;
+- (void)scene:(id)scene didReceiveCollaborationOptionUpdateAction:(id)action;
+- (void)scene:(id)scene didReceiveMetadataUpdateAction:(id)action;
+- (void)scene:(id)scene didReceiveOptionUpdateAction:(id)action;
+- (void)scene:(id)scene didReceiveSizeUpdateAction:(id)action;
+- (void)scene:(id)scene didReceiveSuggestionAction:(id)action;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)startPulsingActivity:(id)activity localizedTitle:(id)title;
+- (void)stopPulsingActivity:(id)activity;
+- (void)updateWithViewModel:(id)model;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation SHSheetRemoteSceneViewController
 
 - (int64_t)_hostProcessType
 {
-  v3 = [(SHSheetRemoteSceneViewController *)self viewIfLoaded];
-  v4 = [v3 window];
+  viewIfLoaded = [(SHSheetRemoteSceneViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (!v4)
+  if (!window)
   {
     return 0;
   }
 
-  v5 = [(SHSheetRemoteSceneViewController *)self viewIfLoaded];
-  v6 = [v5 window];
+  viewIfLoaded2 = [(SHSheetRemoteSceneViewController *)self viewIfLoaded];
+  window2 = [viewIfLoaded2 window];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -70,13 +70,13 @@
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "SHSheetRemoteSceneViewController: viewDidLayoutSubviews", buf, 2u);
   }
 
-  v4 = [(SHSheetRemoteSceneViewController *)self scene];
+  scene = [(SHSheetRemoteSceneViewController *)self scene];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __57__SHSheetRemoteSceneViewController_viewDidLayoutSubviews__block_invoke;
   v5[3] = &unk_1E71F9150;
   v5[4] = self;
-  [v4 updateWithChange:v5];
+  [scene updateWithChange:v5];
 }
 
 void __57__SHSheetRemoteSceneViewController_viewDidLayoutSubviews__block_invoke(uint64_t a1, void *a2)
@@ -86,19 +86,19 @@ void __57__SHSheetRemoteSceneViewController_viewDidLayoutSubviews__block_invoke(
   [v3 setPresentationStyle:{objc_msgSend(v2, "effectivePresentationStyle")}];
 }
 
-- (SHSheetRemoteSceneViewController)initWithSession:(id)a3
+- (SHSheetRemoteSceneViewController)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v11.receiver = self;
   v11.super_class = SHSheetRemoteSceneViewController;
   v6 = [(SHSheetRemoteSceneViewController *)&v11 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
-    v8 = [v5 remoteScene];
+    objc_storeStrong(&v6->_session, session);
+    remoteScene = [sessionCopy remoteScene];
     scene = v7->_scene;
-    v7->_scene = v8;
+    v7->_scene = remoteScene;
 
     [(SHSheetRemoteScene *)v7->_scene setDelegate:v7];
     [(SHSheetRemoteSceneViewController *)v7 installSceneHostingView];
@@ -107,20 +107,20 @@ void __57__SHSheetRemoteSceneViewController_viewDidLayoutSubviews__block_invoke(
   return v7;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  containerCopy = container;
   v8.receiver = self;
   v8.super_class = SHSheetRemoteSceneViewController;
-  [(SHSheetRemoteSceneViewController *)&v8 preferredContentSizeDidChangeForChildContentContainer:v4];
-  [v4 preferredContentSize];
+  [(SHSheetRemoteSceneViewController *)&v8 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
+  [containerCopy preferredContentSize];
   [(SHSheetRemoteSceneViewController *)self setPreferredContentSize:?];
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
-    [v4 preferredContentSize];
+    [containerCopy preferredContentSize];
     v7 = NSStringFromCGSize(v14);
     *buf = 138412546;
     v10 = v6;
@@ -139,38 +139,38 @@ void __57__SHSheetRemoteSceneViewController_viewDidLayoutSubviews__block_invoke(
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = self;
+      selfCopy = self;
       _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "remote scene view controller %@ installing hosting view", buf, 0xCu);
     }
 
     [(SHSheetRemoteSceneViewController *)self setDidInstallHostingView:1];
-    v4 = [(SHSheetRemoteSceneViewController *)self scene];
-    v5 = [v4 hostingController];
-    v6 = [v5 sceneViewController];
+    scene = [(SHSheetRemoteSceneViewController *)self scene];
+    hostingController = [scene hostingController];
+    sceneViewController = [hostingController sceneViewController];
 
-    v23 = v6;
-    [(SHSheetRemoteSceneViewController *)self addChildViewController:v6];
-    v7 = [v6 view];
-    v8 = [(SHSheetRemoteSceneViewController *)self view];
-    [v8 setAccessibilityIdentifier:@"ShareSheet.RemoteContainerView"];
-    [v8 addSubview:v7];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    v23 = sceneViewController;
+    [(SHSheetRemoteSceneViewController *)self addChildViewController:sceneViewController];
+    view = [sceneViewController view];
+    view2 = [(SHSheetRemoteSceneViewController *)self view];
+    [view2 setAccessibilityIdentifier:@"ShareSheet.RemoteContainerView"];
+    [view2 addSubview:view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
     v17 = MEMORY[0x1E696ACD8];
-    v22 = [v7 leadingAnchor];
-    v21 = [v8 leadingAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    leadingAnchor = [view leadingAnchor];
+    leadingAnchor2 = [view2 leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v24[0] = v20;
-    v19 = [v7 trailingAnchor];
-    v18 = [v8 trailingAnchor];
-    v16 = [v19 constraintEqualToAnchor:v18];
+    trailingAnchor = [view trailingAnchor];
+    trailingAnchor2 = [view2 trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v24[1] = v16;
-    v9 = [v7 topAnchor];
-    v10 = [v8 topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    topAnchor = [view topAnchor];
+    topAnchor2 = [view2 topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v24[2] = v11;
-    v12 = [v7 bottomAnchor];
-    v13 = [v8 bottomAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    bottomAnchor = [view bottomAnchor];
+    bottomAnchor2 = [view2 bottomAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v24[3] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
     [v17 activateConstraints:v15];
@@ -194,11 +194,11 @@ void __57__SHSheetRemoteSceneViewController_viewDidLayoutSubviews__block_invoke(
   [(SHSheetRemoteSceneViewController *)self installSceneHostingView];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v9.receiver = self;
   v9.super_class = SHSheetRemoteSceneViewController;
-  [(SHSheetRemoteSceneViewController *)&v9 viewIsAppearing:a3];
+  [(SHSheetRemoteSceneViewController *)&v9 viewIsAppearing:appearing];
   v4 = share_sheet_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -206,15 +206,15 @@ void __57__SHSheetRemoteSceneViewController_viewDidLayoutSubviews__block_invoke(
     _os_log_impl(&dword_18B359000, v4, OS_LOG_TYPE_DEFAULT, "SHSheetRemoteSceneViewController: viewIsAppearing", buf, 2u);
   }
 
-  v5 = [(SHSheetRemoteSceneViewController *)self _hostProcessType];
-  v6 = [(SHSheetRemoteSceneViewController *)self scene];
+  _hostProcessType = [(SHSheetRemoteSceneViewController *)self _hostProcessType];
+  scene = [(SHSheetRemoteSceneViewController *)self scene];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__SHSheetRemoteSceneViewController_viewIsAppearing___block_invoke;
   v7[3] = &unk_1E71F9178;
   v7[4] = self;
-  v7[5] = v5;
-  [v6 updateWithChange:v7];
+  v7[5] = _hostProcessType;
+  [scene updateWithChange:v7];
 }
 
 void __52__SHSheetRemoteSceneViewController_viewIsAppearing___block_invoke(uint64_t a1, void *a2)
@@ -225,7 +225,7 @@ void __52__SHSheetRemoteSceneViewController_viewIsAppearing___block_invoke(uint6
   [v4 setPresentationStyle:{objc_msgSend(*(a1 + 32), "effectivePresentationStyle")}];
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   v4 = share_sheet_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -246,117 +246,117 @@ void __52__SHSheetRemoteSceneViewController_viewIsAppearing___block_invoke(uint6
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "SHSheetRemoteSceneViewController: dealloc", buf, 2u);
   }
 
-  v4 = [(SHSheetRemoteSceneViewController *)self scene];
-  [v4 invalidate];
+  scene = [(SHSheetRemoteSceneViewController *)self scene];
+  [scene invalidate];
 
   v5.receiver = self;
   v5.super_class = SHSheetRemoteSceneViewController;
   [(SHSheetRemoteSceneViewController *)&v5 dealloc];
 }
 
-- (void)scene:(id)a3 didReceiveAction:(id)a4
+- (void)scene:(id)scene didReceiveAction:(id)action
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  actionCopy = action;
   v6 = share_sheet_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134217984;
-    v13 = [v5 type];
+    type = [actionCopy type];
     _os_log_impl(&dword_18B359000, v6, OS_LOG_TYPE_DEFAULT, "did receive action with type:%ld", &v12, 0xCu);
   }
 
-  v7 = [v5 type];
-  if (v7 > 5)
+  type2 = [actionCopy type];
+  if (type2 > 5)
   {
-    if (v7 <= 8)
+    if (type2 <= 8)
     {
-      if (v7 == 6)
+      if (type2 == 6)
       {
-        v8 = [(SHSheetRemoteSceneViewController *)self presenter];
-        [v8 handleActionsEdit];
+        presenter = [(SHSheetRemoteSceneViewController *)self presenter];
+        [presenter handleActionsEdit];
       }
 
-      else if (v7 == 7)
+      else if (type2 == 7)
       {
-        v8 = [(SHSheetRemoteSceneViewController *)self presenter];
-        [v8 handleNext];
+        presenter = [(SHSheetRemoteSceneViewController *)self presenter];
+        [presenter handleNext];
       }
 
       else
       {
-        v8 = [(SHSheetRemoteSceneViewController *)self session];
-        v9 = [v8 activityViewController];
-        [v9 dismissViewControllerAnimated:0 completion:0];
+        presenter = [(SHSheetRemoteSceneViewController *)self session];
+        activityViewController = [presenter activityViewController];
+        [activityViewController dismissViewControllerAnimated:0 completion:0];
       }
 
       goto LABEL_30;
     }
 
-    switch(v7)
+    switch(type2)
     {
       case 9:
-        v10 = [(SHSheetRemoteSceneViewController *)self currentTest];
-        v11 = [v10 completionHandler];
-        v11[2]();
+        currentTest = [(SHSheetRemoteSceneViewController *)self currentTest];
+        completionHandler = [currentTest completionHandler];
+        completionHandler[2]();
 
         [(SHSheetRemoteSceneViewController *)self setCurrentTest:0];
         break;
       case 12:
-        v8 = [(SHSheetRemoteSceneViewController *)self presenter];
-        [v8 handleRemoteCustomPresentation];
+        presenter = [(SHSheetRemoteSceneViewController *)self presenter];
+        [presenter handleRemoteCustomPresentation];
         goto LABEL_30;
       case 13:
-        v8 = [(SHSheetRemoteSceneViewController *)self presenter];
-        [v8 handleRemoteCustomDismissal];
+        presenter = [(SHSheetRemoteSceneViewController *)self presenter];
+        [presenter handleRemoteCustomDismissal];
         goto LABEL_30;
     }
   }
 
   else
   {
-    if (v7 > 2)
+    if (type2 > 2)
     {
-      if (v7 == 3)
+      if (type2 == 3)
       {
-        v8 = [(SHSheetRemoteSceneViewController *)self presenter];
-        [v8 didSelectCollaborativeAction];
+        presenter = [(SHSheetRemoteSceneViewController *)self presenter];
+        [presenter didSelectCollaborativeAction];
       }
 
-      else if (v7 == 4)
+      else if (type2 == 4)
       {
-        v8 = [(SHSheetRemoteSceneViewController *)self presenter];
-        [v8 didSelectSendCopyAction];
+        presenter = [(SHSheetRemoteSceneViewController *)self presenter];
+        [presenter didSelectSendCopyAction];
       }
 
       else
       {
-        v8 = [(SHSheetRemoteSceneViewController *)self presenter];
-        [v8 handleClose];
+        presenter = [(SHSheetRemoteSceneViewController *)self presenter];
+        [presenter handleClose];
       }
 
       goto LABEL_30;
     }
 
-    switch(v7)
+    switch(type2)
     {
       case 0:
-        v8 = [(SHSheetRemoteSceneViewController *)self presenter];
-        [v8 handleCustomHeaderButton];
+        presenter = [(SHSheetRemoteSceneViewController *)self presenter];
+        [presenter handleCustomHeaderButton];
         goto LABEL_30;
       case 1:
         if (!_ShareSheetPlatformWantsRemoteOptions())
         {
-          v8 = [(SHSheetRemoteSceneViewController *)self presenter];
-          [v8 handleOptions];
+          presenter = [(SHSheetRemoteSceneViewController *)self presenter];
+          [presenter handleOptions];
           goto LABEL_30;
         }
 
         [(SHSheetRemoteSceneViewController *)self _handleOptions];
         break;
       case 2:
-        v8 = [(SHSheetRemoteSceneViewController *)self presenter];
-        [v8 handleCollaborationOptions];
+        presenter = [(SHSheetRemoteSceneViewController *)self presenter];
+        [presenter handleCollaborationOptions];
 LABEL_30:
 
         break;
@@ -364,9 +364,9 @@ LABEL_30:
   }
 }
 
-- (void)scene:(id)a3 didReceiveSizeUpdateAction:(id)a4
+- (void)scene:(id)scene didReceiveSizeUpdateAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = share_sheet_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -374,18 +374,18 @@ LABEL_30:
     _os_log_impl(&dword_18B359000, v6, OS_LOG_TYPE_DEFAULT, "SHSheetRemoteSceneViewController received size update", v9, 2u);
   }
 
-  -[SHSheetRemoteSceneViewController setIsCompactSize:](self, "setIsCompactSize:", [v5 isCompact]);
-  -[SHSheetRemoteSceneViewController setIsResizable:](self, "setIsResizable:", [v5 isResizable]);
-  v7 = [v5 isSLMEnabled];
+  -[SHSheetRemoteSceneViewController setIsCompactSize:](self, "setIsCompactSize:", [actionCopy isCompact]);
+  -[SHSheetRemoteSceneViewController setIsResizable:](self, "setIsResizable:", [actionCopy isResizable]);
+  isSLMEnabled = [actionCopy isSLMEnabled];
 
-  [(SHSheetRemoteSceneViewController *)self setIsSLMEnabled:v7];
-  v8 = [(SHSheetRemoteSceneViewController *)self presenter];
-  [v8 didUpdateSheetSize];
+  [(SHSheetRemoteSceneViewController *)self setIsSLMEnabled:isSLMEnabled];
+  presenter = [(SHSheetRemoteSceneViewController *)self presenter];
+  [presenter didUpdateSheetSize];
 }
 
-- (void)scene:(id)a3 didReceiveMetadataUpdateAction:(id)a4
+- (void)scene:(id)scene didReceiveMetadataUpdateAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = share_sheet_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -393,14 +393,14 @@ LABEL_30:
     _os_log_impl(&dword_18B359000, v6, OS_LOG_TYPE_DEFAULT, "SHSheetRemoteSceneViewController received metadata update", v8, 2u);
   }
 
-  v7 = [v5 metadata];
+  metadata = [actionCopy metadata];
 
-  [(SHSheetRemoteSceneViewController *)self setRemoteHeaderMetadata:v7];
+  [(SHSheetRemoteSceneViewController *)self setRemoteHeaderMetadata:metadata];
 }
 
-- (void)scene:(id)a3 didReceiveSuggestionAction:(id)a4
+- (void)scene:(id)scene didReceiveSuggestionAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = share_sheet_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -408,15 +408,15 @@ LABEL_30:
     _os_log_impl(&dword_18B359000, v6, OS_LOG_TYPE_DEFAULT, "SHSheetRemoteSceneViewController received suggestion action", v9, 2u);
   }
 
-  v7 = [(SHSheetRemoteSceneViewController *)self presenter];
-  v8 = [v5 suggestionReason];
+  presenter = [(SHSheetRemoteSceneViewController *)self presenter];
+  suggestionReason = [actionCopy suggestionReason];
 
-  [v7 handleInfoSuggestionPress:v8];
+  [presenter handleInfoSuggestionPress:suggestionReason];
 }
 
-- (void)scene:(id)a3 didReceiveOptionUpdateAction:(id)a4
+- (void)scene:(id)scene didReceiveOptionUpdateAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = share_sheet_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -424,12 +424,12 @@ LABEL_30:
     _os_log_impl(&dword_18B359000, v6, OS_LOG_TYPE_DEFAULT, "SHSheetRemoteSceneViewController received option update", v10, 2u);
   }
 
-  v7 = [v5 customization];
+  customization = [actionCopy customization];
 
-  v8 = [(SHSheetRemoteSceneViewController *)self _localCustomizationForRemoteProxy:v7];
+  v8 = [(SHSheetRemoteSceneViewController *)self _localCustomizationForRemoteProxy:customization];
   if (v8)
   {
-    [(SHSheetRemoteSceneViewController *)self _applyValueFromRemoteCustomization:v7 toLocalCustomization:v8];
+    [(SHSheetRemoteSceneViewController *)self _applyValueFromRemoteCustomization:customization toLocalCustomization:v8];
   }
 
   else
@@ -442,9 +442,9 @@ LABEL_30:
   }
 }
 
-- (void)scene:(id)a3 didReceiveCollaborationOptionUpdateAction:(id)a4
+- (void)scene:(id)scene didReceiveCollaborationOptionUpdateAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = share_sheet_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -452,23 +452,23 @@ LABEL_30:
     _os_log_impl(&dword_18B359000, v6, OS_LOG_TYPE_DEFAULT, "SHSheetRemoteSceneViewController received collaboration options update", v9, 2u);
   }
 
-  v7 = [(SHSheetRemoteSceneViewController *)self session];
-  v8 = [v7 collaborationItem];
-  [v8 setShareOptions:v5];
+  session = [(SHSheetRemoteSceneViewController *)self session];
+  collaborationItem = [session collaborationItem];
+  [collaborationItem setShareOptions:actionCopy];
 }
 
-- (id)_localCustomizationForRemoteProxy:(id)a3
+- (id)_localCustomizationForRemoteProxy:(id)proxy
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SHSheetRemoteSceneViewController *)self session];
-  v6 = [v5 customizationGroups];
+  proxyCopy = proxy;
+  session = [(SHSheetRemoteSceneViewController *)self session];
+  customizationGroups = [session customizationGroups];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = v6;
+  v7 = customizationGroups;
   v23 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v23)
   {
@@ -489,8 +489,8 @@ LABEL_30:
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v11 = [v10 customizations];
-        v12 = [v11 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        customizations = [v10 customizations];
+        v12 = [customizations countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v12)
         {
           v13 = v12;
@@ -501,13 +501,13 @@ LABEL_30:
             {
               if (*v26 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(customizations);
               }
 
               v16 = *(*(&v25 + 1) + 8 * j);
-              v17 = [v16 identifier];
-              v18 = [v4 identifier];
-              v19 = [v17 isEqualToString:v18];
+              identifier = [v16 identifier];
+              identifier2 = [proxyCopy identifier];
+              v19 = [identifier isEqualToString:identifier2];
 
               if (v19)
               {
@@ -518,7 +518,7 @@ LABEL_30:
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            v13 = [customizations countByEnumeratingWithState:&v25 objects:v33 count:16];
             if (v13)
             {
               continue;
@@ -549,15 +549,15 @@ LABEL_19:
   return v20;
 }
 
-- (void)_applyValueFromRemoteCustomization:(id)a3 toLocalCustomization:(id)a4
+- (void)_applyValueFromRemoteCustomization:(id)customization toLocalCustomization:(id)localCustomization
 {
-  v6 = a3;
-  v7 = a4;
+  customizationCopy = customization;
+  localCustomizationCopy = localCustomization;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
-    -[NSObject _setValue:](v8, "_setValue:", [v6 value]);
+    v8 = localCustomizationCopy;
+    -[NSObject _setValue:](v8, "_setValue:", [customizationCopy value]);
   }
 
   else
@@ -565,9 +565,9 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v7;
-      v10 = [v6 text];
-      [v9 _setText:v10];
+      v9 = localCustomizationCopy;
+      text = [customizationCopy text];
+      [v9 _setText:text];
 
       goto LABEL_6;
     }
@@ -575,8 +575,8 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
-      -[NSObject _setSelectedOptionIndex:](v8, "_setSelectedOptionIndex:", [v6 selectedOptionIndex]);
+      v8 = localCustomizationCopy;
+      -[NSObject _setSelectedOptionIndex:](v8, "_setSelectedOptionIndex:", [customizationCopy selectedOptionIndex]);
     }
 
     else
@@ -584,7 +584,7 @@ LABEL_19:
       v8 = share_sheet_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        [(SHSheetRemoteSceneViewController *)v6 _applyValueFromRemoteCustomization:v7 toLocalCustomization:v8];
+        [(SHSheetRemoteSceneViewController *)customizationCopy _applyValueFromRemoteCustomization:localCustomizationCopy toLocalCustomization:v8];
       }
     }
   }
@@ -595,10 +595,10 @@ LABEL_6:
 
 - (void)_handleOptions
 {
-  v3 = [(SHSheetRemoteSceneViewController *)self session];
-  v4 = [v3 supportsCollaboration];
+  session = [(SHSheetRemoteSceneViewController *)self session];
+  supportsCollaboration = [session supportsCollaboration];
 
-  if (v4)
+  if (supportsCollaboration)
   {
 
     [(SHSheetRemoteSceneViewController *)self _handleCollaborationOptions];
@@ -620,74 +620,74 @@ LABEL_6:
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "SHSheetRemoteSceneViewController sending options to remote", buf, 2u);
   }
 
-  v4 = [(SHSheetRemoteSceneViewController *)self session];
-  v5 = [v4 customizationGroups];
+  session = [(SHSheetRemoteSceneViewController *)self session];
+  customizationGroups = [session customizationGroups];
 
-  v6 = [(SHSheetRemoteSceneViewController *)self scene];
+  scene = [(SHSheetRemoteSceneViewController *)self scene];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__SHSheetRemoteSceneViewController__handleLocalOptions__block_invoke;
   v8[3] = &unk_1E71F9150;
-  v9 = v5;
-  v7 = v5;
-  [v6 updateWithChange:v8];
+  v9 = customizationGroups;
+  v7 = customizationGroups;
+  [scene updateWithChange:v8];
 }
 
 - (void)_handleCollaborationOptions
 {
-  v3 = [(SHSheetRemoteSceneViewController *)self session];
-  v4 = [v3 collaborationItem];
-  v5 = [v4 shareOptions];
+  session = [(SHSheetRemoteSceneViewController *)self session];
+  collaborationItem = [session collaborationItem];
+  shareOptions = [collaborationItem shareOptions];
 
-  v6 = [(SHSheetRemoteSceneViewController *)self scene];
+  scene = [(SHSheetRemoteSceneViewController *)self scene];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__SHSheetRemoteSceneViewController__handleCollaborationOptions__block_invoke;
   v8[3] = &unk_1E71F9150;
-  v9 = v5;
-  v7 = v5;
-  [v6 updateWithChange:v8];
+  v9 = shareOptions;
+  v7 = shareOptions;
+  [scene updateWithChange:v8];
 }
 
-- (void)updateWithViewModel:(id)a3
+- (void)updateWithViewModel:(id)model
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modelCopy = model;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = modelCopy;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "SHSheetRemoteSceneViewController updating remote with view model: %@", buf, 0xCu);
   }
 
-  v6 = [(SHSheetRemoteSceneViewController *)self session];
-  v7 = [v6 createClientContext];
+  session = [(SHSheetRemoteSceneViewController *)self session];
+  createClientContext = [session createClientContext];
 
-  v8 = [(SHSheetRemoteSceneViewController *)self scene];
+  scene = [(SHSheetRemoteSceneViewController *)self scene];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__SHSheetRemoteSceneViewController_updateWithViewModel___block_invoke;
   v10[3] = &unk_1E71F9150;
-  v11 = v7;
-  v9 = v7;
-  [v8 updateWithChange:v10];
+  v11 = createClientContext;
+  v9 = createClientContext;
+  [scene updateWithChange:v10];
 }
 
-- (void)didUpdateAirDropTransferWithChange:(id)a3
+- (void)didUpdateAirDropTransferWithChange:(id)change
 {
-  v4 = a3;
-  v6 = [[SHSheetAirDropTransferUpdateAction alloc] initWithAirDropTransferChange:v4];
+  changeCopy = change;
+  v6 = [[SHSheetAirDropTransferUpdateAction alloc] initWithAirDropTransferChange:changeCopy];
 
-  v5 = [(SHSheetRemoteSceneViewController *)self scene];
-  [v5 sendAction:v6];
+  scene = [(SHSheetRemoteSceneViewController *)self scene];
+  [scene sendAction:v6];
 }
 
-- (void)reloadMetadata:(id)a3
+- (void)reloadMetadata:(id)metadata
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v15[0] = v4;
+  metadataCopy = metadata;
+  v15[0] = metadataCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -742,56 +742,56 @@ void __51__SHSheetRemoteSceneViewController_reloadMetadata___block_invoke_2(uint
 - (void)reloadContent
 {
   v4 = [[SHSheetContentReloadAction alloc] initWithActivityUUID:0];
-  v3 = [(SHSheetRemoteSceneViewController *)self scene];
-  [v3 sendAction:v4];
+  scene = [(SHSheetRemoteSceneViewController *)self scene];
+  [scene sendAction:v4];
 }
 
-- (void)reloadActivity:(id)a3
+- (void)reloadActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = [SHSheetContentReloadAction alloc];
-  v6 = [v4 activityUUID];
+  activityUUID = [activityCopy activityUUID];
 
-  v8 = [(SHSheetContentReloadAction *)v5 initWithActivityUUID:v6];
-  v7 = [(SHSheetRemoteSceneViewController *)self scene];
-  [v7 sendAction:v8];
+  v8 = [(SHSheetContentReloadAction *)v5 initWithActivityUUID:activityUUID];
+  scene = [(SHSheetRemoteSceneViewController *)self scene];
+  [scene sendAction:v8];
 }
 
-- (void)startPulsingActivity:(id)a3 localizedTitle:(id)a4
+- (void)startPulsingActivity:(id)activity localizedTitle:(id)title
 {
-  v6 = a4;
-  v7 = [a3 activityUUID];
-  v10 = [SHSheetPulsingEvent startPulsingEventWithActivityUUID:v7 localizedTitle:v6];
+  titleCopy = title;
+  activityUUID = [activity activityUUID];
+  v10 = [SHSheetPulsingEvent startPulsingEventWithActivityUUID:activityUUID localizedTitle:titleCopy];
 
   v8 = [[SHSheetPulsingAction alloc] initWithEvent:v10];
-  v9 = [(SHSheetRemoteSceneViewController *)self scene];
-  [v9 sendAction:v8];
+  scene = [(SHSheetRemoteSceneViewController *)self scene];
+  [scene sendAction:v8];
 }
 
-- (void)stopPulsingActivity:(id)a3
+- (void)stopPulsingActivity:(id)activity
 {
-  v4 = [a3 activityUUID];
-  v7 = [SHSheetPulsingEvent stopPulsingEventWithActivityUUID:v4];
+  activityUUID = [activity activityUUID];
+  v7 = [SHSheetPulsingEvent stopPulsingEventWithActivityUUID:activityUUID];
 
   v5 = [[SHSheetPulsingAction alloc] initWithEvent:v7];
-  v6 = [(SHSheetRemoteSceneViewController *)self scene];
-  [v6 sendAction:v5];
+  scene = [(SHSheetRemoteSceneViewController *)self scene];
+  [scene sendAction:v5];
 }
 
-- (void)runScrollingTestWithName:(id)a3 type:(int64_t)a4 completionHandler:(id)a5
+- (void)runScrollingTestWithName:(id)name type:(int64_t)type completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SHSheetRemoteSceneViewController *)self currentTest];
+  nameCopy = name;
+  handlerCopy = handler;
+  currentTest = [(SHSheetRemoteSceneViewController *)self currentTest];
 
   v11 = share_sheet_log();
   v12 = v11;
-  if (v10)
+  if (currentTest)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [SHSheetRemoteSceneViewController runScrollingTestWithName:v8 type:self completionHandler:&v12->super];
+      [SHSheetRemoteSceneViewController runScrollingTestWithName:nameCopy type:self completionHandler:&v12->super];
     }
   }
 
@@ -800,25 +800,25 @@ void __51__SHSheetRemoteSceneViewController_reloadMetadata___block_invoke_2(uint
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v8;
+      v17 = nameCopy;
       _os_log_impl(&dword_18B359000, &v12->super, OS_LOG_TYPE_DEFAULT, "run scrolling test with name:%@", &v16, 0xCu);
     }
 
-    v12 = [[SHSheetScrollingTest alloc] initWithName:v8 type:a4 completionHandler:v9];
+    v12 = [[SHSheetScrollingTest alloc] initWithName:nameCopy type:type completionHandler:handlerCopy];
     [(SHSheetRemoteSceneViewController *)self setCurrentTest:v12];
     v13 = share_sheet_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412546;
-      v17 = v8;
+      v17 = nameCopy;
       v18 = 2048;
-      v19 = a4;
+      typeCopy = type;
       _os_log_impl(&dword_18B359000, v13, OS_LOG_TYPE_DEFAULT, "sending scrolling test action with test name:%@ type:%ld", &v16, 0x16u);
     }
 
     v14 = [[SHSheetScrollingTestAction alloc] initWithTest:v12];
-    v15 = [(SHSheetRemoteSceneViewController *)self scene];
-    [v15 sendAction:v14];
+    scene = [(SHSheetRemoteSceneViewController *)self scene];
+    [scene sendAction:v14];
   }
 }
 

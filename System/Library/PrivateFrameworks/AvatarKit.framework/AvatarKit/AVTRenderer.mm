@@ -1,46 +1,46 @@
 @interface AVTRenderer
-- (BOOL)_wantsCustomMainPassPostProcessForRenderer:(id)a3;
+- (BOOL)_wantsCustomMainPassPostProcessForRenderer:(id)renderer;
 - (BOOL)arMode;
 - (BOOL)deprecated_ntk_isPaused;
 - (float)_cek_currentPointOfViewSensorHeight;
-- (id)_renderer:(id)a3 subdivDataForHash:(id)a4;
+- (id)_renderer:(id)_renderer subdivDataForHash:(id)hash;
 - (id)faceTrackingDelegate;
-- (void)__setAvatar:(id)a3;
+- (void)__setAvatar:(id)avatar;
 - (void)_animateToNoTrackingState;
-- (void)_avatarWantsSpecificTechniqueDidChange:(id)a3;
-- (void)_avtSetupWithOptions:(id)a3;
-- (void)_cek_applyBlendshapeWeightsInHierarchyUsingBlock:(id)a3;
+- (void)_avatarWantsSpecificTechniqueDidChange:(id)change;
+- (void)_avtSetupWithOptions:(id)options;
+- (void)_cek_applyBlendshapeWeightsInHierarchyUsingBlock:(id)block;
 - (void)_cek_beginTransaction;
-- (void)_cek_fetchBlendshapeWeightsInHierarchyUsingBlock:(id)a3;
-- (void)_cek_renderAtTime:(double)a3 enableAntialiasing:(BOOL)a4 viewport:(CGRect)a5 commandBuffer:(id)a6 passDescriptor:(id)a7;
-- (void)_cek_setCurrentPointOfViewFocalLength:(float)a3;
+- (void)_cek_fetchBlendshapeWeightsInHierarchyUsingBlock:(id)block;
+- (void)_cek_renderAtTime:(double)time enableAntialiasing:(BOOL)antialiasing viewport:(CGRect)viewport commandBuffer:(id)buffer passDescriptor:(id)descriptor;
+- (void)_cek_setCurrentPointOfViewFocalLength:(float)length;
 - (void)_detachAvatarFromRenderer;
 - (void)_implementCEKWorkaroundIfNeeded;
-- (void)_renderer:(id)a3 didApplyAnimationsAtTime:(double)a4;
-- (void)_renderer:(id)a3 didBuildSubdivDataForHash:(id)a4 dataProvider:(id)a5;
-- (void)_renderer:(id)a3 updateAtTime:(double)a4;
-- (void)_setAvatar:(id)a3;
-- (void)_updatePhysicsWorldForAvatarARScaleAndARMode:(BOOL)a3;
+- (void)_renderer:(id)_renderer didApplyAnimationsAtTime:(double)time;
+- (void)_renderer:(id)_renderer didBuildSubdivDataForHash:(id)hash dataProvider:(id)provider;
+- (void)_renderer:(id)_renderer updateAtTime:(double)time;
+- (void)_setAvatar:(id)avatar;
+- (void)_updatePhysicsWorldForAvatarARScaleAndARMode:(BOOL)mode;
 - (void)arMode;
 - (void)clearOutAnimationToNoTrackingState;
 - (void)dealloc;
-- (void)deprecated_ntk_setPhysicsWorldTimeStep:(float)a3;
-- (void)faceTracker:(id)a3 session:(id)a4 didFailWithError:(id)a5;
-- (void)faceTracker:(id)a3 sessionInterruptionEnded:(id)a4;
-- (void)faceTracker:(id)a3 sessionWasInterrupted:(id)a4;
-- (void)faceTrackerDidUpdate:(id)a3 withARFrame:(id)a4;
-- (void)renderAtTime:(double)a3 viewport:(CGRect)a4 commandBuffer:(id)a5 passDescriptor:(id)a6;
-- (void)renderWithViewport:(CGRect)a3 commandBuffer:(id)a4 passDescriptor:(id)a5;
-- (void)renderer:(id)a3 commandBufferDidCompleteWithError:(id)a4;
-- (void)renderer:(id)a3 didFallbackToDefaultTextureForSource:(id)a4 message:(id)a5;
-- (void)setArMode:(BOOL)a3;
-- (void)setAvtRendererTechnique:(id)a3;
-- (void)setAvt_antialiasingMode:(unint64_t)a3;
-- (void)setEnableReticle:(BOOL)a3;
-- (void)setFaceTracker:(id)a3;
-- (void)setFaceTrackingDelegate:(id)a3;
-- (void)setPresentationConfiguration:(id)a3;
-- (void)updateProjectionMatrixForARModeIfNeeded:(CGSize)a3;
+- (void)deprecated_ntk_setPhysicsWorldTimeStep:(float)step;
+- (void)faceTracker:(id)tracker session:(id)session didFailWithError:(id)error;
+- (void)faceTracker:(id)tracker sessionInterruptionEnded:(id)ended;
+- (void)faceTracker:(id)tracker sessionWasInterrupted:(id)interrupted;
+- (void)faceTrackerDidUpdate:(id)update withARFrame:(id)frame;
+- (void)renderAtTime:(double)time viewport:(CGRect)viewport commandBuffer:(id)buffer passDescriptor:(id)descriptor;
+- (void)renderWithViewport:(CGRect)viewport commandBuffer:(id)buffer passDescriptor:(id)descriptor;
+- (void)renderer:(id)renderer commandBufferDidCompleteWithError:(id)error;
+- (void)renderer:(id)renderer didFallbackToDefaultTextureForSource:(id)source message:(id)message;
+- (void)setArMode:(BOOL)mode;
+- (void)setAvtRendererTechnique:(id)technique;
+- (void)setAvt_antialiasingMode:(unint64_t)mode;
+- (void)setEnableReticle:(BOOL)reticle;
+- (void)setFaceTracker:(id)tracker;
+- (void)setFaceTrackingDelegate:(id)delegate;
+- (void)setPresentationConfiguration:(id)configuration;
+- (void)updateProjectionMatrixForARModeIfNeeded:(CGSize)needed;
 @end
 
 @implementation AVTRenderer
@@ -50,9 +50,9 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v3 = [MEMORY[0x1E696AAE8] mainBundle];
-    v4 = [v3 bundleIdentifier];
-    v5 = [v4 isEqualToString:@"com.apple.clips"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v5 = [bundleIdentifier isEqualToString:@"com.apple.clips"];
 
     if (v5)
     {
@@ -77,29 +77,29 @@
   }
 }
 
-- (void)_avtSetupWithOptions:(id)a3
+- (void)_avtSetupWithOptions:(id)options
 {
-  v22 = a3;
+  optionsCopy = options;
   v4 = objc_alloc_init(MEMORY[0x1E696AE68]);
   lock = self->_lock;
   self->_lock = v4;
 
   v6 = objc_alloc(MEMORY[0x1E69DF388]);
-  v7 = [v6 avt_init];
-  [(AVTRenderer *)self setWorld:v7];
+  avt_init = [v6 avt_init];
+  [(AVTRenderer *)self setWorld:avt_init];
 
-  v8 = [(AVTRenderer *)self world];
-  v9 = [v8 physicsWorld];
+  world = [(AVTRenderer *)self world];
+  physicsWorld = [world physicsWorld];
   LODWORD(v10) = 4.0;
-  [v9 setSpeed:v10];
+  [physicsWorld setSpeed:v10];
 
   v11 = [AVTAvatarEnvironment alloc];
-  v12 = [(AVTRenderer *)self world];
-  v13 = [(AVTAvatarEnvironment *)v11 initAndInstallInScene:v12 renderer:self];
+  world2 = [(AVTRenderer *)self world];
+  v13 = [(AVTAvatarEnvironment *)v11 initAndInstallInScene:world2 renderer:self];
   environment = self->_environment;
   self->_environment = v13;
 
-  v15 = [v22 objectForKeyedSubscript:@"AVTRendererOptionEnableFaceTrackingLossFeedback"];
+  v15 = [optionsCopy objectForKeyedSubscript:@"AVTRendererOptionEnableFaceTrackingLossFeedback"];
   v16 = v15;
   if (v15)
   {
@@ -108,7 +108,7 @@
 
   self->_enableFaceTrackingLossFeedback = v15;
   self->_enableReticle = 0;
-  v17 = [v22 objectForKeyedSubscript:@"AVTRendererOptionInitiallyConfigureForARMode"];
+  v17 = [optionsCopy objectForKeyedSubscript:@"AVTRendererOptionInitiallyConfigureForARMode"];
   v18 = v17;
   if (v17 && ![v17 BOOLValue])
   {
@@ -129,14 +129,14 @@
   [(AVTRenderer *)self set_commandBufferStatusMonitor:self];
   [(AVTRenderer *)self _allowGPUBackgroundExecution];
   [(AVTRenderer *)self _implementCEKWorkaroundIfNeeded];
-  v21 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v21 addObserver:self selector:sel__avatarWantsSpecificTechniqueDidChange_ name:@"kAVTAvatarWantsSpecificTechniqueDidChangeNotificationName" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__avatarWantsSpecificTechniqueDidChange_ name:@"kAVTAvatarWantsSpecificTechniqueDidChangeNotificationName" object:0];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(AVTRenderer *)self _detachAvatarFromRenderer];
   [(AVTFaceTracker *)self->_faceTracker removeDelegate:self];
@@ -145,27 +145,27 @@
   [(AVTRenderer *)&v4 dealloc];
 }
 
-- (void)_updatePhysicsWorldForAvatarARScaleAndARMode:(BOOL)a3
+- (void)_updatePhysicsWorldForAvatarARScaleAndARMode:(BOOL)mode
 {
-  v5 = [(AVTRenderer *)self world];
-  v12 = [v5 physicsWorld];
+  world = [(AVTRenderer *)self world];
+  physicsWorld = [world physicsWorld];
 
-  [v12 scale];
+  [physicsWorld scale];
   if (v6 != 100.0)
   {
-    v7 = [(AVTRenderer *)self avatar];
-    if (v7 && a3)
+    avatar = [(AVTRenderer *)self avatar];
+    if (avatar && mode)
     {
-      v9 = [(AVTRenderer *)self avatar];
-      [v9 arScale];
+      avatar2 = [(AVTRenderer *)self avatar];
+      [avatar2 arScale];
       *&v11 = 1.0 / v10;
-      [v12 setScale:v11];
+      [physicsWorld setScale:v11];
     }
 
     else
     {
       LODWORD(v8) = 1.0;
-      [v12 setScale:v8];
+      [physicsWorld setScale:v8];
     }
   }
 }
@@ -185,9 +185,9 @@
   return [(AVTPresentationConfiguration *)self->_presentationConfiguration usesAR];
 }
 
-- (void)setArMode:(BOOL)a3
+- (void)setArMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   if ((setArMode__done_1 & 1) == 0)
   {
     setArMode__done_1 = 1;
@@ -198,7 +198,7 @@
     }
   }
 
-  if (v3)
+  if (modeCopy)
   {
     v6 = objc_alloc_init(AVTAugmentedRealityPresentationConfiguration);
   }
@@ -212,10 +212,10 @@
   [(AVTRenderer *)self setPresentationConfiguration:v6];
 }
 
-- (void)updateProjectionMatrixForARModeIfNeeded:(CGSize)a3
+- (void)updateProjectionMatrixForARModeIfNeeded:(CGSize)needed
 {
-  height = a3.height;
-  width = a3.width;
+  height = needed.height;
+  width = needed.width;
   if ([(AVTPresentationConfiguration *)self->_presentationConfiguration usesAR])
   {
     if (![(AVTAvatarEnvironment *)self->_environment showReticle]&& width != 0.0 && height != 0.0)
@@ -229,24 +229,24 @@
         v14 = v12;
         v15 = v11;
         [(AVTRenderer *)self setFramingMode:@"cameraARMode"];
-        v13 = [(AVTRenderer *)self pointOfView];
-        v18 = [v13 camera];
+        pointOfView = [(AVTRenderer *)self pointOfView];
+        camera = [pointOfView camera];
 
-        [v18 avt_setSimdProjectionTransform:{v17, v16, v15, v14}];
+        [camera avt_setSimdProjectionTransform:{v17, v16, v15, v14}];
       }
     }
   }
 }
 
-- (void)faceTrackerDidUpdate:(id)a3 withARFrame:(id)a4
+- (void)faceTrackerDidUpdate:(id)update withARFrame:(id)frame
 {
-  v19 = a3;
-  v6 = a4;
+  updateCopy = update;
+  frameCopy = frame;
   lastFaceTrackerUpdateTimestamp = self->_lastFaceTrackerUpdateTimestamp;
-  [v19 lastUpdateTimestamp];
+  [updateCopy lastUpdateTimestamp];
   if (lastFaceTrackerUpdateTimestamp < v8)
   {
-    [v19 lastUpdateTimestamp];
+    [updateCopy lastUpdateTimestamp];
     self->_lastFaceTrackerUpdateTimestamp = v9;
   }
 
@@ -262,12 +262,12 @@
       [(AVTRenderer *)self clearOutAnimationToNoTrackingState];
     }
 
-    v13 = [v19 faceTrackingInfo];
+    faceTrackingInfo = [updateCopy faceTrackingInfo];
     avatar = self->_avatar;
-    v15 = [(AVTRenderer *)self pointOfView];
-    [(AVTAvatar *)avatar applyHeadPoseWithTrackingInfo:v13 gazeCorrection:0 pointOfView:v15];
+    pointOfView = [(AVTRenderer *)self pointOfView];
+    [(AVTAvatar *)avatar applyHeadPoseWithTrackingInfo:faceTrackingInfo gazeCorrection:0 pointOfView:pointOfView];
 
-    [(AVTAvatar *)self->_avatar applyBlendShapesWithTrackingInfo:v13];
+    [(AVTAvatar *)self->_avatar applyBlendShapesWithTrackingInfo:faceTrackingInfo];
 LABEL_7:
 
     goto LABEL_13;
@@ -275,9 +275,9 @@ LABEL_7:
 
   if (self->_lastFaceTrackerUpdateTimestamp - self->_lastFaceTrackerUpdateWithTrackedFaceTimestamp > 1.5)
   {
-    v16 = [(AVTFaceTracker *)self->_faceTracker arSession];
-    v13 = v16;
-    if (self->_faceIsTracked && (!v16 || [v16 state] == 1))
+    arSession = [(AVTFaceTracker *)self->_faceTracker arSession];
+    faceTrackingInfo = arSession;
+    if (self->_faceIsTracked && (!arSession || [arSession state] == 1))
     {
       [(AVTRenderer *)self _animateToNoTrackingState];
     }
@@ -289,28 +289,28 @@ LABEL_13:
   if ([(AVTPresentationConfiguration *)self->_presentationConfiguration usesAR])
   {
     arMaskRenderer = self->_arMaskRenderer;
-    v18 = [v19 fallBackDepthData];
-    -[AVTARMaskRenderer updateWithARFrame:fallBackDepthData:captureOrientation:interfaceOrientation:mirroredDepthData:](arMaskRenderer, "updateWithARFrame:fallBackDepthData:captureOrientation:interfaceOrientation:mirroredDepthData:", v6, v18, [v19 captureVideoOrientation], objc_msgSend(v19, "interfaceOrientation"), objc_msgSend(v19, "mirroredDepthData"));
+    fallBackDepthData = [updateCopy fallBackDepthData];
+    -[AVTARMaskRenderer updateWithARFrame:fallBackDepthData:captureOrientation:interfaceOrientation:mirroredDepthData:](arMaskRenderer, "updateWithARFrame:fallBackDepthData:captureOrientation:interfaceOrientation:mirroredDepthData:", frameCopy, fallBackDepthData, [updateCopy captureVideoOrientation], objc_msgSend(updateCopy, "interfaceOrientation"), objc_msgSend(updateCopy, "mirroredDepthData"));
   }
 
-  -[AVTRenderer setCaptureImageIsTooDark:](self, "setCaptureImageIsTooDark:", [v19 lowLight]);
-  -[AVTRenderer setSensorCovered:](self, "setSensorCovered:", [v19 isSensorCovered]);
+  -[AVTRenderer setCaptureImageIsTooDark:](self, "setCaptureImageIsTooDark:", [updateCopy lowLight]);
+  -[AVTRenderer setSensorCovered:](self, "setSensorCovered:", [updateCopy isSensorCovered]);
 }
 
-- (void)faceTracker:(id)a3 session:(id)a4 didFailWithError:(id)a5
+- (void)faceTracker:(id)tracker session:(id)session didFailWithError:(id)error
 {
-  v9 = a5;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_faceTrackingDelegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_faceTrackingDelegate);
-    [v8 avatarRenderer:self faceTrackingSessionFailedWithError:v9];
+    [v8 avatarRenderer:self faceTrackingSessionFailedWithError:errorCopy];
   }
 }
 
-- (void)faceTracker:(id)a3 sessionWasInterrupted:(id)a4
+- (void)faceTracker:(id)tracker sessionWasInterrupted:(id)interrupted
 {
   WeakRetained = objc_loadWeakRetained(&self->_faceTrackingDelegate);
   v6 = objc_opt_respondsToSelector();
@@ -322,7 +322,7 @@ LABEL_13:
   }
 }
 
-- (void)faceTracker:(id)a3 sessionInterruptionEnded:(id)a4
+- (void)faceTracker:(id)tracker sessionInterruptionEnded:(id)ended
 {
   WeakRetained = objc_loadWeakRetained(&self->_faceTrackingDelegate);
   v6 = objc_opt_respondsToSelector();
@@ -341,15 +341,15 @@ LABEL_13:
   {
     [(AVTAvatarEnvironment *)self->_environment setShowReticle:self->_enableReticle];
     objc_initWeak(&location, self);
-    v3 = [(AVTRenderer *)self avatar];
+    avatar = [(AVTRenderer *)self avatar];
     v4 = +[AVTAvatarPose friendlyPose];
-    [v3 animatePhysicsScaleFactor:0.0 duration:1.0];
+    [avatar animatePhysicsScaleFactor:0.0 duration:1.0];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __40__AVTRenderer__animateToNoTrackingState__block_invoke;
     v5[3] = &unk_1E7F49470;
     objc_copyWeak(&v6, &location);
-    [v3 transitionToPose:v4 duration:v5 delay:1.0 completionHandler:0.0];
+    [avatar transitionToPose:v4 duration:v5 delay:1.0 completionHandler:0.0];
     objc_destroyWeak(&v6);
 
     objc_destroyWeak(&location);
@@ -372,17 +372,17 @@ void __40__AVTRenderer__animateToNoTrackingState__block_invoke(uint64_t a1)
   if (self->_enableFaceTrackingLossFeedback)
   {
     [(AVTAvatarEnvironment *)self->_environment setShowReticle:0];
-    v4 = [(AVTRenderer *)self avatar];
-    [v4 stopTransitionAnimation];
-    [v4 animatePhysicsScaleFactor:1.0 duration:0.75];
-    [v4 setPose:0];
+    avatar = [(AVTRenderer *)self avatar];
+    [avatar stopTransitionAnimation];
+    [avatar animatePhysicsScaleFactor:1.0 duration:0.75];
+    [avatar setPose:0];
     [(AVTAvatarEnvironment *)self->_environment setEnablePhysicsSimulation:1];
   }
 }
 
-- (void)setEnableReticle:(BOOL)a3
+- (void)setEnableReticle:(BOOL)reticle
 {
-  self->_enableReticle = a3;
+  self->_enableReticle = reticle;
   if ([(AVTAvatarEnvironment *)self->_environment showReticle]&& !self->_enableReticle)
   {
     environment = self->_environment;
@@ -391,29 +391,29 @@ void __40__AVTRenderer__animateToNoTrackingState__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAvt_antialiasingMode:(unint64_t)a3
+- (void)setAvt_antialiasingMode:(unint64_t)mode
 {
-  if (self->_antialiasingMode != a3)
+  if (self->_antialiasingMode != mode)
   {
-    self->_antialiasingMode = a3;
-    [(AVTARMaskRenderer *)self->_arMaskRenderer setClearWithCamera:0 antialiasingMode:a3];
+    self->_antialiasingMode = mode;
+    [(AVTARMaskRenderer *)self->_arMaskRenderer setClearWithCamera:0 antialiasingMode:mode];
   }
 }
 
-- (void)setFaceTracker:(id)a3
+- (void)setFaceTracker:(id)tracker
 {
-  v5 = a3;
+  trackerCopy = tracker;
   faceTracker = self->_faceTracker;
-  if (faceTracker != v5)
+  if (faceTracker != trackerCopy)
   {
-    v7 = v5;
+    v7 = trackerCopy;
     [(AVTFaceTracker *)faceTracker removeDelegate:self];
-    objc_storeStrong(&self->_faceTracker, a3);
+    objc_storeStrong(&self->_faceTracker, tracker);
     faceTracker = [(AVTFaceTracker *)self->_faceTracker addDelegate:self];
-    v5 = v7;
+    trackerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](faceTracker, v5);
+  MEMORY[0x1EEE66BB8](faceTracker, trackerCopy);
 }
 
 - (id)faceTrackingDelegate
@@ -423,9 +423,9 @@ void __40__AVTRenderer__animateToNoTrackingState__block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (void)setFaceTrackingDelegate:(id)a3
+- (void)setFaceTrackingDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_faceTrackingDelegate);
 
   v5 = obj;
@@ -436,55 +436,55 @@ void __40__AVTRenderer__animateToNoTrackingState__block_invoke(uint64_t a1)
   }
 }
 
-- (void)renderWithViewport:(CGRect)a3 commandBuffer:(id)a4 passDescriptor:(id)a5
+- (void)renderWithViewport:(CGRect)viewport commandBuffer:(id)buffer passDescriptor:(id)descriptor
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
-  v12 = a4;
+  height = viewport.size.height;
+  width = viewport.size.width;
+  y = viewport.origin.y;
+  x = viewport.origin.x;
+  descriptorCopy = descriptor;
+  bufferCopy = buffer;
   [(AVTRenderer *)self updateProjectionMatrixForARModeIfNeeded:width, height];
   v13.receiver = self;
   v13.super_class = AVTRenderer;
-  [(AVTRenderer *)&v13 renderWithViewport:v12 commandBuffer:v11 passDescriptor:x, y, width, height];
+  [(AVTRenderer *)&v13 renderWithViewport:bufferCopy commandBuffer:descriptorCopy passDescriptor:x, y, width, height];
 }
 
-- (void)renderAtTime:(double)a3 viewport:(CGRect)a4 commandBuffer:(id)a5 passDescriptor:(id)a6
+- (void)renderAtTime:(double)time viewport:(CGRect)viewport commandBuffer:(id)buffer passDescriptor:(id)descriptor
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a6;
-  v14 = a5;
+  height = viewport.size.height;
+  width = viewport.size.width;
+  y = viewport.origin.y;
+  x = viewport.origin.x;
+  descriptorCopy = descriptor;
+  bufferCopy = buffer;
   [(AVTRenderer *)self updateProjectionMatrixForARModeIfNeeded:width, height];
   v16.receiver = self;
   v16.super_class = AVTRenderer;
-  [(AVTRenderer *)&v16 updateAtTime:a3];
+  [(AVTRenderer *)&v16 updateAtTime:time];
   v15.receiver = self;
   v15.super_class = AVTRenderer;
-  [(AVTRenderer *)&v15 renderWithViewport:v14 commandBuffer:v13 passDescriptor:x, y, width, height];
+  [(AVTRenderer *)&v15 renderWithViewport:bufferCopy commandBuffer:descriptorCopy passDescriptor:x, y, width, height];
 }
 
-- (void)setPresentationConfiguration:(id)a3
+- (void)setPresentationConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v4 = +[AVTClassicPresentationConfiguration sharedConfiguration];
+    configurationCopy = +[AVTClassicPresentationConfiguration sharedConfiguration];
   }
 
-  if (self->_presentationConfiguration != v4)
+  if (self->_presentationConfiguration != configurationCopy)
   {
-    objc_storeStrong(&self->_presentationConfiguration, v4);
-    v5 = [(AVTPresentationConfiguration *)self->_presentationConfiguration usesAR];
-    if (v5)
+    objc_storeStrong(&self->_presentationConfiguration, configurationCopy);
+    usesAR = [(AVTPresentationConfiguration *)self->_presentationConfiguration usesAR];
+    if (usesAR)
     {
       arMaskRenderer = self->_arMaskRenderer;
       if (arMaskRenderer)
       {
-        [(AVTARMaskRenderer *)arMaskRenderer setPresentationConfiguration:v4];
+        [(AVTARMaskRenderer *)arMaskRenderer setPresentationConfiguration:configurationCopy];
       }
 
       else
@@ -496,7 +496,7 @@ void __40__AVTRenderer__animateToNoTrackingState__block_invoke(uint64_t a1)
         v14 = __44__AVTRenderer_setPresentationConfiguration___block_invoke;
         v15 = &unk_1E7F49560;
         objc_copyWeak(&v16, &location);
-        v9 = [(AVTARMaskRenderer *)v8 initWithOwner:self presentationConfiguration:v4 techniqueDidChangeHandler:&v12];
+        v9 = [(AVTARMaskRenderer *)v8 initWithOwner:self presentationConfiguration:configurationCopy techniqueDidChangeHandler:&v12];
         v10 = self->_arMaskRenderer;
         self->_arMaskRenderer = v9;
 
@@ -516,7 +516,7 @@ void __40__AVTRenderer__animateToNoTrackingState__block_invoke(uint64_t a1)
     }
 
     v11 = &AVTFramingModeAR;
-    if (!v5)
+    if (!usesAR)
     {
       v11 = AVTFramingModeCamera;
     }
@@ -524,7 +524,7 @@ void __40__AVTRenderer__animateToNoTrackingState__block_invoke(uint64_t a1)
     [(AVTRenderer *)self setFramingMode:*v11];
     [(AVTAvatarEnvironment *)self->_environment avatarDidChange:self->_avatar presentationConfiguration:self->_presentationConfiguration];
     [(AVTAvatar *)self->_avatar setPresentationConfiguration:self->_presentationConfiguration];
-    [(AVTRenderer *)self _updatePhysicsWorldForAvatarARScaleAndARMode:v5];
+    [(AVTRenderer *)self _updatePhysicsWorldForAvatarARScaleAndARMode:usesAR];
   }
 }
 
@@ -542,27 +542,27 @@ void __44__AVTRenderer_setPresentationConfiguration___block_invoke(uint64_t a1, 
 - (void)_detachAvatarFromRenderer
 {
   avatar = self->_avatar;
-  v4 = [(AVTRenderer *)self world];
-  [(AVTAvatar *)avatar willRemoveFromWorld:v4];
+  world = [(AVTRenderer *)self world];
+  [(AVTAvatar *)avatar willRemoveFromWorld:world];
 
   avatarNode = self->_avatarNode;
 
   [(VFXNode *)avatarNode removeFromParentNode];
 }
 
-- (void)__setAvatar:(id)a3
+- (void)__setAvatar:(id)avatar
 {
-  v5 = a3;
-  if (self->_avatar != v5)
+  avatarCopy = avatar;
+  if (self->_avatar != avatarCopy)
   {
-    v16 = v5;
+    v16 = avatarCopy;
     [MEMORY[0x1E69DF378] begin];
     [MEMORY[0x1E69DF378] setAnimationDuration:0.0];
-    v6 = [(AVTAvatar *)self->_avatar pose];
+    pose = [(AVTAvatar *)self->_avatar pose];
     [(AVTRenderer *)self lock];
     if ([(AVTAvatar *)self->_avatar avatarSpecificTechniqueClass])
     {
-      v7 = [(AVTRenderer *)self avtRendererTechnique];
+      avtRendererTechnique = [(AVTRenderer *)self avtRendererTechnique];
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
@@ -572,18 +572,18 @@ void __44__AVTRenderer_setPresentationConfiguration___block_invoke(uint64_t a1, 
     }
 
     [(AVTRenderer *)self _detachAvatarFromRenderer];
-    objc_storeStrong(&self->_avatar, a3);
-    v9 = [(AVTAvatar *)v16 avatarNode];
+    objc_storeStrong(&self->_avatar, avatar);
+    avatarNode = [(AVTAvatar *)v16 avatarNode];
     avatarNode = self->_avatarNode;
-    self->_avatarNode = v9;
+    self->_avatarNode = avatarNode;
 
-    v11 = [(AVTRenderer *)self world];
-    v12 = [v11 rootNode];
-    [v12 addChildNode:self->_avatarNode];
+    world = [(AVTRenderer *)self world];
+    rootNode = [world rootNode];
+    [rootNode addChildNode:self->_avatarNode];
 
     avatar = self->_avatar;
-    v14 = [(AVTRenderer *)self world];
-    [(AVTAvatar *)avatar didAddToScene:v14];
+    world2 = [(AVTRenderer *)self world];
+    [(AVTAvatar *)avatar didAddToScene:world2];
 
     [(AVTAvatarEnvironment *)self->_environment avatarDidChange:self->_avatar presentationConfiguration:self->_presentationConfiguration];
     [(AVTAvatar *)self->_avatar setPresentationConfiguration:self->_presentationConfiguration];
@@ -596,48 +596,48 @@ void __44__AVTRenderer_setPresentationConfiguration___block_invoke(uint64_t a1, 
 
     [(AVTRenderer *)self avatarDidChange];
     [(AVTRenderer *)self unlock];
-    [(AVTAvatar *)self->_avatar setPose:v6];
+    [(AVTAvatar *)self->_avatar setPose:pose];
     [MEMORY[0x1E69DF378] commit];
 
-    v5 = v16;
+    avatarCopy = v16;
   }
 }
 
-- (void)_setAvatar:(id)a3
+- (void)_setAvatar:(id)avatar
 {
-  v4 = a3;
+  avatarCopy = avatar;
   kdebug_trace();
-  [(AVTRenderer *)self __setAvatar:v4];
+  [(AVTRenderer *)self __setAvatar:avatarCopy];
 
   kdebug_trace();
 }
 
-- (void)_renderer:(id)a3 didApplyAnimationsAtTime:(double)a4
+- (void)_renderer:(id)_renderer didApplyAnimationsAtTime:(double)time
 {
-  v8 = a3;
-  v6 = [(VFXNode *)self->_avatarNode world];
-  v7 = [v8 world];
+  _rendererCopy = _renderer;
+  world = [(VFXNode *)self->_avatarNode world];
+  world2 = [_rendererCopy world];
 
-  if (v6 == v7)
+  if (world == world2)
   {
-    [(AVTAvatar *)self->_avatar updateAfterAnimationsEvaluatedAtTime:v8 renderer:a4];
+    [(AVTAvatar *)self->_avatar updateAfterAnimationsEvaluatedAtTime:_rendererCopy renderer:time];
   }
 }
 
-- (id)_renderer:(id)a3 subdivDataForHash:(id)a4
+- (id)_renderer:(id)_renderer subdivDataForHash:(id)hash
 {
-  v4 = a4;
+  hashCopy = hash;
   v5 = +[AVTResourceLocator sharedResourceLocator];
-  v6 = [(AVTResourceLocator *)v5 subdivDataCacheURL];
+  subdivDataCacheURL = [(AVTResourceLocator *)v5 subdivDataCacheURL];
 
-  if (v6)
+  if (subdivDataCacheURL)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.osddata", v4];
-    v8 = [v6 URLByAppendingPathComponent:v7 isDirectory:0];
+    hashCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.osddata", hashCopy];
+    v8 = [subdivDataCacheURL URLByAppendingPathComponent:hashCopy isDirectory:0];
 
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v8 path];
-    v11 = [v9 fileExistsAtPath:v10];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v8 path];
+    v11 = [defaultManager fileExistsAtPath:path];
 
     if (v11)
     {
@@ -658,19 +658,19 @@ void __44__AVTRenderer_setPresentationConfiguration___block_invoke(uint64_t a1, 
   return v12;
 }
 
-- (void)_renderer:(id)a3 didBuildSubdivDataForHash:(id)a4 dataProvider:(id)a5
+- (void)_renderer:(id)_renderer didBuildSubdivDataForHash:(id)hash dataProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a5;
+  hashCopy = hash;
+  providerCopy = provider;
   v8 = +[AVTResourceLocator sharedResourceLocator];
-  v9 = [(AVTResourceLocator *)v8 subdivDataCacheURL];
+  subdivDataCacheURL = [(AVTResourceLocator *)v8 subdivDataCacheURL];
 
-  if (v9)
+  if (subdivDataCacheURL)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.osddata", v6];
-    v11 = [v9 URLByAppendingPathComponent:v10 isDirectory:0];
+    hashCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.osddata", hashCopy];
+    v11 = [subdivDataCacheURL URLByAppendingPathComponent:hashCopy isDirectory:0];
 
-    v12 = v7[2](v7);
+    v12 = providerCopy[2](providerCopy);
     if (v12)
     {
       v13 = dispatch_get_global_queue(25, 0);
@@ -713,48 +713,48 @@ void __64__AVTRenderer__renderer_didBuildSubdivDataForHash_dataProvider___block_
   }
 }
 
-- (void)_renderer:(id)a3 updateAtTime:(double)a4
+- (void)_renderer:(id)_renderer updateAtTime:(double)time
 {
   avatarNode = self->_avatarNode;
-  v7 = a3;
-  v8 = [(VFXNode *)avatarNode world];
-  v9 = [v7 world];
+  _rendererCopy = _renderer;
+  world = [(VFXNode *)avatarNode world];
+  world2 = [_rendererCopy world];
 
-  if (v8 == v9)
+  if (world == world2)
   {
-    v10 = [(AVTRenderer *)self avatar];
-    [v10 updateWithOptions:0];
+    avatar = [(AVTRenderer *)self avatar];
+    [avatar updateWithOptions:0];
 
-    [(AVTARMaskRenderer *)self->_arMaskRenderer updateMaskParametersAtTime:a4];
+    [(AVTARMaskRenderer *)self->_arMaskRenderer updateMaskParametersAtTime:time];
     if ([(AVTPresentationConfiguration *)self->_presentationConfiguration usesAR])
     {
       arMaskRenderer = self->_arMaskRenderer;
-      v13 = [(AVTRenderer *)self avatar];
-      v12 = [v13 rootJointNode];
-      [(AVTARMaskRenderer *)arMaskRenderer updateMaskParametersWithRootJointNode:v12];
+      avatar2 = [(AVTRenderer *)self avatar];
+      rootJointNode = [avatar2 rootJointNode];
+      [(AVTARMaskRenderer *)arMaskRenderer updateMaskParametersWithRootJointNode:rootJointNode];
     }
   }
 }
 
-- (void)renderer:(id)a3 didFallbackToDefaultTextureForSource:(id)a4 message:(id)a5
+- (void)renderer:(id)renderer didFallbackToDefaultTextureForSource:(id)source message:(id)message
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  rendererCopy = renderer;
+  sourceCopy = source;
+  messageCopy = message;
   if (AVTIsRunningInAppExtensionOrViewService())
   {
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __69__AVTRenderer_renderer_didFallbackToDefaultTextureForSource_message___block_invoke;
     v22[3] = &unk_1E7F495B0;
-    v23 = v8;
-    v24 = v9;
-    v25 = v10;
+    v23 = rendererCopy;
+    v24 = sourceCopy;
+    v25 = messageCopy;
     [(AVTRenderer *)self crashAppExtensionOrViewService_rdar98130076:v22];
   }
 
-  v11 = [v9 description];
+  v11 = [sourceCopy description];
   v12 = [v11 containsString:@"onTopMask"];
 
   v13 = avt_default_log();
@@ -770,11 +770,11 @@ void __64__AVTRenderer__renderer_didBuildSubdivDataForHash_dataProvider___block_
       *&buf[12] = 2112;
       *&buf[14] = v17;
       *&buf[22] = 2048;
-      *&buf[24] = v8;
+      *&buf[24] = rendererCopy;
       *&buf[32] = 2112;
-      *&buf[34] = v9;
+      *&buf[34] = sourceCopy;
       *&buf[42] = 2112;
-      *&buf[44] = v10;
+      *&buf[44] = messageCopy;
       _os_log_fault_impl(&dword_1BB472000, v13, OS_LOG_TYPE_FAULT, "Fault: %s %@ %p: Failed to find texture for source %@ with message:\n%@", buf, 0x34u);
     }
 
@@ -792,11 +792,11 @@ LABEL_10:
     *&buf[12] = 2112;
     *&buf[14] = v19;
     *&buf[22] = 2048;
-    *&buf[24] = v8;
+    *&buf[24] = rendererCopy;
     *&buf[32] = 2112;
-    *&buf[34] = v9;
+    *&buf[34] = sourceCopy;
     *&buf[42] = 2112;
-    *&buf[44] = v10;
+    *&buf[44] = messageCopy;
     _os_log_fault_impl(&dword_1BB472000, v13, OS_LOG_TYPE_FAULT, "Fault: %s %@ %p: Failed to find texture for source %@ with message:\n%@", buf, 0x34u);
   }
 
@@ -815,11 +815,11 @@ LABEL_10:
   v28 = 2112;
   v29 = v21;
   v30 = 2048;
-  v31 = v8;
+  v31 = rendererCopy;
   v32 = 2112;
-  v33 = v9;
+  v33 = sourceCopy;
   v34 = 2112;
-  v35 = v10;
+  v35 = messageCopy;
   _os_log_send_and_compose_impl();
 
   _os_crash_msg();
@@ -865,50 +865,50 @@ void __69__AVTRenderer_renderer_didFallbackToDefaultTextureForSource_message___b
   __break(1u);
 }
 
-- (void)renderer:(id)a3 commandBufferDidCompleteWithError:(id)a4
+- (void)renderer:(id)renderer commandBufferDidCompleteWithError:(id)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 error];
+  rendererCopy = renderer;
+  errorCopy = error;
+  error = [errorCopy error];
   if (AVTIsRunningInAppExtensionOrViewService())
   {
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __58__AVTRenderer_renderer_commandBufferDidCompleteWithError___block_invoke;
     v26[3] = &unk_1E7F495B0;
-    v27 = v6;
-    v28 = v7;
-    v29 = v8;
+    v27 = rendererCopy;
+    v28 = errorCopy;
+    v29 = error;
     [(AVTRenderer *)self crashAppExtensionOrViewService_rdar98130076:v26];
   }
 
-  if (v8)
+  if (error)
   {
-    v9 = [v8 domain];
+    domain = [error domain];
     v10 = *MEMORY[0x1E6973F70];
 
-    if (v9 == v10 && [v8 code] == 7)
+    if (domain == v10 && [error code] == 7)
     {
       v11 = avt_default_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
         v18 = objc_opt_class();
         v19 = NSStringFromClass(v18);
-        v20 = [v7 status];
-        v21 = [v7 logs];
+        status = [errorCopy status];
+        logs = [errorCopy logs];
         *buf = 136316418;
         *&buf[4] = "[AVTRenderer renderer:commandBufferDidCompleteWithError:]";
         *&buf[12] = 2112;
         *&buf[14] = v19;
         *&buf[22] = 2048;
-        *&buf[24] = v6;
+        *&buf[24] = rendererCopy;
         LOWORD(v43) = 1024;
-        *(&v43 + 2) = v20;
+        *(&v43 + 2) = status;
         WORD3(v43) = 2112;
-        *(&v43 + 1) = v8;
+        *(&v43 + 1) = error;
         LOWORD(v44) = 2112;
-        *(&v44 + 2) = v21;
+        *(&v44 + 2) = logs;
         _os_log_fault_impl(&dword_1BB472000, v11, OS_LOG_TYPE_FAULT, "Fault: %s %@ %p: Command buffer execution failed with status %d, error: %@\n%@", buf, 0x3Au);
       }
 
@@ -923,20 +923,20 @@ LABEL_12:
   {
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [v7 status];
-    v17 = [v7 logs];
+    status2 = [errorCopy status];
+    logs2 = [errorCopy logs];
     *buf = 136316418;
     *&buf[4] = "[AVTRenderer renderer:commandBufferDidCompleteWithError:]";
     *&buf[12] = 2112;
     *&buf[14] = v15;
     *&buf[22] = 2048;
-    *&buf[24] = v6;
+    *&buf[24] = rendererCopy;
     LOWORD(v43) = 1024;
-    *(&v43 + 2) = v16;
+    *(&v43 + 2) = status2;
     WORD3(v43) = 2112;
-    *(&v43 + 1) = v8;
+    *(&v43 + 1) = error;
     LOWORD(v44) = 2112;
-    *(&v44 + 2) = v17;
+    *(&v44 + 2) = logs2;
     _os_log_fault_impl(&dword_1BB472000, v12, OS_LOG_TYPE_FAULT, "Fault: %s %@ %p: Command buffer execution failed with status %d, error: %@\n%@", buf, 0x3Au);
   }
 
@@ -952,20 +952,20 @@ LABEL_12:
   os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR);
   v22 = objc_opt_class();
   v23 = NSStringFromClass(v22);
-  v24 = [v7 status];
-  v25 = [v7 logs];
+  status3 = [errorCopy status];
+  logs3 = [errorCopy logs];
   v30 = 136316418;
   v31 = "[AVTRenderer renderer:commandBufferDidCompleteWithError:]";
   v32 = 2112;
   v33 = v23;
   v34 = 2048;
-  v35 = v6;
+  v35 = rendererCopy;
   v36 = 1024;
-  v37 = v24;
+  v37 = status3;
   v38 = 2112;
-  v39 = v8;
+  v39 = error;
   v40 = 2112;
-  v41 = v25;
+  v41 = logs3;
   _os_log_send_and_compose_impl();
 
   _os_crash_msg();
@@ -1018,16 +1018,16 @@ void __58__AVTRenderer_renderer_commandBufferDidCompleteWithError___block_invoke
   __break(1u);
 }
 
-- (void)_avatarWantsSpecificTechniqueDidChange:(id)a3
+- (void)_avatarWantsSpecificTechniqueDidChange:(id)change
 {
-  v4 = [a3 object];
+  object = [change object];
   avatar = self->_avatar;
 
-  if (v4 == avatar)
+  if (object == avatar)
   {
     if ([(AVTAvatar *)self->_avatar avatarSpecificTechniqueClass])
     {
-      v7 = [(AVTRenderer *)self avtRendererTechnique];
+      avtRendererTechnique = [(AVTRenderer *)self avtRendererTechnique];
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v6 = [(AVTAvatar *)self->_avatar newAvatarSpecificTechniqueWithRenderer:self];
@@ -1043,23 +1043,23 @@ void __58__AVTRenderer_renderer_commandBufferDidCompleteWithError___block_invoke
   }
 }
 
-- (void)setAvtRendererTechnique:(id)a3
+- (void)setAvtRendererTechnique:(id)technique
 {
-  v5 = a3;
-  if (self->_avtRendererTechnique != v5)
+  techniqueCopy = technique;
+  if (self->_avtRendererTechnique != techniqueCopy)
   {
-    objc_storeStrong(&self->_avtRendererTechnique, a3);
+    objc_storeStrong(&self->_avtRendererTechnique, technique);
     [(AVTRenderer *)self _avtUpdateRendersContinuously];
     objc_initWeak(&location, self);
     v6 = MEMORY[0x1E69DF378];
-    v7 = [(AVTRenderer *)self world];
+    world = [(AVTRenderer *)self world];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __39__AVTRenderer_setAvtRendererTechnique___block_invoke;
     v8[3] = &unk_1E7F495D8;
     objc_copyWeak(&v10, &location);
-    v9 = v5;
-    [v6 enqueueCommandForObject:v7 immediateTransactionBlock:v8];
+    v9 = techniqueCopy;
+    [v6 enqueueCommandForObject:world immediateTransactionBlock:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -1077,7 +1077,7 @@ void __39__AVTRenderer_setAvtRendererTechnique___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_wantsCustomMainPassPostProcessForRenderer:(id)a3
+- (BOOL)_wantsCustomMainPassPostProcessForRenderer:(id)renderer
 {
   avtRendererTechniquePresentationTree = self->_avtRendererTechniquePresentationTree;
   if (avtRendererTechniquePresentationTree)
@@ -1090,19 +1090,19 @@ void __39__AVTRenderer_setAvtRendererTechnique___block_invoke(uint64_t a1)
 
 - (BOOL)deprecated_ntk_isPaused
 {
-  v2 = [(AVTRenderer *)self world];
-  v3 = [v2 clock];
-  v4 = [v3 isPaused];
+  world = [(AVTRenderer *)self world];
+  clock = [world clock];
+  isPaused = [clock isPaused];
 
-  return v4;
+  return isPaused;
 }
 
-- (void)deprecated_ntk_setPhysicsWorldTimeStep:(float)a3
+- (void)deprecated_ntk_setPhysicsWorldTimeStep:(float)step
 {
-  v3 = a3;
-  v5 = [(AVTRenderer *)self world];
-  v4 = [v5 physicsWorld];
-  [v4 setTimeStep:v3];
+  stepCopy = step;
+  world = [(AVTRenderer *)self world];
+  physicsWorld = [world physicsWorld];
+  [physicsWorld setTimeStep:stepCopy];
 }
 
 - (void)_cek_beginTransaction
@@ -1115,31 +1115,31 @@ void __39__AVTRenderer_setAvtRendererTechnique___block_invoke(uint64_t a1)
 
 - (float)_cek_currentPointOfViewSensorHeight
 {
-  v2 = [(AVTRenderer *)self pointOfView];
-  v3 = [v2 camera];
+  pointOfView = [(AVTRenderer *)self pointOfView];
+  camera = [pointOfView camera];
 
-  [v3 sensorHeight];
+  [camera sensorHeight];
   v5 = v4;
 
   return v5;
 }
 
-- (void)_cek_setCurrentPointOfViewFocalLength:(float)a3
+- (void)_cek_setCurrentPointOfViewFocalLength:(float)length
 {
-  v4 = [(AVTRenderer *)self pointOfView];
-  v6 = [v4 camera];
+  pointOfView = [(AVTRenderer *)self pointOfView];
+  camera = [pointOfView camera];
 
-  *&v5 = a3;
-  [v6 setFocalLength:v5];
+  *&v5 = length;
+  [camera setFocalLength:v5];
 }
 
-- (void)_cek_renderAtTime:(double)a3 enableAntialiasing:(BOOL)a4 viewport:(CGRect)a5 commandBuffer:(id)a6 passDescriptor:(id)a7
+- (void)_cek_renderAtTime:(double)time enableAntialiasing:(BOOL)antialiasing viewport:(CGRect)viewport commandBuffer:(id)buffer passDescriptor:(id)descriptor
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  if (a4)
+  height = viewport.size.height;
+  width = viewport.size.width;
+  y = viewport.origin.y;
+  x = viewport.origin.x;
+  if (antialiasing)
   {
     v14 = 2;
   }
@@ -1149,31 +1149,31 @@ void __39__AVTRenderer_setAvtRendererTechnique___block_invoke(uint64_t a1)
     v14 = 0;
   }
 
-  v15 = a7;
-  v16 = a6;
+  descriptorCopy = descriptor;
+  bufferCopy = buffer;
   [(AVTRenderer *)self setAvt_antialiasingMode:v14];
   [MEMORY[0x1E69DF378] flush];
   [(AVTRenderer *)self updateProjectionMatrixForARModeIfNeeded:width, height];
   v18.receiver = self;
   v18.super_class = AVTRenderer;
-  [(AVTRenderer *)&v18 updateAtTime:a3];
+  [(AVTRenderer *)&v18 updateAtTime:time];
   v17.receiver = self;
   v17.super_class = AVTRenderer;
-  [(AVTRenderer *)&v17 renderWithViewport:v16 commandBuffer:v15 passDescriptor:x, y, width, height];
+  [(AVTRenderer *)&v17 renderWithViewport:bufferCopy commandBuffer:descriptorCopy passDescriptor:x, y, width, height];
 }
 
-- (void)_cek_fetchBlendshapeWeightsInHierarchyUsingBlock:(id)a3
+- (void)_cek_fetchBlendshapeWeightsInHierarchyUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AVTRenderer *)self world];
-  v6 = [v5 rootNode];
+  blockCopy = block;
+  world = [(AVTRenderer *)self world];
+  rootNode = [world rootNode];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __82__AVTRenderer_CameraEffectsKit___cek_fetchBlendshapeWeightsInHierarchyUsingBlock___block_invoke;
   v8[3] = &unk_1E7F496A8;
-  v9 = v4;
-  v7 = v4;
-  [v6 enumerateHierarchyUsingBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [rootNode enumerateHierarchyUsingBlock:v8];
 }
 
 void __82__AVTRenderer_CameraEffectsKit___cek_fetchBlendshapeWeightsInHierarchyUsingBlock___block_invoke(uint64_t a1, void *a2)
@@ -1194,18 +1194,18 @@ void __82__AVTRenderer_CameraEffectsKit___cek_fetchBlendshapeWeightsInHierarchyU
   }
 }
 
-- (void)_cek_applyBlendshapeWeightsInHierarchyUsingBlock:(id)a3
+- (void)_cek_applyBlendshapeWeightsInHierarchyUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AVTRenderer *)self world];
-  v6 = [v5 rootNode];
+  blockCopy = block;
+  world = [(AVTRenderer *)self world];
+  rootNode = [world rootNode];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __82__AVTRenderer_CameraEffectsKit___cek_applyBlendshapeWeightsInHierarchyUsingBlock___block_invoke;
   v8[3] = &unk_1E7F496A8;
-  v9 = v4;
-  v7 = v4;
-  [v6 enumerateHierarchyUsingBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [rootNode enumerateHierarchyUsingBlock:v8];
 }
 
 void __82__AVTRenderer_CameraEffectsKit___cek_applyBlendshapeWeightsInHierarchyUsingBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3)

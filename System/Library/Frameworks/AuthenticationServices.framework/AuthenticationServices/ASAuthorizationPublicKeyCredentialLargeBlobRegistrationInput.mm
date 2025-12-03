@@ -1,7 +1,7 @@
 @interface ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput
-- (ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput)initWithCoder:(id)a3;
+- (ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput)initWithCoder:(id)coder;
 - (ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput)initWithSupportRequirement:(ASAuthorizationPublicKeyCredentialLargeBlobSupportRequirement)requirement;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput
@@ -21,17 +21,17 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput allocWithZone:a3];
+  v4 = [ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput allocWithZone:zone];
   supportRequirement = self->_supportRequirement;
 
   return [(ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput *)v4 initWithSupportRequirement:supportRequirement];
 }
 
-- (ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput)initWithCoder:(id)a3
+- (ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"supportRequirementKey"];
+  v4 = [coder decodeIntegerForKey:@"supportRequirementKey"];
 
   return [(ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput *)self initWithSupportRequirement:v4];
 }

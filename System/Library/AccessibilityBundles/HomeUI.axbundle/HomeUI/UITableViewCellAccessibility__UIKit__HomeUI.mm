@@ -8,19 +8,19 @@
 {
   v7.receiver = self;
   v7.super_class = UITableViewCellAccessibility__UIKit__HomeUI;
-  v3 = [(UITableViewCellAccessibility__UIKit__HomeUI *)&v7 accessibilityTraits];
-  if ((*MEMORY[0x29EDC7FC0] & ~v3) == 0 && [(UITableViewCellAccessibility__UIKit__HomeUI *)self accessoryType]== 3)
+  accessibilityTraits = [(UITableViewCellAccessibility__UIKit__HomeUI *)&v7 accessibilityTraits];
+  if ((*MEMORY[0x29EDC7FC0] & ~accessibilityTraits) == 0 && [(UITableViewCellAccessibility__UIKit__HomeUI *)self accessoryType]== 3)
   {
-    v4 = [(UITableViewCellAccessibility__UIKit__HomeUI *)self accessoryView];
-    v5 = [v4 accessibilityElementsHidden];
+    accessoryView = [(UITableViewCellAccessibility__UIKit__HomeUI *)self accessoryView];
+    accessibilityElementsHidden = [accessoryView accessibilityElementsHidden];
 
-    if (v5)
+    if (accessibilityElementsHidden)
     {
       return _AXTraitsRemoveTrait();
     }
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface AssetSession
 - (AssetSession)init;
-- (void)URLSession:(id)a3 _willRetryBackgroundDataTask:(id)a4 withError:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 _alternatePathAvailable:(int)a5;
-- (void)URLSession:(id)a3 task:(id)a4 _willSendRequestForEstablishedConnection:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
+- (void)URLSession:(id)session _willRetryBackgroundDataTask:(id)task withError:(id)error;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task _alternatePathAvailable:(int)available;
+- (void)URLSession:(id)session task:(id)task _willSendRequestForEstablishedConnection:(id)connection completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 @end
 
 @implementation AssetSession
@@ -37,11 +37,11 @@
   return v2;
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v6 = a4;
-  v7 = a5;
-  v8 = sub_10020F4B4(AssetTaskInfo, v6);
+  taskCopy = task;
+  dataCopy = data;
+  v8 = sub_10020F4B4(AssetTaskInfo, taskCopy);
   v9 = ASDLogHandleForCategory();
   v10 = v9;
   if (v8)
@@ -54,8 +54,8 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         v33 = objc_getProperty(v8, v14, 56, 1);
-        v34 = [v6 countOfBytesReceived] + *(v8 + 112);
-        v35 = [v6 countOfBytesExpectedToReceive] + *(v8 + 112);
+        v34 = [taskCopy countOfBytesReceived] + *(v8 + 112);
+        v35 = [taskCopy countOfBytesExpectedToReceive] + *(v8 + 112);
         *buf = 138412802;
         v41 = v33;
         v42 = 2048;
@@ -67,24 +67,24 @@
     }
 
     v15 = objc_getProperty(v8, v12, 80, 1);
-    [v15 setCompletedUnitCount:{objc_msgSend(v7, "length") + objc_msgSend(v15, "completedUnitCount")}];
+    [v15 setCompletedUnitCount:{objc_msgSend(dataCopy, "length") + objc_msgSend(v15, "completedUnitCount")}];
 
     v16 = *(v8 + 160);
     *(v8 + 160) = CFAbsoluteTimeGetCurrent();
     if (v16 > 0.0)
     {
-      v17 = [v7 length] / (*(v8 + 160) - v16);
+      v17 = [dataCopy length] / (*(v8 + 160) - v16);
       v18 = fmin(*(v8 + 152), v17);
       *(v8 + 144) = fmax(*(v8 + 144), v17);
       *(v8 + 152) = v18;
     }
 
     WeakRetained = objc_loadWeakRetained((v8 + 88));
-    v20 = [WeakRetained progress];
+    progress = [WeakRetained progress];
 
-    if (v20)
+    if (progress)
     {
-      (v20)[2](v20, 1, [v6 countOfBytesReceived] + *(v8 + 112), objc_msgSend(v6, "countOfBytesExpectedToReceive") + *(v8 + 112));
+      (progress)[2](progress, 1, [taskCopy countOfBytesReceived] + *(v8 + 112), objc_msgSend(taskCopy, "countOfBytesExpectedToReceive") + *(v8 + 112));
     }
 
     v21 = dispatch_semaphore_create(0);
@@ -101,13 +101,13 @@
     v36[1] = 3221225472;
     v36[2] = sub_100372660;
     v36[3] = &unk_100525248;
-    v27 = v6;
+    v27 = taskCopy;
     v37 = v27;
     v28 = v8;
     v38 = v28;
     v29 = v21;
     v39 = v29;
-    [v26 consumeData:v7 withCompletionHandler:v36];
+    [v26 consumeData:dataCopy withCompletionHandler:v36];
     v30 = dispatch_time(0, 300000000000);
     if (dispatch_semaphore_wait(v29, v30))
     {
@@ -123,21 +123,21 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v41 = v6;
+      v41 = taskCopy;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Untracked task: %{public}@ canceling after receiving data", buf, 0xCu);
     }
 
-    [v6 cancel];
+    [taskCopy cancel];
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = sub_100271518(v10);
-  v13 = sub_10020F4B4(AssetTaskInfo, v9);
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
+  v12 = sub_100271518(responseCopy);
+  v13 = sub_10020F4B4(AssetTaskInfo, taskCopy);
   v14 = ASDLogHandleForCategory();
   v15 = v14;
   if (v13)
@@ -160,15 +160,15 @@
       *buf = 138412546;
       v99 = v21;
       v100 = 2114;
-      v101 = v10;
+      v101 = responseCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[%@] Received response: %{public}@", buf, 0x16u);
     }
 
     v23 = objc_getProperty(v13, v22, 56, 1);
-    v24 = +[KeepAlive keepAliveWithFormat:](KeepAlive, "keepAliveWithFormat:", @"com.apple.appstored.AssetTask:%@-%lu", v23, [v9 taskIdentifier]);
+    v24 = +[KeepAlive keepAliveWithFormat:](KeepAlive, "keepAliveWithFormat:", @"com.apple.appstored.AssetTask:%@-%lu", v23, [taskCopy taskIdentifier]);
     objc_setProperty_atomic(v13, v25, v24, 48);
 
-    v26 = sub_100284B18(v10);
+    v26 = sub_100284B18(responseCopy);
     v27 = v26;
     if (v26 && [v26 length])
     {
@@ -179,15 +179,15 @@
         *buf = 138412802;
         v99 = v30;
         v100 = 2114;
-        v101 = v9;
+        v101 = taskCopy;
         v102 = 2114;
         v103 = v27;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "[%@] Task: %{public}@ CDNUUID: %{public}@", buf, 0x20u);
       }
     }
 
-    v31 = [v9 _incompleteTaskMetrics];
-    objc_setProperty_atomic(v13, v32, v31, 64);
+    _incompleteTaskMetrics = [taskCopy _incompleteTaskMetrics];
+    objc_setProperty_atomic(v13, v32, _incompleteTaskMetrics, 64);
 
     if (v12 > 399)
     {
@@ -217,7 +217,7 @@
               *buf = 138412802;
               v99 = v88;
               v100 = 2114;
-              v101 = v9;
+              v101 = taskCopy;
               v102 = 2048;
               v103 = 416;
               _os_log_error_impl(&_mh_execute_header, v77, OS_LOG_TYPE_ERROR, "[%@] Truncate and restart task: %{public}@ after receiving status code: %ld", buf, 0x20u);
@@ -238,8 +238,8 @@
             v89[3] = &unk_1005252C0;
             v89[4] = self;
             v90 = v13;
-            v91 = v9;
-            v92 = v11;
+            v91 = taskCopy;
+            v92 = handlerCopy;
             [v83 truncateWithCompletionHandler:v89];
 
             goto LABEL_63;
@@ -266,7 +266,7 @@
             *buf = 138412802;
             v99 = v85;
             v100 = 2114;
-            v101 = v9;
+            v101 = taskCopy;
             v102 = 2048;
             v103 = 408;
             _os_log_error_impl(&_mh_execute_header, v61, OS_LOG_TYPE_ERROR, "[%@] Restarting task: %{public}@ after receiving status code: %ld", buf, 0x20u);
@@ -292,7 +292,7 @@
             *buf = 138412802;
             v99 = v86;
             v100 = 2114;
-            v101 = v9;
+            v101 = taskCopy;
             v102 = 2048;
             v103 = 403;
             _os_log_error_impl(&_mh_execute_header, v54, OS_LOG_TYPE_ERROR, "[%@] Canceling task: %{public}@ after receiving status code: %ld", buf, 0x20u);
@@ -320,7 +320,7 @@
             *buf = 138412802;
             v99 = v87;
             v100 = 2114;
-            v101 = v9;
+            v101 = taskCopy;
             v102 = 2048;
             v103 = v12;
             _os_log_error_impl(&_mh_execute_header, v71, OS_LOG_TYPE_ERROR, "[%@] Canceling task: %{public}@ after receiving invalid status code: %ld", buf, 0x20u);
@@ -331,29 +331,29 @@
           v75 = ASDErrorWithUnderlyingErrorAndDescription();
           objc_setProperty_atomic(v13, v76, v75, 40);
 
-          (*(v11 + 2))(v11, 0);
+          (*(handlerCopy + 2))(handlerCopy, 0);
           goto LABEL_63;
       }
 
-      (*(v11 + 2))(v11, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
 
     else
     {
-      v33 = [v9 currentRequest];
-      v34 = sub_10030BB94(v33);
+      currentRequest = [taskCopy currentRequest];
+      v34 = sub_10030BB94(currentRequest);
 
       if (!v34 || v12 == 206)
       {
         WeakRetained = objc_loadWeakRetained((v13 + 88));
-        v47 = [WeakRetained progress];
+        progress = [WeakRetained progress];
 
-        if (v47)
+        if (progress)
         {
-          (*(v47 + 2))(v47, 0, *(v13 + 112), [v9 countOfBytesExpectedToReceive] + *(v13 + 112));
+          (*(progress + 2))(progress, 0, *(v13 + 112), [taskCopy countOfBytesExpectedToReceive] + *(v13 + 112));
         }
 
-        (*(v11 + 2))(v11, 1);
+        (*(handlerCopy + 2))(handlerCopy, 1);
       }
 
       else
@@ -378,7 +378,7 @@
           *buf = 138412802;
           v99 = v84;
           v100 = 2114;
-          v101 = v9;
+          v101 = taskCopy;
           v102 = 2048;
           v103 = v12;
           _os_log_error_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "[%@] Resetting data consumer for task: %{public}@ after receiving status code: %ld", buf, 0x20u);
@@ -400,10 +400,10 @@
         v93[4] = self;
         v94 = v46;
         v95 = v13;
-        v96 = v9;
-        v97 = v11;
-        v47 = v46;
-        [v47 truncateWithCompletionHandler:v93];
+        v96 = taskCopy;
+        v97 = handlerCopy;
+        progress = v46;
+        [progress truncateWithCompletionHandler:v93];
       }
     }
 
@@ -415,19 +415,19 @@ LABEL_63:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v99 = v9;
+    v99 = taskCopy;
     _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Untracked task: %{public}@ canceling after receiving response", buf, 0xCu);
   }
 
-  (*(v11 + 2))(v11, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
 LABEL_64:
 }
 
-- (void)URLSession:(id)a3 _willRetryBackgroundDataTask:(id)a4 withError:(id)a5
+- (void)URLSession:(id)session _willRetryBackgroundDataTask:(id)task withError:(id)error
 {
-  v6 = a4;
-  v7 = a5;
-  v8 = sub_10020F4B4(AssetTaskInfo, v6);
+  taskCopy = task;
+  errorCopy = error;
+  v8 = sub_10020F4B4(AssetTaskInfo, taskCopy);
   v9 = v8;
   if (v8)
   {
@@ -442,9 +442,9 @@ LABEL_64:
         v30 = 138412802;
         v31 = v28;
         v32 = 2114;
-        v33 = v6;
+        v33 = taskCopy;
         v34 = 2114;
-        v35 = v7;
+        v35 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "[%@] Retry scheduled for task: %{public}@ error: %{public}@", &v30, 0x20u);
       }
 
@@ -454,7 +454,7 @@ LABEL_64:
       if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
       {
         v18 = objc_getProperty(v9, v17, 56, 1);
-        v19 = sub_100342C9C(v7);
+        v19 = sub_100342C9C(errorCopy);
         v30 = 138543618;
         v31 = v18;
         v32 = 2114;
@@ -471,9 +471,9 @@ LABEL_64:
         v30 = 138412802;
         v31 = v29;
         v32 = 2114;
-        v33 = v6;
+        v33 = taskCopy;
         v34 = 2114;
-        v35 = v7;
+        v35 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "[%@] Canceling task: %{public}@ after cache request failed with error: %{public}@", &v30, 0x20u);
       }
 
@@ -483,7 +483,7 @@ LABEL_64:
       if (v23 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
       {
         v25 = objc_getProperty(v9, v24, 56, 1);
-        v26 = sub_100342C9C(v7);
+        v26 = sub_100342C9C(errorCopy);
         v30 = 138543618;
         v31 = v25;
         v32 = 2114;
@@ -504,19 +504,19 @@ LABEL_64:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v30 = 138543362;
-      v31 = v6;
+      v31 = taskCopy;
       _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Untracked task: %{public}@ canceling after will retry", &v30, 0xCu);
     }
 
-    [v6 cancel];
+    [taskCopy cancel];
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = sub_10020F4B4(AssetTaskInfo, v7);
+  taskCopy = task;
+  errorCopy = error;
+  v9 = sub_10020F4B4(AssetTaskInfo, taskCopy);
   v10 = ASDLogHandleForCategory();
   v11 = v10;
   if (v9)
@@ -535,18 +535,18 @@ LABEL_64:
       *buf = 138412546;
       *&buf[4] = v15;
       *&buf[12] = 2114;
-      *&buf[14] = v7;
+      *&buf[14] = taskCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%@] Completed task: %{public}@", buf, 0x16u);
     }
 
-    if (!v8 || *(v9 + 16))
+    if (!errorCopy || *(v9 + 16))
     {
       goto LABEL_24;
     }
 
-    v17 = v7;
-    v18 = [v8 userInfo];
-    v19 = [v18 objectForKeyedSubscript:NSURLErrorBackgroundTaskCancelledReasonKey];
+    v17 = taskCopy;
+    userInfo = [errorCopy userInfo];
+    v19 = [userInfo objectForKeyedSubscript:NSURLErrorBackgroundTaskCancelledReasonKey];
 
     if ((objc_opt_respondsToSelector() & 1) != 0 && [v19 integerValue] == 2)
     {
@@ -557,7 +557,7 @@ LABEL_64:
         *buf = 138412546;
         *&buf[4] = v132;
         *&buf[12] = 2114;
-        *&buf[14] = v8;
+        *&buf[14] = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "[%@] Restarting request after task cancelled due to insufficient system resources: %{public}@", buf, 0x16u);
       }
     }
@@ -577,7 +577,7 @@ LABEL_21:
 
         sub_1003754E0(self, 3, v9);
 
-        v7 = v17;
+        taskCopy = v17;
 LABEL_24:
         v28 = objc_getProperty(v9, v16, 40, 1);
         v29 = v9;
@@ -585,19 +585,19 @@ LABEL_24:
         if (self)
         {
           v31 = sub_1003BBF50();
-          v32 = [v31 isHRNMode];
+          isHRNMode = [v31 isHRNMode];
 
-          if ((v32 & 1) == 0)
+          if ((isHRNMode & 1) == 0)
           {
             v33 = [AMSMetricsLoadURLContext alloc];
             v35 = objc_getProperty(v29, v34, 136, 1);
             v37 = objc_getProperty(v29, v36, 64, 1);
-            v38 = self;
+            selfCopy = self;
             v39 = [v33 initWithTask:v35 metrics:v37];
 
             v40 = +[BagService appstoredService];
-            v41 = [v40 amsBag];
-            [v39 setBag:v41];
+            amsBag = [v40 amsBag];
+            [v39 setBag:amsBag];
 
             [v39 setError:v30];
             WeakRetained = objc_loadWeakRetained(v29 + 15);
@@ -611,7 +611,7 @@ LABEL_24:
             v152 = v29;
             v153 = v39;
             v44 = v39;
-            self = v38;
+            self = selfCopy;
             v45 = v44;
             [v43 recentBagWithCompletionHandler:buf];
           }
@@ -626,7 +626,7 @@ LABEL_24:
 
         v11 = Property;
 
-        if (v8 && *(v9 + 16) != 2)
+        if (errorCopy && *(v9 + 16) != 2)
         {
           sub_1003754E0(self, 4, v29);
           v140[0] = _NSConcreteStackBlock;
@@ -644,8 +644,8 @@ LABEL_24:
           v137 = v11;
           sub_1003754E0(self, 2, v29);
           v50 = v29;
-          v138 = v8;
-          v51 = v8;
+          v138 = errorCopy;
+          v51 = errorCopy;
           v53 = v51;
           if (self)
           {
@@ -701,24 +701,24 @@ LABEL_24:
 
             v67 = v50;
             v69 = objc_getProperty(v67, v68, 64, 1);
-            v70 = [v69 transactionMetrics];
+            transactionMetrics = [v69 transactionMetrics];
 
             v136 = v29;
-            if (v70)
+            if (transactionMetrics)
             {
               v148 = 0u;
               v149 = 0u;
               v146 = 0u;
               v147 = 0u;
               v72 = objc_getProperty(v67, v71, 64, 1);
-              v73 = [v72 transactionMetrics];
+              transactionMetrics2 = [v72 transactionMetrics];
 
-              v74 = [v73 countByEnumeratingWithState:&v146 objects:buf count:16];
+              v74 = [transactionMetrics2 countByEnumeratingWithState:&v146 objects:buf count:16];
               if (v74)
               {
                 v75 = v74;
-                v134 = self;
-                v135 = v7;
+                selfCopy2 = self;
+                v135 = taskCopy;
                 v76 = 0;
                 v77 = *v147;
                 v78 = 0.0;
@@ -729,16 +729,16 @@ LABEL_24:
                   {
                     if (*v147 != v77)
                     {
-                      objc_enumerationMutation(v73);
+                      objc_enumerationMutation(transactionMetrics2);
                     }
 
                     v81 = *(*(&v146 + 1) + 8 * i);
-                    v82 = [v81 responseStartDate];
-                    v83 = [v81 responseEndDate];
-                    v84 = v83;
-                    if (v82)
+                    responseStartDate = [v81 responseStartDate];
+                    responseEndDate = [v81 responseEndDate];
+                    v84 = responseEndDate;
+                    if (responseStartDate)
                     {
-                      v85 = v83 == 0;
+                      v85 = responseEndDate == 0;
                     }
 
                     else
@@ -746,21 +746,21 @@ LABEL_24:
                       v85 = 1;
                     }
 
-                    if (!v85 && [v82 compare:v83] == -1)
+                    if (!v85 && [responseStartDate compare:responseEndDate] == -1)
                     {
-                      [v84 timeIntervalSinceDate:v82];
+                      [v84 timeIntervalSinceDate:responseStartDate];
                       v79 = v79 + v86;
                       v78 = v78 + [v81 countOfResponseBodyBytesReceived] / v86;
                       ++v76;
                     }
                   }
 
-                  v75 = [v73 countByEnumeratingWithState:&v146 objects:buf count:16];
+                  v75 = [transactionMetrics2 countByEnumeratingWithState:&v146 objects:buf count:16];
                 }
 
                 while (v75);
 
-                v7 = v135;
+                taskCopy = v135;
                 if (v76 < 1)
                 {
                   v88 = 0.0;
@@ -771,7 +771,7 @@ LABEL_24:
                   v88 = v78 / v76;
                 }
 
-                self = v134;
+                self = selfCopy2;
               }
 
               else
@@ -913,7 +913,7 @@ LABEL_24:
           v89 = &v143;
           v143 = v50;
           [v11 finishWithCompletionHandler:v142];
-          v8 = v138;
+          errorCopy = v138;
         }
 
         sessions = self->_sessions;
@@ -945,7 +945,7 @@ LABEL_24:
         *buf = 138412546;
         *&buf[4] = v131;
         *&buf[12] = 2114;
-        *&buf[14] = v8;
+        *&buf[14] = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "[%@] Encountered failure while using local cache, restarting using original request: %{public}@", buf, 0x16u);
       }
 
@@ -959,20 +959,20 @@ LABEL_24:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    *&buf[4] = v7;
+    *&buf[4] = taskCopy;
     *&buf[12] = 2114;
-    *&buf[14] = v8;
+    *&buf[14] = errorCopy;
     _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Untracked task: %{public}@ completed with error: %{public}@", buf, 0x16u);
   }
 
 LABEL_80:
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
-  v6 = a4;
-  v7 = a5;
-  v8 = sub_10020F4B4(AssetTaskInfo, v6);
+  taskCopy = task;
+  metricsCopy = metrics;
+  v8 = sub_10020F4B4(AssetTaskInfo, taskCopy);
   v9 = ASDLogHandleForCategory();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
   if (v8)
@@ -983,21 +983,21 @@ LABEL_80:
       *buf = 138412802;
       v34 = v12;
       v35 = 2114;
-      v36 = v6;
+      v36 = taskCopy;
       v37 = 2114;
-      v38 = v7;
+      v38 = metricsCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%@] Collected metrics for task: %{public}@ metrics: %{public}@", buf, 0x20u);
     }
 
-    v27 = v6;
+    v27 = taskCopy;
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    newValue = v7;
-    v13 = [v7 transactionMetrics];
-    v14 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    newValue = metricsCopy;
+    transactionMetrics = [metricsCopy transactionMetrics];
+    v14 = [transactionMetrics countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v14)
     {
       v15 = v14;
@@ -1008,7 +1008,7 @@ LABEL_80:
         {
           if (*v29 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(transactionMetrics);
           }
 
           v18 = *(*(&v28 + 1) + 8 * i);
@@ -1030,15 +1030,15 @@ LABEL_80:
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v15 = [transactionMetrics countByEnumeratingWithState:&v28 objects:v32 count:16];
       }
 
       while (v15);
     }
 
-    v7 = newValue;
+    metricsCopy = newValue;
     objc_setProperty_atomic(v8, v25, newValue, 64);
-    v6 = v27;
+    taskCopy = v27;
   }
 
   else
@@ -1046,23 +1046,23 @@ LABEL_80:
     if (v10)
     {
       *buf = 138543362;
-      v34 = v6;
+      v34 = taskCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Untracked task: %{public}@ did finish collecting metrics", buf, 0xCu);
     }
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = sub_10020F4B4(AssetTaskInfo, v8);
+  taskCopy = task;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  v11 = sub_10020F4B4(AssetTaskInfo, taskCopy);
   if (v11)
   {
-    v12 = [v9 protectionSpace];
-    v13 = [v12 authenticationMethod];
-    if ([v13 isEqualToString:NSURLAuthenticationMethodClientCertificate])
+    protectionSpace = [challengeCopy protectionSpace];
+    authenticationMethod = [protectionSpace authenticationMethod];
+    if ([authenticationMethod isEqualToString:NSURLAuthenticationMethodClientCertificate])
     {
       v14 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1073,13 +1073,13 @@ LABEL_80:
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[%@] Using client certificate for authentication challenge", buf, 0xCu);
       }
 
-      v10[2](v10, 1, 0);
+      handlerCopy[2](handlerCopy, 1, 0);
     }
 
-    else if ([v13 isEqualToString:NSURLAuthenticationMethodServerTrust])
+    else if ([authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
     {
       error = 0;
-      v19 = SecTrustEvaluateWithError([v12 serverTrust], &error);
+      v19 = SecTrustEvaluateWithError([protectionSpace serverTrust], &error);
       v20 = ASDLogHandleForCategory();
       v21 = v20;
       if (v19)
@@ -1092,8 +1092,8 @@ LABEL_80:
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[%@] Using server trust for authentication challenge", buf, 0xCu);
         }
 
-        v24 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [v12 serverTrust]);
-        (v10)[2](v10, 0, v24);
+        v24 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [protectionSpace serverTrust]);
+        (handlerCopy)[2](handlerCopy, 0, v24);
       }
 
       else
@@ -1108,7 +1108,7 @@ LABEL_80:
           _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "[%@] Failing server trust for authentication challenge: %{public}@", buf, 0x16u);
         }
 
-        v10[2](v10, 2, 0);
+        handlerCopy[2](handlerCopy, 2, 0);
       }
 
       if (error)
@@ -1142,19 +1142,19 @@ LABEL_80:
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "[%@] Prompting user for authentication challenge", buf, 0xCu);
         }
 
-        v31 = sub_10033A47C([AuthenticationChallenge alloc], v9);
+        v31 = sub_10033A47C([AuthenticationChallenge alloc], challengeCopy);
         v32 = sub_10029F2B8(AuthenticationChallengeDialogRequest, v31);
         v33 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v32];
-        v34 = [v33 present];
+        present = [v33 present];
         v39[0] = _NSConcreteStackBlock;
         v39[1] = 3221225472;
         v39[2] = sub_1003767D0;
         v39[3] = &unk_10051D618;
         v40 = v11;
         v41 = v31;
-        v42 = v10;
+        v42 = handlerCopy;
         v35 = v31;
-        [v34 addFinishBlock:v39];
+        [present addFinishBlock:v39];
       }
 
       else
@@ -1167,7 +1167,7 @@ LABEL_80:
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "[%@] Prompting for authentication is not permitted", buf, 0xCu);
         }
 
-        v10[2](v10, 2, 0);
+        handlerCopy[2](handlerCopy, 2, 0);
       }
     }
   }
@@ -1178,18 +1178,18 @@ LABEL_80:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v45 = v8;
+      v45 = taskCopy;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Untracked task: %{public}@ canceling after challenge", buf, 0xCu);
     }
 
-    v10[2](v10, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 _alternatePathAvailable:(int)a5
+- (void)URLSession:(id)session task:(id)task _alternatePathAvailable:(int)available
 {
-  v6 = a4;
-  v7 = sub_10020F4B4(AssetTaskInfo, v6);
+  taskCopy = task;
+  v7 = sub_10020F4B4(AssetTaskInfo, taskCopy);
   if (v7)
   {
     v8 = ASDLogHandleForCategory();
@@ -1199,13 +1199,13 @@ LABEL_80:
       v26 = 138412802;
       v27 = v10;
       v28 = 2114;
-      v29 = v6;
+      v29 = taskCopy;
       v30 = 1024;
-      v31 = a5;
+      availableCopy = available;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%@] Task: %{public}@ has alternate path available: %u", &v26, 0x1Cu);
     }
 
-    if (a5 == 3 && (v12 = objc_getProperty(v7, v11, 96, 1)) != 0 && (v13 = v12[9], v12, (v13 & 1) != 0))
+    if (available == 3 && (v12 = objc_getProperty(v7, v11, 96, 1)) != 0 && (v13 = v12[9], v12, (v13 & 1) != 0))
     {
       v14 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1214,13 +1214,13 @@ LABEL_80:
         v26 = 138412546;
         v27 = v16;
         v28 = 2114;
-        v29 = v6;
+        v29 = taskCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[%@] Task: %{public}@ restarting to take advantage of alternate path", &v26, 0x16u);
       }
 
       v7[2] = 1;
       objc_setProperty_atomic(v7, v17, 0, 40);
-      [v6 cancel];
+      [taskCopy cancel];
     }
 
     else
@@ -1228,7 +1228,7 @@ LABEL_80:
       v18 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        v20 = a5 == 3;
+        v20 = available == 3;
         v21 = objc_getProperty(v7, v19, 56, 1);
         v23 = objc_getProperty(v7, v22, 96, 1);
         v24 = v23;
@@ -1245,9 +1245,9 @@ LABEL_80:
         v26 = 138413058;
         v27 = v21;
         v28 = 2114;
-        v29 = v6;
+        v29 = taskCopy;
         v30 = 1024;
-        v31 = v20;
+        availableCopy = v20;
         v32 = 1024;
         v33 = v25;
         _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "[%@] Task: %{public}@ has alternate path but we are ignorning it: recommended = %{BOOL}d, allow cellular = %{BOOL}d", &v26, 0x22u);
@@ -1256,12 +1256,12 @@ LABEL_80:
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 _willSendRequestForEstablishedConnection:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task _willSendRequestForEstablishedConnection:(id)connection completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = sub_10020F4B4(AssetTaskInfo, v8);
+  taskCopy = task;
+  connectionCopy = connection;
+  handlerCopy = handler;
+  v11 = sub_10020F4B4(AssetTaskInfo, taskCopy);
   if (v11)
   {
     v12 = ASDLogHandleForCategory();
@@ -1282,11 +1282,11 @@ LABEL_80:
       v21 = 138412546;
       v22 = v19;
       v23 = 2114;
-      v24 = v8;
+      v24 = taskCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[%@] Task: %{public}@ will send request", &v21, 0x16u);
     }
 
-    v20 = v9;
+    v20 = connectionCopy;
   }
 
   else
@@ -1295,14 +1295,14 @@ LABEL_80:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v21 = 138543362;
-      v22 = v8;
+      v22 = taskCopy;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Untracked task: %{public}@ canceling after established connection", &v21, 0xCu);
     }
 
     v20 = 0;
   }
 
-  (v10)[2](v10, v20);
+  (handlerCopy)[2](handlerCopy, v20);
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface TBFetchAnalyticsEvent
-+ (id)fetchEventWithSource:(unint64_t)a3 type:(unint64_t)a4 trigger:(unint64_t)a5 duration:(id)a6 requestCount:(id)a7 resultCount:(id)a8 error:(id)a9 tileKey:(id)a10;
++ (id)fetchEventWithSource:(unint64_t)source type:(unint64_t)type trigger:(unint64_t)trigger duration:(id)duration requestCount:(id)count resultCount:(id)resultCount error:(id)error tileKey:(id)self0;
 - (NSDictionary)eventDictionary;
 @end
 
@@ -17,85 +17,85 @@
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[TBFetchAnalyticsEvent trigger](self, "trigger")}];
   [v3 setObject:v6 forKey:@"trigger"];
 
-  v7 = [(TBFetchAnalyticsEvent *)self duration];
+  duration = [(TBFetchAnalyticsEvent *)self duration];
 
-  if (v7)
+  if (duration)
   {
-    v8 = [(TBFetchAnalyticsEvent *)self duration];
-    [v3 setObject:v8 forKey:@"duration"];
+    duration2 = [(TBFetchAnalyticsEvent *)self duration];
+    [v3 setObject:duration2 forKey:@"duration"];
   }
 
-  v9 = [(TBFetchAnalyticsEvent *)self requestCount];
+  requestCount = [(TBFetchAnalyticsEvent *)self requestCount];
 
-  if (v9)
+  if (requestCount)
   {
-    v10 = [(TBFetchAnalyticsEvent *)self requestCount];
-    [v3 setObject:v10 forKey:@"requestCount"];
+    requestCount2 = [(TBFetchAnalyticsEvent *)self requestCount];
+    [v3 setObject:requestCount2 forKey:@"requestCount"];
   }
 
-  v11 = [(TBFetchAnalyticsEvent *)self resultCount];
+  resultCount = [(TBFetchAnalyticsEvent *)self resultCount];
 
-  if (v11)
+  if (resultCount)
   {
-    v12 = [(TBFetchAnalyticsEvent *)self resultCount];
-    [v3 setObject:v12 forKey:@"resultCount"];
+    resultCount2 = [(TBFetchAnalyticsEvent *)self resultCount];
+    [v3 setObject:resultCount2 forKey:@"resultCount"];
   }
 
-  v13 = [(TBFetchAnalyticsEvent *)self error];
+  error = [(TBFetchAnalyticsEvent *)self error];
 
-  if (v13)
+  if (error)
   {
     v14 = MEMORY[0x277CCABB0];
-    v15 = [(TBFetchAnalyticsEvent *)self error];
-    v16 = [v14 numberWithInteger:{objc_msgSend(v15, "code")}];
+    error2 = [(TBFetchAnalyticsEvent *)self error];
+    v16 = [v14 numberWithInteger:{objc_msgSend(error2, "code")}];
     [v3 setObject:v16 forKey:@"errorCode"];
   }
 
-  v17 = [(TBFetchAnalyticsEvent *)self date];
+  date = [(TBFetchAnalyticsEvent *)self date];
 
-  if (v17)
+  if (date)
   {
-    v18 = [MEMORY[0x277CBEA80] currentCalendar];
-    v19 = [(TBFetchAnalyticsEvent *)self date];
-    v20 = [v18 components:96 fromDate:v19];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    date2 = [(TBFetchAnalyticsEvent *)self date];
+    v20 = [currentCalendar components:96 fromDate:date2];
 
-    v21 = [v20 hour];
-    v22 = [MEMORY[0x277CCABB0] numberWithInteger:v21];
+    hour = [v20 hour];
+    v22 = [MEMORY[0x277CCABB0] numberWithInteger:hour];
     [v3 setObject:v22 forKey:@"hour"];
   }
 
-  v23 = [(TBFetchAnalyticsEvent *)self tileKey];
+  tileKey = [(TBFetchAnalyticsEvent *)self tileKey];
 
-  if (v23)
+  if (tileKey)
   {
-    v24 = [(TBFetchAnalyticsEvent *)self tileKey];
-    [v3 setObject:v24 forKey:@"tileKey"];
+    tileKey2 = [(TBFetchAnalyticsEvent *)self tileKey];
+    [v3 setObject:tileKey2 forKey:@"tileKey"];
   }
 
   return v3;
 }
 
-+ (id)fetchEventWithSource:(unint64_t)a3 type:(unint64_t)a4 trigger:(unint64_t)a5 duration:(id)a6 requestCount:(id)a7 resultCount:(id)a8 error:(id)a9 tileKey:(id)a10
++ (id)fetchEventWithSource:(unint64_t)source type:(unint64_t)type trigger:(unint64_t)trigger duration:(id)duration requestCount:(id)count resultCount:(id)resultCount error:(id)error tileKey:(id)self0
 {
-  v16 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
+  keyCopy = key;
+  errorCopy = error;
+  resultCountCopy = resultCount;
+  countCopy = count;
+  durationCopy = duration;
   v21 = objc_alloc_init(TBFetchAnalyticsEvent);
-  [(TBFetchAnalyticsEvent *)v21 setSource:a3];
-  [(TBFetchAnalyticsEvent *)v21 setType:a4];
-  [(TBFetchAnalyticsEvent *)v21 setTrigger:a5];
-  [(TBFetchAnalyticsEvent *)v21 setDuration:v20];
+  [(TBFetchAnalyticsEvent *)v21 setSource:source];
+  [(TBFetchAnalyticsEvent *)v21 setType:type];
+  [(TBFetchAnalyticsEvent *)v21 setTrigger:trigger];
+  [(TBFetchAnalyticsEvent *)v21 setDuration:durationCopy];
 
-  [(TBFetchAnalyticsEvent *)v21 setRequestCount:v19];
-  [(TBFetchAnalyticsEvent *)v21 setResultCount:v18];
+  [(TBFetchAnalyticsEvent *)v21 setRequestCount:countCopy];
+  [(TBFetchAnalyticsEvent *)v21 setResultCount:resultCountCopy];
 
-  [(TBFetchAnalyticsEvent *)v21 setError:v17];
-  v22 = [MEMORY[0x277CBEAA8] date];
-  [(TBFetchAnalyticsEvent *)v21 setDate:v22];
+  [(TBFetchAnalyticsEvent *)v21 setError:errorCopy];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(TBFetchAnalyticsEvent *)v21 setDate:date];
 
-  [(TBFetchAnalyticsEvent *)v21 setTileKey:v16];
+  [(TBFetchAnalyticsEvent *)v21 setTileKey:keyCopy];
 
   return v21;
 }

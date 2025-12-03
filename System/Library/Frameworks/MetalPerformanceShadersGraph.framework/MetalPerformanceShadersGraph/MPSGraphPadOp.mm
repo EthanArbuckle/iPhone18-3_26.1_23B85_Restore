@@ -1,40 +1,40 @@
 @interface MPSGraphPadOp
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphPadOp
 
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  tensorCopy = tensor;
+  gradientCopy = gradient;
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->super._graph);
   paddingMode = self->_paddingMode;
   v14 = [(NSArray *)self->super._inputTensors objectAtIndexedSubscript:1];
   v15 = [(NSArray *)self->super._inputTensors objectAtIndexedSubscript:2];
   v16 = MEMORY[0x1E696AEC0];
-  v17 = [(MPSGraphOperation *)self name];
-  v18 = [v16 stringWithFormat:@"%@/%@/padGradient", v11, v17];
-  v19 = [WeakRetained padGradientWithIncomingGradientTensor:v10 inputTensor:v9 paddingMode:paddingMode paddingTensor:v14 constantValuesTensor:v15 name:v18];
+  name = [(MPSGraphOperation *)self name];
+  v18 = [v16 stringWithFormat:@"%@/%@/padGradient", nameCopy, name];
+  v19 = [WeakRetained padGradientWithIncomingGradientTensor:gradientCopy inputTensor:tensorCopy paddingMode:paddingMode paddingTensor:v14 constantValuesTensor:v15 name:v18];
 
   return v19;
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
-  v28 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphPadOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphTensorShapeOps.mm", v29);
-  v11 = v28;
+  v11 = nameCopy;
   v35 = 260;
   v34[0] = v29;
-  StringAttr = mlir::Builder::getStringAttr(a3, v34);
+  StringAttr = mlir::Builder::getStringAttr(builder, v34);
   v14 = mlir::FileLineColLoc::get(StringAttr, 0x3B9u, 0);
   if (v11)
   {
-    v15 = [v11 UTF8String];
-    v16 = strlen(v15);
+    uTF8String = [v11 UTF8String];
+    v16 = strlen(uTF8String);
     if (v16 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -49,7 +49,7 @@
     v33 = v16;
     if (v16)
     {
-      memmove(&__dst, v15, v16);
+      memmove(&__dst, uTF8String, v16);
     }
 
     v18 = &__dst + v17;
@@ -63,7 +63,7 @@
   }
 
   *v18 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v13, &__p);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v13, &__p);
   p_p = __p.__r_.__value_.__r.__words[0];
   if ((__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -79,7 +79,7 @@
   }
 
   LOBYTE(v35) = v20;
-  v21 = mlir::Builder::getStringAttr(a3, v34);
+  v21 = mlir::Builder::getStringAttr(builder, v34);
   v22 = mlir::NameLoc::get(v21, v14);
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -95,9 +95,9 @@ LABEL_16:
 
 LABEL_21:
       operator delete(v29[0]);
-      v23 = *a5;
-      v24 = *(a5 + 1);
-      v25 = v24 - *a5;
+      v23 = *values;
+      v24 = *(values + 1);
+      v25 = v24 - *values;
       if (v25 == 16)
       {
         goto LABEL_25;
@@ -120,9 +120,9 @@ LABEL_21:
   }
 
 LABEL_17:
-  v23 = *a5;
-  v24 = *(a5 + 1);
-  v25 = v24 - *a5;
+  v23 = *values;
+  v24 = *(values + 1);
+  v25 = v24 - *values;
   if (v25 == 16)
   {
     goto LABEL_25;
@@ -136,7 +136,7 @@ LABEL_25:
   }
 
   LODWORD(__dst) = self->_paddingMode;
-  v34[0] = mlir::OpBuilder::create<mlir::mps::PadOp,mlir::Value &,mlir::Value &,mlir::Value &,mlir::mps::PaddingMode>(a3, v22, v23, v23 + 1, v23 + 2, &__dst) - 16;
+  v34[0] = mlir::OpBuilder::create<mlir::mps::PadOp,mlir::Value &,mlir::Value &,mlir::Value &,mlir::mps::PaddingMode>(builder, v22, v23, v23 + 1, v23 + 2, &__dst) - 16;
   DefiningOp = mlir::Value::getDefiningOp(v34);
 
   return DefiningOp;

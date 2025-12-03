@@ -1,14 +1,14 @@
 @interface HMDPersonSettingsManager
 + (id)logCategory;
-- (BOOL)areClassificationNotificationsEnabledForPersonUUID:(id)a3;
+- (BOOL)areClassificationNotificationsEnabledForPersonUUID:(id)d;
 - (HMDHome)home;
-- (HMDPersonSettingsManager)initWithHome:(id)a3 localZone:(id)a4 dependencyFactory:(id)a5 workQueue:(id)a6;
-- (HMDPersonSettingsManager)initWithHome:(id)a3 localZone:(id)a4 workQueue:(id)a5;
+- (HMDPersonSettingsManager)initWithHome:(id)home localZone:(id)zone dependencyFactory:(id)factory workQueue:(id)queue;
+- (HMDPersonSettingsManager)initWithHome:(id)home localZone:(id)zone workQueue:(id)queue;
 - (NSURL)personSettingsManagerMigrationFileURL;
-- (id)_setClassificationNotificationsEnabled:(id)a3 forPersonUUID:(id)a4;
+- (id)_setClassificationNotificationsEnabled:(id)enabled forPersonUUID:(id)d;
 - (id)logIdentifier;
-- (void)_handleFetchClassificationNotificationsEnabledForPersonMessage:(id)a3;
-- (void)_handleSetClassificationNotificationsEnabledForPersonMessage:(id)a3;
+- (void)_handleFetchClassificationNotificationsEnabledForPersonMessage:(id)message;
+- (void)_handleSetClassificationNotificationsEnabledForPersonMessage:(id)message;
 - (void)_registerForMessages;
 - (void)configure;
 - (void)remove;
@@ -26,22 +26,22 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDPersonSettingsManager *)self UUID];
-  v3 = [v2 UUIDString];
+  uUID = [(HMDPersonSettingsManager *)self UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (id)_setClassificationNotificationsEnabled:(id)a3 forPersonUUID:(id)a4
+- (id)_setClassificationNotificationsEnabled:(id)enabled forPersonUUID:(id)d
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDPersonSettingsManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  enabledCopy = enabled;
+  dCopy = d;
+  workQueue = [(HMDPersonSettingsManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -49,21 +49,21 @@
     v31 = 138543874;
     v32 = v12;
     v33 = 2112;
-    v34 = v6;
+    v34 = enabledCopy;
     v35 = 2112;
-    v36 = v7;
+    v36 = dCopy;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Updating the HMDPersonSettingsModel with classification notifications enabled: %@, for person with UUID: %@", &v31, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v13 = [(HMDPersonSettingsManager *)v10 localZone];
+  localZone = [(HMDPersonSettingsManager *)selfCopy localZone];
   v14 = +[HMDPersonSettingsModel sentinelModelUUID];
-  v15 = [v13 fetchModelWithModelID:v14 ofType:objc_opt_class() error:0];
+  v15 = [localZone fetchModelWithModelID:v14 ofType:objc_opt_class() error:0];
 
   if (!v15)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = v10;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -77,15 +77,15 @@
     v15 = objc_alloc_init(HMDPersonSettingsModel);
   }
 
-  [(HMDPersonSettingsModel *)v15 setClassificationNotificationsEnabled:v6 forPersonUUID:v7];
-  v20 = [(HMDPersonSettingsManager *)v10 localZone];
+  [(HMDPersonSettingsModel *)v15 setClassificationNotificationsEnabled:enabledCopy forPersonUUID:dCopy];
+  localZone2 = [(HMDPersonSettingsManager *)selfCopy localZone];
   v21 = [MEMORY[0x277CBEB98] setWithObject:v15];
   v22 = [MEMORY[0x277D17108] optionsWithLabel:@"Update classification notifications settings"];
-  v23 = [v20 addModels:v21 options:v22];
+  v23 = [localZone2 addModels:v21 options:v22];
 
   v24 = MEMORY[0x277D2C938];
-  v25 = [(HMDPersonSettingsManager *)v10 workQueue];
-  v26 = [v24 schedulerWithDispatchQueue:v25];
+  workQueue2 = [(HMDPersonSettingsManager *)selfCopy workQueue];
+  v26 = [v24 schedulerWithDispatchQueue:workQueue2];
   v27 = [v23 reschedule:v26];
   v28 = [v27 flatMap:&__block_literal_global_86842];
 
@@ -97,49 +97,49 @@
 - (void)_registerForMessages
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPersonSettingsManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPersonSettingsManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = [HMDXPCMessagePolicy policyWithEntitlements:8197];
-  v5 = [(HMDPersonSettingsManager *)self home];
-  v6 = [HMDUserMessagePolicy userMessagePolicyWithHome:v5 userPrivilege:0 remoteAccessRequired:0];
+  home = [(HMDPersonSettingsManager *)self home];
+  v6 = [HMDUserMessagePolicy userMessagePolicyWithHome:home userPrivilege:0 remoteAccessRequired:0];
 
   v11[0] = v4;
   v11[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
-  v8 = [(HMDPersonSettingsManager *)self messageDispatcher];
-  [v8 registerForMessage:*MEMORY[0x277CD0C18] receiver:self policies:v7 selector:sel__handleFetchClassificationNotificationsEnabledForPersonMessage_];
+  messageDispatcher = [(HMDPersonSettingsManager *)self messageDispatcher];
+  [messageDispatcher registerForMessage:*MEMORY[0x277CD0C18] receiver:self policies:v7 selector:sel__handleFetchClassificationNotificationsEnabledForPersonMessage_];
 
-  v9 = [(HMDPersonSettingsManager *)self messageDispatcher];
-  [v9 registerForMessage:*MEMORY[0x277CD0C28] receiver:self policies:v7 selector:sel__handleSetClassificationNotificationsEnabledForPersonMessage_];
+  messageDispatcher2 = [(HMDPersonSettingsManager *)self messageDispatcher];
+  [messageDispatcher2 registerForMessage:*MEMORY[0x277CD0C28] receiver:self policies:v7 selector:sel__handleSetClassificationNotificationsEnabledForPersonMessage_];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSetClassificationNotificationsEnabledForPersonMessage:(id)a3
+- (void)_handleSetClassificationNotificationsEnabledForPersonMessage:(id)message
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonSettingsManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDPersonSettingsManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v4 messagePayload];
+    messagePayload = [messageCopy messagePayload];
     *buf = 138543618;
     v25 = v9;
     v26 = 2112;
-    v27 = v10;
+    v27 = messagePayload;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Handling update classification notifications enabled for person message with payload: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [v4 uuidForKey:*MEMORY[0x277CD0C20]];
-  v12 = [v4 numberForKey:*MEMORY[0x277CD0C10]];
+  v11 = [messageCopy uuidForKey:*MEMORY[0x277CD0C20]];
+  v12 = [messageCopy numberForKey:*MEMORY[0x277CD0C10]];
   v13 = v12;
   if (v11)
   {
@@ -154,7 +154,7 @@
   if (v14)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v7;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -170,18 +170,18 @@
 
     objc_autoreleasePoolPop(v15);
     v19 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    [v4 respondWithError:v19];
+    [messageCopy respondWithError:v19];
   }
 
   else
   {
-    v19 = [(HMDPersonSettingsManager *)v7 _setClassificationNotificationsEnabled:v12 forPersonUUID:v11];
+    v19 = [(HMDPersonSettingsManager *)selfCopy _setClassificationNotificationsEnabled:v12 forPersonUUID:v11];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __89__HMDPersonSettingsManager__handleSetClassificationNotificationsEnabledForPersonMessage___block_invoke;
     v22[3] = &unk_27972E9E0;
-    v22[4] = v7;
-    v23 = v4;
+    v22[4] = selfCopy;
+    v23 = messageCopy;
     v20 = [v19 addCompletionBlock:v22];
   }
 
@@ -233,34 +233,34 @@ LABEL_6:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleFetchClassificationNotificationsEnabledForPersonMessage:(id)a3
+- (void)_handleFetchClassificationNotificationsEnabledForPersonMessage:(id)message
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonSettingsManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDPersonSettingsManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v4 messagePayload];
+    messagePayload = [messageCopy messagePayload];
     *buf = 138543618;
     v28 = v9;
     v29 = 2112;
-    v30 = v10;
+    v30 = messagePayload;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Handling fetch classification notifications enabled for person message with payload: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [v4 uuidForKey:*MEMORY[0x277CD0C20]];
+  v11 = [messageCopy uuidForKey:*MEMORY[0x277CD0C20]];
   if (v11)
   {
-    v12 = [(HMDPersonSettingsManager *)v7 areClassificationNotificationsEnabledForPersonUUID:v11];
+    v12 = [(HMDPersonSettingsManager *)selfCopy areClassificationNotificationsEnabledForPersonUUID:v11];
     v13 = objc_autoreleasePoolPush();
-    v14 = v7;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -277,13 +277,13 @@ LABEL_6:
     v18 = [MEMORY[0x277CCABB0] numberWithBool:{v12, *MEMORY[0x277CD0C10]}];
     v26 = v18;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-    [v4 respondWithPayload:v19];
+    [messageCopy respondWithPayload:v19];
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = v7;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -295,7 +295,7 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v20);
     v18 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    [v4 respondWithError:v18];
+    [messageCopy respondWithError:v18];
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -305,7 +305,7 @@ LABEL_6:
 {
   v41 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -316,16 +316,16 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDPersonSettingsManager *)v4 localZone];
+  localZone = [(HMDPersonSettingsManager *)selfCopy localZone];
   v8 = +[HMDPersonSettingsModel sentinelModelUUID];
-  v9 = [v7 fetchModelWithModelID:v8 ofType:objc_opt_class() error:0];
+  v9 = [localZone fetchModelWithModelID:v8 ofType:objc_opt_class() error:0];
 
-  v10 = [v9 faceClassificationNotificationsEnabledByPersonUUID];
+  faceClassificationNotificationsEnabledByPersonUUID = [v9 faceClassificationNotificationsEnabledByPersonUUID];
   v11 = objc_autoreleasePoolPush();
-  if (v9 && v10)
+  if (v9 && faceClassificationNotificationsEnabledByPersonUUID)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v4;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -333,22 +333,22 @@ LABEL_6:
       *buf = 138543618;
       v36 = v15;
       v37 = 2112;
-      v38 = v10;
+      v38 = faceClassificationNotificationsEnabledByPersonUUID;
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@Saving person classification settings %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
     v34 = 0;
-    v16 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:&v34];
+    v16 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:faceClassificationNotificationsEnabledByPersonUUID requiringSecureCoding:1 error:&v34];
     v17 = v34;
     if (v16)
     {
-      v18 = [(HMDPersonSettingsManager *)v13 personSettingsManagerMigrationFileURL];
-      v19 = [(HMDPersonSettingsManager *)v13 dependencyFactory];
-      v20 = [v19 persistentStore];
+      personSettingsManagerMigrationFileURL = [(HMDPersonSettingsManager *)v13 personSettingsManagerMigrationFileURL];
+      dependencyFactory = [(HMDPersonSettingsManager *)v13 dependencyFactory];
+      persistentStore = [dependencyFactory persistentStore];
 
-      v21 = [v18 path];
-      v22 = [v20 writeData:v16 toStorePath:v21 dataLabel:@"PersonClassificationSettings"];
+      path = [personSettingsManagerMigrationFileURL path];
+      v22 = [persistentStore writeData:v16 toStorePath:path dataLabel:@"PersonClassificationSettings"];
 
       context = objc_autoreleasePoolPush();
       v23 = v13;
@@ -362,7 +362,7 @@ LABEL_6:
         v37 = 2112;
         v38 = v22;
         v39 = 2112;
-        v40 = v18;
+        v40 = personSettingsManagerMigrationFileURL;
         _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_INFO, "%{public}@Saved [%@] bytes to [%@]", buf, 0x20u);
 
         v11 = v32;
@@ -393,7 +393,7 @@ LABEL_6:
 
   else
   {
-    v17 = v4;
+    v17 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -412,8 +412,8 @@ LABEL_6:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = hh1ToHH2PerDeviceMigrationDirectoryPath;
-  v5 = [(HMDPersonSettingsManager *)self UUID];
-  v6 = [v3 stringWithFormat:@"%@/HMDPersonSettingsManager-%@.plist", v4, v5];
+  uUID = [(HMDPersonSettingsManager *)self UUID];
+  v6 = [v3 stringWithFormat:@"%@/HMDPersonSettingsManager-%@.plist", v4, uUID];
 
   v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:v6];
 
@@ -424,7 +424,7 @@ LABEL_6:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -435,17 +435,17 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDPersonSettingsManager *)v4 localZone];
+  localZone = [(HMDPersonSettingsManager *)selfCopy localZone];
   v8 = MEMORY[0x277CBEB98];
   v9 = +[HMDPersonSettingsModel sentinelModelUUID];
   v10 = [v8 setWithObject:v9];
   v11 = [MEMORY[0x277D17108] optionsWithLabel:@"Remove Person Settings"];
-  v12 = [v7 removeModelIDs:v10 options:v11];
+  v12 = [localZone removeModelIDs:v10 options:v11];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __34__HMDPersonSettingsManager_remove__block_invoke;
   v15[3] = &unk_27972EB40;
-  v15[4] = v4;
+  v15[4] = selfCopy;
   v13 = [v12 addCompletionBlock:v15];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -494,12 +494,12 @@ LABEL_6:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)areClassificationNotificationsEnabledForPersonUUID:(id)a3
+- (BOOL)areClassificationNotificationsEnabledForPersonUUID:(id)d
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -510,23 +510,23 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDPersonSettingsManager *)v6 localZone];
+  localZone = [(HMDPersonSettingsManager *)selfCopy localZone];
   v10 = +[HMDPersonSettingsModel sentinelModelUUID];
-  v11 = [v9 fetchModelWithModelID:v10 ofType:objc_opt_class() error:0];
+  v11 = [localZone fetchModelWithModelID:v10 ofType:objc_opt_class() error:0];
 
   if (v11)
   {
-    v12 = [v11 classificationNotificationsEnabledForPersonUUID:v4];
+    v12 = [v11 classificationNotificationsEnabledForPersonUUID:dCopy];
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 BOOLValue];
+      bOOLValue = [v12 BOOLValue];
     }
 
     else
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = v6;
+      v21 = selfCopy;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
@@ -535,21 +535,21 @@ LABEL_6:
         v27 = 138543874;
         v28 = v23;
         v29 = 2112;
-        v30 = v4;
+        v30 = dCopy;
         v31 = 2112;
         v32 = v24;
         _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_INFO, "%{public}@No classification notification setting has been set for person with uuid: %@, so returning default value: %@", &v27, 0x20u);
       }
 
       objc_autoreleasePoolPop(v20);
-      v14 = 1;
+      bOOLValue = 1;
     }
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v6;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -563,21 +563,21 @@ LABEL_6:
     }
 
     objc_autoreleasePoolPop(v15);
-    v14 = 1;
+    bOOLValue = 1;
   }
 
   v25 = *MEMORY[0x277D85DE8];
-  return v14;
+  return bOOLValue;
 }
 
 - (void)configure
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPersonSettingsManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPersonSettingsManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -588,48 +588,48 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v4);
-  [(HMDPersonSettingsManager *)v5 _registerForMessages];
+  [(HMDPersonSettingsManager *)selfCopy _registerForMessages];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDPersonSettingsManager)initWithHome:(id)a3 localZone:(id)a4 dependencyFactory:(id)a5 workQueue:(id)a6
+- (HMDPersonSettingsManager)initWithHome:(id)home localZone:(id)zone dependencyFactory:(id)factory workQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  homeCopy = home;
+  zoneCopy = zone;
+  factoryCopy = factory;
+  queueCopy = queue;
   v23.receiver = self;
   v23.super_class = HMDPersonSettingsManager;
   v14 = [(HMDPersonSettingsManager *)&v23 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_home, v10);
-    v16 = [v10 msgDispatcher];
+    objc_storeWeak(&v14->_home, homeCopy);
+    msgDispatcher = [homeCopy msgDispatcher];
     messageDispatcher = v15->_messageDispatcher;
-    v15->_messageDispatcher = v16;
+    v15->_messageDispatcher = msgDispatcher;
 
-    objc_storeStrong(&v15->_dependencyFactory, a5);
-    objc_storeStrong(&v15->_workQueue, a6);
+    objc_storeStrong(&v15->_dependencyFactory, factory);
+    objc_storeStrong(&v15->_workQueue, queue);
     v18 = MEMORY[0x277CD1CF0];
-    v19 = [v10 uuid];
-    v20 = [v18 personSettingsManagerUUIDFromHomeUUID:v19];
+    uuid = [homeCopy uuid];
+    v20 = [v18 personSettingsManagerUUIDFromHomeUUID:uuid];
     UUID = v15->_UUID;
     v15->_UUID = v20;
 
-    objc_storeStrong(&v15->_localZone, a4);
+    objc_storeStrong(&v15->_localZone, zone);
   }
 
   return v15;
 }
 
-- (HMDPersonSettingsManager)initWithHome:(id)a3 localZone:(id)a4 workQueue:(id)a5
+- (HMDPersonSettingsManager)initWithHome:(id)home localZone:(id)zone workQueue:(id)queue
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  queueCopy = queue;
+  zoneCopy = zone;
+  homeCopy = home;
   v11 = objc_alloc_init(HMDPersonSettingsManagerDependencyFactory);
-  v12 = [(HMDPersonSettingsManager *)self initWithHome:v10 localZone:v9 dependencyFactory:v11 workQueue:v8];
+  v12 = [(HMDPersonSettingsManager *)self initWithHome:homeCopy localZone:zoneCopy dependencyFactory:v11 workQueue:queueCopy];
 
   return v12;
 }

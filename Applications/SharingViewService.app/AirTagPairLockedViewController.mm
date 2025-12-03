@@ -1,5 +1,5 @@
 @interface AirTagPairLockedViewController
-- (_TtC18SharingViewService30AirTagPairLockedViewController)initWithContentView:(id)a3;
+- (_TtC18SharingViewService30AirTagPairLockedViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,16 +7,16 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10009A210();
 }
 
-- (_TtC18SharingViewService30AirTagPairLockedViewController)initWithContentView:(id)a3
+- (_TtC18SharingViewService30AirTagPairLockedViewController)initWithContentView:(id)view
 {
   swift_unknownObjectWeakInit();
   v6.receiver = self;
   v6.super_class = type metadata accessor for AirTagPairLockedViewController();
-  return [(AirTagPairLockedViewController *)&v6 initWithContentView:a3];
+  return [(AirTagPairLockedViewController *)&v6 initWithContentView:view];
 }
 
 @end

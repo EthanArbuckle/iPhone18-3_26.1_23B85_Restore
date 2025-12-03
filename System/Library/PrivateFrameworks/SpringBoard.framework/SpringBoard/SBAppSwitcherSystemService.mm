@@ -1,29 +1,29 @@
 @interface SBAppSwitcherSystemService
-- (SBAppSwitcherSystemService)initWithSwitcherCoordinator:(id)a3 commandTabController:(id)a4;
-- (void)requestAppearanceForHiddenAppWithBundleIdentifier:(id)a3 assertionPort:(id)a4 forClient:(id)a5 withCompletion:(id)a6;
-- (void)systemServiceServer:(id)a3 requestAppearanceForHiddenAppWithBundleIdentifier:(id)a4 assertionPort:(id)a5 forClient:(id)a6 withCompletion:(id)a7;
-- (void)systemServiceServer:(id)a3 requestUpdateWindowingMode:(int)a4 forClient:(id)a5 completion:(id)a6;
-- (void)systemServiceServer:(id)a3 resetLayoutAttributesForClient:(id)a4 completion:(id)a5;
+- (SBAppSwitcherSystemService)initWithSwitcherCoordinator:(id)coordinator commandTabController:(id)controller;
+- (void)requestAppearanceForHiddenAppWithBundleIdentifier:(id)identifier assertionPort:(id)port forClient:(id)client withCompletion:(id)completion;
+- (void)systemServiceServer:(id)server requestAppearanceForHiddenAppWithBundleIdentifier:(id)identifier assertionPort:(id)port forClient:(id)client withCompletion:(id)completion;
+- (void)systemServiceServer:(id)server requestUpdateWindowingMode:(int)mode forClient:(id)client completion:(id)completion;
+- (void)systemServiceServer:(id)server resetLayoutAttributesForClient:(id)client completion:(id)completion;
 @end
 
 @implementation SBAppSwitcherSystemService
 
-- (SBAppSwitcherSystemService)initWithSwitcherCoordinator:(id)a3 commandTabController:(id)a4
+- (SBAppSwitcherSystemService)initWithSwitcherCoordinator:(id)coordinator commandTabController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = SBAppSwitcherSystemService;
   v9 = [(SBAppSwitcherSystemService *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_switcherCoordinator, a3);
-    v11 = [v7 _recentAppLayoutsController];
+    objc_storeStrong(&v9->_switcherCoordinator, coordinator);
+    _recentAppLayoutsController = [coordinatorCopy _recentAppLayoutsController];
     recentAppLayouts = v10->_recentAppLayouts;
-    v10->_recentAppLayouts = v11;
+    v10->_recentAppLayouts = _recentAppLayoutsController;
 
-    objc_storeStrong(&v10->_commandTabController, a4);
+    objc_storeStrong(&v10->_commandTabController, controller);
     v13 = +[SBSystemServiceServer sharedInstance];
     [v13 setAppSwitcherDelegate:v10];
 
@@ -35,47 +35,47 @@
   return v10;
 }
 
-- (void)requestAppearanceForHiddenAppWithBundleIdentifier:(id)a3 assertionPort:(id)a4 forClient:(id)a5 withCompletion:(id)a6
+- (void)requestAppearanceForHiddenAppWithBundleIdentifier:(id)identifier assertionPort:(id)port forClient:(id)client withCompletion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  portCopy = port;
+  clientCopy = client;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
-  if (!v13)
+  if (!clientCopy)
   {
     [SBAppSwitcherSystemService requestAppearanceForHiddenAppWithBundleIdentifier:a2 assertionPort:self forClient:? withCompletion:?];
   }
 
   requestAppearanceForHiddenAppAuthenticator = self->_requestAppearanceForHiddenAppAuthenticator;
-  v16 = [v13 processHandle];
-  v17 = [v16 auditToken];
+  processHandle = [clientCopy processHandle];
+  auditToken = [processHandle auditToken];
   v30 = 0;
-  v18 = [(FBServiceClientAuthenticator *)requestAppearanceForHiddenAppAuthenticator authenticateAuditToken:v17 error:&v30];
+  v18 = [(FBServiceClientAuthenticator *)requestAppearanceForHiddenAppAuthenticator authenticateAuditToken:auditToken error:&v30];
   v19 = v30;
 
   if (v18)
   {
     v20 = +[SBApplicationController sharedInstance];
-    v21 = [v20 applicationWithBundleIdentifier:v11];
+    v21 = [v20 applicationWithBundleIdentifier:identifierCopy];
 
     if (v21)
     {
-      v22 = [(SBRecentAppLayouts *)self->_recentAppLayouts _acquireAllowHiddenAppAssertionForBundleIdentifier:v11 reason:@"SBAppSwitcherSystemService"];
-      [(SBCommandTabController *)self->_commandTabController _allowAppToAppearWhileHidden:v11];
+      v22 = [(SBRecentAppLayouts *)self->_recentAppLayouts _acquireAllowHiddenAppAssertionForBundleIdentifier:identifierCopy reason:@"SBAppSwitcherSystemService"];
+      [(SBCommandTabController *)self->_commandTabController _allowAppToAppearWhileHidden:identifierCopy];
       v23 = MEMORY[0x277CF0CB8];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __119__SBAppSwitcherSystemService_requestAppearanceForHiddenAppWithBundleIdentifier_assertionPort_forClient_withCompletion___block_invoke;
       v26[3] = &unk_2783A8ED8;
       v27 = v22;
-      v28 = self;
-      v29 = v11;
+      selfCopy = self;
+      v29 = identifierCopy;
       v24 = v22;
-      [v23 monitorSendRight:v12 withHandler:v26];
+      [v23 monitorSendRight:portCopy withHandler:v26];
     }
 
-    v14[2](v14, v21 != 0);
+    completionCopy[2](completionCopy, v21 != 0);
   }
 
   else
@@ -86,7 +86,7 @@
       [SBAppSwitcherSystemService requestAppearanceForHiddenAppWithBundleIdentifier:v19 assertionPort:v25 forClient:? withCompletion:?];
     }
 
-    v14[2](v14, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -106,30 +106,30 @@ uint64_t __119__SBAppSwitcherSystemService_requestAppearanceForHiddenAppWithBund
   return [v3 _disallowAppFromAppearingWhileHidden:v2];
 }
 
-- (void)systemServiceServer:(id)a3 requestAppearanceForHiddenAppWithBundleIdentifier:(id)a4 assertionPort:(id)a5 forClient:(id)a6 withCompletion:(id)a7
+- (void)systemServiceServer:(id)server requestAppearanceForHiddenAppWithBundleIdentifier:(id)identifier assertionPort:(id)port forClient:(id)client withCompletion:(id)completion
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v10 = v17;
-  v11 = v16;
-  v12 = v15;
-  v13 = v14;
+  identifierCopy = identifier;
+  portCopy = port;
+  clientCopy = client;
+  completionCopy = completion;
+  v10 = completionCopy;
+  v11 = clientCopy;
+  v12 = portCopy;
+  v13 = identifierCopy;
   BSDispatchMain();
 }
 
-- (void)systemServiceServer:(id)a3 resetLayoutAttributesForClient:(id)a4 completion:(id)a5
+- (void)systemServiceServer:(id)server resetLayoutAttributesForClient:(id)client completion:(id)completion
 {
-  v6 = a5;
-  v5 = v6;
+  completionCopy = completion;
+  v5 = completionCopy;
   BSDispatchMain();
 }
 
-- (void)systemServiceServer:(id)a3 requestUpdateWindowingMode:(int)a4 forClient:(id)a5 completion:(id)a6
+- (void)systemServiceServer:(id)server requestUpdateWindowingMode:(int)mode forClient:(id)client completion:(id)completion
 {
-  v7 = a6;
-  v6 = v7;
+  completionCopy = completion;
+  v6 = completionCopy;
   BSDispatchMain();
 }
 

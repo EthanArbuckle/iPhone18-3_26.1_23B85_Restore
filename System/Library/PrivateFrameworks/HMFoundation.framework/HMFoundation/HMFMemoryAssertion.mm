@@ -1,21 +1,21 @@
 @interface HMFMemoryAssertion
-- (HMFMemoryAssertion)initWithName:(id)a3;
+- (HMFMemoryAssertion)initWithName:(id)name;
 - (void)invalidate;
 - (void)mark;
 @end
 
 @implementation HMFMemoryAssertion
 
-- (HMFMemoryAssertion)initWithName:(id)a3
+- (HMFMemoryAssertion)initWithName:(id)name
 {
   v9.receiver = self;
   v9.super_class = HMFMemoryAssertion;
-  v3 = [(HMFAssertion *)&v9 initWithName:a3];
+  v3 = [(HMFAssertion *)&v9 initWithName:name];
   v4 = v3;
   if (v3)
   {
-    v5 = [(HMFAssertion *)v3 uniqueDescription];
-    [v5 UTF8String];
+    uniqueDescription = [(HMFAssertion *)v3 uniqueDescription];
+    [uniqueDescription UTF8String];
     v6 = os_transaction_create();
     internal = v4->_internal;
     v4->_internal = v6;
@@ -38,18 +38,18 @@
   v12.receiver = self;
   v12.super_class = HMFMemoryAssertion;
   [(HMFAssertion *)&v12 mark];
-  v3 = [(HMFMemoryAssertion *)self internal];
+  internal = [(HMFMemoryAssertion *)self internal];
   v4 = os_transaction_needs_more_time();
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
   if (v4)
   {
     if (v8)
     {
-      v9 = HMFGetLogIdentifier(v6);
+      v9 = HMFGetLogIdentifier(selfCopy);
       *buf = 138543362;
       v14 = v9;
       v10 = "%{public}@Successfully marked";
@@ -60,7 +60,7 @@ LABEL_6:
 
   else if (v8)
   {
-    v9 = HMFGetLogIdentifier(v6);
+    v9 = HMFGetLogIdentifier(selfCopy);
     *buf = 138543362;
     v14 = v9;
     v10 = "%{public}@Failed to mark";

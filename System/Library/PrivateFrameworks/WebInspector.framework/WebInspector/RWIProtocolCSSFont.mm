@@ -3,29 +3,29 @@
 - (BOOL)synthesizedOblique;
 - (NSArray)variationAxes;
 - (NSString)displayName;
-- (RWIProtocolCSSFont)initWithDisplayName:(id)a3 variationAxes:(id)a4;
-- (void)setDisplayName:(id)a3;
-- (void)setVariationAxes:(id)a3;
+- (RWIProtocolCSSFont)initWithDisplayName:(id)name variationAxes:(id)axes;
+- (void)setDisplayName:(id)name;
+- (void)setVariationAxes:(id)axes;
 @end
 
 @implementation RWIProtocolCSSFont
 
-- (RWIProtocolCSSFont)initWithDisplayName:(id)a3 variationAxes:(id)a4
+- (RWIProtocolCSSFont)initWithDisplayName:(id)name variationAxes:(id)axes
 {
   v28 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v21 = a4;
+  nameCopy = name;
+  axesCopy = axes;
   v26.receiver = self;
   v26.super_class = RWIProtocolCSSFont;
   v6 = [(RWIProtocolJSONObject *)&v26 init];
   if (v6)
   {
-    if (!v20)
+    if (!nameCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"displayName"}];
     }
 
-    if (!v21)
+    if (!axesCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"variationAxes"}];
     }
@@ -35,7 +35,7 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = v21;
+    v7 = axesCopy;
     v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v8)
     {
@@ -72,7 +72,7 @@
     }
 
     v6 = v19;
-    [(RWIProtocolCSSFont *)v19 setDisplayName:v20];
+    [(RWIProtocolCSSFont *)v19 setDisplayName:nameCopy];
     [(RWIProtocolCSSFont *)v19 setVariationAxes:v7];
     v16 = v19;
   }
@@ -81,11 +81,11 @@
   return v6;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSFont;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"displayName"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"displayName"];
 }
 
 - (NSString)displayName
@@ -97,14 +97,14 @@
   return v2;
 }
 
-- (void)setVariationAxes:(id)a3
+- (void)setVariationAxes:(id)axes
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = axes;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {

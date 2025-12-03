@@ -1,9 +1,9 @@
 @interface NGMFullPrekey
-+ (id)fullPrekeyForTestingSignedBy:(id)a3;
++ (id)fullPrekeyForTestingSignedBy:(id)by;
 - (BOOL)delete;
 - (BOOL)isSEPKey;
-- (NGMFullPrekey)initWithPBPrekey:(id)a3 verifySignedBy:(id)a4 error:(id *)a5;
-- (NGMFullPrekey)initWithPrekeySignedBy:(id)a3 error:(id *)a4;
+- (NGMFullPrekey)initWithPBPrekey:(id)prekey verifySignedBy:(id)by error:(id *)error;
+- (NGMFullPrekey)initWithPrekeySignedBy:(id)by error:(id *)error;
 - (id)description;
 - (id)keychainData;
 - (id)pbDevicePrekey;
@@ -12,13 +12,13 @@
 
 @implementation NGMFullPrekey
 
-+ (id)fullPrekeyForTestingSignedBy:(id)a3
++ (id)fullPrekeyForTestingSignedBy:(id)by
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 signingKey];
+  byCopy = by;
+  v5 = [self alloc];
+  signingKey = [byCopy signingKey];
   v10 = 0;
-  v7 = [v5 initWithPrekeySignedBy:v6 error:&v10];
+  v7 = [v5 initWithPrekeySignedBy:signingKey error:&v10];
   v8 = v10;
 
   if (v8)
@@ -31,45 +31,45 @@
 
 - (BOOL)isSEPKey
 {
-  v2 = [(NGMFullPrekey *)self dhKey];
-  v3 = [v2 keyStore] == 2;
+  dhKey = [(NGMFullPrekey *)self dhKey];
+  v3 = [dhKey keyStore] == 2;
 
   return v3;
 }
 
 - (id)keychainData
 {
-  v2 = [(NGMFullPrekey *)self dhKey];
-  v3 = [v2 key];
-  v4 = [v3 keychainData];
+  dhKey = [(NGMFullPrekey *)self dhKey];
+  v3 = [dhKey key];
+  keychainData = [v3 keychainData];
 
-  return v4;
+  return keychainData;
 }
 
-- (NGMFullPrekey)initWithPrekeySignedBy:(id)a3 error:(id *)a4
+- (NGMFullPrekey)initWithPrekeySignedBy:(id)by error:(id *)error
 {
-  v6 = a3;
+  byCopy = by;
   v7 = +[SecKeyP256Private defaultProtectionClassForPlatform];
-  v8 = [(FullKey *)DHKey generateNewKeyWithAccess:v7 error:a4];
+  v8 = [(FullKey *)DHKey generateNewKeyWithAccess:v7 error:error];
 
-  v9 = [v8 publicKey];
-  if (v9)
+  publicKey = [v8 publicKey];
+  if (publicKey)
   {
-    v10 = [[NGMPrekeySignatureFormatter alloc] initToSignKey:v9];
+    v10 = [[NGMPrekeySignatureFormatter alloc] initToSignKey:publicKey];
     if (!v10)
     {
-      MPLogAndAssignError(151, a4, @"Time is misconfigured on device.");
-      v21 = 0;
+      MPLogAndAssignError(151, error, @"Time is misconfigured on device.");
+      selfCopy = 0;
 LABEL_19:
 
       goto LABEL_20;
     }
 
-    v11 = [v6 signDataWithFormatter:v10 error:a4];
+    v11 = [byCopy signDataWithFormatter:v10 error:error];
     if (v11)
     {
-      v12 = [v6 publicKey];
-      v13 = [v12 verifySignature:v11 formatter:v10];
+      publicKey2 = [byCopy publicKey];
+      v13 = [publicKey2 verifySignature:v11 formatter:v10];
 
       if (v13)
       {
@@ -82,7 +82,7 @@ LABEL_19:
           objc_storeStrong(&v14->_dhKey, v8);
           v16 = [NGMECDHPublicPreKey alloc];
           [v10 timestamp];
-          v17 = [(NGMECDHPublicPreKey *)v16 initWithPublicKey:v9 signature:v11 timestamp:?];
+          v17 = [(NGMECDHPublicPreKey *)v16 initWithPublicKey:publicKey signature:v11 timestamp:?];
           publicPrekey = v15->_publicPrekey;
           v15->_publicPrekey = v17;
 
@@ -103,26 +103,26 @@ LABEL_19:
 
             v33 = [_TtC17MessageProtection17TetraRegistration alloc];
             tetraPrivateKey = [(Kyber1024ObjCPrivateKey *)v15->_tetraPrivateKey publicKey];
-            v36 = [(NGMFullPrekey *)v15 dhKey];
-            v35 = [v36 publicKey];
-            v34 = [v35 key];
-            v25 = [v34 dataRepresentation];
+            dhKey = [(NGMFullPrekey *)v15 dhKey];
+            publicKey3 = [dhKey publicKey];
+            v34 = [publicKey3 key];
+            dataRepresentation = [v34 dataRepresentation];
             [v10 timestamp];
             v27 = v26;
             v28 = +[_TtC17MessageProtection13TetraVersions currentTetraVersion];
-            v29 = [v6 tetraWrapped];
-            v30 = [(TetraRegistration *)v33 initWithKyberPublicKey:tetraPrivateKey ecdhPublicKey:v25 timestamp:v28 version:v29 signedBy:v27];
+            tetraWrapped = [byCopy tetraWrapped];
+            v30 = [(TetraRegistration *)v33 initWithKyberPublicKey:tetraPrivateKey ecdhPublicKey:dataRepresentation timestamp:v28 version:tetraWrapped signedBy:v27];
             v31 = v15->_tetraRegistration;
             v15->_tetraRegistration = v30;
           }
         }
 
         self = v15;
-        v21 = self;
+        selfCopy = self;
         goto LABEL_18;
       }
 
-      MPLogAndAssignError(201, a4, @"Failure to verify the signature for the freshly generated prekey.");
+      MPLogAndAssignError(201, error, @"Failure to verify the signature for the freshly generated prekey.");
     }
 
     else
@@ -130,27 +130,27 @@ LABEL_19:
       v22 = MessageProtectionLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        [NGMFullPrekey initWithPrekeySignedBy:a4 error:v22];
+        [NGMFullPrekey initWithPrekeySignedBy:error error:v22];
       }
     }
 
-    v21 = 0;
+    selfCopy = 0;
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  MPLogAndAssignError(7, a4, @"Failure to get the public prekey of a new ephemeral.");
-  v21 = 0;
+  MPLogAndAssignError(7, error, @"Failure to get the public prekey of a new ephemeral.");
+  selfCopy = 0;
 LABEL_20:
 
-  return v21;
+  return selfCopy;
 }
 
-- (NGMFullPrekey)initWithPBPrekey:(id)a3 verifySignedBy:(id)a4 error:(id *)a5
+- (NGMFullPrekey)initWithPBPrekey:(id)prekey verifySignedBy:(id)by error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  prekeyCopy = prekey;
+  byCopy = by;
   v57.receiver = self;
   v57.super_class = NGMFullPrekey;
   v10 = [(NGMFullPrekey *)&v57 init];
@@ -160,27 +160,27 @@ LABEL_20:
   }
 
   v11 = [DHKey alloc];
-  v12 = [v8 dhKey];
-  v13 = [(FullKey *)v11 initWithProtobufferData:v12 error:a5];
+  dhKey = [prekeyCopy dhKey];
+  v13 = [(FullKey *)v11 initWithProtobufferData:dhKey error:error];
   dhKey = v10->_dhKey;
   v10->_dhKey = v13;
 
   v15 = [NGMECDHPublicPreKey alloc];
-  v16 = [(DHKey *)v10->_dhKey publicKey];
-  v17 = [v8 prekeySignature];
-  [v8 timestamp];
-  v18 = [(NGMECDHPublicPreKey *)v15 initWithPublicKey:v16 signature:v17 timestamp:?];
+  publicKey = [(DHKey *)v10->_dhKey publicKey];
+  prekeySignature = [prekeyCopy prekeySignature];
+  [prekeyCopy timestamp];
+  v18 = [(NGMECDHPublicPreKey *)v15 initWithPublicKey:publicKey signature:prekeySignature timestamp:?];
   publicPrekey = v10->_publicPrekey;
   v10->_publicPrekey = v18;
 
-  if (!a5 || !*a5)
+  if (!error || !*error)
   {
-    if ([v8 hasTetraPrivateKey])
+    if ([prekeyCopy hasTetraPrivateKey])
     {
       v28 = [_TtC17MessageProtection23Kyber1024ObjCPrivateKey alloc];
-      v29 = [v8 tetraPrivateKey];
+      tetraPrivateKey = [prekeyCopy tetraPrivateKey];
       v56 = 0;
-      v30 = [(Kyber1024ObjCPrivateKey *)v28 initWithProtoBufData:v29 error:&v56];
+      v30 = [(Kyber1024ObjCPrivateKey *)v28 initWithProtoBufData:tetraPrivateKey error:&v56];
       v31 = v56;
       tetraPrivateKey = v10->_tetraPrivateKey;
       v10->_tetraPrivateKey = v30;
@@ -188,27 +188,27 @@ LABEL_20:
       if (v31)
       {
         v33 = MEMORY[0x277CCACA8];
-        v34 = [v31 description];
-        v35 = [v33 stringWithFormat:@"Failed to deserialize a prekey containing a Kyber key because of error: %@", v34];
-        MPLogAndAssignError(200, a5, v35);
+        publicKey3 = [v31 description];
+        prekeySignature2 = [v33 stringWithFormat:@"Failed to deserialize a prekey containing a Kyber key because of error: %@", publicKey3];
+        MPLogAndAssignError(200, error, prekeySignature2);
 LABEL_10:
 
         goto LABEL_11;
       }
 
       v36 = [_TtC17MessageProtection17TetraRegistration alloc];
-      v37 = [v8 tetraRegistrationData];
+      tetraRegistrationData = [prekeyCopy tetraRegistrationData];
       v54 = [(FullKey *)v10->_dhKey key];
-      v38 = [v54 publicKey];
-      v39 = [v38 dataRepresentation];
-      v40 = [v8 tetraVersion];
-      [v8 timestamp];
+      publicKey2 = [v54 publicKey];
+      dataRepresentation = [publicKey2 dataRepresentation];
+      tetraVersion = [prekeyCopy tetraVersion];
+      [prekeyCopy timestamp];
       v42 = v41;
-      v43 = [v9 tetraWrapped];
+      tetraWrapped = [byCopy tetraWrapped];
       v55 = 0;
       v44 = v36;
-      v45 = v37;
-      v46 = [(TetraRegistration *)v44 initWithTetraRegistrationData:v37 ecdhPublicKey:v39 version:v40 timestamp:v43 signedBy:0 isEncrypting:&v55 error:v42];
+      v45 = tetraRegistrationData;
+      v46 = [(TetraRegistration *)v44 initWithTetraRegistrationData:tetraRegistrationData ecdhPublicKey:dataRepresentation version:tetraVersion timestamp:tetraWrapped signedBy:0 isEncrypting:&v55 error:v42];
       v31 = v55;
       tetraRegistration = v10->_tetraRegistration;
       v10->_tetraRegistration = v46;
@@ -216,13 +216,13 @@ LABEL_10:
       if (v31)
       {
         v48 = MEMORY[0x277CCACA8];
-        v34 = [(Kyber1024ObjCPrivateKey *)v10->_tetraPrivateKey publicKey];
-        v35 = [v8 prekeySignature];
-        [v8 timestamp];
+        publicKey3 = [(Kyber1024ObjCPrivateKey *)v10->_tetraPrivateKey publicKey];
+        prekeySignature2 = [prekeyCopy prekeySignature];
+        [prekeyCopy timestamp];
         v50 = v49;
         v51 = [v31 description];
-        v52 = [v48 stringWithFormat:@"Failed to deserialize a prekey containing a Kyber key: %@ \n signature: %@ \n timestamp: %f \n because of error: %@", v34, v35, v50, v51];
-        MPLogAndAssignError(200, a5, v52);
+        v52 = [v48 stringWithFormat:@"Failed to deserialize a prekey containing a Kyber key: %@ \n signature: %@ \n timestamp: %f \n because of error: %@", publicKey3, prekeySignature2, v50, v51];
+        MPLogAndAssignError(200, error, v52);
 
         goto LABEL_10;
       }
@@ -234,13 +234,13 @@ LABEL_11:
   }
 
   v20 = MEMORY[0x277CCACA8];
-  v21 = [(DHKey *)v10->_dhKey publicKey];
-  v22 = [v8 prekeySignature];
-  [v8 timestamp];
+  publicKey4 = [(DHKey *)v10->_dhKey publicKey];
+  prekeySignature3 = [prekeyCopy prekeySignature];
+  [prekeyCopy timestamp];
   v24 = v23;
-  v25 = [*a5 description];
-  v26 = [v20 stringWithFormat:@"Failed to deserialize a prekey containing an ECDH private key: %@ \n signature: %@ \n timestamp: %f \n because of error: %@", v21, v22, v24, v25];
-  MPLogAndAssignError(200, a5, v26);
+  v25 = [*error description];
+  v26 = [v20 stringWithFormat:@"Failed to deserialize a prekey containing an ECDH private key: %@ \n signature: %@ \n timestamp: %f \n because of error: %@", publicKey4, prekeySignature3, v24, v25];
+  MPLogAndAssignError(200, error, v26);
 
   v27 = 0;
 LABEL_12:
@@ -251,44 +251,44 @@ LABEL_12:
 - (id)pbDevicePrekey
 {
   v3 = objc_alloc_init(NGMPBDevicePreKey);
-  v4 = [(NGMFullPrekey *)self publicPrekey];
-  [v4 timestamp];
+  publicPrekey = [(NGMFullPrekey *)self publicPrekey];
+  [publicPrekey timestamp];
   [(NGMPBDevicePreKey *)v3 setTimestamp:?];
 
-  v5 = [(NGMFullPrekey *)self dhKey];
-  v6 = [v5 protobuffer];
-  [(NGMPBDevicePreKey *)v3 setDhKey:v6];
+  dhKey = [(NGMFullPrekey *)self dhKey];
+  protobuffer = [dhKey protobuffer];
+  [(NGMPBDevicePreKey *)v3 setDhKey:protobuffer];
 
-  v7 = [(NGMFullPrekey *)self publicPrekey];
-  v8 = [v7 signature];
-  [(NGMPBDevicePreKey *)v3 setPrekeySignature:v8];
+  publicPrekey2 = [(NGMFullPrekey *)self publicPrekey];
+  signature = [publicPrekey2 signature];
+  [(NGMPBDevicePreKey *)v3 setPrekeySignature:signature];
 
-  v9 = [(NGMFullPrekey *)self tetraPrivateKey];
+  tetraPrivateKey = [(NGMFullPrekey *)self tetraPrivateKey];
 
-  v10 = MessageProtectionLog();
-  v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
-  if (v9)
+  tetraRegistration2 = MessageProtectionLog();
+  v11 = os_log_type_enabled(tetraRegistration2, OS_LOG_TYPE_DEBUG);
+  if (tetraPrivateKey)
   {
     if (v11)
     {
-      [(NGMFullPrekey *)v10 pbDevicePrekey];
+      [(NGMFullPrekey *)tetraRegistration2 pbDevicePrekey];
     }
 
-    v12 = [(NGMFullPrekey *)self tetraPrivateKey];
-    v13 = [v12 protobufData];
-    [(NGMPBDevicePreKey *)v3 setTetraPrivateKey:v13];
+    tetraPrivateKey2 = [(NGMFullPrekey *)self tetraPrivateKey];
+    protobufData = [tetraPrivateKey2 protobufData];
+    [(NGMPBDevicePreKey *)v3 setTetraPrivateKey:protobufData];
 
-    v14 = [(NGMFullPrekey *)self tetraRegistration];
-    v15 = [v14 registrationData];
-    [(NGMPBDevicePreKey *)v3 setTetraRegistrationData:v15];
+    tetraRegistration = [(NGMFullPrekey *)self tetraRegistration];
+    registrationData = [tetraRegistration registrationData];
+    [(NGMPBDevicePreKey *)v3 setTetraRegistrationData:registrationData];
 
-    v10 = [(NGMFullPrekey *)self tetraRegistration];
-    [(NGMPBDevicePreKey *)v3 setTetraVersion:[v10 tetraVersion]];
+    tetraRegistration2 = [(NGMFullPrekey *)self tetraRegistration];
+    [(NGMPBDevicePreKey *)v3 setTetraVersion:[tetraRegistration2 tetraVersion]];
   }
 
   else if (v11)
   {
-    [(NGMFullPrekey *)v10 pbDevicePrekey];
+    [(NGMFullPrekey *)tetraRegistration2 pbDevicePrekey];
   }
 
   return v3;
@@ -297,10 +297,10 @@ LABEL_12:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NGMFullPrekey *)self dhKey];
-  v5 = [v4 description];
-  v6 = [(NGMFullPrekey *)self publicPrekey];
-  v7 = [v6 description];
+  dhKey = [(NGMFullPrekey *)self dhKey];
+  v5 = [dhKey description];
+  publicPrekey = [(NGMFullPrekey *)self publicPrekey];
+  v7 = [publicPrekey description];
   v8 = [v3 stringWithFormat:@"NGMFullPrekey with DHKey: %@\n Public Prekey: %@.", v5, v7];
 
   return v8;
@@ -337,8 +337,8 @@ LABEL_12:
 - (void)delete
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [a1 dhKey];
-  v4 = [v3 description];
+  dhKey = [self dhKey];
+  v4 = [dhKey description];
   v5 = [0 description];
   v7 = 138412546;
   v8 = v4;

@@ -1,6 +1,6 @@
 @interface MOEventPatternDetectorFeatureExtractorDurationSinceLastEvent
 - (MOEventPatternDetectorFeatureExtractorDurationSinceLastEvent)init;
-- (id)extractFeaturesFromEvents:(id)a3;
+- (id)extractFeaturesFromEvents:(id)events;
 @end
 
 @implementation MOEventPatternDetectorFeatureExtractorDurationSinceLastEvent
@@ -19,15 +19,15 @@
   return v3;
 }
 
-- (id)extractFeaturesFromEvents:(id)a3
+- (id)extractFeaturesFromEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v18 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v3;
+  obj = eventsCopy;
   v19 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v19)
   {
@@ -52,9 +52,9 @@
             {
               v8 = [v5 objectAtIndex:v7 - 1];
               v9 = [v5 objectAtIndex:v7];
-              v10 = [v9 startDate];
-              v11 = [v8 endDate];
-              [v10 timeIntervalSinceDate:v11];
+              startDate = [v9 startDate];
+              endDate = [v8 endDate];
+              [startDate timeIntervalSinceDate:endDate];
               v13 = v12;
 
               v14 = [NSNumber numberWithDouble:v13];

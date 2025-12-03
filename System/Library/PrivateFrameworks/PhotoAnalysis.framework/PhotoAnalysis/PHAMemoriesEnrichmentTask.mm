@@ -1,10 +1,10 @@
 @interface PHAMemoriesEnrichmentTask
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)runWithGraphManager:(id)a3 withIncrementalChange:(id)a4 progressReporter:(id)a5 error:(id *)a6;
-- (PHAMemoriesEnrichmentTask)initWithOptions:(id)a3;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
+- (BOOL)runWithGraphManager:(id)manager withIncrementalChange:(id)change progressReporter:(id)reporter error:(id *)error;
+- (PHAMemoriesEnrichmentTask)initWithOptions:(id)options;
 - (id)memoriesEnrichmentProcessor;
 - (id)taskClassDependencies;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHAMemoriesEnrichmentTask
@@ -24,9 +24,9 @@
   return v2;
 }
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHAMemoriesEnrichmentTask timeoutFatal:]", "PHAMemoriesEnrichmentTask.m", 78, "NO");
   }
@@ -38,25 +38,25 @@
   }
 }
 
-- (BOOL)runWithGraphManager:(id)a3 withIncrementalChange:(id)a4 progressReporter:(id)a5 error:(id *)a6
+- (BOOL)runWithGraphManager:(id)manager withIncrementalChange:(id)change progressReporter:(id)reporter error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(PHAMemoriesEnrichmentTask *)self memoriesEnrichmentProcessor];
-  LOBYTE(a6) = [v13 runWithGraphManager:v12 incrementalChange:v11 progressReporter:v10 error:a6];
+  reporterCopy = reporter;
+  changeCopy = change;
+  managerCopy = manager;
+  memoriesEnrichmentProcessor = [(PHAMemoriesEnrichmentTask *)self memoriesEnrichmentProcessor];
+  LOBYTE(error) = [memoriesEnrichmentProcessor runWithGraphManager:managerCopy incrementalChange:changeCopy progressReporter:reporterCopy error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(PHAMemoriesEnrichmentTask *)self memoriesEnrichmentProcessor];
-  LOBYTE(a5) = [v10 runWithGraphManager:v9 incrementalChange:0 progressReporter:v8 error:a5];
+  reporterCopy = reporter;
+  managerCopy = manager;
+  memoriesEnrichmentProcessor = [(PHAMemoriesEnrichmentTask *)self memoriesEnrichmentProcessor];
+  LOBYTE(error) = [memoriesEnrichmentProcessor runWithGraphManager:managerCopy incrementalChange:0 progressReporter:reporterCopy error:error];
 
-  return a5;
+  return error;
 }
 
 - (id)taskClassDependencies
@@ -68,15 +68,15 @@
   return v2;
 }
 
-- (PHAMemoriesEnrichmentTask)initWithOptions:(id)a3
+- (PHAMemoriesEnrichmentTask)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v8.receiver = self;
   v8.super_class = PHAMemoriesEnrichmentTask;
   v5 = [(PHAMemoriesEnrichmentTask *)&v8 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"limit"];
+    v6 = [optionsCopy objectForKeyedSubscript:@"limit"];
     v5->_numberOfMemoriesToEnrich = [v6 unsignedIntegerValue];
   }
 

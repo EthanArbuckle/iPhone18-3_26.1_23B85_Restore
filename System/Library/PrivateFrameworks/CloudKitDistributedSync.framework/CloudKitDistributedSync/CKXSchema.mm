@@ -1,9 +1,9 @@
 @interface CKXSchema
 - (CKXSchema)init;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)newIdentifier;
-- (unint64_t)defineFieldForStruct:(unint64_t)a3;
+- (unint64_t)defineFieldForStruct:(unint64_t)struct;
 @end
 
 @implementation CKXSchema
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CKXSchema);
   v4->_nextIdentifier = objc_msgSend_nextIdentifier(self, v5, v6, v7, v8, v9, v10);
@@ -277,10 +277,10 @@
   return Identifier;
 }
 
-- (unint64_t)defineFieldForStruct:(unint64_t)a3
+- (unint64_t)defineFieldForStruct:(unint64_t)struct
 {
-  v20 = objc_msgSend_newIdentifier(self, a2, a3, v3, v4, v5, v6);
-  sub_2439867B8(self->structTokenToFieldTokens.__begin_ + 3 * a3, &v20);
+  v20 = objc_msgSend_newIdentifier(self, a2, struct, v3, v4, v5, v6);
+  sub_2439867B8(self->structTokenToFieldTokens.__begin_ + 3 * struct, &v20);
   begin = self->fieldTokenToFieldProperties.__begin_;
   end = self->fieldTokenToFieldProperties.__end_;
   v11 = 0x6DB6DB6DB6DB6DB7 * ((end - begin) >> 3);

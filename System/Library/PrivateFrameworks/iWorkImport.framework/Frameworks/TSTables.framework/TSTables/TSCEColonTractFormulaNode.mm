@@ -1,32 +1,32 @@
 @interface TSCEColonTractFormulaNode
-- (TSCEColonTractFormulaNode)initWithColonTract:(id)a3 refFlags:(const TSCEASTRefFlags *)a4 colonTractFlags:(const TSCEASTColonTractFlags *)a5 undoTractList:(id)a6;
+- (TSCEColonTractFormulaNode)initWithColonTract:(id)tract refFlags:(const TSCEASTRefFlags *)flags colonTractFlags:(const TSCEASTColonTractFlags *)tractFlags undoTractList:(id)list;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine;
 @end
 
 @implementation TSCEColonTractFormulaNode
 
-- (TSCEColonTractFormulaNode)initWithColonTract:(id)a3 refFlags:(const TSCEASTRefFlags *)a4 colonTractFlags:(const TSCEASTColonTractFlags *)a5 undoTractList:(id)a6
+- (TSCEColonTractFormulaNode)initWithColonTract:(id)tract refFlags:(const TSCEASTRefFlags *)flags colonTractFlags:(const TSCEASTColonTractFlags *)tractFlags undoTractList:(id)list
 {
-  v11 = a3;
-  v12 = a6;
+  tractCopy = tract;
+  listCopy = list;
   v16.receiver = self;
   v16.super_class = TSCEColonTractFormulaNode;
   v13 = [(TSCEFormulaNode *)&v16 initWithNodeType:13];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_relativeTractRef, a3);
-    objc_storeStrong(&v14->_undoTractList, a6);
-    v14->_refFlags = a4->_flags;
-    v14->_colonTractFlags = a5->_flags;
+    objc_storeStrong(&v13->_relativeTractRef, tract);
+    objc_storeStrong(&v14->_undoTractList, list);
+    v14->_refFlags = flags->_flags;
+    v14->_colonTractFlags = tractFlags->_flags;
   }
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18.receiver = self;
   v18.super_class = TSCEColonTractFormulaNode;
@@ -44,14 +44,14 @@
   return v4;
 }
 
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine
 {
-  TSCEASTColonTractElement::appendColonTractElement(a3, self->_relativeTractRef, self->_undoTractList, a4);
+  TSCEASTColonTractElement::appendColonTractElement(array, self->_relativeTractRef, self->_undoTractList, ref);
   v16 = objc_msgSend_whitespaceBefore(self, v8, v9, v10, v11);
-  TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 31, v16);
+  TSCEASTWhitespaceElement::appendWhitespaceElement(array, 31, v16);
 
   v17 = objc_msgSend_whitespaceAfter(self, v12, v13, v14, v15);
-  TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 32, v17);
+  TSCEASTWhitespaceElement::appendWhitespaceElement(array, 32, v17);
 }
 
 - (id).cxx_construct

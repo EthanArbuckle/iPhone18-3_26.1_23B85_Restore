@@ -1,17 +1,17 @@
 @interface NTKCCLibraryListCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setFaceView:(id)a3;
+- (void)setFaceView:(id)view;
 @end
 
 @implementation NTKCCLibraryListCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKCCLibraryListCell" hasInstanceMethod:@"faceView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKCCLibraryListCell" hasInstanceMethod:@"setFaceView:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKCCLibraryListCell" hasInstanceMethod:@"faceView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKCCLibraryListCell" hasInstanceMethod:@"setFaceView:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -27,18 +27,18 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 textLabel];
-  v6 = [v2 detailTextLabel];
+  textLabel = [v2 textLabel];
+  detailTextLabel = [v2 detailTextLabel];
   v4 = __UIAXStringForVariables();
 
   return v4;
 }
 
-- (void)setFaceView:(id)a3
+- (void)setFaceView:(id)view
 {
   v4.receiver = self;
   v4.super_class = NTKCCLibraryListCellAccessibility;
-  [(NTKCCLibraryListCellAccessibility *)&v4 setFaceView:a3];
+  [(NTKCCLibraryListCellAccessibility *)&v4 setFaceView:view];
   [(NTKCCLibraryListCellAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

@@ -1,15 +1,15 @@
 @interface OfferButton
 - (CGRect)frame;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC20ProductPageExtension11OfferButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC20ProductPageExtension11OfferButton)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)invalidateIntrinsicContentSize;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)tintColorDidChange;
 @end
 
@@ -27,22 +27,22 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v19.receiver = self;
   v19.super_class = ObjectType;
-  v9 = self;
+  selfCopy = self;
   [(OfferButton *)&v19 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18.receiver = v9;
+  v18.receiver = selfCopy;
   v18.super_class = ObjectType;
   [(OfferButton *)&v18 setFrame:x, y, width, height];
   sub_1001E8144(v11, v13, v15, v17);
@@ -52,11 +52,11 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:v5];
+  selfCopy = self;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(OfferButton *)&v7 dealloc];
 }
@@ -72,7 +72,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001E9F40();
 }
 
@@ -90,7 +90,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001EB184();
   v4 = v3;
   v6 = v5;
@@ -102,9 +102,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_1001EB184();
   v5 = v4;
   v7 = v6;
@@ -116,13 +116,13 @@
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  [(OfferButton *)&v8 setHighlighted:v3];
+  [(OfferButton *)&v8 setHighlighted:highlightedCopy];
   v5 = OBJC_IVAR____TtC20ProductPageExtension11OfferButton__configuration;
   swift_beginAccess();
   sub_10000A570(v4 + v5, v7);
@@ -150,24 +150,24 @@
   sub_10000CD74(v5);
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   ObjectType = swift_getObjectType();
   v8.receiver = self;
   v8.super_class = ObjectType;
-  v6 = self;
-  if ([(OfferButton *)&v8 isEnabled]!= v3)
+  selfCopy = self;
+  if ([(OfferButton *)&v8 isEnabled]!= enabledCopy)
   {
-    sub_1001EA5C8(v3);
+    sub_1001EA5C8(enabledCopy);
   }
 
-  v7.receiver = v6;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
-  [(OfferButton *)&v7 setEnabled:v3];
+  [(OfferButton *)&v7 setEnabled:enabledCopy];
 }
 
-- (_TtC20ProductPageExtension11OfferButton)initWithFrame:(CGRect)a3
+- (_TtC20ProductPageExtension11OfferButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

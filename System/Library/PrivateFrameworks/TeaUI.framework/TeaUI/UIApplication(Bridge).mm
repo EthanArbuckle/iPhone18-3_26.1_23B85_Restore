@@ -7,8 +7,8 @@
 
 - (double)defaultStatusBarHeight
 {
-  v1 = [a1 statusBar];
-  [v1 defaultHeight];
+  statusBar = [self statusBar];
+  [statusBar defaultHeight];
   v3 = v2;
 
   return v3;
@@ -16,10 +16,10 @@
 
 - (id)ts_statusBarWindow
 {
-  v1 = [a1 statusBar];
-  v2 = [v1 _window];
+  statusBar = [self statusBar];
+  _window = [statusBar _window];
 
-  return v2;
+  return _window;
 }
 
 @end

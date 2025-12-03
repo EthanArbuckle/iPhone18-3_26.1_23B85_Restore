@@ -4,11 +4,11 @@
 - (SOSVoiceUttererDelegate)delegate;
 - (id)routeDescription;
 - (void)_forgetUtterancesBeingSpoken;
-- (void)_speakAVUtterance:(id)a3;
-- (void)_speakUtteranceAtIndex:(unint64_t)a3;
+- (void)_speakAVUtterance:(id)utterance;
+- (void)_speakUtteranceAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)speakUtterances:(id)a3;
-- (void)speechSynthesizer:(id)a3 didFinishSpeechUtterance:(id)a4;
+- (void)speakUtterances:(id)utterances;
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeechUtterance:(id)utterance;
 - (void)stopSpeaking;
 @end
 
@@ -23,28 +23,28 @@
   [(SOSVoiceUtterer *)&v3 dealloc];
 }
 
-- (void)speakUtterances:(id)a3
+- (void)speakUtterances:(id)utterances
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  utterancesCopy = utterances;
   v6 = sos_voice_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(SOSVoiceUtterer *)self routeDescription];
+    routeDescription = [(SOSVoiceUtterer *)self routeDescription];
     *buf = 138543618;
-    v23 = v7;
+    v23 = routeDescription;
     v24 = 2112;
-    v25 = v5;
+    v25 = utterancesCopy;
     _os_log_impl(&dword_264323000, v6, OS_LOG_TYPE_DEFAULT, "Speaking utterances to %{public}@: %@", buf, 0x16u);
   }
 
   [(SOSVoiceUtterer *)self stopSpeaking];
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(utterancesCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v5;
+  v9 = utterancesCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -60,10 +60,10 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * v13) avSpeechUtterance];
-        if (v14)
+        avSpeechUtterance = [*(*(&v17 + 1) + 8 * v13) avSpeechUtterance];
+        if (avSpeechUtterance)
         {
-          [v8 addObject:v14];
+          [v8 addObject:avSpeechUtterance];
         }
 
         ++v13;
@@ -78,7 +78,7 @@
 
   if (v8)
   {
-    objc_storeStrong(&self->_sosUtterancesBeingSpoken, a3);
+    objc_storeStrong(&self->_sosUtterancesBeingSpoken, utterances);
     objc_storeStrong(&self->_avUtterancesBeingSpoken, v8);
     [(SOSVoiceUtterer *)self _speakUtteranceAtIndex:0];
   }
@@ -101,9 +101,9 @@
   v3 = sos_voice_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SOSVoiceUtterer *)self routeDescription];
+    routeDescription = [(SOSVoiceUtterer *)self routeDescription];
     v6 = 138543362;
-    v7 = v4;
+    v7 = routeDescription;
     _os_log_impl(&dword_264323000, v3, OS_LOG_TYPE_DEFAULT, "Stopping speaking utterances to %{public}@...", &v6, 0xCu);
   }
 
@@ -139,39 +139,39 @@
   return voiceSynthesizer;
 }
 
-- (void)_speakAVUtterance:(id)a3
+- (void)_speakAVUtterance:(id)utterance
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  utteranceCopy = utterance;
   v5 = sos_voice_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(SOSVoiceUtterer *)self routeDescription];
+    routeDescription = [(SOSVoiceUtterer *)self routeDescription];
     v9 = 138543618;
-    v10 = v6;
+    v10 = routeDescription;
     v11 = 2112;
-    v12 = v4;
+    v12 = utteranceCopy;
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "Speaking avUtterance in %{public}@ audio: %@", &v9, 0x16u);
   }
 
-  v7 = [(SOSVoiceUtterer *)self voiceSynthesizer];
-  [v7 speakUtterance:v4];
+  voiceSynthesizer = [(SOSVoiceUtterer *)self voiceSynthesizer];
+  [voiceSynthesizer speakUtterance:utteranceCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_speakUtteranceAtIndex:(unint64_t)a3
+- (void)_speakUtteranceAtIndex:(unint64_t)index
 {
   v18 = *MEMORY[0x277D85DE8];
   p_avUtterancesBeingSpoken = &self->_avUtterancesBeingSpoken;
   v6 = [(NSArray *)self->_avUtterancesBeingSpoken count];
   v7 = sos_voice_log();
   v8 = v7;
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(SOSVoiceUtterer *)p_avUtterancesBeingSpoken _speakUtteranceAtIndex:a3, v8];
+      [(SOSVoiceUtterer *)p_avUtterancesBeingSpoken _speakUtteranceAtIndex:index, v8];
     }
   }
 
@@ -181,22 +181,22 @@
     {
       v9 = [(NSArray *)*p_avUtterancesBeingSpoken count];
       v14 = 134218240;
-      v15 = a3;
+      indexCopy = index;
       v16 = 2048;
       v17 = v9;
       _os_log_impl(&dword_264323000, v8, OS_LOG_TYPE_DEFAULT, "_speakUtteranceAtIndex:%tu / %tu", &v14, 0x16u);
     }
 
-    v10 = [(SOSVoiceUtterer *)self delegate];
+    delegate = [(SOSVoiceUtterer *)self delegate];
 
-    if (v10)
+    if (delegate)
     {
-      v11 = [(SOSVoiceUtterer *)self delegate];
-      v12 = [(SOSVoiceUtterer *)self sosUtterancesBeingSpoken];
-      [v11 voiceUtterer:self willStartSpeakingUtteranceAtIndex:a3 fromUtterances:v12];
+      delegate2 = [(SOSVoiceUtterer *)self delegate];
+      sosUtterancesBeingSpoken = [(SOSVoiceUtterer *)self sosUtterancesBeingSpoken];
+      [delegate2 voiceUtterer:self willStartSpeakingUtteranceAtIndex:index fromUtterances:sosUtterancesBeingSpoken];
     }
 
-    v8 = [(NSArray *)self->_avUtterancesBeingSpoken objectAtIndexedSubscript:a3];
+    v8 = [(NSArray *)self->_avUtterancesBeingSpoken objectAtIndexedSubscript:index];
     [(SOSVoiceUtterer *)self _speakAVUtterance:v8];
   }
 
@@ -222,43 +222,43 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SOSVoiceUtterer *)self routeDescription];
-  v6 = [v3 stringWithFormat:@"<%@ %p route=%@ _voiceSynthesizer=%@", v4, self, v5, self->_voiceSynthesizer];
+  routeDescription = [(SOSVoiceUtterer *)self routeDescription];
+  v6 = [v3 stringWithFormat:@"<%@ %p route=%@ _voiceSynthesizer=%@", v4, self, routeDescription, self->_voiceSynthesizer];
 
   return v6;
 }
 
-- (void)speechSynthesizer:(id)a3 didFinishSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeechUtterance:(id)utterance
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(NSArray *)self->_avUtterancesBeingSpoken indexOfObject:v5];
+  utteranceCopy = utterance;
+  v6 = [(NSArray *)self->_avUtterancesBeingSpoken indexOfObject:utteranceCopy];
   v7 = sos_voice_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     avUtterancesBeingSpoken = self->_avUtterancesBeingSpoken;
     v19 = 138412802;
-    v20 = v5;
+    selfCopy4 = utteranceCopy;
     v21 = 2112;
     v22 = avUtterancesBeingSpoken;
     v23 = 2114;
-    v24 = self;
+    selfCopy5 = self;
     _os_log_impl(&dword_264323000, v7, OS_LOG_TYPE_INFO, "didFinishSpeechUtterance, utterance:%@, _avUtterancesBeingSpoken:%@ [%{public}@]", &v19, 0x20u);
   }
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = sos_voice_log();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    sosUtterancesBeingSpoken = sos_voice_log();
+    if (os_log_type_enabled(sosUtterancesBeingSpoken, OS_LOG_TYPE_DEFAULT))
     {
       v10 = self->_avUtterancesBeingSpoken;
       v19 = 138412802;
-      v20 = v5;
+      selfCopy4 = utteranceCopy;
       v21 = 2112;
       v22 = v10;
       v23 = 2114;
-      v24 = self;
-      _os_log_impl(&dword_264323000, v9, OS_LOG_TYPE_DEFAULT, "didFinishSpeechUtterance, utteranceIndex not found => NOP; utterance:%@, _avUtterancesBeingSpoken:%@ [%{public}@]", &v19, 0x20u);
+      selfCopy5 = self;
+      _os_log_impl(&dword_264323000, sosUtterancesBeingSpoken, OS_LOG_TYPE_DEFAULT, "didFinishSpeechUtterance, utteranceIndex not found => NOP; utterance:%@, _avUtterancesBeingSpoken:%@ [%{public}@]", &v19, 0x20u);
     }
 
 LABEL_17:
@@ -274,26 +274,26 @@ LABEL_17:
     if (v13)
     {
       v19 = 138543362;
-      v20 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_264323000, v12, OS_LOG_TYPE_DEFAULT, "didFinishSpeechUtterance called, completed utterances [%{public}@]", &v19, 0xCu);
     }
 
-    v9 = [(SOSVoiceUtterer *)self sosUtterancesBeingSpoken];
+    sosUtterancesBeingSpoken = [(SOSVoiceUtterer *)self sosUtterancesBeingSpoken];
     [(SOSVoiceUtterer *)self _forgetUtterancesBeingSpoken];
-    v15 = [(SOSVoiceUtterer *)self delegate];
+    delegate = [(SOSVoiceUtterer *)self delegate];
 
-    if (v15)
+    if (delegate)
     {
       v16 = sos_voice_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 138543362;
-        v20 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_264323000, v16, OS_LOG_TYPE_DEFAULT, "didFinishSpeechUtterance called, completed utterances; notifying delegate [%{public}@]", &v19, 0xCu);
       }
 
-      v17 = [(SOSVoiceUtterer *)self delegate];
-      [v17 voiceUtterer:self didFinishSpeakingUtterances:v9];
+      delegate2 = [(SOSVoiceUtterer *)self delegate];
+      [delegate2 voiceUtterer:self didFinishSpeakingUtterances:sosUtterancesBeingSpoken];
     }
 
     goto LABEL_17;
@@ -303,11 +303,11 @@ LABEL_17:
   {
     v14 = [(NSArray *)self->_avUtterancesBeingSpoken count];
     v19 = 134218498;
-    v20 = v6;
+    selfCopy4 = v6;
     v21 = 2048;
     v22 = v14;
     v23 = 2114;
-    v24 = self;
+    selfCopy5 = self;
     _os_log_impl(&dword_264323000, v12, OS_LOG_TYPE_DEFAULT, "didFinishSpeechUtterance, _avUtterancesBeingSpoken index: %lu out of: %lu [%{public}@]", &v19, 0x20u);
   }
 

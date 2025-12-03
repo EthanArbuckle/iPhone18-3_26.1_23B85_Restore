@@ -1,16 +1,16 @@
 @interface VKCImageSubjectGlowLayer
 - (VKCImageSubjectGlowLayer)init;
-- (id)animationGroupWithDuration:(double)a3 beginTime:(double)a4 animations:(id)a5;
-- (id)animationWithKeyPath:(id)a3 beginTime:(double)a4 duration:(double)a5;
-- (id)shapeLayerLineWidth:(double)a3 opacity:(double)a4 path:(CGPath *)a5;
-- (id)thickGlowParametersWithViewScale:(double)a3;
-- (id)thinGlowParametersWithScreenScale:(double)a3 viewScale:(double)a4;
-- (void)beginAnimationWithViewScale:(double)a3 screenScale:(double)a4 path:(id)a5 index:(int64_t)a6 count:(int64_t)a7 identifier:(id)a8;
-- (void)configureAnimationWithViewScale:(double)a3 screenScale:(double)a4 path:(id)a5 index:(int64_t)a6 count:(int64_t)a7 identifier:(id)a8;
-- (void)hideGlow:(BOOL)a3;
-- (void)renderGlowParameters:(id)a3 path:(CGPath *)a4 pathLength:(double)a5 duration:(double)a6 maxStrokeLengthFraction:(id)a7 beginDelay:(double)a8 identifier:(id)a9;
-- (void)stopAnimationAnimated:(BOOL)a3;
-- (void)stopAnimationForIdentifier:(id)a3 animated:(BOOL)a4;
+- (id)animationGroupWithDuration:(double)duration beginTime:(double)time animations:(id)animations;
+- (id)animationWithKeyPath:(id)path beginTime:(double)time duration:(double)duration;
+- (id)shapeLayerLineWidth:(double)width opacity:(double)opacity path:(CGPath *)path;
+- (id)thickGlowParametersWithViewScale:(double)scale;
+- (id)thinGlowParametersWithScreenScale:(double)scale viewScale:(double)viewScale;
+- (void)beginAnimationWithViewScale:(double)scale screenScale:(double)screenScale path:(id)path index:(int64_t)index count:(int64_t)count identifier:(id)identifier;
+- (void)configureAnimationWithViewScale:(double)scale screenScale:(double)screenScale path:(id)path index:(int64_t)index count:(int64_t)count identifier:(id)identifier;
+- (void)hideGlow:(BOOL)glow;
+- (void)renderGlowParameters:(id)parameters path:(CGPath *)path pathLength:(double)length duration:(double)duration maxStrokeLengthFraction:(id)fraction beginDelay:(double)delay identifier:(id)identifier;
+- (void)stopAnimationAnimated:(BOOL)animated;
+- (void)stopAnimationForIdentifier:(id)identifier animated:(BOOL)animated;
 @end
 
 @implementation VKCImageSubjectGlowLayer
@@ -32,31 +32,31 @@
     [(CALayer *)v2->_glowLayer setAllowsGroupOpacity:0];
     [(CALayer *)v2->_glowLayer setOpacity:0.0];
     [(VKCImageSubjectGlowLayer *)v2 setAllowsGroupBlending:0];
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     subLayersMap = v2->_subLayersMap;
-    v2->_subLayersMap = v5;
+    v2->_subLayersMap = dictionary;
   }
 
   return v2;
 }
 
-- (id)thinGlowParametersWithScreenScale:(double)a3 viewScale:(double)a4
+- (id)thinGlowParametersWithScreenScale:(double)scale viewScale:(double)viewScale
 {
   v6 = objc_alloc_init(VKCGlowParameters);
-  [(VKCGlowParameters *)v6 setMinThickness:a4 * 0.3];
-  [(VKCGlowParameters *)v6 setMaxThickness:a4 * 1.5];
-  [(VKCGlowParameters *)v6 setBlurRadius:a4 * 1.5];
+  [(VKCGlowParameters *)v6 setMinThickness:viewScale * 0.3];
+  [(VKCGlowParameters *)v6 setMaxThickness:viewScale * 1.5];
+  [(VKCGlowParameters *)v6 setBlurRadius:viewScale * 1.5];
   [(VKCGlowParameters *)v6 setStrokeLengthFraction:0.25];
-  [(VKCGlowParameters *)v6 setStrokeTaperLength:a4 * 200.0];
+  [(VKCGlowParameters *)v6 setStrokeTaperLength:viewScale * 200.0];
   [(VKCGlowParameters *)v6 setMinOpacity:1.0];
   [(VKCGlowParameters *)v6 setMaxOpacity:1.0];
   v7 = 12;
-  if (a3 == 2.0)
+  if (scale == 2.0)
   {
     v7 = 8;
   }
 
-  if (a3 == 1.0)
+  if (scale == 1.0)
   {
     v8 = 6;
   }
@@ -71,14 +71,14 @@
   return v6;
 }
 
-- (id)thickGlowParametersWithViewScale:(double)a3
+- (id)thickGlowParametersWithViewScale:(double)scale
 {
   v4 = objc_alloc_init(VKCGlowParameters);
-  [(VKCGlowParameters *)v4 setMinThickness:a3 * 4.0];
-  [(VKCGlowParameters *)v4 setMaxThickness:a3 * 16.0];
-  [(VKCGlowParameters *)v4 setBlurRadius:a3 * 20.0];
+  [(VKCGlowParameters *)v4 setMinThickness:scale * 4.0];
+  [(VKCGlowParameters *)v4 setMaxThickness:scale * 16.0];
+  [(VKCGlowParameters *)v4 setBlurRadius:scale * 20.0];
   [(VKCGlowParameters *)v4 setStrokeLengthFraction:0.25];
-  [(VKCGlowParameters *)v4 setStrokeTaperLength:a3 * 200.0];
+  [(VKCGlowParameters *)v4 setStrokeTaperLength:scale * 200.0];
   [(VKCGlowParameters *)v4 setMinOpacity:0.1];
   [(VKCGlowParameters *)v4 setMaxOpacity:0.2];
   [(VKCGlowParameters *)v4 setStrokeCount:3];
@@ -86,45 +86,45 @@
   return v4;
 }
 
-- (void)beginAnimationWithViewScale:(double)a3 screenScale:(double)a4 path:(id)a5 index:(int64_t)a6 count:(int64_t)a7 identifier:(id)a8
+- (void)beginAnimationWithViewScale:(double)scale screenScale:(double)screenScale path:(id)path index:(int64_t)index count:(int64_t)count identifier:(id)identifier
 {
-  [(VKCImageSubjectGlowLayer *)self configureAnimationWithViewScale:a5 screenScale:a6 path:a7 index:a8 count:a3 identifier:a4];
+  [(VKCImageSubjectGlowLayer *)self configureAnimationWithViewScale:path screenScale:index path:count index:identifier count:scale identifier:screenScale];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  v9 = [(VKCImageSubjectGlowLayer *)self glowLayer];
-  [v9 setOpacity:0.0];
+  glowLayer = [(VKCImageSubjectGlowLayer *)self glowLayer];
+  [glowLayer setOpacity:0.0];
 
   [MEMORY[0x1E6979518] commit];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setAnimationDuration:2.0];
-  v10 = [(VKCImageSubjectGlowLayer *)self glowLayer];
+  glowLayer2 = [(VKCImageSubjectGlowLayer *)self glowLayer];
   LODWORD(v11) = 1.0;
-  [v10 setOpacity:v11];
+  [glowLayer2 setOpacity:v11];
 
   [MEMORY[0x1E6979518] commit];
 
   [(VKCImageSubjectGlowLayer *)self setActive:1];
 }
 
-- (void)stopAnimationAnimated:(BOOL)a3
+- (void)stopAnimationAnimated:(BOOL)animated
 {
-  [(VKCImageSubjectGlowLayer *)self hideGlow:a3];
+  [(VKCImageSubjectGlowLayer *)self hideGlow:animated];
 
   [(VKCImageSubjectGlowLayer *)self setActive:0];
 }
 
-- (void)hideGlow:(BOOL)a3
+- (void)hideGlow:(BOOL)glow
 {
-  v3 = a3;
+  glowCopy = glow;
   [MEMORY[0x1E6979518] begin];
-  v5 = [(VKCImageSubjectGlowLayer *)self glowLayer];
-  v6 = [v5 sublayers];
-  v7 = [v6 copy];
+  glowLayer = [(VKCImageSubjectGlowLayer *)self glowLayer];
+  sublayers = [glowLayer sublayers];
+  v7 = [sublayers copy];
 
-  if (v3)
+  if (glowCopy)
   {
     [MEMORY[0x1E6979518] setAnimationDuration:0.35];
-    [v5 setOpacity:0.0];
+    [glowLayer setOpacity:0.0];
     v8 = MEMORY[0x1E6979518];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -136,25 +136,25 @@
 
   else
   {
-    [v5 setOpacity:0.0];
+    [glowLayer setOpacity:0.0];
     [v7 makeObjectsPerformSelector:sel_removeFromSuperlayer];
   }
 
-  v9 = [(VKCImageSubjectGlowLayer *)self subLayersMap];
-  [v9 removeAllObjects];
+  subLayersMap = [(VKCImageSubjectGlowLayer *)self subLayersMap];
+  [subLayersMap removeAllObjects];
 
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)stopAnimationForIdentifier:(id)a3 animated:(BOOL)a4
+- (void)stopAnimationForIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(VKCImageSubjectGlowLayer *)self subLayersMap];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  animatedCopy = animated;
+  identifierCopy = identifier;
+  subLayersMap = [(VKCImageSubjectGlowLayer *)self subLayersMap];
+  v8 = [subLayersMap objectForKeyedSubscript:identifierCopy];
   v9 = [v8 copy];
 
-  if (v4)
+  if (animatedCopy)
   {
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setAnimationDuration:0.2];
@@ -173,18 +173,18 @@
     [v9 makeObjectsPerformSelector:sel_removeFromSuperlayer];
   }
 
-  v11 = [(VKCImageSubjectGlowLayer *)self subLayersMap];
-  [v11 setObject:0 forKeyedSubscript:v6];
+  subLayersMap2 = [(VKCImageSubjectGlowLayer *)self subLayersMap];
+  [subLayersMap2 setObject:0 forKeyedSubscript:identifierCopy];
 }
 
-- (void)configureAnimationWithViewScale:(double)a3 screenScale:(double)a4 path:(id)a5 index:(int64_t)a6 count:(int64_t)a7 identifier:(id)a8
+- (void)configureAnimationWithViewScale:(double)scale screenScale:(double)screenScale path:(id)path index:(int64_t)index count:(int64_t)count identifier:(id)identifier
 {
   v48[2] = *MEMORY[0x1E69E9840];
-  v14 = a5;
-  v15 = a8;
-  v16 = [(VKCImageSubjectGlowLayer *)self thinGlowParametersWithScreenScale:a4 viewScale:a3];
+  pathCopy = path;
+  identifierCopy = identifier;
+  v16 = [(VKCImageSubjectGlowLayer *)self thinGlowParametersWithScreenScale:screenScale viewScale:scale];
   v48[0] = v16;
-  v17 = [(VKCImageSubjectGlowLayer *)self thickGlowParametersWithViewScale:a3];
+  v17 = [(VKCImageSubjectGlowLayer *)self thickGlowParametersWithViewScale:scale];
   v48[1] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:2];
 
@@ -226,19 +226,19 @@
     while (v23);
   }
 
-  v27 = [v14 bezierPathByReversingPath];
+  bezierPathByReversingPath = [pathCopy bezierPathByReversingPath];
 
-  v28 = [v27 vk_CGPath];
-  [v27 vk_lengthIgnoringCurves];
+  vk_CGPath = [bezierPathByReversingPath vk_CGPath];
+  [bezierPathByReversingPath vk_lengthIgnoringCurves];
   v30 = v29;
   v31 = VKMClamp(v29 / 350.0, 4.5, 6.0);
-  v32 = v31 / a7 * a6;
-  if (a7 < 1)
+  v32 = v31 / count * index;
+  if (count < 1)
   {
     v32 = 0.0;
   }
 
-  if (a6 >= 1)
+  if (index >= 1)
   {
     v21 = v32;
   }
@@ -246,21 +246,21 @@
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   v33 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v19, "count")}];
-  v34 = [(VKCImageSubjectGlowLayer *)self subLayersMap];
-  [v34 setObject:v33 forKeyedSubscript:v15];
+  subLayersMap = [(VKCImageSubjectGlowLayer *)self subLayersMap];
+  [subLayersMap setObject:v33 forKeyedSubscript:identifierCopy];
 
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __100__VKCImageSubjectGlowLayer_configureAnimationWithViewScale_screenScale_path_index_count_identifier___block_invoke;
   v36[3] = &unk_1E7BE6E80;
-  v37 = v15;
-  v38 = v28;
+  v37 = identifierCopy;
+  v38 = vk_CGPath;
   v39 = v30;
   v40 = v31;
   v41 = v22;
   v42 = v21;
   v36[4] = self;
-  v35 = v15;
+  v35 = identifierCopy;
   [v19 enumerateObjectsUsingBlock:v36];
   [MEMORY[0x1E6979518] commit];
 }
@@ -278,13 +278,13 @@ void __100__VKCImageSubjectGlowLayer_configureAnimationWithViewScale_screenScale
   [v3 renderGlowParameters:v9 path:v4 pathLength:v10 duration:*(a1 + 40) maxStrokeLengthFraction:v5 beginDelay:v6 identifier:*(a1 + 80)];
 }
 
-- (void)renderGlowParameters:(id)a3 path:(CGPath *)a4 pathLength:(double)a5 duration:(double)a6 maxStrokeLengthFraction:(id)a7 beginDelay:(double)a8 identifier:(id)a9
+- (void)renderGlowParameters:(id)parameters path:(CGPath *)path pathLength:(double)length duration:(double)duration maxStrokeLengthFraction:(id)fraction beginDelay:(double)delay identifier:(id)identifier
 {
   v74[1] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a7;
-  v62 = a9;
-  [v16 blurRadius];
+  parametersCopy = parameters;
+  fractionCopy = fraction;
+  identifierCopy = identifier;
+  [parametersCopy blurRadius];
   v19 = __64__VKCImageSubjectBaseView_configurePulseAnimationWithViewScale___block_invoke(v18);
   v20 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979D78]];
   v71[0] = xmmword_1B44286A0;
@@ -303,124 +303,124 @@ void __100__VKCImageSubjectGlowLayer_configureAnimationWithViewScale_screenScale
   [v22 setFilters:v23];
 
   [v22 setCompositingFilter:*MEMORY[0x1E6979C58]];
-  v24 = CACurrentMediaTime() + a8;
-  [v16 strokeLengthFraction];
+  v24 = CACurrentMediaTime() + delay;
+  [parametersCopy strokeLengthFraction];
   v26 = v25;
-  [v16 strokeTaperLength];
-  v28 = v26 - v27 / a5;
-  [v16 strokeLengthFraction];
+  [parametersCopy strokeTaperLength];
+  v28 = v26 - v27 / length;
+  [parametersCopy strokeLengthFraction];
   v30 = v29;
-  v31 = self;
-  if (v17)
+  selfCopy = self;
+  if (fractionCopy)
   {
-    [v17 doubleValue];
+    [fractionCopy doubleValue];
   }
 
   else
   {
-    [v16 strokeLengthFraction];
+    [parametersCopy strokeLengthFraction];
   }
 
-  v63 = v17;
-  v65 = v30 * a6;
-  v66 = v28 * a6;
-  v64 = v32 * a6;
-  [v16 strokeCount];
+  v63 = fractionCopy;
+  v65 = v30 * duration;
+  v66 = v28 * duration;
+  v64 = v32 * duration;
+  [parametersCopy strokeCount];
   v33 = -1;
-  v34 = v24 - a6;
-  v67 = a4;
+  v34 = v24 - duration;
+  pathCopy = path;
   do
   {
     ++v33;
     v35 = v24;
-    v36 = v33 / [v16 strokeCount];
-    [v16 minThickness];
+    v36 = v33 / [parametersCopy strokeCount];
+    [parametersCopy minThickness];
     v38 = v37;
-    [v16 maxThickness];
+    [parametersCopy maxThickness];
     v40 = VKMMix(v38, v39, v36);
     v41 = VKMMix(v66, v65, 1.0 - v36);
-    [v16 minOpacity];
+    [parametersCopy minOpacity];
     v43 = v42;
-    [v16 maxOpacity];
+    [parametersCopy maxOpacity];
     v45 = VKMMix(v43, v44, v36);
     v46 = v64 + v41 * -0.5;
-    v70 = [(VKCImageSubjectGlowLayer *)v31 shapeLayerLineWidth:a4 opacity:v40 path:v45];
-    v47 = [(VKCImageSubjectGlowLayer *)v31 shapeLayerLineWidth:a4 opacity:v40 path:v45];
-    v69 = [(VKCImageSubjectGlowLayer *)v31 animationWithKeyPath:@"strokeEnd" beginTime:v46 duration:a6];
+    v70 = [(VKCImageSubjectGlowLayer *)selfCopy shapeLayerLineWidth:path opacity:v40 path:v45];
+    v47 = [(VKCImageSubjectGlowLayer *)selfCopy shapeLayerLineWidth:path opacity:v40 path:v45];
+    v69 = [(VKCImageSubjectGlowLayer *)selfCopy animationWithKeyPath:@"strokeEnd" beginTime:v46 duration:duration];
     v48 = v41 + v46;
-    v68 = [(VKCImageSubjectGlowLayer *)v31 animationWithKeyPath:@"strokeStart" beginTime:v48 duration:a6];
+    v68 = [(VKCImageSubjectGlowLayer *)selfCopy animationWithKeyPath:@"strokeStart" beginTime:v48 duration:duration];
     v49 = v46;
     v24 = v35;
-    v50 = [(VKCImageSubjectGlowLayer *)v31 animationWithKeyPath:@"strokeEnd" beginTime:v49 duration:a6];
-    v51 = [(VKCImageSubjectGlowLayer *)v31 animationWithKeyPath:@"strokeStart" beginTime:v48 duration:a6];
+    v50 = [(VKCImageSubjectGlowLayer *)selfCopy animationWithKeyPath:@"strokeEnd" beginTime:v49 duration:duration];
+    v51 = [(VKCImageSubjectGlowLayer *)selfCopy animationWithKeyPath:@"strokeStart" beginTime:v48 duration:duration];
     v73[0] = v68;
     v73[1] = v69;
     v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v73 count:2];
-    v53 = [(VKCImageSubjectGlowLayer *)v31 animationGroupWithDuration:v52 beginTime:a6 + a6 animations:v35];
+    v53 = [(VKCImageSubjectGlowLayer *)selfCopy animationGroupWithDuration:v52 beginTime:duration + duration animations:v35];
 
     v72[0] = v51;
     v72[1] = v50;
     v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:2];
-    [(VKCImageSubjectGlowLayer *)v31 animationGroupWithDuration:v54 beginTime:a6 + a6 animations:v34];
-    v56 = v55 = v16;
+    [(VKCImageSubjectGlowLayer *)selfCopy animationGroupWithDuration:v54 beginTime:duration + duration animations:v34];
+    v56 = v55 = parametersCopy;
 
     [v70 addAnimation:v53 forKey:@"strokeAnimationGroup"];
     [v47 addAnimation:v56 forKey:@"strokeAnimationGroup2"];
     [v22 addSublayer:v47];
     [v22 addSublayer:v70];
 
-    v16 = v55;
-    a4 = v67;
+    parametersCopy = v55;
+    path = pathCopy;
   }
 
   while (v33 < [v55 strokeCount]);
-  v57 = [(VKCImageSubjectGlowLayer *)v31 glowLayer];
-  [v57 addSublayer:v22];
+  glowLayer = [(VKCImageSubjectGlowLayer *)selfCopy glowLayer];
+  [glowLayer addSublayer:v22];
 
-  v58 = [(VKCImageSubjectGlowLayer *)v31 subLayersMap];
-  v59 = [v58 objectForKeyedSubscript:v62];
+  subLayersMap = [(VKCImageSubjectGlowLayer *)selfCopy subLayersMap];
+  v59 = [subLayersMap objectForKeyedSubscript:identifierCopy];
   [v59 addObject:v22];
 }
 
-- (id)shapeLayerLineWidth:(double)a3 opacity:(double)a4 path:(CGPath *)a5
+- (id)shapeLayerLineWidth:(double)width opacity:(double)opacity path:(CGPath *)path
 {
   v8 = objc_alloc_init(MEMORY[0x1E69794A0]);
-  v9 = [MEMORY[0x1E69DC888] whiteColor];
-  [v8 setStrokeColor:{objc_msgSend(v9, "CGColor")}];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v8 setStrokeColor:{objc_msgSend(whiteColor, "CGColor")}];
 
-  [v8 setLineWidth:a3];
+  [v8 setLineWidth:width];
   [v8 setFillColor:0];
-  *&v10 = a4;
+  *&v10 = opacity;
   [v8 setOpacity:v10];
-  [v8 setPath:a5];
+  [v8 setPath:path];
   [v8 setStrokeStart:0.0];
   [v8 setStrokeEnd:0.0];
 
   return v8;
 }
 
-- (id)animationWithKeyPath:(id)a3 beginTime:(double)a4 duration:(double)a5
+- (id)animationWithKeyPath:(id)path beginTime:(double)time duration:(double)duration
 {
-  v7 = [MEMORY[0x1E6979318] animationWithKeyPath:a3];
+  v7 = [MEMORY[0x1E6979318] animationWithKeyPath:path];
   [v7 setFromValue:&unk_1F2C39118];
   [v7 setToValue:&unk_1F2C39128];
-  [v7 setBeginTime:a4];
-  [v7 setDuration:a5];
+  [v7 setBeginTime:time];
+  [v7 setDuration:duration];
   [v7 setFillMode:*MEMORY[0x1E69797E8]];
 
   return v7;
 }
 
-- (id)animationGroupWithDuration:(double)a3 beginTime:(double)a4 animations:(id)a5
+- (id)animationGroupWithDuration:(double)duration beginTime:(double)time animations:(id)animations
 {
   v7 = MEMORY[0x1E6979308];
-  v8 = a5;
+  animationsCopy = animations;
   v9 = objc_alloc_init(v7);
-  [v9 setDuration:a3];
+  [v9 setDuration:duration];
   LODWORD(v10) = 2139095040;
   [v9 setRepeatCount:v10];
-  [v9 setBeginTime:a4];
-  [v9 setAnimations:v8];
+  [v9 setBeginTime:time];
+  [v9 setAnimations:animationsCopy];
 
   return v9;
 }

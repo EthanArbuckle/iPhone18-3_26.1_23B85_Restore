@@ -1,21 +1,21 @@
 @interface MetaData
 - (NSString)description;
 - (_TtC7Measure8MetaData)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MetaData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_10008BBC8(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_10008BBC8(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_10008B680();
 
   v3 = String._bridgeToObjectiveC()();

@@ -1,21 +1,21 @@
 @interface CKPackageTableEntryEnumerator
-- (CKPackageTableEntryEnumerator)initWithPackageTable:(id)a3;
+- (CKPackageTableEntryEnumerator)initWithPackageTable:(id)table;
 - (id)nextObject;
 - (id)nextObjectBatch;
 @end
 
 @implementation CKPackageTableEntryEnumerator
 
-- (CKPackageTableEntryEnumerator)initWithPackageTable:(id)a3
+- (CKPackageTableEntryEnumerator)initWithPackageTable:(id)table
 {
-  v5 = a3;
+  tableCopy = table;
   v9.receiver = self;
   v9.super_class = CKPackageTableEntryEnumerator;
   v6 = [(CKPackageTableEntryEnumerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_packageTable, a3);
+    objc_storeStrong(&v6->_packageTable, table);
   }
 
   return v7;

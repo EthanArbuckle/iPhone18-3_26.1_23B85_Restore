@@ -1,13 +1,13 @@
 @interface WFChooseImageViewController
-- (WFChooseImageViewController)initWithCollection:(id)a3 selectedIndexes:(id)a4;
+- (WFChooseImageViewController)initWithCollection:(id)collection selectedIndexes:(id)indexes;
 - (WFChooseImageViewControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)cancel;
-- (void)cell:(id)a3 didSelectImageViewAtIndex:(unint64_t)a4;
+- (void)cell:(id)cell didSelectImageViewAtIndex:(unint64_t)index;
 - (void)done;
-- (void)setItemsPerRow:(int64_t)a3;
+- (void)setItemsPerRow:(int64_t)row;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -21,31 +21,31 @@
   return WeakRetained;
 }
 
-- (void)cell:(id)a3 didSelectImageViewAtIndex:(unint64_t)a4
+- (void)cell:(id)cell didSelectImageViewAtIndex:(unint64_t)index
 {
-  v19 = a3;
-  v6 = [(WFChooseImageViewController *)self tableView];
-  v7 = [v6 indexPathForCell:v19];
-  v8 = a4 + self->_itemsPerRow * [v7 row];
+  cellCopy = cell;
+  tableView = [(WFChooseImageViewController *)self tableView];
+  v7 = [tableView indexPathForCell:cellCopy];
+  v8 = index + self->_itemsPerRow * [v7 row];
 
-  v9 = [(WFContentCollection *)self->_collection items];
-  if (v8 >= [v9 count])
+  items = [(WFContentCollection *)self->_collection items];
+  if (v8 >= [items count])
   {
-    v11 = v9;
+    v11 = items;
   }
 
   else
   {
-    v10 = [(WFContentCollection *)self->_collection items];
-    v11 = [v10 objectAtIndex:v8];
+    items2 = [(WFContentCollection *)self->_collection items];
+    v11 = [items2 objectAtIndex:v8];
 
     if (!v11)
     {
       goto LABEL_13;
     }
 
-    v12 = [(WFChooseImageViewController *)self maximumNumberOfItems];
-    v13 = [(WFChooseImageViewController *)self minimumNumberOfItems];
+    maximumNumberOfItems = [(WFChooseImageViewController *)self maximumNumberOfItems];
+    minimumNumberOfItems = [(WFChooseImageViewController *)self minimumNumberOfItems];
     v14 = [(NSMutableSet *)self->_selectedItems containsObject:v11];
     selectedItems = self->_selectedItems;
     if (v14)
@@ -53,7 +53,7 @@
       [(NSMutableSet *)selectedItems removeObject:v11];
     }
 
-    else if (v12 - 1 >= [(NSMutableSet *)selectedItems count])
+    else if (maximumNumberOfItems - 1 >= [(NSMutableSet *)selectedItems count])
     {
       [(NSMutableSet *)self->_selectedItems addObject:v11];
     }
@@ -65,11 +65,11 @@
 
     else
     {
-      [v19 setSelected:-[NSMutableSet containsObject:](self->_selectedItems atIndex:{"containsObject:", v11), v8 % self->_itemsPerRow}];
-      v16 = [(NSMutableSet *)self->_selectedItems count]>= v13;
-      v17 = [(WFChooseImageViewController *)self navigationItem];
-      v18 = [v17 rightBarButtonItem];
-      [v18 setEnabled:v16];
+      [cellCopy setSelected:-[NSMutableSet containsObject:](self->_selectedItems atIndex:{"containsObject:", v11), v8 % self->_itemsPerRow}];
+      v16 = [(NSMutableSet *)self->_selectedItems count]>= minimumNumberOfItems;
+      navigationItem = [(WFChooseImageViewController *)self navigationItem];
+      rightBarButtonItem = [navigationItem rightBarButtonItem];
+      [rightBarButtonItem setEnabled:v16];
     }
   }
 
@@ -79,17 +79,17 @@ LABEL_13:
 - (void)done
 {
   v3 = MEMORY[0x277CFC2E0];
-  v4 = [(NSMutableSet *)self->_selectedItems allObjects];
+  allObjects = [(NSMutableSet *)self->_selectedItems allObjects];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __35__WFChooseImageViewController_done__block_invoke;
   v8[3] = &unk_278C36ED8;
   v8[4] = self;
-  v5 = [v4 sortedArrayUsingComparator:v8];
+  v5 = [allObjects sortedArrayUsingComparator:v8];
   v6 = [v3 collectionWithItems:v5];
 
-  v7 = [(WFChooseImageViewController *)self delegate];
-  [v7 chooseImageController:self didSelectItems:v6];
+  delegate = [(WFChooseImageViewController *)self delegate];
+  [delegate chooseImageController:self didSelectItems:v6];
 }
 
 uint64_t __35__WFChooseImageViewController_done__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -114,34 +114,34 @@ uint64_t __35__WFChooseImageViewController_done__block_invoke(uint64_t a1, void 
 
 - (void)cancel
 {
-  v3 = [(WFChooseImageViewController *)self delegate];
-  [v3 chooseImageControllerDidCancel:self];
+  delegate = [(WFChooseImageViewController *)self delegate];
+  [delegate chooseImageControllerDidCancel:self];
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = [(WFChooseImageViewController *)self tableView:a3];
+  v5 = [(WFChooseImageViewController *)self tableView:view];
   [v5 bounds];
   v6 = floor((CGRectGetWidth(v8) - self->_itemsPerRow + 1.0) / self->_itemsPerRow);
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"WFImageContentItemCellIdentifier"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"WFImageContentItemCellIdentifier"];
   if (!v7)
   {
     v7 = [[WFImageContentItemCell alloc] initWithStyle:0 reuseIdentifier:@"WFImageContentItemCellIdentifier"];
   }
 
-  v8 = [v6 row];
+  v8 = [pathCopy row];
   itemsPerRow = self->_itemsPerRow;
   v10 = itemsPerRow * v8;
-  v11 = [(WFContentCollection *)self->_collection items];
-  v12 = [v11 count];
-  v13 = v12 - self->_itemsPerRow * [v6 row];
+  items = [(WFContentCollection *)self->_collection items];
+  v12 = [items count];
+  v13 = v12 - self->_itemsPerRow * [pathCopy row];
 
   if (itemsPerRow >= v13)
   {
@@ -153,14 +153,14 @@ uint64_t __35__WFChooseImageViewController_done__block_invoke(uint64_t a1, void 
     v14 = itemsPerRow;
   }
 
-  v15 = [(WFContentCollection *)self->_collection items];
-  v16 = [v15 subarrayWithRange:{v10, v14}];
+  items2 = [(WFContentCollection *)self->_collection items];
+  v16 = [items2 subarrayWithRange:{v10, v14}];
   v17 = [v16 mutableCopy];
 
   while ([v17 count] < self->_itemsPerRow)
   {
-    v18 = [MEMORY[0x277CBEB68] null];
-    [v17 addObject:v18];
+    null = [MEMORY[0x277CBEB68] null];
+    [v17 addObject:null];
   }
 
   [(WFImageContentItemCell *)v7 setItems:v17];
@@ -171,7 +171,7 @@ uint64_t __35__WFChooseImageViewController_done__block_invoke(uint64_t a1, void 
   v22[3] = &unk_278C36EB0;
   v19 = v7;
   v23 = v19;
-  v24 = self;
+  selfCopy = self;
   [v17 enumerateObjectsUsingBlock:v22];
   v20 = v19;
 
@@ -197,9 +197,9 @@ void __63__WFChooseImageViewController_tableView_cellForRowAtIndexPath___block_i
   [*(a1 + 32) setSelected:objc_msgSend(*(*(a1 + 40) + 1048) atIndex:{"containsObject:", v5), a3}];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFContentCollection *)self->_collection items:a3];
+  v5 = [(WFContentCollection *)self->_collection items:view];
   v6 = vcvtpd_s64_f64([v5 count] / self->_itemsPerRow);
 
   return v6;
@@ -211,8 +211,8 @@ void __63__WFChooseImageViewController_tableView_cellForRowAtIndexPath___block_i
   v17.super_class = WFChooseImageViewController;
   [(WFChooseImageViewController *)&v17 viewDidLayoutSubviews];
   p_lastFrame = &self->_lastFrame;
-  v4 = [(WFChooseImageViewController *)self tableView];
-  [v4 frame];
+  tableView = [(WFChooseImageViewController *)self tableView];
+  [tableView frame];
   v18.origin.x = v5;
   v18.origin.y = v6;
   v18.size.width = v7;
@@ -221,12 +221,12 @@ void __63__WFChooseImageViewController_tableView_cellForRowAtIndexPath___block_i
 
   if (!v9)
   {
-    v10 = [(WFChooseImageViewController *)self tableView];
-    [v10 contentSize];
+    tableView2 = [(WFChooseImageViewController *)self tableView];
+    [tableView2 contentSize];
     [(WFChooseImageViewController *)self setItemsPerRow:vcvtmd_s64_f64(v11 / 80.0)];
 
-    v12 = [(WFChooseImageViewController *)self tableView];
-    [v12 frame];
+    tableView3 = [(WFChooseImageViewController *)self tableView];
+    [tableView3 frame];
     p_lastFrame->origin.x = v13;
     p_lastFrame->origin.y = v14;
     p_lastFrame->size.width = v15;
@@ -234,13 +234,13 @@ void __63__WFChooseImageViewController_tableView_cellForRowAtIndexPath___block_i
   }
 }
 
-- (void)setItemsPerRow:(int64_t)a3
+- (void)setItemsPerRow:(int64_t)row
 {
-  if (a3)
+  if (row)
   {
-    self->_itemsPerRow = a3;
-    v3 = [(WFChooseImageViewController *)self tableView];
-    [v3 reloadData];
+    self->_itemsPerRow = row;
+    tableView = [(WFChooseImageViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
@@ -249,38 +249,38 @@ void __63__WFChooseImageViewController_tableView_cellForRowAtIndexPath___block_i
   v5.receiver = self;
   v5.super_class = WFChooseImageViewController;
   [(WFChooseImageViewController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  v4 = [(WFChooseImageViewController *)self tableView];
-  [v4 setSeparatorColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  tableView = [(WFChooseImageViewController *)self tableView];
+  [tableView setSeparatorColor:clearColor];
 }
 
-- (WFChooseImageViewController)initWithCollection:(id)a3 selectedIndexes:(id)a4
+- (WFChooseImageViewController)initWithCollection:(id)collection selectedIndexes:(id)indexes
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  indexesCopy = indexes;
   v21.receiver = self;
   v21.super_class = WFChooseImageViewController;
   v9 = [(WFChooseImageViewController *)&v21 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_collection, a3);
+    objc_storeStrong(&v9->_collection, collection);
     v10->_itemsPerRow = 4;
     v11 = objc_alloc(MEMORY[0x277CBEB58]);
-    v12 = [v7 items];
-    v13 = [v12 objectsAtIndexes:v8];
+    items = [collectionCopy items];
+    v13 = [items objectsAtIndexes:indexesCopy];
     v14 = [v11 initWithArray:v13];
     selectedItems = v10->_selectedItems;
     v10->_selectedItems = v14;
 
     v16 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:v10 action:sel_done];
     [v16 setStyle:2];
-    v17 = [(WFChooseImageViewController *)v10 navigationItem];
-    [v17 setRightBarButtonItem:v16];
+    navigationItem = [(WFChooseImageViewController *)v10 navigationItem];
+    [navigationItem setRightBarButtonItem:v16];
 
     v18 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v10 action:sel_cancel];
-    v19 = [(WFChooseImageViewController *)v10 navigationItem];
-    [v19 setLeftBarButtonItem:v18];
+    navigationItem2 = [(WFChooseImageViewController *)v10 navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v18];
   }
 
   return v10;

@@ -1,41 +1,41 @@
 @interface PLMomentShare
-+ (PLMomentShare)momentShareWithOriginatingScopeIdentifier:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)createOwnedShareWithUUID:(id)a3 creationDate:(id)a4 title:(id)a5 inPhotoLibrary:(id)a6;
-+ (id)insertOrUpdateShareWithCPLScopeChange:(id)a3 inPhotoLibrary:(id)a4;
++ (PLMomentShare)momentShareWithOriginatingScopeIdentifier:(id)identifier inManagedObjectContext:(id)context;
++ (id)createOwnedShareWithUUID:(id)d creationDate:(id)date title:(id)title inPhotoLibrary:(id)library;
++ (id)insertOrUpdateShareWithCPLScopeChange:(id)change inPhotoLibrary:(id)library;
 + (id)listOfSyncedProperties;
-+ (id)momentSharesReferencedInUploadBatchContainer:(id)a3 inPhotoLibrary:(id)a4;
-+ (void)forceSyncMomentShares:(id)a3 photoLibrary:(id)a4;
++ (id)momentSharesReferencedInUploadBatchContainer:(id)container inPhotoLibrary:(id)library;
++ (void)forceSyncMomentShares:(id)shares photoLibrary:(id)library;
 - (BOOL)_isOwnerInContacts;
 - (BOOL)_shouldAutoAccept;
 - (BOOL)isSyncableChange;
 - (id)_contactStore;
 - (id)cplScopeChange;
 - (unint64_t)estimateUploadSize;
-- (void)_updateWithCPLMomentShare:(id)a3 inPhotoLibrary:(id)a4;
+- (void)_updateWithCPLMomentShare:(id)share inPhotoLibrary:(id)library;
 - (void)autoAcceptShareIfNecessary;
 - (void)prepareForDeletion;
-- (void)publishWithCompletionHandler:(id)a3;
+- (void)publishWithCompletionHandler:(id)handler;
 - (void)trash;
 - (void)willSave;
 @end
 
 @implementation PLMomentShare
 
-+ (id)momentSharesReferencedInUploadBatchContainer:(id)a3 inPhotoLibrary:(id)a4
++ (id)momentSharesReferencedInUploadBatchContainer:(id)container inPhotoLibrary:(id)library
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v24 = a4;
-  v22 = v5;
+  containerCopy = container;
+  libraryCopy = library;
+  v22 = containerCopy;
   v23 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v6 = [v5 batch];
-  v7 = [v6 records];
+  batch = [containerCopy batch];
+  records = [batch records];
 
-  v8 = [v7 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  v8 = [records countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v8)
   {
     v9 = *v37;
@@ -45,27 +45,27 @@
       {
         if (*v37 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(records);
         }
 
         v11 = *(*(&v36 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 scopedIdentifier];
-          v13 = [v12 scopeIdentifier];
-          v14 = [objc_opt_class() scopeIdentifierPrefixInLibrary:v24];
-          v15 = [v13 hasPrefix:v14];
+          scopedIdentifier = [v11 scopedIdentifier];
+          scopeIdentifier = [scopedIdentifier scopeIdentifier];
+          v14 = [objc_opt_class() scopeIdentifierPrefixInLibrary:libraryCopy];
+          v15 = [scopeIdentifier hasPrefix:v14];
 
           if (v15)
           {
-            v16 = [v12 scopeIdentifier];
-            [v23 addObject:v16];
+            scopeIdentifier2 = [scopedIdentifier scopeIdentifier];
+            [v23 addObject:scopeIdentifier2];
           }
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v8 = [records countByEnumeratingWithState:&v36 objects:v40 count:16];
     }
 
     while (v8);
@@ -86,7 +86,7 @@
   v29 = &v30;
   v18 = v22;
   v27 = v18;
-  v19 = v24;
+  v19 = libraryCopy;
   v28 = v19;
   [v19 performBlockAndWait:v25];
   v20 = v31[5];
@@ -115,8 +115,8 @@ void __77__PLMomentShare_momentSharesReferencedInUploadBatchContainer_inPhotoLib
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(PLMomentShare *)self momentShareAssets];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  momentShareAssets = [(PLMomentShare *)self momentShareAssets];
+  v4 = [momentShareAssets countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -128,21 +128,21 @@ void __77__PLMomentShare_momentSharesReferencedInUploadBatchContainer_inPhotoLib
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(momentShareAssets);
         }
 
-        v9 = [*(*(&v18 + 1) + 8 * i) fetchSourceAssetForDuplicationIfExists];
-        v10 = v9;
-        if (v9)
+        fetchSourceAssetForDuplicationIfExists = [*(*(&v18 + 1) + 8 * i) fetchSourceAssetForDuplicationIfExists];
+        v10 = fetchSourceAssetForDuplicationIfExists;
+        if (fetchSourceAssetForDuplicationIfExists)
         {
-          v11 = [v9 master];
-          if (v11)
+          master = [fetchSourceAssetForDuplicationIfExists master];
+          if (master)
           {
-            v12 = v11;
-            v13 = [v10 master];
-            v14 = [v13 cloudLocalState];
+            v12 = master;
+            master2 = [v10 master];
+            cloudLocalState = [master2 cloudLocalState];
 
-            if (v14 != 3)
+            if (cloudLocalState != 3)
             {
               v6 += [v10 originalFilesize];
             }
@@ -150,7 +150,7 @@ void __77__PLMomentShare_momentSharesReferencedInUploadBatchContainer_inPhotoLib
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v5 = [momentShareAssets countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v5);
@@ -164,9 +164,9 @@ void __77__PLMomentShare_momentSharesReferencedInUploadBatchContainer_inPhotoLib
   v15 = PLBackendSharingGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = [(PLShare *)self compactDescription];
+    compactDescription = [(PLShare *)self compactDescription];
     *buf = 138412546;
-    v23 = v16;
+    v23 = compactDescription;
     v24 = 2048;
     v25 = v6;
     _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, "Estimate upload size for moment share %@: %lld", buf, 0x16u);
@@ -178,16 +178,16 @@ void __77__PLMomentShare_momentSharesReferencedInUploadBatchContainer_inPhotoLib
 - (BOOL)_isOwnerInContacts
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [(PLShare *)self owner];
-  v4 = [v3 emailAddress];
-  v5 = [v3 phoneNumber];
-  v6 = [(PLMomentShare *)self _contactStore];
+  owner = [(PLShare *)self owner];
+  emailAddress = [owner emailAddress];
+  phoneNumber = [owner phoneNumber];
+  _contactStore = [(PLMomentShare *)self _contactStore];
   v7 = 0x1E695C000uLL;
-  if ([v4 length])
+  if ([emailAddress length])
   {
-    v8 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:v4];
+    v8 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:emailAddress];
     v31 = 0;
-    v9 = [v6 unifiedContactsMatchingPredicate:v8 keysToFetch:MEMORY[0x1E695E0F0] error:&v31];
+    v9 = [_contactStore unifiedContactsMatchingPredicate:v8 keysToFetch:MEMORY[0x1E695E0F0] error:&v31];
     v10 = v31;
     v11 = v10;
     if (v9)
@@ -202,7 +202,7 @@ void __77__PLMomentShare_momentSharesReferencedInUploadBatchContainer_inPhotoLib
 
     if (v12)
     {
-      v29 = v6;
+      v29 = _contactStore;
       v13 = [v9 count];
       v17 = PLBackendSharingGetLog();
       v14 = os_log_type_enabled(v17, OS_LOG_TYPE_INFO);
@@ -212,14 +212,14 @@ void __77__PLMomentShare_momentSharesReferencedInUploadBatchContainer_inPhotoLib
         {
           v16 = 1;
 LABEL_30:
-          v6 = v29;
+          _contactStore = v29;
 
           goto LABEL_31;
         }
 
-        v15 = [(PLShare *)self compactDescription];
+        compactDescription = [(PLShare *)self compactDescription];
         *buf = 138412546;
-        v33 = v15;
+        v33 = compactDescription;
         v34 = 2112;
         v35 = v8;
         v16 = 1;
@@ -229,15 +229,15 @@ LABEL_30:
 
       if (v14)
       {
-        v21 = [(PLShare *)self compactDescription];
+        compactDescription2 = [(PLShare *)self compactDescription];
         *buf = 138412546;
-        v33 = v21;
+        v33 = compactDescription2;
         v34 = 2112;
         v35 = v8;
         _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_INFO, "Auto Accept CMM: %@, Did not find local contact matching predicate [email=%@", buf, 0x16u);
       }
 
-      v6 = v29;
+      _contactStore = v29;
     }
 
     else
@@ -246,46 +246,46 @@ LABEL_30:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         [(PLShare *)self compactDescription];
-        v20 = v19 = v6;
+        v20 = v19 = _contactStore;
         *buf = 138412802;
         v33 = v20;
         v34 = 2112;
-        v35 = v4;
+        v35 = emailAddress;
         v36 = 2112;
         v37 = v11;
         _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_ERROR, "Auto Accept CMM: %@, Error attempting to fetch all unified contacts matching predicate [email=%@] : %@", buf, 0x20u);
 
-        v6 = v19;
+        _contactStore = v19;
         v7 = 0x1E695C000;
       }
     }
   }
 
-  if ([v5 length])
+  if ([phoneNumber length])
   {
-    v8 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v5];
+    v8 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:phoneNumber];
     v11 = [*(v7 + 3416) predicateForContactsMatchingPhoneNumber:v8];
     v30 = 0;
-    v29 = v6;
-    v17 = [v6 unifiedContactsMatchingPredicate:v11 keysToFetch:MEMORY[0x1E695E0F0] error:&v30];
+    v29 = _contactStore;
+    v17 = [_contactStore unifiedContactsMatchingPredicate:v11 keysToFetch:MEMORY[0x1E695E0F0] error:&v30];
     v22 = v30;
     v9 = v22;
     if (v17 || !v22)
     {
       v24 = [v17 count];
-      v15 = PLBackendSharingGetLog();
-      v25 = os_log_type_enabled(v15, OS_LOG_TYPE_INFO);
+      compactDescription = PLBackendSharingGetLog();
+      v25 = os_log_type_enabled(compactDescription, OS_LOG_TYPE_INFO);
       if (v24)
       {
         if (v25)
         {
-          v26 = [(PLShare *)self compactDescription];
+          compactDescription3 = [(PLShare *)self compactDescription];
           *buf = 138412546;
-          v33 = v26;
+          v33 = compactDescription3;
           v34 = 2112;
           v35 = v11;
           v16 = 1;
-          _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, "Auto Accept CMM: %@, Found local contact matching predicate [phone=%@]", buf, 0x16u);
+          _os_log_impl(&dword_19BF1F000, compactDescription, OS_LOG_TYPE_INFO, "Auto Accept CMM: %@, Found local contact matching predicate [phone=%@]", buf, 0x16u);
         }
 
         else
@@ -298,28 +298,28 @@ LABEL_30:
 
       if (v25)
       {
-        v27 = [(PLShare *)self compactDescription];
+        compactDescription4 = [(PLShare *)self compactDescription];
         *buf = 138412546;
-        v33 = v27;
+        v33 = compactDescription4;
         v34 = 2112;
         v35 = v11;
-        _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, "Auto Accept CMM: %@, Did not find local contact matching predicate [phone=%@", buf, 0x16u);
+        _os_log_impl(&dword_19BF1F000, compactDescription, OS_LOG_TYPE_INFO, "Auto Accept CMM: %@, Did not find local contact matching predicate [phone=%@", buf, 0x16u);
       }
     }
 
     else
     {
-      v15 = PLBackendSharingGetLog();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      compactDescription = PLBackendSharingGetLog();
+      if (os_log_type_enabled(compactDescription, OS_LOG_TYPE_ERROR))
       {
-        v23 = [(PLShare *)self compactDescription];
+        compactDescription5 = [(PLShare *)self compactDescription];
         *buf = 138412802;
-        v33 = v23;
+        v33 = compactDescription5;
         v34 = 2112;
-        v35 = v5;
+        v35 = phoneNumber;
         v36 = 2112;
         v37 = v9;
-        _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Auto Accept CMM: %@, Error attempting to fetch all unified contacts matching predicate [phone=%@] : %@", buf, 0x20u);
+        _os_log_impl(&dword_19BF1F000, compactDescription, OS_LOG_TYPE_ERROR, "Auto Accept CMM: %@, Error attempting to fetch all unified contacts matching predicate [phone=%@] : %@", buf, 0x20u);
       }
     }
 
@@ -364,8 +364,8 @@ void __30__PLMomentShare__contactStore__block_invoke()
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(PLMomentShare *)self momentShareAssets];
-  v4 = [v3 copy];
+  momentShareAssets = [(PLMomentShare *)self momentShareAssets];
+  v4 = [momentShareAssets copy];
 
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v5)
@@ -404,13 +404,13 @@ void __30__PLMomentShare__contactStore__block_invoke()
 
 - (BOOL)_shouldAutoAccept
 {
-  v3 = [(PLMomentShare *)self status];
-  if (v3 != 1)
+  status = [(PLMomentShare *)self status];
+  if (status != 1)
   {
-    LOBYTE(v3) = [(PLMomentShare *)self assetCount]<= 0x1F3 && [(PLMomentShare *)self _isOwnerInContacts];
+    LOBYTE(status) = [(PLMomentShare *)self assetCount]<= 0x1F3 && [(PLMomentShare *)self _isOwnerInContacts];
   }
 
-  return v3;
+  return status;
 }
 
 - (void)autoAcceptShareIfNecessary
@@ -421,9 +421,9 @@ void __30__PLMomentShare__contactStore__block_invoke()
     v3 = PLBackendSharingGetLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(PLShare *)self compactDescription];
+      compactDescription = [(PLShare *)self compactDescription];
       *buf = 138412290;
-      v7 = v4;
+      v7 = compactDescription;
       _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_INFO, "Auto-accept moment share %@", buf, 0xCu);
     }
 
@@ -455,26 +455,26 @@ void __43__PLMomentShare_autoAcceptShareIfNecessary__block_invoke(uint64_t a1, v
   }
 }
 
-- (void)publishWithCompletionHandler:(id)a3
+- (void)publishWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLManagedObject *)self photoLibrary];
-  v6 = [v5 libraryServicesManager];
-  v7 = [v6 cloudPhotoLibraryManager];
+  handlerCopy = handler;
+  photoLibrary = [(PLManagedObject *)self photoLibrary];
+  libraryServicesManager = [photoLibrary libraryServicesManager];
+  cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
 
-  if (v7)
+  if (cloudPhotoLibraryManager)
   {
     [(PLMomentShare *)self setLocalPublishState:1];
-    v8 = [(PLMomentShare *)self cplScopeChange];
+    cplScopeChange = [(PLMomentShare *)self cplScopeChange];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __46__PLMomentShare_publishWithCompletionHandler___block_invoke;
     v12[3] = &unk_1E7573120;
-    v13 = v5;
-    v14 = self;
-    v15 = v4;
-    [v7 publishCPLScopeChange:v8 completionHandler:v12];
+    v13 = photoLibrary;
+    selfCopy = self;
+    v15 = handlerCopy;
+    [cloudPhotoLibraryManager publishCPLScopeChange:cplScopeChange completionHandler:v12];
 
     v9 = v13;
   }
@@ -485,9 +485,9 @@ void __43__PLMomentShare_autoAcceptShareIfNecessary__block_invoke(uint64_t a1, v
     v11 = *MEMORY[0x1E69BFF48];
     v16 = *MEMORY[0x1E696A578];
     v17[0] = @"PLCloudPhotoLibraryManager is not available";
-    v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    v9 = [v10 errorWithDomain:v11 code:41004 userInfo:v8];
-    (*(v4 + 2))(v4, 0, 0, v9);
+    cplScopeChange = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
+    v9 = [v10 errorWithDomain:v11 code:41004 userInfo:cplScopeChange];
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v9);
   }
 }
 
@@ -613,62 +613,62 @@ LABEL_20:
 
 - (id)cplScopeChange
 {
-  v4 = [(PLMomentShare *)self scopeIdentifier];
-  if (!v4)
+  scopeIdentifier = [(PLMomentShare *)self scopeIdentifier];
+  if (!scopeIdentifier)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PLMomentShare.m" lineNumber:268 description:@"Missing scope identifier for moment share"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMomentShare.m" lineNumber:268 description:@"Missing scope identifier for moment share"];
   }
 
-  v5 = [MEMORY[0x1E6994B30] newScopeChangeWithScopeIdentifier:v4 type:{-[PLShare scopeType](self, "scopeType")}];
-  v6 = [(PLMomentShare *)self title];
-  [v5 setTitle:v6];
+  v5 = [MEMORY[0x1E6994B30] newScopeChangeWithScopeIdentifier:scopeIdentifier type:{-[PLShare scopeType](self, "scopeType")}];
+  title = [(PLMomentShare *)self title];
+  [v5 setTitle:title];
 
-  v7 = [(PLMomentShare *)self creationDate];
-  [v5 setCreationDate:v7];
+  creationDate = [(PLMomentShare *)self creationDate];
+  [v5 setCreationDate:creationDate];
 
-  v8 = [(PLMomentShare *)self startDate];
-  [v5 setStartDate:v8];
+  startDate = [(PLMomentShare *)self startDate];
+  [v5 setStartDate:startDate];
 
-  v9 = [(PLMomentShare *)self endDate];
-  [v5 setEndDate:v9];
+  endDate = [(PLMomentShare *)self endDate];
+  [v5 setEndDate:endDate];
 
   [v5 setPromisedAssetCount:{-[PLMomentShare assetCount](self, "assetCount")}];
   [v5 setPromisedPhotosCount:{-[PLMomentShare photosCount](self, "photosCount")}];
   [v5 setPromisedVideosCount:{-[PLMomentShare videosCount](self, "videosCount")}];
-  v10 = [(PLMomentShare *)self originatingScopeIdentifier];
-  [v5 setOriginatingScopeIdentifier:v10];
+  originatingScopeIdentifier = [(PLMomentShare *)self originatingScopeIdentifier];
+  [v5 setOriginatingScopeIdentifier:originatingScopeIdentifier];
 
   if ([(PLMomentShare *)self compatibilityState]>= 1)
   {
     [v5 setHasEPPAssets:1];
   }
 
-  v11 = [(PLMomentShare *)self thumbnailImageData];
-  v12 = [v11 length];
+  thumbnailImageData = [(PLMomentShare *)self thumbnailImageData];
+  v12 = [thumbnailImageData length];
   if (v12 <= [MEMORY[0x1E6994B60] maxInlineDataSize])
   {
-    [v5 setThumbnailImageData:v11];
+    [v5 setThumbnailImageData:thumbnailImageData];
   }
 
   else
   {
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [MEMORY[0x1E6994B60] maxInlineDataSize];
-    v15 = [(PLMomentShare *)self scopeIdentifier];
-    v16 = [v13 stringWithFormat:@"Setting thumbnail image data that is more than %ld bytes to moment share %@, it will not be synced", v14, v15];
+    maxInlineDataSize = [MEMORY[0x1E6994B60] maxInlineDataSize];
+    scopeIdentifier2 = [(PLMomentShare *)self scopeIdentifier];
+    v16 = [v13 stringWithFormat:@"Setting thumbnail image data that is more than %ld bytes to moment share %@, it will not be synced", maxInlineDataSize, scopeIdentifier2];
 
     PLSimulateCrash();
   }
 
-  v17 = [(PLMomentShare *)self previewData];
-  [v5 setPreviewImageData:v17];
+  previewData = [(PLMomentShare *)self previewData];
+  [v5 setPreviewImageData:previewData];
 
-  v18 = [(PLMomentShare *)self expiryDate];
-  [v5 setExpiryDate:v18];
+  expiryDate = [(PLMomentShare *)self expiryDate];
+  [v5 setExpiryDate:expiryDate];
 
-  v19 = [(PLShare *)self cplShare];
-  [v5 setShare:v19];
+  cplShare = [(PLShare *)self cplShare];
+  [v5 setShare:cplShare];
 
   return v5;
 }
@@ -676,13 +676,13 @@ LABEL_20:
 - (BOOL)isSyncableChange
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(PLMomentShare *)self changedValues];
+  changedValues = [(PLMomentShare *)self changedValues];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [objc_opt_class() listOfSyncedProperties];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  listOfSyncedProperties = [objc_opt_class() listOfSyncedProperties];
+  v4 = [listOfSyncedProperties countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -692,10 +692,10 @@ LABEL_20:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(listOfSyncedProperties);
         }
 
-        v7 = [v2 objectForKey:*(*(&v9 + 1) + 8 * i)];
+        v7 = [changedValues objectForKey:*(*(&v9 + 1) + 8 * i)];
 
         if (v7)
         {
@@ -704,7 +704,7 @@ LABEL_20:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [listOfSyncedProperties countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -725,28 +725,28 @@ LABEL_11:
   v11.receiver = self;
   v11.super_class = PLMomentShare;
   [(PLManagedObject *)&v11 willSave];
-  v3 = [(PLMomentShare *)self changedValues];
+  changedValues = [(PLMomentShare *)self changedValues];
   if ([(PLMomentShare *)self isUpdated])
   {
-    v4 = [v3 objectForKey:@"shouldIgnoreBudgets"];
-    v5 = [v4 BOOLValue];
+    v4 = [changedValues objectForKey:@"shouldIgnoreBudgets"];
+    bOOLValue = [v4 BOOLValue];
 
-    if (v5)
+    if (bOOLValue)
     {
-      v6 = [(PLMomentShare *)self scopeIdentifier];
+      scopeIdentifier = [(PLMomentShare *)self scopeIdentifier];
       v7 = PLBackendSharingGetLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v13 = v6;
+        v13 = scopeIdentifier;
         _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_INFO, "Should ignore budgets flag is updated for moment share %@, boosting its priority", buf, 0xCu);
       }
 
-      v8 = [(PLManagedObject *)self photoLibrary];
-      v9 = [v8 libraryServicesManager];
-      v10 = [v9 cloudPhotoLibraryManager];
+      photoLibrary = [(PLManagedObject *)self photoLibrary];
+      libraryServicesManager = [photoLibrary libraryServicesManager];
+      cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
 
-      [v10 boostPriorityForMomentShareWithScopeIdentifier:v6 completionHandler:0];
+      [cloudPhotoLibraryManager boostPriorityForMomentShareWithScopeIdentifier:scopeIdentifier completionHandler:0];
     }
   }
 }
@@ -757,21 +757,21 @@ LABEL_11:
   v16.receiver = self;
   v16.super_class = PLMomentShare;
   [(PLShare *)&v16 prepareForDeletion];
-  v3 = [(PLMomentShare *)self managedObjectContext];
+  managedObjectContext = [(PLMomentShare *)self managedObjectContext];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 mergingChanges] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([managedObjectContext mergingChanges] & 1) == 0)
   {
     [(PLShare *)self recordCloudDeletionIfNeeded];
-    v4 = [(PLManagedObject *)self pathManager];
-    v5 = [v4 isDCIM];
+    pathManager = [(PLManagedObject *)self pathManager];
+    isDCIM = [pathManager isDCIM];
 
-    if (v5)
+    if (isDCIM)
     {
-      v6 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
-      v7 = [v6 privateDirectoryWithSubType:7];
+      systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+      v7 = [systemLibraryPathManager privateDirectoryWithSubType:7];
 
-      v8 = [(PLMomentShare *)self uuid];
-      v9 = [v7 stringByAppendingPathComponent:v8];
+      uuid = [(PLMomentShare *)self uuid];
+      v9 = [v7 stringByAppendingPathComponent:uuid];
 
       v10 = PLBackendSharingGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -781,9 +781,9 @@ LABEL_11:
         _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_INFO, "Deleting CMMAsset subdirectory: %@", buf, 0xCu);
       }
 
-      v11 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v15 = 0;
-      v12 = [v11 removeItemAtPath:v9 error:&v15];
+      v12 = [defaultManager removeItemAtPath:v9 error:&v15];
       v13 = v15;
 
       if ((v12 & 1) == 0)
@@ -802,78 +802,78 @@ LABEL_11:
   }
 }
 
-- (void)_updateWithCPLMomentShare:(id)a3 inPhotoLibrary:(id)a4
+- (void)_updateWithCPLMomentShare:(id)share inPhotoLibrary:(id)library
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  libraryCopy = library;
   v8 = PLBackendSharingGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(PLShare *)self compactDescription];
+    compactDescription = [(PLShare *)self compactDescription];
     *buf = 138412546;
-    *&buf[4] = v9;
+    *&buf[4] = compactDescription;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = shareCopy;
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_INFO, "Updating moment share %@ with CPLMomentShareScopeChange %@", buf, 0x16u);
   }
 
-  v10 = [v6 creationDate];
-  [(PLMomentShare *)self setCreationDate:v10];
+  creationDate = [shareCopy creationDate];
+  [(PLMomentShare *)self setCreationDate:creationDate];
 
-  v11 = [v6 title];
-  [(PLMomentShare *)self setTitle:v11];
+  title = [shareCopy title];
+  [(PLMomentShare *)self setTitle:title];
 
-  v12 = [v6 startDate];
-  [(PLMomentShare *)self setStartDate:v12];
+  startDate = [shareCopy startDate];
+  [(PLMomentShare *)self setStartDate:startDate];
 
-  v13 = [v6 endDate];
-  [(PLMomentShare *)self setEndDate:v13];
+  endDate = [shareCopy endDate];
+  [(PLMomentShare *)self setEndDate:endDate];
 
-  v14 = [v6 expiryDate];
-  [(PLMomentShare *)self setExpiryDate:v14];
+  expiryDate = [shareCopy expiryDate];
+  [(PLMomentShare *)self setExpiryDate:expiryDate];
 
-  -[PLMomentShare setAssetCount:](self, "setAssetCount:", [v6 promisedAssetCount]);
-  -[PLMomentShare setPhotosCount:](self, "setPhotosCount:", [v6 promisedPhotosCount]);
-  -[PLMomentShare setVideosCount:](self, "setVideosCount:", [v6 promisedVideosCount]);
-  v15 = [v6 originatingScopeIdentifier];
-  [(PLMomentShare *)self setOriginatingScopeIdentifier:v15];
+  -[PLMomentShare setAssetCount:](self, "setAssetCount:", [shareCopy promisedAssetCount]);
+  -[PLMomentShare setPhotosCount:](self, "setPhotosCount:", [shareCopy promisedPhotosCount]);
+  -[PLMomentShare setVideosCount:](self, "setVideosCount:", [shareCopy promisedVideosCount]);
+  originatingScopeIdentifier = [shareCopy originatingScopeIdentifier];
+  [(PLMomentShare *)self setOriginatingScopeIdentifier:originatingScopeIdentifier];
 
-  v16 = [v6 thumbnailImageData];
-  [(PLMomentShare *)self setThumbnailImageData:v16];
+  thumbnailImageData = [shareCopy thumbnailImageData];
+  [(PLMomentShare *)self setThumbnailImageData:thumbnailImageData];
 
-  v17 = [v6 previewImageData];
-  [(PLMomentShare *)self setPreviewData:v17];
+  previewImageData = [shareCopy previewImageData];
+  [(PLMomentShare *)self setPreviewData:previewImageData];
 
-  -[PLShare setScopeType:](self, "setScopeType:", [v6 scopeType]);
-  -[PLMomentShare setCompatibilityState:](self, "setCompatibilityState:", [v6 hasEPPAssets]);
-  v18 = [v6 share];
-  [(PLShare *)self updateShareWithCPLShare:v18 inPhotoLibrary:v7];
-  v19 = [v6 scopeType];
+  -[PLShare setScopeType:](self, "setScopeType:", [shareCopy scopeType]);
+  -[PLMomentShare setCompatibilityState:](self, "setCompatibilityState:", [shareCopy hasEPPAssets]);
+  share = [shareCopy share];
+  [(PLShare *)self updateShareWithCPLShare:share inPhotoLibrary:libraryCopy];
+  scopeType = [shareCopy scopeType];
   v20 = 0;
-  if (v19 <= 9)
+  if (scopeType <= 9)
   {
-    if (((1 << v19) & 0x3B3) != 0)
+    if (((1 << scopeType) & 0x3B3) != 0)
     {
       v21 = PLBackendSharingGetLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        *&buf[4] = v6;
+        *&buf[4] = shareCopy;
         _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "Unexpected scopeType for moment share from scopeChange %@", buf, 0xCu);
       }
 
       v20 = 0;
     }
 
-    else if (v19 == 2 || v19 == 3)
+    else if (scopeType == 2 || scopeType == 3)
     {
       v20 = 2;
     }
   }
 
   [(PLMomentShare *)self setLocalPublishState:v20];
-  v22 = [v6 assetCountPerType];
+  assetCountPerType = [shareCopy assetCountPerType];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
@@ -888,7 +888,7 @@ LABEL_11:
   v23[3] = &unk_1E75730D0;
   v23[4] = buf;
   v23[5] = &v24;
-  [v22 enumerateKeysAndObjectsUsingBlock:v23];
+  [assetCountPerType enumerateKeysAndObjectsUsingBlock:v23];
   [(PLMomentShare *)self setCloudPhotoCount:*(*&buf[8] + 24)];
   [(PLMomentShare *)self setCloudVideoCount:*(v25 + 6)];
   _Block_object_dispose(&v24, 8);
@@ -918,30 +918,30 @@ void __58__PLMomentShare__updateWithCPLMomentShare_inPhotoLibrary___block_invoke
 LABEL_6:
 }
 
-+ (void)forceSyncMomentShares:(id)a3 photoLibrary:(id)a4
++ (void)forceSyncMomentShares:(id)shares photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
+  sharesCopy = shares;
+  libraryCopy = library;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__85998;
   v20 = __Block_byref_object_dispose__85999;
-  v21 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __52__PLMomentShare_forceSyncMomentShares_photoLibrary___block_invoke;
   v13 = &unk_1E7578910;
-  v7 = v5;
+  v7 = sharesCopy;
   v14 = v7;
   v15 = &v16;
-  [v6 performTransactionAndWait:&v10];
+  [libraryCopy performTransactionAndWait:&v10];
   if ([v17[5] count])
   {
-    v8 = [v6 libraryServicesManager];
-    v9 = [v8 cloudPhotoLibraryManager];
+    libraryServicesManager = [libraryCopy libraryServicesManager];
+    cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
 
-    [v9 forceSyncMomentSharesWithScopeIdentifiers:v17[5]];
+    [cloudPhotoLibraryManager forceSyncMomentSharesWithScopeIdentifiers:v17[5]];
   }
 
   _Block_object_dispose(&v16, 8);
@@ -1002,28 +1002,28 @@ void __39__PLMomentShare_listOfSyncedProperties__block_invoke()
   listOfSyncedProperties_result_86118 = v0;
 }
 
-+ (PLMomentShare)momentShareWithOriginatingScopeIdentifier:(id)a3 inManagedObjectContext:(id)a4
++ (PLMomentShare)momentShareWithOriginatingScopeIdentifier:(id)identifier inManagedObjectContext:(id)context
 {
   v6 = MEMORY[0x1E696AE18];
-  v7 = a4;
-  v8 = [v6 predicateWithFormat:@"%K == %@", @"originatingScopeIdentifier", a3];
-  v9 = [a1 sharesWithPredicate:v8 fetchLimit:1 inManagedObjectContext:v7];
+  contextCopy = context;
+  identifier = [v6 predicateWithFormat:@"%K == %@", @"originatingScopeIdentifier", identifier];
+  v9 = [self sharesWithPredicate:identifier fetchLimit:1 inManagedObjectContext:contextCopy];
 
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
-+ (id)insertOrUpdateShareWithCPLScopeChange:(id)a3 inPhotoLibrary:(id)a4
++ (id)insertOrUpdateShareWithCPLScopeChange:(id)change inPhotoLibrary:(id)library
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 scopeIdentifier];
-  if ([a1 validateCPLScopeChange:v6])
+  changeCopy = change;
+  libraryCopy = library;
+  scopeIdentifier = [changeCopy scopeIdentifier];
+  if ([self validateCPLScopeChange:changeCopy])
   {
-    v9 = [v7 managedObjectContext];
-    v10 = [a1 shareWithScopeIdentifier:v8 includeTrashed:1 inManagedObjectContext:v9];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    v10 = [self shareWithScopeIdentifier:scopeIdentifier includeTrashed:1 inManagedObjectContext:managedObjectContext];
 
     if (!v10)
     {
@@ -1031,16 +1031,16 @@ void __39__PLMomentShare_listOfSyncedProperties__block_invoke()
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v13 = 138412290;
-        v14 = v8;
+        v14 = scopeIdentifier;
         _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_INFO, "Creating moment share with scope identifier %@", &v13, 0xCu);
       }
 
-      v10 = [a1 insertInPhotoLibrary:v7];
+      v10 = [self insertInPhotoLibrary:libraryCopy];
       [v10 setStatus:2];
-      [v10 setScopeIdentifier:v8];
+      [v10 setScopeIdentifier:scopeIdentifier];
     }
 
-    [v10 _updateWithCPLMomentShare:v6 inPhotoLibrary:v7];
+    [v10 _updateWithCPLMomentShare:changeCopy inPhotoLibrary:libraryCopy];
   }
 
   else
@@ -1051,11 +1051,11 @@ void __39__PLMomentShare_listOfSyncedProperties__block_invoke()
   return v10;
 }
 
-+ (id)createOwnedShareWithUUID:(id)a3 creationDate:(id)a4 title:(id)a5 inPhotoLibrary:(id)a6
++ (id)createOwnedShareWithUUID:(id)d creationDate:(id)date title:(id)title inPhotoLibrary:(id)library
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___PLMomentShare;
-  v6 = objc_msgSendSuper2(&v8, sel_createOwnedShareWithUUID_creationDate_title_inPhotoLibrary_, a3, a4, a5, a6);
+  v6 = objc_msgSendSuper2(&v8, sel_createOwnedShareWithUUID_creationDate_title_inPhotoLibrary_, d, date, title, library);
   [v6 setScopeType:2];
 
   return v6;

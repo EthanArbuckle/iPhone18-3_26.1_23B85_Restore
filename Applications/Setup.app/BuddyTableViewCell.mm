@@ -9,8 +9,8 @@
 {
   if ([(BuddyTableViewCell *)self style]== 1000)
   {
-    v2 = [(BuddyTableViewCell *)self editableTextField];
-    [v2 frame];
+    editableTextField = [(BuddyTableViewCell *)self editableTextField];
+    [editableTextField frame];
     *&v18[8] = v3;
     *v18 = v4;
     *&v18[24] = v5;
@@ -18,8 +18,8 @@
 
     if (!CGRectIsEmpty(*v18))
     {
-      v7 = [(BuddyTableViewCell *)self textLabel];
-      [v7 frame];
+      textLabel = [(BuddyTableViewCell *)self textLabel];
+      [textLabel frame];
       r2_8 = v8;
       r2 = v9;
       r2_24 = v10;
@@ -33,8 +33,8 @@
       rect_16 = v20.size.width;
       if (!CGRectIsNull(v20))
       {
-        v12 = [(BuddyTableViewCell *)self editableTextField];
-        [v12 setFrame:{*v18 + rect_16, *&v18[8], *&v18[16] - rect_16, *&v18[24], *v18 + rect_16, *&v18[8], *&v18[16] - rect_16, *&v18[24]}];
+        editableTextField2 = [(BuddyTableViewCell *)self editableTextField];
+        [editableTextField2 setFrame:{*v18 + rect_16, *&v18[8], *&v18[16] - rect_16, *&v18[24], *v18 + rect_16, *&v18[8], *&v18[16] - rect_16, *&v18[24]}];
       }
     }
   }
@@ -42,12 +42,12 @@
 
 - (void)layoutSubviews
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = BuddyTableViewCell;
   [(BuddyTableViewCell *)&v2 layoutSubviews];
-  [(BuddyTableViewCell *)v4 resizeCellLabelAndFieldIfOverlap];
+  [(BuddyTableViewCell *)selfCopy resizeCellLabelAndFieldIfOverlap];
 }
 
 @end

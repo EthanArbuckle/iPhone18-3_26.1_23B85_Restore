@@ -1,91 +1,91 @@
 @interface SBUIHostProxyHostComponent
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)scene:(id)a3 willUpdateSettings:(id)a4;
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4;
-- (void)setScene:(id)a3;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)scene:(id)scene willUpdateSettings:(id)settings;
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context;
+- (void)setScene:(id)scene;
 @end
 
 @implementation SBUIHostProxyHostComponent
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   v8.receiver = self;
   v8.super_class = SBUIHostProxyHostComponent;
-  [(FBSSceneComponent *)&v8 setScene:a3];
+  [(FBSSceneComponent *)&v8 setScene:scene];
   v4 = +[SBUIAccessorySceneManager sharedInstance];
-  v5 = [(FBSSceneComponent *)self hostScene];
-  v6 = [v4 registerPrimaryScene:v5];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  v6 = [v4 registerPrimaryScene:hostScene];
   sceneRegistration = self->_sceneRegistration;
   self->_sceneRegistration = v6;
 }
 
-- (void)scene:(id)a3 willUpdateSettings:(id)a4
+- (void)scene:(id)scene willUpdateSettings:(id)settings
 {
-  v14 = a3;
-  v5 = a4;
-  v6 = [v5 settings];
-  v7 = [v6 displayConfiguration];
+  sceneCopy = scene;
+  settingsCopy = settings;
+  settings = [settingsCopy settings];
+  displayConfiguration = [settings displayConfiguration];
 
-  v8 = [v5 previousSettings];
+  previousSettings = [settingsCopy previousSettings];
 
-  v9 = [v8 displayConfiguration];
+  displayConfiguration2 = [previousSettings displayConfiguration];
 
-  if (v7 != v9)
+  if (displayConfiguration != displayConfiguration2)
   {
-    v10 = [v14 _keyboardHostComponent];
-    v11 = [v7 hardwareIdentifier];
-    [v10 setHardwareKeyboardExclusivityIdentifier:v11];
+    _keyboardHostComponent = [sceneCopy _keyboardHostComponent];
+    hardwareIdentifier = [displayConfiguration hardwareIdentifier];
+    [_keyboardHostComponent setHardwareKeyboardExclusivityIdentifier:hardwareIdentifier];
 
-    v12 = [v14 systemShellHostingEnvironment];
-    v13 = SBUISystemShellHostingSpaceIdentifierForDisplayConfiguration(v7);
-    [v12 setSystemShellHostingSpaceIdentifier:v13];
+    systemShellHostingEnvironment = [sceneCopy systemShellHostingEnvironment];
+    v13 = SBUISystemShellHostingSpaceIdentifierForDisplayConfiguration(displayConfiguration);
+    [systemShellHostingEnvironment setSystemShellHostingSpaceIdentifier:v13];
   }
 }
 
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context
 {
-  [(BSInvalidatable *)self->_sceneRegistration invalidate:a3];
+  [(BSInvalidatable *)self->_sceneRegistration invalidate:invalidate];
   sceneRegistration = self->_sceneRegistration;
   self->_sceneRegistration = 0;
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  sceneCopy = scene;
+  settingsCopy = settings;
+  if (sceneCopy)
   {
-    v7 = [v5 uiSettings];
-    if (!v7)
+    uiSettings = [sceneCopy uiSettings];
+    if (!uiSettings)
     {
 LABEL_9:
 
       goto LABEL_10;
     }
 
-    v8 = [v5 clientSettings];
-    v9 = [v8 hostProxyUserInterfaceStyle];
+    clientSettings = [sceneCopy clientSettings];
+    hostProxyUserInterfaceStyle = [clientSettings hostProxyUserInterfaceStyle];
 
-    v10 = [v5 clientSettings];
-    v11 = [v10 hostProxyEnhancedWindowingEnabled];
+    clientSettings2 = [sceneCopy clientSettings];
+    hostProxyEnhancedWindowingEnabled = [clientSettings2 hostProxyEnhancedWindowingEnabled];
 
-    v12 = [v5 clientSettings];
-    v13 = [v12 hostProxySceneRenderingEnvironmentIdentifier];
+    clientSettings3 = [sceneCopy clientSettings];
+    hostProxySceneRenderingEnvironmentIdentifier = [clientSettings3 hostProxySceneRenderingEnvironmentIdentifier];
 
-    v14 = [v5 clientSettings];
-    v15 = [v14 hostProxyIsCapturingContentForAdditionalRenderingDestination];
+    clientSettings4 = [sceneCopy clientSettings];
+    hostProxyIsCapturingContentForAdditionalRenderingDestination = [clientSettings4 hostProxyIsCapturingContentForAdditionalRenderingDestination];
 
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __60__SBUIHostProxyHostComponent_scene_didUpdateClientSettings___block_invoke;
     v25[3] = &unk_1E789FA50;
-    v28 = v9;
-    v29 = v11;
-    v16 = v5;
+    v28 = hostProxyUserInterfaceStyle;
+    v29 = hostProxyEnhancedWindowingEnabled;
+    v16 = sceneCopy;
     v26 = v16;
-    v17 = v13;
+    v17 = hostProxySceneRenderingEnvironmentIdentifier;
     v27 = v17;
-    v30 = v15;
+    v30 = hostProxyIsCapturingContentForAdditionalRenderingDestination;
     v18 = MEMORY[0x1AC58E960](v25);
     if ([v16 isActive])
     {
@@ -95,13 +95,13 @@ LABEL_9:
       v22[3] = &unk_1E789EB80;
       v19 = &v24;
       v24 = v18;
-      v23 = v6;
+      v23 = settingsCopy;
       [v16 performUpdate:v22];
     }
 
     else
     {
-      if ([v7 userInterfaceStyle] == v9)
+      if ([uiSettings userInterfaceStyle] == hostProxyUserInterfaceStyle)
       {
 LABEL_8:
 

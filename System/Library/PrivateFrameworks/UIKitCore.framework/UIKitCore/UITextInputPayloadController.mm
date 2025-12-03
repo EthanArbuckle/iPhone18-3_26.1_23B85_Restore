@@ -4,7 +4,7 @@
 - (BOOL)_isMobileSMS;
 - (BOOL)supportsStickerTapbackPayload;
 - (UITextInputPayloadDelegate)payloadDelegate;
-- (void)setSupportedPayloadIds:(id)a3;
+- (void)setSupportedPayloadIds:(id)ids;
 @end
 
 @implementation UITextInputPayloadController
@@ -14,7 +14,7 @@
   v3 = __payloadController;
   if (!__payloadController)
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     v5 = __payloadController;
     __payloadController = v4;
 
@@ -34,22 +34,22 @@
   }
 }
 
-- (void)setSupportedPayloadIds:(id)a3
+- (void)setSupportedPayloadIds:(id)ids
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  idsCopy = ids;
+  v5 = [idsCopy copy];
   supportedPayloadIds = self->_supportedPayloadIds;
   self->_supportedPayloadIds = v5;
 
   v7 = +[UIKeyboardImpl activeInstance];
-  v8 = [v7 keyboardState];
-  [v8 setSupportedPayloadIds:v4];
+  keyboardState = [v7 keyboardState];
+  [keyboardState setSupportedPayloadIds:idsCopy];
 
   if (+[UIKeyboard usesInputSystemUI])
   {
     v10 = +[UIKeyboardImpl activeInstance];
-    v9 = [v10 remoteTextInputPartner];
-    [v9 documentTraitsChanged];
+    remoteTextInputPartner = [v10 remoteTextInputPartner];
+    [remoteTextInputPartner documentTraitsChanged];
   }
 }
 
@@ -63,15 +63,15 @@
 
 - (BOOL)supportsStickerTapbackPayload
 {
-  v3 = [(UITextInputPayloadController *)self _isMobileSMS];
-  if (v3)
+  _isMobileSMS = [(UITextInputPayloadController *)self _isMobileSMS];
+  if (_isMobileSMS)
   {
     supportedPayloadIds = self->_supportedPayloadIds;
 
-    LOBYTE(v3) = [(NSArray *)supportedPayloadIds containsObject:@"com.apple.messages.stickerTapback"];
+    LOBYTE(_isMobileSMS) = [(NSArray *)supportedPayloadIds containsObject:@"com.apple.messages.stickerTapback"];
   }
 
-  return v3;
+  return _isMobileSMS;
 }
 
 - (UITextInputPayloadDelegate)payloadDelegate

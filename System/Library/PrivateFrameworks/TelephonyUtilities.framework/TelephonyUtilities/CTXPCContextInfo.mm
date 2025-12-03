@@ -1,18 +1,18 @@
 @interface CTXPCContextInfo
-+ (id)csd_unknownContextInfoForAccountID:(id)a3;
++ (id)csd_unknownContextInfoForAccountID:(id)d;
 - (BOOL)csd_isThumper;
 - (BOOL)csd_isUnknown;
 @end
 
 @implementation CTXPCContextInfo
 
-+ (id)csd_unknownContextInfoForAccountID:(id)a3
++ (id)csd_unknownContextInfoForAccountID:(id)d
 {
-  v3 = a3;
-  v4 = [v3 csd_UUIDv5];
-  if (v4)
+  dCopy = d;
+  csd_UUIDv5 = [dCopy csd_UUIDv5];
+  if (csd_UUIDv5)
   {
-    v5 = [[CTXPCContextInfo alloc] initWithUUID:v4 andAccountID:v3 andSlot:0];
+    v5 = [[CTXPCContextInfo alloc] initWithUUID:csd_UUIDv5 andAccountID:dCopy andSlot:0];
   }
 
   else
@@ -25,8 +25,8 @@
 
 - (BOOL)csd_isThumper
 {
-  v3 = [(CTXPCContextInfo *)self accountID];
-  if ([v3 length])
+  accountID = [(CTXPCContextInfo *)self accountID];
+  if ([accountID length])
   {
     v4 = [(CTXPCContextInfo *)self slotID]== 0;
   }
@@ -41,8 +41,8 @@
 
 - (BOOL)csd_isUnknown
 {
-  v3 = [(CTXPCContextInfo *)self accountID];
-  v7 = [v3 length] && (objc_msgSend(v3, "csd_UUIDv5"), v4 = objc_claimAutoreleasedReturnValue(), -[CTXPCContextInfo uuid](self, "uuid"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "isEqual:", v5), v5, v4, v6) && -[CTXPCContextInfo slotID](self, "slotID") == 0;
+  accountID = [(CTXPCContextInfo *)self accountID];
+  v7 = [accountID length] && (objc_msgSend(accountID, "csd_UUIDv5"), v4 = objc_claimAutoreleasedReturnValue(), -[CTXPCContextInfo uuid](self, "uuid"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "isEqual:", v5), v5, v4, v6) && -[CTXPCContextInfo slotID](self, "slotID") == 0;
 
   return v7;
 }

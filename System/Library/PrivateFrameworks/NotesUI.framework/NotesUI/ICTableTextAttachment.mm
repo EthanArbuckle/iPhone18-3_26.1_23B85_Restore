@@ -1,8 +1,8 @@
 @interface ICTableTextAttachment
 - ($01BB1521EC52D44A8E7628F5261DCEC8)attachmentBoundsMargins;
 - (CGSize)lastAttachmentSize;
-- (id)printableTextContentForAppearanceType:(unint64_t)a3 traitCollection:(id)a4 textContainer:(id)a5;
-- (void)fixAttachmentForAttributedString:(id)a3 range:(_NSRange)a4 forPlainText:(BOOL)a5 forStandardizedText:(BOOL)a6;
+- (id)printableTextContentForAppearanceType:(unint64_t)type traitCollection:(id)collection textContainer:(id)container;
+- (void)fixAttachmentForAttributedString:(id)string range:(_NSRange)range forPlainText:(BOOL)text forStandardizedText:(BOOL)standardizedText;
 @end
 
 @implementation ICTableTextAttachment
@@ -18,20 +18,20 @@
   v10 = v9;
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    v11 = [(ICAbstractTextAttachment *)self attachment];
-    v12 = [v11 preferredViewSize];
+    attachment = [(ICAbstractTextAttachment *)self attachment];
+    preferredViewSize = [attachment preferredViewSize];
 
-    if (!v12)
+    if (!preferredViewSize)
     {
-      v13 = [(ICAbstractTextAttachment *)self attachment];
-      v14 = [v13 note];
-      v15 = [v14 textStorage];
+      attachment2 = [(ICAbstractTextAttachment *)self attachment];
+      note = [attachment2 note];
+      textStorage = [note textStorage];
 
       v22 = 0;
       v23 = &v22;
       v24 = 0x2020000000;
       v25 = 0;
-      if ([v15 length])
+      if ([textStorage length])
       {
         v16 = *MEMORY[0x1E69DB5F8];
         v21[0] = MEMORY[0x1E69E9820];
@@ -40,7 +40,7 @@
         v21[3] = &unk_1E846A510;
         v21[4] = self;
         v21[5] = &v22;
-        [v15 enumerateAttribute:v16 inRange:0 options:1 usingBlock:{0, v21}];
+        [textStorage enumerateAttribute:v16 inRange:0 options:1 usingBlock:{0, v21}];
       }
 
       if (*(v23 + 24))
@@ -74,20 +74,20 @@ uint64_t __48__ICTableTextAttachment_attachmentBoundsMargins__block_invoke(uint6
   return result;
 }
 
-- (void)fixAttachmentForAttributedString:(id)a3 range:(_NSRange)a4 forPlainText:(BOOL)a5 forStandardizedText:(BOOL)a6
+- (void)fixAttachmentForAttributedString:(id)string range:(_NSRange)range forPlainText:(BOOL)text forStandardizedText:(BOOL)standardizedText
 {
-  v6 = a6;
-  length = a4.length;
-  location = a4.location;
+  standardizedTextCopy = standardizedText;
+  length = range.length;
+  location = range.location;
   v11 = MEMORY[0x1E69B78E8];
-  v12 = a3;
-  v13 = [(ICAbstractTextAttachment *)self attachment];
-  v21 = [v11 sharedProviderForAttachment:v13];
+  stringCopy = string;
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  v21 = [v11 sharedProviderForAttachment:attachment];
 
-  v14 = [v21 table];
-  if (v14)
+  table = [v21 table];
+  if (table)
   {
-    if (a5)
+    if (text)
     {
       goto LABEL_7;
     }
@@ -96,43 +96,43 @@ uint64_t __48__ICTableTextAttachment_attachmentBoundsMargins__block_invoke(uint6
   else
   {
     objc_opt_class();
-    v15 = [(ICAbstractTextAttachment *)self attachment];
-    v16 = [v15 attachmentModel];
+    attachment2 = [(ICAbstractTextAttachment *)self attachment];
+    attachmentModel = [attachment2 attachmentModel];
     v17 = ICDynamicCast();
-    v14 = [v17 table];
+    table = [v17 table];
 
-    if (a5)
+    if (text)
     {
       goto LABEL_7;
     }
   }
 
-  if (!v6)
+  if (!standardizedTextCopy)
   {
-    v18 = [(ICAbstractTextAttachment *)self attachment];
-    v19 = [v18 managedObjectContext];
-    v20 = [v14 attributedStringWithNSTextTablesForColumns:0 rows:0 context:v19];
+    attachment3 = [(ICAbstractTextAttachment *)self attachment];
+    managedObjectContext = [attachment3 managedObjectContext];
+    v20 = [table attributedStringWithNSTextTablesForColumns:0 rows:0 context:managedObjectContext];
 
     goto LABEL_8;
   }
 
 LABEL_7:
-  v20 = [v14 joinedAttributedStringForColumns:0 rows:0];
+  v20 = [table joinedAttributedStringForColumns:0 rows:0];
 LABEL_8:
-  [v12 replaceCharactersInRange:location withAttributedString:{length, v20}];
-  [v12 fixAttributesInRange:{location, objc_msgSend(v20, "length")}];
+  [stringCopy replaceCharactersInRange:location withAttributedString:{length, v20}];
+  [stringCopy fixAttributesInRange:{location, objc_msgSend(v20, "length")}];
 }
 
-- (id)printableTextContentForAppearanceType:(unint64_t)a3 traitCollection:(id)a4 textContainer:(id)a5
+- (id)printableTextContentForAppearanceType:(unint64_t)type traitCollection:(id)collection textContainer:(id)container
 {
   v6 = MEMORY[0x1E69B78E8];
-  v7 = [(ICAbstractTextAttachment *)self attachment:a3];
+  v7 = [(ICAbstractTextAttachment *)self attachment:type];
   v8 = [v6 sharedProviderForAttachment:v7];
 
-  v9 = [v8 table];
-  v10 = [(ICAbstractTextAttachment *)self attachment];
-  v11 = [v10 managedObjectContext];
-  v12 = [v9 attributedStringWithNSTextTablesForColumns:0 rows:0 context:v11 forPrinting:1];
+  table = [v8 table];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
+  v12 = [table attributedStringWithNSTextTablesForColumns:0 rows:0 context:managedObjectContext forPrinting:1];
 
   return v12;
 }

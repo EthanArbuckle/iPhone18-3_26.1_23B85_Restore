@@ -1,8 +1,8 @@
 @interface EKImageCache
 - (EKImageCache)init;
-- (id)persistentImageForSourceID:(id)a3 identifier:(id)a4;
-- (void)uncacheImage:(id)a3;
-- (void)updateToCachedVersionOrCacheImage:(id)a3;
+- (id)persistentImageForSourceID:(id)d identifier:(id)identifier;
+- (void)uncacheImage:(id)image;
+- (void)updateToCachedVersionOrCacheImage:(id)image;
 @end
 
 @implementation EKImageCache
@@ -24,39 +24,39 @@
   return v3;
 }
 
-- (void)updateToCachedVersionOrCacheImage:(id)a3
+- (void)updateToCachedVersionOrCacheImage:(id)image
 {
-  v11 = a3;
+  imageCopy = image;
   v4 = [EKImageKey alloc];
-  v5 = [v11 source];
-  v6 = [v5 objectID];
-  v7 = [v11 identifier];
-  v8 = [(EKImageKey *)v4 initWithSourceID:v6 identifier:v7];
+  source = [imageCopy source];
+  objectID = [source objectID];
+  identifier = [imageCopy identifier];
+  v8 = [(EKImageKey *)v4 initWithSourceID:objectID identifier:identifier];
 
   os_unfair_lock_lock(&self->_lock);
   v9 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v8];
   if (v9)
   {
     os_unfair_lock_unlock(&self->_lock);
-    [v11 setBackingObject:v9];
-    [v11 _resetAfterUpdatingChangeSetOrBackingObject];
-    [v11 markAsSaved];
+    [imageCopy setBackingObject:v9];
+    [imageCopy _resetAfterUpdatingChangeSetOrBackingObject];
+    [imageCopy markAsSaved];
   }
 
   else
   {
-    v10 = [v11 persistentObject];
-    [(NSMutableDictionary *)self->_cache setObject:v10 forKeyedSubscript:v8];
+    persistentObject = [imageCopy persistentObject];
+    [(NSMutableDictionary *)self->_cache setObject:persistentObject forKeyedSubscript:v8];
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (id)persistentImageForSourceID:(id)a3 identifier:(id)a4
+- (id)persistentImageForSourceID:(id)d identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[EKImageKey alloc] initWithSourceID:v7 identifier:v6];
+  identifierCopy = identifier;
+  dCopy = d;
+  v8 = [[EKImageKey alloc] initWithSourceID:dCopy identifier:identifierCopy];
 
   lock._os_unfair_lock_opaque = 0;
   v9 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v8];
@@ -65,10 +65,10 @@
   return v9;
 }
 
-- (void)uncacheImage:(id)a3
+- (void)uncacheImage:(id)image
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  imageCopy = image;
   os_unfair_lock_lock(&self->_lock);
   v15 = 0u;
   v16 = 0u;
@@ -92,7 +92,7 @@
         v10 = *(*(&v13 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v10, v13];
 
-        if (v11 == v4)
+        if (v11 == imageCopy)
         {
           [(NSMutableDictionary *)self->_cache removeObjectForKey:v10];
           goto LABEL_11;

@@ -7,13 +7,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2747BFEF4();
 }
 
 - (void)segmentedControlValueDidChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_2747BFFA8();
 }
 

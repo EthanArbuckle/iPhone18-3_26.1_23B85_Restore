@@ -1,22 +1,22 @@
 @interface PTStudioLightColorCorrectionAndConversion
-- (PTStudioLightColorCorrectionAndConversion)initWithMetalContext:(id)a3 correctionColorCube:(id)a4;
-- (unsigned)initializeCubeMap:(id)a3 inputTexture:(id)a4;
+- (PTStudioLightColorCorrectionAndConversion)initWithMetalContext:(id)context correctionColorCube:(id)cube;
+- (unsigned)initializeCubeMap:(id)map inputTexture:(id)texture;
 @end
 
 @implementation PTStudioLightColorCorrectionAndConversion
 
-- (PTStudioLightColorCorrectionAndConversion)initWithMetalContext:(id)a3 correctionColorCube:(id)a4
+- (PTStudioLightColorCorrectionAndConversion)initWithMetalContext:(id)context correctionColorCube:(id)cube
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  cubeCopy = cube;
   v44.receiver = self;
   v44.super_class = PTStudioLightColorCorrectionAndConversion;
   v8 = [(PTStudioLightColorCorrectionAndConversion *)&v44 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_correctionColorCube, a4);
-    v10 = [v6 computePipelineStateFor:@"studioLightColorCorrectionRGBToYUV" withConstants:0];
+    objc_storeStrong(&v8->_correctionColorCube, cube);
+    v10 = [contextCopy computePipelineStateFor:@"studioLightColorCorrectionRGBToYUV" withConstants:0];
     studioLightColorCorrectionRGBToYUV = v9->_studioLightColorCorrectionRGBToYUV;
     v9->_studioLightColorCorrectionRGBToYUV = v10;
 
@@ -32,15 +32,15 @@
         [v13 setDepth:32];
         [v13 setPixelFormat:70];
         [v13 setUsage:3];
-        v14 = [v6 device];
-        v15 = [v14 newTextureWithDescriptor:v13];
+        device = [contextCopy device];
+        v15 = [device newTextureWithDescriptor:v13];
         cubeTexture = v9->_cubeTexture;
         v9->_cubeTexture = v15;
 
         if (v9->_cubeTexture)
         {
-          v17 = [v6 device];
-          v18 = [v17 newBufferWithLength:16 options:0];
+          device2 = [contextCopy device];
+          v18 = [device2 newBufferWithLength:16 options:0];
           rgbMinMax = v9->_rgbMinMax;
           v9->_rgbMinMax = v18;
 
@@ -86,42 +86,42 @@ LABEL_16:
   return v20;
 }
 
-- (unsigned)initializeCubeMap:(id)a3 inputTexture:(id)a4
+- (unsigned)initializeCubeMap:(id)map inputTexture:(id)texture
 {
   memset(v22, 0, sizeof(v22));
-  v6 = a4;
-  v7 = a3;
-  [PTColorConversion getColorMatrix:v6 toRGB:0];
+  textureCopy = texture;
+  mapCopy = map;
+  [PTColorConversion getColorMatrix:textureCopy toRGB:0];
   memset(v21, 0, sizeof(v21));
-  [PTColorConversion getColorMatrix:v6 toRGB:1];
-  v8 = [v6 transferFunction];
-  v9 = [PTColorConversion getTransferFunction:v8 toLinear:1];
+  [PTColorConversion getColorMatrix:textureCopy toRGB:1];
+  transferFunction = [textureCopy transferFunction];
+  v9 = [PTColorConversion getTransferFunction:transferFunction toLinear:1];
 
   v20 = v9;
-  v10 = [v6 transferFunction];
+  transferFunction2 = [textureCopy transferFunction];
 
-  LODWORD(v6) = [PTColorConversion getTransferFunction:v10 toLinear:0];
-  v19 = v6;
-  v11 = [v7 computeCommandEncoder];
+  LODWORD(textureCopy) = [PTColorConversion getTransferFunction:transferFunction2 toLinear:0];
+  v19 = textureCopy;
+  computeCommandEncoder = [mapCopy computeCommandEncoder];
 
-  [v11 setComputePipelineState:self->_studioLightColorCorrectionRGBToYUV];
-  [v11 setTexture:self->_cubeTexture atIndex:0];
-  [v11 setTexture:self->_correctionColorCube atIndex:1];
-  [v11 setBuffer:self->_rgbMinMax offset:0 atIndex:0];
-  [v11 setBytes:v22 length:24 atIndex:1];
-  [v11 setBytes:v21 length:24 atIndex:2];
-  [v11 setBytes:&v20 length:4 atIndex:3];
-  [v11 setBytes:&v19 length:4 atIndex:4];
-  v12 = [(MTLTexture *)self->_cubeTexture width];
-  v13 = [(MTLTexture *)self->_cubeTexture height];
-  v14 = [(MTLTexture *)self->_cubeTexture depth];
-  v18[0] = v12;
-  v18[1] = v13;
-  v18[2] = v14;
+  [computeCommandEncoder setComputePipelineState:self->_studioLightColorCorrectionRGBToYUV];
+  [computeCommandEncoder setTexture:self->_cubeTexture atIndex:0];
+  [computeCommandEncoder setTexture:self->_correctionColorCube atIndex:1];
+  [computeCommandEncoder setBuffer:self->_rgbMinMax offset:0 atIndex:0];
+  [computeCommandEncoder setBytes:v22 length:24 atIndex:1];
+  [computeCommandEncoder setBytes:v21 length:24 atIndex:2];
+  [computeCommandEncoder setBytes:&v20 length:4 atIndex:3];
+  [computeCommandEncoder setBytes:&v19 length:4 atIndex:4];
+  width = [(MTLTexture *)self->_cubeTexture width];
+  height = [(MTLTexture *)self->_cubeTexture height];
+  depth = [(MTLTexture *)self->_cubeTexture depth];
+  v18[0] = width;
+  v18[1] = height;
+  v18[2] = depth;
   v16 = xmmword_2244A5440;
   v17 = 1;
-  [v11 dispatchThreads:v18 threadsPerThreadgroup:&v16];
-  [v11 endEncoding];
+  [computeCommandEncoder dispatchThreads:v18 threadsPerThreadgroup:&v16];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }

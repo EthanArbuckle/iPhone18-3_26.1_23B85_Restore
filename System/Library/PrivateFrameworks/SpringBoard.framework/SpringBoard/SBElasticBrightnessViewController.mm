@@ -1,6 +1,6 @@
 @interface SBElasticBrightnessViewController
-- (BOOL)updateActiveRouteDisplay:(id *)a3;
-- (SBElasticBrightnessViewController)initWithDataSource:(id)a3;
+- (BOOL)updateActiveRouteDisplay:(id *)display;
+- (SBElasticBrightnessViewController)initWithDataSource:(id)source;
 - (id)dataSource;
 - (void)_debugHandleNextRoute;
 - (void)noteContinuousValueInteractionDidEnd;
@@ -10,11 +10,11 @@
 
 @implementation SBElasticBrightnessViewController
 
-- (SBElasticBrightnessViewController)initWithDataSource:(id)a3
+- (SBElasticBrightnessViewController)initWithDataSource:(id)source
 {
   v4.receiver = self;
   v4.super_class = SBElasticBrightnessViewController;
-  result = [(SBElasticValueViewController *)&v4 initWithDataSource:a3];
+  result = [(SBElasticValueViewController *)&v4 initWithDataSource:source];
   if (result)
   {
     result->_activeBrightnessRoute = 0;
@@ -35,16 +35,16 @@
 {
   v4.receiver = self;
   v4.super_class = SBElasticBrightnessViewController;
-  v2 = [(SBElasticValueViewController *)&v4 dataSource];
+  dataSource = [(SBElasticValueViewController *)&v4 dataSource];
 
-  return v2;
+  return dataSource;
 }
 
-- (BOOL)updateActiveRouteDisplay:(id *)a3
+- (BOOL)updateActiveRouteDisplay:(id *)display
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [(SBElasticBrightnessViewController *)self dataSource];
-  v6 = [v5 elasticBrightnessViewControllerBrightnessRouteType:self];
+  dataSource = [(SBElasticBrightnessViewController *)self dataSource];
+  v6 = [dataSource elasticBrightnessViewControllerBrightnessRouteType:self];
 
   if (SBBrightnessRouteTypeIsValid(v6))
   {
@@ -79,7 +79,7 @@
   v12 = ;
 
   v13 = v12;
-  *a3 = v12;
+  *display = v12;
   v14 = [(SBElasticBrightnessViewController *)self log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -96,14 +96,14 @@
 
 - (void)noteContinuousValueInteractionWillBegin
 {
-  v3 = [(SBElasticBrightnessViewController *)self dataSource];
-  [v3 elasticBrightnessViewControllerValueUpdatesWillBegin:self];
+  dataSource = [(SBElasticBrightnessViewController *)self dataSource];
+  [dataSource elasticBrightnessViewControllerValueUpdatesWillBegin:self];
 }
 
 - (void)noteContinuousValueInteractionDidEnd
 {
-  v3 = [(SBElasticBrightnessViewController *)self dataSource];
-  [v3 elasticBrightnessViewControllerValueUpdatesDidEnd:self];
+  dataSource = [(SBElasticBrightnessViewController *)self dataSource];
+  [dataSource elasticBrightnessViewControllerValueUpdatesDidEnd:self];
 }
 
 - (void)_debugHandleNextRoute

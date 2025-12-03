@@ -1,17 +1,17 @@
 @interface WGWidgetDataSourceManager
 + (id)_widgetExtensionsDiscoveryAttributes;
-+ (id)discoverAvailableWidgetsWithError:(id *)a3;
-- (BOOL)_shouldPublishWidgetExtension:(id)a3;
++ (id)discoverAvailableWidgetsWithError:(id *)error;
+- (BOOL)_shouldPublishWidgetExtension:(id)extension;
 - (NSArray)dataSources;
 - (WGWidgetDataSourceManager)init;
 - (void)_beginContinuousPlugInDiscovery;
 - (void)_endContinuousPlugInDiscovery;
-- (void)_revokeExtensionWithIdentifier:(id)a3;
-- (void)_start:(id)a3;
-- (void)_stop:(id)a3;
-- (void)_updateDataSourceWithExtension:(id)a3;
+- (void)_revokeExtensionWithIdentifier:(id)identifier;
+- (void)_start:(id)_start;
+- (void)_stop:(id)_stop;
+- (void)_updateDataSourceWithExtension:(id)extension;
 - (void)_updatePublishedWidgetExtensions;
-- (void)_updatePublishedWidgetExtensions:(id)a3;
+- (void)_updatePublishedWidgetExtensions:(id)extensions;
 @end
 
 @implementation WGWidgetDataSourceManager
@@ -26,11 +26,11 @@
   return v2;
 }
 
-+ (id)discoverAvailableWidgetsWithError:(id *)a3
++ (id)discoverAvailableWidgetsWithError:(id *)error
 {
   v4 = MEMORY[0x277CCA9C8];
-  v5 = [a1 _widgetExtensionsDiscoveryAttributes];
-  v6 = [v4 extensionsWithMatchingAttributes:v5 error:a3];
+  _widgetExtensionsDiscoveryAttributes = [self _widgetExtensionsDiscoveryAttributes];
+  v6 = [v4 extensionsWithMatchingAttributes:_widgetExtensionsDiscoveryAttributes error:error];
   v7 = [v6 bs_mapNoNulls:&__block_literal_global_1];
 
   return v7;
@@ -74,9 +74,9 @@ WGWidgetDatum *__63__WGWidgetDataSourceManager_discoverAvailableWidgetsWithError
   return v2;
 }
 
-- (void)_start:(id)a3
+- (void)_start:(id)_start
 {
-  v4 = [a3 copy];
+  v4 = [_start copy];
   didStartBlock = self->_didStartBlock;
   self->_didStartBlock = v4;
 
@@ -87,52 +87,52 @@ WGWidgetDatum *__63__WGWidgetDataSourceManager_discoverAvailableWidgetsWithError
   [(_WGParentDataSourceManager *)parentDataSourceManager childDataSourceManagerDataSourcesDidChange:self];
 }
 
-- (void)_stop:(id)a3
+- (void)_stop:(id)_stop
 {
-  v5 = a3;
+  _stopCopy = _stop;
   self->_isPublishing = 0;
   [(WGWidgetDataSourceManager *)self _endContinuousPlugInDiscovery];
-  v4 = v5;
-  if (v5)
+  v4 = _stopCopy;
+  if (_stopCopy)
   {
-    (*(v5 + 2))(v5);
-    v4 = v5;
+    (*(_stopCopy + 2))(_stopCopy);
+    v4 = _stopCopy;
   }
 }
 
-- (BOOL)_shouldPublishWidgetExtension:(id)a3
+- (BOOL)_shouldPublishWidgetExtension:(id)extension
 {
   widgetVisbilityManager = self->_widgetVisbilityManager;
-  v4 = [a3 identifier];
-  LOBYTE(widgetVisbilityManager) = [(WGWidgetVisibilityManager *)widgetVisbilityManager isWidgetWithIdentifierVisible:v4];
+  identifier = [extension identifier];
+  LOBYTE(widgetVisbilityManager) = [(WGWidgetVisibilityManager *)widgetVisbilityManager isWidgetWithIdentifierVisible:identifier];
 
   return widgetVisbilityManager;
 }
 
-- (void)_updateDataSourceWithExtension:(id)a3
+- (void)_updateDataSourceWithExtension:(id)extension
 {
-  if (a3)
+  if (extension)
   {
-    v4 = a3;
-    v5 = [[WGWidgetDatum alloc] initWithExtension:v4];
+    extensionCopy = extension;
+    v5 = [[WGWidgetDatum alloc] initWithExtension:extensionCopy];
 
     [(WGWidgetDataSource *)self->_widgetDataSource replaceWithDatum:v5];
   }
 }
 
-- (void)_revokeExtensionWithIdentifier:(id)a3
+- (void)_revokeExtensionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    [(WGWidgetDataSource *)self->_widgetDataSource removeDatumWithIdentifier:v4];
+    [(WGWidgetDataSource *)self->_widgetDataSource removeDatumWithIdentifier:identifierCopy];
   }
 }
 
-- (void)_updatePublishedWidgetExtensions:(id)a3
+- (void)_updatePublishedWidgetExtensions:(id)extensions
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  extensionsCopy = extensions;
   isPublishing = self->_isPublishing;
   v6 = WGLogWidgets;
   v7 = os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEBUG);
@@ -140,20 +140,20 @@ WGWidgetDatum *__63__WGWidgetDataSourceManager_discoverAvailableWidgetsWithError
   {
     if (v7)
     {
-      [(WGWidgetDataSourceManager *)v6 _updatePublishedWidgetExtensions:v4];
+      [(WGWidgetDataSourceManager *)v6 _updatePublishedWidgetExtensions:extensionsCopy];
     }
 
-    v8 = [(WGWidgetDataSource *)self->_widgetDataSource widgetIdentifiers];
-    v9 = [v8 mutableCopy];
+    widgetIdentifiers = [(WGWidgetDataSource *)self->_widgetDataSource widgetIdentifiers];
+    v9 = [widgetIdentifiers mutableCopy];
 
-    if ([v4 count])
+    if ([extensionsCopy count])
     {
       v41 = 0u;
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v32 = v4;
-      v10 = v4;
+      v32 = extensionsCopy;
+      v10 = extensionsCopy;
       v11 = [v10 countByEnumeratingWithState:&v39 objects:v48 count:16];
       if (v11)
       {
@@ -173,15 +173,15 @@ WGWidgetDatum *__63__WGWidgetDataSourceManager_discoverAvailableWidgetsWithError
             v15 = *(*(&v39 + 1) + 8 * i);
             if ([(WGWidgetDataSourceManager *)self _shouldPublishWidgetExtension:v15])
             {
-              v16 = [v15 identifier];
-              if ([v9 containsObject:v16])
+              identifier = [v15 identifier];
+              if ([v9 containsObject:identifier])
               {
-                v17 = [(WGWidgetDataSource *)self->_widgetDataSource widgetDatumWithIdentifier:v16];
-                v18 = [v17 representedExtension];
+                v17 = [(WGWidgetDataSource *)self->_widgetDataSource widgetDatumWithIdentifier:identifier];
+                representedExtension = [v17 representedExtension];
 
-                v19 = [v18 _plugIn];
-                v20 = [v15 _plugIn];
-                v21 = [v19 isEqual:v20];
+                _plugIn = [representedExtension _plugIn];
+                _plugIn2 = [v15 _plugIn];
+                v21 = [_plugIn isEqual:_plugIn2];
 
                 if ((v21 & 1) == 0)
                 {
@@ -189,11 +189,11 @@ WGWidgetDatum *__63__WGWidgetDataSourceManager_discoverAvailableWidgetsWithError
                   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEBUG))
                   {
                     v23 = v22;
-                    v24 = [v18 wg_description];
+                    wg_description = [representedExtension wg_description];
                     *buf = 138543618;
-                    v45 = v16;
+                    v45 = identifier;
                     v46 = 2114;
-                    v47 = v24;
+                    v47 = wg_description;
                     _os_log_debug_impl(&dword_27425E000, v23, OS_LOG_TYPE_DEBUG, "Widget extension with ID '%{public}@' has changed: %{public}@ ", buf, 0x16u);
                   }
 
@@ -201,7 +201,7 @@ WGWidgetDatum *__63__WGWidgetDataSourceManager_discoverAvailableWidgetsWithError
                 }
 
                 v9 = v34;
-                [v34 removeObject:v16];
+                [v34 removeObject:identifier];
 
                 v10 = v33;
               }
@@ -219,7 +219,7 @@ WGWidgetDatum *__63__WGWidgetDataSourceManager_discoverAvailableWidgetsWithError
         while (v12);
       }
 
-      v4 = v32;
+      extensionsCopy = v32;
     }
 
     v37 = 0u;
@@ -269,13 +269,13 @@ WGWidgetDatum *__63__WGWidgetDataSourceManager_discoverAvailableWidgetsWithError
 {
   objc_initWeak(&location, self);
   v2 = MEMORY[0x277CCA9C8];
-  v3 = [objc_opt_class() _widgetExtensionsDiscoveryAttributes];
+  _widgetExtensionsDiscoveryAttributes = [objc_opt_class() _widgetExtensionsDiscoveryAttributes];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __61__WGWidgetDataSourceManager__updatePublishedWidgetExtensions__block_invoke;
   v4[3] = &unk_279ED0A18;
   objc_copyWeak(&v5, &location);
-  [v2 extensionsWithMatchingAttributes:v3 completion:v4];
+  [v2 extensionsWithMatchingAttributes:_widgetExtensionsDiscoveryAttributes completion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -316,7 +316,7 @@ void __61__WGWidgetDataSourceManager__updatePublishedWidgetExtensions__block_inv
 - (void)_beginContinuousPlugInDiscovery
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v3 = 138543362;
   v4 = v2;
   _os_log_debug_impl(&dword_27425E000, a2, OS_LOG_TYPE_DEBUG, "New discovery token: %{public}@", &v3, 0xCu);

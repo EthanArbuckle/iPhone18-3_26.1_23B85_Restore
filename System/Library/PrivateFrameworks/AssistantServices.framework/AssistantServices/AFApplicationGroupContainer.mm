@@ -1,31 +1,31 @@
 @interface AFApplicationGroupContainer
 + (id)sharedInstance;
-- (void)sharedApplicationGroupURL:(id)a3;
-- (void)sharedApplicationGroupURLOnQueue:(id)a3 WithCompletion:(id)a4;
+- (void)sharedApplicationGroupURL:(id)l;
+- (void)sharedApplicationGroupURLOnQueue:(id)queue WithCompletion:(id)completion;
 @end
 
 @implementation AFApplicationGroupContainer
 
-- (void)sharedApplicationGroupURLOnQueue:(id)a3 WithCompletion:(id)a4
+- (void)sharedApplicationGroupURLOnQueue:(id)queue WithCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __79__AFApplicationGroupContainer_sharedApplicationGroupURLOnQueue_WithCompletion___block_invoke;
   v8[3] = &unk_1E7349838;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  dispatch_async(a3, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(queue, v8);
 }
 
-- (void)sharedApplicationGroupURL:(id)a3
+- (void)sharedApplicationGroupURL:(id)l
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AC08];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v5 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.assistant.shared"];
+  lCopy = l;
+  defaultManager = [v3 defaultManager];
+  v6 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.assistant.shared"];
 
   v7 = AFSiriLogContextFilesystem;
   if (v6)
@@ -39,7 +39,7 @@
       _os_log_debug_impl(&dword_1912FE000, v7, OS_LOG_TYPE_DEBUG, "%s Got container URL: %@", &v10, 0x16u);
     }
 
-    v4[2](v4, v6, 0);
+    lCopy[2](lCopy, v6, 0);
   }
 
   else
@@ -52,9 +52,9 @@
     }
 
     v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"kAFAssistantFilesystemDomain" code:1 userInfo:0];
-    v4[2](v4, 0, v8);
+    lCopy[2](lCopy, 0, v8);
 
-    v4 = v8;
+    lCopy = v8;
   }
 
   v9 = *MEMORY[0x1E69E9840];

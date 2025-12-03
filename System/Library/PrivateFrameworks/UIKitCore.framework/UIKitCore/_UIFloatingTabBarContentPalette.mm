@@ -1,6 +1,6 @@
 @interface _UIFloatingTabBarContentPalette
 - (_UIFloatingTabBarContentPalette)init;
-- (id)resolvedColorFromProvider:(id)a3;
+- (id)resolvedColorFromProvider:(id)provider;
 @end
 
 @implementation _UIFloatingTabBarContentPalette
@@ -25,28 +25,28 @@
   return v2;
 }
 
-- (id)resolvedColorFromProvider:(id)a3
+- (id)resolvedColorFromProvider:(id)provider
 {
-  v4 = a3;
-  if ([v4 isEditing])
+  providerCopy = provider;
+  if ([providerCopy isEditing])
   {
-    if ([v4 isCustomizableItem])
+    if ([providerCopy isCustomizableItem])
     {
-      v5 = +[UIColor labelColor];
+      selectedColor = +[UIColor labelColor];
       goto LABEL_6;
     }
   }
 
-  else if (![v4 isDisabled])
+  else if (![providerCopy isDisabled])
   {
-    if ([v4 hasSelectionHighlight])
+    if ([providerCopy hasSelectionHighlight])
     {
-      v5 = [(_UIFloatingTabBarContentPalette *)self selectedColor];
+      selectedColor = [(_UIFloatingTabBarContentPalette *)self selectedColor];
     }
 
     else
     {
-      if ([v4 isHighlighted])
+      if ([providerCopy isHighlighted])
       {
         [(_UIFloatingTabBarContentPalette *)self highlightedColor];
       }
@@ -55,15 +55,15 @@
       {
         [(_UIFloatingTabBarContentPalette *)self inactiveColor];
       }
-      v5 = ;
+      selectedColor = ;
     }
 
     goto LABEL_6;
   }
 
-  v5 = +[UIColor tertiaryLabelColor];
+  selectedColor = +[UIColor tertiaryLabelColor];
 LABEL_6:
-  v6 = v5;
+  v6 = selectedColor;
 
   return v6;
 }

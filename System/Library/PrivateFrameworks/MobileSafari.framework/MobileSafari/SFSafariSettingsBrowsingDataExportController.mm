@@ -1,25 +1,25 @@
 @interface SFSafariSettingsBrowsingDataExportController
-+ (id)_sandboxExtensionForURL:(id)a3;
-+ (void)exportBookmarksToFileWithURL:(id)a3 completionHandler:(id)a4;
-+ (void)exportExtensionsToDirectoryWithURL:(id)a3 profileIdentifiersToExportFrom:(id)a4 tabGroupManager:(id)a5 completionHandler:(id)a6;
-+ (void)exportHistoryToDirectoryWithURL:(id)a3 profileIdentifiersToExportFrom:(id)a4 tabGroupManager:(id)a5 completionHandler:(id)a6;
++ (id)_sandboxExtensionForURL:(id)l;
++ (void)exportBookmarksToFileWithURL:(id)l completionHandler:(id)handler;
++ (void)exportExtensionsToDirectoryWithURL:(id)l profileIdentifiersToExportFrom:(id)from tabGroupManager:(id)manager completionHandler:(id)handler;
++ (void)exportHistoryToDirectoryWithURL:(id)l profileIdentifiersToExportFrom:(id)from tabGroupManager:(id)manager completionHandler:(id)handler;
 @end
 
 @implementation SFSafariSettingsBrowsingDataExportController
 
-+ (void)exportHistoryToDirectoryWithURL:(id)a3 profileIdentifiersToExportFrom:(id)a4 tabGroupManager:(id)a5 completionHandler:(id)a6
++ (void)exportHistoryToDirectoryWithURL:(id)l profileIdentifiersToExportFrom:(id)from tabGroupManager:(id)manager completionHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v31 = a5;
-  block = a6;
+  lCopy = l;
+  fromCopy = from;
+  managerCopy = manager;
+  block = handler;
   v11 = dispatch_group_create();
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v10;
+  obj = fromCopy;
   v12 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v12)
   {
@@ -35,9 +35,9 @@
           objc_enumerationMutation(obj);
         }
 
-        v15 = [v31 profileWithIdentifier:*(*(&v34 + 1) + 8 * v14)];
-        v16 = [v15 title];
-        v17 = [v16 safari_filenameByFixingIllegalCharacters];
+        v15 = [managerCopy profileWithIdentifier:*(*(&v34 + 1) + 8 * v14)];
+        title = [v15 title];
+        safari_filenameByFixingIllegalCharacters = [title safari_filenameByFixingIllegalCharacters];
 
         v18 = MEMORY[0x1E69C8ED0];
         if ([v15 isDefault])
@@ -47,28 +47,28 @@
 
         else
         {
-          v19 = v17;
+          v19 = safari_filenameByFixingIllegalCharacters;
         }
 
-        v20 = [v18 fileURLFromExportFolderURL:v9 profileTitle:v19 forBrowsingDataExportType:2];
-        v21 = [v20 safari_URLWithUniqueFilename];
+        v20 = [v18 fileURLFromExportFolderURL:lCopy profileTitle:v19 forBrowsingDataExportType:2];
+        safari_URLWithUniqueFilename = [v20 safari_URLWithUniqueFilename];
 
-        v22 = [MEMORY[0x1E696AC08] defaultManager];
-        v23 = [v21 path];
-        [v22 createFileAtPath:v23 contents:0 attributes:0];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        path = [safari_URLWithUniqueFilename path];
+        [defaultManager createFileAtPath:path contents:0 attributes:0];
 
         v24 = objc_alloc_init(MEMORY[0x1E69E2100]);
-        v25 = [a1 _sandboxExtensionForURL:v9];
+        v25 = [self _sandboxExtensionForURL:lCopy];
         if (v25)
         {
           dispatch_group_enter(v11);
-          v26 = [v15 identifier];
+          identifier = [v15 identifier];
           v32[0] = MEMORY[0x1E69E9820];
           v32[1] = 3221225472;
           v32[2] = __145__SFSafariSettingsBrowsingDataExportController_exportHistoryToDirectoryWithURL_profileIdentifiersToExportFrom_tabGroupManager_completionHandler___block_invoke;
           v32[3] = &unk_1E721E178;
           v33 = v11;
-          [v24 exportSafariHistoryToURL:v21 sandboxExtension:v25 profileIdentifier:v26 completionHandler:v32];
+          [v24 exportSafariHistoryToURL:safari_URLWithUniqueFilename sandboxExtension:v25 profileIdentifier:identifier completionHandler:v32];
         }
 
         ++v14;
@@ -99,25 +99,25 @@ void __145__SFSafariSettingsBrowsingDataExportController_exportHistoryToDirector
   dispatch_group_leave(*(a1 + 32));
 }
 
-+ (void)exportBookmarksToFileWithURL:(id)a3 completionHandler:(id)a4
++ (void)exportBookmarksToFileWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x1E69E2100]);
-  v9 = [a1 _sandboxExtensionForURL:v6];
+  v9 = [self _sandboxExtensionForURL:lCopy];
   if (v9)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __95__SFSafariSettingsBrowsingDataExportController_exportBookmarksToFileWithURL_completionHandler___block_invoke;
     v10[3] = &unk_1E721E1A0;
-    v11 = v7;
-    [v8 exportBookmarksToURL:v6 sandboxExtension:v9 completionHandler:v10];
+    v11 = handlerCopy;
+    [v8 exportBookmarksToURL:lCopy sandboxExtension:v9 completionHandler:v10];
   }
 
   else
   {
-    dispatch_async(MEMORY[0x1E69E96A0], v7);
+    dispatch_async(MEMORY[0x1E69E96A0], handlerCopy);
   }
 }
 
@@ -136,24 +136,24 @@ void __95__SFSafariSettingsBrowsingDataExportController_exportBookmarksToFileWit
   dispatch_async(MEMORY[0x1E69E96A0], *(a1 + 32));
 }
 
-+ (void)exportExtensionsToDirectoryWithURL:(id)a3 profileIdentifiersToExportFrom:(id)a4 tabGroupManager:(id)a5 completionHandler:(id)a6
++ (void)exportExtensionsToDirectoryWithURL:(id)l profileIdentifiersToExportFrom:(id)from tabGroupManager:(id)manager completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  lCopy = l;
+  fromCopy = from;
+  managerCopy = manager;
+  handlerCopy = handler;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __148__SFSafariSettingsBrowsingDataExportController_exportExtensionsToDirectoryWithURL_profileIdentifiersToExportFrom_tabGroupManager_completionHandler___block_invoke;
   v17[3] = &unk_1E721E1C8;
-  v18 = v11;
-  v19 = v10;
-  v20 = v9;
-  v21 = v12;
-  v13 = v12;
-  v14 = v9;
-  v15 = v10;
-  v16 = v11;
+  v18 = managerCopy;
+  v19 = fromCopy;
+  v20 = lCopy;
+  v21 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = lCopy;
+  v15 = fromCopy;
+  v16 = managerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v17);
 }
 
@@ -295,10 +295,10 @@ void __148__SFSafariSettingsBrowsingDataExportController_exportExtensionsToDirec
   dispatch_group_leave(*(a1 + 32));
 }
 
-+ (id)_sandboxExtensionForURL:(id)a3
++ (id)_sandboxExtensionForURL:(id)l
 {
-  v3 = a3;
-  [v3 fileSystemRepresentation];
+  lCopy = l;
+  [lCopy fileSystemRepresentation];
   v4 = sandbox_extension_issue_file();
   if (v4)
   {
@@ -310,7 +310,7 @@ void __148__SFSafariSettingsBrowsingDataExportController_exportExtensionsToDirec
     v6 = WBS_LOG_CHANNEL_PREFIXExport();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(SFSafariSettingsBrowsingDataExportController *)v3 _sandboxExtensionForURL:v6];
+      [(SFSafariSettingsBrowsingDataExportController *)lCopy _sandboxExtensionForURL:v6];
     }
 
     v5 = 0;

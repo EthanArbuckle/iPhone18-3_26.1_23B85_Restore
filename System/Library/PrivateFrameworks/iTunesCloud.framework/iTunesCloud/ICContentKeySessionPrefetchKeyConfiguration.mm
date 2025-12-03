@@ -1,25 +1,25 @@
 @interface ICContentKeySessionPrefetchKeyConfiguration
-- (ICContentKeySessionPrefetchKeyConfiguration)initWithRequestContext:(id)a3;
+- (ICContentKeySessionPrefetchKeyConfiguration)initWithRequestContext:(id)context;
 - (NSSet)keyIdentifiers;
 - (NSURL)keyCertificateURL;
 - (NSURL)keyServerURL;
-- (void)_fetchWithRequestContext:(id)a3;
+- (void)_fetchWithRequestContext:(id)context;
 @end
 
 @implementation ICContentKeySessionPrefetchKeyConfiguration
 
-- (void)_fetchWithRequestContext:(id)a3
+- (void)_fetchWithRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   dispatch_group_enter(self->_group);
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__ICContentKeySessionPrefetchKeyConfiguration__fetchWithRequestContext___block_invoke;
   v7[3] = &unk_1E7BFA078;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = contextCopy;
+  selfCopy = self;
+  v6 = contextCopy;
   dispatch_async(queue, v7);
 }
 
@@ -145,7 +145,7 @@ LABEL_9:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       v6 = 138543362;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_ERROR, "%{public}@ [SKD] - Timed out waiting for the enhanced audio configuration (prefetchKeyCertificateURL) to load.", &v6, 0xCu);
     }
 
@@ -169,7 +169,7 @@ LABEL_9:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       v6 = 138543362;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_ERROR, "%{public}@ [SKD] - Timed out waiting for the enhanced audio configuration (prefetchKeyServerURL) to load.", &v6, 0xCu);
     }
 
@@ -228,9 +228,9 @@ LABEL_9:
   return v4;
 }
 
-- (ICContentKeySessionPrefetchKeyConfiguration)initWithRequestContext:(id)a3
+- (ICContentKeySessionPrefetchKeyConfiguration)initWithRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = ICContentKeySessionPrefetchKeyConfiguration;
   v5 = [(ICContentKeySessionPrefetchKeyConfiguration *)&v15 init];
@@ -246,17 +246,17 @@ LABEL_9:
 
     v5->_timeout = dispatch_time(0, 10000000000);
     v10 = +[ICDefaults standardDefaults];
-    v11 = [v10 prefetchKeyIdentifiers];
+    prefetchKeyIdentifiers = [v10 prefetchKeyIdentifiers];
 
-    if (_NSIsNSArray() && [v11 count])
+    if (_NSIsNSArray() && [prefetchKeyIdentifiers count])
     {
       v5->_initWithDefaultKeyIdentifiers = 1;
-      v12 = [MEMORY[0x1E695DFD8] setWithArray:v11];
+      v12 = [MEMORY[0x1E695DFD8] setWithArray:prefetchKeyIdentifiers];
       keyIdentifiers = v5->_keyIdentifiers;
       v5->_keyIdentifiers = v12;
     }
 
-    [(ICContentKeySessionPrefetchKeyConfiguration *)v5 _fetchWithRequestContext:v4];
+    [(ICContentKeySessionPrefetchKeyConfiguration *)v5 _fetchWithRequestContext:contextCopy];
   }
 
   return v5;

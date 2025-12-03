@@ -1,13 +1,13 @@
 @interface PHImageCache
-- (BOOL)pinEntryForKey:(id)a3 requestID:(int)a4 inFlightRequestID:(int *)a5;
-- (BOOL)populateEntryWithImage:(CGImage *)a3 requestID:(int)a4 forKey:(id)a5 additionalInfo:(id)a6;
+- (BOOL)pinEntryForKey:(id)key requestID:(int)d inFlightRequestID:(int *)iD;
+- (BOOL)populateEntryWithImage:(CGImage *)image requestID:(int)d forKey:(id)key additionalInfo:(id)info;
 - (PHImageCache)init;
 - (PHImageCacheDelegate)delegate;
-- (void)_removeEntry:(id)a3;
-- (void)commitChangesWithQueueToProcessDeletes:(id)a3;
-- (void)queryEntryForKey:(id)a3 didWaitForInFlightRequest:(BOOL *)a4 didFindImage:(BOOL *)a5 entryIsValidBlock:(id)a6 resultHandler:(id)a7;
+- (void)_removeEntry:(id)entry;
+- (void)commitChangesWithQueueToProcessDeletes:(id)deletes;
+- (void)queryEntryForKey:(id)key didWaitForInFlightRequest:(BOOL *)request didFindImage:(BOOL *)image entryIsValidBlock:(id)block resultHandler:(id)handler;
 - (void)removeAllEntries;
-- (void)removeEntriesForKeys:(id)a3;
+- (void)removeEntriesForKeys:(id)keys;
 @end
 
 @implementation PHImageCache
@@ -36,9 +36,9 @@
     entryVendor = v2->_entryVendor;
     v2->_entryVendor = v9;
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v12 = DCIM_applicationDidReceiveMemoryWarningNotificationName();
-    [v11 addObserver:v2 selector:sel__didReceiveMemoryWarningNotification_ name:v12 object:0];
+    [defaultCenter addObserver:v2 selector:sel__didReceiveMemoryWarningNotification_ name:v12 object:0];
   }
 
   return v2;
@@ -51,14 +51,14 @@
   return WeakRetained;
 }
 
-- (void)commitChangesWithQueueToProcessDeletes:(id)a3
+- (void)commitChangesWithQueueToProcessDeletes:(id)deletes
 {
-  v4 = a3;
+  deletesCopy = deletes;
   os_unfair_lock_lock(&self->_lock);
   [(NSMutableDictionary *)self->_backingDictionary addEntriesFromDictionary:self->_uncommittedInserts];
   backingDictionary = self->_backingDictionary;
-  v6 = [(NSMutableDictionary *)self->_uncommittedDeletes allKeys];
-  [(NSMutableDictionary *)backingDictionary removeObjectsForKeys:v6];
+  allKeys = [(NSMutableDictionary *)self->_uncommittedDeletes allKeys];
+  [(NSMutableDictionary *)backingDictionary removeObjectsForKeys:allKeys];
 
   v7 = [(NSMutableDictionary *)self->_uncommittedDeletes copy];
   [(NSMutableDictionary *)self->_uncommittedDeletes removeAllObjects];
@@ -69,9 +69,9 @@
   v9[2] = __55__PHImageCache_commitChangesWithQueueToProcessDeletes___block_invoke;
   v9[3] = &unk_1E75AAEB0;
   v10 = v7;
-  v11 = self;
+  selfCopy = self;
   v8 = v7;
-  dispatch_async(v4, v9);
+  dispatch_async(deletesCopy, v9);
 }
 
 uint64_t __55__PHImageCache_commitChangesWithQueueToProcessDeletes___block_invoke(uint64_t a1)
@@ -95,15 +95,15 @@ uint64_t __55__PHImageCache_commitChangesWithQueueToProcessDeletes___block_invok
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeEntriesForKeys:(id)a3
+- (void)removeEntriesForKeys:(id)keys
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [keysCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -115,7 +115,7 @@ uint64_t __55__PHImageCache_commitChangesWithQueueToProcessDeletes___block_invok
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keysCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
@@ -133,25 +133,25 @@ uint64_t __55__PHImageCache_commitChangesWithQueueToProcessDeletes___block_invok
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [keysCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)queryEntryForKey:(id)a3 didWaitForInFlightRequest:(BOOL *)a4 didFindImage:(BOOL *)a5 entryIsValidBlock:(id)a6 resultHandler:(id)a7
+- (void)queryEntryForKey:(id)key didWaitForInFlightRequest:(BOOL *)request didFindImage:(BOOL *)image entryIsValidBlock:(id)block resultHandler:(id)handler
 {
-  v21 = a6;
-  v12 = a7;
-  v13 = a3;
+  blockCopy = block;
+  handlerCopy = handler;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v14 = [(NSMutableDictionary *)self->_backingDictionary objectForKey:v13];
+  v14 = [(NSMutableDictionary *)self->_backingDictionary objectForKey:keyCopy];
 
-  if (v21)
+  if (blockCopy)
   {
-    v15 = [v14 additionalInfo];
-    v16 = v21[2](v21, v15);
+    additionalInfo = [v14 additionalInfo];
+    v16 = blockCopy[2](blockCopy, additionalInfo);
   }
 
   else
@@ -165,11 +165,11 @@ uint64_t __55__PHImageCache_commitChangesWithQueueToProcessDeletes___block_invok
     goto LABEL_8;
   }
 
-  v18 = [v14 createImageRef];
-  v19 = v18;
-  if (a4 && !v18)
+  createImageRef = [v14 createImageRef];
+  v19 = createImageRef;
+  if (request && !createImageRef)
   {
-    [v14 addNotifyHandler:v12];
+    [v14 addNotifyHandler:handlerCopy];
 LABEL_8:
     os_unfair_lock_unlock(&self->_lock);
     goto LABEL_9;
@@ -181,7 +181,7 @@ LABEL_8:
     LOBYTE(v17) = 0;
 LABEL_9:
     v20 = 0;
-    if (!a4)
+    if (!request)
     {
       goto LABEL_11;
     }
@@ -189,29 +189,29 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  (*(v12 + 2))(v12, v19, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, v19, 0, 0);
   CGImageRelease(v19);
   LOBYTE(v17) = 0;
   v20 = 1;
-  if (a4)
+  if (request)
   {
 LABEL_10:
-    *a4 = v17;
+    *request = v17;
   }
 
 LABEL_11:
-  if (a5)
+  if (image)
   {
-    *a5 = v20;
+    *image = v20;
   }
 }
 
-- (BOOL)populateEntryWithImage:(CGImage *)a3 requestID:(int)a4 forKey:(id)a5 additionalInfo:(id)a6
+- (BOOL)populateEntryWithImage:(CGImage *)image requestID:(int)d forKey:(id)key additionalInfo:(id)info
 {
-  v10 = a5;
-  v11 = a6;
+  keyCopy = key;
+  infoCopy = info;
   os_unfair_lock_lock(&self->_lock);
-  v12 = [(NSMutableDictionary *)self->_backingDictionary objectForKey:v10];
+  v12 = [(NSMutableDictionary *)self->_backingDictionary objectForKey:keyCopy];
   if (v12)
   {
     v13 = v12;
@@ -219,21 +219,21 @@ LABEL_11:
 
   else
   {
-    v13 = [(NSMutableDictionary *)self->_uncommittedInserts objectForKey:v10];
+    v13 = [(NSMutableDictionary *)self->_uncommittedInserts objectForKey:keyCopy];
     if (!v13)
     {
       goto LABEL_8;
     }
   }
 
-  v14 = [v13 imageRequestIDForPopulatingCache];
-  if (v14 != a4)
+  imageRequestIDForPopulatingCache = [v13 imageRequestIDForPopulatingCache];
+  if (imageRequestIDForPopulatingCache != d)
   {
-    if (!v14)
+    if (!imageRequestIDForPopulatingCache)
     {
-      v17 = [v13 hasImageRef];
+      hasImageRef = [v13 hasImageRef];
 
-      if (a3 && (v17 & 1) == 0)
+      if (image && (hasImageRef & 1) == 0)
       {
         goto LABEL_6;
       }
@@ -256,59 +256,59 @@ LABEL_6:
   v18[2] = __71__PHImageCache_populateEntryWithImage_requestID_forKey_additionalInfo___block_invoke;
   v18[3] = &unk_1E75AB270;
   v18[4] = self;
-  [v13 populateWithImageRef:a3 additionalInfo:v11 error:0 executeBeforeNotifyingWaitersBlock:v18];
+  [v13 populateWithImageRef:image additionalInfo:infoCopy error:0 executeBeforeNotifyingWaitersBlock:v18];
   v15 = 1;
 LABEL_10:
 
   return v15;
 }
 
-- (BOOL)pinEntryForKey:(id)a3 requestID:(int)a4 inFlightRequestID:(int *)a5
+- (BOOL)pinEntryForKey:(id)key requestID:(int)d inFlightRequestID:(int *)iD
 {
-  v6 = *&a4;
-  v8 = a3;
+  v6 = *&d;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(NSMutableDictionary *)self->_backingDictionary objectForKey:v8];
+  v9 = [(NSMutableDictionary *)self->_backingDictionary objectForKey:keyCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 imageRequestIDForPopulatingCache];
-    if (!v11)
+    imageRequestIDForPopulatingCache = [v9 imageRequestIDForPopulatingCache];
+    if (!imageRequestIDForPopulatingCache)
     {
       [v10 setImageRequestIDForPopulatingCache:v6];
     }
 
-    v12 = v10;
+    dequeueRecyclableObject = v10;
   }
 
   else
   {
-    v12 = [(PHRecyclableObjectVendor *)self->_entryVendor dequeueRecyclableObject];
-    [v12 setImageRequestIDForPopulatingCache:v6];
-    [(NSMutableDictionary *)self->_uncommittedInserts setObject:v12 forKeyedSubscript:v8];
-    v11 = 0;
+    dequeueRecyclableObject = [(PHRecyclableObjectVendor *)self->_entryVendor dequeueRecyclableObject];
+    [dequeueRecyclableObject setImageRequestIDForPopulatingCache:v6];
+    [(NSMutableDictionary *)self->_uncommittedInserts setObject:dequeueRecyclableObject forKeyedSubscript:keyCopy];
+    imageRequestIDForPopulatingCache = 0;
   }
 
-  [(NSMutableDictionary *)self->_uncommittedDeletes removeObjectForKey:v8];
+  [(NSMutableDictionary *)self->_uncommittedDeletes removeObjectForKey:keyCopy];
   os_unfair_lock_unlock(&self->_lock);
-  if (a5)
+  if (iD)
   {
-    *a5 = v11;
+    *iD = imageRequestIDForPopulatingCache;
   }
 
   return v10 == 0;
 }
 
-- (void)_removeEntry:(id)a3
+- (void)_removeEntry:(id)entry
 {
-  if (a3)
+  if (entry)
   {
-    v5 = a3;
-    v4 = [(PHImageCache *)self delegate];
-    [v4 imageCache:self didEvictCacheEntry:v5];
+    entryCopy = entry;
+    delegate = [(PHImageCache *)self delegate];
+    [delegate imageCache:self didEvictCacheEntry:entryCopy];
 
-    [v5 cancel];
-    [(PHRecyclableObjectVendor *)self->_entryVendor recycleObject:v5];
+    [entryCopy cancel];
+    [(PHRecyclableObjectVendor *)self->_entryVendor recycleObject:entryCopy];
   }
 }
 

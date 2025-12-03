@@ -1,9 +1,9 @@
 @interface MUTransitLineItemSectionController
 - (MUInfoCardAnalyticsDelegate)analyticsDelegate;
-- (MUTransitLineItemSectionController)initWithTransitLineItem:(id)a3;
+- (MUTransitLineItemSectionController)initWithTransitLineItem:(id)item;
 - (NSArray)sectionViews;
 - (UIView)sectionView;
-- (id)analyticsModuleForAction:(int)a3 presentationOptions:(id)a4;
+- (id)analyticsModuleForAction:(int)action presentationOptions:(id)options;
 @end
 
 @implementation MUTransitLineItemSectionController
@@ -15,7 +15,7 @@
   return WeakRetained;
 }
 
-- (id)analyticsModuleForAction:(int)a3 presentationOptions:(id)a4
+- (id)analyticsModuleForAction:(int)action presentationOptions:(id)options
 {
   v4 = objc_opt_new();
 
@@ -25,8 +25,8 @@
 - (NSArray)sectionViews
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(MUTransitLineItemSectionController *)self sectionView];
-  v6[0] = v2;
+  sectionView = [(MUTransitLineItemSectionController *)self sectionView];
+  v6[0] = sectionView;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -50,16 +50,16 @@
   return sectionView;
 }
 
-- (MUTransitLineItemSectionController)initWithTransitLineItem:(id)a3
+- (MUTransitLineItemSectionController)initWithTransitLineItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = MUTransitLineItemSectionController;
   v6 = [(MUTransitLineItemSectionController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lineItem, a3);
+    objc_storeStrong(&v6->_lineItem, item);
   }
 
   return v7;

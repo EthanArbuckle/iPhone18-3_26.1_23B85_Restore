@@ -1,64 +1,64 @@
 @interface THNoteCardLayer
 - (BOOL)draggedPastThreshold;
 - (BOOL)isBottomCard;
-- (BOOL)isPointInsideFlipGlyph:(CGPoint)a3;
+- (BOOL)isPointInsideFlipGlyph:(CGPoint)glyph;
 - (BOOL)isTopCard;
 - (CGPoint)dragAnchor;
 - (CGPoint)dragOffset;
-- (CGPoint)extendedDragOffsetInDirection:(CGPoint)a3;
+- (CGPoint)extendedDragOffsetInDirection:(CGPoint)direction;
 - (NSArray)interactiveLayers;
 - (THNoteCardContentLayer)downwardFacingLayer;
 - (THNoteCardContentLayer)upwardFacingLayer;
-- (THNoteCardLayer)initWithDelegate:(id)a3 darkMode:(BOOL)a4;
-- (_THNoteCardDisplayAttributes)p_displayAttributesForParameters:(_THNoteTransformParameters *)a3;
-- (_THNoteTransform)p_noteTransformForParameters:(SEL)a3;
+- (THNoteCardLayer)initWithDelegate:(id)delegate darkMode:(BOOL)mode;
+- (_THNoteCardDisplayAttributes)p_displayAttributesForParameters:(_THNoteTransformParameters *)parameters;
+- (_THNoteTransform)p_noteTransformForParameters:(SEL)parameters;
 - (id).cxx_construct;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)cancelDragAnimated:(BOOL)a3 duration:(double)a4;
-- (void)completeDragInDirection:(CGPoint)a3 newCardIndex:(int64_t)a4 animated:(BOOL)a5 duration:(double)a6 completion:(id)a7;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)cancelDragAnimated:(BOOL)animated duration:(double)duration;
+- (void)completeDragInDirection:(CGPoint)direction newCardIndex:(int64_t)index animated:(BOOL)animated duration:(double)duration completion:(id)completion;
 - (void)dealloc;
-- (void)flipAnimated:(BOOL)a3 duration:(double)a4;
+- (void)flipAnimated:(BOOL)animated duration:(double)duration;
 - (void)layoutSublayers;
-- (void)p_applyNoteTransform:(_THNoteTransform *)a3;
-- (void)p_commonInitWithDarkMode:(BOOL)a3;
-- (void)p_completeDragViaDragOffset:(CGPoint)a3 newCardIndex:(int64_t)a4 animated:(BOOL)a5 duration:(double)a6 completion:(id)a7;
-- (void)p_completeFlippedDragViaDragOffset:(CGPoint)a3 newCardIndex:(int64_t)a4 animated:(BOOL)a5 duration:(double)a6 completion:(id)a7;
+- (void)p_applyNoteTransform:(_THNoteTransform *)transform;
+- (void)p_commonInitWithDarkMode:(BOOL)mode;
+- (void)p_completeDragViaDragOffset:(CGPoint)offset newCardIndex:(int64_t)index animated:(BOOL)animated duration:(double)duration completion:(id)completion;
+- (void)p_completeFlippedDragViaDragOffset:(CGPoint)offset newCardIndex:(int64_t)index animated:(BOOL)animated duration:(double)duration completion:(id)completion;
 - (void)p_mayHaveSettled;
 - (void)p_rebuildNoteTransform;
-- (void)popAnimated:(BOOL)a3 duration:(double)a4;
+- (void)popAnimated:(BOOL)animated duration:(double)duration;
 - (void)removeFromSuperlayer;
 - (void)reset;
-- (void)setCardIndex:(int64_t)a3;
-- (void)setCardIndex:(int64_t)a3 forceHidden:(BOOL)a4 animated:(BOOL)a5 duration:(double)a6;
-- (void)setDarkMode:(BOOL)a3;
-- (void)setFilteredOut:(BOOL)a3;
-- (void)setFilteredOut:(BOOL)a3 direction:(CGPoint)a4;
-- (void)setFilteredOut:(BOOL)a3 direction:(CGPoint)a4 animated:(BOOL)a5 duration:(double)a6 completion:(id)a7;
-- (void)setFlipped:(BOOL)a3;
-- (void)setFlownOut:(BOOL)a3;
-- (void)setFlownOut:(BOOL)a3 direction:(CGPoint)a4;
-- (void)setFlownOut:(BOOL)a3 direction:(CGPoint)a4 animated:(BOOL)a5 duration:(double)a6;
-- (void)setLayoutContext:(id)a3;
-- (void)setPoppedState:(int)a3;
-- (void)setScaleFactor:(double)a3 darkerBackground:(BOOL)a4 animated:(BOOL)a5 duration:(double)a6;
-- (void)shuffleToIndex:(unint64_t)a3 animated:(BOOL)a4 delay:(double)a5 duration:(double)a6 completion:(id)a7;
-- (void)unpopAnimated:(BOOL)a3 duration:(double)a4;
-- (void)updateTransformAnimated:(BOOL)a3 duration:(double)a4;
+- (void)setCardIndex:(int64_t)index;
+- (void)setCardIndex:(int64_t)index forceHidden:(BOOL)hidden animated:(BOOL)animated duration:(double)duration;
+- (void)setDarkMode:(BOOL)mode;
+- (void)setFilteredOut:(BOOL)out;
+- (void)setFilteredOut:(BOOL)out direction:(CGPoint)direction;
+- (void)setFilteredOut:(BOOL)out direction:(CGPoint)direction animated:(BOOL)animated duration:(double)duration completion:(id)completion;
+- (void)setFlipped:(BOOL)flipped;
+- (void)setFlownOut:(BOOL)out;
+- (void)setFlownOut:(BOOL)out direction:(CGPoint)direction;
+- (void)setFlownOut:(BOOL)out direction:(CGPoint)direction animated:(BOOL)animated duration:(double)duration;
+- (void)setLayoutContext:(id)context;
+- (void)setPoppedState:(int)state;
+- (void)setScaleFactor:(double)factor darkerBackground:(BOOL)background animated:(BOOL)animated duration:(double)duration;
+- (void)shuffleToIndex:(unint64_t)index animated:(BOOL)animated delay:(double)delay duration:(double)duration completion:(id)completion;
+- (void)unpopAnimated:(BOOL)animated duration:(double)duration;
+- (void)updateTransformAnimated:(BOOL)animated duration:(double)duration;
 @end
 
 @implementation THNoteCardLayer
 
-- (THNoteCardLayer)initWithDelegate:(id)a3 darkMode:(BOOL)a4
+- (THNoteCardLayer)initWithDelegate:(id)delegate darkMode:(BOOL)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   v9.receiver = self;
   v9.super_class = THNoteCardLayer;
   v6 = [(THNoteCardLayer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    v6->_delegate = a3;
-    [(THNoteCardLayer *)v6 p_commonInitWithDarkMode:v4];
+    v6->_delegate = delegate;
+    [(THNoteCardLayer *)v6 p_commonInitWithDarkMode:modeCopy];
   }
 
   return v7;
@@ -77,16 +77,16 @@
   [(THNoteCardLayer *)&v3 dealloc];
 }
 
-- (void)setLayoutContext:(id)a3
+- (void)setLayoutContext:(id)context
 {
-  [a3 noteCardSize];
+  [context noteCardSize];
   TSDRectWithSize();
   TSDRoundedRect();
   [(THNoteCardLayer *)self setBounds:?];
 
-  self->_layoutContext = a3;
-  [(THNoteCardContentLayer *)self->_frontLayer setLayoutContext:a3];
-  [(THNoteCardContentLayer *)self->_backLayer setLayoutContext:a3];
+  self->_layoutContext = context;
+  [(THNoteCardContentLayer *)self->_frontLayer setLayoutContext:context];
+  [(THNoteCardContentLayer *)self->_backLayer setLayoutContext:context];
   [(THNoteCardLayer *)self p_rebuildNoteTransform];
 
   [(THNoteCardLayer *)self setNeedsLayout];
@@ -118,10 +118,10 @@
   }
 }
 
-- (void)setCardIndex:(int64_t)a3
+- (void)setCardIndex:(int64_t)index
 {
   p_transformParams = &self->_transformParams;
-  self->_transformParams.cardIndex = a3;
+  self->_transformParams.cardIndex = index;
   [(THNoteCardLayer *)self p_rebuildNoteTransform];
   filteredOutDirection = p_transformParams->filteredOutDirection;
   v8[4] = *&p_transformParams->flownOutDirection.y;
@@ -166,29 +166,29 @@
   return [(THNoteCardLayer *)self p_isBottomCardParameters:v6];
 }
 
-- (void)setDarkMode:(BOOL)a3
+- (void)setDarkMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   [(THNoteCardContentLayer *)self->_backLayer setDarkMode:?];
   frontLayer = self->_frontLayer;
 
-  [(THNoteCardContentLayer *)frontLayer setDarkMode:v3];
+  [(THNoteCardContentLayer *)frontLayer setDarkMode:modeCopy];
 }
 
-- (void)setFlipped:(BOOL)a3
+- (void)setFlipped:(BOOL)flipped
 {
-  if (self->_transformParams.flipped != a3)
+  if (self->_transformParams.flipped != flipped)
   {
-    self->_transformParams.flipped = a3;
+    self->_transformParams.flipped = flipped;
     [(THNoteCardLayer *)self p_rebuildNoteTransform];
   }
 }
 
-- (void)setPoppedState:(int)a3
+- (void)setPoppedState:(int)state
 {
-  if (self->_transformParams.poppedState != a3)
+  if (self->_transformParams.poppedState != state)
   {
-    self->_transformParams.poppedState = a3;
+    self->_transformParams.poppedState = state;
     [(THNoteCardLayer *)self p_rebuildNoteTransform];
   }
 }
@@ -211,31 +211,31 @@
   return result;
 }
 
-- (void)setFlownOut:(BOOL)a3
+- (void)setFlownOut:(BOOL)out
 {
-  self->_transformParams.flownOut = a3;
+  self->_transformParams.flownOut = out;
   self->_transformParams.flownOutDirection = xmmword_34A660;
   [(THNoteCardLayer *)self p_rebuildNoteTransform];
 }
 
-- (void)setFlownOut:(BOOL)a3 direction:(CGPoint)a4
+- (void)setFlownOut:(BOOL)out direction:(CGPoint)direction
 {
-  self->_transformParams.flownOut = a3;
-  self->_transformParams.flownOutDirection = a4;
+  self->_transformParams.flownOut = out;
+  self->_transformParams.flownOutDirection = direction;
   [(THNoteCardLayer *)self p_rebuildNoteTransform];
 }
 
-- (void)setFilteredOut:(BOOL)a3
+- (void)setFilteredOut:(BOOL)out
 {
-  self->_transformParams.filteredOut = a3;
+  self->_transformParams.filteredOut = out;
   self->_transformParams.filteredOutDirection = xmmword_34A660;
   [(THNoteCardLayer *)self p_rebuildNoteTransform];
 }
 
-- (void)setFilteredOut:(BOOL)a3 direction:(CGPoint)a4
+- (void)setFilteredOut:(BOOL)out direction:(CGPoint)direction
 {
-  self->_transformParams.filteredOut = a3;
-  self->_transformParams.filteredOutDirection = a4;
+  self->_transformParams.filteredOut = out;
+  self->_transformParams.filteredOutDirection = direction;
   [(THNoteCardLayer *)self p_rebuildNoteTransform];
 }
 
@@ -256,15 +256,15 @@
   }
 }
 
-- (BOOL)isPointInsideFlipGlyph:(CGPoint)a3
+- (BOOL)isPointInsideFlipGlyph:(CGPoint)glyph
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(THNoteCardLayer *)self upwardFacingLayer];
-  [(THNoteCardContentLayer *)v6 convertPoint:self fromLayer:x, y];
+  y = glyph.y;
+  x = glyph.x;
+  upwardFacingLayer = [(THNoteCardLayer *)self upwardFacingLayer];
+  [(THNoteCardContentLayer *)upwardFacingLayer convertPoint:self fromLayer:x, y];
   v8 = v7;
   v10 = v9;
-  [(THNoteCardContentLayer *)v6 flipGlyphFrame];
+  [(THNoteCardContentLayer *)upwardFacingLayer flipGlyphFrame];
   v15 = v8;
   v16 = v10;
 
@@ -273,26 +273,26 @@
 
 - (NSArray)interactiveLayers
 {
-  v2 = [(THNoteCardLayer *)self upwardFacingLayer];
+  upwardFacingLayer = [(THNoteCardLayer *)self upwardFacingLayer];
 
-  return [(THNoteCardContentLayer *)v2 interactiveLayers];
+  return [(THNoteCardContentLayer *)upwardFacingLayer interactiveLayers];
 }
 
-- (void)p_applyNoteTransform:(_THNoteTransform *)a3
+- (void)p_applyNoteTransform:(_THNoteTransform *)transform
 {
   p_transform = &self->_transform;
-  memcpy(&self->_transform, a3, sizeof(self->_transform));
-  v6 = *&a3->xform.m33;
-  v18 = *&a3->xform.m31;
+  memcpy(&self->_transform, transform, sizeof(self->_transform));
+  v6 = *&transform->xform.m33;
+  v18 = *&transform->xform.m31;
   v19 = v6;
-  v7 = *&a3->xform.m43;
-  v20 = *&a3->xform.m41;
+  v7 = *&transform->xform.m43;
+  v20 = *&transform->xform.m41;
   v21 = v7;
-  v8 = *&a3->xform.m13;
-  v14 = *&a3->xform.m11;
+  v8 = *&transform->xform.m13;
+  v14 = *&transform->xform.m11;
   v15 = v8;
-  v9 = *&a3->xform.m23;
-  v16 = *&a3->xform.m21;
+  v9 = *&transform->xform.m23;
+  v16 = *&transform->xform.m21;
   v17 = v9;
   [(THNoteCardLayer *)self setTransform:&v14];
   [(THNoteCardLayer *)self setZPosition:p_transform->zPosition];
@@ -336,7 +336,7 @@
   }
 }
 
-- (_THNoteTransform)p_noteTransformForParameters:(SEL)a3
+- (_THNoteTransform)p_noteTransformForParameters:(SEL)parameters
 {
   retstr->zPosition = 0.0;
   v7 = *&CATransform3DIdentity.m31;
@@ -703,41 +703,41 @@ LABEL_59:
   return result;
 }
 
-- (_THNoteCardDisplayAttributes)p_displayAttributesForParameters:(_THNoteTransformParameters *)a3
+- (_THNoteCardDisplayAttributes)p_displayAttributesForParameters:(_THNoteTransformParameters *)parameters
 {
-  filteredOutDirection = a3->filteredOutDirection;
-  v22 = *&a3->flownOutDirection.y;
+  filteredOutDirection = parameters->filteredOutDirection;
+  v22 = *&parameters->flownOutDirection.y;
   v23 = filteredOutDirection;
-  v24 = *&a3->scaleFactor;
-  dragAnchor = a3->dragAnchor;
-  v18 = *&a3->cardIndex;
+  v24 = *&parameters->scaleFactor;
+  dragAnchor = parameters->dragAnchor;
+  v18 = *&parameters->cardIndex;
   v19 = dragAnchor;
-  v7 = *&a3->shuffleAnimationState;
-  dragOffset = a3->dragOffset;
+  v7 = *&parameters->shuffleAnimationState;
+  dragOffset = parameters->dragOffset;
   v21 = v7;
   v8 = [(THNoteCardLayer *)self p_isTopCardParameters:&v18];
-  v9 = a3->filteredOutDirection;
-  v22 = *&a3->flownOutDirection.y;
+  v9 = parameters->filteredOutDirection;
+  v22 = *&parameters->flownOutDirection.y;
   v23 = v9;
-  v24 = *&a3->scaleFactor;
-  v10 = a3->dragAnchor;
-  v18 = *&a3->cardIndex;
+  v24 = *&parameters->scaleFactor;
+  v10 = parameters->dragAnchor;
+  v18 = *&parameters->cardIndex;
   v19 = v10;
-  v11 = *&a3->shuffleAnimationState;
-  dragOffset = a3->dragOffset;
+  v11 = *&parameters->shuffleAnimationState;
+  dragOffset = parameters->dragOffset;
   v21 = v11;
   v12 = [(THNoteCardLayer *)self p_isBottomCardParameters:&v18];
   if (v8)
   {
-    v13 = [(THNoteCardInfo *)self->_noteCardInfo hasBackContent];
-    useDarkerBackground = a3->useDarkerBackground;
+    hasBackContent = [(THNoteCardInfo *)self->_noteCardInfo hasBackContent];
+    useDarkerBackground = parameters->useDarkerBackground;
     v15 = 1;
   }
 
   else
   {
     useDarkerBackground = 0;
-    v13 = 0;
+    hasBackContent = 0;
     v15 = v12;
   }
 
@@ -747,7 +747,7 @@ LABEL_59:
     v16 = 0;
   }
 
-  return (v16 | (useDarkerBackground << 32) | (v13 << 16) | (v15 << 8) | v15);
+  return (v16 | (useDarkerBackground << 32) | (hasBackContent << 16) | (v15 << 8) | v15);
 }
 
 - (void)reset
@@ -758,7 +758,7 @@ LABEL_59:
   [(THNoteCardContentLayer *)backLayer reset];
 }
 
-- (CGPoint)extendedDragOffsetInDirection:(CGPoint)a3
+- (CGPoint)extendedDragOffsetInDirection:(CGPoint)direction
 {
   TSDPointLength();
   TSDNormalizePoint();
@@ -791,9 +791,9 @@ LABEL_59:
   v16 = THDistanceFromRectCenterToEdge(v25, v22);
   if ([(THNoteCardLayer *)self isTopCard])
   {
-    v17 = [(THNoteCardLayer *)self isFlipped];
+    isFlipped = [(THNoteCardLayer *)self isFlipped];
     v18 = 1.0;
-    if (!v17)
+    if (!isFlipped)
     {
       v18 = 1.60000002;
     }
@@ -811,11 +811,11 @@ LABEL_59:
   return result;
 }
 
-- (void)setCardIndex:(int64_t)a3 forceHidden:(BOOL)a4 animated:(BOOL)a5 duration:(double)a6
+- (void)setCardIndex:(int64_t)index forceHidden:(BOOL)hidden animated:(BOOL)animated duration:(double)duration
 {
-  v7 = a5;
-  v25 = a5;
-  v8 = a4;
+  animatedCopy = animated;
+  animatedCopy2 = animated;
+  hiddenCopy = hidden;
   [(THNoteCardLayer *)self p_willUnsettle];
   v11 = *&self->_transformParams.flipped;
   v27 = v11;
@@ -829,9 +829,9 @@ LABEL_59:
   v42 = v14;
   v43 = *(&self->_transformParams.dragOffset.y + 3);
   v44 = v12;
-  *v28 = a3;
+  *v28 = index;
   *&v28[8] = v11;
-  v28[10] = v8;
+  v28[10] = hiddenCopy;
   *&v28[59] = *(&self->_transformParams.flownOutDirection + 3);
   *&v28[75] = *(&self->_transformParams.filteredOut + 3);
   *&v28[91] = *(&self->_transformParams.filteredOutDirection.y + 3);
@@ -840,9 +840,9 @@ LABEL_59:
   *&v28[27] = *(&self->_transformParams.dragAnchor.y + 3);
   *&v28[43] = *(&self->_transformParams.dragOffset.y + 3);
   [(THNoteCardLayer *)self p_noteTransformForParameters:v28];
-  if (!v7)
+  if (!animatedCopy)
   {
-    a6 = 0.0;
+    duration = 0.0;
   }
 
   v15 = [CABasicAnimation animationWithKeyPath:@"zPosition"];
@@ -883,7 +883,7 @@ LABEL_59:
   [(CABasicAnimation *)v23 setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
   v24 = +[CAAnimationGroup animation];
   [v24 setAnimations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v15, v18, v23, 0)}];
-  [v24 setDuration:a6];
+  [v24 setDuration:duration];
   [v24 setDelegate:self];
   [(THNoteCardLayer *)self addAnimation:v24 forKey:@"cardIndexAnimation"];
   *&v28[59] = v44;
@@ -891,21 +891,21 @@ LABEL_59:
   *&v28[91] = v46[0];
   *&v28[11] = v41;
   *&v28[27] = v42;
-  *v28 = a3;
+  *v28 = index;
   *&v28[8] = v27;
-  v28[10] = v8;
+  v28[10] = hiddenCopy;
   *&v28[104] = *(v46 + 13);
   *&v28[43] = v43;
-  [(THNoteCardContentLayer *)self->_frontLayer setDisplayAttributes:[(THNoteCardLayer *)self p_displayAttributesForParameters:v28]& 0xFFFFFFFFFFLL animated:v25 duration:a6];
-  [(THNoteCardLayer *)self setForceHidden:v8];
-  [(THNoteCardLayer *)self setCardIndex:a3];
+  [(THNoteCardContentLayer *)self->_frontLayer setDisplayAttributes:[(THNoteCardLayer *)self p_displayAttributesForParameters:v28]& 0xFFFFFFFFFFLL animated:animatedCopy2 duration:duration];
+  [(THNoteCardLayer *)self setForceHidden:hiddenCopy];
+  [(THNoteCardLayer *)self setCardIndex:index];
 }
 
-- (void)flipAnimated:(BOOL)a3 duration:(double)a4
+- (void)flipAnimated:(BOOL)animated duration:(double)duration
 {
-  v5 = a3;
+  animatedCopy = animated;
   [(THNoteCardLayer *)self p_willUnsettle];
-  if (v5)
+  if (animatedCopy)
   {
     v7 = [NSNumber numberWithFloat:0.0];
     LODWORD(v8) = 1051372203;
@@ -985,7 +985,7 @@ LABEL_59:
     [(CAKeyframeAnimation *)v29 setValues:[NSArray arrayWithObjects:v30, v31, v32, [NSValue valueWithCATransform3D:&v35], 0]];
     v33 = +[CAAnimationGroup animation];
     [v33 setAnimations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v14, v29, 0)}];
-    [v33 setDuration:a4];
+    [v33 setDuration:duration];
     [v33 setDelegate:self];
     [(THNoteCardLayer *)self addAnimation:v33 forKey:@"cardFlipAnimation"];
   }
@@ -993,15 +993,15 @@ LABEL_59:
   [(THNoteCardLayer *)self setFlipped:[(THNoteCardLayer *)self isFlipped]^ 1];
 }
 
-- (void)popAnimated:(BOOL)a3 duration:(double)a4
+- (void)popAnimated:(BOOL)animated duration:(double)duration
 {
-  v5 = a3;
+  animatedCopy = animated;
   [(THNoteCardLayer *)self p_willUnsettle];
   if ((self->_transformParams.poppedState | 2) == 2)
   {
-    if (!v5)
+    if (!animatedCopy)
     {
-      a4 = 0.0;
+      duration = 0.0;
     }
 
     v7 = [CABasicAnimation animationWithKeyPath:@"zPosition"];
@@ -1012,20 +1012,20 @@ LABEL_59:
     [(CABasicAnimation *)v7 setDelegate:self];
     [(CABasicAnimation *)v7 setRemovedOnCompletion:0];
     [(CABasicAnimation *)v7 setFillMode:kCAFillModeBoth];
-    [(CABasicAnimation *)v7 setDuration:a4];
+    [(CABasicAnimation *)v7 setDuration:duration];
     [(THNoteCardLayer *)self addAnimation:v7 forKey:@"cardPopAnimation"];
   }
 
   [(THNoteCardLayer *)self setPoppedState:1];
 }
 
-- (void)unpopAnimated:(BOOL)a3 duration:(double)a4
+- (void)unpopAnimated:(BOOL)animated duration:(double)duration
 {
   if ((self->_transformParams.poppedState | 2) == 3)
   {
-    if (!a3)
+    if (!animated)
     {
-      a4 = 0.0;
+      duration = 0.0;
     }
 
     v6 = [CABasicAnimation animationWithKeyPath:@"zPosition"];
@@ -1036,16 +1036,16 @@ LABEL_59:
     [(CABasicAnimation *)v6 setDelegate:self];
     [(CABasicAnimation *)v6 setRemovedOnCompletion:0];
     [(CABasicAnimation *)v6 setFillMode:kCAFillModeBoth];
-    [(CABasicAnimation *)v6 setDuration:a4];
+    [(CABasicAnimation *)v6 setDuration:duration];
     [(THNoteCardLayer *)self addAnimation:v6 forKey:@"cardUnpopAnimation"];
   }
 
   [(THNoteCardLayer *)self setPoppedState:2];
 }
 
-- (void)cancelDragAnimated:(BOOL)a3 duration:(double)a4
+- (void)cancelDragAnimated:(BOOL)animated duration:(double)duration
 {
-  v5 = a3;
+  animatedCopy = animated;
   [(THNoteCardLayer *)self p_willUnsettle];
   *&v22 = self->_transformParams.cardIndex;
   v7 = *&self->_transformParams.flipped;
@@ -1063,9 +1063,9 @@ LABEL_59:
   v23 = dragAnchor;
   v24 = v11;
   [(THNoteCardLayer *)self p_noteTransformForParameters:&v22];
-  if (!v5)
+  if (!animatedCopy)
   {
-    a4 = 0.0;
+    duration = 0.0;
   }
 
   v12 = [CABasicAnimation animationWithKeyPath:@"zPosition"];
@@ -1106,7 +1106,7 @@ LABEL_59:
   [(CABasicAnimation *)v20 setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
   v21 = +[CAAnimationGroup animation];
   [v21 setAnimations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v12, v15, v20, 0)}];
-  [v21 setDuration:a4];
+  [v21 setDuration:duration];
   [v21 setDelegate:self];
   [(THNoteCardLayer *)self addAnimation:v21 forKey:@"cancelDragAnimation"];
   [(THNoteCardLayer *)self setDragOffset:CGPointZero.x, CGPointZero.y];
@@ -1114,11 +1114,11 @@ LABEL_59:
   [(THNoteCardLayer *)self setDragAnchor:CGPointZero.x, CGPointZero.y];
 }
 
-- (void)completeDragInDirection:(CGPoint)a3 newCardIndex:(int64_t)a4 animated:(BOOL)a5 duration:(double)a6 completion:(id)a7
+- (void)completeDragInDirection:(CGPoint)direction newCardIndex:(int64_t)index animated:(BOOL)animated duration:(double)duration completion:(id)completion
 {
-  v9 = a5;
-  y = a3.y;
-  x = a3.x;
+  animatedCopy = animated;
+  y = direction.y;
+  x = direction.x;
   [(THNoteCardLayer *)self p_willUnsettle];
   [(THNoteCardLayer *)self extendedDragOffsetInDirection:x, y];
   v15 = v14;
@@ -1126,23 +1126,23 @@ LABEL_59:
   if ([(THNoteCardLayer *)self isFlipped])
   {
 
-    [(THNoteCardLayer *)self p_completeFlippedDragViaDragOffset:a4 newCardIndex:v9 animated:a7 duration:v15 completion:v17, a6];
+    [(THNoteCardLayer *)self p_completeFlippedDragViaDragOffset:index newCardIndex:animatedCopy animated:completion duration:v15 completion:v17, duration];
   }
 
   else
   {
 
-    [(THNoteCardLayer *)self p_completeDragViaDragOffset:a4 newCardIndex:v9 animated:a7 duration:v15 completion:v17, a6];
+    [(THNoteCardLayer *)self p_completeDragViaDragOffset:index newCardIndex:animatedCopy animated:completion duration:v15 completion:v17, duration];
   }
 }
 
-- (void)shuffleToIndex:(unint64_t)a3 animated:(BOOL)a4 delay:(double)a5 duration:(double)a6 completion:(id)a7
+- (void)shuffleToIndex:(unint64_t)index animated:(BOOL)animated delay:(double)delay duration:(double)duration completion:(id)completion
 {
-  v10 = a4;
-  v69 = a4;
+  animatedCopy = animated;
+  animatedCopy2 = animated;
   [(THNoteCardLayer *)self p_willUnsettle];
   +[CATransaction begin];
-  [CATransaction setCompletionBlock:a7];
+  [CATransaction setCompletionBlock:completion];
   [(THNoteCardLayerDelegate *)self->_delegate shuffleOffset:[(THNoteCardLayer *)self cardIndex]& 1];
   v14 = v13;
   v16 = v15;
@@ -1184,8 +1184,8 @@ LABEL_59:
   *&v83[44] = v106[0];
   *&v83[56] = *(v106 + 12);
   [(THNoteCardLayer *)self p_noteTransformForParameters:&v81];
-  v67 = a3;
-  v75 = *&a3;
+  indexCopy = index;
+  v75 = *&index;
   *v76 = v23;
   *&v76[4] = 3;
   LODWORD(v68) = v23;
@@ -1200,7 +1200,7 @@ LABEL_59:
   [(THNoteCardLayer *)self p_noteTransformForParameters:&v75];
   v71 = dragAnchor;
   *&v73[4] = v104;
-  *&v70 = a3;
+  *&v70 = index;
   *(&v70 + 1) = __PAIR64__(v24, v23);
   *&v72 = x;
   *(&v72 + 1) = y;
@@ -1209,9 +1209,9 @@ LABEL_59:
   *&v73[36] = v106[0];
   *&v73[48] = *(v106 + 12);
   [(THNoteCardLayer *)self p_noteTransformForParameters:&v70];
-  if (v10)
+  if (animatedCopy)
   {
-    v25 = a5 + a6;
+    v25 = delay + duration;
   }
 
   else
@@ -1220,9 +1220,9 @@ LABEL_59:
   }
 
   v26 = [NSNumber numberWithFloat:0.0];
-  *&v27 = (a5 + a6 * 0.1) / v25;
+  *&v27 = (delay + duration * 0.1) / v25;
   v28 = [NSNumber numberWithFloat:v27];
-  *&v29 = (a5 + a6 * 0.5) / v25;
+  *&v29 = (delay + duration * 0.5) / v25;
   v30 = [NSNumber numberWithFloat:v29];
   LODWORD(v31) = 1.0;
   v66 = [NSArray arrayWithObjects:v26, v28, v30, [NSNumber numberWithFloat:v31], 0];
@@ -1302,10 +1302,10 @@ LABEL_59:
   [(CAKeyframeAnimation *)v57 setTimingFunctions:[NSArray arrayWithObjects:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut], [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut], [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut], 0]];
   v61 = [CAKeyframeAnimation animationWithKeyPath:@"position"];
   [(CAKeyframeAnimation *)v61 setKeyTimes:v66];
-  v62 = [NSValue valueWithCGPoint:v102, v103];
+  v103 = [NSValue valueWithCGPoint:v102, v103];
   v63 = [NSValue valueWithCGPoint:v91, v92];
   v64 = [NSValue valueWithCGPoint:v85, v86];
-  [(CAKeyframeAnimation *)v61 setValues:[NSArray arrayWithObjects:v62, v63, v64, [NSValue valueWithCGPoint:v79, v80], 0]];
+  [(CAKeyframeAnimation *)v61 setValues:[NSArray arrayWithObjects:v103, v63, v64, [NSValue valueWithCGPoint:v79, v80], 0]];
   [(CAKeyframeAnimation *)v61 setTimingFunctions:[NSArray arrayWithObjects:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear], [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut], [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut], 0]];
   v65 = +[CAAnimationGroup animation];
   [v65 setAnimations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v32, v57, v61, 0)}];
@@ -1313,7 +1313,7 @@ LABEL_59:
   [v65 setDelegate:self];
   [v65 setRemovedOnCompletion:0];
   [(THNoteCardLayer *)self addAnimation:v65 forKey:@"shuffleAnimation"];
-  *&v70 = v67;
+  *&v70 = indexCopy;
   *(&v70 + 1) = v68;
   v71 = dragAnchor;
   *&v72 = x;
@@ -1323,23 +1323,23 @@ LABEL_59:
   *&v73[20] = v105;
   *&v73[36] = v106[0];
   *&v73[48] = *(v106 + 12);
-  [(THNoteCardContentLayer *)self->_frontLayer setDisplayAttributes:[(THNoteCardLayer *)self p_displayAttributesForParameters:&v70]& 0xFFFFFFFFFFLL animated:v69 duration:v25];
+  [(THNoteCardContentLayer *)self->_frontLayer setDisplayAttributes:[(THNoteCardLayer *)self p_displayAttributesForParameters:&v70]& 0xFFFFFFFFFFLL animated:animatedCopy2 duration:v25];
   +[CATransaction commit];
   [(THNoteCardLayer *)self setDragOffset:CGPointZero.x, CGPointZero.y];
   [(THNoteCardLayer *)self setDragAnchor:CGPointZero.x, CGPointZero.y];
-  [(THNoteCardLayer *)self setCardIndex:v67];
+  [(THNoteCardLayer *)self setCardIndex:indexCopy];
   [(THNoteCardLayer *)self setFlipped:0];
 }
 
-- (void)setFilteredOut:(BOOL)a3 direction:(CGPoint)a4 animated:(BOOL)a5 duration:(double)a6 completion:(id)a7
+- (void)setFilteredOut:(BOOL)out direction:(CGPoint)direction animated:(BOOL)animated duration:(double)duration completion:(id)completion
 {
-  v9 = a5;
-  y = a4.y;
-  x = a4.x;
-  v12 = a3;
+  animatedCopy = animated;
+  y = direction.y;
+  x = direction.x;
+  outCopy = out;
   [(THNoteCardLayer *)self p_willUnsettle];
   +[CATransaction begin];
-  [CATransaction setCompletionBlock:a7];
+  [CATransaction setCompletionBlock:completion];
   v14 = *&self->_transformParams.shuffleAnimationState;
   dragOffset = self->_transformParams.dragOffset;
   v30 = v14;
@@ -1348,19 +1348,19 @@ LABEL_59:
   v27 = *&self->_transformParams.cardIndex;
   v28 = dragAnchor;
   v33 = *&self->_transformParams.scaleFactor;
-  self->_transformParams.filteredOut = v12;
+  self->_transformParams.filteredOut = outCopy;
   self->_transformParams.filteredOutDirection.x = x;
   self->_transformParams.filteredOutDirection.y = y;
-  BYTE8(v31) = v12;
+  BYTE8(v31) = outCopy;
   v16 = *(&self->_transformParams.filteredOut + 1);
   HIDWORD(v31) = *(&self->_transformParams.filteredOut + 1);
   *(&v31 + 9) = v16;
   *&v32 = x;
   *(&v32 + 1) = y;
   [(THNoteCardLayer *)self p_noteTransformForParameters:&v27];
-  if (!v9)
+  if (!animatedCopy)
   {
-    a6 = 0.0;
+    duration = 0.0;
   }
 
   v17 = [CABasicAnimation animationWithKeyPath:@"zPosition"];
@@ -1401,19 +1401,19 @@ LABEL_59:
   [(CABasicAnimation *)v25 setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
   v26 = +[CAAnimationGroup animation];
   [v26 setAnimations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v17, v20, v25, 0)}];
-  [v26 setDuration:a6];
+  [v26 setDuration:duration];
   [v26 setDelegate:self];
   [(THNoteCardLayer *)self addAnimation:v26 forKey:@"cardIndexAnimation"];
   +[CATransaction commit];
-  [(THNoteCardLayer *)self setFilteredOut:v12 direction:x, y];
+  [(THNoteCardLayer *)self setFilteredOut:outCopy direction:x, y];
 }
 
-- (void)setFlownOut:(BOOL)a3 direction:(CGPoint)a4 animated:(BOOL)a5 duration:(double)a6
+- (void)setFlownOut:(BOOL)out direction:(CGPoint)direction animated:(BOOL)animated duration:(double)duration
 {
-  v27 = a5;
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
+  animatedCopy = animated;
+  y = direction.y;
+  x = direction.x;
+  outCopy = out;
   [(THNoteCardLayer *)self p_willUnsettle];
   +[CATransaction begin];
   dragAnchor = self->_transformParams.dragAnchor;
@@ -1424,10 +1424,10 @@ LABEL_59:
   *&v34[8] = *&self->_transformParams.filteredOut;
   *&v34[24] = *&self->_transformParams.filteredOutDirection.y;
   *&v34[40] = *&self->_transformParams.useDarkerBackground;
-  self->_transformParams.flownOut = v9;
+  self->_transformParams.flownOut = outCopy;
   self->_transformParams.flownOutDirection.x = x;
   self->_transformParams.flownOutDirection.y = y;
-  BYTE4(v33) = v9;
+  BYTE4(v33) = outCopy;
   *(&v33 + 5) = *(&self->_transformParams.flownOut + 1);
   BYTE7(v33) = *(&self->_transformParams.flownOut + 3);
   *(&v33 + 1) = x;
@@ -1464,7 +1464,7 @@ LABEL_59:
   dragOffset = v39;
   v33 = v40;
   [(CABasicAnimation *)v15 setToValue:[NSValue valueWithCATransform3D:&v30]];
-  if (v9)
+  if (outCopy)
   {
     v24 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
   }
@@ -1479,9 +1479,9 @@ LABEL_59:
   }
 
   [(CABasicAnimation *)v15 setTimingFunction:v24];
-  if (!v27)
+  if (!animatedCopy)
   {
-    a6 = 0.0;
+    duration = 0.0;
   }
 
   v25 = [CABasicAnimation animationWithKeyPath:@"position"];
@@ -1492,7 +1492,7 @@ LABEL_59:
   v26 = +[CAAnimationGroup animation];
   [v26 setAnimations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v12, v15, v25, 0)}];
   [v26 setFillMode:kCAFillModeBoth];
-  [v26 setDuration:a6];
+  [v26 setDuration:duration];
   [v26 setDelegate:self];
   [(THNoteCardLayer *)self addAnimation:v26 forKey:@"cardIndexAnimation"];
   v28[0] = _NSConcreteStackBlock;
@@ -1500,14 +1500,14 @@ LABEL_59:
   v28[2] = sub_DB968;
   v28[3] = &unk_45B2C0;
   v28[4] = self;
-  v29 = v9;
+  v29 = outCopy;
   [CATransaction setCompletionBlock:v28];
   +[CATransaction commit];
 }
 
-- (void)updateTransformAnimated:(BOOL)a3 duration:(double)a4
+- (void)updateTransformAnimated:(BOOL)animated duration:(double)duration
 {
-  v5 = a3;
+  animatedCopy = animated;
   [(THNoteCardLayer *)self p_willUnsettle];
   filteredOutDirection = self->_transformParams.filteredOutDirection;
   *&__dst[64] = *&self->_transformParams.flownOutDirection.y;
@@ -1520,7 +1520,7 @@ LABEL_59:
   *&__dst[32] = self->_transformParams.dragOffset;
   *&__dst[48] = v9;
   [(THNoteCardLayer *)self p_noteTransformForParameters:__dst];
-  if (v5)
+  if (animatedCopy)
   {
     v10 = [CABasicAnimation animationWithKeyPath:@"transform"];
     v11 = *&self->_transform.xform.m33;
@@ -1558,7 +1558,7 @@ LABEL_59:
     v19 = +[CAAnimationGroup animation];
     [v19 setAnimations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v16, v10, v15, 0)}];
     [v19 setTimingFunction:{+[CAMediaTimingFunction functionWithName:](CAMediaTimingFunction, "functionWithName:", kCAMediaTimingFunctionEaseOut)}];
-    [v19 setDuration:a4];
+    [v19 setDuration:duration];
     [v19 setDelegate:self];
     [(THNoteCardLayer *)self addAnimation:v19 forKey:@"transform"];
     memcpy(__dst, __src, sizeof(__dst));
@@ -1573,12 +1573,12 @@ LABEL_59:
   }
 }
 
-- (void)setScaleFactor:(double)a3 darkerBackground:(BOOL)a4 animated:(BOOL)a5 duration:(double)a6
+- (void)setScaleFactor:(double)factor darkerBackground:(BOOL)background animated:(BOOL)animated duration:(double)duration
 {
-  v7 = a5;
+  animatedCopy = animated;
   [(THNoteCardLayer *)self p_willUnsettle];
-  self->_transformParams.useDarkerBackground = a4;
-  self->_transformParams.scaleFactor = a3;
+  self->_transformParams.useDarkerBackground = background;
+  self->_transformParams.scaleFactor = factor;
   filteredOutDirection = self->_transformParams.filteredOutDirection;
   *&v22[64] = *&self->_transformParams.flownOutDirection.y;
   *&v22[80] = filteredOutDirection;
@@ -1590,7 +1590,7 @@ LABEL_59:
   *&v22[32] = self->_transformParams.dragOffset;
   *&v22[48] = v13;
   [(THNoteCardLayer *)self p_noteTransformForParameters:v22];
-  if (v7)
+  if (animatedCopy)
   {
     v14 = [CABasicAnimation animationWithKeyPath:@"transform"];
     v15 = *&self->_transform.xform.m33;
@@ -1631,7 +1631,7 @@ LABEL_59:
   v21 = *&self->_transformParams.shuffleAnimationState;
   *&v22[32] = self->_transformParams.dragOffset;
   *&v22[48] = v21;
-  [(THNoteCardContentLayer *)self->_frontLayer setDisplayAttributes:[(THNoteCardLayer *)self p_displayAttributesForParameters:v22]& 0xFFFFFFFFFFLL animated:1 duration:a6];
+  [(THNoteCardContentLayer *)self->_frontLayer setDisplayAttributes:[(THNoteCardLayer *)self p_displayAttributesForParameters:v22]& 0xFFFFFFFFFFLL animated:1 duration:duration];
 }
 
 - (void)layoutSublayers
@@ -1656,10 +1656,10 @@ LABEL_59:
   [(THNoteCardLayer *)&v3 removeFromSuperlayer];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  [CATransaction begin:a3];
-  if ([(THNoteCardLayer *)self animationForKey:@"cardPopAnimation"]== a3)
+  [CATransaction begin:stop];
+  if ([(THNoteCardLayer *)self animationForKey:@"cardPopAnimation"]== stop)
   {
     if (self->_transformParams.poppedState == 1)
     {
@@ -1670,7 +1670,7 @@ LABEL_59:
     goto LABEL_10;
   }
 
-  if ([(THNoteCardLayer *)self animationForKey:@"cardUnpopAnimation"]== a3)
+  if ([(THNoteCardLayer *)self animationForKey:@"cardUnpopAnimation"]== stop)
   {
     if (self->_transformParams.poppedState == 2)
     {
@@ -1685,7 +1685,7 @@ LABEL_10:
 
   self->_transformParams.poppedState = 0;
 LABEL_11:
-  if ([(THNoteCardLayer *)self animationForKey:@"completeDragAnimation"]== a3 || [(THNoteCardLayer *)self animationForKey:@"completeFlippedDragAnimation"]== a3)
+  if ([(THNoteCardLayer *)self animationForKey:@"completeDragAnimation"]== stop || [(THNoteCardLayer *)self animationForKey:@"completeFlippedDragAnimation"]== stop)
   {
     completionAnimationCompletionBlock = self->_completionAnimationCompletionBlock;
     if (completionAnimationCompletionBlock)
@@ -1705,10 +1705,10 @@ LABEL_11:
   [(THNoteCardLayer *)self p_mayHaveSettled];
 }
 
-- (void)p_commonInitWithDarkMode:(BOOL)a3
+- (void)p_commonInitWithDarkMode:(BOOL)mode
 {
-  v3 = a3;
-  v5 = [[THNoteCardContentLayer alloc] initFrontContentLayerWithDarkMode:a3];
+  modeCopy = mode;
+  v5 = [[THNoteCardContentLayer alloc] initFrontContentLayerWithDarkMode:mode];
   self->_frontLayer = v5;
   [(THNoteCardContentLayer *)v5 setDoubleSided:0];
   [(THNoteCardContentLayer *)self->_frontLayer setDelegate:self];
@@ -1716,7 +1716,7 @@ LABEL_11:
   TSUScreenScale();
   [(THNoteCardContentLayer *)self->_frontLayer setRasterizationScale:?];
   [(THNoteCardLayer *)self addSublayer:self->_frontLayer];
-  self->_backLayer = [[THNoteCardContentLayer alloc] initBackContentLayerWithDarkMode:v3];
+  self->_backLayer = [[THNoteCardContentLayer alloc] initBackContentLayerWithDarkMode:modeCopy];
   CATransform3DMakeRotation(&v8, 3.14159265, 0.0, 1.0, 0.0);
   backLayer = self->_backLayer;
   v7 = v8;
@@ -1742,11 +1742,11 @@ LABEL_11:
   }
 }
 
-- (void)p_completeDragViaDragOffset:(CGPoint)a3 newCardIndex:(int64_t)a4 animated:(BOOL)a5 duration:(double)a6 completion:(id)a7
+- (void)p_completeDragViaDragOffset:(CGPoint)offset newCardIndex:(int64_t)index animated:(BOOL)animated duration:(double)duration completion:(id)completion
 {
-  v67 = a5;
-  y = a3.y;
-  x = a3.x;
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
   p_transformParams = &self->_transformParams;
   filteredOutDirection = self->_transformParams.filteredOutDirection;
   *&v90[64] = *&self->_transformParams.flownOutDirection.y;
@@ -1818,8 +1818,8 @@ LABEL_11:
   v75 = v38;
   v88 = *&p_transformParams->flattenFlipped;
   v89 = *(&p_transformParams->forceHidden + 1);
-  v68 = a4;
-  *&v69 = a4;
+  indexCopy = index;
+  *&v69 = index;
   BYTE8(v69) = 0;
   *(&v69 + 9) = *&p_transformParams->flattenFlipped;
   BYTE11(v69) = *(&p_transformParams->forceHidden + 1);
@@ -1895,21 +1895,21 @@ LABEL_11:
     v63 = [CAMediaTimingFunction functionWithControlPoints:v59];
   }
 
-  if (!v67)
+  if (!animatedCopy)
   {
-    a6 = 0.0;
+    duration = 0.0;
   }
 
   [(CAKeyframeAnimation *)v56 setTimingFunctions:[NSArray arrayWithObjects:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut], v63, 0]];
 
-  self->_completionAnimationCompletionBlock = [a7 copy];
+  self->_completionAnimationCompletionBlock = [completion copy];
   v64 = +[CAAnimationGroup animation];
   [v64 setAnimations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v39, v53, v56, 0)}];
-  [v64 setDuration:a6];
+  [v64 setDuration:duration];
   [v64 setDelegate:self];
   [v64 setRemovedOnCompletion:0];
   [(THNoteCardLayer *)self addAnimation:v64 forKey:@"completeDragAnimation"];
-  *&v69 = v68;
+  *&v69 = indexCopy;
   BYTE8(v69) = 0;
   *(&v69 + 9) = v88;
   BYTE11(v69) = v89;
@@ -1920,18 +1920,18 @@ LABEL_11:
   v75 = v85;
   v72 = v82;
   v73 = v83;
-  [(THNoteCardContentLayer *)self->_frontLayer setDisplayAttributes:[(THNoteCardLayer *)self p_displayAttributesForParameters:&v69]& 0xFFFFFFFFFFLL animated:v67 duration:a6];
+  [(THNoteCardContentLayer *)self->_frontLayer setDisplayAttributes:[(THNoteCardLayer *)self p_displayAttributesForParameters:&v69]& 0xFFFFFFFFFFLL animated:animatedCopy duration:duration];
   [(THNoteCardLayer *)self setDragOffset:CGPointZero.x, CGPointZero.y];
   [(THNoteCardLayer *)self setDragAnchor:CGPointZero.x, CGPointZero.y];
-  [(THNoteCardLayer *)self setCardIndex:v68];
+  [(THNoteCardLayer *)self setCardIndex:indexCopy];
   [(THNoteCardLayer *)self setFlipped:0];
 }
 
-- (void)p_completeFlippedDragViaDragOffset:(CGPoint)a3 newCardIndex:(int64_t)a4 animated:(BOOL)a5 duration:(double)a6 completion:(id)a7
+- (void)p_completeFlippedDragViaDragOffset:(CGPoint)offset newCardIndex:(int64_t)index animated:(BOOL)animated duration:(double)duration completion:(id)completion
 {
-  v92 = a5;
-  y = a3.y;
-  x = a3.x;
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
   p_transformParams = &self->_transformParams;
   TSDPointLength();
   v13 = v12;
@@ -2063,8 +2063,8 @@ LABEL_11:
   v119 = -550.0;
   v56 = p_transformParams->flipped;
   v57 = *&p_transformParams->forceHidden;
-  v93 = a4;
-  *&v94 = a4;
+  indexCopy = index;
+  *&v94 = index;
   v88 = v56;
   v89 = v57;
   BYTE8(v94) = v56;
@@ -2146,8 +2146,8 @@ LABEL_11:
   [(CAKeyframeAnimation *)v79 setCalculationMode:kCAAnimationCubic];
   v80 = [NSValue valueWithCGPoint:v40, v41];
   v81 = [NSValue valueWithCGPoint:v50, v51];
-  v82 = [NSValue valueWithCGPoint:v128, v129];
-  [(CAKeyframeAnimation *)v79 setValues:[NSArray arrayWithObjects:v80, v81, v82, [NSValue valueWithCGPoint:v105, v106], 0]];
+  v129 = [NSValue valueWithCGPoint:v128, v129];
+  [(CAKeyframeAnimation *)v79 setValues:[NSArray arrayWithObjects:v80, v81, v129, [NSValue valueWithCGPoint:v105, v106], 0]];
   [(CAKeyframeAnimation *)v79 setTimingFunctions:[NSArray arrayWithObjects:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear], [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear], [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear], 0]];
   v83 = [CABasicAnimation animationWithKeyPath:@"sublayerTransform"];
   [(THNoteCardLayer *)self sublayerTransform];
@@ -2161,24 +2161,24 @@ LABEL_11:
     completionAnimationCompletionBlock = self->_completionAnimationCompletionBlock;
   }
 
-  if (v92)
+  if (animatedCopy)
   {
-    v85 = a6;
+    durationCopy = duration;
   }
 
   else
   {
-    v85 = 0.0;
+    durationCopy = 0.0;
   }
 
-  self->_completionAnimationCompletionBlock = [a7 copy];
+  self->_completionAnimationCompletionBlock = [completion copy];
   v86 = +[CAAnimationGroup animation];
   [v86 setAnimations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v87, v77, v79, v83, 0)}];
-  [v86 setDuration:v85];
+  [v86 setDuration:durationCopy];
   [v86 setDelegate:self];
   [v86 setRemovedOnCompletion:0];
   [(THNoteCardLayer *)self addAnimation:v86 forKey:@"completeFlippedDragAnimation"];
-  *&v94 = v93;
+  *&v94 = indexCopy;
   BYTE8(v94) = v88;
   BYTE9(v94) = 1;
   WORD5(v94) = v89;
@@ -2189,10 +2189,10 @@ LABEL_11:
   v98 = v108;
   v99 = v109;
   v100 = v110;
-  [(THNoteCardContentLayer *)self->_frontLayer setDisplayAttributes:[(THNoteCardLayer *)self p_displayAttributesForParameters:&v94]& 0xFFFFFFFFFFLL animated:v92 duration:v85];
+  [(THNoteCardContentLayer *)self->_frontLayer setDisplayAttributes:[(THNoteCardLayer *)self p_displayAttributesForParameters:&v94]& 0xFFFFFFFFFFLL animated:animatedCopy duration:durationCopy];
   [(THNoteCardLayer *)self setDragOffset:CGPointZero.x, CGPointZero.y];
   [(THNoteCardLayer *)self setDragAnchor:CGPointZero.x, CGPointZero.y];
-  [(THNoteCardLayer *)self setCardIndex:v93];
+  [(THNoteCardLayer *)self setCardIndex:indexCopy];
   [(THNoteCardLayer *)self setFlipped:0];
 }
 

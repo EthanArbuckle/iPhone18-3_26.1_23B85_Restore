@@ -1,10 +1,10 @@
 @interface RMKeyValueViewController
-- (id)_keyValueDetailValue:(id)a3;
+- (id)_keyValueDetailValue:(id)value;
 - (id)_specifiersForKeyValues;
 - (id)specifiers;
 - (void)_processUserInfoDictionary;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation RMKeyValueViewController
@@ -15,28 +15,28 @@
   v6.receiver = self;
   v6.super_class = RMKeyValueViewController;
   [(RMKeyValueViewController *)&v6 viewDidLoad];
-  v3 = [(RMKeyValueViewController *)self navigationItem];
-  [v3 setLeftBarButtonItem:0];
+  navigationItem = [(RMKeyValueViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 
-  v4 = [(RMKeyValueViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:0];
+  navigationItem2 = [(RMKeyValueViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:0];
 
-  v5 = [(RMKeyValueViewController *)self navigationItem];
-  DMCSendNavUIUpdatedNotification(v5);
+  navigationItem3 = [(RMKeyValueViewController *)self navigationItem];
+  DMCSendNavUIUpdatedNotification(navigationItem3);
 }
 
 - (void)_processUserInfoDictionary
 {
-  v4 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
-  v3 = [v4 objectForKeyedSubscript:@"RMConfigurationViewModelKey"];
+  userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"RMConfigurationViewModelKey"];
   [(RMKeyValueViewController *)self setViewModel:v3];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = RMKeyValueViewController;
-  [(RMKeyValueViewController *)&v4 viewWillAppear:a3];
+  [(RMKeyValueViewController *)&v4 viewWillAppear:appear];
   if (([(RMKeyValueViewController *)self isMovingToParentViewController]& 1) == 0)
   {
     [(RMKeyValueViewController *)self reloadSpecifiers];
@@ -49,9 +49,9 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(RMKeyValueViewController *)self _specifiersForKeyValues];
+    _specifiersForKeyValues = [(RMKeyValueViewController *)self _specifiersForKeyValues];
     v6 = *(&self->super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.isa + v3) = _specifiersForKeyValues;
 
     v4 = *(&self->super.super.super.super.super.isa + v3);
   }
@@ -63,19 +63,19 @@
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
-  v4 = [(RMKeyValueViewController *)self viewModel];
-  v5 = [v4 detailViewModels];
-  v6 = [v3 initWithCapacity:{objc_msgSend(v5, "count")}];
+  viewModel = [(RMKeyValueViewController *)self viewModel];
+  detailViewModels = [viewModel detailViewModels];
+  v6 = [v3 initWithCapacity:{objc_msgSend(detailViewModels, "count")}];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(RMKeyValueViewController *)self viewModel];
-  v8 = [v7 detailViewModels];
+  viewModel2 = [(RMKeyValueViewController *)self viewModel];
+  detailViewModels2 = [viewModel2 detailViewModels];
 
-  obj = v8;
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  obj = detailViewModels2;
+  v9 = [detailViewModels2 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -91,8 +91,8 @@
 
         v13 = *(*(&v19 + 1) + 8 * i);
         v14 = MEMORY[0x277D3FAD8];
-        v15 = [v13 title];
-        v16 = [v14 preferenceSpecifierNamed:v15 target:self set:0 get:sel__keyValueDetailValue_ detail:0 cell:4 edit:0];
+        title = [v13 title];
+        v16 = [v14 preferenceSpecifierNamed:title target:self set:0 get:sel__keyValueDetailValue_ detail:0 cell:4 edit:0];
 
         [v16 setUserInfo:v13];
         [v6 addObject:v16];
@@ -107,12 +107,12 @@
   return v6;
 }
 
-- (id)_keyValueDetailValue:(id)a3
+- (id)_keyValueDetailValue:(id)value
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 value];
+  userInfo = [value userInfo];
+  value = [userInfo value];
 
-  return v4;
+  return value;
 }
 
 @end

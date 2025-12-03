@@ -1,7 +1,7 @@
 @interface HMFObjectObserver
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMFObjectObserver)init;
-- (HMFObjectObserver)initWithObservedObject:(id)a3;
+- (HMFObjectObserver)initWithObservedObject:(id)object;
 - (id)observedObject;
 - (void)_startObserving;
 - (void)_stopObserving;
@@ -23,10 +23,10 @@
   objc_exception_throw(v7);
 }
 
-- (HMFObjectObserver)initWithObservedObject:(id)a3
+- (HMFObjectObserver)initWithObservedObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
     v9.receiver = self;
     v9.super_class = HMFObjectObserver;
@@ -34,21 +34,21 @@
     v6 = v5;
     if (v5)
     {
-      objc_storeWeak(&v5->_observedObject, v4);
-      v6->_cachedHash = [v4 hash];
+      objc_storeWeak(&v5->_observedObject, objectCopy);
+      v6->_cachedHash = [objectCopy hash];
       [(HMFObjectObserver *)v6 _startObserving];
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -62,10 +62,10 @@
   [(HMFObjectObserver *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -75,7 +75,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -112,8 +112,8 @@
 
 - (void)_startObserving
 {
-  v3 = [(HMFObjectObserver *)self observedObject];
-  if (v3)
+  observedObject = [(HMFObjectObserver *)self observedObject];
+  if (observedObject)
   {
     v4 = objc_alloc_init(_HMFObjectObserverInternal);
     objc_initWeak(&location, self);
@@ -123,7 +123,7 @@
     v5[3] = &unk_2786E6CA8;
     objc_copyWeak(&v6, &location);
     [(_HMFObjectObserverInternal *)v4 setDeallocationBlock:v5];
-    objc_setAssociatedObject(v3, self, v4, 1);
+    objc_setAssociatedObject(observedObject, self, v4, 1);
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }
@@ -144,11 +144,11 @@ void __36__HMFObjectObserver__startObserving__block_invoke(uint64_t a1)
 - (void)_stopObserving
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(HMFObjectObserver *)self observedObject];
-  v5 = v4;
-  if (v4)
+  observedObject = [(HMFObjectObserver *)self observedObject];
+  v5 = observedObject;
+  if (observedObject)
   {
-    objc_setAssociatedObject(v4, self, 0, 1);
+    objc_setAssociatedObject(observedObject, self, 0, 1);
   }
 
   objc_autoreleasePoolPop(v3);

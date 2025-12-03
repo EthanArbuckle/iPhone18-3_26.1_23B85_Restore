@@ -1,8 +1,8 @@
 @interface BSXPCAutoCodingOptions
 - (BSXPCAutoCodingOptions)init;
-- (void)addSupportedCoding:(id)a3;
+- (void)addSupportedCoding:(id)coding;
 - (void)dealloc;
-- (void)setSupportedCodings:(id)a3;
+- (void)setSupportedCodings:(id)codings;
 @end
 
 @implementation BSXPCAutoCodingOptions
@@ -32,10 +32,10 @@
   [(BSXPCAutoCodingOptions *)&v3 dealloc];
 }
 
-- (void)addSupportedCoding:(id)a3
+- (void)addSupportedCoding:(id)coding
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!coding)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"coding != ((void *)0)"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -47,7 +47,7 @@
       v11 = 2114;
       v12 = NSStringFromClass(v8);
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = @"BSXPCAutoCoding.m";
       v17 = 1024;
@@ -67,10 +67,10 @@
   [(BSXPCAutoCodingOptions *)self setSupportedCodings:v4];
 }
 
-- (void)setSupportedCodings:(id)a3
+- (void)setSupportedCodings:(id)codings
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!codings)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"supportedCodings != ((void *)0)"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -82,7 +82,7 @@
       v13 = 2114;
       v14 = NSStringFromClass(v10);
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = @"BSXPCAutoCoding.m";
       v19 = 1024;
@@ -97,11 +97,11 @@
     JUMPOUT(0x18FF606F8);
   }
 
-  v4 = [a3 bs_array];
+  bs_array = [codings bs_array];
   supportedCodings = self->_supportedCodings;
-  if (supportedCodings != v4)
+  if (supportedCodings != bs_array)
   {
-    v6 = v4;
+    v6 = bs_array;
 
     if (!v6)
     {

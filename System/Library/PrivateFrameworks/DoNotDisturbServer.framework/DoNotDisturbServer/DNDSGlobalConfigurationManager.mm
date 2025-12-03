@@ -1,28 +1,28 @@
 @interface DNDSGlobalConfigurationManager
-- (BOOL)getModesCanImpactAvailabilityReturningError:(id *)a3;
-- (BOOL)getPreventAutoReplyReturningError:(id *)a3;
-- (BOOL)setConfiguration:(id)a3 withError:(id *)a4;
-- (BOOL)setModesCanImpactAvailability:(BOOL)a3 withError:(id *)a4;
-- (BOOL)setPreventAutoReply:(BOOL)a3 withError:(id *)a4;
-- (DNDSGlobalConfigurationManager)initWithBackingStore:(id)a3;
+- (BOOL)getModesCanImpactAvailabilityReturningError:(id *)error;
+- (BOOL)getPreventAutoReplyReturningError:(id *)error;
+- (BOOL)setConfiguration:(id)configuration withError:(id *)error;
+- (BOOL)setModesCanImpactAvailability:(BOOL)availability withError:(id *)error;
+- (BOOL)setPreventAutoReply:(BOOL)reply withError:(id *)error;
+- (DNDSGlobalConfigurationManager)initWithBackingStore:(id)store;
 - (DNDSGlobalConfigurationManagerDelegate)delegate;
-- (id)getConfigurationReturningError:(id *)a3;
-- (unint64_t)_writeConfiguration:(id)a3 error:(id *)a4;
+- (id)getConfigurationReturningError:(id *)error;
+- (unint64_t)_writeConfiguration:(id)configuration error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation DNDSGlobalConfigurationManager
 
-- (DNDSGlobalConfigurationManager)initWithBackingStore:(id)a3
+- (DNDSGlobalConfigurationManager)initWithBackingStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = DNDSGlobalConfigurationManager;
   v6 = [(DNDSGlobalConfigurationManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingStore, a3);
+    objc_storeStrong(&v6->_backingStore, store);
     [(DNDSGlobalConfigurationStoring *)v7->_backingStore setDelegate:v7];
     DNDSRegisterSysdiagnoseDataProvider(v7);
   }
@@ -38,9 +38,9 @@
   [(DNDSGlobalConfigurationManager *)&v3 dealloc];
 }
 
-- (id)getConfigurationReturningError:(id *)a3
+- (id)getConfigurationReturningError:(id *)error
 {
-  v3 = [(DNDSGlobalConfigurationStoring *)self->_backingStore readRecordWithError:a3];
+  v3 = [(DNDSGlobalConfigurationStoring *)self->_backingStore readRecordWithError:error];
   if (!v3)
   {
     v3 = objc_alloc_init(DNDSMutableGlobalConfiguration);
@@ -52,11 +52,11 @@
   return v4;
 }
 
-- (BOOL)setConfiguration:(id)a3 withError:(id *)a4
+- (BOOL)setConfiguration:(id)configuration withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(DNDSGlobalConfigurationStoring *)self->_backingStore readRecordWithError:a4];
-  v8 = [(DNDSGlobalConfigurationManager *)self _writeConfiguration:v6 error:a4];
+  configurationCopy = configuration;
+  v7 = [(DNDSGlobalConfigurationStoring *)self->_backingStore readRecordWithError:error];
+  v8 = [(DNDSGlobalConfigurationManager *)self _writeConfiguration:configurationCopy error:error];
   if (v8 != 2)
   {
     v9 = v8 == 1;
@@ -64,28 +64,28 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v11 = [v7 preventAutoReply];
-  if (v11 != [v6 preventAutoReply])
+  preventAutoReply = [v7 preventAutoReply];
+  if (preventAutoReply != [configurationCopy preventAutoReply])
   {
-    [WeakRetained globalConfigurationManager:self didUpdatePreventAutoReplySetting:{DNDResolvedPreventAutoReplySetting(objc_msgSend(v6, "preventAutoReply")) == 2}];
+    [WeakRetained globalConfigurationManager:self didUpdatePreventAutoReplySetting:{DNDResolvedPreventAutoReplySetting(objc_msgSend(configurationCopy, "preventAutoReply")) == 2}];
   }
 
-  v12 = [v7 bypassSettings];
-  v13 = [v6 bypassSettings];
-  v14 = v13;
-  if (v12 != v13)
+  bypassSettings = [v7 bypassSettings];
+  bypassSettings2 = [configurationCopy bypassSettings];
+  v14 = bypassSettings2;
+  if (bypassSettings != bypassSettings2)
   {
-    v15 = [v7 bypassSettings];
-    if (v15)
+    bypassSettings3 = [v7 bypassSettings];
+    if (bypassSettings3)
     {
-      v16 = v15;
-      v17 = [v6 bypassSettings];
-      if (v17)
+      v16 = bypassSettings3;
+      bypassSettings4 = [configurationCopy bypassSettings];
+      if (bypassSettings4)
       {
-        v18 = v17;
-        v19 = [v7 bypassSettings];
-        v20 = [v6 bypassSettings];
-        v23 = [v19 isEqual:v20];
+        v18 = bypassSettings4;
+        bypassSettings5 = [v7 bypassSettings];
+        bypassSettings6 = [configurationCopy bypassSettings];
+        v23 = [bypassSettings5 isEqual:bypassSettings6];
 
         if (v23)
         {
@@ -97,17 +97,17 @@
     }
 
 LABEL_13:
-    v12 = [v6 bypassSettings];
-    [WeakRetained globalConfigurationManager:self didUpdatePhoneCallBypassSettings:v12];
+    bypassSettings = [configurationCopy bypassSettings];
+    [WeakRetained globalConfigurationManager:self didUpdatePhoneCallBypassSettings:bypassSettings];
     goto LABEL_14;
   }
 
 LABEL_14:
 LABEL_15:
-  v21 = [v7 modesCanImpactAvailability];
-  if (v21 != [v6 modesCanImpactAvailability])
+  modesCanImpactAvailability = [v7 modesCanImpactAvailability];
+  if (modesCanImpactAvailability != [configurationCopy modesCanImpactAvailability])
   {
-    [WeakRetained globalConfigurationManager:self didUpdateModesCanImpactAvailabilitySetting:{DNDResolvedModesCanImpactAvailabilitySetting(objc_msgSend(v6, "modesCanImpactAvailability")) == 2}];
+    [WeakRetained globalConfigurationManager:self didUpdateModesCanImpactAvailabilitySetting:{DNDResolvedModesCanImpactAvailabilitySetting(objc_msgSend(configurationCopy, "modesCanImpactAvailability")) == 2}];
   }
 
   v9 = 1;
@@ -116,23 +116,23 @@ LABEL_18:
   return v9;
 }
 
-- (BOOL)getPreventAutoReplyReturningError:(id *)a3
+- (BOOL)getPreventAutoReplyReturningError:(id *)error
 {
-  v3 = [(DNDSGlobalConfigurationStoring *)self->_backingStore readRecordWithError:a3];
+  v3 = [(DNDSGlobalConfigurationStoring *)self->_backingStore readRecordWithError:error];
   v4 = DNDResolvedPreventAutoReplySetting([v3 preventAutoReply]) == 2;
 
   return v4;
 }
 
-- (BOOL)setPreventAutoReply:(BOOL)a3 withError:(id *)a4
+- (BOOL)setPreventAutoReply:(BOOL)reply withError:(id *)error
 {
-  v5 = a3;
+  replyCopy = reply;
   v22 = *MEMORY[0x277D85DE8];
   v7 = DNDSLogGlobalConfiguration;
   if (os_log_type_enabled(DNDSLogGlobalConfiguration, OS_LOG_TYPE_DEFAULT))
   {
     v8 = "allow";
-    if (v5)
+    if (replyCopy)
     {
       v8 = "prevent";
     }
@@ -160,7 +160,7 @@ LABEL_18:
 
   else
   {
-    if (v5)
+    if (replyCopy)
     {
       v15 = 2;
     }
@@ -173,15 +173,15 @@ LABEL_18:
     if ([v12 preventAutoReply] != v15)
     {
       [v12 setPreventAutoReply:v15];
-      v13 = [(DNDSGlobalConfigurationManager *)self setConfiguration:v12 withError:a4];
+      v13 = [(DNDSGlobalConfigurationManager *)self setConfiguration:v12 withError:error];
       goto LABEL_15;
     }
   }
 
-  if (a4)
+  if (error)
   {
     v16 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_15:
@@ -190,23 +190,23 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)getModesCanImpactAvailabilityReturningError:(id *)a3
+- (BOOL)getModesCanImpactAvailabilityReturningError:(id *)error
 {
-  v3 = [(DNDSGlobalConfigurationStoring *)self->_backingStore readRecordWithError:a3];
+  v3 = [(DNDSGlobalConfigurationStoring *)self->_backingStore readRecordWithError:error];
   v4 = DNDResolvedModesCanImpactAvailabilitySetting([v3 modesCanImpactAvailability]) == 2;
 
   return v4;
 }
 
-- (BOOL)setModesCanImpactAvailability:(BOOL)a3 withError:(id *)a4
+- (BOOL)setModesCanImpactAvailability:(BOOL)availability withError:(id *)error
 {
-  v5 = a3;
+  availabilityCopy = availability;
   v22 = *MEMORY[0x277D85DE8];
   v7 = DNDSLogGlobalConfiguration;
   if (os_log_type_enabled(DNDSLogGlobalConfiguration, OS_LOG_TYPE_DEFAULT))
   {
     v8 = "NO";
-    if (v5)
+    if (availabilityCopy)
     {
       v8 = "YES";
     }
@@ -234,7 +234,7 @@ LABEL_15:
 
   else
   {
-    if (v5)
+    if (availabilityCopy)
     {
       v15 = 2;
     }
@@ -247,15 +247,15 @@ LABEL_15:
     if ([v12 modesCanImpactAvailability] != v15)
     {
       [v12 setModesCanImpactAvailability:v15];
-      v13 = [(DNDSGlobalConfigurationManager *)self setConfiguration:v12 withError:a4];
+      v13 = [(DNDSGlobalConfigurationManager *)self setConfiguration:v12 withError:error];
       goto LABEL_15;
     }
   }
 
-  if (a4)
+  if (error)
   {
     v16 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_15:
@@ -264,13 +264,13 @@ LABEL_15:
   return v13;
 }
 
-- (unint64_t)_writeConfiguration:(id)a3 error:(id *)a4
+- (unint64_t)_writeConfiguration:(id)configuration error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  configurationCopy = configuration;
   backingStore = self->_backingStore;
   v19 = 0;
-  v8 = [(DNDSGlobalConfigurationStoring *)backingStore writeRecord:v6 error:&v19];
+  v8 = [(DNDSGlobalConfigurationStoring *)backingStore writeRecord:configurationCopy error:&v19];
   v9 = v19;
   v10 = v9;
   if (v8)
@@ -292,7 +292,7 @@ LABEL_15:
       if (os_log_type_enabled(DNDSLogGlobalConfiguration, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v21 = v6;
+        v21 = configurationCopy;
         _os_log_impl(&dword_24912E000, v11, OS_LOG_TYPE_DEFAULT, "Saved configuration; configuration=%{public}@", buf, 0xCu);
       }
 
@@ -304,16 +304,16 @@ LABEL_15:
     goto LABEL_20;
   }
 
-  if (a4 && v9)
+  if (error && v9)
   {
     v14 = v9;
-    *a4 = v10;
+    *error = v10;
   }
 
   v15 = +[DNDSKeybag sharedInstance];
-  v16 = [v15 hasUnlockedSinceBoot];
+  hasUnlockedSinceBoot = [v15 hasUnlockedSinceBoot];
 
-  if (v16)
+  if (hasUnlockedSinceBoot)
   {
     if (os_log_type_enabled(DNDSLogGlobalConfiguration, OS_LOG_TYPE_ERROR))
     {

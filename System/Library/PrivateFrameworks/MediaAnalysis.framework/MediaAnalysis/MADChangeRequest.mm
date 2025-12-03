@@ -1,75 +1,75 @@
 @interface MADChangeRequest
-+ (id)changeRequestWithManagedObjectContext:(id)a3;
-- (MADChangeRequest)initWithManagedObjectContext:(id)a3;
-- (id)_fetchEarliestNthTransaction:(unint64_t)a3;
-- (int)_fetchOrCreateManagedProcessingStatusWithTaskID:(unint64_t)a3 localIdentifier:(id)a4 managedProcessingStatus:(id *)a5;
-- (int)_hardFailAllRunningProcessingStatusForTaskID:(unint64_t)a3 additionalPredicates:(id)a4;
-- (int)_hardFailAllRunningProcessingStatusWithPredicate:(id)a3;
-- (int)_prunePersistentHistoryBeforeTransaction:(id)a3;
-- (int)_removeAssetsWithPredicate:(id)a3;
-- (int)_removeBackgroundAnalysisProgressHistoryImmediatelyWithPredicate:(id)a3;
-- (int)_removeChangeTokenImmediatelyWithPredicate:(id)a3;
-- (int)_removeChangeTokenWithPredicate:(id)a3;
-- (int)_removeMomentsScheduledAssetImmediatelyWithPredicate:(id)a3;
-- (int)_removeMomentsScheduledAssetWithPredicate:(id)a3;
-- (int)_removeProcessingStatusImmediatelyWithPredicate:(id)a3;
-- (int)_removeProcessingStatusWithPredicate:(id)a3;
-- (int)_setAttempts:(unint64_t)a3 asset:(id)a4 taskID:(unint64_t)a5 status:(unint64_t)a6 lastAttemptDate:(id)a7 mediaType:(int64_t)a8 mediaSubtypes:(unint64_t)a9 errorCode:(unint64_t)a10 errorLine:(unint64_t)a11;
-- (int)_updateProcessingStatus:(unint64_t)a3 nextAttemptDate:(id)a4 errorCode:(unint64_t)a5 errorLine:(unint64_t)a6 localIdentifier:(id)a7 taskID:(unint64_t)a8;
++ (id)changeRequestWithManagedObjectContext:(id)context;
+- (MADChangeRequest)initWithManagedObjectContext:(id)context;
+- (id)_fetchEarliestNthTransaction:(unint64_t)transaction;
+- (int)_fetchOrCreateManagedProcessingStatusWithTaskID:(unint64_t)d localIdentifier:(id)identifier managedProcessingStatus:(id *)status;
+- (int)_hardFailAllRunningProcessingStatusForTaskID:(unint64_t)d additionalPredicates:(id)predicates;
+- (int)_hardFailAllRunningProcessingStatusWithPredicate:(id)predicate;
+- (int)_prunePersistentHistoryBeforeTransaction:(id)transaction;
+- (int)_removeAssetsWithPredicate:(id)predicate;
+- (int)_removeBackgroundAnalysisProgressHistoryImmediatelyWithPredicate:(id)predicate;
+- (int)_removeChangeTokenImmediatelyWithPredicate:(id)predicate;
+- (int)_removeChangeTokenWithPredicate:(id)predicate;
+- (int)_removeMomentsScheduledAssetImmediatelyWithPredicate:(id)predicate;
+- (int)_removeMomentsScheduledAssetWithPredicate:(id)predicate;
+- (int)_removeProcessingStatusImmediatelyWithPredicate:(id)predicate;
+- (int)_removeProcessingStatusWithPredicate:(id)predicate;
+- (int)_setAttempts:(unint64_t)attempts asset:(id)asset taskID:(unint64_t)d status:(unint64_t)status lastAttemptDate:(id)date mediaType:(int64_t)type mediaSubtypes:(unint64_t)subtypes errorCode:(unint64_t)self0 errorLine:(unint64_t)self1;
+- (int)_updateProcessingStatus:(unint64_t)status nextAttemptDate:(id)date errorCode:(unint64_t)code errorLine:(unint64_t)line localIdentifier:(id)identifier taskID:(unint64_t)d;
 - (unint64_t)_queryTransactionRecordCount;
-- (void)assetWithPhotosAsset:(id)a3 analysis:(id)a4;
-- (void)deleteAnalysisResultsImmediatelyWithType:(unint64_t)a3;
-- (void)hardFailAllRunningProcessingStatusForTaskID:(unint64_t)a3;
-- (void)hardFailAllRunningProcessingStatusForTaskID:(unint64_t)a3 additionalPredicates:(id)a4;
-- (void)prunePersistentHistoryWithCancelBlock:(id)a3 extendTimeoutBlock:(id)a4;
+- (void)assetWithPhotosAsset:(id)asset analysis:(id)analysis;
+- (void)deleteAnalysisResultsImmediatelyWithType:(unint64_t)type;
+- (void)hardFailAllRunningProcessingStatusForTaskID:(unint64_t)d;
+- (void)hardFailAllRunningProcessingStatusForTaskID:(unint64_t)d additionalPredicates:(id)predicates;
+- (void)prunePersistentHistoryWithCancelBlock:(id)block extendTimeoutBlock:(id)timeoutBlock;
 - (void)removeAllBackgroundAnalysisProgressHistoryImmediately;
 - (void)removeAllChangeTokensImmediately;
-- (void)removeAllChangeTokensImmediatelyForTaskID:(unint64_t)a3;
+- (void)removeAllChangeTokensImmediatelyForTaskID:(unint64_t)d;
 - (void)removeAllDataStoreKeyValuePairsImmediately;
 - (void)removeAllMomentsScheduledAssetsImmediately;
 - (void)removeAllProcessingStatusImmediately;
-- (void)removeAllProcessingStatusImmediatelyForTaskID:(unint64_t)a3;
-- (void)removeAssetsWithLocalIdentifiers:(id)a3;
-- (void)removeChangeTokenForTaskID:(unint64_t)a3 changeTokenType:(unint64_t)a4;
-- (void)removeDataStoreKey:(id)a3;
-- (void)removeMomentsScheduledAssetWithLocalIdentifier:(id)a3 taskID:(unint64_t)a4;
-- (void)removeProcessingStatusForLocalIdentifier:(id)a3 taskID:(unint64_t)a4;
-- (void)removeProcessingStatusForLocalIdentifiers:(id)a3 taskID:(unint64_t)a4;
-- (void)removeProcessingStatusImmediatelyForTaskID:(unint64_t)a3 mediaType:(int64_t)a4 mediaSubtypes:(unint64_t)a5;
+- (void)removeAllProcessingStatusImmediatelyForTaskID:(unint64_t)d;
+- (void)removeAssetsWithLocalIdentifiers:(id)identifiers;
+- (void)removeChangeTokenForTaskID:(unint64_t)d changeTokenType:(unint64_t)type;
+- (void)removeDataStoreKey:(id)key;
+- (void)removeMomentsScheduledAssetWithLocalIdentifier:(id)identifier taskID:(unint64_t)d;
+- (void)removeProcessingStatusForLocalIdentifier:(id)identifier taskID:(unint64_t)d;
+- (void)removeProcessingStatusForLocalIdentifiers:(id)identifiers taskID:(unint64_t)d;
+- (void)removeProcessingStatusImmediatelyForTaskID:(unint64_t)d mediaType:(int64_t)type mediaSubtypes:(unint64_t)subtypes;
 - (void)removeProgressEntriesBeyondLimits;
-- (void)setAnalysisVersion:(int)a3 forLocalIdentifier:(id)a4;
-- (void)setAttempts:(unint64_t)a3 asset:(id)a4 taskID:(unint64_t)a5 status:(unint64_t)a6 lastAttemptDate:(id)a7;
-- (void)setAttempts:(unint64_t)a3 asset:(id)a4 taskID:(unint64_t)a5 status:(unint64_t)a6 lastAttemptDate:(id)a7 mediaType:(int64_t)a8 mediaSubtypes:(unint64_t)a9 errorCode:(unint64_t)a10 errorLine:(unint64_t)a11;
-- (void)setChangeToken:(id)a3 taskID:(unint64_t)a4 changeTokenType:(unint64_t)a5 date:(id)a6;
-- (void)setDataStoreValue:(int64_t)a3 forKey:(id)a4;
-- (void)setDataStoreValueIfNotExist:(int64_t)a3 forKey:(id)a4;
-- (void)setDeletePendingFlag:(BOOL)a3 forLocalIdentifier:(id)a4;
-- (void)setMomentsScheduledAssetWithLocalIdentifier:(id)a3 taskID:(unint64_t)a4 requestDate:(id)a5;
-- (void)storeProgressForActivityID:(unint64_t)a3 analysisSubtype:(unint64_t)a4 version:(unint64_t)a5 processedAssetCount:(unint64_t)a6 totalAssetCount:(unint64_t)a7 storeDate:(id)a8;
-- (void)storeStatsFlags:(unint64_t)a3 forLocalIdentifier:(id)a4;
-- (void)updateChangeToken:(id)a3 taskID:(unint64_t)a4 changeTokenType:(unint64_t)a5;
-- (void)updateProcessingStatus:(unint64_t)a3 nextAttemptDate:(id)a4 errorCode:(unint64_t)a5 errorLine:(unint64_t)a6 localIdentifier:(id)a7 taskID:(unint64_t)a8;
-- (void)updateProcessingStatus:(unint64_t)a3 nextAttemptDate:(id)a4 localIdentifier:(id)a5 taskID:(unint64_t)a6;
+- (void)setAnalysisVersion:(int)version forLocalIdentifier:(id)identifier;
+- (void)setAttempts:(unint64_t)attempts asset:(id)asset taskID:(unint64_t)d status:(unint64_t)status lastAttemptDate:(id)date;
+- (void)setAttempts:(unint64_t)attempts asset:(id)asset taskID:(unint64_t)d status:(unint64_t)status lastAttemptDate:(id)date mediaType:(int64_t)type mediaSubtypes:(unint64_t)subtypes errorCode:(unint64_t)self0 errorLine:(unint64_t)self1;
+- (void)setChangeToken:(id)token taskID:(unint64_t)d changeTokenType:(unint64_t)type date:(id)date;
+- (void)setDataStoreValue:(int64_t)value forKey:(id)key;
+- (void)setDataStoreValueIfNotExist:(int64_t)exist forKey:(id)key;
+- (void)setDeletePendingFlag:(BOOL)flag forLocalIdentifier:(id)identifier;
+- (void)setMomentsScheduledAssetWithLocalIdentifier:(id)identifier taskID:(unint64_t)d requestDate:(id)date;
+- (void)storeProgressForActivityID:(unint64_t)d analysisSubtype:(unint64_t)subtype version:(unint64_t)version processedAssetCount:(unint64_t)count totalAssetCount:(unint64_t)assetCount storeDate:(id)date;
+- (void)storeStatsFlags:(unint64_t)flags forLocalIdentifier:(id)identifier;
+- (void)updateChangeToken:(id)token taskID:(unint64_t)d changeTokenType:(unint64_t)type;
+- (void)updateProcessingStatus:(unint64_t)status nextAttemptDate:(id)date errorCode:(unint64_t)code errorLine:(unint64_t)line localIdentifier:(id)identifier taskID:(unint64_t)d;
+- (void)updateProcessingStatus:(unint64_t)status nextAttemptDate:(id)date localIdentifier:(id)identifier taskID:(unint64_t)d;
 @end
 
 @implementation MADChangeRequest
 
-- (void)storeProgressForActivityID:(unint64_t)a3 analysisSubtype:(unint64_t)a4 version:(unint64_t)a5 processedAssetCount:(unint64_t)a6 totalAssetCount:(unint64_t)a7 storeDate:(id)a8
+- (void)storeProgressForActivityID:(unint64_t)d analysisSubtype:(unint64_t)subtype version:(unint64_t)version processedAssetCount:(unint64_t)count totalAssetCount:(unint64_t)assetCount storeDate:(id)date
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v14 = a8;
+  dateCopy = date;
   if (!self->_error)
   {
     v15 = [[MADManagedBackgroundAnalysisProgressHistory alloc] initWithContext:self->_moc];
     v16 = v15;
     if (v15)
     {
-      [(MADManagedBackgroundAnalysisProgressHistory *)v15 setActivityID:a3];
-      [(MADManagedBackgroundAnalysisProgressHistory *)v16 setAnalysisSubtype:a4];
-      [(MADManagedBackgroundAnalysisProgressHistory *)v16 setVersion:a5];
-      [(MADManagedBackgroundAnalysisProgressHistory *)v16 setProcessedAssetCount:a6];
-      [(MADManagedBackgroundAnalysisProgressHistory *)v16 setTotalAssetCount:a7];
-      [(MADManagedBackgroundAnalysisProgressHistory *)v16 setStoreDate:v14];
+      [(MADManagedBackgroundAnalysisProgressHistory *)v15 setActivityID:d];
+      [(MADManagedBackgroundAnalysisProgressHistory *)v16 setAnalysisSubtype:subtype];
+      [(MADManagedBackgroundAnalysisProgressHistory *)v16 setVersion:version];
+      [(MADManagedBackgroundAnalysisProgressHistory *)v16 setProcessedAssetCount:count];
+      [(MADManagedBackgroundAnalysisProgressHistory *)v16 setTotalAssetCount:assetCount];
+      [(MADManagedBackgroundAnalysisProgressHistory *)v16 setStoreDate:dateCopy];
     }
 
     else
@@ -78,7 +78,7 @@
       v28 = *MEMORY[0x1E696A578];
       v18 = MEMORY[0x1E696AEC0];
       v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"[MACD|ProgressHistory] Failed to create managed progress history object for activity %@"];
-      v20 = VCPTaskIDDescription(a3);
+      v20 = VCPTaskIDDescription(d);
       v21 = [v18 stringWithFormat:v19, v20];
       v29[0] = v21;
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
@@ -88,7 +88,7 @@
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v25 = VCPTaskIDDescription(a3);
+        v25 = VCPTaskIDDescription(d);
         *buf = 138412290;
         v27 = v25;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MACD|ProgressHistory] Failed to create managed progress history object for activity %@", buf, 0xCu);
@@ -142,8 +142,8 @@
       for (i = 0; [v8 count] > i; ++i)
       {
         v20 = [v8 objectAtIndexedSubscript:i];
-        v21 = [v20 storeDate];
-        v22 = [v21 compare:v17] == -1;
+        storeDate = [v20 storeDate];
+        v22 = [storeDate compare:v17] == -1;
 
         if (!v22 && (v18 + [v8 count]) < 0x1F5)
         {
@@ -159,15 +159,15 @@
   }
 }
 
-- (int)_removeBackgroundAnalysisProgressHistoryImmediatelyWithPredicate:(id)a3
+- (int)_removeBackgroundAnalysisProgressHistoryImmediatelyWithPredicate:(id)predicate
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = +[MADManagedBackgroundAnalysisProgressHistory fetchRequest];
   v6 = v5;
-  if (v4)
+  if (predicateCopy)
   {
-    [v5 setPredicate:v4];
+    [v5 setPredicate:predicateCopy];
   }
 
   v13 = 0;
@@ -177,7 +177,7 @@
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = predicateCopy;
       v8 = MEMORY[0x1E69E9C10];
       v9 = "[MACD|ProgressHistory] Failed to batch delete background analysis progress history with predicate %@";
       v10 = OS_LOG_TYPE_ERROR;
@@ -228,20 +228,20 @@ LABEL_10:
   }
 }
 
-- (void)setMomentsScheduledAssetWithLocalIdentifier:(id)a3 taskID:(unint64_t)a4 requestDate:(id)a5
+- (void)setMomentsScheduledAssetWithLocalIdentifier:(id)identifier taskID:(unint64_t)d requestDate:(id)date
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  dateCopy = date;
   if (!self->_error)
   {
     v10 = [[MADManagedMomentsScheduledAsset alloc] initWithContext:self->_moc];
     v11 = v10;
     if (v10)
     {
-      [(MADManagedMomentsScheduledAsset *)v10 setTaskID:a4];
-      [(MADManagedMomentsScheduledAsset *)v11 setLocalIdentifier:v8];
-      [(MADManagedMomentsScheduledAsset *)v11 setRequestDate:v9];
+      [(MADManagedMomentsScheduledAsset *)v10 setTaskID:d];
+      [(MADManagedMomentsScheduledAsset *)v11 setLocalIdentifier:identifierCopy];
+      [(MADManagedMomentsScheduledAsset *)v11 setRequestDate:dateCopy];
       if (MediaAnalysisLogLevel() < 7)
       {
         goto LABEL_10;
@@ -265,8 +265,8 @@ LABEL_10:
       v24 = *MEMORY[0x1E696A578];
       v16 = MEMORY[0x1E696AEC0];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"[MACD|Moments][%@] Failed to create managed moments scheduled asset object"];
-      v18 = [v16 stringWithFormat:v17, v8];
-      v25[0] = v18;
+      identifierCopy = [v16 stringWithFormat:v17, identifierCopy];
+      v25[0] = identifierCopy;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
       v20 = [v15 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v19];
       error = self->_error;
@@ -284,7 +284,7 @@ LABEL_10:
       }
 
       *buf = 138412290;
-      v23 = v8;
+      v23 = identifierCopy;
       v13 = MEMORY[0x1E69E9C10];
       v14 = "[MACD|Moments][%@] Failed to create managed moments scheduled asset object";
     }
@@ -294,16 +294,16 @@ LABEL_10:
   }
 }
 
-- (int)_removeMomentsScheduledAssetWithPredicate:(id)a3
+- (int)_removeMomentsScheduledAssetWithPredicate:(id)predicate
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v21 = v4;
+  predicateCopy = predicate;
+  v21 = predicateCopy;
   v5 = +[MADManagedMomentsScheduledAsset fetchRequest];
   v6 = v5;
-  if (v4)
+  if (predicateCopy)
   {
-    [v5 setPredicate:v4];
+    [v5 setPredicate:predicateCopy];
   }
 
   moc = self->_moc;
@@ -377,25 +377,25 @@ LABEL_20:
   return v11;
 }
 
-- (void)removeMomentsScheduledAssetWithLocalIdentifier:(id)a3 taskID:(unint64_t)a4
+- (void)removeMomentsScheduledAssetWithLocalIdentifier:(id)identifier taskID:(unint64_t)d
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   if (!self->_error)
   {
     v7 = MEMORY[0x1E696AE18];
     v8 = +[MADManagedMomentsScheduledAsset taskIDColumnName];
     v9 = +[MADManagedMomentsScheduledAsset localIdentifierColumnName];
-    v10 = [v7 predicateWithFormat:@"(%K == %ld) AND (%K == %@)", v8, a4, v9, v6];
+    identifierCopy = [v7 predicateWithFormat:@"(%K == %ld) AND (%K == %@)", v8, d, v9, identifierCopy];
 
-    if ([(MADChangeRequest *)self _removeMomentsScheduledAssetWithPredicate:v10])
+    if ([(MADChangeRequest *)self _removeMomentsScheduledAssetWithPredicate:identifierCopy])
     {
       v11 = MEMORY[0x1E696ABC0];
       v24 = *MEMORY[0x1E696A578];
       v12 = MEMORY[0x1E696AEC0];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"Failed to remove moments scheduled asset %@ for task %@"];
-      v14 = VCPTaskIDDescription(a4);
-      v15 = [v12 stringWithFormat:v13, v6, v14];
+      v14 = VCPTaskIDDescription(d);
+      v15 = [v12 stringWithFormat:v13, identifierCopy, v14];
       v25[0] = v15;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
       v17 = [v11 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v16];
@@ -404,9 +404,9 @@ LABEL_20:
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v19 = VCPTaskIDDescription(a4);
+        v19 = VCPTaskIDDescription(d);
         *buf = 138412546;
-        v21 = v6;
+        v21 = identifierCopy;
         v22 = 2112;
         v23 = v19;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to remove moments scheduled asset %@ for task %@", buf, 0x16u);
@@ -415,15 +415,15 @@ LABEL_20:
   }
 }
 
-- (int)_removeMomentsScheduledAssetImmediatelyWithPredicate:(id)a3
+- (int)_removeMomentsScheduledAssetImmediatelyWithPredicate:(id)predicate
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = +[MADManagedMomentsScheduledAsset fetchRequest];
   v6 = v5;
-  if (v4)
+  if (predicateCopy)
   {
-    [v5 setPredicate:v4];
+    [v5 setPredicate:predicateCopy];
   }
 
   v13 = 0;
@@ -433,7 +433,7 @@ LABEL_20:
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = predicateCopy;
       v8 = MEMORY[0x1E69E9C10];
       v9 = "[MACD|Moments] Failed to batch delete moments scheduled asset with predicate %@";
       v10 = OS_LOG_TYPE_ERROR;
@@ -527,7 +527,7 @@ void __67__MADChangeRequest_PersistentHistory___queryTransactionRecordCount__blo
   }
 }
 
-- (id)_fetchEarliestNthTransaction:(unint64_t)a3
+- (id)_fetchEarliestNthTransaction:(unint64_t)transaction
 {
   v7 = 0;
   v8 = &v7;
@@ -541,7 +541,7 @@ void __67__MADChangeRequest_PersistentHistory___queryTransactionRecordCount__blo
   v6[2] = __68__MADChangeRequest_PersistentHistory___fetchEarliestNthTransaction___block_invoke;
   v6[3] = &unk_1E8350110;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = transaction;
   v6[4] = self;
   [(NSManagedObjectContext *)moc performBlockAndWait:v6];
   v4 = v8[5];
@@ -617,23 +617,23 @@ void __68__MADChangeRequest_PersistentHistory___fetchEarliestNthTransaction___bl
   }
 }
 
-- (int)_prunePersistentHistoryBeforeTransaction:(id)a3
+- (int)_prunePersistentHistoryBeforeTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   moc = self->_moc;
   v10 = 0;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __80__MADChangeRequest_PersistentHistory___prunePersistentHistoryBeforeTransaction___block_invoke;
   v11[3] = &unk_1E8350138;
-  v12 = v4;
-  v13 = self;
-  v6 = v4;
+  v12 = transactionCopy;
+  selfCopy = self;
+  v6 = transactionCopy;
   [(NSManagedObjectContext *)moc mad_performAndSaveChanges:v11 error:&v10];
   v7 = v10;
-  v8 = [v7 code];
+  code = [v7 code];
 
-  return v8;
+  return code;
 }
 
 BOOL __80__MADChangeRequest_PersistentHistory___prunePersistentHistoryBeforeTransaction___block_invoke(uint64_t a1, void *a2)
@@ -676,20 +676,20 @@ BOOL __80__MADChangeRequest_PersistentHistory___prunePersistentHistoryBeforeTran
   return v8 != 0;
 }
 
-- (void)prunePersistentHistoryWithCancelBlock:(id)a3 extendTimeoutBlock:(id)a4
+- (void)prunePersistentHistoryWithCancelBlock:(id)block extendTimeoutBlock:(id)timeoutBlock
 {
   v81[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  timeoutBlockCopy = timeoutBlock;
   if (!self->_error)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __96__MADChangeRequest_PersistentHistory__prunePersistentHistoryWithCancelBlock_extendTimeoutBlock___block_invoke;
     aBlock[3] = &unk_1E8350160;
-    v70 = v6;
-    v68 = v7;
-    v71 = v7;
+    v70 = blockCopy;
+    v68 = timeoutBlockCopy;
+    v71 = timeoutBlockCopy;
     v8 = _Block_copy(aBlock);
     if ((v8[2])())
     {
@@ -701,13 +701,13 @@ BOOL __80__MADChangeRequest_PersistentHistory___prunePersistentHistoryBeforeTran
       v13 = [v11 stringWithFormat:v12];
       v81[0] = v13;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v81 forKeys:&v80 count:1];
-      v15 = v14 = v6;
+      v15 = v14 = blockCopy;
       v16 = [v9 errorWithDomain:v10 code:-128 userInfo:v15];
       error = self->_error;
       self->_error = v16;
 
-      v6 = v14;
-      v7 = v68;
+      blockCopy = v14;
+      timeoutBlockCopy = v68;
       if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         goto LABEL_51;
@@ -734,7 +734,7 @@ LABEL_6:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v25, OS_SIGNPOST_INTERVAL_BEGIN, v23, "MADChangeRequest_PersistentHistory_QueryCount", "", buf, 2u);
       }
 
-      v26 = [(MADChangeRequest *)self _queryTransactionRecordCount];
+      _queryTransactionRecordCount = [(MADChangeRequest *)self _queryTransactionRecordCount];
       v27 = VCPSignPostLog();
       v28 = v27;
       if (v23 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v27))
@@ -743,9 +743,9 @@ LABEL_6:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v28, OS_SIGNPOST_INTERVAL_END, v23, "MADChangeRequest_PersistentHistory_QueryCount", "", buf, 2u);
       }
 
-      if (v26 >= 0x186A1)
+      if (_queryTransactionRecordCount >= 0x186A1)
       {
-        v67 = v6;
+        v67 = blockCopy;
         v29 = VCPSignPostLog();
         v30 = os_signpost_id_generate(v29);
 
@@ -761,14 +761,14 @@ LABEL_6:
 
         while (!v8[2](v8))
         {
-          if (v26 - 100000 >= 0x2710)
+          if (_queryTransactionRecordCount - 100000 >= 0x2710)
           {
             v33 = 10000;
           }
 
           else
           {
-            v33 = v26 - 100000;
+            v33 = _queryTransactionRecordCount - 100000;
           }
 
           v34 = VCPSignPostLog();
@@ -822,7 +822,7 @@ LABEL_6:
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to prune persistent history before transaction", buf, 2u);
             }
 
-            v6 = v67;
+            blockCopy = v67;
             goto LABEL_51;
           }
 
@@ -834,8 +834,8 @@ LABEL_6:
             _os_signpost_emit_with_name_impl(&dword_1C9B70000, v46, OS_SIGNPOST_INTERVAL_END, v42, "MADChangeRequest_PersistentHistory_PruneStep", "", buf, 2u);
           }
 
-          v26 -= v33;
-          if (v26 <= 0x186A0)
+          _queryTransactionRecordCount -= v33;
+          if (_queryTransactionRecordCount <= 0x186A0)
           {
             v47 = VCPSignPostLog();
             v48 = v47;
@@ -845,7 +845,7 @@ LABEL_6:
               _os_signpost_emit_with_name_impl(&dword_1C9B70000, v48, OS_SIGNPOST_INTERVAL_END, spid, "MADChangeRequest_PersistentHistory_Prune", "", buf, 2u);
             }
 
-            v6 = v67;
+            blockCopy = v67;
             goto LABEL_51;
           }
         }
@@ -862,7 +862,7 @@ LABEL_6:
         v56 = self->_error;
         self->_error = v55;
 
-        v6 = v67;
+        blockCopy = v67;
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
@@ -882,7 +882,7 @@ LABEL_51:
       }
 
       *buf = 67109376;
-      v77 = v26;
+      v77 = _queryTransactionRecordCount;
       v78 = 1024;
       v79 = 100000;
       v18 = MEMORY[0x1E69E9C10];
@@ -916,7 +916,7 @@ uint64_t __96__MADChangeRequest_PersistentHistory__prunePersistentHistoryWithCan
   return result;
 }
 
-- (void)deleteAnalysisResultsImmediatelyWithType:(unint64_t)a3
+- (void)deleteAnalysisResultsImmediatelyWithType:(unint64_t)type
 {
   v38[1] = *MEMORY[0x1E69E9840];
   if (!self->_error)
@@ -924,8 +924,8 @@ uint64_t __96__MADChangeRequest_PersistentHistory__prunePersistentHistoryWithCan
     v5 = +[MADManagedPhotosResult fetchRequest];
     v6 = MEMORY[0x1E696AE18];
     v7 = +[MADManagedPhotosResult resultsTypeColumnName];
-    v8 = [v6 predicateWithFormat:@"%K == %ld", v7, a3];
-    [v5 setPredicate:v8];
+    type = [v6 predicateWithFormat:@"%K == %ld", v7, type];
+    [v5 setPredicate:type];
 
     v28 = 0;
     v9 = mach_continuous_time();
@@ -965,13 +965,13 @@ uint64_t __96__MADChangeRequest_PersistentHistory__prunePersistentHistoryWithCan
       {
         v25 = qos_class_self();
         v26 = VCPMAQoSDescription(v25);
-        v27 = [v26 UTF8String];
+        uTF8String = [v26 UTF8String];
         *buf = 134349826;
         v30 = v9;
         v31 = 2082;
         v32 = "DeleteResult";
         v33 = 2082;
-        v34 = v27;
+        v34 = uTF8String;
         v35 = 2050;
         v36 = v28;
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v22, OS_SIGNPOST_EVENT, v24, "CoreDataPersistence", "%{public, signpost.description:begin_time}llu Type=%{public, signpost.telemetry:string1}s QoS=%{public, signpost.telemetry:string2}s Rows=%{public, signpost.telemetry:number1}lld  enableTelemetry=YES ", buf, 0x2Au);
@@ -995,34 +995,34 @@ LABEL_13:
   }
 }
 
-- (void)setDataStoreValue:(int64_t)a3 forKey:(id)a4
+- (void)setDataStoreValue:(int64_t)value forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   if (!self->_error)
   {
-    v8 = v6;
-    v7 = [MADManagedKeyValueStore fetchOrCreateKeyValueStoreByKey:v6 managedObjectContext:self->_moc];
-    [v7 setValue:a3];
+    v8 = keyCopy;
+    v7 = [MADManagedKeyValueStore fetchOrCreateKeyValueStoreByKey:keyCopy managedObjectContext:self->_moc];
+    [v7 setValue:value];
 
-    v6 = v8;
+    keyCopy = v8;
   }
 }
 
-- (void)setDataStoreValueIfNotExist:(int64_t)a3 forKey:(id)a4
+- (void)setDataStoreValueIfNotExist:(int64_t)exist forKey:(id)key
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  keyCopy = key;
   if (!self->_error)
   {
-    v7 = [MADManagedKeyValueStore fetchKeyValueStoreByKey:v6 managedObjectContext:self->_moc];
+    v7 = [MADManagedKeyValueStore fetchKeyValueStoreByKey:keyCopy managedObjectContext:self->_moc];
     if (!v7)
     {
       v8 = [[MADManagedKeyValueStore alloc] initWithContext:self->_moc];
       v7 = v8;
       if (v8)
       {
-        [(MADManagedKeyValueStore *)v8 setKey:v6];
-        [v7 setValue:a3];
+        [(MADManagedKeyValueStore *)v8 setKey:keyCopy];
+        [v7 setValue:exist];
       }
 
       else
@@ -1050,13 +1050,13 @@ LABEL_13:
   }
 }
 
-- (void)removeDataStoreKey:(id)a3
+- (void)removeDataStoreKey:(id)key
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   if (!self->_error)
   {
-    v5 = [MADManagedKeyValueStore fetchKeyValueStoreByKey:v4 managedObjectContext:self->_moc];
+    v5 = [MADManagedKeyValueStore fetchKeyValueStoreByKey:keyCopy managedObjectContext:self->_moc];
     if (v5)
     {
       [(NSManagedObjectContext *)self->_moc deleteObject:v5];
@@ -1065,7 +1065,7 @@ LABEL_13:
     else if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = keyCopy;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MACD|KeyValueStore] Store does not contain value for key %@", &v6, 0xCu);
     }
   }
@@ -1123,14 +1123,14 @@ LABEL_10:
   }
 }
 
-- (int)_fetchOrCreateManagedProcessingStatusWithTaskID:(unint64_t)a3 localIdentifier:(id)a4 managedProcessingStatus:(id *)a5
+- (int)_fetchOrCreateManagedProcessingStatusWithTaskID:(unint64_t)d localIdentifier:(id)identifier managedProcessingStatus:(id *)status
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (a5)
+  identifierCopy = identifier;
+  if (status)
   {
     v28 = 0;
-    v9 = [MADManagedProcessingStatus fetchManagedProcessingStatus:&v28 taskID:a3 localIdentifier:v8 managedObjectContext:self->_moc];
+    v9 = [MADManagedProcessingStatus fetchManagedProcessingStatus:&v28 taskID:d localIdentifier:identifierCopy managedObjectContext:self->_moc];
     v10 = v28;
     v11 = v10;
     if (v9)
@@ -1148,18 +1148,18 @@ LABEL_10:
       v24 = MediaAnalysisLogLevel();
       if (v24 >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
-        v25 = [(MADManagedProcessingStatus *)v11 objectID];
+        objectID = [(MADManagedProcessingStatus *)v11 objectID];
         *buf = 138412546;
-        v30 = v8;
+        v30 = identifierCopy;
         v31 = 2112;
-        v32 = v25;
+        v32 = objectID;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MACD|ProcessingStatus][%@] Fetched managed asset %@", buf, 0x16u);
       }
 
       v14 = v11;
 LABEL_22:
       v26 = v14;
-      *a5 = v14;
+      *status = v14;
 
       v23 = 0;
       goto LABEL_23;
@@ -1179,27 +1179,27 @@ LABEL_22:
         v18 = qos_class_self();
         v19 = VCPMAQoSDescription(v18);
         v20 = v19;
-        v21 = [v19 UTF8String];
+        uTF8String = [v19 UTF8String];
         *buf = 134349826;
         v30 = v13;
         v31 = 2082;
         v32 = "CreateProcessingStatus";
         v33 = 2082;
-        v34 = v21;
+        v34 = uTF8String;
         v35 = 2050;
         v36 = 1;
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v15, OS_SIGNPOST_EVENT, v17, "CoreDataPersistence", "%{public, signpost.description:begin_time}llu Type=%{public, signpost.telemetry:string1}s QoS=%{public, signpost.telemetry:string2}s Rows=%{public, signpost.telemetry:number1}lld  enableTelemetry=YES ", buf, 0x2Au);
       }
 
-      [(MADManagedProcessingStatus *)v14 setLocalIdentifier:v8];
-      [(MADManagedProcessingStatus *)v14 setTaskID:a3];
+      [(MADManagedProcessingStatus *)v14 setLocalIdentifier:identifierCopy];
+      [(MADManagedProcessingStatus *)v14 setTaskID:d];
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
-        v22 = [(MADManagedProcessingStatus *)v14 objectID];
+        objectID2 = [(MADManagedProcessingStatus *)v14 objectID];
         *buf = 138412546;
-        v30 = v8;
+        v30 = identifierCopy;
         v31 = 2112;
-        v32 = v22;
+        v32 = objectID2;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MACD|ProcessingStatus][%@] Created new managed processing status %@", buf, 0x16u);
       }
 
@@ -1209,9 +1209,9 @@ LABEL_22:
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v30 = v8;
+      v30 = identifierCopy;
       v31 = 1024;
-      LODWORD(v32) = a3;
+      LODWORD(v32) = d;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MACD|ProcessingStatus][%@] Failed to create managed processing status object for task %d", buf, 0x12u);
     }
 
@@ -1234,24 +1234,24 @@ LABEL_23:
   return v23;
 }
 
-- (int)_setAttempts:(unint64_t)a3 asset:(id)a4 taskID:(unint64_t)a5 status:(unint64_t)a6 lastAttemptDate:(id)a7 mediaType:(int64_t)a8 mediaSubtypes:(unint64_t)a9 errorCode:(unint64_t)a10 errorLine:(unint64_t)a11
+- (int)_setAttempts:(unint64_t)attempts asset:(id)asset taskID:(unint64_t)d status:(unint64_t)status lastAttemptDate:(id)date mediaType:(int64_t)type mediaSubtypes:(unint64_t)subtypes errorCode:(unint64_t)self0 errorLine:(unint64_t)self1
 {
   v47 = *MEMORY[0x1E69E9840];
-  v17 = a4;
-  v18 = a7;
-  v19 = [v17 localIdentifier];
+  assetCopy = asset;
+  dateCopy = date;
+  localIdentifier = [assetCopy localIdentifier];
   v36 = 0;
-  v20 = [(MADChangeRequest *)self _fetchOrCreateManagedProcessingStatusWithTaskID:a5 localIdentifier:v19 managedProcessingStatus:&v36];
+  v20 = [(MADChangeRequest *)self _fetchOrCreateManagedProcessingStatusWithTaskID:d localIdentifier:localIdentifier managedProcessingStatus:&v36];
   v21 = v36;
 
   if (v20)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v22 = [v17 localIdentifier];
-      v23 = VCPTaskIDDescription(a5);
+      localIdentifier2 = [assetCopy localIdentifier];
+      v23 = VCPTaskIDDescription(d);
       *buf = 138412546;
-      v38 = v22;
+      v38 = localIdentifier2;
       v39 = 2112;
       v40 = v23;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to fetch or create managed processing status of asset %@ for task %@", buf, 0x16u);
@@ -1262,20 +1262,20 @@ LABEL_23:
 
   else
   {
-    v25 = [v17 mad_nextAttemptDateForStatus:a6 currentAttemptDate:v18 attemptCount:a3];
+    v25 = [assetCopy mad_nextAttemptDateForStatus:status currentAttemptDate:dateCopy attemptCount:attempts];
     v26 = mach_continuous_time();
-    v27 = [v17 localIdentifier];
-    [v21 setLocalIdentifier:v27];
+    localIdentifier3 = [assetCopy localIdentifier];
+    [v21 setLocalIdentifier:localIdentifier3];
 
-    [v21 setTaskID:a5];
-    [v21 setLastAttemptDate:v18];
+    [v21 setTaskID:d];
+    [v21 setLastAttemptDate:dateCopy];
     [v21 setNextAttemptDate:v25];
-    [v21 setErrorCode:a10];
-    [v21 setErrorLine:a11];
-    [v21 setMediaType:a8];
-    [v21 setMediaSubtypes:a9];
-    [v21 setAttemptCount:a3];
-    [v21 setStatus:a6];
+    [v21 setErrorCode:code];
+    [v21 setErrorLine:line];
+    [v21 setMediaType:type];
+    [v21 setMediaSubtypes:subtypes];
+    [v21 setAttemptCount:attempts];
+    [v21 setStatus:status];
     v28 = VCPSignPostPersistentLog();
     v29 = VCPSignPostPersistentLog();
     v30 = os_signpost_id_generate(v29);
@@ -1285,13 +1285,13 @@ LABEL_23:
       v31 = qos_class_self();
       v32 = VCPMAQoSDescription(v31);
       v33 = v32;
-      v34 = [v32 UTF8String];
+      uTF8String = [v32 UTF8String];
       *buf = 134350082;
       v38 = v26;
       v39 = 2082;
       v40 = "ModifyProcessingStatus";
       v41 = 2082;
-      v42 = v34;
+      v42 = uTF8String;
       v43 = 2050;
       v44 = 1;
       v45 = 2050;
@@ -1305,22 +1305,22 @@ LABEL_23:
   return v24;
 }
 
-- (void)setAttempts:(unint64_t)a3 asset:(id)a4 taskID:(unint64_t)a5 status:(unint64_t)a6 lastAttemptDate:(id)a7 mediaType:(int64_t)a8 mediaSubtypes:(unint64_t)a9 errorCode:(unint64_t)a10 errorLine:(unint64_t)a11
+- (void)setAttempts:(unint64_t)attempts asset:(id)asset taskID:(unint64_t)d status:(unint64_t)status lastAttemptDate:(id)date mediaType:(int64_t)type mediaSubtypes:(unint64_t)subtypes errorCode:(unint64_t)self0 errorLine:(unint64_t)self1
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v17 = a4;
-  v18 = a7;
+  assetCopy = asset;
+  dateCopy = date;
   if (!self->_error)
   {
-    if ([(MADChangeRequest *)self _setAttempts:a3 asset:v17 taskID:a5 status:a6 lastAttemptDate:v18 mediaType:a8 mediaSubtypes:a9 errorCode:a10 errorLine:a11])
+    if ([(MADChangeRequest *)self _setAttempts:attempts asset:assetCopy taskID:d status:status lastAttemptDate:dateCopy mediaType:type mediaSubtypes:subtypes errorCode:code errorLine:line])
     {
       v19 = MEMORY[0x1E696ABC0];
       v34 = *MEMORY[0x1E696A578];
       v20 = MEMORY[0x1E696AEC0];
       v29 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"Failed to set attempts for asset %@ for task %@"];
-      v21 = [v17 localIdentifier];
-      v22 = VCPTaskIDDescription(a5);
-      v23 = [v20 stringWithFormat:v29, v21, v22];
+      localIdentifier = [assetCopy localIdentifier];
+      v22 = VCPTaskIDDescription(d);
+      v23 = [v20 stringWithFormat:v29, localIdentifier, v22];
       v35[0] = v23;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
       v25 = [v19 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v24];
@@ -1329,10 +1329,10 @@ LABEL_23:
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v27 = [v17 localIdentifier];
-        v28 = VCPTaskIDDescription(a5);
+        localIdentifier2 = [assetCopy localIdentifier];
+        v28 = VCPTaskIDDescription(d);
         *buf = 138412546;
-        v31 = v27;
+        v31 = localIdentifier2;
         v32 = 2112;
         v33 = v28;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to set attempts for asset %@ for task %@", buf, 0x16u);
@@ -1341,22 +1341,22 @@ LABEL_23:
   }
 }
 
-- (void)setAttempts:(unint64_t)a3 asset:(id)a4 taskID:(unint64_t)a5 status:(unint64_t)a6 lastAttemptDate:(id)a7
+- (void)setAttempts:(unint64_t)attempts asset:(id)asset taskID:(unint64_t)d status:(unint64_t)status lastAttemptDate:(id)date
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a7;
+  assetCopy = asset;
+  dateCopy = date;
   if (!self->_error)
   {
-    if ([(MADChangeRequest *)self _setAttempts:a3 asset:v12 taskID:a5 status:a6 lastAttemptDate:v13 mediaType:0 mediaSubtypes:0 errorCode:1 errorLine:0])
+    if ([(MADChangeRequest *)self _setAttempts:attempts asset:assetCopy taskID:d status:status lastAttemptDate:dateCopy mediaType:0 mediaSubtypes:0 errorCode:1 errorLine:0])
     {
       v14 = MEMORY[0x1E696ABC0];
       v29 = *MEMORY[0x1E696A578];
       v15 = MEMORY[0x1E696AEC0];
       v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"Failed to set attempts for asset %@ for task %@"];
-      v16 = [v12 localIdentifier];
-      v17 = VCPTaskIDDescription(a5);
-      v18 = [v15 stringWithFormat:v24, v16, v17];
+      localIdentifier = [assetCopy localIdentifier];
+      v17 = VCPTaskIDDescription(d);
+      v18 = [v15 stringWithFormat:v24, localIdentifier, v17];
       v30[0] = v18;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
       v20 = [v14 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v19];
@@ -1365,10 +1365,10 @@ LABEL_23:
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v22 = [v12 localIdentifier];
-        v23 = VCPTaskIDDescription(a5);
+        localIdentifier2 = [assetCopy localIdentifier];
+        v23 = VCPTaskIDDescription(d);
         *buf = 138412546;
-        v26 = v22;
+        v26 = localIdentifier2;
         v27 = 2112;
         v28 = v23;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to set attempts for asset %@ for task %@", buf, 0x16u);
@@ -1377,11 +1377,11 @@ LABEL_23:
   }
 }
 
-- (int)_removeProcessingStatusWithPredicate:(id)a3
+- (int)_removeProcessingStatusWithPredicate:(id)predicate
 {
   v38 = *MEMORY[0x1E69E9840];
   v28 = 0;
-  v4 = [MADManagedProcessingStatus fetchManagedProcessingStatusBatch:&v28 predicate:a3 fetchLimit:0 sortDescriptors:0 managedObjectContext:self->_moc];
+  v4 = [MADManagedProcessingStatus fetchManagedProcessingStatusBatch:&v28 predicate:predicate fetchLimit:0 sortDescriptors:0 managedObjectContext:self->_moc];
   v5 = v28;
   v6 = v5;
   if (!v4)
@@ -1435,13 +1435,13 @@ LABEL_23:
       v18 = qos_class_self();
       v19 = VCPMAQoSDescription(v18);
       v20 = v19;
-      v21 = [v19 UTF8String];
+      uTF8String = [v19 UTF8String];
       *buf = 134349826;
       v30 = v8;
       v31 = 2082;
       v32 = "DeleteProcessingStatus";
       v33 = 2082;
-      v34 = v21;
+      v34 = uTF8String;
       v35 = 2050;
       v36 = v23;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v15, OS_SIGNPOST_EVENT, v17, "CoreDataPersistence", "%{public, signpost.description:begin_time}llu Type=%{public, signpost.telemetry:string1}s QoS=%{public, signpost.telemetry:string2}s Rows=%{public, signpost.telemetry:number1}lld  enableTelemetry=YES ", buf, 0x2Au);
@@ -1453,17 +1453,17 @@ LABEL_23:
   return v4;
 }
 
-- (void)removeProcessingStatusForLocalIdentifiers:(id)a3 taskID:(unint64_t)a4
+- (void)removeProcessingStatusForLocalIdentifiers:(id)identifiers taskID:(unint64_t)d
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifiersCopy = identifiers;
   if (!self->_error)
   {
     v7 = MEMORY[0x1E696AE18];
     v8 = +[MADManagedProcessingStatus localIdentifierColumnName];
     v9 = +[MADManagedProcessingStatus taskIDColumnName];
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    v11 = [v7 predicateWithFormat:@"%K IN %@ && %K == %@", v8, v6, v9, v10];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
+    v11 = [v7 predicateWithFormat:@"%K IN %@ && %K == %@", v8, identifiersCopy, v9, v10];
 
     if ([(MADChangeRequest *)self _removeProcessingStatusWithPredicate:v11])
     {
@@ -1471,8 +1471,8 @@ LABEL_23:
       v25 = *MEMORY[0x1E696A578];
       v13 = MEMORY[0x1E696AEC0];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"Unable to remove processing status with local identifiers %@ for task %@"];
-      v15 = VCPTaskIDDescription(a4);
-      v16 = [v13 stringWithFormat:v14, v6, v15];
+      v15 = VCPTaskIDDescription(d);
+      v16 = [v13 stringWithFormat:v14, identifiersCopy, v15];
       v26[0] = v16;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
       v18 = [v12 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v17];
@@ -1481,9 +1481,9 @@ LABEL_23:
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v20 = VCPTaskIDDescription(a4);
+        v20 = VCPTaskIDDescription(d);
         *buf = 138412546;
-        v22 = v6;
+        v22 = identifiersCopy;
         v23 = 2112;
         v24 = v20;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to remove processing status with local identifiers %@ for task %@", buf, 0x16u);
@@ -1492,17 +1492,17 @@ LABEL_23:
   }
 }
 
-- (void)removeProcessingStatusForLocalIdentifier:(id)a3 taskID:(unint64_t)a4
+- (void)removeProcessingStatusForLocalIdentifier:(id)identifier taskID:(unint64_t)d
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   if (!self->_error)
   {
     v7 = MEMORY[0x1E696AE18];
     v8 = +[MADManagedProcessingStatus localIdentifierColumnName];
     v9 = +[MADManagedProcessingStatus taskIDColumnName];
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    v11 = [v7 predicateWithFormat:@"%K == %@ && %K == %@", v8, v6, v9, v10];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
+    v11 = [v7 predicateWithFormat:@"%K == %@ && %K == %@", v8, identifierCopy, v9, v10];
 
     if ([(MADChangeRequest *)self _removeProcessingStatusWithPredicate:v11])
     {
@@ -1510,8 +1510,8 @@ LABEL_23:
       v25 = *MEMORY[0x1E696A578];
       v13 = MEMORY[0x1E696AEC0];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"Unable to remove processing status with local identifier %@ for task %@"];
-      v15 = VCPTaskIDDescription(a4);
-      v16 = [v13 stringWithFormat:v14, v6, v15];
+      v15 = VCPTaskIDDescription(d);
+      v16 = [v13 stringWithFormat:v14, identifierCopy, v15];
       v26[0] = v16;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
       v18 = [v12 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v17];
@@ -1520,9 +1520,9 @@ LABEL_23:
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v20 = VCPTaskIDDescription(a4);
+        v20 = VCPTaskIDDescription(d);
         *buf = 138412546;
-        v22 = v6;
+        v22 = identifierCopy;
         v23 = 2112;
         v24 = v20;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to remove processing status with local identifier %@ for task %@", buf, 0x16u);
@@ -1531,15 +1531,15 @@ LABEL_23:
   }
 }
 
-- (int)_removeProcessingStatusImmediatelyWithPredicate:(id)a3
+- (int)_removeProcessingStatusImmediatelyWithPredicate:(id)predicate
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = +[MADManagedProcessingStatus fetchRequest];
   v6 = v5;
-  if (v4)
+  if (predicateCopy)
   {
-    [v5 setPredicate:v4];
+    [v5 setPredicate:predicateCopy];
   }
 
   v21 = 0;
@@ -1550,7 +1550,7 @@ LABEL_23:
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v23 = v4;
+      v23 = predicateCopy;
       v9 = MEMORY[0x1E69E9C10];
       v10 = "[MACD|ProcessingStatus] Failed to batch delete processing status with predicate %@";
       v11 = OS_LOG_TYPE_ERROR;
@@ -1571,13 +1571,13 @@ LABEL_13:
       v16 = qos_class_self();
       v17 = VCPMAQoSDescription(v16);
       v18 = v17;
-      v19 = [v17 UTF8String];
+      uTF8String = [v17 UTF8String];
       *buf = 134349826;
       v23 = v7;
       v24 = 2082;
       v25 = "DeleteProcessingStatus";
       v26 = 2082;
-      v27 = v19;
+      v27 = uTF8String;
       v28 = 2050;
       v29 = v21;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v13, OS_SIGNPOST_EVENT, v15, "CoreDataPersistence", "%{public, signpost.description:begin_time}llu Type=%{public, signpost.telemetry:string1}s QoS=%{public, signpost.telemetry:string2}s Rows=%{public, signpost.telemetry:number1}lld  enableTelemetry=YES ", buf, 0x2Au);
@@ -1598,14 +1598,14 @@ LABEL_13:
   return v8;
 }
 
-- (void)removeAllProcessingStatusImmediatelyForTaskID:(unint64_t)a3
+- (void)removeAllProcessingStatusImmediatelyForTaskID:(unint64_t)d
 {
   v21[1] = *MEMORY[0x1E69E9840];
   if (!self->_error)
   {
     v5 = MEMORY[0x1E696AE18];
     v6 = +[MADManagedProcessingStatus taskIDColumnName];
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
     v8 = [v5 predicateWithFormat:@"%K == %@", v6, v7];
 
     if ([(MADChangeRequest *)self _removeProcessingStatusImmediatelyWithPredicate:v8])
@@ -1614,7 +1614,7 @@ LABEL_13:
       v20 = *MEMORY[0x1E696A578];
       v10 = MEMORY[0x1E696AEC0];
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"Unable to remove all processing status for task %@"];
-      v12 = VCPTaskIDDescription(a3);
+      v12 = VCPTaskIDDescription(d);
       v13 = [v10 stringWithFormat:v11, v12];
       v21[0] = v13;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
@@ -1624,7 +1624,7 @@ LABEL_13:
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v17 = VCPTaskIDDescription(a3);
+        v17 = VCPTaskIDDescription(d);
         *buf = 138412290;
         v19 = v17;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to remove all processing status for task %@", buf, 0xCu);
@@ -1660,7 +1660,7 @@ LABEL_13:
   }
 }
 
-- (void)removeProcessingStatusImmediatelyForTaskID:(unint64_t)a3 mediaType:(int64_t)a4 mediaSubtypes:(unint64_t)a5
+- (void)removeProcessingStatusImmediatelyForTaskID:(unint64_t)d mediaType:(int64_t)type mediaSubtypes:(unint64_t)subtypes
 {
   v33[1] = *MEMORY[0x1E69E9840];
   if (!self->_error)
@@ -1669,9 +1669,9 @@ LABEL_13:
     v23 = +[MADManagedProcessingStatus taskIDColumnName];
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
     v9 = +[MADManagedProcessingStatus mediaTypeColumnName];
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     v11 = +[MADManagedProcessingStatus mediaSubtypesColumnName];
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:subtypes];
     v13 = [v7 predicateWithFormat:@"%K == %@ && %K == %@ && %K == %@", v23, v8, v9, v10, v11, v12];
 
     if ([(MADChangeRequest *)self _removeProcessingStatusImmediatelyWithPredicate:v13])
@@ -1680,8 +1680,8 @@ LABEL_13:
       v32 = *MEMORY[0x1E696A578];
       v15 = MEMORY[0x1E696AEC0];
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"Unable to remove all processing status with media type %d and media subtypes %d for task %@"];
-      v17 = VCPTaskIDDescription(a3);
-      v18 = [v15 stringWithFormat:v16, a4, a5, v17];
+      v17 = VCPTaskIDDescription(d);
+      v18 = [v15 stringWithFormat:v16, type, subtypes, v17];
       v33[0] = v18;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
       v20 = [v14 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v19];
@@ -1690,11 +1690,11 @@ LABEL_13:
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v22 = VCPTaskIDDescription(a3);
+        v22 = VCPTaskIDDescription(d);
         *buf = 67109634;
-        v27 = a4;
+        typeCopy = type;
         v28 = 1024;
-        v29 = a5;
+        subtypesCopy = subtypes;
         v30 = 2112;
         v31 = v22;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to remove all processing status with media type %d and media subtypes %d for task %@", buf, 0x18u);
@@ -1703,21 +1703,21 @@ LABEL_13:
   }
 }
 
-- (int)_updateProcessingStatus:(unint64_t)a3 nextAttemptDate:(id)a4 errorCode:(unint64_t)a5 errorLine:(unint64_t)a6 localIdentifier:(id)a7 taskID:(unint64_t)a8
+- (int)_updateProcessingStatus:(unint64_t)status nextAttemptDate:(id)date errorCode:(unint64_t)code errorLine:(unint64_t)line localIdentifier:(id)identifier taskID:(unint64_t)d
 {
   v40 = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v15 = a7;
+  dateCopy = date;
+  identifierCopy = identifier;
   v29 = 0;
-  v16 = [(MADChangeRequest *)self _fetchOrCreateManagedProcessingStatusWithTaskID:a8 localIdentifier:v15 managedProcessingStatus:&v29];
+  v16 = [(MADChangeRequest *)self _fetchOrCreateManagedProcessingStatusWithTaskID:d localIdentifier:identifierCopy managedProcessingStatus:&v29];
   v17 = v29;
   if (v16)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v18 = VCPTaskIDDescription(a8);
+      v18 = VCPTaskIDDescription(d);
       *buf = 138412546;
-      v31 = v15;
+      v31 = identifierCopy;
       v32 = 2112;
       v33 = v18;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to fetch or create managed processing status with local identifier %@ for task %@", buf, 0x16u);
@@ -1729,10 +1729,10 @@ LABEL_13:
   else
   {
     v20 = mach_continuous_time();
-    [v17 setStatus:a3];
-    [v17 setNextAttemptDate:v14];
-    [v17 setErrorCode:a5];
-    [v17 setErrorLine:a6];
+    [v17 setStatus:status];
+    [v17 setNextAttemptDate:dateCopy];
+    [v17 setErrorCode:code];
+    [v17 setErrorLine:line];
     v21 = VCPSignPostPersistentLog();
     v22 = VCPSignPostPersistentLog();
     v23 = os_signpost_id_generate(v22);
@@ -1742,13 +1742,13 @@ LABEL_13:
       v24 = qos_class_self();
       v25 = VCPMAQoSDescription(v24);
       v26 = v25;
-      v27 = [v25 UTF8String];
+      uTF8String = [v25 UTF8String];
       *buf = 134350082;
       v31 = v20;
       v32 = 2082;
       v33 = "ModifyProcessingStatus";
       v34 = 2082;
-      v35 = v27;
+      v35 = uTF8String;
       v36 = 2050;
       v37 = 1;
       v38 = 2050;
@@ -1762,21 +1762,21 @@ LABEL_13:
   return v19;
 }
 
-- (void)updateProcessingStatus:(unint64_t)a3 nextAttemptDate:(id)a4 errorCode:(unint64_t)a5 errorLine:(unint64_t)a6 localIdentifier:(id)a7 taskID:(unint64_t)a8
+- (void)updateProcessingStatus:(unint64_t)status nextAttemptDate:(id)date errorCode:(unint64_t)code errorLine:(unint64_t)line localIdentifier:(id)identifier taskID:(unint64_t)d
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v15 = a7;
+  dateCopy = date;
+  identifierCopy = identifier;
   if (!self->_error)
   {
-    if ([(MADChangeRequest *)self _updateProcessingStatus:a3 nextAttemptDate:v14 errorCode:a5 errorLine:a6 localIdentifier:v15 taskID:a8])
+    if ([(MADChangeRequest *)self _updateProcessingStatus:status nextAttemptDate:dateCopy errorCode:code errorLine:line localIdentifier:identifierCopy taskID:d])
     {
       v16 = MEMORY[0x1E696ABC0];
       v29 = *MEMORY[0x1E696A578];
       v17 = MEMORY[0x1E696AEC0];
       v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"Unable to update processing status of asset %@ for task %@"];
-      v19 = VCPTaskIDDescription(a8);
-      v20 = [v17 stringWithFormat:v18, v15, v19];
+      v19 = VCPTaskIDDescription(d);
+      v20 = [v17 stringWithFormat:v18, identifierCopy, v19];
       v30[0] = v20;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
       v22 = [v16 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v21];
@@ -1785,9 +1785,9 @@ LABEL_13:
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v24 = VCPTaskIDDescription(a8);
+        v24 = VCPTaskIDDescription(d);
         *buf = 138412546;
-        v26 = v15;
+        v26 = identifierCopy;
         v27 = 2112;
         v28 = v24;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to update processing status of asset %@ for task %@", buf, 0x16u);
@@ -1796,21 +1796,21 @@ LABEL_13:
   }
 }
 
-- (void)updateProcessingStatus:(unint64_t)a3 nextAttemptDate:(id)a4 localIdentifier:(id)a5 taskID:(unint64_t)a6
+- (void)updateProcessingStatus:(unint64_t)status nextAttemptDate:(id)date localIdentifier:(id)identifier taskID:(unint64_t)d
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  identifierCopy = identifier;
   if (!self->_error)
   {
-    if ([(MADChangeRequest *)self _updateProcessingStatus:a3 nextAttemptDate:v10 errorCode:1 errorLine:0 localIdentifier:v11 taskID:a6])
+    if ([(MADChangeRequest *)self _updateProcessingStatus:status nextAttemptDate:dateCopy errorCode:1 errorLine:0 localIdentifier:identifierCopy taskID:d])
     {
       v12 = MEMORY[0x1E696ABC0];
       v25 = *MEMORY[0x1E696A578];
       v13 = MEMORY[0x1E696AEC0];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"Unable to update processing status of asset %@ for task %@"];
-      v15 = VCPTaskIDDescription(a6);
-      v16 = [v13 stringWithFormat:v14, v11, v15];
+      v15 = VCPTaskIDDescription(d);
+      v16 = [v13 stringWithFormat:v14, identifierCopy, v15];
       v26[0] = v16;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
       v18 = [v12 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v17];
@@ -1819,9 +1819,9 @@ LABEL_13:
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v20 = VCPTaskIDDescription(a6);
+        v20 = VCPTaskIDDescription(d);
         *buf = 138412546;
-        v22 = v11;
+        v22 = identifierCopy;
         v23 = 2112;
         v24 = v20;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to update processing status of asset %@ for task %@", buf, 0x16u);
@@ -1830,11 +1830,11 @@ LABEL_13:
   }
 }
 
-- (int)_hardFailAllRunningProcessingStatusWithPredicate:(id)a3
+- (int)_hardFailAllRunningProcessingStatusWithPredicate:(id)predicate
 {
   v35 = *MEMORY[0x1E69E9840];
   v23 = 0;
-  v3 = [MADManagedProcessingStatus fetchManagedProcessingStatusBatch:&v23 predicate:a3 fetchLimit:0 sortDescriptors:0 managedObjectContext:self->_moc];
+  v3 = [MADManagedProcessingStatus fetchManagedProcessingStatusBatch:&v23 predicate:predicate fetchLimit:0 sortDescriptors:0 managedObjectContext:self->_moc];
   v4 = v23;
   if (!v3)
   {
@@ -1875,14 +1875,14 @@ LABEL_13:
       v13 = qos_class_self();
       v14 = VCPMAQoSDescription(v13);
       v15 = v14;
-      v16 = [v14 UTF8String];
+      uTF8String = [v14 UTF8String];
       v17 = [v6 count];
       *buf = 134350082;
       v25 = v5;
       v26 = 2082;
       v27 = "ModifyProcessingStatus";
       v28 = 2082;
-      v29 = v16;
+      v29 = uTF8String;
       v30 = 2050;
       v31 = v17;
       v32 = 2050;
@@ -1896,19 +1896,19 @@ LABEL_13:
   return v3;
 }
 
-- (int)_hardFailAllRunningProcessingStatusForTaskID:(unint64_t)a3 additionalPredicates:(id)a4
+- (int)_hardFailAllRunningProcessingStatusForTaskID:(unint64_t)d additionalPredicates:(id)predicates
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  predicatesCopy = predicates;
   v7 = MEMORY[0x1E696AE18];
   v8 = +[MADManagedProcessingStatus taskIDColumnName];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   v10 = +[MADManagedProcessingStatus statusColumnName];
   v11 = [v7 predicateWithFormat:@"%K == %@ && %K == %@", v8, v9, v10, &unk_1F49BE338];
 
-  if (v6)
+  if (predicatesCopy)
   {
-    v12 = [MEMORY[0x1E696AE18] predicateWithFormat:v6];
+    v12 = [MEMORY[0x1E696AE18] predicateWithFormat:predicatesCopy];
     v13 = MEMORY[0x1E696AB28];
     v18[0] = v11;
     v18[1] = v12;
@@ -1931,21 +1931,21 @@ LABEL_13:
   return v16;
 }
 
-- (void)hardFailAllRunningProcessingStatusForTaskID:(unint64_t)a3 additionalPredicates:(id)a4
+- (void)hardFailAllRunningProcessingStatusForTaskID:(unint64_t)d additionalPredicates:(id)predicates
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  predicatesCopy = predicates;
   if (!self->_error)
   {
-    if ([(MADChangeRequest *)self _hardFailAllRunningProcessingStatusForTaskID:a3 additionalPredicates:v6])
+    if ([(MADChangeRequest *)self _hardFailAllRunningProcessingStatusForTaskID:d additionalPredicates:predicatesCopy])
     {
       v7 = MEMORY[0x1E696ABC0];
       v20 = *MEMORY[0x1E696A578];
       v8 = MEMORY[0x1E696AEC0];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"Failed to hard fail all running processing status for task %@ with addtional predicates %@"];
-      v10 = VCPTaskIDDescription(a3);
-      v11 = [v8 stringWithFormat:v9, v10, v6];
-      v21[0] = v11;
+      v10 = VCPTaskIDDescription(d);
+      predicatesCopy = [v8 stringWithFormat:v9, v10, predicatesCopy];
+      v21[0] = predicatesCopy;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
       v13 = [v7 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v12];
       error = self->_error;
@@ -1953,29 +1953,29 @@ LABEL_13:
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v15 = VCPTaskIDDescription(a3);
+        v15 = VCPTaskIDDescription(d);
         *buf = 138412546;
         v17 = v15;
         v18 = 2112;
-        v19 = v6;
+        v19 = predicatesCopy;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to hard fail all running processing status for task %@ with addtional predicates %@", buf, 0x16u);
       }
     }
   }
 }
 
-- (void)hardFailAllRunningProcessingStatusForTaskID:(unint64_t)a3
+- (void)hardFailAllRunningProcessingStatusForTaskID:(unint64_t)d
 {
   v17[1] = *MEMORY[0x1E69E9840];
   if (!self->_error)
   {
-    if ([(MADChangeRequest *)self _hardFailAllRunningProcessingStatusForTaskID:a3 additionalPredicates:0])
+    if ([(MADChangeRequest *)self _hardFailAllRunningProcessingStatusForTaskID:d additionalPredicates:0])
     {
       v5 = MEMORY[0x1E696ABC0];
       v16 = *MEMORY[0x1E696A578];
       v6 = MEMORY[0x1E696AEC0];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"Failed to hard fail all running processing status for task %@"];
-      v8 = VCPTaskIDDescription(a3);
+      v8 = VCPTaskIDDescription(d);
       v9 = [v6 stringWithFormat:v7, v8];
       v17[0] = v9;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
@@ -1985,7 +1985,7 @@ LABEL_13:
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v13 = VCPTaskIDDescription(a3);
+        v13 = VCPTaskIDDescription(d);
         *buf = 138412290;
         v15 = v13;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to hard fail all running processing status for task %@", buf, 0xCu);
@@ -1994,39 +1994,39 @@ LABEL_13:
   }
 }
 
-- (MADChangeRequest)initWithManagedObjectContext:(id)a3
+- (MADChangeRequest)initWithManagedObjectContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = MADChangeRequest;
   v6 = [(MADChangeRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_moc, a3);
+    objc_storeStrong(&v6->_moc, context);
   }
 
   return v7;
 }
 
-+ (id)changeRequestWithManagedObjectContext:(id)a3
++ (id)changeRequestWithManagedObjectContext:(id)context
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithManagedObjectContext:v3];
+  contextCopy = context;
+  v4 = [objc_alloc(objc_opt_class()) initWithManagedObjectContext:contextCopy];
 
   return v4;
 }
 
-- (int)_removeAssetsWithPredicate:(id)a3
+- (int)_removeAssetsWithPredicate:(id)predicate
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v30 = v4;
+  predicateCopy = predicate;
+  v30 = predicateCopy;
   v5 = +[MADManagedPhotosAsset fetchRequest];
   v6 = v5;
-  if (v4)
+  if (predicateCopy)
   {
-    [v5 setPredicate:v4];
+    [v5 setPredicate:predicateCopy];
   }
 
   moc = self->_moc;
@@ -2085,13 +2085,13 @@ LABEL_13:
       v22 = qos_class_self();
       v23 = VCPMAQoSDescription(v22);
       v24 = v23;
-      v25 = [v23 UTF8String];
+      uTF8String = [v23 UTF8String];
       *buf = 134349826;
       v37 = v27;
       v38 = 2082;
       v39 = "DeleteAsset";
       v40 = 2082;
-      v41 = v25;
+      v41 = uTF8String;
       v42 = 2050;
       v43 = v28;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v19, OS_SIGNPOST_EVENT, v21, "CoreDataPersistence", "%{public, signpost.description:begin_time}llu Type=%{public, signpost.telemetry:string1}s QoS=%{public, signpost.telemetry:string2}s Rows=%{public, signpost.telemetry:number1}lld  enableTelemetry=YES ", buf, 0x2Au);
@@ -2123,14 +2123,14 @@ LABEL_23:
   return v11;
 }
 
-- (void)removeAssetsWithLocalIdentifiers:(id)a3
+- (void)removeAssetsWithLocalIdentifiers:(id)identifiers
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  identifiersCopy = identifiers;
+  v5 = identifiersCopy;
   if (!self->_error)
   {
-    if (v4)
+    if (identifiersCopy)
     {
       v6 = MEMORY[0x1E696AE18];
       v7 = +[MADManagedPhotosAsset localIdentifierColumnName];
@@ -2165,20 +2165,20 @@ LABEL_23:
   }
 }
 
-- (void)assetWithPhotosAsset:(id)a3 analysis:(id)a4
+- (void)assetWithPhotosAsset:(id)asset analysis:(id)analysis
 {
   v162[1] = *MEMORY[0x1E69E9840];
-  v123 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  analysisCopy = analysis;
   if (self->_error)
   {
     goto LABEL_108;
   }
 
-  v121 = v6;
+  v121 = analysisCopy;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v123 localIdentifier];
-  v120 = [v7 stringWithFormat:@"[MACD|Asset][%@]", v8];
+  localIdentifier = [assetCopy localIdentifier];
+  v120 = [v7 stringWithFormat:@"[MACD|Asset][%@]", localIdentifier];
 
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
@@ -2202,16 +2202,16 @@ LABEL_23:
   v119 = +[MADManagedPhotosAsset fetchRequest];
   v9 = MEMORY[0x1E696AE18];
   v10 = +[MADManagedPhotosAsset localIdentifierColumnName];
-  v11 = [v123 localIdentifier];
-  v12 = [v9 predicateWithFormat:@"%K = %@", v10, v11];
-  v117 = self;
+  localIdentifier2 = [assetCopy localIdentifier];
+  v12 = [v9 predicateWithFormat:@"%K = %@", v10, localIdentifier2];
+  selfCopy = self;
   [v119 setPredicate:v12];
 
   moc = self->_moc;
   v144 = 0;
   v14 = [(NSManagedObjectContext *)moc executeFetchRequest:v119 error:&v144];
   v118 = v144;
-  v128 = [v14 firstObject];
+  firstObject = [v14 firstObject];
 
   if (v118)
   {
@@ -2219,8 +2219,8 @@ LABEL_23:
     v161 = *MEMORY[0x1E696A578];
     v16 = MEMORY[0x1E696AEC0];
     v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"%@ Failed to fetch managed asset - %@"];
-    v18 = [v16 stringWithFormat:v17, v120, v118];
-    v162[0] = v18;
+    v118 = [v16 stringWithFormat:v17, v120, v118];
+    v162[0] = v118;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v162 forKeys:&v161 count:1];
     v20 = [v15 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v19];
     error = self->_error;
@@ -2238,15 +2238,15 @@ LABEL_23:
     goto LABEL_105;
   }
 
-  if (v128)
+  if (firstObject)
   {
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v22 = [(MADManagedPhotosAsset *)v128 objectID];
+      objectID = [(MADManagedPhotosAsset *)firstObject objectID];
       *buf = 138412546;
       v150 = v120;
       v151 = 2112;
-      v152 = v22;
+      v152 = objectID;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%@ Fetched managed asset %@", buf, 0x16u);
     }
   }
@@ -2254,7 +2254,7 @@ LABEL_23:
   else
   {
     v23 = mach_continuous_time();
-    v128 = [[MADManagedPhotosAsset alloc] initWithContext:self->_moc];
+    firstObject = [[MADManagedPhotosAsset alloc] initWithContext:self->_moc];
     v24 = VCPSignPostPersistentLog();
     v25 = VCPSignPostPersistentLog();
     v26 = os_signpost_id_generate(v25);
@@ -2264,19 +2264,19 @@ LABEL_23:
       v27 = qos_class_self();
       v28 = VCPMAQoSDescription(v27);
       v29 = v28;
-      v30 = [v28 UTF8String];
+      uTF8String = [v28 UTF8String];
       *buf = 134349826;
       v150 = v23;
       v151 = 2082;
       v152 = "CreateAsset";
       v153 = 2082;
-      v154 = v30;
+      v154 = uTF8String;
       v155 = 2050;
       v156 = 1;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v24, OS_SIGNPOST_EVENT, v26, "CoreDataPersistence", "%{public, signpost.description:begin_time}llu Type=%{public, signpost.telemetry:string1}s QoS=%{public, signpost.telemetry:string2}s Rows=%{public, signpost.telemetry:number1}lld  enableTelemetry=YES ", buf, 0x2Au);
     }
 
-    if (!v128)
+    if (!firstObject)
     {
       v100 = MEMORY[0x1E696ABC0];
       v159 = *MEMORY[0x1E696A578];
@@ -2299,34 +2299,34 @@ LABEL_23:
       goto LABEL_106;
     }
 
-    v31 = [v123 localIdentifier];
-    [(MADManagedPhotosAsset *)v128 setLocalIdentifier:v31];
+    localIdentifier3 = [assetCopy localIdentifier];
+    [(MADManagedPhotosAsset *)firstObject setLocalIdentifier:localIdentifier3];
 
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v32 = [(MADManagedPhotosAsset *)v128 objectID];
+      objectID2 = [(MADManagedPhotosAsset *)firstObject objectID];
       *buf = 138412546;
       v150 = v120;
       v151 = 2112;
-      v152 = v32;
+      v152 = objectID2;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%@ Creating new managed asset %@", buf, 0x16u);
     }
   }
 
   v33 = mach_continuous_time();
-  -[MADManagedPhotosAsset setVersion:](v128, "setVersion:", [v121 vcp_version]);
-  v34 = [v121 vcp_dateModified];
-  [(MADManagedPhotosAsset *)v128 setDateModified:v34];
+  -[MADManagedPhotosAsset setVersion:](firstObject, "setVersion:", [v121 vcp_version]);
+  vcp_dateModified = [v121 vcp_dateModified];
+  [(MADManagedPhotosAsset *)firstObject setDateModified:vcp_dateModified];
 
-  v35 = [v121 vcp_dateAnalyzed];
-  [(MADManagedPhotosAsset *)v128 setDateAnalyzed:v35];
+  vcp_dateAnalyzed = [v121 vcp_dateAnalyzed];
+  [(MADManagedPhotosAsset *)firstObject setDateAnalyzed:vcp_dateAnalyzed];
 
-  -[MADManagedPhotosAsset setFlags:](v128, "setFlags:", [v121 vcp_flags]);
+  -[MADManagedPhotosAsset setFlags:](firstObject, "setFlags:", [v121 vcp_flags]);
   [v121 vcp_quality];
   *&v36 = v36;
-  [(MADManagedPhotosAsset *)v128 setQuality:v36];
-  -[MADManagedPhotosAsset setStatsFlags:](v128, "setStatsFlags:", [v121 vcp_statsFlags]);
-  -[MADManagedPhotosAsset setAnalysisTypes:](v128, "setAnalysisTypes:", [v121 vcp_types]);
+  [(MADManagedPhotosAsset *)firstObject setQuality:v36];
+  -[MADManagedPhotosAsset setStatsFlags:](firstObject, "setStatsFlags:", [v121 vcp_statsFlags]);
+  -[MADManagedPhotosAsset setAnalysisTypes:](firstObject, "setAnalysisTypes:", [v121 vcp_types]);
   v37 = VCPSignPostPersistentLog();
   v38 = VCPSignPostPersistentLog();
   v39 = os_signpost_id_generate(v38);
@@ -2336,13 +2336,13 @@ LABEL_23:
     v40 = qos_class_self();
     v41 = VCPMAQoSDescription(v40);
     v42 = v41;
-    v43 = [v41 UTF8String];
+    uTF8String2 = [v41 UTF8String];
     *buf = 134350082;
     v150 = v33;
     v151 = 2082;
     v152 = "ModifyAsset";
     v153 = 2082;
-    v154 = v43;
+    v154 = uTF8String2;
     v155 = 2050;
     v156 = 1;
     v157 = 2050;
@@ -2350,23 +2350,23 @@ LABEL_23:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v37, OS_SIGNPOST_EVENT, v39, "CoreDataPersistence", "%{public, signpost.description:begin_time}llu Type=%{public, signpost.telemetry:string1}s QoS=%{public, signpost.telemetry:string2}s Rows=%{public, signpost.telemetry:number1}lld ColumnsPerRow=%{public, signpost.telemetry:number2}lld  enableTelemetry=YES ", buf, 0x34u);
   }
 
-  v110 = [v121 vcp_results];
+  vcp_results = [v121 vcp_results];
   v111 = [MEMORY[0x1E695DFA8] set];
-  v112 = [MEMORY[0x1E695DF90] dictionary];
-  v44 = [(MADManagedPhotosAsset *)v128 results];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  results = [(MADManagedPhotosAsset *)firstObject results];
   v139[0] = MEMORY[0x1E69E9820];
   v139[1] = 3221225472;
   v139[2] = __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke;
   v139[3] = &unk_1E83515A0;
   v126 = v120;
   v140 = v126;
-  v124 = v110;
+  v124 = vcp_results;
   v141 = v124;
-  v115 = v112;
+  v115 = dictionary;
   v142 = v115;
   v45 = v111;
   v143 = v45;
-  [v44 enumerateObjectsUsingBlock:v139];
+  [results enumerateObjectsUsingBlock:v139];
 
   v137 = 0u;
   v138 = 0u;
@@ -2398,7 +2398,7 @@ LABEL_23:
           _os_log_impl(&dword_1C9B70000, v48, OS_LOG_TYPE_DEBUG, "%@ Deleting managed result %@", buf, 0x16u);
         }
 
-        [(MADManagedPhotosAsset *)v128 removeResult:v50];
+        [(MADManagedPhotosAsset *)firstObject removeResult:v50];
         objc_autoreleasePoolPop(v51);
       }
 
@@ -2408,7 +2408,7 @@ LABEL_23:
     while (v46);
   }
 
-  v52 = [v121 vcp_types];
+  vcp_types = [v121 vcp_types];
   v133 = 0u;
   v134 = 0u;
   v131 = 0u;
@@ -2449,7 +2449,7 @@ LABEL_23:
       }
 
       v59 = MediaAnalysisResultsKeyToAnalysisType(v56);
-      if ((v59 & v52) == 0 && MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
+      if ((v59 & vcp_types) == 0 && MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412802;
         v150 = v126;
@@ -2514,7 +2514,7 @@ LABEL_23:
             }
 
             v73 = mach_continuous_time();
-            v108 = [[MADManagedPhotosResult alloc] initWithContext:v117->_moc];
+            v108 = [[MADManagedPhotosResult alloc] initWithContext:selfCopy->_moc];
             log = VCPSignPostPersistentLog();
             v74 = VCPSignPostPersistentLog();
             v75 = os_signpost_id_generate(v74);
@@ -2524,13 +2524,13 @@ LABEL_23:
               v76 = qos_class_self();
               v77 = VCPMAQoSDescription(v76);
               v78 = v77;
-              v79 = [v77 UTF8String];
+              uTF8String3 = [v77 UTF8String];
               *buf = 134349826;
               v150 = v73;
               v151 = 2082;
               v152 = "CreateResult";
               v153 = 2082;
-              v154 = v79;
+              v154 = uTF8String3;
               v155 = 2050;
               v156 = 1;
               _os_signpost_emit_with_name_impl(&dword_1C9B70000, log, OS_SIGNPOST_EVENT, v75, "CoreDataPersistence", "%{public, signpost.description:begin_time}llu Type=%{public, signpost.telemetry:string1}s QoS=%{public, signpost.telemetry:string2}s Rows=%{public, signpost.telemetry:number1}lld  enableTelemetry=YES ", buf, 0x2Au);
@@ -2539,7 +2539,7 @@ LABEL_23:
             if (v108)
             {
               v80 = mach_continuous_time();
-              [(MADManagedPhotosResult *)v108 setAsset:v128];
+              [(MADManagedPhotosResult *)v108 setAsset:firstObject];
               [(MADManagedPhotosResult *)v108 setResultsType:v58];
               [(MADManagedPhotosResult *)v108 setResults:v114];
               v81 = VCPSignPostPersistentLog();
@@ -2552,13 +2552,13 @@ LABEL_23:
                 v85 = qos_class_self();
                 v86 = VCPMAQoSDescription(v85);
                 v87 = v86;
-                v88 = [v86 UTF8String];
+                uTF8String4 = [v86 UTF8String];
                 *buf = 134350082;
                 v150 = v82;
                 v151 = 2082;
                 v152 = "ModifyResult";
                 v153 = 2082;
-                v154 = v88;
+                v154 = uTF8String4;
                 v155 = 2050;
                 v156 = 1;
                 v157 = 2050;
@@ -2585,12 +2585,12 @@ LABEL_92:
               v145 = v107;
               v90 = MEMORY[0x1E696AEC0];
               v91 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"%@ Failed to created managed result object"];
-              v92 = [v90 stringWithFormat:v91, v126];
-              v146 = v92;
+              v126 = [v90 stringWithFormat:v91, v126];
+              v146 = v126;
               v93 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v146 forKeys:&v145 count:1];
               v94 = [v89 errorWithDomain:v106 code:-18 userInfo:v93];
-              v95 = v117->_error;
-              v117->_error = v94;
+              v95 = selfCopy->_error;
+              selfCopy->_error = v94;
 
               if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
               {
@@ -2674,13 +2674,13 @@ LABEL_100:
 
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
-    v97 = [(MADManagedPhotosAsset *)v128 objectID];
-    v98 = [(MADManagedPhotosAsset *)v128 results];
-    v99 = [v98 count];
+    objectID3 = [(MADManagedPhotosAsset *)firstObject objectID];
+    results2 = [(MADManagedPhotosAsset *)firstObject results];
+    v99 = [results2 count];
     *buf = 138412802;
     v150 = v126;
     v151 = 2112;
-    v152 = v97;
+    v152 = objectID3;
     v153 = 1024;
     LODWORD(v154) = v99;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "%@ Updated managed asset %@ with %d results", buf, 0x1Cu);
@@ -2692,7 +2692,7 @@ LABEL_105:
 LABEL_106:
 
 LABEL_107:
-  v6 = v121;
+  analysisCopy = v121;
 LABEL_108:
 }
 
@@ -2724,23 +2724,23 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
   }
 }
 
-- (void)storeStatsFlags:(unint64_t)a3 forLocalIdentifier:(id)a4
+- (void)storeStatsFlags:(unint64_t)flags forLocalIdentifier:(id)identifier
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  identifierCopy = identifier;
   if (!self->_error)
   {
     v7 = +[MADManagedPhotosAsset fetchRequest];
     v8 = MEMORY[0x1E696AE18];
     v9 = +[MADManagedPhotosAsset localIdentifierColumnName];
-    v10 = [v8 predicateWithFormat:@"%K = %@", v9, v6];
-    [v7 setPredicate:v10];
+    identifierCopy = [v8 predicateWithFormat:@"%K = %@", v9, identifierCopy];
+    [v7 setPredicate:identifierCopy];
 
     moc = self->_moc;
     v30 = 0;
     v12 = [(NSManagedObjectContext *)moc executeFetchRequest:v7 error:&v30];
     v13 = v30;
-    v14 = [v12 firstObject];
+    firstObject = [v12 firstObject];
 
     if (v13)
     {
@@ -2748,7 +2748,7 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
       v41 = *MEMORY[0x1E696A578];
       v16 = MEMORY[0x1E696AEC0];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"Failed to fetch asset with local identifier: %@ - %@"];
-      v18 = [v16 stringWithFormat:v17, v6, v13];
+      v18 = [v16 stringWithFormat:v17, identifierCopy, v13];
       v42[0] = v18;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:&v41 count:1];
       v20 = [v15 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v19];
@@ -2758,7 +2758,7 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v32 = v6;
+        v32 = identifierCopy;
         v33 = 2112;
         v34 = v13;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to fetch asset with local identifier: %@ - %@", buf, 0x16u);
@@ -2768,7 +2768,7 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
     else
     {
       v22 = mach_continuous_time();
-      [v14 setStatsFlags:a3];
+      [firstObject setStatsFlags:flags];
       v23 = VCPSignPostPersistentLog();
       v24 = VCPSignPostPersistentLog();
       v25 = os_signpost_id_generate(v24);
@@ -2778,13 +2778,13 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
         v26 = qos_class_self();
         v27 = VCPMAQoSDescription(v26);
         v28 = v27;
-        v29 = [v27 UTF8String];
+        uTF8String = [v27 UTF8String];
         *buf = 134350082;
         v32 = v22;
         v33 = 2082;
         v34 = "ModifyAsset";
         v35 = 2082;
-        v36 = v29;
+        v36 = uTF8String;
         v37 = 2050;
         v38 = 1;
         v39 = 2050;
@@ -2795,24 +2795,24 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
   }
 }
 
-- (void)setDeletePendingFlag:(BOOL)a3 forLocalIdentifier:(id)a4
+- (void)setDeletePendingFlag:(BOOL)flag forLocalIdentifier:(id)identifier
 {
-  v4 = a3;
+  flagCopy = flag;
   v44[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  identifierCopy = identifier;
   if (!self->_error)
   {
     v7 = +[MADManagedPhotosAsset fetchRequest];
     v8 = MEMORY[0x1E696AE18];
     v9 = +[MADManagedPhotosAsset localIdentifierColumnName];
-    v10 = [v8 predicateWithFormat:@"%K = %@", v9, v6];
-    [v7 setPredicate:v10];
+    identifierCopy = [v8 predicateWithFormat:@"%K = %@", v9, identifierCopy];
+    [v7 setPredicate:identifierCopy];
 
     moc = self->_moc;
     v32 = 0;
     v12 = [(NSManagedObjectContext *)moc executeFetchRequest:v7 error:&v32];
     v13 = v32;
-    v14 = [v12 firstObject];
+    firstObject = [v12 firstObject];
 
     if (v13)
     {
@@ -2820,7 +2820,7 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
       v43 = *MEMORY[0x1E696A578];
       v16 = MEMORY[0x1E696AEC0];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"Failed to fetch asset with local identifier: %@ - %@"];
-      v18 = [v16 stringWithFormat:v17, v6, v13];
+      v18 = [v16 stringWithFormat:v17, identifierCopy, v13];
       v44[0] = v18;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:&v43 count:1];
       v20 = [v15 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v19];
@@ -2830,7 +2830,7 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v34 = v6;
+        v34 = identifierCopy;
         v35 = 2112;
         v36 = v13;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to fetch asset with local identifier: %@ - %@", buf, 0x16u);
@@ -2840,19 +2840,19 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
     else
     {
       v22 = mach_continuous_time();
-      if (v4)
+      if (flagCopy)
       {
-        v23 = [v14 flags] | 0x40000000;
+        v23 = [firstObject flags] | 0x40000000;
       }
 
       else
       {
-        v23 = [v14 flags] & 0xFFFFFFFFBFFFFFFFLL;
+        v23 = [firstObject flags] & 0xFFFFFFFFBFFFFFFFLL;
       }
 
-      [v14 setFlags:v23];
-      v24 = [MEMORY[0x1E695DF00] date];
-      [v14 setDateAnalyzed:v24];
+      [firstObject setFlags:v23];
+      date = [MEMORY[0x1E695DF00] date];
+      [firstObject setDateAnalyzed:date];
 
       v25 = VCPSignPostPersistentLog();
       v26 = VCPSignPostPersistentLog();
@@ -2863,13 +2863,13 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
         v28 = qos_class_self();
         v29 = VCPMAQoSDescription(v28);
         v30 = v29;
-        v31 = [v29 UTF8String];
+        uTF8String = [v29 UTF8String];
         *buf = 134350082;
         v34 = v22;
         v35 = 2082;
         v36 = "ModifyAsset";
         v37 = 2082;
-        v38 = v31;
+        v38 = uTF8String;
         v39 = 2050;
         v40 = 1;
         v41 = 2050;
@@ -2880,29 +2880,29 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
   }
 }
 
-- (void)setAnalysisVersion:(int)a3 forLocalIdentifier:(id)a4
+- (void)setAnalysisVersion:(int)version forLocalIdentifier:(id)identifier
 {
-  v4 = *&a3;
+  v4 = *&version;
   v42[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  identifierCopy = identifier;
   if (!self->_error)
   {
     v7 = +[MADManagedPhotosAsset fetchRequest];
     v8 = MEMORY[0x1E696AE18];
     v9 = +[MADManagedPhotosAsset localIdentifierColumnName];
-    v10 = [v8 predicateWithFormat:@"%K == %@", v9, v6];
-    [v7 setPredicate:v10];
+    identifierCopy = [v8 predicateWithFormat:@"%K == %@", v9, identifierCopy];
+    [v7 setPredicate:identifierCopy];
 
     moc = self->_moc;
     v30 = 0;
     v12 = [(NSManagedObjectContext *)moc executeFetchRequest:v7 error:&v30];
     v13 = v30;
-    v14 = [v12 firstObject];
+    firstObject = [v12 firstObject];
 
-    if (v14)
+    if (firstObject)
     {
       v15 = mach_continuous_time();
-      [v14 setVersion:v4];
+      [firstObject setVersion:v4];
       v16 = VCPSignPostPersistentLog();
       v17 = VCPSignPostPersistentLog();
       v18 = os_signpost_id_generate(v17);
@@ -2912,13 +2912,13 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
         v19 = qos_class_self();
         v20 = VCPMAQoSDescription(v19);
         v21 = v20;
-        v22 = [v20 UTF8String];
+        uTF8String = [v20 UTF8String];
         *buf = 134350082;
         v32 = v15;
         v33 = 2082;
         v34 = "ModifyAsset";
         v35 = 2082;
-        v36 = v22;
+        v36 = uTF8String;
         v37 = 2050;
         v38 = 1;
         v39 = 2050;
@@ -2933,7 +2933,7 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
       v41 = *MEMORY[0x1E696A578];
       v24 = MEMORY[0x1E696AEC0];
       v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"[MACD|Asset][%@] Failed to fetch managed asset - %@"];
-      v26 = [v24 stringWithFormat:v25, v6, v13];
+      v26 = [v24 stringWithFormat:v25, identifierCopy, v13];
       v42[0] = v26;
       v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:&v41 count:1];
       v28 = [v23 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v27];
@@ -2943,7 +2943,7 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v32 = v6;
+        v32 = identifierCopy;
         v33 = 2112;
         v34 = v13;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MACD|Asset][%@] Failed to fetch managed asset - %@", buf, 0x16u);
@@ -2952,16 +2952,16 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
   }
 }
 
-- (void)setChangeToken:(id)a3 taskID:(unint64_t)a4 changeTokenType:(unint64_t)a5 date:(id)a6
+- (void)setChangeToken:(id)token taskID:(unint64_t)d changeTokenType:(unint64_t)type date:(id)date
 {
   v46[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  tokenCopy = token;
+  dateCopy = date;
   if (!self->_error)
   {
-    v33 = v11;
+    v33 = dateCopy;
     v36 = 0;
-    v34 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:&v36];
+    v34 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:tokenCopy requiringSecureCoding:1 error:&v36];
     v35 = v36;
     if (v34)
     {
@@ -2969,18 +2969,18 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
       v13 = v12;
       if (v12)
       {
-        [(MADManagedChangeToken *)v12 setTokenID:a4];
-        [(MADManagedChangeToken *)v13 setTokenType:a5];
+        [(MADManagedChangeToken *)v12 setTokenID:d];
+        [(MADManagedChangeToken *)v13 setTokenType:type];
         [(MADManagedChangeToken *)v13 setTokenData:v34];
         [(MADManagedChangeToken *)v13 setDate:v33];
-        [(MADManagedChangeToken *)v13 setVersion:VCPVersionForTask(a4)];
+        [(MADManagedChangeToken *)v13 setVersion:VCPVersionForTask(d)];
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
-          v14 = VCPTaskIDDescription(a4);
+          v14 = VCPTaskIDDescription(d);
           *buf = 138412546;
           v40 = v14;
           v41 = 1024;
-          v42 = a5;
+          typeCopy3 = type;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MACD|ChangeToken] Successfully set change token for taskID %@ and changeTokenType %d", buf, 0x12u);
         }
       }
@@ -2991,9 +2991,9 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
         v37 = *MEMORY[0x1E696A578];
         v25 = MEMORY[0x1E696AEC0];
         v32 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"[MACD|ChangeToken] Failed to create managed change token object for task %@ and changeTokenType %d"];
-        v26 = VCPTaskIDDescription(a4);
-        v27 = [v25 stringWithFormat:v32, v26, a5];
-        v38 = v27;
+        v26 = VCPTaskIDDescription(d);
+        type = [v25 stringWithFormat:v32, v26, type];
+        v38 = type;
         v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
         v29 = [v24 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v28];
         error = self->_error;
@@ -3001,11 +3001,11 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
 
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v31 = VCPTaskIDDescription(a4);
+          v31 = VCPTaskIDDescription(d);
           *buf = 138412546;
           v40 = v31;
           v41 = 1024;
-          v42 = a5;
+          typeCopy3 = type;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MACD|ChangeToken] Failed to create managed change token object for task %@ and changeTokenType %d", buf, 0x12u);
         }
       }
@@ -3017,8 +3017,8 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
       v45 = *MEMORY[0x1E696A578];
       v16 = MEMORY[0x1E696AEC0];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"[MACD|ChangeToken] Failed to encode data from changeToken content for taskID %@ and changeTokenType %d (error:%@)"];
-      v18 = VCPTaskIDDescription(a4);
-      v19 = [v16 stringWithFormat:v17, v18, a5, v35];
+      v18 = VCPTaskIDDescription(d);
+      v19 = [v16 stringWithFormat:v17, v18, type, v35];
       v46[0] = v19;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:&v45 count:1];
       v21 = [v15 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v20];
@@ -3027,29 +3027,29 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v23 = VCPTaskIDDescription(a4);
+        v23 = VCPTaskIDDescription(d);
         *buf = 138412802;
         v40 = v23;
         v41 = 1024;
-        v42 = a5;
+        typeCopy3 = type;
         v43 = 2112;
         v44 = v35;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MACD|ChangeToken] Failed to encode data from changeToken content for taskID %@ and changeTokenType %d (error:%@)", buf, 0x1Cu);
       }
     }
 
-    v11 = v33;
+    dateCopy = v33;
   }
 }
 
-- (void)updateChangeToken:(id)a3 taskID:(unint64_t)a4 changeTokenType:(unint64_t)a5
+- (void)updateChangeToken:(id)token taskID:(unint64_t)d changeTokenType:(unint64_t)type
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  tokenCopy = token;
   if (!self->_error)
   {
     v41 = 0;
-    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v41];
+    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:tokenCopy requiringSecureCoding:1 error:&v41];
     v37 = v41;
     v38 = v9;
     if (v9)
@@ -3058,25 +3058,25 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
       v10 = MEMORY[0x1E696AE18];
       v11 = +[MADManagedChangeToken tokenIDColumnName];
       v12 = +[MADManagedChangeToken tokenTypeColumnName];
-      v13 = [v10 predicateWithFormat:@"(%K == %ld) AND (%K == %ld)", v11, a4, v12, a5];
-      [v39 setPredicate:v13];
+      type = [v10 predicateWithFormat:@"(%K == %ld) AND (%K == %ld)", v11, d, v12, type];
+      [v39 setPredicate:type];
 
       moc = self->_moc;
       v40 = 0;
       v15 = [(NSManagedObjectContext *)moc executeFetchRequest:v39 error:&v40];
       v36 = v40;
-      v16 = [v15 firstObject];
+      firstObject = [v15 firstObject];
 
-      if (v16)
+      if (firstObject)
       {
-        [v16 setTokenData:v38];
+        [firstObject setTokenData:v38];
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
-          v17 = VCPTaskIDDescription(a4);
+          v17 = VCPTaskIDDescription(d);
           *buf = 138412546;
           v43 = v17;
           v44 = 1024;
-          v45 = a5;
+          typeCopy3 = type;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MACD|ChangeToken] Successfully update change token for taskID %@ and changeTokenType %d", buf, 0x12u);
         }
       }
@@ -3087,8 +3087,8 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
         v48 = *MEMORY[0x1E696A578];
         v28 = MEMORY[0x1E696AEC0];
         v35 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"[MACD|ChangeToken] Failed to query change token for taskID %@ and changeTokenType %d with error %@"];
-        v29 = VCPTaskIDDescription(a4);
-        v30 = [v28 stringWithFormat:v35, v29, a5, v36];
+        v29 = VCPTaskIDDescription(d);
+        v30 = [v28 stringWithFormat:v35, v29, type, v36];
         v49 = v30;
         v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
         v32 = [v27 errorWithDomain:*MEMORY[0x1E696A768] code:-19 userInfo:v31];
@@ -3097,11 +3097,11 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
 
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v34 = VCPTaskIDDescription(a4);
+          v34 = VCPTaskIDDescription(d);
           *buf = 138412802;
           v43 = v34;
           v44 = 1024;
-          v45 = a5;
+          typeCopy3 = type;
           v46 = 2112;
           v47 = v36;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MACD|ChangeToken] Failed to query change token for taskID %@ and changeTokenType %d with error %@", buf, 0x1Cu);
@@ -3115,9 +3115,9 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
       v50 = *MEMORY[0x1E696A578];
       v19 = MEMORY[0x1E696AEC0];
       v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"[MACD|ChangeToken] Failed to encode data from changeToken content for taskID %@ and changeTokenType %d"];
-      v21 = VCPTaskIDDescription(a4);
-      v22 = [v19 stringWithFormat:v20, v21, a5];
-      v51[0] = v22;
+      v21 = VCPTaskIDDescription(d);
+      type2 = [v19 stringWithFormat:v20, v21, type];
+      v51[0] = type2;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:&v50 count:1];
       v24 = [v18 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v23];
       v25 = self->_error;
@@ -3125,27 +3125,27 @@ void __57__MADChangeRequest_Asset__assetWithPhotosAsset_analysis___block_invoke(
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v26 = VCPTaskIDDescription(a4);
+        v26 = VCPTaskIDDescription(d);
         *buf = 138412546;
         v43 = v26;
         v44 = 1024;
-        v45 = a5;
+        typeCopy3 = type;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MACD|ChangeToken] Failed to encode data from changeToken content for taskID %@ and changeTokenType %d", buf, 0x12u);
       }
     }
   }
 }
 
-- (int)_removeChangeTokenWithPredicate:(id)a3
+- (int)_removeChangeTokenWithPredicate:(id)predicate
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v21 = v4;
+  predicateCopy = predicate;
+  v21 = predicateCopy;
   v5 = +[MADManagedChangeToken fetchRequest];
   v6 = v5;
-  if (v4)
+  if (predicateCopy)
   {
-    [v5 setPredicate:v4];
+    [v5 setPredicate:predicateCopy];
   }
 
   moc = self->_moc;
@@ -3219,7 +3219,7 @@ LABEL_20:
   return v11;
 }
 
-- (void)removeChangeTokenForTaskID:(unint64_t)a3 changeTokenType:(unint64_t)a4
+- (void)removeChangeTokenForTaskID:(unint64_t)d changeTokenType:(unint64_t)type
 {
   v25[1] = *MEMORY[0x1E69E9840];
   if (!self->_error)
@@ -3227,16 +3227,16 @@ LABEL_20:
     v7 = MEMORY[0x1E696AE18];
     v8 = +[MADManagedChangeToken tokenIDColumnName];
     v9 = +[MADManagedChangeToken tokenTypeColumnName];
-    v10 = [v7 predicateWithFormat:@"(%K == %ld) AND (%K == %ld)", v8, a3, v9, a4];
+    type = [v7 predicateWithFormat:@"(%K == %ld) AND (%K == %ld)", v8, d, v9, type];
 
-    if ([(MADChangeRequest *)self _removeChangeTokenWithPredicate:v10])
+    if ([(MADChangeRequest *)self _removeChangeTokenWithPredicate:type])
     {
       v11 = MEMORY[0x1E696ABC0];
       v24 = *MEMORY[0x1E696A578];
       v12 = MEMORY[0x1E696AEC0];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"[MACD|ChangeToken] Failed to remove change token with type %d for task %@"];
-      v14 = VCPTaskIDDescription(a3);
-      v15 = [v12 stringWithFormat:v13, a4, v14];
+      v14 = VCPTaskIDDescription(d);
+      v15 = [v12 stringWithFormat:v13, type, v14];
       v25[0] = v15;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
       v17 = [v11 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v16];
@@ -3245,9 +3245,9 @@ LABEL_20:
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v19 = VCPTaskIDDescription(a3);
+        v19 = VCPTaskIDDescription(d);
         *buf = 67109378;
-        v21 = a4;
+        typeCopy = type;
         v22 = 2112;
         v23 = v19;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MACD|ChangeToken] Failed to remove change token with type %d for task %@", buf, 0x12u);
@@ -3256,15 +3256,15 @@ LABEL_20:
   }
 }
 
-- (int)_removeChangeTokenImmediatelyWithPredicate:(id)a3
+- (int)_removeChangeTokenImmediatelyWithPredicate:(id)predicate
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = +[MADManagedChangeToken fetchRequest];
   v6 = v5;
-  if (v4)
+  if (predicateCopy)
   {
-    [v5 setPredicate:v4];
+    [v5 setPredicate:predicateCopy];
   }
 
   v13 = 0;
@@ -3274,7 +3274,7 @@ LABEL_20:
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = predicateCopy;
       v8 = MEMORY[0x1E69E9C10];
       v9 = "[MACD|ChangeToken] Failed to batch delete change token with predicate %@";
       v10 = OS_LOG_TYPE_ERROR;
@@ -3298,14 +3298,14 @@ LABEL_10:
   return v7;
 }
 
-- (void)removeAllChangeTokensImmediatelyForTaskID:(unint64_t)a3
+- (void)removeAllChangeTokensImmediatelyForTaskID:(unint64_t)d
 {
   v20[1] = *MEMORY[0x1E69E9840];
   if (!self->_error)
   {
     v5 = MEMORY[0x1E696AE18];
     v6 = +[MADManagedChangeToken tokenIDColumnName];
-    v7 = [v5 predicateWithFormat:@"%K == %ld", v6, a3];
+    v7 = [v5 predicateWithFormat:@"%K == %ld", v6, d];
 
     if ([(MADChangeRequest *)self _removeChangeTokenImmediatelyWithPredicate:v7])
     {
@@ -3313,7 +3313,7 @@ LABEL_10:
       v19 = *MEMORY[0x1E696A578];
       v9 = MEMORY[0x1E696AEC0];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"[MACD|ChangeToken] Failed to remove all change tokens for task %@"];
-      v11 = VCPTaskIDDescription(a3);
+      v11 = VCPTaskIDDescription(d);
       v12 = [v9 stringWithFormat:v10, v11];
       v20[0] = v12;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
@@ -3323,7 +3323,7 @@ LABEL_10:
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v16 = VCPTaskIDDescription(a3);
+        v16 = VCPTaskIDDescription(d);
         *buf = 138412290;
         v18 = v16;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MACD|ChangeToken] Failed to remove all change tokens for task %@", buf, 0xCu);

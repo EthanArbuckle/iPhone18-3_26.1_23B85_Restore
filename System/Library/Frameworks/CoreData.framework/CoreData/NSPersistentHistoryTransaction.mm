@@ -2,7 +2,7 @@
 + (NSEntityDescription)entityDescription;
 + (NSEntityDescription)entityDescriptionWithContext:(NSManagedObjectContext *)context;
 + (NSFetchRequest)fetchRequest;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)changes;
 - (NSDate)timestamp;
 - (NSNotification)objectIDNotification;
@@ -59,8 +59,8 @@
     return 0;
   }
 
-  v3 = [(NSManagedObjectContext *)context persistentStoreCoordinator];
-  v4 = v3 ? v3->_modelMap : 0;
+  persistentStoreCoordinator = [(NSManagedObjectContext *)context persistentStoreCoordinator];
+  v4 = persistentStoreCoordinator ? persistentStoreCoordinator->_modelMap : 0;
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", +[_PFPersistentHistoryFetchModel ancillaryModelNamespace](_PFPersistentHistoryFetchModel, "ancillaryModelNamespace"), @"Transaction"];
   if (!v4)
   {
@@ -73,19 +73,19 @@
   return [(NSDictionary *)entitiesByPath objectForKey:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v5 = [(NSPersistentHistoryTransaction *)self storeID];
+  storeID = [(NSPersistentHistoryTransaction *)self storeID];
   result = 0;
-  if (v5 == [a3 storeID])
+  if (storeID == [equal storeID])
   {
-    v6 = [(NSPersistentHistoryTransaction *)self transactionNumber];
-    if (v6 == [a3 transactionNumber])
+    transactionNumber = [(NSPersistentHistoryTransaction *)self transactionNumber];
+    if (transactionNumber == [equal transactionNumber])
     {
       return 1;
     }

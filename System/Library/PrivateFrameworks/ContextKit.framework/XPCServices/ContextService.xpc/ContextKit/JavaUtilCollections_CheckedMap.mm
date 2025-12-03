@@ -1,20 +1,20 @@
 @interface JavaUtilCollections_CheckedMap
-- (BOOL)containsKeyWithId:(id)a3;
-- (BOOL)containsValueWithId:(id)a3;
+- (BOOL)containsKeyWithId:(id)id;
+- (BOOL)containsValueWithId:(id)id;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)entrySet;
-- (id)getWithId:(id)a3;
+- (id)getWithId:(id)id;
 - (id)keySet;
-- (id)putWithId:(id)a3 withId:(id)a4;
-- (id)removeWithId:(id)a3;
+- (id)putWithId:(id)id withId:(id)withId;
+- (id)removeWithId:(id)id;
 - (id)values;
 - (int)size;
 - (unint64_t)hash;
 - (void)clear;
 - (void)dealloc;
-- (void)putAllWithJavaUtilMap:(id)a3;
+- (void)putAllWithJavaUtilMap:(id)map;
 @end
 
 @implementation JavaUtilCollections_CheckedMap
@@ -41,7 +41,7 @@
   return [(JavaUtilMap *)m isEmpty];
 }
 
-- (BOOL)containsKeyWithId:(id)a3
+- (BOOL)containsKeyWithId:(id)id
 {
   m = self->m_;
   if (!m)
@@ -49,10 +49,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap *)m containsKeyWithId:a3];
+  return [(JavaUtilMap *)m containsKeyWithId:id];
 }
 
-- (BOOL)containsValueWithId:(id)a3
+- (BOOL)containsValueWithId:(id)id
 {
   m = self->m_;
   if (!m)
@@ -60,10 +60,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap *)m containsValueWithId:a3];
+  return [(JavaUtilMap *)m containsValueWithId:id];
 }
 
-- (id)getWithId:(id)a3
+- (id)getWithId:(id)id
 {
   m = self->m_;
   if (!m)
@@ -71,10 +71,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap *)m getWithId:a3];
+  return [(JavaUtilMap *)m getWithId:id];
 }
 
-- (id)putWithId:(id)a3 withId:(id)a4
+- (id)putWithId:(id)id withId:(id)withId
 {
   m = self->m_;
   if (!m)
@@ -82,13 +82,13 @@
     JreThrowNullPointerException();
   }
 
-  JavaUtilCollections_checkTypeWithId_withIOSClass_(a3, self->keyType_);
-  JavaUtilCollections_checkTypeWithId_withIOSClass_(a4, self->valueType_);
+  JavaUtilCollections_checkTypeWithId_withIOSClass_(id, self->keyType_);
+  JavaUtilCollections_checkTypeWithId_withIOSClass_(withId, self->valueType_);
 
-  return [(JavaUtilMap *)m putWithId:a3 withId:a4];
+  return [(JavaUtilMap *)m putWithId:id withId:withId];
 }
 
-- (id)removeWithId:(id)a3
+- (id)removeWithId:(id)id
 {
   m = self->m_;
   if (!m)
@@ -96,45 +96,45 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap *)m removeWithId:a3];
+  return [(JavaUtilMap *)m removeWithId:id];
 }
 
-- (void)putAllWithJavaUtilMap:(id)a3
+- (void)putAllWithJavaUtilMap:(id)map
 {
-  if (!a3)
+  if (!map)
   {
     goto LABEL_20;
   }
 
-  v5 = [a3 size];
+  v5 = [map size];
   if (v5)
   {
     v6 = v5;
     v7 = [IOSObjectArray arrayWithLength:v5 type:JavaUtilMap_Entry_class_()];
-    v8 = [a3 entrySet];
-    if (!v8)
+    entrySet = [map entrySet];
+    if (!entrySet)
     {
       goto LABEL_20;
     }
 
-    v9 = [v8 iterator];
+    iterator = [entrySet iterator];
     if (v6 >= 1)
     {
-      v10 = v9;
-      if (v9)
+      v10 = iterator;
+      if (iterator)
       {
         v11 = 0;
         v12 = v6;
         do
         {
-          v13 = [v10 next];
-          if (!v13)
+          next = [v10 next];
+          if (!next)
           {
             goto LABEL_20;
           }
 
-          v14 = v13;
-          JavaUtilCollections_checkTypeWithId_withIOSClass_([v13 getKey], self->keyType_);
+          v14 = next;
+          JavaUtilCollections_checkTypeWithId_withIOSClass_([next getKey], self->keyType_);
           JavaUtilCollections_checkTypeWithId_withIOSClass_([v14 getValue], self->valueType_);
           IOSObjectArray_Set(v7, v11++, v14);
         }
@@ -161,7 +161,7 @@
             break;
           }
 
-          v20 = [(IOSClass *)elementType getKey];
+          getKey = [(IOSClass *)elementType getKey];
           v21 = v7->super.size_;
           if (v15 >= v21)
           {
@@ -174,7 +174,7 @@
             break;
           }
 
-          [(JavaUtilMap *)m putWithId:v20 withId:[(IOSClass *)v22 getValue]];
+          [(JavaUtilMap *)m putWithId:getKey withId:[(IOSClass *)v22 getValue]];
           if (v12 == ++v15)
           {
             return;
@@ -229,16 +229,16 @@ LABEL_20:
     JreThrowNullPointerException();
   }
 
-  v4 = [(JavaUtilMap *)m entrySet];
+  entrySet = [(JavaUtilMap *)m entrySet];
   valueType = self->valueType_;
   v6 = [JavaUtilCollections_CheckedMap_CheckedEntrySet alloc];
-  JreStrongAssign(&v6->s_, v4);
+  JreStrongAssign(&v6->s_, entrySet);
   JreStrongAssign(&v6->valueType_, valueType);
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   m = self->m_;
   if (!m)
@@ -246,7 +246,7 @@ LABEL_20:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap *)m isEqual:a3];
+  return [(JavaUtilMap *)m isEqual:equal];
 }
 
 - (unint64_t)hash

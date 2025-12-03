@@ -9,11 +9,11 @@
   v3 = a3;
   v4 = [v3 length];
   v5 = [MEMORY[0x1E695DF88] dataWithLength:(v4 + 1) >> 1];
-  v6 = [v5 mutableBytes];
+  mutableBytes = [v5 mutableBytes];
   v7 = v4;
   if (v4)
   {
-    v8 = v6;
+    v8 = mutableBytes;
     v9 = 0;
     v10 = 0;
     v11 = 0;

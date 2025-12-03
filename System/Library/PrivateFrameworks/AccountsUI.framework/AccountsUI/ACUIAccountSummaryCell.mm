@@ -1,38 +1,38 @@
 @interface ACUIAccountSummaryCell
-+ (id)_enabledDataclassesTextForAccount:(id)a3;
-+ (id)_nameForAccountSpecifier:(id)a3 withStyle:(int64_t)a4;
++ (id)_enabledDataclassesTextForAccount:(id)account;
++ (id)_nameForAccountSpecifier:(id)specifier withStyle:(int64_t)style;
 + (id)_numberFormatter;
-+ (id)_valueForCellSpecifier:(id)a3;
-+ (id)specifierWithStyle:(int64_t)a3 account:(id)a4 detailControllerClass:(Class)a5 presentationStyle:(int64_t)a6;
-+ (id)specifierWithStyle:(int64_t)a3 account:(id)a4 target:(id)a5 controllerLoadAction:(SEL)a6;
-+ (id)specifierWithStyle:(int64_t)a3 account:(id)a4 valueText:(id)a5 detailControllerClass:(Class)a6 presentationStyle:(int64_t)a7;
-+ (void)_configureSpecifier:(id)a3 forAccount:(id)a4 withStyle:(int64_t)a5 valueText:(id)a6;
++ (id)_valueForCellSpecifier:(id)specifier;
++ (id)specifierWithStyle:(int64_t)style account:(id)account detailControllerClass:(Class)class presentationStyle:(int64_t)presentationStyle;
++ (id)specifierWithStyle:(int64_t)style account:(id)account target:(id)target controllerLoadAction:(SEL)action;
++ (id)specifierWithStyle:(int64_t)style account:(id)account valueText:(id)text detailControllerClass:(Class)class presentationStyle:(int64_t)presentationStyle;
++ (void)_configureSpecifier:(id)specifier forAccount:(id)account withStyle:(int64_t)style valueText:(id)text;
 @end
 
 @implementation ACUIAccountSummaryCell
 
-+ (id)specifierWithStyle:(int64_t)a3 account:(id)a4 target:(id)a5 controllerLoadAction:(SEL)a6
++ (id)specifierWithStyle:(int64_t)style account:(id)account target:(id)target controllerLoadAction:(SEL)action
 {
-  obj = a5;
-  v10 = a6;
-  v24 = a1;
+  obj = target;
+  actionCopy = action;
+  selfCopy = self;
   v23 = a2;
-  v22 = a3;
+  styleCopy = style;
   p_location = &location;
   v15 = 0;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v13 = &v20;
   v20 = 0;
   objc_storeStrong(&v20, obj);
-  v19 = v10;
+  v19 = actionCopy;
   v12 = &v18;
-  v18 = [v24 _nameForAccountSpecifier:location withStyle:v22];
+  v18 = [selfCopy _nameForAccountSpecifier:location withStyle:styleCopy];
   v6 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v18 target:v20 set:0 get:0 detail:0 cell:2 edit:0];
   v11 = &v17;
   v17 = v6;
   [v6 setControllerLoadAction:v19];
-  [v24 _configureSpecifier:v17 forAccount:location withStyle:v22 valueText:v15];
+  [selfCopy _configureSpecifier:v17 forAccount:location withStyle:styleCopy valueText:v15];
   v16 = MEMORY[0x277D82BE0](v17);
   objc_storeStrong(v11, v15);
   objc_storeStrong(v12, v15);
@@ -43,37 +43,37 @@
   return v7;
 }
 
-+ (id)specifierWithStyle:(int64_t)a3 account:(id)a4 detailControllerClass:(Class)a5 presentationStyle:(int64_t)a6
++ (id)specifierWithStyle:(int64_t)style account:(id)account detailControllerClass:(Class)class presentationStyle:(int64_t)presentationStyle
 {
-  v13 = a1;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  styleCopy = style;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v9 = [v13 specifierWithStyle:v11 account:location valueText:0 detailControllerClass:a5 presentationStyle:a6];
+  objc_storeStrong(&location, account);
+  v9 = [selfCopy specifierWithStyle:styleCopy account:location valueText:0 detailControllerClass:class presentationStyle:presentationStyle];
   objc_storeStrong(&location, 0);
 
   return v9;
 }
 
-+ (id)specifierWithStyle:(int64_t)a3 account:(id)a4 valueText:(id)a5 detailControllerClass:(Class)a6 presentationStyle:(int64_t)a7
++ (id)specifierWithStyle:(int64_t)style account:(id)account valueText:(id)text detailControllerClass:(Class)class presentationStyle:(int64_t)presentationStyle
 {
-  v28 = a1;
+  selfCopy = self;
   v27 = a2;
-  v26 = a3;
+  styleCopy = style;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v24 = 0;
-  objc_storeStrong(&v24, a5);
-  v23 = a6;
-  v22 = a7;
+  objc_storeStrong(&v24, text);
+  classCopy = class;
+  presentationStyleCopy = presentationStyle;
   v21 = 0;
-  v20 = [v28 _nameForAccountSpecifier:location withStyle:v26];
-  if (a6)
+  v20 = [selfCopy _nameForAccountSpecifier:location withStyle:styleCopy];
+  if (class)
   {
-    if (v22)
+    if (presentationStyleCopy)
     {
-      v12 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v20 target:0 set:0 get:0 detail:v23 cell:2 edit:0];
+      v12 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v20 target:0 set:0 get:0 detail:classCopy cell:2 edit:0];
       v13 = v21;
       v21 = v12;
       MEMORY[0x277D82BD8](v13);
@@ -85,7 +85,7 @@
       v10 = v21;
       v21 = v9;
       MEMORY[0x277D82BD8](v10);
-      v16 = NSStringFromClass(v23);
+      v16 = NSStringFromClass(classCopy);
       v11 = *MEMORY[0x277D400B8];
       [v21 setProperty:? forKey:?];
       MEMORY[0x277D82BD8](v16);
@@ -101,7 +101,7 @@
     [v21 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
   }
 
-  [v28 _configureSpecifier:v21 forAccount:location withStyle:v26 valueText:v24];
+  [selfCopy _configureSpecifier:v21 forAccount:location withStyle:styleCopy valueText:v24];
   v15 = MEMORY[0x277D82BE0](v21);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v21, 0);
@@ -111,20 +111,20 @@
   return v15;
 }
 
-+ (id)_nameForAccountSpecifier:(id)a3 withStyle:(int64_t)a4
++ (id)_nameForAccountSpecifier:(id)specifier withStyle:(int64_t)style
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = a4;
-  v12 = 0;
-  if (a4 == 1 || v13 == 2)
+  objc_storeStrong(location, specifier);
+  styleCopy = style;
+  accountDescription = 0;
+  if (style == 1 || styleCopy == 2)
   {
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v4 = [v10 localizedStringForKey:@"ACCOUNT_SETTINGS" value:&stru_2850054A0 table:@"Localizable"];
-    v5 = v12;
-    v12 = v4;
+    v5 = accountDescription;
+    accountDescription = v4;
     MEMORY[0x277D82BD8](v5);
     MEMORY[0x277D82BD8](v10);
   }
@@ -132,57 +132,57 @@
   else
   {
     v6 = [location[0] accountPropertyForKey:@"ACUIAccountSimpleDisplayName"];
-    v7 = v12;
-    v12 = v6;
+    v7 = accountDescription;
+    accountDescription = v6;
     MEMORY[0x277D82BD8](v7);
-    if (!v12)
+    if (!accountDescription)
     {
-      v12 = [location[0] accountPropertyForKey:@"fullname"];
+      accountDescription = [location[0] accountPropertyForKey:@"fullname"];
       MEMORY[0x277D82BD8](0);
     }
 
-    if (!v12)
+    if (!accountDescription)
     {
-      v12 = [location[0] accountDescription];
+      accountDescription = [location[0] accountDescription];
       MEMORY[0x277D82BD8](0);
     }
   }
 
-  if (!v12)
+  if (!accountDescription)
   {
-    objc_storeStrong(&v12, @"?");
+    objc_storeStrong(&accountDescription, @"?");
   }
 
-  v9 = MEMORY[0x277D82BE0](v12);
-  objc_storeStrong(&v12, 0);
+  v9 = MEMORY[0x277D82BE0](accountDescription);
+  objc_storeStrong(&accountDescription, 0);
   objc_storeStrong(location, 0);
 
   return v9;
 }
 
-+ (void)_configureSpecifier:(id)a3 forAccount:(id)a4 withStyle:(int64_t)a5 valueText:(id)a6
++ (void)_configureSpecifier:(id)specifier forAccount:(id)account withStyle:(int64_t)style valueText:(id)text
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v30 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, specifier);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
-  v27 = a5;
+  objc_storeStrong(&v28, account);
+  styleCopy = style;
   v26 = 0;
-  objc_storeStrong(&v26, a6);
-  v25 = [v28 identifier];
-  if (v27 == 1 || v27 == 2)
+  objc_storeStrong(&v26, text);
+  identifier = [v28 identifier];
+  if (styleCopy == 1 || styleCopy == 2)
   {
-    objc_storeWeak((location[0] + *MEMORY[0x277D3FCB8]), v30);
+    objc_storeWeak((location[0] + *MEMORY[0x277D3FCB8]), selfCopy);
     *(location[0] + *MEMORY[0x277D3FCA8]) = sel__valueForCellSpecifier_;
-    objc_storeStrong(&v25, @"ACCOUNT_INFO");
+    objc_storeStrong(&identifier, @"ACCOUNT_INFO");
   }
 
   [location[0] setProperty:v28 forKey:@"account"];
   v20 = location[0];
-  v21 = [MEMORY[0x277CCABB0] numberWithInteger:v27];
+  v21 = [MEMORY[0x277CCABB0] numberWithInteger:styleCopy];
   [v20 setProperty:? forKey:?];
   MEMORY[0x277D82BD8](v21);
   if (v26)
@@ -195,13 +195,13 @@
   v6 = *MEMORY[0x277D3FE58];
   [v18 setProperty:? forKey:?];
   MEMORY[0x277D82BD8](v19);
-  if (v27 == 3)
+  if (styleCopy == 3)
   {
-    v16 = [v28 accountType];
-    v15 = [v16 supportedDataclasses];
-    v17 = [v15 count];
-    MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v16);
+    accountType = [v28 accountType];
+    supportedDataclasses = [accountType supportedDataclasses];
+    v17 = [supportedDataclasses count];
+    MEMORY[0x277D82BD8](supportedDataclasses);
+    MEMORY[0x277D82BD8](accountType);
     if (v17)
     {
       v11 = location[0];
@@ -214,51 +214,51 @@
     else
     {
       v13 = location[0];
-      v14 = [v28 username];
+      username = [v28 username];
       v7 = *MEMORY[0x277D40160];
       [v13 setProperty:? forKey:?];
-      MEMORY[0x277D82BD8](v14);
+      MEMORY[0x277D82BD8](username);
     }
   }
 
-  [location[0] setProperty:v25 forKey:*MEMORY[0x277D3FFB8]];
+  [location[0] setProperty:identifier forKey:*MEMORY[0x277D3FFB8]];
   v9 = location[0];
   v31 = @"account";
   v32[0] = v28;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
   [v9 setUserInfo:?];
   MEMORY[0x277D82BD8](v10);
-  objc_storeStrong(&v25, 0);
+  objc_storeStrong(&identifier, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-+ (id)_valueForCellSpecifier:(id)a3
++ (id)_valueForCellSpecifier:(id)specifier
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, specifier);
   v4 = [location[0] propertyForKey:@"ACUIAccountSummaryValue"];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-+ (id)_enabledDataclassesTextForAccount:(id)a3
++ (id)_enabledDataclassesTextForAccount:(id)account
 {
   v60[18] = *MEMORY[0x277D85DE8];
-  v53 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v51 = MEMORY[0x277D82BE0](&stru_2850054A0);
-  v50 = [location[0] enabledDataclasses];
-  if ([v50 count])
+  enabledDataclasses = [location[0] enabledDataclasses];
+  if ([enabledDataclasses count])
   {
-    v49 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v60[0] = *MEMORY[0x277CB8A58];
     v60[1] = *MEMORY[0x277CB89C8];
     v60[2] = *MEMORY[0x277CB8968];
@@ -298,7 +298,7 @@
         v46 = *(__b[1] + 8 * v31);
         v44 = MEMORY[0x277D82BE0](v46);
         v43 = 0;
-        if ([v50 containsObject:v46])
+        if ([enabledDataclasses containsObject:v46])
         {
           if ([v46 isEqualToString:*MEMORY[0x277CB89F0]])
           {
@@ -307,15 +307,15 @@
             LOBYTE(v28) = 0;
             if (v42)
             {
-              v41 = [v42 applicationState];
+              applicationState = [v42 applicationState];
               v40 = 1;
-              v28 = [v41 isRestricted] ^ 1;
+              v28 = [applicationState isRestricted] ^ 1;
             }
 
             v43 = v28 & 1;
             if (v40)
             {
-              MEMORY[0x277D82BD8](v41);
+              MEMORY[0x277D82BD8](applicationState);
             }
 
             objc_storeStrong(&v42, 0);
@@ -333,12 +333,12 @@
 
           else if ([v46 isEqualToString:*MEMORY[0x277CB8988]])
           {
-            v25 = [MEMORY[0x277D75418] currentDevice];
-            v26 = [v25 userInterfaceIdiom];
-            MEMORY[0x277D82BD8](v25);
-            v54 = v26;
+            currentDevice = [MEMORY[0x277D75418] currentDevice];
+            userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+            MEMORY[0x277D82BD8](currentDevice);
+            v54 = userInterfaceIdiom;
             v27 = 1;
-            if (v26 != 1)
+            if (userInterfaceIdiom != 1)
             {
               v27 = v54 == 5;
             }
@@ -351,11 +351,11 @@
 
           else if ([v46 isEqualToString:*MEMORY[0x277CB8970]])
           {
-            v23 = [location[0] accountType];
-            v22 = [v23 supportedDataclasses];
-            v24 = [v22 count];
-            MEMORY[0x277D82BD8](v22);
-            MEMORY[0x277D82BD8](v23);
+            accountType = [location[0] accountType];
+            supportedDataclasses = [accountType supportedDataclasses];
+            v24 = [supportedDataclasses count];
+            MEMORY[0x277D82BD8](supportedDataclasses);
+            MEMORY[0x277D82BD8](accountType);
             if (v24 == 1)
             {
               v43 = 1;
@@ -370,7 +370,7 @@
 
         if (v43)
         {
-          v20 = v49;
+          v20 = array;
           v21 = [ACUILocalization localizedStringForDataclass:v44 withSuffix:@"LABEL" forAccount:location[0]];
           [v20 addObject:?];
           MEMORY[0x277D82BD8](v21);
@@ -391,11 +391,11 @@
     }
 
     MEMORY[0x277D82BD8](obj);
-    if ([v49 count])
+    if ([array count])
     {
-      if ([v49 count] <= 5)
+      if ([array count] <= 5)
       {
-        v9 = [MEMORY[0x277CCAAF0] localizedStringByJoiningStrings:v49];
+        v9 = [MEMORY[0x277CCAAF0] localizedStringByJoiningStrings:array];
         v10 = v51;
         v51 = v9;
         MEMORY[0x277D82BD8](v10);
@@ -403,21 +403,21 @@
 
       else
       {
-        v39 = [v49 count] - 3;
+        v39 = [array count] - 3;
         v56 = 0;
         v55 = 3;
         v57 = 0;
         v58 = 3;
         v37[1] = 0;
         v37[2] = 3;
-        v13 = [v49 subarrayWithRange:{0, 3}];
+        v13 = [array subarrayWithRange:{0, 3}];
         v38 = [v13 mutableCopy];
         MEMORY[0x277D82BD8](v13);
-        v15 = [v53 _numberFormatter];
+        _numberFormatter = [selfCopy _numberFormatter];
         v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v39];
-        v37[0] = [v15 stringFromNumber:?];
+        v37[0] = [_numberFormatter stringFromNumber:?];
         MEMORY[0x277D82BD8](v14);
-        MEMORY[0x277D82BD8](v15);
+        MEMORY[0x277D82BD8](_numberFormatter);
         v16 = MEMORY[0x277CCACA8];
         v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v17 = [v18 localizedStringForKey:@"AND_N_MORE" value:&stru_2850054A0 table:@"Localizable"];
@@ -446,7 +446,7 @@
     }
 
     objc_storeStrong(&v48, 0);
-    objc_storeStrong(&v49, 0);
+    objc_storeStrong(&array, 0);
   }
 
   else
@@ -460,7 +460,7 @@
   }
 
   v12 = MEMORY[0x277D82BE0](v51);
-  objc_storeStrong(&v50, 0);
+  objc_storeStrong(&enabledDataclasses, 0);
   objc_storeStrong(&v51, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];

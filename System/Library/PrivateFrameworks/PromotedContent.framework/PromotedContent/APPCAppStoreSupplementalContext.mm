@@ -4,10 +4,10 @@
 - (NSDictionary)appMetadataFields;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)adamId;
-- (id)copyWithZone:(void *)a3;
-- (void)setAdamId:(id)a3;
-- (void)setAppMetadataFields:(id)a3;
-- (void)setRequestTime:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)setAdamId:(id)id;
+- (void)setAppMetadataFields:(id)fields;
+- (void)setRequestTime:(id)time;
 @end
 
 @implementation APPCAppStoreSupplementalContext
@@ -31,9 +31,9 @@
   return v4;
 }
 
-- (void)setAdamId:(id)a3
+- (void)setAdamId:(id)id
 {
-  if (a3)
+  if (id)
   {
     v4 = sub_1C1B94D88();
     v6 = v5;
@@ -70,9 +70,9 @@
   return v4;
 }
 
-- (void)setAppMetadataFields:(id)a3
+- (void)setAppMetadataFields:(id)fields
 {
-  if (a3)
+  if (fields)
   {
     v4 = sub_1C1B94CB8();
   }
@@ -111,13 +111,13 @@
   return v11;
 }
 
-- (void)setRequestTime:(id)a3
+- (void)setRequestTime:(id)time
 {
   v5 = sub_1C1AC1F08(&qword_1EBF07F50, &qword_1C1B9A590);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (time)
   {
     sub_1C1B94558();
     v9 = sub_1C1B94588();
@@ -132,14 +132,14 @@
 
   v11 = OBJC_IVAR___APPCAppStoreSupplementalContext_requestTime;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_1C1AABE90(v8, self + v11);
   swift_endAccess();
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1AD6D7C();
 
   sub_1C1AC1F08(&qword_1EBF08210, &qword_1C1BA4330);
@@ -148,9 +148,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_1C1AD7498(v6);
 
   sub_1C1AAABE0(v6, v6[3]);

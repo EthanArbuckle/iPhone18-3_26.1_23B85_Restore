@@ -1,18 +1,18 @@
 @interface __NSPlaceholderFileSecurity
 - (__NSPlaceholderFileSecurity)init;
-- (__NSPlaceholderFileSecurity)initWithCoder:(id)a3;
-- (__NSPlaceholderFileSecurity)initWithFileSec:(_filesec *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (__NSPlaceholderFileSecurity)initWithCoder:(id)coder;
+- (__NSPlaceholderFileSecurity)initWithFileSec:(_filesec *)sec;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation __NSPlaceholderFileSecurity
 
-- (__NSPlaceholderFileSecurity)initWithFileSec:(_filesec *)a3
+- (__NSPlaceholderFileSecurity)initWithFileSec:(_filesec *)sec
 {
   if (self == &___immutablePlaceholderFileSecurity)
   {
-    return [__NSFileSecurity __new:a3];
+    return [__NSFileSecurity __new:sec];
   }
 
   else
@@ -33,10 +33,10 @@
   return result;
 }
 
-- (__NSPlaceholderFileSecurity)initWithCoder:(id)a3
+- (__NSPlaceholderFileSecurity)initWithCoder:(id)coder
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (![a3 allowsKeyedCoding])
+  if (![coder allowsKeyedCoding])
   {
 
     objc_exception_throw([NSException exceptionWithName:@"NSInvalidArgumentException" reason:@"FileSecurity cannot be decoded by non-keyed archivers" userInfo:0]);
@@ -44,7 +44,7 @@
 
   v5 = @"NSCocoaErrorDomain";
   size = 0;
-  v6 = [a3 decodeBytesForKey:@"NS.filesec" returnedLength:&size];
+  v6 = [coder decodeBytesForKey:@"NS.filesec" returnedLength:&size];
   if (!v6)
   {
     v8 = &off_1EF1B9C30;
@@ -60,8 +60,8 @@
 LABEL_6:
 
     v10 = CFErrorCreate(&__kCFAllocatorSystemDefault, v5, v9, v8);
-    [a3 failWithError:CFAutorelease(v10)];
-    v11 = 0;
+    [coder failWithError:CFAutorelease(v10)];
+    obj_p = 0;
     goto LABEL_7;
   }
 
@@ -92,7 +92,7 @@ LABEL_6:
   if (!v17)
   {
     v5 = @"NSPOSIXErrorDomain";
-    v11 = 0;
+    obj_p = 0;
     v9 = *__error();
     v8 = &off_1EF1B9CA8;
     goto LABEL_45;
@@ -105,7 +105,7 @@ LABEL_6:
     if (filesec_set_property(v17, FILESEC_OWNER, &obj_p))
     {
       v5 = @"NSPOSIXErrorDomain";
-      v11 = 0;
+      obj_p = 0;
       v9 = *__error();
       v8 = &off_1EF1B9CD0;
       goto LABEL_45;
@@ -120,7 +120,7 @@ LABEL_6:
     if (filesec_set_property(v18, FILESEC_GROUP, &obj_p))
     {
       v5 = @"NSPOSIXErrorDomain";
-      v11 = 0;
+      obj_p = 0;
       v9 = *__error();
       v8 = &off_1EF1B9CF8;
       goto LABEL_45;
@@ -135,7 +135,7 @@ LABEL_6:
     if (filesec_set_property(v18, FILESEC_MODE, &obj_p))
     {
       v5 = @"NSPOSIXErrorDomain";
-      v11 = 0;
+      obj_p = 0;
       v9 = *__error();
       v8 = &off_1EF1B9D20;
       goto LABEL_45;
@@ -149,7 +149,7 @@ LABEL_6:
     if (filesec_set_property(v18, FILESEC_UUID, v16 + 4))
     {
       v5 = @"NSPOSIXErrorDomain";
-      v11 = 0;
+      obj_p = 0;
       v9 = *__error();
       v8 = &off_1EF1B9D48;
       goto LABEL_45;
@@ -163,7 +163,7 @@ LABEL_6:
     if (filesec_set_property(v18, FILESEC_GRPUUID, v16 + 6))
     {
       v5 = @"NSPOSIXErrorDomain";
-      v11 = 0;
+      obj_p = 0;
       v9 = *__error();
       v8 = &off_1EF1B9D70;
       goto LABEL_45;
@@ -197,7 +197,7 @@ LABEL_43:
   {
     acl_free(obj_p);
 LABEL_36:
-    v11 = [(__NSPlaceholderFileSecurity *)self initWithFileSec:v18, obj_p];
+    obj_p = [(__NSPlaceholderFileSecurity *)self initWithFileSec:v18, obj_p];
     v8 = &off_1EF1B9C08;
     v9 = 4864;
     goto LABEL_45;
@@ -207,14 +207,14 @@ LABEL_36:
   v9 = *__error();
   v8 = &off_1EF1B9DE8;
 LABEL_44:
-  v11 = 0;
+  obj_p = 0;
 LABEL_45:
   if (v16 != v22)
   {
     free(v16);
   }
 
-  if (!v11)
+  if (!obj_p)
   {
     if (v18)
     {
@@ -226,10 +226,10 @@ LABEL_45:
 
 LABEL_7:
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return obj_p;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = __CFLookUpClass("NSFileSecurity");
   v6 = __CFFullMethodName(v5, self, a2);
@@ -238,7 +238,7 @@ LABEL_7:
   objc_exception_throw(v8);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = __CFLookUpClass("NSFileSecurity");
   v6 = __CFFullMethodName(v5, self, a2);

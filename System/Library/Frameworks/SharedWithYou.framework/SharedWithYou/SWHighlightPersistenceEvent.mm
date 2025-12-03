@@ -1,34 +1,34 @@
 @interface SWHighlightPersistenceEvent
-- (SWHighlightPersistenceEvent)initWithCoder:(id)a3;
+- (SWHighlightPersistenceEvent)initWithCoder:(id)coder;
 - (SWHighlightPersistenceEvent)initWithHighlight:(SWHighlight *)highlight trigger:(SWHighlightPersistenceEventTrigger)trigger;
-- (SWHighlightPersistenceEvent)initWithHighlight:(id)a3 type:(int64_t)a4;
-- (SWHighlightPersistenceEvent)initWithHighlightURL:(id)a3 type:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SWHighlightPersistenceEvent)initWithHighlight:(id)highlight type:(int64_t)type;
+- (SWHighlightPersistenceEvent)initWithHighlightURL:(id)l type:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SWHighlightPersistenceEvent
 
-- (SWHighlightPersistenceEvent)initWithHighlightURL:(id)a3 type:(int64_t)a4
+- (SWHighlightPersistenceEvent)initWithHighlightURL:(id)l type:(int64_t)type
 {
-  v7 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = SWHighlightPersistenceEvent;
   v8 = [(SWHighlightPersistenceEvent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_highlightURL, a3);
-    v9->_persistenceEventType = a4;
+    objc_storeStrong(&v8->_highlightURL, l);
+    v9->_persistenceEventType = type;
   }
 
   return v9;
 }
 
-- (SWHighlightPersistenceEvent)initWithHighlight:(id)a3 type:(int64_t)a4
+- (SWHighlightPersistenceEvent)initWithHighlight:(id)highlight type:(int64_t)type
 {
-  v6 = [a3 URL];
-  v7 = [(SWHighlightPersistenceEvent *)self initWithHighlightURL:v6 type:a4];
+  v6 = [highlight URL];
+  v7 = [(SWHighlightPersistenceEvent *)self initWithHighlightURL:v6 type:type];
 
   return v7;
 }
@@ -41,32 +41,32 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SWHighlightPersistenceEvent *)self highlightURL];
+  coderCopy = coder;
+  highlightURL = [(SWHighlightPersistenceEvent *)self highlightURL];
   v6 = NSStringFromSelector(sel_highlightURL);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:highlightURL forKey:v6];
 
-  v7 = [(SWHighlightPersistenceEvent *)self persistenceEventType];
+  persistenceEventType = [(SWHighlightPersistenceEvent *)self persistenceEventType];
   v8 = NSStringFromSelector(sel_persistenceEventType);
-  [v4 encodeInteger:v7 forKey:v8];
+  [coderCopy encodeInteger:persistenceEventType forKey:v8];
 }
 
-- (SWHighlightPersistenceEvent)initWithCoder:(id)a3
+- (SWHighlightPersistenceEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_highlightURL);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = NSStringFromSelector(sel_persistenceEventType);
-  v9 = [v4 decodeIntegerForKey:v8];
+  v9 = [coderCopy decodeIntegerForKey:v8];
 
   if (v7)
   {
     self = [(SWHighlightPersistenceEvent *)self initWithHighlightURL:v7 type:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -77,17 +77,17 @@
       [SWHighlightPersistenceEvent initWithCoder:v11];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(SWHighlightPersistenceEvent *)self highlightURL];
-  v6 = [v4 initWithHighlightURL:v5 type:{-[SWHighlightPersistenceEvent persistenceEventType](self, "persistenceEventType")}];
+  highlightURL = [(SWHighlightPersistenceEvent *)self highlightURL];
+  v6 = [v4 initWithHighlightURL:highlightURL type:{-[SWHighlightPersistenceEvent persistenceEventType](self, "persistenceEventType")}];
 
   return v6;
 }

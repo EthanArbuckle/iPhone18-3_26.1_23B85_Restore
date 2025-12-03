@@ -11,8 +11,8 @@
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   v7.receiver = self;
   v7.super_class = _UIFullScreenInAssistiveAccessApplicationSceneSpecification;
-  v4 = [(UIApplicationSceneSpecification *)&v7 defaultExtensions];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  defaultExtensions = [(UIApplicationSceneSpecification *)&v7 defaultExtensions];
+  v5 = [v3 arrayByAddingObjectsFromArray:defaultExtensions];
 
   return v5;
 }

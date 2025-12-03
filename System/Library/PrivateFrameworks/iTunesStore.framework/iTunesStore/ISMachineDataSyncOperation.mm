@@ -1,31 +1,31 @@
 @interface ISMachineDataSyncOperation
 - (BOOL)allowsBootstrapCellularData;
 - (BOOL)hidesServerDrivenDialogs;
-- (ISMachineDataSyncOperation)initWithAccountIdentifier:(unint64_t)a3 syncData:(id)a4;
+- (ISMachineDataSyncOperation)initWithAccountIdentifier:(unint64_t)identifier syncData:(id)data;
 - (NSString)syncState;
 - (NSString)userAgent;
-- (id)_newSyncOperationWithClientData:(id)a3 machineIDData:(id)a4;
+- (id)_newSyncOperationWithClientData:(id)data machineIDData:(id)dData;
 - (int64_t)protocolVersion;
 - (void)run;
-- (void)setAllowsBootstrapCellularData:(BOOL)a3;
-- (void)setHidesServerDrivenDialogs:(BOOL)a3;
-- (void)setProtocolVersion:(int64_t)a3;
-- (void)setUserAgent:(id)a3;
+- (void)setAllowsBootstrapCellularData:(BOOL)data;
+- (void)setHidesServerDrivenDialogs:(BOOL)dialogs;
+- (void)setProtocolVersion:(int64_t)version;
+- (void)setUserAgent:(id)agent;
 @end
 
 @implementation ISMachineDataSyncOperation
 
-- (ISMachineDataSyncOperation)initWithAccountIdentifier:(unint64_t)a3 syncData:(id)a4
+- (ISMachineDataSyncOperation)initWithAccountIdentifier:(unint64_t)identifier syncData:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = ISMachineDataSyncOperation;
   v7 = [(ISOperation *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_accountID = a3;
-    v9 = [v6 copy];
+    v7->_accountID = identifier;
+    v9 = [dataCopy copy];
     inputData = v8->_inputData;
     v8->_inputData = v9;
   }
@@ -57,37 +57,37 @@
   return protocolVersion;
 }
 
-- (void)setAllowsBootstrapCellularData:(BOOL)a3
+- (void)setAllowsBootstrapCellularData:(BOOL)data
 {
   [(ISOperation *)self lock];
-  self->_allowsBootstrapCellularData = a3;
+  self->_allowsBootstrapCellularData = data;
 
   [(ISOperation *)self unlock];
 }
 
-- (void)setHidesServerDrivenDialogs:(BOOL)a3
+- (void)setHidesServerDrivenDialogs:(BOOL)dialogs
 {
   [(ISOperation *)self lock];
-  self->_hidesServerDrivenDialogs = a3;
+  self->_hidesServerDrivenDialogs = dialogs;
 
   [(ISOperation *)self unlock];
 }
 
-- (void)setProtocolVersion:(int64_t)a3
+- (void)setProtocolVersion:(int64_t)version
 {
   [(ISOperation *)self lock];
-  self->_protocolVersion = a3;
+  self->_protocolVersion = version;
 
   [(ISOperation *)self unlock];
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
-  v6 = a3;
+  agentCopy = agent;
   [(ISOperation *)self lock];
-  if (self->_userAgent != v6)
+  if (self->_userAgent != agentCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)agentCopy copy];
     userAgent = self->_userAgent;
     self->_userAgent = v4;
   }
@@ -132,30 +132,30 @@
 
   inputData = self->_inputData;
   v5 = SSVAnisetteSynchronize();
-  v6 = [MEMORY[0x277D69B38] sharedDaemonConfig];
-  v7 = v6;
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedDaemonConfig];
+  mEMORY[0x277D69B38]2 = mEMORY[0x277D69B38];
   if (v5)
   {
-    if (!v6)
+    if (!mEMORY[0x277D69B38])
     {
-      v7 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
-    if ([v7 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38]2 shouldLog];
+    if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
     {
-      v8 |= 2u;
+      shouldLog |= 2u;
     }
 
-    v9 = [v7 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x277D69B38]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = v8;
+      v10 = shouldLog;
     }
 
     else
     {
-      v10 = v8 & 2;
+      v10 = shouldLog & 2;
     }
 
     if (v10)
@@ -188,24 +188,24 @@
     goto LABEL_35;
   }
 
-  if (!v6)
+  if (!mEMORY[0x277D69B38])
   {
-    v7 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v14 = [v7 shouldLog];
-  if ([v7 shouldLogToDisk])
+  shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+  if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
   {
-    v15 = v14 | 2;
+    v15 = shouldLog2 | 2;
   }
 
   else
   {
-    v15 = v14;
+    v15 = shouldLog2;
   }
 
-  v16 = [v7 OSLogObject];
-  if (!os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     v15 &= 2u;
   }
@@ -226,9 +226,9 @@
 
   if (v18)
   {
-    v16 = [MEMORY[0x277CCACA8] stringWithCString:v18 encoding:{4, &v38, v32}];
+    oSLogObject2 = [MEMORY[0x277CCACA8] stringWithCString:v18 encoding:{4, &v38, v32}];
     free(v18);
-    v31 = v16;
+    v31 = oSLogObject2;
     SSFileLog();
 LABEL_25:
   }
@@ -241,13 +241,13 @@ LABEL_25:
   v23 = v33;
   if (v22)
   {
-    v24 = [v21 dataProvider];
-    v25 = [v24 output];
+    dataProvider = [v21 dataProvider];
+    output = [dataProvider output];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v26 = [v25 objectForKey:@"syncState"];
+      v26 = [output objectForKey:@"syncState"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -278,18 +278,18 @@ LABEL_35:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_newSyncOperationWithClientData:(id)a3 machineIDData:(id)a4
+- (id)_newSyncOperationWithClientData:(id)data machineIDData:(id)dData
 {
-  v6 = a4;
-  v7 = a3;
+  dDataCopy = dData;
+  dataCopy = data;
   v8 = objc_alloc_init(ISStoreURLOperation);
   [(ISStoreURLOperation *)v8 setUseUserSpecificURLBag:1];
-  v9 = [(ISMachineDataSyncOperation *)self hidesServerDrivenDialogs];
-  v10 = [(ISMachineDataSyncOperation *)self userAgent];
+  hidesServerDrivenDialogs = [(ISMachineDataSyncOperation *)self hidesServerDrivenDialogs];
+  userAgent = [(ISMachineDataSyncOperation *)self userAgent];
   v11 = +[(ISDataProvider *)ISProtocolDataProvider];
-  v12 = !v9;
-  [v11 setShouldProcessAuthenticationDialogs:!v9];
-  [v11 setShouldProcessDialogs:!v9];
+  v12 = !hidesServerDrivenDialogs;
+  [v11 setShouldProcessAuthenticationDialogs:!hidesServerDrivenDialogs];
+  [v11 setShouldProcessDialogs:!hidesServerDrivenDialogs];
   [(ISURLOperation *)v8 setDataProvider:v11];
   v13 = objc_alloc(MEMORY[0x277D69BC8]);
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_accountID];
@@ -303,27 +303,27 @@ LABEL_35:
 
   [v15 setAllowsBootstrapCellularData:{-[ISMachineDataSyncOperation allowsBootstrapCellularData](self, "allowsBootstrapCellularData")}];
   v16 = *MEMORY[0x277D6A130];
-  [v15 setValue:v10 forHTTPHeaderField:*MEMORY[0x277D6A130]];
+  [v15 setValue:userAgent forHTTPHeaderField:*MEMORY[0x277D6A130]];
   [(ISURLOperation *)v8 setAuthenticationContext:v15];
   v17 = objc_alloc_init(MEMORY[0x277D69BD0]);
   [v17 setAllowedRetryCount:0];
   [v17 setAllowsBootstrapCellularData:{-[ISMachineDataSyncOperation allowsBootstrapCellularData](self, "allowsBootstrapCellularData")}];
   [v17 setHTTPMethod:@"POST"];
   [v17 setValue:@"application/x-apple-plist" forHTTPHeaderField:@"Content-Type"];
-  [v17 setValue:v10 forHTTPHeaderField:v16];
-  v18 = [v7 base64EncodedStringWithOptions:0];
+  [v17 setValue:userAgent forHTTPHeaderField:v16];
+  v18 = [dataCopy base64EncodedStringWithOptions:0];
 
   [v17 setValue:v18 forRequestParameter:@"clientData"];
-  v19 = [v6 base64EncodedStringWithOptions:0];
+  v19 = [dDataCopy base64EncodedStringWithOptions:0];
 
   [v17 setValue:v19 forRequestParameter:@"machineId"];
-  v20 = [(ISMachineDataSyncOperation *)self protocolVersion];
-  if (v20 == 1)
+  protocolVersion = [(ISMachineDataSyncOperation *)self protocolVersion];
+  if (protocolVersion == 1)
   {
     [v17 setURLBagKey:@"amd-sync-machine"];
   }
 
-  else if (!v20)
+  else if (!protocolVersion)
   {
     [v17 setURLBagKey:@"md-sync-machine"];
     v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_accountID];

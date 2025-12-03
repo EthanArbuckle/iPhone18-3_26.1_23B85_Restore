@@ -1,6 +1,6 @@
 @interface DBDynamicContentBackgroundView.MaskView
 + (Class)layerClass;
-- (_TtCC9DashBoard30DBDynamicContentBackgroundViewP33_459A3E92225B30F72CE2F9E1A34E98BC8MaskView)initWithCoder:(id)a3;
+- (_TtCC9DashBoard30DBDynamicContentBackgroundViewP33_459A3E92225B30F72CE2F9E1A34E98BC8MaskView)initWithCoder:(id)coder;
 @end
 
 @implementation DBDynamicContentBackgroundView.MaskView
@@ -12,7 +12,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtCC9DashBoard30DBDynamicContentBackgroundViewP33_459A3E92225B30F72CE2F9E1A34E98BC8MaskView)initWithCoder:(id)a3
+- (_TtCC9DashBoard30DBDynamicContentBackgroundViewP33_459A3E92225B30F72CE2F9E1A34E98BC8MaskView)initWithCoder:(id)coder
 {
   result = sub_248384580();
   __break(1u);

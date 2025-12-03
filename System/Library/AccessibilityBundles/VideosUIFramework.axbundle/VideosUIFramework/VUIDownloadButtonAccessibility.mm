@@ -1,5 +1,5 @@
 @interface VUIDownloadButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -9,12 +9,12 @@
 
 @implementation VUIDownloadButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIDownloadButton" hasProperty:@"viewModel" withType:"@"];
-  [v3 validateClass:@"VUIDownloadButtonViewModel" hasProperty:@"downloadProgress" withType:"d"];
-  [v3 validateClass:@"VUIDownloadButtonViewModel" hasProperty:@"downloadState" withType:"Q"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIDownloadButton" hasProperty:@"viewModel" withType:"@"];
+  [validationsCopy validateClass:@"VUIDownloadButtonViewModel" hasProperty:@"downloadProgress" withType:"d"];
+  [validationsCopy validateClass:@"VUIDownloadButtonViewModel" hasProperty:@"downloadState" withType:"Q"];
 }
 
 - (unint64_t)_accessibilityDownloadState
@@ -55,42 +55,42 @@
     v3 = [(VUIDownloadButtonAccessibility *)self safeValueForKey:@"viewModel"];
     [v3 safeCGFloatForKey:@"downloadProgress"];
 
-    v4 = AXFormatFloatWithPercentage();
+    accessibilityValue = AXFormatFloatWithPercentage();
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = VUIDownloadButtonAccessibility;
-    v4 = [(VUIDownloadButtonAccessibility *)&v6 accessibilityValue];
+    accessibilityValue = [(VUIDownloadButtonAccessibility *)&v6 accessibilityValue];
   }
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (id)accessibilityHint
 {
-  v3 = [(VUIDownloadButtonAccessibility *)self _accessibilityDownloadState];
-  if (v3 == 4)
+  _accessibilityDownloadState = [(VUIDownloadButtonAccessibility *)self _accessibilityDownloadState];
+  if (_accessibilityDownloadState == 4)
   {
     v4 = @"download.button.remove.hint";
     goto LABEL_5;
   }
 
-  if (v3 == 2)
+  if (_accessibilityDownloadState == 2)
   {
     v4 = @"download.button.cancel.hint";
 LABEL_5:
-    v5 = accessibilityLocalizedString(v4);
+    accessibilityHint = accessibilityLocalizedString(v4);
     goto LABEL_7;
   }
 
   v7.receiver = self;
   v7.super_class = VUIDownloadButtonAccessibility;
-  v5 = [(VUIDownloadButtonAccessibility *)&v7 accessibilityHint];
+  accessibilityHint = [(VUIDownloadButtonAccessibility *)&v7 accessibilityHint];
 LABEL_7:
 
-  return v5;
+  return accessibilityHint;
 }
 
 @end

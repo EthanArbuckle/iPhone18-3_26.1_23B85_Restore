@@ -1,27 +1,27 @@
 @interface PushMessage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMessage:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMessage:(id)message;
 - (NSNumber)accountID;
-- (PushMessage)initWithMessage:(id)a3;
+- (PushMessage)initWithMessage:(id)message;
 - (id)description;
 - (id)getRevokedProductsMap;
-- (id)valueForUserInfoKey:(id)a3;
+- (id)valueForUserInfoKey:(id)key;
 - (unint64_t)actionType;
 - (unint64_t)hash;
 @end
 
 @implementation PushMessage
 
-- (PushMessage)initWithMessage:(id)a3
+- (PushMessage)initWithMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v9.receiver = self;
   v9.super_class = PushMessage;
   v6 = [(PushMessage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_message, a3);
+    objc_storeStrong(&v6->_message, message);
   }
 
   return v7;
@@ -29,47 +29,47 @@
 
 - (NSNumber)accountID
 {
-  v2 = [(APSIncomingMessage *)self->_message userInfo];
-  v3 = [v2 tcr_numberForKey:@"0"];
+  userInfo = [(APSIncomingMessage *)self->_message userInfo];
+  v3 = [userInfo tcr_numberForKey:@"0"];
 
   return v3;
 }
 
 - (unint64_t)actionType
 {
-  v2 = [(APSIncomingMessage *)self->_message userInfo];
-  v3 = [v2 tcr_integerValueForKey:@"1" missingValue:-1];
+  userInfo = [(APSIncomingMessage *)self->_message userInfo];
+  v3 = [userInfo tcr_integerValueForKey:@"1" missingValue:-1];
 
   return v3;
 }
 
-- (BOOL)isEqualToMessage:(id)a3
+- (BOOL)isEqualToMessage:(id)message
 {
   message = self->_message;
-  v4 = a3;
-  v5 = [(APSIncomingMessage *)message userInfo];
-  v6 = v4[1];
+  messageCopy = message;
+  userInfo = [(APSIncomingMessage *)message userInfo];
+  v6 = messageCopy[1];
 
-  v7 = [v6 userInfo];
-  LOBYTE(v6) = [v5 isEqualToDictionary:v7];
+  userInfo2 = [v6 userInfo];
+  LOBYTE(v6) = [userInfo isEqualToDictionary:userInfo2];
 
   return v6;
 }
 
-- (id)valueForUserInfoKey:(id)a3
+- (id)valueForUserInfoKey:(id)key
 {
   message = self->_message;
-  v4 = a3;
-  v5 = [(APSIncomingMessage *)message userInfo];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  userInfo = [(APSIncomingMessage *)message userInfo];
+  v6 = [userInfo objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -79,7 +79,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PushMessage *)self isEqualToMessage:v4];
+      v5 = [(PushMessage *)self isEqualToMessage:equalCopy];
     }
 
     else
@@ -93,16 +93,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(APSIncomingMessage *)self->_message userInfo];
-  v3 = [v2 hash];
+  userInfo = [(APSIncomingMessage *)self->_message userInfo];
+  v3 = [userInfo hash];
 
   return v3;
 }
 
 - (id)description
 {
-  v3 = [(APSIncomingMessage *)self->_message userInfo];
-  v4 = [v3 mutableCopy];
+  userInfo = [(APSIncomingMessage *)self->_message userInfo];
+  v4 = [userInfo mutableCopy];
 
   v5 = [v4 objectForKeyedSubscript:@"0"];
   if (v5)
@@ -116,9 +116,9 @@
     v9 = [v4 description];
   }
 
-  v10 = [(APSIncomingMessage *)self->_message timestamp];
-  v11 = [v10 lib_loggableDate];
-  v12 = [NSString stringWithFormat:@"%@: %@", v11, v9];
+  timestamp = [(APSIncomingMessage *)self->_message timestamp];
+  lib_loggableDate = [timestamp lib_loggableDate];
+  v12 = [NSString stringWithFormat:@"%@: %@", lib_loggableDate, v9];
 
   return v12;
 }
@@ -136,8 +136,8 @@
     v15 = sub_10006AE04;
     v16 = sub_10006AE14;
     v17 = objc_alloc_init(NSMutableDictionary);
-    v4 = [v3 allKeys];
-    v5 = [NSArray arrayWithArray:v4];
+    allKeys = [v3 allKeys];
+    v5 = [NSArray arrayWithArray:allKeys];
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;

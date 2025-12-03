@@ -1,28 +1,28 @@
 @interface BGSystemTaskThroughputMetrics
-- (BGSystemTaskThroughputMetrics)initWithIdentifier:(id)a3 qos:(id)a4 workloadCategory:(unint64_t)a5 expectedMetricValue:(id)a6;
-- (void)addItemCount:(unint64_t)a3;
+- (BGSystemTaskThroughputMetrics)initWithIdentifier:(id)identifier qos:(id)qos workloadCategory:(unint64_t)category expectedMetricValue:(id)value;
+- (void)addItemCount:(unint64_t)count;
 @end
 
 @implementation BGSystemTaskThroughputMetrics
 
-- (BGSystemTaskThroughputMetrics)initWithIdentifier:(id)a3 qos:(id)a4 workloadCategory:(unint64_t)a5 expectedMetricValue:(id)a6
+- (BGSystemTaskThroughputMetrics)initWithIdentifier:(id)identifier qos:(id)qos workloadCategory:(unint64_t)category expectedMetricValue:(id)value
 {
   v10.receiver = self;
   v10.super_class = BGSystemTaskThroughputMetrics;
-  v6 = [(BGSystemTaskPerformanceMetadata *)&v10 initWithIdentifier:a3 qos:a4 workloadCategory:a5 expectedMetricValue:a6];
+  v6 = [(BGSystemTaskPerformanceMetadata *)&v10 initWithIdentifier:identifier qos:qos workloadCategory:category expectedMetricValue:value];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     reportingUUID = v6->_reportingUUID;
-    v6->_reportingUUID = v7;
+    v6->_reportingUUID = uUID;
   }
 
   return v6;
 }
 
-- (void)addItemCount:(unint64_t)a3
+- (void)addItemCount:(unint64_t)count
 {
-  v4 = [(BGSystemTaskThroughputMetrics *)self itemCount]+ a3;
+  v4 = [(BGSystemTaskThroughputMetrics *)self itemCount]+ count;
 
   [(BGSystemTaskThroughputMetrics *)self setItemCount:v4];
 }

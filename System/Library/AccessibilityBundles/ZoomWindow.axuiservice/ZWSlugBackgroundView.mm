@@ -1,16 +1,16 @@
 @interface ZWSlugBackgroundView
 - (BOOL)isAccessibilityElement;
-- (ZWSlugBackgroundView)initWithFrame:(CGRect)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (ZWSlugBackgroundView)initWithFrame:(CGRect)frame;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation ZWSlugBackgroundView
 
-- (ZWSlugBackgroundView)initWithFrame:(CGRect)a3
+- (ZWSlugBackgroundView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = ZWSlugBackgroundView;
-  return [(ZWSlugBackgroundView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(ZWSlugBackgroundView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 - (BOOL)isAccessibilityElement
@@ -27,14 +27,14 @@
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = [a3 nextFocusedItem];
+  nextFocusedItem = [context nextFocusedItem];
 
-  if (v5 == self)
+  if (nextFocusedItem == self)
   {
-    v6 = [(ZWSlugBackgroundView *)self delegate];
-    [v6 slugDidReceiveFocusWithSlugView:self];
+    delegate = [(ZWSlugBackgroundView *)self delegate];
+    [delegate slugDidReceiveFocusWithSlugView:self];
   }
 }
 

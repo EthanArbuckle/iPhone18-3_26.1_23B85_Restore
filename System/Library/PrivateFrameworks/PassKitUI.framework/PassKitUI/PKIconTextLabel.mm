@@ -1,36 +1,36 @@
 @interface PKIconTextLabel
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKIconTextLabel)initWithAttributedText:(id)a3 icon:(id)a4;
-- (PKIconTextLabel)initWithText:(id)a3 icon:(id)a4;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKIconTextLabel)initWithAttributedText:(id)text icon:(id)icon;
+- (PKIconTextLabel)initWithText:(id)text icon:(id)icon;
 - (void)_updateView;
 - (void)layoutSubviews;
-- (void)setIcon:(id)a3;
-- (void)setIconAlignment:(unint64_t)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTextFont:(id)a3;
+- (void)setIcon:(id)icon;
+- (void)setIconAlignment:(unint64_t)alignment;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
+- (void)setTextFont:(id)font;
 @end
 
 @implementation PKIconTextLabel
 
-- (PKIconTextLabel)initWithText:(id)a3 icon:(id)a4
+- (PKIconTextLabel)initWithText:(id)text icon:(id)icon
 {
-  v6 = a3;
-  if (v6)
+  textCopy = text;
+  if (textCopy)
   {
     v7 = MEMORY[0x1E696AAB0];
-    v8 = a4;
-    v9 = [[v7 alloc] initWithString:v6];
-    v10 = [(PKIconTextLabel *)self initWithAttributedText:v9 icon:v8];
+    iconCopy = icon;
+    v9 = [[v7 alloc] initWithString:textCopy];
+    v10 = [(PKIconTextLabel *)self initWithAttributedText:v9 icon:iconCopy];
 
     v11 = v10;
   }
 
   else
   {
-    v12 = a4;
-    v13 = [(PKIconTextLabel *)self initWithAttributedText:0 icon:v12];
+    iconCopy2 = icon;
+    v13 = [(PKIconTextLabel *)self initWithAttributedText:0 icon:iconCopy2];
 
     v11 = v13;
   }
@@ -38,74 +38,74 @@
   return v11;
 }
 
-- (PKIconTextLabel)initWithAttributedText:(id)a3 icon:(id)a4
+- (PKIconTextLabel)initWithAttributedText:(id)text icon:(id)icon
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  iconCopy = icon;
   v11.receiver = self;
   v11.super_class = PKIconTextLabel;
   v8 = [(PKIconTextLabel *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v9 = v8;
   if (v8)
   {
-    [(PKIconTextLabel *)v8 setText:v6];
-    [(PKIconTextLabel *)v9 setIcon:v7];
+    [(PKIconTextLabel *)v8 setText:textCopy];
+    [(PKIconTextLabel *)v9 setIcon:iconCopy];
   }
 
   return v9;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_text, a3);
+    objc_storeStrong(&self->_text, text);
     [(PKIconTextLabel *)self _updateView];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_textColor != v5)
+  colorCopy = color;
+  if (self->_textColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_textColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_textColor, color);
     [(PKIconTextLabel *)self _updateView];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setTextFont:(id)a3
+- (void)setTextFont:(id)font
 {
-  v5 = a3;
-  if (self->_textFont != v5)
+  fontCopy = font;
+  if (self->_textFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_textFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_textFont, font);
     [(PKIconTextLabel *)self _updateView];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v5 = a3;
-  if (self->_icon != v5)
+  iconCopy = icon;
+  if (self->_icon != iconCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_icon, a3);
+    v6 = iconCopy;
+    objc_storeStrong(&self->_icon, icon);
     [(PKIconTextLabel *)self _updateView];
-    v5 = v6;
+    iconCopy = v6;
   }
 }
 
-- (void)setIconAlignment:(unint64_t)a3
+- (void)setIconAlignment:(unint64_t)alignment
 {
-  if (self->_iconAlignment != a3)
+  if (self->_iconAlignment != alignment)
   {
-    self->_iconAlignment = a3;
+    self->_iconAlignment = alignment;
     [(PKIconTextLabel *)self setNeedsLayout];
   }
 }
@@ -119,20 +119,20 @@
   [(PKIconTextLabel *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKIconTextLabel *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKIconTextLabel *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(PKIconTextLabel *)self _shouldReverseLayoutDirection])
   {
     v10 = 2;
@@ -239,7 +239,7 @@
 
   (v25[2])();
 LABEL_9:
-  if (!a4)
+  if (!layout)
   {
     [(UILabel *)self->_textLabel setFrame:v44[4], v44[5], v44[6], v44[7]];
     [(UIImageView *)self->_iconView setFrame:v38[4], v38[5], v38[6], v38[7]];

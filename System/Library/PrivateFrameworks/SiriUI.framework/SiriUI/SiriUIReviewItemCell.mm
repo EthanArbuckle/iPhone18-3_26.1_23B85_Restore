@@ -1,14 +1,14 @@
 @interface SiriUIReviewItemCell
-+ (CGSize)sizeThatFits:(CGSize)a3 withReview:(id)a4 characterLimit:(int64_t)a5;
++ (CGSize)sizeThatFits:(CGSize)fits withReview:(id)review characterLimit:(int64_t)limit;
 + (UIEdgeInsets)_defaultEdgeInsets;
-+ (id)_displayTextForComment:(id)a3 characterLimit:(int64_t)a4;
-- (SiriUIReviewItemCell)initWithFrame:(CGRect)a3;
++ (id)_displayTextForComment:(id)comment characterLimit:(int64_t)limit;
+- (SiriUIReviewItemCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInsets;
-- (id)_relativeStringFromDate:(id)a3;
-- (void)_setAuthor:(id)a3 andDate:(id)a4 timeZoneId:(id)a5 hasRatingView:(BOOL)a6;
-- (void)_setComment:(id)a3;
-- (void)_setRatingView:(id)a3;
-- (void)configureWithReview:(id)a3 ratingView:(id)a4 offset:(UIOffset)a5;
+- (id)_relativeStringFromDate:(id)date;
+- (void)_setAuthor:(id)author andDate:(id)date timeZoneId:(id)id hasRatingView:(BOOL)view;
+- (void)_setComment:(id)comment;
+- (void)_setRatingView:(id)view;
+- (void)configureWithReview:(id)review ratingView:(id)view offset:(UIOffset)offset;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
@@ -17,8 +17,8 @@
 
 + (UIEdgeInsets)_defaultEdgeInsets
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  if ([v2 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
     v3 = 0.0;
   }
@@ -39,39 +39,39 @@
   return result;
 }
 
-+ (id)_displayTextForComment:(id)a3 characterLimit:(int64_t)a4
++ (id)_displayTextForComment:(id)comment characterLimit:(int64_t)limit
 {
   v5 = MEMORY[0x277CCA900];
-  v6 = a3;
-  v7 = [v5 whitespaceAndNewlineCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  commentCopy = comment;
+  whitespaceAndNewlineCharacterSet = [v5 whitespaceAndNewlineCharacterSet];
+  v8 = [commentCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v9 = [v8 length];
-  if (v9 >= a4)
+  if (v9 >= limit)
   {
-    v10 = a4;
+    limitCopy = limit;
   }
 
   else
   {
-    v10 = v9;
+    limitCopy = v9;
   }
 
-  if (a4 <= 0)
+  if (limit <= 0)
   {
     v11 = v9;
   }
 
   else
   {
-    v11 = v10;
+    v11 = limitCopy;
   }
 
   v12 = [v8 stringByReplacingOccurrencesOfString:@"\n\n" withString:@"\n" options:0 range:{0, v11}];
 
-  if ([v12 length] > a4)
+  if ([v12 length] > limit)
   {
-    v13 = [v12 substringToIndex:a4];
+    v13 = [v12 substringToIndex:limit];
 
     v12 = v13;
   }
@@ -94,15 +94,15 @@
   return v17;
 }
 
-+ (CGSize)sizeThatFits:(CGSize)a3 withReview:(id)a4 characterLimit:(int64_t)a5
++ (CGSize)sizeThatFits:(CGSize)fits withReview:(id)review characterLimit:(int64_t)limit
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v47[2] = *MEMORY[0x277D85DE8];
   v9 = MEMORY[0x277D74248];
-  v10 = a4;
-  v11 = [v9 defaultParagraphStyle];
-  v12 = [v11 mutableCopy];
+  reviewCopy = review;
+  defaultParagraphStyle = [v9 defaultParagraphStyle];
+  v12 = [defaultParagraphStyle mutableCopy];
 
   [v12 setMinimumLineHeight:20.0];
   [v12 setMaximumLineHeight:20.0];
@@ -110,30 +110,30 @@
   {
     v46[0] = *MEMORY[0x277D740A8];
     v13 = v46[0];
-    v14 = [a1 _commentLabelFont];
+    _commentLabelFont = [self _commentLabelFont];
     v46[1] = *MEMORY[0x277D74118];
-    v47[0] = v14;
+    v47[0] = _commentLabelFont;
     v47[1] = v12;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:2];
     v16 = sizeThatFits_withReview_characterLimit__sCommentAttributes;
     sizeThatFits_withReview_characterLimit__sCommentAttributes = v15;
 
     v44 = v13;
-    v17 = [a1 _authorFontAttribute];
-    v45 = v17;
+    _authorFontAttribute = [self _authorFontAttribute];
+    v45 = _authorFontAttribute;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
     v19 = sizeThatFits_withReview_characterLimit__sAuthorAttributes;
     sizeThatFits_withReview_characterLimit__sAuthorAttributes = v18;
   }
 
-  v20 = [v10 comment];
-  v21 = [a1 _displayTextForComment:v20 characterLimit:a5];
+  comment = [reviewCopy comment];
+  v21 = [self _displayTextForComment:comment characterLimit:limit];
 
-  v22 = [v10 author];
+  author = [reviewCopy author];
 
-  if ([v22 length])
+  if ([author length])
   {
-    v23 = v22;
+    v23 = author;
   }
 
   else
@@ -143,7 +143,7 @@
 
   v24 = v23;
 
-  [a1 _defaultEdgeInsets];
+  [self _defaultEdgeInsets];
   v27 = width - (v25 + v26);
   v30 = v28 + v29 + 1.0;
   [v21 boundingRectWithSize:1 options:sizeThatFits_withReview_characterLimit__sCommentAttributes attributes:0 context:{v27, height}];
@@ -152,8 +152,8 @@
   v34 = v33;
 
   v35 = v32 + v34;
-  v36 = [MEMORY[0x277D759A0] mainScreen];
-  [v36 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v38 = ceil(v27);
   v39 = ceil(v35);
   if (v37 >= 2.0)
@@ -183,11 +183,11 @@
   return result;
 }
 
-- (SiriUIReviewItemCell)initWithFrame:(CGRect)a3
+- (SiriUIReviewItemCell)initWithFrame:(CGRect)frame
 {
   v29.receiver = self;
   v29.super_class = SiriUIReviewItemCell;
-  v3 = [(SiriUIContentCollectionViewCell *)&v29 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriUIContentCollectionViewCell *)&v29 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -202,16 +202,16 @@
     v4->_commentLabel = v10;
 
     v12 = v4->_commentLabel;
-    v13 = [objc_opt_class() _commentLabelFont];
-    [(UILabel *)v12 setFont:v13];
+    _commentLabelFont = [objc_opt_class() _commentLabelFont];
+    [(UILabel *)v12 setFont:_commentLabelFont];
 
     v14 = v4->_commentLabel;
-    v15 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v14 setTextColor:v15];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v14 setTextColor:whiteColor];
 
     v16 = v4->_commentLabel;
-    v17 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v16 setBackgroundColor:v17];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v16 setBackgroundColor:clearColor];
 
     [(UILabel *)v4->_commentLabel setNumberOfLines:0];
     [(UILabel *)v4->_commentLabel setLineBreakMode:4];
@@ -221,12 +221,12 @@
     v4->_authorLabel = v18;
 
     v20 = v4->_authorLabel;
-    v21 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v20 setTextColor:v21];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v20 setTextColor:whiteColor2];
 
     v22 = v4->_authorLabel;
-    v23 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v22 setBackgroundColor:v23];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v22 setBackgroundColor:clearColor2];
 
     [(SiriUIReviewItemCell *)v4 addSubview:v4->_authorLabel];
     [objc_opt_class() _defaultEdgeInsets];
@@ -252,34 +252,34 @@
   self->_ratingView = 0;
 }
 
-- (void)configureWithReview:(id)a3 ratingView:(id)a4 offset:(UIOffset)a5
+- (void)configureWithReview:(id)review ratingView:(id)view offset:(UIOffset)offset
 {
-  vertical = a5.vertical;
-  horizontal = a5.horizontal;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 comment];
-  [(SiriUIReviewItemCell *)self _setComment:v11];
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
+  viewCopy = view;
+  reviewCopy = review;
+  comment = [reviewCopy comment];
+  [(SiriUIReviewItemCell *)self _setComment:comment];
 
-  [(SiriUIReviewItemCell *)self _setRatingView:v9];
+  [(SiriUIReviewItemCell *)self _setRatingView:viewCopy];
   self->_ratingOffset.horizontal = horizontal;
   self->_ratingOffset.vertical = vertical;
-  v15 = [v10 lastUpdated];
-  v12 = [v10 author];
+  lastUpdated = [reviewCopy lastUpdated];
+  author = [reviewCopy author];
 
-  v13 = [v15 date];
-  v14 = [v15 timeZoneId];
-  [(SiriUIReviewItemCell *)self _setAuthor:v12 andDate:v13 timeZoneId:v14 hasRatingView:v9 != 0];
+  date = [lastUpdated date];
+  timeZoneId = [lastUpdated timeZoneId];
+  [(SiriUIReviewItemCell *)self _setAuthor:author andDate:date timeZoneId:timeZoneId hasRatingView:viewCopy != 0];
 }
 
-- (void)_setComment:(id)a3
+- (void)_setComment:(id)comment
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_opt_class() _displayTextForComment:v4 characterLimit:self->_characterLimit];
+  commentCopy = comment;
+  v5 = [objc_opt_class() _displayTextForComment:commentCopy characterLimit:self->_characterLimit];
 
-  v6 = [MEMORY[0x277D74248] defaultParagraphStyle];
-  v7 = [v6 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+  v7 = [defaultParagraphStyle mutableCopy];
 
   [v7 setMinimumLineHeight:20.0];
   [v7 setMaximumLineHeight:20.0];
@@ -292,59 +292,59 @@
   [(UILabel *)self->_commentLabel setAttributedText:v10];
 }
 
-- (void)_setRatingView:(id)a3
+- (void)_setRatingView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   [(UIView *)self->_ratingView removeFromSuperview];
-  objc_storeStrong(&self->_ratingView, a3);
+  objc_storeStrong(&self->_ratingView, view);
   if (self->_ratingView)
   {
     [(SiriUIReviewItemCell *)self addSubview:?];
   }
 }
 
-- (void)_setAuthor:(id)a3 andDate:(id)a4 timeZoneId:(id)a5 hasRatingView:(BOOL)a6
+- (void)_setAuthor:(id)author andDate:(id)date timeZoneId:(id)id hasRatingView:(BOOL)view
 {
-  v6 = a6;
+  viewCopy = view;
   v26[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  authorCopy = author;
+  dateCopy = date;
   v11 = objc_alloc_init(MEMORY[0x277CCAB48]);
-  v12 = [v9 length];
+  v12 = [authorCopy length];
   v13 = MEMORY[0x277D740A8];
   if (v12)
   {
-    if (v6)
+    if (viewCopy)
     {
-      v14 = [@" " stringByAppendingString:v9];
+      v14 = [@" " stringByAppendingString:authorCopy];
 
-      v9 = v14;
+      authorCopy = v14;
     }
 
-    if (v10)
+    if (dateCopy)
     {
-      v15 = [v9 stringByAppendingString:@" "];
+      v15 = [authorCopy stringByAppendingString:@" "];
 
-      v9 = v15;
+      authorCopy = v15;
     }
 
     v25 = *v13;
-    v16 = [objc_opt_class() _authorFontAttribute];
-    v26[0] = v16;
+    _authorFontAttribute = [objc_opt_class() _authorFontAttribute];
+    v26[0] = _authorFontAttribute;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
 
-    v18 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v9 attributes:v17];
+    v18 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:authorCopy attributes:v17];
     [v11 appendAttributedString:v18];
   }
 
-  if (v10)
+  if (dateCopy)
   {
-    v19 = [(SiriUIReviewItemCell *)self _relativeStringFromDate:v10];
+    v19 = [(SiriUIReviewItemCell *)self _relativeStringFromDate:dateCopy];
     if ([v19 length])
     {
       v23 = *v13;
-      v20 = [objc_opt_class() _authorDateFontAttribute];
-      v24 = v20;
+      _authorDateFontAttribute = [objc_opt_class() _authorDateFontAttribute];
+      v24 = _authorDateFontAttribute;
       v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
 
       v22 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v19 attributes:v21];
@@ -356,17 +356,17 @@
   [(UILabel *)self->_authorLabel sizeToFit];
 }
 
-- (id)_relativeStringFromDate:(id)a3
+- (id)_relativeStringFromDate:(id)date
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  dateCopy = date;
+  v4 = dateCopy;
+  if (!dateCopy)
   {
     v10 = 0;
     goto LABEL_11;
   }
 
-  [v3 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   if ((v5 / -60.0) <= 1)
   {
     v6 = [MEMORY[0x277CCABB8] sruif_localizedStringFromNumber:&unk_287A0D3D0];
@@ -434,8 +434,8 @@ LABEL_11:
   v13 = v12;
   [(UIView *)self->_ratingView frame];
   v15 = v14;
-  v16 = [MEMORY[0x277D759A0] mainScreen];
-  [v16 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v18 = v17;
   [(UIView *)self->_ratingView frame];
   v20 = ceil(v19);
@@ -463,8 +463,8 @@ LABEL_11:
     [(UILabel *)commentLabel sizeThatFits:CGRectGetWidth(v83) - left - right, v13];
     v24 = v23;
     v26 = v25;
-    v27 = [MEMORY[0x277D759A0] mainScreen];
-    [v27 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     v29 = v28 < 2.0;
     v30 = ceil(left);
     v31 = ceil(top);
@@ -507,8 +507,8 @@ LABEL_11:
     v84.size.width = v24;
     v84.size.height = v26;
     MaxY = CGRectGetMaxY(v84);
-    v38 = [(UILabel *)self->_commentLabel font];
-    [v38 descender];
+    font = [(UILabel *)self->_commentLabel font];
+    [font descender];
     v79 = MaxY + v39;
 
     width = recta.size.width;
@@ -532,8 +532,8 @@ LABEL_11:
     v85.origin.x = v35 + v80;
     v45 = y;
     v46 = v79 - CGRectGetHeight(v85);
-    v47 = [(UILabel *)self->_authorLabel font];
-    [v47 descender];
+    font2 = [(UILabel *)self->_authorLabel font];
+    [font2 descender];
     v49 = v46 - v48 + 21.0;
 
     v86.origin.x = recta.origin.x;
@@ -541,8 +541,8 @@ LABEL_11:
     v86.size.width = width;
     v86.size.height = v45;
     v50 = CGRectGetMaxX(v86) - v44;
-    v51 = [MEMORY[0x277D759A0] mainScreen];
-    [v51 scale];
+    mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen3 scale];
     v53 = v52 < 2.0;
     v54 = ceil(v44);
     v55 = ceil(v49);
@@ -596,8 +596,8 @@ LABEL_11:
     v88.size.width = v64;
     v88.size.height = v66;
     v69 = self->_ratingOffset.vertical + MidY + CGRectGetHeight(v88) * -0.5;
-    v70 = [MEMORY[0x277D759A0] mainScreen];
-    [v70 scale];
+    mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen4 scale];
     v72 = v71 < 2.0;
     v73 = ceil(v67);
     v74 = ceil(v69);

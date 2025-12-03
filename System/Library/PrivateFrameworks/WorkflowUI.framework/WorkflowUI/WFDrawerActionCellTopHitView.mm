@@ -1,5 +1,5 @@
 @interface WFDrawerActionCellTopHitView
-- (void)didSelect:(id)a3;
+- (void)didSelect:(id)select;
 - (void)layoutSubviews;
 @end
 
@@ -7,14 +7,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_27484A9C0();
 }
 
-- (void)didSelect:(id)a3
+- (void)didSelect:(id)select
 {
-  v4 = a3;
-  v5 = self;
+  selectCopy = select;
+  selfCopy = self;
   sub_27484AC38();
 }
 

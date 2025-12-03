@@ -1,48 +1,48 @@
 @interface ACMTicketManager
-- (__SecCertificate)defaultPublicKeyCertificateForRealm:(id)a3;
-- (id)certificateLabelForRealm:(id)a3;
-- (id)decodedUserPreferences:(id)a3;
-- (id)encodedUserPreferences:(id)a3;
+- (__SecCertificate)defaultPublicKeyCertificateForRealm:(id)realm;
+- (id)certificateLabelForRealm:(id)realm;
+- (id)decodedUserPreferences:(id)preferences;
+- (id)encodedUserPreferences:(id)preferences;
 - (id)preferences;
-- (id)publicKeyVersionForRealm:(id)a3;
+- (id)publicKeyVersionForRealm:(id)realm;
 - (id)systemInfo;
-- (id)userPreferencesForToken:(id)a3;
-- (void)setPublickKeyVersion:(id)a3 label:(id)a4 forRealm:(id)a5;
-- (void)setUserPreferences:(id)a3 forToken:(id)a4;
-- (void)uninstallPublicKeyForRealm:(id)a3;
+- (id)userPreferencesForToken:(id)token;
+- (void)setPublickKeyVersion:(id)version label:(id)label forRealm:(id)realm;
+- (void)setUserPreferences:(id)preferences forToken:(id)token;
+- (void)uninstallPublicKeyForRealm:(id)realm;
 @end
 
 @implementation ACMTicketManager
 
 - (id)preferences
 {
-  v2 = [(ACMTicketManager *)self components];
+  components = [(ACMTicketManager *)self components];
 
-  return [v2 preferences];
+  return [components preferences];
 }
 
 - (id)systemInfo
 {
-  v2 = [(ACMTicketManager *)self components];
+  components = [(ACMTicketManager *)self components];
 
-  return [v2 systemInfo];
+  return [components systemInfo];
 }
 
-- (__SecCertificate)defaultPublicKeyCertificateForRealm:(id)a3
+- (__SecCertificate)defaultPublicKeyCertificateForRealm:(id)realm
 {
   v4 = [objc_msgSend(-[ACMTicketManager preferences](self "preferences")];
 
   return [(ACCTicketManager *)self certificateFromString:v4];
 }
 
-- (id)certificateLabelForRealm:(id)a3
+- (id)certificateLabelForRealm:(id)realm
 {
   v3 = [objc_msgSend(-[ACMTicketManager components](self "components")];
 
   return [v3 publicKeyCertificateName];
 }
 
-- (id)publicKeyVersionForRealm:(id)a3
+- (id)publicKeyVersionForRealm:(id)realm
 {
   if ([(ACCTicketManager *)self certificateForRealm:?])
   {
@@ -59,18 +59,18 @@
     return v5;
   }
 
-  return [(ACMTicketManager *)self defaultPublicKeyVersionForRealm:a3];
+  return [(ACMTicketManager *)self defaultPublicKeyVersionForRealm:realm];
 }
 
-- (void)setPublickKeyVersion:(id)a3 label:(id)a4 forRealm:(id)a5
+- (void)setPublickKeyVersion:(id)version label:(id)label forRealm:(id)realm
 {
   v7 = [objc_msgSend(-[ACMTicketManager components](self "components")];
-  [v7 setPublicKeyCertificateName:a4];
+  [v7 setPublicKeyCertificateName:label];
 
-  [v7 setPublicKeyVersion:a3];
+  [v7 setPublicKeyVersion:version];
 }
 
-- (void)uninstallPublicKeyForRealm:(id)a3
+- (void)uninstallPublicKeyForRealm:(id)realm
 {
   v6.receiver = self;
   v6.super_class = ACMTicketManager;
@@ -80,34 +80,34 @@
   [v5 setPublicKeyCertificateName:&stru_2A1EB91A0];
 }
 
-- (void)setUserPreferences:(id)a3 forToken:(id)a4
+- (void)setUserPreferences:(id)preferences forToken:(id)token
 {
-  v5 = [(ACMTicketManager *)self encodedUserPreferences:a3];
+  v5 = [(ACMTicketManager *)self encodedUserPreferences:preferences];
 
-  [a4 setUserPreferences:v5];
+  [token setUserPreferences:v5];
 }
 
-- (id)userPreferencesForToken:(id)a3
+- (id)userPreferencesForToken:(id)token
 {
-  v4 = [a3 userPreferences];
+  userPreferences = [token userPreferences];
 
-  return [(ACMTicketManager *)self decodedUserPreferences:v4];
+  return [(ACMTicketManager *)self decodedUserPreferences:userPreferences];
 }
 
-- (id)encodedUserPreferences:(id)a3
+- (id)encodedUserPreferences:(id)preferences
 {
-  v3 = [MEMORY[0x29EDBA0C0] dataWithPropertyList:a3 format:200 options:0 error:0];
+  v3 = [MEMORY[0x29EDBA0C0] dataWithPropertyList:preferences format:200 options:0 error:0];
 
   return ACFEncodeBase64(v3);
 }
 
-- (id)decodedUserPreferences:(id)a3
+- (id)decodedUserPreferences:(id)preferences
 {
-  result = [a3 length];
+  result = [preferences length];
   if (result)
   {
     v5 = MEMORY[0x29EDBA0C0];
-    v6 = ACFDecodeBase64(a3);
+    v6 = ACFDecodeBase64(preferences);
 
     return [v5 propertyListWithData:v6 options:0 format:0 error:0];
   }

@@ -1,10 +1,10 @@
 @interface MRComponentHealthHandler
 + (id)sharedInstance;
 - (id)_init;
-- (void)getCurrentSystemHealthStatusForComponentsInternal:(unint64_t)a3 WithReply:(id)a4;
-- (void)isBatteryInServiceState:(id)a3;
-- (void)postComponentStatusEventFor:(unint64_t)a3 status:(unint64_t)a4 withReply:(id)a5;
-- (void)sendDailyAnalyticsForModuleType:(id)a3;
+- (void)getCurrentSystemHealthStatusForComponentsInternal:(unint64_t)internal WithReply:(id)reply;
+- (void)isBatteryInServiceState:(id)state;
+- (void)postComponentStatusEventFor:(unint64_t)for status:(unint64_t)status withReply:(id)reply;
+- (void)sendDailyAnalyticsForModuleType:(id)type;
 - (void)sendFailedComponentStats;
 @end
 
@@ -46,9 +46,9 @@
     v7 = objc_opt_new();
     v28[13] = v7;
     v8 = objc_opt_new();
-    v9 = [v8 isSupportedIPad];
+    isSupportedIPad = [v8 isSupportedIPad];
     v10 = CRCameraAuthUsingProperty_ptr;
-    if (!v9)
+    if (!isSupportedIPad)
     {
       v10 = CRCameraAuth_ptr;
     }
@@ -80,39 +80,39 @@
   return v3;
 }
 
-- (void)postComponentStatusEventFor:(unint64_t)a3 status:(unint64_t)a4 withReply:(id)a5
+- (void)postComponentStatusEventFor:(unint64_t)for status:(unint64_t)status withReply:(id)reply
 {
-  v8 = a5;
-  if (a3 - 3 <= 9)
+  replyCopy = reply;
+  if (for - 3 <= 9)
   {
-    v7 = [(__objc2_class *)*off_100018710[a3 - 3] sharedSingleton];
-    [v7 postComponentStatus:a4];
+    sharedSingleton = [(__objc2_class *)*off_100018710[for - 3] sharedSingleton];
+    [sharedSingleton postComponentStatus:status];
   }
 
-  v8[2](v8, 1, 0);
+  replyCopy[2](replyCopy, 1, 0);
 }
 
-- (void)getCurrentSystemHealthStatusForComponentsInternal:(unint64_t)a3 WithReply:(id)a4
+- (void)getCurrentSystemHealthStatusForComponentsInternal:(unint64_t)internal WithReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = objc_opt_new();
   v8 = MGCopyAnswer();
-  v9 = [v8 intValue];
+  intValue = [v8 intValue];
 
   v10 = objc_opt_new();
-  v11 = [v10 isSupportedIPad];
+  isSupportedIPad = [v10 isSupportedIPad];
 
-  if (v11)
+  if (isSupportedIPad)
   {
-    v9 = handleForCategory();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    intValue = handleForCategory();
+    if (os_log_type_enabled(intValue, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Enabling Parts and Service History for supported iPads", buf, 2u);
+      _os_log_impl(&_mh_execute_header, intValue, OS_LOG_TYPE_DEFAULT, "Enabling Parts and Service History for supported iPads", buf, 2u);
     }
   }
 
-  else if (v9 > 9 || ((1 << v9) & 0x242) == 0)
+  else if (intValue > 9 || ((1 << intValue) & 0x242) == 0)
   {
     v13 = handleForCategory();
     if (os_log_type_enabled(&v13->super, OS_LOG_TYPE_DEFAULT))
@@ -125,7 +125,7 @@
     goto LABEL_27;
   }
 
-  if (a3 == -1)
+  if (internal == -1)
   {
     v28 = 0u;
     v29 = 0u;
@@ -136,7 +136,7 @@
     if (v14)
     {
       v15 = v14;
-      v25 = v6;
+      v25 = replyCopy;
       v16 = *v27;
       do
       {
@@ -148,21 +148,21 @@
           }
 
           v18 = *(*(&v26 + 1) + 8 * i);
-          v19 = [v18 copyComponentStatus];
-          v20 = [v18 componentName];
+          copyComponentStatus = [v18 copyComponentStatus];
+          componentName = [v18 componentName];
 
-          if (v20)
+          if (componentName)
           {
-            v21 = [NSNumber numberWithInteger:v19];
+            v21 = [NSNumber numberWithInteger:copyComponentStatus];
             v22 = v21;
             if (!v21)
             {
-              v9 = +[NSNull null];
-              v22 = v9;
+              intValue = +[NSNull null];
+              v22 = intValue;
             }
 
-            v23 = [v18 componentName];
-            [v7 setObject:v22 forKeyedSubscript:v23];
+            componentName2 = [v18 componentName];
+            [v7 setObject:v22 forKeyedSubscript:componentName2];
 
             if (!v21)
             {
@@ -175,7 +175,7 @@
 
       while (v15);
       v12 = 1;
-      v6 = v25;
+      replyCopy = v25;
     }
 
     else
@@ -191,12 +191,12 @@ LABEL_27:
   v12 = 0;
 LABEL_28:
   v24 = [v7 copy];
-  v6[2](v6, v12, v24, 0);
+  replyCopy[2](replyCopy, v12, v24, 0);
 }
 
-- (void)isBatteryInServiceState:(id)a3
+- (void)isBatteryInServiceState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = IOPSGetBatteryHealthState();
   v5 = handleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -211,7 +211,7 @@ LABEL_28:
   v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v9 = [NSError errorWithDomain:v6 code:-42 userInfo:v8];
 
-  v3[2](v3, 0, v9);
+  stateCopy[2](stateCopy, 0, v9);
 }
 
 - (void)sendFailedComponentStats
@@ -238,8 +238,8 @@ LABEL_28:
         v8 = *(*(&v10 + 1) + 8 * i);
         if (([v8 copyComponentStatus] & 0x8000000000000000) != 0)
         {
-          v9 = [v8 componentName];
-          [(MRComponentHealthHandler *)self sendDailyAnalyticsForModuleType:v9];
+          componentName = [v8 componentName];
+          [(MRComponentHealthHandler *)self sendDailyAnalyticsForModuleType:componentName];
         }
       }
 
@@ -250,10 +250,10 @@ LABEL_28:
   }
 }
 
-- (void)sendDailyAnalyticsForModuleType:(id)a3
+- (void)sendDailyAnalyticsForModuleType:(id)type
 {
-  v4 = a3;
-  v3 = v4;
+  typeCopy = type;
+  v3 = typeCopy;
   AnalyticsSendEventLazy();
 }
 

@@ -1,25 +1,25 @@
 @interface MTUpNextResultsController
 + (id)numberFormatter;
 - (MTPlayerController)playerController;
-- (MTUpNextResultsController)initWithPlayerController:(id)a3;
+- (MTUpNextResultsController)initWithPlayerController:(id)controller;
 - (id)title;
 - (unint64_t)startingIndexForDisplay;
 @end
 
 @implementation MTUpNextResultsController
 
-- (MTUpNextResultsController)initWithPlayerController:(id)a3
+- (MTUpNextResultsController)initWithPlayerController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = MTUpNextResultsController;
-  v5 = [(MTManifestResultsController *)&v8 initWithPlayerController:v4];
+  v5 = [(MTManifestResultsController *)&v8 initWithPlayerController:controllerCopy];
   if (v5)
   {
-    v6 = [v4 upNextManifest];
-    [(MTManifestResultsController *)v5 setManifest:v6];
+    upNextManifest = [controllerCopy upNextManifest];
+    [(MTManifestResultsController *)v5 setManifest:upNextManifest];
 
-    [(MTUpNextResultsController *)v5 setPlayerController:v4];
+    [(MTUpNextResultsController *)v5 setPlayerController:controllerCopy];
   }
 
   return v5;
@@ -27,14 +27,14 @@
 
 - (id)title
 {
-  v2 = [(MTResultsController *)self numberOfObjects];
-  v3 = [objc_opt_class() numberFormatter];
-  v4 = [NSNumber numberWithUnsignedInteger:v2];
-  v5 = [v3 stringFromNumber:v4];
+  numberOfObjects = [(MTResultsController *)self numberOfObjects];
+  numberFormatter = [objc_opt_class() numberFormatter];
+  v4 = [NSNumber numberWithUnsignedInteger:numberOfObjects];
+  v5 = [numberFormatter stringFromNumber:v4];
 
   v6 = +[NSBundle mainBundle];
   v7 = v6;
-  if (v2 == 1)
+  if (numberOfObjects == 1)
   {
     v8 = @"QUEUE_SONGS_SINGULAR";
   }
@@ -75,14 +75,14 @@
 {
   v8.receiver = self;
   v8.super_class = MTUpNextResultsController;
-  v3 = [(MTManifestResultsController *)&v8 startingIndexForDisplay];
-  v4 = [(MTUpNextResultsController *)self playerController];
-  v5 = [v4 compositeManifest];
+  startingIndexForDisplay = [(MTManifestResultsController *)&v8 startingIndexForDisplay];
+  playerController = [(MTUpNextResultsController *)self playerController];
+  compositeManifest = [playerController compositeManifest];
 
-  v6 = [(MTManifestResultsController *)self manifest];
-  LODWORD(v4) = [v5 isPlayingFromManifest:v6];
+  manifest = [(MTManifestResultsController *)self manifest];
+  LODWORD(playerController) = [compositeManifest isPlayingFromManifest:manifest];
 
-  return v3 + v4;
+  return startingIndexForDisplay + playerController;
 }
 
 - (MTPlayerController)playerController

@@ -1,62 +1,62 @@
 @interface _UITitleContent
-+ (id)contentWithTitle:(id)a3 attributes:(id)a4 button:(id)a5;
++ (id)contentWithTitle:(id)title attributes:(id)attributes button:(id)button;
 - (NSString)title;
 - (id)description;
-- (void)updateWithButton:(id)a3;
-- (void)updateWithTitleAttributes:(id)a3 button:(id)a4;
+- (void)updateWithButton:(id)button;
+- (void)updateWithTitleAttributes:(id)attributes button:(id)button;
 @end
 
 @implementation _UITitleContent
 
-+ (id)contentWithTitle:(id)a3 attributes:(id)a4 button:(id)a5
++ (id)contentWithTitle:(id)title attributes:(id)attributes button:(id)button
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = objc_alloc_init(a1);
-  v12 = [v8 length];
+  titleCopy = title;
+  attributesCopy = attributes;
+  buttonCopy = button;
+  v11 = objc_alloc_init(self);
+  v12 = [titleCopy length];
   if (v12)
   {
-    v12 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v8 attributes:v9];
+    v12 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:titleCopy attributes:attributesCopy];
   }
 
   v13 = v11[1];
   v11[1] = v12;
 
-  [v11 updateWithButton:v10];
+  [v11 updateWithButton:buttonCopy];
 
   return v11;
 }
 
-- (void)updateWithTitleAttributes:(id)a3 button:(id)a4
+- (void)updateWithTitleAttributes:(id)attributes button:(id)button
 {
-  v12 = a4;
+  buttonCopy = button;
   if (self->_attributedText)
   {
     v6 = MEMORY[0x1E696AAB0];
-    v7 = a3;
+    attributesCopy = attributes;
     v8 = [v6 alloc];
-    v9 = [(NSAttributedString *)self->_attributedText string];
-    v10 = [v8 initWithString:v9 attributes:v7];
+    string = [(NSAttributedString *)self->_attributedText string];
+    v10 = [v8 initWithString:string attributes:attributesCopy];
 
     attributedText = self->_attributedText;
     self->_attributedText = v10;
   }
 
-  [(_UITitleContent *)self updateWithButton:v12];
+  [(_UITitleContent *)self updateWithButton:buttonCopy];
 }
 
-- (void)updateWithButton:(id)a3
+- (void)updateWithButton:(id)button
 {
   if (self->_attributedText)
   {
-    v4 = a3;
-    [v4 contentEdgeInsets];
+    buttonCopy = button;
+    [buttonCopy contentEdgeInsets];
     v6 = v5;
     v8 = v7;
-    v10 = [v4 _visualProvider];
+    _visualProvider = [buttonCopy _visualProvider];
 
-    [v10 _intrinsicWidthForAttributedTitle:self->_attributedText];
+    [_visualProvider _intrinsicWidthForAttributedTitle:self->_attributedText];
     self->_width = v9 - v6 - v8;
   }
 
@@ -71,15 +71,15 @@
   attributedText = self->_attributedText;
   if (attributedText)
   {
-    v4 = [(NSAttributedString *)attributedText string];
+    string = [(NSAttributedString *)attributedText string];
   }
 
   else
   {
-    v4 = &stru_1EFB14550;
+    string = &stru_1EFB14550;
   }
 
-  return v4;
+  return string;
 }
 
 - (id)description

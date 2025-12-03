@@ -1,52 +1,52 @@
 @interface _SFPBMediaArtworkImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBMediaArtworkImage)initWithDictionary:(id)a3;
-- (_SFPBMediaArtworkImage)initWithFacade:(id)a3;
-- (_SFPBMediaArtworkImage)initWithJSON:(id)a3;
+- (_SFPBMediaArtworkImage)initWithDictionary:(id)dictionary;
+- (_SFPBMediaArtworkImage)initWithFacade:(id)facade;
+- (_SFPBMediaArtworkImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setPersistentID:(id)a3;
-- (void)setSpotlightIdentifier:(id)a3;
-- (void)setUniversalLibraryID:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setPersistentID:(id)d;
+- (void)setSpotlightIdentifier:(id)identifier;
+- (void)setUniversalLibraryID:(id)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBMediaArtworkImage
 
-- (_SFPBMediaArtworkImage)initWithFacade:(id)a3
+- (_SFPBMediaArtworkImage)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBMediaArtworkImage *)self init];
   if (v5)
   {
-    v6 = [v4 persistentID];
+    persistentID = [facadeCopy persistentID];
 
-    if (v6)
+    if (persistentID)
     {
-      v7 = [v4 persistentID];
-      [(_SFPBMediaArtworkImage *)v5 setPersistentID:v7];
+      persistentID2 = [facadeCopy persistentID];
+      [(_SFPBMediaArtworkImage *)v5 setPersistentID:persistentID2];
     }
 
-    v8 = [v4 spotlightIdentifier];
+    spotlightIdentifier = [facadeCopy spotlightIdentifier];
 
-    if (v8)
+    if (spotlightIdentifier)
     {
-      v9 = [v4 spotlightIdentifier];
-      [(_SFPBMediaArtworkImage *)v5 setSpotlightIdentifier:v9];
+      spotlightIdentifier2 = [facadeCopy spotlightIdentifier];
+      [(_SFPBMediaArtworkImage *)v5 setSpotlightIdentifier:spotlightIdentifier2];
     }
 
-    if ([v4 hasMediaEntityType])
+    if ([facadeCopy hasMediaEntityType])
     {
-      -[_SFPBMediaArtworkImage setMediaEntityType:](v5, "setMediaEntityType:", [v4 mediaEntityType]);
+      -[_SFPBMediaArtworkImage setMediaEntityType:](v5, "setMediaEntityType:", [facadeCopy mediaEntityType]);
     }
 
-    v10 = [v4 universalLibraryID];
+    universalLibraryID = [facadeCopy universalLibraryID];
 
-    if (v10)
+    if (universalLibraryID)
     {
-      v11 = [v4 universalLibraryID];
-      [(_SFPBMediaArtworkImage *)v5 setUniversalLibraryID:v11];
+      universalLibraryID2 = [facadeCopy universalLibraryID];
+      [(_SFPBMediaArtworkImage *)v5 setUniversalLibraryID:universalLibraryID2];
     }
 
     v12 = v5;
@@ -55,15 +55,15 @@
   return v5;
 }
 
-- (_SFPBMediaArtworkImage)initWithDictionary:(id)a3
+- (_SFPBMediaArtworkImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = _SFPBMediaArtworkImage;
   v5 = [(_SFPBMediaArtworkImage *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"persistentID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"persistentID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,7 +71,7 @@
       [(_SFPBMediaArtworkImage *)v5 setPersistentID:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"spotlightIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"spotlightIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,14 +79,14 @@
       [(_SFPBMediaArtworkImage *)v5 setSpotlightIdentifier:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"mediaEntityType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"mediaEntityType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBMediaArtworkImage setMediaEntityType:](v5, "setMediaEntityType:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"universalLibraryID"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"universalLibraryID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,30 +100,30 @@
   return v5;
 }
 
-- (_SFPBMediaArtworkImage)initWithJSON:(id)a3
+- (_SFPBMediaArtworkImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBMediaArtworkImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBMediaArtworkImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBMediaArtworkImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -136,45 +136,45 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_mediaEntityType)
   {
-    v4 = [(_SFPBMediaArtworkImage *)self mediaEntityType];
-    if (v4 >= 7)
+    mediaEntityType = [(_SFPBMediaArtworkImage *)self mediaEntityType];
+    if (mediaEntityType >= 7)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", mediaEntityType];
     }
 
     else
     {
-      v5 = off_1E7ACE4C8[v4];
+      v5 = off_1E7ACE4C8[mediaEntityType];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"mediaEntityType"];
+    [dictionary setObject:v5 forKeyedSubscript:@"mediaEntityType"];
   }
 
   if (self->_persistentID)
   {
-    v6 = [(_SFPBMediaArtworkImage *)self persistentID];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"persistentID"];
+    persistentID = [(_SFPBMediaArtworkImage *)self persistentID];
+    v7 = [persistentID copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"persistentID"];
   }
 
   if (self->_spotlightIdentifier)
   {
-    v8 = [(_SFPBMediaArtworkImage *)self spotlightIdentifier];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"spotlightIdentifier"];
+    spotlightIdentifier = [(_SFPBMediaArtworkImage *)self spotlightIdentifier];
+    v9 = [spotlightIdentifier copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"spotlightIdentifier"];
   }
 
   if (self->_universalLibraryID)
   {
-    v10 = [(_SFPBMediaArtworkImage *)self universalLibraryID];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"universalLibraryID"];
+    universalLibraryID = [(_SFPBMediaArtworkImage *)self universalLibraryID];
+    v11 = [universalLibraryID copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"universalLibraryID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -185,28 +185,28 @@
   return v4 ^ v3 ^ [(NSString *)self->_universalLibraryID hash]^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  v5 = [(_SFPBMediaArtworkImage *)self persistentID];
-  v6 = [v4 persistentID];
-  if ((v5 != 0) == (v6 == 0))
+  persistentID = [(_SFPBMediaArtworkImage *)self persistentID];
+  persistentID2 = [equalCopy persistentID];
+  if ((persistentID != 0) == (persistentID2 == 0))
   {
     goto LABEL_17;
   }
 
-  v7 = [(_SFPBMediaArtworkImage *)self persistentID];
-  if (v7)
+  persistentID3 = [(_SFPBMediaArtworkImage *)self persistentID];
+  if (persistentID3)
   {
-    v8 = v7;
-    v9 = [(_SFPBMediaArtworkImage *)self persistentID];
-    v10 = [v4 persistentID];
-    v11 = [v9 isEqual:v10];
+    v8 = persistentID3;
+    persistentID4 = [(_SFPBMediaArtworkImage *)self persistentID];
+    persistentID5 = [equalCopy persistentID];
+    v11 = [persistentID4 isEqual:persistentID5];
 
     if (!v11)
     {
@@ -218,20 +218,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaArtworkImage *)self spotlightIdentifier];
-  v6 = [v4 spotlightIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  persistentID = [(_SFPBMediaArtworkImage *)self spotlightIdentifier];
+  persistentID2 = [equalCopy spotlightIdentifier];
+  if ((persistentID != 0) == (persistentID2 == 0))
   {
     goto LABEL_17;
   }
 
-  v12 = [(_SFPBMediaArtworkImage *)self spotlightIdentifier];
-  if (v12)
+  spotlightIdentifier = [(_SFPBMediaArtworkImage *)self spotlightIdentifier];
+  if (spotlightIdentifier)
   {
-    v13 = v12;
-    v14 = [(_SFPBMediaArtworkImage *)self spotlightIdentifier];
-    v15 = [v4 spotlightIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = spotlightIdentifier;
+    spotlightIdentifier2 = [(_SFPBMediaArtworkImage *)self spotlightIdentifier];
+    spotlightIdentifier3 = [equalCopy spotlightIdentifier];
+    v16 = [spotlightIdentifier2 isEqual:spotlightIdentifier3];
 
     if (!v16)
     {
@@ -244,22 +244,22 @@
   }
 
   mediaEntityType = self->_mediaEntityType;
-  if (mediaEntityType != [v4 mediaEntityType])
+  if (mediaEntityType != [equalCopy mediaEntityType])
   {
     goto LABEL_18;
   }
 
-  v5 = [(_SFPBMediaArtworkImage *)self universalLibraryID];
-  v6 = [v4 universalLibraryID];
-  if ((v5 != 0) == (v6 == 0))
+  persistentID = [(_SFPBMediaArtworkImage *)self universalLibraryID];
+  persistentID2 = [equalCopy universalLibraryID];
+  if ((persistentID != 0) == (persistentID2 == 0))
   {
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v18 = [(_SFPBMediaArtworkImage *)self universalLibraryID];
-  if (!v18)
+  universalLibraryID = [(_SFPBMediaArtworkImage *)self universalLibraryID];
+  if (!universalLibraryID)
   {
 
 LABEL_21:
@@ -267,10 +267,10 @@ LABEL_21:
     goto LABEL_19;
   }
 
-  v19 = v18;
-  v20 = [(_SFPBMediaArtworkImage *)self universalLibraryID];
-  v21 = [v4 universalLibraryID];
-  v22 = [v20 isEqual:v21];
+  v19 = universalLibraryID;
+  universalLibraryID2 = [(_SFPBMediaArtworkImage *)self universalLibraryID];
+  universalLibraryID3 = [equalCopy universalLibraryID];
+  v22 = [universalLibraryID2 isEqual:universalLibraryID3];
 
   if (v22)
   {
@@ -284,17 +284,17 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_SFPBMediaArtworkImage *)self persistentID];
-  if (v4)
+  toCopy = to;
+  persistentID = [(_SFPBMediaArtworkImage *)self persistentID];
+  if (persistentID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBMediaArtworkImage *)self spotlightIdentifier];
-  if (v5)
+  spotlightIdentifier = [(_SFPBMediaArtworkImage *)self spotlightIdentifier];
+  if (spotlightIdentifier)
   {
     PBDataWriterWriteStringField();
   }
@@ -304,34 +304,34 @@ LABEL_19:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(_SFPBMediaArtworkImage *)self universalLibraryID];
-  if (v6)
+  universalLibraryID = [(_SFPBMediaArtworkImage *)self universalLibraryID];
+  if (universalLibraryID)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setUniversalLibraryID:(id)a3
+- (void)setUniversalLibraryID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   universalLibraryID = self->_universalLibraryID;
   self->_universalLibraryID = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSpotlightIdentifier:(id)a3
+- (void)setSpotlightIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   spotlightIdentifier = self->_spotlightIdentifier;
   self->_spotlightIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPersistentID:(id)a3
+- (void)setPersistentID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   persistentID = self->_persistentID;
   self->_persistentID = v4;
 

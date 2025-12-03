@@ -1,13 +1,13 @@
 @interface EDMessageQueryEvaluator
 + (OS_os_log)log;
-- (EDMessageQueryEvaluator)initWithQuery:(id)a3 messagePersistence:(id)a4 filterMessagesByID:(BOOL)a5;
+- (EDMessageQueryEvaluator)initWithQuery:(id)query messagePersistence:(id)persistence filterMessagesByID:(BOOL)d;
 - (NSArray)persistentIDsForFilterSet;
-- (id)filterMessages:(id)a3 unmatchedMessages:(id *)a4;
-- (id)transformAndFilterMessages:(id)a3;
-- (id)transformMessages:(id)a3;
-- (id)transformMessages:(id)a3 includeDeleted:(BOOL)a4;
-- (void)addMessagesToFilterSet:(id)a3;
-- (void)removeMessagesFromFilterSet:(id)a3;
+- (id)filterMessages:(id)messages unmatchedMessages:(id *)unmatchedMessages;
+- (id)transformAndFilterMessages:(id)messages;
+- (id)transformMessages:(id)messages;
+- (id)transformMessages:(id)messages includeDeleted:(BOOL)deleted;
+- (void)addMessagesToFilterSet:(id)set;
+- (void)removeMessagesFromFilterSet:(id)set;
 @end
 
 @implementation EDMessageQueryEvaluator
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __30__EDMessageQueryEvaluator_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_63 != -1)
   {
     dispatch_once(&log_onceToken_63, block);
@@ -37,27 +37,27 @@ void __30__EDMessageQueryEvaluator_log__block_invoke(uint64_t a1)
   log_log_63 = v1;
 }
 
-- (EDMessageQueryEvaluator)initWithQuery:(id)a3 messagePersistence:(id)a4 filterMessagesByID:(BOOL)a5
+- (EDMessageQueryEvaluator)initWithQuery:(id)query messagePersistence:(id)persistence filterMessagesByID:(BOOL)d
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  queryCopy = query;
+  persistenceCopy = persistence;
   v28.receiver = self;
   v28.super_class = EDMessageQueryEvaluator;
   v11 = [(EDMessageQueryEvaluator *)&v28 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_messageQuery, a3);
-    objc_storeStrong(&v12->_messagePersistence, a4);
+    objc_storeStrong(&v11->_messageQuery, query);
+    objc_storeStrong(&v12->_messagePersistence, persistence);
     v13 = MEMORY[0x1E699ADA0];
-    v14 = [(EMQuery *)v12->_messageQuery predicate];
-    v15 = [(EDMessagePersistence *)v12->_messagePersistence mailboxPersistence];
-    v16 = [v13 mailboxScopeForPredicate:v14 withMailboxTypeResolver:v15];
+    predicate = [(EMQuery *)v12->_messageQuery predicate];
+    mailboxPersistence = [(EDMessagePersistence *)v12->_messagePersistence mailboxPersistence];
+    v16 = [v13 mailboxScopeForPredicate:predicate withMailboxTypeResolver:mailboxPersistence];
     mailboxScope = v12->_mailboxScope;
     v12->_mailboxScope = v16;
 
-    if (v5)
+    if (dCopy)
     {
       v18 = objc_alloc(MEMORY[0x1E699B7F0]);
       v19 = objc_alloc_init(MEMORY[0x1E699B810]);
@@ -65,15 +65,15 @@ void __30__EDMessageQueryEvaluator_log__block_invoke(uint64_t a1)
       returnedMessageDatabaseIDs = v12->_returnedMessageDatabaseIDs;
       v12->_returnedMessageDatabaseIDs = v20;
 
-      v22 = [MEMORY[0x1E696AE18] ef_matchEverythingPredicate];
+      ef_matchEverythingPredicate = [MEMORY[0x1E696AE18] ef_matchEverythingPredicate];
       filterPredicate = v12->_filterPredicate;
-      v12->_filterPredicate = v22;
+      v12->_filterPredicate = ef_matchEverythingPredicate;
     }
 
     else
     {
       v24 = MEMORY[0x1E699ADA0];
-      filterPredicate = [v9 predicate];
+      filterPredicate = [queryCopy predicate];
       v25 = [v24 predicateStrippingSpotlightOnlyTerms:filterPredicate];
       v26 = v12->_filterPredicate;
       v12->_filterPredicate = v25;
@@ -86,18 +86,18 @@ void __30__EDMessageQueryEvaluator_log__block_invoke(uint64_t a1)
 - (NSArray)persistentIDsForFilterSet
 {
   v3 = objc_opt_new();
-  v4 = [(EDMessageQueryEvaluator *)self returnedMessageDatabaseIDs];
+  returnedMessageDatabaseIDs = [(EDMessageQueryEvaluator *)self returnedMessageDatabaseIDs];
 
-  if (v4)
+  if (returnedMessageDatabaseIDs)
   {
-    v5 = [(EDMessageQueryEvaluator *)self returnedMessageDatabaseIDs];
+    returnedMessageDatabaseIDs2 = [(EDMessageQueryEvaluator *)self returnedMessageDatabaseIDs];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __52__EDMessageQueryEvaluator_persistentIDsForFilterSet__block_invoke;
     v9[3] = &unk_1E8254C78;
     v6 = v3;
     v10 = v6;
-    [v5 performWhileLocked:v9];
+    [returnedMessageDatabaseIDs2 performWhileLocked:v9];
 
     v7 = v6;
   }
@@ -128,20 +128,20 @@ void __52__EDMessageQueryEvaluator_persistentIDsForFilterSet__block_invoke_2(uin
   [v2 addObject:v3];
 }
 
-- (void)addMessagesToFilterSet:(id)a3
+- (void)addMessagesToFilterSet:(id)set
 {
-  v4 = a3;
-  v5 = [(EDMessageQueryEvaluator *)self returnedMessageDatabaseIDs];
+  setCopy = set;
+  returnedMessageDatabaseIDs = [(EDMessageQueryEvaluator *)self returnedMessageDatabaseIDs];
 
-  if (v5)
+  if (returnedMessageDatabaseIDs)
   {
-    v6 = [(EDMessageQueryEvaluator *)self returnedMessageDatabaseIDs];
+    returnedMessageDatabaseIDs2 = [(EDMessageQueryEvaluator *)self returnedMessageDatabaseIDs];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __50__EDMessageQueryEvaluator_addMessagesToFilterSet___block_invoke;
     v7[3] = &unk_1E8254C78;
-    v8 = v4;
-    [v6 performWhileLocked:v7];
+    v8 = setCopy;
+    [returnedMessageDatabaseIDs2 performWhileLocked:v7];
   }
 }
 
@@ -184,20 +184,20 @@ void __50__EDMessageQueryEvaluator_addMessagesToFilterSet___block_invoke(uint64_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeMessagesFromFilterSet:(id)a3
+- (void)removeMessagesFromFilterSet:(id)set
 {
-  v4 = a3;
-  v5 = [(EDMessageQueryEvaluator *)self returnedMessageDatabaseIDs];
+  setCopy = set;
+  returnedMessageDatabaseIDs = [(EDMessageQueryEvaluator *)self returnedMessageDatabaseIDs];
 
-  if (v5)
+  if (returnedMessageDatabaseIDs)
   {
-    v6 = [(EDMessageQueryEvaluator *)self returnedMessageDatabaseIDs];
+    returnedMessageDatabaseIDs2 = [(EDMessageQueryEvaluator *)self returnedMessageDatabaseIDs];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __55__EDMessageQueryEvaluator_removeMessagesFromFilterSet___block_invoke;
     v7[3] = &unk_1E8254C78;
-    v8 = v4;
-    [v6 performWhileLocked:v7];
+    v8 = setCopy;
+    [returnedMessageDatabaseIDs2 performWhileLocked:v7];
   }
 }
 
@@ -240,27 +240,27 @@ void __55__EDMessageQueryEvaluator_removeMessagesFromFilterSet___block_invoke(ui
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)transformAndFilterMessages:(id)a3
+- (id)transformAndFilterMessages:(id)messages
 {
-  v3 = [(EDMessageQueryEvaluator *)self transformAndFilterMessages:a3 includeDeleted:0];
+  v3 = [(EDMessageQueryEvaluator *)self transformAndFilterMessages:messages includeDeleted:0];
 
   return v3;
 }
 
-- (id)transformMessages:(id)a3
+- (id)transformMessages:(id)messages
 {
-  v3 = [(EDMessageQueryEvaluator *)self transformMessages:a3 includeDeleted:0];
+  v3 = [(EDMessageQueryEvaluator *)self transformMessages:messages includeDeleted:0];
 
   return v3;
 }
 
-- (id)transformMessages:(id)a3 includeDeleted:(BOOL)a4
+- (id)transformMessages:(id)messages includeDeleted:(BOOL)deleted
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(EDMessageQueryEvaluator *)self returnedMessageDatabaseIDs];
+  deletedCopy = deleted;
+  messagesCopy = messages;
+  returnedMessageDatabaseIDs = [(EDMessageQueryEvaluator *)self returnedMessageDatabaseIDs];
 
-  if (v7)
+  if (returnedMessageDatabaseIDs)
   {
     v22 = 0;
     v23 = &v22;
@@ -268,25 +268,25 @@ void __55__EDMessageQueryEvaluator_removeMessagesFromFilterSet___block_invoke(ui
     v25 = __Block_byref_object_copy__25;
     v26 = __Block_byref_object_dispose__25;
     v27 = 0;
-    v8 = [(EDMessageQueryEvaluator *)self returnedMessageDatabaseIDs];
+    returnedMessageDatabaseIDs2 = [(EDMessageQueryEvaluator *)self returnedMessageDatabaseIDs];
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __60__EDMessageQueryEvaluator_transformMessages_includeDeleted___block_invoke;
     v19 = &unk_1E8254CA0;
     v21 = &v22;
-    v9 = v6;
+    v9 = messagesCopy;
     v20 = v9;
-    [v8 performWhileLocked:&v16];
+    [returnedMessageDatabaseIDs2 performWhileLocked:&v16];
 
-    v6 = v23[5];
+    messagesCopy = v23[5];
     _Block_object_dispose(&v22, 8);
   }
 
   v10 = [(EDMessageQueryEvaluator *)self messagePersistence:v16];
-  v11 = [(EDMessageQueryEvaluator *)self mailboxScope];
-  v12 = [v10 messagesForPersistedMessages:v6 mailboxScope:v11];
+  mailboxScope = [(EDMessageQueryEvaluator *)self mailboxScope];
+  v12 = [v10 messagesForPersistedMessages:messagesCopy mailboxScope:mailboxScope];
 
-  if (v4)
+  if (deletedCopy)
   {
     v13 = v12;
   }
@@ -334,36 +334,36 @@ uint64_t __60__EDMessageQueryEvaluator_transformMessages_includeDeleted___block_
   return v3 ^ 1u;
 }
 
-- (id)filterMessages:(id)a3 unmatchedMessages:(id *)a4
+- (id)filterMessages:(id)messages unmatchedMessages:(id *)unmatchedMessages
 {
   v19[8] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(EDMessageQueryEvaluator *)self messageQuery];
-  v8 = [v7 predicate];
+  messagesCopy = messages;
+  messageQuery = [(EDMessageQueryEvaluator *)self messageQuery];
+  predicate = [messageQuery predicate];
 
-  v9 = [(EDMessageQueryEvaluator *)self messageQuery];
-  v10 = [v9 sortDescriptors];
+  messageQuery2 = [(EDMessageQueryEvaluator *)self messageQuery];
+  sortDescriptors = [messageQuery2 sortDescriptors];
 
-  if (a4)
+  if (unmatchedMessages)
   {
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __60__EDMessageQueryEvaluator_filterMessages_unmatchedMessages___block_invoke;
     v19[3] = &unk_1E8250858;
     v19[4] = self;
-    v11 = [v6 ef_partition:v19];
-    v12 = [v11 second];
-    *a4 = [v12 sortedArrayUsingDescriptors:v10];
+    v11 = [messagesCopy ef_partition:v19];
+    second = [v11 second];
+    *unmatchedMessages = [second sortedArrayUsingDescriptors:sortDescriptors];
 
-    v13 = [v11 first];
-    v14 = [v13 sortedArrayUsingDescriptors:v10];
+    first = [v11 first];
+    v14 = [first sortedArrayUsingDescriptors:sortDescriptors];
   }
 
   else
   {
-    v15 = [(EDMessageQueryEvaluator *)self filterPredicate];
-    v16 = [v6 filteredArrayUsingPredicate:v15];
-    v14 = [v16 sortedArrayUsingDescriptors:v10];
+    filterPredicate = [(EDMessageQueryEvaluator *)self filterPredicate];
+    v16 = [messagesCopy filteredArrayUsingPredicate:filterPredicate];
+    v14 = [v16 sortedArrayUsingDescriptors:sortDescriptors];
   }
 
   v17 = *MEMORY[0x1E69E9840];

@@ -1,15 +1,15 @@
 @interface VUITopAlignedCollectionViewFlowLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 @end
 
 @implementation VUITopAlignedCollectionViewFlowLayout
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v5 = [(VUITopAlignedCollectionViewFlowLayout *)self collectionView:a3.origin.x];
+  height = change.size.height;
+  width = change.size.width;
+  v5 = [(VUITopAlignedCollectionViewFlowLayout *)self collectionView:change.origin.x];
   [v5 bounds];
   v7 = v6;
   v9 = v8;
@@ -17,14 +17,14 @@
   return v9 != height || v7 != width;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v35 = *MEMORY[0x1E69E9840];
   v33.receiver = self;
   v33.super_class = VUITopAlignedCollectionViewFlowLayout;
-  v3 = [(UICollectionViewFlowLayout *)&v33 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [v3 firstObject];
-  [v4 frame];
+  v3 = [(UICollectionViewFlowLayout *)&v33 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  firstObject = [v3 firstObject];
+  [firstObject frame];
   MidY = CGRectGetMidY(v37);
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -91,11 +91,11 @@
             v10 = x;
           }
 
-          v23 = [v7 lastObject];
+          lastObject = [v7 lastObject];
 
           MidY = v21;
           v12 = 1.0;
-          if (v14 == v23)
+          if (v14 == lastObject)
           {
 LABEL_13:
             v28[0] = MEMORY[0x1E69E9820];

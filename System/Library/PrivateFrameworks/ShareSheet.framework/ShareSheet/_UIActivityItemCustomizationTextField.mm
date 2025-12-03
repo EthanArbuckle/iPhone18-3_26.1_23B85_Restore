@@ -1,69 +1,69 @@
 @interface _UIActivityItemCustomizationTextField
-- (BOOL)isEqual:(id)a3;
-- (_UIActivityItemCustomizationTextField)initWithCoder:(id)a3;
-- (_UIActivityItemCustomizationTextField)initWithText:(id)a3 placeholder:(id)a4 identifier:(id)a5 footerText:(id)a6;
-- (void)_setPlaceholder:(id)a3;
-- (void)_setText:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIActivityItemCustomizationTextField)initWithCoder:(id)coder;
+- (_UIActivityItemCustomizationTextField)initWithText:(id)text placeholder:(id)placeholder identifier:(id)identifier footerText:(id)footerText;
+- (void)_setPlaceholder:(id)placeholder;
+- (void)_setText:(id)text;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIActivityItemCustomizationTextField
 
-- (_UIActivityItemCustomizationTextField)initWithText:(id)a3 placeholder:(id)a4 identifier:(id)a5 footerText:(id)a6
+- (_UIActivityItemCustomizationTextField)initWithText:(id)text placeholder:(id)placeholder identifier:(id)identifier footerText:(id)footerText
 {
   v17.receiver = self;
   v17.super_class = _UIActivityItemCustomizationTextField;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_UIActivityItemCustomization *)&v17 _initWithTitle:v10 identifier:a5 footerText:a6];
-  v12 = [v10 copy];
+  placeholderCopy = placeholder;
+  textCopy = text;
+  v11 = [(_UIActivityItemCustomization *)&v17 _initWithTitle:textCopy identifier:identifier footerText:footerText];
+  v12 = [textCopy copy];
 
   text = v11->_text;
   v11->_text = v12;
 
-  v14 = [v9 copy];
+  v14 = [placeholderCopy copy];
   placeholder = v11->_placeholder;
   v11->_placeholder = v14;
 
   return v11;
 }
 
-- (void)_setText:(id)a3
+- (void)_setText:(id)text
 {
-  v5 = a3;
-  if (self->_text != v5)
+  textCopy = text;
+  if (self->_text != textCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_text, a3);
+    v6 = textCopy;
+    objc_storeStrong(&self->_text, text);
     (*(self->__handler + 2))();
-    v5 = v6;
+    textCopy = v6;
   }
 }
 
-- (void)_setPlaceholder:(id)a3
+- (void)_setPlaceholder:(id)placeholder
 {
-  v5 = a3;
-  if (self->_placeholder != v5)
+  placeholderCopy = placeholder;
+  if (self->_placeholder != placeholderCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placeholder, a3);
-    v5 = v6;
+    v6 = placeholderCopy;
+    objc_storeStrong(&self->_placeholder, placeholder);
+    placeholderCopy = v6;
   }
 }
 
-- (_UIActivityItemCustomizationTextField)initWithCoder:(id)a3
+- (_UIActivityItemCustomizationTextField)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _UIActivityItemCustomizationTextField;
-  v5 = [(_UIActivityItemCustomization *)&v11 initWithCoder:v4];
+  v5 = [(_UIActivityItemCustomization *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placeholder"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placeholder"];
     placeholder = v5->_placeholder;
     v5->_placeholder = v8;
   }
@@ -71,23 +71,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = _UIActivityItemCustomizationTextField;
-  v4 = a3;
-  [(_UIActivityItemCustomization *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(_UIActivityItemCustomization *)&v7 encodeWithCoder:coderCopy];
   v5 = [(_UIActivityItemCustomizationTextField *)self text:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"text"];
+  [coderCopy encodeObject:v5 forKey:@"text"];
 
-  v6 = [(_UIActivityItemCustomizationTextField *)self placeholder];
-  [v4 encodeObject:v6 forKey:@"placeholder"];
+  placeholder = [(_UIActivityItemCustomizationTextField *)self placeholder];
+  [coderCopy encodeObject:placeholder forKey:@"placeholder"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -97,7 +97,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v19.receiver = self;
       v19.super_class = _UIActivityItemCustomizationTextField;
       if (![(_UIActivityItemCustomization *)&v19 isEqual:v5])
@@ -108,10 +108,10 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v6 = [(_UIActivityItemCustomizationTextField *)v5 text];
-      v7 = [(_UIActivityItemCustomizationTextField *)self text];
-      v8 = v6;
-      v9 = v7;
+      text = [(_UIActivityItemCustomizationTextField *)v5 text];
+      text2 = [(_UIActivityItemCustomizationTextField *)self text];
+      v8 = text;
+      v9 = text2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -140,10 +140,10 @@ LABEL_20:
         }
       }
 
-      v13 = [(_UIActivityItemCustomizationTextField *)v5 placeholder];
-      v14 = [(_UIActivityItemCustomizationTextField *)self placeholder];
-      v15 = v13;
-      v16 = v14;
+      placeholder = [(_UIActivityItemCustomizationTextField *)v5 placeholder];
+      placeholder2 = [(_UIActivityItemCustomizationTextField *)self placeholder];
+      v15 = placeholder;
+      v16 = placeholder2;
       v17 = v16;
       if (v15 == v16)
       {

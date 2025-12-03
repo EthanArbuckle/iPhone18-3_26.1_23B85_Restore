@@ -1,18 +1,18 @@
 @interface PlatformSelectorViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation PlatformSelectorViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppStore.PlatformSelectorView" hasSwiftField:@"text" withSwiftType:"Optional<String>"];
-  [v3 validateClass:@"AppStore.PlatformSelectorView" hasInstanceMethod:@"accessibilityDescriptionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppStore.PlatformSelectorView" hasSwiftField:@"accessoryImageView" withSwiftType:"UIImageView"];
-  [v3 validateClass:@"AppStoreKit.DynamicTypeLabel" isKindOfClass:@"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppStore.PlatformSelectorView" hasSwiftField:@"text" withSwiftType:"Optional<String>"];
+  [validationsCopy validateClass:@"AppStore.PlatformSelectorView" hasInstanceMethod:@"accessibilityDescriptionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppStore.PlatformSelectorView" hasSwiftField:@"accessoryImageView" withSwiftType:"UIImageView"];
+  [validationsCopy validateClass:@"AppStoreKit.DynamicTypeLabel" isKindOfClass:@"UILabel"];
 }
 
 - (id)accessibilityLabel
@@ -44,17 +44,17 @@
   {
     v9.receiver = self;
     v9.super_class = PlatformSelectorViewAccessibility;
-    v6 = *MEMORY[0x29EDC7F70] | [(PlatformSelectorViewAccessibility *)&v9 accessibilityTraits];
+    accessibilityTraits = *MEMORY[0x29EDC7F70] | [(PlatformSelectorViewAccessibility *)&v9 accessibilityTraits];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PlatformSelectorViewAccessibility;
-    v6 = [(PlatformSelectorViewAccessibility *)&v8 accessibilityTraits];
+    accessibilityTraits = [(PlatformSelectorViewAccessibility *)&v8 accessibilityTraits];
   }
 
-  return v6;
+  return accessibilityTraits;
 }
 
 @end

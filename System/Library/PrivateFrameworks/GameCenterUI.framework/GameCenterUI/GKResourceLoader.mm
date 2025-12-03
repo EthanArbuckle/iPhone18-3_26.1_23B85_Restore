@@ -1,29 +1,29 @@
 @interface GKResourceLoader
 - (BOOL)isIdle;
-- (BOOL)loadResourceWithRequest:(id)a3 reason:(int64_t)a4;
-- (BOOL)setReason:(int64_t)a3 forRequestWithKey:(id)a4;
+- (BOOL)loadResourceWithRequest:(id)request reason:(int64_t)reason;
+- (BOOL)setReason:(int64_t)reason forRequestWithKey:(id)key;
 - (GKResourceLoader)init;
-- (GKResourceLoader)initWithParentResourceLoader:(id)a3;
-- (GKResourceLoader)initWithRequestQueue:(id)a3 accessQueue:(id)a4 notificationQueue:(id)a5 cacheLimit:(int64_t)a6;
-- (id)cachedResourcesForCacheKey:(id)a3;
+- (GKResourceLoader)initWithParentResourceLoader:(id)loader;
+- (GKResourceLoader)initWithRequestQueue:(id)queue accessQueue:(id)accessQueue notificationQueue:(id)notificationQueue cacheLimit:(int64_t)limit;
+- (id)cachedResourcesForCacheKey:(id)key;
 - (id)description;
-- (id)requestKeyForCacheKey:(id)a3;
+- (id)requestKeyForCacheKey:(id)key;
 - (int64_t)currentQualityOfService;
 - (void)_commonInit;
-- (void)addResource:(id)a3 forCacheKey:(id)a4;
+- (void)addResource:(id)resource forCacheKey:(id)key;
 - (void)cancelAllRequests;
-- (void)cancelRequestForCacheKey:(id)a3;
+- (void)cancelRequestForCacheKey:(id)key;
 - (void)dealloc;
 - (void)enterBackground;
 - (void)enterForeground;
-- (void)finishLoadForRequest:(id)a3 withResource:(id)a4 error:(id)a5;
+- (void)finishLoadForRequest:(id)request withResource:(id)resource error:(id)error;
 - (void)postDidBeginLoadingIfIdle;
 - (void)postDidIdleIfIdle;
-- (void)postDidLoadAllForReason:(int64_t)a3;
+- (void)postDidLoadAllForReason:(int64_t)reason;
 - (void)removeAllCachedResources;
-- (void)removeResourcesForCacheKey:(id)a3;
+- (void)removeResourcesForCacheKey:(id)key;
 - (void)reprioritizeOperations;
-- (void)updateLoadReason:(int64_t)a3 forOperation:(id)a4;
+- (void)updateLoadReason:(int64_t)reason forOperation:(id)operation;
 @end
 
 @implementation GKResourceLoader
@@ -41,14 +41,14 @@
   MEMORY[0x2821F96F8](v5, requestsByCacheKey);
 }
 
-- (GKResourceLoader)initWithRequestQueue:(id)a3 accessQueue:(id)a4 notificationQueue:(id)a5 cacheLimit:(int64_t)a6
+- (GKResourceLoader)initWithRequestQueue:(id)queue accessQueue:(id)accessQueue notificationQueue:(id)notificationQueue cacheLimit:(int64_t)limit
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if ([v13 maxConcurrentOperationCount] != 1)
+  queueCopy = queue;
+  accessQueueCopy = accessQueue;
+  notificationQueueCopy = notificationQueue;
+  if ([accessQueueCopy maxConcurrentOperationCount] != 1)
   {
-    [GKResourceLoader initWithRequestQueue:a2 accessQueue:self notificationQueue:v12 cacheLimit:?];
+    [GKResourceLoader initWithRequestQueue:a2 accessQueue:self notificationQueue:queueCopy cacheLimit:?];
   }
 
   v20.receiver = self;
@@ -57,14 +57,14 @@
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_requestQueue, a3);
-    objc_storeStrong(&v16->_accessQueue, a4);
-    objc_storeStrong(&v16->_notificationQueue, a5);
+    objc_storeStrong(&v15->_requestQueue, queue);
+    objc_storeStrong(&v16->_accessQueue, accessQueue);
+    objc_storeStrong(&v16->_notificationQueue, notificationQueue);
     v17 = objc_alloc_init(GKResourceCache);
     cachedResources = v16->_cachedResources;
     v16->_cachedResources = v17;
 
-    [(GKResourceCache *)v16->_cachedResources setLimit:a6];
+    [(GKResourceCache *)v16->_cachedResources setLimit:limit];
     [(GKResourceCache *)v16->_cachedResources setEvictsObjectsWhenApplicationEntersBackground:0];
     [(GKResourceLoader *)v16 _commonInit];
   }
@@ -72,29 +72,29 @@
   return v16;
 }
 
-- (GKResourceLoader)initWithParentResourceLoader:(id)a3
+- (GKResourceLoader)initWithParentResourceLoader:(id)loader
 {
-  v4 = a3;
+  loaderCopy = loader;
   v15.receiver = self;
   v15.super_class = GKResourceLoader;
   v5 = [(GKResourceLoader *)&v15 init];
   if (v5)
   {
-    v6 = [v4 requestQueue];
+    requestQueue = [loaderCopy requestQueue];
     requestQueue = v5->_requestQueue;
-    v5->_requestQueue = v6;
+    v5->_requestQueue = requestQueue;
 
-    v8 = [v4 accessQueue];
+    accessQueue = [loaderCopy accessQueue];
     accessQueue = v5->_accessQueue;
-    v5->_accessQueue = v8;
+    v5->_accessQueue = accessQueue;
 
-    v10 = [v4 notificationQueue];
+    notificationQueue = [loaderCopy notificationQueue];
     notificationQueue = v5->_notificationQueue;
-    v5->_notificationQueue = v10;
+    v5->_notificationQueue = notificationQueue;
 
-    v12 = [v4 cachedResources];
+    cachedResources = [loaderCopy cachedResources];
     cachedResources = v5->_cachedResources;
-    v5->_cachedResources = v12;
+    v5->_cachedResources = cachedResources;
 
     [(GKResourceLoader *)v5 _commonInit];
     v5->_isInBackground = 1;
@@ -123,66 +123,66 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(GKResourceLoader *)self requestQueue];
-  v7 = [(GKResourceLoader *)self accessQueue];
-  v8 = [(GKResourceLoader *)self notificationQueue];
+  requestQueue = [(GKResourceLoader *)self requestQueue];
+  accessQueue = [(GKResourceLoader *)self accessQueue];
+  notificationQueue = [(GKResourceLoader *)self notificationQueue];
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[GKResourceLoader isInBackground](self, "isInBackground")}];
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"{onScreen: %ld, cacheAhead: %ld, cacheFarAhead: %ld}", self->_requestCountMap[2], self->_requestCountMap[1], self->_requestCountMap[0]];
-  v11 = [v3 stringWithFormat:@"<%@:%p requestQueue = %@, accessQueue = %@, notificationQueue = %@, isInBackground = %@, loadCounts = %@>", v5, self, v6, v7, v8, v9, v10];
+  v11 = [v3 stringWithFormat:@"<%@:%p requestQueue = %@, accessQueue = %@, notificationQueue = %@, isInBackground = %@, loadCounts = %@>", v5, self, requestQueue, accessQueue, notificationQueue, v9, v10];
 
   return v11;
 }
 
-- (void)addResource:(id)a3 forCacheKey:(id)a4
+- (void)addResource:(id)resource forCacheKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKResourceLoader *)self cachedResources];
-  [v8 addResource:v7 forKey:v6];
+  keyCopy = key;
+  resourceCopy = resource;
+  cachedResources = [(GKResourceLoader *)self cachedResources];
+  [cachedResources addResource:resourceCopy forKey:keyCopy];
 }
 
-- (void)removeResourcesForCacheKey:(id)a3
+- (void)removeResourcesForCacheKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKResourceLoader *)self cachedResources];
-  [v5 removeResourcesForKey:v4];
+  keyCopy = key;
+  cachedResources = [(GKResourceLoader *)self cachedResources];
+  [cachedResources removeResourcesForKey:keyCopy];
 }
 
-- (id)cachedResourcesForCacheKey:(id)a3
+- (id)cachedResourcesForCacheKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKResourceLoader *)self cachedResources];
-  v6 = [v5 resourcesForKey:v4];
+  keyCopy = key;
+  cachedResources = [(GKResourceLoader *)self cachedResources];
+  v6 = [cachedResources resourcesForKey:keyCopy];
 
   return v6;
 }
 
 - (void)removeAllCachedResources
 {
-  v2 = [(GKResourceLoader *)self cachedResources];
-  [v2 removeAllResources];
+  cachedResources = [(GKResourceLoader *)self cachedResources];
+  [cachedResources removeAllResources];
 }
 
-- (id)requestKeyForCacheKey:(id)a3
+- (id)requestKeyForCacheKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKResourceLoader *)self requestsByCacheKey];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  requestsByCacheKey = [(GKResourceLoader *)self requestsByCacheKey];
+  v6 = [requestsByCacheKey objectForKey:keyCopy];
 
   return v6;
 }
 
 - (void)cancelAllRequests
 {
-  v3 = [(GKResourceLoader *)self pendingOperations];
-  v4 = [v3 allValues];
-  [v4 makeObjectsPerformSelector:sel_cancel];
+  pendingOperations = [(GKResourceLoader *)self pendingOperations];
+  allValues = [pendingOperations allValues];
+  [allValues makeObjectsPerformSelector:sel_cancel];
 
-  v5 = [(GKResourceLoader *)self pendingOperations];
-  [v5 removeAllObjects];
+  pendingOperations2 = [(GKResourceLoader *)self pendingOperations];
+  [pendingOperations2 removeAllObjects];
 
-  v6 = [(GKResourceLoader *)self requestsByCacheKey];
-  [v6 removeAllObjects];
+  requestsByCacheKey = [(GKResourceLoader *)self requestsByCacheKey];
+  [requestsByCacheKey removeAllObjects];
 
   if (self->_requestCountMap[2] >= 1)
   {
@@ -200,34 +200,34 @@
   }
 }
 
-- (void)cancelRequestForCacheKey:(id)a3
+- (void)cancelRequestForCacheKey:(id)key
 {
-  v11 = a3;
+  keyCopy = key;
   v4 = [(GKResourceLoader *)self requestKeyForCacheKey:?];
   if (v4)
   {
-    v5 = [(GKResourceLoader *)self pendingOperations];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    pendingOperations = [(GKResourceLoader *)self pendingOperations];
+    v6 = [pendingOperations objectForKeyedSubscript:v4];
 
     if (v6)
     {
       [v6 cancel];
-      v7 = [(GKResourceLoader *)self pendingOperations];
-      [v7 removeObjectForKey:v4];
+      pendingOperations2 = [(GKResourceLoader *)self pendingOperations];
+      [pendingOperations2 removeObjectForKey:v4];
 
-      v8 = [(GKResourceLoader *)self requestsByCacheKey];
-      [v8 removeObjectForKey:v11];
+      requestsByCacheKey = [(GKResourceLoader *)self requestsByCacheKey];
+      [requestsByCacheKey removeObjectForKey:keyCopy];
 
-      v9 = [v6 _loadReason];
-      v10 = self->_requestCountMap[v9];
+      _loadReason = [v6 _loadReason];
+      v10 = self->_requestCountMap[_loadReason];
       if (v10 >= 1)
       {
-        self->_requestCountMap[v9] = --v10;
+        self->_requestCountMap[_loadReason] = --v10;
       }
 
       if (!v10)
       {
-        [(GKResourceLoader *)self postDidLoadAllForReason:v9];
+        [(GKResourceLoader *)self postDidLoadAllForReason:_loadReason];
       }
     }
   }
@@ -253,40 +253,40 @@
 
 - (BOOL)isIdle
 {
-  v2 = [(GKResourceLoader *)self pendingOperations];
-  v3 = [v2 count] == 0;
+  pendingOperations = [(GKResourceLoader *)self pendingOperations];
+  v3 = [pendingOperations count] == 0;
 
   return v3;
 }
 
-- (BOOL)loadResourceWithRequest:(id)a3 reason:(int64_t)a4
+- (BOOL)loadResourceWithRequest:(id)request reason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [v6 requestKey];
-  v8 = [(GKResourceLoader *)self pendingOperations];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  requestCopy = request;
+  requestKey = [requestCopy requestKey];
+  pendingOperations = [(GKResourceLoader *)self pendingOperations];
+  v9 = [pendingOperations objectForKeyedSubscript:requestKey];
 
   if (v9)
   {
-    v10 = [(GKResourceLoader *)self isInBackground];
-    v11 = 4 * a4;
-    if (a4 >= 3)
+    isInBackground = [(GKResourceLoader *)self isInBackground];
+    v11 = 4 * reason;
+    if (reason >= 3)
     {
       v11 = 4;
     }
 
     v12 = -8;
-    if (a4 == 1)
+    if (reason == 1)
     {
       v12 = -4;
     }
 
-    if (a4 == 2)
+    if (reason == 2)
     {
       v12 = 0;
     }
 
-    if (v10)
+    if (isInBackground)
     {
       v13 = v12;
     }
@@ -298,35 +298,35 @@
 
     if (v13 > [v9 queuePriority])
     {
-      [(GKResourceLoader *)self updateLoadReason:a4 forOperation:v9];
+      [(GKResourceLoader *)self updateLoadReason:reason forOperation:v9];
       [v9 setQueuePriority:v13];
     }
   }
 
   else
   {
-    v14 = [v6 makeLoadOperation];
-    [v14 _setLoadReason:a4];
-    [v14 setQualityOfService:{-[GKResourceLoader currentQualityOfService](self, "currentQualityOfService")}];
-    v15 = [(GKResourceLoader *)self isInBackground];
-    v16 = 4 * a4;
-    if (a4 >= 3)
+    makeLoadOperation = [requestCopy makeLoadOperation];
+    [makeLoadOperation _setLoadReason:reason];
+    [makeLoadOperation setQualityOfService:{-[GKResourceLoader currentQualityOfService](self, "currentQualityOfService")}];
+    isInBackground2 = [(GKResourceLoader *)self isInBackground];
+    v16 = 4 * reason;
+    if (reason >= 3)
     {
       v16 = 4;
     }
 
     v17 = -8;
-    if (a4 == 1)
+    if (reason == 1)
     {
       v17 = -4;
     }
 
-    if (a4 == 2)
+    if (reason == 2)
     {
       v17 = 0;
     }
 
-    if (v15)
+    if (isInBackground2)
     {
       v18 = v17;
     }
@@ -336,28 +336,28 @@
       v18 = v16;
     }
 
-    [v14 setQueuePriority:v18];
+    [makeLoadOperation setQueuePriority:v18];
     objc_initWeak(&location, self);
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __51__GKResourceLoader_loadResourceWithRequest_reason___block_invoke;
     v25[3] = &unk_27966DAF8;
     objc_copyWeak(&v27, &location);
-    v19 = v6;
+    v19 = requestCopy;
     v26 = v19;
-    [v14 setOutputBlock:v25];
+    [makeLoadOperation setOutputBlock:v25];
     [(GKResourceLoader *)self postDidBeginLoadingIfIdle];
-    v20 = [(GKResourceLoader *)self pendingOperations];
-    [v20 setObject:v14 forKeyedSubscript:v7];
+    pendingOperations2 = [(GKResourceLoader *)self pendingOperations];
+    [pendingOperations2 setObject:makeLoadOperation forKeyedSubscript:requestKey];
 
-    v21 = [(GKResourceLoader *)self requestsByCacheKey];
-    v22 = [v19 cacheKey];
-    [v21 setObject:v7 forKey:v22];
+    requestsByCacheKey = [(GKResourceLoader *)self requestsByCacheKey];
+    cacheKey = [v19 cacheKey];
+    [requestsByCacheKey setObject:requestKey forKey:cacheKey];
 
-    v23 = [(GKResourceLoader *)self requestQueue];
-    [v23 addOperation:v14];
+    requestQueue = [(GKResourceLoader *)self requestQueue];
+    [requestQueue addOperation:makeLoadOperation];
 
-    ++self->_requestCountMap[a4];
+    ++self->_requestCountMap[reason];
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
   }
@@ -392,34 +392,34 @@ void __51__GKResourceLoader_loadResourceWithRequest_reason___block_invoke_2(uint
   [WeakRetained finishLoadForRequest:*(a1 + 32) withResource:*(a1 + 40) error:*(a1 + 48)];
 }
 
-- (BOOL)setReason:(int64_t)a3 forRequestWithKey:(id)a4
+- (BOOL)setReason:(int64_t)reason forRequestWithKey:(id)key
 {
-  v6 = a4;
-  v7 = [(GKResourceLoader *)self pendingOperations];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  pendingOperations = [(GKResourceLoader *)self pendingOperations];
+  v8 = [pendingOperations objectForKeyedSubscript:keyCopy];
 
   if (v8)
   {
-    [(GKResourceLoader *)self updateLoadReason:a3 forOperation:v8];
-    v9 = [(GKResourceLoader *)self isInBackground];
-    v10 = 4 * a3;
-    if (a3 >= 3)
+    [(GKResourceLoader *)self updateLoadReason:reason forOperation:v8];
+    isInBackground = [(GKResourceLoader *)self isInBackground];
+    v10 = 4 * reason;
+    if (reason >= 3)
     {
       v10 = 4;
     }
 
     v11 = -8;
-    if (a3 == 1)
+    if (reason == 1)
     {
       v11 = -4;
     }
 
-    if (a3 == 2)
+    if (reason == 2)
     {
       v11 = 0;
     }
 
-    if (v9)
+    if (isInBackground)
     {
       v12 = v11;
     }
@@ -435,66 +435,66 @@ void __51__GKResourceLoader_loadResourceWithRequest_reason___block_invoke_2(uint
   return v8 != 0;
 }
 
-- (void)finishLoadForRequest:(id)a3 withResource:(id)a4 error:(id)a5
+- (void)finishLoadForRequest:(id)request withResource:(id)resource error:(id)error
 {
-  v23 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v23 requestKey];
-  v11 = [v23 cacheKey];
-  v12 = [(GKResourceLoader *)self pendingOperations];
-  v13 = [v12 objectForKeyedSubscript:v10];
+  requestCopy = request;
+  resourceCopy = resource;
+  errorCopy = error;
+  requestKey = [requestCopy requestKey];
+  cacheKey = [requestCopy cacheKey];
+  pendingOperations = [(GKResourceLoader *)self pendingOperations];
+  v13 = [pendingOperations objectForKeyedSubscript:requestKey];
 
-  v14 = [v13 _loadReason];
-  v15 = [(GKResourceLoader *)self pendingOperations];
-  [v15 removeObjectForKey:v10];
+  _loadReason = [v13 _loadReason];
+  pendingOperations2 = [(GKResourceLoader *)self pendingOperations];
+  [pendingOperations2 removeObjectForKey:requestKey];
 
-  v16 = [(GKResourceLoader *)self requestsByCacheKey];
-  [v16 removeObjectForKey:v11];
+  requestsByCacheKey = [(GKResourceLoader *)self requestsByCacheKey];
+  [requestsByCacheKey removeObjectForKey:cacheKey];
 
-  v17 = [(GKResourceLoader *)self cachedResources];
-  if ([v17 isGroupMember])
+  cachedResources = [(GKResourceLoader *)self cachedResources];
+  if ([cachedResources isGroupMember])
   {
-    v18 = [(GKResourceLoader *)self isInBackground];
+    isInBackground = [(GKResourceLoader *)self isInBackground];
   }
 
   else
   {
-    v18 = 0;
+    isInBackground = 0;
   }
 
-  if (v8)
+  if (resourceCopy)
   {
-    if (!v18)
+    if (!isInBackground)
     {
-      v19 = [v23 cacheOptions];
-      if ((v19 & 2) != 0)
+      cacheOptions = [requestCopy cacheOptions];
+      if ((cacheOptions & 2) != 0)
       {
-        v20 = [(GKResourceLoader *)self cachedResources];
-        v21 = v20;
-        if ((v19 & 4) != 0)
+        cachedResources2 = [(GKResourceLoader *)self cachedResources];
+        v21 = cachedResources2;
+        if ((cacheOptions & 4) != 0)
         {
-          [v20 replaceResourcesForKey:v11 withResource:v8];
+          [cachedResources2 replaceResourcesForKey:cacheKey withResource:resourceCopy];
         }
 
         else
         {
-          [v20 addResource:v8 forKey:v11];
+          [cachedResources2 addResource:resourceCopy forKey:cacheKey];
         }
       }
     }
   }
 
-  [v23 didLoadResource:v8 error:v9];
-  v22 = self->_requestCountMap[v14];
+  [requestCopy didLoadResource:resourceCopy error:errorCopy];
+  v22 = self->_requestCountMap[_loadReason];
   if (v22 >= 1)
   {
-    self->_requestCountMap[v14] = --v22;
+    self->_requestCountMap[_loadReason] = --v22;
   }
 
   if (!v22)
   {
-    [(GKResourceLoader *)self postDidLoadAllForReason:v14];
+    [(GKResourceLoader *)self postDidLoadAllForReason:_loadReason];
   }
 
   [(GKResourceLoader *)self postDidIdleIfIdle];
@@ -513,26 +513,26 @@ void __51__GKResourceLoader_loadResourceWithRequest_reason___block_invoke_2(uint
   }
 }
 
-- (void)updateLoadReason:(int64_t)a3 forOperation:(id)a4
+- (void)updateLoadReason:(int64_t)reason forOperation:(id)operation
 {
-  v9 = a4;
-  v6 = [v9 _loadReason];
-  v7 = v9;
-  if (v6 != a3)
+  operationCopy = operation;
+  _loadReason = [operationCopy _loadReason];
+  v7 = operationCopy;
+  if (_loadReason != reason)
   {
-    [v9 _setLoadReason:a3];
-    ++self->_requestCountMap[a3];
-    v8 = self->_requestCountMap[v6];
+    [operationCopy _setLoadReason:reason];
+    ++self->_requestCountMap[reason];
+    v8 = self->_requestCountMap[_loadReason];
     if (v8 >= 1)
     {
-      self->_requestCountMap[v6] = --v8;
+      self->_requestCountMap[_loadReason] = --v8;
     }
 
-    v7 = v9;
+    v7 = operationCopy;
     if (!v8)
     {
-      [(GKResourceLoader *)self postDidLoadAllForReason:v6];
-      v7 = v9;
+      [(GKResourceLoader *)self postDidLoadAllForReason:_loadReason];
+      v7 = operationCopy;
     }
   }
 }
@@ -540,16 +540,16 @@ void __51__GKResourceLoader_loadResourceWithRequest_reason___block_invoke_2(uint
 - (void)reprioritizeOperations
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(GKResourceLoader *)self currentQualityOfService];
-  v4 = [(GKResourceLoader *)self isInBackground];
+  currentQualityOfService = [(GKResourceLoader *)self currentQualityOfService];
+  isInBackground = [(GKResourceLoader *)self isInBackground];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(GKResourceLoader *)self pendingOperations];
-  v6 = [v5 objectEnumerator];
+  pendingOperations = [(GKResourceLoader *)self pendingOperations];
+  objectEnumerator = [pendingOperations objectEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -560,14 +560,14 @@ void __51__GKResourceLoader_loadResourceWithRequest_reason___block_invoke_2(uint
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 _loadReason];
-        if (v4)
+        _loadReason = [v11 _loadReason];
+        if (isInBackground)
         {
-          if (v12 == 1)
+          if (_loadReason == 1)
           {
             v13 = -4;
           }
@@ -577,7 +577,7 @@ void __51__GKResourceLoader_loadResourceWithRequest_reason___block_invoke_2(uint
             v13 = -8;
           }
 
-          if (v12 == 2)
+          if (_loadReason == 2)
           {
             v14 = 0;
           }
@@ -588,21 +588,21 @@ void __51__GKResourceLoader_loadResourceWithRequest_reason___block_invoke_2(uint
           }
         }
 
-        else if (v12 >= 3)
+        else if (_loadReason >= 3)
         {
           v14 = 4;
         }
 
         else
         {
-          v14 = 4 * v12;
+          v14 = 4 * _loadReason;
         }
 
         [v11 setQueuePriority:v14];
-        [v11 setQualityOfService:v3];
+        [v11 setQualityOfService:currentQualityOfService];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -614,13 +614,13 @@ void __51__GKResourceLoader_loadResourceWithRequest_reason___block_invoke_2(uint
   if ([(GKResourceLoader *)self isIdle])
   {
     objc_initWeak(&location, self);
-    v3 = [(GKResourceLoader *)self notificationQueue];
+    notificationQueue = [(GKResourceLoader *)self notificationQueue];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __45__GKResourceLoader_postDidBeginLoadingIfIdle__block_invoke;
     v4[3] = &unk_279669FE0;
     objc_copyWeak(&v5, &location);
-    [v3 addOperationWithBlock:v4];
+    [notificationQueue addOperationWithBlock:v4];
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
@@ -645,13 +645,13 @@ void __45__GKResourceLoader_postDidBeginLoadingIfIdle__block_invoke(uint64_t a1)
   if ([(GKResourceLoader *)self isIdle])
   {
     objc_initWeak(&location, self);
-    v3 = [(GKResourceLoader *)self notificationQueue];
+    notificationQueue = [(GKResourceLoader *)self notificationQueue];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __37__GKResourceLoader_postDidIdleIfIdle__block_invoke;
     v4[3] = &unk_279669FE0;
     objc_copyWeak(&v5, &location);
-    [v3 addOperationWithBlock:v4];
+    [notificationQueue addOperationWithBlock:v4];
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
@@ -671,17 +671,17 @@ void __37__GKResourceLoader_postDidIdleIfIdle__block_invoke(uint64_t a1)
   }
 }
 
-- (void)postDidLoadAllForReason:(int64_t)a3
+- (void)postDidLoadAllForReason:(int64_t)reason
 {
   objc_initWeak(&location, self);
-  v5 = [(GKResourceLoader *)self notificationQueue];
+  notificationQueue = [(GKResourceLoader *)self notificationQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__GKResourceLoader_postDidLoadAllForReason___block_invoke;
   v6[3] = &unk_27966A930;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
-  [v5 addOperationWithBlock:v6];
+  v7[1] = reason;
+  [notificationQueue addOperationWithBlock:v6];
 
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);

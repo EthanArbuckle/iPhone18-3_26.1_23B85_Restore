@@ -1,33 +1,33 @@
 @interface MFPMetafileImage
-- (MFPMetafileImage)initWithMetafileData:(id)a3;
-- (void)drawInRect:(CGRect)a3 fromRect:(CGRect)a4 unit:(int)a5 effect:(id)a6;
+- (MFPMetafileImage)initWithMetafileData:(id)data;
+- (void)drawInRect:(CGRect)rect fromRect:(CGRect)fromRect unit:(int)unit effect:(id)effect;
 @end
 
 @implementation MFPMetafileImage
 
-- (MFPMetafileImage)initWithMetafileData:(id)a3
+- (MFPMetafileImage)initWithMetafileData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = MFPMetafileImage;
   v6 = [(MFPMetafileImage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mMetafileData, a3);
+    objc_storeStrong(&v6->mMetafileData, data);
   }
 
   return v7;
 }
 
-- (void)drawInRect:(CGRect)a3 fromRect:(CGRect)a4 unit:(int)a5 effect:(id)a6
+- (void)drawInRect:(CGRect)rect fromRect:(CGRect)fromRect unit:(int)unit effect:(id)effect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a6;
-  v12 = [(NSData *)self->mMetafileData bytes];
+  height = fromRect.size.height;
+  width = fromRect.size.width;
+  y = fromRect.origin.y;
+  x = fromRect.origin.x;
+  effectCopy = effect;
+  bytes = [(NSData *)self->mMetafileData bytes];
   v13 = [(NSData *)self->mMetafileData length];
   if (v13 < 0x58)
   {
@@ -37,12 +37,12 @@
     }
   }
 
-  else if (v12[10] == 1179469088)
+  else if (bytes[10] == 1179469088)
   {
-    v15 = v12[18];
-    v14 = v12[19];
-    v17 = v12[20];
-    v16 = v12[21];
+    v15 = bytes[18];
+    v14 = bytes[19];
+    v17 = bytes[20];
+    v16 = bytes[21];
     v72.origin.x = x;
     v72.origin.y = y;
     v72.size.width = width;
@@ -65,37 +65,37 @@
     MaxY = CGRectGetMaxY(v75);
     v22 = v17 * 100.0 / v15;
     v23 = v16 * 100.0 / v14;
-    v12[6] = (MinX * v22);
-    v12[7] = (v23 * MinY);
-    v12[8] = (v22 * MaxX);
-    v12[9] = (v23 * MaxY);
+    bytes[6] = (MinX * v22);
+    bytes[7] = (v23 * MinY);
+    bytes[8] = (v22 * MaxX);
+    bytes[9] = (v23 * MaxY);
 LABEL_19:
     v56 = TCCurrentGraphicsContext();
     CGContextSaveGState(v56);
-    [MFConverter playInCurrentContext:self->mMetafileData frame:0 colorMap:0 fillMap:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [MFConverter playInCurrentContext:self->mMetafileData frame:0 colorMap:0 fillMap:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
     CGContextRestoreGState(v56);
     goto LABEL_20;
   }
 
-  if (*v12 == -1698247209)
+  if (*bytes == -1698247209)
   {
-    v65 = v11;
+    v65 = effectCopy;
     v64 = [(NSData *)self->mMetafileData mutableCopy];
     [v64 replaceBytesInRange:22 withBytes:2 length:{0, 0}];
     objc_storeStrong(&self->mMetafileData, v64);
-    v24 = [(NSData *)self->mMetafileData bytes];
+    bytes2 = [(NSData *)self->mMetafileData bytes];
     v25 = [(NSData *)self->mMetafileData length];
-    v59 = self;
-    v26 = v24[6];
-    v27 = v24[7];
-    v28 = v24[8];
-    v29 = v24[9];
-    v60 = v24[10];
-    v30 = v24[11];
-    v62 = v24[12];
-    v31 = v24[13];
-    v32 = &v24[v25 - 10];
-    TCVerifyInputMeetsCondition(v24 <= v32);
+    selfCopy = self;
+    v26 = bytes2[6];
+    v27 = bytes2[7];
+    v28 = bytes2[8];
+    v29 = bytes2[9];
+    v60 = bytes2[10];
+    v30 = bytes2[11];
+    v62 = bytes2[12];
+    v31 = bytes2[13];
+    v32 = &bytes2[v25 - 10];
+    TCVerifyInputMeetsCondition(bytes2 <= v32);
     v33 = 0;
     v34 = 0;
     v35 = (v27 << 8) | v26;
@@ -104,10 +104,10 @@ LABEL_19:
     v38 = v36;
     v39 = (((v30 << 8) | v60) - v35);
     v40 = (((v31 << 8) | v62) - v36);
-    v41 = v24 + 40;
+    v41 = bytes2 + 40;
     while (v41 <= v32)
     {
-      TCVerifyInputMeetsCondition(v41 > v24);
+      TCVerifyInputMeetsCondition(v41 > bytes2);
       v42 = *v41;
       v43 = v41[1];
       v44 = v41[2];
@@ -140,8 +140,8 @@ LABEL_19:
       }
     }
 
-    v11 = v65;
-    self = v59;
+    effectCopy = v65;
+    self = selfCopy;
     if (v34 && v33)
     {
       v57 = v40;

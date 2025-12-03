@@ -1,28 +1,28 @@
 @interface CDDCloudKitServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (CDDCloudKitServer)initWithListener:(id)a3 configuration:(id)a4;
-- (uint64_t)createRealPathForPath:(void *)a3 error:;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (CDDCloudKitServer)initWithListener:(id)listener configuration:(id)configuration;
+- (uint64_t)createRealPathForPath:(void *)path error:;
 - (void)dealloc;
-- (void)finishedActivity:(id)a3 withResult:(id)a4 inManagedObjectContext:(id)a5;
-- (void)handleMessage:(id)a3 reply:(id)a4;
-- (void)runActivity:(uint64_t)a3 completionHandler:;
+- (void)finishedActivity:(id)activity withResult:(id)result inManagedObjectContext:(id)context;
+- (void)handleMessage:(id)message reply:(id)reply;
+- (void)runActivity:(uint64_t)activity completionHandler:;
 - (void)setUp;
 - (void)tearDown;
 @end
 
 @implementation CDDCloudKitServer
 
-- (CDDCloudKitServer)initWithListener:(id)a3 configuration:(id)a4
+- (CDDCloudKitServer)initWithListener:(id)listener configuration:(id)configuration
 {
   v12.receiver = self;
   v12.super_class = CDDCloudKitServer;
   v6 = [(CDDCloudKitServer *)&v12 init];
   if (v6)
   {
-    v6->_configuration = [a4 copy];
-    if (a3)
+    v6->_configuration = [configuration copy];
+    if (listener)
     {
-      v7 = a3;
+      listenerCopy = listener;
     }
 
     else
@@ -39,11 +39,11 @@
         machServiceName = 0;
       }
 
-      v7 = [v8 initWithMachServiceName:machServiceName];
+      listenerCopy = [v8 initWithMachServiceName:machServiceName];
     }
 
-    v6->_listener = v7;
-    [(NSXPCListener *)v7 setDelegate:v6];
+    v6->_listener = listenerCopy;
+    [(NSXPCListener *)listenerCopy setDelegate:v6];
     v6->_initialized = 0;
     v6->_initializationGroup = dispatch_group_create();
     v6->_containerProvider = objc_alloc_init(PFCloudKitContainerProvider);
@@ -230,15 +230,15 @@ uint64_t __32__CDDCloudKitServer__setUpAsync__block_invoke(uint64_t result, uint
   return result;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v13 = *MEMORY[0x1E69E9840];
   listener = self->_listener;
-  if (listener == a3)
+  if (listener == listener)
   {
-    [a4 setExportedObject:self];
-    [a4 setExportedInterface:{objc_msgSend(MEMORY[0x1E696B0D0], "interfaceWithProtocol:", &unk_1EF44F478)}];
-    [a4 resume];
+    [connection setExportedObject:self];
+    [connection setExportedInterface:{objc_msgSend(MEMORY[0x1E696B0D0], "interfaceWithProtocol:", &unk_1EF44F478)}];
+    [connection resume];
   }
 
   else
@@ -247,7 +247,7 @@ uint64_t __32__CDDCloudKitServer__setUpAsync__block_invoke(uint64_t result, uint
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412290;
-      v12 = a3;
+      listenerCopy2 = listener;
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Called to accept connection for unknown listener: %@\n", &v11, 0xCu);
     }
 
@@ -255,17 +255,17 @@ uint64_t __32__CDDCloudKitServer__setUpAsync__block_invoke(uint64_t result, uint
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
       v11 = 138412290;
-      v12 = a3;
+      listenerCopy2 = listener;
       _os_log_fault_impl(&dword_18565F000, v7, OS_LOG_TYPE_FAULT, "CoreData: Called to accept connection for unknown listener: %@", &v11, 0xCu);
     }
   }
 
-  result = listener == a3;
+  result = listener == listener;
   v10 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)handleMessage:(id)a3 reply:(id)a4
+- (void)handleMessage:(id)message reply:(id)reply
 {
   v99 = *MEMORY[0x1E69E9840];
   initializationGroup = self->_initializationGroup;
@@ -281,17 +281,17 @@ uint64_t __32__CDDCloudKitServer__setUpAsync__block_invoke(uint64_t result, uint
       v82 = *MEMORY[0x1E696A588];
       v83 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The server is not initialized due to: %@", -[NSError description](self->_lastInitializationError, "description")];
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
-      v14 = -[CDDCloudKitResponse initWithMessage:success:error:](v23, a3, 0, [v24 errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:v25]);
+      v14 = -[CDDCloudKitResponse initWithMessage:success:error:](v23, message, 0, [v24 errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:v25]);
       goto LABEL_46;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (a3)
+      if (message)
       {
-        v15 = *(a3 + 3);
-        v16 = *(a3 + 4);
+        v15 = *(message + 3);
+        v16 = *(message + 4);
       }
 
       else
@@ -346,7 +346,7 @@ LABEL_40:
           }
         }
 
-        v14 = [[CDDCloudKitResponse alloc] initWithMessage:a3 success:0 error:v58];
+        v14 = [[CDDCloudKitResponse alloc] initWithMessage:message success:0 error:v58];
         goto LABEL_46;
       }
 
@@ -374,10 +374,10 @@ LABEL_40:
         goto LABEL_40;
       }
 
-      v48 = [MEMORY[0x1E696AC08] defaultManager];
-      if (a3)
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      if (message)
       {
-        v49 = *(a3 + 4);
+        v49 = *(message + 4);
       }
 
       else
@@ -385,14 +385,14 @@ LABEL_40:
         v49 = 0;
       }
 
-      if (![v48 isWritableFileAtPath:v49])
+      if (![defaultManager isWritableFileAtPath:v49])
       {
         v66 = [CDDCloudKitResponse alloc];
         v67 = MEMORY[0x1E696ABC0];
         v86 = *MEMORY[0x1E696A588];
         v87 = @"Provided file handle is invalid, the file is not writable.";
         v68 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
-        v14 = -[CDDCloudKitResponse initWithMessage:success:error:](v66, a3, 0, [v67 errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:v68]);
+        v14 = -[CDDCloudKitResponse initWithMessage:success:error:](v66, message, 0, [v67 errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:v68]);
         goto LABEL_46;
       }
 
@@ -406,26 +406,26 @@ LABEL_40:
       *&v98.st_rdev = __Block_byref_object_copy__23;
       v98.st_atimespec.tv_sec = __Block_byref_object_dispose__23;
       v98.st_atimespec.tv_nsec = 0;
-      v50 = [(NSPersistentContainer *)self->_metadataContainer newBackgroundContext];
+      newBackgroundContext = [(NSPersistentContainer *)self->_metadataContainer newBackgroundContext];
       v70 = MEMORY[0x1E69E9820];
       v71 = 3221225472;
       v72 = __48__CDDCloudKitServer__handleRegistrationMessage___block_invoke;
       v73 = &unk_1E6EC3540;
-      v74 = self;
-      v75 = a3;
-      v76 = v50;
+      selfCopy = self;
+      messageCopy = message;
+      v76 = newBackgroundContext;
       v77 = &v98;
       v78 = &v79;
-      [(NSManagedObjectContext *)v50 performBlockAndWait:&v70];
+      [(NSManagedObjectContext *)newBackgroundContext performBlockAndWait:&v70];
 
       v51 = *(v98.st_ino + 40);
       if (v51)
       {
         v52 = MEMORY[0x1E696ABC0];
         v88 = *MEMORY[0x1E696A588];
-        if (a3)
+        if (message)
         {
-          v53 = *(a3 + 1);
+          v53 = *(message + 1);
         }
 
         else
@@ -444,7 +444,7 @@ LABEL_40:
       }
 
       v69 = [CDDCloudKitResponse alloc];
-      v34 = [(CDDCloudKitResponse *)v69 initWithMessage:a3 success:*(v79.st_ino + 24) error:v55];
+      v34 = [(CDDCloudKitResponse *)v69 initWithMessage:message success:*(v79.st_ino + 24) error:v55];
 
       *(v98.st_ino + 40) = 0;
       v35 = &v98;
@@ -462,7 +462,7 @@ LABEL_40:
         v39 = objc_opt_class();
         v85 = [v38 stringWithFormat:@"Unknown message: %@", NSStringFromClass(v39)];
         v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
-        v14 = -[CDDCloudKitResponse initWithMessage:success:error:](v36, a3, 0, [v37 errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:v40]);
+        v14 = -[CDDCloudKitResponse initWithMessage:success:error:](v36, message, 0, [v37 errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:v40]);
         goto LABEL_46;
       }
 
@@ -506,9 +506,9 @@ LABEL_40:
 
       if (os_log_type_enabled(Stream, v30))
       {
-        if (a3)
+        if (message)
         {
-          v31 = *(a3 + 3);
+          v31 = *(message + 3);
         }
 
         else
@@ -528,20 +528,20 @@ LABEL_40:
       }
 
       objc_autoreleasePoolPop(v26);
-      v32 = [(NSPersistentContainer *)self->_metadataContainer newBackgroundContext];
+      newBackgroundContext2 = [(NSPersistentContainer *)self->_metadataContainer newBackgroundContext];
       *&v98.st_dev = MEMORY[0x1E69E9820];
       v98.st_ino = 3221225472;
       *&v98.st_uid = __44__CDDCloudKitServer__handleScheduleMessage___block_invoke;
       *&v98.st_rdev = &unk_1E6EC3540;
       v98.st_atimespec.tv_sec = self;
-      v98.st_atimespec.tv_nsec = a3;
-      v98.st_mtimespec.tv_sec = v32;
+      v98.st_atimespec.tv_nsec = message;
+      v98.st_mtimespec.tv_sec = newBackgroundContext2;
       v98.st_mtimespec.tv_nsec = &v79;
       v98.st_ctimespec.tv_sec = &v70;
-      [(NSManagedObjectContext *)v32 performBlockAndWait:&v98];
+      [(NSManagedObjectContext *)newBackgroundContext2 performBlockAndWait:&v98];
 
       v33 = [CDDCloudKitResponse alloc];
-      v34 = [(CDDCloudKitResponse *)v33 initWithMessage:a3 success:*(v71 + 24) error:*(v79.st_ino + 40)];
+      v34 = [(CDDCloudKitResponse *)v33 initWithMessage:message success:*(v71 + 24) error:*(v79.st_ino + 40)];
 
       *(v79.st_ino + 40) = 0;
       v35 = &v70;
@@ -557,7 +557,7 @@ LABEL_40:
   v80 = *MEMORY[0x1E696A588];
   v81 = @"The server was unable to process the request because it timed out waiting for initialization.";
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v81 forKeys:&v80 count:1];
-  v14 = -[CDDCloudKitResponse initWithMessage:success:error:](v11, a3, 0, [v12 errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:v13]);
+  v14 = -[CDDCloudKitResponse initWithMessage:success:error:](v11, message, 0, [v12 errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:v13]);
 LABEL_46:
   v34 = v14;
 LABEL_47:
@@ -576,7 +576,7 @@ LABEL_47:
     if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
     {
       v98.st_dev = 138412290;
-      *&v98.st_mode = a3;
+      *&v98.st_mode = message;
       _os_log_error_impl(&dword_18565F000, v61, OS_LOG_TYPE_ERROR, "CoreData: fault: CloudKit Server is attempting to send back a nil response: %@\n", &v98, 0xCu);
     }
 
@@ -584,7 +584,7 @@ LABEL_47:
     if (os_log_type_enabled(v62, OS_LOG_TYPE_FAULT))
     {
       v98.st_dev = 138412290;
-      *&v98.st_mode = a3;
+      *&v98.st_mode = message;
       _os_log_fault_impl(&dword_18565F000, v62, OS_LOG_TYPE_FAULT, "CoreData: CloudKit Server is attempting to send back a nil response: %@", &v98, 0xCu);
     }
   }
@@ -601,7 +601,7 @@ LABEL_47:
   {
     LOWORD(v98.st_dev) = 0;
     _os_log_fault_impl(&dword_18565F000, v64, OS_LOG_TYPE_FAULT, "CoreData: Bug in CoreData CloudKit Server: Response success == NO but error is also nil.", &v98, 2u);
-    if (!a4)
+    if (!reply)
     {
       goto LABEL_60;
     }
@@ -610,10 +610,10 @@ LABEL_47:
   }
 
 LABEL_58:
-  if (a4)
+  if (reply)
   {
 LABEL_59:
-    (*(a4 + 2))(a4, v34);
+    (*(reply + 2))(reply, v34);
   }
 
 LABEL_60:
@@ -745,10 +745,10 @@ LABEL_25:
   }
 }
 
-- (uint64_t)createRealPathForPath:(void *)a3 error:
+- (uint64_t)createRealPathForPath:(void *)path error:
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v4 = realpath_DARWIN_EXTSN([a2 UTF8String], 0);
     if (v4)
@@ -756,13 +756,13 @@ LABEL_25:
       v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:v4 encoding:4];
     }
 
-    else if (a3)
+    else if (path)
     {
       v6 = *MEMORY[0x1E696A250];
       v9 = *MEMORY[0x1E696A588];
       v10[0] = @"Failed to get a real path for the provided store path.";
       v5 = 0;
-      *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:v6 code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v10, &v9, 1)}];
+      *path = [MEMORY[0x1E696ABC0] errorWithDomain:v6 code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v10, &v9, 1)}];
     }
 
     else
@@ -1141,12 +1141,12 @@ void __44__CDDCloudKitServer__handleScheduleMessage___block_invoke_63(uint64_t a
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)runActivity:(uint64_t)a3 completionHandler:
+- (void)runActivity:(uint64_t)activity completionHandler:
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 40);
+    v6 = *(self + 40);
     v7 = dispatch_time(0, 3000000000);
     if (dispatch_group_wait(v6, v7))
     {
@@ -1166,7 +1166,7 @@ void __44__CDDCloudKitServer__handleScheduleMessage___block_invoke_63(uint64_t a
         _os_log_fault_impl(&dword_18565F000, v9, OS_LOG_TYPE_FAULT, "CoreData: Failed to handle activity because initialization took longer than expected: %@", buf, 0xCu);
       }
 
-      (*(a3 + 16))(a3, 1);
+      (*(activity + 16))(activity, 1);
     }
 
     else
@@ -1212,19 +1212,19 @@ void __44__CDDCloudKitServer__handleScheduleMessage___block_invoke_63(uint64_t a
       }
 
       objc_autoreleasePoolPop(v11);
-      v16 = [*(a1 + 32) newBackgroundContext];
+      newBackgroundContext = [*(self + 32) newBackgroundContext];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __51__CDDCloudKitServer_runActivity_completionHandler___block_invoke;
       v18[3] = &unk_1E6EC1E90;
       v18[4] = a2;
-      v18[5] = v16;
-      v18[6] = a1;
-      v18[7] = a3;
-      [v16 performBlockAndWait:v18];
+      v18[5] = newBackgroundContext;
+      v18[6] = self;
+      v18[7] = activity;
+      [newBackgroundContext performBlockAndWait:v18];
 
-      (*(a3 + 16))(a3, 1);
-      [objc_msgSend(a1 "scheduler")];
+      (*(activity + 16))(activity, 1);
+      [objc_msgSend(self "scheduler")];
       objc_autoreleasePoolPop(v10);
     }
   }
@@ -1703,17 +1703,17 @@ void __51__CDDCloudKitServer_runActivity_completionHandler___block_invoke_2(uint
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishedActivity:(id)a3 withResult:(id)a4 inManagedObjectContext:(id)a5
+- (void)finishedActivity:(id)activity withResult:(id)result inManagedObjectContext:(id)context
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __72__CDDCloudKitServer_finishedActivity_withResult_inManagedObjectContext___block_invoke;
   v5[3] = &unk_1E6EC2920;
-  v5[4] = a4;
-  v5[5] = a3;
-  v5[6] = a5;
+  v5[4] = result;
+  v5[5] = activity;
+  v5[6] = context;
   v5[7] = self;
-  [a5 performBlock:v5];
+  [context performBlock:v5];
 }
 
 void __72__CDDCloudKitServer_finishedActivity_withResult_inManagedObjectContext___block_invoke(id *a1)

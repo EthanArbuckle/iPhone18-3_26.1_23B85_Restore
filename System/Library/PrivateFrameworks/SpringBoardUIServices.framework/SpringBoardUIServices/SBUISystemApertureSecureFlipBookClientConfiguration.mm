@@ -1,29 +1,29 @@
 @interface SBUISystemApertureSecureFlipBookClientConfiguration
-- (SBUISystemApertureSecureFlipBookClientConfiguration)initWithBSXPCCoder:(id)a3;
-- (SBUISystemApertureSecureFlipBookClientConfiguration)initWithConfiguration:(id)a3;
-- (SBUISystemApertureSecureFlipBookClientConfiguration)initWithName:(id)a3 layoutModesToComponentFlipBookDescriptions:(id)a4;
-- (SBUISystemApertureSecureFlipBookClientConfiguration)initWithXPCDictionary:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (SBUISystemApertureSecureFlipBookClientConfiguration)initWithBSXPCCoder:(id)coder;
+- (SBUISystemApertureSecureFlipBookClientConfiguration)initWithConfiguration:(id)configuration;
+- (SBUISystemApertureSecureFlipBookClientConfiguration)initWithName:(id)name layoutModesToComponentFlipBookDescriptions:(id)descriptions;
+- (SBUISystemApertureSecureFlipBookClientConfiguration)initWithXPCDictionary:(id)dictionary;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation SBUISystemApertureSecureFlipBookClientConfiguration
 
-- (SBUISystemApertureSecureFlipBookClientConfiguration)initWithConfiguration:(id)a3
+- (SBUISystemApertureSecureFlipBookClientConfiguration)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 layoutModesToComponentFlipBookDescriptions];
-  v6 = [MEMORY[0x1E695DF70] array];
+  configurationCopy = configuration;
+  layoutModesToComponentFlipBookDescriptions = [configurationCopy layoutModesToComponentFlipBookDescriptions];
+  array = [MEMORY[0x1E695DF70] array];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__SBUISystemApertureSecureFlipBookClientConfiguration_initWithConfiguration___block_invoke;
   v11[3] = &unk_1E789F788;
-  v12 = v6;
-  v7 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v11];
-  v8 = [v4 configurationName];
+  v12 = array;
+  v7 = array;
+  [layoutModesToComponentFlipBookDescriptions enumerateKeysAndObjectsUsingBlock:v11];
+  configurationName = [configurationCopy configurationName];
 
-  v9 = [(SBUISystemApertureSecureFlipBookClientConfiguration *)self initWithName:v8 layoutModesToComponentFlipBookDescriptions:v7];
+  v9 = [(SBUISystemApertureSecureFlipBookClientConfiguration *)self initWithName:configurationName layoutModesToComponentFlipBookDescriptions:v7];
   return v9;
 }
 
@@ -72,20 +72,20 @@ void __77__SBUISystemApertureSecureFlipBookClientConfiguration_initWithConfigura
   [*(a1 + 32) addObject:v16];
 }
 
-- (SBUISystemApertureSecureFlipBookClientConfiguration)initWithName:(id)a3 layoutModesToComponentFlipBookDescriptions:(id)a4
+- (SBUISystemApertureSecureFlipBookClientConfiguration)initWithName:(id)name layoutModesToComponentFlipBookDescriptions:(id)descriptions
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  descriptionsCopy = descriptions;
   v14.receiver = self;
   v14.super_class = SBUISystemApertureSecureFlipBookClientConfiguration;
   v8 = [(SBUISystemApertureSecureFlipBookClientConfiguration *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     configurationName = v8->_configurationName;
     v8->_configurationName = v9;
 
-    v11 = [v7 copy];
+    v11 = [descriptionsCopy copy];
     layoutModesToComponentFlipBookDescriptions = v8->_layoutModesToComponentFlipBookDescriptions;
     v8->_layoutModesToComponentFlipBookDescriptions = v11;
   }
@@ -93,39 +93,39 @@ void __77__SBUISystemApertureSecureFlipBookClientConfiguration_initWithConfigura
   return v8;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   configurationName = self->_configurationName;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [(NSString *)configurationName copy];
-  [v5 encodeObject:v6 forKey:@"name"];
+  [coderCopy encodeObject:v6 forKey:@"name"];
 
   v7 = [(NSArray *)self->_layoutModesToComponentFlipBookDescriptions copy];
-  [v5 encodeCollection:v7 forKey:@"descriptions"];
+  [coderCopy encodeCollection:v7 forKey:@"descriptions"];
 }
 
-- (SBUISystemApertureSecureFlipBookClientConfiguration)initWithBSXPCCoder:(id)a3
+- (SBUISystemApertureSecureFlipBookClientConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeStringForKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeStringForKey:@"name"];
   v6 = objc_opt_class();
-  v7 = [v4 decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"descriptions"];
+  v7 = [coderCopy decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"descriptions"];
 
   v8 = [(SBUISystemApertureSecureFlipBookClientConfiguration *)self initWithName:v5 layoutModesToComponentFlipBookDescriptions:v7];
   return v8;
 }
 
-- (SBUISystemApertureSecureFlipBookClientConfiguration)initWithXPCDictionary:(id)a3
+- (SBUISystemApertureSecureFlipBookClientConfiguration)initWithXPCDictionary:(id)dictionary
 {
-  v4 = [MEMORY[0x1E698E7A8] coderWithMessage:a3];
+  v4 = [MEMORY[0x1E698E7A8] coderWithMessage:dictionary];
   v5 = [(SBUISystemApertureSecureFlipBookClientConfiguration *)self initWithBSXPCCoder:v4];
 
   return v5;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = [MEMORY[0x1E698E7A8] coderWithMessage:a3];
+  v4 = [MEMORY[0x1E698E7A8] coderWithMessage:dictionary];
   [(SBUISystemApertureSecureFlipBookClientConfiguration *)self encodeWithBSXPCCoder:v4];
 }
 

@@ -1,46 +1,46 @@
 @interface TransitDirectionsBoardingInfoListView
 + (id)defaultFinalButtonTitle;
-- (BOOL)_shouldIncludeEntry:(id)a3;
-- (CGPoint)_targetContentOffsetForView:(id)a3;
-- (TransitDirectionsBoardingInfoListView)initWithFrame:(CGRect)a3;
+- (BOOL)_shouldIncludeEntry:(id)entry;
+- (CGPoint)_targetContentOffsetForView:(id)view;
+- (TransitDirectionsBoardingInfoListView)initWithFrame:(CGRect)frame;
 - (double)_contentBottomAnchorAdjustment;
-- (id)_closestViewToPoint:(CGPoint)a3 fromEdge:(unint64_t)a4;
-- (id)_viewForEntry:(id)a3;
-- (id)_viewForInstruction:(id)a3;
-- (void)_applyUpdatedInfoViewsIfNeeded:(id)a3;
+- (id)_closestViewToPoint:(CGPoint)point fromEdge:(unint64_t)edge;
+- (id)_viewForEntry:(id)entry;
+- (id)_viewForInstruction:(id)instruction;
+- (void)_applyUpdatedInfoViewsIfNeeded:(id)needed;
 - (void)_dropPastDepartures;
-- (void)_processUpcomingInfoViews:(id)a3;
+- (void)_processUpcomingInfoViews:(id)views;
 - (void)_rebuildListView;
 - (void)_refreshAllInfoViews;
 - (void)_updateFixedWidthConstraints;
 - (void)layoutSubviews;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setBoardingInfo:(id)a3;
-- (void)setDropPastDepartures:(BOOL)a3;
-- (void)setFinalButtonTitle:(id)a3 target:(id)a4 action:(SEL)a5;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setPreboardingStrings:(id)a3;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setBoardingInfo:(id)info;
+- (void)setDropPastDepartures:(BOOL)departures;
+- (void)setFinalButtonTitle:(id)title target:(id)target action:(SEL)action;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setPreboardingStrings:(id)strings;
 @end
 
 @implementation TransitDirectionsBoardingInfoListView
 
-- (id)_closestViewToPoint:(CGPoint)a3 fromEdge:(unint64_t)a4
+- (id)_closestViewToPoint:(CGPoint)point fromEdge:(unint64_t)edge
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4 != 2;
-  v9 = [(UIStackView *)self->_stackView _mapkit_isRTL];
-  v10 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v11 = v10;
-  if (v9 == v8)
+  y = point.y;
+  x = point.x;
+  v8 = edge != 2;
+  _mapkit_isRTL = [(UIStackView *)self->_stackView _mapkit_isRTL];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  v11 = arrangedSubviews;
+  if (_mapkit_isRTL == v8)
   {
-    [v10 reverseObjectEnumerator];
+    [arrangedSubviews reverseObjectEnumerator];
   }
 
   else
   {
-    [v10 objectEnumerator];
+    [arrangedSubviews objectEnumerator];
   }
   v12 = ;
 
@@ -74,7 +74,7 @@ LABEL_6:
       height = v34.size.height;
       v24 = CGRectGetWidth(v34) * 0.349999994;
       v25 = -v24;
-      if (a4 == 2)
+      if (edge == 2)
       {
         v25 = v24;
       }
@@ -113,13 +113,13 @@ LABEL_6:
   return v16;
 }
 
-- (CGPoint)_targetContentOffsetForView:(id)a3
+- (CGPoint)_targetContentOffsetForView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  viewCopy = view;
+  v5 = viewCopy;
+  if (viewCopy)
   {
-    [v4 frame];
+    [viewCopy frame];
     x = v6;
     y = v8;
     if ([(UIStackView *)self->_stackView _mapkit_isRTL])
@@ -154,24 +154,24 @@ LABEL_6:
   return result;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
-  v8 = a5->x;
-  y = a5->y;
-  v10 = [(TransitDirectionsBoardingInfoListView *)self _mapkit_isRTL:a3];
+  x = velocity.x;
+  v8 = offset->x;
+  y = offset->y;
+  v10 = [(TransitDirectionsBoardingInfoListView *)self _mapkit_isRTL:dragging];
   scrollBehavior = self->_scrollBehavior;
   if (scrollBehavior == 1)
   {
-    v18 = [(UIStackView *)self->_stackView _mapkit_isRTL];
-    v19 = [(UIStackView *)self->_stackView arrangedSubviews];
-    v20 = v19;
-    if (v18)
+    _mapkit_isRTL = [(UIStackView *)self->_stackView _mapkit_isRTL];
+    arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+    v20 = arrangedSubviews;
+    if (_mapkit_isRTL)
     {
-      v21 = [v19 reverseObjectEnumerator];
-      v22 = [v21 allObjects];
+      reverseObjectEnumerator = [arrangedSubviews reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
 
-      v20 = v22;
+      v20 = allObjects;
     }
 
     v23 = [v20 indexOfObject:self->_closestViewWhenDragBegan];
@@ -214,8 +214,8 @@ LABEL_6:
     {
 LABEL_7:
       [(TransitDirectionsBoardingInfoListView *)self _targetContentOffsetForView:v13];
-      a5->x = v14;
-      a5->y = v15;
+      offset->x = v14;
+      offset->y = v15;
     }
   }
 
@@ -239,11 +239,11 @@ LABEL_7:
   [v29 captureUserAction:v17 onTarget:self->_targetForAnalytics eventValue:0];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   if (self->_scrollBehavior == 1)
   {
-    [a3 contentOffset];
+    [dragging contentOffset];
     v5 = [(TransitDirectionsBoardingInfoListView *)self _closestViewToPoint:0 fromEdge:?];
     closestViewWhenDragBegan = self->_closestViewWhenDragBegan;
     self->_closestViewWhenDragBegan = v5;
@@ -252,12 +252,12 @@ LABEL_7:
 
 - (void)_updateFixedWidthConstraints
 {
-  v3 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v4 = [v3 count];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  v4 = [arrangedSubviews count];
 
   v5 = [[NSMutableArray alloc] initWithCapacity:v4];
   v6 = sub_10000FA08(self) == 5;
-  v7 = [(UIStackView *)self->_stackView arrangedSubviews];
+  arrangedSubviews2 = [(UIStackView *)self->_stackView arrangedSubviews];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_100D69F44;
@@ -265,37 +265,37 @@ LABEL_7:
   v16 = v6;
   v14 = v5;
   v15 = v4;
-  v13 = self;
+  selfCopy = self;
   v8 = v5;
-  [v7 enumerateObjectsUsingBlock:&v9];
+  [arrangedSubviews2 enumerateObjectsUsingBlock:&v9];
 
-  [NSLayoutConstraint activateConstraints:v8, v9, v10, v11, v12, v13];
+  [NSLayoutConstraint activateConstraints:v8, v9, v10, v11, v12, selfCopy];
 }
 
-- (void)setFinalButtonTitle:(id)a3 target:(id)a4 action:(SEL)a5
+- (void)setFinalButtonTitle:(id)title target:(id)target action:(SEL)action
 {
-  v8 = a3;
-  obj = a4;
+  titleCopy = title;
+  obj = target;
   buttonTitle = self->_buttonTitle;
-  self->_buttonTitle = v8;
-  v10 = v8;
+  self->_buttonTitle = titleCopy;
+  v10 = titleCopy;
 
   objc_storeWeak(&self->_buttonTarget, obj);
-  if (a5)
+  if (action)
   {
-    v11 = a5;
+    actionCopy = action;
   }
 
   else
   {
-    v11 = 0;
+    actionCopy = 0;
   }
 
-  self->_buttonAction = v11;
-  v12 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v13 = [v12 lastObject];
+  self->_buttonAction = actionCopy;
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  lastObject = [arrangedSubviews lastObject];
 
-  [v13 setButtonTitle:v10 target:obj action:a5];
+  [lastObject setButtonTitle:v10 target:obj action:action];
 }
 
 - (void)_refreshAllInfoViews
@@ -304,8 +304,8 @@ LABEL_7:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  v3 = [arrangedSubviews countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -317,7 +317,7 @@ LABEL_7:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         [*(*(&v7 + 1) + 8 * v6) _refreshContent];
@@ -325,28 +325,28 @@ LABEL_7:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [arrangedSubviews countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)setDropPastDepartures:(BOOL)a3
+- (void)setDropPastDepartures:(BOOL)departures
 {
-  if (self->_dropsPastDepartures != a3)
+  if (self->_dropsPastDepartures != departures)
   {
-    self->_dropsPastDepartures = a3;
+    self->_dropsPastDepartures = departures;
     [(TransitDirectionsBoardingInfoListView *)self _rebuildListView];
   }
 }
 
-- (void)_applyUpdatedInfoViewsIfNeeded:(id)a3
+- (void)_applyUpdatedInfoViewsIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v8 = v4;
-  v6 = v5;
+  neededCopy = needed;
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  v8 = neededCopy;
+  v6 = arrangedSubviews;
   if (v8 | v6)
   {
     v7 = [v8 isEqual:v6];
@@ -362,11 +362,11 @@ LABEL_7:
   }
 }
 
-- (void)_processUpcomingInfoViews:(id)a3
+- (void)_processUpcomingInfoViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   v5 = [NSSet alloc];
-  v6 = sub_100021DB0(v4, &stru_101652EC8);
+  v6 = sub_100021DB0(viewsCopy, &stru_101652EC8);
   v7 = [v5 initWithArray:v6];
 
   if (![v7 count] && -[GEOTransitBoardingInfo hasSummaryTimeInstruction](self->_boardingInfo, "hasSummaryTimeInstruction"))
@@ -379,7 +379,7 @@ LABEL_7:
 
       if (v10)
       {
-        if (![v4 count])
+        if (![viewsCopy count])
         {
           goto LABEL_13;
         }
@@ -390,16 +390,16 @@ LABEL_8:
           goto LABEL_15;
         }
 
-        v11 = [v4 lastObject];
-        v12 = [v11 entryType];
+        lastObject = [viewsCopy lastObject];
+        entryType = [lastObject entryType];
 
-        if (v12 == 2)
+        if (entryType == 2)
         {
           goto LABEL_15;
         }
 
-        v13 = [(GEOTransitBoardingInfo *)self->_boardingInfo endTimeInstruction];
-        v14 = [(TransitDirectionsBoardingInfoListView *)self _viewForInstruction:v13];
+        endTimeInstruction = [(GEOTransitBoardingInfo *)self->_boardingInfo endTimeInstruction];
+        v14 = [(TransitDirectionsBoardingInfoListView *)self _viewForInstruction:endTimeInstruction];
 
         [v14 setEntryType:2];
         goto LABEL_14;
@@ -410,13 +410,13 @@ LABEL_8:
     {
     }
 
-    v15 = [(GEOTransitBoardingInfo *)self->_boardingInfo summaryTimeInstruction];
-    v16 = [(TransitDirectionsBoardingInfoListView *)self _viewForInstruction:v15];
+    summaryTimeInstruction = [(GEOTransitBoardingInfo *)self->_boardingInfo summaryTimeInstruction];
+    v16 = [(TransitDirectionsBoardingInfoListView *)self _viewForInstruction:summaryTimeInstruction];
     [v16 setEntryType:1];
-    [v4 removeAllObjects];
-    [v4 addObject:v16];
+    [viewsCopy removeAllObjects];
+    [viewsCopy addObject:v16];
 
-    if ([v4 count])
+    if ([viewsCopy count])
     {
       goto LABEL_15;
     }
@@ -424,24 +424,24 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  if ([v4 count])
+  if ([viewsCopy count])
   {
     goto LABEL_8;
   }
 
 LABEL_13:
-  v17 = [(GEOTransitBoardingInfo *)self->_boardingInfo entrys];
-  v18 = [v17 firstObject];
-  v14 = [(TransitDirectionsBoardingInfoListView *)self _viewForEntry:v18];
+  entrys = [(GEOTransitBoardingInfo *)self->_boardingInfo entrys];
+  firstObject = [entrys firstObject];
+  v14 = [(TransitDirectionsBoardingInfoListView *)self _viewForEntry:firstObject];
 
 LABEL_14:
-  [v4 addObject:v14];
+  [viewsCopy addObject:v14];
 
 LABEL_15:
   v19 = [v7 count];
-  if ([v4 count])
+  if ([viewsCopy count])
   {
-    v20 = [v4 count] - 1;
+    v20 = [viewsCopy count] - 1;
   }
 
   else
@@ -456,7 +456,7 @@ LABEL_15:
   v22 = v19 > 1;
   v21[4] = self;
   v21[5] = v20;
-  [v4 enumerateObjectsUsingBlock:v21];
+  [viewsCopy enumerateObjectsUsingBlock:v21];
 }
 
 - (void)_rebuildListView
@@ -465,12 +465,12 @@ LABEL_15:
   boardingInfo = self->_boardingInfo;
   if (boardingInfo)
   {
-    v5 = [(GEOTransitBoardingInfo *)boardingInfo entrys];
+    entrys = [(GEOTransitBoardingInfo *)boardingInfo entrys];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(TransitDirectionsBoardingInfoView *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v6 = [(TransitDirectionsBoardingInfoView *)entrys countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -481,7 +481,7 @@ LABEL_15:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(entrys);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
@@ -492,7 +492,7 @@ LABEL_15:
           }
         }
 
-        v7 = [(TransitDirectionsBoardingInfoView *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [(TransitDirectionsBoardingInfoView *)entrys countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -503,9 +503,9 @@ LABEL_15:
 
   if (self->_preboardingStrings)
   {
-    v5 = [[TransitDirectionsBoardingInfoView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-    [(TransitDirectionsBoardingInfoView *)v5 setPreboardingStrings:self->_preboardingStrings];
-    [v3 addObject:v5];
+    entrys = [[TransitDirectionsBoardingInfoView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+    [(TransitDirectionsBoardingInfoView *)entrys setPreboardingStrings:self->_preboardingStrings];
+    [v3 addObject:entrys];
 LABEL_14:
   }
 
@@ -513,24 +513,24 @@ LABEL_14:
   [(TransitDirectionsBoardingInfoListView *)self _applyUpdatedInfoViewsIfNeeded:v3];
 }
 
-- (id)_viewForInstruction:(id)a3
+- (id)_viewForInstruction:(id)instruction
 {
-  v3 = a3;
+  instructionCopy = instruction;
   v4 = [[TransitDirectionsBoardingInfoView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v5 = [[NSMutableArray alloc] initWithCapacity:2];
-  if ([v3 hasPrimaryText])
+  if ([instructionCopy hasPrimaryText])
   {
     v6 = [GEOComposedString alloc];
-    v7 = [v3 primaryText];
-    v8 = [v6 initWithGeoFormattedString:v7];
+    primaryText = [instructionCopy primaryText];
+    v8 = [v6 initWithGeoFormattedString:primaryText];
     [v5 addObject:v8];
   }
 
-  if ([v3 hasSecondaryText])
+  if ([instructionCopy hasSecondaryText])
   {
     v9 = [GEOComposedString alloc];
-    v10 = [v3 secondaryText];
-    v11 = [v9 initWithGeoFormattedString:v10];
+    secondaryText = [instructionCopy secondaryText];
+    v11 = [v9 initWithGeoFormattedString:secondaryText];
     [v5 addObject:v11];
   }
 
@@ -540,20 +540,20 @@ LABEL_14:
   return v4;
 }
 
-- (id)_viewForEntry:(id)a3
+- (id)_viewForEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v5 = [[TransitDirectionsBoardingInfoView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-  if ([v4 hasClearExitPlanInfo] && (objc_msgSend(v4, "clearExitPlanInfo") & 1) != 0)
+  if ([entryCopy hasClearExitPlanInfo] && (objc_msgSend(entryCopy, "clearExitPlanInfo") & 1) != 0)
   {
     v6 = 0;
   }
 
   else
   {
-    if ([v4 hasExitPlanInfoOverride])
+    if ([entryCopy hasExitPlanInfoOverride])
     {
-      [v4 exitPlanInfoOverride];
+      [entryCopy exitPlanInfoOverride];
     }
 
     else
@@ -563,18 +563,18 @@ LABEL_14:
     v6 = ;
   }
 
-  [(TransitDirectionsBoardingInfoView *)v5 setBoardingInfoEntry:v4 exitPlan:v6];
+  [(TransitDirectionsBoardingInfoView *)v5 setBoardingInfoEntry:entryCopy exitPlan:v6];
 
   return v5;
 }
 
-- (BOOL)_shouldIncludeEntry:(id)a3
+- (BOOL)_shouldIncludeEntry:(id)entry
 {
-  v4 = a3;
-  v5 = v4;
+  entryCopy = entry;
+  v5 = entryCopy;
   if (self->_dropsPastDepartures)
   {
-    if ([v4 hasExpectedDepartureTime])
+    if ([entryCopy hasExpectedDepartureTime])
     {
       v6 = +[MKTransitItemReferenceDateUpdater referenceDate];
       v7 = +[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate, "dateWithTimeIntervalSinceReferenceDate:", [v5 expectedDepartureTime]);
@@ -599,15 +599,15 @@ LABEL_14:
 - (void)_dropPastDepartures
 {
   v3 = [NSMutableArray alloc];
-  v4 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v5 = [v3 initWithArray:v4];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  v5 = [v3 initWithArray:arrangedSubviews];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  arrangedSubviews2 = [(UIStackView *)self->_stackView arrangedSubviews];
+  v7 = [arrangedSubviews2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -618,16 +618,16 @@ LABEL_14:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrangedSubviews2);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 entry];
+        entry = [v11 entry];
 
-        if (v12)
+        if (entry)
         {
-          v13 = [v11 entry];
-          v14 = [(TransitDirectionsBoardingInfoListView *)self _shouldIncludeEntry:v13];
+          entry2 = [v11 entry];
+          v14 = [(TransitDirectionsBoardingInfoListView *)self _shouldIncludeEntry:entry2];
 
           if ((v14 & 1) == 0)
           {
@@ -638,7 +638,7 @@ LABEL_14:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [arrangedSubviews2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -648,15 +648,15 @@ LABEL_14:
   [(TransitDirectionsBoardingInfoListView *)self _applyUpdatedInfoViewsIfNeeded:v5];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  v5 = [arrangedSubviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -668,7 +668,7 @@ LABEL_14:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
@@ -685,27 +685,27 @@ LABEL_14:
 
         v11 = v10;
 
-        [v11 setHighlighted:v3];
+        [v11 setHighlighted:highlightedCopy];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [arrangedSubviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setPreboardingStrings:(id)a3
+- (void)setPreboardingStrings:(id)strings
 {
-  v5 = a3;
+  stringsCopy = strings;
   preboardingStrings = self->_preboardingStrings;
-  v10 = v5;
+  v10 = stringsCopy;
   v7 = preboardingStrings;
   if (v10 | v7 && (v8 = [v10 isEqual:v7], v7, v10, !v8))
   {
-    objc_storeStrong(&self->_preboardingStrings, a3);
+    objc_storeStrong(&self->_preboardingStrings, strings);
     boardingInfo = self->_boardingInfo;
     self->_boardingInfo = 0;
 
@@ -718,15 +718,15 @@ LABEL_14:
   }
 }
 
-- (void)setBoardingInfo:(id)a3
+- (void)setBoardingInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   boardingInfo = self->_boardingInfo;
-  v10 = v5;
+  v10 = infoCopy;
   v7 = boardingInfo;
   if (v10 | v7 && (v8 = [v10 isEqual:v7], v7, v10, !v8))
   {
-    objc_storeStrong(&self->_boardingInfo, a3);
+    objc_storeStrong(&self->_boardingInfo, info);
     preboardingStrings = self->_preboardingStrings;
     self->_preboardingStrings = 0;
 
@@ -750,27 +750,27 @@ LABEL_14:
     self->_needsResetContentOffset = 0;
     [(UIStackView *)self->_stackView setNeedsLayout];
     [(UIStackView *)self->_stackView layoutIfNeeded];
-    v3 = [(UIStackView *)self->_stackView arrangedSubviews];
-    v4 = [v3 firstObject];
-    [(TransitDirectionsBoardingInfoListView *)self _targetContentOffsetForView:v4];
+    arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+    firstObject = [arrangedSubviews firstObject];
+    [(TransitDirectionsBoardingInfoListView *)self _targetContentOffsetForView:firstObject];
     [(UIScrollView *)self->_scrollView setContentOffset:?];
   }
 }
 
-- (TransitDirectionsBoardingInfoListView)initWithFrame:(CGRect)a3
+- (TransitDirectionsBoardingInfoListView)initWithFrame:(CGRect)frame
 {
   v48.receiver = self;
   v48.super_class = TransitDirectionsBoardingInfoListView;
-  v3 = [(TransitDirectionsBoardingInfoListView *)&v48 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TransitDirectionsBoardingInfoListView *)&v48 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     [(TransitDirectionsBoardingInfoListView *)v3 setAccessibilityIdentifier:v5];
 
-    v6 = [objc_opt_class() defaultFinalButtonTitle];
+    defaultFinalButtonTitle = [objc_opt_class() defaultFinalButtonTitle];
     buttonTitle = v3->_buttonTitle;
-    v3->_buttonTitle = v6;
+    v3->_buttonTitle = defaultFinalButtonTitle;
 
     v3->_scrollBehavior = 1;
     v8 = [[UIScrollView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -812,41 +812,41 @@ LABEL_14:
     LODWORD(v18) = 1148846080;
     [(UIStackView *)v3->_stackView setContentCompressionResistancePriority:1 forAxis:v18];
     [(UIScrollView *)v3->_scrollView addSubview:v3->_stackView];
-    v47 = [(UIScrollView *)v3->_scrollView topAnchor];
-    v46 = [(TransitDirectionsBoardingInfoListView *)v3 topAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46];
+    topAnchor = [(UIScrollView *)v3->_scrollView topAnchor];
+    topAnchor2 = [(TransitDirectionsBoardingInfoListView *)v3 topAnchor];
+    v45 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v49[0] = v45;
-    v44 = [(UIScrollView *)v3->_scrollView leadingAnchor];
-    v43 = [(TransitDirectionsBoardingInfoListView *)v3 leadingAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    leadingAnchor = [(UIScrollView *)v3->_scrollView leadingAnchor];
+    leadingAnchor2 = [(TransitDirectionsBoardingInfoListView *)v3 leadingAnchor];
+    v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v49[1] = v42;
-    v41 = [(UIScrollView *)v3->_scrollView bottomAnchor];
-    v40 = [(TransitDirectionsBoardingInfoListView *)v3 bottomAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    bottomAnchor = [(UIScrollView *)v3->_scrollView bottomAnchor];
+    bottomAnchor2 = [(TransitDirectionsBoardingInfoListView *)v3 bottomAnchor];
+    v39 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v49[2] = v39;
-    v38 = [(UIScrollView *)v3->_scrollView trailingAnchor];
-    v37 = [(TransitDirectionsBoardingInfoListView *)v3 trailingAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37];
+    trailingAnchor = [(UIScrollView *)v3->_scrollView trailingAnchor];
+    trailingAnchor2 = [(TransitDirectionsBoardingInfoListView *)v3 trailingAnchor];
+    v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v49[3] = v36;
-    v35 = [(UIStackView *)v3->_stackView topAnchor];
-    v34 = [(UIScrollView *)v3->_scrollView topAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    topAnchor3 = [(UIStackView *)v3->_stackView topAnchor];
+    topAnchor4 = [(UIScrollView *)v3->_scrollView topAnchor];
+    v33 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v49[4] = v33;
-    v32 = [(UIStackView *)v3->_stackView bottomAnchor];
-    v31 = [(UIScrollView *)v3->_scrollView bottomAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31];
+    bottomAnchor3 = [(UIStackView *)v3->_stackView bottomAnchor];
+    bottomAnchor4 = [(UIScrollView *)v3->_scrollView bottomAnchor];
+    v30 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v49[5] = v30;
-    v29 = [(UIStackView *)v3->_stackView leadingAnchor];
-    v19 = [(UIScrollView *)v3->_scrollView leadingAnchor];
-    v20 = [v29 constraintEqualToAnchor:v19];
+    leadingAnchor3 = [(UIStackView *)v3->_stackView leadingAnchor];
+    leadingAnchor4 = [(UIScrollView *)v3->_scrollView leadingAnchor];
+    v20 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v49[6] = v20;
-    v21 = [(UIStackView *)v3->_stackView trailingAnchor];
-    v22 = [(UIScrollView *)v3->_scrollView trailingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    trailingAnchor3 = [(UIStackView *)v3->_stackView trailingAnchor];
+    trailingAnchor4 = [(UIScrollView *)v3->_scrollView trailingAnchor];
+    v23 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v49[7] = v23;
-    v24 = [(UIScrollView *)v3->_scrollView heightAnchor];
-    v25 = [(UIStackView *)v3->_stackView heightAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    heightAnchor = [(UIScrollView *)v3->_scrollView heightAnchor];
+    heightAnchor2 = [(UIStackView *)v3->_stackView heightAnchor];
+    v26 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v49[8] = v26;
     v27 = [NSArray arrayWithObjects:v49 count:9];
     [NSLayoutConstraint activateConstraints:v27];

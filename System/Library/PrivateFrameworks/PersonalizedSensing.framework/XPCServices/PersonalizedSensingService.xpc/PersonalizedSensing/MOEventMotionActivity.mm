@@ -1,50 +1,50 @@
 @interface MOEventMotionActivity
-+ (id)descriptionOfMotionType:(unint64_t)a3;
-- (MOEventMotionActivity)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)descriptionOfMotionType:(unint64_t)type;
+- (MOEventMotionActivity)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOEventMotionActivity
 
-+ (id)descriptionOfMotionType:(unint64_t)a3
++ (id)descriptionOfMotionType:(unint64_t)type
 {
-  if (a3 > 6)
+  if (type > 6)
   {
     return @"Invalid";
   }
 
   else
   {
-    return *(&off_1000B51C0 + a3);
+    return *(&off_1000B51C0 + type);
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   motionStepCount = self->_motionStepCount;
-  v5 = a3;
-  [v5 encodeObject:motionStepCount forKey:@"motionStepCount"];
-  [v5 encodeInteger:self->_motionType forKey:@"motionType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:motionStepCount forKey:@"motionStepCount"];
+  [coderCopy encodeInteger:self->_motionType forKey:@"motionType"];
   [(NSNumber *)self->_motionDistance doubleValue];
-  [v5 encodeDouble:@"motionDistance" forKey:?];
+  [coderCopy encodeDouble:@"motionDistance" forKey:?];
 }
 
-- (MOEventMotionActivity)initWithCoder:(id)a3
+- (MOEventMotionActivity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MOEventMotionActivity;
   v5 = [(MOEventMotionActivity *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"motionStepCount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"motionStepCount"];
     motionStepCount = v5->_motionStepCount;
     v5->_motionStepCount = v6;
 
-    v5->_motionType = [v4 decodeIntForKey:@"motionType"];
-    [v4 decodeDoubleForKey:@"motionDistance"];
+    v5->_motionType = [coderCopy decodeIntForKey:@"motionType"];
+    [coderCopy decodeDoubleForKey:@"motionDistance"];
     v8 = [NSNumber numberWithDouble:?];
     motionDistance = v5->_motionDistance;
     v5->_motionDistance = v8;
@@ -53,7 +53,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MOEventMotionActivity);
   v4->_motionType = self->_motionType;

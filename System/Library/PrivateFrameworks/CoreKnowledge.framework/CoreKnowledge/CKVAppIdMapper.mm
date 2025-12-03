@@ -1,9 +1,9 @@
 @interface CKVAppIdMapper
-+ (BOOL)isKnownAppId:(id)a3;
++ (BOOL)isKnownAppId:(id)id;
 + (id)_buildKnownIdentifierToUniversalOriginAppIdMap;
 + (id)_getAllKnownAppIds;
 + (id)_getKnownAppIdMap;
-+ (id)convertToUnversalAppId:(id)a3;
++ (id)convertToUnversalAppId:(id)id;
 @end
 
 @implementation CKVAppIdMapper
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __36__CKVAppIdMapper__getAllKnownAppIds__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_getAllKnownAppIds_sharedSetToken != -1)
   {
     dispatch_once(&_getAllKnownAppIds_sharedSetToken, block);
@@ -93,23 +93,23 @@ uint64_t __35__CKVAppIdMapper__getKnownAppIdMap__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)isKnownAppId:(id)a3
++ (BOOL)isKnownAppId:(id)id
 {
-  v4 = a3;
-  v5 = [a1 _getAllKnownAppIds];
-  v6 = [v5 containsObject:v4];
+  idCopy = id;
+  _getAllKnownAppIds = [self _getAllKnownAppIds];
+  v6 = [_getAllKnownAppIds containsObject:idCopy];
 
   return v6;
 }
 
-+ (id)convertToUnversalAppId:(id)a3
++ (id)convertToUnversalAppId:(id)id
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  idCopy = id;
   v4 = +[CKVAppIdMapper _getKnownAppIdMap];
-  v5 = [v4 valueForKey:v3];
+  v5 = [v4 valueForKey:idCopy];
 
-  v6 = v3;
+  v6 = idCopy;
   if (v5)
   {
     v7 = CKLogContextVocabulary;
@@ -120,7 +120,7 @@ uint64_t __35__CKVAppIdMapper__getKnownAppIdMap__block_invoke()
       v11 = 136315650;
       v12 = "+[CKVAppIdMapper convertToUnversalAppId:]";
       v13 = 2112;
-      v14 = v3;
+      v14 = idCopy;
       v15 = 2112;
       v16 = v5;
       _os_log_impl(&dword_1C8683000, v7, OS_LOG_TYPE_INFO, "%s Convert %@ to a universal appId: %@", &v11, 0x20u);

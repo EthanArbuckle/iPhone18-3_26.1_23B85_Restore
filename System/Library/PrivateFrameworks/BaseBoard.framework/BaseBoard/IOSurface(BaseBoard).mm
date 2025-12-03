@@ -21,7 +21,7 @@
       v71 = 2114;
       v72 = v44;
       v73 = 2048;
-      v74 = a1;
+      selfCopy3 = self;
       v75 = 2114;
       v76 = @"IOSurface+BaseBoard.m";
       v77 = 1024;
@@ -50,7 +50,7 @@
       v71 = 2114;
       v72 = v49;
       v73 = 2048;
-      v74 = a1;
+      selfCopy3 = self;
       v75 = 2114;
       v76 = @"IOSurface+BaseBoard.m";
       v77 = 1024;
@@ -79,7 +79,7 @@
       v71 = 2114;
       v72 = v54;
       v73 = 2048;
-      v74 = a1;
+      selfCopy3 = self;
       v75 = 2114;
       v76 = @"IOSurface+BaseBoard.m";
       v77 = 1024;
@@ -97,24 +97,24 @@
 
   if (MEMORY[0x193AE4AD0](*MEMORY[0x1E696D130]) >= a3 && MEMORY[0x193AE4AD0](*MEMORY[0x1E696CF58]) >= a4)
   {
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a3];
-    [v11 setObject:v12 forKey:*MEMORY[0x1E696CDE0]];
+    [dictionary setObject:v12 forKey:*MEMORY[0x1E696CDE0]];
 
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a4];
-    [v11 setObject:v13 forKey:*MEMORY[0x1E696CD90]];
+    [dictionary setObject:v13 forKey:*MEMORY[0x1E696CD90]];
 
-    [v11 setObject:&unk_1F03B7548 forKey:*MEMORY[0x1E696CD88]];
+    [dictionary setObject:&unk_1F03B7548 forKey:*MEMORY[0x1E696CD88]];
     v14 = *MEMORY[0x1E696CE58];
     if ((*a5 & 4) != 0)
     {
       v19 = MEMORY[0x193AE4A90](*MEMORY[0x1E696CE58], 8 * a3);
-      [v11 setObject:&unk_1F03B7560 forKey:*MEMORY[0x1E696CDA0]];
+      [dictionary setObject:&unk_1F03B7560 forKey:*MEMORY[0x1E696CDA0]];
       v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:8];
-      [v11 setObject:v20 forKey:*MEMORY[0x1E696CD78]];
+      [dictionary setObject:v20 forKey:*MEMORY[0x1E696CD78]];
 
       v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v19];
-      [v11 setObject:v18 forKey:*MEMORY[0x1E696CD80]];
+      [dictionary setObject:v18 forKey:*MEMORY[0x1E696CD80]];
       v16 = v19 * a4;
     }
 
@@ -126,12 +126,12 @@
       {
         if (*a5)
         {
-          [v11 setObject:&unk_1F03B7578 forKey:*MEMORY[0x1E696CDA0]];
+          [dictionary setObject:&unk_1F03B7578 forKey:*MEMORY[0x1E696CDA0]];
           v39 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:4];
-          [v11 setObject:v39 forKey:*MEMORY[0x1E696CD78]];
+          [dictionary setObject:v39 forKey:*MEMORY[0x1E696CD78]];
 
           v40 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v15];
-          [v11 setObject:v40 forKey:*MEMORY[0x1E696CD80]];
+          [dictionary setObject:v40 forKey:*MEMORY[0x1E696CD80]];
         }
 
         else
@@ -187,8 +187,8 @@
           v68[1] = v37;
           v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:2];
 
-          [v11 setObject:&unk_1F03B75A8 forKey:*MEMORY[0x1E696CDA0]];
-          [v11 setObject:v38 forKey:*MEMORY[0x1E696CDC0]];
+          [dictionary setObject:&unk_1F03B75A8 forKey:*MEMORY[0x1E696CDA0]];
+          [dictionary setObject:v38 forKey:*MEMORY[0x1E696CDC0]];
 
           v16 += v35;
         }
@@ -196,20 +196,20 @@
         goto LABEL_12;
       }
 
-      [v11 setObject:&unk_1F03B75C0 forKey:*MEMORY[0x1E696CDA0]];
+      [dictionary setObject:&unk_1F03B75C0 forKey:*MEMORY[0x1E696CDA0]];
       v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:4];
-      [v11 setObject:v17 forKey:*MEMORY[0x1E696CD78]];
+      [dictionary setObject:v17 forKey:*MEMORY[0x1E696CD78]];
 
       v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v15];
-      [v11 setObject:v18 forKey:*MEMORY[0x1E696CD80]];
+      [dictionary setObject:v18 forKey:*MEMORY[0x1E696CD80]];
     }
 
     *a5 &= 0xFFFFFFFFFFFFFFFCLL;
 LABEL_12:
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{MEMORY[0x193AE4A90](*MEMORY[0x1E696CE30], v16)}];
-    [v11 setObject:v21 forKey:*MEMORY[0x1E696CD70]];
+    [dictionary setObject:v21 forKey:*MEMORY[0x1E696CD70]];
 
-    v10 = [objc_alloc(MEMORY[0x1E696CDE8]) initWithProperties:v11];
+    v10 = [objc_alloc(MEMORY[0x1E696CDE8]) initWithProperties:dictionary];
     return v10;
   }
 
@@ -219,7 +219,7 @@ LABEL_12:
 - (BSCGImageFromIOSurfaceBuilder)CGImageBuilder
 {
   v2 = [BSCGImageFromIOSurfaceBuilder alloc];
-  v3 = a1;
+  selfCopy = self;
   if (v2)
   {
     v6.receiver = v2;
@@ -228,7 +228,7 @@ LABEL_12:
     v2 = v4;
     if (v4)
     {
-      objc_storeStrong(&v4->_surface, a1);
+      objc_storeStrong(&v4->_surface, self);
     }
   }
 

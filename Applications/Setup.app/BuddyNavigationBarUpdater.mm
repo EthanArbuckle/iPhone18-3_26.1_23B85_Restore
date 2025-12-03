@@ -1,35 +1,35 @@
 @interface BuddyNavigationBarUpdater
 - (UINavigationController)currentNavigationController;
-- (void)_updateNavigationBarBackButtonIfNeeded:(id)a3 forViewController:(id)a4;
-- (void)_updateNavigationBarBackgroundIfNeeded:(id)a3 forViewController:(id)a4;
-- (void)handleSwipeBackGesture:(id)a3;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 operation:(int64_t)a5 animated:(BOOL)a6;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 operation:(int64_t)a5 animated:(BOOL)a6;
-- (void)setNavigationControllerIfNeeded:(id)a3;
+- (void)_updateNavigationBarBackButtonIfNeeded:(id)needed forViewController:(id)controller;
+- (void)_updateNavigationBarBackgroundIfNeeded:(id)needed forViewController:(id)controller;
+- (void)handleSwipeBackGesture:(id)gesture;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController operation:(int64_t)operation animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController operation:(int64_t)operation animated:(BOOL)animated;
+- (void)setNavigationControllerIfNeeded:(id)needed;
 - (void)updateViewControllers;
 @end
 
 @implementation BuddyNavigationBarUpdater
 
-- (void)_updateNavigationBarBackgroundIfNeeded:(id)a3 forViewController:(id)a4
+- (void)_updateNavigationBarBackgroundIfNeeded:(id)needed forViewController:(id)controller
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, needed);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
-  v5 = [location[0] traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  objc_storeStrong(&v18, controller);
+  traitCollection = [location[0] traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v17 = v6;
-  v7 = [v18 traitCollection];
-  v8 = [v7 userInterfaceStyle];
+  v17 = userInterfaceStyle;
+  traitCollection2 = [v18 traitCollection];
+  userInterfaceStyle2 = [traitCollection2 userInterfaceStyle];
 
-  v16 = v8;
-  v9 = [v18 traitCollection];
+  v16 = userInterfaceStyle2;
+  traitCollection3 = [v18 traitCollection];
   v10 = 0;
-  if ([v9 userInterfaceStyle] == 1)
+  if ([traitCollection3 userInterfaceStyle] == 1)
   {
     v10 = [v18 conformsToProtocol:&OBJC_PROTOCOL___BFFViewControllerAppearanceConfigurationDelegate];
   }
@@ -49,22 +49,22 @@
   else if (v17 != v16)
   {
     v12 = location[0];
-    v13 = [v18 traitCollection];
-    [v12 setOverrideUserInterfaceStyle:{objc_msgSend(v13, "userInterfaceStyle")}];
+    traitCollection4 = [v18 traitCollection];
+    [v12 setOverrideUserInterfaceStyle:{objc_msgSend(traitCollection4, "userInterfaceStyle")}];
   }
 
   objc_storeStrong(&v18, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateNavigationBarBackButtonIfNeeded:(id)a3 forViewController:(id)a4
+- (void)_updateNavigationBarBackButtonIfNeeded:(id)needed forViewController:(id)controller
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, needed);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, controller);
   v5 = +[BYPreferencesController buddyPreferencesInternal];
   v6 = [v5 BOOLForKey:@"ignoreBackButtonHandling"];
 
@@ -108,9 +108,9 @@
     }
 
     v13 = v16;
-    v14 = [location[0] tintColor];
+    tintColor = [location[0] tintColor];
 
-    if (v13 != v14)
+    if (v13 != tintColor)
     {
       [location[0] setTintColor:v16];
     }
@@ -123,29 +123,29 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 operation:(int64_t)a5 animated:(BOOL)a6
+- (void)navigationController:(id)controller willShowViewController:(id)viewController operation:(int64_t)operation animated:(BOOL)animated
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  [(BuddyNavigationBarUpdater *)v15 setNavigationControllerIfNeeded:location[0]];
-  if (a5 == 2)
+  objc_storeStrong(&v13, viewController);
+  [(BuddyNavigationBarUpdater *)selfCopy setNavigationControllerIfNeeded:location[0]];
+  if (operation == 2)
   {
-    v8 = v15;
-    v9 = [location[0] navigationBar];
-    [(BuddyNavigationBarUpdater *)v8 _updateNavigationBarBackgroundIfNeeded:v9 forViewController:v13];
+    v8 = selfCopy;
+    navigationBar = [location[0] navigationBar];
+    [(BuddyNavigationBarUpdater *)v8 _updateNavigationBarBackgroundIfNeeded:navigationBar forViewController:v13];
 
-    v10 = [(BuddyNavigationBarUpdater *)v15 transitionCoordinator];
-    LOBYTE(v8) = v10 == 0;
+    transitionCoordinator = [(BuddyNavigationBarUpdater *)selfCopy transitionCoordinator];
+    LOBYTE(v8) = transitionCoordinator == 0;
 
     if (v8)
     {
-      v11 = v15;
-      v12 = [location[0] navigationBar];
-      [(BuddyNavigationBarUpdater *)v11 _updateNavigationBarBackButtonIfNeeded:v12 forViewController:v13];
+      v11 = selfCopy;
+      navigationBar2 = [location[0] navigationBar];
+      [(BuddyNavigationBarUpdater *)v11 _updateNavigationBarBackButtonIfNeeded:navigationBar2 forViewController:v13];
     }
   }
 
@@ -153,30 +153,30 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 operation:(int64_t)a5 animated:(BOOL)a6
+- (void)navigationController:(id)controller didShowViewController:(id)viewController operation:(int64_t)operation animated:(BOOL)animated
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  [(BuddyNavigationBarUpdater *)v16 updateViewControllers];
-  if (a5 == 1)
+  objc_storeStrong(&v14, viewController);
+  [(BuddyNavigationBarUpdater *)selfCopy updateViewControllers];
+  if (operation == 1)
   {
-    v8 = v16;
-    v9 = [location[0] navigationBar];
-    [(BuddyNavigationBarUpdater *)v8 _updateNavigationBarBackgroundIfNeeded:v9 forViewController:v14];
+    v8 = selfCopy;
+    navigationBar = [location[0] navigationBar];
+    [(BuddyNavigationBarUpdater *)v8 _updateNavigationBarBackgroundIfNeeded:navigationBar forViewController:v14];
   }
 
-  v10 = [(BuddyNavigationBarUpdater *)v16 transitionCoordinator];
-  v11 = v10 == 0;
+  transitionCoordinator = [(BuddyNavigationBarUpdater *)selfCopy transitionCoordinator];
+  v11 = transitionCoordinator == 0;
 
   if (v11)
   {
-    v12 = v16;
-    v13 = [location[0] navigationBar];
-    [(BuddyNavigationBarUpdater *)v12 _updateNavigationBarBackButtonIfNeeded:v13 forViewController:v14];
+    v12 = selfCopy;
+    navigationBar2 = [location[0] navigationBar];
+    [(BuddyNavigationBarUpdater *)v12 _updateNavigationBarBackButtonIfNeeded:navigationBar2 forViewController:v14];
   }
 
   objc_storeStrong(&v14, 0);
@@ -185,15 +185,15 @@
 
 - (void)updateViewControllers
 {
-  v2 = [(BuddyNavigationBarUpdater *)self currentNavigationController];
-  v3 = [(UINavigationController *)v2 childViewControllers];
-  v4 = [v3 count];
+  currentNavigationController = [(BuddyNavigationBarUpdater *)self currentNavigationController];
+  childViewControllers = [(UINavigationController *)currentNavigationController childViewControllers];
+  v4 = [childViewControllers count];
 
   if (v4 >= 2)
   {
-    v5 = [(BuddyNavigationBarUpdater *)self currentNavigationController];
-    v6 = [(UINavigationController *)v5 childViewControllers];
-    v7 = [v6 objectAtIndexedSubscript:v4 - 2];
+    currentNavigationController2 = [(BuddyNavigationBarUpdater *)self currentNavigationController];
+    childViewControllers2 = [(UINavigationController *)currentNavigationController2 childViewControllers];
+    v7 = [childViewControllers2 objectAtIndexedSubscript:v4 - 2];
     [(BuddyNavigationBarUpdater *)self setPreviousViewController:v7];
   }
 
@@ -202,104 +202,104 @@
     [(BuddyNavigationBarUpdater *)self setPreviousViewController:0];
   }
 
-  v8 = [(BuddyNavigationBarUpdater *)self currentNavigationController];
-  v9 = [(UINavigationController *)v8 childViewControllers];
-  v10 = [v9 lastObject];
-  [(BuddyNavigationBarUpdater *)self setCurrentViewController:v10];
+  currentNavigationController3 = [(BuddyNavigationBarUpdater *)self currentNavigationController];
+  childViewControllers3 = [(UINavigationController *)currentNavigationController3 childViewControllers];
+  lastObject = [childViewControllers3 lastObject];
+  [(BuddyNavigationBarUpdater *)self setCurrentViewController:lastObject];
 }
 
-- (void)setNavigationControllerIfNeeded:(id)a3
+- (void)setNavigationControllerIfNeeded:(id)needed
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, needed);
   v3 = location[0];
-  v4 = [(BuddyNavigationBarUpdater *)v10 currentNavigationController];
+  currentNavigationController = [(BuddyNavigationBarUpdater *)selfCopy currentNavigationController];
 
-  if (v3 != v4)
+  if (v3 != currentNavigationController)
   {
-    v5 = [(BuddyNavigationBarUpdater *)v10 currentNavigationController];
-    v6 = [(UINavigationController *)v5 interactivePopGestureRecognizer];
-    [(UIGestureRecognizer *)v6 removeTarget:v10 action:"handleSwipeBackGesture:"];
+    currentNavigationController2 = [(BuddyNavigationBarUpdater *)selfCopy currentNavigationController];
+    interactivePopGestureRecognizer = [(UINavigationController *)currentNavigationController2 interactivePopGestureRecognizer];
+    [(UIGestureRecognizer *)interactivePopGestureRecognizer removeTarget:selfCopy action:"handleSwipeBackGesture:"];
 
-    [(BuddyNavigationBarUpdater *)v10 setCurrentNavigationController:location[0]];
-    v7 = [(BuddyNavigationBarUpdater *)v10 currentNavigationController];
-    v8 = [(UINavigationController *)v7 interactivePopGestureRecognizer];
-    [(UIGestureRecognizer *)v8 addTarget:v10 action:"handleSwipeBackGesture:"];
+    [(BuddyNavigationBarUpdater *)selfCopy setCurrentNavigationController:location[0]];
+    currentNavigationController3 = [(BuddyNavigationBarUpdater *)selfCopy currentNavigationController];
+    interactivePopGestureRecognizer2 = [(UINavigationController *)currentNavigationController3 interactivePopGestureRecognizer];
+    [(UIGestureRecognizer *)interactivePopGestureRecognizer2 addTarget:selfCopy action:"handleSwipeBackGesture:"];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)handleSwipeBackGesture:(id)a3
+- (void)handleSwipeBackGesture:(id)gesture
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [location[0] state];
-  if (v3 == 1)
+  objc_storeStrong(location, gesture);
+  state = [location[0] state];
+  if (state == 1)
   {
-    v4 = [(BuddyNavigationBarUpdater *)v31 currentNavigationController];
-    v5 = [(UINavigationController *)v4 transitionCoordinator];
-    [(BuddyNavigationBarUpdater *)v31 setTransitionCoordinator:v5];
+    currentNavigationController = [(BuddyNavigationBarUpdater *)selfCopy currentNavigationController];
+    transitionCoordinator = [(UINavigationController *)currentNavigationController transitionCoordinator];
+    [(BuddyNavigationBarUpdater *)selfCopy setTransitionCoordinator:transitionCoordinator];
 
-    v6 = v31;
-    v7 = [(BuddyNavigationBarUpdater *)v31 currentNavigationController];
-    v8 = [(UINavigationController *)v7 navigationBar];
-    v9 = [(BuddyNavigationBarUpdater *)v31 currentViewController];
-    [(BuddyNavigationBarUpdater *)v6 _updateNavigationBarBackButtonIfNeeded:v8 forViewController:v9];
+    v6 = selfCopy;
+    currentNavigationController2 = [(BuddyNavigationBarUpdater *)selfCopy currentNavigationController];
+    navigationBar = [(UINavigationController *)currentNavigationController2 navigationBar];
+    currentViewController = [(BuddyNavigationBarUpdater *)selfCopy currentViewController];
+    [(BuddyNavigationBarUpdater *)v6 _updateNavigationBarBackButtonIfNeeded:navigationBar forViewController:currentViewController];
   }
 
-  else if (v3 == 2)
+  else if (state == 2)
   {
-    v10 = [(BuddyNavigationBarUpdater *)v31 transitionCoordinator];
+    transitionCoordinator2 = [(BuddyNavigationBarUpdater *)selfCopy transitionCoordinator];
 
-    if (v10)
+    if (transitionCoordinator2)
     {
-      v11 = [(BuddyNavigationBarUpdater *)v31 transitionCoordinator];
-      [(UIViewControllerTransitionCoordinator *)v11 percentComplete];
+      transitionCoordinator3 = [(BuddyNavigationBarUpdater *)selfCopy transitionCoordinator];
+      [(UIViewControllerTransitionCoordinator *)transitionCoordinator3 percentComplete];
       v13 = v12;
 
       if (v13 <= 0.25)
       {
-        v18 = v31;
-        v19 = [(BuddyNavigationBarUpdater *)v31 currentNavigationController];
-        v20 = [(UINavigationController *)v19 navigationBar];
-        v21 = [(BuddyNavigationBarUpdater *)v31 currentViewController];
-        [(BuddyNavigationBarUpdater *)v18 _updateNavigationBarBackButtonIfNeeded:v20 forViewController:v21];
+        v18 = selfCopy;
+        currentNavigationController3 = [(BuddyNavigationBarUpdater *)selfCopy currentNavigationController];
+        navigationBar2 = [(UINavigationController *)currentNavigationController3 navigationBar];
+        currentViewController2 = [(BuddyNavigationBarUpdater *)selfCopy currentViewController];
+        [(BuddyNavigationBarUpdater *)v18 _updateNavigationBarBackButtonIfNeeded:navigationBar2 forViewController:currentViewController2];
       }
 
       else
       {
-        v14 = v31;
-        v15 = [(BuddyNavigationBarUpdater *)v31 currentNavigationController];
-        v16 = [(UINavigationController *)v15 navigationBar];
-        v17 = [(BuddyNavigationBarUpdater *)v31 previousViewController];
-        [(BuddyNavigationBarUpdater *)v14 _updateNavigationBarBackButtonIfNeeded:v16 forViewController:v17];
+        v14 = selfCopy;
+        currentNavigationController4 = [(BuddyNavigationBarUpdater *)selfCopy currentNavigationController];
+        navigationBar3 = [(UINavigationController *)currentNavigationController4 navigationBar];
+        previousViewController = [(BuddyNavigationBarUpdater *)selfCopy previousViewController];
+        [(BuddyNavigationBarUpdater *)v14 _updateNavigationBarBackButtonIfNeeded:navigationBar3 forViewController:previousViewController];
       }
     }
   }
 
-  else if (v3 == 3)
+  else if (state == 3)
   {
-    v26 = v31;
-    v27 = [(BuddyNavigationBarUpdater *)v31 currentNavigationController];
-    v28 = [(UINavigationController *)v27 navigationBar];
-    v29 = [(BuddyNavigationBarUpdater *)v31 previousViewController];
-    [(BuddyNavigationBarUpdater *)v26 _updateNavigationBarBackButtonIfNeeded:v28 forViewController:v29];
+    v26 = selfCopy;
+    currentNavigationController5 = [(BuddyNavigationBarUpdater *)selfCopy currentNavigationController];
+    navigationBar4 = [(UINavigationController *)currentNavigationController5 navigationBar];
+    previousViewController2 = [(BuddyNavigationBarUpdater *)selfCopy previousViewController];
+    [(BuddyNavigationBarUpdater *)v26 _updateNavigationBarBackButtonIfNeeded:navigationBar4 forViewController:previousViewController2];
 
-    [(BuddyNavigationBarUpdater *)v31 setTransitionCoordinator:0];
+    [(BuddyNavigationBarUpdater *)selfCopy setTransitionCoordinator:0];
   }
 
-  else if (v3 == 4)
+  else if (state == 4)
   {
-    v22 = v31;
-    v23 = [(BuddyNavigationBarUpdater *)v31 currentNavigationController];
-    v24 = [(UINavigationController *)v23 navigationBar];
-    v25 = [(BuddyNavigationBarUpdater *)v31 currentViewController];
-    [(BuddyNavigationBarUpdater *)v22 _updateNavigationBarBackButtonIfNeeded:v24 forViewController:v25];
+    v22 = selfCopy;
+    currentNavigationController6 = [(BuddyNavigationBarUpdater *)selfCopy currentNavigationController];
+    navigationBar5 = [(UINavigationController *)currentNavigationController6 navigationBar];
+    currentViewController3 = [(BuddyNavigationBarUpdater *)selfCopy currentViewController];
+    [(BuddyNavigationBarUpdater *)v22 _updateNavigationBarBackButtonIfNeeded:navigationBar5 forViewController:currentViewController3];
   }
 
   objc_storeStrong(location, 0);

@@ -10,7 +10,7 @@
   v6 = 0.0;
   v7 = 0.0;
   v5 = 0.0;
-  if ([a1 getRed:&v8 green:&v7 blue:&v6 alpha:&v5])
+  if ([self getRed:&v8 green:&v7 blue:&v6 alpha:&v5])
   {
     v1 = [MEMORY[0x1E698E650] colorWithRed:v8 green:v7 blue:v6 alpha:v5];
   }

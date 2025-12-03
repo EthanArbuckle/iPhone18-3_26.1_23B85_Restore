@@ -1,7 +1,7 @@
 @interface PhoneShowEventDetailsWithConferenceNotesTest
-- (id)_createTestEventWithStartDate:(id)a3;
+- (id)_createTestEventWithStartDate:(id)date;
 - (id)_testEventWithConferenceNotes;
-- (void)_detailViewControllerAppeared:(id)a3;
+- (void)_detailViewControllerAppeared:(id)appeared;
 - (void)runTest;
 @end
 
@@ -9,16 +9,16 @@
 
 - (void)runTest
 {
-  v3 = [objc_opt_class() testName];
-  v4 = [objc_opt_class() _delaySubTestName];
-  v5 = [objc_opt_class() _animationSubTestName];
-  v6 = [(PhoneShowEventDetailsWithConferenceNotesTest *)self _testEventWithConferenceNotes];
-  v7 = [(ApplicationTest *)self application];
-  v8 = v7;
-  if (v6)
+  testName = [objc_opt_class() testName];
+  _delaySubTestName = [objc_opt_class() _delaySubTestName];
+  _animationSubTestName = [objc_opt_class() _animationSubTestName];
+  _testEventWithConferenceNotes = [(PhoneShowEventDetailsWithConferenceNotesTest *)self _testEventWithConferenceNotes];
+  application = [(ApplicationTest *)self application];
+  v8 = application;
+  if (_testEventWithConferenceNotes)
   {
-    v9 = [v7 rootNavigationController];
-    v10 = [v9 resetToDayView];
+    rootNavigationController = [application rootNavigationController];
+    resetToDayView = [rootNavigationController resetToDayView];
 
     v11 = dispatch_time(0, 1000000000);
     block[0] = _NSConcreteStackBlock;
@@ -26,36 +26,36 @@
     block[2] = sub_1000337C0;
     block[3] = &unk_10020F2B8;
     block[4] = self;
-    v15 = v3;
-    v16 = v4;
-    v17 = v6;
-    v18 = v5;
+    v15 = testName;
+    v16 = _delaySubTestName;
+    v17 = _testEventWithConferenceNotes;
+    v18 = _animationSubTestName;
     dispatch_after(v11, &_dispatch_main_q, block);
   }
 
   else
   {
-    [v7 startedTest:v3];
+    [application startedTest:testName];
 
-    v12 = [(ApplicationTest *)self application];
+    application2 = [(ApplicationTest *)self application];
     v13 = [NSString stringWithFormat:@"Failed to create event"];
-    [v12 failedTest:v3 withFailure:v13];
+    [application2 failedTest:testName withFailure:v13];
   }
 }
 
-- (void)_detailViewControllerAppeared:(id)a3
+- (void)_detailViewControllerAppeared:(id)appeared
 {
-  v10 = [objc_opt_class() testName];
-  v4 = [objc_opt_class() _animationSubTestName];
-  v5 = [(ApplicationTest *)self application];
-  [v5 finishedSubTest:v4 forTest:v10];
+  testName = [objc_opt_class() testName];
+  _animationSubTestName = [objc_opt_class() _animationSubTestName];
+  application = [(ApplicationTest *)self application];
+  [application finishedSubTest:_animationSubTestName forTest:testName];
 
-  v6 = [(ApplicationTest *)self application];
-  [v6 finishedTest:v10 extraResults:0];
+  application2 = [(ApplicationTest *)self application];
+  [application2 finishedTest:testName extraResults:0];
 
-  v7 = [(ApplicationTest *)self model];
-  v8 = [v7 eventStore];
-  [v8 removeEvent:self->_testEvent span:0 error:0];
+  model = [(ApplicationTest *)self model];
+  eventStore = [model eventStore];
+  [eventStore removeEvent:self->_testEvent span:0 error:0];
 
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 removeObserver:self name:EKEventViewControllerDidAppearNotification object:0];
@@ -82,16 +82,16 @@
   return v3;
 }
 
-- (id)_createTestEventWithStartDate:(id)a3
+- (id)_createTestEventWithStartDate:(id)date
 {
-  v4 = a3;
-  v5 = [(ApplicationTest *)self model];
-  v6 = [v5 eventStore];
-  v7 = [EKEvent eventWithEventStore:v6];
+  dateCopy = date;
+  model = [(ApplicationTest *)self model];
+  eventStore = [model eventStore];
+  v7 = [EKEvent eventWithEventStore:eventStore];
 
-  [v7 setStartDate:v4];
-  v8 = [v7 startDate];
-  v9 = [v8 dateByAddingTimeInterval:3600.0];
+  [v7 setStartDate:dateCopy];
+  startDate = [v7 startDate];
+  v9 = [startDate dateByAddingTimeInterval:3600.0];
   [v7 setEndDate:v9];
 
   [v7 setTitle:@"Perf conference test event"];

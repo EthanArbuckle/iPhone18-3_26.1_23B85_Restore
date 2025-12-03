@@ -36,13 +36,13 @@
 
 - (id)description
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v3 = MEMORY[0x29EDBA0F8];
   v6.receiver = self;
   v6.super_class = AXCollectionViewData;
   v4 = [(AXCollectionViewData *)&v6 description];
-  v5 = [v3 stringWithFormat:@"%@ - %@", v4, v8->_children];
+  v5 = [v3 stringWithFormat:@"%@ - %@", v4, selfCopy->_children];
   MEMORY[0x29EDC9740](v4);
 
   return v5;
@@ -50,9 +50,9 @@
 
 - (uint64_t)children
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else
@@ -63,9 +63,9 @@
 
 - (uint64_t)childCount
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 16);
+    return *(self + 16);
   }
 
   else

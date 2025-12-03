@@ -1,32 +1,32 @@
 @interface HKCodableDateComponents
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEra:(BOOL)a3;
-- (void)setHasHour:(BOOL)a3;
-- (void)setHasMinute:(BOOL)a3;
-- (void)setHasMonth:(BOOL)a3;
-- (void)setHasNanosecond:(BOOL)a3;
-- (void)setHasQuarter:(BOOL)a3;
-- (void)setHasSecond:(BOOL)a3;
-- (void)setHasWeekOfMonth:(BOOL)a3;
-- (void)setHasWeekOfYear:(BOOL)a3;
-- (void)setHasWeekday:(BOOL)a3;
-- (void)setHasWeekdayOrdinal:(BOOL)a3;
-- (void)setHasYear:(BOOL)a3;
-- (void)setHasYearForWeekOfYear:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEra:(BOOL)era;
+- (void)setHasHour:(BOOL)hour;
+- (void)setHasMinute:(BOOL)minute;
+- (void)setHasMonth:(BOOL)month;
+- (void)setHasNanosecond:(BOOL)nanosecond;
+- (void)setHasQuarter:(BOOL)quarter;
+- (void)setHasSecond:(BOOL)second;
+- (void)setHasWeekOfMonth:(BOOL)month;
+- (void)setHasWeekOfYear:(BOOL)year;
+- (void)setHasWeekday:(BOOL)weekday;
+- (void)setHasWeekdayOrdinal:(BOOL)ordinal;
+- (void)setHasYear:(BOOL)year;
+- (void)setHasYearForWeekOfYear:(BOOL)year;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableDateComponents
 
-- (void)setHasEra:(BOOL)a3
+- (void)setHasEra:(BOOL)era
 {
-  if (a3)
+  if (era)
   {
     v3 = 2;
   }
@@ -39,9 +39,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasYear:(BOOL)a3
+- (void)setHasYear:(BOOL)year
 {
-  if (a3)
+  if (year)
   {
     v3 = 4096;
   }
@@ -54,9 +54,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasMonth:(BOOL)a3
+- (void)setHasMonth:(BOOL)month
 {
-  if (a3)
+  if (month)
   {
     v3 = 16;
   }
@@ -69,9 +69,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasHour:(BOOL)a3
+- (void)setHasHour:(BOOL)hour
 {
-  if (a3)
+  if (hour)
   {
     v3 = 4;
   }
@@ -84,9 +84,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasMinute:(BOOL)a3
+- (void)setHasMinute:(BOOL)minute
 {
-  if (a3)
+  if (minute)
   {
     v3 = 8;
   }
@@ -99,9 +99,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasSecond:(BOOL)a3
+- (void)setHasSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 128;
   }
@@ -114,9 +114,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasWeekday:(BOOL)a3
+- (void)setHasWeekday:(BOOL)weekday
 {
-  if (a3)
+  if (weekday)
   {
     v3 = 1024;
   }
@@ -129,9 +129,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasWeekdayOrdinal:(BOOL)a3
+- (void)setHasWeekdayOrdinal:(BOOL)ordinal
 {
-  if (a3)
+  if (ordinal)
   {
     v3 = 2048;
   }
@@ -144,9 +144,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasQuarter:(BOOL)a3
+- (void)setHasQuarter:(BOOL)quarter
 {
-  if (a3)
+  if (quarter)
   {
     v3 = 64;
   }
@@ -159,9 +159,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasWeekOfMonth:(BOOL)a3
+- (void)setHasWeekOfMonth:(BOOL)month
 {
-  if (a3)
+  if (month)
   {
     v3 = 256;
   }
@@ -174,9 +174,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasWeekOfYear:(BOOL)a3
+- (void)setHasWeekOfYear:(BOOL)year
 {
-  if (a3)
+  if (year)
   {
     v3 = 512;
   }
@@ -189,9 +189,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasYearForWeekOfYear:(BOOL)a3
+- (void)setHasYearForWeekOfYear:(BOOL)year
 {
-  if (a3)
+  if (year)
   {
     v3 = 0x2000;
   }
@@ -204,9 +204,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasNanosecond:(BOOL)a3
+- (void)setHasNanosecond:(BOOL)nanosecond
 {
-  if (a3)
+  if (nanosecond)
   {
     v3 = 32;
   }
@@ -225,20 +225,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableDateComponents;
   v4 = [(HKCodableDateComponents *)&v8 description];
-  v5 = [(HKCodableDateComponents *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableDateComponents *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_era];
-    [v3 setObject:v9 forKey:@"era"];
+    [dictionary setObject:v9 forKey:@"era"];
 
     has = self->_has;
     if ((has & 0x1000) == 0)
@@ -259,7 +259,7 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_year];
-  [v3 setObject:v10 forKey:@"year"];
+  [dictionary setObject:v10 forKey:@"year"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -275,7 +275,7 @@ LABEL_4:
 
 LABEL_25:
   v11 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_month];
-  [v3 setObject:v11 forKey:@"month"];
+  [dictionary setObject:v11 forKey:@"month"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -291,7 +291,7 @@ LABEL_5:
 
 LABEL_26:
   v12 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_day];
-  [v3 setObject:v12 forKey:@"day"];
+  [dictionary setObject:v12 forKey:@"day"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -307,7 +307,7 @@ LABEL_6:
 
 LABEL_27:
   v13 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_hour];
-  [v3 setObject:v13 forKey:@"hour"];
+  [dictionary setObject:v13 forKey:@"hour"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -323,7 +323,7 @@ LABEL_7:
 
 LABEL_28:
   v14 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_minute];
-  [v3 setObject:v14 forKey:@"minute"];
+  [dictionary setObject:v14 forKey:@"minute"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -339,7 +339,7 @@ LABEL_8:
 
 LABEL_29:
   v15 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_second];
-  [v3 setObject:v15 forKey:@"second"];
+  [dictionary setObject:v15 forKey:@"second"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -355,7 +355,7 @@ LABEL_9:
 
 LABEL_30:
   v16 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_weekday];
-  [v3 setObject:v16 forKey:@"weekday"];
+  [dictionary setObject:v16 forKey:@"weekday"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -371,7 +371,7 @@ LABEL_10:
 
 LABEL_31:
   v17 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_weekdayOrdinal];
-  [v3 setObject:v17 forKey:@"weekdayOrdinal"];
+  [dictionary setObject:v17 forKey:@"weekdayOrdinal"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -387,7 +387,7 @@ LABEL_11:
 
 LABEL_32:
   v18 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_quarter];
-  [v3 setObject:v18 forKey:@"quarter"];
+  [dictionary setObject:v18 forKey:@"quarter"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -403,7 +403,7 @@ LABEL_12:
 
 LABEL_33:
   v19 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_weekOfMonth];
-  [v3 setObject:v19 forKey:@"weekOfMonth"];
+  [dictionary setObject:v19 forKey:@"weekOfMonth"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -419,7 +419,7 @@ LABEL_13:
 
 LABEL_34:
   v20 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_weekOfYear];
-  [v3 setObject:v20 forKey:@"weekOfYear"];
+  [dictionary setObject:v20 forKey:@"weekOfYear"];
 
   has = self->_has;
   if ((has & 0x2000) == 0)
@@ -435,40 +435,40 @@ LABEL_14:
 
 LABEL_35:
   v21 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_yearForWeekOfYear];
-  [v3 setObject:v21 forKey:@"yearForWeekOfYear"];
+  [dictionary setObject:v21 forKey:@"yearForWeekOfYear"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_15:
     v5 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_nanosecond];
-    [v3 setObject:v5 forKey:@"nanosecond"];
+    [dictionary setObject:v5 forKey:@"nanosecond"];
   }
 
 LABEL_16:
   calendar = self->_calendar;
   if (calendar)
   {
-    [v3 setObject:calendar forKey:@"calendar"];
+    [dictionary setObject:calendar forKey:@"calendar"];
   }
 
   timeZone = self->_timeZone;
   if (timeZone)
   {
-    [v3 setObject:timeZone forKey:@"timeZone"];
+    [dictionary setObject:timeZone forKey:@"timeZone"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 0x1000) == 0)
     {
@@ -488,7 +488,7 @@ LABEL_3:
   }
 
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -503,7 +503,7 @@ LABEL_4:
 
 LABEL_25:
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -518,7 +518,7 @@ LABEL_5:
 
 LABEL_26:
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -533,7 +533,7 @@ LABEL_6:
 
 LABEL_27:
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -548,7 +548,7 @@ LABEL_7:
 
 LABEL_28:
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -563,7 +563,7 @@ LABEL_8:
 
 LABEL_29:
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -578,7 +578,7 @@ LABEL_9:
 
 LABEL_30:
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -593,7 +593,7 @@ LABEL_10:
 
 LABEL_31:
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -608,7 +608,7 @@ LABEL_11:
 
 LABEL_32:
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -623,7 +623,7 @@ LABEL_12:
 
 LABEL_33:
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -638,7 +638,7 @@ LABEL_13:
 
 LABEL_34:
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -653,36 +653,36 @@ LABEL_14:
 
 LABEL_35:
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_15:
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_16:
   if (self->_calendar)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_timeZone)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_era;
-    *(v4 + 68) |= 2u;
+    toCopy[2] = self->_era;
+    *(toCopy + 68) |= 2u;
     has = self->_has;
     if ((has & 0x1000) == 0)
     {
@@ -701,8 +701,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[13] = self->_year;
-  *(v4 + 68) |= 0x1000u;
+  toCopy[13] = self->_year;
+  *(toCopy + 68) |= 0x1000u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -716,8 +716,8 @@ LABEL_4:
   }
 
 LABEL_25:
-  v4[5] = self->_month;
-  *(v4 + 68) |= 0x10u;
+  toCopy[5] = self->_month;
+  *(toCopy + 68) |= 0x10u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -731,8 +731,8 @@ LABEL_5:
   }
 
 LABEL_26:
-  v4[1] = self->_day;
-  *(v4 + 68) |= 1u;
+  toCopy[1] = self->_day;
+  *(toCopy + 68) |= 1u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -746,8 +746,8 @@ LABEL_6:
   }
 
 LABEL_27:
-  v4[3] = self->_hour;
-  *(v4 + 68) |= 4u;
+  toCopy[3] = self->_hour;
+  *(toCopy + 68) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -761,8 +761,8 @@ LABEL_7:
   }
 
 LABEL_28:
-  v4[4] = self->_minute;
-  *(v4 + 68) |= 8u;
+  toCopy[4] = self->_minute;
+  *(toCopy + 68) |= 8u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -776,8 +776,8 @@ LABEL_8:
   }
 
 LABEL_29:
-  v4[8] = self->_second;
-  *(v4 + 68) |= 0x80u;
+  toCopy[8] = self->_second;
+  *(toCopy + 68) |= 0x80u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -791,8 +791,8 @@ LABEL_9:
   }
 
 LABEL_30:
-  v4[11] = self->_weekday;
-  *(v4 + 68) |= 0x400u;
+  toCopy[11] = self->_weekday;
+  *(toCopy + 68) |= 0x400u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -806,8 +806,8 @@ LABEL_10:
   }
 
 LABEL_31:
-  v4[12] = self->_weekdayOrdinal;
-  *(v4 + 68) |= 0x800u;
+  toCopy[12] = self->_weekdayOrdinal;
+  *(toCopy + 68) |= 0x800u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -821,8 +821,8 @@ LABEL_11:
   }
 
 LABEL_32:
-  v4[7] = self->_quarter;
-  *(v4 + 68) |= 0x40u;
+  toCopy[7] = self->_quarter;
+  *(toCopy + 68) |= 0x40u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -836,8 +836,8 @@ LABEL_12:
   }
 
 LABEL_33:
-  v4[9] = self->_weekOfMonth;
-  *(v4 + 68) |= 0x100u;
+  toCopy[9] = self->_weekOfMonth;
+  *(toCopy + 68) |= 0x100u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -851,8 +851,8 @@ LABEL_13:
   }
 
 LABEL_34:
-  v4[10] = self->_weekOfYear;
-  *(v4 + 68) |= 0x200u;
+  toCopy[10] = self->_weekOfYear;
+  *(toCopy + 68) |= 0x200u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -866,33 +866,33 @@ LABEL_14:
   }
 
 LABEL_35:
-  v4[14] = self->_yearForWeekOfYear;
-  *(v4 + 68) |= 0x2000u;
+  toCopy[14] = self->_yearForWeekOfYear;
+  *(toCopy + 68) |= 0x2000u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_15:
-    v4[6] = self->_nanosecond;
-    *(v4 + 68) |= 0x20u;
+    toCopy[6] = self->_nanosecond;
+    *(toCopy + 68) |= 0x20u;
   }
 
 LABEL_16:
-  v6 = v4;
+  v6 = toCopy;
   if (self->_calendar)
   {
-    [v4 setCalendar:?];
-    v4 = v6;
+    [toCopy setCalendar:?];
+    toCopy = v6;
   }
 
   if (self->_timeZone)
   {
     [v6 setTimeZone:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -1092,30 +1092,30 @@ LABEL_15:
   }
 
 LABEL_16:
-  v8 = [(NSString *)self->_calendar copyWithZone:a3];
+  v8 = [(NSString *)self->_calendar copyWithZone:zone];
   v9 = v6[15];
   v6[15] = v8;
 
-  v10 = [(NSString *)self->_timeZone copyWithZone:a3];
+  v10 = [(NSString *)self->_timeZone copyWithZone:zone];
   v11 = v6[16];
   v6[16] = v10;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_76;
   }
 
   has = self->_has;
-  v6 = *(v4 + 68);
+  v6 = *(equalCopy + 68);
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_era != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_era != *(equalCopy + 2))
     {
       goto LABEL_76;
     }
@@ -1130,20 +1130,20 @@ LABEL_76:
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 68) & 0x1000) == 0 || self->_year != *(v4 + 13))
+    if ((*(equalCopy + 68) & 0x1000) == 0 || self->_year != *(equalCopy + 13))
     {
       goto LABEL_76;
     }
   }
 
-  else if ((*(v4 + 68) & 0x1000) != 0)
+  else if ((*(equalCopy + 68) & 0x1000) != 0)
   {
     goto LABEL_76;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_month != *(v4 + 5))
+    if ((v6 & 0x10) == 0 || self->_month != *(equalCopy + 5))
     {
       goto LABEL_76;
     }
@@ -1156,7 +1156,7 @@ LABEL_76:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_day != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_day != *(equalCopy + 1))
     {
       goto LABEL_76;
     }
@@ -1169,7 +1169,7 @@ LABEL_76:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_hour != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_hour != *(equalCopy + 3))
     {
       goto LABEL_76;
     }
@@ -1182,7 +1182,7 @@ LABEL_76:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_minute != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_minute != *(equalCopy + 4))
     {
       goto LABEL_76;
     }
@@ -1195,7 +1195,7 @@ LABEL_76:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_second != *(v4 + 8))
+    if ((v6 & 0x80) == 0 || self->_second != *(equalCopy + 8))
     {
       goto LABEL_76;
     }
@@ -1208,33 +1208,33 @@ LABEL_76:
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 68) & 0x400) == 0 || self->_weekday != *(v4 + 11))
+    if ((*(equalCopy + 68) & 0x400) == 0 || self->_weekday != *(equalCopy + 11))
     {
       goto LABEL_76;
     }
   }
 
-  else if ((*(v4 + 68) & 0x400) != 0)
+  else if ((*(equalCopy + 68) & 0x400) != 0)
   {
     goto LABEL_76;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 68) & 0x800) == 0 || self->_weekdayOrdinal != *(v4 + 12))
+    if ((*(equalCopy + 68) & 0x800) == 0 || self->_weekdayOrdinal != *(equalCopy + 12))
     {
       goto LABEL_76;
     }
   }
 
-  else if ((*(v4 + 68) & 0x800) != 0)
+  else if ((*(equalCopy + 68) & 0x800) != 0)
   {
     goto LABEL_76;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_quarter != *(v4 + 7))
+    if ((v6 & 0x40) == 0 || self->_quarter != *(equalCopy + 7))
     {
       goto LABEL_76;
     }
@@ -1247,46 +1247,46 @@ LABEL_76:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 68) & 0x100) == 0 || self->_weekOfMonth != *(v4 + 9))
+    if ((*(equalCopy + 68) & 0x100) == 0 || self->_weekOfMonth != *(equalCopy + 9))
     {
       goto LABEL_76;
     }
   }
 
-  else if ((*(v4 + 68) & 0x100) != 0)
+  else if ((*(equalCopy + 68) & 0x100) != 0)
   {
     goto LABEL_76;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 68) & 0x200) == 0 || self->_weekOfYear != *(v4 + 10))
+    if ((*(equalCopy + 68) & 0x200) == 0 || self->_weekOfYear != *(equalCopy + 10))
     {
       goto LABEL_76;
     }
   }
 
-  else if ((*(v4 + 68) & 0x200) != 0)
+  else if ((*(equalCopy + 68) & 0x200) != 0)
   {
     goto LABEL_76;
   }
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 68) & 0x2000) == 0 || self->_yearForWeekOfYear != *(v4 + 14))
+    if ((*(equalCopy + 68) & 0x2000) == 0 || self->_yearForWeekOfYear != *(equalCopy + 14))
     {
       goto LABEL_76;
     }
   }
 
-  else if ((*(v4 + 68) & 0x2000) != 0)
+  else if ((*(equalCopy + 68) & 0x2000) != 0)
   {
     goto LABEL_76;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_nanosecond != *(v4 + 6))
+    if ((v6 & 0x20) == 0 || self->_nanosecond != *(equalCopy + 6))
     {
       goto LABEL_76;
     }
@@ -1298,13 +1298,13 @@ LABEL_76:
   }
 
   calendar = self->_calendar;
-  if (calendar | *(v4 + 15) && ![(NSString *)calendar isEqual:?])
+  if (calendar | *(equalCopy + 15) && ![(NSString *)calendar isEqual:?])
   {
     goto LABEL_76;
   }
 
   timeZone = self->_timeZone;
-  if (timeZone | *(v4 + 16))
+  if (timeZone | *(equalCopy + 16))
   {
     v9 = [(NSString *)timeZone isEqual:?];
   }
@@ -1516,15 +1516,15 @@ LABEL_30:
   return v18 ^ [(NSString *)self->_timeZone hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 68);
+  fromCopy = from;
+  v5 = *(fromCopy + 68);
   if ((v5 & 2) != 0)
   {
-    self->_era = *(v4 + 2);
+    self->_era = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 68);
+    v5 = *(fromCopy + 68);
     if ((v5 & 0x1000) == 0)
     {
 LABEL_3:
@@ -1537,14 +1537,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 68) & 0x1000) == 0)
+  else if ((*(fromCopy + 68) & 0x1000) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_year = *(v4 + 13);
+  self->_year = *(fromCopy + 13);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -1557,9 +1557,9 @@ LABEL_4:
   }
 
 LABEL_25:
-  self->_month = *(v4 + 5);
+  self->_month = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if ((v5 & 1) == 0)
   {
 LABEL_5:
@@ -1572,9 +1572,9 @@ LABEL_5:
   }
 
 LABEL_26:
-  self->_day = *(v4 + 1);
+  self->_day = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if ((v5 & 4) == 0)
   {
 LABEL_6:
@@ -1587,9 +1587,9 @@ LABEL_6:
   }
 
 LABEL_27:
-  self->_hour = *(v4 + 3);
+  self->_hour = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if ((v5 & 8) == 0)
   {
 LABEL_7:
@@ -1602,9 +1602,9 @@ LABEL_7:
   }
 
 LABEL_28:
-  self->_minute = *(v4 + 4);
+  self->_minute = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if ((v5 & 0x80) == 0)
   {
 LABEL_8:
@@ -1617,9 +1617,9 @@ LABEL_8:
   }
 
 LABEL_29:
-  self->_second = *(v4 + 8);
+  self->_second = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if ((v5 & 0x400) == 0)
   {
 LABEL_9:
@@ -1632,9 +1632,9 @@ LABEL_9:
   }
 
 LABEL_30:
-  self->_weekday = *(v4 + 11);
+  self->_weekday = *(fromCopy + 11);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if ((v5 & 0x800) == 0)
   {
 LABEL_10:
@@ -1647,9 +1647,9 @@ LABEL_10:
   }
 
 LABEL_31:
-  self->_weekdayOrdinal = *(v4 + 12);
+  self->_weekdayOrdinal = *(fromCopy + 12);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if ((v5 & 0x40) == 0)
   {
 LABEL_11:
@@ -1662,9 +1662,9 @@ LABEL_11:
   }
 
 LABEL_32:
-  self->_quarter = *(v4 + 7);
+  self->_quarter = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if ((v5 & 0x100) == 0)
   {
 LABEL_12:
@@ -1677,9 +1677,9 @@ LABEL_12:
   }
 
 LABEL_33:
-  self->_weekOfMonth = *(v4 + 9);
+  self->_weekOfMonth = *(fromCopy + 9);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if ((v5 & 0x200) == 0)
   {
 LABEL_13:
@@ -1692,9 +1692,9 @@ LABEL_13:
   }
 
 LABEL_34:
-  self->_weekOfYear = *(v4 + 10);
+  self->_weekOfYear = *(fromCopy + 10);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_14:
@@ -1707,27 +1707,27 @@ LABEL_14:
   }
 
 LABEL_35:
-  self->_yearForWeekOfYear = *(v4 + 14);
+  self->_yearForWeekOfYear = *(fromCopy + 14);
   *&self->_has |= 0x2000u;
-  if ((*(v4 + 68) & 0x20) != 0)
+  if ((*(fromCopy + 68) & 0x20) != 0)
   {
 LABEL_15:
-    self->_nanosecond = *(v4 + 6);
+    self->_nanosecond = *(fromCopy + 6);
     *&self->_has |= 0x20u;
   }
 
 LABEL_16:
-  v6 = v4;
-  if (*(v4 + 15))
+  v6 = fromCopy;
+  if (*(fromCopy + 15))
   {
     [(HKCodableDateComponents *)self setCalendar:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(HKCodableDateComponents *)self setTimeZone:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

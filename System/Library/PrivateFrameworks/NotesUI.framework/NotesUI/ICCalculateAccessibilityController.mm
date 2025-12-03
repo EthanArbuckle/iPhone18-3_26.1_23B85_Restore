@@ -1,15 +1,15 @@
 @interface ICCalculateAccessibilityController
 - (ICCalculateAccessibilityController)init;
-- (ICCalculateAccessibilityController)initWithNote:(id)a3;
+- (ICCalculateAccessibilityController)initWithNote:(id)note;
 - (ICNote)note;
-- (id)getValueForPencilKitAttachmentAtRange:(_NSRange)a3;
+- (id)getValueForPencilKitAttachmentAtRange:(_NSRange)range;
 @end
 
 @implementation ICCalculateAccessibilityController
 
-- (ICCalculateAccessibilityController)initWithNote:(id)a3
+- (ICCalculateAccessibilityController)initWithNote:(id)note
 {
-  v3 = a3;
+  noteCopy = note;
   v4 = sub_1D4191B38();
 
   return v4;
@@ -23,11 +23,11 @@
   return Strong;
 }
 
-- (id)getValueForPencilKitAttachmentAtRange:(_NSRange)a3
+- (id)getValueForPencilKitAttachmentAtRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
   sub_1D438BCFC(location, length);
   v7 = v6;
 

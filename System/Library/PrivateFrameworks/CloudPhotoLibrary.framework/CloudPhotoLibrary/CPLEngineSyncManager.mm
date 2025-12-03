@@ -1,70 +1,70 @@
 @interface CPLEngineSyncManager
-+ (id)descriptionForState:(unint64_t)a3;
++ (id)descriptionForState:(unint64_t)state;
 + (id)platformImplementationProtocol;
-+ (id)shortDescriptionForState:(unint64_t)a3;
-+ (id)stepForState:(unint64_t)a3 syncManager:(id)a4 session:(id)a5;
++ (id)shortDescriptionForState:(unint64_t)state;
++ (id)stepForState:(unint64_t)state syncManager:(id)manager session:(id)session;
 - (BOOL)_checkForegroundAtLaunchForForcedTask;
-- (BOOL)_didFinishSetupTaskWithError:(id)a3 shouldStop:(BOOL *)a4;
+- (BOOL)_didFinishSetupTaskWithError:(id)error shouldStop:(BOOL *)stop;
 - (BOOL)_launchSetupTask;
 - (BOOL)hasBrokenScopes;
-- (BOOL)prepareAndLaunchSyncTaskUnlocked:(id)a3;
+- (BOOL)prepareAndLaunchSyncTaskUnlocked:(id)unlocked;
 - (CPLEngineLibrary)engineLibrary;
-- (CPLEngineSyncManager)initWithEngineLibrary:(id)a3;
+- (CPLEngineSyncManager)initWithEngineLibrary:(id)library;
 - (NSArray)brokenScopes;
 - (NSError)lastError;
 - (NSError)lastErrorUnlocked;
 - (__CFString)_descriptionForLaunchedTasks;
 - (id)_descriptionForSetupTasks;
 - (id)_dropDerivativeRulesFromUserDefaults;
-- (id)_setupTaskWithCompletionHandler:(id)a3;
+- (id)_setupTaskWithCompletionHandler:(id)handler;
 - (id)_transportUserIdentifier;
-- (uint64_t)_canLaunchForcedTaskVsOtherForcedTask:(void *)a3 otherForcedTask:(char *)a4 discardOtherForcedTask:;
+- (uint64_t)_canLaunchForcedTaskVsOtherForcedTask:(void *)task otherForcedTask:(char *)forcedTask discardOtherForcedTask:;
 - (uint64_t)_cancelAllTasksLockedDeferringPushTaskCancellationIfCurrentlyUploadingForeground:(uint64_t)result;
 - (uint64_t)_launchNecessaryTasksForCurrentStateLocked;
-- (void)_addRuleToUserDefaults:(id)a3;
-- (void)_advanceToNextStateLockedMinimalState:(unint64_t)a3;
+- (void)_addRuleToUserDefaults:(id)defaults;
+- (void)_advanceToNextStateLockedMinimalState:(unint64_t)state;
 - (void)_cancelCurrentSyncSession;
 - (void)_disableSchedulerForForcedTaskIfNecessary;
-- (void)_discardPendingForcedTasksWithError:(id)a3;
-- (void)_dispatchAfter:(double)a3 block:(id)a4;
+- (void)_discardPendingForcedTasksWithError:(id)error;
+- (void)_dispatchAfter:(double)after block:(id)block;
 - (void)_dispatchCancellerBlocksIfNecessary;
-- (void)_forcedTaskDidFinishWithError:(id)a3;
+- (void)_forcedTaskDidFinishWithError:(id)error;
 - (void)_launchForceSetupTask;
 - (void)_launchForcedTaskIfNecessary;
 - (void)_notifyEndOfSyncSession;
 - (void)_overrideBudgetsIfNeeded;
-- (void)_recordForcedTask:(BOOL)a3 discarded:(void *)a4 error:;
+- (void)_recordForcedTask:(BOOL)task discarded:(void *)discarded error:;
 - (void)_reenableSchedulerForForcedTaskIfNecessary;
 - (void)_resetErrorForSyncSession;
-- (void)_setState:(unint64_t)a3;
-- (void)_setTransportUserIdentifier:(id)a3;
+- (void)_setState:(unint64_t)state;
+- (void)_setTransportUserIdentifier:(id)identifier;
 - (void)_shortDescriptionForCurrentState;
-- (void)addBrokenScope:(id)a3;
-- (void)addDropDerivativesRecipe:(id)a3 writeToUserDefaults:(BOOL)a4 withCompletionHandler:(id)a5;
-- (void)beginClientWork:(id)a3;
-- (void)cancelAndBlockAllSyncSessionsWithReason:(id)a3 block:(id)a4;
+- (void)addBrokenScope:(id)scope;
+- (void)addDropDerivativesRecipe:(id)recipe writeToUserDefaults:(BOOL)defaults withCompletionHandler:(id)handler;
+- (void)beginClientWork:(id)work;
+- (void)cancelAndBlockAllSyncSessionsWithReason:(id)reason block:(id)block;
 - (void)cancelCurrentSyncSession;
-- (void)cancelScheduledForcedTaskForLaunch:(id)a3;
-- (void)closeAndDeactivate:(BOOL)a3 completionHandler:(id)a4;
-- (void)configureDirectTransportTask:(id)a3;
+- (void)cancelScheduledForcedTaskForLaunch:(id)launch;
+- (void)closeAndDeactivate:(BOOL)deactivate completionHandler:(id)handler;
+- (void)configureDirectTransportTask:(id)task;
 - (void)discardTransportUserIdentifier;
-- (void)dispatchForcedTaskBlock:(id)a3;
-- (void)dispatchSyncBlock:(id)a3;
-- (void)endClientWork:(id)a3;
-- (void)getStatusDictionaryWithCompletionHandler:(id)a3;
-- (void)getStatusWithCompletionHandler:(id)a3;
-- (void)openWithCompletionHandler:(id)a3;
-- (void)removeBrokenScope:(id)a3;
+- (void)dispatchForcedTaskBlock:(id)block;
+- (void)dispatchSyncBlock:(id)block;
+- (void)endClientWork:(id)work;
+- (void)getStatusDictionaryWithCompletionHandler:(id)handler;
+- (void)getStatusWithCompletionHandler:(id)handler;
+- (void)openWithCompletionHandler:(id)handler;
+- (void)removeBrokenScope:(id)scope;
 - (void)requestDisabledFeaturesUpdate;
 - (void)resetTransportUserIdentifier;
-- (void)scheduleForcedTaskForLaunch:(id)a3;
-- (void)setBoostPriority:(BOOL)a3;
-- (void)setErrorForSyncSessionUnlocked:(id)a3;
-- (void)setSyncSessionShouldBeForeground:(BOOL)a3;
-- (void)startSyncSession:(id)a3 withMinimalPhase:(unint64_t)a4 rewind:(BOOL)a5;
-- (void)task:(id)a3 didFinishWithError:(id)a4;
-- (void)task:(id)a3 didProgress:(float)a4 userInfo:(id)a5;
-- (void)unblockSyncSessionWithReason:(id)a3;
+- (void)scheduleForcedTaskForLaunch:(id)launch;
+- (void)setBoostPriority:(BOOL)priority;
+- (void)setErrorForSyncSessionUnlocked:(id)unlocked;
+- (void)setSyncSessionShouldBeForeground:(BOOL)foreground;
+- (void)startSyncSession:(id)session withMinimalPhase:(unint64_t)phase rewind:(BOOL)rewind;
+- (void)task:(id)task didFinishWithError:(id)error;
+- (void)task:(id)task didProgress:(float)progress userInfo:(id)info;
+- (void)unblockSyncSessionWithReason:(id)reason;
 @end
 
 @implementation CPLEngineSyncManager
@@ -78,7 +78,7 @@
 
 - (BOOL)hasBrokenScopes
 {
-  v2 = self;
+  selfCopy = self;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -87,16 +87,16 @@
   v5[1] = 3221225472;
   v6 = __39__CPLEngineSyncManager_hasBrokenScopes__block_invoke;
   v7 = &unk_1E861A850;
-  v8 = self;
+  selfCopy2 = self;
   v9 = &v10;
   v3 = v5;
-  os_unfair_lock_lock(&v2->_brokenScopesLock);
+  os_unfair_lock_lock(&selfCopy->_brokenScopesLock);
   v6(v3);
-  os_unfair_lock_unlock(&v2->_brokenScopesLock);
+  os_unfair_lock_unlock(&selfCopy->_brokenScopesLock);
 
-  LOBYTE(v2) = *(v11 + 24);
+  LOBYTE(selfCopy) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __39__CPLEngineSyncManager_hasBrokenScopes__block_invoke(uint64_t a1)
@@ -112,9 +112,9 @@ uint64_t __39__CPLEngineSyncManager_hasBrokenScopes__block_invoke(uint64_t a1)
   {
     if (!self->_hasOverridenBudgets)
     {
-      v3 = [(CPLEngineSyncManager *)self engineLibrary];
-      v4 = [v3 systemMonitor];
-      [v4 startOverridingSystemBudgets:18487 reason:3];
+      engineLibrary = [(CPLEngineSyncManager *)self engineLibrary];
+      systemMonitor = [engineLibrary systemMonitor];
+      [systemMonitor startOverridingSystemBudgets:18487 reason:3];
 
       self->_hasOverridenBudgets = 1;
     }
@@ -122,9 +122,9 @@ uint64_t __39__CPLEngineSyncManager_hasBrokenScopes__block_invoke(uint64_t a1)
 
   else if (self->_hasOverridenBudgets)
   {
-    v5 = [(CPLEngineSyncManager *)self engineLibrary];
-    v6 = [v5 systemMonitor];
-    [v6 stopOverridingSystemBudgets:18487 reason:3];
+    engineLibrary2 = [(CPLEngineSyncManager *)self engineLibrary];
+    systemMonitor2 = [engineLibrary2 systemMonitor];
+    [systemMonitor2 stopOverridingSystemBudgets:18487 reason:3];
 
     self->_hasOverridenBudgets = 0;
   }
@@ -162,10 +162,10 @@ uint64_t __39__CPLEngineSyncManager_hasBrokenScopes__block_invoke(uint64_t a1)
         v4 = __CPLSyncOSLogDomain();
         if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
         {
-          v5 = [(CPLEngineSyncManager *)v1 _shortDescriptionForCurrentState];
+          _shortDescriptionForCurrentState = [(CPLEngineSyncManager *)v1 _shortDescriptionForCurrentState];
           v6 = *(v1 + 80);
           v12 = 138412546;
-          v13 = v5;
+          v13 = _shortDescriptionForCurrentState;
           v14 = 2112;
           v15 = v6;
           _os_log_impl(&dword_1DC05A000, v4, OS_LOG_TYPE_DEBUG, "Stopping launch tasks (current state: %@) as we have an error to report: %@", &v12, 0x16u);
@@ -184,8 +184,8 @@ LABEL_13:
 
     [*(result + 64) noteSyncSessionMovedToState:*(result + 216)];
     WeakRetained = objc_loadWeakRetained((v1 + 208));
-    v9 = [WeakRetained scheduler];
-    [v9 noteSyncSession:*(v1 + 64) stateWillBeAttempted:*(v1 + 216)];
+    scheduler = [WeakRetained scheduler];
+    [scheduler noteSyncSession:*(v1 + 64) stateWillBeAttempted:*(v1 + 216)];
 
     result = 0;
     v10 = *(v1 + 216);
@@ -225,9 +225,9 @@ LABEL_15:
         v4 = __CPLSyncOSLogDomain();
         if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
         {
-          v11 = [(CPLEngineSyncManager *)v1 _shortDescriptionForCurrentState];
+          _shortDescriptionForCurrentState2 = [(CPLEngineSyncManager *)v1 _shortDescriptionForCurrentState];
           v12 = 138412290;
-          v13 = v11;
+          v13 = _shortDescriptionForCurrentState2;
           _os_log_impl(&dword_1DC05A000, v4, OS_LOG_TYPE_DEBUG, "Launched some necessary tasks for %@", &v12, 0xCu);
         }
 
@@ -241,38 +241,38 @@ LABEL_7:
   return result;
 }
 
-- (void)addDropDerivativesRecipe:(id)a3 writeToUserDefaults:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)addDropDerivativesRecipe:(id)recipe writeToUserDefaults:(BOOL)defaults withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if ([(CPLDerivativesFilter *)self->_derivativesFilter addServerDropDerivativesRecipe:v8])
+  recipeCopy = recipe;
+  handlerCopy = handler;
+  if ([(CPLDerivativesFilter *)self->_derivativesFilter addServerDropDerivativesRecipe:recipeCopy])
   {
-    v10 = [(CPLEngineSyncManager *)self engineLibrary];
-    v11 = [v10 store];
+    engineLibrary = [(CPLEngineSyncManager *)self engineLibrary];
+    store = [engineLibrary store];
 
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __91__CPLEngineSyncManager_addDropDerivativesRecipe_writeToUserDefaults_withCompletionHandler___block_invoke;
     v20[3] = &unk_1E86205B8;
-    v21 = v11;
-    v22 = self;
+    v21 = store;
+    selfCopy = self;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __91__CPLEngineSyncManager_addDropDerivativesRecipe_writeToUserDefaults_withCompletionHandler___block_invoke_3;
     v16[3] = &unk_1E861FA08;
-    v19 = a4;
-    v18 = v9;
+    defaultsCopy = defaults;
+    v18 = handlerCopy;
     v16[4] = self;
-    v17 = v8;
-    v12 = v11;
+    v17 = recipeCopy;
+    v12 = store;
     v13 = [v12 performWriteTransactionWithBlock:v20 completionHandler:v16];
   }
 
   else
   {
-    v14 = [v8 description];
+    v14 = [recipeCopy description];
     v15 = [CPLErrors incorrectParametersErrorForParameter:v14];
-    (*(v9 + 2))(v9, v15);
+    (*(handlerCopy + 2))(handlerCopy, v15);
   }
 }
 
@@ -329,8 +329,8 @@ void __91__CPLEngineSyncManager_addDropDerivativesRecipe_writeToUserDefaults_wit
 
 - (id)_dropDerivativeRulesFromUserDefaults
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"CPLDropDerivativesTestRules"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"CPLDropDerivativesTestRules"];
 
   if (v3)
   {
@@ -345,33 +345,33 @@ void __91__CPLEngineSyncManager_addDropDerivativesRecipe_writeToUserDefaults_wit
   return v4;
 }
 
-- (void)_addRuleToUserDefaults:(id)a3
+- (void)_addRuleToUserDefaults:(id)defaults
 {
-  v9 = a3;
-  v4 = [(CPLEngineSyncManager *)self _dropDerivativeRulesFromUserDefaults];
+  defaultsCopy = defaults;
+  _dropDerivativeRulesFromUserDefaults = [(CPLEngineSyncManager *)self _dropDerivativeRulesFromUserDefaults];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = v5;
-  if (v4)
+  if (_dropDerivativeRulesFromUserDefaults)
   {
-    [v5 addObjectsFromArray:v4];
+    [v5 addObjectsFromArray:_dropDerivativeRulesFromUserDefaults];
   }
 
-  [v6 addObject:v9];
+  [v6 addObject:defaultsCopy];
   v7 = [CPLDropDerivativesRecipe archiveArrayOfCPLDropDerivativeRecipes:v6];
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v8 setObject:v7 forKey:@"CPLDropDerivativesTestRules"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setObject:v7 forKey:@"CPLDropDerivativesTestRules"];
 }
 
-- (void)getStatusDictionaryWithCompletionHandler:(id)a3
+- (void)getStatusDictionaryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   lock = self->_lock;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__CPLEngineSyncManager_getStatusDictionaryWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E861AA50;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -379,7 +379,7 @@ void __91__CPLEngineSyncManager_addDropDerivativesRecipe_writeToUserDefaults_wit
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = lock;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -490,12 +490,12 @@ void __65__CPLEngineSyncManager_getStatusDictionaryWithCompletionHandler___block
 
 - (__CFString)_descriptionForLaunchedTasks
 {
-  if (!a1)
+  if (!self)
   {
     goto LABEL_10;
   }
 
-  length = a1[6].length;
+  length = self[6].length;
   if (!length || length == 14)
   {
     goto LABEL_13;
@@ -503,18 +503,18 @@ void __65__CPLEngineSyncManager_getStatusDictionaryWithCompletionHandler___block
 
   if (length == 1)
   {
-    [(__CFString *)a1 _descriptionForSetupTasks];
+    [(__CFString *)self _descriptionForSetupTasks];
   }
 
   else
   {
-    [a1[2].length descriptionForTasks];
+    [self[2].length descriptionForTasks];
   }
-  a1 = ;
-  if (!a1)
+  self = ;
+  if (!self)
   {
 LABEL_13:
-    a1 = @"No current tasks";
+    self = @"No current tasks";
   }
 
   else
@@ -522,19 +522,19 @@ LABEL_13:
 LABEL_10:
   }
 
-  return a1;
+  return self;
 }
 
-- (void)getStatusWithCompletionHandler:(id)a3
+- (void)getStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   lock = self->_lock;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__CPLEngineSyncManager_getStatusWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E861AA50;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -542,7 +542,7 @@ LABEL_10:
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = lock;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -916,13 +916,13 @@ LABEL_42:
 
 - (void)_shortDescriptionForCurrentState
 {
-  if (a1)
+  if (self)
   {
-    a1 = [objc_opt_class() shortDescriptionForState:a1[27]];
+    self = [objc_opt_class() shortDescriptionForState:self[27]];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __55__CPLEngineSyncManager_getStatusWithCompletionHandler___block_invoke_2(uint64_t a1)
@@ -1017,29 +1017,29 @@ void __33__CPLEngineSyncManager_lastError__block_invoke(uint64_t a1)
   objc_storeStrong((*(*(a1 + 40) + 8) + 40), v3);
 }
 
-- (void)endClientWork:(id)a3
+- (void)endClientWork:(id)work
 {
-  v4 = a3;
-  v5 = [(CPLEngineSyncManager *)self platformObject];
-  [v5 endClientWork:v4];
+  workCopy = work;
+  platformObject = [(CPLEngineSyncManager *)self platformObject];
+  [platformObject endClientWork:workCopy];
 }
 
-- (void)beginClientWork:(id)a3
+- (void)beginClientWork:(id)work
 {
-  v4 = a3;
-  v5 = [(CPLEngineSyncManager *)self platformObject];
-  [v5 beginClientWork:v4];
+  workCopy = work;
+  platformObject = [(CPLEngineSyncManager *)self platformObject];
+  [platformObject beginClientWork:workCopy];
 }
 
-- (void)closeAndDeactivate:(BOOL)a3 completionHandler:(id)a4
+- (void)closeAndDeactivate:(BOOL)deactivate completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   lock = self->_lock;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __61__CPLEngineSyncManager_closeAndDeactivate_completionHandler___block_invoke;
   v12[3] = &unk_1E861AAC8;
-  v13 = v6;
+  v13 = handlerCopy;
   v14 = a2;
   v12[4] = self;
   v8 = v12;
@@ -1049,7 +1049,7 @@ void __33__CPLEngineSyncManager_lastError__block_invoke(uint64_t a1)
   block[3] = &unk_1E861B4E0;
   v16 = v8;
   v9 = lock;
-  v10 = v6;
+  v10 = handlerCopy;
   v11 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v9, v11);
 }
@@ -1180,9 +1180,9 @@ uint64_t __61__CPLEngineSyncManager_closeAndDeactivate_completionHandler___block
       v4 = __CPLSyncOSLogDomain();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
-        v5 = [(CPLEngineSyncManager *)v3 _descriptionForLaunchedTasks];
+        _descriptionForLaunchedTasks = [(CPLEngineSyncManager *)v3 _descriptionForLaunchedTasks];
         v7 = 138412290;
-        v8 = v5;
+        v8 = _descriptionForLaunchedTasks;
         _os_log_impl(&dword_1DC05A000, v4, OS_LOG_TYPE_DEFAULT, "Cancelling all current sync manager tasks: %@", &v7, 0xCu);
       }
     }
@@ -1195,21 +1195,21 @@ uint64_t __61__CPLEngineSyncManager_closeAndDeactivate_completionHandler___block
   return result;
 }
 
-- (void)openWithCompletionHandler:(id)a3
+- (void)openWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CPLEngineSyncManager *)self engineLibrary];
-  v6 = [v5 store];
+  handlerCopy = handler;
+  engineLibrary = [(CPLEngineSyncManager *)self engineLibrary];
+  store = [engineLibrary store];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__CPLEngineSyncManager_openWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E861F9D8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v4;
-  v7 = v4;
-  v8 = v6;
+  v11 = store;
+  v12 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = store;
   v9 = [v8 performReadTransactionWithBlock:v10];
 }
 
@@ -1246,21 +1246,21 @@ void __50__CPLEngineSyncManager_openWithCompletionHandler___block_invoke(uint64_
   (*(v12 + 16))(v12, v13);
 }
 
-- (void)task:(id)a3 didProgress:(float)a4 userInfo:(id)a5
+- (void)task:(id)task didProgress:(float)progress userInfo:(id)info
 {
-  v9 = a3;
-  v10 = a5;
+  taskCopy = task;
+  infoCopy = info;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __50__CPLEngineSyncManager_task_didProgress_userInfo___block_invoke;
   v13[3] = &unk_1E861F9B0;
   v13[4] = self;
-  v14 = v9;
-  v17 = a4;
-  v15 = v10;
+  v14 = taskCopy;
+  progressCopy = progress;
+  v15 = infoCopy;
   v16 = a2;
-  v11 = v10;
-  v12 = v9;
+  v11 = infoCopy;
+  v12 = taskCopy;
   [(CPLEngineSyncManager *)self dispatchSyncBlock:v13];
 }
 
@@ -1328,23 +1328,23 @@ LABEL_14:
   [v25 didProgress:*(a1 + 48) userInfo:*(*(a1 + 32) + 216) forState:v7];
 }
 
-- (void)task:(id)a3 didFinishWithError:(id)a4
+- (void)task:(id)task didFinishWithError:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  taskCopy = task;
+  errorCopy = error;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v9 = __CPLSyncOSLogDomain();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [(CPLEngineSyncManager *)self _shortDescriptionForCurrentState];
+      _shortDescriptionForCurrentState = [(CPLEngineSyncManager *)self _shortDescriptionForCurrentState];
       *buf = 138412802;
-      v19 = v7;
+      v19 = taskCopy;
       v20 = 2112;
-      v21 = v8;
+      v21 = errorCopy;
       v22 = 2112;
-      v23 = v10;
+      v23 = _shortDescriptionForCurrentState;
       _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_DEBUG, "Task %@ did finish with error %@ in state %@", buf, 0x20u);
     }
   }
@@ -1354,11 +1354,11 @@ LABEL_14:
   v14[2] = __48__CPLEngineSyncManager_task_didFinishWithError___block_invoke;
   v14[3] = &unk_1E861B330;
   v14[4] = self;
-  v15 = v7;
-  v16 = v8;
+  v15 = taskCopy;
+  v16 = errorCopy;
   v17 = a2;
-  v11 = v8;
-  v12 = v7;
+  v11 = errorCopy;
+  v12 = taskCopy;
   [(CPLEngineSyncManager *)self dispatchSyncBlock:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -1657,7 +1657,7 @@ LABEL_61:
 - (void)_notifyEndOfSyncSession
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_17;
   }
@@ -1667,84 +1667,84 @@ LABEL_61:
     v2 = __CPLSyncOSLogDomain();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
     {
-      v3 = a1[10];
+      v3 = self[10];
       v24 = 138412290;
       v25 = v3;
       _os_log_impl(&dword_1DC05A000, v2, OS_LOG_TYPE_DEBUG, "Did finish sync session with error: %@", &v24, 0xCu);
     }
   }
 
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = a1[18];
-  a1[18] = v4;
+  date = [MEMORY[0x1E695DF00] date];
+  v5 = self[18];
+  self[18] = date;
 
-  v6 = a1[10];
-  v7 = [a1 engineLibrary];
-  v8 = [v7 scheduler];
-  v9 = v8;
-  v10 = a1[8];
+  v6 = self[10];
+  engineLibrary = [self engineLibrary];
+  scheduler = [engineLibrary scheduler];
+  v9 = scheduler;
+  v10 = self[8];
   if (v6)
   {
-    [v8 noteSyncSession:v10 failedDuringPhase:a1[27] withError:a1[10]];
+    [scheduler noteSyncSession:v10 failedDuringPhase:self[27] withError:self[10]];
 
-    v11 = [a1 platformObject];
+    platformObject = [self platformObject];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [a1 platformObject];
-      [v13 syncSessionDidFailWithError:a1[10]];
+      platformObject2 = [self platformObject];
+      [platformObject2 syncSessionDidFailWithError:self[10]];
 LABEL_11:
     }
   }
 
   else
   {
-    [v8 noteSyncSessionSucceeded:v10];
+    [scheduler noteSyncSessionSucceeded:v10];
 
-    v14 = [a1 platformObject];
+    platformObject3 = [self platformObject];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v13 = [a1 platformObject];
-      [v13 syncSessionDidSucceed];
+      platformObject2 = [self platformObject];
+      [platformObject2 syncSessionDidSucceed];
       goto LABEL_11;
     }
   }
 
-  v16 = [a1 platformObject];
+  platformObject4 = [self platformObject];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [a1 platformObject];
-    [v18 didFinishSyncSession];
+    platformObject5 = [self platformObject];
+    [platformObject5 didFinishSyncSession];
   }
 
-  [a1 _setState:0];
-  [a1 _overrideBudgetsIfNeeded];
-  v19 = [a1 platformObject];
+  [self _setState:0];
+  [self _overrideBudgetsIfNeeded];
+  platformObject6 = [self platformObject];
   v20 = objc_opt_respondsToSelector();
 
   if (v20)
   {
-    v21 = [a1 platformObject];
-    [v21 didMoveToState:0];
+    platformObject7 = [self platformObject];
+    [platformObject7 didMoveToState:0];
   }
 
-  v22 = a1[8];
-  a1[8] = 0;
+  v22 = self[8];
+  self[8] = 0;
 
-  [a1 _launchForcedTaskIfNecessary];
-  [(CPLEngineSyncManager *)a1 _dispatchCancellerBlocksIfNecessary];
+  [self _launchForcedTaskIfNecessary];
+  [(CPLEngineSyncManager *)self _dispatchCancellerBlocksIfNecessary];
 LABEL_17:
   v23 = *MEMORY[0x1E69E9840];
 }
 
 - (void)_resetErrorForSyncSession
 {
-  if (a1)
+  if (self)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -1756,18 +1756,18 @@ LABEL_17:
       }
     }
 
-    v3 = *(a1 + 80);
-    *(a1 + 80) = 0;
+    v3 = *(self + 80);
+    *(self + 80) = 0;
   }
 }
 
 - (void)_dispatchCancellerBlocksIfNecessary
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 72));
-    v2 = *(a1 + 176);
+    dispatch_assert_queue_V2(*(self + 72));
+    v2 = *(self + 176);
     if (v2)
     {
       v12 = 0u;
@@ -1801,24 +1801,24 @@ LABEL_17:
         while (v5);
       }
 
-      v8 = *(a1 + 176);
-      *(a1 + 176) = 0;
+      v8 = *(self + 176);
+      *(self + 176) = 0;
     }
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_didFinishSetupTaskWithError:(id)a3 shouldStop:(BOOL *)a4
+- (BOOL)_didFinishSetupTaskWithError:(id)error shouldStop:(BOOL *)stop
 {
-  v6 = a3;
+  errorCopy = error;
   setupTask = self->_setupTask;
   self->_setupTask = 0;
 
-  if (v6)
+  if (errorCopy)
   {
-    [(CPLEngineSyncManager *)self setErrorForSyncSessionUnlocked:v6];
-    *a4 = 1;
+    [(CPLEngineSyncManager *)self setErrorForSyncSessionUnlocked:errorCopy];
+    *stop = 1;
   }
 
   return 1;
@@ -1839,9 +1839,9 @@ LABEL_17:
       }
     }
 
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLEngineSyncManager.m"];
-    [v14 handleFailureInMethod:a2 object:self file:v15 lineNumber:1277 description:@"Trying to launch a setup task twice"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v15 lineNumber:1277 description:@"Trying to launch a setup task twice"];
 
     abort();
   }
@@ -1883,9 +1883,9 @@ LABEL_17:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
         v8 = self->_setupTask;
-        v9 = [(CPLEngineTransportSetupTask *)v8 foreground];
+        foreground = [(CPLEngineTransportSetupTask *)v8 foreground];
         v10 = " with background priority";
-        if (v9)
+        if (foreground)
         {
           v10 = " with foreground priority";
         }
@@ -1906,11 +1906,11 @@ LABEL_17:
   return result;
 }
 
-- (id)_setupTaskWithCompletionHandler:(id)a3
+- (id)_setupTaskWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_engineLibrary);
-  v7 = [WeakRetained transport];
+  transport = [WeakRetained transport];
 
   shouldUpdateDisabledFeatures = self->_shouldUpdateDisabledFeatures;
   v12[0] = MEMORY[0x1E69E9820];
@@ -1918,10 +1918,10 @@ LABEL_17:
   v12[2] = __56__CPLEngineSyncManager__setupTaskWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E861F988;
   v12[4] = self;
-  v13 = v5;
+  v13 = handlerCopy;
   v14 = a2;
-  v9 = v5;
-  v10 = [v7 setupTaskUpdateDisabledFeatures:shouldUpdateDisabledFeatures completionHandler:v12];
+  v9 = handlerCopy;
+  v10 = [transport setupTaskUpdateDisabledFeatures:shouldUpdateDisabledFeatures completionHandler:v12];
 
   return v10;
 }
@@ -2368,15 +2368,15 @@ uint64_t __56__CPLEngineSyncManager__setupTaskWithCompletionHandler___block_invo
   setupTask = self->_setupTask;
   if (setupTask)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", setupTask];
+    setupTask = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", setupTask];
   }
 
   else
   {
-    v4 = 0;
+    setupTask = 0;
   }
 
-  return v4;
+  return setupTask;
 }
 
 - (void)_launchForcedTaskIfNecessary
@@ -2385,12 +2385,12 @@ uint64_t __56__CPLEngineSyncManager__setupTaskWithCompletionHandler___block_invo
   dispatch_assert_queue_V2(self->_lock);
   if (!self->_closed && !self->_state && !self->_currentForcedTask && !self->_forcedSetupTask && [(NSMutableArray *)self->_pendingForcedTasks count]&& ![(NSCountedSet *)self->_blockedReasons count])
   {
-    v3 = [(CPLEngineSyncManager *)self _transportUserIdentifier];
-    if (v3)
+    _transportUserIdentifier = [(CPLEngineSyncManager *)self _transportUserIdentifier];
+    if (_transportUserIdentifier)
     {
-      v11 = [(NSMutableArray *)self->_pendingForcedTasks firstObject];
+      firstObject = [(NSMutableArray *)self->_pendingForcedTasks firstObject];
       currentForcedTask = self->_currentForcedTask;
-      self->_currentForcedTask = v11;
+      self->_currentForcedTask = firstObject;
 
       if ([(NSMutableArray *)self->_pendingForcedTasks count]== 1)
       {
@@ -2416,7 +2416,7 @@ uint64_t __56__CPLEngineSyncManager__setupTaskWithCompletionHandler___block_invo
         }
       }
 
-      v18 = [(CPLEngineSyncManagerForcedTask *)self->_currentForcedTask taskDidFinishWithErrorBlock];
+      taskDidFinishWithErrorBlock = [(CPLEngineSyncManagerForcedTask *)self->_currentForcedTask taskDidFinishWithErrorBlock];
       objc_initWeak(buf, self);
       v19 = self->_currentForcedTask;
       v21[0] = MEMORY[0x1E69E9820];
@@ -2425,10 +2425,10 @@ uint64_t __56__CPLEngineSyncManager__setupTaskWithCompletionHandler___block_invo
       v21[3] = &unk_1E861F890;
       objc_copyWeak(&v23, buf);
       v21[4] = self;
-      v20 = v18;
+      v20 = taskDidFinishWithErrorBlock;
       v22 = v20;
       [(CPLEngineSyncManagerForcedTask *)v19 setTaskDidFinishWithErrorBlock:v21];
-      [(CPLEngineSyncManagerForcedTask *)self->_currentForcedTask setTransportUserIdentifier:v3];
+      [(CPLEngineSyncManagerForcedTask *)self->_currentForcedTask setTransportUserIdentifier:_transportUserIdentifier];
       [(CPLEngineSyncManagerForcedTask *)self->_currentForcedTask reallyLaunch];
 
       objc_destroyWeak(&v23);
@@ -2448,7 +2448,7 @@ uint64_t __56__CPLEngineSyncManager__setupTaskWithCompletionHandler___block_invo
       }
 
       [(CPLEngineSyncManager *)self _launchForceSetupTask];
-      v3 = 0;
+      _transportUserIdentifier = 0;
     }
 
     goto LABEL_24;
@@ -2456,7 +2456,7 @@ uint64_t __56__CPLEngineSyncManager__setupTaskWithCompletionHandler___block_invo
 
   if ([(NSMutableArray *)self->_pendingForcedTasks count])
   {
-    v3 = [(NSMutableArray *)self->_pendingForcedTasks firstObject];
+    _transportUserIdentifier = [(NSMutableArray *)self->_pendingForcedTasks firstObject];
     if (self->_state)
     {
       if ((_CPLSilentLogging & 1) == 0)
@@ -2468,7 +2468,7 @@ uint64_t __56__CPLEngineSyncManager__setupTaskWithCompletionHandler___block_invo
           *buf = 138412546;
           v25 = v5;
           v26 = 2112;
-          v27 = v3;
+          v27 = _transportUserIdentifier;
           _os_log_impl(&dword_1DC05A000, v4, OS_LOG_TYPE_DEFAULT, "Waiting for sync manager to be quiet (currently in %@) before launching pending %@", buf, 0x16u);
         }
 
@@ -2494,7 +2494,7 @@ LABEL_24:
         *buf = 138412546;
         v25 = v6;
         v26 = 2112;
-        v27 = v3;
+        v27 = _transportUserIdentifier;
         v7 = "Waiting for sync manager to drop previous force sync %@ before launching pending %@";
         v8 = v4;
         v9 = 22;
@@ -2521,7 +2521,7 @@ LABEL_23:
       }
 
       *buf = 138412290;
-      v25 = v3;
+      v25 = _transportUserIdentifier;
       v7 = "Waiting for sync manager to finish forced setup before launching pending %@";
     }
 
@@ -2539,7 +2539,7 @@ LABEL_23:
       }
 
       *buf = 138412290;
-      v25 = v3;
+      v25 = _transportUserIdentifier;
       v7 = "Waiting for better conditions before launching pending %@";
     }
 
@@ -2625,9 +2625,9 @@ uint64_t __52__CPLEngineSyncManager__launchForcedTaskIfNecessary__block_invoke_2
       }
     }
 
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLEngineSyncManager.m"];
-    [v7 handleFailureInMethod:a2 object:self file:v8 lineNumber:1063 description:@"Trying to launch a forced setup twice"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v8 lineNumber:1063 description:@"Trying to launch a forced setup twice"];
 
     abort();
   }
@@ -2737,16 +2737,16 @@ LABEL_24:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelScheduledForcedTaskForLaunch:(id)a3
+- (void)cancelScheduledForcedTaskForLaunch:(id)launch
 {
-  v4 = a3;
+  launchCopy = launch;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__CPLEngineSyncManager_cancelScheduledForcedTaskForLaunch___block_invoke;
   v6[3] = &unk_1E861B290;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = launchCopy;
+  v5 = launchCopy;
   [(CPLEngineSyncManager *)self dispatchForcedTaskBlock:v6];
 }
 
@@ -2795,16 +2795,16 @@ uint64_t __59__CPLEngineSyncManager_cancelScheduledForcedTaskForLaunch___block_i
   return [v12 _reenableSchedulerForForcedTaskIfNecessary];
 }
 
-- (void)scheduleForcedTaskForLaunch:(id)a3
+- (void)scheduleForcedTaskForLaunch:(id)launch
 {
-  v4 = a3;
+  launchCopy = launch;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__CPLEngineSyncManager_scheduleForcedTaskForLaunch___block_invoke;
   v6[3] = &unk_1E861B290;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = launchCopy;
+  v5 = launchCopy;
   [(CPLEngineSyncManager *)self dispatchForcedTaskBlock:v6];
 }
 
@@ -3072,28 +3072,28 @@ LABEL_22:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_canLaunchForcedTaskVsOtherForcedTask:(void *)a3 otherForcedTask:(char *)a4 discardOtherForcedTask:
+- (uint64_t)_canLaunchForcedTaskVsOtherForcedTask:(void *)task otherForcedTask:(char *)forcedTask discardOtherForcedTask:
 {
   v19 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  taskCopy = task;
+  if (self)
   {
-    v9 = [v7 forcedTaskPriority];
-    v10 = [v8 forcedTaskPriority];
-    if (v9 < v10)
+    forcedTaskPriority = [v7 forcedTaskPriority];
+    forcedTaskPriority2 = [taskCopy forcedTaskPriority];
+    if (forcedTaskPriority < forcedTaskPriority2)
     {
 LABEL_3:
-      a1 = 0;
+      self = 0;
       v11 = 0;
 LABEL_14:
-      *a4 = v11;
+      *forcedTask = v11;
       goto LABEL_15;
     }
 
-    if (v9 == v10)
+    if (forcedTaskPriority == forcedTaskPriority2)
     {
-      if (![v8 allowsForcedTaskQueuing])
+      if (![taskCopy allowsForcedTaskQueuing])
       {
         goto LABEL_3;
       }
@@ -3101,7 +3101,7 @@ LABEL_14:
       if ([v7 allowsForcedTaskQueuing])
       {
         v11 = 0;
-        a1 = 1;
+        self = 1;
         goto LABEL_14;
       }
 
@@ -3111,17 +3111,17 @@ LABEL_14:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           v15 = 138412546;
-          v16 = v8;
+          v16 = taskCopy;
           v17 = 2112;
           v18 = v7;
           _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_DEFAULT, "Cancelling %@ because we must launch %@", &v15, 0x16u);
         }
       }
 
-      [v8 cancelTask];
+      [taskCopy cancelTask];
     }
 
-    a1 = 1;
+    self = 1;
     v11 = 1;
     goto LABEL_14;
   }
@@ -3129,25 +3129,25 @@ LABEL_14:
 LABEL_15:
 
   v13 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
-- (void)_recordForcedTask:(BOOL)a3 discarded:(void *)a4 error:
+- (void)_recordForcedTask:(BOOL)task discarded:(void *)discarded error:
 {
   v21 = a2;
-  v7 = a4;
-  if (a1)
+  discardedCopy = discarded;
+  if (self)
   {
-    if (!*(a1 + 168))
+    if (!*(self + 168))
     {
       v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v9 = *(a1 + 168);
-      *(a1 + 168) = v8;
+      v9 = *(self + 168);
+      *(self + 168) = v8;
     }
 
     v10 = [_CPLForcedTaskHistory alloc];
     v11 = v21;
-    v12 = v7;
+    v12 = discardedCopy;
     if (v10)
     {
       v22.receiver = v10;
@@ -3155,48 +3155,48 @@ LABEL_15:
       v10 = objc_msgSendSuper2(&v22, sel_init);
       if (v10)
       {
-        v13 = [v11 simpleDescription];
+        simpleDescription = [v11 simpleDescription];
         simpleDescription = v10->_simpleDescription;
-        v10->_simpleDescription = v13;
+        v10->_simpleDescription = simpleDescription;
 
-        v15 = [v11 creationDate];
+        creationDate = [v11 creationDate];
         creationDate = v10->_creationDate;
-        v10->_creationDate = v15;
+        v10->_creationDate = creationDate;
 
         v17 = objc_opt_class();
         taskClass = v10->_taskClass;
         v10->_taskClass = v17;
 
-        v10->_discarded = a3;
-        v19 = [v12 localizedDescription];
+        v10->_discarded = task;
+        localizedDescription = [v12 localizedDescription];
         errorDescription = v10->_errorDescription;
-        v10->_errorDescription = v19;
+        v10->_errorDescription = localizedDescription;
       }
     }
 
-    [*(a1 + 168) addObject:v10];
-    if ([*(a1 + 168) count] >= 4)
+    [*(self + 168) addObject:v10];
+    if ([*(self + 168) count] >= 4)
     {
-      [*(a1 + 168) removeObjectsInRange:{0, objc_msgSend(*(a1 + 168), "count") - 3}];
+      [*(self + 168) removeObjectsInRange:{0, objc_msgSend(*(self + 168), "count") - 3}];
     }
   }
 }
 
-- (void)_forcedTaskDidFinishWithError:(id)a3
+- (void)_forcedTaskDidFinishWithError:(id)error
 {
   currentForcedTask = self->_currentForcedTask;
   if (currentForcedTask)
   {
-    [(CPLEngineSyncManager *)self _recordForcedTask:0 discarded:a3 error:?];
+    [(CPLEngineSyncManager *)self _recordForcedTask:0 discarded:error error:?];
     v5 = self->_currentForcedTask;
     self->_currentForcedTask = 0;
   }
 }
 
-- (void)_discardPendingForcedTasksWithError:(id)a3
+- (void)_discardPendingForcedTasksWithError:(id)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -3217,17 +3217,17 @@ LABEL_15:
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 taskDidFinishWithErrorBlock];
-        v12 = v11;
-        if (v4)
+        taskDidFinishWithErrorBlock = [v10 taskDidFinishWithErrorBlock];
+        v12 = taskDidFinishWithErrorBlock;
+        if (errorCopy)
         {
-          (*(v11 + 16))(v11, v10, v4);
+          (*(taskDidFinishWithErrorBlock + 16))(taskDidFinishWithErrorBlock, v10, errorCopy);
         }
 
         else
         {
-          v13 = [v10 discardedError];
-          (v12)[2](v12, v10, v13);
+          discardedError = [v10 discardedError];
+          (v12)[2](v12, v10, discardedError);
         }
       }
 
@@ -3246,20 +3246,20 @@ LABEL_15:
 
 - (BOOL)_checkForegroundAtLaunchForForcedTask
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"CPLForceForegroundAtLaunchForForcedTask"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"CPLForceForegroundAtLaunchForForcedTask"];
 
   if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)_reenableSchedulerForForcedTaskIfNecessary
@@ -3267,9 +3267,9 @@ LABEL_15:
   dispatch_assert_queue_V2(self->_lock);
   if (![(NSMutableArray *)self->_pendingForcedTasks count]&& !self->_currentForcedTask && !self->_forcedSetupTask && self->_disabledSchedulerForForcedTask)
   {
-    v3 = [(CPLEngineSyncManager *)self engineLibrary];
-    v4 = [v3 scheduler];
-    [v4 enableSynchronizationWithReason:@"performing a forced task"];
+    engineLibrary = [(CPLEngineSyncManager *)self engineLibrary];
+    scheduler = [engineLibrary scheduler];
+    [scheduler enableSynchronizationWithReason:@"performing a forced task"];
 
     self->_disabledSchedulerForForcedTask = 0;
     closingCompletionHandler = self->_closingCompletionHandler;
@@ -3289,18 +3289,18 @@ LABEL_15:
   dispatch_assert_queue_V2(self->_lock);
   if (!self->_closed && ([(NSMutableArray *)self->_pendingForcedTasks count]|| self->_currentForcedTask || self->_forcedSetupTask) && !self->_disabledSchedulerForForcedTask)
   {
-    v3 = [(CPLEngineSyncManager *)self engineLibrary];
-    v4 = [v3 scheduler];
-    [v4 disableSynchronizationWithReason:@"performing a forced task"];
+    engineLibrary = [(CPLEngineSyncManager *)self engineLibrary];
+    scheduler = [engineLibrary scheduler];
+    [scheduler disableSynchronizationWithReason:@"performing a forced task"];
 
     [(CPLEngineSyncManager *)self _cancelAllTasksLockedDeferringPushTaskCancellationIfCurrentlyUploadingForeground:?];
     self->_disabledSchedulerForForcedTask = 1;
   }
 }
 
-- (void)removeBrokenScope:(id)a3
+- (void)removeBrokenScope:(id)scope
 {
-  v4 = a3;
+  scopeCopy = scope;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -3309,8 +3309,8 @@ LABEL_15:
   v11[1] = 3221225472;
   v12 = __42__CPLEngineSyncManager_removeBrokenScope___block_invoke;
   v13 = &unk_1E861F868;
-  v14 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = scopeCopy;
   v15 = v5;
   v16 = &v17;
   v6 = v11;
@@ -3330,9 +3330,9 @@ LABEL_15:
       }
     }
 
-    v8 = [(CPLEngineSyncManager *)self engineLibrary];
-    v9 = [v8 scheduler];
-    [v9 kickOffSyncSession];
+    engineLibrary = [(CPLEngineSyncManager *)self engineLibrary];
+    scheduler = [engineLibrary scheduler];
+    [scheduler kickOffSyncSession];
   }
 
   _Block_object_dispose(&v17, 8);
@@ -3364,18 +3364,18 @@ uint64_t __42__CPLEngineSyncManager_removeBrokenScope___block_invoke_2(uint64_t 
   return v6;
 }
 
-- (void)addBrokenScope:(id)a3
+- (void)addBrokenScope:(id)scope
 {
-  v4 = a3;
+  scopeCopy = scope;
   v5 = [CPLBrokenScope alloc];
-  v6 = [(CPLEngineSyncManager *)self engineLibrary];
-  v7 = [(CPLBrokenScope *)v5 initWithEngineScope:v4 engineLibrary:v6];
+  engineLibrary = [(CPLEngineSyncManager *)self engineLibrary];
+  v7 = [(CPLBrokenScope *)v5 initWithEngineScope:scopeCopy engineLibrary:engineLibrary];
 
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __39__CPLEngineSyncManager_addBrokenScope___block_invoke;
   v13 = &unk_1E861B290;
-  v14 = self;
+  selfCopy = self;
   v8 = v7;
   v15 = v8;
   v9 = &v10;
@@ -3416,7 +3416,7 @@ uint64_t __39__CPLEngineSyncManager_addBrokenScope___block_invoke(uint64_t a1)
   v9[1] = 3221225472;
   v10 = __36__CPLEngineSyncManager_brokenScopes__block_invoke;
   v11 = &unk_1E861F818;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
   v3 = v9;
   os_unfair_lock_lock(&self->_brokenScopesLock);
@@ -3486,19 +3486,19 @@ void __36__CPLEngineSyncManager_brokenScopes__block_invoke(uint64_t a1)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configureDirectTransportTask:(id)a3
+- (void)configureDirectTransportTask:(id)task
 {
-  v4 = a3;
-  v5 = [(CPLEngineSyncManager *)self _transportUserIdentifier];
-  [v4 setTransportUserIdentifier:v5];
+  taskCopy = task;
+  _transportUserIdentifier = [(CPLEngineSyncManager *)self _transportUserIdentifier];
+  [taskCopy setTransportUserIdentifier:_transportUserIdentifier];
 }
 
-- (BOOL)prepareAndLaunchSyncTaskUnlocked:(id)a3
+- (BOOL)prepareAndLaunchSyncTaskUnlocked:(id)unlocked
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  unlockedCopy = unlocked;
   dispatch_assert_queue_V2(self->_lock);
-  if (!v5)
+  if (!unlockedCopy)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -3510,20 +3510,20 @@ void __36__CPLEngineSyncManager_brokenScopes__block_invoke(uint64_t a1)
       }
     }
 
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLEngineSyncManager.m"];
-    [v24 handleFailureInMethod:a2 object:self file:v25 lineNumber:792 description:@"Asked to launch a task without providing a task"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v25 lineNumber:792 description:@"Asked to launch a task without providing a task"];
 
     abort();
   }
 
-  v6 = [(CPLEngineSyncManager *)self _transportUserIdentifier];
-  if (v6)
+  _transportUserIdentifier = [(CPLEngineSyncManager *)self _transportUserIdentifier];
+  if (_transportUserIdentifier)
   {
-    v7 = [(CPLEngineSyncManager *)self engineLibrary];
-    v8 = [v7 scheduler];
+    engineLibrary = [(CPLEngineSyncManager *)self engineLibrary];
+    scheduler = [engineLibrary scheduler];
     v26 = 0;
-    v9 = [v8 isSynchronizationDisabledWithReasonError:&v26];
+    v9 = [scheduler isSynchronizationDisabledWithReasonError:&v26];
     v10 = v26;
 
     if (v9)
@@ -3549,17 +3549,17 @@ void __36__CPLEngineSyncManager_brokenScopes__block_invoke(uint64_t a1)
         goto LABEL_17;
       }
 
-      v12 = [(CPLEngineSyncManager *)self engineLibrary];
-      v13 = [v12 systemMonitor];
+      engineLibrary2 = [(CPLEngineSyncManager *)self engineLibrary];
+      systemMonitor = [engineLibrary2 systemMonitor];
 
-      v14 = [v13 diskPressureState];
-      v15 = self->_state >= 9 ? v14 == 0 : v14 != 2;
+      diskPressureState = [systemMonitor diskPressureState];
+      v15 = self->_state >= 9 ? diskPressureState == 0 : diskPressureState != 2;
 
       if (v15)
       {
 LABEL_17:
-        [v5 setTransportUserIdentifier:v6];
-        [v5 setDelegate:self];
+        [unlockedCopy setTransportUserIdentifier:_transportUserIdentifier];
+        [unlockedCopy setDelegate:self];
         if ((_CPLSilentLogging & 1) == 0)
         {
           v16 = __CPLSyncOSLogDomain();
@@ -3572,15 +3572,15 @@ LABEL_17:
             }
 
             *buf = 138412546;
-            v28 = v5;
+            v28 = unlockedCopy;
             v29 = 2080;
             v30 = v17;
             _os_log_impl(&dword_1DC05A000, v16, OS_LOG_TYPE_DEBUG, "Launching %@%s", buf, 0x16u);
           }
         }
 
-        [v5 setForeground:self->_foreground];
-        [v5 launch];
+        [unlockedCopy setForeground:self->_foreground];
+        [unlockedCopy launch];
         v18 = 1;
         goto LABEL_29;
       }
@@ -3611,7 +3611,7 @@ LABEL_17:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v28 = v5;
+      v28 = unlockedCopy;
       _os_log_impl(&dword_1DC05A000, v10, OS_LOG_TYPE_DEBUG, "Can't launch %@ as there is no transport user identifier", buf, 0xCu);
     }
   }
@@ -3624,7 +3624,7 @@ LABEL_30:
   return v18;
 }
 
-- (void)setBoostPriority:(BOOL)a3
+- (void)setBoostPriority:(BOOL)priority
 {
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
@@ -3632,7 +3632,7 @@ LABEL_30:
   v7[2] = __41__CPLEngineSyncManager_setBoostPriority___block_invoke;
   v7[3] = &unk_1E861F7F0;
   v7[4] = self;
-  v8 = a3;
+  priorityCopy = priority;
   v4 = v7;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -3681,13 +3681,13 @@ uint64_t __41__CPLEngineSyncManager_setBoostPriority___block_invoke(uint64_t res
   return result;
 }
 
-- (void)setSyncSessionShouldBeForeground:(BOOL)a3
+- (void)setSyncSessionShouldBeForeground:(BOOL)foreground
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __57__CPLEngineSyncManager_setSyncSessionShouldBeForeground___block_invoke;
   v3[3] = &unk_1E861F7F0;
-  v4 = a3;
+  foregroundCopy = foreground;
   v3[4] = self;
   [(CPLEngineSyncManager *)self dispatchSyncBlock:v3];
 }
@@ -3969,26 +3969,26 @@ void __52__CPLEngineSyncManager_resetTransportUserIdentifier__block_invoke_2(uin
   [v3 do:v5];
 }
 
-- (void)_setTransportUserIdentifier:(id)a3
+- (void)_setTransportUserIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_transportUserIdentifierLock);
   transportUserIdentifier = self->_transportUserIdentifier;
-  self->_transportUserIdentifier = v4;
+  self->_transportUserIdentifier = identifierCopy;
 
   os_unfair_lock_unlock(&self->_transportUserIdentifierLock);
 }
 
-- (void)unblockSyncSessionWithReason:(id)a3
+- (void)unblockSyncSessionWithReason:(id)reason
 {
-  v5 = a3;
+  reasonCopy = reason;
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53__CPLEngineSyncManager_unblockSyncSessionWithReason___block_invoke;
   v11[3] = &unk_1E861B128;
   v11[4] = self;
-  v12 = v5;
+  v12 = reasonCopy;
   v13 = a2;
   v7 = v11;
   block[0] = MEMORY[0x1E69E9820];
@@ -3997,7 +3997,7 @@ void __52__CPLEngineSyncManager_resetTransportUserIdentifier__block_invoke_2(uin
   block[3] = &unk_1E861B4E0;
   v15 = v7;
   v8 = lock;
-  v9 = v5;
+  v9 = reasonCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
@@ -4046,18 +4046,18 @@ uint64_t __53__CPLEngineSyncManager_unblockSyncSessionWithReason___block_invoke(
   return result;
 }
 
-- (void)cancelAndBlockAllSyncSessionsWithReason:(id)a3 block:(id)a4
+- (void)cancelAndBlockAllSyncSessionsWithReason:(id)reason block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  blockCopy = block;
   lock = self->_lock;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __70__CPLEngineSyncManager_cancelAndBlockAllSyncSessionsWithReason_block___block_invoke;
   v14[3] = &unk_1E861B3D0;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = reasonCopy;
+  v16 = blockCopy;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -4065,8 +4065,8 @@ uint64_t __53__CPLEngineSyncManager_unblockSyncSessionWithReason___block_invoke(
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = lock;
-  v11 = v7;
-  v12 = v6;
+  v11 = blockCopy;
+  v12 = reasonCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -4153,30 +4153,30 @@ void __70__CPLEngineSyncManager_cancelAndBlockAllSyncSessionsWithReason_block___
 - (void)_cancelCurrentSyncSession
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    a1[3].length = 14;
-    if (a1[6].length <= 0xDuLL)
+    self[3].length = 14;
+    if (self[6].length <= 0xDuLL)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
         v2 = __CPLSyncOSLogDomain();
         if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
         {
-          v3 = [(CPLEngineSyncManager *)a1 _shortDescriptionForCurrentState];
-          v4 = [(CPLEngineSyncManager *)a1 _descriptionForLaunchedTasks];
+          _shortDescriptionForCurrentState = [(CPLEngineSyncManager *)self _shortDescriptionForCurrentState];
+          _descriptionForLaunchedTasks = [(CPLEngineSyncManager *)self _descriptionForLaunchedTasks];
           v8 = 138412546;
-          v9 = v3;
+          v9 = _shortDescriptionForCurrentState;
           v10 = 2112;
-          v11 = v4;
+          v11 = _descriptionForLaunchedTasks;
           _os_log_impl(&dword_1DC05A000, v2, OS_LOG_TYPE_DEBUG, "Cancelling %@ (%@)", &v8, 0x16u);
         }
       }
 
-      [(CPLEngineSyncManager *)a1 _cancelAllTasksLockedDeferringPushTaskCancellationIfCurrentlyUploadingForeground:?];
-      v5 = [(__CFString *)a1 engineLibrary];
-      v6 = [v5 store];
-      [v6 performBarrier];
+      [(CPLEngineSyncManager *)self _cancelAllTasksLockedDeferringPushTaskCancellationIfCurrentlyUploadingForeground:?];
+      engineLibrary = [(__CFString *)self engineLibrary];
+      store = [engineLibrary store];
+      [store performBarrier];
     }
   }
 
@@ -4202,18 +4202,18 @@ void __70__CPLEngineSyncManager_cancelAndBlockAllSyncSessionsWithReason_block___
   dispatch_async(v4, v5);
 }
 
-- (void)startSyncSession:(id)a3 withMinimalPhase:(unint64_t)a4 rewind:(BOOL)a5
+- (void)startSyncSession:(id)session withMinimalPhase:(unint64_t)phase rewind:(BOOL)rewind
 {
-  v8 = a3;
+  sessionCopy = session;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__CPLEngineSyncManager_startSyncSession_withMinimalPhase_rewind___block_invoke;
   v10[3] = &unk_1E861B178;
-  v13 = a5;
+  rewindCopy = rewind;
   v10[4] = self;
-  v11 = v8;
-  v12 = a4;
-  v9 = v8;
+  v11 = sessionCopy;
+  phaseCopy = phase;
+  v9 = sessionCopy;
   [(CPLEngineSyncManager *)self dispatchSyncBlock:v10];
 }
 
@@ -4433,7 +4433,7 @@ LABEL_46:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_advanceToNextStateLockedMinimalState:(unint64_t)a3
+- (void)_advanceToNextStateLockedMinimalState:(unint64_t)state
 {
   v58 = *MEMORY[0x1E69E9840];
   if ([(NSMutableArray *)self->_pendingForcedTasks count]|| self->_disabledSchedulerForForcedTask || self->_closed)
@@ -4455,9 +4455,9 @@ LABEL_13:
       v6 = __CPLForcedOSLogDomain();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(NSMutableArray *)self->_pendingForcedTasks firstObject];
+        firstObject = [(NSMutableArray *)self->_pendingForcedTasks firstObject];
         *buf = 138412290;
-        *&buf[4] = v7;
+        *&buf[4] = firstObject;
         _os_log_impl(&dword_1DC05A000, v6, OS_LOG_TYPE_DEFAULT, "Stopping current sync session because of pending %@", buf, 0xCu);
       }
     }
@@ -4510,18 +4510,18 @@ LABEL_13:
       v27 = __CPLSyncOSLogDomain();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
-        v28 = [(CPLEngineSyncManager *)self _shortDescriptionForCurrentState];
+        _shortDescriptionForCurrentState = [(CPLEngineSyncManager *)self _shortDescriptionForCurrentState];
         *buf = 138412290;
-        *&buf[4] = v28;
+        *&buf[4] = _shortDescriptionForCurrentState;
         _os_log_impl(&dword_1DC05A000, v27, OS_LOG_TYPE_DEBUG, "Looking for next steps after %@ but setup must be done first", buf, 0xCu);
       }
     }
 
     [(CPLEngineSyncManager *)self _setState:0];
-    v29 = [(CPLEngineSyncManager *)self platformObject];
-    [v29 didMoveToState:self->_state];
+    platformObject = [(CPLEngineSyncManager *)self platformObject];
+    [platformObject didMoveToState:self->_state];
 
-    a3 = 0;
+    state = 0;
   }
 
   if ((_CPLSilentLogging & 1) == 0)
@@ -4529,25 +4529,25 @@ LABEL_13:
     v30 = __CPLSyncOSLogDomain();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
-      v31 = [(CPLEngineSyncManager *)self _shortDescriptionForCurrentState];
+      _shortDescriptionForCurrentState2 = [(CPLEngineSyncManager *)self _shortDescriptionForCurrentState];
       *buf = 138412290;
-      *&buf[4] = v31;
+      *&buf[4] = _shortDescriptionForCurrentState2;
       _os_log_impl(&dword_1DC05A000, v30, OS_LOG_TYPE_DEBUG, "Looking for next state after %@", buf, 0xCu);
     }
   }
 
   state = self->_state;
-  if (a3 <= state)
+  if (state <= state)
   {
-    v32 = self->_state;
+    stateCopy = self->_state;
   }
 
   else
   {
-    v32 = a3;
+    stateCopy = state;
   }
 
-  [(CPLEngineSyncManager *)self _setState:v32];
+  [(CPLEngineSyncManager *)self _setState:stateCopy];
   while (1)
   {
     v33 = self->_state;
@@ -4558,11 +4558,11 @@ LABEL_13:
 
     if (v33 >= 3)
     {
-      v34 = [(CPLEngineSyncManager *)self engineLibrary];
-      v35 = [v34 store];
-      v36 = [v35 isClientInSyncWithClientCache];
+      engineLibrary = [(CPLEngineSyncManager *)self engineLibrary];
+      store = [engineLibrary store];
+      isClientInSyncWithClientCache = [store isClientInSyncWithClientCache];
 
-      if ((v36 & 1) == 0)
+      if ((isClientInSyncWithClientCache & 1) == 0)
       {
         if ((_CPLSilentLogging & 1) == 0)
         {
@@ -4578,20 +4578,20 @@ LABEL_13:
       }
     }
 
-    v37 = [(CPLEngineSyncManager *)self hasBrokenScopes];
+    hasBrokenScopes = [(CPLEngineSyncManager *)self hasBrokenScopes];
     v38 = self->_state;
-    if (v37)
+    if (hasBrokenScopes)
     {
       break;
     }
 
     if (v38 >= 9)
     {
-      v39 = [(CPLEngineSyncManager *)self engineLibrary];
-      v40 = [v39 scheduler];
-      v41 = [v40 isMinglingEnabled];
+      engineLibrary2 = [(CPLEngineSyncManager *)self engineLibrary];
+      scheduler = [engineLibrary2 scheduler];
+      isMinglingEnabled = [scheduler isMinglingEnabled];
 
-      if (!v41)
+      if (!isMinglingEnabled)
       {
         if ((_CPLSilentLogging & 1) == 0)
         {
@@ -4647,7 +4647,7 @@ LABEL_69:
   v49[1] = 3221225472;
   v50 = __62__CPLEngineSyncManager__advanceToNextStateLockedMinimalState___block_invoke;
   v51 = &unk_1E861A850;
-  v52 = self;
+  selfCopy = self;
   v53 = buf;
   v44 = v49;
   os_unfair_lock_lock(&self->_brokenScopesLock);
@@ -4660,7 +4660,7 @@ LABEL_69:
 LABEL_14:
   if (state != self->_state)
   {
-    v11 = [(CPLEngineSyncManager *)self platformObject];
+    platformObject2 = [(CPLEngineSyncManager *)self platformObject];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
@@ -4670,18 +4670,18 @@ LABEL_14:
         v13 = __CPLSyncOSLogDomain();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
         {
-          v14 = [(CPLEngineSyncManager *)self _shortDescriptionForCurrentState];
-          v15 = [(CPLEngineSyncManager *)self _descriptionForLaunchedTasks];
+          _shortDescriptionForCurrentState3 = [(CPLEngineSyncManager *)self _shortDescriptionForCurrentState];
+          _descriptionForLaunchedTasks = [(CPLEngineSyncManager *)self _descriptionForLaunchedTasks];
           *buf = 138412546;
-          *&buf[4] = v14;
+          *&buf[4] = _shortDescriptionForCurrentState3;
           *&buf[12] = 2112;
-          *&buf[14] = v15;
+          *&buf[14] = _descriptionForLaunchedTasks;
           _os_log_impl(&dword_1DC05A000, v13, OS_LOG_TYPE_DEBUG, "Moving to state %@ with current tasks: %@", buf, 0x16u);
         }
       }
 
-      v16 = [(CPLEngineSyncManager *)self platformObject];
-      [v16 didMoveToState:self->_state];
+      platformObject3 = [(CPLEngineSyncManager *)self platformObject];
+      [platformObject3 didMoveToState:self->_state];
     }
   }
 
@@ -4726,9 +4726,9 @@ LABEL_14:
         }
       }
 
-      v47 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v48 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLEngineSyncManager.m"];
-      [v47 handleFailureInMethod:a2 object:self file:v48 lineNumber:525 description:@"State should not be quiet here"];
+      [currentHandler handleFailureInMethod:a2 object:self file:v48 lineNumber:525 description:@"State should not be quiet here"];
 
       abort();
     }
@@ -4745,13 +4745,13 @@ LABEL_14:
         }
       }
 
-      v21 = [(CPLEngineSyncManager *)self platformObject];
+      platformObject4 = [(CPLEngineSyncManager *)self platformObject];
       v22 = objc_opt_respondsToSelector();
 
       if (v22)
       {
-        v23 = [(CPLEngineSyncManager *)self platformObject];
-        [v23 willStartSyncSession];
+        platformObject5 = [(CPLEngineSyncManager *)self platformObject];
+        [platformObject5 willStartSyncSession];
       }
     }
   }
@@ -4769,7 +4769,7 @@ uint64_t __62__CPLEngineSyncManager__advanceToNextStateLockedMinimalState___bloc
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)_setState:(unint64_t)a3
+- (void)_setState:(unint64_t)state
 {
   v26 = *MEMORY[0x1E69E9840];
   currentStep = self->_currentStep;
@@ -4780,36 +4780,36 @@ uint64_t __62__CPLEngineSyncManager__advanceToNextStateLockedMinimalState___bloc
       v15 = __CPLSyncOSLogDomain();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [CPLEngineSyncManager descriptionForState:a3];
-        v17 = [(CPLSyncStep *)self->_currentStep descriptionForTasks];
+        v16 = [CPLEngineSyncManager descriptionForState:state];
+        descriptionForTasks = [(CPLSyncStep *)self->_currentStep descriptionForTasks];
         *buf = 138412546;
         v23 = v16;
         v24 = 2112;
-        v25 = v17;
+        v25 = descriptionForTasks;
         _os_log_impl(&dword_1DC05A000, v15, OS_LOG_TYPE_ERROR, "Trying to move to %@ while still having running tasks for %@", buf, 0x16u);
       }
     }
 
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLEngineSyncManager.m"];
-    v20 = [CPLEngineSyncManager descriptionForState:a3];
-    v21 = [(CPLSyncStep *)self->_currentStep descriptionForTasks];
-    [v18 handleFailureInMethod:a2 object:self file:v19 lineNumber:437 description:{@"Trying to move to %@ while still having running tasks for %@", v20, v21}];
+    v20 = [CPLEngineSyncManager descriptionForState:state];
+    descriptionForTasks2 = [(CPLSyncStep *)self->_currentStep descriptionForTasks];
+    [currentHandler handleFailureInMethod:a2 object:self file:v19 lineNumber:437 description:{@"Trying to move to %@ while still having running tasks for %@", v20, descriptionForTasks2}];
 
     abort();
   }
 
   if (self->_session)
   {
-    v7 = self->_state == a3 || a3 == 0;
-    v8 = v7 || a3 == 14;
+    v7 = self->_state == state || state == 0;
+    v8 = v7 || state == 14;
     if (!v8 && (_CPLSilentLogging & 1) == 0)
     {
       v12 = __CPLSyncOSLogDomain();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         session = self->_session;
-        v14 = [CPLEngineSyncManager shortDescriptionForState:a3];
+        v14 = [CPLEngineSyncManager shortDescriptionForState:state];
         *buf = 138412546;
         v23 = session;
         v24 = 2112;
@@ -4819,7 +4819,7 @@ uint64_t __62__CPLEngineSyncManager__advanceToNextStateLockedMinimalState___bloc
     }
   }
 
-  self->_state = a3;
+  self->_state = state;
   v9 = [objc_opt_class() stepForState:self->_state syncManager:self session:self->_session];
   v10 = self->_currentStep;
   self->_currentStep = v9;
@@ -4827,21 +4827,21 @@ uint64_t __62__CPLEngineSyncManager__advanceToNextStateLockedMinimalState___bloc
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setErrorForSyncSessionUnlocked:(id)a3
+- (void)setErrorForSyncSessionUnlocked:(id)unlocked
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  unlockedCopy = unlocked;
   dispatch_assert_queue_V2(self->_lock);
-  if ([(NSError *)v4 isCPLOperationCancelledError])
+  if ([(NSError *)unlockedCopy isCPLOperationCancelledError])
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
       v5 = __CPLLastSyncErrorOSLogDomain();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
-        v6 = [(CPLEngineSyncManager *)self _shortDescriptionForCurrentState];
+        _shortDescriptionForCurrentState = [(CPLEngineSyncManager *)self _shortDescriptionForCurrentState];
         v23 = 138412290;
-        v24 = v6;
+        v24 = _shortDescriptionForCurrentState;
         v7 = "Sync session in %@ got cancelled";
 LABEL_9:
         _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEBUG, v7, &v23, 0xCu);
@@ -4855,16 +4855,16 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if ([(NSError *)v4 isCPLErrorWithCode:10000])
+  if ([(NSError *)unlockedCopy isCPLErrorWithCode:10000])
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
       v5 = __CPLLastSyncErrorOSLogDomain();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
-        v6 = [(CPLEngineSyncManager *)self _shortDescriptionForCurrentState];
+        _shortDescriptionForCurrentState = [(CPLEngineSyncManager *)self _shortDescriptionForCurrentState];
         v23 = 138412290;
-        v24 = v6;
+        v24 = _shortDescriptionForCurrentState;
         v7 = "Sync session in %@ is requesting a retry";
         goto LABEL_9;
       }
@@ -4877,25 +4877,25 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (![(NSError *)v4 isCPLOperationDeferredError])
+  if (![(NSError *)unlockedCopy isCPLOperationDeferredError])
   {
-    v13 = [(CPLEngineSyncManager *)self engineLibrary];
-    v11 = [v13 transport];
+    engineLibrary = [(CPLEngineSyncManager *)self engineLibrary];
+    transport = [engineLibrary transport];
 
-    v14 = [(NSError *)v4 userInfo];
-    v12 = [v14 objectForKey:*MEMORY[0x1E696AA08]];
+    userInfo = [(NSError *)unlockedCopy userInfo];
+    _shortDescriptionForCurrentState3 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
     if ((_CPLSilentLogging & 1) == 0)
     {
       v15 = __CPLLastSyncErrorOSLogDomain();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [(CPLEngineSyncManager *)self _shortDescriptionForCurrentState];
-        v17 = [v11 bestErrorForUnderlyingError:v12];
+        _shortDescriptionForCurrentState2 = [(CPLEngineSyncManager *)self _shortDescriptionForCurrentState];
+        v17 = [transport bestErrorForUnderlyingError:_shortDescriptionForCurrentState3];
         v23 = 138412802;
-        v24 = v16;
+        v24 = _shortDescriptionForCurrentState2;
         v25 = 2112;
-        v26 = v4;
+        v26 = unlockedCopy;
         v27 = 2112;
         v28 = v17;
         _os_log_impl(&dword_1DC05A000, v15, OS_LOG_TYPE_ERROR, "Sync session in %@ got error: %@, underlying error: %@", &v23, 0x20u);
@@ -4907,18 +4907,18 @@ LABEL_11:
 
   if ((_CPLSilentLogging & 1) == 0)
   {
-    v11 = __CPLLastSyncErrorOSLogDomain();
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    transport = __CPLLastSyncErrorOSLogDomain();
+    if (!os_log_type_enabled(transport, OS_LOG_TYPE_DEBUG))
     {
 LABEL_22:
 
       goto LABEL_23;
     }
 
-    v12 = [(CPLEngineSyncManager *)self _shortDescriptionForCurrentState];
+    _shortDescriptionForCurrentState3 = [(CPLEngineSyncManager *)self _shortDescriptionForCurrentState];
     v23 = 138412290;
-    v24 = v12;
-    _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_DEBUG, "Sync session in %@ got deferred", &v23, 0xCu);
+    v24 = _shortDescriptionForCurrentState3;
+    _os_log_impl(&dword_1DC05A000, transport, OS_LOG_TYPE_DEBUG, "Sync session in %@ got deferred", &v23, 0xCu);
 LABEL_21:
 
     goto LABEL_22;
@@ -4926,16 +4926,16 @@ LABEL_21:
 
 LABEL_23:
   p_lastError = &self->_lastError;
-  if (v4 && !self->_lastError)
+  if (unlockedCopy && !self->_lastError)
   {
-    v18 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v19 = objc_alloc_init(_CPLEngineSyncLastError);
     v21 = v19;
     if (v19)
     {
       v19->_state = self->_state;
-      objc_setProperty_nonatomic_copy(v19, v20, v18, 16);
-      objc_setProperty_nonatomic_copy(v21, v22, v4, 24);
+      objc_setProperty_nonatomic_copy(v19, v20, date, 16);
+      objc_setProperty_nonatomic_copy(v21, v22, unlockedCopy, 24);
     }
 
     [(NSMutableArray *)self->_lastErrors addObject:v21];
@@ -4947,22 +4947,22 @@ LABEL_23:
 
 LABEL_12:
   v9 = *p_lastError;
-  *p_lastError = v4;
+  *p_lastError = unlockedCopy;
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (CPLEngineSyncManager)initWithEngineLibrary:(id)a3
+- (CPLEngineSyncManager)initWithEngineLibrary:(id)library
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  libraryCopy = library;
   v25.receiver = self;
   v25.super_class = CPLEngineSyncManager;
   v6 = [(CPLEngineSyncManager *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_engineLibrary, v5);
+    objc_storeWeak(&v6->_engineLibrary, libraryCopy);
     v8 = dispatch_queue_attr_make_with_qos_class(0, +[CPLEngineSyncManager qualityOfServiceForSyncSessions], 0);
     v9 = dispatch_queue_create("com.apple.cpl.syncmanager", v8);
     lock = v7->_lock;
@@ -4999,9 +4999,9 @@ LABEL_12:
         }
       }
 
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLEngineSyncManager.m"];
-      [v23 handleFailureInMethod:a2 object:v7 file:v24 lineNumber:283 description:{@"No platform object specified for %@", objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:v24 lineNumber:283 description:{@"No platform object specified for %@", objc_opt_class()}];
 
       abort();
     }
@@ -5011,19 +5011,19 @@ LABEL_12:
   return v7;
 }
 
-- (void)_dispatchAfter:(double)a3 block:(id)a4
+- (void)_dispatchAfter:(double)after block:(id)block
 {
-  v5 = 1000000000 * a3;
-  block = a4;
+  v5 = 1000000000 * after;
+  block = block;
   v6 = dispatch_time(0, v5);
   dispatch_after(v6, self->_lock, block);
 }
 
-- (void)dispatchForcedTaskBlock:(id)a3
+- (void)dispatchForcedTaskBlock:(id)block
 {
   lock = self->_lock;
-  v4 = a3;
-  v5 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, +[CPLEngineSyncManager qualityOfServiceForForcedTasks], 0, v4);
+  blockCopy = block;
+  v5 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, +[CPLEngineSyncManager qualityOfServiceForForcedTasks], 0, blockCopy);
 
   v6 = v5;
   block[0] = MEMORY[0x1E69E9820];
@@ -5036,11 +5036,11 @@ LABEL_12:
   dispatch_async(v7, v8);
 }
 
-- (void)dispatchSyncBlock:(id)a3
+- (void)dispatchSyncBlock:(id)block
 {
   lock = self->_lock;
-  v4 = a3;
-  v5 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, +[CPLEngineSyncManager qualityOfServiceForSyncSessions], 0, v4);
+  blockCopy = block;
+  v5 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, +[CPLEngineSyncManager qualityOfServiceForSyncSessions], 0, blockCopy);
 
   v6 = v5;
   block[0] = MEMORY[0x1E69E9820];
@@ -5062,23 +5062,23 @@ LABEL_12:
   return v4;
 }
 
-+ (id)stepForState:(unint64_t)a3 syncManager:(id)a4 session:(id)a5
++ (id)stepForState:(unint64_t)state syncManager:(id)manager session:(id)session
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
+  managerCopy = manager;
+  sessionCopy = session;
+  v9 = sessionCopy;
   if (stepForState_syncManager_session__onceToken == -1)
   {
-    if (v8)
+    if (sessionCopy)
     {
 LABEL_3:
       v10 = stepForState_syncManager_session__constructors;
-      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
       v12 = [v10 objectForKeyedSubscript:v11];
 
       if (v12)
       {
-        v13 = (v12)[2](v12, v7, v9);
+        v13 = (v12)[2](v12, managerCopy, v9);
       }
 
       else
@@ -5247,34 +5247,34 @@ CPLSimpleTaskSyncStep *__57__CPLEngineSyncManager_stepForState_syncManager_sessi
   return v6;
 }
 
-+ (id)shortDescriptionForState:(unint64_t)a3
++ (id)shortDescriptionForState:(unint64_t)state
 {
-  if (a3 >= 0xF)
+  if (state >= 0xF)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"state-%lu", a3];
+    state = [MEMORY[0x1E696AEC0] stringWithFormat:@"state-%lu", state];
   }
 
   else
   {
-    v4 = off_1E861FAA0[a3];
+    state = off_1E861FAA0[state];
   }
 
-  return v4;
+  return state;
 }
 
-+ (id)descriptionForState:(unint64_t)a3
++ (id)descriptionForState:(unint64_t)state
 {
-  if (a3 >= 0xF)
+  if (state >= 0xF)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CPLEngineSyncManagerState unknown %lu", a3];
+    state = [MEMORY[0x1E696AEC0] stringWithFormat:@"CPLEngineSyncManagerState unknown %lu", state];
   }
 
   else
   {
-    v4 = off_1E861FA28[a3];
+    state = off_1E861FA28[state];
   }
 
-  return v4;
+  return state;
 }
 
 @end

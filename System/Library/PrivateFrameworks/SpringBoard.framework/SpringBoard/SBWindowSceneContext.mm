@@ -10,9 +10,9 @@
 - (SBMenuBarManager)menuBarManager;
 - (SBSceneManager)sceneManager;
 - (SBTransientOverlayPresenting)transientOverlayPresenter;
-- (SBWindowSceneContext)initWithScene:(id)a3;
+- (SBWindowSceneContext)initWithScene:(id)scene;
 - (UIScene)_scene;
-- (void)_setScene:(id)a3;
+- (void)_setScene:(id)scene;
 - (void)sceneManager;
 @end
 
@@ -40,9 +40,9 @@
 - (SBTransientOverlayPresenting)transientOverlayPresenter
 {
   v3 = +[SBWorkspace mainWorkspace];
-  v4 = [v3 transientOverlayPresentationManager];
+  transientOverlayPresentationManager = [v3 transientOverlayPresentationManager];
   WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
-  v6 = [v4 transientOverlayPresenterForWindowScene:WeakRetained];
+  v6 = [transientOverlayPresentationManager transientOverlayPresenterForWindowScene:WeakRetained];
 
   return v6;
 }
@@ -67,9 +67,9 @@
   authenticationStatusProvider = self->_authenticationStatusProvider;
   if (!authenticationStatusProvider)
   {
-    v4 = [SBApp authenticationController];
+    authenticationController = [SBApp authenticationController];
     v5 = self->_authenticationStatusProvider;
-    self->_authenticationStatusProvider = v4;
+    self->_authenticationStatusProvider = authenticationController;
 
     authenticationStatusProvider = self->_authenticationStatusProvider;
   }
@@ -82,9 +82,9 @@
   secureDisplayStateProvider = self->_secureDisplayStateProvider;
   if (!secureDisplayStateProvider)
   {
-    v4 = [SBApp authenticationController];
+    authenticationController = [SBApp authenticationController];
     v5 = self->_secureDisplayStateProvider;
-    self->_secureDisplayStateProvider = v4;
+    self->_secureDisplayStateProvider = authenticationController;
 
     secureDisplayStateProvider = self->_secureDisplayStateProvider;
   }
@@ -113,9 +113,9 @@
 {
   if (!self->_bannerController && ![(SBWindowSceneContext *)self _isWindowSceneInvalidatingOrInvalidated])
   {
-    v3 = [SBApp bannerManager];
+    bannerManager = [SBApp bannerManager];
     WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
-    v5 = [v3 newBannerControllerForWindowScene:WeakRetained];
+    v5 = [bannerManager newBannerControllerForWindowScene:WeakRetained];
     bannerController = self->_bannerController;
     self->_bannerController = v5;
   }
@@ -128,14 +128,14 @@
 - (CSCoverSheetViewController)coverSheetViewController
 {
   v2 = +[SBLockScreenManager sharedInstance];
-  v3 = [v2 coverSheetViewController];
+  coverSheetViewController = [v2 coverSheetViewController];
 
-  return v3;
+  return coverSheetViewController;
 }
 
-- (SBWindowSceneContext)initWithScene:(id)a3
+- (SBWindowSceneContext)initWithScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -148,22 +148,22 @@
   if (v6)
   {
     v7 = objc_opt_class();
-    v8 = SBSafeCast(v7, v5);
+    v8 = SBSafeCast(v7, sceneCopy);
     objc_storeWeak(&v6->_sbWindowScene, v8);
   }
 
   return v6;
 }
 
-- (void)_setScene:(id)a3
+- (void)_setScene:(id)scene
 {
-  v7 = a3;
+  sceneCopy = scene;
   WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
 
-  if (WeakRetained != v7)
+  if (WeakRetained != sceneCopy)
   {
     v5 = objc_opt_class();
-    v6 = SBSafeCast(v5, v7);
+    v6 = SBSafeCast(v5, sceneCopy);
     objc_storeWeak(&self->_sbWindowScene, v6);
   }
 }
@@ -194,9 +194,9 @@
       goto LABEL_10;
     }
 
-    v4 = [(SBWindowSceneContext *)self _isWindowSceneInvalidatingOrInvalidated];
+    _isWindowSceneInvalidatingOrInvalidated = [(SBWindowSceneContext *)self _isWindowSceneInvalidatingOrInvalidated];
 
-    if (v4)
+    if (_isWindowSceneInvalidatingOrInvalidated)
     {
       goto LABEL_11;
     }
@@ -228,15 +228,15 @@ LABEL_11:
   WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
   if ([WeakRetained isInvalidating])
   {
-    v3 = 1;
+    isInvalidated = 1;
   }
 
   else
   {
-    v3 = [WeakRetained isInvalidated];
+    isInvalidated = [WeakRetained isInvalidated];
   }
 
-  return v3;
+  return isInvalidated;
 }
 
 - (void)initWithScene:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)
@@ -247,8 +247,8 @@ LABEL_11:
 
 - (void)sceneManager
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a1 object:a2 file:@"SBWindowSceneContext.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"_sceneManager"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBWindowSceneContext.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"_sceneManager"}];
 
   *a4 = *a3;
 }

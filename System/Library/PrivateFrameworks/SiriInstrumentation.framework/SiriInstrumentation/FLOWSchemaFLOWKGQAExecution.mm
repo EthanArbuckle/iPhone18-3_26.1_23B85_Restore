@@ -1,36 +1,36 @@
 @interface FLOWSchemaFLOWKGQAExecution
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWKGQAExecution)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWKGQAExecution)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWKGQAExecution)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWKGQAExecution)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAttributes:(id)a3;
-- (void)setHasIsDisputedResponse:(BOOL)a3;
-- (void)setHasIsWebExtractedFact:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAttributes:(id)attributes;
+- (void)setHasIsDisputedResponse:(BOOL)response;
+- (void)setHasIsWebExtractedFact:(BOOL)fact;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWKGQAExecution
 
-- (FLOWSchemaFLOWKGQAExecution)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWKGQAExecution)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = FLOWSchemaFLOWKGQAExecution;
   v5 = [(FLOWSchemaFLOWKGQAExecution *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"kgQAUsecase"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"kgQAUsecase"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWKGQAExecution setKgQAUsecase:](v5, "setKgQAUsecase:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"attributes"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"attributes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,14 +73,14 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"isDisputedResponse", v21}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"isDisputedResponse", v21}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWKGQAExecution setIsDisputedResponse:](v5, "setIsDisputedResponse:", [v15 BOOLValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"nlgKey"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"nlgKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,7 +88,7 @@
       [(FLOWSchemaFLOWKGQAExecution *)v5 setNlgKey:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"isWebExtractedFact"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"isWebExtractedFact"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -101,30 +101,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWKGQAExecution)initWithJSON:(id)a3
+- (FLOWSchemaFLOWKGQAExecution)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWKGQAExecution *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWKGQAExecution *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWKGQAExecution *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -137,19 +137,19 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_attributes)
   {
-    v4 = [(FLOWSchemaFLOWKGQAExecution *)self attributes];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"attributes"];
+    attributes = [(FLOWSchemaFLOWKGQAExecution *)self attributes];
+    v5 = [attributes copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"attributes"];
   }
 
   v6 = *(&self->_isWebExtractedFact + 1);
   if ((v6 & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWKGQAExecution isDisputedResponse](self, "isDisputedResponse")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isDisputedResponse"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isDisputedResponse"];
 
     v6 = *(&self->_isWebExtractedFact + 1);
     if ((v6 & 4) == 0)
@@ -170,7 +170,7 @@ LABEL_5:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWKGQAExecution isWebExtractedFact](self, "isWebExtractedFact")}];
-  [v3 setObject:v8 forKeyedSubscript:@"isWebExtractedFact"];
+  [dictionary setObject:v8 forKeyedSubscript:@"isWebExtractedFact"];
 
   if (!*(&self->_isWebExtractedFact + 1))
   {
@@ -189,18 +189,18 @@ LABEL_9:
     v10 = off_1E78D53A8[v9];
   }
 
-  [v3 setObject:v10 forKeyedSubscript:@"kgQAUsecase"];
+  [dictionary setObject:v10 forKeyedSubscript:@"kgQAUsecase"];
 LABEL_13:
   if (self->_nlgKey)
   {
-    v11 = [(FLOWSchemaFLOWKGQAExecution *)self nlgKey];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"nlgKey"];
+    nlgKey = [(FLOWSchemaFLOWKGQAExecution *)self nlgKey];
+    v12 = [nlgKey copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"nlgKey"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -240,15 +240,15 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  if (*(&self->_isWebExtractedFact + 1) != (v4[41] & 1))
+  if (*(&self->_isWebExtractedFact + 1) != (equalCopy[41] & 1))
   {
     goto LABEL_18;
   }
@@ -256,26 +256,26 @@ LABEL_13:
   if (*(&self->_isWebExtractedFact + 1))
   {
     kgQAUsecase = self->_kgQAUsecase;
-    if (kgQAUsecase != [v4 kgQAUsecase])
+    if (kgQAUsecase != [equalCopy kgQAUsecase])
     {
       goto LABEL_18;
     }
   }
 
-  v6 = [(FLOWSchemaFLOWKGQAExecution *)self attributes];
-  v7 = [v4 attributes];
-  if ((v6 != 0) == (v7 == 0))
+  attributes = [(FLOWSchemaFLOWKGQAExecution *)self attributes];
+  attributes2 = [equalCopy attributes];
+  if ((attributes != 0) == (attributes2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(FLOWSchemaFLOWKGQAExecution *)self attributes];
-  if (v8)
+  attributes3 = [(FLOWSchemaFLOWKGQAExecution *)self attributes];
+  if (attributes3)
   {
-    v9 = v8;
-    v10 = [(FLOWSchemaFLOWKGQAExecution *)self attributes];
-    v11 = [v4 attributes];
-    v12 = [v10 isEqual:v11];
+    v9 = attributes3;
+    attributes4 = [(FLOWSchemaFLOWKGQAExecution *)self attributes];
+    attributes5 = [equalCopy attributes];
+    v12 = [attributes4 isEqual:attributes5];
 
     if (!v12)
     {
@@ -288,7 +288,7 @@ LABEL_13:
   }
 
   v13 = (*(&self->_isWebExtractedFact + 1) >> 1) & 1;
-  if (v13 != ((v4[41] >> 1) & 1))
+  if (v13 != ((equalCopy[41] >> 1) & 1))
   {
     goto LABEL_18;
   }
@@ -296,28 +296,28 @@ LABEL_13:
   if (v13)
   {
     isDisputedResponse = self->_isDisputedResponse;
-    if (isDisputedResponse != [v4 isDisputedResponse])
+    if (isDisputedResponse != [equalCopy isDisputedResponse])
     {
       goto LABEL_18;
     }
   }
 
-  v6 = [(FLOWSchemaFLOWKGQAExecution *)self nlgKey];
-  v7 = [v4 nlgKey];
-  if ((v6 != 0) == (v7 == 0))
+  attributes = [(FLOWSchemaFLOWKGQAExecution *)self nlgKey];
+  attributes2 = [equalCopy nlgKey];
+  if ((attributes != 0) == (attributes2 == 0))
   {
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v15 = [(FLOWSchemaFLOWKGQAExecution *)self nlgKey];
-  if (v15)
+  nlgKey = [(FLOWSchemaFLOWKGQAExecution *)self nlgKey];
+  if (nlgKey)
   {
-    v16 = v15;
-    v17 = [(FLOWSchemaFLOWKGQAExecution *)self nlgKey];
-    v18 = [v4 nlgKey];
-    v19 = [v17 isEqual:v18];
+    v16 = nlgKey;
+    nlgKey2 = [(FLOWSchemaFLOWKGQAExecution *)self nlgKey];
+    nlgKey3 = [equalCopy nlgKey];
+    v19 = [nlgKey2 isEqual:nlgKey3];
 
     if (!v19)
     {
@@ -330,9 +330,9 @@ LABEL_17:
   }
 
   v22 = (*(&self->_isWebExtractedFact + 1) >> 2) & 1;
-  if (v22 == ((v4[41] >> 2) & 1))
+  if (v22 == ((equalCopy[41] >> 2) & 1))
   {
-    if (!v22 || (isWebExtractedFact = self->_isWebExtractedFact, isWebExtractedFact == [v4 isWebExtractedFact]))
+    if (!v22 || (isWebExtractedFact = self->_isWebExtractedFact, isWebExtractedFact == [equalCopy isWebExtractedFact]))
     {
       v20 = 1;
       goto LABEL_19;
@@ -346,10 +346,10 @@ LABEL_19:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*(&self->_isWebExtractedFact + 1))
   {
     PBDataWriterWriteInt32Field();
@@ -391,9 +391,9 @@ LABEL_19:
     PBDataWriterWriteBOOLField();
   }
 
-  v10 = [(FLOWSchemaFLOWKGQAExecution *)self nlgKey];
+  nlgKey = [(FLOWSchemaFLOWKGQAExecution *)self nlgKey];
 
-  if (v10)
+  if (nlgKey)
   {
     PBDataWriterWriteStringField();
   }
@@ -404,9 +404,9 @@ LABEL_19:
   }
 }
 
-- (void)setHasIsWebExtractedFact:(BOOL)a3
+- (void)setHasIsWebExtractedFact:(BOOL)fact
 {
-  if (a3)
+  if (fact)
   {
     v3 = 4;
   }
@@ -419,9 +419,9 @@ LABEL_19:
   *(&self->_isWebExtractedFact + 1) = *(&self->_isWebExtractedFact + 1) & 0xFB | v3;
 }
 
-- (void)setHasIsDisputedResponse:(BOOL)a3
+- (void)setHasIsDisputedResponse:(BOOL)response
 {
-  if (a3)
+  if (response)
   {
     v3 = 2;
   }
@@ -434,22 +434,22 @@ LABEL_19:
   *(&self->_isWebExtractedFact + 1) = *(&self->_isWebExtractedFact + 1) & 0xFD | v3;
 }
 
-- (void)addAttributes:(id)a3
+- (void)addAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   attributes = self->_attributes;
-  v8 = v4;
+  v8 = attributesCopy;
   if (!attributes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_attributes;
-    self->_attributes = v6;
+    self->_attributes = array;
 
-    v4 = v8;
+    attributesCopy = v8;
     attributes = self->_attributes;
   }
 
-  [(NSArray *)attributes addObject:v4];
+  [(NSArray *)attributes addObject:attributesCopy];
 }
 
 - (id)suppressMessageUnderConditions

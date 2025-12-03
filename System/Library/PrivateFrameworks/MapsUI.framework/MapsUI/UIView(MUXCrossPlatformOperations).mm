@@ -16,7 +16,7 @@
   [v8 setAllowedTouchTypes:MEMORY[0x1E695E0F0]];
   [v8 addTarget:v7 action:a4];
 
-  [a1 addGestureRecognizer:v8];
+  [self addGestureRecognizer:v8];
 }
 
 - (void)_mapsui_performImageLoadingTransitionWithAnimations:()MUXCrossPlatformOperations completion:
@@ -29,15 +29,15 @@
   v9[3] = &unk_1E821A730;
   v10 = v6;
   v8 = v6;
-  [v7 transitionWithView:a1 duration:5242882 options:a3 animations:v9 completion:0.3];
+  [v7 transitionWithView:self duration:5242882 options:a3 animations:v9 completion:0.3];
 }
 
 - (uint64_t)_mapsui_setCardCorner
 {
-  [a1 setClipsToBounds:1];
-  v2 = MUPlacePlatterCornerRadius(a1);
+  [self setClipsToBounds:1];
+  v2 = MUPlacePlatterCornerRadius(self);
 
-  return [a1 _setContinuousCornerRadius:v2];
+  return [self _setContinuousCornerRadius:v2];
 }
 
 + (void)_mapsui_animateWithDuration:()MUXCrossPlatformOperations animations:completion:
@@ -50,7 +50,7 @@
   v12 = a2;
   v11 = v8;
   v9 = v8;
-  [a1 animateWithDuration:v10 animations:a5 completion:a2];
+  [self animateWithDuration:v10 animations:a5 completion:a2];
 }
 
 @end

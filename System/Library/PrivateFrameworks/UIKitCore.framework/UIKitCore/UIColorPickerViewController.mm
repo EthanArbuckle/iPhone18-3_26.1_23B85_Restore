@@ -4,59 +4,59 @@
 - (BOOL)_showsGridOnly;
 - (BOOL)supportsAlpha;
 - (BOOL)supportsEyedropper;
-- (CGSize)_formSheetSizeForWindowWithSize:(CGSize)a3 screenSize:(CGSize)a4;
+- (CGSize)_formSheetSizeForWindowWithSize:(CGSize)size screenSize:(CGSize)screenSize;
 - (NSArray)_suggestedColors;
 - (UIColor)selectedColor;
 - (UIColorPickerViewController)init;
-- (UIColorPickerViewController)initWithCoder:(id)a3;
+- (UIColorPickerViewController)initWithCoder:(id)coder;
 - (double)maximumLinearExposure;
 - (id)_defaultColor;
 - (id)delegate;
 - (int64_t)_userInterfaceStyleForGrid;
-- (void)__setSelectedColor:(id)a3 notifyingViewService:(BOOL)a4;
+- (void)__setSelectedColor:(id)color notifyingViewService:(BOOL)service;
 - (void)_commonUIColorPickerViewControllerInit;
-- (void)_dequeue_pickerDidSelectColor:(id)a3 colorSpace:(id)a4 isVolatile:(BOOL)a5;
+- (void)_dequeue_pickerDidSelectColor:(id)color colorSpace:(id)space isVolatile:(BOOL)volatile;
 - (void)_pickerDidDismissEyedropper;
 - (void)_pickerDidFinish;
 - (void)_pickerDidShowEyedropper;
-- (void)_presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4;
+- (void)_presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController;
 - (void)_selectDefaultColorIfNecessary;
-- (void)_setAllowsNoColor:(BOOL)a3;
-- (void)_setChildViewController:(id)a3;
-- (void)_setSelectedColor:(id)a3;
-- (void)_setShouldUseDarkGridInDarkMode:(BOOL)a3;
-- (void)_setShowsGridOnly:(BOOL)a3;
-- (void)_setSuggestedColors:(id)a3;
-- (void)_setUserInterfaceStyleForGrid:(int64_t)a3;
+- (void)_setAllowsNoColor:(BOOL)color;
+- (void)_setChildViewController:(id)controller;
+- (void)_setSelectedColor:(id)color;
+- (void)_setShouldUseDarkGridInDarkMode:(BOOL)mode;
+- (void)_setShowsGridOnly:(BOOL)only;
+- (void)_setSuggestedColors:(id)colors;
+- (void)_setUserInterfaceStyleForGrid:(int64_t)grid;
 - (void)_updateConfiguration;
 - (void)_updateConfigurationIfNeeded;
-- (void)beginAppearanceTransition:(BOOL)a3 animated:(BOOL)a4;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)dismissEyedropper:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)beginAppearanceTransition:(BOOL)transition animated:(BOOL)animated;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)dismissEyedropper:(BOOL)eyedropper;
+- (void)encodeWithCoder:(id)coder;
 - (void)loadView;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)setDelegate:(id)delegate;
-- (void)setMaximumLinearExposure:(double)a3;
+- (void)setMaximumLinearExposure:(double)exposure;
 - (void)setSupportsAlpha:(BOOL)supportsAlpha;
-- (void)setSupportsEyedropper:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setSupportsEyedropper:(BOOL)eyedropper;
+- (void)setTitle:(id)title;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation UIColorPickerViewController
 
-- (UIColorPickerViewController)initWithCoder:(id)a3
+- (UIColorPickerViewController)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UIColorPickerViewController;
-  v5 = [(UIViewController *)&v9 initWithCoder:v4];
+  v5 = [(UIViewController *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UIColorPickerViewControllerConfiguration"];
+    v6 = [coderCopy decodeObjectForKey:@"UIColorPickerViewControllerConfiguration"];
     v7 = v6;
     if (!v6)
     {
@@ -74,11 +74,11 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UIColorPickerViewController *)self configuration];
-  [v4 encodeObject:v5 forKey:@"UIColorPickerViewControllerConfiguration"];
+  coderCopy = coder;
+  configuration = [(UIColorPickerViewController *)self configuration];
+  [coderCopy encodeObject:configuration forKey:@"UIColorPickerViewControllerConfiguration"];
 }
 
 - (UIColorPickerViewController)init
@@ -115,20 +115,20 @@
   [(_UIColorPickerViewHostingImpl *)v7 setupRemoteHosting];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = UIColorPickerViewController;
-  [(UIViewController *)&v4 viewWillAppear:a3];
+  [(UIViewController *)&v4 viewWillAppear:appear];
   [(UIColorPickerViewController *)self _selectDefaultColorIfNecessary];
 }
 
 - (id)_defaultColor
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 _nativeScreenGamut];
+  _nativeScreenGamut = [v2 _nativeScreenGamut];
 
-  if (v3)
+  if (_nativeScreenGamut)
   {
     [UIColor colorWithDisplayP3Red:0.0 green:0.0 blue:0.0 alpha:1.0];
   }
@@ -187,30 +187,30 @@
   v5.receiver = self;
   v5.super_class = UIColorPickerViewController;
   [(UIViewController *)&v5 loadView];
-  v3 = [(UIViewController *)self view];
-  [v3 setBackgroundColor:0];
+  view = [(UIViewController *)self view];
+  [view setBackgroundColor:0];
 
-  v4 = [(UIViewController *)self view];
-  [v4 setAccessibilityIdentifier:@"UIColorPicker"];
+  view2 = [(UIViewController *)self view];
+  [view2 setAccessibilityIdentifier:@"UIColorPicker"];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  if (!a3)
+  if (!controller)
   {
-    v5 = [(UIColorPickerViewController *)self configuration];
-    [v5 set_isEmbedded:0];
+    configuration = [(UIColorPickerViewController *)self configuration];
+    [configuration set_isEmbedded:0];
 
     [(UIColorPickerViewController *)self _updateConfiguration];
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
-    v4 = [(UIColorPickerViewController *)self configuration];
-    [v4 set_isEmbedded:1];
+    configuration = [(UIColorPickerViewController *)self configuration];
+    [configuration set_isEmbedded:1];
 
     [(UIColorPickerViewController *)self _updateConfiguration];
   }
@@ -218,16 +218,16 @@
 
 - (void)_updateConfiguration
 {
-  v3 = [(UIViewController *)self view];
-  [v3 frame];
+  view = [(UIViewController *)self view];
+  [view frame];
   Width = CGRectGetWidth(v29);
 
-  v27 = [(UIViewController *)self activePresentationController];
+  activePresentationController = [(UIViewController *)self activePresentationController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    [v27 _currentPresentedViewFrame];
+    [activePresentationController _currentPresentedViewFrame];
     Width = CGRectGetWidth(v30);
   }
 
@@ -236,7 +236,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v27;
+      v6 = activePresentationController;
       v7 = 1;
       [v6 _setIgnoresKeyboardNotifications:1];
       [v6 _proposedSize];
@@ -248,17 +248,17 @@
 
   v7 = 0;
 LABEL_6:
-  [v27 set_shouldSuppressHDRDuringPresentation:0];
+  [activePresentationController set_shouldSuppressHDRDuringPresentation:0];
   if (Width > 0.0)
   {
-    v9 = [(UIColorPickerViewController *)self configuration];
-    v10 = [v9 _isEmbedded];
+    configuration = [(UIColorPickerViewController *)self configuration];
+    _isEmbedded = [configuration _isEmbedded];
 
-    v11 = [(UIViewController *)self _window];
-    v12 = v11;
-    if (v11)
+    _window = [(UIViewController *)self _window];
+    v12 = _window;
+    if (_window)
     {
-      [v11 frame];
+      [_window frame];
       v14 = v13;
       v16 = v15;
       v18 = v17;
@@ -267,15 +267,15 @@ LABEL_6:
 
     else
     {
-      v21 = [(UIViewController *)self view];
-      [v21 frame];
+      view2 = [(UIViewController *)self view];
+      [view2 frame];
       v14 = v22;
       v16 = v23;
       v18 = v24;
       v20 = v25;
     }
 
-    v26 = ((v7 | v10) & 1) == 0 && (v31.origin.x = v14, v31.origin.y = v16, v31.size.width = v18, v31.size.height = v20, CGRectGetHeight(v31) < Width) && Width >= 550.0;
+    v26 = ((v7 | _isEmbedded) & 1) == 0 && (v31.origin.x = v14, v31.origin.y = v16, v31.size.width = v18, v31.size.height = v20, CGRectGetHeight(v31) < Width) && Width >= 550.0;
     [(_UIColorPickerViewControllerConfiguration *)self->_configuration set_preferredWidth:Width];
     [(_UIColorPickerViewControllerConfiguration *)self->_configuration set_isInPopoverPresentation:v7];
     [(_UIColorPickerViewControllerConfiguration *)self->_configuration set_useLandscapeLayout:v26];
@@ -296,26 +296,26 @@ LABEL_6:
   }
 }
 
-- (void)beginAppearanceTransition:(BOOL)a3 animated:(BOOL)a4
+- (void)beginAppearanceTransition:(BOOL)transition animated:(BOOL)animated
 {
-  v4 = a3;
+  transitionCopy = transition;
   v6.receiver = self;
   v6.super_class = UIColorPickerViewController;
-  [(UIViewController *)&v6 beginAppearanceTransition:a3 animated:a4];
-  if (v4)
+  [(UIViewController *)&v6 beginAppearanceTransition:transition animated:animated];
+  if (transitionCopy)
   {
     [(UIColorPickerViewController *)self _updateConfiguration];
   }
 }
 
-- (void)_presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4
+- (void)_presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  presentationControllerCopy = presentationController;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = presentationControllerCopy;
     [v6 setPrefersEdgeAttachedInCompactHeight:1];
     [v6 setWidthFollowsPreferredContentSizeWhenEdgeAttached:1];
     v9[0] = MEMORY[0x1E69E9820];
@@ -330,9 +330,9 @@ LABEL_6:
   }
 }
 
-- (CGSize)_formSheetSizeForWindowWithSize:(CGSize)a3 screenSize:(CGSize)a4
+- (CGSize)_formSheetSizeForWindowWithSize:(CGSize)size screenSize:(CGSize)screenSize
 {
-  [UIViewController defaultFormSheetSizeForScreenSize:a4.width, a4.height];
+  [UIViewController defaultFormSheetSizeForScreenSize:screenSize.width, screenSize.height];
   v6 = fmax(v5, 550.0);
   result.height = v4;
   result.width = v6;
@@ -347,55 +347,55 @@ LABEL_6:
   [(UIColorPickerViewController *)self _updateConfiguration];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  [a3 preferredContentSize];
+  [container preferredContentSize];
 
   [(UIViewController *)self setPreferredContentSize:?];
 }
 
-- (void)_setChildViewController:(id)a3
+- (void)_setChildViewController:(id)controller
 {
   v25[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  controllerCopy = controller;
   childViewController = self->_childViewController;
-  if (childViewController != v5)
+  if (childViewController != controllerCopy)
   {
     [(UIViewController *)childViewController willMoveToParentViewController:0];
-    v7 = [(UIViewController *)self->_childViewController view];
-    [v7 removeFromSuperview];
+    view = [(UIViewController *)self->_childViewController view];
+    [view removeFromSuperview];
 
     [(UIViewController *)self->_childViewController removeFromParentViewController];
-    objc_storeStrong(&self->_childViewController, a3);
+    objc_storeStrong(&self->_childViewController, controller);
     if (self->_childViewController)
     {
-      v8 = [(UIViewController *)self view];
-      v9 = [(UIViewController *)self->_childViewController view];
+      view2 = [(UIViewController *)self view];
+      view3 = [(UIViewController *)self->_childViewController view];
       [(UIViewController *)self addChildViewController:self->_childViewController];
-      [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v8 addSubview:v9];
+      [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [view2 addSubview:view3];
       v19 = MEMORY[0x1E69977A0];
-      v24 = [v9 topAnchor];
-      v23 = [v8 topAnchor];
-      v22 = [v24 constraintEqualToAnchor:v23];
+      topAnchor = [view3 topAnchor];
+      topAnchor2 = [view2 topAnchor];
+      v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v25[0] = v22;
-      v21 = [v9 leadingAnchor];
-      v20 = [v8 leadingAnchor];
-      v18 = [v21 constraintEqualToAnchor:v20];
+      leadingAnchor = [view3 leadingAnchor];
+      leadingAnchor2 = [view2 leadingAnchor];
+      v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v25[1] = v18;
-      v17 = [v9 trailingAnchor];
-      v16 = [v8 trailingAnchor];
-      v10 = [v17 constraintEqualToAnchor:v16];
+      trailingAnchor = [view3 trailingAnchor];
+      trailingAnchor2 = [view2 trailingAnchor];
+      v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v25[2] = v10;
-      v11 = [v9 bottomAnchor];
-      v12 = [v8 bottomAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12];
+      bottomAnchor = [view3 bottomAnchor];
+      bottomAnchor2 = [view2 bottomAnchor];
+      v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v25[3] = v13;
       [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
-      v15 = v14 = v5;
+      v15 = v14 = controllerCopy;
       [v19 activateConstraints:v15];
 
-      v5 = v14;
+      controllerCopy = v14;
       [(UIViewController *)self->_childViewController didMoveToParentViewController:self];
     }
   }
@@ -405,8 +405,8 @@ LABEL_6:
 {
   if (!self->_selectedColor && ![(UIColorPickerViewController *)self _allowsNoColor])
   {
-    v3 = [(UIColorPickerViewController *)self _defaultColor];
-    [(UIColorPickerViewController *)self setSelectedColor:v3];
+    _defaultColor = [(UIColorPickerViewController *)self _defaultColor];
+    [(UIColorPickerViewController *)self setSelectedColor:_defaultColor];
   }
 }
 
@@ -415,41 +415,41 @@ LABEL_6:
   selectedColor = self->_selectedColor;
   if (selectedColor)
   {
-    v3 = selectedColor;
+    _defaultColor = selectedColor;
   }
 
   else
   {
-    v3 = [(UIColorPickerViewController *)self _defaultColor];
+    _defaultColor = [(UIColorPickerViewController *)self _defaultColor];
   }
 
-  return v3;
+  return _defaultColor;
 }
 
-- (void)_setSelectedColor:(id)a3
+- (void)_setSelectedColor:(id)color
 {
-  v6 = a3;
-  v4 = [(UIColorPickerViewController *)self _allowsNoColor];
-  v5 = v6;
-  if (v6 || v4)
+  colorCopy = color;
+  _allowsNoColor = [(UIColorPickerViewController *)self _allowsNoColor];
+  v5 = colorCopy;
+  if (colorCopy || _allowsNoColor)
   {
-    [(UIColorPickerViewController *)self __setSelectedColor:v6 notifyingViewService:1];
-    v5 = v6;
+    [(UIColorPickerViewController *)self __setSelectedColor:colorCopy notifyingViewService:1];
+    v5 = colorCopy;
   }
 }
 
-- (void)__setSelectedColor:(id)a3 notifyingViewService:(BOOL)a4
+- (void)__setSelectedColor:(id)color notifyingViewService:(BOOL)service
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_selectedColor != v7)
+  serviceCopy = service;
+  colorCopy = color;
+  if (self->_selectedColor != colorCopy)
   {
-    v9 = v7;
-    if (v7)
+    v9 = colorCopy;
+    if (colorCopy)
     {
       [(UIColorPickerViewController *)self willChangeValueForKey:@"selectedColor"];
       [(UIColorPickerViewController *)self willChangeValueForKey:@"_selectedColor"];
-      objc_storeStrong(&self->_selectedColor, a3);
+      objc_storeStrong(&self->_selectedColor, color);
       [(UIColorPickerViewController *)self didChangeValueForKey:@"selectedColor"];
     }
 
@@ -461,18 +461,18 @@ LABEL_6:
     }
 
     [(UIColorPickerViewController *)self didChangeValueForKey:@"_selectedColor"];
-    v7 = v9;
-    if (v4)
+    colorCopy = v9;
+    if (serviceCopy)
     {
       [(_UIColorPickerViewHostingImpl *)self->_hostingImpl setRemoteSelectedColor:v9];
-      v7 = v9;
+      colorCopy = v9;
     }
   }
 }
 
-- (void)dismissEyedropper:(BOOL)a3
+- (void)dismissEyedropper:(BOOL)eyedropper
 {
-  if (a3)
+  if (eyedropper)
   {
     v3 = 0;
   }
@@ -489,159 +489,159 @@ LABEL_6:
 - (void)setSupportsAlpha:(BOOL)supportsAlpha
 {
   v3 = supportsAlpha;
-  v5 = [(UIColorPickerViewController *)self configuration];
-  [v5 setShowsAlpha:v3];
+  configuration = [(UIColorPickerViewController *)self configuration];
+  [configuration setShowsAlpha:v3];
 
   [(UIColorPickerViewController *)self _updateConfigurationIfNeeded];
 }
 
 - (BOOL)supportsAlpha
 {
-  v2 = [(UIColorPickerViewController *)self configuration];
-  v3 = [v2 showsAlpha];
+  configuration = [(UIColorPickerViewController *)self configuration];
+  showsAlpha = [configuration showsAlpha];
 
-  return v3;
+  return showsAlpha;
 }
 
-- (void)setMaximumLinearExposure:(double)a3
+- (void)setMaximumLinearExposure:(double)exposure
 {
-  v5 = [(UIColorPickerViewController *)self configuration];
-  [v5 setMaxGain:a3];
+  configuration = [(UIColorPickerViewController *)self configuration];
+  [configuration setMaxGain:exposure];
 
   [(UIColorPickerViewController *)self _updateConfigurationIfNeeded];
 }
 
 - (double)maximumLinearExposure
 {
-  v2 = [(UIColorPickerViewController *)self configuration];
-  [v2 maxGain];
+  configuration = [(UIColorPickerViewController *)self configuration];
+  [configuration maxGain];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(UIColorPickerViewController *)self configuration];
-  [v5 setTitle:v4];
+  titleCopy = title;
+  configuration = [(UIColorPickerViewController *)self configuration];
+  [configuration setTitle:titleCopy];
 
   v6.receiver = self;
   v6.super_class = UIColorPickerViewController;
-  [(UIViewController *)&v6 setTitle:v4];
+  [(UIViewController *)&v6 setTitle:titleCopy];
 
   [(UIColorPickerViewController *)self _updateConfigurationIfNeeded];
 }
 
-- (void)_setShouldUseDarkGridInDarkMode:(BOOL)a3
+- (void)_setShouldUseDarkGridInDarkMode:(BOOL)mode
 {
-  v3 = a3;
-  v5 = [(UIColorPickerViewController *)self configuration];
-  [v5 set_shouldUseDarkGridInDarkMode:v3];
+  modeCopy = mode;
+  configuration = [(UIColorPickerViewController *)self configuration];
+  [configuration set_shouldUseDarkGridInDarkMode:modeCopy];
 
   [(UIColorPickerViewController *)self _updateConfigurationIfNeeded];
 }
 
 - (BOOL)_shouldUseDarkGridInDarkMode
 {
-  v2 = [(UIColorPickerViewController *)self configuration];
-  v3 = [v2 _shouldUseDarkGridInDarkMode];
+  configuration = [(UIColorPickerViewController *)self configuration];
+  _shouldUseDarkGridInDarkMode = [configuration _shouldUseDarkGridInDarkMode];
 
-  return v3;
+  return _shouldUseDarkGridInDarkMode;
 }
 
-- (void)_setUserInterfaceStyleForGrid:(int64_t)a3
+- (void)_setUserInterfaceStyleForGrid:(int64_t)grid
 {
-  v5 = [(UIColorPickerViewController *)self configuration];
-  [v5 set_userInterfaceStyleForGrid:a3];
+  configuration = [(UIColorPickerViewController *)self configuration];
+  [configuration set_userInterfaceStyleForGrid:grid];
 
   [(UIColorPickerViewController *)self _updateConfigurationIfNeeded];
 }
 
 - (int64_t)_userInterfaceStyleForGrid
 {
-  v2 = [(UIColorPickerViewController *)self configuration];
-  v3 = [v2 _userInterfaceStyleForGrid];
+  configuration = [(UIColorPickerViewController *)self configuration];
+  _userInterfaceStyleForGrid = [configuration _userInterfaceStyleForGrid];
 
-  return v3;
+  return _userInterfaceStyleForGrid;
 }
 
-- (void)_setSuggestedColors:(id)a3
+- (void)_setSuggestedColors:(id)colors
 {
-  v4 = a3;
-  v5 = [(UIColorPickerViewController *)self configuration];
-  [v5 set_suggestedColors:v4];
+  colorsCopy = colors;
+  configuration = [(UIColorPickerViewController *)self configuration];
+  [configuration set_suggestedColors:colorsCopy];
 
   [(UIColorPickerViewController *)self _updateConfigurationIfNeeded];
 }
 
 - (NSArray)_suggestedColors
 {
-  v2 = [(UIColorPickerViewController *)self configuration];
-  v3 = [v2 _suggestedColors];
+  configuration = [(UIColorPickerViewController *)self configuration];
+  _suggestedColors = [configuration _suggestedColors];
 
-  return v3;
+  return _suggestedColors;
 }
 
-- (void)_setAllowsNoColor:(BOOL)a3
+- (void)_setAllowsNoColor:(BOOL)color
 {
-  v3 = a3;
-  v5 = [(UIColorPickerViewController *)self configuration];
-  [v5 set_allowsNoColor:v3];
+  colorCopy = color;
+  configuration = [(UIColorPickerViewController *)self configuration];
+  [configuration set_allowsNoColor:colorCopy];
 
   [(UIColorPickerViewController *)self _updateConfigurationIfNeeded];
 }
 
 - (BOOL)_allowsNoColor
 {
-  v2 = [(UIColorPickerViewController *)self configuration];
-  v3 = [v2 _allowsNoColor];
+  configuration = [(UIColorPickerViewController *)self configuration];
+  _allowsNoColor = [configuration _allowsNoColor];
 
-  return v3;
+  return _allowsNoColor;
 }
 
 - (BOOL)supportsEyedropper
 {
-  v2 = [(UIColorPickerViewController *)self configuration];
-  v3 = [v2 _showsEyedropper];
+  configuration = [(UIColorPickerViewController *)self configuration];
+  _showsEyedropper = [configuration _showsEyedropper];
 
-  return v3;
+  return _showsEyedropper;
 }
 
-- (void)setSupportsEyedropper:(BOOL)a3
+- (void)setSupportsEyedropper:(BOOL)eyedropper
 {
-  v3 = a3;
-  v5 = [(UIColorPickerViewController *)self configuration];
-  [v5 set_showsEyedropper:v3];
+  eyedropperCopy = eyedropper;
+  configuration = [(UIColorPickerViewController *)self configuration];
+  [configuration set_showsEyedropper:eyedropperCopy];
 
   [(UIColorPickerViewController *)self _updateConfigurationIfNeeded];
 }
 
 - (BOOL)_showsGridOnly
 {
-  v2 = [(UIColorPickerViewController *)self configuration];
-  v3 = [v2 _showsGridOnly];
+  configuration = [(UIColorPickerViewController *)self configuration];
+  _showsGridOnly = [configuration _showsGridOnly];
 
-  return v3;
+  return _showsGridOnly;
 }
 
-- (void)_setShowsGridOnly:(BOOL)a3
+- (void)_setShowsGridOnly:(BOOL)only
 {
-  v3 = a3;
-  v5 = [(UIColorPickerViewController *)self configuration];
-  [v5 set_showsGridOnly:v3];
+  onlyCopy = only;
+  configuration = [(UIColorPickerViewController *)self configuration];
+  [configuration set_showsGridOnly:onlyCopy];
 
   [(UIColorPickerViewController *)self _updateConfigurationIfNeeded];
 }
 
-- (void)_dequeue_pickerDidSelectColor:(id)a3 colorSpace:(id)a4 isVolatile:(BOOL)a5
+- (void)_dequeue_pickerDidSelectColor:(id)color colorSpace:(id)space isVolatile:(BOOL)volatile
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  volatileCopy = volatile;
+  colorCopy = color;
+  spaceCopy = space;
+  v10 = colorCopy;
   v14 = v10;
-  if (v9 && (dyld_program_sdk_at_least() & 1) == 0)
+  if (spaceCopy && (dyld_program_sdk_at_least() & 1) == 0)
   {
     UISCreateCachedColorTransform();
     v11 = v10;
@@ -658,7 +658,7 @@ LABEL_6:
     if (*&self->_flags)
     {
       WeakRetained = [(UIColorPickerViewController *)self delegate];
-      [WeakRetained colorPickerViewController:self didSelectColor:v10 continuously:v5];
+      [WeakRetained colorPickerViewController:self didSelectColor:v10 continuously:volatileCopy];
     }
 
     else
@@ -691,14 +691,14 @@ LABEL_12:
 - (void)_pickerDidShowEyedropper
 {
   obj = [(UIViewController *)self _existingPresentationControllerImmediate:0 effective:1 includesRoot:1];
-  v3 = [obj presentedView];
-  [v3 bounds];
+  presentedView = [obj presentedView];
+  [presentedView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(UIViewController *)self view];
-  [v12 bounds];
+  view = [(UIViewController *)self view];
+  [view bounds];
   v24.origin.x = v13;
   v24.origin.y = v14;
   v24.size.width = v15;
@@ -725,13 +725,13 @@ LABEL_12:
 
   obj = 0;
 LABEL_6:
-  v18 = [(UIColorPickerViewController *)self delegate];
+  delegate = [(UIColorPickerViewController *)self delegate];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    v20 = [(UIColorPickerViewController *)self delegate];
-    [v20 _colorPickerViewControllerDidShowEyedropper:self];
+    delegate2 = [(UIColorPickerViewController *)self delegate];
+    [delegate2 _colorPickerViewControllerDidShowEyedropper:self];
   }
 }
 
@@ -740,25 +740,25 @@ LABEL_6:
   presentationController = self->_presentationController;
   if (presentationController)
   {
-    v4 = [(UIViewController *)self activePresentationController];
-    v5 = v4;
-    if ((*&self->_flags & 8) == 0 && (!v4 || ([v4 dismissing] & 1) != 0 || objc_msgSend(v5, "dismissed")))
+    activePresentationController = [(UIViewController *)self activePresentationController];
+    v5 = activePresentationController;
+    if ((*&self->_flags & 8) == 0 && (!activePresentationController || ([activePresentationController dismissing] & 1) != 0 || objc_msgSend(v5, "dismissed")))
     {
-      v6 = [(UIPresentationController *)self->_presentationController presentedViewController];
-      [v6 _setTemporaryPresentationController:self->_presentationController];
+      presentedViewController = [(UIPresentationController *)self->_presentationController presentedViewController];
+      [presentedViewController _setTemporaryPresentationController:self->_presentationController];
 
-      v7 = [(UIPresentationController *)self->_presentationController presentingViewController];
-      v8 = [(UIPresentationController *)self->_presentationController presentedViewController];
-      [v7 presentViewController:v8 animated:1 completion:0];
+      presentingViewController = [(UIPresentationController *)self->_presentationController presentingViewController];
+      presentedViewController2 = [(UIPresentationController *)self->_presentationController presentedViewController];
+      [presentingViewController presentViewController:presentedViewController2 animated:1 completion:0];
     }
 
-    v9 = [(UIColorPickerViewController *)self delegate];
+    delegate = [(UIColorPickerViewController *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(UIColorPickerViewController *)self delegate];
-      [v11 _colorPickerViewControllerDidHideEyedropper:self];
+      delegate2 = [(UIColorPickerViewController *)self delegate];
+      [delegate2 _colorPickerViewControllerDidHideEyedropper:self];
     }
 
     presentationController = self->_presentationController;
@@ -773,17 +773,17 @@ LABEL_6:
 {
   if (![(_UIColorPickerViewControllerConfiguration *)self->_configuration _isEmbedded])
   {
-    v3 = [(UIViewController *)self presentingViewController];
-    [v3 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(UIViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 
-  v4 = [(UIColorPickerViewController *)self delegate];
+  delegate = [(UIColorPickerViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIColorPickerViewController *)self delegate];
-    [v6 colorPickerViewControllerDidFinish:self];
+    delegate2 = [(UIColorPickerViewController *)self delegate];
+    [delegate2 colorPickerViewControllerDidFinish:self];
   }
 }
 

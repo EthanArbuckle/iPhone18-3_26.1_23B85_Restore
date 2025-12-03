@@ -1,20 +1,20 @@
 @interface SXLayoutInstructionFactory
-- (SXLayoutInstructionFactory)initWithPresentationAttributesProvider:(id)a3;
+- (SXLayoutInstructionFactory)initWithPresentationAttributesProvider:(id)provider;
 - (id)createInstructions;
 @end
 
 @implementation SXLayoutInstructionFactory
 
-- (SXLayoutInstructionFactory)initWithPresentationAttributesProvider:(id)a3
+- (SXLayoutInstructionFactory)initWithPresentationAttributesProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = SXLayoutInstructionFactory;
   v6 = [(SXLayoutInstructionFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_presentationAttributesProvider, a3);
+    objc_storeStrong(&v6->_presentationAttributesProvider, provider);
   }
 
   return v7;
@@ -23,11 +23,11 @@
 - (id)createInstructions
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v2 = [(SXLayoutInstructionFactory *)self presentationAttributesProvider];
-  v3 = [v2 presentationAttributes];
-  v4 = [v3 presentationMode];
+  presentationAttributesProvider = [(SXLayoutInstructionFactory *)self presentationAttributesProvider];
+  presentationAttributes = [presentationAttributesProvider presentationAttributes];
+  presentationMode = [presentationAttributes presentationMode];
 
-  if (v4 == 1)
+  if (presentationMode == 1)
   {
     v5 = objc_opt_new();
     v8[0] = v5;

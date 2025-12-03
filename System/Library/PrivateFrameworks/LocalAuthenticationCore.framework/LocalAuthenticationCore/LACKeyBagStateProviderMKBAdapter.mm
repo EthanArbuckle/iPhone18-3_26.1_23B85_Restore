@@ -1,5 +1,5 @@
 @interface LACKeyBagStateProviderMKBAdapter
-- (LACKeyBagStateProviderMKBAdapter)initWithUserId:(unsigned int)a3;
+- (LACKeyBagStateProviderMKBAdapter)initWithUserId:(unsigned int)id;
 - (int64_t)state;
 @end
 
@@ -28,14 +28,14 @@
   return result;
 }
 
-- (LACKeyBagStateProviderMKBAdapter)initWithUserId:(unsigned int)a3
+- (LACKeyBagStateProviderMKBAdapter)initWithUserId:(unsigned int)id
 {
   v5.receiver = self;
   v5.super_class = LACKeyBagStateProviderMKBAdapter;
   result = [(LACKeyBagStateProviderMKBAdapter *)&v5 init];
   if (result)
   {
-    result->_userId = a3;
+    result->_userId = id;
   }
 
   return result;

@@ -1,7 +1,7 @@
 @interface SPUISWebURLPasteboardResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-- (SPUISWebURLPasteboardResultBuilder)initWithResult:(id)a3;
-- (id)buildBadgingImageWithThumbnail:(id)a3;
++ (BOOL)supportsResult:(id)result;
+- (SPUISWebURLPasteboardResultBuilder)initWithResult:(id)result;
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail;
 - (id)buildCopyItems;
 - (id)buildPreviewButtonItems;
 - (id)buildShareItems;
@@ -11,16 +11,16 @@
 
 @implementation SPUISWebURLPasteboardResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v4 = a3;
-  v9.receiver = a1;
+  resultCopy = result;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___SPUISWebURLPasteboardResultBuilder;
-  if (objc_msgSendSuper2(&v9, sel_supportsResult_, v4))
+  if (objc_msgSendSuper2(&v9, sel_supportsResult_, resultCopy))
   {
-    v5 = [v4 contentTypeTree];
-    v6 = [*MEMORY[0x277CE1E90] identifier];
-    v7 = [v5 containsObject:v6];
+    contentTypeTree = [resultCopy contentTypeTree];
+    identifier = [*MEMORY[0x277CE1E90] identifier];
+    v7 = [contentTypeTree containsObject:identifier];
   }
 
   else
@@ -31,23 +31,23 @@
   return v7;
 }
 
-- (SPUISWebURLPasteboardResultBuilder)initWithResult:(id)a3
+- (SPUISWebURLPasteboardResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v12.receiver = self;
   v12.super_class = SPUISWebURLPasteboardResultBuilder;
-  v5 = [(SPUISPasteboardResultBuilder *)&v12 initWithResult:v4];
+  v5 = [(SPUISPasteboardResultBuilder *)&v12 initWithResult:resultCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(SPUISResultBuilder *)v5 result];
-    v8 = [v7 valueForAttribute:*MEMORY[0x277CC31F8] withType:objc_opt_class()];
+    result = [(SPUISResultBuilder *)v5 result];
+    v8 = [result valueForAttribute:*MEMORY[0x277CC31F8] withType:objc_opt_class()];
     [(SPUISWebURLPasteboardResultBuilder *)v6 setUrl:v8];
 
-    v9 = [v4 valueForAttribute:*MEMORY[0x277CC31C8] withType:objc_opt_class()];
+    v9 = [resultCopy valueForAttribute:*MEMORY[0x277CC31C8] withType:objc_opt_class()];
     [(SPUISWebURLPasteboardResultBuilder *)v6 setThumbnailData:v9];
 
-    v10 = [v4 valueForAttribute:*MEMORY[0x277CC31F0] withType:objc_opt_class()];
+    v10 = [resultCopy valueForAttribute:*MEMORY[0x277CC31F0] withType:objc_opt_class()];
     [(SPUISWebURLPasteboardResultBuilder *)v6 setTitle:v10];
   }
 
@@ -56,20 +56,20 @@
 
 - (id)buildTitle
 {
-  v3 = [(SPUISWebURLPasteboardResultBuilder *)self title];
-  v4 = v3;
-  if (v3)
+  title = [(SPUISWebURLPasteboardResultBuilder *)self title];
+  v4 = title;
+  if (title)
   {
-    v5 = v3;
+    absoluteString = title;
   }
 
   else
   {
     v6 = [(SPUISWebURLPasteboardResultBuilder *)self url];
-    v5 = [v6 absoluteString];
+    absoluteString = [v6 absoluteString];
   }
 
-  v7 = [MEMORY[0x277D4C598] textWithString:v5];
+  v7 = [MEMORY[0x277D4C598] textWithString:absoluteString];
 
   return v7;
 }
@@ -77,18 +77,18 @@
 - (id)pasteboardDescription
 {
   v3 = objc_opt_new();
-  v4 = [*MEMORY[0x277CE1E90] localizedDescription];
-  if ([v4 length])
+  localizedDescription = [*MEMORY[0x277CE1E90] localizedDescription];
+  if ([localizedDescription length])
   {
-    [v3 addObject:v4];
+    [v3 addObject:localizedDescription];
   }
 
   v5 = [(SPUISWebURLPasteboardResultBuilder *)self url];
-  v6 = [v5 host];
+  host = [v5 host];
 
-  if ([v6 length])
+  if ([host length])
   {
-    [v3 addObject:v6];
+    [v3 addObject:host];
   }
 
   v7 = [v3 componentsJoinedByString:@" · "];
@@ -96,9 +96,9 @@
   return v7;
 }
 
-- (id)buildBadgingImageWithThumbnail:(id)a3
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail
 {
-  v4 = a3;
+  thumbnailCopy = thumbnail;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -109,7 +109,7 @@
   {
     v7.receiver = self;
     v7.super_class = SPUISWebURLPasteboardResultBuilder;
-    v5 = [(SPUISPasteboardResultBuilder *)&v7 buildBadgingImageWithThumbnail:v4];
+    v5 = [(SPUISPasteboardResultBuilder *)&v7 buildBadgingImageWithThumbnail:thumbnailCopy];
   }
 
   return v5;
@@ -165,8 +165,8 @@
 
   v14.receiver = self;
   v14.super_class = SPUISWebURLPasteboardResultBuilder;
-  v11 = [(SPUISPasteboardResultBuilder *)&v14 buildPreviewButtonItems];
-  v12 = [v11 arrayByAddingObject:v8];
+  buildPreviewButtonItems = [(SPUISPasteboardResultBuilder *)&v14 buildPreviewButtonItems];
+  v12 = [buildPreviewButtonItems arrayByAddingObject:v8];
 
   return v12;
 }

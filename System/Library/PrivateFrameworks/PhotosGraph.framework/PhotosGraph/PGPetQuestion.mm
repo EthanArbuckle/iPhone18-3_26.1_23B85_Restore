@@ -1,29 +1,29 @@
 @interface PGPetQuestion
-- (PGPetQuestion)initWithPetUUID:(id)a3 displayString:(id)a4 localFactoryScore:(double)a5;
+- (PGPetQuestion)initWithPetUUID:(id)d displayString:(id)string localFactoryScore:(double)score;
 @end
 
 @implementation PGPetQuestion
 
-- (PGPetQuestion)initWithPetUUID:(id)a3 displayString:(id)a4 localFactoryScore:(double)a5
+- (PGPetQuestion)initWithPetUUID:(id)d displayString:(id)string localFactoryScore:(double)score
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  stringCopy = string;
   v17.receiver = self;
   v17.super_class = PGPetQuestion;
   v11 = [(PGPetQuestion *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_entityIdentifier, a3);
+    objc_storeStrong(&v11->_entityIdentifier, d);
     v12->_state = 0;
-    v12->_localFactoryScore = a5;
-    if (v10)
+    v12->_localFactoryScore = score;
+    if (stringCopy)
     {
       v12->_entityType = 4;
       v12->_displayType = 6;
       v18 = *MEMORY[0x277D3C8D0];
-      v19[0] = v10;
+      v19[0] = stringCopy;
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     }
 

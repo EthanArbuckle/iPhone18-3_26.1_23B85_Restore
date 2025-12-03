@@ -1,7 +1,7 @@
 @interface CXXPCVoicemailSource
 - (BOOL)isConnected;
 - (BOOL)isPermittedToUsePrivateAPI;
-- (CXXPCVoicemailSource)initWithConnection:(id)a3;
+- (CXXPCVoicemailSource)initWithConnection:(id)connection;
 - (id)vendorProtocolDelegate;
 - (int)processIdentifier;
 - (void)dealloc;
@@ -9,27 +9,27 @@
 
 @implementation CXXPCVoicemailSource
 
-- (CXXPCVoicemailSource)initWithConnection:(id)a3
+- (CXXPCVoicemailSource)initWithConnection:(id)connection
 {
   v52 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  connectionCopy = connection;
   v39.receiver = self;
   v39.super_class = CXXPCVoicemailSource;
   v6 = [(CXVoicemailSource *)&v39 init];
   if (v6)
   {
-    v7 = [v5 cx_applicationIdentifier];
+    cx_applicationIdentifier = [connectionCopy cx_applicationIdentifier];
     applicationIdentifier = v6->_applicationIdentifier;
-    v6->_applicationIdentifier = v7;
+    v6->_applicationIdentifier = cx_applicationIdentifier;
 
-    v9 = [v5 cx_capabilities];
+    cx_capabilities = [connectionCopy cx_capabilities];
     capabilities = v6->_capabilities;
-    v6->_capabilities = v9;
+    v6->_capabilities = cx_capabilities;
 
-    v11 = [MEMORY[0x1E69635F8] cx_applicationRecordForConnection:v5];
-    v12 = [v11 bundleIdentifier];
+    v11 = [MEMORY[0x1E69635F8] cx_applicationRecordForConnection:connectionCopy];
+    bundleIdentifier = [v11 bundleIdentifier];
     bundleIdentifier = v6->_bundleIdentifier;
-    v6->_bundleIdentifier = v12;
+    v6->_bundleIdentifier = bundleIdentifier;
 
     v14 = [v11 URL];
     bundleURL = v6->_bundleURL;
@@ -37,13 +37,13 @@
 
     if (v6->_applicationIdentifier && [(CXXPCVoicemailSource *)v6 isPermittedToUsePrivateAPI])
     {
-      objc_storeStrong(&v6->_connection, a3);
+      objc_storeStrong(&v6->_connection, connection);
       [(NSXPCConnection *)v6->_connection setExportedObject:v6];
-      v16 = [MEMORY[0x1E696B0D0] cx_voicemailProviderHostInterface];
-      [(NSXPCConnection *)v6->_connection setExportedInterface:v16];
+      cx_voicemailProviderHostInterface = [MEMORY[0x1E696B0D0] cx_voicemailProviderHostInterface];
+      [(NSXPCConnection *)v6->_connection setExportedInterface:cx_voicemailProviderHostInterface];
 
-      v17 = [MEMORY[0x1E696B0D0] cx_voicemailProviderVendorInterface];
-      [(NSXPCConnection *)v6->_connection setRemoteObjectInterface:v17];
+      cx_voicemailProviderVendorInterface = [MEMORY[0x1E696B0D0] cx_voicemailProviderVendorInterface];
+      [(NSXPCConnection *)v6->_connection setRemoteObjectInterface:cx_voicemailProviderVendorInterface];
 
       objc_initWeak(&location, v6);
       v36[0] = MEMORY[0x1E69E9820];
@@ -78,7 +78,7 @@
         v48 = 2112;
         v49 = v23;
         v50 = 2112;
-        v51 = v5;
+        v51 = connectionCopy;
         v24 = v19;
         _os_log_impl(&dword_1B47F3000, v18, OS_LOG_TYPE_DEFAULT, "Created %@ with applicationIdentifier: %@ bundleIdentifier: %@ bundleURL: %@ capabilities: %@ connection: %@", buf, 0x3Eu);
       }
@@ -109,7 +109,7 @@
         v48 = 2112;
         v49 = v32;
         v50 = 2112;
-        v51 = v5;
+        v51 = connectionCopy;
         v33 = v28;
         _os_log_error_impl(&dword_1B47F3000, v25, OS_LOG_TYPE_ERROR, "Denying creation of %@ with applicationIdentifier: %@ bundleIdentifier: %@ bundleURL: %@ capabilities: %@ connection: %@", buf, 0x3Eu);
       }
@@ -195,34 +195,34 @@ void __43__CXXPCVoicemailSource_initWithConnection___block_invoke_2_4(uint64_t a
 
 - (BOOL)isConnected
 {
-  v2 = [(CXXPCVoicemailSource *)self connection];
-  v3 = v2 != 0;
+  connection = [(CXXPCVoicemailSource *)self connection];
+  v3 = connection != 0;
 
   return v3;
 }
 
 - (int)processIdentifier
 {
-  v2 = [(CXXPCVoicemailSource *)self connection];
-  v3 = [v2 processIdentifier];
+  connection = [(CXXPCVoicemailSource *)self connection];
+  processIdentifier = [connection processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
 - (BOOL)isPermittedToUsePrivateAPI
 {
-  v2 = [(CXXPCVoicemailSource *)self capabilities];
-  v3 = [v2 containsObject:@"private-voicemail-provider-api"];
+  capabilities = [(CXXPCVoicemailSource *)self capabilities];
+  v3 = [capabilities containsObject:@"private-voicemail-provider-api"];
 
   return v3;
 }
 
 - (id)vendorProtocolDelegate
 {
-  v2 = [(CXXPCVoicemailSource *)self connection];
-  v3 = [v2 remoteObjectProxy];
+  connection = [(CXXPCVoicemailSource *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 @end

@@ -1,37 +1,37 @@
 @interface CNMutableOrderedDictionary
-- (CNMutableOrderedDictionary)initWithDictionary:(id)a3 orderedKeys:(id)a4;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (CNMutableOrderedDictionary)initWithDictionary:(id)dictionary orderedKeys:(id)keys;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation CNMutableOrderedDictionary
 
-- (CNMutableOrderedDictionary)initWithDictionary:(id)a3 orderedKeys:(id)a4
+- (CNMutableOrderedDictionary)initWithDictionary:(id)dictionary orderedKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  keysCopy = keys;
   v12.receiver = self;
   v12.super_class = CNMutableOrderedDictionary;
   v8 = [(CNOrderedDictionary *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    [(NSMutableDictionary *)v8->super._dictionary addEntriesFromDictionary:v6];
-    [(NSMutableArray *)v9->super._orderedKeys addObjectsFromArray:v7];
+    [(NSMutableDictionary *)v8->super._dictionary addEntriesFromDictionary:dictionaryCopy];
+    [(NSMutableArray *)v9->super._orderedKeys addObjectsFromArray:keysCopy];
     v10 = v9;
   }
 
   return v9;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v8)
+  objectCopy = object;
+  keyCopy = key;
+  v7 = keyCopy;
+  if (objectCopy)
   {
-    [(NSMutableDictionary *)self->super._dictionary setObject:v8 forKey:v6];
+    [(NSMutableDictionary *)self->super._dictionary setObject:objectCopy forKey:keyCopy];
     if (([(NSMutableArray *)self->super._orderedKeys containsObject:v7]& 1) == 0)
     {
       [(NSMutableArray *)self->super._orderedKeys addObject:v7];
@@ -40,16 +40,16 @@
 
   else
   {
-    [(CNMutableOrderedDictionary *)self removeObjectForKey:v6];
+    [(CNMutableOrderedDictionary *)self removeObjectForKey:keyCopy];
   }
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   dictionary = self->super._dictionary;
-  v5 = a3;
-  [(NSMutableDictionary *)dictionary removeObjectForKey:v5];
-  [(NSMutableArray *)self->super._orderedKeys removeObject:v5];
+  keyCopy = key;
+  [(NSMutableDictionary *)dictionary removeObjectForKey:keyCopy];
+  [(NSMutableArray *)self->super._orderedKeys removeObject:keyCopy];
 }
 
 @end

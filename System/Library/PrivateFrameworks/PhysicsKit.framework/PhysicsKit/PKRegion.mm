@@ -1,20 +1,20 @@
 @interface PKRegion
 + (id)infiniteRegion;
-- (BOOL)containsPoint:(CGPoint)a3;
-- (BOOL)isEqualToRegion:(id)a3;
+- (BOOL)containsPoint:(CGPoint)point;
+- (BOOL)isEqualToRegion:(id)region;
 - (CGPath)path;
-- (PKRegion)initWithCoder:(id)a3;
-- (PKRegion)initWithPath:(CGPath *)a3;
-- (PKRegion)initWithRadius:(float)a3;
-- (PKRegion)initWithSize:(CGSize)a3;
+- (PKRegion)initWithCoder:(id)coder;
+- (PKRegion)initWithPath:(CGPath *)path;
+- (PKRegion)initWithRadius:(float)radius;
+- (PKRegion)initWithSize:(CGSize)size;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)inverseRegion;
-- (id)regionByDifferenceFromRegion:(id)a3;
-- (id)regionByIntersectionWithRegion:(id)a3;
-- (id)regionByUnionWithRegion:(id)a3;
-- (void)containsPoints:(const float *)a3 locationStride:(int64_t)a4 results:(char *)a5 resultsStride:(int64_t)a6 count:(int)a7;
-- (void)encodeWithCoder:(id)a3;
+- (id)regionByDifferenceFromRegion:(id)region;
+- (id)regionByIntersectionWithRegion:(id)region;
+- (id)regionByUnionWithRegion:(id)region;
+- (void)containsPoints:(const float *)points locationStride:(int64_t)stride results:(char *)results resultsStride:(int64_t)resultsStride count:(int)count;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKRegion
@@ -35,28 +35,28 @@
   return v2;
 }
 
-- (BOOL)isEqualToRegion:(id)a3
+- (BOOL)isEqualToRegion:(id)region
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  regionCopy = region;
+  v5 = regionCopy;
+  if (self == regionCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    if (self->_shape != v4->_shape || self->_isExclusive != v4->_isExclusive)
+    if (self->_shape != regionCopy->_shape || self->_isExclusive != regionCopy->_isExclusive)
     {
       goto LABEL_22;
     }
 
     v6 = 0;
-    v7 = vmovn_s32(vmvnq_s8(vceqq_f32(*&self->_anon_10[3], *&v4->_anon_10[3])));
+    v7 = vmovn_s32(vmvnq_s8(vceqq_f32(*&self->_anon_10[3], *&regionCopy->_anon_10[3])));
     if ((v7.i8[0] & 1) == 0 && (v7.i8[2] & 1) == 0 && (v7.i8[4] & 1) == 0)
     {
       ptr = self->_path.__ptr_;
-      v9 = v4->_path.__ptr_;
+      v9 = regionCopy->_path.__ptr_;
       if (ptr)
       {
         if (!v9 || !CGPathEqualToPath(*ptr, *v9))
@@ -151,28 +151,28 @@ LABEL_11:
   }
 }
 
-- (PKRegion)initWithCoder:(id)a3
+- (PKRegion)initWithCoder:(id)coder
 {
   v34[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = PKRegion;
   v5 = [(PKRegion *)&v32 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_type"];
     v5->_shape = stringToShape(v6);
 
-    v5->_isExclusive = [v4 decodeBoolForKey:@"_isexclusive"];
-    [v4 decodeFloatForKey:@"_halfx"];
+    v5->_isExclusive = [coderCopy decodeBoolForKey:@"_isexclusive"];
+    [coderCopy decodeFloatForKey:@"_halfx"];
     v30 = v7;
-    [v4 decodeFloatForKey:@"_halfy"];
+    [coderCopy decodeFloatForKey:@"_halfy"];
     v28 = v8;
-    [v4 decodeFloatForKey:@"_halfz"];
+    [coderCopy decodeFloatForKey:@"_halfz"];
     *&v9 = __PAIR64__(v28, v30);
     *(&v9 + 1) = v10;
     *&v5->_anon_10[3] = v9;
-    if ([v4 containsValueForKey:@"_cgpath"])
+    if ([coderCopy containsValueForKey:@"_cgpath"])
     {
       v11 = MEMORY[0x277CBEB98];
       v34[0] = objc_opt_class();
@@ -183,13 +183,13 @@ LABEL_11:
       v34[5] = objc_opt_class();
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:6];
       v13 = [v11 setWithArray:v12];
-      v14 = [v4 decodeObjectOfClasses:v13 forKey:@"_cgpath"];
+      v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"_cgpath"];
 
       PKCGPathCreateFromArray(v14, 1);
       operator new();
     }
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_op"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_op"];
     v16 = v15;
     if (v15)
     {
@@ -220,18 +220,18 @@ LABEL_11:
     }
 
     v5->_regionOp = v17;
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_type2"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_type2"];
     v5->_shape2 = stringToShape(v18);
 
-    [v4 decodeFloatForKey:@"_halfx2"];
+    [coderCopy decodeFloatForKey:@"_halfx2"];
     v31 = v19;
-    [v4 decodeFloatForKey:@"_halfy2"];
+    [coderCopy decodeFloatForKey:@"_halfy2"];
     v29 = v20;
-    [v4 decodeFloatForKey:@"_halfz2"];
+    [coderCopy decodeFloatForKey:@"_halfz2"];
     *&v21 = __PAIR64__(v29, v31);
     *(&v21 + 1) = v22;
     *v5->_anon_40 = v21;
-    if ([v4 containsValueForKey:@"_cgpath2"])
+    if ([coderCopy containsValueForKey:@"_cgpath2"])
     {
       v23 = MEMORY[0x277CBEB98];
       v33[0] = objc_opt_class();
@@ -242,7 +242,7 @@ LABEL_11:
       v33[5] = objc_opt_class();
       v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:6];
       v25 = [v23 setWithArray:v24];
-      v26 = [v4 decodeObjectOfClasses:v25 forKey:@"_cgpath"];
+      v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"_cgpath"];
       PKCGPathCreateFromArray(v26, 1);
 
       operator new();
@@ -252,9 +252,9 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   shape = self->_shape;
   if (shape > 5)
   {
@@ -266,8 +266,8 @@ LABEL_11:
     v6 = off_279A38A58[shape];
   }
 
-  v21 = v4;
-  [v4 encodeObject:v6 forKey:@"_type"];
+  v21 = coderCopy;
+  [coderCopy encodeObject:v6 forKey:@"_type"];
   [v21 encodeBool:self->_isExclusive forKey:@"_isexclusive"];
   LODWORD(v7) = *&self->_anon_10[3];
   [v21 encodeFloat:@"_halfx" forKey:v7];
@@ -320,9 +320,9 @@ LABEL_11:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   *(v4 + 8) = self->_shape;
   *(v4 + 12) = self->_isExclusive;
@@ -362,14 +362,14 @@ LABEL_11:
   return v5;
 }
 
-- (PKRegion)initWithRadius:(float)a3
+- (PKRegion)initWithRadius:(float)radius
 {
   v7.receiver = self;
   v7.super_class = PKRegion;
   v4 = [(PKRegion *)&v7 init];
   if (v4)
   {
-    *v5.i32 = PKGet_INV_PTM_RATIO() * a3;
+    *v5.i32 = PKGet_INV_PTM_RATIO() * radius;
     v4->_shape = 2;
     *&v4->_anon_10[3] = vdupq_lane_s32(v5, 0);
     v4->_regionOp = 0;
@@ -378,10 +378,10 @@ LABEL_11:
   return v4;
 }
 
-- (PKRegion)initWithSize:(CGSize)a3
+- (PKRegion)initWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v21.receiver = self;
   v21.super_class = PKRegion;
   v3 = [(PKRegion *)&v21 init];
@@ -414,7 +414,7 @@ LABEL_11:
   return v4;
 }
 
-- (PKRegion)initWithPath:(CGPath *)a3
+- (PKRegion)initWithPath:(CGPath *)path
 {
   v9.receiver = self;
   v9.super_class = PKRegion;
@@ -426,7 +426,7 @@ LABEL_11:
     v5 = PKGet_INV_PTM_RATIO();
     v6 = PKGet_INV_PTM_RATIO();
     CGAffineTransformMakeScale(&v8, v5, v6);
-    MEMORY[0x25F8C00F0](a3, &v8);
+    MEMORY[0x25F8C00F0](path, &v8);
     operator new();
   }
 
@@ -441,15 +441,15 @@ LABEL_11:
   return v3;
 }
 
-- (id)regionByUnionWithRegion:(id)a3
+- (id)regionByUnionWithRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v5 = [(PKRegion *)self copy];
   v6 = v5;
-  *(v5 + 52) = v4[2];
-  *(v5 + 64) = *(v4 + 1);
-  v8 = *(v4 + 4);
-  v7 = *(v4 + 5);
+  *(v5 + 52) = regionCopy[2];
+  *(v5 + 64) = *(regionCopy + 1);
+  v8 = *(regionCopy + 4);
+  v7 = *(regionCopy + 5);
   if (v7)
   {
     atomic_fetch_add_explicit((v7 + 8), 1uLL, memory_order_relaxed);
@@ -463,7 +463,7 @@ LABEL_11:
     std::__shared_weak_count::__release_shared[abi:ne200100](v9);
   }
 
-  if (*(v4 + 12))
+  if (*(regionCopy + 12))
   {
     v10 = 2;
   }
@@ -478,15 +478,15 @@ LABEL_11:
   return v6;
 }
 
-- (id)regionByDifferenceFromRegion:(id)a3
+- (id)regionByDifferenceFromRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v5 = [(PKRegion *)self copy];
   v6 = v5;
-  *(v5 + 52) = v4[2];
-  *(v5 + 64) = *(v4 + 1);
-  v8 = *(v4 + 4);
-  v7 = *(v4 + 5);
+  *(v5 + 52) = regionCopy[2];
+  *(v5 + 64) = *(regionCopy + 1);
+  v8 = *(regionCopy + 4);
+  v7 = *(regionCopy + 5);
   if (v7)
   {
     atomic_fetch_add_explicit((v7 + 8), 1uLL, memory_order_relaxed);
@@ -500,7 +500,7 @@ LABEL_11:
     std::__shared_weak_count::__release_shared[abi:ne200100](v9);
   }
 
-  if (*(v4 + 12))
+  if (*(regionCopy + 12))
   {
     v10 = 1;
   }
@@ -515,15 +515,15 @@ LABEL_11:
   return v6;
 }
 
-- (id)regionByIntersectionWithRegion:(id)a3
+- (id)regionByIntersectionWithRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v5 = [(PKRegion *)self copy];
   v6 = v5;
-  *(v5 + 52) = v4[2];
-  *(v5 + 64) = *(v4 + 1);
-  v8 = *(v4 + 4);
-  v7 = *(v4 + 5);
+  *(v5 + 52) = regionCopy[2];
+  *(v5 + 64) = *(regionCopy + 1);
+  v8 = *(regionCopy + 4);
+  v7 = *(regionCopy + 5);
   if (v7)
   {
     atomic_fetch_add_explicit((v7 + 8), 1uLL, memory_order_relaxed);
@@ -542,10 +542,10 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   shape = self->_shape;
   if (shape <= 1)
   {
@@ -571,7 +571,7 @@ LABEL_17:
     {
       if (shape == 3)
       {
-        v13 = a3.x;
+        v13 = point.x;
         v14 = fabsf(v13);
         v15 = *&self->_anon_10[3];
         if (v14 < *&v15)
@@ -587,7 +587,7 @@ LABEL_17:
         ptr = self->_path.__ptr_;
         if (ptr)
         {
-          v8 = CGPathContainsPoint(*ptr, 0, a3, 1);
+          v8 = CGPathContainsPoint(*ptr, 0, point, 1);
           goto LABEL_19;
         }
       }
@@ -811,13 +811,13 @@ LABEL_19:
   return result;
 }
 
-- (void)containsPoints:(const float *)a3 locationStride:(int64_t)a4 results:(char *)a5 resultsStride:(int64_t)a6 count:(int)a7
+- (void)containsPoints:(const float *)points locationStride:(int64_t)stride results:(char *)results resultsStride:(int64_t)resultsStride count:(int)count
 {
   if (([(PKRegion *)self isMemberOfClass:objc_opt_class()]& 1) != 0)
   {
-    if (a7 >= 1)
+    if (count >= 1)
     {
-      v13 = (a3 + 1);
+      v13 = (points + 1);
       do
       {
         v14 = *(v13 - 1);
@@ -897,28 +897,28 @@ LABEL_24:
         }
 
 LABEL_26:
-        *a5 = self->_isExclusive != v21;
-        a5 += a6;
-        v13 = (v13 + a4);
-        --a7;
+        *results = self->_isExclusive != v21;
+        results += resultsStride;
+        v13 = (v13 + stride);
+        --count;
       }
 
-      while (a7);
+      while (count);
     }
   }
 
-  else if (a7 >= 1)
+  else if (count >= 1)
   {
-    v27 = (a3 + 1);
+    v27 = (points + 1);
     do
     {
-      *a5 = [(PKRegion *)self containsPoint:*(v27 - 1), *v27];
-      a5 += a6;
-      v27 = (v27 + a4);
-      --a7;
+      *results = [(PKRegion *)self containsPoint:*(v27 - 1), *v27];
+      results += resultsStride;
+      v27 = (v27 + stride);
+      --count;
     }
 
-    while (a7);
+    while (count);
   }
 }
 

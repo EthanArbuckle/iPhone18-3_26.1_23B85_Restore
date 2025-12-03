@@ -1,5 +1,5 @@
 @interface CAFNowPlayingManager
-- (CAFNowPlayingManager)initWithObserver:(id)a3;
+- (CAFNowPlayingManager)initWithObserver:(id)observer;
 - (void)_connectionActivated;
 - (void)_connectionInterrupted;
 - (void)_fetchSnapshot;
@@ -10,9 +10,9 @@
 
 @implementation CAFNowPlayingManager
 
-- (CAFNowPlayingManager)initWithObserver:(id)a3
+- (CAFNowPlayingManager)initWithObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v13.receiver = self;
   v13.super_class = CAFNowPlayingManager;
   v5 = [(CAFNowPlayingManager *)&v13 init];
@@ -24,12 +24,12 @@
       [CAFNowPlayingManager initWithObserver:];
     }
 
-    v7 = [MEMORY[0x277CF0C18] serial];
+    serial = [MEMORY[0x277CF0C18] serial];
     v8 = BSDispatchQueueCreate();
     workQueue = v5->_workQueue;
     v5->_workQueue = v8;
 
-    v10 = MEMORY[0x231933C60](v4);
+    v10 = MEMORY[0x231933C60](observerCopy);
     snapshotObserver = v5->_snapshotObserver;
     v5->_snapshotObserver = v10;
 
@@ -190,13 +190,13 @@ void __40__CAFNowPlayingManager__setupConnection__block_invoke_4()
     [CAFNowPlayingManager _fetchSnapshot];
   }
 
-  v4 = [(BSServiceConnection *)self->_connection remoteTarget];
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __38__CAFNowPlayingManager__fetchSnapshot__block_invoke;
   v5[3] = &unk_27890F370;
   v5[4] = self;
-  [v4 fetchNowPlayingSnapshotWithReply:v5];
+  [remoteTarget fetchNowPlayingSnapshotWithReply:v5];
 }
 
 void __38__CAFNowPlayingManager__fetchSnapshot__block_invoke(uint64_t a1, void *a2, void *a3)

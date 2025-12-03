@@ -1,5 +1,5 @@
 @interface BYDaemonProximityTargetClientConnection
-- (BYDaemonProximityTargetClientConnection)initWithConnection:(id)a3;
+- (BYDaemonProximityTargetClientConnection)initWithConnection:(id)connection;
 - (void)beginAdvertisingProximitySetup;
 - (void)beginSIMSetupExternalAuthentication;
 - (void)dismissProximityPinCode;
@@ -7,28 +7,28 @@
 - (void)endDeviceToDeviceMigration;
 - (void)endPairing;
 - (void)endSIMSetupExternalAuthentication;
-- (void)fileTransferSessionTemplate:(id)a3;
-- (void)hasConnection:(id)a3;
+- (void)fileTransferSessionTemplate:(id)template;
+- (void)hasConnection:(id)connection;
 - (void)proximityConnectionInitiated;
-- (void)proximityConnectionPreparing:(id)a3;
+- (void)proximityConnectionPreparing:(id)preparing;
 - (void)proximityConnectionReconnected;
 - (void)proximityConnectionTerminated;
-- (void)proximitySetupCompleted:(id)a3;
-- (void)receivedLanguages:(id)a3 locale:(id)a4 model:(id)a5 deviceClass:(id)a6 accessibilitySettings:(id)a7;
-- (void)resumeProximitySetup:(id)a3;
+- (void)proximitySetupCompleted:(id)completed;
+- (void)receivedLanguages:(id)languages locale:(id)locale model:(id)model deviceClass:(id)class accessibilitySettings:(id)settings;
+- (void)resumeProximitySetup:(id)setup;
 - (void)showMigrationInterfaceOnSource;
-- (void)storeHandshake:(id)a3;
-- (void)storeInformation:(id)a3;
-- (void)suspendConnectionForSoftwareUpdate:(id)a3;
+- (void)storeHandshake:(id)handshake;
+- (void)storeInformation:(id)information;
+- (void)suspendConnectionForSoftwareUpdate:(id)update;
 @end
 
 @implementation BYDaemonProximityTargetClientConnection
 
-- (BYDaemonProximityTargetClientConnection)initWithConnection:(id)a3
+- (BYDaemonProximityTargetClientConnection)initWithConnection:(id)connection
 {
   v6.receiver = self;
   v6.super_class = BYDaemonProximityTargetClientConnection;
-  v3 = [(BYDaemonClientConnection *)&v6 initWithConnection:a3];
+  v3 = [(BYDaemonClientConnection *)&v6 initWithConnection:connection];
   if (v3)
   {
     v4 = +[BYDaemonProximityController sharedController];
@@ -56,34 +56,34 @@
   [v2 endPairing];
 }
 
-- (void)hasConnection:(id)a3
+- (void)hasConnection:(id)connection
 {
-  if (a3)
+  if (connection)
   {
-    v4 = a3;
+    connectionCopy = connection;
     v5 = +[BYDaemonProximityController sharedController];
-    (*(a3 + 2))(v4, [v5 hasConnection]);
+    (*(connection + 2))(connectionCopy, [v5 hasConnection]);
   }
 }
 
-- (void)resumeProximitySetup:(id)a3
+- (void)resumeProximitySetup:(id)setup
 {
-  v9 = a3;
+  setupCopy = setup;
   v3 = +[BYDaemonProximityController sharedController];
-  if (v9)
+  if (setupCopy)
   {
-    v4 = [v3 handshake];
-    v5 = [v3 information];
-    v6 = [v3 messageSession];
-    v7 = [v3 model];
-    v8 = [v3 deviceClass];
-    v9[2](v9, v4, v5, v6, v7, v8, [v3 hasConnection]);
+    handshake = [v3 handshake];
+    information = [v3 information];
+    messageSession = [v3 messageSession];
+    model = [v3 model];
+    deviceClass = [v3 deviceClass];
+    setupCopy[2](setupCopy, handshake, information, messageSession, model, deviceClass, [v3 hasConnection]);
   }
 }
 
-- (void)storeInformation:(id)a3
+- (void)storeInformation:(id)information
 {
-  v3 = a3;
+  informationCopy = information;
   v4 = _BYLoggingFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -92,12 +92,12 @@
   }
 
   v5 = +[BYDaemonProximityController sharedController];
-  [v5 setInformation:v3];
+  [v5 setInformation:informationCopy];
 }
 
-- (void)storeHandshake:(id)a3
+- (void)storeHandshake:(id)handshake
 {
-  v3 = a3;
+  handshakeCopy = handshake;
   v4 = _BYLoggingFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -106,18 +106,18 @@
   }
 
   v5 = +[BYDaemonProximityController sharedController];
-  [v5 setHandshake:v3];
+  [v5 setHandshake:handshakeCopy];
 }
 
-- (void)fileTransferSessionTemplate:(id)a3
+- (void)fileTransferSessionTemplate:(id)template
 {
-  v5 = a3;
+  templateCopy = template;
   v3 = +[BYDaemonProximityController sharedController];
-  v4 = [v3 fileTransferSessionTemplate];
+  fileTransferSessionTemplate = [v3 fileTransferSessionTemplate];
 
-  if (v5)
+  if (templateCopy)
   {
-    v5[2](v5, v4);
+    templateCopy[2](templateCopy, fileTransferSessionTemplate);
   }
 }
 
@@ -133,11 +133,11 @@
   [v2 showMigrationInterfaceOnSource];
 }
 
-- (void)suspendConnectionForSoftwareUpdate:(id)a3
+- (void)suspendConnectionForSoftwareUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
   v4 = +[BYDaemonProximityController sharedController];
-  [v4 suspendConnectionForSoftwareUpdate:v3];
+  [v4 suspendConnectionForSoftwareUpdate:updateCopy];
 }
 
 - (void)beginSIMSetupExternalAuthentication
@@ -154,58 +154,58 @@
 
 - (void)dismissProximityPinCode
 {
-  v3 = [(BYDaemonClientConnection *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 dismissProximityPinCode];
+  connection = [(BYDaemonClientConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy dismissProximityPinCode];
 }
 
-- (void)proximityConnectionPreparing:(id)a3
+- (void)proximityConnectionPreparing:(id)preparing
 {
-  v4 = a3;
-  v6 = [(BYDaemonClientConnection *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 proximityConnectionPreparing:v4];
+  preparingCopy = preparing;
+  connection = [(BYDaemonClientConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy proximityConnectionPreparing:preparingCopy];
 }
 
 - (void)proximityConnectionInitiated
 {
-  v3 = [(BYDaemonClientConnection *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 proximityConnectionInitiated];
+  connection = [(BYDaemonClientConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy proximityConnectionInitiated];
 }
 
 - (void)proximityConnectionTerminated
 {
-  v3 = [(BYDaemonClientConnection *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 proximityConnectionTerminated];
+  connection = [(BYDaemonClientConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy proximityConnectionTerminated];
 }
 
 - (void)proximityConnectionReconnected
 {
-  v3 = [(BYDaemonClientConnection *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 proximityConnectionReconnected];
+  connection = [(BYDaemonClientConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy proximityConnectionReconnected];
 }
 
-- (void)receivedLanguages:(id)a3 locale:(id)a4 model:(id)a5 deviceClass:(id)a6 accessibilitySettings:(id)a7
+- (void)receivedLanguages:(id)languages locale:(id)locale model:(id)model deviceClass:(id)class accessibilitySettings:(id)settings
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v18 = [(BYDaemonClientConnection *)self connection];
-  v17 = [v18 remoteObjectProxy];
-  [v17 receivedLanguages:v16 locale:v15 model:v14 deviceClass:v13 accessibilitySettings:v12];
+  settingsCopy = settings;
+  classCopy = class;
+  modelCopy = model;
+  localeCopy = locale;
+  languagesCopy = languages;
+  connection = [(BYDaemonClientConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy receivedLanguages:languagesCopy locale:localeCopy model:modelCopy deviceClass:classCopy accessibilitySettings:settingsCopy];
 }
 
-- (void)proximitySetupCompleted:(id)a3
+- (void)proximitySetupCompleted:(id)completed
 {
-  v4 = a3;
-  v6 = [(BYDaemonClientConnection *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 proximitySetupCompleted:v4];
+  completedCopy = completed;
+  connection = [(BYDaemonClientConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy proximitySetupCompleted:completedCopy];
 }
 
 @end

@@ -4,7 +4,7 @@
 - (unint64_t)numberOfPlaceInferenceInLastDay;
 - (unint64_t)numberOfRunsInLastDay;
 - (unint64_t)numberOfRunsInLastHour;
-- (void)_getLastDay:(id)a3;
+- (void)_getLastDay:(id)day;
 - (void)_loadState;
 - (void)_saveStateIsolated;
 @end
@@ -92,13 +92,13 @@
   return v5;
 }
 
-- (void)_getLastDay:(id)a3
+- (void)_getLastDay:(id)day
 {
-  v4 = a3;
+  dayCopy = day;
   v5 = +[NSDate date];
   isolater = self->_isolater;
-  v9 = v4;
-  v7 = v4;
+  v9 = dayCopy;
+  v7 = dayCopy;
   v8 = v5;
   geo_isolate_sync();
 }

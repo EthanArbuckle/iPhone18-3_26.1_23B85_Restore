@@ -1,5 +1,5 @@
 @interface PDUploadEventsOperation
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4;
+- (BOOL)processResponseObject:(id)object error:(id *)error;
 - (BOOL)wantsToExecute;
 - (id)requestData;
 - (void)prepare;
@@ -14,8 +14,8 @@
     return 0;
   }
 
-  v4 = [(PDOperation *)self database];
-  v5 = [v4 count:objc_opt_class() where:0 bindings:0];
+  database = [(PDOperation *)self database];
+  v5 = [database count:objc_opt_class() where:0 bindings:0];
 
   return v5 > 0;
 }
@@ -31,26 +31,26 @@
 {
   if ([(PDOperation *)self isAborted])
   {
-    v3 = 0;
+    immutableData = 0;
   }
 
   else
   {
-    v4 = [(PDURLRequestOperation *)self stats];
-    if (v4)
+    stats = [(PDURLRequestOperation *)self stats];
+    if (stats)
     {
-      v4[14] = 0;
+      stats[14] = 0;
     }
 
     v5 = objc_alloc_init(PBDataWriter);
     v6 = objc_alloc_init(PDDPUploadEventsRequest);
-    v7 = [(PDOperation *)self database];
+    database = [(PDOperation *)self database];
     v8 = objc_opt_class();
-    v9 = [(PDEndpointRequestOperation *)self endpointInfo];
-    v10 = v9;
-    if (v9)
+    endpointInfo = [(PDEndpointRequestOperation *)self endpointInfo];
+    v10 = endpointInfo;
+    if (endpointInfo)
     {
-      v11 = *(v9 + 64);
+      v11 = *(endpointInfo + 64);
     }
 
     else
@@ -67,107 +67,107 @@
     v12 = v5;
     v19 = v12;
     v13 = v6;
-    [v7 selectAll:v8 where:0 orderBy:@"dateCreated asc" limit:v11 offset:0 bindings:0 block:v17];
+    [database selectAll:v8 where:0 orderBy:@"dateCreated asc" limit:v11 offset:0 bindings:0 block:v17];
 
-    v14 = [(PDURLRequestOperation *)self stats];
-    if (v14 && (v15 = v14[14], v14, v15))
+    stats2 = [(PDURLRequestOperation *)self stats];
+    if (stats2 && (v15 = stats2[14], stats2, v15))
     {
-      v3 = [v12 immutableData];
+      immutableData = [v12 immutableData];
     }
 
     else
     {
       [(PDEndpointRequestOperation *)self markAsFinished];
-      v3 = 0;
+      immutableData = 0;
     }
   }
 
-  return v3;
+  return immutableData;
 }
 
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4
+- (BOOL)processResponseObject:(id)object error:(id *)error
 {
-  v5 = a3;
-  v6 = [(PDOperation *)self isAborted];
-  v7 = v6;
-  if ((v6 & 1) == 0)
+  objectCopy = object;
+  isAborted = [(PDOperation *)self isAborted];
+  v7 = isAborted;
+  if ((isAborted & 1) == 0)
   {
-    v42 = v6;
-    v8 = [(PDOperation *)self database];
+    v42 = isAborted;
+    database = [(PDOperation *)self database];
     CLSInitLog();
-    v9 = [(PDUploadEventsOperation *)self logSubsystem];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    logSubsystem = [(PDUploadEventsOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
       v11 = v10;
-      v12 = [(PDURLRequestOperation *)self operationID];
+      operationID = [(PDURLRequestOperation *)self operationID];
       *buf = 138543618;
       v52 = v10;
       v53 = 2114;
-      v54 = v12;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ processing response;", buf, 0x16u);
+      v54 = operationID;
+      _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ processing response;", buf, 0x16u);
     }
 
     CLSInitLog();
-    v13 = [(PDUploadEventsOperation *)self logSubsystem];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+    logSubsystem2 = [(PDUploadEventsOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEBUG))
     {
       v37 = objc_opt_class();
       v38 = v37;
-      v39 = [(PDURLRequestOperation *)self operationID];
-      v40 = [v5 dictionaryRepresentation];
+      operationID2 = [(PDURLRequestOperation *)self operationID];
+      dictionaryRepresentation = [objectCopy dictionaryRepresentation];
       *buf = 138543874;
       v52 = v37;
       v53 = 2114;
-      v54 = v39;
+      v54 = operationID2;
       v55 = 2112;
-      v56 = v40;
-      _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%{public}@ %{public}@ response data: %@", buf, 0x20u);
+      v56 = dictionaryRepresentation;
+      _os_log_debug_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEBUG, "%{public}@ %{public}@ response data: %@", buf, 0x20u);
     }
 
-    v45 = [(PDURLRequestOperation *)self operationID];
-    v14 = [v5 eventItems];
-    v15 = [v14 count];
-    v16 = [(PDURLRequestOperation *)self stats];
-    if (v16)
+    operationID3 = [(PDURLRequestOperation *)self operationID];
+    eventItems = [objectCopy eventItems];
+    v15 = [eventItems count];
+    stats = [(PDURLRequestOperation *)self stats];
+    if (stats)
     {
-      v16[15] = v15;
+      stats[15] = v15;
     }
 
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v41 = v5;
-    v17 = [v5 eventItems];
-    v18 = [v17 countByEnumeratingWithState:&v46 objects:v59 count:16];
+    v41 = objectCopy;
+    eventItems2 = [objectCopy eventItems];
+    v18 = [eventItems2 countByEnumeratingWithState:&v46 objects:v59 count:16];
     if (v18)
     {
       v19 = v18;
       v20 = *v47;
-      v43 = v17;
-      v44 = v8;
+      v43 = eventItems2;
+      v44 = database;
       do
       {
         for (i = 0; i != v19; i = i + 1)
         {
           if (*v47 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(eventItems2);
           }
 
           v22 = *(*(&v46 + 1) + 8 * i);
           v23 = objc_autoreleasePoolPush();
-          v24 = [v22 status];
-          v25 = [v24 code];
+          status = [v22 status];
+          code = [status code];
 
-          if (v25 == 1)
+          if (code == 1)
           {
             v26 = objc_opt_class();
-            v27 = [v22 objectId];
-            v50 = v27;
+            objectId = [v22 objectId];
+            v50 = objectId;
             v28 = [NSArray arrayWithObjects:&v50 count:1];
-            LOBYTE(v26) = [v8 deleteAll:v26 where:@"objectID = ?" bindings:v28];
+            LOBYTE(v26) = [database deleteAll:v26 where:@"objectID = ?" bindings:v28];
 
             if (v26)
             {
@@ -178,20 +178,20 @@
           }
 
           CLSInitLog();
-          v29 = [(PDUploadEventsOperation *)self logSubsystem];
-          if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+          logSubsystem3 = [(PDUploadEventsOperation *)self logSubsystem];
+          if (os_log_type_enabled(logSubsystem3, OS_LOG_TYPE_DEFAULT))
           {
             v30 = objc_opt_class();
-            v31 = [v22 objectId];
-            v32 = [v22 status];
-            v33 = [v32 code];
-            if (v33 > 299)
+            objectId2 = [v22 objectId];
+            status2 = [v22 status];
+            code2 = [status2 code];
+            if (code2 > 299)
             {
-              if (v33 <= 801)
+              if (code2 <= 801)
               {
-                if (v33 > 799)
+                if (code2 > 799)
                 {
-                  if (v33 == 800)
+                  if (code2 == 800)
                   {
                     v34 = @"E_NOT_APPLICABLE_TYPE";
                   }
@@ -204,13 +204,13 @@
                   goto LABEL_73;
                 }
 
-                if (v33 == 300)
+                if (code2 == 300)
                 {
                   v34 = @"E_DEVICE_UNSUPPORTED";
                   goto LABEL_73;
                 }
 
-                if (v33 == 500)
+                if (code2 == 500)
                 {
                   v34 = @"E_INVALID_FIELD_VALUE";
                   goto LABEL_73;
@@ -219,9 +219,9 @@
                 goto LABEL_45;
               }
 
-              if (v33 <= 803)
+              if (code2 <= 803)
               {
-                if (v33 == 802)
+                if (code2 == 802)
                 {
                   v34 = @"E_ENTITY_PRIVILEGE_CHANGE";
                 }
@@ -234,19 +234,19 @@
                 goto LABEL_73;
               }
 
-              if (v33 == 804)
+              if (code2 == 804)
               {
                 v34 = @"E_ENTITY_EXPIRED";
                 goto LABEL_73;
               }
 
-              if (v33 == 805)
+              if (code2 == 805)
               {
                 v34 = @"E_NOT_ALLOWED_FEDERATED_ORGANIZATION";
                 goto LABEL_73;
               }
 
-              if (v33 != 806)
+              if (code2 != 806)
               {
                 goto LABEL_45;
               }
@@ -256,9 +256,9 @@
 
             else
             {
-              if (v33 > 3)
+              if (code2 > 3)
               {
-                switch(v33)
+                switch(code2)
                 {
                   case 'd':
                     v34 = @"E_BOOTSTRAP_REQUIRED";
@@ -327,14 +327,14 @@
                     v34 = @"E_DISALLOWED_COUNTRY_CODE";
                     break;
                   default:
-                    if (v33 == 4)
+                    if (code2 == 4)
                     {
                       v34 = @"S_OK_HAS_MORE_DATA";
                     }
 
                     else
                     {
-                      if (v33 != 5)
+                      if (code2 != 5)
                       {
                         goto LABEL_45;
                       }
@@ -348,9 +348,9 @@
                 goto LABEL_73;
               }
 
-              if (v33 > 1)
+              if (code2 > 1)
               {
-                if (v33 == 2)
+                if (code2 == 2)
                 {
                   v34 = @"E_ERROR";
                 }
@@ -364,16 +364,16 @@
               }
 
               v34 = @"UNKNOWN_CODE";
-              if (v33)
+              if (code2)
               {
-                if (v33 == 1)
+                if (code2 == 1)
                 {
                   v34 = @"S_OK";
                   goto LABEL_73;
                 }
 
 LABEL_45:
-                v34 = [NSString stringWithFormat:@"(unknown: %i)", v33];
+                v34 = [NSString stringWithFormat:@"(unknown: %i)", code2];
               }
             }
 
@@ -381,36 +381,36 @@ LABEL_73:
             *buf = 138544130;
             v52 = v30;
             v53 = 2114;
-            v54 = v45;
+            v54 = operationID3;
             v55 = 2112;
-            v56 = v31;
+            v56 = objectId2;
             v57 = 2112;
             v58 = v34;
-            _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Upload item %@ was rejected. status: %@", buf, 0x2Au);
+            _os_log_impl(&_mh_execute_header, logSubsystem3, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Upload item %@ was rejected. status: %@", buf, 0x2Au);
 
-            v17 = v43;
-            v8 = v44;
+            eventItems2 = v43;
+            database = v44;
           }
 
 LABEL_75:
-          v35 = [(PDURLRequestOperation *)self stats];
-          if (v35)
+          stats2 = [(PDURLRequestOperation *)self stats];
+          if (stats2)
           {
-            ++v35[16];
+            ++stats2[16];
           }
 
 LABEL_78:
           objc_autoreleasePoolPop(v23);
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v46 objects:v59 count:16];
+        v19 = [eventItems2 countByEnumeratingWithState:&v46 objects:v59 count:16];
       }
 
       while (v19);
     }
 
     v7 = v42;
-    v5 = v41;
+    objectCopy = v41;
   }
 
   return v7 ^ 1;

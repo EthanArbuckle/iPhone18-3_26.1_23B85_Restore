@@ -1,31 +1,31 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (void)applicationWillTerminate:(id)a3;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (void)applicationWillTerminate:(id)terminate;
 @end
 
 @implementation AppDelegate
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
-  v3 = a3;
-  v4 = v3;
+  terminateCopy = terminate;
+  v4 = terminateCopy;
   if (dword_1001BE510 <= 30)
   {
-    v5 = v3;
-    if (dword_1001BE510 != -1 || (v3 = _LogCategory_Initialize(), v4 = v5, v3))
+    v5 = terminateCopy;
+    if (dword_1001BE510 != -1 || (terminateCopy = _LogCategory_Initialize(), v4 = v5, terminateCopy))
     {
-      v3 = LogPrintF();
+      terminateCopy = LogPrintF();
       v4 = v5;
     }
   }
 
-  _objc_release_x1(v3, v4);
+  _objc_release_x1(terminateCopy, v4);
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  applicationCopy = application;
+  optionsCopy = options;
   if (dword_1001BE510 <= 30 && (dword_1001BE510 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();

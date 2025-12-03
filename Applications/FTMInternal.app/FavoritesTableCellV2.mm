@@ -1,10 +1,10 @@
 @interface FavoritesTableCellV2
-- (_TtC11FTMInternal20FavoritesTableCellV2)initWithCoder:(id)a3;
+- (_TtC11FTMInternal20FavoritesTableCellV2)initWithCoder:(id)coder;
 @end
 
 @implementation FavoritesTableCellV2
 
-- (_TtC11FTMInternal20FavoritesTableCellV2)initWithCoder:(id)a3
+- (_TtC11FTMInternal20FavoritesTableCellV2)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11FTMInternal20FavoritesTableCellV2____lazy_storage___titleLabel) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11FTMInternal20FavoritesTableCellV2____lazy_storage___subtitleLabel) = 0;

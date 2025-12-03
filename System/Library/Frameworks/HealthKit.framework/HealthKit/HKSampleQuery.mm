@@ -1,13 +1,13 @@
 @interface HKSampleQuery
 + (id)sortDescriptorsForMostRecentSamples;
-+ (void)configureClientInterface:(id)a3;
-- (BOOL)_prepareSamplesForDelivery:(id)a3 error:(id *)a4;
++ (void)configureClientInterface:(id)interface;
+- (BOOL)_prepareSamplesForDelivery:(id)delivery error:(id *)error;
 - (HKSampleQuery)initWithQueryDescriptors:(NSArray *)queryDescriptors limit:(NSInteger)limit sortDescriptors:(NSArray *)sortDescriptors resultsHandler:(void *)resultsHandler;
 - (HKSampleQuery)initWithSampleType:(HKSampleType *)sampleType predicate:(NSPredicate *)predicate limit:(NSUInteger)limit sortDescriptors:(NSArray *)sortDescriptors resultsHandler:(void *)resultsHandler;
-- (void)client_deliverSamples:(id)a3 clearPendingSamples:(BOOL)a4 isFinalBatch:(BOOL)a5 queryUUID:(id)a6;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (void)client_deliverSamples:(id)samples clearPendingSamples:(BOOL)pendingSamples isFinalBatch:(BOOL)batch queryUUID:(id)d;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
@@ -54,15 +54,15 @@
   return v12;
 }
 
-- (BOOL)_prepareSamplesForDelivery:(id)a3 error:(id *)a4
+- (BOOL)_prepareSamplesForDelivery:(id)delivery error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  deliveryCopy = delivery;
+  v6 = [deliveryCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -73,17 +73,17 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(deliveryCopy);
         }
 
-        if (![*(*(&v13 + 1) + 8 * i) prepareForDelivery:{a4, v13}])
+        if (![*(*(&v13 + 1) + 8 * i) prepareForDelivery:{error, v13}])
         {
           v10 = 0;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [deliveryCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -100,23 +100,23 @@ LABEL_11:
   return v10;
 }
 
-- (void)client_deliverSamples:(id)a3 clearPendingSamples:(BOOL)a4 isFinalBatch:(BOOL)a5 queryUUID:(id)a6
+- (void)client_deliverSamples:(id)samples clearPendingSamples:(BOOL)pendingSamples isFinalBatch:(BOOL)batch queryUUID:(id)d
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(HKQuery *)self queue];
+  samplesCopy = samples;
+  dCopy = d;
+  queue = [(HKQuery *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __82__HKSampleQuery_client_deliverSamples_clearPendingSamples_isFinalBatch_queryUUID___block_invoke;
   v15[3] = &unk_1E7379FC0;
   v15[4] = self;
-  v16 = v11;
-  v17 = v10;
-  v18 = a4;
-  v19 = a5;
-  v13 = v10;
-  v14 = v11;
-  dispatch_async(v12, v15);
+  v16 = dCopy;
+  v17 = samplesCopy;
+  pendingSamplesCopy = pendingSamples;
+  batchCopy = batch;
+  v13 = samplesCopy;
+  v14 = dCopy;
+  dispatch_async(queue, v15);
 }
 
 void __82__HKSampleQuery_client_deliverSamples_clearPendingSamples_isFinalBatch_queryUUID___block_invoke(uint64_t a1)
@@ -212,35 +212,35 @@ LABEL_15:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = HKSampleQuery;
-  v4 = a3;
-  [(HKQuery *)&v6 queue_populateConfiguration:v4];
-  [v4 setSortDescriptors:{self->_sortDescriptors, v6.receiver, v6.super_class}];
-  [v4 setLimit:self->_limit];
-  [v4 setIncludeAutomaticTimeZones:self->_includeAutomaticTimeZones];
-  [v4 setIncludeContributorInformation:self->_includeContributorInformation];
-  v5 = [(HKQuery *)self queryDescriptors];
-  [v4 setQueryDescriptors:v5];
+  configurationCopy = configuration;
+  [(HKQuery *)&v6 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setSortDescriptors:{self->_sortDescriptors, v6.receiver, v6.super_class}];
+  [configurationCopy setLimit:self->_limit];
+  [configurationCopy setIncludeAutomaticTimeZones:self->_includeAutomaticTimeZones];
+  [configurationCopy setIncludeContributorInformation:self->_includeContributorInformation];
+  queryDescriptors = [(HKQuery *)self queryDescriptors];
+  [configurationCopy setQueryDescriptors:queryDescriptors];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _Block_copy(self->_resultHandler);
   if (v5)
   {
-    v6 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __36__HKSampleQuery_queue_deliverError___block_invoke;
     block[3] = &unk_1E7376618;
     v9 = v5;
     block[4] = self;
-    v8 = v4;
-    dispatch_async(v6, block);
+    v8 = errorCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 
@@ -255,8 +255,8 @@ LABEL_15:
     [MEMORY[0x1E695DF30] raise:@"HKQueryValidationFailureException" format:{@"%@ resultsHandler cannot be nil", objc_opt_class()}];
   }
 
-  v3 = [(HKQuery *)self queryDescriptors];
-  v4 = [v3 count];
+  queryDescriptors = [(HKQuery *)self queryDescriptors];
+  v4 = [queryDescriptors count];
 
   if (!v4)
   {
@@ -268,7 +268,7 @@ LABEL_15:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = self;
+  selfCopy = self;
   obj = [(HKQuery *)self queryDescriptors];
   v7 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v7)
@@ -285,14 +285,14 @@ LABEL_15:
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        v12 = [v11 sampleType];
+        sampleType = [v11 sampleType];
 
-        if (!v12)
+        if (!sampleType)
         {
           [MEMORY[0x1E695DF30] raise:@"HKQueryValidationFailureException" format:{@"%@ data type must be non-nil", objc_opt_class()}];
         }
 
-        v13 = [v11 sampleType];
+        sampleType2 = [v11 sampleType];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -303,8 +303,8 @@ LABEL_15:
           [v15 raise:@"HKQueryValidationFailureException" format:{@"%@ data type must be of class %@", v16, objc_opt_class()}];
         }
 
-        v17 = [v11 sampleType];
-        [v5 addObject:v17];
+        sampleType3 = [v11 sampleType];
+        [v5 addObject:sampleType3];
       }
 
       v8 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -314,8 +314,8 @@ LABEL_15:
   }
 
   v18 = [v5 count];
-  v19 = [(HKQuery *)v6 queryDescriptors];
-  v20 = [v19 count];
+  queryDescriptors2 = [(HKQuery *)selfCopy queryDescriptors];
+  v20 = [queryDescriptors2 count];
 
   if (v18 != v20)
   {
@@ -325,22 +325,22 @@ LABEL_15:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKSampleQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   resultHandler = self->_resultHandler;
   self->_resultHandler = 0;
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v4 = a3;
-  v6.receiver = a1;
+  interfaceCopy = interface;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___HKSampleQuery;
-  objc_msgSendSuper2(&v6, sel_configureClientInterface_, v4);
-  v5 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverSamples_clearPendingSamples_isFinalBatch_queryUUID_ argumentIndex:0 ofReply:0];
+  objc_msgSendSuper2(&v6, sel_configureClientInterface_, interfaceCopy);
+  v5 = [interfaceCopy hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverSamples_clearPendingSamples_isFinalBatch_queryUUID_ argumentIndex:0 ofReply:0];
 }
 
 + (id)sortDescriptorsForMostRecentSamples

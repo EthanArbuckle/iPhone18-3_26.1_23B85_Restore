@@ -1,17 +1,17 @@
 @interface SAMutableDataOutputStream
-- (id)initWithMutableData:(void *)a1;
+- (id)initWithMutableData:(void *)data;
 @end
 
 @implementation SAMutableDataOutputStream
 
-- (id)initWithMutableData:(void *)a1
+- (id)initWithMutableData:(void *)data
 {
-  if (!a1)
+  if (!data)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = data;
   v6.super_class = SAMutableDataOutputStream;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   v4 = v3;

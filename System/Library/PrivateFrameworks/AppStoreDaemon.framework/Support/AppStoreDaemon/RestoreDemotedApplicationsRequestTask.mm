@@ -1,30 +1,30 @@
 @interface RestoreDemotedApplicationsRequestTask
-- (id)initForClient:(id)a3 withOptions:(id)a4;
+- (id)initForClient:(id)client withOptions:(id)options;
 - (void)main;
 @end
 
 @implementation RestoreDemotedApplicationsRequestTask
 
-- (id)initForClient:(id)a3 withOptions:(id)a4
+- (id)initForClient:(id)client withOptions:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   v18.receiver = self;
   v18.super_class = RestoreDemotedApplicationsRequestTask;
-  v7 = [(RequestTask *)&v18 initForClient:a3 withOptions:v6];
+  v7 = [(RequestTask *)&v18 initForClient:client withOptions:optionsCopy];
   if (v7)
   {
-    v8 = [v6 accountID];
-    v9 = [v8 copy];
+    accountID = [optionsCopy accountID];
+    v9 = [accountID copy];
     v10 = v7[8];
     v7[8] = v9;
 
-    v11 = [v6 appleID];
-    v12 = [v11 copy];
+    appleID = [optionsCopy appleID];
+    v12 = [appleID copy];
     v13 = v7[9];
     v7[9] = v12;
 
-    v14 = [v6 bundleIDs];
-    v15 = [v14 copy];
+    bundleIDs = [optionsCopy bundleIDs];
+    v15 = [bundleIDs copy];
     v16 = v7[10];
     v7[10] = v15;
   }
@@ -73,8 +73,8 @@
       sub_1002898BC(v13, v10, 0);
 
       v14 = sub_1002856D4();
-      v15 = [v10 ams_DSID];
-      sub_100287648(v14, v15);
+      ams_DSID = [v10 ams_DSID];
+      sub_100287648(v14, ams_DSID);
 
       v16 = 1;
     }

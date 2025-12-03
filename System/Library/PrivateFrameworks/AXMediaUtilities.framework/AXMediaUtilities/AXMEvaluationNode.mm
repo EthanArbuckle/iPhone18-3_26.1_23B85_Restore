@@ -1,46 +1,46 @@
 @interface AXMEvaluationNode
 + (BOOL)isANEDeviceAvailable;
 + (CGSize)preferredModelInputSize;
-+ (void)configureForRunningOnANEIfPossibleWithRequest:(id)a3;
-- (AXMEvaluationNode)initWithCoder:(id)a3;
-- (BOOL)evaluateRequests:(id)a3 withContext:(id)a4 requestHandlerOptions:(id)a5 metrics:(id)a6 error:(id *)a7;
-- (id)_diagnosticNameForRequests:(id)a3 metrics:(id)a4;
-- (void)encodeWithCoder:(id)a3;
++ (void)configureForRunningOnANEIfPossibleWithRequest:(id)request;
+- (AXMEvaluationNode)initWithCoder:(id)coder;
+- (BOOL)evaluateRequests:(id)requests withContext:(id)context requestHandlerOptions:(id)options metrics:(id)metrics error:(id *)error;
+- (id)_diagnosticNameForRequests:(id)requests metrics:(id)metrics;
+- (void)encodeWithCoder:(id)coder;
 - (void)nodeInitialize;
 @end
 
 @implementation AXMEvaluationNode
 
-- (AXMEvaluationNode)initWithCoder:(id)a3
+- (AXMEvaluationNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = AXMEvaluationNode;
-  v5 = [(AXMVisionEngineNode *)&v7 initWithCoder:v4];
+  v5 = [(AXMVisionEngineNode *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    -[AXMEvaluationNode setPriority:](v5, "setPriority:", [v4 decodeIntegerForKey:@"priority"]);
+    -[AXMEvaluationNode setPriority:](v5, "setPriority:", [coderCopy decodeIntegerForKey:@"priority"]);
     if (![(AXMEvaluationNode *)v5 priority])
     {
       -[AXMEvaluationNode setPriority:](v5, "setPriority:", [objc_opt_class() defaultPriority]);
     }
 
-    [v4 decodeDoubleForKey:@"minimumConfidence"];
+    [coderCopy decodeDoubleForKey:@"minimumConfidence"];
     [(AXMEvaluationNode *)v5 setMinimumConfidence:?];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = AXMEvaluationNode;
-  v4 = a3;
-  [(AXMVisionEngineNode *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[AXMEvaluationNode priority](self forKey:{"priority", v5.receiver, v5.super_class), @"priority"}];
+  coderCopy = coder;
+  [(AXMVisionEngineNode *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[AXMEvaluationNode priority](self forKey:{"priority", v5.receiver, v5.super_class), @"priority"}];
   [(AXMEvaluationNode *)self minimumConfidence];
-  [v4 encodeDouble:@"minimumConfidence" forKey:?];
+  [coderCopy encodeDouble:@"minimumConfidence" forKey:?];
 }
 
 - (void)nodeInitialize
@@ -109,10 +109,10 @@
   return v5 != 0;
 }
 
-+ (void)configureForRunningOnANEIfPossibleWithRequest:(id)a3
++ (void)configureForRunningOnANEIfPossibleWithRequest:(id)request
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestCopy = request;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -154,17 +154,17 @@
 
   if (v7)
   {
-    [v3 setComputeDevice:v7 forComputeStage:{*MEMORY[0x1E69848C8], v12}];
+    [requestCopy setComputeDevice:v7 forComputeStage:{*MEMORY[0x1E69848C8], v12}];
 LABEL_13:
   }
 }
 
-- (BOOL)evaluateRequests:(id)a3 withContext:(id)a4 requestHandlerOptions:(id)a5 metrics:(id)a6 error:(id *)a7
+- (BOOL)evaluateRequests:(id)requests withContext:(id)context requestHandlerOptions:(id)options metrics:(id)metrics error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  requestsCopy = requests;
+  contextCopy = context;
+  optionsCopy = options;
+  metricsCopy = metrics;
   v16 = AXMediaLogCommon();
   if (os_signpost_enabled(v16))
   {
@@ -172,32 +172,32 @@ LABEL_13:
     _os_signpost_emit_with_name_impl(&dword_1AE37B000, v16, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "ImageCaptionGeneration", "", buf, 2u);
   }
 
-  if (v14)
+  if (optionsCopy)
   {
-    [v13 visionImageRequestHandlerWithOptions:v14];
+    [contextCopy visionImageRequestHandlerWithOptions:optionsCopy];
   }
 
   else
   {
-    [v13 visionImageRequestHandler];
+    [contextCopy visionImageRequestHandler];
   }
   v17 = ;
   if (v17)
   {
-    [v12 enumerateObjectsUsingBlock:&__block_literal_global_27];
+    [requestsCopy enumerateObjectsUsingBlock:&__block_literal_global_27];
     *buf = 0;
     v32 = buf;
     v33 = 0x2020000000;
     v34 = 0;
-    v18 = [(AXMEvaluationNode *)self _diagnosticNameForRequests:v12 metrics:v15];
+    v18 = [(AXMEvaluationNode *)self _diagnosticNameForRequests:requestsCopy metrics:metricsCopy];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __86__AXMEvaluationNode_evaluateRequests_withContext_requestHandlerOptions_metrics_error___block_invoke_2;
     v27[3] = &unk_1E7A1E3E8;
     v30 = buf;
     v28 = v17;
-    v29 = v12;
-    v19 = [v15 measure:v18 tryExecute:v27];
+    v29 = requestsCopy;
+    v19 = [metricsCopy measure:v18 tryExecute:v27];
 
     if ((v32[24] & 1) == 0)
     {
@@ -207,10 +207,10 @@ LABEL_13:
         [AXMTraitDetectorNode evaluate:v19 metrics:v20];
       }
 
-      if (a7)
+      if (error)
       {
         v21 = v19;
-        *a7 = v19;
+        *error = v19;
       }
     }
 
@@ -250,18 +250,18 @@ id __86__AXMEvaluationNode_evaluateRequests_withContext_requestHandlerOptions_me
   return result;
 }
 
-- (id)_diagnosticNameForRequests:(id)a3 metrics:(id)a4
+- (id)_diagnosticNameForRequests:(id)requests metrics:(id)metrics
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([a4 measurementsEnabled])
+  requestsCopy = requests;
+  if ([metrics measurementsEnabled])
   {
     v6 = [MEMORY[0x1E696AD60] stringWithString:@"Vision:"];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v5;
+    v7 = requestsCopy;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {

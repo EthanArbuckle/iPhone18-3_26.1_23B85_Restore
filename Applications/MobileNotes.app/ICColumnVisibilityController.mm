@@ -1,25 +1,25 @@
 @interface ICColumnVisibilityController
-- (BOOL)shouldForceShowMainSplitViewColumn:(int64_t)a3;
-- (ICColumnVisibilityController)initWithViewControllerManager:(id)a3;
+- (BOOL)shouldForceShowMainSplitViewColumn:(int64_t)column;
+- (ICColumnVisibilityController)initWithViewControllerManager:(id)manager;
 - (ICMainSplitViewController)mainSplitViewController;
 - (ICTrailingSidebarSplitViewController)trailingColumnSplitViewController;
 - (ICViewControllerManager)viewControllerManager;
-- (id)topViewControllerForMainSplitViewColumn:(int64_t)a3;
-- (void)splitViewWillTransitionToSize:(id)a3;
+- (id)topViewControllerForMainSplitViewColumn:(int64_t)column;
+- (void)splitViewWillTransitionToSize:(id)size;
 @end
 
 @implementation ICColumnVisibilityController
 
-- (ICColumnVisibilityController)initWithViewControllerManager:(id)a3
+- (ICColumnVisibilityController)initWithViewControllerManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = ICColumnVisibilityController;
   v5 = [(ICColumnVisibilityController *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_viewControllerManager, v4);
+    objc_storeWeak(&v5->_viewControllerManager, managerCopy);
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 addObserver:v6 selector:"splitViewWillTransitionToSize:" name:@"ICSplitViewControllerWillTransitionToSizeNotification" object:0];
   }
@@ -29,59 +29,59 @@
 
 - (ICMainSplitViewController)mainSplitViewController
 {
-  v2 = [(ICColumnVisibilityController *)self viewControllerManager];
-  v3 = [v2 mainSplitViewController];
+  viewControllerManager = [(ICColumnVisibilityController *)self viewControllerManager];
+  mainSplitViewController = [viewControllerManager mainSplitViewController];
 
-  return v3;
+  return mainSplitViewController;
 }
 
 - (ICTrailingSidebarSplitViewController)trailingColumnSplitViewController
 {
   objc_opt_class();
-  v3 = [(ICColumnVisibilityController *)self viewControllerManager];
-  v4 = [v3 trailingSidebarViewController];
+  viewControllerManager = [(ICColumnVisibilityController *)self viewControllerManager];
+  trailingSidebarViewController = [viewControllerManager trailingSidebarViewController];
   v5 = ICDynamicCast();
 
   return v5;
 }
 
-- (void)splitViewWillTransitionToSize:(id)a3
+- (void)splitViewWillTransitionToSize:(id)size
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v5 traitCollection];
-  v7 = [v6 ic_hasCompactSize];
+  sizeCopy = size;
+  object = [sizeCopy object];
+  traitCollection = [object traitCollection];
+  ic_hasCompactSize = [traitCollection ic_hasCompactSize];
 
-  if ((v7 & 1) == 0)
+  if ((ic_hasCompactSize & 1) == 0)
   {
-    v8 = [v4 userInfo];
-    v9 = [v8 objectForKeyedSubscript:@"ICSplitViewControllerWillTransitionToSizeNotificationNewSizeKey"];
+    userInfo = [sizeCopy userInfo];
+    v9 = [userInfo objectForKeyedSubscript:@"ICSplitViewControllerWillTransitionToSizeNotificationNewSizeKey"];
     [v9 CGSizeValue];
     v11 = v10;
     v13 = v12;
 
-    v14 = [v4 userInfo];
-    v15 = [v14 objectForKeyedSubscript:@"ICSplitViewControllerWillTransitionToSizeNotificationTransitionCoordinatorKey"];
+    userInfo2 = [sizeCopy userInfo];
+    v15 = [userInfo2 objectForKeyedSubscript:@"ICSplitViewControllerWillTransitionToSizeNotificationTransitionCoordinatorKey"];
 
-    v16 = [(ICColumnVisibilityController *)self trailingColumnSplitViewController];
-    v17 = [v16 view];
-    [v17 bounds];
+    trailingColumnSplitViewController = [(ICColumnVisibilityController *)self trailingColumnSplitViewController];
+    view = [trailingColumnSplitViewController view];
+    [view bounds];
     v19 = v18;
     v21 = v20;
 
     v22 = v19 < v21 && v11 > v13;
-    v23 = [(ICColumnVisibilityController *)self trailingColumnSplitViewController];
+    trailingColumnSplitViewController2 = [(ICColumnVisibilityController *)self trailingColumnSplitViewController];
 
-    if (v5 == v23)
+    if (object == trailingColumnSplitViewController2)
     {
-      v26 = [(ICColumnVisibilityController *)self viewControllerManager];
-      v27 = [v26 activityStreamSelection];
+      viewControllerManager = [(ICColumnVisibilityController *)self viewControllerManager];
+      activityStreamSelection = [viewControllerManager activityStreamSelection];
 
       if (v22)
       {
-        v28 = [v5 displayMode];
+        displayMode = [object displayMode];
         v29 = 1;
-        if (v28 != 3 && !v27)
+        if (displayMode != 3 && !activityStreamSelection)
         {
           if ([(ICColumnVisibilityController *)self mostRecentTrailingColumnLandscapeDisplayMode]== 2)
           {
@@ -95,21 +95,21 @@
       else
       {
         v54 = v15;
-        v30 = [(ICColumnVisibilityController *)self viewControllerManager];
-        v31 = [v30 window];
-        v32 = [v31 rootViewController];
-        v33 = [v32 ic_topViewController];
-        v34 = [v33 ic_hasFullScreenModalPresentationStyle];
+        viewControllerManager2 = [(ICColumnVisibilityController *)self viewControllerManager];
+        window = [viewControllerManager2 window];
+        rootViewController = [window rootViewController];
+        ic_topViewController = [rootViewController ic_topViewController];
+        ic_hasFullScreenModalPresentationStyle = [ic_topViewController ic_hasFullScreenModalPresentationStyle];
 
-        if (v34)
+        if (ic_hasFullScreenModalPresentationStyle)
         {
           v29 = 0;
         }
 
         else
         {
-          -[ICColumnVisibilityController setMostRecentTrailingColumnLandscapeDisplayMode:](self, "setMostRecentTrailingColumnLandscapeDisplayMode:", [v5 displayMode]);
-          v29 = [v5 displayMode] == 2 && v27 == 0;
+          -[ICColumnVisibilityController setMostRecentTrailingColumnLandscapeDisplayMode:](self, "setMostRecentTrailingColumnLandscapeDisplayMode:", [object displayMode]);
+          v29 = [object displayMode] == 2 && activityStreamSelection == 0;
         }
 
         v15 = v54;
@@ -121,21 +121,21 @@
       v61[3] = &unk_100646EE8;
       v64 = v22;
       v61[4] = self;
-      v62 = v27;
+      v62 = activityStreamSelection;
       v65 = v29;
-      v63 = v5;
-      v40 = v27;
+      v63 = object;
+      v40 = activityStreamSelection;
       v41 = objc_retainBlock(v61);
 
       goto LABEL_47;
     }
 
-    v24 = [(ICColumnVisibilityController *)self mainSplitViewController];
+    mainSplitViewController = [(ICColumnVisibilityController *)self mainSplitViewController];
 
-    if (v5 == v24)
+    if (object == mainSplitViewController)
     {
-      v25 = [(ICColumnVisibilityController *)self trailingColumnSplitViewController];
-      if ([v25 displayMode] == 1)
+      trailingColumnSplitViewController3 = [(ICColumnVisibilityController *)self trailingColumnSplitViewController];
+      if ([trailingColumnSplitViewController3 displayMode] == 1)
       {
 
         goto LABEL_18;
@@ -148,13 +148,13 @@
 LABEL_18:
         if (+[UIDevice ic_isVision])
         {
-          v36 = [(ICColumnVisibilityController *)self viewControllerManager];
-          if ([v36 noteContainerViewMode] == 1)
+          viewControllerManager3 = [(ICColumnVisibilityController *)self viewControllerManager];
+          if ([viewControllerManager3 noteContainerViewMode] == 1)
           {
-            v37 = [(ICColumnVisibilityController *)self viewControllerManager];
-            v38 = [v37 isNoteEditorVisible];
+            viewControllerManager4 = [(ICColumnVisibilityController *)self viewControllerManager];
+            isNoteEditorVisible = [viewControllerManager4 isNoteEditorVisible];
 
-            if (v38)
+            if (isNoteEditorVisible)
             {
               goto LABEL_52;
             }
@@ -167,7 +167,7 @@ LABEL_18:
 
         if (v11 != v19 && v13 != v21)
         {
-          [v5 setPreferredDisplayMode:0];
+          [object setPreferredDisplayMode:0];
         }
 
         v42 = &__kCFBooleanTrue;
@@ -193,16 +193,16 @@ LABEL_39:
             v57[2] = sub_10007AB24;
             v57[3] = &unk_100645D40;
             v58 = v43;
-            v45 = v5;
+            v45 = object;
             v59 = v45;
             v60 = v42;
             v41 = objc_retainBlock(v57);
             if (!v22)
             {
               v46 = +[UIApplication sharedApplication];
-              v47 = [v46 applicationState];
+              applicationState = [v46 applicationState];
 
-              if (!v47)
+              if (!applicationState)
               {
                 -[ICColumnVisibilityController setMostRecentMainLandscapeDisplayMode:](self, "setMostRecentMainLandscapeDisplayMode:", [v45 displayMode]);
               }
@@ -214,9 +214,9 @@ LABEL_47:
             if (v41)
             {
               v48 = +[UIApplication sharedApplication];
-              v49 = [v48 applicationState];
+              applicationState2 = [v48 applicationState];
 
-              if (v49 == 2)
+              if (applicationState2 == 2)
               {
                 (v41[2])(v41);
               }
@@ -236,14 +236,14 @@ LABEL_47:
             goto LABEL_52;
           }
 
-          v51 = [(ICColumnVisibilityController *)self viewControllerManager];
-          v52 = [v51 noteContainerViewMode];
+          viewControllerManager5 = [(ICColumnVisibilityController *)self viewControllerManager];
+          noteContainerViewMode = [viewControllerManager5 noteContainerViewMode];
 
-          v53 = [(ICColumnVisibilityController *)self mostRecentMainLandscapeDisplayMode];
-          if (v52 == 1)
+          mostRecentMainLandscapeDisplayMode = [(ICColumnVisibilityController *)self mostRecentMainLandscapeDisplayMode];
+          if (noteContainerViewMode == 1)
           {
             v44 = 0;
-            if (v53 == 2)
+            if (mostRecentMainLandscapeDisplayMode == 2)
             {
               v43 = &__kCFBooleanTrue;
             }
@@ -256,7 +256,7 @@ LABEL_47:
             goto LABEL_39;
           }
 
-          if (v53 == 4)
+          if (mostRecentMainLandscapeDisplayMode == 4)
           {
             v43 = &__kCFBooleanTrue;
           }
@@ -287,49 +287,49 @@ LABEL_52:
   }
 }
 
-- (BOOL)shouldForceShowMainSplitViewColumn:(int64_t)a3
+- (BOOL)shouldForceShowMainSplitViewColumn:(int64_t)column
 {
-  v4 = [(ICColumnVisibilityController *)self topViewControllerForMainSplitViewColumn:a3];
-  v5 = [(ICColumnVisibilityController *)self viewControllerManager];
-  if ([v5 isTrailingContentVisible])
+  v4 = [(ICColumnVisibilityController *)self topViewControllerForMainSplitViewColumn:column];
+  viewControllerManager = [(ICColumnVisibilityController *)self viewControllerManager];
+  if ([viewControllerManager isTrailingContentVisible])
   {
-    v6 = 0;
+    isActive = 0;
   }
 
   else
   {
-    v7 = [(ICColumnVisibilityController *)self mainSplitViewController];
-    if ([v7 displayMode] == 1)
+    mainSplitViewController = [(ICColumnVisibilityController *)self mainSplitViewController];
+    if ([mainSplitViewController displayMode] == 1)
     {
-      v6 = 0;
+      isActive = 0;
     }
 
     else if ([v4 isEditing])
     {
-      v6 = 1;
+      isActive = 1;
     }
 
     else
     {
-      v8 = [v4 navigationItem];
-      v9 = [v8 searchController];
-      v6 = [v9 isActive];
+      navigationItem = [v4 navigationItem];
+      searchController = [navigationItem searchController];
+      isActive = [searchController isActive];
     }
   }
 
-  return v6;
+  return isActive;
 }
 
-- (id)topViewControllerForMainSplitViewColumn:(int64_t)a3
+- (id)topViewControllerForMainSplitViewColumn:(int64_t)column
 {
-  v4 = [(ICColumnVisibilityController *)self mainSplitViewController];
-  v5 = [v4 viewControllerForColumn:a3];
+  mainSplitViewController = [(ICColumnVisibilityController *)self mainSplitViewController];
+  v5 = [mainSplitViewController viewControllerForColumn:column];
 
   objc_opt_class();
   v6 = ICDynamicCast();
-  v7 = [v6 topViewController];
+  topViewController = [v6 topViewController];
 
-  return v7;
+  return topViewController;
 }
 
 - (ICViewControllerManager)viewControllerManager

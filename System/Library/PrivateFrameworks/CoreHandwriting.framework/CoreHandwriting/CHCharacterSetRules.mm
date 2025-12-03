@@ -1,16 +1,16 @@
 @interface CHCharacterSetRules
-+ (unint64_t)characterType:(unsigned int)a3;
-+ (unint64_t)characterTypeFromString:(id)a3;
-+ (unint64_t)expectedMaxDotCount:(unsigned int)a3;
-+ (unint64_t)expectedMaxStrokeCount:(unsigned int)a3;
-+ (unint64_t)expectedMinStrokeCount:(unsigned int)a3;
++ (unint64_t)characterType:(unsigned int)type;
++ (unint64_t)characterTypeFromString:(id)string;
++ (unint64_t)expectedMaxDotCount:(unsigned int)count;
++ (unint64_t)expectedMaxStrokeCount:(unsigned int)count;
++ (unint64_t)expectedMinStrokeCount:(unsigned int)count;
 - (CHCharacterSetRules)init;
 - (id).cxx_construct;
 @end
 
 @implementation CHCharacterSetRules
 
-+ (unint64_t)expectedMaxStrokeCount:(unsigned int)a3
++ (unint64_t)expectedMaxStrokeCount:(unsigned int)count
 {
   objc_opt_self();
   if (qword_1EA84D208 != -1)
@@ -39,7 +39,7 @@
   block[3] = &unk_1E6DE04A0;
   v10 = v4;
   v11 = &v13;
-  v12 = a3;
+  countCopy = count;
   v6 = v4;
   dispatch_sync(v5, block);
   v7 = v14[3];
@@ -48,7 +48,7 @@
   return v7;
 }
 
-+ (unint64_t)expectedMinStrokeCount:(unsigned int)a3
++ (unint64_t)expectedMinStrokeCount:(unsigned int)count
 {
   objc_opt_self();
   if (qword_1EA84D208 != -1)
@@ -77,7 +77,7 @@
   block[3] = &unk_1E6DE04A0;
   v10 = v4;
   v11 = &v13;
-  v12 = a3;
+  countCopy = count;
   v6 = v4;
   dispatch_sync(v5, block);
   v7 = v14[3];
@@ -86,7 +86,7 @@
   return v7;
 }
 
-+ (unint64_t)expectedMaxDotCount:(unsigned int)a3
++ (unint64_t)expectedMaxDotCount:(unsigned int)count
 {
   objc_opt_self();
   if (qword_1EA84D208 != -1)
@@ -115,7 +115,7 @@
   block[3] = &unk_1E6DE04A0;
   v10 = v4;
   v11 = &v13;
-  v12 = a3;
+  countCopy = count;
   v6 = v4;
   dispatch_sync(v5, block);
   v7 = v14[3];
@@ -124,7 +124,7 @@
   return v7;
 }
 
-+ (unint64_t)characterType:(unsigned int)a3
++ (unint64_t)characterType:(unsigned int)type
 {
   objc_opt_self();
   if (qword_1EA84D208 != -1)
@@ -153,7 +153,7 @@
   block[3] = &unk_1E6DE04A0;
   v10 = v4;
   v11 = &v13;
-  v12 = a3;
+  typeCopy = type;
   v6 = v4;
   dispatch_sync(v5, block);
   v7 = v14[3];
@@ -162,12 +162,12 @@
   return v7;
 }
 
-+ (unint64_t)characterTypeFromString:(id)a3
++ (unint64_t)characterTypeFromString:(id)string
 {
   *&v42[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  objc_msgSend_rangeOfComposedCharacterSequenceAtIndex_(v4, v5, 0, v6, v7, v8);
-  if (v17 != objc_msgSend_length(v4, v17, v9, v10, v11, v12))
+  stringCopy = string;
+  objc_msgSend_rangeOfComposedCharacterSequenceAtIndex_(stringCopy, v5, 0, v6, v7, v8);
+  if (v17 != objc_msgSend_length(stringCopy, v17, v9, v10, v11, v12))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -178,13 +178,13 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v41 = 138412290;
-      *v42 = v4;
+      *v42 = stringCopy;
       _os_log_impl(&dword_18366B000, v18, OS_LOG_TYPE_ERROR, "Method can only be called on a single character string: %@", &v41, 0xCu);
     }
   }
 
-  objc_msgSend_rangeOfComposedCharacterSequenceAtIndex_(v4, v13, 0, v14, v15, v16);
-  if (v26 != objc_msgSend_length(v4, v26, v19, v20, v21, v22))
+  objc_msgSend_rangeOfComposedCharacterSequenceAtIndex_(stringCopy, v13, 0, v14, v15, v16);
+  if (v26 != objc_msgSend_length(stringCopy, v26, v19, v20, v21, v22))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -195,16 +195,16 @@
     if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
     {
       v41 = 138412290;
-      *v42 = v4;
+      *v42 = stringCopy;
       _os_log_impl(&dword_18366B000, v27, OS_LOG_TYPE_FAULT, "Method can only be called on a single character string: %@", &v41, 0xCu);
     }
   }
 
-  v28 = objc_msgSend_codepointAtIndex_outRange_(v4, v23, 0, &v41, v24, v25);
+  v28 = objc_msgSend_codepointAtIndex_outRange_(stringCopy, v23, 0, &v41, v24, v25);
   v29 = *&v42[1];
-  if (v29 == objc_msgSend_length(v4, v30, v31, v32, v33, v34))
+  if (v29 == objc_msgSend_length(stringCopy, v30, v31, v32, v33, v34))
   {
-    v39 = objc_msgSend_characterType_(a1, v35, v28, v36, v37, v38);
+    v39 = objc_msgSend_characterType_(self, v35, v28, v36, v37, v38);
   }
 
   else

@@ -9,10 +9,10 @@
 - (uint64_t)sl_hasPossibleCollaborationRepresentation
 {
   v2 = 1;
-  v3 = [a1 registeredTypeIdentifiersWithFileOptions:1];
+  v3 = [self registeredTypeIdentifiersWithFileOptions:1];
   if (![v3 count])
   {
-    if ([a1 canLoadObjectOfClass:objc_opt_class()])
+    if ([self canLoadObjectOfClass:objc_opt_class()])
     {
       v2 = 1;
     }
@@ -37,7 +37,7 @@
 
       v5 = v4;
       _Block_object_dispose(&v8, 8);
-      v2 = [a1 canLoadObjectOfClass:v4];
+      v2 = [self canLoadObjectOfClass:v4];
     }
   }
 
@@ -47,13 +47,13 @@
 - (id)sl_representations
 {
   v25 = *MEMORY[0x277D85DE8];
-  v2 = [a1 registeredTypeIdentifiers];
-  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  registeredTypeIdentifiers = [self registeredTypeIdentifiers];
+  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(registeredTypeIdentifiers, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = v2;
+  v4 = registeredTypeIdentifiers;
   v5 = [v4 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v5)
   {
@@ -71,7 +71,7 @@
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [a1 _representationConformingToType:{v10, v15, v16}];
+        v11 = [self _representationConformingToType:{v10, v15, v16}];
         if (v11)
         {
           v12 = -[SLShareableContentRepresentation initWithTypeIdentifier:preferredRepresentation:]([SLShareableContentRepresentation alloc], "initWithTypeIdentifier:preferredRepresentation:", v10, [v11 preferredRepresentation]);
@@ -86,7 +86,7 @@
             *buf = v15;
             v21 = v10;
             v22 = 2112;
-            v23 = a1;
+            selfCopy = self;
             _os_log_error_impl(&dword_231772000, &v12->super, OS_LOG_TYPE_ERROR, "Unexpectedly got empty representation for registered type identifier: %@ on item provider: %@", buf, 0x16u);
           }
         }
@@ -108,7 +108,7 @@
   v21[1] = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v8 = [a1 _representationConformingToType:v6];
+  v8 = [self _representationConformingToType:v6];
   v9 = v8;
   if (v8)
   {
@@ -128,7 +128,7 @@
     v12 = SLShareableContentLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(NSItemProvider(SocialLayer) *)v6 sl_loadRepresentationForTypeIdentifier:a1 completionHandler:v12];
+      [(NSItemProvider(SocialLayer) *)v6 sl_loadRepresentationForTypeIdentifier:self completionHandler:v12];
     }
 
     v13 = MEMORY[0x277CCA9B8];

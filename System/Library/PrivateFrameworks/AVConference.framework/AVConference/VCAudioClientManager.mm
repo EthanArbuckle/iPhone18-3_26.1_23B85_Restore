@@ -1,15 +1,15 @@
 @interface VCAudioClientManager
 + (id)sharedInstance;
-- (BOOL)dispatchedHandleMuteStateChangedHandlerForAudioClient:(id)a3 enabled:(BOOL)a4 error:(id *)a5;
+- (BOOL)dispatchedHandleMuteStateChangedHandlerForAudioClient:(id)client enabled:(BOOL)enabled error:(id *)error;
 - (VCAudioClientManager)init;
-- (id)getAudioClientWithProcessId:(id)a3 create:(BOOL)a4;
-- (id)handleDisconnectWithXPCArguments:(id)a3;
-- (id)handleNewClientWithXPCArguments:(id)a3 error:(id *)a4;
-- (id)handleRegisterMutedTalkerNotificationForAudioClient:(id)a3 error:(id *)a4;
-- (id)handleUnregisterMutedTalkerNotificationForAudioClient:(id)a3 error:(id *)a4;
+- (id)getAudioClientWithProcessId:(id)id create:(BOOL)create;
+- (id)handleDisconnectWithXPCArguments:(id)arguments;
+- (id)handleNewClientWithXPCArguments:(id)arguments error:(id *)error;
+- (id)handleRegisterMutedTalkerNotificationForAudioClient:(id)client error:(id *)error;
+- (id)handleUnregisterMutedTalkerNotificationForAudioClient:(id)client error:(id *)error;
 - (void)dealloc;
-- (void)dispatchedHandleMuteStateChanged:(BOOL)a3 reason:(unsigned __int8)a4;
-- (void)handleMutedTalkerNotification:(unsigned int)a3;
+- (void)dispatchedHandleMuteStateChanged:(BOOL)changed reason:(unsigned __int8)reason;
+- (void)handleMutedTalkerNotification:(unsigned int)notification;
 - (void)registerBlocksForService;
 - (void)registerForMutedTalkerNotfications;
 - (void)registerMuteStateChangedHandler;
@@ -70,9 +70,9 @@ void __38__VCAudioClientManager_sharedInstance__block_invoke()
   [(VCAudioClientManager *)&v3 dealloc];
 }
 
-- (id)getAudioClientWithProcessId:(id)a3 create:(BOOL)a4
+- (id)getAudioClientWithProcessId:(id)id create:(BOOL)create
 {
-  if (!a3)
+  if (!id)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -86,7 +86,7 @@ void __38__VCAudioClientManager_sharedInstance__block_invoke()
     return 0;
   }
 
-  v4 = a4;
+  createCopy = create;
   if ([(NSMutableDictionary *)self->_clientList objectForKeyedSubscript:?])
   {
     v7 = 1;
@@ -94,7 +94,7 @@ void __38__VCAudioClientManager_sharedInstance__block_invoke()
 
   else
   {
-    v7 = !v4;
+    v7 = !createCopy;
   }
 
   if (v7)
@@ -102,7 +102,7 @@ void __38__VCAudioClientManager_sharedInstance__block_invoke()
     goto LABEL_8;
   }
 
-  v8 = -[VCAudioClient initWithProcessId:]([VCAudioClient alloc], "initWithProcessId:", [a3 intValue]);
+  v8 = -[VCAudioClient initWithProcessId:]([VCAudioClient alloc], "initWithProcessId:", [id intValue]);
   if (!v8)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -118,45 +118,45 @@ void __38__VCAudioClientManager_sharedInstance__block_invoke()
   }
 
   v9 = v8;
-  [(NSMutableDictionary *)self->_clientList setObject:v8 forKeyedSubscript:a3];
+  [(NSMutableDictionary *)self->_clientList setObject:v8 forKeyedSubscript:id];
 
 LABEL_8:
   clientList = self->_clientList;
 
-  return [(NSMutableDictionary *)clientList objectForKeyedSubscript:a3];
+  return [(NSMutableDictionary *)clientList objectForKeyedSubscript:id];
 }
 
-- (id)handleRegisterMutedTalkerNotificationForAudioClient:(id)a3 error:(id *)a4
+- (id)handleRegisterMutedTalkerNotificationForAudioClient:(id)client error:(id *)error
 {
-  if (a3)
+  if (client)
   {
-    [a3 setIsMutedTalkerNotificationRegistered:{1, a4}];
+    [client setIsMutedTalkerNotificationRegistered:{1, error}];
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32016 detailCode:0 description:@"Audio client not registered"];
+    *error = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32016 detailCode:0 description:@"Audio client not registered"];
   }
 
   return 0;
 }
 
-- (id)handleUnregisterMutedTalkerNotificationForAudioClient:(id)a3 error:(id *)a4
+- (id)handleUnregisterMutedTalkerNotificationForAudioClient:(id)client error:(id *)error
 {
-  if (a3)
+  if (client)
   {
-    [a3 setIsMutedTalkerNotificationRegistered:{0, a4}];
+    [client setIsMutedTalkerNotificationRegistered:{0, error}];
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32016 detailCode:0 description:@"Audio client not registered"];
+    *error = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32016 detailCode:0 description:@"Audio client not registered"];
   }
 
   return 0;
 }
 
-- (void)handleMutedTalkerNotification:(unsigned int)a3
+- (void)handleMutedTalkerNotification:(unsigned int)notification
 {
   v6 = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -164,7 +164,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __54__VCAudioClientManager_handleMutedTalkerNotification___block_invoke;
   block[3] = &unk_1E85F38B8;
-  v5 = a3;
+  notificationCopy = notification;
   block[4] = self;
   dispatch_async(xpcCommandQueue, block);
 }
@@ -242,23 +242,23 @@ uint64_t __58__VCAudioClientManager_registerForMutedTalkerNotfications__block_in
   [v2 unregisterFromMutedTalkerNotification];
 }
 
-- (BOOL)dispatchedHandleMuteStateChangedHandlerForAudioClient:(id)a3 enabled:(BOOL)a4 error:(id *)a5
+- (BOOL)dispatchedHandleMuteStateChangedHandlerForAudioClient:(id)client enabled:(BOOL)enabled error:(id *)error
 {
-  v6 = a4;
+  enabledCopy = enabled;
   dispatch_assert_queue_V2(self->_xpcCommandQueue);
-  if (a3)
+  if (client)
   {
-    if ([a3 isMutedStateChangeHandlerRegistered] != v6)
+    if ([client isMutedStateChangeHandlerRegistered] != enabledCopy)
     {
-      [a3 setIsMutedStateChangeHandlerRegistered:v6];
+      [client setIsMutedStateChangeHandlerRegistered:enabledCopy];
       return 1;
     }
 
-    if (a5)
+    if (error)
     {
       v12 = MEMORY[0x1E696ABC0];
       v13 = "NO";
-      if (v6)
+      if (enabledCopy)
       {
         v13 = "YES";
       }
@@ -270,7 +270,7 @@ uint64_t __58__VCAudioClientManager_registerForMutedTalkerNotfications__block_in
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v9 = MEMORY[0x1E696ABC0];
     v10 = @"Audio client not registered";
@@ -278,30 +278,30 @@ uint64_t __58__VCAudioClientManager_registerForMutedTalkerNotfications__block_in
 LABEL_10:
     v14 = [v9 AVConferenceServiceError:v11 detailCode:0 description:v10];
     result = 0;
-    *a5 = v14;
+    *error = v14;
     return result;
   }
 
   return 0;
 }
 
-- (void)dispatchedHandleMuteStateChanged:(BOOL)a3 reason:(unsigned __int8)a4
+- (void)dispatchedHandleMuteStateChanged:(BOOL)changed reason:(unsigned __int8)reason
 {
-  v4 = a4;
-  v5 = a3;
+  reasonCopy = reason;
+  changedCopy = changed;
   v20[2] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_xpcCommandQueue);
   v19[0] = @"muteStateChangedMuteState";
   v19[1] = @"muteStateChangedReason";
-  v20[0] = [MEMORY[0x1E696AD98] numberWithBool:v5];
-  v20[1] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v4];
+  v20[0] = [MEMORY[0x1E696AD98] numberWithBool:changedCopy];
+  v20[1] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:reasonCopy];
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(NSMutableDictionary *)self->_clientList allValues];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_clientList allValues];
+  v9 = [allValues countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v9)
   {
     v10 = v9;
@@ -312,7 +312,7 @@ LABEL_10:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
@@ -322,7 +322,7 @@ LABEL_10:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v14 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v15 objects:v14 count:16];
     }
 
     while (v10);
@@ -356,15 +356,15 @@ uint64_t __55__VCAudioClientManager_registerMuteStateChangedHandler__block_invok
   }
 }
 
-- (id)handleNewClientWithXPCArguments:(id)a3 error:(id *)a4
+- (id)handleNewClientWithXPCArguments:(id)arguments error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = [a3 objectForKeyedSubscript:@"CLIENTPID"];
-  v8 = [a3 objectForKeyedSubscript:@"CONTEXT"];
+  v7 = [arguments objectForKeyedSubscript:@"CLIENTPID"];
+  v8 = [arguments objectForKeyedSubscript:@"CONTEXT"];
   if (v8)
   {
     v14 = @"Audio client is already registered";
-    if (a4)
+    if (error)
     {
       goto LABEL_8;
     }
@@ -376,17 +376,17 @@ uint64_t __55__VCAudioClientManager_registerMuteStateChangedHandler__block_invok
   if (!v9)
   {
     v14 = @"Failed to allocate client";
-    if (a4)
+    if (error)
     {
 LABEL_8:
-      *a4 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32029 detailCode:0 description:v14];
+      *error = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32029 detailCode:0 description:v14];
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
         v15 = VRTraceErrorLogLevelToCSTR();
         v16 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
-          v18 = *a4;
+          v18 = *error;
           *buf = 136316162;
           v22 = v15;
           v23 = 2080;
@@ -439,10 +439,10 @@ LABEL_12:
   return result;
 }
 
-- (id)handleDisconnectWithXPCArguments:(id)a3
+- (id)handleDisconnectWithXPCArguments:(id)arguments
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [a3 objectForKeyedSubscript:@"CONTEXT"];
+  v5 = [arguments objectForKeyedSubscript:@"CONTEXT"];
   if (!v5)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -477,9 +477,9 @@ LABEL_12:
       v15 = 1024;
       v16 = 265;
       v17 = 1024;
-      v18 = [v6 processId];
+      processId = [v6 processId];
       v19 = 2112;
-      v20 = a3;
+      argumentsCopy = arguments;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Got notification that client died, tearing down the audio session (client PID=%d), arguments=%@", buf, 0x2Cu);
     }
   }
@@ -487,8 +487,8 @@ LABEL_12:
   *buf = 0;
   [v6 stopWithError:buf];
   -[NSMutableDictionary setObject:forKeyedSubscript:](self->_clientList, "setObject:forKeyedSubscript:", 0, [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v6, "processId")}]);
-  v11 = [MEMORY[0x1E695DFB0] null];
-  return [MEMORY[0x1E695DF20] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
+  null = [MEMORY[0x1E695DFB0] null];
+  return [MEMORY[0x1E695DF20] dictionaryWithObjects:&null forKeys:&v10 count:1];
 }
 
 - (void)registerBlocksForService

@@ -9,9 +9,9 @@
 - (BOOL)recursiveRequestFlag
 {
   v2 = [NSURLProtocol propertyForKey:@"com.apple.ap.pc.proxy-is-recursive" inRequest:self];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasRecursiveRequestFlag
@@ -28,15 +28,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 @end

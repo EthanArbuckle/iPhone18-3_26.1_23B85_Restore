@@ -1,31 +1,31 @@
 @interface CNiOSABContainerOfContactPredicate
-- (CNiOSABContainerOfContactPredicate)initWithCoder:(id)a3;
-- (CNiOSABContainerOfContactPredicate)initWithContactIdentifier:(id)a3;
+- (CNiOSABContainerOfContactPredicate)initWithCoder:(id)coder;
+- (CNiOSABContainerOfContactPredicate)initWithContactIdentifier:(id)identifier;
 - (NSString)description;
-- (__CFArray)cn_copyContainersInAddressBook:(void *)a3 error:(__CFError *)a4;
-- (id)containersFromRecentsLibrary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (__CFArray)cn_copyContainersInAddressBook:(void *)book error:(__CFError *)error;
+- (id)containersFromRecentsLibrary:(id)library;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABContainerOfContactPredicate
 
-- (id)containersFromRecentsLibrary:(id)a3
+- (id)containersFromRecentsLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [(CNiOSABContainerOfContactPredicate *)self contactIdentifier];
+  libraryCopy = library;
+  contactIdentifier = [(CNiOSABContainerOfContactPredicate *)self contactIdentifier];
 
-  if (v5 && ([(CNiOSABContainerOfContactPredicate *)self contactIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = [(CNContactStore *)CNCoreRecentsContactStore isStoreForContactIdentifier:v6], v6, v7))
+  if (contactIdentifier && ([(CNiOSABContainerOfContactPredicate *)self contactIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = [(CNContactStore *)CNCoreRecentsContactStore isStoreForContactIdentifier:v6], v6, v7))
   {
-    v8 = [(CNiOSABContainerOfContactPredicate *)self contactIdentifier];
-    v9 = [CNCoreRecentsContactStore coreRecentsDomainFromContactIdentifier:v8];
+    contactIdentifier2 = [(CNiOSABContainerOfContactPredicate *)self contactIdentifier];
+    v9 = [CNCoreRecentsContactStore coreRecentsDomainFromContactIdentifier:contactIdentifier2];
 
-    v10 = [v4 domains];
-    LODWORD(v8) = [v10 containsObject:v9];
+    domains = [libraryCopy domains];
+    LODWORD(contactIdentifier2) = [domains containsObject:v9];
 
-    if (v8)
+    if (contactIdentifier2)
     {
-      v11 = [v4 domains];
-      v12 = [v4 containersForIdentifiers:v11];
+      domains2 = [libraryCopy domains];
+      v12 = [libraryCopy containersForIdentifiers:domains2];
     }
 
     else
@@ -42,17 +42,17 @@
   return v12;
 }
 
-- (CNiOSABContainerOfContactPredicate)initWithContactIdentifier:(id)a3
+- (CNiOSABContainerOfContactPredicate)initWithContactIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY contacts.identifier == %@", v4];
+  identifierCopy = identifier;
+  identifierCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY contacts.identifier == %@", identifierCopy];
   v10.receiver = self;
   v10.super_class = CNiOSABContainerOfContactPredicate;
-  v6 = [(CNPredicate *)&v10 initWithPredicate:v5];
+  v6 = [(CNPredicate *)&v10 initWithPredicate:identifierCopy];
 
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [identifierCopy copy];
     contactIdentifier = v6->_contactIdentifier;
     v6->_contactIdentifier = v7;
   }
@@ -60,15 +60,15 @@
   return v6;
 }
 
-- (CNiOSABContainerOfContactPredicate)initWithCoder:(id)a3
+- (CNiOSABContainerOfContactPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CNiOSABContainerOfContactPredicate;
-  v5 = [(CNPredicate *)&v11 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_contactIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contactIdentifier"];
     v7 = [v6 copy];
     contactIdentifier = v5->_contactIdentifier;
     v5->_contactIdentifier = v7;
@@ -79,25 +79,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNiOSABContainerOfContactPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_contactIdentifier forKey:{@"_contactIdentifier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_contactIdentifier forKey:{@"_contactIdentifier", v5.receiver, v5.super_class}];
 }
 
-- (__CFArray)cn_copyContainersInAddressBook:(void *)a3 error:(__CFError *)a4
+- (__CFArray)cn_copyContainersInAddressBook:(void *)book error:(__CFError *)error
 {
-  v6 = [(CNiOSABContainerOfContactPredicate *)self contactIdentifier];
-  v7 = [v6 length];
+  contactIdentifier = [(CNiOSABContainerOfContactPredicate *)self contactIdentifier];
+  v7 = [contactIdentifier length];
 
   if (v7)
   {
-    v8 = [(CNiOSABContainerOfContactPredicate *)self contactIdentifier];
+    contactIdentifier2 = [(CNiOSABContainerOfContactPredicate *)self contactIdentifier];
 
-    values = v8;
+    values = contactIdentifier2;
     v9 = *MEMORY[0x1E695E480];
     v10 = CFArrayCreate(*MEMORY[0x1E695E480], &values, 1, MEMORY[0x1E695E9C0]);
     v11 = ABAddressBookCopyPeopleWithUUIDs();
@@ -142,10 +142,10 @@ LABEL_14:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [CNErrorFactory errorWithCode:400 userInfo:0];
-    *a4 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -160,12 +160,12 @@ LABEL_14:
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContainer predicateForContainerOfContactWithIdentifier:]"];
-  v5 = [(CNiOSABContainerOfContactPredicate *)self contactIdentifier];
-  v6 = [v3 appendName:@"identifier" object:v5];
+  contactIdentifier = [(CNiOSABContainerOfContactPredicate *)self contactIdentifier];
+  v6 = [v3 appendName:@"identifier" object:contactIdentifier];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

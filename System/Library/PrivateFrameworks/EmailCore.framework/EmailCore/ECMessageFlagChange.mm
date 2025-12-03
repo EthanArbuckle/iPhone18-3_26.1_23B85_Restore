@@ -7,17 +7,17 @@
 + (ECMessageFlagChange)setRead;
 + (ECMessageFlagChange)setReplied;
 + (ECMessageFlagChange)setTouchedByCleanup;
-+ (id)changeFrom:(id)a3 to:(id)a4;
++ (id)changeFrom:(id)from to:(id)to;
 - (BOOL)hasChanges;
-- (BOOL)isEqual:(id)a3;
-- (ECMessageFlagChange)initWithBuilder:(id)a3;
-- (ECMessageFlagChange)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ECMessageFlagChange)initWithBuilder:(id)builder;
+- (ECMessageFlagChange)initWithCoder:(id)coder;
 - (NSString)ef_publicDescription;
-- (id)flagsAfterChangingFlags:(id)a3 flagsWereChanged:(BOOL *)a4;
+- (id)flagsAfterChangingFlags:(id)flags flagsWereChanged:(BOOL *)changed;
 - (unint64_t)hash;
-- (void)changesFlagColorTo:(unint64_t)a3;
-- (void)changesJunkLevelTo:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)changesFlagColorTo:(unint64_t)to;
+- (void)changesJunkLevelTo:(unint64_t)to;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ECMessageFlagChange
@@ -97,18 +97,18 @@
   return v16;
 }
 
-+ (id)changeFrom:(id)a3 to:(id)a4
++ (id)changeFrom:(id)from to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  toCopy = to;
   v7 = [ECMessageFlagChange alloc];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __37__ECMessageFlagChange_changeFrom_to___block_invoke;
   v12[3] = &unk_27874BD08;
-  v8 = v5;
+  v8 = fromCopy;
   v13 = v8;
-  v9 = v6;
+  v9 = toCopy;
   v14 = v9;
   v10 = [(ECMessageFlagChange *)v7 initWithBuilder:v12];
 
@@ -249,15 +249,15 @@ void __37__ECMessageFlagChange_changeFrom_to___block_invoke(uint64_t a1, void *a
   return v2;
 }
 
-- (ECMessageFlagChange)initWithBuilder:(id)a3
+- (ECMessageFlagChange)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v7.receiver = self;
   v7.super_class = ECMessageFlagChange;
   v5 = [(ECMessageFlagChange *)&v7 init];
   if (v5)
   {
-    v4[2](v4, v5);
+    builderCopy[2](builderCopy, v5);
   }
 
   return v5;
@@ -273,113 +273,113 @@ void __37__ECMessageFlagChange_changeFrom_to___block_invoke(uint64_t a1, void *a
   return [(ECMessageFlagChange *)self touchedByCleanup];
 }
 
-- (id)flagsAfterChangingFlags:(id)a3 flagsWereChanged:(BOOL *)a4
+- (id)flagsAfterChangingFlags:(id)flags flagsWereChanged:(BOOL *)changed
 {
-  v5 = a3;
-  v24 = [v5 read];
-  if (![(ECMessageFlagChange *)self readChanged]|| v24 == [(ECMessageFlagChange *)self read])
+  flagsCopy = flags;
+  read = [flagsCopy read];
+  if (![(ECMessageFlagChange *)self readChanged]|| read == [(ECMessageFlagChange *)self read])
   {
     v6 = 0;
   }
 
   else
   {
-    LOBYTE(v24) = [(ECMessageFlagChange *)self read];
+    LOBYTE(read) = [(ECMessageFlagChange *)self read];
     v6 = 1;
   }
 
-  v23 = [v5 deleted];
-  if ([(ECMessageFlagChange *)self deletedChanged]&& v23 != [(ECMessageFlagChange *)self deleted])
+  deleted = [flagsCopy deleted];
+  if ([(ECMessageFlagChange *)self deletedChanged]&& deleted != [(ECMessageFlagChange *)self deleted])
   {
-    LOBYTE(v23) = [(ECMessageFlagChange *)self deleted];
+    LOBYTE(deleted) = [(ECMessageFlagChange *)self deleted];
     v6 = 1;
   }
 
-  v22 = [v5 replied];
-  if ([(ECMessageFlagChange *)self repliedChanged]&& v22 != [(ECMessageFlagChange *)self replied])
+  replied = [flagsCopy replied];
+  if ([(ECMessageFlagChange *)self repliedChanged]&& replied != [(ECMessageFlagChange *)self replied])
   {
-    LOBYTE(v22) = [(ECMessageFlagChange *)self replied];
+    LOBYTE(replied) = [(ECMessageFlagChange *)self replied];
     v6 = 1;
   }
 
-  v21 = [v5 flagged];
-  if ([(ECMessageFlagChange *)self flaggedChanged]&& v21 != [(ECMessageFlagChange *)self flagged])
+  flagged = [flagsCopy flagged];
+  if ([(ECMessageFlagChange *)self flaggedChanged]&& flagged != [(ECMessageFlagChange *)self flagged])
   {
-    LOBYTE(v21) = [(ECMessageFlagChange *)self flagged];
+    LOBYTE(flagged) = [(ECMessageFlagChange *)self flagged];
     v6 = 1;
   }
 
-  v7 = [v5 draft];
-  if ([(ECMessageFlagChange *)self draftChanged]&& v7 != [(ECMessageFlagChange *)self draft])
+  draft = [flagsCopy draft];
+  if ([(ECMessageFlagChange *)self draftChanged]&& draft != [(ECMessageFlagChange *)self draft])
   {
-    LOBYTE(v7) = [(ECMessageFlagChange *)self draft];
+    LOBYTE(draft) = [(ECMessageFlagChange *)self draft];
     v6 = 1;
   }
 
-  v8 = [v5 forwarded];
-  if ([(ECMessageFlagChange *)self forwardedChanged]&& v8 != [(ECMessageFlagChange *)self forwarded])
+  forwarded = [flagsCopy forwarded];
+  if ([(ECMessageFlagChange *)self forwardedChanged]&& forwarded != [(ECMessageFlagChange *)self forwarded])
   {
-    LOBYTE(v8) = [(ECMessageFlagChange *)self forwarded];
+    LOBYTE(forwarded) = [(ECMessageFlagChange *)self forwarded];
     v6 = 1;
   }
 
-  v9 = [v5 redirected];
-  if ([(ECMessageFlagChange *)self redirectedChanged]&& v9 != [(ECMessageFlagChange *)self redirected])
+  redirected = [flagsCopy redirected];
+  if ([(ECMessageFlagChange *)self redirectedChanged]&& redirected != [(ECMessageFlagChange *)self redirected])
   {
-    LOBYTE(v9) = [(ECMessageFlagChange *)self redirected];
+    LOBYTE(redirected) = [(ECMessageFlagChange *)self redirected];
     v6 = 1;
   }
 
-  v10 = [v5 junkLevelSetByUser];
-  if ([(ECMessageFlagChange *)self junkLevelSetByUserChanged]&& v10 != [(ECMessageFlagChange *)self junkLevelSetByUser])
+  junkLevelSetByUser = [flagsCopy junkLevelSetByUser];
+  if ([(ECMessageFlagChange *)self junkLevelSetByUserChanged]&& junkLevelSetByUser != [(ECMessageFlagChange *)self junkLevelSetByUser])
   {
-    LOBYTE(v10) = [(ECMessageFlagChange *)self junkLevelSetByUser];
+    LOBYTE(junkLevelSetByUser) = [(ECMessageFlagChange *)self junkLevelSetByUser];
     v6 = 1;
   }
 
-  v11 = [v5 junkLevel];
-  if ([(ECMessageFlagChange *)self junkLevelChanged]&& v11 != [(ECMessageFlagChange *)self junkLevel])
+  junkLevel = [flagsCopy junkLevel];
+  if ([(ECMessageFlagChange *)self junkLevelChanged]&& junkLevel != [(ECMessageFlagChange *)self junkLevel])
   {
-    v11 = [(ECMessageFlagChange *)self junkLevel];
+    junkLevel = [(ECMessageFlagChange *)self junkLevel];
     v6 = 1;
   }
 
-  v12 = [v5 flagColor];
-  if ([(ECMessageFlagChange *)self flagColorChanged]&& v12 != [(ECMessageFlagChange *)self flagColor])
+  flagColor = [flagsCopy flagColor];
+  if ([(ECMessageFlagChange *)self flagColorChanged]&& flagColor != [(ECMessageFlagChange *)self flagColor])
   {
-    v12 = [(ECMessageFlagChange *)self flagColor];
+    flagColor = [(ECMessageFlagChange *)self flagColor];
     v6 = 1;
   }
 
-  v13 = [v5 touchedByCleanup];
-  if ([(ECMessageFlagChange *)self touchedByCleanupChanged]&& v13 != [(ECMessageFlagChange *)self touchedByCleanup])
+  touchedByCleanup = [flagsCopy touchedByCleanup];
+  if ([(ECMessageFlagChange *)self touchedByCleanupChanged]&& touchedByCleanup != [(ECMessageFlagChange *)self touchedByCleanup])
   {
-    LOBYTE(v13) = [(ECMessageFlagChange *)self touchedByCleanup];
-    v14 = v5;
+    LOBYTE(touchedByCleanup) = [(ECMessageFlagChange *)self touchedByCleanup];
+    v14 = flagsCopy;
 LABEL_36:
     v16 = [ECMessageFlags alloc];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __64__ECMessageFlagChange_flagsAfterChangingFlags_flagsWereChanged___block_invoke;
     v25[3] = &__block_descriptor_57_e33_v16__0___ECMessageFlagsBuilder__8l;
-    v26 = v24;
-    v27 = v23;
-    v28 = v22;
-    v29 = v21;
-    v30 = v7;
-    v31 = v8;
-    v32 = v9;
-    v33 = v10;
-    v25[4] = v11;
-    v25[5] = v12;
-    v34 = v13;
+    v26 = read;
+    v27 = deleted;
+    v28 = replied;
+    v29 = flagged;
+    v30 = draft;
+    v31 = forwarded;
+    v32 = redirected;
+    v33 = junkLevelSetByUser;
+    v25[4] = junkLevel;
+    v25[5] = flagColor;
+    v34 = touchedByCleanup;
     v17 = [(ECMessageFlags *)v16 initWithBuilder:v25];
 
     v18 = 1;
     goto LABEL_38;
   }
 
-  v15 = v5;
+  v15 = flagsCopy;
   if (v6)
   {
     goto LABEL_36;
@@ -388,9 +388,9 @@ LABEL_36:
   v17 = v15;
   v18 = 0;
 LABEL_38:
-  if (a4)
+  if (changed)
   {
-    *a4 = v18;
+    *changed = v18;
   }
 
   return v17;
@@ -412,28 +412,28 @@ void __64__ECMessageFlagChange_flagsAfterChangingFlags_flagsWereChanged___block_
   [v3 setTouchedByCleanup:*(a1 + 56)];
 }
 
-- (void)changesJunkLevelTo:(unint64_t)a3
+- (void)changesJunkLevelTo:(unint64_t)to
 {
-  [(ECMessageFlagChange *)self setJunkLevel:a3];
+  [(ECMessageFlagChange *)self setJunkLevel:to];
 
   [(ECMessageFlagChange *)self setJunkLevelChanged:1];
 }
 
-- (void)changesFlagColorTo:(unint64_t)a3
+- (void)changesFlagColorTo:(unint64_t)to
 {
-  [(ECMessageFlagChange *)self setFlagColor:a3];
+  [(ECMessageFlagChange *)self setFlagColor:to];
 
   [(ECMessageFlagChange *)self setFlagColorChanged:1];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = [(ECMessageFlagChange *)self hash];
-    v6 = v5 == [v4 hash];
+    v6 = v5 == [equalCopy hash];
   }
 
   else
@@ -476,15 +476,15 @@ void __64__ECMessageFlagChange_flagsAfterChangingFlags_flagsWereChanged___block_
   return *&vorr_s8(*v16.i8, *&vextq_s8(v16, v16, 8uLL)) | ((self->_junkLevel & 3) << 8) | v4 & 0xFFFFFFFFFFFFE3FFLL | ((self->_flagColor & 7) << 10);
 }
 
-- (ECMessageFlagChange)initWithCoder:(id)a3
+- (ECMessageFlagChange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __37__ECMessageFlagChange_initWithCoder___block_invoke;
   v8[3] = &unk_27874BD50;
-  v9 = v4;
-  v5 = v4;
+  v9 = coderCopy;
+  v5 = coderCopy;
   v6 = [(ECMessageFlagChange *)self initWithBuilder:v8];
 
   return v6;
@@ -553,10 +553,10 @@ void __37__ECMessageFlagChange_initWithCoder___block_invoke(uint64_t a1, void *a
   [v5 setReason:(v4 >> 25) & 0xF];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[ECMessageFlagChange hash](self forKey:{"hash") & 0xFFFFFFFFE1FFFFFFLL | ((self->_reason & 0xF) << 25), @"EFPropertyKey_hash"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[ECMessageFlagChange hash](self forKey:{"hash") & 0xFFFFFFFFE1FFFFFFLL | ((self->_reason & 0xF) << 25), @"EFPropertyKey_hash"}];
 }
 
 @end

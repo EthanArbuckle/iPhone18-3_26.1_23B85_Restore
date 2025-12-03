@@ -7,7 +7,7 @@
 
 - (void)scheduleControlDidRescheduleItems
 {
-  v2 = self;
+  selfCopy = self;
   sub_22819ACC0();
 }
 

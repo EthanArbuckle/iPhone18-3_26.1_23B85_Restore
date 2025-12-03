@@ -1,13 +1,13 @@
 @interface NTKTimerBundleTimelineEntry
-+ (id)circularMediumImageProviderForDevice:(id)a3;
-+ (id)circularSmallImageProviderForDevice:(id)a3;
-+ (id)extraLargeImageProviderForDevice:(id)a3;
-+ (id)fullColorSymbolImageProviderForDevice:(id)a3 withOverridePointSize:(double)a4;
-+ (id)modularSmallImageProviderForDevice:(id)a3;
-+ (id)utilitarianSmallImageProviderForDevice:(id)a3;
-- (NTKTimerBundleTimelineEntry)initWithDevice:(id)a3;
-- (id)_countdownTextProviderWithBaseDate:(id)a3;
-- (id)_gaugeProviderForTimeAtState:(unint64_t)a3 tintColor:(id)a4;
++ (id)circularMediumImageProviderForDevice:(id)device;
++ (id)circularSmallImageProviderForDevice:(id)device;
++ (id)extraLargeImageProviderForDevice:(id)device;
++ (id)fullColorSymbolImageProviderForDevice:(id)device withOverridePointSize:(double)size;
++ (id)modularSmallImageProviderForDevice:(id)device;
++ (id)utilitarianSmallImageProviderForDevice:(id)device;
+- (NTKTimerBundleTimelineEntry)initWithDevice:(id)device;
+- (id)_countdownTextProviderWithBaseDate:(id)date;
+- (id)_gaugeProviderForTimeAtState:(unint64_t)state tintColor:(id)color;
 - (id)_newCircularMediumTemplate;
 - (id)_newCircularSmallTemplate;
 - (id)_newExtraLargeTemplate;
@@ -23,114 +23,114 @@
 - (id)_newSimpleTextTemplate;
 - (id)_newSmallFlatUtilityTemplate;
 - (id)_newSmallModularTemplate;
-- (id)_relativeDateGaugeProviderForTimeInterval:(double)a3 fullDuration:(double)a4 paused:(BOOL)a5 tintColor:(id)a6;
+- (id)_relativeDateGaugeProviderForTimeInterval:(double)interval fullDuration:(double)duration paused:(BOOL)paused tintColor:(id)color;
 - (id)_templateMetadata;
-- (id)_titleTextProvider:(BOOL)a3;
-- (id)templateForComplicationFamily:(int64_t)a3;
+- (id)_titleTextProvider:(BOOL)provider;
+- (id)templateForComplicationFamily:(int64_t)family;
 @end
 
 @implementation NTKTimerBundleTimelineEntry
 
-+ (id)circularMediumImageProviderForDevice:(id)a3
++ (id)circularMediumImageProviderForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 isRunningGloryGMOrLater];
-  if (v4)
+  deviceCopy = device;
+  isRunningGloryGMOrLater = [deviceCopy isRunningGloryGMOrLater];
+  if (isRunningGloryGMOrLater)
   {
-    [NTKTimerBundleTimelineEntry symbolImageProviderForDevice:v3];
+    [NTKTimerBundleTimelineEntry symbolImageProviderForDevice:deviceCopy];
   }
 
   else
   {
-    sub_3F8C(v4, v3);
+    sub_3F8C(isRunningGloryGMOrLater, deviceCopy);
   }
   v5 = ;
 
   return v5;
 }
 
-+ (id)circularSmallImageProviderForDevice:(id)a3
++ (id)circularSmallImageProviderForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 isRunningGloryGMOrLater];
-  if (v4)
+  deviceCopy = device;
+  isRunningGloryGMOrLater = [deviceCopy isRunningGloryGMOrLater];
+  if (isRunningGloryGMOrLater)
   {
-    [NTKTimerBundleTimelineEntry symbolImageProviderForDevice:v3];
+    [NTKTimerBundleTimelineEntry symbolImageProviderForDevice:deviceCopy];
   }
 
   else
   {
-    sub_4158(v4, v3);
+    sub_4158(isRunningGloryGMOrLater, deviceCopy);
   }
   v5 = ;
 
   return v5;
 }
 
-+ (id)extraLargeImageProviderForDevice:(id)a3
++ (id)extraLargeImageProviderForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 isRunningGloryGMOrLater];
-  if (v4)
+  deviceCopy = device;
+  isRunningGloryGMOrLater = [deviceCopy isRunningGloryGMOrLater];
+  if (isRunningGloryGMOrLater)
   {
-    [NTKTimerBundleTimelineEntry symbolImageProviderForDevice:v3];
+    [NTKTimerBundleTimelineEntry symbolImageProviderForDevice:deviceCopy];
   }
 
   else
   {
-    sub_4324(v4, v3);
+    sub_4324(isRunningGloryGMOrLater, deviceCopy);
   }
   v5 = ;
 
   return v5;
 }
 
-+ (id)modularSmallImageProviderForDevice:(id)a3
++ (id)modularSmallImageProviderForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 isRunningGloryGMOrLater];
-  if (v4)
+  deviceCopy = device;
+  isRunningGloryGMOrLater = [deviceCopy isRunningGloryGMOrLater];
+  if (isRunningGloryGMOrLater)
   {
-    [NTKTimerBundleTimelineEntry symbolImageProviderForDevice:v3];
+    [NTKTimerBundleTimelineEntry symbolImageProviderForDevice:deviceCopy];
   }
 
   else
   {
-    sub_44F0(v4, v3);
+    sub_44F0(isRunningGloryGMOrLater, deviceCopy);
   }
   v5 = ;
 
   return v5;
 }
 
-+ (id)utilitarianSmallImageProviderForDevice:(id)a3
++ (id)utilitarianSmallImageProviderForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 isRunningGloryGMOrLater];
-  if (v4)
+  deviceCopy = device;
+  isRunningGloryGMOrLater = [deviceCopy isRunningGloryGMOrLater];
+  if (isRunningGloryGMOrLater)
   {
-    [NTKTimerBundleTimelineEntry symbolImageProviderForDevice:v3];
+    [NTKTimerBundleTimelineEntry symbolImageProviderForDevice:deviceCopy];
   }
 
   else
   {
-    sub_46BC(v4, v3);
+    sub_46BC(isRunningGloryGMOrLater, deviceCopy);
   }
   v5 = ;
 
   return v5;
 }
 
-- (NTKTimerBundleTimelineEntry)initWithDevice:(id)a3
+- (NTKTimerBundleTimelineEntry)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = NTKTimerBundleTimelineEntry;
   v6 = [(NTKTimerBundleTimelineEntry *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
@@ -208,39 +208,39 @@ LABEL_15:
   return v3;
 }
 
-- (id)templateForComplicationFamily:(int64_t)a3
+- (id)templateForComplicationFamily:(int64_t)family
 {
-  if (CLKComplicationFamilyCircularMedium == a3)
+  if (CLKComplicationFamilyCircularMedium == family)
   {
-    v4 = [(NTKTimerBundleTimelineEntry *)self _newCircularMediumTemplate];
+    _newCircularMediumTemplate = [(NTKTimerBundleTimelineEntry *)self _newCircularMediumTemplate];
     goto LABEL_3;
   }
 
-  if (CLKComplicationFamilySimpleText == a3)
+  if (CLKComplicationFamilySimpleText == family)
   {
-    v7 = [(NTKTimerBundleTimelineEntry *)self _newSimpleTextTemplate];
+    _newSimpleTextTemplate = [(NTKTimerBundleTimelineEntry *)self _newSimpleTextTemplate];
   }
 
   else
   {
     v5 = 0;
-    if (a3 <= 6)
+    if (family <= 6)
     {
-      if (a3 > 2)
+      if (family > 2)
       {
-        if (a3 == 3)
+        if (family == 3)
         {
-          v4 = [(NTKTimerBundleTimelineEntry *)self _newLargeFlatUtilityTemplate];
+          _newCircularMediumTemplate = [(NTKTimerBundleTimelineEntry *)self _newLargeFlatUtilityTemplate];
           goto LABEL_3;
         }
 
-        if (a3 == 4)
+        if (family == 4)
         {
-          v4 = [(NTKTimerBundleTimelineEntry *)self _newCircularSmallTemplate];
+          _newCircularMediumTemplate = [(NTKTimerBundleTimelineEntry *)self _newCircularSmallTemplate];
           goto LABEL_3;
         }
 
-        if (a3 != 6)
+        if (family != 6)
         {
           goto LABEL_4;
         }
@@ -248,46 +248,46 @@ LABEL_15:
 
       else
       {
-        if (!a3)
+        if (!family)
         {
-          v4 = [(NTKTimerBundleTimelineEntry *)self _newSmallModularTemplate];
+          _newCircularMediumTemplate = [(NTKTimerBundleTimelineEntry *)self _newSmallModularTemplate];
           goto LABEL_3;
         }
 
-        if (a3 == 1)
+        if (family == 1)
         {
-          v4 = [(NTKTimerBundleTimelineEntry *)self _newLargeModularTemplate];
+          _newCircularMediumTemplate = [(NTKTimerBundleTimelineEntry *)self _newLargeModularTemplate];
           goto LABEL_3;
         }
 
-        if (a3 != 2)
+        if (family != 2)
         {
           goto LABEL_4;
         }
       }
 
-      v4 = [(NTKTimerBundleTimelineEntry *)self _newSmallFlatUtilityTemplate];
+      _newCircularMediumTemplate = [(NTKTimerBundleTimelineEntry *)self _newSmallFlatUtilityTemplate];
 LABEL_3:
-      v5 = v4;
+      v5 = _newCircularMediumTemplate;
 LABEL_4:
-      v6 = [(NTKTimerBundleTimelineEntry *)self _templateMetadata];
-      [v5 setMetadata:v6];
+      _templateMetadata = [(NTKTimerBundleTimelineEntry *)self _templateMetadata];
+      [v5 setMetadata:_templateMetadata];
 
       goto LABEL_8;
     }
 
-    if (a3 > 9)
+    if (family > 9)
     {
-      switch(a3)
+      switch(family)
       {
         case 10:
-          v7 = [(NTKTimerBundleTimelineEntry *)self _newSignatureCircularTemplate];
+          _newSimpleTextTemplate = [(NTKTimerBundleTimelineEntry *)self _newSignatureCircularTemplate];
           break;
         case 11:
-          v4 = [(NTKTimerBundleTimelineEntry *)self _newSignatureRectangular];
+          _newCircularMediumTemplate = [(NTKTimerBundleTimelineEntry *)self _newSignatureRectangular];
           goto LABEL_3;
         case 12:
-          v7 = [(NTKTimerBundleTimelineEntry *)self _newSignatureExtraLargeCircularTemplate];
+          _newSimpleTextTemplate = [(NTKTimerBundleTimelineEntry *)self _newSignatureExtraLargeCircularTemplate];
           break;
         default:
           goto LABEL_4;
@@ -296,23 +296,23 @@ LABEL_4:
 
     else
     {
-      if (a3 == 7)
+      if (family == 7)
       {
-        v4 = [(NTKTimerBundleTimelineEntry *)self _newExtraLargeTemplate];
+        _newCircularMediumTemplate = [(NTKTimerBundleTimelineEntry *)self _newExtraLargeTemplate];
         goto LABEL_3;
       }
 
-      if (a3 == 8)
+      if (family == 8)
       {
-        v4 = [(NTKTimerBundleTimelineEntry *)self _newSignatureCornerGaugeImageTemplate];
+        _newCircularMediumTemplate = [(NTKTimerBundleTimelineEntry *)self _newSignatureCornerGaugeImageTemplate];
         goto LABEL_3;
       }
 
-      v7 = [(NTKTimerBundleTimelineEntry *)self _newSignatureBezelTemplate];
+      _newSimpleTextTemplate = [(NTKTimerBundleTimelineEntry *)self _newSignatureBezelTemplate];
     }
   }
 
-  v5 = v7;
+  v5 = _newSimpleTextTemplate;
 LABEL_8:
   v8 = +[UIColor systemOrangeColor];
   [v5 setTintColor:v8];
@@ -325,20 +325,20 @@ LABEL_8:
   return v5;
 }
 
-- (id)_countdownTextProviderWithBaseDate:(id)a3
+- (id)_countdownTextProviderWithBaseDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   [(NTKTimerBundleTimelineEntry *)self countdownDuration];
   v6 = v5;
   [(NTKTimerBundleTimelineEntry *)self remainingTime];
-  v7 = [v4 dateByAddingTimeInterval:?];
+  v7 = [dateCopy dateByAddingTimeInterval:?];
   state = self->_state;
   v9 = [CLKRelativeDateTextProvider textProviderWithDate:v7 style:2 units:224];
   [v9 setPauseTimerAtZero:1];
   [v9 setTwoDigitMinuteZeroPadding:v6 > 600.0];
   if (state == 2)
   {
-    [v9 setRelativeToDate:v4];
+    [v9 setRelativeToDate:dateCopy];
     [(NTKTimerBundleTimelineEntry *)self _updateTextProviderForAOTPaused:v9];
   }
 
@@ -347,27 +347,27 @@ LABEL_8:
 
 - (id)_newSignatureCircularTemplate
 {
-  v2 = [(NTKTimerBundleTimelineEntry *)self _templateMetadata];
-  v3 = [CLKComplicationTemplateGraphicCircularMetadata templateWithMetadata:v2];
+  _templateMetadata = [(NTKTimerBundleTimelineEntry *)self _templateMetadata];
+  v3 = [CLKComplicationTemplateGraphicCircularMetadata templateWithMetadata:_templateMetadata];
 
   return v3;
 }
 
 - (id)_newSignatureExtraLargeCircularTemplate
 {
-  v2 = [(NTKTimerBundleTimelineEntry *)self _templateMetadata];
-  v3 = [CLKComplicationTemplateGraphicExtraLargeCircularMetadata templateWithMetadata:v2];
+  _templateMetadata = [(NTKTimerBundleTimelineEntry *)self _templateMetadata];
+  v3 = [CLKComplicationTemplateGraphicExtraLargeCircularMetadata templateWithMetadata:_templateMetadata];
 
   return v3;
 }
 
 - (id)_newSignatureBezelTemplate
 {
-  v2 = [(NTKTimerBundleTimelineEntry *)self _newSignatureCircularTemplate];
+  _newSignatureCircularTemplate = [(NTKTimerBundleTimelineEntry *)self _newSignatureCircularTemplate];
   v3 = +[UIColor systemOrangeColor];
-  [v2 setTintColor:v3];
+  [_newSignatureCircularTemplate setTintColor:v3];
 
-  v4 = [CLKComplicationTemplateGraphicBezelCircularText templateWithCircularTemplate:v2];
+  v4 = [CLKComplicationTemplateGraphicBezelCircularText templateWithCircularTemplate:_newSignatureCircularTemplate];
 
   return v4;
 }
@@ -375,16 +375,16 @@ LABEL_8:
 - (id)_newSignatureRectangular
 {
   v3 = +[UIColor systemOrangeColor];
-  v4 = [(NTKTimerBundleTimelineEntry *)self device];
-  v5 = [NTKTimerBundleTimelineEntry fullColorSymbolImageProviderForDevice:v4];
+  device = [(NTKTimerBundleTimelineEntry *)self device];
+  v5 = [NTKTimerBundleTimelineEntry fullColorSymbolImageProviderForDevice:device];
 
-  v6 = [(NTKTimerBundleTimelineEntry *)self _newSignatureRectangularHeaderTextProvider];
-  [v6 setTintColor:v3];
+  _newSignatureRectangularHeaderTextProvider = [(NTKTimerBundleTimelineEntry *)self _newSignatureRectangularHeaderTextProvider];
+  [_newSignatureRectangularHeaderTextProvider setTintColor:v3];
   if (*&self->_numPausedTimers != 0)
   {
     state = self->_state;
     v8 = NTKClockFaceLocalizedString();
-    v15 = [(NTKTimerBundleTimelineEntry *)self _textProviderForTimeAtState:state withUnknownText:v8 twoDigitMinuteZeroPadding:0];
+    _newSignatureRectangularBodyRelativeDateTextProvider2 = [(NTKTimerBundleTimelineEntry *)self _textProviderForTimeAtState:state withUnknownText:v8 twoDigitMinuteZeroPadding:0];
 
     v9 = self->_state;
     if (v9 > 2)
@@ -392,9 +392,9 @@ LABEL_8:
       if (v9 == 3)
       {
         v13 = NTKClockFaceLocalizedString();
-        v11 = [CLKTextProvider textProviderWithFormat:v13, v15];
+        _newSignatureRectangularBodyRelativeDateTextProvider = [CLKTextProvider textProviderWithFormat:v13, _newSignatureRectangularBodyRelativeDateTextProvider2];
 
-        v15 = v13;
+        _newSignatureRectangularBodyRelativeDateTextProvider2 = v13;
         goto LABEL_11;
       }
 
@@ -409,30 +409,30 @@ LABEL_8:
       if (v9 == 2)
       {
         v10 = NTKClockFaceLocalizedString();
-        v11 = [CLKTextProvider textProviderWithFormat:v10, v15];
+        _newSignatureRectangularBodyRelativeDateTextProvider = [CLKTextProvider textProviderWithFormat:v10, _newSignatureRectangularBodyRelativeDateTextProvider2];
 
-        v15 = +[UIColor whiteColor];
-        v12 = [v15 colorWithAlphaComponent:0.5];
-        [v11 setTintColor:v12];
+        _newSignatureRectangularBodyRelativeDateTextProvider2 = +[UIColor whiteColor];
+        v12 = [_newSignatureRectangularBodyRelativeDateTextProvider2 colorWithAlphaComponent:0.5];
+        [_newSignatureRectangularBodyRelativeDateTextProvider setTintColor:v12];
 
 LABEL_11:
-        v15 = v11;
+        _newSignatureRectangularBodyRelativeDateTextProvider2 = _newSignatureRectangularBodyRelativeDateTextProvider;
       }
 
 LABEL_12:
       v16 = [(NTKTimerBundleTimelineEntry *)self _gaugeProviderForTimeAtState:self->_state tintColor:v3];
-      v18 = [CLKComplicationTemplateGraphicRectangularTextGauge templateWithHeaderImageProvider:v5 headerTextProvider:v6 body1TextProvider:v15 gaugeProvider:v16];
+      v18 = [CLKComplicationTemplateGraphicRectangularTextGauge templateWithHeaderImageProvider:v5 headerTextProvider:_newSignatureRectangularHeaderTextProvider body1TextProvider:_newSignatureRectangularBodyRelativeDateTextProvider2 gaugeProvider:v16];
       goto LABEL_13;
     }
 
-    v11 = [(NTKTimerBundleTimelineEntry *)self _newSignatureRectangularBodyRelativeDateTextProvider];
+    _newSignatureRectangularBodyRelativeDateTextProvider = [(NTKTimerBundleTimelineEntry *)self _newSignatureRectangularBodyRelativeDateTextProvider];
     goto LABEL_11;
   }
 
-  v15 = [(NTKTimerBundleTimelineEntry *)self _newSignatureRectangularBodyRelativeDateTextProvider];
+  _newSignatureRectangularBodyRelativeDateTextProvider2 = [(NTKTimerBundleTimelineEntry *)self _newSignatureRectangularBodyRelativeDateTextProvider];
   v16 = [v3 colorWithAlphaComponent:0.25];
   v17 = [(NTKTimerBundleTimelineEntry *)self _gaugeProviderForTimeAtState:self->_state tintColor:v16];
-  v18 = [CLKComplicationTemplateGraphicRectangularTextGauge templateWithHeaderImageProvider:v5 headerTextProvider:v6 body1TextProvider:v15 gaugeProvider:v17];
+  v18 = [CLKComplicationTemplateGraphicRectangularTextGauge templateWithHeaderImageProvider:v5 headerTextProvider:_newSignatureRectangularHeaderTextProvider body1TextProvider:_newSignatureRectangularBodyRelativeDateTextProvider2 gaugeProvider:v17];
 
 LABEL_13:
   return v18;
@@ -440,8 +440,8 @@ LABEL_13:
 
 - (id)_newSignatureCornerGaugeImageTemplate
 {
-  v3 = [(NTKTimerBundleTimelineEntry *)self device];
-  v4 = [NTKTimerBundleTimelineEntry fullColorSymbolImageProviderForDevice:v3];
+  device = [(NTKTimerBundleTimelineEntry *)self device];
+  v4 = [NTKTimerBundleTimelineEntry fullColorSymbolImageProviderForDevice:device];
 
   state = self->_state;
   v6 = NTKClockFaceLocalizedString();
@@ -457,8 +457,8 @@ LABEL_13:
 
 - (id)_newSmallModularTemplate
 {
-  v3 = [(NTKTimerBundleTimelineEntry *)self device];
-  v4 = [NTKTimerBundleTimelineEntry modularSmallImageProviderForDevice:v3];
+  device = [(NTKTimerBundleTimelineEntry *)self device];
+  v4 = [NTKTimerBundleTimelineEntry modularSmallImageProviderForDevice:device];
 
   state = self->_state;
   v6 = NTKClockFaceLocalizedString();
@@ -502,13 +502,13 @@ LABEL_9:
   v8 = NTKClockFaceLocalizedString();
   v9 = [(NTKTimerBundleTimelineEntry *)self _textProviderForTimeAtState:v7 withUnknownText:v8];
 
-  v10 = [(NTKTimerBundleTimelineEntry *)self device];
-  v11 = [v10 supportsPDRCapability:3516830922];
+  device = [(NTKTimerBundleTimelineEntry *)self device];
+  v11 = [device supportsPDRCapability:3516830922];
 
   if (v11)
   {
-    v12 = [(NTKTimerBundleTimelineEntry *)self device];
-    v13 = [NTKTimerBundleTimelineEntry symbolImageProviderForDevice:v12];
+    device2 = [(NTKTimerBundleTimelineEntry *)self device];
+    v13 = [NTKTimerBundleTimelineEntry symbolImageProviderForDevice:device2];
     v14 = [CLKComplicationTemplateModularLargeTallBody templateWithHeaderImageProvider:v13 headerTextProvider:v4 bodyTextProvider:v9];
   }
 
@@ -524,8 +524,8 @@ LABEL_9:
 {
   if ((self->_state | 4) == 4)
   {
-    v2 = [(NTKTimerBundleTimelineEntry *)self device];
-    v3 = [NTKTimerBundleTimelineEntry circularSmallImageProviderForDevice:v2];
+    device = [(NTKTimerBundleTimelineEntry *)self device];
+    v3 = [NTKTimerBundleTimelineEntry circularSmallImageProviderForDevice:device];
 
     [CLKComplicationTemplateCircularSmallSimpleImage templateWithImageProvider:v3];
   }
@@ -542,8 +542,8 @@ LABEL_9:
 
 - (id)_newCircularMediumTemplate
 {
-  v3 = [(NTKTimerBundleTimelineEntry *)self device];
-  v4 = [NTKTimerBundleTimelineEntry circularMediumImageProviderForDevice:v3];
+  device = [(NTKTimerBundleTimelineEntry *)self device];
+  v4 = [NTKTimerBundleTimelineEntry circularMediumImageProviderForDevice:device];
 
   v5 = [(NTKTimerBundleTimelineEntry *)self _textProviderForTimeAtState:self->_state];
   v6 = [CLKComplicationTemplateCircularMediumStackImage templateWithLine1ImageProvider:v4 line2TextProvider:v5];
@@ -553,8 +553,8 @@ LABEL_9:
 
 - (id)_newSmallFlatUtilityTemplate
 {
-  v3 = [(NTKTimerBundleTimelineEntry *)self device];
-  v4 = [NTKTimerBundleTimelineEntry utilitarianSmallImageProviderForDevice:v3];
+  device = [(NTKTimerBundleTimelineEntry *)self device];
+  v4 = [NTKTimerBundleTimelineEntry utilitarianSmallImageProviderForDevice:device];
 
   state = self->_state;
   v6 = NTKClockFaceLocalizedString();
@@ -567,8 +567,8 @@ LABEL_9:
 
 - (id)_newLargeFlatUtilityTemplate
 {
-  v3 = [(NTKTimerBundleTimelineEntry *)self device];
-  v4 = [NTKTimerBundleTimelineEntry utilitarianSmallImageProviderForDevice:v3];
+  device = [(NTKTimerBundleTimelineEntry *)self device];
+  v4 = [NTKTimerBundleTimelineEntry utilitarianSmallImageProviderForDevice:device];
 
   v5 = 0;
   state = self->_state;
@@ -576,9 +576,9 @@ LABEL_9:
   {
     if (state == 3)
     {
-      v14 = [(NTKTimerBundleTimelineEntry *)self title];
+      title = [(NTKTimerBundleTimelineEntry *)self title];
 
-      if (!v14)
+      if (!title)
       {
         [(NTKTimerBundleTimelineEntry *)self remainingTime];
         v5 = [(NTKTimerBundleTimelineEntry *)self _relativeDateTextProviderForTimeInterval:0 paused:1 twoDigitMinuteZeroPadding:?];
@@ -621,13 +621,13 @@ LABEL_8:
 
   if (state == 2)
   {
-    v7 = [(NTKTimerBundleTimelineEntry *)self title];
+    title2 = [(NTKTimerBundleTimelineEntry *)self title];
 
-    if (v7)
+    if (title2)
     {
       v8 = NTKClockFaceLocalizedString();
-      v9 = [(NTKTimerBundleTimelineEntry *)self title];
-      v10 = [NSString stringWithFormat:v8, v9];
+      title3 = [(NTKTimerBundleTimelineEntry *)self title];
+      v10 = [NSString stringWithFormat:v8, title3];
 
       v5 = [CLKSimpleTextProvider textProviderWithText:v10];
 
@@ -654,8 +654,8 @@ LABEL_15:
   v5 = [(NTKTimerBundleTimelineEntry *)self _textProviderForTimeAtState:state withUnknownText:v4];
 
   v6 = [CLKComplicationTemplateSimpleText templateWithTextProvider:v5];
-  v7 = [(NTKTimerBundleTimelineEntry *)self _templateMetadata];
-  v8 = [v7 mutableCopy];
+  _templateMetadata = [(NTKTimerBundleTimelineEntry *)self _templateMetadata];
+  v8 = [_templateMetadata mutableCopy];
 
   [v8 setObject:&off_CFE8 forKeyedSubscript:NTKSimpleTextComplicationTypeMetadataKey];
   [v6 setMetadata:v8];
@@ -665,8 +665,8 @@ LABEL_15:
 
 - (id)_newExtraLargeTemplate
 {
-  v3 = [(NTKTimerBundleTimelineEntry *)self device];
-  v4 = [NTKTimerBundleTimelineEntry extraLargeImageProviderForDevice:v3];
+  device = [(NTKTimerBundleTimelineEntry *)self device];
+  v4 = [NTKTimerBundleTimelineEntry extraLargeImageProviderForDevice:device];
 
   state = self->_state;
   v6 = NTKClockFaceLocalizedString();
@@ -677,26 +677,26 @@ LABEL_15:
   return v8;
 }
 
-- (id)_gaugeProviderForTimeAtState:(unint64_t)a3 tintColor:(id)a4
+- (id)_gaugeProviderForTimeAtState:(unint64_t)state tintColor:(id)color
 {
-  v6 = a4;
+  colorCopy = color;
   v7 = 0;
-  if (a3 <= 1)
+  if (state <= 1)
   {
-    if (!a3)
+    if (!state)
     {
 LABEL_9:
       v9 = 100.0;
       v10 = 0.0;
-      v11 = self;
+      selfCopy3 = self;
 LABEL_12:
       v14 = 1;
 LABEL_13:
-      v7 = [(NTKTimerBundleTimelineEntry *)v11 _relativeDateGaugeProviderForTimeInterval:v14 fullDuration:v6 paused:v10 tintColor:v9];
+      v7 = [(NTKTimerBundleTimelineEntry *)selfCopy3 _relativeDateGaugeProviderForTimeInterval:v14 fullDuration:colorCopy paused:v10 tintColor:v9];
       goto LABEL_14;
     }
 
-    if (a3 != 1)
+    if (state != 1)
     {
       goto LABEL_14;
     }
@@ -706,12 +706,12 @@ LABEL_11:
     v12 = v8;
     [(NTKTimerBundleTimelineEntry *)self countdownDuration];
     v9 = v13;
-    v11 = self;
+    selfCopy3 = self;
     v10 = v12;
     goto LABEL_12;
   }
 
-  switch(a3)
+  switch(state)
   {
     case 2uLL:
       [(NTKTimerBundleTimelineEntry *)self remainingTime];
@@ -721,7 +721,7 @@ LABEL_11:
       v17 = v16;
       [(NTKTimerBundleTimelineEntry *)self countdownDuration];
       v9 = v18;
-      v11 = self;
+      selfCopy3 = self;
       v10 = v17;
       v14 = 0;
       goto LABEL_13;
@@ -734,22 +734,22 @@ LABEL_14:
   return v7;
 }
 
-- (id)_relativeDateGaugeProviderForTimeInterval:(double)a3 fullDuration:(double)a4 paused:(BOOL)a5 tintColor:(id)a6
+- (id)_relativeDateGaugeProviderForTimeInterval:(double)interval fullDuration:(double)duration paused:(BOOL)paused tintColor:(id)color
 {
-  v7 = a3 / a4;
-  if (a3 <= 0.0 || a5)
+  v7 = interval / duration;
+  if (interval <= 0.0 || paused)
   {
-    v14 = a6;
+    colorCopy = color;
     *&v15 = v7;
-    v13 = [CLKSimpleGaugeProvider gaugeProviderWithStyle:1 gaugeColor:v14 fillFraction:v15];
+    v13 = [CLKSimpleGaugeProvider gaugeProviderWithStyle:1 gaugeColor:colorCopy fillFraction:v15];
   }
 
   else
   {
-    v8 = a6;
+    colorCopy2 = color;
     v9 = +[NSDate date];
-    v10 = [v9 dateByAddingTimeInterval:a3];
-    v17 = v8;
+    v10 = [v9 dateByAddingTimeInterval:interval];
+    v17 = colorCopy2;
     v11 = [NSArray arrayWithObjects:&v17 count:1];
     *&v12 = v7;
     v13 = [CLKTimeIntervalGaugeProvider gaugeProviderWithStyle:1 gaugeColors:v11 gaugeColorLocations:0 startDate:v9 startFillFraction:v10 endDate:v12 endFillFraction:0.0];
@@ -827,37 +827,37 @@ LABEL_14:
   return v11;
 }
 
-- (id)_titleTextProvider:(BOOL)a3
+- (id)_titleTextProvider:(BOOL)provider
 {
-  v3 = a3;
-  v5 = [(NTKTimerBundleTimelineEntry *)self title];
+  providerCopy = provider;
+  title = [(NTKTimerBundleTimelineEntry *)self title];
 
-  if (v5)
+  if (title)
   {
-    v6 = [(NTKTimerBundleTimelineEntry *)self title];
-    if (v3)
+    title2 = [(NTKTimerBundleTimelineEntry *)self title];
+    if (providerCopy)
     {
       v7 = NTKClockFaceLocalizedString();
-      v8 = [NSString stringWithFormat:@"%@ %@", v6, v7];
+      v8 = [NSString stringWithFormat:@"%@ %@", title2, v7];
 
-      v6 = v8;
+      title2 = v8;
     }
   }
 
   else
   {
-    v6 = NTKClockFaceLocalizedString();
+    title2 = NTKClockFaceLocalizedString();
   }
 
-  v9 = [CLKSimpleTextProvider textProviderWithText:v6];
+  v9 = [CLKSimpleTextProvider textProviderWithText:title2];
 
   return v9;
 }
 
-+ (id)fullColorSymbolImageProviderForDevice:(id)a3 withOverridePointSize:(double)a4
++ (id)fullColorSymbolImageProviderForDevice:(id)device withOverridePointSize:(double)size
 {
-  sub_65E8(a1, a3);
-  *&v5 = a4;
+  sub_65E8(self, device);
+  *&v5 = size;
   v6 = [NSNumber numberWithFloat:v5];
   v7 = [qword_113A0 objectForKeyedSubscript:v6];
   if (!v7)

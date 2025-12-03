@@ -1,51 +1,51 @@
 @interface CRLGroupEditor
-- (BOOL)canPasteWithPasteboard:(id)a3;
-- (BOOL)canPasteWithPasteboard:(id)a3 sender:(id)a4;
-- (BOOL)p_canDuplicateWithSender:(id)a3;
+- (BOOL)canPasteWithPasteboard:(id)pasteboard;
+- (BOOL)canPasteWithPasteboard:(id)pasteboard sender:(id)sender;
+- (BOOL)p_canDuplicateWithSender:(id)sender;
 - (BOOL)p_currentlyEditingInGroup;
 - (BOOL)p_shouldAllowKeyCommands;
 - (NSSet)groupItems;
-- (id)nextEditorForSelection:(id)a3 withNewEditorStack:(id)a4 selectionPath:(id)a5;
-- (id)pasteNativeInfosFromPasteboard:(id)a3;
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4;
-- (int64_t)editorResponseForCanPasteContentsOfItemSource:(id)a3;
-- (void)duplicate:(id)a3;
-- (void)insertNewline:(id)a3;
-- (void)p_pasteBoardItems:(id)a3 inGroup:(id)a4 atIndex:(unint64_t)a5 forceMatchStyle:(BOOL)a6 isCrossDocument:(BOOL)a7;
-- (void)paste:(id)a3;
-- (void)pasteAsPlainText:(id)a3;
-- (void)pasteValues:(id)a3;
-- (void)pasteWithPasteboard:(id)a3 atIndex:(unint64_t)a4 forceMatchStyle:(BOOL)a5 bakeFormulas:(BOOL)a6 completionHandler:(id)a7;
-- (void)selectionDidChangeFromSelection:(id)a3 toSelection:(id)a4 withFlags:(unint64_t)a5;
+- (id)nextEditorForSelection:(id)selection withNewEditorStack:(id)stack selectionPath:(id)path;
+- (id)pasteNativeInfosFromPasteboard:(id)pasteboard;
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender;
+- (int64_t)editorResponseForCanPasteContentsOfItemSource:(id)source;
+- (void)duplicate:(id)duplicate;
+- (void)insertNewline:(id)newline;
+- (void)p_pasteBoardItems:(id)items inGroup:(id)group atIndex:(unint64_t)index forceMatchStyle:(BOOL)style isCrossDocument:(BOOL)document;
+- (void)paste:(id)paste;
+- (void)pasteAsPlainText:(id)text;
+- (void)pasteValues:(id)values;
+- (void)pasteWithPasteboard:(id)pasteboard atIndex:(unint64_t)index forceMatchStyle:(BOOL)style bakeFormulas:(BOOL)formulas completionHandler:(id)handler;
+- (void)selectionDidChangeFromSelection:(id)selection toSelection:(id)toSelection withFlags:(unint64_t)flags;
 @end
 
 @implementation CRLGroupEditor
 
-- (id)nextEditorForSelection:(id)a3 withNewEditorStack:(id)a4 selectionPath:(id)a5
+- (id)nextEditorForSelection:(id)selection withNewEditorStack:(id)stack selectionPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  selectionCopy = selection;
+  stackCopy = stack;
+  pathCopy = path;
   v11 = objc_opt_class();
-  v12 = sub_100014370(v11, v8);
+  v12 = sub_100014370(v11, selectionCopy);
   if (v12)
   {
-    v13 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v14 = [v13 canvasEditor];
-    v15 = [v14 canvasEditorHelper];
-    v16 = [v12 boardItems];
-    v17 = [v15 editorClassForInfos:v16];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    canvasEditor = [interactiveCanvasController canvasEditor];
+    canvasEditorHelper = [canvasEditor canvasEditorHelper];
+    boardItems = [v12 boardItems];
+    v17 = [canvasEditorHelper editorClassForInfos:boardItems];
 
     if (v17)
     {
       if ([(objc_class *)v17 isSubclassOfClass:objc_opt_class()])
       {
         v18 = [v17 alloc];
-        v19 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-        v20 = [v18 initWithInteractiveCanvasController:v19];
+        interactiveCanvasController2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+        v20 = [v18 initWithInteractiveCanvasController:interactiveCanvasController2];
 
-        v21 = [v12 boardItems];
-        [v20 setBoardItems:v21];
+        boardItems2 = [v12 boardItems];
+        [v20 setBoardItems:boardItems2];
 
         goto LABEL_16;
       }
@@ -59,7 +59,7 @@
       v23 = off_1019EDA68;
       if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
       {
-        sub_101396558(v8, v22, v23);
+        sub_101396558(selectionCopy, v22, v23);
       }
 
       if (qword_101AD5A10 != -1)
@@ -75,7 +75,7 @@
 
       v25 = [NSString stringWithUTF8String:"[CRLGroupEditor nextEditorForSelection:withNewEditorStack:selectionPath:]"];
       v26 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLGroupEditor.m"];
-      [CRLAssertionHandler handleFailureInFunction:v25 file:v26 lineNumber:46 isFatal:0 description:"Unknown editor class for selection %@", v8];
+      [CRLAssertionHandler handleFailureInFunction:v25 file:v26 lineNumber:46 isFatal:0 description:"Unknown editor class for selection %@", selectionCopy];
     }
 
     v20 = 0;
@@ -85,7 +85,7 @@
   {
     v28.receiver = self;
     v28.super_class = CRLGroupEditor;
-    v20 = [(CRLBoardItemEditor *)&v28 nextEditorForSelection:v8 withNewEditorStack:v9 selectionPath:v10];
+    v20 = [(CRLBoardItemEditor *)&v28 nextEditorForSelection:selectionCopy withNewEditorStack:stackCopy selectionPath:pathCopy];
   }
 
 LABEL_16:
@@ -93,24 +93,24 @@ LABEL_16:
   return v20;
 }
 
-- (void)selectionDidChangeFromSelection:(id)a3 toSelection:(id)a4 withFlags:(unint64_t)a5
+- (void)selectionDidChangeFromSelection:(id)selection toSelection:(id)toSelection withFlags:(unint64_t)flags
 {
-  v8 = a3;
+  selectionCopy = selection;
   v16.receiver = self;
   v16.super_class = CRLGroupEditor;
-  v9 = a4;
-  [(CRLBoardItemEditor *)&v16 selectionDidChangeFromSelection:v8 toSelection:v9 withFlags:a5];
+  toSelectionCopy = toSelection;
+  [(CRLBoardItemEditor *)&v16 selectionDidChangeFromSelection:selectionCopy toSelection:toSelectionCopy withFlags:flags];
   objc_opt_class();
-  LOBYTE(a5) = objc_opt_isKindOfClass();
+  LOBYTE(flags) = objc_opt_isKindOfClass();
 
-  if (a5 & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (flags & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     v10 = [(CRLGroupEditor *)self groupItems:v16.receiver];
-    v11 = [v10 anyObject];
+    anyObject = [v10 anyObject];
 
     v12 = objc_opt_class();
-    v13 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v14 = [v13 repForInfo:v11];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    v14 = [interactiveCanvasController repForInfo:anyObject];
     v15 = sub_100014370(v12, v14);
 
     [v15 invalidateKnobs];
@@ -124,21 +124,21 @@ LABEL_16:
   return [(CRLBoardItemEditor *)self boardItemsOfClass:v3];
 }
 
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(CRLGroupEditor *)self p_currentlyEditingInGroup];
+  senderCopy = sender;
+  p_currentlyEditingInGroup = [(CRLGroupEditor *)self p_currentlyEditingInGroup];
   v8 = [NSSet crl_setWithSelectors:"group:", 0];
   v9 = objc_opt_class();
-  v10 = [(CRLBoardItemEditor *)self editorController];
-  v11 = [v10 selectionForEditor:self];
+  editorController = [(CRLBoardItemEditor *)self editorController];
+  v11 = [editorController selectionForEditor:self];
   v12 = sub_100014370(v9, v11);
 
   if (v12)
   {
     if ([v12 isCrossContainerSelection])
     {
-      v13 = NSStringFromSelector(a3);
+      v13 = NSStringFromSelector(action);
       v14 = [v8 containsObject:v13];
 
       if (v14)
@@ -149,15 +149,15 @@ LABEL_16:
     }
   }
 
-  if ("insertNewline:" == a3)
+  if ("insertNewline:" == action)
   {
-    if (v7)
+    if (p_currentlyEditingInGroup)
     {
       goto LABEL_23;
     }
 
-    v16 = [(CRLBoardItemEditor *)self boardItems];
-    if ([v16 count] == 1)
+    boardItems = [(CRLBoardItemEditor *)self boardItems];
+    if ([boardItems count] == 1)
     {
       v15 = 1;
     }
@@ -170,11 +170,11 @@ LABEL_16:
 
   else
   {
-    if ("paste:" != a3 && "pasteAsPlainText:" != a3 && "pasteValues:" != a3)
+    if ("paste:" != action && "pasteAsPlainText:" != action && "pasteValues:" != action)
     {
-      if ((("duplicate:" == a3) & v7) == 1 && [(CRLGroupEditor *)self canPasteIntoCurrentlySelectedGroups])
+      if ((("duplicate:" == action) & p_currentlyEditingInGroup) == 1 && [(CRLGroupEditor *)self canPasteIntoCurrentlySelectedGroups])
       {
-        if ([(CRLGroupEditor *)self p_canDuplicateWithSender:v6])
+        if ([(CRLGroupEditor *)self p_canDuplicateWithSender:senderCopy])
         {
           v15 = 1;
         }
@@ -190,16 +190,16 @@ LABEL_16:
 LABEL_23:
       v24.receiver = self;
       v24.super_class = CRLGroupEditor;
-      v15 = [(CRLBoardItemEditor *)&v24 canPerformEditorAction:a3 withSender:v6];
+      v15 = [(CRLBoardItemEditor *)&v24 canPerformEditorAction:action withSender:senderCopy];
       goto LABEL_28;
     }
 
-    v17 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v18 = [v17 canvasEditor];
-    v19 = [v18 pasteboardController];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    canvasEditor = [interactiveCanvasController canvasEditor];
+    pasteboardController = [canvasEditor pasteboardController];
 
     v20 = +[CRLPasteboard generalPasteboard];
-    v21 = [v19 ingestibleItemSourceForPasteboard:v20];
+    v21 = [pasteboardController ingestibleItemSourceForPasteboard:v20];
 
     v22 = [(CRLGroupEditor *)self editorResponseForCanPasteContentsOfItemSource:v21];
     if (v22 != 1)
@@ -219,7 +219,7 @@ LABEL_23:
       v15 = 1;
     }
 
-    else if ([CRLCanvasEditor physicalKeyboardIsSender:v6])
+    else if ([CRLCanvasEditor physicalKeyboardIsSender:senderCopy])
     {
       v15 = -1;
     }
@@ -235,13 +235,13 @@ LABEL_28:
   return v15;
 }
 
-- (BOOL)canPasteWithPasteboard:(id)a3 sender:(id)a4
+- (BOOL)canPasteWithPasteboard:(id)pasteboard sender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(CRLGroupEditor *)self p_shouldAllowKeyCommands]|| ![CRLCanvasEditor physicalKeyboardIsSender:v7])
+  pasteboardCopy = pasteboard;
+  senderCopy = sender;
+  if ([(CRLGroupEditor *)self p_shouldAllowKeyCommands]|| ![CRLCanvasEditor physicalKeyboardIsSender:senderCopy])
   {
-    v8 = [(CRLGroupEditor *)self canPasteWithPasteboard:v6];
+    v8 = [(CRLGroupEditor *)self canPasteWithPasteboard:pasteboardCopy];
   }
 
   else
@@ -254,28 +254,28 @@ LABEL_28:
 
 - (BOOL)p_currentlyEditingInGroup
 {
-  v3 = [(CRLBoardItemEditor *)self editorController];
-  v4 = [v3 selectionForEditor:self];
+  editorController = [(CRLBoardItemEditor *)self editorController];
+  v4 = [editorController selectionForEditor:self];
 
   objc_opt_class();
-  LOBYTE(v3) = objc_opt_isKindOfClass();
+  LOBYTE(editorController) = objc_opt_isKindOfClass();
 
-  return v3 & 1;
+  return editorController & 1;
 }
 
-- (void)insertNewline:(id)a3
+- (void)insertNewline:(id)newline
 {
-  v4 = [(CRLGroupEditor *)self groupItems];
-  v21 = [v4 anyObject];
+  groupItems = [(CRLGroupEditor *)self groupItems];
+  anyObject = [groupItems anyObject];
 
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v6 = [v5 canvasEditor];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController canvasEditor];
 
-  v7 = [v21 childItems];
+  childItems = [anyObject childItems];
   v8 = +[CRLCanvasEditor spatialInfoComparator];
-  v9 = [v7 sortedArrayUsingComparator:v8];
-  v10 = [v9 firstObject];
-  v17 = sub_1003035DC(v10, 1, v11, v12, v13, v14, v15, v16, &OBJC_PROTOCOL___CRLCanvasElementInfo);
+  v9 = [childItems sortedArrayUsingComparator:v8];
+  firstObject = [v9 firstObject];
+  v17 = sub_1003035DC(firstObject, 1, v11, v12, v13, v14, v15, v16, &OBJC_PROTOCOL___CRLCanvasElementInfo);
 
   if (v17)
   {
@@ -287,33 +287,33 @@ LABEL_28:
     v18 = 0;
   }
 
-  v19 = [v6 selectionPathWithInfos:v18];
-  v20 = [(CRLBoardItemEditor *)self editorController];
-  [v20 setSelectionPath:v19];
+  v19 = [canvasEditor selectionPathWithInfos:v18];
+  editorController = [(CRLBoardItemEditor *)self editorController];
+  [editorController setSelectionPath:v19];
 }
 
 - (BOOL)p_shouldAllowKeyCommands
 {
-  v2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v3 = [v2 shouldAllowKeyCommands];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  shouldAllowKeyCommands = [interactiveCanvasController shouldAllowKeyCommands];
 
-  return v3;
+  return shouldAllowKeyCommands;
 }
 
-- (int64_t)editorResponseForCanPasteContentsOfItemSource:(id)a3
+- (int64_t)editorResponseForCanPasteContentsOfItemSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   if ([(CRLGroupEditor *)self p_currentlyEditingInGroup]&& [(CRLGroupEditor *)self canPasteIntoCurrentlySelectedGroups])
   {
-    v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v6 = [v5 selectionModelTranslator];
-    v7 = [(CRLBoardItemEditor *)self editorController];
-    v8 = [v7 selectionPath];
-    v9 = [v6 containerToInsertIntoForSelectionPath:v8];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    selectionModelTranslator = [interactiveCanvasController selectionModelTranslator];
+    editorController = [(CRLBoardItemEditor *)self editorController];
+    selectionPath = [editorController selectionPath];
+    v9 = [selectionModelTranslator containerToInsertIntoForSelectionPath:selectionPath];
 
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      if ([v4 canProduceBoardItems])
+      if ([sourceCopy canProduceBoardItems])
       {
         v10 = 1;
       }
@@ -338,158 +338,158 @@ LABEL_28:
   return v10;
 }
 
-- (BOOL)p_canDuplicateWithSender:(id)a3
+- (BOOL)p_canDuplicateWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v6 = [v5 canvasEditor];
+  senderCopy = sender;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController canvasEditor];
 
-  v7 = [v6 canvasEditorHelper];
-  v8 = [v7 canvasEditorCanPerformDuplicateAction:"duplicate:" withSender:v4];
+  canvasEditorHelper = [canvasEditor canvasEditorHelper];
+  v8 = [canvasEditorHelper canvasEditorCanPerformDuplicateAction:"duplicate:" withSender:senderCopy];
 
   return v8 != 0;
 }
 
-- (BOOL)canPasteWithPasteboard:(id)a3
+- (BOOL)canPasteWithPasteboard:(id)pasteboard
 {
-  v4 = a3;
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v6 = [v5 canvasEditor];
-  v7 = [v6 pasteboardController];
+  pasteboardCopy = pasteboard;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  pasteboardController = [canvasEditor pasteboardController];
 
-  v8 = [v7 ingestibleItemSourceForPasteboard:v4];
+  v8 = [pasteboardController ingestibleItemSourceForPasteboard:pasteboardCopy];
 
   LOBYTE(self) = [(CRLGroupEditor *)self editorResponseForCanPasteContentsOfItemSource:v8]== 1;
   return self;
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
   v4 = +[CRLPasteboard generalPasteboard];
   [(CRLGroupEditor *)self pasteWithPasteboard:v4 completionHandler:&stru_1018704C0];
 
-  v6 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v5 = [v6 canvasEditor];
-  [v5 hideLassoSelectionEditMenuInDrawingModeIfLassoToolIsSelected];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  [canvasEditor hideLassoSelectionEditMenuInDrawingModeIfLassoToolIsSelected];
 }
 
-- (void)pasteAsPlainText:(id)a3
+- (void)pasteAsPlainText:(id)text
 {
   v4 = +[CRLPasteboard generalPasteboard];
   [(CRLGroupEditor *)self pasteWithPasteboard:v4 atIndex:0x7FFFFFFFFFFFFFFFLL forceMatchStyle:1 bakeFormulas:0 completionHandler:&stru_1018704E0];
 }
 
-- (void)pasteValues:(id)a3
+- (void)pasteValues:(id)values
 {
   v4 = +[CRLPasteboard generalPasteboard];
   [(CRLGroupEditor *)self pasteWithPasteboard:v4 atIndex:0x7FFFFFFFFFFFFFFFLL forceMatchStyle:1 bakeFormulas:1 completionHandler:&stru_101870500];
 }
 
-- (void)pasteWithPasteboard:(id)a3 atIndex:(unint64_t)a4 forceMatchStyle:(BOOL)a5 bakeFormulas:(BOOL)a6 completionHandler:(id)a7
+- (void)pasteWithPasteboard:(id)pasteboard atIndex:(unint64_t)index forceMatchStyle:(BOOL)style bakeFormulas:(BOOL)formulas completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a7;
-  v13 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v14 = [v13 editingCoordinator];
+  pasteboardCopy = pasteboard;
+  handlerCopy = handler;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  editingCoordinator = [interactiveCanvasController editingCoordinator];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100582AAC;
   v17[3] = &unk_101870590;
   v17[4] = self;
-  v18 = v11;
-  v21 = a5;
-  v19 = v12;
-  v20 = a4;
-  v15 = v12;
-  v16 = v11;
-  [v14 canPerformUserActionUsingBlock:v17];
+  v18 = pasteboardCopy;
+  styleCopy = style;
+  v19 = handlerCopy;
+  indexCopy = index;
+  v15 = handlerCopy;
+  v16 = pasteboardCopy;
+  [editingCoordinator canPerformUserActionUsingBlock:v17];
 }
 
-- (void)p_pasteBoardItems:(id)a3 inGroup:(id)a4 atIndex:(unint64_t)a5 forceMatchStyle:(BOOL)a6 isCrossDocument:(BOOL)a7
+- (void)p_pasteBoardItems:(id)items inGroup:(id)group atIndex:(unint64_t)index forceMatchStyle:(BOOL)style isCrossDocument:(BOOL)document
 {
-  v7 = a7;
-  v11 = a3;
-  v12 = a4;
+  documentCopy = document;
+  itemsCopy = items;
+  groupCopy = group;
   v13 = +[CRLInsertionContext nonInteractiveInsertionContext];
-  v14 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v15 = [v14 commandController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
 
-  v16 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v17 = [v16 canvasEditor];
+  interactiveCanvasController2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController2 canvasEditor];
 
-  v18 = [v17 canvasEditorHelper];
-  v19 = [v18 canInsertBoardItems:v11 intoGroup:v12];
+  canvasEditorHelper = [canvasEditor canvasEditorHelper];
+  v19 = [canvasEditorHelper canInsertBoardItems:itemsCopy intoGroup:groupCopy];
 
   if (v19)
   {
-    v34 = a5;
-    v20 = [v17 canvasEditorHelper];
-    v21 = [(CRLBoardItemEditor *)self editorController];
-    v22 = [v21 selectionPath];
+    indexCopy = index;
+    canvasEditorHelper2 = [canvasEditor canvasEditorHelper];
+    editorController = [(CRLBoardItemEditor *)self editorController];
+    selectionPath = [editorController selectionPath];
     v35 = 0;
-    v23 = [v20 commandForReplacingImagePlaceholderInSelection:v22 withBoardItems:v11 isCrossDocument:v7 withSender:0 outSelectionBehavior:&v35];
+    v23 = [canvasEditorHelper2 commandForReplacingImagePlaceholderInSelection:selectionPath withBoardItems:itemsCopy isCrossDocument:documentCopy withSender:0 outSelectionBehavior:&v35];
     v24 = v35;
 
     if (v23)
     {
-      [v15 enqueueCommand:v23 withSelectionBehavior:v24];
+      [commandController enqueueCommand:v23 withSelectionBehavior:v24];
     }
 
-    else if (v12)
+    else if (groupCopy)
     {
-      if (v34 == 0x7FFFFFFFFFFFFFFFLL || ([v12 childInfos], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "count"), v25, v27 = v34, v26 < v34))
+      if (indexCopy == 0x7FFFFFFFFFFFFFFFLL || ([groupCopy childInfos], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "count"), v25, v27 = indexCopy, v26 < indexCopy))
       {
-        v28 = [v12 childInfos];
-        v29 = [v28 count];
+        childInfos = [groupCopy childInfos];
+        v29 = [childInfos count];
 
         v27 = v29;
       }
 
-      v30 = [[_TtC8Freeform26CRLCommandInsertBoardItems alloc] initWithParentContainer:v12 boardItems:v11 index:v27];
+      v30 = [[_TtC8Freeform26CRLCommandInsertBoardItems alloc] initWithParentContainer:groupCopy boardItems:itemsCopy index:v27];
       v31 = [CRLCanvasCommandSelectionBehavior alloc];
-      v32 = [NSSet setWithArray:v11];
-      v33 = [(CRLCanvasCommandSelectionBehavior *)v31 initWithCanvasEditor:v17 type:0 constructedInfos:v32];
+      v32 = [NSSet setWithArray:itemsCopy];
+      v33 = [(CRLCanvasCommandSelectionBehavior *)v31 initWithCanvasEditor:canvasEditor type:0 constructedInfos:v32];
 
-      [v15 enqueueCommand:v30 withSelectionBehavior:v33];
+      [commandController enqueueCommand:v30 withSelectionBehavior:v33];
     }
 
     else
     {
-      [v17 insertBoardItems:v11 withInsertionContext:v13 postProcessBlock:&stru_1018705B0];
+      [canvasEditor insertBoardItems:itemsCopy withInsertionContext:v13 postProcessBlock:&stru_1018705B0];
     }
   }
 
   else
   {
-    [v17 prepareGeometryForInsertingBoardItems:v11 withInsertionContext:v13];
-    [v17 insertBoardItems:v11 withInsertionContext:v13 postProcessBlock:&stru_1018705D0];
+    [canvasEditor prepareGeometryForInsertingBoardItems:itemsCopy withInsertionContext:v13];
+    [canvasEditor insertBoardItems:itemsCopy withInsertionContext:v13 postProcessBlock:&stru_1018705D0];
   }
 }
 
-- (id)pasteNativeInfosFromPasteboard:(id)a3
+- (id)pasteNativeInfosFromPasteboard:(id)pasteboard
 {
-  v4 = a3;
+  pasteboardCopy = pasteboard;
   v5 = +[NSMutableArray array];
-  v6 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v7 = [v6 selectionModelTranslator];
-  v8 = [(CRLBoardItemEditor *)self editorController];
-  v9 = [v8 selectionPath];
-  v10 = [v7 containerToInsertIntoForSelectionPath:v9];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  selectionModelTranslator = [interactiveCanvasController selectionModelTranslator];
+  editorController = [(CRLBoardItemEditor *)self editorController];
+  selectionPath = [editorController selectionPath];
+  v10 = [selectionModelTranslator containerToInsertIntoForSelectionPath:selectionPath];
 
   v11 = objc_opt_class();
   v12 = sub_100014370(v11, v10);
   v13 = v12;
   if (v12)
   {
-    v37 = self;
+    selfCopy = self;
     v39 = v12;
     v40 = v10;
-    v14 = [v6 canvasEditor];
-    v15 = [v14 pasteboardController];
+    canvasEditor = [interactiveCanvasController canvasEditor];
+    pasteboardController = [canvasEditor pasteboardController];
 
-    v38 = v15;
-    v41 = v4;
-    [v15 providersForBoardItemsFromPasteboard:v4];
+    v38 = pasteboardController;
+    v41 = pasteboardCopy;
+    [pasteboardController providersForBoardItemsFromPasteboard:pasteboardCopy];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
@@ -510,9 +510,9 @@ LABEL_28:
           }
 
           v21 = *(*(&v42 + 1) + 8 * v20);
-          v22 = [v6 editingCoordinator];
-          v23 = [v22 boardItemFactory];
-          v24 = [v21 newBoardItemWithFactory:v23 bakedSize:0];
+          editingCoordinator = [interactiveCanvasController editingCoordinator];
+          boardItemFactory = [editingCoordinator boardItemFactory];
+          v24 = [v21 newBoardItemWithFactory:boardItemFactory bakedSize:0];
 
           if (v24)
           {
@@ -577,20 +577,20 @@ LABEL_28:
 
     if ([v5 count])
     {
-      v32 = [v6 canvasEditor];
-      v33 = [v32 canvasEditorHelper];
-      v4 = v41;
+      canvasEditor2 = [interactiveCanvasController canvasEditor];
+      canvasEditorHelper = [canvasEditor2 canvasEditorHelper];
+      pasteboardCopy = v41;
       v13 = v39;
-      [v33 prepareGeometryForPastingBoardItems:v5 fromPasteboard:v41 intoContainer:v39 useOriginalPositions:1];
+      [canvasEditorHelper prepareGeometryForPastingBoardItems:v5 fromPasteboard:v41 intoContainer:v39 useOriginalPositions:1];
 
-      [(CRLGroupEditor *)v37 p_pasteBoardItems:v5 inGroup:v39 atIndex:0x7FFFFFFFFFFFFFFFLL forceMatchStyle:0 isCrossDocument:0];
+      [(CRLGroupEditor *)selfCopy p_pasteBoardItems:v5 inGroup:v39 atIndex:0x7FFFFFFFFFFFFFFFLL forceMatchStyle:0 isCrossDocument:0];
       v10 = v40;
     }
 
     else
     {
       v10 = v40;
-      v4 = v41;
+      pasteboardCopy = v41;
       v13 = v39;
     }
 
@@ -629,16 +629,16 @@ LABEL_28:
   return v5;
 }
 
-- (void)duplicate:(id)a3
+- (void)duplicate:(id)duplicate
 {
-  v4 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v5 = [v4 editingCoordinator];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  editingCoordinator = [interactiveCanvasController editingCoordinator];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100583D54;
   v6[3] = &unk_10183D270;
   v6[4] = self;
-  [v5 canPerformUserActionUsingBlock:v6];
+  [editingCoordinator canPerformUserActionUsingBlock:v6];
 }
 
 @end

@@ -1,51 +1,51 @@
 @interface PKToolFromPaletteTool
-+ (id)toolByApplyingPropertiesFromPaletteTool:(id)a3 toTool:(id)a4;
++ (id)toolByApplyingPropertiesFromPaletteTool:(id)tool toTool:(id)toTool;
 @end
 
 @implementation PKToolFromPaletteTool
 
-+ (id)toolByApplyingPropertiesFromPaletteTool:(id)a3 toTool:(id)a4
++ (id)toolByApplyingPropertiesFromPaletteTool:(id)tool toTool:(id)toTool
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 _configuration];
-  v8 = [v7 copy];
+  toolCopy = tool;
+  toToolCopy = toTool;
+  _configuration = [toToolCopy _configuration];
+  v8 = [_configuration copy];
 
-  if ([v5 isInkingTool] && (objc_msgSend(v5, "isLassoTool") & 1) == 0 && (objc_msgSend(v5, "isCustomTool") & 1) == 0)
+  if ([toolCopy isInkingTool] && (objc_msgSend(toolCopy, "isLassoTool") & 1) == 0 && (objc_msgSend(toolCopy, "isCustomTool") & 1) == 0)
   {
-    v9 = [v5 inkingTool];
-    v13 = [v9 ink];
-    v12 = [(PKTool *)[PKInkingTool alloc] _initWithInk:v13 configuration:v8];
-    v15 = [v6 _toolPickerItemIdentifier];
-    [(PKTool *)v12 _setToolPickerItemIdentifier:v15];
+    inkingTool = [toolCopy inkingTool];
+    inkingTool2 = [inkingTool ink];
+    v12 = [(PKTool *)[PKInkingTool alloc] _initWithInk:inkingTool2 configuration:v8];
+    _toolPickerItemIdentifier = [toToolCopy _toolPickerItemIdentifier];
+    [(PKTool *)v12 _setToolPickerItemIdentifier:_toolPickerItemIdentifier];
     goto LABEL_13;
   }
 
-  if ([v5 isErasingTool])
+  if ([toolCopy isErasingTool])
   {
-    v9 = [v5 erasingTool];
-    v10 = [v9 isBitmapEraser];
+    inkingTool = [toolCopy erasingTool];
+    isBitmapEraser = [inkingTool isBitmapEraser];
     v11 = [PKEraserTool alloc];
-    [v9 weight];
-    v12 = [(PKEraserTool *)v11 initWithEraserType:v10 weight:?];
+    [inkingTool weight];
+    v12 = [(PKEraserTool *)v11 initWithEraserType:isBitmapEraser weight:?];
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  if ([v5 isLassoTool])
+  if ([toolCopy isLassoTool])
   {
-    v9 = [v5 inkingTool];
-    v13 = [v9 ink];
-    v12 = [[PKLassoTool alloc] _initWithInk:v13];
+    inkingTool = [toolCopy inkingTool];
+    inkingTool2 = [inkingTool ink];
+    v12 = [[PKLassoTool alloc] _initWithInk:inkingTool2];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  if (![v5 isHandwritingTool])
+  if (![toolCopy isHandwritingTool])
   {
-    if (![v5 isCustomTool])
+    if (![toolCopy isCustomTool])
     {
       v20 = os_log_create("com.apple.pencilkit", "");
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -54,17 +54,17 @@ LABEL_14:
         _os_log_error_impl(&dword_1C7CCA000, v20, OS_LOG_TYPE_ERROR, "Unsupported tool type.", v21, 2u);
       }
 
-      v14 = v6;
+      v14 = toToolCopy;
       goto LABEL_22;
     }
 
     v16 = objc_opt_class();
-    v9 = PKCheckedDynamicCast(v16, v6);
-    v13 = [v5 inkingTool];
-    v15 = [v13 ink];
-    v17 = [v15 colorForUIAllowHDR:1];
-    v18 = [v9 copyWithScrubbedColor:v17];
-    [v15 weight];
+    inkingTool = PKCheckedDynamicCast(v16, toToolCopy);
+    inkingTool2 = [toolCopy inkingTool];
+    _toolPickerItemIdentifier = [inkingTool2 ink];
+    v17 = [_toolPickerItemIdentifier colorForUIAllowHDR:1];
+    v18 = [inkingTool copyWithScrubbedColor:v17];
+    [_toolPickerItemIdentifier weight];
     v12 = [v18 copyWithWeight:?];
 
 LABEL_13:

@@ -1,24 +1,24 @@
 @interface SUUIImageIndexBarEntry
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)_calculatedContentSize;
-- (SUUIImageIndexBarEntry)initWithImage:(id)a3;
+- (SUUIImageIndexBarEntry)initWithImage:(id)image;
 - (id)description;
 - (unint64_t)hash;
-- (void)_drawContentInRect:(CGRect)a3;
+- (void)_drawContentInRect:(CGRect)rect;
 @end
 
 @implementation SUUIImageIndexBarEntry
 
-- (SUUIImageIndexBarEntry)initWithImage:(id)a3
+- (SUUIImageIndexBarEntry)initWithImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v9.receiver = self;
   v9.super_class = SUUIImageIndexBarEntry;
   v6 = [(SUUIImageIndexBarEntry *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_image, a3);
+    objc_storeStrong(&v6->_image, image);
     [(SUUIIndexBarEntry *)v7 setEntryType:2];
   }
 
@@ -43,22 +43,22 @@
   return [(UIImage *)self->_image hash]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_7;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (v8.receiver = self, v8.super_class = SUUIImageIndexBarEntry, ![(SUUIIndexBarEntry *)&v8 isEqual:v4]))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (v8.receiver = self, v8.super_class = SUUIImageIndexBarEntry, ![(SUUIIndexBarEntry *)&v8 isEqual:equalCopy]))
   {
     v6 = 0;
     goto LABEL_8;
   }
 
-  image = v4->_image;
+  image = equalCopy->_image;
   if (image == self->_image)
   {
 LABEL_7:
@@ -80,12 +80,12 @@ LABEL_8:
   return result;
 }
 
-- (void)_drawContentInRect:(CGRect)a3
+- (void)_drawContentInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   if (([(UIImage *)self->_image renderingMode]& 0xFFFFFFFFFFFFFFFDLL) != 0)
@@ -99,8 +99,8 @@ LABEL_8:
     CGContextBeginTransparencyLayer(CurrentContext, 0);
     CGContextSetFillColorWithColor(CurrentContext, 0);
     [(UIImage *)self->_image drawInRect:x, y, width, height];
-    v9 = [(SUUIIndexBarEntry *)self tintColor];
-    [v9 setFill];
+    tintColor = [(SUUIIndexBarEntry *)self tintColor];
+    [tintColor setFill];
     v11.origin.x = x;
     v11.origin.y = y;
     v11.size.width = width;

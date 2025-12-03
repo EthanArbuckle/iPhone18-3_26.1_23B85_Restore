@@ -1,15 +1,15 @@
 @interface BKMatchResultInfo
-- (BKMatchResultInfo)initWithServerIdentity:(id)a3 details:(id)a4 device:(id)a5;
+- (BKMatchResultInfo)initWithServerIdentity:(id)identity details:(id)details device:(id)device;
 @end
 
 @implementation BKMatchResultInfo
 
-- (BKMatchResultInfo)initWithServerIdentity:(id)a3 details:(id)a4 device:(id)a5
+- (BKMatchResultInfo)initWithServerIdentity:(id)identity details:(id)details device:(id)device
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identityCopy = identity;
+  detailsCopy = details;
+  deviceCopy = device;
   v11 = MEMORY[0x1E69E9C10];
   if (__osLogTrace)
   {
@@ -24,11 +24,11 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v29 = v8;
+    v29 = identityCopy;
     v30 = 2112;
-    v31 = v9;
+    v31 = detailsCopy;
     v32 = 2112;
-    v33 = v10;
+    v33 = deviceCopy;
     _os_log_impl(&dword_1C82AD000, v12, OS_LOG_TYPE_DEFAULT, "BKMatchResultInfo::initWithServerIdentity:details:device: %@, %@, %@\n", buf, 0x20u);
   }
 
@@ -37,37 +37,37 @@
   v13 = [(BKMatchResultInfo *)&v27 init];
   if (v13)
   {
-    if (v8)
+    if (identityCopy)
     {
-      v14 = [[BKIdentity alloc] initWithServerIdentity:v8 device:v10];
+      v14 = [[BKIdentity alloc] initWithServerIdentity:identityCopy device:deviceCopy];
       identity = v13->_identity;
       v13->_identity = v14;
     }
 
-    if (v9)
+    if (detailsCopy)
     {
-      v16 = [v9 objectForKeyedSubscript:@"BKMatchDetailLockoutState"];
+      v16 = [detailsCopy objectForKeyedSubscript:@"BKMatchDetailLockoutState"];
       v17 = v16;
       if (v16)
       {
         +[BKDevice lockoutState:fromDeviceLockoutState:error:](BKDevice, "lockoutState:fromDeviceLockoutState:error:", &v13->_lockoutState, [v16 integerValue], 0);
       }
 
-      v18 = [v9 objectForKeyedSubscript:@"BKMatchDetailUnlocked"];
+      v18 = [detailsCopy objectForKeyedSubscript:@"BKMatchDetailUnlocked"];
 
       if (v18)
       {
         v13->_unlocked = [v18 BOOLValue];
       }
 
-      v19 = [v9 objectForKeyedSubscript:@"BKMatchDetailCredentialAdded"];
+      v19 = [detailsCopy objectForKeyedSubscript:@"BKMatchDetailCredentialAdded"];
 
       if (v19)
       {
         v13->_credentialAdded = [v19 BOOLValue];
       }
 
-      v20 = [v9 objectForKeyedSubscript:@"BKMatchDetailResultIgnored"];
+      v20 = [detailsCopy objectForKeyedSubscript:@"BKMatchDetailResultIgnored"];
 
       if (v20)
       {

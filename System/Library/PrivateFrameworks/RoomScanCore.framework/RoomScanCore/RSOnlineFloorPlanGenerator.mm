@@ -1,7 +1,7 @@
 @interface RSOnlineFloorPlanGenerator
 - (RSOnlineFloorPlanGenerator)init;
 - (void)clear;
-- (void)generateFloorPlanWithInputDir:(id)a3 outputDir:(id)a4 debug:(BOOL)a5;
+- (void)generateFloorPlanWithInputDir:(id)dir outputDir:(id)outputDir debug:(BOOL)debug;
 @end
 
 @implementation RSOnlineFloorPlanGenerator
@@ -596,22 +596,22 @@ LABEL_19:
   return v47;
 }
 
-- (void)generateFloorPlanWithInputDir:(id)a3 outputDir:(id)a4 debug:(BOOL)a5
+- (void)generateFloorPlanWithInputDir:(id)dir outputDir:(id)outputDir debug:(BOOL)debug
 {
-  v98 = a5;
+  debugCopy = debug;
   v112 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v99 = a4;
-  v97 = v6;
+  dirCopy = dir;
+  outputDirCopy = outputDir;
+  v97 = dirCopy;
   v9 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v7, v8);
-  v11 = objc_msgSend_contentsOfDirectoryAtPath_error_(v9, v10, v6, 0);
+  v11 = objc_msgSend_contentsOfDirectoryAtPath_error_(v9, v10, dirCopy, 0);
 
   v95 = v11;
   v105 = objc_msgSend_sortedArrayUsingComparator_(v11, v12, &unk_2874EE2A0);
   v15 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v13, v14);
-  objc_msgSend_createDirectoryAtPath_withIntermediateDirectories_attributes_error_(v15, v16, v99, 1, 0, 0);
+  objc_msgSend_createDirectoryAtPath_withIntermediateDirectories_attributes_error_(v15, v16, outputDirCopy, 1, 0, 0);
 
-  if (v98)
+  if (debugCopy)
   {
     self->_enableLiveDump = 1;
   }
@@ -680,11 +680,11 @@ LABEL_19:
       v75 = objc_msgSend_objectAtIndexedSubscript_(v105, v74, v104);
       v77 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(v75, v76, @"fp_input.plist", @"fp_output.plist");
 
-      v79 = objc_msgSend_stringByAppendingPathComponent_(v99, v78, v77);
+      v79 = objc_msgSend_stringByAppendingPathComponent_(outputDirCopy, v78, v77);
       v82 = objc_msgSend_dictionaryRepresentation(v106, v80, v81);
       objc_msgSend_writeToFile_atomically_(v82, v83, v79, 1);
 
-      if (v98)
+      if (debugCopy)
       {
         v86 = objc_msgSend_stringByDeletingPathExtension(v79, v84, v85);
         v88 = objc_msgSend_stringByAppendingPathExtension_(v86, v87, @"obj");
@@ -697,10 +697,10 @@ LABEL_19:
     v22 = v104 + 1;
   }
 
-  if (v98)
+  if (debugCopy)
   {
     v90 = sub_2621EEB10(self, v23);
-    v92 = objc_msgSend_stringByAppendingPathComponent_(v99, v91, @"debug_info.plist");
+    v92 = objc_msgSend_stringByAppendingPathComponent_(outputDirCopy, v91, @"debug_info.plist");
     objc_msgSend_writeToFile_atomically_(v90, v93, v92, 1);
   }
 

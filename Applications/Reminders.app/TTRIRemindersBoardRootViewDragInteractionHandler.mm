@@ -1,7 +1,7 @@
 @interface TTRIRemindersBoardRootViewDragInteractionHandler
 - (_TtC9Reminders48TTRIRemindersBoardRootViewDragInteractionHandler)init;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
 @end
 
 @implementation TTRIRemindersBoardRootViewDragInteractionHandler
@@ -16,13 +16,13 @@
   return [(TTRIRemindersBoardRootViewDragInteractionHandler *)&v5 init];
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v6 = a3;
+    interactionCopy = interaction;
     swift_unknownObjectRetain();
-    v7 = self;
+    selfCopy = self;
     sub_100076AB0();
 
     swift_unknownObjectRelease();
@@ -35,14 +35,14 @@
   return v8.super.isa;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v8 = a3;
-    v9 = a4;
+    interactionCopy = interaction;
+    itemCopy = item;
     swift_unknownObjectRetain();
-    v10 = self;
+    selfCopy = self;
     v11 = sub_100077458();
     swift_unknownObjectRelease();
 

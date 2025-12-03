@@ -1,36 +1,36 @@
 @interface ASCStarRatingView
-- (ASCStarRatingView)initWithCoder:(id)a3;
-- (ASCStarRatingView)initWithFrame:(CGRect)a3;
-- (ASCStarRatingView)initWithMaxNumberOfStars:(int64_t)a3 starSize:(int64_t)a4 andFill:(BOOL)a5;
+- (ASCStarRatingView)initWithCoder:(id)coder;
+- (ASCStarRatingView)initWithFrame:(CGRect)frame;
+- (ASCStarRatingView)initWithMaxNumberOfStars:(int64_t)stars starSize:(int64_t)size andFill:(BOOL)fill;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeWithStarSize:(int64_t)a3 andNumberOfStars:(int64_t)a4;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeWithStarSize:(int64_t)size andNumberOfStars:(int64_t)stars;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (id)accessibilityLabel;
 - (void)layoutSubviews;
-- (void)setRating:(double)a3;
+- (void)setRating:(double)rating;
 @end
 
 @implementation ASCStarRatingView
 
-- (ASCStarRatingView)initWithMaxNumberOfStars:(int64_t)a3 starSize:(int64_t)a4 andFill:(BOOL)a5
+- (ASCStarRatingView)initWithMaxNumberOfStars:(int64_t)stars starSize:(int64_t)size andFill:(BOOL)fill
 {
   v18.receiver = self;
   v18.super_class = ASCStarRatingView;
-  v7 = [(ASCStarRatingView *)&v18 initWithFrame:a3, a4, a5, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  v7 = [(ASCStarRatingView *)&v18 initWithFrame:stars, size, fill, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7->_rating = 0.0;
-  v7->_maxNumberOfStars = a3;
-  v7->_starSize = a4;
+  v7->_maxNumberOfStars = stars;
+  v7->_starSize = size;
   v8 = [ASCStarRow alloc];
-  v9 = [MEMORY[0x277D75348] grayColor];
-  v10 = a3;
-  v11 = [(ASCStarRow *)v8 initWithStarSize:a4 fill:1 starColor:v9 andMaxNumberOfStars:a3];
+  grayColor = [MEMORY[0x277D75348] grayColor];
+  starsCopy = stars;
+  v11 = [(ASCStarRow *)v8 initWithStarSize:size fill:1 starColor:grayColor andMaxNumberOfStars:stars];
   filledStarRowView = v7->_filledStarRowView;
   v7->_filledStarRowView = v11;
 
   v13 = [ASCStarRow alloc];
-  v14 = [MEMORY[0x277D75348] grayColor];
-  v15 = [(ASCStarRow *)v13 initWithStarSize:a4 fill:0 starColor:v14 andMaxNumberOfStars:v10];
+  grayColor2 = [MEMORY[0x277D75348] grayColor];
+  v15 = [(ASCStarRow *)v13 initWithStarSize:size fill:0 starColor:grayColor2 andMaxNumberOfStars:starsCopy];
   hollowStarRowView = v7->_hollowStarRowView;
   v7->_hollowStarRowView = v15;
 
@@ -41,31 +41,31 @@
   return v7;
 }
 
-- (ASCStarRatingView)initWithFrame:(CGRect)a3
+- (ASCStarRatingView)initWithFrame:(CGRect)frame
 {
-  [(ASCStarRatingView *)self doesNotRecognizeSelector:a2, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(ASCStarRatingView *)self doesNotRecognizeSelector:a2, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 
   return 0;
 }
 
-- (ASCStarRatingView)initWithCoder:(id)a3
+- (ASCStarRatingView)initWithCoder:(id)coder
 {
   [(ASCStarRatingView *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (void)setRating:(double)a3
+- (void)setRating:(double)rating
 {
-  if (self->_rating != a3)
+  if (self->_rating != rating)
   {
     maxNumberOfStars = 0.0;
-    if (a3 >= 0.0)
+    if (rating >= 0.0)
     {
       maxNumberOfStars = self->_maxNumberOfStars;
-      if (maxNumberOfStars >= a3)
+      if (maxNumberOfStars >= rating)
       {
-        maxNumberOfStars = a3;
+        maxNumberOfStars = rating;
       }
     }
 
@@ -82,17 +82,17 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(ASCStarRatingView *)self sizeWithStarSize:self->_starSize andNumberOfStars:self->_maxNumberOfStars, a3.width, a3.height];
+  [(ASCStarRatingView *)self sizeWithStarSize:self->_starSize andNumberOfStars:self->_maxNumberOfStars, fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  v4 = [(ASCStarRatingView *)self sizeThatFits:a4, a3.width, a3.height];
+  v4 = [(ASCStarRatingView *)self sizeThatFits:in, fitting.width, fitting.height];
 
   MEMORY[0x2821814B0](v4);
   result.var3 = v8;
@@ -138,9 +138,9 @@
   [(ASCStarRow *)hollowStarRowView setTransform:&v20];
 }
 
-- (CGSize)sizeWithStarSize:(int64_t)a3 andNumberOfStars:(int64_t)a4
+- (CGSize)sizeWithStarSize:(int64_t)size andNumberOfStars:(int64_t)stars
 {
-  [ASCStarRow sizeForStarRowWithSizeOfStar:a3 andNumberOfStars:a4];
+  [ASCStarRow sizeForStarRowWithSizeOfStar:size andNumberOfStars:stars];
   result.height = v5;
   result.width = v4;
   return result;

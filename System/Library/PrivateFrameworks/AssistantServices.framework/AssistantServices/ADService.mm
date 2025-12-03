@@ -1,11 +1,11 @@
 @interface ADService
 - (ADServiceDelegate)delegate;
 - (NSString)description;
-- (void)beginSyncForInfo:(id)a3 chunkHandler:(id)a4;
-- (void)getInfoWithCompletion:(id)a3;
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6;
-- (void)handleResponse:(id)a3 toCommand:(id)a4 completion:(id)a5;
-- (void)runMaintenanceWorkWithCompletion:(id)a3;
+- (void)beginSyncForInfo:(id)info chunkHandler:(id)handler;
+- (void)getInfoWithCompletion:(id)completion;
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply;
+- (void)handleResponse:(id)response toCommand:(id)command completion:(id)completion;
+- (void)runMaintenanceWorkWithCompletion:(id)completion;
 @end
 
 @implementation ADService
@@ -27,91 +27,91 @@
   return WeakRetained;
 }
 
-- (void)getInfoWithCompletion:(id)a3
+- (void)getInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v12 = v4;
+    v12 = completionCopy;
     v5 = +[NSMutableDictionary dictionary];
-    v6 = [(ADService *)self domains];
-    if (v6)
+    domains = [(ADService *)self domains];
+    if (domains)
     {
-      [v5 setObject:v6 forKey:@"Domains"];
+      [v5 setObject:domains forKey:@"Domains"];
     }
 
-    v7 = [(ADService *)self firstUnlockRestrictedCommands];
+    firstUnlockRestrictedCommands = [(ADService *)self firstUnlockRestrictedCommands];
 
-    if (v7)
+    if (firstUnlockRestrictedCommands)
     {
-      [v5 setObject:v7 forKey:@"First Unlock Restricted Commands"];
+      [v5 setObject:firstUnlockRestrictedCommands forKey:@"First Unlock Restricted Commands"];
     }
 
-    v8 = [(ADService *)self controlCenterLockRestrictedCommands];
+    controlCenterLockRestrictedCommands = [(ADService *)self controlCenterLockRestrictedCommands];
 
-    if (v8)
+    if (controlCenterLockRestrictedCommands)
     {
-      [v5 setObject:v8 forKey:@"Control Center Lock Restricted Commands"];
+      [v5 setObject:controlCenterLockRestrictedCommands forKey:@"Control Center Lock Restricted Commands"];
     }
 
-    v9 = [(NSSet *)self->_managedStorageDomains allObjects];
+    allObjects = [(NSSet *)self->_managedStorageDomains allObjects];
 
-    if (v9)
+    if (allObjects)
     {
-      [v5 setObject:v9 forKey:@"Managed Storage Domains"];
+      [v5 setObject:allObjects forKey:@"Managed Storage Domains"];
     }
 
-    v10 = [(ADService *)self syncKeys];
+    syncKeys = [(ADService *)self syncKeys];
 
-    if (v10)
+    if (syncKeys)
     {
-      [v5 setObject:v10 forKey:@"Sync Keys"];
+      [v5 setObject:syncKeys forKey:@"Sync Keys"];
     }
 
-    v11 = [(ADService *)self lockRestrictedCommands];
+    lockRestrictedCommands = [(ADService *)self lockRestrictedCommands];
 
-    if (v11)
+    if (lockRestrictedCommands)
     {
-      [v5 setObject:v11 forKey:@"Lock Restricted Commands"];
+      [v5 setObject:lockRestrictedCommands forKey:@"Lock Restricted Commands"];
     }
 
     v12[2](v12, v5);
 
-    v4 = v12;
+    completionCopy = v12;
   }
 }
 
-- (void)runMaintenanceWorkWithCompletion:(id)a3
+- (void)runMaintenanceWorkWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)beginSyncForInfo:(id)a3 chunkHandler:(id)a4
+- (void)beginSyncForInfo:(id)info chunkHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4, 0, 0, 0);
+    (*(handler + 2))(handler, 0, 0, 0);
   }
 }
 
-- (void)handleResponse:(id)a3 toCommand:(id)a4 completion:(id)a5
+- (void)handleResponse:(id)response toCommand:(id)command completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply
 {
-  if (a6)
+  if (reply)
   {
-    v7 = a6;
+    replyCopy = reply;
     v8 = [NSError errorWithDomain:@"ADServiceError" code:-1 userInfo:0];
-    (*(a6 + 2))(v7, 0, v8);
+    (*(reply + 2))(replyCopy, 0, v8);
   }
 }
 

@@ -1,22 +1,22 @@
 @interface PTEffectBackgroundURLManager
-+ (CGSize)findSize:(CGSize)a3 maxSize:(CGSize)a4;
-- (BOOL)copyAsFullsizeAndThumbnailFromPixelBuffer:(__CVBuffer *)a3 outputPathFullsize:(id)a4 outputPathThumbnail:(id)a5;
-- (PTEffectBackgroundURLManager)initWithUserBackgrounds:(BOOL)a3;
-- (id)arrayToPlist:(id)a3;
++ (CGSize)findSize:(CGSize)size maxSize:(CGSize)maxSize;
+- (BOOL)copyAsFullsizeAndThumbnailFromPixelBuffer:(__CVBuffer *)buffer outputPathFullsize:(id)fullsize outputPathThumbnail:(id)thumbnail;
+- (PTEffectBackgroundURLManager)initWithUserBackgrounds:(BOOL)backgrounds;
+- (id)arrayToPlist:(id)plist;
 - (id)asyncWorkerQueue;
-- (id)backgroundsWithType:(int64_t)a3;
-- (id)createBuiltInBackgroundURLsWithFiles:(id)a3 extension:(id)a4 subdirectory:(id)a5;
+- (id)backgroundsWithType:(int64_t)type;
+- (id)createBuiltInBackgroundURLsWithFiles:(id)files extension:(id)extension subdirectory:(id)subdirectory;
 - (id)makeUniqueFilename;
-- (id)plistToArray:(id)a3;
-- (void)addUserBackground:(id)a3 ciImage:(id)a4 backgroundToReplace:(id)a5 withOptions:(id)a6 completion:(id)a7;
-- (void)hasUserBackgroundWithPixelBuffer:(id)a3 ciImage:(id)a4 completion:(id)a5;
-- (void)loadUserBackgroundWithPath:(id)a3;
-- (void)removeUserBackground:(id)a3 withOptions:(id)a4 completion:(id)a5;
+- (id)plistToArray:(id)array;
+- (void)addUserBackground:(id)background ciImage:(id)image backgroundToReplace:(id)replace withOptions:(id)options completion:(id)completion;
+- (void)hasUserBackgroundWithPixelBuffer:(id)buffer ciImage:(id)image completion:(id)completion;
+- (void)loadUserBackgroundWithPath:(id)path;
+- (void)removeUserBackground:(id)background withOptions:(id)options completion:(id)completion;
 @end
 
 @implementation PTEffectBackgroundURLManager
 
-- (PTEffectBackgroundURLManager)initWithUserBackgrounds:(BOOL)a3
+- (PTEffectBackgroundURLManager)initWithUserBackgrounds:(BOOL)backgrounds
 {
   v7.receiver = self;
   v7.super_class = PTEffectBackgroundURLManager;
@@ -30,36 +30,36 @@
   return v4;
 }
 
-- (void)loadUserBackgroundWithPath:(id)a3
+- (void)loadUserBackgroundWithPath:(id)path
 {
   v59[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_userBackgroundDirectory, a3);
+  pathCopy = path;
+  objc_storeStrong(&self->_userBackgroundDirectory, path);
   userBackgroundDirectory = self->_userBackgroundDirectory;
   if (userBackgroundDirectory)
   {
-    v7 = [(NSURL *)userBackgroundDirectory path];
+    path = [(NSURL *)userBackgroundDirectory path];
 
-    if (v7)
+    if (path)
     {
-      v45 = v5;
+      v45 = pathCopy;
       v8 = MEMORY[0x277CBEBC0];
-      v9 = [(NSURL *)self->_userBackgroundDirectory path];
-      v10 = [v9 stringByAppendingPathComponent:@"content.plist"];
+      path2 = [(NSURL *)self->_userBackgroundDirectory path];
+      v10 = [path2 stringByAppendingPathComponent:@"content.plist"];
       v11 = [v8 fileURLWithPath:v10];
       userBackgroundPList = self->_userBackgroundPList;
       self->_userBackgroundPList = v11;
 
       v13 = MEMORY[0x277CBEBC0];
-      v14 = [(NSURL *)self->_userBackgroundDirectory path];
-      v15 = [v14 stringByAppendingPathComponent:@"images"];
+      path3 = [(NSURL *)self->_userBackgroundDirectory path];
+      v15 = [path3 stringByAppendingPathComponent:@"images"];
       v16 = [v13 fileURLWithPath:v15];
       userBackgroundDirectoryImages = self->_userBackgroundDirectoryImages;
       self->_userBackgroundDirectoryImages = v16;
 
       v18 = MEMORY[0x277CBEBC0];
-      v19 = [(NSURL *)self->_userBackgroundDirectory path];
-      v20 = [v19 stringByAppendingPathComponent:@"thumbnails"];
+      path4 = [(NSURL *)self->_userBackgroundDirectory path];
+      v20 = [path4 stringByAppendingPathComponent:@"thumbnails"];
       v21 = [v18 fileURLWithPath:v20];
       userBackgroundDirectoryThumbnails = self->_userBackgroundDirectoryThumbnails;
       self->_userBackgroundDirectoryThumbnails = v21;
@@ -93,39 +93,39 @@
           v29 = *(*(&v48 + 1) + 8 * v28);
           v47 = 0;
           fileManager = self->_fileManager;
-          v31 = [v29 path];
-          LOBYTE(fileManager) = [(NSFileManager *)fileManager fileExistsAtPath:v31 isDirectory:&v47];
+          path5 = [v29 path];
+          LOBYTE(fileManager) = [(NSFileManager *)fileManager fileExistsAtPath:path5 isDirectory:&v47];
 
           if ((fileManager & 1) == 0)
           {
             v36 = self->_fileManager;
-            v37 = [v29 path];
+            path6 = [v29 path];
             v46 = 0;
-            v38 = [(NSFileManager *)v36 createDirectoryAtPath:v37 withIntermediateDirectories:1 attributes:0 error:&v46];
+            v38 = [(NSFileManager *)v36 createDirectoryAtPath:path6 withIntermediateDirectories:1 attributes:0 error:&v46];
             v34 = v46;
 
             v39 = _PTLogSystem();
-            v35 = v39;
+            path8 = v39;
             if (v38)
             {
               if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
               {
-                v40 = [v29 path];
+                path7 = [v29 path];
                 *buf = 138412290;
-                v55 = v40;
-                _os_log_impl(&dword_2243FB000, v35, OS_LOG_TYPE_INFO, "Created %@", buf, 0xCu);
+                v55 = path7;
+                _os_log_impl(&dword_2243FB000, path8, OS_LOG_TYPE_INFO, "Created %@", buf, 0xCu);
                 goto LABEL_15;
               }
             }
 
             else if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
             {
-              v40 = [v29 path];
+              path7 = [v29 path];
               *buf = 138412546;
-              v55 = v40;
+              v55 = path7;
               v56 = 2112;
               v57 = v34;
-              _os_log_error_impl(&dword_2243FB000, v35, OS_LOG_TYPE_ERROR, "Error creating directory %@ error %@", buf, 0x16u);
+              _os_log_error_impl(&dword_2243FB000, path8, OS_LOG_TYPE_ERROR, "Error creating directory %@ error %@", buf, 0x16u);
 LABEL_15:
             }
 
@@ -144,9 +144,9 @@ LABEL_19:
               goto LABEL_20;
             }
 
-            v35 = [v29 path];
+            path8 = [v29 path];
             *buf = 138412290;
-            v55 = v35;
+            v55 = path8;
             _os_log_impl(&dword_2243FB000, v34, OS_LOG_TYPE_INFO, "Found background replacement directory %@", buf, 0xCu);
             goto LABEL_19;
           }
@@ -172,7 +172,7 @@ LABEL_24:
           pixelBufferUtil = self->_pixelBufferUtil;
           self->_pixelBufferUtil = v42;
 
-          v5 = v45;
+          pathCopy = v45;
           goto LABEL_28;
         }
       }
@@ -204,7 +204,7 @@ LABEL_28:
   return asyncWorkerQueue;
 }
 
-- (id)createBuiltInBackgroundURLsWithFiles:(id)a3 extension:(id)a4 subdirectory:(id)a5
+- (id)createBuiltInBackgroundURLsWithFiles:(id)files extension:(id)extension subdirectory:(id)subdirectory
 {
   v5 = objc_opt_new();
   v6 = _PTLogSystem();
@@ -218,7 +218,7 @@ LABEL_28:
   return v7;
 }
 
-- (id)backgroundsWithType:(int64_t)a3
+- (id)backgroundsWithType:(int64_t)type
 {
   v3 = _PTLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -231,15 +231,15 @@ LABEL_28:
 
 - (id)makeUniqueFilename
 {
-  v2 = [MEMORY[0x277CCAD78] UUID];
-  v3 = [v2 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.heic", v3];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.heic", uUIDString];
 
   return v4;
 }
 
-- (void)hasUserBackgroundWithPixelBuffer:(id)a3 ciImage:(id)a4 completion:(id)a5
+- (void)hasUserBackgroundWithPixelBuffer:(id)buffer ciImage:(id)image completion:(id)completion
 {
   v5 = _PTLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -248,7 +248,7 @@ LABEL_28:
   }
 }
 
-- (void)addUserBackground:(id)a3 ciImage:(id)a4 backgroundToReplace:(id)a5 withOptions:(id)a6 completion:(id)a7
+- (void)addUserBackground:(id)background ciImage:(id)image backgroundToReplace:(id)replace withOptions:(id)options completion:(id)completion
 {
   v7 = _PTLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -257,7 +257,7 @@ LABEL_28:
   }
 }
 
-- (void)removeUserBackground:(id)a3 withOptions:(id)a4 completion:(id)a5
+- (void)removeUserBackground:(id)background withOptions:(id)options completion:(id)completion
 {
   v5 = _PTLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -266,58 +266,58 @@ LABEL_28:
   }
 }
 
-+ (CGSize)findSize:(CGSize)a3 maxSize:(CGSize)a4
++ (CGSize)findSize:(CGSize)size maxSize:(CGSize)maxSize
 {
-  v4 = a3.width / a4.width;
-  v5 = a3.width / a4.width;
-  v6 = a3.height / a4.height;
-  v7 = a3.height / a4.height;
+  v4 = size.width / maxSize.width;
+  v5 = size.width / maxSize.width;
+  v6 = size.height / maxSize.height;
+  v7 = size.height / maxSize.height;
   if (v5 > 1.0 || v7 > 1.0)
   {
     if (v5 >= 1.0)
     {
       if (v7 >= 1.0)
       {
-        a3 = a4;
+        size = maxSize;
       }
 
       else
       {
-        if (a4.width * v6 < a4.width)
+        if (maxSize.width * v6 < maxSize.width)
         {
-          a4.width = a4.width * v6;
+          maxSize.width = maxSize.width * v6;
         }
 
-        if (a4.width < a3.width)
+        if (maxSize.width < size.width)
         {
-          a3.width = a4.width;
+          size.width = maxSize.width;
         }
       }
     }
 
     else
     {
-      height = a4.height * v4;
-      if (a4.height * v4 >= a4.height)
+      height = maxSize.height * v4;
+      if (maxSize.height * v4 >= maxSize.height)
       {
-        height = a4.height;
+        height = maxSize.height;
       }
 
-      if (height < a3.height)
+      if (height < size.height)
       {
-        a3.height = height;
+        size.height = height;
       }
     }
   }
 
-  v10 = floor(a3.width);
-  v11 = floor(a3.height);
+  v10 = floor(size.width);
+  v11 = floor(size.height);
   result.height = v11;
   result.width = v10;
   return result;
 }
 
-- (BOOL)copyAsFullsizeAndThumbnailFromPixelBuffer:(__CVBuffer *)a3 outputPathFullsize:(id)a4 outputPathThumbnail:(id)a5
+- (BOOL)copyAsFullsizeAndThumbnailFromPixelBuffer:(__CVBuffer *)buffer outputPathFullsize:(id)fullsize outputPathThumbnail:(id)thumbnail
 {
   v5 = _PTLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -328,16 +328,16 @@ LABEL_28:
   return 0;
 }
 
-- (id)arrayToPlist:(id)a3
+- (id)arrayToPlist:(id)plist
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  plistCopy = plist;
   v20 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v4;
+  obj = plistCopy;
   v5 = [obj countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v5)
   {
@@ -354,19 +354,19 @@ LABEL_28:
 
         v9 = *(*(&v21 + 1) + 8 * i);
         v27[0] = @"fullsize";
-        v10 = [v9 fullsizeURL];
-        v11 = [v10 path];
-        v28[0] = v11;
+        fullsizeURL = [v9 fullsizeURL];
+        path = [fullsizeURL path];
+        v28[0] = path;
         v27[1] = @"thumbnail";
-        v12 = [v9 thumbnailURL];
-        v13 = [v12 path];
-        v28[1] = v13;
+        thumbnailURL = [v9 thumbnailURL];
+        path2 = [thumbnailURL path];
+        v28[1] = path2;
         v27[2] = @"inputBufferChecksum";
-        v14 = [v9 inputBufferChecksum];
-        if (v14)
+        inputBufferChecksum = [v9 inputBufferChecksum];
+        if (inputBufferChecksum)
         {
-          v3 = [v9 inputBufferChecksum];
-          v15 = v3;
+          inputBufferChecksum2 = [v9 inputBufferChecksum];
+          v15 = inputBufferChecksum2;
         }
 
         else
@@ -378,7 +378,7 @@ LABEL_28:
         v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:3];
         [v20 addObject:v16];
 
-        if (v14)
+        if (inputBufferChecksum)
         {
         }
       }
@@ -396,7 +396,7 @@ LABEL_28:
   return v17;
 }
 
-- (id)plistToArray:(id)a3
+- (id)plistToArray:(id)array
 {
   v3 = _PTLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))

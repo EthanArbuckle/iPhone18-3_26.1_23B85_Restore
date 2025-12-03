@@ -1,34 +1,34 @@
 @interface ShazamKitRecognizer
 - (_TtC23AudioFlowDelegatePlugin19ShazamKitRecognizer)init;
-- (void)finishedManagedSession:(id)a3;
-- (void)session:(id)a3 didFindMatch:(id)a4;
-- (void)session:(id)a3 didNotFindMatchForSignature:(id)a4 error:(id)a5;
+- (void)finishedManagedSession:(id)session;
+- (void)session:(id)session didFindMatch:(id)match;
+- (void)session:(id)session didNotFindMatchForSignature:(id)signature error:(id)error;
 @end
 
 @implementation ShazamKitRecognizer
 
-- (void)session:(id)a3 didFindMatch:(id)a4
+- (void)session:(id)session didFindMatch:(id)match
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_DB85C(v7);
+  sessionCopy = session;
+  matchCopy = match;
+  selfCopy = self;
+  sub_DB85C(matchCopy);
 }
 
-- (void)session:(id)a3 didNotFindMatchForSignature:(id)a4 error:(id)a5
+- (void)session:(id)session didNotFindMatchForSignature:(id)signature error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_DC078(a5);
+  sessionCopy = session;
+  signatureCopy = signature;
+  selfCopy = self;
+  errorCopy = error;
+  sub_DC078(error);
 }
 
-- (void)finishedManagedSession:(id)a3
+- (void)finishedManagedSession:(id)session
 {
-  v4 = a3;
-  v5 = self;
-  sub_DA12C(v4);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_DA12C(sessionCopy);
 }
 
 - (_TtC23AudioFlowDelegatePlugin19ShazamKitRecognizer)init

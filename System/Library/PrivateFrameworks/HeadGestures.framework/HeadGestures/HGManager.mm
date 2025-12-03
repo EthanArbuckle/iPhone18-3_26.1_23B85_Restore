@@ -1,22 +1,22 @@
 @interface HGManager
-- (HGManager)initWithDelegate:(id)a3 config:(id)a4;
+- (HGManager)initWithDelegate:(id)delegate config:(id)config;
 @end
 
 @implementation HGManager
 
-- (HGManager)initWithDelegate:(id)a3 config:(id)a4
+- (HGManager)initWithDelegate:(id)delegate config:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  configCopy = config;
   v17.receiver = self;
   v17.super_class = HGManager;
   v8 = [(HGManager *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    if (v7)
+    if (configCopy)
     {
-      [(HGManager *)v8 setConfiguration:v7];
+      [(HGManager *)v8 setConfiguration:configCopy];
     }
 
     else
@@ -26,9 +26,9 @@
     }
 
     v11 = [HGManagerInternal alloc];
-    v12 = [(HGManager *)v9 configuration];
-    v13 = [v12 internal];
-    v14 = [(HGManagerInternal *)v11 initWithDelegate:v6 config:v13];
+    configuration = [(HGManager *)v9 configuration];
+    internal = [configuration internal];
+    v14 = [(HGManagerInternal *)v11 initWithDelegate:delegateCopy config:internal];
     internal = v9->_internal;
     v9->_internal = v14;
   }

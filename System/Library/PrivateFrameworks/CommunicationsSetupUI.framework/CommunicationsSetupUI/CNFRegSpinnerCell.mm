@@ -1,15 +1,15 @@
 @interface CNFRegSpinnerCell
-- (CNFRegSpinnerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CNFRegSpinnerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation CNFRegSpinnerCell
 
-- (CNFRegSpinnerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNFRegSpinnerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = CNFRegSpinnerCell;
-  v4 = [(PSTableCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:2];
@@ -17,8 +17,8 @@
     v4->_activityIndicator = v5;
 
     [(UIActivityIndicatorView *)v4->_activityIndicator startAnimating];
-    v7 = [(CNFRegSpinnerCell *)v4 contentView];
-    [v7 addSubview:v4->_activityIndicator];
+    contentView = [(CNFRegSpinnerCell *)v4 contentView];
+    [contentView addSubview:v4->_activityIndicator];
 
     [(CNFRegSpinnerCell *)v4 setNeedsLayout];
   }
@@ -31,8 +31,8 @@
   *&rect.origin.y = self;
   *&rect.size.width = CNFRegSpinnerCell;
   [(CGFloat *)&rect.origin.y layoutSubviews];
-  v3 = [(CNFRegSpinnerCell *)self contentView];
-  [v3 bounds];
+  contentView = [(CNFRegSpinnerCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   rect.origin.x = v4;
   v7 = v6;

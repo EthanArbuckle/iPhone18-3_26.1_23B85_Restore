@@ -1,6 +1,6 @@
 @interface PXPeopleRecoCollectionView
 - (PXPeopleRecoCollectionViewDelegate)recoCollectionViewDelegate;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation PXPeopleRecoCollectionView
@@ -12,17 +12,17 @@
   return WeakRetained;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = PXPeopleRecoCollectionView;
   [(PXPeopleRecoCollectionView *)&v9 setFrame:?];
-  v8 = [(PXPeopleRecoCollectionView *)self recoCollectionViewDelegate];
-  [v8 collectionView:self frameDidChange:{x, y, width, height}];
+  recoCollectionViewDelegate = [(PXPeopleRecoCollectionView *)self recoCollectionViewDelegate];
+  [recoCollectionViewDelegate collectionView:self frameDidChange:{x, y, width, height}];
 }
 
 @end

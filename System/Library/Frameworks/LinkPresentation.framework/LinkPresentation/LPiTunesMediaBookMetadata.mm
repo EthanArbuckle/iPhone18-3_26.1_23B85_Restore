@@ -1,89 +1,89 @@
 @interface LPiTunesMediaBookMetadata
-- (BOOL)isEqual:(id)a3;
-- (LPiTunesMediaBookMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
-- (id)previewSummaryForTransformer:(id)a3;
-- (id)storeIdentifierForTransformer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateMetadataForBackwardCompatibility:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LPiTunesMediaBookMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)presentationPropertiesForTransformer:(id)transformer;
+- (id)previewSummaryForTransformer:(id)transformer;
+- (id)storeIdentifierForTransformer:(id)transformer;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility;
 @end
 
 @implementation LPiTunesMediaBookMetadata
 
-- (LPiTunesMediaBookMetadata)initWithCoder:(id)a3
+- (LPiTunesMediaBookMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = LPiTunesMediaBookMetadata;
   v5 = [(LPiTunesMediaBookMetadata *)&v20 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"storeFrontIdentifier");
+    v6 = decodeStringForKey(coderCopy, @"storeFrontIdentifier");
     v7 = *&v5->_hasSpineOnRight;
     *&v5->_hasSpineOnRight = v6;
 
-    v8 = decodeStringForKey(v4, @"storeIdentifier");
+    v8 = decodeStringForKey(coderCopy, @"storeIdentifier");
     storeFrontIdentifier = v5->_storeFrontIdentifier;
     v5->_storeFrontIdentifier = v8;
 
-    v10 = decodeStringForKey(v4, @"name");
+    v10 = decodeStringForKey(coderCopy, @"name");
     storeIdentifier = v5->_storeIdentifier;
     v5->_storeIdentifier = v10;
 
-    v12 = decodeStringForKey(v4, @"author");
+    v12 = decodeStringForKey(coderCopy, @"author");
     name = v5->_name;
     v5->_name = v12;
 
-    v14 = [v4 _lp_strictlyDecodeLPImageForKey:@"artwork"];
+    v14 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"artwork"];
     author = v5->_author;
     v5->_author = v14;
 
-    v16 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"artworkMetadata"];
+    v16 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"artworkMetadata"];
     artwork = v5->_artwork;
     v5->_artwork = v16;
 
-    *(&v5->super.__disallowsURLOverrideByDelegate + 1) = [v4 decodeBoolForKey:@"hasSpineOnRight"];
+    *(&v5->super.__disallowsURLOverrideByDelegate + 1) = [coderCopy decodeBoolForKey:@"hasSpineOnRight"];
     v18 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 _lp_encodeStringIfNotNil:*&self->_hasSpineOnRight forKey:@"storeFrontIdentifier"];
-  [v4 _lp_encodeStringIfNotNil:self->_storeFrontIdentifier forKey:@"storeIdentifier"];
-  [v4 _lp_encodeStringIfNotNil:self->_storeIdentifier forKey:@"name"];
-  [v4 _lp_encodeStringIfNotNil:self->_name forKey:@"author"];
-  [v4 _lp_encodeObjectIfNotNil:self->_author forKey:@"artwork"];
-  [v4 _lp_encodeObjectIfNotNil:self->_artwork forKey:@"artworkMetadata"];
-  [v4 encodeBool:*(&self->super.__disallowsURLOverrideByDelegate + 1) forKey:@"hasSpineOnRight"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:*&self->_hasSpineOnRight forKey:@"storeFrontIdentifier"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_storeFrontIdentifier forKey:@"storeIdentifier"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_storeIdentifier forKey:@"name"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_name forKey:@"author"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_author forKey:@"artwork"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_artwork forKey:@"artworkMetadata"];
+  [coderCopy encodeBool:*(&self->super.__disallowsURLOverrideByDelegate + 1) forKey:@"hasSpineOnRight"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPiTunesMediaBookMetadata allocWithZone:a3];
+  v4 = [LPiTunesMediaBookMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPiTunesMediaBookMetadata *)self storeFrontIdentifier];
-    [(LPiTunesMediaBookMetadata *)v4 setStoreFrontIdentifier:v5];
+    storeFrontIdentifier = [(LPiTunesMediaBookMetadata *)self storeFrontIdentifier];
+    [(LPiTunesMediaBookMetadata *)v4 setStoreFrontIdentifier:storeFrontIdentifier];
 
-    v6 = [(LPiTunesMediaBookMetadata *)self storeIdentifier];
-    [(LPiTunesMediaBookMetadata *)v4 setStoreIdentifier:v6];
+    storeIdentifier = [(LPiTunesMediaBookMetadata *)self storeIdentifier];
+    [(LPiTunesMediaBookMetadata *)v4 setStoreIdentifier:storeIdentifier];
 
-    v7 = [(LPiTunesMediaBookMetadata *)self name];
-    [(LPiTunesMediaBookMetadata *)v4 setName:v7];
+    name = [(LPiTunesMediaBookMetadata *)self name];
+    [(LPiTunesMediaBookMetadata *)v4 setName:name];
 
-    v8 = [(LPiTunesMediaBookMetadata *)self author];
-    [(LPiTunesMediaBookMetadata *)v4 setAuthor:v8];
+    author = [(LPiTunesMediaBookMetadata *)self author];
+    [(LPiTunesMediaBookMetadata *)v4 setAuthor:author];
 
-    v9 = [(LPiTunesMediaBookMetadata *)self artwork];
-    [(LPiTunesMediaBookMetadata *)v4 setArtwork:v9];
+    artwork = [(LPiTunesMediaBookMetadata *)self artwork];
+    [(LPiTunesMediaBookMetadata *)v4 setArtwork:artwork];
 
-    v10 = [(LPiTunesMediaBookMetadata *)self artworkMetadata];
-    [(LPiTunesMediaBookMetadata *)v4 setArtworkMetadata:v10];
+    artworkMetadata = [(LPiTunesMediaBookMetadata *)self artworkMetadata];
+    [(LPiTunesMediaBookMetadata *)v4 setArtworkMetadata:artworkMetadata];
 
     [(LPiTunesMediaBookMetadata *)v4 setHasSpineOnRight:[(LPiTunesMediaBookMetadata *)self hasSpineOnRight]];
     v11 = v4;
@@ -92,12 +92,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPiTunesMediaBookMetadata;
-  if ([(LPiTunesMediaBookMetadata *)&v8 isEqual:v4])
+  if ([(LPiTunesMediaBookMetadata *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -107,7 +107,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v5 = (objectsAreEqual_0(v6[2], *&self->_hasSpineOnRight) & 1) != 0 && objectsAreEqual_0(v6[3], self->_storeFrontIdentifier) && objectsAreEqual_0(v6[4], self->_storeIdentifier) && objectsAreEqual_0(v6[5], self->_name) && objectsAreEqual_0(v6[6], self->_author) && objectsAreEqual_0(v6[7], self->_artwork) && *(v6 + 11) == *(&self->super.__disallowsURLOverrideByDelegate + 1);
     }
 
@@ -120,20 +120,20 @@
   return v5;
 }
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [v4 commonPresentationPropertiesForStyle:13];
+  transformerCopy = transformer;
+  v5 = [transformerCopy commonPresentationPropertiesForStyle:13];
   v6 = objc_alloc_init(LPCaptionBarPresentationProperties);
   [v5 setCaptionBar:v6];
 
-  v7 = [(LPiTunesMediaBookMetadata *)self name];
-  v8 = [(LPiTunesMediaBookMetadata *)self author];
+  name = [(LPiTunesMediaBookMetadata *)self name];
+  author = [(LPiTunesMediaBookMetadata *)self author];
   v9 = LPLocalizedString(@" Books");
-  populateCaptionBar(v5, v7, v8, v9, 1, v4);
+  populateCaptionBar(v5, name, author, v9, 1, transformerCopy);
 
-  v10 = [(LPiTunesMediaBookMetadata *)self artwork];
-  [v4 _populateProperties:v5 withPrimaryImage:v10];
+  artwork = [(LPiTunesMediaBookMetadata *)self artwork];
+  [transformerCopy _populateProperties:v5 withPrimaryImage:artwork];
 
   v11 = objc_alloc_init(LPImagePresentationProperties);
   if ([(LPiTunesMediaBookMetadata *)self hasSpineOnRight])
@@ -152,34 +152,34 @@
   return v5;
 }
 
-- (id)previewSummaryForTransformer:(id)a3
+- (id)previewSummaryForTransformer:(id)transformer
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = LPLocalizedString(@"Book: %@ – %@");
-  v6 = [(LPiTunesMediaBookMetadata *)self name];
-  v7 = [(LPiTunesMediaBookMetadata *)self author];
-  v8 = [v4 localizedStringWithFormat:v5, v6, v7];
+  name = [(LPiTunesMediaBookMetadata *)self name];
+  author = [(LPiTunesMediaBookMetadata *)self author];
+  v8 = [v4 localizedStringWithFormat:v5, name, author];
 
   return v8;
 }
 
-- (void)populateMetadataForBackwardCompatibility:(id)a3
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility
 {
-  v8 = a3;
-  v4 = [(LPiTunesMediaBookMetadata *)self name];
-  v5 = [(LPiTunesMediaBookMetadata *)self author];
-  v6 = joinedByEmDash(v4, v5);
-  [v8 setTitle:v6];
+  compatibilityCopy = compatibility;
+  name = [(LPiTunesMediaBookMetadata *)self name];
+  author = [(LPiTunesMediaBookMetadata *)self author];
+  v6 = joinedByEmDash(name, author);
+  [compatibilityCopy setTitle:v6];
 
-  v7 = [(LPiTunesMediaBookMetadata *)self artwork];
-  [v8 setImage:v7];
+  artwork = [(LPiTunesMediaBookMetadata *)self artwork];
+  [compatibilityCopy setImage:artwork];
 }
 
-- (id)storeIdentifierForTransformer:(id)a3
+- (id)storeIdentifierForTransformer:(id)transformer
 {
-  v3 = [(LPiTunesMediaBookMetadata *)self storeIdentifier];
+  storeIdentifier = [(LPiTunesMediaBookMetadata *)self storeIdentifier];
 
-  return v3;
+  return storeIdentifier;
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface CACInstructionalCell
-- (CACInstructionalCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (CACInstructionalCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)layoutSubviews;
 @end
 
 @implementation CACInstructionalCell
 
-- (CACInstructionalCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (CACInstructionalCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v47.receiver = self;
   v47.super_class = CACInstructionalCell;
-  v7 = a5;
-  v8 = [(CACInstructionalCell *)&v47 initWithStyle:a3 reuseIdentifier:a4 specifier:v7];
+  specifierCopy = specifier;
+  v8 = [(CACInstructionalCell *)&v47 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v9 = +[UIColor clearColor];
   [(CACInstructionalCell *)v8 setBackgroundColor:v9];
 
@@ -22,52 +22,52 @@
   right = UIEdgeInsetsZero.right;
   [(CACInstructionalCell *)v8 setSeparatorInset:UIEdgeInsetsZero.top, left, bottom, right];
   [(CACInstructionalCell *)v8 setLayoutMargins:UIEdgeInsetsZero.top, left, bottom, right];
-  v46 = [v7 propertyForKey:@"Title"];
-  v44 = [v7 propertyForKey:@"Icon"];
-  v45 = [v7 propertyForKey:@"IconIgnoresInvertColors"];
-  v43 = [v7 propertyForKey:@"Description"];
-  v42 = [v7 propertyForKey:@"URLText"];
-  v40 = [v7 propertyForKey:@"ButtonCallback"];
-  v41 = [v7 propertyForKey:@"CloseCallback"];
+  v46 = [specifierCopy propertyForKey:@"Title"];
+  v44 = [specifierCopy propertyForKey:@"Icon"];
+  v45 = [specifierCopy propertyForKey:@"IconIgnoresInvertColors"];
+  v43 = [specifierCopy propertyForKey:@"Description"];
+  v42 = [specifierCopy propertyForKey:@"URLText"];
+  v40 = [specifierCopy propertyForKey:@"ButtonCallback"];
+  v41 = [specifierCopy propertyForKey:@"CloseCallback"];
 
   v39 = objc_opt_new();
   v14 = [v39 makeContentCellViewWithTitle:v46 image:v44 imageIgnoresInvertColors:objc_msgSend(v45 description:"BOOLValue") linkTitle:v43 linkCallback:v42 closeCallback:{v40, v41}];
-  v15 = [v14 view];
+  view = [v14 view];
 
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v16 = [(CACInstructionalCell *)v8 contentView];
-  [v16 addSubview:v15];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentView = [(CACInstructionalCell *)v8 contentView];
+  [contentView addSubview:view];
 
   v17 = +[UIColor clearColor];
-  v18 = [(CACInstructionalCell *)v8 contentView];
-  [v18 setBackgroundColor:v17];
+  contentView2 = [(CACInstructionalCell *)v8 contentView];
+  [contentView2 setBackgroundColor:v17];
 
-  v19 = [v15 layer];
-  [v19 setCornerRadius:16.0];
+  layer = [view layer];
+  [layer setCornerRadius:16.0];
 
-  [v15 setAccessibilityContainerType:4];
+  [view setAccessibilityContainerType:4];
   v20 = settingsLocString(@"TIP_VOICEOVER_HINTS_LABEL", @"Accessibility");
-  [v15 setAccessibilityLabel:v20];
+  [view setAccessibilityLabel:v20];
 
-  v37 = [v15 topAnchor];
-  v38 = [(CACInstructionalCell *)v8 contentView];
-  v36 = [v38 topAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36 constant:0.0];
+  topAnchor = [view topAnchor];
+  contentView3 = [(CACInstructionalCell *)v8 contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v35 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   v48[0] = v35;
-  v33 = [v15 leadingAnchor];
-  v34 = [(CACInstructionalCell *)v8 contentView];
-  v32 = [v34 leadingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32 constant:15.0];
+  leadingAnchor = [view leadingAnchor];
+  contentView4 = [(CACInstructionalCell *)v8 contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:15.0];
   v48[1] = v31;
-  v30 = [v15 trailingAnchor];
-  v21 = [(CACInstructionalCell *)v8 contentView];
-  v22 = [v21 trailingAnchor];
-  v23 = [v30 constraintEqualToAnchor:v22 constant:-15.0];
+  trailingAnchor = [view trailingAnchor];
+  contentView5 = [(CACInstructionalCell *)v8 contentView];
+  trailingAnchor2 = [contentView5 trailingAnchor];
+  v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-15.0];
   v48[2] = v23;
-  v24 = [v15 bottomAnchor];
-  v25 = [(CACInstructionalCell *)v8 contentView];
-  v26 = [v25 bottomAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26 constant:0.0];
+  bottomAnchor = [view bottomAnchor];
+  contentView6 = [(CACInstructionalCell *)v8 contentView];
+  bottomAnchor2 = [contentView6 bottomAnchor];
+  v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
   v48[3] = v27;
   v28 = [NSArray arrayWithObjects:v48 count:4];
   [NSLayoutConstraint activateConstraints:v28];
@@ -87,8 +87,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(CACInstructionalCell *)self subviews];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  subviews = [(CACInstructionalCell *)self subviews];
+  v5 = [subviews countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -100,7 +100,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
@@ -114,7 +114,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v6);

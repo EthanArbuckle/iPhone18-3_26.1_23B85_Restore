@@ -1,20 +1,20 @@
 @interface PowerUIIntelligenceManager
-- (PowerUIIntelligenceManager)initWithDefaultsDomain:(id)a3 withContextStore:(id)a4 withTrialManager:(id)a5;
+- (PowerUIIntelligenceManager)initWithDefaultsDomain:(id)domain withContextStore:(id)store withTrialManager:(id)manager;
 - (id)queryPredictedPlugoutDate;
-- (id)ttrURLforBadPredictionsWithStateDictionary:(id)a3;
+- (id)ttrURLforBadPredictionsWithStateDictionary:(id)dictionary;
 - (void)handleCallback;
-- (void)postAnalyticsEventForNewEventTypeWithPredictedDurationMinutes:(int64_t)a3 andActualDurationMinutes:(int64_t)a4 andConfidence:(double)a5 didMeetThreshold:(int)a6 andWasWireless:(BOOL)a7 andPredictionScheme:(id)a8;
-- (void)postPluginNotificationWithPredictorOutput:(id)a3 andError:(id)a4 andState:(id)a5;
+- (void)postAnalyticsEventForNewEventTypeWithPredictedDurationMinutes:(int64_t)minutes andActualDurationMinutes:(int64_t)durationMinutes andConfidence:(double)confidence didMeetThreshold:(int)threshold andWasWireless:(BOOL)wireless andPredictionScheme:(id)scheme;
+- (void)postPluginNotificationWithPredictorOutput:(id)output andError:(id)error andState:(id)state;
 - (void)removePluginNotification;
 @end
 
 @implementation PowerUIIntelligenceManager
 
-- (PowerUIIntelligenceManager)initWithDefaultsDomain:(id)a3 withContextStore:(id)a4 withTrialManager:(id)a5
+- (PowerUIIntelligenceManager)initWithDefaultsDomain:(id)domain withContextStore:(id)store withTrialManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  domainCopy = domain;
+  storeCopy = store;
+  managerCopy = manager;
   v21.receiver = self;
   v21.super_class = PowerUIIntelligenceManager;
   v12 = [(PowerUIIntelligenceManager *)&v21 init];
@@ -24,13 +24,13 @@
     log = v12->_log;
     v12->_log = v13;
 
-    objc_storeStrong(&v12->_context, a4);
-    objc_storeStrong(&v12->_trialManager, a5);
-    v15 = [MEMORY[0x277D36CD0] predictor];
+    objc_storeStrong(&v12->_context, store);
+    objc_storeStrong(&v12->_trialManager, manager);
+    predictor = [MEMORY[0x277D36CD0] predictor];
     chargingPredictor = v12->_chargingPredictor;
-    v12->_chargingPredictor = v15;
+    v12->_chargingPredictor = predictor;
 
-    objc_storeStrong(&v12->_defaultsDomain, a3);
+    objc_storeStrong(&v12->_defaultsDomain, domain);
     lastPluginPredictionInfo = v12->_lastPluginPredictionInfo;
     v12->_lastPluginPredictionInfo = 0;
 
@@ -55,24 +55,24 @@
 - (void)handleCallback
 {
   v118[3] = *MEMORY[0x277D85DE8];
-  v3 = [(PowerUIIntelligenceManager *)self context];
-  v4 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  context = [(PowerUIIntelligenceManager *)self context];
+  keyPathForBatteryStateDataDictionary = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
+  v5 = [context objectForKeyedSubscript:keyPathForBatteryStateDataDictionary];
 
   if (v5)
   {
-    v6 = [(PowerUIIntelligenceManager *)self context];
-    v7 = [PowerUISmartChargeUtilities isPluggedInWithContext:v6];
+    context2 = [(PowerUIIntelligenceManager *)self context];
+    v7 = [PowerUISmartChargeUtilities isPluggedInWithContext:context2];
 
     if (+[PowerUISmartChargeUtilities isiPhone](PowerUISmartChargeUtilities, "isiPhone") && +[PowerUISmartChargeUtilities isInternalBuild])
     {
       v8 = [PowerUISmartChargeUtilities numberForPreferenceKey:@"chargingIntelligenceNotificationEnabled" inDomain:self->_defaultsDomain];
-      v9 = [v8 BOOLValue];
+      bOOLValue = [v8 BOOLValue];
     }
 
     else
     {
-      v9 = 0;
+      bOOLValue = 0;
     }
 
     log = self->_log;
@@ -81,7 +81,7 @@
       *buf = 67109376;
       *v109 = v7;
       *&v109[4] = 1024;
-      *&v109[6] = v9;
+      *&v109[6] = bOOLValue;
       _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Handling callback in intelligence manager isPluggedIn: %d, notificationsEnabled: %d", buf, 0xEu);
     }
 
@@ -108,7 +108,7 @@
         _os_log_impl(&dword_21B766000, v18, OS_LOG_TYPE_INFO, "draError: %@", buf, 0xCu);
       }
 
-      if (v9)
+      if (bOOLValue)
       {
         [(PowerUIIntelligenceManager *)self postPluginNotificationWithPredictorOutput:v17 andError:v15 andState:v5];
       }
@@ -172,8 +172,8 @@
       v113[3] = @"returnedError";
       v113[4] = @"isWireless";
       v37 = MEMORY[0x277CCABB0];
-      v38 = [(PowerUIIntelligenceManager *)self context];
-      v39 = [v37 numberWithBool:{+[PowerUISmartChargeUtilities deviceConnectedToWirelessChargerWithContext:](PowerUISmartChargeUtilities, "deviceConnectedToWirelessChargerWithContext:", v38)}];
+      context3 = [(PowerUIIntelligenceManager *)self context];
+      v39 = [v37 numberWithBool:{+[PowerUISmartChargeUtilities deviceConnectedToWirelessChargerWithContext:](PowerUISmartChargeUtilities, "deviceConnectedToWirelessChargerWithContext:", context3)}];
       v114[4] = v39;
       v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v114 forKeys:v113 count:5];
 
@@ -187,8 +187,8 @@
       v112[3] = v97;
       v111[4] = @"isWireless";
       v41 = MEMORY[0x277CCABB0];
-      v42 = [(PowerUIIntelligenceManager *)self context];
-      v43 = [v41 numberWithBool:{+[PowerUISmartChargeUtilities deviceConnectedToWirelessChargerWithContext:](PowerUISmartChargeUtilities, "deviceConnectedToWirelessChargerWithContext:", v42)}];
+      context4 = [(PowerUIIntelligenceManager *)self context];
+      v43 = [v41 numberWithBool:{+[PowerUISmartChargeUtilities deviceConnectedToWirelessChargerWithContext:](PowerUISmartChargeUtilities, "deviceConnectedToWirelessChargerWithContext:", context4)}];
       v112[4] = v43;
       v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v112 forKeys:v111 count:5];
 
@@ -274,9 +274,9 @@ LABEL_31:
             [v69 doubleValue];
             v71 = v70;
             v72 = [v65 objectForKeyedSubscript:@"meetsThreshold"];
-            v73 = [v72 integerValue];
+            integerValue = [v72 integerValue];
             v74 = [(NSDictionary *)v101 objectForKeyedSubscript:@"isWireless"];
-            -[PowerUIIntelligenceManager postAnalyticsEventForNewEventTypeWithPredictedDurationMinutes:andActualDurationMinutes:andConfidence:didMeetThreshold:andWasWireless:andPredictionScheme:](self, "postAnalyticsEventForNewEventTypeWithPredictedDurationMinutes:andActualDurationMinutes:andConfidence:didMeetThreshold:andWasWireless:andPredictionScheme:", v68, v104, v73, [v74 BOOLValue], @"classic", v71);
+            -[PowerUIIntelligenceManager postAnalyticsEventForNewEventTypeWithPredictedDurationMinutes:andActualDurationMinutes:andConfidence:didMeetThreshold:andWasWireless:andPredictionScheme:](self, "postAnalyticsEventForNewEventTypeWithPredictedDurationMinutes:andActualDurationMinutes:andConfidence:didMeetThreshold:andWasWireless:andPredictionScheme:", v68, v104, integerValue, [v74 BOOLValue], @"classic", v71);
 
             v75 = [(NSDictionary *)v101 objectForKeyedSubscript:@"onPluginPredictionInfo"];
             v76 = self->_log;
@@ -295,9 +295,9 @@ LABEL_31:
             [v79 doubleValue];
             v81 = v80;
             v82 = [v75 objectForKeyedSubscript:@"meetsThreshold"];
-            v83 = [v82 integerValue];
+            integerValue2 = [v82 integerValue];
             v84 = [(NSDictionary *)v101 objectForKeyedSubscript:@"isWireless"];
-            -[PowerUIIntelligenceManager postAnalyticsEventForNewEventTypeWithPredictedDurationMinutes:andActualDurationMinutes:andConfidence:didMeetThreshold:andWasWireless:andPredictionScheme:](self, "postAnalyticsEventForNewEventTypeWithPredictedDurationMinutes:andActualDurationMinutes:andConfidence:didMeetThreshold:andWasWireless:andPredictionScheme:", v78, v104, v83, [v84 BOOLValue], @"onplugin", v81);
+            -[PowerUIIntelligenceManager postAnalyticsEventForNewEventTypeWithPredictedDurationMinutes:andActualDurationMinutes:andConfidence:didMeetThreshold:andWasWireless:andPredictionScheme:](self, "postAnalyticsEventForNewEventTypeWithPredictedDurationMinutes:andActualDurationMinutes:andConfidence:didMeetThreshold:andWasWireless:andPredictionScheme:", v78, v104, integerValue2, [v84 BOOLValue], @"onplugin", v81);
 
             v85 = [(NSDictionary *)v101 objectForKeyedSubscript:@"draPredictionInfo"];
             v86 = self->_log;
@@ -311,11 +311,11 @@ LABEL_31:
             v88 = [v87 integerValue] / 60;
 
             v89 = [v85 objectForKeyedSubscript:@"engagementDecision"];
-            v90 = [v89 BOOLValue];
+            bOOLValue2 = [v89 BOOLValue];
             v91 = [v85 objectForKeyedSubscript:@"isWireless"];
-            v92 = [v91 BOOLValue];
+            bOOLValue3 = [v91 BOOLValue];
             v93 = [v85 objectForKeyedSubscript:@"returnedError"];
-            -[PowerUIIntelligenceManager postAnalyticsEventForDynamicRuntimeAllocationWithPredictedDurationMinutes:andActualDurationMinutes:andEngagementDecision:andWasWireless:andSPIError:](self, "postAnalyticsEventForDynamicRuntimeAllocationWithPredictedDurationMinutes:andActualDurationMinutes:andEngagementDecision:andWasWireless:andSPIError:", v88, v104, v90, v92, [v93 BOOLValue]);
+            -[PowerUIIntelligenceManager postAnalyticsEventForDynamicRuntimeAllocationWithPredictedDurationMinutes:andActualDurationMinutes:andEngagementDecision:andWasWireless:andSPIError:](self, "postAnalyticsEventForDynamicRuntimeAllocationWithPredictedDurationMinutes:andActualDurationMinutes:andEngagementDecision:andWasWireless:andSPIError:", v88, v104, bOOLValue2, bOOLValue3, [v93 BOOLValue]);
 
             goto LABEL_18;
           }
@@ -406,10 +406,10 @@ id __117__PowerUIIntelligenceManager_postAnalyticsEventForOldEventTypeWithPredic
   return v2;
 }
 
-- (void)postAnalyticsEventForNewEventTypeWithPredictedDurationMinutes:(int64_t)a3 andActualDurationMinutes:(int64_t)a4 andConfidence:(double)a5 didMeetThreshold:(int)a6 andWasWireless:(BOOL)a7 andPredictionScheme:(id)a8
+- (void)postAnalyticsEventForNewEventTypeWithPredictedDurationMinutes:(int64_t)minutes andActualDurationMinutes:(int64_t)durationMinutes andConfidence:(double)confidence didMeetThreshold:(int)threshold andWasWireless:(BOOL)wireless andPredictionScheme:(id)scheme
 {
-  v9 = a8;
-  v8 = v9;
+  schemeCopy = scheme;
+  v8 = schemeCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -529,15 +529,15 @@ id __178__PowerUIIntelligenceManager_postAnalyticsEventForDynamicRuntimeAllocati
   return v2;
 }
 
-- (void)postPluginNotificationWithPredictorOutput:(id)a3 andError:(id)a4 andState:(id)a5
+- (void)postPluginNotificationWithPredictorOutput:(id)output andError:(id)error andState:(id)state
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  outputCopy = output;
+  errorCopy = error;
+  stateCopy = state;
   if (+[PowerUISmartChargeUtilities isInternalBuild])
   {
-    if ([v9 code] == 3)
+    if ([errorCopy code] == 3)
     {
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -551,21 +551,21 @@ LABEL_12:
 
     else
     {
-      if (v9)
+      if (errorCopy)
       {
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Prediction failed, please file a radar by tapping the notification"];
         v14 = self->_log;
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           v15 = v14;
-          v16 = [v9 localizedDescription];
+          localizedDescription = [errorCopy localizedDescription];
           v25 = 138412290;
-          v26 = v16;
+          v26 = localizedDescription;
           _os_log_impl(&dword_21B766000, v15, OS_LOG_TYPE_DEFAULT, "Error querying the predictor %@", &v25, 0xCu);
         }
 
         v17 = +[PowerUINotificationManager sharedInstance];
-        v18 = [(PowerUIIntelligenceManager *)self ttrURLforBadPredictionsWithStateDictionary:v10];
+        v18 = [(PowerUIIntelligenceManager *)self ttrURLforBadPredictionsWithStateDictionary:stateCopy];
         v19 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:30.0];
         v20 = [v17 postInternalChargingIntelligenceNotificationWithChargingStatus:1 information:v13 url:v18 validUntil:v19];
       }
@@ -573,9 +573,9 @@ LABEL_12:
       else
       {
         v13 = +[PowerUINotificationManager sharedInstance];
-        [v8 chargingDuration];
+        [outputCopy chargingDuration];
         v22 = v21;
-        [v8 confidence];
+        [outputCopy confidence];
         [v13 postInternalChargeDurationNotificationWithDuration:v22 withConfidence:v23];
       }
 
@@ -608,20 +608,20 @@ LABEL_12:
   }
 }
 
-- (id)ttrURLforBadPredictionsWithStateDictionary:(id)a3
+- (id)ttrURLforBadPredictionsWithStateDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x277D85DE8];
   context = self->_context;
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = [PowerUISmartChargeUtilities currentBatteryLevelWithContext:context];
   v7 = MEMORY[0x277CCACA8];
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:v6];
   v9 = [MEMORY[0x277CBEAA8] now];
   v10 = [PowerUISmartChargeUtilities timeStringFromDate:v9];
-  v11 = [v7 stringWithFormat:@"tap-to-radar://new?Title=Duration Predictor Failure (Unplugged at %@ percent)&Classification=Serious Bug&ComponentID=971083&ComponentName=PowerUI&ComponentVersion=all&Reproducible=Sometimes&Description=PLEASE ANSWER THESE QUESTIONS TO AID DEBUGGING:\n\n* Why did you unplug your device at %@?\n* Do you usually leave your device charged for a while at this time?\n* Is this your regular carry device? \n\n\n DebugInfo:\n %@", v8, v10, v5];
+  dictionaryCopy = [v7 stringWithFormat:@"tap-to-radar://new?Title=Duration Predictor Failure (Unplugged at %@ percent)&Classification=Serious Bug&ComponentID=971083&ComponentName=PowerUI&ComponentVersion=all&Reproducible=Sometimes&Description=PLEASE ANSWER THESE QUESTIONS TO AID DEBUGGING:\n\n* Why did you unplug your device at %@?\n* Do you usually leave your device charged for a while at this time?\n* Is this your regular carry device? \n\n\n DebugInfo:\n %@", v8, v10, dictionaryCopy];
 
-  v12 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-  v13 = [v11 stringByAddingPercentEncodingWithAllowedCharacters:v12];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+  v13 = [dictionaryCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
   v14 = [MEMORY[0x277CBEBC0] URLWithString:v13];
   log = self->_log;

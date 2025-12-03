@@ -1,51 +1,51 @@
 @interface SRUserAttentionController
-- (BOOL)_detectionStartedForType:(unint64_t)a3;
-- (BOOL)_restartFaceAttentionAwarenessClient:(id *)a3;
-- (BOOL)_startButtonPressAwarenessClient:(id *)a3;
-- (BOOL)_startFaceAttentionAwarenessClient:(id *)a3;
-- (BOOL)_startTouchAttentionAwarenessClient:(id *)a3;
-- (BOOL)_stopButtonPressAttentionAwarenessClient:(id *)a3;
-- (BOOL)_stopFaceAttentionAwarenessClient:(id *)a3;
-- (BOOL)_stopTouchAttentionAwarenessClient:(id *)a3;
-- (BOOL)startIfNeededForTypes:(unint64_t)a3 error:(id *)a4;
-- (BOOL)stopIfNeededForTypes:(unint64_t)a3 error:(id *)a4;
-- (SRUserAttentionController)initWithSamplingInterval:(double)a3 attentionLossTimeout:(double)a4 supportedAttentionAwarenessEvents:(unint64_t)a5 deviceSupportsRaiseGestureDetection:(BOOL)a6;
-- (SRUserAttentionController)initWithSignalProviderFactory:(id)a3 supportedAttentionAwarenessEvents:(unint64_t)a4 deviceSupportsRaiseGestureDetection:(BOOL)a5;
+- (BOOL)_detectionStartedForType:(unint64_t)type;
+- (BOOL)_restartFaceAttentionAwarenessClient:(id *)client;
+- (BOOL)_startButtonPressAwarenessClient:(id *)client;
+- (BOOL)_startFaceAttentionAwarenessClient:(id *)client;
+- (BOOL)_startTouchAttentionAwarenessClient:(id *)client;
+- (BOOL)_stopButtonPressAttentionAwarenessClient:(id *)client;
+- (BOOL)_stopFaceAttentionAwarenessClient:(id *)client;
+- (BOOL)_stopTouchAttentionAwarenessClient:(id *)client;
+- (BOOL)startIfNeededForTypes:(unint64_t)types error:(id *)error;
+- (BOOL)stopIfNeededForTypes:(unint64_t)types error:(id *)error;
+- (SRUserAttentionController)initWithSamplingInterval:(double)interval attentionLossTimeout:(double)timeout supportedAttentionAwarenessEvents:(unint64_t)events deviceSupportsRaiseGestureDetection:(BOOL)detection;
+- (SRUserAttentionController)initWithSignalProviderFactory:(id)factory supportedAttentionAwarenessEvents:(unint64_t)events deviceSupportsRaiseGestureDetection:(BOOL)detection;
 - (SRUserAttentionControllerDelegate)delegate;
-- (void)_handleButtonPressAttentionEvent:(id)a3;
-- (void)_handleFaceAttentionEvent:(id)a3;
-- (void)_handleTouchAttentionEvent:(id)a3;
-- (void)_setDetectionStarted:(BOOL)a3 forType:(unint64_t)a4;
+- (void)_handleButtonPressAttentionEvent:(id)event;
+- (void)_handleFaceAttentionEvent:(id)event;
+- (void)_handleTouchAttentionEvent:(id)event;
+- (void)_setDetectionStarted:(BOOL)started forType:(unint64_t)type;
 - (void)_startWakeGestureManagerIfNeeded;
 - (void)_stopWakeGestureManagerIfNeeded;
 - (void)dealloc;
-- (void)startIfNeededForTypes:(unint64_t)a3 completionQueue:(id)a4 completion:(id)a5;
-- (void)wakeGestureManager:(id)a3 didUpdateWakeGesture:(int64_t)a4;
+- (void)startIfNeededForTypes:(unint64_t)types completionQueue:(id)queue completion:(id)completion;
+- (void)wakeGestureManager:(id)manager didUpdateWakeGesture:(int64_t)gesture;
 @end
 
 @implementation SRUserAttentionController
 
-- (SRUserAttentionController)initWithSamplingInterval:(double)a3 attentionLossTimeout:(double)a4 supportedAttentionAwarenessEvents:(unint64_t)a5 deviceSupportsRaiseGestureDetection:(BOOL)a6
+- (SRUserAttentionController)initWithSamplingInterval:(double)interval attentionLossTimeout:(double)timeout supportedAttentionAwarenessEvents:(unint64_t)events deviceSupportsRaiseGestureDetection:(BOOL)detection
 {
-  v6 = a6;
-  v9 = [[SRUserAttentionSignalProviderFactory alloc] initWithSamplingInterval:a5 attentionLossTimeout:a3 supportedAttentionAwarenessEvents:a4];
-  v10 = [(SRUserAttentionController *)self initWithSignalProviderFactory:v9 supportedAttentionAwarenessEvents:a5 deviceSupportsRaiseGestureDetection:v6];
+  detectionCopy = detection;
+  v9 = [[SRUserAttentionSignalProviderFactory alloc] initWithSamplingInterval:events attentionLossTimeout:interval supportedAttentionAwarenessEvents:timeout];
+  v10 = [(SRUserAttentionController *)self initWithSignalProviderFactory:v9 supportedAttentionAwarenessEvents:events deviceSupportsRaiseGestureDetection:detectionCopy];
 
   return v10;
 }
 
-- (SRUserAttentionController)initWithSignalProviderFactory:(id)a3 supportedAttentionAwarenessEvents:(unint64_t)a4 deviceSupportsRaiseGestureDetection:(BOOL)a5
+- (SRUserAttentionController)initWithSignalProviderFactory:(id)factory supportedAttentionAwarenessEvents:(unint64_t)events deviceSupportsRaiseGestureDetection:(BOOL)detection
 {
-  v9 = a3;
+  factoryCopy = factory;
   v15.receiver = self;
   v15.super_class = SRUserAttentionController;
   v10 = [(SRUserAttentionController *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_userAttentionSignalProviderFactory, a3);
-    v11->_supportedAttentionAwarenessEvents = a4;
-    v11->_deviceSupportsRaiseGestureDetection = a5;
+    objc_storeStrong(&v10->_userAttentionSignalProviderFactory, factory);
+    v11->_supportedAttentionAwarenessEvents = events;
+    v11->_deviceSupportsRaiseGestureDetection = detection;
     v11->_deviceLowered = 0;
     v12 = dispatch_queue_create("com.apple.siri.AttentionAwarenessQueue", 0);
     attentionAwarenessHandlerQueue = v11->_attentionAwarenessHandlerQueue;
@@ -70,12 +70,12 @@
   [(SRUserAttentionController *)&v5 dealloc];
 }
 
-- (BOOL)startIfNeededForTypes:(unint64_t)a3 error:(id *)a4
+- (BOOL)startIfNeededForTypes:(unint64_t)types error:(id *)error
 {
-  v5 = a3;
-  if ((a3 & 1) != 0 && ![(SRUserAttentionController *)self _detectionStartedForType:1])
+  typesCopy = types;
+  if ((types & 1) != 0 && ![(SRUserAttentionController *)self _detectionStartedForType:1])
   {
-    if (![(SRUserAttentionController *)self _startFaceAttentionAwarenessClient:a4])
+    if (![(SRUserAttentionController *)self _startFaceAttentionAwarenessClient:error])
     {
       return 0;
     }
@@ -83,9 +83,9 @@
     [(SRUserAttentionController *)self _setDetectionStarted:1 forType:1];
   }
 
-  if ((v5 & 2) != 0 && ![(SRUserAttentionController *)self _detectionStartedForType:2])
+  if ((typesCopy & 2) != 0 && ![(SRUserAttentionController *)self _detectionStartedForType:2])
   {
-    if (![(SRUserAttentionController *)self _startTouchAttentionAwarenessClient:a4])
+    if (![(SRUserAttentionController *)self _startTouchAttentionAwarenessClient:error])
     {
       return 0;
     }
@@ -93,15 +93,15 @@
     [(SRUserAttentionController *)self _setDetectionStarted:1 forType:2];
   }
 
-  if ((v5 & 4) != 0 && ![(SRUserAttentionController *)self _detectionStartedForType:4])
+  if ((typesCopy & 4) != 0 && ![(SRUserAttentionController *)self _detectionStartedForType:4])
   {
     [(SRUserAttentionController *)self _startWakeGestureManagerIfNeeded];
     [(SRUserAttentionController *)self _setDetectionStarted:1 forType:4];
   }
 
-  if ((v5 & 8) != 0 && ![(SRUserAttentionController *)self _detectionStartedForType:8])
+  if ((typesCopy & 8) != 0 && ![(SRUserAttentionController *)self _detectionStartedForType:8])
   {
-    if ([(SRUserAttentionController *)self _startButtonPressAwarenessClient:a4])
+    if ([(SRUserAttentionController *)self _startButtonPressAwarenessClient:error])
     {
       v7 = 1;
       [(SRUserAttentionController *)self _setDetectionStarted:1 forType:8];
@@ -114,12 +114,12 @@
   return 1;
 }
 
-- (BOOL)stopIfNeededForTypes:(unint64_t)a3 error:(id *)a4
+- (BOOL)stopIfNeededForTypes:(unint64_t)types error:(id *)error
 {
-  v5 = a3;
-  if ((a3 & 1) != 0 && [(SRUserAttentionController *)self _detectionStartedForType:1])
+  typesCopy = types;
+  if ((types & 1) != 0 && [(SRUserAttentionController *)self _detectionStartedForType:1])
   {
-    v7 = [(SRUserAttentionController *)self _stopFaceAttentionAwarenessClient:a4];
+    v7 = [(SRUserAttentionController *)self _stopFaceAttentionAwarenessClient:error];
     if (!v7)
     {
       return v7;
@@ -128,9 +128,9 @@
     [(SRUserAttentionController *)self _setDetectionStarted:0 forType:1];
   }
 
-  if ((v5 & 2) != 0 && [(SRUserAttentionController *)self _detectionStartedForType:2])
+  if ((typesCopy & 2) != 0 && [(SRUserAttentionController *)self _detectionStartedForType:2])
   {
-    v7 = [(SRUserAttentionController *)self _stopTouchAttentionAwarenessClient:a4];
+    v7 = [(SRUserAttentionController *)self _stopTouchAttentionAwarenessClient:error];
     if (!v7)
     {
       return v7;
@@ -139,18 +139,18 @@
     [(SRUserAttentionController *)self _setDetectionStarted:0 forType:2];
   }
 
-  if ((v5 & 4) != 0 && [(SRUserAttentionController *)self _detectionStartedForType:4])
+  if ((typesCopy & 4) != 0 && [(SRUserAttentionController *)self _detectionStartedForType:4])
   {
     [(SRUserAttentionController *)self _stopWakeGestureManagerIfNeeded];
     [(SRUserAttentionController *)self _setDetectionStarted:0 forType:4];
   }
 
-  if ((v5 & 8) == 0 || ![(SRUserAttentionController *)self _detectionStartedForType:8])
+  if ((typesCopy & 8) == 0 || ![(SRUserAttentionController *)self _detectionStartedForType:8])
   {
     goto LABEL_16;
   }
 
-  v7 = [(SRUserAttentionController *)self _stopButtonPressAttentionAwarenessClient:a4];
+  v7 = [(SRUserAttentionController *)self _stopButtonPressAttentionAwarenessClient:error];
   if (v7)
   {
     [(SRUserAttentionController *)self _setDetectionStarted:0 forType:8];
@@ -161,11 +161,11 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)_startFaceAttentionAwarenessClient:(id *)a3
+- (BOOL)_startFaceAttentionAwarenessClient:(id *)client
 {
-  v5 = [(SRUserAttentionSignalProviderFactory *)self->_userAttentionSignalProviderFactory faceAttentionAwarenessClient];
+  faceAttentionAwarenessClient = [(SRUserAttentionSignalProviderFactory *)self->_userAttentionSignalProviderFactory faceAttentionAwarenessClient];
   faceAttentionAwarenessClient = self->_faceAttentionAwarenessClient;
-  self->_faceAttentionAwarenessClient = v5;
+  self->_faceAttentionAwarenessClient = faceAttentionAwarenessClient;
 
   objc_initWeak(&location, self);
   v7 = self->_faceAttentionAwarenessClient;
@@ -176,17 +176,17 @@ LABEL_16:
   v13 = &unk_100166D90;
   objc_copyWeak(&v14, &location);
   [(AWAttentionAwarenessClient *)v7 setEventHandlerWithQueue:attentionAwarenessHandlerQueue block:&v10];
-  LOBYTE(a3) = [(AWAttentionAwarenessClient *)self->_faceAttentionAwarenessClient resumeWithError:a3, v10, v11, v12, v13];
+  LOBYTE(client) = [(AWAttentionAwarenessClient *)self->_faceAttentionAwarenessClient resumeWithError:client, v10, v11, v12, v13];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
-  return a3;
+  return client;
 }
 
-- (BOOL)_startTouchAttentionAwarenessClient:(id *)a3
+- (BOOL)_startTouchAttentionAwarenessClient:(id *)client
 {
-  v5 = [(SRUserAttentionSignalProviderFactory *)self->_userAttentionSignalProviderFactory touchAttentionAwarenessClient];
+  touchAttentionAwarenessClient = [(SRUserAttentionSignalProviderFactory *)self->_userAttentionSignalProviderFactory touchAttentionAwarenessClient];
   touchAttentionAwarenessClient = self->_touchAttentionAwarenessClient;
-  self->_touchAttentionAwarenessClient = v5;
+  self->_touchAttentionAwarenessClient = touchAttentionAwarenessClient;
 
   objc_initWeak(&location, self);
   v7 = self->_touchAttentionAwarenessClient;
@@ -197,17 +197,17 @@ LABEL_16:
   v13 = &unk_100166D90;
   objc_copyWeak(&v14, &location);
   [(AWAttentionAwarenessClient *)v7 setEventHandlerWithQueue:attentionAwarenessHandlerQueue block:&v10];
-  LOBYTE(a3) = [(AWAttentionAwarenessClient *)self->_touchAttentionAwarenessClient resumeWithError:a3, v10, v11, v12, v13];
+  LOBYTE(client) = [(AWAttentionAwarenessClient *)self->_touchAttentionAwarenessClient resumeWithError:client, v10, v11, v12, v13];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
-  return a3;
+  return client;
 }
 
-- (BOOL)_startButtonPressAwarenessClient:(id *)a3
+- (BOOL)_startButtonPressAwarenessClient:(id *)client
 {
-  v5 = [(SRUserAttentionSignalProviderFactory *)self->_userAttentionSignalProviderFactory buttonPressAwarenessClient];
+  buttonPressAwarenessClient = [(SRUserAttentionSignalProviderFactory *)self->_userAttentionSignalProviderFactory buttonPressAwarenessClient];
   buttonPressAwarenessClient = self->_buttonPressAwarenessClient;
-  self->_buttonPressAwarenessClient = v5;
+  self->_buttonPressAwarenessClient = buttonPressAwarenessClient;
 
   objc_initWeak(&location, self);
   v7 = self->_buttonPressAwarenessClient;
@@ -218,58 +218,58 @@ LABEL_16:
   v13 = &unk_100166D90;
   objc_copyWeak(&v14, &location);
   [(AWAttentionAwarenessClient *)v7 setEventHandlerWithQueue:attentionAwarenessHandlerQueue block:&v10];
-  LOBYTE(a3) = [(AWAttentionAwarenessClient *)self->_buttonPressAwarenessClient resumeWithError:a3, v10, v11, v12, v13];
+  LOBYTE(client) = [(AWAttentionAwarenessClient *)self->_buttonPressAwarenessClient resumeWithError:client, v10, v11, v12, v13];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
-  return a3;
+  return client;
 }
 
-- (BOOL)_stopFaceAttentionAwarenessClient:(id *)a3
+- (BOOL)_stopFaceAttentionAwarenessClient:(id *)client
 {
-  v4 = [(AWAttentionAwarenessClient *)self->_faceAttentionAwarenessClient invalidateWithError:a3];
+  v4 = [(AWAttentionAwarenessClient *)self->_faceAttentionAwarenessClient invalidateWithError:client];
   faceAttentionAwarenessClient = self->_faceAttentionAwarenessClient;
   self->_faceAttentionAwarenessClient = 0;
 
   return v4;
 }
 
-- (BOOL)_stopTouchAttentionAwarenessClient:(id *)a3
+- (BOOL)_stopTouchAttentionAwarenessClient:(id *)client
 {
-  v4 = [(AWAttentionAwarenessClient *)self->_touchAttentionAwarenessClient invalidateWithError:a3];
+  v4 = [(AWAttentionAwarenessClient *)self->_touchAttentionAwarenessClient invalidateWithError:client];
   touchAttentionAwarenessClient = self->_touchAttentionAwarenessClient;
   self->_touchAttentionAwarenessClient = 0;
 
   return v4;
 }
 
-- (BOOL)_stopButtonPressAttentionAwarenessClient:(id *)a3
+- (BOOL)_stopButtonPressAttentionAwarenessClient:(id *)client
 {
-  v4 = [(AWAttentionAwarenessClient *)self->_buttonPressAwarenessClient invalidateWithError:a3];
+  v4 = [(AWAttentionAwarenessClient *)self->_buttonPressAwarenessClient invalidateWithError:client];
   buttonPressAwarenessClient = self->_buttonPressAwarenessClient;
   self->_buttonPressAwarenessClient = 0;
 
   return v4;
 }
 
-- (BOOL)_restartFaceAttentionAwarenessClient:(id *)a3
+- (BOOL)_restartFaceAttentionAwarenessClient:(id *)client
 {
   if ([(SRUserAttentionController *)self _detectionStartedForType:1])
   {
     faceAttentionAwarenessClient = self->_faceAttentionAwarenessClient;
 
-    return [(AWAttentionAwarenessClient *)faceAttentionAwarenessClient resetAttentionLostTimeoutWithError:a3];
+    return [(AWAttentionAwarenessClient *)faceAttentionAwarenessClient resetAttentionLostTimeoutWithError:client];
   }
 
   else
   {
 
-    return [(SRUserAttentionController *)self startIfNeededForTypes:1 error:a3];
+    return [(SRUserAttentionController *)self startIfNeededForTypes:1 error:client];
   }
 }
 
-- (void)_handleFaceAttentionEvent:(id)a3
+- (void)_handleFaceAttentionEvent:(id)event
 {
-  v4 = [a3 eventMask];
+  eventMask = [event eventMask];
   if ([(SRUserAttentionController *)self _isDeviceLowered])
   {
     v5 = 0;
@@ -280,18 +280,18 @@ LABEL_16:
   {
     v7 = 1;
     v8 = 3;
-    if ((v4 & 8) == 0)
+    if ((eventMask & 8) == 0)
     {
-      v8 = (v4 >> 7) & 4;
+      v8 = (eventMask >> 7) & 4;
     }
 
-    if ((v4 & 0x80) == 0)
+    if ((eventMask & 0x80) == 0)
     {
       v7 = v8;
     }
 
-    v9 = (v4 & 1) == 0;
-    if (v4)
+    v9 = (eventMask & 1) == 0;
+    if (eventMask)
     {
       v5 = 0;
     }
@@ -317,17 +317,17 @@ LABEL_16:
   objc_destroyWeak(&location);
 }
 
-- (void)_handleTouchAttentionEvent:(id)a3
+- (void)_handleTouchAttentionEvent:(id)event
 {
-  v4 = [a3 eventMask];
-  if ((v4 & 8) != 0)
+  eventMask = [event eventMask];
+  if ((eventMask & 8) != 0)
   {
     v5 = 3;
   }
 
   else
   {
-    v5 = (v4 >> 7) & 4;
+    v5 = (eventMask >> 7) & 4;
   }
 
   objc_initWeak(&location, self);
@@ -343,10 +343,10 @@ LABEL_16:
   objc_destroyWeak(&location);
 }
 
-- (void)_handleButtonPressAttentionEvent:(id)a3
+- (void)_handleButtonPressAttentionEvent:(id)event
 {
-  v4 = a3;
-  v5 = ((([v4 eventMask] << 62) >> 63) & 5);
+  eventCopy = event;
+  v5 = ((([eventCopy eventMask] << 62) >> 63) & 5);
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -354,8 +354,8 @@ LABEL_16:
   v7[3] = &unk_100166DE0;
   v9[1] = v5;
   objc_copyWeak(v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(&_dispatch_main_q, v7);
 
   objc_destroyWeak(v9);
@@ -366,9 +366,9 @@ LABEL_16:
 {
   if (![(SRUserAttentionController *)self _deviceSupportsFaceDetection]&& self->_deviceSupportsRaiseGestureDetection)
   {
-    v3 = [(SRUserAttentionSignalProviderFactory *)self->_userAttentionSignalProviderFactory wakeGestureManager];
+    wakeGestureManager = [(SRUserAttentionSignalProviderFactory *)self->_userAttentionSignalProviderFactory wakeGestureManager];
     wakeGestureManager = self->_wakeGestureManager;
-    self->_wakeGestureManager = v3;
+    self->_wakeGestureManager = wakeGestureManager;
 
     [(CMWakeGestureManager *)self->_wakeGestureManager setDelegate:self];
     v5 = self->_wakeGestureManager;
@@ -388,33 +388,33 @@ LABEL_16:
   }
 }
 
-- (void)wakeGestureManager:(id)a3 didUpdateWakeGesture:(int64_t)a4
+- (void)wakeGestureManager:(id)manager didUpdateWakeGesture:(int64_t)gesture
 {
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001B0CC;
   block[3] = &unk_100166E08;
-  v6[1] = a4;
+  v6[1] = gesture;
   objc_copyWeak(v6, &location);
   dispatch_async(&_dispatch_main_q, block);
   objc_destroyWeak(v6);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_detectionStartedForType:(unint64_t)a3
+- (BOOL)_detectionStartedForType:(unint64_t)type
 {
   attentionDetectionStatuses = self->_attentionDetectionStatuses;
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:type];
   v5 = [(NSMutableDictionary *)attentionDetectionStatuses objectForKeyedSubscript:v4];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)_setDetectionStarted:(BOOL)a3 forType:(unint64_t)a4
+- (void)_setDetectionStarted:(BOOL)started forType:(unint64_t)type
 {
-  v5 = a3;
+  startedCopy = started;
   attentionDetectionStatuses = self->_attentionDetectionStatuses;
   if (attentionDetectionStatuses)
   {
@@ -429,9 +429,9 @@ LABEL_16:
   v9 = self->_attentionDetectionStatuses;
   self->_attentionDetectionStatuses = v8;
 
-  v12 = [NSNumber numberWithBool:v5];
+  v12 = [NSNumber numberWithBool:startedCopy];
   v10 = self->_attentionDetectionStatuses;
-  v11 = [NSNumber numberWithUnsignedInteger:a4];
+  v11 = [NSNumber numberWithUnsignedInteger:type];
   [(NSMutableDictionary *)v10 setObject:v12 forKeyedSubscript:v11];
 }
 
@@ -442,12 +442,12 @@ LABEL_16:
   return WeakRetained;
 }
 
-- (void)startIfNeededForTypes:(unint64_t)a3 completionQueue:(id)a4 completion:(id)a5
+- (void)startIfNeededForTypes:(unint64_t)types completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8 && v9)
+  queueCopy = queue;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (queueCopy && completionCopy)
   {
     if (!self->_asynchronousCallQueue)
     {
@@ -463,8 +463,8 @@ LABEL_16:
     block[2] = sub_10001B578;
     block[3] = &unk_100166E58;
     objc_copyWeak(v17, &location);
-    v17[1] = a3;
-    v15 = v8;
+    v17[1] = types;
+    v15 = queueCopy;
     v16 = v10;
     dispatch_async(v13, block);
 

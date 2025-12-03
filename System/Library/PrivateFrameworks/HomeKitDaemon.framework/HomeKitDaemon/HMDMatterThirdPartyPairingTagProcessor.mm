@@ -1,67 +1,67 @@
 @interface HMDMatterThirdPartyPairingTagProcessor
-- (HMDMatterThirdPartyPairingTagProcessor)initWithSubmitter:(id)a3;
+- (HMDMatterThirdPartyPairingTagProcessor)initWithSubmitter:(id)submitter;
 - (id)tagProcessingBlocks;
-- (void)closeSessionWithEvent:(id)a3;
-- (void)processAccessoryInfoEvent:(id)a3;
-- (void)processAccessoryTransport:(id)a3;
-- (void)processCASESanityCheckEvent:(id)a3;
-- (void)processCredentialsToClientEvent:(id)a3;
-- (void)processFirmwareVersionEvent:(id)a3;
-- (void)processLongestPairingState:(id)a3;
-- (void)processPairingErrorCancelledEvent:(id)a3;
-- (void)processPairingErrorEvent:(id)a3;
-- (void)processPairingEventWindowOpenedSetupDuration:(id)a3;
-- (void)processPairingStartEvent:(id)a3;
-- (void)processStateChange:(id)a3;
-- (void)processThreadScanResultsEvent:(id)a3;
-- (void)processThreadSetupDuration:(id)a3;
-- (void)processWiFiScanResultsEvent:(id)a3;
-- (void)setLogEventCloseReason:(unint64_t)a3;
+- (void)closeSessionWithEvent:(id)event;
+- (void)processAccessoryInfoEvent:(id)event;
+- (void)processAccessoryTransport:(id)transport;
+- (void)processCASESanityCheckEvent:(id)event;
+- (void)processCredentialsToClientEvent:(id)event;
+- (void)processFirmwareVersionEvent:(id)event;
+- (void)processLongestPairingState:(id)state;
+- (void)processPairingErrorCancelledEvent:(id)event;
+- (void)processPairingErrorEvent:(id)event;
+- (void)processPairingEventWindowOpenedSetupDuration:(id)duration;
+- (void)processPairingStartEvent:(id)event;
+- (void)processStateChange:(id)change;
+- (void)processThreadScanResultsEvent:(id)event;
+- (void)processThreadSetupDuration:(id)duration;
+- (void)processWiFiScanResultsEvent:(id)event;
+- (void)setLogEventCloseReason:(unint64_t)reason;
 @end
 
 @implementation HMDMatterThirdPartyPairingTagProcessor
 
-- (void)setLogEventCloseReason:(unint64_t)a3
+- (void)setLogEventCloseReason:(unint64_t)reason
 {
-  v3 = a3 == 0;
-  v4 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-  [v4 setCleanClose:v3];
+  v3 = reason == 0;
+  logEvent = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+  [logEvent setCleanClose:v3];
 }
 
-- (void)closeSessionWithEvent:(id)a3
+- (void)closeSessionWithEvent:(id)event
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMatterThirdPartyPairingTagProcessor *)self stateTracker];
-  [v5 endWithTime:{objc_msgSend(v4, "tagTime")}];
+  eventCopy = event;
+  stateTracker = [(HMDMatterThirdPartyPairingTagProcessor *)self stateTracker];
+  [stateTracker endWithTime:{objc_msgSend(eventCopy, "tagTime")}];
 
   v6 = MEMORY[0x277CCABB0];
-  v7 = [(HMDMatterThirdPartyPairingTagProcessor *)self stateTracker];
-  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(v7, "totalDuration")}];
-  v9 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-  [v9 setPairingDuration:v8];
+  stateTracker2 = [(HMDMatterThirdPartyPairingTagProcessor *)self stateTracker];
+  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(stateTracker2, "totalDuration")}];
+  logEvent = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+  [logEvent setPairingDuration:v8];
 
   v10 = MEMORY[0x277CCABB0];
-  v11 = self;
-  v12 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-  v13 = [v12 errorCode];
-  v14 = [v10 numberWithBool:v13 == 0];
-  v15 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-  [v15 setSuccess:v14];
+  selfCopy = self;
+  logEvent2 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+  errorCode = [logEvent2 errorCode];
+  v14 = [v10 numberWithBool:errorCode == 0];
+  logEvent3 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+  [logEvent3 setSuccess:v14];
 
-  [(HMMLogEventTagProcessor *)v11 closeForReason:0];
+  [(HMMLogEventTagProcessor *)selfCopy closeForReason:0];
   if (isInternalBuild())
   {
-    v33 = v4;
+    v33 = eventCopy;
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v16 = [(HMDMatterThirdPartyPairingTagProcessor *)v11 stateTracker];
-    v17 = [v16 states];
+    stateTracker3 = [(HMDMatterThirdPartyPairingTagProcessor *)selfCopy stateTracker];
+    states = [stateTracker3 states];
 
-    obj = v17;
-    v18 = [v17 countByEnumeratingWithState:&v36 objects:v48 count:16];
+    obj = states;
+    v18 = [states countByEnumeratingWithState:&v36 objects:v48 count:16];
     if (v18)
     {
       v19 = v18;
@@ -80,26 +80,26 @@
 
           v23 = *(*(&v36 + 1) + 8 * v22);
           v24 = objc_autoreleasePoolPush();
-          v25 = v11;
+          v25 = selfCopy;
           v26 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
           {
             HMFGetLogIdentifier();
             v27 = v21;
-            v29 = v28 = v11;
-            v30 = [v23 name];
-            v31 = [v23 duration];
+            v29 = v28 = selfCopy;
+            name = [v23 name];
+            duration = [v23 duration];
             *buf = 138544130;
             v41 = v29;
             v42 = 2048;
             v43 = v20;
             v44 = 2112;
-            v45 = v30;
+            v45 = name;
             v46 = 2048;
-            v47 = v31;
+            v47 = duration;
             _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_INFO, "%{public}@Matter pairing state %ld: %@ for %lu msec", buf, 0x2Au);
 
-            v11 = v28;
+            selfCopy = v28;
             v21 = v27;
             v19 = v34;
           }
@@ -116,19 +116,19 @@
       while (v19);
     }
 
-    v4 = v33;
+    eventCopy = v33;
   }
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processStateChange:(id)a3
+- (void)processStateChange:(id)change
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 tagData];
+  changeCopy = change;
+  tagData = [changeCopy tagData];
   v6 = *MEMORY[0x277D179E0];
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277D179E0]];
+  v7 = [tagData objectForKeyedSubscript:*MEMORY[0x277D179E0]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -206,19 +206,19 @@
       case 36:
         v11 = @"Resident Confirmation";
 LABEL_20:
-        v16 = [(HMDMatterThirdPartyPairingTagProcessor *)self stateTracker];
-        v17 = [v4 tagTime];
-        v18 = [v4 tagData];
-        [v16 enterState:v11 enterTime:v17 enterData:v18];
+        stateTracker = [(HMDMatterThirdPartyPairingTagProcessor *)self stateTracker];
+        tagTime = [changeCopy tagTime];
+        tagData2 = [changeCopy tagData];
+        [stateTracker enterState:v11 enterTime:tagTime enterData:tagData2];
         goto LABEL_27;
       case 37:
       case 38:
         v10 = @"Resident Confirmation";
 LABEL_26:
-        v16 = [(HMDMatterThirdPartyPairingTagProcessor *)self stateTracker];
-        v19 = [v4 tagTime];
-        v18 = [v4 tagData];
-        [v16 exitState:v10 exitTime:v19 exitData:v18];
+        stateTracker = [(HMDMatterThirdPartyPairingTagProcessor *)self stateTracker];
+        tagTime2 = [changeCopy tagTime];
+        tagData2 = [changeCopy tagData];
+        [stateTracker exitState:v10 exitTime:tagTime2 exitData:tagData2];
 LABEL_27:
 
         break;
@@ -230,7 +230,7 @@ LABEL_27:
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -248,11 +248,11 @@ LABEL_27:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processLongestPairingState:(id)a3
+- (void)processLongestPairingState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 tagData];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D17998]];
+  stateCopy = state;
+  tagData = [stateCopy tagData];
+  v6 = [tagData objectForKeyedSubscript:*MEMORY[0x277D17998]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -267,12 +267,12 @@ LABEL_27:
 
   v8 = v7;
 
-  v9 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-  [v9 setLongestStateName:v8];
+  logEvent = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+  [logEvent setLongestStateName:v8];
 
-  v10 = [v4 tagData];
+  tagData2 = [stateCopy tagData];
 
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277D179A0]];
+  v11 = [tagData2 objectForKeyedSubscript:*MEMORY[0x277D179A0]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -287,32 +287,32 @@ LABEL_27:
 
   v13 = v12;
 
-  v14 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-  [v14 setLongestStateDuration:v13];
+  logEvent2 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+  [logEvent2 setLongestStateDuration:v13];
 }
 
-- (void)processCredentialsToClientEvent:(id)a3
+- (void)processCredentialsToClientEvent:(id)event
 {
-  v3 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-  [v3 setCredentialsSentToClient:MEMORY[0x277CBEC38]];
+  logEvent = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+  [logEvent setCredentialsSentToClient:MEMORY[0x277CBEC38]];
 }
 
-- (void)processWiFiScanResultsEvent:(id)a3
+- (void)processWiFiScanResultsEvent:(id)event
 {
-  v3 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-  [v3 setProvidedWiFiScanResults:MEMORY[0x277CBEC38]];
+  logEvent = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+  [logEvent setProvidedWiFiScanResults:MEMORY[0x277CBEC38]];
 }
 
-- (void)processThreadScanResultsEvent:(id)a3
+- (void)processThreadScanResultsEvent:(id)event
 {
-  v3 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-  [v3 setProvidedThreadScanResults:MEMORY[0x277CBEC38]];
+  logEvent = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+  [logEvent setProvidedThreadScanResults:MEMORY[0x277CBEC38]];
 }
 
-- (void)processFirmwareVersionEvent:(id)a3
+- (void)processFirmwareVersionEvent:(id)event
 {
-  v4 = [a3 tagData];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D17A18]];
+  tagData = [event tagData];
+  v5 = [tagData objectForKeyedSubscript:*MEMORY[0x277D17A18]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -329,15 +329,15 @@ LABEL_27:
 
   if (v8)
   {
-    v7 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v7 setFirmwareVersion:v8];
+    logEvent = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent setFirmwareVersion:v8];
   }
 }
 
-- (void)processPairingEventWindowOpenedSetupDuration:(id)a3
+- (void)processPairingEventWindowOpenedSetupDuration:(id)duration
 {
-  v4 = [a3 tagData];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D179C8]];
+  tagData = [duration tagData];
+  v5 = [tagData objectForKeyedSubscript:*MEMORY[0x277D179C8]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -354,15 +354,15 @@ LABEL_27:
 
   if (v8)
   {
-    v7 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v7 setPairingWindowOpenedWithPasscodeDuration:v8];
+    logEvent = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent setPairingWindowOpenedWithPasscodeDuration:v8];
   }
 }
 
-- (void)processAccessoryTransport:(id)a3
+- (void)processAccessoryTransport:(id)transport
 {
-  v4 = [a3 tagData];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D179F0]];
+  tagData = [transport tagData];
+  v5 = [tagData objectForKeyedSubscript:*MEMORY[0x277D179F0]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -379,15 +379,15 @@ LABEL_27:
 
   if (v8)
   {
-    v7 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v7 setAccessoryTransportType:v8];
+    logEvent = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent setAccessoryTransportType:v8];
   }
 }
 
-- (void)processThreadSetupDuration:(id)a3
+- (void)processThreadSetupDuration:(id)duration
 {
-  v4 = [a3 tagData];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D179C8]];
+  tagData = [duration tagData];
+  v5 = [tagData objectForKeyedSubscript:*MEMORY[0x277D179C8]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -404,15 +404,15 @@ LABEL_27:
 
   if (v8)
   {
-    v7 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v7 setThreadSetupDuration:v8];
+    logEvent = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent setThreadSetupDuration:v8];
   }
 }
 
-- (void)processCASESanityCheckEvent:(id)a3
+- (void)processCASESanityCheckEvent:(id)event
 {
-  v4 = [a3 tagData];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D179C0]];
+  tagData = [event tagData];
+  v5 = [tagData objectForKeyedSubscript:*MEMORY[0x277D179C0]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -429,16 +429,16 @@ LABEL_27:
 
   if (v8)
   {
-    v7 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v7 setCaseSessionSanityCheckPassed:v8];
+    logEvent = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent setCaseSessionSanityCheckPassed:v8];
   }
 }
 
-- (void)processAccessoryInfoEvent:(id)a3
+- (void)processAccessoryInfoEvent:(id)event
 {
-  v64 = a3;
-  v4 = [v64 tagData];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D17A38]];
+  eventCopy = event;
+  tagData = [eventCopy tagData];
+  v5 = [tagData objectForKeyedSubscript:*MEMORY[0x277D17A38]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -455,12 +455,12 @@ LABEL_27:
 
   if (v7)
   {
-    v8 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v8 setCommunicationProtocol:v7];
+    logEvent = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent setCommunicationProtocol:v7];
   }
 
-  v9 = [v64 tagData];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D17A30]];
+  tagData2 = [eventCopy tagData];
+  v10 = [tagData2 objectForKeyedSubscript:*MEMORY[0x277D17A30]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -477,12 +477,12 @@ LABEL_27:
 
   if (v12)
   {
-    v13 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v13 setMatterCategoryNumber:v12];
+    logEvent2 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent2 setMatterCategoryNumber:v12];
   }
 
-  v14 = [v64 tagData];
-  v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277D17A98]];
+  tagData3 = [eventCopy tagData];
+  v15 = [tagData3 objectForKeyedSubscript:*MEMORY[0x277D17A98]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -499,12 +499,12 @@ LABEL_27:
 
   if (v17)
   {
-    v18 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v18 setMatterVendorNumber:v17];
+    logEvent3 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent3 setMatterVendorNumber:v17];
   }
 
-  v19 = [v64 tagData];
-  v20 = [v19 objectForKeyedSubscript:*MEMORY[0x277D17A58]];
+  tagData4 = [eventCopy tagData];
+  v20 = [tagData4 objectForKeyedSubscript:*MEMORY[0x277D17A58]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -521,13 +521,13 @@ LABEL_27:
 
   if (v22)
   {
-    v23 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v23 setMatterProductNumber:v22];
+    logEvent4 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent4 setMatterProductNumber:v22];
   }
 
   v62 = v17;
-  v24 = [v64 tagData];
-  v25 = [v24 objectForKeyedSubscript:*MEMORY[0x277D17A50]];
+  tagData5 = [eventCopy tagData];
+  v25 = [tagData5 objectForKeyedSubscript:*MEMORY[0x277D17A50]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -544,14 +544,14 @@ LABEL_27:
 
   if (v27)
   {
-    v28 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v28 setMatterProductID:v27];
+    logEvent5 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent5 setMatterProductID:v27];
   }
 
   v60 = v27;
   v61 = v22;
-  v29 = [v64 tagData];
-  v30 = [v29 objectForKeyedSubscript:*MEMORY[0x277D17A28]];
+  tagData6 = [eventCopy tagData];
+  v30 = [tagData6 objectForKeyedSubscript:*MEMORY[0x277D17A28]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -568,12 +568,12 @@ LABEL_27:
 
   if (v32)
   {
-    v33 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v33 setClient:v32];
+    logEvent6 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent6 setClient:v32];
   }
 
-  v34 = [v64 tagData];
-  v35 = [v34 objectForKeyedSubscript:*MEMORY[0x277D17A88]];
+  tagData7 = [eventCopy tagData];
+  v35 = [tagData7 objectForKeyedSubscript:*MEMORY[0x277D17A88]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -590,12 +590,12 @@ LABEL_27:
 
   if (v37)
   {
-    v38 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v38 setSupportsSoftAP:v37];
+    logEvent7 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent7 setSupportsSoftAP:v37];
   }
 
-  v39 = [v64 tagData];
-  v40 = [v39 objectForKeyedSubscript:*MEMORY[0x277D17A48]];
+  tagData8 = [eventCopy tagData];
+  v40 = [tagData8 objectForKeyedSubscript:*MEMORY[0x277D17A48]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -612,13 +612,13 @@ LABEL_27:
 
   if (v42)
   {
-    v43 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v43 setHasShortDiscriminator:v42];
+    logEvent8 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent8 setHasShortDiscriminator:v42];
   }
 
   v63 = v12;
-  v44 = [v64 tagData];
-  v45 = [v44 objectForKeyedSubscript:*MEMORY[0x277D17A60]];
+  tagData9 = [eventCopy tagData];
+  v45 = [tagData9 objectForKeyedSubscript:*MEMORY[0x277D17A60]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -635,13 +635,13 @@ LABEL_27:
 
   if (v47)
   {
-    v48 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v48 setRequiresMatterCustomCommissioningFlow:v47];
+    logEvent9 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent9 setRequiresMatterCustomCommissioningFlow:v47];
   }
 
   v49 = v7;
-  v50 = [v64 tagData];
-  v51 = [v50 objectForKeyedSubscript:*MEMORY[0x277D17A08]];
+  tagData10 = [eventCopy tagData];
+  v51 = [tagData10 objectForKeyedSubscript:*MEMORY[0x277D17A08]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -658,12 +658,12 @@ LABEL_27:
 
   if (v53)
   {
-    v54 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v54 setDiscoveredOverBLE:v53];
+    logEvent10 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent10 setDiscoveredOverBLE:v53];
   }
 
-  v55 = [v64 tagData];
-  v56 = [v55 objectForKeyedSubscript:*MEMORY[0x277D17A20]];
+  tagData11 = [eventCopy tagData];
+  v56 = [tagData11 objectForKeyedSubscript:*MEMORY[0x277D17A20]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -680,29 +680,29 @@ LABEL_27:
 
   if (v58)
   {
-    v59 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v59 setKnownToSystemCommissioner:v58];
+    logEvent11 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent11 setKnownToSystemCommissioner:v58];
   }
 }
 
-- (void)processPairingErrorCancelledEvent:(id)a3
+- (void)processPairingErrorCancelledEvent:(id)event
 {
   v4 = *MEMORY[0x277CCFD28];
-  v7 = a3;
-  v5 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-  [v5 setErrorDomain:v4];
+  eventCopy = event;
+  logEvent = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+  [logEvent setErrorDomain:v4];
 
-  v6 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-  [v6 setErrorCode:&unk_283E752C0];
+  logEvent2 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+  [logEvent2 setErrorCode:&unk_283E752C0];
 
-  [(HMDMatterThirdPartyPairingTagProcessor *)self closeSessionWithEvent:v7];
+  [(HMDMatterThirdPartyPairingTagProcessor *)self closeSessionWithEvent:eventCopy];
 }
 
-- (void)processPairingErrorEvent:(id)a3
+- (void)processPairingErrorEvent:(id)event
 {
-  v26 = a3;
-  v4 = [v26 tagData];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D17D70]];
+  eventCopy = event;
+  tagData = [eventCopy tagData];
+  v5 = [tagData objectForKeyedSubscript:*MEMORY[0x277D17D70]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -719,8 +719,8 @@ LABEL_27:
 
   if (v7)
   {
-    v8 = [v26 tagData];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D17D78]];
+    tagData2 = [eventCopy tagData];
+    v9 = [tagData2 objectForKeyedSubscript:*MEMORY[0x277D17D78]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -735,8 +735,8 @@ LABEL_27:
 
     v11 = v10;
 
-    v12 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v12 setErrorDomain:v11];
+    logEvent = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent setErrorDomain:v11];
 
     v13 = v7;
   }
@@ -744,16 +744,16 @@ LABEL_27:
   else
   {
     v14 = *MEMORY[0x277CCFD28];
-    v12 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v12 setErrorDomain:v14];
+    logEvent = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent setErrorDomain:v14];
     v13 = &unk_283E752A8;
   }
 
-  v15 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-  [v15 setErrorCode:v13];
+  logEvent2 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+  [logEvent2 setErrorCode:v13];
 
-  v16 = [v26 tagData];
-  v17 = [v16 objectForKeyedSubscript:*MEMORY[0x277D17D80]];
+  tagData3 = [eventCopy tagData];
+  v17 = [tagData3 objectForKeyedSubscript:*MEMORY[0x277D17D80]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -770,8 +770,8 @@ LABEL_27:
 
   if (v19)
   {
-    v20 = [v26 tagData];
-    v21 = [v20 objectForKeyedSubscript:*MEMORY[0x277D17D88]];
+    tagData4 = [eventCopy tagData];
+    v21 = [tagData4 objectForKeyedSubscript:*MEMORY[0x277D17D88]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -786,24 +786,24 @@ LABEL_27:
 
     v23 = v22;
 
-    v24 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v24 setUnderlyingErrorDomain:v23];
+    logEvent3 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent3 setUnderlyingErrorDomain:v23];
 
-    v25 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
-    [v25 setUnderlyingErrorCode:v19];
+    logEvent4 = [(HMDMatterThirdPartyPairingTagProcessor *)self logEvent];
+    [logEvent4 setUnderlyingErrorCode:v19];
   }
 
-  [(HMDMatterThirdPartyPairingTagProcessor *)self closeSessionWithEvent:v26];
+  [(HMDMatterThirdPartyPairingTagProcessor *)self closeSessionWithEvent:eventCopy];
 }
 
-- (void)processPairingStartEvent:(id)a3
+- (void)processPairingStartEvent:(id)event
 {
-  v4 = a3;
-  -[HMDMatterThirdPartyPairingTagProcessor setStartTime:](self, "setStartTime:", [v4 tagTime]);
-  v6 = [(HMDMatterThirdPartyPairingTagProcessor *)self stateTracker];
-  v5 = [v4 tagTime];
+  eventCopy = event;
+  -[HMDMatterThirdPartyPairingTagProcessor setStartTime:](self, "setStartTime:", [eventCopy tagTime]);
+  stateTracker = [(HMDMatterThirdPartyPairingTagProcessor *)self stateTracker];
+  tagTime = [eventCopy tagTime];
 
-  [v6 startWithTime:v5];
+  [stateTracker startWithTime:tagTime];
 }
 
 - (id)tagProcessingBlocks
@@ -865,11 +865,11 @@ void __61__HMDMatterThirdPartyPairingTagProcessor_tagProcessingBlocks__block_inv
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMatterThirdPartyPairingTagProcessor)initWithSubmitter:(id)a3
+- (HMDMatterThirdPartyPairingTagProcessor)initWithSubmitter:(id)submitter
 {
   v9.receiver = self;
   v9.super_class = HMDMatterThirdPartyPairingTagProcessor;
-  v3 = [(HMMLogEventTagProcessor *)&v9 initWithSubmitter:a3];
+  v3 = [(HMMLogEventTagProcessor *)&v9 initWithSubmitter:submitter];
   if (v3)
   {
     v4 = objc_alloc_init(HMDMatterThirdPartyPairingLogEvent);

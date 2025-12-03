@@ -1,7 +1,7 @@
 @interface LockScreenColorAdjustmentsLayer
 - (_TtC11MediaCoreUI31LockScreenColorAdjustmentsLayer)init;
-- (_TtC11MediaCoreUI31LockScreenColorAdjustmentsLayer)initWithCoder:(id)a3;
-- (_TtC11MediaCoreUI31LockScreenColorAdjustmentsLayer)initWithLayer:(id)a3;
+- (_TtC11MediaCoreUI31LockScreenColorAdjustmentsLayer)initWithCoder:(id)coder;
+- (_TtC11MediaCoreUI31LockScreenColorAdjustmentsLayer)initWithLayer:(id)layer;
 @end
 
 @implementation LockScreenColorAdjustmentsLayer
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (_TtC11MediaCoreUI31LockScreenColorAdjustmentsLayer)initWithLayer:(id)a3
+- (_TtC11MediaCoreUI31LockScreenColorAdjustmentsLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_1C5BCB8D4();
@@ -34,7 +34,7 @@
   return v6;
 }
 
-- (_TtC11MediaCoreUI31LockScreenColorAdjustmentsLayer)initWithCoder:(id)a3
+- (_TtC11MediaCoreUI31LockScreenColorAdjustmentsLayer)initWithCoder:(id)coder
 {
   result = sub_1C5BCBBC4();
   __break(1u);

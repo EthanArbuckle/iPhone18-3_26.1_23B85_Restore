@@ -1,11 +1,11 @@
 @interface BlurImageView
-- (_TtC17PromotedContentUI13BlurImageView)initWithCoder:(id)a3;
-- (_TtC17PromotedContentUI13BlurImageView)initWithFrame:(CGRect)a3;
+- (_TtC17PromotedContentUI13BlurImageView)initWithCoder:(id)coder;
+- (_TtC17PromotedContentUI13BlurImageView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation BlurImageView
 
-- (_TtC17PromotedContentUI13BlurImageView)initWithCoder:(id)a3
+- (_TtC17PromotedContentUI13BlurImageView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17PromotedContentUI13BlurImageView_image) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17PromotedContentUI13BlurImageView____lazy_storage___visualEffectView) = 0;
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (_TtC17PromotedContentUI13BlurImageView)initWithFrame:(CGRect)a3
+- (_TtC17PromotedContentUI13BlurImageView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

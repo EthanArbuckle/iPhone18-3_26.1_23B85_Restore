@@ -1,33 +1,33 @@
 @interface CNPRUISPosterRenderingViewControllerWrapper
-- (CNPRUISPosterRenderingViewControllerWrapper)initWithConfiguration:(id)a3 context:(id)a4;
-- (CNPRUISPosterRenderingViewControllerWrapper)initWithConfiguration:(id)a3 context:(id)a4 boundingShape:(int64_t)a5;
-- (void)registerLabel:(id)a3;
-- (void)snapshotWithCompletionBlock:(id)a3;
+- (CNPRUISPosterRenderingViewControllerWrapper)initWithConfiguration:(id)configuration context:(id)context;
+- (CNPRUISPosterRenderingViewControllerWrapper)initWithConfiguration:(id)configuration context:(id)context boundingShape:(int64_t)shape;
+- (void)registerLabel:(id)label;
+- (void)snapshotWithCompletionBlock:(id)block;
 @end
 
 @implementation CNPRUISPosterRenderingViewControllerWrapper
 
-- (void)snapshotWithCompletionBlock:(id)a3
+- (void)snapshotWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (objc_opt_respondsToSelector())
   {
-    [(PRUISPosterRenderingViewController *)self->_wrappedPosterRenderingViewController snapshotWithOptions:2 forScreen:0 completionBlock:v4];
+    [(PRUISPosterRenderingViewController *)self->_wrappedPosterRenderingViewController snapshotWithOptions:2 forScreen:0 completionBlock:blockCopy];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0);
   }
 }
 
-- (void)registerLabel:(id)a3
+- (void)registerLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(PRUISPosterRenderingViewController *)self->_wrappedPosterRenderingViewController obscurableContentView];
-  [v5 addSubview:v4];
+  labelCopy = label;
+  obscurableContentView = [(PRUISPosterRenderingViewController *)self->_wrappedPosterRenderingViewController obscurableContentView];
+  [obscurableContentView addSubview:labelCopy];
 
-  v8 = v4;
+  v8 = labelCopy;
   if ([v8 conformsToProtocol:&unk_1F0E08250])
   {
     v6 = v8;
@@ -43,19 +43,19 @@
   [(PRUISPosterRenderingViewController *)self->_wrappedPosterRenderingViewController registerPosterAppearanceObserver:v7];
 }
 
-- (CNPRUISPosterRenderingViewControllerWrapper)initWithConfiguration:(id)a3 context:(id)a4 boundingShape:(int64_t)a5
+- (CNPRUISPosterRenderingViewControllerWrapper)initWithConfiguration:(id)configuration context:(id)context boundingShape:(int64_t)shape
 {
-  v8 = a3;
-  v9 = a4;
+  configurationCopy = configuration;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = CNPRUISPosterRenderingViewControllerWrapper;
   v10 = [(CNPRUISPosterRenderingViewControllerWrapper *)&v18 init];
   if (v10)
   {
-    v11 = [v8 wrappedPosterConfiguration];
+    wrappedPosterConfiguration = [configurationCopy wrappedPosterConfiguration];
     v12 = objc_alloc(getPRUISPosterRenderingViewControllerClass());
-    v13 = [v9 wrappedIncomingCallPosterContext];
-    v14 = [v12 initWithConfiguration:v11 context:v13 boundingShape:a5];
+    wrappedIncomingCallPosterContext = [contextCopy wrappedIncomingCallPosterContext];
+    v14 = [v12 initWithConfiguration:wrappedPosterConfiguration context:wrappedIncomingCallPosterContext boundingShape:shape];
     wrappedPosterRenderingViewController = v10->_wrappedPosterRenderingViewController;
     v10->_wrappedPosterRenderingViewController = v14;
 
@@ -65,19 +65,19 @@
   return v10;
 }
 
-- (CNPRUISPosterRenderingViewControllerWrapper)initWithConfiguration:(id)a3 context:(id)a4
+- (CNPRUISPosterRenderingViewControllerWrapper)initWithConfiguration:(id)configuration context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = CNPRUISPosterRenderingViewControllerWrapper;
   v8 = [(CNPRUISPosterRenderingViewControllerWrapper *)&v16 init];
   if (v8)
   {
-    v9 = [v6 wrappedPosterConfiguration];
+    wrappedPosterConfiguration = [configurationCopy wrappedPosterConfiguration];
     v10 = objc_alloc(getPRUISPosterRenderingViewControllerClass());
-    v11 = [v7 wrappedIncomingCallPosterContext];
-    v12 = [v10 initWithConfiguration:v9 context:v11];
+    wrappedIncomingCallPosterContext = [contextCopy wrappedIncomingCallPosterContext];
+    v12 = [v10 initWithConfiguration:wrappedPosterConfiguration context:wrappedIncomingCallPosterContext];
     wrappedPosterRenderingViewController = v8->_wrappedPosterRenderingViewController;
     v8->_wrappedPosterRenderingViewController = v12;
 

@@ -29,36 +29,36 @@
 - (unint64_t)layoutForMainLayer;
 - (unint64_t)layoutForOtherLayers;
 - (unsigned)targetFPS;
-- (void)setAlignment:(unint64_t)a3;
-- (void)setAutoInterpose:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setEncoderGPUTimelineMaxFrameCount:(unint64_t)a3;
-- (void)setEncoderGPUTimelineSwapDeltaInSeconds:(double)a3;
-- (void)setEncoderGPUTimelineTrackHeight:(float)a3;
-- (void)setEncoderTimingEnabled:(BOOL)a3;
-- (void)setEnergyReportHeight:(float)a3;
-- (void)setEnergyReportSampleIntervalInSeconds:(double)a3;
-- (void)setExplicitFrameBoundary:(BOOL)a3;
-- (void)setInsightReportIntervalInSeconds:(float)a3;
-- (void)setInsightTimeOutInSeconds:(float)a3;
-- (void)setInsightsEnabled:(BOOL)a3;
-- (void)setLayoutForMainLayer:(unint64_t)a3;
-- (void)setLayoutForOtherLayers:(unint64_t)a3;
-- (void)setLogAllMetrics:(BOOL)a3;
-- (void)setLogShaderCompilerEnabled:(BOOL)a3;
-- (void)setLoggingEnabled:(BOOL)a3;
-- (void)setMinSizeRequired:(float)a3;
-- (void)setOpacity:(float)a3;
-- (void)setPositionX:(float)a3;
-- (void)setPositionY:(float)a3;
-- (void)setScale:(float)a3;
-- (void)setShowInsightMetrics:(BOOL)a3;
-- (void)setShowInternalMetrics:(BOOL)a3;
-- (void)setShowMetricsValuerange:(BOOL)a3;
-- (void)setShowZeroMetrics:(BOOL)a3;
-- (void)setTargetFPS:(unsigned int)a3;
-- (void)setTransientMetricTimeOutInSeconds:(float)a3;
-- (void)setWidth:(float)a3;
+- (void)setAlignment:(unint64_t)alignment;
+- (void)setAutoInterpose:(BOOL)interpose;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setEncoderGPUTimelineMaxFrameCount:(unint64_t)count;
+- (void)setEncoderGPUTimelineSwapDeltaInSeconds:(double)seconds;
+- (void)setEncoderGPUTimelineTrackHeight:(float)height;
+- (void)setEncoderTimingEnabled:(BOOL)enabled;
+- (void)setEnergyReportHeight:(float)height;
+- (void)setEnergyReportSampleIntervalInSeconds:(double)seconds;
+- (void)setExplicitFrameBoundary:(BOOL)boundary;
+- (void)setInsightReportIntervalInSeconds:(float)seconds;
+- (void)setInsightTimeOutInSeconds:(float)seconds;
+- (void)setInsightsEnabled:(BOOL)enabled;
+- (void)setLayoutForMainLayer:(unint64_t)layer;
+- (void)setLayoutForOtherLayers:(unint64_t)layers;
+- (void)setLogAllMetrics:(BOOL)metrics;
+- (void)setLogShaderCompilerEnabled:(BOOL)enabled;
+- (void)setLoggingEnabled:(BOOL)enabled;
+- (void)setMinSizeRequired:(float)required;
+- (void)setOpacity:(float)opacity;
+- (void)setPositionX:(float)x;
+- (void)setPositionY:(float)y;
+- (void)setScale:(float)scale;
+- (void)setShowInsightMetrics:(BOOL)metrics;
+- (void)setShowInternalMetrics:(BOOL)metrics;
+- (void)setShowMetricsValuerange:(BOOL)valuerange;
+- (void)setShowZeroMetrics:(BOOL)metrics;
+- (void)setTargetFPS:(unsigned int)s;
+- (void)setTransientMetricTimeOutInSeconds:(float)seconds;
+- (void)setWidth:(float)width;
 @end
 
 @implementation MTLHUDConfigExternal
@@ -363,300 +363,300 @@
   return byte_76CA7;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  LOBYTE(HUDGetGlobalConfig_config) = a3;
+  LOBYTE(HUDGetGlobalConfig_config) = enabled;
 }
 
-- (void)setLoggingEnabled:(BOOL)a3
+- (void)setLoggingEnabled:(BOOL)enabled
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  HIBYTE(HUDGetGlobalConfig_config) = a3;
+  HIBYTE(HUDGetGlobalConfig_config) = enabled;
 }
 
-- (void)setLogShaderCompilerEnabled:(BOOL)a3
+- (void)setLogShaderCompilerEnabled:(BOOL)enabled
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  byte_76C8A = a3;
+  byte_76C8A = enabled;
 }
 
-- (void)setInsightsEnabled:(BOOL)a3
+- (void)setInsightsEnabled:(BOOL)enabled
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  byte_76C8B = a3;
+  byte_76C8B = enabled;
 }
 
-- (void)setEncoderTimingEnabled:(BOOL)a3
+- (void)setEncoderTimingEnabled:(BOOL)enabled
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  byte_76C8C = a3;
+  byte_76C8C = enabled;
 }
 
-- (void)setAutoInterpose:(BOOL)a3
+- (void)setAutoInterpose:(BOOL)interpose
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  byte_76C8D = a3;
+  byte_76C8D = interpose;
 }
 
-- (void)setShowZeroMetrics:(BOOL)a3
+- (void)setShowZeroMetrics:(BOOL)metrics
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  byte_76C8E = a3;
+  byte_76C8E = metrics;
 }
 
-- (void)setShowInsightMetrics:(BOOL)a3
+- (void)setShowInsightMetrics:(BOOL)metrics
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  byte_76C8F = a3;
+  byte_76C8F = metrics;
 }
 
-- (void)setOpacity:(float)a3
+- (void)setOpacity:(float)opacity
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  dword_76CB0 = LODWORD(a3);
+  dword_76CB0 = LODWORD(opacity);
 }
 
-- (void)setScale:(float)a3
+- (void)setScale:(float)scale
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  dword_76CB4 = LODWORD(a3);
+  dword_76CB4 = LODWORD(scale);
   byte_76C9E = 1;
 }
 
-- (void)setEncoderGPUTimelineTrackHeight:(float)a3
+- (void)setEncoderGPUTimelineTrackHeight:(float)height
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  dword_76CB8 = LODWORD(a3);
+  dword_76CB8 = LODWORD(height);
 }
 
-- (void)setEnergyReportHeight:(float)a3
+- (void)setEnergyReportHeight:(float)height
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  dword_76CBC = LODWORD(a3);
+  dword_76CBC = LODWORD(height);
 }
 
-- (void)setPositionX:(float)a3
+- (void)setPositionX:(float)x
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  *&qword_76CC0 = a3;
+  *&qword_76CC0 = x;
   *&xmmword_76CC8 = 1;
 }
 
-- (void)setPositionY:(float)a3
+- (void)setPositionY:(float)y
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  *(&qword_76CC0 + 1) = a3;
+  *(&qword_76CC0 + 1) = y;
   *&xmmword_76CC8 = 1;
 }
 
-- (void)setAlignment:(unint64_t)a3
+- (void)setAlignment:(unint64_t)alignment
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  *&xmmword_76CC8 = a3;
+  *&xmmword_76CC8 = alignment;
 }
 
-- (void)setLayoutForMainLayer:(unint64_t)a3
+- (void)setLayoutForMainLayer:(unint64_t)layer
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  *(&xmmword_76CC8 + 1) = a3;
+  *(&xmmword_76CC8 + 1) = layer;
 }
 
-- (void)setLayoutForOtherLayers:(unint64_t)a3
+- (void)setLayoutForOtherLayers:(unint64_t)layers
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  qword_76CD8 = a3;
+  qword_76CD8 = layers;
 }
 
-- (void)setEncoderGPUTimelineMaxFrameCount:(unint64_t)a3
+- (void)setEncoderGPUTimelineMaxFrameCount:(unint64_t)count
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  qword_76CE0 = a3;
+  qword_76CE0 = count;
 }
 
-- (void)setEncoderGPUTimelineSwapDeltaInSeconds:(double)a3
+- (void)setEncoderGPUTimelineSwapDeltaInSeconds:(double)seconds
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  *&xmmword_76CE8 = a3;
+  *&xmmword_76CE8 = seconds;
 }
 
-- (void)setEnergyReportSampleIntervalInSeconds:(double)a3
+- (void)setEnergyReportSampleIntervalInSeconds:(double)seconds
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  *(&xmmword_76CE8 + 1) = a3;
+  *(&xmmword_76CE8 + 1) = seconds;
 }
 
-- (void)setMinSizeRequired:(float)a3
+- (void)setMinSizeRequired:(float)required
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  dword_76CF8 = LODWORD(a3);
+  dword_76CF8 = LODWORD(required);
 }
 
-- (void)setWidth:(float)a3
+- (void)setWidth:(float)width
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  dword_76CFC = LODWORD(a3);
+  dword_76CFC = LODWORD(width);
 }
 
-- (void)setInsightTimeOutInSeconds:(float)a3
+- (void)setInsightTimeOutInSeconds:(float)seconds
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  dword_76D00 = LODWORD(a3);
+  dword_76D00 = LODWORD(seconds);
 }
 
-- (void)setInsightReportIntervalInSeconds:(float)a3
+- (void)setInsightReportIntervalInSeconds:(float)seconds
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  dword_76D04 = LODWORD(a3);
+  dword_76D04 = LODWORD(seconds);
 }
 
-- (void)setTargetFPS:(unsigned int)a3
+- (void)setTargetFPS:(unsigned int)s
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  dword_76D0C = a3;
+  dword_76D0C = s;
 }
 
-- (void)setExplicitFrameBoundary:(BOOL)a3
+- (void)setExplicitFrameBoundary:(BOOL)boundary
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  byte_76C90 = a3;
+  byte_76C90 = boundary;
 }
 
-- (void)setShowInternalMetrics:(BOOL)a3
+- (void)setShowInternalMetrics:(BOOL)metrics
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  byte_76C91 = !a3;
+  byte_76C91 = !metrics;
 }
 
-- (void)setTransientMetricTimeOutInSeconds:(float)a3
+- (void)setTransientMetricTimeOutInSeconds:(float)seconds
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  *&qword_76D10 = a3;
+  *&qword_76D10 = seconds;
 }
 
-- (void)setShowMetricsValuerange:(BOOL)a3
+- (void)setShowMetricsValuerange:(BOOL)valuerange
 {
-  v3 = a3;
+  valuerangeCopy = valuerange;
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  byte_76CA6 = v3;
+  byte_76CA6 = valuerangeCopy;
   v4 = 300.0;
-  if (v3)
+  if (valuerangeCopy)
   {
     v4 = 350.0;
   }
@@ -664,14 +664,14 @@
   dword_76CFC = LODWORD(v4);
 }
 
-- (void)setLogAllMetrics:(BOOL)a3
+- (void)setLogAllMetrics:(BOOL)metrics
 {
   if (HUDGetGlobalConfig_onceToken != -1)
   {
     HUDUpdateMutableConfig_cold_1();
   }
 
-  byte_76CA7 = a3;
+  byte_76CA7 = metrics;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface LPMapMetadata
 - (BOOL)_isDirections;
 - (BOOL)_isOnlyCoordinates;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CLLocationCoordinate2D)location;
 - (LPMapMetadata)init;
-- (LPMapMetadata)initWithCoder:(id)a3;
+- (LPMapMetadata)initWithCoder:(id)coder;
 - (id)_address;
-- (id)_bottomLineForTwoUpForTransformer:(id)a3;
+- (id)_bottomLineForTwoUpForTransformer:(id)transformer;
 - (id)_deduplicatedAddress;
 - (id)_directionsDestinationAddress;
 - (id)_directionsSourceAddress;
@@ -15,17 +15,17 @@
 - (id)_resolvedImage;
 - (id)_singleLineShortDescription;
 - (id)_singleLineVerboseDescription;
-- (id)_topLineForThreeUpForTransformer:(id)a3;
-- (id)_topLineForTransformer:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)fallbackIconForTransformer:(id)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
-- (id)previewImageForTransformer:(id)a3;
-- (id)previewSummaryForTransformer:(id)a3;
+- (id)_topLineForThreeUpForTransformer:(id)transformer;
+- (id)_topLineForTransformer:(id)transformer;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)fallbackIconForTransformer:(id)transformer;
+- (id)presentationPropertiesForTransformer:(id)transformer;
+- (id)previewImageForTransformer:(id)transformer;
+- (id)previewSummaryForTransformer:(id)transformer;
 - (int64_t)_style;
-- (void)_enumerateAsynchronousFields:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateMetadataForBackwardCompatibility:(id)a3;
+- (void)_enumerateAsynchronousFields:(id)fields;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility;
 @end
 
 @implementation LPMapMetadata
@@ -45,20 +45,20 @@
   return v3;
 }
 
-- (LPMapMetadata)initWithCoder:(id)a3
+- (LPMapMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v59.receiver = self;
   v59.super_class = LPMapMetadata;
   v5 = [(LPMapMetadata *)&v59 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"name");
+    v6 = decodeStringForKey(coderCopy, @"name");
     v7 = *(v5 + 2);
     *(v5 + 2) = v6;
 
-    v8 = decodeNumberForKey(v4, @"locationLatitude");
-    v9 = decodeNumberForKey(v4, @"locationLongitude");
+    v8 = decodeNumberForKey(coderCopy, @"locationLatitude");
+    v9 = decodeNumberForKey(coderCopy, @"locationLongitude");
     v10 = v9;
     v11 = (v5 + 152);
     if (v8 && v9)
@@ -76,175 +76,175 @@
       *v11 = *MEMORY[0x1E6985CC0];
     }
 
-    v16 = decodeStringForKey(v4, @"address");
+    v16 = decodeStringForKey(coderCopy, @"address");
     v17 = *(v5 + 3);
     *(v5 + 3) = v16;
 
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 _lp_strictlyDecodeObjectOfClasses:v20 forKey:@"addressComponents"];
+    v21 = [coderCopy _lp_strictlyDecodeObjectOfClasses:v20 forKey:@"addressComponents"];
     v22 = *(v5 + 4);
     *(v5 + 4) = v21;
 
-    v23 = decodeStringForKey(v4, @"category");
+    v23 = decodeStringForKey(coderCopy, @"category");
     v24 = *(v5 + 5);
     *(v5 + 5) = v23;
 
-    v25 = [v4 _lp_strictlyDecodeLPImageForKey:@"categoryIcon"];
+    v25 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"categoryIcon"];
     v26 = *(v5 + 6);
     *(v5 + 6) = v25;
 
-    v27 = decodeStringForKey(v4, @"searchQuery");
+    v27 = decodeStringForKey(coderCopy, @"searchQuery");
     v28 = *(v5 + 7);
     *(v5 + 7) = v27;
 
-    v29 = decodeStringForKey(v4, @"directionsType");
+    v29 = decodeStringForKey(coderCopy, @"directionsType");
     v30 = *(v5 + 8);
     *(v5 + 8) = v29;
 
-    v31 = decodeNumberForKey(v4, @"transportType");
+    v31 = decodeNumberForKey(coderCopy, @"transportType");
     v32 = *(v5 + 9);
     *(v5 + 9) = v31;
 
-    v33 = decodeStringForKey(v4, @"directionsSourceAddress");
+    v33 = decodeStringForKey(coderCopy, @"directionsSourceAddress");
     v34 = *(v5 + 10);
     *(v5 + 10) = v33;
 
     v35 = MEMORY[0x1E695DFD8];
     v36 = objc_opt_class();
     v37 = [v35 setWithObjects:{v36, objc_opt_class(), 0}];
-    v38 = [v4 _lp_strictlyDecodeObjectOfClasses:v37 forKey:@"directionsSourceAddressComponents"];
+    v38 = [coderCopy _lp_strictlyDecodeObjectOfClasses:v37 forKey:@"directionsSourceAddressComponents"];
     v39 = *(v5 + 11);
     *(v5 + 11) = v38;
 
-    v40 = decodeStringForKey(v4, @"directionsSourceLocationName");
+    v40 = decodeStringForKey(coderCopy, @"directionsSourceLocationName");
     v41 = *(v5 + 12);
     *(v5 + 12) = v40;
 
-    v42 = decodeStringForKey(v4, @"directionsDestinationAddress");
+    v42 = decodeStringForKey(coderCopy, @"directionsDestinationAddress");
     v43 = *(v5 + 13);
     *(v5 + 13) = v42;
 
     v44 = MEMORY[0x1E695DFD8];
     v45 = objc_opt_class();
     v46 = [v44 setWithObjects:{v45, objc_opt_class(), 0}];
-    v47 = [v4 _lp_strictlyDecodeObjectOfClasses:v46 forKey:@"directionsDestinationAddressComponents"];
+    v47 = [coderCopy _lp_strictlyDecodeObjectOfClasses:v46 forKey:@"directionsDestinationAddressComponents"];
     v48 = *(v5 + 14);
     *(v5 + 14) = v47;
 
-    v49 = decodeStringForKey(v4, @"directionsDestinationLocationName");
+    v49 = decodeStringForKey(coderCopy, @"directionsDestinationLocationName");
     v50 = *(v5 + 15);
     *(v5 + 15) = v49;
 
-    v51 = decodeNumberForKey(v4, @"distance");
+    v51 = decodeNumberForKey(coderCopy, @"distance");
     v52 = *(v5 + 16);
     *(v5 + 16) = v51;
 
-    v53 = [v4 _lp_strictlyDecodeLPImageForKey:@"image"];
+    v53 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"image"];
     v54 = *(v5 + 17);
     *(v5 + 17) = v53;
 
-    v55 = [v4 _lp_strictlyDecodeLPImageForKey:@"darkImage"];
+    v55 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"darkImage"];
     v56 = *(v5 + 18);
     *(v5 + 18) = v55;
 
-    v5[11] = [v4 decodeBoolForKey:@"isPointOfInterest"];
+    v5[11] = [coderCopy decodeBoolForKey:@"isPointOfInterest"];
     v57 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 _lp_encodeStringIfNotNil:*&self->_isPointOfInterest forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:*&self->_isPointOfInterest forKey:@"name"];
   if (CLLocationCoordinate2DIsValid(*&self->_darkImage))
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:*&self->_darkImage];
-    [v6 _lp_encodeObjectIfNotNil:v4 forKey:@"locationLatitude"];
+    [coderCopy _lp_encodeObjectIfNotNil:v4 forKey:@"locationLatitude"];
 
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_location.latitude];
-    [v6 _lp_encodeObjectIfNotNil:v5 forKey:@"locationLongitude"];
+    [coderCopy _lp_encodeObjectIfNotNil:v5 forKey:@"locationLongitude"];
   }
 
-  [v6 _lp_encodeStringIfNotNil:self->_name forKey:@"address"];
-  [v6 _lp_encodeObjectIfNotNil:self->_address forKey:@"addressComponents"];
-  [v6 _lp_encodeStringIfNotNil:self->_addressComponents forKey:@"category"];
-  [v6 _lp_encodeObjectIfNotNil:self->_category forKey:@"categoryIcon"];
-  [v6 _lp_encodeStringIfNotNil:self->_categoryIcon forKey:@"searchQuery"];
-  [v6 _lp_encodeStringIfNotNil:self->_searchQuery forKey:@"directionsType"];
-  [v6 _lp_encodeObjectIfNotNil:self->_directionsType forKey:@"transportType"];
-  [v6 _lp_encodeStringIfNotNil:self->_transportType forKey:@"directionsSourceAddress"];
-  [v6 _lp_encodeObjectIfNotNil:self->_directionsSourceAddress forKey:@"directionsSourceAddressComponents"];
-  [v6 _lp_encodeStringIfNotNil:self->_directionsSourceAddressComponents forKey:@"directionsSourceLocationName"];
-  [v6 _lp_encodeStringIfNotNil:self->_directionsSourceLocationName forKey:@"directionsDestinationAddress"];
-  [v6 _lp_encodeObjectIfNotNil:self->_directionsDestinationAddress forKey:@"directionsDestinationAddressComponents"];
-  [v6 _lp_encodeStringIfNotNil:self->_directionsDestinationAddressComponents forKey:@"directionsDestinationLocationName"];
-  [v6 _lp_encodeObjectIfNotNil:self->_directionsDestinationLocationName forKey:@"distance"];
-  [v6 _lp_encodeObjectIfNotNil:self->_distance forKey:@"image"];
-  [v6 _lp_encodeObjectIfNotNil:self->_image forKey:@"darkImage"];
-  [v6 encodeBool:*(&self->super.__disallowsURLOverrideByDelegate + 1) forKey:@"isPointOfInterest"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_name forKey:@"address"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_address forKey:@"addressComponents"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_addressComponents forKey:@"category"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_category forKey:@"categoryIcon"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_categoryIcon forKey:@"searchQuery"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_searchQuery forKey:@"directionsType"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_directionsType forKey:@"transportType"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_transportType forKey:@"directionsSourceAddress"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_directionsSourceAddress forKey:@"directionsSourceAddressComponents"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_directionsSourceAddressComponents forKey:@"directionsSourceLocationName"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_directionsSourceLocationName forKey:@"directionsDestinationAddress"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_directionsDestinationAddress forKey:@"directionsDestinationAddressComponents"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_directionsDestinationAddressComponents forKey:@"directionsDestinationLocationName"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_directionsDestinationLocationName forKey:@"distance"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_distance forKey:@"image"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_image forKey:@"darkImage"];
+  [coderCopy encodeBool:*(&self->super.__disallowsURLOverrideByDelegate + 1) forKey:@"isPointOfInterest"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPMapMetadata allocWithZone:a3];
+  v4 = [LPMapMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPMapMetadata *)self name];
-    [(LPMapMetadata *)v4 setName:v5];
+    name = [(LPMapMetadata *)self name];
+    [(LPMapMetadata *)v4 setName:name];
 
     [(LPMapMetadata *)self location];
     [(LPMapMetadata *)v4 setLocation:?];
-    v6 = [(LPMapMetadata *)self address];
-    [(LPMapMetadata *)v4 setAddress:v6];
+    address = [(LPMapMetadata *)self address];
+    [(LPMapMetadata *)v4 setAddress:address];
 
-    v7 = [(LPMapMetadata *)self addressComponents];
-    [(LPMapMetadata *)v4 setAddressComponents:v7];
+    addressComponents = [(LPMapMetadata *)self addressComponents];
+    [(LPMapMetadata *)v4 setAddressComponents:addressComponents];
 
-    v8 = [(LPMapMetadata *)self category];
-    [(LPMapMetadata *)v4 setCategory:v8];
+    category = [(LPMapMetadata *)self category];
+    [(LPMapMetadata *)v4 setCategory:category];
 
-    v9 = [(LPMapMetadata *)self categoryIcon];
-    [(LPMapMetadata *)v4 setCategoryIcon:v9];
+    categoryIcon = [(LPMapMetadata *)self categoryIcon];
+    [(LPMapMetadata *)v4 setCategoryIcon:categoryIcon];
 
-    v10 = [(LPMapMetadata *)self searchQuery];
-    [(LPMapMetadata *)v4 setSearchQuery:v10];
+    searchQuery = [(LPMapMetadata *)self searchQuery];
+    [(LPMapMetadata *)v4 setSearchQuery:searchQuery];
 
-    v11 = [(LPMapMetadata *)self directionsType];
-    [(LPMapMetadata *)v4 setDirectionsType:v11];
+    directionsType = [(LPMapMetadata *)self directionsType];
+    [(LPMapMetadata *)v4 setDirectionsType:directionsType];
 
-    v12 = [(LPMapMetadata *)self transportType];
-    [(LPMapMetadata *)v4 setTransportType:v12];
+    transportType = [(LPMapMetadata *)self transportType];
+    [(LPMapMetadata *)v4 setTransportType:transportType];
 
-    v13 = [(LPMapMetadata *)self directionsSourceAddress];
-    [(LPMapMetadata *)v4 setDirectionsSourceAddress:v13];
+    directionsSourceAddress = [(LPMapMetadata *)self directionsSourceAddress];
+    [(LPMapMetadata *)v4 setDirectionsSourceAddress:directionsSourceAddress];
 
-    v14 = [(LPMapMetadata *)self directionsSourceAddressComponents];
-    [(LPMapMetadata *)v4 setDirectionsSourceAddressComponents:v14];
+    directionsSourceAddressComponents = [(LPMapMetadata *)self directionsSourceAddressComponents];
+    [(LPMapMetadata *)v4 setDirectionsSourceAddressComponents:directionsSourceAddressComponents];
 
-    v15 = [(LPMapMetadata *)self directionsSourceLocationName];
-    [(LPMapMetadata *)v4 setDirectionsSourceLocationName:v15];
+    directionsSourceLocationName = [(LPMapMetadata *)self directionsSourceLocationName];
+    [(LPMapMetadata *)v4 setDirectionsSourceLocationName:directionsSourceLocationName];
 
-    v16 = [(LPMapMetadata *)self directionsDestinationAddress];
-    [(LPMapMetadata *)v4 setDirectionsDestinationAddress:v16];
+    directionsDestinationAddress = [(LPMapMetadata *)self directionsDestinationAddress];
+    [(LPMapMetadata *)v4 setDirectionsDestinationAddress:directionsDestinationAddress];
 
-    v17 = [(LPMapMetadata *)self directionsDestinationAddressComponents];
-    [(LPMapMetadata *)v4 setDirectionsDestinationAddressComponents:v17];
+    directionsDestinationAddressComponents = [(LPMapMetadata *)self directionsDestinationAddressComponents];
+    [(LPMapMetadata *)v4 setDirectionsDestinationAddressComponents:directionsDestinationAddressComponents];
 
-    v18 = [(LPMapMetadata *)self directionsDestinationLocationName];
-    [(LPMapMetadata *)v4 setDirectionsDestinationLocationName:v18];
+    directionsDestinationLocationName = [(LPMapMetadata *)self directionsDestinationLocationName];
+    [(LPMapMetadata *)v4 setDirectionsDestinationLocationName:directionsDestinationLocationName];
 
-    v19 = [(LPMapMetadata *)self distance];
-    [(LPMapMetadata *)v4 setDistance:v19];
+    distance = [(LPMapMetadata *)self distance];
+    [(LPMapMetadata *)v4 setDistance:distance];
 
-    v20 = [(LPMapMetadata *)self image];
-    [(LPMapMetadata *)v4 setImage:v20];
+    image = [(LPMapMetadata *)self image];
+    [(LPMapMetadata *)v4 setImage:image];
 
-    v21 = [(LPMapMetadata *)self darkImage];
-    [(LPMapMetadata *)v4 setDarkImage:v21];
+    darkImage = [(LPMapMetadata *)self darkImage];
+    [(LPMapMetadata *)v4 setDarkImage:darkImage];
 
     [(LPMapMetadata *)v4 setIsPointOfInterest:[(LPMapMetadata *)self isPointOfInterest]];
     v22 = v4;
@@ -253,12 +253,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPMapMetadata;
-  if ([(LPMapMetadata *)&v8 isEqual:v4])
+  if ([(LPMapMetadata *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -268,7 +268,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v5 = (objectsAreEqual_0(v6[2], *&self->_isPointOfInterest) & 1) != 0 && *(v6 + 20) == self->_location.latitude && *(v6 + 19) == *&self->_darkImage && objectsAreEqual_0(v6[3], self->_name) && objectsAreEqual_0(v6[4], self->_address) && objectsAreEqual_0(v6[5], self->_addressComponents) && objectsAreEqual_0(v6[6], self->_category) && objectsAreEqual_0(v6[7], self->_categoryIcon) && objectsAreEqual_0(v6[8], self->_searchQuery) && objectsAreEqual_0(v6[9], self->_directionsType) && objectsAreEqual_0(v6[10], self->_transportType) && objectsAreEqual_0(v6[11], self->_directionsSourceAddress) && objectsAreEqual_0(v6[12], self->_directionsSourceAddressComponents) && objectsAreEqual_0(v6[13], self->_directionsSourceLocationName) && objectsAreEqual_0(v6[14], self->_directionsDestinationAddress) && objectsAreEqual_0(v6[15], self->_directionsDestinationAddressComponents) && objectsAreEqual_0(v6[16], self->_directionsDestinationLocationName) && objectsAreEqual_0(v6[17], self->_distance) && objectsAreEqual_0(v6[18], self->_image) && *(v6 + 11) == *(&self->super.__disallowsURLOverrideByDelegate + 1);
     }
 
@@ -281,12 +281,12 @@
   return v5;
 }
 
-- (void)_enumerateAsynchronousFields:(id)a3
+- (void)_enumerateAsynchronousFields:(id)fields
 {
-  v3 = a3;
-  v3[2](v3, @"image");
-  v3[2](v3, @"darkImage");
-  v3[2](v3, @"categoryIcon");
+  fieldsCopy = fields;
+  fieldsCopy[2](fieldsCopy, @"image");
+  fieldsCopy[2](fieldsCopy, @"darkImage");
+  fieldsCopy[2](fieldsCopy, @"categoryIcon");
 }
 
 - (CLLocationCoordinate2D)location
@@ -300,79 +300,79 @@
 
 - (id)_address
 {
-  v3 = [(LPMapMetadata *)self addressComponents];
-  v4 = [(LPMapMetadata *)self address];
-  v5 = formattedAddressWithFallback(v3, v4, [(LPMapMetadata *)self isPointOfInterest]);
+  addressComponents = [(LPMapMetadata *)self addressComponents];
+  address = [(LPMapMetadata *)self address];
+  v5 = formattedAddressWithFallback(addressComponents, address, [(LPMapMetadata *)self isPointOfInterest]);
 
   return v5;
 }
 
 - (id)_directionsSourceAddress
 {
-  v3 = [(LPMapMetadata *)self directionsSourceLocationName];
+  directionsSourceLocationName = [(LPMapMetadata *)self directionsSourceLocationName];
 
-  if (v3)
+  if (directionsSourceLocationName)
   {
-    v4 = [(LPMapMetadata *)self directionsSourceLocationName];
+    directionsSourceLocationName2 = [(LPMapMetadata *)self directionsSourceLocationName];
   }
 
   else
   {
-    v5 = [(LPMapMetadata *)self directionsSourceAddressComponents];
-    v6 = [(LPMapMetadata *)self directionsSourceAddress];
-    v4 = formattedAddressWithFallback(v5, v6, [(LPMapMetadata *)self isPointOfInterest]);
+    directionsSourceAddressComponents = [(LPMapMetadata *)self directionsSourceAddressComponents];
+    directionsSourceAddress = [(LPMapMetadata *)self directionsSourceAddress];
+    directionsSourceLocationName2 = formattedAddressWithFallback(directionsSourceAddressComponents, directionsSourceAddress, [(LPMapMetadata *)self isPointOfInterest]);
   }
 
-  return v4;
+  return directionsSourceLocationName2;
 }
 
 - (id)_directionsDestinationAddress
 {
-  v3 = [(LPMapMetadata *)self directionsDestinationLocationName];
+  directionsDestinationLocationName = [(LPMapMetadata *)self directionsDestinationLocationName];
 
-  if (v3)
+  if (directionsDestinationLocationName)
   {
-    v4 = [(LPMapMetadata *)self directionsDestinationLocationName];
+    directionsDestinationLocationName2 = [(LPMapMetadata *)self directionsDestinationLocationName];
   }
 
   else
   {
-    v5 = [(LPMapMetadata *)self directionsDestinationAddressComponents];
-    v6 = [(LPMapMetadata *)self directionsDestinationAddress];
-    v4 = formattedAddressWithFallback(v5, v6, [(LPMapMetadata *)self isPointOfInterest]);
+    directionsDestinationAddressComponents = [(LPMapMetadata *)self directionsDestinationAddressComponents];
+    directionsDestinationAddress = [(LPMapMetadata *)self directionsDestinationAddress];
+    directionsDestinationLocationName2 = formattedAddressWithFallback(directionsDestinationAddressComponents, directionsDestinationAddress, [(LPMapMetadata *)self isPointOfInterest]);
   }
 
-  return v4;
+  return directionsDestinationLocationName2;
 }
 
 - (BOOL)_isDirections
 {
-  v3 = [(LPMapMetadata *)self directionsSourceAddress];
-  if (v3)
+  directionsSourceAddress = [(LPMapMetadata *)self directionsSourceAddress];
+  if (directionsSourceAddress)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(LPMapMetadata *)self directionsSourceAddressComponents];
-    if (v5)
+    directionsSourceAddressComponents = [(LPMapMetadata *)self directionsSourceAddressComponents];
+    if (directionsSourceAddressComponents)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(LPMapMetadata *)self directionsDestinationAddress];
-      if (v6)
+      directionsDestinationAddress = [(LPMapMetadata *)self directionsDestinationAddress];
+      if (directionsDestinationAddress)
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(LPMapMetadata *)self directionsDestinationAddressComponents];
-        v4 = v7 != 0;
+        directionsDestinationAddressComponents = [(LPMapMetadata *)self directionsDestinationAddressComponents];
+        v4 = directionsDestinationAddressComponents != 0;
       }
     }
   }
@@ -388,32 +388,32 @@
     return 0;
   }
 
-  v4 = [(LPMapMetadata *)self name];
-  if (v4)
+  name = [(LPMapMetadata *)self name];
+  if (name)
   {
     v3 = 0;
   }
 
   else
   {
-    v5 = [(LPMapMetadata *)self searchQuery];
-    if (v5)
+    searchQuery = [(LPMapMetadata *)self searchQuery];
+    if (searchQuery)
     {
       v3 = 0;
     }
 
     else
     {
-      v6 = [(LPMapMetadata *)self address];
-      if (v6)
+      address = [(LPMapMetadata *)self address];
+      if (address)
       {
         v3 = 0;
       }
 
       else
       {
-        v7 = [(LPMapMetadata *)self addressComponents];
-        v3 = v7 == 0;
+        addressComponents = [(LPMapMetadata *)self addressComponents];
+        v3 = addressComponents == 0;
       }
     }
   }
@@ -423,90 +423,90 @@
 
 - (id)_name
 {
-  v3 = [(LPMapMetadata *)self name];
+  name = [(LPMapMetadata *)self name];
 
-  if (v3)
+  if (name)
   {
-    v4 = [(LPMapMetadata *)self name];
+    name2 = [(LPMapMetadata *)self name];
   }
 
   else
   {
-    v4 = [(LPMapMetadata *)self addressComponents];
+    name2 = [(LPMapMetadata *)self addressComponents];
 
-    if (v4)
+    if (name2)
     {
-      v5 = [(LPMapMetadata *)self addressComponents];
-      v4 = [v5 street];
+      addressComponents = [(LPMapMetadata *)self addressComponents];
+      name2 = [addressComponents street];
     }
   }
 
-  return v4;
+  return name2;
 }
 
 - (id)_deduplicatedAddress
 {
-  v3 = [(LPMapMetadata *)self _address];
-  v4 = [(LPMapMetadata *)self _name];
-  if ([v4 length] && objc_msgSend(v3, "_lp_hasCaseInsensitivePrefix:", v4))
+  _address = [(LPMapMetadata *)self _address];
+  _name = [(LPMapMetadata *)self _name];
+  if ([_name length] && objc_msgSend(_address, "_lp_hasCaseInsensitivePrefix:", _name))
   {
-    v5 = [v3 substringFromIndex:{objc_msgSend(v4, "length")}];
+    v5 = [_address substringFromIndex:{objc_msgSend(_name, "length")}];
 
-    v6 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v3 = [v5 stringByTrimmingCharactersInSet:v6];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    _address = [v5 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   }
 
-  return v3;
+  return _address;
 }
 
 - (id)_singleLineShortDescription
 {
   if ([(LPMapMetadata *)self _isOnlyCoordinates])
   {
-    v3 = [(LPMapMetadata *)self _singleLineVerboseDescription];
+    _singleLineVerboseDescription = [(LPMapMetadata *)self _singleLineVerboseDescription];
 LABEL_5:
-    v5 = v3;
+    v5 = _singleLineVerboseDescription;
     goto LABEL_6;
   }
 
-  v4 = [(LPMapMetadata *)self searchQuery];
+  searchQuery = [(LPMapMetadata *)self searchQuery];
 
-  if (v4)
+  if (searchQuery)
   {
-    v3 = [(LPMapMetadata *)self searchQuery];
+    _singleLineVerboseDescription = [(LPMapMetadata *)self searchQuery];
     goto LABEL_5;
   }
 
-  v7 = [(LPMapMetadata *)self _directionsDestinationAddress];
+  _directionsDestinationAddress = [(LPMapMetadata *)self _directionsDestinationAddress];
 
-  if (v7)
+  if (_directionsDestinationAddress)
   {
     v8 = MEMORY[0x1E696AEC0];
     v9 = LPLocalizedString(@"Directions to %@");
-    v10 = [(LPMapMetadata *)self _directionsDestinationAddress];
-    v11 = [v8 localizedStringWithFormat:v9, v10];
+    _directionsDestinationAddress2 = [(LPMapMetadata *)self _directionsDestinationAddress];
+    v11 = [v8 localizedStringWithFormat:v9, _directionsDestinationAddress2];
 LABEL_13:
     v5 = v11;
 
     goto LABEL_6;
   }
 
-  v12 = [(LPMapMetadata *)self _directionsSourceAddress];
+  _directionsSourceAddress = [(LPMapMetadata *)self _directionsSourceAddress];
 
-  if (v12)
+  if (_directionsSourceAddress)
   {
     v13 = MEMORY[0x1E696AEC0];
     v9 = LPLocalizedString(@"Directions from %@");
-    v10 = [(LPMapMetadata *)self _directionsSourceAddress];
-    v11 = [v13 localizedStringWithFormat:v9, v10];
+    _directionsDestinationAddress2 = [(LPMapMetadata *)self _directionsSourceAddress];
+    v11 = [v13 localizedStringWithFormat:v9, _directionsDestinationAddress2];
     goto LABEL_13;
   }
 
-  v14 = [(LPMapMetadata *)self _name];
+  _name = [(LPMapMetadata *)self _name];
 
-  if (v14)
+  if (_name)
   {
-    v3 = [(LPMapMetadata *)self _name];
+    _singleLineVerboseDescription = [(LPMapMetadata *)self _name];
     goto LABEL_5;
   }
 
@@ -521,51 +521,51 @@ LABEL_6:
   if ([(LPMapMetadata *)self _isOnlyCoordinates])
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = LPLocalizedString(@"Location: %@");
+    _name = LPLocalizedString(@"Location: %@");
     [(LPMapMetadata *)self location];
-    v7 = stringFromCLLocationCoordinate2D(v5, v6);
-    v8 = [v3 localizedStringWithFormat:v4, v7];
+    searchQuery2 = stringFromCLLocationCoordinate2D(v5, v6);
+    v8 = [v3 localizedStringWithFormat:_name, searchQuery2];
 LABEL_9:
     v15 = v8;
     goto LABEL_10;
   }
 
-  v9 = [(LPMapMetadata *)self searchQuery];
+  searchQuery = [(LPMapMetadata *)self searchQuery];
 
-  if (v9)
+  if (searchQuery)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v4 = LPLocalizedString(@"Search for “%@”");
-    v7 = [(LPMapMetadata *)self searchQuery];
-    v8 = [v10 localizedStringWithFormat:v4, v7];
+    _name = LPLocalizedString(@"Search for “%@”");
+    searchQuery2 = [(LPMapMetadata *)self searchQuery];
+    v8 = [v10 localizedStringWithFormat:_name, searchQuery2];
     goto LABEL_9;
   }
 
-  v11 = [(LPMapMetadata *)self _directionsDestinationAddress];
+  _directionsDestinationAddress = [(LPMapMetadata *)self _directionsDestinationAddress];
 
-  if (v11)
+  if (_directionsDestinationAddress)
   {
     v12 = MEMORY[0x1E696AEC0];
-    v4 = LPLocalizedString(@"Directions to %@");
-    v7 = [(LPMapMetadata *)self _directionsDestinationAddress];
-    v8 = [v12 localizedStringWithFormat:v4, v7];
+    _name = LPLocalizedString(@"Directions to %@");
+    searchQuery2 = [(LPMapMetadata *)self _directionsDestinationAddress];
+    v8 = [v12 localizedStringWithFormat:_name, searchQuery2];
     goto LABEL_9;
   }
 
-  v13 = [(LPMapMetadata *)self _directionsSourceAddress];
+  _directionsSourceAddress = [(LPMapMetadata *)self _directionsSourceAddress];
 
-  if (v13)
+  if (_directionsSourceAddress)
   {
     v14 = MEMORY[0x1E696AEC0];
-    v4 = LPLocalizedString(@"Directions from %@");
-    v7 = [(LPMapMetadata *)self _directionsSourceAddress];
-    v8 = [v14 localizedStringWithFormat:v4, v7];
+    _name = LPLocalizedString(@"Directions from %@");
+    searchQuery2 = [(LPMapMetadata *)self _directionsSourceAddress];
+    v8 = [v14 localizedStringWithFormat:_name, searchQuery2];
     goto LABEL_9;
   }
 
-  v4 = [(LPMapMetadata *)self _name];
-  v7 = [(LPMapMetadata *)self _deduplicatedAddress];
-  v17 = joinedBySpace(v4, v7);
+  _name = [(LPMapMetadata *)self _name];
+  searchQuery2 = [(LPMapMetadata *)self _deduplicatedAddress];
+  v17 = joinedBySpace(_name, searchQuery2);
   v15 = [v17 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
 
 LABEL_10:
@@ -573,12 +573,12 @@ LABEL_10:
   return v15;
 }
 
-- (id)_topLineForTransformer:(id)a3
+- (id)_topLineForTransformer:(id)transformer
 {
-  v4 = a3;
+  transformerCopy = transformer;
   if ([(LPMapMetadata *)self _isOnlyCoordinates])
   {
-    if ([v4 isInSenderContext])
+    if ([transformerCopy isInSenderContext])
     {
       LPLocalizedString(@"Your Location");
     }
@@ -587,74 +587,74 @@ LABEL_10:
     {
       LPLocalizedString(@"Location");
     }
-    v5 = ;
+    searchQuery2 = ;
   }
 
   else
   {
-    v6 = [(LPMapMetadata *)self searchQuery];
+    searchQuery = [(LPMapMetadata *)self searchQuery];
 
-    if (v6)
+    if (searchQuery)
     {
-      v5 = [(LPMapMetadata *)self searchQuery];
+      searchQuery2 = [(LPMapMetadata *)self searchQuery];
     }
 
     else if ([(LPMapMetadata *)self _isDirections])
     {
-      if ([v4 effectiveSizeClass] != 2 || (-[LPMapMetadata distance](self, "distance"), v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
+      if ([transformerCopy effectiveSizeClass] != 2 || (-[LPMapMetadata distance](self, "distance"), v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
       {
-        v10 = [(LPMapMetadata *)self _directionsDestinationAddress];
-        v11 = v10;
-        if (v10)
+        _directionsDestinationAddress = [(LPMapMetadata *)self _directionsDestinationAddress];
+        v11 = _directionsDestinationAddress;
+        if (_directionsDestinationAddress)
         {
-          v12 = v10;
+          _directionsSourceAddress = _directionsDestinationAddress;
         }
 
         else
         {
-          v12 = [(LPMapMetadata *)self _directionsSourceAddress];
+          _directionsSourceAddress = [(LPMapMetadata *)self _directionsSourceAddress];
         }
 
-        v8 = v12;
+        v8 = _directionsSourceAddress;
 
         goto LABEL_14;
       }
 
-      v5 = [(LPMapMetadata *)self _singleLineVerboseDescription];
+      searchQuery2 = [(LPMapMetadata *)self _singleLineVerboseDescription];
     }
 
     else
     {
-      v5 = [(LPMapMetadata *)self _name];
+      searchQuery2 = [(LPMapMetadata *)self _name];
     }
   }
 
-  v8 = v5;
+  v8 = searchQuery2;
 LABEL_14:
 
   return v8;
 }
 
-- (id)_topLineForThreeUpForTransformer:(id)a3
+- (id)_topLineForThreeUpForTransformer:(id)transformer
 {
-  v4 = [(LPMapMetadata *)self _topLineForTransformer:a3];
+  v4 = [(LPMapMetadata *)self _topLineForTransformer:transformer];
   if (!-[LPMapMetadata isPointOfInterest](self, "isPointOfInterest") && (-[LPMapMetadata addressComponents](self, "addressComponents"), (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (-[LPMapMetadata name](self, "name"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v4 isEqualToString:v6], v6, v5, v7))
   {
-    v8 = [(LPMapMetadata *)self addressComponents];
-    v9 = [v8 street];
+    addressComponents = [(LPMapMetadata *)self addressComponents];
+    street = [addressComponents street];
   }
 
   else
   {
-    v9 = v4;
+    street = v4;
   }
 
-  return v9;
+  return street;
 }
 
-- (id)_bottomLineForTwoUpForTransformer:(id)a3
+- (id)_bottomLineForTwoUpForTransformer:(id)transformer
 {
-  v4 = a3;
+  transformerCopy = transformer;
   if ([(LPMapMetadata *)self _isOnlyCoordinates])
   {
     [(LPMapMetadata *)self location];
@@ -663,19 +663,19 @@ LABEL_14:
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v9 = [(LPMapMetadata *)self category];
+  category = [(LPMapMetadata *)self category];
 
-  if (v9)
+  if (category)
   {
-    v10 = [(LPMapMetadata *)self category];
-    [v8 appendString:v10];
+    category2 = [(LPMapMetadata *)self category];
+    [v8 appendString:category2];
   }
 
   if ([(LPMapMetadata *)self _isDirections])
   {
-    v11 = [(LPMapMetadata *)self distance];
+    distance = [(LPMapMetadata *)self distance];
 
-    if (v11)
+    if (distance)
     {
       v22 = 0;
       v23 = &v22;
@@ -701,8 +701,8 @@ LABEL_14:
         [v8 appendString:@" · "];
       }
 
-      v15 = [(LPMapMetadata *)self distance];
-      [v15 doubleValue];
+      distance2 = [(LPMapMetadata *)self distance];
+      [distance2 doubleValue];
       v16 = [v14 stringFromDistance:?];
       [v8 appendString:v16];
     }
@@ -723,12 +723,12 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v17 = [(LPMapMetadata *)self addressComponents];
+  addressComponents = [(LPMapMetadata *)self addressComponents];
 
-  if (v17)
+  if (addressComponents)
   {
-    v18 = [(LPMapMetadata *)self addressComponents];
-    v19 = cityAndState(v18);
+    addressComponents2 = [(LPMapMetadata *)self addressComponents];
+    v19 = cityAndState(addressComponents2);
 
     if ([v19 length])
     {
@@ -761,9 +761,9 @@ LABEL_24:
     return 59;
   }
 
-  v4 = [(LPMapMetadata *)self searchQuery];
+  searchQuery = [(LPMapMetadata *)self searchQuery];
 
-  if (v4)
+  if (searchQuery)
   {
     return 32;
   }
@@ -776,37 +776,37 @@ LABEL_24:
 
 - (id)_resolvedImage
 {
-  v3 = [(LPMapMetadata *)self image];
-  v4 = [v3 platformImage];
+  image = [(LPMapMetadata *)self image];
+  platformImage = [image platformImage];
 
-  if (v4)
+  if (platformImage)
   {
     v5 = [LPImage alloc];
-    v6 = [(LPMapMetadata *)self image];
-    v4 = [(LPImage *)v5 _initWithImage:v6];
+    image2 = [(LPMapMetadata *)self image];
+    platformImage = [(LPImage *)v5 _initWithImage:image2];
 
-    v7 = [(LPMapMetadata *)self darkImage];
-    [v4 _setDarkInterfaceAlternativeImage:v7];
+    darkImage = [(LPMapMetadata *)self darkImage];
+    [platformImage _setDarkInterfaceAlternativeImage:darkImage];
   }
 
-  return v4;
+  return platformImage;
 }
 
 - (id)_iconForTransport
 {
-  v3 = [(LPMapMetadata *)self transportType];
+  transportType = [(LPMapMetadata *)self transportType];
 
-  if (!v3)
+  if (!transportType)
   {
     goto LABEL_5;
   }
 
-  v4 = [(LPMapMetadata *)self transportType];
-  v5 = [v4 integerValue];
+  transportType2 = [(LPMapMetadata *)self transportType];
+  integerValue = [transportType2 integerValue];
 
-  if (v5 <= 1)
+  if (integerValue <= 1)
   {
-    if (v5 == 1)
+    if (integerValue == 1)
     {
       v6 = +[LPResources transportTransitIcon];
       goto LABEL_6;
@@ -815,9 +815,9 @@ LABEL_24:
     goto LABEL_5;
   }
 
-  if (v5 != 2)
+  if (integerValue != 2)
   {
-    if (v5 == 3)
+    if (integerValue == 3)
     {
       v6 = +[LPResources transportBicycleIcon];
       goto LABEL_6;
@@ -834,82 +834,82 @@ LABEL_6:
   return v6;
 }
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [v4 commonPresentationPropertiesForStyle:{-[LPMapMetadata _style](self, "_style")}];
+  transformerCopy = transformer;
+  v5 = [transformerCopy commonPresentationPropertiesForStyle:{-[LPMapMetadata _style](self, "_style")}];
   v6 = objc_alloc_init(LPCaptionBarPresentationProperties);
   [v5 setCaptionBar:v6];
 
   if ([v5 style] == 59)
   {
-    v7 = +[LPResources mapCoordinatesIcon];
-    [v5 setImage:v7];
+    categoryIcon = +[LPResources mapCoordinatesIcon];
+    [v5 setImage:categoryIcon];
   }
 
   else if ([(LPMapMetadata *)self _isDirections])
   {
-    v7 = objc_alloc_init(LPImagePresentationProperties);
-    if (!sizeClassRequiresLargeMedia([v4 effectiveSizeClass]) && objc_msgSend(v4, "effectiveSizeClass") != 10)
+    categoryIcon = objc_alloc_init(LPImagePresentationProperties);
+    if (!sizeClassRequiresLargeMedia([transformerCopy effectiveSizeClass]) && objc_msgSend(transformerCopy, "effectiveSizeClass") != 10)
     {
-      [(LPImagePresentationProperties *)v7 setFilter:13];
-      v8 = [MEMORY[0x1E69DC888] systemBlueColor];
-      [(LPImagePresentationProperties *)v7 setBackgroundColor:v8];
+      [(LPImagePresentationProperties *)categoryIcon setFilter:13];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      [(LPImagePresentationProperties *)categoryIcon setBackgroundColor:systemBlueColor];
 
-      v9 = [MEMORY[0x1E69DC888] whiteColor];
-      [(LPImagePresentationProperties *)v7 setMaskColor:v9];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(LPImagePresentationProperties *)categoryIcon setMaskColor:whiteColor];
 
-      [(LPImagePresentationProperties *)v7 setShouldApplyBackground:1];
+      [(LPImagePresentationProperties *)categoryIcon setShouldApplyBackground:1];
     }
 
-    v10 = [(LPMapMetadata *)self _iconForTransport];
-    [v4 _populateProperties:v5 withPrimaryIcon:v10 iconProperties:v7];
+    _iconForTransport = [(LPMapMetadata *)self _iconForTransport];
+    [transformerCopy _populateProperties:v5 withPrimaryIcon:_iconForTransport iconProperties:categoryIcon];
   }
 
   else
   {
-    if ([v4 _prefersImageAsIconWithStyle:{-[LPMapMetadata _style](self, "_style")}] && (-[LPMapMetadata categoryIcon](self, "categoryIcon"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+    if ([transformerCopy _prefersImageAsIconWithStyle:{-[LPMapMetadata _style](self, "_style")}] && (-[LPMapMetadata categoryIcon](self, "categoryIcon"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
     {
-      v7 = [(LPMapMetadata *)self categoryIcon];
+      categoryIcon = [(LPMapMetadata *)self categoryIcon];
     }
 
     else
     {
-      v7 = [(LPMapMetadata *)self _resolvedImage];
-      v12 = [(LPMapMetadata *)self darkImage];
+      categoryIcon = [(LPMapMetadata *)self _resolvedImage];
+      darkImage = [(LPMapMetadata *)self darkImage];
 
-      if (v12)
+      if (darkImage)
       {
-        v13 = [(LPMapMetadata *)self darkImage];
-        [(LPImagePresentationProperties *)v7 _setDarkInterfaceAlternativeImage:v13];
+        darkImage2 = [(LPMapMetadata *)self darkImage];
+        [(LPImagePresentationProperties *)categoryIcon _setDarkInterfaceAlternativeImage:darkImage2];
       }
     }
 
-    [v4 _populateProperties:v5 withPrimaryImage:v7];
+    [transformerCopy _populateProperties:v5 withPrimaryImage:categoryIcon];
   }
 
-  v14 = [v4 _rowConfigurationForStyle:{objc_msgSend(v5, "style")}];
+  v14 = [transformerCopy _rowConfigurationForStyle:{objc_msgSend(v5, "style")}];
   if (v14 <= 1)
   {
     if (!v14)
     {
-      v19 = LPLocalizedString(@" Maps");
-      v26 = [(LPMapMetadata *)self _singleLineShortDescription];
-      v20 = v26;
-      if (v26)
+      _name = LPLocalizedString(@" Maps");
+      _singleLineShortDescription = [(LPMapMetadata *)self _singleLineShortDescription];
+      captionBar10 = _singleLineShortDescription;
+      if (_singleLineShortDescription)
       {
-        v27 = v26;
+        v27 = _singleLineShortDescription;
       }
 
       else
       {
-        v27 = v19;
+        v27 = _name;
       }
 
-      v28 = [v5 captionBar];
-      v29 = [v28 top];
-      v30 = [v29 leading];
-      [v30 setText:v27];
+      captionBar = [v5 captionBar];
+      captionBar4 = [captionBar top];
+      leading = [captionBar4 leading];
+      [leading setText:v27];
       goto LABEL_44;
     }
 
@@ -918,27 +918,27 @@ LABEL_6:
       goto LABEL_48;
     }
 
-    v15 = [(LPMapMetadata *)self _topLineForTransformer:v4];
-    v16 = [v5 captionBar];
-    v17 = [v16 top];
-    v18 = [v17 leading];
-    [v18 setText:v15];
+    v15 = [(LPMapMetadata *)self _topLineForTransformer:transformerCopy];
+    captionBar2 = [v5 captionBar];
+    v17 = [captionBar2 top];
+    leading2 = [v17 leading];
+    [leading2 setText:v15];
 
-    v19 = [(LPMapMetadata *)self _bottomLineForTwoUpForTransformer:v4];
-    if ([v5 style] == 59 || sizeClassIsCardHeading(objc_msgSend(v4, "effectiveSizeClass")))
+    _name = [(LPMapMetadata *)self _bottomLineForTwoUpForTransformer:transformerCopy];
+    if ([v5 style] == 59 || sizeClassIsCardHeading(objc_msgSend(transformerCopy, "effectiveSizeClass")))
     {
-      v20 = v19;
-      if (!v19)
+      captionBar10 = _name;
+      if (!_name)
       {
-        v20 = LPLocalizedString(@" Maps");
+        captionBar10 = LPLocalizedString(@" Maps");
       }
 
-      v21 = [v5 captionBar];
-      v22 = [v21 bottom];
-      v23 = [v22 leading];
-      [v23 setText:v20];
+      captionBar3 = [v5 captionBar];
+      bottom = [captionBar3 bottom];
+      leading3 = [bottom leading];
+      [leading3 setText:captionBar10];
 
-      if (v19)
+      if (_name)
       {
         goto LABEL_47;
       }
@@ -946,12 +946,12 @@ LABEL_6:
       goto LABEL_46;
     }
 
-    v20 = LPLocalizedString(@" Maps");
-    v28 = joinedByDot(v20, v19);
-    v29 = [v5 captionBar];
-    v30 = [v29 bottom];
-    v40 = [v30 leading];
-    [v40 setText:v28];
+    captionBar10 = LPLocalizedString(@" Maps");
+    captionBar = joinedByDot(captionBar10, _name);
+    captionBar4 = [v5 captionBar];
+    leading = [captionBar4 bottom];
+    v30Leading = [leading leading];
+    [v30Leading setText:captionBar];
 LABEL_43:
 
 LABEL_44:
@@ -965,97 +965,97 @@ LABEL_44:
       goto LABEL_48;
     }
 
-    v24 = [(LPMapMetadata *)self _topLineForTransformer:v4];
+    v24 = [(LPMapMetadata *)self _topLineForTransformer:transformerCopy];
     if ([(LPMapMetadata *)self _isDirections])
     {
-      v25 = LPLocalizedString(@"Directions");
+      _deduplicatedAddress = LPLocalizedString(@"Directions");
     }
 
     else
     {
-      v39 = [(LPMapMetadata *)self searchQuery];
+      searchQuery = [(LPMapMetadata *)self searchQuery];
 
-      if (v39)
+      if (searchQuery)
       {
-        v20 = 0;
+        captionBar10 = 0;
         goto LABEL_37;
       }
 
-      v25 = [(LPMapMetadata *)self _deduplicatedAddress];
+      _deduplicatedAddress = [(LPMapMetadata *)self _deduplicatedAddress];
     }
 
-    v20 = v25;
+    captionBar10 = _deduplicatedAddress;
 LABEL_37:
-    v41 = [v4 metadata];
-    v42 = [v41 URL];
+    metadata = [transformerCopy metadata];
+    v42 = [metadata URL];
     v43 = [LPPresentationSpecializations isMuninURL:v42];
 
     if (v43)
     {
       v44 = LPLocalizedString(@"Look Around");
-      v45 = [v5 captionBar];
-      v46 = [v45 aboveTop];
-      v47 = [v46 leading];
-      [v47 setText:v44];
+      captionBar5 = [v5 captionBar];
+      aboveTop = [captionBar5 aboveTop];
+      leading4 = [aboveTop leading];
+      [leading4 setText:v44];
 
-      v19 = [(LPMapMetadata *)self _name];
+      _name = [(LPMapMetadata *)self _name];
 
-      if (!v19)
+      if (!_name)
       {
 LABEL_39:
-        v48 = [v5 captionBar];
-        v49 = [v48 top];
-        v50 = [v49 leading];
-        [v50 setText:v20];
+        captionBar6 = [v5 captionBar];
+        bottom2 = [captionBar6 top];
+        leading5 = [bottom2 leading];
+        [leading5 setText:captionBar10];
 LABEL_42:
 
-        v28 = LPLocalizedString(@" Maps");
-        v29 = [v5 captionBar];
-        v30 = [v29 belowBottom];
-        v40 = [v30 leading];
-        [v40 setText:v28];
+        captionBar = LPLocalizedString(@" Maps");
+        captionBar4 = [v5 captionBar];
+        leading = [captionBar4 belowBottom];
+        v30Leading = [leading leading];
+        [v30Leading setText:captionBar];
         goto LABEL_43;
       }
     }
 
     else
     {
-      v19 = v24;
+      _name = v24;
       if (!v24)
       {
         goto LABEL_39;
       }
     }
 
-    v51 = [v5 captionBar];
-    v52 = [v51 top];
-    v53 = [v52 leading];
-    [v53 setText:v19];
+    captionBar7 = [v5 captionBar];
+    v52 = [captionBar7 top];
+    leading6 = [v52 leading];
+    [leading6 setText:_name];
 
-    v48 = [v5 captionBar];
-    v49 = [v48 bottom];
-    v50 = [v49 leading];
-    [v50 setText:v20];
+    captionBar6 = [v5 captionBar];
+    bottom2 = [captionBar6 bottom];
+    leading5 = [bottom2 leading];
+    [leading5 setText:captionBar10];
     goto LABEL_42;
   }
 
-  v31 = [(LPMapMetadata *)self _topLineForThreeUpForTransformer:v4];
-  v32 = [v5 captionBar];
-  v33 = [v32 top];
-  v34 = [v33 leading];
-  [v34 setText:v31];
+  v31 = [(LPMapMetadata *)self _topLineForThreeUpForTransformer:transformerCopy];
+  captionBar8 = [v5 captionBar];
+  v33 = [captionBar8 top];
+  leading7 = [v33 leading];
+  [leading7 setText:v31];
 
-  v35 = [(LPMapMetadata *)self _bottomLineForTwoUpForTransformer:v4];
-  v36 = [v5 captionBar];
-  v37 = [v36 bottom];
-  v38 = [v37 leading];
-  [v38 setText:v35];
+  v35 = [(LPMapMetadata *)self _bottomLineForTwoUpForTransformer:transformerCopy];
+  captionBar9 = [v5 captionBar];
+  bottom3 = [captionBar9 bottom];
+  leading8 = [bottom3 leading];
+  [leading8 setText:v35];
 
-  v19 = LPLocalizedString(@" Maps");
-  v20 = [v5 captionBar];
-  v28 = [v20 belowBottom];
-  v29 = [v28 leading];
-  [v29 setText:v19];
+  _name = LPLocalizedString(@" Maps");
+  captionBar10 = [v5 captionBar];
+  captionBar = [captionBar10 belowBottom];
+  captionBar4 = [captionBar leading];
+  [captionBar4 setText:_name];
 LABEL_45:
 
 LABEL_46:
@@ -1066,41 +1066,41 @@ LABEL_48:
   return v5;
 }
 
-- (id)previewSummaryForTransformer:(id)a3
+- (id)previewSummaryForTransformer:(id)transformer
 {
   if ([(LPMapMetadata *)self _isOnlyCoordinates])
   {
-    v4 = [(LPMapMetadata *)self _singleLineVerboseDescription];
+    _singleLineVerboseDescription = [(LPMapMetadata *)self _singleLineVerboseDescription];
   }
 
   else
   {
     v5 = MEMORY[0x1E696AEC0];
     v6 = LPLocalizedString(@"Location: %@");
-    v7 = [(LPMapMetadata *)self _name];
-    v8 = v7;
-    if (!v7)
+    _name = [(LPMapMetadata *)self _name];
+    _singleLineVerboseDescription2 = _name;
+    if (!_name)
     {
-      v8 = [(LPMapMetadata *)self _singleLineVerboseDescription];
+      _singleLineVerboseDescription2 = [(LPMapMetadata *)self _singleLineVerboseDescription];
     }
 
-    v4 = [v5 localizedStringWithFormat:v6, v8];
-    if (!v7)
+    _singleLineVerboseDescription = [v5 localizedStringWithFormat:v6, _singleLineVerboseDescription2];
+    if (!_name)
     {
     }
   }
 
-  return v4;
+  return _singleLineVerboseDescription;
 }
 
-- (id)previewImageForTransformer:(id)a3
+- (id)previewImageForTransformer:(id)transformer
 {
-  v3 = [(LPMapMetadata *)self image];
+  image = [(LPMapMetadata *)self image];
 
-  return v3;
+  return image;
 }
 
-- (id)fallbackIconForTransformer:(id)a3
+- (id)fallbackIconForTransformer:(id)transformer
 {
   if ([(LPMapMetadata *)self _isOnlyCoordinates])
   {
@@ -1124,14 +1124,14 @@ LABEL_48:
   return v4;
 }
 
-- (void)populateMetadataForBackwardCompatibility:(id)a3
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility
 {
-  v6 = a3;
-  v4 = [(LPMapMetadata *)self _singleLineVerboseDescription];
-  [v6 setTitle:v4];
+  compatibilityCopy = compatibility;
+  _singleLineVerboseDescription = [(LPMapMetadata *)self _singleLineVerboseDescription];
+  [compatibilityCopy setTitle:_singleLineVerboseDescription];
 
-  v5 = [(LPMapMetadata *)self image];
-  [v6 setImage:v5];
+  image = [(LPMapMetadata *)self image];
+  [compatibilityCopy setImage:image];
 }
 
 @end

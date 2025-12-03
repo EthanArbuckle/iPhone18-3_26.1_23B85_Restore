@@ -3,26 +3,26 @@
 - (BOOL)isMultichannel;
 - (BOOL)isMultichannelAvailable;
 - (BOOL)isSpatialAudioActive;
-- (MRUSpatialAudioController)initWithOutputDeviceRouteController:(id)a3;
+- (MRUSpatialAudioController)initWithOutputDeviceRouteController:(id)controller;
 - (MRUSpatialAudioControllerDelegate)delegate;
 - (NSString)description;
-- (id)localizedStringForRenderingMode:(int64_t)a3;
-- (id)preferenceForBundleID:(id)a3 outputDevice:(id)a4;
-- (id)preferencesForMode:(id)a3 previousPreferences:(id)a4;
+- (id)localizedStringForRenderingMode:(int64_t)mode;
+- (id)preferenceForBundleID:(id)d outputDevice:(id)device;
+- (id)preferencesForMode:(id)mode previousPreferences:(id)preferences;
 - (void)accessibilityHeadTrackChangedNotification;
 - (void)dealloc;
-- (void)expanseManagerDidJoinExpanseSession:(id)a3;
-- (void)expanseManagerDidLeaveExpanseSession:(id)a3;
-- (void)nowPlayingAudioFormatController:(id)a3 didChangeAudioFormatApplication:(id)a4;
-- (void)nowPlayingAudioFormatController:(id)a3 didChangeAudioFormatContentInfo:(id)a4;
+- (void)expanseManagerDidJoinExpanseSession:(id)session;
+- (void)expanseManagerDidLeaveExpanseSession:(id)session;
+- (void)nowPlayingAudioFormatController:(id)controller didChangeAudioFormatApplication:(id)application;
+- (void)nowPlayingAudioFormatController:(id)controller didChangeAudioFormatContentInfo:(id)info;
 - (void)resetOptimisticSpatialAudioActive;
-- (void)setPreferences:(id)a3 forBundleID:(id)a4 outputDevice:(id)a5;
-- (void)setSelectedMode:(id)a3;
+- (void)setPreferences:(id)preferences forBundleID:(id)d outputDevice:(id)device;
+- (void)setSelectedMode:(id)mode;
 - (void)startMonitoring;
 - (void)startOptimisticSpatialAudioActive;
 - (void)stopMonitoring;
 - (void)stopOptimisticSpatialAudioActive;
-- (void)systemOutputDeviceRouteControllerDidUpdateOutputDevices:(id)a3;
+- (void)systemOutputDeviceRouteControllerDidUpdateOutputDevices:(id)devices;
 - (void)updateDeviceSpatialAudioSupported;
 - (void)updateHeadTrackingAvailable;
 - (void)updateNowPlaying;
@@ -41,14 +41,14 @@
 - (void)updateSpatialAudioModes
 {
   v57 = *MEMORY[0x1E69E9840];
-  v3 = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatApplication];
-  v4 = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
-  v5 = [v4 bundleID];
-  v6 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
-  v7 = [(MRUSpatialAudioController *)self preferenceForBundleID:v5 outputDevice:v6];
+  audioFormatApplication = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatApplication];
+  audioFormatContentInfo = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
+  bundleID = [audioFormatContentInfo bundleID];
+  primaryOutputDeviceRoute = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
+  v7 = [(MRUSpatialAudioController *)self preferenceForBundleID:bundleID outputDevice:primaryOutputDeviceRoute];
 
-  v8 = [(MRUSpatialAudioController *)self isSpatialAudioActive];
-  if ([v3 isFaceTime])
+  isSpatialAudioActive = [(MRUSpatialAudioController *)self isSpatialAudioActive];
+  if ([audioFormatApplication isFaceTime])
   {
     v9 = self->_accessoryStereoHFPStatus == 2;
   }
@@ -66,7 +66,7 @@
     goto LABEL_23;
   }
 
-  v35 = v8;
+  v35 = isSpatialAudioActive;
   v11 = MEMORY[0x1E695DF70];
   v12 = [[MRUSpatialAudioMode alloc] initWithType:0];
   v13 = [[MRUSpatialAudioMode alloc] initWithType:1];
@@ -138,65 +138,65 @@ LABEL_23:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     v34 = v21;
-    v25 = v3;
+    v25 = audioFormatApplication;
     v26 = objc_opt_class();
-    v31 = [(NSTimer *)self->_optimisticSpatialAudioActiveTimer isValid];
+    isValid = [(NSTimer *)self->_optimisticSpatialAudioActiveTimer isValid];
     isDeviceSpatialAudioSupported = self->_isDeviceSpatialAudioSupported;
     accessoryStereoHFPStatus = self->_accessoryStereoHFPStatus;
     v36 = v18;
-    v27 = [(MRUSpatialAccessibilityObserver *)self->_accessibilityObserver isHeadTrackingEnabled];
+    isHeadTrackingEnabled = [(MRUSpatialAccessibilityObserver *)self->_accessibilityObserver isHeadTrackingEnabled];
     v28 = v14;
-    v29 = [(MRUSpatialAccessibilityObserver *)self->_accessibilityObserver isMonoAudioEnabled];
-    v30 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController isSplitRoute];
+    isMonoAudioEnabled = [(MRUSpatialAccessibilityObserver *)self->_accessibilityObserver isMonoAudioEnabled];
+    isSplitRoute = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController isSplitRoute];
     *buf = 138545666;
     v38 = v26;
-    v3 = v25;
+    audioFormatApplication = v25;
     v39 = 2114;
     v40 = v7;
     v41 = 2114;
     v42 = v25;
     v43 = 2114;
-    v44 = v4;
+    v44 = audioFormatContentInfo;
     v45 = 1024;
-    v46 = v31;
+    v46 = isValid;
     v47 = 1024;
     v48 = isDeviceSpatialAudioSupported;
     v49 = 1024;
     v50 = accessoryStereoHFPStatus;
     v51 = 1024;
-    v52 = v27;
+    v52 = isHeadTrackingEnabled;
     v21 = v34;
     v18 = v36;
     v53 = 1024;
-    v54 = v29;
+    v54 = isMonoAudioEnabled;
     v14 = v28;
     v55 = 1024;
-    v56 = v30;
+    v56 = isSplitRoute;
     _os_log_impl(&dword_1A20FC000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ update modes - pref: %{public}@ | application: %{public}@ | contentInfo: %{public}@ | OptActive: %{BOOL}u | Supported: %{BOOL}u | HFP: %{PUBLIC}i | HTAcess: %{BOOL}u | Mono: %{BOOL}u | split: %{BOOL}u", buf, 0x4Eu);
   }
 }
 
 - (BOOL)isSpatialAudioActive
 {
-  v3 = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
-  v4 = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatApplication];
-  v5 = ([v4 isFaceTime] & 1) != 0 || (objc_msgSend(v3, "isSpatialized") & 1) != 0 || -[NSTimer isValid](self->_optimisticSpatialAudioActiveTimer, "isValid");
+  audioFormatContentInfo = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
+  audioFormatApplication = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatApplication];
+  v5 = ([audioFormatApplication isFaceTime] & 1) != 0 || (objc_msgSend(audioFormatContentInfo, "isSpatialized") & 1) != 0 || -[NSTimer isValid](self->_optimisticSpatialAudioActiveTimer, "isValid");
 
   return v5;
 }
 
 - (BOOL)isMultichannel
 {
-  v3 = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatApplication];
-  if ([v3 isFaceTime])
+  audioFormatApplication = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatApplication];
+  if ([audioFormatApplication isFaceTime])
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v5 = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
-    if ([v5 isMultichannel])
+    audioFormatContentInfo = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
+    if ([audioFormatContentInfo isMultichannel])
     {
       LOBYTE(v4) = 1;
     }
@@ -212,28 +212,28 @@ LABEL_23:
 
 - (BOOL)isEnabled
 {
-  v3 = [MEMORY[0x1E69B0A28] sharedManager];
-  v4 = [v3 expanseSessionHasScreenSharingActivity];
+  mEMORY[0x1E69B0A28] = [MEMORY[0x1E69B0A28] sharedManager];
+  expanseSessionHasScreenSharingActivity = [mEMORY[0x1E69B0A28] expanseSessionHasScreenSharingActivity];
 
-  if (v4)
+  if (expanseSessionHasScreenSharingActivity)
   {
     return 0;
   }
 
-  v6 = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatApplication];
-  v7 = [v6 isFaceTime];
+  audioFormatApplication = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatApplication];
+  isFaceTime = [audioFormatApplication isFaceTime];
 
-  if (v7)
+  if (isFaceTime)
   {
     return 1;
   }
 
-  v8 = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
-  if ([v8 isEligibleForSpatialization])
+  audioFormatContentInfo = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
+  if ([audioFormatContentInfo isEligibleForSpatialization])
   {
-    v9 = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
-    v10 = [v9 audioFormatDescription];
-    v5 = v10 != 0;
+    audioFormatContentInfo2 = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
+    audioFormatDescription = [audioFormatContentInfo2 audioFormatDescription];
+    v5 = audioFormatDescription != 0;
   }
 
   else
@@ -246,23 +246,23 @@ LABEL_23:
 
 - (void)updateNowPlaying
 {
-  v15 = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatApplication];
-  v3 = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
-  v4 = [v15 bundleID];
-  v5 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
-  v6 = [(MRUSpatialAudioController *)self preferenceForBundleID:v4 outputDevice:v5];
+  audioFormatApplication = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatApplication];
+  audioFormatContentInfo = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
+  bundleID = [audioFormatApplication bundleID];
+  primaryOutputDeviceRoute = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
+  v6 = [(MRUSpatialAudioController *)self preferenceForBundleID:bundleID outputDevice:primaryOutputDeviceRoute];
 
-  v7 = [v3 renderingMode];
-  if ([v15 isFaceTime])
+  renderingMode = [audioFormatContentInfo renderingMode];
+  if ([audioFormatApplication isFaceTime])
   {
     v8 = +[MRUStringsProvider spatialButtonTitle];
   }
 
-  else if (self->_isDeviceSpatialAudioSupported || (v7 - 6) < 0xFFFFFFFFFFFFFFFDLL)
+  else if (self->_isDeviceSpatialAudioSupported || (renderingMode - 6) < 0xFFFFFFFFFFFFFFFDLL)
   {
     if ([(NSTimer *)self->_optimisticSpatialAudioActiveTimer isValid]&& [(MRUSpatialAudioController *)self isMultichannel])
     {
-      if ([v3 bestAvailableAudioFormat] == 2)
+      if ([audioFormatContentInfo bestAvailableAudioFormat] == 2)
       {
         +[MRUStringsProvider bestAvailableAudioFormatAtmos];
       }
@@ -275,31 +275,31 @@ LABEL_23:
 
     else if ([v6 mode])
     {
-      [v3 audioFormatDescription];
+      [audioFormatContentInfo audioFormatDescription];
     }
 
     else
     {
-      [v3 bestAvailableAudioFormatDescription];
+      [audioFormatContentInfo bestAvailableAudioFormatDescription];
     }
     v8 = ;
   }
 
   else
   {
-    v8 = [(MRUSpatialAudioController *)self localizedStringForRenderingMode:v7];
+    v8 = [(MRUSpatialAudioController *)self localizedStringForRenderingMode:renderingMode];
   }
 
   v9 = v8;
   if ([(MRUSpatialAudioController *)self isEnabled])
   {
-    if (!self->_isDeviceSpatialAudioSupported && (v7 - 3) >= 3)
+    if (!self->_isDeviceSpatialAudioSupported && (renderingMode - 3) >= 3)
     {
       goto LABEL_18;
     }
   }
 
-  else if ((v7 - 3) > 2)
+  else if ((renderingMode - 3) > 2)
   {
 LABEL_18:
     v10 = 0;
@@ -307,9 +307,9 @@ LABEL_18:
   }
 
   v11 = [MRUVolumeNowPlayingInfo alloc];
-  v12 = [v15 bundleID];
-  v13 = [v15 displayName];
-  v10 = [(MRUVolumeNowPlayingInfo *)v11 initWithBundleID:v12 name:v13 formatDescription:v9];
+  bundleID2 = [audioFormatApplication bundleID];
+  displayName = [audioFormatApplication displayName];
+  v10 = [(MRUVolumeNowPlayingInfo *)v11 initWithBundleID:bundleID2 name:displayName formatDescription:v9];
 
 LABEL_21:
   if (![(MRUVolumeNowPlayingInfo *)self->_nowPlayingInfo isEqual:v10])
@@ -322,32 +322,32 @@ LABEL_21:
 
 - (void)updateDeviceSpatialAudioSupported
 {
-  v3 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
-  v7 = [v3 logicalLeaderOutputDevice];
+  primaryOutputDeviceRoute = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
+  logicalLeaderOutputDevice = [primaryOutputDeviceRoute logicalLeaderOutputDevice];
 
-  v4 = [v7 supportsHeadTrackedSpatialAudio];
+  supportsHeadTrackedSpatialAudio = [logicalLeaderOutputDevice supportsHeadTrackedSpatialAudio];
   if ([(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController isSplitRoute])
   {
-    v5 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController secondaryOutputDeviceRoute];
-    v6 = [v5 logicalLeaderOutputDevice];
+    secondaryOutputDeviceRoute = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController secondaryOutputDeviceRoute];
+    logicalLeaderOutputDevice2 = [secondaryOutputDeviceRoute logicalLeaderOutputDevice];
 
-    if (v4)
+    if (supportsHeadTrackedSpatialAudio)
     {
-      if ([v6 supportsHeadTrackedSpatialAudio])
+      if ([logicalLeaderOutputDevice2 supportsHeadTrackedSpatialAudio])
       {
-        v4 = +[MRUFeatureFlagProvider isSpatialOnAggregateDevices];
+        supportsHeadTrackedSpatialAudio = +[MRUFeatureFlagProvider isSpatialOnAggregateDevices];
       }
 
       else
       {
-        v4 = 0;
+        supportsHeadTrackedSpatialAudio = 0;
       }
     }
   }
 
-  if (self->_isDeviceSpatialAudioSupported != v4)
+  if (self->_isDeviceSpatialAudioSupported != supportsHeadTrackedSpatialAudio)
   {
-    self->_isDeviceSpatialAudioSupported = v4;
+    self->_isDeviceSpatialAudioSupported = supportsHeadTrackedSpatialAudio;
     [(MRUSpatialAudioController *)self updateSpatialAudioModes];
   }
 }
@@ -355,28 +355,28 @@ LABEL_21:
 - (void)updateHeadTrackingAvailable
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
-  v4 = [v3 logicalLeaderOutputDevice];
+  primaryOutputDeviceRoute = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
+  logicalLeaderOutputDevice = [primaryOutputDeviceRoute logicalLeaderOutputDevice];
 
-  if ([v4 deviceType] == 2)
+  if ([logicalLeaderOutputDevice deviceType] == 2)
   {
-    v5 = [MEMORY[0x1E698F468] sharedInstance];
-    v6 = [v4 uid];
-    v7 = [v5 deviceFromAddressString:v6];
+    mEMORY[0x1E698F468] = [MEMORY[0x1E698F468] sharedInstance];
+    v6 = [logicalLeaderOutputDevice uid];
+    v7 = [mEMORY[0x1E698F468] deviceFromAddressString:v6];
 
-    v8 = [v7 getStereoHFPSupport];
-    v9 = [v7 headTrackingAvailable];
+    getStereoHFPSupport = [v7 getStereoHFPSupport];
+    headTrackingAvailable = [v7 headTrackingAvailable];
     v10 = MCLogCategoryVolume();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = objc_opt_class();
-      v12 = [v4 uid];
+      v12 = [logicalLeaderOutputDevice uid];
       v13 = 138544386;
       v14 = v11;
       v15 = 1026;
-      v16 = v8;
+      v16 = getStereoHFPSupport;
       v17 = 1024;
-      v18 = v9;
+      v18 = headTrackingAvailable;
       v19 = 2114;
       v20 = v12;
       v21 = 2114;
@@ -387,28 +387,28 @@ LABEL_21:
 
   else
   {
-    v9 = 0;
-    v8 = 0;
+    headTrackingAvailable = 0;
+    getStereoHFPSupport = 0;
   }
 
-  if (self->_accessoryStereoHFPStatus != v8 || self->_isHeadTrackingAvailable != v9)
+  if (self->_accessoryStereoHFPStatus != getStereoHFPSupport || self->_isHeadTrackingAvailable != headTrackingAvailable)
   {
-    self->_accessoryStereoHFPStatus = v8;
-    self->_isHeadTrackingAvailable = v9;
+    self->_accessoryStereoHFPStatus = getStereoHFPSupport;
+    self->_isHeadTrackingAvailable = headTrackingAvailable;
     [(MRUSpatialAudioController *)self updateSpatialAudioModes];
   }
 }
 
-- (MRUSpatialAudioController)initWithOutputDeviceRouteController:(id)a3
+- (MRUSpatialAudioController)initWithOutputDeviceRouteController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = MRUSpatialAudioController;
   v6 = [(MRUSpatialAudioController *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_outputDeviceRouteController, a3);
+    objc_storeStrong(&v6->_outputDeviceRouteController, controller);
     [(MRUSystemOutputDeviceRouteController *)v7->_outputDeviceRouteController add:v7];
     v8 = objc_alloc_init(MEMORY[0x1E69B0A80]);
     audioFormatController = v7->_audioFormatController;
@@ -424,8 +424,8 @@ LABEL_21:
     cache = v7->_cache;
     v7->_cache = v12;
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v7 selector:sel_accessibilityHeadTrackChangedNotification name:*MEMORY[0x1E698F430] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_accessibilityHeadTrackChangedNotification name:*MEMORY[0x1E698F430] object:0];
   }
 
   return v7;
@@ -443,8 +443,8 @@ LABEL_21:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatApplication];
-  v6 = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
+  audioFormatApplication = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatApplication];
+  audioFormatContentInfo = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
   if ([(NSTimer *)self->_optimisticSpatialAudioActiveTimer isValid])
   {
     v7 = @"YES";
@@ -455,8 +455,8 @@ LABEL_21:
     v7 = @"NO";
   }
 
-  v8 = [MEMORY[0x1E69B0A28] sharedManager];
-  if ([v8 expanseSessionHasScreenSharingActivity])
+  mEMORY[0x1E69B0A28] = [MEMORY[0x1E69B0A28] sharedManager];
+  if ([mEMORY[0x1E69B0A28] expanseSessionHasScreenSharingActivity])
   {
     v9 = @"YES";
   }
@@ -466,29 +466,29 @@ LABEL_21:
     v9 = @"NO";
   }
 
-  v10 = [v3 stringWithFormat:@"%@ | %@ | %@ | optimistic: %@ | Screen Sharing: %@", v4, v5, v6, v7, v9];
+  v10 = [v3 stringWithFormat:@"%@ | %@ | %@ | optimistic: %@ | Screen Sharing: %@", v4, audioFormatApplication, audioFormatContentInfo, v7, v9];
 
   return v10;
 }
 
-- (void)setSelectedMode:(id)a3
+- (void)setSelectedMode:(id)mode
 {
-  v12 = a3;
-  objc_storeStrong(&self->_selectedMode, a3);
-  v5 = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
-  v6 = [v5 bundleID];
+  modeCopy = mode;
+  objc_storeStrong(&self->_selectedMode, mode);
+  audioFormatContentInfo = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
+  bundleID = [audioFormatContentInfo bundleID];
 
-  v7 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
-  v8 = [(MRUSpatialAudioController *)self preferenceForBundleID:v6 outputDevice:v7];
+  primaryOutputDeviceRoute = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
+  v8 = [(MRUSpatialAudioController *)self preferenceForBundleID:bundleID outputDevice:primaryOutputDeviceRoute];
 
-  v9 = [(MRUSpatialAudioController *)self preferencesForMode:v12 previousPreferences:v8];
-  v10 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
-  [(MRUSpatialAudioController *)self setPreferences:v9 forBundleID:v6 outputDevice:v10];
+  v9 = [(MRUSpatialAudioController *)self preferencesForMode:modeCopy previousPreferences:v8];
+  primaryOutputDeviceRoute2 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
+  [(MRUSpatialAudioController *)self setPreferences:v9 forBundleID:bundleID outputDevice:primaryOutputDeviceRoute2];
 
   if ([(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController isSplitRoute])
   {
-    v11 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController secondaryOutputDeviceRoute];
-    [(MRUSpatialAudioController *)self setPreferences:v9 forBundleID:v6 outputDevice:v11];
+    secondaryOutputDeviceRoute = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController secondaryOutputDeviceRoute];
+    [(MRUSpatialAudioController *)self setPreferences:v9 forBundleID:bundleID outputDevice:secondaryOutputDeviceRoute];
   }
 
   if (![v8 mode] && objc_msgSend(v9, "mode") == 1 && -[MRUSpatialAudioController isMultichannelAvailable](self, "isMultichannelAvailable"))
@@ -504,19 +504,19 @@ LABEL_21:
 
 - (BOOL)isMultichannelAvailable
 {
-  v3 = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
-  v4 = [v3 bestAvailableAudioFormat];
+  audioFormatContentInfo = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatContentInfo];
+  bestAvailableAudioFormat = [audioFormatContentInfo bestAvailableAudioFormat];
 
-  v5 = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatApplication];
-  v6 = [v5 isFaceTime];
-  if ((v4 - 1) < 2)
+  audioFormatApplication = [(MRNowPlayingAudioFormatController *)self->_audioFormatController audioFormatApplication];
+  isFaceTime = [audioFormatApplication isFaceTime];
+  if ((bestAvailableAudioFormat - 1) < 2)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = v6;
+    v7 = isFaceTime;
   }
 
   return v7;
@@ -524,11 +524,11 @@ LABEL_21:
 
 - (void)startMonitoring
 {
-  v3 = [MEMORY[0x1E69B0A28] sharedManager];
-  [v3 addObserver:self];
+  mEMORY[0x1E69B0A28] = [MEMORY[0x1E69B0A28] sharedManager];
+  [mEMORY[0x1E69B0A28] addObserver:self];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel_headTrackChangedNotification name:*MEMORY[0x1E698F430] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_headTrackChangedNotification name:*MEMORY[0x1E698F430] object:0];
 
   [(MRUSpatialAudioController *)self updateDeviceSpatialAudioSupported];
   [(MRUSpatialAudioController *)self updateHeadTrackingAvailable];
@@ -538,11 +538,11 @@ LABEL_21:
 
 - (void)stopMonitoring
 {
-  v3 = [MEMORY[0x1E69B0A28] sharedManager];
-  [v3 removeObserver:self];
+  mEMORY[0x1E69B0A28] = [MEMORY[0x1E69B0A28] sharedManager];
+  [mEMORY[0x1E69B0A28] removeObserver:self];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E698F430] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E698F430] object:0];
 }
 
 - (void)startOptimisticSpatialAudioActive
@@ -574,7 +574,7 @@ LABEL_21:
   [(MRUSpatialAudioController *)self updateSpatialAudioModes];
 }
 
-- (void)systemOutputDeviceRouteControllerDidUpdateOutputDevices:(id)a3
+- (void)systemOutputDeviceRouteControllerDidUpdateOutputDevices:(id)devices
 {
   [(NSCache *)self->_cache removeAllObjects];
   [(MRUSpatialAudioController *)self updateSpatialAudioModes];
@@ -583,23 +583,23 @@ LABEL_21:
   [(MRUSpatialAudioController *)self updateNowPlaying];
 }
 
-- (void)nowPlayingAudioFormatController:(id)a3 didChangeAudioFormatApplication:(id)a4
+- (void)nowPlayingAudioFormatController:(id)controller didChangeAudioFormatApplication:(id)application
 {
-  [(MRUSpatialAudioController *)self resetOptimisticSpatialAudioActive:a3];
+  [(MRUSpatialAudioController *)self resetOptimisticSpatialAudioActive:controller];
   [(MRUSpatialAudioController *)self updateSpatialAudioModes];
 
   [(MRUSpatialAudioController *)self updateNowPlaying];
 }
 
-- (void)nowPlayingAudioFormatController:(id)a3 didChangeAudioFormatContentInfo:(id)a4
+- (void)nowPlayingAudioFormatController:(id)controller didChangeAudioFormatContentInfo:(id)info
 {
-  [(MRUSpatialAudioController *)self resetOptimisticSpatialAudioActive:a3];
+  [(MRUSpatialAudioController *)self resetOptimisticSpatialAudioActive:controller];
   [(MRUSpatialAudioController *)self updateSpatialAudioModes];
 
   [(MRUSpatialAudioController *)self updateNowPlaying];
 }
 
-- (void)expanseManagerDidJoinExpanseSession:(id)a3
+- (void)expanseManagerDidJoinExpanseSession:(id)session
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -609,7 +609,7 @@ LABEL_21:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)expanseManagerDidLeaveExpanseSession:(id)a3
+- (void)expanseManagerDidLeaveExpanseSession:(id)session
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -619,30 +619,30 @@ LABEL_21:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (id)preferenceForBundleID:(id)a3 outputDevice:(id)a4
+- (id)preferenceForBundleID:(id)d outputDevice:(id)device
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   cache = self->_cache;
-  v8 = a4;
-  v9 = [(NSCache *)cache objectForKey:v6];
-  v10 = [v8 logicalLeaderOutputDevice];
+  deviceCopy = device;
+  v9 = [(NSCache *)cache objectForKey:dCopy];
+  logicalLeaderOutputDevice = [deviceCopy logicalLeaderOutputDevice];
 
-  if ([v10 deviceType] == 2)
+  if ([logicalLeaderOutputDevice deviceType] == 2)
   {
-    v11 = [MEMORY[0x1E698F468] sharedInstance];
-    v12 = [v10 uid];
-    v13 = [v11 deviceFromAddressString:v12];
+    mEMORY[0x1E698F468] = [MEMORY[0x1E698F468] sharedInstance];
+    v12 = [logicalLeaderOutputDevice uid];
+    v13 = [mEMORY[0x1E698F468] deviceFromAddressString:v12];
 
     v22 = 0;
     v21 = 0;
-    v14 = [v13 spatialAudioConfig:v6 spatialMode:&v22 headTracking:&v21];
+    v14 = [v13 spatialAudioConfig:dCopy spatialMode:&v22 headTracking:&v21];
     if (v14)
     {
       v15 = [MRUSpatialAudioPreferences alloc];
       v16 = [(MRUSpatialAudioPreferences *)v15 initWithMode:v22 headTrackingEnabled:v21];
 
-      [(NSCache *)self->_cache setObject:v16 forKey:v6];
+      [(NSCache *)self->_cache setObject:v16 forKey:dCopy];
       v9 = v16;
     }
 
@@ -650,13 +650,13 @@ LABEL_21:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = objc_opt_class();
-      v19 = [v10 uid];
+      v19 = [logicalLeaderOutputDevice uid];
       *buf = 138544386;
       v24 = v18;
       v25 = 2114;
       v26 = v9;
       v27 = 2114;
-      v28 = v6;
+      v28 = dCopy;
       v29 = 2114;
       v30 = v19;
       v31 = 1024;
@@ -668,35 +668,35 @@ LABEL_21:
   return v9;
 }
 
-- (void)setPreferences:(id)a3 forBundleID:(id)a4 outputDevice:(id)a5
+- (void)setPreferences:(id)preferences forBundleID:(id)d outputDevice:(id)device
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [a5 logicalLeaderOutputDevice];
-  if ([v10 deviceType] == 2)
+  preferencesCopy = preferences;
+  dCopy = d;
+  logicalLeaderOutputDevice = [device logicalLeaderOutputDevice];
+  if ([logicalLeaderOutputDevice deviceType] == 2)
   {
-    v11 = [MEMORY[0x1E698F468] sharedInstance];
-    v12 = [v10 uid];
-    v13 = [v11 deviceFromAddressString:v12];
+    mEMORY[0x1E698F468] = [MEMORY[0x1E698F468] sharedInstance];
+    v12 = [logicalLeaderOutputDevice uid];
+    v13 = [mEMORY[0x1E698F468] deviceFromAddressString:v12];
 
-    v14 = [v13 setSpatialAudioConfig:v9 spatialMode:objc_msgSend(v8 headTracking:{"mode"), objc_msgSend(v8, "isHeadTrackingEnabled")}];
+    v14 = [v13 setSpatialAudioConfig:dCopy spatialMode:objc_msgSend(preferencesCopy headTracking:{"mode"), objc_msgSend(preferencesCopy, "isHeadTrackingEnabled")}];
     if (v14)
     {
-      [(NSCache *)self->_cache setObject:v8 forKey:v9];
+      [(NSCache *)self->_cache setObject:preferencesCopy forKey:dCopy];
     }
 
     v15 = MCLogCategoryVolume();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = objc_opt_class();
-      v17 = [v10 uid];
+      v17 = [logicalLeaderOutputDevice uid];
       v18 = 138544386;
       v19 = v16;
       v20 = 2114;
-      v21 = v8;
+      v21 = preferencesCopy;
       v22 = 2114;
-      v23 = v9;
+      v23 = dCopy;
       v24 = 2114;
       v25 = v17;
       v26 = 1024;
@@ -706,18 +706,18 @@ LABEL_21:
   }
 }
 
-- (id)preferencesForMode:(id)a3 previousPreferences:(id)a4
+- (id)preferencesForMode:(id)mode previousPreferences:(id)preferences
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRUSpatialAudioController *)self isSpatialAudioActive];
-  v9 = [(MRUSpatialAudioController *)self isMultichannel];
-  v10 = [(MRUSpatialAudioController *)self isMultichannelAvailable];
+  modeCopy = mode;
+  preferencesCopy = preferences;
+  isSpatialAudioActive = [(MRUSpatialAudioController *)self isSpatialAudioActive];
+  isMultichannel = [(MRUSpatialAudioController *)self isMultichannel];
+  isMultichannelAvailable = [(MRUSpatialAudioController *)self isMultichannelAvailable];
   v11 = 3;
-  if ([v7 mode] != 1 || v8 || !v9)
+  if ([preferencesCopy mode] != 1 || isSpatialAudioActive || !isMultichannel)
   {
-    v12 = [v7 mode] == 0;
-    if (v9)
+    v12 = [preferencesCopy mode] == 0;
+    if (isMultichannel)
     {
       v13 = 1;
     }
@@ -727,7 +727,7 @@ LABEL_21:
       v13 = 2;
     }
 
-    if (v12 && v10)
+    if (v12 && isMultichannelAvailable)
     {
       v11 = 3;
     }
@@ -738,8 +738,8 @@ LABEL_21:
     }
   }
 
-  v14 = [v6 type];
-  if (v14 == 2)
+  type = [modeCopy type];
+  if (type == 2)
   {
     v15 = [MRUSpatialAudioPreferences alloc];
     v16 = v11;
@@ -748,14 +748,14 @@ LABEL_21:
 
   else
   {
-    if (v14 != 1)
+    if (type != 1)
     {
-      if (v14)
+      if (type)
       {
         goto LABEL_19;
       }
 
-      if (v9)
+      if (isMultichannel)
       {
         v11 = 0;
       }
@@ -777,17 +777,17 @@ LABEL_19:
   return v11;
 }
 
-- (id)localizedStringForRenderingMode:(int64_t)a3
+- (id)localizedStringForRenderingMode:(int64_t)mode
 {
   v3 = @"Not Applicable";
-  if (a3 <= 2)
+  if (mode <= 2)
   {
-    if (a3 == 1)
+    if (mode == 1)
     {
       v3 = +[MRUStringsProvider audioSessionRenderingModeMonoStereo];
     }
 
-    else if (a3 == 2)
+    else if (mode == 2)
     {
       v3 = +[MRUStringsProvider audioSessionRenderingModeSurround];
     }
@@ -795,7 +795,7 @@ LABEL_19:
 
   else
   {
-    switch(a3)
+    switch(mode)
     {
       case 3:
         v3 = +[MRUStringsProvider audioSessionRenderingModeSpatialAudio];

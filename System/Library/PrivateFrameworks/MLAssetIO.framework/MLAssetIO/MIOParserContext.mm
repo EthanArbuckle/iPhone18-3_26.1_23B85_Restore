@@ -1,18 +1,18 @@
 @interface MIOParserContext
-- (MIOParserContext)initWithModelSpecificationFileURL:(id)a3;
+- (MIOParserContext)initWithModelSpecificationFileURL:(id)l;
 @end
 
 @implementation MIOParserContext
 
-- (MIOParserContext)initWithModelSpecificationFileURL:(id)a3
+- (MIOParserContext)initWithModelSpecificationFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = MIOParserContext;
   v5 = [(MIOParserContext *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     modelSpecificationFileURL = v5->_modelSpecificationFileURL;
     v5->_modelSpecificationFileURL = v6;
   }

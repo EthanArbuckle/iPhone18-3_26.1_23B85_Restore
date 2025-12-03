@@ -1,47 +1,47 @@
 @interface CHPKAnalyticsMetricsContext
-- (BOOL)isEqual:(id)a3;
-- (CHPKAnalyticsMetricsContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CHPKAnalyticsMetricsContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHPKAnalyticsMetricsContext
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CHPKAnalyticsMetricsContext;
-  v4 = a3;
-  [(CHPKAnalyticsMetricsContext *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[CHPKAnalyticsMetricsContext fingerDrawingEnabled](self forKey:{"fingerDrawingEnabled", v5.receiver, v5.super_class), @"UIPencilOnlyDrawWithPencilKey"}];
-  [v4 encodeBool:-[CHPKAnalyticsMetricsContext scribbleEnabled](self forKey:{"scribbleEnabled"), @"ApplePencilTextInputEnabled"}];
-  [v4 encodeBool:-[CHPKAnalyticsMetricsContext liveTextToggleEnabled](self forKey:{"liveTextToggleEnabled"), @"LiveTextEnabledKey"}];
-  [v4 encodeBool:-[CHPKAnalyticsMetricsContext liveTextSupportedByPrimaryLanguage](self forKey:{"liveTextSupportedByPrimaryLanguage"), @"LiveTextSupportedByPrimaryLanguageKey"}];
+  coderCopy = coder;
+  [(CHPKAnalyticsMetricsContext *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[CHPKAnalyticsMetricsContext fingerDrawingEnabled](self forKey:{"fingerDrawingEnabled", v5.receiver, v5.super_class), @"UIPencilOnlyDrawWithPencilKey"}];
+  [coderCopy encodeBool:-[CHPKAnalyticsMetricsContext scribbleEnabled](self forKey:{"scribbleEnabled"), @"ApplePencilTextInputEnabled"}];
+  [coderCopy encodeBool:-[CHPKAnalyticsMetricsContext liveTextToggleEnabled](self forKey:{"liveTextToggleEnabled"), @"LiveTextEnabledKey"}];
+  [coderCopy encodeBool:-[CHPKAnalyticsMetricsContext liveTextSupportedByPrimaryLanguage](self forKey:{"liveTextSupportedByPrimaryLanguage"), @"LiveTextSupportedByPrimaryLanguageKey"}];
 }
 
-- (CHPKAnalyticsMetricsContext)initWithCoder:(id)a3
+- (CHPKAnalyticsMetricsContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CHPKAnalyticsMetricsContext;
-  v5 = [(CHPKAnalyticsMetricsContext *)&v7 initWithCoder:v4];
+  v5 = [(CHPKAnalyticsMetricsContext *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_fingerDrawingEnabled = [v4 decodeBoolForKey:@"UIPencilOnlyDrawWithPencilKey"];
-    v5->_scribbleEnabled = [v4 decodeBoolForKey:@"ApplePencilTextInputEnabled"];
-    v5->_liveTextToggleEnabled = [v4 decodeBoolForKey:@"LiveTextEnabledKey"];
-    v5->_liveTextSupportedByPrimaryLanguage = [v4 decodeBoolForKey:@"LiveTextSupportedByPrimaryLanguageKey"];
+    v5->_fingerDrawingEnabled = [coderCopy decodeBoolForKey:@"UIPencilOnlyDrawWithPencilKey"];
+    v5->_scribbleEnabled = [coderCopy decodeBoolForKey:@"ApplePencilTextInputEnabled"];
+    v5->_liveTextToggleEnabled = [coderCopy decodeBoolForKey:@"LiveTextEnabledKey"];
+    v5->_liveTextSupportedByPrimaryLanguage = [coderCopy decodeBoolForKey:@"LiveTextSupportedByPrimaryLanguageKey"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(CHPKAnalyticsMetricsContext *)self inputLanguage];
-  v6 = [(CHPKAnalyticsMetricsContext *)self inputRegion];
-  v7 = [v4 initWithInputLanguage:v5 inputRegion:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  inputLanguage = [(CHPKAnalyticsMetricsContext *)self inputLanguage];
+  inputRegion = [(CHPKAnalyticsMetricsContext *)self inputRegion];
+  v7 = [v4 initWithInputLanguage:inputLanguage inputRegion:inputRegion];
 
   v7[8] = self->_fingerDrawingEnabled;
   v7[9] = self->_scribbleEnabled;
@@ -50,23 +50,23 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v10) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v13.receiver = self, v13.super_class = CHPKAnalyticsMetricsContext, [(CHPKAnalyticsMetricsContext *)&v13 isEqual:v5]))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v13.receiver = self, v13.super_class = CHPKAnalyticsMetricsContext, [(CHPKAnalyticsMetricsContext *)&v13 isEqual:v5]))
   {
     v6 = v5;
-    v7 = [(CHPKAnalyticsMetricsContext *)v6 fingerDrawingEnabled];
-    if (v7 == [(CHPKAnalyticsMetricsContext *)self fingerDrawingEnabled]&& (v8 = [(CHPKAnalyticsMetricsContext *)v6 scribbleEnabled], v8 == [(CHPKAnalyticsMetricsContext *)self scribbleEnabled]) && (v9 = [(CHPKAnalyticsMetricsContext *)v6 liveTextToggleEnabled], v9 == [(CHPKAnalyticsMetricsContext *)self liveTextToggleEnabled]))
+    fingerDrawingEnabled = [(CHPKAnalyticsMetricsContext *)v6 fingerDrawingEnabled];
+    if (fingerDrawingEnabled == [(CHPKAnalyticsMetricsContext *)self fingerDrawingEnabled]&& (v8 = [(CHPKAnalyticsMetricsContext *)v6 scribbleEnabled], v8 == [(CHPKAnalyticsMetricsContext *)self scribbleEnabled]) && (v9 = [(CHPKAnalyticsMetricsContext *)v6 liveTextToggleEnabled], v9 == [(CHPKAnalyticsMetricsContext *)self liveTextToggleEnabled]))
     {
-      v12 = [(CHPKAnalyticsMetricsContext *)v6 liveTextSupportedByPrimaryLanguage];
-      v10 = v12 ^ [(CHPKAnalyticsMetricsContext *)self liveTextSupportedByPrimaryLanguage]^ 1;
+      liveTextSupportedByPrimaryLanguage = [(CHPKAnalyticsMetricsContext *)v6 liveTextSupportedByPrimaryLanguage];
+      v10 = liveTextSupportedByPrimaryLanguage ^ [(CHPKAnalyticsMetricsContext *)self liveTextSupportedByPrimaryLanguage]^ 1;
     }
 
     else

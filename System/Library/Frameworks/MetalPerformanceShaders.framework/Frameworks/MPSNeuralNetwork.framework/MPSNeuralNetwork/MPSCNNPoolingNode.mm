@@ -9,7 +9,7 @@
 
 + (MPSCNNPoolingNode)nodeWithSource:(MPSNNImageNode *)sourceNode filterSize:(NSUInteger)size
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v12 = objc_msgSend_initWithSource_filterSize_(v6, v7, sourceNode, size, v8, v9, v10, v11);
 
   return v12;
@@ -17,7 +17,7 @@
 
 + (MPSCNNPoolingNode)nodeWithSource:(MPSNNImageNode *)sourceNode filterSize:(NSUInteger)size stride:(NSUInteger)stride
 {
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   v13 = objc_msgSend_initWithSource_filterSize_stride_(v8, v9, sourceNode, size, stride, v10, v11, v12);
 
   return v13;

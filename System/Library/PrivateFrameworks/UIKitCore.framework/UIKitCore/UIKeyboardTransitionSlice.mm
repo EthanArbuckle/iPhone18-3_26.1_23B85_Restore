@@ -1,10 +1,10 @@
 @interface UIKeyboardTransitionSlice
-+ (UIKeyboardTransitionSlice)sliceWithStart:(CGRect)a3 end:(CGRect)a4;
++ (UIKeyboardTransitionSlice)sliceWithStart:(CGRect)start end:(CGRect)end;
 - (CGRect)endRect;
 - (CGRect)startRect;
 - (UIKeyboardTransitionSlice)init;
 - (id)description;
-- (void)addStartRect:(CGRect)a3 end:(CGRect)a4;
+- (void)addStartRect:(CGRect)rect end:(CGRect)end;
 @end
 
 @implementation UIKeyboardTransitionSlice
@@ -37,30 +37,30 @@
   return v3;
 }
 
-+ (UIKeyboardTransitionSlice)sliceWithStart:(CGRect)a3 end:(CGRect)a4
++ (UIKeyboardTransitionSlice)sliceWithStart:(CGRect)start end:(CGRect)end
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  v12 = objc_alloc_init(a1);
+  height = end.size.height;
+  width = end.size.width;
+  y = end.origin.y;
+  x = end.origin.x;
+  v8 = start.size.height;
+  v9 = start.size.width;
+  v10 = start.origin.y;
+  v11 = start.origin.x;
+  v12 = objc_alloc_init(self);
   [v12 setStartRect:{v11, v10, v9, v8}];
   [v12 setEndRect:{x, y, width, height}];
 
   return v12;
 }
 
-- (void)addStartRect:(CGRect)a3 end:(CGRect)a4
+- (void)addStartRect:(CGRect)rect end:(CGRect)end
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  self->_startRect = CGRectUnion(self->_startRect, a3);
+  height = end.size.height;
+  width = end.size.width;
+  y = end.origin.y;
+  x = end.origin.x;
+  self->_startRect = CGRectUnion(self->_startRect, rect);
   v9.origin.x = x;
   v9.origin.y = y;
   v9.size.width = width;

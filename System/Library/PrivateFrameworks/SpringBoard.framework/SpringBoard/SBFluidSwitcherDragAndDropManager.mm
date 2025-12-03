@@ -1,67 +1,67 @@
 @interface SBFluidSwitcherDragAndDropManager
-- (BOOL)_anyActiveAndVisibleSceneEntityMatches:(id)a3;
+- (BOOL)_anyActiveAndVisibleSceneEntityMatches:(id)matches;
 - (BOOL)_continuousExposeStripsOccluded;
-- (BOOL)_workspaceWouldAllowTransitionToApplication:(id)a3;
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
-- (BOOL)isApplicationActiveAndVisible:(id)a3;
+- (BOOL)_workspaceWouldAllowTransitionToApplication:(id)application;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
+- (BOOL)isApplicationActiveAndVisible:(id)visible;
 - (BOOL)isDragAndDropTransactionRunning;
 - (BOOL)shouldBeginWindowDragGesture;
-- (SBFluidSwitcherDragAndDropManager)initWithSwitcherController:(id)a3 delegate:(id)a4;
+- (SBFluidSwitcherDragAndDropManager)initWithSwitcherController:(id)controller delegate:(id)delegate;
 - (SBFluidSwitcherDragAndDropManagerDelegate)delegate;
 - (SBFluidSwitcherViewController)switcherContentController;
 - (SBSceneManager)sceneManager;
 - (SBSwitcherController)switcherController;
-- (id)_dragInteraction:(id)a3 customSpringAnimationBehaviorForCancellingItem:(id)a4;
-- (id)_dropInteraction:(id)a3 customSpringAnimationBehaviorForDroppingItem:(id)a4;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (id)mostRecentSceneIdentityExcludingLiveScenesForApplication:(id)a3;
-- (id)newSceneIdentityForApplication:(id)a3;
-- (id)preferredSceneIdentityForApplication:(id)a3 targetContentIdentifier:(id)a4 preferNewScene:(BOOL)a5;
-- (void)_addMedusaDraggingDestinationWindow:(id)a3;
-- (void)_beginTrackingDropSessionIfNeeded:(id)a3;
-- (void)_dragInteraction:(id)a3 prepareForSession:(id)a4 completion:(id)a5;
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3;
-- (void)_removeMedusaDraggingDestinationWindow:(id)a3;
+- (id)_dragInteraction:(id)interaction customSpringAnimationBehaviorForCancellingItem:(id)item;
+- (id)_dropInteraction:(id)interaction customSpringAnimationBehaviorForDroppingItem:(id)item;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (id)mostRecentSceneIdentityExcludingLiveScenesForApplication:(id)application;
+- (id)newSceneIdentityForApplication:(id)application;
+- (id)preferredSceneIdentityForApplication:(id)application targetContentIdentifier:(id)identifier preferNewScene:(BOOL)scene;
+- (void)_addMedusaDraggingDestinationWindow:(id)window;
+- (void)_beginTrackingDropSessionIfNeeded:(id)needed;
+- (void)_dragInteraction:(id)interaction prepareForSession:(id)session completion:(id)completion;
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging;
+- (void)_removeMedusaDraggingDestinationWindow:(id)window;
 - (void)_windowDragSessionDidEnd;
 - (void)dealloc;
-- (void)dragAndDropTransaction:(id)a3 didBeginGesture:(id)a4;
-- (void)dragAndDropTransaction:(id)a3 didEndGesture:(id)a4;
-- (void)dragAndDropTransaction:(id)a3 didPlatterizeWindowDragWithSceneIdentifier:(id)a4;
-- (void)dragAndDropTransaction:(id)a3 didUpdateGesture:(id)a4;
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 sessionDidMove:(id)a4;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
-- (void)dropInteraction:(id)a3 concludeDrop:(id)a4;
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4;
-- (void)handleWindowDragGestureRecognizer:(id)a3;
-- (void)transactionDidComplete:(id)a3;
+- (void)dragAndDropTransaction:(id)transaction didBeginGesture:(id)gesture;
+- (void)dragAndDropTransaction:(id)transaction didEndGesture:(id)gesture;
+- (void)dragAndDropTransaction:(id)transaction didPlatterizeWindowDragWithSceneIdentifier:(id)identifier;
+- (void)dragAndDropTransaction:(id)transaction didUpdateGesture:(id)gesture;
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction sessionDidMove:(id)move;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session;
+- (void)dropInteraction:(id)interaction concludeDrop:(id)drop;
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end;
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter;
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit;
+- (void)handleWindowDragGestureRecognizer:(id)recognizer;
+- (void)transactionDidComplete:(id)complete;
 @end
 
 @implementation SBFluidSwitcherDragAndDropManager
 
-- (SBFluidSwitcherDragAndDropManager)initWithSwitcherController:(id)a3 delegate:(id)a4
+- (SBFluidSwitcherDragAndDropManager)initWithSwitcherController:(id)controller delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = SBFluidSwitcherDragAndDropManager;
   v8 = [(SBFluidSwitcherDragAndDropManager *)&v24 init];
   if (v8)
   {
-    v9 = [v6 contentViewController];
+    contentViewController = [controllerCopy contentViewController];
     v10 = objc_opt_class();
-    v11 = v9;
+    v11 = contentViewController;
     if (v10)
     {
       if (objc_opt_isKindOfClass())
@@ -82,25 +82,25 @@
 
     v13 = v12;
 
-    objc_storeWeak(&v8->_switcherController, v6);
+    objc_storeWeak(&v8->_switcherController, controllerCopy);
     objc_storeWeak(&v8->_switcherContentController, v13);
-    v14 = [v6 windowScene];
-    v15 = [v14 sceneManager];
-    objc_storeWeak(&v8->_sceneManager, v15);
+    windowScene = [controllerCopy windowScene];
+    sceneManager = [windowScene sceneManager];
+    objc_storeWeak(&v8->_sceneManager, sceneManager);
 
-    objc_storeWeak(&v8->_delegate, v7);
-    v16 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     activeDropSessions = v8->_activeDropSessions;
-    v8->_activeDropSessions = v16;
+    v8->_activeDropSessions = weakToStrongObjectsMapTable;
 
     v18 = [objc_alloc(MEMORY[0x277D754A0]) initWithDelegate:v8];
     dropInteraction = v8->_dropInteraction;
     v8->_dropInteraction = v18;
 
     [(UIDropInteraction *)v8->_dropInteraction _setWantsDefaultVisualBehavior:0];
-    v20 = [v13 view];
+    view = [v13 view];
 
-    [v20 addInteraction:v8->_dropInteraction];
+    [view addInteraction:v8->_dropInteraction];
     v21 = objc_alloc_init(MEMORY[0x277CBEB58]);
     requiredContextIdentifiersForMedusaDraggingDestination = v8->_requiredContextIdentifiersForMedusaDraggingDestination;
     v8->_requiredContextIdentifiersForMedusaDraggingDestination = v21;
@@ -112,11 +112,11 @@
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_switcherContentController);
-  v4 = [WeakRetained view];
+  view = [WeakRetained view];
 
-  [v4 removeInteraction:self->_dropInteraction];
-  v5 = [v4 window];
-  [(SBFluidSwitcherDragAndDropManager *)self _removeMedusaDraggingDestinationWindow:v5];
+  [view removeInteraction:self->_dropInteraction];
+  window = [view window];
+  [(SBFluidSwitcherDragAndDropManager *)self _removeMedusaDraggingDestinationWindow:window];
 
   v6.receiver = self;
   v6.super_class = SBFluidSwitcherDragAndDropManager;
@@ -125,35 +125,35 @@
 
 - (BOOL)shouldBeginWindowDragGesture
 {
-  v2 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
-  v3 = [v2 isDragging];
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  isDragging = [activeTransaction isDragging];
 
-  return v3 ^ 1;
+  return isDragging ^ 1;
 }
 
-- (void)handleWindowDragGestureRecognizer:(id)a3
+- (void)handleWindowDragGestureRecognizer:(id)recognizer
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recognizerCopy = recognizer;
   if (!self->_hasAddedSwitcherWindowAsDragTarget)
   {
     self->_hasAddedSwitcherWindowAsDragTarget = 1;
     WeakRetained = objc_loadWeakRetained(&self->_switcherContentController);
-    v6 = [WeakRetained view];
-    v7 = [v6 window];
-    [(SBFluidSwitcherDragAndDropManager *)self _addMedusaDraggingDestinationWindow:v7];
+    view = [WeakRetained view];
+    window = [view window];
+    [(SBFluidSwitcherDragAndDropManager *)self _addMedusaDraggingDestinationWindow:window];
   }
 
-  v8 = [v4 state];
-  if ((v8 - 5) > 0xFFFFFFFFFFFFFFFDLL)
+  state = [recognizerCopy state];
+  if ((state - 5) > 0xFFFFFFFFFFFFFFFDLL)
   {
-    if ((v8 != 4 || ![(UIDragInteraction *)self->_windowDragInteraction _isActive]) && !self->_windowDragHandledByDruid)
+    if ((state != 4 || ![(UIDragInteraction *)self->_windowDragInteraction _isActive]) && !self->_windowDragHandledByDruid)
     {
       [(SBFluidSwitcherDragAndDropManager *)self _windowDragSessionDidEnd];
     }
 
-    v16 = [(UIDragInteraction *)self->_windowDragInteraction view];
-    [v16 removeInteraction:self->_windowDragInteraction];
+    view2 = [(UIDragInteraction *)self->_windowDragInteraction view];
+    [view2 removeInteraction:self->_windowDragInteraction];
 
     windowDragInteraction = self->_windowDragInteraction;
     self->_windowDragInteraction = 0;
@@ -161,19 +161,19 @@
 
   else
   {
-    v9 = [(SBFluidSwitcherDragAndDropManager *)self delegate];
-    v10 = v9;
+    delegate = [(SBFluidSwitcherDragAndDropManager *)self delegate];
+    v10 = delegate;
     if (!self->_windowDragInteraction)
     {
-      v11 = [v9 dragAndDropManager:self sourceViewProviderForDraggingWindowWithGestureRecognizer:v4];
-      v12 = [[SBWindowDragInteraction alloc] initWithDelegate:self gestureRecognizer:v4];
+      v11 = [delegate dragAndDropManager:self sourceViewProviderForDraggingWindowWithGestureRecognizer:recognizerCopy];
+      v12 = [[SBWindowDragInteraction alloc] initWithDelegate:self gestureRecognizer:recognizerCopy];
       v13 = self->_windowDragInteraction;
       self->_windowDragInteraction = v12;
 
       [(UIDragInteraction *)self->_windowDragInteraction setEnabled:0];
       [(SBWindowDragInteraction *)self->_windowDragInteraction setSourceViewProvider:v11];
-      v14 = [v11 sourceView];
-      [v14 addInteraction:self->_windowDragInteraction];
+      sourceView = [v11 sourceView];
+      [sourceView addInteraction:self->_windowDragInteraction];
     }
 
     if (self->_windowDragSession)
@@ -188,8 +188,8 @@
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v18 = [v4 _activeEvents];
-      v19 = [v18 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      _activeEvents = [recognizerCopy _activeEvents];
+      v19 = [_activeEvents countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v19)
       {
         v20 = v19;
@@ -200,7 +200,7 @@ LABEL_15:
         {
           if (*v35 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(_activeEvents);
           }
 
           v23 = *(*(&v34 + 1) + 8 * v22);
@@ -211,7 +211,7 @@ LABEL_15:
 
           if (v20 == ++v22)
           {
-            v20 = [v18 countByEnumeratingWithState:&v34 objects:v38 count:16];
+            v20 = [_activeEvents countByEnumeratingWithState:&v34 objects:v38 count:16];
             if (v20)
             {
               goto LABEL_15;
@@ -221,15 +221,15 @@ LABEL_15:
           }
         }
 
-        v25 = [v4 _activeTouchesForEvent:v23];
-        v24 = [v25 anyObject];
+        v25 = [recognizerCopy _activeTouchesForEvent:v23];
+        anyObject = [v25 anyObject];
 
-        if (!v24)
+        if (!anyObject)
         {
           goto LABEL_29;
         }
 
-        v26 = [v10 dragAndDropManager:self displayItemForDraggingWindowWithGestureRecognizer:v4];
+        v26 = [v10 dragAndDropManager:self displayItemForDraggingWindowWithGestureRecognizer:recognizerCopy];
         if (v26)
         {
           v27 = v26;
@@ -237,32 +237,32 @@ LABEL_15:
 
         else
         {
-          v27 = [v10 dragAndDropManager:self displayItemForDraggingWindowWithGestureRecognizer:v4];
+          v27 = [v10 dragAndDropManager:self displayItemForDraggingWindowWithGestureRecognizer:recognizerCopy];
           if (!v27)
           {
             [SBFluidSwitcherDragAndDropManager handleWindowDragGestureRecognizer:];
           }
         }
 
-        v28 = [v27 uniqueIdentifier];
+        uniqueIdentifier = [v27 uniqueIdentifier];
         windowDragSceneIdentifier = self->_windowDragSceneIdentifier;
-        self->_windowDragSceneIdentifier = v28;
+        self->_windowDragSceneIdentifier = uniqueIdentifier;
 
         v30 = self->_windowDragInteraction;
-        v31 = [v27 uniqueIdentifier];
-        [(SBWindowDragInteraction *)v30 setSceneIdentifier:v31];
+        uniqueIdentifier2 = [v27 uniqueIdentifier];
+        [(SBWindowDragInteraction *)v30 setSceneIdentifier:uniqueIdentifier2];
 
         v32 = self->_windowDragInteraction;
-        v33 = [v27 bundleIdentifier];
-        [(SBWindowDragInteraction *)v32 setBundleIdentifier:v33];
+        bundleIdentifier = [v27 bundleIdentifier];
+        [(SBWindowDragInteraction *)v32 setBundleIdentifier:bundleIdentifier];
 
-        [(UIDragInteraction *)self->_windowDragInteraction _immediatelyBeginDragWithTouch:v24 completion:0];
+        [(UIDragInteraction *)self->_windowDragInteraction _immediatelyBeginDragWithTouch:anyObject completion:0];
       }
 
       else
       {
 LABEL_21:
-        v24 = v18;
+        anyObject = _activeEvents;
       }
     }
 
@@ -281,43 +281,43 @@ LABEL_29:
   return activeTransaction;
 }
 
-- (void)dragAndDropTransaction:(id)a3 didBeginGesture:(id)a4
+- (void)dragAndDropTransaction:(id)transaction didBeginGesture:(id)gesture
 {
-  v5 = a4;
-  v6 = [(SBFluidSwitcherDragAndDropManager *)self delegate];
-  [v6 dragAndDropManager:self didBeginGesture:v5];
+  gestureCopy = gesture;
+  delegate = [(SBFluidSwitcherDragAndDropManager *)self delegate];
+  [delegate dragAndDropManager:self didBeginGesture:gestureCopy];
 }
 
-- (void)dragAndDropTransaction:(id)a3 didUpdateGesture:(id)a4
+- (void)dragAndDropTransaction:(id)transaction didUpdateGesture:(id)gesture
 {
-  v5 = a4;
-  v6 = [(SBFluidSwitcherDragAndDropManager *)self delegate];
-  [v6 dragAndDropManager:self didUpdateGesture:v5];
+  gestureCopy = gesture;
+  delegate = [(SBFluidSwitcherDragAndDropManager *)self delegate];
+  [delegate dragAndDropManager:self didUpdateGesture:gestureCopy];
 }
 
-- (void)dragAndDropTransaction:(id)a3 didEndGesture:(id)a4
+- (void)dragAndDropTransaction:(id)transaction didEndGesture:(id)gesture
 {
-  v5 = a4;
-  v6 = [(SBFluidSwitcherDragAndDropManager *)self delegate];
-  [v6 dragAndDropManager:self didEndGesture:v5];
+  gestureCopy = gesture;
+  delegate = [(SBFluidSwitcherDragAndDropManager *)self delegate];
+  [delegate dragAndDropManager:self didEndGesture:gestureCopy];
 }
 
-- (void)dragAndDropTransaction:(id)a3 didPlatterizeWindowDragWithSceneIdentifier:(id)a4
+- (void)dragAndDropTransaction:(id)transaction didPlatterizeWindowDragWithSceneIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(SBFluidSwitcherDragAndDropManager *)self delegate];
-  [v6 dragAndDropManager:self didPlatterizeWindowDragWithSceneIdentifier:v5];
+  identifierCopy = identifier;
+  delegate = [(SBFluidSwitcherDragAndDropManager *)self delegate];
+  [delegate dragAndDropManager:self didPlatterizeWindowDragWithSceneIdentifier:identifierCopy];
 }
 
-- (BOOL)isApplicationActiveAndVisible:(id)a3
+- (BOOL)isApplicationActiveAndVisible:(id)visible
 {
-  v4 = [a3 bundleIdentifier];
+  bundleIdentifier = [visible bundleIdentifier];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__SBFluidSwitcherDragAndDropManager_isApplicationActiveAndVisible___block_invoke;
   v7[3] = &unk_2783A9EA0;
-  v8 = v4;
-  v5 = v4;
+  v8 = bundleIdentifier;
+  v5 = bundleIdentifier;
   LOBYTE(self) = [(SBFluidSwitcherDragAndDropManager *)self _anyActiveAndVisibleSceneEntityMatches:v7];
 
   return self;
@@ -332,50 +332,50 @@ uint64_t __67__SBFluidSwitcherDragAndDropManager_isApplicationActiveAndVisible__
   return v5;
 }
 
-- (id)newSceneIdentityForApplication:(id)a3
+- (id)newSceneIdentityForApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   WeakRetained = objc_loadWeakRetained(&self->_sceneManager);
-  v6 = [WeakRetained newSceneIdentityForApplication:v4];
+  v6 = [WeakRetained newSceneIdentityForApplication:applicationCopy];
 
   return v6;
 }
 
-- (id)mostRecentSceneIdentityExcludingLiveScenesForApplication:(id)a3
+- (id)mostRecentSceneIdentityExcludingLiveScenesForApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   WeakRetained = objc_loadWeakRetained(&self->_sceneManager);
   v6 = objc_loadWeakRetained(&self->_switcherController);
-  v7 = [v6 activeAndVisibleSceneIdentifiersForApplication:v4];
-  v8 = [WeakRetained sceneIdentityForApplication:v4 excludingIdentifiers:v7];
+  v7 = [v6 activeAndVisibleSceneIdentifiersForApplication:applicationCopy];
+  v8 = [WeakRetained sceneIdentityForApplication:applicationCopy excludingIdentifiers:v7];
 
   return v8;
 }
 
-- (id)preferredSceneIdentityForApplication:(id)a3 targetContentIdentifier:(id)a4 preferNewScene:(BOOL)a5
+- (id)preferredSceneIdentityForApplication:(id)application targetContentIdentifier:(id)identifier preferNewScene:(BOOL)scene
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  sceneCopy = scene;
+  identifierCopy = identifier;
+  applicationCopy = application;
   WeakRetained = objc_loadWeakRetained(&self->_sceneManager);
   v11 = objc_loadWeakRetained(&self->_switcherController);
-  v12 = [v11 activeAndVisibleSceneIdentifiersForApplication:v9];
-  v13 = [WeakRetained sceneIdentityForApplication:v9 targetContentIdentifier:v8 allowCanMatches:0 preferNewScene:v5 visibleIdentifiers:v12];
+  v12 = [v11 activeAndVisibleSceneIdentifiersForApplication:applicationCopy];
+  v13 = [WeakRetained sceneIdentityForApplication:applicationCopy targetContentIdentifier:identifierCopy allowCanMatches:0 preferNewScene:sceneCopy visibleIdentifiers:v12];
 
   return v13;
 }
 
-- (void)_dragInteraction:(id)a3 prepareForSession:(id)a4 completion:(id)a5
+- (void)_dragInteraction:(id)interaction prepareForSession:(id)session completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  interactionCopy = interaction;
+  sessionCopy = session;
+  completionCopy = completion;
   v12 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 138543362;
-    v26 = v10;
+    v26 = sessionCopy;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "SBAppDrop prepareForSession: %{public}@", &v25, 0xCu);
   }
 
@@ -390,25 +390,25 @@ uint64_t __67__SBFluidSwitcherDragAndDropManager_isApplicationActiveAndVisible__
   }
 
   v13 = objc_opt_class();
-  v14 = SBSafeCast(v13, v9);
+  v14 = SBSafeCast(v13, interactionCopy);
   if (!v14)
   {
     [SBFluidSwitcherDragAndDropManager _dragInteraction:a2 prepareForSession:self completion:?];
   }
 
   v15 = v14;
-  v16 = [v14 sceneIdentifier];
+  sceneIdentifier = [v14 sceneIdentifier];
   v17 = objc_alloc(MEMORY[0x277D66998]);
-  v18 = [v15 bundleIdentifier];
-  v19 = [v17 initWithUniqueIdentifier:v18 withLaunchActions:0 startLocation:8];
+  bundleIdentifier = [v15 bundleIdentifier];
+  v19 = [v17 initWithUniqueIdentifier:bundleIdentifier withLaunchActions:0 startLocation:8];
 
-  [v19 setDraggedSceneIdentifier:v16];
-  [v10 setLocalContext:v19];
+  [v19 setDraggedSceneIdentifier:sceneIdentifier];
+  [sessionCopy setLocalContext:v19];
   windowDragSession = self->_windowDragSession;
-  self->_windowDragSession = v10;
-  v21 = v10;
+  self->_windowDragSession = sessionCopy;
+  v21 = sessionCopy;
 
-  v22 = MEMORY[0x223D6F7F0](v11);
+  v22 = MEMORY[0x223D6F7F0](completionCopy);
   windowDragSessionPrepareCompletionBlock = self->_windowDragSessionPrepareCompletionBlock;
   self->_windowDragSessionPrepareCompletionBlock = v22;
 
@@ -418,15 +418,15 @@ uint64_t __67__SBFluidSwitcherDragAndDropManager_isApplicationActiveAndVisible__
   [(SBFluidSwitcherDragAndDropManager *)self _beginTrackingDropSessionIfNeeded:v24];
 }
 
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  draggingCopy = dragging;
   v5 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = draggingCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "SBAppDrop _dragInteractionDidCancelLiftWithoutDragging: %{public}@", &v7, 0xCu);
   }
 
@@ -435,44 +435,44 @@ uint64_t __67__SBFluidSwitcherDragAndDropManager_isApplicationActiveAndVisible__
     [(SBFluidSwitcherDragAndDropManager *)self _windowDragSessionDidEnd];
   }
 
-  v6 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
-  [v6 _dragInteractionDidCancelLiftWithoutDragging:v4];
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  [activeTransaction _dragInteractionDidCancelLiftWithoutDragging:draggingCopy];
 }
 
-- (id)_dragInteraction:(id)a3 customSpringAnimationBehaviorForCancellingItem:(id)a4
+- (id)_dragInteraction:(id)interaction customSpringAnimationBehaviorForCancellingItem:(id)item
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  itemCopy = item;
+  interactionCopy = interaction;
   v8 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(SBFluidSwitcherDragAndDropManager *)self activeDropSessions];
+    activeDropSessions = [(SBFluidSwitcherDragAndDropManager *)self activeDropSessions];
     v13 = 138543362;
-    v14 = v9;
+    v14 = activeDropSessions;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "SBAppDrop customSpringAnimationBehaviorForCancellingItem: for activeDropSessions:%{public}@", &v13, 0xCu);
   }
 
-  v10 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
-  v11 = [v10 _dragInteraction:v7 customSpringAnimationBehaviorForCancellingItem:v6];
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  v11 = [activeTransaction _dragInteraction:interactionCopy customSpringAnimationBehaviorForCancellingItem:itemCopy];
 
   return v11;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  sessionCopy = session;
   v6 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = v5;
+    v15 = sessionCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "SBAppDrop itemsForBeginningSession: %{public}@", buf, 0xCu);
   }
 
-  v7 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
-  if (([v7 matchesUIDragDropSession:v5] & 1) == 0)
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  if (([activeTransaction matchesUIDragDropSession:sessionCopy] & 1) == 0)
   {
     [SBFluidSwitcherDragAndDropManager dragInteraction:itemsForBeginningSession:];
   }
@@ -480,8 +480,8 @@ uint64_t __67__SBFluidSwitcherDragAndDropManager_isApplicationActiveAndVisible__
   v8 = objc_alloc_init(MEMORY[0x277CCAA88]);
   [v8 registerDataRepresentationForTypeIdentifier:@"com.apple.springboard.private.windowdrag" visibility:3 loadHandler:&__block_literal_global_20];
   v9 = [objc_alloc(MEMORY[0x277D75470]) initWithItemProvider:v8];
-  v10 = [v5 localContext];
-  [v9 setLocalObject:v10];
+  localContext = [sessionCopy localContext];
+  [v9 setLocalObject:localContext];
 
   v13 = v9;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
@@ -499,64 +499,64 @@ uint64_t __78__SBFluidSwitcherDragAndDropManager_dragInteraction_itemsForBeginni
   return 0;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  itemCopy = item;
+  sessionCopy = session;
   v11 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543362;
-    v16 = v10;
+    v16 = sessionCopy;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "SBAppDrop previewForLiftingItem: %{public}@", &v15, 0xCu);
   }
 
-  v12 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
-  if (([v12 matchesUIDragDropSession:v10] & 1) == 0)
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  if (([activeTransaction matchesUIDragDropSession:sessionCopy] & 1) == 0)
   {
     [SBFluidSwitcherDragAndDropManager dragInteraction:previewForLiftingItem:session:];
   }
 
-  v13 = [v12 dragInteraction:v8 previewForLiftingItem:v9 session:v10];
+  v13 = [activeTransaction dragInteraction:interactionCopy previewForLiftingItem:itemCopy session:sessionCopy];
 
   return v13;
 }
 
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
   v15 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  animatorCopy = animator;
+  sessionCopy = session;
   v11 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543362;
-    v14 = v10;
+    v14 = sessionCopy;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "SBAppDrop willAnimateLiftWithAnimator: %{public}@", &v13, 0xCu);
   }
 
-  v12 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
-  if (([v12 matchesUIDragDropSession:v10] & 1) == 0)
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  if (([activeTransaction matchesUIDragDropSession:sessionCopy] & 1) == 0)
   {
     [SBFluidSwitcherDragAndDropManager dragInteraction:willAnimateLiftWithAnimator:session:];
   }
 
-  [v12 dragInteraction:v8 willAnimateLiftWithAnimator:v9 session:v10];
+  [activeTransaction dragInteraction:interactionCopy willAnimateLiftWithAnimator:animatorCopy session:sessionCopy];
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  beginCopy = begin;
   v8 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v7;
+    v12 = beginCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "SBAppDrop sessionWillBegin: %{public}@", &v11, 0xCu);
   }
 
@@ -564,113 +564,113 @@ uint64_t __78__SBFluidSwitcherDragAndDropManager_dragInteraction_itemsForBeginni
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained dragAndDropManager:self didBeginDraggingWindowWithSceneIdentifier:self->_windowDragSceneIdentifier];
 
-  v10 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
-  if (([v10 matchesUIDragDropSession:v7] & 1) == 0)
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  if (([activeTransaction matchesUIDragDropSession:beginCopy] & 1) == 0)
   {
     [SBFluidSwitcherDragAndDropManager dragInteraction:sessionWillBegin:];
   }
 
-  [v10 dragInteraction:v6 sessionWillBegin:v7];
+  [activeTransaction dragInteraction:interactionCopy sessionWillBegin:beginCopy];
 }
 
-- (void)dragInteraction:(id)a3 sessionDidMove:(id)a4
+- (void)dragInteraction:(id)interaction sessionDidMove:(id)move
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
-  if ([v7 matchesUIDragDropSession:v6])
+  interactionCopy = interaction;
+  moveCopy = move;
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  if ([activeTransaction matchesUIDragDropSession:moveCopy])
   {
-    [v7 dragInteraction:v8 sessionDidMove:v6];
+    [activeTransaction dragInteraction:interactionCopy sessionDidMove:moveCopy];
   }
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  interactionCopy = interaction;
+  sessionCopy = session;
   v10 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543618;
-    v14 = v9;
+    v14 = sessionCopy;
     v15 = 2048;
-    v16 = a5;
+    operationCopy = operation;
     _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "SBAppDrop session: %{public}@ willEndWithOperation: %ld", &v13, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained dragAndDropManager:self willEndDraggingWindowWithSceneIdentifier:self->_windowDragSceneIdentifier];
 
-  v12 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
-  if ([v12 matchesUIDragDropSession:v9])
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  if ([activeTransaction matchesUIDragDropSession:sessionCopy])
   {
-    [v12 dragInteraction:v8 session:v9 willEndWithOperation:a5];
+    [activeTransaction dragInteraction:interactionCopy session:sessionCopy willEndWithOperation:operation];
   }
 
   [(SBFluidSwitcherDragAndDropManager *)self _windowDragSessionDidEnd];
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  interactionCopy = interaction;
+  sessionCopy = session;
   v10 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
-    v13 = v9;
+    v13 = sessionCopy;
     v14 = 2048;
-    v15 = a5;
+    operationCopy = operation;
     _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "SBAppDrop session: %{public}@ didEndWithOperation: %ld", &v12, 0x16u);
   }
 
-  v11 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
-  if ([v11 matchesUIDragDropSession:v9])
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  if ([activeTransaction matchesUIDragDropSession:sessionCopy])
   {
-    [v11 dragInteraction:v8 session:v9 didEndWithOperation:a5];
+    [activeTransaction dragInteraction:interactionCopy session:sessionCopy didEndWithOperation:operation];
   }
 }
 
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  defaultCopy = default;
+  itemCopy = item;
+  interactionCopy = interaction;
   v11 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(SBFluidSwitcherDragAndDropManager *)self activeDropSessions];
+    activeDropSessions = [(SBFluidSwitcherDragAndDropManager *)self activeDropSessions];
     v16 = 138543362;
-    v17 = v12;
+    v17 = activeDropSessions;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "SBAppDrop previewForCancellingItem: for activeDropSessions:%{public}@", &v16, 0xCu);
   }
 
-  v13 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
-  v14 = [v13 dragInteraction:v10 previewForCancellingItem:v9 withDefault:v8];
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  v14 = [activeTransaction dragInteraction:interactionCopy previewForCancellingItem:itemCopy withDefault:defaultCopy];
 
   return v14;
 }
 
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  animatorCopy = animator;
+  itemCopy = item;
+  interactionCopy = interaction;
   v11 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(SBFluidSwitcherDragAndDropManager *)self activeDropSessions];
+    activeDropSessions = [(SBFluidSwitcherDragAndDropManager *)self activeDropSessions];
     v14 = 138543362;
-    v15 = v12;
+    v15 = activeDropSessions;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "SBAppDrop willAnimateCancelWithAnimator: for activeDropSessions:%{public}@", &v14, 0xCu);
   }
 
-  v13 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
-  [v13 dragInteraction:v10 item:v9 willAnimateCancelWithAnimator:v8];
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  [activeTransaction dragInteraction:interactionCopy item:itemCopy willAnimateCancelWithAnimator:animatorCopy];
 }
 
 - (void)_windowDragSessionDidEnd
@@ -688,38 +688,38 @@ uint64_t __78__SBFluidSwitcherDragAndDropManager_dragInteraction_itemsForBeginni
   self->_windowDragHandledByDruid = 0;
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [SBApplicationDropSession canHandleUIDragDropSession:v5]|| [(SBFluidSwitcherDragAndDropManager *)self _continuousExposeStripsOccluded];
+  sessionCopy = session;
+  _continuousExposeStripsOccluded = [SBApplicationDropSession canHandleUIDragDropSession:sessionCopy]|| [(SBFluidSwitcherDragAndDropManager *)self _continuousExposeStripsOccluded];
   v7 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = v5;
+    v10 = sessionCopy;
     v11 = 1024;
-    v12 = v6;
+    v12 = _continuousExposeStripsOccluded;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "SBAppDrop canHandleSession: %{public}@ -> %{BOOL}u", &v9, 0x12u);
   }
 
-  return v6;
+  return _continuousExposeStripsOccluded;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMapTable *)self->_activeDropSessions objectForKey:v7];
-  v9 = [MEMORY[0x277CBEB68] null];
+  interactionCopy = interaction;
+  enterCopy = enter;
+  v8 = [(NSMapTable *)self->_activeDropSessions objectForKey:enterCopy];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (v8 == v9)
+  if (v8 == null)
   {
-    v16 = SBLogMedusaDropDestination();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    activeTransaction = SBLogMedusaDropDestination();
+    if (os_log_type_enabled(activeTransaction, OS_LOG_TYPE_ERROR))
     {
-      [SBFluidSwitcherDragAndDropManager dropInteraction:v7 sessionDidEnter:v16];
+      [SBFluidSwitcherDragAndDropManager dropInteraction:enterCopy sessionDidEnter:activeTransaction];
     }
   }
 
@@ -728,8 +728,8 @@ uint64_t __78__SBFluidSwitcherDragAndDropManager_dragInteraction_itemsForBeginni
     if (!v8)
     {
       activeDropSessions = self->_activeDropSessions;
-      v11 = [v7 localDragSession];
-      v8 = [(NSMapTable *)activeDropSessions objectForKey:v11];
+      localDragSession = [enterCopy localDragSession];
+      v8 = [(NSMapTable *)activeDropSessions objectForKey:localDragSession];
 
       v12 = SBLogMedusaDropDestination();
       v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -738,15 +738,15 @@ uint64_t __78__SBFluidSwitcherDragAndDropManager_dragInteraction_itemsForBeginni
         if (v13)
         {
           *buf = 138543362;
-          v27 = v7;
+          v27 = enterCopy;
           _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "SBAppDrop sessionDidEnter: %{public}@ [local drag session]", buf, 0xCu);
         }
 
         v14 = self->_activeDropSessions;
-        v15 = [v7 localDragSession];
-        [(NSMapTable *)v14 removeObjectForKey:v15];
+        localDragSession2 = [enterCopy localDragSession];
+        [(NSMapTable *)v14 removeObjectForKey:localDragSession2];
 
-        [(NSMapTable *)self->_activeDropSessions setObject:v8 forKey:v7];
+        [(NSMapTable *)self->_activeDropSessions setObject:v8 forKey:enterCopy];
       }
 
       else
@@ -754,35 +754,35 @@ uint64_t __78__SBFluidSwitcherDragAndDropManager_dragInteraction_itemsForBeginni
         if (v13)
         {
           *buf = 138543362;
-          v27 = v7;
+          v27 = enterCopy;
           _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "SBAppDrop sessionDidEnter: %{public}@ [loading drop session]", buf, 0xCu);
         }
 
-        v17 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
         v18 = self->_activeDropSessions;
-        v19 = [MEMORY[0x277CBEB68] null];
-        [(NSMapTable *)v18 setObject:v19 forKey:v7];
+        null2 = [MEMORY[0x277CBEB68] null];
+        [(NSMapTable *)v18 setObject:null2 forKey:enterCopy];
 
-        v20 = [(SBFluidSwitcherDragAndDropManager *)self _continuousExposeStripsOccluded];
+        _continuousExposeStripsOccluded = [(SBFluidSwitcherDragAndDropManager *)self _continuousExposeStripsOccluded];
         v22[0] = MEMORY[0x277D85DD0];
         v22[1] = 3221225472;
         v22[2] = __69__SBFluidSwitcherDragAndDropManager_dropInteraction_sessionDidEnter___block_invoke;
         v22[3] = &unk_2783ABEB0;
-        v23 = v7;
-        v24 = v17;
-        v25 = self;
-        v21 = v17;
-        [SBApplicationDropSession getDropSessionWithUIDropSession:v23 sceneProvider:self defaultToSourceApplication:v20 completion:v22];
+        v23 = enterCopy;
+        v24 = date;
+        selfCopy = self;
+        v21 = date;
+        [SBApplicationDropSession getDropSessionWithUIDropSession:v23 sceneProvider:self defaultToSourceApplication:_continuousExposeStripsOccluded completion:v22];
 
         v8 = 0;
       }
     }
 
     [(SBFluidSwitcherDragAndDropManager *)self _beginTrackingDropSessionIfNeeded:v8];
-    v16 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
-    if ([v16 matchesUIDragDropSession:v7])
+    activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+    if ([activeTransaction matchesUIDragDropSession:enterCopy])
     {
-      [v16 dropInteraction:v6 sessionDidEnter:v7];
+      [activeTransaction dropInteraction:interactionCopy sessionDidEnter:enterCopy];
     }
   }
 }
@@ -820,16 +820,16 @@ void __69__SBFluidSwitcherDragAndDropManager_dropInteraction_sessionDidEnter___b
   }
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMapTable *)self->_activeDropSessions objectForKey:v7];
-  v9 = [MEMORY[0x277CBEB68] null];
+  interactionCopy = interaction;
+  updateCopy = update;
+  v8 = [(NSMapTable *)self->_activeDropSessions objectForKey:updateCopy];
+  null = [MEMORY[0x277CBEB68] null];
 
   if (v8)
   {
-    v10 = v8 == v9;
+    v10 = v8 == null;
   }
 
   else
@@ -845,10 +845,10 @@ void __69__SBFluidSwitcherDragAndDropManager_dropInteraction_sessionDidEnter___b
   else
   {
     [(SBFluidSwitcherDragAndDropManager *)self _beginTrackingDropSessionIfNeeded:v8];
-    v12 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
-    if ([v12 matchesUIDragDropSession:v7])
+    activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+    if ([activeTransaction matchesUIDragDropSession:updateCopy])
     {
-      v13 = [v12 dropInteraction:v6 sessionDidUpdate:v7];
+      v13 = [activeTransaction dropInteraction:interactionCopy sessionDidUpdate:updateCopy];
     }
 
     else
@@ -862,172 +862,172 @@ void __69__SBFluidSwitcherDragAndDropManager_dropInteraction_sessionDidEnter___b
   return v11;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  exitCopy = exit;
   v8 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v7;
+    v11 = exitCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "SBAppDrop sessionDidExit: %{public}@", &v10, 0xCu);
   }
 
-  v9 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
-  if ([v9 matchesUIDragDropSession:v7])
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  if ([activeTransaction matchesUIDragDropSession:exitCopy])
   {
-    [v9 dropInteraction:v6 sessionDidExit:v7];
+    [activeTransaction dropInteraction:interactionCopy sessionDidExit:exitCopy];
   }
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  dropCopy = drop;
+  interactionCopy = interaction;
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
   v9 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543874;
-    v11 = v6;
+    v11 = dropCopy;
     v12 = 1024;
-    v13 = [v8 matchesUIDragDropSession:v6];
+    v13 = [activeTransaction matchesUIDragDropSession:dropCopy];
     v14 = 1024;
-    v15 = v8 != 0;
+    v15 = activeTransaction != 0;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "SBAppDrop performDrop: %{public}@, transaction exists for session: %{BOOL}u, transaction exists: %{BOOL}u", &v10, 0x18u);
   }
 
-  [v8 dropInteraction:v7 performDrop:v6];
+  [activeTransaction dropInteraction:interactionCopy performDrop:dropCopy];
 }
 
-- (void)dropInteraction:(id)a3 concludeDrop:(id)a4
+- (void)dropInteraction:(id)interaction concludeDrop:(id)drop
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  dropCopy = drop;
   v8 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v7;
+    v11 = dropCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "SBAppDrop concludeDrop: %{public}@", &v10, 0xCu);
   }
 
-  v9 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
-  if ([v9 matchesUIDragDropSession:v7])
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  if ([activeTransaction matchesUIDragDropSession:dropCopy])
   {
-    [v9 dropInteraction:v6 concludeDrop:v7];
+    [activeTransaction dropInteraction:interactionCopy concludeDrop:dropCopy];
   }
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  endCopy = end;
   v8 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = self->_activeTransaction != 0;
     v11 = 138543618;
-    v12 = v7;
+    v12 = endCopy;
     v13 = 1024;
     v14 = v9;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "SBAppDrop sessionDidEnd: %{public}@, transaction exists: %{BOOL}u", &v11, 0x12u);
   }
 
-  v10 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
-  [(NSMapTable *)self->_activeDropSessions removeObjectForKey:v7];
-  if ([v10 matchesUIDragDropSession:v7])
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  [(NSMapTable *)self->_activeDropSessions removeObjectForKey:endCopy];
+  if ([activeTransaction matchesUIDragDropSession:endCopy])
   {
-    [v10 dropInteraction:v6 sessionDidEnd:v7];
+    [activeTransaction dropInteraction:interactionCopy sessionDidEnd:endCopy];
   }
 }
 
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  defaultCopy = default;
+  itemCopy = item;
+  interactionCopy = interaction;
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
   v12 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(SBFluidSwitcherDragAndDropManager *)self activeDropSessions];
+    activeDropSessions = [(SBFluidSwitcherDragAndDropManager *)self activeDropSessions];
     v16 = 138543618;
-    v17 = v13;
+    v17 = activeDropSessions;
     v18 = 1024;
-    v19 = v11 != 0;
+    v19 = activeTransaction != 0;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "SBAppDrop previewForDroppingItem: for activeDropSessions:%{public}@, transaction exists: %{BOOL}u", &v16, 0x12u);
   }
 
-  v14 = [v11 dropInteraction:v10 previewForDroppingItem:v9 withDefault:v8];
+  v14 = [activeTransaction dropInteraction:interactionCopy previewForDroppingItem:itemCopy withDefault:defaultCopy];
 
   return v14;
 }
 
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  animatorCopy = animator;
+  itemCopy = item;
+  interactionCopy = interaction;
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
   v12 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(SBFluidSwitcherDragAndDropManager *)self activeDropSessions];
+    activeDropSessions = [(SBFluidSwitcherDragAndDropManager *)self activeDropSessions];
     v14 = 138543618;
-    v15 = v13;
+    v15 = activeDropSessions;
     v16 = 1024;
-    v17 = v11 != 0;
+    v17 = activeTransaction != 0;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "SBAppDrop willAnimateDropWithAnimator: for activeDropSessions:%{public}@, transaction exists: %{BOOL}u", &v14, 0x12u);
   }
 
-  [v11 dropInteraction:v10 item:v9 willAnimateDropWithAnimator:v8];
+  [activeTransaction dropInteraction:interactionCopy item:itemCopy willAnimateDropWithAnimator:animatorCopy];
 }
 
-- (id)_dropInteraction:(id)a3 customSpringAnimationBehaviorForDroppingItem:(id)a4
+- (id)_dropInteraction:(id)interaction customSpringAnimationBehaviorForDroppingItem:(id)item
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  itemCopy = item;
+  interactionCopy = interaction;
+  activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
   v9 = SBLogMedusaDropDestination();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(SBFluidSwitcherDragAndDropManager *)self activeDropSessions];
+    activeDropSessions = [(SBFluidSwitcherDragAndDropManager *)self activeDropSessions];
     v13 = 138543618;
-    v14 = v10;
+    v14 = activeDropSessions;
     v15 = 1024;
-    v16 = v8 != 0;
+    v16 = activeTransaction != 0;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "SBAppDrop customSpringAnimationBehaviorForDroppingItem: for activeDropSessions:%{public}@, transaction exists: %{BOOL}u", &v13, 0x12u);
   }
 
-  v11 = [v8 _dropInteraction:v7 customSpringAnimationBehaviorForDroppingItem:v6];
+  v11 = [activeTransaction _dropInteraction:interactionCopy customSpringAnimationBehaviorForDroppingItem:itemCopy];
 
   return v11;
 }
 
-- (BOOL)_anyActiveAndVisibleSceneEntityMatches:(id)a3
+- (BOOL)_anyActiveAndVisibleSceneEntityMatches:(id)matches
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  matchesCopy = matches;
   WeakRetained = objc_loadWeakRetained(&self->_switcherController);
-  v6 = [WeakRetained windowScene];
-  v7 = [v6 layoutStateProvider];
-  v8 = [v7 layoutState];
+  windowScene = [WeakRetained windowScene];
+  layoutStateProvider = [windowScene layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [v8 elements];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  elements = [layoutState elements];
+  v10 = [elements countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = *v17;
@@ -1037,21 +1037,21 @@ void __69__SBFluidSwitcherDragAndDropManager_dropInteraction_sessionDidEnter___b
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(elements);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) workspaceEntity];
-        v14 = [v13 applicationSceneEntity];
+        workspaceEntity = [*(*(&v16 + 1) + 8 * i) workspaceEntity];
+        applicationSceneEntity = [workspaceEntity applicationSceneEntity];
 
-        LOBYTE(v13) = v4[2](v4, v14);
-        if (v13)
+        LOBYTE(workspaceEntity) = matchesCopy[2](matchesCopy, applicationSceneEntity);
+        if (workspaceEntity)
         {
           LOBYTE(v10) = 1;
           goto LABEL_11;
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [elements countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         continue;
@@ -1066,38 +1066,38 @@ LABEL_11:
   return v10;
 }
 
-- (void)_beginTrackingDropSessionIfNeeded:(id)a3
+- (void)_beginTrackingDropSessionIfNeeded:(id)needed
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  neededCopy = needed;
+  if (neededCopy)
   {
-    v5 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+    activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
 
-    if (!v5 || (-[SBFluidSwitcherDragAndDropManager activeTransaction](self, "activeTransaction"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 matchesApplicationDropSession:v4], v6, (v7 & 1) == 0))
+    if (!activeTransaction || (-[SBFluidSwitcherDragAndDropManager activeTransaction](self, "activeTransaction"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 matchesApplicationDropSession:neededCopy], v6, (v7 & 1) == 0))
     {
       WeakRetained = objc_loadWeakRetained(&self->_switcherController);
-      if ([SBDragAndDropWorkspaceTransaction shouldTrackLocationOfDropSession:v4 forSwitcherController:WeakRetained])
+      if ([SBDragAndDropWorkspaceTransaction shouldTrackLocationOfDropSession:neededCopy forSwitcherController:WeakRetained])
       {
         v9 = +[SBWorkspace mainWorkspace];
-        v10 = [v9 transientOverlayPresentationManager];
+        transientOverlayPresentationManager = [v9 transientOverlayPresentationManager];
 
-        v11 = [MEMORY[0x277D0AB20] sharedInstance];
-        [v11 cancelEventsWithName:@"SBDragAndDrop"];
+        mEMORY[0x277D0AB20] = [MEMORY[0x277D0AB20] sharedInstance];
+        [mEMORY[0x277D0AB20] cancelEventsWithName:@"SBDragAndDrop"];
 
         v12 = +[SBWorkspace mainWorkspace];
-        v13 = [WeakRetained windowScene];
-        v14 = [v13 _fbsDisplayConfiguration];
+        windowScene = [WeakRetained windowScene];
+        _fbsDisplayConfiguration = [windowScene _fbsDisplayConfiguration];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __71__SBFluidSwitcherDragAndDropManager__beginTrackingDropSessionIfNeeded___block_invoke_2;
         v16[3] = &unk_2783ABF48;
         v16[4] = self;
-        v17 = v4;
-        v18 = v10;
+        v17 = neededCopy;
+        v18 = transientOverlayPresentationManager;
         v19 = WeakRetained;
-        v15 = v10;
-        [v12 requestTransitionWithOptions:0 displayConfiguration:v14 builder:&__block_literal_global_53 validator:v16];
+        v15 = transientOverlayPresentationManager;
+        [v12 requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration builder:&__block_literal_global_53 validator:v16];
       }
 
       else
@@ -1106,7 +1106,7 @@ LABEL_11:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           *buf = 138543362;
-          v21 = v4;
+          v21 = neededCopy;
           _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_INFO, "SBAppDrop _beginTrackingDropSessionIfNedeed: not starting tracking %{public}@ [not within drop boundary]", buf, 0xCu);
         }
       }
@@ -1332,11 +1332,11 @@ LABEL_7:
   return v4;
 }
 
-- (BOOL)_workspaceWouldAllowTransitionToApplication:(id)a3
+- (BOOL)_workspaceWouldAllowTransitionToApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = objc_alloc_init(SBWorkspaceApplicationSceneTransitionContext);
-  v5 = [[SBDeviceApplicationSceneEntity alloc] initWithApplicationForMainDisplay:v3];
+  v5 = [[SBDeviceApplicationSceneEntity alloc] initWithApplicationForMainDisplay:applicationCopy];
 
   [(SBWorkspaceApplicationSceneTransitionContext *)v4 setEntity:v5 forLayoutRole:1];
   v6 = +[SBWorkspace mainWorkspace];
@@ -1349,47 +1349,47 @@ LABEL_7:
   return v8;
 }
 
-- (void)_addMedusaDraggingDestinationWindow:(id)a3
+- (void)_addMedusaDraggingDestinationWindow:(id)window
 {
-  v8 = a3;
-  if (v8)
+  windowCopy = window;
+  if (windowCopy)
   {
-    v4 = [v8 _contextId];
-    if (v4)
+    _contextId = [windowCopy _contextId];
+    if (_contextId)
     {
       requiredContextIdentifiersForMedusaDraggingDestination = self->_requiredContextIdentifiersForMedusaDraggingDestination;
-      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v4];
+      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:_contextId];
       [(NSMutableSet *)requiredContextIdentifiersForMedusaDraggingDestination addObject:v6];
     }
   }
 
-  v7 = [(SBFluidSwitcherDragAndDropManager *)self _requiredContextIdentifiersForMedusaDraggingDestination];
+  _requiredContextIdentifiersForMedusaDraggingDestination = [(SBFluidSwitcherDragAndDropManager *)self _requiredContextIdentifiersForMedusaDraggingDestination];
   SBSSetRequiredContextIdsForMedusaDragAndDropForSpotlightOnly();
 }
 
-- (void)_removeMedusaDraggingDestinationWindow:(id)a3
+- (void)_removeMedusaDraggingDestinationWindow:(id)window
 {
-  v8 = a3;
-  if (v8)
+  windowCopy = window;
+  if (windowCopy)
   {
-    v4 = [v8 _contextId];
-    if (v4)
+    _contextId = [windowCopy _contextId];
+    if (_contextId)
     {
       requiredContextIdentifiersForMedusaDraggingDestination = self->_requiredContextIdentifiersForMedusaDraggingDestination;
-      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v4];
+      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:_contextId];
       [(NSMutableSet *)requiredContextIdentifiersForMedusaDraggingDestination removeObject:v6];
     }
   }
 
-  v7 = [(SBFluidSwitcherDragAndDropManager *)self _requiredContextIdentifiersForMedusaDraggingDestination];
+  _requiredContextIdentifiersForMedusaDraggingDestination = [(SBFluidSwitcherDragAndDropManager *)self _requiredContextIdentifiersForMedusaDraggingDestination];
   SBSSetRequiredContextIdsForMedusaDragAndDropForSpotlightOnly();
 }
 
 - (BOOL)_continuousExposeStripsOccluded
 {
   WeakRetained = objc_loadWeakRetained(&self->_switcherController);
-  v4 = [WeakRetained windowManagementContext];
-  if ([v4 isAutomaticStageCreationEnabled])
+  windowManagementContext = [WeakRetained windowManagementContext];
+  if ([windowManagementContext isAutomaticStageCreationEnabled])
   {
     v5 = objc_loadWeakRetained(&self->_switcherContentController);
     v6 = [v5 _areContinuousExposeStripsUnoccluded] ^ 1;
@@ -1403,10 +1403,10 @@ LABEL_7:
   return v6;
 }
 
-- (void)transactionDidComplete:(id)a3
+- (void)transactionDidComplete:(id)complete
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completeCopy = complete;
   v5 = SBLogMedusaDropDestination();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
 
@@ -1416,21 +1416,21 @@ LABEL_7:
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(SBFluidSwitcherDragAndDropManager *)v4 transactionDidComplete:v8];
+      [(SBFluidSwitcherDragAndDropManager *)completeCopy transactionDidComplete:v8];
     }
   }
 
   else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+    activeTransaction = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
     v11[0] = 67109120;
-    v11[1] = v9 == v4;
+    v11[1] = activeTransaction == completeCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "SBAppDrop transactionDidComplete: Matches active transaction: %{BOOL}u", v11, 8u);
   }
 
-  v10 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
+  activeTransaction2 = [(SBFluidSwitcherDragAndDropManager *)self activeTransaction];
 
-  if (v10 == v4)
+  if (activeTransaction2 == completeCopy)
   {
     [(SBFluidSwitcherDragAndDropManager *)self setActiveTransaction:0];
   }

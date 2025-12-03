@@ -1,8 +1,8 @@
 @interface FMDAbsintheV3SigningSession
 - (FMDAbsintheV3SigningSession)init;
-- (id)signatureForData:(id)a3 error:(id *)a4;
+- (id)signatureForData:(id)data error:(id *)error;
 - (void)_destroySession;
-- (void)establishSessionWithServerInteractionController:(id)a3;
+- (void)establishSessionWithServerInteractionController:(id)controller;
 @end
 
 @implementation FMDAbsintheV3SigningSession
@@ -21,9 +21,9 @@
   return v3;
 }
 
-- (void)establishSessionWithServerInteractionController:(id)a3
+- (void)establishSessionWithServerInteractionController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(FMDAbsintheV3SigningSession *)self _destroySession];
   v5 = sub_100002880();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -74,22 +74,22 @@
   v15 = +[FMDServiceProvider activeServiceProvider];
   v16 = [(FMDAbsintheV3SigningSession *)self mode]== 0;
   v17 = [FMDRequestIdentityV3Session alloc];
-  v18 = [(FMDAbsintheV3SigningSession *)self activationLockRequestUUID];
-  v19 = [(FMDRequestIdentityV3Session *)v17 initWithProvider:v15 activationLockRequestUUID:v18 pscHelloMsg:v13];
+  activationLockRequestUUID = [(FMDAbsintheV3SigningSession *)self activationLockRequestUUID];
+  v19 = [(FMDRequestIdentityV3Session *)v17 initWithProvider:v15 activationLockRequestUUID:activationLockRequestUUID pscHelloMsg:v13];
 
   [(FMDRequestIdentityV3Session *)v19 setRequiresAuthentication:v16];
-  v20 = [(FMDAbsintheV3SigningSession *)self cause];
-  [(FMDRequestIdentityV3Session *)v19 setCause:v20];
+  cause = [(FMDAbsintheV3SigningSession *)self cause];
+  [(FMDRequestIdentityV3Session *)v19 setCause:cause];
 
   v23 = _NSConcreteStackBlock;
   v24 = 3221225472;
   v25 = sub_1001645AC;
   v26 = &unk_1002CF188;
-  v27 = self;
+  selfCopy = self;
   v21 = v6;
   v28 = v21;
   [(FMDRequest *)v19 setCompletionHandler:&v23];
-  v22 = [v4 enqueueRequest:{v19, v23, v24, v25, v26, v27}];
+  v22 = [controllerCopy enqueueRequest:{v19, v23, v24, v25, v26, selfCopy}];
 
   if (v22)
   {
@@ -97,9 +97,9 @@
   }
 }
 
-- (id)signatureForData:(id)a3 error:(id *)a4
+- (id)signatureForData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   if ([(FMDAbsintheV3SigningSession *)self pscSessionRef])
   {
     v25 = 0;
@@ -109,13 +109,13 @@
     v7 = sub_100002880();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 base64EncodedStringWithOptions:4];
+      v8 = [dataCopy base64EncodedStringWithOptions:4];
       *buf = 138412290;
       v30 = v8;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "FMDAbsintheV3SigningSession digest to sign : %@", buf, 0xCu);
     }
 
-    v9 = sub_100225018(-[FMDAbsintheV3SigningSession pscSessionRef](self, "pscSessionRef"), [v6 bytes], objc_msgSend(v6, "length"), &v25, &v24, &v23, &v22);
+    v9 = sub_100225018(-[FMDAbsintheV3SigningSession pscSessionRef](self, "pscSessionRef"), [dataCopy bytes], objc_msgSend(dataCopy, "length"), &v25, &v24, &v23, &v22);
     if (v9)
     {
       v10 = v9;
@@ -144,7 +144,7 @@
     }
 
     [(FMDAbsintheV3SigningSession *)self _destroySession];
-    if (a4)
+    if (error)
     {
       goto LABEL_12;
     }
@@ -154,14 +154,14 @@
   {
     v14 = 0;
     v15 = 0;
-    if (a4)
+    if (error)
     {
 LABEL_12:
-      v16 = [(FMDAbsintheV3SigningSession *)self pscError];
-      v17 = v16;
-      if (v16)
+      pscError = [(FMDAbsintheV3SigningSession *)self pscError];
+      v17 = pscError;
+      if (pscError)
       {
-        v18 = v16;
+        v18 = pscError;
       }
 
       else
@@ -172,7 +172,7 @@ LABEL_12:
       v19 = v18;
 
       v20 = v19;
-      *a4 = v19;
+      *error = v19;
       v14 = v19;
     }
   }

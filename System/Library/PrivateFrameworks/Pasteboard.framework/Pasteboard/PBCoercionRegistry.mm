@@ -1,31 +1,31 @@
 @interface PBCoercionRegistry
-+ (id)archivedDataFromObject:(id)a3 requestedType:(id)a4 outError:(id *)a5;
++ (id)archivedDataFromObject:(id)object requestedType:(id)type outError:(id *)error;
 + (id)defaultRegistry;
-+ (id)objectFromArchivedData:(id)a3 URL:(id)a4 requestedClass:(Class)a5 typeIdentifier:(id)a6 outError:(id *)a7;
-- (BOOL)canCoerceFromRepresentationConformingToType:(id)a3 toObjectOfClass:(Class)a4;
-- (BOOL)canCoerceObjectOfClass:(Class)a3 toObjectOfClass:(Class)a4;
-- (BOOL)canCoerceObjectOfClass:(Class)a3 toRepresentationConformingToType:(id)a4;
++ (id)objectFromArchivedData:(id)data URL:(id)l requestedClass:(Class)class typeIdentifier:(id)identifier outError:(id *)error;
+- (BOOL)canCoerceFromRepresentationConformingToType:(id)type toObjectOfClass:(Class)class;
+- (BOOL)canCoerceObjectOfClass:(Class)class toObjectOfClass:(Class)ofClass;
+- (BOOL)canCoerceObjectOfClass:(Class)class toRepresentationConformingToType:(id)type;
 - (PBCoercionRegistry)init;
-- (id)_availableClassesToCoerceFromClass:(Class)a3;
-- (id)_member_acceptableRepresentationTypesForCreatingObjectOfClass:(Class)a3;
-- (id)_member_availableClassesToCoerceToFromClass:(Class)a3;
-- (id)_member_availableDirectRepresentationTypesForClass:(Class)a3;
-- (id)_member_exporterFromClass:(Class)a3 toType:(id)a4;
-- (id)_newObjectOfClass:(Class)a3 fromData:(id)a4 URL:(id)a5 ofType:(id)a6 outError:(id *)a7;
-- (id)acceptableRepresentationTypesForCreatingObjectOfClass:(Class)a3;
-- (id)availableRepresentationTypesForClass:(Class)a3;
-- (id)loadCoercionOfRepresentation:(id)a3 fromType:(id)a4 toType:(id)a5 usingCoercion:(id)a6 completionBlock:(id)a7;
-- (void)_member_enumerateAvailableCoercionLoaderBlocksForRepresentation:(id)a3 usingBlock:(id)a4;
-- (void)_member_registerCoercionFromObjectOfClass:(Class)a3 toObjectOfClass:(Class)a4 coercionBlock:(id)a5;
-- (void)_member_registerCoercionFromObjectOfClass:(Class)a3 toRepresentationOfType:(id)a4 coercionBlock:(id)a5;
-- (void)_member_registerCoercionFromRepresentationConformingToType:(id)a3 toObjectOfClass:(Class)a4 coercionBlock:(id)a5;
-- (void)_member_registerCoercionFromRepresentationConformingToType:(id)a3 toRepresentationOfType:(id)a4 coercionBlock:(id)a5;
-- (void)enumerateAvailableCoercionLoaderBlocksForRepresentation:(id)a3 usingBlock:(id)a4;
-- (void)loadRepresentationOfObject:(id)a3 asType:(id)a4 completionBlock:(id)a5;
-- (void)registerCoercionFromObjectOfClass:(Class)a3 toObjectOfClass:(Class)a4 coercionBlock:(id)a5;
-- (void)registerCoercionFromObjectOfClass:(Class)a3 toRepresentationOfType:(id)a4 coercionBlock:(id)a5;
-- (void)registerCoercionFromRepresentationConformingToType:(id)a3 toObjectOfClass:(Class)a4 coercionBlock:(id)a5;
-- (void)registerCoercionFromRepresentationConformingToType:(id)a3 toRepresentationOfType:(id)a4 coercionBlock:(id)a5;
+- (id)_availableClassesToCoerceFromClass:(Class)class;
+- (id)_member_acceptableRepresentationTypesForCreatingObjectOfClass:(Class)class;
+- (id)_member_availableClassesToCoerceToFromClass:(Class)class;
+- (id)_member_availableDirectRepresentationTypesForClass:(Class)class;
+- (id)_member_exporterFromClass:(Class)class toType:(id)type;
+- (id)_newObjectOfClass:(Class)class fromData:(id)data URL:(id)l ofType:(id)type outError:(id *)error;
+- (id)acceptableRepresentationTypesForCreatingObjectOfClass:(Class)class;
+- (id)availableRepresentationTypesForClass:(Class)class;
+- (id)loadCoercionOfRepresentation:(id)representation fromType:(id)type toType:(id)toType usingCoercion:(id)coercion completionBlock:(id)block;
+- (void)_member_enumerateAvailableCoercionLoaderBlocksForRepresentation:(id)representation usingBlock:(id)block;
+- (void)_member_registerCoercionFromObjectOfClass:(Class)class toObjectOfClass:(Class)ofClass coercionBlock:(id)block;
+- (void)_member_registerCoercionFromObjectOfClass:(Class)class toRepresentationOfType:(id)type coercionBlock:(id)block;
+- (void)_member_registerCoercionFromRepresentationConformingToType:(id)type toObjectOfClass:(Class)class coercionBlock:(id)block;
+- (void)_member_registerCoercionFromRepresentationConformingToType:(id)type toRepresentationOfType:(id)ofType coercionBlock:(id)block;
+- (void)enumerateAvailableCoercionLoaderBlocksForRepresentation:(id)representation usingBlock:(id)block;
+- (void)loadRepresentationOfObject:(id)object asType:(id)type completionBlock:(id)block;
+- (void)registerCoercionFromObjectOfClass:(Class)class toObjectOfClass:(Class)ofClass coercionBlock:(id)block;
+- (void)registerCoercionFromObjectOfClass:(Class)class toRepresentationOfType:(id)type coercionBlock:(id)block;
+- (void)registerCoercionFromRepresentationConformingToType:(id)type toObjectOfClass:(Class)class coercionBlock:(id)block;
+- (void)registerCoercionFromRepresentationConformingToType:(id)type toRepresentationOfType:(id)ofType coercionBlock:(id)block;
 @end
 
 @implementation PBCoercionRegistry
@@ -41,7 +41,7 @@
   v7 = __37__PBCoercionRegistry_defaultRegistry__block_invoke;
   v8 = &unk_279A072F0;
   v9 = &v11;
-  v10 = a1;
+  selfCopy = self;
   if (qword_280AEA938 != -1)
   {
     dispatch_once(&qword_280AEA938, &v5);
@@ -56,8 +56,8 @@
 
     else
     {
-      v2 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v2 postNotificationName:@"PBDefaultCoercionRegistryDidInstantiateNotification" object:_MergedGlobals_7];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"PBDefaultCoercionRegistryDidInstantiateNotification" object:_MergedGlobals_7];
     }
   }
 
@@ -355,141 +355,141 @@ id __37__PBCoercionRegistry_defaultRegistry__block_invoke_10(uint64_t a1, objc_c
     memberQueue = v2->_memberQueue;
     v2->_memberQueue = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     member_exporterByClass = v2->_member_exporterByClass;
-    v2->_member_exporterByClass = v5;
+    v2->_member_exporterByClass = dictionary;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     member_importerByClass = v2->_member_importerByClass;
-    v2->_member_importerByClass = v7;
+    v2->_member_importerByClass = dictionary2;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     member_classCoercionByClass = v2->_member_classCoercionByClass;
-    v2->_member_classCoercionByClass = v9;
+    v2->_member_classCoercionByClass = dictionary3;
 
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     member_representationCoercions = v2->_member_representationCoercions;
-    v2->_member_representationCoercions = v11;
+    v2->_member_representationCoercions = array;
   }
 
   return v2;
 }
 
-- (void)_member_registerCoercionFromObjectOfClass:(Class)a3 toRepresentationOfType:(id)a4 coercionBlock:(id)a5
+- (void)_member_registerCoercionFromObjectOfClass:(Class)class toRepresentationOfType:(id)type coercionBlock:(id)block
 {
-  v13 = a4;
-  v8 = a5;
-  v9 = NSStringFromClass(a3);
-  v10 = [(PBCoercionRegistry *)self member_exporterByClass];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  typeCopy = type;
+  blockCopy = block;
+  v9 = NSStringFromClass(class);
+  member_exporterByClass = [(PBCoercionRegistry *)self member_exporterByClass];
+  v11 = [member_exporterByClass objectForKeyedSubscript:v9];
 
   if (!v11)
   {
-    v11 = [[PBObjectToRepresentationCoercion alloc] initWithClass:a3];
-    v12 = [(PBCoercionRegistry *)self member_exporterByClass];
-    [v12 setObject:v11 forKeyedSubscript:v9];
+    v11 = [[PBObjectToRepresentationCoercion alloc] initWithClass:class];
+    member_exporterByClass2 = [(PBCoercionRegistry *)self member_exporterByClass];
+    [member_exporterByClass2 setObject:v11 forKeyedSubscript:v9];
   }
 
-  [(PBObjectToRepresentationCoercion *)v11 addCoercionToType:v13 block:v8];
+  [(PBObjectToRepresentationCoercion *)v11 addCoercionToType:typeCopy block:blockCopy];
 }
 
-- (void)registerCoercionFromObjectOfClass:(Class)a3 toRepresentationOfType:(id)a4 coercionBlock:(id)a5
+- (void)registerCoercionFromObjectOfClass:(Class)class toRepresentationOfType:(id)type coercionBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PBCoercionRegistry *)self memberQueue];
+  typeCopy = type;
+  blockCopy = block;
+  memberQueue = [(PBCoercionRegistry *)self memberQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __93__PBCoercionRegistry_registerCoercionFromObjectOfClass_toRepresentationOfType_coercionBlock___block_invoke;
   v13[3] = &unk_279A07318;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
-  dispatch_sync(v10, v13);
+  v14 = typeCopy;
+  v15 = blockCopy;
+  classCopy = class;
+  v11 = blockCopy;
+  v12 = typeCopy;
+  dispatch_sync(memberQueue, v13);
 }
 
-- (void)_member_registerCoercionFromRepresentationConformingToType:(id)a3 toObjectOfClass:(Class)a4 coercionBlock:(id)a5
+- (void)_member_registerCoercionFromRepresentationConformingToType:(id)type toObjectOfClass:(Class)class coercionBlock:(id)block
 {
-  v13 = a3;
-  v8 = a5;
-  v9 = NSStringFromClass(a4);
-  v10 = [(PBCoercionRegistry *)self member_importerByClass];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  typeCopy = type;
+  blockCopy = block;
+  v9 = NSStringFromClass(class);
+  member_importerByClass = [(PBCoercionRegistry *)self member_importerByClass];
+  v11 = [member_importerByClass objectForKeyedSubscript:v9];
 
   if (!v11)
   {
-    v11 = [[PBRepresentationToObjectCoercion alloc] initWithClass:a4];
-    v12 = [(PBCoercionRegistry *)self member_importerByClass];
-    [v12 setObject:v11 forKeyedSubscript:v9];
+    v11 = [[PBRepresentationToObjectCoercion alloc] initWithClass:class];
+    member_importerByClass2 = [(PBCoercionRegistry *)self member_importerByClass];
+    [member_importerByClass2 setObject:v11 forKeyedSubscript:v9];
   }
 
-  [(PBRepresentationToObjectCoercion *)v11 addCoercionFromType:v13 block:v8];
+  [(PBRepresentationToObjectCoercion *)v11 addCoercionFromType:typeCopy block:blockCopy];
 }
 
-- (void)registerCoercionFromRepresentationConformingToType:(id)a3 toObjectOfClass:(Class)a4 coercionBlock:(id)a5
+- (void)registerCoercionFromRepresentationConformingToType:(id)type toObjectOfClass:(Class)class coercionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PBCoercionRegistry *)self memberQueue];
+  typeCopy = type;
+  blockCopy = block;
+  memberQueue = [(PBCoercionRegistry *)self memberQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __103__PBCoercionRegistry_registerCoercionFromRepresentationConformingToType_toObjectOfClass_coercionBlock___block_invoke;
   v13[3] = &unk_279A07340;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
-  dispatch_sync(v10, v13);
+  v14 = typeCopy;
+  v15 = blockCopy;
+  classCopy = class;
+  v11 = blockCopy;
+  v12 = typeCopy;
+  dispatch_sync(memberQueue, v13);
 }
 
-- (void)_member_registerCoercionFromObjectOfClass:(Class)a3 toObjectOfClass:(Class)a4 coercionBlock:(id)a5
+- (void)_member_registerCoercionFromObjectOfClass:(Class)class toObjectOfClass:(Class)ofClass coercionBlock:(id)block
 {
-  v12 = a5;
-  v8 = NSStringFromClass(a3);
-  v9 = [(PBCoercionRegistry *)self member_classCoercionByClass];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  blockCopy = block;
+  v8 = NSStringFromClass(class);
+  member_classCoercionByClass = [(PBCoercionRegistry *)self member_classCoercionByClass];
+  v10 = [member_classCoercionByClass objectForKeyedSubscript:v8];
 
   if (!v10)
   {
-    v10 = [[PBObjectToObjectCoercion alloc] initWithClass:a3];
-    v11 = [(PBCoercionRegistry *)self member_classCoercionByClass];
-    [v11 setObject:v10 forKeyedSubscript:v8];
+    v10 = [[PBObjectToObjectCoercion alloc] initWithClass:class];
+    member_classCoercionByClass2 = [(PBCoercionRegistry *)self member_classCoercionByClass];
+    [member_classCoercionByClass2 setObject:v10 forKeyedSubscript:v8];
   }
 
-  [(PBObjectToObjectCoercion *)v10 addCoercionToClass:a4 block:v12];
+  [(PBObjectToObjectCoercion *)v10 addCoercionToClass:ofClass block:blockCopy];
 }
 
-- (void)registerCoercionFromObjectOfClass:(Class)a3 toObjectOfClass:(Class)a4 coercionBlock:(id)a5
+- (void)registerCoercionFromObjectOfClass:(Class)class toObjectOfClass:(Class)ofClass coercionBlock:(id)block
 {
-  v8 = a5;
-  v9 = [(PBCoercionRegistry *)self memberQueue];
+  blockCopy = block;
+  memberQueue = [(PBCoercionRegistry *)self memberQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __86__PBCoercionRegistry_registerCoercionFromObjectOfClass_toObjectOfClass_coercionBlock___block_invoke;
   v11[3] = &unk_279A07368;
-  v13 = a3;
-  v14 = a4;
+  classCopy = class;
+  ofClassCopy = ofClass;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  dispatch_sync(v9, v11);
+  v12 = blockCopy;
+  v10 = blockCopy;
+  dispatch_sync(memberQueue, v11);
 }
 
-- (id)_member_availableDirectRepresentationTypesForClass:(Class)a3
+- (id)_member_availableDirectRepresentationTypesForClass:(Class)class
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(PBCoercionRegistry *)self member_exporterByClass];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  member_exporterByClass = [(PBCoercionRegistry *)self member_exporterByClass];
+  v7 = [member_exporterByClass countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -500,85 +500,85 @@ id __37__PBCoercionRegistry_defaultRegistry__block_invoke_10(uint64_t a1, objc_c
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(member_exporterByClass);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        if ([(objc_class *)a3 isSubclassOfClass:NSClassFromString(v11)])
+        if ([(objc_class *)class isSubclassOfClass:NSClassFromString(v11)])
         {
-          v12 = [(PBCoercionRegistry *)self member_exporterByClass];
-          v13 = [v12 objectForKeyedSubscript:v11];
-          v14 = [v13 availableExportTypes];
+          member_exporterByClass2 = [(PBCoercionRegistry *)self member_exporterByClass];
+          v13 = [member_exporterByClass2 objectForKeyedSubscript:v11];
+          availableExportTypes = [v13 availableExportTypes];
 
-          if (v14)
+          if (availableExportTypes)
           {
-            [v5 addObjectsFromArray:v14];
+            [orderedSet addObjectsFromArray:availableExportTypes];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [member_exporterByClass countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
   }
 
-  v15 = [v5 array];
+  array = [orderedSet array];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return array;
 }
 
-- (void)registerCoercionFromRepresentationConformingToType:(id)a3 toRepresentationOfType:(id)a4 coercionBlock:(id)a5
+- (void)registerCoercionFromRepresentationConformingToType:(id)type toRepresentationOfType:(id)ofType coercionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PBCoercionRegistry *)self memberQueue];
+  typeCopy = type;
+  ofTypeCopy = ofType;
+  blockCopy = block;
+  memberQueue = [(PBCoercionRegistry *)self memberQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __110__PBCoercionRegistry_registerCoercionFromRepresentationConformingToType_toRepresentationOfType_coercionBlock___block_invoke;
   v15[3] = &unk_279A07050;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_sync(v11, v15);
+  v16 = typeCopy;
+  v17 = ofTypeCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = ofTypeCopy;
+  v14 = typeCopy;
+  dispatch_sync(memberQueue, v15);
 }
 
-- (void)_member_registerCoercionFromRepresentationConformingToType:(id)a3 toRepresentationOfType:(id)a4 coercionBlock:(id)a5
+- (void)_member_registerCoercionFromRepresentationConformingToType:(id)type toRepresentationOfType:(id)ofType coercionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PBCoercionRegistry *)self member_representationCoercions];
+  typeCopy = type;
+  ofTypeCopy = ofType;
+  blockCopy = block;
+  member_representationCoercions = [(PBCoercionRegistry *)self member_representationCoercions];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __118__PBCoercionRegistry__member_registerCoercionFromRepresentationConformingToType_toRepresentationOfType_coercionBlock___block_invoke;
   v22 = &unk_279A07390;
-  v12 = v8;
+  v12 = typeCopy;
   v23 = v12;
-  v13 = v9;
+  v13 = ofTypeCopy;
   v24 = v13;
-  v14 = [v11 indexOfObjectPassingTest:&v19];
+  v14 = [member_representationCoercions indexOfObjectPassingTest:&v19];
 
   v15 = [PBRepresentationToRepresentationCoercion alloc];
-  v16 = [(PBRepresentationToRepresentationCoercion *)v15 initWithSourceType:v12 destinationType:v13 conversionBlock:v10, v19, v20, v21, v22];
+  v16 = [(PBRepresentationToRepresentationCoercion *)v15 initWithSourceType:v12 destinationType:v13 conversionBlock:blockCopy, v19, v20, v21, v22];
 
-  v17 = [(PBCoercionRegistry *)self member_representationCoercions];
-  v18 = v17;
+  member_representationCoercions2 = [(PBCoercionRegistry *)self member_representationCoercions];
+  v18 = member_representationCoercions2;
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v17 addObject:v16];
+    [member_representationCoercions2 addObject:v16];
   }
 
   else
   {
-    [v17 replaceObjectAtIndex:v14 withObject:v16];
+    [member_representationCoercions2 replaceObjectAtIndex:v14 withObject:v16];
   }
 }
 
@@ -600,23 +600,23 @@ uint64_t __118__PBCoercionRegistry__member_registerCoercionFromRepresentationCon
   return v6;
 }
 
-- (id)availableRepresentationTypesForClass:(Class)a3
+- (id)availableRepresentationTypesForClass:(Class)class
 {
-  v5 = [MEMORY[0x277CBEB40] orderedSet];
-  v6 = [(PBCoercionRegistry *)self memberQueue];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  memberQueue = [(PBCoercionRegistry *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__PBCoercionRegistry_availableRepresentationTypesForClass___block_invoke;
   block[3] = &unk_279A073B8;
-  v11 = v5;
-  v12 = self;
-  v13 = a3;
-  v7 = v5;
-  dispatch_sync(v6, block);
+  v11 = orderedSet;
+  selfCopy = self;
+  classCopy = class;
+  v7 = orderedSet;
+  dispatch_sync(memberQueue, block);
 
-  v8 = [v7 array];
+  array = [v7 array];
 
-  return v8;
+  return array;
 }
 
 void __59__PBCoercionRegistry_availableRepresentationTypesForClass___block_invoke(uint64_t a1)
@@ -699,16 +699,16 @@ void __59__PBCoercionRegistry_availableRepresentationTypesForClass___block_invok
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_member_acceptableRepresentationTypesForCreatingObjectOfClass:(Class)a3
+- (id)_member_acceptableRepresentationTypesForCreatingObjectOfClass:(Class)class
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(PBCoercionRegistry *)self member_importerByClass];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  member_importerByClass = [(PBCoercionRegistry *)self member_importerByClass];
+  v7 = [member_importerByClass countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -719,37 +719,37 @@ void __59__PBCoercionRegistry_availableRepresentationTypesForClass___block_invok
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(member_importerByClass);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        if ([(objc_class *)a3 isSubclassOfClass:NSClassFromString(v11)])
+        if ([(objc_class *)class isSubclassOfClass:NSClassFromString(v11)])
         {
-          v12 = [(PBCoercionRegistry *)self member_importerByClass];
-          v13 = [v12 objectForKeyedSubscript:v11];
-          v14 = [v13 availableImportTypes];
+          member_importerByClass2 = [(PBCoercionRegistry *)self member_importerByClass];
+          v13 = [member_importerByClass2 objectForKeyedSubscript:v11];
+          availableImportTypes = [v13 availableImportTypes];
 
-          if (v14)
+          if (availableImportTypes)
           {
-            [v5 addObjectsFromArray:v14];
+            [orderedSet addObjectsFromArray:availableImportTypes];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [member_importerByClass countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
   }
 
-  v15 = [v5 array];
+  array = [orderedSet array];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return array;
 }
 
-- (id)acceptableRepresentationTypesForCreatingObjectOfClass:(Class)a3
+- (id)acceptableRepresentationTypesForCreatingObjectOfClass:(Class)class
 {
   v9 = 0;
   v10 = &v9;
@@ -757,15 +757,15 @@ void __59__PBCoercionRegistry_availableRepresentationTypesForClass___block_invok
   v12 = __Block_byref_object_copy__4;
   v13 = __Block_byref_object_dispose__4;
   v14 = 0;
-  v5 = [(PBCoercionRegistry *)self memberQueue];
+  memberQueue = [(PBCoercionRegistry *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__PBCoercionRegistry_acceptableRepresentationTypesForCreatingObjectOfClass___block_invoke;
   block[3] = &unk_279A073E0;
   block[4] = self;
   block[5] = &v9;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = class;
+  dispatch_sync(memberQueue, block);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -783,28 +783,28 @@ uint64_t __76__PBCoercionRegistry_acceptableRepresentationTypesForCreatingObject
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)canCoerceFromRepresentationConformingToType:(id)a3 toObjectOfClass:(Class)a4
+- (BOOL)canCoerceFromRepresentationConformingToType:(id)type toObjectOfClass:(Class)class
 {
-  v6 = a3;
+  typeCopy = type;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v7 = [(PBCoercionRegistry *)self memberQueue];
+  memberQueue = [(PBCoercionRegistry *)self memberQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __82__PBCoercionRegistry_canCoerceFromRepresentationConformingToType_toObjectOfClass___block_invoke;
   v10[3] = &unk_279A07408;
   v10[4] = self;
-  v11 = v6;
+  v11 = typeCopy;
   v12 = &v14;
-  v13 = a4;
-  v8 = v6;
-  dispatch_sync(v7, v10);
+  classCopy = class;
+  v8 = typeCopy;
+  dispatch_sync(memberQueue, v10);
 
-  LOBYTE(v6) = *(v15 + 24);
+  LOBYTE(typeCopy) = *(v15 + 24);
   _Block_object_dispose(&v14, 8);
-  return v6;
+  return typeCopy;
 }
 
 void __82__PBCoercionRegistry_canCoerceFromRepresentationConformingToType_toObjectOfClass___block_invoke(uint64_t a1)
@@ -864,28 +864,28 @@ LABEL_14:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)canCoerceObjectOfClass:(Class)a3 toRepresentationConformingToType:(id)a4
+- (BOOL)canCoerceObjectOfClass:(Class)class toRepresentationConformingToType:(id)type
 {
-  v6 = a4;
+  typeCopy = type;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v7 = [(PBCoercionRegistry *)self memberQueue];
+  memberQueue = [(PBCoercionRegistry *)self memberQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __78__PBCoercionRegistry_canCoerceObjectOfClass_toRepresentationConformingToType___block_invoke;
   v10[3] = &unk_279A07408;
   v10[4] = self;
-  v11 = v6;
+  v11 = typeCopy;
   v12 = &v14;
-  v13 = a3;
-  v8 = v6;
-  dispatch_sync(v7, v10);
+  classCopy = class;
+  v8 = typeCopy;
+  dispatch_sync(memberQueue, v10);
 
-  LOBYTE(v6) = *(v15 + 24);
+  LOBYTE(typeCopy) = *(v15 + 24);
   _Block_object_dispose(&v14, 8);
-  return v6;
+  return typeCopy;
 }
 
 void __78__PBCoercionRegistry_canCoerceObjectOfClass_toRepresentationConformingToType___block_invoke(uint64_t a1)
@@ -945,26 +945,26 @@ LABEL_14:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)canCoerceObjectOfClass:(Class)a3 toObjectOfClass:(Class)a4
+- (BOOL)canCoerceObjectOfClass:(Class)class toObjectOfClass:(Class)ofClass
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v7 = [(PBCoercionRegistry *)self memberQueue];
+  memberQueue = [(PBCoercionRegistry *)self memberQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__PBCoercionRegistry_canCoerceObjectOfClass_toObjectOfClass___block_invoke;
   v9[3] = &unk_279A07430;
-  v9[6] = a3;
-  v9[7] = a4;
+  v9[6] = class;
+  v9[7] = ofClass;
   v9[4] = self;
   v9[5] = &v10;
-  dispatch_sync(v7, v9);
+  dispatch_sync(memberQueue, v9);
 
-  LOBYTE(a4) = *(v11 + 24);
+  LOBYTE(ofClass) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
-  return a4;
+  return ofClass;
 }
 
 void __61__PBCoercionRegistry_canCoerceObjectOfClass_toObjectOfClass___block_invoke(uint64_t a1)
@@ -1024,33 +1024,33 @@ LABEL_14:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_newObjectOfClass:(Class)a3 fromData:(id)a4 URL:(id)a5 ofType:(id)a6 outError:(id *)a7
+- (id)_newObjectOfClass:(Class)class fromData:(id)data URL:(id)l ofType:(id)type outError:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dataCopy = data;
+  lCopy = l;
+  typeCopy = type;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy__4;
   v32 = __Block_byref_object_dispose__4;
   v33 = 0;
-  v15 = [(PBCoercionRegistry *)self memberQueue];
+  memberQueue = [(PBCoercionRegistry *)self memberQueue];
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __69__PBCoercionRegistry__newObjectOfClass_fromData_URL_ofType_outError___block_invoke;
   v23 = &unk_279A07408;
-  v24 = self;
-  v27 = a3;
-  v16 = v14;
+  selfCopy = self;
+  classCopy = class;
+  v16 = typeCopy;
   v25 = v16;
   v26 = &v28;
-  dispatch_sync(v15, &v20);
+  dispatch_sync(memberQueue, &v20);
 
   v17 = v29[5];
   if (v17)
   {
-    v18 = [v17 createObjectFromRepresentationConformingToType:v16 data:v12 URL:v13 outError:{a7, v20, v21, v22, v23, v24}];
+    v18 = [v17 createObjectFromRepresentationConformingToType:v16 data:dataCopy URL:lCopy outError:{error, v20, v21, v22, v23, selfCopy}];
   }
 
   else
@@ -1116,16 +1116,16 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_member_exporterFromClass:(Class)a3 toType:(id)a4
+- (id)_member_exporterFromClass:(Class)class toType:(id)type
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  typeCopy = type;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(PBCoercionRegistry *)self member_exporterByClass];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  member_exporterByClass = [(PBCoercionRegistry *)self member_exporterByClass];
+  v8 = [member_exporterByClass countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1136,23 +1136,23 @@ LABEL_13:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(member_exporterByClass);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        if ([(objc_class *)a3 isSubclassOfClass:NSClassFromString(v12)])
+        if ([(objc_class *)class isSubclassOfClass:NSClassFromString(v12)])
         {
-          v13 = [(PBCoercionRegistry *)self member_exporterByClass];
-          v14 = [v13 objectForKeyedSubscript:v12];
+          member_exporterByClass2 = [(PBCoercionRegistry *)self member_exporterByClass];
+          v14 = [member_exporterByClass2 objectForKeyedSubscript:v12];
 
-          if ([v14 canCoerceToType:v6])
+          if ([v14 canCoerceToType:typeCopy])
           {
             goto LABEL_12;
           }
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [member_exporterByClass countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
@@ -1166,20 +1166,20 @@ LABEL_12:
   return v14;
 }
 
-- (void)loadRepresentationOfObject:(id)a3 asType:(id)a4 completionBlock:(id)a5
+- (void)loadRepresentationOfObject:(id)object asType:(id)type completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  typeCopy = type;
+  blockCopy = block;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __72__PBCoercionRegistry_loadRepresentationOfObject_asType_completionBlock___block_invoke;
   v29[3] = &unk_279A07458;
-  v11 = v9;
+  v11 = typeCopy;
   v30 = v11;
-  v12 = v8;
+  v12 = objectCopy;
   v31 = v12;
-  v13 = v10;
+  v13 = blockCopy;
   v32 = v13;
   v14 = MEMORY[0x25F8AC430](v29);
   v23 = 0;
@@ -1188,7 +1188,7 @@ LABEL_12:
   v26 = __Block_byref_object_copy__47;
   v27 = __Block_byref_object_dispose__48;
   v28 = 0;
-  v15 = [(PBCoercionRegistry *)self memberQueue];
+  memberQueue = [(PBCoercionRegistry *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__PBCoercionRegistry_loadRepresentationOfObject_asType_completionBlock___block_invoke_49;
@@ -1199,7 +1199,7 @@ LABEL_12:
   v17 = v11;
   v21 = v17;
   v22 = &v23;
-  dispatch_sync(v15, block);
+  dispatch_sync(memberQueue, block);
 
   v18 = v24[5];
   if (v18)
@@ -1443,18 +1443,18 @@ void __72__PBCoercionRegistry_loadRepresentationOfObject_asType_completionBlock_
   }
 }
 
-- (id)_member_availableClassesToCoerceToFromClass:(Class)a3
+- (id)_member_availableClassesToCoerceToFromClass:(Class)class
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (class)
   {
-    v18 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v5 = [(PBCoercionRegistry *)self member_classCoercionByClass];
-    v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    member_classCoercionByClass = [(PBCoercionRegistry *)self member_classCoercionByClass];
+    v6 = [member_classCoercionByClass countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1465,45 +1465,45 @@ void __72__PBCoercionRegistry_loadRepresentationOfObject_asType_completionBlock_
         {
           if (*v22 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(member_classCoercionByClass);
           }
 
           v10 = *(*(&v21 + 1) + 8 * i);
           v11 = objc_autoreleasePoolPush();
-          if ([(objc_class *)a3 isSubclassOfClass:NSClassFromString(v10)])
+          if ([(objc_class *)class isSubclassOfClass:NSClassFromString(v10)])
           {
-            v12 = [(PBCoercionRegistry *)self member_classCoercionByClass];
-            v13 = [v12 objectForKeyedSubscript:v10];
+            member_classCoercionByClass2 = [(PBCoercionRegistry *)self member_classCoercionByClass];
+            v13 = [member_classCoercionByClass2 objectForKeyedSubscript:v10];
 
-            v14 = [v13 availableClasses];
+            availableClasses = [v13 availableClasses];
             v19[0] = MEMORY[0x277D85DD0];
             v19[1] = 3221225472;
             v19[2] = __66__PBCoercionRegistry__member_availableClassesToCoerceToFromClass___block_invoke;
             v19[3] = &unk_279A074F8;
-            v20 = v18;
-            [v14 enumerateObjectsUsingBlock:v19];
+            v20 = orderedSet;
+            [availableClasses enumerateObjectsUsingBlock:v19];
           }
 
           objc_autoreleasePoolPop(v11);
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v7 = [member_classCoercionByClass countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v7);
     }
 
-    v15 = [v18 array];
+    array = [orderedSet array];
   }
 
   else
   {
-    v15 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return array;
 }
 
 Class __66__PBCoercionRegistry__member_availableClassesToCoerceToFromClass___block_invoke(uint64_t a1, NSString *aClassName)
@@ -1520,27 +1520,27 @@ Class __66__PBCoercionRegistry__member_availableClassesToCoerceToFromClass___blo
   return result;
 }
 
-- (id)loadCoercionOfRepresentation:(id)a3 fromType:(id)a4 toType:(id)a5 usingCoercion:(id)a6 completionBlock:(id)a7
+- (id)loadCoercionOfRepresentation:(id)representation fromType:(id)type toType:(id)toType usingCoercion:(id)coercion completionBlock:(id)block
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  if (v12)
+  toTypeCopy = toType;
+  coercionCopy = coercion;
+  blockCopy = block;
+  if (coercionCopy)
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __97__PBCoercionRegistry_loadCoercionOfRepresentation_fromType_toType_usingCoercion_completionBlock___block_invoke;
     v17[3] = &unk_279A07520;
-    v18 = v12;
-    v19 = v11;
-    v20 = v13;
-    v14 = [a3 loadWithCompletionHandler:v17];
+    v18 = coercionCopy;
+    v19 = toTypeCopy;
+    v20 = blockCopy;
+    v14 = [representation loadWithCompletionHandler:v17];
   }
 
   else
   {
-    v15 = PBCannotLoadRepresentationError(a4, 0);
-    (*(v13 + 2))(v13, 0, v15);
+    v15 = PBCannotLoadRepresentationError(type, 0);
+    (*(blockCopy + 2))(blockCopy, 0, v15);
 
     v14 = 0;
   }
@@ -1605,34 +1605,34 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)enumerateAvailableCoercionLoaderBlocksForRepresentation:(id)a3 usingBlock:(id)a4
+- (void)enumerateAvailableCoercionLoaderBlocksForRepresentation:(id)representation usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PBCoercionRegistry *)self memberQueue];
+  representationCopy = representation;
+  blockCopy = block;
+  memberQueue = [(PBCoercionRegistry *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __98__PBCoercionRegistry_Private__enumerateAvailableCoercionLoaderBlocksForRepresentation_usingBlock___block_invoke;
   block[3] = &unk_279A07548;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = representationCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = representationCopy;
+  dispatch_sync(memberQueue, block);
 }
 
-- (void)_member_enumerateAvailableCoercionLoaderBlocksForRepresentation:(id)a3 usingBlock:(id)a4
+- (void)_member_enumerateAvailableCoercionLoaderBlocksForRepresentation:(id)representation usingBlock:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 typeIdentifier];
+  representationCopy = representation;
+  blockCopy = block;
+  typeIdentifier = [representationCopy typeIdentifier];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v18 = self;
+  selfCopy = self;
   obj = [(PBCoercionRegistry *)self member_representationCoercions];
   v9 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v9)
@@ -1649,20 +1649,20 @@ LABEL_10:
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v13 sourceType];
-        v15 = [v13 destinationType];
-        if (UTTypeConformsTo(v8, v14))
+        sourceType = [v13 sourceType];
+        destinationType = [v13 destinationType];
+        if (UTTypeConformsTo(typeIdentifier, sourceType))
         {
           v19[0] = MEMORY[0x277D85DD0];
           v19[1] = 3221225472;
           v19[2] = __106__PBCoercionRegistry_Private___member_enumerateAvailableCoercionLoaderBlocksForRepresentation_usingBlock___block_invoke;
           v19[3] = &unk_279A07570;
-          v19[4] = v18;
-          v20 = v6;
-          v21 = v14;
-          v22 = v15;
+          v19[4] = selfCopy;
+          v20 = representationCopy;
+          v21 = sourceType;
+          v22 = destinationType;
           v23 = v13;
-          v7[2](v7, v22, v19);
+          blockCopy[2](blockCopy, v22, v19);
         }
       }
 
@@ -1675,7 +1675,7 @@ LABEL_10:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_availableClassesToCoerceFromClass:(Class)a3
+- (id)_availableClassesToCoerceFromClass:(Class)class
 {
   v9 = 0;
   v10 = &v9;
@@ -1683,15 +1683,15 @@ LABEL_10:
   v12 = __Block_byref_object_copy__4;
   v13 = __Block_byref_object_dispose__4;
   v14 = 0;
-  v5 = [(PBCoercionRegistry *)self memberQueue];
+  memberQueue = [(PBCoercionRegistry *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__PBCoercionRegistry_Private___availableClassesToCoerceFromClass___block_invoke;
   block[3] = &unk_279A073E0;
   block[4] = self;
   block[5] = &v9;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = class;
+  dispatch_sync(memberQueue, block);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -1709,52 +1709,52 @@ uint64_t __66__PBCoercionRegistry_Private___availableClassesToCoerceFromClass___
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)archivedDataFromObject:(id)a3 requestedType:(id)a4 outError:(id *)a5
++ (id)archivedDataFromObject:(id)object requestedType:(id)type outError:(id *)error
 {
-  v7 = a4;
+  typeCopy = type;
   v13 = 0;
-  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v13];
+  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:object requiringSecureCoding:1 error:&v13];
   v9 = v13;
   if (!v8)
   {
-    v10 = PBCannotLoadRepresentationError(v7, v9);
+    v10 = PBCannotLoadRepresentationError(typeCopy, v9);
 
     v9 = v10;
   }
 
-  if (a5)
+  if (error)
   {
     v11 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   return v8;
 }
 
-+ (id)objectFromArchivedData:(id)a3 URL:(id)a4 requestedClass:(Class)a5 typeIdentifier:(id)a6 outError:(id *)a7
++ (id)objectFromArchivedData:(id)data URL:(id)l requestedClass:(Class)class typeIdentifier:(id)identifier outError:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!v11 && v12)
+  dataCopy = data;
+  lCopy = l;
+  identifierCopy = identifier;
+  if (!dataCopy && lCopy)
   {
-    v11 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v12];
+    dataCopy = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy];
   }
 
-  if (v11)
+  if (dataCopy)
   {
     v23 = 0;
-    v14 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v11 error:&v23];
+    v14 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:dataCopy error:&v23];
     v15 = v23;
     [v14 setDecodingFailurePolicy:1];
     v16 = *MEMORY[0x277CCA308];
     v22 = v15;
-    v17 = [v14 decodeTopLevelObjectOfClass:a5 forKey:v16 error:&v22];
+    v17 = [v14 decodeTopLevelObjectOfClass:class forKey:v16 error:&v22];
     v18 = v22;
 
     if (v17)
     {
-      if (!a7)
+      if (!error)
       {
         goto LABEL_8;
       }
@@ -1768,15 +1768,15 @@ uint64_t __66__PBCoercionRegistry_Private___availableClassesToCoerceFromClass___
     v18 = 0;
   }
 
-  v21 = PBCannotInstantiateObjectOfClassError(a5, v13, v18);
+  v21 = PBCannotInstantiateObjectOfClassError(class, identifierCopy, v18);
 
   v17 = 0;
   v18 = v21;
-  if (a7)
+  if (error)
   {
 LABEL_7:
     v19 = v18;
-    *a7 = v18;
+    *error = v18;
   }
 
 LABEL_8:

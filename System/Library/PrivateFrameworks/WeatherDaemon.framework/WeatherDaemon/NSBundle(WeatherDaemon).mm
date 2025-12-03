@@ -6,7 +6,7 @@
 
 - (id)createObjectInstanceWithClassName:()WeatherDaemon
 {
-  v1 = objc_alloc_init([a1 classNamed:?]);
+  v1 = objc_alloc_init([self classNamed:?]);
 
   return v1;
 }

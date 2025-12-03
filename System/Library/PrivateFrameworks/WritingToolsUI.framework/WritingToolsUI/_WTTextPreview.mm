@@ -1,39 +1,39 @@
 @interface _WTTextPreview
 - (CGRect)presentationFrame;
-- (_WTTextPreview)initWithContentPath:(CGPath *)a3;
-- (_WTTextPreview)initWithSnapshotImage:(CGImage *)a3 presentationFrame:(CGRect)a4 backgroundColor:(CGColor *)a5 clippingPath:(CGPath *)a6 scale:(double)a7 candidateRects:(id)a8;
+- (_WTTextPreview)initWithContentPath:(CGPath *)path;
+- (_WTTextPreview)initWithSnapshotImage:(CGImage *)image presentationFrame:(CGRect)frame backgroundColor:(CGColor *)color clippingPath:(CGPath *)path scale:(double)scale candidateRects:(id)rects;
 - (id)layerWithContents;
 - (void)dealloc;
 @end
 
 @implementation _WTTextPreview
 
-- (_WTTextPreview)initWithSnapshotImage:(CGImage *)a3 presentationFrame:(CGRect)a4 backgroundColor:(CGColor *)a5 clippingPath:(CGPath *)a6 scale:(double)a7 candidateRects:(id)a8
+- (_WTTextPreview)initWithSnapshotImage:(CGImage *)image presentationFrame:(CGRect)frame backgroundColor:(CGColor *)color clippingPath:(CGPath *)path scale:(double)scale candidateRects:(id)rects
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v17 = a8;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  rectsCopy = rects;
   v22.receiver = self;
   v22.super_class = _WTTextPreview;
   v18 = [(_WTTextPreview *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    [(_WTTextPreview *)v18 setPreviewImage:a3];
+    [(_WTTextPreview *)v18 setPreviewImage:image];
     [(_WTTextPreview *)v19 setPresentationFrame:x, y, width, height];
-    [(_WTTextPreview *)v19 setBackgroundColor:a5];
-    [(_WTTextPreview *)v19 setClippingPath:a6];
-    [(_WTTextPreview *)v19 setScale:a7];
-    [(_WTTextPreview *)v19 setCandidateRects:v17];
+    [(_WTTextPreview *)v19 setBackgroundColor:color];
+    [(_WTTextPreview *)v19 setClippingPath:path];
+    [(_WTTextPreview *)v19 setScale:scale];
+    [(_WTTextPreview *)v19 setCandidateRects:rectsCopy];
     v20 = v19;
   }
 
   return v19;
 }
 
-- (_WTTextPreview)initWithContentPath:(CGPath *)a3
+- (_WTTextPreview)initWithContentPath:(CGPath *)path
 {
   v8.receiver = self;
   v8.super_class = _WTTextPreview;
@@ -41,11 +41,11 @@
   v5 = v4;
   if (v4)
   {
-    [(_WTTextPreview *)v4 setContentPath:a3];
-    PathBoundingBox = CGPathGetPathBoundingBox(a3);
+    [(_WTTextPreview *)v4 setContentPath:path];
+    PathBoundingBox = CGPathGetPathBoundingBox(path);
     [(_WTTextPreview *)v5 setPresentationFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), PathBoundingBox.size.width, PathBoundingBox.size.height];
     [(_WTTextPreview *)v5 setBackgroundColor:0];
-    [(_WTTextPreview *)v5 setClippingPath:a3];
+    [(_WTTextPreview *)v5 setClippingPath:path];
     [(_WTTextPreview *)v5 setScale:1.0];
     v6 = v5;
   }
@@ -57,21 +57,21 @@
 {
   if ([(_WTTextPreview *)self contentPath])
   {
-    v3 = [MEMORY[0x1E69794A0] layer];
-    [v3 setPath:{-[_WTTextPreview contentPath](self, "contentPath")}];
-    [v3 setFillColor:CGColorGetConstantColor(*MEMORY[0x1E695F088])];
+    layer = [MEMORY[0x1E69794A0] layer];
+    [layer setPath:{-[_WTTextPreview contentPath](self, "contentPath")}];
+    [layer setFillColor:CGColorGetConstantColor(*MEMORY[0x1E695F088])];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E6979398] layer];
-    [v3 setContents:{-[_WTTextPreview previewImage](self, "previewImage")}];
+    layer = [MEMORY[0x1E6979398] layer];
+    [layer setContents:{-[_WTTextPreview previewImage](self, "previewImage")}];
   }
 
   [(_WTTextPreview *)self presentationFrame];
-  [v3 setFrame:?];
+  [layer setFrame:?];
 
-  return v3;
+  return layer;
 }
 
 - (void)dealloc

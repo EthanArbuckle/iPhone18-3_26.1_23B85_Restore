@@ -1,13 +1,13 @@
 @interface CATCallbackParams
-- (id)valueForKey:(id)a3;
+- (id)valueForKey:(id)key;
 @end
 
 @implementation CATCallbackParams
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
   sub_222D5292C();
-  v4 = self;
+  selfCopy = self;
   sub_222D41E38(v13);
 
   v5 = v14;

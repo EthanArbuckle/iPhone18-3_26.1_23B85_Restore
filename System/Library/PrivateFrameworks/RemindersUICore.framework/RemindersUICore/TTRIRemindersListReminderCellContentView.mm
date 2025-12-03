@@ -1,12 +1,12 @@
 @interface TTRIRemindersListReminderCellContentView
 - (CGRect)frame;
-- (_TtC15RemindersUICore40TTRIRemindersListReminderCellContentView)initWithArrangedSubviewRows:(id)a3;
+- (_TtC15RemindersUICore40TTRIRemindersListReminderCellContentView)initWithArrangedSubviewRows:(id)rows;
 - (id)_preferredSeparatorInsetsDidChangeHandler;
-- (void)_setPreferredSeparatorInsetsDidChangeHandler:(id)a3;
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3;
+- (void)_setPreferredSeparatorInsetsDidChangeHandler:(id)handler;
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation TTRIRemindersListReminderCellContentView
@@ -33,9 +33,9 @@
   return v3;
 }
 
-- (void)_setPreferredSeparatorInsetsDidChangeHandler:(id)a3
+- (void)_setPreferredSeparatorInsetsDidChangeHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -53,7 +53,7 @@
   v8 = *(self + OBJC_IVAR____TtC15RemindersUICore40TTRIRemindersListReminderCellContentView__preferredSeparatorInsetsDidChangeHandler);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_21D0D0E88(v8);
 }
 
@@ -69,13 +69,13 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   sub_21DAA2464(x, y, width, height);
 }
 
@@ -101,13 +101,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21DAA262C();
 }
 
-- (_TtC15RemindersUICore40TTRIRemindersListReminderCellContentView)initWithArrangedSubviewRows:(id)a3
+- (_TtC15RemindersUICore40TTRIRemindersListReminderCellContentView)initWithArrangedSubviewRows:(id)rows
 {
-  if (a3)
+  if (rows)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CE5F100);
     v3 = sub_21DBFA5EC();
@@ -121,9 +121,9 @@
   return sub_21DAA2BEC(v3);
 }
 
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews
 {
-  v3 = self;
+  selfCopy = self;
   sub_21DAA1E60();
 }
 

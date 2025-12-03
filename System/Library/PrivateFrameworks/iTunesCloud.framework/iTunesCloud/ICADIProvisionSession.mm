@@ -1,7 +1,7 @@
 @interface ICADIProvisionSession
-- (BOOL)endWithMessageData:(id)a3 transportKey:(id)a4 error:(id *)a5;
-- (BOOL)startWithServerActionData:(id)a3 returningClientData:(id *)a4 error:(id *)a5;
-- (ICADIProvisionSession)initWithAccountID:(unint64_t)a3;
+- (BOOL)endWithMessageData:(id)data transportKey:(id)key error:(id *)error;
+- (BOOL)startWithServerActionData:(id)data returningClientData:(id *)clientData error:(id *)error;
+- (ICADIProvisionSession)initWithAccountID:(unint64_t)d;
 - (void)_destroySession;
 - (void)dealloc;
 @end
@@ -17,20 +17,20 @@
   }
 }
 
-- (BOOL)endWithMessageData:(id)a3 transportKey:(id)a4 error:(id *)a5
+- (BOOL)endWithMessageData:(id)data transportKey:(id)key error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  dataCopy = data;
+  keyCopy = key;
   if (!self->_sessionID)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"ICADIUtilities.m" lineNumber:132 description:@"ICADIProvisionSession end called for invalid session"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICADIUtilities.m" lineNumber:132 description:@"ICADIProvisionSession end called for invalid session"];
   }
 
-  [v9 bytes];
-  [v9 length];
-  [v10 bytes];
-  [v10 length];
+  [dataCopy bytes];
+  [dataCopy length];
+  [keyCopy bytes];
+  [keyCopy length];
   uv5t6nhkui();
   v12 = v11;
   if (v11)
@@ -44,33 +44,33 @@
   }
 
   [(ICADIProvisionSession *)self _destroySession];
-  if (a5)
+  if (error)
   {
     v14 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   return v12 == 0;
 }
 
-- (BOOL)startWithServerActionData:(id)a3 returningClientData:(id *)a4 error:(id *)a5
+- (BOOL)startWithServerActionData:(id)data returningClientData:(id *)clientData error:(id *)error
 {
-  v9 = a3;
+  dataCopy = data;
   v19 = 0;
   v18 = 0;
   if (self->_sessionID)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"ICADIUtilities.m" lineNumber:104 description:@"ICADIProvisionSession start can only be called once!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICADIUtilities.m" lineNumber:104 description:@"ICADIProvisionSession start can only be called once!"];
   }
 
-  rsegvyrt87(self->_accountID, [v9 bytes], objc_msgSend(v9, "length"), &v19, &v18, &self->_sessionID);
+  rsegvyrt87(self->_accountID, [dataCopy bytes], objc_msgSend(dataCopy, "length"), &v19, &v18, &self->_sessionID);
   v11 = v10;
   if (v10)
   {
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICFairPlayError" code:v10 userInfo:0];
     v13 = 0;
-    if (!a4)
+    if (!clientData)
     {
       goto LABEL_6;
     }
@@ -80,18 +80,18 @@
 
   v13 = [MEMORY[0x1E695DEF0] ic_dataWithADIBytes:v19 length:v18];
   v12 = 0;
-  if (a4)
+  if (clientData)
   {
 LABEL_5:
     v14 = v13;
-    *a4 = v13;
+    *clientData = v13;
   }
 
 LABEL_6:
-  if (a5)
+  if (error)
   {
     v15 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v11 == 0;
@@ -105,14 +105,14 @@ LABEL_6:
   [(ICADIProvisionSession *)&v3 dealloc];
 }
 
-- (ICADIProvisionSession)initWithAccountID:(unint64_t)a3
+- (ICADIProvisionSession)initWithAccountID:(unint64_t)d
 {
   v5.receiver = self;
   v5.super_class = ICADIProvisionSession;
   result = [(ICADIProvisionSession *)&v5 init];
   if (result)
   {
-    result->_accountID = a3;
+    result->_accountID = d;
   }
 
   return result;

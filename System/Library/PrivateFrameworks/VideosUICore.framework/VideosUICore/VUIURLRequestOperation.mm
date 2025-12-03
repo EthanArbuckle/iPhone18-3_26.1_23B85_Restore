@@ -1,6 +1,6 @@
 @interface VUIURLRequestOperation
 - (VUIURLRequestOperation)init;
-- (VUIURLRequestOperation)initWithRequest:(id)a3 session:(id)a4;
+- (VUIURLRequestOperation)initWithRequest:(id)request session:(id)session;
 - (unint64_t)elapsedTimeInMilliseconds;
 - (void)cancel;
 - (void)executionDidBegin;
@@ -18,11 +18,11 @@
   return 0;
 }
 
-- (VUIURLRequestOperation)initWithRequest:(id)a3 session:(id)a4
+- (VUIURLRequestOperation)initWithRequest:(id)request session:(id)session
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  requestCopy = request;
+  sessionCopy = session;
+  if (!requestCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"The %@ parameter must not be nil.", @"request"}];
   }
@@ -37,13 +37,13 @@
       [VUIURLRequestOperation initWithRequest:session:];
     }
 
-    objc_storeStrong(&v9->_request, a3);
-    if (!v8)
+    objc_storeStrong(&v9->_request, request);
+    if (!sessionCopy)
     {
-      v8 = [MEMORY[0x277CCAD30] sharedSession];
+      sessionCopy = [MEMORY[0x277CCAD30] sharedSession];
     }
 
-    objc_storeStrong(&v9->_session, v8);
+    objc_storeStrong(&v9->_session, sessionCopy);
   }
 
   return v9;
@@ -55,8 +55,8 @@
   if (result)
   {
     v4 = mach_absolute_time();
-    v5 = [(VUIURLRequestOperation *)self taskStartTime];
-    return (v4 - v5) * (__TimebaseInfo / *algn_28086F3C4) / 0xF4240;
+    taskStartTime = [(VUIURLRequestOperation *)self taskStartTime];
+    return (v4 - taskStartTime) * (__TimebaseInfo / *algn_28086F3C4) / 0xF4240;
   }
 
   return result;
@@ -65,14 +65,14 @@
 - (void)executionDidBegin
 {
   objc_initWeak(&location, self);
-  v3 = [(VUIURLRequestOperation *)self session];
-  v4 = [(VUIURLRequestOperation *)self request];
+  session = [(VUIURLRequestOperation *)self session];
+  request = [(VUIURLRequestOperation *)self request];
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __43__VUIURLRequestOperation_executionDidBegin__block_invoke;
   v9 = &unk_279E215A0;
   objc_copyWeak(&v10, &location);
-  v5 = [v3 dataTaskWithRequest:v4 completionHandler:&v6];
+  v5 = [session dataTaskWithRequest:request completionHandler:&v6];
 
   [(VUIURLRequestOperation *)self setTaskStartTime:mach_absolute_time(), v6, v7, v8, v9];
   [v5 resume];
@@ -103,8 +103,8 @@ void __43__VUIURLRequestOperation_executionDidBegin__block_invoke(uint64_t a1, v
   v4.receiver = self;
   v4.super_class = VUIURLRequestOperation;
   [(VUIURLRequestOperation *)&v4 cancel];
-  v3 = [(VUIURLRequestOperation *)self task];
-  [v3 cancel];
+  task = [(VUIURLRequestOperation *)self task];
+  [task cancel];
 
   [(VUIAsynchronousOperation *)self finishExecutionIfPossible];
 }

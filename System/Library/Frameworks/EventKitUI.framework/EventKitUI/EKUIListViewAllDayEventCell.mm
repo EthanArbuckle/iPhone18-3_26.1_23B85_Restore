@@ -1,6 +1,6 @@
 @interface EKUIListViewAllDayEventCell
 + (UIEdgeInsets)adjustedSeparatorInsets;
-+ (id)pathForBackgroundForRect:(CGRect)a3 allDay:(BOOL)a4;
++ (id)pathForBackgroundForRect:(CGRect)rect allDay:(BOOL)day;
 - (id)_subtextMonospacedFont;
 - (int64_t)_userInterfaceStyle;
 - (void)_adjustNumberOfLines;
@@ -9,9 +9,9 @@
 - (void)_updateColors;
 - (void)_updateTextAndIconColors;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateWithEvent:(id)a3 dimmed:(BOOL)a4;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)updateWithEvent:(id)event dimmed:(BOOL)dimmed;
 @end
 
 @implementation EKUIListViewAllDayEventCell
@@ -22,16 +22,16 @@
   v87.receiver = self;
   v87.super_class = EKUIListViewAllDayEventCell;
   [(EKUIListViewCell *)&v87 _commonInit];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__adjustNumberOfLines name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__adjustNumberOfLines name:*MEMORY[0x1E69DDC48] object:0];
 
   v4 = [[EKUIListViewCellBackground alloc] initWithCornerRadius:0.0];
   backgroundView = self->_backgroundView;
   self->_backgroundView = v4;
 
   [(EKUIListViewCellBackground *)self->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(EKUIListViewCell *)self cellContentView];
-  [v6 addSubview:self->_backgroundView];
+  cellContentView = [(EKUIListViewCell *)self cellContentView];
+  [cellContentView addSubview:self->_backgroundView];
 
   v7 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   dateField = self->_dateField;
@@ -39,13 +39,13 @@
 
   [(UILabel *)self->_dateField setTranslatesAutoresizingMaskIntoConstraints:0];
   v9 = self->_dateField;
-  v10 = [(EKUIListViewAllDayEventCell *)self _subtextMonospacedFont];
-  [(UILabel *)v9 setFont:v10];
+  _subtextMonospacedFont = [(EKUIListViewAllDayEventCell *)self _subtextMonospacedFont];
+  [(UILabel *)v9 setFont:_subtextMonospacedFont];
 
   LODWORD(v11) = 1148846080;
   [(UILabel *)self->_dateField setContentCompressionResistancePriority:0 forAxis:v11];
-  v12 = [(EKUIListViewCell *)self cellContentView];
-  [v12 addSubview:self->_dateField];
+  cellContentView2 = [(EKUIListViewCell *)self cellContentView];
+  [cellContentView2 addSubview:self->_dateField];
 
   v13 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
   imageView = self->_imageView;
@@ -56,8 +56,8 @@
   [(UIImageView *)self->_imageView setContentCompressionResistancePriority:0 forAxis:v15];
   LODWORD(v16) = 1148846080;
   [(UIImageView *)self->_imageView setContentCompressionResistancePriority:1 forAxis:v16];
-  v17 = [(EKUIListViewCell *)self cellContentView];
-  [v17 addSubview:self->_imageView];
+  cellContentView3 = [(EKUIListViewCell *)self cellContentView];
+  [cellContentView3 addSubview:self->_imageView];
 
   v18 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   titleField = self->_titleField;
@@ -67,119 +67,119 @@
   LODWORD(v20) = 1148846080;
   [(UILabel *)self->_titleField setContentCompressionResistancePriority:1 forAxis:v20];
   v21 = self->_titleField;
-  v22 = [(EKUIListViewAllDayEventCell *)self _titleFont];
-  [(UILabel *)v21 setFont:v22];
+  _titleFont = [(EKUIListViewAllDayEventCell *)self _titleFont];
+  [(UILabel *)v21 setFont:_titleFont];
 
-  v23 = [(EKUIListViewCell *)self cellContentView];
-  [v23 addSubview:self->_titleField];
+  cellContentView4 = [(EKUIListViewCell *)self cellContentView];
+  [cellContentView4 addSubview:self->_titleField];
 
-  v24 = [(UILabel *)self->_titleField leadingAnchor];
-  v25 = [(UIImageView *)self->_imageView trailingAnchor];
-  v26 = [(EKUIListViewCell *)self carplayMode];
+  leadingAnchor = [(UILabel *)self->_titleField leadingAnchor];
+  trailingAnchor = [(UIImageView *)self->_imageView trailingAnchor];
+  carplayMode = [(EKUIListViewCell *)self carplayMode];
   v27 = 4.5;
-  if (v26)
+  if (carplayMode)
   {
     v27 = 3.5;
   }
 
-  v28 = [v24 constraintEqualToAnchor:v25 constant:v27];
+  v28 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:v27];
   titleLeadingConstraint = self->_titleLeadingConstraint;
   self->_titleLeadingConstraint = v28;
 
   v75 = MEMORY[0x1E696ACD8];
-  v30 = [(EKUIListViewCellBackground *)self->_backgroundView leadingAnchor];
-  v83 = [(EKUIListViewAllDayEventCell *)self contentView];
-  v31 = [v83 leadingAnchor];
-  v32 = [(EKUIListViewCell *)self carplayMode];
+  leadingAnchor2 = [(EKUIListViewCellBackground *)self->_backgroundView leadingAnchor];
+  contentView = [(EKUIListViewAllDayEventCell *)self contentView];
+  leadingAnchor3 = [contentView leadingAnchor];
+  carplayMode2 = [(EKUIListViewCell *)self carplayMode];
   v33 = 12.0;
   v34 = 12.0;
-  if (v32)
+  if (carplayMode2)
   {
     [(EKUIListViewCell *)self carplayBackgroundViewInsets];
     v34 = v35;
   }
 
-  v81 = [v30 constraintEqualToAnchor:v31 constant:v34];
+  v81 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:v34];
   v88[0] = v81;
-  v36 = [(EKUIListViewCellBackground *)self->_backgroundView trailingAnchor];
-  v79 = [(EKUIListViewAllDayEventCell *)self contentView];
-  v37 = [v79 trailingAnchor];
+  trailingAnchor2 = [(EKUIListViewCellBackground *)self->_backgroundView trailingAnchor];
+  contentView2 = [(EKUIListViewAllDayEventCell *)self contentView];
+  trailingAnchor3 = [contentView2 trailingAnchor];
   if ([(EKUIListViewCell *)self carplayMode])
   {
     [(EKUIListViewCell *)self carplayBackgroundViewInsets];
     v33 = v38;
   }
 
-  v77 = [v36 constraintEqualToAnchor:v37 constant:-v33];
+  v77 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-v33];
   v88[1] = v77;
-  v86 = [(EKUIListViewCellBackground *)self->_backgroundView topAnchor];
-  v76 = [(EKUIListViewAllDayEventCell *)self contentView];
-  v85 = [v76 topAnchor];
-  v39 = [(EKUIListViewCell *)self carplayMode];
+  topAnchor = [(EKUIListViewCellBackground *)self->_backgroundView topAnchor];
+  contentView3 = [(EKUIListViewAllDayEventCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  carplayMode3 = [(EKUIListViewCell *)self carplayMode];
   v40 = 4.0;
   v41 = 4.0;
-  if (v39)
+  if (carplayMode3)
   {
     [(EKUIListViewCell *)self carplayBackgroundViewInsets];
   }
 
-  v78 = v37;
-  v80 = v36;
-  v82 = v31;
-  v84 = v30;
-  v74 = [v86 constraintEqualToAnchor:v85 constant:v41];
+  v78 = trailingAnchor3;
+  v80 = trailingAnchor2;
+  v82 = leadingAnchor3;
+  v84 = leadingAnchor2;
+  v74 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v41];
   v88[2] = v74;
-  v42 = [(EKUIListViewCellBackground *)self->_backgroundView bottomAnchor];
-  v73 = [(EKUIListViewAllDayEventCell *)self contentView];
-  v43 = [v73 bottomAnchor];
+  bottomAnchor = [(EKUIListViewCellBackground *)self->_backgroundView bottomAnchor];
+  contentView4 = [(EKUIListViewAllDayEventCell *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
   if ([(EKUIListViewCell *)self carplayMode])
   {
     [(EKUIListViewCell *)self carplayBackgroundViewInsets];
     v40 = v44;
   }
 
-  v72 = [v42 constraintEqualToAnchor:v43 constant:-v40];
+  v72 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v40];
   v88[3] = v72;
-  v71 = [(UIImageView *)self->_imageView centerYAnchor];
-  v70 = [(UILabel *)self->_titleField centerYAnchor];
-  v69 = [v71 constraintEqualToAnchor:v70];
+  centerYAnchor = [(UIImageView *)self->_imageView centerYAnchor];
+  centerYAnchor2 = [(UILabel *)self->_titleField centerYAnchor];
+  v69 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v88[4] = v69;
-  v68 = [(UIImageView *)self->_imageView leadingAnchor];
-  v67 = [(EKUIListViewCellBackground *)self->_backgroundView leadingAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67 constant:6.5];
+  leadingAnchor4 = [(UIImageView *)self->_imageView leadingAnchor];
+  leadingAnchor5 = [(EKUIListViewCellBackground *)self->_backgroundView leadingAnchor];
+  v66 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:6.5];
   v88[5] = v66;
-  v64 = [(UILabel *)self->_titleField topAnchor];
-  v63 = [(EKUIListViewCellBackground *)self->_backgroundView topAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63 constant:8.0];
+  topAnchor3 = [(UILabel *)self->_titleField topAnchor];
+  topAnchor4 = [(EKUIListViewCellBackground *)self->_backgroundView topAnchor];
+  v62 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:8.0];
   v88[6] = v62;
-  v61 = [(UILabel *)self->_titleField bottomAnchor];
-  v60 = [(EKUIListViewCellBackground *)self->_backgroundView bottomAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60 constant:-8.0];
+  bottomAnchor3 = [(UILabel *)self->_titleField bottomAnchor];
+  bottomAnchor4 = [(EKUIListViewCellBackground *)self->_backgroundView bottomAnchor];
+  v59 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-8.0];
   v88[7] = v59;
   [(UILabel *)self->_titleField trailingAnchor];
-  v45 = v65 = v43;
-  v46 = [(UILabel *)self->_dateField leadingAnchor];
-  v47 = [(EKUIListViewCell *)self carplayMode];
+  v45 = v65 = bottomAnchor2;
+  leadingAnchor6 = [(UILabel *)self->_dateField leadingAnchor];
+  carplayMode4 = [(EKUIListViewCell *)self carplayMode];
   v48 = -6.0;
-  if (v47)
+  if (carplayMode4)
   {
     v48 = -5.0;
   }
 
-  v49 = [v45 constraintLessThanOrEqualToAnchor:v46 constant:v48];
+  v49 = [v45 constraintLessThanOrEqualToAnchor:leadingAnchor6 constant:v48];
   v50 = self->_titleLeadingConstraint;
   v88[8] = v49;
   v88[9] = v50;
-  v51 = [(UILabel *)self->_dateField firstBaselineAnchor];
-  v52 = [(UILabel *)self->_titleField firstBaselineAnchor];
-  v53 = [v51 constraintEqualToAnchor:v52];
+  firstBaselineAnchor = [(UILabel *)self->_dateField firstBaselineAnchor];
+  firstBaselineAnchor2 = [(UILabel *)self->_titleField firstBaselineAnchor];
+  v53 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
   v88[10] = v53;
-  v54 = [(UILabel *)self->_dateField trailingAnchor];
-  v55 = [(EKUIListViewCellBackground *)self->_backgroundView trailingAnchor];
-  v56 = [v54 constraintEqualToAnchor:v55 constant:-8.0];
+  trailingAnchor4 = [(UILabel *)self->_dateField trailingAnchor];
+  trailingAnchor5 = [(EKUIListViewCellBackground *)self->_backgroundView trailingAnchor];
+  v56 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-8.0];
   v88[11] = v56;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v88 count:12];
-  v57 = v58 = v42;
+  v57 = v58 = bottomAnchor;
   [v75 activateConstraints:v57];
 }
 
@@ -188,52 +188,52 @@
   v9.receiver = self;
   v9.super_class = EKUIListViewAllDayEventCell;
   [(EKUIListViewCell *)&v9 layoutSubviews];
-  v3 = [(EKUIListViewAllDayEventCell *)self layer];
-  v4 = [v3 mask];
-  if (v4)
+  layer = [(EKUIListViewAllDayEventCell *)self layer];
+  mask = [layer mask];
+  if (mask)
   {
-    v5 = v4;
+    layer3 = mask;
   }
 
   else
   {
-    v6 = [(EKUIListViewCell *)self carplayMode];
+    carplayMode = [(EKUIListViewCell *)self carplayMode];
 
-    if (!v6)
+    if (!carplayMode)
     {
       return;
     }
 
-    v3 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     v7 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:1.0];
-    [v3 setBackgroundColor:{objc_msgSend(v7, "CGColor")}];
+    [layer setBackgroundColor:{objc_msgSend(v7, "CGColor")}];
 
-    v8 = [(EKUIListViewAllDayEventCell *)self layer];
-    [v8 bounds];
-    [v3 setFrame:?];
+    layer2 = [(EKUIListViewAllDayEventCell *)self layer];
+    [layer2 bounds];
+    [layer setFrame:?];
 
-    v5 = [(EKUIListViewAllDayEventCell *)self layer];
-    [v5 setMask:v3];
+    layer3 = [(EKUIListViewAllDayEventCell *)self layer];
+    [layer3 setMask:layer];
   }
 }
 
 - (void)_adjustNumberOfLines
 {
-  v3 = [(EKUIListViewAllDayEventCell *)self contentView];
-  v4 = [v3 traitCollection];
-  v5 = EKUIUsesLargeTextLayout(v4);
+  contentView = [(EKUIListViewAllDayEventCell *)self contentView];
+  traitCollection = [contentView traitCollection];
+  v5 = EKUIUsesLargeTextLayout(traitCollection);
 
   [(UIImageView *)self->_imageView setHidden:v5];
   [(UILabel *)self->_dateField setNumberOfLines:v5 ^ 1];
   [(UILabel *)self->_titleField setNumberOfLines:v5 ^ 1];
   [(NSLayoutConstraint *)self->_titleLeadingConstraint setActive:0];
-  v6 = [(UILabel *)self->_titleField leadingAnchor];
+  leadingAnchor = [(UILabel *)self->_titleField leadingAnchor];
   if (!v5)
   {
-    v7 = [(UIImageView *)self->_imageView trailingAnchor];
-    v9 = [(EKUIListViewCell *)self carplayMode];
+    trailingAnchor = [(UIImageView *)self->_imageView trailingAnchor];
+    carplayMode = [(EKUIListViewCell *)self carplayMode];
     v8 = 4.5;
-    if (v9)
+    if (carplayMode)
     {
       v8 = 3.5;
     }
@@ -241,11 +241,11 @@
 
   else
   {
-    v7 = [(EKUIListViewCellBackground *)self->_backgroundView leadingAnchor];
+    trailingAnchor = [(EKUIListViewCellBackground *)self->_backgroundView leadingAnchor];
     v8 = 8.0;
   }
 
-  v10 = [v6 constraintEqualToAnchor:v7 constant:v8];
+  v10 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:v8];
   titleLeadingConstraint = self->_titleLeadingConstraint;
   self->_titleLeadingConstraint = v10;
 
@@ -254,30 +254,30 @@
   [(NSLayoutConstraint *)v12 setActive:1];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = EKUIListViewAllDayEventCell;
-  [(EKUIListViewAllDayEventCell *)&v5 setHighlighted:a3 animated:a4];
+  [(EKUIListViewAllDayEventCell *)&v5 setHighlighted:highlighted animated:animated];
   [(EKUIListViewAllDayEventCell *)self _updateAppEntityAnnotationIfNeeded];
   [(EKUIListViewAllDayEventCell *)self _updateColors];
 }
 
-- (void)updateWithEvent:(id)a3 dimmed:(BOOL)a4
+- (void)updateWithEvent:(id)event dimmed:(BOOL)dimmed
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [(EKUIListViewAllDayEventCell *)self setEvent:v6];
+  eventCopy = event;
+  [(EKUIListViewAllDayEventCell *)self setEvent:eventCopy];
   [(EKUIListViewAllDayEventCell *)self _updateAppEntityAnnotationIfNeeded];
-  if (v6)
+  if (eventCopy)
   {
-    self->_dimmed = a4;
+    self->_dimmed = dimmed;
     if ([(EKUIListViewCell *)self carplayMode])
     {
       [(EKUIListViewAllDayEventCell *)self setSelectionStyle:0];
     }
 
-    v7 = [v6 status] == 3;
+    v7 = [eventCopy status] == 3;
     v8 = v7 | CUIKEventDisplaysAsDeclined();
     v9 = objc_alloc(MEMORY[0x1E696AAB0]);
     v10 = CUIKDisplayedTitleForEvent();
@@ -290,7 +290,7 @@
     [(UILabel *)self->_titleField setAttributedText:v14];
 
     v15 = MEMORY[0x1E69DCAB8];
-    v16 = [v6 CUIK_symbolName:{objc_msgSend(v6, "isAllDay")}];
+    v16 = [eventCopy CUIK_symbolName:{objc_msgSend(eventCopy, "isAllDay")}];
     v17 = [v15 systemImageNamed:v16];
     [(UIImageView *)self->_imageView setImage:v17];
 
@@ -298,12 +298,12 @@
     {
       v18 = objc_alloc_init(MEMORY[0x1E696AB78]);
       [v18 setDateStyle:1];
-      v19 = [(EKUIListViewAllDayEventCell *)self event];
-      [v18 setTimeStyle:{objc_msgSend(v19, "isAllDay") ^ 1}];
+      event = [(EKUIListViewAllDayEventCell *)self event];
+      [v18 setTimeStyle:{objc_msgSend(event, "isAllDay") ^ 1}];
 
-      v20 = [(EKUIListViewAllDayEventCell *)self event];
-      v21 = [v20 startDate];
-      v22 = [v18 stringFromDate:v21];
+      event2 = [(EKUIListViewAllDayEventCell *)self event];
+      startDate = [event2 startDate];
+      v22 = [v18 stringFromDate:startDate];
 
       v23 = objc_alloc(MEMORY[0x1E696AAB0]);
       v32 = v11;
@@ -337,13 +337,13 @@
 
 - (void)_updateColors
 {
-  v3 = [(EKUIListViewAllDayEventCell *)self traitCollection];
+  traitCollection = [(EKUIListViewAllDayEventCell *)self traitCollection];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __44__EKUIListViewAllDayEventCell__updateColors__block_invoke;
   v4[3] = &unk_1E843EC60;
   v4[4] = self;
-  [v3 performAsCurrentTraitCollection:v4];
+  [traitCollection performAsCurrentTraitCollection:v4];
 }
 
 void __44__EKUIListViewAllDayEventCell__updateColors__block_invoke(uint64_t a1)
@@ -401,30 +401,30 @@ void __44__EKUIListViewAllDayEventCell__updateColors__block_invoke(uint64_t a1)
 
 - (int64_t)_userInterfaceStyle
 {
-  v2 = [(EKUIListViewAllDayEventCell *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(EKUIListViewAllDayEventCell *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  return v3;
+  return userInterfaceStyle;
 }
 
 - (void)_updateTextAndIconColors
 {
   if ([(EKUIListViewCell *)self carplayMode]&& [(EKUIListViewAllDayEventCell *)self isHighlighted])
   {
-    v3 = [MEMORY[0x1E69DC888] _carSystemFocusLabelColor];
+    _carSystemFocusLabelColor = [MEMORY[0x1E69DC888] _carSystemFocusLabelColor];
   }
 
   else
   {
-    v4 = [(EKUIListViewAllDayEventCell *)self event];
-    v5 = [v4 status];
+    event = [(EKUIListViewAllDayEventCell *)self event];
+    status = [event status];
 
-    v6 = [(EKUIListViewAllDayEventCell *)self event];
+    event2 = [(EKUIListViewAllDayEventCell *)self event];
     v7 = CUIKEventDisplaysAsDeclined();
 
-    if (v5 == 3 || v7)
+    if (status == 3 || v7)
     {
-      v3 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+      _carSystemFocusLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
     }
 
     else
@@ -432,20 +432,20 @@ void __44__EKUIListViewAllDayEventCell__updateColors__block_invoke(uint64_t a1)
       if ([(EKUIListViewCell *)self dragPreview])
       {
         [(EKUIListViewAllDayEventCell *)self _userInterfaceStyle];
-        v8 = [(EKUIListViewAllDayEventCell *)self event];
-        v9 = [v8 calendar];
-        v10 = [v9 displayColor];
+        event3 = [(EKUIListViewAllDayEventCell *)self event];
+        calendar = [event3 calendar];
+        displayColor = [calendar displayColor];
         v13 = CUIKTextColorForCalendarColorForStyle();
 
         v11 = v13;
         goto LABEL_11;
       }
 
-      v3 = [MEMORY[0x1E69DC888] labelColor];
+      _carSystemFocusLabelColor = [MEMORY[0x1E69DC888] labelColor];
     }
   }
 
-  v11 = v3;
+  v11 = _carSystemFocusLabelColor;
 LABEL_11:
   if (self->_dimmed)
   {
@@ -464,8 +464,8 @@ LABEL_11:
 {
   v2 = *MEMORY[0x1E69DDD80];
   v3 = *MEMORY[0x1E69DDC28];
-  v4 = [(EKUIListViewAllDayEventCell *)self traitCollection];
-  v5 = [EKUIConstrainedFontUtilities constrainedFontForTextStyle:v2 maximumContentSizeCategory:v3 traitCollection:v4];
+  traitCollection = [(EKUIListViewAllDayEventCell *)self traitCollection];
+  v5 = [EKUIConstrainedFontUtilities constrainedFontForTextStyle:v2 maximumContentSizeCategory:v3 traitCollection:traitCollection];
 
   v6 = MEMORY[0x1E69DB878];
   [v5 pointSize];
@@ -478,41 +478,41 @@ LABEL_11:
 {
   if (CalendarLinkLibraryCore())
   {
-    v8 = [(EKUIListViewAllDayEventCell *)self event];
-    if ([v8 isNew])
+    event = [(EKUIListViewAllDayEventCell *)self event];
+    if ([event isNew])
     {
     }
 
     else
     {
-      v3 = [(EKUIListViewAllDayEventCell *)self event];
-      v4 = [v3 isBirthday];
+      event2 = [(EKUIListViewAllDayEventCell *)self event];
+      isBirthday = [event2 isBirthday];
 
-      if ((v4 & 1) == 0)
+      if ((isBirthday & 1) == 0)
       {
-        v5 = [(EKUIListViewAllDayEventCell *)self event];
-        [(EKUIListViewAllDayEventCell *)self Cal_annotateWithEvent:v5];
+        event3 = [(EKUIListViewAllDayEventCell *)self event];
+        [(EKUIListViewAllDayEventCell *)self Cal_annotateWithEvent:event3];
 
-        v6 = [(EKUIListViewAllDayEventCell *)self isSelected];
-        v7 = [(EKUIListViewAllDayEventCell *)self isHighlighted];
+        isSelected = [(EKUIListViewAllDayEventCell *)self isSelected];
+        isHighlighted = [(EKUIListViewAllDayEventCell *)self isHighlighted];
 
-        [(EKUIListViewAllDayEventCell *)self Cal_updateEntityAnnotationStateIsSelected:v6 isHighlighted:v7 isFocused:0 isDisabled:0 isEditing:0 isPrimary:0];
+        [(EKUIListViewAllDayEventCell *)self Cal_updateEntityAnnotationStateIsSelected:isSelected isHighlighted:isHighlighted isFocused:0 isDisabled:0 isEditing:0 isPrimary:0];
       }
     }
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = EKUIListViewAllDayEventCell;
-  [(EKUIListViewAllDayEventCell *)&v5 setSelected:a3 animated:a4];
+  [(EKUIListViewAllDayEventCell *)&v5 setSelected:selected animated:animated];
   [(EKUIListViewAllDayEventCell *)self _updateAppEntityAnnotationIfNeeded];
 }
 
-+ (id)pathForBackgroundForRect:(CGRect)a3 allDay:(BOOL)a4
++ (id)pathForBackgroundForRect:(CGRect)rect allDay:(BOOL)day
 {
-  v13 = CGRectInset(a3, 12.0, 4.0);
+  v13 = CGRectInset(rect, 12.0, 4.0);
   x = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;

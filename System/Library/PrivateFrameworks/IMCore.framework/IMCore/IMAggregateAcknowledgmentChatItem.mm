@@ -1,17 +1,17 @@
 @interface IMAggregateAcknowledgmentChatItem
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithAcknowledgments:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithAcknowledgments:(id)acknowledgments;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation IMAggregateAcknowledgmentChatItem
 
-- (id)_initWithAcknowledgments:(id)a3
+- (id)_initWithAcknowledgments:(id)acknowledgments
 {
   v87 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!objc_msgSend_count(v4, v5, v6))
+  acknowledgmentsCopy = acknowledgments;
+  if (!objc_msgSend_count(acknowledgmentsCopy, v5, v6))
   {
     v9 = MEMORY[0x1E696AEC0];
     v10 = IMFileLocationTrimFileName();
@@ -34,14 +34,14 @@
     }
   }
 
-  v19 = objc_msgSend_lastObject(v4, v7, v8);
+  v19 = objc_msgSend_lastObject(acknowledgmentsCopy, v7, v8);
   v22 = objc_msgSend__item(v19, v20, v21);
   v25 = objc_msgSend_sender(v19, v23, v24);
   v27 = objc_msgSend__initWithItem_sender_(self, v26, v22, v25);
 
   if (v27)
   {
-    v30 = objc_msgSend_copy(v4, v28, v29);
+    v30 = objc_msgSend_copy(acknowledgmentsCopy, v28, v29);
     v31 = *(v27 + 168);
     *(v27 + 168) = v30;
 
@@ -113,7 +113,7 @@
       while (v40);
     }
 
-    *(v27 + 161) = objc_msgSend_count(v4, v62, v63) > 1;
+    *(v27 + 161) = objc_msgSend_count(acknowledgmentsCopy, v62, v63) > 1;
     v19 = v75;
     *(v27 + 160) = objc_msgSend_isFromMe(v75, v64, v65);
     v68 = objc_msgSend_tapback(v75, v66, v67);
@@ -142,13 +142,13 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (self->_latestIsFromMe == *(v6 + 160) && objc_msgSend_isEqual_(self->_latestTapback, v5, v6[23]) && self->_includesMultiple == *(v6 + 161))
     {
       isEqual = objc_msgSend_isEqual_(self->_acknowledgments, v7, v6[21]);
@@ -168,7 +168,7 @@
   return isEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   acknowledgments = self->_acknowledgments;

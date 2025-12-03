@@ -1,21 +1,21 @@
 @interface HKCodableChartCardioFitnessQueryData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBiologicalSex:(BOOL)a3;
-- (void)setHasCardioFitnessLevelEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBiologicalSex:(BOOL)sex;
+- (void)setHasCardioFitnessLevelEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableChartCardioFitnessQueryData
 
-- (void)setHasCardioFitnessLevelEnabled:(BOOL)a3
+- (void)setHasCardioFitnessLevelEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasBiologicalSex:(BOOL)a3
+- (void)setHasBiologicalSex:(BOOL)sex
 {
-  if (a3)
+  if (sex)
   {
     v3 = 2;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableChartCardioFitnessQueryData;
   v4 = [(HKCodableChartCardioFitnessQueryData *)&v8 description];
-  v5 = [(HKCodableChartCardioFitnessQueryData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableChartCardioFitnessQueryData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_cardioFitnessLevelEnabled];
-    [v3 setObject:v9 forKey:@"cardioFitnessLevelEnabled"];
+    [dictionary setObject:v9 forKey:@"cardioFitnessLevelEnabled"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -83,35 +83,35 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_biologicalSex];
-  [v3 setObject:v10 forKey:@"biologicalSex"];
+  [dictionary setObject:v10 forKey:@"biologicalSex"];
 
   if (*&self->_has)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_age];
-    [v3 setObject:v5 forKey:@"age"];
+    [dictionary setObject:v5 forKey:@"age"];
   }
 
 LABEL_5:
   quantityData = self->_quantityData;
   if (quantityData)
   {
-    v7 = [(HKCodableChartQuantityDataSourceQueryData *)quantityData dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"quantityData"];
+    dictionaryRepresentation = [(HKCodableChartQuantityDataSourceQueryData *)quantityData dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"quantityData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if ((has & 4) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -131,30 +131,30 @@ LABEL_3:
   }
 
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   if (*&self->_has)
   {
 LABEL_4:
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
   if (self->_quantityData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[3] = self->_cardioFitnessLevelEnabled;
-    *(v4 + 40) |= 4u;
+    toCopy[3] = self->_cardioFitnessLevelEnabled;
+    *(toCopy + 40) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -173,27 +173,27 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = self->_biologicalSex;
-  *(v4 + 40) |= 2u;
+  toCopy[2] = self->_biologicalSex;
+  *(toCopy + 40) |= 2u;
   if (*&self->_has)
   {
 LABEL_4:
-    v4[1] = self->_age;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = self->_age;
+    *(toCopy + 40) |= 1u;
   }
 
 LABEL_5:
   if (self->_quantityData)
   {
-    v6 = v4;
-    [v4 setQuantityData:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setQuantityData:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) == 0)
@@ -231,30 +231,30 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(HKCodableChartQuantityDataSourceQueryData *)self->_quantityData copyWithZone:a3];
+  v8 = [(HKCodableChartQuantityDataSourceQueryData *)self->_quantityData copyWithZone:zone];
   v9 = v6[4];
   v6[4] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_cardioFitnessLevelEnabled != *(v4 + 3))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_cardioFitnessLevelEnabled != *(equalCopy + 3))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
 LABEL_19:
     v6 = 0;
@@ -263,32 +263,32 @@ LABEL_19:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_biologicalSex != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_biologicalSex != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_age != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_age != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_19;
   }
 
   quantityData = self->_quantityData;
-  if (quantityData | *(v4 + 4))
+  if (quantityData | *(equalCopy + 4))
   {
     v6 = [(HKCodableChartQuantityDataSourceQueryData *)quantityData isEqual:?];
   }
@@ -343,16 +343,16 @@ LABEL_4:
   return v7 ^ v6 ^ v8 ^ [(HKCodableChartQuantityDataSourceQueryData *)self->_quantityData hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 40);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 40);
   if ((v6 & 4) != 0)
   {
-    self->_cardioFitnessLevelEnabled = v4[3];
+    self->_cardioFitnessLevelEnabled = fromCopy[3];
     *&self->_has |= 4u;
-    v6 = *(v4 + 40);
+    v6 = *(fromCopy + 40);
     if ((v6 & 2) == 0)
     {
 LABEL_3:
@@ -365,17 +365,17 @@ LABEL_3:
     }
   }
 
-  else if ((v4[5] & 2) == 0)
+  else if ((fromCopy[5] & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_biologicalSex = v4[2];
+  self->_biologicalSex = fromCopy[2];
   *&self->_has |= 2u;
-  if (v4[5])
+  if (fromCopy[5])
   {
 LABEL_4:
-    self->_age = v4[1];
+    self->_age = fromCopy[1];
     *&self->_has |= 1u;
   }
 

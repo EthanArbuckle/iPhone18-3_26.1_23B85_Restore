@@ -1,26 +1,26 @@
 @interface FCCKTestMultiFetchQueryEndpoint
-- (id)_collectRecordIDsFromRecords:(id)a3 linkKeysByRecordType:(id)a4;
-- (id)_collectRecordsWithRecords:(id)a3 recordIDs:(id)a4 linkKeysByRecordType:(id)a5 visitedRecordIDs:(id)a6 missingRecordIDs:(id)a7;
-- (void)handleQueryOperation:(id)a3 withRecords:(id)a4 droppedFeeds:(id)a5;
+- (id)_collectRecordIDsFromRecords:(id)records linkKeysByRecordType:(id)type;
+- (id)_collectRecordsWithRecords:(id)records recordIDs:(id)ds linkKeysByRecordType:(id)type visitedRecordIDs:(id)iDs missingRecordIDs:(id)recordIDs;
+- (void)handleQueryOperation:(id)operation withRecords:(id)records droppedFeeds:(id)feeds;
 @end
 
 @implementation FCCKTestMultiFetchQueryEndpoint
 
-- (void)handleQueryOperation:(id)a3 withRecords:(id)a4 droppedFeeds:(id)a5
+- (void)handleQueryOperation:(id)operation withRecords:(id)records droppedFeeds:(id)feeds
 {
   v119 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v79 = a5;
-  v10 = [v8 query];
+  operationCopy = operation;
+  recordsCopy = records;
+  feedsCopy = feeds;
+  query = [operationCopy query];
   objc_opt_class();
-  v78 = v10;
-  v11 = [v10 predicate];
-  if (v11)
+  v78 = query;
+  predicate = [query predicate];
+  if (predicate)
   {
     if (objc_opt_isKindOfClass())
     {
-      v12 = v11;
+      v12 = predicate;
     }
 
     else
@@ -36,7 +36,7 @@
 
   v13 = v12;
 
-  v80 = v9;
+  v80 = recordsCopy;
   v77 = v13;
   if (v13 && [v13 compoundPredicateType] == 1)
   {
@@ -65,14 +65,14 @@
   else if (v13)
   {
 LABEL_10:
-    v73 = self;
-    v75 = v8;
+    selfCopy = self;
+    v75 = operationCopy;
     v105 = 0u;
     v106 = 0u;
     v103 = 0u;
     v104 = 0u;
-    v14 = [v13 subpredicates];
-    v15 = [v14 countByEnumeratingWithState:&v103 objects:v110 count:16];
+    subpredicates = [v13 subpredicates];
+    v15 = [subpredicates countByEnumeratingWithState:&v103 objects:v110 count:16];
     if (!v15)
     {
       v82 = 0;
@@ -93,7 +93,7 @@ LABEL_10:
       {
         if (*v104 != v18)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(subpredicates);
         }
 
         v20 = *(*(&v103 + 1) + 8 * v19);
@@ -110,44 +110,44 @@ LABEL_10:
           goto LABEL_22;
         }
 
-        v22 = [v21 rightExpression];
-        if ([v22 expressionType] == 3)
+        rightExpression = [v21 rightExpression];
+        if ([rightExpression expressionType] == 3)
         {
-          v23 = [v22 keyPath];
-          v24 = [v23 isEqualToString:@"recordIDs"];
+          keyPath = [rightExpression keyPath];
+          v24 = [keyPath isEqualToString:@"recordIDs"];
 
           if (v24)
           {
-            v25 = [v21 leftExpression];
-            v26 = [v25 constantValue];
+            leftExpression = [v21 leftExpression];
+            constantValue = [leftExpression constantValue];
             v27 = v17;
-            v17 = v26;
+            v17 = constantValue;
 LABEL_28:
 
             goto LABEL_29;
           }
 
-          v28 = [v22 keyPath];
-          v29 = [v28 isEqualToString:@"recordTypes"];
+          keyPath2 = [rightExpression keyPath];
+          v29 = [keyPath2 isEqualToString:@"recordTypes"];
 
           if (v29)
           {
-            v25 = [v21 leftExpression];
-            v30 = [v25 constantValue];
+            leftExpression = [v21 leftExpression];
+            constantValue2 = [leftExpression constantValue];
             v27 = obj;
-            obj = v30;
+            obj = constantValue2;
             goto LABEL_28;
           }
 
-          v31 = [v22 keyPath];
-          v32 = [v31 isEqualToString:@"fetchFields"];
+          keyPath3 = [rightExpression keyPath];
+          v32 = [keyPath3 isEqualToString:@"fetchFields"];
 
           if (v32)
           {
-            v25 = [v21 leftExpression];
-            v33 = [v25 constantValue];
+            leftExpression = [v21 leftExpression];
+            constantValue3 = [leftExpression constantValue];
             v27 = v82;
-            v82 = v33;
+            v82 = constantValue3;
             goto LABEL_28;
           }
         }
@@ -159,15 +159,15 @@ LABEL_22:
       }
 
       while (v16 != v19);
-      v34 = [v14 countByEnumeratingWithState:&v103 objects:v110 count:16];
+      v34 = [subpredicates countByEnumeratingWithState:&v103 objects:v110 count:16];
       v16 = v34;
       if (!v34)
       {
 LABEL_33:
 
-        self = v73;
-        v8 = v75;
-        v9 = v80;
+        self = selfCopy;
+        operationCopy = v75;
+        recordsCopy = v80;
         v35 = v17;
         v36 = v82;
         v37 = obj;
@@ -194,11 +194,11 @@ LABEL_36:
   v43 = [MEMORY[0x1E695DFA8] set];
   v81 = v42;
   v83 = v41;
-  v44 = [(FCCKTestMultiFetchQueryEndpoint *)self _collectRecordsWithRecords:v9 recordIDs:v35 linkKeysByRecordType:v41 visitedRecordIDs:v43 missingRecordIDs:v42];
+  v44 = [(FCCKTestMultiFetchQueryEndpoint *)self _collectRecordsWithRecords:recordsCopy recordIDs:v35 linkKeysByRecordType:v41 visitedRecordIDs:v43 missingRecordIDs:v42];
 
-  v45 = [v8 desiredKeys];
+  desiredKeys = [operationCopy desiredKeys];
 
-  if (v45)
+  if (desiredKeys)
   {
     v74 = v40;
     v76 = v35;
@@ -224,16 +224,16 @@ LABEL_36:
 
           v49 = *(*(&v96 + 1) + 8 * i);
           v50 = MEMORY[0x1E695DFD8];
-          v51 = v8;
-          v52 = [v8 desiredKeys];
-          v53 = [v50 setWithArray:v52];
+          v51 = operationCopy;
+          desiredKeys2 = [operationCopy desiredKeys];
+          v53 = [v50 setWithArray:desiredKeys2];
 
           v94 = 0u;
           v95 = 0u;
           v92 = 0u;
           v93 = 0u;
-          v54 = [v49 changedKeys];
-          v55 = [v54 countByEnumeratingWithState:&v92 objects:v108 count:16];
+          changedKeys = [v49 changedKeys];
+          v55 = [changedKeys countByEnumeratingWithState:&v92 objects:v108 count:16];
           if (v55)
           {
             v56 = v55;
@@ -244,7 +244,7 @@ LABEL_36:
               {
                 if (*v93 != v57)
                 {
-                  objc_enumerationMutation(v54);
+                  objc_enumerationMutation(changedKeys);
                 }
 
                 v59 = *(*(&v92 + 1) + 8 * j);
@@ -254,13 +254,13 @@ LABEL_36:
                 }
               }
 
-              v56 = [v54 countByEnumeratingWithState:&v92 objects:v108 count:16];
+              v56 = [changedKeys countByEnumeratingWithState:&v92 objects:v108 count:16];
             }
 
             while (v56);
           }
 
-          v8 = v51;
+          operationCopy = v51;
         }
 
         v47 = [obja countByEnumeratingWithState:&v96 objects:v109 count:16];
@@ -269,7 +269,7 @@ LABEL_36:
       while (v47);
     }
 
-    v9 = v80;
+    recordsCopy = v80;
     v40 = v74;
     v35 = v76;
     v44 = v72;
@@ -295,8 +295,8 @@ LABEL_36:
         }
 
         v65 = *(*(&v88 + 1) + 8 * k);
-        v66 = [v8 recordFetchedBlock];
-        v66[2](v66, v65);
+        recordFetchedBlock = [operationCopy recordFetchedBlock];
+        recordFetchedBlock[2](recordFetchedBlock, v65);
       }
 
       v62 = [v60 countByEnumeratingWithState:&v88 objects:v107 count:16];
@@ -306,14 +306,14 @@ LABEL_36:
   }
 
   v67 = [objc_alloc(MEMORY[0x1E695BA60]) initWithRecordType:@"Results"];
-  v68 = [v81 allObjects];
-  [v67 setObject:v68 forKeyedSubscript:@"notFound"];
+  allObjects = [v81 allObjects];
+  [v67 setObject:allObjects forKeyedSubscript:@"notFound"];
 
-  v69 = [v8 recordFetchedBlock];
-  (v69)[2](v69, v67);
+  recordFetchedBlock2 = [operationCopy recordFetchedBlock];
+  (recordFetchedBlock2)[2](recordFetchedBlock2, v67);
 
-  v70 = [v8 queryCompletionBlock];
-  v70[2](v70, 0, 0);
+  queryCompletionBlock = [operationCopy queryCompletionBlock];
+  queryCompletionBlock[2](queryCompletionBlock, 0, 0);
 
   v71 = *MEMORY[0x1E69E9840];
 }
@@ -343,15 +343,15 @@ void __81__FCCKTestMultiFetchQueryEndpoint_handleQueryOperation_withRecords_drop
   }
 }
 
-- (id)_collectRecordsWithRecords:(id)a3 recordIDs:(id)a4 linkKeysByRecordType:(id)a5 visitedRecordIDs:(id)a6 missingRecordIDs:(id)a7
+- (id)_collectRecordsWithRecords:(id)records recordIDs:(id)ds linkKeysByRecordType:(id)type visitedRecordIDs:(id)iDs missingRecordIDs:(id)recordIDs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v12 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  recordsCopy = records;
+  dsCopy = ds;
+  typeCopy = type;
+  iDsCopy = iDs;
+  recordIDsCopy = recordIDs;
+  if (!recordsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v27 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "records"];
     *buf = 136315906;
@@ -364,13 +364,13 @@ void __81__FCCKTestMultiFetchQueryEndpoint_handleQueryOperation_withRecords_drop
     v37 = v27;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v13)
+    if (dsCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v13)
+  else if (dsCopy)
   {
     goto LABEL_6;
   }
@@ -390,7 +390,7 @@ void __81__FCCKTestMultiFetchQueryEndpoint_handleQueryOperation_withRecords_drop
   }
 
 LABEL_6:
-  if (!v14 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!typeCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "linkKeysByRecordType"];
     *buf = 136315906;
@@ -404,19 +404,19 @@ LABEL_6:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  [v16 addObjectsFromArray:v13];
-  v17 = FCLookupRecordByNames(v12, v13);
+  [recordIDsCopy addObjectsFromArray:dsCopy];
+  v17 = FCLookupRecordByNames(recordsCopy, dsCopy);
   v18 = [v17 fc_arrayByTransformingWithBlock:&__block_literal_global_119];
-  [v16 fc_removeObjectsFromArray:v18];
+  [recordIDsCopy fc_removeObjectsFromArray:v18];
 
-  v19 = [(FCCKTestMultiFetchQueryEndpoint *)self _collectRecordIDsFromRecords:v17 linkKeysByRecordType:v14];
-  v20 = [v15 allObjects];
-  v21 = [v19 fc_arrayByRemovingObjectsInArray:v20];
+  v19 = [(FCCKTestMultiFetchQueryEndpoint *)self _collectRecordIDsFromRecords:v17 linkKeysByRecordType:typeCopy];
+  allObjects = [iDsCopy allObjects];
+  v21 = [v19 fc_arrayByRemovingObjectsInArray:allObjects];
 
   if ([v21 count])
   {
-    [v15 addObjectsFromArray:v21];
-    v22 = [(FCCKTestMultiFetchQueryEndpoint *)self _collectRecordsWithRecords:v12 recordIDs:v21 linkKeysByRecordType:v14 visitedRecordIDs:v15 missingRecordIDs:v16];
+    [iDsCopy addObjectsFromArray:v21];
+    v22 = [(FCCKTestMultiFetchQueryEndpoint *)self _collectRecordsWithRecords:recordsCopy recordIDs:v21 linkKeysByRecordType:typeCopy visitedRecordIDs:iDsCopy missingRecordIDs:recordIDsCopy];
     v23 = [v17 arrayByAddingObjectsFromArray:v22];
   }
 
@@ -439,12 +439,12 @@ id __127__FCCKTestMultiFetchQueryEndpoint__collectRecordsWithRecords_recordIDs_l
   return v3;
 }
 
-- (id)_collectRecordIDsFromRecords:(id)a3 linkKeysByRecordType:(id)a4
+- (id)_collectRecordIDsFromRecords:(id)records linkKeysByRecordType:(id)type
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  recordsCopy = records;
+  typeCopy = type;
+  if (!recordsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "records"];
     *buf = 136315906;
@@ -457,13 +457,13 @@ id __127__FCCKTestMultiFetchQueryEndpoint__collectRecordsWithRecords_recordIDs_l
     v25 = v13;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v6)
+    if (typeCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v6)
+  else if (typeCopy)
   {
     goto LABEL_6;
   }
@@ -488,10 +488,10 @@ LABEL_6:
   v15[1] = 3221225472;
   v15[2] = __85__FCCKTestMultiFetchQueryEndpoint__collectRecordIDsFromRecords_linkKeysByRecordType___block_invoke;
   v15[3] = &unk_1E7C3B110;
-  v16 = v5;
-  v17 = v6;
-  v8 = v6;
-  v9 = v5;
+  v16 = recordsCopy;
+  v17 = typeCopy;
+  v8 = typeCopy;
+  v9 = recordsCopy;
   v10 = [v7 fc_array:v15];
 
   v11 = *MEMORY[0x1E69E9840];

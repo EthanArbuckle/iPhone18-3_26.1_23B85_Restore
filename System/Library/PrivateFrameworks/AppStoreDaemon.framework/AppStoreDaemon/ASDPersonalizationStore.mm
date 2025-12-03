@@ -2,21 +2,21 @@
 + (id)interface;
 + (id)sharedInstance;
 - (ASDPersonalizationStore)init;
-- (void)flushMetricsWithCompletionBlock:(id)a3;
-- (void)getAppEventsWithCompletionBlock:(id)a3;
-- (void)getClusterMappingsWithCompletionBlock:(id)a3;
-- (void)getGroupingToken:(id)a3;
-- (void)getTasteProfileToken:(id)a3;
-- (void)recordLaunchesWithCompletionBlock:(id)a3;
-- (void)recordMetricsWithCompletionBlock:(id)a3;
-- (void)reloadClusterMappingsWithCompletionBlock:(id)a3;
-- (void)reportAppEvent:(id)a3 completionBlock:(id)a4;
-- (void)resetActorIDWithCompletionBlock:(id)a3;
-- (void)resetMetricsWithCompletionBlock:(id)a3;
-- (void)sendMetricsWithCompletionBlock:(id)a3;
-- (void)setClusterMapping:(id)a3 completionBlock:(id)a4;
-- (void)setClusterMappings:(id)a3 completionBlock:(id)a4;
-- (void)tasteProfileFeatureEnabled:(id)a3;
+- (void)flushMetricsWithCompletionBlock:(id)block;
+- (void)getAppEventsWithCompletionBlock:(id)block;
+- (void)getClusterMappingsWithCompletionBlock:(id)block;
+- (void)getGroupingToken:(id)token;
+- (void)getTasteProfileToken:(id)token;
+- (void)recordLaunchesWithCompletionBlock:(id)block;
+- (void)recordMetricsWithCompletionBlock:(id)block;
+- (void)reloadClusterMappingsWithCompletionBlock:(id)block;
+- (void)reportAppEvent:(id)event completionBlock:(id)block;
+- (void)resetActorIDWithCompletionBlock:(id)block;
+- (void)resetMetricsWithCompletionBlock:(id)block;
+- (void)sendMetricsWithCompletionBlock:(id)block;
+- (void)setClusterMapping:(id)mapping completionBlock:(id)block;
+- (void)setClusterMappings:(id)mappings completionBlock:(id)block;
+- (void)tasteProfileFeatureEnabled:(id)enabled;
 @end
 
 @implementation ASDPersonalizationStore
@@ -67,7 +67,7 @@
   block[1] = 3221225472;
   block[2] = __41__ASDPersonalizationStore_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED90D640 != -1)
   {
     dispatch_once(&qword_1ED90D640, block);
@@ -85,10 +85,10 @@ uint64_t __41__ASDPersonalizationStore_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)flushMetricsWithCompletionBlock:(id)a3
+- (void)flushMetricsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -103,8 +103,8 @@ uint64_t __41__ASDPersonalizationStore_sharedInstance__block_invoke(uint64_t a1)
   v10[1] = 3221225472;
   v10[2] = __59__ASDPersonalizationStore_flushMetricsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDD6D0;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getPersonalizationServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -137,10 +137,10 @@ void __59__ASDPersonalizationStore_flushMetricsWithCompletionBlock___block_invok
   }
 }
 
-- (void)getClusterMappingsWithCompletionBlock:(id)a3
+- (void)getClusterMappingsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -155,8 +155,8 @@ void __59__ASDPersonalizationStore_flushMetricsWithCompletionBlock___block_invok
   v10[1] = 3221225472;
   v10[2] = __65__ASDPersonalizationStore_getClusterMappingsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDD6D0;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getPersonalizationServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -189,10 +189,10 @@ void __65__ASDPersonalizationStore_getClusterMappingsWithCompletionBlock___block
   }
 }
 
-- (void)getTasteProfileToken:(id)a3
+- (void)getTasteProfileToken:(id)token
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -207,8 +207,8 @@ void __65__ASDPersonalizationStore_getClusterMappingsWithCompletionBlock___block
   v10[1] = 3221225472;
   v10[2] = __48__ASDPersonalizationStore_getTasteProfileToken___block_invoke;
   v10[3] = &unk_1E7CDD6D0;
-  v11 = v4;
-  v8 = v4;
+  v11 = tokenCopy;
+  v8 = tokenCopy;
   [(ASDServiceBroker *)serviceBroker getPersonalizationServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -241,10 +241,10 @@ void __48__ASDPersonalizationStore_getTasteProfileToken___block_invoke(uint64_t 
   }
 }
 
-- (void)getGroupingToken:(id)a3
+- (void)getGroupingToken:(id)token
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -259,8 +259,8 @@ void __48__ASDPersonalizationStore_getTasteProfileToken___block_invoke(uint64_t 
   v10[1] = 3221225472;
   v10[2] = __44__ASDPersonalizationStore_getGroupingToken___block_invoke;
   v10[3] = &unk_1E7CDD6D0;
-  v11 = v4;
-  v8 = v4;
+  v11 = tokenCopy;
+  v8 = tokenCopy;
   [(ASDServiceBroker *)serviceBroker getPersonalizationServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -293,10 +293,10 @@ void __44__ASDPersonalizationStore_getGroupingToken___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)getAppEventsWithCompletionBlock:(id)a3
+- (void)getAppEventsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -311,8 +311,8 @@ void __44__ASDPersonalizationStore_getGroupingToken___block_invoke(uint64_t a1, 
   v10[1] = 3221225472;
   v10[2] = __59__ASDPersonalizationStore_getAppEventsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDD6D0;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getPersonalizationServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -345,10 +345,10 @@ void __59__ASDPersonalizationStore_getAppEventsWithCompletionBlock___block_invok
   }
 }
 
-- (void)recordLaunchesWithCompletionBlock:(id)a3
+- (void)recordLaunchesWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -363,8 +363,8 @@ void __59__ASDPersonalizationStore_getAppEventsWithCompletionBlock___block_invok
   v10[1] = 3221225472;
   v10[2] = __61__ASDPersonalizationStore_recordLaunchesWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDD6D0;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getPersonalizationServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -397,10 +397,10 @@ void __61__ASDPersonalizationStore_recordLaunchesWithCompletionBlock___block_inv
   }
 }
 
-- (void)recordMetricsWithCompletionBlock:(id)a3
+- (void)recordMetricsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -415,8 +415,8 @@ void __61__ASDPersonalizationStore_recordLaunchesWithCompletionBlock___block_inv
   v10[1] = 3221225472;
   v10[2] = __60__ASDPersonalizationStore_recordMetricsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDD6D0;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getPersonalizationServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -449,11 +449,11 @@ void __60__ASDPersonalizationStore_recordMetricsWithCompletionBlock___block_invo
   }
 }
 
-- (void)reportAppEvent:(id)a3 completionBlock:(id)a4
+- (void)reportAppEvent:(id)event completionBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  blockCopy = block;
   v8 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -468,10 +468,10 @@ void __60__ASDPersonalizationStore_recordMetricsWithCompletionBlock___block_invo
   v14[1] = 3221225472;
   v14[2] = __58__ASDPersonalizationStore_reportAppEvent_completionBlock___block_invoke;
   v14[3] = &unk_1E7CDD720;
-  v15 = v6;
-  v16 = v7;
-  v11 = v6;
-  v12 = v7;
+  v15 = eventCopy;
+  v16 = blockCopy;
+  v11 = eventCopy;
+  v12 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getPersonalizationServiceWithCompletionHandler:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -505,10 +505,10 @@ void __58__ASDPersonalizationStore_reportAppEvent_completionBlock___block_invoke
   }
 }
 
-- (void)resetActorIDWithCompletionBlock:(id)a3
+- (void)resetActorIDWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -523,8 +523,8 @@ void __58__ASDPersonalizationStore_reportAppEvent_completionBlock___block_invoke
   v10[1] = 3221225472;
   v10[2] = __59__ASDPersonalizationStore_resetActorIDWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDD6D0;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getPersonalizationServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -557,10 +557,10 @@ void __59__ASDPersonalizationStore_resetActorIDWithCompletionBlock___block_invok
   }
 }
 
-- (void)reloadClusterMappingsWithCompletionBlock:(id)a3
+- (void)reloadClusterMappingsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -575,8 +575,8 @@ void __59__ASDPersonalizationStore_resetActorIDWithCompletionBlock___block_invok
   v10[1] = 3221225472;
   v10[2] = __68__ASDPersonalizationStore_reloadClusterMappingsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDD6D0;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getPersonalizationServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -609,10 +609,10 @@ void __68__ASDPersonalizationStore_reloadClusterMappingsWithCompletionBlock___bl
   }
 }
 
-- (void)resetMetricsWithCompletionBlock:(id)a3
+- (void)resetMetricsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -627,8 +627,8 @@ void __68__ASDPersonalizationStore_reloadClusterMappingsWithCompletionBlock___bl
   v10[1] = 3221225472;
   v10[2] = __59__ASDPersonalizationStore_resetMetricsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDD6D0;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getPersonalizationServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -661,10 +661,10 @@ void __59__ASDPersonalizationStore_resetMetricsWithCompletionBlock___block_invok
   }
 }
 
-- (void)sendMetricsWithCompletionBlock:(id)a3
+- (void)sendMetricsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -679,8 +679,8 @@ void __59__ASDPersonalizationStore_resetMetricsWithCompletionBlock___block_invok
   v10[1] = 3221225472;
   v10[2] = __58__ASDPersonalizationStore_sendMetricsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDD6D0;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getPersonalizationServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -713,11 +713,11 @@ void __58__ASDPersonalizationStore_sendMetricsWithCompletionBlock___block_invoke
   }
 }
 
-- (void)setClusterMapping:(id)a3 completionBlock:(id)a4
+- (void)setClusterMapping:(id)mapping completionBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  mappingCopy = mapping;
+  blockCopy = block;
   v8 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -732,10 +732,10 @@ void __58__ASDPersonalizationStore_sendMetricsWithCompletionBlock___block_invoke
   v14[1] = 3221225472;
   v14[2] = __61__ASDPersonalizationStore_setClusterMapping_completionBlock___block_invoke;
   v14[3] = &unk_1E7CDD720;
-  v15 = v6;
-  v16 = v7;
-  v11 = v6;
-  v12 = v7;
+  v15 = mappingCopy;
+  v16 = blockCopy;
+  v11 = mappingCopy;
+  v12 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getPersonalizationServiceWithCompletionHandler:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -769,11 +769,11 @@ void __61__ASDPersonalizationStore_setClusterMapping_completionBlock___block_inv
   }
 }
 
-- (void)setClusterMappings:(id)a3 completionBlock:(id)a4
+- (void)setClusterMappings:(id)mappings completionBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  mappingsCopy = mappings;
+  blockCopy = block;
   v8 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -788,10 +788,10 @@ void __61__ASDPersonalizationStore_setClusterMapping_completionBlock___block_inv
   v14[1] = 3221225472;
   v14[2] = __62__ASDPersonalizationStore_setClusterMappings_completionBlock___block_invoke;
   v14[3] = &unk_1E7CDD720;
-  v15 = v6;
-  v16 = v7;
-  v11 = v6;
-  v12 = v7;
+  v15 = mappingsCopy;
+  v16 = blockCopy;
+  v11 = mappingsCopy;
+  v12 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getPersonalizationServiceWithCompletionHandler:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -825,10 +825,10 @@ void __62__ASDPersonalizationStore_setClusterMappings_completionBlock___block_in
   }
 }
 
-- (void)tasteProfileFeatureEnabled:(id)a3
+- (void)tasteProfileFeatureEnabled:(id)enabled
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -843,8 +843,8 @@ void __62__ASDPersonalizationStore_setClusterMappings_completionBlock___block_in
   v10[1] = 3221225472;
   v10[2] = __54__ASDPersonalizationStore_tasteProfileFeatureEnabled___block_invoke;
   v10[3] = &unk_1E7CDD6D0;
-  v11 = v4;
-  v8 = v4;
+  v11 = enabledCopy;
+  v8 = enabledCopy;
   [(ASDServiceBroker *)serviceBroker getPersonalizationServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];

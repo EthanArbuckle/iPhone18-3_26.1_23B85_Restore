@@ -29,7 +29,7 @@
 {
   v5 = *a2;
   *buf = 138412546;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2112;
   *(buf + 14) = v5;
   _os_log_error_impl(&dword_1B8447000, log, OS_LOG_TYPE_ERROR, "Failed database integrity check on %@: %@", buf, 0x16u);

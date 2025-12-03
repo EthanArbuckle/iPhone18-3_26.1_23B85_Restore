@@ -8,11 +8,11 @@
 {
   v9.receiver = self;
   v9.super_class = BNBannerSourceApplicationStarkSceneSpecification;
-  v2 = [(UIApplicationStarkSceneSpecification *)&v9 baseSceneComponentClassDictionary];
-  v3 = v2;
-  if (v2)
+  baseSceneComponentClassDictionary = [(UIApplicationStarkSceneSpecification *)&v9 baseSceneComponentClassDictionary];
+  v3 = baseSceneComponentClassDictionary;
+  if (baseSceneComponentClassDictionary)
   {
-    v4 = [v2 mutableCopy];
+    v4 = [baseSceneComponentClassDictionary mutableCopy];
   }
 
   else

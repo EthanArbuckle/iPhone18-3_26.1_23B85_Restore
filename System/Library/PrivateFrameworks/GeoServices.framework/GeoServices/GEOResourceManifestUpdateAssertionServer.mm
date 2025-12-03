@@ -1,28 +1,28 @@
 @interface GEOResourceManifestUpdateAssertionServer
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6;
-- (void)checkinForUpdateAssertionWithRequest:(id)a3;
-- (void)peerDidDisconnect:(id)a3;
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id;
+- (void)checkinForUpdateAssertionWithRequest:(id)request;
+- (void)peerDidDisconnect:(id)disconnect;
 @end
 
 @implementation GEOResourceManifestUpdateAssertionServer
 
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (sub_100001334(v10) == 2583)
+  messageCopy = message;
+  objectCopy = object;
+  peerCopy = peer;
+  if (sub_100001334(messageCopy) == 2583)
   {
     v13 = 1;
-    if (sub_100001B78(v12, v11, @"resourcemanifestupdateassertion", v10, &off_100088E38, 1))
+    if (sub_100001B78(peerCopy, objectCopy, @"resourcemanifestupdateassertion", messageCopy, &off_100088E38, 1))
     {
       v14 = objc_opt_class();
-      v15 = sub_100001388(@"resourcemanifestupdateassertion", v10, v11, v14, v12);
+      v15 = sub_100001388(@"resourcemanifestupdateassertion", messageCopy, objectCopy, v14, peerCopy);
       v16 = v15;
       v13 = v15 != 0;
       if (v15)
       {
-        [v15 setSignpostId:a6];
+        [v15 setSignpostId:id];
         [(GEOResourceManifestUpdateAssertionServer *)self checkinForUpdateAssertionWithRequest:v16];
       }
     }
@@ -36,24 +36,24 @@
   return v13;
 }
 
-- (void)checkinForUpdateAssertionWithRequest:(id)a3
+- (void)checkinForUpdateAssertionWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 peer];
-  v6 = [v5 bundleIdentifier];
-  v7 = v6;
+  requestCopy = request;
+  peer = [requestCopy peer];
+  bundleIdentifier = [peer bundleIdentifier];
+  v7 = bundleIdentifier;
   v8 = @"<unknown>";
-  if (v6)
+  if (bundleIdentifier)
   {
-    v8 = v6;
+    v8 = bundleIdentifier;
   }
 
   v9 = v8;
 
   v10 = +[GEOResourceManifestUpdateAssertionRegistry sharedRegistry];
-  v11 = [v4 reason];
-  [v4 timestamp];
-  v12 = [v10 addAssertionForProcess:v9 reason:v11 creationTimestamp:?];
+  reason = [requestCopy reason];
+  [requestCopy timestamp];
+  v12 = [v10 addAssertionForProcess:v9 reason:reason creationTimestamp:?];
 
   peerToAssertionRecord = self->_peerToAssertionRecord;
   if (!peerToAssertionRecord)
@@ -65,19 +65,19 @@
     peerToAssertionRecord = self->_peerToAssertionRecord;
   }
 
-  v16 = [v4 peer];
-  v17 = [(NSMapTable *)peerToAssertionRecord objectForKey:v16];
+  peer2 = [requestCopy peer];
+  v17 = [(NSMapTable *)peerToAssertionRecord objectForKey:peer2];
 
   if (v17)
   {
     v18 = GEOGetResourceManifestLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
-      v19 = [v4 reason];
+      reason2 = [requestCopy reason];
       v23 = 138543618;
       v24 = v9;
       v25 = 2114;
-      v26 = v19;
+      v26 = reason2;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_FAULT, "Process '%{public}@' already has an existing update assertion on this connection (reason: '%{public}@')", &v23, 0x16u);
     }
 
@@ -86,24 +86,24 @@
   }
 
   v21 = self->_peerToAssertionRecord;
-  v22 = [v4 peer];
-  [(NSMapTable *)v21 setObject:v12 forKey:v22];
+  peer3 = [requestCopy peer];
+  [(NSMapTable *)v21 setObject:v12 forKey:peer3];
 }
 
-- (void)peerDidDisconnect:(id)a3
+- (void)peerDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_peerToAssertionRecord objectForKey:v4];
+  disconnectCopy = disconnect;
+  v5 = [(NSMapTable *)self->_peerToAssertionRecord objectForKey:disconnectCopy];
   if (v5)
   {
-    [(NSMapTable *)self->_peerToAssertionRecord removeObjectForKey:v4];
+    [(NSMapTable *)self->_peerToAssertionRecord removeObjectForKey:disconnectCopy];
     v6 = +[GEOResourceManifestUpdateAssertionRegistry sharedRegistry];
     [v6 removeAssertion:v5];
   }
 
   v7.receiver = self;
   v7.super_class = GEOResourceManifestUpdateAssertionServer;
-  [(GEOResourceManifestUpdateAssertionServer *)&v7 peerDidDisconnect:v4];
+  [(GEOResourceManifestUpdateAssertionServer *)&v7 peerDidDisconnect:disconnectCopy];
 }
 
 @end

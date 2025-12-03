@@ -1,23 +1,23 @@
 @interface AXVoiceOverPunctuationReplacement
 - (AXSSPunctuationEntry)punctuationEntry;
 - (BOOL)_isValidPunctuationEntry;
-- (id)_punctuation:(id)a3;
-- (id)_replacement:(id)a3;
+- (id)_punctuation:(id)_punctuation;
+- (id)_replacement:(id)_replacement;
 - (id)specifiers;
-- (void)_punctuationPickerTapped:(id)a3;
+- (void)_punctuationPickerTapped:(id)tapped;
 - (void)_saveIfPossible;
-- (void)_setPunctuation:(id)a3 specifier:(id)a4;
-- (void)_setReplacement:(id)a3 specifier:(id)a4;
+- (void)_setPunctuation:(id)punctuation specifier:(id)specifier;
+- (void)_setReplacement:(id)replacement specifier:(id)specifier;
 - (void)_updateSelectedRuleChoice;
 - (void)_updateTextAttributes;
-- (void)buttonPickerWantsToInsertText:(id)a3;
-- (void)popoverPresentationController:(id)a3 willRepositionPopoverToRect:(CGRect *)a4 inView:(id *)a5;
+- (void)buttonPickerWantsToInsertText:(id)text;
+- (void)popoverPresentationController:(id)controller willRepositionPopoverToRect:(CGRect *)rect inView:(id *)view;
 - (void)reloadSpecifiers;
 - (void)removeFromParentViewController;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willBecomeActive;
 @end
 
@@ -43,15 +43,15 @@
   v4.receiver = self;
   v4.super_class = AXVoiceOverPunctuationReplacement;
   [(AXVoiceOverPunctuationReplacement *)&v4 removeFromParentViewController];
-  v3 = [(AXVoiceOverPunctuationReplacement *)self specifier];
-  [v3 removePropertyForKey:@"PunctuationEntry"];
+  specifier = [(AXVoiceOverPunctuationReplacement *)self specifier];
+  [specifier removePropertyForKey:@"PunctuationEntry"];
 }
 
 - (BOOL)_isValidPunctuationEntry
 {
-  v2 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
-  v3 = [v2 punctuation];
-  v4 = [v3 length] != 0;
+  punctuationEntry = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
+  punctuation = [punctuationEntry punctuation];
+  v4 = [punctuation length] != 0;
 
   return v4;
 }
@@ -59,69 +59,69 @@
 - (void)_updateTextAttributes
 {
   v3 = [(AXVoiceOverPunctuationReplacement *)self cellForSpecifierID:@"replacement"];
-  v4 = [v3 editableTextField];
-  v5 = [v4 text];
-  v6 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
-  [v6 setReplacement:v5];
+  editableTextField = [v3 editableTextField];
+  text = [editableTextField text];
+  punctuationEntry = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
+  [punctuationEntry setReplacement:text];
 
   v10 = [(AXVoiceOverPunctuationReplacement *)self cellForSpecifierID:@"punctuation"];
-  v7 = [v10 editableTextField];
-  v8 = [v7 text];
-  v9 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
-  [v9 setPunctuation:v8];
+  editableTextField2 = [v10 editableTextField];
+  text2 = [editableTextField2 text];
+  punctuationEntry2 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
+  [punctuationEntry2 setPunctuation:text2];
 }
 
 - (void)_saveIfPossible
 {
   [(AXVoiceOverPunctuationReplacement *)self _updateTextAttributes];
-  v3 = [(AXVoiceOverPunctuationReplacement *)self punctuationGroup];
-  if (([v3 inDatabase] & 1) == 0)
+  punctuationGroup = [(AXVoiceOverPunctuationReplacement *)self punctuationGroup];
+  if (([punctuationGroup inDatabase] & 1) == 0)
   {
     v4 = AXLogPunctuationStorage();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v24 = 138412290;
-      v25[0] = v3;
+      v25[0] = punctuationGroup;
       _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "Group not in DB, adding: %@", &v24, 0xCu);
     }
 
     v5 = +[AXSSPunctuationManager sharedDatabase];
-    [v5 updatePunctuationGroup:v3];
+    [v5 updatePunctuationGroup:punctuationGroup];
   }
 
   v6 = AXLogPunctuationStorage();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(AXVoiceOverPunctuationReplacement *)self _isValidPunctuationEntry];
-    v8 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
+    _isValidPunctuationEntry = [(AXVoiceOverPunctuationReplacement *)self _isValidPunctuationEntry];
+    punctuationEntry = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
     v24 = 67109378;
-    LODWORD(v25[0]) = v7;
+    LODWORD(v25[0]) = _isValidPunctuationEntry;
     WORD2(v25[0]) = 2112;
-    *(v25 + 6) = v8;
+    *(v25 + 6) = punctuationEntry;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "Adding entry: valid:%d - %@", &v24, 0x12u);
   }
 
   if ([(AXVoiceOverPunctuationReplacement *)self _isValidPunctuationEntry])
   {
-    v9 = [v3 uuid];
-    v10 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
-    [v10 setGroupUUID:v9];
+    uuid = [punctuationGroup uuid];
+    punctuationEntry2 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
+    [punctuationEntry2 setGroupUUID:uuid];
 
     v11 = +[AXSSPunctuationManager sharedDatabase];
-    v12 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
-    [v11 updateEntry:v12];
+    punctuationEntry3 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
+    [v11 updateEntry:punctuationEntry3];
 
-    v13 = [v3 entries];
-    v14 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
-    v15 = [v13 containsObject:v14];
+    entries = [punctuationGroup entries];
+    punctuationEntry4 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
+    v15 = [entries containsObject:punctuationEntry4];
 
     if ((v15 & 1) == 0)
     {
-      v16 = [v3 entries];
-      if (v16)
+      entries2 = [punctuationGroup entries];
+      if (entries2)
       {
-        v17 = [v3 entries];
-        v18 = [v17 mutableCopy];
+        entries3 = [punctuationGroup entries];
+        v18 = [entries3 mutableCopy];
       }
 
       else
@@ -129,21 +129,21 @@
         v18 = +[NSMutableArray array];
       }
 
-      v19 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
-      [v18 addObject:v19];
+      punctuationEntry5 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
+      [v18 addObject:punctuationEntry5];
 
-      [v3 setEntries:v18];
+      [punctuationGroup setEntries:v18];
       v20 = AXLogPunctuationStorage();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
-        v21 = [v3 entries];
+        entries4 = [punctuationGroup entries];
         v24 = 138412290;
-        v25[0] = v21;
+        v25[0] = entries4;
         _os_log_impl(&dword_0, v20, OS_LOG_TYPE_INFO, "Associating entry: %@", &v24, 0xCu);
       }
 
       v22 = +[AXSSPunctuationManager sharedDatabase];
-      [v22 updatePunctuationGroup:v3];
+      [v22 updatePunctuationGroup:punctuationGroup];
     }
 
     v23 = +[NSNotificationCenter defaultCenter];
@@ -153,26 +153,26 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(AXVoiceOverPunctuationReplacement *)self specifier];
-  v4 = [v3 propertyForKey:@"PunctuationGroup"];
+  specifier = [(AXVoiceOverPunctuationReplacement *)self specifier];
+  v4 = [specifier propertyForKey:@"PunctuationGroup"];
   if (v4)
   {
     v5 = v4;
-    v6 = [(AXVoiceOverPunctuationReplacement *)self punctuationGroup];
+    punctuationGroup = [(AXVoiceOverPunctuationReplacement *)self punctuationGroup];
 
-    if (v6)
+    if (punctuationGroup)
     {
       goto LABEL_5;
     }
 
-    v3 = [(AXVoiceOverPunctuationReplacement *)self specifier];
-    v7 = [v3 propertyForKey:@"PunctuationGroup"];
+    specifier = [(AXVoiceOverPunctuationReplacement *)self specifier];
+    v7 = [specifier propertyForKey:@"PunctuationGroup"];
     [(AXVoiceOverPunctuationReplacement *)self setPunctuationGroup:v7];
   }
 
 LABEL_5:
-  v8 = [(AXVoiceOverPunctuationReplacement *)self specifier];
-  v9 = [v8 propertyForKey:@"PunctuationEntry"];
+  specifier2 = [(AXVoiceOverPunctuationReplacement *)self specifier];
+  v9 = [specifier2 propertyForKey:@"PunctuationEntry"];
   if (!v9)
   {
 LABEL_8:
@@ -184,17 +184,17 @@ LABEL_8:
 
   if (!punctuationEntry)
   {
-    v8 = [(AXVoiceOverPunctuationReplacement *)self specifier];
-    v11 = [v8 propertyForKey:@"PunctuationEntry"];
+    specifier2 = [(AXVoiceOverPunctuationReplacement *)self specifier];
+    v11 = [specifier2 propertyForKey:@"PunctuationEntry"];
     [(AXVoiceOverPunctuationReplacement *)self setPunctuationEntry:v11];
 
     goto LABEL_8;
   }
 
 LABEL_9:
-  v12 = [(AXVoiceOverPunctuationReplacement *)self specifier];
+  specifier3 = [(AXVoiceOverPunctuationReplacement *)self specifier];
   cachedSpecifier = self->_cachedSpecifier;
-  self->_cachedSpecifier = v12;
+  self->_cachedSpecifier = specifier3;
 
   v14.receiver = self;
   v14.super_class = AXVoiceOverPunctuationReplacement;
@@ -280,11 +280,11 @@ LABEL_9:
   [(AXVoiceOverPunctuationReplacement *)self _updateSelectedRuleChoice];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AXVoiceOverPunctuationReplacement;
-  [(AXVoiceOverPunctuationReplacement *)&v4 viewWillAppear:a3];
+  [(AXVoiceOverPunctuationReplacement *)&v4 viewWillAppear:appear];
   [(AXVoiceOverPunctuationReplacement *)self _updateSelectedRuleChoice];
 }
 
@@ -292,24 +292,24 @@ LABEL_9:
 {
   v10 = [(AXVoiceOverPunctuationReplacement *)self specifierForID:@"RuleGroup"];
   v3 = [(AXVoiceOverPunctuationReplacement *)self specifierForID:@"replacement"];
-  v4 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
-  v5 = [v4 rule];
+  punctuationEntry = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
+  rule = [punctuationEntry rule];
 
-  if (!v5)
+  if (!rule)
   {
     v6 = 0;
     v7 = @"AXSSPunctuationEntryRuleIgnore";
     goto LABEL_7;
   }
 
-  if (v5 == &dword_0 + 2)
+  if (rule == &dword_0 + 2)
   {
     v6 = 0;
     v7 = @"AXSSPunctuationEntryRuleRemove";
     goto LABEL_7;
   }
 
-  if (v5 == &dword_0 + 1)
+  if (rule == &dword_0 + 1)
   {
     v6 = 1;
     v7 = @"AXSSPunctuationEntryRuleReplace";
@@ -331,153 +331,153 @@ LABEL_9:
   [(AXVoiceOverPunctuationReplacement *)self endUpdates];
 }
 
-- (void)_setReplacement:(id)a3 specifier:(id)a4
+- (void)_setReplacement:(id)replacement specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
-  [v6 setReplacement:v5];
+  replacementCopy = replacement;
+  punctuationEntry = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
+  [punctuationEntry setReplacement:replacementCopy];
 
   [(AXVoiceOverPunctuationReplacement *)self _saveIfPossible];
 }
 
-- (id)_replacement:(id)a3
+- (id)_replacement:(id)_replacement
 {
-  v3 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
-  v4 = [v3 replacement];
-  v5 = [v4 localizedCapitalizedString];
+  punctuationEntry = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
+  replacement = [punctuationEntry replacement];
+  localizedCapitalizedString = [replacement localizedCapitalizedString];
 
-  return v5;
+  return localizedCapitalizedString;
 }
 
-- (void)_setPunctuation:(id)a3 specifier:(id)a4
+- (void)_setPunctuation:(id)punctuation specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
-  [v6 setPunctuation:v5];
+  punctuationCopy = punctuation;
+  punctuationEntry = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
+  [punctuationEntry setPunctuation:punctuationCopy];
 
   [(AXVoiceOverPunctuationReplacement *)self _saveIfPossible];
 }
 
-- (id)_punctuation:(id)a3
+- (id)_punctuation:(id)_punctuation
 {
-  v3 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
-  v4 = [v3 punctuation];
+  punctuationEntry = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
+  punctuation = [punctuationEntry punctuation];
 
-  if ([v4 length] == &dword_0 + 1)
+  if ([punctuation length] == &dword_0 + 1)
   {
-    v5 = [[AXAttributedString alloc] initWithString:v4];
+    v5 = [[AXAttributedString alloc] initWithString:punctuation];
     v8 = UIAccessibilitySpeechAttributePunctuation;
     v9 = &__kCFBooleanTrue;
     v6 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
     [v5 setAttributes:v6];
 
-    v4 = v5;
+    punctuation = v5;
   }
 
-  return v4;
+  return punctuation;
 }
 
-- (void)buttonPickerWantsToInsertText:(id)a3
+- (void)buttonPickerWantsToInsertText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = [(AXVoiceOverPunctuationReplacement *)self cellForSpecifierID:@"punctuation"];
-  v6 = [v5 editableTextField];
-  [v6 setText:v4];
+  editableTextField = [v5 editableTextField];
+  [editableTextField setText:textCopy];
 
   v7 = [(AXVoiceOverPunctuationReplacement *)self specifierForID:@"punctuation"];
-  [(AXVoiceOverPunctuationReplacement *)self _setPunctuation:v4 specifier:v7];
+  [(AXVoiceOverPunctuationReplacement *)self _setPunctuation:textCopy specifier:v7];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v23 = a4;
-  v7 = [(AXVoiceOverPunctuationReplacement *)self specifierAtIndexPath:a5];
+  cellCopy = cell;
+  v7 = [(AXVoiceOverPunctuationReplacement *)self specifierAtIndexPath:path];
   v8 = [v7 propertyForKey:PSIDKey];
   v9 = [v8 isEqualToString:@"punctuation"];
 
-  v10 = v23;
+  v10 = cellCopy;
   if (v9)
   {
-    v11 = [v23 editableTextField];
-    v12 = [v11 rightView];
+    editableTextField = [cellCopy editableTextField];
+    rightView = [editableTextField rightView];
 
-    if (!v12)
+    if (!rightView)
     {
-      [v11 setRightViewMode:3];
+      [editableTextField setRightViewMode:3];
       v13 = [AXVoiceOverPunctuationPickerButtonSet alloc];
-      [v11 bounds];
+      [editableTextField bounds];
       v14 = [(AXVoiceOverPunctuationPickerButtonSet *)v13 initWithFrame:0.0, 0.0, 100.0];
       [(AXVoiceOverPunctuationPickerButtonSet *)v14 layoutSubviews];
       [(AXVoiceOverPunctuationPickerButtonSet *)v14 frame];
       v16 = v15;
       v18 = v17;
       v20 = v19;
-      v21 = [(AXVoiceOverPunctuationPickerButtonSet *)v14 circle];
-      BoundingBox = CGPathGetBoundingBox([v21 path]);
+      circle = [(AXVoiceOverPunctuationPickerButtonSet *)v14 circle];
+      BoundingBox = CGPathGetBoundingBox([circle path]);
       width = BoundingBox.size.width;
 
       [(AXVoiceOverPunctuationPickerButtonSet *)v14 setFrame:v16, v18, width, v20];
       [(AXVoiceOverPunctuationPickerButtonSet *)v14 addTarget:self action:"_punctuationPickerTapped:" forControlEvents:64];
-      [v11 setRightView:v14];
+      [editableTextField setRightView:v14];
     }
 
-    v10 = v23;
+    v10 = cellCopy;
   }
 }
 
-- (void)popoverPresentationController:(id)a3 willRepositionPopoverToRect:(CGRect *)a4 inView:(id *)a5
+- (void)popoverPresentationController:(id)controller willRepositionPopoverToRect:(CGRect *)rect inView:(id *)view
 {
-  [*a5 frame];
+  [*view frame];
   AX_CGRectGetCenter();
-  a4->origin.x = v6;
-  a4->origin.y = v7;
+  rect->origin.x = v6;
+  rect->origin.y = v7;
 }
 
-- (void)_punctuationPickerTapped:(id)a3
+- (void)_punctuationPickerTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(AXVoiceOverPunctuationReplacement *)self view];
-  v6 = [v5 window];
-  v7 = [v6 firstResponder];
-  [v7 resignFirstResponder];
+  tappedCopy = tapped;
+  view = [(AXVoiceOverPunctuationReplacement *)self view];
+  window = [view window];
+  firstResponder = [window firstResponder];
+  [firstResponder resignFirstResponder];
 
   v15 = objc_alloc_init(AXVoiceOverPunctuationSelectionPicker);
   [(AXVoiceOverPunctuationSelectionPicker *)v15 setDelegate:self];
   [(AXVoiceOverPunctuationSelectionPicker *)v15 setModalPresentationStyle:7];
-  v8 = [(AXVoiceOverPunctuationSelectionPicker *)v15 popoverPresentationController];
-  [v8 setDelegate:self];
-  [v8 setPermittedArrowDirections:1];
-  v9 = [v4 label];
-  [v8 setSourceView:v9];
+  popoverPresentationController = [(AXVoiceOverPunctuationSelectionPicker *)v15 popoverPresentationController];
+  [popoverPresentationController setDelegate:self];
+  [popoverPresentationController setPermittedArrowDirections:1];
+  label = [tappedCopy label];
+  [popoverPresentationController setSourceView:label];
 
-  v10 = [v4 label];
-  [v10 bounds];
+  label2 = [tappedCopy label];
+  [label2 bounds];
   v12 = v11;
-  v13 = [v4 label];
+  label3 = [tappedCopy label];
 
-  [v13 bounds];
-  [v8 setSourceRect:{v12, v14, 1.0, 1.0}];
+  [label3 bounds];
+  [popoverPresentationController setSourceRect:{v12, v14, 1.0, 1.0}];
 
-  [v8 setCanOverlapSourceViewRect:0];
+  [popoverPresentationController setCanOverlapSourceViewRect:0];
   [(AXVoiceOverPunctuationReplacement *)self presentViewController:v15 animated:1 completion:0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AXVoiceOverPunctuationReplacement *)self specifierForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(AXVoiceOverPunctuationReplacement *)self specifierForIndexPath:pathCopy];
   v13.receiver = self;
   v13.super_class = AXVoiceOverPunctuationReplacement;
-  [(AXVoiceOverPunctuationReplacement *)&v13 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(AXVoiceOverPunctuationReplacement *)&v13 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 
   v9 = [v8 propertyForKey:@"RuleType"];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 integerValue];
-    v12 = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
-    [v12 setRule:v11];
+    integerValue = [v9 integerValue];
+    punctuationEntry = [(AXVoiceOverPunctuationReplacement *)self punctuationEntry];
+    [punctuationEntry setRule:integerValue];
 
     [(AXVoiceOverPunctuationReplacement *)self _saveIfPossible];
     [(AXVoiceOverPunctuationReplacement *)self _updateSelectedRuleChoice];

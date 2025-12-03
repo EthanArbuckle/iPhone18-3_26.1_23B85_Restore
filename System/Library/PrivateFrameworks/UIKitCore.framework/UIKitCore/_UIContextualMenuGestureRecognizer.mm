@@ -1,17 +1,17 @@
 @interface _UIContextualMenuGestureRecognizer
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UIContextualMenuGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible)
   {
-    if (a4 && (([a4 _modifierFlags] & 0x40000) != 0 || (objc_msgSend(a4, "_buttonMask") & 2) != 0))
+    if (event && (([event _modifierFlags] & 0x40000) != 0 || (objc_msgSend(event, "_buttonMask") & 2) != 0))
     {
       v6 = 1;
     }
@@ -25,27 +25,27 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  if ([(UIGestureRecognizer *)self state:a3]== UIGestureRecognizerStateBegan || [(UIGestureRecognizer *)self state]== UIGestureRecognizerStateChanged)
+  if ([(UIGestureRecognizer *)self state:moved]== UIGestureRecognizerStateBegan || [(UIGestureRecognizer *)self state]== UIGestureRecognizerStateChanged)
   {
 
     [(UIGestureRecognizer *)self setState:2];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if ([(UIGestureRecognizer *)self state:a3]== UIGestureRecognizerStateBegan || [(UIGestureRecognizer *)self state]== UIGestureRecognizerStateChanged)
+  if ([(UIGestureRecognizer *)self state:ended]== UIGestureRecognizerStateBegan || [(UIGestureRecognizer *)self state]== UIGestureRecognizerStateChanged)
   {
 
     [(UIGestureRecognizer *)self setState:3];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  if ([(UIGestureRecognizer *)self state:a3]> UIGestureRecognizerStatePossible)
+  if ([(UIGestureRecognizer *)self state:cancelled]> UIGestureRecognizerStatePossible)
   {
     v5 = 4;
   }

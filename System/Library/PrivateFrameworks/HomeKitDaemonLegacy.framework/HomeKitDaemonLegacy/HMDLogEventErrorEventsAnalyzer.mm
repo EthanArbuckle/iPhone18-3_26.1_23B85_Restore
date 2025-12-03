@@ -1,17 +1,17 @@
 @interface HMDLogEventErrorEventsAnalyzer
 + (NSArray)errorEventsRequestGroupKeys;
-+ (id)eventCounterNameForError:(id)a3;
++ (id)eventCounterNameForError:(id)error;
 + (id)managedEventCounterRequestGroups;
 - (HMDLogEventAnalyzerDataSource)dataSource;
-- (HMDLogEventErrorEventsAnalyzer)initWithDataSource:(id)a3;
-- (id)errorEventsAnalyzedSummaryForDate:(id)a3;
-- (id)eventCounterRequestGroupNameForLogEvent:(id)a3;
-- (void)_handleAdditionalErrorsForAccessoryPairingLogEvent:(id)a3 logEventUnderlyingErrorGroupName:(id)a4;
-- (void)_handleAdditionalErrorsForCloudShareTrustManagerFailureLogEvent:(id)a3 logEventUnderlyingErrorGroupName:(id)a4;
-- (void)observeEvent:(id)a3;
+- (HMDLogEventErrorEventsAnalyzer)initWithDataSource:(id)source;
+- (id)errorEventsAnalyzedSummaryForDate:(id)date;
+- (id)eventCounterRequestGroupNameForLogEvent:(id)event;
+- (void)_handleAdditionalErrorsForAccessoryPairingLogEvent:(id)event logEventUnderlyingErrorGroupName:(id)name;
+- (void)_handleAdditionalErrorsForCloudShareTrustManagerFailureLogEvent:(id)event logEventUnderlyingErrorGroupName:(id)name;
+- (void)observeEvent:(id)event;
 - (void)resetEventCountersForAllErrorEventRequestGroups;
 - (void)submitAllFormattedErrorAggregationLogEvents;
-- (void)submitErrorAggregationLogEventsForErrorEventGroup:(id)a3;
+- (void)submitErrorAggregationLogEventsForErrorEventGroup:(id)group;
 @end
 
 @implementation HMDLogEventErrorEventsAnalyzer
@@ -30,8 +30,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [objc_opt_class() errorEventsRequestGroupKeys];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  errorEventsRequestGroupKeys = [objc_opt_class() errorEventsRequestGroupKeys];
+  v4 = [errorEventsRequestGroupKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -43,22 +43,22 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(errorEventsRequestGroupKeys);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
-        v9 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
-        [v9 resetEventCountersForRequestGroup:v8];
+        eventCountersManager = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
+        [eventCountersManager resetEventCountersForRequestGroup:v8];
 
-        v10 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
+        eventCountersManager2 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_UnderlyingError", v8];
-        [v10 resetEventCountersForRequestGroup:v11];
+        [eventCountersManager2 resetEventCountersForRequestGroup:v11];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [errorEventsRequestGroupKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -67,14 +67,14 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitErrorAggregationLogEventsForErrorEventGroup:(id)a3
+- (void)submitErrorAggregationLogEventsForErrorEventGroup:(id)group
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  v6 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
-  v18 = v4;
-  v7 = [v6 fetchEventCountersForRequestGroup:v4];
+  groupCopy = group;
+  selfCopy = self;
+  eventCountersManager = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
+  v18 = groupCopy;
+  v7 = [eventCountersManager fetchEventCountersForRequestGroup:groupCopy];
 
   v21 = 0u;
   v22 = 0u;
@@ -98,10 +98,10 @@
         v13 = *(*(&v19 + 1) + 8 * i);
         if (([v13 isEqualToString:@"Total Events"] & 1) == 0)
         {
-          v14 = [(HMDLogEventErrorEventsAnalyzer *)v5 logEventSubmitter];
+          logEventSubmitter = [(HMDLogEventErrorEventsAnalyzer *)selfCopy logEventSubmitter];
           v15 = [v8 objectForKeyedSubscript:v13];
           v16 = [HMDErrorAggregationLogEvent createErrorEventForRequestGroup:v18 errorString:v13 errorCount:v15];
-          [v14 submitLogEvent:v16];
+          [logEventSubmitter submitLogEvent:v16];
         }
       }
 
@@ -117,9 +117,9 @@
 - (void)submitAllFormattedErrorAggregationLogEvents
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDLogEventErrorEventsAnalyzer *)self dataSource];
-  v4 = [v3 cachedConfiguration];
-  v5 = [v4 totalHomeCategoryBitMask];
+  dataSource = [(HMDLogEventErrorEventsAnalyzer *)self dataSource];
+  cachedConfiguration = [dataSource cachedConfiguration];
+  totalHomeCategoryBitMask = [cachedConfiguration totalHomeCategoryBitMask];
 
   v27 = 0u;
   v28 = 0u;
@@ -143,28 +143,28 @@
         }
 
         v9 = *(*(&v25 + 1) + 8 * v8);
-        v10 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
-        v11 = [v10 fetchEventCounterForEventName:v6 requestGroup:v9];
+        eventCountersManager = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
+        v11 = [eventCountersManager fetchEventCounterForEventName:v6 requestGroup:v9];
 
-        v12 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
-        v13 = [v12 fetchEventCounterForEventName:@"Total Events" requestGroup:v9];
+        eventCountersManager2 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
+        v13 = [eventCountersManager2 fetchEventCounterForEventName:@"Total Events" requestGroup:v9];
 
-        if (v5 > 1 || v11)
+        if (totalHomeCategoryBitMask > 1 || v11)
         {
-          v14 = [(HMDLogEventErrorEventsAnalyzer *)self logEventSubmitter];
-          v15 = v5;
+          logEventSubmitter = [(HMDLogEventErrorEventsAnalyzer *)self logEventSubmitter];
+          v15 = totalHomeCategoryBitMask;
           v16 = v6;
           v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
           v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v13];
           v19 = [HMDErrorAggregationLogEvent createSummaryEventForRequestGroup:v9 totalErrorCount:v17 totalEventCount:v18];
-          [v14 submitLogEvent:v19];
+          [logEventSubmitter submitLogEvent:v19];
 
           [(HMDLogEventErrorEventsAnalyzer *)self submitErrorAggregationLogEventsForErrorEventGroup:v9];
           v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_UnderlyingError", v9];
           [(HMDLogEventErrorEventsAnalyzer *)self submitErrorAggregationLogEventsForErrorEventGroup:v20];
 
           v6 = v16;
-          v5 = v15;
+          totalHomeCategoryBitMask = v15;
           v7 = v22;
         }
 
@@ -182,10 +182,10 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)errorEventsAnalyzedSummaryForDate:(id)a3
+- (id)errorEventsAnalyzedSummaryForDate:(id)date
 {
   v34 = *MEMORY[0x277D85DE8];
-  v21 = a3;
+  dateCopy = date;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -206,11 +206,11 @@
         }
 
         v5 = *(*(&v28 + 1) + 8 * i);
-        v6 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
-        v7 = [v6 counterGroupForName:v5];
+        eventCountersManager = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
+        v7 = [eventCountersManager counterGroupForName:v5];
 
         v23 = v7;
-        v8 = [v7 eventCountersForDate:v21];
+        v8 = [v7 eventCountersForDate:dateCopy];
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
@@ -263,58 +263,58 @@
   return v3;
 }
 
-- (void)_handleAdditionalErrorsForCloudShareTrustManagerFailureLogEvent:(id)a3 logEventUnderlyingErrorGroupName:(id)a4
+- (void)_handleAdditionalErrorsForCloudShareTrustManagerFailureLogEvent:(id)event logEventUnderlyingErrorGroupName:(id)name
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v13 trustManagerErrorCode];
+  eventCopy = event;
+  nameCopy = name;
+  trustManagerErrorCode = [eventCopy trustManagerErrorCode];
 
-  if (v7)
+  if (trustManagerErrorCode)
   {
     v8 = MEMORY[0x277CCA9B8];
-    v9 = [v13 trustManagerErrorCode];
-    v10 = [v8 errorWithDomain:@"HMDCloudShareTrustManagerErrorDomain" code:objc_msgSend(v9 userInfo:{"integerValue"), 0}];
+    trustManagerErrorCode2 = [eventCopy trustManagerErrorCode];
+    v10 = [v8 errorWithDomain:@"HMDCloudShareTrustManagerErrorDomain" code:objc_msgSend(trustManagerErrorCode2 userInfo:{"integerValue"), 0}];
 
-    v11 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
+    eventCountersManager = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
     v12 = [HMDLogEventErrorEventsAnalyzer eventCounterNameForError:v10];
-    [v11 incrementEventCounterForEventName:v12 requestGroup:v6];
+    [eventCountersManager incrementEventCounterForEventName:v12 requestGroup:nameCopy];
   }
 }
 
-- (void)_handleAdditionalErrorsForAccessoryPairingLogEvent:(id)a3 logEventUnderlyingErrorGroupName:(id)a4
+- (void)_handleAdditionalErrorsForAccessoryPairingLogEvent:(id)event logEventUnderlyingErrorGroupName:(id)name
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v13 threadCommissioningError];
+  eventCopy = event;
+  nameCopy = name;
+  threadCommissioningError = [eventCopy threadCommissioningError];
 
-  if (v7)
+  if (threadCommissioningError)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [v13 threadCommissioningError];
-    v10 = [HMDLogEventErrorEventsAnalyzer eventCounterNameForError:v9];
+    threadCommissioningError2 = [eventCopy threadCommissioningError];
+    v10 = [HMDLogEventErrorEventsAnalyzer eventCounterNameForError:threadCommissioningError2];
     v11 = [v8 stringWithFormat:@"Thread_%@", v10];
 
-    v12 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
-    [v12 incrementEventCounterForEventName:v11 requestGroup:v6];
+    eventCountersManager = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
+    [eventCountersManager incrementEventCounterForEventName:v11 requestGroup:nameCopy];
   }
 }
 
-- (id)eventCounterRequestGroupNameForLogEvent:(id)a3
+- (id)eventCounterRequestGroupNameForLogEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (v3 && (isKindOfClass & 1) != 0)
+  if (eventCopy && (isKindOfClass & 1) != 0)
   {
     v5 = @"HMDCharacteristicReadWriteLogEvent";
     goto LABEL_62;
   }
 
-  v6 = v3;
+  v6 = eventCopy;
   objc_opt_class();
   v7 = objc_opt_isKindOfClass();
 
-  if (v3 && (v7 & 1) != 0)
+  if (eventCopy && (v7 & 1) != 0)
   {
     v5 = @"HAPPairVerifyLogEvent";
     goto LABEL_62;
@@ -324,7 +324,7 @@
   objc_opt_class();
   v9 = objc_opt_isKindOfClass();
 
-  if (v3 && (v9 & 1) != 0)
+  if (eventCopy && (v9 & 1) != 0)
   {
     v10 = v8;
     objc_opt_class();
@@ -340,8 +340,8 @@
 
     v12 = v11;
 
-    v13 = [v12 isAddOperation];
-    if (v13)
+    isAddOperation = [v12 isAddOperation];
+    if (isAddOperation)
     {
       v5 = @"HMDAddAccessoryPairingLogEvent";
     }
@@ -358,7 +358,7 @@
   objc_opt_class();
   v15 = objc_opt_isKindOfClass();
 
-  if (v3 && (v15 & 1) != 0)
+  if (eventCopy && (v15 & 1) != 0)
   {
     v5 = @"HMDLogEventErrorEventsAnalyzerCloudSyncLegacyUploadRequestGroup";
     goto LABEL_62;
@@ -368,7 +368,7 @@
   objc_opt_class();
   v17 = objc_opt_isKindOfClass();
 
-  if (v3 && (v17 & 1) != 0)
+  if (eventCopy && (v17 & 1) != 0)
   {
     v5 = @"HMDCloudShareTrustManagerFailureLogEvent";
     goto LABEL_62;
@@ -378,7 +378,7 @@
   objc_opt_class();
   v19 = objc_opt_isKindOfClass();
 
-  if (v3 && (v19 & 1) != 0)
+  if (eventCopy && (v19 & 1) != 0)
   {
     v5 = @"HMDDatabaseCKOperationCompletionEvent";
     goto LABEL_62;
@@ -388,7 +388,7 @@
   objc_opt_class();
   v21 = objc_opt_isKindOfClass();
 
-  if (v3 && (v21 & 1) != 0)
+  if (eventCopy && (v21 & 1) != 0)
   {
     v5 = @"HMDBackingStoreCKOperationZoneCompletionLogEvent";
     goto LABEL_62;
@@ -398,7 +398,7 @@
   objc_opt_class();
   v23 = objc_opt_isKindOfClass();
 
-  if (v3 && (v23 & 1) != 0)
+  if (eventCopy && (v23 & 1) != 0)
   {
     v5 = @"HMDCameraMetricsStreamLogEvent";
     goto LABEL_62;
@@ -408,7 +408,7 @@
   objc_opt_class();
   v25 = objc_opt_isKindOfClass();
 
-  if (v3 && (v25 & 1) != 0)
+  if (eventCopy && (v25 & 1) != 0)
   {
     v5 = @"HMDCameraMetricsSnapshotLogEvent";
     goto LABEL_62;
@@ -418,7 +418,7 @@
   objc_opt_class();
   v27 = objc_opt_isKindOfClass();
 
-  if (v3 && (v27 & 1) != 0)
+  if (eventCopy && (v27 & 1) != 0)
   {
     v5 = @"HMDActionSetLogEvent";
     goto LABEL_62;
@@ -428,7 +428,7 @@
   objc_opt_class();
   v29 = objc_opt_isKindOfClass();
 
-  if (v3 && (v29 & 1) != 0)
+  if (eventCopy && (v29 & 1) != 0)
   {
     v5 = @"HomeKitEventTriggerExecutionSessionLogEvent";
     goto LABEL_62;
@@ -438,7 +438,7 @@
   objc_opt_class();
   v31 = objc_opt_isKindOfClass();
 
-  if (v3 && (v31 & 1) != 0)
+  if (eventCopy && (v31 & 1) != 0)
   {
     v5 = @"HMDSiriCommandLogEvent";
     goto LABEL_62;
@@ -448,13 +448,13 @@
   objc_opt_class();
   v33 = objc_opt_isKindOfClass();
 
-  if (!v3 || (v33 & 1) == 0)
+  if (!eventCopy || (v33 & 1) == 0)
   {
     v37 = v32;
     objc_opt_class();
     v38 = objc_opt_isKindOfClass();
 
-    if (v3 && (v38 & 1) != 0)
+    if (eventCopy && (v38 & 1) != 0)
     {
       v5 = @"HMDCameraRecordingUploadOperationLogEvent";
       goto LABEL_62;
@@ -464,10 +464,10 @@
     objc_opt_class();
     v40 = objc_opt_isKindOfClass();
 
-    if (v3 && (v40 & 1) != 0)
+    if (eventCopy && (v40 & 1) != 0)
     {
-      v41 = [v39 error];
-      if ([HMDCameraRecordingSessionLogEvent isRecordingSessionAlreadyInProgressError:v41])
+      error = [v39 error];
+      if ([HMDCameraRecordingSessionLogEvent isRecordingSessionAlreadyInProgressError:error])
       {
 LABEL_57:
 
@@ -476,18 +476,18 @@ LABEL_67:
         goto LABEL_62;
       }
 
-      v42 = [v39 error];
-      if ([v42 code] == 14)
+      error2 = [v39 error];
+      if ([error2 code] == 14)
       {
 
         goto LABEL_57;
       }
 
-      v51 = [v39 error];
-      v52 = [v51 code];
+      error3 = [v39 error];
+      code = [error3 code];
 
       v49 = @"HMDCameraRecordingSessionCoordinationLogEvent";
-      v50 = v52 == 1057;
+      v50 = code == 1057;
     }
 
     else
@@ -497,23 +497,23 @@ LABEL_67:
       v45 = objc_opt_isKindOfClass();
 
       v5 = 0;
-      if (!v3 || (v45 & 1) == 0)
+      if (!eventCopy || (v45 & 1) == 0)
       {
         goto LABEL_62;
       }
 
-      v46 = [v44 error];
-      if ([HMDCameraRecordingSessionLogEvent isRecordingSessionAlreadyInProgressError:v46])
+      error4 = [v44 error];
+      if ([HMDCameraRecordingSessionLogEvent isRecordingSessionAlreadyInProgressError:error4])
       {
 
         goto LABEL_67;
       }
 
-      v47 = [v44 error];
-      v48 = [v47 code];
+      error5 = [v44 error];
+      code2 = [error5 code];
 
       v49 = @"HMDCameraRecordingSessionLogEvent";
-      v50 = v48 == 14;
+      v50 = code2 == 14;
     }
 
     if (v50)
@@ -562,22 +562,22 @@ LABEL_62:
   return v5;
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
-  v29 = a3;
+  eventCopy = event;
   v4 = [(HMDLogEventErrorEventsAnalyzer *)self eventCounterRequestGroupNameForLogEvent:?];
   if (v4)
   {
-    v5 = [v29 error];
+    error = [eventCopy error];
 
-    v6 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
-    v7 = v6;
-    if (v5)
+    eventCountersManager = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
+    v7 = eventCountersManager;
+    if (error)
     {
-      [v6 incrementEventCounterForEventName:@"Any Error" requestGroup:@"All Event Groups"];
+      [eventCountersManager incrementEventCounterForEventName:@"Any Error" requestGroup:@"All Event Groups"];
 
-      v6 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
-      v7 = v6;
+      eventCountersManager = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
+      v7 = eventCountersManager;
       v8 = @"Any Error";
       v9 = v4;
     }
@@ -588,23 +588,23 @@ LABEL_62:
       v9 = @"All Event Groups";
     }
 
-    [v6 incrementEventCounterForEventName:v8 requestGroup:v9];
+    [eventCountersManager incrementEventCounterForEventName:v8 requestGroup:v9];
 
-    v10 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
-    [v10 incrementEventCounterForEventName:@"Total Events" requestGroup:@"All Event Groups"];
+    eventCountersManager2 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
+    [eventCountersManager2 incrementEventCounterForEventName:@"Total Events" requestGroup:@"All Event Groups"];
 
-    v11 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
-    [v11 incrementEventCounterForEventName:@"Total Events" requestGroup:v4];
+    eventCountersManager3 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
+    [eventCountersManager3 incrementEventCounterForEventName:@"Total Events" requestGroup:v4];
 
-    v12 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
-    v13 = [v29 error];
-    v14 = [HMDLogEventErrorEventsAnalyzer eventCounterNameForError:v13];
-    [v12 incrementEventCounterForEventName:v14 requestGroup:v4];
+    eventCountersManager4 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
+    error2 = [eventCopy error];
+    v14 = [HMDLogEventErrorEventsAnalyzer eventCounterNameForError:error2];
+    [eventCountersManager4 incrementEventCounterForEventName:v14 requestGroup:v4];
 
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_UnderlyingError", v4];
-    v16 = [v29 error];
-    v17 = [v16 userInfo];
-    v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    error3 = [eventCopy error];
+    userInfo = [error3 userInfo];
+    v18 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -621,12 +621,12 @@ LABEL_62:
 
     if (v20)
     {
-      v21 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
+      eventCountersManager5 = [(HMDLogEventErrorEventsAnalyzer *)self eventCountersManager];
       v22 = [HMDLogEventErrorEventsAnalyzer eventCounterNameForError:v20];
-      [v21 incrementEventCounterForEventName:v22 requestGroup:v15];
+      [eventCountersManager5 incrementEventCounterForEventName:v22 requestGroup:v15];
     }
 
-    v23 = v29;
+    v23 = eventCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -669,29 +669,29 @@ LABEL_62:
   }
 }
 
-- (HMDLogEventErrorEventsAnalyzer)initWithDataSource:(id)a3
+- (HMDLogEventErrorEventsAnalyzer)initWithDataSource:(id)source
 {
   v17[16] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sourceCopy = source;
   v16.receiver = self;
   v16.super_class = HMDLogEventErrorEventsAnalyzer;
   v5 = [(HMDLogEventErrorEventsAnalyzer *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataSource, v4);
-    v7 = [v4 legacyCountersManager];
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
+    legacyCountersManager = [sourceCopy legacyCountersManager];
     eventCountersManager = v6->_eventCountersManager;
-    v6->_eventCountersManager = v7;
+    v6->_eventCountersManager = legacyCountersManager;
 
-    v9 = [v4 logEventSubmitter];
+    logEventSubmitter = [sourceCopy logEventSubmitter];
     logEventSubmitter = v6->_logEventSubmitter;
-    v6->_logEventSubmitter = v9;
+    v6->_logEventSubmitter = logEventSubmitter;
 
-    v11 = [v4 dailyScheduler];
-    [v11 registerDailyTaskRunner:v6];
+    dailyScheduler = [sourceCopy dailyScheduler];
+    [dailyScheduler registerDailyTaskRunner:v6];
 
-    v12 = [v4 logEventDispatcher];
+    logEventDispatcher = [sourceCopy logEventDispatcher];
     v17[0] = objc_opt_class();
     v17[1] = objc_opt_class();
     v17[2] = objc_opt_class();
@@ -709,10 +709,10 @@ LABEL_62:
     v17[14] = objc_opt_class();
     v17[15] = objc_opt_class();
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:16];
-    [v12 addObserver:v6 forEventClasses:v13];
+    [logEventDispatcher addObserver:v6 forEventClasses:v13];
 
-    [v4 addThresholdTrigger:@"pairingFailureCount" forEventName:@"Any Error" requestGroup:@"HMDAddAccessoryPairingLogEvent" atThreshold:3];
-    [v4 addThresholdTrigger:@"cameraRecordingUploadErrorCount" forEventName:@"Any Error" requestGroup:@"HMDCameraRecordingUploadOperationLogEvent" atThreshold:1 uploadImmediately:1];
+    [sourceCopy addThresholdTrigger:@"pairingFailureCount" forEventName:@"Any Error" requestGroup:@"HMDAddAccessoryPairingLogEvent" atThreshold:3];
+    [sourceCopy addThresholdTrigger:@"cameraRecordingUploadErrorCount" forEventName:@"Any Error" requestGroup:@"HMDCameraRecordingUploadOperationLogEvent" atThreshold:1 uploadImmediately:1];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -726,26 +726,26 @@ LABEL_62:
   return [v2 errorEventsRequestGroupKeys];
 }
 
-+ (id)eventCounterNameForError:(id)a3
++ (id)eventCounterNameForError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
     v5 = MEMORY[0x277CCACA8];
-    v6 = [v3 domain];
-    if (v6)
+    domain = [errorCopy domain];
+    if (domain)
     {
-      v7 = [v4 domain];
+      domain2 = [v4 domain];
     }
 
     else
     {
-      v7 = @"<No Domain>";
+      domain2 = @"<No Domain>";
     }
 
-    v8 = [v5 stringWithFormat:@"%@ %ld", v7, objc_msgSend(v4, "code")];
-    if (v6)
+    v8 = [v5 stringWithFormat:@"%@ %ld", domain2, objc_msgSend(v4, "code")];
+    if (domain)
     {
     }
   }

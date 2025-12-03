@@ -1,90 +1,90 @@
 @interface REAttributeDescriptor
-- (BOOL)validateWithPayloadSize:(unint64_t)a3 error:(id *)a4;
-- (REAttributeDescriptor)initWithCoder:(id)a3;
-- (REAttributeDescriptor)initWithName:(id)a3 buffer:(const void *)a4 elementSize:(unint64_t)a5 payloadLayout:(void *)a6;
-- (REAttributeDescriptor)initWithName:(id)a3 payloadOffset:(unsigned int)a4 count:(unsigned int)a5 stride:(unsigned int)a6;
+- (BOOL)validateWithPayloadSize:(unint64_t)size error:(id *)error;
+- (REAttributeDescriptor)initWithCoder:(id)coder;
+- (REAttributeDescriptor)initWithName:(id)name buffer:(const void *)buffer elementSize:(unint64_t)size payloadLayout:(void *)layout;
+- (REAttributeDescriptor)initWithName:(id)name payloadOffset:(unsigned int)offset count:(unsigned int)count stride:(unsigned int)stride;
 - (unint64_t)estimateContainerSize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REAttributeDescriptor
 
-- (REAttributeDescriptor)initWithName:(id)a3 buffer:(const void *)a4 elementSize:(unint64_t)a5 payloadLayout:(void *)a6
+- (REAttributeDescriptor)initWithName:(id)name buffer:(const void *)buffer elementSize:(unint64_t)size payloadLayout:(void *)layout
 {
-  v10 = a3;
+  nameCopy = name;
 
   return v11;
 }
 
-- (REAttributeDescriptor)initWithName:(id)a3 payloadOffset:(unsigned int)a4 count:(unsigned int)a5 stride:(unsigned int)a6
+- (REAttributeDescriptor)initWithName:(id)name payloadOffset:(unsigned int)offset count:(unsigned int)count stride:(unsigned int)stride
 {
-  v10 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = REAttributeDescriptor;
   v11 = [(REAttributeDescriptor *)&v15 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    v11->_payloadOffset = a4;
-    v11->_count = a5;
-    v11->_stride = a6;
+    v11->_payloadOffset = offset;
+    v11->_count = count;
+    v11->_stride = stride;
   }
 
   return v11;
 }
 
-- (REAttributeDescriptor)initWithCoder:(id)a3
+- (REAttributeDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   name = self->_name;
   self->_name = v5;
 
   v7 = self->_name;
-  v8 = [v4 decodeIntegerForKey:@"payloadOffset"];
+  v8 = [coderCopy decodeIntegerForKey:@"payloadOffset"];
   self->_payloadOffset = v8;
-  v9 = [v4 decodeIntegerForKey:@"count"];
+  v9 = [coderCopy decodeIntegerForKey:@"count"];
   self->_count = v9;
-  v10 = [v4 decodeIntegerForKey:@"stride"];
+  v10 = [coderCopy decodeIntegerForKey:@"stride"];
   self->_stride = v10;
   if (HIDWORD(v10) || HIDWORD(v9) || HIDWORD(v8))
     v13 = {;
-    [v4 failWithError:v13];
+    [coderCopy failWithError:v13];
 LABEL_8:
 
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
   if (!v7)
     v13 = {;
-    [v4 failWithError:v13];
+    [coderCopy failWithError:v13];
     goto LABEL_8;
   }
 
-  v12 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:self->_payloadOffset forKey:@"payloadOffset"];
-  [v4 encodeInt:self->_count forKey:@"count"];
-  [v4 encodeInt:self->_stride forKey:@"stride"];
-  [v4 encodeObject:self->_name forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy encodeInt:self->_payloadOffset forKey:@"payloadOffset"];
+  [coderCopy encodeInt:self->_count forKey:@"count"];
+  [coderCopy encodeInt:self->_stride forKey:@"stride"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
 }
 
-- (BOOL)validateWithPayloadSize:(unint64_t)a3 error:(id *)a4
+- (BOOL)validateWithPayloadSize:(unint64_t)size error:(id *)error
 {
   payloadOffset = self->_payloadOffset;
-  v7 = [(REAttributeDescriptor *)self bufferSize];
-  if (v7 && !__CFADD__(payloadOffset, v7) && payloadOffset < a3 && payloadOffset + v7 <= a3)
+  bufferSize = [(REAttributeDescriptor *)self bufferSize];
+  if (bufferSize && !__CFADD__(payloadOffset, bufferSize) && payloadOffset < size && payloadOffset + bufferSize <= size)
   {
     return 1;
   }

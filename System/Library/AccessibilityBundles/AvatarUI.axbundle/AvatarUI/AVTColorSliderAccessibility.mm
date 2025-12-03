@@ -1,17 +1,17 @@
 @interface AVTColorSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation AVTColorSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTColorSlider" isKindOfClass:@"UISlider"];
-  [v3 validateClass:@"UISlider" hasInstanceMethod:@"minimumValue" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"UISlider" hasInstanceMethod:@"maximumValue" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"UISlider" hasInstanceMethod:@"value" withFullSignature:{"f", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTColorSlider" isKindOfClass:@"UISlider"];
+  [validationsCopy validateClass:@"UISlider" hasInstanceMethod:@"minimumValue" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"UISlider" hasInstanceMethod:@"maximumValue" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"UISlider" hasInstanceMethod:@"value" withFullSignature:{"f", 0}];
 }
 
 - (id)accessibilityValue

@@ -1,26 +1,26 @@
 @interface HMIVideoAnalyzerResultOutcome
 + (HMIVideoAnalyzerResultOutcome)skipped;
 + (HMIVideoAnalyzerResultOutcome)success;
-- (HMIVideoAnalyzerResultOutcome)initWithCode:(unint64_t)a3 analysisFPS:(double)a4 message:(id)a5;
-- (HMIVideoAnalyzerResultOutcome)initWithCoder:(id)a3;
+- (HMIVideoAnalyzerResultOutcome)initWithCode:(unint64_t)code analysisFPS:(double)s message:(id)message;
+- (HMIVideoAnalyzerResultOutcome)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMIVideoAnalyzerResultOutcome
 
-- (HMIVideoAnalyzerResultOutcome)initWithCode:(unint64_t)a3 analysisFPS:(double)a4 message:(id)a5
+- (HMIVideoAnalyzerResultOutcome)initWithCode:(unint64_t)code analysisFPS:(double)s message:(id)message
 {
-  v9 = a5;
+  messageCopy = message;
   v13.receiver = self;
   v13.super_class = HMIVideoAnalyzerResultOutcome;
   v10 = [(HMIVideoAnalyzerResultOutcome *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_code = a3;
-    v10->_analysisFPS = a4;
-    objc_storeStrong(&v10->_message, a5);
+    v10->_code = code;
+    v10->_analysisFPS = s;
+    objc_storeStrong(&v10->_message, message);
   }
 
   return v11;
@@ -32,7 +32,7 @@
   block[1] = 3221225472;
   block[2] = __40__HMIVideoAnalyzerResultOutcome_success__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (success_onceToken != -1)
   {
     dispatch_once(&success_onceToken, block);
@@ -56,7 +56,7 @@ uint64_t __40__HMIVideoAnalyzerResultOutcome_success__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __40__HMIVideoAnalyzerResultOutcome_skipped__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (skipped_onceToken != -1)
   {
     dispatch_once(&skipped_onceToken, block);
@@ -76,14 +76,14 @@ uint64_t __40__HMIVideoAnalyzerResultOutcome_skipped__block_invoke(uint64_t a1)
 
 - (id)description
 {
-  v3 = [(HMIVideoAnalyzerResultOutcome *)self code];
+  code = [(HMIVideoAnalyzerResultOutcome *)self code];
   v4 = @"Unknown";
-  if (!v3)
+  if (!code)
   {
     v4 = @"Skipped";
   }
 
-  if (v3 == 1)
+  if (code == 1)
   {
     v5 = @"Success";
   }
@@ -93,15 +93,15 @@ uint64_t __40__HMIVideoAnalyzerResultOutcome_skipped__block_invoke(uint64_t a1)
     v5 = v4;
   }
 
-  v6 = [(HMIVideoAnalyzerResultOutcome *)self message];
+  message = [(HMIVideoAnalyzerResultOutcome *)self message];
 
   v7 = MEMORY[0x277CCACA8];
   [(HMIVideoAnalyzerResultOutcome *)self analysisFPS];
   v9 = v8;
-  if (v6)
+  if (message)
   {
-    v10 = [(HMIVideoAnalyzerResultOutcome *)self message];
-    v11 = [v7 stringWithFormat:@"{code: %@, analysisFPS: %f, message: %@}", v5, v9, v10];
+    message2 = [(HMIVideoAnalyzerResultOutcome *)self message];
+    v11 = [v7 stringWithFormat:@"{code: %@, analysisFPS: %f, message: %@}", v5, v9, message2];
   }
 
   else
@@ -112,39 +112,39 @@ uint64_t __40__HMIVideoAnalyzerResultOutcome_skipped__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (HMIVideoAnalyzerResultOutcome)initWithCoder:(id)a3
+- (HMIVideoAnalyzerResultOutcome)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_code);
-  v6 = [v4 decodeIntegerForKey:v5];
+  v6 = [coderCopy decodeIntegerForKey:v5];
 
   v7 = NSStringFromSelector(sel_analysisFPS);
-  [v4 decodeDoubleForKey:v7];
+  [coderCopy decodeDoubleForKey:v7];
   v9 = v8;
 
   v10 = objc_opt_class();
   v11 = NSStringFromSelector(sel_message);
-  v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+  v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
 
   v13 = [(HMIVideoAnalyzerResultOutcome *)self initWithCode:v6 analysisFPS:v12 message:v9];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMIVideoAnalyzerResultOutcome *)self code];
+  coderCopy = coder;
+  code = [(HMIVideoAnalyzerResultOutcome *)self code];
   v6 = NSStringFromSelector(sel_code);
-  [v4 encodeInteger:v5 forKey:v6];
+  [coderCopy encodeInteger:code forKey:v6];
 
   [(HMIVideoAnalyzerResultOutcome *)self analysisFPS];
   v8 = v7;
   v9 = NSStringFromSelector(sel_analysisFPS);
-  [v4 encodeDouble:v9 forKey:v8];
+  [coderCopy encodeDouble:v9 forKey:v8];
 
-  v11 = [(HMIVideoAnalyzerResultOutcome *)self message];
+  message = [(HMIVideoAnalyzerResultOutcome *)self message];
   v10 = NSStringFromSelector(sel_message);
-  [v4 encodeObject:v11 forKey:v10];
+  [coderCopy encodeObject:message forKey:v10];
 }
 
 @end

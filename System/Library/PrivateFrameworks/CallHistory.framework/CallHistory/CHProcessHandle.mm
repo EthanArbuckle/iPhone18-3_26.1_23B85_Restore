@@ -17,7 +17,7 @@ uint64_t __32__CHProcessHandle_processHandle__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __32__CHProcessHandle_processHandle__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (processHandle_onceToken != -1)
   {
     dispatch_once(&processHandle_onceToken, block);

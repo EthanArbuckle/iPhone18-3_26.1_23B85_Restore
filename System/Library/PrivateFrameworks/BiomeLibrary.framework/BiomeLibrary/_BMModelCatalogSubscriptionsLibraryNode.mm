@@ -2,25 +2,25 @@
 + (id)ExplicitRequests;
 + (id)configurationForExplicitRequests;
 + (id)storeConfigurationForExplicitRequests;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMModelCatalogSubscriptionsLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"ExplicitRequests"])
+  if ([name isEqualToString:@"ExplicitRequests"])
   {
-    v4 = [a1 ExplicitRequests];
+    explicitRequests = [self ExplicitRequests];
   }
 
   else
   {
-    v4 = 0;
+    explicitRequests = 0;
   }
 
-  return v4;
+  return explicitRequests;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForExplicitRequests
 {
-  v3 = [a1 storeConfigurationForExplicitRequests];
-  v4 = [a1 syncPolicyForExplicitRequests];
+  storeConfigurationForExplicitRequests = [self storeConfigurationForExplicitRequests];
+  syncPolicyForExplicitRequests = [self syncPolicyForExplicitRequests];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"A534253F-5C64-409D-8A71-EA0B9E491517"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ModelCatalog.Subscriptions.ExplicitRequests" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ModelCatalog.Subscriptions.ExplicitRequests" eventClass:objc_opt_class() storeConfig:storeConfigurationForExplicitRequests syncPolicy:syncPolicyForExplicitRequests legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -59,7 +59,7 @@
 + (id)ExplicitRequests
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForExplicitRequests];
+  configurationForExplicitRequests = [self configurationForExplicitRequests];
   v3 = +[BMModelCatalogExplicitRequests columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -71,7 +71,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"ModelCatalog.Subscriptions.ExplicitRequests" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ModelCatalog.Subscriptions.ExplicitRequests" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ModelCatalog.Subscriptions.ExplicitRequests" schema:v9 configuration:configurationForExplicitRequests];
 
   v11 = *MEMORY[0x1E69E9840];
 

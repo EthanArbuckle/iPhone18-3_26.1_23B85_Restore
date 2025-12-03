@@ -4,15 +4,15 @@
 - (void)_beginReportingIfNecessary;
 - (void)_dismissDelayed;
 - (void)_endReportingIfNecessary;
-- (void)_ingestionDidFinishWithResult:(unint64_t)a3;
-- (void)_setUpCardStackViewControllerWithPassDataArray:(id)a3 orPassesContainer:(id)a4 fromPresentationSource:(unint64_t)a5 shouldPushController:(BOOL)a6;
-- (void)_setUpIssuerBindingViewControllerWithData:(id)a3 signature:(id)a4 fromPresentationSource:(unint64_t)a5;
-- (void)addPassesCardStackViewController:(id)a3 didCancelAddingPasses:(id)a4;
+- (void)_ingestionDidFinishWithResult:(unint64_t)result;
+- (void)_setUpCardStackViewControllerWithPassDataArray:(id)array orPassesContainer:(id)container fromPresentationSource:(unint64_t)source shouldPushController:(BOOL)controller;
+- (void)_setUpIssuerBindingViewControllerWithData:(id)data signature:(id)signature fromPresentationSource:(unint64_t)source;
+- (void)addPassesCardStackViewController:(id)controller didCancelAddingPasses:(id)passes;
 - (void)dealloc;
-- (void)ingestPasses:(id)a3 orPassesContainer:(id)a4 orIssuerData:(id)a5 withSignature:(id)a6 fromPresentationSource:(unint64_t)a7;
-- (void)issuerBindingViewControllerDidCancel:(id)a3;
+- (void)ingestPasses:(id)passes orPassesContainer:(id)container orIssuerData:(id)data withSignature:(id)signature fromPresentationSource:(unint64_t)source;
+- (void)issuerBindingViewControllerDidCancel:(id)cancel;
 - (void)resetBrightness;
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4;
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation PKServiceAddPassesViewController
@@ -39,24 +39,24 @@
   [(PKNavigationController *)&v3 dealloc];
 }
 
-- (void)addPassesCardStackViewController:(id)a3 didCancelAddingPasses:(id)a4
+- (void)addPassesCardStackViewController:(id)controller didCancelAddingPasses:(id)passes
 {
-  [(PKServiceAddPassesViewController *)self resetBrightness:a3];
+  [(PKServiceAddPassesViewController *)self resetBrightness:controller];
 
   [(PKServiceAddPassesViewController *)self _ingestionDidFinishWithResult:0];
 }
 
-- (void)issuerBindingViewControllerDidCancel:(id)a3
+- (void)issuerBindingViewControllerDidCancel:(id)cancel
 {
   [(PKServiceAddPassesViewController *)self resetBrightness];
 
   [(PKServiceAddPassesViewController *)self _ingestionDidFinishWithResult:0];
 }
 
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v13 = *MEMORY[0x1E69E9840];
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -67,28 +67,28 @@
     v9 = 138543618;
     v10 = v8;
     v11 = 2048;
-    v12 = a4;
+    scaleCopy = scale;
     _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Setting display properties with screenSize=%{public}@ scale=%.f", &v9, 0x16u);
   }
 
   PKSetDisplayProperties();
 }
 
-- (void)ingestPasses:(id)a3 orPassesContainer:(id)a4 orIssuerData:(id)a5 withSignature:(id)a6 fromPresentationSource:(unint64_t)a7
+- (void)ingestPasses:(id)passes orPassesContainer:(id)container orIssuerData:(id)data withSignature:(id)signature fromPresentationSource:(unint64_t)source
 {
-  v16 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (v16 | v12)
+  passesCopy = passes;
+  containerCopy = container;
+  dataCopy = data;
+  signatureCopy = signature;
+  v15 = signatureCopy;
+  if (passesCopy | containerCopy)
   {
-    [(PKServiceAddPassesViewController *)self _setUpCardStackViewControllerWithPassDataArray:v16 orPassesContainer:v12 fromPresentationSource:a7 shouldPushController:0];
+    [(PKServiceAddPassesViewController *)self _setUpCardStackViewControllerWithPassDataArray:passesCopy orPassesContainer:containerCopy fromPresentationSource:source shouldPushController:0];
   }
 
-  else if (v13 && v14)
+  else if (dataCopy && signatureCopy)
   {
-    [(PKServiceAddPassesViewController *)self _setUpIssuerBindingViewControllerWithData:v13 signature:v14 fromPresentationSource:a7];
+    [(PKServiceAddPassesViewController *)self _setUpIssuerBindingViewControllerWithData:dataCopy signature:signatureCopy fromPresentationSource:source];
   }
 
   else
@@ -116,13 +116,13 @@ uint64_t __51__PKServiceAddPassesViewController__dismissDelayed__block_invoke(ui
   return [v2 _ingestionDidFinishWithResult:1];
 }
 
-- (void)_setUpCardStackViewControllerWithPassDataArray:(id)a3 orPassesContainer:(id)a4 fromPresentationSource:(unint64_t)a5 shouldPushController:(BOOL)a6
+- (void)_setUpCardStackViewControllerWithPassDataArray:(id)array orPassesContainer:(id)container fromPresentationSource:(unint64_t)source shouldPushController:(BOOL)controller
 {
-  v6 = a6;
+  controllerCopy = controller;
   v17[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a3;
-  v12 = [[PKAddPassesCardStackViewController alloc] initWithPasses:v11 orPassesContainer:v10 fromPresentationSource:a5];
+  containerCopy = container;
+  arrayCopy = array;
+  v12 = [[PKAddPassesCardStackViewController alloc] initWithPasses:arrayCopy orPassesContainer:containerCopy fromPresentationSource:source];
 
   cardStackViewController = self->_cardStackViewController;
   self->_cardStackViewController = v12;
@@ -132,7 +132,7 @@ uint64_t __51__PKServiceAddPassesViewController__dismissDelayed__block_invoke(ui
   {
     [(PKAddPassesCardStackViewController *)v14 setDelegate:self];
     v15 = self->_cardStackViewController;
-    if (v6)
+    if (controllerCopy)
     {
 
       [(PKServiceAddPassesViewController *)self pushViewController:v15 animated:1];
@@ -153,13 +153,13 @@ uint64_t __51__PKServiceAddPassesViewController__dismissDelayed__block_invoke(ui
   }
 }
 
-- (void)_setUpIssuerBindingViewControllerWithData:(id)a3 signature:(id)a4 fromPresentationSource:(unint64_t)a5
+- (void)_setUpIssuerBindingViewControllerWithData:(id)data signature:(id)signature fromPresentationSource:(unint64_t)source
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
+  signatureCopy = signature;
+  dataCopy = data;
   [(PKServiceAddPassesViewController *)self _beginReportingIfNecessary];
-  v10 = [[PKIssuerBindingViewController alloc] initWithIssuerData:v9 signature:v8 referralSource:a5];
+  v10 = [[PKIssuerBindingViewController alloc] initWithIssuerData:dataCopy signature:signatureCopy referralSource:source];
 
   issuerBindingViewController = self->_issuerBindingViewController;
   self->_issuerBindingViewController = v10;
@@ -180,14 +180,14 @@ uint64_t __51__PKServiceAddPassesViewController__dismissDelayed__block_invoke(ui
   }
 }
 
-- (void)_ingestionDidFinishWithResult:(unint64_t)a3
+- (void)_ingestionDidFinishWithResult:(unint64_t)result
 {
   [(PKServiceAddPassesViewController *)self _endReportingIfNecessary];
-  v5 = [(PKServiceAddPassesViewController *)self _remoteViewControllerProxy];
-  v6 = v5;
-  if (v5)
+  _remoteViewControllerProxy = [(PKServiceAddPassesViewController *)self _remoteViewControllerProxy];
+  v6 = _remoteViewControllerProxy;
+  if (_remoteViewControllerProxy)
   {
-    [v5 ingestionDidFinishWithResult:a3];
+    [_remoteViewControllerProxy ingestionDidFinishWithResult:result];
   }
 
   else
@@ -196,7 +196,7 @@ uint64_t __51__PKServiceAddPassesViewController__dismissDelayed__block_invoke(ui
     if (WeakRetained && (v8 = WeakRetained, v9 = objc_loadWeakRetained(&self->_resultsDelegate), v10 = objc_opt_respondsToSelector(), v9, v8, (v10 & 1) != 0))
     {
       v11 = objc_loadWeakRetained(&self->_resultsDelegate);
-      [v11 viewController:self ingestionDidFinishWithResult:a3];
+      [v11 viewController:self ingestionDidFinishWithResult:result];
     }
 
     else

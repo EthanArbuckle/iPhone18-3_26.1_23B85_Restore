@@ -1,7 +1,7 @@
 @interface UITableConstants_Watch
 + (id)sharedConstants;
-- (_UITableConstantsBackgroundProperties)defaultHeaderFooterBackgroundPropertiesForTableViewStyle:(SEL)a3 cellConfigurationState:(int64_t)a4 traitCollection:(id)a5 floating:(id)a6;
-- (id)defaultCheckmarkImageForCell:(id)a3;
+- (_UITableConstantsBackgroundProperties)defaultHeaderFooterBackgroundPropertiesForTableViewStyle:(SEL)style cellConfigurationState:(int64_t)state traitCollection:(id)collection floating:(id)floating;
+- (id)defaultCheckmarkImageForCell:(id)cell;
 @end
 
 @implementation UITableConstants_Watch
@@ -21,9 +21,9 @@
   return v2;
 }
 
-- (_UITableConstantsBackgroundProperties)defaultHeaderFooterBackgroundPropertiesForTableViewStyle:(SEL)a3 cellConfigurationState:(int64_t)a4 traitCollection:(id)a5 floating:(id)a6
+- (_UITableConstantsBackgroundProperties)defaultHeaderFooterBackgroundPropertiesForTableViewStyle:(SEL)style cellConfigurationState:(int64_t)state traitCollection:(id)collection floating:(id)floating
 {
-  result = [UIColor blackColor:a4];
+  result = [UIColor blackColor:state];
   *&retstr->var0 = 0u;
   *&retstr->var2 = 0u;
   *&retstr->var4 = 0u;
@@ -37,7 +37,7 @@
   return result;
 }
 
-- (id)defaultCheckmarkImageForCell:(id)a3
+- (id)defaultCheckmarkImageForCell:(id)cell
 {
   v3 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.PepperUICore"];
   v4 = [UIImage imageNamed:@"UIPreferencesBlueCheck" inBundle:v3];

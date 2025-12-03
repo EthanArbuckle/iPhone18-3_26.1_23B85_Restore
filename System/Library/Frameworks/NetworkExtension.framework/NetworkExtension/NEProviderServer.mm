@@ -1,29 +1,29 @@
 @interface NEProviderServer
 + (NEProviderServer)sharedServer;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NEExtensionProviderContext)firstContext;
-- (void)generateProviderEndpointInfoInMessage:(id)a3 extensionPoint:(id)a4;
-- (void)removeProviderContext:(id)a3;
+- (void)generateProviderEndpointInfoInMessage:(id)message extensionPoint:(id)point;
+- (void)removeProviderContext:(id)context;
 - (void)start;
 @end
 
 @implementation NEProviderServer
 
-- (void)removeProviderContext:(id)a3
+- (void)removeProviderContext:(id)context
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableArray *)v4->_contexts removeObject:v5];
-  objc_sync_exit(v4);
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_contexts removeObject:contextCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = listenerCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -81,7 +81,7 @@ LABEL_19:
   }
 
   v11 = [v10 alloc];
-  v12 = v7;
+  v12 = connectionCopy;
   if (!v11 || (v30.receiver = v11, v30.super_class = NEExtensionProviderContext, (v13 = [(NEProviderServer *)&v30 init]) == 0))
   {
 
@@ -107,11 +107,11 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v14 = [objc_opt_class() _extensionAuxiliaryHostProtocol];
-  [v12 setRemoteObjectInterface:v14];
+  _extensionAuxiliaryHostProtocol = [objc_opt_class() _extensionAuxiliaryHostProtocol];
+  [v12 setRemoteObjectInterface:_extensionAuxiliaryHostProtocol];
 
-  v15 = [objc_opt_class() _extensionAuxiliaryVendorProtocol];
-  [v12 setExportedInterface:v15];
+  _extensionAuxiliaryVendorProtocol = [objc_opt_class() _extensionAuxiliaryVendorProtocol];
+  [v12 setExportedInterface:_extensionAuxiliaryVendorProtocol];
 
   [v12 setExportedObject:v13];
   *&buf = MEMORY[0x1E69E9820];
@@ -122,22 +122,22 @@ LABEL_19:
   v34 = v16;
   [v12 setInvalidationHandler:&buf];
   [v12 resume];
-  objc_storeStrong(&v16[8].isa, a4);
+  objc_storeStrong(&v16[8].isa, connection);
 
-  v17 = self;
-  objc_sync_enter(v17);
-  contexts = v17->_contexts;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  contexts = selfCopy->_contexts;
   if (!contexts)
   {
     v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v20 = v17->_contexts;
-    v17->_contexts = v19;
+    v20 = selfCopy->_contexts;
+    selfCopy->_contexts = v19;
 
-    contexts = v17->_contexts;
+    contexts = selfCopy->_contexts;
   }
 
   [(NSMutableArray *)contexts addObject:v16];
-  objc_sync_exit(v17);
+  objc_sync_exit(selfCopy);
 
   v21 = 1;
 LABEL_20:
@@ -187,59 +187,59 @@ void __25__NEProviderServer_start__block_invoke(uint64_t a1, void *a2)
 
 - (NEExtensionProviderContext)firstContext
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_contexts firstObject];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  firstObject = [(NSMutableArray *)selfCopy->_contexts firstObject];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return firstObject;
 }
 
-- (void)generateProviderEndpointInfoInMessage:(id)a3 extensionPoint:(id)a4
+- (void)generateProviderEndpointInfoInMessage:(id)message extensionPoint:(id)point
 {
   v30 = *MEMORY[0x1E69E9840];
-  xdict = a3;
-  v6 = a4;
-  v7 = v6;
+  xdict = message;
+  pointCopy = point;
+  endpoint = pointCopy;
   if (!self)
   {
     goto LABEL_26;
   }
 
-  if ([v6 isEqualToString:@"com.apple.networkextension.filter-data"])
+  if ([pointCopy isEqualToString:@"com.apple.networkextension.filter-data"])
   {
     v8 = off_1E7F047A8;
   }
 
-  else if ([v7 isEqualToString:@"com.apple.networkextension.app-proxy"])
+  else if ([endpoint isEqualToString:@"com.apple.networkextension.app-proxy"])
   {
     v8 = off_1E7F04728;
   }
 
-  else if ([v7 isEqualToString:@"com.apple.networkextension.packet-tunnel"])
+  else if ([endpoint isEqualToString:@"com.apple.networkextension.packet-tunnel"])
   {
     v8 = off_1E7F04760;
   }
 
-  else if ([v7 isEqualToString:@"com.apple.networkextension.dns-proxy"])
+  else if ([endpoint isEqualToString:@"com.apple.networkextension.dns-proxy"])
   {
     v8 = off_1E7F04750;
   }
 
-  else if ([v7 isEqualToString:@"com.apple.networkextension.filter-packet"])
+  else if ([endpoint isEqualToString:@"com.apple.networkextension.filter-packet"])
   {
     v8 = off_1E7F047F0;
   }
 
   else
   {
-    if (([v7 isEqualToString:@"com.apple.networkextension.app-push"] & 1) == 0)
+    if (([endpoint isEqualToString:@"com.apple.networkextension.app-push"] & 1) == 0)
     {
       v13 = ne_log_obj();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         LODWORD(v29.receiver) = 138412290;
-        *(&v29.receiver + 4) = v7;
+        *(&v29.receiver + 4) = endpoint;
         _os_log_error_impl(&dword_1BA83C000, v13, OS_LOG_TYPE_ERROR, "Failed to create a listener, extension point is not supported: %@", &v29, 0xCu);
       }
 
@@ -312,9 +312,9 @@ LABEL_24:
     goto LABEL_27;
   }
 
-  v7 = [(NEProviderServer *)self endpoint];
-  v21 = [v7 _endpoint];
-  xpc_dictionary_set_value(xdict, "listener-endpoint", v21);
+  endpoint = [(NEProviderServer *)self endpoint];
+  _endpoint = [endpoint _endpoint];
+  xpc_dictionary_set_value(xdict, "listener-endpoint", _endpoint);
 
 LABEL_26:
 LABEL_27:

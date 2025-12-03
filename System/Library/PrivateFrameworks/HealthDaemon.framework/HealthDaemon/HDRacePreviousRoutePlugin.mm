@@ -1,17 +1,17 @@
 @interface HDRacePreviousRoutePlugin
-- (id)extensionForProfile:(id)a3;
+- (id)extensionForProfile:(id)profile;
 - (id)orderedSyncEntities;
 - (id)taskServerClasses;
 @end
 
 @implementation HDRacePreviousRoutePlugin
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v3 = a3;
-  if ([v3 profileType] == 1)
+  profileCopy = profile;
+  if ([profileCopy profileType] == 1)
   {
-    v4 = [[HDRacePreviousRouteProfileExtension alloc] initWithProfile:v3];
+    v4 = [[HDRacePreviousRouteProfileExtension alloc] initWithProfile:profileCopy];
   }
 
   else

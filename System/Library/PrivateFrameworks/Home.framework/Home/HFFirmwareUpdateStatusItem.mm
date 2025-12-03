@@ -1,19 +1,19 @@
 @interface HFFirmwareUpdateStatusItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFFirmwareUpdateStatusItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:HFItemUpdateOptionFastInitialUpdate];
-  v5 = [v4 BOOLValue];
+  v4 = [options objectForKeyedSubscript:HFItemUpdateOptionFastInitialUpdate];
+  bOOLValue = [v4 BOOLValue];
 
-  if (!v5)
+  if (!bOOLValue)
   {
-    v10 = [(HFStatusItem *)self room];
-    if (v10)
+    room = [(HFStatusItem *)self room];
+    if (room)
     {
       [(HFStatusItem *)self room];
     }
@@ -23,15 +23,15 @@
       [(HFStatusItem *)self home];
     }
     v11 = ;
-    v12 = [v11 accessories];
+    accessories = [v11 accessories];
 
-    v13 = [[HFSoftwareUpdateCounter alloc] initWithAccessories:v12];
+    v13 = [[HFSoftwareUpdateCounter alloc] initWithAccessories:accessories];
     if ([(HFSoftwareUpdateCounter *)v13 softwareUpdatesInProgress])
     {
       if ([(HFSoftwareUpdateCounter *)v13 softwareUpdatesInstalling])
       {
-        v46 = [(HFSoftwareUpdateCounter *)v13 softwareUpdatesInstalling];
-        HFLocalizedStringWithFormat(@"HFStatusTitleFirmwareUpdateInstalling", @"%lu", v14, v15, v16, v17, v18, v19, v46);
+        softwareUpdatesInstalling = [(HFSoftwareUpdateCounter *)v13 softwareUpdatesInstalling];
+        HFLocalizedStringWithFormat(@"HFStatusTitleFirmwareUpdateInstalling", @"%lu", v14, v15, v16, v17, v18, v19, softwareUpdatesInstalling);
         v32 = LABEL_13:;
 LABEL_15:
         v33 = objc_alloc_init(HFMutableItemUpdateOutcome);
@@ -45,7 +45,7 @@ LABEL_15:
         [(HFMutableItemUpdateOutcome *)v33 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"hasSoftwareUpdateV2Dependency"];
         if (v32)
         {
-          v39 = [MEMORY[0x277CBEB98] setWithArray:v12];
+          v39 = [MEMORY[0x277CBEB98] setWithArray:accessories];
           v40 = [v39 na_filter:&__block_literal_global_73];
 
           v41 = [MEMORY[0x277D755D0] configurationWithPointSize:24.0];
@@ -74,16 +74,16 @@ LABEL_15:
 
       if ([(HFSoftwareUpdateCounter *)v13 softwareUpdatesDownloading])
       {
-        v48 = [(HFSoftwareUpdateCounter *)v13 softwareUpdatesDownloading];
-        HFLocalizedStringWithFormat(@"HFStatusTitleFirmwareUpdateDownloading", @"%lu", v26, v27, v28, v29, v30, v31, v48);
+        softwareUpdatesDownloading = [(HFSoftwareUpdateCounter *)v13 softwareUpdatesDownloading];
+        HFLocalizedStringWithFormat(@"HFStatusTitleFirmwareUpdateDownloading", @"%lu", v26, v27, v28, v29, v30, v31, softwareUpdatesDownloading);
         goto LABEL_13;
       }
     }
 
     else if ([(HFSoftwareUpdateCounter *)v13 updatesReadyToInstall])
     {
-      v47 = [(HFSoftwareUpdateCounter *)v13 updatesReadyToInstall];
-      HFLocalizedStringWithFormat(@"HFStatusTitleFirmwareUpdateAvailable", @"%lu", v20, v21, v22, v23, v24, v25, v47);
+      updatesReadyToInstall = [(HFSoftwareUpdateCounter *)v13 updatesReadyToInstall];
+      HFLocalizedStringWithFormat(@"HFStatusTitleFirmwareUpdateAvailable", @"%lu", v20, v21, v22, v23, v24, v25, updatesReadyToInstall);
       goto LABEL_13;
     }
 

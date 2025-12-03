@@ -1,8 +1,8 @@
 @interface TSCEValueBindingEnvironment
 - (TSCEValueBindingEnvironment)init;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)lookup:(const unsigned int *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)lookup:(const unsigned int *)lookup;
 - (void)popScope;
 - (void)pushScope;
 @end
@@ -74,7 +74,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
@@ -93,14 +93,14 @@
   return v4;
 }
 
-- (id)lookup:(const unsigned int *)a3
+- (id)lookup:(const unsigned int *)lookup
 {
   var0 = self->_bindings.var0;
   while (var0 != self->_bindings.__begin_)
   {
     v6 = *--var0;
     v7 = v6;
-    v11 = objc_msgSend_lookup_(v7, v8, a3, v9, v10);
+    v11 = objc_msgSend_lookup_(v7, v8, lookup, v9, v10);
 
     if (v11)
     {

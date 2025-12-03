@@ -1,19 +1,19 @@
 @interface TKAdaptiveImageAPI
-+ (id)getService:(id)a3;
-+ (void)registerService:(id)a3 handler:(id)a4;
-+ (void)setDefaultImageService:(id)a3;
++ (id)getService:(id)service;
++ (void)registerService:(id)service handler:(id)handler;
++ (void)setDefaultImageService:(id)service;
 @end
 
 @implementation TKAdaptiveImageAPI
 
-+ (void)registerService:(id)a3 handler:(id)a4
++ (void)registerService:(id)service handler:(id)handler
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, service);
   aBlock = 0;
-  objc_storeStrong(&aBlock, a4);
+  objc_storeStrong(&aBlock, handler);
   v9 = &registerService_handler__onceToken;
   v8 = 0;
   objc_storeStrong(&v8, &__block_literal_global_10);
@@ -43,12 +43,12 @@ uint64_t __46__TKAdaptiveImageAPI_registerService_handler___block_invoke()
   return MEMORY[0x277D82BD8](v1);
 }
 
-+ (id)getService:(id)a3
++ (id)getService:(id)service
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, service);
   if (!location[0])
   {
     objc_storeStrong(location, _defaultImageService);
@@ -60,12 +60,12 @@ uint64_t __46__TKAdaptiveImageAPI_registerService_handler___block_invoke()
   return v4;
 }
 
-+ (void)setDefaultImageService:(id)a3
++ (void)setDefaultImageService:(id)service
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, service);
   v3 = [location[0] copy];
   v4 = _defaultImageService;
   _defaultImageService = v3;

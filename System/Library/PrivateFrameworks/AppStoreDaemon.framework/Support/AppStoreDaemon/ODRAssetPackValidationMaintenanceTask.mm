@@ -58,7 +58,7 @@
           *(&buf + 1) = 3221225472;
           v19 = sub_1002A2E00;
           v20 = &unk_100520658;
-          v21 = self;
+          selfCopy = self;
           v22 = v10;
           sub_1002A2B48(ODRAssetPackValidationMaintenanceTask, v12, &buf);
           [(Task *)self completeWithSuccess];

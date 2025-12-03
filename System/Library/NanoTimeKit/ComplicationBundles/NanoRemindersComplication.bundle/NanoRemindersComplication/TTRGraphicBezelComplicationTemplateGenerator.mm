@@ -2,12 +2,12 @@
 - (CLKComplicationTemplate)lockedTemplate;
 - (CLKComplicationTemplate)privacyTemplate;
 - (TTRGraphicCircularComplicationTemplateGenerator)graphicCircularTemplateGenerator;
-- (id)_templateWithTextProvider:(id)a3;
-- (id)_textProviderForOverdueCount:(int64_t)a3;
-- (id)_textProviderForRemainingDueTodayCount:(int64_t)a3;
-- (id)_textProviderForReminder:(id)a3;
-- (id)_textProviderForTimelineModelEntry:(id)a3;
-- (id)templateForTimelineModelEntry:(id)a3;
+- (id)_templateWithTextProvider:(id)provider;
+- (id)_textProviderForOverdueCount:(int64_t)count;
+- (id)_textProviderForRemainingDueTodayCount:(int64_t)count;
+- (id)_textProviderForReminder:(id)reminder;
+- (id)_textProviderForTimelineModelEntry:(id)entry;
+- (id)templateForTimelineModelEntry:(id)entry;
 @end
 
 @implementation TTRGraphicBezelComplicationTemplateGenerator
@@ -32,9 +32,9 @@
   return v6;
 }
 
-- (id)templateForTimelineModelEntry:(id)a3
+- (id)templateForTimelineModelEntry:(id)entry
 {
-  v4 = [(TTRGraphicBezelComplicationTemplateGenerator *)self _textProviderForTimelineModelEntry:a3];
+  v4 = [(TTRGraphicBezelComplicationTemplateGenerator *)self _textProviderForTimelineModelEntry:entry];
   v5 = [(TTRGraphicBezelComplicationTemplateGenerator *)self _templateWithTextProvider:v4];
 
   return v5;
@@ -47,52 +47,52 @@
   return v2;
 }
 
-- (id)_templateWithTextProvider:(id)a3
+- (id)_templateWithTextProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = [CLKComplicationTemplateGraphicBezelCircularText alloc];
-  v6 = [(TTRGraphicBezelComplicationTemplateGenerator *)self graphicCircularTemplateGenerator];
-  v7 = [v6 complicationTemplate];
-  v8 = [v5 initWithCircularTemplate:v7 textProvider:v4];
+  graphicCircularTemplateGenerator = [(TTRGraphicBezelComplicationTemplateGenerator *)self graphicCircularTemplateGenerator];
+  complicationTemplate = [graphicCircularTemplateGenerator complicationTemplate];
+  v8 = [v5 initWithCircularTemplate:complicationTemplate textProvider:providerCopy];
 
   return v8;
 }
 
-- (id)_textProviderForTimelineModelEntry:(id)a3
+- (id)_textProviderForTimelineModelEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 overdueCount];
-  v6 = [v4 remainingDueTodayCount];
-  if (v5 < 1)
+  entryCopy = entry;
+  overdueCount = [entryCopy overdueCount];
+  remainingDueTodayCount = [entryCopy remainingDueTodayCount];
+  if (overdueCount < 1)
   {
-    v8 = v6;
-    if (v6 <= 1)
+    v8 = remainingDueTodayCount;
+    if (remainingDueTodayCount <= 1)
     {
-      v10 = [v4 representativeReminder];
+      representativeReminder = [entryCopy representativeReminder];
 
-      if (v10)
+      if (representativeReminder)
       {
-        v11 = [v4 representativeReminder];
-        v12 = [(TTRGraphicBezelComplicationTemplateGenerator *)self _textProviderForReminder:v11];
+        representativeReminder2 = [entryCopy representativeReminder];
+        v12 = [(TTRGraphicBezelComplicationTemplateGenerator *)self _textProviderForReminder:representativeReminder2];
 
         goto LABEL_10;
       }
 
-      v9 = self;
+      selfCopy2 = self;
       v8 = 0;
     }
 
     else
     {
-      v9 = self;
+      selfCopy2 = self;
     }
 
-    v7 = [(TTRGraphicBezelComplicationTemplateGenerator *)v9 _textProviderForRemainingDueTodayCount:v8];
+    v7 = [(TTRGraphicBezelComplicationTemplateGenerator *)selfCopy2 _textProviderForRemainingDueTodayCount:v8];
   }
 
   else
   {
-    v7 = [(TTRGraphicBezelComplicationTemplateGenerator *)self _textProviderForOverdueCount:v5];
+    v7 = [(TTRGraphicBezelComplicationTemplateGenerator *)self _textProviderForOverdueCount:overdueCount];
   }
 
   v12 = v7;
@@ -101,25 +101,25 @@ LABEL_10:
   return v12;
 }
 
-- (id)_textProviderForReminder:(id)a3
+- (id)_textProviderForReminder:(id)reminder
 {
-  v3 = a3;
+  reminderCopy = reminder;
   v4 = TTRComplicationCalendarCreate();
-  v5 = [v3 makeTitleAndExactDueDateTextProviderUsingCalendar:v4 dropMinutesForRoundHours:1];
+  v5 = [reminderCopy makeTitleAndExactDueDateTextProviderUsingCalendar:v4 dropMinutesForRoundHours:1];
 
   return v5;
 }
 
-- (id)_textProviderForRemainingDueTodayCount:(int64_t)a3
+- (id)_textProviderForRemainingDueTodayCount:(int64_t)count
 {
   v4 = RemindersUICoreBundleGet();
   v5 = [v4 localizedStringForKey:@"COMPLICATION_%@ Items Due Today" value:@"%@ Items Due Today" table:@"PluralLocalizable"];
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:count];
   v7 = [NSString stringWithFormat:v5, v6];
 
   v8 = RemindersUICoreBundleGet();
   v9 = [v8 localizedStringForKey:@"COMPLICATION_%@ Items Today" value:@"%@ Items Today" table:@"PluralLocalizable"];
-  v10 = [NSNumber numberWithInteger:a3];
+  v10 = [NSNumber numberWithInteger:count];
   v11 = [NSString stringWithFormat:v9, v10];
 
   v12 = [CLKSimpleTextProvider textProviderWithText:v7 shortText:v11];
@@ -127,11 +127,11 @@ LABEL_10:
   return v12;
 }
 
-- (id)_textProviderForOverdueCount:(int64_t)a3
+- (id)_textProviderForOverdueCount:(int64_t)count
 {
   v4 = RemindersUICoreBundleGet();
   v5 = [v4 localizedStringForKey:@"COMPLICATION_%@ Overdue" value:@"%@ Overdue" table:@"PluralLocalizable"];
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:count];
   v7 = [NSString stringWithFormat:v5, v6];
 
   v8 = [CLKSimpleTextProvider textProviderWithText:v7];

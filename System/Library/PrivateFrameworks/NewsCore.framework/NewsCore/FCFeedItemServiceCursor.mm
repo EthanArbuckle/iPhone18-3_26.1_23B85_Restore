@@ -1,6 +1,6 @@
 @interface FCFeedItemServiceCursor
 - (FCFeedItemServiceCursor)init;
-- (FCFeedItemServiceCursor)initWithLastRefreshed:(id)a3 feedItems:(id)a4;
+- (FCFeedItemServiceCursor)initWithLastRefreshed:(id)refreshed feedItems:(id)items;
 @end
 
 @implementation FCFeedItemServiceCursor
@@ -31,12 +31,12 @@
   objc_exception_throw(v6);
 }
 
-- (FCFeedItemServiceCursor)initWithLastRefreshed:(id)a3 feedItems:(id)a4
+- (FCFeedItemServiceCursor)initWithLastRefreshed:(id)refreshed feedItems:(id)items
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  refreshedCopy = refreshed;
+  itemsCopy = items;
+  if (!refreshedCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "lastRefreshed"];
     *buf = 136315906;
@@ -49,13 +49,13 @@
     v25 = v15;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v7)
+    if (itemsCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (itemsCopy)
   {
     goto LABEL_6;
   }
@@ -80,11 +80,11 @@ LABEL_6:
   v8 = [(FCFeedItemServiceCursor *)&v17 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [refreshedCopy copy];
     lastRefreshed = v8->_lastRefreshed;
     v8->_lastRefreshed = v9;
 
-    v11 = [v7 copy];
+    v11 = [itemsCopy copy];
     feedItems = v8->_feedItems;
     v8->_feedItems = v11;
   }

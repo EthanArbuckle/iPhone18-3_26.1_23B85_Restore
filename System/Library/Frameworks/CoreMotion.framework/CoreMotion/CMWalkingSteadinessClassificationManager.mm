@@ -1,10 +1,10 @@
 @interface CMWalkingSteadinessClassificationManager
-+ (BOOL)classificationForScore:(double)a3 classification:(int64_t *)a4;
++ (BOOL)classificationForScore:(double)score classification:(int64_t *)classification;
 + (BOOL)isWalkingSteadinessAvailable;
-+ (double)maximumScoreForClassification:(int64_t)a3;
-+ (double)minimumScoreForClassification:(int64_t)a3;
-+ (id)classificationDataFromStruct:(CLWalkingSteadinessClassificationData *)a3;
-+ (int)mapClassificationTypeFromFrameworkToClassifier:(int64_t)a3;
++ (double)maximumScoreForClassification:(int64_t)classification;
++ (double)minimumScoreForClassification:(int64_t)classification;
++ (id)classificationDataFromStruct:(CLWalkingSteadinessClassificationData *)struct;
++ (int)mapClassificationTypeFromFrameworkToClassifier:(int64_t)classifier;
 @end
 
 @implementation CMWalkingSteadinessClassificationManager
@@ -25,23 +25,23 @@
   return v2;
 }
 
-+ (BOOL)classificationForScore:(double)a3 classification:(int64_t *)a4
++ (BOOL)classificationForScore:(double)score classification:(int64_t *)classification
 {
-  v6 = sub_19B6B3F30(v12, a3);
+  v6 = sub_19B6B3F30(v12, score);
   if (v6)
   {
     v11[0] = v12[0];
     v11[1] = v12[1];
     v7 = objc_msgSend_classificationDataFromStruct_(CMWalkingSteadinessClassificationManager, v5, v11);
-    *a4 = objc_msgSend_classificationType(v7, v8, v9);
+    *classification = objc_msgSend_classificationType(v7, v8, v9);
   }
 
   return v6;
 }
 
-+ (double)minimumScoreForClassification:(int64_t)a3
++ (double)minimumScoreForClassification:(int64_t)classification
 {
-  LODWORD(v4) = objc_msgSend_mapClassificationTypeFromFrameworkToClassifier_(CMWalkingSteadinessClassificationManager, a2, a3) - 1;
+  LODWORD(v4) = objc_msgSend_mapClassificationTypeFromFrameworkToClassifier_(CMWalkingSteadinessClassificationManager, a2, classification) - 1;
   if (v4 >= 3)
   {
     v4 = 0;
@@ -61,9 +61,9 @@
   return result;
 }
 
-+ (double)maximumScoreForClassification:(int64_t)a3
++ (double)maximumScoreForClassification:(int64_t)classification
 {
-  LODWORD(v4) = objc_msgSend_mapClassificationTypeFromFrameworkToClassifier_(CMWalkingSteadinessClassificationManager, a2, a3) - 1;
+  LODWORD(v4) = objc_msgSend_mapClassificationTypeFromFrameworkToClassifier_(CMWalkingSteadinessClassificationManager, a2, classification) - 1;
   if (v4 >= 3)
   {
     v4 = 0;
@@ -83,11 +83,11 @@
   return result;
 }
 
-+ (id)classificationDataFromStruct:(CLWalkingSteadinessClassificationData *)a3
++ (id)classificationDataFromStruct:(CLWalkingSteadinessClassificationData *)struct
 {
-  var0 = a3->var0;
-  var1 = a3->var1;
-  var3 = a3->var3;
+  var0 = struct->var0;
+  var1 = struct->var1;
+  var3 = struct->var3;
   v6 = 1;
   if (var3 == 2)
   {
@@ -110,9 +110,9 @@
   return v10;
 }
 
-+ (int)mapClassificationTypeFromFrameworkToClassifier:(int64_t)a3
++ (int)mapClassificationTypeFromFrameworkToClassifier:(int64_t)classifier
 {
-  if (a3 == 2)
+  if (classifier == 2)
   {
     v3 = 2;
   }
@@ -122,7 +122,7 @@
     v3 = 1;
   }
 
-  if (a3 == 3)
+  if (classifier == 3)
   {
     return 3;
   }

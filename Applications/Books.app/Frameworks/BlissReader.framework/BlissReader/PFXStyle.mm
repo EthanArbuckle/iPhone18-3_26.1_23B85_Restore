@@ -1,37 +1,37 @@
 @interface PFXStyle
-- (BOOL)mapStartElementWithState:(id)a3;
-- (void)mapEndElementWithState:(id)a3;
+- (BOOL)mapStartElementWithState:(id)state;
+- (void)mapEndElementWithState:(id)state;
 @end
 
 @implementation PFXStyle
 
-- (BOOL)mapStartElementWithState:(id)a3
+- (BOOL)mapStartElementWithState:(id)state
 {
-  v5 = [a3 currentXmlStackEntry];
-  v6 = [v5 valueForAttribute:"type"];
+  currentXmlStackEntry = [state currentXmlStackEntry];
+  v6 = [currentXmlStackEntry valueForAttribute:"type"];
   if ([PFXCommonCssMimeType isEqualToString:v6])
   {
-    v7 = [(PFXStyle *)self supportedMediaTypes];
-    v8 = [v5 valueForAttribute:"media"];
-    if (!v8 || [v7 containsObject:v8])
+    supportedMediaTypes = [(PFXStyle *)self supportedMediaTypes];
+    v8 = [currentXmlStackEntry valueForAttribute:"media"];
+    if (!v8 || [supportedMediaTypes containsObject:v8])
     {
       v9 = [NSMutableString stringWithCapacity:0];
-      v10 = [a3 streamAPI];
-      v11 = xmlTextReaderDepth(v10);
-      while (xmlTextReaderRead(v10) == 1)
+      streamAPI = [state streamAPI];
+      v11 = xmlTextReaderDepth(streamAPI);
+      while (xmlTextReaderRead(streamAPI) == 1)
       {
-        if (xmlTextReaderDepth(v10) == v11 && xmlTextReaderNodeType(v10) == 15)
+        if (xmlTextReaderDepth(streamAPI) == v11 && xmlTextReaderNodeType(streamAPI) == 15)
         {
           break;
         }
 
-        if (xmlTextReaderNodeType(v10) == 3)
+        if (xmlTextReaderNodeType(streamAPI) == 3)
         {
-          [(NSMutableString *)v9 appendFormat:@"%@ %s", v9, xmlTextReaderConstValue(v10)];
+          [(NSMutableString *)v9 appendFormat:@"%@ %s", v9, xmlTextReaderConstValue(streamAPI)];
         }
       }
 
-      if (-[NSMutableString length](v9, "length") && !+[PFXStylesheet readStylesheetFromStyleNodeContents:sourceURL:readerState:](PFXStylesheet, "readStylesheetFromStyleNodeContents:sourceURL:readerState:", v9, [a3 entryNSURL], a3))
+      if (-[NSMutableString length](v9, "length") && !+[PFXStylesheet readStylesheetFromStyleNodeContents:sourceURL:readerState:](PFXStylesheet, "readStylesheetFromStyleNodeContents:sourceURL:readerState:", v9, [state entryNSURL], state))
       {
         [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
       }
@@ -41,7 +41,7 @@
   return 0;
 }
 
-- (void)mapEndElementWithState:(id)a3
+- (void)mapEndElementWithState:(id)state
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [NSString stringWithUTF8String:"[PFXStyle mapEndElementWithState:]"];

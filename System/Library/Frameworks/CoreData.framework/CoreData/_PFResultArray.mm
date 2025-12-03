@@ -1,13 +1,13 @@
 @interface _PFResultArray
-- (BOOL)_setPurgeable:(BOOL)a3;
-- (id)objectAtIndex:(unint64_t)a3;
+- (BOOL)_setPurgeable:(BOOL)purgeable;
+- (id)objectAtIndex:(unint64_t)index;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (unint64_t)indexOfObject:(id)a3 inRange:(_NSRange)a4;
-- (unint64_t)indexOfObjectIdenticalTo:(id)a3 inRange:(_NSRange)a4;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (unint64_t)indexOfObject:(id)object inRange:(_NSRange)range;
+- (unint64_t)indexOfObjectIdenticalTo:(id)to inRange:(_NSRange)range;
 - (void)dealloc;
-- (void)getObjects:(id *)a3;
-- (void)getObjects:(id *)a3 range:(_NSRange)a4;
+- (void)getObjects:(id *)objects;
+- (void)getObjects:(id *)objects range:(_NSRange)range;
 - (void)release;
 @end
 
@@ -50,17 +50,17 @@
   [(_PFResultArray *)&v4 dealloc];
 }
 
-- (unint64_t)indexOfObject:(id)a3 inRange:(_NSRange)a4
+- (unint64_t)indexOfObject:(id)object inRange:(_NSRange)range
 {
-  if (!a3)
+  if (!object)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  length = a4.length;
-  location = a4.location;
-  v8 = a4.location + a4.length;
-  v9 = [a3 methodForSelector:sel_isEqual_];
+  length = range.length;
+  location = range.location;
+  v8 = range.location + range.length;
+  v9 = [object methodForSelector:sel_isEqual_];
   if (location >= v8)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -70,7 +70,7 @@
   while (1)
   {
     v11 = [(_PFResultArray *)self objectAtIndex:location];
-    if (v11 == a3 || (v10(a3, sel_isEqual_, v11) & 1) != 0)
+    if (v11 == object || (v10(object, sel_isEqual_, v11) & 1) != 0)
     {
       break;
     }
@@ -85,9 +85,9 @@
   return location;
 }
 
-- (unint64_t)indexOfObjectIdenticalTo:(id)a3 inRange:(_NSRange)a4
+- (unint64_t)indexOfObjectIdenticalTo:(id)to inRange:(_NSRange)range
 {
-  if (!a3)
+  if (!to)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -97,14 +97,14 @@
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  length = a4.length;
-  location = a4.location;
-  if (a4.location >= a4.location + a4.length)
+  length = range.length;
+  location = range.location;
+  if (range.location >= range.location + range.length)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  while ([(_PFResultArray *)self objectAtIndex:location]!= a3)
+  while ([(_PFResultArray *)self objectAtIndex:location]!= to)
   {
     ++location;
     if (!--length)
@@ -116,10 +116,10 @@
   return location;
 }
 
-- (BOOL)_setPurgeable:(BOOL)a3
+- (BOOL)_setPurgeable:(BOOL)purgeable
 {
   resultSet = self->_resultSet;
-  if (a3)
+  if (purgeable)
   {
     return bufferResultSetPurgeable(resultSet);
   }
@@ -130,7 +130,7 @@
   }
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   v36 = *MEMORY[0x1E69E9840];
   resultSet = self->_resultSet;
@@ -163,9 +163,9 @@
   }
 
 LABEL_2:
-  if (self->_count <= a3)
+  if (self->_count <= index)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: index (%lu) beyond bounds (%lu)", _NSMethodExceptionProem(), a3, self->_count}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: index (%lu) beyond bounds (%lu)", _NSMethodExceptionProem(), index, self->_count}];
 LABEL_23:
     v18 = 0;
     goto LABEL_30;
@@ -185,7 +185,7 @@ LABEL_25:
   {
     v9 = resultSet->var9[v7];
     v10 = *v9;
-    if (v8 + (v10 - 1) >= a3)
+    if (v8 + (v10 - 1) >= index)
     {
       break;
     }
@@ -198,7 +198,7 @@ LABEL_14:
     }
   }
 
-  if (v10 < a3 - v8)
+  if (v10 < index - v8)
   {
     v11 = objc_autoreleasePoolPush();
     _pflogInitialize(1);
@@ -225,19 +225,19 @@ LABEL_16:
         v32 = 2048;
         v33 = v8;
         v34 = 2048;
-        v35 = a3;
+        indexCopy = index;
         _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: Index beyond buffer: %ld, %ld, %ld, %ld\n", buf, 0x2Au);
       }
     }
 
-    _NSCoreDataLog_console(1, "Index beyond buffer: %ld, %ld, %ld, %ld", v7, 0, v8, a3);
+    _NSCoreDataLog_console(1, "Index beyond buffer: %ld, %ld, %ld, %ld", v7, 0, v8, index);
     objc_autoreleasePoolPop(v11);
     resultSet = self->_resultSet;
     goto LABEL_14;
   }
 
-  v23 = a3 - v8;
-  if (a3 == v8)
+  v23 = index - v8;
+  if (index == v8)
   {
 LABEL_26:
     v19 = 8;
@@ -268,22 +268,22 @@ LABEL_30:
   return v18;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   if ((*&self->_resultSet->var7 & 0x40) != 0)
   {
     return 0;
   }
 
-  var0 = a3->var0;
-  if (!a3->var0)
+  var0 = state->var0;
+  if (!state->var0)
   {
-    a3->var2 = &self->_count;
+    state->var2 = &self->_count;
   }
 
   result = 0;
-  a3->var1 = a4;
-  if (a5)
+  state->var1 = objects;
+  if (count)
   {
     count = self->_count;
     if (var0 < count)
@@ -293,21 +293,21 @@ LABEL_30:
       {
         v12 = result;
         v13 = var0 + result;
-        v14 = [(_PFResultArray *)self objectAtIndex:var0 + result];
+        result = [(_PFResultArray *)self objectAtIndex:var0 + result];
         result = v12 + 1;
-        a4[v12] = v14;
+        objects[v12] = result;
       }
 
-      while (v13 + 1 < count && result < a5);
+      while (v13 + 1 < count && result < count);
       var0 += result;
     }
   }
 
-  a3->var0 = var0;
+  state->var0 = var0;
   return result;
 }
 
-- (void)getObjects:(id *)a3
+- (void)getObjects:(id *)objects
 {
   v13[1] = *MEMORY[0x1E69E9840];
   count = self->_count;
@@ -344,7 +344,7 @@ LABEL_3:
   while (v9 < v10);
   v11 = 8 * v10;
 LABEL_8:
-  memmove(a3, v8, v11);
+  memmove(objects, v8, v11);
   if (count >= 0x201)
   {
     NSZoneFree(0, v8);
@@ -353,15 +353,15 @@ LABEL_8:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getObjects:(id *)a3 range:(_NSRange)a4
+- (void)getObjects:(id *)objects range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = self;
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
   v15 = *MEMORY[0x1E69E9840];
-  if (a4.location + a4.length > self->_count)
+  if (range.location + range.length > self->_count)
   {
-    self = [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: index (%lu) beyond bounds (%lu)", _NSMethodExceptionProem(), a4.location + a4.length - 1, self->_count}];
+    self = [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: index (%lu) beyond bounds (%lu)", _NSMethodExceptionProem(), range.location + range.length - 1, self->_count}];
   }
 
   if (length)
@@ -379,21 +379,21 @@ LABEL_8:
       bzero(&v14 - v8, 8 * length);
     }
 
-    if (location < v7->_count)
+    if (location < selfCopy->_count)
     {
       v10 = 1;
       v11 = v9;
       do
       {
-        *v11++ = [(_PFResultArray *)v7 objectAtIndex:location + v10 - 1, v14, v15];
-        v12 = location + v10 < v7->_count && length > v10;
+        *v11++ = [(_PFResultArray *)selfCopy objectAtIndex:location + v10 - 1, v14, v15];
+        v12 = location + v10 < selfCopy->_count && length > v10;
         ++v10;
       }
 
       while (v12);
     }
 
-    memmove(a3, v9, 8 * length);
+    memmove(objects, v9, 8 * length);
     if (length >= 0x201)
     {
       NSZoneFree(0, v9);

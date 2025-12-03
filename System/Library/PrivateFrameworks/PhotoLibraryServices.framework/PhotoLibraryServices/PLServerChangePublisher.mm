@@ -1,13 +1,13 @@
 @interface PLServerChangePublisher
 - (PLServerChangePublisher)init;
-- (id)publishChangeEvent:(id)a3 delayedSaveActionsDetail:(id)a4 debugEvent:(id)a5 transaction:(id)a6;
+- (id)publishChangeEvent:(id)event delayedSaveActionsDetail:(id)detail debugEvent:(id)debugEvent transaction:(id)transaction;
 - (id)stateCaptureDictionary;
 - (void)_postChangeHubNotification;
 - (void)_postWatchUpdateNotification;
 - (void)_postWatchUpdateNotificationIfNotPaused;
 - (void)_postWatchUpdateNotificationIfPending;
 - (void)dealloc;
-- (void)distributeChangeEvent:(id)a3 debugEvent:(id)a4 transaction:(id)a5;
+- (void)distributeChangeEvent:(id)event debugEvent:(id)debugEvent transaction:(id)transaction;
 - (void)pauseLaunchEventNotifications;
 - (void)unpauseLaunchEventNotifications;
 @end
@@ -35,9 +35,9 @@
   if (v7)
   {
     v8 = v7;
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLServerChangePublisher _postChangeHubNotification]"];
-    [v9 handleFailureInFunction:v10 file:@"PLServerChangePublisher.m" lineNumber:108 description:{@"-[PLServerChangePublisher _postChangeHubNotification]: notify_post() failed: (%d)", v8}];
+    [currentHandler handleFailureInFunction:v10 file:@"PLServerChangePublisher.m" lineNumber:108 description:{@"-[PLServerChangePublisher _postChangeHubNotification]: notify_post() failed: (%d)", v8}];
   }
 }
 
@@ -60,9 +60,9 @@
   if (v7)
   {
     v8 = v7;
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLServerChangePublisher _postWatchUpdateNotification]"];
-    [v9 handleFailureInFunction:v10 file:@"PLServerChangePublisher.m" lineNumber:136 description:{@"-[PLServerChangePublisher _postWatchUpdateNotification]: notify_post() failed: (%d)", v8}];
+    [currentHandler handleFailureInFunction:v10 file:@"PLServerChangePublisher.m" lineNumber:136 description:{@"-[PLServerChangePublisher _postWatchUpdateNotification]: notify_post() failed: (%d)", v8}];
   }
 }
 
@@ -80,11 +80,11 @@
 
 - (id)stateCaptureDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(PFStateCaptureEventLog *)self->_eventLog eventDescriptions];
-  [v3 setObject:v4 forKeyedSubscript:@"events"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  eventDescriptions = [(PFStateCaptureEventLog *)self->_eventLog eventDescriptions];
+  [dictionary setObject:eventDescriptions forKeyedSubscript:@"events"];
 
-  return v3;
+  return dictionary;
 }
 
 - (void)unpauseLaunchEventNotifications
@@ -143,63 +143,63 @@
   }
 }
 
-- (void)distributeChangeEvent:(id)a3 debugEvent:(id)a4 transaction:(id)a5
+- (void)distributeChangeEvent:(id)event debugEvent:(id)debugEvent transaction:(id)transaction
 {
-  xdict = a3;
-  v9 = a4;
-  v10 = a5;
+  xdict = event;
+  debugEventCopy = debugEvent;
+  transactionCopy = transaction;
   v11 = xdict;
   if (!xdict)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLServerChangePublisher.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"event != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLServerChangePublisher.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"event != NULL"}];
 
     v11 = 0;
   }
 
   if (xpc_dictionary_get_uint64(v11, "eventKind") != 1)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PLServerChangePublisher.m" lineNumber:85 description:@"Trying to distribute an invalid event."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLServerChangePublisher.m" lineNumber:85 description:@"Trying to distribute an invalid event."];
   }
 
   if ([PLLegacyChangeEvent isEmptyEvent:xdict])
   {
-    [v9 setHasEmptyMessage:1];
+    [debugEventCopy setHasEmptyMessage:1];
   }
 
   else
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-    [v9 setPostTimestamp:?];
+    [debugEventCopy setPostTimestamp:?];
     [(PLServerChangePublisher *)self _postChangeHubNotification];
     [(PLServerChangePublisher *)self _postWatchUpdateNotificationIfNotPaused];
     v12 = atomic_load(&self->_postCount);
-    [v9 setPostCount:v12];
+    [debugEventCopy setPostCount:v12];
   }
 }
 
-- (id)publishChangeEvent:(id)a3 delayedSaveActionsDetail:(id)a4 debugEvent:(id)a5 transaction:(id)a6
+- (id)publishChangeEvent:(id)event delayedSaveActionsDetail:(id)detail debugEvent:(id)debugEvent transaction:(id)transaction
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v11 transactionToken];
-  if (v12)
+  eventCopy = event;
+  debugEventCopy = debugEvent;
+  transactionCopy = transaction;
+  transactionToken = [transactionCopy transactionToken];
+  if (transactionToken)
   {
-    v13 = v11;
-    v14 = [v13 changeScopes];
-    v15 = [v13 pathManager];
+    v13 = transactionCopy;
+    changeScopes = [v13 changeScopes];
+    pathManager = [v13 pathManager];
 
-    v11 = [PLClientServerTransaction beginServerTransactionWithToken:v12 changeScopes:v14 pathManager:v15 identifier:"[PLServerChangePublisher publishChangeEvent:delayedSaveActionsDetail:debugEvent:transaction:]"];
+    transactionCopy = [PLClientServerTransaction beginServerTransactionWithToken:transactionToken changeScopes:changeScopes pathManager:pathManager identifier:"[PLServerChangePublisher publishChangeEvent:delayedSaveActionsDetail:debugEvent:transaction:]"];
 
-    [v13 transferReplyBlocksTo:v11];
+    [v13 transferReplyBlocksTo:transactionCopy];
     [v13 completeTransaction];
   }
 
-  [(PLServerChangePublisher *)self distributeChangeEvent:v9 debugEvent:v10 transaction:v11];
+  [(PLServerChangePublisher *)self distributeChangeEvent:eventCopy debugEvent:debugEventCopy transaction:transactionCopy];
 
-  return v11;
+  return transactionCopy;
 }
 
 - (void)dealloc
@@ -211,7 +211,7 @@
     *buf = 138412546;
     v6 = objc_opt_class();
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p dealloc", buf, 0x16u);
   }
 

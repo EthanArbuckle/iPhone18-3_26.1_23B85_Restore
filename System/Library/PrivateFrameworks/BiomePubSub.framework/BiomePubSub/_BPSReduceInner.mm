@@ -1,19 +1,19 @@
 @interface _BPSReduceInner
-- (_BPSReduceInner)initWithDownstream:(id)a3 initial:(id)a4 reduce:(id)a5;
-- (id)receiveNewValue:(id)a3;
+- (_BPSReduceInner)initWithDownstream:(id)downstream initial:(id)initial reduce:(id)reduce;
+- (id)receiveNewValue:(id)value;
 @end
 
 @implementation _BPSReduceInner
 
-- (_BPSReduceInner)initWithDownstream:(id)a3 initial:(id)a4 reduce:(id)a5
+- (_BPSReduceInner)initWithDownstream:(id)downstream initial:(id)initial reduce:(id)reduce
 {
-  v8 = a5;
+  reduceCopy = reduce;
   v13.receiver = self;
   v13.super_class = _BPSReduceInner;
-  v9 = [(BPSReduceProducer *)&v13 initWithDownstream:a3 initial:a4 reduce:v8];
+  v9 = [(BPSReduceProducer *)&v13 initWithDownstream:downstream initial:initial reduce:reduceCopy];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [reduceCopy copy];
     reduce = v9->_reduce;
     v9->_reduce = v10;
   }
@@ -21,17 +21,17 @@
   return v9;
 }
 
-- (id)receiveNewValue:(id)a3
+- (id)receiveNewValue:(id)value
 {
-  v4 = a3;
-  v5 = [(_BPSReduceInner *)self reduce];
-  v6 = [(BPSReduceProducer *)self result];
-  v7 = (v5)[2](v5, v6, v4);
+  valueCopy = value;
+  reduce = [(_BPSReduceInner *)self reduce];
+  result = [(BPSReduceProducer *)self result];
+  v7 = (reduce)[2](reduce, result, valueCopy);
 
   [(BPSReduceProducer *)self setResult:v7];
   v8 = [BPSPartialCompletion alloc];
-  v9 = [(BPSReduceProducer *)self result];
-  v10 = [(BPSPartialCompletion *)v8 initWithState:1 value:v9 error:0];
+  result2 = [(BPSReduceProducer *)self result];
+  v10 = [(BPSPartialCompletion *)v8 initWithState:1 value:result2 error:0];
 
   return v10;
 }

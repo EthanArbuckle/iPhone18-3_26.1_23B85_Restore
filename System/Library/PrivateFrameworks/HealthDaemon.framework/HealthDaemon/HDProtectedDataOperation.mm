@@ -1,35 +1,35 @@
 @interface HDProtectedDataOperation
-- (BOOL)requestWorkWithPriority:(int64_t)a3 error:(id *)a4;
-- (HDProtectedDataOperation)initWithOperationScheduler:(id)a3 debugIdentifier:(id)a4 delegate:(id)a5;
-- (HDProtectedDataOperation)initWithProfile:(id)a3 debugIdentifier:(id)a4 delegate:(id)a5;
+- (BOOL)requestWorkWithPriority:(int64_t)priority error:(id *)error;
+- (HDProtectedDataOperation)initWithOperationScheduler:(id)scheduler debugIdentifier:(id)identifier delegate:(id)delegate;
+- (HDProtectedDataOperation)initWithProfile:(id)profile debugIdentifier:(id)identifier delegate:(id)delegate;
 - (id)diagnosticDescription;
-- (uint64_t)_performStateTransitionWithError:(void *)a3 block:;
-- (void)_startWorkNow:(void *)a1;
-- (void)protectedDataOperationSchedulerProtectedDataIsAvailable:(id)a3;
-- (void)setDelegate:(id)a3;
+- (uint64_t)_performStateTransitionWithError:(void *)error block:;
+- (void)_startWorkNow:(void *)now;
+- (void)protectedDataOperationSchedulerProtectedDataIsAvailable:(id)available;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation HDProtectedDataOperation
 
-- (HDProtectedDataOperation)initWithProfile:(id)a3 debugIdentifier:(id)a4 delegate:(id)a5
+- (HDProtectedDataOperation)initWithProfile:(id)profile debugIdentifier:(id)identifier delegate:(id)delegate
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 protectedDataOperationScheduler];
-  v11 = [(HDProtectedDataOperation *)self initWithOperationScheduler:v10 debugIdentifier:v9 delegate:v8];
+  delegateCopy = delegate;
+  identifierCopy = identifier;
+  protectedDataOperationScheduler = [profile protectedDataOperationScheduler];
+  v11 = [(HDProtectedDataOperation *)self initWithOperationScheduler:protectedDataOperationScheduler debugIdentifier:identifierCopy delegate:delegateCopy];
 
   return v11;
 }
 
-- (HDProtectedDataOperation)initWithOperationScheduler:(id)a3 debugIdentifier:(id)a4 delegate:(id)a5
+- (HDProtectedDataOperation)initWithOperationScheduler:(id)scheduler debugIdentifier:(id)identifier delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  schedulerCopy = scheduler;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  if (!schedulerCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HDProtectedDataOperation.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"protectedDataOperationScheduler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDProtectedDataOperation.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"protectedDataOperationScheduler"}];
   }
 
   v19.receiver = self;
@@ -38,12 +38,12 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_protectedDataOperationScheduler, a3);
-    v15 = [v11 copy];
+    objc_storeStrong(&v13->_protectedDataOperationScheduler, scheduler);
+    v15 = [identifierCopy copy];
     debugIdentifier = v14->_debugIdentifier;
     v14->_debugIdentifier = v15;
 
-    objc_storeWeak(&v14->_lock_delegate, v12);
+    objc_storeWeak(&v14->_lock_delegate, delegateCopy);
     v14->_lock._os_unfair_lock_opaque = 0;
     v14->_lock_shouldBypassMaintenanceCoordinator = 0;
     v14->_lock_state = 1;
@@ -52,15 +52,15 @@
   return v14;
 }
 
-- (BOOL)requestWorkWithPriority:(int64_t)a3 error:(id *)a4
+- (BOOL)requestWorkWithPriority:(int64_t)priority error:(id *)error
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __58__HDProtectedDataOperation_requestWorkWithPriority_error___block_invoke;
   v5[3] = &unk_27862E658;
   v5[4] = self;
-  v5[5] = a3;
-  return [(HDProtectedDataOperation *)self _performStateTransitionWithError:a4 block:v5];
+  v5[5] = priority;
+  return [(HDProtectedDataOperation *)self _performStateTransitionWithError:error block:v5];
 }
 
 id __58__HDProtectedDataOperation_requestWorkWithPriority_error___block_invoke(uint64_t a1, void *a2)
@@ -127,21 +127,21 @@ id __58__HDProtectedDataOperation_requestWorkWithPriority_error___block_invoke(u
   return v3;
 }
 
-- (uint64_t)_performStateTransitionWithError:(void *)a3 block:
+- (uint64_t)_performStateTransitionWithError:(void *)error block:
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!a1)
+  errorCopy = error;
+  if (!self)
   {
     v30 = 0;
     goto LABEL_49;
   }
 
-  os_unfair_lock_lock((a1 + 16));
+  os_unfair_lock_lock((self + 16));
   v6 = [_HDProtectedDataOperationTransitionContext alloc];
   if (v6)
   {
-    v7 = [(_HDProtectedDataOperationTransitionContext *)v6 initWithOldState:*(a1 + 24) newState:0];
+    v7 = [(_HDProtectedDataOperationTransitionContext *)v6 initWithOldState:*(self + 24) newState:0];
   }
 
   else
@@ -150,7 +150,7 @@ id __58__HDProtectedDataOperation_requestWorkWithPriority_error___block_invoke(u
   }
 
   v37 = 0;
-  v8 = v5[2](v5, v7, &v37);
+  v8 = errorCopy[2](errorCopy, v7, &v37);
   v9 = v37;
   v10 = v9;
   if (!v8)
@@ -179,23 +179,23 @@ LABEL_14:
 
   if ([v8 hasNewState])
   {
-    v11 = [v8 newState];
+    newState = [v8 newState];
     v36 = v10;
-    os_unfair_lock_assert_owner((a1 + 16));
-    v12 = *(a1 + 24);
+    os_unfair_lock_assert_owner((self + 16));
+    v12 = *(self + 24);
     if (v12 > 4)
     {
       if (v12 <= 6)
       {
         if (v12 == 5)
         {
-          if (v11 == 7)
+          if (newState == 7)
           {
             goto LABEL_28;
           }
         }
 
-        else if ((v11 | 2) == 7)
+        else if ((newState | 2) == 7)
         {
           goto LABEL_28;
         }
@@ -205,7 +205,7 @@ LABEL_14:
 
       if (v12 == 7)
       {
-        if (v11 != 3 && v11 != 8)
+        if (newState != 3 && newState != 8)
         {
           goto LABEL_43;
         }
@@ -217,8 +217,8 @@ LABEL_14:
       {
 LABEL_43:
         v26 = MEMORY[0x277CCA9B8];
-        v27 = NSStringFromHDProtectedDataOperationState(*(a1 + 24));
-        v28 = NSStringFromHDProtectedDataOperationState(v11);
+        v27 = NSStringFromHDProtectedDataOperationState(*(self + 24));
+        v28 = NSStringFromHDProtectedDataOperationState(newState);
         [v26 hk_assignError:&v36 code:126 format:{@"Invalid attempt to change state from %@ to %@", v27, v28}];
 
         v29 = v36;
@@ -241,7 +241,7 @@ LABEL_43:
     {
       if (v12 != 1)
       {
-        if (v12 != 4 || (v11 - 5) >= 2)
+        if (v12 != 4 || (newState - 5) >= 2)
         {
           goto LABEL_43;
         }
@@ -257,9 +257,9 @@ LABEL_28:
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {
             v18 = NSStringFromHDProtectedDataOperationState(v12);
-            v19 = NSStringFromHDProtectedDataOperationState(v11);
+            v19 = NSStringFromHDProtectedDataOperationState(newState);
             *buf = 138543874;
-            v40 = a1;
+            selfCopy = self;
             v41 = 2114;
             v42 = v18;
             v43 = 2114;
@@ -268,14 +268,14 @@ LABEL_28:
           }
         }
 
-        *(a1 + 24) = v11;
+        *(self + 24) = newState;
         v10 = v10;
 
-        os_unfair_lock_unlock((a1 + 16));
+        os_unfair_lock_unlock((self + 16));
         v20 = v8;
-        os_unfair_lock_lock((a1 + 16));
-        WeakRetained = objc_loadWeakRetained((a1 + 40));
-        os_unfair_lock_unlock((a1 + 16));
+        os_unfair_lock_lock((self + 16));
+        WeakRetained = objc_loadWeakRetained((self + 40));
+        os_unfair_lock_unlock((self + 16));
         if ([WeakRetained conformsToProtocol:&unk_283D717F8])
         {
           v22 = WeakRetained;
@@ -286,49 +286,49 @@ LABEL_28:
           v22 = 0;
         }
 
-        [v22 protectedDataOperation:a1 didTransitionWithContext:v20];
-        v23 = [v20 newState];
-        if (v23 <= 4)
+        [v22 protectedDataOperation:self didTransitionWithContext:v20];
+        newState2 = [v20 newState];
+        if (newState2 <= 4)
         {
-          if (v23 == 2)
+          if (newState2 == 2)
           {
-            [*(a1 + 8) registerObserver:a1];
+            [*(self + 8) registerObserver:self];
           }
 
-          else if (v23 == 4)
+          else if (newState2 == 4)
           {
-            [*(a1 + 8) registerProtectedDataAvailableObserver:a1];
+            [*(self + 8) registerProtectedDataAvailableObserver:self];
           }
 
           goto LABEL_55;
         }
 
-        if (v23 == 5)
+        if (newState2 == 5)
         {
-          v33 = [v20 oldState];
-          if (v33 == 6)
+          oldState = [v20 oldState];
+          if (oldState == 6)
           {
-            v34 = *(a1 + 8);
-            v35 = [a1 description];
+            v34 = *(self + 8);
+            v35 = [self description];
             [v34 startEnqueuedWorkWithName:v35];
 
             goto LABEL_55;
           }
 
-          if (v33 == 4)
+          if (oldState == 4)
           {
-            v24 = a1;
+            selfCopy3 = self;
             v25 = 1;
             goto LABEL_54;
           }
         }
 
-        else if (v23 == 6)
+        else if (newState2 == 6)
         {
-          v24 = a1;
+          selfCopy3 = self;
           v25 = 0;
 LABEL_54:
-          [(HDProtectedDataOperation *)v24 _startWorkNow:v25];
+          [(HDProtectedDataOperation *)selfCopy3 _startWorkNow:v25];
         }
 
 LABEL_55:
@@ -337,7 +337,7 @@ LABEL_55:
         goto LABEL_48;
       }
 
-      if (v11 == 2)
+      if (newState == 2)
       {
         goto LABEL_28;
       }
@@ -345,7 +345,7 @@ LABEL_55:
       goto LABEL_43;
     }
 
-    if (v11 == 4)
+    if (newState == 4)
     {
       goto LABEL_28;
     }
@@ -355,7 +355,7 @@ LABEL_55:
 
   v14 = 1;
 LABEL_47:
-  os_unfair_lock_unlock((a1 + 16));
+  os_unfair_lock_unlock((self + 16));
 LABEL_48:
   v38 = v14;
 
@@ -366,11 +366,11 @@ LABEL_49:
   return v30;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeWeak(&self->_lock_delegate, v4);
+  objc_storeWeak(&self->_lock_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -385,15 +385,15 @@ id __66__HDProtectedDataOperation__performTransitionToNewStateWithBlock___block_
   return v5;
 }
 
-- (void)_startWorkNow:(void *)a1
+- (void)_startWorkNow:(void *)now
 {
-  v4 = a1[1];
-  v5 = [a1 description];
+  v4 = now[1];
+  v5 = [now description];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__HDProtectedDataOperation__startWorkNow___block_invoke;
   v6[3] = &unk_278625D40;
-  v6[4] = a1;
+  v6[4] = now;
   [v4 startWorkNow:a2 name:v5 asynchronousBlock:v6];
 }
 
@@ -564,7 +564,7 @@ LABEL_9:
   return v8;
 }
 
-- (void)protectedDataOperationSchedulerProtectedDataIsAvailable:(id)a3
+- (void)protectedDataOperationSchedulerProtectedDataIsAvailable:(id)available
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;

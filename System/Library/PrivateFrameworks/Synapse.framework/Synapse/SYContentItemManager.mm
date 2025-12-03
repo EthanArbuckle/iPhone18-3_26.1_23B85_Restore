@@ -1,9 +1,9 @@
 @interface SYContentItemManager
 + (id)sharedManager;
-- (void)_navigateToURL:(id)a3 completion:(id)a4;
-- (void)_navigateToUserActivity:(id)a3 completion:(id)a4;
-- (void)fetchLinkableContentItemsWithCompletion:(id)a3;
-- (void)navigateToContentItem:(id)a3 completion:(id)a4;
+- (void)_navigateToURL:(id)l completion:(id)completion;
+- (void)_navigateToUserActivity:(id)activity completion:(id)completion;
+- (void)fetchLinkableContentItemsWithCompletion:(id)completion;
+- (void)navigateToContentItem:(id)item completion:(id)completion;
 @end
 
 @implementation SYContentItemManager
@@ -27,34 +27,34 @@ uint64_t __37__SYContentItemManager_sharedManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)navigateToContentItem:(id)a3 completion:(id)a4
+- (void)navigateToContentItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __57__SYContentItemManager_navigateToContentItem_completion___block_invoke;
   v14[3] = &unk_27856B738;
-  v15 = v7;
-  v8 = v7;
+  v15 = completionCopy;
+  v8 = completionCopy;
   v9 = MEMORY[0x22AA6A360](v14);
-  v10 = [v6 userActivity];
+  userActivity = [itemCopy userActivity];
 
-  if (v10)
+  if (userActivity)
   {
-    v11 = [v6 userActivity];
-    [(SYContentItemManager *)self _navigateToUserActivity:v11 completion:v9];
+    userActivity2 = [itemCopy userActivity];
+    [(SYContentItemManager *)self _navigateToUserActivity:userActivity2 completion:v9];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v12 = [v6 itemURL];
+  itemURL = [itemCopy itemURL];
 
-  if (v12)
+  if (itemURL)
   {
-    v11 = [v6 itemURL];
-    [(SYContentItemManager *)self _navigateToURL:v11 completion:v9];
+    userActivity2 = [itemCopy itemURL];
+    [(SYContentItemManager *)self _navigateToURL:userActivity2 completion:v9];
     goto LABEL_5;
   }
 
@@ -86,54 +86,54 @@ void __57__SYContentItemManager_navigateToContentItem_completion___block_invoke(
   }
 }
 
-- (void)_navigateToUserActivity:(id)a3 completion:(id)a4
+- (void)_navigateToUserActivity:(id)activity completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  activityCopy = activity;
+  completionCopy = completion;
+  if (!activityCopy)
   {
     [SYContentItemManager _navigateToUserActivity:a2 completion:self];
   }
 
-  v9 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__SYContentItemManager__navigateToUserActivity_completion___block_invoke;
   v11[3] = &unk_27856B738;
-  v12 = v8;
-  v10 = v8;
-  [v9 openUserActivity:v7 usingApplicationRecord:0 configuration:0 completionHandler:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [defaultWorkspace openUserActivity:activityCopy usingApplicationRecord:0 configuration:0 completionHandler:v11];
 }
 
-- (void)_navigateToURL:(id)a3 completion:(id)a4
+- (void)_navigateToURL:(id)l completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  lCopy = l;
+  completionCopy = completion;
+  if (!lCopy)
   {
     [SYContentItemManager _navigateToURL:a2 completion:self];
   }
 
-  v9 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __50__SYContentItemManager__navigateToURL_completion___block_invoke;
   v11[3] = &unk_27856C1B8;
-  v12 = v8;
-  v10 = v8;
-  [v9 openURL:v7 configuration:0 completionHandler:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [defaultWorkspace openURL:lCopy configuration:0 completionHandler:v11];
 }
 
-- (void)fetchLinkableContentItemsWithCompletion:(id)a3
+- (void)fetchLinkableContentItemsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(SYLinkableContentItemFinder);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__SYContentItemManager_fetchLinkableContentItemsWithCompletion___block_invoke;
   v6[3] = &unk_27856BF68;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(SYLinkableContentItemFinder *)v4 fetchLinkableContentItemsExcludingActivities:0 completion:v6];
 }
 

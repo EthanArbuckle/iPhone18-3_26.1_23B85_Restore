@@ -9,13 +9,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37301C4();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B3730430();
   v5 = v4;
 
@@ -28,13 +28,13 @@
 
 - (void)updateLabelTexts
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37307E4();
 }
 
 - (void)updateLabelFonts
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3730A98();
 }
 

@@ -5,9 +5,9 @@
 - (id)activityTitle;
 - (id)activityViewController;
 - (void)_cleanup;
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4;
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion;
 - (void)performActivity;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation UISharePlayActivity
@@ -19,11 +19,11 @@
   {
     if (_ShareSheetSupportsSharePlayStartFromApp())
     {
-      v3 = [(objc_class *)getTUCallCenterClass() sharedInstance];
-      v4 = [v3 conversationManager];
-      v5 = [v4 isSharePlayAvailable];
+      sharedInstance = [(objc_class *)getTUCallCenterClass() sharedInstance];
+      conversationManager = [sharedInstance conversationManager];
+      isSharePlayAvailable = [conversationManager isSharePlayAvailable];
 
-      if (v5)
+      if (isSharePlayAvailable)
       {
         LOBYTE(v2) = 1;
         return v2;
@@ -157,10 +157,10 @@ void __36__UISharePlayActivity_activityImage__block_invoke()
   }
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v26 = *MEMORY[0x1E69E9840];
-  [SHSheetActivityItemUtilities itemProvidersFromActivityItems:a3];
+  [SHSheetActivityItemUtilities itemProvidersFromActivityItems:items];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -236,46 +236,46 @@ LABEL_14:
   self->_groupActivitySharingController = v15;
 
   [(SHSheetGroupActivitySharingController *)self->_groupActivitySharingController setDelegate:self];
-  v17 = [(UIActivity *)self sessionIdentifier];
+  sessionIdentifier = [(UIActivity *)self sessionIdentifier];
 
-  if (v17)
+  if (sessionIdentifier)
   {
-    v18 = [(UIActivity *)self sessionIdentifier];
-    [(SHSheetGroupActivitySharingController *)self->_groupActivitySharingController setShareSheetSessionID:v18];
+    sessionIdentifier2 = [(UIActivity *)self sessionIdentifier];
+    [(SHSheetGroupActivitySharingController *)self->_groupActivitySharingController setShareSheetSessionID:sessionIdentifier2];
   }
 }
 
 - (id)activityViewController
 {
-  v3 = [(UISharePlayActivity *)self groupActivitySharingController];
-  v4 = [v3 isPossibleToDirectlyCreateActivity];
+  groupActivitySharingController = [(UISharePlayActivity *)self groupActivitySharingController];
+  isPossibleToDirectlyCreateActivity = [groupActivitySharingController isPossibleToDirectlyCreateActivity];
 
-  if (v4)
+  if (isPossibleToDirectlyCreateActivity)
   {
-    v5 = 0;
+    groupActivitySharingController2 = 0;
   }
 
   else
   {
-    v5 = [(UISharePlayActivity *)self groupActivitySharingController];
+    groupActivitySharingController2 = [(UISharePlayActivity *)self groupActivitySharingController];
   }
 
-  return v5;
+  return groupActivitySharingController2;
 }
 
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__UISharePlayActivity__prepareWithActivityItems_completion___block_invoke;
   v9[3] = &unk_1E71F9A70;
   objc_copyWeak(&v11, &location);
-  v8 = v7;
+  v8 = completionCopy;
   v10 = v8;
-  [(UIActivity *)self _loadItemProvidersFromActivityItems:v6 completion:v9];
+  [(UIActivity *)self _loadItemProvidersFromActivityItems:itemsCopy completion:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -294,8 +294,8 @@ void __60__UISharePlayActivity__prepareWithActivityItems_completion___block_invo
 
 - (void)performActivity
 {
-  v2 = [(UISharePlayActivity *)self groupActivitySharingController];
-  [v2 directlyCreateActivity];
+  groupActivitySharingController = [(UISharePlayActivity *)self groupActivitySharingController];
+  [groupActivitySharingController directlyCreateActivity];
 }
 
 - (void)_cleanup

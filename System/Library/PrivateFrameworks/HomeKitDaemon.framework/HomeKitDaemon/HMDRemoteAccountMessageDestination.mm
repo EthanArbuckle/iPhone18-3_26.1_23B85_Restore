@@ -1,9 +1,9 @@
 @interface HMDRemoteAccountMessageDestination
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMDRemoteAccountMessageDestination)initWithTarget:(id)a3;
-- (HMDRemoteAccountMessageDestination)initWithTarget:(id)a3 handle:(id)a4 multicast:(BOOL)a5 deviceCapabilities:(id)a6;
-- (id)descriptionWithPointer:(BOOL)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMDRemoteAccountMessageDestination)initWithTarget:(id)target;
+- (HMDRemoteAccountMessageDestination)initWithTarget:(id)target handle:(id)handle multicast:(BOOL)multicast deviceCapabilities:(id)capabilities;
+- (id)descriptionWithPointer:(BOOL)pointer;
 - (id)remoteDestinationString;
 - (id)shortDescription;
 - (unint64_t)hash;
@@ -13,18 +13,18 @@
 
 - (id)remoteDestinationString
 {
-  v2 = [(HMDRemoteAccountMessageDestination *)self handle];
-  v3 = [v2 remoteDestinationString];
+  handle = [(HMDRemoteAccountMessageDestination *)self handle];
+  remoteDestinationString = [handle remoteDestinationString];
 
-  return v3;
+  return remoteDestinationString;
 }
 
-- (id)descriptionWithPointer:(BOOL)a3
+- (id)descriptionWithPointer:(BOOL)pointer
 {
-  v3 = a3;
+  pointerCopy = pointer;
   v5 = MEMORY[0x277CCACA8];
-  v6 = [objc_opt_class() shortDescription];
-  if (v3)
+  shortDescription = [objc_opt_class() shortDescription];
+  if (pointerCopy)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@" %p", self];
   }
@@ -34,16 +34,16 @@
     v7 = &stru_283CF9D50;
   }
 
-  v8 = [(HMFMessageDestination *)self target];
-  v9 = [v8 UUIDString];
-  v10 = [(HMDRemoteAccountMessageDestination *)self handle];
-  v11 = [v10 shortDescription];
+  target = [(HMFMessageDestination *)self target];
+  uUIDString = [target UUIDString];
+  handle = [(HMDRemoteAccountMessageDestination *)self handle];
+  shortDescription2 = [handle shortDescription];
   [(HMDRemoteAccountMessageDestination *)self isMulticast];
   v12 = HMFBooleanToString();
-  v13 = [(HMDRemoteAccountMessageDestination *)self deviceCapabilities];
-  v14 = [v5 stringWithFormat:@"<%@%@, Target = %@, Handle = %@, Multicast = %@, Device Capabilities = %@>", v6, v7, v9, v11, v12, v13];
+  deviceCapabilities = [(HMDRemoteAccountMessageDestination *)self deviceCapabilities];
+  v14 = [v5 stringWithFormat:@"<%@%@, Target = %@, Handle = %@, Multicast = %@, Device Capabilities = %@>", shortDescription, v7, uUIDString, shortDescription2, v12, deviceCapabilities];
 
-  if (v3)
+  if (pointerCopy)
   {
   }
 
@@ -53,18 +53,18 @@
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMFMessageDestination *)self target];
-  v6 = [v5 UUIDString];
-  v7 = [v3 stringWithFormat:@"%@ %@", v4, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  target = [(HMFMessageDestination *)self target];
+  uUIDString = [target UUIDString];
+  v7 = [v3 stringWithFormat:@"%@ %@", shortDescription, uUIDString];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -73,9 +73,9 @@
   {
     v16.receiver = self;
     v16.super_class = HMDRemoteAccountMessageDestination;
-    if ([(HMFMessageDestination *)&v16 isEqual:v4])
+    if ([(HMFMessageDestination *)&v16 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -94,20 +94,20 @@
         goto LABEL_9;
       }
 
-      v8 = [(HMDRemoteAccountMessageDestination *)self handle];
-      v9 = [(HMDRemoteAccountMessageDestination *)v7 handle];
-      v10 = [v8 isEqual:v9];
+      handle = [(HMDRemoteAccountMessageDestination *)self handle];
+      handle2 = [(HMDRemoteAccountMessageDestination *)v7 handle];
+      v10 = [handle isEqual:handle2];
 
       if (!v10)
       {
         goto LABEL_9;
       }
 
-      v11 = [(HMDRemoteAccountMessageDestination *)self isMulticast];
-      if (v11 == [(HMDRemoteAccountMessageDestination *)v7 isMulticast])
+      isMulticast = [(HMDRemoteAccountMessageDestination *)self isMulticast];
+      if (isMulticast == [(HMDRemoteAccountMessageDestination *)v7 isMulticast])
       {
-        v14 = [(HMDRemoteAccountMessageDestination *)self deviceCapabilities];
-        v15 = [(HMDRemoteAccountMessageDestination *)v7 deviceCapabilities];
+        deviceCapabilities = [(HMDRemoteAccountMessageDestination *)self deviceCapabilities];
+        deviceCapabilities2 = [(HMDRemoteAccountMessageDestination *)v7 deviceCapabilities];
         v12 = HMFEqualObjects();
       }
 
@@ -129,43 +129,43 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v3 = [(HMFMessageDestination *)self target];
-  v4 = [v3 hash];
-  v5 = [(HMDRemoteAccountMessageDestination *)self handle];
-  v6 = [v5 hash];
+  target = [(HMFMessageDestination *)self target];
+  v4 = [target hash];
+  handle = [(HMDRemoteAccountMessageDestination *)self handle];
+  v6 = [handle hash];
 
   return v6 ^ v4;
 }
 
-- (HMDRemoteAccountMessageDestination)initWithTarget:(id)a3 handle:(id)a4 multicast:(BOOL)a5 deviceCapabilities:(id)a6
+- (HMDRemoteAccountMessageDestination)initWithTarget:(id)target handle:(id)handle multicast:(BOOL)multicast deviceCapabilities:(id)capabilities
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v10)
+  targetCopy = target;
+  handleCopy = handle;
+  capabilitiesCopy = capabilities;
+  if (!targetCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  if (!v11)
+  if (!handleCopy)
   {
 LABEL_7:
     v20 = _HMFPreconditionFailure();
     return [(HMDRemoteAccountMessageDestination *)v20 initWithTarget:v21 handle:v22 multicast:v23, v24];
   }
 
-  v13 = v12;
+  v13 = capabilitiesCopy;
   v25.receiver = self;
   v25.super_class = HMDRemoteAccountMessageDestination;
-  v14 = [(HMFMessageDestination *)&v25 initWithTarget:v10];
+  v14 = [(HMFMessageDestination *)&v25 initWithTarget:targetCopy];
   if (v14)
   {
-    v15 = [v11 copy];
+    v15 = [handleCopy copy];
     handle = v14->_handle;
     v14->_handle = v15;
 
-    v14->_multicast = a5;
+    v14->_multicast = multicast;
     v17 = [v13 copy];
     deviceCapabilities = v14->_deviceCapabilities;
     v14->_deviceCapabilities = v17;
@@ -174,9 +174,9 @@ LABEL_7:
   return v14;
 }
 
-- (HMDRemoteAccountMessageDestination)initWithTarget:(id)a3
+- (HMDRemoteAccountMessageDestination)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

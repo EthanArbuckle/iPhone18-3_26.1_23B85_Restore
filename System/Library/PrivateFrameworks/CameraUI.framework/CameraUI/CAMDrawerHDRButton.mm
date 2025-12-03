@@ -1,29 +1,29 @@
 @interface CAMDrawerHDRButton
-- (BOOL)isMenuItemSelected:(id)a3;
+- (BOOL)isMenuItemSelected:(id)selected;
 - (id)imageNameForAXHUD;
 - (id)loadMenuItems;
-- (void)didSelectMenuItem:(id)a3;
-- (void)setHDRMode:(int64_t)a3 animated:(BOOL)a4;
+- (void)didSelectMenuItem:(id)item;
+- (void)setHDRMode:(int64_t)mode animated:(BOOL)animated;
 @end
 
 @implementation CAMDrawerHDRButton
 
-- (void)setHDRMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setHDRMode:(int64_t)mode animated:(BOOL)animated
 {
-  if (self->_hdrMode != a3)
+  if (self->_hdrMode != mode)
   {
-    self->_hdrMode = a3;
-    [(CAMControlDrawerButton *)self updateImageAnimated:a4];
+    self->_hdrMode = mode;
+    [(CAMControlDrawerButton *)self updateImageAnimated:animated];
 
     [(CAMControlDrawerMenuButton *)self updateLabelsIfNeeded];
   }
 }
 
-- (BOOL)isMenuItemSelected:(id)a3
+- (BOOL)isMenuItemSelected:(id)selected
 {
-  v4 = [a3 value];
-  v5 = [v4 integerValue];
-  LOBYTE(self) = v5 == [(CAMDrawerHDRButton *)self hdrMode];
+  value = [selected value];
+  integerValue = [value integerValue];
+  LOBYTE(self) = integerValue == [(CAMDrawerHDRButton *)self hdrMode];
 
   return self;
 }
@@ -47,16 +47,16 @@
   return v2;
 }
 
-- (void)didSelectMenuItem:(id)a3
+- (void)didSelectMenuItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CAMDrawerHDRButton *)self hdrMode];
-  v6 = [v4 value];
+  itemCopy = item;
+  hdrMode = [(CAMDrawerHDRButton *)self hdrMode];
+  value = [itemCopy value];
 
-  v7 = [v6 unsignedIntegerValue];
-  if (v7 != v5)
+  unsignedIntegerValue = [value unsignedIntegerValue];
+  if (unsignedIntegerValue != hdrMode)
   {
-    [(CAMDrawerHDRButton *)self setHDRMode:v7 animated:1];
+    [(CAMDrawerHDRButton *)self setHDRMode:unsignedIntegerValue animated:1];
 
     [(CAMDrawerHDRButton *)self sendActionsForControlEvents:4096];
   }

@@ -1,21 +1,21 @@
 @interface AMSEngagementConnection
-- (AMSEngagementConnection)initWithNotificationCenter:(id)a3;
+- (AMSEngagementConnection)initWithNotificationCenter:(id)center;
 - (id)_makeExportedClientConnectionInterface;
 - (id)_makeRemoteConnectionInterface;
 - (id)_newRemoteConnection;
 - (id)proxy;
 - (void)_removeRemoteConnection;
 - (void)beginObservingMessages;
-- (void)contentInfoForApp:(id)a3 cacheKey:(id)a4 version:(id)a5 reply:(id)a6;
+- (void)contentInfoForApp:(id)app cacheKey:(id)key version:(id)version reply:(id)reply;
 - (void)dealloc;
-- (void)enqueueWithRequest:(id)a3 completion:(id)a4;
+- (void)enqueueWithRequest:(id)request completion:(id)completion;
 - (void)fetchMetricsIdentifiers;
-- (void)handlePushedEvent:(id)a3;
+- (void)handlePushedEvent:(id)event;
 - (void)manualSyncMetricsIdentifiers;
-- (void)notifyBlockedMessages:(id)a3;
+- (void)notifyBlockedMessages:(id)messages;
 - (void)syncMetricsIdentifiers;
-- (void)syncWithRequest:(id)a3 completion:(id)a4;
-- (void)treatmentStoreServiceWithReply:(id)a3;
+- (void)syncWithRequest:(id)request completion:(id)completion;
+- (void)treatmentStoreServiceWithReply:(id)reply;
 - (void)treatmentsDidSyncronize;
 @end
 
@@ -23,23 +23,23 @@
 
 - (id)proxy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(AMSEngagementConnection *)v2 connection];
-  if (!v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connection = [(AMSEngagementConnection *)selfCopy connection];
+  if (!connection)
   {
-    v3 = [(AMSEngagementConnection *)v2 _newRemoteConnection];
-    [(AMSEngagementConnection *)v2 setConnection:v3];
+    connection = [(AMSEngagementConnection *)selfCopy _newRemoteConnection];
+    [(AMSEngagementConnection *)selfCopy setConnection:connection];
   }
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __32__AMSEngagementConnection_proxy__block_invoke;
   v6[3] = &unk_1E73B34B8;
-  v6[4] = v2;
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v6[4] = selfCopy;
+  v4 = [connection remoteObjectProxyWithErrorHandler:v6];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -53,8 +53,8 @@
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = AMSLogKey();
@@ -62,18 +62,18 @@
     v20 = v5;
     v21 = 2114;
     v22 = v6;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Creating new connection.", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Creating new connection.", buf, 0x16u);
   }
 
   v7 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.xpc.amsengagementd" options:0];
-  v8 = [(AMSEngagementConnection *)self queue];
-  [v7 _setQueue:v8];
+  queue = [(AMSEngagementConnection *)self queue];
+  [v7 _setQueue:queue];
 
-  v9 = [(AMSEngagementConnection *)self _makeRemoteConnectionInterface];
-  [v7 setRemoteObjectInterface:v9];
+  _makeRemoteConnectionInterface = [(AMSEngagementConnection *)self _makeRemoteConnectionInterface];
+  [v7 setRemoteObjectInterface:_makeRemoteConnectionInterface];
 
-  v10 = [(AMSEngagementConnection *)self _makeExportedClientConnectionInterface];
-  [v7 setExportedInterface:v10];
+  _makeExportedClientConnectionInterface = [(AMSEngagementConnection *)self _makeExportedClientConnectionInterface];
+  [v7 setExportedInterface:_makeExportedClientConnectionInterface];
 
   [v7 setExportedObject:self];
   objc_initWeak(buf, self);
@@ -138,20 +138,20 @@
 
 - (void)beginObservingMessages
 {
-  v2 = [(AMSEngagementConnection *)self proxy];
-  [v2 beginObservingMessages];
+  proxy = [(AMSEngagementConnection *)self proxy];
+  [proxy beginObservingMessages];
 }
 
-- (AMSEngagementConnection)initWithNotificationCenter:(id)a3
+- (AMSEngagementConnection)initWithNotificationCenter:(id)center
 {
-  v5 = a3;
+  centerCopy = center;
   v12.receiver = self;
   v12.super_class = AMSEngagementConnection;
   v6 = [(AMSEngagementConnection *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_notificationCenter, a3);
+    objc_storeStrong(&v6->_notificationCenter, center);
     v8 = dispatch_get_global_queue(0, 0);
     v9 = dispatch_queue_create_with_target_V2("com.apple.AppleMediaServices.engagement", 0, v8);
     queue = v7->_queue;
@@ -218,81 +218,81 @@ void __47__AMSEngagementConnection__newRemoteConnection__block_invoke_2(uint64_t
 
 - (void)_removeRemoteConnection
 {
-  v3 = [(AMSEngagementConnection *)self connection];
-  [v3 invalidate];
+  connection = [(AMSEngagementConnection *)self connection];
+  [connection invalidate];
 
   [(AMSEngagementConnection *)self setConnection:0];
 }
 
-- (void)handlePushedEvent:(id)a3
+- (void)handlePushedEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(AMSEngagementConnection *)self notificationCenter];
-  [v5 postNotificationName:@"com.apple.AppleMediaServices.engagement.pushEvent" object:v4];
+  eventCopy = event;
+  notificationCenter = [(AMSEngagementConnection *)self notificationCenter];
+  [notificationCenter postNotificationName:@"com.apple.AppleMediaServices.engagement.pushEvent" object:eventCopy];
 }
 
 - (void)treatmentsDidSyncronize
 {
-  v2 = [(AMSEngagementConnection *)self notificationCenter];
-  [v2 postNotificationName:@"AMSEngagementTreatmentsDidSyncronizeNotification" object:0];
+  notificationCenter = [(AMSEngagementConnection *)self notificationCenter];
+  [notificationCenter postNotificationName:@"AMSEngagementTreatmentsDidSyncronizeNotification" object:0];
 }
 
-- (void)contentInfoForApp:(id)a3 cacheKey:(id)a4 version:(id)a5 reply:(id)a6
+- (void)contentInfoForApp:(id)app cacheKey:(id)key version:(id)version reply:(id)reply
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(AMSEngagementConnection *)self proxy];
-  [v14 contentInfoForApp:v13 cacheKey:v12 version:v11 reply:v10];
+  replyCopy = reply;
+  versionCopy = version;
+  keyCopy = key;
+  appCopy = app;
+  proxy = [(AMSEngagementConnection *)self proxy];
+  [proxy contentInfoForApp:appCopy cacheKey:keyCopy version:versionCopy reply:replyCopy];
 }
 
-- (void)enqueueWithRequest:(id)a3 completion:(id)a4
+- (void)enqueueWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AMSEngagementConnection *)self proxy];
-  [v8 enqueueWithRequest:v7 completion:v6];
+  completionCopy = completion;
+  requestCopy = request;
+  proxy = [(AMSEngagementConnection *)self proxy];
+  [proxy enqueueWithRequest:requestCopy completion:completionCopy];
 }
 
-- (void)notifyBlockedMessages:(id)a3
+- (void)notifyBlockedMessages:(id)messages
 {
-  v4 = a3;
-  v5 = [(AMSEngagementConnection *)self proxy];
-  [v5 notifyBlockedMessages:v4];
+  messagesCopy = messages;
+  proxy = [(AMSEngagementConnection *)self proxy];
+  [proxy notifyBlockedMessages:messagesCopy];
 }
 
-- (void)syncWithRequest:(id)a3 completion:(id)a4
+- (void)syncWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AMSEngagementConnection *)self proxy];
-  [v8 syncWithRequest:v7 completion:v6];
+  completionCopy = completion;
+  requestCopy = request;
+  proxy = [(AMSEngagementConnection *)self proxy];
+  [proxy syncWithRequest:requestCopy completion:completionCopy];
 }
 
 - (void)syncMetricsIdentifiers
 {
-  v2 = [(AMSEngagementConnection *)self proxy];
-  [v2 syncMetricsIdentifiers];
+  proxy = [(AMSEngagementConnection *)self proxy];
+  [proxy syncMetricsIdentifiers];
 }
 
 - (void)fetchMetricsIdentifiers
 {
-  v2 = [(AMSEngagementConnection *)self proxy];
-  [v2 fetchMetricsIdentifiers];
+  proxy = [(AMSEngagementConnection *)self proxy];
+  [proxy fetchMetricsIdentifiers];
 }
 
-- (void)treatmentStoreServiceWithReply:(id)a3
+- (void)treatmentStoreServiceWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(AMSEngagementConnection *)self proxy];
-  [v5 treatmentStoreServiceWithReply:v4];
+  replyCopy = reply;
+  proxy = [(AMSEngagementConnection *)self proxy];
+  [proxy treatmentStoreServiceWithReply:replyCopy];
 }
 
 - (void)manualSyncMetricsIdentifiers
 {
-  v2 = [(AMSEngagementConnection *)self proxy];
-  [v2 manualSyncMetricsIdentifiers];
+  proxy = [(AMSEngagementConnection *)self proxy];
+  [proxy manualSyncMetricsIdentifiers];
 }
 
 @end

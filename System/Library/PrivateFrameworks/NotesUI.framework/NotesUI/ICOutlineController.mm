@@ -1,59 +1,59 @@
 @interface ICOutlineController
-- (BOOL)canCollapseAnyUUIDs:(id)a3;
-- (BOOL)canExpandAnyUUIDs:(id)a3;
+- (BOOL)canCollapseAnyUUIDs:(id)ds;
+- (BOOL)canExpandAnyUUIDs:(id)ds;
 - (BOOL)isAsynchronous;
-- (BOOL)isUUIDCollapsed:(id)a3;
-- (BOOL)isUUIDCollapsible:(id)a3;
-- (BOOL)isUUIDHidden:(id)a3;
-- (BOOL)toggleCollapsedAtRange:(_NSRange)a3;
-- (ICOutlineController)initWithTextStorage:(id)a3 collapsedUUIDs:(id)a4 asynchronous:(BOOL)a5;
+- (BOOL)isUUIDCollapsed:(id)collapsed;
+- (BOOL)isUUIDCollapsible:(id)collapsible;
+- (BOOL)isUUIDHidden:(id)hidden;
+- (BOOL)toggleCollapsedAtRange:(_NSRange)range;
+- (ICOutlineController)initWithTextStorage:(id)storage collapsedUUIDs:(id)ds asynchronous:(BOOL)asynchronous;
 - (ICTTTextStorage)textStorage;
 - (NSArray)invisibleRangeValues;
 - (NSArray)rangesValuesContainingCollapsedRanges;
 - (NSArray)rangesValuesContainingExpandedRanges;
 - (NSArray)visibleRangeValues;
 - (NSSet)collapsedUUIDs;
-- (_NSRange)descendantRangeForUUID:(id)a3;
-- (_NSRange)rangeForUUID:(id)a3;
+- (_NSRange)descendantRangeForUUID:(id)d;
+- (_NSRange)rangeForUUID:(id)d;
 - (_NSRange)visibleRange;
-- (id)ancestorsForUUID:(id)a3;
-- (id)closestVisibleAncestorForUUID:(id)a3;
-- (id)descendantsForUUID:(id)a3;
+- (id)ancestorsForUUID:(id)d;
+- (id)closestVisibleAncestorForUUID:(id)d;
+- (id)descendantsForUUID:(id)d;
 - (int64_t)collapsibleSectionAffordanceUsages;
 - (void)collapseAll;
-- (void)collapseUUIDs:(id)a3;
-- (void)collapsibleSectionAffordanceUsedForUUIDs:(id)a3;
+- (void)collapseUUIDs:(id)ds;
+- (void)collapsibleSectionAffordanceUsedForUUIDs:(id)ds;
 - (void)expandAll;
-- (void)expandAncestorsOfRange:(_NSRange)a3;
-- (void)expandUUIDs:(id)a3;
+- (void)expandAncestorsOfRange:(_NSRange)range;
+- (void)expandUUIDs:(id)ds;
 - (void)requestUpdate;
 - (void)resetCollapsibleSectionAffordanceUsages;
-- (void)setCollapsedUUIDs:(id)a3;
-- (void)setIsAsynchronous:(BOOL)a3;
-- (void)toggleUUIDCollapsed:(id)a3;
+- (void)setCollapsedUUIDs:(id)ds;
+- (void)setIsAsynchronous:(BOOL)asynchronous;
+- (void)toggleUUIDCollapsed:(id)collapsed;
 @end
 
 @implementation ICOutlineController
 
 - (NSSet)collapsedUUIDs
 {
-  v2 = [(ICOutlineController *)self outlineControllerObject];
-  v3 = [v2 collapsedUUIDs];
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  collapsedUUIDs = [outlineControllerObject collapsedUUIDs];
 
-  return v3;
+  return collapsedUUIDs;
 }
 
-- (ICOutlineController)initWithTextStorage:(id)a3 collapsedUUIDs:(id)a4 asynchronous:(BOOL)a5
+- (ICOutlineController)initWithTextStorage:(id)storage collapsedUUIDs:(id)ds asynchronous:(BOOL)asynchronous
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  asynchronousCopy = asynchronous;
+  storageCopy = storage;
+  dsCopy = ds;
   v14.receiver = self;
   v14.super_class = ICOutlineController;
   v10 = [(ICOutlineController *)&v14 init];
   if (v10)
   {
-    v11 = [[OutlineController alloc] initWithTextStorage:v8 collapsedUUIDs:v9 asynchronous:v5];
+    v11 = [[OutlineController alloc] initWithTextStorage:storageCopy collapsedUUIDs:dsCopy asynchronous:asynchronousCopy];
     outlineControllerObject = v10->_outlineControllerObject;
     v10->_outlineControllerObject = v11;
   }
@@ -63,50 +63,50 @@
 
 - (ICTTTextStorage)textStorage
 {
-  v2 = [(ICOutlineController *)self outlineControllerObject];
-  v3 = [v2 textStorage];
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  textStorage = [outlineControllerObject textStorage];
 
-  return v3;
+  return textStorage;
 }
 
 - (BOOL)isAsynchronous
 {
-  v2 = [(ICOutlineController *)self outlineControllerObject];
-  v3 = [v2 isAsynchronous];
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  isAsynchronous = [outlineControllerObject isAsynchronous];
 
-  return v3;
+  return isAsynchronous;
 }
 
-- (void)setIsAsynchronous:(BOOL)a3
+- (void)setIsAsynchronous:(BOOL)asynchronous
 {
-  v3 = a3;
-  v4 = [(ICOutlineController *)self outlineControllerObject];
-  [v4 setIsAsynchronous:v3];
+  asynchronousCopy = asynchronous;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  [outlineControllerObject setIsAsynchronous:asynchronousCopy];
 }
 
-- (void)setCollapsedUUIDs:(id)a3
+- (void)setCollapsedUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(ICOutlineController *)self outlineControllerObject];
-  [v5 setCollapsedUUIDs:v4];
+  dsCopy = ds;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  [outlineControllerObject setCollapsedUUIDs:dsCopy];
 }
 
 - (int64_t)collapsibleSectionAffordanceUsages
 {
-  v2 = [(ICOutlineController *)self outlineControllerObject];
-  v3 = [v2 interactedUUIDs];
-  v4 = [v3 count];
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  interactedUUIDs = [outlineControllerObject interactedUUIDs];
+  v4 = [interactedUUIDs count];
 
   return v4;
 }
 
 - (_NSRange)visibleRange
 {
-  v2 = [(ICOutlineController *)self outlineControllerObject];
-  v3 = [v2 visibleRange];
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  visibleRange = [outlineControllerObject visibleRange];
   v5 = v4;
 
-  v6 = v3;
+  v6 = visibleRange;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -115,156 +115,156 @@
 
 - (NSArray)visibleRangeValues
 {
-  v2 = [(ICOutlineController *)self outlineControllerObject];
-  v3 = [v2 visibleRangeValues];
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  visibleRangeValues = [outlineControllerObject visibleRangeValues];
 
-  return v3;
+  return visibleRangeValues;
 }
 
 - (NSArray)invisibleRangeValues
 {
-  v2 = [(ICOutlineController *)self outlineControllerObject];
-  v3 = [v2 invisibleRangeValues];
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  invisibleRangeValues = [outlineControllerObject invisibleRangeValues];
 
-  return v3;
+  return invisibleRangeValues;
 }
 
 - (NSArray)rangesValuesContainingCollapsedRanges
 {
-  v2 = [(ICOutlineController *)self outlineControllerObject];
-  v3 = [v2 rangesValuesContainingCollapsedRanges];
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  rangesValuesContainingCollapsedRanges = [outlineControllerObject rangesValuesContainingCollapsedRanges];
 
-  return v3;
+  return rangesValuesContainingCollapsedRanges;
 }
 
 - (NSArray)rangesValuesContainingExpandedRanges
 {
-  v2 = [(ICOutlineController *)self outlineControllerObject];
-  v3 = [v2 rangesValuesContainingExpandedRanges];
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  rangesValuesContainingExpandedRanges = [outlineControllerObject rangesValuesContainingExpandedRanges];
 
-  return v3;
+  return rangesValuesContainingExpandedRanges;
 }
 
-- (BOOL)toggleCollapsedAtRange:(_NSRange)a3
+- (BOOL)toggleCollapsedAtRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(ICOutlineController *)self outlineControllerObject];
-  LOBYTE(length) = [v5 toggleCollapsedAtRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  LOBYTE(length) = [outlineControllerObject toggleCollapsedAtRange:{location, length}];
 
   return length;
 }
 
 - (void)requestUpdate
 {
-  v2 = [(ICOutlineController *)self outlineControllerObject];
-  [v2 requestUpdate];
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  [outlineControllerObject requestUpdate];
 }
 
-- (BOOL)canCollapseAnyUUIDs:(id)a3
+- (BOOL)canCollapseAnyUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(ICOutlineController *)self outlineControllerObject];
-  v6 = [v5 canCollapseAnyUUIDs:v4];
+  dsCopy = ds;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  v6 = [outlineControllerObject canCollapseAnyUUIDs:dsCopy];
 
   return v6;
 }
 
-- (BOOL)isUUIDCollapsible:(id)a3
+- (BOOL)isUUIDCollapsible:(id)collapsible
 {
-  v4 = a3;
-  v5 = [(ICOutlineController *)self outlineControllerObject];
-  v6 = [v5 isUUIDCollapsible:v4];
+  collapsibleCopy = collapsible;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  v6 = [outlineControllerObject isUUIDCollapsible:collapsibleCopy];
 
   return v6;
 }
 
-- (BOOL)isUUIDCollapsed:(id)a3
+- (BOOL)isUUIDCollapsed:(id)collapsed
 {
-  v4 = a3;
-  v5 = [(ICOutlineController *)self outlineControllerObject];
-  v6 = [v5 isUUIDCollapsed:v4];
+  collapsedCopy = collapsed;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  v6 = [outlineControllerObject isUUIDCollapsed:collapsedCopy];
 
   return v6;
 }
 
-- (void)collapseUUIDs:(id)a3
+- (void)collapseUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(ICOutlineController *)self outlineControllerObject];
-  [v5 collapseUUIDs:v4];
+  dsCopy = ds;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  [outlineControllerObject collapseUUIDs:dsCopy];
 }
 
-- (void)toggleUUIDCollapsed:(id)a3
+- (void)toggleUUIDCollapsed:(id)collapsed
 {
-  v4 = a3;
-  v5 = [(ICOutlineController *)self outlineControllerObject];
-  [v5 toggleUUIDCollapsed:v4];
+  collapsedCopy = collapsed;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  [outlineControllerObject toggleUUIDCollapsed:collapsedCopy];
 }
 
 - (void)collapseAll
 {
-  v2 = [(ICOutlineController *)self outlineControllerObject];
-  [v2 collapseAll];
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  [outlineControllerObject collapseAll];
 }
 
-- (BOOL)canExpandAnyUUIDs:(id)a3
+- (BOOL)canExpandAnyUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(ICOutlineController *)self outlineControllerObject];
-  v6 = [v5 canExpandAnyUUIDs:v4];
+  dsCopy = ds;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  v6 = [outlineControllerObject canExpandAnyUUIDs:dsCopy];
 
   return v6;
 }
 
-- (void)expandUUIDs:(id)a3
+- (void)expandUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(ICOutlineController *)self outlineControllerObject];
-  [v5 expandUUIDs:v4];
+  dsCopy = ds;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  [outlineControllerObject expandUUIDs:dsCopy];
 }
 
-- (void)expandAncestorsOfRange:(_NSRange)a3
+- (void)expandAncestorsOfRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(ICOutlineController *)self outlineControllerObject];
-  [v5 expandAncestorsOfRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  [outlineControllerObject expandAncestorsOfRange:{location, length}];
 }
 
 - (void)expandAll
 {
-  v2 = [(ICOutlineController *)self outlineControllerObject];
-  [v2 expandAll];
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  [outlineControllerObject expandAll];
 }
 
-- (void)collapsibleSectionAffordanceUsedForUUIDs:(id)a3
+- (void)collapsibleSectionAffordanceUsedForUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(ICOutlineController *)self outlineControllerObject];
-  [v5 collapsibleSectionAffordanceUsedForUUIDs:v4];
+  dsCopy = ds;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  [outlineControllerObject collapsibleSectionAffordanceUsedForUUIDs:dsCopy];
 }
 
 - (void)resetCollapsibleSectionAffordanceUsages
 {
-  v2 = [(ICOutlineController *)self outlineControllerObject];
-  [v2 resetCollapsibleSectionAffordanceUsages];
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  [outlineControllerObject resetCollapsibleSectionAffordanceUsages];
 }
 
-- (BOOL)isUUIDHidden:(id)a3
+- (BOOL)isUUIDHidden:(id)hidden
 {
-  v4 = a3;
-  v5 = [(ICOutlineController *)self outlineControllerObject];
-  v6 = [v5 isUUIDHidden:v4];
+  hiddenCopy = hidden;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  v6 = [outlineControllerObject isUUIDHidden:hiddenCopy];
 
   return v6;
 }
 
-- (_NSRange)rangeForUUID:(id)a3
+- (_NSRange)rangeForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICOutlineController *)self outlineControllerObject];
-  v6 = [v5 rangeForUUID:v4];
+  dCopy = d;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  v6 = [outlineControllerObject rangeForUUID:dCopy];
   v8 = v7;
 
   v9 = v6;
@@ -274,11 +274,11 @@
   return result;
 }
 
-- (_NSRange)descendantRangeForUUID:(id)a3
+- (_NSRange)descendantRangeForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICOutlineController *)self outlineControllerObject];
-  v6 = [v5 descendantRangeForUUID:v4];
+  dCopy = d;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  v6 = [outlineControllerObject descendantRangeForUUID:dCopy];
   v8 = v7;
 
   v9 = v6;
@@ -288,29 +288,29 @@
   return result;
 }
 
-- (id)closestVisibleAncestorForUUID:(id)a3
+- (id)closestVisibleAncestorForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICOutlineController *)self outlineControllerObject];
-  v6 = [v5 closestVisibleAncestorForUUID:v4];
+  dCopy = d;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  v6 = [outlineControllerObject closestVisibleAncestorForUUID:dCopy];
 
   return v6;
 }
 
-- (id)ancestorsForUUID:(id)a3
+- (id)ancestorsForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICOutlineController *)self outlineControllerObject];
-  v6 = [v5 ancestorsForUUID:v4];
+  dCopy = d;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  v6 = [outlineControllerObject ancestorsForUUID:dCopy];
 
   return v6;
 }
 
-- (id)descendantsForUUID:(id)a3
+- (id)descendantsForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICOutlineController *)self outlineControllerObject];
-  v6 = [v5 descendantsForUUID:v4];
+  dCopy = d;
+  outlineControllerObject = [(ICOutlineController *)self outlineControllerObject];
+  v6 = [outlineControllerObject descendantsForUUID:dCopy];
 
   return v6;
 }

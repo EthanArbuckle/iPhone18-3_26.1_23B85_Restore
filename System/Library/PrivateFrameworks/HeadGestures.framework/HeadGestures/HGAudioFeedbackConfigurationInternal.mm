@@ -4,12 +4,12 @@
 - (BOOL)invertedConfirmationAudioFeedbackMode;
 - (HGAudioFeedbackConfigurationInternal)init;
 - (unsigned)audioSessionID;
-- (void)enableAudioFeedbackForGestureWithGesture:(unint64_t)a3 enable:(BOOL)a4;
-- (void)enableAudioFeedbackForPartGestureWithPart:(unint64_t)a3 enable:(BOOL)a4;
-- (void)setAudioSessionID:(unsigned int)a3;
-- (void)setEnableAudioFeedback:(BOOL)a3;
-- (void)setEnableWaitingTone:(BOOL)a3;
-- (void)setInvertedConfirmationAudioFeedbackMode:(BOOL)a3;
+- (void)enableAudioFeedbackForGestureWithGesture:(unint64_t)gesture enable:(BOOL)enable;
+- (void)enableAudioFeedbackForPartGestureWithPart:(unint64_t)part enable:(BOOL)enable;
+- (void)setAudioSessionID:(unsigned int)d;
+- (void)setEnableAudioFeedback:(BOOL)feedback;
+- (void)setEnableWaitingTone:(BOOL)tone;
+- (void)setInvertedConfirmationAudioFeedbackMode:(BOOL)mode;
 @end
 
 @implementation HGAudioFeedbackConfigurationInternal
@@ -21,11 +21,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setEnableAudioFeedback:(BOOL)a3
+- (void)setEnableAudioFeedback:(BOOL)feedback
 {
   v5 = OBJC_IVAR___HGAudioFeedbackConfigurationInternal_enableAudioFeedback;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = feedback;
 }
 
 - (BOOL)invertedConfirmationAudioFeedbackMode
@@ -35,28 +35,28 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setInvertedConfirmationAudioFeedbackMode:(BOOL)a3
+- (void)setInvertedConfirmationAudioFeedbackMode:(BOOL)mode
 {
   v5 = OBJC_IVAR___HGAudioFeedbackConfigurationInternal_invertedConfirmationAudioFeedbackMode;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = mode;
 }
 
 - (BOOL)enableWaitingTone
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_251130CA8();
 
   return v5;
 }
 
-- (void)setEnableWaitingTone:(BOOL)a3
+- (void)setEnableWaitingTone:(BOOL)tone
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_251130CB8();
 }
 
@@ -67,23 +67,23 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setAudioSessionID:(unsigned int)a3
+- (void)setAudioSessionID:(unsigned int)d
 {
   v5 = OBJC_IVAR___HGAudioFeedbackConfigurationInternal_audioSessionID;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = d;
 }
 
-- (void)enableAudioFeedbackForGestureWithGesture:(unint64_t)a3 enable:(BOOL)a4
+- (void)enableAudioFeedbackForGestureWithGesture:(unint64_t)gesture enable:(BOOL)enable
 {
-  v6 = self;
-  sub_2510F97C8(a3, a4);
+  selfCopy = self;
+  sub_2510F97C8(gesture, enable);
 }
 
-- (void)enableAudioFeedbackForPartGestureWithPart:(unint64_t)a3 enable:(BOOL)a4
+- (void)enableAudioFeedbackForPartGestureWithPart:(unint64_t)part enable:(BOOL)enable
 {
-  v6 = self;
-  sub_2510F9AF0(a3, a4);
+  selfCopy = self;
+  sub_2510F9AF0(part, enable);
 }
 
 - (HGAudioFeedbackConfigurationInternal)init

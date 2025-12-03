@@ -9,21 +9,21 @@
 
 - (void)start
 {
-  v3 = [(TouchIDSensorSPIBusIntegrityTestController *)self inputs];
-  if ([v3 numberOfRuns])
+  inputs = [(TouchIDSensorSPIBusIntegrityTestController *)self inputs];
+  if ([inputs numberOfRuns])
   {
-    v4 = [(TouchIDSensorSPIBusIntegrityTestController *)self inputs];
-    [v4 runDelay];
+    inputs2 = [(TouchIDSensorSPIBusIntegrityTestController *)self inputs];
+    [inputs2 runDelay];
     v6 = v5;
 
     if (v6 != 0.0)
     {
-      v7 = [(TouchIDSensorSPIBusIntegrityTestController *)self result];
-      [v7 setStatusCode:&off_100004258];
+      result = [(TouchIDSensorSPIBusIntegrityTestController *)self result];
+      [result setStatusCode:&off_100004258];
 
       v8 = [NSMutableArray alloc];
-      v9 = [(TouchIDSensorSPIBusIntegrityTestController *)self inputs];
-      v10 = [v8 initWithCapacity:{objc_msgSend(v9, "numberOfRuns")}];
+      inputs3 = [(TouchIDSensorSPIBusIntegrityTestController *)self inputs];
+      v10 = [v8 initWithCapacity:{objc_msgSend(inputs3, "numberOfRuns")}];
       [(TouchIDSensorSPIBusIntegrityTestController *)self setAllResults:v10];
 
       [(TouchIDSensorSPIBusIntegrityTestController *)self setRunCount:0];
@@ -45,8 +45,8 @@
   {
   }
 
-  v11 = [(TouchIDSensorSPIBusIntegrityTestController *)self result];
-  [v11 setStatusCode:&off_100004240];
+  result2 = [(TouchIDSensorSPIBusIntegrityTestController *)self result];
+  [result2 setStatusCode:&off_100004240];
 
   [(TouchIDSensorSPIBusIntegrityTestController *)self setFinished:1];
 }
@@ -58,12 +58,12 @@
     goto LABEL_5;
   }
 
-  v3 = [(TouchIDSensorSPIBusIntegrityTestController *)self runTimer];
-  if (!v3 || (v4 = v3, v5 = -[TouchIDSensorSPIBusIntegrityTestController runCount](self, "runCount"), -[TouchIDSensorSPIBusIntegrityTestController inputs](self, "inputs"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 numberOfRuns], v6, v4, v5 >= v7))
+  runTimer = [(TouchIDSensorSPIBusIntegrityTestController *)self runTimer];
+  if (!runTimer || (v4 = runTimer, v5 = -[TouchIDSensorSPIBusIntegrityTestController runCount](self, "runCount"), -[TouchIDSensorSPIBusIntegrityTestController inputs](self, "inputs"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 numberOfRuns], v6, v4, v5 >= v7))
   {
 LABEL_5:
-    v9 = [(TouchIDSensorSPIBusIntegrityTestController *)self runTimer];
-    [v9 invalidate];
+    runTimer2 = [(TouchIDSensorSPIBusIntegrityTestController *)self runTimer];
+    [runTimer2 invalidate];
   }
 
   else
@@ -81,23 +81,23 @@ LABEL_5:
 - (void)finish
 {
   v6 = @"results";
-  v3 = [(TouchIDSensorSPIBusIntegrityTestController *)self allResults];
-  v7 = v3;
+  allResults = [(TouchIDSensorSPIBusIntegrityTestController *)self allResults];
+  v7 = allResults;
   v4 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
-  v5 = [(TouchIDSensorSPIBusIntegrityTestController *)self result];
-  [v5 setData:v4];
+  result = [(TouchIDSensorSPIBusIntegrityTestController *)self result];
+  [result setData:v4];
 
   [(TouchIDSensorSPIBusIntegrityTestController *)self setFinished:1];
 }
 
 - (void)teardown
 {
-  v3 = [(TouchIDSensorSPIBusIntegrityTestController *)self runTimer];
+  runTimer = [(TouchIDSensorSPIBusIntegrityTestController *)self runTimer];
 
-  if (v3)
+  if (runTimer)
   {
-    v4 = [(TouchIDSensorSPIBusIntegrityTestController *)self runTimer];
-    [v4 invalidate];
+    runTimer2 = [(TouchIDSensorSPIBusIntegrityTestController *)self runTimer];
+    [runTimer2 invalidate];
 
     [(TouchIDSensorSPIBusIntegrityTestController *)self setRunTimer:0];
   }

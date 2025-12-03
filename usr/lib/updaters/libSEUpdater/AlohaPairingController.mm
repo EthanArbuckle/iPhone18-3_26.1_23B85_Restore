@@ -1,39 +1,39 @@
 @interface AlohaPairingController
-- (AlohaPairingController)initWithOptions:(const void *)a3 seController:(shared_ptr<SEUpdater::P73BaseSEController>)a4;
-- (BOOL)submitPairingRecord:(id *)a3;
-- (id)beginPair:(id *)a3;
-- (id)getReverseProxySettings:(id)a3 outError:(id *)a4;
-- (id)performHTTPRequestWithRequestDict:(id)a3 outError:(id *)a4;
-- (id)processApduReqPayload:(id)a3 outError:(id *)a4;
-- (id)processAuthReqPayload:(id)a3 outError:(id *)a4;
-- (id)processEndPair:(id)a3;
-- (id)verifyAndRetrieveServerSessionId:(id)a3;
+- (AlohaPairingController)initWithOptions:(const void *)options seController:(shared_ptr<SEUpdater::P73BaseSEController>)controller;
+- (BOOL)submitPairingRecord:(id *)record;
+- (id)beginPair:(id *)pair;
+- (id)getReverseProxySettings:(id)settings outError:(id *)error;
+- (id)performHTTPRequestWithRequestDict:(id)dict outError:(id *)error;
+- (id)processApduReqPayload:(id)payload outError:(id *)error;
+- (id)processAuthReqPayload:(id)payload outError:(id *)error;
+- (id)processEndPair:(id)pair;
+- (id)verifyAndRetrieveServerSessionId:(id)id;
 - (int)performAlohaPairing;
 - (void)dealloc;
 - (void)invalidate;
-- (void)writeRecord:(id)a3 fileExtension:(id)a4;
+- (void)writeRecord:(id)record fileExtension:(id)extension;
 @end
 
 @implementation AlohaPairingController
 
-- (AlohaPairingController)initWithOptions:(const void *)a3 seController:(shared_ptr<SEUpdater::P73BaseSEController>)a4
+- (AlohaPairingController)initWithOptions:(const void *)options seController:(shared_ptr<SEUpdater::P73BaseSEController>)controller
 {
-  ptr = a4.__ptr_;
+  ptr = controller.__ptr_;
   v20.receiver = self;
   v20.super_class = AlohaPairingController;
-  v6 = [(AlohaPairingController *)&v20 init:a3];
+  v6 = [(AlohaPairingController *)&v20 init:options];
   v7 = v6;
   v8 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_alohaHostname, *(a3 + 2));
-    v9 = *(a3 + 3);
+    objc_storeStrong(&v6->_alohaHostname, *(options + 2));
+    v9 = *(options + 3);
     if (v9)
     {
       objc_storeStrong(&v7->_debugRecordPath, v9);
     }
 
-    objc_storeStrong(&v7->_alohaVersion, *(a3 + 1));
+    objc_storeStrong(&v7->_alohaVersion, *(options + 1));
     v10 = [SETransceiveHelper alloc];
     v11 = *(ptr + 1);
     v18 = *ptr;
@@ -52,10 +52,10 @@
       std::__shared_weak_count::__release_shared[abi:ne200100](v19);
     }
 
-    v8->_useReverseProxy = *(a3 + 32);
-    v14 = [MEMORY[0x29EDB8DE8] array];
+    v8->_useReverseProxy = *(options + 32);
+    array = [MEMORY[0x29EDB8DE8] array];
     alohaPlistRecord = v8->_alohaPlistRecord;
-    v8->_alohaPlistRecord = v14;
+    v8->_alohaPlistRecord = array;
 
     v8->_state = 1;
     alohaServerIP = v8->_alohaServerIP;
@@ -281,14 +281,14 @@ LABEL_45:
   return v7;
 }
 
-- (id)beginPair:(id *)a3
+- (id)beginPair:(id *)pair
 {
   v60[16] = *MEMORY[0x29EDCA608];
   v5 = [(SETransceiveHelper *)self->_transceiver selectWithAID:@"A00000015153504341534400"];
   v9 = v5;
   if (v5)
   {
-    _ObjCLogWrapOutError(a3, v5, 0, "[AlohaPairingController beginPair:]", @"Error encountered when selecting CASD %@\n", v6, v7, v8, v5);
+    _ObjCLogWrapOutError(pair, v5, 0, "[AlohaPairingController beginPair:]", @"Error encountered when selecting CASD %@\n", v6, v7, v8, v5);
 LABEL_5:
     v16 = 0;
     goto LABEL_6;
@@ -303,7 +303,7 @@ LABEL_5:
 
   if (v9 || !self->_seid)
   {
-    _ObjCLogWrapOutError(a3, v9, 0, "[AlohaPairingController beginPair:]", @"Error encountered when copying SEID %@\n", v13, v14, v15, v9);
+    _ObjCLogWrapOutError(pair, v9, 0, "[AlohaPairingController beginPair:]", @"Error encountered when copying SEID %@\n", v13, v14, v15, v9);
     goto LABEL_5;
   }
 
@@ -314,7 +314,7 @@ LABEL_5:
   v9 = v21;
   if (v21 || !v20)
   {
-    _ObjCLogWrapOutError(a3, v21, 0, "[AlohaPairingController beginPair:]", @"Error encountered when retrieving casdCertificate %@\n", v22, v23, v24, v21);
+    _ObjCLogWrapOutError(pair, v21, 0, "[AlohaPairingController beginPair:]", @"Error encountered when retrieving casdCertificate %@\n", v22, v23, v24, v21);
   }
 
   else
@@ -329,7 +329,7 @@ LABEL_5:
       if (v26 == 32 || v26 == 115 || v26 == 100)
       {
         v9 = 0;
-        _ObjCLogOutError(a3, 0, "[AlohaPairingController beginPair:]", @"seDeviceType does not support A9\n", v28, v29, v30, v31, v51);
+        _ObjCLogOutError(pair, 0, "[AlohaPairingController beginPair:]", @"seDeviceType does not support A9\n", v28, v29, v30, v31, v51);
         v16 = 0;
       }
 
@@ -398,7 +398,7 @@ LABEL_5:
 
         else
         {
-          _ObjCLogOutError(a3, 0, "[AlohaPairingController beginPair:]", @"Error when copying a9 params %@\n", v34, v35, v36, v37, v9);
+          _ObjCLogOutError(pair, 0, "[AlohaPairingController beginPair:]", @"Error when copying a9 params %@\n", v34, v35, v36, v37, v9);
           v16 = 0;
         }
       }
@@ -406,7 +406,7 @@ LABEL_5:
       goto LABEL_21;
     }
 
-    _ObjCLogWrapOutError(a3, v27, 0, "[AlohaPairingController beginPair:]", @"Unable to retrieve seDeviceType with error %@\n", v29, v30, v31, v27);
+    _ObjCLogWrapOutError(pair, v27, 0, "[AlohaPairingController beginPair:]", @"Unable to retrieve seDeviceType with error %@\n", v29, v30, v31, v27);
   }
 
   v16 = 0;
@@ -418,29 +418,29 @@ LABEL_6:
   return v16;
 }
 
-- (id)processAuthReqPayload:(id)a3 outError:(id *)a4
+- (id)processAuthReqPayload:(id)payload outError:(id *)error
 {
   v76[3] = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  payloadCopy = payload;
   v7 = objc_opt_new();
   [v7 setValue:@"AUTHRESP" forKey:@"Command"];
   [v7 setValue:qword_2A197F330 forKey:@"ErrorCode"];
   [v7 setValue:@"Failure" forKey:@"ErrorMessage"];
   [v7 setValue:self->_fullServerSessionID forKey:@"SessionId"];
   [v7 setValue:*MEMORY[0x29EDB8E98] forKey:@"DATA"];
-  v8 = [v6 objectForKeyedSubscript:@"HSMChallengeSE"];
-  v9 = [v6 objectForKeyedSubscript:@"HSMChallengeSEP"];
+  v8 = [payloadCopy objectForKeyedSubscript:@"HSMChallengeSE"];
+  v9 = [payloadCopy objectForKeyedSubscript:@"HSMChallengeSEP"];
   v14 = v9;
   if (!v8 || !v9)
   {
-    _ObjCLogOutError(a4, 1, "[AlohaPairingController processAuthReqPayload:outError:]", @"Payload dictionary is wrong %@\n", v10, v11, v12, v13, v6);
+    _ObjCLogOutError(error, 1, "[AlohaPairingController processAuthReqPayload:outError:]", @"Payload dictionary is wrong %@\n", v10, v11, v12, v13, payloadCopy);
     goto LABEL_6;
   }
 
   v15 = SSEIsFeatureSupported(45);
   if (v15)
   {
-    _ObjCLogOutError(a4, 0, "[AlohaPairingController processAuthReqPayload:outError:]", @"Get Attestation V2 Auth Key feature is not supported on this device with status %d\n", v16, v17, v18, v19, v15);
+    _ObjCLogOutError(error, 0, "[AlohaPairingController processAuthReqPayload:outError:]", @"Get Attestation V2 Auth Key feature is not supported on this device with status %d\n", v16, v17, v18, v19, v15);
 LABEL_6:
     v20 = v7;
     goto LABEL_7;
@@ -449,7 +449,7 @@ LABEL_6:
   v74 = 0;
   v23 = SSEGetAttV2AuthKey(self->_seid, v14, &v74);
   v66 = v74;
-  v63 = [(__CFData *)v14 asHexString];
+  asHexString = [(__CFData *)v14 asHexString];
   _ObjCLog(2, "[AlohaPairingController processAuthReqPayload:outError:]", &cfstr_CalledSsgetatt.isa);
 
   if (!v23 && v66)
@@ -481,7 +481,7 @@ LABEL_6:
       v39 = DERParseSequence(v70, &img4BlobSpec, 0x2000000000000010, &v71, 0x30uLL);
       if (v39)
       {
-        _ObjCLogOutError(a4, 0, "[AlohaPairingController processAuthReqPayload:outError:]", @"Error encountered when parsing IMG4Blob %d\n", v40, v41, v42, v43, v39);
+        _ObjCLogOutError(error, 0, "[AlohaPairingController processAuthReqPayload:outError:]", @"Error encountered when parsing IMG4Blob %d\n", v40, v41, v42, v43, v39);
       }
 
       else
@@ -496,7 +496,7 @@ LABEL_6:
           {
             [v64 setValue:v56 forKey:@"SCRT"];
             transceiver = self->_transceiver;
-            v58 = [v6 objectForKeyedSubscript:@"HSMChallengeSE"];
+            v58 = [payloadCopy objectForKeyedSubscript:@"HSMChallengeSE"];
             v59 = [MEMORY[0x29EDBA070] numberWithLongLong:MGGetSInt64Answer()];
             v67 = 0;
             v60 = [(SETransceiveHelper *)transceiver copySESignature:v66 hsmChallengeSE:v58 ecid:v59 outError:&v67];
@@ -511,7 +511,7 @@ LABEL_6:
 
           else
           {
-            _ObjCLogOutError(a4, 0, "[AlohaPairingController processAuthReqPayload:outError:]", @"SCRT is nil\n", v52, v53, v54, v55, v63);
+            _ObjCLogOutError(error, 0, "[AlohaPairingController processAuthReqPayload:outError:]", @"SCRT is nil\n", v52, v53, v54, v55, asHexString);
             v62 = v7;
             v37 = 0;
           }
@@ -519,7 +519,7 @@ LABEL_6:
           goto LABEL_21;
         }
 
-        _ObjCLogOutError(a4, 0, "[AlohaPairingController processAuthReqPayload:outError:]", @"Error encountered when parsing SCRTBlob %d\n", v47, v48, v49, v50, v46);
+        _ObjCLogOutError(error, 0, "[AlohaPairingController processAuthReqPayload:outError:]", @"Error encountered when parsing SCRTBlob %d\n", v47, v48, v49, v50, v46);
       }
 
       v51 = v7;
@@ -528,7 +528,7 @@ LABEL_6:
 
     else
     {
-      _ObjCLogWrapOutError(a4, 0, 0, "[AlohaPairingController processAuthReqPayload:outError:]", @"Error encountered when geting scrt %@ or scrt absent %d\n", v33, v34, v35, v73);
+      _ObjCLogWrapOutError(error, 0, 0, "[AlohaPairingController processAuthReqPayload:outError:]", @"Error encountered when geting scrt %@ or scrt absent %d\n", v33, v34, v35, v73);
       v45 = v7;
     }
 
@@ -537,7 +537,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  _ObjCLogOutError(a4, 0, "[AlohaPairingController processAuthReqPayload:outError:]", @"Bad status received when getting Auth Key V2 %d or nil for AuthKey %d\n", v24, v25, v26, v27, v23);
+  _ObjCLogOutError(error, 0, "[AlohaPairingController processAuthReqPayload:outError:]", @"Bad status received when getting Auth Key V2 %d or nil for AuthKey %d\n", v24, v25, v26, v27, v23);
   v44 = v7;
 LABEL_22:
 
@@ -547,10 +547,10 @@ LABEL_7:
   return v7;
 }
 
-- (id)processApduReqPayload:(id)a3 outError:(id *)a4
+- (id)processApduReqPayload:(id)payload outError:(id *)error
 {
   v19 = *MEMORY[0x29EDCA608];
-  v10 = a3;
+  payloadCopy = payload;
   v11 = objc_opt_new();
   [v11 setValue:@"APDURESP" forKey:@"Command"];
   [v11 setValue:qword_2A197F338 forKey:@"ErrorCode"];
@@ -562,7 +562,7 @@ LABEL_7:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  obj = v10;
+  obj = payloadCopy;
   if ([obj countByEnumeratingWithState:&v14 objects:v18 count:16])
   {
     *v15;
@@ -578,11 +578,11 @@ LABEL_7:
   return v11;
 }
 
-- (id)processEndPair:(id)a3
+- (id)processEndPair:(id)pair
 {
-  v4 = a3;
-  _ObjCLog(2, "[AlohaPairingController processEndPair:]", &cfstr_EndpairPayload.isa, v4);
-  v5 = [v4 objectForKeyedSubscript:@"ECID"];
+  pairCopy = pair;
+  _ObjCLog(2, "[AlohaPairingController processEndPair:]", &cfstr_EndpairPayload.isa, pairCopy);
+  v5 = [pairCopy objectForKeyedSubscript:@"ECID"];
   if ([(NSNumber *)self->_ecid isEqualToNumber:v5])
   {
     v6 = 0;
@@ -596,7 +596,7 @@ LABEL_7:
   return v6;
 }
 
-- (id)performHTTPRequestWithRequestDict:(id)a3 outError:(id *)a4
+- (id)performHTTPRequestWithRequestDict:(id)dict outError:(id *)error
 {
   v51 = 0;
   v52 = &v51;
@@ -611,12 +611,12 @@ LABEL_7:
   v49 = __Block_byref_object_dispose__5;
   v50 = 0;
   obj = 0;
-  v6 = [MEMORY[0x29EDBA0C0] dataWithPropertyList:a3 format:100 options:0 error:&obj];
+  v6 = [MEMORY[0x29EDBA0C0] dataWithPropertyList:dict format:100 options:0 error:&obj];
   objc_storeStrong(&v50, obj);
   v10 = v46[5];
   if (v10 || !v6)
   {
-    _ObjCLogWrapOutError(a4, v10, 0, "[AlohaPairingController performHTTPRequestWithRequestDict:outError:]", @"Error encountered when forming request body %@\n", v7, v8, v9, v46[5]);
+    _ObjCLogWrapOutError(error, v10, 0, "[AlohaPairingController performHTTPRequestWithRequestDict:outError:]", @"Error encountered when forming request body %@\n", v7, v8, v9, v46[5]);
     v26 = 0;
     goto LABEL_20;
   }
@@ -626,11 +626,11 @@ LABEL_7:
   v12 = [MEMORY[0x29EDB8E70] URLWithString:self->_alohaHostname];
   v13 = [v11 requestWithURL:v12 cachePolicy:1 timeoutInterval:60.0];
 
-  v14 = [MEMORY[0x29EDBA138] defaultSessionConfiguration];
-  v15 = v14;
+  defaultSessionConfiguration = [MEMORY[0x29EDBA138] defaultSessionConfiguration];
+  v15 = defaultSessionConfiguration;
   if (self->_useReverseProxy)
   {
-    [v14 setConnectionProxyDictionary:self->_reverseProxySettings];
+    [defaultSessionConfiguration setConnectionProxyDictionary:self->_reverseProxySettings];
   }
 
   [v13 setHTTPMethod:@"POST"];
@@ -679,20 +679,20 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v32 = [v52[5] asHexString];
-      _ObjCLogOutError(a4, 0, "[AlohaPairingController performHTTPRequestWithRequestDict:outError:]", @"Unable to form plist from data %@\n", v33, v34, v35, v36, v32);
+      asHexString = [v52[5] asHexString];
+      _ObjCLogOutError(error, 0, "[AlohaPairingController performHTTPRequestWithRequestDict:outError:]", @"Unable to form plist from data %@\n", v33, v34, v35, v36, asHexString);
     }
 
     else
     {
-      _ObjCLogOutError(a4, 1, "[AlohaPairingController performHTTPRequestWithRequestDict:outError:]", @"Was expecting XML format but received %lu\n", v28, v29, v30, v31, v39);
+      _ObjCLogOutError(error, 1, "[AlohaPairingController performHTTPRequestWithRequestDict:outError:]", @"Was expecting XML format but received %lu\n", v28, v29, v30, v31, v39);
     }
 
     v26 = 0;
     goto LABEL_18;
   }
 
-  _ObjCLogWrapOutError(a4, v24, 0, "[AlohaPairingController performHTTPRequestWithRequestDict:outError:]", @"Encountered error when talking to server %@\n", v21, v22, v23, v46[5]);
+  _ObjCLogWrapOutError(error, v24, 0, "[AlohaPairingController performHTTPRequestWithRequestDict:outError:]", @"Encountered error when talking to server %@\n", v21, v22, v23, v46[5]);
   v26 = 0;
 LABEL_19:
 
@@ -735,9 +735,9 @@ void __69__AlohaPairingController_performHTTPRequestWithRequestDict_outError___b
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (id)getReverseProxySettings:(id)a3 outError:(id *)a4
+- (id)getReverseProxySettings:(id)settings outError:(id *)error
 {
-  v4 = a3;
+  settingsCopy = settings;
   v6[0] = 0;
   v6[1] = v6;
   v6[2] = 0x3812000000;
@@ -788,13 +788,13 @@ void __59__AlohaPairingController_getReverseProxySettings_outError___block_invok
   MEMORY[0x2A1C71028]();
 }
 
-- (id)verifyAndRetrieveServerSessionId:(id)a3
+- (id)verifyAndRetrieveServerSessionId:(id)id
 {
-  v5 = a3;
-  v6 = [v5 componentsSeparatedByString:@"/"];
+  idCopy = id;
+  v6 = [idCopy componentsSeparatedByString:@"/"];
   if ([v6 count] == 3)
   {
-    objc_storeStrong(&self->_fullServerSessionID, a3);
+    objc_storeStrong(&self->_fullServerSessionID, id);
     v7 = [v6 objectAtIndexedSubscript:0];
     alohaServerIP = self->_alohaServerIP;
     self->_alohaServerIP = v7;
@@ -826,7 +826,7 @@ void __59__AlohaPairingController_getReverseProxySettings_outError___block_invok
 
   else
   {
-    v12 = _ObjCLogNSError(0, 1, "[AlohaPairingController verifyAndRetrieveServerSessionId:]", &cfstr_MalformedSessi.isa, v5);
+    v12 = _ObjCLogNSError(0, 1, "[AlohaPairingController verifyAndRetrieveServerSessionId:]", &cfstr_MalformedSessi.isa, idCopy);
   }
 
 LABEL_9:
@@ -834,25 +834,25 @@ LABEL_9:
   return v12;
 }
 
-- (void)writeRecord:(id)a3 fileExtension:(id)a4
+- (void)writeRecord:(id)record fileExtension:(id)extension
 {
-  v15 = a3;
-  v6 = a4;
-  for (i = 0; [v15 count] > i; ++i)
+  recordCopy = record;
+  extensionCopy = extension;
+  for (i = 0; [recordCopy count] > i; ++i)
   {
     v8 = [MEMORY[0x29EDBA070] numberWithInt:i];
-    v9 = [v8 stringValue];
-    v10 = [@"AlohaV2Pairing-" stringByAppendingString:v9];
-    v11 = [v10 stringByAppendingPathExtension:v6];
+    stringValue = [v8 stringValue];
+    v10 = [@"AlohaV2Pairing-" stringByAppendingString:stringValue];
+    v11 = [v10 stringByAppendingPathExtension:extensionCopy];
 
     v12 = [(NSString *)self->_debugRecordPath stringByAppendingPathComponent:v11];
-    v13 = [MEMORY[0x29EDB9FB8] defaultManager];
-    v14 = [v15 objectAtIndexedSubscript:i];
-    [v13 createFileAtPath:v12 contents:v14 attributes:0];
+    defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+    v14 = [recordCopy objectAtIndexedSubscript:i];
+    [defaultManager createFileAtPath:v12 contents:v14 attributes:0];
   }
 }
 
-- (BOOL)submitPairingRecord:(id *)a3
+- (BOOL)submitPairingRecord:(id *)record
 {
   transceiver = self->_transceiver;
   v26 = 0;
@@ -864,13 +864,13 @@ LABEL_9:
   v8 = v25;
   if (v5 && v6 != 0 && v7 != 0 && v8 == 0)
   {
-    v17 = [v7 asHexString];
-    v18 = [v17 uppercaseString];
+    asHexString = [v7 asHexString];
+    uppercaseString = [asHexString uppercaseString];
 
     _ObjCLog(2, "[AlohaPairingController(FDR) submitPairingRecord:]", &cfstr_SubmittingSepk.isa);
-    _ObjCLog(2, "[AlohaPairingController(FDR) submitPairingRecord:]", &cfstr_Seid_1.isa, v18);
-    v19 = [v6 base64Encoding];
-    _ObjCLog(2, "[AlohaPairingController(FDR) submitPairingRecord:]", &cfstr_Sepk_0.isa, v19);
+    _ObjCLog(2, "[AlohaPairingController(FDR) submitPairingRecord:]", &cfstr_Seid_1.isa, uppercaseString);
+    base64Encoding = [v6 base64Encoding];
+    _ObjCLog(2, "[AlohaPairingController(FDR) submitPairingRecord:]", &cfstr_Sepk_0.isa, base64Encoding);
 
     v20 = AMFDRDataPutForRestore();
     v16 = v20;
@@ -878,14 +878,14 @@ LABEL_9:
     _ObjCLog(2, "[AlohaPairingController(FDR) submitPairingRecord:]", &cfstr_ResponseFromAm.isa, v20, 0);
     if (!v16)
     {
-      _ObjCLogWrapOutError(a3, 0, 0, "[AlohaPairingController(FDR) submitPairingRecord:]", @"Failed to AMFDRDataPutForRestore : %@", v21, v22, v23, 0);
+      _ObjCLogWrapOutError(record, 0, 0, "[AlohaPairingController(FDR) submitPairingRecord:]", @"Failed to AMFDRDataPutForRestore : %@", v21, v22, v23, 0);
     }
   }
 
   else
   {
     v15 = v8;
-    _ObjCLogWrapOutError(a3, v8, 0, "[AlohaPairingController(FDR) submitPairingRecord:]", @"Failed to get SEPK+SEID: %@", v9, v10, v11, v8);
+    _ObjCLogWrapOutError(record, v8, 0, "[AlohaPairingController(FDR) submitPairingRecord:]", @"Failed to get SEPK+SEID: %@", v9, v10, v11, v8);
     v16 = 0;
   }
 

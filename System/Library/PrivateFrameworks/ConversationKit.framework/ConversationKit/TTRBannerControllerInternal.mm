@@ -1,9 +1,9 @@
 @interface TTRBannerControllerInternal
 - (TTRBannerControllerDelegate)delegate;
-- (void)buildTTRMessageBubbleRecipientsListWithGroupMessageUUID:(id)a3 with:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)showHoldAssistTTRBannerForCall:(id)a3;
-- (void)showTTRBannerWithFullLogArchive:(BOOL)a3 call:(id)a4;
+- (void)buildTTRMessageBubbleRecipientsListWithGroupMessageUUID:(id)d with:(id)with;
+- (void)setDelegate:(id)delegate;
+- (void)showHoldAssistTTRBannerForCall:(id)call;
+- (void)showTTRBannerWithFullLogArchive:(BOOL)archive call:(id)call;
 @end
 
 @implementation TTRBannerControllerInternal
@@ -15,31 +15,31 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   TTRBannerController.delegate.setter();
 }
 
-- (void)showTTRBannerWithFullLogArchive:(BOOL)a3 call:(id)a4
+- (void)showTTRBannerWithFullLogArchive:(BOOL)archive call:(id)call
 {
-  v5 = a3;
-  v7 = a4;
-  v8 = self;
-  TTRBannerController.showTTRBanner(useFullLogArchive:call:)(v5, a4);
+  archiveCopy = archive;
+  callCopy = call;
+  selfCopy = self;
+  TTRBannerController.showTTRBanner(useFullLogArchive:call:)(archiveCopy, call);
 }
 
-- (void)showHoldAssistTTRBannerForCall:(id)a3
+- (void)showHoldAssistTTRBannerForCall:(id)call
 {
-  v5 = a3;
-  v6 = self;
-  TTRBannerController.showHoldAssistTTRBanner(call:)(a3);
+  callCopy = call;
+  selfCopy = self;
+  TTRBannerController.showHoldAssistTTRBanner(call:)(call);
 }
 
-- (void)buildTTRMessageBubbleRecipientsListWithGroupMessageUUID:(id)a3 with:(id)a4
+- (void)buildTTRMessageBubbleRecipientsListWithGroupMessageUUID:(id)d with:(id)with
 {
-  if (a3)
+  if (d)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -52,7 +52,7 @@
   }
 
   v8 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   TTRBannerController.buildTTRMessageBubbleRecipientsList(groupMessageUUID:with:)(v5, v7, v8);
 }
 

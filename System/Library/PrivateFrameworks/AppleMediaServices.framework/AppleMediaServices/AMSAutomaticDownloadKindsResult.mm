@@ -1,21 +1,21 @@
 @interface AMSAutomaticDownloadKindsResult
-- (AMSAutomaticDownloadKindsResult)initWithAccount:(id)a3 andEnabledMediaKinds:(id)a4;
+- (AMSAutomaticDownloadKindsResult)initWithAccount:(id)account andEnabledMediaKinds:(id)kinds;
 @end
 
 @implementation AMSAutomaticDownloadKindsResult
 
-- (AMSAutomaticDownloadKindsResult)initWithAccount:(id)a3 andEnabledMediaKinds:(id)a4
+- (AMSAutomaticDownloadKindsResult)initWithAccount:(id)account andEnabledMediaKinds:(id)kinds
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  kindsCopy = kinds;
   v14.receiver = self;
   v14.super_class = AMSAutomaticDownloadKindsResult;
   v9 = [(AMSAutomaticDownloadKindsResult *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_account, account);
+    v11 = [kindsCopy copy];
     enabledMediaKinds = v10->_enabledMediaKinds;
     v10->_enabledMediaKinds = v11;
   }

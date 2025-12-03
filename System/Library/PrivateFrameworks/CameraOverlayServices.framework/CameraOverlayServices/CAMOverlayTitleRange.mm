@@ -1,37 +1,37 @@
 @interface CAMOverlayTitleRange
-- (BOOL)containsValue:(id)a3;
-- (BOOL)isEqualToRange:(id)a3;
-- (BOOL)isValueExpectedType:(id)a3;
+- (BOOL)containsValue:(id)value;
+- (BOOL)isEqualToRange:(id)range;
+- (BOOL)isValueExpectedType:(id)type;
 - (CAMOverlayIndexedRange)indexedRange;
-- (CAMOverlayTitleRange)initWithCoder:(id)a3;
-- (CAMOverlayTitleRange)initWithTitles:(id)a3;
-- (id)valueAtIndex:(unint64_t)a3;
+- (CAMOverlayTitleRange)initWithCoder:(id)coder;
+- (CAMOverlayTitleRange)initWithTitles:(id)titles;
+- (id)valueAtIndex:(unint64_t)index;
 - (unint64_t)count;
-- (unint64_t)indexOfValue:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (unint64_t)indexOfValue:(id)value;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CAMOverlayTitleRange
 
-- (CAMOverlayTitleRange)initWithTitles:(id)a3
+- (CAMOverlayTitleRange)initWithTitles:(id)titles
 {
-  v5 = a3;
+  titlesCopy = titles;
   v10.receiver = self;
   v10.super_class = CAMOverlayTitleRange;
   v6 = [(CAMOverlayTitleRange *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__titles, a3);
+    objc_storeStrong(&v6->__titles, titles);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (CAMOverlayTitleRange)initWithCoder:(id)a3
+- (CAMOverlayTitleRange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CAMOverlayTitleRange;
   v5 = [(CAMOverlayTitleRange *)&v16 init];
@@ -44,7 +44,7 @@
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
     v12 = [v9 stringWithFormat:@"%@.%@", v11, @"_titles"];
-    v13 = [v4 decodeObjectOfClasses:v8 forKey:v12];
+    v13 = [coderCopy decodeObjectOfClasses:v8 forKey:v12];
     titles = v5->__titles;
     v5->__titles = v13;
   }
@@ -52,41 +52,41 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v9 = [(CAMOverlayTitleRange *)self _titles];
+  coderCopy = coder;
+  _titles = [(CAMOverlayTitleRange *)self _titles];
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v5 stringWithFormat:@"%@.%@", v7, @"_titles"];
-  [v4 encodeObject:v9 forKey:v8];
+  [coderCopy encodeObject:_titles forKey:v8];
 }
 
 - (unint64_t)count
 {
-  v2 = [(CAMOverlayTitleRange *)self _titles];
-  v3 = [v2 count];
+  _titles = [(CAMOverlayTitleRange *)self _titles];
+  v3 = [_titles count];
 
   return v3;
 }
 
-- (BOOL)isEqualToRange:(id)a3
+- (BOOL)isEqualToRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v4 == self)
+    if (rangeCopy == self)
     {
       v7 = 1;
     }
 
     else
     {
-      v5 = [(CAMOverlayTitleRange *)v4 _titles];
-      v6 = [(CAMOverlayTitleRange *)self _titles];
-      v7 = [v5 isEqualToArray:v6];
+      _titles = [(CAMOverlayTitleRange *)rangeCopy _titles];
+      _titles2 = [(CAMOverlayTitleRange *)self _titles];
+      v7 = [_titles isEqualToArray:_titles2];
     }
   }
 
@@ -98,14 +98,14 @@
   return v7;
 }
 
-- (BOOL)containsValue:(id)a3
+- (BOOL)containsValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CAMOverlayTitleRange *)self _titles];
-    v6 = [v5 containsObject:v4];
+    _titles = [(CAMOverlayTitleRange *)self _titles];
+    v6 = [_titles containsObject:valueCopy];
   }
 
   else
@@ -116,28 +116,28 @@
   return v6;
 }
 
-- (BOOL)isValueExpectedType:(id)a3
+- (BOOL)isValueExpectedType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (unint64_t)indexOfValue:(id)a3
+- (unint64_t)indexOfValue:(id)value
 {
-  v4 = a3;
-  v5 = [(CAMOverlayTitleRange *)self _titles];
-  v6 = [v5 indexOfObject:v4];
+  valueCopy = value;
+  _titles = [(CAMOverlayTitleRange *)self _titles];
+  v6 = [_titles indexOfObject:valueCopy];
 
   return v6;
 }
 
-- (id)valueAtIndex:(unint64_t)a3
+- (id)valueAtIndex:(unint64_t)index
 {
-  v4 = [(CAMOverlayTitleRange *)self _titles];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  _titles = [(CAMOverlayTitleRange *)self _titles];
+  v5 = [_titles objectAtIndexedSubscript:index];
 
   return v5;
 }

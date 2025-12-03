@@ -1,20 +1,20 @@
 @interface TabOverviewDisplayItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation TabOverviewDisplayItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFTabOverviewDisplayItem" hasSwiftField:@"barManager" withSwiftType:"BarManager"];
-  [v3 validateClass:@"SFTabOverviewDisplayItemBarManager" hasSwiftField:@"registrations" withSwiftType:"Array<TabOverviewDisplayItemBarRegistration>"];
-  [v3 validateClass:@"SFTabOverviewDisplayItem" hasSwiftField:@"profileButtonForNavigationBar" withSwiftType:"Optional<UIButton>"];
-  [v3 validateClass:@"SFTabOverviewDisplayItem" hasSwiftField:@"tabOverviewSwitcher" withSwiftType:"TabOverviewSwitcher"];
-  [v3 validateClass:@"MobileSafari.TabOverviewSwitcher" hasSwiftField:@"lastSettledPage" withSwiftType:"Optional<Page>"];
-  [v3 validateSwiftStruct:@"MobileSafari.TabOverviewSwitcher[class].Page" hasSwiftField:@"profile" withSwiftType:"Optional<Profile>"];
-  [v3 validateSwiftStruct:@"MobileSafari.TabSwitcher[class].Profile" hasSwiftField:@"title" withSwiftType:"String"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFTabOverviewDisplayItem" hasSwiftField:@"barManager" withSwiftType:"BarManager"];
+  [validationsCopy validateClass:@"SFTabOverviewDisplayItemBarManager" hasSwiftField:@"registrations" withSwiftType:"Array<TabOverviewDisplayItemBarRegistration>"];
+  [validationsCopy validateClass:@"SFTabOverviewDisplayItem" hasSwiftField:@"profileButtonForNavigationBar" withSwiftType:"Optional<UIButton>"];
+  [validationsCopy validateClass:@"SFTabOverviewDisplayItem" hasSwiftField:@"tabOverviewSwitcher" withSwiftType:"TabOverviewSwitcher"];
+  [validationsCopy validateClass:@"MobileSafari.TabOverviewSwitcher" hasSwiftField:@"lastSettledPage" withSwiftType:"Optional<Page>"];
+  [validationsCopy validateSwiftStruct:@"MobileSafari.TabOverviewSwitcher[class].Page" hasSwiftField:@"profile" withSwiftType:"Optional<Profile>"];
+  [validationsCopy validateSwiftStruct:@"MobileSafari.TabSwitcher[class].Profile" hasSwiftField:@"title" withSwiftType:"String"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

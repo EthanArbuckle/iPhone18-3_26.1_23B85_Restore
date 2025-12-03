@@ -1,18 +1,18 @@
 @interface AnnotationImagesView
 - (BOOL)hasContent;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC8AppStore20AnnotationImagesView)initWithFrame:(CGRect)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC8AppStore20AnnotationImagesView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation AnnotationImagesView
 
-- (_TtC8AppStore20AnnotationImagesView)initWithFrame:(CGRect)a3
+- (_TtC8AppStore20AnnotationImagesView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = sub_10002849C(&qword_10098B4C0);
   __chkstk_darwin(v9);
@@ -23,16 +23,16 @@
   ReusePool.init(recycler:limit:)();
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(AnnotationImagesView *)&v12 initWithFrame:x, y, width, height];
-  [(AnnotationImagesView *)v10 setLayoutMargins:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
-  return v10;
+  height = [(AnnotationImagesView *)&v12 initWithFrame:x, y, width, height];
+  [(AnnotationImagesView *)height setLayoutMargins:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
+  return height;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_beginAccess();
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
 
   sub_1002A627C(v6);
 
@@ -65,7 +65,7 @@
 {
   swift_beginAccess();
   type metadata accessor for AnnotationImagesView.AnnotationImageView();
-  v3 = self;
+  selfCopy = self;
 
   v4 = Array.isNotEmpty.getter();
 
@@ -74,7 +74,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100548734();
 }
 

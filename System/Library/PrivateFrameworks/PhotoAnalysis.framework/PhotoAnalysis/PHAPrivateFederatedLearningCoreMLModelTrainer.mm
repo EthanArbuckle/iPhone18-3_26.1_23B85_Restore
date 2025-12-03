@@ -1,52 +1,52 @@
 @interface PHAPrivateFederatedLearningCoreMLModelTrainer
-+ (unint64_t)countForTrainingData:(id)a3;
-- (PHAPrivateFederatedLearningCoreMLModelTrainer)initWithTrainingData:(id)a3 programTrainer:(id)a4 evaluationMetricNames:(id)a5;
-- (id)_generateErrorWithErrorCode:(int64_t)a3 message:(id)a4 underlyingError:(id)a5;
-- (id)_unpackEvaluationMetrics:(id)a3 resultDictionary:(id)a4 error:(id *)a5;
-- (id)trainForNumberOfEpochs:(unint64_t)a3 error:(id *)a4;
-- (id)unpackResults:(id)a3 error:(id *)a4;
++ (unint64_t)countForTrainingData:(id)data;
+- (PHAPrivateFederatedLearningCoreMLModelTrainer)initWithTrainingData:(id)data programTrainer:(id)trainer evaluationMetricNames:(id)names;
+- (id)_generateErrorWithErrorCode:(int64_t)code message:(id)message underlyingError:(id)error;
+- (id)_unpackEvaluationMetrics:(id)metrics resultDictionary:(id)dictionary error:(id *)error;
+- (id)trainForNumberOfEpochs:(unint64_t)epochs error:(id *)error;
+- (id)unpackResults:(id)results error:(id *)error;
 @end
 
 @implementation PHAPrivateFederatedLearningCoreMLModelTrainer
 
-- (id)_generateErrorWithErrorCode:(int64_t)a3 message:(id)a4 underlyingError:(id)a5
+- (id)_generateErrorWithErrorCode:(int64_t)code message:(id)message underlyingError:(id)error
 {
-  v7 = a5;
+  errorCopy = error;
   v8 = MEMORY[0x277CBEB38];
-  v9 = a4;
+  messageCopy = message;
   v10 = objc_alloc_init(v8);
-  [v10 setObject:v9 forKey:*MEMORY[0x277CCA450]];
+  [v10 setObject:messageCopy forKey:*MEMORY[0x277CCA450]];
 
-  if (v7)
+  if (errorCopy)
   {
-    [v10 setObject:v7 forKey:*MEMORY[0x277CCA7E8]];
+    [v10 setObject:errorCopy forKey:*MEMORY[0x277CCA7E8]];
   }
 
-  v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.PhotoAnalysis.PHAPrivateFederatedLearningCoreMLModelTrainer" code:a3 userInfo:v10];
+  v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.PhotoAnalysis.PHAPrivateFederatedLearningCoreMLModelTrainer" code:code userInfo:v10];
 
   return v11;
 }
 
-- (id)_unpackEvaluationMetrics:(id)a3 resultDictionary:(id)a4 error:(id *)a5
+- (id)_unpackEvaluationMetrics:(id)metrics resultDictionary:(id)dictionary error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  metricsCopy = metrics;
+  dictionaryCopy = dictionary;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v40 = self;
+  selfCopy = self;
   obj = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self evaluationMetricNames];
   v10 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = *v44;
-    v37 = v9;
-    v38 = a5;
+    v37 = dictionaryCopy;
+    errorCopy = error;
     v35 = *v44;
-    v36 = v8;
+    v36 = metricsCopy;
     do
     {
       v13 = 0;
@@ -59,30 +59,30 @@
         }
 
         v14 = *(*(&v43 + 1) + 8 * v13);
-        v15 = [v8 featureValueForName:v14];
+        v15 = [metricsCopy featureValueForName:v14];
         if ([v15 isUndefined])
         {
-          if (!a5)
+          if (!error)
           {
             goto LABEL_22;
           }
 
           v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ is undefined", v14];
-          *a5 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)v40 _generateErrorWithErrorCode:2 message:v16 underlyingError:0];
+          *error = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)selfCopy _generateErrorWithErrorCode:2 message:v16 underlyingError:0];
         }
 
         else
         {
-          v17 = [v15 multiArrayValue];
-          v16 = v17;
-          if (v17)
+          multiArrayValue = [v15 multiArrayValue];
+          v16 = multiArrayValue;
+          if (multiArrayValue)
           {
-            v18 = [v17 shape];
-            v19 = [v18 objectAtIndexedSubscript:0];
-            v20 = [v19 unsignedIntValue];
+            shape = [multiArrayValue shape];
+            v19 = [shape objectAtIndexedSubscript:0];
+            unsignedIntValue = [v19 unsignedIntValue];
 
-            v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:v20];
-            v22 = [v9 objectForKeyedSubscript:v14];
+            v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:unsignedIntValue];
+            v22 = [dictionaryCopy objectForKeyedSubscript:v14];
             v42 = v22;
             if (v22)
             {
@@ -91,15 +91,15 @@
               v21 = v23;
             }
 
-            else if (v20)
+            else if (unsignedIntValue)
             {
               do
               {
                 [v21 addObject:&unk_2844CC978];
-                --v20;
+                --unsignedIntValue;
               }
 
-              while (v20);
+              while (unsignedIntValue);
             }
 
             if ([v21 count])
@@ -123,25 +123,25 @@
               while (v24 < [v21 count]);
             }
 
-            v9 = v37;
+            dictionaryCopy = v37;
             [v37 setObject:v21 forKeyedSubscript:v14];
 
-            a5 = v38;
+            error = errorCopy;
             v11 = v39;
             v12 = v35;
-            v8 = v36;
+            metricsCopy = v36;
           }
 
           else
           {
-            if (!a5)
+            if (!error)
             {
               v16 = 0;
               goto LABEL_21;
             }
 
             v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"metricMLMultiArray is undefined for %@", v14];
-            *a5 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)v40 _generateErrorWithErrorCode:3 message:v21 underlyingError:0];
+            *error = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)selfCopy _generateErrorWithErrorCode:3 message:v21 underlyingError:0];
           }
         }
 
@@ -159,15 +159,15 @@ LABEL_22:
     while (v33);
   }
 
-  return v9;
+  return dictionaryCopy;
 }
 
-- (id)unpackResults:(id)a3 error:(id *)a4
+- (id)unpackResults:(id)results error:(id *)error
 {
-  v6 = a3;
+  resultsCopy = results;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v8 = [v6 evaluationMetrics];
-  v9 = [v8 count];
+  evaluationMetrics = [resultsCopy evaluationMetrics];
+  v9 = [evaluationMetrics count];
 
   if (v9 < 1)
   {
@@ -179,14 +179,14 @@ LABEL_22:
     v10 = 0;
     do
     {
-      v11 = [v6 evaluationMetrics];
-      v12 = [v11 featuresAtIndex:v10];
+      evaluationMetrics2 = [resultsCopy evaluationMetrics];
+      v12 = [evaluationMetrics2 featuresAtIndex:v10];
 
-      v13 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self _unpackEvaluationMetrics:v12 resultDictionary:v7 error:a4];
+      v13 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self _unpackEvaluationMetrics:v12 resultDictionary:v7 error:error];
 
       ++v10;
-      v14 = [v6 evaluationMetrics];
-      v15 = [v14 count];
+      evaluationMetrics3 = [resultsCopy evaluationMetrics];
+      v15 = [evaluationMetrics3 count];
 
       v7 = v13;
     }
@@ -196,7 +196,7 @@ LABEL_22:
 
   v16 = objc_alloc(MEMORY[0x277CBEB18]);
   v17 = MEMORY[0x277CCABB0];
-  [v6 loss];
+  [resultsCopy loss];
   v18 = [v17 numberWithDouble:?];
   v19 = [v16 initWithObjects:{v18, 0}];
   [v13 setObject:v19 forKeyedSubscript:@"loss"];
@@ -204,56 +204,56 @@ LABEL_22:
   return v13;
 }
 
-- (id)trainForNumberOfEpochs:(unint64_t)a3 error:(id *)a4
+- (id)trainForNumberOfEpochs:(unint64_t)epochs error:(id *)error
 {
   v36[1] = *MEMORY[0x277D85DE8];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self trainingData];
-  v8 = v7;
-  if (v7)
+  trainingData = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self trainingData];
+  v8 = trainingData;
+  if (trainingData)
   {
-    v9 = [v7 count];
-    if (a4 && !v9)
+    v9 = [trainingData count];
+    if (error && !v9)
     {
       goto LABEL_4;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
 LABEL_4:
-    *a4 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self _generateErrorWithErrorCode:4 message:@"Empty training data" underlyingError:0];
+    *error = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self _generateErrorWithErrorCode:4 message:@"Empty training data" underlyingError:0];
   }
 
-  v10 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self trainingData];
-  v11 = [PHAPrivateFederatedLearningCoreMLModelTrainer countForTrainingData:v10];
+  trainingData2 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self trainingData];
+  v11 = [PHAPrivateFederatedLearningCoreMLModelTrainer countForTrainingData:trainingData2];
 
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
   v36[0] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
   [v6 setObject:v13 forKeyedSubscript:@"count"];
 
-  v14 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self programTrainer];
-  v15 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self evaluationMetricNames];
-  v16 = [v14 evaluateUsingTestData:v8 evaluationMetricNames:v15 error:a4];
+  programTrainer = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self programTrainer];
+  evaluationMetricNames = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self evaluationMetricNames];
+  v16 = [programTrainer evaluateUsingTestData:v8 evaluationMetricNames:evaluationMetricNames error:error];
 
   v33 = v16;
-  v17 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self unpackResults:v16 error:a4];
+  v17 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self unpackResults:v16 error:error];
   if (v17)
   {
     [v6 setObject:v17 forKey:@"Pretraining"];
   }
 
   v32 = v17;
-  if (!a3)
+  if (!epochs)
   {
     v18 = 0;
 LABEL_17:
-    v27 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self programTrainer];
-    v28 = [v27 copyCurrentTrainingDelta];
+    programTrainer2 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self programTrainer];
+    copyCurrentTrainingDelta = [programTrainer2 copyCurrentTrainingDelta];
 
-    v29 = [v28 flattenedModelUpdate];
-    v30 = [[PHAPrivateFederatedLearningCoreModelTrainerResponse alloc] initWithDataPackage:v29 trainingMetrics:v6];
+    flattenedModelUpdate = [copyCurrentTrainingDelta flattenedModelUpdate];
+    v30 = [[PHAPrivateFederatedLearningCoreModelTrainerResponse alloc] initWithDataPackage:flattenedModelUpdate trainingMetrics:v6];
 
     goto LABEL_18;
   }
@@ -263,11 +263,11 @@ LABEL_17:
   while (1)
   {
     v20 = v18;
-    v21 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self programTrainer];
-    v22 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self evaluationMetricNames];
+    programTrainer3 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self programTrainer];
+    evaluationMetricNames2 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self evaluationMetricNames];
     v35 = v18;
     v23 = v8;
-    v24 = [v21 trainUsingTrainingData:v8 evaluationMetricNames:v22 error:&v35];
+    v24 = [programTrainer3 trainUsingTrainingData:v8 evaluationMetricNames:evaluationMetricNames2 error:&v35];
     v18 = v35;
 
     if (!v24)
@@ -275,7 +275,7 @@ LABEL_17:
       break;
     }
 
-    v25 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self unpackResults:v24 error:a4];
+    v25 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self unpackResults:v24 error:error];
     if (v25)
     {
       v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"Epoch %lu", v19];
@@ -284,7 +284,7 @@ LABEL_17:
 
     ++v19;
     v8 = v23;
-    if (a3 == v19)
+    if (epochs == v19)
     {
       goto LABEL_17;
     }
@@ -292,45 +292,45 @@ LABEL_17:
 
   v30 = 0;
   v8 = v23;
-  if (a4 && v18)
+  if (error && v18)
   {
-    v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Empty training result"];
-    [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self _generateErrorWithErrorCode:1 message:v28 underlyingError:v18];
-    *a4 = v30 = 0;
+    copyCurrentTrainingDelta = [MEMORY[0x277CCACA8] stringWithFormat:@"Empty training result"];
+    [(PHAPrivateFederatedLearningCoreMLModelTrainer *)self _generateErrorWithErrorCode:1 message:copyCurrentTrainingDelta underlyingError:v18];
+    *error = v30 = 0;
 LABEL_18:
   }
 
   return v30;
 }
 
-- (PHAPrivateFederatedLearningCoreMLModelTrainer)initWithTrainingData:(id)a3 programTrainer:(id)a4 evaluationMetricNames:(id)a5
+- (PHAPrivateFederatedLearningCoreMLModelTrainer)initWithTrainingData:(id)data programTrainer:(id)trainer evaluationMetricNames:(id)names
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  trainerCopy = trainer;
+  namesCopy = names;
   v15.receiver = self;
   v15.super_class = PHAPrivateFederatedLearningCoreMLModelTrainer;
   v12 = [(PHAPrivateFederatedLearningCoreMLModelTrainer *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_trainingData, a3);
-    objc_storeStrong(&v13->_programTrainer, a4);
-    objc_storeStrong(&v13->_evaluationMetricNames, a5);
+    objc_storeStrong(&v12->_trainingData, data);
+    objc_storeStrong(&v13->_programTrainer, trainer);
+    objc_storeStrong(&v13->_evaluationMetricNames, names);
   }
 
   return v13;
 }
 
-+ (unint64_t)countForTrainingData:(id)a3
++ (unint64_t)countForTrainingData:(id)data
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [a3 array];
+  array = [data array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v4 = [array countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -342,21 +342,21 @@ LABEL_18:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(array);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 featureNames];
-        v11 = [v10 anyObject];
+        featureNames = [v9 featureNames];
+        anyObject = [featureNames anyObject];
 
-        v12 = [v9 featureValueForName:v11];
-        v13 = [v12 multiArrayValue];
-        v14 = [v13 shape];
-        v15 = [v14 objectAtIndexedSubscript:0];
+        v12 = [v9 featureValueForName:anyObject];
+        multiArrayValue = [v12 multiArrayValue];
+        shape = [multiArrayValue shape];
+        v15 = [shape objectAtIndexedSubscript:0];
         v6 += [v15 unsignedIntValue];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [array countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v5);

@@ -1,21 +1,21 @@
 @interface IMMemoryCache
-- (BOOL)_shouldRemoveIndex:(unint64_t)a3;
+- (BOOL)_shouldRemoveIndex:(unint64_t)index;
 - (IMMemoryCache)init;
 - (id)allKeys;
 - (id)description;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (int64_t)numberOfCachedItems;
-- (unint64_t)costForObjectWithKey:(id)a3;
-- (void)_addItem:(id)a3 forKey:(id)a4;
+- (unint64_t)costForObjectWithKey:(id)key;
+- (void)_addItem:(id)item forKey:(id)key;
 - (void)_checkLimits;
 - (void)_checkLimitsAndEvictObjects;
-- (void)_removeObjectForKey:(id)a3;
+- (void)_removeObjectForKey:(id)key;
 - (void)checkLimitsAndEvictObjects;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)removeObjectsForKeyWithPrefix:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4 cost:(unint64_t)a5;
+- (void)removeObjectForKey:(id)key;
+- (void)removeObjectsForKeyWithPrefix:(id)prefix;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key cost:(unint64_t)cost;
 @end
 
 @implementation IMMemoryCache
@@ -84,10 +84,10 @@ void __24__IMMemoryCache_allKeys__block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 length])
+  keyCopy = key;
+  if ([keyCopy length])
   {
     v11 = 0;
     v12 = &v11;
@@ -101,7 +101,7 @@ void __24__IMMemoryCache_allKeys__block_invoke(uint64_t a1)
     block[2] = __30__IMMemoryCache_objectForKey___block_invoke;
     block[3] = &unk_2782BDD40;
     block[4] = self;
-    v9 = v4;
+    v9 = keyCopy;
     v10 = &v11;
     dispatch_sync(accessQueue, block);
     v6 = v12[5];
@@ -155,25 +155,25 @@ void __30__IMMemoryCache_objectForKey___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = [_IMMemoryCacheItem cacheItemWithItem:a3 key:v6 cost:0];
-  [(IMMemoryCache *)self _addItem:v7 forKey:v6];
+  keyCopy = key;
+  v7 = [_IMMemoryCacheItem cacheItemWithItem:object key:keyCopy cost:0];
+  [(IMMemoryCache *)self _addItem:v7 forKey:keyCopy];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 cost:(unint64_t)a5
+- (void)setObject:(id)object forKey:(id)key cost:(unint64_t)cost
 {
-  v8 = a4;
-  v9 = [_IMMemoryCacheItem cacheItemWithItem:a3 key:v8 cost:a5];
-  [(IMMemoryCache *)self _addItem:v9 forKey:v8];
+  keyCopy = key;
+  v9 = [_IMMemoryCacheItem cacheItemWithItem:object key:keyCopy cost:cost];
+  [(IMMemoryCache *)self _addItem:v9 forKey:keyCopy];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (keyCopy)
   {
     accessQueue = self->_accessQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -181,7 +181,7 @@ void __30__IMMemoryCache_objectForKey___block_invoke(uint64_t a1)
     v7[2] = __36__IMMemoryCache_removeObjectForKey___block_invoke;
     v7[3] = &unk_2782BDD68;
     v7[4] = self;
-    v8 = v4;
+    v8 = keyCopy;
     dispatch_sync(accessQueue, v7);
   }
 }
@@ -208,10 +208,10 @@ void __33__IMMemoryCache_removeAllObjects__block_invoke(uint64_t a1)
   [v3 removeAllObjects];
 }
 
-- (void)removeObjectsForKeyWithPrefix:(id)a3
+- (void)removeObjectsForKeyWithPrefix:(id)prefix
 {
-  v4 = a3;
-  if ([v4 length])
+  prefixCopy = prefix;
+  if ([prefixCopy length])
   {
     accessQueue = self->_accessQueue;
     v6[0] = MEMORY[0x277D85DD0];
@@ -219,7 +219,7 @@ void __33__IMMemoryCache_removeAllObjects__block_invoke(uint64_t a1)
     v6[2] = __47__IMMemoryCache_removeObjectsForKeyWithPrefix___block_invoke;
     v6[3] = &unk_2782BDD68;
     v6[4] = self;
-    v7 = v4;
+    v7 = prefixCopy;
     dispatch_sync(accessQueue, v6);
   }
 }
@@ -263,9 +263,9 @@ void __47__IMMemoryCache_removeObjectsForKeyWithPrefix___block_invoke(uint64_t a
   }
 }
 
-- (BOOL)_shouldRemoveIndex:(unint64_t)a3
+- (BOOL)_shouldRemoveIndex:(unint64_t)index
 {
-  v4 = [(NSMutableArray *)self->_itemsArray objectAtIndex:a3];
+  v4 = [(NSMutableArray *)self->_itemsArray objectAtIndex:index];
   if ([v4 conformsToProtocol] && (objc_msgSend(v4, "item"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "discardContentIfPossible"), v5, objc_msgSend(v4, "item"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isContentDiscarded"), v6, !v7))
   {
     v16 = 0;
@@ -273,20 +273,20 @@ void __47__IMMemoryCache_removeObjectsForKeyWithPrefix___block_invoke(uint64_t a
 
   else
   {
-    v8 = [(IMMemoryCache *)self delegate];
+    delegate = [(IMMemoryCache *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(IMMemoryCache *)self delegate];
-      v11 = [v4 item];
-      [v10 cache:self willEvictObject:v11];
+      delegate2 = [(IMMemoryCache *)self delegate];
+      item = [v4 item];
+      [delegate2 cache:self willEvictObject:item];
     }
 
-    v12 = [v4 cost];
+    cost = [v4 cost];
     items = self->_items;
     v14 = self->_count - 1;
-    self->_totalCost -= v12;
+    self->_totalCost -= cost;
     self->_count = v14;
     v15 = [v4 key];
     [(NSMutableDictionary *)items removeObjectForKey:v15];
@@ -314,7 +314,7 @@ void __47__IMMemoryCache_removeObjectsForKeyWithPrefix___block_invoke(uint64_t a
   if (totalCostLimit && self->_totalCost > totalCostLimit)
   {
     count = self->_count;
-    v5 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
     if (count)
     {
       v6 = 0;
@@ -323,14 +323,14 @@ void __47__IMMemoryCache_removeObjectsForKeyWithPrefix___block_invoke(uint64_t a
       {
         if ([(IMMemoryCache *)self _shouldRemoveIndex:v6])
         {
-          [v5 addIndex:v6];
+          [indexSet addIndex:v6];
         }
       }
 
       while (self->_totalCost > self->_totalCostLimit && v7 != v6++);
     }
 
-    [(NSMutableArray *)self->_itemsArray removeObjectsAtIndexes:v5];
+    [(NSMutableArray *)self->_itemsArray removeObjectsAtIndexes:indexSet];
   }
 
   countLimit = self->_countLimit;
@@ -339,19 +339,19 @@ void __47__IMMemoryCache_removeObjectsForKeyWithPrefix___block_invoke(uint64_t a
     v10 = self->_count;
     if (v10 > countLimit)
     {
-      v14 = [MEMORY[0x277CCAB58] indexSet];
+      indexSet2 = [MEMORY[0x277CCAB58] indexSet];
       v11 = 0;
       v12 = v10 - 1;
       do
       {
         if ([(IMMemoryCache *)self _shouldRemoveIndex:v11])
         {
-          [v14 addIndex:v11];
+          [indexSet2 addIndex:v11];
         }
       }
 
       while (self->_count > self->_countLimit && v12 != v11++);
-      [(NSMutableArray *)self->_itemsArray removeObjectsAtIndexes:v14];
+      [(NSMutableArray *)self->_itemsArray removeObjectsAtIndexes:indexSet2];
     }
   }
 }
@@ -368,11 +368,11 @@ void __47__IMMemoryCache_removeObjectsForKeyWithPrefix___block_invoke(uint64_t a
   }
 }
 
-- (unint64_t)costForObjectWithKey:(id)a3
+- (unint64_t)costForObjectWithKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (keyCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -384,7 +384,7 @@ void __47__IMMemoryCache_removeObjectsForKeyWithPrefix___block_invoke(uint64_t a
     block[2] = __38__IMMemoryCache_costForObjectWithKey___block_invoke;
     block[3] = &unk_2782BDD40;
     block[4] = self;
-    v10 = v4;
+    v10 = keyCopy;
     v11 = &v12;
     dispatch_sync(accessQueue, block);
     v7 = v13[3];
@@ -489,11 +489,11 @@ void __28__IMMemoryCache_description__block_invoke(uint64_t a1)
   *(v12 + 40) = v11;
 }
 
-- (void)_addItem:(id)a3 forKey:(id)a4
+- (void)_addItem:(id)item forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  itemCopy = item;
+  keyCopy = key;
+  if ([keyCopy length])
   {
     accessQueue = self->_accessQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -501,8 +501,8 @@ void __28__IMMemoryCache_description__block_invoke(uint64_t a1)
     block[2] = __33__IMMemoryCache__addItem_forKey___block_invoke;
     block[3] = &unk_2782BDDB8;
     block[4] = self;
-    v10 = v7;
-    v11 = v6;
+    v10 = keyCopy;
+    v11 = itemCopy;
     dispatch_sync(accessQueue, block);
   }
 }
@@ -535,21 +535,21 @@ uint64_t __33__IMMemoryCache__addItem_forKey___block_invoke(uint64_t a1)
   return [v6 _checkLimits];
 }
 
-- (void)_removeObjectForKey:(id)a3
+- (void)_removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (keyCopy)
   {
-    v13 = v4;
-    v6 = [(NSMutableDictionary *)self->_items objectForKey:v4];
+    v13 = keyCopy;
+    v6 = [(NSMutableDictionary *)self->_items objectForKey:keyCopy];
     v7 = v6;
     if (v6)
     {
       --self->_count;
-      v8 = [v6 cost];
+      cost = [v6 cost];
       items = self->_items;
-      self->_totalCost -= v8;
+      self->_totalCost -= cost;
       [(NSMutableDictionary *)items removeObjectForKey:v13];
       itemsArray = self->_itemsArray;
       v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v7, "timeStamp")}];
@@ -564,7 +564,7 @@ uint64_t __33__IMMemoryCache__addItem_forKey___block_invoke(uint64_t a1)
     v5 = v13;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](keyCopy, v5);
 }
 
 @end

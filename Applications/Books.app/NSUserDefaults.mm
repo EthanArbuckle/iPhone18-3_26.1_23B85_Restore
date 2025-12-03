@@ -7,143 +7,143 @@
 - (BOOL)BKReadingGoalsShouldClearDataTrigger;
 - (BOOL)BKReadingGoalsUserDefaultsKey;
 - (BOOL)readerShowStatusBar;
-- (void)setAllowAutoDownloadsForPurchasesFromOtherDevices:(BOOL)a3;
-- (void)setBAResetAnalyticsUserIDTrigger:(BOOL)a3;
-- (void)setBCWWebRepExternalLoadApprovalCacheClearTrigger:(BOOL)a3;
-- (void)setBKFinishedAssetRemovalEnabledKey:(BOOL)a3;
-- (void)setBKReadingGoalsShouldClearDataKey:(BOOL)a3;
-- (void)setBKReadingGoalsShouldClearDataTrigger:(BOOL)a3;
-- (void)setBKReadingGoalsUserDefaultsKey:(BOOL)a3;
+- (void)setAllowAutoDownloadsForPurchasesFromOtherDevices:(BOOL)devices;
+- (void)setBAResetAnalyticsUserIDTrigger:(BOOL)trigger;
+- (void)setBCWWebRepExternalLoadApprovalCacheClearTrigger:(BOOL)trigger;
+- (void)setBKFinishedAssetRemovalEnabledKey:(BOOL)key;
+- (void)setBKReadingGoalsShouldClearDataKey:(BOOL)key;
+- (void)setBKReadingGoalsShouldClearDataTrigger:(BOOL)trigger;
+- (void)setBKReadingGoalsUserDefaultsKey:(BOOL)key;
 @end
 
 @implementation NSUserDefaults
 
 - (BOOL)readerShowStatusBar
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007A2214();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   return v4;
 }
 
 - (BOOL)BKReadingGoalsShouldClearDataTrigger
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007A2214();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   return v4;
 }
 
-- (void)setBKReadingGoalsShouldClearDataTrigger:(BOOL)a3
+- (void)setBKReadingGoalsShouldClearDataTrigger:(BOOL)trigger
 {
-  v5 = self;
+  selfCopy = self;
   isa = sub_1007A2684().super.super.isa;
   v4 = sub_1007A2214();
-  [(NSUserDefaults *)v5 setValue:isa forKey:v4];
+  [(NSUserDefaults *)selfCopy setValue:isa forKey:v4];
 }
 
 - (BOOL)BKReadingGoalsShouldClearDataKey
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007A2214();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   return v4;
 }
 
-- (void)setBKReadingGoalsShouldClearDataKey:(BOOL)a3
+- (void)setBKReadingGoalsShouldClearDataKey:(BOOL)key
 {
-  v5 = self;
+  selfCopy = self;
   isa = sub_1007A2684().super.super.isa;
   v4 = sub_1007A2214();
-  [(NSUserDefaults *)v5 setValue:isa forKey:v4];
+  [(NSUserDefaults *)selfCopy setValue:isa forKey:v4];
 }
 
 - (BOOL)BAResetAnalyticsUserIDTrigger
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007A2214();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   return v4;
 }
 
-- (void)setBAResetAnalyticsUserIDTrigger:(BOOL)a3
+- (void)setBAResetAnalyticsUserIDTrigger:(BOOL)trigger
 {
-  v5 = self;
+  selfCopy = self;
   isa = sub_1007A2684().super.super.isa;
   v4 = sub_1007A2214();
-  [(NSUserDefaults *)v5 setValue:isa forKey:v4];
+  [(NSUserDefaults *)selfCopy setValue:isa forKey:v4];
 }
 
 - (BOOL)BCWWebRepExternalLoadApprovalCacheClearTrigger
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007A2214();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   return v4;
 }
 
-- (void)setBCWWebRepExternalLoadApprovalCacheClearTrigger:(BOOL)a3
+- (void)setBCWWebRepExternalLoadApprovalCacheClearTrigger:(BOOL)trigger
 {
-  v5 = self;
+  selfCopy = self;
   isa = sub_1007A2684().super.super.isa;
   v4 = sub_1007A2214();
-  [(NSUserDefaults *)v5 setValue:isa forKey:v4];
+  [(NSUserDefaults *)selfCopy setValue:isa forKey:v4];
 }
 
 - (BOOL)AllowAutoDownloadsForPurchasesFromOtherDevices
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007A2214();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   return v4;
 }
 
-- (void)setAllowAutoDownloadsForPurchasesFromOtherDevices:(BOOL)a3
+- (void)setAllowAutoDownloadsForPurchasesFromOtherDevices:(BOOL)devices
 {
-  v5 = self;
+  selfCopy = self;
   isa = sub_1007A2684().super.super.isa;
   v4 = sub_1007A2214();
-  [(NSUserDefaults *)v5 setValue:isa forKey:v4];
+  [(NSUserDefaults *)selfCopy setValue:isa forKey:v4];
 }
 
 - (BOOL)BKReadingGoalsUserDefaultsKey
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007A2214();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   return v4;
 }
 
-- (void)setBKReadingGoalsUserDefaultsKey:(BOOL)a3
+- (void)setBKReadingGoalsUserDefaultsKey:(BOOL)key
 {
-  v5 = self;
+  selfCopy = self;
   isa = sub_1007A2684().super.super.isa;
   v4 = sub_1007A2214();
-  [(NSUserDefaults *)v5 setValue:isa forKey:v4];
+  [(NSUserDefaults *)selfCopy setValue:isa forKey:v4];
 }
 
 - (BOOL)BKFinishedAssetRemovalEnabledKey
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007A2214();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   return v4;
 }
 
-- (void)setBKFinishedAssetRemovalEnabledKey:(BOOL)a3
+- (void)setBKFinishedAssetRemovalEnabledKey:(BOOL)key
 {
-  v5 = self;
+  selfCopy = self;
   isa = sub_1007A2684().super.super.isa;
   v4 = sub_1007A2214();
-  [(NSUserDefaults *)v5 setValue:isa forKey:v4];
+  [(NSUserDefaults *)selfCopy setValue:isa forKey:v4];
 }
 
 @end

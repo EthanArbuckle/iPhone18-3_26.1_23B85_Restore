@@ -9,25 +9,25 @@
 
 - (void)markSystemAvailableForCacheDelete
 {
-  v2 = self;
+  selfCopy = self;
   sub_100002C1C();
 }
 
 - (void)registerWithCacheDelete
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000496C();
 }
 
 - (void)startCloudAssetsService
 {
-  v2 = self;
+  selfCopy = self;
   sub_100005BB4();
 }
 
 - (void)setupCloudTelemetryXpcServiceActivities
 {
-  v2 = self;
+  selfCopy = self;
   sub_100005F5C();
 }
 

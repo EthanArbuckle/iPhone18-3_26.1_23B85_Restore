@@ -1,21 +1,21 @@
 @interface BETableViewCellPageNumberLabel
-- (BETableViewCellPageNumberLabel)initWithFrame:(CGRect)a3;
+- (BETableViewCellPageNumberLabel)initWithFrame:(CGRect)frame;
 @end
 
 @implementation BETableViewCellPageNumberLabel
 
-- (BETableViewCellPageNumberLabel)initWithFrame:(CGRect)a3
+- (BETableViewCellPageNumberLabel)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = BETableViewCellPageNumberLabel;
-  v3 = [(BETableViewCellPageNumberLabel *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BETableViewCellPageNumberLabel *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIFont systemFontOfSize:17.0];
     [(BETableViewCellPageNumberLabel *)v3 setFont:v4];
 
-    v5 = [objc_opt_class() p_textColor];
-    [(BETableViewCellPageNumberLabel *)v3 setTextColor:v5];
+    p_textColor = [objc_opt_class() p_textColor];
+    [(BETableViewCellPageNumberLabel *)v3 setTextColor:p_textColor];
 
     [(BETableViewCellPageNumberLabel *)v3 setTextAlignment:2];
   }

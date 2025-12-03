@@ -1,33 +1,33 @@
 @interface PTFocusBlurMap
-- (CGRect)_boxFromComponent:(id)a3;
+- (CGRect)_boxFromComponent:(id)component;
 - (CGRect)_inputSensorPixelRect;
-- (CGRect)_normalRectFromPixelRect:(CGRect)a3;
-- (CGRect)_pixelRectFromNormalRect:(CGRect)a3;
-- (CGRect)_sensorPixelRectFromRegion:(id)a3;
-- (CGRect)_sensorPixelRectFromTileRect:(CGRect)a3;
-- (CGRect)_tileRectFromNodes:(id)a3;
-- (CGRect)_tileRectFromSensorPixelRect:(CGRect)a3;
-- (CGRect)_validNormalizedRectFromSensorPixelRect:(CGRect)a3;
+- (CGRect)_normalRectFromPixelRect:(CGRect)rect;
+- (CGRect)_pixelRectFromNormalRect:(CGRect)rect;
+- (CGRect)_sensorPixelRectFromRegion:(id)region;
+- (CGRect)_sensorPixelRectFromTileRect:(CGRect)rect;
+- (CGRect)_tileRectFromNodes:(id)nodes;
+- (CGRect)_tileRectFromSensorPixelRect:(CGRect)rect;
+- (CGRect)_validNormalizedRectFromSensorPixelRect:(CGRect)rect;
 - (CGRect)autoFocusRect;
 - (CGRect)focusValidNormalizedRect;
 - (CGRect)inputValidNormalizedRect;
-- (CGRect)validNormalizedRectFromRegion:(id)a3;
+- (CGRect)validNormalizedRectFromRegion:(id)region;
 - (NSIndexSet)inFocusRegion;
 - (NSIndexSet)largestFocusRegion;
 - (PTFocusBlurMap)init;
-- (PTFocusBlurMap)initWithFocusBlurMapData:(id)a3 sensorSize:(CGSize)a4 validSensorRect:(CGRect)a5;
-- (PTFocusBlurMap)initWithFocusBlurMapDictionary:(id)a3;
-- (id)_blurExtendedNodes:(id)a3 blurMin:(int)a4 blurMax:(int)a5;
-- (id)_blurExtendedNodes:(id)a3 options:(unint64_t)a4;
-- (id)_connectedComponentWithNode:(unint64_t)a3 unvisited:(id)a4;
-- (id)_connectedComponents:(id)a3;
+- (PTFocusBlurMap)initWithFocusBlurMapData:(id)data sensorSize:(CGSize)size validSensorRect:(CGRect)rect;
+- (PTFocusBlurMap)initWithFocusBlurMapDictionary:(id)dictionary;
+- (id)_blurExtendedNodes:(id)nodes blurMin:(int)min blurMax:(int)max;
+- (id)_blurExtendedNodes:(id)nodes options:(unint64_t)options;
+- (id)_connectedComponentWithNode:(unint64_t)node unvisited:(id)unvisited;
+- (id)_connectedComponents:(id)components;
 - (id)_inFocusNodes;
-- (id)_largestOfComponents:(id)a3;
-- (id)_nodesBetweenBlurMin:(int)a3 blurMax:(int)a4;
-- (id)_nodesForNormalizedRect:(CGRect)a3;
-- (id)_nodesFromTileRect:(CGRect)a3;
-- (void)_getBlurRangeOfNodes:(id)a3 blurMin:(int *)a4 blurMax:(int *)a5;
-- (void)_initValidRectFromSensorWidth:(unint64_t)a3 height:(unint64_t)a4;
+- (id)_largestOfComponents:(id)components;
+- (id)_nodesBetweenBlurMin:(int)min blurMax:(int)max;
+- (id)_nodesForNormalizedRect:(CGRect)rect;
+- (id)_nodesFromTileRect:(CGRect)rect;
+- (void)_getBlurRangeOfNodes:(id)nodes blurMin:(int *)min blurMax:(int *)max;
+- (void)_initValidRectFromSensorWidth:(unint64_t)width height:(unint64_t)height;
 - (void)dealloc;
 @end
 
@@ -62,16 +62,16 @@
   [(PTFocusBlurMap *)&v4 dealloc];
 }
 
-- (PTFocusBlurMap)initWithFocusBlurMapData:(id)a3 sensorSize:(CGSize)a4 validSensorRect:(CGRect)a5
+- (PTFocusBlurMap)initWithFocusBlurMapData:(id)data sensorSize:(CGSize)size validSensorRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.height;
-  v10 = a4.width;
-  v12 = a3;
-  if (![v12 length])
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = size.height;
+  v10 = size.width;
+  dataCopy = data;
+  if (![dataCopy length])
   {
     goto LABEL_7;
   }
@@ -81,9 +81,9 @@
   self = [(PTFocusBlurMap *)&v17 init];
   if (self)
   {
-    v13 = malloc_type_malloc([v12 length], 0xF4989469uLL);
+    v13 = malloc_type_malloc([dataCopy length], 0xF4989469uLL);
     self->_map = v13;
-    [v12 getBytes:v13 length:{objc_msgSend(v12, "length")}];
+    [dataCopy getBytes:v13 length:{objc_msgSend(dataCopy, "length")}];
     map = self->_map;
     if (map->var0 && map->var1.var12 * map->var1.var11 - 1 <= 0x1FF)
     {
@@ -97,21 +97,21 @@
     }
 
 LABEL_7:
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
 LABEL_6:
   self = self;
-  v15 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v15;
+  return selfCopy;
 }
 
-- (PTFocusBlurMap)initWithFocusBlurMapDictionary:(id)a3
+- (PTFocusBlurMap)initWithFocusBlurMapDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(PTFocusBlurMap *)self init];
   v6 = v5;
   if (!v5)
@@ -125,7 +125,7 @@ LABEL_8:
     goto LABEL_22;
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"flow"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"flow"];
   v9 = v8;
   if (v8)
   {
@@ -228,11 +228,11 @@ LABEL_12:
 
         v38 = [v30 objectAtIndexedSubscript:v33];
         v39 = [v38 objectForKeyedSubscript:@"conf"];
-        v40 = [v39 intValue];
-        v41 = v40 + 255;
-        if (v40 >= 0)
+        intValue = [v39 intValue];
+        v41 = intValue + 255;
+        if (intValue >= 0)
         {
-          HIBYTE(v41) = BYTE1(v40);
+          HIBYTE(v41) = BYTE1(intValue);
         }
 
         *(p_var5 - 4) = HIBYTE(v41);
@@ -268,13 +268,13 @@ LABEL_23:
   return v9;
 }
 
-- (void)_initValidRectFromSensorWidth:(unint64_t)a3 height:(unint64_t)a4
+- (void)_initValidRectFromSensorWidth:(unint64_t)width height:(unint64_t)height
 {
-  v4 = a3 / 1.78;
-  self->_validWidth = a3;
+  v4 = width / 1.78;
+  self->_validWidth = width;
   self->_validHeight = v4;
   self->_validX = 0;
-  self->_validY = a4 - (v4 >> 1);
+  self->_validY = height - (v4 >> 1);
 }
 
 - (NSIndexSet)inFocusRegion
@@ -287,8 +287,8 @@ LABEL_23:
 
 - (NSIndexSet)largestFocusRegion
 {
-  v3 = [(PTFocusBlurMap *)self inFocusRegion];
-  v4 = [(PTFocusBlurMap *)self _connectedComponents:v3];
+  inFocusRegion = [(PTFocusBlurMap *)self inFocusRegion];
+  v4 = [(PTFocusBlurMap *)self _connectedComponents:inFocusRegion];
   v5 = [(PTFocusBlurMap *)self _largestOfComponents:v4];
 
   return v5;
@@ -330,8 +330,8 @@ LABEL_23:
 
 - (CGRect)focusValidNormalizedRect
 {
-  v3 = [(PTFocusBlurMap *)self largestFocusRegion];
-  [(PTFocusBlurMap *)self _sensorPixelRectFromRegion:v3];
+  largestFocusRegion = [(PTFocusBlurMap *)self largestFocusRegion];
+  [(PTFocusBlurMap *)self _sensorPixelRectFromRegion:largestFocusRegion];
   [(PTFocusBlurMap *)self _validNormalizedRectFromSensorPixelRect:?];
   v5 = v4;
   v7 = v6;
@@ -349,9 +349,9 @@ LABEL_23:
   return result;
 }
 
-- (CGRect)validNormalizedRectFromRegion:(id)a3
+- (CGRect)validNormalizedRectFromRegion:(id)region
 {
-  [(PTFocusBlurMap *)self _sensorPixelRectFromRegion:a3];
+  [(PTFocusBlurMap *)self _sensorPixelRectFromRegion:region];
 
   [(PTFocusBlurMap *)self _validNormalizedRectFromSensorPixelRect:?];
   result.size.height = v7;
@@ -361,28 +361,28 @@ LABEL_23:
   return result;
 }
 
-- (id)_nodesForNormalizedRect:(CGRect)a3
+- (id)_nodesForNormalizedRect:(CGRect)rect
 {
-  [(PTFocusBlurMap *)self _pixelRectFromNormalRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PTFocusBlurMap *)self _pixelRectFromNormalRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [(PTFocusBlurMap *)self _tileRectFromSensorPixelRect:?];
 
   return [(PTFocusBlurMap *)self _nodesFromTileRect:?];
 }
 
-- (id)_nodesBetweenBlurMin:(int)a3 blurMax:(int)a4
+- (id)_nodesBetweenBlurMin:(int)min blurMax:(int)max
 {
-  v4 = *&a4;
-  v5 = *&a3;
-  v7 = [MEMORY[0x277CCAA78] indexSet];
-  v8 = [(PTFocusBlurMap *)self _blurExtendedNodes:v7 blurMin:v5 blurMax:v4];
+  v4 = *&max;
+  v5 = *&min;
+  indexSet = [MEMORY[0x277CCAA78] indexSet];
+  v8 = [(PTFocusBlurMap *)self _blurExtendedNodes:indexSet blurMin:v5 blurMax:v4];
 
   return v8;
 }
 
-- (id)_blurExtendedNodes:(id)a3 blurMin:(int)a4 blurMax:(int)a5
+- (id)_blurExtendedNodes:(id)nodes blurMin:(int)min blurMax:(int)max
 {
-  v8 = a3;
-  v9 = [v8 mutableCopy];
+  nodesCopy = nodes;
+  v9 = [nodesCopy mutableCopy];
   map = self->_map;
   if (map->var1.var12 * map->var1.var11)
   {
@@ -391,7 +391,7 @@ LABEL_23:
     do
     {
       v13 = *(&map->var0 + v12);
-      if (v13 >= a4 && v13 <= a5)
+      if (v13 >= min && v13 <= max)
       {
         [v9 addIndex:v11];
         map = self->_map;
@@ -409,39 +409,39 @@ LABEL_23:
   return v15;
 }
 
-- (void)_getBlurRangeOfNodes:(id)a3 blurMin:(int *)a4 blurMax:(int *)a5
+- (void)_getBlurRangeOfNodes:(id)nodes blurMin:(int *)min blurMax:(int *)max
 {
-  v8 = a3;
-  *a4 = 0x7FFFFFFF;
-  *a5 = 0x80000000;
-  v12 = v8;
-  v9 = [v8 firstIndex];
-  if (v9 != 0x7FFFFFFFFFFFFFFFLL)
+  nodesCopy = nodes;
+  *min = 0x7FFFFFFF;
+  *max = 0x80000000;
+  v12 = nodesCopy;
+  firstIndex = [nodesCopy firstIndex];
+  if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (i = v9; i != 0x7FFFFFFFFFFFFFFFLL; i = [v12 indexGreaterThanIndex:?])
+    for (i = firstIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [v12 indexGreaterThanIndex:?])
     {
       var0 = self->_map->var2[i].var0;
-      if (*a4 > var0)
+      if (*min > var0)
       {
-        *a4 = var0;
+        *min = var0;
       }
 
-      if (*a5 < var0)
+      if (*max < var0)
       {
-        *a5 = var0;
+        *max = var0;
       }
     }
   }
 }
 
-- (id)_blurExtendedNodes:(id)a3 options:(unint64_t)a4
+- (id)_blurExtendedNodes:(id)nodes options:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
+  optionsCopy = options;
+  nodesCopy = nodes;
   v11 = 0;
-  if (![v6 count])
+  if (![nodesCopy count])
   {
-    if ((v4 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
       v7 = 4294967040;
     }
@@ -456,9 +456,9 @@ LABEL_23:
     goto LABEL_14;
   }
 
-  [(PTFocusBlurMap *)self _getBlurRangeOfNodes:v6 blurMin:&v11 + 4 blurMax:&v11];
+  [(PTFocusBlurMap *)self _getBlurRangeOfNodes:nodesCopy blurMin:&v11 + 4 blurMax:&v11];
   v7 = HIDWORD(v11);
-  if (v4)
+  if (optionsCopy)
   {
     if (SHIDWORD(v11) >= 1)
     {
@@ -479,7 +479,7 @@ LABEL_23:
     v8 = v11;
   }
 
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     v7 = (v7 - 256);
     HIDWORD(v11) = v7;
@@ -488,14 +488,14 @@ LABEL_14:
     LODWORD(v11) = v8;
   }
 
-  v9 = [(PTFocusBlurMap *)self _blurExtendedNodes:v6 blurMin:v7 blurMax:v8];
+  v9 = [(PTFocusBlurMap *)self _blurExtendedNodes:nodesCopy blurMin:v7 blurMax:v8];
 
   return v9;
 }
 
 - (id)_inFocusNodes
 {
-  v3 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   map = self->_map;
   if (map->var1.var12 * map->var1.var11)
   {
@@ -505,7 +505,7 @@ LABEL_14:
     {
       if (*(&map->var0 + v6))
       {
-        [v3 addIndex:v5];
+        [indexSet addIndex:v5];
         map = self->_map;
       }
 
@@ -516,26 +516,26 @@ LABEL_14:
     while (v5 < map->var1.var12 * map->var1.var11);
   }
 
-  v7 = [v3 copy];
+  v7 = [indexSet copy];
 
   return v7;
 }
 
-- (id)_connectedComponentWithNode:(unint64_t)a3 unvisited:(id)a4
+- (id)_connectedComponentWithNode:(unint64_t)node unvisited:(id)unvisited
 {
-  v6 = a4;
-  v23 = [MEMORY[0x277CCAB58] indexSet];
-  v7 = [MEMORY[0x277CCAB58] indexSetWithIndex:a3];
+  unvisitedCopy = unvisited;
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  v7 = [MEMORY[0x277CCAB58] indexSetWithIndex:node];
   v8 = v7;
   while ([v7 count])
   {
-    v9 = [v8 firstIndex];
-    [v23 addIndex:v9];
-    [v8 removeIndex:v9];
-    [v6 removeIndex:v9];
+    firstIndex = [v8 firstIndex];
+    [indexSet addIndex:firstIndex];
+    [v8 removeIndex:firstIndex];
+    [unvisitedCopy removeIndex:firstIndex];
     var11 = self->_map->var1.var11;
-    v11 = v9 / var11;
-    v12 = v9 % var11;
+    v11 = firstIndex / var11;
+    v12 = firstIndex % var11;
     for (i = -1; i != 2; ++i)
     {
       v14 = i + v11;
@@ -555,7 +555,7 @@ LABEL_14:
               if (v17 < v19)
               {
                 v20 = v17 + v14 * v19;
-                if ([v6 containsIndex:v20])
+                if ([unvisitedCopy containsIndex:v20])
                 {
                   [v8 addIndex:v20];
                 }
@@ -574,40 +574,40 @@ LABEL_14:
     v7 = v8;
   }
 
-  v21 = [v23 copy];
+  v21 = [indexSet copy];
 
   return v21;
 }
 
-- (id)_connectedComponents:(id)a3
+- (id)_connectedComponents:(id)components
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [v4 mutableCopy];
+  componentsCopy = components;
+  array = [MEMORY[0x277CBEB18] array];
+  v6 = [componentsCopy mutableCopy];
   v7 = v6;
   while ([v6 count])
   {
     v8 = -[PTFocusBlurMap _connectedComponentWithNode:unvisited:](self, "_connectedComponentWithNode:unvisited:", [v7 firstIndex], v7);
-    [v5 addObject:v8];
+    [array addObject:v8];
 
     v6 = v7;
   }
 
-  v9 = [v5 copy];
+  v9 = [array copy];
 
   return v9;
 }
 
-- (id)_largestOfComponents:(id)a3
+- (id)_largestOfComponents:(id)components
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA78] indexSet];
+  componentsCopy = components;
+  indexSet = [MEMORY[0x277CCAA78] indexSet];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = componentsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -624,11 +624,11 @@ LABEL_14:
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [v10 count];
-        if (v11 > [v4 count])
+        if (v11 > [indexSet count])
         {
           v12 = v10;
 
-          v4 = v12;
+          indexSet = v12;
         }
       }
 
@@ -638,17 +638,17 @@ LABEL_14:
     while (v7);
   }
 
-  return v4;
+  return indexSet;
 }
 
-- (CGRect)_validNormalizedRectFromSensorPixelRect:(CGRect)a3
+- (CGRect)_validNormalizedRectFromSensorPixelRect:(CGRect)rect
 {
   validWidth = self->_validWidth;
-  v4 = (a3.origin.x - self->_validX) / validWidth;
+  v4 = (rect.origin.x - self->_validX) / validWidth;
   validHeight = self->_validHeight;
-  v6 = (a3.origin.y - self->_validY) / validHeight;
-  v7 = a3.size.width / validWidth;
-  v8 = a3.size.height / validHeight;
+  v6 = (rect.origin.y - self->_validY) / validHeight;
+  v7 = rect.size.width / validWidth;
+  v8 = rect.size.height / validHeight;
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -656,17 +656,17 @@ LABEL_14:
   return result;
 }
 
-- (CGRect)_normalRectFromPixelRect:(CGRect)a3
+- (CGRect)_normalRectFromPixelRect:(CGRect)rect
 {
   map = self->_map;
   LOWORD(v3) = map->var1.var3;
   v6 = v3;
-  v7 = a3.origin.x / v6;
+  v7 = rect.origin.x / v6;
   LOWORD(v4) = map->var1.var4;
   v8 = v4;
-  v9 = a3.origin.y / v8;
-  v10 = a3.size.width / v6;
-  v11 = a3.size.height / v8;
+  v9 = rect.origin.y / v8;
+  v10 = rect.size.width / v6;
+  v11 = rect.size.height / v8;
   result.size.height = v11;
   result.size.width = v10;
   result.origin.y = v9;
@@ -674,17 +674,17 @@ LABEL_14:
   return result;
 }
 
-- (CGRect)_pixelRectFromNormalRect:(CGRect)a3
+- (CGRect)_pixelRectFromNormalRect:(CGRect)rect
 {
   map = self->_map;
   LOWORD(v3) = map->var1.var3;
   v6 = v3;
-  v7 = a3.origin.x * v6;
+  v7 = rect.origin.x * v6;
   LOWORD(v4) = map->var1.var4;
   v8 = v4;
-  v9 = a3.origin.y * v8;
-  v10 = a3.size.width * v6;
-  v11 = a3.size.height * v8;
+  v9 = rect.origin.y * v8;
+  v10 = rect.size.width * v6;
+  v11 = rect.size.height * v8;
   result.size.height = v11;
   result.size.width = v10;
   result.origin.y = v9;
@@ -692,23 +692,23 @@ LABEL_14:
   return result;
 }
 
-- (CGRect)_tileRectFromSensorPixelRect:(CGRect)a3
+- (CGRect)_tileRectFromSensorPixelRect:(CGRect)rect
 {
   map = self->_map;
   LOWORD(v3) = map->var1.var1;
   *&v6 = v3;
-  v7 = a3.origin.x - *&v6;
+  v7 = rect.origin.x - *&v6;
   LOWORD(v6) = map->var1.var9;
   v8 = v6;
   v9 = v7 / v8;
   LOWORD(v4) = map->var1.var2;
   *&v10 = v4;
-  v11 = a3.origin.y - *&v10;
+  v11 = rect.origin.y - *&v10;
   LOWORD(v10) = map->var1.var10;
   v12 = v10;
   v13 = v11 / v12;
-  v14 = a3.size.width / v8;
-  v15 = a3.size.height / v12;
+  v14 = rect.size.width / v8;
+  v15 = rect.size.height / v12;
   result.size.height = v15;
   result.size.width = v14;
   result.origin.y = v13;
@@ -716,20 +716,20 @@ LABEL_14:
   return result;
 }
 
-- (CGRect)_sensorPixelRectFromTileRect:(CGRect)a3
+- (CGRect)_sensorPixelRectFromTileRect:(CGRect)rect
 {
   map = self->_map;
   LOWORD(v3) = map->var1.var1;
   *&v7 = v3;
   LOWORD(v4) = map->var1.var9;
   v8 = v4;
-  v9 = *&v7 + a3.origin.x * v8;
+  v9 = *&v7 + rect.origin.x * v8;
   LOWORD(v7) = map->var1.var2;
   LOWORD(v5) = map->var1.var10;
   v10 = v5;
-  v11 = v7 + a3.origin.y * v10;
-  v12 = a3.size.width * v8;
-  v13 = a3.size.height * v10;
+  v11 = v7 + rect.origin.y * v10;
+  v12 = rect.size.width * v8;
+  v13 = rect.size.height * v10;
   result.size.height = v13;
   result.size.width = v12;
   result.origin.y = v11;
@@ -737,16 +737,16 @@ LABEL_14:
   return result;
 }
 
-- (CGRect)_tileRectFromNodes:(id)a3
+- (CGRect)_tileRectFromNodes:(id)nodes
 {
-  v4 = a3;
-  if ([v4 count])
+  nodesCopy = nodes;
+  if ([nodesCopy count])
   {
     map = self->_map;
     var11 = map->var1.var11;
     var12 = map->var1.var12;
-    v8 = [v4 firstIndex];
-    if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex = [nodesCopy firstIndex];
+    if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = 0;
       v10 = 0;
@@ -754,7 +754,7 @@ LABEL_14:
 
     else
     {
-      v15 = v8;
+      v15 = firstIndex;
       v10 = 0;
       v9 = 0;
       do
@@ -782,7 +782,7 @@ LABEL_14:
           v10 = v17 + 1;
         }
 
-        v15 = [v4 indexGreaterThanIndex:?];
+        v15 = [nodesCopy indexGreaterThanIndex:?];
       }
 
       while (v15 != 0x7FFFFFFFFFFFFFFFLL);
@@ -825,13 +825,13 @@ LABEL_14:
   return result;
 }
 
-- (id)_nodesFromTileRect:(CGRect)a3
+- (id)_nodesFromTileRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [MEMORY[0x277CCAB58] indexSet];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v26.origin.x = x;
   v26.origin.y = y;
   v26.size.width = width;
@@ -898,7 +898,7 @@ LABEL_14:
       {
         do
         {
-          [v8 addIndex:v22 + v12 * self->_map->var1.var11];
+          [indexSet addIndex:v22 + v12 * self->_map->var1.var11];
           ++v22;
         }
 
@@ -911,14 +911,14 @@ LABEL_14:
     while (v12 != v20);
   }
 
-  v23 = [v8 copy];
+  v23 = [indexSet copy];
 
   return v23;
 }
 
-- (CGRect)_sensorPixelRectFromRegion:(id)a3
+- (CGRect)_sensorPixelRectFromRegion:(id)region
 {
-  [(PTFocusBlurMap *)self _tileRectFromNodes:a3];
+  [(PTFocusBlurMap *)self _tileRectFromNodes:region];
 
   [(PTFocusBlurMap *)self _sensorPixelRectFromTileRect:?];
   result.size.height = v7;
@@ -928,9 +928,9 @@ LABEL_14:
   return result;
 }
 
-- (CGRect)_boxFromComponent:(id)a3
+- (CGRect)_boxFromComponent:(id)component
 {
-  [(PTFocusBlurMap *)self _tileRectFromNodes:a3];
+  [(PTFocusBlurMap *)self _tileRectFromNodes:component];
   [(PTFocusBlurMap *)self _sensorPixelRectFromTileRect:?];
 
   [(PTFocusBlurMap *)self _normalRectFromPixelRect:?];

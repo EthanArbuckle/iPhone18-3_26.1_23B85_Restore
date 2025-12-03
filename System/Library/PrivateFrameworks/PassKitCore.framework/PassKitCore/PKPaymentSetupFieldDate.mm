@@ -1,24 +1,24 @@
 @interface PKPaymentSetupFieldDate
 - (BOOL)submissionStringMeetsAllRequirements;
 - (NSDate)defaultDate;
-- (PKPaymentSetupFieldDate)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldDate)initWithIdentifier:(id)identifier type:(unint64_t)type;
 - (id)_defaultValueAsDateForCurrentLocale;
-- (id)_submissionStringForValue:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_submissionStringForValue:(id)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)displayString;
 - (void)_commonUpdate;
-- (void)setCurrentValue:(id)a3;
-- (void)updateWithAttribute:(id)a3;
-- (void)updateWithConfiguration:(id)a3;
+- (void)setCurrentValue:(id)value;
+- (void)updateWithAttribute:(id)attribute;
+- (void)updateWithConfiguration:(id)configuration;
 @end
 
 @implementation PKPaymentSetupFieldDate
 
-- (PKPaymentSetupFieldDate)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldDate)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v9.receiver = self;
   v9.super_class = PKPaymentSetupFieldDate;
-  v4 = [(PKPaymentSetupFieldText *)&v9 initWithIdentifier:a3 type:a4];
+  v4 = [(PKPaymentSetupFieldText *)&v9 initWithIdentifier:identifier type:type];
   v5 = v4;
   if (v4)
   {
@@ -27,26 +27,26 @@
     v4->_showsYear = 1;
     [(PKPaymentSetupField *)v4 setDisplayFormat:@"MM/yy"];
     [(PKPaymentSetupFieldDate *)v5 setSubmissionFormat:@"MM/yy"];
-    v6 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    [(PKPaymentSetupFieldDate *)v5 setLocale:v6];
+    autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    [(PKPaymentSetupFieldDate *)v5 setLocale:autoupdatingCurrentLocale];
 
-    v7 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
-    [(PKPaymentSetupFieldDate *)v5 setCalendar:v7];
+    autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+    [(PKPaymentSetupFieldDate *)v5 setCalendar:autoupdatingCurrentCalendar];
   }
 
   return v5;
 }
 
-- (void)setCurrentValue:(id)a3
+- (void)setCurrentValue:(id)value
 {
-  if (self->super.super._currentValue != a3)
+  if (self->super.super._currentValue != value)
   {
-    v5 = [a3 copyWithZone:0];
+    v5 = [value copyWithZone:0];
     currentValue = self->super.super._currentValue;
     self->super.super._currentValue = v5;
 
-    v7 = [(PKPaymentSetupField *)self attribute];
-    [v7 setCurrentValue:self->super.super._currentValue];
+    attribute = [(PKPaymentSetupField *)self attribute];
+    [attribute setCurrentValue:self->super.super._currentValue];
 
     [(PKPaymentSetupField *)self noteCurrentValueChanged];
   }
@@ -64,30 +64,30 @@
     displayDateFormatter = self->_displayDateFormatter;
   }
 
-  v6 = [(PKPaymentSetupFieldDate *)self locale];
-  [(NSDateFormatter *)displayDateFormatter setLocale:v6];
+  locale = [(PKPaymentSetupFieldDate *)self locale];
+  [(NSDateFormatter *)displayDateFormatter setLocale:locale];
 
   v7 = MEMORY[0x1E696AB78];
-  v8 = [(PKPaymentSetupField *)self displayFormat];
-  v9 = [(NSDateFormatter *)self->_displayDateFormatter locale];
-  v10 = [v7 dateFormatFromTemplate:v8 options:0 locale:v9];
+  displayFormat = [(PKPaymentSetupField *)self displayFormat];
+  locale2 = [(NSDateFormatter *)self->_displayDateFormatter locale];
+  v10 = [v7 dateFormatFromTemplate:displayFormat options:0 locale:locale2];
 
   [(NSDateFormatter *)self->_displayDateFormatter setDateFormat:v10];
-  v11 = [(PKPaymentSetupFieldDate *)self currentValue];
-  if (!v11)
+  currentValue = [(PKPaymentSetupFieldDate *)self currentValue];
+  if (!currentValue)
   {
-    v11 = [(PKPaymentSetupFieldDate *)self defaultDate];
+    currentValue = [(PKPaymentSetupFieldDate *)self defaultDate];
   }
 
-  v12 = [(NSDateFormatter *)self->_displayDateFormatter stringFromDate:v11];
+  v12 = [(NSDateFormatter *)self->_displayDateFormatter stringFromDate:currentValue];
 
   return v12;
 }
 
-- (id)_submissionStringForValue:(id)a3
+- (id)_submissionStringForValue:(id)value
 {
-  v4 = a3;
-  if (v4)
+  valueCopy = value;
+  if (valueCopy)
   {
     if (qword_1EB5B7C90 != -1)
     {
@@ -95,19 +95,19 @@
     }
 
     v5 = _MergedGlobals_10;
-    v6 = [(PKPaymentSetupFieldDate *)self submissionFormat];
-    [v5 setDateFormat:v6];
+    submissionFormat = [(PKPaymentSetupFieldDate *)self submissionFormat];
+    [v5 setDateFormat:submissionFormat];
 
-    v7 = [_MergedGlobals_10 stringFromDate:v4];
-    v8 = [v7 pk_zString];
+    v7 = [_MergedGlobals_10 stringFromDate:valueCopy];
+    pk_zString = [v7 pk_zString];
   }
 
   else
   {
-    v8 = 0;
+    pk_zString = 0;
   }
 
-  return v8;
+  return pk_zString;
 }
 
 void __53__PKPaymentSetupFieldDate__submissionStringForValue___block_invoke()
@@ -129,12 +129,12 @@ void __53__PKPaymentSetupFieldDate__submissionStringForValue___block_invoke()
   }
 
   v3 = qword_1EB5B7C98;
-  v4 = [(PKPaymentSetupFieldDate *)self submissionFormat];
-  [v3 setDateFormat:v4];
+  submissionFormat = [(PKPaymentSetupFieldDate *)self submissionFormat];
+  [v3 setDateFormat:submissionFormat];
 
   v5 = qword_1EB5B7C98;
-  v6 = [(PKPaymentSetupField *)self defaultValue];
-  v7 = [v5 dateFromString:v6];
+  defaultValue = [(PKPaymentSetupField *)self defaultValue];
+  v7 = [v5 dateFromString:defaultValue];
 
   return v7;
 }
@@ -152,8 +152,8 @@ void __62__PKPaymentSetupFieldDate__defaultValueAsDateForCurrentLocale__block_in
 
 - (BOOL)submissionStringMeetsAllRequirements
 {
-  v2 = [(PKPaymentSetupField *)self submissionString];
-  v3 = [v2 length] != 0;
+  submissionString = [(PKPaymentSetupField *)self submissionString];
+  v3 = [submissionString length] != 0;
 
   return v3;
 }
@@ -163,9 +163,9 @@ void __62__PKPaymentSetupFieldDate__defaultValueAsDateForCurrentLocale__block_in
   defaultDate = self->_defaultDate;
   if (!defaultDate)
   {
-    v4 = [(PKPaymentSetupFieldDate *)self _defaultValueAsDateForCurrentLocale];
+    _defaultValueAsDateForCurrentLocale = [(PKPaymentSetupFieldDate *)self _defaultValueAsDateForCurrentLocale];
     v5 = self->_defaultDate;
-    self->_defaultDate = v4;
+    self->_defaultDate = _defaultValueAsDateForCurrentLocale;
 
     defaultDate = self->_defaultDate;
   }
@@ -173,64 +173,64 @@ void __62__PKPaymentSetupFieldDate__defaultValueAsDateForCurrentLocale__block_in
   return defaultDate;
 }
 
-- (void)updateWithAttribute:(id)a3
+- (void)updateWithAttribute:(id)attribute
 {
-  v4 = a3;
+  attributeCopy = attribute;
   v8.receiver = self;
   v8.super_class = PKPaymentSetupFieldDate;
-  [(PKPaymentSetupFieldText *)&v8 updateWithAttribute:v4];
+  [(PKPaymentSetupFieldText *)&v8 updateWithAttribute:attributeCopy];
   [(PKPaymentSetupFieldDate *)self _commonUpdate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = attributeCopy;
     -[PKPaymentSetupFieldDate setShowsDay:](self, "setShowsDay:", [v5 requireDay]);
     -[PKPaymentSetupFieldDate setShowsMonth:](self, "setShowsMonth:", [v5 requireMonth]);
     -[PKPaymentSetupFieldDate setShowsYear:](self, "setShowsYear:", [v5 requireYear]);
-    v6 = [v5 defaultValue];
-    if (v6)
+    defaultValue = [v5 defaultValue];
+    if (defaultValue)
     {
-      objc_storeStrong(&self->_defaultDate, v6);
+      objc_storeStrong(&self->_defaultDate, defaultValue);
     }
 
-    v7 = [(PKPaymentSetupFieldDate *)self defaultDate];
+    defaultDate = [(PKPaymentSetupFieldDate *)self defaultDate];
 
-    if (v7)
+    if (defaultDate)
     {
-      [v5 setCurrentValue:v7];
+      [v5 setCurrentValue:defaultDate];
     }
   }
 }
 
-- (void)updateWithConfiguration:(id)a3
+- (void)updateWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = PKPaymentSetupFieldDate;
-  [(PKPaymentSetupFieldText *)&v12 updateWithConfiguration:v4];
+  [(PKPaymentSetupFieldText *)&v12 updateWithConfiguration:configurationCopy];
   [(PKPaymentSetupFieldDate *)self _commonUpdate];
-  v5 = [v4 PKNumberForKey:@"showsDay"];
+  v5 = [configurationCopy PKNumberForKey:@"showsDay"];
   v6 = v5;
   if (v5)
   {
     -[PKPaymentSetupFieldDate setShowsDay:](self, "setShowsDay:", [v5 BOOLValue]);
   }
 
-  v7 = [v4 PKNumberForKey:@"showsMonth"];
+  v7 = [configurationCopy PKNumberForKey:@"showsMonth"];
   v8 = v7;
   if (v7)
   {
     -[PKPaymentSetupFieldDate setShowsMonth:](self, "setShowsMonth:", [v7 BOOLValue]);
   }
 
-  v9 = [v4 PKNumberForKey:@"showsYear"];
+  v9 = [configurationCopy PKNumberForKey:@"showsYear"];
   v10 = v9;
   if (v9)
   {
     -[PKPaymentSetupFieldDate setShowsYear:](self, "setShowsYear:", [v9 BOOLValue]);
   }
 
-  v11 = [v4 PKStringForKey:@"submissionFormat"];
+  v11 = [configurationCopy PKStringForKey:@"submissionFormat"];
   if (v11)
   {
     [(PKPaymentSetupFieldDate *)self setSubmissionFormat:v11];
@@ -248,11 +248,11 @@ void __62__PKPaymentSetupFieldDate__defaultValueAsDateForCurrentLocale__block_in
   [(PKPaymentSetupFieldText *)self setLuhnCheck:0];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PKPaymentSetupFieldDate;
-  v4 = [(PKPaymentSetupFieldText *)&v6 copyWithZone:a3];
+  v4 = [(PKPaymentSetupFieldText *)&v6 copyWithZone:zone];
   *(v4 + 288) = self->_showsDay;
   *(v4 + 289) = self->_showsMonth;
   *(v4 + 290) = self->_showsYear;

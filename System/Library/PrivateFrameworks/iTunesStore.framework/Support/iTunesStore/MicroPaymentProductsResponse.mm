@@ -1,5 +1,5 @@
 @interface MicroPaymentProductsResponse
-- (BOOL)loadFromDictionary:(id)a3 error:(id *)a4;
+- (BOOL)loadFromDictionary:(id)dictionary error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -12,7 +12,7 @@
   [(MicroPaymentProductsResponse *)&v3 dealloc];
 }
 
-- (BOOL)loadFromDictionary:(id)a3 error:(id *)a4
+- (BOOL)loadFromDictionary:(id)dictionary error:(id *)error
 {
   v6 = objc_alloc_init(NSMutableArray);
   v7 = objc_alloc_init(NSMutableArray);
@@ -26,7 +26,7 @@
     v8 = 0;
   }
 
-  v9 = [a3 objectForKey:@"available-subproducts"];
+  v9 = [dictionary objectForKey:@"available-subproducts"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -76,9 +76,9 @@
   self->_invalidIdentifiers = [v6 copy];
   self->_products = [v7 copy];
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return 1;

@@ -1,12 +1,12 @@
 @interface MUPlaceActionBarItem
 - (MUPlaceActionBarItem)init;
-- (MUPlaceActionBarItem)initWithType:(id)a3 axID:(id)a4;
+- (MUPlaceActionBarItem)initWithType:(id)type axID:(id)d;
 - (MUPlaceActionBarType)type;
 - (NSArray)handlers;
-- (void)addHandler:(id)a3;
-- (void)addMenuProvider:(id)a3;
-- (void)setHandlers:(id)a3;
-- (void)setType:(id)a3;
+- (void)addHandler:(id)handler;
+- (void)addMenuProvider:(id)provider;
+- (void)setHandlers:(id)handlers;
+- (void)setType:(id)type;
 @end
 
 @implementation MUPlaceActionBarItem
@@ -23,7 +23,7 @@
   return v5;
 }
 
-- (void)setHandlers:(id)a3
+- (void)setHandlers:(id)handlers
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC170E00, &qword_1C5878C88);
   v4 = sub_1C584F770();
@@ -40,39 +40,39 @@
   return *(self + v3);
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
   v5 = OBJC_IVAR___MUPlaceActionBarItem_type;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = type;
+  typeCopy = type;
 }
 
-- (MUPlaceActionBarItem)initWithType:(id)a3 axID:(id)a4
+- (MUPlaceActionBarItem)initWithType:(id)type axID:(id)d
 {
   ObjectType = swift_getObjectType();
   v7 = sub_1C584F660();
   v8 = MEMORY[0x1E69E7CC0];
   *(self + OBJC_IVAR___MUPlaceActionBarItem_handlers) = MEMORY[0x1E69E7CC0];
   *(self + OBJC_IVAR___MUPlaceActionBarItem_menuProviders) = v8;
-  *(self + OBJC_IVAR___MUPlaceActionBarItem_type) = a3;
+  *(self + OBJC_IVAR___MUPlaceActionBarItem_type) = type;
   v9 = (self + OBJC_IVAR___MUPlaceActionBarItem_axID);
   *v9 = v7;
   v9[1] = v10;
   v13.receiver = self;
   v13.super_class = ObjectType;
-  v11 = a3;
+  typeCopy = type;
   return [(MUPlaceActionBarItem *)&v13 init];
 }
 
-- (void)addHandler:(id)a3
+- (void)addHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_copy(v4);
   v5 = OBJC_IVAR___MUPlaceActionBarItem_handlers;
   swift_beginAccess();
-  v6 = self;
+  selfCopy = self;
   MEMORY[0x1C6949DF0]();
   if (*((*(self + v5) & 0xFFFFFFFFFFFFFF8) + 0x10) >= *((*(self + v5) & 0xFFFFFFFFFFFFFF8) + 0x18) >> 1)
   {
@@ -85,9 +85,9 @@
   _Block_release(v4);
 }
 
-- (void)addMenuProvider:(id)a3
+- (void)addMenuProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -96,7 +96,7 @@
   v7 = OBJC_IVAR___MUPlaceActionBarItem_menuProviders;
   swift_beginAccess();
   v8 = *(self + v7);
-  v9 = self;
+  selfCopy = self;
 
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
   *(self + v7) = v8;

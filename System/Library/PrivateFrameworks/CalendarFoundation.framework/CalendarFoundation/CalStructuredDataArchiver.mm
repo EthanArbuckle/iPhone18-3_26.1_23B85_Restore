@@ -1,8 +1,8 @@
 @interface CalStructuredDataArchiver
 + (NSSet)defaultPermittedClasses;
-+ (id)archiveDictionary:(id)a3 error:(id *)a4;
-+ (id)unarchiveDictionaryFromData:(id)a3 error:(id *)a4;
-+ (id)unarchiveDictionaryFromData:(id)a3 permittedClasses:(id)a4 strict:(BOOL)a5 error:(id *)a6;
++ (id)archiveDictionary:(id)dictionary error:(id *)error;
++ (id)unarchiveDictionaryFromData:(id)data error:(id *)error;
++ (id)unarchiveDictionaryFromData:(id)data permittedClasses:(id)classes strict:(BOOL)strict error:(id *)error;
 @end
 
 @implementation CalStructuredDataArchiver
@@ -40,31 +40,31 @@ void __52__CalStructuredDataArchiver_defaultPermittedClasses__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)unarchiveDictionaryFromData:(id)a3 error:(id *)a4
++ (id)unarchiveDictionaryFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 defaultPermittedClasses];
-  v8 = [a1 unarchiveDictionaryFromData:v6 permittedClasses:v7 strict:0 error:a4];
+  dataCopy = data;
+  defaultPermittedClasses = [self defaultPermittedClasses];
+  v8 = [self unarchiveDictionaryFromData:dataCopy permittedClasses:defaultPermittedClasses strict:0 error:error];
 
   return v8;
 }
 
-+ (id)unarchiveDictionaryFromData:(id)a3 permittedClasses:(id)a4 strict:(BOOL)a5 error:(id *)a6
++ (id)unarchiveDictionaryFromData:(id)data permittedClasses:(id)classes strict:(BOOL)strict error:(id *)error
 {
-  v7 = a5;
+  strictCopy = strict;
   v14 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (v9)
+  dataCopy = data;
+  classesCopy = classes;
+  if (dataCopy)
   {
-    if (v7)
+    if (strictCopy)
     {
-      [MEMORY[0x1E696ACD0] _strictlyUnarchivedObjectOfClasses:v10 fromData:v9 error:a6];
+      [MEMORY[0x1E696ACD0] _strictlyUnarchivedObjectOfClasses:classesCopy fromData:dataCopy error:error];
     }
 
     else
     {
-      [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v10 fromData:v9 error:a6];
+      [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:classesCopy fromData:dataCopy error:error];
     }
     v11 = ;
   }
@@ -79,11 +79,11 @@ void __52__CalStructuredDataArchiver_defaultPermittedClasses__block_invoke()
   return v11;
 }
 
-+ (id)archiveDictionary:(id)a3 error:(id *)a4
++ (id)archiveDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 defaultPermittedClasses];
-  v8 = [a1 archiveDictionary:v6 permittedClasses:v7 strict:0 error:a4];
+  dictionaryCopy = dictionary;
+  defaultPermittedClasses = [self defaultPermittedClasses];
+  v8 = [self archiveDictionary:dictionaryCopy permittedClasses:defaultPermittedClasses strict:0 error:error];
 
   return v8;
 }

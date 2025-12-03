@@ -1,24 +1,24 @@
 @interface PSUVIPManager
-- (void)emailVIPAddressesWithCompletion:(id)a3;
+- (void)emailVIPAddressesWithCompletion:(id)completion;
 @end
 
 @implementation PSUVIPManager
 
-- (void)emailVIPAddressesWithCompletion:(id)a3
+- (void)emailVIPAddressesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_opt_new();
-  v7 = [v6 vipManager];
+  vipManager = [v6 vipManager];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __49__PSUVIPManager_emailVIPAddressesWithCompletion___block_invoke;
   v10[3] = &unk_278947528;
-  v8 = v4;
-  v11 = v7;
+  v8 = completionCopy;
+  v11 = vipManager;
   v12 = v8;
   v10[4] = self;
-  v9 = v7;
+  v9 = vipManager;
   [v9 getAllVIPsWithCompletion:v10];
 
   objc_autoreleasePoolPop(v5);

@@ -1,36 +1,36 @@
 @interface HKTitledIconHeaderView
-- (CGSize)_sizeThatFitsLabel:(id)a3 containerSize:(CGSize)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (HKTitledIconHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)_sizeThatFitsLabel:(id)label containerSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (HKTitledIconHeaderView)initWithFrame:(CGRect)frame;
 - (id)_healthIconImage;
 - (void)_positionSubtitleLabel;
 - (void)_updateFont;
 - (void)layoutSubviews;
-- (void)setCentersSubtitle:(BOOL)a3;
-- (void)setIconImage:(id)a3;
-- (void)setIconImageTint:(id)a3;
-- (void)setLayoutMarginsWithTableView:(id)a3;
-- (void)setPrefersLargeTitle:(BOOL)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setCentersSubtitle:(BOOL)subtitle;
+- (void)setIconImage:(id)image;
+- (void)setIconImageTint:(id)tint;
+- (void)setLayoutMarginsWithTableView:(id)view;
+- (void)setPrefersLargeTitle:(BOOL)title;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HKTitledIconHeaderView
 
-- (HKTitledIconHeaderView)initWithFrame:(CGRect)a3
+- (HKTitledIconHeaderView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = HKTitledIconHeaderView;
-  v3 = [(HKTitledIconHeaderView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HKTitledIconHeaderView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     iconImageView = v3->_iconImageView;
     v3->_iconImageView = v4;
 
-    v6 = [(HKTitledIconHeaderView *)v3 _healthIconImage];
-    [(UIImageView *)v3->_iconImageView setImage:v6];
+    _healthIconImage = [(HKTitledIconHeaderView *)v3 _healthIconImage];
+    [(UIImageView *)v3->_iconImageView setImage:_healthIconImage];
 
     [(UIImageView *)v3->_iconImageView sizeToFit];
     [(HKTitledIconHeaderView *)v3 addSubview:v3->_iconImageView];
@@ -39,8 +39,8 @@
     v3->_titleLabel = v7;
 
     [(UILabel *)v3->_titleLabel setNumberOfLines:0];
-    v9 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v3->_titleLabel setTextColor:v9];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v3->_titleLabel setTextColor:labelColor];
 
     [(UILabel *)v3->_titleLabel setTextAlignment:1];
     LODWORD(v10) = 1.0;
@@ -52,8 +52,8 @@
     v3->_subtitleLabel = v11;
 
     [(UILabel *)v3->_subtitleLabel setNumberOfLines:0];
-    v13 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v3->_subtitleLabel setTextColor:v13];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v3->_subtitleLabel setTextColor:labelColor2];
 
     [(HKTitledIconHeaderView *)v3 setCentersSubtitle:1];
     [(UILabel *)v3->_subtitleLabel setHidden:1];
@@ -66,42 +66,42 @@
 
 - (void)_updateFont
 {
-  v3 = [(HKTitledIconHeaderView *)self _titleFont];
-  [(UILabel *)self->_titleLabel setFont:v3];
+  _titleFont = [(HKTitledIconHeaderView *)self _titleFont];
+  [(UILabel *)self->_titleLabel setFont:_titleFont];
 
   v4 = [MEMORY[0x1E69DB878] hk_preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [(UILabel *)self->_subtitleLabel setFont:v4];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_title isEqualToString:?])
   {
-    objc_storeStrong(&self->_title, a3);
-    [(UILabel *)self->_titleLabel setText:v6];
+    objc_storeStrong(&self->_title, title);
+    [(UILabel *)self->_titleLabel setText:titleCopy];
     LODWORD(v5) = 1045220557;
     [(UILabel *)self->_titleLabel _setHyphenationFactor:v5];
     [(UILabel *)self->_titleLabel sizeToFit];
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v5 = a3;
+  subtitleCopy = subtitle;
   if (![(NSString *)self->_subtitle isEqualToString:?])
   {
-    objc_storeStrong(&self->_subtitle, a3);
+    objc_storeStrong(&self->_subtitle, subtitle);
     [(UILabel *)self->_subtitleLabel setHidden:[(NSString *)self->_subtitle length]== 0];
-    [(UILabel *)self->_subtitleLabel setText:v5];
+    [(UILabel *)self->_subtitleLabel setText:subtitleCopy];
     [(UILabel *)self->_subtitleLabel sizeToFit];
   }
 }
 
-- (void)setCentersSubtitle:(BOOL)a3
+- (void)setCentersSubtitle:(BOOL)subtitle
 {
-  self->_centersSubtitle = a3;
-  if (a3)
+  self->_centersSubtitle = subtitle;
+  if (subtitle)
   {
     v3 = 1;
   }
@@ -114,10 +114,10 @@
   [(UILabel *)self->_subtitleLabel setTextAlignment:v3];
 }
 
-- (void)setPrefersLargeTitle:(BOOL)a3
+- (void)setPrefersLargeTitle:(BOOL)title
 {
   v4 = MEMORY[0x1E69DDD58];
-  if (!a3)
+  if (!title)
   {
     v4 = MEMORY[0x1E69DDDB8];
   }
@@ -127,23 +127,23 @@
   [(HKTitledIconHeaderView *)self _updateFont];
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  [(UIImageView *)self->_iconImageView setImage:a3];
+  [(UIImageView *)self->_iconImageView setImage:image];
   iconImageView = self->_iconImageView;
 
   [(UIImageView *)iconImageView sizeToFit];
 }
 
-- (void)setIconImageTint:(id)a3
+- (void)setIconImageTint:(id)tint
 {
-  v4 = [a3 copy];
+  v4 = [tint copy];
   [(UIImageView *)self->_iconImageView setTintColor:v4];
 }
 
-- (void)setLayoutMarginsWithTableView:(id)a3
+- (void)setLayoutMarginsWithTableView:(id)view
 {
-  [a3 separatorInset];
+  [view separatorInset];
 
   [(HKTitledIconHeaderView *)self setLayoutMargins:0.0, v4, 0.0, v4];
 }
@@ -232,10 +232,10 @@
   [(UILabel *)subtitleLabel setFrame:v4, v3, v5, v6];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UIImageView *)self->_iconImageView frame];
   v7 = v6 + 31.0;
   [(HKTitledIconHeaderView *)self _verticalOffsetForTitle];
@@ -257,18 +257,18 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = HKTitledIconHeaderView;
-  [(HKTitledIconHeaderView *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(HKTitledIconHeaderView *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HKTitledIconHeaderView *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HKTitledIconHeaderView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -287,13 +287,13 @@
   return v4;
 }
 
-- (CGSize)_sizeThatFitsLabel:(id)a3 containerSize:(CGSize)a4
+- (CGSize)_sizeThatFitsLabel:(id)label containerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  labelCopy = label;
   [(HKTitledIconHeaderView *)self layoutMargins];
-  [v7 sizeThatFits:{width - (v8 + v9), height}];
+  [labelCopy sizeThatFits:{width - (v8 + v9), height}];
   v11 = v10;
   v13 = v12;
 

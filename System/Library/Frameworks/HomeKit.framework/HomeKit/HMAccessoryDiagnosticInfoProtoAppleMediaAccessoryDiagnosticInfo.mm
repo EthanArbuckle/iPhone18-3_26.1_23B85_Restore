@@ -1,37 +1,37 @@
 @interface HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPrimaryResidentStatus:(id)a3;
+- (int)StringAsPrimaryResidentStatus:(id)status;
 - (int)primaryResidentStatus;
 - (unint64_t)hash;
-- (void)addNearbyVisibleDeviceInfos:(id)a3;
-- (void)addNetworkInfo:(id)a3;
-- (void)addNetworkServiceInfo:(id)a3;
-- (void)addNetworkVisibleDeviceInfos:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumAppleMediaAccessories:(BOOL)a3;
-- (void)setHasNumResidents:(BOOL)a3;
-- (void)setHasPrimaryResidentStatus:(BOOL)a3;
-- (void)setHasSfProblemFlags:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addNearbyVisibleDeviceInfos:(id)infos;
+- (void)addNetworkInfo:(id)info;
+- (void)addNetworkServiceInfo:(id)info;
+- (void)addNetworkVisibleDeviceInfos:(id)infos;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumAppleMediaAccessories:(BOOL)accessories;
+- (void)setHasNumResidents:(BOOL)residents;
+- (void)setHasPrimaryResidentStatus:(BOOL)status;
+- (void)setHasSfProblemFlags:(BOOL)flags;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 10))
+  fromCopy = from;
+  if (*(fromCopy + 10))
   {
     [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self setMediaRouteIdString:?];
   }
 
   wifiInfo = self->_wifiInfo;
-  v6 = *(v4 + 22);
+  v6 = *(fromCopy + 22);
   if (wifiInfo)
   {
     if (v6)
@@ -46,7 +46,7 @@
   }
 
   currentAccessoryInfo = self->_currentAccessoryInfo;
-  v8 = *(v4 + 6);
+  v8 = *(fromCopy + 6);
   if (currentAccessoryInfo)
   {
     if (v8)
@@ -61,7 +61,7 @@
   }
 
   cloudInfo = self->_cloudInfo;
-  v10 = *(v4 + 5);
+  v10 = *(fromCopy + 5);
   if (cloudInfo)
   {
     if (v10)
@@ -76,7 +76,7 @@
   }
 
   idsInfo = self->_idsInfo;
-  v12 = *(v4 + 8);
+  v12 = *(fromCopy + 8);
   if (idsInfo)
   {
     if (v12)
@@ -91,7 +91,7 @@
   }
 
   eventRouterServerInfo = self->_eventRouterServerInfo;
-  v14 = *(v4 + 7);
+  v14 = *(fromCopy + 7);
   if (eventRouterServerInfo)
   {
     if (v14)
@@ -105,39 +105,39 @@
     [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self setEventRouterServerInfo:?];
   }
 
-  if (*(v4 + 184))
+  if (*(fromCopy + 184))
   {
-    self->_generationTime = *(v4 + 1);
+    self->_generationTime = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self setSerialNumber:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self setModelIdentifier:?];
   }
 
-  if (*(v4 + 21))
+  if (*(fromCopy + 21))
   {
     [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self setSoftwareVersion:?];
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self setRegionInfo:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self setManufacturer:?];
   }
 
   softwareUpdateDescriptor = self->_softwareUpdateDescriptor;
-  v16 = *(v4 + 19);
+  v16 = *(fromCopy + 19);
   if (softwareUpdateDescriptor)
   {
     if (v16)
@@ -152,7 +152,7 @@
   }
 
   softwareUpdateProgress = self->_softwareUpdateProgress;
-  v18 = *(v4 + 20);
+  v18 = *(fromCopy + 20);
   if (softwareUpdateProgress)
   {
     if (v18)
@@ -166,9 +166,9 @@
     [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self setSoftwareUpdateProgress:?];
   }
 
-  if ((*(v4 + 184) & 8) != 0)
+  if ((*(fromCopy + 184) & 8) != 0)
   {
-    self->_sfProblemFlags = *(v4 + 4);
+    self->_sfProblemFlags = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
@@ -176,7 +176,7 @@
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v19 = *(v4 + 13);
+  v19 = *(fromCopy + 13);
   v20 = [v19 countByEnumeratingWithState:&v53 objects:v60 count:16];
   if (v20)
   {
@@ -204,7 +204,7 @@
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v24 = *(v4 + 14);
+  v24 = *(fromCopy + 14);
   v25 = [v24 countByEnumeratingWithState:&v49 objects:v59 count:16];
   if (v25)
   {
@@ -232,7 +232,7 @@
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v29 = *(v4 + 15);
+  v29 = *(fromCopy + 15);
   v30 = [v29 countByEnumeratingWithState:&v45 objects:v58 count:16];
   if (v30)
   {
@@ -260,7 +260,7 @@
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v34 = *(v4 + 12);
+  v34 = *(fromCopy + 12);
   v35 = [v34 countByEnumeratingWithState:&v41 objects:v57 count:16];
   if (v35)
   {
@@ -284,18 +284,18 @@
     while (v36);
   }
 
-  v39 = *(v4 + 184);
+  v39 = *(fromCopy + 184);
   if ((v39 & 2) == 0)
   {
-    if ((*(v4 + 184) & 4) == 0)
+    if ((*(fromCopy + 184) & 4) == 0)
     {
       goto LABEL_82;
     }
 
 LABEL_86:
-    self->_numResidents = *(v4 + 3);
+    self->_numResidents = *(fromCopy + 3);
     *&self->_has |= 4u;
-    if ((*(v4 + 184) & 0x10) == 0)
+    if ((*(fromCopy + 184) & 0x10) == 0)
     {
       goto LABEL_84;
     }
@@ -303,9 +303,9 @@ LABEL_86:
     goto LABEL_83;
   }
 
-  self->_numAppleMediaAccessories = *(v4 + 2);
+  self->_numAppleMediaAccessories = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v39 = *(v4 + 184);
+  v39 = *(fromCopy + 184);
   if ((v39 & 4) != 0)
   {
     goto LABEL_86;
@@ -315,7 +315,7 @@ LABEL_82:
   if ((v39 & 0x10) != 0)
   {
 LABEL_83:
-    self->_primaryResidentStatus = *(v4 + 32);
+    self->_primaryResidentStatus = *(fromCopy + 32);
     *&self->_has |= 0x10u;
   }
 
@@ -425,16 +425,16 @@ LABEL_15:
   return v30 ^ v31 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_61;
   }
 
   mediaRouteIdString = self->_mediaRouteIdString;
-  if (mediaRouteIdString | *(v4 + 10))
+  if (mediaRouteIdString | *(equalCopy + 10))
   {
     if (![(NSString *)mediaRouteIdString isEqual:?])
     {
@@ -443,7 +443,7 @@ LABEL_15:
   }
 
   wifiInfo = self->_wifiInfo;
-  if (wifiInfo | *(v4 + 22))
+  if (wifiInfo | *(equalCopy + 22))
   {
     if (![(HMAccessoryInfoProtoWifiNetworkInfoEvent *)wifiInfo isEqual:?])
     {
@@ -452,7 +452,7 @@ LABEL_15:
   }
 
   currentAccessoryInfo = self->_currentAccessoryInfo;
-  if (currentAccessoryInfo | *(v4 + 6))
+  if (currentAccessoryInfo | *(equalCopy + 6))
   {
     if (![(HMAccessoryDiagnosticInfoProtoCurrentAccessoryInfo *)currentAccessoryInfo isEqual:?])
     {
@@ -461,7 +461,7 @@ LABEL_15:
   }
 
   cloudInfo = self->_cloudInfo;
-  if (cloudInfo | *(v4 + 5))
+  if (cloudInfo | *(equalCopy + 5))
   {
     if (![(HMAccessoryDiagnosticInfoProtoCloudInfo *)cloudInfo isEqual:?])
     {
@@ -470,7 +470,7 @@ LABEL_15:
   }
 
   idsInfo = self->_idsInfo;
-  if (idsInfo | *(v4 + 8))
+  if (idsInfo | *(equalCopy + 8))
   {
     if (![(HMAccessoryDiagnosticInfoProtoIdsInfo *)idsInfo isEqual:?])
     {
@@ -479,7 +479,7 @@ LABEL_15:
   }
 
   eventRouterServerInfo = self->_eventRouterServerInfo;
-  if (eventRouterServerInfo | *(v4 + 7))
+  if (eventRouterServerInfo | *(equalCopy + 7))
   {
     if (![(HMRemoteEventRouterProtoServerDiagnosticInfo *)eventRouterServerInfo isEqual:?])
     {
@@ -487,16 +487,16 @@ LABEL_15:
     }
   }
 
-  v11 = *(v4 + 184);
+  v11 = *(equalCopy + 184);
   if (*&self->_has)
   {
-    if ((*(v4 + 184) & 1) == 0 || self->_generationTime != *(v4 + 1))
+    if ((*(equalCopy + 184) & 1) == 0 || self->_generationTime != *(equalCopy + 1))
     {
       goto LABEL_61;
     }
   }
 
-  else if (*(v4 + 184))
+  else if (*(equalCopy + 184))
   {
 LABEL_61:
     v24 = 0;
@@ -504,13 +504,13 @@ LABEL_61:
   }
 
   serialNumber = self->_serialNumber;
-  if (serialNumber | *(v4 + 18) && ![(NSString *)serialNumber isEqual:?])
+  if (serialNumber | *(equalCopy + 18) && ![(NSString *)serialNumber isEqual:?])
   {
     goto LABEL_61;
   }
 
   modelIdentifier = self->_modelIdentifier;
-  if (modelIdentifier | *(v4 + 11))
+  if (modelIdentifier | *(equalCopy + 11))
   {
     if (![(NSString *)modelIdentifier isEqual:?])
     {
@@ -519,7 +519,7 @@ LABEL_61:
   }
 
   softwareVersion = self->_softwareVersion;
-  if (softwareVersion | *(v4 + 21))
+  if (softwareVersion | *(equalCopy + 21))
   {
     if (![(NSString *)softwareVersion isEqual:?])
     {
@@ -528,7 +528,7 @@ LABEL_61:
   }
 
   regionInfo = self->_regionInfo;
-  if (regionInfo | *(v4 + 17))
+  if (regionInfo | *(equalCopy + 17))
   {
     if (![(NSString *)regionInfo isEqual:?])
     {
@@ -537,7 +537,7 @@ LABEL_61:
   }
 
   manufacturer = self->_manufacturer;
-  if (manufacturer | *(v4 + 9))
+  if (manufacturer | *(equalCopy + 9))
   {
     if (![(NSString *)manufacturer isEqual:?])
     {
@@ -546,7 +546,7 @@ LABEL_61:
   }
 
   softwareUpdateDescriptor = self->_softwareUpdateDescriptor;
-  if (softwareUpdateDescriptor | *(v4 + 19))
+  if (softwareUpdateDescriptor | *(equalCopy + 19))
   {
     if (![(HMSoftwareUpdateEventProtoSoftwareUpdateDescriptor *)softwareUpdateDescriptor isEqual:?])
     {
@@ -555,7 +555,7 @@ LABEL_61:
   }
 
   softwareUpdateProgress = self->_softwareUpdateProgress;
-  if (softwareUpdateProgress | *(v4 + 20))
+  if (softwareUpdateProgress | *(equalCopy + 20))
   {
     if (![(HMSoftwareUpdateEventProtoSoftwareUpdateProgress *)softwareUpdateProgress isEqual:?])
     {
@@ -563,28 +563,28 @@ LABEL_61:
     }
   }
 
-  v19 = *(v4 + 184);
+  v19 = *(equalCopy + 184);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 184) & 8) == 0 || self->_sfProblemFlags != *(v4 + 4))
+    if ((*(equalCopy + 184) & 8) == 0 || self->_sfProblemFlags != *(equalCopy + 4))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 184) & 8) != 0)
+  else if ((*(equalCopy + 184) & 8) != 0)
   {
     goto LABEL_61;
   }
 
   networkInfos = self->_networkInfos;
-  if (networkInfos | *(v4 + 13) && ![(NSMutableArray *)networkInfos isEqual:?])
+  if (networkInfos | *(equalCopy + 13) && ![(NSMutableArray *)networkInfos isEqual:?])
   {
     goto LABEL_61;
   }
 
   networkServiceInfos = self->_networkServiceInfos;
-  if (networkServiceInfos | *(v4 + 14))
+  if (networkServiceInfos | *(equalCopy + 14))
   {
     if (![(NSMutableArray *)networkServiceInfos isEqual:?])
     {
@@ -593,7 +593,7 @@ LABEL_61:
   }
 
   networkVisibleDeviceInfos = self->_networkVisibleDeviceInfos;
-  if (networkVisibleDeviceInfos | *(v4 + 15))
+  if (networkVisibleDeviceInfos | *(equalCopy + 15))
   {
     if (![(NSMutableArray *)networkVisibleDeviceInfos isEqual:?])
     {
@@ -602,7 +602,7 @@ LABEL_61:
   }
 
   nearbyVisibleDeviceInfos = self->_nearbyVisibleDeviceInfos;
-  if (nearbyVisibleDeviceInfos | *(v4 + 12))
+  if (nearbyVisibleDeviceInfos | *(equalCopy + 12))
   {
     if (![(NSMutableArray *)nearbyVisibleDeviceInfos isEqual:?])
     {
@@ -612,33 +612,33 @@ LABEL_61:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 184) & 2) == 0 || self->_numAppleMediaAccessories != *(v4 + 2))
+    if ((*(equalCopy + 184) & 2) == 0 || self->_numAppleMediaAccessories != *(equalCopy + 2))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 184) & 2) != 0)
+  else if ((*(equalCopy + 184) & 2) != 0)
   {
     goto LABEL_61;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 184) & 4) == 0 || self->_numResidents != *(v4 + 3))
+    if ((*(equalCopy + 184) & 4) == 0 || self->_numResidents != *(equalCopy + 3))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 184) & 4) != 0)
+  else if ((*(equalCopy + 184) & 4) != 0)
   {
     goto LABEL_61;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 184) & 0x10) == 0 || self->_primaryResidentStatus != *(v4 + 32))
+    if ((*(equalCopy + 184) & 0x10) == 0 || self->_primaryResidentStatus != *(equalCopy + 32))
     {
       goto LABEL_61;
     }
@@ -648,7 +648,7 @@ LABEL_61:
 
   else
   {
-    v24 = (*(v4 + 184) & 0x10) == 0;
+    v24 = (*(equalCopy + 184) & 0x10) == 0;
   }
 
 LABEL_62:
@@ -656,31 +656,31 @@ LABEL_62:
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v79 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_mediaRouteIdString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_mediaRouteIdString copyWithZone:zone];
   v7 = *(v5 + 80);
   *(v5 + 80) = v6;
 
-  v8 = [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)self->_wifiInfo copyWithZone:a3];
+  v8 = [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)self->_wifiInfo copyWithZone:zone];
   v9 = *(v5 + 176);
   *(v5 + 176) = v8;
 
-  v10 = [(HMAccessoryDiagnosticInfoProtoCurrentAccessoryInfo *)self->_currentAccessoryInfo copyWithZone:a3];
+  v10 = [(HMAccessoryDiagnosticInfoProtoCurrentAccessoryInfo *)self->_currentAccessoryInfo copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
-  v12 = [(HMAccessoryDiagnosticInfoProtoCloudInfo *)self->_cloudInfo copyWithZone:a3];
+  v12 = [(HMAccessoryDiagnosticInfoProtoCloudInfo *)self->_cloudInfo copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
-  v14 = [(HMAccessoryDiagnosticInfoProtoIdsInfo *)self->_idsInfo copyWithZone:a3];
+  v14 = [(HMAccessoryDiagnosticInfoProtoIdsInfo *)self->_idsInfo copyWithZone:zone];
   v15 = *(v5 + 64);
   *(v5 + 64) = v14;
 
-  v16 = [(HMRemoteEventRouterProtoServerDiagnosticInfo *)self->_eventRouterServerInfo copyWithZone:a3];
+  v16 = [(HMRemoteEventRouterProtoServerDiagnosticInfo *)self->_eventRouterServerInfo copyWithZone:zone];
   v17 = *(v5 + 56);
   *(v5 + 56) = v16;
 
@@ -690,31 +690,31 @@ LABEL_62:
     *(v5 + 184) |= 1u;
   }
 
-  v18 = [(NSString *)self->_serialNumber copyWithZone:a3];
+  v18 = [(NSString *)self->_serialNumber copyWithZone:zone];
   v19 = *(v5 + 144);
   *(v5 + 144) = v18;
 
-  v20 = [(NSString *)self->_modelIdentifier copyWithZone:a3];
+  v20 = [(NSString *)self->_modelIdentifier copyWithZone:zone];
   v21 = *(v5 + 88);
   *(v5 + 88) = v20;
 
-  v22 = [(NSString *)self->_softwareVersion copyWithZone:a3];
+  v22 = [(NSString *)self->_softwareVersion copyWithZone:zone];
   v23 = *(v5 + 168);
   *(v5 + 168) = v22;
 
-  v24 = [(NSString *)self->_regionInfo copyWithZone:a3];
+  v24 = [(NSString *)self->_regionInfo copyWithZone:zone];
   v25 = *(v5 + 136);
   *(v5 + 136) = v24;
 
-  v26 = [(NSString *)self->_manufacturer copyWithZone:a3];
+  v26 = [(NSString *)self->_manufacturer copyWithZone:zone];
   v27 = *(v5 + 72);
   *(v5 + 72) = v26;
 
-  v28 = [(HMSoftwareUpdateEventProtoSoftwareUpdateDescriptor *)self->_softwareUpdateDescriptor copyWithZone:a3];
+  v28 = [(HMSoftwareUpdateEventProtoSoftwareUpdateDescriptor *)self->_softwareUpdateDescriptor copyWithZone:zone];
   v29 = *(v5 + 152);
   *(v5 + 152) = v28;
 
-  v30 = [(HMSoftwareUpdateEventProtoSoftwareUpdateProgress *)self->_softwareUpdateProgress copyWithZone:a3];
+  v30 = [(HMSoftwareUpdateEventProtoSoftwareUpdateProgress *)self->_softwareUpdateProgress copyWithZone:zone];
   v31 = *(v5 + 160);
   *(v5 + 160) = v30;
 
@@ -743,7 +743,7 @@ LABEL_62:
           objc_enumerationMutation(v32);
         }
 
-        v37 = [*(*(&v71 + 1) + 8 * i) copyWithZone:a3];
+        v37 = [*(*(&v71 + 1) + 8 * i) copyWithZone:zone];
         [v5 addNetworkInfo:v37];
       }
 
@@ -772,7 +772,7 @@ LABEL_62:
           objc_enumerationMutation(v38);
         }
 
-        v43 = [*(*(&v67 + 1) + 8 * j) copyWithZone:a3];
+        v43 = [*(*(&v67 + 1) + 8 * j) copyWithZone:zone];
         [v5 addNetworkServiceInfo:v43];
       }
 
@@ -801,7 +801,7 @@ LABEL_62:
           objc_enumerationMutation(v44);
         }
 
-        v49 = [*(*(&v63 + 1) + 8 * k) copyWithZone:a3];
+        v49 = [*(*(&v63 + 1) + 8 * k) copyWithZone:zone];
         [v5 addNetworkVisibleDeviceInfos:v49];
       }
 
@@ -830,7 +830,7 @@ LABEL_62:
           objc_enumerationMutation(v50);
         }
 
-        v55 = [*(*(&v59 + 1) + 8 * m) copyWithZone:{a3, v59}];
+        v55 = [*(*(&v59 + 1) + 8 * m) copyWithZone:{zone, v59}];
         [v5 addNearbyVisibleDeviceInfos:v55];
       }
 
@@ -880,107 +880,107 @@ LABEL_37:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v22 = v4;
+  toCopy = to;
+  v22 = toCopy;
   if (self->_mediaRouteIdString)
   {
-    [v4 setMediaRouteIdString:?];
-    v4 = v22;
+    [toCopy setMediaRouteIdString:?];
+    toCopy = v22;
   }
 
   if (self->_wifiInfo)
   {
     [v22 setWifiInfo:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_currentAccessoryInfo)
   {
     [v22 setCurrentAccessoryInfo:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_cloudInfo)
   {
     [v22 setCloudInfo:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_idsInfo)
   {
     [v22 setIdsInfo:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_eventRouterServerInfo)
   {
     [v22 setEventRouterServerInfo:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_generationTime;
-    *(v4 + 184) |= 1u;
+    *(toCopy + 1) = *&self->_generationTime;
+    *(toCopy + 184) |= 1u;
   }
 
   if (self->_serialNumber)
   {
     [v22 setSerialNumber:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_modelIdentifier)
   {
     [v22 setModelIdentifier:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_softwareVersion)
   {
     [v22 setSoftwareVersion:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_regionInfo)
   {
     [v22 setRegionInfo:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_manufacturer)
   {
     [v22 setManufacturer:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_softwareUpdateDescriptor)
   {
     [v22 setSoftwareUpdateDescriptor:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_softwareUpdateProgress)
   {
     [v22 setSoftwareUpdateProgress:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 4) = self->_sfProblemFlags;
-    *(v4 + 184) |= 8u;
+    *(toCopy + 4) = self->_sfProblemFlags;
+    *(toCopy + 184) |= 8u;
   }
 
   if ([(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self networkInfosCount])
   {
     [v22 clearNetworkInfos];
-    v5 = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self networkInfosCount];
-    if (v5)
+    networkInfosCount = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self networkInfosCount];
+    if (networkInfosCount)
     {
-      v6 = v5;
+      v6 = networkInfosCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self networkInfoAtIndex:i];
@@ -992,10 +992,10 @@ LABEL_37:
   if ([(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self networkServiceInfosCount])
   {
     [v22 clearNetworkServiceInfos];
-    v9 = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self networkServiceInfosCount];
-    if (v9)
+    networkServiceInfosCount = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self networkServiceInfosCount];
+    if (networkServiceInfosCount)
     {
-      v10 = v9;
+      v10 = networkServiceInfosCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self networkServiceInfoAtIndex:j];
@@ -1007,10 +1007,10 @@ LABEL_37:
   if ([(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self networkVisibleDeviceInfosCount])
   {
     [v22 clearNetworkVisibleDeviceInfos];
-    v13 = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self networkVisibleDeviceInfosCount];
-    if (v13)
+    networkVisibleDeviceInfosCount = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self networkVisibleDeviceInfosCount];
+    if (networkVisibleDeviceInfosCount)
     {
-      v14 = v13;
+      v14 = networkVisibleDeviceInfosCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self networkVisibleDeviceInfosAtIndex:k];
@@ -1022,10 +1022,10 @@ LABEL_37:
   if ([(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self nearbyVisibleDeviceInfosCount])
   {
     [v22 clearNearbyVisibleDeviceInfos];
-    v17 = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self nearbyVisibleDeviceInfosCount];
-    if (v17)
+    nearbyVisibleDeviceInfosCount = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self nearbyVisibleDeviceInfosCount];
+    if (nearbyVisibleDeviceInfosCount)
     {
-      v18 = v17;
+      v18 = nearbyVisibleDeviceInfosCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self nearbyVisibleDeviceInfosAtIndex:m];
@@ -1069,10 +1069,10 @@ LABEL_50:
 LABEL_51:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_mediaRouteIdString)
   {
     PBDataWriterWriteStringField();
@@ -1309,47 +1309,47 @@ LABEL_63:
 - (id)dictionaryRepresentation
 {
   v82 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   mediaRouteIdString = self->_mediaRouteIdString;
   if (mediaRouteIdString)
   {
-    [v3 setObject:mediaRouteIdString forKey:@"mediaRouteIdString"];
+    [dictionary setObject:mediaRouteIdString forKey:@"mediaRouteIdString"];
   }
 
   wifiInfo = self->_wifiInfo;
   if (wifiInfo)
   {
-    v7 = [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)wifiInfo dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"wifiInfo"];
+    dictionaryRepresentation = [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)wifiInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"wifiInfo"];
   }
 
   currentAccessoryInfo = self->_currentAccessoryInfo;
   if (currentAccessoryInfo)
   {
-    v9 = [(HMAccessoryDiagnosticInfoProtoCurrentAccessoryInfo *)currentAccessoryInfo dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"currentAccessoryInfo"];
+    dictionaryRepresentation2 = [(HMAccessoryDiagnosticInfoProtoCurrentAccessoryInfo *)currentAccessoryInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"currentAccessoryInfo"];
   }
 
   cloudInfo = self->_cloudInfo;
   if (cloudInfo)
   {
-    v11 = [(HMAccessoryDiagnosticInfoProtoCloudInfo *)cloudInfo dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"cloudInfo"];
+    dictionaryRepresentation3 = [(HMAccessoryDiagnosticInfoProtoCloudInfo *)cloudInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"cloudInfo"];
   }
 
   idsInfo = self->_idsInfo;
   if (idsInfo)
   {
-    v13 = [(HMAccessoryDiagnosticInfoProtoIdsInfo *)idsInfo dictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"idsInfo"];
+    dictionaryRepresentation4 = [(HMAccessoryDiagnosticInfoProtoIdsInfo *)idsInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"idsInfo"];
   }
 
   eventRouterServerInfo = self->_eventRouterServerInfo;
   if (eventRouterServerInfo)
   {
-    v15 = [(HMRemoteEventRouterProtoServerDiagnosticInfo *)eventRouterServerInfo dictionaryRepresentation];
-    [v4 setObject:v15 forKey:@"eventRouterServerInfo"];
+    dictionaryRepresentation5 = [(HMRemoteEventRouterProtoServerDiagnosticInfo *)eventRouterServerInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"eventRouterServerInfo"];
   }
 
   if (*&self->_has)
@@ -1391,15 +1391,15 @@ LABEL_63:
   softwareUpdateDescriptor = self->_softwareUpdateDescriptor;
   if (softwareUpdateDescriptor)
   {
-    v23 = [(HMSoftwareUpdateEventProtoSoftwareUpdateDescriptor *)softwareUpdateDescriptor dictionaryRepresentation];
-    [v4 setObject:v23 forKey:@"softwareUpdateDescriptor"];
+    dictionaryRepresentation6 = [(HMSoftwareUpdateEventProtoSoftwareUpdateDescriptor *)softwareUpdateDescriptor dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation6 forKey:@"softwareUpdateDescriptor"];
   }
 
   softwareUpdateProgress = self->_softwareUpdateProgress;
   if (softwareUpdateProgress)
   {
-    v25 = [(HMSoftwareUpdateEventProtoSoftwareUpdateProgress *)softwareUpdateProgress dictionaryRepresentation];
-    [v4 setObject:v25 forKey:@"softwareUpdateProgress"];
+    dictionaryRepresentation7 = [(HMSoftwareUpdateEventProtoSoftwareUpdateProgress *)softwareUpdateProgress dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation7 forKey:@"softwareUpdateProgress"];
   }
 
   if ((*&self->_has & 8) != 0)
@@ -1430,8 +1430,8 @@ LABEL_63:
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v74 + 1) + 8 * i) dictionaryRepresentation];
-          [v27 addObject:v33];
+          dictionaryRepresentation8 = [*(*(&v74 + 1) + 8 * i) dictionaryRepresentation];
+          [v27 addObject:dictionaryRepresentation8];
         }
 
         v30 = [(NSMutableArray *)v28 countByEnumeratingWithState:&v74 objects:v81 count:16];
@@ -1465,8 +1465,8 @@ LABEL_63:
             objc_enumerationMutation(v35);
           }
 
-          v40 = [*(*(&v70 + 1) + 8 * j) dictionaryRepresentation];
-          [v34 addObject:v40];
+          dictionaryRepresentation9 = [*(*(&v70 + 1) + 8 * j) dictionaryRepresentation];
+          [v34 addObject:dictionaryRepresentation9];
         }
 
         v37 = [(NSMutableArray *)v35 countByEnumeratingWithState:&v70 objects:v80 count:16];
@@ -1500,8 +1500,8 @@ LABEL_63:
             objc_enumerationMutation(v42);
           }
 
-          v47 = [*(*(&v66 + 1) + 8 * k) dictionaryRepresentation];
-          [v41 addObject:v47];
+          dictionaryRepresentation10 = [*(*(&v66 + 1) + 8 * k) dictionaryRepresentation];
+          [v41 addObject:dictionaryRepresentation10];
         }
 
         v44 = [(NSMutableArray *)v42 countByEnumeratingWithState:&v66 objects:v79 count:16];
@@ -1535,8 +1535,8 @@ LABEL_63:
             objc_enumerationMutation(v49);
           }
 
-          v54 = [*(*(&v62 + 1) + 8 * m) dictionaryRepresentation];
-          [v48 addObject:v54];
+          dictionaryRepresentation11 = [*(*(&v62 + 1) + 8 * m) dictionaryRepresentation];
+          [v48 addObject:dictionaryRepresentation11];
         }
 
         v51 = [(NSMutableArray *)v49 countByEnumeratingWithState:&v62 objects:v78 count:16];
@@ -1609,26 +1609,26 @@ LABEL_77:
   v8.receiver = self;
   v8.super_class = HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo;
   v4 = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)&v8 description];
-  v5 = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsPrimaryResidentStatus:(id)a3
+- (int)StringAsPrimaryResidentStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NoKnownPrimary"])
+  else if ([statusCopy isEqualToString:@"NoKnownPrimary"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"KnownPrimary"])
+  else if ([statusCopy isEqualToString:@"KnownPrimary"])
   {
     v4 = 2;
   }
@@ -1641,9 +1641,9 @@ LABEL_77:
   return v4;
 }
 
-- (void)setHasPrimaryResidentStatus:(BOOL)a3
+- (void)setHasPrimaryResidentStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 16;
   }
@@ -1669,9 +1669,9 @@ LABEL_77:
   }
 }
 
-- (void)setHasNumResidents:(BOOL)a3
+- (void)setHasNumResidents:(BOOL)residents
 {
-  if (a3)
+  if (residents)
   {
     v3 = 4;
   }
@@ -1684,9 +1684,9 @@ LABEL_77:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumAppleMediaAccessories:(BOOL)a3
+- (void)setHasNumAppleMediaAccessories:(BOOL)accessories
 {
-  if (a3)
+  if (accessories)
   {
     v3 = 2;
   }
@@ -1699,81 +1699,81 @@ LABEL_77:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addNearbyVisibleDeviceInfos:(id)a3
+- (void)addNearbyVisibleDeviceInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   nearbyVisibleDeviceInfos = self->_nearbyVisibleDeviceInfos;
-  v8 = v4;
+  v8 = infosCopy;
   if (!nearbyVisibleDeviceInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_nearbyVisibleDeviceInfos;
     self->_nearbyVisibleDeviceInfos = v6;
 
-    v4 = v8;
+    infosCopy = v8;
     nearbyVisibleDeviceInfos = self->_nearbyVisibleDeviceInfos;
   }
 
-  [(NSMutableArray *)nearbyVisibleDeviceInfos addObject:v4];
+  [(NSMutableArray *)nearbyVisibleDeviceInfos addObject:infosCopy];
 }
 
-- (void)addNetworkVisibleDeviceInfos:(id)a3
+- (void)addNetworkVisibleDeviceInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   networkVisibleDeviceInfos = self->_networkVisibleDeviceInfos;
-  v8 = v4;
+  v8 = infosCopy;
   if (!networkVisibleDeviceInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_networkVisibleDeviceInfos;
     self->_networkVisibleDeviceInfos = v6;
 
-    v4 = v8;
+    infosCopy = v8;
     networkVisibleDeviceInfos = self->_networkVisibleDeviceInfos;
   }
 
-  [(NSMutableArray *)networkVisibleDeviceInfos addObject:v4];
+  [(NSMutableArray *)networkVisibleDeviceInfos addObject:infosCopy];
 }
 
-- (void)addNetworkServiceInfo:(id)a3
+- (void)addNetworkServiceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   networkServiceInfos = self->_networkServiceInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!networkServiceInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_networkServiceInfos;
     self->_networkServiceInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     networkServiceInfos = self->_networkServiceInfos;
   }
 
-  [(NSMutableArray *)networkServiceInfos addObject:v4];
+  [(NSMutableArray *)networkServiceInfos addObject:infoCopy];
 }
 
-- (void)addNetworkInfo:(id)a3
+- (void)addNetworkInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   networkInfos = self->_networkInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!networkInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_networkInfos;
     self->_networkInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     networkInfos = self->_networkInfos;
   }
 
-  [(NSMutableArray *)networkInfos addObject:v4];
+  [(NSMutableArray *)networkInfos addObject:infoCopy];
 }
 
-- (void)setHasSfProblemFlags:(BOOL)a3
+- (void)setHasSfProblemFlags:(BOOL)flags
 {
-  if (a3)
+  if (flags)
   {
     v3 = 8;
   }

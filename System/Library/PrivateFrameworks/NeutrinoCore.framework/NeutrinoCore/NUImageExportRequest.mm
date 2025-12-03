@@ -1,29 +1,29 @@
 @interface NUImageExportRequest
 + (NSArray)defaultAuxiliaryImageTypes;
 - (NUImageExportFormat)format;
-- (NUImageExportRequest)initWithComposition:(id)a3;
-- (NUImageExportRequest)initWithComposition:(id)a3 destinationURL:(id)a4;
-- (NUImageExportRequest)initWithComposition:(id)a3 exportFormat:(id)a4;
-- (NUImageExportRequest)initWithMedia:(id)a3;
-- (NUImageExportRequest)initWithMedia:(id)a3 destinationURL:(id)a4;
-- (NUImageExportRequest)initWithMedia:(id)a3 exportFormat:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NUImageExportRequest)initWithComposition:(id)composition;
+- (NUImageExportRequest)initWithComposition:(id)composition destinationURL:(id)l;
+- (NUImageExportRequest)initWithComposition:(id)composition exportFormat:(id)format;
+- (NUImageExportRequest)initWithMedia:(id)media;
+- (NUImageExportRequest)initWithMedia:(id)media destinationURL:(id)l;
+- (NUImageExportRequest)initWithMedia:(id)media exportFormat:(id)format;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 @end
 
 @implementation NUImageExportRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = NUImageExportRequest;
-  v4 = [(NUExportRequest *)&v10 copyWithZone:a3];
+  v4 = [(NUExportRequest *)&v10 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
     objc_storeStrong(v4 + 23, self->_colorSpace);
-    v6 = [(NUImageExportRequest *)self format];
-    v7 = [v6 copy];
+    format = [(NUImageExportRequest *)self format];
+    v7 = [format copy];
     v8 = v5[24];
     v5[24] = v7;
 
@@ -60,35 +60,35 @@
   return format;
 }
 
-- (NUImageExportRequest)initWithMedia:(id)a3 exportFormat:(id)a4
+- (NUImageExportRequest)initWithMedia:(id)media exportFormat:(id)format
 {
-  v6 = a4;
-  v7 = [(NUImageExportRequest *)self initWithMedia:a3];
+  formatCopy = format;
+  v7 = [(NUImageExportRequest *)self initWithMedia:media];
   format = v7->_format;
-  v7->_format = v6;
+  v7->_format = formatCopy;
 
   return v7;
 }
 
-- (NUImageExportRequest)initWithComposition:(id)a3 exportFormat:(id)a4
+- (NUImageExportRequest)initWithComposition:(id)composition exportFormat:(id)format
 {
-  v6 = a4;
-  v7 = [(NUImageExportRequest *)self initWithComposition:a3];
+  formatCopy = format;
+  v7 = [(NUImageExportRequest *)self initWithComposition:composition];
   format = v7->_format;
-  v7->_format = v6;
+  v7->_format = formatCopy;
 
   return v7;
 }
 
-- (NUImageExportRequest)initWithMedia:(id)a3 destinationURL:(id)a4
+- (NUImageExportRequest)initWithMedia:(id)media destinationURL:(id)l
 {
-  v6 = a4;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = NUImageExportRequest;
-  v7 = [(NUExportRequest *)&v12 initWithMedia:a3 destinationURL:v6];
-  if (v6)
+  v7 = [(NUExportRequest *)&v12 initWithMedia:media destinationURL:lCopy];
+  if (lCopy)
   {
-    v8 = [NUImageExportFormat defaultFormatForURL:v6];
+    v8 = [NUImageExportFormat defaultFormatForURL:lCopy];
     format = v7->_format;
     v7->_format = v8;
   }
@@ -99,15 +99,15 @@
   return v7;
 }
 
-- (NUImageExportRequest)initWithComposition:(id)a3 destinationURL:(id)a4
+- (NUImageExportRequest)initWithComposition:(id)composition destinationURL:(id)l
 {
-  v6 = a4;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = NUImageExportRequest;
-  v7 = [(NUExportRequest *)&v12 initWithComposition:a3 destinationURL:v6];
-  if (v6)
+  v7 = [(NUExportRequest *)&v12 initWithComposition:composition destinationURL:lCopy];
+  if (lCopy)
   {
-    v8 = [NUImageExportFormat defaultFormatForURL:v6];
+    v8 = [NUImageExportFormat defaultFormatForURL:lCopy];
     format = v7->_format;
     v7->_format = v8;
   }
@@ -118,11 +118,11 @@
   return v7;
 }
 
-- (NUImageExportRequest)initWithMedia:(id)a3
+- (NUImageExportRequest)initWithMedia:(id)media
 {
   v8.receiver = self;
   v8.super_class = NUImageExportRequest;
-  v3 = [(NURenderRequest *)&v8 initWithMedia:a3];
+  v3 = [(NURenderRequest *)&v8 initWithMedia:media];
   v4 = +[NUColorSpace sRGBColorSpace];
   colorSpace = v3->_colorSpace;
   v3->_colorSpace = v4;
@@ -134,11 +134,11 @@
   return v3;
 }
 
-- (NUImageExportRequest)initWithComposition:(id)a3
+- (NUImageExportRequest)initWithComposition:(id)composition
 {
   v8.receiver = self;
   v8.super_class = NUImageExportRequest;
-  v3 = [(NURenderRequest *)&v8 initWithComposition:a3];
+  v3 = [(NURenderRequest *)&v8 initWithComposition:composition];
   v4 = +[NUColorSpace sRGBColorSpace];
   colorSpace = v3->_colorSpace;
   v3->_colorSpace = v4;

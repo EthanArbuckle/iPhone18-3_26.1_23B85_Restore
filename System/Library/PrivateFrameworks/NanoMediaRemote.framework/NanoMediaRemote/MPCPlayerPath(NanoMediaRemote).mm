@@ -13,7 +13,7 @@
 
 - (uint64_t)nmr_isSystemPodcastsPath
 {
-  v1 = [a1 representedBundleID];
+  representedBundleID = [self representedBundleID];
   IsSystemPodcastApplication = MRMediaRemoteApplicationIsSystemPodcastApplication();
 
   return IsSystemPodcastApplication;
@@ -21,7 +21,7 @@
 
 - (uint64_t)nmr_isSystemBooksPath
 {
-  v1 = [a1 representedBundleID];
+  representedBundleID = [self representedBundleID];
   IsSystemBooksApplication = MRMediaRemoteApplicationIsSystemBooksApplication();
 
   return IsSystemBooksApplication;
@@ -29,19 +29,19 @@
 
 - (uint64_t)nmr_isSystemWorkoutPath
 {
-  v1 = [a1 representedBundleID];
-  v2 = [v1 isEqualToString:@"com.apple.SessionTrackerApp"];
+  representedBundleID = [self representedBundleID];
+  v2 = [representedBundleID isEqualToString:@"com.apple.SessionTrackerApp"];
 
   return v2;
 }
 
 - (uint64_t)nmr_isSystemWorkoutGuidedWalkPath
 {
-  result = [a1 nmr_isSystemWorkoutPath];
+  result = [self nmr_isSystemWorkoutPath];
   if (result)
   {
-    v3 = [a1 playerID];
-    v4 = [v3 isEqualToString:@"guidedWalk"];
+    playerID = [self playerID];
+    v4 = [playerID isEqualToString:@"guidedWalk"];
 
     return v4;
   }
@@ -51,24 +51,24 @@
 
 - (uint64_t)nmr_isSystemVoiceMemosPath
 {
-  v1 = [a1 representedBundleID];
-  v2 = [v1 isEqualToString:@"com.apple.VoiceMemos"];
+  representedBundleID = [self representedBundleID];
+  v2 = [representedBundleID isEqualToString:@"com.apple.VoiceMemos"];
 
   return v2;
 }
 
 - (uint64_t)nmr_isSystemRemotePath
 {
-  v1 = [a1 representedBundleID];
-  v2 = [v1 isEqualToString:@"com.apple.NanoRemote"];
+  representedBundleID = [self representedBundleID];
+  v2 = [representedBundleID isEqualToString:@"com.apple.NanoRemote"];
 
   return v2;
 }
 
 - (uint64_t)nmr_isSystemMindfulnessPath
 {
-  v1 = [a1 representedBundleID];
-  v2 = [v1 isEqualToString:@"com.apple.Mind"];
+  representedBundleID = [self representedBundleID];
+  v2 = [representedBundleID isEqualToString:@"com.apple.Mind"];
 
   return v2;
 }
@@ -77,21 +77,21 @@
 {
   v30 = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277CCACE0] componentsWithURL:a3 resolvingAgainstBaseURL:0];
-  v5 = [v4 queryItems];
-  v6 = [v5 count];
+  queryItems = [v4 queryItems];
+  v6 = [queryItems count];
 
   if (v6)
   {
     v7 = MEMORY[0x277CBEB38];
-    v8 = [v4 queryItems];
-    v9 = [v7 dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
+    queryItems2 = [v4 queryItems];
+    v9 = [v7 dictionaryWithCapacity:{objc_msgSend(queryItems2, "count")}];
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = [v4 queryItems];
-    v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    queryItems3 = [v4 queryItems];
+    v11 = [queryItems3 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v11)
     {
       v12 = v11;
@@ -102,16 +102,16 @@
         {
           if (*v26 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(queryItems3);
           }
 
           v15 = *(*(&v25 + 1) + 8 * i);
-          v16 = [v15 value];
-          v17 = [v15 name];
-          [v9 setObject:v16 forKeyedSubscript:v17];
+          value = [v15 value];
+          name = [v15 name];
+          [v9 setObject:value forKeyedSubscript:name];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v12 = [queryItems3 countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v12);
@@ -126,7 +126,7 @@
 
     v20 = [v9 objectForKeyedSubscript:@"bundleID"];
     v21 = [v9 objectForKeyedSubscript:@"playerID"];
-    v22 = [a1 pathWithDeviceUID:v19 bundleID:v20 pid:0 playerID:v21];
+    v22 = [self pathWithDeviceUID:v19 bundleID:v20 pid:0 playerID:v21];
 
     if (!v18)
     {

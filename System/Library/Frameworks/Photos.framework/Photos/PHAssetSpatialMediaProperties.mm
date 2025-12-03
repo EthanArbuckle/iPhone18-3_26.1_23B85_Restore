@@ -1,6 +1,6 @@
 @interface PHAssetSpatialMediaProperties
 + (id)propertiesToFetch;
-- (PHAssetSpatialMediaProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetSpatialMediaProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetSpatialMediaProperties
@@ -23,18 +23,18 @@ void __50__PHAssetSpatialMediaProperties_propertiesToFetch__block_invoke()
   propertiesToFetch_pl_once_object_75 = v1;
 }
 
-- (PHAssetSpatialMediaProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetSpatialMediaProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v13.receiver = self;
   v13.super_class = PHAssetSpatialMediaProperties;
   v9 = [(PHAssetSpatialMediaProperties *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->super._asset, v8);
-    v11 = [v7 objectForKeyedSubscript:@"spatialType"];
+    objc_storeWeak(&v9->super._asset, assetCopy);
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"spatialType"];
     v10->_spatialMediaType = [v11 shortValue];
   }
 

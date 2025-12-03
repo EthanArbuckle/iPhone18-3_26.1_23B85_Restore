@@ -17,7 +17,7 @@
 
 - (void)handleAppWillEnterForeground
 {
-  v2 = self;
+  selfCopy = self;
   dispatch thunk of WorkoutConfigurationOccurrenceStore.handleAppWillEnterForeground()();
 }
 

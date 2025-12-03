@@ -1,57 +1,57 @@
 @interface ICArchiveNoteDocScansActivity
-- (ICArchiveNoteDocScansActivity)initWithNote:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5;
+- (ICArchiveNoteDocScansActivity)initWithNote:(id)note presentingViewController:(id)controller presentingBarButtonItem:(id)item;
 - (UIViewController)presentingViewController;
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICArchiveNoteDocScansActivity
 
-- (ICArchiveNoteDocScansActivity)initWithNote:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5
+- (ICArchiveNoteDocScansActivity)initWithNote:(id)note presentingViewController:(id)controller presentingBarButtonItem:(id)item
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  noteCopy = note;
+  controllerCopy = controller;
+  itemCopy = item;
   v15.receiver = self;
   v15.super_class = ICArchiveNoteDocScansActivity;
   v12 = [(ICArchiveNoteDocScansActivity *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_note, a3);
-    objc_storeWeak(&v13->_presentingViewController, v10);
-    objc_storeStrong(&v13->_presentingBarButtonItem, a5);
+    objc_storeStrong(&v12->_note, note);
+    objc_storeWeak(&v13->_presentingViewController, controllerCopy);
+    objc_storeStrong(&v13->_presentingBarButtonItem, item);
   }
 
   return v13;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v11 = a3;
-  v4 = [(ICArchiveNoteDocScansActivity *)self presentingViewController];
+  completionCopy = completion;
+  presentingViewController = [(ICArchiveNoteDocScansActivity *)self presentingViewController];
 
-  if (v4)
+  if (presentingViewController)
   {
-    v5 = [(ICArchiveNoteDocScansActivity *)self note];
-    v6 = [(ICArchiveNoteDocScansActivity *)self presentingViewController];
-    v7 = [(ICArchiveNoteDocScansActivity *)self presentingBarButtonItem];
-    [ICDocCamArchiveExporter showExportArchiveFromNote:v5 presentingViewController:v6 presentingBarButtonItem:v7];
+    note = [(ICArchiveNoteDocScansActivity *)self note];
+    presentingViewController2 = [(ICArchiveNoteDocScansActivity *)self presentingViewController];
+    presentingBarButtonItem = [(ICArchiveNoteDocScansActivity *)self presentingBarButtonItem];
+    [ICDocCamArchiveExporter showExportArchiveFromNote:note presentingViewController:presentingViewController2 presentingBarButtonItem:presentingBarButtonItem];
 
-    v8 = self;
+    selfCopy2 = self;
     v9 = 1;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = 0;
   }
 
-  [(ICArchiveNoteDocScansActivity *)v8 activityDidFinish:v9];
-  if (v11)
+  [(ICArchiveNoteDocScansActivity *)selfCopy2 activityDidFinish:v9];
+  if (completionCopy)
   {
-    v10 = [(ICArchiveNoteDocScansActivity *)self activityType];
-    v11[2](v11, v4 != 0, v10);
+    activityType = [(ICArchiveNoteDocScansActivity *)self activityType];
+    completionCopy[2](completionCopy, presentingViewController != 0, activityType);
   }
 }
 

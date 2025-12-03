@@ -36,32 +36,32 @@
 - (id)testAccRequestWithReqAndResParamsHandler;
 - (id)testAccRequestWithReqParamsHandler;
 - (id)testAccRequestWithResParamsHandler;
-- (void)_controlDidUpdate:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)setTestAccRequestNoParamsHandler:(id)a3;
-- (void)setTestAccRequestWithReqAndResParamsHandler:(id)a3;
-- (void)setTestAccRequestWithReqParamsHandler:(id)a3;
-- (void)setTestAccRequestWithResParamsHandler:(id)a3;
-- (void)testDevRequestNoParamsWithCompletion:(id)a3;
-- (void)testDevRequestWithResParamsWithCompletion:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)_controlDidUpdate:(id)update;
+- (void)registerObserver:(id)observer;
+- (void)setTestAccRequestNoParamsHandler:(id)handler;
+- (void)setTestAccRequestWithReqAndResParamsHandler:(id)handler;
+- (void)setTestAccRequestWithReqParamsHandler:(id)handler;
+- (void)setTestAccRequestWithResParamsHandler:(id)handler;
+- (void)testDevRequestNoParamsWithCompletion:(id)completion;
+- (void)testDevRequestWithResParamsWithCompletion:(id)completion;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFTestControlSync
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFTestControlSync;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -74,12 +74,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -109,24 +109,24 @@
   return v4;
 }
 
-- (void)testDevRequestNoParamsWithCompletion:(id)a3
+- (void)testDevRequestNoParamsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CAFTestControlSync *)self testDevRequestNoParamsControl];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  testDevRequestNoParamsControl = [(CAFTestControlSync *)self testDevRequestNoParamsControl];
+  v6 = testDevRequestNoParamsControl;
+  if (testDevRequestNoParamsControl)
   {
-    [v5 testDevRequestNoParamsWithCompletion:v4];
+    [testDevRequestNoParamsControl testDevRequestNoParamsWithCompletion:completionCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v7 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __59__CAFTestControlSync_testDevRequestNoParamsWithCompletion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(v7, block);
   }
 }
@@ -140,26 +140,26 @@ void __59__CAFTestControlSync_testDevRequestNoParamsWithCompletion___block_invok
 
 - (BOOL)hasTestDevRequestNoParams
 {
-  v2 = [(CAFTestControlSync *)self testDevRequestNoParamsControl];
-  v3 = v2 != 0;
+  testDevRequestNoParamsControl = [(CAFTestControlSync *)self testDevRequestNoParamsControl];
+  v3 = testDevRequestNoParamsControl != 0;
 
   return v3;
 }
 
 - (BOOL)testDevRequestNoParamsError
 {
-  v2 = [(CAFTestControlSync *)self testDevRequestNoParamsControl];
-  v3 = [v2 hasErrorState];
+  testDevRequestNoParamsControl = [(CAFTestControlSync *)self testDevRequestNoParamsControl];
+  hasErrorState = [testDevRequestNoParamsControl hasErrorState];
 
-  return v3;
+  return hasErrorState;
 }
 
 - (BOOL)testDevRequestNoParamsDisabled
 {
-  v2 = [(CAFTestControlSync *)self testDevRequestNoParamsControl];
-  v3 = [v2 isDisabled];
+  testDevRequestNoParamsControl = [(CAFTestControlSync *)self testDevRequestNoParamsControl];
+  isDisabled = [testDevRequestNoParamsControl isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (CAFTestDevRequestWithReqParamsControl)testDevRequestWithReqParamsControl
@@ -188,26 +188,26 @@ void __86__CAFTestControlSync_testDevRequestWithReqParamsWithTestInput1_testInpu
 
 - (BOOL)hasTestDevRequestWithReqParams
 {
-  v2 = [(CAFTestControlSync *)self testDevRequestWithReqParamsControl];
-  v3 = v2 != 0;
+  testDevRequestWithReqParamsControl = [(CAFTestControlSync *)self testDevRequestWithReqParamsControl];
+  v3 = testDevRequestWithReqParamsControl != 0;
 
   return v3;
 }
 
 - (BOOL)testDevRequestWithReqParamsError
 {
-  v2 = [(CAFTestControlSync *)self testDevRequestWithReqParamsControl];
-  v3 = [v2 hasErrorState];
+  testDevRequestWithReqParamsControl = [(CAFTestControlSync *)self testDevRequestWithReqParamsControl];
+  hasErrorState = [testDevRequestWithReqParamsControl hasErrorState];
 
-  return v3;
+  return hasErrorState;
 }
 
 - (BOOL)testDevRequestWithReqParamsDisabled
 {
-  v2 = [(CAFTestControlSync *)self testDevRequestWithReqParamsControl];
-  v3 = [v2 isDisabled];
+  testDevRequestWithReqParamsControl = [(CAFTestControlSync *)self testDevRequestWithReqParamsControl];
+  isDisabled = [testDevRequestWithReqParamsControl isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (CAFTestDevRequestWithResParamsControl)testDevRequestWithResParamsControl
@@ -227,24 +227,24 @@ void __86__CAFTestControlSync_testDevRequestWithReqParamsWithTestInput1_testInpu
   return v4;
 }
 
-- (void)testDevRequestWithResParamsWithCompletion:(id)a3
+- (void)testDevRequestWithResParamsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CAFTestControlSync *)self testDevRequestWithResParamsControl];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  testDevRequestWithResParamsControl = [(CAFTestControlSync *)self testDevRequestWithResParamsControl];
+  v6 = testDevRequestWithResParamsControl;
+  if (testDevRequestWithResParamsControl)
   {
-    [v5 testDevRequestWithResParamsWithCompletion:v4];
+    [testDevRequestWithResParamsControl testDevRequestWithResParamsWithCompletion:completionCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v7 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __64__CAFTestControlSync_testDevRequestWithResParamsWithCompletion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(v7, block);
   }
 }
@@ -258,26 +258,26 @@ void __64__CAFTestControlSync_testDevRequestWithResParamsWithCompletion___block_
 
 - (BOOL)hasTestDevRequestWithResParams
 {
-  v2 = [(CAFTestControlSync *)self testDevRequestWithResParamsControl];
-  v3 = v2 != 0;
+  testDevRequestWithResParamsControl = [(CAFTestControlSync *)self testDevRequestWithResParamsControl];
+  v3 = testDevRequestWithResParamsControl != 0;
 
   return v3;
 }
 
 - (BOOL)testDevRequestWithResParamsError
 {
-  v2 = [(CAFTestControlSync *)self testDevRequestWithResParamsControl];
-  v3 = [v2 hasErrorState];
+  testDevRequestWithResParamsControl = [(CAFTestControlSync *)self testDevRequestWithResParamsControl];
+  hasErrorState = [testDevRequestWithResParamsControl hasErrorState];
 
-  return v3;
+  return hasErrorState;
 }
 
 - (BOOL)testDevRequestWithResParamsDisabled
 {
-  v2 = [(CAFTestControlSync *)self testDevRequestWithResParamsControl];
-  v3 = [v2 isDisabled];
+  testDevRequestWithResParamsControl = [(CAFTestControlSync *)self testDevRequestWithResParamsControl];
+  isDisabled = [testDevRequestWithResParamsControl isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (CAFTestDevRequestWithReqAndResParamsControl)testDevRequestWithReqAndResParamsControl
@@ -306,26 +306,26 @@ void __92__CAFTestControlSync_testDevRequestWithReqAndResParamsWithTestInput5_te
 
 - (BOOL)hasTestDevRequestWithReqAndResParams
 {
-  v2 = [(CAFTestControlSync *)self testDevRequestWithReqAndResParamsControl];
-  v3 = v2 != 0;
+  testDevRequestWithReqAndResParamsControl = [(CAFTestControlSync *)self testDevRequestWithReqAndResParamsControl];
+  v3 = testDevRequestWithReqAndResParamsControl != 0;
 
   return v3;
 }
 
 - (BOOL)testDevRequestWithReqAndResParamsError
 {
-  v2 = [(CAFTestControlSync *)self testDevRequestWithReqAndResParamsControl];
-  v3 = [v2 hasErrorState];
+  testDevRequestWithReqAndResParamsControl = [(CAFTestControlSync *)self testDevRequestWithReqAndResParamsControl];
+  hasErrorState = [testDevRequestWithReqAndResParamsControl hasErrorState];
 
-  return v3;
+  return hasErrorState;
 }
 
 - (BOOL)testDevRequestWithReqAndResParamsDisabled
 {
-  v2 = [(CAFTestControlSync *)self testDevRequestWithReqAndResParamsControl];
-  v3 = [v2 isDisabled];
+  testDevRequestWithReqAndResParamsControl = [(CAFTestControlSync *)self testDevRequestWithReqAndResParamsControl];
+  isDisabled = [testDevRequestWithReqAndResParamsControl isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (CAFTestAccRequestNoParamsControl)testAccRequestNoParamsControl
@@ -347,23 +347,23 @@ void __92__CAFTestControlSync_testDevRequestWithReqAndResParamsWithTestInput5_te
 
 - (id)testAccRequestNoParamsHandler
 {
-  v2 = [(CAFTestControlSync *)self testAccRequestNoParamsControl];
-  v3 = [v2 handler];
+  testAccRequestNoParamsControl = [(CAFTestControlSync *)self testAccRequestNoParamsControl];
+  handler = [testAccRequestNoParamsControl handler];
 
-  return v3;
+  return handler;
 }
 
-- (void)setTestAccRequestNoParamsHandler:(id)a3
+- (void)setTestAccRequestNoParamsHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CAFTestControlSync *)self testAccRequestNoParamsControl];
-  [v5 setHandler:v4];
+  handlerCopy = handler;
+  testAccRequestNoParamsControl = [(CAFTestControlSync *)self testAccRequestNoParamsControl];
+  [testAccRequestNoParamsControl setHandler:handlerCopy];
 }
 
 - (BOOL)hasTestAccRequestNoParams
 {
-  v2 = [(CAFTestControlSync *)self testAccRequestNoParamsControl];
-  v3 = v2 != 0;
+  testAccRequestNoParamsControl = [(CAFTestControlSync *)self testAccRequestNoParamsControl];
+  v3 = testAccRequestNoParamsControl != 0;
 
   return v3;
 }
@@ -387,23 +387,23 @@ void __92__CAFTestControlSync_testDevRequestWithReqAndResParamsWithTestInput5_te
 
 - (id)testAccRequestWithReqParamsHandler
 {
-  v2 = [(CAFTestControlSync *)self testAccRequestWithReqParamsControl];
-  v3 = [v2 handler];
+  testAccRequestWithReqParamsControl = [(CAFTestControlSync *)self testAccRequestWithReqParamsControl];
+  handler = [testAccRequestWithReqParamsControl handler];
 
-  return v3;
+  return handler;
 }
 
-- (void)setTestAccRequestWithReqParamsHandler:(id)a3
+- (void)setTestAccRequestWithReqParamsHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CAFTestControlSync *)self testAccRequestWithReqParamsControl];
-  [v5 setHandler:v4];
+  handlerCopy = handler;
+  testAccRequestWithReqParamsControl = [(CAFTestControlSync *)self testAccRequestWithReqParamsControl];
+  [testAccRequestWithReqParamsControl setHandler:handlerCopy];
 }
 
 - (BOOL)hasTestAccRequestWithReqParams
 {
-  v2 = [(CAFTestControlSync *)self testAccRequestWithReqParamsControl];
-  v3 = v2 != 0;
+  testAccRequestWithReqParamsControl = [(CAFTestControlSync *)self testAccRequestWithReqParamsControl];
+  v3 = testAccRequestWithReqParamsControl != 0;
 
   return v3;
 }
@@ -427,23 +427,23 @@ void __92__CAFTestControlSync_testDevRequestWithReqAndResParamsWithTestInput5_te
 
 - (id)testAccRequestWithResParamsHandler
 {
-  v2 = [(CAFTestControlSync *)self testAccRequestWithResParamsControl];
-  v3 = [v2 handler];
+  testAccRequestWithResParamsControl = [(CAFTestControlSync *)self testAccRequestWithResParamsControl];
+  handler = [testAccRequestWithResParamsControl handler];
 
-  return v3;
+  return handler;
 }
 
-- (void)setTestAccRequestWithResParamsHandler:(id)a3
+- (void)setTestAccRequestWithResParamsHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CAFTestControlSync *)self testAccRequestWithResParamsControl];
-  [v5 setHandler:v4];
+  handlerCopy = handler;
+  testAccRequestWithResParamsControl = [(CAFTestControlSync *)self testAccRequestWithResParamsControl];
+  [testAccRequestWithResParamsControl setHandler:handlerCopy];
 }
 
 - (BOOL)hasTestAccRequestWithResParams
 {
-  v2 = [(CAFTestControlSync *)self testAccRequestWithResParamsControl];
-  v3 = v2 != 0;
+  testAccRequestWithResParamsControl = [(CAFTestControlSync *)self testAccRequestWithResParamsControl];
+  v3 = testAccRequestWithResParamsControl != 0;
 
   return v3;
 }
@@ -467,42 +467,42 @@ void __92__CAFTestControlSync_testDevRequestWithReqAndResParamsWithTestInput5_te
 
 - (id)testAccRequestWithReqAndResParamsHandler
 {
-  v2 = [(CAFTestControlSync *)self testAccRequestWithReqAndResParamsControl];
-  v3 = [v2 handler];
+  testAccRequestWithReqAndResParamsControl = [(CAFTestControlSync *)self testAccRequestWithReqAndResParamsControl];
+  handler = [testAccRequestWithReqAndResParamsControl handler];
 
-  return v3;
+  return handler;
 }
 
-- (void)setTestAccRequestWithReqAndResParamsHandler:(id)a3
+- (void)setTestAccRequestWithReqAndResParamsHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CAFTestControlSync *)self testAccRequestWithReqAndResParamsControl];
-  [v5 setHandler:v4];
+  handlerCopy = handler;
+  testAccRequestWithReqAndResParamsControl = [(CAFTestControlSync *)self testAccRequestWithReqAndResParamsControl];
+  [testAccRequestWithReqAndResParamsControl setHandler:handlerCopy];
 }
 
 - (BOOL)hasTestAccRequestWithReqAndResParams
 {
-  v2 = [(CAFTestControlSync *)self testAccRequestWithReqAndResParamsControl];
-  v3 = v2 != 0;
+  testAccRequestWithReqAndResParamsControl = [(CAFTestControlSync *)self testAccRequestWithReqAndResParamsControl];
+  v3 = testAccRequestWithReqAndResParamsControl != 0;
 
   return v3;
 }
 
-- (void)_controlDidUpdate:(id)a3
+- (void)_controlDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 controlType];
-  if ([v5 isEqual:@"0x00000000FF000028"])
+  updateCopy = update;
+  controlType = [updateCopy controlType];
+  if ([controlType isEqual:@"0x00000000FF000028"])
   {
-    v6 = [v4 uniqueIdentifier];
-    v7 = [(CAFTestControlSync *)self testDevRequestNoParamsControl];
-    v8 = [v7 uniqueIdentifier];
-    v9 = [v6 isEqual:v8];
+    uniqueIdentifier = [updateCopy uniqueIdentifier];
+    testDevRequestNoParamsControl = [(CAFTestControlSync *)self testDevRequestNoParamsControl];
+    uniqueIdentifier2 = [testDevRequestNoParamsControl uniqueIdentifier];
+    v9 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
     if (v9)
     {
-      v10 = [(CAFService *)self observers];
-      [v10 testControlSyncServiceDidUpdateTestDevRequestNoParams:self];
+      observers = [(CAFService *)self observers];
+      [observers testControlSyncServiceDidUpdateTestDevRequestNoParams:self];
 LABEL_16:
 
       goto LABEL_17;
@@ -513,18 +513,18 @@ LABEL_16:
   {
   }
 
-  v11 = [v4 controlType];
-  if ([v11 isEqual:@"0x00000000FF000029"])
+  controlType2 = [updateCopy controlType];
+  if ([controlType2 isEqual:@"0x00000000FF000029"])
   {
-    v12 = [v4 uniqueIdentifier];
-    v13 = [(CAFTestControlSync *)self testDevRequestWithReqParamsControl];
-    v14 = [v13 uniqueIdentifier];
-    v15 = [v12 isEqual:v14];
+    uniqueIdentifier3 = [updateCopy uniqueIdentifier];
+    testDevRequestWithReqParamsControl = [(CAFTestControlSync *)self testDevRequestWithReqParamsControl];
+    uniqueIdentifier4 = [testDevRequestWithReqParamsControl uniqueIdentifier];
+    v15 = [uniqueIdentifier3 isEqual:uniqueIdentifier4];
 
     if (v15)
     {
-      v10 = [(CAFService *)self observers];
-      [v10 testControlSyncServiceDidUpdateTestDevRequestWithReqParams:self];
+      observers = [(CAFService *)self observers];
+      [observers testControlSyncServiceDidUpdateTestDevRequestWithReqParams:self];
       goto LABEL_16;
     }
   }
@@ -533,18 +533,18 @@ LABEL_16:
   {
   }
 
-  v16 = [v4 controlType];
-  if ([v16 isEqual:@"0x00000000FF00002A"])
+  controlType3 = [updateCopy controlType];
+  if ([controlType3 isEqual:@"0x00000000FF00002A"])
   {
-    v17 = [v4 uniqueIdentifier];
-    v18 = [(CAFTestControlSync *)self testDevRequestWithResParamsControl];
-    v19 = [v18 uniqueIdentifier];
-    v20 = [v17 isEqual:v19];
+    uniqueIdentifier5 = [updateCopy uniqueIdentifier];
+    testDevRequestWithResParamsControl = [(CAFTestControlSync *)self testDevRequestWithResParamsControl];
+    uniqueIdentifier6 = [testDevRequestWithResParamsControl uniqueIdentifier];
+    v20 = [uniqueIdentifier5 isEqual:uniqueIdentifier6];
 
     if (v20)
     {
-      v10 = [(CAFService *)self observers];
-      [v10 testControlSyncServiceDidUpdateTestDevRequestWithResParams:self];
+      observers = [(CAFService *)self observers];
+      [observers testControlSyncServiceDidUpdateTestDevRequestWithResParams:self];
       goto LABEL_16;
     }
   }
@@ -553,40 +553,40 @@ LABEL_16:
   {
   }
 
-  v10 = [v4 controlType];
-  if (![v10 isEqual:@"0x00000000FF00002B"])
+  observers = [updateCopy controlType];
+  if (![observers isEqual:@"0x00000000FF00002B"])
   {
     goto LABEL_16;
   }
 
-  v21 = [v4 uniqueIdentifier];
-  v22 = [(CAFTestControlSync *)self testDevRequestWithReqAndResParamsControl];
-  v23 = [v22 uniqueIdentifier];
-  v24 = [v21 isEqual:v23];
+  uniqueIdentifier7 = [updateCopy uniqueIdentifier];
+  testDevRequestWithReqAndResParamsControl = [(CAFTestControlSync *)self testDevRequestWithReqAndResParamsControl];
+  uniqueIdentifier8 = [testDevRequestWithReqAndResParamsControl uniqueIdentifier];
+  v24 = [uniqueIdentifier7 isEqual:uniqueIdentifier8];
 
   if (v24)
   {
-    v10 = [(CAFService *)self observers];
-    [v10 testControlSyncServiceDidUpdateTestDevRequestWithReqAndResParams:self];
+    observers = [(CAFService *)self observers];
+    [observers testControlSyncServiceDidUpdateTestDevRequestWithReqAndResParams:self];
     goto LABEL_16;
   }
 
 LABEL_17:
   v25.receiver = self;
   v25.super_class = CAFTestControlSync;
-  [(CAFService *)&v25 _controlDidUpdate:v4];
+  [(CAFService *)&v25 _controlDidUpdate:updateCopy];
 }
 
 - (BOOL)registeredForTestDevRequestNoParams
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x00000000FF000028"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x00000000FF000028"];
 
   return v10;
 }
@@ -594,13 +594,13 @@ LABEL_17:
 - (BOOL)registeredForTestDevRequestWithReqParams
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x00000000FF000029"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x00000000FF000029"];
 
   return v10;
 }
@@ -608,13 +608,13 @@ LABEL_17:
 - (BOOL)registeredForTestDevRequestWithResParams
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x00000000FF00002A"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x00000000FF00002A"];
 
   return v10;
 }
@@ -622,13 +622,13 @@ LABEL_17:
 - (BOOL)registeredForTestDevRequestWithReqAndResParams
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x00000000FF00002B"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x00000000FF00002B"];
 
   return v10;
 }
@@ -636,13 +636,13 @@ LABEL_17:
 - (BOOL)registeredForTestAccRequestNoParams
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x00000000FF00002E"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x00000000FF00002E"];
 
   return v10;
 }
@@ -650,13 +650,13 @@ LABEL_17:
 - (BOOL)registeredForTestAccRequestWithReqParams
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x00000000FF00002F"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x00000000FF00002F"];
 
   return v10;
 }
@@ -664,13 +664,13 @@ LABEL_17:
 - (BOOL)registeredForTestAccRequestWithResParams
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x00000000FF000030"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x00000000FF000030"];
 
   return v10;
 }
@@ -678,13 +678,13 @@ LABEL_17:
 - (BOOL)registeredForTestAccRequestWithReqAndResParams
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x00000000FF000031"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x00000000FF000031"];
 
   return v10;
 }

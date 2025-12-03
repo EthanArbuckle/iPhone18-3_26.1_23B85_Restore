@@ -1,16 +1,16 @@
 @interface NCNotificationInlineFeaturedSectionList
-- (id)notificationGroupList:(id)a3 requestsContentProviderForNotificationRequest:(id)a4;
-- (void)_configureSectionListView:(id)a3;
-- (void)notificationListComponent:(id)a3 requestsExecuteAction:(id)a4 forNotificationRequest:(id)a5 requestAuthentication:(BOOL)a6 withParameters:(id)a7 completion:(id)a8;
-- (void)setFeaturedNotificationContentProviders:(id)a3;
+- (id)notificationGroupList:(id)list requestsContentProviderForNotificationRequest:(id)request;
+- (void)_configureSectionListView:(id)view;
+- (void)notificationListComponent:(id)component requestsExecuteAction:(id)action forNotificationRequest:(id)request requestAuthentication:(BOOL)authentication withParameters:(id)parameters completion:(id)completion;
+- (void)setFeaturedNotificationContentProviders:(id)providers;
 - (void)updateContent;
 @end
 
 @implementation NCNotificationInlineFeaturedSectionList
 
-- (void)setFeaturedNotificationContentProviders:(id)a3
+- (void)setFeaturedNotificationContentProviders:(id)providers
 {
-  v5 = a3;
+  providersCopy = providers;
   if (BSEqualArrays())
   {
     [(NCNotificationInlineFeaturedSectionList *)self updateContent];
@@ -28,13 +28,13 @@
     richContentProviders = self->_richContentProviders;
     self->_richContentProviders = 0;
 
-    objc_storeStrong(&self->_featuredNotificationContentProviders, a3);
+    objc_storeStrong(&self->_featuredNotificationContentProviders, providers);
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __83__NCNotificationInlineFeaturedSectionList_setFeaturedNotificationContentProviders___block_invoke_2;
     v8[3] = &unk_2783722E0;
     v8[4] = self;
-    [v5 enumerateObjectsUsingBlock:v8];
+    [providersCopy enumerateObjectsUsingBlock:v8];
   }
 }
 
@@ -54,16 +54,16 @@ void __83__NCNotificationInlineFeaturedSectionList_setFeaturedNotificationConten
 
 - (void)updateContent
 {
-  v3 = [(NSArray *)self->_featuredNotificationContentProviders firstObject];
-  v4 = [v3 isDeviceAuthenticated];
+  firstObject = [(NSArray *)self->_featuredNotificationContentProviders firstObject];
+  isDeviceAuthenticated = [firstObject isDeviceAuthenticated];
 
-  [(NCNotificationStructuredSectionList *)self setDeviceAuthenticated:v4];
+  [(NCNotificationStructuredSectionList *)self setDeviceAuthenticated:isDeviceAuthenticated];
   richContentProviders = self->_richContentProviders;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__NCNotificationInlineFeaturedSectionList_updateContent__block_invoke;
   v9[3] = &__block_descriptor_33_e80_v32__0__NCNotificationRequest_8__NCNotificationRequestRichContentProvider_16_B24l;
-  v10 = v4;
+  v10 = isDeviceAuthenticated;
   [(NSMutableDictionary *)richContentProviders enumerateKeysAndObjectsUsingBlock:v9];
   featuredNotificationContentProviders = self->_featuredNotificationContentProviders;
   v8[0] = MEMORY[0x277D85DD0];
@@ -72,8 +72,8 @@ void __83__NCNotificationInlineFeaturedSectionList_setFeaturedNotificationConten
   v8[3] = &unk_2783722E0;
   v8[4] = self;
   [(NSArray *)featuredNotificationContentProviders enumerateObjectsUsingBlock:v8];
-  v7 = [(NCNotificationStructuredSectionList *)self listView];
-  [v7 invalidateHeight];
+  listView = [(NCNotificationStructuredSectionList *)self listView];
+  [listView invalidateHeight];
 }
 
 void __56__NCNotificationInlineFeaturedSectionList_updateContent__block_invoke_2(uint64_t a1, void *a2)
@@ -83,10 +83,10 @@ void __56__NCNotificationInlineFeaturedSectionList_updateContent__block_invoke_2
   [v2 reloadNotificationRequest:v3];
 }
 
-- (id)notificationGroupList:(id)a3 requestsContentProviderForNotificationRequest:(id)a4
+- (id)notificationGroupList:(id)list requestsContentProviderForNotificationRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  requestCopy = request;
   richContentProviders = self->_richContentProviders;
   if (!richContentProviders)
   {
@@ -97,51 +97,51 @@ void __56__NCNotificationInlineFeaturedSectionList_updateContent__block_invoke_2
     richContentProviders = self->_richContentProviders;
   }
 
-  v11 = [(NSMutableDictionary *)richContentProviders objectForKey:v7];
+  v11 = [(NSMutableDictionary *)richContentProviders objectForKey:requestCopy];
   if (!v11)
   {
-    v11 = [(NCNotificationRequestCoalescingContentProvider *)[NCNotificationRequestRichContentProvider alloc] initWithNotificationRequest:v7];
+    v11 = [(NCNotificationRequestCoalescingContentProvider *)[NCNotificationRequestRichContentProvider alloc] initWithNotificationRequest:requestCopy];
     [(NCNotificationRequestRichContentProvider *)v11 setIconVisible:1];
-    v12 = [(NSArray *)self->_featuredNotificationContentProviders firstObject];
-    -[NCNotificationRequestCoalescingContentProvider setDeviceAuthenticated:](v11, "setDeviceAuthenticated:", [v12 isDeviceAuthenticated]);
+    firstObject = [(NSArray *)self->_featuredNotificationContentProviders firstObject];
+    -[NCNotificationRequestCoalescingContentProvider setDeviceAuthenticated:](v11, "setDeviceAuthenticated:", [firstObject isDeviceAuthenticated]);
 
-    [(NSMutableDictionary *)self->_richContentProviders bs_setSafeObject:v11 forKey:v7];
+    [(NSMutableDictionary *)self->_richContentProviders bs_setSafeObject:v11 forKey:requestCopy];
   }
 
   return v11;
 }
 
-- (void)notificationListComponent:(id)a3 requestsExecuteAction:(id)a4 forNotificationRequest:(id)a5 requestAuthentication:(BOOL)a6 withParameters:(id)a7 completion:(id)a8
+- (void)notificationListComponent:(id)component requestsExecuteAction:(id)action forNotificationRequest:(id)request requestAuthentication:(BOOL)authentication withParameters:(id)parameters completion:(id)completion
 {
-  v10 = a6;
-  v20 = a4;
-  v13 = a7;
-  v14 = a8;
-  v15 = a5;
-  v16 = [v15 defaultAction];
+  authenticationCopy = authentication;
+  actionCopy = action;
+  parametersCopy = parameters;
+  completionCopy = completion;
+  requestCopy = request;
+  defaultAction = [requestCopy defaultAction];
 
-  if (v16 == v20)
+  if (defaultAction == actionCopy)
   {
-    v17 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v13];
+    v17 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:parametersCopy];
     v18 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [v17 setObject:v18 forKey:@"NCNotificationActionDeferClearForNotificationSummaryKey"];
 
-    v13 = v17;
+    parametersCopy = v17;
   }
 
-  v19 = [(NCNotificationStructuredSectionList *)self delegate];
-  [v19 notificationListComponent:self requestsExecuteAction:v20 forNotificationRequest:v15 requestAuthentication:v10 withParameters:v13 completion:v14];
+  delegate = [(NCNotificationStructuredSectionList *)self delegate];
+  [delegate notificationListComponent:self requestsExecuteAction:actionCopy forNotificationRequest:requestCopy requestAuthentication:authenticationCopy withParameters:parametersCopy completion:completionCopy];
 }
 
-- (void)_configureSectionListView:(id)a3
+- (void)_configureSectionListView:(id)view
 {
   v4.receiver = self;
   v4.super_class = NCNotificationInlineFeaturedSectionList;
-  v3 = a3;
-  [(NCNotificationStructuredSectionList *)&v4 _configureSectionListView:v3];
-  [v3 setRevealed:{1, v4.receiver, v4.super_class}];
-  [v3 setRevealPercentage:1.0];
-  [v3 setGroupingAnimationStyle:1];
+  viewCopy = view;
+  [(NCNotificationStructuredSectionList *)&v4 _configureSectionListView:viewCopy];
+  [viewCopy setRevealed:{1, v4.receiver, v4.super_class}];
+  [viewCopy setRevealPercentage:1.0];
+  [viewCopy setGroupingAnimationStyle:1];
 }
 
 @end

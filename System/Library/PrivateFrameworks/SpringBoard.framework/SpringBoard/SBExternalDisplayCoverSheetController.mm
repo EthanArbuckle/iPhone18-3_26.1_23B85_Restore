@@ -1,68 +1,68 @@
 @interface SBExternalDisplayCoverSheetController
-- (SBExternalDisplayCoverSheetController)initWithWindowScene:(id)a3;
+- (SBExternalDisplayCoverSheetController)initWithWindowScene:(id)scene;
 - (SBWindowScene)_sbWindowScene;
-- (id)_initWithWindowScene:(id)a3 lockStateProvider:(id)a4 backlightController:(id)a5 presentationManager:(id)a6 windowFactory:(id)a7 externalDisplayCoverSheetViewController:(id)a8;
-- (id)newCoverSheetWindowForScene:(id)a3;
-- (void)_embeddedLockStateDidChange:(id)a3;
-- (void)_handleScrunchGesture:(id)a3;
-- (void)_notifyObserversDidUpdateExternalDisplayCoverSheetAppearance:(BOOL)a3;
-- (void)_notifyObserversWillUpdateExternalDisplayCoverSheetAppearance:(BOOL)a3;
-- (void)_postNotificationForExternalCoverSheetVisibilityDidChange:(BOOL)a3;
-- (void)_setCoverSheetWindowVisible:(BOOL)a3 fadeDuration:(double)a4;
-- (void)_setCoversheetPresented:(BOOL)a3;
-- (void)_setScreenOn:(BOOL)a3;
+- (id)_initWithWindowScene:(id)scene lockStateProvider:(id)provider backlightController:(id)controller presentationManager:(id)manager windowFactory:(id)factory externalDisplayCoverSheetViewController:(id)viewController;
+- (id)newCoverSheetWindowForScene:(id)scene;
+- (void)_embeddedLockStateDidChange:(id)change;
+- (void)_handleScrunchGesture:(id)gesture;
+- (void)_notifyObserversDidUpdateExternalDisplayCoverSheetAppearance:(BOOL)appearance;
+- (void)_notifyObserversWillUpdateExternalDisplayCoverSheetAppearance:(BOOL)appearance;
+- (void)_postNotificationForExternalCoverSheetVisibilityDidChange:(BOOL)change;
+- (void)_setCoverSheetWindowVisible:(BOOL)visible fadeDuration:(double)duration;
+- (void)_setCoversheetPresented:(BOOL)presented;
+- (void)_setScreenOn:(BOOL)on;
 - (void)_updateExternalDisplayCoverSheetExistence;
 - (void)_updateLockStateObservers;
-- (void)_wakeScreenForMouseButtonDown:(id)a3;
-- (void)addLockStateObserver:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)backlightController:(id)a3 willAnimateBacklightToFactor:(float)a4 source:(int64_t)a5;
-- (void)coverSheetPresentationManagerDidChangeDismissedSinceKeyBagLock:(id)a3;
+- (void)_wakeScreenForMouseButtonDown:(id)down;
+- (void)addLockStateObserver:(id)observer;
+- (void)addObserver:(id)observer;
+- (void)backlightController:(id)controller willAnimateBacklightToFactor:(float)factor source:(int64_t)source;
+- (void)coverSheetPresentationManagerDidChangeDismissedSinceKeyBagLock:(id)lock;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeLockStateObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setDisplayLayoutElementActive:(BOOL)a3;
-- (void)updateDisplayLayoutElementWithBuilder:(id)a3;
+- (void)removeLockStateObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)setDisplayLayoutElementActive:(BOOL)active;
+- (void)updateDisplayLayoutElementWithBuilder:(id)builder;
 @end
 
 @implementation SBExternalDisplayCoverSheetController
 
-- (SBExternalDisplayCoverSheetController)initWithWindowScene:(id)a3
+- (SBExternalDisplayCoverSheetController)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = +[SBLockStateAggregator sharedInstance];
   v6 = +[SBBacklightController sharedInstanceIfExists];
-  v7 = [v4 coverSheetPresentationManager];
-  v8 = [[SBExternalDisplayCoverSheetViewController alloc] _initWithWindowScene:v4 wallpaperEffectViewFactory:0];
-  v9 = [(SBExternalDisplayCoverSheetController *)self _initWithWindowScene:v4 lockStateProvider:v5 backlightController:v6 presentationManager:v7 windowFactory:0 externalDisplayCoverSheetViewController:v8];
+  coverSheetPresentationManager = [sceneCopy coverSheetPresentationManager];
+  v8 = [[SBExternalDisplayCoverSheetViewController alloc] _initWithWindowScene:sceneCopy wallpaperEffectViewFactory:0];
+  v9 = [(SBExternalDisplayCoverSheetController *)self _initWithWindowScene:sceneCopy lockStateProvider:v5 backlightController:v6 presentationManager:coverSheetPresentationManager windowFactory:0 externalDisplayCoverSheetViewController:v8];
 
   return v9;
 }
 
-- (id)_initWithWindowScene:(id)a3 lockStateProvider:(id)a4 backlightController:(id)a5 presentationManager:(id)a6 windowFactory:(id)a7 externalDisplayCoverSheetViewController:(id)a8
+- (id)_initWithWindowScene:(id)scene lockStateProvider:(id)provider backlightController:(id)controller presentationManager:(id)manager windowFactory:(id)factory externalDisplayCoverSheetViewController:(id)viewController
 {
-  v14 = a3;
-  v43 = a4;
-  v42 = a5;
-  v41 = a6;
-  v15 = a7;
-  v16 = a8;
+  sceneCopy = scene;
+  providerCopy = provider;
+  controllerCopy = controller;
+  managerCopy = manager;
+  factoryCopy = factory;
+  viewControllerCopy = viewController;
   v44.receiver = self;
   v44.super_class = SBExternalDisplayCoverSheetController;
   v17 = [(SBExternalDisplayCoverSheetController *)&v44 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_sbWindowScene, v14);
-    objc_storeStrong(&v18->_lockStateProvider, a4);
-    objc_storeStrong(&v18->_backlightController, a5);
-    objc_storeStrong(&v18->_presentationManager, a6);
-    objc_storeStrong(&v18->_windowFactory, a7);
-    v19 = [v14 _sbDisplayConfiguration];
-    v20 = [v19 hardwareIdentifier];
+    objc_storeWeak(&v17->_sbWindowScene, sceneCopy);
+    objc_storeStrong(&v18->_lockStateProvider, provider);
+    objc_storeStrong(&v18->_backlightController, controller);
+    objc_storeStrong(&v18->_presentationManager, manager);
+    objc_storeStrong(&v18->_windowFactory, factory);
+    _sbDisplayConfiguration = [sceneCopy _sbDisplayConfiguration];
+    hardwareIdentifier = [_sbDisplayConfiguration hardwareIdentifier];
     externalDisplayUUID = v18->_externalDisplayUUID;
-    v18->_externalDisplayUUID = v20;
+    v18->_externalDisplayUUID = hardwareIdentifier;
 
     if (!v18->_externalDisplayUUID)
     {
@@ -71,8 +71,8 @@
 
     [(SBBacklightController *)v18->_backlightController addObserver:v18];
     [(SBExternalDisplayCoverSheetController *)v18 _setScreenOn:[(SBBacklightController *)v18->_backlightController screenIsOn]];
-    v22 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v22 addObserver:v18 selector:sel__embeddedLockStateDidChange_ name:@"SBAggregateLockStateDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v18 selector:sel__embeddedLockStateDidChange_ name:@"SBAggregateLockStateDidChangeNotification" object:0];
     v23 = objc_alloc(MEMORY[0x277D66A50]);
     v24 = [v23 initWithIdentifier:*MEMORY[0x277D0ABA0]];
     displayLayoutElement = v18->_displayLayoutElement;
@@ -92,31 +92,31 @@
       windowFactory = v18;
     }
 
-    v28 = [windowFactory newCoverSheetWindowForScene:v14];
+    v28 = [windowFactory newCoverSheetWindowForScene:sceneCopy];
     coversheetWindow = v18->_coversheetWindow;
     v18->_coversheetWindow = v28;
 
     [(UIWindow *)v18->_coversheetWindow setWindowLevel:v26 + -15.0];
     v30 = v18->_coversheetWindow;
-    v31 = [MEMORY[0x277D75348] clearColor];
-    [(UIWindow *)v30 setBackgroundColor:v31];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIWindow *)v30 setBackgroundColor:clearColor];
 
     [(UIWindow *)v18->_coversheetWindow setAlpha:0.0];
     [(UIWindow *)v18->_coversheetWindow setHidden:0];
     [(UIWindow *)v18->_coversheetWindow setUserInteractionEnabled:0];
-    [(UIWindow *)v18->_coversheetWindow setRootViewController:v16];
-    objc_storeStrong(&v18->_rootViewController, a8);
-    v32 = [v14 statusBarManager];
-    v33 = [v32 layoutManager];
-    [v33 setOrientationWindow:v18->_coversheetWindow forStatusBarLayoutLayer:1];
+    [(UIWindow *)v18->_coversheetWindow setRootViewController:viewControllerCopy];
+    objc_storeStrong(&v18->_rootViewController, viewController);
+    statusBarManager = [sceneCopy statusBarManager];
+    layoutManager = [statusBarManager layoutManager];
+    [layoutManager setOrientationWindow:v18->_coversheetWindow forStatusBarLayoutLayer:1];
 
     [(SBExternalDisplayCoverSheetController *)v18 _updateExternalDisplayCoverSheetExistence];
     v34 = [objc_alloc(MEMORY[0x277D65EF0]) initWithTarget:v18 action:sel__wakeScreenForMouseButtonDown_];
     mouseButtonDownGesture = v18->_mouseButtonDownGesture;
     v18->_mouseButtonDownGesture = v34;
 
-    v36 = [v14 systemGestureManager];
-    [v36 addGestureRecognizer:v18->_mouseButtonDownGesture withType:71];
+    systemGestureManager = [sceneCopy systemGestureManager];
+    [systemGestureManager addGestureRecognizer:v18->_mouseButtonDownGesture withType:71];
 
     [(SBFMouseButtonDownGestureRecognizer *)v18->_mouseButtonDownGesture setEnabled:!v18->_screenOn];
     v37 = [[SBFluidScrunchGestureRecognizer alloc] initWithTarget:v18 action:sel__handleScrunchGesture_];
@@ -125,37 +125,37 @@
 
     [(SBFluidScrunchGestureRecognizer *)v18->_scrunchDismissGestureRecognizer setAllowedTouchTypes:&unk_28336E8E0];
     [(SBFluidScrunchGestureRecognizer *)v18->_scrunchDismissGestureRecognizer setDelegate:v18];
-    v39 = [v14 systemGestureManager];
-    [v39 addGestureRecognizer:v18->_scrunchDismissGestureRecognizer withType:8];
+    systemGestureManager2 = [sceneCopy systemGestureManager];
+    [systemGestureManager2 addGestureRecognizer:v18->_scrunchDismissGestureRecognizer withType:8];
   }
 
   return v18;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     observers = self->_observers;
-    v8 = v4;
+    v8 = observerCopy;
     if (!observers)
     {
-      v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v7 = self->_observers;
-      self->_observers = v6;
+      self->_observers = weakObjectsHashTable;
 
       observers = self->_observers;
     }
 
     [(NSHashTable *)observers addObject:v8];
-    v4 = v8;
+    observerCopy = v8;
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
@@ -166,7 +166,7 @@
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"_isInvalidated"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     *buf = 138544642;
@@ -189,42 +189,42 @@
   __break(0);
 }
 
-- (void)addLockStateObserver:(id)a3
+- (void)addLockStateObserver:(id)observer
 {
-  v4 = a3;
-  v8 = v4;
-  if (!v4)
+  observerCopy = observer;
+  v8 = observerCopy;
+  if (!observerCopy)
   {
     [SBExternalDisplayCoverSheetController addLockStateObserver:];
-    v4 = 0;
+    observerCopy = 0;
   }
 
   lockStateObservers = self->_lockStateObservers;
   if (!lockStateObservers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_lockStateObservers;
-    self->_lockStateObservers = v6;
+    self->_lockStateObservers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     lockStateObservers = self->_lockStateObservers;
   }
 
-  [(NSHashTable *)lockStateObservers addObject:v4];
+  [(NSHashTable *)lockStateObservers addObject:observerCopy];
   [(SBExternalDisplayCoverSheetController *)self _updateLockStateObservers];
 }
 
-- (void)removeLockStateObserver:(id)a3
+- (void)removeLockStateObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (!observerCopy)
   {
     [SBExternalDisplayCoverSheetController removeLockStateObserver:];
-    v4 = 0;
+    observerCopy = 0;
   }
 
-  [(NSHashTable *)self->_lockStateObservers removeObject:v4];
+  [(NSHashTable *)self->_lockStateObservers removeObject:observerCopy];
 }
 
 - (void)invalidate
@@ -235,12 +235,12 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "Invalidating %p", &v8, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(SBBacklightController *)self->_backlightController removeObserver:self];
   [(BSInvalidatable *)self->_displayLayoutElementAssertion invalidate];
@@ -248,50 +248,50 @@
   self->_displayLayoutElementAssertion = 0;
 
   WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
-  v7 = [WeakRetained systemGestureManager];
+  systemGestureManager = [WeakRetained systemGestureManager];
 
-  [v7 removeGestureRecognizer:self->_mouseButtonDownGesture];
-  [v7 removeGestureRecognizer:self->_scrunchDismissGestureRecognizer];
+  [systemGestureManager removeGestureRecognizer:self->_mouseButtonDownGesture];
+  [systemGestureManager removeGestureRecognizer:self->_scrunchDismissGestureRecognizer];
   self->_isInvalidated = 1;
 }
 
-- (id)newCoverSheetWindowForScene:(id)a3
+- (id)newCoverSheetWindowForScene:(id)scene
 {
-  v3 = a3;
-  v4 = [[SBWindow alloc] initWithWindowScene:v3 role:@"SBTraitsParticipantRoleCoverSheet" debugName:@"External Display Cover Sheet Window"];
+  sceneCopy = scene;
+  v4 = [[SBWindow alloc] initWithWindowScene:sceneCopy role:@"SBTraitsParticipantRoleCoverSheet" debugName:@"External Display Cover Sheet Window"];
 
   return v4;
 }
 
-- (void)updateDisplayLayoutElementWithBuilder:(id)a3
+- (void)updateDisplayLayoutElementWithBuilder:(id)builder
 {
   displayLayoutElement = self->_displayLayoutElement;
   if (self->_displayLayoutElementAssertion)
   {
     v6 = displayLayoutElement;
-    v7 = a3;
-    v8 = [(SBExternalDisplayCoverSheetController *)self _sbWindowScene];
-    if (!v8)
+    builderCopy = builder;
+    _sbWindowScene = [(SBExternalDisplayCoverSheetController *)self _sbWindowScene];
+    if (!_sbWindowScene)
     {
       [SBExternalDisplayCoverSheetController updateDisplayLayoutElementWithBuilder:];
     }
 
-    v16 = [v8 displayLayoutPublisher];
-    if (!v16)
+    builderCopy2 = [_sbWindowScene displayLayoutPublisher];
+    if (!builderCopy2)
     {
       [SBExternalDisplayCoverSheetController updateDisplayLayoutElementWithBuilder:];
     }
 
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v16 transitionAssertionWithReason:v10];
+    v11 = [builderCopy2 transitionAssertionWithReason:v10];
 
     [(BSInvalidatable *)self->_displayLayoutElementAssertion invalidate];
     displayLayoutElementAssertion = self->_displayLayoutElementAssertion;
     self->_displayLayoutElementAssertion = 0;
 
-    v7[2](v7, v6);
-    v13 = [v16 addElement:v6];
+    builderCopy[2](builderCopy, v6);
+    v13 = [builderCopy2 addElement:v6];
     v14 = self->_displayLayoutElementAssertion;
     self->_displayLayoutElementAssertion = v13;
 
@@ -300,17 +300,17 @@
 
   else
   {
-    v15 = *(a3 + 2);
+    v15 = *(builder + 2);
     v11 = displayLayoutElement;
-    v16 = a3;
+    builderCopy2 = builder;
     v15();
   }
 }
 
-- (void)setDisplayLayoutElementActive:(BOOL)a3
+- (void)setDisplayLayoutElementActive:(BOOL)active
 {
   displayLayoutElementAssertion = self->_displayLayoutElementAssertion;
-  if (a3)
+  if (active)
   {
     if (displayLayoutElementAssertion)
     {
@@ -318,23 +318,23 @@
     }
 
     v5 = self->_displayLayoutElement;
-    v6 = [(SBExternalDisplayCoverSheetController *)self _sbWindowScene];
-    if (!v6)
+    _sbWindowScene = [(SBExternalDisplayCoverSheetController *)self _sbWindowScene];
+    if (!_sbWindowScene)
     {
       [SBExternalDisplayCoverSheetController setDisplayLayoutElementActive:];
     }
 
-    v10 = [v6 displayLayoutPublisher];
-    if (!v10)
+    displayLayoutPublisher = [_sbWindowScene displayLayoutPublisher];
+    if (!displayLayoutPublisher)
     {
       [SBExternalDisplayCoverSheetController setDisplayLayoutElementActive:];
     }
 
-    v7 = [v10 addElement:v5];
+    v7 = [displayLayoutPublisher addElement:v5];
     v8 = self->_displayLayoutElementAssertion;
     self->_displayLayoutElementAssertion = v7;
 
-    v9 = v10;
+    v9 = displayLayoutPublisher;
   }
 
   else
@@ -350,17 +350,17 @@
   }
 }
 
-- (void)backlightController:(id)a3 willAnimateBacklightToFactor:(float)a4 source:(int64_t)a5
+- (void)backlightController:(id)controller willAnimateBacklightToFactor:(float)factor source:(int64_t)source
 {
   v17 = *MEMORY[0x277D85DE8];
   BSDispatchQueueAssertMain();
-  if ([(SBExternalDisplayCoverSheetController *)self _shouldIgnoreEmbeddedBacklightChangingSource:a5])
+  if ([(SBExternalDisplayCoverSheetController *)self _shouldIgnoreEmbeddedBacklightChangingSource:source])
   {
     v8 = SBLogCoverSheet();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 134217984;
-      v16 = a5;
+      sourceCopy = source;
       v9 = "[EXTERNAL] ignoring backlight change source: %ld";
       v10 = v8;
       v11 = 12;
@@ -389,8 +389,8 @@ LABEL_8:
     return;
   }
 
-  v12 = fabsf(a4);
-  v13 = fabsf(a4 + -1.0);
+  v12 = fabsf(factor);
+  v13 = fabsf(factor + -1.0);
   if (v12 < 2.2204e-16 || v13 < 2.2204e-16)
   {
 
@@ -398,7 +398,7 @@ LABEL_8:
   }
 }
 
-- (void)_embeddedLockStateDidChange:(id)a3
+- (void)_embeddedLockStateDidChange:(id)change
 {
   v11 = *MEMORY[0x277D85DE8];
   BSDispatchQueueAssertMain();
@@ -418,9 +418,9 @@ LABEL_8:
   {
     if (v6)
     {
-      v7 = [(SBLockStateProvider *)self->_lockStateProvider hasAnyLockState];
+      hasAnyLockState = [(SBLockStateProvider *)self->_lockStateProvider hasAnyLockState];
       v8 = @"NO";
-      if (v7)
+      if (hasAnyLockState)
       {
         v8 = @"YES";
       }
@@ -434,50 +434,50 @@ LABEL_8:
   }
 }
 
-- (void)coverSheetPresentationManagerDidChangeDismissedSinceKeyBagLock:(id)a3
+- (void)coverSheetPresentationManagerDidChangeDismissedSinceKeyBagLock:(id)lock
 {
-  v4 = a3;
-  if (self->_presentationManager == v4 && !self->_isInvalidated)
+  lockCopy = lock;
+  if (self->_presentationManager == lockCopy && !self->_isInvalidated)
   {
-    v5 = v4;
+    v5 = lockCopy;
     [(SBExternalDisplayCoverSheetController *)self _updateExternalDisplayCoverSheetExistence];
-    v4 = v5;
+    lockCopy = v5;
   }
 }
 
 - (void)_updateExternalDisplayCoverSheetExistence
 {
   OUTLINED_FUNCTION_3_1();
-  v3 = [MEMORY[0x277CCA890] currentHandler];
-  [v3 handleFailureInMethod:v2 object:v1 file:@"SBExternalDisplayCoverSheetController.m" lineNumber:437 description:{@"failed to get a SBSystemShellExternalDisplaySceneManager. instead we got: %@", v0}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:v2 object:v1 file:@"SBExternalDisplayCoverSheetController.m" lineNumber:437 description:{@"failed to get a SBSystemShellExternalDisplaySceneManager. instead we got: %@", v0}];
 }
 
-- (void)_setScreenOn:(BOOL)a3
+- (void)_setScreenOn:(BOOL)on
 {
-  if (self->_screenOn != a3)
+  if (self->_screenOn != on)
   {
-    self->_screenOn = a3;
-    [(SBFMouseButtonDownGestureRecognizer *)self->_mouseButtonDownGesture setEnabled:!a3];
+    self->_screenOn = on;
+    [(SBFMouseButtonDownGestureRecognizer *)self->_mouseButtonDownGesture setEnabled:!on];
   }
 }
 
-- (void)_setCoversheetPresented:(BOOL)a3
+- (void)_setCoversheetPresented:(BOOL)presented
 {
-  if (self->_coversheetPresented != a3)
+  if (self->_coversheetPresented != presented)
   {
-    self->_coversheetPresented = a3;
+    self->_coversheetPresented = presented;
     [(SBExternalDisplayCoverSheetController *)self _updateLockStateObservers];
   }
 }
 
-- (void)_setCoverSheetWindowVisible:(BOOL)a3 fadeDuration:(double)a4
+- (void)_setCoverSheetWindowVisible:(BOOL)visible fadeDuration:(double)duration
 {
-  v5 = a3;
+  visibleCopy = visible;
   v20 = *MEMORY[0x277D85DE8];
-  self->_shouldBeVisible = a3;
+  self->_shouldBeVisible = visible;
   if ([(SBExternalDisplayCoverSheetController *)self noAnimations])
   {
-    a4 = 0.0;
+    duration = 0.0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
@@ -485,9 +485,9 @@ LABEL_8:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109376;
-    HIDWORD(buf) = v5;
+    HIDWORD(buf) = visibleCopy;
     v18 = 2048;
-    v19 = a4;
+    durationCopy = duration;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[EXTERNAL] making coversheet window visible: %{BOOL}u duration: %f", &buf, 0x12u);
   }
 
@@ -524,7 +524,7 @@ LABEL_8:
     v13 = __82__SBExternalDisplayCoverSheetController__setCoverSheetWindowVisible_fadeDuration___block_invoke_2;
     v14 = &unk_2783AC358;
     objc_copyWeak(&v15, &buf);
-    [v10 animateWithDuration:v9 animations:&v11 completion:a4];
+    [v10 animateWithDuration:v9 animations:&v11 completion:duration];
     objc_destroyWeak(&v15);
     objc_destroyWeak(&buf);
   }
@@ -569,27 +569,27 @@ void __82__SBExternalDisplayCoverSheetController__setCoverSheetWindowVisible_fad
   }
 }
 
-- (void)_wakeScreenForMouseButtonDown:(id)a3
+- (void)_wakeScreenForMouseButtonDown:(id)down
 {
-  v3 = a3;
+  downCopy = down;
   v4 = +[SBLockScreenManager sharedInstanceIfExists];
-  [v4 _wakeScreenForMouseButtonDown:v3];
+  [v4 _wakeScreenForMouseButtonDown:downCopy];
 }
 
-- (void)_handleScrunchGesture:(id)a3
+- (void)_handleScrunchGesture:(id)gesture
 {
-  v14 = a3;
-  v4 = [v14 state];
-  v5 = v14;
-  if (v4 == 3)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  v5 = gestureCopy;
+  if (state == 3)
   {
-    v6 = [(SBExternalDisplayCoverSheetController *)self viewForSystemGestureRecognizer:v14];
-    [v14 locationInView:v6];
+    v6 = [(SBExternalDisplayCoverSheetController *)self viewForSystemGestureRecognizer:gestureCopy];
+    [gestureCopy locationInView:v6];
     v8 = v7;
     [v6 bounds];
     v10 = v9 - v8;
-    v11 = [MEMORY[0x277D02C20] rootSettings];
-    [v11 unlockPasscodeThresholdForExternalDisplay];
+    rootSettings = [MEMORY[0x277D02C20] rootSettings];
+    [rootSettings unlockPasscodeThresholdForExternalDisplay];
     v13 = v12;
 
     if (v10 >= v13)
@@ -597,13 +597,13 @@ void __82__SBExternalDisplayCoverSheetController__setCoverSheetWindowVisible_fad
       [(SBCoverSheetPresentationManager *)self->_presentationManager _notifyDelegateRequestsUnlock];
     }
 
-    v5 = v14;
+    v5 = gestureCopy;
   }
 }
 
-- (void)_notifyObserversWillUpdateExternalDisplayCoverSheetAppearance:(BOOL)a3
+- (void)_notifyObserversWillUpdateExternalDisplayCoverSheetAppearance:(BOOL)appearance
 {
-  v3 = a3;
+  appearanceCopy = appearance;
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
@@ -628,7 +628,7 @@ void __82__SBExternalDisplayCoverSheetController__setCoverSheetWindowVisible_fad
         v9 = *(*(&v10 + 1) + 8 * v8);
         if (objc_opt_respondsToSelector())
         {
-          [v9 willUpdateExternalDisplayCoverSheetAppearance:v3];
+          [v9 willUpdateExternalDisplayCoverSheetAppearance:appearanceCopy];
         }
 
         ++v8;
@@ -642,9 +642,9 @@ void __82__SBExternalDisplayCoverSheetController__setCoverSheetWindowVisible_fad
   }
 }
 
-- (void)_notifyObserversDidUpdateExternalDisplayCoverSheetAppearance:(BOOL)a3
+- (void)_notifyObserversDidUpdateExternalDisplayCoverSheetAppearance:(BOOL)appearance
 {
-  v3 = a3;
+  appearanceCopy = appearance;
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
@@ -669,7 +669,7 @@ void __82__SBExternalDisplayCoverSheetController__setCoverSheetWindowVisible_fad
         v9 = *(*(&v10 + 1) + 8 * v8);
         if (objc_opt_respondsToSelector())
         {
-          [v9 didUpdateExternalDisplayCoverSheetAppearance:v3];
+          [v9 didUpdateExternalDisplayCoverSheetAppearance:appearanceCopy];
         }
 
         ++v8;
@@ -683,24 +683,24 @@ void __82__SBExternalDisplayCoverSheetController__setCoverSheetWindowVisible_fad
   }
 }
 
-- (void)_postNotificationForExternalCoverSheetVisibilityDidChange:(BOOL)a3
+- (void)_postNotificationForExternalCoverSheetVisibilityDidChange:(BOOL)change
 {
   v3 = @"SBExternalDisplayCoverSheetDidDismiss";
-  if (a3)
+  if (change)
   {
     v3 = @"SBExternalDisplayCoverSheetDidPresent";
   }
 
   v4 = MEMORY[0x277CCAB98];
   v5 = v3;
-  v6 = [v4 defaultCenter];
-  [v6 postNotificationName:v5 object:0];
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter postNotificationName:v5 object:0];
 }
 
 - (void)_updateLockStateObservers
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SBExternalDisplayCoverSheetController *)self isUILocked];
+  isUILocked = [(SBExternalDisplayCoverSheetController *)self isUILocked];
   v4 = [(NSHashTable *)self->_lockStateObservers copy];
   v10 = 0u;
   v11 = 0u;
@@ -722,7 +722,7 @@ void __82__SBExternalDisplayCoverSheetController__setCoverSheetWindowVisible_fad
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) lockStateProvider:self didUpdateIsUILocked:{v3, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) lockStateProvider:self didUpdateIsUILocked:{isUILocked, v10}];
       }
 
       while (v7 != v9);

@@ -1,43 +1,43 @@
 @interface ATXPosterDescriptor
-- (ATXPosterDescriptor)initWithCoder:(id)a3;
-- (ATXPosterDescriptor)initWithIdentifier:(id)a3 extensionBundleIdentifier:(id)a4 containerBundleIdentifier:(id)a5 galleryOptions:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXPosterDescriptor:(id)a3;
+- (ATXPosterDescriptor)initWithCoder:(id)coder;
+- (ATXPosterDescriptor)initWithIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier containerBundleIdentifier:(id)containerBundleIdentifier galleryOptions:(id)options;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXPosterDescriptor:(id)descriptor;
 - (NSString)coreIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXPosterDescriptor
 
-- (ATXPosterDescriptor)initWithIdentifier:(id)a3 extensionBundleIdentifier:(id)a4 containerBundleIdentifier:(id)a5 galleryOptions:(id)a6
+- (ATXPosterDescriptor)initWithIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier containerBundleIdentifier:(id)containerBundleIdentifier galleryOptions:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  containerBundleIdentifierCopy = containerBundleIdentifier;
+  optionsCopy = options;
   v24.receiver = self;
   v24.super_class = ATXPosterDescriptor;
   v14 = [(ATXPosterDescriptor *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [bundleIdentifierCopy copy];
     extensionBundleIdentifier = v14->_extensionBundleIdentifier;
     v14->_extensionBundleIdentifier = v17;
 
-    v19 = [v12 copy];
+    v19 = [containerBundleIdentifierCopy copy];
     containerBundleIdentifier = v14->_containerBundleIdentifier;
     v14->_containerBundleIdentifier = v19;
 
-    if (v13)
+    if (optionsCopy)
     {
-      v21 = v13;
+      v21 = optionsCopy;
     }
 
     else
@@ -59,20 +59,20 @@
   v5 = NSStringFromClass(v4);
   [v3 appendFormat:@"%@; ", v5];
 
-  v6 = [(ATXPosterDescriptor *)self identifier];
-  [v3 appendFormat:@"identifier: %@; ", v6];
+  identifier = [(ATXPosterDescriptor *)self identifier];
+  [v3 appendFormat:@"identifier: %@; ", identifier];
 
-  v7 = [(ATXPosterDescriptor *)self extensionBundleIdentifier];
-  [v3 appendFormat:@"extensionBundleIdentifier: %@; ", v7];
+  extensionBundleIdentifier = [(ATXPosterDescriptor *)self extensionBundleIdentifier];
+  [v3 appendFormat:@"extensionBundleIdentifier: %@; ", extensionBundleIdentifier];
 
-  v8 = [(ATXPosterDescriptor *)self containerBundleIdentifier];
-  [v3 appendFormat:@"containerBundleIdentifier: %@; ", v8];
+  containerBundleIdentifier = [(ATXPosterDescriptor *)self containerBundleIdentifier];
+  [v3 appendFormat:@"containerBundleIdentifier: %@; ", containerBundleIdentifier];
 
-  v9 = [(ATXPosterDescriptor *)self galleryOptions];
-  [v3 appendFormat:@"galleryOptions: %@; ", v9];
+  galleryOptions = [(ATXPosterDescriptor *)self galleryOptions];
+  [v3 appendFormat:@"galleryOptions: %@; ", galleryOptions];
 
-  v10 = [(ATXPosterDescriptor *)self score];
-  [v3 appendFormat:@"score: %@; ", v10];
+  score = [(ATXPosterDescriptor *)self score];
+  [v3 appendFormat:@"score: %@; ", score];
 
   return v3;
 }
@@ -83,7 +83,7 @@
   coreIdentifier = self->_coreIdentifier;
   if (!coreIdentifier)
   {
-    v4 = [(ATXPosterDescriptor *)self identifier];
+    identifier = [(ATXPosterDescriptor *)self identifier];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -105,12 +105,12 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [v4 rangeOfString:*(*(&v15 + 1) + 8 * i) options:14];
+          v10 = [identifier rangeOfString:*(*(&v15 + 1) + 8 * i) options:14];
           if (v10 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v12 = [v4 stringByReplacingCharactersInRange:v10 withString:{v11, &stru_1F3E050C8}];
+            v12 = [identifier stringByReplacingCharactersInRange:v10 withString:{v11, &stru_1F3E050C8}];
 
-            v4 = v12;
+            identifier = v12;
             goto LABEL_12;
           }
         }
@@ -128,7 +128,7 @@
 LABEL_12:
 
     v13 = self->_coreIdentifier;
-    self->_coreIdentifier = v4;
+    self->_coreIdentifier = identifier;
 
     coreIdentifier = self->_coreIdentifier;
   }
@@ -136,10 +136,10 @@ LABEL_12:
   return coreIdentifier;
 }
 
-- (ATXPosterDescriptor)initWithCoder:(id)a3
+- (ATXPosterDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   if (!v5)
   {
     v6 = __atxlog_handle_lock_screen();
@@ -151,7 +151,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
   if (!v6)
   {
     v11 = __atxlog_handle_lock_screen();
@@ -161,79 +161,79 @@ LABEL_12:
     }
 
 LABEL_9:
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"galleryOptions"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"galleryOptions"];
   self = [(ATXPosterDescriptor *)self initWithIdentifier:v5 extensionBundleIdentifier:v6 containerBundleIdentifier:v7 galleryOptions:v8];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"score"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"score"];
   [(ATXPosterDescriptor *)self setScore:v9];
 
-  v10 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXPosterDescriptor *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(ATXPosterDescriptor *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(ATXPosterDescriptor *)self extensionBundleIdentifier];
-  [v4 encodeObject:v6 forKey:@"extensionBundleIdentifier"];
+  extensionBundleIdentifier = [(ATXPosterDescriptor *)self extensionBundleIdentifier];
+  [coderCopy encodeObject:extensionBundleIdentifier forKey:@"extensionBundleIdentifier"];
 
-  v7 = [(ATXPosterDescriptor *)self containerBundleIdentifier];
-  [v4 encodeObject:v7 forKey:@"containerBundleIdentifier"];
+  containerBundleIdentifier = [(ATXPosterDescriptor *)self containerBundleIdentifier];
+  [coderCopy encodeObject:containerBundleIdentifier forKey:@"containerBundleIdentifier"];
 
-  v8 = [(ATXPosterDescriptor *)self galleryOptions];
-  [v4 encodeObject:v8 forKey:@"galleryOptions"];
+  galleryOptions = [(ATXPosterDescriptor *)self galleryOptions];
+  [coderCopy encodeObject:galleryOptions forKey:@"galleryOptions"];
 
-  v9 = [(ATXPosterDescriptor *)self score];
-  [v4 encodeObject:v9 forKey:@"score"];
+  score = [(ATXPosterDescriptor *)self score];
+  [coderCopy encodeObject:score forKey:@"score"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(ATXPosterDescriptor *)self identifier];
-  v6 = [(ATXPosterDescriptor *)self extensionBundleIdentifier];
-  v7 = [(ATXPosterDescriptor *)self containerBundleIdentifier];
-  v8 = [(ATXPosterDescriptor *)self galleryOptions];
-  v9 = [v4 initWithIdentifier:v5 extensionBundleIdentifier:v6 containerBundleIdentifier:v7 galleryOptions:v8];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  identifier = [(ATXPosterDescriptor *)self identifier];
+  extensionBundleIdentifier = [(ATXPosterDescriptor *)self extensionBundleIdentifier];
+  containerBundleIdentifier = [(ATXPosterDescriptor *)self containerBundleIdentifier];
+  galleryOptions = [(ATXPosterDescriptor *)self galleryOptions];
+  v9 = [v4 initWithIdentifier:identifier extensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier galleryOptions:galleryOptions];
 
-  v10 = [(ATXPosterDescriptor *)self score];
-  [v9 setScore:v10];
+  score = [(ATXPosterDescriptor *)self score];
+  [v9 setScore:score];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPosterDescriptor *)self isEqualToATXPosterDescriptor:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPosterDescriptor *)self isEqualToATXPosterDescriptor:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXPosterDescriptor:(id)a3
+- (BOOL)isEqualToATXPosterDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = self->_identifier;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == descriptorCopy[2])
   {
   }
 
@@ -249,7 +249,7 @@ LABEL_10:
 
   v8 = self->_extensionBundleIdentifier;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == descriptorCopy[3])
   {
   }
 
@@ -265,7 +265,7 @@ LABEL_10:
 
   v11 = self->_containerBundleIdentifier;
   v12 = v11;
-  if (v11 == v4[4])
+  if (v11 == descriptorCopy[4])
   {
   }
 
@@ -283,7 +283,7 @@ LABEL_11:
 
   v15 = self->_galleryOptions;
   v16 = v15;
-  if (v15 == v4[5])
+  if (v15 == descriptorCopy[5])
   {
     v14 = 1;
   }
@@ -299,17 +299,17 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v3 = [(ATXPosterDescriptor *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(ATXPosterDescriptor *)self identifier];
+  v4 = [identifier hash];
 
-  v5 = [(ATXPosterDescriptor *)self extensionBundleIdentifier];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  extensionBundleIdentifier = [(ATXPosterDescriptor *)self extensionBundleIdentifier];
+  v6 = [extensionBundleIdentifier hash] - v4 + 32 * v4;
 
-  v7 = [(ATXPosterDescriptor *)self containerBundleIdentifier];
-  v8 = [v7 hash] - v6 + 32 * v6;
+  containerBundleIdentifier = [(ATXPosterDescriptor *)self containerBundleIdentifier];
+  v8 = [containerBundleIdentifier hash] - v6 + 32 * v6;
 
-  v9 = [(ATXPosterDescriptor *)self galleryOptions];
-  v10 = [v9 hash] - v8 + 32 * v8;
+  galleryOptions = [(ATXPosterDescriptor *)self galleryOptions];
+  v10 = [galleryOptions hash] - v8 + 32 * v8;
 
   return v10;
 }

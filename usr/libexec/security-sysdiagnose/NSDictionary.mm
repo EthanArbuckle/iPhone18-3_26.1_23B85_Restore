@@ -6,10 +6,10 @@
 
 - (id)asOneLineString
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [NSMutableString stringWithCapacity:0];
-  v4 = [(NSDictionary *)v2 allKeys];
-  v5 = [v4 sortedArrayUsingSelector:"compare:"];
+  allKeys = [(NSDictionary *)selfCopy allKeys];
+  v5 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   v17 = 0u;
   v18 = 0u;
@@ -31,7 +31,7 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [(NSDictionary *)v2 objectForKeyedSubscript:v11];
+        v12 = [(NSDictionary *)selfCopy objectForKeyedSubscript:v11];
         [v3 appendFormat:@"%@=%@, ", v11, v12, v15];
       }
 

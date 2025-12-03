@@ -1,20 +1,20 @@
 @interface SUCoreErrorInformation
-+ (id)codeNameForDomain:(id)a3 withCode:(int64_t)a4;
-+ (id)codeNameForError:(id)a3;
-+ (id)nameForSUCoreCode:(int64_t)a3;
-+ (id)nameForSUCoreLayer:(int64_t)a3;
++ (id)codeNameForDomain:(id)domain withCode:(int64_t)code;
++ (id)codeNameForError:(id)error;
++ (id)nameForSUCoreCode:(int64_t)code;
++ (id)nameForSUCoreLayer:(int64_t)layer;
 + (id)safeUserInfoValueClasses;
 + (id)setupCoreErrorInformation;
 + (id)sharedErrorInformation;
-+ (id)summaryOfIndications:(int64_t)a3;
-+ (int64_t)indicationsForError:(id)a3 matchingMask:(int64_t)a4;
-+ (int64_t)layerForError:(id)a3;
-+ (void)associateLayer:(int64_t)a3 withDomain:(id)a4 minCode:(int64_t)a5 maxCode:(int64_t)a6 indicating:(int64_t)a7 ifKeyTrue:(id)a8 keyMatchTrueMap:(id)a9;
-+ (void)attributesOfErrorForDomain:(id)a3 withCode:(int64_t)a4 codeName:(id)a5 indicating:(int64_t)a6 ifKeyTrue:(id)a7 keyMatchTrueMap:(id)a8;
-+ (void)attributesOfSUCoreErrorCode:(int64_t)a3 indicating:(int64_t)a4;
++ (id)summaryOfIndications:(int64_t)indications;
++ (int64_t)indicationsForError:(id)error matchingMask:(int64_t)mask;
++ (int64_t)layerForError:(id)error;
++ (void)associateLayer:(int64_t)layer withDomain:(id)domain minCode:(int64_t)code maxCode:(int64_t)maxCode indicating:(int64_t)indicating ifKeyTrue:(id)true keyMatchTrueMap:(id)map;
++ (void)attributesOfErrorForDomain:(id)domain withCode:(int64_t)code codeName:(id)name indicating:(int64_t)indicating ifKeyTrue:(id)true keyMatchTrueMap:(id)map;
++ (void)attributesOfSUCoreErrorCode:(int64_t)code indicating:(int64_t)indicating;
 - (SUCoreErrorInformation)init;
-- (void)_associateLayer:(int64_t)a3 withDomain:(id)a4 minCode:(int64_t)a5 maxCode:(int64_t)a6 indicating:(int64_t)a7 ifKeyTrue:(id)a8 keyMatchTrueMap:(id)a9;
-- (void)_attributesOfErrorForDomain:(id)a3 withCode:(int64_t)a4 codeName:(id)a5 indicating:(int64_t)a6 ifKeyTrue:(id)a7 keyMatchTrueMap:(id)a8;
+- (void)_associateLayer:(int64_t)layer withDomain:(id)domain minCode:(int64_t)code maxCode:(int64_t)maxCode indicating:(int64_t)indicating ifKeyTrue:(id)true keyMatchTrueMap:(id)map;
+- (void)_attributesOfErrorForDomain:(id)domain withCode:(int64_t)code codeName:(id)name indicating:(int64_t)indicating ifKeyTrue:(id)true keyMatchTrueMap:(id)map;
 - (void)_defineErrorLayers;
 @end
 
@@ -29,10 +29,10 @@
   v14 = __Block_byref_object_copy__0;
   v15 = __Block_byref_object_dispose__0;
   v16 = 0;
-  v3 = [v2 informationQueue];
-  dispatch_assert_queue_not_V2(v3);
+  informationQueue = [v2 informationQueue];
+  dispatch_assert_queue_not_V2(informationQueue);
 
-  v4 = [v2 informationQueue];
+  informationQueue2 = [v2 informationQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__SUCoreErrorInformation_safeUserInfoValueClasses__block_invoke;
@@ -40,7 +40,7 @@
   v9 = v2;
   v10 = &v11;
   v5 = v2;
-  dispatch_sync(v4, v8);
+  dispatch_sync(informationQueue2, v8);
 
   v6 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -102,9 +102,9 @@ uint64_t __48__SUCoreErrorInformation_sharedErrorInformation__block_invoke()
   v2 = [(SUCoreErrorInformation *)&v15 init];
   if (v2)
   {
-    v3 = [@"com.apple.su.core.error.info" UTF8String];
+    uTF8String = [@"com.apple.su.core.error.info" UTF8String];
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v5 = dispatch_queue_create(v3, v4);
+    v5 = dispatch_queue_create(uTF8String, v4);
     informationQueue = v2->_informationQueue;
     v2->_informationQueue = v5;
 
@@ -132,8 +132,8 @@ uint64_t __48__SUCoreErrorInformation_sharedErrorInformation__block_invoke()
 
 - (void)_defineErrorLayers
 {
-  v3 = [(SUCoreErrorInformation *)self informationQueue];
-  dispatch_assert_queue_V2(v3);
+  informationQueue = [(SUCoreErrorInformation *)self informationQueue];
+  dispatch_assert_queue_V2(informationQueue);
 
   [(SUCoreErrorInformation *)self _associateLayer:100 withDomain:@"SUCoreError" minCode:8100 maxCode:8126];
   [(SUCoreErrorInformation *)self _associateLayer:110 withDomain:@"SUCoreError" minCode:8200 maxCode:8206];
@@ -150,80 +150,80 @@ uint64_t __48__SUCoreErrorInformation_sharedErrorInformation__block_invoke()
   [(SUCoreErrorInformation *)self _associateLayer:920 withDomain:@"SUCoreError" minCode:9000 maxCode:9012];
 }
 
-- (void)_associateLayer:(int64_t)a3 withDomain:(id)a4 minCode:(int64_t)a5 maxCode:(int64_t)a6 indicating:(int64_t)a7 ifKeyTrue:(id)a8 keyMatchTrueMap:(id)a9
+- (void)_associateLayer:(int64_t)layer withDomain:(id)domain minCode:(int64_t)code maxCode:(int64_t)maxCode indicating:(int64_t)indicating ifKeyTrue:(id)true keyMatchTrueMap:(id)map
 {
-  v13 = a4;
-  v14 = a8;
-  v15 = a9;
-  v16 = [(SUCoreErrorInformation *)self informationQueue];
-  dispatch_assert_queue_V2(v16);
+  domainCopy = domain;
+  trueCopy = true;
+  mapCopy = map;
+  informationQueue = [(SUCoreErrorInformation *)self informationQueue];
+  dispatch_assert_queue_V2(informationQueue);
 
-  v17 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:a3];
-  v18 = [(SUCoreErrorInformation *)self layerInformation];
-  v19 = [v18 safeObjectForKey:v17 ofClass:objc_opt_class()];
+  v17 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:layer];
+  layerInformation = [(SUCoreErrorInformation *)self layerInformation];
+  v19 = [layerInformation safeObjectForKey:v17 ofClass:objc_opt_class()];
 
   if (v19)
   {
     v20 = +[SUCoreLog sharedLogger];
-    v21 = [v20 oslog];
+    oslog = [v20 oslog];
 
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      [SUCoreErrorInformation _associateLayer:a3 withDomain:v21 minCode:? maxCode:? indicating:? ifKeyTrue:? keyMatchTrueMap:?];
+      [SUCoreErrorInformation _associateLayer:layer withDomain:oslog minCode:? maxCode:? indicating:? ifKeyTrue:? keyMatchTrueMap:?];
     }
   }
 
   else
   {
-    v19 = [[SUCoreErrorLayerGroup alloc] initForLayer:a3 withDomain:v13 minCode:a5 maxCode:a6 indicating:a7 ifKeyTrue:v14 keyMatchTrueMap:v15];
-    v22 = [(SUCoreErrorInformation *)self layerInformation];
-    [v22 setSafeObject:v19 forKey:v17];
+    v19 = [[SUCoreErrorLayerGroup alloc] initForLayer:layer withDomain:domainCopy minCode:code maxCode:maxCode indicating:indicating ifKeyTrue:trueCopy keyMatchTrueMap:mapCopy];
+    layerInformation2 = [(SUCoreErrorInformation *)self layerInformation];
+    [layerInformation2 setSafeObject:v19 forKey:v17];
   }
 }
 
-- (void)_attributesOfErrorForDomain:(id)a3 withCode:(int64_t)a4 codeName:(id)a5 indicating:(int64_t)a6 ifKeyTrue:(id)a7 keyMatchTrueMap:(id)a8
+- (void)_attributesOfErrorForDomain:(id)domain withCode:(int64_t)code codeName:(id)name indicating:(int64_t)indicating ifKeyTrue:(id)true keyMatchTrueMap:(id)map
 {
   v47 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = [(SUCoreErrorInformation *)self informationQueue];
-  dispatch_assert_queue_V2(v18);
+  domainCopy = domain;
+  nameCopy = name;
+  trueCopy = true;
+  mapCopy = map;
+  informationQueue = [(SUCoreErrorInformation *)self informationQueue];
+  dispatch_assert_queue_V2(informationQueue);
 
-  v19 = [(SUCoreErrorInformation *)self errorInformation];
-  v20 = [v19 safeDictionaryForKey:v14 fromBase:@"SUCoreErrorInformation{_attributesOfErrorForDomain} errorInformation" withKeyDescription:@"error domain"];
+  errorInformation = [(SUCoreErrorInformation *)self errorInformation];
+  v20 = [errorInformation safeDictionaryForKey:domainCopy fromBase:@"SUCoreErrorInformation{_attributesOfErrorForDomain} errorInformation" withKeyDescription:@"error domain"];
 
-  v21 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a4];
+  v21 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:code];
   if (!v20)
   {
     v20 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v22 = [(SUCoreErrorInformation *)self errorInformation];
-    [v22 setSafeObject:v20 forKey:v14];
+    errorInformation2 = [(SUCoreErrorInformation *)self errorInformation];
+    [errorInformation2 setSafeObject:v20 forKey:domainCopy];
   }
 
   v23 = [v20 safeObjectForKey:v21 ofClass:objc_opt_class()];
   if (!v23)
   {
-    v24 = [[SUCoreErrorAttributes alloc] initForDomain:v14 withCode:a4 ofCodeName:v15 indicating:a6 ifKeyTrue:v16 keyMatchTrueMap:v17];
+    v24 = [[SUCoreErrorAttributes alloc] initForDomain:domainCopy withCode:code ofCodeName:nameCopy indicating:indicating ifKeyTrue:trueCopy keyMatchTrueMap:mapCopy];
     [v20 setSafeObject:v24 forKey:v21];
     goto LABEL_13;
   }
 
   v24 = v23;
-  v34 = v16;
-  v25 = a6;
-  v26 = [v23 domain];
-  if (+[SUCore stringIsEqual:to:](SUCore, "stringIsEqual:to:", v14, v26) && [v24 code] == a4)
+  v34 = trueCopy;
+  indicatingCopy = indicating;
+  domain = [v23 domain];
+  if (+[SUCore stringIsEqual:to:](SUCore, "stringIsEqual:to:", domainCopy, domain) && [v24 code] == code)
   {
-    v27 = [v24 codeName];
+    codeName = [v24 codeName];
 
-    if (v27 == v15)
+    if (codeName == nameCopy)
     {
-      [v24 setIndications:v25];
-      v16 = v34;
+      [v24 setIndications:indicatingCopy];
+      trueCopy = v34;
       [v24 setKeyMatchTrue:v34];
-      [v24 setKeyMatchTrueMap:v17];
+      [v24 setKeyMatchTrueMap:mapCopy];
       goto LABEL_13;
     }
   }
@@ -233,121 +233,121 @@ uint64_t __48__SUCoreErrorInformation_sharedErrorInformation__block_invoke()
   }
 
   v28 = +[SUCoreLog sharedLogger];
-  v29 = [v28 oslog];
+  oslog = [v28 oslog];
 
-  if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
   {
-    v31 = [v24 domain];
-    v33 = [v24 code];
-    v32 = [v24 codeName];
+    domain2 = [v24 domain];
+    code = [v24 code];
+    codeName2 = [v24 codeName];
     *buf = 138544642;
-    v36 = v14;
+    v36 = domainCopy;
     v37 = 1024;
-    v38 = a4;
+    codeCopy = code;
     v39 = 2114;
-    v40 = v15;
+    v40 = nameCopy;
     v41 = 2114;
-    v42 = v31;
+    v42 = domain2;
     v43 = 1024;
-    v44 = v33;
+    v44 = code;
     v45 = 2114;
-    v46 = v32;
-    _os_log_error_impl(&dword_1E0F71000, v29, OS_LOG_TYPE_ERROR, "[ERROR_INFORMATION] changing attributes of error [%{public}@:%d(%{public}@)] when already have attributes for error [%{public}@:%d(%{public}@)] | new attributes ignored", buf, 0x36u);
+    v46 = codeName2;
+    _os_log_error_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_ERROR, "[ERROR_INFORMATION] changing attributes of error [%{public}@:%d(%{public}@)] when already have attributes for error [%{public}@:%d(%{public}@)] | new attributes ignored", buf, 0x36u);
   }
 
-  v16 = v34;
+  trueCopy = v34;
 LABEL_13:
 
   v30 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)associateLayer:(int64_t)a3 withDomain:(id)a4 minCode:(int64_t)a5 maxCode:(int64_t)a6 indicating:(int64_t)a7 ifKeyTrue:(id)a8 keyMatchTrueMap:(id)a9
++ (void)associateLayer:(int64_t)layer withDomain:(id)domain minCode:(int64_t)code maxCode:(int64_t)maxCode indicating:(int64_t)indicating ifKeyTrue:(id)true keyMatchTrueMap:(id)map
 {
-  v14 = a4;
-  v15 = a8;
-  v16 = a9;
+  domainCopy = domain;
+  trueCopy = true;
+  mapCopy = map;
   v17 = +[SUCoreErrorInformation setupCoreErrorInformation];
-  v18 = [v17 informationQueue];
-  dispatch_assert_queue_not_V2(v18);
+  informationQueue = [v17 informationQueue];
+  dispatch_assert_queue_not_V2(informationQueue);
 
-  v19 = [v17 informationQueue];
+  informationQueue2 = [v17 informationQueue];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __105__SUCoreErrorInformation_associateLayer_withDomain_minCode_maxCode_indicating_ifKeyTrue_keyMatchTrueMap___block_invoke;
   v24[3] = &unk_1E86FC218;
   v25 = v17;
-  v26 = v14;
-  v29 = a3;
-  v30 = a5;
-  v31 = a6;
-  v32 = a7;
-  v27 = v15;
-  v28 = v16;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
+  v26 = domainCopy;
+  layerCopy = layer;
+  codeCopy = code;
+  maxCodeCopy = maxCode;
+  indicatingCopy = indicating;
+  v27 = trueCopy;
+  v28 = mapCopy;
+  v20 = mapCopy;
+  v21 = trueCopy;
+  v22 = domainCopy;
   v23 = v17;
-  dispatch_sync(v19, v24);
+  dispatch_sync(informationQueue2, v24);
 }
 
-+ (void)attributesOfSUCoreErrorCode:(int64_t)a3 indicating:(int64_t)a4
++ (void)attributesOfSUCoreErrorCode:(int64_t)code indicating:(int64_t)indicating
 {
   v6 = [SUCoreErrorInformation nameForSUCoreCode:?];
-  [SUCoreErrorInformation attributesOfErrorForDomain:@"SUCoreError" withCode:a3 codeName:v6 indicating:a4 ifKeyTrue:0 keyMatchTrueMap:0];
+  [SUCoreErrorInformation attributesOfErrorForDomain:@"SUCoreError" withCode:code codeName:v6 indicating:indicating ifKeyTrue:0 keyMatchTrueMap:0];
 }
 
-+ (void)attributesOfErrorForDomain:(id)a3 withCode:(int64_t)a4 codeName:(id)a5 indicating:(int64_t)a6 ifKeyTrue:(id)a7 keyMatchTrueMap:(id)a8
++ (void)attributesOfErrorForDomain:(id)domain withCode:(int64_t)code codeName:(id)name indicating:(int64_t)indicating ifKeyTrue:(id)true keyMatchTrueMap:(id)map
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a7;
-  v16 = a8;
+  domainCopy = domain;
+  nameCopy = name;
+  trueCopy = true;
+  mapCopy = map;
   v17 = +[SUCoreErrorInformation setupCoreErrorInformation];
-  v18 = [v17 informationQueue];
-  dispatch_assert_queue_not_V2(v18);
+  informationQueue = [v17 informationQueue];
+  dispatch_assert_queue_not_V2(informationQueue);
 
-  v19 = [v17 informationQueue];
+  informationQueue2 = [v17 informationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __108__SUCoreErrorInformation_attributesOfErrorForDomain_withCode_codeName_indicating_ifKeyTrue_keyMatchTrueMap___block_invoke;
   block[3] = &unk_1E86FC240;
   v26 = v17;
-  v27 = v13;
-  v31 = a4;
-  v32 = a6;
-  v28 = v14;
-  v29 = v15;
-  v30 = v16;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
-  v23 = v13;
+  v27 = domainCopy;
+  codeCopy = code;
+  indicatingCopy = indicating;
+  v28 = nameCopy;
+  v29 = trueCopy;
+  v30 = mapCopy;
+  v20 = mapCopy;
+  v21 = trueCopy;
+  v22 = nameCopy;
+  v23 = domainCopy;
   v24 = v17;
-  dispatch_sync(v19, block);
+  dispatch_sync(informationQueue2, block);
 }
 
-+ (int64_t)layerForError:(id)a3
++ (int64_t)layerForError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = +[SUCoreErrorInformation setupCoreErrorInformation];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 10;
-  v5 = [v4 informationQueue];
-  dispatch_assert_queue_not_V2(v5);
+  informationQueue = [v4 informationQueue];
+  dispatch_assert_queue_not_V2(informationQueue);
 
-  v6 = [v4 informationQueue];
+  informationQueue2 = [v4 informationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__SUCoreErrorInformation_layerForError___block_invoke;
   block[3] = &unk_1E86FC290;
   v12 = v4;
-  v13 = v3;
+  v13 = errorCopy;
   v14 = &v15;
-  v7 = v3;
+  v7 = errorCopy;
   v8 = v4;
-  dispatch_sync(v6, block);
+  dispatch_sync(informationQueue2, block);
 
   v9 = v16[3];
   _Block_object_dispose(&v15, 8);
@@ -406,9 +406,9 @@ LABEL_4:
 LABEL_8:
 }
 
-+ (id)codeNameForError:(id)a3
++ (id)codeNameForError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = +[SUCoreErrorInformation setupCoreErrorInformation];
   v15 = 0;
   v16 = &v15;
@@ -416,20 +416,20 @@ LABEL_8:
   v18 = __Block_byref_object_copy__0;
   v19 = __Block_byref_object_dispose__0;
   v20 = 0;
-  v5 = [v4 informationQueue];
-  dispatch_assert_queue_not_V2(v5);
+  informationQueue = [v4 informationQueue];
+  dispatch_assert_queue_not_V2(informationQueue);
 
-  v6 = [v4 informationQueue];
+  informationQueue2 = [v4 informationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__SUCoreErrorInformation_codeNameForError___block_invoke;
   block[3] = &unk_1E86FC290;
   v12 = v4;
-  v13 = v3;
+  v13 = errorCopy;
   v14 = &v15;
-  v7 = v3;
+  v7 = errorCopy;
   v8 = v4;
-  dispatch_sync(v6, block);
+  dispatch_sync(informationQueue2, block);
 
   v9 = v16[5];
   _Block_object_dispose(&v15, 8);
@@ -506,22 +506,22 @@ LABEL_9:
 LABEL_11:
 }
 
-+ (id)nameForSUCoreLayer:(int64_t)a3
++ (id)nameForSUCoreLayer:(int64_t)layer
 {
-  if (a3 <= 409)
+  if (layer <= 409)
   {
-    if (a3 > 149)
+    if (layer > 149)
     {
-      if (a3 <= 199)
+      if (layer <= 199)
       {
-        if (a3 > 159)
+        if (layer > 159)
         {
-          if (a3 == 160)
+          if (layer == 160)
           {
             return @"Power";
           }
 
-          if (a3 == 161)
+          if (layer == 161)
           {
             return @"PowerManagement";
           }
@@ -529,26 +529,26 @@ LABEL_11:
 
         else
         {
-          if (a3 == 150)
+          if (layer == 150)
           {
             return @"Space";
           }
 
-          if (a3 == 151)
+          if (layer == 151)
           {
             return @"CacheDelete";
           }
         }
       }
 
-      else if (a3 <= 299)
+      else if (layer <= 299)
       {
-        if (a3 == 200)
+        if (layer == 200)
         {
           return @"OperatingSystem";
         }
 
-        if (a3 == 210)
+        if (layer == 210)
         {
           return @"OSFilesystem";
         }
@@ -556,7 +556,7 @@ LABEL_11:
 
       else
       {
-        switch(a3)
+        switch(layer)
         {
           case 300:
             return @"Network";
@@ -570,16 +570,16 @@ LABEL_11:
       return @"!";
     }
 
-    if (a3 > 101)
+    if (layer > 101)
     {
-      if (a3 <= 119)
+      if (layer <= 119)
       {
-        if (a3 == 102)
+        if (layer == 102)
         {
           return @"FSM";
         }
 
-        if (a3 == 110)
+        if (layer == 110)
         {
           return @"EventReporter";
         }
@@ -587,7 +587,7 @@ LABEL_11:
 
       else
       {
-        switch(a3)
+        switch(layer)
         {
           case 120:
             return @"Scheduler";
@@ -601,14 +601,14 @@ LABEL_11:
       return @"!";
     }
 
-    if (a3 <= 99)
+    if (layer <= 99)
     {
-      if (!a3)
+      if (!layer)
       {
         return &stru_1F5BDE410;
       }
 
-      if (a3 == 10)
+      if (layer == 10)
       {
         return @"?";
       }
@@ -616,7 +616,7 @@ LABEL_11:
       return @"!";
     }
 
-    if (a3 == 100)
+    if (layer == 100)
     {
       return @"SUCore";
     }
@@ -629,18 +629,18 @@ LABEL_11:
 
   else
   {
-    if (a3 > 599)
+    if (layer > 599)
     {
-      if (a3 > 709)
+      if (layer > 709)
       {
-        if (a3 <= 899)
+        if (layer <= 899)
         {
-          if (a3 == 710)
+          if (layer == 710)
           {
             return @"BridgeOS";
           }
 
-          if (a3 == 711)
+          if (layer == 711)
           {
             return @"BridgeOSAMAuthInstall";
           }
@@ -648,7 +648,7 @@ LABEL_11:
 
         else
         {
-          switch(a3)
+          switch(layer)
           {
             case 900:
               return @"Test";
@@ -660,14 +660,14 @@ LABEL_11:
         }
       }
 
-      else if (a3 <= 619)
+      else if (layer <= 619)
       {
-        if (a3 == 600)
+        if (layer == 600)
         {
           return @"Facility";
         }
 
-        if (a3 == 610)
+        if (layer == 610)
         {
           return @"Policy";
         }
@@ -675,7 +675,7 @@ LABEL_11:
 
       else
       {
-        switch(a3)
+        switch(layer)
         {
           case 620:
             return @"Scan";
@@ -689,16 +689,16 @@ LABEL_11:
       return @"!";
     }
 
-    if (a3 > 413)
+    if (layer > 413)
     {
-      if (a3 <= 509)
+      if (layer <= 509)
       {
-        if (a3 == 414)
+        if (layer == 414)
         {
           return @"MobileAssetXPC";
         }
 
-        if (a3 == 500)
+        if (layer == 500)
         {
           return @"SoftwareUpdate";
         }
@@ -706,7 +706,7 @@ LABEL_11:
 
       else
       {
-        switch(a3)
+        switch(layer)
         {
           case 510:
             return @"MSU";
@@ -720,9 +720,9 @@ LABEL_11:
       return @"!";
     }
 
-    if (a3 > 411)
+    if (layer > 411)
     {
-      if (a3 == 412)
+      if (layer == 412)
       {
         return @"MobileAssetQuery";
       }
@@ -733,7 +733,7 @@ LABEL_11:
       }
     }
 
-    else if (a3 == 410)
+    else if (layer == 410)
     {
       return @"MobileAsset";
     }
@@ -745,9 +745,9 @@ LABEL_11:
   }
 }
 
-+ (id)codeNameForDomain:(id)a3 withCode:(int64_t)a4
++ (id)codeNameForDomain:(id)domain withCode:(int64_t)code
 {
-  v5 = a3;
+  domainCopy = domain;
   v6 = +[SUCoreErrorInformation setupCoreErrorInformation];
   v21 = 0;
   v22 = &v21;
@@ -755,28 +755,28 @@ LABEL_11:
   v24 = __Block_byref_object_copy__0;
   v25 = __Block_byref_object_dispose__0;
   v26 = 0;
-  v7 = [v6 informationQueue];
-  dispatch_assert_queue_not_V2(v7);
+  informationQueue = [v6 informationQueue];
+  dispatch_assert_queue_not_V2(informationQueue);
 
-  v8 = [v6 informationQueue];
+  informationQueue2 = [v6 informationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke;
   block[3] = &unk_1E86FC2B8;
-  v9 = v5;
+  v9 = domainCopy;
   v17 = v9;
   v19 = &v21;
-  v20 = a4;
+  codeCopy = code;
   v10 = v6;
   v18 = v10;
-  dispatch_sync(v8, block);
+  dispatch_sync(informationQueue2, block);
 
   v11 = v22[5];
   if (!v11)
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", a4];
+    code = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", code];
     v13 = v22[5];
-    v22[5] = v12;
+    v22[5] = code;
 
     v11 = v22[5];
   }
@@ -821,24 +821,24 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)nameForSUCoreCode:(int64_t)a3
++ (id)nameForSUCoreCode:(int64_t)code
 {
-  if (a3 > 8499)
+  if (code > 8499)
   {
-    if (a3 > 8802)
+    if (code > 8802)
     {
-      if (a3 <= 9001)
+      if (code <= 9001)
       {
-        if (a3 <= 8904)
+        if (code <= 8904)
         {
-          if (a3 > 8901)
+          if (code > 8901)
           {
-            if (a3 == 8902)
+            if (code == 8902)
             {
               return @"kSUCoreErrorConnectClientDecodeFailure";
             }
 
-            if (a3 == 8903)
+            if (code == 8903)
             {
               return @"kSUCoreErrorConnectClientDecodeException";
             }
@@ -846,7 +846,7 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
             return @"kSUCoreErrorConnectServerDecodeFailure";
           }
 
-          switch(a3)
+          switch(code)
           {
             case 8803:
               return @"kSUCoreErrorMSUMissingDescriptor";
@@ -859,14 +859,14 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
 
         else
         {
-          if (a3 <= 8907)
+          if (code <= 8907)
           {
-            if (a3 == 8905)
+            if (code == 8905)
             {
               return @"kSUCoreErrorConnectServerDecodeException";
             }
 
-            if (a3 == 8906)
+            if (code == 8906)
             {
               return @"kSUCoreErrorConnectClientIsObserverOnly";
             }
@@ -874,9 +874,9 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
             return @"kSUCoreErrorConnectClientIDMismatch";
           }
 
-          if (a3 > 8999)
+          if (code > 8999)
           {
-            if (a3 == 9000)
+            if (code == 9000)
             {
               return @"kSUCoreErrorDocManagerAllocationFailure";
             }
@@ -887,23 +887,23 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
             }
           }
 
-          if (a3 == 8908)
+          if (code == 8908)
           {
             return @"kSUCoreErrorConnectMessagedIDMismatch";
           }
 
-          if (a3 == 8909)
+          if (code == 8909)
           {
             return @"kSUCoreErrorConnectNoServerConnection";
           }
         }
       }
 
-      else if (a3 > 9009)
+      else if (code > 9009)
       {
-        if (a3 <= 9099)
+        if (code <= 9099)
         {
-          switch(a3)
+          switch(code)
           {
             case 9010:
               return @"kSUCoreErrorDocDataCreateFailed";
@@ -914,14 +914,14 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
           }
         }
 
-        else if (a3 > 9899)
+        else if (code > 9899)
         {
-          if (a3 == 9900)
+          if (code == 9900)
           {
             return @"kSUCoreErrorSimulatedFailure";
           }
 
-          if (a3 == 90007)
+          if (code == 90007)
           {
             return @"kSUCoreErrorDocManagerFileEvictionFailure";
           }
@@ -929,12 +929,12 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
 
         else
         {
-          if (a3 == 9100)
+          if (code == 9100)
           {
             return @"kSUCoreErrorDDMInvalidDeclarationFailure";
           }
 
-          if (a3 == 9101)
+          if (code == 9101)
           {
             return @"kSUCoreErrorDDMNoControllerFailure";
           }
@@ -943,14 +943,14 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
 
       else
       {
-        if (a3 <= 9004)
+        if (code <= 9004)
         {
-          if (a3 == 9002)
+          if (code == 9002)
           {
             return @"kSUCoreErrorDocManagerDirectoryCopyFailure";
           }
 
-          if (a3 == 9003)
+          if (code == 9003)
           {
             return @"kSUCoreErrorDocManagerDirectoryReadFailure";
           }
@@ -958,9 +958,9 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
           return @"kSUCoreErrorDocManagerPathCreateFailure";
         }
 
-        if (a3 > 9007)
+        if (code > 9007)
         {
-          if (a3 == 9008)
+          if (code == 9008)
           {
             return @"kSUCoreErrorDocManagerCreateInstalledStashedDataDictFailed";
           }
@@ -971,30 +971,30 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
           }
         }
 
-        if (a3 == 9005)
+        if (code == 9005)
         {
           return @"kSUCoreErrorDocManagerInstalledBuildCreateFailure";
         }
 
-        if (a3 == 9006)
+        if (code == 9006)
         {
           return @"kSUCoreErrorDocManagerDetermineOSBuildFailure";
         }
       }
     }
 
-    else if (a3 <= 8608)
+    else if (code <= 8608)
     {
-      if (a3 > 8601)
+      if (code > 8601)
       {
-        if (a3 <= 8604)
+        if (code <= 8604)
         {
-          if (a3 == 8602)
+          if (code == 8602)
           {
             return @"kSUCoreErrorSpaceCheckFailed";
           }
 
-          else if (a3 == 8603)
+          else if (code == 8603)
           {
             return @"kSUCoreErrorSpaceNoCacheDeletePurgeableResults";
           }
@@ -1005,9 +1005,9 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
           }
         }
 
-        else if (a3 > 8606)
+        else if (code > 8606)
         {
-          if (a3 == 8607)
+          if (code == 8607)
           {
             return @"kSUCoreErrorSpaceNoAppOffloadPurgeResults";
           }
@@ -1018,7 +1018,7 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
           }
         }
 
-        else if (a3 == 8605)
+        else if (code == 8605)
         {
           return @"kSUCoreErrorSpaceNoAppOffloadPurgeableResults";
         }
@@ -1029,14 +1029,14 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
         }
       }
 
-      if (a3 <= 8502)
+      if (code <= 8502)
       {
-        if (a3 == 8500)
+        if (code == 8500)
         {
           return @"kSUCoreErrorFSMStateInvalidForTable";
         }
 
-        if (a3 == 8501)
+        if (code == 8501)
         {
           return @"kSUCoreErrorFSMEventInvalidForState";
         }
@@ -1044,7 +1044,7 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
         return @"kSUCoreErrorFSMAlreadyActive";
       }
 
-      switch(a3)
+      switch(code)
       {
         case 8503:
           return @"kSUCoreErrorFSMInvalidTable";
@@ -1055,16 +1055,16 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
       }
     }
 
-    else if (a3 > 8703)
+    else if (code > 8703)
     {
-      if (a3 <= 8706)
+      if (code <= 8706)
       {
-        if (a3 == 8704)
+        if (code == 8704)
         {
           return @"kSUCoreErrorAssetReloadFailed";
         }
 
-        if (a3 == 8705)
+        if (code == 8705)
         {
           return @"kSUCoreErrorAssetReloadNotFound";
         }
@@ -1072,9 +1072,9 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
         return @"kSUCoreErrorAssetRefreshFailed";
       }
 
-      if (a3 > 8800)
+      if (code > 8800)
       {
-        if (a3 == 8801)
+        if (code == 8801)
         {
           return @"kSUCoreErrorMSUPurgeFailed";
         }
@@ -1085,12 +1085,12 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
         }
       }
 
-      if (a3 == 8707)
+      if (code == 8707)
       {
         return @"kSUCoreErrorAssetNotLocal";
       }
 
-      if (a3 == 8800)
+      if (code == 8800)
       {
         return @"kSUCoreErrorMSUPreflightSUDownloadFailed";
       }
@@ -1098,11 +1098,11 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
 
     else
     {
-      if (a3 > 8699)
+      if (code > 8699)
       {
-        if (a3 > 8701)
+        if (code > 8701)
         {
-          if (a3 == 8702)
+          if (code == 8702)
           {
             return @"kSUCoreErrorCancelingDownload";
           }
@@ -1113,7 +1113,7 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
           }
         }
 
-        else if (a3 == 8700)
+        else if (code == 8700)
         {
           return @"kSUCoreErrorAssetDownloadFailed";
         }
@@ -1124,7 +1124,7 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
         }
       }
 
-      switch(a3)
+      switch(code)
       {
         case 8609:
           return @"kSUCoreErrorSpaceMobileAssetEstimateEvictableFailed";
@@ -1138,20 +1138,20 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
     return @"Unknown Error Code";
   }
 
-  if (a3 > 8199)
+  if (code > 8199)
   {
-    if (a3 > 8299)
+    if (code > 8299)
     {
-      if (a3 <= 8404)
+      if (code <= 8404)
       {
-        if (a3 > 8401)
+        if (code > 8401)
         {
-          if (a3 == 8402)
+          if (code == 8402)
           {
             return @"kSUCoreErrorScanFailed";
           }
 
-          if (a3 == 8403)
+          if (code == 8403)
           {
             return @"kSUCoreErrorScanCanceled";
           }
@@ -1159,7 +1159,7 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
           return @"kSUCoreErrorScanFailCanceling";
         }
 
-        switch(a3)
+        switch(code)
         {
           case 8300:
             return @"kSUCoreErrorDiagDecoded";
@@ -1172,14 +1172,14 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
 
       else
       {
-        if (a3 <= 8407)
+        if (code <= 8407)
         {
-          if (a3 == 8405)
+          if (code == 8405)
           {
             return @"kSUCoreErrorScanNotCanceling";
           }
 
-          if (a3 == 8406)
+          if (code == 8406)
           {
             return @"kSUCoreErrorScanNoUpdateFound";
           }
@@ -1187,9 +1187,9 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
           return @"kSUCoreErrorScanNoDocFound";
         }
 
-        if (a3 <= 8409)
+        if (code <= 8409)
         {
-          if (a3 == 8408)
+          if (code == 8408)
           {
             return @"kSUCoreErrorScanFoundDifferent";
           }
@@ -1200,12 +1200,12 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
           }
         }
 
-        if (a3 == 8410)
+        if (code == 8410)
         {
           return @"kSUCoreErrorScanAbortedStale";
         }
 
-        if (a3 == 8411)
+        if (code == 8411)
         {
           return @"kSUCoreErrorScanFailedToDeterminePSUSAssets";
         }
@@ -1214,16 +1214,16 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
 
     else
     {
-      if (a3 <= 8205)
+      if (code <= 8205)
       {
-        if (a3 > 8202)
+        if (code > 8202)
         {
-          if (a3 == 8203)
+          if (code == 8203)
           {
             return @"kSUCoreErrorEventReporterInvalidResponse";
           }
 
-          else if (a3 == 8204)
+          else if (code == 8204)
           {
             return @"kSUCoreErrorEventReporterInvalidFileUUID";
           }
@@ -1234,12 +1234,12 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
           }
         }
 
-        else if (a3 == 8200)
+        else if (code == 8200)
         {
           return @"kSUCoreErrorEventReporterInvalidTask";
         }
 
-        else if (a3 == 8201)
+        else if (code == 8201)
         {
           return @"kSUCoreErrorEventReporterInvalidTaskDescriptor";
         }
@@ -1250,9 +1250,9 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
         }
       }
 
-      if (a3 <= 8251)
+      if (code <= 8251)
       {
-        switch(a3)
+        switch(code)
         {
           case 8206:
             return @"kSUCoreErrorEventReporterResponseNotHTTP";
@@ -1265,9 +1265,9 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
 
       else
       {
-        if (a3 <= 8253)
+        if (code <= 8253)
         {
-          if (a3 == 8252)
+          if (code == 8252)
           {
             return @"kSUCoreErrorPersistedStateMissingContents";
           }
@@ -1278,12 +1278,12 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
           }
         }
 
-        if (a3 == 8254)
+        if (code == 8254)
         {
           return @"kSUCoreErrorPersistedStateArchiverError";
         }
 
-        if (a3 == 8255)
+        if (code == 8255)
         {
           return @"kSUCoreErrorPersistedStateClassMismatch";
         }
@@ -1293,7 +1293,7 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
     return @"Unknown Error Code";
   }
 
-  switch(a3)
+  switch(code)
   {
     case 8100:
       result = @"kSUCoreErrorCreateFailed";
@@ -1377,7 +1377,7 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
       result = @"kSUCoreErrorMissingAuthentication";
       break;
     default:
-      if (a3)
+      if (code)
       {
         return @"Unknown Error Code";
       }
@@ -1389,14 +1389,14 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
   return result;
 }
 
-+ (id)summaryOfIndications:(int64_t)a3
++ (id)summaryOfIndications:(int64_t)indications
 {
-  v3 = a3;
+  indicationsCopy = indications;
   v4 = 0;
   v5 = &stru_1F5BDE410;
   do
   {
-    if (((1 << v4) & v3) != 0)
+    if (((1 << v4) & indicationsCopy) != 0)
     {
       v6 = MEMORY[0x1E696AEC0];
       v7 = [SUCoreErrorAttributes nameForIndication:?];
@@ -1426,29 +1426,29 @@ uint64_t __53__SUCoreErrorInformation_codeNameForDomain_withCode___block_invoke(
   return v10;
 }
 
-+ (int64_t)indicationsForError:(id)a3 matchingMask:(int64_t)a4
++ (int64_t)indicationsForError:(id)error matchingMask:(int64_t)mask
 {
-  v5 = a3;
+  errorCopy = error;
   v6 = +[SUCoreErrorInformation setupCoreErrorInformation];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v7 = [v6 informationQueue];
-  dispatch_assert_queue_not_V2(v7);
+  informationQueue = [v6 informationQueue];
+  dispatch_assert_queue_not_V2(informationQueue);
 
-  v8 = [v6 informationQueue];
+  informationQueue2 = [v6 informationQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59__SUCoreErrorInformation_indicationsForError_matchingMask___block_invoke;
   v13[3] = &unk_1E86FC330;
   v14 = v6;
-  v15 = v5;
+  v15 = errorCopy;
   v16 = &v18;
-  v17 = a4;
-  v9 = v5;
+  maskCopy = mask;
+  v9 = errorCopy;
   v10 = v6;
-  dispatch_sync(v8, v13);
+  dispatch_sync(informationQueue2, v13);
 
   v11 = v19[3];
   _Block_object_dispose(&v18, 8);

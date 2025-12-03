@@ -1,30 +1,30 @@
 @interface JavaLangCharacter
-+ (BOOL)isBmpCodePointWithInt:(int)a3;
-+ (BOOL)isHighSurrogateWithChar:(unsigned __int16)a3;
-+ (BOOL)isLowSurrogateWithChar:(unsigned __int16)a3;
-+ (BOOL)isSpaceWithChar:(unsigned __int16)a3;
-+ (BOOL)isSupplementaryCodePointWithInt:(int)a3;
-+ (BOOL)isSurrogateWithChar:(unsigned __int16)a3;
-+ (BOOL)isValidCodePointWithInt:(int)a3;
-+ (id)getNameImplWithInt:(int)a3;
-+ (int)binarySearchRangeWithIntArray:(id)a3 withInt:(int)a4;
-+ (int)charCountWithInt:(int)a3;
-+ (int)compareWithChar:(unsigned __int16)a3 withChar:(unsigned __int16)a4;
-+ (int)toCodePointWithChar:(unsigned __int16)a3 withChar:(unsigned __int16)a4;
-+ (unsigned)highSurrogateWithInt:(int)a3;
-+ (unsigned)lowSurrogateWithInt:(int)a3;
-+ (unsigned)reverseBytesWithChar:(unsigned __int16)a3;
++ (BOOL)isBmpCodePointWithInt:(int)int;
++ (BOOL)isHighSurrogateWithChar:(unsigned __int16)char;
++ (BOOL)isLowSurrogateWithChar:(unsigned __int16)char;
++ (BOOL)isSpaceWithChar:(unsigned __int16)char;
++ (BOOL)isSupplementaryCodePointWithInt:(int)int;
++ (BOOL)isSurrogateWithChar:(unsigned __int16)char;
++ (BOOL)isValidCodePointWithInt:(int)int;
++ (id)getNameImplWithInt:(int)int;
++ (int)binarySearchRangeWithIntArray:(id)array withInt:(int)int;
++ (int)charCountWithInt:(int)int;
++ (int)compareWithChar:(unsigned __int16)char withChar:(unsigned __int16)withChar;
++ (int)toCodePointWithChar:(unsigned __int16)char withChar:(unsigned __int16)withChar;
++ (unsigned)highSurrogateWithInt:(int)int;
++ (unsigned)lowSurrogateWithInt:(int)int;
++ (unsigned)reverseBytesWithChar:(unsigned __int16)char;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (int)compareToWithId:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (int)compareToWithId:(id)id;
 @end
 
 @implementation JavaLangCharacter
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -35,7 +35,7 @@
   }
 
   value = self->value_;
-  v6 = *(a3 + 4);
+  v6 = *(id + 4);
   if ((atomic_load_explicit(JavaLangCharacter__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10025E130();
@@ -44,76 +44,76 @@
   return value - v6;
 }
 
-+ (int)compareWithChar:(unsigned __int16)a3 withChar:(unsigned __int16)a4
++ (int)compareWithChar:(unsigned __int16)char withChar:(unsigned __int16)withChar
 {
-  v4 = a4;
-  v5 = a3;
+  withCharCopy = withChar;
+  charCopy = char;
   if ((atomic_load_explicit(JavaLangCharacter__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10025E130();
   }
 
-  return v5 - v4;
+  return charCopy - withCharCopy;
 }
 
-+ (BOOL)isValidCodePointWithInt:(int)a3
++ (BOOL)isValidCodePointWithInt:(int)int
 {
   if ((atomic_load_explicit(JavaLangCharacter__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10025E130();
   }
 
-  return a3 < 0x110000;
+  return int < 0x110000;
 }
 
-+ (BOOL)isSupplementaryCodePointWithInt:(int)a3
++ (BOOL)isSupplementaryCodePointWithInt:(int)int
 {
   if ((atomic_load_explicit(JavaLangCharacter__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10025E130();
   }
 
-  return (a3 - 0x10000) < 0x100000;
+  return (int - 0x10000) < 0x100000;
 }
 
-+ (BOOL)isHighSurrogateWithChar:(unsigned __int16)a3
++ (BOOL)isHighSurrogateWithChar:(unsigned __int16)char
 {
   if ((atomic_load_explicit(JavaLangCharacter__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10025E130();
   }
 
-  return (a3 & 0xFC00) == 55296;
+  return (char & 0xFC00) == 55296;
 }
 
-+ (BOOL)isLowSurrogateWithChar:(unsigned __int16)a3
++ (BOOL)isLowSurrogateWithChar:(unsigned __int16)char
 {
   if ((atomic_load_explicit(JavaLangCharacter__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10025E130();
   }
 
-  return (a3 & 0xFC00) == 56320;
+  return (char & 0xFC00) == 56320;
 }
 
-+ (BOOL)isSurrogateWithChar:(unsigned __int16)a3
++ (BOOL)isSurrogateWithChar:(unsigned __int16)char
 {
   if ((atomic_load_explicit(JavaLangCharacter__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10025E130();
   }
 
-  return (a3 & 0xF800) == 55296;
+  return (char & 0xF800) == 55296;
 }
 
-+ (int)charCountWithInt:(int)a3
++ (int)charCountWithInt:(int)int
 {
   if ((atomic_load_explicit(JavaLangCharacter__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10025E130();
   }
 
-  if (a3 < 0x10000)
+  if (int < 0x10000)
   {
     return 1;
   }
@@ -124,17 +124,17 @@
   }
 }
 
-+ (int)toCodePointWithChar:(unsigned __int16)a3 withChar:(unsigned __int16)a4
++ (int)toCodePointWithChar:(unsigned __int16)char withChar:(unsigned __int16)withChar
 {
   if ((atomic_load_explicit(JavaLangCharacter__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10025E130();
   }
 
-  return (a4 & 0x3FF | ((a3 & 0x3FF) << 10)) + 0x10000;
+  return (withChar & 0x3FF | ((char & 0x3FF) << 10)) + 0x10000;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -143,7 +143,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -153,10 +153,10 @@
     JreThrowClassCastException();
   }
 
-  return *(a3 + 4) == self->value_;
+  return *(equal + 4) == self->value_;
 }
 
-+ (id)getNameImplWithInt:(int)a3
++ (id)getNameImplWithInt:(int)int
 {
   if ((atomic_load_explicit(JavaLangCharacter__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -166,64 +166,64 @@
   return 0;
 }
 
-+ (unsigned)highSurrogateWithInt:(int)a3
++ (unsigned)highSurrogateWithInt:(int)int
 {
   if ((atomic_load_explicit(JavaLangCharacter__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10025E130();
   }
 
-  return (a3 >> 10) - 10304;
+  return (int >> 10) - 10304;
 }
 
-+ (unsigned)lowSurrogateWithInt:(int)a3
++ (unsigned)lowSurrogateWithInt:(int)int
 {
-  v3 = a3;
+  intCopy = int;
   if ((atomic_load_explicit(JavaLangCharacter__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10025E130();
   }
 
-  return v3 & 0x3FF | 0xDC00;
+  return intCopy & 0x3FF | 0xDC00;
 }
 
-+ (BOOL)isBmpCodePointWithInt:(int)a3
++ (BOOL)isBmpCodePointWithInt:(int)int
 {
   if ((atomic_load_explicit(JavaLangCharacter__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10025E130();
   }
 
-  return a3 < 0x10000;
+  return int < 0x10000;
 }
 
-+ (BOOL)isSpaceWithChar:(unsigned __int16)a3
++ (BOOL)isSpaceWithChar:(unsigned __int16)char
 {
-  v3 = a3;
+  charCopy = char;
   if ((atomic_load_explicit(JavaLangCharacter__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10025E130();
   }
 
-  return (v3 < 0x21) & (0x100003600uLL >> v3);
+  return (charCopy < 0x21) & (0x100003600uLL >> charCopy);
 }
 
-+ (unsigned)reverseBytesWithChar:(unsigned __int16)a3
++ (unsigned)reverseBytesWithChar:(unsigned __int16)char
 {
-  v3 = a3;
+  charCopy = char;
   if ((atomic_load_explicit(JavaLangCharacter__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10025E130();
   }
 
-  return __rev16(v3);
+  return __rev16(charCopy);
 }
 
-+ (int)binarySearchRangeWithIntArray:(id)a3 withInt:(int)a4
++ (int)binarySearchRangeWithIntArray:(id)array withInt:(int)int
 {
   if (atomic_load_explicit(JavaLangCharacter__initialized, memory_order_acquire))
   {
-    if (a3)
+    if (array)
     {
       goto LABEL_3;
     }
@@ -233,13 +233,13 @@ LABEL_18:
   }
 
   sub_10025E130();
-  if (!a3)
+  if (!array)
   {
     goto LABEL_18;
   }
 
 LABEL_3:
-  v6 = *(a3 + 2) - 1;
+  v6 = *(array + 2) - 1;
   if (v6 < 0)
   {
     v11 = 0;
@@ -253,16 +253,16 @@ LABEL_3:
     {
       v8 = v7 + v6;
       v9 = (v7 + v6) >> 1;
-      v10 = *(a3 + 2);
+      v10 = *(array + 2);
       if (v9 < 0 || v9 >= v10)
       {
         IOSArray_throwOutOfBoundsWithMsg(v10, (v8 >> 1));
       }
 
-      v11 = *(a3 + (v8 >> 1) + 3);
-      if (v11 >= a4)
+      v11 = *(array + (v8 >> 1) + 3);
+      if (v11 >= int)
       {
-        if (v11 == a4)
+        if (v11 == int)
         {
           return v9;
         }
@@ -279,13 +279,13 @@ LABEL_3:
     while (v7 <= v6);
   }
 
-  v9 -= v11 > a4;
+  v9 -= v11 > int;
   return v9;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [IOSClass_arrayType(+[IOSClass charClass](IOSClass "charClass")];
     objc_opt_class();

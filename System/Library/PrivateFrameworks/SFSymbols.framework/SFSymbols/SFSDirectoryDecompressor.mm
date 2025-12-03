@@ -1,15 +1,15 @@
 @interface SFSDirectoryDecompressor
-+ (BOOL)decompressDataAtURL:(id)a3 toURL:(id)a4 error:(id *)a5;
++ (BOOL)decompressDataAtURL:(id)l toURL:(id)rL error:(id *)error;
 @end
 
 @implementation SFSDirectoryDecompressor
 
-+ (BOOL)decompressDataAtURL:(id)a3 toURL:(id)a4 error:(id *)a5
++ (BOOL)decompressDataAtURL:(id)l toURL:(id)rL error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 path];
-  v10 = soft_AAFileStreamOpenWithPath([v9 fileSystemRepresentation], 0);
+  lCopy = l;
+  rLCopy = rL;
+  path = [lCopy path];
+  v10 = soft_AAFileStreamOpenWithPath([path fileSystemRepresentation], 0);
 
   if (!v10)
   {
@@ -75,14 +75,14 @@ LABEL_22:
   }
 
   v18 = v17;
-  v19 = [MEMORY[0x277CCAA00] defaultManager];
-  v20 = [v8 path];
-  v21 = [v19 fileExistsAtPath:v20];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path2 = [rLCopy path];
+  v21 = [defaultManager fileExistsAtPath:path2];
 
   if ((v21 & 1) == 0)
   {
-    v22 = [MEMORY[0x277CCAA00] defaultManager];
-    v23 = [v22 createDirectoryAtURL:v8 withIntermediateDirectories:0 attributes:0 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v23 = [defaultManager2 createDirectoryAtURL:rLCopy withIntermediateDirectories:0 attributes:0 error:0];
 
     if (!v23)
     {
@@ -92,8 +92,8 @@ LABEL_21:
     }
   }
 
-  v24 = [v8 path];
-  v25 = [v24 fileSystemRepresentation];
+  path3 = [rLCopy path];
+  fileSystemRepresentation = [path3 fileSystemRepresentation];
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -115,7 +115,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v28 = (v26)(v25, 0, 0, 1, 0);
+  v28 = (v26)(fileSystemRepresentation, 0, 0, 1, 0);
 
   if (!v28)
   {
@@ -153,7 +153,7 @@ LABEL_29:
   {
 LABEL_24:
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:-1 userInfo:0];
-    *a5 = v32 = 0;
+    *error = v32 = 0;
     goto LABEL_25;
   }
 

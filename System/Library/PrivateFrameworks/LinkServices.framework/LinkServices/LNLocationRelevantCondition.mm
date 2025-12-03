@@ -1,25 +1,25 @@
 @interface LNLocationRelevantCondition
-- (LNLocationRelevantCondition)initWithRegion:(id)a3;
+- (LNLocationRelevantCondition)initWithRegion:(id)region;
 @end
 
 @implementation LNLocationRelevantCondition
 
-- (LNLocationRelevantCondition)initWithRegion:(id)a3
+- (LNLocationRelevantCondition)initWithRegion:(id)region
 {
-  v6 = a3;
-  if (!v6)
+  regionCopy = region;
+  if (!regionCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"LNRelevantContext.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"region"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNRelevantContext.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"region"}];
   }
 
   v12.receiver = self;
   v12.super_class = LNLocationRelevantCondition;
-  v7 = [(LNRelevantCondition *)&v12 _init];
-  v8 = v7;
-  if (v7)
+  _init = [(LNRelevantCondition *)&v12 _init];
+  v8 = _init;
+  if (_init)
   {
-    objc_storeStrong(v7 + 1, a3);
+    objc_storeStrong(_init + 1, region);
     v9 = v8;
   }
 

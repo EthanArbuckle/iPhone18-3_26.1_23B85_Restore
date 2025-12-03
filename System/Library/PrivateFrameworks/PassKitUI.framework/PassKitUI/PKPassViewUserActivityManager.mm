@@ -1,15 +1,15 @@
 @interface PKPassViewUserActivityManager
 + (id)sharedInstance;
-- (BOOL)_shouldDonateActivity:(id)a3;
+- (BOOL)_shouldDonateActivity:(id)activity;
 - (id)_currentUserActivityPassUniqueID;
-- (id)_displayNameForPass:(id)a3;
+- (id)_displayNameForPass:(id)pass;
 - (id)_init;
-- (id)_passViewTemplateNameForPass:(id)a3;
+- (id)_passViewTemplateNameForPass:(id)pass;
 - (void)_endedViewingPass;
 - (void)dealloc;
 - (void)endedViewingPass;
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4;
-- (void)startedViewingPass:(id)a3;
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state;
+- (void)startedViewingPass:(id)pass;
 @end
 
 @implementation PKPassViewUserActivityManager
@@ -63,11 +63,11 @@ void __47__PKPassViewUserActivityManager_sharedInstance__block_invoke()
   [(PKPassViewUserActivityManager *)&v4 dealloc];
 }
 
-- (void)startedViewingPass:(id)a3
+- (void)startedViewingPass:(id)pass
 {
-  v4 = a3;
-  v5 = [v4 uniqueID];
-  if (v5 && (PKRunningInRemoteContext() & 1) == 0)
+  passCopy = pass;
+  uniqueID = [passCopy uniqueID];
+  if (uniqueID && (PKRunningInRemoteContext() & 1) == 0)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -75,8 +75,8 @@ void __47__PKPassViewUserActivityManager_sharedInstance__block_invoke()
     block[2] = __52__PKPassViewUserActivityManager_startedViewingPass___block_invoke;
     block[3] = &unk_1E8010A88;
     block[4] = self;
-    v8 = v5;
-    v9 = v4;
+    v8 = uniqueID;
+    v9 = passCopy;
     dispatch_async(queue, block);
   }
 }
@@ -180,7 +180,7 @@ void __52__PKPassViewUserActivityManager_startedViewingPass___block_invoke_2(uin
   }
 }
 
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state
 {
   queue = self->_queue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -188,7 +188,7 @@ void __52__PKPassViewUserActivityManager_startedViewingPass___block_invoke_2(uin
   v5[2] = __88__PKPassViewUserActivityManager_foregroundActiveArbiter_didUpdateForegroundActiveState___block_invoke;
   v5[3] = &unk_1E8019910;
   v5[4] = self;
-  v6 = a4;
+  stateCopy = state;
   dispatch_async(queue, v5);
 }
 
@@ -211,9 +211,9 @@ uint64_t __88__PKPassViewUserActivityManager_foregroundActiveArbiter_didUpdateFo
     v3 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(PKPassViewUserActivityManager *)self _currentUserActivityPassUniqueID];
+      _currentUserActivityPassUniqueID = [(PKPassViewUserActivityManager *)self _currentUserActivityPassUniqueID];
       v6 = 138412290;
-      v7 = v4;
+      v7 = _currentUserActivityPassUniqueID;
       _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "PKPassViewUserActivityManager: endedViewingPass - %@", &v6, 0xCu);
     }
 
@@ -228,8 +228,8 @@ uint64_t __88__PKPassViewUserActivityManager_foregroundActiveArbiter_didUpdateFo
   currentUserActivity = self->_currentUserActivity;
   if (currentUserActivity)
   {
-    v3 = [(NSUserActivity *)currentUserActivity userInfo];
-    v4 = [v3 objectForKey:*MEMORY[0x1E69BC6C0]];
+    userInfo = [(NSUserActivity *)currentUserActivity userInfo];
+    v4 = [userInfo objectForKey:*MEMORY[0x1E69BC6C0]];
   }
 
   else
@@ -240,17 +240,17 @@ uint64_t __88__PKPassViewUserActivityManager_foregroundActiveArbiter_didUpdateFo
   return v4;
 }
 
-- (BOOL)_shouldDonateActivity:(id)a3
+- (BOOL)_shouldDonateActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(PKPassViewUserActivityManager *)self _displayNameForPass:v4];
+  activityCopy = activity;
+  v5 = [(PKPassViewUserActivityManager *)self _displayNameForPass:activityCopy];
 
   if (v5)
   {
-    v6 = [v4 style];
-    if (v6 <= 7)
+    style = [activityCopy style];
+    if (style <= 7)
     {
-      LOBYTE(v5) = 0xE2u >> v6;
+      LOBYTE(v5) = 0xE2u >> style;
     }
 
     else
@@ -262,11 +262,11 @@ uint64_t __88__PKPassViewUserActivityManager_foregroundActiveArbiter_didUpdateFo
   return v5 & 1;
 }
 
-- (id)_displayNameForPass:(id)a3
+- (id)_displayNameForPass:(id)pass
 {
-  v3 = [a3 notificationCenterTitle];
-  v4 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  notificationCenterTitle = [pass notificationCenterTitle];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v5 = [notificationCenterTitle stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if (!v5 || ![v5 length])
   {
@@ -277,37 +277,37 @@ uint64_t __88__PKPassViewUserActivityManager_foregroundActiveArbiter_didUpdateFo
   return v5;
 }
 
-- (id)_passViewTemplateNameForPass:(id)a3
+- (id)_passViewTemplateNameForPass:(id)pass
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  passCopy = pass;
+  v4 = passCopy;
+  if (!passCopy)
   {
     v7 = 0;
     goto LABEL_16;
   }
 
-  v5 = [v3 style];
+  style = [passCopy style];
   v6 = @"PASS_VIEW_USER_ACTIVITY_TEMPLATE_NAME_NON_PAYMENT_BOARDING_PASS";
-  if (v5 <= 5)
+  if (style <= 5)
   {
-    if (v5 == 2)
+    if (style == 2)
     {
       goto LABEL_13;
     }
 
-    if (v5 != 4)
+    if (style != 4)
     {
 LABEL_12:
       v6 = @"PASS_VIEW_USER_ACTIVITY_TEMPLATE_NAME_NON_PAYMENT_PASS";
     }
   }
 
-  else if (v5 != 10)
+  else if (style != 10)
   {
-    if (v5 != 9)
+    if (style != 9)
     {
-      if (v5 == 6)
+      if (style == 6)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 && ([v4 isAppleCardPass])

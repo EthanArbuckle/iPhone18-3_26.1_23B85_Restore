@@ -1,17 +1,17 @@
 @interface NTKTimelineEntryModelCache
-+ (id)_startOfDayAfterDate:(id)a3;
-+ (id)_startOfDayBeforeDate:(id)a3;
-+ (id)_startOfDayForDate:(id)a3;
-- (BOOL)hasEntryModelForDate:(id)a3;
++ (id)_startOfDayAfterDate:(id)date;
++ (id)_startOfDayBeforeDate:(id)date;
++ (id)_startOfDayForDate:(id)date;
+- (BOOL)hasEntryModelForDate:(id)date;
 - (NTKTimelineEntryModelCache)init;
 - (NTKTimelineEntryModelCacheDataSource)dataSource;
-- (id)_cachedEntryModelAfterDate:(id)a3 limit:(unint64_t)a4;
-- (id)_cachedEntryModelBeforeDate:(id)a3 limit:(unint64_t)a4;
-- (id)_cachedEntryModelForDate:(id)a3;
-- (id)entryModelForDate:(id)a3;
-- (id)entryModelsAfterDate:(id)a3 limit:(unint64_t)a4;
-- (id)entryModelsBeforeDate:(id)a3 limit:(unint64_t)a4;
-- (void)_extendCacheTowardDate:(id)a3;
+- (id)_cachedEntryModelAfterDate:(id)date limit:(unint64_t)limit;
+- (id)_cachedEntryModelBeforeDate:(id)date limit:(unint64_t)limit;
+- (id)_cachedEntryModelForDate:(id)date;
+- (id)entryModelForDate:(id)date;
+- (id)entryModelsAfterDate:(id)date limit:(unint64_t)limit;
+- (id)entryModelsBeforeDate:(id)date limit:(unint64_t)limit;
+- (void)_extendCacheTowardDate:(id)date;
 - (void)invalidate;
 @end
 
@@ -24,9 +24,9 @@
   v2 = [(NTKTimelineEntryModelCache *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     cachedEntryModels = v2->_cachedEntryModels;
-    v2->_cachedEntryModels = v3;
+    v2->_cachedEntryModels = array;
 
     [(NTKTimelineEntryModelCache *)v2 invalidate];
   }
@@ -34,39 +34,39 @@
   return v2;
 }
 
-- (BOOL)hasEntryModelForDate:(id)a3
+- (BOOL)hasEntryModelForDate:(id)date
 {
-  v3 = [(NTKTimelineEntryModelCache *)self _cachedEntryModelForDate:a3];
+  v3 = [(NTKTimelineEntryModelCache *)self _cachedEntryModelForDate:date];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)entryModelForDate:(id)a3
+- (id)entryModelForDate:(id)date
 {
-  v4 = a3;
-  [(NTKTimelineEntryModelCache *)self _extendCacheTowardDate:v4];
-  v5 = [(NTKTimelineEntryModelCache *)self _cachedEntryModelForDate:v4];
+  dateCopy = date;
+  [(NTKTimelineEntryModelCache *)self _extendCacheTowardDate:dateCopy];
+  v5 = [(NTKTimelineEntryModelCache *)self _cachedEntryModelForDate:dateCopy];
 
   return v5;
 }
 
-- (id)entryModelsBeforeDate:(id)a3 limit:(unint64_t)a4
+- (id)entryModelsBeforeDate:(id)date limit:(unint64_t)limit
 {
-  v6 = a3;
-  v7 = [objc_opt_class() _startOfDayBeforeDate:v6];
+  dateCopy = date;
+  v7 = [objc_opt_class() _startOfDayBeforeDate:dateCopy];
   [(NTKTimelineEntryModelCache *)self _extendCacheTowardDate:v7];
-  v8 = [(NTKTimelineEntryModelCache *)self _cachedEntryModelBeforeDate:v6 limit:a4];
+  v8 = [(NTKTimelineEntryModelCache *)self _cachedEntryModelBeforeDate:dateCopy limit:limit];
 
   return v8;
 }
 
-- (id)entryModelsAfterDate:(id)a3 limit:(unint64_t)a4
+- (id)entryModelsAfterDate:(id)date limit:(unint64_t)limit
 {
-  v6 = a3;
-  v7 = [objc_opt_class() _startOfDayAfterDate:v6];
+  dateCopy = date;
+  v7 = [objc_opt_class() _startOfDayAfterDate:dateCopy];
   [(NTKTimelineEntryModelCache *)self _extendCacheTowardDate:v7];
-  v8 = [(NTKTimelineEntryModelCache *)self _cachedEntryModelAfterDate:v6 limit:a4];
+  v8 = [(NTKTimelineEntryModelCache *)self _cachedEntryModelAfterDate:dateCopy limit:limit];
 
   return v8;
 }
@@ -84,13 +84,13 @@
   self->_cacheEndDate = 0;
 }
 
-- (void)_extendCacheTowardDate:(id)a3
+- (void)_extendCacheTowardDate:(id)date
 {
-  v4 = a3;
-  v22 = v4;
+  dateCopy = date;
+  v22 = dateCopy;
   if (!self->_cachedEntryModels)
   {
-    v15 = [objc_opt_class() _startOfDayForDate:v4];
+    v15 = [objc_opt_class() _startOfDayForDate:dateCopy];
     cacheStartDate = self->_cacheStartDate;
     self->_cacheStartDate = v15;
 
@@ -98,8 +98,8 @@
     cacheEndDate = self->_cacheEndDate;
     self->_cacheEndDate = v17;
 
-    v14 = [(NTKTimelineEntryModelCache *)self dataSource];
-    v19 = [v14 loadEntryModelsForDay:self->_cacheStartDate];
+    dataSource = [(NTKTimelineEntryModelCache *)self dataSource];
+    v19 = [dataSource loadEntryModelsForDay:self->_cacheStartDate];
     v20 = [v19 mutableCopy];
     cachedEntryModels = self->_cachedEntryModels;
     self->_cachedEntryModels = v20;
@@ -107,14 +107,14 @@
     goto LABEL_7;
   }
 
-  if ([v4 isBeforeDate:self->_cacheStartDate])
+  if ([dateCopy isBeforeDate:self->_cacheStartDate])
   {
     v5 = [objc_opt_class() _startOfDayBeforeDate:self->_cacheStartDate];
     v6 = self->_cacheStartDate;
     self->_cacheStartDate = v5;
 
-    v7 = [(NTKTimelineEntryModelCache *)self dataSource];
-    v8 = [v7 loadEntryModelsForDay:self->_cacheStartDate];
+    dataSource2 = [(NTKTimelineEntryModelCache *)self dataSource];
+    v8 = [dataSource2 loadEntryModelsForDay:self->_cacheStartDate];
     v9 = [v8 mutableCopy];
 
     [(NSMutableArray *)v9 addObjectsFromArray:self->_cachedEntryModels];
@@ -128,17 +128,17 @@
     v12 = self->_cacheEndDate;
     self->_cacheEndDate = v11;
 
-    v13 = [(NTKTimelineEntryModelCache *)self dataSource];
-    v14 = [v13 loadEntryModelsForDay:self->_cacheEndDate];
+    dataSource3 = [(NTKTimelineEntryModelCache *)self dataSource];
+    dataSource = [dataSource3 loadEntryModelsForDay:self->_cacheEndDate];
 
-    [(NSMutableArray *)self->_cachedEntryModels addObjectsFromArray:v14];
+    [(NSMutableArray *)self->_cachedEntryModels addObjectsFromArray:dataSource];
 LABEL_7:
   }
 }
 
-- (id)_cachedEntryModelForDate:(id)a3
+- (id)_cachedEntryModelForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -150,7 +150,7 @@ LABEL_7:
   v9[1] = 3221225472;
   v9[2] = __55__NTKTimelineEntryModelCache__cachedEntryModelForDate___block_invoke;
   v9[3] = &unk_2787868E0;
-  v6 = v4;
+  v6 = dateCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableArray *)cachedEntryModels enumerateObjectsWithOptions:2 usingBlock:v9];
@@ -172,29 +172,29 @@ void __55__NTKTimelineEntryModelCache__cachedEntryModelForDate___block_invoke(ui
   }
 }
 
-- (id)_cachedEntryModelBeforeDate:(id)a3 limit:(unint64_t)a4
+- (id)_cachedEntryModelBeforeDate:(id)date limit:(unint64_t)limit
 {
-  v6 = a3;
-  v7 = [(NTKTimelineEntryModelCache *)self _cachedEntryModelForDate:v6];
+  dateCopy = date;
+  v7 = [(NTKTimelineEntryModelCache *)self _cachedEntryModelForDate:dateCopy];
   v8 = [(NSMutableArray *)self->_cachedEntryModels indexOfObject:v7];
   v9 = v8;
-  if (v8 >= a4)
+  if (v8 >= limit)
   {
-    v10 = a4;
+    limitCopy = limit;
   }
 
   else
   {
-    v10 = v8;
+    limitCopy = v8;
   }
 
-  v11 = v8 - v10;
+  v11 = v8 - limitCopy;
   v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:?];
   while (v9 > v11)
   {
     v13 = [(NSMutableArray *)self->_cachedEntryModels objectAtIndexedSubscript:v9];
-    v14 = [v13 entryDate];
-    v15 = [v14 compare:v6];
+    entryDate = [v13 entryDate];
+    v15 = [entryDate compare:dateCopy];
 
     if (v15 == -1)
     {
@@ -207,17 +207,17 @@ void __55__NTKTimelineEntryModelCache__cachedEntryModelForDate___block_invoke(ui
   return v12;
 }
 
-- (id)_cachedEntryModelAfterDate:(id)a3 limit:(unint64_t)a4
+- (id)_cachedEntryModelAfterDate:(id)date limit:(unint64_t)limit
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NTKTimelineEntryModelCache *)self _cachedEntryModelForDate:v6];
+  dateCopy = date;
+  v7 = [(NTKTimelineEntryModelCache *)self _cachedEntryModelForDate:dateCopy];
   if (!v7)
   {
     v9 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(NTKTimelineEntryModelCache *)v6 _cachedEntryModelAfterDate:v9 limit:?];
+      [(NTKTimelineEntryModelCache *)dateCopy _cachedEntryModelAfterDate:v9 limit:?];
     }
 
     goto LABEL_7;
@@ -233,7 +233,7 @@ void __55__NTKTimelineEntryModelCache__cachedEntryModelForDate___block_invoke(ui
       v19 = 138412802;
       v20 = v7;
       v21 = 2112;
-      v22 = v6;
+      v22 = dateCopy;
       v23 = 2112;
       v24 = cachedEntryModels;
       _os_log_error_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_ERROR, "NTKTimelineEntryModelCache: Failed to find entryForDate %@ for date %@ in models: %@.", &v19, 0x20u);
@@ -247,24 +247,24 @@ LABEL_7:
 
   v13 = v8;
   v14 = [(NSMutableArray *)self->_cachedEntryModels count];
-  if (v14 - v13 >= a4)
+  if (v14 - v13 >= limit)
   {
-    v15 = a4;
+    limitCopy = limit;
   }
 
   else
   {
-    v15 = v14 - v13;
+    limitCopy = v14 - v13;
   }
 
-  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:v15];
-  if (v13 < v15 + v13)
+  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:limitCopy];
+  if (v13 < limitCopy + v13)
   {
     do
     {
       v16 = [(NSMutableArray *)self->_cachedEntryModels objectAtIndexedSubscript:v13];
-      v17 = [v16 entryDate];
-      v18 = [v17 compare:v6];
+      entryDate = [v16 entryDate];
+      v18 = [entryDate compare:dateCopy];
 
       if (v18 == 1)
       {
@@ -272,10 +272,10 @@ LABEL_7:
       }
 
       ++v13;
-      --v15;
+      --limitCopy;
     }
 
-    while (v15);
+    while (limitCopy);
   }
 
 LABEL_8:
@@ -283,36 +283,36 @@ LABEL_8:
   return v11;
 }
 
-+ (id)_startOfDayForDate:(id)a3
++ (id)_startOfDayForDate:(id)date
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 startOfDayForDate:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar startOfDayForDate:dateCopy];
 
   return v6;
 }
 
-+ (id)_startOfDayBeforeDate:(id)a3
++ (id)_startOfDayBeforeDate:(id)date
 {
   v4 = MEMORY[0x277CBEA80];
-  v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 dateByAddingUnit:16 value:-1 toDate:v5 options:0];
+  dateCopy = date;
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar dateByAddingUnit:16 value:-1 toDate:dateCopy options:0];
 
-  v8 = [a1 _startOfDayForDate:v7];
+  v8 = [self _startOfDayForDate:v7];
 
   return v8;
 }
 
-+ (id)_startOfDayAfterDate:(id)a3
++ (id)_startOfDayAfterDate:(id)date
 {
   v4 = MEMORY[0x277CBEA80];
-  v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 dateByAddingUnit:16 value:1 toDate:v5 options:0];
+  dateCopy = date;
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar dateByAddingUnit:16 value:1 toDate:dateCopy options:0];
 
-  v8 = [a1 _startOfDayForDate:v7];
+  v8 = [self _startOfDayForDate:v7];
 
   return v8;
 }

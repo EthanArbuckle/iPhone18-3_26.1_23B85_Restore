@@ -1,27 +1,27 @@
 @interface ODDSiriSchemaODDAssetAvailabilityFromBootTuples
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDAssetAvailabilityFromBootTuples)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDAssetAvailabilityFromBootTuples)initWithJSON:(id)a3;
-- (float)bootToAssetDeliveryInMsAtIndex:(unint64_t)a3;
+- (ODDSiriSchemaODDAssetAvailabilityFromBootTuples)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDAssetAvailabilityFromBootTuples)initWithJSON:(id)n;
+- (float)bootToAssetDeliveryInMsAtIndex:(unint64_t)index;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addBootToAssetDeliveryInMs:(float)a3;
-- (void)writeTo:(id)a3;
+- (void)addBootToAssetDeliveryInMs:(float)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDAssetAvailabilityFromBootTuples
 
-- (ODDSiriSchemaODDAssetAvailabilityFromBootTuples)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDAssetAvailabilityFromBootTuples)initWithDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = ODDSiriSchemaODDAssetAvailabilityFromBootTuples;
   v5 = [(ODDSiriSchemaODDAssetAvailabilityFromBootTuples *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"bootToAssetDeliveryInMs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"bootToAssetDeliveryInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,30 +70,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDAssetAvailabilityFromBootTuples)initWithJSON:(id)a3
+- (ODDSiriSchemaODDAssetAvailabilityFromBootTuples)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDAssetAvailabilityFromBootTuples *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDAssetAvailabilityFromBootTuples *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDAssetAvailabilityFromBootTuples *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -106,31 +106,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_bootToAssetDeliveryInMs count])
   {
-    v4 = [(ODDSiriSchemaODDAssetAvailabilityFromBootTuples *)self bootToAssetDeliveryInMs];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"bootToAssetDeliveryInMs"];
+    bootToAssetDeliveryInMs = [(ODDSiriSchemaODDAssetAvailabilityFromBootTuples *)self bootToAssetDeliveryInMs];
+    v5 = [bootToAssetDeliveryInMs copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"bootToAssetDeliveryInMs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(ODDSiriSchemaODDAssetAvailabilityFromBootTuples *)self bootToAssetDeliveryInMs];
-    v6 = [v4 bootToAssetDeliveryInMs];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    bootToAssetDeliveryInMs = [(ODDSiriSchemaODDAssetAvailabilityFromBootTuples *)self bootToAssetDeliveryInMs];
+    bootToAssetDeliveryInMs2 = [equalCopy bootToAssetDeliveryInMs];
+    v7 = bootToAssetDeliveryInMs2;
+    if ((bootToAssetDeliveryInMs != 0) != (bootToAssetDeliveryInMs2 == 0))
     {
-      v8 = [(ODDSiriSchemaODDAssetAvailabilityFromBootTuples *)self bootToAssetDeliveryInMs];
-      if (!v8)
+      bootToAssetDeliveryInMs3 = [(ODDSiriSchemaODDAssetAvailabilityFromBootTuples *)self bootToAssetDeliveryInMs];
+      if (!bootToAssetDeliveryInMs3)
       {
 
 LABEL_10:
@@ -138,10 +138,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(ODDSiriSchemaODDAssetAvailabilityFromBootTuples *)self bootToAssetDeliveryInMs];
-      v11 = [v4 bootToAssetDeliveryInMs];
-      v12 = [v10 isEqual:v11];
+      v9 = bootToAssetDeliveryInMs3;
+      bootToAssetDeliveryInMs4 = [(ODDSiriSchemaODDAssetAvailabilityFromBootTuples *)self bootToAssetDeliveryInMs];
+      bootToAssetDeliveryInMs5 = [equalCopy bootToAssetDeliveryInMs];
+      v12 = [bootToAssetDeliveryInMs4 isEqual:bootToAssetDeliveryInMs5];
 
       if (v12)
       {
@@ -160,10 +160,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -197,28 +197,28 @@ LABEL_8:
   }
 }
 
-- (float)bootToAssetDeliveryInMsAtIndex:(unint64_t)a3
+- (float)bootToAssetDeliveryInMsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_bootToAssetDeliveryInMs objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_bootToAssetDeliveryInMs objectAtIndexedSubscript:index];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addBootToAssetDeliveryInMs:(float)a3
+- (void)addBootToAssetDeliveryInMs:(float)ms
 {
   bootToAssetDeliveryInMs = self->_bootToAssetDeliveryInMs;
   if (!bootToAssetDeliveryInMs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_bootToAssetDeliveryInMs;
-    self->_bootToAssetDeliveryInMs = v6;
+    self->_bootToAssetDeliveryInMs = array;
 
     bootToAssetDeliveryInMs = self->_bootToAssetDeliveryInMs;
   }
 
-  *&v8 = a3;
+  *&v8 = ms;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   [(NSArray *)bootToAssetDeliveryInMs addObject:v9];
 }

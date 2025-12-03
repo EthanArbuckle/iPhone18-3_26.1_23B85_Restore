@@ -19,10 +19,10 @@
 
 - (BOOL)fc_isOperationThrottledError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:@"FCErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"FCErrorDomain"])
   {
-    v3 = [a1 code] == 12;
+    v3 = [self code] == 12;
   }
 
   else
@@ -35,49 +35,49 @@
 
 - (uint64_t)fc_shouldRetry
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"NSErrorFCAdditionsShouldRetry"];
-  v3 = [v2 BOOLValue];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"NSErrorFCAdditionsShouldRetry"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)fc_isNetworkUnavailableError
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"NSErrorFCAdditionsIsNetworkUnavailable"];
-  v3 = [v2 BOOLValue];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"NSErrorFCAdditionsIsNetworkUnavailable"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)fc_isCancellationError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x1E695B740]] && objc_msgSend(a1, "code") == 20)
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E695B740]] && objc_msgSend(self, "code") == 20)
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [a1 domain];
-    if ([v4 isEqualToString:*MEMORY[0x1E696A978]] && objc_msgSend(a1, "code") == -999)
+    domain2 = [self domain];
+    if ([domain2 isEqualToString:*MEMORY[0x1E696A978]] && objc_msgSend(self, "code") == -999)
     {
       v3 = 1;
     }
 
     else
     {
-      v5 = [a1 domain];
-      if ([v5 isEqualToString:@"FCErrorDomain"] && objc_msgSend(a1, "code") == 1)
+      domain3 = [self domain];
+      if ([domain3 isEqualToString:@"FCErrorDomain"] && objc_msgSend(self, "code") == 1)
       {
         v3 = 1;
       }
 
       else
       {
-        v3 = [a1 fc_hasUnderlyingErrorPassingTest:&__block_literal_global_146];
+        v3 = [self fc_hasUnderlyingErrorPassingTest:&__block_literal_global_146];
       }
     }
   }
@@ -87,10 +87,10 @@
 
 - (BOOL)fc_isRequestDroppedError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:@"FCErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"FCErrorDomain"])
   {
-    v3 = [a1 code] == 2;
+    v3 = [self code] == 2;
   }
 
   else
@@ -103,21 +103,21 @@
 
 - (uint64_t)fc_isOfflineErrorOfflineReason:()FCAdditions
 {
-  v5 = [a1 domain];
-  v6 = [a1 code];
+  domain = [self domain];
+  code = [self code];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  if ([v5 isEqualToString:@"FCErrorDomain"])
+  if ([domain isEqualToString:@"FCErrorDomain"])
   {
-    if (v6 == 10)
+    if (code == 10)
     {
-      v7 = [a1 userInfo];
-      v8 = [v7 objectForKeyedSubscript:@"FCErrorOfflineReasonKey"];
+      userInfo = [self userInfo];
+      v8 = [userInfo objectForKeyedSubscript:@"FCErrorOfflineReasonKey"];
 
-      v9 = [v8 unsignedIntegerValue];
-      v18[3] = v9;
+      unsignedIntegerValue = [v8 unsignedIntegerValue];
+      v18[3] = unsignedIntegerValue;
 
       goto LABEL_15;
     }
@@ -128,13 +128,13 @@ LABEL_20:
     v16[2] = __55__NSError_FCAdditions__fc_isOfflineErrorOfflineReason___block_invoke;
     v16[3] = &unk_1E7C45178;
     v16[4] = &v17;
-    v14 = [a1 fc_hasUnderlyingErrorPassingTest:v16];
+    v14 = [self fc_hasUnderlyingErrorPassingTest:v16];
     goto LABEL_21;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E695B740]])
+  if ([domain isEqualToString:*MEMORY[0x1E695B740]])
   {
-    if ((v6 - 3) >= 2)
+    if ((code - 3) >= 2)
     {
       goto LABEL_20;
     }
@@ -142,29 +142,29 @@ LABEL_20:
 
   else
   {
-    if ([v5 isEqualToString:*MEMORY[0x1E696A978]])
+    if ([domain isEqualToString:*MEMORY[0x1E696A978]])
     {
-      v10 = [a1 code];
-      if ((v10 + 1018) > 0x11)
+      code2 = [self code];
+      if ((code2 + 1018) > 0x11)
       {
         goto LABEL_20;
       }
 
-      v11 = 1 << (v10 - 6);
+      v11 = 1 << (code2 - 6);
       v12 = 139777;
     }
 
     else
     {
-      if (![v5 isEqual:*MEMORY[0x1E695AD78]])
+      if (![domain isEqual:*MEMORY[0x1E695AD78]])
       {
         goto LABEL_20;
       }
 
-      v13 = [a1 code];
-      if (v13 > 0)
+      code3 = [self code];
+      if (code3 > 0)
       {
-        if (v13 != 1 && v13 != 302 && v13 != 310)
+        if (code3 != 1 && code3 != 302 && code3 != 310)
         {
           goto LABEL_20;
         }
@@ -172,12 +172,12 @@ LABEL_20:
         goto LABEL_15;
       }
 
-      if ((v13 + 1020) > 0x13)
+      if ((code3 + 1020) > 0x13)
       {
         goto LABEL_20;
       }
 
-      v11 = 1 << (v13 - 4);
+      v11 = 1 << (code3 - 4);
       v12 = 772103;
     }
 
@@ -207,10 +207,10 @@ LABEL_21:
 
 - (BOOL)fc_isBlockedInStoreFrontError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:@"FCErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"FCErrorDomain"])
   {
-    v3 = [a1 code] == 20;
+    v3 = [self code] == 20;
   }
 
   else
@@ -223,34 +223,34 @@ LABEL_21:
 
 - (BOOL)fc_isAVUnauthorizedError
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:@"FCErrorDomain"];
+  domain = [self domain];
+  v3 = [domain isEqualToString:@"FCErrorDomain"];
 
   if (!v3)
   {
     return 0;
   }
 
-  if ([a1 code] == 34)
+  if ([self code] == 34)
   {
     return 1;
   }
 
-  return [a1 code] == 35;
+  return [self code] == 35;
 }
 
 - (BOOL)fc_isHTTPNotFoundError
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:@"FCErrorDomain"];
+  domain = [self domain];
+  v3 = [domain isEqualToString:@"FCErrorDomain"];
 
-  if (!v3 || [a1 code] != 4)
+  if (!v3 || [self code] != 4)
   {
     return 0;
   }
 
-  v4 = [a1 userInfo];
-  v5 = [v4 objectForKey:@"FCErrorHTTPStatusCode"];
+  userInfo = [self userInfo];
+  v5 = [userInfo objectForKey:@"FCErrorHTTPStatusCode"];
 
   if (v5)
   {
@@ -273,8 +273,8 @@ LABEL_21:
     v15[6] = 3221225472;
     v15[7] = __54__NSError_FCAdditions__fc_errorWithMaximumRetryAfter___block_invoke;
     v15[8] = &unk_1E7C36F98;
-    v15[9] = a1;
-    v13 = a1;
+    v15[9] = self;
+    selfCopy3 = self;
   }
 
   else
@@ -283,50 +283,50 @@ LABEL_21:
     v15[1] = 3221225472;
     v15[2] = __54__NSError_FCAdditions__fc_errorWithMaximumRetryAfter___block_invoke_2;
     v15[3] = &unk_1E7C371A8;
-    v15[4] = a1;
+    v15[4] = self;
     v4 = __54__NSError_FCAdditions__fc_errorWithMaximumRetryAfter___block_invoke_2(v15);
     if (v4)
     {
-      v5 = [a1 userInfo];
-      v6 = [v5 objectForKeyedSubscript:v4];
+      userInfo = [self userInfo];
+      v6 = [userInfo objectForKeyedSubscript:v4];
 
       [v6 doubleValue];
       if (v7 <= a2)
       {
-        v13 = a1;
+        selfCopy3 = self;
       }
 
       else
       {
-        v8 = [a1 userInfo];
-        v9 = [v8 mutableCopy];
+        userInfo2 = [self userInfo];
+        v9 = [userInfo2 mutableCopy];
 
         v10 = [MEMORY[0x1E696AD98] numberWithDouble:a2];
         [v9 setObject:v10 forKeyedSubscript:v4];
 
         v11 = MEMORY[0x1E696ABC0];
-        v12 = [a1 domain];
-        v13 = [v11 errorWithDomain:v12 code:objc_msgSend(a1 userInfo:{"code"), v9}];
+        domain = [self domain];
+        selfCopy3 = [v11 errorWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v9}];
       }
     }
 
     else
     {
-      v13 = a1;
+      selfCopy3 = self;
     }
   }
 
-  return v13;
+  return selfCopy3;
 }
 
 - (uint64_t)fc_isAuthenticationUserCancelled
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x1E698C548]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E698C548]])
   {
-    v3 = [a1 code];
+    code = [self code];
 
-    if (v3 == 6)
+    if (code == 6)
     {
       return 1;
     }
@@ -336,12 +336,12 @@ LABEL_21:
   {
   }
 
-  v5 = [a1 userInfo];
+  userInfo = [self userInfo];
   v6 = *MEMORY[0x1E696AA08];
-  v7 = [v5 objectForKey:*MEMORY[0x1E696AA08]];
+  v7 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
-  v8 = [v7 userInfo];
-  v9 = [v8 objectForKey:v6];
+  userInfo2 = [v7 userInfo];
+  v9 = [userInfo2 objectForKey:v6];
 
   v4 = [v7 code] == -7003 || objc_msgSend(v9, "code") == -7003;
   return v4;
@@ -349,8 +349,8 @@ LABEL_21:
 
 - (uint64_t)fc_failedDueToTaskConstraints
 {
-  v2 = [a1 userInfo];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E696A9A0]];
+  userInfo = [self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A9A0]];
   if (v3)
   {
     v4 = 1;
@@ -358,7 +358,7 @@ LABEL_21:
 
   else
   {
-    v4 = [a1 fc_hasUnderlyingErrorPassingTest:&__block_literal_global_20_0];
+    v4 = [self fc_hasUnderlyingErrorPassingTest:&__block_literal_global_20_0];
   }
 
   return v4;
@@ -368,8 +368,8 @@ LABEL_21:
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696A750]];
+  userInfo = [self userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A750]];
 
   v19 = 0u;
   v20 = 0u;
@@ -412,8 +412,8 @@ LABEL_21:
     }
   }
 
-  v12 = [a1 userInfo];
-  v13 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  userInfo2 = [self userInfo];
+  v13 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
   v14 = v13 && ((v4)[2](v4, v13) & 1) != 0;
 LABEL_14:
@@ -424,8 +424,8 @@ LABEL_14:
 
 - (id)fc_retryAfter
 {
-  v2 = [a1 userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"FCErrorRetryAfter"];
+  userInfo = [self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"FCErrorRetryAfter"];
   v4 = v3;
   if (v3)
   {
@@ -434,8 +434,8 @@ LABEL_14:
 
   else
   {
-    v6 = [a1 userInfo];
-    v5 = [v6 objectForKeyedSubscript:*MEMORY[0x1E695B748]];
+    userInfo2 = [self userInfo];
+    v5 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E695B748]];
   }
 
   return v5;

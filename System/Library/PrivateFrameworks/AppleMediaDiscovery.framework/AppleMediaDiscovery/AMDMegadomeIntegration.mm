@@ -1,37 +1,37 @@
 @interface AMDMegadomeIntegration
-+ (id)handleJSRequest:(id)a3 error:(id *)a4;
-+ (id)run:(id)a3 usingView:(id)a4 andDb:(id)a5 returnColumnMajor:(BOOL)a6 returnRowMajor:(BOOL)a7 withError:(id *)a8;
-+ (id)save:(id)a3 into:(id)a4 inDb:(id)a5 withError:(id *)a6;
++ (id)handleJSRequest:(id)request error:(id *)error;
++ (id)run:(id)run usingView:(id)view andDb:(id)db returnColumnMajor:(BOOL)major returnRowMajor:(BOOL)rowMajor withError:(id *)error;
++ (id)save:(id)save into:(id)into inDb:(id)db withError:(id *)error;
 @end
 
 @implementation AMDMegadomeIntegration
 
-+ (id)handleJSRequest:(id)a3 error:(id *)a4
++ (id)handleJSRequest:(id)request error:(id *)error
 {
   v71 = *MEMORY[0x277D85DE8];
-  v64 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v62 = a4;
+  objc_storeStrong(location, request);
+  errorCopy = error;
   v61 = +[AMDSQLite getSharedInstance];
   if (([v61 isUsable] & 1) == 0)
   {
-    v40 = [v61 generateDBLoadError];
-    v4 = v40;
-    *v62 = v40;
+    generateDBLoadError = [v61 generateDBLoadError];
+    v4 = generateDBLoadError;
+    *errorCopy = generateDBLoadError;
     v65 = 0;
     v60 = 1;
     goto LABEL_53;
   }
 
-  v39 = [v61 getMegadomeSchema];
-  MEMORY[0x277D82BD8](v39);
-  if (!v39)
+  getMegadomeSchema = [v61 getMegadomeSchema];
+  MEMORY[0x277D82BD8](getMegadomeSchema);
+  if (!getMegadomeSchema)
   {
     v38 = [AMDMiscHelpers logAndCreateError:17 errorMessage:@"Megadome: no megadome db"];
     v5 = v38;
-    *v62 = v38;
+    *errorCopy = v38;
     v65 = 0;
     v60 = 1;
     goto LABEL_53;
@@ -161,35 +161,35 @@ LABEL_46:
       v16 = v59;
       v59 = v15;
       MEMORY[0x277D82BD8](v16);
-      v30 = 0;
+      bOOLValue = 0;
       if (v59)
       {
         objc_opt_class();
-        v30 = 0;
+        bOOLValue = 0;
         if (objc_opt_isKindOfClass())
         {
-          v30 = [v59 BOOLValue];
+          bOOLValue = [v59 BOOLValue];
         }
       }
 
-      v48 = v30 & 1;
-      if (v30 & 1) != 0 || (v50)
+      v48 = bOOLValue & 1;
+      if (bOOLValue & 1) != 0 || (v50)
       {
         v47 = 0;
         v45 = 0;
-        v29 = [v64 run:v52 usingView:v53 andDb:v61 returnColumnMajor:v48 & 1 returnRowMajor:v50 & 1 withError:&v45];
+        v29 = [selfCopy run:v52 usingView:v53 andDb:v61 returnColumnMajor:v48 & 1 returnRowMajor:v50 & 1 withError:&v45];
         objc_storeStrong(&v47, v45);
         v46 = v29;
         if (v47)
         {
           v26 = v57;
           v68 = @"error";
-          v28 = [v47 localizedDescription];
-          v69 = v28;
+          localizedDescription = [v47 localizedDescription];
+          v69 = localizedDescription;
           v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v69 forKeys:&v68 count:1];
           [v26 addObject:?];
           MEMORY[0x277D82BD8](v27);
-          MEMORY[0x277D82BD8](v28);
+          MEMORY[0x277D82BD8](localizedDescription);
           v60 = 3;
         }
 
@@ -202,15 +202,15 @@ LABEL_46:
           if ((v50 & 1) != 0 && v49)
           {
             v43 = v47;
-            v25 = [v64 save:v46 into:v49 inDb:v61 withError:&v43];
+            v25 = [selfCopy save:v46 into:v49 inDb:v61 withError:&v43];
             objc_storeStrong(&v47, v43);
             v44 = v25;
             if (v47)
             {
               v23 = v51;
-              v24 = [v47 localizedDescription];
+              localizedDescription2 = [v47 localizedDescription];
               [v23 setObject:? forKey:?];
-              MEMORY[0x277D82BD8](v24);
+              MEMORY[0x277D82BD8](localizedDescription2);
             }
 
             else
@@ -256,7 +256,7 @@ LABEL_46:
 
   v37 = [AMDMiscHelpers logAndCreateError:17 errorMessage:@"Megadome: bad payload"];
   v6 = v37;
-  *v62 = v37;
+  *errorCopy = v37;
   v65 = 0;
   v60 = 1;
 LABEL_52:
@@ -270,33 +270,33 @@ LABEL_53:
   return v19;
 }
 
-+ (id)run:(id)a3 usingView:(id)a4 andDb:(id)a5 returnColumnMajor:(BOOL)a6 returnRowMajor:(BOOL)a7 withError:(id *)a8
++ (id)run:(id)run usingView:(id)view andDb:(id)db returnColumnMajor:(BOOL)major returnRowMajor:(BOOL)rowMajor withError:(id *)error
 {
   v74 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, run);
   v67 = 0;
-  objc_storeStrong(&v67, a4);
+  objc_storeStrong(&v67, view);
   v66 = 0;
-  objc_storeStrong(&v66, a5);
-  v65 = a6;
-  v64 = a7;
-  v63 = a8;
+  objc_storeStrong(&v66, db);
+  majorCopy = major;
+  rowMajorCopy = rowMajor;
+  errorCopy = error;
   v62 = 0;
-  v61 = [getGDViewServiceClass() clientService];
+  clientService = [getGDViewServiceClass() clientService];
   v60 = 0;
   v59 = 0;
   v58 = 0;
   v57 = 0;
   if ([v67 isEqualToString:@"ShortTermTopics"])
   {
-    v8 = [v61 firstPartyShortTermTopicViewWithError:v63];
+    v8 = [clientService firstPartyShortTermTopicViewWithError:errorCopy];
     v9 = v59;
     v59 = v8;
     MEMORY[0x277D82BD8](v9);
-    if (*v63)
+    if (*errorCopy)
     {
       v69 = 0;
       v56 = 1;
@@ -304,20 +304,20 @@ LABEL_53:
     }
 
 LABEL_4:
-    v10 = [v59 databaseFilePath];
+    databaseFilePath = [v59 databaseFilePath];
     v11 = v60;
-    v60 = v10;
+    v60 = databaseFilePath;
     MEMORY[0x277D82BD8](v11);
     goto LABEL_14;
   }
 
   if ([v67 isEqualToString:@"LongTermTopics"])
   {
-    v12 = [v61 firstPartyLongTermTopicViewWithError:v63];
+    v12 = [clientService firstPartyLongTermTopicViewWithError:errorCopy];
     v13 = v59;
     v59 = v12;
     MEMORY[0x277D82BD8](v13);
-    if (*v63)
+    if (*errorCopy)
     {
       v69 = 0;
       v56 = 1;
@@ -335,7 +335,7 @@ LABEL_4:
     MEMORY[0x277D82BD8](v20);
     v35 = [AMDError allocError:17 withMessage:v62];
     v21 = v35;
-    *v63 = v35;
+    *errorCopy = v35;
     v69 = 0;
     v56 = 1;
     goto LABEL_37;
@@ -346,27 +346,27 @@ LABEL_4:
   v14 = v58;
   v58 = v36;
   MEMORY[0x277D82BD8](v14);
-  v15 = [v36 requestAssertionForViewName:@"languageView" error:v63];
+  v15 = [v36 requestAssertionForViewName:@"languageView" error:errorCopy];
   v16 = v57;
   v57 = v15;
   MEMORY[0x277D82BD8](v16);
-  if (*v63)
+  if (*errorCopy)
   {
     v69 = 0;
     v56 = 1;
     goto LABEL_37;
   }
 
-  v55 = [v57 viewArtifactURL];
-  v17 = [v55 path];
+  viewArtifactURL = [v57 viewArtifactURL];
+  path = [viewArtifactURL path];
   v18 = v60;
-  v60 = v17;
+  v60 = path;
   MEMORY[0x277D82BD8](v18);
-  objc_storeStrong(&v55, 0);
+  objc_storeStrong(&viewArtifactURL, 0);
 LABEL_14:
-  v54 = [v66 getMegadomeSchema];
-  v53 = [[AMDFetchDescriptor alloc] initWithDict:location[0] usingSchema:v54 error:v63];
-  if (*v63)
+  getMegadomeSchema = [v66 getMegadomeSchema];
+  v53 = [[AMDFetchDescriptor alloc] initWithDict:location[0] usingSchema:getMegadomeSchema error:errorCopy];
+  if (*errorCopy)
   {
     v69 = 0;
     v56 = 1;
@@ -398,7 +398,7 @@ LABEL_14:
       MEMORY[0x277D82BD8](v24);
       v33 = [AMDError allocError:17 withMessage:v62];
       v25 = v33;
-      *v63 = v33;
+      *errorCopy = v33;
       v69 = 0;
       v56 = 1;
     }
@@ -414,7 +414,7 @@ LABEL_14:
       }
 
       objc_storeStrong(&v46, 0);
-      v26 = [v66 fetchRowsFrom:ppDb usingDescriptor:v53 andSchema:v54 columnMajorOutput:v65 rowMajorOutput:v64 andPersist:0 error:v63];
+      v26 = [v66 fetchRowsFrom:ppDb usingDescriptor:v53 andSchema:getMegadomeSchema columnMajorOutput:majorCopy rowMajorOutput:rowMajorCopy andPersist:0 error:errorCopy];
       v27 = v50;
       v50 = v26;
       MEMORY[0x277D82BD8](v27);
@@ -471,13 +471,13 @@ LABEL_14:
   }
 
   objc_storeStrong(&v53, 0);
-  objc_storeStrong(&v54, 0);
+  objc_storeStrong(&getMegadomeSchema, 0);
 LABEL_37:
   objc_storeStrong(&v57, 0);
   objc_storeStrong(&v58, 0);
   objc_storeStrong(&v59, 0);
   objc_storeStrong(&v60, 0);
-  objc_storeStrong(&v61, 0);
+  objc_storeStrong(&clientService, 0);
   objc_storeStrong(&v62, 0);
   objc_storeStrong(&v66, 0);
   objc_storeStrong(&v67, 0);
@@ -488,18 +488,18 @@ LABEL_37:
   return v30;
 }
 
-+ (id)save:(id)a3 into:(id)a4 inDb:(id)a5 withError:(id *)a6
++ (id)save:(id)save into:(id)into inDb:(id)db withError:(id *)error
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, save);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, into);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
-  v18 = a6;
+  objc_storeStrong(&v19, db);
+  errorCopy = error;
   v25[0] = 0x2852AF668;
   v26[0] = v20;
   v25[1] = 0x2852A9128;
@@ -507,8 +507,8 @@ LABEL_37:
   v26[1] = v13;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
   MEMORY[0x277D82BD8](v13);
-  v16 = [v19 deleteRows:v17 error:a6];
-  if (*a6)
+  v16 = [v19 deleteRows:v17 error:error];
+  if (*error)
   {
     v22 = 0;
     v15 = 1;
@@ -517,10 +517,10 @@ LABEL_37:
   else
   {
     v8 = v19;
-    v9 = [v19 getDataSchema];
+    getDataSchema = [v19 getDataSchema];
     v14 = [v8 insertRows:v17 usingSchema:? error:?];
-    MEMORY[0x277D82BD8](v9);
-    if (*v18)
+    MEMORY[0x277D82BD8](getDataSchema);
+    if (*errorCopy)
     {
       v22 = 0;
     }

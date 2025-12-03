@@ -1,9 +1,9 @@
 @interface _TVAppLoadingView
 + (id)loadingScreen;
-- (_TVAppLoadingView)initWithFrame:(CGRect)a3 templateImage:(id)a4;
-- (void)didRotate:(id)a3;
+- (_TVAppLoadingView)initWithFrame:(CGRect)frame templateImage:(id)image;
+- (void)didRotate:(id)rotate;
 - (void)hide;
-- (void)showOverKeyWindowWithSpinnerOnly:(BOOL)a3;
+- (void)showOverKeyWindowWithSpinnerOnly:(BOOL)only;
 - (void)timeout;
 @end
 
@@ -21,9 +21,9 @@
   return v3;
 }
 
-- (void)showOverKeyWindowWithSpinnerOnly:(BOOL)a3
+- (void)showOverKeyWindowWithSpinnerOnly:(BOOL)only
 {
-  [(UIImageView *)self->_maskView setHidden:a3];
+  [(UIImageView *)self->_maskView setHidden:only];
   if (!self->_overlayWindow)
   {
     v4 = [_TVLoadingOverlayWindow alloc];
@@ -37,27 +37,27 @@
     v8 = objc_alloc_init(MEMORY[0x277D75D28]);
     [(UIWindow *)v7 setRootViewController:v8];
 
-    v9 = [(UIWindow *)self->_overlayWindow layer];
-    v10 = [v9 superlayer];
-    [v10 setAllowsGroupOpacity:0];
+    layer = [(UIWindow *)self->_overlayWindow layer];
+    superlayer = [layer superlayer];
+    [superlayer setAllowsGroupOpacity:0];
 
-    v11 = [(UIWindow *)self->_overlayWindow layer];
-    [v11 setAllowsGroupOpacity:0];
+    layer2 = [(UIWindow *)self->_overlayWindow layer];
+    [layer2 setAllowsGroupOpacity:0];
 
     [(UIWindow *)self->_overlayWindow setBackgroundColor:0];
   }
 
-  v12 = [MEMORY[0x277D75128] sharedApplication];
-  v13 = [v12 keyWindow];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  keyWindow = [mEMORY[0x277D75128] keyWindow];
 
-  v14 = [(_TVAppLoadingView *)self superview];
-  v15 = [v14 isEqual:v13];
+  superview = [(_TVAppLoadingView *)self superview];
+  v15 = [superview isEqual:keyWindow];
 
   if ((v15 & 1) == 0)
   {
     [(UIWindow *)self->_overlayWindow setHidden:0];
-    v16 = [(UIWindow *)self->_overlayWindow rootViewController];
-    [v16 setView:self];
+    rootViewController = [(UIWindow *)self->_overlayWindow rootViewController];
+    [rootViewController setView:self];
 
     [(UIView *)self->_wallpaperView setAlpha:1.0];
     [(_TVAppLoadingView *)self setAlpha:1.0];
@@ -131,27 +131,27 @@
   }
 }
 
-- (_TVAppLoadingView)initWithFrame:(CGRect)a3 templateImage:(id)a4
+- (_TVAppLoadingView)initWithFrame:(CGRect)frame templateImage:(id)image
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(_TVAppLoadingView *)self initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  imageCopy = image;
+  height = [(_TVAppLoadingView *)self initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(_TVAppLoadingView *)v10 bounds];
+    [(_TVAppLoadingView *)height bounds];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v20 = v11;
-    v21 = [v20 layer];
-    [v21 setAllowsGroupOpacity:0];
-    [v21 setAllowsGroupBlending:0];
-    if (v9)
+    layer = [v20 layer];
+    [layer setAllowsGroupOpacity:0];
+    [layer setAllowsGroupBlending:0];
+    if (imageCopy)
     {
       v22 = MEMORY[0x277D75D00];
       v23 = [MEMORY[0x277D75210] effectWithStyle:1000];
@@ -164,31 +164,31 @@
       [v20[57] setAutoresizingMask:18];
       [v20[57] setFrame:{v13, v15, v17, v19}];
       v27 = objc_alloc(MEMORY[0x277D755E8]);
-      v28 = [v9 imageWithRenderingMode:2];
+      v28 = [imageCopy imageWithRenderingMode:2];
       v29 = [v27 initWithImage:v28];
       v30 = v20[56];
       v20[56] = v29;
 
-      v31 = [v20[57] contentView];
-      [v31 addSubview:v20[56]];
+      contentView = [v20[57] contentView];
+      [contentView addSubview:v20[56]];
 
-      v32 = [v20[56] layer];
-      [v32 setAllowsGroupOpacity:0];
+      layer2 = [v20[56] layer];
+      [layer2 setAllowsGroupOpacity:0];
 
       [v20 addSubview:v20[57]];
-      v33 = [v20[57] contentView];
+      contentView2 = [v20[57] contentView];
     }
 
     else
     {
-      v33 = v20;
+      contentView2 = v20;
     }
 
-    v34 = [MEMORY[0x277D75348] grayColor];
-    v35 = [MEMORY[0x277CCAB98] defaultCenter];
+    grayColor = [MEMORY[0x277D75348] grayColor];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v36 = *MEMORY[0x277D772D0];
-    v37 = [*MEMORY[0x277D76620] keyWindow];
-    [v35 addObserver:v20 selector:sel_didRotate_ name:v36 object:v37];
+    keyWindow = [*MEMORY[0x277D76620] keyWindow];
+    [defaultCenter addObserver:v20 selector:sel_didRotate_ name:v36 object:keyWindow];
 
     [MEMORY[0x277D750E8] defaultSizeForStyle:100];
     UIRectCenteredIntegralRect();
@@ -200,12 +200,12 @@
     v47 = v20[58];
     v20[58] = v46;
 
-    if (v34)
+    if (grayColor)
     {
-      [v20[58] setColor:v34];
+      [v20[58] setColor:grayColor];
     }
 
-    if (v9)
+    if (imageCopy)
     {
       v48 = v41 + 50.0;
     }
@@ -216,28 +216,28 @@
     }
 
     [v20[58] setFrame:{v39, v48, v43, v45}];
-    [v33 addSubview:v20[58]];
+    [contentView2 addSubview:v20[58]];
     [v20[58] startAnimating];
   }
 
   return v11;
 }
 
-- (void)didRotate:(id)a3
+- (void)didRotate:(id)rotate
 {
   [(UIActivityIndicatorView *)self->_spinner frame];
-  v4 = [*MEMORY[0x277D76620] keyWindow];
-  [v4 frame];
+  keyWindow = [*MEMORY[0x277D76620] keyWindow];
+  [keyWindow frame];
   UIRectCenteredIntegralRect();
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(UIImageView *)self->_maskView image];
+  image = [(UIImageView *)self->_maskView image];
 
   spinner = self->_spinner;
-  if (v13)
+  if (image)
   {
     v15 = v8 + 50.0;
   }

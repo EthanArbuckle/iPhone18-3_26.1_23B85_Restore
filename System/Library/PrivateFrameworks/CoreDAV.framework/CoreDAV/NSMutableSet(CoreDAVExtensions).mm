@@ -10,7 +10,7 @@
   v9 = a3;
   v10 = [[CoreDAVItemParserMapping alloc] initWithNameSpace:v9 name:v8 parseClass:a5];
 
-  [a1 addObject:v10];
+  [self addObject:v10];
 }
 
 @end

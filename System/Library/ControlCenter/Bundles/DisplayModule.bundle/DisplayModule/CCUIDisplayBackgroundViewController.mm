@@ -1,15 +1,15 @@
 @interface CCUIDisplayBackgroundViewController
 - (BOOL)_toggleNightShift;
 - (BOOL)_uses24HourTime;
-- (id)_alertControllerForDisablingAccessibilityScreenFilter:(id)a3 cancelBlock:(id)a4;
-- (id)_subtitleForBlueLightStatus:(id *)a3;
-- (id)_subtitleForTrueToneEnabled:(BOOL)a3;
-- (id)_subtitleForUserInterfaceStyle:(int64_t)a3 nextTransition:(id)a4;
-- (id)_subtitleFormatStringForBlueLightEnabled:(BOOL)a3 transitionTime:(id)a4;
+- (id)_alertControllerForDisablingAccessibilityScreenFilter:(id)filter cancelBlock:(id)block;
+- (id)_subtitleForBlueLightStatus:(id *)status;
+- (id)_subtitleForTrueToneEnabled:(BOOL)enabled;
+- (id)_subtitleForUserInterfaceStyle:(int64_t)style nextTransition:(id)transition;
+- (id)_subtitleFormatStringForBlueLightEnabled:(BOOL)enabled transitionTime:(id)time;
 - (id)_timeFormatter;
-- (id)_timeStringForHour:(unint64_t)a3 minute:(unint64_t)a4;
-- (unint64_t)_formattedHourForHour:(unint64_t)a3;
-- (void)_getBlueLightStatus:(id)a3;
+- (id)_timeStringForHour:(unint64_t)hour minute:(unint64_t)minute;
+- (unint64_t)_formattedHourForHour:(unint64_t)hour;
+- (void)_getBlueLightStatus:(id)status;
 - (void)_setupNightShift;
 - (void)_setupStyleMode;
 - (void)_setupTrueTone;
@@ -295,26 +295,26 @@ LABEL_12:
   objc_msgSend__updateState(self, v6, v7);
 }
 
-- (void)_getBlueLightStatus:(id)a3
+- (void)_getBlueLightStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v11 = 0;
   v9 = 0u;
   v10 = 0u;
   if (objc_msgSend_getBlueLightStatus_(self->_nightShiftClient, v5, &v9))
   {
-    v6 = v4[2];
+    v6 = statusCopy[2];
     v7[0] = v9;
     v7[1] = v10;
     v8 = v11;
-    v6(v4, v7);
+    v6(statusCopy, v7);
   }
 }
 
-- (id)_alertControllerForDisablingAccessibilityScreenFilter:(id)a3 cancelBlock:(id)a4
+- (id)_alertControllerForDisablingAccessibilityScreenFilter:(id)filter cancelBlock:(id)block
 {
-  v5 = a3;
-  v44 = a4;
+  filterCopy = filter;
+  blockCopy = block;
   v6 = MEMORY[0x29EDC7928];
   v7 = MEMORY[0x29EDB9F48];
   v8 = objc_opt_class();
@@ -335,8 +335,8 @@ LABEL_12:
   v47[1] = 3221225472;
   v47[2] = sub_29C972954;
   v47[3] = &unk_29F338300;
-  v48 = v5;
-  v28 = v5;
+  v48 = filterCopy;
+  v28 = filterCopy;
   v30 = objc_msgSend_actionWithTitle_style_handler_(v21, v29, v27, 0, v47);
   objc_msgSend_addAction_(v20, v31, v30);
 
@@ -349,18 +349,18 @@ LABEL_12:
   v45[1] = 3221225472;
   v45[2] = sub_29C9729A4;
   v45[3] = &unk_29F338300;
-  v46 = v44;
-  v39 = v44;
+  v46 = blockCopy;
+  v39 = blockCopy;
   v41 = objc_msgSend_actionWithTitle_style_handler_(v32, v40, v38, 1, v45);
   objc_msgSend_addAction_(v20, v42, v41);
 
   return v20;
 }
 
-- (id)_subtitleForBlueLightStatus:(id *)a3
+- (id)_subtitleForBlueLightStatus:(id *)status
 {
-  var3 = a3->var3;
-  var1 = a3->var1;
+  var3 = status->var3;
+  var1 = status->var1;
   if (var3 == 1)
   {
     v22 = MEMORY[0x29EDB9F48];
@@ -399,13 +399,13 @@ LABEL_12:
   }
 
   v6 = 8;
-  if (a3->var1)
+  if (status->var1)
   {
     v6 = 16;
   }
 
-  v7 = *(&a3->var0 + v6);
-  v8 = objc_msgSend__subtitleFormatStringForBlueLightEnabled_transitionTime_(self, a2, a3->var1, v7);
+  v7 = *(&status->var0 + v6);
+  v8 = objc_msgSend__subtitleFormatStringForBlueLightEnabled_transitionTime_(self, a2, status->var1, v7);
   v9 = MEMORY[0x29EDB9F48];
   v10 = objc_opt_class();
   v12 = objc_msgSend_bundleForClass_(v9, v11, v10);
@@ -421,11 +421,11 @@ LABEL_13:
   return v21;
 }
 
-- (id)_timeStringForHour:(unint64_t)a3 minute:(unint64_t)a4
+- (id)_timeStringForHour:(unint64_t)hour minute:(unint64_t)minute
 {
   v7 = objc_alloc_init(MEMORY[0x29EDB8DB8]);
-  objc_msgSend_setHour_(v7, v8, a3);
-  objc_msgSend_setMinute_(v7, v9, a4);
+  objc_msgSend_setHour_(v7, v8, hour);
+  objc_msgSend_setMinute_(v7, v9, minute);
   v12 = objc_msgSend_currentCalendar(MEMORY[0x29EDB8D98], v10, v11);
   objc_msgSend_setCalendar_(v7, v13, v12);
 
@@ -439,23 +439,23 @@ LABEL_13:
   return v24;
 }
 
-- (id)_subtitleFormatStringForBlueLightEnabled:(BOOL)a3 transitionTime:(id)a4
+- (id)_subtitleFormatStringForBlueLightEnabled:(BOOL)enabled transitionTime:(id)time
 {
-  if (a3)
+  if (enabled)
   {
-    return objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], a2, @"CONTROL_CENTER_STATUS_NIGHT_SHIFT_%@_UNTIL_FORMAT", a4, @"ON");
+    return objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], a2, @"CONTROL_CENTER_STATUS_NIGHT_SHIFT_%@_UNTIL_FORMAT", time, @"ON");
   }
 
   else
   {
-    return objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], a2, @"CONTROL_CENTER_STATUS_NIGHT_SHIFT_%@_UNTIL_FORMAT", a4, @"OFF");
+    return objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], a2, @"CONTROL_CENTER_STATUS_NIGHT_SHIFT_%@_UNTIL_FORMAT", time, @"OFF");
   }
 }
 
-- (unint64_t)_formattedHourForHour:(unint64_t)a3
+- (unint64_t)_formattedHourForHour:(unint64_t)hour
 {
-  v4 = objc_msgSend__uses24HourTime(self, a2, a3);
-  if (a3 < 0xD)
+  v4 = objc_msgSend__uses24HourTime(self, a2, hour);
+  if (hour < 0xD)
   {
     v5 = 1;
   }
@@ -467,12 +467,12 @@ LABEL_13:
 
   if (v5)
   {
-    return a3;
+    return hour;
   }
 
   else
   {
-    return a3 - 12;
+    return hour - 12;
   }
 }
 
@@ -502,11 +502,11 @@ LABEL_13:
   return v2;
 }
 
-- (id)_subtitleForUserInterfaceStyle:(int64_t)a3 nextTransition:(id)a4
+- (id)_subtitleForUserInterfaceStyle:(int64_t)style nextTransition:(id)transition
 {
-  v6 = a4;
-  v9 = v6;
-  if (v6 && (v10 = objc_msgSend_type(v6, v7, v8), v10 <= 2))
+  transitionCopy = transition;
+  v9 = transitionCopy;
+  if (transitionCopy && (v10 = objc_msgSend_type(transitionCopy, v7, v8), v10 <= 2))
   {
     v11 = off_29F338320[v10];
   }
@@ -516,7 +516,7 @@ LABEL_13:
     v11 = @"_MANUAL";
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
     objc_msgSend_stringByAppendingString_(@"CONTROL_CENTER_STATUS_STYLE_MODE", v7, @"_DARK");
   }
@@ -552,14 +552,14 @@ LABEL_13:
   return v25;
 }
 
-- (id)_subtitleForTrueToneEnabled:(BOOL)a3
+- (id)_subtitleForTrueToneEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = MEMORY[0x29EDB9F48];
   v5 = objc_opt_class();
   v7 = objc_msgSend_bundleForClass_(v4, v6, v5);
   v9 = v7;
-  if (v3)
+  if (enabledCopy)
   {
     objc_msgSend_localizedStringForKey_value_table_(v7, v8, @"CONTROL_CENTER_STATUS_TRUE_TONE_ON", &stru_2A23E6408, 0);
   }

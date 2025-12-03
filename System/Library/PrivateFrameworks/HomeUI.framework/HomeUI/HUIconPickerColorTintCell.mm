@@ -1,17 +1,17 @@
 @interface HUIconPickerColorTintCell
-- (HUIconPickerColorTintCell)initWithFrame:(CGRect)a3;
+- (HUIconPickerColorTintCell)initWithFrame:(CGRect)frame;
 - (UIColor)color;
-- (void)setColor:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setColor:(id)color;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation HUIconPickerColorTintCell
 
-- (HUIconPickerColorTintCell)initWithFrame:(CGRect)a3
+- (HUIconPickerColorTintCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = HUIconPickerColorTintCell;
-  v3 = [(HUIconPickerColorTintCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUIconPickerColorTintCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [HUColorSwatchView alloc];
@@ -19,20 +19,20 @@
     v5 = [(HUColorSwatchView *)v4 initWithFrame:?];
     [(HUIconPickerColorTintCell *)v3 setColorSwatchView:v5];
 
-    v6 = [(HUIconPickerColorTintCell *)v3 colorSwatchView];
-    [v6 setLabelHidden:1];
+    colorSwatchView = [(HUIconPickerColorTintCell *)v3 colorSwatchView];
+    [colorSwatchView setLabelHidden:1];
 
-    v7 = [(HUIconPickerColorTintCell *)v3 contentView];
-    v8 = [(HUIconPickerColorTintCell *)v3 colorSwatchView];
-    [v7 addSubview:v8];
+    contentView = [(HUIconPickerColorTintCell *)v3 contentView];
+    colorSwatchView2 = [(HUIconPickerColorTintCell *)v3 colorSwatchView];
+    [contentView addSubview:colorSwatchView2];
   }
 
   return v3;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (a3)
+  if (selected)
   {
     v3 = 2;
   }
@@ -42,23 +42,23 @@
     v3 = 0;
   }
 
-  v4 = [(HUIconPickerColorTintCell *)self colorSwatchView];
-  [v4 setSelectionState:v3];
+  colorSwatchView = [(HUIconPickerColorTintCell *)self colorSwatchView];
+  [colorSwatchView setSelectionState:v3];
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v4 = a3;
-  v5 = [(HUIconPickerColorTintCell *)self colorSwatchView];
-  [v5 setColor:v4];
+  colorCopy = color;
+  colorSwatchView = [(HUIconPickerColorTintCell *)self colorSwatchView];
+  [colorSwatchView setColor:colorCopy];
 }
 
 - (UIColor)color
 {
-  v2 = [(HUIconPickerColorTintCell *)self colorSwatchView];
-  v3 = [v2 color];
+  colorSwatchView = [(HUIconPickerColorTintCell *)self colorSwatchView];
+  color = [colorSwatchView color];
 
-  return v3;
+  return color;
 }
 
 @end

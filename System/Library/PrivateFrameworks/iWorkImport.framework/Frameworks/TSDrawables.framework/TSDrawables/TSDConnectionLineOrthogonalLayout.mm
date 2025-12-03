@@ -1,16 +1,16 @@
 @interface TSDConnectionLineOrthogonalLayout
-- (CGPoint)axisSnapPoint:(CGPoint)result toXs:()vector<double toYs:(std:()vector<double :(std:(double)a6 :allocator<double>> *)a5 allocator<double>> *)a4 withThreshold:;
-- (CGPoint)controlPointForPointA:(CGPoint)a3 pointB:(CGPoint)a4 andOriginalA:(CGPoint)a5 originalB:(CGPoint)a6;
-- (CGRect)orthoRectOfLayout:(id)a3 outset:(double)a4;
-- (id)createConnectedPathFrom:(id)a3 to:(id)a4 withControlPoints:(CGPoint)a5[3];
+- (CGPoint)axisSnapPoint:(CGPoint)result toXs:()vector<double toYs:(std:()vector<double :(std:(double)std :allocator<double>> *)a5 allocator<double>> *)a4 withThreshold:;
+- (CGPoint)controlPointForPointA:(CGPoint)a pointB:(CGPoint)b andOriginalA:(CGPoint)originalA originalB:(CGPoint)originalB;
+- (CGRect)orthoRectOfLayout:(id)layout outset:(double)outset;
+- (id)createConnectedPathFrom:(id)from to:(id)to withControlPoints:(CGPoint)points[3];
 @end
 
 @implementation TSDConnectionLineOrthogonalLayout
 
-- (CGRect)orthoRectOfLayout:(id)a3 outset:(double)a4
+- (CGRect)orthoRectOfLayout:(id)layout outset:(double)outset
 {
-  v6 = a3;
-  objc_msgSend_centerForConnecting(v6, v7, v8);
+  layoutCopy = layout;
+  objc_msgSend_centerForConnecting(layoutCopy, v7, v8);
   v10 = v9;
   v12 = v11;
   v47 = 0;
@@ -24,7 +24,7 @@
   v54 = v14;
   v55 = v15;
   v56 = v16;
-  objc_msgSend_boundsForStandardKnobs(v6, v17, v18);
+  objc_msgSend_boundsForStandardKnobs(layoutCopy, v17, v18);
   if (v19 >= v20)
   {
     v21 = v19;
@@ -45,11 +45,11 @@
   v36 = &unk_27A6CD128;
   v41 = v10;
   v42 = v12;
-  v43 = a4 + 10.0 + v21;
-  v37 = self;
-  v22 = v6;
+  v43 = outset + 10.0 + v21;
+  selfCopy = self;
+  v22 = layoutCopy;
   v23 = 0;
-  v44 = a4;
+  outsetCopy = outset;
   v38 = v22;
   v39 = v45;
   v40 = &v47;
@@ -84,11 +84,11 @@
   return result;
 }
 
-- (id)createConnectedPathFrom:(id)a3 to:(id)a4 withControlPoints:(CGPoint)a5[3]
+- (id)createConnectedPathFrom:(id)from to:(id)to withControlPoints:(CGPoint)points[3]
 {
   v83 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  fromCopy = from;
+  toCopy = to;
   for (i = 0; i != 6; i += 2)
   {
     TSUMultiplyPointScalar();
@@ -127,12 +127,12 @@
   v64 = 0u;
   v65 = 0u;
   v66 = 0;
-  if (v7)
+  if (fromCopy)
   {
     objc_msgSend_outsetFrom(self, v18, v19);
-    objc_msgSend_orthoRectOfLayout_outset_(self, v22, v7);
+    objc_msgSend_orthoRectOfLayout_outset_(self, v22, fromCopy);
     v23 = sub_27677AF98(&v67);
-    objc_msgSend_centerForConnecting(v7, v24, v25, v23);
+    objc_msgSend_centerForConnecting(fromCopy, v24, v25, v23);
     sub_27677AED8(v26, v27, 10.0);
     v15 = v28;
     v17 = v29;
@@ -147,12 +147,12 @@
     }
   }
 
-  if (v8)
+  if (toCopy)
   {
     objc_msgSend_outsetTo(self, v18, v19);
-    objc_msgSend_orthoRectOfLayout_outset_(self, v30, v8);
+    objc_msgSend_orthoRectOfLayout_outset_(self, v30, toCopy);
     v31 = sub_27677AF98(&v58);
-    objc_msgSend_centerForConnecting(v8, v32, v33, v31);
+    objc_msgSend_centerForConnecting(toCopy, v32, v33, v31);
     sub_27677AED8(v34, v35, 10.0);
     v20 = v36;
     v21 = v37;
@@ -210,7 +210,7 @@
   sub_2766F6E78();
 }
 
-- (CGPoint)controlPointForPointA:(CGPoint)a3 pointB:(CGPoint)a4 andOriginalA:(CGPoint)a5 originalB:(CGPoint)a6
+- (CGPoint)controlPointForPointA:(CGPoint)a pointB:(CGPoint)b andOriginalA:(CGPoint)originalA originalB:(CGPoint)originalB
 {
   objc_opt_class();
   mResizePathSource = self->super.super.mResizePathSource;
@@ -260,7 +260,7 @@
   return result;
 }
 
-- (CGPoint)axisSnapPoint:(CGPoint)result toXs:()vector<double toYs:(std:()vector<double :(std:(double)a6 :allocator<double>> *)a5 allocator<double>> *)a4 withThreshold:
+- (CGPoint)axisSnapPoint:(CGPoint)result toXs:()vector<double toYs:(std:()vector<double :(std:(double)std :allocator<double>> *)a5 allocator<double>> *)a4 withThreshold:
 {
   var0 = a4->var0;
   var1 = a4->var1;
@@ -339,7 +339,7 @@
   }
 
   v21 = result.x - v8;
-  if (v20 < a6)
+  if (v20 < std)
   {
     result.x = v21;
   }
@@ -351,7 +351,7 @@
   }
 
   v23 = result.y - v15;
-  if (v22 < a6)
+  if (v22 < std)
   {
     result.y = v23;
   }

@@ -1,8 +1,8 @@
 @interface NSSQLUpdateIntermediate
-- (NSSQLUpdateIntermediate)initWithEntity:(id)a3 alias:(id)a4 inScope:(id)a5;
-- (id)generateSQLStringInContext:(id)a3;
+- (NSSQLUpdateIntermediate)initWithEntity:(id)entity alias:(id)alias inScope:(id)scope;
+- (id)generateSQLStringInContext:(id)context;
 - (void)dealloc;
-- (void)setUpdateColumnsIntermediate:(uint64_t)a1;
+- (void)setUpdateColumnsIntermediate:(uint64_t)intermediate;
 @end
 
 @implementation NSSQLUpdateIntermediate
@@ -15,29 +15,29 @@
   [(NSSQLStatementIntermediate *)&v3 dealloc];
 }
 
-- (NSSQLUpdateIntermediate)initWithEntity:(id)a3 alias:(id)a4 inScope:(id)a5
+- (NSSQLUpdateIntermediate)initWithEntity:(id)entity alias:(id)alias inScope:(id)scope
 {
   v6.receiver = self;
   v6.super_class = NSSQLUpdateIntermediate;
-  return [(NSSQLStatementIntermediate *)&v6 initWithEntity:a3 alias:a4 inScope:a5];
+  return [(NSSQLStatementIntermediate *)&v6 initWithEntity:entity alias:alias inScope:scope];
 }
 
-- (void)setUpdateColumnsIntermediate:(uint64_t)a1
+- (void)setUpdateColumnsIntermediate:(uint64_t)intermediate
 {
-  if (a1)
+  if (intermediate)
   {
-    if (*(a1 + 64) != a2)
+    if (*(intermediate + 64) != a2)
     {
       v4 = a2;
 
-      *(a1 + 64) = a2;
+      *(intermediate + 64) = a2;
     }
   }
 }
 
-- (id)generateSQLStringInContext:(id)a3
+- (id)generateSQLStringInContext:(id)context
 {
-  if ([a3 objectForKey:@"NSUnderlyingException"])
+  if ([context objectForKey:@"NSUnderlyingException"])
   {
     return 0;
   }
@@ -53,7 +53,7 @@
   }
 
   v6 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"UPDATE OR FAIL %@%@ SET ", objc_msgSend(-[NSSQLStatementIntermediate governingEntity](self, "governingEntity"), "tableName"), v5];
-  v7 = [(NSSQLUpdateColumnsIntermediate *)self->_updateColumns generateSQLStringInContext:a3];
+  v7 = [(NSSQLUpdateColumnsIntermediate *)self->_updateColumns generateSQLStringInContext:context];
   if (!v7)
   {
 LABEL_19:
@@ -66,7 +66,7 @@ LABEL_19:
   whereClause = self->super._whereClause;
   if (whereClause)
   {
-    v10 = [(NSSQLIntermediate *)whereClause generateSQLStringInContext:a3];
+    v10 = [(NSSQLIntermediate *)whereClause generateSQLStringInContext:context];
     if (!v10)
     {
       goto LABEL_18;
@@ -81,7 +81,7 @@ LABEL_19:
   orderIntermediate = self->super._orderIntermediate;
   if (orderIntermediate)
   {
-    v12 = [(NSSQLOrderIntermediate *)orderIntermediate generateSQLStringInContext:a3];
+    v12 = [(NSSQLOrderIntermediate *)orderIntermediate generateSQLStringInContext:context];
     if (!v12)
     {
       goto LABEL_17;
@@ -96,7 +96,7 @@ LABEL_19:
   limitClause = self->super._limitClause;
   if (limitClause)
   {
-    v14 = [(NSSQLLimitIntermediate *)limitClause generateSQLStringInContext:a3];
+    v14 = [(NSSQLLimitIntermediate *)limitClause generateSQLStringInContext:context];
     if (!v14)
     {
 

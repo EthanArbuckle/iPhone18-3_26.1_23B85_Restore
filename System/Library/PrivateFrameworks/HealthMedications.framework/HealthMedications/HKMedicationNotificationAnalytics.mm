@@ -1,21 +1,21 @@
 @interface HKMedicationNotificationAnalytics
 + (BOOL)_isMetricEnabled;
 + (BOOL)shouldSubmit;
-+ (void)submitMetricForType:(int64_t)a3 areHealthNotificationsAuthorizedStatus:(id)a4 interactionType:(int64_t)a5 dataSource:(id)a6;
++ (void)submitMetricForType:(int64_t)type areHealthNotificationsAuthorizedStatus:(id)status interactionType:(int64_t)interactionType dataSource:(id)source;
 @end
 
 @implementation HKMedicationNotificationAnalytics
 
 + (BOOL)shouldSubmit
 {
-  v3 = [a1 _isMetricEnabled];
-  if (v3)
+  _isMetricEnabled = [self _isMetricEnabled];
+  if (_isMetricEnabled)
   {
 
-    LOBYTE(v3) = [a1 _isAllowed];
+    LOBYTE(_isMetricEnabled) = [self _isAllowed];
   }
 
-  return v3;
+  return _isMetricEnabled;
 }
 
 + (BOOL)_isMetricEnabled
@@ -26,23 +26,23 @@
   return IsEventUsed;
 }
 
-+ (void)submitMetricForType:(int64_t)a3 areHealthNotificationsAuthorizedStatus:(id)a4 interactionType:(int64_t)a5 dataSource:(id)a6
++ (void)submitMetricForType:(int64_t)type areHealthNotificationsAuthorizedStatus:(id)status interactionType:(int64_t)interactionType dataSource:(id)source
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
-  if ([a1 shouldSubmit])
+  statusCopy = status;
+  sourceCopy = source;
+  if ([self shouldSubmit])
   {
     v12 = HKMedicationsSharedAnalyticsQueue();
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __123__HKMedicationNotificationAnalytics_submitMetricForType_areHealthNotificationsAuthorizedStatus_interactionType_dataSource___block_invoke;
     block[3] = &unk_2796CA0C8;
-    v25 = a3;
-    v23 = v10;
-    v24 = v11;
-    v26 = a5;
-    v27 = a1;
+    typeCopy = type;
+    v23 = statusCopy;
+    v24 = sourceCopy;
+    interactionTypeCopy = interactionType;
+    selfCopy = self;
     dispatch_async(v12, block);
 
     v13 = v23;
@@ -65,8 +65,8 @@
       v16 = objc_opt_class();
       v17 = MEMORY[0x277CCABB0];
       v18 = v16;
-      v19 = [v17 numberWithBool:{objc_msgSend(a1, "_isMetricEnabled")}];
-      v20 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "_isAllowed")}];
+      v19 = [v17 numberWithBool:{objc_msgSend(self, "_isMetricEnabled")}];
+      v20 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "_isAllowed")}];
       *buf = 138543874;
       v29 = v16;
       v30 = 2114;

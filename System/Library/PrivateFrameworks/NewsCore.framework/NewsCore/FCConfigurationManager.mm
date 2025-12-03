@@ -1,8 +1,8 @@
 @interface FCConfigurationManager
 - (BOOL)_currentAppConfigurationIsExpired;
 - (FCConfigurationManager)init;
-- (FCConfigurationManager)initWithContextConfiguration:(id)a3 contentHostDirectoryFileURL:(id)a4 feldsparIDProvider:(id)a5;
-- (FCConfigurationManager)initWithContextConfiguration:(id)a3 contentHostDirectoryFileURL:(id)a4 feldsparIDProvider:(id)a5 appShortVersionString:(id)a6 buildNumberString:(id)a7 networkBehaviorMonitor:(id)a8 appActivityMonitor:(id)a9 applicationState:(unint64_t)a10;
+- (FCConfigurationManager)initWithContextConfiguration:(id)configuration contentHostDirectoryFileURL:(id)l feldsparIDProvider:(id)provider;
+- (FCConfigurationManager)initWithContextConfiguration:(id)configuration contentHostDirectoryFileURL:(id)l feldsparIDProvider:(id)provider appShortVersionString:(id)string buildNumberString:(id)numberString networkBehaviorMonitor:(id)monitor appActivityMonitor:(id)activityMonitor applicationState:(unint64_t)self0;
 - (FCCoreConfiguration)configuration;
 - (FCNewsAppConfiguration)appConfiguration;
 - (FCNewsAppConfiguration)fetchedAppConfiguration;
@@ -14,32 +14,32 @@
 - (NSData)magazinesConfigurationData;
 - (NSData)todayFeedConfigurationData;
 - (NSString)feldsparID;
-- (id)_changeTagsInRecords:(void *)a1;
-- (id)_changeTagsInWidgetConfigurationDict:(uint64_t)a1;
-- (id)_configurationSettingsWithRequestInfos:(void *)a3 feldsparID:(void *)a4 storefrontID:(unsigned int)a5 contextConfiguration:(void *)a6 useBackgroundRefreshRate:requestMode:formatVersion:;
-- (id)_deviceInfoWithFormatVersion:(uint64_t)a3;
-- (id)_loadConfigDataForRequestKey:(void *)a1;
-- (id)_mergeRecords:(void *)a1 withCachedRecords:(void *)a2;
-- (id)_requestInfoForRequestKey:(void *)a3 storefrontID:(void *)a4 additionalChangeTags:(uint64_t)a5 feedType:(void *)a6 cachePolicy:;
-- (id)_requestInfoForRequestKey:(void *)a3 storefrontID:(void *)a4 additionalChangeTags:(void *)a5 cachePolicy:;
+- (id)_changeTagsInRecords:(void *)records;
+- (id)_changeTagsInWidgetConfigurationDict:(uint64_t)dict;
+- (id)_configurationSettingsWithRequestInfos:(void *)infos feldsparID:(void *)d storefrontID:(unsigned int)iD contextConfiguration:(void *)configuration useBackgroundRefreshRate:requestMode:formatVersion:;
+- (id)_deviceInfoWithFormatVersion:(uint64_t)version;
+- (id)_loadConfigDataForRequestKey:(void *)key;
+- (id)_mergeRecords:(void *)records withCachedRecords:(void *)cachedRecords;
+- (id)_requestInfoForRequestKey:(void *)key storefrontID:(void *)d additionalChangeTags:(uint64_t)tags feedType:(void *)type cachePolicy:;
+- (id)_requestInfoForRequestKey:(void *)key storefrontID:(void *)d additionalChangeTags:(void *)tags cachePolicy:;
 - (id)_storefrontID;
 - (id)currentAppConfiguration;
 - (id)initForTesting;
 - (id)lastModificationDate;
-- (void)_configurationDidChangeSignificantConfigChange:(int)a3 paywallConfigDidChange:(char)a4 scienceExperimentFieldsDidChange:;
-- (void)_fetchAppConfigurationIfNeededWithForceRefresh:(void *)a3 completion:;
-- (void)_saveConfigData:(uint64_t)a3 forRequestKey:;
-- (void)addAppConfigObserver:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)fetchAppConfigurationIfNeededWithCompletionQueue:(id)a3 completion:(id)a4;
-- (void)fetchAppWidgetConfigurationWithTodayLiteConfig:(BOOL)a3 additionalFields:(id)a4 completion:(id)a5;
-- (void)fetchAudioFeedConfigIfNeededWithCompletionQueue:(id)a3 formatVersion:(id)a4 completion:(id)a5;
-- (void)fetchConfigurationIfNeededWithCompletionQueue:(id)a3 completion:(id)a4;
-- (void)fetchMagazinesConfigurationIfNeededWithCompletionQueue:(id)a3 formatVersion:(id)a4 completion:(id)a5;
-- (void)fetchTodayFeedConfigurationIfNeededWithCompletionQueue:(id)a3 feedType:(unint64_t)a4 formatVersion:(id)a5 cachePolicy:(id)a6 networkActivityBlock:(id)a7 completion:(id)a8;
-- (void)refreshAppConfigurationIfNeededWithCompletionQueue:(id)a3 refreshCompletion:(id)a4;
-- (void)removeAppConfigObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)_configurationDidChangeSignificantConfigChange:(int)change paywallConfigDidChange:(char)didChange scienceExperimentFieldsDidChange:;
+- (void)_fetchAppConfigurationIfNeededWithForceRefresh:(void *)refresh completion:;
+- (void)_saveConfigData:(uint64_t)data forRequestKey:;
+- (void)addAppConfigObserver:(id)observer;
+- (void)addObserver:(id)observer;
+- (void)fetchAppConfigurationIfNeededWithCompletionQueue:(id)queue completion:(id)completion;
+- (void)fetchAppWidgetConfigurationWithTodayLiteConfig:(BOOL)config additionalFields:(id)fields completion:(id)completion;
+- (void)fetchAudioFeedConfigIfNeededWithCompletionQueue:(id)queue formatVersion:(id)version completion:(id)completion;
+- (void)fetchConfigurationIfNeededWithCompletionQueue:(id)queue completion:(id)completion;
+- (void)fetchMagazinesConfigurationIfNeededWithCompletionQueue:(id)queue formatVersion:(id)version completion:(id)completion;
+- (void)fetchTodayFeedConfigurationIfNeededWithCompletionQueue:(id)queue feedType:(unint64_t)type formatVersion:(id)version cachePolicy:(id)policy networkActivityBlock:(id)block completion:(id)completion;
+- (void)refreshAppConfigurationIfNeededWithCompletionQueue:(id)queue refreshCompletion:(id)completion;
+- (void)removeAppConfigObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation FCConfigurationManager
@@ -47,15 +47,15 @@
 - (id)_storefrontID
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v1 = +[FCAppleAccount sharedAccount];
-    v2 = [v1 contentStoreFrontID];
+    contentStoreFrontID = [v1 contentStoreFrontID];
 
     v3 = +[FCAppleAccount sharedAccount];
-    v4 = [v3 supportedContentStoreFrontID];
+    supportedContentStoreFrontID = [v3 supportedContentStoreFrontID];
 
-    v5 = [MEMORY[0x1E69E58C0] nf_object:v2 isEqualToObject:v4];
+    v5 = [MEMORY[0x1E69E58C0] nf_object:contentStoreFrontID isEqualToObject:supportedContentStoreFrontID];
     v6 = FCAppConfigurationLog;
     v7 = os_log_type_enabled(FCAppConfigurationLog, OS_LOG_TYPE_DEFAULT);
     if (v5)
@@ -63,7 +63,7 @@
       if (v7)
       {
         v13 = 138543362;
-        v14 = v2;
+        v14 = contentStoreFrontID;
         v8 = "configuration manager will use the current storefrontID: %{public}@";
         v9 = v6;
         v10 = 12;
@@ -75,9 +75,9 @@ LABEL_7:
     else if (v7)
     {
       v13 = 138543618;
-      v14 = v2;
+      v14 = contentStoreFrontID;
       v15 = 2114;
-      v16 = v4;
+      v16 = supportedContentStoreFrontID;
       v8 = "configuration manager will fall back from the current storefrontID: %{public}@ to the supported storefrontID: %{public}@";
       v9 = v6;
       v10 = 22;
@@ -87,11 +87,11 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v4 = 0;
+  supportedContentStoreFrontID = 0;
 LABEL_9:
   v11 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return supportedContentStoreFrontID;
 }
 
 uint64_t __59__FCConfigurationManager_possiblyUnfetchedAppConfiguration__block_invoke(uint64_t a1)
@@ -182,9 +182,9 @@ uint64_t __39__FCConfigurationManager_configuration__block_invoke(uint64_t a1)
 
 - (BOOL)_currentAppConfigurationIsExpired
 {
-  v1 = a1;
+  selfCopy = self;
   v28 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v18 = 0;
     v19 = &v18;
@@ -198,31 +198,31 @@ uint64_t __39__FCConfigurationManager_configuration__block_invoke(uint64_t a1)
     v15 = __Block_byref_object_copy__19;
     v16 = __Block_byref_object_dispose__19;
     v17 = 0;
-    v2 = *(a1 + 96);
+    v2 = *(self + 96);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __59__FCConfigurationManager__currentAppConfigurationIsExpired__block_invoke;
     v11[3] = &unk_1E7C39DB0;
-    v11[4] = v1;
+    v11[4] = selfCopy;
     v11[5] = &v18;
     v11[6] = &v12;
     [v2 performWithLockSync:v11];
 
     [v13[5] fc_timeIntervalUntilNow];
     v4 = v3;
-    v5 = [v19[5] appConfigRefreshRate];
-    v1 = v4 >= v5;
-    if (v4 >= v5)
+    appConfigRefreshRate = [v19[5] appConfigRefreshRate];
+    selfCopy = v4 >= appConfigRefreshRate;
+    if (v4 >= appConfigRefreshRate)
     {
       v6 = FCAppConfigurationLog;
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v7 = v13[5];
-        v8 = [v19[5] appConfigRefreshRate];
+        appConfigRefreshRate2 = [v19[5] appConfigRefreshRate];
         *buf = 138543618;
         v25 = v7;
         v26 = 2048;
-        v27 = v8;
+        v27 = appConfigRefreshRate2;
         _os_log_impl(&dword_1B63EF000, v6, OS_LOG_TYPE_DEFAULT, "App config needs to refresh lastModificationDate: %{public}@ refreshRate: %lld", buf, 0x16u);
       }
     }
@@ -233,7 +233,7 @@ uint64_t __39__FCConfigurationManager_configuration__block_invoke(uint64_t a1)
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v1;
+  return selfCopy;
 }
 
 void __45__FCConfigurationManager_overrideAppConfigID__block_invoke()
@@ -267,28 +267,28 @@ void __45__FCConfigurationManager_overrideAppConfigID__block_invoke()
 
 - (id)currentAppConfiguration
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    [a1[12] assertLocked];
-    a1 = v2[2];
+    selfCopy = self;
+    [self[12] assertLocked];
+    self = selfCopy[2];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)lastModificationDate
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    [a1[12] assertLocked];
-    a1 = v2[3];
+    selfCopy = self;
+    [self[12] assertLocked];
+    self = selfCopy[3];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (FCNewsAppConfiguration)fetchedAppConfiguration
@@ -537,13 +537,13 @@ uint64_t __39__FCConfigurationManager_segmentSetIDs__block_invoke(uint64_t a1)
     remoteAudioConfigSerialQueue = v2->_remoteAudioConfigSerialQueue;
     v2->_remoteAudioConfigSerialQueue = v19;
 
-    v21 = [MEMORY[0x1E696AAE8] mainBundle];
-    v22 = [v21 objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    v22 = [mainBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     appShortVersionString = v2->_appShortVersionString;
     v2->_appShortVersionString = v22;
 
-    v24 = [MEMORY[0x1E696AAE8] mainBundle];
-    v25 = [v24 objectForInfoDictionaryKey:@"CFBundleVersion"];
+    mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+    v25 = [mainBundle2 objectForInfoDictionaryKey:@"CFBundleVersion"];
     buildNumberString = v2->_buildNumberString;
     v2->_buildNumberString = v25;
 
@@ -554,31 +554,31 @@ uint64_t __39__FCConfigurationManager_segmentSetIDs__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (FCConfigurationManager)initWithContextConfiguration:(id)a3 contentHostDirectoryFileURL:(id)a4 feldsparIDProvider:(id)a5
+- (FCConfigurationManager)initWithContextConfiguration:(id)configuration contentHostDirectoryFileURL:(id)l feldsparIDProvider:(id)provider
 {
   v8 = MEMORY[0x1E696AAE8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 mainBundle];
-  v13 = [v12 objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-  v14 = [MEMORY[0x1E696AAE8] mainBundle];
-  v15 = [v14 objectForInfoDictionaryKey:@"CFBundleVersion"];
-  v16 = [(FCConfigurationManager *)self initWithContextConfiguration:v11 contentHostDirectoryFileURL:v10 feldsparIDProvider:v9 appShortVersionString:v13 buildNumberString:v15 networkBehaviorMonitor:0 appActivityMonitor:0 applicationState:0];
+  providerCopy = provider;
+  lCopy = l;
+  configurationCopy = configuration;
+  mainBundle = [v8 mainBundle];
+  v13 = [mainBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+  mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+  v15 = [mainBundle2 objectForInfoDictionaryKey:@"CFBundleVersion"];
+  v16 = [(FCConfigurationManager *)self initWithContextConfiguration:configurationCopy contentHostDirectoryFileURL:lCopy feldsparIDProvider:providerCopy appShortVersionString:v13 buildNumberString:v15 networkBehaviorMonitor:0 appActivityMonitor:0 applicationState:0];
 
   return v16;
 }
 
-- (FCConfigurationManager)initWithContextConfiguration:(id)a3 contentHostDirectoryFileURL:(id)a4 feldsparIDProvider:(id)a5 appShortVersionString:(id)a6 buildNumberString:(id)a7 networkBehaviorMonitor:(id)a8 appActivityMonitor:(id)a9 applicationState:(unint64_t)a10
+- (FCConfigurationManager)initWithContextConfiguration:(id)configuration contentHostDirectoryFileURL:(id)l feldsparIDProvider:(id)provider appShortVersionString:(id)string buildNumberString:(id)numberString networkBehaviorMonitor:(id)monitor appActivityMonitor:(id)activityMonitor applicationState:(unint64_t)self0
 {
   location[16] = *MEMORY[0x1E69E9840];
-  v102 = a3;
-  v103 = a4;
-  v100 = a5;
-  v105 = a6;
-  v104 = a7;
-  v101 = a8;
-  v106 = a9;
+  configurationCopy = configuration;
+  lCopy = l;
+  providerCopy = provider;
+  stringCopy = string;
+  numberStringCopy = numberString;
+  monitorCopy = monitor;
+  activityMonitorCopy = activityMonitor;
   v114.receiver = self;
   v114.super_class = FCConfigurationManager;
   selfa = [(FCConfigurationManager *)&v114 init];
@@ -587,27 +587,27 @@ uint64_t __39__FCConfigurationManager_segmentSetIDs__block_invoke(uint64_t a1)
     goto LABEL_77;
   }
 
-  objc_storeStrong(selfa + 5, a3);
-  objc_storeStrong(selfa + 6, a5);
+  objc_storeStrong(selfa + 5, configuration);
+  objc_storeStrong(selfa + 6, provider);
   [*(selfa + 6) addObserver:?];
-  v17 = [v105 copy];
+  v17 = [stringCopy copy];
   v18 = *(selfa + 7);
   *(selfa + 7) = v17;
 
-  v19 = [v104 copy];
+  v19 = [numberStringCopy copy];
   v20 = *(selfa + 8);
   *(selfa + 8) = v19;
 
-  *(selfa + 9) = a10;
-  objc_storeStrong(selfa + 10, a9);
-  if (v106)
+  *(selfa + 9) = state;
+  objc_storeStrong(selfa + 10, activityMonitor);
+  if (activityMonitorCopy)
   {
-    [v106 addObserver:selfa];
+    [activityMonitorCopy addObserver:selfa];
   }
 
-  objc_storeStrong(selfa + 11, a8);
-  v21 = [v102 contentContainerCombinationIdentifier];
-  v107 = [v103 URLByAppendingPathComponent:v21 isDirectory:1];
+  objc_storeStrong(selfa + 11, monitor);
+  contentContainerCombinationIdentifier = [configurationCopy contentContainerCombinationIdentifier];
+  v107 = [lCopy URLByAppendingPathComponent:contentContainerCombinationIdentifier isDirectory:1];
 
   v22 = [objc_alloc(MEMORY[0x1E69C6D58]) initWithContentDirectoryURL:v107];
   v23 = *(selfa + 4);
@@ -651,15 +651,15 @@ uint64_t __39__FCConfigurationManager_segmentSetIDs__block_invoke(uint64_t a1)
   v43 = *(selfa + 18);
   *(selfa + 18) = v42;
 
-  v44 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v45 = [v44 stringForKey:@"FCAppConfigurationBundleShortVersionKey"];
-  v46 = [MEMORY[0x1E696AAE8] mainBundle];
-  v47 = [v46 infoDictionary];
-  v48 = [v47 objectForKeyedSubscript:@"CFBundleShortVersionString"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v45 = [standardUserDefaults stringForKey:@"FCAppConfigurationBundleShortVersionKey"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  v48 = [infoDictionary objectForKeyedSubscript:@"CFBundleShortVersionString"];
 
   if (([v48 isEqualToString:v45] & 1) == 0 || (NewsCoreUserDefaults(), v49 = objc_claimAutoreleasedReturnValue(), v50 = objc_msgSend(v49, "BOOLForKey:", @"force_refresh_user_segmentation"), v49, v50))
   {
-    [v44 setObject:v48 forKey:@"FCAppConfigurationBundleShortVersionKey"];
+    [standardUserDefaults setObject:v48 forKey:@"FCAppConfigurationBundleShortVersionKey"];
     v52 = NewsCoreUserDefaults();
     [v52 setBool:0 forKey:@"force_refresh_user_segmentation"];
 
@@ -677,23 +677,23 @@ uint64_t __39__FCConfigurationManager_segmentSetIDs__block_invoke(uint64_t a1)
   *(selfa + 19) = v53;
 
   v55 = [FCKeyValueStore alloc];
-  v56 = [v107 relativePath];
-  v57 = [(FCKeyValueStore *)v55 initWithName:@"app-config" directory:v56 version:2 options:0 classRegistry:0];
+  relativePath = [v107 relativePath];
+  v57 = [(FCKeyValueStore *)v55 initWithName:@"app-config" directory:relativePath version:2 options:0 classRegistry:0];
   v58 = *(selfa + 20);
   *(selfa + 20) = v57;
 
   if (*(selfa + 8) == 1)
   {
     [*(selfa + 20) removeAllObjects];
-    v59 = [MEMORY[0x1E696AC08] defaultManager];
-    [v59 removeItemAtURL:*(selfa + 19) error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtURL:*(selfa + 19) error:0];
   }
 
-  v60 = [MEMORY[0x1E696AC08] defaultManager];
-  [v60 createDirectoryAtURL:*(selfa + 19) withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager2 createDirectoryAtURL:*(selfa + 19) withIntermediateDirectories:1 attributes:0 error:0];
 
   v110 = *(selfa + 20);
-  v108 = [(FCConfigurationManager *)selfa _storefrontID];
+  _storefrontID = [(FCConfigurationManager *)selfa _storefrontID];
   v121 = 0u;
   v122 = 0u;
   v120 = 0u;
@@ -726,10 +726,10 @@ uint64_t __39__FCConfigurationManager_segmentSetIDs__block_invoke(uint64_t a1)
           v69 = v68;
           if (v67)
           {
-            v70 = [v68 preferredLanguages];
-            v71 = [FCNewsAppConfig configurationWithData:v67 storefrontID:v108 preferredLanguageTags:v70];
+            preferredLanguages = [v68 preferredLanguages];
+            v71 = [FCNewsAppConfig configurationWithData:v67 storefrontID:_storefrontID preferredLanguageTags:preferredLanguages];
 
-            v61 = v70;
+            v61 = preferredLanguages;
           }
 
           else
@@ -781,9 +781,9 @@ LABEL_28:
   v118 = 0u;
   v115 = 0u;
   v116 = 0u;
-  v75 = [v110 allKeys];
+  allKeys = [v110 allKeys];
   v76 = 0;
-  v77 = [v75 countByEnumeratingWithState:&v115 objects:v125 count:16];
+  v77 = [allKeys countByEnumeratingWithState:&v115 objects:v125 count:16];
   if (!v77)
   {
     goto LABEL_66;
@@ -796,7 +796,7 @@ LABEL_28:
     {
       if (*v116 != v78)
       {
-        objc_enumerationMutation(v75);
+        objc_enumerationMutation(allKeys);
       }
 
       v80 = *(*(&v115 + 1) + 8 * j);
@@ -911,7 +911,7 @@ LABEL_28:
       }
     }
 
-    v77 = [v75 countByEnumeratingWithState:&v115 objects:v125 count:16];
+    v77 = [allKeys countByEnumeratingWithState:&v115 objects:v125 count:16];
   }
 
   while (v77);
@@ -922,7 +922,7 @@ LABEL_66:
   {
     v89 = [v88 objectForKeyedSubscript:@"widgetAppConfiguration"];
     v90 = [v89 objectForKeyedSubscript:@"widgetLanguageConfiguration"];
-    v91 = [[FCNewsAppConfig alloc] initWithConfigDictionary:v89 storefrontID:v108 languageConfigDictionary:v90];
+    v91 = [[FCNewsAppConfig alloc] initWithConfigDictionary:v89 storefrontID:_storefrontID languageConfigDictionary:v90];
 
     v61 = v91;
   }
@@ -934,9 +934,9 @@ LABEL_66:
 
   else
   {
-    v92 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     v93 = *(selfa + 3);
-    *(selfa + 3) = v92;
+    *(selfa + 3) = distantPast;
 
     [v110 setObject:*(selfa + 3) forKey:@"lastModificationDate"];
   }
@@ -957,7 +957,7 @@ LABEL_66:
 
   else
   {
-    v96 = [FCNewsAppConfig defaultConfigurationForStoreFrontID:v108];
+    v96 = [FCNewsAppConfig defaultConfigurationForStoreFrontID:_storefrontID];
   }
 
   v97 = *(selfa + 2);
@@ -1099,18 +1099,18 @@ uint64_t __55__FCConfigurationManager_jsonEncodableAppConfiguration__block_invok
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)fetchAppConfigurationIfNeededWithCompletionQueue:(id)a3 completion:(id)a4
+- (void)fetchAppConfigurationIfNeededWithCompletionQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __86__FCConfigurationManager_fetchAppConfigurationIfNeededWithCompletionQueue_completion___block_invoke;
   v10[3] = &unk_1E7C3A8C8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v6;
-  v9 = v7;
+  v11 = queueCopy;
+  v12 = completionCopy;
+  v8 = queueCopy;
+  v9 = completionCopy;
   [(FCConfigurationManager *)self _fetchAppConfigurationIfNeededWithForceRefresh:v10 completion:?];
 }
 
@@ -1133,36 +1133,36 @@ void __86__FCConfigurationManager_fetchAppConfigurationIfNeededWithCompletionQue
   }
 }
 
-- (void)_fetchAppConfigurationIfNeededWithForceRefresh:(void *)a3 completion:
+- (void)_fetchAppConfigurationIfNeededWithForceRefresh:(void *)refresh completion:
 {
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  refreshCopy = refresh;
+  v6 = refreshCopy;
+  if (self)
   {
-    v7 = *(a1 + 104);
+    v7 = *(self + 104);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __84__FCConfigurationManager__fetchAppConfigurationIfNeededWithForceRefresh_completion___block_invoke;
     block[3] = &unk_1E7C3AA30;
-    block[4] = a1;
-    v9 = v5;
+    block[4] = self;
+    v9 = refreshCopy;
     v10 = a2;
     dispatch_async(v7, block);
   }
 }
 
-- (void)refreshAppConfigurationIfNeededWithCompletionQueue:(id)a3 refreshCompletion:(id)a4
+- (void)refreshAppConfigurationIfNeededWithCompletionQueue:(id)queue refreshCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __95__FCConfigurationManager_refreshAppConfigurationIfNeededWithCompletionQueue_refreshCompletion___block_invoke;
   v10[3] = &unk_1E7C3A8C8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v6;
-  v9 = v7;
+  v11 = queueCopy;
+  v12 = completionCopy;
+  v8 = queueCopy;
+  v9 = completionCopy;
   [(FCConfigurationManager *)self _fetchAppConfigurationIfNeededWithForceRefresh:v10 completion:?];
 }
 
@@ -1185,12 +1185,12 @@ void __95__FCConfigurationManager_refreshAppConfigurationIfNeededWithCompletionQ
   }
 }
 
-- (void)fetchAppWidgetConfigurationWithTodayLiteConfig:(BOOL)a3 additionalFields:(id)a4 completion:(id)a5
+- (void)fetchAppWidgetConfigurationWithTodayLiteConfig:(BOOL)config additionalFields:(id)fields completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  fieldsCopy = fields;
+  completionCopy = completion;
+  if (!fieldsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "additionalFields != nil"];
     *buf = 136315906;
@@ -1204,13 +1204,13 @@ void __95__FCConfigurationManager_refreshAppConfigurationIfNeededWithCompletionQ
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v10 = v8;
+  v10 = fieldsCopy;
   v11 = MEMORY[0x1E69E96A0];
   v12 = MEMORY[0x1E69E96A0];
-  v13 = v9;
+  v13 = completionCopy;
   if (self)
   {
-    if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (!fieldsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "additionalFields != nil"];
       *buf = 136315906;
@@ -1232,7 +1232,7 @@ void __95__FCConfigurationManager_refreshAppConfigurationIfNeededWithCompletionQ
     *(&v20 + 1) = self;
     v23 = v13;
     v21 = v10;
-    v24 = a3;
+    configCopy = config;
     v25 = 0;
     v15 = v11;
     v22 = v11;
@@ -1242,12 +1242,12 @@ void __95__FCConfigurationManager_refreshAppConfigurationIfNeededWithCompletionQ
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addAppConfigObserver:(id)a3
+- (void)addAppConfigObserver:(id)observer
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     if (self)
     {
@@ -1264,7 +1264,7 @@ void __95__FCConfigurationManager_refreshAppConfigurationIfNeededWithCompletionQ
     v9[2] = __47__FCConfigurationManager_addAppConfigObserver___block_invoke;
     v9[3] = &unk_1E7C36C58;
     v9[4] = self;
-    v10 = v4;
+    v10 = observerCopy;
     [(NFUnfairLock *)accessLock performWithLockSync:v9];
   }
 
@@ -1329,12 +1329,12 @@ uint64_t __47__FCConfigurationManager_addAppConfigObserver___block_invoke(uint64
   return result;
 }
 
-- (void)removeAppConfigObserver:(id)a3
+- (void)removeAppConfigObserver:(id)observer
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     if (self)
     {
@@ -1351,7 +1351,7 @@ uint64_t __47__FCConfigurationManager_addAppConfigObserver___block_invoke(uint64
     v9[2] = __50__FCConfigurationManager_removeAppConfigObserver___block_invoke;
     v9[3] = &unk_1E7C36C58;
     v9[4] = self;
-    v10 = v4;
+    v10 = observerCopy;
     [(NFUnfairLock *)accessLock performWithLockSync:v9];
   }
 
@@ -1390,24 +1390,24 @@ uint64_t __50__FCConfigurationManager_removeAppConfigObserver___block_invoke(uin
     self = self->_feldsparIDProvider;
   }
 
-  v2 = [(FCConfigurationManager *)self feldsparID];
-  v3 = [v2 copy];
+  feldsparID = [(FCConfigurationManager *)self feldsparID];
+  v3 = [feldsparID copy];
 
   return v3;
 }
 
-- (void)fetchConfigurationIfNeededWithCompletionQueue:(id)a3 completion:(id)a4
+- (void)fetchConfigurationIfNeededWithCompletionQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __83__FCConfigurationManager_fetchConfigurationIfNeededWithCompletionQueue_completion___block_invoke;
   v10[3] = &unk_1E7C3A8C8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v6;
-  v9 = v7;
+  v11 = queueCopy;
+  v12 = completionCopy;
+  v8 = queueCopy;
+  v9 = completionCopy;
   [(FCConfigurationManager *)self _fetchAppConfigurationIfNeededWithForceRefresh:v10 completion:?];
 }
 
@@ -1430,12 +1430,12 @@ void __83__FCConfigurationManager_fetchConfigurationIfNeededWithCompletionQueue_
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     if (self)
     {
@@ -1452,7 +1452,7 @@ void __83__FCConfigurationManager_fetchConfigurationIfNeededWithCompletionQueue_
     v9[2] = __38__FCConfigurationManager_addObserver___block_invoke;
     v9[3] = &unk_1E7C36C58;
     v9[4] = self;
-    v10 = v4;
+    v10 = observerCopy;
     [(NFUnfairLock *)accessLock performWithLockSync:v9];
   }
 
@@ -1517,12 +1517,12 @@ uint64_t __38__FCConfigurationManager_addObserver___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     if (self)
     {
@@ -1539,7 +1539,7 @@ uint64_t __38__FCConfigurationManager_addObserver___block_invoke(uint64_t a1)
     v9[2] = __41__FCConfigurationManager_removeObserver___block_invoke;
     v9[3] = &unk_1E7C36C58;
     v9[4] = self;
-    v10 = v4;
+    v10 = observerCopy;
     [(NFUnfairLock *)accessLock performWithLockSync:v9];
   }
 
@@ -1657,20 +1657,20 @@ uint64_t __52__FCConfigurationManager_magazinesConfigurationData__block_invoke(u
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)fetchMagazinesConfigurationIfNeededWithCompletionQueue:(id)a3 formatVersion:(id)a4 completion:(id)a5
+- (void)fetchMagazinesConfigurationIfNeededWithCompletionQueue:(id)queue formatVersion:(id)version completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __106__FCConfigurationManager_fetchMagazinesConfigurationIfNeededWithCompletionQueue_formatVersion_completion___block_invoke;
   v20 = &unk_1E7C3A8F0;
-  v21 = v8;
-  v22 = v9;
-  v10 = v8;
-  v11 = v9;
+  v21 = queueCopy;
+  v22 = completionCopy;
+  v10 = queueCopy;
+  v11 = completionCopy;
   v12 = v10;
-  v13 = a4;
+  versionCopy = version;
   v14 = &v17;
   v15 = v14;
   if (self)
@@ -1683,7 +1683,7 @@ uint64_t __52__FCConfigurationManager_magazinesConfigurationData__block_invoke(u
     v23[4] = self;
     v26 = v14;
     v24 = v12;
-    v25 = v13;
+    v25 = versionCopy;
     [(FCAsyncSerialQueue *)remoteMagazineConfigSerialQueue enqueueBlock:v23, v17, v18, v19, v20, v21, v22];
   }
 }
@@ -1793,25 +1793,25 @@ uint64_t __107__FCConfigurationManager__fetchMagazinesConfigurationIfNeededWithC
   return (*(v2 + 16))(v2, v4, 0);
 }
 
-- (id)_requestInfoForRequestKey:(void *)a3 storefrontID:(void *)a4 additionalChangeTags:(void *)a5 cachePolicy:
+- (id)_requestInfoForRequestKey:(void *)key storefrontID:(void *)d additionalChangeTags:(void *)tags cachePolicy:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(FCConfigurationManager *)a1 _requestInfoForRequestKey:a2 storefrontID:a3 additionalChangeTags:a4 feedType:0 cachePolicy:a5];
+    self = [(FCConfigurationManager *)self _requestInfoForRequestKey:a2 storefrontID:key additionalChangeTags:d feedType:0 cachePolicy:tags];
     v5 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)_configurationSettingsWithRequestInfos:(void *)a3 feldsparID:(void *)a4 storefrontID:(unsigned int)a5 contextConfiguration:(void *)a6 useBackgroundRefreshRate:requestMode:formatVersion:
+- (id)_configurationSettingsWithRequestInfos:(void *)infos feldsparID:(void *)d storefrontID:(unsigned int)iD contextConfiguration:(void *)configuration useBackgroundRefreshRate:requestMode:formatVersion:
 {
-  if (a1)
+  if (self)
   {
-    v11 = *(a1 + 40);
-    v12 = a6;
-    v48 = a4;
-    v13 = a3;
+    v11 = *(self + 40);
+    configurationCopy = configuration;
+    dCopy = d;
+    infosCopy = infos;
     v14 = a2;
     v15 = [v11 environment] - 1;
     if (v15 > 5)
@@ -1838,10 +1838,10 @@ uint64_t __107__FCConfigurationManager__fetchMagazinesConfigurationIfNeededWithC
       v45 = 0;
     }
 
-    v44 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    v44 = *(self + 8);
+    *(self + 8) = 0;
     objc_opt_self();
-    v49 = a5;
+    iDCopy = iD;
     if (NFInternalBuild() && (NewsCoreUserDefaults(), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 BOOLForKey:@"enable_overrides_user_segmentation"], v18, v19))
     {
       v20 = NewsCoreUserDefaults();
@@ -1915,24 +1915,24 @@ uint64_t __107__FCConfigurationManager__fetchMagazinesConfigurationIfNeededWithC
     LOBYTE(v43) = v45;
     v33 = [objc_alloc(MEMORY[0x1E69C6D68]) initWithDisableAbTesting:HIDWORD(v45) overrideSegmentSetIDs:v23 additionalSegmentSetIDs:v29 configurationSource:v32 debugEnvironment:v46 ignoreCache:v44 enableExtraLogs:v43];
     v34 = &stru_1F2DC7DC0;
-    if (v13)
+    if (infosCopy)
     {
-      v34 = v13;
+      v34 = infosCopy;
     }
 
     v35 = v34;
-    v36 = [(FCConfigurationManager *)*(a1 + 56) _deviceInfoWithFormatVersion:v12];
+    v36 = [(FCConfigurationManager *)*(self + 56) _deviceInfoWithFormatVersion:configurationCopy];
 
     v37 = objc_alloc(MEMORY[0x1E69C6D60]);
     AppBundleID();
     v38 = v47 = v29;
-    v39 = [v37 initWithRequestInfos:v14 userID:v35 storefrontID:v48 bundleID:v38 deviceInfo:v36];
+    v39 = [v37 initWithRequestInfos:v14 userID:v35 storefrontID:dCopy bundleID:v38 deviceInfo:v36];
 
     [v39 setDebugOverrides:v33];
-    [v39 setUseBackgroundRefreshRate:v49];
+    [v39 setUseBackgroundRefreshRate:iDCopy];
     [v39 setRequestMode:1];
     [v39 setEndpointTimeoutDuration:15.0];
-    v40 = *(a1 + 72);
+    v40 = *(self + 72);
     if (v40 == 2)
     {
       v41 = 2;
@@ -2068,13 +2068,13 @@ void __107__FCConfigurationManager__fetchMagazinesConfigurationIfNeededWithCompl
   [(FCConfigurationManager *)v3 _saveConfigData:v4 forRequestKey:@"magazinesConfigRequest"];
 }
 
-- (void)_saveConfigData:(uint64_t)a3 forRequestKey:
+- (void)_saveConfigData:(uint64_t)data forRequestKey:
 {
-  if (a1)
+  if (self)
   {
-    v4 = *(a1 + 152);
+    v4 = *(self + 152);
     v5 = a2;
-    v6 = [v4 URLByAppendingPathComponent:a3];
+    v6 = [v4 URLByAppendingPathComponent:data];
     [v5 writeToURL:v6 atomically:1];
   }
 }
@@ -2122,22 +2122,22 @@ uint64_t __52__FCConfigurationManager_todayFeedConfigurationData__block_invoke(u
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)fetchTodayFeedConfigurationIfNeededWithCompletionQueue:(id)a3 feedType:(unint64_t)a4 formatVersion:(id)a5 cachePolicy:(id)a6 networkActivityBlock:(id)a7 completion:(id)a8
+- (void)fetchTodayFeedConfigurationIfNeededWithCompletionQueue:(id)queue feedType:(unint64_t)type formatVersion:(id)version cachePolicy:(id)policy networkActivityBlock:(id)block completion:(id)completion
 {
-  v14 = a3;
-  v15 = a8;
+  queueCopy = queue;
+  completionCopy = completion;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __148__FCConfigurationManager_fetchTodayFeedConfigurationIfNeededWithCompletionQueue_feedType_formatVersion_cachePolicy_networkActivityBlock_completion___block_invoke;
   v25[3] = &unk_1E7C3A8F0;
-  v26 = v14;
-  v27 = v15;
-  v16 = v14;
-  v17 = v15;
+  v26 = queueCopy;
+  v27 = completionCopy;
+  v16 = queueCopy;
+  v17 = completionCopy;
   v18 = v16;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
+  versionCopy = version;
+  policyCopy = policy;
+  blockCopy = block;
   v22 = v25;
   v23 = v22;
   if (self)
@@ -2150,10 +2150,10 @@ uint64_t __52__FCConfigurationManager_todayFeedConfigurationData__block_invoke(u
     v28[4] = self;
     v32 = v22;
     v29 = v18;
-    v34 = a4;
-    v30 = v20;
-    v31 = v19;
-    v33 = v21;
+    typeCopy = type;
+    v30 = policyCopy;
+    v31 = versionCopy;
+    v33 = blockCopy;
     [(FCAsyncSerialQueue *)remoteTodayConfigSerialQueue enqueueBlock:v28];
   }
 }
@@ -2263,19 +2263,19 @@ uint64_t __149__FCConfigurationManager__fetchTodayFeedConfigurationIfNeededWithC
   return (*(v2 + 16))(v2, v4, 0);
 }
 
-- (id)_requestInfoForRequestKey:(void *)a3 storefrontID:(void *)a4 additionalChangeTags:(uint64_t)a5 feedType:(void *)a6 cachePolicy:
+- (id)_requestInfoForRequestKey:(void *)key storefrontID:(void *)d additionalChangeTags:(uint64_t)tags feedType:(void *)type cachePolicy:
 {
   v42 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  if (!a1)
+  if (!self)
   {
     v28 = 0;
     goto LABEL_40;
   }
 
-  v33 = a6;
-  v12 = a4;
-  v13 = a3;
+  typeCopy = type;
+  dCopy = d;
+  keyCopy = key;
   v14 = v11;
   if ([v14 isEqualToString:@"appConfigRequest"])
   {
@@ -2323,7 +2323,7 @@ uint64_t __149__FCConfigurationManager__fetchTodayFeedConfigurationIfNeededWithC
 
   v16 = v15;
   v17 = v14;
-  v18 = v13;
+  v18 = keyCopy;
   if ([v17 isEqualToString:@"appConfigRequest"])
   {
     objc_opt_self();
@@ -2333,10 +2333,10 @@ uint64_t __149__FCConfigurationManager__fetchTodayFeedConfigurationIfNeededWithC
       dispatch_once(&qword_1EDB27010, &__block_literal_global_186);
     }
 
-    v20 = _MergedGlobals_140;
-    if ([v20 length])
+    possiblyUnfetchedAppConfiguration = _MergedGlobals_140;
+    if ([possiblyUnfetchedAppConfiguration length])
     {
-      v21 = v20;
+      v21 = possiblyUnfetchedAppConfiguration;
     }
 
     else
@@ -2376,16 +2376,16 @@ uint64_t __149__FCConfigurationManager__fetchTodayFeedConfigurationIfNeededWithC
     }
 
     v19 = v11;
-    v20 = [a1 possiblyUnfetchedAppConfiguration];
-    v22 = [v20 magazinesConfigRecordID];
-    v23 = [v22 copy];
+    possiblyUnfetchedAppConfiguration = [self possiblyUnfetchedAppConfiguration];
+    magazinesConfigRecordID = [possiblyUnfetchedAppConfiguration magazinesConfigRecordID];
+    v23 = [magazinesConfigRecordID copy];
   }
 
 LABEL_31:
   if ([v23 length])
   {
-    v24 = [a1[5] contentContainerIdentifier];
-    v25 = FCPermanentURLForRecordID(v23, 3uLL, v24, 1);
+    contentContainerIdentifier = [self[5] contentContainerIdentifier];
+    v25 = FCPermanentURLForRecordID(v23, 3uLL, contentContainerIdentifier, 1);
   }
 
   else
@@ -2395,14 +2395,14 @@ LABEL_31:
 
   v11 = v19;
 
-  if (a5 != 2)
+  if (tags != 2)
   {
-    a5 = a5 == 1;
+    tags = tags == 1;
   }
 
-  v26 = [v33 cachePolicy];
+  cachePolicy = [typeCopy cachePolicy];
 
-  if (v26 == 1)
+  if (cachePolicy == 1)
   {
     [MEMORY[0x1E69C6D48] ignoreCachePolicy];
   }
@@ -2412,7 +2412,7 @@ LABEL_31:
     [MEMORY[0x1E69C6D48] defaultCachePolicy];
   }
   v27 = ;
-  v28 = [objc_alloc(MEMORY[0x1E69C6D80]) initWithRequestKey:v17 responseKey:v16 fallbackURL:v25 requestType:v12 != 0 additionalChangeTags:v12 requestFeedType:a5 cachePolicy:v27];
+  v28 = [objc_alloc(MEMORY[0x1E69C6D80]) initWithRequestKey:v17 responseKey:v16 fallbackURL:v25 requestType:dCopy != 0 additionalChangeTags:dCopy requestFeedType:tags cachePolicy:v27];
 
 LABEL_40:
   v29 = *MEMORY[0x1E69E9840];
@@ -2560,20 +2560,20 @@ uint64_t __45__FCConfigurationManager_audioFeedConfigData__block_invoke(uint64_t
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)fetchAudioFeedConfigIfNeededWithCompletionQueue:(id)a3 formatVersion:(id)a4 completion:(id)a5
+- (void)fetchAudioFeedConfigIfNeededWithCompletionQueue:(id)queue formatVersion:(id)version completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __99__FCConfigurationManager_fetchAudioFeedConfigIfNeededWithCompletionQueue_formatVersion_completion___block_invoke;
   v20 = &unk_1E7C3A8F0;
-  v21 = v8;
-  v22 = v9;
-  v10 = v8;
-  v11 = v9;
+  v21 = queueCopy;
+  v22 = completionCopy;
+  v10 = queueCopy;
+  v11 = completionCopy;
   v12 = v10;
-  v13 = a4;
+  versionCopy = version;
   v14 = &v17;
   v15 = v14;
   if (self)
@@ -2586,7 +2586,7 @@ uint64_t __45__FCConfigurationManager_audioFeedConfigData__block_invoke(uint64_t
     v23[4] = self;
     v26 = v14;
     v24 = v12;
-    v25 = v13;
+    v25 = versionCopy;
     [(FCAsyncSerialQueue *)remoteAudioConfigSerialQueue enqueueBlock:v23, v17, v18, v19, v20, v21, v22];
   }
 }
@@ -3312,45 +3312,45 @@ void __93__FCConfigurationManager__refreshAppConfigurationWithConfigurationSetti
   [(FCConfigurationManager *)v35 _configurationDidChangeSignificantConfigChange:v6 paywallConfigDidChange:v7 scienceExperimentFieldsDidChange:v15];
 }
 
-- (void)_configurationDidChangeSignificantConfigChange:(int)a3 paywallConfigDidChange:(char)a4 scienceExperimentFieldsDidChange:
+- (void)_configurationDidChangeSignificantConfigChange:(int)change paywallConfigDidChange:(char)didChange scienceExperimentFieldsDidChange:
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [a1[12] assertLocked];
+    [self[12] assertLocked];
     v8 = FCAppConfigurationLog;
     if (os_log_type_enabled(FCAppConfigurationLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
       v28 = a2;
       v29 = 1024;
-      v30 = a3;
+      changeCopy = change;
       _os_log_impl(&dword_1B63EF000, v8, OS_LOG_TYPE_DEFAULT, "configuration manager notify observers with significantConfigChange: %d paywallConfigDidChange: %d", buf, 0xEu);
     }
 
-    v9 = a1[26];
-    v10 = [v9 allObjects];
+    v9 = self[26];
+    allObjects = [v9 allObjects];
 
-    v11 = a1[25];
-    v12 = [v11 allObjects];
+    v11 = self[25];
+    allObjects2 = [v11 allObjects];
 
-    v13 = [(FCConfigurationManager *)a1 currentAppConfiguration];
-    v14 = [v13 copy];
+    currentAppConfiguration = [(FCConfigurationManager *)self currentAppConfiguration];
+    v14 = [currentAppConfiguration copy];
 
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __129__FCConfigurationManager__configurationDidChangeSignificantConfigChange_paywallConfigDidChange_scienceExperimentFieldsDidChange___block_invoke;
     block[3] = &unk_1E7C3AB70;
-    v20 = v10;
-    v21 = a1;
-    v24 = a4;
+    v20 = allObjects;
+    selfCopy = self;
+    didChangeCopy = didChange;
     v22 = v14;
-    v23 = v12;
+    v23 = allObjects2;
     v25 = a2;
-    v26 = a3;
-    v15 = v12;
+    changeCopy2 = change;
+    v15 = allObjects2;
     v16 = v14;
-    v17 = v10;
+    v17 = allObjects;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
@@ -3520,13 +3520,13 @@ void __132__FCConfigurationManager__fetchRemoteAppWidgetConfigurationIfNeededWit
   _Block_object_dispose(&v14, 8);
 }
 
-- (id)_changeTagsInWidgetConfigurationDict:(uint64_t)a1
+- (id)_changeTagsInWidgetConfigurationDict:(uint64_t)dict
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (dict && v3)
   {
     v6 = [v3 objectForKeyedSubscript:@"articles"];
     v7 = [FCConfigurationManager _changeTagsInRecords:v6];
@@ -4002,19 +4002,19 @@ void __129__FCConfigurationManager__configurationDidChangeSignificantConfigChang
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_loadConfigDataForRequestKey:(void *)a1
+- (id)_loadConfigDataForRequestKey:(void *)key
 {
-  v2 = [a1 URLByAppendingPathComponent:a2];
+  v2 = [key URLByAppendingPathComponent:a2];
   v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v2];
 
   return v3;
 }
 
-- (id)_deviceInfoWithFormatVersion:(uint64_t)a3
+- (id)_deviceInfoWithFormatVersion:(uint64_t)version
 {
   v5 = MEMORY[0x1E69C6D70];
-  v6 = a1;
-  v7 = [v5 defaultDeviceInfoWithAppVersion:v6 formatVersion:a3 seedNumber:0 buildNumber:a2];
+  selfCopy = self;
+  v7 = [v5 defaultDeviceInfoWithAppVersion:selfCopy formatVersion:version seedNumber:0 buildNumber:a2];
 
   return v7;
 }
@@ -4075,17 +4075,17 @@ uint64_t __65__FCConfigurationManager_internalOverrideAdditionalSegmentSetIDs__b
   return [v2 numberWithInteger:v3];
 }
 
-- (id)_mergeRecords:(void *)a1 withCachedRecords:(void *)a2
+- (id)_mergeRecords:(void *)records withCachedRecords:(void *)cachedRecords
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v26 = a2;
-  v25 = [MEMORY[0x1E695DF90] dictionary];
+  recordsCopy = records;
+  cachedRecordsCopy = cachedRecords;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = recordsCopy;
   v4 = [obj countByEnumeratingWithState:&v27 objects:v39 count:16];
   if (v4)
   {
@@ -4102,9 +4102,9 @@ uint64_t __65__FCConfigurationManager_internalOverrideAdditionalSegmentSetIDs__b
 
         v8 = *(*(&v27 + 1) + 8 * i);
         v9 = [v8 objectForKeyedSubscript:@"id"];
-        v10 = [v26 objectForKeyedSubscript:v9];
-        v11 = [v8 allKeys];
-        v12 = [v11 count];
+        v10 = [cachedRecordsCopy objectForKeyedSubscript:v9];
+        allKeys = [v8 allKeys];
+        v12 = [allKeys count];
 
         if (v12 < 4)
         {
@@ -4138,8 +4138,8 @@ uint64_t __65__FCConfigurationManager_internalOverrideAdditionalSegmentSetIDs__b
         {
           v17 = v10;
 
-          v18 = [v17 allKeys];
-          v19 = [v18 count];
+          allKeys2 = [v17 allKeys];
+          v19 = [allKeys2 count];
 
           if (v19 <= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
           {
@@ -4163,7 +4163,7 @@ uint64_t __65__FCConfigurationManager_internalOverrideAdditionalSegmentSetIDs__b
 
         if (v17)
         {
-          [v25 setObject:v17 forKey:v9];
+          [dictionary setObject:v17 forKey:v9];
         }
       }
 
@@ -4175,22 +4175,22 @@ uint64_t __65__FCConfigurationManager_internalOverrideAdditionalSegmentSetIDs__b
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v25;
+  return dictionary;
 }
 
-- (id)_changeTagsInRecords:(void *)a1
+- (id)_changeTagsInRecords:(void *)records
 {
-  v1 = a1;
-  if (v1)
+  recordsCopy = records;
+  if (recordsCopy)
   {
-    v2 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __47__FCConfigurationManager__changeTagsInRecords___block_invoke_2;
     v5[3] = &unk_1E7C3A5F0;
-    v3 = v2;
+    v3 = array;
     v6 = v3;
-    [v1 enumerateKeysAndObjectsUsingBlock:v5];
+    [recordsCopy enumerateKeysAndObjectsUsingBlock:v5];
   }
 
   else

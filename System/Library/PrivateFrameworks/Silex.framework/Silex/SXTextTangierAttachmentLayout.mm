@@ -11,50 +11,50 @@
 
 - (id)wrapPolygon
 {
-  v3 = [(SXTextTangierAttachmentLayout *)self polygon];
+  polygon = [(SXTextTangierAttachmentLayout *)self polygon];
 
-  if (!v3)
+  if (!polygon)
   {
-    v4 = [(TSDLayout *)self info];
-    v5 = [v4 exclusionPath];
-    v6 = [(SXTextExclusionPath *)v5 path];
-    v7 = [v6 TSDBezierPath];
+    info = [(TSDLayout *)self info];
+    exclusionPath = [info exclusionPath];
+    path = [(SXTextExclusionPath *)exclusionPath path];
+    tSDBezierPath = [path TSDBezierPath];
 
     memset(&v26, 0, sizeof(v26));
-    v8 = [(TSDLayout *)self info];
-    v9 = [v8 exclusionPath];
-    v10 = [(SXTextExclusionPath *)v9 position];
-    v11 = [(TSDLayout *)self info];
-    v12 = [v11 exclusionPath];
-    [(SXTextExclusionPath *)v12 position];
-    CGAffineTransformMakeTranslation(&v26, v10, v13);
+    info2 = [(TSDLayout *)self info];
+    exclusionPath2 = [info2 exclusionPath];
+    position = [(SXTextExclusionPath *)exclusionPath2 position];
+    info3 = [(TSDLayout *)self info];
+    exclusionPath3 = [info3 exclusionPath];
+    [(SXTextExclusionPath *)exclusionPath3 position];
+    CGAffineTransformMakeTranslation(&v26, position, v13);
 
     v25 = v26;
-    [v7 transformUsingAffineTransform:&v25];
-    v14 = [(TSDLayout *)self info];
-    v15 = [v14 exclusionPath];
-    v16 = [(SXAnimatedImageFrame *)v15 duration];
+    [tSDBezierPath transformUsingAffineTransform:&v25];
+    info4 = [(TSDLayout *)self info];
+    exclusionPath4 = [info4 exclusionPath];
+    duration = [(SXAnimatedImageFrame *)exclusionPath4 duration];
 
-    if (v16 > 0.0)
+    if (duration > 0.0)
     {
-      v17 = [(TSDLayout *)self info];
-      v18 = [v17 exclusionPath];
-      v19 = [(SXAnimatedImageFrame *)v18 duration];
-      [v7 setLineWidth:v19 + v19];
+      info5 = [(TSDLayout *)self info];
+      exclusionPath5 = [info5 exclusionPath];
+      duration2 = [(SXAnimatedImageFrame *)exclusionPath5 duration];
+      [tSDBezierPath setLineWidth:duration2 + duration2];
 
-      v20 = [MEMORY[0x1E69D5628] outlineBezierPath:v7 withThreshold:0.0];
-      v21 = [v7 uniteWithBezierPath:v20];
+      v20 = [MEMORY[0x1E69D5628] outlineBezierPath:tSDBezierPath withThreshold:0.0];
+      v21 = [tSDBezierPath uniteWithBezierPath:v20];
 
-      v7 = v21;
+      tSDBezierPath = v21;
     }
 
-    v22 = [objc_alloc(MEMORY[0x1E69D5688]) initWithPath:v7];
+    v22 = [objc_alloc(MEMORY[0x1E69D5688]) initWithPath:tSDBezierPath];
     [(SXTextTangierAttachmentLayout *)self setPolygon:v22];
   }
 
-  v23 = [(SXTextTangierAttachmentLayout *)self polygon];
+  polygon2 = [(SXTextTangierAttachmentLayout *)self polygon];
 
-  return v23;
+  return polygon2;
 }
 
 - (void)fixTransformFromInterimPosition
@@ -63,21 +63,21 @@
   v7.super_class = SXTextTangierAttachmentLayout;
   [(TSDAbstractLayout *)&v7 fixTransformFromInterimPosition];
   [(SXTextTangierAttachmentLayout *)self storeActualPosition];
-  v3 = [(TSDLayout *)self info];
-  v4 = [v3 exclusionPath];
+  info = [(TSDLayout *)self info];
+  exclusionPath = [info exclusionPath];
   [(TSDAbstractLayout *)self frame];
-  [(SXTextExclusionPath *)v4 adjustYPositionWithCurrentPosition:v5, v6];
+  [(SXTextExclusionPath *)exclusionPath adjustYPositionWithCurrentPosition:v5, v6];
 
   [(SXTextTangierAttachmentLayout *)self setPolygon:0];
 }
 
 - (void)validate
 {
-  v3 = [(TSDLayout *)self invalidGeometry];
+  invalidGeometry = [(TSDLayout *)self invalidGeometry];
   v4.receiver = self;
   v4.super_class = SXTextTangierAttachmentLayout;
   [(TSDLayout *)&v4 validate];
-  if (v3)
+  if (invalidGeometry)
   {
     [(SXTextTangierAttachmentLayout *)self storeActualPosition];
   }
@@ -85,8 +85,8 @@
 
 - (CGRect)boundsInfluencingExteriorWrap
 {
-  v2 = [(SXTextTangierAttachmentLayout *)self wrapPolygon];
-  [v2 bounds];
+  wrapPolygon = [(SXTextTangierAttachmentLayout *)self wrapPolygon];
+  [wrapPolygon bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -105,8 +105,8 @@
 
 - (CGRect)boundsInRoot
 {
-  v2 = [(SXTextTangierAttachmentLayout *)self wrapPolygon];
-  [v2 bounds];
+  wrapPolygon = [(SXTextTangierAttachmentLayout *)self wrapPolygon];
+  [wrapPolygon bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -125,27 +125,27 @@
 
 - (void)storeActualPosition
 {
-  v3 = [(TSDLayout *)self info];
-  v4 = [v3 exclusionPath];
-  if ([(SXTextExclusionPath *)v4 type]== 2)
+  info = [(TSDLayout *)self info];
+  exclusionPath = [info exclusionPath];
+  if ([(SXTextExclusionPath *)exclusionPath type]== 2)
   {
-    v5 = [(TSDAbstractLayout *)self geometry];
-    [v5 frame];
+    geometry = [(TSDAbstractLayout *)self geometry];
+    [geometry frame];
     v7 = v6;
-    v8 = [(TSDLayout *)self info];
-    v9 = [v8 exclusionPath];
-    [(SXTextExclusionPath *)v9 position];
+    info2 = [(TSDLayout *)self info];
+    exclusionPath2 = [info2 exclusionPath];
+    [(SXTextExclusionPath *)exclusionPath2 position];
     v11 = v10;
 
     if (v7 < v11)
     {
-      v22 = [(TSDLayout *)self info];
-      v12 = [v22 exclusionPath];
-      v13 = [(SXTextExclusionPath *)v12 position];
+      info3 = [(TSDLayout *)self info];
+      exclusionPath3 = [info3 exclusionPath];
+      position = [(SXTextExclusionPath *)exclusionPath3 position];
       v15 = v14;
-      v16 = [(TSDLayout *)self info];
-      v17 = [v16 exclusionPath];
-      [(SXTextExclusionPath *)v17 setActualPosition:v13, v15];
+      info4 = [(TSDLayout *)self info];
+      exclusionPath4 = [info4 exclusionPath];
+      [(SXTextExclusionPath *)exclusionPath4 setActualPosition:position, v15];
 
       goto LABEL_6;
     }
@@ -155,13 +155,13 @@
   {
   }
 
-  v22 = [(TSDAbstractLayout *)self geometry];
-  [v22 frame];
+  info3 = [(TSDAbstractLayout *)self geometry];
+  [info3 frame];
   v19 = v18;
   v21 = v20;
-  v12 = [(TSDLayout *)self info];
-  v16 = [v12 exclusionPath];
-  [(SXTextExclusionPath *)v16 setActualPosition:v19, v21];
+  exclusionPath3 = [(TSDLayout *)self info];
+  info4 = [exclusionPath3 exclusionPath];
+  [(SXTextExclusionPath *)info4 setActualPosition:v19, v21];
 LABEL_6:
 }
 

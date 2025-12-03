@@ -1,42 +1,42 @@
 @interface NWStatsManager
-+ (id)getKernelMetrics:(id)a3;
-+ (void)dumpKernelMetrics:(id)a3;
-- (BOOL)setRcvBufsize:(int)a3;
-- (NWStatsManager)initWithQueue:(id)a3;
++ (id)getKernelMetrics:(id)metrics;
++ (void)dumpKernelMetrics:(id)metrics;
+- (BOOL)setRcvBufsize:(int)bufsize;
+- (NWStatsManager)initWithQueue:(id)queue;
 - (NWStatsManagerDelegate)delegate;
 - (id)getState;
-- (id)identifierForUUID:(id)a3 derivation:(int *)a4;
+- (id)identifierForUUID:(id)d derivation:(int *)derivation;
 - (id)stateDictionary;
-- (int)_refreshSyncUsingBlock:(id)a3;
-- (int)_refreshUsingBlock:(id)a3 completionBlock:(id)a4;
-- (int)_setThresholds:(id)a3;
-- (int)configure:(id)a3;
-- (int)initialConfigure:(id)a3;
-- (int)reconfigure:(id)a3;
+- (int)_refreshSyncUsingBlock:(id)block;
+- (int)_refreshUsingBlock:(id)block completionBlock:(id)completionBlock;
+- (int)_setThresholds:(id)thresholds;
+- (int)configure:(id)configure;
+- (int)initialConfigure:(id)configure;
+- (int)reconfigure:(id)reconfigure;
 - (int)statsRefreshCurrentUsage;
 - (void)_adaptAfterDrop;
-- (void)_addAllForProvider:(int)a3 filter:(unint64_t)a4 events:(unint64_t)a5;
+- (void)_addAllForProvider:(int)provider filter:(unint64_t)filter events:(unint64_t)events;
 - (void)_drainReadBuffer;
-- (void)_handleCompletion:(unint64_t)a3;
-- (void)_handleCounts:(nstat_msg_src_counts *)a3;
-- (void)_handleMessage:(nstat_msg_hdr *)a3 length:(int64_t)a4;
-- (void)_handleReads:(int64_t)a3;
-- (void)_handleRemoveForSource:(id)a3;
-- (void)_removeSourceInternal:(unint64_t)a3;
-- (void)_restartPoll:(id)a3;
-- (void)_sendDetailsRequestMessage:(unint64_t)a3;
-- (void)_sendMessage:(nstat_msg_hdr *)a3 length:(int64_t)a4;
+- (void)_handleCompletion:(unint64_t)completion;
+- (void)_handleCounts:(nstat_msg_src_counts *)counts;
+- (void)_handleMessage:(nstat_msg_hdr *)message length:(int64_t)length;
+- (void)_handleReads:(int64_t)reads;
+- (void)_handleRemoveForSource:(id)source;
+- (void)_removeSourceInternal:(unint64_t)internal;
+- (void)_restartPoll:(id)poll;
+- (void)_sendDetailsRequestMessage:(unint64_t)message;
+- (void)_sendMessage:(nstat_msg_hdr *)message length:(int64_t)length;
 - (void)_sendPoll;
-- (void)_sendRemoveSource:(unint64_t)a3;
-- (void)_sendUpdateRequestMessage:(unint64_t)a3;
-- (void)_setInterfaceTraceFd:(int)a3;
-- (void)_startPoll:(id)a3;
+- (void)_sendRemoveSource:(unint64_t)source;
+- (void)_sendUpdateRequestMessage:(unint64_t)message;
+- (void)_setInterfaceTraceFd:(int)fd;
+- (void)_startPoll:(id)poll;
 - (void)_startQueuedPoll;
-- (void)_trace:(char *)a3;
-- (void)_traceMemoryBuf:(char *)a3 length:(int64_t)a4 tag:(char *)a5;
+- (void)_trace:(char *)_trace;
+- (void)_traceMemoryBuf:(char *)buf length:(int64_t)length tag:(char *)tag;
 - (void)dealloc;
 - (void)dumpState;
-- (void)ignoreSource:(unint64_t)a3;
+- (void)ignoreSource:(unint64_t)source;
 - (void)invalidate;
 @end
 
@@ -59,8 +59,8 @@
 
 - (int)statsRefreshCurrentUsage
 {
-  v3 = [(NWStatsManager *)self queuedPolls];
-  v4 = [v3 count];
+  queuedPolls = [(NWStatsManager *)self queuedPolls];
+  v4 = [queuedPolls count];
 
   if (v4 == 1)
   {
@@ -82,14 +82,14 @@
 
   else
   {
-    v5 = [(NWStatsManager *)self activePoll];
-    v6 = v5 != 0;
+    activePoll = [(NWStatsManager *)self activePoll];
+    v6 = activePoll != 0;
   }
 
   return v6;
 }
 
-- (void)_traceMemoryBuf:(char *)a3 length:(int64_t)a4 tag:(char *)a5
+- (void)_traceMemoryBuf:(char *)buf length:(int64_t)length tag:(char *)tag
 {
   if (self->_interfaceTraceFd >= 1)
   {
@@ -100,45 +100,45 @@
       v13.tv_sec = 0;
       *&v13.tv_usec = 0;
       gettimeofday(&v13, 0);
-      snprintf(self->_iftracebuf, 0x1100uLL, "%ld.%06d %s len %zu\n", v13.tv_sec, v13.tv_usec, a5, a4);
+      snprintf(self->_iftracebuf, 0x1100uLL, "%ld.%06d %s len %zu\n", v13.tv_sec, v13.tv_usec, tag, length);
       v11 = strlen(self->_iftracebuf) + 1;
-      v12 = v11 + a4;
-      if ((v11 + a4) >> 8 <= 0x10)
+      v12 = v11 + length;
+      if ((v11 + length) >> 8 <= 0x10)
       {
-        memcpy(&self->_iftracebuf[v11], a3, a4);
+        memcpy(&self->_iftracebuf[v11], buf, length);
         write(self->_interfaceTraceFd, self->_iftracebuf, v12);
       }
     }
   }
 }
 
-- (void)_trace:(char *)a3
+- (void)_trace:(char *)_trace
 {
-  if (a3 && self->_interfaceTraceFd >= 1)
+  if (_trace && self->_interfaceTraceFd >= 1)
   {
-    v5 = strlen(a3) + 1;
+    v5 = strlen(_trace) + 1;
 
-    [(NWStatsManager *)self _traceMemoryBuf:a3 length:v5 tag:"Trace"];
+    [(NWStatsManager *)self _traceMemoryBuf:_trace length:v5 tag:"Trace"];
   }
 }
 
-- (void)_sendMessage:(nstat_msg_hdr *)a3 length:(int64_t)a4
+- (void)_sendMessage:(nstat_msg_hdr *)message length:(int64_t)length
 {
-  v7 = [(NWStatsManager *)self clientQueue];
-  dispatch_assert_queue_V2(v7);
+  clientQueue = [(NWStatsManager *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v8 = [(NWStatsManager *)self readSource];
+  readSource = [(NWStatsManager *)self readSource];
 
-  if (v8)
+  if (readSource)
   {
-    a3->length = a4;
-    a3->flags |= 1u;
+    message->length = length;
+    message->flags |= 1u;
     if (self->_interfaceTraceFd >= 1 && self->_iftracebuf)
     {
-      [(NWStatsManager *)self _traceMemoryBuf:a3 length:a4 tag:"Output"];
+      [(NWStatsManager *)self _traceMemoryBuf:message length:length tag:"Output"];
     }
 
-    if (send([(NWStatsManager *)self sockfd], a3, a4, 0) != a4 && a3->context)
+    if (send([(NWStatsManager *)self sockfd], message, length, 0) != length && message->context)
     {
 
       [(NWStatsManager *)self _handleCompletion:?];
@@ -146,50 +146,50 @@
   }
 }
 
-- (void)_sendUpdateRequestMessage:(unint64_t)a3
+- (void)_sendUpdateRequestMessage:(unint64_t)message
 {
-  v5 = [(NWStatsManager *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  clientQueue = [(NWStatsManager *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   if (![(NWStatsManager *)self isInvalidated])
   {
     v6 = xmmword_25BA77950;
     DWORD2(v6) = 1007;
-    v7 = a3;
+    messageCopy = message;
     [(NWStatsManager *)self _sendMessage:&v6 length:24];
   }
 }
 
-- (void)_sendDetailsRequestMessage:(unint64_t)a3
+- (void)_sendDetailsRequestMessage:(unint64_t)message
 {
-  v5 = [(NWStatsManager *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  clientQueue = [(NWStatsManager *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   if (![(NWStatsManager *)self isInvalidated])
   {
     v6 = xmmword_25BA77950;
     DWORD2(v6) = 1009;
-    v7 = a3;
+    messageCopy = message;
     [(NWStatsManager *)self _sendMessage:&v6 length:24];
   }
 }
 
-- (void)_sendRemoveSource:(unint64_t)a3
+- (void)_sendRemoveSource:(unint64_t)source
 {
-  v5 = [(NWStatsManager *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  clientQueue = [(NWStatsManager *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   v6[0] = 0;
   v6[1] = 1003;
-  v6[2] = a3;
+  v6[2] = source;
   [(NWStatsManager *)self _sendMessage:v6 length:24];
 }
 
-- (void)_startPoll:(id)a3
+- (void)_startPoll:(id)poll
 {
-  v6 = a3;
-  v4 = [(NWStatsManager *)self clientQueue];
-  dispatch_assert_queue_V2(v4);
+  pollCopy = poll;
+  clientQueue = [(NWStatsManager *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   [(NWStatsManager *)self activePoll];
   if (objc_claimAutoreleasedReturnValue())
@@ -197,22 +197,22 @@
     [NWStatsManager _startPoll:];
   }
 
-  [(NWStatsManager *)self setActivePoll:v6];
+  [(NWStatsManager *)self setActivePoll:pollCopy];
   nextPollReference = self->_nextPollReference;
   self->_currentPollReference = nextPollReference;
   self->_nextPollReference = nextPollReference + 1;
-  [v6 setNtstatContext:?];
+  [pollCopy setNtstatContext:?];
   [(NWStatsManager *)self _sendPoll];
 }
 
-- (void)_restartPoll:(id)a3
+- (void)_restartPoll:(id)poll
 {
-  v6 = a3;
-  v4 = [(NWStatsManager *)self clientQueue];
-  dispatch_assert_queue_V2(v4);
+  pollCopy = poll;
+  clientQueue = [(NWStatsManager *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v5 = [(NWStatsManager *)self activePoll];
-  if (v5 != v6)
+  activePoll = [(NWStatsManager *)self activePoll];
+  if (activePoll != pollCopy)
   {
     [NWStatsManager _restartPoll:];
   }
@@ -220,14 +220,14 @@
   [(NWStatsManager *)self _sendPoll];
 }
 
-- (void)_handleRemoveForSource:(id)a3
+- (void)_handleRemoveForSource:(id)source
 {
-  v6 = a3;
-  v4 = [(NWStatsManager *)self delegate];
+  sourceCopy = source;
+  delegate = [(NWStatsManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v6 createSnapshot:2 firstOccurrence:0];
-    [v4 statsManager:self didReceiveNWSnapshot:v5];
+    v5 = [sourceCopy createSnapshot:2 firstOccurrence:0];
+    [delegate statsManager:self didReceiveNWSnapshot:v5];
   }
 }
 
@@ -301,46 +301,46 @@ LABEL_10:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleMessage:(nstat_msg_hdr *)a3 length:(int64_t)a4
+- (void)_handleMessage:(nstat_msg_hdr *)message length:(int64_t)length
 {
   v72 = *MEMORY[0x277D85DE8];
-  v7 = [(NWStatsManager *)self clientQueue];
-  dispatch_assert_queue_V2(v7);
+  clientQueue = [(NWStatsManager *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  type = a3->type;
+  type = message->type;
   if (type > 10003)
   {
     if ((type - 10008) >= 2)
     {
       if (type == 10004)
       {
-        if (a4 < 0x90)
+        if (length < 0x90)
         {
           goto LABEL_133;
         }
 
         v29 = *MEMORY[0x277D85DE8];
 
-        [(NWStatsManager *)self _handleCounts:a3];
+        [(NWStatsManager *)self _handleCounts:message];
         return;
       }
 
-      if (type != 10006 || a4 < 0x98)
+      if (type != 10006 || length < 0x98)
       {
         goto LABEL_133;
       }
 
-      context = a3[9].context;
+      context = message[9].context;
       if (context == 6)
       {
-        if (a4 < 0x190)
+        if (length < 0x190)
         {
           goto LABEL_133;
         }
 
-        v17 = a3[1].context;
-        context_low = LODWORD(a3[10].context);
-        v19 = *&a3[9].type;
+        v17 = message[1].context;
+        context_low = LODWORD(message[10].context);
+        v19 = *&message[9].type;
         v20 = *MEMORY[0x277D85DE8];
 
         [(NWStatsManager *)self _noteInterfaceSrcRef:v17 forInterface:context_low threshold:v19];
@@ -351,7 +351,7 @@ LABEL_10:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109120;
-        LODWORD(v69) = context;
+        LODWORD(lengthCopy4) = context;
         v23 = "update message for unknown provider %d\n";
 LABEL_79:
         v33 = v22;
@@ -364,15 +364,15 @@ LABEL_131:
       goto LABEL_132;
     }
 
-    if (a4 < 0x1E8)
+    if (length < 0x1E8)
     {
       goto LABEL_133;
     }
 
-    v21 = a3[30].context;
+    v21 = message[30].context;
     if ((v21 & 0xFFFFFFFE) == 2)
     {
-      if (a4 <= 0x33F)
+      if (length <= 0x33F)
       {
         v22 = NStatGetLog();
         if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -381,7 +381,7 @@ LABEL_131:
         }
 
         *buf = 134218240;
-        v69 = a4;
+        lengthCopy4 = length;
         v70 = 2048;
         v71 = 832;
         v23 = "TCP details message with size %ld below minimum %ld\n";
@@ -398,7 +398,7 @@ LABEL_130:
     {
       if (v21 == 8)
       {
-        if (a4 <= 0x33F)
+        if (length <= 0x33F)
         {
           v22 = NStatGetLog();
           if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -407,7 +407,7 @@ LABEL_130:
           }
 
           *buf = 134218240;
-          v69 = a4;
+          lengthCopy4 = length;
           v70 = 2048;
           v71 = 832;
           v23 = "QUIC details message with size %ld below minimum %ld\n";
@@ -419,7 +419,7 @@ LABEL_130:
 
       if (v21 == 9)
       {
-        if (a4 <= 0x2AF)
+        if (length <= 0x2AF)
         {
           v22 = NStatGetLog();
           if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -428,7 +428,7 @@ LABEL_130:
           }
 
           *buf = 134218240;
-          v69 = a4;
+          lengthCopy4 = length;
           v70 = 2048;
           v71 = 688;
           v23 = "Userland connection details message with size %ld below minimum %ld\n";
@@ -445,7 +445,7 @@ LABEL_77:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
           *buf = 67109120;
-          LODWORD(v69) = v21;
+          LODWORD(lengthCopy4) = v21;
           v23 = "details message for unknown provider %d\n";
           goto LABEL_79;
         }
@@ -466,7 +466,7 @@ LABEL_132:
       goto LABEL_77;
     }
 
-    if (a4 <= 0x2FF)
+    if (length <= 0x2FF)
     {
       v22 = NStatGetLog();
       if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -475,7 +475,7 @@ LABEL_132:
       }
 
       *buf = 134218240;
-      v69 = a4;
+      lengthCopy4 = length;
       v70 = 2048;
       v71 = 768;
       v23 = "UDP details message with size %ld below minimum %ld\n";
@@ -483,13 +483,13 @@ LABEL_132:
     }
 
 LABEL_81:
-    v35 = [(NWStatsManager *)self delegate];
-    v36 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3[1].context];
-    v37 = [(NWStatsManager *)self internalSources];
-    v67 = [v37 objectForKey:v36];
+    delegate = [(NWStatsManager *)self delegate];
+    v36 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:message[1].context];
+    internalSources = [(NWStatsManager *)self internalSources];
+    activePoll5 = [internalSources objectForKey:v36];
 
-    flags = a3->flags;
-    v66 = v35;
+    flags = message->flags;
+    v66 = delegate;
     if ((flags & 4) != 0)
     {
       v40 = 0;
@@ -498,7 +498,7 @@ LABEL_81:
       v41 = 32;
     }
 
-    else if (a3->context == 1)
+    else if (message->context == 1)
     {
       v39 = 0;
       v40 = 1;
@@ -509,9 +509,9 @@ LABEL_81:
     else
     {
       v40 = 0;
-      v39 = *&a3[1].type == 0;
+      v39 = *&message[1].type == 0;
       v41 = 24;
-      if (*&a3[1].type)
+      if (*&message[1].type)
       {
         v42 = 4;
       }
@@ -524,23 +524,23 @@ LABEL_81:
     }
 
     ++*(&self->_providerCounts[v21].numSrcsAdded + v41);
-    if (v67)
+    if (activePoll5)
     {
-      if (((v40 | [v67 removing]) & 1) == 0)
+      if (((v40 | [activePoll5 removing]) & 1) == 0)
       {
-        v43 = [(NWStatsManager *)self statsMonitor];
-        if ([v67 updateWithDetails:a3 length:a4 monitor:v43])
+        statsMonitor = [(NWStatsManager *)self statsMonitor];
+        if ([activePoll5 updateWithDetails:message length:length monitor:statsMonitor])
         {
 
 LABEL_101:
-          v48 = [v67 createSnapshot:v42 firstOccurrence:{0, v66}];
-          if ((a3->flags & 4) == 0)
+          v48 = [activePoll5 createSnapshot:v42 firstOccurrence:{0, v66}];
+          if ((message->flags & 4) == 0)
           {
             goto LABEL_104;
           }
 
-          v49 = [(NWStatsManager *)self internalSources];
-          [v49 removeObjectForKey:v36];
+          internalSources2 = [(NWStatsManager *)self internalSources];
+          [internalSources2 removeObjectForKey:v36];
 LABEL_103:
 
 LABEL_104:
@@ -558,16 +558,16 @@ LABEL_104:
 
               if (self->_checkNESessionManagerVPNs)
               {
-                v53 = [v52 interfaceIndex];
+                interfaceIndex = [v52 interfaceIndex];
                 v54 = +[NWStatsInterfaceRegistry sharedInstance];
-                [v54 addInterfaceIndexToRegistry:v53];
-                if ([v54 isTrackingInterfaceIndex:v53])
+                [v54 addInterfaceIndexToRegistry:interfaceIndex];
+                if ([v54 isTrackingInterfaceIndex:interfaceIndex])
                 {
                   [v52 donateBytesToAccumulator];
                 }
 
-                v55 = [v52 euuid];
-                v56 = [v54 machOUUIDBelongsToVPNProvider:v55];
+                euuid = [v52 euuid];
+                v56 = [v54 machOUUIDBelongsToVPNProvider:euuid];
 
                 if (v56)
                 {
@@ -581,17 +581,17 @@ LABEL_104:
               goto LABEL_119;
             }
 
-            v57 = [(NWStatsManager *)self activePoll];
-            if (!v57)
+            activePoll = [(NWStatsManager *)self activePoll];
+            if (!activePoll)
             {
               goto LABEL_119;
             }
 
-            v58 = v57;
-            v59 = [(NWStatsManager *)self activePoll];
-            v60 = [v59 deliveryBlock];
+            v58 = activePoll;
+            activePoll2 = [(NWStatsManager *)self activePoll];
+            deliveryBlock = [activePoll2 deliveryBlock];
 
-            if (!v60)
+            if (!deliveryBlock)
             {
 LABEL_119:
               v63 = v66;
@@ -603,9 +603,9 @@ LABEL_119:
               goto LABEL_124;
             }
 
-            v61 = [(NWStatsManager *)self activePoll];
-            v62 = [v61 deliveryBlock];
-            (v62)[2](v62, v48);
+            activePoll3 = [(NWStatsManager *)self activePoll];
+            deliveryBlock2 = [activePoll3 deliveryBlock];
+            (deliveryBlock2)[2](deliveryBlock2, v48);
           }
 
 LABEL_123:
@@ -618,7 +618,7 @@ LABEL_125:
           return;
         }
 
-        v50 = a3->flags;
+        v50 = message->flags;
 
         if ((v50 & 4) != 0)
         {
@@ -646,23 +646,23 @@ LABEL_125:
       }
 
       v46 = objc_alloc(*v44);
-      v47 = [(NWStatsManager *)self statsMonitor];
-      v67 = [v46 initWithDetails:a3 length:a4 monitor:v47];
+      statsMonitor2 = [(NWStatsManager *)self statsMonitor];
+      activePoll5 = [v46 initWithDetails:message length:length monitor:statsMonitor2];
 
-      if (v67)
+      if (activePoll5)
       {
-        v48 = [v67 createSnapshot:v42 firstOccurrence:1];
+        v48 = [activePoll5 createSnapshot:v42 firstOccurrence:1];
         if ((flags & 4) != 0)
         {
           goto LABEL_104;
         }
 
-        v49 = [(NWStatsManager *)self internalSources];
-        [v49 setObject:v67 forKey:v36];
+        internalSources2 = [(NWStatsManager *)self internalSources];
+        [internalSources2 setObject:activePoll5 forKey:v36];
         goto LABEL_103;
       }
 
-      v67 = 0;
+      activePoll5 = 0;
     }
 
     v48 = 0;
@@ -673,16 +673,16 @@ LABEL_125:
   {
     if (type != 10001)
     {
-      if (type != 10002 || a4 < 0x18)
+      if (type != 10002 || length < 0x18)
       {
         goto LABEL_133;
       }
 
-      v9 = a3[1].context;
-      v10 = a3->flags;
-      v11 = [(NWStatsManager *)self internalSources];
+      v9 = message[1].context;
+      v10 = message->flags;
+      internalSources3 = [(NWStatsManager *)self internalSources];
       v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v9];
-      v13 = [v11 objectForKey:v12];
+      v13 = [internalSources3 objectForKey:v12];
 
       if (v10 == 8)
       {
@@ -690,7 +690,7 @@ LABEL_125:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           *buf = 134218242;
-          v69 = v9;
+          lengthCopy4 = v9;
           v70 = 2112;
           v71 = v13;
           _os_log_impl(&dword_25BA3A000, v14, OS_LOG_TYPE_ERROR, "NSTAT_MSG_TYPE_SRC_REMOVED received reports drop, source ref %lld source %@", buf, 0x16u);
@@ -737,12 +737,12 @@ LABEL_72:
       goto LABEL_133;
     }
 
-    if (a4 < 0x20)
+    if (length < 0x20)
     {
       goto LABEL_133;
     }
 
-    v26 = a3[1].type;
+    v26 = message[1].type;
     if (v26 > 0xA)
     {
       goto LABEL_133;
@@ -751,7 +751,7 @@ LABEL_72:
     ++self->_providerCounts[v26].numSrcsAdded;
     if (v26 == 6)
     {
-      v27 = a3[1].context;
+      v27 = message[1].context;
       v28 = *MEMORY[0x277D85DE8];
 
       [(NWStatsManager *)self _sendUpdateRequestMessage:v27];
@@ -760,7 +760,7 @@ LABEL_72:
 
     if (self->_eagerInstantiate)
     {
-      v31 = a3[1].context;
+      v31 = message[1].context;
       v32 = *MEMORY[0x277D85DE8];
 
       [(NWStatsManager *)self _sendDetailsRequestMessage:v31];
@@ -773,20 +773,20 @@ LABEL_133:
   }
 
   currentPollReference = self->_currentPollReference;
-  if (!currentPollReference || currentPollReference != a3->context)
+  if (!currentPollReference || currentPollReference != message->context)
   {
     goto LABEL_133;
   }
 
-  if ((a3->flags & 2) != 0 && self->_continuationCount <= 0x27)
+  if ((message->flags & 2) != 0 && self->_continuationCount <= 0x27)
   {
-    v25 = [(NWStatsManager *)self activePoll];
-    if (!v25)
+    activePoll4 = [(NWStatsManager *)self activePoll];
+    if (!activePoll4)
     {
       [NWStatsManager _handleMessage:length:];
     }
 
-    v67 = [(NWStatsManager *)self activePoll];
+    activePoll5 = [(NWStatsManager *)self activePoll];
     [(NWStatsManager *)self _restartPoll:?];
     goto LABEL_125;
   }
@@ -803,10 +803,10 @@ LABEL_133:
   {
     for (i = v3; i > 0; i = recv([(NWStatsManager *)self sockfd], [(NWStatsManager *)self readBuffer], [(NWStatsManager *)self readBufferSize], 0))
     {
-      v5 = [(NWStatsManager *)self readBuffer];
+      readBuffer = [(NWStatsManager *)self readBuffer];
       if (i >= 0x10)
       {
-        v6 = v5;
+        v6 = readBuffer;
         do
         {
           v7 = *(v6 + 6);
@@ -833,18 +833,18 @@ LABEL_133:
   }
 }
 
-- (void)_handleReads:(int64_t)a3
+- (void)_handleReads:(int64_t)reads
 {
   v5 = objc_autoreleasePoolPush();
   v6 = 0;
-  if (a3 <= 1)
+  if (reads <= 1)
   {
-    v7 = 1;
+    readsCopy = 1;
   }
 
   else
   {
-    v7 = a3;
+    readsCopy = reads;
   }
 
   do
@@ -856,10 +856,10 @@ LABEL_133:
     }
 
     v9 = v8;
-    v10 = [(NWStatsManager *)self readBuffer];
+    readBuffer = [(NWStatsManager *)self readBuffer];
     if (v9 >= 0x10)
     {
-      v11 = v10;
+      v11 = readBuffer;
       do
       {
         v12 = *(v11 + 6);
@@ -884,7 +884,7 @@ LABEL_133:
     ++v6;
   }
 
-  while (v6 != v7);
+  while (v6 != readsCopy);
 
   objc_autoreleasePoolPop(v5);
 }
@@ -897,55 +897,55 @@ LABEL_133:
     [NWStatsManager _startQueuedPoll];
   }
 
-  v3 = [(NWStatsManager *)self clientQueue];
-  dispatch_assert_queue_V2(v3);
+  clientQueue = [(NWStatsManager *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v4 = [(NWStatsManager *)self queuedPolls];
-  v8 = [v4 objectAtIndexedSubscript:0];
+  queuedPolls = [(NWStatsManager *)self queuedPolls];
+  v8 = [queuedPolls objectAtIndexedSubscript:0];
 
   v6 = v8;
   if (v8)
   {
-    v7 = [(NWStatsManager *)self queuedPolls];
-    [v7 removeObjectAtIndex:0];
+    queuedPolls2 = [(NWStatsManager *)self queuedPolls];
+    [queuedPolls2 removeObjectAtIndex:0];
 
-    v5 = [(NWStatsManager *)self isInvalidated];
+    isInvalidated = [(NWStatsManager *)self isInvalidated];
     v6 = v8;
-    if ((v5 & 1) == 0)
+    if ((isInvalidated & 1) == 0)
     {
-      v5 = [(NWStatsManager *)self _startPoll:v8];
+      isInvalidated = [(NWStatsManager *)self _startPoll:v8];
       v6 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](isInvalidated, v6);
 }
 
-- (void)_handleCompletion:(unint64_t)a3
+- (void)_handleCompletion:(unint64_t)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a3 && self->_currentPollReference == a3)
+  if (completion && self->_currentPollReference == completion)
   {
     self->_currentPollReference = 0;
     self->_continuationCount = 0;
-    v13 = [(NWStatsManager *)self activePoll];
+    activePoll = [(NWStatsManager *)self activePoll];
     [(NWStatsManager *)self setActivePoll:0];
-    if (v13)
+    if (activePoll)
     {
-      if (([v13 synchronous] & 1) == 0)
+      if (([activePoll synchronous] & 1) == 0)
       {
-        v5 = [v13 completionBlock];
+        completionBlock = [activePoll completionBlock];
 
-        if (v5)
+        if (completionBlock)
         {
-          v6 = [v13 completionBlock];
-          v6[2]();
+          completionBlock2 = [activePoll completionBlock];
+          completionBlock2[2]();
         }
       }
     }
 
-    v7 = [(NWStatsManager *)self queuedPolls];
-    v8 = [v7 count];
+    queuedPolls = [(NWStatsManager *)self queuedPolls];
+    v8 = [queuedPolls count];
 
     if (v8)
     {
@@ -964,7 +964,7 @@ LABEL_133:
       *buf = 134218240;
       v15 = currentPollReference;
       v16 = 2048;
-      v17 = a3;
+      completionCopy = completion;
       _os_log_impl(&dword_25BA3A000, v10, OS_LOG_TYPE_ERROR, "mismatch, _currentPollReference %lld supplied reference %lld", buf, 0x16u);
     }
 
@@ -972,26 +972,26 @@ LABEL_133:
   }
 }
 
-- (void)_removeSourceInternal:(unint64_t)a3
+- (void)_removeSourceInternal:(unint64_t)internal
 {
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-  v4 = [(NWStatsManager *)self internalSources];
-  v5 = [v4 objectForKey:v7];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:internal];
+  internalSources = [(NWStatsManager *)self internalSources];
+  v5 = [internalSources objectForKey:v7];
 
   if (v5)
   {
     [v5 setRemoved:1];
-    v6 = [(NWStatsManager *)self internalSources];
-    [v6 removeObjectForKey:v7];
+    internalSources2 = [(NWStatsManager *)self internalSources];
+    [internalSources2 removeObjectForKey:v7];
 
     [(NWStatsManager *)self _handleRemoveForSource:v5];
   }
 }
 
-- (void)_addAllForProvider:(int)a3 filter:(unint64_t)a4 events:(unint64_t)a5
+- (void)_addAllForProvider:(int)provider filter:(unint64_t)filter events:(unint64_t)events
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 > 0xA || ((1 << a3) & 0x73C) == 0)
+  if (provider > 0xA || ((1 << provider) & 0x73C) == 0)
   {
     [NWStatsManager _addAllForProvider:filter:events:];
   }
@@ -1000,22 +1000,22 @@ LABEL_133:
   v6 = 0u;
   v10 = 0;
   DWORD2(v6) = 1002;
-  LODWORD(v9) = a3;
-  v7 = a4;
-  v8 = a5;
+  LODWORD(v9) = provider;
+  filterCopy = filter;
+  eventsCopy = events;
   [(NWStatsManager *)self _sendMessage:&v6 length:56];
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCounts:(nstat_msg_src_counts *)a3
+- (void)_handleCounts:(nstat_msg_src_counts *)counts
 {
   v23 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(NWStatsManager *)self interfaceSources];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  interfaceSources = [(NWStatsManager *)self interfaceSources];
+  v6 = [interfaceSources countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1026,24 +1026,24 @@ LABEL_133:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(interfaceSources);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        if ([v10 srcRef] == a3->var1)
+        if ([v10 srcRef] == counts->var1)
         {
-          v13 = [(NWStatsManager *)self delegate];
-          v14 = [v10 ifIndex];
+          delegate = [(NWStatsManager *)self delegate];
+          ifIndex = [v10 ifIndex];
           if (objc_opt_respondsToSelector())
           {
-            [v13 statsManager:self thresholdReachedOn:v14];
+            [delegate statsManager:self thresholdReachedOn:ifIndex];
           }
 
           goto LABEL_15;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v7 = [interfaceSources countByEnumeratingWithState:&v16 objects:v22 count:16];
       if (v7)
       {
         continue;
@@ -1056,23 +1056,23 @@ LABEL_133:
   v11 = NStatGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    var1 = a3->var1;
+    var1 = counts->var1;
     *buf = 134217984;
     v21 = var1;
     _os_log_impl(&dword_25BA3A000, v11, OS_LOG_TYPE_DEFAULT, "Unexpected counts message on source ref %lld", buf, 0xCu);
   }
 
-  [(NWStatsManager *)self _sendUpdateRequestMessage:a3->var1];
+  [(NWStatsManager *)self _sendUpdateRequestMessage:counts->var1];
 LABEL_15:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (int)_setThresholds:(id)a3
+- (int)_setThresholds:(id)thresholds
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  thresholdsCopy = thresholds;
+  v5 = thresholdsCopy;
+  if (!thresholdsCopy)
   {
     v17 = 0;
     goto LABEL_21;
@@ -1082,7 +1082,7 @@ LABEL_15:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v4;
+  v6 = thresholdsCopy;
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v36 count:16];
   if (!v7)
   {
@@ -1148,10 +1148,10 @@ LABEL_19:
       }
 
       v14 = v13;
-      v15 = [v14 unsignedLongLongValue];
-      v16 = [v12 unsignedIntegerValue];
+      unsignedLongLongValue = [v14 unsignedLongLongValue];
+      unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-      [(NWStatsManager *)self _setThreshold:v15 onInterface:v16];
+      [(NWStatsManager *)self _setThreshold:unsignedLongLongValue onInterface:unsignedIntegerValue];
     }
 
     v8 = [v6 countByEnumeratingWithState:&v26 objects:v36 count:16];
@@ -1172,7 +1172,7 @@ LABEL_21:
   return v17;
 }
 
-- (void)_setInterfaceTraceFd:(int)a3
+- (void)_setInterfaceTraceFd:(int)fd
 {
   if (!self->_iftracebuf)
   {
@@ -1192,24 +1192,24 @@ LABEL_21:
     close(interfaceTraceFd);
   }
 
-  self->_interfaceTraceFd = a3;
+  self->_interfaceTraceFd = fd;
 }
 
 - (void)invalidate
 {
-  v3 = [(NWStatsManager *)self readSource];
+  readSource = [(NWStatsManager *)self readSource];
 
-  if (v3)
+  if (readSource)
   {
-    v4 = [(NWStatsManager *)self readSource];
-    dispatch_source_cancel(v4);
+    readSource2 = [(NWStatsManager *)self readSource];
+    dispatch_source_cancel(readSource2);
 
     [(NWStatsManager *)self setReadSource:0];
   }
 
-  v5 = [(NWStatsManager *)self activePoll];
+  activePoll = [(NWStatsManager *)self activePoll];
 
-  if (v5)
+  if (activePoll)
   {
     [(NWStatsManager *)self setActivePoll:0];
   }
@@ -1217,18 +1217,18 @@ LABEL_21:
   [(NWStatsManager *)self setQueuedPolls:0];
   while (1)
   {
-    v6 = [(NWStatsManager *)self internalSources];
-    v7 = [v6 count];
+    internalSources = [(NWStatsManager *)self internalSources];
+    v7 = [internalSources count];
 
     if (!v7)
     {
       break;
     }
 
-    v8 = [(NWStatsManager *)self internalSources];
-    v9 = [v8 allKeys];
+    internalSources2 = [(NWStatsManager *)self internalSources];
+    allKeys = [internalSources2 allKeys];
 
-    v10 = [v9 objectAtIndexedSubscript:0];
+    v10 = [allKeys objectAtIndexedSubscript:0];
     -[NWStatsManager _removeSourceInternal:](self, "_removeSourceInternal:", [v10 unsignedLongLongValue]);
   }
 
@@ -1269,18 +1269,18 @@ LABEL_21:
   [(NWStatsManager *)&v6 dealloc];
 }
 
-- (BOOL)setRcvBufsize:(int)a3
+- (BOOL)setRcvBufsize:(int)bufsize
 {
   v14 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (self->_currentRcvBufSize == a3)
+  bufsizeCopy = bufsize;
+  if (self->_currentRcvBufSize == bufsize)
   {
     goto LABEL_4;
   }
 
-  if (setsockopt(self->_sockfd, 0xFFFF, 4098, &v9, 4u) != -1)
+  if (setsockopt(self->_sockfd, 0xFFFF, 4098, &bufsizeCopy, 4u) != -1)
   {
-    self->_currentRcvBufSize = v9;
+    self->_currentRcvBufSize = bufsizeCopy;
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     self->_currentRcvBufTimestamp = v4;
 LABEL_4:
@@ -1295,7 +1295,7 @@ LABEL_4:
     *buf = 67109376;
     v11 = currentRcvBufSize;
     v12 = 1024;
-    v13 = v9;
+    v13 = bufsizeCopy;
     _os_log_impl(&dword_25BA3A000, v7, OS_LOG_TYPE_ERROR, "Unable to increment rcv buf size from %d to %d", buf, 0xEu);
   }
 
@@ -1305,10 +1305,10 @@ LABEL_5:
   return result;
 }
 
-- (NWStatsManager)initWithQueue:(id)a3
+- (NWStatsManager)initWithQueue:(id)queue
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  queueCopy = queue;
   v24.receiver = self;
   v24.super_class = NWStatsManager;
   v6 = [(NWStatsManager *)&v24 init];
@@ -1363,7 +1363,7 @@ LABEL_5:
   v6->_sockfd = v8;
   if ([(NWStatsManager *)v6 setRcvBufsize:0x20000])
   {
-    objc_storeStrong(&v6->_clientQueue, a3);
+    objc_storeStrong(&v6->_clientQueue, queue);
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
     internalSources = v6->_internalSources;
     v6->_internalSources = v12;
@@ -1376,7 +1376,7 @@ LABEL_5:
     interfaceSources = v6->_interfaceSources;
     v6->_interfaceSources = v16;
 
-    v18 = [[NWStatsMonitor alloc] initWithQueue:v5];
+    v18 = [[NWStatsMonitor alloc] initWithQueue:queueCopy];
     statsMonitor = v6->_statsMonitor;
     v6->_statsMonitor = v18;
 
@@ -1405,19 +1405,19 @@ LABEL_16:
   return v10;
 }
 
-- (int)initialConfigure:(id)a3
+- (int)initialConfigure:(id)configure
 {
   v83 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configureCopy = configure;
   currentRcvBufSize = self->_currentRcvBufSize;
   self->_consecutiveReadLimit = 20;
   self->_checkNESessionManagerVPNs = 1;
   [(NWStatsManager *)self setReadBufferSize:4096];
-  v6 = [v4 objectForKeyedSubscript:@"kNWStatsParameterTargetSelector"];
+  v6 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterTargetSelector"];
 
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:@"kNWStatsParameterTargetSelector"];
+    v7 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterTargetSelector"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1426,22 +1426,22 @@ LABEL_16:
       goto LABEL_7;
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"kNWStatsParameterTargetSelector"];
+    v9 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterTargetSelector"];
   }
 
   else
   {
-    v9 = [[NWStatsTargetSelector alloc] initWithSelection:v4];
+    v9 = [[NWStatsTargetSelector alloc] initWithSelection:configureCopy];
   }
 
   v10 = v9;
   if (v9)
   {
-    v11 = [(NWStatsTargetSelector *)v9 filter];
-    v12 = [(NWStatsTargetSelector *)v10 connFilter];
-    v13 = [(NWStatsTargetSelector *)v10 events];
+    filter = [(NWStatsTargetSelector *)v9 filter];
+    connFilter = [(NWStatsTargetSelector *)v10 connFilter];
+    events = [(NWStatsTargetSelector *)v10 events];
     v14 = 0;
-    v15 = v11 | 0x8000000000;
+    v15 = filter | 0x8000000000;
     goto LABEL_10;
   }
 
@@ -1454,29 +1454,29 @@ LABEL_7:
   }
 
   v10 = 0;
-  v13 = 0;
-  v12 = 0;
+  events = 0;
+  connFilter = 0;
   v15 = 0x8000000000;
   v14 = 1;
 LABEL_10:
-  v17 = [v4 objectForKeyedSubscript:@"kNWStatsParameterTraceFD"];
+  v17 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterTraceFD"];
 
   if (v17)
   {
-    v18 = [v4 objectForKeyedSubscript:@"kNWStatsParameterTraceFD"];
-    v19 = [v18 intValue];
+    v18 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterTraceFD"];
+    intValue = [v18 intValue];
 
-    if (v19)
+    if (intValue)
     {
-      [(NWStatsManager *)self _setInterfaceTraceFd:v19];
+      [(NWStatsManager *)self _setInterfaceTraceFd:intValue];
     }
   }
 
-  v20 = [v4 objectForKeyedSubscript:@"kNWStatsParameterDomainInfo"];
+  v20 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterDomainInfo"];
 
   if (v20)
   {
-    v21 = [v4 objectForKeyedSubscript:@"kNWStatsParameterDomainInfo"];
+    v21 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterDomainInfo"];
     if ([v21 BOOLValue])
     {
       v15 |= 0x20000000000uLL;
@@ -1492,46 +1492,46 @@ LABEL_10:
     }
   }
 
-  v23 = [v4 objectForKeyedSubscript:@"kNWStatsSelectKnownInbound"];
+  v23 = [configureCopy objectForKeyedSubscript:@"kNWStatsSelectKnownInbound"];
 
   if (v23)
   {
-    v24 = [v4 objectForKeyedSubscript:@"kNWStatsSelectKnownInbound"];
+    v24 = [configureCopy objectForKeyedSubscript:@"kNWStatsSelectKnownInbound"];
     if ([v24 BOOLValue])
     {
       v15 |= 0x4000000uLL;
     }
   }
 
-  v25 = [v4 objectForKeyedSubscript:@"kNWStatsSelectKnownOutbound"];
+  v25 = [configureCopy objectForKeyedSubscript:@"kNWStatsSelectKnownOutbound"];
 
   if (v25)
   {
-    v26 = [v4 objectForKeyedSubscript:@"kNWStatsSelectKnownOutbound"];
+    v26 = [configureCopy objectForKeyedSubscript:@"kNWStatsSelectKnownOutbound"];
     if ([v26 BOOLValue])
     {
       v15 |= 0x8000000uLL;
     }
   }
 
-  v27 = [v4 objectForKeyedSubscript:@"kNWStatsSelectKnownListener"];
+  v27 = [configureCopy objectForKeyedSubscript:@"kNWStatsSelectKnownListener"];
 
   if (v27)
   {
-    v28 = [v4 objectForKeyedSubscript:@"kNWStatsSelectKnownListener"];
+    v28 = [configureCopy objectForKeyedSubscript:@"kNWStatsSelectKnownListener"];
     if ([v28 BOOLValue])
     {
       v15 |= 0x2000000uLL;
     }
   }
 
-  v29 = [v4 objectForKeyedSubscript:@"kNWStatsParameterNECPClientTLV"];
+  v29 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterNECPClientTLV"];
 
   v76 = currentRcvBufSize;
   if (v29)
   {
     v15 |= 0x40000000000uLL;
-    v12 |= 0x40000000000uLL;
+    connFilter |= 0x40000000000uLL;
     v30 = NStatGetLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
@@ -1541,71 +1541,71 @@ LABEL_10:
     }
   }
 
-  v31 = [v4 objectForKeyedSubscript:@"kNWStatsParameterNECPAncestralClientTLV"];
+  v31 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterNECPAncestralClientTLV"];
 
   if (v31)
   {
-    v32 = v12 | 0x80000000000;
+    v32 = connFilter | 0x80000000000;
   }
 
   else
   {
-    v32 = v12;
+    v32 = connFilter;
   }
 
-  v33 = [v4 objectForKeyedSubscript:@"kNWStatsSelectConnHasNetAccess"];
+  v33 = [configureCopy objectForKeyedSubscript:@"kNWStatsSelectConnHasNetAccess"];
 
   if (v33)
   {
-    v34 = [v4 objectForKeyedSubscript:@"kNWStatsSelectConnHasNetAccess"];
+    v34 = [configureCopy objectForKeyedSubscript:@"kNWStatsSelectConnHasNetAccess"];
     if ([v34 BOOLValue])
     {
       v32 |= 0x1000000uLL;
     }
   }
 
-  v35 = [v4 objectForKeyedSubscript:@"kNWStatsSelectTuneSkipNoChangeConnOnRefresh"];
+  v35 = [configureCopy objectForKeyedSubscript:@"kNWStatsSelectTuneSkipNoChangeConnOnRefresh"];
 
   if (v35)
   {
-    v36 = [v4 objectForKeyedSubscript:@"kNWStatsSelectTuneSkipNoChangeConnOnRefresh"];
+    v36 = [configureCopy objectForKeyedSubscript:@"kNWStatsSelectTuneSkipNoChangeConnOnRefresh"];
     if ([v36 BOOLValue])
     {
       v32 |= 0x20000000uLL;
     }
   }
 
-  v37 = [v4 objectForKeyedSubscript:@"kNWStatsTuneMaxConsecutiveReads"];
+  v37 = [configureCopy objectForKeyedSubscript:@"kNWStatsTuneMaxConsecutiveReads"];
 
   if (v37)
   {
-    v38 = [v4 objectForKeyedSubscript:@"kNWStatsTuneMaxConsecutiveReads"];
+    v38 = [configureCopy objectForKeyedSubscript:@"kNWStatsTuneMaxConsecutiveReads"];
     objc_opt_class();
     v39 = objc_opt_isKindOfClass();
 
     if (v39)
     {
-      v40 = [v4 objectForKeyedSubscript:@"kNWStatsTuneMaxConsecutiveReads"];
+      v40 = [configureCopy objectForKeyedSubscript:@"kNWStatsTuneMaxConsecutiveReads"];
       self->_consecutiveReadLimit = [v40 intValue];
     }
   }
 
-  v41 = [v4 objectForKeyedSubscript:@"kNWStatsSelectTuneSkipNoChangeConnOnClose"];
+  v41 = [configureCopy objectForKeyedSubscript:@"kNWStatsSelectTuneSkipNoChangeConnOnClose"];
 
   if (v41)
   {
-    v42 = [v4 objectForKeyedSubscript:@"kNWStatsSelectTuneSkipNoChangeConnOnClose"];
+    v42 = [configureCopy objectForKeyedSubscript:@"kNWStatsSelectTuneSkipNoChangeConnOnClose"];
     if ([v42 BOOLValue])
     {
       v32 |= 0x10000000uLL;
     }
   }
 
-  v43 = [v4 objectForKeyedSubscript:@"kNWStatsOptimizeFrequentRefresh"];
+  v43 = [configureCopy objectForKeyedSubscript:@"kNWStatsOptimizeFrequentRefresh"];
 
   if (v43)
   {
-    v44 = [v4 objectForKeyedSubscript:@"kNWStatsOptimizeFrequentRefresh"];
+    v44 = [configureCopy objectForKeyedSubscript:@"kNWStatsOptimizeFrequentRefresh"];
     if ([v44 BOOLValue])
     {
       [(NWStatsManager *)self setReadBufferSize:0x4000];
@@ -1613,17 +1613,17 @@ LABEL_10:
     }
   }
 
-  v45 = [v4 objectForKeyedSubscript:@"kNWStatsSelectHasTrafficDelta"];
+  v45 = [configureCopy objectForKeyedSubscript:@"kNWStatsSelectHasTrafficDelta"];
   if (v45)
   {
     v46 = v45;
-    v47 = [v4 objectForKeyedSubscript:@"kNWStatsSelectHasTrafficDelta"];
+    v47 = [configureCopy objectForKeyedSubscript:@"kNWStatsSelectHasTrafficDelta"];
     objc_opt_class();
     v48 = objc_opt_isKindOfClass();
 
     if (v48)
     {
-      v49 = [v4 objectForKeyedSubscript:@"kNWStatsSelectHasTrafficDelta"];
+      v49 = [configureCopy objectForKeyedSubscript:@"kNWStatsSelectHasTrafficDelta"];
       if ([v49 BOOLValue])
       {
         v15 |= 0x800000uLL;
@@ -1631,20 +1631,20 @@ LABEL_10:
     }
   }
 
-  v50 = [v4 objectForKeyedSubscript:@"kNWStatsParameterReportOpen"];
+  v50 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterReportOpen"];
 
   if (v50)
   {
-    v51 = [v4 objectForKeyedSubscript:@"kNWStatsParameterReportOpen"];
-    v52 = [v51 BOOLValue];
-    self->_eagerInstantiate = v52;
-    if (v52)
+    v51 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterReportOpen"];
+    bOOLValue = [v51 BOOLValue];
+    self->_eagerInstantiate = bOOLValue;
+    if (bOOLValue)
     {
-      v53 = [v4 objectForKeyedSubscript:@"kNWStatsParameterExperiment"];
+      v53 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterExperiment"];
 
       if (v53)
       {
-        v54 = [v4 objectForKeyedSubscript:@"kNWStatsParameterExperiment"];
+        v54 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterExperiment"];
         if ([v54 BOOLValue])
         {
           v32 |= 0x200000uLL;
@@ -1667,39 +1667,39 @@ LABEL_10:
     v32 |= 0x100000uLL;
   }
 
-  v55 = [v4 objectForKeyedSubscript:@"kNWStatsParameterTrafficDeltaAdjustmentFactor"];
+  v55 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterTrafficDeltaAdjustmentFactor"];
 
   if (v55)
   {
-    v56 = [v4 objectForKeyedSubscript:@"kNWStatsParameterTrafficDeltaAdjustmentFactor"];
+    v56 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterTrafficDeltaAdjustmentFactor"];
     objc_opt_class();
     v57 = objc_opt_isKindOfClass();
 
     if (v57)
     {
-      v58 = [v4 objectForKeyedSubscript:@"kNWStatsParameterTrafficDeltaAdjustmentFactor"];
+      v58 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterTrafficDeltaAdjustmentFactor"];
       [v58 doubleValue];
       self->_trafficDeltaAdjustmentFactor = v59;
     }
   }
 
-  v60 = [v4 objectForKeyedSubscript:@"kNWStatsParameterCheckNESessionManagerVPNs"];
+  v60 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterCheckNESessionManagerVPNs"];
 
   if (v60)
   {
-    v61 = [v4 objectForKeyedSubscript:@"kNWStatsParameterCheckNESessionManagerVPNs"];
+    v61 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterCheckNESessionManagerVPNs"];
     objc_opt_class();
     v62 = objc_opt_isKindOfClass();
 
     if (v62)
     {
-      v63 = [v4 objectForKeyedSubscript:@"kNWStatsParameterCheckNESessionManagerVPNs"];
+      v63 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterCheckNESessionManagerVPNs"];
       self->_checkNESessionManagerVPNs = [v63 BOOLValue];
     }
   }
 
-  v64 = [(NWStatsManager *)self readBufferSize];
-  if (!v64 || (v65 = malloc_type_malloc(v64, 0x46AA3AE4uLL)) == 0)
+  readBufferSize = [(NWStatsManager *)self readBufferSize];
+  if (!readBufferSize || (v65 = malloc_type_malloc(readBufferSize, 0x46AA3AE4uLL)) == 0)
   {
     __break(1u);
   }
@@ -1735,7 +1735,7 @@ LABEL_10:
   [(NWStatsManager *)self _sendDetailsRequestMessage:-1];
   if (v14)
   {
-    [(NWStatsManager *)self _addAllForProvider:2 filter:v15 events:v13];
+    [(NWStatsManager *)self _addAllForProvider:2 filter:v15 events:events];
     [(NWStatsManager *)self _drainReadBuffer];
   }
 
@@ -1743,7 +1743,7 @@ LABEL_10:
   {
     if ([(NWStatsTargetSelector *)v10 shouldAddProvider:2])
     {
-      [(NWStatsManager *)self _addAllForProvider:2 filter:v15 events:v13];
+      [(NWStatsManager *)self _addAllForProvider:2 filter:v15 events:events];
       [(NWStatsManager *)self _drainReadBuffer];
     }
 
@@ -1752,7 +1752,7 @@ LABEL_10:
 LABEL_88:
       if ([(NWStatsTargetSelector *)v10 shouldAddProvider:3])
       {
-        [(NWStatsManager *)self _addAllForProvider:3 filter:v15 events:v13];
+        [(NWStatsManager *)self _addAllForProvider:3 filter:v15 events:events];
         [(NWStatsManager *)self _drainReadBuffer];
       }
 
@@ -1765,22 +1765,22 @@ LABEL_88:
     }
   }
 
-  [(NWStatsManager *)self _addAllForProvider:4 filter:v15 events:v13];
+  [(NWStatsManager *)self _addAllForProvider:4 filter:v15 events:events];
   [(NWStatsManager *)self _drainReadBuffer];
   if ((v14 & 1) == 0)
   {
     goto LABEL_88;
   }
 
-  [(NWStatsManager *)self _addAllForProvider:3 filter:v15 events:v13];
+  [(NWStatsManager *)self _addAllForProvider:3 filter:v15 events:events];
   [(NWStatsManager *)self _drainReadBuffer];
 LABEL_91:
-  [(NWStatsManager *)self _addAllForProvider:5 filter:v15 events:v13];
+  [(NWStatsManager *)self _addAllForProvider:5 filter:v15 events:events];
   [(NWStatsManager *)self _drainReadBuffer];
   if (v14)
   {
 LABEL_93:
-    [(NWStatsManager *)self _addAllForProvider:8 filter:v15 events:v13];
+    [(NWStatsManager *)self _addAllForProvider:8 filter:v15 events:events];
     [(NWStatsManager *)self _drainReadBuffer];
     goto LABEL_94;
   }
@@ -1794,14 +1794,14 @@ LABEL_92:
 LABEL_94:
   if ([(NWStatsTargetSelector *)v10 shouldAddProvider:10])
   {
-    [(NWStatsManager *)self _addAllForProvider:10 filter:v15 events:v13];
+    [(NWStatsManager *)self _addAllForProvider:10 filter:v15 events:events];
     [(NWStatsManager *)self _drainReadBuffer];
     v76 += 0x8000;
   }
 
   if ([(NWStatsTargetSelector *)v10 shouldAddProvider:9])
   {
-    [(NWStatsManager *)self _addAllForProvider:9 filter:v32 | 0x120000000000 events:v13];
+    [(NWStatsManager *)self _addAllForProvider:9 filter:v32 | 0x120000000000 events:events];
     [(NWStatsManager *)self _drainReadBuffer];
     v72 = v76 + 0x8000;
   }
@@ -1813,7 +1813,7 @@ LABEL_94:
 
   [(NWStatsManager *)self setRcvBufsize:v72];
   [(NWStatsManager *)self setConfigured:1];
-  v73 = [v4 objectForKeyedSubscript:@"kNWStatsParameterThresholds"];
+  v73 = [configureCopy objectForKeyedSubscript:@"kNWStatsParameterThresholds"];
   v71 = [(NWStatsManager *)self _setThresholds:v73];
 
   if (self->_eagerInstantiate || self->_trafficDeltaAdjustmentFactor > 0.0)
@@ -1851,34 +1851,34 @@ void __35__NWStatsManager_initialConfigure___block_invoke_3(uint64_t a1)
   }
 }
 
-- (int)reconfigure:(id)a3
+- (int)reconfigure:(id)reconfigure
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kNWStatsParameterTraceFD"];
+  reconfigureCopy = reconfigure;
+  v5 = [reconfigureCopy objectForKeyedSubscript:@"kNWStatsParameterTraceFD"];
 
   if (v5)
   {
     interfaceTraceFd = self->_interfaceTraceFd;
-    v7 = [v4 objectForKeyedSubscript:@"kNWStatsParameterTraceFD"];
-    v8 = [v7 intValue];
+    v7 = [reconfigureCopy objectForKeyedSubscript:@"kNWStatsParameterTraceFD"];
+    intValue = [v7 intValue];
 
-    if (interfaceTraceFd != v8)
+    if (interfaceTraceFd != intValue)
     {
-      v9 = [v4 objectForKeyedSubscript:@"kNWStatsParameterTraceFD"];
+      v9 = [reconfigureCopy objectForKeyedSubscript:@"kNWStatsParameterTraceFD"];
       -[NWStatsManager _setInterfaceTraceFd:](self, "_setInterfaceTraceFd:", [v9 intValue]);
     }
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"kNWStatsParameterThresholds"];
+  v10 = [reconfigureCopy objectForKeyedSubscript:@"kNWStatsParameterThresholds"];
   v11 = [(NWStatsManager *)self _setThresholds:v10];
 
   return v11;
 }
 
-- (int)configure:(id)a3
+- (int)configure:(id)configure
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configureCopy = configure;
   if ([(NWStatsManager *)self isInvalidated])
   {
     v5 = NStatGetLog();
@@ -1899,25 +1899,25 @@ void __35__NWStatsManager_initialConfigure___block_invoke_3(uint64_t a1)
     {
       v9 = v8;
       v10 = SecTaskCopyValueForEntitlement(v8, @"com.apple.private.network.statistics", 0);
-      v11 = [v10 BOOLValue];
+      bOOLValue = [v10 BOOLValue];
       v12 = SecTaskCopyValueForEntitlement(v9, @"com.apple.private.coreservices.canmapbundleidtouuid", 0);
 
-      v13 = [v12 BOOLValue];
+      bOOLValue2 = [v12 BOOLValue];
       CFRelease(v9);
 
-      if (v11 && v13)
+      if (bOOLValue && bOOLValue2)
       {
-        v14 = [(NWStatsManager *)self statsMonitor];
-        [v14 configure:v4];
+        statsMonitor = [(NWStatsManager *)self statsMonitor];
+        [statsMonitor configure:configureCopy];
 
         if ([(NWStatsManager *)self configured])
         {
-          v6 = [(NWStatsManager *)self reconfigure:v4];
+          v6 = [(NWStatsManager *)self reconfigure:configureCopy];
         }
 
         else
         {
-          v6 = [(NWStatsManager *)self initialConfigure:v4];
+          v6 = [(NWStatsManager *)self initialConfigure:configureCopy];
           [(NWStatsManager *)self setConfigured:1];
         }
 
@@ -1934,17 +1934,17 @@ void __35__NWStatsManager_initialConfigure___block_invoke_3(uint64_t a1)
         _os_log_impl(&dword_25BA3A000, v15, OS_LOG_TYPE_ERROR, "NWStatsManager configure: unable to get task ref for entitlement check", v19, 2u);
       }
 
-      v11 = 0;
-      v13 = 0;
+      bOOLValue = 0;
+      bOOLValue2 = 0;
     }
 
     v16 = NStatGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
       v19[0] = 67109376;
-      v19[1] = v11;
+      v19[1] = bOOLValue;
       v20 = 1024;
-      v21 = v13;
+      v21 = bOOLValue2;
       _os_log_impl(&dword_25BA3A000, v16, OS_LOG_TYPE_FAULT, "NWStatsManager configure: entitlements not held, netstats %d, mapping %d", v19, 0xEu);
     }
 
@@ -1958,13 +1958,13 @@ LABEL_16:
   return v6;
 }
 
-- (int)_refreshUsingBlock:(id)a3 completionBlock:(id)a4
+- (int)_refreshUsingBlock:(id)block completionBlock:(id)completionBlock
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NWStatsManager *)self queuedPolls];
-  v9 = [v8 count];
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  queuedPolls = [(NWStatsManager *)self queuedPolls];
+  v9 = [queuedPolls count];
 
   if (v9 < 4)
   {
@@ -1988,16 +1988,16 @@ LABEL_16:
         v15 = v14;
         if (v14)
         {
-          [(NWStatsPollHandler *)v14 setDeliveryBlock:v6];
-          [(NWStatsPollHandler *)v15 setCompletionBlock:v7];
+          [(NWStatsPollHandler *)v14 setDeliveryBlock:blockCopy];
+          [(NWStatsPollHandler *)v15 setCompletionBlock:completionBlockCopy];
           [(NWStatsPollHandler *)v15 setManager:self];
           [(NWStatsPollHandler *)v15 setSynchronous:0];
-          v16 = [(NWStatsManager *)self activePoll];
+          activePoll = [(NWStatsManager *)self activePoll];
 
-          if (v16)
+          if (activePoll)
           {
-            v17 = [(NWStatsManager *)self queuedPolls];
-            [v17 addObject:v15];
+            queuedPolls2 = [(NWStatsManager *)self queuedPolls];
+            [queuedPolls2 addObject:v15];
           }
 
           else
@@ -2045,9 +2045,9 @@ LABEL_16:
   return v11;
 }
 
-- (int)_refreshSyncUsingBlock:(id)a3
+- (int)_refreshSyncUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(NWStatsManager *)self configured])
   {
     if ([(NWStatsManager *)self isInvalidated])
@@ -2080,16 +2080,16 @@ LABEL_16:
       v11 = v10;
       if (v10)
       {
-        [(NWStatsPollHandler *)v10 setDeliveryBlock:v4];
+        [(NWStatsPollHandler *)v10 setDeliveryBlock:blockCopy];
         [(NWStatsPollHandler *)v11 setCompletionBlock:0];
         [(NWStatsPollHandler *)v11 setManager:self];
         [(NWStatsPollHandler *)v11 setSynchronous:1];
-        v12 = [(NWStatsManager *)self activePoll];
+        activePoll = [(NWStatsManager *)self activePoll];
 
-        if (v12)
+        if (activePoll)
         {
-          v13 = [(NWStatsManager *)self queuedPolls];
-          [v13 addObject:v11];
+          queuedPolls = [(NWStatsManager *)self queuedPolls];
+          [queuedPolls addObject:v11];
         }
 
         else
@@ -2100,9 +2100,9 @@ LABEL_16:
         self->_handlingSocketReads = 1;
         while (1)
         {
-          v14 = [(NWStatsManager *)self activePoll];
+          activePoll2 = [(NWStatsManager *)self activePoll];
 
-          if (!v14)
+          if (!activePoll2)
           {
             break;
           }
@@ -2136,30 +2136,30 @@ LABEL_16:
   return v6;
 }
 
-- (void)ignoreSource:(unint64_t)a3
+- (void)ignoreSource:(unint64_t)source
 {
-  v5 = [(NWStatsManager *)self internalSources];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-  v8 = [v5 objectForKey:v6];
+  internalSources = [(NWStatsManager *)self internalSources];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:source];
+  v8 = [internalSources objectForKey:v6];
 
   v7 = v8;
   if (v8)
   {
     [v8 setRemoving:1];
-    [(NWStatsManager *)self _sendRemoveSource:a3];
+    [(NWStatsManager *)self _sendRemoveSource:source];
     v7 = v8;
   }
 }
 
-- (id)identifierForUUID:(id)a3 derivation:(int *)a4
+- (id)identifierForUUID:(id)d derivation:(int *)derivation
 {
-  v6 = a3;
-  v7 = [(NWStatsManager *)self statsMonitor];
+  dCopy = d;
+  statsMonitor = [(NWStatsManager *)self statsMonitor];
 
-  if (v7)
+  if (statsMonitor)
   {
-    v8 = [(NWStatsManager *)self statsMonitor];
-    v9 = [v8 identifierForUUID:v6 derivation:a4];
+    statsMonitor2 = [(NWStatsManager *)self statsMonitor];
+    v9 = [statsMonitor2 identifierForUUID:dCopy derivation:derivation];
   }
 
   else
@@ -2172,10 +2172,10 @@ LABEL_16:
 
 - (id)stateDictionary
 {
-  v2 = [(NWStatsManager *)self statsMonitor];
-  v3 = [v2 stateDictionary];
+  statsMonitor = [(NWStatsManager *)self statsMonitor];
+  stateDictionary = [statsMonitor stateDictionary];
 
-  return v3;
+  return stateDictionary;
 }
 
 - (id)getState
@@ -2183,8 +2183,8 @@ LABEL_16:
   v68 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
-  v5 = [(NWStatsManager *)self internalSources];
-  v6 = [v4 initWithFormat:@"NWStatsManager %p: Current num sources %d current buf size %d after %d adaptations", self, objc_msgSend(v5, "count"), self->_currentRcvBufSize, self->_numAdaptiveRcvBufIncrements];
+  internalSources = [(NWStatsManager *)self internalSources];
+  v6 = [v4 initWithFormat:@"NWStatsManager %p: Current num sources %d current buf size %d after %d adaptations", self, objc_msgSend(internalSources, "count"), self->_currentRcvBufSize, self->_numAdaptiveRcvBufIncrements];
   [v3 addObject:v6];
 
   v7 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -2201,12 +2201,12 @@ LABEL_16:
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v13 = [(NWStatsManager *)self queuedPolls];
-  v14 = [v13 countByEnumeratingWithState:&v61 objects:v67 count:16];
+  queuedPolls = [(NWStatsManager *)self queuedPolls];
+  v14 = [queuedPolls countByEnumeratingWithState:&v61 objects:v67 count:16];
   if (v14)
   {
     v15 = v14;
-    v16 = self;
+    selfCopy = self;
     v17 = 0;
     v18 = *v62;
     do
@@ -2217,7 +2217,7 @@ LABEL_16:
       {
         if (*v62 != v18)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(queuedPolls);
         }
 
         v17 = *(*(&v61 + 1) + 8 * v19);
@@ -2230,12 +2230,12 @@ LABEL_16:
       }
 
       while (v15 != v19);
-      v15 = [v13 countByEnumeratingWithState:&v61 objects:v67 count:16];
+      v15 = [queuedPolls countByEnumeratingWithState:&v61 objects:v67 count:16];
     }
 
     while (v15);
 
-    self = v16;
+    self = selfCopy;
   }
 
   v22 = &off_27996E108;
@@ -2266,7 +2266,7 @@ LABEL_16:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v27 = self;
+  selfCopy2 = self;
   obj = [(NWStatsManager *)self interfaceSources];
   v28 = [obj countByEnumeratingWithState:&v57 objects:v66 count:16];
   if (v28)
@@ -2282,7 +2282,7 @@ LABEL_16:
           objc_enumerationMutation(obj);
         }
 
-        v32 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"NWStatsManager %p: monitoring interface %d with srcref %lld threshold %lld", v27, objc_msgSend(*(*(&v57 + 1) + 8 * j), "ifIndex"), objc_msgSend(*(*(&v57 + 1) + 8 * j), "srcRef"), objc_msgSend(*(*(&v57 + 1) + 8 * j), "threshold")];
+        v32 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"NWStatsManager %p: monitoring interface %d with srcref %lld threshold %lld", selfCopy2, objc_msgSend(*(*(&v57 + 1) + 8 * j), "ifIndex"), objc_msgSend(*(*(&v57 + 1) + 8 * j), "srcRef"), objc_msgSend(*(*(&v57 + 1) + 8 * j), "threshold")];
         [v3 addObject:v32];
       }
 
@@ -2292,12 +2292,12 @@ LABEL_16:
     while (v29);
   }
 
-  v33 = v27;
-  v34 = [(NWStatsManager *)v27 internalSources];
-  v35 = [v34 allKeys];
+  v33 = selfCopy2;
+  internalSources2 = [(NWStatsManager *)selfCopy2 internalSources];
+  allKeys = [internalSources2 allKeys];
 
-  v50 = v35;
-  [v35 sortedArrayUsingSelector:sel_compare_];
+  v50 = allKeys;
+  [allKeys sortedArrayUsingSelector:sel_compare_];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
@@ -2318,10 +2318,10 @@ LABEL_16:
 
         v40 = *(*(&v53 + 1) + 8 * k);
         v41 = objc_alloc(MEMORY[0x277CCACA8]);
-        v42 = [v40 longLongValue];
-        v43 = [(NWStatsManager *)v33 internalSources];
-        v44 = [v43 objectForKeyedSubscript:v40];
-        v45 = [v41 initWithFormat:@" ref %6lld --> %@", v42, v44];
+        longLongValue = [v40 longLongValue];
+        internalSources3 = [(NWStatsManager *)v33 internalSources];
+        v44 = [internalSources3 objectForKeyedSubscript:v40];
+        v45 = [v41 initWithFormat:@" ref %6lld --> %@", longLongValue, v44];
         [v3 addObject:v45];
       }
 
@@ -2334,8 +2334,8 @@ LABEL_16:
   if (v33->_checkNESessionManagerVPNs)
   {
     v46 = +[NWStatsInterfaceRegistry sharedInstance];
-    v47 = [v46 getState];
-    [v3 addObject:v47];
+    getState = [v46 getState];
+    [v3 addObject:getState];
   }
 
   v48 = *MEMORY[0x277D85DE8];
@@ -2346,12 +2346,12 @@ LABEL_16:
 - (void)dumpState
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(NWStatsManager *)self getState];
+  getState = [(NWStatsManager *)self getState];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v16 count:16];
+  v3 = [getState countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2362,7 +2362,7 @@ LABEL_16:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(getState);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -2375,7 +2375,7 @@ LABEL_16:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v16 count:16];
+      v4 = [getState countByEnumeratingWithState:&v10 objects:v16 count:16];
     }
 
     while (v4);
@@ -2384,22 +2384,22 @@ LABEL_16:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)getKernelMetrics:(id)a3
++ (id)getKernelMetrics:(id)metrics
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  metricsCopy = metrics;
+  v4 = metricsCopy;
+  if (metricsCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"kNtstatMetricsGlobal"];
+    v5 = [metricsCopy objectForKeyedSubscript:@"kNtstatMetricsGlobal"];
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v31 = [v5 BOOLValue];
-      v6 = v31 ^ 1;
+      bOOLValue = [v5 BOOLValue];
+      v6 = bOOLValue ^ 1;
     }
 
     else
     {
-      v31 = 0;
+      bOOLValue = 0;
       v6 = 1;
     }
 
@@ -2407,91 +2407,91 @@ LABEL_16:
 
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v8 = [v7 BOOLValue];
-      v6 &= v8 ^ 1;
+      bOOLValue2 = [v7 BOOLValue];
+      v6 &= bOOLValue2 ^ 1;
     }
 
     else
     {
-      v8 = 0;
+      bOOLValue2 = 0;
     }
 
     v9 = [v4 objectForKeyedSubscript:@"kNtstatMetricsCurrent"];
 
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v10 = [v9 BOOLValue];
-      v6 &= v10 ^ 1;
+      bOOLValue3 = [v9 BOOLValue];
+      v6 &= bOOLValue3 ^ 1;
     }
 
     else
     {
-      v10 = 0;
+      bOOLValue3 = 0;
     }
 
     v11 = [v4 objectForKeyedSubscript:@"kNtstatMetricsPrevious"];
 
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v12 = [v11 BOOLValue];
-      v6 &= v12 ^ 1;
+      bOOLValue4 = [v11 BOOLValue];
+      v6 &= bOOLValue4 ^ 1;
     }
 
     else
     {
-      v12 = 0;
+      bOOLValue4 = 0;
     }
 
     v13 = [v4 objectForKeyedSubscript:@"kNtstatMetricsGrandTotal"];
 
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v14 = [v13 BOOLValue];
-      v6 &= v14 ^ 1;
+      bOOLValue5 = [v13 BOOLValue];
+      v6 &= bOOLValue5 ^ 1;
     }
 
     else
     {
-      v14 = 0;
+      bOOLValue5 = 0;
     }
 
     v15 = [v4 objectForKeyedSubscript:@"kNtstatMetricsReportZeroCounts"];
 
     if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v16 = [v15 BOOLValue];
+      bOOLValue6 = [v15 BOOLValue];
     }
 
     else
     {
-      v16 = 0;
+      bOOLValue6 = 0;
     }
 
     v17 = [v4 objectForKeyedSubscript:@"kNtstatMetricsPid"];
 
     if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v30 = [v17 intValue];
+      intValue = [v17 intValue];
       v6 = 0;
     }
 
     else
     {
-      v30 = 0;
+      intValue = 0;
     }
 
     v18 = [v4 objectForKeyedSubscript:@"kNtstatMetricsSelf"];
 
     if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v19 = [v18 BOOLValue];
-      v20 = v19 | v8;
-      v6 &= v19 ^ 1;
+      bOOLValue7 = [v18 BOOLValue];
+      v20 = bOOLValue7 | bOOLValue2;
+      v6 &= bOOLValue7 ^ 1;
     }
 
     else
     {
-      v20 = v8;
+      v20 = bOOLValue2;
     }
 
     v21 = [v4 objectForKeyedSubscript:@"kNtstatMetricsProcessName"];
@@ -2507,19 +2507,19 @@ LABEL_16:
       v22 = 0;
     }
 
-    v23 = v31;
+    v23 = bOOLValue;
   }
 
   else
   {
-    v16 = 0;
-    v14 = 0;
+    bOOLValue6 = 0;
+    bOOLValue5 = 0;
     v20 = 0;
-    v12 = 0;
-    v10 = 0;
+    bOOLValue4 = 0;
+    bOOLValue3 = 0;
     v23 = 0;
     v22 = 0;
-    v30 = 0;
+    intValue = 0;
     v6 = 1;
   }
 
@@ -2527,25 +2527,25 @@ LABEL_16:
   v25 = v24;
   if ((v6 & 1) != 0 || v23)
   {
-    getGlobalMetrics(v24, v16);
+    getGlobalMetrics(v24, bOOLValue6);
   }
 
-  v26 = v6 | v10;
-  if (v14)
+  v26 = v6 | bOOLValue3;
+  if (bOOLValue5)
   {
-    getGrandTotalMetrics(v25, v16);
+    getGrandTotalMetrics(v25, bOOLValue6);
   }
 
-  v27 = v6 | v12;
+  v27 = v6 | bOOLValue4;
   if (v26)
   {
-    getCurrentMetrics(v25, v16);
+    getCurrentMetrics(v25, bOOLValue6);
     goto LABEL_53;
   }
 
   if (v22)
   {
-    getProcessMetrics(v25, v22, v16);
+    getProcessMetrics(v25, v22, bOOLValue6);
     goto LABEL_53;
   }
 
@@ -2556,27 +2556,27 @@ LABEL_16:
 
   else
   {
-    v28 = v30;
-    if (!v30)
+    v28 = intValue;
+    if (!intValue)
     {
       goto LABEL_53;
     }
   }
 
-  getPidMetrics(v25, v28, v16);
+  getPidMetrics(v25, v28, bOOLValue6);
 LABEL_53:
   if (v27)
   {
-    getPreviousMetrics(v25, v16);
+    getPreviousMetrics(v25, bOOLValue6);
   }
 
   return v25;
 }
 
-+ (void)dumpKernelMetrics:(id)a3
++ (void)dumpKernelMetrics:(id)metrics
 {
   v36 = *MEMORY[0x277D85DE8];
-  [a1 getKernelMetrics:a3];
+  [self getKernelMetrics:metrics];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;

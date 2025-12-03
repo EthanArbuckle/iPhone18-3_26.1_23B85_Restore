@@ -1,31 +1,31 @@
 @interface PushNotificationObserver
 - (_TtC9MusicCore24PushNotificationObserver)init;
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 @end
 
 @implementation PushNotificationObserver
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  if (a4)
+  if (token)
   {
-    v6 = a4;
+    tokenCopy = token;
     v4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     outlined consume of Data._Representation(v4, v5);
   }
 }
 
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd_0);
   __chkstk_darwin(v8 - 8);
   v10 = &v16 - v9;
-  if (a4)
+  if (topic)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    topic = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = v11;
-    if (a5)
+    if (info)
     {
 LABEL_3:
       v13 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
@@ -35,7 +35,7 @@ LABEL_3:
       v15[2] = 0;
       v15[3] = 0;
       v15[4] = self;
-      v15[5] = a4;
+      v15[5] = topic;
       v15[6] = v12;
       v15[7] = v13;
 
@@ -48,7 +48,7 @@ LABEL_3:
   else
   {
     v12 = 0;
-    if (a5)
+    if (info)
     {
       goto LABEL_3;
     }

@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneDocumentField_IndexEnum
-+ (id)toIndexWithBoolean:(BOOL)a3 withBoolean:(BOOL)a4 withBoolean:(BOOL)a5;
++ (id)toIndexWithBoolean:(BOOL)boolean withBoolean:(BOOL)withBoolean withBoolean:(BOOL)a5;
 + (void)initialize;
 @end
 
 @implementation OrgApacheLuceneDocumentField_IndexEnum
 
-+ (id)toIndexWithBoolean:(BOOL)a3 withBoolean:(BOOL)a4 withBoolean:(BOOL)a5
++ (id)toIndexWithBoolean:(BOOL)boolean withBoolean:(BOOL)withBoolean withBoolean:(BOOL)a5
 {
-  v6 = a4;
-  v7 = a3;
+  withBooleanCopy = withBoolean;
+  booleanCopy = boolean;
   if ((atomic_load_explicit(&OrgApacheLuceneDocumentField_IndexEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100066710();
@@ -16,14 +16,14 @@
 
   v8 = OrgApacheLuceneDocumentField_IndexEnum_values_;
   v9 = 3;
-  if (v6)
+  if (withBooleanCopy)
   {
     v9 = 4;
   }
 
   v10 = &OrgApacheLuceneDocumentField_IndexEnum_values_[v9];
   v11 = 2;
-  if (v6)
+  if (withBooleanCopy)
   {
     v11 = 1;
   }
@@ -34,7 +34,7 @@
     v10 = v12;
   }
 
-  if (v7)
+  if (booleanCopy)
   {
     v8 = v10;
   }
@@ -44,7 +44,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [OrgApacheLuceneDocumentField_Index__1Enum alloc];
     JavaLangEnum_initWithNSString_withInt_(v2, @"NO", 0);

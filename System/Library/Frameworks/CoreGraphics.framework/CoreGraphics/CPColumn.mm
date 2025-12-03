@@ -4,12 +4,12 @@
 - (double)bottomBaseline;
 - (double)rightPad;
 - (double)selectionBottom;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int)inOrder;
 - (int)outOrder;
 - (void)dealloc;
-- (void)setMaxLeftPad:(double)a3;
-- (void)setMaxRightPad:(double)a3;
+- (void)setMaxLeftPad:(double)pad;
+- (void)setMaxRightPad:(double)pad;
 @end
 
 @implementation CPColumn
@@ -21,9 +21,9 @@
     return 0.0;
   }
 
-  v3 = [(CPObject *)self lastChild];
+  lastChild = [(CPObject *)self lastChild];
 
-  [v3 selectionBottom];
+  [lastChild selectionBottom];
   return result;
 }
 
@@ -50,19 +50,19 @@
   return result;
 }
 
-- (void)setMaxRightPad:(double)a3
+- (void)setMaxRightPad:(double)pad
 {
-  self->maxLeftPad = a3;
+  self->maxLeftPad = pad;
   [(CPChunk *)self bounds];
   if (v7 < 0.0 || v8 < 0.0)
   {
     *&v5 = CGRectStandardize(*&v5);
   }
 
-  self->maxRightPad = v5 + v7 + a3;
+  self->maxRightPad = v5 + v7 + pad;
 }
 
-- (void)setMaxLeftPad:(double)a3
+- (void)setMaxLeftPad:(double)pad
 {
   [(CPChunk *)self bounds];
   if (v7 < 0.0 || v8 < 0.0)
@@ -70,8 +70,8 @@
     *&v5 = CGRectStandardize(*&v5);
   }
 
-  self->maxRight = v5 - a3;
-  *&self->hasCentredParagraph = a3;
+  self->maxRight = v5 - pad;
+  *&self->hasCentredParagraph = pad;
 }
 
 - (double)rightPad
@@ -92,23 +92,23 @@
     return 0.0;
   }
 
-  v3 = [(CPObject *)self lastChild];
-  if (!v3)
+  lastChild = [(CPObject *)self lastChild];
+  if (!lastChild)
   {
     return 0.0;
   }
 
-  v4 = [v3 lastChild];
+  v3LastChild = [lastChild lastChild];
 
-  [v4 baseline];
+  [v3LastChild baseline];
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = CPColumn;
-  return [(CPRegion *)&v4 copyWithZone:a3];
+  return [(CPRegion *)&v4 copyWithZone:zone];
 }
 
 - (void)dealloc

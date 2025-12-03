@@ -1,45 +1,45 @@
 @interface _UIRIPDeliveryRecord
-- (_UIRIPDeliveryRecord)initWithPresses:(id)a3 inPhase:(int64_t)a4 withEvent:(id)a5;
+- (_UIRIPDeliveryRecord)initWithPresses:(id)presses inPhase:(int64_t)phase withEvent:(id)event;
 - (id)description;
-- (id)diffToRecord:(id)a3 press:(id)a4;
-- (void)responder:(id)a3 class:(Class)a4 receivedPresses:(id)a5 inPhase:(int64_t)a6 withEvent:(id)a7;
+- (id)diffToRecord:(id)record press:(id)press;
+- (void)responder:(id)responder class:(Class)class receivedPresses:(id)presses inPhase:(int64_t)phase withEvent:(id)event;
 @end
 
 @implementation _UIRIPDeliveryRecord
 
-- (_UIRIPDeliveryRecord)initWithPresses:(id)a3 inPhase:(int64_t)a4 withEvent:(id)a5
+- (_UIRIPDeliveryRecord)initWithPresses:(id)presses inPhase:(int64_t)phase withEvent:(id)event
 {
-  v9 = a3;
-  v10 = a5;
+  pressesCopy = presses;
+  eventCopy = event;
   v16.receiver = self;
   v16.super_class = _UIRIPDeliveryRecord;
   v11 = [(_UIRIPDeliveryRecord *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_presses, a3);
-    v12->_phase = a4;
-    objc_storeStrong(&v12->_event, a5);
-    v13 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    objc_storeStrong(&v11->_presses, presses);
+    v12->_phase = phase;
+    objc_storeStrong(&v12->_event, event);
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     receivers = v12->_receivers;
-    v12->_receivers = v13;
+    v12->_receivers = strongToStrongObjectsMapTable;
   }
 
   return v12;
 }
 
-- (void)responder:(id)a3 class:(Class)a4 receivedPresses:(id)a5 inPhase:(int64_t)a6 withEvent:(id)a7
+- (void)responder:(id)responder class:(Class)class receivedPresses:(id)presses inPhase:(int64_t)phase withEvent:(id)event
 {
   v28 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  responderCopy = responder;
+  pressesCopy = presses;
+  eventCopy = event;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v13;
-  v15 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  obj = pressesCopy;
+  v15 = [pressesCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v15)
   {
     v16 = v15;
@@ -61,7 +61,7 @@
           [(NSMapTable *)self->_receivers setObject:v20 forKey:v19];
         }
 
-        v21 = [[_UIRIPReceiver alloc] initWithResponder:v12 class:a4 press:v19 inPhase:a6 withEvent:v14];
+        v21 = [[_UIRIPReceiver alloc] initWithResponder:responderCopy class:class press:v19 inPhase:phase withEvent:eventCopy];
         [v20 addObject:v21];
       }
 
@@ -81,26 +81,26 @@
   return v3;
 }
 
-- (id)diffToRecord:(id)a3 press:(id)a4
+- (id)diffToRecord:(id)record press:(id)press
 {
   v83 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIRIPDeliveryRecord *)self event];
-  v9 = [v6 event];
+  recordCopy = record;
+  pressCopy = press;
+  event = [(_UIRIPDeliveryRecord *)self event];
+  event2 = [recordCopy event];
 
-  if (v8 != v9)
+  if (event != event2)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [(_UIRIPDeliveryRecord *)self event];
-    v12 = [v6 event];
-    v13 = [v10 stringWithFormat:@"Unable to generate diff for records from different events: %p and %p", v11, v12];
+    event3 = [(_UIRIPDeliveryRecord *)self event];
+    event4 = [recordCopy event];
+    v13 = [v10 stringWithFormat:@"Unable to generate diff for records from different events: %p and %p", event3, event4];
 
     goto LABEL_67;
   }
 
-  v14 = [(NSMapTable *)self->_receivers objectForKey:v7];
-  v15 = [v6[1] objectForKey:v7];
+  v14 = [(NSMapTable *)self->_receivers objectForKey:pressCopy];
+  v15 = [recordCopy[1] objectForKey:pressCopy];
   v16 = v15;
   if (!v14 || !v15)
   {
@@ -110,7 +110,7 @@
 
   v17 = MEMORY[0x1E696AD60];
   v18 = _NSStringFromUIPressPhase([(_UIRIPDeliveryRecord *)self phase]);
-  v19 = _NSStringFromUIPressPhase([v6 phase]);
+  v19 = _NSStringFromUIPressPhase([recordCopy phase]);
   v20 = [v17 stringWithFormat:@"Difference between phase %@ and %@:\n", v18, v19];
 
   v21 = [v14 differenceFromArray:v16];
@@ -120,16 +120,16 @@
     goto LABEL_65;
   }
 
-  v67 = self;
-  v61 = v7;
-  v62 = v6;
-  v22 = [v21 removals];
+  selfCopy = self;
+  v61 = pressCopy;
+  v62 = recordCopy;
+  removals = [v21 removals];
   v23 = objc_opt_new();
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v24 = v22;
+  v24 = removals;
   v25 = [v24 countByEnumeratingWithState:&v77 objects:v82 count:16];
   if (v25)
   {
@@ -156,13 +156,13 @@
   v72 = v20;
 
   v60 = v21;
-  v29 = [v21 insertions];
+  insertions = [v21 insertions];
   v30 = objc_opt_new();
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v31 = v29;
+  v31 = insertions;
   v32 = [v31 countByEnumeratingWithState:&v73 objects:v81 count:16];
   if (v32)
   {
@@ -189,7 +189,7 @@
   v36 = 0;
   v37 = 0;
   v38 = v31;
-  v39 = 0;
+  responder6 = 0;
   v59 = v38;
   v70 = v16;
   v71 = v14;
@@ -224,10 +224,10 @@
       v40 = [v16 objectAtIndexedSubscript:v37];
     }
 
-    v41 = [v38 responder];
-    v42 = [v40 responder];
-    v43 = v42;
-    if (v41 == v42)
+    responder = [v38 responder];
+    responder2 = [v40 responder];
+    v43 = responder2;
+    if (responder == responder2)
     {
       v64 = objc_opt_class();
       v44 = objc_opt_class();
@@ -236,8 +236,8 @@
       v14 = v71;
       if (v45)
       {
-        __appendDescription(v72, v39, v38, 0);
-        v56 = [v38 responder];
+        __appendDescription(v72, responder6, v38, 0);
+        responder3 = [v38 responder];
 
         ++v36;
         ++v37;
@@ -249,9 +249,9 @@
     {
     }
 
-    v46 = [v38 responder];
-    v47 = v46;
-    if (v46 == v39)
+    responder4 = [v38 responder];
+    v47 = responder4;
+    if (responder4 == responder6)
     {
 
       if (([v23 containsIndex:v37] & 1) == 0)
@@ -261,7 +261,7 @@
         {
 LABEL_59:
           ++v36;
-          v56 = v39;
+          responder3 = responder6;
           goto LABEL_61;
         }
 
@@ -274,7 +274,7 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v48 = [v40 responder];
+    responder5 = [v40 responder];
 
     if (([v23 containsIndex:v37] & 1) == 0)
     {
@@ -284,7 +284,7 @@ LABEL_37:
         goto LABEL_59;
       }
 
-      if (v48 == v39)
+      if (responder5 == responder6)
       {
         goto LABEL_48;
       }
@@ -292,7 +292,7 @@ LABEL_37:
       goto LABEL_46;
     }
 
-    if (v48 == v39)
+    if (responder5 == responder6)
     {
       goto LABEL_37;
     }
@@ -300,23 +300,23 @@ LABEL_37:
     v65 = 1;
     v49 = @"-#- missing responder in %@ -#-\n";
 LABEL_38:
-    v50 = _NSStringFromUIPressPhase([(_UIRIPDeliveryRecord *)v67 phase]);
+    v50 = _NSStringFromUIPressPhase([(_UIRIPDeliveryRecord *)selfCopy phase]);
     [v72 appendFormat:v49, v50];
 
     if ([v23 containsIndex:v37])
     {
       v51 = v40;
-      v52 = v39;
+      v52 = responder6;
       do
       {
         v40 = [v70 objectAtIndexedSubscript:v37];
 
         __appendDescription(v72, v52, v40, -1);
-        v39 = [v40 responder];
+        responder6 = [v40 responder];
 
         ++v37;
         v51 = v40;
-        v52 = v39;
+        v52 = responder6;
       }
 
       while (([v69 containsIndex:v37] & 1) != 0);
@@ -352,7 +352,7 @@ LABEL_46:
     v66 = 1;
     v53 = @"+#+ additional responder in %@ +#+\n";
 LABEL_49:
-    v54 = _NSStringFromUIPressPhase([(_UIRIPDeliveryRecord *)v67 phase]);
+    v54 = _NSStringFromUIPressPhase([(_UIRIPDeliveryRecord *)selfCopy phase]);
     [v72 appendFormat:v53, v54];
 
     if ([v30 containsIndex:v36])
@@ -362,12 +362,12 @@ LABEL_49:
       {
         v55 = [v71 objectAtIndexedSubscript:v36];
 
-        __appendDescription(v72, v39, v55, 1);
-        v56 = [v55 responder];
+        __appendDescription(v72, responder6, v55, 1);
+        responder3 = [v55 responder];
 
         ++v36;
         v38 = v55;
-        v39 = v56;
+        responder6 = responder3;
       }
 
       while (([v30 containsIndex:v36] & 1) != 0);
@@ -375,7 +375,7 @@ LABEL_49:
 
     else
     {
-      v56 = v39;
+      responder3 = responder6;
       v55 = v38;
       v14 = v71;
     }
@@ -395,7 +395,7 @@ LABEL_49:
     v38 = v55;
 LABEL_61:
 
-    v39 = v56;
+    responder6 = responder3;
     v16 = v70;
     v24 = v68;
   }
@@ -403,8 +403,8 @@ LABEL_61:
   v20 = v72;
   v13 = v72;
 
-  v7 = v61;
-  v6 = v62;
+  pressCopy = v61;
+  recordCopy = v62;
   v21 = v60;
 LABEL_65:
 

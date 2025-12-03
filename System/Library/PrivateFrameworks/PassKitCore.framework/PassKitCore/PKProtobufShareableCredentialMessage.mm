@@ -1,33 +1,33 @@
 @interface PKProtobufShareableCredentialMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addShareableCredentials:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addShareableCredentials:(id)credentials;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufShareableCredentialMessage
 
-- (void)addShareableCredentials:(id)a3
+- (void)addShareableCredentials:(id)credentials
 {
-  v4 = a3;
+  credentialsCopy = credentials;
   shareableCredentials = self->_shareableCredentials;
-  v8 = v4;
+  v8 = credentialsCopy;
   if (!shareableCredentials)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_shareableCredentials;
     self->_shareableCredentials = v6;
 
-    v4 = v8;
+    credentialsCopy = v8;
     shareableCredentials = self->_shareableCredentials;
   }
 
-  [(NSMutableArray *)shareableCredentials addObject:v4];
+  [(NSMutableArray *)shareableCredentials addObject:credentialsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = PKProtobufShareableCredentialMessage;
   v4 = [(PKProtobufShareableCredentialMessage *)&v8 description];
-  v5 = [(PKProtobufShareableCredentialMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufShareableCredentialMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,9 +45,9 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_version];
-  [v3 setObject:v4 forKey:@"version"];
+  [dictionary setObject:v4 forKey:@"version"];
 
   if ([(NSMutableArray *)self->_shareableCredentials count])
   {
@@ -71,8 +71,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -81,46 +81,46 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"shareableCredentials"];
+    [dictionary setObject:v5 forKey:@"shareableCredentials"];
   }
 
   messageCaption = self->_messageCaption;
   if (messageCaption)
   {
-    [v3 setObject:messageCaption forKey:@"messageCaption"];
+    [dictionary setObject:messageCaption forKey:@"messageCaption"];
   }
 
   dataString = self->_dataString;
   if (dataString)
   {
-    [v3 setObject:dataString forKey:@"dataString"];
+    [dictionary setObject:dataString forKey:@"dataString"];
   }
 
   policyIdentifier = self->_policyIdentifier;
   if (policyIdentifier)
   {
-    [v3 setObject:policyIdentifier forKey:@"policyIdentifier"];
+    [dictionary setObject:policyIdentifier forKey:@"policyIdentifier"];
   }
 
   passThumbnailImage = self->_passThumbnailImage;
   if (passThumbnailImage)
   {
-    [v3 setObject:passThumbnailImage forKey:@"passThumbnailImage"];
+    [dictionary setObject:passThumbnailImage forKey:@"passThumbnailImage"];
   }
 
   if (*&self->_has)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:self->_isPassInLibrary];
-    [v3 setObject:v16 forKey:@"isPassInLibrary"];
+    [dictionary setObject:v16 forKey:@"isPassInLibrary"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   v12 = 0u;
   v13 = 0u;
@@ -179,47 +179,47 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
-  v9[12] = self->_version;
+  toCopy = to;
+  toCopy[12] = self->_version;
   if ([(PKProtobufShareableCredentialMessage *)self shareableCredentialsCount])
   {
-    [v9 clearShareableCredentials];
-    v4 = [(PKProtobufShareableCredentialMessage *)self shareableCredentialsCount];
-    if (v4)
+    [toCopy clearShareableCredentials];
+    shareableCredentialsCount = [(PKProtobufShareableCredentialMessage *)self shareableCredentialsCount];
+    if (shareableCredentialsCount)
     {
-      v5 = v4;
+      v5 = shareableCredentialsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PKProtobufShareableCredentialMessage *)self shareableCredentialsAtIndex:i];
-        [v9 addShareableCredentials:v7];
+        [toCopy addShareableCredentials:v7];
       }
     }
   }
 
   if (self->_messageCaption)
   {
-    [v9 setMessageCaption:?];
+    [toCopy setMessageCaption:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_dataString)
   {
-    [v9 setDataString:?];
-    v8 = v9;
+    [toCopy setDataString:?];
+    v8 = toCopy;
   }
 
   if (self->_policyIdentifier)
   {
-    [v9 setPolicyIdentifier:?];
-    v8 = v9;
+    [toCopy setPolicyIdentifier:?];
+    v8 = toCopy;
   }
 
   if (self->_passThumbnailImage)
   {
-    [v9 setPassThumbnailImage:?];
-    v8 = v9;
+    [toCopy setPassThumbnailImage:?];
+    v8 = toCopy;
   }
 
   if (*&self->_has)
@@ -229,10 +229,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 48) = self->_version;
   v21 = 0u;
   v22 = 0u;
@@ -253,7 +253,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{a3, v21}];
+        v11 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{zone, v21}];
         [v5 addShareableCredentials:v11];
       }
 
@@ -263,19 +263,19 @@
     while (v8);
   }
 
-  v12 = [(NSString *)self->_messageCaption copyWithZone:a3];
+  v12 = [(NSString *)self->_messageCaption copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
-  v14 = [(NSString *)self->_dataString copyWithZone:a3];
+  v14 = [(NSString *)self->_dataString copyWithZone:zone];
   v15 = *(v5 + 8);
   *(v5 + 8) = v14;
 
-  v16 = [(NSString *)self->_policyIdentifier copyWithZone:a3];
+  v16 = [(NSString *)self->_policyIdentifier copyWithZone:zone];
   v17 = *(v5 + 32);
   *(v5 + 32) = v16;
 
-  v18 = [(NSData *)self->_passThumbnailImage copyWithZone:a3];
+  v18 = [(NSData *)self->_passThumbnailImage copyWithZone:zone];
   v19 = *(v5 + 24);
   *(v5 + 24) = v18;
 
@@ -288,21 +288,21 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if (self->_version != *(v4 + 12))
+  if (self->_version != *(equalCopy + 12))
   {
     goto LABEL_15;
   }
 
   shareableCredentials = self->_shareableCredentials;
-  if (shareableCredentials | *(v4 + 5))
+  if (shareableCredentials | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)shareableCredentials isEqual:?])
     {
@@ -311,7 +311,7 @@
   }
 
   messageCaption = self->_messageCaption;
-  if (messageCaption | *(v4 + 2))
+  if (messageCaption | *(equalCopy + 2))
   {
     if (![(NSString *)messageCaption isEqual:?])
     {
@@ -320,7 +320,7 @@
   }
 
   dataString = self->_dataString;
-  if (dataString | *(v4 + 1))
+  if (dataString | *(equalCopy + 1))
   {
     if (![(NSString *)dataString isEqual:?])
     {
@@ -329,7 +329,7 @@
   }
 
   policyIdentifier = self->_policyIdentifier;
-  if (policyIdentifier | *(v4 + 4))
+  if (policyIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)policyIdentifier isEqual:?])
     {
@@ -338,7 +338,7 @@
   }
 
   passThumbnailImage = self->_passThumbnailImage;
-  if (passThumbnailImage | *(v4 + 3))
+  if (passThumbnailImage | *(equalCopy + 3))
   {
     if (![(NSData *)passThumbnailImage isEqual:?])
     {
@@ -346,10 +346,10 @@
     }
   }
 
-  v10 = (*(v4 + 56) & 1) == 0;
+  v10 = (*(equalCopy + 56) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0)
+    if ((*(equalCopy + 56) & 1) == 0)
     {
 LABEL_15:
       v10 = 0;
@@ -358,13 +358,13 @@ LABEL_15:
 
     if (self->_isPassInLibrary)
     {
-      if ((*(v4 + 52) & 1) == 0)
+      if ((*(equalCopy + 52) & 1) == 0)
       {
         goto LABEL_15;
       }
     }
 
-    else if (*(v4 + 52))
+    else if (*(equalCopy + 52))
     {
       goto LABEL_15;
     }
@@ -398,16 +398,16 @@ LABEL_16:
   return v4 ^ v5 ^ v6 ^ v7 ^ (2654435761 * version) ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  self->_version = *(v4 + 12);
+  fromCopy = from;
+  self->_version = *(fromCopy + 12);
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 5);
+  v5 = *(fromCopy + 5);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -431,29 +431,29 @@ LABEL_16:
     while (v7);
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PKProtobufShareableCredentialMessage *)self setMessageCaption:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PKProtobufShareableCredentialMessage *)self setDataString:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PKProtobufShareableCredentialMessage *)self setPolicyIdentifier:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PKProtobufShareableCredentialMessage *)self setPassThumbnailImage:?];
   }
 
-  if (*(v4 + 56))
+  if (*(fromCopy + 56))
   {
-    self->_isPassInLibrary = *(v4 + 52);
+    self->_isPassInLibrary = *(fromCopy + 52);
     *&self->_has |= 1u;
   }
 }

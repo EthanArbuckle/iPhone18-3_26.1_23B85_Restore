@@ -8,26 +8,26 @@
 
 - (unint64_t)columnCount
 {
-  v2 = [(IKViewElement *)self style];
-  v3 = [v2 columnCount];
+  style = [(IKViewElement *)self style];
+  columnCount = [style columnCount];
 
-  return v3 & ~(v3 >> 63);
+  return columnCount & ~(columnCount >> 63);
 }
 
 - (BOOL)isCentered
 {
-  v2 = [(IKViewElement *)self style];
-  v3 = [v2 elementAlignment] == 2;
+  style = [(IKViewElement *)self style];
+  v3 = [style elementAlignment] == 2;
 
   return v3;
 }
 
 - (NSString)rowHeight
 {
-  v2 = [(IKViewElement *)self style];
-  v3 = [v2 rowHeight];
+  style = [(IKViewElement *)self style];
+  rowHeight = [style rowHeight];
 
-  return v3;
+  return rowHeight;
 }
 
 @end

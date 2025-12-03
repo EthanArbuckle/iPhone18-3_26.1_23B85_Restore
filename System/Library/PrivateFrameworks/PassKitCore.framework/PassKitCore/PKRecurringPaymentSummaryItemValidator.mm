@@ -1,39 +1,39 @@
 @interface PKRecurringPaymentSummaryItemValidator
-+ (id)validatorWithObject:(id)a3;
-- (BOOL)isValidWithAPIType:(int64_t)a3 withError:(id *)a4;
-- (PKRecurringPaymentSummaryItemValidator)initWithRecurringPaymentSummaryItem:(id)a3;
++ (id)validatorWithObject:(id)object;
+- (BOOL)isValidWithAPIType:(int64_t)type withError:(id *)error;
+- (PKRecurringPaymentSummaryItemValidator)initWithRecurringPaymentSummaryItem:(id)item;
 @end
 
 @implementation PKRecurringPaymentSummaryItemValidator
 
-+ (id)validatorWithObject:(id)a3
++ (id)validatorWithObject:(id)object
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithRecurringPaymentSummaryItem:v3];
+  objectCopy = object;
+  v4 = [objc_alloc(objc_opt_class()) initWithRecurringPaymentSummaryItem:objectCopy];
 
   return v4;
 }
 
-- (PKRecurringPaymentSummaryItemValidator)initWithRecurringPaymentSummaryItem:(id)a3
+- (PKRecurringPaymentSummaryItemValidator)initWithRecurringPaymentSummaryItem:(id)item
 {
   v4.receiver = self;
   v4.super_class = PKRecurringPaymentSummaryItemValidator;
-  return [(PKPaymentSummaryItemValidator *)&v4 initWithPaymentSummaryItem:a3];
+  return [(PKPaymentSummaryItemValidator *)&v4 initWithPaymentSummaryItem:item];
 }
 
-- (BOOL)isValidWithAPIType:(int64_t)a3 withError:(id *)a4
+- (BOOL)isValidWithAPIType:(int64_t)type withError:(id *)error
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__PKRecurringPaymentSummaryItemValidator_isValidWithAPIType_withError___block_invoke;
   aBlock[3] = &__block_descriptor_40_e27___NSError_16__0__NSString_8l;
-  aBlock[4] = a3;
+  aBlock[4] = type;
   v7 = _Block_copy(aBlock);
   v25.receiver = self;
   v25.super_class = PKRecurringPaymentSummaryItemValidator;
-  if ([(PKPaymentSummaryItemValidator *)&v25 isValidWithAPIType:a3 withError:a4])
+  if ([(PKPaymentSummaryItemValidator *)&v25 isValidWithAPIType:type withError:error])
   {
-    v8 = [(PKPaymentSummaryItemValidator *)self item];
+    item = [(PKPaymentSummaryItemValidator *)self item];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -43,29 +43,29 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v9 = [(PKPaymentSummaryItemValidator *)self item];
+    item2 = [(PKPaymentSummaryItemValidator *)self item];
     v10 = objc_opt_class();
-    if (!_PKPaymentValidateProperty(v9, @"startDate", v10, 0, a3, a4))
+    if (!_PKPaymentValidateProperty(item2, @"startDate", v10, 0, type, error))
     {
       goto LABEL_19;
     }
 
-    v11 = [(PKPaymentSummaryItemValidator *)self item];
+    item3 = [(PKPaymentSummaryItemValidator *)self item];
     v12 = objc_opt_class();
-    v13 = _PKPaymentValidateProperty(v11, @"endDate", v12, 0, a3, a4);
+    v13 = _PKPaymentValidateProperty(item3, @"endDate", v12, 0, type, error);
 
     if (v13)
     {
-      v8 = [(PKPaymentSummaryItemValidator *)self item];
-      v9 = [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F23B51B0, &unk_1F23B51C8, &unk_1F23B51E0, &unk_1F23B51F8, &unk_1F23B5210, 0}];
-      if ([v8 intervalCount] > 0)
+      item = [(PKPaymentSummaryItemValidator *)self item];
+      item2 = [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F23B51B0, &unk_1F23B51C8, &unk_1F23B51E0, &unk_1F23B51F8, &unk_1F23B5210, 0}];
+      if ([item intervalCount] > 0)
       {
-        v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "intervalUnit")}];
-        v15 = [v9 containsObject:v14];
+        v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(item, "intervalUnit")}];
+        v15 = [item2 containsObject:v14];
 
         if ((v15 & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v7[2](v7, @"must have a valid intervalUnit: year, month, day, hour or minute");
             goto LABEL_18;
@@ -74,25 +74,25 @@ LABEL_21:
           goto LABEL_19;
         }
 
-        v16 = [v8 startDate];
-        if (v16)
+        startDate = [item startDate];
+        if (startDate)
         {
-          v17 = v16;
-          v18 = [v8 endDate];
-          if (v18)
+          v17 = startDate;
+          endDate = [item endDate];
+          if (endDate)
           {
-            v19 = v18;
-            v20 = [v8 startDate];
-            v21 = [v8 endDate];
-            v22 = [v20 compare:v21];
+            v19 = endDate;
+            startDate2 = [item startDate];
+            endDate2 = [item endDate];
+            v22 = [startDate2 compare:endDate2];
 
             if (v22 == 1)
             {
-              if (a4)
+              if (error)
               {
                 v7[2](v7, @"must have a startDate earlier than or equal to endDate");
 LABEL_18:
-                *a4 = v23 = 0;
+                *error = v23 = 0;
 LABEL_20:
 
                 goto LABEL_21;
@@ -111,7 +111,7 @@ LABEL_20:
         goto LABEL_20;
       }
 
-      if (a4)
+      if (error)
       {
         v7[2](v7, @"must have a intervalCount >= 1");
         goto LABEL_18;

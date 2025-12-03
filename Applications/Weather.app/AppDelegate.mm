@@ -1,9 +1,9 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 - (id)createSceneContainer;
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4;
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions;
+- (void)buildMenuWithBuilder:(id)builder;
 - (void)didBecomeActive;
 - (void)didBecomeKeyWindow;
 - (void)didEnterBackground;
@@ -14,30 +14,30 @@
 
 @implementation AppDelegate
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_1000610E4(v11, v9);
+  applicationCopy = application;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  v12 = sub_1000610E4(selfCopy, sessionCopy);
 
   return v12;
 }
 
 - (void)didBecomeKeyWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000A5EA4();
 }
 
 - (void)willEnterForeground
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000BECF0("Application will enter foreground", 33, &dispatch thunk of ApplicationStateManagerType.willEnterForeground());
 }
 
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions
 {
   sub_10000C70C(0, &qword_100CAF470);
   sub_10016B300();
@@ -46,19 +46,19 @@
 
 - (void)willTerminate
 {
-  v2 = self;
+  selfCopy = self;
   sub_100356078();
 }
 
 - (void)didEnterBackground
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000BECF0("Application did enter background", 32, &dispatch thunk of ApplicationStateManagerType.didEnterBackground());
 }
 
 - (id)createSceneContainer
 {
-  v2 = self;
+  selfCopy = self;
   sub_100356628(v5);
 
   sub_1000161C0(v5, v5[3]);
@@ -70,33 +70,33 @@
 
 - (void)willResignActive
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003567D4(0);
 }
 
 - (void)didBecomeActive
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003567D4(1);
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  LOBYTE(self) = sub_100356894(v11, v7, v9);
+  applicationCopy = application;
+  selfCopy = self;
+  LOBYTE(self) = sub_100356894(selfCopy, v7, v9);
 
   return self & 1;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100356990(a3);
+  selfCopy = self;
+  sub_100356990(builder);
   swift_unknownObjectRelease();
 }
 

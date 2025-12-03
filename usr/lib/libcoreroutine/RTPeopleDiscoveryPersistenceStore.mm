@@ -1,33 +1,33 @@
 @interface RTPeopleDiscoveryPersistenceStore
-- (BOOL)isEqual:(id)a3;
-- (RTPeopleDiscoveryPersistenceStore)initWithCoder:(id)a3;
-- (RTPeopleDiscoveryPersistenceStore)initWithContactRecord:(id)a3 densityRecord:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTPeopleDiscoveryPersistenceStore)initWithCoder:(id)coder;
+- (RTPeopleDiscoveryPersistenceStore)initWithContactRecord:(id)record densityRecord:(id)densityRecord;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTPeopleDiscoveryPersistenceStore
 
-- (RTPeopleDiscoveryPersistenceStore)initWithContactRecord:(id)a3 densityRecord:(id)a4
+- (RTPeopleDiscoveryPersistenceStore)initWithContactRecord:(id)record densityRecord:(id)densityRecord
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  densityRecordCopy = densityRecord;
   v11.receiver = self;
   v11.super_class = RTPeopleDiscoveryPersistenceStore;
   v8 = [(RTPeopleDiscoveryPersistenceStore *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(RTPeopleDiscoveryPersistenceStore *)v8 setContactRecord:v6];
-    [(RTPeopleDiscoveryPersistenceStore *)v9 setDensityRecord:v7];
+    [(RTPeopleDiscoveryPersistenceStore *)v8 setContactRecord:recordCopy];
+    [(RTPeopleDiscoveryPersistenceStore *)v9 setDensityRecord:densityRecordCopy];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -37,14 +37,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTPeopleDiscoveryPersistenceStore *)self contactRecord];
-      v7 = [(RTPeopleDiscoveryPersistenceStore *)v5 contactRecord];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      contactRecord = [(RTPeopleDiscoveryPersistenceStore *)self contactRecord];
+      contactRecord2 = [(RTPeopleDiscoveryPersistenceStore *)v5 contactRecord];
+      if ([contactRecord isEqual:contactRecord2])
       {
-        v8 = [(RTPeopleDiscoveryPersistenceStore *)self densityRecord];
-        v9 = [(RTPeopleDiscoveryPersistenceStore *)v5 densityRecord];
-        v10 = [v8 isEqual:v9];
+        densityRecord = [(RTPeopleDiscoveryPersistenceStore *)self densityRecord];
+        densityRecord2 = [(RTPeopleDiscoveryPersistenceStore *)v5 densityRecord];
+        v10 = [densityRecord isEqual:densityRecord2];
       }
 
       else
@@ -62,19 +62,19 @@
   return v10;
 }
 
-- (RTPeopleDiscoveryPersistenceStore)initWithCoder:(id)a3
+- (RTPeopleDiscoveryPersistenceStore)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = RTPeopleDiscoveryPersistenceStore;
   v5 = [(RTPeopleDiscoveryPersistenceStore *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ContactRecord"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ContactRecord"];
     contactRecord = v5->_contactRecord;
     v5->_contactRecord = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DensityRecord"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DensityRecord"];
     densityRecord = v5->_densityRecord;
     v5->_densityRecord = v8;
   }
@@ -82,12 +82,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contactRecord = self->_contactRecord;
-  v5 = a3;
-  [v5 encodeObject:contactRecord forKey:@"ContactRecord"];
-  [v5 encodeObject:self->_densityRecord forKey:@"DensityRecord"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contactRecord forKey:@"ContactRecord"];
+  [coderCopy encodeObject:self->_densityRecord forKey:@"DensityRecord"];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface _TUIGuideInstance
 - (NSString)description;
-- (_TUIGuideInstance)initWithSpec:(id)a3;
+- (_TUIGuideInstance)initWithSpec:(id)spec;
 @end
 
 @implementation _TUIGuideInstance
 
-- (_TUIGuideInstance)initWithSpec:(id)a3
+- (_TUIGuideInstance)initWithSpec:(id)spec
 {
-  v5 = a3;
+  specCopy = spec;
   v9.receiver = self;
   v9.super_class = _TUIGuideInstance;
   v6 = [(_TUIGuideInstance *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_spec, a3);
+    objc_storeStrong(&v6->_spec, spec);
     v7->_offset = NAN;
   }
 

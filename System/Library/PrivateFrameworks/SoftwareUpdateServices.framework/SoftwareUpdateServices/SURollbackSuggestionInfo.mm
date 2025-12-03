@@ -1,9 +1,9 @@
 @interface SURollbackSuggestionInfo
 - (SURollbackSuggestionInfo)init;
-- (SURollbackSuggestionInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SURollbackSuggestionInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SURollbackSuggestionInfo
@@ -39,16 +39,16 @@
   return v6;
 }
 
-- (SURollbackSuggestionInfo)initWithCoder:(id)a3
+- (SURollbackSuggestionInfo)initWithCoder:(id)coder
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SURollbackSuggestionInfo;
   v5 = [(SURollbackSuggestionInfo *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ClientIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ClientIdentifier"];
     [(SURollbackSuggestionInfo *)v5 setClientIdentifier:v6];
 
     v7 = MEMORY[0x277CBEB98];
@@ -57,36 +57,36 @@
     v14[2] = objc_opt_class();
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:3];
     v9 = [v7 setWithArray:v8];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"responsibleProcessesInfo"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"responsibleProcessesInfo"];
     [(SURollbackSuggestionInfo *)v5 setResponsibleProcessesInfo:v10];
 
-    -[SURollbackSuggestionInfo setSuggestionReason:](v5, "setSuggestionReason:", [v4 decodeIntForKey:@"RollbackSuggestionReason"]);
+    -[SURollbackSuggestionInfo setSuggestionReason:](v5, "setSuggestionReason:", [coderCopy decodeIntForKey:@"RollbackSuggestionReason"]);
   }
 
   v11 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(SURollbackSuggestionInfo *)self clientIdentifier];
-  [v6 encodeObject:v4 forKey:@"ClientIdentifier"];
+  coderCopy = coder;
+  clientIdentifier = [(SURollbackSuggestionInfo *)self clientIdentifier];
+  [coderCopy encodeObject:clientIdentifier forKey:@"ClientIdentifier"];
 
-  v5 = [(SURollbackSuggestionInfo *)self responsibleProcessesInfo];
-  [v6 encodeObject:v5 forKey:@"responsibleProcessesInfo"];
+  responsibleProcessesInfo = [(SURollbackSuggestionInfo *)self responsibleProcessesInfo];
+  [coderCopy encodeObject:responsibleProcessesInfo forKey:@"responsibleProcessesInfo"];
 
-  [v6 encodeInteger:-[SURollbackSuggestionInfo suggestionReason](self forKey:{"suggestionReason"), @"RollbackSuggestionReason"}];
+  [coderCopy encodeInteger:-[SURollbackSuggestionInfo suggestionReason](self forKey:{"suggestionReason"), @"RollbackSuggestionReason"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SURollbackSuggestionInfo);
-  v5 = [(SURollbackSuggestionInfo *)self clientIdentifier];
-  [(SURollbackSuggestionInfo *)v4 setClientIdentifier:v5];
+  clientIdentifier = [(SURollbackSuggestionInfo *)self clientIdentifier];
+  [(SURollbackSuggestionInfo *)v4 setClientIdentifier:clientIdentifier];
 
-  v6 = [(SURollbackSuggestionInfo *)self responsibleProcessesInfo];
-  [(SURollbackSuggestionInfo *)v4 setResponsibleProcessesInfo:v6];
+  responsibleProcessesInfo = [(SURollbackSuggestionInfo *)self responsibleProcessesInfo];
+  [(SURollbackSuggestionInfo *)v4 setResponsibleProcessesInfo:responsibleProcessesInfo];
 
   [(SURollbackSuggestionInfo *)v4 setSuggestionReason:[(SURollbackSuggestionInfo *)self suggestionReason]];
   return v4;

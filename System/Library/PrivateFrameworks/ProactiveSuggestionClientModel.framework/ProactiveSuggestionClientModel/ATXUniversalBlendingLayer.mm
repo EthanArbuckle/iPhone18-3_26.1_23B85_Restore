@@ -1,42 +1,42 @@
 @interface ATXUniversalBlendingLayer
-+ (void)logLongDescriptionForBlendingLayerString:(id)a3 prefix:(id)a4 shouldUseDefaultLogLevel:(BOOL)a5 limit:(unint64_t)a6;
-- (ATXUniversalBlendingLayer)initWithSuggestionPreprocessor:(id)a3 delegate:(id)a4 layoutSelectorsForConsumerSubTypes:(id)a5 blendingSessionLogger:(id)a6 hyperParameters:(id)a7;
-- (id)rerankedSuggestions:(id)a3;
-- (id)rerankedValidSuggestionsFromClientModelSuggestions:(id)a3;
-- (void)promoteSuggestionsFromClientModelWithIdentifier:(id)a3;
-- (void)updateSuggestionsForAllConsumerSubTypesWithClientModelSuggestions:(id)a3;
-- (void)updateSuggestionsForConsumerSubTypes:(id)a3 clientModelSuggestions:(id)a4;
++ (void)logLongDescriptionForBlendingLayerString:(id)string prefix:(id)prefix shouldUseDefaultLogLevel:(BOOL)level limit:(unint64_t)limit;
+- (ATXUniversalBlendingLayer)initWithSuggestionPreprocessor:(id)preprocessor delegate:(id)delegate layoutSelectorsForConsumerSubTypes:(id)types blendingSessionLogger:(id)logger hyperParameters:(id)parameters;
+- (id)rerankedSuggestions:(id)suggestions;
+- (id)rerankedValidSuggestionsFromClientModelSuggestions:(id)suggestions;
+- (void)promoteSuggestionsFromClientModelWithIdentifier:(id)identifier;
+- (void)updateSuggestionsForAllConsumerSubTypesWithClientModelSuggestions:(id)suggestions;
+- (void)updateSuggestionsForConsumerSubTypes:(id)types clientModelSuggestions:(id)suggestions;
 @end
 
 @implementation ATXUniversalBlendingLayer
 
-- (ATXUniversalBlendingLayer)initWithSuggestionPreprocessor:(id)a3 delegate:(id)a4 layoutSelectorsForConsumerSubTypes:(id)a5 blendingSessionLogger:(id)a6 hyperParameters:(id)a7
+- (ATXUniversalBlendingLayer)initWithSuggestionPreprocessor:(id)preprocessor delegate:(id)delegate layoutSelectorsForConsumerSubTypes:(id)types blendingSessionLogger:(id)logger hyperParameters:(id)parameters
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  preprocessorCopy = preprocessor;
+  delegateCopy = delegate;
+  typesCopy = types;
+  loggerCopy = logger;
+  parametersCopy = parameters;
   v29.receiver = self;
   v29.super_class = ATXUniversalBlendingLayer;
   v18 = [(ATXUniversalBlendingLayer *)&v29 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_suggestionPreprocessor, a3);
+    objc_storeStrong(&v18->_suggestionPreprocessor, preprocessor);
     v20 = objc_alloc(MEMORY[0x1E695E000]);
     v21 = [v20 initWithSuiteName:*MEMORY[0x1E698B030]];
     v22 = [v21 stringForKey:@"BlendingLayerPromotedClientModel"];
     promotedClientModelId = v19->_promotedClientModelId;
     v19->_promotedClientModelId = v22;
 
-    objc_storeStrong(&v19->_delegate, a4);
-    v24 = [v15 copy];
+    objc_storeStrong(&v19->_delegate, delegate);
+    v24 = [typesCopy copy];
     layoutSelectorsForConsumerSubTypes = v19->_layoutSelectorsForConsumerSubTypes;
     v19->_layoutSelectorsForConsumerSubTypes = v24;
 
-    objc_storeStrong(&v19->_blendingSessionLogger, a6);
-    objc_storeStrong(&v19->_hyperParameters, a7);
+    objc_storeStrong(&v19->_blendingSessionLogger, logger);
+    objc_storeStrong(&v19->_hyperParameters, parameters);
     v26 = objc_opt_new();
     feedbackWriter = v19->_feedbackWriter;
     v19->_feedbackWriter = v26;
@@ -45,9 +45,9 @@
   return v19;
 }
 
-- (void)updateSuggestionsForAllConsumerSubTypesWithClientModelSuggestions:(id)a3
+- (void)updateSuggestionsForAllConsumerSubTypesWithClientModelSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v5 = __atxlog_handle_blending();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -55,8 +55,8 @@
     _os_log_impl(&dword_1DEFC4000, v5, OS_LOG_TYPE_DEFAULT, "Blending: Blending Layer asked to update suggestions for all consumer subtypes. [BLENDING REFRESH START]", buf, 2u);
   }
 
-  v6 = [objc_opt_class() validConsumerSubTypesForLayoutGeneration];
-  [(ATXUniversalBlendingLayer *)self updateSuggestionsForConsumerSubTypes:v6 clientModelSuggestions:v4];
+  validConsumerSubTypesForLayoutGeneration = [objc_opt_class() validConsumerSubTypesForLayoutGeneration];
+  [(ATXUniversalBlendingLayer *)self updateSuggestionsForConsumerSubTypes:validConsumerSubTypesForLayoutGeneration clientModelSuggestions:suggestionsCopy];
 
   v7 = __atxlog_handle_blending();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -66,11 +66,11 @@
   }
 }
 
-- (void)updateSuggestionsForConsumerSubTypes:(id)a3 clientModelSuggestions:(id)a4
+- (void)updateSuggestionsForConsumerSubTypes:(id)types clientModelSuggestions:(id)suggestions
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  typesCopy = types;
+  suggestionsCopy = suggestions;
   sel_getName(a2);
   v23 = os_transaction_create();
   v9 = __atxlog_handle_blending();
@@ -88,12 +88,12 @@
     _os_log_impl(&dword_1DEFC4000, v10, OS_LOG_TYPE_DEFAULT, "Blending: Done executing Blending Layer session logging before executing Blending Layer refresh.", buf, 2u);
   }
 
-  v11 = [(ATXUniversalBlendingLayer *)self rerankedValidSuggestionsFromClientModelSuggestions:v8];
+  v11 = [(ATXUniversalBlendingLayer *)self rerankedValidSuggestionsFromClientModelSuggestions:suggestionsCopy];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = v7;
+  v12 = typesCopy;
   v13 = [v12 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v13)
   {
@@ -109,13 +109,13 @@
         }
 
         v17 = *(*(&v24 + 1) + 8 * i);
-        v18 = [v17 integerValue];
-        v19 = [objc_opt_class() validConsumerSubTypesForLayoutGeneration];
-        LOBYTE(v17) = [v19 containsObject:v17];
+        integerValue = [v17 integerValue];
+        validConsumerSubTypesForLayoutGeneration = [objc_opt_class() validConsumerSubTypesForLayoutGeneration];
+        LOBYTE(v17) = [validConsumerSubTypesForLayoutGeneration containsObject:v17];
 
         if (v17)
         {
-          [(ATXUniversalBlendingLayer *)self updateSuggestionsForConsumerSubType:v18 rankedSuggestions:v11 clientModelSuggestions:v8];
+          [(ATXUniversalBlendingLayer *)self updateSuggestionsForConsumerSubType:integerValue rankedSuggestions:v11 clientModelSuggestions:suggestionsCopy];
         }
 
         else
@@ -123,7 +123,7 @@
           v20 = __atxlog_handle_blending();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [MEMORY[0x1E698B028] stringForConsumerSubtype:v18];
+            v21 = [MEMORY[0x1E698B028] stringForConsumerSubtype:integerValue];
             *buf = 138412290;
             v29 = v21;
             _os_log_impl(&dword_1DEFC4000, v20, OS_LOG_TYPE_DEFAULT, "Ignoring UI Consumer because it's not allowed. UI Consumer: %@", buf, 0xCu);
@@ -140,18 +140,18 @@
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)rerankedValidSuggestionsFromClientModelSuggestions:(id)a3
+- (id)rerankedValidSuggestionsFromClientModelSuggestions:(id)suggestions
 {
-  v4 = [(ATXUniversalBlendingLayer *)self rerankedSuggestions:a3];
+  v4 = [(ATXUniversalBlendingLayer *)self rerankedSuggestions:suggestions];
   v5 = [(ATXSuggestionPreprocessorProtocol *)self->_suggestionPreprocessor suggestionsWithInvalidSuggestionsRemoved:v4];
 
   return v5;
 }
 
-- (id)rerankedSuggestions:(id)a3
+- (id)rerankedSuggestions:(id)suggestions
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v5 = __atxlog_handle_blending();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -159,8 +159,8 @@
     _os_log_impl(&dword_1DEFC4000, v5, OS_LOG_TYPE_DEFAULT, "Blending: Blending Layer is reranking suggestions.", &v21, 2u);
   }
 
-  v6 = [[ATXSuggestionReranker alloc] initWithClientModelSuggestions:v4 promoteSuggestionsFromClientModel:self->_promotedClientModelId hyperParameters:self->_hyperParameters];
-  v7 = [(ATXSuggestionReranker *)v6 rerankedSuggestions];
+  v6 = [[ATXSuggestionReranker alloc] initWithClientModelSuggestions:suggestionsCopy promoteSuggestionsFromClientModel:self->_promotedClientModelId hyperParameters:self->_hyperParameters];
+  rerankedSuggestions = [(ATXSuggestionReranker *)v6 rerankedSuggestions];
   v8 = objc_autoreleasePoolPush();
   v9 = __atxlog_handle_blending();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -172,10 +172,10 @@
   v10 = __atxlog_handle_blending();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 count];
+    v11 = [rerankedSuggestions count];
     if (v11)
     {
-      v12 = [v7 objectAtIndexedSubscript:0];
+      v12 = [rerankedSuggestions objectAtIndexedSubscript:0];
     }
 
     else
@@ -194,7 +194,7 @@
   v13 = __atxlog_handle_blending();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v7 count];
+    v14 = [rerankedSuggestions count];
     if (v14 < 2)
     {
       v15 = @"None";
@@ -202,7 +202,7 @@
 
     else
     {
-      v15 = [v7 objectAtIndexedSubscript:1];
+      v15 = [rerankedSuggestions objectAtIndexedSubscript:1];
     }
 
     v21 = 138412290;
@@ -216,7 +216,7 @@
   v16 = __atxlog_handle_blending();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v7 count];
+    v17 = [rerankedSuggestions count];
     if (v17 < 3)
     {
       v18 = @"None";
@@ -224,7 +224,7 @@
 
     else
     {
-      v18 = [v7 objectAtIndexedSubscript:2];
+      v18 = [rerankedSuggestions objectAtIndexedSubscript:2];
     }
 
     v21 = 138412290;
@@ -238,12 +238,12 @@
   objc_autoreleasePoolPop(v8);
   v19 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return rerankedSuggestions;
 }
 
-- (void)promoteSuggestionsFromClientModelWithIdentifier:(id)a3
+- (void)promoteSuggestionsFromClientModelWithIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   promotedClientModelId = self->_promotedClientModelId;
   self->_promotedClientModelId = v4;
 
@@ -252,34 +252,34 @@
   [v7 setObject:self->_promotedClientModelId forKey:@"BlendingLayerPromotedClientModel"];
 }
 
-+ (void)logLongDescriptionForBlendingLayerString:(id)a3 prefix:(id)a4 shouldUseDefaultLogLevel:(BOOL)a5 limit:(unint64_t)a6
++ (void)logLongDescriptionForBlendingLayerString:(id)string prefix:(id)prefix shouldUseDefaultLogLevel:(BOOL)level limit:(unint64_t)limit
 {
-  v7 = a5;
+  levelCopy = level;
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v25 = v9;
-  v12 = [v9 componentsSeparatedByCharactersInSet:v11];
+  stringCopy = string;
+  prefixCopy = prefix;
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v25 = stringCopy;
+  v12 = [stringCopy componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
   v13 = [v12 count];
-  if (v13 >= a6)
+  if (v13 >= limit)
   {
-    v14 = a6;
+    limitCopy = limit;
   }
 
   else
   {
-    v14 = v13;
+    limitCopy = v13;
   }
 
-  if (v14)
+  if (limitCopy)
   {
-    for (i = 0; i < v21; ++i)
+    for (i = 0; i < limitCopy2; ++i)
     {
       v16 = __atxlog_handle_blending_internal_cache();
       v17 = v16;
-      if (v7)
+      if (levelCopy)
       {
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
@@ -290,7 +290,7 @@
           v28 = 2048;
           v29 = v18;
           v30 = 2112;
-          v31 = v10;
+          v31 = prefixCopy;
           v32 = 2112;
           v33 = v19;
           _os_log_impl(&dword_1DEFC4000, v17, OS_LOG_TYPE_DEFAULT, "[%lu of %lu] %@ %@", buf, 0x2Au);
@@ -306,21 +306,21 @@
         v28 = 2048;
         v29 = v22;
         v30 = 2112;
-        v31 = v10;
+        v31 = prefixCopy;
         v32 = 2112;
         v33 = v23;
         _os_log_debug_impl(&dword_1DEFC4000, v17, OS_LOG_TYPE_DEBUG, "[%lu of %lu] %@ %@", buf, 0x2Au);
       }
 
       v20 = [v12 count];
-      if (v20 >= a6)
+      if (v20 >= limit)
       {
-        v21 = a6;
+        limitCopy2 = limit;
       }
 
       else
       {
-        v21 = v20;
+        limitCopy2 = v20;
       }
     }
   }

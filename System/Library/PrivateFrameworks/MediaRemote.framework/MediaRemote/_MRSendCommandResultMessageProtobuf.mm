@@ -1,18 +1,18 @@
 @interface _MRSendCommandResultMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsHandlerReturnStatus:(id)a3;
-- (int)StringAsSendError:(id)a3;
-- (int)handlerReturnStatusAtIndex:(unint64_t)a3;
+- (int)StringAsHandlerReturnStatus:(id)status;
+- (int)StringAsSendError:(id)error;
+- (int)handlerReturnStatusAtIndex:(unint64_t)index;
 - (int)sendError;
 - (unint64_t)hash;
-- (void)addHandlerReturnStatusData:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addHandlerReturnStatusData:(id)data;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRSendCommandResultMessageProtobuf
@@ -38,60 +38,60 @@
   }
 }
 
-- (int)StringAsSendError:(id)a3
+- (int)StringAsSendError:(id)error
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  errorCopy = error;
+  if ([errorCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ApplicationNotFound"])
+  else if ([errorCopy isEqualToString:@"ApplicationNotFound"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ConnectionFailed"])
+  else if ([errorCopy isEqualToString:@"ConnectionFailed"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Ignored"])
+  else if ([errorCopy isEqualToString:@"Ignored"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CouldNotLaunchApplication"])
+  else if ([errorCopy isEqualToString:@"CouldNotLaunchApplication"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"TimedOut"])
+  else if ([errorCopy isEqualToString:@"TimedOut"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"OriginDoesNotExist"])
+  else if ([errorCopy isEqualToString:@"OriginDoesNotExist"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"InvalidOptions"])
+  else if ([errorCopy isEqualToString:@"InvalidOptions"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"NoCommandHandlers"])
+  else if ([errorCopy isEqualToString:@"NoCommandHandlers"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"ApplicationNotInstalled"])
+  else if ([errorCopy isEqualToString:@"ApplicationNotInstalled"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"NotSupported"])
+  else if ([errorCopy isEqualToString:@"NotSupported"])
   {
     v4 = 10;
   }
@@ -104,121 +104,121 @@
   return v4;
 }
 
-- (int)handlerReturnStatusAtIndex:(unint64_t)a3
+- (int)handlerReturnStatusAtIndex:(unint64_t)index
 {
   p_handlerReturnStatus = &self->_handlerReturnStatus;
   count = self->_handlerReturnStatus.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_handlerReturnStatus->list[a3];
+  return p_handlerReturnStatus->list[index];
 }
 
-- (int)StringAsHandlerReturnStatus:(id)a3
+- (int)StringAsHandlerReturnStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Success"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"Success"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NoSuchContent"])
+  else if ([statusCopy isEqualToString:@"NoSuchContent"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CommandFailed"])
+  else if ([statusCopy isEqualToString:@"CommandFailed"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NoActionableNowPlayingItem"])
+  else if ([statusCopy isEqualToString:@"NoActionableNowPlayingItem"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"DeviceNotFound"])
+  else if ([statusCopy isEqualToString:@"DeviceNotFound"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"UIKitLegacy"])
+  else if ([statusCopy isEqualToString:@"UIKitLegacy"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SkipAdProhibited"])
+  else if ([statusCopy isEqualToString:@"SkipAdProhibited"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"QueueIsUserCurated"])
+  else if ([statusCopy isEqualToString:@"QueueIsUserCurated"])
   {
     v4 = 101;
   }
 
-  else if ([v3 isEqualToString:@"UserModifiedQueueDisable"])
+  else if ([statusCopy isEqualToString:@"UserModifiedQueueDisable"])
   {
     v4 = 102;
   }
 
-  else if ([v3 isEqualToString:@"UserQueueModificationNotSupportedForCurrentItem"])
+  else if ([statusCopy isEqualToString:@"UserQueueModificationNotSupportedForCurrentItem"])
   {
     v4 = 103;
   }
 
-  else if ([v3 isEqualToString:@"SubscriptionRequiredForSharedQueue"])
+  else if ([statusCopy isEqualToString:@"SubscriptionRequiredForSharedQueue"])
   {
     v4 = 104;
   }
 
-  else if ([v3 isEqualToString:@"InsertionPositionNotSpecified"])
+  else if ([statusCopy isEqualToString:@"InsertionPositionNotSpecified"])
   {
     v4 = 105;
   }
 
-  else if ([v3 isEqualToString:@"InvalidInsertionPosition"])
+  else if ([statusCopy isEqualToString:@"InvalidInsertionPosition"])
   {
     v4 = 106;
   }
 
-  else if ([v3 isEqualToString:@"RequestParametersOutOfBounds"])
+  else if ([statusCopy isEqualToString:@"RequestParametersOutOfBounds"])
   {
     v4 = 107;
   }
 
-  else if ([v3 isEqualToString:@"SkipLimitReached"])
+  else if ([statusCopy isEqualToString:@"SkipLimitReached"])
   {
     v4 = 108;
   }
 
-  else if ([v3 isEqualToString:@"CannotModifyQueueWithPlaybackTokenItems"])
+  else if ([statusCopy isEqualToString:@"CannotModifyQueueWithPlaybackTokenItems"])
   {
     v4 = 109;
   }
 
-  else if ([v3 isEqualToString:@"AuthenticationFailure"])
+  else if ([statusCopy isEqualToString:@"AuthenticationFailure"])
   {
     v4 = 401;
   }
 
-  else if ([v3 isEqualToString:@"MediaServicesUnavailable"])
+  else if ([statusCopy isEqualToString:@"MediaServicesUnavailable"])
   {
     v4 = 501;
   }
 
-  else if ([v3 isEqualToString:@"Timeout"])
+  else if ([statusCopy isEqualToString:@"Timeout"])
   {
     v4 = 555;
   }
 
-  else if ([v3 isEqualToString:@"UnsupportedCommand"])
+  else if ([statusCopy isEqualToString:@"UnsupportedCommand"])
   {
     v4 = 404;
   }
@@ -231,22 +231,22 @@
   return v4;
 }
 
-- (void)addHandlerReturnStatusData:(id)a3
+- (void)addHandlerReturnStatusData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   handlerReturnStatusDatas = self->_handlerReturnStatusDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!handlerReturnStatusDatas)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_handlerReturnStatusDatas;
     self->_handlerReturnStatusDatas = v6;
 
-    v4 = v8;
+    dataCopy = v8;
     handlerReturnStatusDatas = self->_handlerReturnStatusDatas;
   }
 
-  [(NSMutableArray *)handlerReturnStatusDatas addObject:v4];
+  [(NSMutableArray *)handlerReturnStatusDatas addObject:dataCopy];
 }
 
 - (id)description
@@ -255,15 +255,15 @@
   v8.receiver = self;
   v8.super_class = _MRSendCommandResultMessageProtobuf;
   v4 = [(_MRSendCommandResultMessageProtobuf *)&v8 description];
-  v5 = [(_MRSendCommandResultMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRSendCommandResultMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     sendError = self->_sendError;
@@ -277,7 +277,7 @@
       v5 = off_1E76A4060[sendError];
     }
 
-    [v3 setObject:v5 forKey:@"sendError"];
+    [dictionary setObject:v5 forKey:@"sendError"];
   }
 
   p_handlerReturnStatus = &self->_handlerReturnStatus;
@@ -438,42 +438,42 @@ LABEL_53:
       }
     }
 
-    [v3 setObject:v7 forKey:@"handlerReturnStatus"];
+    [dictionary setObject:v7 forKey:@"handlerReturnStatus"];
   }
 
   handlerReturnStatusDatas = self->_handlerReturnStatusDatas;
   if (handlerReturnStatusDatas)
   {
-    [v3 setObject:handlerReturnStatusDatas forKey:@"handlerReturnStatusData"];
+    [dictionary setObject:handlerReturnStatusDatas forKey:@"handlerReturnStatusData"];
   }
 
   commandID = self->_commandID;
   if (commandID)
   {
-    [v3 setObject:commandID forKey:@"commandID"];
+    [dictionary setObject:commandID forKey:@"commandID"];
   }
 
   playerPath = self->_playerPath;
   if (playerPath)
   {
-    v14 = [(_MRNowPlayingPlayerPathProtobuf *)playerPath dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"playerPath"];
+    dictionaryRepresentation = [(_MRNowPlayingPlayerPathProtobuf *)playerPath dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"playerPath"];
   }
 
   commandResult = self->_commandResult;
   if (commandResult)
   {
-    v16 = [(_MRSendCommandResultProtobuf *)commandResult dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"commandResult"];
+    dictionaryRepresentation2 = [(_MRSendCommandResultProtobuf *)commandResult dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"commandResult"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     sendError = self->_sendError;
@@ -540,23 +540,23 @@ LABEL_53:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[16] = self->_sendError;
-    *(v4 + 68) |= 1u;
+    toCopy[16] = self->_sendError;
+    *(toCopy + 68) |= 1u;
   }
 
-  v13 = v4;
+  v13 = toCopy;
   if ([(_MRSendCommandResultMessageProtobuf *)self handlerReturnStatusCount])
   {
     [v13 clearHandlerReturnStatus];
-    v5 = [(_MRSendCommandResultMessageProtobuf *)self handlerReturnStatusCount];
-    if (v5)
+    handlerReturnStatusCount = [(_MRSendCommandResultMessageProtobuf *)self handlerReturnStatusCount];
+    if (handlerReturnStatusCount)
     {
-      v6 = v5;
+      v6 = handlerReturnStatusCount;
       for (i = 0; i != v6; ++i)
       {
         [v13 addHandlerReturnStatus:{-[_MRSendCommandResultMessageProtobuf handlerReturnStatusAtIndex:](self, "handlerReturnStatusAtIndex:", i)}];
@@ -567,10 +567,10 @@ LABEL_53:
   if ([(_MRSendCommandResultMessageProtobuf *)self handlerReturnStatusDatasCount])
   {
     [v13 clearHandlerReturnStatusDatas];
-    v8 = [(_MRSendCommandResultMessageProtobuf *)self handlerReturnStatusDatasCount];
-    if (v8)
+    handlerReturnStatusDatasCount = [(_MRSendCommandResultMessageProtobuf *)self handlerReturnStatusDatasCount];
+    if (handlerReturnStatusDatasCount)
     {
-      v9 = v8;
+      v9 = handlerReturnStatusDatasCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(_MRSendCommandResultMessageProtobuf *)self handlerReturnStatusDataAtIndex:j];
@@ -598,10 +598,10 @@ LABEL_53:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -630,7 +630,7 @@ LABEL_53:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v21 + 1) + 8 * v11) copyWithZone:{a3, v21}];
+        v12 = [*(*(&v21 + 1) + 8 * v11) copyWithZone:{zone, v21}];
         [v6 addHandlerReturnStatusData:v12];
 
         ++v11;
@@ -643,15 +643,15 @@ LABEL_53:
     while (v9);
   }
 
-  v13 = [(NSString *)self->_commandID copyWithZone:a3];
+  v13 = [(NSString *)self->_commandID copyWithZone:zone];
   v14 = v6[4];
   v6[4] = v13;
 
-  v15 = [(_MRNowPlayingPlayerPathProtobuf *)self->_playerPath copyWithZone:a3];
+  v15 = [(_MRNowPlayingPlayerPathProtobuf *)self->_playerPath copyWithZone:zone];
   v16 = v6[7];
   v6[7] = v15;
 
-  v17 = [(_MRSendCommandResultProtobuf *)self->_commandResult copyWithZone:a3];
+  v17 = [(_MRSendCommandResultProtobuf *)self->_commandResult copyWithZone:zone];
   v18 = v6[5];
   v6[5] = v17;
 
@@ -659,24 +659,24 @@ LABEL_53:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = *(v4 + 68);
+  v5 = *(equalCopy + 68);
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_sendError != *(v4 + 16))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_sendError != *(equalCopy + 16))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
 LABEL_16:
     v10 = 0;
@@ -689,7 +689,7 @@ LABEL_16:
   }
 
   handlerReturnStatusDatas = self->_handlerReturnStatusDatas;
-  if (handlerReturnStatusDatas | *(v4 + 6))
+  if (handlerReturnStatusDatas | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)handlerReturnStatusDatas isEqual:?])
     {
@@ -698,7 +698,7 @@ LABEL_16:
   }
 
   commandID = self->_commandID;
-  if (commandID | *(v4 + 4))
+  if (commandID | *(equalCopy + 4))
   {
     if (![(NSString *)commandID isEqual:?])
     {
@@ -707,7 +707,7 @@ LABEL_16:
   }
 
   playerPath = self->_playerPath;
-  if (playerPath | *(v4 + 7))
+  if (playerPath | *(equalCopy + 7))
   {
     if (![(_MRNowPlayingPlayerPathProtobuf *)playerPath isEqual:?])
     {
@@ -716,7 +716,7 @@ LABEL_16:
   }
 
   commandResult = self->_commandResult;
-  if (commandResult | *(v4 + 5))
+  if (commandResult | *(equalCopy + 5))
   {
     v10 = [(_MRSendCommandResultProtobuf *)commandResult isEqual:?];
   }
@@ -750,21 +750,21 @@ LABEL_17:
   return v7 ^ [(_MRSendCommandResultProtobuf *)self->_commandResult hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 68))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 68))
   {
-    self->_sendError = *(v4 + 16);
+    self->_sendError = *(fromCopy + 16);
     *&self->_has |= 1u;
   }
 
-  v6 = [v4 handlerReturnStatusCount];
-  if (v6)
+  handlerReturnStatusCount = [fromCopy handlerReturnStatusCount];
+  if (handlerReturnStatusCount)
   {
-    v7 = v6;
+    v7 = handlerReturnStatusCount;
     for (i = 0; i != v7; ++i)
     {
       -[_MRSendCommandResultMessageProtobuf addHandlerReturnStatus:](self, "addHandlerReturnStatus:", [v5 handlerReturnStatusAtIndex:i]);

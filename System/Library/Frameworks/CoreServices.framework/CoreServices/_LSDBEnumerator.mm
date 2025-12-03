@@ -1,11 +1,11 @@
 @interface _LSDBEnumerator
 - (id).cxx_construct;
 - (id)_initWithContext:(LSContext *)CurrentContext;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)nextObject;
-- (id)swift_firstWhere:(id)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)swift_forEach:(id)a3;
+- (id)swift_firstWhere:(id)where;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)swift_forEach:(id)each;
 @end
 
 @implementation _LSDBEnumerator
@@ -68,7 +68,7 @@
   return v5;
 }
 
-- (void)swift_forEach:(id)a3
+- (void)swift_forEach:(id)each
 {
   NextObject = _LSDBEnumeratorGetNextObject(self);
   if (NextObject)
@@ -76,7 +76,7 @@
     v6 = NextObject;
     do
     {
-      (*(a3 + 2))(a3, v6);
+      (*(each + 2))(each, v6);
 
       v6 = _LSDBEnumeratorGetNextObject(self);
     }
@@ -85,12 +85,12 @@
   }
 }
 
-- (id)swift_firstWhere:(id)a3
+- (id)swift_firstWhere:(id)where
 {
   NextObject = _LSDBEnumeratorGetNextObject(self);
   if (NextObject)
   {
-    while (!(*(a3 + 2))(a3, NextObject))
+    while (!(*(where + 2))(where, NextObject))
     {
 
       NextObject = _LSDBEnumeratorGetNextObject(self);
@@ -108,11 +108,11 @@ LABEL_6:
   return NextObject;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  if (a3->var0)
+  if (state->var0)
   {
-    if (!a5)
+    if (!count)
     {
       return 0;
     }
@@ -120,10 +120,10 @@ LABEL_6:
 
   else
   {
-    a3->var1 = a4;
-    a3->var2 = &mutationsPtr;
-    a3->var0 = 1;
-    if (!a5)
+    state->var1 = objects;
+    state->var2 = &mutationsPtr;
+    state->var0 = 1;
+    if (!count)
     {
       return 0;
     }
@@ -136,18 +136,18 @@ LABEL_6:
   v9 = self->_lastFastObject;
   if (v9)
   {
-    *a4 = v9;
+    *objects = v9;
     return 1;
   }
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = _LSDBEnumerator;
-  v4 = [(LSEnumerator *)&v7 copyWithZone:a3];
+  v4 = [(LSEnumerator *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

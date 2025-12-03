@@ -1,10 +1,10 @@
 @interface VCMediaControlInfoIPCamera
-- (BOOL)hasInfoType:(unsigned int)a3;
+- (BOOL)hasInfoType:(unsigned int)type;
 - (VCMediaControlInfoIPCamera)init;
-- (VCMediaControlInfoIPCamera)initWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5 version:(unsigned __int8)a6;
-- (int)configureWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5;
-- (int)getInfo:(void *)a3 bufferLength:(unint64_t)a4 infoSize:(unint64_t *)a5 type:(unsigned int)a6;
-- (int)setInfo:(void *)a3 size:(unint64_t)a4 type:(unsigned int)a5;
+- (VCMediaControlInfoIPCamera)initWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info version:(unsigned __int8)version;
+- (int)configureWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info;
+- (int)getInfo:(void *)info bufferLength:(unint64_t)length infoSize:(unint64_t *)size type:(unsigned int)type;
+- (int)setInfo:(void *)info size:(unint64_t)size type:(unsigned int)type;
 @end
 
 @implementation VCMediaControlInfoIPCamera
@@ -24,12 +24,12 @@
   return result;
 }
 
-- (VCMediaControlInfoIPCamera)initWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5 version:(unsigned __int8)a6
+- (VCMediaControlInfoIPCamera)initWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info version:(unsigned __int8)version
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = VCMediaControlInfoIPCamera;
-  result = [(VCMediaControlInfo *)&v7 initWithBuffer:a3 length:a4 optionalControlInfo:a5 version:a6];
+  result = [(VCMediaControlInfo *)&v7 initWithBuffer:buffer length:length optionalControlInfo:info version:version];
   if (result)
   {
     result->super._vtableC.serializedSize = VCMediaControlInfoIPCamera_SerializedSize;
@@ -39,9 +39,9 @@
   return result;
 }
 
-- (int)setInfo:(void *)a3 size:(unint64_t)a4 type:(unsigned int)a5
+- (int)setInfo:(void *)info size:(unint64_t)size type:(unsigned int)type
 {
-  if (a5 >= 0x16)
+  if (type >= 0x16)
   {
     [VCMediaControlInfoIPCamera setInfo:size:type:];
     return v7;
@@ -50,13 +50,13 @@
   else
   {
     v5 = -2144403455;
-    if (a5 == 9)
+    if (type == 9)
     {
-      if (a4 == 8)
+      if (size == 8)
       {
         v5 = 0;
         self->super._bitmap |= 1u;
-        *self->_controlInfoCVO = *a3;
+        *self->_controlInfoCVO = *info;
       }
 
       else
@@ -78,9 +78,9 @@
   return v5;
 }
 
-- (BOOL)hasInfoType:(unsigned int)a3
+- (BOOL)hasInfoType:(unsigned int)type
 {
-  if (a3 == 9)
+  if (type == 9)
   {
     return self->super._bitmap & 1;
   }
@@ -93,20 +93,20 @@
   return v3;
 }
 
-- (int)getInfo:(void *)a3 bufferLength:(unint64_t)a4 infoSize:(unint64_t *)a5 type:(unsigned int)a6
+- (int)getInfo:(void *)info bufferLength:(unint64_t)length infoSize:(unint64_t *)size type:(unsigned int)type
 {
   result = -2144403455;
-  if (a3 && a6 == 9)
+  if (info && type == 9)
   {
     if (self->super._bitmap)
     {
-      if (a4 >= 8)
+      if (length >= 8)
       {
-        *a3 = *self->_controlInfoCVO;
+        *info = *self->_controlInfoCVO;
         result = 0;
-        if (a5)
+        if (size)
         {
-          *a5 = 8;
+          *size = 8;
         }
       }
 
@@ -125,17 +125,17 @@
   return result;
 }
 
-- (int)configureWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5
+- (int)configureWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info
 {
-  if (!a4)
+  if (!length)
   {
     return 0;
   }
 
   result = -2144403455;
-  if (a3)
+  if (buffer)
   {
-    if (a4 > 8)
+    if (length > 8)
     {
       return -2144403442;
     }
@@ -143,7 +143,7 @@
     else
     {
       self->super._bitmap |= 1u;
-      memcpy(self->_controlInfoCVO, a3, a4);
+      memcpy(self->_controlInfoCVO, buffer, length);
       return 0;
     }
   }

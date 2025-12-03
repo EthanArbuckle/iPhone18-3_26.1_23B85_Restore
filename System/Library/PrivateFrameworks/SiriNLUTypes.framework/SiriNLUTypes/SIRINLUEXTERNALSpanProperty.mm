@@ -1,26 +1,26 @@
 @interface SIRINLUEXTERNALSpanProperty
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALSpanProperty
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v10 = a3;
-  if (v10[1])
+  fromCopy = from;
+  if (fromCopy[1])
   {
     [(SIRINLUEXTERNALSpanProperty *)self setKey:?];
   }
 
   valueString = self->_valueString;
-  v5 = v10[4];
+  v5 = fromCopy[4];
   if (valueString)
   {
     if (v5)
@@ -35,7 +35,7 @@
   }
 
   valueInt = self->_valueInt;
-  v7 = v10[3];
+  v7 = fromCopy[3];
   if (valueInt)
   {
     if (v7)
@@ -50,7 +50,7 @@
   }
 
   valueFloat = self->_valueFloat;
-  v9 = v10[2];
+  v9 = fromCopy[2];
   if (valueFloat)
   {
     if (v9)
@@ -73,13 +73,13 @@
   return v4 ^ v5 ^ [(SIRICOMMONFloatValue *)self->_valueFloat hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | v4[1])) || -[NSString isEqual:](key, "isEqual:")) && ((valueString = self->_valueString, !(valueString | v4[4])) || -[SIRICOMMONStringValue isEqual:](valueString, "isEqual:")) && ((valueInt = self->_valueInt, !(valueInt | v4[3])) || -[SIRICOMMONInt32Value isEqual:](valueInt, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | equalCopy[1])) || -[NSString isEqual:](key, "isEqual:")) && ((valueString = self->_valueString, !(valueString | equalCopy[4])) || -[SIRICOMMONStringValue isEqual:](valueString, "isEqual:")) && ((valueInt = self->_valueInt, !(valueInt | equalCopy[3])) || -[SIRICOMMONInt32Value isEqual:](valueInt, "isEqual:")))
   {
     valueFloat = self->_valueFloat;
-    if (valueFloat | v4[2])
+    if (valueFloat | equalCopy[2])
     {
       v9 = [(SIRICOMMONFloatValue *)valueFloat isEqual:?];
     }
@@ -98,115 +98,115 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(SIRICOMMONStringValue *)self->_valueString copyWithZone:a3];
+  v8 = [(SIRICOMMONStringValue *)self->_valueString copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(SIRICOMMONInt32Value *)self->_valueInt copyWithZone:a3];
+  v10 = [(SIRICOMMONInt32Value *)self->_valueInt copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(SIRICOMMONFloatValue *)self->_valueFloat copyWithZone:a3];
+  v12 = [(SIRICOMMONFloatValue *)self->_valueFloat copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v5;
+    [toCopy setKey:?];
+    toCopy = v5;
   }
 
   if (self->_valueString)
   {
     [v5 setValueString:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_valueInt)
   {
     [v5 setValueInt:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_valueFloat)
   {
     [v5 setValueFloat:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_valueString)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_valueInt)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_valueFloat)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   valueString = self->_valueString;
   if (valueString)
   {
-    v7 = [(SIRICOMMONStringValue *)valueString dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"value_string"];
+    dictionaryRepresentation = [(SIRICOMMONStringValue *)valueString dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"value_string"];
   }
 
   valueInt = self->_valueInt;
   if (valueInt)
   {
-    v9 = [(SIRICOMMONInt32Value *)valueInt dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"value_int"];
+    dictionaryRepresentation2 = [(SIRICOMMONInt32Value *)valueInt dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"value_int"];
   }
 
   valueFloat = self->_valueFloat;
   if (valueFloat)
   {
-    v11 = [(SIRICOMMONFloatValue *)valueFloat dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"value_float"];
+    dictionaryRepresentation3 = [(SIRICOMMONFloatValue *)valueFloat dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"value_float"];
   }
 
   return v4;
@@ -218,8 +218,8 @@
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALSpanProperty;
   v4 = [(SIRINLUEXTERNALSpanProperty *)&v8 description];
-  v5 = [(SIRINLUEXTERNALSpanProperty *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALSpanProperty *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

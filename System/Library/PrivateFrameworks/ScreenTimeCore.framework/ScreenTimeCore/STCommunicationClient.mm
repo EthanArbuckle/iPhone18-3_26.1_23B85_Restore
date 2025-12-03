@@ -1,8 +1,8 @@
 @interface STCommunicationClient
 + (id)_newConnection;
 - (STCommunicationClient)init;
-- (id)currentConfigurationWithError:(id *)a3;
-- (void)authenticateForCommunicationConfigurationOverrideWithCompletionHandler:(id)a3;
+- (id)currentConfigurationWithError:(id *)error;
+- (void)authenticateForCommunicationConfigurationOverrideWithCompletionHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -42,10 +42,10 @@
   [(STCommunicationClient *)&v3 dealloc];
 }
 
-- (void)authenticateForCommunicationConfigurationOverrideWithCompletionHandler:(id)a3
+- (void)authenticateForCommunicationConfigurationOverrideWithCompletionHandler:(id)handler
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[STLog communicationClient];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -59,13 +59,13 @@
   v40[2] = __Block_byref_object_copy__2;
   v40[3] = __Block_byref_object_dispose__2;
   v41 = 0;
-  v6 = [(STCommunicationClient *)self connection];
+  connection = [(STCommunicationClient *)self connection];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __96__STCommunicationClient_authenticateForCommunicationConfigurationOverrideWithCompletionHandler___block_invoke;
   v38[3] = &unk_1E7CE6BA8;
   v38[4] = buf;
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v38];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v38];
 
   if (*(v40[0] + 40))
   {
@@ -75,19 +75,19 @@
       [(STCommunicationClient *)v40 authenticateForCommunicationConfigurationOverrideWithCompletionHandler:v8, v9, v10, v11, v12, v13, v14];
     }
 
-    (*(v4 + 2))(v4, 0, *(v40[0] + 40));
+    (*(handlerCopy + 2))(handlerCopy, 0, *(v40[0] + 40));
   }
 
   else
   {
     v15 = objc_opt_new();
-    v16 = [v15 providePasscodeAuthenticationProviderService];
+    providePasscodeAuthenticationProviderService = [v15 providePasscodeAuthenticationProviderService];
     v17 = objc_alloc(MEMORY[0x1E69C7548]);
-    v18 = [MEMORY[0x1E69C7640] currentProcess];
+    currentProcess = [MEMORY[0x1E69C7640] currentProcess];
     v19 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.screentimeunlock" name:@"WaitForAuth"];
     v42[0] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:1];
-    v21 = [v17 initWithExplanation:@"Wait for ScreenTime Auth" target:v18 attributes:v20];
+    v21 = [v17 initWithExplanation:@"Wait for ScreenTime Auth" target:currentProcess attributes:v20];
 
     v37 = 0;
     LOBYTE(v19) = [v21 acquireWithError:&v37];
@@ -107,12 +107,12 @@
     v33[1] = 3221225472;
     v33[2] = __96__STCommunicationClient_authenticateForCommunicationConfigurationOverrideWithCompletionHandler___block_invoke_23;
     v33[3] = &unk_1E7CE7128;
-    v36 = v4;
+    v36 = handlerCopy;
     v30 = v21;
     v34 = v30;
     v31 = v15;
     v35 = v31;
-    [v16 authenticatePasscodeWithCommunicationServiceProxy:v7 completionHandler:v33];
+    [providePasscodeAuthenticationProviderService authenticatePasscodeWithCommunicationServiceProxy:v7 completionHandler:v33];
   }
 
   _Block_object_dispose(buf, 8);
@@ -143,7 +143,7 @@ void __96__STCommunicationClient_authenticateForCommunicationConfigurationOverri
   [*(a1 + 32) invalidate];
 }
 
-- (id)currentConfigurationWithError:(id *)a3
+- (id)currentConfigurationWithError:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
   v5 = +[STLog communicationClient];
@@ -165,13 +165,13 @@ void __96__STCommunicationClient_authenticateForCommunicationConfigurationOverri
   v19 = __Block_byref_object_copy__2;
   v20 = __Block_byref_object_dispose__2;
   v21 = 0;
-  v6 = [(STCommunicationClient *)self connection];
+  connection = [(STCommunicationClient *)self connection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __55__STCommunicationClient_currentConfigurationWithError___block_invoke;
   v15[3] = &unk_1E7CE6BA8;
   v15[4] = buf;
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v15];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v15];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -192,9 +192,9 @@ void __96__STCommunicationClient_authenticateForCommunicationConfigurationOverri
     _os_log_impl(&dword_1B831F000, v8, OS_LOG_TYPE_DEFAULT, "Got current communication configuration: %{public}@ - Error: %{public}@", v28, 0x16u);
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = *(v23 + 5);
+    *error = *(v23 + 5);
   }
 
   v11 = v17[5];

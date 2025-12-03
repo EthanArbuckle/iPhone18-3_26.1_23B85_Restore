@@ -1,17 +1,17 @@
 @interface TSCellularPlanLabelTableViewCell
-- (TSCellularPlanLabelTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setLabel:(id)a3 badge:(id)a4;
-- (void)setLabelWithNoBadge:(id)a3;
+- (TSCellularPlanLabelTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setLabel:(id)label badge:(id)badge;
+- (void)setLabelWithNoBadge:(id)badge;
 @end
 
 @implementation TSCellularPlanLabelTableViewCell
 
-- (TSCellularPlanLabelTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TSCellularPlanLabelTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v26[2] = *MEMORY[0x277D85DE8];
   v25.receiver = self;
   v25.super_class = TSCellularPlanLabelTableViewCell;
-  v4 = [(TSCellularPlanLabelTableViewCell *)&v25 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(TSCellularPlanLabelTableViewCell *)&v25 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277D756B8]);
@@ -19,138 +19,138 @@
     [(TSCellularPlanLabelTableViewCell *)v4 setLabel:v6];
 
     v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-    v8 = [(TSCellularPlanLabelTableViewCell *)v4 label];
-    [v8 setFont:v7];
+    label = [(TSCellularPlanLabelTableViewCell *)v4 label];
+    [label setFont:v7];
 
-    v9 = [(TSCellularPlanLabelTableViewCell *)v4 label];
-    [v9 setNumberOfLines:0];
+    label2 = [(TSCellularPlanLabelTableViewCell *)v4 label];
+    [label2 setNumberOfLines:0];
 
-    v10 = [(TSCellularPlanLabelTableViewCell *)v4 label];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    label3 = [(TSCellularPlanLabelTableViewCell *)v4 label];
+    [label3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v11 = [(TSCellularPlanLabelTableViewCell *)v4 contentView];
-    v12 = [(TSCellularPlanLabelTableViewCell *)v4 label];
-    [v11 addSubview:v12];
+    contentView = [(TSCellularPlanLabelTableViewCell *)v4 contentView];
+    label4 = [(TSCellularPlanLabelTableViewCell *)v4 label];
+    [contentView addSubview:label4];
 
-    v13 = [(TSCellularPlanLabelTableViewCell *)v4 contentView];
-    v24 = [(TSCellularPlanLabelTableViewCell *)v4 label];
-    v14 = [v24 centerYAnchor];
-    v15 = [(TSCellularPlanLabelTableViewCell *)v4 contentView];
-    v16 = [v15 centerYAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16];
+    contentView2 = [(TSCellularPlanLabelTableViewCell *)v4 contentView];
+    label5 = [(TSCellularPlanLabelTableViewCell *)v4 label];
+    centerYAnchor = [label5 centerYAnchor];
+    contentView3 = [(TSCellularPlanLabelTableViewCell *)v4 contentView];
+    centerYAnchor2 = [contentView3 centerYAnchor];
+    v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v26[0] = v17;
-    v18 = [(TSCellularPlanLabelTableViewCell *)v4 contentView];
-    v19 = [v18 heightAnchor];
-    v20 = [v19 constraintGreaterThanOrEqualToConstant:45.0];
+    contentView4 = [(TSCellularPlanLabelTableViewCell *)v4 contentView];
+    heightAnchor = [contentView4 heightAnchor];
+    v20 = [heightAnchor constraintGreaterThanOrEqualToConstant:45.0];
     v26[1] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
-    [v13 addConstraints:v21];
+    [contentView2 addConstraints:v21];
   }
 
   v22 = *MEMORY[0x277D85DE8];
   return v4;
 }
 
-- (void)setLabelWithNoBadge:(id)a3
+- (void)setLabelWithNoBadge:(id)badge
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TSCellularPlanLabelTableViewCell *)self label];
-  [v5 setText:v4];
+  badgeCopy = badge;
+  label = [(TSCellularPlanLabelTableViewCell *)self label];
+  [label setText:badgeCopy];
 
-  v6 = [(TSCellularPlanLabelTableViewCell *)self badge];
+  badge = [(TSCellularPlanLabelTableViewCell *)self badge];
 
-  if (v6)
+  if (badge)
   {
-    v7 = [(TSCellularPlanLabelTableViewCell *)self badge];
-    [v7 removeFromSuperview];
+    badge2 = [(TSCellularPlanLabelTableViewCell *)self badge];
+    [badge2 removeFromSuperview];
   }
 
-  v8 = [(TSCellularPlanLabelTableViewCell *)self contentView];
-  v9 = [(TSCellularPlanLabelTableViewCell *)self label];
-  v10 = [v9 leadingAnchor];
-  v11 = [(TSCellularPlanLabelTableViewCell *)self contentView];
-  v12 = [v11 layoutMarginsGuide];
-  v13 = [v12 leadingAnchor];
-  v14 = [v10 constraintEqualToAnchor:v13];
+  contentView = [(TSCellularPlanLabelTableViewCell *)self contentView];
+  label2 = [(TSCellularPlanLabelTableViewCell *)self label];
+  leadingAnchor = [label2 leadingAnchor];
+  contentView2 = [(TSCellularPlanLabelTableViewCell *)self contentView];
+  layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v17[0] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  [v8 addConstraints:v15];
+  [contentView addConstraints:v15];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLabel:(id)a3 badge:(id)a4
+- (void)setLabel:(id)label badge:(id)badge
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TSCellularPlanLabelTableViewCell *)self label];
-  [v8 setText:v7];
+  badgeCopy = badge;
+  labelCopy = label;
+  label = [(TSCellularPlanLabelTableViewCell *)self label];
+  [label setText:labelCopy];
 
-  v9 = [(TSCellularPlanLabelTableViewCell *)self badge];
+  badge = [(TSCellularPlanLabelTableViewCell *)self badge];
 
-  if (v9)
+  if (badge)
   {
-    v10 = [(TSCellularPlanLabelTableViewCell *)self badge];
-    [v10 removeFromSuperview];
+    badge2 = [(TSCellularPlanLabelTableViewCell *)self badge];
+    [badge2 removeFromSuperview];
   }
 
-  v11 = [MEMORY[0x277CBDB08] badgeForText:v6];
+  v11 = [MEMORY[0x277CBDB08] badgeForText:badgeCopy];
   [(TSCellularPlanLabelTableViewCell *)self setBadge:v11];
 
   v51 = *MEMORY[0x277D74068];
-  v12 = [MEMORY[0x277D75348] systemGrayColor];
-  v52[0] = v12;
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  v52[0] = systemGrayColor;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:&v51 count:1];
   [(TSCellularPlanLabelTableViewCell *)self badge];
-  v14 = v48 = v6;
+  v14 = v48 = badgeCopy;
   [v14 setViewAttributes:v13];
 
-  v15 = [(TSCellularPlanLabelTableViewCell *)self contentView];
-  v16 = [(TSCellularPlanLabelTableViewCell *)self badge];
-  [v15 addSubview:v16];
+  contentView = [(TSCellularPlanLabelTableViewCell *)self contentView];
+  badge3 = [(TSCellularPlanLabelTableViewCell *)self badge];
+  [contentView addSubview:badge3];
 
-  v49 = [(TSCellularPlanLabelTableViewCell *)self contentView];
-  v47 = [(TSCellularPlanLabelTableViewCell *)self badge];
-  v45 = [v47 leadingAnchor];
-  v46 = [(TSCellularPlanLabelTableViewCell *)self contentView];
-  v44 = [v46 layoutMarginsGuide];
-  v43 = [v44 leadingAnchor];
-  v42 = [v45 constraintEqualToAnchor:v43];
+  contentView2 = [(TSCellularPlanLabelTableViewCell *)self contentView];
+  badge4 = [(TSCellularPlanLabelTableViewCell *)self badge];
+  leadingAnchor = [badge4 leadingAnchor];
+  contentView3 = [(TSCellularPlanLabelTableViewCell *)self contentView];
+  layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v50[0] = v42;
-  v41 = [(TSCellularPlanLabelTableViewCell *)self badge];
-  v39 = [v41 trailingAnchor];
-  v40 = [(TSCellularPlanLabelTableViewCell *)self label];
-  v37 = [v40 leadingAnchor];
-  v38 = [MEMORY[0x277D75520] defaultMetrics];
-  [v38 scaledValueForValue:-4.0];
-  v36 = [v39 constraintEqualToAnchor:v37 constant:?];
+  badge5 = [(TSCellularPlanLabelTableViewCell *)self badge];
+  trailingAnchor = [badge5 trailingAnchor];
+  label2 = [(TSCellularPlanLabelTableViewCell *)self label];
+  leadingAnchor3 = [label2 leadingAnchor];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+  [defaultMetrics scaledValueForValue:-4.0];
+  v36 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:?];
   v50[1] = v36;
-  v35 = [(TSCellularPlanLabelTableViewCell *)self badge];
-  v33 = [v35 bottomAnchor];
-  v34 = [(TSCellularPlanLabelTableViewCell *)self label];
-  v32 = [v34 firstBaselineAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  badge6 = [(TSCellularPlanLabelTableViewCell *)self badge];
+  bottomAnchor = [badge6 bottomAnchor];
+  label3 = [(TSCellularPlanLabelTableViewCell *)self label];
+  firstBaselineAnchor = [label3 firstBaselineAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:firstBaselineAnchor];
   v50[2] = v31;
-  v17 = [(TSCellularPlanLabelTableViewCell *)self badge];
-  v18 = [v17 widthAnchor];
-  v19 = [v18 constraintLessThanOrEqualToConstant:300.0];
+  badge7 = [(TSCellularPlanLabelTableViewCell *)self badge];
+  widthAnchor = [badge7 widthAnchor];
+  v19 = [widthAnchor constraintLessThanOrEqualToConstant:300.0];
   v50[3] = v19;
-  v20 = [(TSCellularPlanLabelTableViewCell *)self badge];
-  v21 = [v20 centerYAnchor];
-  v22 = [(TSCellularPlanLabelTableViewCell *)self contentView];
-  v23 = [v22 centerYAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  badge8 = [(TSCellularPlanLabelTableViewCell *)self badge];
+  centerYAnchor = [badge8 centerYAnchor];
+  contentView4 = [(TSCellularPlanLabelTableViewCell *)self contentView];
+  centerYAnchor2 = [contentView4 centerYAnchor];
+  v24 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v50[4] = v24;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:5];
-  [v49 addConstraints:v25];
+  [contentView2 addConstraints:v25];
 
-  v26 = [(TSCellularPlanLabelTableViewCell *)self badge];
-  v27 = [(TSCellularPlanLabelTableViewCell *)self label];
-  [v27 contentHuggingPriorityForAxis:0];
+  badge9 = [(TSCellularPlanLabelTableViewCell *)self badge];
+  label4 = [(TSCellularPlanLabelTableViewCell *)self label];
+  [label4 contentHuggingPriorityForAxis:0];
   *&v29 = v28 + 1.0;
-  [v26 setContentHuggingPriority:0 forAxis:v29];
+  [badge9 setContentHuggingPriority:0 forAxis:v29];
 
   v30 = *MEMORY[0x277D85DE8];
 }

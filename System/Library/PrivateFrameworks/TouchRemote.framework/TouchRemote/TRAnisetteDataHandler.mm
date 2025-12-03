@@ -1,17 +1,17 @@
 @interface TRAnisetteDataHandler
-- (void)registerForAnisetteDataRequestsFromSession:(id)a3;
+- (void)registerForAnisetteDataRequestsFromSession:(id)session;
 @end
 
 @implementation TRAnisetteDataHandler
 
-- (void)registerForAnisetteDataRequestsFromSession:(id)a3
+- (void)registerForAnisetteDataRequestsFromSession:(id)session
 {
-  v3 = a3;
-  [v3 setRequestHandler:&__block_literal_global_3 forRequestClass:objc_opt_class()];
-  [v3 setRequestHandler:&__block_literal_global_7 forRequestClass:objc_opt_class()];
-  [v3 setRequestHandler:&__block_literal_global_13 forRequestClass:objc_opt_class()];
-  [v3 setRequestHandler:&__block_literal_global_19 forRequestClass:objc_opt_class()];
-  [v3 setRequestHandler:&__block_literal_global_26 forRequestClass:objc_opt_class()];
+  sessionCopy = session;
+  [sessionCopy setRequestHandler:&__block_literal_global_3 forRequestClass:objc_opt_class()];
+  [sessionCopy setRequestHandler:&__block_literal_global_7 forRequestClass:objc_opt_class()];
+  [sessionCopy setRequestHandler:&__block_literal_global_13 forRequestClass:objc_opt_class()];
+  [sessionCopy setRequestHandler:&__block_literal_global_19 forRequestClass:objc_opt_class()];
+  [sessionCopy setRequestHandler:&__block_literal_global_26 forRequestClass:objc_opt_class()];
 }
 
 void __68__TRAnisetteDataHandler_registerForAnisetteDataRequestsFromSession___block_invoke(uint64_t a1, void *a2, void *a3)

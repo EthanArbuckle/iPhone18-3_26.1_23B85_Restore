@@ -1,26 +1,26 @@
 @interface ServiceBridgedBarButtonItem
-+ (id)itemFromItem:(id)a3;
++ (id)itemFromItem:(id)item;
 - (ServiceBridgedNavigationItemProxy)proxyHandler;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation ServiceBridgedBarButtonItem
 
-+ (id)itemFromItem:(id)a3
++ (id)itemFromItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4[1];
-  v4[1] = v3;
+  v4[1] = itemCopy;
 
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  [(UIBarButtonItem *)self->_underlyingBarButtonItem setTitle:a3];
-  v4 = [(ServiceBridgedBarButtonItem *)self proxyHandler];
-  [v4 navigationItemUpdated];
+  [(UIBarButtonItem *)self->_underlyingBarButtonItem setTitle:title];
+  proxyHandler = [(ServiceBridgedBarButtonItem *)self proxyHandler];
+  [proxyHandler navigationItemUpdated];
 }
 
 - (ServiceBridgedNavigationItemProxy)proxyHandler

@@ -1,23 +1,23 @@
 @interface HAPTLVBase
-- (BOOL)_parseFields:(id)a3;
-- (BOOL)_parseMandatory:(id)a3 optional:(id)a4;
-- (HAPTLVBase)initWithTLVData:(id)a3;
-- (id)_parseArray:(id)a3 result:(id *)a4 objectCreator:(id)a5;
+- (BOOL)_parseFields:(id)fields;
+- (BOOL)_parseMandatory:(id)mandatory optional:(id)optional;
+- (HAPTLVBase)initWithTLVData:(id)data;
+- (id)_parseArray:(id)array result:(id *)result objectCreator:(id)creator;
 @end
 
 @implementation HAPTLVBase
 
-- (id)_parseArray:(id)a3 result:(id *)a4 objectCreator:(id)a5
+- (id)_parseArray:(id)array result:(id *)result objectCreator:(id)creator
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a5;
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  arrayCopy = array;
+  creatorCopy = creator;
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v6;
+  v9 = arrayCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -32,7 +32,7 @@ LABEL_3:
         objc_enumerationMutation(v9);
       }
 
-      v14 = v7[2](v7, *(*(&v19 + 1) + 8 * v13));
+      v14 = creatorCopy[2](creatorCopy, *(*(&v19 + 1) + 8 * v13));
       if (!v14)
       {
         break;
@@ -60,28 +60,28 @@ LABEL_3:
   return v16;
 }
 
-- (BOOL)_parseMandatory:(id)a3 optional:(id)a4
+- (BOOL)_parseMandatory:(id)mandatory optional:(id)optional
 {
-  v6 = a4;
-  LOBYTE(a3) = [(HAPTLVBase *)self _parseFields:a3];
-  [(HAPTLVBase *)self _parseFields:v6];
+  optionalCopy = optional;
+  LOBYTE(mandatory) = [(HAPTLVBase *)self _parseFields:mandatory];
+  [(HAPTLVBase *)self _parseFields:optionalCopy];
 
-  return a3;
+  return mandatory;
 }
 
-- (BOOL)_parseFields:(id)a3
+- (BOOL)_parseFields:(id)fields
 {
   v81 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v64 = self;
-  v5 = [(HAPTLVBase *)self tlvDatablob];
-  v6 = [HAPTLVParser parserWithData:v5];
+  fieldsCopy = fields;
+  selfCopy = self;
+  tlvDatablob = [(HAPTLVBase *)self tlvDatablob];
+  v6 = [HAPTLVParser parserWithData:tlvDatablob];
 
   v70 = 0u;
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v7 = v4;
+  v7 = fieldsCopy;
   v8 = [v7 countByEnumeratingWithState:&v68 objects:v80 count:16];
   if (!v8)
   {
@@ -126,18 +126,18 @@ LABEL_3:
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
             v24 = HMFGetLogIdentifier();
-            v25 = [v16 name];
-            v26 = [v16 tlvid];
-            v27 = [(HAPTLVBase *)v64 tlvDatablob];
+            name = [v16 name];
+            tlvid = [v16 tlvid];
+            tlvDatablob2 = [(HAPTLVBase *)selfCopy tlvDatablob];
             *buf = 138544130;
             v73 = v24;
             v74 = 2112;
-            v75 = v25;
+            v75 = name;
             v76 = 2048;
-            v77 = v26;
+            v77 = tlvid;
             v6 = v63;
             v78 = 2112;
-            v79 = v27;
+            v79 = tlvDatablob2;
             v28 = v19;
             v29 = "%{public}@Failed to parse uint8 for tlv: %@ with ID: %tu (%@)";
             goto LABEL_37;
@@ -172,18 +172,18 @@ LABEL_39:
           }
 
           v24 = HMFGetLogIdentifier();
-          v25 = [v16 name];
-          v30 = [v16 tlvid];
-          v27 = [(HAPTLVBase *)v64 tlvDatablob];
+          name = [v16 name];
+          tlvid2 = [v16 tlvid];
+          tlvDatablob2 = [(HAPTLVBase *)selfCopy tlvDatablob];
           *buf = 138544130;
           v73 = v24;
           v74 = 2112;
-          v75 = v25;
+          v75 = name;
           v76 = 2048;
-          v77 = v30;
+          v77 = tlvid2;
           v6 = v63;
           v78 = 2112;
-          v79 = v27;
+          v79 = tlvDatablob2;
           v28 = v19;
           v29 = "%{public}@Failed to parse uint16 for tlv: %@ with ID: %tu (%@)";
         }
@@ -208,18 +208,18 @@ LABEL_39:
             }
 
             v24 = HMFGetLogIdentifier();
-            v25 = [v16 name];
-            v31 = [v16 tlvid];
-            v27 = [(HAPTLVBase *)v64 tlvDatablob];
+            name = [v16 name];
+            tlvid3 = [v16 tlvid];
+            tlvDatablob2 = [(HAPTLVBase *)selfCopy tlvDatablob];
             *buf = 138544130;
             v73 = v24;
             v74 = 2112;
-            v75 = v25;
+            v75 = name;
             v76 = 2048;
-            v77 = v31;
+            v77 = tlvid3;
             v6 = v63;
             v78 = 2112;
-            v79 = v27;
+            v79 = tlvDatablob2;
             v28 = v19;
             v29 = "%{public}@Failed to parse String for tlv: %@ with ID: %tu (%@)";
           }
@@ -237,9 +237,9 @@ LABEL_39:
                 if (v33)
                 {
                   v34 = v33;
-                  v35 = [v32 objectCreator];
+                  objectCreator = [v32 objectCreator];
 
-                  if (!v35)
+                  if (!objectCreator)
                   {
                     [v32 setField:v34];
 
@@ -249,8 +249,8 @@ LABEL_39:
                   }
 
                   v67 = v34;
-                  v36 = [v32 objectCreator];
-                  v37 = [(HAPTLVBase *)v64 _parseArray:v34 result:&v67 objectCreator:v36];
+                  objectCreator2 = [v32 objectCreator];
+                  v37 = [(HAPTLVBase *)selfCopy _parseArray:v34 result:&v67 objectCreator:objectCreator2];
                   v38 = v67;
 
                   if (v37)
@@ -266,18 +266,18 @@ LABEL_39:
                     {
                       HMFGetLogIdentifier();
                       v55 = v62 = v53;
-                      v56 = [v32 name];
-                      v57 = [v32 tlvid];
-                      v58 = [(HAPTLVBase *)v64 tlvDatablob];
+                      name2 = [v32 name];
+                      tlvid4 = [v32 tlvid];
+                      tlvDatablob3 = [(HAPTLVBase *)selfCopy tlvDatablob];
                       *buf = 138544130;
                       v73 = v55;
                       v74 = 2112;
-                      v75 = v56;
+                      v75 = name2;
                       v76 = 2048;
-                      v77 = v57;
+                      v77 = tlvid4;
                       v6 = v63;
                       v78 = 2112;
-                      v79 = v58;
+                      v79 = tlvDatablob3;
                       _os_log_impl(&dword_22AADC000, v54, OS_LOG_TYPE_ERROR, "%{public}@Failed to construct array for tlv: %@ with ID: %tu (%@)", buf, 0x2Au);
 
                       v53 = v62;
@@ -299,18 +299,18 @@ LABEL_39:
                   if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
                   {
                     v49 = HMFGetLogIdentifier();
-                    v50 = [v32 name];
-                    v51 = [v32 tlvid];
-                    v52 = [(HAPTLVBase *)v64 tlvDatablob];
+                    name3 = [v32 name];
+                    tlvid5 = [v32 tlvid];
+                    tlvDatablob4 = [(HAPTLVBase *)selfCopy tlvDatablob];
                     *buf = 138544130;
                     v73 = v49;
                     v74 = 2112;
-                    v75 = v50;
+                    v75 = name3;
                     v76 = 2048;
-                    v77 = v51;
+                    v77 = tlvid5;
                     v6 = v63;
                     v78 = 2112;
-                    v79 = v52;
+                    v79 = tlvDatablob4;
                     _os_log_impl(&dword_22AADC000, v48, OS_LOG_TYPE_ERROR, "%{public}@Failed to parse Array for tlv: %@ with ID: %tu (%@)", buf, 0x2Au);
 
                     v11 = 0x2786D1000;
@@ -340,18 +340,18 @@ LABEL_39:
                 if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
                 {
                   v41 = HMFGetLogIdentifier();
-                  v42 = [v16 name];
-                  v43 = [v16 tlvid];
-                  v44 = [(HAPTLVBase *)v64 tlvDatablob];
+                  name4 = [v16 name];
+                  tlvid6 = [v16 tlvid];
+                  tlvDatablob5 = [(HAPTLVBase *)selfCopy tlvDatablob];
                   *buf = 138544130;
                   v73 = v41;
                   v74 = 2112;
-                  v75 = v42;
+                  v75 = name4;
                   v76 = 2048;
-                  v77 = v43;
+                  v77 = tlvid6;
                   v6 = v63;
                   v78 = 2112;
-                  v79 = v44;
+                  v79 = tlvDatablob5;
                   _os_log_impl(&dword_22AADC000, v40, OS_LOG_TYPE_ERROR, "%{public}@Failed to parse UUID for tlv: %@ with ID: %tu (%@)", buf, 0x2Au);
 
                   v7 = v65;
@@ -379,18 +379,18 @@ LABEL_39:
             }
 
             v24 = HMFGetLogIdentifier();
-            v25 = [v16 name];
-            v46 = [v16 tlvid];
-            v27 = [(HAPTLVBase *)v64 tlvDatablob];
+            name = [v16 name];
+            tlvid7 = [v16 tlvid];
+            tlvDatablob2 = [(HAPTLVBase *)selfCopy tlvDatablob];
             *buf = 138544130;
             v73 = v24;
             v74 = 2112;
-            v75 = v25;
+            v75 = name;
             v76 = 2048;
-            v77 = v46;
+            v77 = tlvid7;
             v6 = v63;
             v78 = 2112;
-            v79 = v27;
+            v79 = tlvDatablob2;
             v28 = v19;
             v29 = "%{public}@Failed to parse Data for tlv: %@ with ID: %tu (%@)";
           }
@@ -412,17 +412,17 @@ LABEL_37:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
           v20 = HMFGetLogIdentifier();
-          v21 = [v16 name];
-          v22 = [v16 tlvid];
-          v23 = [(HAPTLVBase *)v64 tlvDatablob];
+          name5 = [v16 name];
+          tlvid8 = [v16 tlvid];
+          tlvDatablob6 = [(HAPTLVBase *)selfCopy tlvDatablob];
           *buf = 138544130;
           v73 = v20;
           v74 = 2112;
-          v75 = v21;
+          v75 = name5;
           v76 = 2048;
-          v77 = v22;
+          v77 = tlvid8;
           v78 = 2112;
-          v79 = v23;
+          v79 = tlvDatablob6;
           _os_log_impl(&dword_22AADC000, v19, OS_LOG_TYPE_ERROR, "%{public}@Failed to parse number for tlv: %@ with ID: %tu (%@)", buf, 0x2Au);
 
           v7 = v65;
@@ -453,14 +453,14 @@ LABEL_56:
   return v10 & 1;
 }
 
-- (HAPTLVBase)initWithTLVData:(id)a3
+- (HAPTLVBase)initWithTLVData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = HAPTLVBase;
   v6 = [(HAPTLVBase *)&v10 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_tlvDatablob, a3), ![(HAPTLVBase *)v7 _parseFromTLVData]))
+  if (v6 && (objc_storeStrong(&v6->_tlvDatablob, data), ![(HAPTLVBase *)v7 _parseFromTLVData]))
   {
     v8 = 0;
   }

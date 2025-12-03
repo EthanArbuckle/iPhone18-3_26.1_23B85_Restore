@@ -1,7 +1,7 @@
 @interface CNAskToController
 + (id)logAskTo;
 - (CNAskToController)init;
-- (void)sendCommLimitsQuestionForHandles:(id)a3 withReply:(id)a4;
+- (void)sendCommLimitsQuestionForHandles:(id)handles withReply:(id)reply;
 @end
 
 @implementation CNAskToController
@@ -42,31 +42,31 @@ uint64_t __29__CNAskToController_logAskTo__block_invoke()
   return v2;
 }
 
-- (void)sendCommLimitsQuestionForHandles:(id)a3 withReply:(id)a4
+- (void)sendCommLimitsQuestionForHandles:(id)handles withReply:(id)reply
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [objc_opt_class() logAskTo];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  handlesCopy = handles;
+  logAskTo = [objc_opt_class() logAskTo];
+  if (os_log_type_enabled(logAskTo, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"nil";
-    if (v5)
+    if (handlesCopy)
     {
-      v7 = v5;
+      v7 = handlesCopy;
     }
 
     *buf = 138412290;
     v11 = v7;
-    _os_log_impl(&dword_1954A0000, v6, OS_LOG_TYPE_DEFAULT, "CNAskToController sendCommLimitsQuestionForHandles %@", buf, 0xCu);
+    _os_log_impl(&dword_1954A0000, logAskTo, OS_LOG_TYPE_DEFAULT, "CNAskToController sendCommLimitsQuestionForHandles %@", buf, 0xCu);
   }
 
-  v8 = [(CNAskToController *)self contactsSupport];
+  contactsSupport = [(CNAskToController *)self contactsSupport];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__CNAskToController_sendCommLimitsQuestionForHandles_withReply___block_invoke;
   v9[3] = &unk_1E7412FA0;
   v9[4] = self;
-  [v8 sendCommLimitsQuestionForHandles:v5 withReply:v9];
+  [contactsSupport sendCommLimitsQuestionForHandles:handlesCopy withReply:v9];
 }
 
 void __64__CNAskToController_sendCommLimitsQuestionForHandles_withReply___block_invoke(uint64_t a1, void *a2)

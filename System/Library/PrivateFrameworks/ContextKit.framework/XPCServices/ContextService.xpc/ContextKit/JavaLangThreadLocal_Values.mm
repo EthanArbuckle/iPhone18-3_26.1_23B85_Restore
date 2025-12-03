@@ -1,23 +1,23 @@
 @interface JavaLangThreadLocal_Values
 + (void)initialize;
-- (id)getAfterMissWithJavaLangThreadLocal:(id)a3;
-- (void)addWithJavaLangThreadLocal:(id)a3 withId:(id)a4;
+- (id)getAfterMissWithJavaLangThreadLocal:(id)local;
+- (void)addWithJavaLangThreadLocal:(id)local withId:(id)id;
 - (void)dealloc;
-- (void)putWithJavaLangThreadLocal:(id)a3 withId:(id)a4;
-- (void)removeWithJavaLangThreadLocal:(id)a3;
+- (void)putWithJavaLangThreadLocal:(id)local withId:(id)id;
+- (void)removeWithJavaLangThreadLocal:(id)local;
 @end
 
 @implementation JavaLangThreadLocal_Values
 
-- (void)addWithJavaLangThreadLocal:(id)a3 withId:(id)a4
+- (void)addWithJavaLangThreadLocal:(id)local withId:(id)id
 {
-  if (!a3 || (table = self->table_) == 0)
+  if (!local || (table = self->table_) == 0)
   {
 LABEL_13:
     JreThrowNullPointerException();
   }
 
-  v7 = self->mask_ & *(a3 + 4);
+  v7 = self->mask_ & *(local + 4);
   while (1)
   {
     v8 = v7;
@@ -40,22 +40,22 @@ LABEL_13:
     }
   }
 
-  IOSObjectArray_Set(self->table_, v7, *(a3 + 1));
+  IOSObjectArray_Set(self->table_, v7, *(local + 1));
   v10 = self->table_;
 
-  IOSObjectArray_Set(v10, v8 + 1, a4);
+  IOSObjectArray_Set(v10, v8 + 1, id);
 }
 
-- (void)putWithJavaLangThreadLocal:(id)a3 withId:(id)a4
+- (void)putWithJavaLangThreadLocal:(id)local withId:(id)id
 {
   sub_100186EC4(self);
-  if (!a3 || (table = self->table_) == 0)
+  if (!local || (table = self->table_) == 0)
   {
 LABEL_22:
     JreThrowNullPointerException();
   }
 
-  v8 = self->mask_ & *(a3 + 4);
+  v8 = self->mask_ & *(local + 4);
   v9 = -1;
   while (1)
   {
@@ -67,7 +67,7 @@ LABEL_22:
     }
 
     v12 = (&table->elementType_)[v8];
-    v13 = *(a3 + 1);
+    v13 = *(local + 1);
     if (v12 == v13)
     {
       break;
@@ -79,14 +79,14 @@ LABEL_22:
       if (v9 == -1)
       {
         IOSObjectArray_Set(v16, v10, v13);
-        IOSObjectArray_Set(self->table_, v10 + 1, a4);
+        IOSObjectArray_Set(self->table_, v10 + 1, id);
         ++self->size_;
       }
 
       else
       {
         IOSObjectArray_Set(v16, v9, v13);
-        IOSObjectArray_Set(self->table_, v9 + 1, a4);
+        IOSObjectArray_Set(self->table_, v9 + 1, id);
         *&self->size_ = vadd_s32(*&self->size_, 0xFFFFFFFF00000001);
       }
 
@@ -118,22 +118,22 @@ LABEL_22:
 
   v15 = self->table_;
 
-  IOSObjectArray_Set(v15, v10 + 1, a4);
+  IOSObjectArray_Set(v15, v10 + 1, id);
 }
 
-- (id)getAfterMissWithJavaLangThreadLocal:(id)a3
+- (id)getAfterMissWithJavaLangThreadLocal:(id)local
 {
-  if (!a3 || (table = self->table_) == 0)
+  if (!local || (table = self->table_) == 0)
   {
     JreThrowNullPointerException();
   }
 
   mask = self->mask_;
-  v7 = mask & *(a3 + 4);
+  v7 = mask & *(local + 4);
   size = table->super.size_;
   if ((v7 & 0x80000000) != 0 || v7 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, mask & *(a3 + 4));
+    IOSArray_throwOutOfBoundsWithMsg(size, mask & *(local + 4));
   }
 
   if ((&table->elementType_)[v7])
@@ -150,7 +150,7 @@ LABEL_22:
       }
 
       v12 = (&table->elementType_)[v9];
-      if (v12 == *(a3 + 1))
+      if (v12 == *(local + 1))
       {
         v19 = table->super.size_;
         v20 = v7 + 1;
@@ -190,7 +190,7 @@ LABEL_22:
       v9 = self->mask_ & (v7 + 2);
     }
 
-    v14 = [a3 initialValue];
+    initialValue = [local initialValue];
     if (self->table_ != table)
     {
       goto LABEL_34;
@@ -206,10 +206,10 @@ LABEL_22:
 
       if ((&table->elementType_)[v10] == qword_100554BA0)
       {
-        IOSObjectArray_Set(table, v10, *(a3 + 1));
-        IOSObjectArray_Set(table, v10 + 1, v14);
+        IOSObjectArray_Set(table, v10, *(local + 1));
+        IOSObjectArray_Set(table, v10 + 1, initialValue);
         *&self->size_ = vadd_s32(*&self->size_, 0xFFFFFFFF00000001);
-        return v14;
+        return initialValue;
       }
     }
 
@@ -221,7 +221,7 @@ LABEL_22:
 
     if (!(&table->elementType_)[v7])
     {
-      v16 = *(a3 + 1);
+      v16 = *(local + 1);
       v17 = table;
       v18 = v7;
       goto LABEL_37;
@@ -230,7 +230,7 @@ LABEL_22:
     goto LABEL_34;
   }
 
-  v14 = [a3 initialValue];
+  initialValue = [local initialValue];
   if (self->table_ != table)
   {
     goto LABEL_34;
@@ -245,31 +245,31 @@ LABEL_22:
   if ((&table->elementType_)[v7])
   {
 LABEL_34:
-    [(JavaLangThreadLocal_Values *)self putWithJavaLangThreadLocal:a3 withId:v14];
-    return v14;
+    [(JavaLangThreadLocal_Values *)self putWithJavaLangThreadLocal:local withId:initialValue];
+    return initialValue;
   }
 
-  v16 = *(a3 + 1);
+  v16 = *(local + 1);
   v17 = table;
   v18 = v7;
 LABEL_37:
   IOSObjectArray_Set(v17, v18, v16);
-  IOSObjectArray_Set(table, v7 + 1, v14);
+  IOSObjectArray_Set(table, v7 + 1, initialValue);
   ++self->size_;
   sub_100186EC4(self);
-  return v14;
+  return initialValue;
 }
 
-- (void)removeWithJavaLangThreadLocal:(id)a3
+- (void)removeWithJavaLangThreadLocal:(id)local
 {
   sub_100186EC4(self);
-  if (!a3 || (table = self->table_) == 0)
+  if (!local || (table = self->table_) == 0)
   {
 LABEL_13:
     JreThrowNullPointerException();
   }
 
-  v6 = self->mask_ & *(a3 + 4);
+  v6 = self->mask_ & *(local + 4);
   while (1)
   {
     v7 = v6;
@@ -280,7 +280,7 @@ LABEL_13:
     }
 
     v9 = (&table->elementType_)[v6];
-    if (v9 == *(a3 + 1))
+    if (v9 == *(local + 1))
     {
       break;
     }
@@ -312,7 +312,7 @@ LABEL_13:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&qword_100554BA0, [NSObject alloc]);
     atomic_store(1u, &JavaLangThreadLocal_Values__initialized);

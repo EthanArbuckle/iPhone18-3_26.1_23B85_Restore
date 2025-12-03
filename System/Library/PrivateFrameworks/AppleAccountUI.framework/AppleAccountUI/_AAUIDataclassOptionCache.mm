@@ -2,21 +2,21 @@
 + (BOOL)_hasPrescriptionEnrollment;
 - (NSArray)filteredDataclasses;
 - (NSDictionary)dataclassDetails;
-- (_AAUIDataclassOptionCache)initWithDataclassOptions:(id)a3;
-- (void)setDataclassOptions:(id)a3;
+- (_AAUIDataclassOptionCache)initWithDataclassOptions:(id)options;
+- (void)setDataclassOptions:(id)options;
 @end
 
 @implementation _AAUIDataclassOptionCache
 
-- (_AAUIDataclassOptionCache)initWithDataclassOptions:(id)a3
+- (_AAUIDataclassOptionCache)initWithDataclassOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = _AAUIDataclassOptionCache;
   v5 = [(_AAUIDataclassOptionCache *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [optionsCopy copy];
     dataclassOptions = v5->_dataclassOptions;
     v5->_dataclassOptions = v6;
   }
@@ -24,9 +24,9 @@
   return v5;
 }
 
-- (void)setDataclassOptions:(id)a3
+- (void)setDataclassOptions:(id)options
 {
-  v4 = [a3 copy];
+  v4 = [options copy];
   dataclassOptions = self->_dataclassOptions;
   self->_dataclassOptions = v4;
 
@@ -40,13 +40,13 @@
   if (!filteredDataclasses)
   {
     v4 = [(NSDictionary *)self->_dataclassOptions aaf_filter:&__block_literal_global_12];
-    v5 = [v4 allKeys];
+    allKeys = [v4 allKeys];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __48___AAUIDataclassOptionCache_filteredDataclasses__block_invoke_2;
     v9[3] = &unk_1E820CE18;
     v9[4] = self;
-    v6 = [v5 sortedArrayUsingComparator:v9];
+    v6 = [allKeys sortedArrayUsingComparator:v9];
     v7 = self->_filteredDataclasses;
     self->_filteredDataclasses = v6;
 

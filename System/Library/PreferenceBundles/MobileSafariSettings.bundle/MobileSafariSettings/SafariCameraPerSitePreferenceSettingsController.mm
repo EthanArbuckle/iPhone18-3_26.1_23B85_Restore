@@ -6,10 +6,10 @@
 
 - (id)preference
 {
-  v2 = [(SafariMediaCapturePerSitePreferenceSettingsController *)self preferenceManager];
-  v3 = [v2 cameraMediaCapturePreference];
+  preferenceManager = [(SafariMediaCapturePerSitePreferenceSettingsController *)self preferenceManager];
+  cameraMediaCapturePreference = [preferenceManager cameraMediaCapturePreference];
 
-  return v3;
+  return cameraMediaCapturePreference;
 }
 
 @end

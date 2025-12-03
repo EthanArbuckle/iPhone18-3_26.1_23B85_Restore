@@ -1,37 +1,37 @@
 @interface ASVAnalytics
-+ (void)sendAnalyticsWithCategory:(id)a3 payloadDict:(id)a4;
-+ (void)sendAnalyticsWithEvent:(unint64_t)a3 error:(id)a4;
-+ (void)sendAnalyticsWithEvent:(unint64_t)a3 payloadDict:(id)a4;
++ (void)sendAnalyticsWithCategory:(id)category payloadDict:(id)dict;
++ (void)sendAnalyticsWithEvent:(unint64_t)event error:(id)error;
++ (void)sendAnalyticsWithEvent:(unint64_t)event payloadDict:(id)dict;
 @end
 
 @implementation ASVAnalytics
 
-+ (void)sendAnalyticsWithEvent:(unint64_t)a3 error:(id)a4
++ (void)sendAnalyticsWithEvent:(unint64_t)event error:(id)error
 {
   v11[3] = *MEMORY[0x277D85DE8];
   v10[0] = @"errorDomain";
-  v5 = a4;
-  v6 = [v5 domain];
-  v11[0] = v6;
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v11[0] = domain;
   v10[1] = @"errorCode";
-  v7 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(v5, "code")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(errorCopy, "code")}];
   v11[1] = v7;
   v10[2] = @"errorMessage";
-  v8 = [v5 localizedDescription];
+  localizedDescription = [errorCopy localizedDescription];
 
-  v11[2] = v8;
+  v11[2] = localizedDescription;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:3];
-  [ASVAnalytics sendAnalyticsWithEvent:a3 payloadDict:v9];
+  [ASVAnalytics sendAnalyticsWithEvent:event payloadDict:v9];
 }
 
-+ (void)sendAnalyticsWithEvent:(unint64_t)a3 payloadDict:(id)a4
++ (void)sendAnalyticsWithEvent:(unint64_t)event payloadDict:(id)dict
 {
-  v7 = a4;
-  v14 = v7;
-  if (a3 >= 0x15)
+  dictCopy = dict;
+  v14 = dictCopy;
+  if (event >= 0x15)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"ASVAnalytics.m" lineNumber:190 description:@"Event name should be defined"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ASVAnalytics.m" lineNumber:190 description:@"Event name should be defined"];
 
     v8 = v14;
     v9 = 0;
@@ -40,9 +40,9 @@
 
   else
   {
-    v8 = v7;
-    v9 = off_278CCABD8[a3];
-    v10 = off_278CCAC80[a3];
+    v8 = dictCopy;
+    v9 = off_278CCABD8[event];
+    v10 = off_278CCAC80[event];
   }
 
   v12 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v8];
@@ -50,22 +50,22 @@
 
   if (v13)
   {
-    [ASVAnalytics sendAnalyticsWithEvent:a2 payloadDict:a1];
+    [ASVAnalytics sendAnalyticsWithEvent:a2 payloadDict:self];
   }
 
   [v12 setObject:v10 forKeyedSubscript:@"type"];
   [ASVAnalytics sendAnalyticsWithCategory:v9 payloadDict:v12];
 }
 
-+ (void)sendAnalyticsWithCategory:(id)a3 payloadDict:(id)a4
++ (void)sendAnalyticsWithCategory:(id)category payloadDict:(id)dict
 {
-  v9 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:@"type"];
+  categoryCopy = category;
+  dictCopy = dict;
+  v8 = [dictCopy objectForKeyedSubscript:@"type"];
 
   if (!v8)
   {
-    [ASVAnalytics sendAnalyticsWithCategory:a2 payloadDict:a1];
+    [ASVAnalytics sendAnalyticsWithCategory:a2 payloadDict:self];
   }
 
   AnalyticsSendEvent();

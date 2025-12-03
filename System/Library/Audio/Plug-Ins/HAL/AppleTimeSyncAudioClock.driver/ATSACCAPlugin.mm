@@ -1,10 +1,10 @@
 @interface ATSACCAPlugin
 + (id)sharedPlugin;
 - (ATSACCAPlugin)init;
-- (void)addClockWithIdentifier:(unint64_t)a3;
-- (void)halInitializeWithPluginHost:(AudioServerPlugInHostInterface *)a3;
-- (void)interruptedConnectionForClockManager:(id)a3;
-- (void)removeClockWithIdentifier:(unint64_t)a3 force:(BOOL)a4;
+- (void)addClockWithIdentifier:(unint64_t)identifier;
+- (void)halInitializeWithPluginHost:(AudioServerPlugInHostInterface *)host;
+- (void)interruptedConnectionForClockManager:(id)manager;
+- (void)removeClockWithIdentifier:(unint64_t)identifier force:(BOOL)force;
 - (void)setupIOKitMatching;
 @end
 
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_1134;
   block[3] = &unk_C360;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10FF8 != -1)
   {
     dispatch_once(&qword_10FF8, block);
@@ -56,11 +56,11 @@
   return v3;
 }
 
-- (void)halInitializeWithPluginHost:(AudioServerPlugInHostInterface *)a3
+- (void)halInitializeWithPluginHost:(AudioServerPlugInHostInterface *)host
 {
   v5.receiver = self;
   v5.super_class = ATSACCAPlugin;
-  [(ATSACCAPlugin *)&v5 halInitializeWithPluginHost:a3];
+  [(ATSACCAPlugin *)&v5 halInitializeWithPluginHost:host];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_12F0;
@@ -122,7 +122,7 @@
   objc_destroyWeak(buf);
 }
 
-- (void)interruptedConnectionForClockManager:(id)a3
+- (void)interruptedConnectionForClockManager:(id)manager
 {
   v4 = dispatch_get_global_queue(33, 0);
   block[0] = _NSConcreteStackBlock;
@@ -133,7 +133,7 @@
   dispatch_async(v4, block);
 }
 
-- (void)addClockWithIdentifier:(unint64_t)a3
+- (void)addClockWithIdentifier:(unint64_t)identifier
 {
   clockAdminQueue = self->_clockAdminQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -141,11 +141,11 @@
   v4[2] = sub_1F40;
   v4[3] = &unk_C428;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = identifier;
   dispatch_sync(clockAdminQueue, v4);
 }
 
-- (void)removeClockWithIdentifier:(unint64_t)a3 force:(BOOL)a4
+- (void)removeClockWithIdentifier:(unint64_t)identifier force:(BOOL)force
 {
   clockAdminQueue = self->_clockAdminQueue;
   block[0] = _NSConcreteStackBlock;
@@ -153,8 +153,8 @@
   block[2] = sub_2190;
   block[3] = &unk_C450;
   block[4] = self;
-  block[5] = a3;
-  v6 = a4;
+  block[5] = identifier;
+  forceCopy = force;
   dispatch_sync(clockAdminQueue, block);
 }
 

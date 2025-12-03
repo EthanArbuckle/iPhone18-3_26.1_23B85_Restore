@@ -1,17 +1,17 @@
 @interface HSPCRouterDetectedViewController
 - (BOOL)canContinue;
-- (HSPCRouterDetectedViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCRouterDetectedViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)commitConfiguration;
 - (id)prominentButtonLocalizedTitle;
 @end
 
 @implementation HSPCRouterDetectedViewController
 
-- (HSPCRouterDetectedViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCRouterDetectedViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
   v12.receiver = self;
   v12.super_class = HSPCRouterDetectedViewController;
-  v4 = [(HSPCDetectedViewController *)&v12 initWithCoordinator:a3 config:a4];
+  v4 = [(HSPCDetectedViewController *)&v12 initWithCoordinator:coordinator config:config];
   v5 = v4;
   if (!v4)
   {
@@ -38,9 +38,9 @@ LABEL_6:
 
   [(HSPCRouterDetectedViewController *)v5 setSubtitle:0];
 LABEL_8:
-  v9 = [(HSPCRouterDetectedViewController *)v5 subtitle];
+  subtitle = [(HSPCRouterDetectedViewController *)v5 subtitle];
 
-  if (v9)
+  if (subtitle)
   {
     v10 = +[NSURL hf_learnAboutNetworkProtectionURL];
     [(HSPCRouterDetectedViewController *)v5 addLearnMoreButtonWithURL:v10];
@@ -51,10 +51,10 @@ LABEL_8:
 
 - (BOOL)canContinue
 {
-  v2 = [(HSPCCenterIconViewController *)self config];
-  v3 = [v2 home];
+  config = [(HSPCCenterIconViewController *)self config];
+  home = [config home];
 
-  v4 = !v3 || ([v3 hf_isNetworkRouterSupported] & 1) != 0 || (objc_msgSend(v3, "networkRouterSupportDisableReason") & 1) == 0;
+  v4 = !home || ([home hf_isNetworkRouterSupported] & 1) != 0 || (objc_msgSend(home, "networkRouterSupportDisableReason") & 1) == 0;
   return v4;
 }
 
@@ -64,15 +64,15 @@ LABEL_8:
   {
     v5.receiver = self;
     v5.super_class = HSPCRouterDetectedViewController;
-    v3 = [(HSPCDetectedViewController *)&v5 prominentButtonLocalizedTitle];
+    prominentButtonLocalizedTitle = [(HSPCDetectedViewController *)&v5 prominentButtonLocalizedTitle];
   }
 
   else
   {
-    v3 = HULocalizedString();
+    prominentButtonLocalizedTitle = HULocalizedString();
   }
 
-  return v3;
+  return prominentButtonLocalizedTitle;
 }
 
 - (id)commitConfiguration

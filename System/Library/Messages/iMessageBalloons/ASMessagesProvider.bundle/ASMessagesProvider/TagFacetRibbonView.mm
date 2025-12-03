@@ -1,13 +1,13 @@
 @interface TagFacetRibbonView
 - (BOOL)hasContent;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC18ASMessagesProvider18TagFacetRibbonView)initWithCoder:(id)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC18ASMessagesProvider18TagFacetRibbonView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation TagFacetRibbonView
 
-- (_TtC18ASMessagesProvider18TagFacetRibbonView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider18TagFacetRibbonView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider18TagFacetRibbonView_tagFacetViews) = _swiftEmptyArrayStorage;
   sub_75EE50();
@@ -23,15 +23,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_31A8A4();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_31AC00(a4);
+  selfCopy = self;
+  v7 = sub_31AC00(in);
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -51,7 +51,7 @@
 - (BOOL)hasContent
 {
   type metadata accessor for RibbonBarItemCollectionViewCell();
-  v3 = self;
+  selfCopy = self;
 
   v4 = sub_769490();
 

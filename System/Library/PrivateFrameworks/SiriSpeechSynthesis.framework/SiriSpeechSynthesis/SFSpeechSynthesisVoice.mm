@@ -1,56 +1,56 @@
 @interface SFSpeechSynthesisVoice
-+ (id)getDefaultVoiceByLocale:(id)a3;
-+ (id)getVoiceByName:(id)a3;
-+ (id)supportedVoicesByLocale:(id)a3;
++ (id)getDefaultVoiceByLocale:(id)locale;
++ (id)getVoiceByName:(id)name;
++ (id)supportedVoicesByLocale:(id)locale;
 + (void)initialize;
-- (SFSpeechSynthesisVoice)initWithVoiceAsset:(id)a3 resourceAsset:(id)a4;
-- (id)init:(id)a3 gender:(id)a4 name:(id)a5 isDefault:(BOOL)a6;
+- (SFSpeechSynthesisVoice)initWithVoiceAsset:(id)asset resourceAsset:(id)resourceAsset;
+- (id)init:(id)init gender:(id)gender name:(id)name isDefault:(BOOL)default;
 @end
 
 @implementation SFSpeechSynthesisVoice
 
-- (id)init:(id)a3 gender:(id)a4 name:(id)a5 isDefault:(BOOL)a6
+- (id)init:(id)init gender:(id)gender name:(id)name isDefault:(BOOL)default
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  initCopy = init;
+  genderCopy = gender;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = SFSpeechSynthesisVoice;
   v14 = [(SFSpeechSynthesisVoice *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_locale, a3);
-    objc_storeStrong(&v15->_gender, a4);
-    objc_storeStrong(&v15->_name, a5);
-    v15->_isDefault = a6;
+    objc_storeStrong(&v14->_locale, init);
+    objc_storeStrong(&v15->_gender, gender);
+    objc_storeStrong(&v15->_name, name);
+    v15->_isDefault = default;
   }
 
   return v15;
 }
 
-- (SFSpeechSynthesisVoice)initWithVoiceAsset:(id)a3 resourceAsset:(id)a4
+- (SFSpeechSynthesisVoice)initWithVoiceAsset:(id)asset resourceAsset:(id)resourceAsset
 {
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  resourceAssetCopy = resourceAsset;
   v12.receiver = self;
   v12.super_class = SFSpeechSynthesisVoice;
   v9 = [(SFSpeechSynthesisVoice *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_voiceAsset, a3);
-    objc_storeStrong(&v10->_resourceAsset, a4);
+    objc_storeStrong(&v9->_voiceAsset, asset);
+    objc_storeStrong(&v10->_resourceAsset, resourceAsset);
   }
 
   return v10;
 }
 
-+ (id)getDefaultVoiceByLocale:(id)a3
++ (id)getDefaultVoiceByLocale:(id)locale
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEAF8] currentLocale];
-  v5 = [a1 supportedVoicesByLocale:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v5 = [self supportedVoicesByLocale:currentLocale];
 
   v15 = 0u;
   v16 = 0u;
@@ -95,10 +95,10 @@ LABEL_11:
   return v7;
 }
 
-+ (id)getVoiceByName:(id)a3
++ (id)getVoiceByName:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -118,8 +118,8 @@ LABEL_11:
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 name];
-        v10 = [v9 isEqualToString:v3];
+        name = [v8 name];
+        v10 = [name isEqualToString:nameCopy];
 
         if (v10)
         {
@@ -145,10 +145,10 @@ LABEL_11:
   return v5;
 }
 
-+ (id)supportedVoicesByLocale:(id)a3
++ (id)supportedVoicesByLocale:(id)locale
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  localeCopy = locale;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v15 = 0u;
   v16 = 0u;
@@ -170,8 +170,8 @@ LABEL_11:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 locale];
-        v12 = [v11 isEqual:v3];
+        locale = [v10 locale];
+        v12 = [locale isEqual:localeCopy];
 
         if (v12)
         {
@@ -193,7 +193,7 @@ LABEL_11:
 + (void)initialize
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v22 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v23 = objc_alloc_init(MEMORY[0x277CBEB58]);

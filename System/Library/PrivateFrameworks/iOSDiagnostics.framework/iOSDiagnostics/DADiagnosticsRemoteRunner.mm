@@ -1,32 +1,32 @@
 @interface DADiagnosticsRemoteRunner
 - (BOOL)_establishConnection;
-- (DADiagnosticsRemoteRunner)initWithDelegate:(id)a3;
+- (DADiagnosticsRemoteRunner)initWithDelegate:(id)delegate;
 - (DADiagnosticsRemoteRunnerDelegate)delegate;
-- (void)cancelTestWithID:(id)a3 completion:(id)a4;
-- (void)createRemoteRunnerDeviceWithSerialNumber:(id)a3 completion:(id)a4;
+- (void)cancelTestWithID:(id)d completion:(id)completion;
+- (void)createRemoteRunnerDeviceWithSerialNumber:(id)number completion:(id)completion;
 - (void)dealloc;
-- (void)destroyRemoteRunnerDeviceWithCompletion:(id)a3;
-- (void)getReportWithCompletion:(id)a3;
-- (void)getReportWithComponents:(id)a3 completion:(id)a4;
-- (void)ping:(id)a3;
+- (void)destroyRemoteRunnerDeviceWithCompletion:(id)completion;
+- (void)getReportWithCompletion:(id)completion;
+- (void)getReportWithComponents:(id)components completion:(id)completion;
+- (void)ping:(id)ping;
 - (void)remoteRunnerDeviceEnded;
-- (void)requestAsset:(id)a3 completion:(id)a4;
-- (void)requestUploadAssets:(id)a3 completion:(id)a4;
-- (void)runTestWithID:(id)a3 name:(id)a4 description:(id)a5 parameters:(id)a6 completion:(id)a7;
+- (void)requestAsset:(id)asset completion:(id)completion;
+- (void)requestUploadAssets:(id)assets completion:(id)completion;
+- (void)runTestWithID:(id)d name:(id)name description:(id)description parameters:(id)parameters completion:(id)completion;
 @end
 
 @implementation DADiagnosticsRemoteRunner
 
-- (DADiagnosticsRemoteRunner)initWithDelegate:(id)a3
+- (DADiagnosticsRemoteRunner)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = DADiagnosticsRemoteRunner;
   v5 = [(DADiagnosticsRemoteRunner *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DADiagnosticsRemoteRunner *)v5 setDelegate:v4];
+    [(DADiagnosticsRemoteRunner *)v5 setDelegate:delegateCopy];
     if (![(DADiagnosticsRemoteRunner *)v6 _establishConnection])
     {
 
@@ -39,15 +39,15 @@
 
 - (void)dealloc
 {
-  v3 = [(DADiagnosticsRemoteRunner *)self xpcConnection];
+  xpcConnection = [(DADiagnosticsRemoteRunner *)self xpcConnection];
 
-  if (v3)
+  if (xpcConnection)
   {
-    v4 = [(DADiagnosticsRemoteRunner *)self xpcConnection];
-    [v4 suspend];
+    xpcConnection2 = [(DADiagnosticsRemoteRunner *)self xpcConnection];
+    [xpcConnection2 suspend];
 
-    v5 = [(DADiagnosticsRemoteRunner *)self xpcConnection];
-    [v5 invalidate];
+    xpcConnection3 = [(DADiagnosticsRemoteRunner *)self xpcConnection];
+    [xpcConnection3 invalidate];
 
     [(DADiagnosticsRemoteRunner *)self setXpcConnection:0];
   }
@@ -181,142 +181,142 @@ uint64_t __49__DADiagnosticsRemoteRunner__establishConnection__block_invoke_2(ui
   return [v1 ping:v3];
 }
 
-- (void)cancelTestWithID:(id)a3 completion:(id)a4
+- (void)cancelTestWithID:(id)d completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
+  dCopy = d;
+  completionCopy = completion;
+  remoteRunnerServer = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
 
-  if (v7)
+  if (remoteRunnerServer)
   {
-    v8 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
-    [v8 cancelTestWithID:v9 completion:v6];
+    remoteRunnerServer2 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
+    [remoteRunnerServer2 cancelTestWithID:dCopy completion:completionCopy];
   }
 }
 
-- (void)createRemoteRunnerDeviceWithSerialNumber:(id)a3 completion:(id)a4
+- (void)createRemoteRunnerDeviceWithSerialNumber:(id)number completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
+  numberCopy = number;
+  completionCopy = completion;
+  remoteRunnerServer = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
 
-  if (v7)
+  if (remoteRunnerServer)
   {
-    v8 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
-    [v8 createRemoteRunnerDeviceWithSerialNumber:v9 completion:v6];
+    remoteRunnerServer2 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
+    [remoteRunnerServer2 createRemoteRunnerDeviceWithSerialNumber:numberCopy completion:completionCopy];
   }
 }
 
-- (void)destroyRemoteRunnerDeviceWithCompletion:(id)a3
+- (void)destroyRemoteRunnerDeviceWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
+  completionCopy = completion;
+  remoteRunnerServer = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
 
-  if (v4)
+  if (remoteRunnerServer)
   {
-    v5 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
-    [v5 destroyRemoteRunnerDeviceWithCompletion:v6];
+    remoteRunnerServer2 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
+    [remoteRunnerServer2 destroyRemoteRunnerDeviceWithCompletion:completionCopy];
   }
 }
 
-- (void)getReportWithComponents:(id)a3 completion:(id)a4
+- (void)getReportWithComponents:(id)components completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
+  componentsCopy = components;
+  completionCopy = completion;
+  remoteRunnerServer = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
 
-  if (v6 && v7)
+  if (completionCopy && remoteRunnerServer)
   {
-    v8 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
-    [v8 getReportWithComponents:v9 completion:v6];
+    remoteRunnerServer2 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
+    [remoteRunnerServer2 getReportWithComponents:componentsCopy completion:completionCopy];
   }
 }
 
-- (void)getReportWithCompletion:(id)a3
+- (void)getReportWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
+  completionCopy = completion;
+  remoteRunnerServer = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
 
-  if (v6 && v4)
+  if (completionCopy && remoteRunnerServer)
   {
-    v5 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
-    [v5 getReportWithCompletion:v6];
+    remoteRunnerServer2 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
+    [remoteRunnerServer2 getReportWithCompletion:completionCopy];
   }
 }
 
-- (void)runTestWithID:(id)a3 name:(id)a4 description:(id)a5 parameters:(id)a6 completion:(id)a7
+- (void)runTestWithID:(id)d name:(id)name description:(id)description parameters:(id)parameters completion:(id)completion
 {
-  v18 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
+  dCopy = d;
+  nameCopy = name;
+  descriptionCopy = description;
+  parametersCopy = parameters;
+  completionCopy = completion;
+  remoteRunnerServer = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
 
-  if (v18 && v16)
+  if (dCopy && remoteRunnerServer)
   {
-    v17 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
-    [v17 runTestWithID:v18 name:v12 description:v13 parameters:v14 completion:v15];
+    remoteRunnerServer2 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
+    [remoteRunnerServer2 runTestWithID:dCopy name:nameCopy description:descriptionCopy parameters:parametersCopy completion:completionCopy];
   }
 }
 
-- (void)ping:(id)a3
+- (void)ping:(id)ping
 {
-  v6 = a3;
-  v4 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
+  pingCopy = ping;
+  remoteRunnerServer = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
 
-  if (v4)
+  if (remoteRunnerServer)
   {
-    v5 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
-    [v5 ping:v6];
+    remoteRunnerServer2 = [(DADiagnosticsRemoteRunner *)self remoteRunnerServer];
+    [remoteRunnerServer2 ping:pingCopy];
   }
 }
 
 - (void)remoteRunnerDeviceEnded
 {
-  v3 = [(DADiagnosticsRemoteRunner *)self delegate];
+  delegate = [(DADiagnosticsRemoteRunner *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(DADiagnosticsRemoteRunner *)self delegate];
-    [v4 remoteRunnerDeviceEnded];
+    delegate2 = [(DADiagnosticsRemoteRunner *)self delegate];
+    [delegate2 remoteRunnerDeviceEnded];
   }
 }
 
-- (void)requestAsset:(id)a3 completion:(id)a4
+- (void)requestAsset:(id)asset completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(DADiagnosticsRemoteRunner *)self delegate];
+  assetCopy = asset;
+  completionCopy = completion;
+  delegate = [(DADiagnosticsRemoteRunner *)self delegate];
 
-  if (v7)
+  if (delegate)
   {
-    v8 = [(DADiagnosticsRemoteRunner *)self delegate];
-    [v8 requestAsset:v9 completion:v6];
+    delegate2 = [(DADiagnosticsRemoteRunner *)self delegate];
+    [delegate2 requestAsset:assetCopy completion:completionCopy];
   }
 
   else
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)requestUploadAssets:(id)a3 completion:(id)a4
+- (void)requestUploadAssets:(id)assets completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(DADiagnosticsRemoteRunner *)self delegate];
+  assetsCopy = assets;
+  completionCopy = completion;
+  delegate = [(DADiagnosticsRemoteRunner *)self delegate];
 
-  if (v7)
+  if (delegate)
   {
-    v8 = [(DADiagnosticsRemoteRunner *)self delegate];
-    [v8 requestUploadAssets:v9 completion:v6];
+    delegate2 = [(DADiagnosticsRemoteRunner *)self delegate];
+    [delegate2 requestUploadAssets:assetsCopy completion:completionCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DADiagnosticsRemoteRunner" code:-6 userInfo:0];
-    v6[2](v6, &unk_2884B58F8, v8);
+    delegate2 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DADiagnosticsRemoteRunner" code:-6 userInfo:0];
+    completionCopy[2](completionCopy, &unk_2884B58F8, delegate2);
   }
 }
 

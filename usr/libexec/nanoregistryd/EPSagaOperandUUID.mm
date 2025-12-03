@@ -1,31 +1,31 @@
 @interface EPSagaOperandUUID
-- (EPSagaOperandUUID)initWithCoder:(id)a3;
-- (EPSagaOperandUUID)initWithUUID:(id)a3;
+- (EPSagaOperandUUID)initWithCoder:(id)coder;
+- (EPSagaOperandUUID)initWithUUID:(id)d;
 - (NSString)description;
 @end
 
 @implementation EPSagaOperandUUID
 
-- (EPSagaOperandUUID)initWithUUID:(id)a3
+- (EPSagaOperandUUID)initWithUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v6 = [(EPSagaOperandUUID *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uuid, a3);
+    objc_storeStrong(&v6->_uuid, d);
   }
 
   return v7;
 }
 
-- (EPSagaOperandUUID)initWithCoder:(id)a3
+- (EPSagaOperandUUID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(EPSagaOperandUUID *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
   }
@@ -37,9 +37,9 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(EPSagaOperandUUID *)self uuid];
-  v6 = [v5 UUIDString];
-  v7 = [NSString stringWithFormat:@"%@: %@", v4, v6];
+  uuid = [(EPSagaOperandUUID *)self uuid];
+  uUIDString = [uuid UUIDString];
+  v7 = [NSString stringWithFormat:@"%@: %@", v4, uUIDString];
 
   return v7;
 }

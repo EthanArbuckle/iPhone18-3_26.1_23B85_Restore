@@ -41,10 +41,10 @@
 
 - (CGPoint)symbolImageControlKeyOffset
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   v4 = 13.0;
   v5 = 13.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v6.receiver = self;
     v6.super_class = UIKBRenderFactoryiPadSansHomeButtonLandscape;
@@ -58,9 +58,9 @@
 
 - (double)controlKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 20.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadSansHomeButtonLandscape;
@@ -82,8 +82,8 @@
 
   else
   {
-    v5 = [(UIKBRenderFactory *)self renderConfig];
-    if ([v5 colorAdaptiveBackground])
+    renderConfig = [(UIKBRenderFactory *)self renderConfig];
+    if ([renderConfig colorAdaptiveBackground])
     {
       v4 = 12.0;
     }
@@ -117,9 +117,9 @@
 
 - (double)symbolImageControlKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 24.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadSansHomeButtonLandscape;
@@ -131,9 +131,9 @@
 
 - (double)dualStringKeyBottomFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 28.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadSansHomeButtonLandscape;
@@ -165,9 +165,9 @@
 
 - (double)dualStringKeyTopFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 31.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadSansHomeButtonLandscape;
@@ -199,9 +199,9 @@
 
 - (double)bottomRowDefaultFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 24.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadSansHomeButtonLandscape;
@@ -213,9 +213,9 @@
 
 - (double)fontSizeAdjustmentForNonAlphanumericKeycaps
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 6.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadSansHomeButtonLandscape;
@@ -245,9 +245,9 @@
 
 - (double)messagesTypeKeyplanSwitchKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 22.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadSansHomeButtonLandscape;
@@ -259,8 +259,8 @@
 
 - (UIEdgeInsets)dynamicInsets
 {
-  v2 = [(UIKBRenderFactory *)self dynamicFactory];
-  if (v2)
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
+  if (dynamicFactory)
   {
     v3 = 4.0;
   }
@@ -270,7 +270,7 @@
     v3 = 7.0;
   }
 
-  if (v2)
+  if (dynamicFactory)
   {
     v4 = 4.0;
   }
@@ -291,9 +291,9 @@
 
 - (double)dynamicBottomRowMultiplier
 {
-  v2 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 1.115;
-  if (v2)
+  if (dynamicFactory)
   {
     return 1.08;
   }

@@ -1,36 +1,36 @@
 @interface AMSBinaryPromise
-+ (id)promiseWithAll:(id)a3;
-+ (id)promiseWithAny:(id)a3;
-+ (id)promiseWithError:(id)a3;
-+ (id)promiseWithFlattenedPromises:(id)a3;
-+ (id)promiseWithPromise:(id)a3;
++ (id)promiseWithAll:(id)all;
++ (id)promiseWithAny:(id)any;
++ (id)promiseWithError:(id)error;
++ (id)promiseWithFlattenedPromises:(id)promises;
++ (id)promiseWithPromise:(id)promise;
 + (id)promiseWithSuccess;
 - (AMSBinaryPromise)init;
-- (AMSBinaryPromise)initWithBackingPromise:(id)a3;
-- (BOOL)resultWithError:(id *)a3;
-- (BOOL)resultWithTimeout:(double)a3 error:(id *)a4;
-- (id)catchWithBlock:(id)a3;
-- (id)catchWithPromiseBlock:(id)a3 successValue:(id)a4;
+- (AMSBinaryPromise)initWithBackingPromise:(id)promise;
+- (BOOL)resultWithError:(id *)error;
+- (BOOL)resultWithTimeout:(double)timeout error:(id *)error;
+- (id)catchWithBlock:(id)block;
+- (id)catchWithPromiseBlock:(id)block successValue:(id)value;
 - (id)completionHandlerAdapter;
-- (id)continueWithBlock:(id)a3;
-- (id)continueWithPromiseBlock:(id)a3;
+- (id)continueWithBlock:(id)block;
+- (id)continueWithPromiseBlock:(id)block;
 - (id)promiseAdapter;
-- (id)thenWithBlock:(id)a3;
-- (id)thenWithPromiseBlock:(id)a3;
-- (void)addErrorBlock:(id)a3;
-- (void)addFinishBlock:(id)a3;
-- (void)addSuccessBlock:(id)a3;
-- (void)resultWithTimeout:(double)a3 completion:(id)a4;
+- (id)thenWithBlock:(id)block;
+- (id)thenWithPromiseBlock:(id)block;
+- (void)addErrorBlock:(id)block;
+- (void)addFinishBlock:(id)block;
+- (void)addSuccessBlock:(id)block;
+- (void)resultWithTimeout:(double)timeout completion:(id)completion;
 - (void)stopRetainingSelf;
 - (void)waitUntilFinished;
-- (void)waitUntilFinishedWithTimeout:(double)a3;
+- (void)waitUntilFinishedWithTimeout:(double)timeout;
 @end
 
 @implementation AMSBinaryPromise
 
 + (id)promiseWithSuccess
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (_MergedGlobals_90 != -1)
     {
@@ -42,7 +42,7 @@
 
   else
   {
-    v3 = [a1 alloc];
+    v3 = [self alloc];
     v4 = [AMSFinishedPromise promiseWithResult:MEMORY[0x1E695E118]];
     v5 = [v3 initWithBackingPromise:v4];
   }
@@ -61,9 +61,9 @@ void __38__AMSBinaryPromise_promiseWithSuccess__block_invoke()
 
 - (void)stopRetainingSelf
 {
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock_with_options();
-  [(AMSBinaryPromise *)v3 setRetainedSelf:0];
+  [(AMSBinaryPromise *)selfCopy setRetainedSelf:0];
   os_unfair_lock_unlock(&self->_backingPromise->super._stateLock);
 }
 
@@ -98,17 +98,17 @@ void __38__AMSBinaryPromise_promiseWithSuccess__block_invoke()
   return v4;
 }
 
-- (AMSBinaryPromise)initWithBackingPromise:(id)a3
+- (AMSBinaryPromise)initWithBackingPromise:(id)promise
 {
-  v5 = a3;
+  promiseCopy = promise;
   v10.receiver = self;
   v10.super_class = AMSBinaryPromise;
   v6 = [(AMSBinaryPromise *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingPromise, a3);
-    if ([v5 isFinished])
+    objc_storeStrong(&v6->_backingPromise, promise);
+    if ([promiseCopy isFinished])
     {
       v8 = 0;
     }
@@ -124,47 +124,47 @@ void __38__AMSBinaryPromise_promiseWithSuccess__block_invoke()
   return v7;
 }
 
-+ (id)promiseWithAll:(id)a3
++ (id)promiseWithAll:(id)all
 {
-  v4 = [a3 ams_mapWithTransform:&__block_literal_global_20];
+  v4 = [all ams_mapWithTransform:&__block_literal_global_20];
   v5 = [AMSPromise promiseWithAll:v4];
-  v6 = [v5 binaryPromiseAdapterForClass:a1];
+  v6 = [v5 binaryPromiseAdapterForClass:self];
 
   return v6;
 }
 
-+ (id)promiseWithAny:(id)a3
++ (id)promiseWithAny:(id)any
 {
-  v4 = [a3 ams_mapWithTransform:&__block_literal_global_3_0];
+  v4 = [any ams_mapWithTransform:&__block_literal_global_3_0];
   v5 = [AMSPromise promiseWithAny:v4];
-  v6 = [v5 binaryPromiseAdapterForClass:a1];
+  v6 = [v5 binaryPromiseAdapterForClass:self];
 
   return v6;
 }
 
-+ (id)promiseWithError:(id)a3
++ (id)promiseWithError:(id)error
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [AMSFinishedPromise promiseWithError:v4];
+  errorCopy = error;
+  v5 = [self alloc];
+  v6 = [AMSFinishedPromise promiseWithError:errorCopy];
 
   v7 = [v5 initWithBackingPromise:v6];
 
   return v7;
 }
 
-+ (id)promiseWithFlattenedPromises:(id)a3
++ (id)promiseWithFlattenedPromises:(id)promises
 {
-  v4 = [a3 ams_mapWithTransform:&__block_literal_global_6];
+  v4 = [promises ams_mapWithTransform:&__block_literal_global_6];
   v5 = [AMSPromise promiseWithAll:v4];
-  v6 = [v5 binaryPromiseAdapterForClass:a1];
+  v6 = [v5 binaryPromiseAdapterForClass:self];
 
   return v6;
 }
 
-+ (id)promiseWithPromise:(id)a3
++ (id)promiseWithPromise:(id)promise
 {
-  v3 = a3;
+  promiseCopy = promise;
   v4 = objc_alloc_init(AMSMutableBinaryPromise);
   objc_initWeak(&location, v4);
   v8[0] = MEMORY[0x1E69E9820];
@@ -172,13 +172,13 @@ void __38__AMSBinaryPromise_promiseWithSuccess__block_invoke()
   v8[2] = __39__AMSBinaryPromise_promiseWithPromise___block_invoke;
   v8[3] = &unk_1E73B4ED8;
   objc_copyWeak(&v9, &location);
-  [v3 addSuccessBlock:v8];
+  [promiseCopy addSuccessBlock:v8];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__AMSBinaryPromise_promiseWithPromise___block_invoke_2;
   v6[3] = &unk_1E73B4F00;
   objc_copyWeak(&v7, &location);
-  [v3 addErrorBlock:v6];
+  [promiseCopy addErrorBlock:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -199,24 +199,24 @@ void __39__AMSBinaryPromise_promiseWithPromise___block_invoke_2(uint64_t a1, voi
   [WeakRetained finishWithError:v3];
 }
 
-- (void)addErrorBlock:(id)a3
+- (void)addErrorBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AMSBinaryPromise *)self backingPromise];
-  [v5 addErrorBlock:v4];
+  blockCopy = block;
+  backingPromise = [(AMSBinaryPromise *)self backingPromise];
+  [backingPromise addErrorBlock:blockCopy];
 }
 
-- (void)addFinishBlock:(id)a3
+- (void)addFinishBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AMSBinaryPromise *)self backingPromise];
+  blockCopy = block;
+  backingPromise = [(AMSBinaryPromise *)self backingPromise];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__AMSBinaryPromise_addFinishBlock___block_invoke;
   v7[3] = &unk_1E73B4F28;
-  v8 = v4;
-  v6 = v4;
-  [v5 addFinishBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [backingPromise addFinishBlock:v7];
 }
 
 void __35__AMSBinaryPromise_addFinishBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -226,39 +226,39 @@ void __35__AMSBinaryPromise_addFinishBlock___block_invoke(uint64_t a1, void *a2,
   (*(v4 + 16))(v4, [a2 BOOLValue], v5);
 }
 
-- (void)addSuccessBlock:(id)a3
+- (void)addSuccessBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AMSBinaryPromise *)self backingPromise];
+  blockCopy = block;
+  backingPromise = [(AMSBinaryPromise *)self backingPromise];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__AMSBinaryPromise_addSuccessBlock___block_invoke;
   v7[3] = &unk_1E73B4F50;
-  v8 = v4;
-  v6 = v4;
-  [v5 addSuccessBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [backingPromise addSuccessBlock:v7];
 }
 
-- (BOOL)resultWithError:(id *)a3
+- (BOOL)resultWithError:(id *)error
 {
-  v4 = [(AMSBinaryPromise *)self backingPromise];
-  v5 = [v4 resultWithError:a3];
-  LOBYTE(a3) = v5 != 0;
+  backingPromise = [(AMSBinaryPromise *)self backingPromise];
+  v5 = [backingPromise resultWithError:error];
+  LOBYTE(error) = v5 != 0;
 
-  return a3;
+  return error;
 }
 
-- (void)resultWithTimeout:(double)a3 completion:(id)a4
+- (void)resultWithTimeout:(double)timeout completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(AMSBinaryPromise *)self backingPromise];
-  v8 = [v7 promiseWithTimeout:a3];
+  completionCopy = completion;
+  backingPromise = [(AMSBinaryPromise *)self backingPromise];
+  v8 = [backingPromise promiseWithTimeout:timeout];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __49__AMSBinaryPromise_resultWithTimeout_completion___block_invoke;
   v13[3] = &unk_1E73B4F78;
-  v9 = v6;
+  v9 = completionCopy;
   v14 = v9;
   [v8 addErrorBlock:v13];
   v11[0] = MEMORY[0x1E69E9820];
@@ -270,38 +270,38 @@ void __35__AMSBinaryPromise_addFinishBlock___block_invoke(uint64_t a1, void *a2,
   [v8 addSuccessBlock:v11];
 }
 
-- (BOOL)resultWithTimeout:(double)a3 error:(id *)a4
+- (BOOL)resultWithTimeout:(double)timeout error:(id *)error
 {
-  v6 = [(AMSBinaryPromise *)self backingPromise];
-  v7 = [v6 resultWithTimeout:a4 error:a3];
-  LOBYTE(a4) = v7 != 0;
+  backingPromise = [(AMSBinaryPromise *)self backingPromise];
+  v7 = [backingPromise resultWithTimeout:error error:timeout];
+  LOBYTE(error) = v7 != 0;
 
-  return a4;
+  return error;
 }
 
 - (void)waitUntilFinished
 {
-  v2 = [(AMSBinaryPromise *)self backingPromise];
-  [v2 waitUntilFinished];
+  backingPromise = [(AMSBinaryPromise *)self backingPromise];
+  [backingPromise waitUntilFinished];
 }
 
-- (void)waitUntilFinishedWithTimeout:(double)a3
+- (void)waitUntilFinishedWithTimeout:(double)timeout
 {
-  v4 = [(AMSBinaryPromise *)self backingPromise];
-  [v4 waitUntilFinishedWithTimeout:a3];
+  backingPromise = [(AMSBinaryPromise *)self backingPromise];
+  [backingPromise waitUntilFinishedWithTimeout:timeout];
 }
 
-- (id)catchWithBlock:(id)a3
+- (id)catchWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AMSBinaryPromise *)self backingPromise];
+  blockCopy = block;
+  backingPromise = [(AMSBinaryPromise *)self backingPromise];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __35__AMSBinaryPromise_catchWithBlock___block_invoke;
   v10[3] = &unk_1E73B4FC8;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 catchWithBlock:v10];
+  v11 = blockCopy;
+  v6 = blockCopy;
+  v7 = [backingPromise catchWithBlock:v10];
   v8 = [v7 binaryPromiseAdapterForClass:objc_opt_class()];
 
   return v8;
@@ -315,20 +315,20 @@ id __35__AMSBinaryPromise_catchWithBlock___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)catchWithPromiseBlock:(id)a3 successValue:(id)a4
+- (id)catchWithPromiseBlock:(id)block successValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSBinaryPromise *)self backingPromise];
+  blockCopy = block;
+  valueCopy = value;
+  backingPromise = [(AMSBinaryPromise *)self backingPromise];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __55__AMSBinaryPromise_catchWithPromiseBlock_successValue___block_invoke;
   v13[3] = &unk_1E73B4FF0;
-  v14 = v7;
-  v15 = v6;
-  v9 = v6;
-  v10 = v7;
-  v11 = [v8 continueWithBlock:v13];
+  v14 = valueCopy;
+  v15 = blockCopy;
+  v9 = blockCopy;
+  v10 = valueCopy;
+  v11 = [backingPromise continueWithBlock:v13];
 
   return v11;
 }
@@ -350,17 +350,17 @@ id __55__AMSBinaryPromise_catchWithPromiseBlock_successValue___block_invoke(uint
   return v6;
 }
 
-- (id)continueWithBlock:(id)a3
+- (id)continueWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AMSBinaryPromise *)self backingPromise];
+  blockCopy = block;
+  backingPromise = [(AMSBinaryPromise *)self backingPromise];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __38__AMSBinaryPromise_continueWithBlock___block_invoke;
   v10[3] = &unk_1E73B5018;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 continueWithBlock:v10];
+  v11 = blockCopy;
+  v6 = blockCopy;
+  v7 = [backingPromise continueWithBlock:v10];
   v8 = [v7 binaryPromiseAdapterForClass:objc_opt_class()];
 
   return v8;
@@ -387,17 +387,17 @@ id __38__AMSBinaryPromise_continueWithBlock___block_invoke(uint64_t a1, void *a2
   return v10;
 }
 
-- (id)continueWithPromiseBlock:(id)a3
+- (id)continueWithPromiseBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AMSBinaryPromise *)self backingPromise];
+  blockCopy = block;
+  backingPromise = [(AMSBinaryPromise *)self backingPromise];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__AMSBinaryPromise_continueWithPromiseBlock___block_invoke;
   v9[3] = &unk_1E73B5018;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 continueWithBlock:v9];
+  v10 = blockCopy;
+  v6 = blockCopy;
+  v7 = [backingPromise continueWithBlock:v9];
 
   return v7;
 }
@@ -411,17 +411,17 @@ id __45__AMSBinaryPromise_continueWithPromiseBlock___block_invoke(uint64_t a1, v
   return v6;
 }
 
-- (id)thenWithBlock:(id)a3
+- (id)thenWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AMSBinaryPromise *)self backingPromise];
+  blockCopy = block;
+  backingPromise = [(AMSBinaryPromise *)self backingPromise];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __34__AMSBinaryPromise_thenWithBlock___block_invoke;
   v10[3] = &unk_1E73B5040;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 thenWithBlock:v10];
+  v11 = blockCopy;
+  v6 = blockCopy;
+  v7 = [backingPromise thenWithBlock:v10];
   v8 = [v7 binaryPromiseAdapterForClass:objc_opt_class()];
 
   return v8;
@@ -435,17 +435,17 @@ id __34__AMSBinaryPromise_thenWithBlock___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)thenWithPromiseBlock:(id)a3
+- (id)thenWithPromiseBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AMSBinaryPromise *)self backingPromise];
+  blockCopy = block;
+  backingPromise = [(AMSBinaryPromise *)self backingPromise];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __41__AMSBinaryPromise_thenWithPromiseBlock___block_invoke;
   v9[3] = &unk_1E73B5040;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 thenWithBlock:v9];
+  v10 = blockCopy;
+  v6 = blockCopy;
+  v7 = [backingPromise thenWithBlock:v9];
 
   return v7;
 }

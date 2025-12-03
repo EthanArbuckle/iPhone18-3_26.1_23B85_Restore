@@ -1,18 +1,18 @@
 @interface UIKeyboardUISnapshot
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (UIKeyboardUISnapshot)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UIKeyboardUISnapshot)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIKeyboardUISnapshot
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  if (([v7 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The coder must allow keyed coding."];
   }
@@ -20,20 +20,20 @@
   slotID = self->_slotID;
   if (slotID)
   {
-    [v7 encodeInt32:slotID forKey:@"slot"];
+    [coderCopy encodeInt32:slotID forKey:@"slot"];
   }
 
   if (self->_size.width != *MEMORY[0x1E695F060] || self->_size.height != *(MEMORY[0x1E695F060] + 8))
   {
     v6 = [MEMORY[0x1E696B098] valueWithSize:?];
-    [v7 encodeObject:v6 forKey:@"size"];
+    [coderCopy encodeObject:v6 forKey:@"size"];
   }
 }
 
-- (UIKeyboardUISnapshot)initWithCoder:(id)a3
+- (UIKeyboardUISnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The decoder must allow keyed coding."];
   }
@@ -43,8 +43,8 @@
   v5 = [(UIKeyboardUISnapshot *)&v11 init];
   if (v5)
   {
-    v5->_slotID = [v4 decodeInt32ForKey:@"slot"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"size"];
+    v5->_slotID = [coderCopy decodeInt32ForKey:@"slot"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"size"];
     v7 = v6;
     if (v6)
     {
@@ -57,7 +57,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[UIKeyboardUISnapshot allocWithZone:?]];
   *(result + 2) = self->_slotID;
@@ -84,10 +84,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -97,9 +97,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(UIKeyboardUISnapshot *)self slotID];
-      if (v6 == [(UIKeyboardUISnapshot *)v5 slotID])
+      v5 = equalCopy;
+      slotID = [(UIKeyboardUISnapshot *)self slotID];
+      if (slotID == [(UIKeyboardUISnapshot *)v5 slotID])
       {
         [(UIKeyboardUISnapshot *)self size];
         v8 = v7;

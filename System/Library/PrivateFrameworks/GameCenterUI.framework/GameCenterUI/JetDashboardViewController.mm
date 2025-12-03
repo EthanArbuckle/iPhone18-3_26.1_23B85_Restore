@@ -2,20 +2,20 @@
 - (PSRootController)_rootController;
 - (PSSpecifier)_specifier;
 - (_TtC12GameCenterUI18BaseSplitPresenter)dataPresenter;
-- (void)didSelectPlayerAvatarView:(id)a3;
-- (void)donePressed:(id)a3;
-- (void)loadMoreWithContinuationToken:(id)a3;
-- (void)setDataPresenter:(id)a3;
-- (void)set_rootController:(id)a3;
-- (void)set_specifier:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)didSelectPlayerAvatarView:(id)view;
+- (void)donePressed:(id)pressed;
+- (void)loadMoreWithContinuationToken:(id)token;
+- (void)setDataPresenter:(id)presenter;
+- (void)set_rootController:(id)controller;
+- (void)set_specifier:(id)set_specifier;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation JetDashboardViewController
@@ -27,64 +27,64 @@
   return v2;
 }
 
-- (void)setDataPresenter:(id)a3
+- (void)setDataPresenter:(id)presenter
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E04D118(v4);
+  presenterCopy = presenter;
+  selfCopy = self;
+  sub_24E04D118(presenterCopy);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   JetDashboardViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  JetDashboardViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  JetDashboardViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  JetDashboardViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  JetDashboardViewController.viewWillDisappear(_:)(disappear);
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  JetDashboardViewController.willMove(toParent:)(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  JetDashboardViewController.willMove(toParent:)(controller);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  JetDashboardViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  JetDashboardViewController.viewDidAppear(_:)(appear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   JetDashboardViewController.viewDidLayoutSubviews()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   JetDashboardViewController.traitCollectionDidChange(_:)(v9);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  JetDashboardViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  JetDashboardViewController.viewDidDisappear(_:)(disappear);
 }
 
 - (PSRootController)_rootController
@@ -94,11 +94,11 @@
   return v2;
 }
 
-- (void)set_rootController:(id)a3
+- (void)set_rootController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E052008(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_24E052008(controller);
 }
 
 - (PSSpecifier)_specifier
@@ -108,25 +108,25 @@
   return v2;
 }
 
-- (void)set_specifier:(id)a3
+- (void)set_specifier:(id)set_specifier
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E0520D4(a3);
+  set_specifierCopy = set_specifier;
+  selfCopy = self;
+  sub_24E0520D4(set_specifier);
 }
 
-- (void)didSelectPlayerAvatarView:(id)a3
+- (void)didSelectPlayerAvatarView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  JetDashboardViewController.didSelectPlayerAvatarView(_:)(v5);
+  viewCopy = view;
+  selfCopy = self;
+  JetDashboardViewController.didSelectPlayerAvatarView(_:)(selfCopy);
 }
 
-- (void)donePressed:(id)a3
+- (void)donePressed:(id)pressed
 {
-  if (a3)
+  if (pressed)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_24E3487A8();
     swift_unknownObjectRelease();
@@ -135,7 +135,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_24E0523DC();
@@ -143,10 +143,10 @@
   sub_24DF8C95C(v6, &qword_27F1E0370);
 }
 
-- (void)loadMoreWithContinuationToken:(id)a3
+- (void)loadMoreWithContinuationToken:(id)token
 {
   sub_24E347CF8();
-  v4 = self;
+  selfCopy = self;
   sub_24E052630();
 }
 

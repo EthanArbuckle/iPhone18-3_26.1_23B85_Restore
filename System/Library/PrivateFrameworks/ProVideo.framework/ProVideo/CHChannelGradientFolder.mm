@@ -1,13 +1,13 @@
 @interface CHChannelGradientFolder
-- (id)addNewChannelWithXMLTypeInfo:(id)a3;
-- (id)cloneSample:(unsigned int)a3;
-- (id)insertSampleAtTime:(id *)a3 offset:(double)a4;
+- (id)addNewChannelWithXMLTypeInfo:(id)info;
+- (id)cloneSample:(unsigned int)sample;
+- (id)insertSampleAtTime:(id *)time offset:(double)offset;
 - (id)sampleBaseName;
-- (void)deleteSample:(unsigned int)a3;
-- (void)flopAtTime:(id *)a3;
+- (void)deleteSample:(unsigned int)sample;
+- (void)flopAtTime:(id *)time;
 - (void)ozChannel;
 - (void)sortAndRename;
-- (void)spreadAtTime:(id *)a3;
+- (void)spreadAtTime:(id *)time;
 @end
 
 @implementation CHChannelGradientFolder
@@ -34,58 +34,58 @@
   return PCString::ns_str(v3);
 }
 
-- (id)insertSampleAtTime:(id *)a3 offset:(double)a4
+- (id)insertSampleAtTime:(id *)time offset:(double)offset
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  v7 = (*(*pOZChannel + 720))(pOZChannel, a3, a4);
+  v7 = (*(*pOZChannel + 720))(pOZChannel, time, offset);
 
   return CHChannelWrapperForOZChannel(v7, 0);
 }
 
-- (id)cloneSample:(unsigned int)a3
+- (id)cloneSample:(unsigned int)sample
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  v5 = OZChannelGradientFolder::cloneSample(pOZChannel, a3);
+  v5 = OZChannelGradientFolder::cloneSample(pOZChannel, sample);
 
   return CHChannelWrapperForOZChannel(v5, 0);
 }
 
-- (void)deleteSample:(unsigned int)a3
+- (void)deleteSample:(unsigned int)sample
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannelGradientFolder::deleteSample(pOZChannel, a3);
+  OZChannelGradientFolder::deleteSample(pOZChannel, sample);
 }
 
-- (void)spreadAtTime:(id *)a3
+- (void)spreadAtTime:(id *)time
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannelGradientFolder::spread(pOZChannel, a3);
+  OZChannelGradientFolder::spread(pOZChannel, time);
 }
 
-- (void)flopAtTime:(id *)a3
+- (void)flopAtTime:(id *)time
 {
   pOZChannel = self->super.super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannelGradientFolder::flop(pOZChannel, a3);
+  OZChannelGradientFolder::flop(pOZChannel, time);
 }
 
 - (void)sortAndRename
@@ -99,7 +99,7 @@
   OZChannelGradientFolder::sortAndRename(pOZChannel);
 }
 
-- (id)addNewChannelWithXMLTypeInfo:(id)a3
+- (id)addNewChannelWithXMLTypeInfo:(id)info
 {
   v4 = *MEMORY[0x277CC08F0];
   v5 = *(MEMORY[0x277CC08F0] + 16);

@@ -1,23 +1,23 @@
 @interface EKEventDetailLocationDisambiguationContentViewController
 - (BOOL)_shouldEnableAddButton;
-- (BOOL)searchBarShouldBeginEditing:(id)a3;
-- (EKEventDetailLocationDisambiguationContentViewController)initWithLocation:(id)a3 pois:(id)a4 completionBlock:(id)a5;
-- (id)_constraintsForParadigm:(unint64_t)a3;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (BOOL)searchBarShouldBeginEditing:(id)editing;
+- (EKEventDetailLocationDisambiguationContentViewController)initWithLocation:(id)location pois:(id)pois completionBlock:(id)block;
+- (id)_constraintsForParadigm:(unint64_t)paradigm;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (void)_createConstraints;
 - (void)_deselectCircle;
 - (void)_selectCircle;
-- (void)_selectRow:(unint64_t)a3;
+- (void)_selectRow:(unint64_t)row;
 - (void)_updateMapRegion;
-- (void)doneTapped:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)searchBarTextDidEndEditing:(id)a3;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
+- (void)doneTapped:(id)tapped;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)searchBarTextDidEndEditing:(id)editing;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
 - (void)updateViewConstraints;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -25,32 +25,32 @@
 
 @implementation EKEventDetailLocationDisambiguationContentViewController
 
-- (EKEventDetailLocationDisambiguationContentViewController)initWithLocation:(id)a3 pois:(id)a4 completionBlock:(id)a5
+- (EKEventDetailLocationDisambiguationContentViewController)initWithLocation:(id)location pois:(id)pois completionBlock:(id)block
 {
   v43 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v9 = a4;
-  v10 = a5;
+  locationCopy = location;
+  poisCopy = pois;
+  blockCopy = block;
   v40.receiver = self;
   v40.super_class = EKEventDetailLocationDisambiguationContentViewController;
   v11 = [(EKEventDetailLocationDisambiguationContentViewController *)&v40 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_location, a3);
-    v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count") + 1}];
+    objc_storeStrong(&v11->_location, location);
+    v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(poisCopy, "count") + 1}];
     pois = v12->_pois;
     v12->_pois = v13;
 
     v15 = v12->_pois;
-    v16 = [v32 copy];
+    v16 = [locationCopy copy];
     [(NSMutableArray *)v15 addObject:v16];
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v17 = v9;
+    v17 = poisCopy;
     v18 = [v17 countByEnumeratingWithState:&v36 objects:v42 count:16];
     if (v18)
     {
@@ -79,7 +79,7 @@
       while (v18);
     }
 
-    v23 = _Block_copy(v10);
+    v23 = _Block_copy(blockCopy);
     completionBlock = v12->_completionBlock;
     v12->_completionBlock = v23;
 
@@ -119,116 +119,116 @@ void __98__EKEventDetailLocationDisambiguationContentViewController_initWithLoca
 - (void)_createConstraints
 {
   v88[11] = *MEMORY[0x1E69E9840];
-  v3 = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
+  view = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
   v86 = objc_opt_new();
   v85 = objc_opt_new();
-  v82 = [(MKMapView *)self->_mapView leadingAnchor];
-  v80 = [v3 leadingAnchor];
-  v78 = [v82 constraintEqualToAnchor:v80];
+  leadingAnchor = [(MKMapView *)self->_mapView leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v78 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v88[0] = v78;
-  v76 = [(MKMapView *)self->_mapView trailingAnchor];
-  v74 = [v3 trailingAnchor];
-  v71 = [v76 constraintEqualToAnchor:v74];
+  trailingAnchor = [(MKMapView *)self->_mapView trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v71 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v88[1] = v71;
-  v69 = [(MKMapView *)self->_mapView topAnchor];
-  v67 = [v3 topAnchor];
-  v65 = [v69 constraintEqualToAnchor:v67];
+  topAnchor = [(MKMapView *)self->_mapView topAnchor];
+  topAnchor2 = [view topAnchor];
+  v65 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v88[2] = v65;
-  v63 = [(UIView *)self->_separatorLine leadingAnchor];
-  v61 = [v3 leadingAnchor];
-  v59 = [v63 constraintEqualToAnchor:v61];
+  leadingAnchor3 = [(UIView *)self->_separatorLine leadingAnchor];
+  leadingAnchor4 = [view leadingAnchor];
+  v59 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v88[3] = v59;
-  v57 = [(UIView *)self->_separatorLine trailingAnchor];
-  v55 = [v3 trailingAnchor];
-  v53 = [v57 constraintEqualToAnchor:v55];
+  trailingAnchor3 = [(UIView *)self->_separatorLine trailingAnchor];
+  trailingAnchor4 = [view trailingAnchor];
+  v53 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v88[4] = v53;
-  v51 = [(UIView *)self->_separatorLine topAnchor];
-  v49 = [(MKMapView *)self->_mapView bottomAnchor];
-  v47 = [v51 constraintEqualToAnchor:v49];
+  topAnchor3 = [(UIView *)self->_separatorLine topAnchor];
+  bottomAnchor = [(MKMapView *)self->_mapView bottomAnchor];
+  v47 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v88[5] = v47;
-  v45 = [(UIView *)self->_separatorLine heightAnchor];
-  v43 = [v45 constraintEqualToConstant:EKUIPixelSizeInPoints()];
+  heightAnchor = [(UIView *)self->_separatorLine heightAnchor];
+  v43 = [heightAnchor constraintEqualToConstant:EKUIPixelSizeInPoints()];
   v88[6] = v43;
-  v41 = [(UITableView *)self->_tableView leadingAnchor];
-  v39 = [v3 leadingAnchor];
-  v37 = [v41 constraintEqualToAnchor:v39];
+  leadingAnchor5 = [(UITableView *)self->_tableView leadingAnchor];
+  leadingAnchor6 = [view leadingAnchor];
+  v37 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v88[7] = v37;
-  v35 = [(UITableView *)self->_tableView trailingAnchor];
-  v84 = v3;
-  v4 = [v3 trailingAnchor];
-  v5 = [v35 constraintEqualToAnchor:v4];
+  trailingAnchor5 = [(UITableView *)self->_tableView trailingAnchor];
+  v84 = view;
+  trailingAnchor6 = [view trailingAnchor];
+  v5 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v88[8] = v5;
-  v6 = [(UITableView *)self->_tableView topAnchor];
-  v7 = [(UIView *)self->_separatorLine bottomAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  topAnchor4 = [(UITableView *)self->_tableView topAnchor];
+  bottomAnchor2 = [(UIView *)self->_separatorLine bottomAnchor];
+  v8 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2];
   v88[9] = v8;
-  v9 = [(UITableView *)self->_tableView bottomAnchor];
-  v10 = [v3 bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomAnchor3 = [(UITableView *)self->_tableView bottomAnchor];
+  bottomAnchor4 = [view bottomAnchor];
+  v11 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v88[10] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v88 count:11];
   [v86 addObjectsFromArray:v12];
 
-  v13 = [(MKMapView *)self->_mapView heightAnchor];
-  v14 = [(MKMapView *)self->_mapView widthAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  heightAnchor2 = [(MKMapView *)self->_mapView heightAnchor];
+  widthAnchor = [(MKMapView *)self->_mapView widthAnchor];
+  v15 = [heightAnchor2 constraintEqualToAnchor:widthAnchor];
   v16 = [v86 setByAddingObject:v15];
   tallConstraints = self->_tallConstraints;
   self->_tallConstraints = v16;
 
-  v18 = [(MKMapView *)self->_mapView heightAnchor];
-  v19 = [(MKMapView *)self->_mapView widthAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19 multiplier:0.5];
+  heightAnchor3 = [(MKMapView *)self->_mapView heightAnchor];
+  widthAnchor2 = [(MKMapView *)self->_mapView widthAnchor];
+  v20 = [heightAnchor3 constraintEqualToAnchor:widthAnchor2 multiplier:0.5];
   v21 = [v86 setByAddingObject:v20];
   iPadConstraints = self->_iPadConstraints;
   self->_iPadConstraints = v21;
 
-  v83 = [(MKMapView *)self->_mapView leadingAnchor];
-  v81 = [v84 leadingAnchor];
-  v79 = [v83 constraintEqualToAnchor:v81];
+  leadingAnchor7 = [(MKMapView *)self->_mapView leadingAnchor];
+  leadingAnchor8 = [v84 leadingAnchor];
+  v79 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v87[0] = v79;
-  v77 = [(MKMapView *)self->_mapView topAnchor];
-  v75 = [v84 topAnchor];
-  v72 = [v77 constraintEqualToAnchor:v75];
+  topAnchor5 = [(MKMapView *)self->_mapView topAnchor];
+  topAnchor6 = [v84 topAnchor];
+  v72 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v87[1] = v72;
-  v70 = [(MKMapView *)self->_mapView bottomAnchor];
-  v68 = [v84 bottomAnchor];
-  v66 = [v70 constraintEqualToAnchor:v68];
+  bottomAnchor5 = [(MKMapView *)self->_mapView bottomAnchor];
+  bottomAnchor6 = [v84 bottomAnchor];
+  v66 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v87[2] = v66;
-  v64 = [(UIView *)self->_separatorLine leadingAnchor];
-  v62 = [(MKMapView *)self->_mapView trailingAnchor];
-  v60 = [v64 constraintEqualToAnchor:v62];
+  leadingAnchor9 = [(UIView *)self->_separatorLine leadingAnchor];
+  trailingAnchor7 = [(MKMapView *)self->_mapView trailingAnchor];
+  v60 = [leadingAnchor9 constraintEqualToAnchor:trailingAnchor7];
   v87[3] = v60;
-  v58 = [(UIView *)self->_separatorLine widthAnchor];
-  v56 = [v58 constraintEqualToConstant:EKUIPixelSizeInPoints()];
+  widthAnchor3 = [(UIView *)self->_separatorLine widthAnchor];
+  v56 = [widthAnchor3 constraintEqualToConstant:EKUIPixelSizeInPoints()];
   v87[4] = v56;
-  v54 = [(UIView *)self->_separatorLine topAnchor];
-  v52 = [v84 topAnchor];
-  v50 = [v54 constraintEqualToAnchor:v52];
+  topAnchor7 = [(UIView *)self->_separatorLine topAnchor];
+  topAnchor8 = [v84 topAnchor];
+  v50 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
   v87[5] = v50;
-  v48 = [(UIView *)self->_separatorLine bottomAnchor];
-  v46 = [v84 bottomAnchor];
-  v44 = [v48 constraintEqualToAnchor:v46];
+  bottomAnchor7 = [(UIView *)self->_separatorLine bottomAnchor];
+  bottomAnchor8 = [v84 bottomAnchor];
+  v44 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v87[6] = v44;
-  v42 = [(UITableView *)self->_tableView leadingAnchor];
-  v73 = [(UIView *)self->_separatorLine trailingAnchor];
-  v40 = [v42 constraintEqualToAnchor:v73];
+  leadingAnchor10 = [(UITableView *)self->_tableView leadingAnchor];
+  trailingAnchor8 = [(UIView *)self->_separatorLine trailingAnchor];
+  v40 = [leadingAnchor10 constraintEqualToAnchor:trailingAnchor8];
   v87[7] = v40;
-  v38 = [(UITableView *)self->_tableView trailingAnchor];
-  v36 = [v84 trailingAnchor];
-  v34 = [v38 constraintEqualToAnchor:v36];
+  trailingAnchor9 = [(UITableView *)self->_tableView trailingAnchor];
+  trailingAnchor10 = [v84 trailingAnchor];
+  v34 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   v87[8] = v34;
-  v33 = [(UITableView *)self->_tableView topAnchor];
-  v23 = [v84 topAnchor];
-  v24 = [v33 constraintEqualToAnchor:v23];
+  topAnchor9 = [(UITableView *)self->_tableView topAnchor];
+  topAnchor10 = [v84 topAnchor];
+  v24 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
   v87[9] = v24;
-  v25 = [(UITableView *)self->_tableView bottomAnchor];
-  v26 = [v84 bottomAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  bottomAnchor9 = [(UITableView *)self->_tableView bottomAnchor];
+  bottomAnchor10 = [v84 bottomAnchor];
+  v27 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10];
   v87[10] = v27;
-  v28 = [(UITableView *)self->_tableView widthAnchor];
-  v29 = [(MKMapView *)self->_mapView widthAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  widthAnchor4 = [(UITableView *)self->_tableView widthAnchor];
+  widthAnchor5 = [(MKMapView *)self->_mapView widthAnchor];
+  v30 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5];
   v87[11] = v30;
   v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v87 count:12];
   [(NSSet *)v85 addObjectsFromArray:v31];
@@ -237,15 +237,15 @@ void __98__EKEventDetailLocationDisambiguationContentViewController_initWithLoca
   self->_splitConstraints = v85;
 }
 
-- (id)_constraintsForParadigm:(unint64_t)a3
+- (id)_constraintsForParadigm:(unint64_t)paradigm
 {
   v3 = &OBJC_IVAR___EKEventDetailLocationDisambiguationContentViewController__tallConstraints;
-  if (a3 == 8)
+  if (paradigm == 8)
   {
     v3 = &OBJC_IVAR___EKEventDetailLocationDisambiguationContentViewController__splitConstraints;
   }
 
-  if (a3 == 16)
+  if (paradigm == 16)
   {
     v3 = &OBJC_IVAR___EKEventDetailLocationDisambiguationContentViewController__iPadConstraints;
   }
@@ -255,34 +255,34 @@ void __98__EKEventDetailLocationDisambiguationContentViewController_initWithLoca
 
 - (void)updateViewConstraints
 {
-  v3 = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
-  v4 = EKUICurrentWindowInterfaceParadigm(v3);
+  view = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
+  v4 = EKUICurrentWindowInterfaceParadigm(view);
 
   if (!self->_tallConstraints)
   {
     [(EKEventDetailLocationDisambiguationContentViewController *)self _createConstraints];
     v13 = MEMORY[0x1E696ACD8];
     v5 = [(EKEventDetailLocationDisambiguationContentViewController *)self _constraintsForParadigm:v4];
-    v6 = [v5 allObjects];
-    [v13 activateConstraints:v6];
+    allObjects = [v5 allObjects];
+    [v13 activateConstraints:allObjects];
     goto LABEL_5;
   }
 
   if (v4 != self->_currentLayoutParadigm)
   {
     v5 = [(EKEventDetailLocationDisambiguationContentViewController *)self _constraintsForParadigm:?];
-    v6 = [(EKEventDetailLocationDisambiguationContentViewController *)self _constraintsForParadigm:v4];
+    allObjects = [(EKEventDetailLocationDisambiguationContentViewController *)self _constraintsForParadigm:v4];
     v7 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:v5];
-    [v7 minusSet:v6];
-    v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:v6];
+    [v7 minusSet:allObjects];
+    v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:allObjects];
     [v8 minusSet:v5];
     v9 = MEMORY[0x1E696ACD8];
-    v10 = [v7 allObjects];
-    [v9 deactivateConstraints:v10];
+    allObjects2 = [v7 allObjects];
+    [v9 deactivateConstraints:allObjects2];
 
     v11 = MEMORY[0x1E696ACD8];
-    v12 = [v8 allObjects];
-    [v11 activateConstraints:v12];
+    allObjects3 = [v8 allObjects];
+    [v11 activateConstraints:allObjects3];
 
 LABEL_5:
   }
@@ -305,15 +305,15 @@ LABEL_5:
     [v4 setObscuresBackgroundDuringPresentation:0];
     [v4 setHidesNavigationBarDuringPresentation:0];
     [v4 setAutomaticallyShowsCancelButton:0];
-    v5 = [(EKEventDetailLocationDisambiguationContentViewController *)self navigationItem];
-    [v5 setSearchController:v4];
+    navigationItem = [(EKEventDetailLocationDisambiguationContentViewController *)self navigationItem];
+    [navigationItem setSearchController:v4];
 
-    v6 = [(EKEventDetailLocationDisambiguationContentViewController *)self navigationItem];
-    [v6 setHidesSearchBarWhenScrolling:0];
+    navigationItem2 = [(EKEventDetailLocationDisambiguationContentViewController *)self navigationItem];
+    [navigationItem2 setHidesSearchBarWhenScrolling:0];
 
-    v7 = [v4 searchBar];
+    searchBar = [v4 searchBar];
     searchBar = self->_searchBar;
-    self->_searchBar = v7;
+    self->_searchBar = searchBar;
 
     [(UISearchBar *)self->_searchBar setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UISearchBar *)self->_searchBar setAutocorrectionType:0];
@@ -346,8 +346,8 @@ LABEL_5:
     [(MKMapView *)self->_mapView setDelegate:self];
     v16 = self->_mapView;
     v17 = objc_alloc(MEMORY[0x1E69DD060]);
-    v18 = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
-    v19 = [v17 initWithTarget:v18 action:sel_endEditing_];
+    view = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
+    v19 = [v17 initWithTarget:view action:sel_endEditing_];
     [(MKMapView *)v16 addGestureRecognizer:v19];
 
     v20 = objc_opt_new();
@@ -355,8 +355,8 @@ LABEL_5:
     self->_separatorLine = v20;
 
     [(UIView *)self->_separatorLine setTranslatesAutoresizingMaskIntoConstraints:0];
-    v22 = [MEMORY[0x1E69DC888] systemMidGrayColor];
-    [(UIView *)self->_separatorLine setBackgroundColor:v22];
+    systemMidGrayColor = [MEMORY[0x1E69DC888] systemMidGrayColor];
+    [(UIView *)self->_separatorLine setBackgroundColor:systemMidGrayColor];
 
     v23 = objc_alloc_init(MEMORY[0x1E69DD020]);
     tableView = self->_tableView;
@@ -365,37 +365,37 @@ LABEL_5:
     [(UITableView *)self->_tableView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UITableView *)self->_tableView setDelegate:self];
     [(UITableView *)self->_tableView setDataSource:self];
-    v25 = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
-    [v25 addSubview:self->_mapView];
+    view2 = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
+    [view2 addSubview:self->_mapView];
 
-    v26 = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
-    [v26 addSubview:self->_tableView];
+    view3 = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
+    [view3 addSubview:self->_tableView];
 
-    v27 = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
-    [v27 addSubview:self->_separatorLine];
+    view4 = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
+    [view4 addSubview:self->_separatorLine];
 
     v28 = EventKitUIBundle();
     v29 = [v28 localizedStringForKey:@"Add Location" value:&stru_1F4EF6790 table:0];
-    v30 = [(EKEventDetailLocationDisambiguationContentViewController *)self navigationItem];
-    [v30 setTitle:v29];
+    navigationItem3 = [(EKEventDetailLocationDisambiguationContentViewController *)self navigationItem];
+    [navigationItem3 setTitle:v29];
 
     v31 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancelTapped_];
-    v32 = [(EKEventDetailLocationDisambiguationContentViewController *)self navigationItem];
-    [v32 setLeftBarButtonItem:v31];
+    navigationItem4 = [(EKEventDetailLocationDisambiguationContentViewController *)self navigationItem];
+    [navigationItem4 setLeftBarButtonItem:v31];
 
     v33 = objc_alloc(MEMORY[0x1E69DC708]);
     v34 = EventKitUIBundle();
     v35 = [v34 localizedStringForKey:@"Add" value:&stru_1F4EF6790 table:0];
     v36 = [v33 initWithTitle:v35 style:2 target:self action:sel_doneTapped_];
-    v37 = [(EKEventDetailLocationDisambiguationContentViewController *)self navigationItem];
-    [v37 setRightBarButtonItem:v36];
+    navigationItem5 = [(EKEventDetailLocationDisambiguationContentViewController *)self navigationItem];
+    [navigationItem5 setRightBarButtonItem:v36];
 
-    v38 = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
-    [v38 setNeedsUpdateConstraints];
+    view5 = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
+    [view5 setNeedsUpdateConstraints];
 
     v39 = EKWeakLinkClass();
-    v40 = [(EKStructuredLocation *)self->_location geoLocation];
-    [v40 coordinate];
+    geoLocation = [(EKStructuredLocation *)self->_location geoLocation];
+    [geoLocation coordinate];
     v42 = v41;
     v44 = v43;
     [(EKStructuredLocation *)self->_location radius];
@@ -405,35 +405,35 @@ LABEL_5:
   }
 }
 
-- (void)_selectRow:(unint64_t)a3
+- (void)_selectRow:(unint64_t)row
 {
-  v5 = [(EKEventDetailLocationDisambiguationContentViewController *)self navigationItem];
-  v6 = [v5 rightBarButtonItem];
-  [v6 setEnabled:1];
+  navigationItem = [(EKEventDetailLocationDisambiguationContentViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:1];
 
-  v7 = [(UITableView *)self->_tableView indexPathForSelectedRow];
-  v8 = [v7 row];
+  indexPathForSelectedRow = [(UITableView *)self->_tableView indexPathForSelectedRow];
+  v8 = [indexPathForSelectedRow row];
 
-  if (v8 != a3)
+  if (v8 != row)
   {
     tableView = self->_tableView;
-    v10 = [(UITableView *)tableView indexPathForSelectedRow];
-    v11 = [(UITableView *)tableView cellForRowAtIndexPath:v10];
+    indexPathForSelectedRow2 = [(UITableView *)tableView indexPathForSelectedRow];
+    v11 = [(UITableView *)tableView cellForRowAtIndexPath:indexPathForSelectedRow2];
     [v11 setAccessoryType:0];
   }
 
-  v28 = [MEMORY[0x1E696AC88] indexPathForRow:a3 inSection:0];
+  v28 = [MEMORY[0x1E696AC88] indexPathForRow:row inSection:0];
   v12 = [(UITableView *)self->_tableView cellForRowAtIndexPath:v28];
   [v12 setAccessoryType:3];
 
   [(UITableView *)self->_tableView selectRowAtIndexPath:v28 animated:0 scrollPosition:2];
-  v13 = [(NSMutableArray *)self->_pois objectAtIndexedSubscript:a3];
+  v13 = [(NSMutableArray *)self->_pois objectAtIndexedSubscript:row];
   v14 = v13;
-  if (a3)
+  if (row)
   {
-    v15 = [v13 title];
+    title = [v13 title];
     p_searchBar = &self->_searchBar;
-    [(UISearchBar *)self->_searchBar setText:v15];
+    [(UISearchBar *)self->_searchBar setText:title];
 
     [MEMORY[0x1E69DC888] systemGrayColor];
   }
@@ -441,17 +441,17 @@ LABEL_5:
   else
   {
     v17 = MEMORY[0x1E6992FD8];
-    v18 = [v13 title];
-    v19 = [v14 address];
-    v20 = [v17 fullDisplayStringWithTitle:v18 address:v19];
+    title2 = [v13 title];
+    address = [v14 address];
+    v20 = [v17 fullDisplayStringWithTitle:title2 address:address];
     p_searchBar = &self->_searchBar;
     [(UISearchBar *)self->_searchBar setText:v20];
 
     [MEMORY[0x1E69DC888] labelColor];
   }
   v21 = ;
-  v22 = [(UISearchBar *)*p_searchBar searchField];
-  [v22 setTextColor:v21];
+  searchField = [(UISearchBar *)*p_searchBar searchField];
+  [searchField setTextColor:v21];
 
   if ([v14 isImprecise])
   {
@@ -474,15 +474,15 @@ LABEL_5:
       self->_pin = v23;
     }
 
-    v25 = [v14 geoLocation];
-    [v25 coordinate];
+    geoLocation = [v14 geoLocation];
+    [geoLocation coordinate];
     [(MKPointAnnotation *)self->_pin setCoordinate:?];
 
-    v26 = [v14 title];
-    [(MKPointAnnotation *)self->_pin setTitle:v26];
+    title3 = [v14 title];
+    [(MKPointAnnotation *)self->_pin setTitle:title3];
 
-    v27 = [v14 address];
-    [(MKPointAnnotation *)self->_pin setSubtitle:v27];
+    address2 = [v14 address];
+    [(MKPointAnnotation *)self->_pin setSubtitle:address2];
 
     [(MKPointAnnotation *)self->_pin setRepresentation:2];
     [(MKMapView *)self->_mapView addAnnotation:self->_pin];
@@ -501,14 +501,14 @@ LABEL_5:
     [EKEventDetailLocationDisambiguationContentViewController _updateMapRegion];
   }
 
-  v3 = [(EKStructuredLocation *)self->_location geoLocation];
-  [v3 coordinate];
+  geoLocation = [(EKStructuredLocation *)self->_location geoLocation];
+  [geoLocation coordinate];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(EKStructuredLocation *)self->_location radius];
+  radius = [(EKStructuredLocation *)self->_location radius];
   v10 = fmax(v9 * 3.0, 50.0);
-  _updateMapRegion_makeRegionWithDistance(v8, v5, v7, v10, v10);
+  _updateMapRegion_makeRegionWithDistance(radius, v5, v7, v10, v10);
   [(MKMapView *)self->_mapView regionThatFits:?];
   v12 = v11;
   v14 = v13;
@@ -636,66 +636,66 @@ uint64_t (*__76__EKEventDetailLocationDisambiguationContentViewController__updat
   }
 }
 
-- (void)doneTapped:(id)a3
+- (void)doneTapped:(id)tapped
 {
   self->_done = 1;
-  v4 = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
-  [v4 endEditing:1];
+  view = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
+  [view endEditing:1];
 
   if (!self->_geocoding)
   {
     completionBlock = self->_completionBlock;
     pois = self->_pois;
-    v8 = [(UITableView *)self->_tableView indexPathForSelectedRow];
-    v7 = -[NSMutableArray objectAtIndexedSubscript:](pois, "objectAtIndexedSubscript:", [v8 row]);
+    indexPathForSelectedRow = [(UITableView *)self->_tableView indexPathForSelectedRow];
+    v7 = -[NSMutableArray objectAtIndexedSubscript:](pois, "objectAtIndexedSubscript:", [indexPathForSelectedRow row]);
     completionBlock[2](completionBlock, 0, v7);
   }
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v3 = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
-  [v3 endEditing:0];
+  view = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
+  [view endEditing:0];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   v11[1] = *MEMORY[0x1E69E9840];
   self->_textChanged = 1;
-  v5 = [(EKEventDetailLocationDisambiguationContentViewController *)self _shouldEnableAddButton:a3];
-  v6 = [(EKEventDetailLocationDisambiguationContentViewController *)self navigationItem];
-  v7 = [v6 rightBarButtonItem];
-  [v7 setEnabled:v5];
+  v5 = [(EKEventDetailLocationDisambiguationContentViewController *)self _shouldEnableAddButton:bar];
+  navigationItem = [(EKEventDetailLocationDisambiguationContentViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v5];
 
-  v8 = [(UITableView *)self->_tableView indexPathForSelectedRow];
+  indexPathForSelectedRow = [(UITableView *)self->_tableView indexPathForSelectedRow];
   [(UITableView *)self->_tableView selectRowAtIndexPath:0 animated:0 scrollPosition:2];
-  if (v8)
+  if (indexPathForSelectedRow)
   {
     tableView = self->_tableView;
-    v11[0] = v8;
+    v11[0] = indexPathForSelectedRow;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     [(UITableView *)tableView reloadRowsAtIndexPaths:v10 withRowAnimation:100];
   }
 }
 
-- (BOOL)searchBarShouldBeginEditing:(id)a3
+- (BOOL)searchBarShouldBeginEditing:(id)editing
 {
-  v3 = [(UITableView *)self->_tableView indexPathForSelectedRow];
-  v4 = [v3 row] == 0;
+  indexPathForSelectedRow = [(UITableView *)self->_tableView indexPathForSelectedRow];
+  v4 = [indexPathForSelectedRow row] == 0;
 
   return v4;
 }
 
 - (BOOL)_shouldEnableAddButton
 {
-  v2 = [(UISearchBar *)self->_searchBar searchField];
-  v3 = [v2 text];
-  v4 = [v3 length] != 0;
+  searchField = [(UISearchBar *)self->_searchBar searchField];
+  text = [searchField text];
+  v4 = [text length] != 0;
 
   return v4;
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
   if (self->_textChanged)
   {
@@ -703,13 +703,13 @@ uint64_t (*__76__EKEventDetailLocationDisambiguationContentViewController__updat
     v8[10] = v4;
     self->_geocoding = 1;
     v6 = MEMORY[0x1E6992FB8];
-    v7 = [(UISearchBar *)self->_searchBar text];
+    text = [(UISearchBar *)self->_searchBar text];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __87__EKEventDetailLocationDisambiguationContentViewController_searchBarTextDidEndEditing___block_invoke;
     v8[3] = &unk_1E8442728;
     v8[4] = self;
-    [v6 geocodeLocationString:v7 withCompletionBlock:v8];
+    [v6 geocodeLocationString:text withCompletionBlock:v8];
   }
 }
 
@@ -769,12 +769,12 @@ void __87__EKEventDetailLocationDisambiguationContentViewController_searchBarTex
 
 - (void)_selectCircle
 {
-  v3 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v4 = [v3 colorWithAlphaComponent:0.28];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v4 = [systemBlueColor colorWithAlphaComponent:0.28];
   [(MKCircleRenderer *)self->_circleRenderer setFillColor:v4];
 
-  v5 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [(MKCircleRenderer *)self->_circleRenderer setStrokeColor:v5];
+  systemBlueColor2 = [MEMORY[0x1E69DC888] systemBlueColor];
+  [(MKCircleRenderer *)self->_circleRenderer setStrokeColor:systemBlueColor2];
 
   circleRenderer = self->_circleRenderer;
 
@@ -783,8 +783,8 @@ void __87__EKEventDetailLocationDisambiguationContentViewController_searchBarTex
 
 - (void)_deselectCircle
 {
-  v3 = [(MKCircleRenderer *)self->_circleRenderer fillColor];
-  v4 = [v3 colorWithAlphaComponent:0.1];
+  fillColor = [(MKCircleRenderer *)self->_circleRenderer fillColor];
+  v4 = [fillColor colorWithAlphaComponent:0.1];
   [(MKCircleRenderer *)self->_circleRenderer setFillColor:v4];
 
   [(MKCircleRenderer *)self->_circleRenderer setStrokeColor:0];
@@ -793,13 +793,13 @@ void __87__EKEventDetailLocationDisambiguationContentViewController_searchBarTex
   [(MKCircleRenderer *)circleRenderer setNeedsDisplay];
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
   circleRenderer = self->_circleRenderer;
   if (!circleRenderer)
   {
-    v6 = a4;
-    v7 = [objc_alloc(EKWeakLinkClass()) initWithCircle:v6];
+    overlayCopy = overlay;
+    v7 = [objc_alloc(EKWeakLinkClass()) initWithCircle:overlayCopy];
 
     v8 = self->_circleRenderer;
     self->_circleRenderer = v7;
@@ -813,7 +813,7 @@ void __87__EKEventDetailLocationDisambiguationContentViewController_searchBarTex
   return circleRenderer;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   v4 = EventKitUIBundle();
   v5 = [v4 localizedStringForKey:@"Suggestions" value:&stru_1F4EF6790 table:0];
@@ -821,34 +821,34 @@ void __87__EKEventDetailLocationDisambiguationContentViewController_searchBarTex
   return v5;
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v10 = a3;
-  v6 = a4;
+  viewCopy = view;
+  headerViewCopy = headerView;
   if (EKUICatalyst())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [v10 backgroundColor];
-      v9 = [v7 contentView];
+      v7 = headerViewCopy;
+      backgroundColor = [viewCopy backgroundColor];
+      contentView = [v7 contentView];
 
-      [v9 setBackgroundColor:v8];
+      [contentView setBackgroundColor:backgroundColor];
     }
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (tableView_cellForRowAtIndexPath__onceToken != -1)
   {
     [EKEventDetailLocationDisambiguationContentViewController tableView:cellForRowAtIndexPath:];
   }
 
-  v8 = [v6 dequeueReusableCellWithIdentifier:@"MapItemCell"];
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"MapItemCell"];
   if (!v8)
   {
     v8 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:@"MapItemCell"];
@@ -857,8 +857,8 @@ void __87__EKEventDetailLocationDisambiguationContentViewController_searchBarTex
     [v8 setSelectedBackgroundView:v9];
   }
 
-  v10 = [v6 indexPathForSelectedRow];
-  if (v10 && (v11 = v10, [v6 indexPathForSelectedRow], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "row"), v14 = objc_msgSend(v7, "row"), v12, v11, v13 == v14))
+  indexPathForSelectedRow = [viewCopy indexPathForSelectedRow];
+  if (indexPathForSelectedRow && (v11 = indexPathForSelectedRow, [viewCopy indexPathForSelectedRow], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "row"), v14 = objc_msgSend(pathCopy, "row"), v12, v11, v13 == v14))
   {
     v15 = 3;
   }
@@ -869,73 +869,73 @@ void __87__EKEventDetailLocationDisambiguationContentViewController_searchBarTex
   }
 
   [v8 setAccessoryType:v15];
-  v16 = -[NSMutableArray objectAtIndexedSubscript:](self->_pois, "objectAtIndexedSubscript:", [v7 row]);
-  if ([v7 row])
+  v16 = -[NSMutableArray objectAtIndexedSubscript:](self->_pois, "objectAtIndexedSubscript:", [pathCopy row]);
+  if ([pathCopy row])
   {
-    v17 = [v16 title];
-    v18 = [v8 textLabel];
-    [v18 setText:v17];
+    title = [v16 title];
+    textLabel = [v8 textLabel];
+    [textLabel setText:title];
 
-    v19 = [v16 address];
-    v20 = [v8 detailTextLabel];
-    v21 = v20;
-    v22 = v19;
+    address = [v16 address];
+    detailTextLabel = [v8 detailTextLabel];
+    title2 = detailTextLabel;
+    v22 = address;
     goto LABEL_11;
   }
 
   if ([v16 isImprecise])
   {
-    v19 = [MEMORY[0x1E6993408] labelForLocation:v16];
-    if (v19)
+    address = [MEMORY[0x1E6993408] labelForLocation:v16];
+    if (address)
     {
-      v28 = [v8 textLabel];
-      [v28 setText:v19];
+      textLabel2 = [v8 textLabel];
+      [textLabel2 setText:address];
 
-      v21 = [v16 title];
-      v29 = [v8 detailTextLabel];
-      [v29 setText:v21];
+      title2 = [v16 title];
+      detailTextLabel2 = [v8 detailTextLabel];
+      [detailTextLabel2 setText:title2];
 
       goto LABEL_12;
     }
 
-    v32 = [v16 title];
-    v33 = [v8 textLabel];
-    [v33 setText:v32];
+    title3 = [v16 title];
+    textLabel3 = [v8 textLabel];
+    [textLabel3 setText:title3];
 
-    v20 = [v8 detailTextLabel];
-    v21 = v20;
+    detailTextLabel = [v8 detailTextLabel];
+    title2 = detailTextLabel;
     v22 = 0;
 LABEL_11:
-    [v20 setText:v22];
+    [detailTextLabel setText:v22];
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v30 = [v16 title];
-  v31 = [v8 textLabel];
-  [v31 setText:v30];
+  title4 = [v16 title];
+  textLabel4 = [v8 textLabel];
+  [textLabel4 setText:title4];
 
-  v19 = [v8 detailTextLabel];
-  [v19 setText:0];
+  address = [v8 detailTextLabel];
+  [address setText:0];
 LABEL_13:
 
-  v23 = [(NSCache *)self->_iconCache objectForKey:v7];
-  v24 = [v8 imageView];
-  [v24 setImage:v23];
+  v23 = [(NSCache *)self->_iconCache objectForKey:pathCopy];
+  imageView = [v8 imageView];
+  [imageView setImage:v23];
 
   if (!v23)
   {
     v25 = tableView_cellForRowAtIndexPath__MKMapItemClass;
-    v26 = [v16 mapKitHandle];
+    mapKitHandle = [v16 mapKitHandle];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __92__EKEventDetailLocationDisambiguationContentViewController_tableView_cellForRowAtIndexPath___block_invoke_2;
     v34[3] = &unk_1E8440D18;
-    v35 = v6;
-    v36 = v7;
-    v37 = self;
-    [v25 _mapItemFromHandle:v26 completionHandler:v34];
+    v35 = viewCopy;
+    v36 = pathCopy;
+    selfCopy = self;
+    [v25 _mapItemFromHandle:mapKitHandle completionHandler:v34];
   }
 
   return v8;
@@ -1026,20 +1026,20 @@ void __92__EKEventDetailLocationDisambiguationContentViewController_tableView_ce
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
-  [v6 endEditing:0];
+  pathCopy = path;
+  view = [(EKEventDetailLocationDisambiguationContentViewController *)self view];
+  [view endEditing:0];
 
-  v7 = [v5 row];
+  v7 = [pathCopy row];
 
   [(EKEventDetailLocationDisambiguationContentViewController *)self _selectRow:v7];
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v4 = [a3 cellForRowAtIndexPath:a4];
+  v4 = [view cellForRowAtIndexPath:path];
   [v4 setAccessoryType:0];
 }
 

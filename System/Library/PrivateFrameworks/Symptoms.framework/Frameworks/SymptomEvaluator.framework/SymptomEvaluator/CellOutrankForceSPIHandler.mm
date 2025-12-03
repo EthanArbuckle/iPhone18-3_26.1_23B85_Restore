@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (CellOutrankForceSPIHandler)init;
 - (void)deletePreferCellOverWiFiSettings;
-- (void)handlePreferCellOverWiFi:(BOOL)a3 until:(double)a4 updateDB:(BOOL)a5;
-- (void)setForcePreferCellOverWiFi:(BOOL)a3 autoDisableTimestamp:(double)a4;
+- (void)handlePreferCellOverWiFi:(BOOL)fi until:(double)until updateDB:(BOOL)b;
+- (void)setForcePreferCellOverWiFi:(BOOL)fi autoDisableTimestamp:(double)timestamp;
 @end
 
 @implementation CellOutrankForceSPIHandler
@@ -26,10 +26,10 @@
   }
 }
 
-- (void)handlePreferCellOverWiFi:(BOOL)a3 until:(double)a4 updateDB:(BOOL)a5
+- (void)handlePreferCellOverWiFi:(BOOL)fi until:(double)until updateDB:(BOOL)b
 {
-  v5 = a5;
-  LODWORD(v7) = a3;
+  bCopy = b;
+  LODWORD(v7) = fi;
   v32 = *MEMORY[0x277D85DE8];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v10 = v9;
@@ -47,11 +47,11 @@
     *buf = 67109376;
     v29 = v7;
     v30 = 2048;
-    v31 = a4 - v10;
+    v31 = until - v10;
     _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_DEBUG, "COSM handlePreferCellOverWiFi force %d delay %f", buf, 0x12u);
   }
 
-  if (v10 <= a4)
+  if (v10 <= until)
   {
     v7 = v7;
   }
@@ -61,7 +61,7 @@
     v7 = 0;
   }
 
-  if (v5)
+  if (bCopy)
   {
     v14 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.symptomsd.cellOutrankOverrides"];
     v15 = v14;
@@ -70,7 +70,7 @@
       if (v7)
       {
         [v14 setBool:1 forKey:@"overrideRequired"];
-        [v15 setDouble:@"overrideExpiryTime" forKey:a4];
+        [v15 setDouble:@"overrideExpiryTime" forKey:until];
       }
 
       else
@@ -81,7 +81,7 @@
     }
   }
 
-  v16 = 0.0;
+  untilCopy = 0.0;
   if (v7)
   {
     v17 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, self->_queue);
@@ -91,7 +91,7 @@
     v19 = self->_forcePreferCellOverWiFiTimer;
     if (v19)
     {
-      v20 = dispatch_time(0, ((a4 - v10) * 1000000000.0));
+      v20 = dispatch_time(0, ((until - v10) * 1000000000.0));
       dispatch_source_set_timer(v19, v20, 0xFFFFFFFFFFFFFFFFLL, 0);
       v21 = self->_forcePreferCellOverWiFiTimer;
       handler[0] = MEMORY[0x277D85DD0];
@@ -103,19 +103,19 @@
       dispatch_resume(self->_forcePreferCellOverWiFiTimer);
     }
 
-    v16 = a4;
+    untilCopy = until;
   }
 
   [(CellOutrankForceSPIHandler *)self setCellOutrankForcedViaSPI:v7];
-  [(CellOutrankForceSPIHandler *)self setCellOutrankForcedViaSPIUntil:v16];
+  [(CellOutrankForceSPIHandler *)self setCellOutrankForcedViaSPIUntil:untilCopy];
   v22 = outrankLogHandle;
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v23 = v22;
-    v24 = [(CellOutrankForceSPIHandler *)self cellOutrankForcedViaSPI];
+    cellOutrankForcedViaSPI = [(CellOutrankForceSPIHandler *)self cellOutrankForcedViaSPI];
     [(CellOutrankForceSPIHandler *)self cellOutrankForcedViaSPIUntil];
     *buf = 67109376;
-    v29 = v24;
+    v29 = cellOutrankForcedViaSPI;
     v30 = 2048;
     v31 = v25;
     _os_log_impl(&dword_23255B000, v23, OS_LOG_TYPE_DEBUG, "COSM handlePreferCellOverWiFi exit with force %d until %f", buf, 0x12u);
@@ -139,15 +139,15 @@ void __70__CellOutrankForceSPIHandler_handlePreferCellOverWiFi_until_updateDB___
   *(v2 + 8) = 0;
 }
 
-- (void)setForcePreferCellOverWiFi:(BOOL)a3 autoDisableTimestamp:(double)a4
+- (void)setForcePreferCellOverWiFi:(BOOL)fi autoDisableTimestamp:(double)timestamp
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__CellOutrankForceSPIHandler_setForcePreferCellOverWiFi_autoDisableTimestamp___block_invoke;
   block[3] = &unk_27898A6B8;
-  *&block[5] = a4;
-  v6 = a3;
+  *&block[5] = timestamp;
+  fiCopy = fi;
   block[4] = self;
   dispatch_async(queue, block);
 }
@@ -291,7 +291,7 @@ void __34__CellOutrankForceSPIHandler_init__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __44__CellOutrankForceSPIHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_instancePred_1 != -1)
   {
     dispatch_once(&sharedInstance_instancePred_1, block);

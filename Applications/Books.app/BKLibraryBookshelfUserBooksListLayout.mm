@@ -1,31 +1,31 @@
 @interface BKLibraryBookshelfUserBooksListLayout
 - (BKLibraryBookshelfLayout)bookshelfLayout;
-- (BKLibraryBookshelfUserBooksListLayout)initWithLayout:(id)a3;
+- (BKLibraryBookshelfUserBooksListLayout)initWithLayout:(id)layout;
 - (BOOL)isSupplementalContentPDFPicker;
-- (CGRect)_frameOfBookCellAtIndexPath:(id)a3;
-- (CGRect)_frameOfSectionHeaderAtIndexPath:(id)a3;
-- (double)prepareLayoutForBooksSection:(double)a3;
-- (id)layoutAttributesForBooksInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (int64_t)_rowAtPos:(double)a3 inSection:(id)a4;
-- (int64_t)_sectionAtPos:(double)a3;
+- (CGRect)_frameOfBookCellAtIndexPath:(id)path;
+- (CGRect)_frameOfSectionHeaderAtIndexPath:(id)path;
+- (double)prepareLayoutForBooksSection:(double)section;
+- (id)layoutAttributesForBooksInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)_rowAtPos:(double)pos inSection:(id)section;
+- (int64_t)_sectionAtPos:(double)pos;
 - (void)prepareLayoutForNoBooks;
 - (void)prepareLayoutForUserCollectionBooksSection;
 @end
 
 @implementation BKLibraryBookshelfUserBooksListLayout
 
-- (BKLibraryBookshelfUserBooksListLayout)initWithLayout:(id)a3
+- (BKLibraryBookshelfUserBooksListLayout)initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v8.receiver = self;
   v8.super_class = BKLibraryBookshelfUserBooksListLayout;
   v5 = [(BKLibraryBookshelfUserBooksListLayout *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_bookshelfLayout, v4);
+    objc_storeWeak(&v5->_bookshelfLayout, layoutCopy);
   }
 
   return v6;
@@ -33,13 +33,13 @@
 
 - (BOOL)isSupplementalContentPDFPicker
 {
-  v2 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-  v3 = [v2 delegate];
-  v4 = [v3 dataSourceAdaptor];
-  v5 = [v4 supplementaryDataSource];
-  v6 = [v5 supplementalContentPDFPicker];
+  bookshelfLayout = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+  delegate = [bookshelfLayout delegate];
+  dataSourceAdaptor = [delegate dataSourceAdaptor];
+  supplementaryDataSource = [dataSourceAdaptor supplementaryDataSource];
+  supplementalContentPDFPicker = [supplementaryDataSource supplementalContentPDFPicker];
 
-  return v6;
+  return supplementalContentPDFPicker;
 }
 
 - (void)prepareLayoutForNoBooks
@@ -55,57 +55,57 @@
   v9 = v8;
   [(BKLibraryBookshelfUserBooksListLayout *)self layoutAreaWidth];
   v11 = v10;
-  v12 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-  v13 = [v12 collectionView];
-  [v13 bounds];
+  bookshelfLayout = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+  collectionView = [bookshelfLayout collectionView];
+  [collectionView bounds];
   v15 = v14 - v9;
-  v16 = [(BKLibraryBookshelfUserBooksListLayout *)self noBooksAttr];
-  [v16 setFrame:{v7, v9, v11, v15}];
+  noBooksAttr = [(BKLibraryBookshelfUserBooksListLayout *)self noBooksAttr];
+  [noBooksAttr setFrame:{v7, v9, v11, v15}];
 
-  v17 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-  v18 = [v17 mainHeaderMetrics];
-  v19 = [(BKLibraryBookshelfUserBooksListLayout *)self noBooksAttr];
-  [v19 setMainHeaderMetrics:v18];
+  bookshelfLayout2 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+  mainHeaderMetrics = [bookshelfLayout2 mainHeaderMetrics];
+  noBooksAttr2 = [(BKLibraryBookshelfUserBooksListLayout *)self noBooksAttr];
+  [noBooksAttr2 setMainHeaderMetrics:mainHeaderMetrics];
 
-  v20 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-  v21 = [v20 metrics];
-  v22 = [v21 compactWidth];
-  v23 = [(BKLibraryBookshelfUserBooksListLayout *)self noBooksAttr];
-  [v23 setCompactLayout:v22];
+  bookshelfLayout3 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+  metrics = [bookshelfLayout3 metrics];
+  compactWidth = [metrics compactWidth];
+  noBooksAttr3 = [(BKLibraryBookshelfUserBooksListLayout *)self noBooksAttr];
+  [noBooksAttr3 setCompactLayout:compactWidth];
 
-  v24 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-  v25 = [v24 measuring];
-  v26 = [(BKLibraryBookshelfUserBooksListLayout *)self noBooksAttr];
-  [v25 adjustHeight:v26];
+  bookshelfLayout4 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+  measuring = [bookshelfLayout4 measuring];
+  noBooksAttr4 = [(BKLibraryBookshelfUserBooksListLayout *)self noBooksAttr];
+  [measuring adjustHeight:noBooksAttr4];
 
-  v27 = [(BKLibraryBookshelfUserBooksListLayout *)self noBooksAttr];
-  [v27 frame];
+  noBooksAttr5 = [(BKLibraryBookshelfUserBooksListLayout *)self noBooksAttr];
+  [noBooksAttr5 frame];
   [(BKLibraryBookshelfUserBooksListLayout *)self setTotalHeightOfBooksSection:CGRectGetMaxY(v29)];
 }
 
-- (double)prepareLayoutForBooksSection:(double)a3
+- (double)prepareLayoutForBooksSection:(double)section
 {
-  v5 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-  v6 = [v5 columnMetrics];
+  bookshelfLayout = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+  columnMetrics = [bookshelfLayout columnMetrics];
 
-  v7 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-  v8 = [v7 collectionView];
+  bookshelfLayout2 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+  collectionView = [bookshelfLayout2 collectionView];
 
-  [v8 bounds];
+  [collectionView bounds];
   v10 = v9;
-  [v8 safeAreaInsets];
+  [collectionView safeAreaInsets];
   v13 = v10 - (v11 + v12);
-  [v6 margins];
+  [columnMetrics margins];
   v15 = v14;
   [(BKLibraryBookshelfUserBooksListLayout *)self setLayoutWidth:v13];
   [(BKLibraryBookshelfUserBooksListLayout *)self setLayoutLeftMargin:0.0];
   [(BKLibraryBookshelfUserBooksListLayout *)self setLayoutAreaLeftMargin:v15 + 0.0];
   [(BKLibraryBookshelfUserBooksListLayout *)self layoutWidth];
   v17 = v16;
-  [v6 margins];
+  [columnMetrics margins];
   [(BKLibraryBookshelfUserBooksListLayout *)self setLayoutAreaWidth:v17 + v18 * -2.0];
-  [(BKLibraryBookshelfUserBooksListLayout *)self setBooksAreaTop:a3];
-  [(BKLibraryBookshelfUserBooksListLayout *)self setTotalHeightOfBooksSection:a3];
+  [(BKLibraryBookshelfUserBooksListLayout *)self setBooksAreaTop:section];
+  [(BKLibraryBookshelfUserBooksListLayout *)self setTotalHeightOfBooksSection:section];
   [(BKLibraryBookshelfUserBooksListLayout *)self prepareLayoutForUserCollectionBooksSection];
   if ([(BKLibraryBookshelfUserBooksListLayout *)self hasSomeBooks])
   {
@@ -125,15 +125,15 @@
 
 - (void)prepareLayoutForUserCollectionBooksSection
 {
-  v3 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-  v4 = [v3 cellMetrics];
+  bookshelfLayout = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+  cellMetrics = [bookshelfLayout cellMetrics];
   v5 = BUProtocolCast();
 
-  v6 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-  v7 = [v6 bookHeaderMetrics];
+  bookshelfLayout2 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+  bookHeaderMetrics = [bookshelfLayout2 bookHeaderMetrics];
 
-  v8 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-  v9 = [v8 collectionView];
+  bookshelfLayout3 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+  collectionView = [bookshelfLayout3 collectionView];
 
   if ([(BKLibraryBookshelfUserBooksListLayout *)self isSupplementalContentPDFPicker])
   {
@@ -146,17 +146,17 @@
   }
 
   v11 = v10;
-  v12 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-  if ([v12 collectionType] == 1)
+  bookshelfLayout4 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+  if ([bookshelfLayout4 collectionType] == 1)
   {
   }
 
   else
   {
-    v13 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-    v14 = [v13 collectionType];
+    bookshelfLayout5 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+    collectionType = [bookshelfLayout5 collectionType];
 
-    if (v14 != 3)
+    if (collectionType != 3)
     {
       goto LABEL_18;
     }
@@ -203,36 +203,36 @@ LABEL_17:
 LABEL_18:
   [(BKLibraryBookshelfUserBooksListLayout *)self setHasSomeBooks:0, v36];
   [(BKLibraryBookshelfUserBooksListLayout *)self setTotalNumBooks:0];
-  v20 = [v9 numberOfSections];
+  numberOfSections = [collectionView numberOfSections];
   v21 = +[NSMutableArray array];
   [(BKLibraryBookshelfUserBooksListLayout *)self setSectionInfo:v21];
 
   [(BKLibraryBookshelfUserBooksListLayout *)self booksAreaTop];
   v23 = v22;
-  if (v20 >= 1)
+  if (numberOfSections >= 1)
   {
-    for (j = 0; j != v20; ++j)
+    for (j = 0; j != numberOfSections; ++j)
     {
       v25 = objc_alloc_init(BKLibraryListSectionInfo);
-      v26 = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
-      [v26 addObject:v25];
+      sectionInfo = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
+      [sectionInfo addObject:v25];
 
       [(BKLibraryListSectionInfo *)v25 setVertOffset:v23];
-      -[BKLibraryListSectionInfo setNumBooks:](v25, "setNumBooks:", [v9 numberOfItemsInSection:j]);
+      -[BKLibraryListSectionInfo setNumBooks:](v25, "setNumBooks:", [collectionView numberOfItemsInSection:j]);
       [(BKLibraryListSectionInfo *)v25 setNumRows:[(BKLibraryListSectionInfo *)v25 numBooks]];
       [(BKLibraryListSectionInfo *)v25 setRowHeight:v11];
       v27 = 0.0;
-      if (v20 >= 2)
+      if (numberOfSections >= 2)
       {
-        [v7 sectionHeaderHeight];
+        [bookHeaderMetrics sectionHeaderHeight];
       }
 
       [(BKLibraryListSectionInfo *)v25 setHeaderHeight:v27];
-      v28 = [(BKLibraryListSectionInfo *)v25 numRows];
+      numRows = [(BKLibraryListSectionInfo *)v25 numRows];
       [(BKLibraryListSectionInfo *)v25 rowHeight];
       v30 = v29;
       [(BKLibraryListSectionInfo *)v25 headerHeight];
-      [(BKLibraryListSectionInfo *)v25 setHeight:v31 + v28 * v30];
+      [(BKLibraryListSectionInfo *)v25 setHeight:v31 + numRows * v30];
       [(BKLibraryListSectionInfo *)v25 height];
       v33 = v32;
       [(BKLibraryBookshelfUserBooksListLayout *)self setTotalNumBooks:[(BKLibraryListSectionInfo *)v25 numBooks]+ [(BKLibraryBookshelfUserBooksListLayout *)self totalNumBooks]];
@@ -242,17 +242,17 @@ LABEL_18:
     }
   }
 
-  [v7 bottomMargin];
+  [bookHeaderMetrics bottomMargin];
   [(BKLibraryBookshelfUserBooksListLayout *)self setTotalHeightOfBooksSection:v23 + v35];
 }
 
-- (CGRect)_frameOfSectionHeaderAtIndexPath:(id)a3
+- (CGRect)_frameOfSectionHeaderAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
-  v6 = [v4 section];
+  pathCopy = path;
+  sectionInfo = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
+  section = [pathCopy section];
 
-  v7 = [v5 objectAtIndexedSubscript:v6];
+  v7 = [sectionInfo objectAtIndexedSubscript:section];
 
   [v7 vertOffset];
   v9 = v8;
@@ -272,14 +272,14 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)_frameOfBookCellAtIndexPath:(id)a3
+- (CGRect)_frameOfBookCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
-  v7 = [v6 count];
+  pathCopy = path;
+  section = [pathCopy section];
+  sectionInfo = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
+  v7 = [sectionInfo count];
 
-  if (v5 >= v7)
+  if (section >= v7)
   {
     x = CGRectZero.origin.x;
     y = CGRectZero.origin.y;
@@ -289,16 +289,16 @@ LABEL_18:
 
   else
   {
-    v8 = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
-    v9 = [v8 objectAtIndex:{objc_msgSend(v4, "section")}];
+    sectionInfo2 = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
+    v9 = [sectionInfo2 objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
-    v10 = [v4 item];
+    item = [pathCopy item];
     [v9 vertOffset];
     v12 = v11;
     [v9 headerHeight];
     v14 = v12 + v13;
     [v9 rowHeight];
-    v16 = v14 + v10 * v15;
+    v16 = v14 + item * v15;
     [(BKLibraryBookshelfUserBooksListLayout *)self layoutLeftMargin];
     x = v17;
     y = round(v16);
@@ -319,18 +319,18 @@ LABEL_18:
   return result;
 }
 
-- (int64_t)_sectionAtPos:(double)a3
+- (int64_t)_sectionAtPos:(double)pos
 {
-  v5 = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
-  if ([v5 count])
+  sectionInfo = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
+  if ([sectionInfo count])
   {
-    v6 = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
-    v7 = [v6 objectAtIndexedSubscript:0];
+    sectionInfo2 = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
+    v7 = [sectionInfo2 objectAtIndexedSubscript:0];
     [v7 vertOffset];
     v9 = v8;
 
     v10 = 0;
-    if (v9 > a3)
+    if (v9 > pos)
     {
       return v10;
     }
@@ -344,8 +344,8 @@ LABEL_18:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
-  v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  sectionInfo3 = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
+  v12 = [sectionInfo3 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
     v13 = v12;
@@ -359,17 +359,17 @@ LABEL_7:
     {
       if (*v24 != v15)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(sectionInfo3);
       }
 
       v17 = *(*(&v23 + 1) + 8 * v16);
       [v17 vertOffset];
-      if (v18 <= a3)
+      if (v18 <= pos)
       {
         [v17 vertOffset];
         v20 = v19;
         [v17 height];
-        if (v20 + v21 > a3)
+        if (v20 + v21 > pos)
         {
           break;
         }
@@ -378,7 +378,7 @@ LABEL_7:
       ++v10;
       if (v13 == ++v16)
       {
-        v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v13 = [sectionInfo3 countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v13)
         {
           goto LABEL_7;
@@ -393,44 +393,44 @@ LABEL_7:
   {
 LABEL_14:
 
-    v11 = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
-    v10 = [v11 count] - 1;
+    sectionInfo3 = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
+    v10 = [sectionInfo3 count] - 1;
   }
 
   return v10;
 }
 
-- (int64_t)_rowAtPos:(double)a3 inSection:(id)a4
+- (int64_t)_rowAtPos:(double)pos inSection:(id)section
 {
-  v5 = a4;
-  [v5 vertOffset];
+  sectionCopy = section;
+  [sectionCopy vertOffset];
   v7 = v6;
-  [v5 headerHeight];
-  v9 = a3 - (v7 + v8);
-  [v5 rowHeight];
+  [sectionCopy headerHeight];
+  v9 = pos - (v7 + v8);
+  [sectionCopy rowHeight];
   v11 = vcvtmd_s64_f64(v9 / v10);
   v12 = (v11 & ~(v11 >> 63));
-  if (v12 >= [v5 numRows])
+  if (v12 >= [sectionCopy numRows])
   {
-    v12 = [v5 numRows] - 1;
+    v12 = [sectionCopy numRows] - 1;
   }
 
   return v12;
 }
 
-- (id)layoutAttributesForBooksInRect:(CGRect)a3
+- (id)layoutAttributesForBooksInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-  v9 = [v8 collectionView];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  bookshelfLayout = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+  collectionView = [bookshelfLayout collectionView];
 
   v10 = +[NSMutableArray array];
   if ([(BKLibraryBookshelfUserBooksListLayout *)self hasSomeBooks])
   {
-    v28 = [v9 numberOfSections];
+    numberOfSections = [collectionView numberOfSections];
     v30.origin.x = x;
     v30.origin.y = y;
     v30.size.width = width;
@@ -448,15 +448,15 @@ LABEL_14:
       {
         do
         {
-          if (v28 >= 2)
+          if (numberOfSections >= 2)
           {
             v14 = [NSIndexPath indexPathForItem:0 inSection:v11];
             v15 = [(BKLibraryBookshelfUserBooksListLayout *)self layoutAttributesForSupplementaryViewOfKind:off_100ACEF50 atIndexPath:v14];
             [v10 addObject:v15];
           }
 
-          v16 = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
-          v17 = [v16 objectAtIndexedSubscript:v11];
+          sectionInfo = [(BKLibraryBookshelfUserBooksListLayout *)self sectionInfo];
+          v17 = [sectionInfo objectAtIndexedSubscript:v11];
 
           v32.origin.x = x;
           v32.origin.y = y;
@@ -502,69 +502,69 @@ LABEL_14:
 
   else
   {
-    v24 = [(BKLibraryBookshelfUserBooksListLayout *)self noBooksAttr];
+    noBooksAttr = [(BKLibraryBookshelfUserBooksListLayout *)self noBooksAttr];
 
-    if (v24)
+    if (noBooksAttr)
     {
-      v25 = [(BKLibraryBookshelfUserBooksListLayout *)self noBooksAttr];
-      [v10 addObject:v25];
+      noBooksAttr2 = [(BKLibraryBookshelfUserBooksListLayout *)self noBooksAttr];
+      [v10 addObject:noBooksAttr2];
     }
   }
 
   return v10;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [(BKLibraryBookshelfUserBooksListLayout *)self totalNumBooks]- 1;
-  v6 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-  v7 = [v6 cellMetrics];
+  bookshelfLayout = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+  cellMetrics = [bookshelfLayout cellMetrics];
   v8 = BUProtocolCast();
 
-  v9 = [BKLibraryLayoutAttributes layoutAttributesForCellWithIndexPath:v4];
-  [(BKLibraryBookshelfUserBooksListLayout *)self _frameOfBookCellAtIndexPath:v4];
+  v9 = [BKLibraryLayoutAttributes layoutAttributesForCellWithIndexPath:pathCopy];
+  [(BKLibraryBookshelfUserBooksListLayout *)self _frameOfBookCellAtIndexPath:pathCopy];
   [v9 setFrame:?];
   [v9 setCellMetrics:v8];
-  v10 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-  v11 = [v10 columnMetrics];
-  [v9 setColumnMetrics:v11];
+  bookshelfLayout2 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+  columnMetrics = [bookshelfLayout2 columnMetrics];
+  [v9 setColumnMetrics:columnMetrics];
 
-  v12 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-  [v9 setEditMode:{objc_msgSend(v12, "editMode")}];
+  bookshelfLayout3 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+  [v9 setEditMode:{objc_msgSend(bookshelfLayout3, "editMode")}];
 
-  [v9 setFirstItem:{objc_msgSend(v4, "item") == 0}];
-  v13 = [v4 item];
+  [v9 setFirstItem:{objc_msgSend(pathCopy, "item") == 0}];
+  item = [pathCopy item];
 
-  [v9 setLastItem:v13 == v5];
-  v14 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-  [v9 setEditable:{objc_msgSend(v14, "reorderableCollection")}];
+  [v9 setLastItem:item == v5];
+  bookshelfLayout4 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+  [v9 setEditable:{objc_msgSend(bookshelfLayout4, "reorderableCollection")}];
 
   return v9;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-  v9 = [v8 bookHeaderMetrics];
+  kindCopy = kind;
+  pathCopy = path;
+  bookshelfLayout = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+  bookHeaderMetrics = [bookshelfLayout bookHeaderMetrics];
 
-  if ([v6 isEqualToString:off_100ACEF50])
+  if ([kindCopy isEqualToString:off_100ACEF50])
   {
-    v10 = [BKLibraryLayoutAttributes layoutAttributesForSupplementaryViewOfKind:v6 withIndexPath:v7];
-    v11 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-    [v10 setRtlLayout:{objc_msgSend(v11, "rtlLayout")}];
+    v10 = [BKLibraryLayoutAttributes layoutAttributesForSupplementaryViewOfKind:kindCopy withIndexPath:pathCopy];
+    bookshelfLayout2 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+    [v10 setRtlLayout:{objc_msgSend(bookshelfLayout2, "rtlLayout")}];
 
-    [(BKLibraryBookshelfUserBooksListLayout *)self _frameOfSectionHeaderAtIndexPath:v7];
+    [(BKLibraryBookshelfUserBooksListLayout *)self _frameOfSectionHeaderAtIndexPath:pathCopy];
     [v10 setFrame:?];
-    v12 = [v9 headerFontAttributes];
-    v13 = [v12 attributes];
-    [v10 setFontAttrs:v13];
+    headerFontAttributes = [bookHeaderMetrics headerFontAttributes];
+    attributes = [headerFontAttributes attributes];
+    [v10 setFontAttrs:attributes];
 
-    v14 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
-    v15 = [v14 columnMetrics];
-    [v10 setColumnMetrics:v15];
+    bookshelfLayout3 = [(BKLibraryBookshelfUserBooksListLayout *)self bookshelfLayout];
+    columnMetrics = [bookshelfLayout3 columnMetrics];
+    [v10 setColumnMetrics:columnMetrics];
 
     [v10 setMainHeaderMetrics:0];
     [v10 setUseAllCaps:1];

@@ -1,9 +1,9 @@
 @interface ManagedAppManager
-- (BOOL)isManagedApp:(id)a3 auditToken:(id *)a4;
+- (BOOL)isManagedApp:(id)app auditToken:(id *)token;
 - (ManagedAppManager)init;
 - (void)dealloc;
 - (void)listenForChanges;
-- (void)updateManagedApps:(id)a3;
+- (void)updateManagedApps:(id)apps;
 @end
 
 @implementation ManagedAppManager
@@ -28,29 +28,29 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = +[NSNotificationCenter defaultCenter];
-  [(NSNotificationCenter *)v2 removeObserver:v5];
+  [(NSNotificationCenter *)v2 removeObserver:selfCopy];
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = ManagedAppManager;
   [(ManagedAppManager *)&v3 dealloc];
 }
 
-- (BOOL)isManagedApp:(id)a3 auditToken:(id *)a4
+- (BOOL)isManagedApp:(id)app auditToken:(id *)token
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14[1] = a4;
+  objc_storeStrong(location, app);
+  v14[1] = token;
   v9 = _NSConcreteStackBlock;
   v10 = -1073741824;
   v11 = 0;
   v12 = sub_1000132C0;
   v13 = &unk_100025070;
-  v14[0] = v16;
+  v14[0] = selfCopy;
   v18 = &unk_100028E98;
   v17 = 0;
   objc_storeStrong(&v17, &v9);
@@ -60,10 +60,10 @@
   }
 
   objc_storeStrong(&v17, 0);
-  v7 = v16;
+  v7 = selfCopy;
   objc_sync_enter(v7);
-  v5 = [(ManagedAppManager *)v16 managedApps];
-  v6 = [(NSArray *)v5 containsObject:location[0]];
+  managedApps = [(ManagedAppManager *)selfCopy managedApps];
+  v6 = [(NSArray *)managedApps containsObject:location[0]];
 
   objc_sync_exit(v7);
   objc_storeStrong(v14, 0);
@@ -71,12 +71,12 @@
   return v6;
 }
 
-- (void)updateManagedApps:(id)a3
+- (void)updateManagedApps:(id)apps
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, apps);
   v15 = sub_10000E120();
   v14 = 1;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -92,24 +92,24 @@
   v11 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(ManagedAppManager *)v17 managedApps];
-    sub_10000586C(v19, v7);
+    managedApps = [(ManagedAppManager *)selfCopy managedApps];
+    sub_10000586C(v19, managedApps);
     _os_log_debug_impl(&_mh_execute_header, v12, v11, "Old Managed App list: %{private}@", v19, 0xCu);
   }
 
   objc_storeStrong(&v12, 0);
-  obj = v17;
+  obj = selfCopy;
   objc_sync_enter(obj);
-  v5 = [sub_1000136C0() sharedConnection];
-  v4 = [v5 managedAppBundleIDs];
-  [(ManagedAppManager *)v17 setManagedApps:?];
+  sharedConnection = [sub_1000136C0() sharedConnection];
+  managedAppBundleIDs = [sharedConnection managedAppBundleIDs];
+  [(ManagedAppManager *)selfCopy setManagedApps:?];
 
   objc_sync_exit(obj);
   v10 = sub_10000E120();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v3 = [(ManagedAppManager *)v17 managedApps];
-    sub_10000586C(v18, v3);
+    managedApps2 = [(ManagedAppManager *)selfCopy managedApps];
+    sub_10000586C(v18, managedApps2);
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "New Managed App list: %{private}@", v18, 0xCu);
   }
 
@@ -119,13 +119,13 @@
 
 - (void)listenForChanges
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v6[0] = sub_1000138C4();
   v5 = +[NSNotificationCenter defaultCenter];
-  v2 = v7;
+  v2 = selfCopy;
   v3 = v6[0];
-  v4 = [sub_1000136C0() sharedConnection];
+  sharedConnection = [sub_1000136C0() sharedConnection];
   [(NSNotificationCenter *)v5 addObserver:v2 selector:"updateManagedApps:" name:v3 object:?];
 
   objc_storeStrong(v6, 0);

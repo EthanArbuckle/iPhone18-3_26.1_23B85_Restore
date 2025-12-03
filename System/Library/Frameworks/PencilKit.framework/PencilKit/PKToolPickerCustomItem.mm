@@ -1,23 +1,23 @@
 @interface PKToolPickerCustomItem
 - (BOOL)allowsColorSelection;
-- (PKToolPickerCustomItem)initWithConfiguration:(id)a3;
+- (PKToolPickerCustomItem)initWithConfiguration:(id)configuration;
 - (id)_dictionaryRepresentation;
-- (id)_toolCopyWithColor:(id)a3;
-- (id)_toolCopyWithWidth:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAllowsColorSelection:(BOOL)a3;
+- (id)_toolCopyWithColor:(id)color;
+- (id)_toolCopyWithWidth:(double)width;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAllowsColorSelection:(BOOL)selection;
 @end
 
 @implementation PKToolPickerCustomItem
 
-- (PKToolPickerCustomItem)initWithConfiguration:(id)a3
+- (PKToolPickerCustomItem)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 defaultColor];
-  [v4 defaultWidth];
+  configurationCopy = configuration;
+  defaultColor = [configurationCopy defaultColor];
+  [configurationCopy defaultWidth];
   v7 = v6;
-  v8 = v4;
-  v9 = v5;
+  v8 = configurationCopy;
+  v9 = defaultColor;
   if (self)
   {
     v10 = [v8 copy];
@@ -39,8 +39,8 @@
     }
 
     v14 = [PKCustomTool alloc];
-    v15 = [v10 identifier];
-    v16 = [(PKCustomTool *)v14 initWithCustomIdentifier:v15 configuration:v11 color:v13 weight:v7];
+    identifier = [v10 identifier];
+    v16 = [(PKCustomTool *)v14 initWithCustomIdentifier:identifier configuration:v11 color:v13 weight:v7];
 
     v27.receiver = self;
     v27.super_class = PKToolPickerCustomItem;
@@ -49,9 +49,9 @@
     if (v17)
     {
       objc_storeStrong(&v17->_configuration, v10);
-      v19 = [p_isa[3] imageProvider];
+      imageProvider = [p_isa[3] imageProvider];
 
-      if (v19)
+      if (imageProvider)
       {
         objc_initWeak(&location, p_isa);
         v24 = MEMORY[0x1E69E9820];
@@ -108,33 +108,33 @@ id __60__PKToolPickerCustomItem_initWithConfiguration_color_width___block_invoke
 
 - (BOOL)allowsColorSelection
 {
-  v2 = [(PKToolPickerItem *)self _tool];
-  v3 = [v2 _configuration];
-  v4 = [v3 supportsColor];
+  _tool = [(PKToolPickerItem *)self _tool];
+  _configuration = [_tool _configuration];
+  supportsColor = [_configuration supportsColor];
 
-  return v4;
+  return supportsColor;
 }
 
-- (void)setAllowsColorSelection:(BOOL)a3
+- (void)setAllowsColorSelection:(BOOL)selection
 {
-  v3 = a3;
-  if ([(PKToolPickerCustomItem *)self allowsColorSelection]!= a3)
+  selectionCopy = selection;
+  if ([(PKToolPickerCustomItem *)self allowsColorSelection]!= selection)
   {
-    v5 = [(PKToolPickerItem *)self _tool];
-    v6 = [v5 _configuration];
-    v15 = [v6 copy];
+    _tool = [(PKToolPickerItem *)self _tool];
+    _configuration = [_tool _configuration];
+    v15 = [_configuration copy];
 
-    v7 = [v15 defaultColor];
-    [v15 setSupportsColor:v3 andOpacity:v3 defaultColor:v7];
+    defaultColor = [v15 defaultColor];
+    [v15 setSupportsColor:selectionCopy andOpacity:selectionCopy defaultColor:defaultColor];
 
     if ([v15 supportsColor])
     {
-      v8 = [(PKToolPickerItem *)self color];
+      color = [(PKToolPickerItem *)self color];
     }
 
     else
     {
-      v8 = 0;
+      color = 0;
     }
 
     v9 = 0.0;
@@ -145,9 +145,9 @@ id __60__PKToolPickerCustomItem_initWithConfiguration_color_width___block_invoke
     }
 
     v11 = [PKCustomTool alloc];
-    v12 = [(PKToolPickerCustomItem *)self configuration];
-    v13 = [v12 identifier];
-    v14 = [(PKCustomTool *)v11 initWithCustomIdentifier:v13 configuration:v15 color:v8 weight:v9];
+    configuration = [(PKToolPickerCustomItem *)self configuration];
+    identifier = [configuration identifier];
+    v14 = [(PKCustomTool *)v11 initWithCustomIdentifier:identifier configuration:v15 color:color weight:v9];
 
     [(PKToolPickerItem *)self _updateTool:v14 shouldCallObserver:1];
   }
@@ -155,22 +155,22 @@ id __60__PKToolPickerCustomItem_initWithConfiguration_color_width___block_invoke
 
 - (id)_dictionaryRepresentation
 {
-  v3 = [(PKToolPickerItem *)self _tool];
-  v4 = [v3 ink];
-  v5 = [v4 dictionaryRepresentation];
-  v6 = [v5 mutableCopy];
+  _tool = [(PKToolPickerItem *)self _tool];
+  v4 = [_tool ink];
+  dictionaryRepresentation = [v4 dictionaryRepresentation];
+  v6 = [dictionaryRepresentation mutableCopy];
 
-  v7 = [(PKToolPickerItem *)self identifier];
-  [v6 setObject:v7 forKeyedSubscript:@"identifier"];
+  identifier = [(PKToolPickerItem *)self identifier];
+  [v6 setObject:identifier forKeyedSubscript:@"identifier"];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(PKToolPickerItem *)self _tool];
-  v6 = [v4 initWithTool:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  _tool = [(PKToolPickerItem *)self _tool];
+  v6 = [v4 initWithTool:_tool];
 
   if (v6)
   {
@@ -182,48 +182,48 @@ id __60__PKToolPickerCustomItem_initWithConfiguration_color_width___block_invoke
   return v6;
 }
 
-- (id)_toolCopyWithColor:(id)a3
+- (id)_toolCopyWithColor:(id)color
 {
-  v4 = a3;
-  v5 = [(PKToolPickerItem *)self _tool];
-  v6 = [v5 _configuration];
+  colorCopy = color;
+  _tool = [(PKToolPickerItem *)self _tool];
+  _configuration = [_tool _configuration];
   v7 = 0.0;
-  if ([v6 supportsStrokeWeight])
+  if ([_configuration supportsStrokeWeight])
   {
     [(PKToolPickerItem *)self width];
     v7 = v8;
   }
 
   v9 = [PKCustomTool alloc];
-  v10 = [(PKToolPickerCustomItem *)self configuration];
-  v11 = [v10 identifier];
-  v12 = [(PKToolPickerItem *)self _tool];
-  v13 = [v12 _configuration];
-  v14 = [(PKCustomTool *)v9 initWithCustomIdentifier:v11 configuration:v13 color:v4 weight:v7];
+  configuration = [(PKToolPickerCustomItem *)self configuration];
+  identifier = [configuration identifier];
+  _tool2 = [(PKToolPickerItem *)self _tool];
+  _configuration2 = [_tool2 _configuration];
+  v14 = [(PKCustomTool *)v9 initWithCustomIdentifier:identifier configuration:_configuration2 color:colorCopy weight:v7];
 
   return v14;
 }
 
-- (id)_toolCopyWithWidth:(double)a3
+- (id)_toolCopyWithWidth:(double)width
 {
-  v5 = [(PKToolPickerItem *)self _tool];
-  v6 = [v5 _configuration];
-  if ([v6 supportsColor])
+  _tool = [(PKToolPickerItem *)self _tool];
+  _configuration = [_tool _configuration];
+  if ([_configuration supportsColor])
   {
-    v7 = [(PKToolPickerItem *)self color];
+    color = [(PKToolPickerItem *)self color];
   }
 
   else
   {
-    v7 = 0;
+    color = 0;
   }
 
   v8 = [PKCustomTool alloc];
-  v9 = [(PKToolPickerCustomItem *)self configuration];
-  v10 = [v9 identifier];
-  v11 = [(PKToolPickerItem *)self _tool];
-  v12 = [v11 _configuration];
-  v13 = [(PKCustomTool *)v8 initWithCustomIdentifier:v10 configuration:v12 color:v7 weight:a3];
+  configuration = [(PKToolPickerCustomItem *)self configuration];
+  identifier = [configuration identifier];
+  _tool2 = [(PKToolPickerItem *)self _tool];
+  _configuration2 = [_tool2 _configuration];
+  v13 = [(PKCustomTool *)v8 initWithCustomIdentifier:identifier configuration:_configuration2 color:color weight:width];
 
   return v13;
 }

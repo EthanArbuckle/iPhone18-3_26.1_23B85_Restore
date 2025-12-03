@@ -1,6 +1,6 @@
 @interface HearingMLHelperServiceInstance
 - (void)run;
-- (void)trainWithDetectorID:(id)a3 hallucinatorPath:(id)a4 pretrainedWeightsPath:(id)a5 resultHandler:(id)a6;
+- (void)trainWithDetectorID:(id)d hallucinatorPath:(id)path pretrainedWeightsPath:(id)weightsPath resultHandler:(id)handler;
 @end
 
 @implementation HearingMLHelperServiceInstance
@@ -17,11 +17,11 @@
   v4 = objc_alloc_init(HearingMLHelperServiceXPCServer);
   [(HearingMLHelperServiceInstance *)self setXpcServer:v4];
 
-  v5 = [(HearingMLHelperServiceInstance *)self xpcServer];
-  [v5 setDelegate:self];
+  xpcServer = [(HearingMLHelperServiceInstance *)self xpcServer];
+  [xpcServer setDelegate:self];
 
-  v6 = [(HearingMLHelperServiceInstance *)self xpcServer];
-  [v6 run];
+  xpcServer2 = [(HearingMLHelperServiceInstance *)self xpcServer];
+  [xpcServer2 run];
 
   v7 = AXLogUltronKShot();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -31,21 +31,21 @@
   }
 }
 
-- (void)trainWithDetectorID:(id)a3 hallucinatorPath:(id)a4 pretrainedWeightsPath:(id)a5 resultHandler:(id)a6
+- (void)trainWithDetectorID:(id)d hallucinatorPath:(id)path pretrainedWeightsPath:(id)weightsPath resultHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  pathCopy = path;
+  weightsPathCopy = weightsPath;
+  handlerCopy = handler;
   v14 = AXLogUltronKShot();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v34 = v10;
+    v34 = dCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Training Detector with ID: %@ started", buf, 0xCu);
   }
 
-  if (!v11)
+  if (!pathCopy)
   {
     v28 = AXLogUltronKShot();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -59,7 +59,7 @@
 
   v15 = AXLogUltronKShot();
   v16 = v15;
-  if (!v12)
+  if (!weightsPathCopy)
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -68,25 +68,25 @@
 
     [NSError ax_errorWithDomain:@"com.apple.accessibility.ultron" description:@"Invalid pretrainedWeightsPath: %@", 0];
     v29 = LABEL_21:;
-    v13[2](v13, 0, v29);
+    handlerCopy[2](handlerCopy, 0, v29);
 
     goto LABEL_22;
   }
 
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v11 path];
+    path = [pathCopy path];
     *buf = 138412290;
-    v34 = v17;
+    v34 = path;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Using hPath: %@", buf, 0xCu);
   }
 
   v18 = AXLogUltronKShot();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v12 path];
+    path2 = [weightsPathCopy path];
     *buf = 138412290;
-    v34 = v19;
+    v34 = path2;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Using pretrained weights at path: %@", buf, 0xCu);
   }
 
@@ -99,20 +99,20 @@
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v34 = v10;
+    v34 = dCopy;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Invoking train method for detector ID: %@", buf, 0xCu);
   }
 
   v24 = self->_modelCreationManager;
   v32 = 0;
-  v25 = [(AXSDKShotModelCreationManager *)v24 trainWithDetectorID:v10 hallucinatorPath:v11 pretrainedWeightsPath:v12 error:&v32];
+  v25 = [(AXSDKShotModelCreationManager *)v24 trainWithDetectorID:dCopy hallucinatorPath:pathCopy pretrainedWeightsPath:weightsPathCopy error:&v32];
   v26 = v32;
   if (v26)
   {
     v27 = AXLogUltronKShot();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      sub_100001FF0(v10, v26, v27);
+      sub_100001FF0(dCopy, v26, v27);
     }
   }
 
@@ -124,22 +124,22 @@
     {
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [v25 path];
+        path3 = [v25 path];
         *buf = 138412546;
-        v34 = v10;
+        v34 = dCopy;
         v35 = 2112;
-        v36 = v31;
+        v36 = path3;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Training completed successfully for detector ID: %@, model saved at: %@", buf, 0x16u);
       }
     }
 
     else if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      sub_100002078(v10, v27);
+      sub_100002078(dCopy, v27);
     }
   }
 
-  (v13)[2](v13, v25, v26);
+  (handlerCopy)[2](handlerCopy, v25, v26);
   objc_autoreleasePoolPop(v20);
 LABEL_22:
 }

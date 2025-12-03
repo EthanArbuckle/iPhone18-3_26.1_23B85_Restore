@@ -1,47 +1,47 @@
 @interface PLAppDeletion
-+ (BOOL)changeClassProtection:(int)a3;
-+ (BOOL)changePermissionForDirectory:(id)a3 withProtectionLevel:(id)a4;
-+ (BOOL)changePermissionsForFilesInDirectory:(id)a3 withProtectionLevel:(id)a4;
-+ (BOOL)deferXPCActivity:(id)a3;
-+ (BOOL)finishXPCActivity:(id)a3;
-+ (BOOL)setFileProtectionForPath:(id)a3 withLevel:(id)a4;
++ (BOOL)changeClassProtection:(int)protection;
++ (BOOL)changePermissionForDirectory:(id)directory withProtectionLevel:(id)level;
++ (BOOL)changePermissionsForFilesInDirectory:(id)directory withProtectionLevel:(id)level;
++ (BOOL)deferXPCActivity:(id)activity;
++ (BOOL)finishXPCActivity:(id)activity;
++ (BOOL)setFileProtectionForPath:(id)path withLevel:(id)level;
 + (id)appDeletionCriteria;
 + (id)constructUpdateQueries;
 + (id)filePermissionCriteria;
-+ (id)getProtectionLevel:(int)a3;
-+ (id)pluginsForBundleID:(id)a3;
-+ (id)processNameForBundleID:(id)a3;
-+ (void)addFilesToList:(id)a3;
++ (id)getProtectionLevel:(int)level;
++ (id)pluginsForBundleID:(id)d;
++ (id)processNameForBundleID:(id)d;
++ (void)addFilesToList:(id)list;
 + (void)constructAppReferenceMapping;
 + (void)constructAppReferenceTableList;
 + (void)constructFileNames;
 + (void)constructUpdateQueries;
 + (void)deleteAppReferenceMapping;
-+ (void)deleteAppReferences:(id)a3;
-+ (void)deleteAppReferencesFromCompressedFiles:(id)a3;
++ (void)deleteAppReferences:(id)references;
++ (void)deleteAppReferencesFromCompressedFiles:(id)files;
 + (void)deleteAppReferencesInCurrentPowerlog;
 + (void)filePermissionCriteria;
-+ (void)handleAppDeletionXPCActivityCallback:(id)a3;
-+ (void)handleFilePermissionXPCActivityCallback:(id)a3;
++ (void)handleAppDeletionXPCActivityCallback:(id)callback;
++ (void)handleFilePermissionXPCActivityCallback:(id)callback;
 + (void)iterateAgents;
 + (void)iterateMetrics;
 + (void)iterateServices;
-+ (void)maskAssociatedPlugins:(id)a3 withMaskedDictionary:(id)a4;
-+ (void)maskProcessName:(id)a3 withMaskedDictionary:(id)a4;
-+ (void)populateIdentifiers:(id)a3;
++ (void)maskAssociatedPlugins:(id)plugins withMaskedDictionary:(id)dictionary;
++ (void)maskProcessName:(id)name withMaskedDictionary:(id)dictionary;
++ (void)populateIdentifiers:(id)identifiers;
 + (void)registerAppDeletionActivity;
 + (void)registerFilePermissionActivity;
 + (void)resetStateVariables;
 + (void)setup;
-+ (void)traverseVersionDirectory:(id)a3 withBlock:(id)a4;
-+ (void)updateQuery:(id)a3;
++ (void)traverseVersionDirectory:(id)directory withBlock:(id)block;
++ (void)updateQuery:(id)query;
 @end
 
 @implementation PLAppDeletion
 
-+ (id)getProtectionLevel:(int)a3
++ (id)getProtectionLevel:(int)level
 {
-  if (!a3)
+  if (!level)
   {
     v4 = MEMORY[0x1E696A380];
 LABEL_5:
@@ -50,7 +50,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 1)
+  if (level == 1)
   {
     v4 = MEMORY[0x1E696A388];
     goto LABEL_5;
@@ -61,20 +61,20 @@ LABEL_5:
   return v5;
 }
 
-+ (void)traverseVersionDirectory:(id)a3 withBlock:(id)a4
++ (void)traverseVersionDirectory:(id)directory withBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 contentsOfDirectoryAtPath:v5 error:0];
+  directoryCopy = directory;
+  blockCopy = block;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [defaultManager contentsOfDirectoryAtPath:directoryCopy error:0];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __52__PLAppDeletion_traverseVersionDirectory_withBlock___block_invoke;
   v11[3] = &unk_1E851A638;
-  v12 = v5;
-  v13 = v6;
-  v9 = v6;
-  v10 = v5;
+  v12 = directoryCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = directoryCopy;
   [v8 enumerateObjectsUsingBlock:v11];
 }
 
@@ -84,17 +84,17 @@ void __52__PLAppDeletion_traverseVersionDirectory_withBlock___block_invoke(uint6
   (*(*(a1 + 40) + 16))();
 }
 
-+ (BOOL)setFileProtectionForPath:(id)a3 withLevel:(id)a4
++ (BOOL)setFileProtectionForPath:(id)path withLevel:(id)level
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  pathCopy = path;
+  levelCopy = level;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v21 = *MEMORY[0x1E696A3A0];
-  v22[0] = v6;
+  v22[0] = levelCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
   v14 = 0;
-  v9 = [v7 setAttributes:v8 ofItemAtPath:v5 error:&v14];
+  v9 = [defaultManager setAttributes:v8 ofItemAtPath:pathCopy error:&v14];
   v10 = v14;
 
   if (v10)
@@ -103,9 +103,9 @@ void __52__PLAppDeletion_traverseVersionDirectory_withBlock___block_invoke(uint6
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v16 = v6;
+      v16 = levelCopy;
       v17 = 2112;
-      v18 = v5;
+      v18 = pathCopy;
       v19 = 2112;
       v20 = v10;
       _os_log_error_impl(&dword_1D8611000, v11, OS_LOG_TYPE_ERROR, "Failed to set file protection %@ for file at path: %@ with error: %@", buf, 0x20u);
@@ -116,13 +116,13 @@ void __52__PLAppDeletion_traverseVersionDirectory_withBlock___block_invoke(uint6
   return v9;
 }
 
-+ (BOOL)changePermissionsForFilesInDirectory:(id)a3 withProtectionLevel:(id)a4
++ (BOOL)changePermissionsForFilesInDirectory:(id)directory withProtectionLevel:(id)level
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  [v8 contentsOfDirectoryAtPath:v6 error:0];
+  directoryCopy = directory;
+  levelCopy = level;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager contentsOfDirectoryAtPath:directoryCopy error:0];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -144,18 +144,18 @@ void __52__PLAppDeletion_traverseVersionDirectory_withBlock___block_invoke(uint6
           objc_enumerationMutation(v9);
         }
 
-        v15 = [v6 stringByAppendingPathComponent:{*(*(&v22 + 1) + 8 * v14), v21, v22}];
+        v15 = [directoryCopy stringByAppendingPathComponent:{*(*(&v22 + 1) + 8 * v14), v21, v22}];
         v16 = PLLogAppDeletion();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
           *buf = v21;
           v27 = v15;
           v28 = 2112;
-          v29 = v7;
+          v29 = levelCopy;
           _os_log_debug_impl(&dword_1D8611000, v16, OS_LOG_TYPE_DEBUG, "Changing permission for file %@ to %@", buf, 0x16u);
         }
 
-        if (([a1 setFileProtectionForPath:v15 withLevel:v7] & 1) == 0)
+        if (([self setFileProtectionForPath:v15 withLevel:levelCopy] & 1) == 0)
         {
           v18 = PLLogAppDeletion();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -188,10 +188,10 @@ LABEL_15:
   return v17;
 }
 
-+ (BOOL)changePermissionForDirectory:(id)a3 withProtectionLevel:(id)a4
++ (BOOL)changePermissionForDirectory:(id)directory withProtectionLevel:(id)level
 {
-  v6 = a3;
-  v7 = a4;
+  directoryCopy = directory;
+  levelCopy = level;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -201,14 +201,14 @@ LABEL_15:
   v10[2] = __66__PLAppDeletion_changePermissionForDirectory_withProtectionLevel___block_invoke;
   v10[3] = &unk_1E851A660;
   v12 = &v14;
-  v13 = a1;
-  v8 = v7;
+  selfCopy = self;
+  v8 = levelCopy;
   v11 = v8;
-  [a1 traverseVersionDirectory:v6 withBlock:v10];
-  LOBYTE(a1) = *(v15 + 24);
+  [self traverseVersionDirectory:directoryCopy withBlock:v10];
+  LOBYTE(self) = *(v15 + 24);
 
   _Block_object_dispose(&v14, 8);
-  return a1;
+  return self;
 }
 
 void __66__PLAppDeletion_changePermissionForDirectory_withProtectionLevel___block_invoke(uint64_t a1, void *a2)
@@ -225,9 +225,9 @@ void __66__PLAppDeletion_changePermissionForDirectory_withProtectionLevel___bloc
   }
 }
 
-+ (BOOL)changeClassProtection:(int)a3
++ (BOOL)changeClassProtection:(int)protection
 {
-  v4 = [a1 getProtectionLevel:?];
+  v4 = [self getProtectionLevel:?];
   if (!v4)
   {
     v12 = PLLogAppDeletion();
@@ -241,7 +241,7 @@ void __66__PLAppDeletion_changePermissionForDirectory_withProtectionLevel___bloc
 
   v5 = +[PLUtilities containerPath];
   v6 = [v5 stringByAppendingString:@"/Library/BatteryLife/UpgradeLogs/MajorVersion"];
-  v7 = [a1 changePermissionForDirectory:v6 withProtectionLevel:v4];
+  v7 = [self changePermissionForDirectory:v6 withProtectionLevel:v4];
 
   if ((v7 & 1) == 0)
   {
@@ -256,7 +256,7 @@ void __66__PLAppDeletion_changePermissionForDirectory_withProtectionLevel___bloc
 
   v8 = +[PLUtilities containerPath];
   v9 = [v8 stringByAppendingString:@"/Library/BatteryLife/UpgradeLogs/MinorVersion"];
-  v10 = [a1 changePermissionForDirectory:v9 withProtectionLevel:v4];
+  v10 = [self changePermissionForDirectory:v9 withProtectionLevel:v4];
 
   v11 = PLLogAppDeletion();
   v12 = v11;
@@ -300,13 +300,13 @@ LABEL_14:
 
 + (void)registerFilePermissionActivity
 {
-  v3 = [a1 filePermissionCriteria];
+  filePermissionCriteria = [self filePermissionCriteria];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __47__PLAppDeletion_registerFilePermissionActivity__block_invoke;
   handler[3] = &__block_descriptor_40_e33_v16__0__NSObject_OS_xpc_object__8l;
-  handler[4] = a1;
-  xpc_activity_register("com.apple.powerlogd.XPCFilePermissionScheduler", v3, handler);
+  handler[4] = self;
+  xpc_activity_register("com.apple.powerlogd.XPCFilePermissionScheduler", filePermissionCriteria, handler);
 }
 
 void __47__PLAppDeletion_registerFilePermissionActivity__block_invoke(uint64_t a1, void *a2)
@@ -327,9 +327,9 @@ void __47__PLAppDeletion_registerFilePermissionActivity__block_invoke(uint64_t a
   }
 }
 
-+ (void)handleFilePermissionXPCActivityCallback:(id)a3
++ (void)handleFilePermissionXPCActivityCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v5 = [PLAppDeletion changeClassProtection:1];
   v6 = PLLogAppDeletion();
   v7 = v6;
@@ -340,8 +340,8 @@ void __47__PLAppDeletion_registerFilePermissionActivity__block_invoke(uint64_t a
       +[PLAppDeletion handleFilePermissionXPCActivityCallback:];
     }
 
-    [a1 finishXPCActivity:v4];
-    [a1 registerAppDeletionActivity];
+    [self finishXPCActivity:callbackCopy];
+    [self registerAppDeletionActivity];
   }
 
   else
@@ -352,31 +352,31 @@ void __47__PLAppDeletion_registerFilePermissionActivity__block_invoke(uint64_t a
       _os_log_impl(&dword_1D8611000, v7, OS_LOG_TYPE_DEFAULT, "Deferring activity as changing class protection to ClassC failed", v8, 2u);
     }
 
-    if (([a1 deferXPCActivity:v4] & 1) == 0)
+    if (([self deferXPCActivity:callbackCopy] & 1) == 0)
     {
-      [a1 finishXPCActivity:v4];
+      [self finishXPCActivity:callbackCopy];
     }
   }
 }
 
 + (void)setup
 {
-  [a1 constructAppReferenceTableList];
-  [a1 constructFileNames];
-  [a1 constructAppReferenceMapping];
-  v3 = [a1 constructUpdateQueries];
+  [self constructAppReferenceTableList];
+  [self constructFileNames];
+  [self constructAppReferenceMapping];
+  constructUpdateQueries = [self constructUpdateQueries];
 }
 
 + (void)resetStateVariables
 {
   v14 = *MEMORY[0x1E69E9840];
   processedFilesCounter = 0;
-  v2 = [listOfFileNames allKeys];
+  allKeys = [listOfFileNames allKeys];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v3 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -388,47 +388,47 @@ void __47__PLAppDeletion_registerFilePermissionActivity__block_invoke(uint64_t a
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allKeys);
         }
 
         [listOfFileNames setObject:&unk_1F5406048 forKeyedSubscript:*(*(&v9 + 1) + 8 * v6++)];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
   }
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"PLAppDeletionActivityComplete" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PLAppDeletionActivityComplete" object:0 userInfo:0];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)pluginsForBundleID:(id)a3
++ (id)pluginsForBundleID:(id)d
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [[PLValueComparison alloc] initWithKey:@"PluginParentApp" withValue:v3 withComparisonOperation:0];
+  dCopy = d;
+  v4 = [[PLValueComparison alloc] initWithKey:@"PluginParentApp" withValue:dCopy withComparisonOperation:0];
 
   v5 = +[PowerlogCore sharedCore];
-  v6 = [v5 storage];
+  storage = [v5 storage];
   v11[0] = v4;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  v8 = [v6 entriesForKey:@"PLApplicationAgent_EventNone_AllPlugins" withComparisons:v7];
+  v8 = [storage entriesForKey:@"PLApplicationAgent_EventNone_AllPlugins" withComparisons:v7];
 
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-+ (void)maskAssociatedPlugins:(id)a3 withMaskedDictionary:(id)a4
++ (void)maskAssociatedPlugins:(id)plugins withMaskedDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a1 pluginsForBundleID:a3];
+  dictionaryCopy = dictionary;
+  v7 = [self pluginsForBundleID:plugins];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -454,7 +454,7 @@ void __47__PLAppDeletion_registerFilePermissionActivity__block_invoke(uint64_t a
         {
           v14 = _MergedGlobals;
           v15 = [v12 objectForKeyedSubscript:@"PluginId"];
-          [v14 setObject:v6 forKeyedSubscript:v15];
+          [v14 setObject:dictionaryCopy forKeyedSubscript:v15];
         }
 
         v16 = [v12 objectForKeyedSubscript:@"PluginExecutableName"];
@@ -463,7 +463,7 @@ void __47__PLAppDeletion_registerFilePermissionActivity__block_invoke(uint64_t a
         {
           v17 = qword_1EDFFF260;
           v18 = [v12 objectForKeyedSubscript:@"PluginExecutableName"];
-          [v17 setObject:v6 forKeyedSubscript:v18];
+          [v17 setObject:dictionaryCopy forKeyedSubscript:v18];
         }
       }
 
@@ -476,17 +476,17 @@ void __47__PLAppDeletion_registerFilePermissionActivity__block_invoke(uint64_t a
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)processNameForBundleID:(id)a3
++ (id)processNameForBundleID:(id)d
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [[PLValueComparison alloc] initWithKey:@"BundleID" withValue:v3 withComparisonOperation:0];
+  dCopy = d;
+  v4 = [[PLValueComparison alloc] initWithKey:@"BundleID" withValue:dCopy withComparisonOperation:0];
 
   v5 = +[PowerlogCore sharedCore];
-  v6 = [v5 storage];
+  storage = [v5 storage];
   v12[0] = v4;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  v8 = [v6 lastEntryForKey:@"PLProcessMonitorAgent_EventForward_ProcessID" withComparisons:v7 isSingleton:1];
+  v8 = [storage lastEntryForKey:@"PLProcessMonitorAgent_EventForward_ProcessID" withComparisons:v7 isSingleton:1];
 
   v9 = [v8 objectForKeyedSubscript:@"ProcessName"];
 
@@ -495,13 +495,13 @@ void __47__PLAppDeletion_registerFilePermissionActivity__block_invoke(uint64_t a
   return v9;
 }
 
-+ (void)maskProcessName:(id)a3 withMaskedDictionary:(id)a4
++ (void)maskProcessName:(id)name withMaskedDictionary:(id)dictionary
 {
-  v7 = a4;
-  v6 = [a1 processNameForBundleID:a3];
+  dictionaryCopy = dictionary;
+  v6 = [self processNameForBundleID:name];
   if (v6)
   {
-    [qword_1EDFFF260 setObject:v7 forKeyedSubscript:v6];
+    [qword_1EDFFF260 setObject:dictionaryCopy forKeyedSubscript:v6];
   }
 }
 
@@ -514,15 +514,15 @@ void __47__PLAppDeletion_registerFilePermissionActivity__block_invoke(uint64_t a
   v5 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)populateIdentifiers:(id)a3
++ (void)populateIdentifiers:(id)identifiers
 {
   v43 = *MEMORY[0x1E69E9840];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  identifiersCopy = identifiers;
+  v4 = [identifiersCopy countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v4)
   {
     v5 = v4;
@@ -531,7 +531,7 @@ void __47__PLAppDeletion_registerFilePermissionActivity__block_invoke(uint64_t a
     v25 = v29;
     v7 = 0x1E8518000uLL;
     v8 = 0x1E8518000uLL;
-    v26 = v3;
+    v26 = identifiersCopy;
     do
     {
       v9 = 0;
@@ -539,13 +539,13 @@ void __47__PLAppDeletion_registerFilePermissionActivity__block_invoke(uint64_t a
       {
         if (*v39 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         v10 = *(*(&v38 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        v12 = [*(v7 + 2384) sharedSQLiteConnection];
-        v13 = [v12 tableExistsForTableName:v10];
+        sharedSQLiteConnection = [*(v7 + 2384) sharedSQLiteConnection];
+        v13 = [sharedSQLiteConnection tableExistsForTableName:v10];
 
         if (v13)
         {
@@ -599,7 +599,7 @@ void __47__PLAppDeletion_registerFilePermissionActivity__block_invoke(uint64_t a
               v11 = v27;
 LABEL_12:
 
-              v3 = v26;
+              identifiersCopy = v26;
             }
 
             else
@@ -635,7 +635,7 @@ LABEL_12:
       }
 
       while (v5 != v9);
-      v5 = [v3 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v5 = [identifiersCopy countByEnumeratingWithState:&v38 objects:v42 count:16];
     }
 
     while (v5);
@@ -691,10 +691,10 @@ void __37__PLAppDeletion_populateIdentifiers___block_invoke_2(id *a1, void *a2, 
   v15 = 0u;
   v16 = 0u;
   v3 = +[PowerlogCore sharedCore];
-  v4 = [v3 agents];
-  v5 = [v4 allOperators];
+  agents = [v3 agents];
+  allOperators = [agents allOperators];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [allOperators countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -706,18 +706,18 @@ void __37__PLAppDeletion_populateIdentifiers___block_invoke_2(id *a1, void *a2, 
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allOperators);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * v9) entryKeys];
-        v11 = [v10 copy];
+        entryKeys = [*(*(&v13 + 1) + 8 * v9) entryKeys];
+        v11 = [entryKeys copy];
 
-        [a1 populateIdentifiers:v11];
+        [self populateIdentifiers:v11];
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allOperators countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -734,10 +734,10 @@ void __37__PLAppDeletion_populateIdentifiers___block_invoke_2(id *a1, void *a2, 
   v15 = 0u;
   v16 = 0u;
   v3 = +[PowerlogCore sharedCore];
-  v4 = [v3 services];
-  v5 = [v4 allOperators];
+  services = [v3 services];
+  allOperators = [services allOperators];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [allOperators countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -749,18 +749,18 @@ void __37__PLAppDeletion_populateIdentifiers___block_invoke_2(id *a1, void *a2, 
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allOperators);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * v9) entryKeys];
-        v11 = [v10 copy];
+        entryKeys = [*(*(&v13 + 1) + 8 * v9) entryKeys];
+        v11 = [entryKeys copy];
 
-        [a1 populateIdentifiers:v11];
+        [self populateIdentifiers:v11];
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allOperators countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -772,7 +772,7 @@ void __37__PLAppDeletion_populateIdentifiers___block_invoke_2(id *a1, void *a2, 
 + (void)iterateMetrics
 {
   v3 = +[PPSEntryKey allEntryKeys];
-  [a1 populateIdentifiers:v3];
+  [self populateIdentifiers:v3];
 }
 
 + (void)constructAppReferenceTableList
@@ -1135,12 +1135,12 @@ void __39__PLAppDeletion_constructUpdateQueries__block_invoke_2(uint64_t a1, voi
   v18 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)addFilesToList:(id)a3
++ (void)addFilesToList:(id)list
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v14 = [MEMORY[0x1E696AC08] defaultManager];
-  [v14 contentsOfDirectoryAtPath:v3 error:0];
+  listCopy = list;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager contentsOfDirectoryAtPath:listCopy error:0];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -1161,12 +1161,12 @@ void __39__PLAppDeletion_constructUpdateQueries__block_invoke_2(uint64_t a1, voi
 
         v8 = *(*(&v16 + 1) + 8 * i);
         v9 = MEMORY[0x1E696AEC0];
-        v10 = [v8 pathExtension];
-        v11 = [v9 stringWithFormat:@".%@", v10];
+        pathExtension = [v8 pathExtension];
+        v11 = [v9 stringWithFormat:@".%@", pathExtension];
 
         if ([v11 isEqualToString:@".gz"])
         {
-          v12 = [v3 stringByAppendingPathComponent:v8];
+          v12 = [listCopy stringByAppendingPathComponent:v8];
           [listOfFileNames setObject:&unk_1F5406048 forKeyedSubscript:v12];
         }
 
@@ -1199,7 +1199,7 @@ void __39__PLAppDeletion_constructUpdateQueries__block_invoke_2(uint64_t a1, voi
 
   v5 = +[PLUtilities containerPath];
   v6 = [v5 stringByAppendingString:@"/Library/BatteryLife/Archives/"];
-  [a1 addFilesToList:v6];
+  [self addFilesToList:v6];
 
   v7 = +[PLUtilities containerPath];
   v8 = [v7 stringByAppendingString:@"/Library/BatteryLife/UpgradeLogs/MajorVersion"];
@@ -1207,7 +1207,7 @@ void __39__PLAppDeletion_constructUpdateQueries__block_invoke_2(uint64_t a1, voi
   v12[1] = 3221225472;
   v12[2] = __35__PLAppDeletion_constructFileNames__block_invoke;
   v12[3] = &__block_descriptor_40_e18_v16__0__NSString_8l;
-  v12[4] = a1;
+  v12[4] = self;
   [PLAppDeletion traverseVersionDirectory:v8 withBlock:v12];
 
   v9 = +[PLUtilities containerPath];
@@ -1216,17 +1216,17 @@ void __39__PLAppDeletion_constructUpdateQueries__block_invoke_2(uint64_t a1, voi
   v11[1] = 3221225472;
   v11[2] = __35__PLAppDeletion_constructFileNames__block_invoke_2;
   v11[3] = &__block_descriptor_40_e18_v16__0__NSString_8l;
-  v11[4] = a1;
+  v11[4] = self;
   [PLAppDeletion traverseVersionDirectory:v10 withBlock:v11];
 }
 
-+ (void)updateQuery:(id)a3
++ (void)updateQuery:(id)query
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  queryCopy = query;
   errmsg = 0;
   ppDb = 0;
-  if (sqlite3_open_v2([v3 UTF8String], &ppDb, 2, 0))
+  if (sqlite3_open_v2([queryCopy UTF8String], &ppDb, 2, 0))
   {
     v4 = PLLogAppDeletion();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -1246,7 +1246,7 @@ void __39__PLAppDeletion_constructUpdateQueries__block_invoke_2(uint64_t a1, voi
     if (v5)
     {
       v6 = v5;
-      v15 = v3;
+      v15 = queryCopy;
       v7 = *v17;
       do
       {
@@ -1285,7 +1285,7 @@ void __39__PLAppDeletion_constructUpdateQueries__block_invoke_2(uint64_t a1, voi
       }
 
       while (v6);
-      v3 = v15;
+      queryCopy = v15;
     }
   }
 
@@ -1293,11 +1293,11 @@ void __39__PLAppDeletion_constructUpdateQueries__block_invoke_2(uint64_t a1, voi
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)deleteAppReferencesFromCompressedFiles:(id)a3
++ (void)deleteAppReferencesFromCompressedFiles:(id)files
 {
   v48 = *MEMORY[0x1E69E9840];
-  activity = a3;
-  v33 = [MEMORY[0x1E696AC08] defaultManager];
+  activity = files;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   [listOfFileNames allKeys];
   v39 = 0u;
   v40 = 0u;
@@ -1321,26 +1321,26 @@ void __39__PLAppDeletion_constructUpdateQueries__block_invoke_2(uint64_t a1, voi
 
         v8 = *(*(&v39 + 1) + 8 * i);
         v9 = [listOfFileNames objectForKeyedSubscript:{v8, v32}];
-        v10 = [v9 intValue];
+        intValue = [v9 intValue];
 
-        if (v10)
+        if (intValue)
         {
-          v11 = PLLogAppDeletion();
-          if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+          stringByDeletingLastPathComponent = PLLogAppDeletion();
+          if (os_log_type_enabled(stringByDeletingLastPathComponent, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
             v44 = v8;
-            _os_log_impl(&dword_1D8611000, v11, OS_LOG_TYPE_DEFAULT, "AppDeletion : filename %@ is processed", buf, 0xCu);
+            _os_log_impl(&dword_1D8611000, stringByDeletingLastPathComponent, OS_LOG_TYPE_DEFAULT, "AppDeletion : filename %@ is processed", buf, 0xCu);
           }
         }
 
         else
         {
-          v11 = [v8 stringByDeletingLastPathComponent];
-          v12 = [v8 lastPathComponent];
-          v13 = [v12 stringByDeletingPathExtension];
+          stringByDeletingLastPathComponent = [v8 stringByDeletingLastPathComponent];
+          lastPathComponent = [v8 lastPathComponent];
+          stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-          v14 = [v11 stringByAppendingPathComponent:v13];
+          v14 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:stringByDeletingPathExtension];
           v15 = PLLogAppDeletion();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
@@ -1361,7 +1361,7 @@ void __39__PLAppDeletion_constructUpdateQueries__block_invoke_2(uint64_t a1, voi
               _os_log_debug_impl(&dword_1D8611000, v18, OS_LOG_TYPE_DEBUG, "AppDeletion : invoking update query on file %@", buf, 0xCu);
             }
 
-            [a1 updateQuery:v14];
+            [self updateQuery:v14];
             v19 = PLLogAppDeletion();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
@@ -1371,12 +1371,12 @@ void __39__PLAppDeletion_constructUpdateQueries__block_invoke_2(uint64_t a1, voi
             }
 
             [PLUtilities compressWithSource:v14 withDestination:v8 withLevel:4];
-            [v33 removeItemAtPath:v14 error:0];
+            [defaultManager removeItemAtPath:v14 error:0];
             v20 = [v14 stringByAppendingString:@"-shm"];
-            [v33 removeItemAtPath:v20 error:0];
+            [defaultManager removeItemAtPath:v20 error:0];
 
             v21 = [v14 stringByAppendingString:@"-wal"];
-            [v33 removeItemAtPath:v21 error:0];
+            [defaultManager removeItemAtPath:v21 error:0];
 
             [listOfFileNames setObject:&unk_1F5406060 forKeyedSubscript:v8];
             v22 = ++processedFilesCounter;
@@ -1386,11 +1386,11 @@ void __39__PLAppDeletion_constructUpdateQueries__block_invoke_2(uint64_t a1, voi
               if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
               {
                 v29 = [listOfFileNames objectForKeyedSubscript:v8];
-                v30 = [v29 intValue];
+                intValue2 = [v29 intValue];
                 *buf = v32;
                 v44 = v8;
                 v45 = 1024;
-                v46 = v30;
+                v46 = intValue2;
                 _os_log_impl(&dword_1D8611000, v28, OS_LOG_TYPE_DEFAULT, "Did not defer activity file %@ and processed %d", buf, 0x12u);
               }
 
@@ -1406,7 +1406,7 @@ void __39__PLAppDeletion_constructUpdateQueries__block_invoke_2(uint64_t a1, voi
 
             if (activity && xpc_activity_should_defer(activity))
             {
-              v23 = [a1 deferXPCActivity:activity];
+              v23 = [self deferXPCActivity:activity];
               v24 = PLLogAppDeletion();
               v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG);
               if (v23)
@@ -1433,11 +1433,11 @@ LABEL_38:
               if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
               {
                 v26 = [listOfFileNames objectForKeyedSubscript:v8];
-                v27 = [v26 intValue];
+                intValue3 = [v26 intValue];
                 *buf = v32;
                 v44 = v8;
                 v45 = 1024;
-                v46 = v27;
+                v46 = intValue3;
                 _os_log_impl(&dword_1D8611000, v24, OS_LOG_TYPE_DEFAULT, "Did not defer activity file %@ and processed %d", buf, 0x12u);
               }
             }
@@ -1594,10 +1594,10 @@ LABEL_39:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)deleteAppReferences:(id)a3
++ (void)deleteAppReferences:(id)references
 {
-  v4 = a3;
-  [a1 setup];
+  referencesCopy = references;
+  [self setup];
   v5 = [updateQueries count];
   v6 = PLLogAppDeletion();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
@@ -1608,11 +1608,11 @@ LABEL_39:
       +[PLAppDeletion deleteAppReferences:];
     }
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"PLAppDeletionActivityStarted" object:a1 userInfo:qword_1EDFFF268];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PLAppDeletionActivityStarted" object:self userInfo:qword_1EDFFF268];
 
-    [a1 deleteAppReferencesInCurrentPowerlog];
-    [a1 deleteAppReferencesFromCompressedFiles:v4];
+    [self deleteAppReferencesInCurrentPowerlog];
+    [self deleteAppReferencesFromCompressedFiles:referencesCopy];
   }
 
   else
@@ -1638,13 +1638,13 @@ LABEL_39:
 
 + (void)registerAppDeletionActivity
 {
-  v3 = [a1 appDeletionCriteria];
+  appDeletionCriteria = [self appDeletionCriteria];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __44__PLAppDeletion_registerAppDeletionActivity__block_invoke;
   handler[3] = &__block_descriptor_40_e33_v16__0__NSObject_OS_xpc_object__8l;
-  handler[4] = a1;
-  xpc_activity_register("com.apple.powerlogd.XPCAppDeletionScheduler", v3, handler);
+  handler[4] = self;
+  xpc_activity_register("com.apple.powerlogd.XPCAppDeletionScheduler", appDeletionCriteria, handler);
 }
 
 void __44__PLAppDeletion_registerAppDeletionActivity__block_invoke(uint64_t a1, void *a2)
@@ -1672,21 +1672,21 @@ void __44__PLAppDeletion_registerAppDeletionActivity__block_invoke(uint64_t a1, 
   }
 }
 
-+ (void)handleAppDeletionXPCActivityCallback:(id)a3
++ (void)handleAppDeletionXPCActivityCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v5 = PLLogAppDeletion();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     +[PLAppDeletion handleAppDeletionXPCActivityCallback:];
   }
 
-  [a1 deleteAppReferences:v4];
+  [self deleteAppReferences:callbackCopy];
   v6 = processedFilesCounter;
   if (v6 == [listOfFileNames count])
   {
-    [a1 deleteAppReferenceMapping];
-    [a1 finishXPCActivity:v4];
+    [self deleteAppReferenceMapping];
+    [self finishXPCActivity:callbackCopy];
     v7 = PLLogAppDeletion();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
@@ -1700,7 +1700,7 @@ void __44__PLAppDeletion_registerAppDeletionActivity__block_invoke(uint64_t a1, 
     }
 
     [PLAppDeletion changeClassProtection:0];
-    [a1 resetStateVariables];
+    [self resetStateVariables];
   }
 
   else
@@ -1713,13 +1713,13 @@ void __44__PLAppDeletion_registerAppDeletionActivity__block_invoke(uint64_t a1, 
   }
 }
 
-+ (BOOL)finishXPCActivity:(id)a3
++ (BOOL)finishXPCActivity:(id)activity
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  activityCopy = activity;
+  v4 = activityCopy;
+  if (activityCopy)
   {
-    v5 = xpc_activity_set_state(v3, 5);
+    v5 = xpc_activity_set_state(activityCopy, 5);
     v6 = PLLogAppDeletion();
     v7 = v6;
     if (v5)
@@ -1744,13 +1744,13 @@ void __44__PLAppDeletion_registerAppDeletionActivity__block_invoke(uint64_t a1, 
   return v5;
 }
 
-+ (BOOL)deferXPCActivity:(id)a3
++ (BOOL)deferXPCActivity:(id)activity
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  activityCopy = activity;
+  v4 = activityCopy;
+  if (activityCopy)
   {
-    if (xpc_activity_get_state(v3) == 3)
+    if (xpc_activity_get_state(activityCopy) == 3)
     {
       v5 = PLLogAppDeletion();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))

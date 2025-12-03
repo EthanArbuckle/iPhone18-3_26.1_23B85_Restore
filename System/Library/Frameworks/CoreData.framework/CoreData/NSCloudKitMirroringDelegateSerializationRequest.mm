@@ -1,19 +1,19 @@
 @interface NSCloudKitMirroringDelegateSerializationRequest
-+ (__CFString)stringForResultType:(uint64_t)a1;
-- (NSCloudKitMirroringDelegateSerializationRequest)initWithOptions:(id)a3 completionBlock:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (__CFString)stringForResultType:(uint64_t)type;
+- (NSCloudKitMirroringDelegateSerializationRequest)initWithOptions:(id)options completionBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)setObjectIDsToSerialize:(id)a3;
+- (void)setObjectIDsToSerialize:(id)serialize;
 @end
 
 @implementation NSCloudKitMirroringDelegateSerializationRequest
 
-- (NSCloudKitMirroringDelegateSerializationRequest)initWithOptions:(id)a3 completionBlock:(id)a4
+- (NSCloudKitMirroringDelegateSerializationRequest)initWithOptions:(id)options completionBlock:(id)block
 {
   v7.receiver = self;
   v7.super_class = NSCloudKitMirroringDelegateSerializationRequest;
-  v4 = [(NSCloudKitMirroringRequest *)&v7 initWithOptions:a3 completionBlock:a4];
+  v4 = [(NSCloudKitMirroringRequest *)&v7 initWithOptions:options completionBlock:block];
   v5 = v4;
   if (v4)
   {
@@ -45,7 +45,7 @@
   return v4;
 }
 
-+ (__CFString)stringForResultType:(uint64_t)a1
++ (__CFString)stringForResultType:(uint64_t)type
 {
   v9 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -84,31 +84,31 @@
   return result;
 }
 
-- (void)setObjectIDsToSerialize:(id)a3
+- (void)setObjectIDsToSerialize:(id)serialize
 {
   objectIDsToSerialize = self->_objectIDsToSerialize;
-  if (objectIDsToSerialize != a3)
+  if (objectIDsToSerialize != serialize)
   {
 
-    if (a3)
+    if (serialize)
     {
-      v6 = a3;
+      serializeCopy = serialize;
     }
 
     else
     {
-      v6 = NSSet_EmptySet;
+      serializeCopy = NSSet_EmptySet;
     }
 
-    self->_objectIDsToSerialize = v6;
+    self->_objectIDsToSerialize = serializeCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NSCloudKitMirroringDelegateSerializationRequest;
-  v4 = [(NSCloudKitMirroringRequest *)&v6 copyWithZone:a3];
+  v4 = [(NSCloudKitMirroringRequest *)&v6 copyWithZone:zone];
   v4[10] = self->_resultType;
   v4[11] = self->_objectIDsToSerialize;
   return v4;

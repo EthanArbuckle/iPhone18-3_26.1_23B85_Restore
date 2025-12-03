@@ -1,19 +1,19 @@
 @interface MPCreateRadioStationCommandEvent
-- (MPCreateRadioStationCommandEvent)initWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5;
+- (MPCreateRadioStationCommandEvent)initWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options;
 @end
 
 @implementation MPCreateRadioStationCommandEvent
 
-- (MPCreateRadioStationCommandEvent)initWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5
+- (MPCreateRadioStationCommandEvent)initWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options
 {
-  v5 = *&a4;
-  v8 = a5;
+  v5 = *&type;
+  optionsCopy = options;
   v16.receiver = self;
   v16.super_class = MPCreateRadioStationCommandEvent;
-  v9 = [(MPRemoteCommandEvent *)&v16 initWithCommand:a3 mediaRemoteType:v5 options:v8];
+  v9 = [(MPRemoteCommandEvent *)&v16 initWithCommand:command mediaRemoteType:v5 options:optionsCopy];
   if (v9)
   {
-    v10 = [v8 objectForKey:*MEMORY[0x1E69B1260]];
+    v10 = [optionsCopy objectForKey:*MEMORY[0x1E69B1260]];
     v11 = [v10 copy];
 
     if ([v11 length])
@@ -23,7 +23,7 @@
       v9->_stationURL = v12;
     }
 
-    v14 = [v8 objectForKey:*MEMORY[0x1E69B1228]];
+    v14 = [optionsCopy objectForKey:*MEMORY[0x1E69B1228]];
     v9->_requestingPlaybackInitialization = [v14 BOOLValue];
   }
 

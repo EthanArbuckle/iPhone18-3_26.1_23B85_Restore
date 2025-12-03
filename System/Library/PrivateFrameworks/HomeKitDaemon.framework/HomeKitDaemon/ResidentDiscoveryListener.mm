@@ -1,7 +1,7 @@
 @interface ResidentDiscoveryListener
 - (_TtC13HomeKitDaemonP33_8BAA1CB4456490773E1DD9AD12A50A5425ResidentDiscoveryListener)init;
-- (void)residentDeviceManager:(id)a3 didCompleteDiscoveryWithPrimaryResidentDevice:(id)a4 error:(id)a5;
-- (void)residentDeviceManager:(id)a3 didNotCompleteDiscoveryWithError:(id)a4;
+- (void)residentDeviceManager:(id)manager didCompleteDiscoveryWithPrimaryResidentDevice:(id)device error:(id)error;
+- (void)residentDeviceManager:(id)manager didNotCompleteDiscoveryWithError:(id)error;
 @end
 
 @implementation ResidentDiscoveryListener
@@ -16,22 +16,22 @@
   return [(ResidentDiscoveryListener *)&v6 init];
 }
 
-- (void)residentDeviceManager:(id)a3 didCompleteDiscoveryWithPrimaryResidentDevice:(id)a4 error:(id)a5
+- (void)residentDeviceManager:(id)manager didCompleteDiscoveryWithPrimaryResidentDevice:(id)device error:(id)error
 {
   swift_unknownObjectRetain();
-  v8 = a4;
-  v9 = self;
-  v10 = a5;
-  sub_2295B8F44(a4, a5);
+  deviceCopy = device;
+  selfCopy = self;
+  errorCopy = error;
+  sub_2295B8F44(device, error);
   swift_unknownObjectRelease();
 }
 
-- (void)residentDeviceManager:(id)a3 didNotCompleteDiscoveryWithError:(id)a4
+- (void)residentDeviceManager:(id)manager didNotCompleteDiscoveryWithError:(id)error
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = a4;
-  sub_2295B916C(a4);
+  selfCopy = self;
+  errorCopy = error;
+  sub_2295B916C(error);
   swift_unknownObjectRelease();
 }
 

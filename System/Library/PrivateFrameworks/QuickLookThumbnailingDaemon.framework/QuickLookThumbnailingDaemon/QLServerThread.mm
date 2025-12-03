@@ -1,58 +1,58 @@
 @interface QLServerThread
 + (id)sharedInstance;
-+ (void)updateThumbnailRequestThumbnailVersionWithThirdPartyGeneratorInformationIfNeeded:(id)a3;
-- (BOOL)_canUseAdditionToProvideThumbnail:(id)a3 forThumbnailRequest:(id)a4 taggedLogicalURL:(id)a5;
-- (BOOL)_saveResultForThumbnailRequest:(id)a3 withImage:(id)a4 error:(id *)a5;
-- (BOOL)downloadThumbnails:(id)a3 forProvider:(id)a4;
-- (CGImage)_createUndecoratedAppIconForData:(id)a3 ofSize:(CGSize)a4 scale:(double)a5;
++ (void)updateThumbnailRequestThumbnailVersionWithThirdPartyGeneratorInformationIfNeeded:(id)needed;
+- (BOOL)_canUseAdditionToProvideThumbnail:(id)thumbnail forThumbnailRequest:(id)request taggedLogicalURL:(id)l;
+- (BOOL)_saveResultForThumbnailRequest:(id)request withImage:(id)image error:(id *)error;
+- (BOOL)downloadThumbnails:(id)thumbnails forProvider:(id)provider;
+- (CGImage)_createUndecoratedAppIconForData:(id)data ofSize:(CGSize)size scale:(double)scale;
 - (QLServerThread)init;
-- (QLServerThread)initWithCacheSize:(int64_t)a3 location:(id)a4;
+- (QLServerThread)initWithCacheSize:(int64_t)size location:(id)location;
 - (id)allKnownDataSeparatedVolumes;
-- (id)cacheThreadForFileIdentifier:(id)a3 atURL:(id)a4;
-- (id)cacheThreadForProviderDomainID:(id)a3;
-- (id)cacheThreadForRequest:(id)a3;
-- (id)cacheThreadForVolume:(id)a3;
-- (id)failedDownloadErrorForRequest:(id)a3 underlyingError:(id)a4;
-- (id)genStoreThumbnailForRequest:(id)a3 error:(id *)a4;
-- (id)makeCacheThreadForPersonaString:(id)a3 containerURL:(id *)a4;
-- (id)processedPNGAppIconDataForData:(id)a3 ofType:(id)a4 size:(CGSize)a5 scale:(double)a6;
-- (id)uncachedCacheThreadForFileAtURL:(id)a3;
-- (id)uncachedCacheThreadForProviderDomainID:(id)a3;
-- (void)_addAllThumbnailsSizesToCacheForRequest:(id)a3 withImageSource:(CGImageSource *)a4 imageSize:(CGSize)a5 alreadyCachedSize:(CGSize)a6 completionHandler:(id)a7;
-- (void)_addThumbnailRequestBatchToQueue:(id)a3 completionHandler:(id)a4;
-- (void)_cacheThumbnailData:(id)a3 forRequest:(id)a4 imageSource:(CGImageSource *)a5 actualSize:(CGSize)a6 resultSize:(CGSize)a7 fromGenStore:(BOOL)a8 completionHandler:(id)a9;
-- (void)_callCompletionHandler:(id)a3 ofThumbnailRequestBatch:(id)a4;
-- (void)_completeHandledThumbnailRequest:(id)a3;
-- (void)_downloadThumbnailForRequest:(id)a3 completionHandler:(id)a4;
+- (id)cacheThreadForFileIdentifier:(id)identifier atURL:(id)l;
+- (id)cacheThreadForProviderDomainID:(id)d;
+- (id)cacheThreadForRequest:(id)request;
+- (id)cacheThreadForVolume:(id)volume;
+- (id)failedDownloadErrorForRequest:(id)request underlyingError:(id)error;
+- (id)genStoreThumbnailForRequest:(id)request error:(id *)error;
+- (id)makeCacheThreadForPersonaString:(id)string containerURL:(id *)l;
+- (id)processedPNGAppIconDataForData:(id)data ofType:(id)type size:(CGSize)size scale:(double)scale;
+- (id)uncachedCacheThreadForFileAtURL:(id)l;
+- (id)uncachedCacheThreadForProviderDomainID:(id)d;
+- (void)_addAllThumbnailsSizesToCacheForRequest:(id)request withImageSource:(CGImageSource *)source imageSize:(CGSize)size alreadyCachedSize:(CGSize)cachedSize completionHandler:(id)handler;
+- (void)_addThumbnailRequestBatchToQueue:(id)queue completionHandler:(id)handler;
+- (void)_cacheThumbnailData:(id)data forRequest:(id)request imageSource:(CGImageSource *)source actualSize:(CGSize)size resultSize:(CGSize)resultSize fromGenStore:(BOOL)store completionHandler:(id)handler;
+- (void)_callCompletionHandler:(id)handler ofThumbnailRequestBatch:(id)batch;
+- (void)_completeHandledThumbnailRequest:(id)request;
+- (void)_downloadThumbnailForRequest:(id)request completionHandler:(id)handler;
 - (void)_installRequestsFinishedWatchdog;
-- (void)_removeRequestFromPendingRequests:(id)a3;
-- (void)_saveLargeThumbnailToGenstoreWithData:(id)a3 url:(id)a4;
-- (void)_updateInformationForProviderAndCallPendingBlocksForProviderDomainID:(id)a3 withConnection:(id)a4 inboxURL:(id)a5 thumbnailsURL:(id)a6;
-- (void)addImageData:(id)a3 toCacheForRequest:(id)a4 withBitmapFormat:(id)a5 contentRect:(CGRect)a6 flavor:(int)a7 metadata:(id)a8;
-- (void)cancelThumbnailRequests:(id)a3;
-- (void)completeThumbnailRequest:(id)a3 thumbnailData:(id)a4 updatedMetadata:(id)a5;
-- (void)didNotFindLowQualityEntryInCachedForThumbnailRequest:(id)a3 error:(id)a4;
-- (void)downloadThumbnailForRequest:(id)a3 completionHandler:(id)a4;
+- (void)_removeRequestFromPendingRequests:(id)requests;
+- (void)_saveLargeThumbnailToGenstoreWithData:(id)data url:(id)url;
+- (void)_updateInformationForProviderAndCallPendingBlocksForProviderDomainID:(id)d withConnection:(id)connection inboxURL:(id)l thumbnailsURL:(id)rL;
+- (void)addImageData:(id)data toCacheForRequest:(id)request withBitmapFormat:(id)format contentRect:(CGRect)rect flavor:(int)flavor metadata:(id)metadata;
+- (void)cancelThumbnailRequests:(id)requests;
+- (void)completeThumbnailRequest:(id)request thumbnailData:(id)data updatedMetadata:(id)metadata;
+- (void)didNotFindLowQualityEntryInCachedForThumbnailRequest:(id)request error:(id)error;
+- (void)downloadThumbnailForRequest:(id)request completionHandler:(id)handler;
 - (void)drainDownloadsQueueIfNeeded;
-- (void)failedToCompleteThumbnailRequest:(id)a3 error:(id)a4;
-- (void)findThumbnailInAddition:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)findUncachedThumbnailInExternalThumbnailCacheForRequest:(id)a3 item:(id)a4 URL:(id)a5 completionHandler:(id)a6;
-- (void)findUncachedThumbnailInGenStoreForRequest:(id)a3 completionHandler:(id)a4;
-- (void)findUncachedThumbnailInGenStoreOrDownload:(id)a3 completionHandler:(id)a4;
-- (void)forEachCacheThread:(id)a3;
-- (void)generateSuccessiveThumbnailRepresentationsForGeneratorRequests:(id)a3 completionHandler:(id)a4;
-- (void)generateSuccessiveThumbnailRepresentationsForRequests:(id)a3 generationHandler:(id)a4 completionHandler:(id)a5;
-- (void)generateThumbnailForThumbnailRequest:(id)a3 shouldUpdateGenstore:(BOOL)a4 completionHandler:(id)a5;
-- (void)getExternalThumbnailCacheConnectionForItem:(id)a3 atURL:(id)a4 completionHandler:(id)a5;
-- (void)perform:(id)a3 afterDelay:(int64_t)a4;
-- (void)queueThumbnailRequest:(id)a3 tryCache:(BOOL)a4 tryAdditionsFirst:(BOOL)a5;
-- (void)receivedExternalCacheConnection:(id)a3 error:(id)a4 forProviderDomainID:(id)a5;
-- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:(id)a3 completionHandler:(id)a4;
+- (void)failedToCompleteThumbnailRequest:(id)request error:(id)error;
+- (void)findThumbnailInAddition:(id)addition request:(id)request completionHandler:(id)handler;
+- (void)findUncachedThumbnailInExternalThumbnailCacheForRequest:(id)request item:(id)item URL:(id)l completionHandler:(id)handler;
+- (void)findUncachedThumbnailInGenStoreForRequest:(id)request completionHandler:(id)handler;
+- (void)findUncachedThumbnailInGenStoreOrDownload:(id)download completionHandler:(id)handler;
+- (void)forEachCacheThread:(id)thread;
+- (void)generateSuccessiveThumbnailRepresentationsForGeneratorRequests:(id)requests completionHandler:(id)handler;
+- (void)generateSuccessiveThumbnailRepresentationsForRequests:(id)requests generationHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)generateThumbnailForThumbnailRequest:(id)request shouldUpdateGenstore:(BOOL)genstore completionHandler:(id)handler;
+- (void)getExternalThumbnailCacheConnectionForItem:(id)item atURL:(id)l completionHandler:(id)handler;
+- (void)perform:(id)perform afterDelay:(int64_t)delay;
+- (void)queueThumbnailRequest:(id)request tryCache:(BOOL)cache tryAdditionsFirst:(BOOL)first;
+- (void)receivedExternalCacheConnection:(id)connection error:(id)error forProviderDomainID:(id)d;
+- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:(id)identifiers completionHandler:(id)handler;
 - (void)reset;
-- (void)sendResultForThumbnailRequest:(id)a3 images:(id)a4 metadata:(id)a5 contentRect:(CGRect)a6 iconFlavor:(int)a7 thumbnailRepresentation:(int64_t)a8 clientShouldTakeOwnership:(BOOL)a9 reenqueueRequest:(BOOL)a10 error:(id)a11;
-- (void)storeImage:(CGImage *)a3 inExternalThumbnailCacheForItem:(id)a4 atURL:(id)a5;
-- (void)thumbnailRequestWasCancelled:(id)a3;
+- (void)sendResultForThumbnailRequest:(id)request images:(id)images metadata:(id)metadata contentRect:(CGRect)rect iconFlavor:(int)flavor thumbnailRepresentation:(int64_t)representation clientShouldTakeOwnership:(BOOL)ownership reenqueueRequest:(BOOL)self0 error:(id)self1;
+- (void)storeImage:(CGImage *)image inExternalThumbnailCacheForItem:(id)item atURL:(id)l;
+- (void)thumbnailRequestWasCancelled:(id)cancelled;
 @end
 
 @implementation QLServerThread
@@ -63,7 +63,7 @@
   block[1] = 3221225472;
   block[2] = __32__QLServerThread_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once != -1)
   {
     dispatch_once(&sharedInstance_once, block);
@@ -102,33 +102,33 @@
   objc_destroyWeak(&location);
 }
 
-- (void)findUncachedThumbnailInExternalThumbnailCacheForRequest:(id)a3 item:(id)a4 URL:(id)a5 completionHandler:(id)a6
+- (void)findUncachedThumbnailInExternalThumbnailCacheForRequest:(id)request item:(id)item URL:(id)l completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  requestCopy = request;
+  itemCopy = item;
+  handlerCopy = handler;
+  lCopy = l;
   v14 = _log_3();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     [QLServerThread(ExternalCache) findUncachedThumbnailInExternalThumbnailCacheForRequest:item:URL:completionHandler:];
   }
 
-  v15 = [v10 request];
+  request = [requestCopy request];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __116__QLServerThread_ExternalCache__findUncachedThumbnailInExternalThumbnailCacheForRequest_item_URL_completionHandler___block_invoke;
   v20[3] = &unk_279ADD1D8;
-  v24 = self;
-  v25 = v12;
-  v21 = v10;
-  v22 = v11;
-  v23 = v15;
-  v16 = v15;
-  v17 = v11;
-  v18 = v10;
-  v19 = v12;
-  [(QLServerThread *)self getExternalThumbnailCacheConnectionForItem:v17 atURL:v13 completionHandler:v20];
+  selfCopy = self;
+  v25 = handlerCopy;
+  v21 = requestCopy;
+  v22 = itemCopy;
+  v23 = request;
+  v16 = request;
+  v17 = itemCopy;
+  v18 = requestCopy;
+  v19 = handlerCopy;
+  [(QLServerThread *)self getExternalThumbnailCacheConnectionForItem:v17 atURL:lCopy completionHandler:v20];
 }
 
 void __116__QLServerThread_ExternalCache__findUncachedThumbnailInExternalThumbnailCacheForRequest_item_URL_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -313,35 +313,35 @@ void __116__QLServerThread_ExternalCache__findUncachedThumbnailInExternalThumbna
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedExternalCacheConnection:(id)a3 error:(id)a4 forProviderDomainID:(id)a5
+- (void)receivedExternalCacheConnection:(id)connection error:(id)error forProviderDomainID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  connectionCopy = connection;
+  errorCopy = error;
+  dCopy = d;
+  if (connectionCopy)
   {
     v11 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2873F6FA0];
-    [v8 setRemoteObjectInterface:v11];
+    [connectionCopy setRemoteObjectInterface:v11];
 
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __91__QLServerThread_ExternalCache__receivedExternalCacheConnection_error_forProviderDomainID___block_invoke;
     v24[3] = &unk_279ADD200;
-    v12 = v10;
+    v12 = dCopy;
     v25 = v12;
-    v26 = self;
-    [v8 setInvalidationHandler:v24];
-    [v8 resume];
-    v13 = [v8 remoteObjectProxy];
+    selfCopy = self;
+    [connectionCopy setInvalidationHandler:v24];
+    [connectionCopy resume];
+    remoteObjectProxy = [connectionCopy remoteObjectProxy];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __91__QLServerThread_ExternalCache__receivedExternalCacheConnection_error_forProviderDomainID___block_invoke_20;
     v21[3] = &unk_279ADD228;
     v21[4] = self;
     v22 = v12;
-    v23 = v8;
+    v23 = connectionCopy;
     v14 = v12;
-    [v13 getThumbnailCacheURLWrappersWithCompletion:v21];
+    [remoteObjectProxy getThumbnailCacheURLWrappersWithCompletion:v21];
 
     v15 = v25;
   }
@@ -360,8 +360,8 @@ void __116__QLServerThread_ExternalCache__findUncachedThumbnailInExternalThumbna
     block[2] = __91__QLServerThread_ExternalCache__receivedExternalCacheConnection_error_forProviderDomainID___block_invoke_22;
     block[3] = &unk_279ADD200;
     block[4] = self;
-    v20 = v10;
-    v18 = v10;
+    v20 = dCopy;
+    v18 = dCopy;
     dispatch_sync(queue, block);
     [(QLServerThread *)self _updateInformationForProviderAndCallPendingBlocksForProviderDomainID:v18 withConnection:0 inboxURL:0 thumbnailsURL:0];
     v15 = v20;
@@ -395,35 +395,35 @@ void __91__QLServerThread_ExternalCache__receivedExternalCacheConnection_error_f
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)_updateInformationForProviderAndCallPendingBlocksForProviderDomainID:(id)a3 withConnection:(id)a4 inboxURL:(id)a5 thumbnailsURL:(id)a6
+- (void)_updateInformationForProviderAndCallPendingBlocksForProviderDomainID:(id)d withConnection:(id)connection inboxURL:(id)l thumbnailsURL:(id)rL
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  connectionCopy = connection;
+  lCopy = l;
+  rLCopy = rL;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
   v37 = __Block_byref_object_copy__0;
   v38 = __Block_byref_object_dispose__0;
   v39 = 0;
-  v14 = [(QLServerThread *)self queue];
+  queue = [(QLServerThread *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __140__QLServerThread_ExternalCache___updateInformationForProviderAndCallPendingBlocksForProviderDomainID_withConnection_inboxURL_thumbnailsURL___block_invoke;
   block[3] = &unk_279ADD250;
   block[4] = self;
-  v15 = v10;
+  v15 = dCopy;
   v29 = v15;
-  v16 = v11;
+  v16 = connectionCopy;
   v30 = v16;
-  v17 = v12;
+  v17 = lCopy;
   v31 = v17;
-  v18 = v13;
+  v18 = rLCopy;
   v32 = v18;
   v33 = &v34;
-  dispatch_sync(v14, block);
+  dispatch_sync(queue, block);
 
   v26 = 0u;
   v27 = 0u;
@@ -484,11 +484,11 @@ void __140__QLServerThread_ExternalCache___updateInformationForProviderAndCallPe
   [v13 setObject:0 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)getExternalThumbnailCacheConnectionForItem:(id)a3 atURL:(id)a4 completionHandler:(id)a5
+- (void)getExternalThumbnailCacheConnectionForItem:(id)item atURL:(id)l completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  lCopy = l;
+  handlerCopy = handler;
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
@@ -503,9 +503,9 @@ void __140__QLServerThread_ExternalCache___updateInformationForProviderAndCallPe
   v41 = &v40;
   v42 = 0x2020000000;
   v43 = 0;
-  v11 = [v8 providerDomainID];
-  v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v13 = [v12 BOOLForKey:@"QLEnableExternalThumbnailCache"];
+  providerDomainID = [itemCopy providerDomainID];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v13 = [standardUserDefaults BOOLForKey:@"QLEnableExternalThumbnailCache"];
 
   if (v13)
   {
@@ -515,14 +515,14 @@ void __140__QLServerThread_ExternalCache___updateInformationForProviderAndCallPe
     block[2] = __100__QLServerThread_ExternalCache__getExternalThumbnailCacheConnectionForItem_atURL_completionHandler___block_invoke;
     block[3] = &unk_279ADD278;
     block[4] = self;
-    v15 = v11;
+    v15 = providerDomainID;
     v34 = v15;
     v37 = &v44;
-    v16 = v10;
+    v16 = handlerCopy;
     v36 = v16;
     v38 = &v40;
     v39 = &v48;
-    v17 = v8;
+    v17 = itemCopy;
     v35 = v17;
     dispatch_sync(queue, block);
     if ((v41[3] & 1) == 0)
@@ -537,9 +537,9 @@ void __140__QLServerThread_ExternalCache___updateInformationForProviderAndCallPe
         v18 = v49[5];
         if (v18)
         {
-          v19 = [(QLServerThread *)self externalThumbnailCacheInboxURLs];
-          v20 = [v17 providerDomainID];
-          v21 = [v19 objectForKeyedSubscript:v20];
+          externalThumbnailCacheInboxURLs = [(QLServerThread *)self externalThumbnailCacheInboxURLs];
+          providerDomainID2 = [v17 providerDomainID];
+          v21 = [externalThumbnailCacheInboxURLs objectForKeyedSubscript:providerDomainID2];
           (*(v16 + 2))(v16, v18, v21);
         }
 
@@ -557,25 +557,25 @@ void __140__QLServerThread_ExternalCache___updateInformationForProviderAndCallPe
           v30[4] = self;
           v26 = v15;
           v31 = v26;
-          v19 = v24;
-          v32 = v19;
+          externalThumbnailCacheInboxURLs = v24;
+          v32 = externalThumbnailCacheInboxURLs;
           dispatch_sync(v25, v30);
-          v27 = [MEMORY[0x277CCAA00] defaultManager];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
           v28[0] = MEMORY[0x277D85DD0];
           v28[1] = 3221225472;
           v28[2] = __100__QLServerThread_ExternalCache__getExternalThumbnailCacheConnectionForItem_atURL_completionHandler___block_invoke_3;
           v28[3] = &unk_279ADD2F0;
           v28[4] = self;
           v29 = v26;
-          [v27 getFileProviderServicesForItemAtURL:v9 completionHandler:v28];
+          [defaultManager getFileProviderServicesForItemAtURL:lCopy completionHandler:v28];
         }
       }
     }
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   _Block_object_dispose(&v40, 8);
@@ -650,20 +650,20 @@ void __100__QLServerThread_ExternalCache__getExternalThumbnailCacheConnectionFor
   }
 }
 
-- (void)storeImage:(CGImage *)a3 inExternalThumbnailCacheForItem:(id)a4 atURL:(id)a5
+- (void)storeImage:(CGImage *)image inExternalThumbnailCacheForItem:(id)item atURL:(id)l
 {
-  v8 = a4;
-  v9 = a5;
-  CGImageRetain(a3);
+  itemCopy = item;
+  lCopy = l;
+  CGImageRetain(image);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __82__QLServerThread_ExternalCache__storeImage_inExternalThumbnailCacheForItem_atURL___block_invoke;
   v11[3] = &unk_279ADD368;
-  v12 = v8;
-  v13 = a3;
+  v12 = itemCopy;
+  imageCopy = image;
   v11[4] = self;
-  v10 = v8;
-  [(QLServerThread *)self getExternalThumbnailCacheConnectionForItem:v10 atURL:v9 completionHandler:v11];
+  v10 = itemCopy;
+  [(QLServerThread *)self getExternalThumbnailCacheConnectionForItem:v10 atURL:lCopy completionHandler:v11];
 }
 
 void __82__QLServerThread_ExternalCache__storeImage_inExternalThumbnailCacheForItem_atURL___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -738,10 +738,10 @@ void __82__QLServerThread_ExternalCache__storeImage_inExternalThumbnailCacheForI
   return v5;
 }
 
-- (QLServerThread)initWithCacheSize:(int64_t)a3 location:(id)a4
+- (QLServerThread)initWithCacheSize:(int64_t)size location:(id)location
 {
   v65 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  locationCopy = location;
   v63.receiver = self;
   v63.super_class = QLServerThread;
   v7 = [(QLServerThread *)&v63 init];
@@ -842,7 +842,7 @@ void __82__QLServerThread_ExternalCache__storeImage_inExternalThumbnailCacheForI
 
     v7->_fsidCacheLock._os_unfair_lock_opaque = 0;
     *&v7->_domainCacheLock._os_unfair_lock_opaque = 0;
-    v55 = [[_QLCacheThread alloc] initWithServerThread:v7 cacheSize:a3 location:v6];
+    v55 = [[_QLCacheThread alloc] initWithServerThread:v7 cacheSize:size location:locationCopy];
     cacheThread = v7->_cacheThread;
     v7->_cacheThread = v55;
 
@@ -889,47 +889,47 @@ void __32__QLServerThread_sharedInstance__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)perform:(id)a3 afterDelay:(int64_t)a4
+- (void)perform:(id)perform afterDelay:(int64_t)delay
 {
-  block = a3;
-  v6 = dispatch_time(0, a4);
+  block = perform;
+  v6 = dispatch_time(0, delay);
   dispatch_after(v6, self->_queue, block);
 }
 
-- (id)makeCacheThreadForPersonaString:(id)a3 containerURL:(id *)a4
+- (id)makeCacheThreadForPersonaString:(id)string containerURL:(id *)l
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(QLServerThread *)self overrideBasePersonaVolumesURLForTesting];
+  stringCopy = string;
+  overrideBasePersonaVolumesURLForTesting = [(QLServerThread *)self overrideBasePersonaVolumesURLForTesting];
 
-  if (v8)
+  if (overrideBasePersonaVolumesURLForTesting)
   {
-    v9 = [(QLServerThread *)self overrideBasePersonaVolumesURLForTesting];
-    v10 = [v9 URLByAppendingPathComponent:v7];
+    overrideBasePersonaVolumesURLForTesting2 = [(QLServerThread *)self overrideBasePersonaVolumesURLForTesting];
+    v10 = [overrideBasePersonaVolumesURLForTesting2 URLByAppendingPathComponent:stringCopy];
 
 LABEL_23:
     v24 = [v10 URLByAppendingPathComponent:*MEMORY[0x277CDAB70]];
-    v25 = [v24 path];
+    path = [v24 path];
 
-    if (a4)
+    if (l)
     {
       v26 = v10;
-      *a4 = v10;
+      *l = v10;
     }
 
-    [QLDiskCache setupCacheAtLocationIfNecessary:v25];
-    v4 = [[_QLCacheThread alloc] initWithServerThread:self cacheSize:+[_QLCacheThread location:"defaultCacheSize"], v25];
+    [QLDiskCache setupCacheAtLocationIfNecessary:path];
+    v4 = [[_QLCacheThread alloc] initWithServerThread:self cacheSize:+[_QLCacheThread location:"defaultCacheSize"], path];
 
     goto LABEL_26;
   }
 
-  v11 = [MEMORY[0x277D77BF8] sharedManager];
-  v12 = [v11 currentPersona];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  currentPersona = [mEMORY[0x277D77BF8] currentPersona];
 
   v31 = 0;
-  v13 = [v12 userPersonaUniqueString];
-  v14 = v13;
-  if (v13 == v7 || ([v13 isEqualToString:v7] & 1) != 0 || !voucher_process_can_use_arbitrary_personas())
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  v14 = userPersonaUniqueString;
+  if (userPersonaUniqueString == stringCopy || ([userPersonaUniqueString isEqualToString:stringCopy] & 1) != 0 || !voucher_process_can_use_arbitrary_personas())
   {
     v19 = 0;
   }
@@ -937,7 +937,7 @@ LABEL_23:
   else
   {
     v30 = 0;
-    v15 = [v12 copyCurrentPersonaContextWithError:&v30];
+    v15 = [currentPersona copyCurrentPersonaContextWithError:&v30];
     v16 = v30;
     v17 = v31;
     v31 = v15;
@@ -951,7 +951,7 @@ LABEL_23:
       }
     }
 
-    v19 = [v12 generateAndRestorePersonaContextWithPersonaUniqueString:v7];
+    v19 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:stringCopy];
 
     if (v19)
     {
@@ -971,7 +971,7 @@ LABEL_23:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v33 = v7;
+      v33 = stringCopy;
       v34 = 2080;
       v35 = v21;
       _os_log_impl(&dword_2615D3000, v22, OS_LOG_TYPE_INFO, "Creating cache for persona %@ in container %s", buf, 0x16u);
@@ -1006,11 +1006,11 @@ LABEL_26:
   return v4;
 }
 
-- (id)uncachedCacheThreadForProviderDomainID:(id)a3
+- (id)uncachedCacheThreadForProviderDomainID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v19 = 0;
-  v5 = [MEMORY[0x277CC6420] providerDomainWithID:v4 cachePolicy:1 error:&v19];
+  v5 = [MEMORY[0x277CC6420] providerDomainWithID:dCopy cachePolicy:1 error:&v19];
   v6 = v19;
   if (!v5)
   {
@@ -1023,9 +1023,9 @@ LABEL_26:
     goto LABEL_11;
   }
 
-  v7 = [v5 personaIdentifier];
+  personaIdentifier = [v5 personaIdentifier];
 
-  if (!v7)
+  if (!personaIdentifier)
   {
 LABEL_11:
     v12 = self->_cacheThread;
@@ -1033,14 +1033,14 @@ LABEL_11:
   }
 
   v8 = MEMORY[0x277D77C10];
-  v9 = [v5 personaIdentifier];
-  v10 = [v8 personaAttributesForIdentifier:v9];
+  personaIdentifier2 = [v5 personaIdentifier];
+  v10 = [v8 personaAttributesForIdentifier:personaIdentifier2];
 
   if (v10 && ([v10 isDataSeparatedPersona] & 1) != 0)
   {
-    v11 = [v5 personaIdentifier];
+    personaIdentifier3 = [v5 personaIdentifier];
     v18 = 0;
-    v12 = [(QLServerThread *)self makeCacheThreadForPersonaString:v11 containerURL:&v18];
+    v12 = [(QLServerThread *)self makeCacheThreadForPersonaString:personaIdentifier3 containerURL:&v18];
     v13 = v18;
 
     v17 = 0;
@@ -1066,11 +1066,11 @@ LABEL_14:
   return v12;
 }
 
-- (id)uncachedCacheThreadForFileAtURL:(id)a3
+- (id)uncachedCacheThreadForFileAtURL:(id)l
 {
   v62 = *MEMORY[0x277D85DE8];
-  v42 = a3;
-  [v42 getFileSystemRepresentation:&v60 maxLength:1024];
+  lCopy = l;
+  [lCopy getFileSystemRepresentation:&v60 maxLength:1024];
   if (v60 != 0x657461766972702FLL || *v61 != 0x7265502F7261762FLL || *&v61[8] != 0x756C6F56616E6F73 || *&v61[11] != 0x73656D756C6F5661)
   {
     v7 = v60 == 0x7265502F7261762FLL && *v61 == 0x756C6F56616E6F73;
@@ -1081,10 +1081,10 @@ LABEL_14:
     }
   }
 
-  v10 = [v42 startAccessingSecurityScopedResource];
+  startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
   v52 = 0;
   v11 = *MEMORY[0x277CBEA58];
-  v12 = [v42 getResourceValue:&v52 forKey:*MEMORY[0x277CBEA58] error:0];
+  v12 = [lCopy getResourceValue:&v52 forKey:*MEMORY[0x277CBEA58] error:0];
   v13 = v52;
   if (!v12)
   {
@@ -1098,10 +1098,10 @@ LABEL_14:
   {
     os_unfair_lock_unlock(&self->_volumeCacheLock);
 LABEL_25:
-    v40 = self;
-    v15 = [MEMORY[0x277D77BF8] sharedManager];
+    selfCopy = self;
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
     v51 = 0;
-    v16 = [v15 listAllPersonaAttributesWithError:&v51];
+    v16 = [mEMORY[0x277D77BF8] listAllPersonaAttributesWithError:&v51];
     v17 = v51;
 
     if (v17)
@@ -1115,7 +1115,7 @@ LABEL_25:
 
     v39 = v11;
     v41 = v13;
-    v19 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
@@ -1125,7 +1125,7 @@ LABEL_25:
     if (v21)
     {
       v22 = v21;
-      v38 = v10;
+      v38 = startAccessingSecurityScopedResource;
       v23 = *v48;
 LABEL_31:
       v24 = 0;
@@ -1137,29 +1137,29 @@ LABEL_31:
         }
 
         v25 = *(*(&v47 + 1) + 8 * v24);
-        v26 = [v25 personaLayoutPathURL];
+        personaLayoutPathURL = [v25 personaLayoutPathURL];
 
-        if (v26)
+        if (personaLayoutPathURL)
         {
           v46 = 0;
-          v27 = [v25 personaLayoutPathURL];
+          personaLayoutPathURL2 = [v25 personaLayoutPathURL];
           v45 = v17;
-          v28 = [v19 getRelationship:&v46 ofDirectoryAtURL:v27 toItemAtURL:v42 error:&v45];
+          v28 = [defaultManager getRelationship:&v46 ofDirectoryAtURL:personaLayoutPathURL2 toItemAtURL:lCopy error:&v45];
           v29 = v45;
 
           if (v28)
           {
             if (!v46)
             {
-              v32 = [v25 userPersonaUniqueString];
+              userPersonaUniqueString = [v25 userPersonaUniqueString];
 
-              if (!v32)
+              if (!userPersonaUniqueString)
               {
                 goto LABEL_51;
               }
 
               v44 = 0;
-              v9 = [(QLServerThread *)v40 makeCacheThreadForPersonaString:v32 containerURL:&v44];
+              v9 = [(QLServerThread *)selfCopy makeCacheThreadForPersonaString:userPersonaUniqueString containerURL:&v44];
               v33 = v44;
               v43 = 0;
               v34 = [v33 getResourceValue:&v43 forKey:v39 error:0];
@@ -1167,14 +1167,14 @@ LABEL_31:
 
               if (v34)
               {
-                os_unfair_lock_lock(&v40->_volumeCacheLock);
-                [(NSMutableDictionary *)v40->_volumesToCaches setObject:v9 forKeyedSubscript:v13];
-                os_unfair_lock_unlock(&v40->_volumeCacheLock);
+                os_unfair_lock_lock(&selfCopy->_volumeCacheLock);
+                [(NSMutableDictionary *)selfCopy->_volumesToCaches setObject:v9 forKeyedSubscript:v13];
+                os_unfair_lock_unlock(&selfCopy->_volumeCacheLock);
               }
 
               if (v38)
               {
-                [v42 stopAccessingSecurityScopedResource];
+                [lCopy stopAccessingSecurityScopedResource];
               }
 
               goto LABEL_54;
@@ -1186,11 +1186,11 @@ LABEL_31:
             v30 = _log_3();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
             {
-              v31 = [v25 personaLayoutPathURL];
+              personaLayoutPathURL3 = [v25 personaLayoutPathURL];
               *buf = 138412802;
-              v54 = v31;
+              v54 = personaLayoutPathURL3;
               v55 = 2112;
-              v56 = v42;
+              v56 = lCopy;
               v57 = 2112;
               v58 = v29;
               _os_log_error_impl(&dword_2615D3000, v30, OS_LOG_TYPE_ERROR, "Could not get relationship between %@ and %@, error: %@", buf, 0x20u);
@@ -1222,15 +1222,15 @@ LABEL_51:
       [QLServerThread uncachedCacheThreadForFileAtURL:];
     }
 
-    v9 = v40->_cacheThread;
+    v9 = selfCopy->_cacheThread;
 LABEL_54:
 
     goto LABEL_55;
   }
 
-  if (v10)
+  if (startAccessingSecurityScopedResource)
   {
-    [v42 stopAccessingSecurityScopedResource];
+    [lCopy stopAccessingSecurityScopedResource];
   }
 
   v9 = [(NSMutableDictionary *)self->_volumesToCaches objectForKeyedSubscript:v13];
@@ -1243,15 +1243,15 @@ LABEL_56:
   return v9;
 }
 
-- (id)cacheThreadForProviderDomainID:(id)a3
+- (id)cacheThreadForProviderDomainID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_domainCacheLock);
-  v5 = [(NSMutableDictionary *)self->_domainsToCaches objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_domainsToCaches objectForKey:dCopy];
   if (!v5)
   {
-    v5 = [(QLServerThread *)self uncachedCacheThreadForProviderDomainID:v4];
-    [(NSMutableDictionary *)self->_domainsToCaches setObject:v5 forKeyedSubscript:v4];
+    v5 = [(QLServerThread *)self uncachedCacheThreadForProviderDomainID:dCopy];
+    [(NSMutableDictionary *)self->_domainsToCaches setObject:v5 forKeyedSubscript:dCopy];
   }
 
   os_unfair_lock_unlock(&self->_domainCacheLock);
@@ -1259,41 +1259,41 @@ LABEL_56:
   return v5;
 }
 
-- (id)cacheThreadForRequest:(id)a3
+- (id)cacheThreadForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = v5;
-  if (v5)
+  requestCopy = request;
+  item = [requestCopy item];
+  v6 = item;
+  if (item)
   {
-    v7 = [v5 providerDomainID];
-    v8 = [(QLServerThread *)self cacheThreadForProviderDomainID:v7];
+    providerDomainID = [item providerDomainID];
+    v8 = [(QLServerThread *)self cacheThreadForProviderDomainID:providerDomainID];
   }
 
   else
   {
-    v7 = [v4 fileIdentifier];
-    v9 = [v7 fileIdentifier];
-    v10 = [v4 quicklookSandboxWrapper];
-    v11 = [v10 url];
-    v8 = [(QLServerThread *)self cacheThreadForFileIdentifier:v9 atURL:v11];
+    providerDomainID = [requestCopy fileIdentifier];
+    fileIdentifier = [providerDomainID fileIdentifier];
+    quicklookSandboxWrapper = [requestCopy quicklookSandboxWrapper];
+    v11 = [quicklookSandboxWrapper url];
+    v8 = [(QLServerThread *)self cacheThreadForFileIdentifier:fileIdentifier atURL:v11];
   }
 
   return v8;
 }
 
-- (void)generateSuccessiveThumbnailRepresentationsForRequests:(id)a3 generationHandler:(id)a4 completionHandler:(id)a5
+- (void)generateSuccessiveThumbnailRepresentationsForRequests:(id)requests generationHandler:(id)handler completionHandler:(id)completionHandler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  requestsCopy = requests;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(requestsCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = v8;
+  v12 = requestsCopy;
   v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v13)
   {
@@ -1311,7 +1311,7 @@ LABEL_56:
 
         v17 = *(*(&v21 + 1) + 8 * v16);
         v18 = [QLTGeneratorThumbnailRequest alloc];
-        v19 = [(QLTGeneratorThumbnailRequest *)v18 initWithRequest:v17 generationHandler:v9, v21];
+        v19 = [(QLTGeneratorThumbnailRequest *)v18 initWithRequest:v17 generationHandler:handlerCopy, v21];
         [v11 addObject:v19];
 
         ++v16;
@@ -1324,15 +1324,15 @@ LABEL_56:
     while (v14);
   }
 
-  [(QLServerThread *)self generateSuccessiveThumbnailRepresentationsForGeneratorRequests:v11 completionHandler:v10];
+  [(QLServerThread *)self generateSuccessiveThumbnailRepresentationsForGeneratorRequests:v11 completionHandler:completionHandlerCopy];
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateSuccessiveThumbnailRepresentationsForGeneratorRequests:(id)a3 completionHandler:(id)a4
+- (void)generateSuccessiveThumbnailRepresentationsForGeneratorRequests:(id)requests completionHandler:(id)handler
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  handlerCopy = handler;
   v8 = _log_3();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1343,7 +1343,7 @@ LABEL_56:
   v36 = 0u;
   v34 = 0u;
   v33 = 0u;
-  v9 = v6;
+  v9 = requestsCopy;
   v10 = [v9 countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v10)
   {
@@ -1359,8 +1359,8 @@ LABEL_56:
           objc_enumerationMutation(v9);
         }
 
-        v15 = [*(*(&v33 + 1) + 8 * i) request];
-        v16 = [(QLServerThread *)self cacheThreadForRequest:v15];
+        request = [*(*(&v33 + 1) + 8 * i) request];
+        v16 = [(QLServerThread *)self cacheThreadForRequest:request];
 
         if (v16 != self->_cacheThread)
         {
@@ -1423,8 +1423,8 @@ LABEL_56:
   block[3] = &unk_279ADD6C8;
   block[4] = self;
   v27 = v9;
-  v28 = v7;
-  v23 = v7;
+  v28 = handlerCopy;
+  v23 = handlerCopy;
   v24 = v9;
   dispatch_sync(queue, block);
 
@@ -1460,18 +1460,18 @@ void __50__QLServerThread__installRequestsFinishedWatchdog__block_invoke_2(uint6
   }
 }
 
-- (void)_addThumbnailRequestBatchToQueue:(id)a3 completionHandler:(id)a4
+- (void)_addThumbnailRequestBatchToQueue:(id)queue completionHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v23 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v7 = dispatch_group_create();
   [(QLServerThread *)self _installRequestsFinishedWatchdog];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v6;
+  obj = queueCopy;
   v8 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v8)
   {
@@ -1486,7 +1486,7 @@ void __50__QLServerThread__installRequestsFinishedWatchdog__block_invoke_2(uint6
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        v12 = [v11 request];
+        request = [v11 request];
         dispatch_group_enter(v7);
         kdebug_trace();
         [v11 setBatchDispatchGroup:v7];
@@ -1495,22 +1495,22 @@ void __50__QLServerThread__installRequestsFinishedWatchdog__block_invoke_2(uint6
         state.opaque[1] = 0;
         os_activity_scope_enter(v13, &state);
         [v11 setTopActivity:v13];
-        v14 = [(QLServerThread *)self pendingRequests];
-        v15 = [v12 uuid];
-        [v14 setObject:v11 forKeyedSubscript:v15];
+        pendingRequests = [(QLServerThread *)self pendingRequests];
+        uuid = [request uuid];
+        [pendingRequests setObject:v11 forKeyedSubscript:uuid];
 
-        v16 = [v12 forceGeneration];
-        if (v16)
+        forceGeneration = [request forceGeneration];
+        if (forceGeneration)
         {
-          v17 = 0;
+          cacheEnabled = 0;
         }
 
         else
         {
-          v17 = [v11 cacheEnabled];
+          cacheEnabled = [v11 cacheEnabled];
         }
 
-        [(QLServerThread *)self queueThumbnailRequest:v11 tryCache:v17 tryAdditionsFirst:v16 ^ 1u];
+        [(QLServerThread *)self queueThumbnailRequest:v11 tryCache:cacheEnabled tryAdditionsFirst:forceGeneration ^ 1u];
         os_activity_scope_leave(&state);
       }
 
@@ -1526,10 +1526,10 @@ void __50__QLServerThread__installRequestsFinishedWatchdog__block_invoke_2(uint6
   block[2] = __69__QLServerThread__addThumbnailRequestBatchToQueue_completionHandler___block_invoke;
   block[3] = &unk_279ADD710;
   block[4] = self;
-  v27 = v23;
+  v27 = handlerCopy;
   v19 = obj;
   v26 = v19;
-  v20 = v23;
+  v20 = handlerCopy;
   dispatch_group_notify(v7, completionBlocksQueue, block);
   v21 = _log_3();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -1540,11 +1540,11 @@ void __50__QLServerThread__installRequestsFinishedWatchdog__block_invoke_2(uint6
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_callCompletionHandler:(id)a3 ofThumbnailRequestBatch:(id)a4
+- (void)_callCompletionHandler:(id)handler ofThumbnailRequestBatch:(id)batch
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a3;
+  batchCopy = batch;
+  handlerCopy = handler;
   v9 = _log_3();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -1552,27 +1552,27 @@ void __50__QLServerThread__installRequestsFinishedWatchdog__block_invoke_2(uint6
     v12 = 138412546;
     v13 = v10;
     v14 = 2112;
-    v15 = v7;
+    v15 = batchCopy;
     _os_log_impl(&dword_2615D3000, v9, OS_LOG_TYPE_INFO, "%@%@", &v12, 0x16u);
   }
 
   dispatch_assert_queue_V2(self->_completionBlocksQueue);
-  v8[2](v8);
+  handlerCopy[2](handlerCopy);
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelThumbnailRequests:(id)a3
+- (void)cancelThumbnailRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__QLServerThread_cancelThumbnailRequests___block_invoke;
   v7[3] = &unk_279ADD200;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = requestsCopy;
+  selfCopy = self;
+  v6 = requestsCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -1643,63 +1643,63 @@ void __42__QLServerThread_cancelThumbnailRequests___block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queueThumbnailRequest:(id)a3 tryCache:(BOOL)a4 tryAdditionsFirst:(BOOL)a5
+- (void)queueThumbnailRequest:(id)request tryCache:(BOOL)cache tryAdditionsFirst:(BOOL)first
 {
-  v5 = a4;
+  cacheCopy = cache;
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 request];
+  requestCopy = request;
+  request = [requestCopy request];
   v9 = _log_3();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf.opaque[0]) = 138412290;
-    *(buf.opaque + 4) = v7;
+    *(buf.opaque + 4) = requestCopy;
     _os_log_impl(&dword_2615D3000, v9, OS_LOG_TYPE_INFO, "Enqueuing thumbnail request: %@", &buf, 0xCu);
   }
 
-  if ([v7 hasHandledAllRequestedTypesOrMostRepresentativeType])
+  if ([requestCopy hasHandledAllRequestedTypesOrMostRepresentativeType])
   {
-    [(QLServerThread *)self _completeHandledThumbnailRequest:v7];
+    [(QLServerThread *)self _completeHandledThumbnailRequest:requestCopy];
   }
 
   else
   {
-    if (![v7 cancelled])
+    if (![requestCopy cancelled])
     {
-      if (([v8 isValid] & 1) == 0)
+      if (([request isValid] & 1) == 0)
       {
         v17 = dispatch_get_global_queue(0, 0);
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __67__QLServerThread_queueThumbnailRequest_tryCache_tryAdditionsFirst___block_invoke_26;
         v30[3] = &unk_279ADD200;
-        v31 = v7;
-        v32 = self;
+        v31 = requestCopy;
+        selfCopy = self;
         dispatch_async(v17, v30);
 
         goto LABEL_18;
       }
 
-      if (v5)
+      if (cacheCopy)
       {
-        v11 = [v7 topActivity];
-        v12 = _os_activity_create(&dword_2615D3000, "Cache Lookup", v11, OS_ACTIVITY_FLAG_DEFAULT);
+        topActivity = [requestCopy topActivity];
+        v12 = _os_activity_create(&dword_2615D3000, "Cache Lookup", topActivity, OS_ACTIVITY_FLAG_DEFAULT);
 
         buf.opaque[0] = 0;
         buf.opaque[1] = 0;
         os_activity_scope_enter(v12, &buf);
-        [v7 setActivity:v12];
-        v13 = [v8 fileIdentifier];
-        v14 = [v13 version];
-        v15 = [v14 isDefaultVersion];
+        [requestCopy setActivity:v12];
+        fileIdentifier = [request fileIdentifier];
+        version = [fileIdentifier version];
+        isDefaultVersion = [version isDefaultVersion];
 
-        if (v15)
+        if (isDefaultVersion)
         {
-          [objc_opt_class() updateThumbnailRequestThumbnailVersionWithThirdPartyGeneratorInformationIfNeeded:v8];
+          [objc_opt_class() updateThumbnailRequestThumbnailVersionWithThirdPartyGeneratorInformationIfNeeded:request];
         }
 
-        v16 = [(QLServerThread *)self cacheThreadForRequest:v8];
-        if ([v16 addThumbnailRequest:v7])
+        v16 = [(QLServerThread *)self cacheThreadForRequest:request];
+        if ([v16 addThumbnailRequest:requestCopy])
         {
 
           os_activity_scope_leave(&buf);
@@ -1712,24 +1712,24 @@ void __42__QLServerThread_cancelThumbnailRequests___block_invoke(uint64_t a1)
           [QLServerThread queueThumbnailRequest:tryCache:tryAdditionsFirst:];
         }
 
-        [v7 setActivity:0];
+        [requestCopy setActivity:0];
         os_activity_scope_leave(&buf);
       }
 
-      v19 = [v7 topActivity];
-      v20 = _os_activity_create(&dword_2615D3000, "Thumbnail Generation", v19, OS_ACTIVITY_FLAG_DEFAULT);
+      topActivity2 = [requestCopy topActivity];
+      v20 = _os_activity_create(&dword_2615D3000, "Thumbnail Generation", topActivity2, OS_ACTIVITY_FLAG_DEFAULT);
 
       buf.opaque[0] = 0;
       buf.opaque[1] = 0;
       os_activity_scope_enter(v20, &buf);
-      [v7 setActivity:v20];
+      [requestCopy setActivity:v20];
       v21 = MEMORY[0x277CCA8C8];
       v24 = MEMORY[0x277D85DD0];
       v25 = 3221225472;
       v26 = __67__QLServerThread_queueThumbnailRequest_tryCache_tryAdditionsFirst___block_invoke_28;
       v27 = &unk_279ADD200;
-      v28 = v7;
-      v29 = self;
+      v28 = requestCopy;
+      selfCopy2 = self;
       v22 = [v21 blockOperationWithBlock:&v24];
       [(NSOperationQueue *)self->_uncachedThumbnailRetrievalQueue addOperation:v22, v24, v25, v26, v27];
 
@@ -1742,8 +1742,8 @@ void __42__QLServerThread_cancelThumbnailRequests___block_invoke(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __67__QLServerThread_queueThumbnailRequest_tryCache_tryAdditionsFirst___block_invoke;
     block[3] = &unk_279ADD200;
-    v34 = v7;
-    v35 = self;
+    v34 = requestCopy;
+    selfCopy3 = self;
     dispatch_async(v10, block);
   }
 
@@ -1986,23 +1986,23 @@ void __67__QLServerThread_queueThumbnailRequest_tryCache_tryAdditionsFirst___blo
   }
 }
 
-- (void)findUncachedThumbnailInGenStoreOrDownload:(id)a3 completionHandler:(id)a4
+- (void)findUncachedThumbnailInGenStoreOrDownload:(id)download completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  downloadCopy = download;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__QLServerThread_findUncachedThumbnailInGenStoreOrDownload_completionHandler___block_invoke;
   aBlock[3] = &unk_279ADD760;
-  v8 = v7;
+  v8 = handlerCopy;
   v19 = v8;
-  v9 = v6;
+  v9 = downloadCopy;
   v17 = v9;
-  v18 = self;
+  selfCopy = self;
   v10 = _Block_copy(aBlock);
-  v11 = [v9 taggedLogicalURL];
+  taggedLogicalURL = [v9 taggedLogicalURL];
 
-  if (v11)
+  if (taggedLogicalURL)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -2062,33 +2062,33 @@ LABEL_3:
 LABEL_10:
 }
 
-- (void)findUncachedThumbnailInGenStoreForRequest:(id)a3 completionHandler:(id)a4
+- (void)findUncachedThumbnailInGenStoreForRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
+  requestCopy = request;
   v10 = 0;
-  v7 = a4;
-  v8 = [(QLServerThread *)self genStoreThumbnailForRequest:v6 error:&v10];
+  handlerCopy = handler;
+  v8 = [(QLServerThread *)self genStoreThumbnailForRequest:requestCopy error:&v10];
   v9 = v10;
   if (v8)
   {
-    [(QLServerThread *)self findThumbnailInAddition:v8 request:v6 completionHandler:v7];
+    [(QLServerThread *)self findThumbnailInAddition:v8 request:requestCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v7[2](v7, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 }
 
-- (id)genStoreThumbnailForRequest:(id)a3 error:(id *)a4
+- (id)genStoreThumbnailForRequest:(id)request error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 taggedLogicalURL];
-  v8 = v7;
-  if (v7)
+  requestCopy = request;
+  taggedLogicalURL = [requestCopy taggedLogicalURL];
+  v8 = taggedLogicalURL;
+  if (taggedLogicalURL)
   {
-    v9 = [v7 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource = [taggedLogicalURL startAccessingSecurityScopedResource];
     v10 = _CFURLPromiseCopyPhysicalURL();
     v11 = v10;
     if (v10)
@@ -2127,30 +2127,30 @@ LABEL_10:
       }
     }
 
-    if (v9)
+    if (startAccessingSecurityScopedResource)
     {
       [v8 stopAccessingSecurityScopedResource];
     }
 
     if (v15)
     {
-      if ([(QLServerThread *)self _canUseAdditionToProvideThumbnail:v15 forThumbnailRequest:v6 taggedLogicalURL:v8])
+      if ([(QLServerThread *)self _canUseAdditionToProvideThumbnail:v15 forThumbnailRequest:requestCopy taggedLogicalURL:v8])
       {
         v15 = v15;
         v18 = v15;
         goto LABEL_24;
       }
 
-      if (a4)
+      if (error)
       {
-        v19 = generationFailedErrorWithUnderlyingError(v6, 0, @"Stored thumbnail version in Generational Storage is invalid for this version of the file");
+        v19 = generationFailedErrorWithUnderlyingError(requestCopy, 0, @"Stored thumbnail version in Generational Storage is invalid for this version of the file");
         goto LABEL_22;
       }
 
       goto LABEL_23;
     }
 
-    if (!a4)
+    if (!error)
     {
 LABEL_23:
       v18 = 0;
@@ -2158,18 +2158,18 @@ LABEL_23:
     }
 
 LABEL_19:
-    v19 = generationFailedErrorWithUnderlyingError(v6, v16, 0);
+    v19 = generationFailedErrorWithUnderlyingError(requestCopy, v16, 0);
     v15 = 0;
 LABEL_22:
     v18 = 0;
-    *a4 = v19;
+    *error = v19;
     goto LABEL_24;
   }
 
   v16 = 0;
   v15 = 0;
   v18 = 0;
-  if (a4)
+  if (error)
   {
     goto LABEL_19;
   }
@@ -2196,50 +2196,50 @@ uint64_t __117__QLServerThread_processLargeThumbnailData_withContentType_isAppCo
   return [v2 _cacheThumbnailData:v1 forRequest:v3 imageSource:*(a1 + 64) actualSize:*(a1 + 72) resultSize:*(a1 + 80) fromGenStore:*(a1 + 88) completionHandler:?];
 }
 
-- (void)_cacheThumbnailData:(id)a3 forRequest:(id)a4 imageSource:(CGImageSource *)a5 actualSize:(CGSize)a6 resultSize:(CGSize)a7 fromGenStore:(BOOL)a8 completionHandler:(id)a9
+- (void)_cacheThumbnailData:(id)data forRequest:(id)request imageSource:(CGImageSource *)source actualSize:(CGSize)size resultSize:(CGSize)resultSize fromGenStore:(BOOL)store completionHandler:(id)handler
 {
-  height = a7.height;
-  width = a7.width;
-  v13 = a6.height;
-  v14 = a6.width;
-  v18 = a3;
-  v19 = a4;
-  v20 = a9;
-  v21 = [v19 taggedLogicalURL];
-  v22 = [v19 request];
-  v23 = v22;
-  if (v21)
+  height = resultSize.height;
+  width = resultSize.width;
+  v13 = size.height;
+  v14 = size.width;
+  dataCopy = data;
+  requestCopy = request;
+  handlerCopy = handler;
+  taggedLogicalURL = [requestCopy taggedLogicalURL];
+  request = [requestCopy request];
+  v23 = request;
+  if (taggedLogicalURL)
   {
-    if (!a8)
+    if (!store)
     {
-      [(QLServerThread *)self _saveLargeThumbnailToGenstoreWithData:v18 url:v21];
+      [(QLServerThread *)self _saveLargeThumbnailToGenstoreWithData:dataCopy url:taggedLogicalURL];
     }
 
-    v20[2](v20, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    if ([v22 isUbiquitous])
+    if ([request isUbiquitous])
     {
-      v24 = [MEMORY[0x277CC6408] defaultManager];
-      v25 = [v23 item];
+      defaultManager = [MEMORY[0x277CC6408] defaultManager];
+      item = [v23 item];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __114__QLServerThread__cacheThumbnailData_forRequest_imageSource_actualSize_resultSize_fromGenStore_completionHandler___block_invoke;
       v29[3] = &unk_279ADD7F8;
       v30 = v23;
-      v40 = a8;
-      v34 = v20;
-      v31 = self;
-      v32 = v18;
-      v33 = v19;
-      v35 = a5;
+      storeCopy = store;
+      v34 = handlerCopy;
+      selfCopy = self;
+      v32 = dataCopy;
+      v33 = requestCopy;
+      sourceCopy = source;
       v36 = v14;
       v37 = v13;
       v38 = width;
       v39 = height;
-      [v24 fetchURLForItem:v25 creatingPlaceholderIfMissing:0 completionHandler:v29];
+      [defaultManager fetchURLForItem:item creatingPlaceholderIfMissing:0 completionHandler:v29];
 
       v26 = v30;
     }
@@ -2250,8 +2250,8 @@ uint64_t __117__QLServerThread_processLargeThumbnailData_withContentType_isAppCo
       v27[1] = 3221225472;
       v27[2] = __114__QLServerThread__cacheThumbnailData_forRequest_imageSource_actualSize_resultSize_fromGenStore_completionHandler___block_invoke_2;
       v27[3] = &unk_279ADD038;
-      v28 = v20;
-      [(QLServerThread *)self _addAllThumbnailsSizesToCacheForRequest:v19 withImageSource:a5 imageSize:v27 alreadyCachedSize:v14 completionHandler:v13, width, height];
+      v28 = handlerCopy;
+      [(QLServerThread *)self _addAllThumbnailsSizesToCacheForRequest:requestCopy withImageSource:source imageSize:v27 alreadyCachedSize:v14 completionHandler:v13, width, height];
       v26 = v28;
     }
   }
@@ -2307,18 +2307,18 @@ LABEL_6:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_saveLargeThumbnailToGenstoreWithData:(id)a3 url:(id)a4
+- (void)_saveLargeThumbnailToGenstoreWithData:(id)data url:(id)url
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  urlCopy = url;
   v26 = 0;
   v6 = MEMORY[0x277CBEBC0];
-  v7 = a3;
+  dataCopy = data;
   v8 = [v6 _QLTemporaryURLWithExtension:@"jpg" openingFileHandle:&v26 inDirectoryAtURL:0];
   v9 = objc_alloc(MEMORY[0x277CCA9F8]);
   v10 = [v9 initWithFileDescriptor:v26 closeOnDealloc:1];
   v25 = 0;
-  v11 = [v10 writeData:v7 error:&v25];
+  v11 = [v10 writeData:dataCopy error:&v25];
 
   v12 = v25;
   if (v11)
@@ -2329,14 +2329,14 @@ LABEL_6:
 
     if (v13)
     {
-      v15 = [v5 startAccessingSecurityScopedResource];
-      v16 = _CFURLPromiseCopyPhysicalURL();
+      startAccessingSecurityScopedResource = [urlCopy startAccessingSecurityScopedResource];
+      defaultManager = _CFURLPromiseCopyPhysicalURL();
       v17 = MEMORY[0x277CDAAC0];
       v27 = *MEMORY[0x277CBE788];
       v28[0] = v8;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
       v23 = v14;
-      v19 = [v17 associateThumbnailImagesDictionary:v18 serializedQuickLookMetadata:0 withDocumentAtURL:v16 error:&v23];
+      v19 = [v17 associateThumbnailImagesDictionary:v18 serializedQuickLookMetadata:0 withDocumentAtURL:defaultManager error:&v23];
       v12 = v23;
 
       if ((v19 & 1) == 0)
@@ -2348,9 +2348,9 @@ LABEL_6:
         }
       }
 
-      if (v15)
+      if (startAccessingSecurityScopedResource)
       {
-        [v5 stopAccessingSecurityScopedResource];
+        [urlCopy stopAccessingSecurityScopedResource];
       }
 
       goto LABEL_13;
@@ -2365,28 +2365,28 @@ LABEL_6:
     [QLServerThread _saveLargeThumbnailToGenstoreWithData:url:];
   }
 
-  v16 = [MEMORY[0x277CCAA00] defaultManager];
-  [v16 removeItemAtURL:v8 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager removeItemAtURL:v8 error:0];
 LABEL_13:
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addAllThumbnailsSizesToCacheForRequest:(id)a3 withImageSource:(CGImageSource *)a4 imageSize:(CGSize)a5 alreadyCachedSize:(CGSize)a6 completionHandler:(id)a7
+- (void)_addAllThumbnailsSizesToCacheForRequest:(id)request withImageSource:(CGImageSource *)source imageSize:(CGSize)size alreadyCachedSize:(CGSize)cachedSize completionHandler:(id)handler
 {
-  height = a6.height;
-  width = a6.width;
-  v10 = a5.height;
-  v11 = a5.width;
-  v14 = a3;
-  v15 = a7;
-  if (a4)
+  height = cachedSize.height;
+  width = cachedSize.width;
+  v10 = size.height;
+  v11 = size.width;
+  requestCopy = request;
+  handlerCopy = handler;
+  if (source)
   {
-    CFRetain(a4);
+    CFRetain(source);
   }
 
-  v16 = [v14 request];
-  v17 = [(QLServerThread *)self cacheThreadForRequest:v16];
+  request = [requestCopy request];
+  v17 = [(QLServerThread *)self cacheThreadForRequest:request];
 
   downscaledThumbnailGenerationQueue = self->_downscaledThumbnailGenerationQueue;
   v22[0] = MEMORY[0x277D85DD0];
@@ -2397,13 +2397,13 @@ LABEL_13:
   v27 = v10;
   v28 = width;
   v29 = height;
-  v30 = a4;
-  v23 = v14;
+  sourceCopy = source;
+  v23 = requestCopy;
   v24 = v17;
-  v25 = v15;
-  v19 = v15;
+  v25 = handlerCopy;
+  v19 = handlerCopy;
   v20 = v17;
-  v21 = v14;
+  v21 = requestCopy;
   [(NSOperationQueue *)downscaledThumbnailGenerationQueue addOperationWithBlock:v22];
 }
 
@@ -2490,16 +2490,16 @@ uint64_t __120__QLServerThread__addAllThumbnailsSizesToCacheForRequest_withImage
   return v8;
 }
 
-- (void)generateThumbnailForThumbnailRequest:(id)a3 shouldUpdateGenstore:(BOOL)a4 completionHandler:(id)a5
+- (void)generateThumbnailForThumbnailRequest:(id)request shouldUpdateGenstore:(BOOL)genstore completionHandler:(id)handler
 {
-  v6 = a4;
+  genstoreCopy = genstore;
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v31 = a5;
-  v9 = [v8 request];
-  v10 = [v9 copy];
+  requestCopy = request;
+  handlerCopy = handler;
+  request = [requestCopy request];
+  v10 = [request copy];
 
-  if (v6)
+  if (genstoreCopy)
   {
     [v10 scale];
     v12 = 1024.0 / v11;
@@ -2507,81 +2507,81 @@ uint64_t __120__QLServerThread__addAllThumbnailsSizesToCacheForRequest_withImage
     [v10 setSize:{v12, 1024.0 / v13}];
   }
 
-  v14 = [v8 taggedLogicalURL];
-  v15 = [v10 isDataBased];
+  taggedLogicalURL = [requestCopy taggedLogicalURL];
+  isDataBased = [v10 isDataBased];
   v16 = _log_3();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_INFO);
-  if (v15)
+  if (isDataBased)
   {
     if (v17)
     {
       *buf = 138412290;
-      v46 = v8;
+      v46 = requestCopy;
       _os_log_impl(&dword_2615D3000, v16, OS_LOG_TYPE_INFO, "About to generate a thumbnail locally for data request: %@", buf, 0xCu);
     }
 
     v18 = objc_alloc(MEMORY[0x277CDAAE8]);
-    v19 = [v10 data];
-    v20 = [v10 contentType];
-    v21 = [v18 initWithData:v19 contentType:v20];
+    data = [v10 data];
+    contentType = [v10 contentType];
+    v21 = [v18 initWithData:data contentType:contentType];
     goto LABEL_14;
   }
 
   if (v17)
   {
     *buf = 138412290;
-    v46 = v14;
+    v46 = taggedLogicalURL;
     _os_log_impl(&dword_2615D3000, v16, OS_LOG_TYPE_INFO, "About to generate a thumbnail locally from URL: %@", buf, 0xCu);
   }
 
   if ([v10 isFileBased])
   {
-    v22 = [v10 genericSandboxWrapper];
+    genericSandboxWrapper = [v10 genericSandboxWrapper];
 LABEL_13:
-    v19 = v22;
+    data = genericSandboxWrapper;
     v23 = objc_alloc(MEMORY[0x277CDAAE8]);
-    v20 = [v10 parentDirectorySandboxWrapper];
-    v24 = [v10 contentType];
-    v21 = [v23 initWithURLWrapper:v19 parentDirectoryWrapper:v20 contentType:v24];
+    contentType = [v10 parentDirectorySandboxWrapper];
+    contentType2 = [v10 contentType];
+    v21 = [v23 initWithURLWrapper:data parentDirectoryWrapper:contentType contentType:contentType2];
 
 LABEL_14:
     if ([v10 provideLowQualityThumbnail])
     {
-      v25 = [v8 needsLowQualityThumbnailGeneration];
+      needsLowQualityThumbnailGeneration = [requestCopy needsLowQualityThumbnailGeneration];
     }
 
     else
     {
-      v25 = 0;
+      needsLowQualityThumbnailGeneration = 0;
     }
 
-    v26 = [[QLPreviewThumbnailGenerator alloc] initWithGeneratorRequest:v8 lowQuality:v25 thumbnailItem:v21];
+    v26 = [[QLPreviewThumbnailGenerator alloc] initWithGeneratorRequest:requestCopy lowQuality:needsLowQualityThumbnailGeneration thumbnailItem:v21];
     [(QLPreviewThumbnailGenerator *)v26 setGenerationQueue:self->_previewThumbnailGeneratorQueue];
     objc_initWeak(buf, v26);
-    v27 = [v8 request];
+    request2 = [requestCopy request];
     kdebug_trace();
 
-    [v8 setGenerator:v26];
+    [requestCopy setGenerator:v26];
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __94__QLServerThread_generateThumbnailForThumbnailRequest_shouldUpdateGenstore_completionHandler___block_invoke;
     v43[3] = &unk_279ADD870;
-    v44 = v8;
+    v44 = requestCopy;
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __94__QLServerThread_generateThumbnailForThumbnailRequest_shouldUpdateGenstore_completionHandler___block_invoke_2;
     v32[3] = &unk_279ADD898;
     v33 = v44;
     objc_copyWeak(&v39, buf);
-    v40 = v25;
+    v40 = needsLowQualityThumbnailGeneration;
     v28 = v26;
     v34 = v28;
-    v35 = v14;
-    v38 = v31;
-    v41 = v15;
+    v35 = taggedLogicalURL;
+    v38 = handlerCopy;
+    v41 = isDataBased;
     v36 = v10;
-    v37 = self;
-    v42 = v6;
+    selfCopy = self;
+    v42 = genstoreCopy;
     [(QLPreviewThumbnailGenerator *)v28 generateWithWillStartBlock:v43 completionBlock:v32];
 
     objc_destroyWeak(&v39);
@@ -2590,9 +2590,9 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  if (v14)
+  if (taggedLogicalURL)
   {
-    v22 = [MEMORY[0x277CC6438] wrapperWithURL:v14 readonly:1 error:0];
+    genericSandboxWrapper = [MEMORY[0x277CC6438] wrapperWithURL:taggedLogicalURL readonly:1 error:0];
     goto LABEL_13;
   }
 
@@ -2602,8 +2602,8 @@ LABEL_14:
     [QLServerThread generateThumbnailForThumbnailRequest:shouldUpdateGenstore:completionHandler:];
   }
 
-  v21 = generationFailedErrorWithUnderlyingError(v8, 0, @"Item does not have a file URL, cannot generate thumbnail locally");
-  (*(v31 + 2))(v31, v21);
+  v21 = generationFailedErrorWithUnderlyingError(requestCopy, 0, @"Item does not have a file URL, cannot generate thumbnail locally");
+  (*(handlerCopy + 2))(handlerCopy, v21);
 LABEL_18:
 
   v29 = *MEMORY[0x277D85DE8];
@@ -2863,14 +2863,14 @@ LABEL_49:
   v67 = *MEMORY[0x277D85DE8];
 }
 
-- (void)findThumbnailInAddition:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)findThumbnailInAddition:(id)addition request:(id)request completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
   v10 = *MEMORY[0x277CBE788];
-  v11 = a3;
-  v12 = [v11 thumbnailDataForKey:v10];
-  v13 = [v11 thumbnailURLForKey:v10];
+  additionCopy = addition;
+  v12 = [additionCopy thumbnailDataForKey:v10];
+  v13 = [additionCopy thumbnailURLForKey:v10];
 
   v20 = 0;
   v14 = *MEMORY[0x277CBE918];
@@ -2887,46 +2887,46 @@ LABEL_49:
     }
   }
 
-  [(QLServerThread *)self processLargeThumbnailData:v12 withContentType:v16 isAppContainer:0 forRequest:v8 fromGenStore:1 completionHandler:v9];
+  [(QLServerThread *)self processLargeThumbnailData:v12 withContentType:v16 isAppContainer:0 forRequest:requestCopy fromGenStore:1 completionHandler:handlerCopy];
 }
 
-- (void)addImageData:(id)a3 toCacheForRequest:(id)a4 withBitmapFormat:(id)a5 contentRect:(CGRect)a6 flavor:(int)a7 metadata:(id)a8
+- (void)addImageData:(id)data toCacheForRequest:(id)request withBitmapFormat:(id)format contentRect:(CGRect)rect flavor:(int)flavor metadata:(id)metadata
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v41 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a8;
-  v21 = [v18 request];
-  v22 = [v21 forceGeneration];
+  dataCopy = data;
+  requestCopy = request;
+  formatCopy = format;
+  metadataCopy = metadata;
+  request = [requestCopy request];
+  forceGeneration = [request forceGeneration];
 
-  if ((v22 & 1) == 0)
+  if ((forceGeneration & 1) == 0)
   {
     v23 = _log_3();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v40 = v18;
+      v40 = requestCopy;
       _os_log_impl(&dword_2615D3000, v23, OS_LOG_TYPE_INFO, "Will add image to cache for request: %@.", buf, 0xCu);
     }
 
-    v24 = [v18 request];
-    v25 = [(QLServerThread *)self cacheThreadForRequest:v24];
+    request2 = [requestCopy request];
+    v25 = [(QLServerThread *)self cacheThreadForRequest:request2];
 
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __94__QLServerThread_addImageData_toCacheForRequest_withBitmapFormat_contentRect_flavor_metadata___block_invoke;
     v28[3] = &unk_279ADD8C0;
-    v29 = v18;
-    v30 = v19;
-    v31 = v17;
+    v29 = requestCopy;
+    v30 = formatCopy;
+    v31 = dataCopy;
     v32 = v25;
-    v33 = v20;
-    v38 = a7;
+    v33 = metadataCopy;
+    flavorCopy = flavor;
     v34 = x;
     v35 = y;
     v36 = width;
@@ -2977,13 +2977,13 @@ uint64_t __94__QLServerThread_addImageData_toCacheForRequest_withBitmapFormat_co
   return v16;
 }
 
-- (void)completeThumbnailRequest:(id)a3 thumbnailData:(id)a4 updatedMetadata:(id)a5
+- (void)completeThumbnailRequest:(id)request thumbnailData:(id)data updatedMetadata:(id)metadata
 {
-  v25 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 request];
-  if ([QLDiskCacheEnumerator cachedThumbnailDataIsLowQuality:v25 forThumbnailRequest:v10])
+  dataCopy = data;
+  metadataCopy = metadata;
+  requestCopy = request;
+  request = [requestCopy request];
+  if ([QLDiskCacheEnumerator cachedThumbnailDataIsLowQuality:dataCopy forThumbnailRequest:request])
   {
     v11 = 1;
   }
@@ -2993,117 +2993,117 @@ uint64_t __94__QLServerThread_addImageData_toCacheForRequest_withBitmapFormat_co
     v11 = 2;
   }
 
-  v12 = [v25 bitmapData];
-  v13 = v8;
-  if (!v8)
+  bitmapData = [dataCopy bitmapData];
+  metadata = metadataCopy;
+  if (!metadataCopy)
   {
-    v13 = [v25 metadata];
+    metadata = [dataCopy metadata];
   }
 
-  [v25 contentRect];
+  [dataCopy contentRect];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [v25 flavor];
-  v23 = [v25 bitmapFormat];
+  flavor = [dataCopy flavor];
+  bitmapFormat = [dataCopy bitmapFormat];
   LOBYTE(v24) = 0;
-  [(QLServerThread *)self completeThumbnailRequest:v9 bitmapData:v12 metadata:v13 contentRect:v11 thumbnailRepresentation:v22 iconFlavor:v23 format:v15 clientShouldTakeOwnership:v17, v19, v21, v24];
+  [(QLServerThread *)self completeThumbnailRequest:requestCopy bitmapData:bitmapData metadata:metadata contentRect:v11 thumbnailRepresentation:flavor iconFlavor:bitmapFormat format:v15 clientShouldTakeOwnership:v17, v19, v21, v24];
 
-  if (!v8)
+  if (!metadataCopy)
   {
   }
 }
 
-- (void)thumbnailRequestWasCancelled:(id)a3
+- (void)thumbnailRequestWasCancelled:(id)cancelled
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cancelledCopy = cancelled;
   v5 = _log_3();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = cancelledCopy;
     _os_log_impl(&dword_2615D3000, v5, OS_LOG_TYPE_INFO, "thumbnailRequestWasCancelled %@", &v8, 0xCu);
   }
 
-  v6 = cancelledError(v4);
-  [(QLServerThread *)self failedToCompleteThumbnailRequest:v4 error:v6];
+  v6 = cancelledError(cancelledCopy);
+  [(QLServerThread *)self failedToCompleteThumbnailRequest:cancelledCopy error:v6];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didNotFindLowQualityEntryInCachedForThumbnailRequest:(id)a3 error:(id)a4
+- (void)didNotFindLowQualityEntryInCachedForThumbnailRequest:(id)request error:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  requestCopy = request;
   queue = self->_queue;
-  v8 = a4;
+  errorCopy = error;
   dispatch_assert_queue_V2(queue);
   v9 = _log_3();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v13 = v6;
+    v13 = requestCopy;
     _os_log_impl(&dword_2615D3000, v9, OS_LOG_TYPE_INFO, "didNotFindLowQualityEntryInCachedForThumbnailRequest -> sendResultForThumbnailRequest %@", buf, 0xCu);
   }
 
   LOBYTE(v11) = 0;
-  [(QLServerThread *)self sendResultForThumbnailRequest:v6 images:0 metadata:0 contentRect:0 iconFlavor:1 thumbnailRepresentation:0 clientShouldTakeOwnership:*MEMORY[0x277CBF3A0] reenqueueRequest:*(MEMORY[0x277CBF3A0] + 8) error:*(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), v11, v8];
+  [(QLServerThread *)self sendResultForThumbnailRequest:requestCopy images:0 metadata:0 contentRect:0 iconFlavor:1 thumbnailRepresentation:0 clientShouldTakeOwnership:*MEMORY[0x277CBF3A0] reenqueueRequest:*(MEMORY[0x277CBF3A0] + 8) error:*(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), v11, errorCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)failedToCompleteThumbnailRequest:(id)a3 error:(id)a4
+- (void)failedToCompleteThumbnailRequest:(id)request error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  errorCopy = error;
   dispatch_assert_queue_not_V2(self->_queue);
-  [v6 setGenerationError:v7];
+  [requestCopy setGenerationError:errorCopy];
   v8 = _log_3();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [QLServerThread failedToCompleteThumbnailRequest:error:];
   }
 
-  v9 = [v6 request];
-  v10 = [v9 requestedMostRepresentativeType];
+  request = [requestCopy request];
+  requestedMostRepresentativeType = [request requestedMostRepresentativeType];
   LOBYTE(v11) = 1;
-  [(QLServerThread *)self sendResultForThumbnailRequest:v6 images:0 metadata:0 contentRect:0 iconFlavor:v10 thumbnailRepresentation:0 clientShouldTakeOwnership:*MEMORY[0x277CBF3A0] reenqueueRequest:*(MEMORY[0x277CBF3A0] + 8) error:*(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), v11, v7];
+  [(QLServerThread *)self sendResultForThumbnailRequest:requestCopy images:0 metadata:0 contentRect:0 iconFlavor:requestedMostRepresentativeType thumbnailRepresentation:0 clientShouldTakeOwnership:*MEMORY[0x277CBF3A0] reenqueueRequest:*(MEMORY[0x277CBF3A0] + 8) error:*(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), v11, errorCopy];
 }
 
-- (void)sendResultForThumbnailRequest:(id)a3 images:(id)a4 metadata:(id)a5 contentRect:(CGRect)a6 iconFlavor:(int)a7 thumbnailRepresentation:(int64_t)a8 clientShouldTakeOwnership:(BOOL)a9 reenqueueRequest:(BOOL)a10 error:(id)a11
+- (void)sendResultForThumbnailRequest:(id)request images:(id)images metadata:(id)metadata contentRect:(CGRect)rect iconFlavor:(int)flavor thumbnailRepresentation:(int64_t)representation clientShouldTakeOwnership:(BOOL)ownership reenqueueRequest:(BOOL)self0 error:(id)self1
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a11;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  requestCopy = request;
+  imagesCopy = images;
+  metadataCopy = metadata;
+  errorCopy = error;
   queue = self->_queue;
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __160__QLServerThread_sendResultForThumbnailRequest_images_metadata_contentRect_iconFlavor_thumbnailRepresentation_clientShouldTakeOwnership_reenqueueRequest_error___block_invoke;
   v30[3] = &unk_279ADD8E8;
-  v31 = v21;
-  v32 = v22;
-  v33 = v24;
-  v34 = self;
-  v35 = v23;
-  v36 = a8;
+  v31 = requestCopy;
+  v32 = imagesCopy;
+  v33 = errorCopy;
+  selfCopy = self;
+  v35 = metadataCopy;
+  representationCopy = representation;
   v37 = x;
   v38 = y;
   v39 = width;
   v40 = height;
-  v41 = a7;
-  v42 = a9;
-  v43 = a10;
-  v26 = v23;
-  v27 = v24;
-  v28 = v22;
-  v29 = v21;
+  flavorCopy = flavor;
+  ownershipCopy = ownership;
+  reenqueueRequestCopy = reenqueueRequest;
+  v26 = metadataCopy;
+  v27 = errorCopy;
+  v28 = imagesCopy;
+  v29 = requestCopy;
   dispatch_async(queue, v30);
 }
 
@@ -3191,26 +3191,26 @@ LABEL_14:
   os_activity_scope_leave(&state);
 }
 
-- (BOOL)_saveResultForThumbnailRequest:(id)a3 withImage:(id)a4 error:(id *)a5
+- (BOOL)_saveResultForThumbnailRequest:(id)request withImage:(id)image error:(id *)error
 {
   v74[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  requestCopy = request;
   queue = self->_queue;
-  v10 = a4;
+  imageCopy = image;
   dispatch_assert_queue_V2(queue);
-  v11 = [v8 request];
-  v12 = [v11 saveURL];
-  v13 = [v11 saveURLContentType];
-  v14 = [v13 identifier];
+  request = [requestCopy request];
+  saveURL = [request saveURL];
+  saveURLContentType = [request saveURLContentType];
+  identifier = [saveURLContentType identifier];
 
   v15 = QLImageCreateForDefaultThumbnailGenerationFromData();
   if (v15)
   {
-    if (v12)
+    if (saveURL)
     {
-      v55 = [v12 startAccessingSecurityScopedResource];
+      startAccessingSecurityScopedResource = [saveURL startAccessingSecurityScopedResource];
       v58 = 0;
-      v16 = [MEMORY[0x277CBEBC0] _QLCreateTemporaryReplacementURLForOriginalFileAtURL:v12 withExtension:0 temporaryDirectoryURL:&v58];
+      v16 = [MEMORY[0x277CBEBC0] _QLCreateTemporaryReplacementURLForOriginalFileAtURL:saveURL withExtension:0 temporaryDirectoryURL:&v58];
       v54 = v58;
       if (!v16)
       {
@@ -3229,11 +3229,11 @@ LABEL_23:
           [QLServerThread _saveResultForThumbnailRequest:withImage:error:];
         }
 
-        if (a5)
+        if (error)
         {
-          [MEMORY[0x277CDAAE0] errorWithCode:1 request:v11 additionalUserInfo:0];
-          *a5 = v21 = 0;
-          if (!v10)
+          [MEMORY[0x277CDAAE0] errorWithCode:1 request:request additionalUserInfo:0];
+          *error = v21 = 0;
+          if (!imageCopy)
           {
 LABEL_28:
             if (v54)
@@ -3241,9 +3241,9 @@ LABEL_28:
               [MEMORY[0x277CCAA00] _QLTRemoveTemporaryDirectoryAtURL:v54];
             }
 
-            if (v55)
+            if (startAccessingSecurityScopedResource)
             {
-              [v12 stopAccessingSecurityScopedResource];
+              [saveURL stopAccessingSecurityScopedResource];
             }
 
             goto LABEL_33;
@@ -3253,7 +3253,7 @@ LABEL_28:
         else
         {
           v21 = 0;
-          if (!v10)
+          if (!imageCopy)
           {
             goto LABEL_28;
           }
@@ -3264,7 +3264,7 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      v17 = CGImageDestinationCreateWithURL(v16, v14, 1uLL, 0);
+      v17 = CGImageDestinationCreateWithURL(v16, identifier, 1uLL, 0);
       v18 = 0;
       if (!v17)
       {
@@ -3275,8 +3275,8 @@ LABEL_27:
     else
     {
       v18 = objc_alloc_init(MEMORY[0x277CBEB28]);
-      v17 = CGImageDestinationCreateWithData(v18, v14, 1uLL, 0);
-      v55 = 0;
+      v17 = CGImageDestinationCreateWithData(v18, identifier, 1uLL, 0);
+      startAccessingSecurityScopedResource = 0;
       v54 = 0;
       v16 = 0;
       if (!v17)
@@ -3285,7 +3285,7 @@ LABEL_27:
       }
     }
 
-    v53 = v14;
+    v53 = identifier;
     v71 = *MEMORY[0x277CD2D60];
     v72 = MEMORY[0x277CBEC38];
     CGImageDestinationAddImage(v17, v15, [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v72 forKeys:&v71 count:1]);
@@ -3299,14 +3299,14 @@ LABEL_27:
         [QLServerThread _saveResultForThumbnailRequest:withImage:error:];
       }
 
-      if (a5)
+      if (error)
       {
         v51 = MEMORY[0x277CDAAE0];
         v69 = *MEMORY[0x277CCA068];
-        v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to save thumbnail for %@ to %@", v11, v12];
+        v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to save thumbnail for %@ to %@", request, saveURL];
         v70 = v30;
         v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v70 forKeys:&v69 count:1];
-        *a5 = [v51 errorWithCode:1 request:v11 additionalUserInfo:v31];
+        *error = [v51 errorWithCode:1 request:request additionalUserInfo:v31];
 
         v21 = 0;
       }
@@ -3316,8 +3316,8 @@ LABEL_27:
         v21 = 1;
       }
 
-      v14 = v53;
-      if (!v10)
+      identifier = v53;
+      if (!imageCopy)
       {
         goto LABEL_28;
       }
@@ -3327,12 +3327,12 @@ LABEL_27:
 
     if (!v18)
     {
-      v36 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v56 = 0;
-      v21 = [v36 replaceItemAtURL:v12 withItemAtURL:v16 backupItemName:0 options:0 resultingItemURL:0 error:&v56];
+      v21 = [defaultManager replaceItemAtURL:saveURL withItemAtURL:v16 backupItemName:0 options:0 resultingItemURL:0 error:&v56];
       v37 = v56;
 
-      v14 = v53;
+      identifier = v53;
       if ((v21 & 1) == 0)
       {
         v52 = v37;
@@ -3343,9 +3343,9 @@ LABEL_27:
         }
 
         v37 = v52;
-        if (a5)
+        if (error)
         {
-          v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to save thumbnail for %@ to %@", v8, v12];
+          v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to save thumbnail for %@ to %@", requestCopy, saveURL];
           v40 = *MEMORY[0x277CCA068];
           v49 = v39;
           if (v52)
@@ -3372,15 +3372,15 @@ LABEL_27:
           }
 
           v48 = [v42 dictionaryWithObjects:v43 forKeys:v44 count:v45];
-          *a5 = [MEMORY[0x277CDAAE0] errorWithCode:1 request:v11 additionalUserInfo:v48];
+          *error = [MEMORY[0x277CDAAE0] errorWithCode:1 request:request additionalUserInfo:v48];
           v37 = v52;
           v46 = v52;
-          *a5 = v52;
+          *error = v52;
         }
       }
 
       v18 = 0;
-      if (!v10)
+      if (!imageCopy)
       {
         goto LABEL_28;
       }
@@ -3388,56 +3388,56 @@ LABEL_27:
       goto LABEL_27;
     }
 
-    v23 = [v11 saveFileHandle];
+    saveFileHandle = [request saveFileHandle];
     v57 = 0;
-    v24 = [v23 writeData:v18 error:&v57];
+    v24 = [saveFileHandle writeData:v18 error:&v57];
     v50 = v57;
 
     v25 = _log_3();
     v26 = v25;
     if (v24)
     {
-      v14 = v53;
+      identifier = v53;
       if (!os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
         goto LABEL_48;
       }
 
       v27 = [(__CFData *)v18 length];
-      v28 = [v11 saveFileHandle];
+      saveFileHandle2 = [request saveFileHandle];
       *buf = 134218498;
       v64 = v27;
       v65 = 2112;
-      v66 = v28;
+      v66 = saveFileHandle2;
       v67 = 2112;
-      v68 = v8;
+      v68 = requestCopy;
       _os_log_debug_impl(&dword_2615D3000, v26, OS_LOG_TYPE_DEBUG, "Successfully wrote data of length %llu to file handle %@ for request %@", buf, 0x20u);
     }
 
     else
     {
-      v14 = v53;
+      identifier = v53;
       if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_48;
       }
 
       v47 = [(__CFData *)v18 length];
-      v28 = [v11 saveFileHandle];
+      saveFileHandle2 = [request saveFileHandle];
       *buf = 134218498;
       v64 = v47;
       v65 = 2112;
-      v66 = v28;
+      v66 = saveFileHandle2;
       v67 = 2112;
       v68 = v50;
       _os_log_error_impl(&dword_2615D3000, v26, OS_LOG_TYPE_ERROR, "Could not write saved thumbnail (length: %llu) to file handle %@: %@", buf, 0x20u);
     }
 
-    v14 = v53;
+    identifier = v53;
 LABEL_48:
 
     v21 = 1;
-    if (!v10)
+    if (!imageCopy)
     {
       goto LABEL_28;
     }
@@ -3451,19 +3451,19 @@ LABEL_48:
     [QLServerThread _saveResultForThumbnailRequest:withImage:error:];
   }
 
-  if (!a5)
+  if (!error)
   {
     v21 = 0;
     goto LABEL_34;
   }
 
-  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to decode thumbnail data to save for %@", v11];
+  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to decode thumbnail data to save for %@", request];
   v20 = MEMORY[0x277CDAAE0];
   v73 = *MEMORY[0x277CCA068];
   v74[0] = v18;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v74 forKeys:&v73 count:1];
-  [v20 errorWithCode:1 request:v11 additionalUserInfo:v16];
-  *a5 = v21 = 0;
+  [v20 errorWithCode:1 request:request additionalUserInfo:v16];
+  *error = v21 = 0;
 LABEL_33:
 
 LABEL_34:
@@ -3471,29 +3471,29 @@ LABEL_34:
   return v21;
 }
 
-- (void)_completeHandledThumbnailRequest:(id)a3
+- (void)_completeHandledThumbnailRequest:(id)request
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = _log_3();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = requestCopy;
     _os_log_impl(&dword_2615D3000, v5, OS_LOG_TYPE_INFO, "All requested thumbnail types for request %@ have been handled.", buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCACC8] callStackReturnAddresses];
+  callStackReturnAddresses = [MEMORY[0x277CCACC8] callStackReturnAddresses];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__QLServerThread__completeHandledThumbnailRequest___block_invoke;
   block[3] = &unk_279ADD2A0;
   block[4] = self;
-  v12 = v4;
-  v13 = v6;
-  v8 = v6;
-  v9 = v4;
+  v12 = requestCopy;
+  v13 = callStackReturnAddresses;
+  v8 = callStackReturnAddresses;
+  v9 = requestCopy;
   dispatch_async(queue, block);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -3533,16 +3533,16 @@ void __51__QLServerThread__completeHandledThumbnailRequest___block_invoke(uint64
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeRequestFromPendingRequests:(id)a3
+- (void)_removeRequestFromPendingRequests:(id)requests
 {
   queue = self->_queue;
-  v5 = a3;
+  requestsCopy = requests;
   dispatch_assert_queue_V2(queue);
   pendingRequests = self->_pendingRequests;
-  v7 = [v5 request];
+  request = [requestsCopy request];
 
-  v8 = [v7 uuid];
-  [(NSMutableDictionary *)pendingRequests setObject:0 forKeyedSubscript:v8];
+  uuid = [request uuid];
+  [(NSMutableDictionary *)pendingRequests setObject:0 forKeyedSubscript:uuid];
 
   if (![(NSMutableDictionary *)self->_pendingRequests count])
   {
@@ -3555,11 +3555,11 @@ void __51__QLServerThread__completeHandledThumbnailRequest___block_invoke(uint64
   }
 }
 
-- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v21 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v7 = objc_opt_new();
   os_unfair_lock_lock(&self->_domainCacheLock);
   domainsToCaches = self->_domainsToCaches;
@@ -3571,7 +3571,7 @@ void __51__QLServerThread__completeHandledThumbnailRequest___block_invoke(uint64
   v32 = v9;
   [(NSMutableDictionary *)domainsToCaches enumerateKeysAndObjectsUsingBlock:v31];
   os_unfair_lock_unlock(&self->_domainCacheLock);
-  v20 = self;
+  selfCopy = self;
   [v9 addObject:self->_cacheThread];
   v10 = dispatch_group_create();
   v27 = 0u;
@@ -3601,7 +3601,7 @@ void __51__QLServerThread__completeHandledThumbnailRequest___block_invoke(uint64
         v24[2] = __123__QLServerThread_removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers_completionHandler___block_invoke_2;
         v24[3] = &unk_279ADD958;
         v24[4] = v16;
-        v25 = v6;
+        v25 = identifiersCopy;
         v26 = v10;
         [v16 enqueueWriting:v24];
 
@@ -3615,13 +3615,13 @@ void __51__QLServerThread__completeHandledThumbnailRequest___block_invoke(uint64
     while (v13);
   }
 
-  completionBlocksQueue = v20->_completionBlocksQueue;
+  completionBlocksQueue = selfCopy->_completionBlocksQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __123__QLServerThread_removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers_completionHandler___block_invoke_3;
   block[3] = &unk_279ADD038;
-  v23 = v21;
-  v18 = v21;
+  v23 = handlerCopy;
+  v18 = handlerCopy;
   dispatch_group_notify(v10, completionBlocksQueue, block);
 
   v19 = *MEMORY[0x277D85DE8];
@@ -3645,11 +3645,11 @@ uint64_t __123__QLServerThread_removeCachedThumbnailsFromUninstalledFileProvider
   return result;
 }
 
-- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v21 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v7 = objc_opt_new();
   os_unfair_lock_lock(&self->_domainCacheLock);
   domainsToCaches = self->_domainsToCaches;
@@ -3661,7 +3661,7 @@ uint64_t __123__QLServerThread_removeCachedThumbnailsFromUninstalledFileProvider
   v32 = v9;
   [(NSMutableDictionary *)domainsToCaches enumerateKeysAndObjectsUsingBlock:v31];
   os_unfair_lock_unlock(&self->_domainCacheLock);
-  v20 = self;
+  selfCopy = self;
   [v9 addObject:self->_cacheThread];
   v10 = dispatch_group_create();
   v27 = 0u;
@@ -3691,7 +3691,7 @@ uint64_t __123__QLServerThread_removeCachedThumbnailsFromUninstalledFileProvider
         v24[2] = __102__QLServerThread_removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers_completionHandler___block_invoke_2;
         v24[3] = &unk_279ADD958;
         v24[4] = v16;
-        v25 = v6;
+        v25 = identifiersCopy;
         v26 = v10;
         [v16 enqueueWriting:v24];
 
@@ -3705,13 +3705,13 @@ uint64_t __123__QLServerThread_removeCachedThumbnailsFromUninstalledFileProvider
     while (v13);
   }
 
-  completionBlocksQueue = v20->_completionBlocksQueue;
+  completionBlocksQueue = selfCopy->_completionBlocksQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __102__QLServerThread_removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers_completionHandler___block_invoke_3;
   block[3] = &unk_279ADD038;
-  v23 = v21;
-  v18 = v21;
+  v23 = handlerCopy;
+  v18 = handlerCopy;
   dispatch_group_notify(v10, completionBlocksQueue, block);
 
   v19 = *MEMORY[0x277D85DE8];
@@ -3735,16 +3735,16 @@ uint64_t __102__QLServerThread_removeCachedThumbnailsFromUninstalledFileProvider
   return result;
 }
 
-- (BOOL)_canUseAdditionToProvideThumbnail:(id)a3 forThumbnailRequest:(id)a4 taggedLogicalURL:(id)a5
+- (BOOL)_canUseAdditionToProvideThumbnail:(id)thumbnail forThumbnailRequest:(id)request taggedLogicalURL:(id)l
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a5;
-  if (a3)
+  lCopy = l;
+  if (thumbnail)
   {
     v7 = MEMORY[0x277CDAB10];
-    v8 = a3;
-    v9 = [[v7 alloc] initWithFileURL:v6 automaticallyGenerated:1];
-    v10 = [v8 shouldBeInvalidatedByThumbnailVersion:v9];
+    thumbnailCopy = thumbnail;
+    v9 = [[v7 alloc] initWithFileURL:lCopy automaticallyGenerated:1];
+    v10 = [thumbnailCopy shouldBeInvalidatedByThumbnailVersion:v9];
 
     v11 = _log_3();
     v12 = v11;
@@ -3753,11 +3753,11 @@ uint64_t __102__QLServerThread_removeCachedThumbnailsFromUninstalledFileProvider
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v18 = 138412290;
-        v19 = v6;
+        v19 = lCopy;
         _os_log_impl(&dword_2615D3000, v12, OS_LOG_TYPE_INFO, "not trusting thumbnail in GenStore for %@ because it is not for the right version", &v18, 0xCu);
       }
 
-      if (!v6 || ([MEMORY[0x277CDAB20] contentTypeForURL:v6], v13 = objc_claimAutoreleasedReturnValue(), v14 = +[QLPreviewThumbnailGenerator canGenerateThumbnailForContentType:atSize:](QLPreviewThumbnailGenerator, "canGenerateThumbnailForContentType:atSize:", v13, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)), v13, v14))
+      if (!lCopy || ([MEMORY[0x277CDAB20] contentTypeForURL:lCopy], v13 = objc_claimAutoreleasedReturnValue(), v14 = +[QLPreviewThumbnailGenerator canGenerateThumbnailForContentType:atSize:](QLPreviewThumbnailGenerator, "canGenerateThumbnailForContentType:atSize:", v13, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)), v13, v14))
       {
         v15 = 0;
 LABEL_14:
@@ -3788,36 +3788,36 @@ LABEL_15:
   return v15;
 }
 
-+ (void)updateThumbnailRequestThumbnailVersionWithThirdPartyGeneratorInformationIfNeeded:(id)a3
++ (void)updateThumbnailRequestThumbnailVersionWithThirdPartyGeneratorInformationIfNeeded:(id)needed
 {
-  v12 = a3;
-  v3 = [v12 contentType];
+  neededCopy = needed;
+  contentType = [neededCopy contentType];
 
-  if (v3)
+  if (contentType)
   {
     v4 = +[QLThumbnailExtensionMonitor shared];
-    v5 = [v4 bestExtensionFor:v12 matching:3];
+    v5 = [v4 bestExtensionFor:neededCopy matching:3];
 
     if (v5)
     {
-      v6 = [v5 generatorIdentifier];
-      v7 = [v5 generatorVersion];
-      if (v6)
+      generatorIdentifier = [v5 generatorIdentifier];
+      generatorVersion = [v5 generatorVersion];
+      if (generatorIdentifier)
       {
-        v8 = [v12 fileIdentifier];
-        v9 = [v8 version];
-        [v9 setGeneratorID:v6];
+        fileIdentifier = [neededCopy fileIdentifier];
+        version = [fileIdentifier version];
+        [version setGeneratorID:generatorIdentifier];
 
-        v10 = [v12 fileIdentifier];
-        v11 = [v10 version];
-        [v11 setGeneratorVersion:v7];
+        fileIdentifier2 = [neededCopy fileIdentifier];
+        version2 = [fileIdentifier2 version];
+        [version2 setGeneratorVersion:generatorVersion];
       }
     }
 
     else
     {
-      v6 = 0;
-      v7 = 0;
+      generatorIdentifier = 0;
+      generatorVersion = 0;
     }
   }
 }
@@ -3832,9 +3832,9 @@ LABEL_15:
   [(QLServerThread *)self perform:v2];
 }
 
-- (void)forEachCacheThread:(id)a3
+- (void)forEachCacheThread:(id)thread
 {
-  v4 = a3;
+  threadCopy = thread;
   v5 = objc_opt_new();
   os_unfair_lock_lock(&self->_domainCacheLock);
   domainsToCaches = self->_domainsToCaches;
@@ -3842,11 +3842,11 @@ LABEL_15:
   v19[1] = 3221225472;
   v19[2] = __37__QLServerThread_forEachCacheThread___block_invoke;
   v19[3] = &unk_279ADD980;
-  v7 = v4;
+  v7 = threadCopy;
   v22 = v7;
   v8 = v5;
   v20 = v8;
-  v21 = self;
+  selfCopy = self;
   [(NSMutableDictionary *)domainsToCaches enumerateKeysAndObjectsUsingBlock:v19];
   os_unfair_lock_unlock(&self->_domainCacheLock);
   os_unfair_lock_lock(&self->_volumeCacheLock);
@@ -3858,7 +3858,7 @@ LABEL_15:
   v10 = v8;
   v16 = v10;
   v11 = v7;
-  v17 = self;
+  selfCopy2 = self;
   v18 = v11;
   [(NSMutableDictionary *)volumesToCaches enumerateKeysAndObjectsUsingBlock:&v12];
   os_unfair_lock_unlock(&self->_volumeCacheLock);
@@ -3887,27 +3887,27 @@ void __37__QLServerThread_forEachCacheThread___block_invoke_2(uint64_t a1, uint6
   }
 }
 
-- (id)cacheThreadForVolume:(id)a3
+- (id)cacheThreadForVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   os_unfair_lock_lock(&self->_volumeCacheLock);
-  v5 = [(NSMutableDictionary *)self->_volumesToCaches objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_volumesToCaches objectForKeyedSubscript:volumeCopy];
 
   os_unfair_lock_unlock(&self->_volumeCacheLock);
 
   return v5;
 }
 
-- (id)cacheThreadForFileIdentifier:(id)a3 atURL:(id)a4
+- (id)cacheThreadForFileIdentifier:(id)identifier atURL:(id)l
 {
-  v6 = a4;
-  v10 = [a3 fsid];
-  v7 = [MEMORY[0x277CCAE60] valueWithBytes:&v10 objCType:"{fsid=[2i]}"];
+  lCopy = l;
+  fsid = [identifier fsid];
+  v7 = [MEMORY[0x277CCAE60] valueWithBytes:&fsid objCType:"{fsid=[2i]}"];
   os_unfair_lock_lock(&self->_fsidCacheLock);
   v8 = [(NSMutableDictionary *)self->_fsidsToCaches objectForKeyedSubscript:v7];
   if (!v8)
   {
-    v8 = [(QLServerThread *)self uncachedCacheThreadForFileAtURL:v6];
+    v8 = [(QLServerThread *)self uncachedCacheThreadForFileAtURL:lCopy];
     [(NSMutableDictionary *)self->_fsidsToCaches setObject:v8 forKeyedSubscript:v7];
   }
 
@@ -3919,19 +3919,19 @@ void __37__QLServerThread_forEachCacheThread___block_invoke_2(uint64_t a1, uint6
 - (id)allKnownDataSeparatedVolumes
 {
   os_unfair_lock_lock(&self->_volumeCacheLock);
-  v3 = [(NSMutableDictionary *)self->_volumesToCaches allKeys];
+  allKeys = [(NSMutableDictionary *)self->_volumesToCaches allKeys];
   os_unfair_lock_unlock(&self->_volumeCacheLock);
 
-  return v3;
+  return allKeys;
 }
 
-- (id)failedDownloadErrorForRequest:(id)a3 underlyingError:(id)a4
+- (id)failedDownloadErrorForRequest:(id)request underlyingError:(id)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 item];
-  if ([v7 isDownloaded])
+  requestCopy = request;
+  errorCopy = error;
+  item = [requestCopy item];
+  if ([item isDownloaded])
   {
     v8 = @"Could not generate thumbnail for %@, and could not download a thumbnail either";
   }
@@ -3941,93 +3941,93 @@ void __37__QLServerThread_forEachCacheThread___block_invoke_2(uint64_t a1, uint6
     v8 = @"Could not download a thumbnail for cloud item %@";
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:v8, v7];
-  v10 = [MEMORY[0x277CBEB38] dictionary];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:v8, item];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v11 = *MEMORY[0x277CCA068];
-  [v10 setObject:v9 forKeyedSubscript:*MEMORY[0x277CCA068]];
-  if (v6)
+  [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x277CCA068]];
+  if (errorCopy)
   {
-    [v10 setObject:v6 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    [dictionary setObject:errorCopy forKeyedSubscript:*MEMORY[0x277CCA7E8]];
   }
 
   v12 = MEMORY[0x277CDAAE0];
-  v13 = [v5 request];
+  request = [requestCopy request];
   v18 = v11;
   v19[0] = v9;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-  v15 = [v12 errorWithCode:3 request:v13 additionalUserInfo:v14];
+  v15 = [v12 errorWithCode:3 request:request additionalUserInfo:v14];
 
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-- (void)_downloadThumbnailForRequest:(id)a3 completionHandler:(id)a4
+- (void)_downloadThumbnailForRequest:(id)request completionHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 item];
-  v9 = [v8 providerDomainID];
-  if ((([v9 hasPrefix:@"com.apple.filesystems.UserFS.FileProvider"] & 1) != 0 || (objc_msgSend(v9, "hasPrefix:", @"com.apple.FileProvider.LocalStorage") & 1) != 0 || objc_msgSend(v9, "hasPrefix:", @"com.apple.SMBClientProvider.FileProvider")) && (objc_msgSend(v8, "fp_isContainer") & 1) == 0)
+  requestCopy = request;
+  handlerCopy = handler;
+  item = [requestCopy item];
+  providerDomainID = [item providerDomainID];
+  if ((([providerDomainID hasPrefix:@"com.apple.filesystems.UserFS.FileProvider"] & 1) != 0 || (objc_msgSend(providerDomainID, "hasPrefix:", @"com.apple.FileProvider.LocalStorage") & 1) != 0 || objc_msgSend(providerDomainID, "hasPrefix:", @"com.apple.SMBClientProvider.FileProvider")) && (objc_msgSend(item, "fp_isContainer") & 1) == 0)
   {
     v16 = _log_9();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v29 = v6;
+      v29 = requestCopy;
       _os_log_impl(&dword_2615D3000, v16, OS_LOG_TYPE_INFO, "Item provider doesn't support fetching thumbnails for %@", buf, 0xCu);
     }
 
     v11 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:0];
-    v13 = self;
-    v14 = v6;
+    selfCopy2 = self;
+    v14 = requestCopy;
     v15 = v11;
     goto LABEL_12;
   }
 
-  v10 = [v8 providerDomainID];
-  v11 = [(QLServerThread *)self cacheThreadForProviderDomainID:v10];
+  providerDomainID2 = [item providerDomainID];
+  v11 = [(QLServerThread *)self cacheThreadForProviderDomainID:providerDomainID2];
 
-  if ([v11 itemIsMissingRemoteThumbnail:v8])
+  if ([v11 itemIsMissingRemoteThumbnail:item])
   {
     v12 = _log_9();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v29 = v6;
+      v29 = requestCopy;
       _os_log_impl(&dword_2615D3000, v12, OS_LOG_TYPE_INFO, "We cached there is no thumbnail on the server for %@, failing", buf, 0xCu);
     }
 
-    v13 = self;
-    v14 = v6;
+    selfCopy2 = self;
+    v14 = requestCopy;
     v15 = 0;
 LABEL_12:
-    v17 = [(QLServerThread *)v13 failedDownloadErrorForRequest:v14 underlyingError:v15];
-    v7[2](v7, v17);
+    v17 = [(QLServerThread *)selfCopy2 failedDownloadErrorForRequest:v14 underlyingError:v15];
+    handlerCopy[2](handlerCopy, v17);
     goto LABEL_16;
   }
 
-  [v6 setDownloadCompletionHandler:v7];
+  [requestCopy setDownloadCompletionHandler:handlerCopy];
   v18 = _log_9();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    [QLServerThread(UbiquitousRequests) _downloadThumbnailForRequest:v6 completionHandler:self];
+    [QLServerThread(UbiquitousRequests) _downloadThumbnailForRequest:requestCopy completionHandler:self];
   }
 
-  v19 = [v6 generationHandler];
-  v20 = [v6 request];
-  v21 = [v20 uuid];
-  [v19 didUpdateStatus:1 ofThumbnailGenerationWithUUID:v21];
+  generationHandler = [requestCopy generationHandler];
+  request = [requestCopy request];
+  uuid = [request uuid];
+  [generationHandler didUpdateStatus:1 ofThumbnailGenerationWithUUID:uuid];
 
   pendingDownloadsQueue = self->_pendingDownloadsQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__QLServerThread_UbiquitousRequests___downloadThumbnailForRequest_completionHandler___block_invoke;
   block[3] = &unk_279ADD2A0;
-  v25 = v6;
-  v26 = self;
-  v27 = v8;
+  v25 = requestCopy;
+  selfCopy3 = self;
+  v27 = item;
   dispatch_async(pendingDownloadsQueue, block);
 
   v17 = v25;
@@ -4114,23 +4114,23 @@ uint64_t __85__QLServerThread_UbiquitousRequests___downloadThumbnailForRequest_c
   return [*(a1 + 32) drainDownloadsQueueIfNeeded];
 }
 
-- (void)downloadThumbnailForRequest:(id)a3 completionHandler:(id)a4
+- (void)downloadThumbnailForRequest:(id)request completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 request];
-  v9 = [v8 isDownloadingAllowed];
+  requestCopy = request;
+  handlerCopy = handler;
+  request = [requestCopy request];
+  isDownloadingAllowed = [request isDownloadingAllowed];
 
-  if (v9)
+  if (isDownloadingAllowed)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __84__QLServerThread_UbiquitousRequests__downloadThumbnailForRequest_completionHandler___block_invoke;
     v19[3] = &unk_279ADDFA0;
-    v20 = v6;
-    v21 = self;
-    v22 = v7;
+    v20 = requestCopy;
+    selfCopy = self;
+    v22 = handlerCopy;
     [v20 fetchFPItemWithCompletionHandler:v19];
 
     v10 = v20;
@@ -4142,21 +4142,21 @@ uint64_t __85__QLServerThread_UbiquitousRequests___downloadThumbnailForRequest_c
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v26 = v6;
+      v26 = requestCopy;
       _os_log_impl(&dword_2615D3000, v11, OS_LOG_TYPE_INFO, "Will not add thumbnail-download to queue because downloading is not allowed for request: %@.", buf, 0xCu);
     }
 
     v12 = MEMORY[0x277CCACA8];
-    v13 = [v6 request];
-    v10 = [v12 stringWithFormat:@"Failed to generate a thumbnail for request %@ and thumbnail downloading is not allowed for this request", v13];
+    request2 = [requestCopy request];
+    v10 = [v12 stringWithFormat:@"Failed to generate a thumbnail for request %@ and thumbnail downloading is not allowed for this request", request2];
 
     v14 = MEMORY[0x277CDAAE0];
-    v15 = [v6 request];
+    request3 = [requestCopy request];
     v23 = *MEMORY[0x277CCA068];
     v24 = v10;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    v17 = [v14 errorWithCode:0 request:v15 additionalUserInfo:v16];
-    (*(v7 + 2))(v7, v17);
+    v17 = [v14 errorWithCode:0 request:request3 additionalUserInfo:v16];
+    (*(handlerCopy + 2))(handlerCopy, v17);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -4206,23 +4206,23 @@ void __84__QLServerThread_UbiquitousRequests__downloadThumbnailForRequest_comple
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)downloadThumbnails:(id)a3 forProvider:(id)a4
+- (BOOL)downloadThumbnails:(id)thumbnails forProvider:(id)provider
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  thumbnailsCopy = thumbnails;
+  providerCopy = provider;
   dispatch_assert_queue_V2(self->_pendingDownloadsQueue);
-  if ([v6 count])
+  if ([thumbnailsCopy count])
   {
-    v30 = v7;
-    v31 = [(QLServerThread *)self cacheThreadForProviderDomainID:v7];
-    v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
+    v30 = providerCopy;
+    v31 = [(QLServerThread *)self cacheThreadForProviderDomainID:providerCopy];
+    v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(thumbnailsCopy, "count")}];
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v9 = [v6 allValues];
-    v10 = [v9 countByEnumeratingWithState:&v46 objects:v50 count:16];
+    allValues = [thumbnailsCopy allValues];
+    v10 = [allValues countByEnumeratingWithState:&v46 objects:v50 count:16];
     if (v10)
     {
       v11 = *v47;
@@ -4233,18 +4233,18 @@ void __84__QLServerThread_UbiquitousRequests__downloadThumbnailForRequest_comple
         {
           if (*v47 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues);
           }
 
-          v13 = [*(*(&v46 + 1) + 8 * v12) anyObject];
-          v14 = [v13 item];
-          [v8 addObject:v14];
+          anyObject = [*(*(&v46 + 1) + 8 * v12) anyObject];
+          item = [anyObject item];
+          [v8 addObject:item];
 
           ++v12;
         }
 
         while (v10 != v12);
-        v10 = [v9 countByEnumeratingWithState:&v46 objects:v50 count:16];
+        v10 = [allValues countByEnumeratingWithState:&v46 objects:v50 count:16];
       }
 
       while (v10);
@@ -4253,7 +4253,7 @@ void __84__QLServerThread_UbiquitousRequests__downloadThumbnailForRequest_comple
     v15 = _log_9();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      [(QLServerThread(UbiquitousRequests) *)v6 downloadThumbnails:v15 forProvider:?];
+      [(QLServerThread(UbiquitousRequests) *)thumbnailsCopy downloadThumbnails:v15 forProvider:?];
     }
 
     v16 = _log_9();
@@ -4261,12 +4261,12 @@ void __84__QLServerThread_UbiquitousRequests__downloadThumbnailForRequest_comple
 
     if (v17)
     {
-      [v6 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_8];
+      [thumbnailsCopy enumerateKeysAndObjectsUsingBlock:&__block_literal_global_8];
     }
 
     atomic_fetch_add(&self->_thumbnailDownloadsInFlight, [v8 count]);
-    v18 = [MEMORY[0x277CC6408] defaultManager];
-    v19 = [v18 thumbnailsFetchOperationForItems:v8 withSize:1024.0 scale:{1024.0, 2.0}];
+    defaultManager = [MEMORY[0x277CC6408] defaultManager];
+    v19 = [defaultManager thumbnailsFetchOperationForItems:v8 withSize:1024.0 scale:{1024.0, 2.0}];
 
     objc_initWeak(&location, self);
     v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -4276,9 +4276,9 @@ void __84__QLServerThread_UbiquitousRequests__downloadThumbnailForRequest_comple
     v39[2] = __69__QLServerThread_UbiquitousRequests__downloadThumbnails_forProvider___block_invoke_30;
     v39[3] = &unk_279ADE010;
     objc_copyWeak(&v44, &location);
-    v22 = v6;
+    v22 = thumbnailsCopy;
     v40 = v22;
-    v41 = self;
+    selfCopy = self;
     v23 = v20;
     v42 = v23;
     v24 = v21;
@@ -4290,7 +4290,7 @@ void __84__QLServerThread_UbiquitousRequests__downloadThumbnailForRequest_comple
     v32[3] = &unk_279ADE088;
     objc_copyWeak(&v38, &location);
     v33 = v22;
-    v34 = self;
+    selfCopy2 = self;
     v25 = v31;
     v35 = v25;
     v26 = v23;
@@ -4304,7 +4304,7 @@ void __84__QLServerThread_UbiquitousRequests__downloadThumbnailForRequest_comple
     objc_destroyWeak(&v44);
 
     objc_destroyWeak(&location);
-    v7 = v30;
+    providerCopy = v30;
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -4802,31 +4802,31 @@ void __65__QLServerThread_UbiquitousRequests__drainDownloadsQueueIfNeeded__block
   }
 }
 
-- (id)processedPNGAppIconDataForData:(id)a3 ofType:(id)a4 size:(CGSize)a5 scale:(double)a6
+- (id)processedPNGAppIconDataForData:(id)data ofType:(id)type size:(CGSize)size scale:(double)scale
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = a4;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  typeCopy = type;
   v13 = _log_9();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     [QLServerThread(UbiquitousRequests) processedPNGAppIconDataForData:ofType:size:scale:];
   }
 
-  v14 = [v12 isEqualToString:*MEMORY[0x277CC62D8]];
+  v14 = [typeCopy isEqualToString:*MEMORY[0x277CC62D8]];
   if (v14)
   {
-    v15 = [(QLServerThread *)self _createUndecoratedAppIconForData:v11 ofSize:width scale:height, a6];
+    scale = [(QLServerThread *)self _createUndecoratedAppIconForData:dataCopy ofSize:width scale:height, scale];
   }
 
   else
   {
-    v15 = LICreateIconFromCachedBitmap();
+    scale = LICreateIconFromCachedBitmap();
   }
 
-  v16 = v15;
-  if (v15)
+  v16 = scale;
+  if (scale)
   {
     v17 = QLCGImageRefPNGRepresentation();
 
@@ -4847,17 +4847,17 @@ void __65__QLServerThread_UbiquitousRequests__drainDownloadsQueueIfNeeded__block
   return v17;
 }
 
-- (CGImage)_createUndecoratedAppIconForData:(id)a3 ofSize:(CGSize)a4 scale:(double)a5
+- (CGImage)_createUndecoratedAppIconForData:(id)data ofSize:(CGSize)size scale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v24[1] = *MEMORY[0x277D85DE8];
   v23 = *MEMORY[0x277CD3648];
   v24[0] = MEMORY[0x277CBEC38];
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a3;
+  dataCopy = data;
   v10 = [v8 dictionaryWithObjects:v24 forKeys:&v23 count:1];
-  v11 = CGImageSourceCreateWithData(v9, v10);
+  v11 = CGImageSourceCreateWithData(dataCopy, v10);
 
   if (!v11)
   {
@@ -4875,27 +4875,27 @@ void __65__QLServerThread_UbiquitousRequests__drainDownloadsQueueIfNeeded__block
   if (!ImageAtIndex)
   {
 LABEL_6:
-    v19 = 0;
+    cGImage = 0;
     goto LABEL_7;
   }
 
   v13 = [objc_alloc(MEMORY[0x277D1B160]) initWithCGImage:ImageAtIndex scale:1.0];
   v14 = objc_alloc_init(MEMORY[0x277D1B1C8]);
   [v14 setSize:{width, height}];
-  [v14 setScale:a5];
+  [v14 setScale:scale];
   v15 = objc_alloc(MEMORY[0x277D1B1A8]);
   v22 = v13;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
   v17 = [v15 initWithImages:v16];
 
   v18 = [v17 prepareImageForDescriptor:v14];
-  v19 = [v18 CGImage];
-  CGImageRetain(v19);
+  cGImage = [v18 CGImage];
+  CGImageRetain(cGImage);
   CFRelease(ImageAtIndex);
 
 LABEL_7:
   v20 = *MEMORY[0x277D85DE8];
-  return v19;
+  return cGImage;
 }
 
 void __116__QLServerThread_ExternalCache__findUncachedThumbnailInExternalThumbnailCacheForRequest_item_URL_completionHandler___block_invoke_cold_1(uint64_t a1, NSObject *a2)

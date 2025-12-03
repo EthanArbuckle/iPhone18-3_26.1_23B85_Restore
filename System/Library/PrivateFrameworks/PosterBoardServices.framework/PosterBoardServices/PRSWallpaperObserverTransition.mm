@@ -1,6 +1,6 @@
 @interface PRSWallpaperObserverTransition
 - (PRSWallpaperObserverTransition)init;
-- (id)_initWithChanged:(unint64_t)a3;
+- (id)_initWithChanged:(unint64_t)changed;
 - (id)description;
 @end
 
@@ -23,7 +23,7 @@
     v14 = 2114;
     v15 = v10;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
     v19 = @"PRSWallpaperObserver.m";
     v20 = 1024;
@@ -39,14 +39,14 @@
   return result;
 }
 
-- (id)_initWithChanged:(unint64_t)a3
+- (id)_initWithChanged:(unint64_t)changed
 {
   v5.receiver = self;
   v5.super_class = PRSWallpaperObserverTransition;
   result = [(PRSWallpaperObserverTransition *)&v5 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = changed;
   }
 
   return result;

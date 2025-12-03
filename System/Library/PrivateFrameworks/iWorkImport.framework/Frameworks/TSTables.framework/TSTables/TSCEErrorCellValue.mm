@@ -1,31 +1,31 @@
 @interface TSCEErrorCellValue
-- (BOOL)isEqualToCellValue:(id)a3;
-- (TSCEErrorCellValue)initWithArchive:(const void *)a3 locale:(id)a4;
-- (TSCEErrorCellValue)initWithErrorValue:(id)a3 locale:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqualToCellValue:(id)value;
+- (TSCEErrorCellValue)initWithArchive:(const void *)archive locale:(id)locale;
+- (TSCEErrorCellValue)initWithErrorValue:(id)value locale:(id)locale;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)tsceValue;
-- (void)encodeToArchive:(void *)a3;
+- (void)encodeToArchive:(void *)archive;
 @end
 
 @implementation TSCEErrorCellValue
 
-- (TSCEErrorCellValue)initWithErrorValue:(id)a3 locale:(id)a4
+- (TSCEErrorCellValue)initWithErrorValue:(id)value locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  localeCopy = locale;
   v16.receiver = self;
   v16.super_class = TSCEErrorCellValue;
-  v8 = [(TSCECellValue *)&v16 initWithLocale:v7];
+  v8 = [(TSCECellValue *)&v16 initWithLocale:localeCopy];
   v8->super._valueType = 9;
-  v13 = objc_msgSend_copy(v6, v9, v10, v11, v12);
+  v13 = objc_msgSend_copy(valueCopy, v9, v10, v11, v12);
   errorValue = v8->_errorValue;
   v8->_errorValue = v13;
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSCEErrorCellValue alloc];
   errorValue = self->_errorValue;
@@ -62,12 +62,12 @@
   return v20;
 }
 
-- (BOOL)isEqualToCellValue:(id)a3
+- (BOOL)isEqualToCellValue:(id)value
 {
   v107 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v99 = v4;
-  if (v4 && objc_msgSend_valueType(v4, v5, v6, v7, v8) == 9)
+  valueCopy = value;
+  v99 = valueCopy;
+  if (valueCopy && objc_msgSend_valueType(valueCopy, v5, v6, v7, v8) == 9)
   {
     v13 = objc_msgSend_error(self->_errorValue, v9, v10, v11, v12);
     v18 = objc_msgSend_errorDictionary(v13, v14, v15, v16, v17);
@@ -167,21 +167,21 @@ LABEL_19:
   return v97;
 }
 
-- (TSCEErrorCellValue)initWithArchive:(const void *)a3 locale:(id)a4
+- (TSCEErrorCellValue)initWithArchive:(const void *)archive locale:(id)locale
 {
-  v6 = a4;
+  localeCopy = locale;
   v28.receiver = self;
   v28.super_class = TSCEErrorCellValue;
-  v7 = [(TSCECellValue *)&v28 initWithLocale:v6];
+  v7 = [(TSCECellValue *)&v28 initWithLocale:localeCopy];
   v11 = v7;
   if (v7)
   {
     v7->super._valueType = 9;
-    v12 = *(a3 + 8);
+    v12 = *(archive + 8);
     v17 = objc_msgSend_errorForErrorType_(TSCEError, v8, v12, v9, v10);
     if (v12 == 116)
     {
-      if ((*(a3 + 16) & 8) == 0)
+      if ((*(archive + 16) & 8) == 0)
       {
 LABEL_10:
         v25 = objc_msgSend_errorValue_(TSCEErrorValue, v13, v17, v15, v16);
@@ -191,18 +191,18 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v18 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v13, v14, v15, v16, *(a3 + 5));
+      v18 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v13, v14, v15, v16, *(archive + 5));
       objc_msgSend_setDateAsTimeInterval_(v17, v22, v18, v23, v24);
     }
 
     else
     {
-      if (v12 != 117 && v12 != 120 || (*(a3 + 16) & 1) == 0)
+      if (v12 != 117 && v12 != 120 || (*(archive + 16) & 1) == 0)
       {
         goto LABEL_10;
       }
 
-      v18 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v13, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL, v15, v16);
+      v18 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v13, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL, v15, v16);
       objc_msgSend_setExtraInfoString_(v17, v19, v18, v20, v21);
     }
 
@@ -214,12 +214,12 @@ LABEL_11:
   return v11;
 }
 
-- (void)encodeToArchive:(void *)a3
+- (void)encodeToArchive:(void *)archive
 {
-  v6 = objc_msgSend_error(self->_errorValue, a2, a3, v3, v4);
+  v6 = objc_msgSend_error(self->_errorValue, a2, archive, v3, v4);
   v11 = objc_msgSend_errorType(v6, v7, v8, v9, v10);
-  *(a3 + 4) |= 2u;
-  *(a3 + 8) = v11;
+  *(archive + 4) |= 2u;
+  *(archive + 8) = v11;
   if (v11 == 116)
   {
     v25 = objc_msgSend_dateAsTimeInterval(v6, v12, v13, v14, v15);
@@ -227,8 +227,8 @@ LABEL_11:
     if (v25)
     {
       objc_msgSend_doubleValue(v25, v26, v27, v28, v29);
-      *(a3 + 4) |= 8u;
-      *(a3 + 5) = v30;
+      *(archive + 4) |= 8u;
+      *(archive + 5) = v30;
     }
 
     goto LABEL_15;
@@ -260,7 +260,7 @@ LABEL_11:
       }
 
       *(&__dst + v24) = 0;
-      *(a3 + 4) |= 1u;
+      *(archive + 4) |= 1u;
       google::protobuf::internal::ArenaStringPtr::Set();
       if (v32 < 0)
       {

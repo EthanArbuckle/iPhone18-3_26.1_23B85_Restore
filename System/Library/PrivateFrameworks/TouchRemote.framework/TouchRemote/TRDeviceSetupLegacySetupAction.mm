@@ -7,80 +7,80 @@
 - (NSString)language;
 - (NSString)networkPassword;
 - (NSString)networkSSID;
-- (TRDeviceSetupLegacySetupAction)initWithAuthInfo:(id)a3 networkSSID:(id)a4 networkPassword:(id)a5 diagnosticsEnabled:(BOOL)a6 language:(id)a7 countryCode:(id)a8 homeSharingAppleID:(id)a9 homeSharingGroupID:(id)a10 rememberPassword:(BOOL)a11;
+- (TRDeviceSetupLegacySetupAction)initWithAuthInfo:(id)info networkSSID:(id)d networkPassword:(id)password diagnosticsEnabled:(BOOL)enabled language:(id)language countryCode:(id)code homeSharingAppleID:(id)iD homeSharingGroupID:(id)self0 rememberPassword:(BOOL)self1;
 - (TRDeviceSetupLegacySetupActionAuthInfo)authInfo;
 @end
 
 @implementation TRDeviceSetupLegacySetupAction
 
-- (TRDeviceSetupLegacySetupAction)initWithAuthInfo:(id)a3 networkSSID:(id)a4 networkPassword:(id)a5 diagnosticsEnabled:(BOOL)a6 language:(id)a7 countryCode:(id)a8 homeSharingAppleID:(id)a9 homeSharingGroupID:(id)a10 rememberPassword:(BOOL)a11
+- (TRDeviceSetupLegacySetupAction)initWithAuthInfo:(id)info networkSSID:(id)d networkPassword:(id)password diagnosticsEnabled:(BOOL)enabled language:(id)language countryCode:(id)code homeSharingAppleID:(id)iD homeSharingGroupID:(id)self0 rememberPassword:(BOOL)self1
 {
-  v34 = a6;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  enabledCopy = enabled;
+  infoCopy = info;
+  dCopy = d;
+  passwordCopy = password;
+  languageCopy = language;
+  codeCopy = code;
+  iDCopy = iD;
+  groupIDCopy = groupID;
   v22 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:9];
-  if (v15)
+  if (infoCopy)
   {
     v23 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
-    v24 = [v15 headers];
+    headers = [infoCopy headers];
 
-    if (v24)
+    if (headers)
     {
-      v25 = [v15 headers];
-      [v23 setObject:v25 forKeyedSubscript:@"h"];
+      headers2 = [infoCopy headers];
+      [v23 setObject:headers2 forKeyedSubscript:@"h"];
     }
 
-    v26 = [v15 body];
+    body = [infoCopy body];
 
-    if (v26)
+    if (body)
     {
-      v27 = [v15 body];
-      [v23 setObject:v27 forKeyedSubscript:@"b"];
+      body2 = [infoCopy body];
+      [v23 setObject:body2 forKeyedSubscript:@"b"];
     }
 
     v28 = [v23 copy];
     [v22 setObject:v28 forKeyedSubscript:@"au"];
   }
 
-  if (v16)
+  if (dCopy)
   {
-    [v22 setObject:v16 forKeyedSubscript:@"ns"];
+    [v22 setObject:dCopy forKeyedSubscript:@"ns"];
   }
 
-  if (v17)
+  if (passwordCopy)
   {
-    [v22 setObject:v17 forKeyedSubscript:@"np"];
+    [v22 setObject:passwordCopy forKeyedSubscript:@"np"];
   }
 
-  v29 = [MEMORY[0x277CCABB0] numberWithBool:v34];
+  v29 = [MEMORY[0x277CCABB0] numberWithBool:enabledCopy];
   [v22 setObject:v29 forKeyedSubscript:@"di"];
 
-  if (v18)
+  if (languageCopy)
   {
-    [v22 setObject:v18 forKeyedSubscript:@"l"];
+    [v22 setObject:languageCopy forKeyedSubscript:@"l"];
   }
 
-  if (v19)
+  if (codeCopy)
   {
-    [v22 setObject:v19 forKeyedSubscript:@"c"];
+    [v22 setObject:codeCopy forKeyedSubscript:@"c"];
   }
 
-  if (v20)
+  if (iDCopy)
   {
-    [v22 setObject:v20 forKeyedSubscript:@"ha"];
+    [v22 setObject:iDCopy forKeyedSubscript:@"ha"];
   }
 
-  if (v21)
+  if (groupIDCopy)
   {
-    [v22 setObject:v21 forKeyedSubscript:@"hg"];
+    [v22 setObject:groupIDCopy forKeyedSubscript:@"hg"];
   }
 
-  v30 = [MEMORY[0x277CCABB0] numberWithBool:a11];
+  v30 = [MEMORY[0x277CCABB0] numberWithBool:rememberPassword];
   [v22 setObject:v30 forKeyedSubscript:@"rp"];
 
   v31 = [v22 copy];
@@ -93,8 +93,8 @@
 
 - (TRDeviceSetupLegacySetupActionAuthInfo)authInfo
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"au"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"au"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -119,8 +119,8 @@
 
 - (NSString)networkSSID
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"ns"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"ns"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -140,8 +140,8 @@
 
 - (NSString)networkPassword
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"np"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"np"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -161,8 +161,8 @@
 
 - (BOOL)diagnosticsEnabled
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"di"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"di"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -177,14 +177,14 @@
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 - (NSString)language
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"l"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"l"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -204,8 +204,8 @@
 
 - (NSString)countryCode
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"c"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"c"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -225,8 +225,8 @@
 
 - (NSString)homeSharingAppleID
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"ha"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"ha"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -246,8 +246,8 @@
 
 - (NSString)homeSharingGroupID
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"hg"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"hg"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -267,8 +267,8 @@
 
 - (BOOL)rememberPassword
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"rp"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"rp"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -283,8 +283,8 @@
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 @end

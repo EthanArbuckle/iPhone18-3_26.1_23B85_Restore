@@ -16,8 +16,8 @@
   v11[13] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = UIApplicationSceneSpecification;
-  v2 = [(UIApplicationSceneSpecification *)&v10 defaultExtensions];
-  v3 = [v2 mutableCopy];
+  defaultExtensions = [(UIApplicationSceneSpecification *)&v10 defaultExtensions];
+  v3 = [defaultExtensions mutableCopy];
   v4 = v3;
   if (v3)
   {
@@ -96,8 +96,8 @@
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:10];
   v17.receiver = self;
   v17.super_class = UIApplicationSceneSpecification;
-  v11 = [(FBSSceneSpecification *)&v17 initialSettingsDiffActions];
-  v12 = [v10 arrayByAddingObjectsFromArray:v11];
+  initialSettingsDiffActions = [(FBSSceneSpecification *)&v17 initialSettingsDiffActions];
+  v12 = [v10 arrayByAddingObjectsFromArray:initialSettingsDiffActions];
 
   return v12;
 }
@@ -121,9 +121,9 @@
   v23[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
 
-  v10 = [UIApp _appAdoptsUISceneLifecycle];
+  _appAdoptsUISceneLifecycle = [UIApp _appAdoptsUISceneLifecycle];
   v11 = v9;
-  if (v10)
+  if (_appAdoptsUISceneLifecycle)
   {
     v20 = objc_opt_new();
     v22[0] = v20;
@@ -150,10 +150,10 @@
 
   v21.receiver = self;
   v21.super_class = UIApplicationSceneSpecification;
-  v12 = [(FBSSceneSpecification *)&v21 initialActionHandlers];
-  v13 = [v11 arrayByAddingObjectsFromArray:v12];
+  initialActionHandlers = [(FBSSceneSpecification *)&v21 initialActionHandlers];
+  v13 = [v11 arrayByAddingObjectsFromArray:initialActionHandlers];
 
-  if (v10)
+  if (_appAdoptsUISceneLifecycle)
   {
   }
 
@@ -162,46 +162,46 @@
 
 - (id)coreSceneComponentClassDictionary
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
-  [v2 setObject:objc_opt_class() forKeyedSubscript:_UIKeyWindowSceneObserverComponentKey];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_opt_class() forKeyedSubscript:_UIKeyWindowSceneObserverComponentKey];
   if (_UIViewMaskingConfigurationSPIEnabled())
   {
     v3 = objc_opt_class();
     v4 = +[_UIRelativeCornerMaskingProviderSceneComponent componentKey];
-    [v2 setObject:v3 forKeyedSubscript:v4];
+    [dictionary setObject:v3 forKeyedSubscript:v4];
   }
 
-  [v2 setObject:objc_opt_class() forKeyedSubscript:_UIEventDeferringSceneComponentKey];
-  [v2 setObject:objc_opt_class() forKeyedSubscript:0x1EFB5FC50];
-  [v2 setObject:objc_opt_class() forKeyedSubscript:0x1EFB5FC30];
-  [v2 setObject:objc_opt_class() forKeyedSubscript:_UIFocusSystemSceneComponentKey];
-  [v2 setObject:objc_opt_class() forKeyedSubscript:_UIShareableContentSceneComponentKey];
-  [v2 setObject:objc_opt_class() forKeyedSubscript:@"_UIHomeAffordanceSceneNotifierComponentKey"];
+  [dictionary setObject:objc_opt_class() forKeyedSubscript:_UIEventDeferringSceneComponentKey];
+  [dictionary setObject:objc_opt_class() forKeyedSubscript:0x1EFB5FC50];
+  [dictionary setObject:objc_opt_class() forKeyedSubscript:0x1EFB5FC30];
+  [dictionary setObject:objc_opt_class() forKeyedSubscript:_UIFocusSystemSceneComponentKey];
+  [dictionary setObject:objc_opt_class() forKeyedSubscript:_UIShareableContentSceneComponentKey];
+  [dictionary setObject:objc_opt_class() forKeyedSubscript:@"_UIHomeAffordanceSceneNotifierComponentKey"];
 
-  return v2;
+  return dictionary;
 }
 
 - (id)baseSceneComponentClassDictionary
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
-  [v2 setObject:objc_msgSend(objc_opt_class() forKeyedSubscript:{"_statusBarManagerClass"), _UIStatusBarManagerWindowSceneComponentKey}];
-  [v2 setObject:objc_opt_class() forKeyedSubscript:_UISystemAppearanceManagerWindowSceneComponentKey];
-  [v2 setObject:objc_opt_class() forKeyedSubscript:_UIBannerManagerWindowSceneComponentKey];
-  [v2 setObject:objc_opt_class() forKeyedSubscript:_UIAlertControllerStackManagerSceneComponentKey];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(objc_opt_class() forKeyedSubscript:{"_statusBarManagerClass"), _UIStatusBarManagerWindowSceneComponentKey}];
+  [dictionary setObject:objc_opt_class() forKeyedSubscript:_UISystemAppearanceManagerWindowSceneComponentKey];
+  [dictionary setObject:objc_opt_class() forKeyedSubscript:_UIBannerManagerWindowSceneComponentKey];
+  [dictionary setObject:objc_opt_class() forKeyedSubscript:_UIAlertControllerStackManagerSceneComponentKey];
   if (+[_UIDebugIdentifierLabelSceneComponent isEnabled])
   {
-    [v2 setObject:objc_opt_class() forKeyedSubscript:0x1EFB935F0];
+    [dictionary setObject:objc_opt_class() forKeyedSubscript:0x1EFB935F0];
   }
 
   if (_os_feature_enabled_impl())
   {
-    [v2 setObject:objc_opt_class() forKeyedSubscript:@"_UIContentTextExtractionSceneComponentKey"];
+    [dictionary setObject:objc_opt_class() forKeyedSubscript:@"_UIContentTextExtractionSceneComponentKey"];
   }
 
-  [v2 setObject:objc_opt_class() forKeyedSubscript:_UIRenderingEnvironmentSceneComponentKey];
-  [v2 setObject:objc_opt_class() forKeyedSubscript:_UIHDRUsageCoordinatorSceneComponentKey];
+  [dictionary setObject:objc_opt_class() forKeyedSubscript:_UIRenderingEnvironmentSceneComponentKey];
+  [dictionary setObject:objc_opt_class() forKeyedSubscript:_UIHDRUsageCoordinatorSceneComponentKey];
 
-  return v2;
+  return dictionary;
 }
 
 - (id)disconnectionHandlers

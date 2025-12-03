@@ -17,15 +17,15 @@
   v7 = v6;
   v8 = _Block_copy(&v12);
   v9 = _Block_copy(v8);
-  v10 = [a1 previewProxyItemAtIndex:a4 refreshBlock:{v9, v12, v13, v14, v15}];
+  v10 = [self previewProxyItemAtIndex:a4 refreshBlock:{v9, v12, v13, v14, v15}];
 
   return v10;
 }
 
 - (uint64_t)numberOfPreviewItemsInPreviewController:()QLPreviewControllerDataSource
 {
-  v1 = [a1 items];
-  v2 = [v1 count];
+  items = [self items];
+  v2 = [items count];
 
   return v2;
 }

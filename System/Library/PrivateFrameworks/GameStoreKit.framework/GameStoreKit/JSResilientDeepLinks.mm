@@ -1,18 +1,18 @@
 @interface JSResilientDeepLinks
 - (BOOL)hasResilientDeepLinks;
-- (BOOL)isResilientDeepLink:(id)a3;
+- (BOOL)isResilientDeepLink:(id)link;
 - (_TtC12GameStoreKit20JSResilientDeepLinks)init;
 - (void)removeAllDeepLinks;
-- (void)removeDeepLink:(id)a3;
+- (void)removeDeepLink:(id)link;
 @end
 
 @implementation JSResilientDeepLinks
 
-- (BOOL)isResilientDeepLink:(id)a3
+- (BOOL)isResilientDeepLink:(id)link
 {
   v4 = sub_24F92B0D8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   LOBYTE(v4) = sub_24F1B21D0(v4, v6);
 
   return v4 & 1;
@@ -20,14 +20,14 @@
 
 - (BOOL)hasResilientDeepLinks
 {
-  v2 = self;
+  selfCopy = self;
 
   v4 = _s12GameStoreKit27ResilientDeepLinkControllerO03hasdE5Links3bagSbAA14ASKBagContractC_tFZ_0(v3);
 
   return v4 & 1;
 }
 
-- (void)removeDeepLink:(id)a3
+- (void)removeDeepLink:(id)link
 {
   v3 = sub_24F92B0D8();
   _s12GameStoreKit27ResilientDeepLinkControllerO06removeeF0yySSFZ_0(v3, v4);

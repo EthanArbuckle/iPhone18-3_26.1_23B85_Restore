@@ -1,20 +1,20 @@
 @interface _ASConditionalRegistrationRequester
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)credentialAuthenticationViewController:(id)a3 didFinishWithCredential:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)credentialAuthenticationViewController:(id)a3 didFinishWithPasskeyRegistrationCredential:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)requestAutomaticPasskeyUpgradeWithLoginChoice:(id)a3 completionHandler:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)credentialAuthenticationViewController:(id)controller didFinishWithCredential:(id)credential error:(id)error completion:(id)completion;
+- (void)credentialAuthenticationViewController:(id)controller didFinishWithPasskeyRegistrationCredential:(id)credential error:(id)error completion:(id)completion;
+- (void)requestAutomaticPasskeyUpgradeWithLoginChoice:(id)choice completionHandler:(id)handler;
 @end
 
 @implementation _ASConditionalRegistrationRequester
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   v9 = *MEMORY[0x1E69C8AF0];
@@ -42,24 +42,24 @@
   return HasEntitlement;
 }
 
-- (void)requestAutomaticPasskeyUpgradeWithLoginChoice:(id)a3 completionHandler:(id)a4
+- (void)requestAutomaticPasskeyUpgradeWithLoginChoice:(id)choice completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  choiceCopy = choice;
+  handlerCopy = handler;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = [MEMORY[0x1E69C8DE0] sharedManager];
-  v9 = [v8 getEnabledExtensionsSynchronously];
+  mEMORY[0x1E69C8DE0] = [MEMORY[0x1E69C8DE0] sharedManager];
+  getEnabledExtensionsSynchronously = [mEMORY[0x1E69C8DE0] getEnabledExtensionsSynchronously];
 
-  v10 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  v10 = [getEnabledExtensionsSynchronously countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v10)
   {
     v11 = v10;
-    v29 = self;
-    aBlock = v7;
+    selfCopy = self;
+    aBlock = handlerCopy;
     v12 = 0;
     v13 = *v32;
     do
@@ -68,13 +68,13 @@
       {
         if (*v32 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(getEnabledExtensionsSynchronously);
         }
 
         v15 = *(*(&v31 + 1) + 8 * i);
-        v16 = [v6 externalCredentialProviderBundleID];
-        v17 = [v15 sf_bundleIdentifierForContainingApp];
-        v18 = [v16 isEqualToString:v17];
+        externalCredentialProviderBundleID = [choiceCopy externalCredentialProviderBundleID];
+        sf_bundleIdentifierForContainingApp = [v15 sf_bundleIdentifierForContainingApp];
+        v18 = [externalCredentialProviderBundleID isEqualToString:sf_bundleIdentifierForContainingApp];
 
         if (v18)
         {
@@ -84,36 +84,36 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v11 = [getEnabledExtensionsSynchronously countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v11);
 
     if (v12)
     {
-      v20 = [MEMORY[0x1E69C8DE0] sharedManager];
-      v21 = [v20 extensionSupportsPasskeys:v12];
+      mEMORY[0x1E69C8DE0]2 = [MEMORY[0x1E69C8DE0] sharedManager];
+      v21 = [mEMORY[0x1E69C8DE0]2 extensionSupportsPasskeys:v12];
 
-      v7 = aBlock;
+      handlerCopy = aBlock;
       if (v21)
       {
         v22 = _Block_copy(aBlock);
-        registrationHandler = v29->_registrationHandler;
-        v29->_registrationHandler = v22;
+        registrationHandler = selfCopy->_registrationHandler;
+        selfCopy->_registrationHandler = v22;
 
-        v24 = [[ASPasskeyCredentialRequest alloc] initWithLoginChoice:v6 registrationExtensionInput:0];
+        v24 = [[ASPasskeyCredentialRequest alloc] initWithLoginChoice:choiceCopy registrationExtensionInput:0];
         v25 = [[_ASCredentialAuthenticationViewController alloc] initWithExtension:v12 passkeyRegistrationRequest:v24 forConditionalRegistration:1];
-        credentialProviderViewController = v29->_credentialProviderViewController;
-        v29->_credentialProviderViewController = v25;
+        credentialProviderViewController = selfCopy->_credentialProviderViewController;
+        selfCopy->_credentialProviderViewController = v25;
 
-        [(_ASCredentialAuthenticationViewController *)v29->_credentialProviderViewController setDelegate:v29];
+        [(_ASCredentialAuthenticationViewController *)selfCopy->_credentialProviderViewController setDelegate:selfCopy];
         goto LABEL_18;
       }
     }
 
     else
     {
-      v7 = aBlock;
+      handlerCopy = aBlock;
     }
   }
 
@@ -130,51 +130,51 @@
   }
 
   v24 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E698DF70] code:1 userInfo:0];
-  (*(v7 + 2))(v7, 0, v24);
+  (*(handlerCopy + 2))(handlerCopy, 0, v24);
 LABEL_18:
 
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)credentialAuthenticationViewController:(id)a3 didFinishWithPasskeyRegistrationCredential:(id)a4 error:(id)a5 completion:(id)a6
+- (void)credentialAuthenticationViewController:(id)controller didFinishWithPasskeyRegistrationCredential:(id)credential error:(id)error completion:(id)completion
 {
   v9 = MEMORY[0x1E698DFE8];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  completionCopy = completion;
+  errorCopy = error;
+  credentialCopy = credential;
   v13 = [v9 alloc];
-  v14 = [v12 relyingParty];
-  v15 = [v12 attestationObject];
-  v16 = [v12 credentialID];
+  relyingParty = [credentialCopy relyingParty];
+  attestationObject = [credentialCopy attestationObject];
+  credentialID = [credentialCopy credentialID];
 
   v17 = +[ASPasskeyRegistrationCredential _defaultTransports];
   LOBYTE(v19) = 1;
-  v20 = [v13 initWithRelyingPartyIdentifier:v14 attestationObject:v15 rawClientDataJSON:0 credentialID:v16 transports:v17 extensions:0 attachment:*MEMORY[0x1E698DF88] isExternal:v19];
+  v20 = [v13 initWithRelyingPartyIdentifier:relyingParty attestationObject:attestationObject rawClientDataJSON:0 credentialID:credentialID transports:v17 extensions:0 attachment:*MEMORY[0x1E698DF88] isExternal:v19];
 
   (*(self->_registrationHandler + 2))();
-  v10[2](v10);
+  completionCopy[2](completionCopy);
 
   credentialProviderViewController = self->_credentialProviderViewController;
   self->_credentialProviderViewController = 0;
 }
 
-- (void)credentialAuthenticationViewController:(id)a3 didFinishWithCredential:(id)a4 error:(id)a5 completion:(id)a6
+- (void)credentialAuthenticationViewController:(id)controller didFinishWithCredential:(id)credential error:(id)error completion:(id)completion
 {
-  if (a4 || !a5)
+  if (credential || !error)
   {
-    v12 = *(a6 + 2);
-    v13 = a6;
+    v12 = *(completion + 2);
+    completionCopy = completion;
     v12();
-    credentialProviderViewController = v13;
+    credentialProviderViewController = completionCopy;
   }
 
   else
   {
     registrationHandler = self->_registrationHandler;
     v9 = registrationHandler[2];
-    v10 = a6;
-    v9(registrationHandler, 0, a5);
-    v10[2](v10);
+    completionCopy2 = completion;
+    v9(registrationHandler, 0, error);
+    completionCopy2[2](completionCopy2);
 
     credentialProviderViewController = self->_credentialProviderViewController;
     self->_credentialProviderViewController = 0;

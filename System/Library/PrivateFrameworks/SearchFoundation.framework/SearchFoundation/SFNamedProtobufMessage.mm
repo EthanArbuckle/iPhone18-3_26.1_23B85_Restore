@@ -1,42 +1,42 @@
 @interface SFNamedProtobufMessage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFNamedProtobufMessage)initWithCoder:(id)a3;
-- (SFNamedProtobufMessage)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFNamedProtobufMessage)initWithCoder:(id)coder;
+- (SFNamedProtobufMessage)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFNamedProtobufMessage
 
 - (unint64_t)hash
 {
-  v3 = [(SFNamedProtobufMessage *)self protobufMessageData];
-  v4 = [v3 hash];
-  v5 = [(SFNamedProtobufMessage *)self protobufMessageName];
-  v6 = [v5 hash];
+  protobufMessageData = [(SFNamedProtobufMessage *)self protobufMessageData];
+  v4 = [protobufMessageData hash];
+  protobufMessageName = [(SFNamedProtobufMessage *)self protobufMessageName];
+  v6 = [protobufMessageName hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFNamedProtobufMessage *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFNamedProtobufMessage *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFNamedProtobufMessage *)self protobufMessageData];
-      v8 = [(SFNamedProtobufMessage *)v6 protobufMessageData];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      protobufMessageData = [(SFNamedProtobufMessage *)self protobufMessageData];
+      protobufMessageData2 = [(SFNamedProtobufMessage *)v6 protobufMessageData];
+      if ((protobufMessageData != 0) == (protobufMessageData2 == 0))
       {
         v11 = 0;
 LABEL_19:
@@ -44,12 +44,12 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v9 = [(SFNamedProtobufMessage *)self protobufMessageData];
-      if (v9)
+      protobufMessageData3 = [(SFNamedProtobufMessage *)self protobufMessageData];
+      if (protobufMessageData3)
       {
-        v3 = [(SFNamedProtobufMessage *)self protobufMessageData];
-        v10 = [(SFNamedProtobufMessage *)v6 protobufMessageData];
-        if (![v3 isEqual:v10])
+        protobufMessageData4 = [(SFNamedProtobufMessage *)self protobufMessageData];
+        protobufMessageData5 = [(SFNamedProtobufMessage *)v6 protobufMessageData];
+        if (![protobufMessageData4 isEqual:protobufMessageData5])
         {
           v11 = 0;
 LABEL_17:
@@ -58,13 +58,13 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v21 = v10;
+        v21 = protobufMessageData5;
       }
 
-      v12 = [(SFNamedProtobufMessage *)self protobufMessageName];
-      v13 = [(SFNamedProtobufMessage *)v6 protobufMessageName];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      protobufMessageName = [(SFNamedProtobufMessage *)self protobufMessageName];
+      protobufMessageName2 = [(SFNamedProtobufMessage *)v6 protobufMessageName];
+      v14 = protobufMessageName2;
+      if ((protobufMessageName != 0) == (protobufMessageName2 == 0))
       {
 
         v11 = 0;
@@ -72,16 +72,16 @@ LABEL_18:
 
       else
       {
-        v15 = [(SFNamedProtobufMessage *)self protobufMessageName];
-        if (v15)
+        protobufMessageName3 = [(SFNamedProtobufMessage *)self protobufMessageName];
+        if (protobufMessageName3)
         {
-          v16 = v15;
-          v19 = [(SFNamedProtobufMessage *)self protobufMessageName];
+          v16 = protobufMessageName3;
+          protobufMessageName4 = [(SFNamedProtobufMessage *)self protobufMessageName];
           [(SFNamedProtobufMessage *)v6 protobufMessageName];
-          v17 = v20 = v3;
-          v11 = [v19 isEqual:v17];
+          v17 = v20 = protobufMessageData4;
+          v11 = [protobufMessageName4 isEqual:v17];
 
-          v3 = v20;
+          protobufMessageData4 = v20;
         }
 
         else
@@ -91,8 +91,8 @@ LABEL_18:
         }
       }
 
-      v10 = v21;
-      if (!v9)
+      protobufMessageData5 = v21;
+      if (!protobufMessageData3)
       {
         goto LABEL_18;
       }
@@ -108,15 +108,15 @@ LABEL_20:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFNamedProtobufMessage *)self protobufMessageData];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  protobufMessageData = [(SFNamedProtobufMessage *)self protobufMessageData];
+  v6 = [protobufMessageData copy];
   [v4 setProtobufMessageData:v6];
 
-  v7 = [(SFNamedProtobufMessage *)self protobufMessageName];
-  v8 = [v7 copy];
+  protobufMessageName = [(SFNamedProtobufMessage *)self protobufMessageName];
+  v8 = [protobufMessageName copy];
   [v4 setProtobufMessageName:v8];
 
   return v4;
@@ -125,31 +125,31 @@ LABEL_20:
 - (NSData)jsonData
 {
   v2 = [[_SFPBNamedProtobufMessage alloc] initWithFacade:self];
-  v3 = [(_SFPBNamedProtobufMessage *)v2 jsonData];
+  jsonData = [(_SFPBNamedProtobufMessage *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBNamedProtobufMessage alloc] initWithFacade:self];
-  v3 = [(_SFPBNamedProtobufMessage *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBNamedProtobufMessage *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBNamedProtobufMessage alloc] initWithFacade:self];
-  v5 = [(_SFPBNamedProtobufMessage *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBNamedProtobufMessage *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFNamedProtobufMessage)initWithCoder:(id)a3
+- (SFNamedProtobufMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBNamedProtobufMessage alloc] initWithData:v5];
   v7 = [(SFNamedProtobufMessage *)self initWithProtobuf:v6];
@@ -157,28 +157,28 @@ LABEL_20:
   return v7;
 }
 
-- (SFNamedProtobufMessage)initWithProtobuf:(id)a3
+- (SFNamedProtobufMessage)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFNamedProtobufMessage;
   v5 = [(SFNamedProtobufMessage *)&v12 init];
   if (v5)
   {
-    v6 = [v4 protobufMessageData];
+    protobufMessageData = [protobufCopy protobufMessageData];
 
-    if (v6)
+    if (protobufMessageData)
     {
-      v7 = [v4 protobufMessageData];
-      [(SFNamedProtobufMessage *)v5 setProtobufMessageData:v7];
+      protobufMessageData2 = [protobufCopy protobufMessageData];
+      [(SFNamedProtobufMessage *)v5 setProtobufMessageData:protobufMessageData2];
     }
 
-    v8 = [v4 protobufMessageName];
+    protobufMessageName = [protobufCopy protobufMessageName];
 
-    if (v8)
+    if (protobufMessageName)
     {
-      v9 = [v4 protobufMessageName];
-      [(SFNamedProtobufMessage *)v5 setProtobufMessageName:v9];
+      protobufMessageName2 = [protobufCopy protobufMessageName];
+      [(SFNamedProtobufMessage *)v5 setProtobufMessageName:protobufMessageName2];
     }
 
     v10 = v5;

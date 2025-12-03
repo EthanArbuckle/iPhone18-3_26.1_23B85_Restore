@@ -1,24 +1,24 @@
 @interface CRLFreehandDrawingSelectionDecorator
-- (CRLFreehandDrawingSelectionDecorator)initWithInteractiveCanvasController:(id)a3;
+- (CRLFreehandDrawingSelectionDecorator)initWithInteractiveCanvasController:(id)controller;
 - (NSArray)decoratorOverlayRenderables;
 - (void)dealloc;
-- (void)setDecoratorLayer:(id)a3;
+- (void)setDecoratorLayer:(id)layer;
 - (void)tearDown;
 @end
 
 @implementation CRLFreehandDrawingSelectionDecorator
 
-- (CRLFreehandDrawingSelectionDecorator)initWithInteractiveCanvasController:(id)a3
+- (CRLFreehandDrawingSelectionDecorator)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = CRLFreehandDrawingSelectionDecorator;
   v5 = [(CRLFreehandDrawingSelectionDecorator *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_icc, v4);
-    [v4 addDecorator:v6];
+    v7 = objc_storeWeak(&v5->_icc, controllerCopy);
+    [controllerCopy addDecorator:v6];
   }
 
   return v6;
@@ -98,9 +98,9 @@
   [(CRLFreehandDrawingSelectionDecorator *)&v6 dealloc];
 }
 
-- (void)setDecoratorLayer:(id)a3
+- (void)setDecoratorLayer:(id)layer
 {
-  objc_storeStrong(&self->_layer, a3);
+  objc_storeStrong(&self->_layer, layer);
   WeakRetained = objc_loadWeakRetained(&self->_icc);
   [WeakRetained invalidateLayersForDecorator:self];
 }

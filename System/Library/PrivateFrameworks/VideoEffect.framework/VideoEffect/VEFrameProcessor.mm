@@ -1,18 +1,18 @@
 @interface VEFrameProcessor
 - (BOOL)createSharedEventListener;
-- (BOOL)internalProcessWithParameters:(id)a3 error:(id *)a4;
-- (BOOL)internalStartSessionWithConfigurations:(id)a3 error:(id *)a4;
-- (BOOL)processWithListParameters:(id)a3 error:(id *)a4;
-- (BOOL)processWithParameters:(id)a3 error:(id *)a4;
-- (BOOL)startSessionWithConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)startSessionWithListConfigurations:(id)a3 error:(id *)a4;
+- (BOOL)internalProcessWithParameters:(id)parameters error:(id *)error;
+- (BOOL)internalStartSessionWithConfigurations:(id)configurations error:(id *)error;
+- (BOOL)processWithListParameters:(id)parameters error:(id *)error;
+- (BOOL)processWithParameters:(id)parameters error:(id *)error;
+- (BOOL)startSessionWithConfiguration:(id)configuration error:(id *)error;
+- (BOOL)startSessionWithListConfigurations:(id)configurations error:(id *)error;
 - (VEFrameProcessor)init;
 - (void)destroySharedEventListener;
 - (void)endSession;
 - (void)internalEndSession;
-- (void)processWithCommandBuffer:(id)a3 parameters:(id)a4 completionHandler:(id)a5;
-- (void)processWithListParameters:(id)a3 completionHandler:(id)a4;
-- (void)processWithParameters:(id)a3 completionHandler:(id)a4;
+- (void)processWithCommandBuffer:(id)buffer parameters:(id)parameters completionHandler:(id)handler;
+- (void)processWithListParameters:(id)parameters completionHandler:(id)handler;
+- (void)processWithParameters:(id)parameters completionHandler:(id)handler;
 @end
 
 @implementation VEFrameProcessor
@@ -103,17 +103,17 @@
     os_unfair_lock_lock(&self->_sharedEventListLock);
     if ([(NSMutableArray *)self->_sharedEventList count]&& !self->_sharedEventListTearingDown)
     {
-      v3 = [(NSMutableArray *)self->_sharedEventList lastObject];
+      lastObject = [(NSMutableArray *)self->_sharedEventList lastObject];
       self->_sharedEventListTearingDown = 1;
       os_unfair_lock_unlock(&self->_sharedEventListLock);
-      if (v3)
+      if (lastObject)
       {
         if ((global_logLevel & 0x10) != 0 && os_log_type_enabled(global_logger, OS_LOG_TYPE_ERROR))
         {
           [VEFrameProcessor endSession];
         }
 
-        [v3 waitUntilSignaledValue:2 timeoutMS:10000];
+        [lastObject waitUntilSignaledValue:2 timeoutMS:10000];
       }
     }
 
@@ -136,10 +136,10 @@
   }
 }
 
-- (BOOL)internalStartSessionWithConfigurations:(id)a3 error:(id *)a4
+- (BOOL)internalStartSessionWithConfigurations:(id)configurations error:(id *)error
 {
-  v6 = a3;
-  if (![v6 count])
+  configurationsCopy = configurations;
+  if (![configurationsCopy count])
   {
 LABEL_36:
     v47 = 1;
@@ -150,11 +150,11 @@ LABEL_36:
   v8 = 0x277D04000uLL;
   while (1)
   {
-    v9 = [v6 objectAtIndexedSubscript:v7];
+    v9 = [configurationsCopy objectAtIndexedSubscript:v7];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v11 = [v6 objectAtIndexedSubscript:v7];
+    v11 = [configurationsCopy objectAtIndexedSubscript:v7];
     v12 = v11;
     if (isKindOfClass)
     {
@@ -168,7 +168,7 @@ LABEL_36:
 
           if (!self->_vsaProcessor)
           {
-            if (a4)
+            if (error)
             {
               v48 = @"Could not init VSAProcessor";
               goto LABEL_71;
@@ -180,7 +180,7 @@ LABEL_36:
           isMemoryAvailableForVSA([v12 frameWidth], objc_msgSend(v12, "frameHeight"), objc_msgSend(v12, "usePrecomputedFlow"), objc_msgSend(v12, "qualityPrioritization"));
           v15 = self->_vsaProcessor;
           v16 = dvpVSAConfigFromVE(v12);
-          v17 = [(VSAProcessor *)v15 startSessionWithMotionBlurConfig:v16 error:a4];
+          v17 = [(VSAProcessor *)v15 startSessionWithMotionBlurConfig:v16 error:error];
 LABEL_13:
           v24 = v17;
 
@@ -192,7 +192,7 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_73;
         }
@@ -201,7 +201,7 @@ LABEL_13:
         goto LABEL_68;
       }
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_73;
       }
@@ -213,7 +213,7 @@ LABEL_13:
     objc_opt_class();
     v18 = objc_opt_isKindOfClass();
 
-    v19 = [v6 objectAtIndexedSubscript:v7];
+    v19 = [configurationsCopy objectAtIndexedSubscript:v7];
     v12 = v19;
     if (v18)
     {
@@ -228,7 +228,7 @@ LABEL_13:
           v22 = self->_opticalFlow;
           if (!v22)
           {
-            if (a4)
+            if (error)
             {
               v48 = @"Could not init OpticalFlowProcessor";
               goto LABEL_71;
@@ -241,11 +241,11 @@ LABEL_13:
           isMemoryAvailableForOpticalFlow([v12 frameWidth], objc_msgSend(v12, "frameHeight"), objc_msgSend(v12, "revision"), objc_msgSend(v12, "qualityPrioritization"));
           v23 = self->_opticalFlow;
           v16 = dvpOpticalFlowConfigFromVE(v12);
-          v17 = [(OpticalFlowProcessor *)v23 startSessionWithOpticalFlowConfig:v16 error:a4];
+          v17 = [(OpticalFlowProcessor *)v23 startSessionWithOpticalFlowConfig:v16 error:error];
           goto LABEL_13;
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_73;
         }
@@ -256,7 +256,7 @@ LABEL_68:
         goto LABEL_72;
       }
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_73;
       }
@@ -270,7 +270,7 @@ LABEL_65:
     objc_opt_class();
     v25 = objc_opt_isKindOfClass();
 
-    v26 = [v6 objectAtIndexedSubscript:v7];
+    v26 = [configurationsCopy objectAtIndexedSubscript:v7];
     v12 = v26;
     if ((v25 & 1) == 0)
     {
@@ -279,7 +279,7 @@ LABEL_65:
 
     if (!v26)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_73;
       }
@@ -290,7 +290,7 @@ LABEL_65:
 
     if (self->_frcProcessor)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_73;
       }
@@ -305,7 +305,7 @@ LABEL_65:
 
     if (!self->_frcProcessor)
     {
-      if (a4)
+      if (error)
       {
         v48 = @"Could not init FRCProcessor";
         goto LABEL_71;
@@ -317,7 +317,7 @@ LABEL_65:
     isMemoryAvailableForFRC([v12 frameWidth], objc_msgSend(v12, "frameHeight"), objc_msgSend(v12, "usePrecomputedFlow"), objc_msgSend(v12, "qualityPrioritization"));
     v29 = self->_frcProcessor;
     v30 = dvpFRCConfigFromVE(v12);
-    v31 = [(FRCProcessor *)v29 startSessionWithFrameRateConfig:v30 error:a4];
+    v31 = [(FRCProcessor *)v29 startSessionWithFrameRateConfig:v30 error:error];
 LABEL_32:
     v45 = v31;
 
@@ -328,7 +328,7 @@ LABEL_32:
     }
 
 LABEL_14:
-    if ([v6 count] <= ++v7)
+    if ([configurationsCopy count] <= ++v7)
     {
       goto LABEL_36;
     }
@@ -337,7 +337,7 @@ LABEL_14:
   objc_opt_class();
   v32 = objc_opt_isKindOfClass();
 
-  v33 = [v6 objectAtIndexedSubscript:v7];
+  v33 = [configurationsCopy objectAtIndexedSubscript:v7];
   v12 = v33;
   if (v32)
   {
@@ -351,7 +351,7 @@ LABEL_14:
 
         if (!self->_vsrProcessor)
         {
-          if (a4)
+          if (error)
           {
             v48 = @"Could not init VSRProcessor";
             goto LABEL_71;
@@ -360,29 +360,29 @@ LABEL_14:
           goto LABEL_73;
         }
 
-        v36 = [v12 inputType];
-        v37 = [v12 frameWidth];
-        v38 = [v12 frameHeight];
-        v39 = [v12 usePrecomputedFlow];
-        v40 = [v12 qualityPrioritization];
-        if (v36 == 1)
+        inputType = [v12 inputType];
+        frameWidth = [v12 frameWidth];
+        frameHeight = [v12 frameHeight];
+        usePrecomputedFlow = [v12 usePrecomputedFlow];
+        qualityPrioritization = [v12 qualityPrioritization];
+        if (inputType == 1)
         {
-          isMemoryAvailableForVSR(v37, v38, v39, v40);
+          isMemoryAvailableForVSR(frameWidth, frameHeight, usePrecomputedFlow, qualityPrioritization);
         }
 
         else
         {
-          isMemoryAvailableForISR(v37, v38, v39, v40);
+          isMemoryAvailableForISR(frameWidth, frameHeight, usePrecomputedFlow, qualityPrioritization);
         }
 
         v8 = 0x277D04000;
         v46 = self->_vsrProcessor;
         v16 = dvpVSRConfigFromVE(v12);
-        v17 = [(VSRProcessor *)v46 startSessionWithSuperResolutionConfig:v16 error:a4];
+        v17 = [(VSRProcessor *)v46 startSessionWithSuperResolutionConfig:v16 error:error];
         goto LABEL_13;
       }
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_73;
       }
@@ -391,7 +391,7 @@ LABEL_14:
       goto LABEL_68;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_73;
     }
@@ -405,10 +405,10 @@ LABEL_14:
 
   if (v41)
   {
-    v12 = [v6 objectAtIndexedSubscript:v7];
+    v12 = [configurationsCopy objectAtIndexedSubscript:v7];
     if (!v12)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_73;
       }
@@ -419,7 +419,7 @@ LABEL_14:
 
     if (self->_vdgProcessor)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_73;
       }
@@ -435,13 +435,13 @@ LABEL_14:
     v44 = self->_vdgProcessor;
     if (!v44)
     {
-      if (a4)
+      if (error)
       {
         v48 = @"Could not init VDGProcessor";
 LABEL_71:
         v49 = 7;
 LABEL_72:
-        *a4 = errorMessage(v49, v48);
+        *error = errorMessage(v49, v48);
       }
 
 LABEL_73:
@@ -450,14 +450,14 @@ LABEL_73:
     }
 
     v30 = dvpVDGConfigFromVE(v12);
-    v31 = [(VDGProcessor *)v44 startSessionWithDeghostingConfig:v30 error:a4];
+    v31 = [(VDGProcessor *)v44 startSessionWithDeghostingConfig:v30 error:error];
     goto LABEL_32;
   }
 
-  if (a4)
+  if (error)
   {
     errorMessage(12, @"Invalid configurations");
-    *a4 = v47 = 0;
+    *error = v47 = 0;
     goto LABEL_75;
   }
 
@@ -468,9 +468,9 @@ LABEL_75:
   return v47;
 }
 
-- (BOOL)startSessionWithListConfigurations:(id)a3 error:(id *)a4
+- (BOOL)startSessionWithListConfigurations:(id)configurations error:(id *)error
 {
-  v6 = a3;
+  configurationsCopy = configurations;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -488,13 +488,13 @@ LABEL_75:
   v11[3] = &unk_279E17140;
   v13 = &v21;
   v11[4] = self;
-  v8 = v6;
+  v8 = configurationsCopy;
   v12 = v8;
   v14 = &v15;
   dispatch_sync(processFrameQueue, v11);
-  if (a4)
+  if (error)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   v9 = *(v22 + 24);
@@ -516,9 +516,9 @@ void __61__VEFrameProcessor_startSessionWithListConfigurations_error___block_inv
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (BOOL)startSessionWithConfiguration:(id)a3 error:(id *)a4
+- (BOOL)startSessionWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -529,12 +529,12 @@ void __61__VEFrameProcessor_startSessionWithListConfigurations_error___block_inv
   v21 = __Block_byref_object_copy_;
   v22 = __Block_byref_object_dispose_;
   v23 = 0;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = v7;
-  if (!v6 || !v7)
+  array = [MEMORY[0x277CBEB18] array];
+  v8 = array;
+  if (!configurationCopy || !array)
   {
     *(v25 + 24) = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_5;
     }
@@ -546,7 +546,7 @@ void __61__VEFrameProcessor_startSessionWithListConfigurations_error___block_inv
     goto LABEL_4;
   }
 
-  [v7 addObject:v6];
+  [array addObject:configurationCopy];
   processFrameQueue = self->_processFrameQueue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -558,10 +558,10 @@ void __61__VEFrameProcessor_startSessionWithListConfigurations_error___block_inv
   v17 = &v18;
   dispatch_sync(processFrameQueue, v14);
 
-  if (a4)
+  if (error)
   {
 LABEL_4:
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
 LABEL_5:
@@ -585,18 +585,18 @@ uint64_t __56__VEFrameProcessor_startSessionWithConfiguration_error___block_invo
   return [a1[5] removeAllObjects];
 }
 
-- (BOOL)internalProcessWithParameters:(id)a3 error:(id *)a4
+- (BOOL)internalProcessWithParameters:(id)parameters error:(id *)error
 {
-  v6 = a3;
+  parametersCopy = parameters;
   v7 = objc_autoreleasePoolPush();
   if (self->_opticalFlow)
   {
-    if ([v6 count])
+    if ([parametersCopy count])
     {
       v8 = 0;
       while (1)
       {
-        v9 = [v6 objectAtIndexedSubscript:v8];
+        v9 = [parametersCopy objectAtIndexedSubscript:v8];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -605,23 +605,23 @@ uint64_t __56__VEFrameProcessor_startSessionWithConfiguration_error___block_invo
           break;
         }
 
-        if ([v6 count] <= ++v8)
+        if ([parametersCopy count] <= ++v8)
         {
           goto LABEL_6;
         }
       }
 
-      v17 = [v6 objectAtIndexedSubscript:v8];
+      v17 = [parametersCopy objectAtIndexedSubscript:v8];
       v11 = v17;
       if (v17)
       {
-        v18 = [v17 sourceFrame];
-        if ([v18 buffer])
+        sourceFrame = [v17 sourceFrame];
+        if ([sourceFrame buffer])
         {
-          v19 = [v11 nextFrame];
-          v20 = [v19 buffer];
+          nextFrame = [v11 nextFrame];
+          buffer = [nextFrame buffer];
 
-          if (v20)
+          if (buffer)
           {
             opticalFlow = self->_opticalFlow;
             v22 = dvpOpticalFlowParamsFromVE(v11);
@@ -642,7 +642,7 @@ LABEL_8:
 LABEL_30:
               if (self->_frcProcessor)
               {
-                if (![v6 count])
+                if (![parametersCopy count])
                 {
                   goto LABEL_35;
                 }
@@ -650,7 +650,7 @@ LABEL_30:
                 v30 = 0;
                 while (1)
                 {
-                  v31 = [v6 objectAtIndexedSubscript:v30];
+                  v31 = [parametersCopy objectAtIndexedSubscript:v30];
                   objc_opt_class();
                   v32 = objc_opt_isKindOfClass();
 
@@ -659,17 +659,17 @@ LABEL_30:
                     break;
                   }
 
-                  if ([v6 count] <= ++v30)
+                  if ([parametersCopy count] <= ++v30)
                   {
                     goto LABEL_35;
                   }
                 }
 
-                v33 = [v6 objectAtIndexedSubscript:v30];
+                v33 = [parametersCopy objectAtIndexedSubscript:v30];
                 if (!v33)
                 {
 LABEL_35:
-                  if (!a4)
+                  if (!error)
                   {
                     goto LABEL_64;
                   }
@@ -694,7 +694,7 @@ LABEL_35:
 
               if (self->_vsrProcessor)
               {
-                if (![v6 count])
+                if (![parametersCopy count])
                 {
                   goto LABEL_44;
                 }
@@ -702,7 +702,7 @@ LABEL_35:
                 v38 = 0;
                 while (1)
                 {
-                  v39 = [v6 objectAtIndexedSubscript:v38];
+                  v39 = [parametersCopy objectAtIndexedSubscript:v38];
                   objc_opt_class();
                   v40 = objc_opt_isKindOfClass();
 
@@ -711,17 +711,17 @@ LABEL_35:
                     break;
                   }
 
-                  if ([v6 count] <= ++v38)
+                  if ([parametersCopy count] <= ++v38)
                   {
                     goto LABEL_44;
                   }
                 }
 
-                v41 = [v6 objectAtIndexedSubscript:v38];
+                v41 = [parametersCopy objectAtIndexedSubscript:v38];
                 if (!v41)
                 {
 LABEL_44:
-                  if (!a4)
+                  if (!error)
                   {
                     goto LABEL_64;
                   }
@@ -750,12 +750,12 @@ LABEL_44:
                 goto LABEL_65;
               }
 
-              if ([v6 count])
+              if ([parametersCopy count])
               {
                 v46 = 0;
                 while (1)
                 {
-                  v47 = [v6 objectAtIndexedSubscript:v46];
+                  v47 = [parametersCopy objectAtIndexedSubscript:v46];
                   objc_opt_class();
                   v48 = objc_opt_isKindOfClass();
 
@@ -764,13 +764,13 @@ LABEL_44:
                     break;
                   }
 
-                  if ([v6 count] <= ++v46)
+                  if ([parametersCopy count] <= ++v46)
                   {
                     goto LABEL_54;
                   }
                 }
 
-                v50 = [v6 objectAtIndexedSubscript:v46];
+                v50 = [parametersCopy objectAtIndexedSubscript:v46];
                 if (v50)
                 {
                   v51 = v50;
@@ -795,7 +795,7 @@ LABEL_58:
               }
 
 LABEL_54:
-              if (!a4)
+              if (!error)
               {
                 goto LABEL_64;
               }
@@ -841,12 +841,12 @@ LABEL_6:
 
   v12 = 0;
 LABEL_12:
-  if ([v6 count])
+  if ([parametersCopy count])
   {
     v13 = 0;
     while (1)
     {
-      v14 = [v6 objectAtIndexedSubscript:v13];
+      v14 = [parametersCopy objectAtIndexedSubscript:v13];
       objc_opt_class();
       v15 = objc_opt_isKindOfClass();
 
@@ -855,13 +855,13 @@ LABEL_12:
         break;
       }
 
-      if ([v6 count] <= ++v13)
+      if ([parametersCopy count] <= ++v13)
       {
         goto LABEL_16;
       }
     }
 
-    v24 = [v6 objectAtIndexedSubscript:v13];
+    v24 = [parametersCopy objectAtIndexedSubscript:v13];
     if (v24)
     {
       v25 = v24;
@@ -882,7 +882,7 @@ LABEL_12:
   }
 
 LABEL_16:
-  if (a4)
+  if (error)
   {
     v16 = @"motionBlurParams is missing";
     goto LABEL_56;
@@ -892,18 +892,18 @@ LABEL_64:
   v49 = 0;
 LABEL_65:
   objc_autoreleasePoolPop(v7);
-  if (a4)
+  if (error)
   {
     v54 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   return v49;
 }
 
-- (BOOL)processWithListParameters:(id)a3 error:(id *)a4
+- (BOOL)processWithListParameters:(id)parameters error:(id *)error
 {
-  v6 = a3;
+  parametersCopy = parameters;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -921,13 +921,13 @@ LABEL_65:
   v11[3] = &unk_279E17140;
   v13 = &v21;
   v11[4] = self;
-  v8 = v6;
+  v8 = parametersCopy;
   v12 = v8;
   v14 = &v15;
   dispatch_sync(processFrameQueue, v11);
-  if (a4)
+  if (error)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   v9 = *(v22 + 24);
@@ -949,20 +949,20 @@ void __52__VEFrameProcessor_processWithListParameters_error___block_invoke(void 
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (void)processWithListParameters:(id)a3 completionHandler:(id)a4
+- (void)processWithListParameters:(id)parameters completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   processFrameQueue = self->_processFrameQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__VEFrameProcessor_processWithListParameters_completionHandler___block_invoke;
   block[3] = &unk_279E17168;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = parametersCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = parametersCopy;
   dispatch_async(processFrameQueue, block);
 }
 
@@ -986,9 +986,9 @@ void __64__VEFrameProcessor_processWithListParameters_completionHandler___block_
   }
 }
 
-- (BOOL)processWithParameters:(id)a3 error:(id *)a4
+- (BOOL)processWithParameters:(id)parameters error:(id *)error
 {
-  v6 = a3;
+  parametersCopy = parameters;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -999,12 +999,12 @@ void __64__VEFrameProcessor_processWithListParameters_completionHandler___block_
   v21 = __Block_byref_object_copy_;
   v22 = __Block_byref_object_dispose_;
   v23 = 0;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = v7;
-  if (!v6 || !v7)
+  array = [MEMORY[0x277CBEB18] array];
+  v8 = array;
+  if (!parametersCopy || !array)
   {
     *(v25 + 24) = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_5;
     }
@@ -1016,7 +1016,7 @@ void __64__VEFrameProcessor_processWithListParameters_completionHandler___block_
     goto LABEL_4;
   }
 
-  [v7 addObject:v6];
+  [array addObject:parametersCopy];
   processFrameQueue = self->_processFrameQueue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -1028,10 +1028,10 @@ void __64__VEFrameProcessor_processWithListParameters_completionHandler___block_
   v17 = &v18;
   dispatch_sync(processFrameQueue, v14);
 
-  if (a4)
+  if (error)
   {
 LABEL_4:
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
 LABEL_5:
@@ -1055,20 +1055,20 @@ uint64_t __48__VEFrameProcessor_processWithParameters_error___block_invoke(void 
   return [a1[5] removeAllObjects];
 }
 
-- (void)processWithParameters:(id)a3 completionHandler:(id)a4
+- (void)processWithParameters:(id)parameters completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   processFrameQueue = self->_processFrameQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__VEFrameProcessor_processWithParameters_completionHandler___block_invoke;
   block[3] = &unk_279E17168;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = parametersCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = parametersCopy;
   dispatch_async(processFrameQueue, block);
 }
 
@@ -1112,21 +1112,21 @@ void __60__VEFrameProcessor_processWithParameters_completionHandler___block_invo
   }
 }
 
-- (void)processWithCommandBuffer:(id)a3 parameters:(id)a4 completionHandler:(id)a5
+- (void)processWithCommandBuffer:(id)buffer parameters:(id)parameters completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bufferCopy = buffer;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 1;
   if (*&self->_opticalFlow != 0 || self->_frcProcessor || self->_vsrProcessor)
   {
-    if (v9)
+    if (parametersCopy)
     {
-      v11 = [MEMORY[0x277CBEB18] array];
-      [v11 addObject:v9];
+      array = [MEMORY[0x277CBEB18] array];
+      [array addObject:parametersCopy];
       os_unfair_lock_lock(&self->_sharedEventListLock);
       if (!self->_sharedEventListTearingDown)
       {
@@ -1140,15 +1140,15 @@ void __60__VEFrameProcessor_processWithParameters_completionHandler___block_invo
 
         else
         {
-          v14 = [(VEFrameProcessor *)self createSharedEventListener];
-          *(v21 + 24) = v14;
-          if (v14)
+          createSharedEventListener = [(VEFrameProcessor *)self createSharedEventListener];
+          *(v21 + 24) = createSharedEventListener;
+          if (createSharedEventListener)
           {
 LABEL_8:
-            v12 = [(MTLDevice *)self->_device newSharedEvent];
-            [(NSMutableArray *)self->_sharedEventList addObject:v12];
+            newSharedEvent = [(MTLDevice *)self->_device newSharedEvent];
+            [(NSMutableArray *)self->_sharedEventList addObject:newSharedEvent];
             os_unfair_lock_unlock(&self->_sharedEventListLock);
-            if (v12)
+            if (newSharedEvent)
             {
               sharedEventListener = self->_sharedEventListener;
               v15[0] = MEMORY[0x277D85DD0];
@@ -1157,12 +1157,12 @@ LABEL_8:
               v15[3] = &unk_279E17190;
               v19 = &v20;
               v15[4] = self;
-              v16 = v11;
-              v18 = v10;
-              v17 = v9;
-              [v12 notifyListener:sharedEventListener atValue:1 block:v15];
-              [v8 encodeSignalEvent:v12 value:1];
-              [v8 encodeWaitForEvent:v12 value:2];
+              v16 = array;
+              v18 = handlerCopy;
+              v17 = parametersCopy;
+              [newSharedEvent notifyListener:sharedEventListener atValue:1 block:v15];
+              [bufferCopy encodeSignalEvent:newSharedEvent value:1];
+              [bufferCopy encodeWaitForEvent:newSharedEvent value:2];
             }
 
             goto LABEL_15;

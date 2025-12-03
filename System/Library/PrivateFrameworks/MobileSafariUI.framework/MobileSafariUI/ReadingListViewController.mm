@@ -1,84 +1,84 @@
 @interface ReadingListViewController
 - (BOOL)_shouldUseTranslucentAppearance;
-- (BOOL)tableView:(id)a3 canHandleDropSession:(id)a4;
+- (BOOL)tableView:(id)view canHandleDropSession:(id)session;
 - (LinkPreviewProvider)linkPreviewProvider;
 - (NSArray)bookmarksPanelToolbarItems;
 - (ReadingListViewController)init;
 - (ReadingListViewControllerDelegate)delegate;
 - (TabGroupProvider)tabGroupProvider;
 - (_SFNavigationIntentHandling)navigationIntentHandler;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)_URLForRowAtIndexPath:(id)a3;
-- (id)_bookmarkAtIndexPath:(id)a3;
-- (id)_createAction:(int64_t)a3 forRowAtIndexPath:(id)a4 allowingNewlineInTitle:(BOOL)a5 withBlock:(id)a6;
-- (id)_createActions:(id)a3 forRowAtIndexPath:(id)a4 allowingNewlineInTitles:(BOOL)a5 withBlock:(id)a6;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)_URLForRowAtIndexPath:(id)path;
+- (id)_bookmarkAtIndexPath:(id)path;
+- (id)_createAction:(int64_t)action forRowAtIndexPath:(id)path allowingNewlineInTitle:(BOOL)title withBlock:(id)block;
+- (id)_createActions:(id)actions forRowAtIndexPath:(id)path allowingNewlineInTitles:(BOOL)titles withBlock:(id)block;
 - (id)_currentReadingListBookmark;
 - (id)_deleteBarButtonItem;
 - (id)_editButtonIdentifier;
-- (id)_iconForUUID:(id)a3 iconData:(id)a4;
+- (id)_iconForUUID:(id)d iconData:(id)data;
 - (id)_saveOfflineBarButtonItem;
 - (id)_unreadFilterBarButtonItem;
 - (id)_unreadFilterButtonIdentifier;
 - (id)_unreadFilterButtonTitle;
-- (id)previewTableViewController:(id)a3 menuForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)tableView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)previewTableViewController:(id)controller menuForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)tableView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (void)_adjustContentOffsetIfNeeded;
 - (void)_clearExplanationView;
 - (void)_connectSafariFetcherServerProxy;
-- (void)_deleteBookmarks:(id)a3;
+- (void)_deleteBookmarks:(id)bookmarks;
 - (void)_didChangeUnreadFilter;
 - (void)_disconnectSafariFetcherServerProxy;
-- (void)_fetchMetadataIfNeededForBookmark:(id)a3;
-- (void)_networkReachabilityChanged:(id)a3;
+- (void)_fetchMetadataIfNeededForBookmark:(id)bookmark;
+- (void)_networkReachabilityChanged:(id)changed;
 - (void)_postChangeNotification;
-- (void)_readingListBookmarkMetadataDidUpdate:(id)a3;
-- (void)_readingListItemAtIndexPath:(id)a3 lockAndPerformUpdates:(id)a4 performBlockIfLockFailed:(id)a5;
-- (void)_readingListItemAtIndexPath:(id)a3 setUnread:(BOOL)a4;
-- (void)_readingListItemAtIndexPathDelete:(id)a3;
-- (void)_readingListItemsAtIndexPaths:(id)a3 lockAndPerformUpdate:(id)a4 performBlockIfLockFailed:(id)a5;
+- (void)_readingListBookmarkMetadataDidUpdate:(id)update;
+- (void)_readingListItemAtIndexPath:(id)path lockAndPerformUpdates:(id)updates performBlockIfLockFailed:(id)failed;
+- (void)_readingListItemAtIndexPath:(id)path setUnread:(BOOL)unread;
+- (void)_readingListItemAtIndexPathDelete:(id)delete;
+- (void)_readingListItemsAtIndexPaths:(id)paths lockAndPerformUpdate:(id)update performBlockIfLockFailed:(id)failed;
 - (void)_reloadReadingList;
 - (void)_reloadReadingListAndTable;
 - (void)_restoreCellSeparator;
-- (void)_saveForOffline:(id)a3;
+- (void)_saveForOffline:(id)offline;
 - (void)_scheduleDelayedChangeNotification;
-- (void)_setIconForBookmark:(id)a3 cell:(id)a4 synchronously:(BOOL)a5;
+- (void)_setIconForBookmark:(id)bookmark cell:(id)cell synchronously:(BOOL)synchronously;
 - (void)_showExplanationView;
 - (void)_updateEditingButtonsEnabled;
 - (void)_updateSearchBar;
 - (void)_updateTableViewByComputingDifference;
-- (void)_updateTableViewByRemovingReadingListItemAtIndexPath:(id)a3;
-- (void)_updateToolbarItemsAnimated:(BOOL)a3;
-- (void)_webBookmarksDidReload:(id)a3;
-- (void)bookmarksServerProxy:(id)a3 didStartFetchingReadingListItem:(id)a4;
-- (void)bookmarksServerProxy:(id)a3 didStopFetchingReadingListItem:(id)a4;
-- (void)bookmarksServerProxyConnectionInvalidated:(id)a3;
-- (void)bookmarksServerProxyDidFinishFetching:(id)a3;
+- (void)_updateTableViewByRemovingReadingListItemAtIndexPath:(id)path;
+- (void)_updateToolbarItemsAnimated:(BOOL)animated;
+- (void)_webBookmarksDidReload:(id)reload;
+- (void)bookmarksServerProxy:(id)proxy didStartFetchingReadingListItem:(id)item;
+- (void)bookmarksServerProxy:(id)proxy didStopFetchingReadingListItem:(id)item;
+- (void)bookmarksServerProxyConnectionInvalidated:(id)invalidated;
+- (void)bookmarksServerProxyDidFinishFetching:(id)fetching;
 - (void)contentSizeCategoryDidChange;
 - (void)dealloc;
 - (void)loadView;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 dragSessionWillBegin:(id)a4;
-- (void)tableView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)updateAndScrollToCurrentSelectedItemIfNeeded:(BOOL)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view dragSessionWillBegin:(id)begin;
+- (void)tableView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)updateAndScrollToCurrentSelectedItemIfNeeded:(BOOL)needed;
 - (void)updateColorSchemeForExplanationView;
-- (void)updateUserActivityState:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateUserActivityState:(id)state;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation ReadingListViewController
@@ -91,19 +91,19 @@
   v2 = [(ReadingListViewController *)&v20 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-    v2->_networkIsReachable = [v3 isNetworkReachable];
-    [v3 addNetworkReachableObserver:v2 selector:sel__networkReachabilityChanged_];
-    v4 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+    mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+    v2->_networkIsReachable = [mEMORY[0x277CEC5B8] isNetworkReachable];
+    [mEMORY[0x277CEC5B8] addNetworkReachableObserver:v2 selector:sel__networkReachabilityChanged_];
+    mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
     collection = v2->_collection;
-    v2->_collection = v4;
+    v2->_collection = mainBookmarkCollection;
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel__readingListBookmarkDidUpdate_ name:@"ReadingListBookmarkDidUpdateNotification" object:0];
-    [v6 addObserver:v2 selector:sel__webBookmarksDidReload_ name:*MEMORY[0x277D7B608] object:0];
-    [v6 addObserver:v2 selector:sel__didAddNewReadingListBookmark name:@"ReadingListBookmarkAddedNotification" object:0];
-    [v6 addObserver:v2 selector:sel__webBookmarksDidReload_ name:@"bookmarkCollectionHasBecomeAvailableNotification" object:0];
-    [v6 addObserver:v2 selector:sel__readingListBookmarkMetadataDidUpdate_ name:@"ReadingListBookmarkMetadataDidUpdateNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__readingListBookmarkDidUpdate_ name:@"ReadingListBookmarkDidUpdateNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__webBookmarksDidReload_ name:*MEMORY[0x277D7B608] object:0];
+    [defaultCenter addObserver:v2 selector:sel__didAddNewReadingListBookmark name:@"ReadingListBookmarkAddedNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__webBookmarksDidReload_ name:@"bookmarkCollectionHasBecomeAvailableNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__readingListBookmarkMetadataDidUpdate_ name:@"ReadingListBookmarkMetadataDidUpdateNotification" object:0];
     [(ReadingListViewController *)v2 _connectSafariFetcherServerProxy];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, didReceiveWebBookmarksReadingListFetchingNotification, *MEMORY[0x277D7B630], 0, 1024);
@@ -112,9 +112,9 @@
     [(ReadingListViewController *)v2 setTitle:v8];
 
     v9 = +[Application sharedApplication];
-    v10 = [v9 readingListLeadImageCache];
+    readingListLeadImageCache = [v9 readingListLeadImageCache];
     imageCache = v2->_imageCache;
-    v2->_imageCache = v10;
+    v2->_imageCache = readingListLeadImageCache;
 
     v12 = [MEMORY[0x277CBEB58] set];
     visibleBookmarkIDs = v2->_visibleBookmarkIDs;
@@ -125,8 +125,8 @@
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
     v15 = [(ReadingListViewController *)v2 registerForTraitChanges:v14 withTarget:v2 action:sel_contentSizeCategoryDidChange];
 
-    v16 = [MEMORY[0x277D75C80] systemTraitsAffectingColorAppearance];
-    v17 = [(ReadingListViewController *)v2 registerForTraitChanges:v16 withTarget:v2 action:sel_updateColorSchemeForExplanationView];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x277D75C80] systemTraitsAffectingColorAppearance];
+    v17 = [(ReadingListViewController *)v2 registerForTraitChanges:systemTraitsAffectingColorAppearance withTarget:v2 action:sel_updateColorSchemeForExplanationView];
 
     v18 = v2;
   }
@@ -136,11 +136,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  [v4 removeNetworkReachableObserver:self];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  [mEMORY[0x277CEC5B8] removeNetworkReachableObserver:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, *MEMORY[0x277D7B630], 0);
@@ -175,14 +175,14 @@
   {
     v13 = _WBSLocalizedString();
     v3 = _WBSLocalizedString();
-    v4 = [MEMORY[0x277D75390] emptyConfiguration];
-    [v4 setTextToSecondaryTextPadding:8.0];
-    [v4 setText:v13];
-    [v4 setSecondaryText:v3];
-    v5 = [(UIContentUnavailableView *)[ReadingListContentUnavailableView alloc] initWithConfiguration:v4];
+    emptyConfiguration = [MEMORY[0x277D75390] emptyConfiguration];
+    [emptyConfiguration setTextToSecondaryTextPadding:8.0];
+    [emptyConfiguration setText:v13];
+    [emptyConfiguration setSecondaryText:v3];
+    v5 = [(UIContentUnavailableView *)[ReadingListContentUnavailableView alloc] initWithConfiguration:emptyConfiguration];
     [(ReadingListContentUnavailableView *)v5 setAutoresizingMask:18];
-    v6 = [(ReadingListViewController *)self view];
-    [v6 bounds];
+    view = [(ReadingListViewController *)self view];
+    [view bounds];
     [(ReadingListContentUnavailableView *)v5 setFrame:?];
 
     if ([(ReadingListViewController *)self _shouldUseTranslucentAppearance])
@@ -200,15 +200,15 @@
     self->_explanationView = &v5->super.super;
     v9 = v5;
 
-    v10 = [(ReadingListViewController *)self view];
-    [v10 addSubview:self->_explanationView];
+    view2 = [(ReadingListViewController *)self view];
+    [view2 addSubview:self->_explanationView];
 
     v11 = objc_alloc_init(MEMORY[0x277D75D18]);
     [(UITableView *)self->_tableView setTableFooterView:v11];
 
-    v12 = [(UITableView *)self->_tableView tableHeaderView];
+    tableHeaderView = [(UITableView *)self->_tableView tableHeaderView];
 
-    [v12 setHidden:1];
+    [tableHeaderView setHidden:1];
   }
 }
 
@@ -219,26 +219,26 @@
   self->_explanationView = 0;
 
   [(UITableView *)self->_tableView setTableFooterView:0];
-  v4 = [(UITableView *)self->_tableView tableHeaderView];
-  [v4 setHidden:0];
+  tableHeaderView = [(UITableView *)self->_tableView tableHeaderView];
+  [tableHeaderView setHidden:0];
 }
 
 - (void)loadView
 {
-  v19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v19 objectForKey:@"showingAllReadingListBookmarks"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"showingAllReadingListBookmarks"];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  self->_showingAllBookmarks = v5;
+  self->_showingAllBookmarks = bOOLValue;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -249,29 +249,29 @@
   v7 = objc_alloc_init(MEMORY[0x277D75D18]);
   [(ReadingListViewController *)self setView:v7];
 
-  v8 = [(ReadingListViewController *)self view];
-  [v8 setAutoresizingMask:18];
+  view = [(ReadingListViewController *)self view];
+  [view setAutoresizingMask:18];
 
-  v9 = [(ReadingListViewController *)self _unreadFilterButtonTitle];
-  v10 = [(ReadingListViewController *)self _unreadFilterBarButtonItem];
-  [v10 setTitle:v9];
+  _unreadFilterButtonTitle = [(ReadingListViewController *)self _unreadFilterButtonTitle];
+  _unreadFilterBarButtonItem = [(ReadingListViewController *)self _unreadFilterBarButtonItem];
+  [_unreadFilterBarButtonItem setTitle:_unreadFilterButtonTitle];
 
-  v11 = [(ReadingListViewController *)self _unreadFilterButtonIdentifier];
-  v12 = [(ReadingListViewController *)self _unreadFilterBarButtonItem];
-  [v12 setAccessibilityIdentifier:v11];
+  _unreadFilterButtonIdentifier = [(ReadingListViewController *)self _unreadFilterButtonIdentifier];
+  _unreadFilterBarButtonItem2 = [(ReadingListViewController *)self _unreadFilterBarButtonItem];
+  [_unreadFilterBarButtonItem2 setAccessibilityIdentifier:_unreadFilterButtonIdentifier];
 
   v13 = [[PreviewTableViewController alloc] initWithStyle:2];
   tableViewController = self->_tableViewController;
   self->_tableViewController = v13;
 
   [(PreviewTableViewController *)self->_tableViewController setPreviewDelegate:self];
-  v15 = [(ReadingListViewController *)self linkPreviewProvider];
-  [(PreviewTableViewController *)self->_tableViewController setLinkPreviewProvider:v15];
+  linkPreviewProvider = [(ReadingListViewController *)self linkPreviewProvider];
+  [(PreviewTableViewController *)self->_tableViewController setLinkPreviewProvider:linkPreviewProvider];
 
   [(PreviewTableViewController *)self->_tableViewController setViewRespectsSystemMinimumLayoutMargins:0];
-  v16 = [(PreviewTableViewController *)self->_tableViewController tableView];
+  tableView = [(PreviewTableViewController *)self->_tableViewController tableView];
   tableView = self->_tableView;
-  self->_tableView = v16;
+  self->_tableView = tableView;
 
   [(UITableView *)self->_tableView setAccessibilityIdentifier:@"ReadingListTable"];
   [(UITableView *)self->_tableView setAutoresizingMask:18];
@@ -288,8 +288,8 @@
   [(UITableView *)self->_tableView setRowHeight:*MEMORY[0x277D76F30]];
   [(UITableView *)self->_tableView setSeparatorInsetReference:1];
   [(ReadingListViewController *)self addChildViewController:self->_tableViewController];
-  v18 = [(ReadingListViewController *)self view];
-  [v18 addSubview:self->_tableView];
+  view2 = [(ReadingListViewController *)self view];
+  [view2 addSubview:self->_tableView];
 
   [(ReadingListViewController *)self _updateSearchBar];
 }
@@ -299,8 +299,8 @@
   v4.receiver = self;
   v4.super_class = ReadingListViewController;
   [(ReadingListViewController *)&v4 viewDidLoad];
-  v3 = [(ReadingListViewController *)self view];
-  [v3 bounds];
+  view = [(ReadingListViewController *)self view];
+  [view bounds];
   [(UITableView *)self->_tableView setFrame:?];
 
   if (self->_deferEnteringEditMode)
@@ -310,19 +310,19 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = ReadingListViewController;
-  [(ReadingListViewController *)&v4 viewDidDisappear:a3];
+  [(ReadingListViewController *)&v4 viewDidDisappear:disappear];
   [(ReadingListLeadImageCache *)self->_imageCache clearCache];
   [(ReadingListViewController *)self setEditing:0];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(ReadingListViewController *)self view];
-  [v3 bounds];
+  view = [(ReadingListViewController *)self view];
+  [view bounds];
   [(UITableView *)self->_tableView setFrame:?];
 
   v4.receiver = self;
@@ -336,35 +336,35 @@
   v5.super_class = ReadingListViewController;
   [(ReadingListViewController *)&v5 viewDidLayoutSubviews];
   searchBar = self->_searchBar;
-  v4 = [(ReadingListViewController *)self tableView];
-  [v4 layoutMargins];
+  tableView = [(ReadingListViewController *)self tableView];
+  [tableView layoutMargins];
   [(UISearchBar *)searchBar _setOverrideContentInsets:10 forRectEdges:?];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = [(WebBookmarkCollection *)self->_collection readingListWithUnreadOnly:0];
-  v6 = [v5 bookmarkCount];
+  bookmarkCount = [v5 bookmarkCount];
 
-  if (!v6)
+  if (!bookmarkCount)
   {
     [(ReadingListViewController *)self _showExplanationView];
   }
 
   v11.receiver = self;
   v11.super_class = ReadingListViewController;
-  [(ReadingListViewController *)&v11 viewWillAppear:v3];
-  v7 = [(ReadingListViewController *)self navigationController];
-  [v7 setToolbarHidden:0 animated:v3];
+  [(ReadingListViewController *)&v11 viewWillAppear:appearCopy];
+  navigationController = [(ReadingListViewController *)self navigationController];
+  [navigationController setToolbarHidden:0 animated:appearCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
 
   if ((v9 & 1) == 0)
   {
-    v10 = [(ReadingListViewController *)self bookmarksPanelToolbarItems];
-    [(ReadingListViewController *)self setToolbarItems:v10 animated:v3];
+    bookmarksPanelToolbarItems = [(ReadingListViewController *)self bookmarksPanelToolbarItems];
+    [(ReadingListViewController *)self setToolbarItems:bookmarksPanelToolbarItems animated:appearCopy];
   }
 }
 
@@ -403,26 +403,26 @@ uint64_t __57__ReadingListViewController_contentSizeCategoryDidChange__block_inv
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = ReadingListViewController;
-  [(ReadingListViewController *)&v9 viewDidAppear:a3];
-  v4 = [(ReadingListViewController *)self userActivity];
-  v5 = [v4 activityType];
+  [(ReadingListViewController *)&v9 viewDidAppear:appear];
+  userActivity = [(ReadingListViewController *)self userActivity];
+  activityType = [userActivity activityType];
   v6 = *MEMORY[0x277CDB9F8];
-  v7 = [v5 isEqualToString:*MEMORY[0x277CDB9F8]];
+  v7 = [activityType isEqualToString:*MEMORY[0x277CDB9F8]];
 
   if ((v7 & 1) == 0)
   {
-    [v4 invalidate];
+    [userActivity invalidate];
     v8 = [objc_alloc(MEMORY[0x277CC1EF0]) initWithActivityType:v6];
 
     [(ReadingListViewController *)self setUserActivity:v8];
-    v4 = v8;
+    userActivity = v8;
   }
 
-  [v4 setNeedsSave:1];
+  [userActivity setNeedsSave:1];
 }
 
 - (void)_adjustContentOffsetIfNeeded
@@ -439,32 +439,32 @@ uint64_t __57__ReadingListViewController_contentSizeCategoryDidChange__block_inv
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if ([(NSTimer *)self->_deletionNotificationTimer isValid])
   {
     [(ReadingListViewController *)self _postChangeNotification];
   }
 
   [(UIViewController *)self safari_saveTableViewScrollPosition];
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_showingAllBookmarks];
-  [v5 setObject:v6 forKey:@"showingAllReadingListBookmarks"];
+  [standardUserDefaults setObject:v6 forKey:@"showingAllReadingListBookmarks"];
 
-  v7 = [(ReadingListViewController *)self tableView];
-  [(UITableView *)v7 safari_dismissContextMenu];
+  tableView = [(ReadingListViewController *)self tableView];
+  [(UITableView *)tableView safari_dismissContextMenu];
 
   v8.receiver = self;
   v8.super_class = ReadingListViewController;
-  [(ReadingListViewController *)&v8 viewWillDisappear:v3];
+  [(ReadingListViewController *)&v8 viewWillDisappear:disappearCopy];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = ReadingListViewController;
-  [(ReadingListViewController *)&v5 willMoveToParentViewController:a3];
+  [(ReadingListViewController *)&v5 willMoveToParentViewController:controller];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -472,20 +472,20 @@ uint64_t __57__ReadingListViewController_contentSizeCategoryDidChange__block_inv
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(UITableView *)self->_tableView window];
+  animatedCopy = animated;
+  editingCopy = editing;
+  window = [(UITableView *)self->_tableView window];
 
-  if (v7)
+  if (window)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = !v5;
+    v8 = !editingCopy;
   }
 
   if (!v8)
@@ -496,11 +496,11 @@ uint64_t __57__ReadingListViewController_contentSizeCategoryDidChange__block_inv
   [(ReadingListViewController *)self _restoreCellSeparator];
   v16.receiver = self;
   v16.super_class = ReadingListViewController;
-  [(ReadingListViewController *)&v16 setEditing:v5 animated:v4];
-  v9 = !v5;
-  [(UISearchBar *)self->_searchBar setUserInteractionEnabled:v5 ^ 1];
+  [(ReadingListViewController *)&v16 setEditing:editingCopy animated:animatedCopy];
+  v9 = !editingCopy;
+  [(UISearchBar *)self->_searchBar setUserInteractionEnabled:editingCopy ^ 1];
   v10 = 1.0;
-  if (v5)
+  if (editingCopy)
   {
     v10 = 0.5;
   }
@@ -513,8 +513,8 @@ uint64_t __57__ReadingListViewController_contentSizeCategoryDidChange__block_inv
   v15[3] = &unk_2781D4D40;
   v15[4] = self;
   [MEMORY[0x277CD9FF0] setCompletionBlock:v15];
-  [(PreviewTableViewController *)self->_tableViewController setEditing:v5 animated:v4];
-  [(ReadingListViewController *)self _updateToolbarItemsAnimated:v4];
+  [(PreviewTableViewController *)self->_tableViewController setEditing:editingCopy animated:animatedCopy];
+  [(ReadingListViewController *)self _updateToolbarItemsAnimated:animatedCopy];
   [(ReadingListViewController *)self _updateEditingButtonsEnabled];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v12 = WBS_LOG_CHANNEL_PREFIXUserInteraction();
@@ -550,9 +550,9 @@ uint64_t __57__ReadingListViewController_contentSizeCategoryDidChange__block_inv
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)_updateToolbarItemsAnimated:(BOOL)a3
+- (void)_updateToolbarItemsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -561,23 +561,23 @@ uint64_t __57__ReadingListViewController_contentSizeCategoryDidChange__block_inv
 
   else
   {
-    v5 = [(ReadingListViewController *)self bookmarksPanelToolbarItems];
-    [(ReadingListViewController *)self setToolbarItems:v5 animated:v3];
+    bookmarksPanelToolbarItems = [(ReadingListViewController *)self bookmarksPanelToolbarItems];
+    [(ReadingListViewController *)self setToolbarItems:bookmarksPanelToolbarItems animated:animatedCopy];
   }
 }
 
-- (id)_bookmarkAtIndexPath:(id)a3
+- (id)_bookmarkAtIndexPath:(id)path
 {
   readingList = self->_readingList;
-  v4 = [a3 row];
+  v4 = [path row];
 
   return [(WebBookmarkList *)readingList bookmarkAtIndex:v4];
 }
 
-- (void)_networkReachabilityChanged:(id)a3
+- (void)_networkReachabilityChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277CEC510]];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277CEC510]];
   self->_networkIsReachable = [v5 BOOLValue];
 
   [(ReadingListViewController *)self _reloadReadingListAndTable];
@@ -592,9 +592,9 @@ uint64_t __57__ReadingListViewController_contentSizeCategoryDidChange__block_inv
 
 - (void)_updateSearchBar
 {
-  v3 = [(WebBookmarkList *)self->_readingList bookmarkCount];
+  bookmarkCount = [(WebBookmarkList *)self->_readingList bookmarkCount];
   searchBar = self->_searchBar;
-  if (v3)
+  if (bookmarkCount)
   {
     if (searchBar)
     {
@@ -610,8 +610,8 @@ uint64_t __57__ReadingListViewController_contentSizeCategoryDidChange__block_inv
     goto LABEL_8;
   }
 
-  v6 = [(UISearchBar *)searchBar text];
-  v7 = [v6 length];
+  text = [(UISearchBar *)searchBar text];
+  v7 = [text length];
 
   v8 = self->_searchBar;
   if ((v7 != 0) != (v8 == 0))
@@ -635,15 +635,15 @@ LABEL_8:
 LABEL_10:
       v9 = [objc_alloc(MEMORY[0x277D759F0]) initWithSearchResultsController:0];
       [(UISearchBar *)v9 setObscuresBackgroundDuringPresentation:0];
-      v10 = [(UISearchBar *)v9 searchBar];
+      searchBar = [(UISearchBar *)v9 searchBar];
       v11 = self->_searchBar;
-      self->_searchBar = v10;
+      self->_searchBar = searchBar;
 
-      v12 = [(ReadingListViewController *)self navigationItem];
-      [v12 setPreferredSearchBarPlacement:2];
+      navigationItem = [(ReadingListViewController *)self navigationItem];
+      [navigationItem setPreferredSearchBarPlacement:2];
 
-      v13 = [(ReadingListViewController *)self navigationItem];
-      [v13 setSearchController:v9];
+      navigationItem2 = [(ReadingListViewController *)self navigationItem];
+      [navigationItem2 setSearchController:v9];
 
 LABEL_17:
       [(UISearchBar *)self->_searchBar setDelegate:self];
@@ -731,13 +731,13 @@ LABEL_17:
     [WeakRetained readingListViewController:self updateUnreadFilterShowingAllBookmarks:self->_showingAllBookmarks];
   }
 
-  v6 = [(ReadingListViewController *)self _unreadFilterButtonTitle];
-  v7 = [(ReadingListViewController *)self _unreadFilterBarButtonItem];
-  [v7 setTitle:v6];
+  _unreadFilterButtonTitle = [(ReadingListViewController *)self _unreadFilterButtonTitle];
+  _unreadFilterBarButtonItem = [(ReadingListViewController *)self _unreadFilterBarButtonItem];
+  [_unreadFilterBarButtonItem setTitle:_unreadFilterButtonTitle];
 
-  v8 = [(ReadingListViewController *)self _unreadFilterButtonIdentifier];
-  v9 = [(ReadingListViewController *)self _unreadFilterBarButtonItem];
-  [v9 setAccessibilityIdentifier:v8];
+  _unreadFilterButtonIdentifier = [(ReadingListViewController *)self _unreadFilterButtonIdentifier];
+  _unreadFilterBarButtonItem2 = [(ReadingListViewController *)self _unreadFilterBarButtonItem];
+  [_unreadFilterBarButtonItem2 setAccessibilityIdentifier:_unreadFilterButtonIdentifier];
 
   [(ReadingListViewController *)self _reloadReadingListAndTable];
   [(ReadingListViewController *)self _updateToolbarItemsAnimated:1];
@@ -748,14 +748,14 @@ LABEL_17:
   if (!self->_cachedUnreadFilterBarButtonButton)
   {
     v3 = objc_alloc(MEMORY[0x277D751E0]);
-    v4 = [(ReadingListViewController *)self _unreadFilterButtonTitle];
-    v5 = [v3 initWithTitle:v4 style:0 target:self action:sel__didChangeUnreadFilter];
+    _unreadFilterButtonTitle = [(ReadingListViewController *)self _unreadFilterButtonTitle];
+    v5 = [v3 initWithTitle:_unreadFilterButtonTitle style:0 target:self action:sel__didChangeUnreadFilter];
     cachedUnreadFilterBarButtonButton = self->_cachedUnreadFilterBarButtonButton;
     self->_cachedUnreadFilterBarButtonButton = v5;
   }
 
-  v7 = [(ReadingListViewController *)self _unreadFilterButtonIdentifier];
-  [(UIBarButtonItem *)self->_cachedUnreadFilterBarButtonButton setAccessibilityIdentifier:v7];
+  _unreadFilterButtonIdentifier = [(ReadingListViewController *)self _unreadFilterButtonIdentifier];
+  [(UIBarButtonItem *)self->_cachedUnreadFilterBarButtonButton setAccessibilityIdentifier:_unreadFilterButtonIdentifier];
 
   v8 = self->_cachedUnreadFilterBarButtonButton;
 
@@ -770,36 +770,36 @@ LABEL_17:
   {
     if (!self->_isUsingSwipeAction)
     {
-      v8 = [(ReadingListViewController *)self _editButtonIdentifier];
-      v9 = [(ReadingListViewController *)self editButtonItem];
-      [v9 setAccessibilityIdentifier:v8];
+      _editButtonIdentifier = [(ReadingListViewController *)self _editButtonIdentifier];
+      editButtonItem = [(ReadingListViewController *)self editButtonItem];
+      [editButtonItem setAccessibilityIdentifier:_editButtonIdentifier];
 
-      v10 = [(ReadingListViewController *)self isEditing];
-      if (v10)
+      isEditing = [(ReadingListViewController *)self isEditing];
+      if (isEditing)
       {
-        v4 = [(ReadingListViewController *)self _deleteBarButtonItem];
-        [v4 setAccessibilityIdentifier:@"ReadingListBarDeleteButton"];
+        _deleteBarButtonItem = [(ReadingListViewController *)self _deleteBarButtonItem];
+        [_deleteBarButtonItem setAccessibilityIdentifier:@"ReadingListBarDeleteButton"];
       }
 
       else
       {
-        v4 = [(ReadingListViewController *)self _unreadFilterBarButtonItem];
+        _deleteBarButtonItem = [(ReadingListViewController *)self _unreadFilterBarButtonItem];
       }
 
-      v11 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-      if (([v11 safari_shouldAutomaticallyDownloadReadingListItems] & 1) != 0 || v10 != 1)
+      safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+      if (([safari_browserDefaults safari_shouldAutomaticallyDownloadReadingListItems] & 1) != 0 || isEditing != 1)
       {
-        v12 = v3;
+        _saveOfflineBarButtonItem = v3;
       }
 
       else
       {
-        v12 = [(ReadingListViewController *)self _saveOfflineBarButtonItem];
+        _saveOfflineBarButtonItem = [(ReadingListViewController *)self _saveOfflineBarButtonItem];
       }
 
-      v13 = v12;
+      v13 = _saveOfflineBarButtonItem;
 
-      v14 = [(ReadingListViewController *)self editButtonItem:v4];
+      v14 = [(ReadingListViewController *)self editButtonItem:_deleteBarButtonItem];
       v16[4] = v14;
       v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:5];
 
@@ -807,16 +807,16 @@ LABEL_17:
     }
 
     v17[0] = v3;
-    v4 = [(ReadingListViewController *)self editButtonItem];
-    v17[1] = v4;
+    _deleteBarButtonItem = [(ReadingListViewController *)self editButtonItem];
+    v17[1] = _deleteBarButtonItem;
     v5 = MEMORY[0x277CBEA60];
     v6 = v17;
   }
 
   else
   {
-    v4 = [(ReadingListViewController *)self _unreadFilterBarButtonItem];
-    v18[0] = v4;
+    _deleteBarButtonItem = [(ReadingListViewController *)self _unreadFilterBarButtonItem];
+    v18[0] = _deleteBarButtonItem;
     v18[1] = v3;
     v5 = MEMORY[0x277CBEA60];
     v6 = v18;
@@ -844,7 +844,7 @@ LABEL_14:
   return cachedDeleteBarButtonItem;
 }
 
-- (void)_deleteBookmarks:(id)a3
+- (void)_deleteBookmarks:(id)bookmarks
 {
   v4 = WBS_LOG_CHANNEL_PREFIXUserInteraction();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -853,18 +853,18 @@ LABEL_14:
     _os_log_impl(&dword_215819000, v4, OS_LOG_TYPE_DEFAULT, "Tap delete selected reading list items", buf, 2u);
   }
 
-  v5 = [(UITableView *)self->_tableView indexPathsForSelectedRows];
+  indexPathsForSelectedRows = [(UITableView *)self->_tableView indexPathsForSelectedRows];
   v6 = +[FeatureManager sharedFeatureManager];
-  v7 = [v6 isInMemoryBookmarkChangeTrackingAvailable];
+  isInMemoryBookmarkChangeTrackingAvailable = [v6 isInMemoryBookmarkChangeTrackingAvailable];
 
-  if (v7)
+  if (isInMemoryBookmarkChangeTrackingAvailable)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __46__ReadingListViewController__deleteBookmarks___block_invoke;
     aBlock[3] = &unk_2781D85C0;
     aBlock[4] = self;
-    v17 = v5;
+    v17 = indexPathsForSelectedRows;
     v8 = _Block_copy(aBlock);
   }
 
@@ -877,11 +877,11 @@ LABEL_14:
   v11 = 3221225472;
   v12 = __46__ReadingListViewController__deleteBookmarks___block_invoke_2;
   v13 = &unk_2781D85C0;
-  v14 = self;
-  v15 = v5;
-  v9 = v5;
+  selfCopy = self;
+  v15 = indexPathsForSelectedRows;
+  v9 = indexPathsForSelectedRows;
   [(ReadingListViewController *)self _readingListItemsAtIndexPaths:v9 lockAndPerformUpdate:&v10 performBlockIfLockFailed:v8];
-  [(ReadingListViewController *)self setEditing:0, v10, v11, v12, v13, v14];
+  [(ReadingListViewController *)self setEditing:0, v10, v11, v12, v13, selfCopy];
 }
 
 uint64_t __46__ReadingListViewController__deleteBookmarks___block_invoke(uint64_t a1, void *a2)
@@ -932,7 +932,7 @@ uint64_t __46__ReadingListViewController__deleteBookmarks___block_invoke_2(uint6
   return cachedSaveOfflineBarButtonItem;
 }
 
-- (void)_saveForOffline:(id)a3
+- (void)_saveForOffline:(id)offline
 {
   v4 = WBS_LOG_CHANNEL_PREFIXUserInteraction();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -941,7 +941,7 @@ uint64_t __46__ReadingListViewController__deleteBookmarks___block_invoke_2(uint6
     _os_log_impl(&dword_215819000, v4, OS_LOG_TYPE_DEFAULT, "Tap save archives for selected reading list items", buf, 2u);
   }
 
-  v5 = [(UITableView *)self->_tableView indexPathsForSelectedRows];
+  indexPathsForSelectedRows = [(UITableView *)self->_tableView indexPathsForSelectedRows];
   v6[4] = self;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -952,7 +952,7 @@ uint64_t __46__ReadingListViewController__deleteBookmarks___block_invoke_2(uint6
   v6[1] = 3221225472;
   v6[2] = __45__ReadingListViewController__saveForOffline___block_invoke_3;
   v6[3] = &unk_2781D4FA0;
-  [(ReadingListViewController *)self _readingListItemsAtIndexPaths:v5 lockAndPerformUpdate:v7 performBlockIfLockFailed:v6];
+  [(ReadingListViewController *)self _readingListItemsAtIndexPaths:indexPathsForSelectedRows lockAndPerformUpdate:v7 performBlockIfLockFailed:v6];
   [(ReadingListViewController *)self setEditing:0];
 }
 
@@ -971,25 +971,25 @@ void __45__ReadingListViewController__saveForOffline___block_invoke_3(uint64_t a
 
 - (void)_updateEditingButtonsEnabled
 {
-  v3 = [(ReadingListViewController *)self _deleteBarButtonItem];
-  v4 = [(ReadingListViewController *)self _saveOfflineBarButtonItem];
+  _deleteBarButtonItem = [(ReadingListViewController *)self _deleteBarButtonItem];
+  _saveOfflineBarButtonItem = [(ReadingListViewController *)self _saveOfflineBarButtonItem];
   if (([(ReadingListViewController *)self isEditing]& 1) != 0)
   {
-    v5 = [(UITableView *)self->_tableView indexPathsForSelectedRows];
-    [v3 setEnabled:{objc_msgSend(v5, "count") != 0}];
+    indexPathsForSelectedRows = [(UITableView *)self->_tableView indexPathsForSelectedRows];
+    [_deleteBarButtonItem setEnabled:{objc_msgSend(indexPathsForSelectedRows, "count") != 0}];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __57__ReadingListViewController__updateEditingButtonsEnabled__block_invoke;
     v7[3] = &unk_2781D8608;
     v7[4] = self;
-    v6 = [v5 safari_firstObjectPassingTest:v7];
-    [v4 setEnabled:v6 != 0];
+    v6 = [indexPathsForSelectedRows safari_firstObjectPassingTest:v7];
+    [_saveOfflineBarButtonItem setEnabled:v6 != 0];
   }
 
   else
   {
-    [v3 setEnabled:0];
-    [v4 setEnabled:0];
+    [_deleteBarButtonItem setEnabled:0];
+    [_saveOfflineBarButtonItem setEnabled:0];
   }
 }
 
@@ -1062,9 +1062,9 @@ uint64_t __57__ReadingListViewController__updateEditingButtonsEnabled__block_inv
 - (void)_connectSafariFetcherServerProxy
 {
   v3 = +[FeatureManager sharedFeatureManager];
-  v4 = [v3 isOfflineReadingListAvailable];
+  isOfflineReadingListAvailable = [v3 isOfflineReadingListAvailable];
 
-  if (v4 && !self->_safariFetcherServerProxy)
+  if (isOfflineReadingListAvailable && !self->_safariFetcherServerProxy)
   {
     v5 = objc_alloc_init(MEMORY[0x277D7B518]);
     safariFetcherServerProxy = self->_safariFetcherServerProxy;
@@ -1087,22 +1087,22 @@ uint64_t __57__ReadingListViewController__updateEditingButtonsEnabled__block_inv
   }
 }
 
-- (void)_webBookmarksDidReload:(id)a3
+- (void)_webBookmarksDidReload:(id)reload
 {
-  v4 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+  mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
   collection = self->_collection;
-  self->_collection = v4;
+  self->_collection = mainBookmarkCollection;
 
   [(ReadingListViewController *)self _reloadReadingListAndTable];
 }
 
-- (void)_readingListBookmarkMetadataDidUpdate:(id)a3
+- (void)_readingListBookmarkMetadataDidUpdate:(id)update
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   [(ReadingListViewController *)self _updateTableViewByComputingDifference];
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"BookmarkWithUpdatedMetadataKey"];
+  userInfo = [updateCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"BookmarkWithUpdatedMetadataKey"];
 
   if (v6)
   {
@@ -1116,8 +1116,8 @@ uint64_t __57__ReadingListViewController__updateEditingButtonsEnabled__block_inv
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v9 = [(UITableView *)self->_tableView visibleCells];
-      v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      visibleCells = [(UITableView *)self->_tableView visibleCells];
+      v10 = [visibleCells countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         v11 = v10;
@@ -1128,12 +1128,12 @@ uint64_t __57__ReadingListViewController__updateEditingButtonsEnabled__block_inv
           {
             if (*v17 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(visibleCells);
             }
 
             v14 = *(*(&v16 + 1) + 8 * i);
-            v15 = [v14 bookmarkID];
-            if (v15 == [v6 identifier])
+            bookmarkID = [v14 bookmarkID];
+            if (bookmarkID == [v6 identifier])
             {
               [v14 setBookmark:v6];
               [(ReadingListViewController *)self _setIconForBookmark:v6 cell:v14 synchronously:self->_loadIconsSynchronously];
@@ -1142,7 +1142,7 @@ uint64_t __57__ReadingListViewController__updateEditingButtonsEnabled__block_inv
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v11 = [visibleCells countByEnumeratingWithState:&v16 objects:v20 count:16];
           if (v11)
           {
             continue;
@@ -1161,48 +1161,48 @@ LABEL_13:
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v4 = [WeakRetained readingListViewControllerCurrentReadingListItem:self];
-  v5 = [v4 readingListBookmark];
+  readingListBookmark = [v4 readingListBookmark];
 
-  return v5;
+  return readingListBookmark;
 }
 
-- (void)updateAndScrollToCurrentSelectedItemIfNeeded:(BOOL)a3
+- (void)updateAndScrollToCurrentSelectedItemIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v20 = [(UITableView *)self->_tableView indexPathForSelectedRow];
+  neededCopy = needed;
+  indexPathForSelectedRow = [(UITableView *)self->_tableView indexPathForSelectedRow];
   if (([(ReadingListViewController *)self isEditing]& 1) == 0)
   {
     [(ReadingListViewController *)self _restoreCellSeparator];
-    v5 = [(UITableView *)self->_tableView indexPathsForVisibleRows];
-    v6 = [(ReadingListViewController *)self _currentReadingListBookmark];
-    if (v6)
+    indexPathsForVisibleRows = [(UITableView *)self->_tableView indexPathsForVisibleRows];
+    _currentReadingListBookmark = [(ReadingListViewController *)self _currentReadingListBookmark];
+    if (_currentReadingListBookmark)
     {
-      v7 = [(WebBookmarkList *)self->_readingList bookmarkArray];
-      v8 = [v7 indexOfObject:v6];
+      bookmarkArray = [(WebBookmarkList *)self->_readingList bookmarkArray];
+      v8 = [bookmarkArray indexOfObject:_currentReadingListBookmark];
 
       if (v8 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v9 = [MEMORY[0x277CCAA70] indexPathForRow:v8 inSection:0];
-        v10 = [v5 firstObject];
-        v11 = [v5 lastObject];
+        firstObject = [indexPathsForVisibleRows firstObject];
+        lastObject = [indexPathsForVisibleRows lastObject];
         v12 = [v9 row];
-        if (v12 <= [v10 row])
+        if (v12 <= [firstObject row])
         {
           tableView = self->_tableView;
-          v16 = v3;
+          v16 = neededCopy;
           v15 = v9;
         }
 
         else
         {
           v13 = [v9 row];
-          if (v13 >= [v11 row])
+          if (v13 >= [lastObject row])
           {
             v17 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(v9 inSection:{"row") - 1, 0}];
             v18 = [(UITableView *)self->_tableView cellForRowAtIndexPath:v17];
             [v18 setSeparatorStyle:0];
 
-            if (v3)
+            if (neededCopy)
             {
               v19 = 3;
             }
@@ -1229,43 +1229,43 @@ LABEL_14:
 
     else
     {
-      [(UITableView *)self->_tableView deselectRowAtIndexPath:v20 animated:0];
+      [(UITableView *)self->_tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
     }
   }
 }
 
 - (void)_restoreCellSeparator
 {
-  v6 = [(UITableView *)self->_tableView indexPathForSelectedRow];
-  if ([v6 row])
+  indexPathForSelectedRow = [(UITableView *)self->_tableView indexPathForSelectedRow];
+  if ([indexPathForSelectedRow row])
   {
-    v3 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(v6 inSection:{"row") - 1, 0}];
-    v4 = [(UITableView *)self->_tableView separatorStyle];
+    v3 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(indexPathForSelectedRow inSection:{"row") - 1, 0}];
+    separatorStyle = [(UITableView *)self->_tableView separatorStyle];
     v5 = [(UITableView *)self->_tableView cellForRowAtIndexPath:v3];
-    [v5 setSeparatorStyle:v4];
+    [v5 setSeparatorStyle:separatorStyle];
   }
 }
 
-- (id)_URLForRowAtIndexPath:(id)a3
+- (id)_URLForRowAtIndexPath:(id)path
 {
-  v3 = [(ReadingListViewController *)self _bookmarkAtIndexPath:a3];
-  v4 = [MEMORY[0x277D28F40] builder];
-  v5 = [v4 navigationIntentWithBookmark:v3];
+  v3 = [(ReadingListViewController *)self _bookmarkAtIndexPath:path];
+  builder = [MEMORY[0x277D28F40] builder];
+  v5 = [builder navigationIntentWithBookmark:v3];
   v6 = [v5 URL];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ReadingListViewController *)self _bookmarkAtIndexPath:v6];
-  v9 = [v7 dequeueReusableCellWithIdentifier:@"ReadingListTableViewCellWithImage" forIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(ReadingListViewController *)self _bookmarkAtIndexPath:pathCopy];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:@"ReadingListTableViewCellWithImage" forIndexPath:pathCopy];
 
   [v9 setBookmark:v8];
-  v10 = [v8 UUID];
-  [v9 setBookmark:v8 isArchiving:{objc_msgSend(v10, "isEqualToString:", self->_archivingBookmarkUUID)}];
+  uUID = [v8 UUID];
+  [v9 setBookmark:v8 isArchiving:{objc_msgSend(uUID, "isEqualToString:", self->_archivingBookmarkUUID)}];
 
   [v9 safari_annotateWithReadingListItem:v8];
   if ([(ReadingListViewController *)self _shouldUseTranslucentAppearance])
@@ -1276,7 +1276,7 @@ LABEL_14:
   return v9;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   if (self->_shouldUseSearchControllerInNavigationBar)
   {
@@ -1285,7 +1285,7 @@ LABEL_14:
 
   else
   {
-    v6 = [a3 dequeueReusableHeaderFooterViewWithIdentifier:{@"ReadingListSpacingHeaderReuseIdentifier", a4, v4}];
+    v6 = [view dequeueReusableHeaderFooterViewWithIdentifier:{@"ReadingListSpacingHeaderReuseIdentifier", section, v4}];
     if (!v6)
     {
       v6 = [objc_alloc(MEMORY[0x277D75B70]) initWithReuseIdentifier:@"ReadingListSpacingHeaderReuseIdentifier"];
@@ -1295,7 +1295,7 @@ LABEL_14:
   return v6;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   result = 12.0;
   if (self->_shouldUseSearchControllerInNavigationBar)
@@ -1306,14 +1306,14 @@ LABEL_14:
   return result;
 }
 
-- (id)_iconForUUID:(id)a3 iconData:(id)a4
+- (id)_iconForUUID:(id)d iconData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  dCopy = d;
+  dataCopy = data;
+  if ([dCopy length])
   {
-    v8 = [(ReadingListLeadImageCache *)self->_imageCache loadImageSynchronouslyForIconUUID:v6];
-    if (!v7)
+    v8 = [(ReadingListLeadImageCache *)self->_imageCache loadImageSynchronouslyForIconUUID:dCopy];
+    if (!dataCopy)
     {
       goto LABEL_7;
     }
@@ -1322,7 +1322,7 @@ LABEL_14:
   else
   {
     v8 = 0;
-    if (!v7)
+    if (!dataCopy)
     {
       goto LABEL_7;
     }
@@ -1330,7 +1330,7 @@ LABEL_14:
 
   if (!v8)
   {
-    v8 = [MEMORY[0x277D755B8] imageWithData:v7];
+    v8 = [MEMORY[0x277D755B8] imageWithData:dataCopy];
   }
 
 LABEL_7:
@@ -1338,42 +1338,42 @@ LABEL_7:
   return v8;
 }
 
-- (void)_setIconForBookmark:(id)a3 cell:(id)a4 synchronously:(BOOL)a5
+- (void)_setIconForBookmark:(id)bookmark cell:(id)cell synchronously:(BOOL)synchronously
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 bookmarkID];
-  if (v10 == [v8 identifier])
+  bookmarkCopy = bookmark;
+  cellCopy = cell;
+  bookmarkID = [cellCopy bookmarkID];
+  if (bookmarkID == [bookmarkCopy identifier])
   {
-    v11 = [v9 imageView];
-    v12 = [v11 image];
+    imageView = [cellCopy imageView];
+    image = [imageView image];
 
-    if (!v12)
+    if (!image)
     {
-      v13 = [v8 readingListIconUUID];
-      v14 = [v8 iconData];
-      v15 = [v8 identifier];
-      if (a5)
+      readingListIconUUID = [bookmarkCopy readingListIconUUID];
+      iconData = [bookmarkCopy iconData];
+      identifier = [bookmarkCopy identifier];
+      if (synchronously)
       {
-        v16 = [(ReadingListViewController *)self _iconForUUID:v13 iconData:v14];
+        v16 = [(ReadingListViewController *)self _iconForUUID:readingListIconUUID iconData:iconData];
         if (v16)
         {
-          [v9 setReadingListIcon:v16];
+          [cellCopy setReadingListIcon:v16];
         }
       }
 
       else
       {
-        v17 = v15;
+        v17 = identifier;
         v18 = dispatch_get_global_queue(0, 0);
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __68__ReadingListViewController__setIconForBookmark_cell_synchronously___block_invoke;
         block[3] = &unk_2781D8658;
         block[4] = self;
-        v20 = v13;
-        v21 = v14;
-        v22 = v9;
+        v20 = readingListIconUUID;
+        v21 = iconData;
+        v22 = cellCopy;
         v23 = v17;
         dispatch_async(v18, block);
       }
@@ -1411,95 +1411,95 @@ uint64_t __68__ReadingListViewController__setIconForBookmark_cell_synchronously_
   return result;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ReadingListViewController *)self _bookmarkAtIndexPath:v9];
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
+  v10 = [(ReadingListViewController *)self _bookmarkAtIndexPath:pathCopy];
   visibleBookmarkIDs = self->_visibleBookmarkIDs;
   v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "identifier")}];
   [(NSMutableSet *)visibleBookmarkIDs addObject:v12];
 
   [(ReadingListViewController *)self _fetchMetadataIfNeededForBookmark:v10];
-  [(ReadingListViewController *)self _setIconForBookmark:v10 cell:v8 synchronously:self->_loadIconsSynchronously];
-  v13 = [(ReadingListViewController *)self _currentReadingListBookmark];
-  if ([v13 isEqualToBookmark:v10])
+  [(ReadingListViewController *)self _setIconForBookmark:v10 cell:cellCopy synchronously:self->_loadIconsSynchronously];
+  _currentReadingListBookmark = [(ReadingListViewController *)self _currentReadingListBookmark];
+  if ([_currentReadingListBookmark isEqualToBookmark:v10])
   {
-    if (([v8 isSelected] & 1) == 0 && (-[ReadingListViewController isEditing](self, "isEditing") & 1) == 0)
+    if (([cellCopy isSelected] & 1) == 0 && (-[ReadingListViewController isEditing](self, "isEditing") & 1) == 0)
     {
-      [v17 selectRowAtIndexPath:v9 animated:1 scrollPosition:0];
+      [viewCopy selectRowAtIndexPath:pathCopy animated:1 scrollPosition:0];
     }
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(v9 inSection:{"row") + 1, 0}];
+    v14 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(pathCopy inSection:{"row") + 1, 0}];
     v15 = [v14 row];
     if (v15 < [(WebBookmarkList *)self->_readingList bookmarkCount])
     {
       v16 = [(ReadingListViewController *)self _bookmarkAtIndexPath:v14];
-      if ([v13 isEqualToBookmark:v16])
+      if ([_currentReadingListBookmark isEqualToBookmark:v16])
       {
-        [v8 setSeparatorStyle:0];
+        [cellCopy setSeparatorStyle:0];
       }
     }
   }
 }
 
-- (void)_fetchMetadataIfNeededForBookmark:(id)a3
+- (void)_fetchMetadataIfNeededForBookmark:(id)bookmark
 {
-  v6 = a3;
-  v3 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  v4 = [v3 safari_shouldAutomaticallyDownloadReadingListItems];
+  bookmarkCopy = bookmark;
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  safari_shouldAutomaticallyDownloadReadingListItems = [safari_browserDefaults safari_shouldAutomaticallyDownloadReadingListItems];
 
-  if ((v4 & 1) == 0)
+  if ((safari_shouldAutomaticallyDownloadReadingListItems & 1) == 0)
   {
-    if ([ReadingListMetadataFetcher shouldFetchMetadataForBookmark:v6])
+    if ([ReadingListMetadataFetcher shouldFetchMetadataForBookmark:bookmarkCopy])
     {
       v5 = +[ReadingListMetadataFetcher sharedMetadataFetcher];
-      [v5 fetchMetadataForReadingListBookmark:v6 withProvider:0];
+      [v5 fetchMetadataForReadingListBookmark:bookmarkCopy withProvider:0];
     }
 
     else
     {
-      if (![ReadingListMetadataFetcher shouldFetchThumbnailForBookmark:v6])
+      if (![ReadingListMetadataFetcher shouldFetchThumbnailForBookmark:bookmarkCopy])
       {
         goto LABEL_7;
       }
 
       v5 = +[ReadingListMetadataFetcher sharedMetadataFetcher];
-      [v5 fetchThumbnailForReadingListBookmark:v6 withProvider:0];
+      [v5 fetchThumbnailForReadingListBookmark:bookmarkCopy withProvider:0];
     }
   }
 
 LABEL_7:
 }
 
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path
 {
   visibleBookmarkIDs = self->_visibleBookmarkIDs;
-  v6 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(a4, "bookmarkID", a3)}];
+  v6 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(cell, "bookmarkID", view)}];
   [(NSMutableSet *)visibleBookmarkIDs removeObject:v6];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ReadingListViewController *)self isEditing];
+  viewCopy = view;
+  pathCopy = path;
+  isEditing = [(ReadingListViewController *)self isEditing];
   v9 = WBS_LOG_CHANNEL_PREFIXUserInteraction();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (isEditing)
   {
     if (v10)
     {
       v11 = v9;
       v17 = 134218240;
-      v18 = [v7 row];
+      v18 = [pathCopy row];
       v19 = 2048;
-      v20 = [v6 numberOfRowsInSection:{objc_msgSend(v7, "section")}];
+      v20 = [viewCopy numberOfRowsInSection:{objc_msgSend(pathCopy, "section")}];
       _os_log_impl(&dword_215819000, v11, OS_LOG_TYPE_DEFAULT, "Tap to select reading list item at row %ld, number of rows: %ld", &v17, 0x16u);
     }
 
@@ -1512,15 +1512,15 @@ LABEL_7:
     {
       v12 = v9;
       v17 = 134218240;
-      v18 = [v7 row];
+      v18 = [pathCopy row];
       v19 = 2048;
-      v20 = [v6 numberOfRowsInSection:{objc_msgSend(v7, "section")}];
+      v20 = [viewCopy numberOfRowsInSection:{objc_msgSend(pathCopy, "section")}];
       _os_log_impl(&dword_215819000, v12, OS_LOG_TYPE_DEFAULT, "Tap reading list item at row %ld, number of rows: %ld", &v17, 0x16u);
     }
 
-    v13 = [(ReadingListViewController *)self _bookmarkAtIndexPath:v7];
-    v14 = [MEMORY[0x277D28F40] builder];
-    v15 = [v14 navigationIntentWithBookmark:v13];
+    v13 = [(ReadingListViewController *)self _bookmarkAtIndexPath:pathCopy];
+    builder = [MEMORY[0x277D28F40] builder];
+    v15 = [builder navigationIntentWithBookmark:v13];
 
     [v15 setShouldDismissSidebarOnLoad:1];
     WeakRetained = objc_loadWeakRetained(&self->_navigationIntentHandler);
@@ -1528,11 +1528,11 @@ LABEL_7:
   }
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([(ReadingListViewController *)self isEditing])
   {
     v8 = WBS_LOG_CHANNEL_PREFIXUserInteraction();
@@ -1540,9 +1540,9 @@ LABEL_7:
     {
       v9 = v8;
       v10 = 134218240;
-      v11 = [v7 row];
+      v11 = [pathCopy row];
       v12 = 2048;
-      v13 = [v6 numberOfRowsInSection:{objc_msgSend(v7, "section")}];
+      v13 = [viewCopy numberOfRowsInSection:{objc_msgSend(pathCopy, "section")}];
       _os_log_impl(&dword_215819000, v9, OS_LOG_TYPE_DEFAULT, "Tap to deselect editing reading list item at row %ld, number of rows: %ld", &v10, 0x16u);
     }
 
@@ -1582,14 +1582,14 @@ id __76__ReadingListViewController_tableView_leadingSwipeActionsForRowAtIndexPat
   return v11;
 }
 
-- (void)_readingListItemAtIndexPath:(id)a3 lockAndPerformUpdates:(id)a4 performBlockIfLockFailed:(id)a5
+- (void)_readingListItemAtIndexPath:(id)path lockAndPerformUpdates:(id)updates performBlockIfLockFailed:(id)failed
 {
-  v11 = a4;
-  v8 = a5;
-  v9 = [(ReadingListViewController *)self _bookmarkAtIndexPath:a3];
+  updatesCopy = updates;
+  failedCopy = failed;
+  v9 = [(ReadingListViewController *)self _bookmarkAtIndexPath:path];
   if ([MEMORY[0x277D7B5A8] isLockedSync])
   {
-    v10 = v11[2];
+    v10 = updatesCopy[2];
 LABEL_7:
     v10();
     goto LABEL_8;
@@ -1597,44 +1597,44 @@ LABEL_7:
 
   if ([MEMORY[0x277D7B5A8] lockSync])
   {
-    (v11[2])(v11, v9);
+    (updatesCopy[2])(updatesCopy, v9);
     [MEMORY[0x277D7B5A8] unlockSync];
     goto LABEL_8;
   }
 
-  if (v8)
+  if (failedCopy)
   {
-    v10 = v8[2];
+    v10 = failedCopy[2];
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)_readingListItemsAtIndexPaths:(id)a3 lockAndPerformUpdate:(id)a4 performBlockIfLockFailed:(id)a5
+- (void)_readingListItemsAtIndexPaths:(id)paths lockAndPerformUpdate:(id)update performBlockIfLockFailed:(id)failed
 {
-  v8 = a4;
-  v9 = a5;
+  updateCopy = update;
+  failedCopy = failed;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __105__ReadingListViewController__readingListItemsAtIndexPaths_lockAndPerformUpdate_performBlockIfLockFailed___block_invoke;
   v11[3] = &unk_2781D86C8;
   v11[4] = self;
-  v10 = [a3 safari_mapObjectsUsingBlock:v11];
+  v10 = [paths safari_mapObjectsUsingBlock:v11];
   if ([MEMORY[0x277D7B5A8] isLockedSync])
   {
-    v8[2](v8, v10);
+    updateCopy[2](updateCopy, v10);
   }
 
   else if ([MEMORY[0x277D7B5A8] lockSync])
   {
-    v8[2](v8, v10);
+    updateCopy[2](updateCopy, v10);
     [MEMORY[0x277D7B5A8] unlockSync];
   }
 
-  else if (v9)
+  else if (failedCopy)
   {
-    v9[2](v9, v10);
+    failedCopy[2](failedCopy, v10);
   }
 }
 
@@ -1646,27 +1646,27 @@ LABEL_8:
   v4 = [(WebBookmarkList *)self->_readingList differenceFromList:v3 withOptions:3];
   if ([v4 hasChanges])
   {
-    v5 = [(ReadingListViewController *)self tableView];
+    tableView = [(ReadingListViewController *)self tableView];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __66__ReadingListViewController__updateTableViewByComputingDifference__block_invoke_2;
     v8[3] = &unk_2781D7E28;
-    v10 = self;
+    selfCopy = self;
     v11 = &__block_literal_global_177;
     v9 = v4;
-    [v5 performBatchUpdates:v8 completion:0];
+    [tableView performBatchUpdates:v8 completion:0];
 
     [(UIViewController *)self safari_saveTableViewScrollPosition];
-    LODWORD(v5) = [(WebBookmarkList *)v3 bookmarkCount]== 0;
-    if (((v5 ^ ([(WebBookmarkList *)self->_readingList bookmarkCount]!= 0)) & 1) == 0)
+    LODWORD(tableView) = [(WebBookmarkList *)v3 bookmarkCount]== 0;
+    if (((tableView ^ ([(WebBookmarkList *)self->_readingList bookmarkCount]!= 0)) & 1) == 0)
     {
       [(ReadingListViewController *)self _updateToolbarItemsAnimated:1];
     }
 
     v6 = [(WebBookmarkCollection *)self->_collection readingListWithUnreadOnly:0];
-    v7 = [v6 bookmarkCount];
+    bookmarkCount = [v6 bookmarkCount];
 
-    if (v7)
+    if (bookmarkCount)
     {
       [(ReadingListViewController *)self _clearExplanationView];
     }
@@ -1773,31 +1773,31 @@ void __66__ReadingListViewController__updateTableViewByComputingDifference__bloc
   }
 }
 
-- (void)_updateTableViewByRemovingReadingListItemAtIndexPath:(id)a3
+- (void)_updateTableViewByRemovingReadingListItemAtIndexPath:(id)path
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  pathCopy = path;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v7 count:1];
+  pathCopy2 = path;
+  v6 = [v4 arrayWithObjects:&pathCopy count:1];
 
-  [(ReadingListViewController *)self _updateTableViewByRemovingReadingListItemsAtIndexPaths:v6, v7, v8];
+  [(ReadingListViewController *)self _updateTableViewByRemovingReadingListItemsAtIndexPaths:v6, pathCopy, v8];
 }
 
-- (void)_readingListItemAtIndexPathDelete:(id)a3
+- (void)_readingListItemAtIndexPathDelete:(id)delete
 {
-  v4 = a3;
+  deleteCopy = delete;
   v5 = +[FeatureManager sharedFeatureManager];
-  v6 = [v5 isInMemoryBookmarkChangeTrackingAvailable];
+  isInMemoryBookmarkChangeTrackingAvailable = [v5 isInMemoryBookmarkChangeTrackingAvailable];
 
-  if (v6)
+  if (isInMemoryBookmarkChangeTrackingAvailable)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __63__ReadingListViewController__readingListItemAtIndexPathDelete___block_invoke;
     aBlock[3] = &unk_2781D8710;
     aBlock[4] = self;
-    v12 = v4;
+    v12 = deleteCopy;
     v7 = _Block_copy(aBlock);
   }
 
@@ -1811,8 +1811,8 @@ void __66__ReadingListViewController__updateTableViewByComputingDifference__bloc
   v9[2] = __63__ReadingListViewController__readingListItemAtIndexPathDelete___block_invoke_2;
   v9[3] = &unk_2781D8710;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = deleteCopy;
+  v8 = deleteCopy;
   [(ReadingListViewController *)self _readingListItemAtIndexPath:v8 lockAndPerformUpdates:v9 performBlockIfLockFailed:v7];
 }
 
@@ -1850,21 +1850,21 @@ void __63__ReadingListViewController__readingListItemAtIndexPathDelete___block_i
   }
 }
 
-- (id)_createActions:(id)a3 forRowAtIndexPath:(id)a4 allowingNewlineInTitles:(BOOL)a5 withBlock:(id)a6
+- (id)_createActions:(id)actions forRowAtIndexPath:(id)path allowingNewlineInTitles:(BOOL)titles withBlock:(id)block
 {
-  v10 = a4;
-  v11 = a6;
+  pathCopy = path;
+  blockCopy = block;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __96__ReadingListViewController__createActions_forRowAtIndexPath_allowingNewlineInTitles_withBlock___block_invoke;
   v16[3] = &unk_2781D8738;
   v16[4] = self;
-  v17 = v10;
-  v19 = a5;
-  v18 = v11;
-  v12 = v11;
-  v13 = v10;
-  v14 = [a3 safari_mapAndFilterObjectsUsingBlock:v16];
+  v17 = pathCopy;
+  titlesCopy = titles;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = pathCopy;
+  v14 = [actions safari_mapAndFilterObjectsUsingBlock:v16];
 
   return v14;
 }
@@ -1880,13 +1880,13 @@ uint64_t __96__ReadingListViewController__createActions_forRowAtIndexPath_allowi
   return [v3 _createAction:v4 forRowAtIndexPath:v6 allowingNewlineInTitle:v5 withBlock:v7];
 }
 
-- (id)_createAction:(int64_t)a3 forRowAtIndexPath:(id)a4 allowingNewlineInTitle:(BOOL)a5 withBlock:(id)a6
+- (id)_createAction:(int64_t)action forRowAtIndexPath:(id)path allowingNewlineInTitle:(BOOL)title withBlock:(id)block
 {
   v67[2] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a6;
+  pathCopy = path;
+  blockCopy = block;
   objc_initWeak(&location, self);
-  if (a3 == 1)
+  if (action == 1)
   {
     v11 = _WBSLocalizedString();
     v12 = [MEMORY[0x277D755B8] systemImageNamed:@"trash"];
@@ -1895,21 +1895,21 @@ uint64_t __96__ReadingListViewController__createActions_forRowAtIndexPath_allowi
     v63[2] = __94__ReadingListViewController__createAction_forRowAtIndexPath_allowingNewlineInTitle_withBlock___block_invoke;
     v63[3] = &unk_2781D4F30;
     objc_copyWeak(&v65, &location);
-    v64 = v9;
-    v13 = v10[2](v10, v11, @"DeleteReadingListItem", v12, 1, v63);
+    v64 = pathCopy;
+    v13 = blockCopy[2](blockCopy, v11, @"DeleteReadingListItem", v12, 1, v63);
 
     objc_destroyWeak(&v65);
     goto LABEL_20;
   }
 
-  v14 = [(ReadingListViewController *)self _bookmarkAtIndexPath:v9];
+  v14 = [(ReadingListViewController *)self _bookmarkAtIndexPath:pathCopy];
   v11 = v14;
-  if (a3 == 4)
+  if (action == 4)
   {
-    v29 = [v14 dateLastViewed];
+    dateLastViewed = [v14 dateLastViewed];
 
     v30 = _WBSLocalizedString();
-    if (v29)
+    if (dateLastViewed)
     {
       v31 = [MEMORY[0x277D755B8] systemImageNamed:@"xmark.circle"];
       v54[0] = MEMORY[0x277D85DD0];
@@ -1917,8 +1917,8 @@ uint64_t __96__ReadingListViewController__createActions_forRowAtIndexPath_allowi
       v54[2] = __94__ReadingListViewController__createAction_forRowAtIndexPath_allowingNewlineInTitle_withBlock___block_invoke_3_229;
       v54[3] = &unk_2781D4F30;
       objc_copyWeak(&v56, &location);
-      v55 = v9;
-      v13 = v10[2](v10, v30, @"MarkUnreadReadingListItem", v31, 0, v54);
+      v55 = pathCopy;
+      v13 = blockCopy[2](blockCopy, v30, @"MarkUnreadReadingListItem", v31, 0, v54);
 
       objc_destroyWeak(&v56);
     }
@@ -1931,8 +1931,8 @@ uint64_t __96__ReadingListViewController__createActions_forRowAtIndexPath_allowi
       v51[2] = __94__ReadingListViewController__createAction_forRowAtIndexPath_allowingNewlineInTitle_withBlock___block_invoke_248;
       v51[3] = &unk_2781D4F30;
       objc_copyWeak(&v53, &location);
-      v52 = v9;
-      v13 = v10[2](v10, v30, @"MarkReadReadingListItem", v34, 0, v51);
+      v52 = pathCopy;
+      v13 = blockCopy[2](blockCopy, v30, @"MarkReadReadingListItem", v34, 0, v51);
 
       objc_destroyWeak(&v53);
     }
@@ -1940,7 +1940,7 @@ uint64_t __96__ReadingListViewController__createActions_forRowAtIndexPath_allowi
 
   else
   {
-    if (a3 != 2 || ([MEMORY[0x277CBEBD0] safari_browserDefaults], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "safari_shouldAutomaticallyDownloadReadingListItems"), v15, (v16 & 1) != 0))
+    if (action != 2 || ([MEMORY[0x277CBEBD0] safari_browserDefaults], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "safari_shouldAutomaticallyDownloadReadingListItems"), v15, (v16 & 1) != 0))
     {
 LABEL_6:
       aBlock[0] = MEMORY[0x277D85DD0];
@@ -1948,11 +1948,11 @@ LABEL_6:
       aBlock[2] = __94__ReadingListViewController__createAction_forRowAtIndexPath_allowingNewlineInTitle_withBlock___block_invoke_249;
       aBlock[3] = &unk_2781D8788;
       objc_copyWeak(&v50, &location);
-      v48 = v9;
+      v48 = pathCopy;
       v11 = v11;
       v49 = v11;
       v17 = _Block_copy(aBlock);
-      if (a3 == 16)
+      if (action == 16)
       {
         v18 = _WBSLocalizedString();
         v28 = [MEMORY[0x277D755B8] systemImageNamed:@"doc.on.doc"];
@@ -1961,30 +1961,30 @@ LABEL_6:
         v41[2] = __94__ReadingListViewController__createAction_forRowAtIndexPath_allowingNewlineInTitle_withBlock___block_invoke_4;
         v41[3] = &unk_2781D4D40;
         v42 = v11;
-        v13 = v10[2](v10, v18, @"CopyReadingListItem", v28, 0, v41);
+        v13 = blockCopy[2](blockCopy, v18, @"CopyReadingListItem", v28, 0, v41);
       }
 
       else
       {
-        if (a3 != 8)
+        if (action != 8)
         {
           v13 = 0;
           goto LABEL_14;
         }
 
         v18 = [MEMORY[0x277D750C8] _sf_openInNewTabActionWithHandler:&__block_literal_global_254];
-        v19 = [v18 title];
-        v20 = [v18 image];
+        title = [v18 title];
+        image = [v18 image];
         v45[0] = MEMORY[0x277D85DD0];
         v45[1] = 3221225472;
         v45[2] = __94__ReadingListViewController__createAction_forRowAtIndexPath_allowingNewlineInTitle_withBlock___block_invoke_2_258;
         v45[3] = &unk_2781D4D90;
         v21 = v17;
         v46 = v21;
-        v40 = v10[2](v10, v19, @"OpenInNewTabReadingListItem", v20, 0, v45);
+        v40 = blockCopy[2](blockCopy, title, @"OpenInNewTabReadingListItem", image, 0, v45);
 
-        v22 = [v11 address];
-        v23 = [MEMORY[0x277CBEBC0] URLWithString:v22];
+        address = [v11 address];
+        v23 = [MEMORY[0x277CBEBC0] URLWithString:address];
         WeakRetained = objc_loadWeakRetained(&self->_tabGroupProvider);
         v43[0] = MEMORY[0x277D85DD0];
         v43[1] = 3221225472;
@@ -2016,18 +2016,18 @@ LABEL_14:
       v60[2] = __94__ReadingListViewController__createAction_forRowAtIndexPath_allowingNewlineInTitle_withBlock___block_invoke_198;
       v60[3] = &unk_2781D4F30;
       objc_copyWeak(&v62, &location);
-      v61 = v9;
-      v13 = v10[2](v10, v35, @"DontSaveReadingListItem", v36, 0, v60);
+      v61 = pathCopy;
+      v13 = blockCopy[2](blockCopy, v35, @"DontSaveReadingListItem", v36, 0, v60);
 
       objc_destroyWeak(&v62);
     }
 
     else
     {
-      v32 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-      v33 = [v32 isNetworkReachable];
+      mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+      isNetworkReachable = [mEMORY[0x277CEC5B8] isNetworkReachable];
 
-      if (!v33)
+      if (!isNetworkReachable)
       {
         goto LABEL_6;
       }
@@ -2039,8 +2039,8 @@ LABEL_14:
       v57[2] = __94__ReadingListViewController__createAction_forRowAtIndexPath_allowingNewlineInTitle_withBlock___block_invoke_3;
       v57[3] = &unk_2781D4F30;
       objc_copyWeak(&v59, &location);
-      v58 = v9;
-      v13 = v10[2](v10, v37, @"SaveOfflineReadingListItem", v38, 0, v57);
+      v58 = pathCopy;
+      v13 = blockCopy[2](blockCopy, v37, @"SaveOfflineReadingListItem", v38, 0, v57);
 
       objc_destroyWeak(&v59);
     }
@@ -2287,19 +2287,19 @@ void __94__ReadingListViewController__createAction_forRowAtIndexPath_allowingNew
   }
 }
 
-- (void)_readingListItemAtIndexPath:(id)a3 setUnread:(BOOL)a4
+- (void)_readingListItemAtIndexPath:(id)path setUnread:(BOOL)unread
 {
-  v4 = a4;
-  v11 = a3;
+  unreadCopy = unread;
+  pathCopy = path;
   v6 = [(ReadingListViewController *)self _bookmarkAtIndexPath:?];
-  v7 = [v6 dateLastViewed];
+  dateLastViewed = [v6 dateLastViewed];
 
-  if ((v7 != 0) != v4)
+  if ((dateLastViewed != 0) != unreadCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4)
+  if (unreadCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained readingListViewController:self setBookmark:v6 asRead:0];
@@ -2318,11 +2318,11 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  [(ReadingListViewController *)self _updateTableViewByRemovingReadingListItemAtIndexPath:v11];
+  [(ReadingListViewController *)self _updateTableViewByRemovingReadingListItemAtIndexPath:pathCopy];
 LABEL_6:
 }
 
-- (void)bookmarksServerProxyDidFinishFetching:(id)a3
+- (void)bookmarksServerProxyDidFinishFetching:(id)fetching
 {
   if (self->_archivingBookmarkUUID)
   {
@@ -2332,9 +2332,9 @@ LABEL_6:
   [(ReadingListViewController *)self _disconnectSafariFetcherServerProxy];
 }
 
-- (void)bookmarksServerProxyConnectionInvalidated:(id)a3
+- (void)bookmarksServerProxyConnectionInvalidated:(id)invalidated
 {
-  if (self->_safariFetcherServerProxy == a3)
+  if (self->_safariFetcherServerProxy == invalidated)
   {
     [(ReadingListViewController *)self _disconnectSafariFetcherServerProxy];
 
@@ -2342,23 +2342,23 @@ LABEL_6:
   }
 }
 
-- (void)bookmarksServerProxy:(id)a3 didStartFetchingReadingListItem:(id)a4
+- (void)bookmarksServerProxy:(id)proxy didStartFetchingReadingListItem:(id)item
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7 && self->_safariFetcherServerProxy == v6 && ![(NSString *)self->_archivingBookmarkUUID isEqualToString:v7])
+  proxyCopy = proxy;
+  itemCopy = item;
+  if (itemCopy && self->_safariFetcherServerProxy == proxyCopy && ![(NSString *)self->_archivingBookmarkUUID isEqualToString:itemCopy])
   {
     if (self->_archivingBookmarkUUID)
     {
       [(ReadingListViewController *)self bookmarksServerProxy:self->_safariFetcherServerProxy didStopFetchingReadingListItem:?];
     }
 
-    v8 = [(WebBookmarkCollection *)self->_collection bookmarkWithUUID:v7];
+    v8 = [(WebBookmarkCollection *)self->_collection bookmarkWithUUID:itemCopy];
     if (v8)
     {
-      v20 = v6;
-      objc_storeStrong(&self->_archivingBookmarkUUID, a4);
+      v20 = proxyCopy;
+      objc_storeStrong(&self->_archivingBookmarkUUID, item);
       [(UITableView *)self->_tableView indexPathsForVisibleRows];
       v21 = 0u;
       v22 = 0u;
@@ -2381,8 +2381,8 @@ LABEL_6:
 
             v14 = *(*(&v21 + 1) + 8 * i);
             v15 = [(ReadingListViewController *)self _bookmarkAtIndexPath:v14];
-            v16 = [v15 UUID];
-            v17 = [v16 isEqualToString:v7];
+            uUID = [v15 UUID];
+            v17 = [uUID isEqualToString:itemCopy];
 
             if (v17)
             {
@@ -2407,22 +2407,22 @@ LABEL_6:
 
 LABEL_17:
 
-      v6 = v20;
+      proxyCopy = v20;
     }
   }
 }
 
-- (void)bookmarksServerProxy:(id)a3 didStopFetchingReadingListItem:(id)a4
+- (void)bookmarksServerProxy:(id)proxy didStopFetchingReadingListItem:(id)item
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (self->_safariFetcherServerProxy == v6 && self->_archivingBookmarkUUID)
+  proxyCopy = proxy;
+  itemCopy = item;
+  if (self->_safariFetcherServerProxy == proxyCopy && self->_archivingBookmarkUUID)
   {
     v8 = [(WebBookmarkCollection *)self->_collection bookmarkWithUUID:?];
     if (v8)
     {
-      v20 = v7;
+      v20 = itemCopy;
       [(UITableView *)self->_tableView indexPathsForVisibleRows];
       v22 = 0u;
       v23 = 0u;
@@ -2445,8 +2445,8 @@ LABEL_17:
 
             v13 = *(*(&v22 + 1) + 8 * i);
             v14 = [(ReadingListViewController *)self _bookmarkAtIndexPath:v13];
-            v15 = [v14 UUID];
-            v16 = [v15 isEqualToString:self->_archivingBookmarkUUID];
+            uUID = [v14 UUID];
+            v16 = [uUID isEqualToString:self->_archivingBookmarkUUID];
 
             if (v16)
             {
@@ -2475,14 +2475,14 @@ LABEL_14:
       self->_archivingBookmarkUUID = 0;
 
       [(ReadingListViewController *)self _reloadReadingListAndTable];
-      v7 = v20;
+      itemCopy = v20;
     }
   }
 }
 
-- (id)previewTableViewController:(id)a3 menuForRowAtIndexPath:(id)a4
+- (id)previewTableViewController:(id)controller menuForRowAtIndexPath:(id)path
 {
-  v4 = [(ReadingListViewController *)self _createActions:&unk_2827FC5F8 forRowAtIndexPath:a4 allowingNewlineInTitles:0 withBlock:&__block_literal_global_287];
+  v4 = [(ReadingListViewController *)self _createActions:&unk_2827FC5F8 forRowAtIndexPath:path allowingNewlineInTitles:0 withBlock:&__block_literal_global_287];
   v5 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:v4];
 
   return v5;
@@ -2510,14 +2510,14 @@ id __78__ReadingListViewController_previewTableViewController_menuForRowAtIndexP
   return v14;
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v10 = a3;
-  v6 = a4;
+  barCopy = bar;
+  changeCopy = change;
   userTypedFilter = self->_userTypedFilter;
-  if (userTypedFilter != v6 && ![(NSString *)userTypedFilter isEqualToString:v6])
+  if (userTypedFilter != changeCopy && ![(NSString *)userTypedFilter isEqualToString:changeCopy])
   {
-    v8 = [(NSString *)v6 copy];
+    v8 = [(NSString *)changeCopy copy];
     v9 = self->_userTypedFilter;
     self->_userTypedFilter = v8;
 
@@ -2525,7 +2525,7 @@ id __78__ReadingListViewController_previewTableViewController_menuForRowAtIndexP
   }
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
   userTypedFilter = self->_userTypedFilter;
   self->_userTypedFilter = 0;
@@ -2533,13 +2533,13 @@ id __78__ReadingListViewController_previewTableViewController_menuForRowAtIndexP
   [(ReadingListViewController *)self _reloadReadingListAndTable];
 }
 
-- (id)tableView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)tableView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277D75470];
-  v7 = a5;
+  pathCopy = path;
   v8 = [v6 alloc];
-  v9 = [(ReadingListViewController *)self _bookmarkAtIndexPath:v7];
+  v9 = [(ReadingListViewController *)self _bookmarkAtIndexPath:pathCopy];
 
   v10 = [v8 _sf_initWithBookmark:v9];
   v13[0] = v10;
@@ -2548,15 +2548,15 @@ id __78__ReadingListViewController_previewTableViewController_menuForRowAtIndexP
   return v11;
 }
 
-- (void)tableView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)tableView:(id)view dragSessionWillBegin:(id)begin
 {
-  v4 = [MEMORY[0x277D499B8] sharedLogger];
-  [v4 didStartDragWithDragContentType:9];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didStartDragWithDragContentType:9];
 }
 
-- (BOOL)tableView:(id)a3 canHandleDropSession:(id)a4
+- (BOOL)tableView:(id)view canHandleDropSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   if (([(ReadingListViewController *)self isEditing]& 1) != 0)
   {
     v6 = 0;
@@ -2564,35 +2564,35 @@ id __78__ReadingListViewController_previewTableViewController_menuForRowAtIndexP
 
   else
   {
-    v6 = [MEMORY[0x277CBEBC0] _sf_canCreateURLsFromDropSession:v5];
+    v6 = [MEMORY[0x277CBEBC0] _sf_canCreateURLsFromDropSession:sessionCopy];
   }
 
   return v6;
 }
 
-- (id)tableView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)tableView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
-  v5 = [objc_alloc(MEMORY[0x277D75B68]) initWithDropOperation:-[WebBookmarkCollection dropOperationForReadingListDropSession:](self->_collection dropLocation:{a4), 2}];
+  v5 = [objc_alloc(MEMORY[0x277D75B68]) initWithDropOperation:-[WebBookmarkCollection dropOperationForReadingListDropSession:](self->_collection dropLocation:{update), 2}];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)tableView:(id)view performDropWithCoordinator:(id)coordinator
 {
   collection = self->_collection;
-  v7 = [a4 session];
-  v6 = [v7 items];
-  [(WebBookmarkCollection *)collection dropDragItemsInReadingList:v6 updatingController:self];
+  session = [coordinator session];
+  items = [session items];
+  [(WebBookmarkCollection *)collection dropDragItemsInReadingList:items updatingController:self];
 }
 
-- (void)updateUserActivityState:(id)a3
+- (void)updateUserActivityState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v3 = WebBookmarksReadingListFolderTitle();
-  [v4 setTitle:v3];
+  [stateCopy setTitle:v3];
 
-  [v4 setEligibleForSearch:1];
-  [v4 setEligibleForPrediction:1];
+  [stateCopy setEligibleForSearch:1];
+  [stateCopy setEligibleForPrediction:1];
 }
 
 - (ReadingListViewControllerDelegate)delegate

@@ -1,14 +1,14 @@
 @interface UILabel
-- (void)crl_setTextAllowingHyphenation:(id)a3;
+- (void)crl_setTextAllowingHyphenation:(id)hyphenation;
 @end
 
 @implementation UILabel
 
-- (void)crl_setTextAllowingHyphenation:(id)a3
+- (void)crl_setTextAllowingHyphenation:(id)hyphenation
 {
-  if (a3)
+  if (hyphenation)
   {
-    v4 = a3;
+    hyphenationCopy = hyphenation;
     v5 = objc_alloc_init(NSMutableParagraphStyle);
     LODWORD(v6) = 1036831949;
     [v5 setHyphenationFactor:v6];
@@ -19,7 +19,7 @@
     v10 = NSParagraphStyleAttributeName;
     v11 = v5;
     v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-    v9 = [v7 initWithString:v4 attributes:v8];
+    v9 = [v7 initWithString:hyphenationCopy attributes:v8];
   }
 
   else

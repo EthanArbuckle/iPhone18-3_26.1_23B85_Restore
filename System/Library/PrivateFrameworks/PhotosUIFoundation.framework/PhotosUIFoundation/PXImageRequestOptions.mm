@@ -2,9 +2,9 @@
 - (CGRect)normalizedCropRect;
 - (CGSize)fallbackTargetSizeIfRequestedSizeNotLocallyAvailable;
 - (PXImageRequestOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)copyPropertiesToOptions:(id)a3;
-- (void)setAllowSecondaryDegradedImage:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)copyPropertiesToOptions:(id)options;
+- (void)setAllowSecondaryDegradedImage:(BOOL)image;
 @end
 
 @implementation PXImageRequestOptions
@@ -61,46 +61,46 @@
   return result;
 }
 
-- (void)copyPropertiesToOptions:(id)a3
+- (void)copyPropertiesToOptions:(id)options
 {
   version = self->_version;
-  v5 = a3;
-  [v5 setVersion:version];
-  [v5 setAllowPlaceholder:self->_allowPlaceholder];
-  [v5 setDeliveryMode:self->_deliveryMode];
-  [v5 setResizeMode:self->_resizeMode];
-  [v5 setNormalizedCropRect:{self->_normalizedCropRect.origin.x, self->_normalizedCropRect.origin.y, self->_normalizedCropRect.size.width, self->_normalizedCropRect.size.height}];
-  [v5 setNetworkAccessAllowed:self->_networkAccessAllowed];
-  [v5 setSynchronous:self->_synchronous];
-  [v5 setProgressHandler:self->_progressHandler];
-  [v5 setFallbackTargetSizeIfRequestedSizeNotLocallyAvailable:{self->_fallbackTargetSizeIfRequestedSizeNotLocallyAvailable.width, self->_fallbackTargetSizeIfRequestedSizeNotLocallyAvailable.height}];
-  [v5 setLoadingMode:self->_loadingMode];
-  [v5 setResultHandlerQueue:self->_resultHandlerQueue];
-  [v5 setDownloadIntent:self->_downloadIntent];
-  [v5 setDownloadPriority:self->_downloadPriority];
-  [v5 setUseLowMemoryMode:self->_useLowMemoryMode];
-  [v5 setPreferHDR:self->_preferHDR];
-  [v5 setTargetHDRHeadroom:self->_targetHDRHeadroom];
-  [v5 setIncludeHDRGainMap:self->_includeHDRGainMap];
-  [v5 setChooseAlchemist:self->_chooseAlchemist];
-  [v5 setUseAsyncForFastOpportunisticResult:self->_useAsyncForFastOpportunisticResult];
-  [v5 setOpportunisticDegradedImagesToReturn:self->_opportunisticDegradedImagesToReturn];
-  [v5 setAvoidDisplayingProgressUpdates:self->_avoidDisplayingProgressUpdates];
+  optionsCopy = options;
+  [optionsCopy setVersion:version];
+  [optionsCopy setAllowPlaceholder:self->_allowPlaceholder];
+  [optionsCopy setDeliveryMode:self->_deliveryMode];
+  [optionsCopy setResizeMode:self->_resizeMode];
+  [optionsCopy setNormalizedCropRect:{self->_normalizedCropRect.origin.x, self->_normalizedCropRect.origin.y, self->_normalizedCropRect.size.width, self->_normalizedCropRect.size.height}];
+  [optionsCopy setNetworkAccessAllowed:self->_networkAccessAllowed];
+  [optionsCopy setSynchronous:self->_synchronous];
+  [optionsCopy setProgressHandler:self->_progressHandler];
+  [optionsCopy setFallbackTargetSizeIfRequestedSizeNotLocallyAvailable:{self->_fallbackTargetSizeIfRequestedSizeNotLocallyAvailable.width, self->_fallbackTargetSizeIfRequestedSizeNotLocallyAvailable.height}];
+  [optionsCopy setLoadingMode:self->_loadingMode];
+  [optionsCopy setResultHandlerQueue:self->_resultHandlerQueue];
+  [optionsCopy setDownloadIntent:self->_downloadIntent];
+  [optionsCopy setDownloadPriority:self->_downloadPriority];
+  [optionsCopy setUseLowMemoryMode:self->_useLowMemoryMode];
+  [optionsCopy setPreferHDR:self->_preferHDR];
+  [optionsCopy setTargetHDRHeadroom:self->_targetHDRHeadroom];
+  [optionsCopy setIncludeHDRGainMap:self->_includeHDRGainMap];
+  [optionsCopy setChooseAlchemist:self->_chooseAlchemist];
+  [optionsCopy setUseAsyncForFastOpportunisticResult:self->_useAsyncForFastOpportunisticResult];
+  [optionsCopy setOpportunisticDegradedImagesToReturn:self->_opportunisticDegradedImagesToReturn];
+  [optionsCopy setAvoidDisplayingProgressUpdates:self->_avoidDisplayingProgressUpdates];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(PXImageRequestOptions *)self copyPropertiesToOptions:v4];
   return v4;
 }
 
-- (void)setAllowSecondaryDegradedImage:(BOOL)a3
+- (void)setAllowSecondaryDegradedImage:(BOOL)image
 {
-  v3 = a3;
+  imageCopy = image;
   v5 = [(PXImageRequestOptions *)self opportunisticDegradedImagesToReturn]& 0xFFFFFFFFFFFFFFFDLL;
   v6 = 2;
-  if (!v3)
+  if (!imageCopy)
   {
     v6 = 0;
   }

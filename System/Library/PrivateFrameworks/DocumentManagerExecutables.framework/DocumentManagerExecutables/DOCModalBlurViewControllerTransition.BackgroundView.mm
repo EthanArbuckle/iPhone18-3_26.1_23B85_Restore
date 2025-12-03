@@ -1,10 +1,10 @@
 @interface DOCModalBlurViewControllerTransition.BackgroundView
-- (void)dismissPresentedViewController:(id)a3;
+- (void)dismissPresentedViewController:(id)controller;
 @end
 
 @implementation DOCModalBlurViewControllerTransition.BackgroundView
 
-- (void)dismissPresentedViewController:(id)a3
+- (void)dismissPresentedViewController:(id)controller
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)

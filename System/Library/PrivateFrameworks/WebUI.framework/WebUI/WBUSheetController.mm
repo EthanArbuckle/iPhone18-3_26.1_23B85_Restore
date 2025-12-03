@@ -1,30 +1,30 @@
 @interface WBUSheetController
-- (WBUSheetController)initWithDelegate:(id)a3;
+- (WBUSheetController)initWithDelegate:(id)delegate;
 - (void)hideSheet;
-- (void)showSheetForAlert:(id)a3;
+- (void)showSheetForAlert:(id)alert;
 @end
 
 @implementation WBUSheetController
 
-- (WBUSheetController)initWithDelegate:(id)a3
+- (WBUSheetController)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = WBUSheetController;
   v6 = [(WBUSheetController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)showSheetForAlert:(id)a3
+- (void)showSheetForAlert:(id)alert
 {
-  v6 = a3;
+  alertCopy = alert;
   if (self->_alertController)
   {
     if (!self->_alertInvocationQueue)
@@ -34,7 +34,7 @@
       self->_alertInvocationQueue = v7;
     }
 
-    v20 = v6;
+    v20 = alertCopy;
     v9 = MEMORY[0x277CBEAE8];
     v10 = [(WBUSheetController *)self methodSignatureForSelector:a2];
     v11 = [v9 invocationWithMethodSignature:v10];
@@ -47,7 +47,7 @@
 
   else
   {
-    objc_storeStrong(&self->_alert, a3);
+    objc_storeStrong(&self->_alert, alert);
     v12 = objc_opt_class();
     alert = self->_alert;
     v19[0] = MEMORY[0x277D85DD0];

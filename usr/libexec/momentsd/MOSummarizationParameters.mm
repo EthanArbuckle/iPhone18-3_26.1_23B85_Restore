@@ -1,13 +1,13 @@
 @interface MOSummarizationParameters
-- (MOSummarizationParameters)initWithConfigurationManager:(id)a3;
+- (MOSummarizationParameters)initWithConfigurationManager:(id)manager;
 @end
 
 @implementation MOSummarizationParameters
 
-- (MOSummarizationParameters)initWithConfigurationManager:(id)a3
+- (MOSummarizationParameters)initWithConfigurationManager:(id)manager
 {
-  v6 = a3;
-  if (v6)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v65.receiver = self;
     v65.super_class = MOSummarizationParameters;
@@ -15,7 +15,7 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_configurationManager, a3);
+      objc_storeStrong(&v7->_configurationManager, manager);
       [(MOConfigurationManagerBase *)v8->_configurationManager getDoubleSettingForKey:@"Summarization_DominantBundleOverlappingThreshold" withFallback:0.7];
       *&v9 = v9;
       v8->_dominantBundle_overlappingThreshold = *&v9;
@@ -135,7 +135,7 @@
     }
 
     self = v8;
-    v61 = self;
+    selfCopy = self;
   }
 
   else
@@ -149,10 +149,10 @@
     v63 = +[NSAssertionHandler currentHandler];
     [v63 handleFailureInMethod:a2 object:self file:@"MOSummarizationParameters.m" lineNumber:135 description:@"Invalid parameter not satisfying: configurationManager"];
 
-    v61 = 0;
+    selfCopy = 0;
   }
 
-  return v61;
+  return selfCopy;
 }
 
 @end

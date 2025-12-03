@@ -2,7 +2,7 @@
 - (id).cxx_construct;
 - (shared_ptr<mlcore::EntityQuery>)downloadableItemsQuery;
 - (void)execute;
-- (void)setDownloadableItemsQuery:(shared_ptr<mlcore::EntityQuery>)a3;
+- (void)setDownloadableItemsQuery:(shared_ptr<mlcore::EntityQuery>)query;
 @end
 
 @implementation MPModelLibraryKeepLocalStatusRequestOperation
@@ -14,11 +14,11 @@
   return self;
 }
 
-- (void)setDownloadableItemsQuery:(shared_ptr<mlcore::EntityQuery>)a3
+- (void)setDownloadableItemsQuery:(shared_ptr<mlcore::EntityQuery>)query
 {
   p_downloadableItemsQuery = &self->_downloadableItemsQuery;
-  v5 = *a3.__ptr_;
-  v4 = *(a3.__ptr_ + 1);
+  v5 = *query.__ptr_;
+  v4 = *(query.__ptr_ + 1);
   if (v4)
   {
     atomic_fetch_add_explicit((v4 + 8), 1uLL, memory_order_relaxed);
@@ -53,14 +53,14 @@
   libraryView = self->_libraryView;
   if (!libraryView)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"MPModelLibraryKeepLocalStatusRequestOperation.mm" lineNumber:28 description:@"Library view must not be nil."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryKeepLocalStatusRequestOperation.mm" lineNumber:28 description:@"Library view must not be nil."];
 
     libraryView = self->_libraryView;
   }
 
-  v5 = [(MPMediaLibraryView *)libraryView library];
-  v6 = [v5 uniqueIdentifier];
+  library = [(MPMediaLibraryView *)libraryView library];
+  uniqueIdentifier = [library uniqueIdentifier];
 
   ptr = self->_downloadableItemsQuery.__ptr_;
   if (ptr)
@@ -78,7 +78,7 @@
     }
 
     aBlock[4] = self;
-    v27 = v6;
+    v27 = uniqueIdentifier;
     v8 = _Block_copy(aBlock);
     redownloadableItemCount = self->_redownloadableItemCount;
     if (!redownloadableItemCount)
@@ -108,7 +108,7 @@
     v22[2] = __56__MPModelLibraryKeepLocalStatusRequestOperation_execute__block_invoke_2_13;
     v22[3] = &unk_1E767A9E8;
     v22[4] = self;
-    v23 = v6;
+    v23 = uniqueIdentifier;
     v10 = _Block_copy(v22);
     v11 = self->_redownloadableItemCount;
     if (v11)
@@ -147,8 +147,8 @@
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"MPModelLibraryKeepLocalStatusRequestOperation.mm" lineNumber:290 description:@"Invalid creation options for MPModelLibraryKeepLocalStatusRequestOperation. downloadableItemsQuery or downloadablePlaylistItemEntityQueryBlock  must be specified"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPModelLibraryKeepLocalStatusRequestOperation.mm" lineNumber:290 description:@"Invalid creation options for MPModelLibraryKeepLocalStatusRequestOperation. downloadableItemsQuery or downloadablePlaylistItemEntityQueryBlock  must be specified"];
 
     responseHandler = self->_responseHandler;
     if (responseHandler)

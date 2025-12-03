@@ -1,8 +1,8 @@
 @interface BPSApplePayLocallyStoredValueManager
 + (id)remoteLocallyStoredValuePassNames;
-+ (void)_attemptToMarkAllAppletsForDeletionWithCompletion:(id)a3;
-+ (void)_presentApplePayLocallyStoredValueWarningInController:(id)a3 unableToConnect:(BOOL)a4 legacyDevice:(BOOL)a5 withCompletion:(id)a6;
-+ (void)presentApplePayLocallyStoredValueOfflineWarningIfNeededInController:(id)a3 forPairedDevice:(id)a4 withCompletion:(id)a5;
++ (void)_attemptToMarkAllAppletsForDeletionWithCompletion:(id)completion;
++ (void)_presentApplePayLocallyStoredValueWarningInController:(id)controller unableToConnect:(BOOL)connect legacyDevice:(BOOL)device withCompletion:(id)completion;
++ (void)presentApplePayLocallyStoredValueOfflineWarningIfNeededInController:(id)controller forPairedDevice:(id)device withCompletion:(id)completion;
 @end
 
 @implementation BPSApplePayLocallyStoredValueManager
@@ -10,7 +10,7 @@
 + (id)remoteLocallyStoredValuePassNames
 {
   v34 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v29 = 0;
   v30 = &v29;
   v31 = 0x2050000000;
@@ -91,8 +91,8 @@ LABEL_23:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v14 = [v13 paymentPassesWithLocallyStoredValue];
-    v15 = [v14 countByEnumeratingWithState:&v20 objects:v33 count:16];
+    paymentPassesWithLocallyStoredValue = [v13 paymentPassesWithLocallyStoredValue];
+    v15 = [paymentPassesWithLocallyStoredValue countByEnumeratingWithState:&v20 objects:v33 count:16];
     if (v15)
     {
       v16 = *v21;
@@ -102,68 +102,68 @@ LABEL_23:
         {
           if (*v21 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(paymentPassesWithLocallyStoredValue);
           }
 
-          v18 = [*(*(&v20 + 1) + 8 * i) localizedDescription];
-          if (v18)
+          localizedDescription = [*(*(&v20 + 1) + 8 * i) localizedDescription];
+          if (localizedDescription)
           {
-            [v2 addObject:v18];
+            [array addObject:localizedDescription];
           }
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v20 objects:v33 count:16];
+        v15 = [paymentPassesWithLocallyStoredValue countByEnumeratingWithState:&v20 objects:v33 count:16];
       }
 
       while (v15);
     }
   }
 
-  return v2;
+  return array;
 }
 
-+ (void)presentApplePayLocallyStoredValueOfflineWarningIfNeededInController:(id)a3 forPairedDevice:(id)a4 withCompletion:(id)a5
++ (void)presentApplePayLocallyStoredValueOfflineWarningIfNeededInController:(id)controller forPairedDevice:(id)device withCompletion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v11)
+  controllerCopy = controller;
+  deviceCopy = device;
+  completionCopy = completion;
+  if (!controllerCopy)
   {
     NSLog(&cfstr_Presentingcont.isa);
   }
 
-  v10 = [a1 remoteLocallyStoredValuePassNames];
-  if ([v10 count])
+  remoteLocallyStoredValuePassNames = [self remoteLocallyStoredValuePassNames];
+  if ([remoteLocallyStoredValuePassNames count])
   {
     NRWatchOSVersionForRemoteDevice();
-    [a1 _presentApplePayLocallyStoredValueWarningInController:v11 unableToConnect:0 legacyDevice:NRVersionIsGreaterThanOrEqual() ^ 1 withCompletion:v9];
+    [self _presentApplePayLocallyStoredValueWarningInController:controllerCopy unableToConnect:0 legacyDevice:NRVersionIsGreaterThanOrEqual() ^ 1 withCompletion:completionCopy];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    v9[2](v9, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-+ (void)_presentApplePayLocallyStoredValueWarningInController:(id)a3 unableToConnect:(BOOL)a4 legacyDevice:(BOOL)a5 withCompletion:(id)a6
++ (void)_presentApplePayLocallyStoredValueWarningInController:(id)controller unableToConnect:(BOOL)connect legacyDevice:(BOOL)device withCompletion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v44 = a3;
-  v42 = a6;
-  v10 = [a1 remoteLocallyStoredValuePassNames];
-  v11 = [v10 count];
+  deviceCopy = device;
+  connectCopy = connect;
+  controllerCopy = controller;
+  completionCopy = completion;
+  remoteLocallyStoredValuePassNames = [self remoteLocallyStoredValuePassNames];
+  v11 = [remoteLocallyStoredValuePassNames count];
   v12 = 0x277CCA000uLL;
-  v43 = v10;
+  v43 = remoteLocallyStoredValuePassNames;
   if (v11 == 1)
   {
     v13 = MEMORY[0x277CCACA8];
     v14 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.BridgePreferences"];
     v15 = [v14 localizedStringForKey:@"REMAINING_BALANCE_TITLE_%@" value:&stru_285406330 table:@"Localizable"];
-    v16 = [v10 firstObject];
+    firstObject = [remoteLocallyStoredValuePassNames firstObject];
     v17 = v13;
     v12 = 0x277CCA000;
-    v18 = [v17 stringWithFormat:v15, v16];
+    v18 = [v17 stringWithFormat:v15, firstObject];
   }
 
   else
@@ -172,7 +172,7 @@ LABEL_23:
     v18 = [v14 localizedStringForKey:@"REMAINING_BALANCE_TITLE_MULTIPLE" value:&stru_285406330 table:@"Localizable"];
   }
 
-  if (v8)
+  if (connectCopy)
   {
     v19 = [*(v12 + 2264) bundleWithIdentifier:@"com.apple.BridgePreferences"];
     v20 = [v19 localizedStringForKey:@"REMAINING_BALANCE_MESSAGE_ERROR" value:&stru_285406330 table:@"Localizable"];
@@ -188,7 +188,7 @@ LABEL_23:
 
     v22 = v21;
     v19 = v22;
-    if (v7)
+    if (deviceCopy)
     {
       v23 = [(__CFString *)v22 stringByAppendingString:@"_LEGACY"];
 
@@ -200,10 +200,10 @@ LABEL_23:
   }
 
   v25 = [MEMORY[0x277D75110] alertControllerWithTitle:v18 message:v20 preferredStyle:1];
-  if (v7)
+  if (deviceCopy)
   {
     v26 = 0;
-    v27 = v42;
+    v27 = completionCopy;
   }
 
   else
@@ -215,11 +215,11 @@ LABEL_23:
     v49[1] = 3221225472;
     v49[2] = __138__BPSApplePayLocallyStoredValueManager__presentApplePayLocallyStoredValueWarningInController_unableToConnect_legacyDevice_withCompletion___block_invoke;
     v49[3] = &unk_278D233B8;
-    v50 = v44;
-    v52 = a1;
-    v27 = v42;
-    v51 = v42;
-    v53 = v7;
+    v50 = controllerCopy;
+    selfCopy = self;
+    v27 = completionCopy;
+    v51 = completionCopy;
+    v53 = deviceCopy;
     v31 = [v28 actionWithTitle:v30 style:0 handler:v49];
 
     [v25 addAction:v31];
@@ -240,7 +240,7 @@ LABEL_23:
   v36 = [v32 actionWithTitle:v34 style:v26 handler:v47];
 
   [v25 addAction:v36];
-  if (v7)
+  if (deviceCopy)
   {
     [v25 setPreferredAction:v36];
   }
@@ -257,7 +257,7 @@ LABEL_23:
   v41 = [v37 actionWithTitle:v39 style:1 handler:v45];
   [v25 addAction:v41];
 
-  [v44 presentViewController:v25 animated:1 completion:0];
+  [controllerCopy presentViewController:v25 animated:1 completion:0];
 }
 
 void __138__BPSApplePayLocallyStoredValueManager__presentApplePayLocallyStoredValueWarningInController_unableToConnect_legacyDevice_withCompletion___block_invoke(uint64_t a1)
@@ -354,9 +354,9 @@ uint64_t __138__BPSApplePayLocallyStoredValueManager__presentApplePayLocallyStor
   return result;
 }
 
-+ (void)_attemptToMarkAllAppletsForDeletionWithCompletion:(id)a3
++ (void)_attemptToMarkAllAppletsForDeletionWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2050000000;
@@ -380,8 +380,8 @@ uint64_t __138__BPSApplePayLocallyStoredValueManager__presentApplePayLocallyStor
   v8[1] = 3221225472;
   v8[2] = __90__BPSApplePayLocallyStoredValueManager__attemptToMarkAllAppletsForDeletionWithCompletion___block_invoke;
   v8[3] = &unk_278D23430;
-  v9 = v3;
-  v7 = v3;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [v6 markAllAppletsForDeletionWithCompletion:v8];
 }
 

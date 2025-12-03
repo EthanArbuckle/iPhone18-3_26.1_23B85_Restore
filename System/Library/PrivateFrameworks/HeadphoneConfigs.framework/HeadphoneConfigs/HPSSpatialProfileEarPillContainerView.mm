@@ -1,21 +1,21 @@
 @interface HPSSpatialProfileEarPillContainerView
-- (BOOL)fillPillsAroundAngle:(double)a3 forTutorial:(BOOL)a4;
+- (BOOL)fillPillsAroundAngle:(double)angle forTutorial:(BOOL)tutorial;
 - (CGPoint)enrollViewCenter;
 - (HPSSpatialProfileEarPillContainerView)init;
 - (double)percentOfPillsCompleted;
 - (id)unfilledDirections;
-- (int64_t)_indexForPillAtAngle:(double)a3;
+- (int64_t)_indexForPillAtAngle:(double)angle;
 - (unint64_t)_numberOfVisiblePillViews;
-- (void)_animateToFinishedCompletion:(id)a3;
-- (void)animateToState:(int)a3 completion:(id)a4;
+- (void)_animateToFinishedCompletion:(id)completion;
+- (void)animateToState:(int)state completion:(id)completion;
 - (void)dealloc;
-- (void)fillCentralPillsWithCompletion:(id)a3;
-- (void)fillLeftPillsWithCompletion:(id)a3;
-- (void)fillRightPillsWithCompletion:(id)a3;
+- (void)fillCentralPillsWithCompletion:(id)completion;
+- (void)fillLeftPillsWithCompletion:(id)completion;
+- (void)fillRightPillsWithCompletion:(id)completion;
 - (void)layoutSubviews;
-- (void)setRadius:(double)a3 center:(CGPoint)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)setRadius:(double)radius center:(CGPoint)center animated:(BOOL)animated completion:(id)completion;
 - (void)stashPillStates;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HPSSpatialProfileEarPillContainerView
@@ -137,12 +137,12 @@ LABEL_7:
   }
 }
 
-- (void)_animateToFinishedCompletion:(id)a3
+- (void)_animateToFinishedCompletion:(id)completion
 {
   v48 = *MEMORY[0x277D85DE8];
-  block = a3;
-  v4 = [(NSMutableArray *)self->_pillViews firstObject];
-  [v4 ringHeight];
+  block = completion;
+  firstObject = [(NSMutableArray *)self->_pillViews firstObject];
+  [firstObject ringHeight];
   v6 = v5;
 
   v7 = objc_alloc_init(MEMORY[0x277D24208]);
@@ -150,16 +150,16 @@ LABEL_7:
   self->_successAnimation = v7;
 
   v9 = self->_successAnimation;
-  v10 = [MEMORY[0x277D75348] systemGreenColor];
-  [(LAUICheckmarkLayer *)v9 setPrimaryColor:v10 animated:0];
+  systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+  [(LAUICheckmarkLayer *)v9 setPrimaryColor:systemGreenColor animated:0];
 
-  v11 = [(HPSSpatialProfileEarPillContainerView *)self layer];
-  [v11 addSublayer:self->_successAnimation];
+  layer = [(HPSSpatialProfileEarPillContainerView *)self layer];
+  [layer addSublayer:self->_successAnimation];
 
   v12 = self->_successAnimation;
-  v13 = [(HPSSpatialProfileEarPillContainerView *)self layer];
+  layer2 = [(HPSSpatialProfileEarPillContainerView *)self layer];
   v14 = 34.7999992 - v6;
-  [v13 contentsScale];
+  [layer2 contentsScale];
   [(LAUICheckmarkLayer *)v12 defaultSizeForCircleWithDiameter:v14 + v14 scale:v15];
   v17 = v16;
   v19 = v18;
@@ -272,21 +272,21 @@ void __70__HPSSpatialProfileEarPillContainerView__animateToFinishedCompletion___
 
 - (double)percentOfPillsCompleted
 {
-  v3 = [(HPSSpatialProfileEarPillContainerView *)self _numberOfVisiblePillViews];
-  if (v3)
+  _numberOfVisiblePillViews = [(HPSSpatialProfileEarPillContainerView *)self _numberOfVisiblePillViews];
+  if (_numberOfVisiblePillViews)
   {
     v4 = 0;
     v5 = 0;
     do
     {
       v6 = [(NSMutableArray *)self->_pillViews objectAtIndexedSubscript:v4];
-      v7 = [v6 isCompleted];
+      isCompleted = [v6 isCompleted];
 
-      v5 += v7;
+      v5 += isCompleted;
       ++v4;
     }
 
-    while (v3 != v4);
+    while (_numberOfVisiblePillViews != v4);
     v8 = v5;
   }
 
@@ -295,7 +295,7 @@ void __70__HPSSpatialProfileEarPillContainerView__animateToFinishedCompletion___
     v8 = 0.0;
   }
 
-  return v8 / v3;
+  return v8 / _numberOfVisiblePillViews;
 }
 
 - (void)stashPillStates
@@ -323,12 +323,12 @@ void __70__HPSSpatialProfileEarPillContainerView__animateToFinishedCompletion___
   self->_hasPillStateStash = 1;
 }
 
-- (int64_t)_indexForPillAtAngle:(double)a3
+- (int64_t)_indexForPillAtAngle:(double)angle
 {
-  v4 = [(HPSSpatialProfileEarPillContainerView *)self _numberOfVisiblePillViews];
-  if (v4)
+  _numberOfVisiblePillViews = [(HPSSpatialProfileEarPillContainerView *)self _numberOfVisiblePillViews];
+  if (_numberOfVisiblePillViews)
   {
-    return (a3 / (6.28318531 / v4)) % v4;
+    return (angle / (6.28318531 / _numberOfVisiblePillViews)) % _numberOfVisiblePillViews;
   }
 
   else
@@ -337,9 +337,9 @@ void __70__HPSSpatialProfileEarPillContainerView__animateToFinishedCompletion___
   }
 }
 
-- (BOOL)fillPillsAroundAngle:(double)a3 forTutorial:(BOOL)a4
+- (BOOL)fillPillsAroundAngle:(double)angle forTutorial:(BOOL)tutorial
 {
-  if (a4)
+  if (tutorial)
   {
     v6 = 0.05;
   }
@@ -349,7 +349,7 @@ void __70__HPSSpatialProfileEarPillContainerView__animateToFinishedCompletion___
     v6 = 0.02;
   }
 
-  if (a4)
+  if (tutorial)
   {
     v7 = 1;
   }
@@ -359,14 +359,14 @@ void __70__HPSSpatialProfileEarPillContainerView__animateToFinishedCompletion___
     v7 = 3;
   }
 
-  v8 = [(HPSSpatialProfileEarPillContainerView *)self _numberOfVisiblePillViews];
+  _numberOfVisiblePillViews = [(HPSSpatialProfileEarPillContainerView *)self _numberOfVisiblePillViews];
   v9 = 6.28318531;
-  if (a3 + 0.392699082 >= 0.0)
+  if (angle + 0.392699082 >= 0.0)
   {
     v9 = 0.0;
   }
 
-  v10 = ((a3 + 0.392699082 + v9) * 100.0);
+  v10 = ((angle + 0.392699082 + v9) * 100.0);
   self->_counterwise -= self->_lastAngle < v10;
   if (self->_lastAngle <= v10)
   {
@@ -387,10 +387,10 @@ void __70__HPSSpatialProfileEarPillContainerView__animateToFinishedCompletion___
     return v13 & 1;
   }
 
-  v14 = vcvtd_n_f64_u64(v8, 3uLL);
+  v14 = vcvtd_n_f64_u64(_numberOfVisiblePillViews, 3uLL);
   v15 = vcvtps_u32_f32(v14);
-  v16 = ((v12 / v15) * v15 - (v15 >> 1)) % v8;
-  v17 = (v8 & (v16 >> 63)) + v16;
+  v16 = ((v12 / v15) * v15 - (v15 >> 1)) % _numberOfVisiblePillViews;
+  v17 = (_numberOfVisiblePillViews & (v16 >> 63)) + v16;
   v18 = v17 + v15;
   if ((self->_counterwise + self->_clockwise < 0) ^ __OFADD__(self->_counterwise, self->_clockwise) | (self->_counterwise + self->_clockwise == 0))
   {
@@ -400,7 +400,7 @@ void __70__HPSSpatialProfileEarPillContainerView__animateToFinishedCompletion___
       v22 = 0.0;
       do
       {
-        v23 = [(NSMutableArray *)self->_pillViews objectAtIndexedSubscript:v17 % v8];
+        v23 = [(NSMutableArray *)self->_pillViews objectAtIndexedSubscript:v17 % _numberOfVisiblePillViews];
         v13 |= [v23 state] != v7;
         [v23 setState:v7 animated:1 animationDelay:0 completion:0 failure:v22];
         v22 = v6 + v22;
@@ -423,7 +423,7 @@ void __70__HPSSpatialProfileEarPillContainerView__animateToFinishedCompletion___
       v20 = 0.0;
       do
       {
-        v21 = [(NSMutableArray *)self->_pillViews objectAtIndexedSubscript:v19 % v8];
+        v21 = [(NSMutableArray *)self->_pillViews objectAtIndexedSubscript:v19 % _numberOfVisiblePillViews];
         v13 |= [v21 state] != v7;
         [v21 setState:v7 animated:1 animationDelay:0 completion:0 failure:v20];
         v20 = v6 + v20;
@@ -472,16 +472,16 @@ LABEL_24:
   return v2;
 }
 
-- (void)setRadius:(double)a3 center:(CGPoint)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)setRadius:(double)radius center:(CGPoint)center animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  y = a4.y;
-  x = a4.x;
+  animatedCopy = animated;
+  y = center.y;
+  x = center.x;
   v28 = *MEMORY[0x277D85DE8];
-  v11 = a6;
+  completionCopy = completion;
   [(HPSSpatialProfileEarPillContainerView *)self setEnrollViewCenter:x, y];
   [(HPSSpatialProfileEarPillContainerView *)self setNeedsLayout];
-  if (v6)
+  if (animatedCopy)
   {
     v12 = 0.5;
   }
@@ -519,7 +519,7 @@ LABEL_24:
         v21[2] = __78__HPSSpatialProfileEarPillContainerView_setRadius_center_animated_completion___block_invoke;
         v21[3] = &unk_2796AD618;
         v22 = v13;
-        [v19 setRadius:v21 animationDuration:a3 completion:v12];
+        [v19 setRadius:v21 animationDuration:radius completion:v12];
 
         ++v18;
       }
@@ -531,38 +531,38 @@ LABEL_24:
     while (v16);
   }
 
-  if (v11)
+  if (completionCopy)
   {
-    dispatch_group_notify(v13, MEMORY[0x277D85CD0], v11);
+    dispatch_group_notify(v13, MEMORY[0x277D85CD0], completionCopy);
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)animateToState:(int)a3 completion:(id)a4
+- (void)animateToState:(int)state completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   state = self->_state;
-  if (state == a3)
+  if (state == state)
   {
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_12;
     }
 
-    v9 = v6;
-    v6[2](v6);
+    v9 = completionCopy;
+    completionCopy[2](completionCopy);
   }
 
   else
   {
-    v9 = v6;
+    v9 = completionCopy;
     if (state == 10)
     {
       [(LAUICheckmarkLayer *)self->_successAnimation setRevealed:0 animated:0];
     }
 
-    self->_state = a3;
+    self->_state = state;
     [(HPSSpatialProfileEarPillContainerView *)self setNeedsLayout];
     v8 = self->_state;
     if ((v8 - 6) >= 3 && v8 == 10)
@@ -572,7 +572,7 @@ LABEL_24:
 
     else
     {
-      v6 = v9;
+      completionCopy = v9;
       if (!v9)
       {
         goto LABEL_12;
@@ -582,22 +582,22 @@ LABEL_24:
     }
   }
 
-  v6 = v9;
+  completionCopy = v9;
 LABEL_12:
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = HPSSpatialProfileEarPillContainerView;
-  [(HPSSpatialProfileEarPillContainerView *)&v4 traitCollectionDidChange:a3];
+  [(HPSSpatialProfileEarPillContainerView *)&v4 traitCollectionDidChange:change];
   [(HPSSpatialProfileEarPillContainerView *)self layoutSubviews];
 }
 
-- (void)fillLeftPillsWithCompletion:(id)a3
+- (void)fillLeftPillsWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  completionCopy = completion;
   v4 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -631,8 +631,8 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = __69__HPSSpatialProfileEarPillContainerView_fillLeftPillsWithCompletion___block_invoke_2;
   block[3] = &unk_2796AD5A0;
-  v14 = v12;
-  v10 = v12;
+  v14 = completionCopy;
+  v10 = completionCopy;
   dispatch_group_notify(v9, MEMORY[0x277D85CD0], block);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -649,10 +649,10 @@ uint64_t __69__HPSSpatialProfileEarPillContainerView_fillLeftPillsWithCompletion
   return result;
 }
 
-- (void)fillCentralPillsWithCompletion:(id)a3
+- (void)fillCentralPillsWithCompletion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -719,8 +719,8 @@ uint64_t __69__HPSSpatialProfileEarPillContainerView_fillLeftPillsWithCompletion
   v18[1] = 3221225472;
   v18[2] = __72__HPSSpatialProfileEarPillContainerView_fillCentralPillsWithCompletion___block_invoke_2;
   v18[3] = &unk_2796AD5A0;
-  v19 = v4;
-  v16 = v4;
+  v19 = completionCopy;
+  v16 = completionCopy;
   dispatch_group_notify(v15, MEMORY[0x277D85CD0], v18);
 
   v17 = *MEMORY[0x277D85DE8];
@@ -737,10 +737,10 @@ uint64_t __72__HPSSpatialProfileEarPillContainerView_fillCentralPillsWithComplet
   return result;
 }
 
-- (void)fillRightPillsWithCompletion:(id)a3
+- (void)fillRightPillsWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  completionCopy = completion;
   v4 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -774,8 +774,8 @@ uint64_t __72__HPSSpatialProfileEarPillContainerView_fillCentralPillsWithComplet
   block[1] = 3221225472;
   block[2] = __70__HPSSpatialProfileEarPillContainerView_fillRightPillsWithCompletion___block_invoke_2;
   block[3] = &unk_2796AD5A0;
-  v14 = v12;
-  v10 = v12;
+  v14 = completionCopy;
+  v10 = completionCopy;
   dispatch_group_notify(v9, MEMORY[0x277D85CD0], block);
 
   v11 = *MEMORY[0x277D85DE8];

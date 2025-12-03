@@ -1,5 +1,5 @@
 @interface HFUserNotificationServiceTopicItemProvider
-- (HFUserNotificationServiceTopicItemProvider)initWithHome:(id)a3;
+- (HFUserNotificationServiceTopicItemProvider)initWithHome:(id)home;
 - (id)invalidationReasons;
 - (id)items;
 - (id)reloadItems;
@@ -7,16 +7,16 @@
 
 @implementation HFUserNotificationServiceTopicItemProvider
 
-- (HFUserNotificationServiceTopicItemProvider)initWithHome:(id)a3
+- (HFUserNotificationServiceTopicItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v9.receiver = self;
   v9.super_class = HFUserNotificationServiceTopicItemProvider;
   v6 = [(HFItemProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
   }
 
   return v7;
@@ -24,20 +24,20 @@
 
 - (id)reloadItems
 {
-  v3 = [(HFUserNotificationServiceTopicItemProvider *)self home];
-  v4 = [v3 hf_userNotificationServiceTopics];
+  home = [(HFUserNotificationServiceTopicItemProvider *)self home];
+  hf_userNotificationServiceTopics = [home hf_userNotificationServiceTopics];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __57__HFUserNotificationServiceTopicItemProvider_reloadItems__block_invoke_2;
   v11[3] = &unk_277DF4830;
   v12 = &__block_literal_global_22;
-  v5 = [(HFUserNotificationServiceTopicItemProvider *)self filter];
+  filter = [(HFUserNotificationServiceTopicItemProvider *)self filter];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__HFUserNotificationServiceTopicItemProvider_reloadItems__block_invoke_3;
   v10[3] = &unk_277DF4858;
   v10[4] = self;
-  v6 = [(HFItemProvider *)self reloadItemsWithObjects:v4 keyAdaptor:&__block_literal_global_22 itemAdaptor:v11 filter:v5 itemMap:v10];
+  v6 = [(HFItemProvider *)self reloadItemsWithObjects:hf_userNotificationServiceTopics keyAdaptor:&__block_literal_global_22 itemAdaptor:v11 filter:filter itemMap:v10];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__HFUserNotificationServiceTopicItemProvider_reloadItems__block_invoke_4;
@@ -75,11 +75,11 @@ void __57__HFUserNotificationServiceTopicItemProvider_reloadItems__block_invoke_
 
 - (id)items
 {
-  v2 = [(HFUserNotificationServiceTopicItemProvider *)self topicItems];
-  v3 = v2;
-  if (v2)
+  topicItems = [(HFUserNotificationServiceTopicItemProvider *)self topicItems];
+  v3 = topicItems;
+  if (topicItems)
   {
-    v4 = v2;
+    v4 = topicItems;
   }
 
   else
@@ -96,14 +96,14 @@ void __57__HFUserNotificationServiceTopicItemProvider_reloadItems__block_invoke_
 {
   v6.receiver = self;
   v6.super_class = HFUserNotificationServiceTopicItemProvider;
-  v2 = [(HFItemProvider *)&v6 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v6 invalidationReasons];
   if (_MergedGlobals_2 != -1)
   {
     dispatch_once(&_MergedGlobals_2, &__block_literal_global_12);
   }
 
   v3 = qword_280E025B8;
-  v4 = [v2 setByAddingObjectsFromSet:v3];
+  v4 = [invalidationReasons setByAddingObjectsFromSet:v3];
 
   return v4;
 }

@@ -1,18 +1,18 @@
 @interface _CPConnectionInvalidatedFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPConnectionInvalidatedFeedback)init;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPConnectionInvalidatedFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     timestamp = self->_timestamp;
-    v6 = timestamp == [v4 timestamp];
+    v6 = timestamp == [equalCopy timestamp];
   }
 
   else
@@ -23,9 +23,9 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if ([(_CPConnectionInvalidatedFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;

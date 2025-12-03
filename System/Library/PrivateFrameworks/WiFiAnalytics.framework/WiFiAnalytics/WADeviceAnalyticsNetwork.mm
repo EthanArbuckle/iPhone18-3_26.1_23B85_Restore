@@ -1,42 +1,42 @@
 @interface WADeviceAnalyticsNetwork
-+ (id)networkWith:(id)a3;
-- (WADeviceAnalyticsNetwork)initWith:(id)a3;
++ (id)networkWith:(id)with;
+- (WADeviceAnalyticsNetwork)initWith:(id)with;
 - (id)description;
 @end
 
 @implementation WADeviceAnalyticsNetwork
 
-+ (id)networkWith:(id)a3
++ (id)networkWith:(id)with
 {
-  v3 = a3;
-  v4 = [[WADeviceAnalyticsNetwork alloc] initWith:v3];
+  withCopy = with;
+  v4 = [[WADeviceAnalyticsNetwork alloc] initWith:withCopy];
 
   return v4;
 }
 
-- (WADeviceAnalyticsNetwork)initWith:(id)a3
+- (WADeviceAnalyticsNetwork)initWith:(id)with
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  withCopy = with;
   v34.receiver = self;
   v34.super_class = WADeviceAnalyticsNetwork;
   v5 = [(WADeviceAnalyticsNetwork *)&v34 init];
   if (v5)
   {
-    v6 = [v4 ssid];
+    ssid = [withCopy ssid];
     ssid = v5->_ssid;
-    v5->_ssid = v6;
+    v5->_ssid = ssid;
 
     v28 = v5;
-    v5->_isHome = [v4 isHome];
+    v5->_isHome = [withCopy isHome];
     v8 = objc_opt_new();
     v9 = objc_opt_new();
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v29 = v4;
-    v10 = [v4 bss];
+    v29 = withCopy;
+    v10 = [withCopy bss];
     v11 = [v10 countByEnumeratingWithState:&v30 objects:v41 count:16];
     if (v11)
     {
@@ -73,9 +73,9 @@
           v19 = [WAPersistentContainer getConstraintsValues:v18];
 
           [v8 addObject:v19];
-          v20 = [v19 allValues];
-          v21 = [v15 bssid];
-          [(NSDictionary *)v9 setObject:v20 forKeyedSubscript:v21];
+          allValues = [v19 allValues];
+          bssid = [v15 bssid];
+          [(NSDictionary *)v9 setObject:allValues forKeyedSubscript:bssid];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v30 objects:v41 count:16];
@@ -93,7 +93,7 @@
     lans = v28->_lans;
     v28->_lans = v24;
 
-    v4 = v29;
+    withCopy = v29;
   }
 
   v26 = *MEMORY[0x1E69E9840];

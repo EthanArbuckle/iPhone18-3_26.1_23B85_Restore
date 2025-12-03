@@ -10,7 +10,7 @@
   v4 = a3;
   if ([v4 length])
   {
-    v5 = [a1 stringWithFormat:@"%@%@%@", @"\x1C", v4, @"\x1F"];
+    v5 = [self stringWithFormat:@"%@%@%@", @"\x1C", v4, @"\x1F"];
   }
 
   else
@@ -46,7 +46,7 @@
 
   [v8 appendString:@">"];
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"</%@>", v6];
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@%@", v8, a1, v14];
+  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@%@", v8, self, v14];
 
   return v15;
 }

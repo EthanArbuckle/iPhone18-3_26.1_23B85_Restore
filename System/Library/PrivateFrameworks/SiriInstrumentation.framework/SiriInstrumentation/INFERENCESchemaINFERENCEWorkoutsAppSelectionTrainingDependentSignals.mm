@@ -1,27 +1,27 @@
 @interface INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsIndoorWorkout:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsIndoorWorkout:(BOOL)workout;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals
 
-- (INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals;
   v5 = [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"commonDependent"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"commonDependent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,14 +29,14 @@
       [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)v5 setCommonDependent:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"workoutType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"workoutType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals setWorkoutType:](v5, "setWorkoutType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isIndoorWorkout"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isIndoorWorkout"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,20 +85,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_commonDependent)
   {
-    v4 = [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)self commonDependent];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    commonDependent = [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)self commonDependent];
+    dictionaryRepresentation = [commonDependent dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"commonDependent"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"commonDependent"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"commonDependent"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"commonDependent"];
     }
   }
 
@@ -106,7 +106,7 @@
   if ((v7 & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals isIndoorWorkout](self, "isIndoorWorkout")}];
-    [v3 setObject:v8 forKeyedSubscript:@"isIndoorWorkout"];
+    [dictionary setObject:v8 forKeyedSubscript:@"isIndoorWorkout"];
 
     v7 = *(&self->_isIndoorWorkout + 1);
   }
@@ -114,12 +114,12 @@
   if (v7)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals workoutType](self, "workoutType")}];
-    [v3 setObject:v9 forKeyedSubscript:@"workoutType"];
+    [dictionary setObject:v9 forKeyedSubscript:@"workoutType"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -149,30 +149,30 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)self commonDependent];
-  v6 = [v4 commonDependent];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  commonDependent = [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)self commonDependent];
+  commonDependent2 = [equalCopy commonDependent];
+  v7 = commonDependent2;
+  if ((commonDependent != 0) == (commonDependent2 == 0))
   {
 
     goto LABEL_16;
   }
 
-  v8 = [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)self commonDependent];
-  if (v8)
+  commonDependent3 = [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)self commonDependent];
+  if (commonDependent3)
   {
-    v9 = v8;
-    v10 = [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)self commonDependent];
-    v11 = [v4 commonDependent];
-    v12 = [v10 isEqual:v11];
+    v9 = commonDependent3;
+    commonDependent4 = [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)self commonDependent];
+    commonDependent5 = [equalCopy commonDependent];
+    v12 = [commonDependent4 isEqual:commonDependent5];
 
     if (!v12)
     {
@@ -185,7 +185,7 @@ LABEL_3:
   }
 
   v13 = *(&self->_isIndoorWorkout + 1);
-  v14 = v4[21];
+  v14 = equalCopy[21];
   if ((v13 & 1) != (v14 & 1))
   {
 LABEL_16:
@@ -196,10 +196,10 @@ LABEL_16:
   if (v13)
   {
     workoutType = self->_workoutType;
-    if (workoutType == [v4 workoutType])
+    if (workoutType == [equalCopy workoutType])
     {
       v13 = *(&self->_isIndoorWorkout + 1);
-      v14 = v4[21];
+      v14 = equalCopy[21];
       goto LABEL_12;
     }
 
@@ -216,7 +216,7 @@ LABEL_12:
   if (v16)
   {
     isIndoorWorkout = self->_isIndoorWorkout;
-    if (isIndoorWorkout != [v4 isIndoorWorkout])
+    if (isIndoorWorkout != [equalCopy isIndoorWorkout])
     {
       goto LABEL_16;
     }
@@ -228,14 +228,14 @@ LABEL_17:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)self commonDependent];
+  toCopy = to;
+  commonDependent = [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)self commonDependent];
 
-  if (v4)
+  if (commonDependent)
   {
-    v5 = [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)self commonDependent];
+    commonDependent2 = [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)self commonDependent];
     PBDataWriterWriteSubmessage();
   }
 
@@ -246,17 +246,17 @@ LABEL_17:
     v6 = *(&self->_isIndoorWorkout + 1);
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((v6 & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasIsIndoorWorkout:(BOOL)a3
+- (void)setHasIsIndoorWorkout:(BOOL)workout
 {
-  if (a3)
+  if (workout)
   {
     v3 = 2;
   }
@@ -269,17 +269,17 @@ LABEL_17:
   *(&self->_isIndoorWorkout + 1) = *(&self->_isIndoorWorkout + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)self commonDependent:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(INFERENCESchemaINFERENCEWorkoutsAppSelectionTrainingDependentSignals *)self deleteCommonDependent];
   }

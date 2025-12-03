@@ -6,12 +6,12 @@
 
 - (uint64_t)sr_sensorByDeletingDeletionRecord
 {
-  if (![a1 hasSuffix:@".tombstones"])
+  if (![self hasSuffix:@".tombstones"])
   {
-    return a1;
+    return self;
   }
 
-  return [a1 stringByDeletingPathExtension];
+  return [self stringByDeletingPathExtension];
 }
 
 @end

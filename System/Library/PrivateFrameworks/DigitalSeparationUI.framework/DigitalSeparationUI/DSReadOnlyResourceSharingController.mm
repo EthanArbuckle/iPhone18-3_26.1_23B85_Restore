@@ -2,21 +2,21 @@
 - (BOOL)shouldShow;
 - (DSNavigationDelegate)delegate;
 - (DSReadOnlyResourceSharingController)init;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_pushDetailPaneForSharingPeople:(id)a3;
-- (void)_pushDetailPaneForSharingTypes:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_pushDetailPaneForSharingPeople:(id)people;
+- (void)_pushDetailPaneForSharingTypes:(id)types;
 - (void)_reviewAllSharing;
 - (void)_updateButton;
-- (void)filterContentForSearchText:(id)a3 category:(int64_t)a4;
-- (void)learnMorePressedForSharingType:(id)a3;
+- (void)filterContentForSearchText:(id)text category:(int64_t)category;
+- (void)learnMorePressedForSharingType:(id)type;
 - (void)reloadTableViewData;
 - (void)reviewReadOnlySharingCompleted;
 - (void)reviewSelectedSharing;
-- (void)searchBar:(id)a3 selectedScopeButtonIndexDidChange:(int64_t)a4;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)searchBar:(id)bar selectedScopeButtonIndexDidChange:(int64_t)change;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -57,24 +57,24 @@
 
 - (BOOL)shouldShow
 {
-  v3 = [(DSReadOnlyResourceSharingController *)self delegate];
+  delegate = [(DSReadOnlyResourceSharingController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 fetchedSharingPermissions];
-    [(DSReadOnlyResourceSharingController *)self setPermissions:v4];
+    fetchedSharingPermissions = [delegate fetchedSharingPermissions];
+    [(DSReadOnlyResourceSharingController *)self setPermissions:fetchedSharingPermissions];
 
-    v5 = [(DSReadOnlyResourceSharingController *)self permissions];
-    v6 = [v5 allReadOnlySharingTypes];
-    if ([v6 count])
+    permissions = [(DSReadOnlyResourceSharingController *)self permissions];
+    allReadOnlySharingTypes = [permissions allReadOnlySharingTypes];
+    if ([allReadOnlySharingTypes count])
     {
       v7 = 1;
     }
 
     else
     {
-      v8 = [(DSReadOnlyResourceSharingController *)self permissions];
-      v9 = [v8 allReadOnlySharingPeople];
-      v7 = [v9 count] != 0;
+      permissions2 = [(DSReadOnlyResourceSharingController *)self permissions];
+      allReadOnlySharingPeople = [permissions2 allReadOnlySharingPeople];
+      v7 = [allReadOnlySharingPeople count] != 0;
     }
   }
 
@@ -97,65 +97,65 @@
   v4 = DSUILocStringForKey(@"BY_TYPE");
   v13[1] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
-  v6 = [(DSTableWelcomeController *)self searchController];
-  v7 = [v6 searchBar];
-  [v7 setScopeButtonTitles:v5];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  [searchBar setScopeButtonTitles:v5];
 
   v8 = DSUILocStringForKey(@"SEARCH_SHARING_TYPE_PLACEHOLDER");
-  v9 = [(DSTableWelcomeController *)self searchController];
-  v10 = [v9 searchBar];
-  [v10 setPlaceholder:v8];
+  searchController2 = [(DSTableWelcomeController *)self searchController];
+  searchBar2 = [searchController2 searchBar];
+  [searchBar2 setPlaceholder:v8];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_reviewAllSharing
 {
-  v3 = [(DSReadOnlyResourceSharingController *)self scope];
-  v4 = [(DSReadOnlyResourceSharingController *)self permissions];
-  v6 = v4;
-  if (v3 == 1)
+  scope = [(DSReadOnlyResourceSharingController *)self scope];
+  permissions = [(DSReadOnlyResourceSharingController *)self permissions];
+  v6 = permissions;
+  if (scope == 1)
   {
-    v5 = [v4 allReadOnlySharingTypes];
-    [(DSReadOnlyResourceSharingController *)self _pushDetailPaneForSharingTypes:v5];
+    allReadOnlySharingTypes = [permissions allReadOnlySharingTypes];
+    [(DSReadOnlyResourceSharingController *)self _pushDetailPaneForSharingTypes:allReadOnlySharingTypes];
   }
 
   else
   {
-    v5 = [v4 allReadOnlySharingPeople];
-    [(DSReadOnlyResourceSharingController *)self _pushDetailPaneForSharingPeople:v5];
+    allReadOnlySharingTypes = [permissions allReadOnlySharingPeople];
+    [(DSReadOnlyResourceSharingController *)self _pushDetailPaneForSharingPeople:allReadOnlySharingTypes];
   }
 }
 
-- (void)_pushDetailPaneForSharingTypes:(id)a3
+- (void)_pushDetailPaneForSharingTypes:(id)types
 {
-  v6 = a3;
-  if ([v6 count])
+  typesCopy = types;
+  if ([typesCopy count])
   {
-    v4 = [DSReadOnlyResourceSharingDetailController initWithSharingTypes:v6 startingViewController:self delegate:self];
-    v5 = [(DSReadOnlyResourceSharingController *)self navigationController];
-    [v5 pushViewController:v4 animated:1];
+    v4 = [DSReadOnlyResourceSharingDetailController initWithSharingTypes:typesCopy startingViewController:self delegate:self];
+    navigationController = [(DSReadOnlyResourceSharingController *)self navigationController];
+    [navigationController pushViewController:v4 animated:1];
   }
 }
 
-- (void)_pushDetailPaneForSharingPeople:(id)a3
+- (void)_pushDetailPaneForSharingPeople:(id)people
 {
-  v6 = a3;
-  if ([v6 count])
+  peopleCopy = people;
+  if ([peopleCopy count])
   {
-    v4 = [DSReadOnlyResourceSharingDetailController initWithSharingPeople:v6 startingViewController:self delegate:self];
-    v5 = [(DSReadOnlyResourceSharingController *)self navigationController];
-    [v5 pushViewController:v4 animated:1];
+    v4 = [DSReadOnlyResourceSharingDetailController initWithSharingPeople:peopleCopy startingViewController:self delegate:self];
+    navigationController = [(DSReadOnlyResourceSharingController *)self navigationController];
+    [navigationController pushViewController:v4 animated:1];
   }
 }
 
 - (void)_updateButton
 {
-  v3 = [(DSTableWelcomeController *)self searchController];
-  v4 = [v3 searchBar];
-  v5 = [v4 selectedScopeButtonIndex];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  selectedScopeButtonIndex = [searchBar selectedScopeButtonIndex];
 
-  if (v5)
+  if (selectedScopeButtonIndex)
   {
     [(DSReadOnlyResourceSharingController *)self selectedTypes];
   }
@@ -167,23 +167,23 @@
   v6 = ;
   v7 = [v6 count];
 
-  v8 = [(DSTableWelcomeController *)self boldButton];
-  [v8 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+  boldButton = [(DSTableWelcomeController *)self boldButton];
+  [boldButton removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
 
   if (v7)
   {
-    v9 = [(DSTableWelcomeController *)self boldButton];
+    boldButton2 = [(DSTableWelcomeController *)self boldButton];
     v10 = DSUILocStringForKey(@"REVIEW_SHARING");
-    [v9 setTitle:v10 forState:0];
+    [boldButton2 setTitle:v10 forState:0];
 
-    v11 = [(DSTableWelcomeController *)self boldButton];
-    [v11 addTarget:self action:sel_reviewSelectedSharing forControlEvents:64];
+    boldButton3 = [(DSTableWelcomeController *)self boldButton];
+    [boldButton3 addTarget:self action:sel_reviewSelectedSharing forControlEvents:64];
   }
 
   else
   {
-    v12 = [(DSReadOnlyResourceSharingController *)self permissions];
-    if ([v12 readOnlySharingPeopleCountWithFilter:0])
+    permissions = [(DSReadOnlyResourceSharingController *)self permissions];
+    if ([permissions readOnlySharingPeopleCountWithFilter:0])
     {
       v13 = @"SKIP";
     }
@@ -193,13 +193,13 @@
       v13 = @"CONTINUE";
     }
 
-    v11 = DSUILocStringForKey(v13);
+    boldButton3 = DSUILocStringForKey(v13);
 
-    v14 = [(DSTableWelcomeController *)self boldButton];
-    [v14 setTitle:v11 forState:0];
+    boldButton4 = [(DSTableWelcomeController *)self boldButton];
+    [boldButton4 setTitle:boldButton3 forState:0];
 
-    v15 = [(DSTableWelcomeController *)self boldButton];
-    [v15 addTarget:self action:sel_reviewReadOnlySharingCompleted forControlEvents:64];
+    boldButton5 = [(DSTableWelcomeController *)self boldButton];
+    [boldButton5 addTarget:self action:sel_reviewReadOnlySharingCompleted forControlEvents:64];
   }
 
   [(DSTableWelcomeController *)self hideButtonsIfSearching];
@@ -208,13 +208,13 @@
 - (void)reviewSelectedSharing
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(OBTableWelcomeController *)self tableView];
-  v4 = [v3 indexPathsForSelectedRows];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_15];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+  v5 = [indexPathsForSelectedRows sortedArrayUsingComparator:&__block_literal_global_15];
 
-  v6 = [(DSReadOnlyResourceSharingController *)self scope];
-  v7 = [MEMORY[0x277CBEB18] array];
-  if (v6 == 1)
+  scope = [(DSReadOnlyResourceSharingController *)self scope];
+  array = [MEMORY[0x277CBEB18] array];
+  if (scope == 1)
   {
     v33 = 0uLL;
     v34 = 0uLL;
@@ -236,12 +236,12 @@
           }
 
           v13 = *(*(&v31 + 1) + 8 * i);
-          v14 = [(DSReadOnlyResourceSharingController *)self permissions];
-          v15 = [v14 readOnlySharingType:objc_msgSend(v13 withFilter:{"row"), -[DSTableWelcomeController isFiltering](self, "isFiltering")}];
+          permissions = [(DSReadOnlyResourceSharingController *)self permissions];
+          v15 = [permissions readOnlySharingType:objc_msgSend(v13 withFilter:{"row"), -[DSTableWelcomeController isFiltering](self, "isFiltering")}];
 
           if (v15)
           {
-            [v7 addObject:v15];
+            [array addObject:v15];
           }
         }
 
@@ -251,7 +251,7 @@
       while (v10);
     }
 
-    [(DSReadOnlyResourceSharingController *)self _pushDetailPaneForSharingTypes:v7];
+    [(DSReadOnlyResourceSharingController *)self _pushDetailPaneForSharingTypes:array];
   }
 
   else
@@ -276,12 +276,12 @@
           }
 
           v21 = *(*(&v27 + 1) + 8 * j);
-          v22 = [(DSReadOnlyResourceSharingController *)self permissions];
-          v23 = [v22 readOnlySharingPerson:objc_msgSend(v21 withFilter:{"row"), -[DSTableWelcomeController isFiltering](self, "isFiltering")}];
+          permissions2 = [(DSReadOnlyResourceSharingController *)self permissions];
+          v23 = [permissions2 readOnlySharingPerson:objc_msgSend(v21 withFilter:{"row"), -[DSTableWelcomeController isFiltering](self, "isFiltering")}];
 
           if (v23)
           {
-            [v7 addObject:v23];
+            [array addObject:v23];
           }
         }
 
@@ -291,14 +291,14 @@
       while (v18);
     }
 
-    [(DSReadOnlyResourceSharingController *)self _pushDetailPaneForSharingPeople:v7];
+    [(DSReadOnlyResourceSharingController *)self _pushDetailPaneForSharingPeople:array];
   }
 
-  v24 = [(DSReadOnlyResourceSharingController *)self selectedTypes];
-  [v24 removeAllObjects];
+  selectedTypes = [(DSReadOnlyResourceSharingController *)self selectedTypes];
+  [selectedTypes removeAllObjects];
 
-  v25 = [(DSReadOnlyResourceSharingController *)self selectedPeople];
-  [v25 removeAllObjects];
+  selectedPeople = [(DSReadOnlyResourceSharingController *)self selectedPeople];
+  [selectedPeople removeAllObjects];
 
   [(DSReadOnlyResourceSharingController *)self _updateButton];
   v26 = *MEMORY[0x277D85DE8];
@@ -323,28 +323,28 @@ uint64_t __60__DSReadOnlyResourceSharingController_reviewSelectedSharing__block_
   return v7;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v7 = [a3 searchBar];
-  v4 = [v7 text];
-  v5 = [(DSTableWelcomeController *)self searchController];
-  v6 = [v5 searchBar];
-  -[DSReadOnlyResourceSharingController filterContentForSearchText:category:](self, "filterContentForSearchText:category:", v4, [v6 selectedScopeButtonIndex]);
+  searchBar = [controller searchBar];
+  text = [searchBar text];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar2 = [searchController searchBar];
+  -[DSReadOnlyResourceSharingController filterContentForSearchText:category:](self, "filterContentForSearchText:category:", text, [searchBar2 selectedScopeButtonIndex]);
 }
 
-- (void)searchBar:(id)a3 selectedScopeButtonIndexDidChange:(int64_t)a4
+- (void)searchBar:(id)bar selectedScopeButtonIndexDidChange:(int64_t)change
 {
-  [(DSReadOnlyResourceSharingController *)self setScope:a4];
+  [(DSReadOnlyResourceSharingController *)self setScope:change];
   [(DSReadOnlyResourceSharingController *)self _updateButton];
-  v8 = [(DSTableWelcomeController *)self searchController];
-  v6 = [v8 searchBar];
-  v7 = [v6 text];
-  [(DSReadOnlyResourceSharingController *)self filterContentForSearchText:v7 category:a4];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  text = [searchBar text];
+  [(DSReadOnlyResourceSharingController *)self filterContentForSearchText:text category:change];
 }
 
-- (void)filterContentForSearchText:(id)a3 category:(int64_t)a4
+- (void)filterContentForSearchText:(id)text category:(int64_t)category
 {
-  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"displayName contains[c] %@", a4, a3];
+  text = [MEMORY[0x277CCAC30] predicateWithFormat:@"displayName contains[c] %@", category, text];
   scope = self->_scope;
   if (scope)
   {
@@ -353,45 +353,45 @@ uint64_t __60__DSReadOnlyResourceSharingController_reviewSelectedSharing__block_
       goto LABEL_6;
     }
 
-    v6 = [(DSReadOnlyResourceSharingController *)self permissions];
-    [v6 filterReadOnlySharingTypesWithPredicate:v10];
+    permissions = [(DSReadOnlyResourceSharingController *)self permissions];
+    [permissions filterReadOnlySharingTypesWithPredicate:text];
   }
 
   else
   {
-    v6 = [(DSReadOnlyResourceSharingController *)self permissions];
-    [v6 filterReadOnlySharingPeopleWithPredicate:v10];
+    permissions = [(DSReadOnlyResourceSharingController *)self permissions];
+    [permissions filterReadOnlySharingPeopleWithPredicate:text];
   }
 
 LABEL_6:
-  v7 = [(DSReadOnlyResourceSharingController *)self headerView];
-  [v7 setTitle:&stru_285BA4988];
+  headerView = [(DSReadOnlyResourceSharingController *)self headerView];
+  [headerView setTitle:&stru_285BA4988];
 
-  v8 = [(DSReadOnlyResourceSharingController *)self headerView];
-  [v8 setDetailText:&stru_285BA4988];
+  headerView2 = [(DSReadOnlyResourceSharingController *)self headerView];
+  [headerView2 setDetailText:&stru_285BA4988];
 
-  v9 = [(OBTableWelcomeController *)self tableView];
-  [v9 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSReadOnlyResourceSharingController *)self scope];
-  if (!v6)
+  pathCopy = path;
+  scope = [(DSReadOnlyResourceSharingController *)self scope];
+  if (!scope)
   {
-    v15 = [(DSReadOnlyResourceSharingController *)self permissions];
-    v8 = [v15 readOnlySharingPerson:objc_msgSend(v5 withFilter:{"row"), -[DSTableWelcomeController isFiltering](self, "isFiltering")}];
+    permissions = [(DSReadOnlyResourceSharingController *)self permissions];
+    v8 = [permissions readOnlySharingPerson:objc_msgSend(pathCopy withFilter:{"row"), -[DSTableWelcomeController isFiltering](self, "isFiltering")}];
 
-    v16 = [(OBTableWelcomeController *)self tableView];
-    v17 = [v8 displayName];
-    v18 = [v8 iconForTable];
-    v12 = [DSIconTableViewCell iconTableViewCellFromTableView:v16 withText:v17 detail:&stru_285BA4988 icon:v18];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    displayName = [v8 displayName];
+    iconForTable = [v8 iconForTable];
+    v12 = [DSIconTableViewCell iconTableViewCellFromTableView:tableView withText:displayName detail:&stru_285BA4988 icon:iconForTable];
 
-    v19 = [(DSReadOnlyResourceSharingController *)self selectedPeople];
-    LODWORD(v17) = [v19 containsObject:v8];
+    selectedPeople = [(DSReadOnlyResourceSharingController *)self selectedPeople];
+    LODWORD(displayName) = [selectedPeople containsObject:v8];
 
-    if (!v17)
+    if (!displayName)
     {
       goto LABEL_5;
     }
@@ -399,20 +399,20 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  if (v6 == 1)
+  if (scope == 1)
   {
-    v7 = [(DSReadOnlyResourceSharingController *)self permissions];
-    v8 = [v7 readOnlySharingType:objc_msgSend(v5 withFilter:{"row"), -[DSTableWelcomeController isFiltering](self, "isFiltering")}];
+    permissions2 = [(DSReadOnlyResourceSharingController *)self permissions];
+    v8 = [permissions2 readOnlySharingType:objc_msgSend(pathCopy withFilter:{"row"), -[DSTableWelcomeController isFiltering](self, "isFiltering")}];
 
-    v9 = [(OBTableWelcomeController *)self tableView];
-    v10 = [v8 displayName];
-    v11 = [v8 iconForTable];
-    v12 = [DSIconTableViewCell iconTableViewCellFromTableView:v9 withText:v10 detail:&stru_285BA4988 icon:v11];
+    tableView2 = [(OBTableWelcomeController *)self tableView];
+    displayName2 = [v8 displayName];
+    iconForTable2 = [v8 iconForTable];
+    v12 = [DSIconTableViewCell iconTableViewCellFromTableView:tableView2 withText:displayName2 detail:&stru_285BA4988 icon:iconForTable2];
 
-    v13 = [(DSReadOnlyResourceSharingController *)self selectedTypes];
-    LOBYTE(v10) = [v13 containsObject:v8];
+    selectedTypes = [(DSReadOnlyResourceSharingController *)self selectedTypes];
+    LOBYTE(displayName2) = [selectedTypes containsObject:v8];
 
-    if ((v10 & 1) == 0)
+    if ((displayName2 & 1) == 0)
     {
 LABEL_5:
 
@@ -420,8 +420,8 @@ LABEL_5:
     }
 
 LABEL_4:
-    v14 = [(OBTableWelcomeController *)self tableView];
-    [v14 selectRowAtIndexPath:v5 animated:1 scrollPosition:0];
+    tableView3 = [(OBTableWelcomeController *)self tableView];
+    [tableView3 selectRowAtIndexPath:pathCopy animated:1 scrollPosition:0];
 
     goto LABEL_5;
   }
@@ -435,30 +435,30 @@ LABEL_9:
 
 - (void)reloadTableViewData
 {
-  v3 = [(DSReadOnlyResourceSharingController *)self permissions];
-  [v3 sort];
+  permissions = [(DSReadOnlyResourceSharingController *)self permissions];
+  [permissions sort];
 
-  v4 = [(OBTableWelcomeController *)self tableView];
+  tableView = [(OBTableWelcomeController *)self tableView];
   v5 = [MEMORY[0x277CCAA78] indexSetWithIndex:0];
-  [v4 reloadSections:v5 withRowAnimation:100];
+  [tableView reloadSections:v5 withRowAnimation:100];
 
-  v6 = [(OBTableWelcomeController *)self tableView];
-  [v6 layoutIfNeeded];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 layoutIfNeeded];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(DSReadOnlyResourceSharingController *)self scope:a3];
-  v6 = [(DSReadOnlyResourceSharingController *)self permissions];
-  v7 = [(DSTableWelcomeController *)self isFiltering];
+  v5 = [(DSReadOnlyResourceSharingController *)self scope:view];
+  permissions = [(DSReadOnlyResourceSharingController *)self permissions];
+  isFiltering = [(DSTableWelcomeController *)self isFiltering];
   if (v5 == 1)
   {
-    v8 = [v6 readOnlySharingTypesCountWithFilter:v7];
+    v8 = [permissions readOnlySharingTypesCountWithFilter:isFiltering];
   }
 
   else
   {
-    v8 = [v6 readOnlySharingPeopleCountWithFilter:v7];
+    v8 = [permissions readOnlySharingPeopleCountWithFilter:isFiltering];
   }
 
   v9 = v8;
@@ -468,12 +468,12 @@ LABEL_9:
     if (v9)
     {
       [(DSTableWelcomeController *)self hideNoSharingView];
-      v10 = [(DSReadOnlyResourceSharingController *)self headerView];
+      headerView = [(DSReadOnlyResourceSharingController *)self headerView];
       v11 = DSUILocStringForKey(@"READ_ONLY_SHARING_TITLE");
       v12 = [DSUIUtilities valueForUnfinalizedString:v11];
-      [v10 setTitle:v12];
+      [headerView setTitle:v12];
 
-      v13 = [(DSReadOnlyResourceSharingController *)self headerView];
+      headerView2 = [(DSReadOnlyResourceSharingController *)self headerView];
       if ([(DSReadOnlyResourceSharingController *)self scope]== 1)
       {
         v14 = @"READ_ONLY_SHARING_BY_TYPE_DETAIL";
@@ -486,7 +486,7 @@ LABEL_9:
 
       v15 = DSUILocStringForKey(v14);
       v16 = [DSUIUtilities valueForUnfinalizedString:v15];
-      [v13 setDetailText:v16];
+      [headerView2 setDetailText:v16];
 
       goto LABEL_18;
     }
@@ -502,10 +502,10 @@ LABEL_9:
     }
 
     v20 = DSUILocStringForKey(v19);
-    v13 = [DSUIUtilities valueForUnfinalizedString:v20];
+    headerView2 = [DSUIUtilities valueForUnfinalizedString:v20];
 
-    v17 = [MEMORY[0x277D755B8] _systemImageNamed:@"app.3.stack.3d.fill"];
-    [(DSTableWelcomeController *)self showNoSharingViewWithText:v13 image:v17];
+    searchBar = [MEMORY[0x277D755B8] _systemImageNamed:@"app.3.stack.3d.fill"];
+    [(DSTableWelcomeController *)self showNoSharingViewWithText:headerView2 image:searchBar];
 LABEL_17:
 
 LABEL_18:
@@ -514,10 +514,10 @@ LABEL_18:
 
   if (!v9)
   {
-    v13 = [(DSTableWelcomeController *)self searchController];
-    v17 = [v13 searchBar];
-    v18 = [v17 text];
-    [(DSTableWelcomeController *)self showNoResultsViewWithSearchText:v18];
+    headerView2 = [(DSTableWelcomeController *)self searchController];
+    searchBar = [headerView2 searchBar];
+    text = [searchBar text];
+    [(DSTableWelcomeController *)self showNoResultsViewWithSearchText:text];
 
     goto LABEL_17;
   }
@@ -528,62 +528,62 @@ LABEL_19:
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSTableWelcomeController *)self searchController];
-  v7 = [v6 searchBar];
-  v8 = [v7 selectedScopeButtonIndex];
+  pathCopy = path;
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  selectedScopeButtonIndex = [searchBar selectedScopeButtonIndex];
 
-  if (v8)
+  if (selectedScopeButtonIndex)
   {
-    v9 = [(DSReadOnlyResourceSharingController *)self selectedTypes];
-    v10 = [(DSReadOnlyResourceSharingController *)self permissions];
-    v11 = [v5 row];
+    selectedTypes = [(DSReadOnlyResourceSharingController *)self selectedTypes];
+    permissions = [(DSReadOnlyResourceSharingController *)self permissions];
+    v11 = [pathCopy row];
 
-    [v10 readOnlySharingType:v11 withFilter:{-[DSTableWelcomeController isFiltering](self, "isFiltering")}];
+    [permissions readOnlySharingType:v11 withFilter:{-[DSTableWelcomeController isFiltering](self, "isFiltering")}];
   }
 
   else
   {
-    v9 = [(DSReadOnlyResourceSharingController *)self selectedPeople];
-    v10 = [(DSReadOnlyResourceSharingController *)self permissions];
-    v12 = [v5 row];
+    selectedTypes = [(DSReadOnlyResourceSharingController *)self selectedPeople];
+    permissions = [(DSReadOnlyResourceSharingController *)self permissions];
+    v12 = [pathCopy row];
 
-    [v10 readOnlySharingPerson:v12 withFilter:{-[DSTableWelcomeController isFiltering](self, "isFiltering")}];
+    [permissions readOnlySharingPerson:v12 withFilter:{-[DSTableWelcomeController isFiltering](self, "isFiltering")}];
   }
   v13 = ;
-  [v9 addObject:v13];
+  [selectedTypes addObject:v13];
 
   [(DSReadOnlyResourceSharingController *)self _updateButton];
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSTableWelcomeController *)self searchController];
-  v7 = [v6 searchBar];
-  v8 = [v7 selectedScopeButtonIndex];
+  pathCopy = path;
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  selectedScopeButtonIndex = [searchBar selectedScopeButtonIndex];
 
-  if (v8)
+  if (selectedScopeButtonIndex)
   {
-    v9 = [(DSReadOnlyResourceSharingController *)self selectedTypes];
-    v10 = [(DSReadOnlyResourceSharingController *)self permissions];
-    v11 = [v5 row];
+    selectedTypes = [(DSReadOnlyResourceSharingController *)self selectedTypes];
+    permissions = [(DSReadOnlyResourceSharingController *)self permissions];
+    v11 = [pathCopy row];
 
-    [v10 readOnlySharingType:v11 withFilter:{-[DSTableWelcomeController isFiltering](self, "isFiltering")}];
+    [permissions readOnlySharingType:v11 withFilter:{-[DSTableWelcomeController isFiltering](self, "isFiltering")}];
   }
 
   else
   {
-    v9 = [(DSReadOnlyResourceSharingController *)self selectedPeople];
-    v10 = [(DSReadOnlyResourceSharingController *)self permissions];
-    v12 = [v5 row];
+    selectedTypes = [(DSReadOnlyResourceSharingController *)self selectedPeople];
+    permissions = [(DSReadOnlyResourceSharingController *)self permissions];
+    v12 = [pathCopy row];
 
-    [v10 readOnlySharingPerson:v12 withFilter:{-[DSTableWelcomeController isFiltering](self, "isFiltering")}];
+    [permissions readOnlySharingPerson:v12 withFilter:{-[DSTableWelcomeController isFiltering](self, "isFiltering")}];
   }
   v13 = ;
-  [v9 removeObject:v13];
+  [selectedTypes removeObject:v13];
 
   [(DSReadOnlyResourceSharingController *)self _updateButton];
 }
@@ -591,20 +591,20 @@ LABEL_19:
 - (void)reviewReadOnlySharingCompleted
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(DSReadOnlyResourceSharingController *)self selectedTypes];
-  [v3 removeAllObjects];
+  selectedTypes = [(DSReadOnlyResourceSharingController *)self selectedTypes];
+  [selectedTypes removeAllObjects];
 
-  v4 = [(DSReadOnlyResourceSharingController *)self selectedPeople];
-  [v4 removeAllObjects];
+  selectedPeople = [(DSReadOnlyResourceSharingController *)self selectedPeople];
+  [selectedPeople removeAllObjects];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [(OBTableWelcomeController *)self tableView];
-  v6 = [v5 indexPathsForSelectedRows];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  v7 = [indexPathsForSelectedRows countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v7)
   {
     v8 = v7;
@@ -616,35 +616,35 @@ LABEL_19:
       {
         if (*v29 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(indexPathsForSelectedRows);
         }
 
         v11 = *(*(&v28 + 1) + 8 * v10);
-        v12 = [(OBTableWelcomeController *)self tableView];
-        [v12 deselectRowAtIndexPath:v11 animated:0];
+        tableView2 = [(OBTableWelcomeController *)self tableView];
+        [tableView2 deselectRowAtIndexPath:v11 animated:0];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v8 = [indexPathsForSelectedRows countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v8);
   }
 
-  v13 = [(DSReadOnlyResourceSharingController *)self delegate];
-  [v13 pushPaneAfterPaneType:objc_opt_class()];
+  delegate = [(DSReadOnlyResourceSharingController *)self delegate];
+  [delegate pushPaneAfterPaneType:objc_opt_class()];
 
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v15 = [(DSReadOnlyResourceSharingController *)self navigationController];
-  v16 = [v15 viewControllers];
+  navigationController = [(DSReadOnlyResourceSharingController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
 
-  v17 = [v16 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  v17 = [viewControllers countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v17)
   {
     v18 = v17;
@@ -656,7 +656,7 @@ LABEL_19:
       {
         if (*v25 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(viewControllers);
         }
 
         v21 = *(*(&v24 + 1) + 8 * v20);
@@ -670,23 +670,23 @@ LABEL_19:
       }
 
       while (v18 != v20);
-      v18 = [v16 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v18 = [viewControllers countByEnumeratingWithState:&v24 objects:v32 count:16];
     }
 
     while (v18);
   }
 
-  v22 = [(DSReadOnlyResourceSharingController *)self navigationController];
-  [v22 setViewControllers:v14];
+  navigationController2 = [(DSReadOnlyResourceSharingController *)self navigationController];
+  [navigationController2 setViewControllers:v14];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)learnMorePressedForSharingType:(id)a3
+- (void)learnMorePressedForSharingType:(id)type
 {
   v5 = DSUILocStringForKey(@"NAVIGATION_LEARN_MORE_URL");
-  v4 = [(DSReadOnlyResourceSharingController *)self delegate];
-  [v4 learnMorePressedForController:self withURL:v5];
+  delegate = [(DSReadOnlyResourceSharingController *)self delegate];
+  [delegate learnMorePressedForController:self withURL:v5];
 }
 
 - (DSNavigationDelegate)delegate

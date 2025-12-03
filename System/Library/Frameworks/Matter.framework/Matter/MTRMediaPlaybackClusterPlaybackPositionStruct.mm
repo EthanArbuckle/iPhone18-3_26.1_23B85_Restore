@@ -1,6 +1,6 @@
 @interface MTRMediaPlaybackClusterPlaybackPositionStruct
 - (MTRMediaPlaybackClusterPlaybackPositionStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRMediaPlaybackClusterPlaybackPositionStruct);
-  v5 = [(MTRMediaPlaybackClusterPlaybackPositionStruct *)self updatedAt];
-  [(MTRMediaPlaybackClusterPlaybackPositionStruct *)v4 setUpdatedAt:v5];
+  updatedAt = [(MTRMediaPlaybackClusterPlaybackPositionStruct *)self updatedAt];
+  [(MTRMediaPlaybackClusterPlaybackPositionStruct *)v4 setUpdatedAt:updatedAt];
 
-  v6 = [(MTRMediaPlaybackClusterPlaybackPositionStruct *)self position];
-  [(MTRMediaPlaybackClusterPlaybackPositionStruct *)v4 setPosition:v6];
+  position = [(MTRMediaPlaybackClusterPlaybackPositionStruct *)self position];
+  [(MTRMediaPlaybackClusterPlaybackPositionStruct *)v4 setPosition:position];
 
   return v4;
 }

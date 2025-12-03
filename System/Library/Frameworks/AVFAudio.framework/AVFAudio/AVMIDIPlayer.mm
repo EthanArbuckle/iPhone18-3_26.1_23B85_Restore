@@ -4,10 +4,10 @@
 - (BOOL)isPlaying;
 - (NSTimeInterval)currentPosition;
 - (NSTimeInterval)duration;
-- (double)beatsForHostTime:(unint64_t)a3;
+- (double)beatsForHostTime:(unint64_t)time;
 - (float)rate;
 - (id)initBase;
-- (unint64_t)hostTimeForBeats:(double)a3;
+- (unint64_t)hostTimeForBeats:(double)beats;
 - (void)dealloc;
 - (void)destroyBase;
 - (void)finalize;
@@ -23,9 +23,9 @@
 - (void)setCurrentPosition:(NSTimeInterval)currentPosition
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = [(AVMIDIPlayer *)self impl];
+  impl = [(AVMIDIPlayer *)self impl];
   outBeats = 0.0;
-  BeatsForSeconds = MusicSequenceGetBeatsForSeconds(v4->var2, currentPosition, &outBeats);
+  BeatsForSeconds = MusicSequenceGetBeatsForSeconds(impl->var2, currentPosition, &outBeats);
   if (BeatsForSeconds)
   {
     v6 = BeatsForSeconds;
@@ -57,7 +57,7 @@
     [MEMORY[0x1E695DF30] raise:@"com.apple.coreaudio.avfaudio" format:{@"error %d", v6}];
   }
 
-  v8 = MusicPlayerSetTime(v4->var1, outBeats);
+  v8 = MusicPlayerSetTime(impl->var1, outBeats);
   if (v8)
   {
     v9 = v8;
@@ -95,10 +95,10 @@
 - (NSTimeInterval)currentPosition
 {
   v27 = *MEMORY[0x1E69E9840];
-  v2 = [(AVMIDIPlayer *)self impl];
+  impl = [(AVMIDIPlayer *)self impl];
   outSeconds = 0.0;
   outTime = 0.0;
-  Time = MusicPlayerGetTime(v2->var1, &outTime);
+  Time = MusicPlayerGetTime(impl->var1, &outTime);
   if (Time)
   {
     v4 = Time;
@@ -130,7 +130,7 @@
     [MEMORY[0x1E695DF30] raise:@"com.apple.coreaudio.avfaudio" format:{@"error %d", v4}];
   }
 
-  SecondsForBeats = MusicSequenceGetSecondsForBeats(v2->var2, outTime, &outSeconds);
+  SecondsForBeats = MusicSequenceGetSecondsForBeats(impl->var2, outTime, &outSeconds);
   if (SecondsForBeats)
   {
     v7 = SecondsForBeats;
@@ -170,9 +170,9 @@
 - (NSTimeInterval)duration
 {
   v23 = *MEMORY[0x1E69E9840];
-  v2 = [(AVMIDIPlayer *)self impl];
+  impl = [(AVMIDIPlayer *)self impl];
   outSeconds = 0.0;
-  SecondsForBeats = MusicSequenceGetSecondsForBeats(v2->var2, v2->var3, &outSeconds);
+  SecondsForBeats = MusicSequenceGetSecondsForBeats(impl->var2, impl->var3, &outSeconds);
   if (SecondsForBeats)
   {
     v4 = SecondsForBeats;
@@ -331,8 +331,8 @@
 - (void)stop
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(AVMIDIPlayer *)self impl];
-  v3 = MusicPlayerStop(v2->var1);
+  impl = [(AVMIDIPlayer *)self impl];
+  v3 = MusicPlayerStop(impl->var1);
   if (v3)
   {
     v4 = v3;
@@ -364,11 +364,11 @@
     [MEMORY[0x1E695DF30] raise:@"com.apple.coreaudio.avfaudio" format:{@"error %d", v4}];
   }
 
-  var4 = v2->var4;
+  var4 = impl->var4;
   if (var4)
   {
-    v2->var4 = 0;
-    var5 = v2->var5;
+    impl->var4 = 0;
+    var5 = impl->var5;
     *buf = MEMORY[0x1E69E9820];
     *&buf[8] = 3221225472;
     *&buf[16] = ___ZN14MIDIPlayerImpl4stopEv_block_invoke;
@@ -383,9 +383,9 @@
 - (void)play:(AVMIDIPlayerCompletionHandler)completionHandler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = [(AVMIDIPlayer *)self impl];
-  v4->var4 = _Block_copy(completionHandler);
-  v5 = MusicPlayerStart(v4->var1);
+  impl = [(AVMIDIPlayer *)self impl];
+  impl->var4 = _Block_copy(completionHandler);
+  v5 = MusicPlayerStart(impl->var1);
   if (v5)
   {
     v6 = v5;
@@ -458,10 +458,10 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (double)beatsForHostTime:(unint64_t)a3
+- (double)beatsForHostTime:(unint64_t)time
 {
   outBeats = 0.0;
-  BeatsForHostTime = MusicPlayerGetBeatsForHostTime([(AVMIDIPlayer *)self impl][8], a3, &outBeats);
+  BeatsForHostTime = MusicPlayerGetBeatsForHostTime([(AVMIDIPlayer *)self impl][8], time, &outBeats);
   result = outBeats;
   if (BeatsForHostTime)
   {
@@ -471,10 +471,10 @@
   return result;
 }
 
-- (unint64_t)hostTimeForBeats:(double)a3
+- (unint64_t)hostTimeForBeats:(double)beats
 {
   outHostTime = 0;
-  if (MusicPlayerGetHostTimeForBeats([(AVMIDIPlayer *)self impl][8], a3, &outHostTime))
+  if (MusicPlayerGetHostTimeForBeats([(AVMIDIPlayer *)self impl][8], beats, &outHostTime))
   {
     return 0;
   }
@@ -487,9 +487,9 @@
 
 - (AVMIDIPlayer)initWithData:(NSData *)data soundBankURL:(NSURL *)bankURL error:(NSError *)outError
 {
-  v8 = [(AVMIDIPlayer *)self initBase];
-  v9 = v8;
-  if (v8)
+  initBase = [(AVMIDIPlayer *)self initBase];
+  v9 = initBase;
+  if (initBase)
   {
     if (!data)
     {
@@ -503,9 +503,9 @@ LABEL_9:
       *outError = 0;
     }
 
-    v10 = [(AVMIDIPlayer *)v8 impl];
-    v11 = MusicSequenceFileLoadData(v10->var2, data, kMusicSequenceFile_AnyType, 1u);
-    if (v11 || (v11 = MIDIPlayerImpl::finishLoad(v10, bankURL)) != 0)
+    impl = [(AVMIDIPlayer *)initBase impl];
+    v11 = MusicSequenceFileLoadData(impl->var2, data, kMusicSequenceFile_AnyType, 1u);
+    if (v11 || (v11 = MIDIPlayerImpl::finishLoad(impl, bankURL)) != 0)
     {
       if (outError)
       {
@@ -521,9 +521,9 @@ LABEL_9:
 
 - (AVMIDIPlayer)initWithContentsOfURL:(NSURL *)inURL soundBankURL:(NSURL *)bankURL error:(NSError *)outError
 {
-  v8 = [(AVMIDIPlayer *)self initBase];
-  v9 = v8;
-  if (v8)
+  initBase = [(AVMIDIPlayer *)self initBase];
+  v9 = initBase;
+  if (initBase)
   {
     if (!inURL)
     {
@@ -537,10 +537,10 @@ LABEL_9:
       *outError = 0;
     }
 
-    v10 = [(AVMIDIPlayer *)v8 impl];
-    *(v10 + 24) = 0;
-    v11 = MusicSequenceFileLoad(*(v10 + 16), inURL, kMusicSequenceFile_AnyType, 1u);
-    if (v11 || (v11 = MIDIPlayerImpl::finishLoad(v10, bankURL)) != 0)
+    impl = [(AVMIDIPlayer *)initBase impl];
+    *(impl + 24) = 0;
+    v11 = MusicSequenceFileLoad(*(impl + 16), inURL, kMusicSequenceFile_AnyType, 1u);
+    if (v11 || (v11 = MIDIPlayerImpl::finishLoad(impl, bankURL)) != 0)
     {
       if (outError)
       {
@@ -578,7 +578,7 @@ LABEL_9:
     v8 = 1024;
     v9 = 73;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA5AC000, v3, OS_LOG_TYPE_DEBUG, "%25s:%-5d ---> self = %p", buf, 0x1Cu);
   }
 
@@ -601,10 +601,10 @@ LABEL_7:
 - (void)destroyBase
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [(AVMIDIPlayer *)self impl];
-  if (v2)
+  impl = [(AVMIDIPlayer *)self impl];
+  if (impl)
   {
-    v3 = v2;
+    v3 = impl;
     if (kAVMPScope)
     {
       v4 = *kAVMPScope;

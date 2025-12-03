@@ -52,12 +52,12 @@ LABEL_6:
 - (NSString)ct_shortDescription
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(CTXPCMessage *)self ct_shortName];
-  v5 = [v3 stringWithFormat:@"<%@", v4];
+  ct_shortName = [(CTXPCMessage *)self ct_shortName];
+  v5 = [v3 stringWithFormat:@"<%@", ct_shortName];
 
-  v6 = [(CTXPCMessage *)self namedArguments];
-  v7 = [v6 allKeys];
-  v8 = [v7 sortedArrayUsingSelector:sel_compare_];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  allKeys = [namedArguments allKeys];
+  v8 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;

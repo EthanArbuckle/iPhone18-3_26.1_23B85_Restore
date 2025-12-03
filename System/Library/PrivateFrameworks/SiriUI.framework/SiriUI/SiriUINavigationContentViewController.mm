@@ -1,5 +1,5 @@
 @interface SiriUINavigationContentViewController
-- (BOOL)hasContentAtPoint:(CGPoint)a3;
+- (BOOL)hasContentAtPoint:(CGPoint)point;
 - (BOOL)isContentLayoutEnabled;
 - (SiriSharedUIContentPlatterViewController)contentPlatterViewController;
 - (id)_navigationContentView;
@@ -7,9 +7,9 @@
 - (void)contentViewDidUpdateSize;
 - (void)loadView;
 - (void)prepareForDrillInAnimation;
-- (void)prepareForPopAnimationOfType:(int64_t)a3;
-- (void)setContentLayoutEnabled:(BOOL)a3;
-- (void)setContentViewController:(id)a3;
+- (void)prepareForPopAnimationOfType:(int64_t)type;
+- (void)setContentLayoutEnabled:(BOOL)enabled;
+- (void)setContentViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -26,100 +26,100 @@
   v5.receiver = self;
   v5.super_class = SiriUINavigationContentViewController;
   [(SiriUINavigationContentViewController *)&v5 viewDidLoad];
-  v3 = [(SiriUINavigationContentViewController *)self view];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(SiriUINavigationContentViewController *)self view];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [view setBackgroundColor:clearColor];
 }
 
 - (id)title
 {
-  v2 = [(SiriUINavigationContentViewController *)self contentViewController];
-  v3 = [v2 title];
+  contentViewController = [(SiriUINavigationContentViewController *)self contentViewController];
+  title = [contentViewController title];
 
-  return v3;
+  return title;
 }
 
 - (void)prepareForDrillInAnimation
 {
-  v2 = [(SiriUINavigationContentViewController *)self _navigationContentView];
-  v3 = [v2 contentView];
+  _navigationContentView = [(SiriUINavigationContentViewController *)self _navigationContentView];
+  contentView = [_navigationContentView contentView];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 prepareForDrillInAnimation];
+    [contentView prepareForDrillInAnimation];
   }
 }
 
-- (void)prepareForPopAnimationOfType:(int64_t)a3
+- (void)prepareForPopAnimationOfType:(int64_t)type
 {
-  v4 = [(SiriUINavigationContentViewController *)self _navigationContentView];
-  v5 = [v4 contentView];
+  _navigationContentView = [(SiriUINavigationContentViewController *)self _navigationContentView];
+  contentView = [_navigationContentView contentView];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 prepareForPopAnimationOfType:a3];
+    [contentView prepareForPopAnimationOfType:type];
   }
 }
 
-- (void)setContentViewController:(id)a3
+- (void)setContentViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_contentViewController != v5)
+  controllerCopy = controller;
+  if (self->_contentViewController != controllerCopy)
   {
-    v10 = v5;
-    v6 = [(SiriUINavigationContentViewController *)self contentViewController];
-    [v6 removeFromParentViewController];
-    v7 = [(SiriUINavigationContentViewController *)self _navigationContentView];
-    [v7 setContentView:0];
+    v10 = controllerCopy;
+    contentViewController = [(SiriUINavigationContentViewController *)self contentViewController];
+    [contentViewController removeFromParentViewController];
+    _navigationContentView = [(SiriUINavigationContentViewController *)self _navigationContentView];
+    [_navigationContentView setContentView:0];
 
-    [v6 didMoveToParentViewController:0];
-    objc_storeStrong(&self->_contentViewController, a3);
+    [contentViewController didMoveToParentViewController:0];
+    objc_storeStrong(&self->_contentViewController, controller);
     [(SiriUINavigationContentViewController *)self addChildViewController:v10];
-    v8 = [(SiriUINavigationContentViewController *)self _navigationContentView];
-    v9 = [(UIViewController *)v10 view];
-    [v8 setContentView:v9];
+    _navigationContentView2 = [(SiriUINavigationContentViewController *)self _navigationContentView];
+    view = [(UIViewController *)v10 view];
+    [_navigationContentView2 setContentView:view];
 
     [(UIViewController *)v10 didMoveToParentViewController:self];
-    v5 = v10;
+    controllerCopy = v10;
   }
 }
 
 - (BOOL)isContentLayoutEnabled
 {
-  v2 = [(SiriUINavigationContentViewController *)self _navigationContentView];
-  v3 = [v2 isContentLayoutEnabled];
+  _navigationContentView = [(SiriUINavigationContentViewController *)self _navigationContentView];
+  isContentLayoutEnabled = [_navigationContentView isContentLayoutEnabled];
 
-  return v3;
+  return isContentLayoutEnabled;
 }
 
-- (void)setContentLayoutEnabled:(BOOL)a3
+- (void)setContentLayoutEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(SiriUINavigationContentViewController *)self _navigationContentView];
-  [v4 setContentLayoutEnabled:v3];
+  enabledCopy = enabled;
+  _navigationContentView = [(SiriUINavigationContentViewController *)self _navigationContentView];
+  [_navigationContentView setContentLayoutEnabled:enabledCopy];
 }
 
-- (BOOL)hasContentAtPoint:(CGPoint)a3
+- (BOOL)hasContentAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SiriUINavigationContentViewController *)self contentPlatterViewController];
+  y = point.y;
+  x = point.x;
+  contentPlatterViewController = [(SiriUINavigationContentViewController *)self contentPlatterViewController];
 
   result = 0;
-  if (v6)
+  if (contentPlatterViewController)
   {
-    v7 = [(SiriUINavigationContentViewController *)self view];
-    v8 = [(SiriUINavigationContentViewController *)self contentPlatterViewController];
-    v9 = [v8 view];
-    [v7 convertPoint:v9 toView:{x, y}];
+    view = [(SiriUINavigationContentViewController *)self view];
+    contentPlatterViewController2 = [(SiriUINavigationContentViewController *)self contentPlatterViewController];
+    view2 = [contentPlatterViewController2 view];
+    [view convertPoint:view2 toView:{x, y}];
     v11 = v10;
     v13 = v12;
 
-    v14 = [(SiriUINavigationContentViewController *)self contentPlatterViewController];
-    v15 = [v14 view];
-    [v15 bounds];
+    contentPlatterViewController3 = [(SiriUINavigationContentViewController *)self contentPlatterViewController];
+    view3 = [contentPlatterViewController3 view];
+    [view3 bounds];
     v17 = v16;
     v19 = v18;
     v21 = v20;
@@ -135,8 +135,8 @@
 
     else
     {
-      v28 = [(SiriUINavigationContentViewController *)self _navigationContentView];
-      [v28 safeAreaInsets];
+      _navigationContentView = [(SiriUINavigationContentViewController *)self _navigationContentView];
+      [_navigationContentView safeAreaInsets];
       v30 = v29;
       v32 = v31;
 
@@ -160,21 +160,21 @@
 
 - (void)contentViewDidUpdateSize
 {
-  v3 = [(SiriUINavigationContentViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(SiriUINavigationContentViewController *)self view];
+  [view setNeedsLayout];
 
-  v5 = [(SiriUINavigationContentViewController *)self contentViewController];
-  v4 = [v5 view];
-  [v4 setNeedsLayout];
+  contentViewController = [(SiriUINavigationContentViewController *)self contentViewController];
+  view2 = [contentViewController view];
+  [view2 setNeedsLayout];
 }
 
 - (id)_navigationContentView
 {
-  v2 = [(SiriUINavigationContentViewController *)self view];
+  view = [(SiriUINavigationContentViewController *)self view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = view;
   }
 
   else
@@ -189,11 +189,11 @@
 
 - (SiriSharedUIContentPlatterViewController)contentPlatterViewController
 {
-  v2 = [(SiriUINavigationContentViewController *)self contentViewController];
+  contentViewController = [(SiriUINavigationContentViewController *)self contentViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = contentViewController;
   }
 
   else

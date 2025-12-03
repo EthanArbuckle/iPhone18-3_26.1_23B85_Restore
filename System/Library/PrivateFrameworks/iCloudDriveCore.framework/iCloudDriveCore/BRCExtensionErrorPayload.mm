@@ -1,33 +1,33 @@
 @interface BRCExtensionErrorPayload
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRecordIds:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRecordIds:(id)ids;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BRCExtensionErrorPayload
 
-- (void)addRecordIds:(id)a3
+- (void)addRecordIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   recordIds = self->_recordIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!recordIds)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_recordIds;
     self->_recordIds = v6;
 
-    v4 = v8;
+    idsCopy = v8;
     recordIds = self->_recordIds;
   }
 
-  [(NSMutableArray *)recordIds addObject:v4];
+  [(NSMutableArray *)recordIds addObject:idsCopy];
 }
 
 - (id)description
@@ -36,20 +36,20 @@
   v8.receiver = self;
   v8.super_class = BRCExtensionErrorPayload;
   v4 = [(BRCExtensionErrorPayload *)&v8 description];
-  v5 = [(BRCExtensionErrorPayload *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BRCExtensionErrorPayload *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   minimumOSName = self->_minimumOSName;
   if (minimumOSName)
   {
-    [v3 setObject:minimumOSName forKey:@"minimumOSName"];
+    [dictionary setObject:minimumOSName forKey:@"minimumOSName"];
   }
 
   recordId = self->_recordId;
@@ -73,10 +73,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_minimumOSName)
   {
     PBDataWriterWriteStringField();
@@ -127,53 +127,53 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_minimumOSName)
   {
-    [v8 setMinimumOSName:?];
+    [toCopy setMinimumOSName:?];
   }
 
   if (self->_recordId)
   {
-    [v8 setRecordId:?];
+    [toCopy setRecordId:?];
   }
 
   if (self->_fieldName)
   {
-    [v8 setFieldName:?];
+    [toCopy setFieldName:?];
   }
 
   if ([(BRCExtensionErrorPayload *)self recordIdsCount])
   {
-    [v8 clearRecordIds];
-    v4 = [(BRCExtensionErrorPayload *)self recordIdsCount];
-    if (v4)
+    [toCopy clearRecordIds];
+    recordIdsCount = [(BRCExtensionErrorPayload *)self recordIdsCount];
+    if (recordIdsCount)
     {
-      v5 = v4;
+      v5 = recordIdsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(BRCExtensionErrorPayload *)self recordIdsAtIndex:i];
-        [v8 addRecordIds:v7];
+        [toCopy addRecordIds:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_minimumOSName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_minimumOSName copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_recordId copyWithZone:a3];
+  v8 = [(NSString *)self->_recordId copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_fieldName copyWithZone:a3];
+  v10 = [(NSString *)self->_fieldName copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
@@ -197,7 +197,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addRecordIds:v17];
 
         ++v16;
@@ -214,13 +214,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((minimumOSName = self->_minimumOSName, !(minimumOSName | v4[2])) || -[NSString isEqual:](minimumOSName, "isEqual:")) && ((recordId = self->_recordId, !(recordId | v4[3])) || -[NSString isEqual:](recordId, "isEqual:")) && ((fieldName = self->_fieldName, !(fieldName | v4[1])) || -[NSString isEqual:](fieldName, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((minimumOSName = self->_minimumOSName, !(minimumOSName | equalCopy[2])) || -[NSString isEqual:](minimumOSName, "isEqual:")) && ((recordId = self->_recordId, !(recordId | equalCopy[3])) || -[NSString isEqual:](recordId, "isEqual:")) && ((fieldName = self->_fieldName, !(fieldName | equalCopy[1])) || -[NSString isEqual:](fieldName, "isEqual:")))
   {
     recordIds = self->_recordIds;
-    if (recordIds | v4[4])
+    if (recordIds | equalCopy[4])
     {
       v9 = [(NSMutableArray *)recordIds isEqual:?];
     }
@@ -247,21 +247,21 @@
   return v4 ^ v5 ^ [(NSMutableArray *)self->_recordIds hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(BRCExtensionErrorPayload *)self setMinimumOSName:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BRCExtensionErrorPayload *)self setRecordId:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(BRCExtensionErrorPayload *)self setFieldName:?];
   }
@@ -270,7 +270,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

@@ -1,23 +1,23 @@
 @interface MTPlaylistSettingsPodcastGroupCell
-- (MTPlaylistSettingsPodcastGroupCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MTPlaylistSettingsPodcastGroupCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation MTPlaylistSettingsPodcastGroupCell
 
-- (MTPlaylistSettingsPodcastGroupCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MTPlaylistSettingsPodcastGroupCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = MTPlaylistSettingsPodcastGroupCell;
-  v4 = [(MTTableViewCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MTTableViewCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MTArtworkView);
     [(MTPlaylistSettingsPodcastGroupCell *)v4 setArtworkView:v5];
 
-    v6 = [(MTPlaylistSettingsPodcastGroupCell *)v4 contentView];
-    v7 = [(MTPlaylistSettingsPodcastGroupCell *)v4 artworkView];
-    [v6 addSubview:v7];
+    contentView = [(MTPlaylistSettingsPodcastGroupCell *)v4 contentView];
+    artworkView = [(MTPlaylistSettingsPodcastGroupCell *)v4 artworkView];
+    [contentView addSubview:artworkView];
   }
 
   return v4;
@@ -28,14 +28,14 @@
   v44.receiver = self;
   v44.super_class = MTPlaylistSettingsPodcastGroupCell;
   [(MTTableViewCell *)&v44 layoutSubviews];
-  v3 = [(MTPlaylistSettingsPodcastGroupCell *)self contentView];
-  [v3 bounds];
+  contentView = [(MTPlaylistSettingsPodcastGroupCell *)self contentView];
+  [contentView bounds];
   v38 = v5;
   v39 = v4;
   v37 = v6;
   rect = v7;
 
-  v8 = [(MTPlaylistSettingsPodcastGroupCell *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(MTPlaylistSettingsPodcastGroupCell *)self effectiveUserInterfaceLayoutDirection];
   [(MTPlaylistSettingsPodcastGroupCell *)self layoutMargins];
   +[MTPlaylistSettingsViewController podcastImageSize];
   [(MTPlaylistSettingsPodcastGroupCell *)self bounds];
@@ -44,8 +44,8 @@
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(MTPlaylistSettingsPodcastGroupCell *)self textLabel];
-  [v17 frame];
+  textLabel = [(MTPlaylistSettingsPodcastGroupCell *)self textLabel];
+  [textLabel frame];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -57,8 +57,8 @@
   v45.size.width = v14;
   v45.size.height = v16;
   v24 = CGRectGetMaxX(v45) + 14.0;
-  v25 = [(MTPlaylistSettingsPodcastGroupCell *)self textLabel];
-  [v25 frame];
+  textLabel2 = [(MTPlaylistSettingsPodcastGroupCell *)self textLabel];
+  [textLabel2 frame];
   v27 = v21 - (v24 - v26);
 
   v46.origin.x = v24;
@@ -67,7 +67,7 @@
   v46.size.height = v23;
   MinX = CGRectGetMinX(v46);
   v29 = MinX;
-  if (v8 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v36 = MinX;
     v47.origin.x = v39;
@@ -105,11 +105,11 @@
     v16 = v41;
   }
 
-  v34 = [(MTPlaylistSettingsPodcastGroupCell *)self textLabel];
-  [v34 setFrame:{v24, v19, v27, v23}];
+  textLabel3 = [(MTPlaylistSettingsPodcastGroupCell *)self textLabel];
+  [textLabel3 setFrame:{v24, v19, v27, v23}];
 
-  v35 = [(MTPlaylistSettingsPodcastGroupCell *)self artworkView];
-  [v35 setFrame:{v10, v43, v42, v16}];
+  artworkView = [(MTPlaylistSettingsPodcastGroupCell *)self artworkView];
+  [artworkView setFrame:{v10, v43, v42, v16}];
 
   [(MTPlaylistSettingsPodcastGroupCell *)self setSeparatorInset:0.0, v29, 0.0, 0.0];
 }

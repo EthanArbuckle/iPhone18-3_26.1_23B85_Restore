@@ -1,13 +1,13 @@
 @interface MTIDCompositeSecretStore
 - (MTIDCompositeSecretStore)init;
 - (id)debugInfo;
-- (id)maintainSchemes:(id)a3 options:(id)a4;
-- (id)resetSchemes:(id)a3 options:(id)a4;
-- (id)schemesGroupedByStore:(id)a3;
-- (id)secretForScheme:(id)a3 options:(id)a4;
-- (id)secretStoreForScheme:(id)a3;
-- (id)storeKeyForScheme:(id)a3;
-- (id)syncForSchemes:(id)a3 options:(id)a4;
+- (id)maintainSchemes:(id)schemes options:(id)options;
+- (id)resetSchemes:(id)schemes options:(id)options;
+- (id)schemesGroupedByStore:(id)store;
+- (id)secretForScheme:(id)scheme options:(id)options;
+- (id)secretStoreForScheme:(id)scheme;
+- (id)storeKeyForScheme:(id)scheme;
+- (id)syncForSchemes:(id)schemes options:(id)options;
 - (void)clearLocalData;
 @end
 
@@ -27,32 +27,32 @@
   return v2;
 }
 
-- (id)storeKeyForScheme:(id)a3
+- (id)storeKeyForScheme:(id)scheme
 {
-  v3 = a3;
-  v4 = [v3 idType];
+  schemeCopy = scheme;
+  idType = [schemeCopy idType];
   v5 = @"Local";
-  if (v4 == 2)
+  if (idType == 2)
   {
     v5 = @"Cloud";
   }
 
   v6 = v5;
-  v7 = [v3 containerIdentifier];
+  containerIdentifier = [schemeCopy containerIdentifier];
 
-  v8 = [NSString stringWithFormat:@"%@-%@", v6, v7];
+  v8 = [NSString stringWithFormat:@"%@-%@", v6, containerIdentifier];
 
   return v8;
 }
 
-- (id)secretStoreForScheme:(id)a3
+- (id)secretStoreForScheme:(id)scheme
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MTIDCompositeSecretStore *)v5 storeKeyForScheme:v4];
-  v7 = [(MTIDCompositeSecretStore *)v5 stores];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  schemeCopy = scheme;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(MTIDCompositeSecretStore *)selfCopy storeKeyForScheme:schemeCopy];
+  stores = [(MTIDCompositeSecretStore *)selfCopy stores];
+  v8 = [stores objectForKeyedSubscript:v6];
 
   if (v8)
   {
@@ -62,27 +62,27 @@
   else
   {
     v10 = [MTIDCloudKitStore alloc];
-    v11 = [v4 containerIdentifier];
-    v9 = -[MTIDCloudKitStore initWithContainerIdentifer:enableSync:](v10, "initWithContainerIdentifer:enableSync:", v11, [v4 idType] == 2);
+    containerIdentifier = [schemeCopy containerIdentifier];
+    v9 = -[MTIDCloudKitStore initWithContainerIdentifer:enableSync:](v10, "initWithContainerIdentifer:enableSync:", containerIdentifier, [schemeCopy idType] == 2);
 
-    v12 = [(MTIDCompositeSecretStore *)v5 stores];
-    [v12 setObject:v9 forKeyedSubscript:v6];
+    stores2 = [(MTIDCompositeSecretStore *)selfCopy stores];
+    [stores2 setObject:v9 forKeyedSubscript:v6];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (id)schemesGroupedByStore:(id)a3
+- (id)schemesGroupedByStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = [NSMutableDictionary dictionaryWithCapacity:1];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = storeCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -126,23 +126,23 @@
   return v5;
 }
 
-- (id)secretForScheme:(id)a3 options:(id)a4
+- (id)secretForScheme:(id)scheme options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTIDCompositeSecretStore *)self secretStoreForScheme:v7];
-  v9 = [v8 secretForScheme:v7 options:v6];
+  optionsCopy = options;
+  schemeCopy = scheme;
+  v8 = [(MTIDCompositeSecretStore *)self secretStoreForScheme:schemeCopy];
+  v9 = [v8 secretForScheme:schemeCopy options:optionsCopy];
 
   return v9;
 }
 
-- (id)resetSchemes:(id)a3 options:(id)a4
+- (id)resetSchemes:(id)schemes options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  schemesCopy = schemes;
+  optionsCopy = options;
   v8 = +[NSMutableArray array];
-  v21 = v6;
-  v9 = [(MTIDCompositeSecretStore *)self schemesGroupedByStore:v6];
+  v21 = schemesCopy;
+  v9 = [(MTIDCompositeSecretStore *)self schemesGroupedByStore:schemesCopy];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -162,10 +162,10 @@
         }
 
         v14 = [v9 objectForKeyedSubscript:*(*(&v22 + 1) + 8 * i)];
-        v15 = [v14 firstObject];
-        v16 = [(MTIDCompositeSecretStore *)self secretStoreForScheme:v15];
+        firstObject = [v14 firstObject];
+        v16 = [(MTIDCompositeSecretStore *)self secretStoreForScheme:firstObject];
 
-        v17 = [v16 resetSchemes:v14 options:v7];
+        v17 = [v16 resetSchemes:v14 options:optionsCopy];
         [v8 addObject:v17];
       }
 
@@ -189,13 +189,13 @@
   return v19;
 }
 
-- (id)maintainSchemes:(id)a3 options:(id)a4
+- (id)maintainSchemes:(id)schemes options:(id)options
 {
-  v6 = a3;
-  v21 = a4;
+  schemesCopy = schemes;
+  optionsCopy = options;
   v7 = +[NSMutableArray array];
-  v20 = v6;
-  v8 = [(MTIDCompositeSecretStore *)self schemesGroupedByStore:v6];
+  v20 = schemesCopy;
+  v8 = [(MTIDCompositeSecretStore *)self schemesGroupedByStore:schemesCopy];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -215,12 +215,12 @@
         }
 
         v13 = [v8 objectForKeyedSubscript:*(*(&v22 + 1) + 8 * i)];
-        v14 = [v13 firstObject];
-        v15 = [(MTIDCompositeSecretStore *)self secretStoreForScheme:v14];
+        firstObject = [v13 firstObject];
+        v15 = [(MTIDCompositeSecretStore *)self secretStoreForScheme:firstObject];
 
         if (objc_opt_respondsToSelector())
         {
-          v16 = [v15 maintainSchemes:v13 options:v21];
+          v16 = [v15 maintainSchemes:v13 options:optionsCopy];
           [v7 addObject:v16];
         }
       }
@@ -247,23 +247,23 @@
 
 - (void)clearLocalData
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MTIDCompositeSecretStore *)v2 stores];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  stores = [(MTIDCompositeSecretStore *)selfCopy stores];
+  v4 = [stores copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   [v4 enumerateKeysAndObjectsUsingBlock:&stru_100020E68];
 }
 
 - (id)debugInfo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MTIDCompositeSecretStore *)v2 stores];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  stores = [(MTIDCompositeSecretStore *)selfCopy stores];
+  v4 = [stores copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
@@ -278,13 +278,13 @@
   return v6;
 }
 
-- (id)syncForSchemes:(id)a3 options:(id)a4
+- (id)syncForSchemes:(id)schemes options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  schemesCopy = schemes;
+  optionsCopy = options;
   v8 = +[NSMutableArray array];
-  v21 = v6;
-  v9 = [(MTIDCompositeSecretStore *)self schemesGroupedByStore:v6];
+  v21 = schemesCopy;
+  v9 = [(MTIDCompositeSecretStore *)self schemesGroupedByStore:schemesCopy];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -304,10 +304,10 @@
         }
 
         v14 = [v9 objectForKeyedSubscript:*(*(&v22 + 1) + 8 * i)];
-        v15 = [v14 firstObject];
-        v16 = [(MTIDCompositeSecretStore *)self secretStoreForScheme:v15];
+        firstObject = [v14 firstObject];
+        v16 = [(MTIDCompositeSecretStore *)self secretStoreForScheme:firstObject];
 
-        v17 = [v16 syncForSchemes:v14 options:v7];
+        v17 = [v16 syncForSchemes:v14 options:optionsCopy];
         if (v17)
         {
           [v8 addObject:v17];

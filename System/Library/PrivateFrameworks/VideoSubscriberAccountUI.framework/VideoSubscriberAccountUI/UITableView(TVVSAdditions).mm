@@ -14,7 +14,7 @@
 
 - (id)vs_indexPathForFirstFocusableRow
 {
-  if ([a1 numberOfSections] < 1)
+  if ([self numberOfSections] < 1)
   {
 LABEL_10:
     v4 = 0;
@@ -25,18 +25,18 @@ LABEL_10:
     v2 = 0;
     while (1)
     {
-      if ([a1 numberOfRowsInSection:v2] >= 1)
+      if ([self numberOfRowsInSection:v2] >= 1)
       {
         v3 = 0;
         while (1)
         {
           v4 = [MEMORY[0x277CCAA70] indexPathForRow:v3 inSection:v2];
-          if ([a1 vs_canFocusRowAtIndexPath:v4])
+          if ([self vs_canFocusRowAtIndexPath:v4])
           {
             break;
           }
 
-          if (++v3 >= [a1 numberOfRowsInSection:v2])
+          if (++v3 >= [self numberOfRowsInSection:v2])
           {
             goto LABEL_9;
           }
@@ -49,7 +49,7 @@ LABEL_10:
       }
 
 LABEL_9:
-      if (++v2 >= [a1 numberOfSections])
+      if (++v2 >= [self numberOfSections])
       {
         goto LABEL_10;
       }
@@ -62,8 +62,8 @@ LABEL_9:
 - (BOOL)vs_containsIndexPath:()TVVSAdditions
 {
   v4 = a3;
-  v5 = [v4 section];
-  if (v5 >= [a1 numberOfSections])
+  section = [v4 section];
+  if (section >= [self numberOfSections])
   {
     v7 = 0;
   }
@@ -71,7 +71,7 @@ LABEL_9:
   else
   {
     v6 = [v4 row];
-    v7 = v6 < [a1 numberOfRowsInSection:{objc_msgSend(v4, "section")}];
+    v7 = v6 < [self numberOfRowsInSection:{objc_msgSend(v4, "section")}];
   }
 
   return v7;
@@ -80,12 +80,12 @@ LABEL_9:
 - (uint64_t)vs_canFocusRowAtIndexPath:()TVVSAdditions
 {
   v4 = a3;
-  if ([a1 vs_hasRowAtIndexPath:v4])
+  if ([self vs_hasRowAtIndexPath:v4])
   {
-    v5 = [a1 delegate];
+    delegate = [self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v5 tableView:a1 canFocusRowAtIndexPath:v4];
+      v6 = [delegate tableView:self canFocusRowAtIndexPath:v4];
     }
 
     else
@@ -111,11 +111,11 @@ LABEL_9:
   {
     if (([v4 section] & 0x8000000000000000) == 0 && (objc_msgSend(v5, "row") & 0x8000000000000000) == 0)
     {
-      v6 = [v5 section];
-      if (v6 < [a1 numberOfSections])
+      section = [v5 section];
+      if (section < [self numberOfSections])
       {
         v7 = [v5 row];
-        if (v7 < [a1 numberOfRowsInSection:{objc_msgSend(v5, "section")}])
+        if (v7 < [self numberOfRowsInSection:{objc_msgSend(v5, "section")}])
         {
           v8 = 1;
         }
@@ -128,24 +128,24 @@ LABEL_9:
 
 - (double)vs_scrollToTopContentOffset
 {
-  [a1 contentOffset];
+  [self contentOffset];
   v3 = v2;
-  [a1 adjustedContentInset];
+  [self adjustedContentInset];
   return v3;
 }
 
 - (uint64_t)vs_scrollToTopAnimated:()TVVSAdditions
 {
-  [a1 vs_scrollToTopContentOffset];
+  [self vs_scrollToTopContentOffset];
 
-  return [a1 setContentOffset:a3 animated:?];
+  return [self setContentOffset:a3 animated:?];
 }
 
 - (void)vs_scrollViewDidEndScrollingAnimation
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [a1 vs_scrollCompletionOperations];
-  v3 = [v2 count];
+  vs_scrollCompletionOperations = [self vs_scrollCompletionOperations];
+  v3 = [vs_scrollCompletionOperations count];
 
   if (v3)
   {
@@ -157,13 +157,13 @@ LABEL_9:
       _os_log_impl(&dword_270DD4000, v4, OS_LOG_TYPE_DEFAULT, "Entering %s", &v9, 0xCu);
     }
 
-    v5 = [a1 vs_scrollCompletionOperations];
-    v6 = [v5 firstObject];
+    vs_scrollCompletionOperations2 = [self vs_scrollCompletionOperations];
+    firstObject = [vs_scrollCompletionOperations2 firstObject];
 
-    v7 = [a1 vs_scrollCompletionOperations];
-    [v7 removeObjectAtIndex:0];
+    vs_scrollCompletionOperations3 = [self vs_scrollCompletionOperations];
+    [vs_scrollCompletionOperations3 removeObjectAtIndex:0];
 
-    [v6 start];
+    [firstObject start];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -181,16 +181,16 @@ LABEL_9:
     _os_log_impl(&dword_270DD4000, v7, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  v8 = [a1 vs_scrollCompletionOperations];
+  vs_scrollCompletionOperations = [self vs_scrollCompletionOperations];
 
-  if (!v8)
+  if (!vs_scrollCompletionOperations)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
-    [a1 vs_setScrollCompletionOperations:v9];
+    array = [MEMORY[0x277CBEB18] array];
+    [self vs_setScrollCompletionOperations:array];
   }
 
-  [a1 vs_scrollToTopAnimated:a3];
-  if ([a1 isScrollAnimating])
+  [self vs_scrollToTopAnimated:a3];
+  if ([self isScrollAnimating])
   {
     v10 = MEMORY[0x277CCA8C8];
     v14[0] = MEMORY[0x277D85DD0];
@@ -199,8 +199,8 @@ LABEL_9:
     v14[3] = &unk_279E19698;
     v15 = v6;
     v11 = [v10 blockOperationWithBlock:v14];
-    v12 = [a1 vs_scrollCompletionOperations];
-    [v12 addObject:v11];
+    vs_scrollCompletionOperations2 = [self vs_scrollCompletionOperations];
+    [vs_scrollCompletionOperations2 addObject:v11];
   }
 
   else
@@ -224,16 +224,16 @@ LABEL_9:
     _os_log_impl(&dword_270DD4000, v12, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  v13 = [a1 vs_scrollCompletionOperations];
+  vs_scrollCompletionOperations = [self vs_scrollCompletionOperations];
 
-  if (!v13)
+  if (!vs_scrollCompletionOperations)
   {
-    v14 = [MEMORY[0x277CBEB18] array];
-    [a1 vs_setScrollCompletionOperations:v14];
+    array = [MEMORY[0x277CBEB18] array];
+    [self vs_setScrollCompletionOperations:array];
   }
 
-  [a1 scrollToRowAtIndexPath:v10 atScrollPosition:a4 animated:a5];
-  if ([a1 isScrollAnimating])
+  [self scrollToRowAtIndexPath:v10 atScrollPosition:a4 animated:a5];
+  if ([self isScrollAnimating])
   {
     v15 = MEMORY[0x277CCA8C8];
     v19[0] = MEMORY[0x277D85DD0];
@@ -242,8 +242,8 @@ LABEL_9:
     v19[3] = &unk_279E19698;
     v20 = v11;
     v16 = [v15 blockOperationWithBlock:v19];
-    v17 = [a1 vs_scrollCompletionOperations];
-    [v17 addObject:v16];
+    vs_scrollCompletionOperations2 = [self vs_scrollCompletionOperations];
+    [vs_scrollCompletionOperations2 addObject:v16];
   }
 
   else

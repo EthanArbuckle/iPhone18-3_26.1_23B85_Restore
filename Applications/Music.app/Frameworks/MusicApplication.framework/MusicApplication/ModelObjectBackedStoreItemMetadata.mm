@@ -16,12 +16,12 @@
 - (NSArray)audioTraits;
 - (NSArray)genreNames;
 - (_TtC9MusicCore34ModelObjectBackedStoreItemMetadata)init;
-- (_TtC9MusicCore34ModelObjectBackedStoreItemMetadata)initWithCoder:(id)a3;
-- (_TtC9MusicCore34ModelObjectBackedStoreItemMetadata)initWithStorePlatformDictionary:(id)a3 expirationDate:(id)a4;
-- (_TtC9MusicCore34ModelObjectBackedStoreItemMetadata)initWithStorePlatformDictionary:(id)a3 parentStoreItemMetadata:(id)a4;
-- (_TtC9MusicCore34ModelObjectBackedStoreItemMetadata)initWithStorePlatformDictionary:(id)a3 parentStoreItemMetadata:(id)a4 expirationDate:(id)a5;
+- (_TtC9MusicCore34ModelObjectBackedStoreItemMetadata)initWithCoder:(id)coder;
+- (_TtC9MusicCore34ModelObjectBackedStoreItemMetadata)initWithStorePlatformDictionary:(id)dictionary expirationDate:(id)date;
+- (_TtC9MusicCore34ModelObjectBackedStoreItemMetadata)initWithStorePlatformDictionary:(id)dictionary parentStoreItemMetadata:(id)metadata;
+- (_TtC9MusicCore34ModelObjectBackedStoreItemMetadata)initWithStorePlatformDictionary:(id)dictionary parentStoreItemMetadata:(id)metadata expirationDate:(id)date;
 - (double)duration;
-- (id)metadataByAppendingMetadata:(id)a3;
+- (id)metadataByAppendingMetadata:(id)metadata;
 - (id)storeID;
 - (int64_t)discCount;
 - (int64_t)discNumber;
@@ -36,30 +36,30 @@
 
 @implementation ModelObjectBackedStoreItemMetadata
 
-- (_TtC9MusicCore34ModelObjectBackedStoreItemMetadata)initWithStorePlatformDictionary:(id)a3 parentStoreItemMetadata:(id)a4
+- (_TtC9MusicCore34ModelObjectBackedStoreItemMetadata)initWithStorePlatformDictionary:(id)dictionary parentStoreItemMetadata:(id)metadata
 {
   sub_AB8FF0();
   *&self->MPStoreItemMetadata_opaque[OBJC_IVAR____TtC9MusicCore34ModelObjectBackedStoreItemMetadata_modelObject] = 0;
   v6 = &self->MPStoreItemMetadata_opaque[OBJC_IVAR____TtC9MusicCore34ModelObjectBackedStoreItemMetadata_modelObjectStoreID];
   *v6 = 0;
   *(v6 + 1) = 0;
-  v7 = a4;
+  metadataCopy = metadata;
   isa = sub_AB8FD0().super.isa;
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for ModelObjectBackedStoreItemMetadata();
-  v9 = [(ModelObjectBackedStoreItemMetadata *)&v11 initWithStorePlatformDictionary:isa parentStoreItemMetadata:v7];
+  v9 = [(ModelObjectBackedStoreItemMetadata *)&v11 initWithStorePlatformDictionary:isa parentStoreItemMetadata:metadataCopy];
 
   return v9;
 }
 
-- (_TtC9MusicCore34ModelObjectBackedStoreItemMetadata)initWithStorePlatformDictionary:(id)a3 expirationDate:(id)a4
+- (_TtC9MusicCore34ModelObjectBackedStoreItemMetadata)initWithStorePlatformDictionary:(id)dictionary expirationDate:(id)date
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_E0FF60);
   __chkstk_darwin(v5 - 8);
   v7 = &v12 - v6;
   v8 = sub_AB8FF0();
-  if (a4)
+  if (date)
   {
     sub_AB33F0();
     v9 = sub_AB3430();
@@ -75,13 +75,13 @@
   return ModelObjectBackedStoreItemMetadata.init(storePlatformDictionary:expirationDate:)(v8, v7);
 }
 
-- (_TtC9MusicCore34ModelObjectBackedStoreItemMetadata)initWithStorePlatformDictionary:(id)a3 parentStoreItemMetadata:(id)a4 expirationDate:(id)a5
+- (_TtC9MusicCore34ModelObjectBackedStoreItemMetadata)initWithStorePlatformDictionary:(id)dictionary parentStoreItemMetadata:(id)metadata expirationDate:(id)date
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_E0FF60);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
   v10 = sub_AB8FF0();
-  if (a5)
+  if (date)
   {
     sub_AB33F0();
     v11 = sub_AB3430();
@@ -94,13 +94,13 @@
     (*(*(v12 - 8) + 56))(v9, 1, 1, v12);
   }
 
-  v13 = a4;
-  v14 = sub_69D4C4(v10, v13, v9);
+  metadataCopy = metadata;
+  v14 = sub_69D4C4(v10, metadataCopy, v9);
 
   return v14;
 }
 
-- (_TtC9MusicCore34ModelObjectBackedStoreItemMetadata)initWithCoder:(id)a3
+- (_TtC9MusicCore34ModelObjectBackedStoreItemMetadata)initWithCoder:(id)coder
 {
   *&self->MPStoreItemMetadata_opaque[OBJC_IVAR____TtC9MusicCore34ModelObjectBackedStoreItemMetadata_modelObject] = 0;
   v3 = &self->MPStoreItemMetadata_opaque[OBJC_IVAR____TtC9MusicCore34ModelObjectBackedStoreItemMetadata_modelObjectStoreID];
@@ -111,12 +111,12 @@
   return result;
 }
 
-- (id)metadataByAppendingMetadata:(id)a3
+- (id)metadataByAppendingMetadata:(id)metadata
 {
   v16.receiver = self;
   v16.super_class = type metadata accessor for ModelObjectBackedStoreItemMetadata();
   v4 = v16.receiver;
-  v5 = [(ModelObjectBackedStoreItemMetadata *)&v16 metadataByAppendingMetadata:a3];
+  v5 = [(ModelObjectBackedStoreItemMetadata *)&v16 metadataByAppendingMetadata:metadata];
   v6 = OBJC_IVAR____TtC9MusicCore34ModelObjectBackedStoreItemMetadata_modelObject;
   swift_beginAccess();
   v7 = *&v4[v6];
@@ -141,7 +141,7 @@
 
 - (NSArray)audioTraits
 {
-  v2 = self;
+  selfCopy = self;
   ModelObjectBackedStoreItemMetadata.audioTraits.getter();
 
   v3.super.isa = sub_AB9740().super.isa;
@@ -151,7 +151,7 @@
 
 - (BOOL)isBeats1
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.isBeats1.getter();
 
   return v3 & 1;
@@ -159,7 +159,7 @@
 
 - (BOOL)isCompilation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.isCompilation.getter();
 
   return v3 & 1;
@@ -167,7 +167,7 @@
 
 - (int64_t)discCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.discCount.getter();
 
   return v3;
@@ -175,7 +175,7 @@
 
 - (int64_t)discNumber
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.discNumber.getter();
 
   return v3;
@@ -183,7 +183,7 @@
 
 - (double)duration
 {
-  v2 = self;
+  selfCopy = self;
   ModelObjectBackedStoreItemMetadata.duration.getter();
   v4 = v3;
 
@@ -192,7 +192,7 @@
 
 - (int64_t)episodeCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.episodeCount.getter();
 
   return v3;
@@ -200,7 +200,7 @@
 
 - (int64_t)explicitRating
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.explicitRating.getter();
 
   return v3;
@@ -208,7 +208,7 @@
 
 - (NSArray)genreNames
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.genreNames.getter();
 
   if (v3)
@@ -226,7 +226,7 @@
 
 - (BOOL)hasArtistBiography
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.hasArtistBiography.getter();
 
   return v3 & 1;
@@ -234,7 +234,7 @@
 
 - (BOOL)hasLyrics
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.hasLyrics.getter();
 
   return v3 & 1;
@@ -242,7 +242,7 @@
 
 - (BOOL)hasTimeSyncedLyrics
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.hasTimeSyncedLyrics.getter();
 
   return v3 & 1;
@@ -250,7 +250,7 @@
 
 - (BOOL)hasSocialPosts
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.hasSocialPosts.getter();
 
   return v3 & 1;
@@ -258,7 +258,7 @@
 
 - (BOOL)isExplicitContent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.isExplicitContent.getter();
 
   return v3 & 1;
@@ -266,7 +266,7 @@
 
 - (BOOL)isMasteredForiTunes
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.isMasteredForiTunes.getter();
 
   return v3 & 1;
@@ -274,7 +274,7 @@
 
 - (BOOL)isPreorder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.isPreorder.getter();
 
   return v3 & 1;
@@ -282,7 +282,7 @@
 
 - (BOOL)isPrivatePerson
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.isPrivatePerson.getter();
 
   return v3 & 1;
@@ -290,7 +290,7 @@
 
 - (BOOL)isVerifiedPerson
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.isVerifiedPerson.getter();
 
   return v3 & 1;
@@ -298,7 +298,7 @@
 
 - (BOOL)isOnboardedPerson
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.isOnboardedPerson.getter();
 
   return v3 & 1;
@@ -306,7 +306,7 @@
 
 - (int64_t)movementCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.movementCount.getter();
 
   return v3;
@@ -314,7 +314,7 @@
 
 - (int64_t)movementNumber
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.movementNumber.getter();
 
   return v3;
@@ -322,7 +322,7 @@
 
 - (int64_t)seasonNumber
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.seasonNumber.getter();
 
   return v3;
@@ -330,7 +330,7 @@
 
 - (BOOL)showComposer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.showComposer.getter();
 
   return v3 & 1;
@@ -360,7 +360,7 @@
 
 - (BOOL)isStoreRedownloadable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.isStoreRedownloadable.getter();
 
   return v3 & 1;
@@ -368,7 +368,7 @@
 
 - (int64_t)trackCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.trackCount.getter();
 
   return v3;
@@ -376,7 +376,7 @@
 
 - (int64_t)trackNumber
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModelObjectBackedStoreItemMetadata.trackNumber.getter();
 
   return v3;

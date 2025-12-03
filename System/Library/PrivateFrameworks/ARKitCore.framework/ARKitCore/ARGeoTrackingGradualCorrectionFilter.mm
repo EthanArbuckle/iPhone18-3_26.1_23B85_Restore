@@ -1,50 +1,50 @@
 @interface ARGeoTrackingGradualCorrectionFilter
-- (BOOL)getCurrentENUFromVIO:(id *)a3;
-- (__n128)initWithTargetTransform:(__n128 *)a3;
+- (BOOL)getCurrentENUFromVIO:(id *)o;
+- (__n128)initWithTargetTransform:(__n128 *)transform;
 - (id).cxx_construct;
 - (void)ENUFromVIOTarget;
-- (void)setENUFromVIOTarget:(__int128 *)a3;
-- (void)setTargetRotation:(uint64_t)a3;
+- (void)setENUFromVIOTarget:(__int128 *)target;
+- (void)setTargetRotation:(uint64_t)rotation;
 - (void)setTargetTranslation:(ARGeoTrackingGradualCorrectionFilter *)self;
-- (void)updateWithVIOPose:(uint64_t)a3 timestamp:(_OWORD *)a4;
+- (void)updateWithVIOPose:(uint64_t)pose timestamp:(_OWORD *)timestamp;
 @end
 
 @implementation ARGeoTrackingGradualCorrectionFilter
 
-- (__n128)initWithTargetTransform:(__n128 *)a3
+- (__n128)initWithTargetTransform:(__n128 *)transform
 {
-  v17.receiver = a1;
+  v17.receiver = self;
   v17.super_class = ARGeoTrackingGradualCorrectionFilter;
   v4 = [(ARGeoTrackingGradualCorrectionFilter *)&v17 init];
   if (v4)
   {
     v4->_targetLock._os_unfair_lock_opaque = 0;
-    v6 = *a3;
-    v7 = a3[1];
-    v8 = a3[3];
-    *&v4->_anon_10[32] = a3[2];
+    v6 = *transform;
+    v7 = transform[1];
+    v8 = transform[3];
+    *&v4->_anon_10[32] = transform[2];
     *&v4->_anon_10[48] = v8;
     *v4->_anon_10 = v6;
     *&v4->_anon_10[16] = v7;
-    v9 = a3[4];
-    v10 = a3[5];
-    v11 = a3[7];
-    *&v4->_anon_10[96] = a3[6];
+    v9 = transform[4];
+    v10 = transform[5];
+    v11 = transform[7];
+    *&v4->_anon_10[96] = transform[6];
     *&v4->_anon_10[112] = v11;
     *&v4->_anon_10[64] = v9;
     *&v4->_anon_10[80] = v10;
     v4->_lastTimestamp = -1.0;
-    v12 = *a3;
-    v13 = a3[1];
-    v14 = a3[3];
-    *&v4[1]._anon_10[16] = a3[2];
+    v12 = *transform;
+    v13 = transform[1];
+    v14 = transform[3];
+    *&v4[1]._anon_10[16] = transform[2];
     *&v4[1]._anon_10[32] = v14;
     *&v4[1].super.isa = v12;
     *v4[1]._anon_10 = v13;
-    result = a3[4];
-    v15 = a3[5];
-    v16 = a3[7];
-    *&v4[1]._anon_10[80] = a3[6];
+    result = transform[4];
+    v15 = transform[5];
+    v16 = transform[7];
+    *&v4[1]._anon_10[80] = transform[6];
     *&v4[1]._anon_10[96] = v16;
     *&v4[1]._anon_10[48] = result;
     *&v4[1]._anon_10[64] = v15;
@@ -55,42 +55,42 @@
 
 - (void)ENUFromVIOTarget
 {
-  os_unfair_lock_lock((a1 + 280));
-  v4 = *(a1 + 416);
-  a2[4] = *(a1 + 400);
+  os_unfair_lock_lock((self + 280));
+  v4 = *(self + 416);
+  a2[4] = *(self + 400);
   a2[5] = v4;
-  v5 = *(a1 + 448);
-  a2[6] = *(a1 + 432);
+  v5 = *(self + 448);
+  a2[6] = *(self + 432);
   a2[7] = v5;
-  v6 = *(a1 + 352);
-  *a2 = *(a1 + 336);
+  v6 = *(self + 352);
+  *a2 = *(self + 336);
   a2[1] = v6;
-  v7 = *(a1 + 384);
-  a2[2] = *(a1 + 368);
+  v7 = *(self + 384);
+  a2[2] = *(self + 368);
   a2[3] = v7;
 
-  os_unfair_lock_unlock((a1 + 280));
+  os_unfair_lock_unlock((self + 280));
 }
 
-- (void)setENUFromVIOTarget:(__int128 *)a3
+- (void)setENUFromVIOTarget:(__int128 *)target
 {
-  os_unfair_lock_lock((a1 + 280));
-  v5 = *a3;
-  v6 = a3[1];
-  v7 = a3[3];
-  *(a1 + 368) = a3[2];
-  *(a1 + 384) = v7;
-  *(a1 + 336) = v5;
-  *(a1 + 352) = v6;
-  v8 = a3[4];
-  v9 = a3[5];
-  v10 = a3[7];
-  *(a1 + 432) = a3[6];
-  *(a1 + 448) = v10;
-  *(a1 + 400) = v8;
-  *(a1 + 416) = v9;
+  os_unfair_lock_lock((self + 280));
+  v5 = *target;
+  v6 = target[1];
+  v7 = target[3];
+  *(self + 368) = target[2];
+  *(self + 384) = v7;
+  *(self + 336) = v5;
+  *(self + 352) = v6;
+  v8 = target[4];
+  v9 = target[5];
+  v10 = target[7];
+  *(self + 432) = target[6];
+  *(self + 448) = v10;
+  *(self + 400) = v8;
+  *(self + 416) = v9;
 
-  os_unfair_lock_unlock((a1 + 280));
+  os_unfair_lock_unlock((self + 280));
 }
 
 - (void)setTargetTranslation:(ARGeoTrackingGradualCorrectionFilter *)self
@@ -106,40 +106,40 @@
   os_unfair_lock_unlock(&self->_targetLock);
 }
 
-- (void)setTargetRotation:(uint64_t)a3
+- (void)setTargetRotation:(uint64_t)rotation
 {
-  os_unfair_lock_lock(a1 + 70);
+  os_unfair_lock_lock(self + 70);
   for (i = 0; i != 24; i += 8)
   {
-    v6 = *(a3 + i * 4 + 16);
-    v7 = &a1[i + 84];
-    *&v7->_os_unfair_lock_opaque = *(a3 + i * 4);
+    v6 = *(rotation + i * 4 + 16);
+    v7 = &self[i + 84];
+    *&v7->_os_unfair_lock_opaque = *(rotation + i * 4);
     *&v7[4]._os_unfair_lock_opaque = v6;
   }
 
-  os_unfair_lock_unlock(a1 + 70);
+  os_unfair_lock_unlock(self + 70);
 }
 
-- (BOOL)getCurrentENUFromVIO:(id *)a3
+- (BOOL)getCurrentENUFromVIO:(id *)o
 {
   v3 = *self->_anon_10;
   v4 = *&self->_anon_10[16];
   v5 = *&self->_anon_10[48];
-  *(a3 + 2) = *&self->_anon_10[32];
-  *(a3 + 3) = v5;
-  *a3 = v3;
-  *(a3 + 1) = v4;
+  *(o + 2) = *&self->_anon_10[32];
+  *(o + 3) = v5;
+  *o = v3;
+  *(o + 1) = v4;
   v6 = *&self->_anon_10[64];
   v7 = *&self->_anon_10[80];
   v8 = *&self->_anon_10[112];
-  *(a3 + 6) = *&self->_anon_10[96];
-  *(a3 + 7) = v8;
-  *(a3 + 4) = v6;
-  *(a3 + 5) = v7;
+  *(o + 6) = *&self->_anon_10[96];
+  *(o + 7) = v8;
+  *(o + 4) = v6;
+  *(o + 5) = v7;
   return 1;
 }
 
-- (void)updateWithVIOPose:(uint64_t)a3 timestamp:(_OWORD *)a4
+- (void)updateWithVIOPose:(uint64_t)pose timestamp:(_OWORD *)timestamp
 {
   STACK[0xAC8] = *MEMORY[0x1E69E9840];
   *&STACK[0x8B0] = 0u;
@@ -150,17 +150,17 @@
   *&STACK[0x880] = 0u;
   *&STACK[0x850] = 0u;
   *&STACK[0x860] = 0u;
-  v54 = a4[5];
-  *&STACK[0x910] = a4[4];
+  v54 = timestamp[5];
+  *&STACK[0x910] = timestamp[4];
   *&STACK[0x920] = v54;
-  v55 = a4[7];
-  *&STACK[0x930] = a4[6];
+  v55 = timestamp[7];
+  *&STACK[0x930] = timestamp[6];
   *&STACK[0x940] = v55;
-  v56 = a4[1];
-  *&STACK[0x8D0] = *a4;
+  v56 = timestamp[1];
+  *&STACK[0x8D0] = *timestamp;
   *&STACK[0x8E0] = v56;
-  v57 = a4[3];
-  *&STACK[0x8F0] = a4[2];
+  v57 = timestamp[3];
+  *&STACK[0x8F0] = timestamp[2];
   *&STACK[0x900] = v57;
   __invert_d4();
   *&STACK[0x930] = 0u;
@@ -172,35 +172,35 @@
   *&STACK[0x8D0] = 0u;
   *&STACK[0x8E0] = 0u;
   ConvertIMU(&STACK[0x850], &STACK[0x8D0]);
-  if (*(a1 + 272) >= 0.0)
+  if (*(self + 272) >= 0.0)
   {
     STACK[0x848] = 0;
     STACK[0x840] = 0;
-    RelativeMotionAndYaw = GetRelativeMotionAndYaw((a1 + 144), &STACK[0x8D0], &STACK[0x848], &STACK[0x840]);
-    os_unfair_lock_lock((a1 + 280));
-    v63 = *(a1 + 416);
-    *&STACK[0x800] = *(a1 + 400);
+    RelativeMotionAndYaw = GetRelativeMotionAndYaw((self + 144), &STACK[0x8D0], &STACK[0x848], &STACK[0x840]);
+    os_unfair_lock_lock((self + 280));
+    v63 = *(self + 416);
+    *&STACK[0x800] = *(self + 400);
     *&STACK[0x810] = v63;
-    v64 = *(a1 + 448);
-    *&STACK[0x820] = *(a1 + 432);
+    v64 = *(self + 448);
+    *&STACK[0x820] = *(self + 432);
     *&STACK[0x830] = v64;
-    v65 = *(a1 + 352);
-    *a52.columns[0].f64 = *(a1 + 336);
+    v65 = *(self + 352);
+    *a52.columns[0].f64 = *(self + 336);
     *&a52.columns[0].f64[2] = v65;
-    v66 = *(a1 + 384);
-    *&STACK[0x7E0] = *(a1 + 368);
+    v66 = *(self + 384);
+    *&STACK[0x7E0] = *(self + 368);
     *&STACK[0x7F0] = v66;
-    os_unfair_lock_unlock((a1 + 280));
+    os_unfair_lock_unlock((self + 280));
     if (RelativeMotionAndYaw)
     {
       v67 = *&STACK[0x840];
-      v68 = (a1 + 16);
-      v69 = *(a1 + 272);
+      v68 = (self + 16);
+      v69 = *(self + 272);
       v155 = *&STACK[0x940];
       v156 = *&STACK[0x930];
       v70 = vmlaq_laneq_f64(vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(*&a52.columns[0].f64[2], *&STACK[0x930]), *&STACK[0x7F0], *&STACK[0x930], 1), *&STACK[0x810], v155.f64[0]), *&STACK[0x830], v155, 1);
-      v157 = vmlaq_laneq_f64(vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(*(a1 + 32), *&STACK[0x930]), *(a1 + 64), *&STACK[0x930], 1), *(a1 + 96), *&STACK[0x940]), *(a1 + 128), *&STACK[0x940], 1);
-      v158 = vmlaq_laneq_f64(vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(*(a1 + 16), *&STACK[0x930]), *(a1 + 48), *&STACK[0x930], 1), *(a1 + 80), *&STACK[0x940]), *(a1 + 112), *&STACK[0x940], 1);
+      v157 = vmlaq_laneq_f64(vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(*(self + 32), *&STACK[0x930]), *(self + 64), *&STACK[0x930], 1), *(self + 96), *&STACK[0x940]), *(self + 128), *&STACK[0x940], 1);
+      v158 = vmlaq_laneq_f64(vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(*(self + 16), *&STACK[0x930]), *(self + 48), *&STACK[0x930], 1), *(self + 80), *&STACK[0x940]), *(self + 112), *&STACK[0x940], 1);
       v71 = vsubq_f64(v70, v157);
       v153 = v70.f64[0] - v157.f64[0];
       v154 = vsubq_f64(vmlaq_laneq_f64(vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(*a52.columns[0].f64, *&STACK[0x930]), *&STACK[0x7E0], *&STACK[0x930], 1), *&STACK[0x800], v155.f64[0]), *&STACK[0x820], v155, 1), v158);
@@ -226,7 +226,7 @@
       }
 
       a50 = 0.0;
-      GetRelativeMotionAndYaw((a1 + 16), &a52, &a51, &a50);
+      GetRelativeMotionAndYaw((self + 16), &a52, &a51, &a50);
       v75 = a50;
       v76 = fabs(a50);
       if (vars0.f64[0] <= 5.0 && v76 <= 5.0)
@@ -266,7 +266,7 @@
           v105 = -v76;
         }
 
-        Transform4DofFromMatrix((a1 + 16), &a45);
+        Transform4DofFromMatrix((self + 16), &a45);
         a44 = 0;
         a41 = 0u;
         a42 = 0;
@@ -319,17 +319,17 @@
         __asm { FMOV            V3.2D, #1.0 }
 
         *&_Q3 = v123;
-        v130 = *(a1 + 96);
-        *&STACK[0x990] = *(a1 + 80);
+        v130 = *(self + 96);
+        *&STACK[0x990] = *(self + 80);
         *&STACK[0x9A0] = v130;
-        v131 = *(a1 + 128);
-        *&STACK[0x9B0] = *(a1 + 112);
+        v131 = *(self + 128);
+        *&STACK[0x9B0] = *(self + 112);
         *&STACK[0x9C0] = v131;
-        v132 = *(a1 + 32);
+        v132 = *(self + 32);
         *&STACK[0x950] = *v68;
         *&STACK[0x960] = v132;
-        v133 = *(a1 + 64);
-        *&STACK[0x970] = *(a1 + 48);
+        v133 = *(self + 64);
+        *&STACK[0x970] = *(self + 48);
         *&STACK[0x980] = v133;
         a35 = v114;
         a36 = v116;
@@ -374,37 +374,37 @@
             LODWORD(STACK[0x950]) = 138543618;
             STACK[0x954] = v143;
             LOWORD(STACK[0x95C]) = 2048;
-            STACK[0x95E] = a1;
+            STACK[0x95E] = self;
             _os_log_impl(&dword_1C241C000, v141, OS_LOG_TYPE_INFO, "%{public}@ <%p>: GradualCorrection Pose update does not improve", &STACK[0x950], 0x16u);
           }
         }
 
         v144 = *&STACK[0xA00];
-        *(a1 + 48) = *&STACK[0x9F0];
-        *(a1 + 64) = v144;
+        *(self + 48) = *&STACK[0x9F0];
+        *(self + 64) = v144;
         v145 = *&STACK[0xA20];
-        *(a1 + 80) = *&STACK[0xA10];
-        *(a1 + 96) = v145;
+        *(self + 80) = *&STACK[0xA10];
+        *(self + 96) = v145;
         v146 = *&STACK[0x9E0];
         *v68 = *&STACK[0x9D0];
-        *(a1 + 32) = v146;
-        *(a1 + 112) = vars0a;
-        *(a1 + 128) = v159;
-        *(a1 + 272) = a2;
+        *(self + 32) = v146;
+        *(self + 112) = vars0a;
+        *(self + 128) = v159;
+        *(self + 272) = a2;
         v147 = *&STACK[0x8D0];
         v148 = *&STACK[0x8E0];
         v149 = *&STACK[0x900];
-        *(a1 + 176) = *&STACK[0x8F0];
-        *(a1 + 192) = v149;
-        *(a1 + 144) = v147;
-        *(a1 + 160) = v148;
+        *(self + 176) = *&STACK[0x8F0];
+        *(self + 192) = v149;
+        *(self + 144) = v147;
+        *(self + 160) = v148;
         v150 = *&STACK[0x910];
         v151 = *&STACK[0x920];
         v152 = *&STACK[0x940];
-        *(a1 + 240) = *&STACK[0x930];
-        *(a1 + 256) = v152;
-        *(a1 + 208) = v150;
-        *(a1 + 224) = v151;
+        *(self + 240) = *&STACK[0x930];
+        *(self + 256) = v152;
+        *(self + 208) = v150;
+        *(self + 224) = v151;
       }
 
       else
@@ -417,7 +417,7 @@
           LODWORD(STACK[0xA40]) = 138544130;
           STACK[0xA44] = v80;
           LOWORD(STACK[0xA4C]) = 2048;
-          STACK[0xA4E] = a1;
+          STACK[0xA4E] = self;
           LOWORD(STACK[0xA56]) = 2048;
           STACK[0xA58] = *&vars0.f64[0];
           LOWORD(STACK[0xA60]) = 2048;
@@ -425,31 +425,31 @@
           _os_log_impl(&dword_1C241C000, v78, OS_LOG_TYPE_INFO, "%{public}@ <%p>: GradualCorrection Pose update to strong (%f m ,%f deg) - resetting filter", &STACK[0xA40], 0x2Au);
         }
 
-        *(a1 + 272) = a2;
+        *(self + 272) = a2;
         v81 = *&STACK[0x920];
-        *(a1 + 208) = *&STACK[0x910];
-        *(a1 + 224) = v81;
+        *(self + 208) = *&STACK[0x910];
+        *(self + 224) = v81;
         v82 = *&STACK[0x940];
-        *(a1 + 240) = *&STACK[0x930];
-        *(a1 + 256) = v82;
+        *(self + 240) = *&STACK[0x930];
+        *(self + 256) = v82;
         v83 = *&STACK[0x8E0];
-        *(a1 + 144) = *&STACK[0x8D0];
-        *(a1 + 160) = v83;
+        *(self + 144) = *&STACK[0x8D0];
+        *(self + 160) = v83;
         v84 = *&STACK[0x900];
-        *(a1 + 176) = *&STACK[0x8F0];
-        *(a1 + 192) = v84;
+        *(self + 176) = *&STACK[0x8F0];
+        *(self + 192) = v84;
         v85 = *&STACK[0x7F0];
-        *(a1 + 48) = *&STACK[0x7E0];
-        *(a1 + 64) = v85;
+        *(self + 48) = *&STACK[0x7E0];
+        *(self + 64) = v85;
         v86 = *&a52.columns[0].f64[2];
         *v68 = *a52.columns[0].f64;
-        *(a1 + 32) = v86;
+        *(self + 32) = v86;
         v87 = *&STACK[0x830];
-        *(a1 + 112) = *&STACK[0x820];
-        *(a1 + 128) = v87;
+        *(self + 112) = *&STACK[0x820];
+        *(self + 128) = v87;
         v88 = *&STACK[0x810];
-        *(a1 + 80) = *&STACK[0x800];
-        *(a1 + 96) = v88;
+        *(self + 80) = *&STACK[0x800];
+        *(self + 96) = v88;
       }
     }
 
@@ -463,53 +463,53 @@
         LODWORD(STACK[0xA40]) = 138543618;
         STACK[0xA44] = v91;
         LOWORD(STACK[0xA4C]) = 2048;
-        STACK[0xA4E] = a1;
+        STACK[0xA4E] = self;
         _os_log_impl(&dword_1C241C000, v89, OS_LOG_TYPE_INFO, "%{public}@ <%p>: GradualCorrection GetRelativeMotionAndYaw failed - resetting filter", &STACK[0xA40], 0x16u);
       }
 
-      *(a1 + 272) = a2;
+      *(self + 272) = a2;
       v92 = *&STACK[0x920];
-      *(a1 + 208) = *&STACK[0x910];
-      *(a1 + 224) = v92;
+      *(self + 208) = *&STACK[0x910];
+      *(self + 224) = v92;
       v93 = *&STACK[0x940];
-      *(a1 + 240) = *&STACK[0x930];
-      *(a1 + 256) = v93;
+      *(self + 240) = *&STACK[0x930];
+      *(self + 256) = v93;
       v94 = *&STACK[0x8E0];
-      *(a1 + 144) = *&STACK[0x8D0];
-      *(a1 + 160) = v94;
+      *(self + 144) = *&STACK[0x8D0];
+      *(self + 160) = v94;
       v95 = *&STACK[0x900];
-      *(a1 + 176) = *&STACK[0x8F0];
-      *(a1 + 192) = v95;
+      *(self + 176) = *&STACK[0x8F0];
+      *(self + 192) = v95;
       v96 = *&STACK[0x7F0];
-      *(a1 + 48) = *&STACK[0x7E0];
-      *(a1 + 64) = v96;
+      *(self + 48) = *&STACK[0x7E0];
+      *(self + 64) = v96;
       v97 = *&a52.columns[0].f64[2];
-      *(a1 + 16) = *a52.columns[0].f64;
-      *(a1 + 32) = v97;
+      *(self + 16) = *a52.columns[0].f64;
+      *(self + 32) = v97;
       v98 = *&STACK[0x830];
-      *(a1 + 112) = *&STACK[0x820];
-      *(a1 + 128) = v98;
+      *(self + 112) = *&STACK[0x820];
+      *(self + 128) = v98;
       v99 = *&STACK[0x810];
-      *(a1 + 80) = *&STACK[0x800];
-      *(a1 + 96) = v99;
+      *(self + 80) = *&STACK[0x800];
+      *(self + 96) = v99;
     }
   }
 
   else
   {
-    *(a1 + 272) = a2;
+    *(self + 272) = a2;
     v58 = *&STACK[0x920];
-    *(a1 + 208) = *&STACK[0x910];
-    *(a1 + 224) = v58;
+    *(self + 208) = *&STACK[0x910];
+    *(self + 224) = v58;
     v59 = *&STACK[0x940];
-    *(a1 + 240) = *&STACK[0x930];
-    *(a1 + 256) = v59;
+    *(self + 240) = *&STACK[0x930];
+    *(self + 256) = v59;
     v60 = *&STACK[0x8E0];
-    *(a1 + 144) = *&STACK[0x8D0];
-    *(a1 + 160) = v60;
+    *(self + 144) = *&STACK[0x8D0];
+    *(self + 160) = v60;
     v61 = *&STACK[0x900];
-    *(a1 + 176) = *&STACK[0x8F0];
-    *(a1 + 192) = v61;
+    *(self + 176) = *&STACK[0x8F0];
+    *(self + 192) = v61;
   }
 }
 

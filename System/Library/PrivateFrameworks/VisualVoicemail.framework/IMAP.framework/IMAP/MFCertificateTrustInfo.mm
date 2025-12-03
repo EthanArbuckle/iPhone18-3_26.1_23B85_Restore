@@ -1,5 +1,5 @@
 @interface MFCertificateTrustInfo
-- (MFCertificateTrustInfo)initWithCertificateType:(unint64_t)a3 trust:(__SecTrust *)a4 sender:(id)a5;
+- (MFCertificateTrustInfo)initWithCertificateType:(unint64_t)type trust:(__SecTrust *)trust sender:(id)sender;
 - (NSString)commonName;
 - (NSString)emailAddress;
 - (unint64_t)keychainStatus;
@@ -11,24 +11,24 @@
 
 @implementation MFCertificateTrustInfo
 
-- (MFCertificateTrustInfo)initWithCertificateType:(unint64_t)a3 trust:(__SecTrust *)a4 sender:(id)a5
+- (MFCertificateTrustInfo)initWithCertificateType:(unint64_t)type trust:(__SecTrust *)trust sender:(id)sender
 {
-  v8 = a5;
+  senderCopy = sender;
   v16.receiver = self;
   v16.super_class = MFCertificateTrustInfo;
   v9 = [(MFCertificateTrustInfo *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    v9->_certificateType = a3;
-    v9->_trust = CFRetain(a4);
-    v11 = [v8 copy];
+    v9->_certificateType = type;
+    v9->_trust = CFRetain(trust);
+    v11 = [senderCopy copy];
     sender = v10->_sender;
     v10->_sender = v11;
 
-    v13 = [v8 mf_copyUncommentedAddress];
+    mf_copyUncommentedAddress = [senderCopy mf_copyUncommentedAddress];
     uncommentedSender = v10->_uncommentedSender;
-    v10->_uncommentedSender = v13;
+    v10->_uncommentedSender = mf_copyUncommentedAddress;
   }
 
   return v10;
@@ -142,12 +142,12 @@
 - (void)keychainStatus
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = *a1;
-  v5 = [a2 vf_publicDescription];
+  v4 = *self;
+  vf_publicDescription = [a2 vf_publicDescription];
   v7 = 138412546;
   v8 = v4;
   v9 = 2114;
-  v10 = v5;
+  v10 = vf_publicDescription;
   _os_log_error_impl(&dword_2720B1000, a3, OS_LOG_TYPE_ERROR, "#SMIMEErrors Error when retrieving encryption certificate for %@: %{public}@", &v7, 0x16u);
 
   v6 = *MEMORY[0x277D85DE8];

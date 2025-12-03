@@ -1,89 +1,89 @@
 @interface PKTextInputCursorController
-- (BOOL)canMakeCursorWeakForResponder:(id)a3;
+- (BOOL)canMakeCursorWeakForResponder:(id)responder;
 - (BOOL)lastKnownTextInputResponderWindowIsKey;
 - (BOOL)scribbleEnabled;
-- (PKTextInputCursorController)initWithSettings:(id)a3;
+- (PKTextInputCursorController)initWithSettings:(id)settings;
 - (PKTextInputCursorControllerDelegate)delegate;
 - (PKTextInputSettings)_textInputSettings;
 - (UITextInput)_lastKnownTextInputResponder;
 - (id)_currentAssertionController;
 - (id)_implicitAssertionControllerIfPossible;
-- (id)_windowForResponder:(id)a3;
+- (id)_windowForResponder:(id)responder;
 - (void)_delayedRevokeTemporaryStrongMode;
-- (void)_handleDidPerformReturn:(id)a3;
-- (void)_handleUndoRedo:(id)a3;
-- (void)_setCursorStyle:(int64_t)a3;
-- (void)_setLastKnownTextInputResponder:(id)a3;
-- (void)_setMode:(int64_t)a3;
-- (void)_setTrackedLastKnownTextInputResponderWindowIsKey:(BOOL)a3;
-- (void)_textInputSourceDidChange:(id)a3;
+- (void)_handleDidPerformReturn:(id)return;
+- (void)_handleUndoRedo:(id)redo;
+- (void)_setCursorStyle:(int64_t)style;
+- (void)_setLastKnownTextInputResponder:(id)responder;
+- (void)_setMode:(int64_t)mode;
+- (void)_setTrackedLastKnownTextInputResponderWindowIsKey:(BOOL)key;
+- (void)_textInputSourceDidChange:(id)change;
 - (void)_updateAssertionsForCurrentState;
 - (void)_updateCursorStyle;
-- (void)firstResponderDidChange:(id)a3;
+- (void)firstResponderDidChange:(id)change;
 - (void)flashCursor;
 - (void)invalidateGhostAssertion;
 - (void)invalidateNonBlinkingAssertion;
 - (void)invalidateNonVisibleAssertion;
-- (void)keyWindowDidChange:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (void)keyWindowDidChange:(id)change;
+- (void)keyboardWillShow:(id)show;
 - (void)makeCursorStrong;
 - (void)makeCursorTemporarilyStrongWhileWriting;
-- (void)makeCursorTemporarilyStrongWithTimeout:(double)a3;
+- (void)makeCursorTemporarilyStrongWithTimeout:(double)timeout;
 - (void)makeCursorWeak;
 - (void)removeAllAssertions;
-- (void)reportDebugStateDescription:(id)a3;
+- (void)reportDebugStateDescription:(id)description;
 - (void)resetState;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setForceHidden:(BOOL)a3;
-- (void)setForceStrong:(BOOL)a3;
-- (void)setForceVisible:(BOOL)a3;
-- (void)simulateFirstResponderChangeForTesting:(id)a3;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setForceHidden:(BOOL)hidden;
+- (void)setForceStrong:(BOOL)strong;
+- (void)setForceVisible:(BOOL)visible;
+- (void)simulateFirstResponderChangeForTesting:(id)testing;
 - (void)simulateResetCursorTimeout;
-- (void)textInputSourceDidChange:(id)a3;
+- (void)textInputSourceDidChange:(id)change;
 - (void)writingStateDidChange;
 @end
 
 @implementation PKTextInputCursorController
 
-- (PKTextInputCursorController)initWithSettings:(id)a3
+- (PKTextInputCursorController)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v19.receiver = self;
   v19.super_class = PKTextInputCursorController;
   v6 = [(PKTextInputCursorController *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
     v7->_cursorStyle = 0;
     v7->_mode = 0;
-    v8 = [MEMORY[0x1E695DF00] distantPast];
-    [v8 timeIntervalSinceReferenceDate];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    [distantPast timeIntervalSinceReferenceDate];
     v7->__lastSwitchToIdleWritingStateTime = v9;
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel_firstResponderDidChange_ name:*MEMORY[0x1E69DEB18] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_firstResponderDidChange_ name:*MEMORY[0x1E69DEB18] object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v7 selector:sel_keyWindowDidChange_ name:*MEMORY[0x1E69DE7B0] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel_keyWindowDidChange_ name:*MEMORY[0x1E69DE7B0] object:0];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v7 selector:sel_textInputSourceDidChange_ name:*MEMORY[0x1E69DE710] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v7 selector:sel_textInputSourceDidChange_ name:*MEMORY[0x1E69DE710] object:0];
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v7 selector:sel_scrollViewWillBeginDragging_ name:*MEMORY[0x1E69DEA58] object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v7 selector:sel_scrollViewWillBeginDragging_ name:*MEMORY[0x1E69DEA58] object:0];
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v7 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter5 addObserver:v7 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v7 selector:sel_keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE068] object:0];
+    defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter6 addObserver:v7 selector:sel_keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE068] object:0];
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v7 selector:sel__handleUndoRedo_ name:*MEMORY[0x1E696AA30] object:0];
+    defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter7 addObserver:v7 selector:sel__handleUndoRedo_ name:*MEMORY[0x1E696AA30] object:0];
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v7 selector:sel__handleUndoRedo_ name:*MEMORY[0x1E696AA28] object:0];
+    defaultCenter8 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter8 addObserver:v7 selector:sel__handleUndoRedo_ name:*MEMORY[0x1E696AA28] object:0];
   }
 
   return v7;
@@ -105,52 +105,52 @@
   return v3;
 }
 
-- (void)_setMode:(int64_t)a3
+- (void)_setMode:(int64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
+    self->_mode = mode;
     +[PKTextInputDebugStateIntrospector debugStateDidChange];
 
     [(PKTextInputCursorController *)self _updateCursorStyle];
   }
 }
 
-- (BOOL)canMakeCursorWeakForResponder:(id)a3
+- (BOOL)canMakeCursorWeakForResponder:(id)responder
 {
-  v4 = a3;
-  v5 = [(PKTextInputCursorController *)self _textInputSettings];
-  v6 = [v5 enableWeakCursor];
+  responderCopy = responder;
+  _textInputSettings = [(PKTextInputCursorController *)self _textInputSettings];
+  enableWeakCursor = [_textInputSettings enableWeakCursor];
 
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0 && [v4 _textInputSource] == 3 && +[PKTextInputElementsFinder isResponderEditableTextInput:](PKTextInputElementsFinder, v4) && (objc_opt_respondsToSelector() & 1) != 0)
+  if (enableWeakCursor && (objc_opt_respondsToSelector() & 1) != 0 && [responderCopy _textInputSource] == 3 && +[PKTextInputElementsFinder isResponderEditableTextInput:](PKTextInputElementsFinder, responderCopy) && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v7 = objc_opt_class();
-    v8 = [v4 selectedTextRange];
-    v9 = PKDynamicCast(v7, v8);
+    selectedTextRange = [responderCopy selectedTextRange];
+    v9 = PKDynamicCast(v7, selectedTextRange);
 
     if (v9)
     {
-      v10 = [v9 isEmpty];
+      isEmpty = [v9 isEmpty];
     }
 
     else
     {
-      v10 = 1;
+      isEmpty = 1;
     }
   }
 
   else
   {
-    v10 = 0;
+    isEmpty = 0;
   }
 
-  return v10;
+  return isEmpty;
 }
 
-- (void)_setCursorStyle:(int64_t)a3
+- (void)_setCursorStyle:(int64_t)style
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (self->_cursorStyle != a3)
+  if (self->_cursorStyle != style)
   {
     v5 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -166,25 +166,25 @@
         v12 = off_1E82D97F8[cursorStyle];
       }
 
-      if (a3 > 3)
+      if (style > 3)
       {
         v13 = 0;
       }
 
       else
       {
-        v13 = off_1E82D97F8[a3];
+        v13 = off_1E82D97F8[style];
       }
 
-      v14 = [(PKTextInputCursorController *)self mode];
-      if (v14 > 2)
+      mode = [(PKTextInputCursorController *)self mode];
+      if (mode > 2)
       {
         v15 = 0;
       }
 
       else
       {
-        v15 = off_1E82D9818[v14];
+        v15 = off_1E82D9818[mode];
       }
 
       *buf = 138412802;
@@ -197,7 +197,7 @@
     }
 
     v6 = self->_cursorStyle;
-    self->_cursorStyle = a3;
+    self->_cursorStyle = style;
     +[PKTextInputDebugStateIntrospector debugStateDidChange];
     if (v6 == 1 && self->_cursorStyle == 3)
     {
@@ -231,11 +231,11 @@
   [(PKTextInputCursorController *)self removeAllAssertions];
   if (self->_cursorShouldFlash)
   {
-    v3 = [(PKTextInputCursorController *)self _currentAssertionController];
+    _currentAssertionController = [(PKTextInputCursorController *)self _currentAssertionController];
     v4 = @"Non blinking for Scribble flash cursor";
 LABEL_3:
-    v9 = v3;
-    v5 = [v3 nonBlinkingAssertionWithReason:v4];
+    _currentAssertionController2 = _currentAssertionController;
+    v5 = [_currentAssertionController nonBlinkingAssertionWithReason:v4];
     v6 = 8;
     goto LABEL_4;
   }
@@ -243,15 +243,15 @@ LABEL_3:
   cursorStyle = self->_cursorStyle;
   if (cursorStyle == 3)
   {
-    v9 = [(PKTextInputCursorController *)self _currentAssertionController];
-    v5 = [v9 nonVisibleAssertionWithReason:@"Hidden for Scribble"];
+    _currentAssertionController2 = [(PKTextInputCursorController *)self _currentAssertionController];
+    v5 = [_currentAssertionController2 nonVisibleAssertionWithReason:@"Hidden for Scribble"];
     v6 = 16;
     goto LABEL_4;
   }
 
   if (cursorStyle == 2)
   {
-    v3 = [(PKTextInputCursorController *)self _currentAssertionController];
+    _currentAssertionController = [(PKTextInputCursorController *)self _currentAssertionController];
     v4 = @"Non blinking for Scribble";
     goto LABEL_3;
   }
@@ -261,8 +261,8 @@ LABEL_3:
     return;
   }
 
-  v9 = [(PKTextInputCursorController *)self _currentAssertionController];
-  v5 = [v9 nonBlinkingGhostAssertionWithReason:@"Ghosted for Scribble"];
+  _currentAssertionController2 = [(PKTextInputCursorController *)self _currentAssertionController];
+  v5 = [_currentAssertionController2 nonBlinkingGhostAssertionWithReason:@"Ghosted for Scribble"];
   v6 = 24;
 LABEL_4:
   v7 = *(&self->super.isa + v6);
@@ -273,11 +273,11 @@ LABEL_4:
 {
   if ([(PKTextInputCursorController *)self scribbleEnabled])
   {
-    v3 = [(PKTextInputCursorController *)self delegate];
-    if (v3)
+    delegate = [(PKTextInputCursorController *)self delegate];
+    if (delegate)
     {
-      v4 = [(PKTextInputCursorController *)self delegate];
-      v5 = [v4 cursorControllerWritingState:self];
+      delegate2 = [(PKTextInputCursorController *)self delegate];
+      v5 = [delegate2 cursorControllerWritingState:self];
     }
 
     else
@@ -289,13 +289,13 @@ LABEL_4:
     v7 = v6;
     [(PKTextInputCursorController *)self _lastSwitchToIdleWritingStateTime];
     v9 = v7 - v8;
-    v10 = [(PKTextInputCursorController *)self _textInputSettings];
-    [v10 weakCursorVisibilityTimeout];
+    _textInputSettings = [(PKTextInputCursorController *)self _textInputSettings];
+    [_textInputSettings weakCursorVisibilityTimeout];
     v12 = v11 - v9;
 
-    v13 = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
+    _lastKnownTextInputResponder = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
 
-    v14 = [(PKTextInputCursorController *)self lastKnownTextInputResponderWindowIsKey];
+    lastKnownTextInputResponderWindowIsKey = [(PKTextInputCursorController *)self lastKnownTextInputResponderWindowIsKey];
     if (v5 == 1)
     {
       v16 = 0;
@@ -316,25 +316,25 @@ LABEL_4:
       }
     }
 
-    v17 = [(PKTextInputCursorController *)self delegate];
-    if ([v17 cursorControllerCustomHighlightFeedbackIsVisible:self])
+    delegate3 = [(PKTextInputCursorController *)self delegate];
+    if ([delegate3 cursorControllerCustomHighlightFeedbackIsVisible:self])
     {
     }
 
     else
     {
-      v18 = !v14;
+      v18 = !lastKnownTextInputResponderWindowIsKey;
 
-      if (!v13 || !v18)
+      if (!_lastKnownTextInputResponder || !v18)
       {
-        if ([(PKTextInputCursorController *)self mode]!= 2 || !v13 || [(PKTextInputCursorController *)self forceStrong])
+        if ([(PKTextInputCursorController *)self mode]!= 2 || !_lastKnownTextInputResponder || [(PKTextInputCursorController *)self forceStrong])
         {
           goto LABEL_24;
         }
 
-        v21 = [(PKTextInputCursorController *)self forceVisible];
+        forceVisible = [(PKTextInputCursorController *)self forceVisible];
         v22 = v15 ^ 1;
-        if (v21)
+        if (forceVisible)
         {
           v22 = v18;
         }
@@ -343,7 +343,7 @@ LABEL_4:
         {
 LABEL_24:
           v19 = 0;
-          v20 = (v13 == 0) | (v15 | v16) ^ 1;
+          v20 = (_lastKnownTextInputResponder == 0) | (v15 | v16) ^ 1;
 LABEL_25:
           if ([(PKTextInputCursorController *)self forceVisible])
           {
@@ -357,9 +357,9 @@ LABEL_25:
 
           else
           {
-            v25 = [(PKTextInputCursorController *)self forceHidden];
-            v23 = v19 | v25;
-            v24 = v25 | v20;
+            forceHidden = [(PKTextInputCursorController *)self forceHidden];
+            v23 = v19 | forceHidden;
+            v24 = forceHidden | v20;
             if (!v16)
             {
 LABEL_30:
@@ -461,21 +461,21 @@ void __42__PKTextInputCursorController_flashCursor__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setForceStrong:(BOOL)a3
+- (void)setForceStrong:(BOOL)strong
 {
-  if (self->_forceStrong != a3)
+  if (self->_forceStrong != strong)
   {
-    self->_forceStrong = a3;
+    self->_forceStrong = strong;
     [(PKTextInputCursorController *)self _updateCursorStyle];
   }
 }
 
-- (void)setForceVisible:(BOOL)a3
+- (void)setForceVisible:(BOOL)visible
 {
-  if (self->_forceVisible != a3)
+  if (self->_forceVisible != visible)
   {
-    self->_forceVisible = a3;
-    if (a3)
+    self->_forceVisible = visible;
+    if (visible)
     {
       self->_forceHidden = 0;
     }
@@ -484,12 +484,12 @@ void __42__PKTextInputCursorController_flashCursor__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setForceHidden:(BOOL)a3
+- (void)setForceHidden:(BOOL)hidden
 {
-  if (self->_forceHidden != a3)
+  if (self->_forceHidden != hidden)
   {
-    self->_forceHidden = a3;
-    if (a3)
+    self->_forceHidden = hidden;
+    if (hidden)
     {
       self->_forceVisible = 0;
     }
@@ -515,24 +515,24 @@ void __42__PKTextInputCursorController_flashCursor__block_invoke(uint64_t a1)
   }
 }
 
-- (void)makeCursorTemporarilyStrongWithTimeout:(double)a3
+- (void)makeCursorTemporarilyStrongWithTimeout:(double)timeout
 {
   if ([(PKTextInputCursorController *)self mode]== 2)
   {
     [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__delayedRevokeTemporaryStrongMode object:0];
     [(PKTextInputCursorController *)self _setMode:1];
-    if (a3 > 0.0)
+    if (timeout > 0.0)
     {
 
-      [(PKTextInputCursorController *)self performSelector:sel__delayedRevokeTemporaryStrongMode withObject:0 afterDelay:a3];
+      [(PKTextInputCursorController *)self performSelector:sel__delayedRevokeTemporaryStrongMode withObject:0 afterDelay:timeout];
     }
   }
 }
 
 - (void)writingStateDidChange
 {
-  v3 = [(PKTextInputCursorController *)self delegate];
-  v4 = [v3 cursorControllerWritingState:self];
+  delegate = [(PKTextInputCursorController *)self delegate];
+  v4 = [delegate cursorControllerWritingState:self];
 
   if (!v4)
   {
@@ -540,8 +540,8 @@ void __42__PKTextInputCursorController_flashCursor__block_invoke(uint64_t a1)
     [(PKTextInputCursorController *)self set_lastSwitchToIdleWritingStateTime:?];
     if ([(PKTextInputCursorController *)self mode]== 1)
     {
-      v5 = [(PKTextInputCursorController *)self _textInputSettings];
-      [v5 weakCursorVisibilityTimeout];
+      _textInputSettings = [(PKTextInputCursorController *)self _textInputSettings];
+      [_textInputSettings weakCursorVisibilityTimeout];
       v7 = v6;
 
       [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__delayedRevokeTemporaryStrongMode object:0];
@@ -563,12 +563,12 @@ void __42__PKTextInputCursorController_flashCursor__block_invoke(uint64_t a1)
 
 - (id)_currentAssertionController
 {
-  v3 = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
-  v4 = [v3 _textInteraction];
+  _lastKnownTextInputResponder = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
+  _textInteraction = [_lastKnownTextInputResponder _textInteraction];
 
-  if (v4)
+  if (_textInteraction)
   {
-    [v4 _assertionController];
+    [_textInteraction _assertionController];
   }
 
   else
@@ -582,29 +582,29 @@ void __42__PKTextInputCursorController_flashCursor__block_invoke(uint64_t a1)
 
 - (id)_implicitAssertionControllerIfPossible
 {
-  v3 = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [v3 conformsToProtocol:&unk_1F485D540])
+  _lastKnownTextInputResponder = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [_lastKnownTextInputResponder conformsToProtocol:&unk_1F485D540])
   {
-    v4 = [(PKTextInputCursorController *)self implicitAssertionController];
+    implicitAssertionController = [(PKTextInputCursorController *)self implicitAssertionController];
 
-    if (!v4)
+    if (!implicitAssertionController)
     {
       v5 = objc_alloc_init(MEMORY[0x1E69DD090]);
       [(PKTextInputCursorController *)self setImplicitAssertionController:v5];
     }
 
-    v6 = [(PKTextInputCursorController *)self implicitAssertionController];
-    [v6 setSubject:v3];
+    implicitAssertionController2 = [(PKTextInputCursorController *)self implicitAssertionController];
+    [implicitAssertionController2 setSubject:_lastKnownTextInputResponder];
 
-    v7 = [(PKTextInputCursorController *)self implicitAssertionController];
+    implicitAssertionController3 = [(PKTextInputCursorController *)self implicitAssertionController];
   }
 
   else
   {
-    v7 = 0;
+    implicitAssertionController3 = 0;
   }
 
-  return v7;
+  return implicitAssertionController3;
 }
 
 - (void)removeAllAssertions
@@ -620,8 +620,8 @@ void __42__PKTextInputCursorController_flashCursor__block_invoke(uint64_t a1)
   self->_cursorShouldFlash = 0;
   self->_cursorStyle = 0;
   self->_mode = 0;
-  v3 = [MEMORY[0x1E695DF00] distantPast];
-  [v3 timeIntervalSinceReferenceDate];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  [distantPast timeIntervalSinceReferenceDate];
   self->__lastSwitchToIdleWritingStateTime = v4;
 
   objc_storeWeak(&self->__lastKnownTextInputResponder, 0);
@@ -652,22 +652,22 @@ void __42__PKTextInputCursorController_flashCursor__block_invoke(uint64_t a1)
 
 - (BOOL)scribbleEnabled
 {
-  v2 = [(PKTextInputCursorController *)self _textInputSettings];
-  v3 = [v2 isScribbleActive];
+  _textInputSettings = [(PKTextInputCursorController *)self _textInputSettings];
+  isScribbleActive = [_textInputSettings isScribbleActive];
 
-  return v3;
+  return isScribbleActive;
 }
 
-- (void)firstResponderDidChange:(id)a3
+- (void)firstResponderDidChange:(id)change
 {
-  v11 = a3;
+  changeCopy = change;
   if ([(PKTextInputCursorController *)self scribbleEnabled])
   {
-    v4 = [v11 object];
-    v5 = [v4 firstResponder];
-    if ([PKTextInputUtilities isResponderSupportedTextInput:v5])
+    object = [changeCopy object];
+    firstResponder = [object firstResponder];
+    if ([PKTextInputUtilities isResponderSupportedTextInput:firstResponder])
     {
-      v6 = v5;
+      v6 = firstResponder;
     }
 
     else
@@ -675,13 +675,13 @@ void __42__PKTextInputCursorController_flashCursor__block_invoke(uint64_t a1)
       v6 = 0;
     }
 
-    v7 = [(PKTextInputCursorController *)self delegate];
-    v8 = [v7 windowSceneForController:self];
+    delegate = [(PKTextInputCursorController *)self delegate];
+    v8 = [delegate windowSceneForController:self];
 
     v9 = [(PKTextInputCursorController *)self _windowForResponder:v6];
-    v10 = [v9 windowScene];
+    windowScene = [v9 windowScene];
 
-    if (v8 == v10)
+    if (v8 == windowScene)
     {
       [(PKTextInputCursorController *)self _setLastKnownTextInputResponder:v6];
     }
@@ -693,13 +693,13 @@ void __42__PKTextInputCursorController_flashCursor__block_invoke(uint64_t a1)
   }
 }
 
-- (void)keyWindowDidChange:(id)a3
+- (void)keyWindowDidChange:(id)change
 {
   if ([(PKTextInputCursorController *)self scribbleEnabled])
   {
-    v4 = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
+    _lastKnownTextInputResponder = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
 
-    if (v4)
+    if (_lastKnownTextInputResponder)
     {
       [(PKTextInputCursorController *)self _setTrackedLastKnownTextInputResponderWindowIsKey:[(PKTextInputCursorController *)self lastKnownTextInputResponderWindowIsKey]];
     }
@@ -714,12 +714,12 @@ void __42__PKTextInputCursorController_flashCursor__block_invoke(uint64_t a1)
   }
 }
 
-- (void)textInputSourceDidChange:(id)a3
+- (void)textInputSourceDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    [(PKTextInputCursorController *)self _textInputSourceDidChange:v4];
+    [(PKTextInputCursorController *)self _textInputSourceDidChange:changeCopy];
   }
 
   else
@@ -729,19 +729,19 @@ void __42__PKTextInputCursorController_flashCursor__block_invoke(uint64_t a1)
     v5[2] = __56__PKTextInputCursorController_textInputSourceDidChange___block_invoke;
     v5[3] = &unk_1E82D6E70;
     v5[4] = self;
-    v6 = v4;
+    v6 = changeCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v5);
   }
 }
 
-- (void)_textInputSourceDidChange:(id)a3
+- (void)_textInputSourceDidChange:(id)change
 {
   if ([(PKTextInputCursorController *)self scribbleEnabled])
   {
     if ([(PKTextInputCursorController *)self mode])
     {
-      v4 = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
-      v5 = [(PKTextInputCursorController *)self canMakeCursorWeakForResponder:v4];
+      _lastKnownTextInputResponder = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
+      v5 = [(PKTextInputCursorController *)self canMakeCursorWeakForResponder:_lastKnownTextInputResponder];
 
       if (!v5)
       {
@@ -758,24 +758,24 @@ void __42__PKTextInputCursorController_flashCursor__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setTrackedLastKnownTextInputResponderWindowIsKey:(BOOL)a3
+- (void)_setTrackedLastKnownTextInputResponderWindowIsKey:(BOOL)key
 {
-  if (self->__trackedLastKnownTextInputResponderWindowIsKey != a3)
+  if (self->__trackedLastKnownTextInputResponderWindowIsKey != key)
   {
-    self->__trackedLastKnownTextInputResponderWindowIsKey = a3;
+    self->__trackedLastKnownTextInputResponderWindowIsKey = key;
     [(PKTextInputCursorController *)self _updateCursorStyle];
   }
 }
 
-- (void)_setLastKnownTextInputResponder:(id)a3
+- (void)_setLastKnownTextInputResponder:(id)responder
 {
-  v4 = a3;
+  responderCopy = responder;
   WeakRetained = objc_loadWeakRetained(&self->__lastKnownTextInputResponder);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == responderCopy)
   {
-    v6 = [(PKTextInputCursorController *)self _trackedLastKnownTextInputResponderWindowIsKey];
-    if (v6 == [(PKTextInputCursorController *)self lastKnownTextInputResponderWindowIsKey])
+    _trackedLastKnownTextInputResponderWindowIsKey = [(PKTextInputCursorController *)self _trackedLastKnownTextInputResponderWindowIsKey];
+    if (_trackedLastKnownTextInputResponderWindowIsKey == [(PKTextInputCursorController *)self lastKnownTextInputResponderWindowIsKey])
     {
       goto LABEL_13;
     }
@@ -788,19 +788,19 @@ void __42__PKTextInputCursorController_flashCursor__block_invoke(uint64_t a1)
     }
   }
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 removeObserver:self name:@"PKPaletteKeyboardUtilitiesDidPerformReturnNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"PKPaletteKeyboardUtilitiesDidPerformReturnNotification" object:0];
 
   [(PKTextInputCursorController *)self _setCursorStyle:0];
-  objc_storeWeak(&self->__lastKnownTextInputResponder, v4);
+  objc_storeWeak(&self->__lastKnownTextInputResponder, responderCopy);
   self->__trackedLastKnownTextInputResponderWindowIsKey = [(PKTextInputCursorController *)self lastKnownTextInputResponderWindowIsKey];
-  if (v4)
+  if (responderCopy)
   {
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:self selector:sel__handleDidPerformReturn_ name:@"PKPaletteKeyboardUtilitiesDidPerformReturnNotification" object:v4];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__handleDidPerformReturn_ name:@"PKPaletteKeyboardUtilitiesDidPerformReturnNotification" object:responderCopy];
   }
 
-  if (-[PKTextInputCursorController canMakeCursorWeakForResponder:](self, "canMakeCursorWeakForResponder:", v4) && ([MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate], v11 = v10, -[PKTextInputCursorController lastElementTapToFocusTimestamp](self, "lastElementTapToFocusTimestamp"), v11 - v12 > 0.5))
+  if (-[PKTextInputCursorController canMakeCursorWeakForResponder:](self, "canMakeCursorWeakForResponder:", responderCopy) && ([MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate], v11 = v10, -[PKTextInputCursorController lastElementTapToFocusTimestamp](self, "lastElementTapToFocusTimestamp"), v11 - v12 > 0.5))
   {
     [(PKTextInputCursorController *)self makeCursorWeak];
   }
@@ -816,34 +816,34 @@ LABEL_13:
 
 - (BOOL)lastKnownTextInputResponderWindowIsKey
 {
-  v3 = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
-  v4 = [(PKTextInputCursorController *)self _windowForResponder:v3];
-  v5 = [v4 isKeyWindow];
+  _lastKnownTextInputResponder = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
+  v4 = [(PKTextInputCursorController *)self _windowForResponder:_lastKnownTextInputResponder];
+  isKeyWindow = [v4 isKeyWindow];
 
-  return v5;
+  return isKeyWindow;
 }
 
-- (id)_windowForResponder:(id)a3
+- (id)_windowForResponder:(id)responder
 {
-  v3 = a3;
+  responderCopy = responder;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 _responderWindow];
+    _responderWindow = [responderCopy _responderWindow];
   }
 
   else
   {
     v5 = objc_opt_class();
-    v6 = PKDynamicCast(v5, v3);
-    v4 = [v6 window];
+    v6 = PKDynamicCast(v5, responderCopy);
+    _responderWindow = [v6 window];
   }
 
-  return v4;
+  return _responderWindow;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
+  draggingCopy = dragging;
   if (![(PKTextInputCursorController *)self scribbleEnabled])
   {
     [(PKTextInputCursorController *)self resetState];
@@ -852,21 +852,21 @@ LABEL_13:
 
   if (![(PKTextInputCursorController *)self mode])
   {
-    v5 = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
-    if ([(PKTextInputCursorController *)self canMakeCursorWeakForResponder:v5])
+    _lastKnownTextInputResponder = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
+    if ([(PKTextInputCursorController *)self canMakeCursorWeakForResponder:_lastKnownTextInputResponder])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [v4 object];
+        object = [draggingCopy object];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v5 = v5;
-          v8 = [v4 object];
-          if ([v5 isDescendantOfView:v8])
+          _lastKnownTextInputResponder = _lastKnownTextInputResponder;
+          object2 = [draggingCopy object];
+          if ([_lastKnownTextInputResponder isDescendantOfView:object2])
           {
             v9 = os_log_create("com.apple.pencilkit", "PencilTextInput");
             if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -886,20 +886,20 @@ LABEL_13:
 LABEL_13:
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
   if ([(PKTextInputCursorController *)self scribbleEnabled])
   {
-    v4 = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
-    if (v4)
+    _lastKnownTextInputResponder = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
+    if (_lastKnownTextInputResponder)
     {
-      v5 = v4;
-      v6 = [(PKTextInputCursorController *)self mode];
+      v5 = _lastKnownTextInputResponder;
+      mode = [(PKTextInputCursorController *)self mode];
 
-      if (v6)
+      if (mode)
       {
-        v7 = [MEMORY[0x1E69DCBE0] activeInstance];
-        if (([v7 isMinimized] & 1) == 0 && (objc_msgSend(v7, "_suppressSoftwareKeyboard") & 1) == 0)
+        activeInstance = [MEMORY[0x1E69DCBE0] activeInstance];
+        if (([activeInstance isMinimized] & 1) == 0 && (objc_msgSend(activeInstance, "_suppressSoftwareKeyboard") & 1) == 0)
         {
           v8 = os_log_create("com.apple.pencilkit", "PencilTextInput");
           if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -921,38 +921,38 @@ LABEL_13:
   }
 }
 
-- (void)reportDebugStateDescription:(id)a3
+- (void)reportDebugStateDescription:(id)description
 {
-  v11 = a3;
-  v4 = [(PKTextInputCursorController *)self cursorStyle];
-  if (v4 > 3)
+  descriptionCopy = description;
+  cursorStyle = [(PKTextInputCursorController *)self cursorStyle];
+  if (cursorStyle > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = off_1E82D97F8[v4];
+    v5 = off_1E82D97F8[cursorStyle];
   }
 
-  v11[2](v11, @"Cursor style", v5);
-  v6 = [(PKTextInputCursorController *)self mode];
-  if (v6 > 2)
+  descriptionCopy[2](descriptionCopy, @"Cursor style", v5);
+  mode = [(PKTextInputCursorController *)self mode];
+  if (mode > 2)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = off_1E82D9818[v6];
+    v7 = off_1E82D9818[mode];
   }
 
-  v11[2](v11, @"Cursor mode", v7);
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = v8;
+  descriptionCopy[2](descriptionCopy, @"Cursor mode", v7);
+  array = [MEMORY[0x1E695DF70] array];
+  v9 = array;
   if (self->_nonVisibleAssertion)
   {
-    [v8 addObject:@"hidden"];
+    [array addObject:@"hidden"];
   }
 
   if (self->_nonBlinkingAssertion)
@@ -975,21 +975,21 @@ LABEL_13:
     v10 = @"none";
   }
 
-  v11[2](v11, @"Cursor assertions", v10);
+  descriptionCopy[2](descriptionCopy, @"Cursor assertions", v10);
 }
 
-- (void)_handleUndoRedo:(id)a3
+- (void)_handleUndoRedo:(id)redo
 {
-  v7 = a3;
+  redoCopy = redo;
   if ([(PKTextInputCursorController *)self scribbleEnabled])
   {
     if ([(PKTextInputCursorController *)self isCursorWeak])
     {
-      v4 = [v7 object];
-      v5 = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
-      v6 = [v5 undoManager];
+      object = [redoCopy object];
+      _lastKnownTextInputResponder = [(PKTextInputCursorController *)self _lastKnownTextInputResponder];
+      undoManager = [_lastKnownTextInputResponder undoManager];
 
-      if (v4 == v6)
+      if (object == undoManager)
       {
         [(PKTextInputCursorController *)self flashCursor];
       }
@@ -1002,7 +1002,7 @@ LABEL_13:
   }
 }
 
-- (void)_handleDidPerformReturn:(id)a3
+- (void)_handleDidPerformReturn:(id)return
 {
   if ([(PKTextInputCursorController *)self scribbleEnabled])
   {
@@ -1020,11 +1020,11 @@ LABEL_13:
   }
 }
 
-- (void)simulateFirstResponderChangeForTesting:(id)a3
+- (void)simulateFirstResponderChangeForTesting:(id)testing
 {
-  v4 = a3;
+  testingCopy = testing;
   [(PKTextInputCursorController *)self _setLastKnownTextInputResponder:0];
-  [(PKTextInputCursorController *)self _setLastKnownTextInputResponder:v4];
+  [(PKTextInputCursorController *)self _setLastKnownTextInputResponder:testingCopy];
 }
 
 - (void)simulateResetCursorTimeout

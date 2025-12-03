@@ -1,16 +1,16 @@
 @interface BitrateLimits
-- (BitrateLimits)initWithOperatingMode:(unsigned __int8)a3 withBitrateCap:(unint64_t)a4 useCaseWatchContinuity:(BOOL)a5;
-- (unint64_t)defaultValueForNetwork:(BOOL)a3;
-- (void)capDefaultValues:(unint64_t)a3;
+- (BitrateLimits)initWithOperatingMode:(unsigned __int8)mode withBitrateCap:(unint64_t)cap useCaseWatchContinuity:(BOOL)continuity;
+- (unint64_t)defaultValueForNetwork:(BOOL)network;
+- (void)capDefaultValues:(unint64_t)values;
 - (void)dealloc;
 - (void)setupDefaultValuesAudio;
 @end
 
 @implementation BitrateLimits
 
-- (BitrateLimits)initWithOperatingMode:(unsigned __int8)a3 withBitrateCap:(unint64_t)a4 useCaseWatchContinuity:(BOOL)a5
+- (BitrateLimits)initWithOperatingMode:(unsigned __int8)mode withBitrateCap:(unint64_t)cap useCaseWatchContinuity:(BOOL)continuity
 {
-  v7 = a3;
+  modeCopy = mode;
   v18[1] = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = BitrateLimits;
@@ -18,78 +18,78 @@
   v9 = v8;
   if (v8)
   {
-    if (v7 > 5)
+    if (modeCopy > 5)
     {
-      if (v7 <= 7)
+      if (modeCopy <= 7)
       {
-        if (v7 != 6)
+        if (modeCopy != 6)
         {
-          v10 = [(BitrateLimits *)v8 commonAudioOnlyLimitsLegacy];
+          commonAudioOnlyLimitsLegacy = [(BitrateLimits *)v8 commonAudioOnlyLimitsLegacy];
           goto LABEL_23;
         }
 
-        v18[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+        v18[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:cap];
         v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-        v9->defaultValue = a4;
-        v9->defaultValueCellular = a4;
-        v9->defaultValue2G = a4;
+        v9->defaultValue = cap;
+        v9->defaultValueCellular = cap;
+        v9->defaultValue2G = cap;
         v9->limits = v14;
         goto LABEL_24;
       }
 
-      if (v7 == 8)
+      if (modeCopy == 8)
       {
-        v10 = [(BitrateLimits *)v8 commonAudioOnlyLimits];
+        commonAudioOnlyLimitsLegacy = [(BitrateLimits *)v8 commonAudioOnlyLimits];
         v11 = &unk_1F579D320;
         goto LABEL_22;
       }
 
-      if (v7 != 9)
+      if (modeCopy != 9)
       {
         goto LABEL_24;
       }
 
-      v12 = [(BitrateLimits *)v8 commonAudioVideoLimits];
+      commonAudioVideoLimits = [(BitrateLimits *)v8 commonAudioVideoLimits];
       v13 = &unk_1F579D338;
     }
 
     else
     {
-      if (v7 > 2)
+      if (modeCopy > 2)
       {
-        if ((v7 - 4) >= 2)
+        if ((modeCopy - 4) >= 2)
         {
-          if (v7 == 3)
+          if (modeCopy == 3)
           {
-            v10 = [(BitrateLimits *)v8 commonAudioOnlyLimits];
-            if (!a5)
+            commonAudioOnlyLimitsLegacy = [(BitrateLimits *)v8 commonAudioOnlyLimits];
+            if (!continuity)
             {
               v11 = &unk_1F579D2F0;
               goto LABEL_22;
             }
 
 LABEL_23:
-            v9->limits = v10;
+            v9->limits = commonAudioOnlyLimitsLegacy;
             [(BitrateLimits *)v9 setupDefaultValuesAudio];
           }
 
 LABEL_24:
-          [(BitrateLimits *)v9 capDefaultValues:a4];
+          [(BitrateLimits *)v9 capDefaultValues:cap];
           v15 = v9->limits;
           return v9;
         }
       }
 
-      else if (v7 >= 2)
+      else if (modeCopy >= 2)
       {
-        if (v7 == 2)
+        if (modeCopy == 2)
         {
-          v10 = [(BitrateLimits *)v8 commonAudioOnlyLimitsLegacy];
-          if (!a5)
+          commonAudioOnlyLimitsLegacy = [(BitrateLimits *)v8 commonAudioOnlyLimitsLegacy];
+          if (!continuity)
           {
             v11 = &unk_1F579D2D8;
 LABEL_22:
-            v10 = [(NSArray *)v10 arrayByAddingObjectsFromArray:v11];
+            commonAudioOnlyLimitsLegacy = [(NSArray *)commonAudioOnlyLimitsLegacy arrayByAddingObjectsFromArray:v11];
             goto LABEL_23;
           }
 
@@ -99,11 +99,11 @@ LABEL_22:
         goto LABEL_24;
       }
 
-      v12 = [(BitrateLimits *)v8 commonAudioVideoLimits];
+      commonAudioVideoLimits = [(BitrateLimits *)v8 commonAudioVideoLimits];
       v13 = &unk_1F579D308;
     }
 
-    v9->limits = [v12 arrayByAddingObjectsFromArray:v13];
+    v9->limits = [commonAudioVideoLimits arrayByAddingObjectsFromArray:v13];
     [(BitrateLimits *)v9 setUpDefaultValuesAudioVideo];
     goto LABEL_24;
   }
@@ -128,10 +128,10 @@ LABEL_22:
   [(BitrateLimits *)&v3 dealloc];
 }
 
-- (void)capDefaultValues:(unint64_t)a3
+- (void)capDefaultValues:(unint64_t)values
 {
   v5 = [(NSArray *)self->limits count]- 1;
-  v6 = +[VCArrayUtils insertionIndexForValue:array:](VCArrayUtils, "insertionIndexForValue:array:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3], self->limits);
+  v6 = +[VCArrayUtils insertionIndexForValue:array:](VCArrayUtils, "insertionIndexForValue:array:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:values], self->limits);
   if (v5 >= v6)
   {
     v7 = v6;
@@ -153,10 +153,10 @@ LABEL_22:
   self->defaultValue2G = defaultValue2G;
 }
 
-- (unint64_t)defaultValueForNetwork:(BOOL)a3
+- (unint64_t)defaultValueForNetwork:(BOOL)network
 {
   v3 = 8;
-  if (a3)
+  if (network)
   {
     v3 = 16;
   }

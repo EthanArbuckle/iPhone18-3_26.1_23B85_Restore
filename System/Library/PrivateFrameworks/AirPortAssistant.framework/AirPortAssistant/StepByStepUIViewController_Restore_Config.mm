@@ -2,7 +2,7 @@
 - (void)dealloc;
 - (void)loadView;
 - (void)setupInitialTableHeaderConfiguration;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation StepByStepUIViewController_Restore_Config
@@ -70,13 +70,13 @@
   objc_msgSend_setTableHeaderView_(v26, v27, v23);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v49 = 0;
   v50 = 0;
   v48 = 0;
-  v5 = objc_msgSend_inParamDict(self, a2, a3);
+  v5 = objc_msgSend_inParamDict(self, a2, appear);
   v7 = objc_msgSend_objectForKey_(v5, v6, @"kSBSKey_TargetBase");
   objc_msgSend_syncTopoUIForTarget_andSource_andNetwork_connectionType_(self, v8, v7, 0, 0, 0);
   justTextLabel = self->super.justTextLabel;
@@ -124,7 +124,7 @@
   objc_msgSend_setupInitialTableHeaderConfiguration(self, v45, v46);
   v47.receiver = self;
   v47.super_class = StepByStepUIViewController_Restore_Config;
-  [(StepByStepUIViewController *)&v47 viewWillAppear:v3];
+  [(StepByStepUIViewController *)&v47 viewWillAppear:appearCopy];
 }
 
 @end

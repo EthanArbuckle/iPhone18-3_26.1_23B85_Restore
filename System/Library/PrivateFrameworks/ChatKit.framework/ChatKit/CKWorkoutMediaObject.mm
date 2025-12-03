@@ -1,36 +1,36 @@
 @interface CKWorkoutMediaObject
 - (BOOL)_isCachedFileLocationValid;
-- (id)attachmentSummary:(unint64_t)a3;
-- (id)linkMetadataForWidth:(double)a3 orientation:(char)a4;
+- (id)attachmentSummary:(unint64_t)summary;
+- (id)linkMetadataForWidth:(double)width orientation:(char)orientation;
 @end
 
 @implementation CKWorkoutMediaObject
 
-- (id)attachmentSummary:(unint64_t)a3
+- (id)attachmentSummary:(unint64_t)summary
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = IMSharedUtilitiesFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"%lu Workouts" value:&stru_1F04268F8 table:@"IMSharedUtilities"];
-  v7 = [v4 localizedStringWithFormat:v6, a3];
+  summary = [v4 localizedStringWithFormat:v6, summary];
 
-  return v7;
+  return summary;
 }
 
 - (BOOL)_isCachedFileLocationValid
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(LPLinkMetadata *)self->_linkMetadata originalURL];
-  v4 = [(CKMediaObject *)self fileURL];
-  v5 = [v3 isEqual:v4];
+  originalURL = [(LPLinkMetadata *)self->_linkMetadata originalURL];
+  fileURL = [(CKMediaObject *)self fileURL];
+  v5 = [originalURL isEqual:fileURL];
 
   if (v5)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [(LPLinkMetadata *)self->_linkMetadata originalURL];
-    v8 = [v6 stringWithUTF8String:{objc_msgSend(v7, "fileSystemRepresentation")}];
+    originalURL2 = [(LPLinkMetadata *)self->_linkMetadata originalURL];
+    v8 = [v6 stringWithUTF8String:{objc_msgSend(originalURL2, "fileSystemRepresentation")}];
 
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v9 fileExistsAtPath:v8];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v10 = [defaultManager fileExistsAtPath:v8];
 
     if ((v10 & 1) == 0 && IMOSLoggingEnabled())
     {
@@ -51,12 +51,12 @@
       v12 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = [(LPLinkMetadata *)self->_linkMetadata originalURL];
-        v14 = [(CKMediaObject *)self fileURL];
+        originalURL3 = [(LPLinkMetadata *)self->_linkMetadata originalURL];
+        fileURL2 = [(CKMediaObject *)self fileURL];
         v16 = 138412546;
-        v17 = v13;
+        v17 = originalURL3;
         v18 = 2112;
-        v19 = v14;
+        v19 = fileURL2;
         _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "Cached link metadata fileURL does not match current media object fileURL.  Cached: %@  Current: %@", &v16, 0x16u);
       }
     }
@@ -67,20 +67,20 @@
   return v10;
 }
 
-- (id)linkMetadataForWidth:(double)a3 orientation:(char)a4
+- (id)linkMetadataForWidth:(double)width orientation:(char)orientation
 {
-  v4 = a4;
+  orientationCopy = orientation;
   v29 = *MEMORY[0x1E69E9840];
-  if (self->_linkMetadata && vabdd_f64(a3, self->_cachedWidth) <= 1.0 && self->_cachedOrientation == a4 && [(CKWorkoutMediaObject *)self _isCachedFileLocationValid])
+  if (self->_linkMetadata && vabdd_f64(width, self->_cachedWidth) <= 1.0 && self->_cachedOrientation == orientation && [(CKWorkoutMediaObject *)self _isCachedFileLocationValid])
   {
     if (IMOSLoggingEnabled())
     {
       v7 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [(CKMediaObject *)self fileURL];
+        fileURL = [(CKMediaObject *)self fileURL];
         v27 = 138412290;
-        v28 = v8;
+        v28 = fileURL;
         _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Using cached link metadata for fileURL: %@", &v27, 0xCu);
       }
     }
@@ -94,9 +94,9 @@
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(CKMediaObject *)self fileURL];
+      fileURL2 = [(CKMediaObject *)self fileURL];
       v27 = 138412290;
-      v28 = v11;
+      v28 = fileURL2;
       _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "Generating link metadata for fileURL: %@", &v27, 0xCu);
     }
   }
@@ -107,8 +107,8 @@
   [v12 setName:v14];
 
   [v12 setType:@"com.apple.workout"];
-  v15 = [(CKMediaObject *)self fileURL];
-  LOBYTE(v13) = v15 == 0;
+  fileURL3 = [(CKMediaObject *)self fileURL];
+  LOBYTE(v13) = fileURL3 == 0;
 
   v16 = IMOSLoggingEnabled();
   if ((v13 & 1) == 0)
@@ -123,7 +123,7 @@
       }
     }
 
-    v18 = [(CKMediaObject *)self previewForWidth:v4 orientation:a3];
+    v18 = [(CKMediaObject *)self previewForWidth:orientationCopy orientation:width];
     v19 = IMOSLoggingEnabled();
     if (v18)
     {
@@ -171,13 +171,13 @@ LABEL_33:
 LABEL_34:
   v9 = objc_alloc_init(MEMORY[0x1E696ECA0]);
   [(LPLinkMetadata *)v9 setSpecialization:v12];
-  v23 = [(CKMediaObject *)self fileURL];
-  [(LPLinkMetadata *)v9 setOriginalURL:v23];
+  fileURL4 = [(CKMediaObject *)self fileURL];
+  [(LPLinkMetadata *)v9 setOriginalURL:fileURL4];
 
-  v24 = [v12 thumbnail];
-  LOBYTE(v23) = v24 == 0;
+  thumbnail = [v12 thumbnail];
+  LOBYTE(fileURL4) = thumbnail == 0;
 
-  if ((v23 & 1) == 0)
+  if ((fileURL4 & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -190,8 +190,8 @@ LABEL_34:
     }
 
     objc_storeStrong(&self->_linkMetadata, v9);
-    self->_cachedWidth = a3;
-    self->_cachedOrientation = v4;
+    self->_cachedWidth = width;
+    self->_cachedOrientation = orientationCopy;
   }
 
 LABEL_41:

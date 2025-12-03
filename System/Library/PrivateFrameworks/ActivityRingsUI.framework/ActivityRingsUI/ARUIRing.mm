@@ -1,15 +1,15 @@
 @interface ARUIRing
 + (id)randomRing;
 - (ARUIRing)init;
-- (ARUIRing)initWithRing:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ARUIRing)initWithRing:(id)ring;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)setBottomColor:(id)a3;
-- (void)setOpacity:(float)a3;
-- (void)setPercentage:(float)a3;
-- (void)setTopColor:(id)a3;
+- (void)setBottomColor:(id)color;
+- (void)setOpacity:(float)opacity;
+- (void)setPercentage:(float)percentage;
+- (void)setTopColor:(id)color;
 @end
 
 @implementation ARUIRing
@@ -61,64 +61,64 @@
   return result;
 }
 
-- (ARUIRing)initWithRing:(id)a3
+- (ARUIRing)initWithRing:(id)ring
 {
-  v4 = a3;
+  ringCopy = ring;
   v26.receiver = self;
   v26.super_class = ARUIRing;
   v5 = [(ARUIRing *)&v26 init];
   if (v5)
   {
-    v6 = [v4 topColor];
-    v7 = [v6 copy];
+    topColor = [ringCopy topColor];
+    v7 = [topColor copy];
     topColor = v5->_topColor;
     v5->_topColor = v7;
 
-    v9 = [v4 bottomColor];
-    v10 = [v9 copy];
+    bottomColor = [ringCopy bottomColor];
+    v10 = [bottomColor copy];
     bottomColor = v5->_bottomColor;
     v5->_bottomColor = v10;
 
-    [v4 topColorVector];
+    [ringCopy topColorVector];
     *v5->_topColorVector = v12;
-    [v4 topColorPremultipliedVector];
+    [ringCopy topColorPremultipliedVector];
     *v5->_topColorPremultipliedVector = v13;
-    [v4 bottomColorVector];
+    [ringCopy bottomColorVector];
     *v5->_bottomColorVector = v14;
-    [v4 bottomColorPremultipliedVector];
+    [ringCopy bottomColorPremultipliedVector];
     *v5->_bottomColorPremultipliedVector = v15;
-    [v4 diameter];
+    [ringCopy diameter];
     v5->_diameter = v16;
-    [v4 thickness];
+    [ringCopy thickness];
     v5->_thickness = v17;
-    [v4 percentage];
+    [ringCopy percentage];
     v5->_percentage = v18;
-    [v4 opacity];
+    [ringCopy opacity];
     v5->_opacity = v19;
-    [v4 emptyOpacity];
+    [ringCopy emptyOpacity];
     v5->_emptyOpacity = v20;
-    [v4 trackOpacity];
+    [ringCopy trackOpacity];
     v5->_trackOpacity = v21;
-    [v4 scale];
+    [ringCopy scale];
     v5->_scale = v22;
-    [v4 zRotation];
+    [ringCopy zRotation];
     v5->_zRotation = v23;
-    [v4 translation];
+    [ringCopy translation];
     *v5->_translation = v24;
   }
 
   return v5;
 }
 
-- (void)setTopColor:(id)a3
+- (void)setTopColor:(id)color
 {
-  objc_storeStrong(&self->_topColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_topColor, color);
+  colorCopy = color;
   v10 = 0.0;
   v11 = 0.0;
   v8 = 0.0;
   v9 = 0.0;
-  [v5 getRed:&v11 green:&v10 blue:&v9 alpha:&v8];
+  [colorCopy getRed:&v11 green:&v10 blue:&v9 alpha:&v8];
 
   v6.f64[0] = v11;
   v6.f64[1] = v10;
@@ -128,15 +128,15 @@
   [(ARUIRing *)self _updatePremultipliedTopColor];
 }
 
-- (void)setBottomColor:(id)a3
+- (void)setBottomColor:(id)color
 {
-  objc_storeStrong(&self->_bottomColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_bottomColor, color);
+  colorCopy = color;
   v10 = 0.0;
   v11 = 0.0;
   v8 = 0.0;
   v9 = 0.0;
-  [v5 getRed:&v11 green:&v10 blue:&v9 alpha:&v8];
+  [colorCopy getRed:&v11 green:&v10 blue:&v9 alpha:&v8];
 
   v6.f64[0] = v11;
   v6.f64[1] = v10;
@@ -146,38 +146,38 @@
   [(ARUIRing *)self _updatePremultipliedBottomColor];
 }
 
-- (void)setOpacity:(float)a3
+- (void)setOpacity:(float)opacity
 {
-  if (!ARUIFloatEqual(a3, self->_opacity))
+  if (!ARUIFloatEqual(opacity, self->_opacity))
   {
-    self->_opacity = a3;
+    self->_opacity = opacity;
     [(ARUIRing *)self _updatePremultipliedTopColor];
 
     [(ARUIRing *)self _updatePremultipliedBottomColor];
   }
 }
 
-- (void)setPercentage:(float)a3
+- (void)setPercentage:(float)percentage
 {
-  if (a3 == INFINITY)
+  if (percentage == INFINITY)
   {
-    a3 = *&ARUIRingPercentageValueNoRing;
+    percentage = *&ARUIRingPercentageValueNoRing;
   }
 
-  v4 = a3;
-  if (!ARUIFloatEqual(a3, self->_percentage))
+  percentageCopy = percentage;
+  if (!ARUIFloatEqual(percentage, self->_percentage))
   {
-    self->_percentage = v4;
+    self->_percentage = percentageCopy;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [MEMORY[0x1E698E6A0] builderWithObject:v5 ofExpectedClass:objc_opt_class()];
     topColor = self->_topColor;
     v81[0] = MEMORY[0x1E69E9820];
@@ -313,14 +313,14 @@
   v8 = [v3 appendFloat:@"scale" withName:self->_scale];
   v9 = [v3 appendFloat:@"translation.x" withName:COERCE_FLOAT(*self->_translation)];
   v10 = [v3 appendFloat:@"translation.y" withName:*&self->_translation[4]];
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ARUIRing allocWithZone:a3];
+  v4 = [ARUIRing allocWithZone:zone];
 
   return [(ARUIRing *)v4 initWithRing:self];
 }

@@ -1,12 +1,12 @@
 @interface DigitalClockFaceComplicationsView
-- (_TtC11ClockPoster33DigitalClockFaceComplicationsView)initWithCoder:(id)a3;
-- (_TtC11ClockPoster33DigitalClockFaceComplicationsView)initWithFrame:(CGRect)a3;
+- (_TtC11ClockPoster33DigitalClockFaceComplicationsView)initWithCoder:(id)coder;
+- (_TtC11ClockPoster33DigitalClockFaceComplicationsView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation DigitalClockFaceComplicationsView
 
-- (_TtC11ClockPoster33DigitalClockFaceComplicationsView)initWithCoder:(id)a3
+- (_TtC11ClockPoster33DigitalClockFaceComplicationsView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC11ClockPoster33DigitalClockFaceComplicationsView_currentTemperature;
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECF816A0, &unk_1E49A5C90);
@@ -24,11 +24,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E4932F44();
 }
 
-- (_TtC11ClockPoster33DigitalClockFaceComplicationsView)initWithFrame:(CGRect)a3
+- (_TtC11ClockPoster33DigitalClockFaceComplicationsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

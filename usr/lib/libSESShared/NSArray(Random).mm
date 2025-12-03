@@ -6,10 +6,10 @@
 
 - (id)randomElement
 {
-  v2 = [a1 count];
+  v2 = [self count];
   if (v2)
   {
-    v3 = [a1 objectAtIndexedSubscript:arc4random_uniform(v2)];
+    v3 = [self objectAtIndexedSubscript:arc4random_uniform(v2)];
   }
 
   else

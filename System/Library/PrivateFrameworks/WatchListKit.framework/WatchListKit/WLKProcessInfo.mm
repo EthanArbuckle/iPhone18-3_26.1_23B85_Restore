@@ -1,9 +1,9 @@
 @interface WLKProcessInfo
 + (id)currentProcessInfo;
-- (BOOL)BOOLValueForEntitlement:(id)a3;
-- (BOOL)valueForEntitlement:(id)a3 containsObject:(id)a4;
+- (BOOL)BOOLValueForEntitlement:(id)entitlement;
+- (BOOL)valueForEntitlement:(id)entitlement containsObject:(id)object;
 - (WLKProcessInfo)init;
-- (id)valueForEntitlement:(id)a3;
+- (id)valueForEntitlement:(id)entitlement;
 - (void)dealloc;
 @end
 
@@ -54,18 +54,18 @@ uint64_t __36__WLKProcessInfo_currentProcessInfo__block_invoke()
   [(WLKProcessInfo *)&v4 dealloc];
 }
 
-- (id)valueForEntitlement:(id)a3
+- (id)valueForEntitlement:(id)entitlement
 {
-  v4 = a3;
-  if (!v4)
+  entitlementCopy = entitlement;
+  if (!entitlementCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The entitlement argument must not be nil."];
   }
 
-  v5 = [(WLKProcessInfo *)self currentTask];
-  if (v5)
+  currentTask = [(WLKProcessInfo *)self currentTask];
+  if (currentTask)
   {
-    v6 = SecTaskCopyValueForEntitlement(v5, v4, 0);
+    v6 = SecTaskCopyValueForEntitlement(currentTask, entitlementCopy, 0);
   }
 
   else
@@ -76,29 +76,29 @@ uint64_t __36__WLKProcessInfo_currentProcessInfo__block_invoke()
   return v6;
 }
 
-- (BOOL)BOOLValueForEntitlement:(id)a3
+- (BOOL)BOOLValueForEntitlement:(id)entitlement
 {
-  v3 = [(WLKProcessInfo *)self valueForEntitlement:a3];
+  v3 = [(WLKProcessInfo *)self valueForEntitlement:entitlement];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)valueForEntitlement:(id)a3 containsObject:(id)a4
+- (BOOL)valueForEntitlement:(id)entitlement containsObject:(id)object
 {
-  v6 = a4;
-  v7 = [(WLKProcessInfo *)self valueForEntitlement:a3];
+  objectCopy = object;
+  v7 = [(WLKProcessInfo *)self valueForEntitlement:entitlement];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 containsObject:v6];
+    v8 = [v7 containsObject:objectCopy];
   }
 
   else

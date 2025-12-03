@@ -1,55 +1,55 @@
 @interface MPUQueryDataSource
-- (BOOL)_deleteHidesFromCloudForIndex:(unint64_t)a3 hidesAll:(BOOL *)a4;
-- (BOOL)canEditEntityAtIndex:(unint64_t)a3;
-- (BOOL)canSelectEntityAtIndex:(unint64_t)a3;
+- (BOOL)_deleteHidesFromCloudForIndex:(unint64_t)index hidesAll:(BOOL *)all;
+- (BOOL)canEditEntityAtIndex:(unint64_t)index;
+- (BOOL)canSelectEntityAtIndex:(unint64_t)index;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (MPUQueryDataSource)initWithCoder:(id)a3;
-- (MPUQueryDataSource)initWithQuery:(id)a3 entityType:(int64_t)a4;
-- (_NSRange)rangeOfSectionAtIndex:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (MPUQueryDataSource)initWithCoder:(id)coder;
+- (MPUQueryDataSource)initWithQuery:(id)query entityType:(int64_t)type;
+- (_NSRange)rangeOfSectionAtIndex:(unint64_t)index;
 - (id)_representativeCollection;
 - (id)_sectionInfo;
 - (id)entities;
 - (id)localizedSectionIndexTitles;
-- (id)localizedSectionTitleAtIndex:(unint64_t)a3;
-- (id)queryForEntityAtIndex:(unint64_t)a3;
-- (id)queryForEntityAtIndexPath:(id)a3;
-- (int64_t)editingTypeForEntityAtIndex:(unint64_t)a3;
+- (id)localizedSectionTitleAtIndex:(unint64_t)index;
+- (id)queryForEntityAtIndex:(unint64_t)index;
+- (id)queryForEntityAtIndexPath:(id)path;
+- (int64_t)editingTypeForEntityAtIndex:(unint64_t)index;
 - (unint64_t)count;
 - (unint64_t)hash;
-- (unint64_t)indexOfSectionForSectionTitleAtIndex:(unint64_t)a3;
+- (unint64_t)indexOfSectionForSectionTitleAtIndex:(unint64_t)index;
 - (unint64_t)numberOfSections;
-- (void)_defaultMediaLibraryDidChangeNotification:(id)a3;
+- (void)_defaultMediaLibraryDidChangeNotification:(id)notification;
 - (void)_invalidateCalculatedEntities;
 - (void)_invalidateForDisplayValuesChangeIfNeeded;
 - (void)_invalidateIfNeeded;
-- (void)addAdditionalMediaEntityPropertiesToFetch:(id)a3;
+- (void)addAdditionalMediaEntityPropertiesToFetch:(id)fetch;
 - (void)dealloc;
-- (void)deleteEntityAtIndex:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeAdditionalMediaEntityPropertiesToFetch:(id)a3;
-- (void)setIgnoringInvalidationDueToBackgroundApplicationState:(BOOL)a3;
+- (void)deleteEntityAtIndex:(unint64_t)index;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeAdditionalMediaEntityPropertiesToFetch:(id)fetch;
+- (void)setIgnoringInvalidationDueToBackgroundApplicationState:(BOOL)state;
 @end
 
 @implementation MPUQueryDataSource
 
-- (MPUQueryDataSource)initWithQuery:(id)a3 entityType:(int64_t)a4
+- (MPUQueryDataSource)initWithQuery:(id)query entityType:(int64_t)type
 {
-  v7 = a3;
+  queryCopy = query;
   v12.receiver = self;
   v12.super_class = MPUQueryDataSource;
-  v8 = [(MPUDataSource *)&v12 initWithEntityType:a4];
+  v8 = [(MPUDataSource *)&v12 initWithEntityType:type];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_query, a3);
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v9 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
-    [v10 addObserver:v9 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
-    [v10 addObserver:v9 selector:sel__defaultMediaLibraryDidChangeNotification_ name:*MEMORY[0x277CD58D0] object:0];
-    [v10 addObserver:v9 selector:sel__mediaLibraryDidChangeNotification_ name:*MEMORY[0x277CD58D8] object:0];
-    [v10 addObserver:v9 selector:sel__mediaLibraryDisplayValuesDidChangeNotification_ name:*MEMORY[0x277CD58E0] object:0];
-    [v10 addObserver:v9 selector:sel__mediaLibraryDynamicPropertiesDidChangeNotification_ name:*MEMORY[0x277CD58E8] object:0];
+    objc_storeStrong(&v8->_query, query);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
+    [defaultCenter addObserver:v9 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
+    [defaultCenter addObserver:v9 selector:sel__defaultMediaLibraryDidChangeNotification_ name:*MEMORY[0x277CD58D0] object:0];
+    [defaultCenter addObserver:v9 selector:sel__mediaLibraryDidChangeNotification_ name:*MEMORY[0x277CD58D8] object:0];
+    [defaultCenter addObserver:v9 selector:sel__mediaLibraryDisplayValuesDidChangeNotification_ name:*MEMORY[0x277CD58E0] object:0];
+    [defaultCenter addObserver:v9 selector:sel__mediaLibraryDynamicPropertiesDidChangeNotification_ name:*MEMORY[0x277CD58E8] object:0];
   }
 
   return v9;
@@ -57,32 +57,32 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76758] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76660] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277CD58D0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277CD58D8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277CD58E0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277CD58E8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76758] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76660] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CD58D0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CD58D8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CD58E0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CD58E8] object:0];
 
   v4.receiver = self;
   v4.super_class = MPUQueryDataSource;
   [(MPUQueryDataSource *)&v4 dealloc];
 }
 
-- (MPUQueryDataSource)initWithCoder:(id)a3
+- (MPUQueryDataSource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = MPUQueryDataSource;
-  v5 = [(MPUDataSource *)&v12 initWithCoder:v4];
+  v5 = [(MPUDataSource *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"query"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"query"];
     query = v5->_query;
     v5->_query = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"additionalUniqueItemPropertiesToFetch"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"additionalUniqueItemPropertiesToFetch"];
     if ([v8 count])
     {
       v9 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:v8];
@@ -94,38 +94,38 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = MPUQueryDataSource;
-  [(MPUDataSource *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:self->_query forKey:@"query"];
-  v5 = [(NSMutableSet *)self->_additionalUniqueItemPropertiesToFetch allObjects];
-  if ([v5 count])
+  [(MPUDataSource *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_query forKey:@"query"];
+  allObjects = [(NSMutableSet *)self->_additionalUniqueItemPropertiesToFetch allObjects];
+  if ([allObjects count])
   {
-    [v4 encodeObject:v5 forKey:@"additionalUniqueItemPropertiesToFetch"];
+    [coderCopy encodeObject:allObjects forKey:@"additionalUniqueItemPropertiesToFetch"];
   }
 }
 
 - (unint64_t)hash
 {
-  v3 = [(MPUDataSource *)self entityType];
-  v4 = [(MPUDataSource *)self isIgnoringInvalidation];
+  entityType = [(MPUDataSource *)self entityType];
+  isIgnoringInvalidation = [(MPUDataSource *)self isIgnoringInvalidation];
   v5 = 5;
-  if (v4)
+  if (isIgnoringInvalidation)
   {
     v5 = 0;
   }
 
-  v6 = v5 ^ v3 ^ (10 * [(MPMediaQuery *)self->_query hash]) ^ (100 * !self->_invalidateWhenEnteringForeground);
+  v6 = v5 ^ entityType ^ (10 * [(MPMediaQuery *)self->_query hash]) ^ (100 * !self->_invalidateWhenEnteringForeground);
   return v6 ^ (1000 * [(NSMutableSet *)self->_additionalUniqueItemPropertiesToFetch hash]);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -135,9 +135,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MPUDataSource *)self entityType];
-      if (v6 == [(MPUDataSource *)v5 entityType]&& (v7 = [(MPUDataSource *)self isIgnoringInvalidation], v7 == [(MPUDataSource *)v5 isIgnoringInvalidation]) && ((query = self->_query, query == v5->_query) || [(MPMediaQuery *)query isEqual:?]) && !self->_invalidateWhenEnteringForeground && !v5->_invalidateWhenEnteringForeground)
+      v5 = equalCopy;
+      entityType = [(MPUDataSource *)self entityType];
+      if (entityType == [(MPUDataSource *)v5 entityType]&& (v7 = [(MPUDataSource *)self isIgnoringInvalidation], v7 == [(MPUDataSource *)v5 isIgnoringInvalidation]) && ((query = self->_query, query == v5->_query) || [(MPMediaQuery *)query isEqual:?]) && !self->_invalidateWhenEnteringForeground && !v5->_invalidateWhenEnteringForeground)
       {
         additionalUniqueItemPropertiesToFetch = self->_additionalUniqueItemPropertiesToFetch;
         if (additionalUniqueItemPropertiesToFetch == v5->_additionalUniqueItemPropertiesToFetch)
@@ -166,19 +166,19 @@
   return v9;
 }
 
-- (BOOL)canEditEntityAtIndex:(unint64_t)a3
+- (BOOL)canEditEntityAtIndex:(unint64_t)index
 {
-  v5 = [MEMORY[0x277CD6040] sharedRestrictionsMonitor];
-  v6 = [v5 allowsDeletion];
+  mEMORY[0x277CD6040] = [MEMORY[0x277CD6040] sharedRestrictionsMonitor];
+  allowsDeletion = [mEMORY[0x277CD6040] allowsDeletion];
 
-  return v6 && [(MPUQueryDataSource *)self count]> a3;
+  return allowsDeletion && [(MPUQueryDataSource *)self count]> index;
 }
 
-- (BOOL)canSelectEntityAtIndex:(unint64_t)a3
+- (BOOL)canSelectEntityAtIndex:(unint64_t)index
 {
   if (![(MPUDataSource *)self entityType])
   {
-    v6 = [(MPUDataSource *)self entityAtIndex:a3];
+    v6 = [(MPUDataSource *)self entityAtIndex:index];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -221,19 +221,19 @@ LABEL_19:
 LABEL_8:
 
 LABEL_15:
-    v15 = [MEMORY[0x277CD5D78] sharedCloudController];
-    if ([v15 hasProperNetworkConditionsToPlayMedia])
+    mEMORY[0x277CD5D78] = [MEMORY[0x277CD5D78] sharedCloudController];
+    if ([mEMORY[0x277CD5D78] hasProperNetworkConditionsToPlayMedia])
     {
-      v16 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
       v17 = [v6 valueForProperty:v7];
-      v16 = [v17 BOOLValue];
+      bOOLValue = [v17 BOOLValue];
     }
 
-    v5 = v10 & v16;
+    v5 = v10 & bOOLValue;
     goto LABEL_19;
   }
 
@@ -242,9 +242,9 @@ LABEL_15:
 
 - (unint64_t)count
 {
-  v3 = [(MPUDataSource *)self entityType];
+  entityType = [(MPUDataSource *)self entityType];
   entities = self->_entities;
-  if (v3)
+  if (entityType)
   {
     if (!entities)
     {
@@ -268,19 +268,19 @@ LABEL_7:
   return [(MPMediaQuery *)v7 _countOfItems];
 }
 
-- (void)deleteEntityAtIndex:(unint64_t)a3
+- (void)deleteEntityAtIndex:(unint64_t)index
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = [(MPUDataSource *)self entityAtIndex:a3];
+  v4 = [(MPUDataSource *)self entityAtIndex:index];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_12;
   }
 
-  v5 = [v4 mediaLibrary];
-  v6 = [MEMORY[0x277CD5E10] deviceMediaLibrary];
-  v7 = [v5 isEqual:v6];
+  mediaLibrary = [v4 mediaLibrary];
+  deviceMediaLibrary = [MEMORY[0x277CD5E10] deviceMediaLibrary];
+  v7 = [mediaLibrary isEqual:deviceMediaLibrary];
 
   if (!v7)
   {
@@ -291,7 +291,7 @@ LABEL_7:
   if (objc_opt_isKindOfClass())
   {
     v11[0] = v4;
-    v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
+    items = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   }
 
   else
@@ -303,15 +303,15 @@ LABEL_7:
       goto LABEL_9;
     }
 
-    v8 = [v4 items];
+    items = [v4 items];
   }
 
-  v9 = v8;
+  v9 = items;
 LABEL_9:
   if ([v9 count])
   {
-    v10 = [v4 mediaLibrary];
-    [v10 removeItems:v9];
+    mediaLibrary2 = [v4 mediaLibrary];
+    [mediaLibrary2 removeItems:v9];
 
     [(MPUQueryDataSource *)self _invalidateCalculatedEntities];
   }
@@ -319,17 +319,17 @@ LABEL_9:
 LABEL_12:
 }
 
-- (int64_t)editingTypeForEntityAtIndex:(unint64_t)a3
+- (int64_t)editingTypeForEntityAtIndex:(unint64_t)index
 {
-  v5 = [MEMORY[0x277CD6040] sharedRestrictionsMonitor];
-  v6 = [v5 allowsDeletion];
+  mEMORY[0x277CD6040] = [MEMORY[0x277CD6040] sharedRestrictionsMonitor];
+  allowsDeletion = [mEMORY[0x277CD6040] allowsDeletion];
 
-  if (v6 && [(MPUQueryDataSource *)self count]> a3)
+  if (allowsDeletion && [(MPUQueryDataSource *)self count]> index)
   {
-    v7 = [(MPUDataSource *)self entityAtIndex:a3];
-    v8 = [v7 mediaLibrary];
-    v9 = [MEMORY[0x277CD5E10] deviceMediaLibrary];
-    v10 = [v8 isEqual:v9];
+    v7 = [(MPUDataSource *)self entityAtIndex:index];
+    mediaLibrary = [v7 mediaLibrary];
+    deviceMediaLibrary = [MEMORY[0x277CD5E10] deviceMediaLibrary];
+    v10 = [mediaLibrary isEqual:deviceMediaLibrary];
 
     if (v10)
     {
@@ -352,9 +352,9 @@ LABEL_12:
         }
 
         v21 = [v15 objectForKey:v13];
-        v22 = [v21 BOOLValue];
+        bOOLValue = [v21 BOOLValue];
 
-        if ((v22 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
           goto LABEL_12;
         }
@@ -365,8 +365,8 @@ LABEL_12:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = [v7 itemsQuery];
-          v19 = [v18 copy];
+          itemsQuery = [v7 itemsQuery];
+          v19 = [itemsQuery copy];
           v20 = [MEMORY[0x277CD5E30] predicateWithValue:MEMORY[0x277CBEC38] forProperty:*MEMORY[0x277CD5778]];
           [v19 addFilterPredicate:v20];
 
@@ -393,9 +393,9 @@ LABEL_13:
   entities = self->_entities;
   if (!entities)
   {
-    v4 = [(MPUDataSource *)self entityType];
+    entityType = [(MPUDataSource *)self entityType];
     query = self->_query;
-    if (v4)
+    if (entityType)
     {
       [(MPMediaQuery *)query collections];
     }
@@ -420,32 +420,32 @@ LABEL_13:
   return entities;
 }
 
-- (id)queryForEntityAtIndex:(unint64_t)a3
+- (id)queryForEntityAtIndex:(unint64_t)index
 {
-  v4 = [(MPUDataSource *)self entityAtIndex:a3];
+  v4 = [(MPUDataSource *)self entityAtIndex:index];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 itemsQuery];
+    itemsQuery = [v4 itemsQuery];
   }
 
   else
   {
-    v6 = [(MPUQueryDataSource *)self query];
-    v5 = [v6 copy];
+    query = [(MPUQueryDataSource *)self query];
+    itemsQuery = [query copy];
 
     v7 = MEMORY[0x277CD5E30];
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "persistentID")}];
     v9 = [v7 predicateWithValue:v8 forProperty:*MEMORY[0x277CD56B0]];
-    [v5 addFilterPredicate:v9];
+    [itemsQuery addFilterPredicate:v9];
   }
 
-  return v5;
+  return itemsQuery;
 }
 
-- (id)queryForEntityAtIndexPath:(id)a3
+- (id)queryForEntityAtIndexPath:(id)path
 {
-  v4 = [(MPUDataSource *)self _globalIndexForIndexPath:a3];
+  v4 = [(MPUDataSource *)self _globalIndexForIndexPath:path];
 
   return [(MPUQueryDataSource *)self queryForEntityAtIndex:v4];
 }
@@ -473,22 +473,22 @@ LABEL_13:
   if (!self->_hasValidEmpty)
   {
     self->_hasValidEmpty = 1;
-    v4 = [(MPUDataSource *)self entityType];
+    entityType = [(MPUDataSource *)self entityType];
     entities = self->_entities;
-    if (v4)
+    if (entityType)
     {
       if (!entities)
       {
-        v6 = [(MPMediaQuery *)self->_query _hasCollections];
+        _hasCollections = [(MPMediaQuery *)self->_query _hasCollections];
 LABEL_9:
-        isEmpty = v6 ^ 1;
+        isEmpty = _hasCollections ^ 1;
         goto LABEL_10;
       }
     }
 
     else if (!entities)
     {
-      v6 = [(MPMediaQuery *)self->_query _hasItems];
+      _hasCollections = [(MPMediaQuery *)self->_query _hasItems];
       goto LABEL_9;
     }
 
@@ -509,52 +509,52 @@ LABEL_10:
     return [(MPUQueryDataSource *)self count]!= 0;
   }
 
-  v3 = [(MPUQueryDataSource *)self _sectionInfo];
-  v4 = [v3 sections];
-  v5 = [v4 count];
+  _sectionInfo = [(MPUQueryDataSource *)self _sectionInfo];
+  sections = [_sectionInfo sections];
+  v5 = [sections count];
 
   return v5;
 }
 
 - (id)localizedSectionIndexTitles
 {
-  v2 = [(MPUQueryDataSource *)self _sectionInfo];
-  v3 = [v2 sectionIndexTitles];
+  _sectionInfo = [(MPUQueryDataSource *)self _sectionInfo];
+  sectionIndexTitles = [_sectionInfo sectionIndexTitles];
 
-  return v3;
+  return sectionIndexTitles;
 }
 
-- (id)localizedSectionTitleAtIndex:(unint64_t)a3
+- (id)localizedSectionTitleAtIndex:(unint64_t)index
 {
-  v4 = [(MPUQueryDataSource *)self _sectionInfo];
-  v5 = [v4 sections];
-  v6 = [v5 objectAtIndex:a3];
+  _sectionInfo = [(MPUQueryDataSource *)self _sectionInfo];
+  sections = [_sectionInfo sections];
+  v6 = [sections objectAtIndex:index];
 
-  v7 = [v6 title];
+  title = [v6 title];
 
-  return v7;
+  return title;
 }
 
-- (unint64_t)indexOfSectionForSectionTitleAtIndex:(unint64_t)a3
+- (unint64_t)indexOfSectionForSectionTitleAtIndex:(unint64_t)index
 {
-  v4 = [(MPUQueryDataSource *)self _sectionInfo];
-  v5 = [v4 indexOfSectionForSectionIndexTitleAtIndex:a3];
+  _sectionInfo = [(MPUQueryDataSource *)self _sectionInfo];
+  v5 = [_sectionInfo indexOfSectionForSectionIndexTitleAtIndex:index];
 
   return v5;
 }
 
-- (_NSRange)rangeOfSectionAtIndex:(unint64_t)a3
+- (_NSRange)rangeOfSectionAtIndex:(unint64_t)index
 {
   if ([(MPUDataSource *)self usesSections])
   {
-    v5 = [(MPUQueryDataSource *)self _sectionInfo];
-    v6 = [v5 sections];
-    v7 = [v6 objectAtIndex:a3];
+    _sectionInfo = [(MPUQueryDataSource *)self _sectionInfo];
+    sections = [_sectionInfo sections];
+    v7 = [sections objectAtIndex:index];
 
-    v8 = [v7 range];
+    range = [v7 range];
     v10 = v9;
 
-    v11 = v8;
+    v11 = range;
     v12 = v10;
   }
 
@@ -569,15 +569,15 @@ LABEL_10:
   return result;
 }
 
-- (void)addAdditionalMediaEntityPropertiesToFetch:(id)a3
+- (void)addAdditionalMediaEntityPropertiesToFetch:(id)fetch
 {
-  v7 = a3;
-  if ([v7 count])
+  fetchCopy = fetch;
+  if ([fetchCopy count])
   {
     additionalUniqueItemPropertiesToFetch = self->_additionalUniqueItemPropertiesToFetch;
     if (!additionalUniqueItemPropertiesToFetch)
     {
-      v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v7, "count") + 2}];
+      v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(fetchCopy, "count") + 2}];
       v6 = self->_additionalUniqueItemPropertiesToFetch;
       self->_additionalUniqueItemPropertiesToFetch = v5;
 
@@ -586,16 +586,16 @@ LABEL_10:
       additionalUniqueItemPropertiesToFetch = self->_additionalUniqueItemPropertiesToFetch;
     }
 
-    [(NSMutableSet *)additionalUniqueItemPropertiesToFetch unionSet:v7];
+    [(NSMutableSet *)additionalUniqueItemPropertiesToFetch unionSet:fetchCopy];
   }
 }
 
-- (void)removeAdditionalMediaEntityPropertiesToFetch:(id)a3
+- (void)removeAdditionalMediaEntityPropertiesToFetch:(id)fetch
 {
-  v5 = a3;
-  if ([v5 count])
+  fetchCopy = fetch;
+  if ([fetchCopy count])
   {
-    [(NSMutableSet *)self->_additionalUniqueItemPropertiesToFetch minusSet:v5];
+    [(NSMutableSet *)self->_additionalUniqueItemPropertiesToFetch minusSet:fetchCopy];
     if (![(NSMutableSet *)self->_additionalUniqueItemPropertiesToFetch count])
     {
       additionalUniqueItemPropertiesToFetch = self->_additionalUniqueItemPropertiesToFetch;
@@ -604,12 +604,12 @@ LABEL_10:
   }
 }
 
-- (void)setIgnoringInvalidationDueToBackgroundApplicationState:(BOOL)a3
+- (void)setIgnoringInvalidationDueToBackgroundApplicationState:(BOOL)state
 {
-  if (self->_ignoringInvalidationDueToBackgroundApplicationState != a3)
+  if (self->_ignoringInvalidationDueToBackgroundApplicationState != state)
   {
-    self->_ignoringInvalidationDueToBackgroundApplicationState = a3;
-    if (self->_invalidateWhenEnteringForeground && !a3)
+    self->_ignoringInvalidationDueToBackgroundApplicationState = state;
+    if (self->_invalidateWhenEnteringForeground && !state)
     {
       [(MPUDataSource *)self invalidate];
     }
@@ -635,9 +635,9 @@ LABEL_10:
   if (!self->_hasValidRepresentativeCollection)
   {
     self->_hasValidRepresentativeCollection = 1;
-    v3 = [(MPMediaQuery *)self->_query _representativeCollection];
+    _representativeCollection = [(MPMediaQuery *)self->_query _representativeCollection];
     representativeCollection = self->_representativeCollection;
-    self->_representativeCollection = v3;
+    self->_representativeCollection = _representativeCollection;
   }
 
   v5 = self->_representativeCollection;
@@ -645,27 +645,27 @@ LABEL_10:
   return v5;
 }
 
-- (void)_defaultMediaLibraryDidChangeNotification:(id)a3
+- (void)_defaultMediaLibraryDidChangeNotification:(id)notification
 {
   query = self->_query;
-  v5 = [MEMORY[0x277CD5E10] defaultMediaLibrary];
-  [(MPMediaQuery *)query setMediaLibrary:v5];
+  defaultMediaLibrary = [MEMORY[0x277CD5E10] defaultMediaLibrary];
+  [(MPMediaQuery *)query setMediaLibrary:defaultMediaLibrary];
 
   [(MPUQueryDataSource *)self _invalidateIfNeeded];
 }
 
-- (BOOL)_deleteHidesFromCloudForIndex:(unint64_t)a3 hidesAll:(BOOL *)a4
+- (BOOL)_deleteHidesFromCloudForIndex:(unint64_t)index hidesAll:(BOOL *)all
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (all)
   {
-    *a4 = 0;
+    *all = 0;
   }
 
-  v5 = [(MPUDataSource *)self entityAtIndex:a3];
-  v6 = [v5 mediaLibrary];
-  v7 = [MEMORY[0x277CD5E10] deviceMediaLibrary];
-  v8 = [v6 isEqual:v7];
+  v5 = [(MPUDataSource *)self entityAtIndex:index];
+  mediaLibrary = [v5 mediaLibrary];
+  deviceMediaLibrary = [MEMORY[0x277CD5E10] deviceMediaLibrary];
+  v8 = [mediaLibrary isEqual:deviceMediaLibrary];
 
   if (!v8)
   {
@@ -678,10 +678,10 @@ LABEL_10:
   {
     v10 = __61__MPUQueryDataSource__deleteHidesFromCloudForIndex_hidesAll___block_invoke(isKindOfClass, v5);
     v11 = v10;
-    if (a4 && v10)
+    if (all && v10)
     {
       v11 = 1;
-      *a4 = 1;
+      *all = 1;
     }
 
     goto LABEL_23;
@@ -700,8 +700,8 @@ LABEL_22:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = [v12 items];
-  v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  items = [v12 items];
+  v14 = [items countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v14)
   {
 
@@ -719,7 +719,7 @@ LABEL_21:
     {
       if (*v22 != v17)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(items);
       }
 
       v14 = __61__MPUQueryDataSource__deleteHidesFromCloudForIndex_hidesAll___block_invoke(v14, *(*(&v21 + 1) + 8 * v18));
@@ -728,7 +728,7 @@ LABEL_21:
     }
 
     while (v15 != v18);
-    v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v14 = [items countByEnumeratingWithState:&v21 objects:v25 count:16];
     v15 = v14;
   }
 
@@ -739,10 +739,10 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (a4)
+  if (all)
   {
-    v19 = [v12 items];
-    *a4 = v16 == [v19 count];
+    items2 = [v12 items];
+    *all = v16 == [items2 count];
   }
 
   v11 = 1;
@@ -785,9 +785,9 @@ uint64_t __61__MPUQueryDataSource__deleteHidesFromCloudForIndex_hidesAll___block
 {
   if (!self->_sectionInfo)
   {
-    v3 = [(MPUDataSource *)self entityType];
+    entityType = [(MPUDataSource *)self entityType];
     query = self->_query;
-    if (v3)
+    if (entityType)
     {
       [(MPMediaQuery *)query collectionSectionInfo];
     }

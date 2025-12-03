@@ -1,14 +1,14 @@
 @interface _CLLSLHeading
-- (_CLLSLHeading)initWithCoder:(id)a3;
+- (_CLLSLHeading)initWithCoder:(id)coder;
 - (__n128)rotationFromGlobalToCameraFrame;
 - (__n128)rotationFromGlobalToDeviceFrame;
 - (__n128)rotationalAccuracyInRadians;
-- (__n128)setRotationFromGlobalToCameraFrame:(uint64_t)a3;
-- (__n128)setRotationFromGlobalToDeviceFrame:(uint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithMemberIndent:(id)a3 endIndent:(id)a4;
+- (__n128)setRotationFromGlobalToCameraFrame:(uint64_t)frame;
+- (__n128)setRotationFromGlobalToDeviceFrame:(uint64_t)frame;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithMemberIndent:(id)indent endIndent:(id)endIndent;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setRotationalAccuracyInRadians:(_CLLSLHeading *)self;
 @end
 
@@ -21,9 +21,9 @@
   [(_CLLSLHeading *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_timestamp;
   v6 = *&self->_anon_50[32];
   v7 = *&self->_anon_50[48];
@@ -50,29 +50,29 @@
   *(v5 + 64) = v14;
   *(v5 + 16) = self->_confidence;
   *(v5 + 24) = self->_globalReferenceFrame;
-  *(v5 + 32) = [(_CLLSLLocation *)self->_location copyWithZone:a3];
-  *(v5 + 40) = [(_CLLSLHeadingSupplInfo *)self->_supplemantaryInfo copyWithZone:a3];
+  *(v5 + 32) = [(_CLLSLLocation *)self->_location copyWithZone:zone];
+  *(v5 + 40) = [(_CLLSLHeadingSupplInfo *)self->_supplemantaryInfo copyWithZone:zone];
   return v5;
 }
 
-- (_CLLSLHeading)initWithCoder:(id)a3
+- (_CLLSLHeading)initWithCoder:(id)coder
 {
   v14.receiver = self;
   v14.super_class = _CLLSLHeading;
   v4 = [(_CLLSLHeading *)&v14 init];
   if (v4)
   {
-    [a3 decodeDoubleForKey:@"timestamp"];
+    [coder decodeDoubleForKey:@"timestamp"];
     v4->_timestamp = v5;
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"rotationFromGlobalToDeviceFrame"];
-    if (v6 && (v7 = v6, [v6 length] == 96) && (objc_msgSend(v7, "getBytes:length:", v4->_anon_50, 96), (v8 = objc_msgSend(a3, "decodeObjectOfClass:forKey:", objc_opt_class(), @"rotationFromGlobalToCameraFrame")) != 0) && (v9 = v8, objc_msgSend(v8, "length") == 96) && (objc_msgSend(v9, "getBytes:length:", &v4[1], 96), (v10 = objc_msgSend(a3, "decodeObjectOfClass:forKey:", objc_opt_class(), @"rotationalAccuracyInRadians")) != 0) && (v11 = v10, objc_msgSend(v10, "length") == 32))
+    v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"rotationFromGlobalToDeviceFrame"];
+    if (v6 && (v7 = v6, [v6 length] == 96) && (objc_msgSend(v7, "getBytes:length:", v4->_anon_50, 96), (v8 = objc_msgSend(coder, "decodeObjectOfClass:forKey:", objc_opt_class(), @"rotationFromGlobalToCameraFrame")) != 0) && (v9 = v8, objc_msgSend(v8, "length") == 96) && (objc_msgSend(v9, "getBytes:length:", &v4[1], 96), (v10 = objc_msgSend(coder, "decodeObjectOfClass:forKey:", objc_opt_class(), @"rotationalAccuracyInRadians")) != 0) && (v11 = v10, objc_msgSend(v10, "length") == 32))
     {
       [v11 getBytes:v4->_rotationalAccuracyInRadians length:32];
-      [a3 decodeDoubleForKey:@"confidence"];
+      [coder decodeDoubleForKey:@"confidence"];
       v4->_confidence = v12;
-      v4->_globalReferenceFrame = [a3 decodeIntegerForKey:@"globalReferenceFrame"];
-      v4->_location = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
-      v4->_supplemantaryInfo = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"supplemantaryInfo"];
+      v4->_globalReferenceFrame = [coder decodeIntegerForKey:@"globalReferenceFrame"];
+      v4->_location = [coder decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+      v4->_supplemantaryInfo = [coder decodeObjectOfClass:objc_opt_class() forKey:@"supplemantaryInfo"];
     }
 
     else
@@ -85,21 +85,21 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeDouble:@"timestamp" forKey:self->_timestamp];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E695DEF0] forKey:{"dataWithBytes:length:", self->_anon_50, 96), @"rotationFromGlobalToDeviceFrame"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E695DEF0] forKey:{"dataWithBytes:length:", &self[1], 96), @"rotationFromGlobalToCameraFrame"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E695DEF0] forKey:{"dataWithBytes:length:", self->_rotationalAccuracyInRadians, 32), @"rotationalAccuracyInRadians"}];
-  [a3 encodeDouble:@"confidence" forKey:self->_confidence];
-  [a3 encodeInteger:self->_globalReferenceFrame forKey:@"globalReferenceFrame"];
-  [a3 encodeObject:self->_location forKey:@"location"];
+  [coder encodeDouble:@"timestamp" forKey:self->_timestamp];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E695DEF0] forKey:{"dataWithBytes:length:", self->_anon_50, 96), @"rotationFromGlobalToDeviceFrame"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E695DEF0] forKey:{"dataWithBytes:length:", &self[1], 96), @"rotationFromGlobalToCameraFrame"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E695DEF0] forKey:{"dataWithBytes:length:", self->_rotationalAccuracyInRadians, 32), @"rotationalAccuracyInRadians"}];
+  [coder encodeDouble:@"confidence" forKey:self->_confidence];
+  [coder encodeInteger:self->_globalReferenceFrame forKey:@"globalReferenceFrame"];
+  [coder encodeObject:self->_location forKey:@"location"];
   supplemantaryInfo = self->_supplemantaryInfo;
 
-  [a3 encodeObject:supplemantaryInfo forKey:@"supplemantaryInfo"];
+  [coder encodeObject:supplemantaryInfo forKey:@"supplemantaryInfo"];
 }
 
-- (id)descriptionWithMemberIndent:(id)a3 endIndent:(id)a4
+- (id)descriptionWithMemberIndent:(id)indent endIndent:(id)endIndent
 {
   v7 = MEMORY[0x1E696AEC0];
   [(_CLLSLHeading *)self timestamp];
@@ -176,73 +176,73 @@
   }
 
   [(_CLLSLHeading *)self confidence];
-  return [v7 stringWithFormat:@"<_CLLSLHeading: %p> {\n%@.timestamp = %f, \n%@.rotationFromGlobalToDeviceFrame = [%f, %f, %f; %f, %f, %f; %f, %f, %f], \n%@.rotationFromGlobalToCameraFrame = [%f, %f, %f; %f, %f, %f; %f, %f, %f], \n%@.rotationalAccuracyInRadians = [%f, %f, %f], \n%@.confidence = %f, \n%@.globalReferenceFrame = %zu, \n%@.location = %@, \n%@.supplemantryInfo = %@\n%@}", self, a3, v9, a3, vzip1q_s64(v32, v31), v29, *(&v28 + 1), vzip2q_s64(v26, v27), vzip1q_s64(v24, v25), v22, a3, vzip1q_s64(v23, v20), v21, *(&v18 + 1), vzip2q_s64(v19, v16), vzip1q_s64(v17, v14), v30, a3, v13, v15, v10, a3, v11, a3, -[_CLLSLHeading globalReferenceFrame](self, "globalReferenceFrame"), a3, -[_CLLSLLocation descriptionWithMemberIndent:endIndent:](-[_CLLSLHeading location](self, "location"), "descriptionWithMemberIndent:endIndent:", objc_msgSend(a3, "stringByAppendingString:", @"\t", objc_msgSend(a4, "stringByAppendingString:", @"\t", a3, -[_CLLSLHeadingSupplInfo descriptionWithMemberIndent:endIndent:](-[_CLLSLHeading supplemantaryInfo](self, "supplemantaryInfo"), "descriptionWithMemberIndent:endIndent:", objc_msgSend(a3, "stringByAppendingString:", @"\t", objc_msgSend(a4, "stringByAppendingString:", @"\t", a4];
+  return [v7 stringWithFormat:@"<_CLLSLHeading: %p> {\n%@.timestamp = %f, \n%@.rotationFromGlobalToDeviceFrame = [%f, %f, %f; %f, %f, %f; %f, %f, %f], \n%@.rotationFromGlobalToCameraFrame = [%f, %f, %f; %f, %f, %f; %f, %f, %f], \n%@.rotationalAccuracyInRadians = [%f, %f, %f], \n%@.confidence = %f, \n%@.globalReferenceFrame = %zu, \n%@.location = %@, \n%@.supplemantryInfo = %@\n%@}", self, indent, v9, indent, vzip1q_s64(v32, v31), v29, *(&v28 + 1), vzip2q_s64(v26, v27), vzip1q_s64(v24, v25), v22, indent, vzip1q_s64(v23, v20), v21, *(&v18 + 1), vzip2q_s64(v19, v16), vzip1q_s64(v17, v14), v30, indent, v13, v15, v10, indent, v11, indent, -[_CLLSLHeading globalReferenceFrame](self, "globalReferenceFrame"), indent, -[_CLLSLLocation descriptionWithMemberIndent:endIndent:](-[_CLLSLHeading location](self, "location"), "descriptionWithMemberIndent:endIndent:", objc_msgSend(indent, "stringByAppendingString:", @"\t", objc_msgSend(endIndent, "stringByAppendingString:", @"\t", indent, -[_CLLSLHeadingSupplInfo descriptionWithMemberIndent:endIndent:](-[_CLLSLHeading supplemantaryInfo](self, "supplemantaryInfo"), "descriptionWithMemberIndent:endIndent:", objc_msgSend(indent, "stringByAppendingString:", @"\t", objc_msgSend(endIndent, "stringByAppendingString:", @"\t", endIndent];
 }
 
 - (__n128)rotationFromGlobalToDeviceFrame
 {
-  v2 = *(a1 + 128);
-  *(a2 + 32) = *(a1 + 112);
+  v2 = *(self + 128);
+  *(a2 + 32) = *(self + 112);
   *(a2 + 48) = v2;
-  v3 = *(a1 + 160);
-  *(a2 + 64) = *(a1 + 144);
+  v3 = *(self + 160);
+  *(a2 + 64) = *(self + 144);
   *(a2 + 80) = v3;
-  result = *(a1 + 80);
-  v5 = *(a1 + 96);
+  result = *(self + 80);
+  v5 = *(self + 96);
   *a2 = result;
   *(a2 + 16) = v5;
   return result;
 }
 
-- (__n128)setRotationFromGlobalToDeviceFrame:(uint64_t)a3
+- (__n128)setRotationFromGlobalToDeviceFrame:(uint64_t)frame
 {
-  v3 = *(a3 + 16);
-  *(a1 + 80) = *a3;
-  *(a1 + 96) = v3;
-  result = *(a3 + 32);
-  v5 = *(a3 + 48);
-  v6 = *(a3 + 80);
-  *(a1 + 144) = *(a3 + 64);
-  *(a1 + 160) = v6;
-  *(a1 + 112) = result;
-  *(a1 + 128) = v5;
+  v3 = *(frame + 16);
+  *(self + 80) = *frame;
+  *(self + 96) = v3;
+  result = *(frame + 32);
+  v5 = *(frame + 48);
+  v6 = *(frame + 80);
+  *(self + 144) = *(frame + 64);
+  *(self + 160) = v6;
+  *(self + 112) = result;
+  *(self + 128) = v5;
   return result;
 }
 
 - (__n128)rotationFromGlobalToCameraFrame
 {
-  v2 = *(a1 + 224);
-  *(a2 + 32) = *(a1 + 208);
+  v2 = *(self + 224);
+  *(a2 + 32) = *(self + 208);
   *(a2 + 48) = v2;
-  v3 = *(a1 + 256);
-  *(a2 + 64) = *(a1 + 240);
+  v3 = *(self + 256);
+  *(a2 + 64) = *(self + 240);
   *(a2 + 80) = v3;
-  result = *(a1 + 176);
-  v5 = *(a1 + 192);
+  result = *(self + 176);
+  v5 = *(self + 192);
   *a2 = result;
   *(a2 + 16) = v5;
   return result;
 }
 
-- (__n128)setRotationFromGlobalToCameraFrame:(uint64_t)a3
+- (__n128)setRotationFromGlobalToCameraFrame:(uint64_t)frame
 {
-  v3 = *(a3 + 16);
-  *(a1 + 176) = *a3;
-  *(a1 + 192) = v3;
-  result = *(a3 + 32);
-  v5 = *(a3 + 48);
-  v6 = *(a3 + 80);
-  *(a1 + 240) = *(a3 + 64);
-  *(a1 + 256) = v6;
-  *(a1 + 208) = result;
-  *(a1 + 224) = v5;
+  v3 = *(frame + 16);
+  *(self + 176) = *frame;
+  *(self + 192) = v3;
+  result = *(frame + 32);
+  v5 = *(frame + 48);
+  v6 = *(frame + 80);
+  *(self + 240) = *(frame + 64);
+  *(self + 256) = v6;
+  *(self + 208) = result;
+  *(self + 224) = v5;
   return result;
 }
 
 - (__n128)rotationalAccuracyInRadians
 {
-  result = a1[3];
-  a2[1].n128_u64[0] = a1[4].n128_u64[0];
+  result = self[3];
+  a2[1].n128_u64[0] = self[4].n128_u64[0];
   *a2 = result;
   return result;
 }

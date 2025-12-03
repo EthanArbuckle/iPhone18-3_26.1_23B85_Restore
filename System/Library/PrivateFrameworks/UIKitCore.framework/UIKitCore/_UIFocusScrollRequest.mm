@@ -1,12 +1,12 @@
 @interface _UIFocusScrollRequest
 - (CGPoint)originatingContentOffset;
-- (CGPoint)resolveTargetContentOffsetUsingScrollOffsetResolverClamped:(BOOL)a3;
+- (CGPoint)resolveTargetContentOffsetUsingScrollOffsetResolverClamped:(BOOL)clamped;
 - (CGPoint)targetContentOffset;
 - (CGRect)focusItemFrame;
 - (CGRect)originatingBounds;
-- (_UIFocusScrollRequest)initWithBaseRequest:(id)a3 environmentScrollableContainer:(id)a4;
-- (_UIFocusScrollRequest)initWithEnvironmentScrollableContainer:(id)a3 focusItemInfo:(id)a4 focusMovement:(id)a5 focusItemFrame:(CGRect)a6 targetContentOffsetValue:(id)a7;
-- (_UIFocusScrollRequest)initWithEnvironmentScrollableContainer:(id)a3 focusItemInfo:(id)a4 focusUpdateContext:(id)a5;
+- (_UIFocusScrollRequest)initWithBaseRequest:(id)request environmentScrollableContainer:(id)container;
+- (_UIFocusScrollRequest)initWithEnvironmentScrollableContainer:(id)container focusItemInfo:(id)info focusMovement:(id)movement focusItemFrame:(CGRect)frame targetContentOffsetValue:(id)value;
+- (_UIFocusScrollRequest)initWithEnvironmentScrollableContainer:(id)container focusItemInfo:(id)info focusUpdateContext:(id)context;
 - (id)description;
 - (void)reloadFocusItemInfo;
 @end
@@ -42,9 +42,9 @@
     focusItemInfo = self->_focusItemInfo;
     if (focusItemInfo)
     {
-      v4 = [(_UIFocusEnvironmentScrollableContainerTuple *)self->_environmentScrollableContainer scrollableContainer];
-      v5 = [v4 coordinateSpace];
-      [(_UIFocusItemInfo *)focusItemInfo focusedRectInCoordinateSpace:v5];
+      scrollableContainer = [(_UIFocusEnvironmentScrollableContainerTuple *)self->_environmentScrollableContainer scrollableContainer];
+      coordinateSpace = [scrollableContainer coordinateSpace];
+      [(_UIFocusItemInfo *)focusItemInfo focusedRectInCoordinateSpace:coordinateSpace];
       x = v6;
       y = v8;
       width = v10;
@@ -88,16 +88,16 @@
   return result;
 }
 
-- (_UIFocusScrollRequest)initWithEnvironmentScrollableContainer:(id)a3 focusItemInfo:(id)a4 focusMovement:(id)a5 focusItemFrame:(CGRect)a6 targetContentOffsetValue:(id)a7
+- (_UIFocusScrollRequest)initWithEnvironmentScrollableContainer:(id)container focusItemInfo:(id)info focusMovement:(id)movement focusItemFrame:(CGRect)frame targetContentOffsetValue:(id)value
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  containerCopy = container;
+  infoCopy = info;
+  movementCopy = movement;
+  valueCopy = value;
   v79.receiver = self;
   v79.super_class = _UIFocusScrollRequest;
   v20 = [(_UIFocusScrollRequest *)&v79 init];
@@ -107,9 +107,9 @@
     goto LABEL_16;
   }
 
-  objc_storeStrong(&v20->_environmentScrollableContainer, a3);
-  objc_storeStrong(&v21->_focusMovement, a5);
-  objc_storeStrong(&v21->_focusItemInfo, a4);
+  objc_storeStrong(&v20->_environmentScrollableContainer, container);
+  objc_storeStrong(&v21->_focusMovement, movement);
+  objc_storeStrong(&v21->_focusItemInfo, info);
   v21->_focusItemFrame.origin.x = x;
   v21->_focusItemFrame.origin.y = y;
   v21->_focusItemFrame.size.width = width;
@@ -160,41 +160,41 @@
   }
 
 LABEL_10:
-  v76 = v18;
-  v77 = v17;
-  v78 = v16;
+  v76 = movementCopy;
+  v77 = infoCopy;
+  v78 = containerCopy;
   v24 = v21;
-  v25 = v19;
-  v26 = [(_UIFocusEnvironmentScrollableContainerTuple *)v21->_environmentScrollableContainer scrollableContainer];
-  v27 = [(_UIFocusEnvironmentScrollableContainerTuple *)v21->_environmentScrollableContainer owningEnvironment];
-  v28 = _UIFocusEnvironmentContainingView(v27);
-  v29 = [v28 window];
+  v25 = valueCopy;
+  scrollableContainer = [(_UIFocusEnvironmentScrollableContainerTuple *)v21->_environmentScrollableContainer scrollableContainer];
+  owningEnvironment = [(_UIFocusEnvironmentScrollableContainerTuple *)v21->_environmentScrollableContainer owningEnvironment];
+  v28 = _UIFocusEnvironmentContainingView(owningEnvironment);
+  window = [v28 window];
 
-  v30 = [_UIFocusSystemSceneComponent sceneComponentForEnvironment:v27];
-  v31 = [v30 scrollManager];
+  v30 = [_UIFocusSystemSceneComponent sceneComponentForEnvironment:owningEnvironment];
+  scrollManager = [v30 scrollManager];
   v24->_scrollOffsetResolver = _UIFocusItemScrollableContainerScrollOffsetResolverTypeForFocusMovement(v21->_environmentScrollableContainer, v21->_focusMovement);
-  [v31 targetContentOffsetForScrollableContainer:v26];
+  [scrollManager targetContentOffsetForScrollableContainer:scrollableContainer];
   v24->_originatingContentOffset.x = v32;
   v24->_originatingContentOffset.y = v33;
   *buf = v24->_originatingContentOffset;
-  [v26 visibleSize];
+  [scrollableContainer visibleSize];
   v24->_originatingBounds.origin = *buf;
   v24->_originatingBounds.size.width = v34;
   v24->_originatingBounds.size.height = v35;
-  [v26 contentOffset];
+  [scrollableContainer contentOffset];
   v37 = v36;
   v39 = v38;
-  [v26 visibleSize];
+  [scrollableContainer visibleSize];
   v41 = v40;
   v43 = v42;
-  v44 = [v26 coordinateSpace];
-  [v29 convertRect:v44 fromCoordinateSpace:{v37, v39, v41, v43}];
+  coordinateSpace = [scrollableContainer coordinateSpace];
+  [window convertRect:coordinateSpace fromCoordinateSpace:{v37, v39, v41, v43}];
   v46 = v45;
   v48 = v47;
   v50 = v49;
   v52 = v51;
 
-  [v29 bounds];
+  [window bounds];
   v93.origin.x = v53;
   v93.origin.y = v54;
   v93.size.width = v55;
@@ -259,7 +259,7 @@ LABEL_10:
     v24->_originatingBounds.size.height = v65;
   }
 
-  v16 = v78;
+  containerCopy = v78;
   if (v25)
   {
     [v25 CGPointValue];
@@ -272,28 +272,28 @@ LABEL_10:
     v24->_targetContentOffset = v24->_originatingContentOffset;
   }
 
-  v18 = v76;
-  v17 = v77;
+  movementCopy = v76;
+  infoCopy = v77;
 LABEL_16:
 
   return v21;
 }
 
-- (_UIFocusScrollRequest)initWithBaseRequest:(id)a3 environmentScrollableContainer:(id)a4
+- (_UIFocusScrollRequest)initWithBaseRequest:(id)request environmentScrollableContainer:(id)container
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 environmentScrollableContainer];
-  v9 = [v8 scrollableContainer];
-  v10 = [v9 coordinateSpace];
+  requestCopy = request;
+  containerCopy = container;
+  environmentScrollableContainer = [requestCopy environmentScrollableContainer];
+  scrollableContainer = [environmentScrollableContainer scrollableContainer];
+  coordinateSpace = [scrollableContainer coordinateSpace];
 
-  v11 = [v7 scrollableContainer];
-  v12 = [v11 coordinateSpace];
+  scrollableContainer2 = [containerCopy scrollableContainer];
+  coordinateSpace2 = [scrollableContainer2 coordinateSpace];
 
-  v13 = v6[9];
-  v14 = v6[10];
-  v15 = v6[11];
-  v16 = v6[12];
+  v13 = requestCopy[9];
+  v14 = requestCopy[10];
+  v15 = requestCopy[11];
+  v16 = requestCopy[12];
   v29.origin.x = v13;
   v29.origin.y = v14;
   v29.size.width = v15;
@@ -308,36 +308,36 @@ LABEL_16:
 
   else
   {
-    [v12 convertRect:v10 fromCoordinateSpace:{v13, v14, v15, v16}];
+    [coordinateSpace2 convertRect:coordinateSpace fromCoordinateSpace:{v13, v14, v15, v16}];
     v17 = v21;
     v18 = v22;
     v19 = v23;
     v20 = v24;
   }
 
-  v25 = [v6 focusItemInfo];
-  v26 = [v6 focusMovement];
-  v27 = [(_UIFocusScrollRequest *)self initWithEnvironmentScrollableContainer:v7 focusItemInfo:v25 focusMovement:v26 focusItemFrame:0 targetContentOffsetValue:v17, v18, v19, v20];
+  focusItemInfo = [requestCopy focusItemInfo];
+  focusMovement = [requestCopy focusMovement];
+  v27 = [(_UIFocusScrollRequest *)self initWithEnvironmentScrollableContainer:containerCopy focusItemInfo:focusItemInfo focusMovement:focusMovement focusItemFrame:0 targetContentOffsetValue:v17, v18, v19, v20];
 
   return v27;
 }
 
-- (_UIFocusScrollRequest)initWithEnvironmentScrollableContainer:(id)a3 focusItemInfo:(id)a4 focusUpdateContext:(id)a5
+- (_UIFocusScrollRequest)initWithEnvironmentScrollableContainer:(id)container focusItemInfo:(id)info focusUpdateContext:(id)context
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a5 _focusMovement];
-  v11 = [(_UIFocusScrollRequest *)self initWithEnvironmentScrollableContainer:v9 focusItemInfo:v8 focusMovement:v10 focusItemFrame:0 targetContentOffsetValue:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
+  infoCopy = info;
+  containerCopy = container;
+  _focusMovement = [context _focusMovement];
+  v11 = [(_UIFocusScrollRequest *)self initWithEnvironmentScrollableContainer:containerCopy focusItemInfo:infoCopy focusMovement:_focusMovement focusItemFrame:0 targetContentOffsetValue:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
 
   return v11;
 }
 
-- (CGPoint)resolveTargetContentOffsetUsingScrollOffsetResolverClamped:(BOOL)a3
+- (CGPoint)resolveTargetContentOffsetUsingScrollOffsetResolverClamped:(BOOL)clamped
 {
-  v3 = a3;
+  clampedCopy = clamped;
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [(_UIFocusScrollRequest *)self environmentScrollableContainer];
-  v6 = [v5 scrollableContainer];
+  environmentScrollableContainer = [(_UIFocusScrollRequest *)self environmentScrollableContainer];
+  scrollableContainer = [environmentScrollableContainer scrollableContainer];
 
   v7 = _UIFocusScrollOffsetResolverForOffsetResolverType([(_UIFocusScrollRequest *)self scrollOffsetResolver]);
   v8 = v7;
@@ -363,11 +363,11 @@ LABEL_16:
     }
   }
 
-  if (v3)
+  if (clampedCopy)
   {
-    v16 = _UIFocusItemScrollableContainerMinimumContentOffset(v6);
+    v16 = _UIFocusItemScrollableContainerMinimumContentOffset(scrollableContainer);
     v18 = v17;
-    x = fmax(v16, fmin(x, _UIFocusItemScrollableContainerMaximumContentOffset(v6)));
+    x = fmax(v16, fmin(x, _UIFocusItemScrollableContainerMaximumContentOffset(scrollableContainer)));
     y = fmax(v18, fmin(y, v19));
   }
 
@@ -383,31 +383,31 @@ LABEL_16:
 
 - (void)reloadFocusItemInfo
 {
-  v3 = [(_UIFocusItemInfo *)self->_focusItemInfo item];
-  v7 = v3;
-  if (v3)
+  item = [(_UIFocusItemInfo *)self->_focusItemInfo item];
+  v7 = item;
+  if (item)
   {
-    v4 = [(_UIFocusScrollRequest *)self focusItemInfo];
-    v5 = [v4 useFallbackAncestorScroller];
+    focusItemInfo = [(_UIFocusScrollRequest *)self focusItemInfo];
+    useFallbackAncestorScroller = [focusItemInfo useFallbackAncestorScroller];
 
-    v3 = [_UIFocusItemInfo infoWithItem:v7 useFallbackAncestorScroller:v5];
+    item = [_UIFocusItemInfo infoWithItem:v7 useFallbackAncestorScroller:useFallbackAncestorScroller];
   }
 
   focusItemInfo = self->_focusItemInfo;
-  self->_focusItemInfo = v3;
+  self->_focusItemInfo = item;
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(_UIFocusScrollRequest *)self environmentScrollableContainer];
-  v5 = [v4 owningEnvironment];
-  if (v5)
+  environmentScrollableContainer = [(_UIFocusScrollRequest *)self environmentScrollableContainer];
+  owningEnvironment = [environmentScrollableContainer owningEnvironment];
+  if (owningEnvironment)
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v6 stringWithFormat:@"<%@: %p>", v8, v5];
+    v9 = [v6 stringWithFormat:@"<%@: %p>", v8, owningEnvironment];
   }
 
   else
@@ -417,14 +417,14 @@ LABEL_16:
 
   v10 = [v3 appendObject:v9 withName:@"owningEnvironment"];
 
-  v11 = [(_UIFocusScrollRequest *)self environmentScrollableContainer];
-  v12 = [v11 scrollableContainer];
-  if (v12)
+  environmentScrollableContainer2 = [(_UIFocusScrollRequest *)self environmentScrollableContainer];
+  scrollableContainer = [environmentScrollableContainer2 scrollableContainer];
+  if (scrollableContainer)
   {
     v13 = MEMORY[0x1E696AEC0];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [v13 stringWithFormat:@"<%@: %p>", v15, v12];
+    v16 = [v13 stringWithFormat:@"<%@: %p>", v15, scrollableContainer];
   }
 
   else
@@ -437,12 +437,12 @@ LABEL_16:
   v18 = _UIFocusScrollOffsetResolverStringForOffsetResolverType([(_UIFocusScrollRequest *)self scrollOffsetResolver]);
   v19 = [v3 appendObject:v18 withName:@"scrollOffsetResolver"];
 
-  v20 = [(_UIFocusScrollRequest *)self focusItemInfo];
-  v21 = [v20 shortDescription];
-  v22 = [v3 appendObject:v21 withName:@"focusItemInfo"];
+  focusItemInfo = [(_UIFocusScrollRequest *)self focusItemInfo];
+  shortDescription = [focusItemInfo shortDescription];
+  v22 = [v3 appendObject:shortDescription withName:@"focusItemInfo"];
 
-  v23 = [(_UIFocusScrollRequest *)self focusMovement];
-  v24 = [v3 appendObject:v23 withName:@"focusMovement"];
+  focusMovement = [(_UIFocusScrollRequest *)self focusMovement];
+  v24 = [v3 appendObject:focusMovement withName:@"focusMovement"];
 
   [(_UIFocusScrollRequest *)self originatingContentOffset];
   v25 = NSStringFromCGPoint(v36);
@@ -460,9 +460,9 @@ LABEL_16:
   v31 = NSStringFromCGRect(v39);
   v32 = [v3 appendObject:v31 withName:@"focusItemFrame"];
 
-  v33 = [v3 build];
+  build = [v3 build];
 
-  return v33;
+  return build;
 }
 
 @end

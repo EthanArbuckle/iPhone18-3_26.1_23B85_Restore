@@ -1,8 +1,8 @@
 @interface SUICKPAudioPlaybackCardSectionViewController
 + (id)cardSectionClasses;
-- (void)_performCommands:(id)a3 applyingUserInfo:(id)a4;
-- (void)cardEventDidOccur:(unint64_t)a3 withIdentifier:(id)a4 userInfo:(id)a5;
-- (void)didEngageCardSection:(id)a3;
+- (void)_performCommands:(id)commands applyingUserInfo:(id)info;
+- (void)cardEventDidOccur:(unint64_t)occur withIdentifier:(id)identifier userInfo:(id)info;
+- (void)didEngageCardSection:(id)section;
 @end
 
 @implementation SUICKPAudioPlaybackCardSectionViewController
@@ -26,14 +26,14 @@ uint64_t __66__SUICKPAudioPlaybackCardSectionViewController_cardSectionClasses__
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)cardEventDidOccur:(unint64_t)a3 withIdentifier:(id)a4 userInfo:(id)a5
+- (void)cardEventDidOccur:(unint64_t)occur withIdentifier:(id)identifier userInfo:(id)info
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  identifierCopy = identifier;
   v36.receiver = self;
   v36.super_class = SUICKPAudioPlaybackCardSectionViewController;
-  [(CRKCardSectionViewController *)&v36 cardEventDidOccur:a3 withIdentifier:v8 userInfo:a5];
-  v9 = [(CRKCardSectionViewController *)self cardSection];
+  [(CRKCardSectionViewController *)&v36 cardEventDidOccur:occur withIdentifier:identifierCopy userInfo:info];
+  cardSection = [(CRKCardSectionViewController *)self cardSection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -48,8 +48,8 @@ uint64_t __66__SUICKPAudioPlaybackCardSectionViewController_cardSectionClasses__
     goto LABEL_26;
   }
 
-  v11 = [(SUICKPAudioPlaybackCardSectionViewController *)self view];
-  v12 = [v11 conformsToProtocol:&unk_2876D4898];
+  view = [(SUICKPAudioPlaybackCardSectionViewController *)self view];
+  v12 = [view conformsToProtocol:&unk_2876D4898];
 
   if ((v12 & 1) == 0)
   {
@@ -62,39 +62,39 @@ uint64_t __66__SUICKPAudioPlaybackCardSectionViewController_cardSectionClasses__
     goto LABEL_26;
   }
 
-  if (a3 == 2)
+  if (occur == 2)
   {
-    v28 = [(CRKCardSectionViewController *)self cardSection];
-    v29 = [v28 state];
+    cardSection2 = [(CRKCardSectionViewController *)self cardSection];
+    state = [cardSection2 state];
 
-    if (!v29)
+    if (!state)
     {
       goto LABEL_26;
     }
 
-    v30 = [(CRKCardSectionViewController *)self cardSection];
-    v31 = v30;
+    cardSection3 = [(CRKCardSectionViewController *)self cardSection];
+    v31 = cardSection3;
     v32 = 0;
 LABEL_23:
-    [v30 setState:v32];
+    [cardSection3 setState:v32];
 
-    v13 = [(SUICKPAudioPlaybackCardSectionViewController *)self view];
-    v33 = [(CRKCardSectionViewController *)self cardSection];
-    [v13 updateStateFromCardSection:v33];
+    view2 = [(SUICKPAudioPlaybackCardSectionViewController *)self view];
+    cardSection4 = [(CRKCardSectionViewController *)self cardSection];
+    [view2 updateStateFromCardSection:cardSection4];
 
 LABEL_25:
     goto LABEL_26;
   }
 
-  if (a3 != 1)
+  if (occur != 1)
   {
     goto LABEL_26;
   }
 
-  v13 = [(CRKCardSectionViewController *)self cardSection];
-  v14 = [v13 playCommands];
-  v15 = v8;
-  v16 = v14;
+  view2 = [(CRKCardSectionViewController *)self cardSection];
+  playCommands = [view2 playCommands];
+  v15 = identifierCopy;
+  v16 = playCommands;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -108,7 +108,7 @@ LABEL_25:
   }
 
   v19 = v18;
-  v35 = v13;
+  v35 = view2;
   v20 = *v38;
   while (2)
   {
@@ -119,17 +119,17 @@ LABEL_25:
         objc_enumerationMutation(v17);
       }
 
-      v22 = [*(*(&v37 + 1) + 8 * i) value];
-      v23 = [v22 referentialCommand];
-      v24 = [v23 referenceIdentifier];
+      value = [*(*(&v37 + 1) + 8 * i) value];
+      referentialCommand = [value referentialCommand];
+      referenceIdentifier = [referentialCommand referenceIdentifier];
 
-      v25 = [v24 isEqualToString:v15];
+      v25 = [referenceIdentifier isEqualToString:v15];
       if (v25)
       {
 
 LABEL_22:
-        v30 = [(CRKCardSectionViewController *)self cardSection];
-        v31 = v30;
+        cardSection3 = [(CRKCardSectionViewController *)self cardSection];
+        v31 = cardSection3;
         v32 = 2;
         goto LABEL_23;
       }
@@ -154,74 +154,74 @@ LABEL_26:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didEngageCardSection:(id)a3
+- (void)didEngageCardSection:(id)section
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CRKCardSectionViewController *)self delegate];
+  sectionCopy = section;
+  delegate = [(CRKCardSectionViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CRKCardSectionViewController *)self delegate];
+    delegate2 = [(CRKCardSectionViewController *)self delegate];
     v8 = MEMORY[0x277CF9470];
-    v9 = [v4 cardSection];
-    v10 = [v8 cardSectionWithSFCardSection:v9];
-    [v7 cardSectionView:v10 willProcessEngagementFeedback:v4];
+    cardSection = [sectionCopy cardSection];
+    v10 = [v8 cardSectionWithSFCardSection:cardSection];
+    [delegate2 cardSectionView:v10 willProcessEngagementFeedback:sectionCopy];
   }
 
-  v11 = [(CRKCardSectionViewController *)self delegate];
+  delegate3 = [(CRKCardSectionViewController *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(CRKCardSectionViewController *)self delegate];
-    v14 = [(CRKCardSectionViewController *)self cardSection];
-    [v13 userDidEngageCardSection:v14 withEngagementFeedback:v4];
+    delegate4 = [(CRKCardSectionViewController *)self delegate];
+    cardSection2 = [(CRKCardSectionViewController *)self cardSection];
+    [delegate4 userDidEngageCardSection:cardSection2 withEngagementFeedback:sectionCopy];
   }
 
-  v15 = [(CRKCardSectionViewController *)self cardSection];
+  cardSection3 = [(CRKCardSectionViewController *)self cardSection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v17 = [(CRKCardSectionViewController *)self delegate];
+    delegate5 = [(CRKCardSectionViewController *)self delegate];
     v18 = objc_opt_respondsToSelector();
 
     if (v18)
     {
-      v19 = [v4 actionTarget];
-      v20 = [(CRKCardSectionViewController *)self cardSection];
-      v21 = v20;
-      if (v19 == 4)
+      actionTarget = [sectionCopy actionTarget];
+      cardSection4 = [(CRKCardSectionViewController *)self cardSection];
+      v21 = cardSection4;
+      if (actionTarget == 4)
       {
-        v22 = [v20 state];
+        state = [cardSection4 state];
 
-        v23 = [(CRKCardSectionViewController *)self cardSection];
-        v24 = v23;
-        if (!v22)
+        cardSection5 = [(CRKCardSectionViewController *)self cardSection];
+        v24 = cardSection5;
+        if (!state)
         {
-          v35 = [v23 stopCommands];
-          [(SUICKPAudioPlaybackCardSectionViewController *)self _performCommands:v35 applyingUserInfo:0];
+          stopCommands = [cardSection5 stopCommands];
+          [(SUICKPAudioPlaybackCardSectionViewController *)self _performCommands:stopCommands applyingUserInfo:0];
 
-          v26 = [(CRKCardSectionViewController *)self cardSection];
-          v27 = [v26 playCommands];
+          cardSection6 = [(CRKCardSectionViewController *)self cardSection];
+          playCommands = [cardSection6 playCommands];
           v38 = @"CRKAudioPlaybackCardSectionIgnoresMuteSwitch";
           v39[0] = MEMORY[0x277CBEC38];
           v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:&v38 count:1];
-          [(SUICKPAudioPlaybackCardSectionViewController *)self _performCommands:v27 applyingUserInfo:v36];
+          [(SUICKPAudioPlaybackCardSectionViewController *)self _performCommands:playCommands applyingUserInfo:v36];
 
           goto LABEL_18;
         }
 
-        v25 = [v23 state];
+        state2 = [cardSection5 state];
 
-        if (v25 == 2)
+        if (state2 == 2)
         {
-          v26 = [(CRKCardSectionViewController *)self cardSection];
-          v27 = [v26 stopCommands];
-          [(SUICKPAudioPlaybackCardSectionViewController *)self _performCommands:v27 applyingUserInfo:0];
+          cardSection6 = [(CRKCardSectionViewController *)self cardSection];
+          playCommands = [cardSection6 stopCommands];
+          [(SUICKPAudioPlaybackCardSectionViewController *)self _performCommands:playCommands applyingUserInfo:0];
 LABEL_18:
 
           goto LABEL_19;
@@ -230,18 +230,18 @@ LABEL_18:
 
       else
       {
-        v30 = [v20 backingCardSection];
-        v31 = [v30 nextCard];
+        backingCardSection = [cardSection4 backingCardSection];
+        nextCard = [backingCardSection nextCard];
 
-        if (v31)
+        if (nextCard)
         {
-          v26 = objc_alloc_init(MEMORY[0x277CF9448]);
-          v32 = [(CRKCardSectionViewController *)self cardSection];
-          v33 = [v32 backingCardSection];
-          v34 = [v33 nextCard];
-          [v26 setNextCard:v34];
+          cardSection6 = objc_alloc_init(MEMORY[0x277CF9448]);
+          cardSection7 = [(CRKCardSectionViewController *)self cardSection];
+          backingCardSection2 = [cardSection7 backingCardSection];
+          nextCard2 = [backingCardSection2 nextCard];
+          [cardSection6 setNextCard:nextCard2];
 
-          [(CRKCardSectionViewController *)self _performCommand:v26];
+          [(CRKCardSectionViewController *)self _performCommand:cardSection6];
 LABEL_19:
         }
       }
@@ -269,16 +269,16 @@ LABEL_19:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performCommands:(id)a3 applyingUserInfo:(id)a4
+- (void)_performCommands:(id)commands applyingUserInfo:(id)info
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  commandsCopy = commands;
+  infoCopy = info;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [commandsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -289,15 +289,15 @@ LABEL_19:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(commandsCopy);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        [v12 setUserInfo:v7];
+        [v12 setUserInfo:infoCopy];
         [(CRKCardSectionViewController *)self _performCommand:v12];
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [commandsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);

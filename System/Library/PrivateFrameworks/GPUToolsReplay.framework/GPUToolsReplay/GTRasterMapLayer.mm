@@ -1,49 +1,49 @@
 @interface GTRasterMapLayer
 + (void)initialize;
-- (GTRasterMapLayer)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSize:(GTSize *)a3;
+- (GTRasterMapLayer)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSize:(GTSize *)size;
 @end
 
 @implementation GTRasterMapLayer
 
-- (void)setSize:(GTSize *)a3
+- (void)setSize:(GTSize *)size
 {
-  v3 = *&a3->width;
-  self->_size.depth = a3->depth;
+  v3 = *&size->width;
+  self->_size.depth = size->depth;
   *&self->_size.width = v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   width = self->_size.width;
-  v5 = a3;
-  [v5 encodeInt64:width forKey:@"size.width"];
-  [v5 encodeInt64:self->_size.height forKey:@"size.height"];
-  [v5 encodeInt64:self->_size.depth forKey:@"size.depth"];
-  [v5 encodeObject:self->_horizontalLogicalCoordinatesAtPhysicalTileBoundaries forKey:@"horizontalLogicalCoordinatesAtPhysicalTileBoundaries"];
-  [v5 encodeObject:self->_verticalLogicalCoordinatesAtPhysicalTileBoundaries forKey:@"verticalLogicalCoordinatesAtPhysicalTileBoundaries"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:width forKey:@"size.width"];
+  [coderCopy encodeInt64:self->_size.height forKey:@"size.height"];
+  [coderCopy encodeInt64:self->_size.depth forKey:@"size.depth"];
+  [coderCopy encodeObject:self->_horizontalLogicalCoordinatesAtPhysicalTileBoundaries forKey:@"horizontalLogicalCoordinatesAtPhysicalTileBoundaries"];
+  [coderCopy encodeObject:self->_verticalLogicalCoordinatesAtPhysicalTileBoundaries forKey:@"verticalLogicalCoordinatesAtPhysicalTileBoundaries"];
 }
 
-- (GTRasterMapLayer)initWithCoder:(id)a3
+- (GTRasterMapLayer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = GTRasterMapLayer;
   v5 = [(GTRasterMapLayer *)&v15 init];
   if (v5)
   {
-    v5->_size.width = [v4 decodeInt64ForKey:@"size.width"];
-    v5->_size.height = [v4 decodeInt64ForKey:@"size.height"];
-    v5->_size.depth = [v4 decodeInt64ForKey:@"size.depth"];
+    v5->_size.width = [coderCopy decodeInt64ForKey:@"size.width"];
+    v5->_size.height = [coderCopy decodeInt64ForKey:@"size.height"];
+    v5->_size.depth = [coderCopy decodeInt64ForKey:@"size.depth"];
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"horizontalLogicalCoordinatesAtPhysicalTileBoundaries"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"horizontalLogicalCoordinatesAtPhysicalTileBoundaries"];
     horizontalLogicalCoordinatesAtPhysicalTileBoundaries = v5->_horizontalLogicalCoordinatesAtPhysicalTileBoundaries;
     v5->_horizontalLogicalCoordinatesAtPhysicalTileBoundaries = v9;
 
-    v11 = [v4 decodeObjectOfClasses:v8 forKey:@"verticalLogicalCoordinatesAtPhysicalTileBoundaries"];
+    v11 = [coderCopy decodeObjectOfClasses:v8 forKey:@"verticalLogicalCoordinatesAtPhysicalTileBoundaries"];
     verticalLogicalCoordinatesAtPhysicalTileBoundaries = v5->_verticalLogicalCoordinatesAtPhysicalTileBoundaries;
     v5->_verticalLogicalCoordinatesAtPhysicalTileBoundaries = v11;
 

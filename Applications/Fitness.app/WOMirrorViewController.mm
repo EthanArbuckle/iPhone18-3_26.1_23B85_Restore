@@ -1,24 +1,24 @@
 @interface WOMirrorViewController
 - (BOOL)isCompleted;
-- (BOOL)showingSummaryForWorkoutUUID:(id)a3;
+- (BOOL)showingSummaryForWorkoutUUID:(id)d;
 - (BOOL)willPresentSummaryOnEndWorkout;
-- (WOMirrorViewController)initWithCoder:(id)a3;
-- (WOMirrorViewController)initWithDataLinkMonitor:(id)a3 summaryViewControllerCompletion:(id)a4;
-- (WOMirrorViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (WOMirrorViewController)initWithCoder:(id)coder;
+- (WOMirrorViewController)initWithDataLinkMonitor:(id)monitor summaryViewControllerCompletion:(id)completion;
+- (WOMirrorViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dismissLiveActivityForActiveSummary;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)showNotification:(id)a3;
-- (void)showTimeoutDialogWithDismissCompletion:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)showNotification:(id)notification;
+- (void)showTimeoutDialogWithDismissCompletion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation WOMirrorViewController
 
-- (WOMirrorViewController)initWithDataLinkMonitor:(id)a3 summaryViewControllerCompletion:(id)a4
+- (WOMirrorViewController)initWithDataLinkMonitor:(id)monitor summaryViewControllerCompletion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   if (v5)
   {
     v6 = swift_allocObject();
@@ -31,12 +31,12 @@
     v6 = 0;
   }
 
-  v7 = sub_100461990(a3, v5, v6);
+  v7 = sub_100461990(monitor, v5, v6);
   sub_1000245E0(v5);
   return v7;
 }
 
-- (WOMirrorViewController)initWithCoder:(id)a3
+- (WOMirrorViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___WOMirrorViewController____lazy_storage___canHostMapView) = 2;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -46,18 +46,18 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10045F0C8();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = type metadata accessor for SessionCurrentView();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = self;
+  selfCopy = self;
 
   MirrorViewMonitor.sessionViewModel.getter();
   dispatch thunk of SessionViewModel.currentView.getter();
@@ -66,26 +66,26 @@
 
   (*(v6 + 8))(v8, v5);
   v10 = type metadata accessor for MirrorViewController();
-  v11.receiver = v9;
+  v11.receiver = selfCopy;
   v11.super_class = v10;
-  [(WOMirrorViewController *)&v11 viewDidAppear:v3];
+  [(WOMirrorViewController *)&v11 viewDidAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v4 = self;
+  disappearCopy = disappear;
+  selfCopy = self;
 
   dispatch thunk of ScreenAssertionManager.releaseAssertion()();
 
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for MirrorViewController();
-  [(WOMirrorViewController *)&v5 viewDidDisappear:v3];
+  [(WOMirrorViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -98,24 +98,24 @@
     v7 = 0;
   }
 
-  v8 = self;
-  sub_10045F674(a3, v6, v7);
+  selfCopy = self;
+  sub_10045F674(animated, v6, v7);
   sub_1000245E0(v6);
 }
 
-- (void)showNotification:(id)a3
+- (void)showNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   MirrorViewMonitor.notificationCenter.getter();
   dispatch thunk of WorkoutNotificationCenter.add(_:)();
 }
 
-- (void)showTimeoutDialogWithDismissCompletion:(id)a3
+- (void)showTimeoutDialogWithDismissCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   *(swift_allocObject() + 16) = v4;
-  v5 = self;
+  selfCopy = self;
   MirrorViewMonitor.sessionViewModel.getter();
 
   dispatch thunk of SessionViewModel.mirroredEndWorkoutTimeoutAlertDismissed.setter();
@@ -126,7 +126,7 @@
 
 - (BOOL)willPresentSummaryOnEndWorkout
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100460154();
 
   return v3 & 1;
@@ -140,7 +140,7 @@
   v6 = &v14 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v7);
   v9 = &v14 - v8;
-  v10 = self;
+  selfCopy = self;
   MirrorViewMonitor.sessionViewModel.getter();
   dispatch thunk of SessionViewModel.currentView.getter();
 
@@ -153,14 +153,14 @@
   return v11 & 1;
 }
 
-- (BOOL)showingSummaryForWorkoutUUID:(id)a3
+- (BOOL)showingSummaryForWorkoutUUID:(id)d
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_100460C78(v7);
 
   (*(v5 + 8))(v7, v4);
@@ -169,11 +169,11 @@
 
 - (void)dismissLiveActivityForActiveSummary
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004613D4();
 }
 
-- (WOMirrorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WOMirrorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,21 +1,21 @@
 @interface _UISceneHostingDisconnectingActivationController
-- (void)activationHandleDidUpdate:(id)a3 forHostingController:(id)a4;
-- (void)endManagingHostedSceneActivationForHostingController:(id)a3;
-- (void)hostingController:(id)a3 isMovingToParentScene:(id)a4;
+- (void)activationHandleDidUpdate:(id)update forHostingController:(id)controller;
+- (void)endManagingHostedSceneActivationForHostingController:(id)controller;
+- (void)hostingController:(id)controller isMovingToParentScene:(id)scene;
 @end
 
 @implementation _UISceneHostingDisconnectingActivationController
 
-- (void)endManagingHostedSceneActivationForHostingController:(id)a3
+- (void)endManagingHostedSceneActivationForHostingController:(id)controller
 {
   activationHandle = self->_activationHandle;
   self->_activationHandle = 0;
 }
 
-- (void)hostingController:(id)a3 isMovingToParentScene:(id)a4
+- (void)hostingController:(id)controller isMovingToParentScene:(id)scene
 {
-  v6 = [(_UISceneHostingActivationHandle *)self->_activationHandle isActive];
-  if (a4 && !v6)
+  isActive = [(_UISceneHostingActivationHandle *)self->_activationHandle isActive];
+  if (scene && !isActive)
   {
     activationHandle = self->_activationHandle;
 
@@ -23,12 +23,12 @@
   }
 }
 
-- (void)activationHandleDidUpdate:(id)a3 forHostingController:(id)a4
+- (void)activationHandleDidUpdate:(id)update forHostingController:(id)controller
 {
-  v5 = a4;
-  if (([a3 isActive] & 1) == 0)
+  controllerCopy = controller;
+  if (([update isActive] & 1) == 0)
   {
-    [v5 invalidate];
+    [controllerCopy invalidate];
   }
 }
 

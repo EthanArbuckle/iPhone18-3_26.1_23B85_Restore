@@ -1,25 +1,25 @@
 @interface SWLocation
-- (BOOL)isEqual:(id)a3;
-- (SWLocation)initWithContext:(id)a3 URL:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SWLocation)initWithContext:(id)context URL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SWLocation
 
-- (SWLocation)initWithContext:(id)a3 URL:(id)a4
+- (SWLocation)initWithContext:(id)context URL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = SWLocation;
   v8 = [(SWLocation *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [contextCopy copy];
     context = v8->_context;
     v8->_context = v9;
 
-    v11 = [v7 copy];
+    v11 = [lCopy copy];
     URL = v8->_URL;
     v8->_URL = v11;
   }
@@ -27,7 +27,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SWLocation alloc];
   context = self->_context;
@@ -36,20 +36,20 @@
   return [(SWLocation *)v4 initWithContext:context URL:URL];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F5259BE8])
+  equalCopy = equal;
+  if ([equalCopy conformsToProtocol:&unk_1F5259BE8])
   {
     context = self->_context;
-    v6 = [v4 context];
-    if ([context isEqualToString:v6])
+    context = [equalCopy context];
+    if ([context isEqualToString:context])
     {
       URL = self->_URL;
       v8 = URL;
       if (!URL)
       {
-        context = [v4 URL];
+        context = [equalCopy URL];
         if (!context)
         {
           v10 = 1;
@@ -61,7 +61,7 @@ LABEL_11:
         v8 = self->_URL;
       }
 
-      v9 = [v4 URL];
+      v9 = [equalCopy URL];
       v10 = [(NSURL *)v8 isEqual:v9];
 
       if (!URL)

@@ -1,12 +1,12 @@
 @interface CVACMCompassData
 + (id)classes;
-+ (id)withData:(id)a3;
++ (id)withData:(id)data;
 - (CVACMCompassData)init;
-- (CVACMCompassData)initWithCoder:(id)a3;
-- (CVACMCompassData)initWithDictionary:(id)a3;
+- (CVACMCompassData)initWithCoder:(id)coder;
+- (CVACMCompassData)initWithDictionary:(id)dictionary;
 - (id)debugDescription;
 - (id)dictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CVACMCompassData
@@ -42,11 +42,11 @@
   return v2;
 }
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[CVACMCompassData classes];
-  v5 = [CVAMetadataWrapper decodeNSCoderObject:v3 classes:v4];
+  v5 = [CVAMetadataWrapper decodeNSCoderObject:dataCopy classes:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -64,87 +64,87 @@
   return v6;
 }
 
-- (CVACMCompassData)initWithDictionary:(id)a3
+- (CVACMCompassData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(CVACMCompassData *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"x"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"x"];
     [v6 floatValue];
     [(CVACLMotionTypeVector3 *)v5->_fieldValues setX:?];
 
-    v7 = [v4 objectForKeyedSubscript:@"y"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"y"];
     [v7 floatValue];
     [(CVACLMotionTypeVector3 *)v5->_fieldValues setY:?];
 
-    v8 = [v4 objectForKeyedSubscript:@"z"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"z"];
     [v8 floatValue];
     [(CVACLMotionTypeVector3 *)v5->_fieldValues setZ:?];
 
-    v9 = [v4 objectForKeyedSubscript:@"p"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"p"];
     [v9 floatValue];
     v5->_temperature = v10;
 
-    v11 = [v4 objectForKeyedSubscript:@"t"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"t"];
     [v11 doubleValue];
     v5->_timestamp = v12;
 
-    v13 = [v4 objectForKeyedSubscript:@"st"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"st"];
     v5->_syncTimestamp = [v13 unsignedLongLongValue];
 
-    v14 = [v4 objectForKeyedSubscript:@"sn"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"sn"];
     v5->_sequenceNumber = [v14 unsignedLongLongValue];
 
-    v15 = [v4 objectForKeyedSubscript:@"fi"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"fi"];
     v5->_frameId = [v15 unsignedLongLongValue];
   }
 
   return v5;
 }
 
-- (CVACMCompassData)initWithCoder:(id)a3
+- (CVACMCompassData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CVACMCompassData *)self init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    [v4 decodeFloatForKey:@"x"];
+    [coderCopy decodeFloatForKey:@"x"];
     [(CVACLMotionTypeVector3 *)v5->_fieldValues setX:?];
-    [v4 decodeFloatForKey:@"y"];
+    [coderCopy decodeFloatForKey:@"y"];
     [(CVACLMotionTypeVector3 *)v5->_fieldValues setY:?];
-    [v4 decodeFloatForKey:@"z"];
+    [coderCopy decodeFloatForKey:@"z"];
     [(CVACLMotionTypeVector3 *)v5->_fieldValues setZ:?];
-    [v4 decodeDoubleForKey:@"t"];
+    [coderCopy decodeDoubleForKey:@"t"];
     v5->_timestamp = v7;
-    [v4 decodeFloatForKey:@"p"];
+    [coderCopy decodeFloatForKey:@"p"];
     v5->_temperature = v8;
-    v5->_syncTimestamp = [v4 decodeInt64ForKey:@"st"];
-    v5->_sequenceNumber = [v4 decodeInt64ForKey:@"sn"];
-    v5->_frameId = [v4 decodeInt64ForKey:@"fi"];
+    v5->_syncTimestamp = [coderCopy decodeInt64ForKey:@"st"];
+    v5->_sequenceNumber = [coderCopy decodeInt64ForKey:@"sn"];
+    v5->_frameId = [coderCopy decodeInt64ForKey:@"fi"];
     objc_autoreleasePoolPop(v6);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   [(CVACLMotionTypeVector3 *)self->_fieldValues x];
-  [v6 encodeFloat:@"x" forKey:?];
+  [coderCopy encodeFloat:@"x" forKey:?];
   [(CVACLMotionTypeVector3 *)self->_fieldValues y];
-  [v6 encodeFloat:@"y" forKey:?];
+  [coderCopy encodeFloat:@"y" forKey:?];
   [(CVACLMotionTypeVector3 *)self->_fieldValues z];
-  [v6 encodeFloat:@"z" forKey:?];
+  [coderCopy encodeFloat:@"z" forKey:?];
   *&v5 = self->_temperature;
-  [v6 encodeFloat:@"p" forKey:v5];
-  [v6 encodeDouble:@"t" forKey:self->_timestamp];
-  [v6 encodeInt64:self->_syncTimestamp forKey:@"st"];
-  [v6 encodeInt64:self->_sequenceNumber forKey:@"sn"];
-  [v6 encodeInt64:self->_frameId forKey:@"fi"];
+  [coderCopy encodeFloat:@"p" forKey:v5];
+  [coderCopy encodeDouble:@"t" forKey:self->_timestamp];
+  [coderCopy encodeInt64:self->_syncTimestamp forKey:@"st"];
+  [coderCopy encodeInt64:self->_sequenceNumber forKey:@"sn"];
+  [coderCopy encodeInt64:self->_frameId forKey:@"fi"];
   objc_autoreleasePoolPop(v4);
 }
 
@@ -193,8 +193,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVACMCompassData *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVACMCompassData *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }

@@ -1,16 +1,16 @@
 @interface CustomRoomMusicVideoCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation CustomRoomMusicVideoCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.CustomRoomMusicVideoCell" hasInstanceMethod:@"headlineText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.CustomRoomMusicVideoCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.CustomRoomMusicVideoCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.CustomRoomMusicVideoCell" hasInstanceMethod:@"descriptionText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.CustomRoomMusicVideoCell" hasInstanceMethod:@"headlineText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.CustomRoomMusicVideoCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.CustomRoomMusicVideoCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.CustomRoomMusicVideoCell" hasInstanceMethod:@"descriptionText" withFullSignature:{"@", 0}];
 }
 
 @end

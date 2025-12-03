@@ -1,19 +1,19 @@
 @interface PKPGSVFooterView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (PKPGSVFooterView)initWithFrame:(CGRect)a3;
+- (PKPGSVFooterView)initWithFrame:(CGRect)frame;
 - (PKPGSVFooterViewDelegate)delegate;
-- (void)_editTapped:(id)a3;
+- (void)_editTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setExpiredSectionCount:(int64_t)a3;
+- (void)setExpiredSectionCount:(int64_t)count;
 @end
 
 @implementation PKPGSVFooterView
 
-- (PKPGSVFooterView)initWithFrame:(CGRect)a3
+- (PKPGSVFooterView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = PKPGSVFooterView;
-  v3 = [(PKPGSVFooterView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPGSVFooterView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v11 = 0x401C000000000000;
@@ -29,9 +29,9 @@
     v7 = PKLocalizedString(&cfstr_TableFooterEdi.isa);
     [(PKContinuousButton *)v6 setTitle:v7 forState:0];
 
-    v8 = [(PKContinuousButton *)v3->_editButton titleLabel];
+    titleLabel = [(PKContinuousButton *)v3->_editButton titleLabel];
     v9 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], *MEMORY[0x1E69DDC38], 2, 0);
-    [v8 setFont:v9];
+    [titleLabel setFont:v9];
 
     [(PKPGSVFooterView *)v3 addSubview:v3->_editButton];
     [(PKContinuousButton *)v3->_editButton addTarget:v3 action:sel__editTapped_ forControlEvents:64];
@@ -63,7 +63,7 @@
   [(PKContinuousButton *)editButton setFrame:?];
 }
 
-- (void)_editTapped:(id)a3
+- (void)_editTapped:(id)tapped
 {
   if (PKUIStoreDemoGatewayWithView(self))
   {
@@ -77,18 +77,18 @@
   }
 }
 
-- (void)setExpiredSectionCount:(int64_t)a3
+- (void)setExpiredSectionCount:(int64_t)count
 {
-  if (self->_expiredSectionCount != a3)
+  if (self->_expiredSectionCount != count)
   {
-    self->_expiredSectionCount = a3;
+    self->_expiredSectionCount = count;
     refreshed = PKExpiredPassesRefreshEnabled();
-    if (a3)
+    if (count)
     {
       if (refreshed)
       {
         editButton = self->_editButton;
-        v7 = PKLocalizedString(&cfstr_TableFooterExp.isa, &cfstr_Lu.isa, a3);
+        v7 = PKLocalizedString(&cfstr_TableFooterExp.isa, &cfstr_Lu.isa, count);
         [(PKContinuousButton *)editButton setTitle:v7 forState:0];
 
         [(PKPGSVFooterView *)self setNeedsLayout];

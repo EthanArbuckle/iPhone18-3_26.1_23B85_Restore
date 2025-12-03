@@ -1,34 +1,34 @@
 @interface IMUTITypes
-+ (id)UTIByExtension:(id)a3;
-+ (id)UTIFromMIMEType:(id)a3;
++ (id)UTIByExtension:(id)extension;
++ (id)UTIFromMIMEType:(id)type;
 @end
 
 @implementation IMUTITypes
 
-+ (id)UTIByExtension:(id)a3
++ (id)UTIByExtension:(id)extension
 {
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
+  extensionCopy = extension;
   v5 = [v3 arrayWithObjects:{@"mov", @"m4v", @"mp4", @"mpv", @"3gp", 0}];
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:{@"m4a", @"mp3", @"m4r", @"aiff", 0}];
-  v7 = [v4 lowercaseString];
+  lowercaseString = [extensionCopy lowercaseString];
 
-  if ([v7 isEqualToString:@"pdf"])
+  if ([lowercaseString isEqualToString:@"pdf"])
   {
     v8 = @"com.adobe.pdf";
   }
 
-  else if ([v7 isEqualToString:@"epub"])
+  else if ([lowercaseString isEqualToString:@"epub"])
   {
     v8 = @"public.epub";
   }
 
-  else if ([v5 containsObject:v7])
+  else if ([v5 containsObject:lowercaseString])
   {
     v8 = @"public.movie";
   }
 
-  else if ([v6 containsObject:v7])
+  else if ([v6 containsObject:lowercaseString])
   {
     v8 = @"public.audio";
   }
@@ -41,9 +41,9 @@
   return v8;
 }
 
-+ (id)UTIFromMIMEType:(id)a3
++ (id)UTIFromMIMEType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
     return 0;
   }

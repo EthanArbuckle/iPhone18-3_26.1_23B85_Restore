@@ -1,13 +1,13 @@
 @interface DCIMLocationUtilities
 + (id)_sharedGPSDateAndTimestampFormatter;
-+ (id)locationFromImageProperties:(id)a3;
++ (id)locationFromImageProperties:(id)properties;
 @end
 
 @implementation DCIMLocationUtilities
 
-+ (id)locationFromImageProperties:(id)a3
++ (id)locationFromImageProperties:(id)properties
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x1E696DBF0]];
+  v3 = [properties objectForKeyedSubscript:*MEMORY[0x1E696DBF0]];
   v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E696DC18]];
   v5 = [v3 objectForKeyedSubscript:*MEMORY[0x1E696DC28]];
   v6 = [v3 objectForKeyedSubscript:*MEMORY[0x1E696DC20]];

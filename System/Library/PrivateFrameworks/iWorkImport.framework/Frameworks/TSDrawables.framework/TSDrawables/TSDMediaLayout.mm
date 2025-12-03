@@ -2,22 +2,22 @@
 - (CGRect)alignmentFrame;
 - (CGRect)alignmentFrameInRoot;
 - (CGRect)boundsForStandardKnobs;
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3;
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root;
 - (TSDMediaInfo)mediaInfo;
-- (TSDMediaLayout)initWithInfo:(id)a3;
+- (TSDMediaLayout)initWithInfo:(id)info;
 - (id)stroke;
-- (void)processChangedProperty:(int)a3;
-- (void)setGeometry:(id)a3;
+- (void)processChangedProperty:(int)property;
+- (void)setGeometry:(id)geometry;
 @end
 
 @implementation TSDMediaLayout
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v24.receiver = self;
   v24.super_class = TSDMediaLayout;
   [(TSDDrawableLayout *)&v24 processChangedProperty:?];
-  if (a3 == 517)
+  if (property == 517)
   {
     objc_msgSend_invalidateFrame(self, v5, v6);
     objc_msgSend_invalidateAlignmentFrame(self, v7, v8);
@@ -42,11 +42,11 @@
   }
 }
 
-- (TSDMediaLayout)initWithInfo:(id)a3
+- (TSDMediaLayout)initWithInfo:(id)info
 {
   v4.receiver = self;
   v4.super_class = TSDMediaLayout;
-  result = [(TSDLayout *)&v4 initWithInfo:a3];
+  result = [(TSDLayout *)&v4 initWithInfo:info];
   if (result)
   {
     *&result->_mediaInvalidFlags |= 1u;
@@ -81,18 +81,18 @@
   return v4;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v6 = a3;
+  geometryCopy = geometry;
   if ((*&self->_mediaInvalidFlags & 1) == 0)
   {
     v7 = objc_msgSend_geometry(self, v4, v5);
     v10 = v7;
-    if (v7 && (objc_msgSend_differsInMoreThanTranslationFrom_(v7, v8, v6) & 1) == 0)
+    if (v7 && (objc_msgSend_differsInMoreThanTranslationFrom_(v7, v8, geometryCopy) & 1) == 0)
     {
-      if (v6)
+      if (geometryCopy)
       {
-        objc_msgSend_transform(v6, v8, v9);
+        objc_msgSend_transform(geometryCopy, v8, v9);
       }
 
       objc_msgSend_transform(v10, v8, v9);
@@ -113,10 +113,10 @@
 
   v13.receiver = self;
   v13.super_class = TSDMediaLayout;
-  [(TSDDrawableLayout *)&v13 setGeometry:v6];
+  [(TSDDrawableLayout *)&v13 setGeometry:geometryCopy];
 }
 
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDMediaLayout computeAlignmentFrameInRoot:]");

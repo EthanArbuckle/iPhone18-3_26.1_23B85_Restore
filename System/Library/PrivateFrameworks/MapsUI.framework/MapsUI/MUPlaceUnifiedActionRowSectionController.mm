@@ -1,22 +1,22 @@
 @interface MUPlaceUnifiedActionRowSectionController
 - (MUOfflineMapProvider)offlineMapProvider;
-- (MUPlaceUnifiedActionRowSectionController)initWithMapItem:(id)a3 configuration:(id)a4;
+- (MUPlaceUnifiedActionRowSectionController)initWithMapItem:(id)item configuration:(id)configuration;
 - (MUPlaceUnifiedActionRowSectionControllerDelegate)actionDelegate;
 - (id)leadingActionBarItem;
 - (id)menuActionBarItems;
-- (id)menuElementForActionItem:(id)a3;
-- (id)menuForActionItem:(id)a3;
+- (id)menuElementForActionItem:(id)item;
+- (id)menuForActionItem:(id)item;
 - (id)trailingActionBarItems;
 - (void)_buildButtonLayout;
 - (void)_createSectionView;
-- (void)_populateRevealedAnalyticsModule:(id)a3;
-- (void)_updateActions:(id)a3;
+- (void)_populateRevealedAnalyticsModule:(id)module;
+- (void)_updateActions:(id)actions;
 - (void)_updateHasContent;
-- (void)actionsRowView:(id)a3 didPresentMenuForViewModel:(id)a4 presentationOptions:(id)a5;
-- (void)actionsRowView:(id)a3 didSelectViewModel:(id)a4 presentationOptions:(id)a5;
-- (void)setOfflineFeatureDiscoveryView:(id)a3;
-- (void)setOfflineMapProvider:(id)a3;
-- (void)setSecondaryActionButtonController:(id)a3;
+- (void)actionsRowView:(id)view didPresentMenuForViewModel:(id)model presentationOptions:(id)options;
+- (void)actionsRowView:(id)view didSelectViewModel:(id)model presentationOptions:(id)options;
+- (void)setOfflineFeatureDiscoveryView:(id)view;
+- (void)setOfflineMapProvider:(id)provider;
+- (void)setSecondaryActionButtonController:(id)controller;
 @end
 
 @implementation MUPlaceUnifiedActionRowSectionController
@@ -40,15 +40,15 @@
   actionsRowView = self->_actionsRowView;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(MUGroupedActionsRowView *)self->_actionsRowView menuActionBarItems];
+    menuActionBarItems = [(MUGroupedActionsRowView *)self->_actionsRowView menuActionBarItems];
   }
 
   else
   {
-    v4 = 0;
+    menuActionBarItems = 0;
   }
 
-  return v4;
+  return menuActionBarItems;
 }
 
 - (id)trailingActionBarItems
@@ -56,15 +56,15 @@
   actionsRowView = self->_actionsRowView;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(MUGroupedActionsRowView *)self->_actionsRowView trailingActionBarItems];
+    trailingActionBarItems = [(MUGroupedActionsRowView *)self->_actionsRowView trailingActionBarItems];
   }
 
   else
   {
-    v4 = 0;
+    trailingActionBarItems = 0;
   }
 
-  return v4;
+  return trailingActionBarItems;
 }
 
 - (id)leadingActionBarItem
@@ -72,22 +72,22 @@
   actionsRowView = self->_actionsRowView;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(MUGroupedActionsRowView *)self->_actionsRowView leadingActionBarItem];
+    leadingActionBarItem = [(MUGroupedActionsRowView *)self->_actionsRowView leadingActionBarItem];
   }
 
   else
   {
-    v4 = 0;
+    leadingActionBarItem = 0;
   }
 
-  return v4;
+  return leadingActionBarItem;
 }
 
-- (void)_updateActions:(id)a3
+- (void)_updateActions:(id)actions
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([(NSArray *)self->_actionItemViewModels isEqual:v5]& 1) == 0)
+  actionsCopy = actions;
+  if (([(NSArray *)self->_actionItemViewModels isEqual:actionsCopy]& 1) == 0)
   {
     v23 = 0u;
     v24 = 0u;
@@ -119,8 +119,8 @@
       while (v8);
     }
 
-    objc_storeStrong(&self->_actionItemViewModels, a3);
-    [(MUGroupedActionsRowView *)self->_actionsRowView setViewModels:v5];
+    objc_storeStrong(&self->_actionItemViewModels, actions);
+    [(MUGroupedActionsRowView *)self->_actionsRowView setViewModels:actionsCopy];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -157,69 +157,69 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setOfflineFeatureDiscoveryView:(id)a3
+- (void)setOfflineFeatureDiscoveryView:(id)view
 {
-  v5 = a3;
-  if (self->_offlineFeatureDiscoveryView != v5)
+  viewCopy = view;
+  if (self->_offlineFeatureDiscoveryView != viewCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_offlineFeatureDiscoveryView, a3);
-    v6 = [(MUPlaceUnifiedActionRowSectionController *)self layoutBuilder];
-    v7 = [v6 downloadOfflineViewModel];
+    v8 = viewCopy;
+    objc_storeStrong(&self->_offlineFeatureDiscoveryView, view);
+    layoutBuilder = [(MUPlaceUnifiedActionRowSectionController *)self layoutBuilder];
+    downloadOfflineViewModel = [layoutBuilder downloadOfflineViewModel];
 
-    [v7 setFeatureDiscoveryView:self->_offlineFeatureDiscoveryView];
-    v5 = v8;
+    [downloadOfflineViewModel setFeatureDiscoveryView:self->_offlineFeatureDiscoveryView];
+    viewCopy = v8;
   }
 }
 
-- (void)setOfflineMapProvider:(id)a3
+- (void)setOfflineMapProvider:(id)provider
 {
-  objc_storeWeak(&self->_offlineMapProvider, a3);
+  objc_storeWeak(&self->_offlineMapProvider, provider);
 
   [(MUPlaceUnifiedActionRowSectionController *)self _buildButtonLayout];
 }
 
-- (void)setSecondaryActionButtonController:(id)a3
+- (void)setSecondaryActionButtonController:(id)controller
 {
-  v10 = a3;
-  v4 = [(MUPlaceUnifiedActionRowSectionController *)self configuration];
-  v5 = [v4 secondaryActionButtonController];
+  controllerCopy = controller;
+  configuration = [(MUPlaceUnifiedActionRowSectionController *)self configuration];
+  secondaryActionButtonController = [configuration secondaryActionButtonController];
 
-  v6 = v10;
-  if (v5 != v10)
+  v6 = controllerCopy;
+  if (secondaryActionButtonController != controllerCopy)
   {
-    v7 = [(MUPlaceUnifiedActionRowSectionController *)self configuration];
-    [v7 setSecondaryActionButtonController:v10];
+    configuration2 = [(MUPlaceUnifiedActionRowSectionController *)self configuration];
+    [configuration2 setSecondaryActionButtonController:controllerCopy];
 
-    v8 = [(MUPlaceUnifiedActionRowSectionController *)self configuration];
-    v9 = [v8 buttonModuleConfiguration];
+    configuration3 = [(MUPlaceUnifiedActionRowSectionController *)self configuration];
+    buttonModuleConfiguration = [configuration3 buttonModuleConfiguration];
 
-    v6 = v10;
-    if (!v9)
+    v6 = controllerCopy;
+    if (!buttonModuleConfiguration)
     {
       [(MUPlaceUnifiedActionRowSectionController *)self _buildButtonLayout];
-      v6 = v10;
+      v6 = controllerCopy;
     }
   }
 }
 
 - (void)_buildButtonLayout
 {
-  v3 = [(MUPlaceUnifiedActionRowSectionController *)self layoutBuilder];
-  v4 = [v3 buildButtonLayout];
+  layoutBuilder = [(MUPlaceUnifiedActionRowSectionController *)self layoutBuilder];
+  buildButtonLayout = [layoutBuilder buildButtonLayout];
 
-  [(MUPlaceUnifiedActionRowSectionController *)self _updateActions:v4];
+  [(MUPlaceUnifiedActionRowSectionController *)self _updateActions:buildButtonLayout];
 }
 
-- (void)actionsRowView:(id)a3 didPresentMenuForViewModel:(id)a4 presentationOptions:(id)a5
+- (void)actionsRowView:(id)view didPresentMenuForViewModel:(id)model presentationOptions:(id)options
 {
-  v12 = a4;
-  v7 = a5;
+  modelCopy = model;
+  optionsCopy = options;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v12;
-    if ([v7 isForActionBar])
+    v8 = modelCopy;
+    if ([optionsCopy isForActionBar])
     {
       v9 = 6112;
     }
@@ -229,13 +229,13 @@
       v9 = 209;
     }
 
-    v10 = [v8 externalActionMenuRevealButtons];
-    if ([v7 isForActionBarMoreMenu])
+    externalActionMenuRevealButtons = [v8 externalActionMenuRevealButtons];
+    if ([optionsCopy isForActionBarMoreMenu])
     {
       v11 = @"SECONDARY";
     }
 
-    else if ([v7 isForActionBar])
+    else if ([optionsCopy isForActionBar])
     {
       v11 = @"PRIMARY";
     }
@@ -245,29 +245,29 @@
       v11 = 0;
     }
 
-    [(MUPlaceSectionController *)self captureInfoCardPartnerAction:v9 eventValue:0 sharedStateButtonList:v10 presentationOptions:v7 classification:v11];
+    [(MUPlaceSectionController *)self captureInfoCardPartnerAction:v9 eventValue:0 sharedStateButtonList:externalActionMenuRevealButtons presentationOptions:optionsCopy classification:v11];
   }
 }
 
-- (void)actionsRowView:(id)a3 didSelectViewModel:(id)a4 presentationOptions:(id)a5
+- (void)actionsRowView:(id)view didSelectViewModel:(id)model presentationOptions:(id)options
 {
   v38[5] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(MUPlaceUnifiedActionRowSectionController *)self configuration];
+  modelCopy = model;
+  optionsCopy = options;
+  configuration = [(MUPlaceUnifiedActionRowSectionController *)self configuration];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = 1;
+    isForActionBar = 1;
   }
 
   else
   {
-    v10 = [v8 isForActionBar];
+    isForActionBar = [optionsCopy isForActionBar];
   }
 
-  v11 = [(MUPlaceUnifiedActionRowSectionController *)self analyticsModuleForAction:0 presentationOptions:v8];
-  if (v10)
+  v11 = [(MUPlaceUnifiedActionRowSectionController *)self analyticsModuleForAction:0 presentationOptions:optionsCopy];
+  if (isForActionBar)
   {
     v12 = [MEMORY[0x1E69A1B10] moduleFromModuleType:46];
 
@@ -278,27 +278,27 @@
   if (objc_opt_isKindOfClass())
   {
     v37[0] = *MEMORY[0x1E696F118];
-    v13 = [v8 sourceView];
+    sourceView = [optionsCopy sourceView];
     v14 = *MEMORY[0x1E696F108];
-    v38[0] = v13;
+    v38[0] = sourceView;
     v38[1] = v11;
     v15 = *MEMORY[0x1E696F100];
     v37[1] = v14;
     v37[2] = v15;
     v38[2] = MEMORY[0x1E695E110];
     v37[3] = *MEMORY[0x1E696F0F0];
-    v16 = [MEMORY[0x1E696AD98] numberWithBool:v10];
+    v16 = [MEMORY[0x1E696AD98] numberWithBool:isForActionBar];
     v38[3] = v16;
     v37[4] = *MEMORY[0x1E696F0F8];
-    v17 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isForActionBarMoreMenu")}];
+    v17 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(optionsCopy, "isForActionBarMoreMenu")}];
     v38[4] = v17;
-    v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:5];
+    actionDelegate = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:5];
 
-    v19 = [(MUPlaceUnifiedActionRowSectionController *)self configuration];
-    v20 = [v19 actionManager];
-    v21 = [v7 actionRowItem];
-    v22 = [v21 resolvedActionItem];
-    [v20 performAction:v22 options:v18 completion:0];
+    configuration2 = [(MUPlaceUnifiedActionRowSectionController *)self configuration];
+    actionManager = [configuration2 actionManager];
+    actionRowItem = [modelCopy actionRowItem];
+    resolvedActionItem = [actionRowItem resolvedActionItem];
+    [actionManager performAction:resolvedActionItem options:actionDelegate completion:0];
 
     goto LABEL_12;
   }
@@ -306,9 +306,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v18 = [(MUPlaceUnifiedActionRowSectionController *)self actionDelegate];
-    v23 = [(MUPlaceUnifiedActionRowSectionController *)self configuration];
-    [v18 sectionController:self didSelectPrimaryButtonType:objc_msgSend(v23 options:{"primaryButtonType"), v8}];
+    actionDelegate = [(MUPlaceUnifiedActionRowSectionController *)self actionDelegate];
+    configuration3 = [(MUPlaceUnifiedActionRowSectionController *)self configuration];
+    [actionDelegate sectionController:self didSelectPrimaryButtonType:objc_msgSend(configuration3 options:{"primaryButtonType"), optionsCopy}];
 LABEL_11:
 
     goto LABEL_12;
@@ -318,30 +318,30 @@ LABEL_11:
   if (objc_opt_isKindOfClass())
   {
     v35[0] = *MEMORY[0x1E696F118];
-    v25 = v7;
-    v26 = [v8 sourceView];
+    v25 = modelCopy;
+    sourceView2 = [optionsCopy sourceView];
     v27 = *MEMORY[0x1E696F108];
-    v36[0] = v26;
+    v36[0] = sourceView2;
     v36[1] = v11;
     v28 = *MEMORY[0x1E696F100];
     v35[1] = v27;
     v35[2] = v28;
     v36[2] = MEMORY[0x1E695E110];
     v35[3] = *MEMORY[0x1E696F0F0];
-    v29 = [MEMORY[0x1E696AD98] numberWithBool:v10];
+    v29 = [MEMORY[0x1E696AD98] numberWithBool:isForActionBar];
     v36[3] = v29;
     v35[4] = *MEMORY[0x1E696F0F8];
-    v30 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isForActionBarMoreMenu")}];
+    v30 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(optionsCopy, "isForActionBarMoreMenu")}];
     v36[4] = v30;
-    v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:5];
+    actionDelegate = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:5];
 
     v31 = MEMORY[0x1E696F308];
-    v32 = [v25 actionItemType];
+    actionItemType = [v25 actionItemType];
 
-    v23 = [v31 actionItemWithType:v32];
-    v33 = [(MUPlaceUnifiedActionRowSectionController *)self configuration];
-    v34 = [v33 actionManager];
-    [v34 performAction:v23 options:v18 completion:0];
+    configuration3 = [v31 actionItemWithType:actionItemType];
+    configuration4 = [(MUPlaceUnifiedActionRowSectionController *)self configuration];
+    actionManager2 = [configuration4 actionManager];
+    [actionManager2 performAction:configuration3 options:actionDelegate completion:0];
 
     goto LABEL_11;
   }
@@ -349,14 +349,14 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 performSingleVendorSelectionActionWithPresentationOptions:v8];
+    [modelCopy performSingleVendorSelectionActionWithPresentationOptions:optionsCopy];
     goto LABEL_13;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 performWithPresentationOptions:v8];
+    [modelCopy performWithPresentationOptions:optionsCopy];
     goto LABEL_13;
   }
 
@@ -366,18 +366,18 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v18 = [(MUPlaceUnifiedActionRowSectionController *)self actionDelegate];
-  [v18 sectionControllerDidSelectViewContactButton:self];
+  actionDelegate = [(MUPlaceUnifiedActionRowSectionController *)self actionDelegate];
+  [actionDelegate sectionControllerDidSelectViewContactButton:self];
 LABEL_12:
 
 LABEL_13:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_populateRevealedAnalyticsModule:(id)a3
+- (void)_populateRevealedAnalyticsModule:(id)module
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  moduleCopy = module;
   v5 = objc_alloc_init(MEMORY[0x1E69A24E0]);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v23 = 0u;
@@ -400,8 +400,8 @@ LABEL_13:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v23 + 1) + 8 * v11) analyticsButtonValues];
-        [v6 _mapsui_addObjectsFromArrayIfNotNil:v12];
+        analyticsButtonValues = [*(*(&v23 + 1) + 8 * v11) analyticsButtonValues];
+        [v6 _mapsui_addObjectsFromArrayIfNotNil:analyticsButtonValues];
 
         ++v11;
       }
@@ -445,7 +445,7 @@ LABEL_13:
 
   if ([v13 count])
   {
-    [v4 setUnifiedActionRow:v5];
+    [moduleCopy setUnifiedActionRow:v5];
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -453,28 +453,28 @@ LABEL_13:
 
 - (void)_updateHasContent
 {
-  v3 = [(MUGroupedActionsRowView *)self->_actionsRowView hasContent];
-  if (self->_hasContent != v3)
+  hasContent = [(MUGroupedActionsRowView *)self->_actionsRowView hasContent];
+  if (self->_hasContent != hasContent)
   {
-    self->_hasContent = v3;
-    v4 = [(MUPlaceSectionController *)self delegate];
-    [v4 placeSectionControllerDidUpdateContent:self];
+    self->_hasContent = hasContent;
+    delegate = [(MUPlaceSectionController *)self delegate];
+    [delegate placeSectionControllerDidUpdateContent:self];
   }
 }
 
-- (id)menuElementForActionItem:(id)a3
+- (id)menuElementForActionItem:(id)item
 {
-  v4 = a3;
-  v5 = [(MUPlaceUnifiedActionRowSectionController *)self configuration];
-  v6 = [v5 actionRowMenuProvider];
-  v7 = [v6 menuElementForActionItem:v4];
+  itemCopy = item;
+  configuration = [(MUPlaceUnifiedActionRowSectionController *)self configuration];
+  actionRowMenuProvider = [configuration actionRowMenuProvider];
+  v7 = [actionRowMenuProvider menuElementForActionItem:itemCopy];
 
   return v7;
 }
 
-- (id)menuForActionItem:(id)a3
+- (id)menuForActionItem:(id)item
 {
-  v3 = [(MUPlaceUnifiedActionRowSectionController *)self menuElementForActionItem:a3];
+  v3 = [(MUPlaceUnifiedActionRowSectionController *)self menuElementForActionItem:item];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -506,9 +506,9 @@ LABEL_13:
   self->_sectionView = v5;
 
   [(MUPlaceSectionView *)self->_sectionView configureWithSectionController:self];
-  v7 = [MEMORY[0x1E696AAE8] mainBundle];
-  v8 = [v7 bundleIdentifier];
-  v9 = [v8 isEqualToString:*MEMORY[0x1E69A1A78]];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v9 = [bundleIdentifier isEqualToString:*MEMORY[0x1E69A1A78]];
 
   if ((v9 & 1) == 0)
   {
@@ -520,12 +520,12 @@ LABEL_13:
   }
 }
 
-- (MUPlaceUnifiedActionRowSectionController)initWithMapItem:(id)a3 configuration:(id)a4
+- (MUPlaceUnifiedActionRowSectionController)initWithMapItem:(id)item configuration:(id)configuration
 {
-  v7 = a4;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = MUPlaceUnifiedActionRowSectionController;
-  v8 = [(MUPlaceSectionController *)&v15 initWithMapItem:a3];
+  v8 = [(MUPlaceSectionController *)&v15 initWithMapItem:item];
   if (v8)
   {
     v9 = MUGetPlaceCardLog();
@@ -535,7 +535,7 @@ LABEL_13:
       _os_signpost_emit_with_name_impl(&dword_1C5620000, v9, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "MUPlaceActionRowSectionControllerInit", "", v14, 2u);
     }
 
-    objc_storeStrong(&v8->_configuration, a4);
+    objc_storeStrong(&v8->_configuration, configuration);
     v10 = [[MUPlaceUnifiedActionRowLayoutBuilder alloc] initWithConfiguration:v8->_configuration delegate:v8];
     layoutBuilder = v8->_layoutBuilder;
     v8->_layoutBuilder = v10;

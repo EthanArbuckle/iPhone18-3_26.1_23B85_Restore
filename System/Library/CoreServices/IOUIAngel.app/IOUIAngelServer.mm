@@ -4,10 +4,10 @@
 - (IOUIAngelServer)init;
 - (void)activate;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)pingWithCompletion:(id)a3;
-- (void)removeIntrusiveUIWithCompletion:(id)a3;
-- (void)setIntrusiveUIWithCompletion:(id)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)pingWithCompletion:(id)completion;
+- (void)removeIntrusiveUIWithCompletion:(id)completion;
+- (void)setIntrusiveUIWithCompletion:(id)completion;
 @end
 
 @implementation IOUIAngelServer
@@ -83,78 +83,78 @@
   return v3;
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v7 = a4;
-  v8 = [a5 decodeStringForKey:@"IOUIAngelLDCM"];
+  connectionCopy = connection;
+  v8 = [context decodeStringForKey:@"IOUIAngelLDCM"];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v9 = +[BSServiceConnection currentContext];
-    v10 = [v9 remoteProcess];
+    remoteProcess = [v9 remoteProcess];
     *buf = 136315906;
     v19 = "[IOUIAngelServer listener:didReceiveConnection:withContext:]";
     v20 = 2048;
-    v21 = v7;
+    v21 = connectionCopy;
     v22 = 2112;
     v23 = v8;
     v24 = 2112;
-    v25 = v10;
+    v25 = remoteProcess;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s: received connection %p with identifier %@ from %@", buf, 0x2Au);
   }
 
-  v11 = [v7 remoteProcess];
-  if ([v11 hasEntitlement:@"com.apple.IOUIAngel.LDCM.allowUI"])
+  remoteProcess2 = [connectionCopy remoteProcess];
+  if ([remoteProcess2 hasEntitlement:@"com.apple.IOUIAngel.LDCM.allowUI"])
   {
     v12 = _NSConcreteStackBlock;
     v13 = 3221225472;
     v14 = sub_1000015D4;
     v15 = &unk_10000C418;
     v16 = v8;
-    v17 = self;
-    [v7 configureConnection:&v12];
-    [v7 activate];
+    selfCopy = self;
+    [connectionCopy configureConnection:&v12];
+    [connectionCopy activate];
   }
 
   else
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_1000053D8(v7, v11);
+      sub_1000053D8(connectionCopy, remoteProcess2);
     }
 
-    [v7 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
-- (void)pingWithCompletion:(id)a3
+- (void)pingWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v4 = +[BSServiceConnection currentContext];
-    v5 = [v4 remoteProcess];
+    remoteProcess = [v4 remoteProcess];
     v6 = 136315394;
     v7 = "[IOUIAngelServer pingWithCompletion:]";
     v8 = 2112;
-    v9 = v5;
+    v9 = remoteProcess;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s: pinged from %@", &v6, 0x16u);
   }
 
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)setIntrusiveUIWithCompletion:(id)a3
+- (void)setIntrusiveUIWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = +[BSServiceConnection currentContext];
-    v6 = [v5 remoteProcess];
+    remoteProcess = [v5 remoteProcess];
     *buf = 138412290;
-    v11 = v6;
+    v11 = remoteProcess;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "setIntrusiveUIWithCompletion called from %@", buf, 0xCu);
   }
 
@@ -163,20 +163,20 @@
   v8[2] = sub_1000018D8;
   v8[3] = &unk_10000C468;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(&_dispatch_main_q, v8);
 }
 
-- (void)removeIntrusiveUIWithCompletion:(id)a3
+- (void)removeIntrusiveUIWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = +[BSServiceConnection currentContext];
-    v6 = [v5 remoteProcess];
+    remoteProcess = [v5 remoteProcess];
     *buf = 138412290;
-    v11 = v6;
+    v11 = remoteProcess;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "removeIntrusiveUIWithCompletion called from %@", buf, 0xCu);
   }
 
@@ -185,8 +185,8 @@
   v8[2] = sub_100001CC8;
   v8[3] = &unk_10000C468;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(&_dispatch_main_q, v8);
 }
 

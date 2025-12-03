@@ -1,25 +1,25 @@
 @interface UITabBarCustomizeViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilityObscuredScreenAllowedViews;
-- (void)tabBarTouchesBegan:(id)a3 withEvent:(id)a4;
-- (void)tabBarTouchesEnded:(id)a3 withEvent:(id)a4;
-- (void)tabBarTouchesMoved:(id)a3 withEvent:(id)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)tabBarTouchesBegan:(id)began withEvent:(id)event;
+- (void)tabBarTouchesEnded:(id)ended withEvent:(id)event;
+- (void)tabBarTouchesMoved:(id)moved withEvent:(id)event;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UITabBarCustomizeViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v8 = location;
   v7 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UITabBarCustomizeView";
   [location[0] validateClass:? hasInstanceVariable:? withType:?];
   [location[0] validateClass:@"UITabBarCustomizeView" hasInstanceVariable:@"_draggingItem" withType:"UITabBarItem"];
@@ -46,27 +46,27 @@
   return v4;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, began);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v12 = [(UITabBarCustomizeViewAccessibility *)v15 safeValueForKey:?];
-  v11.receiver = v15;
+  objc_storeStrong(&v13, event);
+  v12 = [(UITabBarCustomizeViewAccessibility *)selfCopy safeValueForKey:?];
+  v11.receiver = selfCopy;
   v11.super_class = UITabBarCustomizeViewAccessibility;
   [(UITabBarCustomizeViewAccessibility *)&v11 touchesBegan:location[0] withEvent:v13];
-  v10 = [(UITabBarCustomizeViewAccessibility *)v15 safeValueForKey:@"_draggingProxy"];
+  v10 = [(UITabBarCustomizeViewAccessibility *)selfCopy safeValueForKey:@"_draggingProxy"];
   if (!v12 && v10)
   {
     v4 = MEMORY[0x29EDBA0F8];
     v7 = accessibilityLocalizedString(@"started.moving.tabbar.icon");
     v6 = [v10 safeValueForKey:@"view"];
-    v5 = [v6 accessibilityLabel];
-    v9 = [v4 stringWithFormat:v7, v5];
-    MEMORY[0x29EDC9740](v5);
+    accessibilityLabel = [v6 accessibilityLabel];
+    v9 = [v4 stringWithFormat:v7, accessibilityLabel];
+    MEMORY[0x29EDC9740](accessibilityLabel);
     MEMORY[0x29EDC9740](v6);
     MEMORY[0x29EDC9740](v7);
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v9);
@@ -79,25 +79,25 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, moved);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
-  v18 = [(UITabBarCustomizeViewAccessibility *)v21 safeValueForKey:?];
-  v17.receiver = v21;
+  objc_storeStrong(&v19, event);
+  v18 = [(UITabBarCustomizeViewAccessibility *)selfCopy safeValueForKey:?];
+  v17.receiver = selfCopy;
   v17.super_class = UITabBarCustomizeViewAccessibility;
   [(UITabBarCustomizeViewAccessibility *)&v17 touchesMoved:location[0] withEvent:v19];
-  v16 = [(UITabBarCustomizeViewAccessibility *)v21 safeValueForKey:@"_replaceItem"];
+  v16 = [(UITabBarCustomizeViewAccessibility *)selfCopy safeValueForKey:@"_replaceItem"];
   if (v16 && ([v18 isEqual:v16] & 1) == 0)
   {
     v15 = [v16 safeValueForKey:@"view"];
     v12 = MEMORY[0x29EDC7EA8];
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], *MEMORY[0x29EDBDAA8]);
-    v5 = [(UITabBarCustomizeViewAccessibility *)v21 safeValueForKey:@"_tabBar"];
+    v5 = [(UITabBarCustomizeViewAccessibility *)selfCopy safeValueForKey:@"_tabBar"];
     v4 = [v5 safeValueForKey:@"_items"];
     v6 = [v4 indexOfObject:v16];
     MEMORY[0x29EDC9740](v4);
@@ -105,13 +105,13 @@
     v14[1] = v6;
     v7 = MEMORY[0x29EDBA0F8];
     v11 = accessibilityLocalizedString(@"replacing.tabbar.icon");
-    v10 = [v15 accessibilityLabel];
+    accessibilityLabel = [v15 accessibilityLabel];
     v9 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v6 + 1];
     v8 = AXFormatNumber();
-    v14[0] = [v7 stringWithFormat:v11, v10, v8];
+    v14[0] = [v7 stringWithFormat:v11, accessibilityLabel, v8];
     MEMORY[0x29EDC9740](v8);
     MEMORY[0x29EDC9740](v9);
-    MEMORY[0x29EDC9740](v10);
+    MEMORY[0x29EDC9740](accessibilityLabel);
     MEMORY[0x29EDC9740](v11);
     UIAccessibilityPostNotification(*v12, v14[0]);
     objc_storeStrong(v14, 0);
@@ -124,16 +124,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, ended);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  v6 = [(UITabBarCustomizeViewAccessibility *)v9 safeValueForKey:@"_draggingProxy"];
-  v5.receiver = v9;
+  objc_storeStrong(&v7, event);
+  v6 = [(UITabBarCustomizeViewAccessibility *)selfCopy safeValueForKey:@"_draggingProxy"];
+  v5.receiver = selfCopy;
   v5.super_class = UITabBarCustomizeViewAccessibility;
   [(UITabBarCustomizeViewAccessibility *)&v5 touchesEnded:location[0] withEvent:v7];
   if (v6)
@@ -146,26 +146,26 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)tabBarTouchesBegan:(id)a3 withEvent:(id)a4
+- (void)tabBarTouchesBegan:(id)began withEvent:(id)event
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, began);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v11.receiver = v14;
+  objc_storeStrong(&v12, event);
+  v11.receiver = selfCopy;
   v11.super_class = UITabBarCustomizeViewAccessibility;
   [(UITabBarCustomizeViewAccessibility *)&v11 tabBarTouchesBegan:location[0] withEvent:v12];
-  v10 = [(UITabBarCustomizeViewAccessibility *)v14 safeValueForKey:@"_draggingItem"];
+  v10 = [(UITabBarCustomizeViewAccessibility *)selfCopy safeValueForKey:@"_draggingItem"];
   if (v10)
   {
     v4 = MEMORY[0x29EDBA0F8];
     v7 = accessibilityLocalizedString(@"started.moving.tabbar.icon");
     v6 = [v10 safeValueForKey:@"view"];
-    v5 = [v6 accessibilityLabel];
-    v9 = [v4 stringWithFormat:v7, v5];
-    MEMORY[0x29EDC9740](v5);
+    accessibilityLabel = [v6 accessibilityLabel];
+    v9 = [v4 stringWithFormat:v7, accessibilityLabel];
+    MEMORY[0x29EDC9740](accessibilityLabel);
     MEMORY[0x29EDC9740](v6);
     MEMORY[0x29EDC9740](v7);
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v9);
@@ -177,14 +177,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)tabBarTouchesMoved:(id)a3 withEvent:(id)a4
+- (void)tabBarTouchesMoved:(id)moved withEvent:(id)event
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, moved);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, event);
   v26 = 0;
   v27 = &v26;
   v28 = 838860800;
@@ -197,7 +197,7 @@
   v21 = __67__UITabBarCustomizeViewAccessibility_tabBarTouchesMoved_withEvent___block_invoke;
   v22 = &unk_29F30D400;
   v25[1] = &v26;
-  v23 = MEMORY[0x29EDC9748](v36);
+  v23 = MEMORY[0x29EDC9748](selfCopy);
   v24 = MEMORY[0x29EDC9748](location[0]);
   v25[0] = MEMORY[0x29EDC9748](v34);
   AXPerformSafeBlock();
@@ -208,16 +208,16 @@
   _Block_object_dispose(&v26, 8);
   objc_storeStrong(&v32, 0);
   v33 = v18;
-  v17.receiver = v36;
+  v17.receiver = selfCopy;
   v17.super_class = UITabBarCustomizeViewAccessibility;
   [(UITabBarCustomizeViewAccessibility *)&v17 tabBarTouchesMoved:location[0] withEvent:v34];
-  v16 = [(UITabBarCustomizeViewAccessibility *)v36 safeValueForKey:@"_draggingItem"];
+  v16 = [(UITabBarCustomizeViewAccessibility *)selfCopy safeValueForKey:@"_draggingItem"];
   if (v16 && v33 && ([v33 isEqual:v16] & 1) == 0)
   {
     v12 = MEMORY[0x29EDC7EA8];
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], *MEMORY[0x29EDBDAA8]);
     v15 = [v33 safeValueForKey:@"view"];
-    v5 = [(UITabBarCustomizeViewAccessibility *)v36 safeValueForKey:@"_tabBar"];
+    v5 = [(UITabBarCustomizeViewAccessibility *)selfCopy safeValueForKey:@"_tabBar"];
     v4 = [v5 safeValueForKey:@"_items"];
     v6 = [v4 indexOfObject:v16];
     MEMORY[0x29EDC9740](v4);
@@ -225,13 +225,13 @@
     argument[1] = v6;
     v7 = MEMORY[0x29EDBA0F8];
     v11 = accessibilityLocalizedString(@"replacing.tabbar.icon");
-    v10 = [v15 accessibilityLabel];
+    accessibilityLabel = [v15 accessibilityLabel];
     v9 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v6 + 1];
     v8 = AXFormatNumber();
-    argument[0] = [v7 stringWithFormat:v11, v10, v8];
+    argument[0] = [v7 stringWithFormat:v11, accessibilityLabel, v8];
     MEMORY[0x29EDC9740](v8);
     MEMORY[0x29EDC9740](v9);
-    MEMORY[0x29EDC9740](v10);
+    MEMORY[0x29EDC9740](accessibilityLabel);
     MEMORY[0x29EDC9740](v11);
     UIAccessibilityPostNotification(*v12, argument[0]);
     objc_storeStrong(argument, 0);
@@ -254,16 +254,16 @@ double __67__UITabBarCustomizeViewAccessibility_tabBarTouchesMoved_withEvent___b
   return result;
 }
 
-- (void)tabBarTouchesEnded:(id)a3 withEvent:(id)a4
+- (void)tabBarTouchesEnded:(id)ended withEvent:(id)event
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, ended);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  v6 = [(UITabBarCustomizeViewAccessibility *)v9 safeValueForKey:@"_draggingItem"];
-  v5.receiver = v9;
+  objc_storeStrong(&v7, event);
+  v6 = [(UITabBarCustomizeViewAccessibility *)selfCopy safeValueForKey:@"_draggingItem"];
+  v5.receiver = selfCopy;
   v5.super_class = UITabBarCustomizeViewAccessibility;
   [(UITabBarCustomizeViewAccessibility *)&v5 tabBarTouchesEnded:location[0] withEvent:v7];
   if (v6)
@@ -276,15 +276,15 @@ double __67__UITabBarCustomizeViewAccessibility_tabBarTouchesMoved_withEvent___b
   objc_storeStrong(location, 0);
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
   v88 = *MEMORY[0x29EDCA608];
-  v84 = a3;
-  v83 = self;
+  testCopy = test;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v81 = [(UITabBarCustomizeViewAccessibility *)v83 _accessibilityBoolValueForKey:@"AXInHitTestOverride"];
+  objc_storeStrong(location, event);
+  v81 = [(UITabBarCustomizeViewAccessibility *)selfCopy _accessibilityBoolValueForKey:@"AXInHitTestOverride"];
   v73 = 0;
   v35 = 0;
   if ((v81 & 1) == 0)
@@ -294,7 +294,7 @@ double __67__UITabBarCustomizeViewAccessibility_tabBarTouchesMoved_withEvent___b
     v77 = 0;
     v78 = __70__UITabBarCustomizeViewAccessibility__accessibilityHitTest_withEvent___block_invoke;
     v79 = &unk_29F30CEB0;
-    v80 = MEMORY[0x29EDC9748](v83);
+    v80 = MEMORY[0x29EDC9748](selfCopy);
     v74 = &v80;
     v73 = 1;
     v35 = (__70__UITabBarCustomizeViewAccessibility__accessibilityHitTest_withEvent___block_invoke)();
@@ -302,9 +302,9 @@ double __67__UITabBarCustomizeViewAccessibility_tabBarTouchesMoved_withEvent___b
 
   if (v35)
   {
-    [(UITabBarCustomizeViewAccessibility *)v83 _accessibilitySetBoolValue:1 forKey:?];
-    v72 = [(UITabBarCustomizeViewAccessibility *)v83 accessibilityHitTest:location[0] withEvent:v84.x, v84.y];
-    [(UITabBarCustomizeViewAccessibility *)v83 _accessibilitySetBoolValue:0 forKey:@"AXInHitTestOverride"];
+    [(UITabBarCustomizeViewAccessibility *)selfCopy _accessibilitySetBoolValue:1 forKey:?];
+    v72 = [(UITabBarCustomizeViewAccessibility *)selfCopy accessibilityHitTest:location[0] withEvent:testCopy.x, testCopy.y];
+    [(UITabBarCustomizeViewAccessibility *)selfCopy _accessibilitySetBoolValue:0 forKey:@"AXInHitTestOverride"];
     v85 = MEMORY[0x29EDC9748](v72);
     v71 = 1;
     objc_storeStrong(&v72, 0);
@@ -322,11 +322,11 @@ double __67__UITabBarCustomizeViewAccessibility_tabBarTouchesMoved_withEvent___b
 
   if (!v71)
   {
-    v69.receiver = v83;
+    v69.receiver = selfCopy;
     v69.super_class = UITabBarCustomizeViewAccessibility;
-    v70 = [(UITabBarCustomizeViewAccessibility *)&v69 _accessibilityHitTest:location[0] withEvent:v84.x, v84.y];
+    v70 = [(UITabBarCustomizeViewAccessibility *)&v69 _accessibilityHitTest:location[0] withEvent:testCopy.x, testCopy.y];
     v64 = 0;
-    if (!v70 || (v34 = 0, v70 == v83))
+    if (!v70 || (v34 = 0, v70 == selfCopy))
     {
       v68 = 0;
       objc_opt_class();
@@ -335,7 +335,7 @@ double __67__UITabBarCustomizeViewAccessibility_tabBarTouchesMoved_withEvent___b
       objc_storeStrong(&v67, 0);
       v65 = v66;
       v64 = 1;
-      v34 = [v66 pointInside:location[0] withEvent:{v84.x, v84.y}];
+      v34 = [v66 pointInside:location[0] withEvent:{testCopy.x, testCopy.y}];
     }
 
     if (v64)
@@ -347,16 +347,16 @@ double __67__UITabBarCustomizeViewAccessibility_tabBarTouchesMoved_withEvent___b
     {
       v62 = 0;
       objc_opt_class();
-      v33 = [(UITabBarCustomizeViewAccessibility *)v83 safeValueForKey:@"_proxies"];
+      v33 = [(UITabBarCustomizeViewAccessibility *)selfCopy safeValueForKey:@"_proxies"];
       v61 = __UIAccessibilityCastAsClass();
       MEMORY[0x29EDC9740](v33);
       v60 = MEMORY[0x29EDC9748](v61);
       objc_storeStrong(&v61, 0);
       v63 = v60;
-      v29 = [(UITabBarCustomizeViewAccessibility *)v83 safeValueForKey:@"_itemsInRowCount"];
-      v30 = [v29 integerValue];
+      v29 = [(UITabBarCustomizeViewAccessibility *)selfCopy safeValueForKey:@"_itemsInRowCount"];
+      integerValue = [v29 integerValue];
       *&v4 = MEMORY[0x29EDC9740](v29).n128_u64[0];
-      v59 = v30;
+      v59 = integerValue;
       v5 = [v63 count];
       v86 = v5 / v59;
       v58 = vcvtps_s32_f32(v86);
@@ -414,16 +414,16 @@ double __67__UITabBarCustomizeViewAccessibility_tabBarTouchesMoved_withEvent___b
       }
 
       *&v10 = MEMORY[0x29EDC9740](obj).n128_u64[0];
-      v20 = v83;
-      v23 = [v63 firstObject];
-      v22 = [v23 safeValueForKey:@"view"];
-      v21 = [v22 superview];
-      [(UITabBarCustomizeViewAccessibility *)v20 convertPoint:v84.x toView:v84.y];
+      v20 = selfCopy;
+      firstObject = [v63 firstObject];
+      v22 = [firstObject safeValueForKey:@"view"];
+      superview = [v22 superview];
+      [(UITabBarCustomizeViewAccessibility *)v20 convertPoint:testCopy.x toView:testCopy.y];
       v47 = v11;
       v48 = v12;
-      MEMORY[0x29EDC9740](v21);
+      MEMORY[0x29EDC9740](superview);
       MEMORY[0x29EDC9740](v22);
-      MEMORY[0x29EDC9740](v23);
+      MEMORY[0x29EDC9740](firstObject);
       v48 = v48 - r1.origin.y;
       v46 = v47 - r1.origin.x;
       v45 = r1.size.width - 1.0;

@@ -1,18 +1,18 @@
 @interface EDMergedCellCollection
-- (id)referenceContainingRow:(int)a3 column:(int)a4;
-- (unint64_t)addObject:(id)a3;
+- (id)referenceContainingRow:(int)row column:(int)column;
+- (unint64_t)addObject:(id)object;
 @end
 
 @implementation EDMergedCellCollection
 
-- (unint64_t)addObject:(id)a3
+- (unint64_t)addObject:(id)object
 {
-  v4 = a3;
-  if ([v4 isValidAreaReference])
+  objectCopy = object;
+  if ([objectCopy isValidAreaReference])
   {
     v7.receiver = self;
     v7.super_class = EDMergedCellCollection;
-    v5 = [(EDCollection *)&v7 addObject:v4];
+    v5 = [(EDCollection *)&v7 addObject:objectCopy];
   }
 
   else
@@ -23,10 +23,10 @@
   return v5;
 }
 
-- (id)referenceContainingRow:(int)a3 column:(int)a4
+- (id)referenceContainingRow:(int)row column:(int)column
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&column;
+  v5 = *&row;
   v7 = [(EDCollection *)self count];
   if (v7)
   {

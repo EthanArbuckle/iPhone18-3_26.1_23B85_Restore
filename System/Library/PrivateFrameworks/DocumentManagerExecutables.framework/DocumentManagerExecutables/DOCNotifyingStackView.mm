@@ -1,6 +1,6 @@
 @interface DOCNotifyingStackView
-- (_TtC26DocumentManagerExecutablesP33_D3F4F15D4D1E39DDD74E719D0B18933C21DOCNotifyingStackView)initWithCoder:(id)a3;
-- (_TtC26DocumentManagerExecutablesP33_D3F4F15D4D1E39DDD74E719D0B18933C21DOCNotifyingStackView)initWithFrame:(CGRect)a3;
+- (_TtC26DocumentManagerExecutablesP33_D3F4F15D4D1E39DDD74E719D0B18933C21DOCNotifyingStackView)initWithCoder:(id)coder;
+- (_TtC26DocumentManagerExecutablesP33_D3F4F15D4D1E39DDD74E719D0B18933C21DOCNotifyingStackView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -21,7 +21,7 @@
   v8[2] = thunk for @escaping @callee_guaranteed () -> ();
   v8[3] = &block_descriptor_147;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   [v3 performWithoutAnimation_];
   _Block_release(v6);
@@ -33,12 +33,12 @@
   }
 }
 
-- (_TtC26DocumentManagerExecutablesP33_D3F4F15D4D1E39DDD74E719D0B18933C21DOCNotifyingStackView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutablesP33_D3F4F15D4D1E39DDD74E719D0B18933C21DOCNotifyingStackView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutablesP33_D3F4F15D4D1E39DDD74E719D0B18933C21DOCNotifyingStackView_stackViewDidLayoutSubviews);
   v9 = type metadata accessor for DOCNotifyingStackView();
   *v8 = 0;
@@ -48,7 +48,7 @@
   return [(DOCNotifyingStackView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC26DocumentManagerExecutablesP33_D3F4F15D4D1E39DDD74E719D0B18933C21DOCNotifyingStackView)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutablesP33_D3F4F15D4D1E39DDD74E719D0B18933C21DOCNotifyingStackView)initWithCoder:(id)coder
 {
   v5 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutablesP33_D3F4F15D4D1E39DDD74E719D0B18933C21DOCNotifyingStackView_stackViewDidLayoutSubviews);
   v6 = type metadata accessor for DOCNotifyingStackView();
@@ -56,7 +56,7 @@
   v5[1] = 0;
   v8.receiver = self;
   v8.super_class = v6;
-  return [(DOCNotifyingStackView *)&v8 initWithCoder:a3];
+  return [(DOCNotifyingStackView *)&v8 initWithCoder:coder];
 }
 
 @end

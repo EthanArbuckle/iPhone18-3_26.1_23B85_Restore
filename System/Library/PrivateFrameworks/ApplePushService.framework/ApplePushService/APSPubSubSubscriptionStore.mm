@@ -1,21 +1,21 @@
 @interface APSPubSubSubscriptionStore
 - (APSPubSubSubscriptionStore)init;
-- (APSPubSubSubscriptionStore)initWithMessageStore:(id)a3;
-- (BOOL)deleteSubscription:(id)a3;
-- (BOOL)saveSubscription:(id)a3 inMemoryOnly:(BOOL)a4;
-- (id)allSubscriptionsForEnvironment:(id)a3 userName:(id)a4;
-- (id)allSubscriptionsForTopic:(id)a3 environment:(id)a4 userName:(id)a5;
-- (id)databaseSubscriptionsForEnvironment:(id)a3 userName:(id)a4;
-- (id)inMemorySubscriptionsForEnvironment:(id)a3 userName:(id)a4;
-- (id)lookupSubscriptionForChannelID:(id)a3 pushTopic:(id)a4 environment:(id)a5 userName:(id)a6;
-- (void)updateChannel:(id)a3;
+- (APSPubSubSubscriptionStore)initWithMessageStore:(id)store;
+- (BOOL)deleteSubscription:(id)subscription;
+- (BOOL)saveSubscription:(id)subscription inMemoryOnly:(BOOL)only;
+- (id)allSubscriptionsForEnvironment:(id)environment userName:(id)name;
+- (id)allSubscriptionsForTopic:(id)topic environment:(id)environment userName:(id)name;
+- (id)databaseSubscriptionsForEnvironment:(id)environment userName:(id)name;
+- (id)inMemorySubscriptionsForEnvironment:(id)environment userName:(id)name;
+- (id)lookupSubscriptionForChannelID:(id)d pushTopic:(id)topic environment:(id)environment userName:(id)name;
+- (void)updateChannel:(id)channel;
 @end
 
 @implementation APSPubSubSubscriptionStore
 
-- (APSPubSubSubscriptionStore)initWithMessageStore:(id)a3
+- (APSPubSubSubscriptionStore)initWithMessageStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   sub_1000D19F8(0);
   if (&_swiftEmptyArrayStorage >> 62 && _CocoaArrayWrapper.endIndex.getter())
   {
@@ -28,31 +28,31 @@
   }
 
   *(&self->super.isa + OBJC_IVAR___APSPubSubSubscriptionStore_inMemorySubscriptions) = v5;
-  *(&self->super.isa + OBJC_IVAR___APSPubSubSubscriptionStore_messageStore) = v4;
+  *(&self->super.isa + OBJC_IVAR___APSPubSubSubscriptionStore_messageStore) = storeCopy;
   v7.receiver = self;
   v7.super_class = type metadata accessor for PubSubSubscriptionStore();
   return [(APSPubSubSubscriptionStore *)&v7 init];
 }
 
-- (BOOL)saveSubscription:(id)a3 inMemoryOnly:(BOOL)a4
+- (BOOL)saveSubscription:(id)subscription inMemoryOnly:(BOOL)only
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1000DA738(v6, a4);
+  subscriptionCopy = subscription;
+  selfCopy = self;
+  v8 = sub_1000DA738(subscriptionCopy, only);
 
   return v8 & 1;
 }
 
-- (BOOL)deleteSubscription:(id)a3
+- (BOOL)deleteSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1000DAB18(v4);
+  subscriptionCopy = subscription;
+  selfCopy = self;
+  LOBYTE(self) = sub_1000DAB18(subscriptionCopy);
 
   return self & 1;
 }
 
-- (id)allSubscriptionsForTopic:(id)a3 environment:(id)a4 userName:(id)a5
+- (id)allSubscriptionsForTopic:(id)topic environment:(id)environment userName:(id)name
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
@@ -60,7 +60,7 @@
   v11 = v10;
   v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
-  v15 = self;
+  selfCopy = self;
   sub_1000DADC4(v6, v8, v9, v11, v12, v14);
 
   sub_1000DDFA8(0, &qword_1001BD380, PKPublicChannel_ptr);
@@ -69,13 +69,13 @@
   return v16.super.isa;
 }
 
-- (id)allSubscriptionsForEnvironment:(id)a3 userName:(id)a4
+- (id)allSubscriptionsForEnvironment:(id)environment userName:(id)name
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   sub_1000DB448(v5, v7, v8, v10);
 
   sub_1000DDFA8(0, &qword_1001BD380, PKPublicChannel_ptr);
@@ -84,10 +84,10 @@
   return v12.super.isa;
 }
 
-- (id)inMemorySubscriptionsForEnvironment:(id)a3 userName:(id)a4
+- (id)inMemorySubscriptionsForEnvironment:(id)environment userName:(id)name
 {
   v4 = *((swift_isaMask & self->super.isa) + 0x68);
-  v5 = self;
+  selfCopy = self;
   v6 = v4();
   sub_1000DD8A8(v6);
 
@@ -97,11 +97,11 @@
   return v7.super.isa;
 }
 
-- (id)databaseSubscriptionsForEnvironment:(id)a3 userName:(id)a4
+- (id)databaseSubscriptionsForEnvironment:(id)environment userName:(id)name
 {
   v6 = *(&self->super.isa + OBJC_IVAR___APSPubSubSubscriptionStore_messageStore);
-  v7 = self;
-  result = [v6 allRegisteredChannelsForEnvironment:a3 userName:a4];
+  selfCopy = self;
+  result = [v6 allRegisteredChannelsForEnvironment:environment userName:name];
   if (result)
   {
     v9 = result;
@@ -117,7 +117,7 @@
   return result;
 }
 
-- (id)lookupSubscriptionForChannelID:(id)a3 pushTopic:(id)a4 environment:(id)a5 userName:(id)a6
+- (id)lookupSubscriptionForChannelID:(id)d pushTopic:(id)topic environment:(id)environment userName:(id)name
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
@@ -127,18 +127,18 @@
   v15 = v14;
   v16 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v18 = v17;
-  v19 = self;
+  selfCopy = self;
   sub_1000DBB78(v7, v9, v10, v12, v13, v15, v16, v18);
   v21 = v20;
 
   return v21;
 }
 
-- (void)updateChannel:(id)a3
+- (void)updateChannel:(id)channel
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000DC0F4(v4);
+  channelCopy = channel;
+  selfCopy = self;
+  sub_1000DC0F4(channelCopy);
 }
 
 - (APSPubSubSubscriptionStore)init

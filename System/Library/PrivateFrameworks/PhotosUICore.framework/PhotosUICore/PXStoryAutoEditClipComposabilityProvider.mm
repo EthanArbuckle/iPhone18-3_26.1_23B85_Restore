@@ -1,6 +1,6 @@
 @interface PXStoryAutoEditClipComposabilityProvider
-- ($94F468A8D4C62B317260615823C2B210)composabilityScoresForDisplayAssetIndex:(unint64_t)a3;
-- (PXStoryAutoEditClipComposabilityProvider)initWithDisplayAssets:(id)a3 chapterCollection:(id)a4;
+- ($94F468A8D4C62B317260615823C2B210)composabilityScoresForDisplayAssetIndex:(unint64_t)index;
+- (PXStoryAutoEditClipComposabilityProvider)initWithDisplayAssets:(id)assets chapterCollection:(id)collection;
 - (id)diagnosticDescription;
 - (id)results;
 - (void)_computeComposabilityScores;
@@ -16,7 +16,7 @@
   for (i = 0; i < [(PXDisplayAssetFetchResult *)self->_displayAssets count]; ++i)
   {
     v5 = [(PXDisplayAssetFetchResult *)self->_displayAssets objectAtIndexedSubscript:i];
-    v6 = [v5 uuid];
+    uuid = [v5 uuid];
     [(PXStoryComposabilityResults *)self->_similarityScoreResults composabilityScoresAtIndex:i];
     v8 = v7;
     v9 = 0.0;
@@ -34,7 +34,7 @@
       v12 = v13;
     }
 
-    [v3 appendFormat:@"%lu\t%@\t%0.3f\t%0.3f\t%0.3f\n", i, v6, v8, *&v9, *&v12];
+    [v3 appendFormat:@"%lu\t%@\t%0.3f\t%0.3f\t%0.3f\n", i, uuid, v8, *&v9, *&v12];
   }
 
   [v3 appendString:@"\n"];
@@ -43,7 +43,7 @@
   for (j = 0; j < [(PXDisplayAssetFetchResult *)self->_displayAssets count]; ++j)
   {
     v15 = [(PXDisplayAssetFetchResult *)self->_displayAssets objectAtIndexedSubscript:j];
-    v16 = [v15 uuid];
+    uuid2 = [v15 uuid];
     [(PXStoryComposabilityResults *)self->_similarityScoreResults composabilityScoresAtIndex:j];
     v18 = v17;
     v19 = 0.0;
@@ -61,29 +61,29 @@
       v22 = v23;
     }
 
-    [v3 appendFormat:@"%lu\t%@\t%0.3f\t%0.3f\t%0.3f\n", j, v16, v18, *&v19, *&v22];
+    [v3 appendFormat:@"%lu\t%@\t%0.3f\t%0.3f\t%0.3f\n", j, uuid2, v18, *&v19, *&v22];
   }
 
   [v3 appendString:@"\n"];
   if (objc_opt_respondsToSelector())
   {
-    v24 = [(PXStoryAutoEditComposabilityScorer *)self->_cropQualityScorer diagnosticDescription];
-    [v3 appendString:v24];
+    diagnosticDescription = [(PXStoryAutoEditComposabilityScorer *)self->_cropQualityScorer diagnosticDescription];
+    [v3 appendString:diagnosticDescription];
   }
 
   return v3;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)composabilityScoresForDisplayAssetIndex:(unint64_t)a3
+- ($94F468A8D4C62B317260615823C2B210)composabilityScoresForDisplayAssetIndex:(unint64_t)index
 {
-  if ([(PXDisplayAssetFetchResult *)self->_displayAssets count]<= a3)
+  if ([(PXDisplayAssetFetchResult *)self->_displayAssets count]<= index)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXStoryAutoEditClipComposabilityProvider.mm" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"index < _displayAssets.count"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryAutoEditClipComposabilityProvider.mm" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"index < _displayAssets.count"}];
   }
 
-  v6 = [(PXStoryAutoEditClipComposabilityProvider *)self results];
-  [v6 composabilityScoresAtIndex:a3];
+  results = [(PXStoryAutoEditClipComposabilityProvider *)self results];
+  [results composabilityScoresAtIndex:index];
   v8 = v7;
   v10 = v9;
 
@@ -255,10 +255,10 @@
     }
   }
 
-  v38 = [(PXStoryAutoEditClipComposabilityProvider *)self chapterCollection];
-  if (v38)
+  chapterCollection = [(PXStoryAutoEditClipComposabilityProvider *)self chapterCollection];
+  if (chapterCollection)
   {
-    v39 = [[PXStoryChapteredComposabilityResults alloc] initWithDisplayAssets:self->_displayAssets originalResults:v34 chapterCollection:v38];
+    v39 = [[PXStoryChapteredComposabilityResults alloc] initWithDisplayAssets:self->_displayAssets originalResults:v34 chapterCollection:chapterCollection];
     v40 = [[PXStoryComposabilityScoresArray alloc] initWithComposabilityResults:v39];
 
     v34 = v40;
@@ -276,18 +276,18 @@
   self->_composabilityResults = v34;
 }
 
-- (PXStoryAutoEditClipComposabilityProvider)initWithDisplayAssets:(id)a3 chapterCollection:(id)a4
+- (PXStoryAutoEditClipComposabilityProvider)initWithDisplayAssets:(id)assets chapterCollection:(id)collection
 {
-  v7 = a3;
-  v8 = a4;
+  assetsCopy = assets;
+  collectionCopy = collection;
   v21.receiver = self;
   v21.super_class = PXStoryAutoEditClipComposabilityProvider;
   v9 = [(PXStoryAutoEditClipComposabilityProvider *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_displayAssets, a3);
-    objc_storeStrong(&v10->_chapterCollection, a4);
+    objc_storeStrong(&v9->_displayAssets, assets);
+    objc_storeStrong(&v10->_chapterCollection, collection);
     v11 = objc_alloc_init(PXStoryPhotoAnalysisComposabilityScorer);
     similarityScorer = v10->_similarityScorer;
     v10->_similarityScorer = v11;
@@ -298,8 +298,8 @@
 
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    v17 = [v16 UTF8String];
-    v18 = os_log_create(*MEMORY[0x1E69BFF60], v17);
+    uTF8String = [v16 UTF8String];
+    v18 = os_log_create(*MEMORY[0x1E69BFF60], uTF8String);
     log = v10->_log;
     v10->_log = v18;
   }

@@ -1,12 +1,12 @@
 @interface GameModeCCUIStatusBundleInfo
 - (_TtC10GamePolicy28GameModeCCUIStatusBundleInfo)init;
-- (_TtC10GamePolicy28GameModeCCUIStatusBundleInfo)initWithExecutableDisplayName:(id)a3 bundleIdentifier:(id)a4 isSystemService:(BOOL)a5 isAAAGame:(BOOL)a6 usedRecently:(BOOL)a7 state:(int64_t)a8;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC10GamePolicy28GameModeCCUIStatusBundleInfo)initWithExecutableDisplayName:(id)name bundleIdentifier:(id)identifier isSystemService:(BOOL)service isAAAGame:(BOOL)game usedRecently:(BOOL)recently state:(int64_t)state;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GameModeCCUIStatusBundleInfo
 
-- (_TtC10GamePolicy28GameModeCCUIStatusBundleInfo)initWithExecutableDisplayName:(id)a3 bundleIdentifier:(id)a4 isSystemService:(BOOL)a5 isAAAGame:(BOOL)a6 usedRecently:(BOOL)a7 state:(int64_t)a8
+- (_TtC10GamePolicy28GameModeCCUIStatusBundleInfo)initWithExecutableDisplayName:(id)name bundleIdentifier:(id)identifier isSystemService:(BOOL)service isAAAGame:(BOOL)game usedRecently:(BOOL)recently state:(int64_t)state
 {
   v13 = sub_24E5D2CD0();
   v15 = v14;
@@ -17,20 +17,20 @@
   v18 = (self + OBJC_IVAR____TtC10GamePolicy28GameModeCCUIStatusBundleInfo_bundleIdentifier);
   *v18 = v16;
   v18[1] = v19;
-  *(&self->super.isa + OBJC_IVAR____TtC10GamePolicy28GameModeCCUIStatusBundleInfo_isSystemService) = a5;
-  *(&self->super.isa + OBJC_IVAR____TtC10GamePolicy28GameModeCCUIStatusBundleInfo_isAAAGame) = a6;
-  *(&self->super.isa + OBJC_IVAR____TtC10GamePolicy28GameModeCCUIStatusBundleInfo_usedRecently) = a7;
-  *(&self->super.isa + OBJC_IVAR____TtC10GamePolicy28GameModeCCUIStatusBundleInfo_state) = a8;
+  *(&self->super.isa + OBJC_IVAR____TtC10GamePolicy28GameModeCCUIStatusBundleInfo_isSystemService) = service;
+  *(&self->super.isa + OBJC_IVAR____TtC10GamePolicy28GameModeCCUIStatusBundleInfo_isAAAGame) = game;
+  *(&self->super.isa + OBJC_IVAR____TtC10GamePolicy28GameModeCCUIStatusBundleInfo_usedRecently) = recently;
+  *(&self->super.isa + OBJC_IVAR____TtC10GamePolicy28GameModeCCUIStatusBundleInfo_state) = state;
   v21.receiver = self;
   v21.super_class = type metadata accessor for GameModeCCUIStatusBundleInfo();
   return [(GameModeCCUIStatusBundleInfo *)&v21 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E5C0E58(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_24E5C0E58(coderCopy);
 }
 
 - (_TtC10GamePolicy28GameModeCCUIStatusBundleInfo)init

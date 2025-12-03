@@ -1,5 +1,5 @@
 @interface AGXG18PFamilyResidencySet
-- (BOOL)_commitAddedAllocations:(const void *)a3 count:(unint64_t)a4 removedAllocations:(const void *)a5 count:(unint64_t)a6;
+- (BOOL)_commitAddedAllocations:(const void *)allocations count:(unint64_t)count removedAllocations:(const void *)removedAllocations count:(unint64_t)a6;
 - (id).cxx_construct;
 @end
 
@@ -13,20 +13,20 @@
   return self;
 }
 
-- (BOOL)_commitAddedAllocations:(const void *)a3 count:(unint64_t)a4 removedAllocations:(const void *)a5 count:(unint64_t)a6
+- (BOOL)_commitAddedAllocations:(const void *)allocations count:(unint64_t)count removedAllocations:(const void *)removedAllocations count:(unint64_t)a6
 {
   v46 = *MEMORY[0x29EDCA608];
   p_subResourceRefCounts = &self->_subResourceRefCounts;
   v34 = v33;
   v35 = xmmword_29D2F25D0;
-  if (a4)
+  if (count)
   {
-    v9 = a4;
+    countCopy = count;
     v11 = MEMORY[0x29EDBB760];
     while (1)
     {
-      v13 = *a3;
-      v14 = *(*a3 + *v11);
+      v13 = *allocations;
+      v14 = *(*allocations + *v11);
       if (v14 <= 3)
       {
         break;
@@ -57,8 +57,8 @@ LABEL_3:
       }
 
 LABEL_4:
-      ++a3;
-      if (!--v9)
+      ++allocations;
+      if (!--countCopy)
       {
         goto LABEL_23;
       }
@@ -128,8 +128,8 @@ LABEL_23:
     v20 = MEMORY[0x29EDC5638];
     while (1)
     {
-      v22 = *a5;
-      v23 = *(*a5 + *v19);
+      v22 = *removedAllocations;
+      v23 = *(*removedAllocations + *v19);
       if (v23 <= 3)
       {
         break;
@@ -160,7 +160,7 @@ LABEL_25:
       }
 
 LABEL_26:
-      ++a5;
+      ++removedAllocations;
       if (!--a6)
       {
         goto LABEL_45;

@@ -1,65 +1,65 @@
 @interface FLOWSchemaFLOWSPORTSExecution
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWSPORTSExecution)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWSPORTSExecution)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWSPORTSExecution)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWSPORTSExecution)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsDisambiguation:(BOOL)a3;
-- (void)setHasIsLiveScoreRequest:(BOOL)a3;
-- (void)setHasIsMachineUtterance:(BOOL)a3;
-- (void)setHasIsSnippetNextCardRequest:(BOOL)a3;
-- (void)setHasIsSportsWatchFaceRequest:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsDisambiguation:(BOOL)disambiguation;
+- (void)setHasIsLiveScoreRequest:(BOOL)request;
+- (void)setHasIsMachineUtterance:(BOOL)utterance;
+- (void)setHasIsSnippetNextCardRequest:(BOOL)request;
+- (void)setHasIsSportsWatchFaceRequest:(BOOL)request;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWSPORTSExecution
 
-- (FLOWSchemaFLOWSPORTSExecution)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWSPORTSExecution)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = FLOWSchemaFLOWSPORTSExecution;
   v5 = [(FLOWSchemaFLOWSPORTSExecution *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sportsUsecase"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sportsUsecase"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWSPORTSExecution setSportsUsecase:](v5, "setSportsUsecase:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isSportsWatchFaceRequest"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isSportsWatchFaceRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWSPORTSExecution setIsSportsWatchFaceRequest:](v5, "setIsSportsWatchFaceRequest:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isSnippetNextCardRequest"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isSnippetNextCardRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWSPORTSExecution setIsSnippetNextCardRequest:](v5, "setIsSnippetNextCardRequest:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isMachineUtterance"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isMachineUtterance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWSPORTSExecution setIsMachineUtterance:](v5, "setIsMachineUtterance:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isDisambiguation"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isDisambiguation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWSPORTSExecution setIsDisambiguation:](v5, "setIsDisambiguation:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isLiveScoreRequest"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isLiveScoreRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,30 +72,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWSPORTSExecution)initWithJSON:(id)a3
+- (FLOWSchemaFLOWSPORTSExecution)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWSPORTSExecution *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWSPORTSExecution *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWSPORTSExecution *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,12 +108,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isLiveScoreRequest + 1);
   if ((v4 & 0x10) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWSPORTSExecution isDisambiguation](self, "isDisambiguation")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isDisambiguation"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isDisambiguation"];
 
     v4 = *(&self->_isLiveScoreRequest + 1);
     if ((v4 & 0x20) == 0)
@@ -134,7 +134,7 @@ LABEL_3:
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWSPORTSExecution isLiveScoreRequest](self, "isLiveScoreRequest")}];
-  [v3 setObject:v6 forKeyedSubscript:@"isLiveScoreRequest"];
+  [dictionary setObject:v6 forKeyedSubscript:@"isLiveScoreRequest"];
 
   v4 = *(&self->_isLiveScoreRequest + 1);
   if ((v4 & 8) == 0)
@@ -150,7 +150,7 @@ LABEL_4:
 
 LABEL_10:
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWSPORTSExecution isMachineUtterance](self, "isMachineUtterance")}];
-  [v3 setObject:v7 forKeyedSubscript:@"isMachineUtterance"];
+  [dictionary setObject:v7 forKeyedSubscript:@"isMachineUtterance"];
 
   v4 = *(&self->_isLiveScoreRequest + 1);
   if ((v4 & 4) == 0)
@@ -163,7 +163,7 @@ LABEL_5:
 
 LABEL_12:
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWSPORTSExecution isSportsWatchFaceRequest](self, "isSportsWatchFaceRequest")}];
-    [v3 setObject:v9 forKeyedSubscript:@"isSportsWatchFaceRequest"];
+    [dictionary setObject:v9 forKeyedSubscript:@"isSportsWatchFaceRequest"];
 
     if (!*(&self->_isLiveScoreRequest + 1))
     {
@@ -182,13 +182,13 @@ LABEL_13:
       v11 = off_1E78D6238[v10];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"sportsUsecase"];
+    [dictionary setObject:v11 forKeyedSubscript:@"sportsUsecase"];
     goto LABEL_17;
   }
 
 LABEL_11:
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWSPORTSExecution isSnippetNextCardRequest](self, "isSnippetNextCardRequest")}];
-  [v3 setObject:v8 forKeyedSubscript:@"isSnippetNextCardRequest"];
+  [dictionary setObject:v8 forKeyedSubscript:@"isSnippetNextCardRequest"];
 
   v4 = *(&self->_isLiveScoreRequest + 1);
   if ((v4 & 2) != 0)
@@ -203,9 +203,9 @@ LABEL_6:
   }
 
 LABEL_17:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -290,16 +290,16 @@ LABEL_7:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   v5 = *(&self->_isLiveScoreRequest + 1);
-  v6 = v4[17];
+  v6 = equalCopy[17];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_26;
@@ -308,13 +308,13 @@ LABEL_7:
   if (v5)
   {
     sportsUsecase = self->_sportsUsecase;
-    if (sportsUsecase != [v4 sportsUsecase])
+    if (sportsUsecase != [equalCopy sportsUsecase])
     {
       goto LABEL_26;
     }
 
     v5 = *(&self->_isLiveScoreRequest + 1);
-    v6 = v4[17];
+    v6 = equalCopy[17];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -326,13 +326,13 @@ LABEL_7:
   if (v8)
   {
     isSportsWatchFaceRequest = self->_isSportsWatchFaceRequest;
-    if (isSportsWatchFaceRequest != [v4 isSportsWatchFaceRequest])
+    if (isSportsWatchFaceRequest != [equalCopy isSportsWatchFaceRequest])
     {
       goto LABEL_26;
     }
 
     v5 = *(&self->_isLiveScoreRequest + 1);
-    v6 = v4[17];
+    v6 = equalCopy[17];
   }
 
   v10 = (v5 >> 2) & 1;
@@ -344,13 +344,13 @@ LABEL_7:
   if (v10)
   {
     isSnippetNextCardRequest = self->_isSnippetNextCardRequest;
-    if (isSnippetNextCardRequest != [v4 isSnippetNextCardRequest])
+    if (isSnippetNextCardRequest != [equalCopy isSnippetNextCardRequest])
     {
       goto LABEL_26;
     }
 
     v5 = *(&self->_isLiveScoreRequest + 1);
-    v6 = v4[17];
+    v6 = equalCopy[17];
   }
 
   v12 = (v5 >> 3) & 1;
@@ -362,13 +362,13 @@ LABEL_7:
   if (v12)
   {
     isMachineUtterance = self->_isMachineUtterance;
-    if (isMachineUtterance != [v4 isMachineUtterance])
+    if (isMachineUtterance != [equalCopy isMachineUtterance])
     {
       goto LABEL_26;
     }
 
     v5 = *(&self->_isLiveScoreRequest + 1);
-    v6 = v4[17];
+    v6 = equalCopy[17];
   }
 
   v14 = (v5 >> 4) & 1;
@@ -380,10 +380,10 @@ LABEL_7:
   if (v14)
   {
     isDisambiguation = self->_isDisambiguation;
-    if (isDisambiguation == [v4 isDisambiguation])
+    if (isDisambiguation == [equalCopy isDisambiguation])
     {
       v5 = *(&self->_isLiveScoreRequest + 1);
-      v6 = v4[17];
+      v6 = equalCopy[17];
       goto LABEL_22;
     }
 
@@ -402,7 +402,7 @@ LABEL_22:
   if (v16)
   {
     isLiveScoreRequest = self->_isLiveScoreRequest;
-    if (isLiveScoreRequest != [v4 isLiveScoreRequest])
+    if (isLiveScoreRequest != [equalCopy isLiveScoreRequest])
     {
       goto LABEL_26;
     }
@@ -414,9 +414,9 @@ LABEL_27:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   v4 = *(&self->_isLiveScoreRequest + 1);
   if (v4)
   {
@@ -491,9 +491,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)setHasIsLiveScoreRequest:(BOOL)a3
+- (void)setHasIsLiveScoreRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 32;
   }
@@ -506,9 +506,9 @@ LABEL_8:
   *(&self->_isLiveScoreRequest + 1) = *(&self->_isLiveScoreRequest + 1) & 0xDF | v3;
 }
 
-- (void)setHasIsDisambiguation:(BOOL)a3
+- (void)setHasIsDisambiguation:(BOOL)disambiguation
 {
-  if (a3)
+  if (disambiguation)
   {
     v3 = 16;
   }
@@ -521,9 +521,9 @@ LABEL_8:
   *(&self->_isLiveScoreRequest + 1) = *(&self->_isLiveScoreRequest + 1) & 0xEF | v3;
 }
 
-- (void)setHasIsMachineUtterance:(BOOL)a3
+- (void)setHasIsMachineUtterance:(BOOL)utterance
 {
-  if (a3)
+  if (utterance)
   {
     v3 = 8;
   }
@@ -536,9 +536,9 @@ LABEL_8:
   *(&self->_isLiveScoreRequest + 1) = *(&self->_isLiveScoreRequest + 1) & 0xF7 | v3;
 }
 
-- (void)setHasIsSnippetNextCardRequest:(BOOL)a3
+- (void)setHasIsSnippetNextCardRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 4;
   }
@@ -551,9 +551,9 @@ LABEL_8:
   *(&self->_isLiveScoreRequest + 1) = *(&self->_isLiveScoreRequest + 1) & 0xFB | v3;
 }
 
-- (void)setHasIsSportsWatchFaceRequest:(BOOL)a3
+- (void)setHasIsSportsWatchFaceRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 2;
   }

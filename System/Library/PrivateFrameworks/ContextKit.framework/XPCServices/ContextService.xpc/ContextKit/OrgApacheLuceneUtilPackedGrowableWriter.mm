@@ -4,7 +4,7 @@
 - (int64_t)ramBytesUsed;
 - (void)clear;
 - (void)dealloc;
-- (void)saveWithOrgApacheLuceneStoreDataOutput:(id)a3;
+- (void)saveWithOrgApacheLuceneStoreDataOutput:(id)output;
 @end
 
 @implementation OrgApacheLuceneUtilPackedGrowableWriter
@@ -65,7 +65,7 @@
   return [(OrgApacheLuceneUtilPackedPackedInts_Mutable *)current ramBytesUsed]+ v4;
 }
 
-- (void)saveWithOrgApacheLuceneStoreDataOutput:(id)a3
+- (void)saveWithOrgApacheLuceneStoreDataOutput:(id)output
 {
   current = self->current_;
   if (!current)
@@ -73,7 +73,7 @@
     JreThrowNullPointerException();
   }
 
-  [(OrgApacheLuceneUtilPackedPackedInts_Mutable *)current saveWithOrgApacheLuceneStoreDataOutput:a3];
+  [(OrgApacheLuceneUtilPackedPackedInts_Mutable *)current saveWithOrgApacheLuceneStoreDataOutput:output];
 }
 
 - (void)dealloc

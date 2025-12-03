@@ -1,6 +1,6 @@
 @interface MTRActivatedCarbonFilterMonitoringClusterReplacementProductStruct
 - (MTRActivatedCarbonFilterMonitoringClusterReplacementProductStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRActivatedCarbonFilterMonitoringClusterReplacementProductStruct);
-  v5 = [(MTRActivatedCarbonFilterMonitoringClusterReplacementProductStruct *)self productIdentifierType];
-  [(MTRActivatedCarbonFilterMonitoringClusterReplacementProductStruct *)v4 setProductIdentifierType:v5];
+  productIdentifierType = [(MTRActivatedCarbonFilterMonitoringClusterReplacementProductStruct *)self productIdentifierType];
+  [(MTRActivatedCarbonFilterMonitoringClusterReplacementProductStruct *)v4 setProductIdentifierType:productIdentifierType];
 
-  v6 = [(MTRActivatedCarbonFilterMonitoringClusterReplacementProductStruct *)self productIdentifierValue];
-  [(MTRActivatedCarbonFilterMonitoringClusterReplacementProductStruct *)v4 setProductIdentifierValue:v6];
+  productIdentifierValue = [(MTRActivatedCarbonFilterMonitoringClusterReplacementProductStruct *)self productIdentifierValue];
+  [(MTRActivatedCarbonFilterMonitoringClusterReplacementProductStruct *)v4 setProductIdentifierValue:productIdentifierValue];
 
   return v4;
 }

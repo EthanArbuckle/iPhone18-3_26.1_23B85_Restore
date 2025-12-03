@@ -1,11 +1,11 @@
 @interface KNBuildFlameSystem
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3;
-- (CGPoint)startingPointAtIndexPoint:(CGPoint)a3;
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point;
+- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)point;
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point;
+- (CGPoint)startingPointAtIndexPoint:(CGPoint)point;
 - (void)dealloc;
-- (void)p_setupBottomRowWithMetalTexture:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 bakedScale:(double)a6;
-- (void)p_setupParticleDataWithTexture:(id)a3;
+- (void)p_setupBottomRowWithMetalTexture:(id)texture width:(unint64_t)width height:(unint64_t)height bakedScale:(double)scale;
+- (void)p_setupParticleDataWithTexture:(id)texture;
 @end
 
 @implementation KNBuildFlameSystem
@@ -18,9 +18,9 @@
   [(KNBuildFlameSystem *)&v3 dealloc];
 }
 
-- (CGPoint)startingPointAtIndexPoint:(CGPoint)a3
+- (CGPoint)startingPointAtIndexPoint:(CGPoint)point
 {
-  v4 = [(KNBuildFlameSystem *)self randomGenerator:a3.x];
+  v4 = [(KNBuildFlameSystem *)self randomGenerator:point.x];
   if (self->_bottomRow)
   {
     do
@@ -51,13 +51,13 @@
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point
 {
-  v4 = [(KNBuildFlameSystem *)self indexFromPoint:a3.x, a3.y];
+  v4 = [(KNBuildFlameSystem *)self indexFromPoint:point.x, point.y];
   v5 = [objc_opt_class() numberOfVerticesPerParticle] * v4;
-  v6 = [(KNBuildFlameSystem *)self dataBuffer];
-  v7 = [(KNBuildFlameSystem *)self positionAttribute];
-  [v6 metalPoint2DForAttribute:v7 atIndex:v5];
+  dataBuffer = [(KNBuildFlameSystem *)self dataBuffer];
+  positionAttribute = [(KNBuildFlameSystem *)self positionAttribute];
+  [dataBuffer metalPoint2DForAttribute:positionAttribute atIndex:v5];
   v9 = v8;
 
   height = self->_actualSize.height;
@@ -72,8 +72,8 @@
   }
 
   v12 = v11 * 0.9 + height * 0.2;
-  v13 = [(KNBuildFlameSystem *)self randomGenerator];
-  [v13 doubleBetween:0.0 :0.1];
+  randomGenerator = [(KNBuildFlameSystem *)self randomGenerator];
+  [randomGenerator doubleBetween:0.0 :0.1];
   v15 = v12 * (v14 + 1.0);
 
   [(KNBuildFlameSystem *)self speedMax];
@@ -89,10 +89,10 @@
   return result;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(KNBuildFlameSystem *)self duration];
   v7 = 1.0 / fmax(v6, 2.0);
   if (v7 <= 1.0)
@@ -105,24 +105,24 @@
     v8 = 1.0;
   }
 
-  v9 = [(KNBuildFlameSystem *)self randomGenerator];
-  [v9 doubleBetween:0.8 :1.0];
+  randomGenerator = [(KNBuildFlameSystem *)self randomGenerator];
+  [randomGenerator doubleBetween:0.8 :1.0];
   v11 = v10 * v8;
 
   v12 = [(KNBuildFlameSystem *)self indexFromPoint:x, y];
-  v13 = [(KNBuildFlameSystem *)self particleCount];
-  v14 = (1.0 - v11) * (v12 / v13 * 0.75 + v12 / v13 * (v12 / v13) * 0.25);
+  particleCount = [(KNBuildFlameSystem *)self particleCount];
+  v14 = (1.0 - v11) * (v12 / particleCount * 0.75 + v12 / particleCount * (v12 / particleCount) * 0.25);
   v15 = v11;
   result.var1 = v15;
   result.var0 = v14;
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)point
 {
-  v4 = [(KNBuildFlameSystem *)self randomGenerator:a3.x];
-  v5 = [(KNBuildFlameSystem *)self randomGenerator];
-  [v5 doubleBetween:-1.0 :1.0];
+  v4 = [(KNBuildFlameSystem *)self randomGenerator:point.x];
+  randomGenerator = [(KNBuildFlameSystem *)self randomGenerator];
+  [randomGenerator doubleBetween:-1.0 :1.0];
   v7 = v6;
   [v4 doubleBetween:-1.0 :1.0];
   v9 = v8;
@@ -137,15 +137,15 @@
   return result;
 }
 
-- (void)p_setupBottomRowWithMetalTexture:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 bakedScale:(double)a6
+- (void)p_setupBottomRowWithMetalTexture:(id)texture width:(unint64_t)width height:(unint64_t)height bakedScale:(double)scale
 {
-  v9 = a3;
-  v10 = [(KNBuildFlameSystem *)self metalContext];
-  v11 = [v10 device];
+  textureCopy = texture;
+  metalContext = [(KNBuildFlameSystem *)self metalContext];
+  device = [metalContext device];
 
-  v52 = [TSDMetalShaderLibraryLoader loadApplicationLibraryWithDevice:v11 library:@"KeynoteMetalLibrary"];
+  v52 = [TSDMetalShaderLibraryLoader loadApplicationLibraryWithDevice:device library:@"KeynoteMetalLibrary"];
   v12 = [v52 newFunctionWithName:@"buildFlameBottomRowComputeShader"];
-  v53 = [v11 newBufferWithBytes:malloc_type_malloc(16 * a4 length:0x1000040451B5BE8uLL) options:{16 * a4, 0}];
+  v53 = [device newBufferWithBytes:malloc_type_malloc(16 * width length:0x1000040451B5BE8uLL) options:{16 * width, 0}];
   v13 = objc_alloc_init(MTLComputePipelineDescriptor);
   v51 = v12;
   [v13 setComputeFunction:v12];
@@ -153,13 +153,13 @@
   [v14 setStride:16];
   [v14 setStepRate:1];
   [v14 setStepFunction:5];
-  v15 = [v13 stageInputDescriptor];
-  v16 = [v15 layouts];
-  [v16 setObject:v14 atIndexedSubscript:0];
+  stageInputDescriptor = [v13 stageInputDescriptor];
+  layouts = [stageInputDescriptor layouts];
+  [layouts setObject:v14 atIndexedSubscript:0];
 
   v60[0] = 0;
   v59 = 0;
-  v17 = [v11 newComputePipelineStateWithDescriptor:v13 options:0 reflection:v60 error:&v59];
+  v17 = [device newComputePipelineStateWithDescriptor:v13 options:0 reflection:v60 error:&v59];
   v18 = v60[0];
   v19 = v59;
   v20 = v19;
@@ -167,68 +167,68 @@
   {
     v46 = v19;
     v47 = v18;
-    v48 = v11;
-    v21 = [v17 threadExecutionWidth];
-    v49 = v9;
-    v44 = ([v9 width] + v21 - 1) / v21;
-    if (a6 <= 1.0)
+    v48 = device;
+    threadExecutionWidth = [v17 threadExecutionWidth];
+    v49 = textureCopy;
+    v44 = ([textureCopy width] + threadExecutionWidth - 1) / threadExecutionWidth;
+    if (scale <= 1.0)
     {
       TSUClamp();
-      a6 = v22;
+      scale = v22;
     }
 
-    v58 = a6;
-    v23 = [(KNBuildFlameSystem *)self metalContext];
-    v24 = [v23 commandQueue];
-    v25 = [v24 commandBuffer];
+    scaleCopy = scale;
+    metalContext2 = [(KNBuildFlameSystem *)self metalContext];
+    commandQueue = [metalContext2 commandQueue];
+    commandBuffer = [commandQueue commandBuffer];
 
-    v26 = [v25 computeCommandEncoder];
-    [v26 setComputePipelineState:v17];
-    [v26 setBuffer:v53 offset:0 atIndex:0];
-    [v26 setBytes:&v58 length:4 atIndex:1];
-    [v26 setTexture:v49 atIndex:0];
+    computeCommandEncoder = [commandBuffer computeCommandEncoder];
+    [computeCommandEncoder setComputePipelineState:v17];
+    [computeCommandEncoder setBuffer:v53 offset:0 atIndex:0];
+    [computeCommandEncoder setBytes:&scaleCopy length:4 atIndex:1];
+    [computeCommandEncoder setTexture:v49 atIndex:0];
     v56 = v45;
     v57 = vdupq_n_s64(1uLL);
-    v54 = v21;
+    v54 = threadExecutionWidth;
     v55 = v57;
-    [v26 dispatchThreadgroups:&v56 threadsPerThreadgroup:&v54];
-    [v26 endEncoding];
-    [v25 commit];
-    [v25 waitUntilCompleted];
-    v27 = [v53 contents];
-    v28 = malloc_type_malloc(16 * a4, 0x1000040451B5BE8uLL);
+    [computeCommandEncoder dispatchThreadgroups:&v56 threadsPerThreadgroup:&v54];
+    [computeCommandEncoder endEncoding];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
+    contents = [v53 contents];
+    v28 = malloc_type_malloc(16 * width, 0x1000040451B5BE8uLL);
     self->_bottomRow = v28;
-    self->_bottomRowCount = a4;
+    self->_bottomRowCount = width;
     x = CGPointZero.x;
     y = CGPointZero.y;
     v31 = 0;
-    if (a4)
+    if (width)
     {
       v32 = 0;
       p_y = &v28->y;
-      v34 = a4;
-      v35 = a5;
+      widthCopy = width;
+      heightCopy2 = height;
       do
       {
-        v36 = v27[v32];
-        v37 = *&v36 / a4;
-        LODWORD(v38) = HIDWORD(*&v27[v32]);
+        v36 = contents[v32];
+        v37 = *&v36 / width;
+        LODWORD(v38) = HIDWORD(*&contents[v32]);
         v39 = v38;
         v40 = v32;
-        if (v34 >= v32)
+        if (widthCopy >= v32)
         {
           v41 = v32;
         }
 
         else
         {
-          v41 = v34;
+          v41 = widthCopy;
         }
 
         *&v36 = *(&v36 + 2);
-        if (v35 < *(&v36 + 2))
+        if (heightCopy2 < *(&v36 + 2))
         {
-          *&v36 = v35;
+          *&v36 = heightCopy2;
         }
 
         if (x >= v40)
@@ -244,7 +244,7 @@
         v42 = v38 <= -1.0;
         if (v38 > -1.0)
         {
-          v43 = v38 / a5;
+          v43 = v38 / height;
         }
 
         else
@@ -256,8 +256,8 @@
         {
           y = v39;
           x = v40;
-          v35 = *&v36;
-          v34 = v41;
+          heightCopy2 = *&v36;
+          widthCopy = v41;
           v31 = 1;
         }
 
@@ -267,39 +267,39 @@
         p_y += 2;
       }
 
-      while (a4 != v32);
+      while (width != v32);
     }
 
     else
     {
-      v35 = a5;
-      v34 = 0;
+      heightCopy2 = height;
+      widthCopy = 0;
     }
 
     [(KNBuildFlameSystem *)self setShouldDraw:v31 & 1];
-    self->_actualSize.width = x - v34;
-    self->_actualSize.height = y - v35;
+    self->_actualSize.width = x - widthCopy;
+    self->_actualSize.height = y - heightCopy2;
 
-    v11 = v48;
-    v9 = v49;
+    device = v48;
+    textureCopy = v49;
     v20 = v46;
     v18 = v47;
   }
 }
 
-- (void)p_setupParticleDataWithTexture:(id)a3
+- (void)p_setupParticleDataWithTexture:(id)texture
 {
-  v4 = a3;
+  textureCopy = texture;
   [(KNBuildFlameSystem *)self setShouldDraw:0];
-  v5 = [(KNBuildFlameSystem *)self metalContext];
-  v6 = [v4 metalTextureWithContext:v5];
+  metalContext = [(KNBuildFlameSystem *)self metalContext];
+  v6 = [textureCopy metalTextureWithContext:metalContext];
 
   if (v6)
   {
-    v7 = [v6 width];
-    v8 = [v6 height];
-    [v4 bakedScale];
-    [(KNBuildFlameSystem *)self p_setupBottomRowWithMetalTexture:v6 width:v7 height:v8 bakedScale:?];
+    width = [v6 width];
+    height = [v6 height];
+    [textureCopy bakedScale];
+    [(KNBuildFlameSystem *)self p_setupBottomRowWithMetalTexture:v6 width:width height:height bakedScale:?];
   }
 
   if ([(KNBuildFlameSystem *)self shouldDraw])
@@ -315,9 +315,9 @@
       v12 = v11 * 0.5;
       do
       {
-        v13 = [(KNBuildFlameSystem *)self dataBuffer];
-        v14 = [(KNBuildFlameSystem *)self positionAttribute];
-        [v13 metalPoint2DForAttribute:v14 atIndex:v10];
+        dataBuffer = [(KNBuildFlameSystem *)self dataBuffer];
+        positionAttribute = [(KNBuildFlameSystem *)self positionAttribute];
+        [dataBuffer metalPoint2DForAttribute:positionAttribute atIndex:v10];
         v16 = v15;
         v18 = v17;
 
@@ -336,7 +336,7 @@
         v56.size.height = v11;
         v24 = MidX;
         MidY = CGRectGetMidY(v56);
-        v26 = [(KNBuildFlameSystem *)self dataBuffer];
+        dataBuffer2 = [(KNBuildFlameSystem *)self dataBuffer];
         v57.origin.x = v21;
         v57.origin.y = v22;
         v57.size.width = v11;
@@ -347,13 +347,13 @@
         v58.size.width = v11;
         v58.size.height = v11;
         MinY = CGRectGetMinY(v58);
-        v29 = [(KNBuildFlameSystem *)self positionAttribute];
+        positionAttribute2 = [(KNBuildFlameSystem *)self positionAttribute];
         *&MinX = MinX;
         LODWORD(v30) = LODWORD(MinX);
         *&v31 = MinY;
-        [v26 setMetalPoint2D:v29 forAttribute:v10 atIndex:{v30, v31}];
+        [dataBuffer2 setMetalPoint2D:positionAttribute2 forAttribute:v10 atIndex:{v30, v31}];
 
-        v32 = [(KNBuildFlameSystem *)self dataBuffer];
+        dataBuffer3 = [(KNBuildFlameSystem *)self dataBuffer];
         v59.origin.x = v21;
         v59.origin.y = v22;
         v59.size.width = v11;
@@ -364,13 +364,13 @@
         v60.size.width = v11;
         v60.size.height = v11;
         v34 = CGRectGetMinY(v60);
-        v35 = [(KNBuildFlameSystem *)self positionAttribute];
+        positionAttribute3 = [(KNBuildFlameSystem *)self positionAttribute];
         *&MaxX = MaxX;
         LODWORD(v36) = LODWORD(MaxX);
         *&v37 = v34;
-        [v32 setMetalPoint2D:v35 forAttribute:v10 | 1 atIndex:{v36, v37}];
+        [dataBuffer3 setMetalPoint2D:positionAttribute3 forAttribute:v10 | 1 atIndex:{v36, v37}];
 
-        v38 = [(KNBuildFlameSystem *)self dataBuffer];
+        dataBuffer4 = [(KNBuildFlameSystem *)self dataBuffer];
         v61.origin.x = v21;
         v61.origin.y = v22;
         v61.size.width = v11;
@@ -381,13 +381,13 @@
         v62.size.width = v11;
         v62.size.height = v11;
         MaxY = CGRectGetMaxY(v62);
-        v41 = [(KNBuildFlameSystem *)self positionAttribute];
+        positionAttribute4 = [(KNBuildFlameSystem *)self positionAttribute];
         *&v39 = v39;
         LODWORD(v42) = LODWORD(v39);
         *&v43 = MaxY;
-        [v38 setMetalPoint2D:v41 forAttribute:v10 | 2 atIndex:{v42, v43}];
+        [dataBuffer4 setMetalPoint2D:positionAttribute4 forAttribute:v10 | 2 atIndex:{v42, v43}];
 
-        v44 = [(KNBuildFlameSystem *)self dataBuffer];
+        dataBuffer5 = [(KNBuildFlameSystem *)self dataBuffer];
         v63.origin.x = v21;
         v63.origin.y = v22;
         v63.size.width = v11;
@@ -398,19 +398,19 @@
         v64.size.width = v11;
         v64.size.height = v11;
         *&v22 = CGRectGetMaxY(v64);
-        v46 = [(KNBuildFlameSystem *)self positionAttribute];
+        positionAttribute5 = [(KNBuildFlameSystem *)self positionAttribute];
         *&v21 = v45;
         LODWORD(v47) = LODWORD(v21);
         LODWORD(v48) = LODWORD(v22);
-        [v44 setMetalPoint2D:v46 forAttribute:v10 | 3 atIndex:{v47, v48}];
+        [dataBuffer5 setMetalPoint2D:positionAttribute5 forAttribute:v10 | 3 atIndex:{v47, v48}];
 
         for (i = 0; i != 4; ++i)
         {
-          v50 = [(KNBuildFlameSystem *)self dataBuffer];
-          v51 = [(KNBuildFlameSystem *)self centerAttribute];
+          dataBuffer6 = [(KNBuildFlameSystem *)self dataBuffer];
+          centerAttribute = [(KNBuildFlameSystem *)self centerAttribute];
           *&v52 = v24;
           *&v53 = MidY;
-          [v50 setMetalPoint2D:v51 forAttribute:v10 + i atIndex:{v52, v53}];
+          [dataBuffer6 setMetalPoint2D:centerAttribute forAttribute:v10 + i atIndex:{v52, v53}];
         }
 
         v10 += 4;

@@ -1,19 +1,19 @@
 @interface EscrowRequestServer
 + (id)server;
-- (BOOL)escrowCompletedWithinLastSeconds:(double)a3;
-- (BOOL)pendingEscrowUpload:(id *)a3;
-- (BOOL)triggerEscrowUpdate:(id)a3 options:(id)a4 error:(id *)a5;
-- (EscrowRequestServer)initWithLockStateTracker:(id)a3;
-- (id)fetchStatuses:(id *)a3;
-- (void)cachePrerecord:(id)a3 serializedPrerecord:(id)a4 reply:(id)a5;
-- (void)escrowCompletedWithinLastSeconds:(double)a3 reply:(id)a4;
-- (void)fetchPrerecord:(id)a3 reply:(id)a4;
-- (void)fetchRequestStatuses:(id)a3;
-- (void)fetchRequestWaitingOnPasscode:(id)a3;
-- (void)resetAllRequests:(id)a3;
+- (BOOL)escrowCompletedWithinLastSeconds:(double)seconds;
+- (BOOL)pendingEscrowUpload:(id *)upload;
+- (BOOL)triggerEscrowUpdate:(id)update options:(id)options error:(id *)error;
+- (EscrowRequestServer)initWithLockStateTracker:(id)tracker;
+- (id)fetchStatuses:(id *)statuses;
+- (void)cachePrerecord:(id)prerecord serializedPrerecord:(id)serializedPrerecord reply:(id)reply;
+- (void)escrowCompletedWithinLastSeconds:(double)seconds reply:(id)reply;
+- (void)fetchPrerecord:(id)prerecord reply:(id)reply;
+- (void)fetchRequestStatuses:(id)statuses;
+- (void)fetchRequestWaitingOnPasscode:(id)passcode;
+- (void)resetAllRequests:(id)requests;
 - (void)setupAnalytics;
-- (void)storePrerecordsInEscrow:(id)a3;
-- (void)triggerEscrowUpdate:(id)a3 options:(id)a4 reply:(id)a5;
+- (void)storePrerecordsInEscrow:(id)escrow;
+- (void)triggerEscrowUpdate:(id)update options:(id)options reply:(id)reply;
 @end
 
 @implementation EscrowRequestServer
@@ -24,9 +24,9 @@
   v2 = [v3 AddMultiSamplerForName:@"escorwrequest-healthSummary" withTimeInterval:&stru_1003365B0 block:SFAnalyticsSamplerIntervalOncePerReport];
 }
 
-- (void)escrowCompletedWithinLastSeconds:(double)a3 reply:(id)a4
+- (void)escrowCompletedWithinLastSeconds:(double)seconds reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   if (!_os_feature_enabled_impl())
   {
     v20 = 0;
@@ -35,16 +35,16 @@
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 domain];
-      if ([v9 isEqualToString:NSOSStatusErrorDomain])
+      domain = [v7 domain];
+      if ([domain isEqualToString:NSOSStatusErrorDomain])
       {
-        v10 = [v8 code];
+        code = [v8 code];
 
-        if (v10 == -25300)
+        if (code == -25300)
         {
           v11 = 0;
 LABEL_22:
-          v5[2](v5, v11, 0);
+          replyCopy[2](replyCopy, v11, 0);
 
           goto LABEL_23;
         }
@@ -91,7 +91,7 @@ LABEL_9:
         v15 = *(*(&v16 + 1) + 8 * v14);
         if ([v15 uploadCompleted])
         {
-          if ([v15 escrowAttemptedWithinLastSeconds:a3])
+          if ([v15 escrowAttemptedWithinLastSeconds:seconds])
           {
             break;
           }
@@ -114,16 +114,16 @@ LABEL_9:
     goto LABEL_21;
   }
 
-  v5[2](v5, 0, 0);
+  replyCopy[2](replyCopy, 0, 0);
 LABEL_23:
 }
 
-- (void)storePrerecordsInEscrow:(id)a3
+- (void)storePrerecordsInEscrow:(id)escrow
 {
-  v4 = a3;
+  escrowCopy = escrow;
   if (_os_feature_enabled_impl())
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(escrowCopy + 2))(escrowCopy, 0, 0);
   }
 
   else
@@ -135,14 +135,14 @@ LABEL_23:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "attempting to store a prerecord in escrow", v7, 2u);
     }
 
-    v6 = [(EscrowRequestServer *)self controller];
-    [v6 storePrerecordsInEscrowRPC:v4];
+    controller = [(EscrowRequestServer *)self controller];
+    [controller storePrerecordsInEscrowRPC:escrowCopy];
   }
 }
 
-- (void)resetAllRequests:(id)a3
+- (void)resetAllRequests:(id)requests
 {
-  v3 = a3;
+  requestsCopy = requests;
   if (!_os_feature_enabled_impl())
   {
     v4 = sub_100006274("escrowrequest");
@@ -158,7 +158,7 @@ LABEL_23:
     if (!v6)
     {
       v20 = v5;
-      v21 = v3;
+      v21 = requestsCopy;
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
@@ -215,19 +215,19 @@ LABEL_23:
         v7 = 0;
       }
 
-      v3 = v21;
+      requestsCopy = v21;
       v21[2](v21, v7);
       v5 = v20;
       goto LABEL_29;
     }
 
     v7 = v6;
-    v8 = [v6 domain];
-    if ([v8 isEqualToString:NSOSStatusErrorDomain])
+    domain = [v6 domain];
+    if ([domain isEqualToString:NSOSStatusErrorDomain])
     {
-      v9 = [v7 code];
+      code = [v7 code];
 
-      if (v9 == -25300)
+      if (code == -25300)
       {
         v10 = sub_100006274("escrowrequest");
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -236,7 +236,7 @@ LABEL_23:
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "no extant requests; nothing to delete", buf, 2u);
         }
 
-        v3[2](v3, 0);
+        requestsCopy[2](requestsCopy, 0);
 LABEL_29:
 
         goto LABEL_30;
@@ -255,17 +255,17 @@ LABEL_29:
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "error fetching records: %@", buf, 0xCu);
     }
 
-    (v3)[2](v3, v7);
+    (requestsCopy)[2](requestsCopy, v7);
     goto LABEL_29;
   }
 
-  v3[2](v3, 0);
+  requestsCopy[2](requestsCopy, 0);
 LABEL_30:
 }
 
-- (void)fetchRequestStatuses:(id)a3
+- (void)fetchRequestStatuses:(id)statuses
 {
-  v3 = a3;
+  statusesCopy = statuses;
   if (!_os_feature_enabled_impl())
   {
     v33 = 0;
@@ -275,7 +275,7 @@ LABEL_30:
     if (!v5)
     {
       v25 = 0;
-      v27 = v3;
+      v27 = statusesCopy;
       v10 = sub_100006274("escrowrequest");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -311,24 +311,24 @@ LABEL_30:
             v19 = *(*(&v29 + 1) + 8 * i);
             if ([v19 uploadCompleted])
             {
-              v20 = [v19 uuid];
+              uuid = [v19 uuid];
               v21 = v11;
               v22 = @"complete";
             }
 
             else if ([v19 hasSerializedPrerecord])
             {
-              v20 = [v19 uuid];
+              uuid = [v19 uuid];
               v21 = v11;
               v22 = v17;
             }
 
             else
             {
-              v23 = [v19 certCached];
-              v20 = [v19 uuid];
+              certCached = [v19 certCached];
+              uuid = [v19 uuid];
               v21 = v11;
-              if (v23)
+              if (certCached)
               {
                 v22 = v16;
               }
@@ -339,7 +339,7 @@ LABEL_30:
               }
             }
 
-            [v21 setObject:v22 forKeyedSubscript:v20];
+            [v21 setObject:v22 forKeyedSubscript:uuid];
           }
 
           v14 = [v12 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -348,7 +348,7 @@ LABEL_30:
         while (v14);
       }
 
-      v3 = v27;
+      statusesCopy = v27;
       v27[2](v27, v11, 0);
 
       v6 = v25;
@@ -356,12 +356,12 @@ LABEL_30:
       goto LABEL_30;
     }
 
-    v7 = [v5 domain];
-    if ([v7 isEqualToString:NSOSStatusErrorDomain])
+    domain = [v5 domain];
+    if ([domain isEqualToString:NSOSStatusErrorDomain])
     {
-      v8 = [v6 code];
+      code = [v6 code];
 
-      if (v8 == -25300)
+      if (code == -25300)
       {
         v9 = sub_100006274("escrowrequest");
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -370,7 +370,7 @@ LABEL_30:
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "no extant requests", buf, 2u);
         }
 
-        v3[2](v3, &__NSDictionary0__struct, 0);
+        statusesCopy[2](statusesCopy, &__NSDictionary0__struct, 0);
 LABEL_30:
 
         goto LABEL_31;
@@ -389,22 +389,22 @@ LABEL_30:
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "escrowrequest: failed to load requests: %@", buf, 0xCu);
     }
 
-    (v3)[2](v3, 0, v6);
+    (statusesCopy)[2](statusesCopy, 0, v6);
     goto LABEL_30;
   }
 
-  v3[2](v3, &__NSDictionary0__struct, 0);
+  statusesCopy[2](statusesCopy, &__NSDictionary0__struct, 0);
 LABEL_31:
 }
 
-- (void)triggerEscrowUpdate:(id)a3 options:(id)a4 reply:(id)a5
+- (void)triggerEscrowUpdate:(id)update options:(id)options reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updateCopy = update;
+  optionsCopy = options;
+  replyCopy = reply;
   if (_os_feature_enabled_impl())
   {
-    v10[2](v10, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -413,18 +413,18 @@ LABEL_31:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v8;
+      v14 = updateCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Triggering an escrow update request due to '%@'", &v13, 0xCu);
     }
 
-    v12 = [(EscrowRequestServer *)self controller];
-    [v12 triggerEscrowUpdateRPC:v8 options:v9 reply:v10];
+    controller = [(EscrowRequestServer *)self controller];
+    [controller triggerEscrowUpdateRPC:updateCopy options:optionsCopy reply:replyCopy];
   }
 }
 
-- (void)fetchRequestWaitingOnPasscode:(id)a3
+- (void)fetchRequestWaitingOnPasscode:(id)passcode
 {
-  v3 = a3;
+  passcodeCopy = passcode;
   if (!_os_feature_enabled_impl())
   {
     v31 = 0;
@@ -433,17 +433,17 @@ LABEL_31:
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 domain];
-      if ([v7 isEqualToString:NSOSStatusErrorDomain])
+      domain = [v5 domain];
+      if ([domain isEqualToString:NSOSStatusErrorDomain])
       {
-        v8 = [v6 code];
+        code = [v6 code];
 
-        if (v8 == -25300)
+        if (code == -25300)
         {
           v9 = +[CKKSAnalytics logger];
           [v9 setDateProperty:0 forKey:@"ERSPending"];
 
-          (*(v3 + 2))(v3, 0, 0);
+          (*(passcodeCopy + 2))(passcodeCopy, 0, 0);
 LABEL_32:
 
           goto LABEL_33;
@@ -455,7 +455,7 @@ LABEL_32:
       }
 
 LABEL_26:
-      (*(v3 + 2))(v3, 0, v6);
+      (*(passcodeCopy + 2))(passcodeCopy, 0, v6);
       goto LABEL_32;
     }
 
@@ -483,7 +483,7 @@ LABEL_22:
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "No escrow requests need a passcode", buf, 2u);
       }
 
-      (*(v3 + 2))(v3, 0, 0);
+      (*(passcodeCopy + 2))(passcodeCopy, 0, 0);
 LABEL_31:
       v6 = v25;
       v4 = v26;
@@ -510,9 +510,9 @@ LABEL_10:
       v17 = sub_100006274("escrowrequest");
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v15 uuid];
+        uuid = [v15 uuid];
         *buf = 138412290;
-        v33 = v19;
+        v33 = uuid;
         v20 = v17;
         v21 = "Escrow request %@ doesn't yet have a certificate cached";
 LABEL_19:
@@ -533,21 +533,21 @@ LABEL_20:
       }
     }
 
-    v16 = [v15 hasSerializedPrerecord];
+    hasSerializedPrerecord = [v15 hasSerializedPrerecord];
     v17 = sub_100006274("escrowrequest");
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-    if (!v16)
+    if (!hasSerializedPrerecord)
     {
       if (v18)
       {
-        v23 = [v15 uuid];
+        uuid2 = [v15 uuid];
         *buf = 138412290;
-        v33 = v23;
+        v33 = uuid2;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Escrow request %@ is pending a passcode", buf, 0xCu);
       }
 
-      v24 = [v15 uuid];
-      (*(v3 + 2))(v3, v24, 0);
+      uuid3 = [v15 uuid];
+      (*(passcodeCopy + 2))(passcodeCopy, uuid3, 0);
 
       goto LABEL_31;
     }
@@ -557,26 +557,26 @@ LABEL_20:
       goto LABEL_20;
     }
 
-    v19 = [v15 uuid];
+    uuid = [v15 uuid];
     *buf = 138412290;
-    v33 = v19;
+    v33 = uuid;
     v20 = v17;
     v21 = "Escrow request %@ already has a prerecord; no passcode needed";
     goto LABEL_19;
   }
 
-  (*(v3 + 2))(v3, 0, 0);
+  (*(passcodeCopy + 2))(passcodeCopy, 0, 0);
 LABEL_33:
 }
 
-- (void)fetchPrerecord:(id)a3 reply:(id)a4
+- (void)fetchPrerecord:(id)prerecord reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  prerecordCopy = prerecord;
+  replyCopy = reply;
   if (!_os_feature_enabled_impl())
   {
     v16 = 0;
-    v7 = [SecEscrowPendingRecord loadFromKeychain:v5 error:&v16];
+    v7 = [SecEscrowPendingRecord loadFromKeychain:prerecordCopy error:&v16];
     v8 = v16;
     if (v8)
     {
@@ -584,13 +584,13 @@ LABEL_33:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v18 = v5;
+        v18 = prerecordCopy;
         v19 = 2112;
         v20 = v8;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "escrowrequest: unable to load prerecord with uuid %@: %@", buf, 0x16u);
       }
 
-      v6[2](v6, 0, v8);
+      replyCopy[2](replyCopy, 0, v8);
       goto LABEL_18;
     }
 
@@ -601,14 +601,14 @@ LABEL_33:
       {
 LABEL_17:
 
-        v6[2](v6, 0, 0);
+        replyCopy[2](replyCopy, 0, 0);
 LABEL_18:
 
         goto LABEL_19;
       }
 
       *buf = 138412290;
-      v18 = v5;
+      v18 = prerecordCopy;
       v11 = "escrowrequest: prerecord for uuid %@ already uploaded";
       v12 = v10;
       v13 = 12;
@@ -622,12 +622,12 @@ LABEL_18:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v18 = v5;
+          v18 = prerecordCopy;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "fetched prerecord for uuid %@", buf, 0xCu);
         }
 
-        v15 = [v7 serializedPrerecord];
-        (v6)[2](v6, v15, 0);
+        serializedPrerecord = [v7 serializedPrerecord];
+        (replyCopy)[2](replyCopy, serializedPrerecord, 0);
 
         goto LABEL_18;
       }
@@ -639,7 +639,7 @@ LABEL_18:
       }
 
       *buf = 138412546;
-      v18 = v5;
+      v18 = prerecordCopy;
       v19 = 2112;
       v20 = 0;
       v11 = "escrowrequest: no prerecord for uuid %@: %@";
@@ -651,19 +651,19 @@ LABEL_18:
     goto LABEL_17;
   }
 
-  v6[2](v6, 0, 0);
+  replyCopy[2](replyCopy, 0, 0);
 LABEL_19:
 }
 
-- (void)cachePrerecord:(id)a3 serializedPrerecord:(id)a4 reply:(id)a5
+- (void)cachePrerecord:(id)prerecord serializedPrerecord:(id)serializedPrerecord reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  prerecordCopy = prerecord;
+  serializedPrerecordCopy = serializedPrerecord;
+  replyCopy = reply;
   if (!_os_feature_enabled_impl())
   {
     v21 = 0;
-    v11 = [SecEscrowPendingRecord loadFromKeychain:v8 error:&v21];
+    v11 = [SecEscrowPendingRecord loadFromKeychain:prerecordCopy error:&v21];
     v12 = v21;
     if (v12)
     {
@@ -672,7 +672,7 @@ LABEL_19:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v23 = v8;
+        v23 = prerecordCopy;
         v24 = 2112;
         v25 = v13;
         v15 = "escrowrequest: unable to load uuid %@: %@";
@@ -683,7 +683,7 @@ LABEL_9:
 
     else
     {
-      [v11 setSerializedPrerecord:v9];
+      [v11 setSerializedPrerecord:serializedPrerecordCopy];
       v20 = 0;
       [v11 saveToKeychain:&v20];
       v16 = v20;
@@ -693,15 +693,15 @@ LABEL_9:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v23 = v8;
+          v23 = prerecordCopy;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "saved new prerecord for uuid %@", buf, 0xCu);
         }
 
-        v18 = [(EscrowRequestServer *)self controller];
-        v19 = [v18 stateMachine];
-        [v19 pokeStateMachine];
+        controller = [(EscrowRequestServer *)self controller];
+        stateMachine = [controller stateMachine];
+        [stateMachine pokeStateMachine];
 
-        v10[2](v10, 0);
+        replyCopy[2](replyCopy, 0);
         goto LABEL_11;
       }
 
@@ -710,7 +710,7 @@ LABEL_9:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v23 = v8;
+        v23 = prerecordCopy;
         v24 = 2112;
         v25 = v13;
         v15 = "escrowrequest: unable to save new prerecord for uuid %@: %@";
@@ -718,17 +718,17 @@ LABEL_9:
       }
     }
 
-    (v10)[2](v10, v13);
+    (replyCopy)[2](replyCopy, v13);
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v10[2](v10, 0);
+  replyCopy[2](replyCopy, 0);
 LABEL_12:
 }
 
-- (BOOL)escrowCompletedWithinLastSeconds:(double)a3
+- (BOOL)escrowCompletedWithinLastSeconds:(double)seconds
 {
   v10 = 0;
   v11 = &v10;
@@ -741,7 +741,7 @@ LABEL_12:
   v9 = &v10;
   v5 = dispatch_semaphore_create(0);
   v8 = v5;
-  [(EscrowRequestServer *)self escrowCompletedWithinLastSeconds:v7 reply:a3];
+  [(EscrowRequestServer *)self escrowCompletedWithinLastSeconds:v7 reply:seconds];
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   LOBYTE(self) = *(v11 + 24);
 
@@ -749,7 +749,7 @@ LABEL_12:
   return self;
 }
 
-- (BOOL)pendingEscrowUpload:(id *)a3
+- (BOOL)pendingEscrowUpload:(id *)upload
 {
   v28 = 0;
   v29 = &v28;
@@ -781,10 +781,10 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "failed to fetch escrow statuses: %@", buf, 0xCu);
     }
 
-    if (a3)
+    if (upload)
     {
       v6 = 0;
-      *a3 = v23[5];
+      *upload = v23[5];
       goto LABEL_21;
     }
 
@@ -803,9 +803,9 @@ LABEL_20:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v29[5] allValues];
+  allValues = [v29[5] allValues];
   v6 = 0;
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v34 count:16];
+  v9 = [allValues countByEnumeratingWithState:&v17 objects:v34 count:16];
   if (v9)
   {
     v10 = *v18;
@@ -818,7 +818,7 @@ LABEL_20:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v15 = *(*(&v17 + 1) + 8 * i);
@@ -828,7 +828,7 @@ LABEL_20:
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v17 objects:v34 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v17 objects:v34 count:16];
     }
 
     while (v9);
@@ -841,7 +841,7 @@ LABEL_21:
   return v6 & 1;
 }
 
-- (id)fetchStatuses:(id *)a3
+- (id)fetchStatuses:(id *)statuses
 {
   v14 = 0;
   v15 = &v14;
@@ -862,12 +862,12 @@ LABEL_21:
   v7[4] = &v14;
   v7[5] = &v8;
   [(EscrowRequestServer *)self fetchRequestStatuses:v7];
-  if (a3)
+  if (statuses)
   {
     v4 = v9[5];
     if (v4)
     {
-      *a3 = v4;
+      *statuses = v4;
     }
   }
 
@@ -879,10 +879,10 @@ LABEL_21:
   return v5;
 }
 
-- (BOOL)triggerEscrowUpdate:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)triggerEscrowUpdate:(id)update options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  updateCopy = update;
+  optionsCopy = options;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -896,15 +896,15 @@ LABEL_21:
   v17 = &v18;
   v10 = dispatch_semaphore_create(0);
   v16 = v10;
-  [(EscrowRequestServer *)self triggerEscrowUpdate:v8 options:v9 reply:v15];
+  [(EscrowRequestServer *)self triggerEscrowUpdate:updateCopy options:optionsCopy reply:v15];
   dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
   v11 = v19;
-  if (a5)
+  if (error)
   {
     v12 = v19[5];
     if (v12)
     {
-      *a5 = v12;
+      *error = v12;
       v11 = v19;
     }
   }
@@ -915,15 +915,15 @@ LABEL_21:
   return v13;
 }
 
-- (EscrowRequestServer)initWithLockStateTracker:(id)a3
+- (EscrowRequestServer)initWithLockStateTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v9.receiver = self;
   v9.super_class = EscrowRequestServer;
   v5 = [(EscrowRequestServer *)&v9 init];
   if (v5)
   {
-    v6 = [[EscrowRequestController alloc] initWithLockStateTracker:v4];
+    v6 = [[EscrowRequestController alloc] initWithLockStateTracker:trackerCopy];
     controller = v5->_controller;
     v5->_controller = v6;
   }

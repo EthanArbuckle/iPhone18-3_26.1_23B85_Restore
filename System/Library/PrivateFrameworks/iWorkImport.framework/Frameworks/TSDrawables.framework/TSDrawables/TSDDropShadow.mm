@@ -1,27 +1,27 @@
 @interface TSDDropShadow
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (CGImage)newShadowImageForRep:(id)a3 withSize:(CGSize)a4 drawSelector:(SEL)a5 unflipped:(BOOL)a6;
-- (CGRect)boundsForRep:(id)a3;
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3;
-- (TSDDropShadow)initWithAngle:(double)a3 offset:(double)a4 radius:(double)a5 opacity:(double)a6 color:(id)a7 enabled:(BOOL)a8;
-- (TSDDropShadow)initWithArchive:(const void *)a3 unarchiver:(id)a4;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (BOOL)isEqual:(id)equal;
+- (CGImage)newShadowImageForRep:(id)rep withSize:(CGSize)size drawSelector:(SEL)selector unflipped:(BOOL)unflipped;
+- (CGRect)boundsForRep:(id)rep;
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep;
+- (TSDDropShadow)initWithAngle:(double)angle offset:(double)offset radius:(double)radius opacity:(double)opacity color:(id)color enabled:(BOOL)enabled;
+- (TSDDropShadow)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
 - (TSDDropShadow)shadowWithClampedValues;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)newShadowClampedForSwatches;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
 - (unint64_t)hash;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSDDropShadow
 
-- (TSDDropShadow)initWithAngle:(double)a3 offset:(double)a4 radius:(double)a5 opacity:(double)a6 color:(id)a7 enabled:(BOOL)a8
+- (TSDDropShadow)initWithAngle:(double)angle offset:(double)offset radius:(double)radius opacity:(double)opacity color:(id)color enabled:(BOOL)enabled
 {
   v9.receiver = self;
   v9.super_class = TSDDropShadow;
-  return [(TSDShadow *)&v9 i_initWithOpacity:a7 color:a8 angle:a6 offset:a3 radius:a4 enabled:a5];
+  return [(TSDShadow *)&v9 i_initWithOpacity:color color:enabled angle:opacity offset:angle radius:offset enabled:radius];
 }
 
 - (TSDDropShadow)shadowWithClampedValues
@@ -42,14 +42,14 @@
   return v27;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -75,7 +75,7 @@
   return [(TSDShadow *)&v3 hash];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TSDMutableDropShadow alloc];
   objc_msgSend_angle(self, v5, v6);
@@ -121,9 +121,9 @@
   return v34;
 }
 
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep
 {
-  v3 = objc_msgSend_styledLayout(a3, a2, a3);
+  v3 = objc_msgSend_styledLayout(rep, a2, rep);
   objc_msgSend_shadowedNaturalBoundsWithoutOffset(v3, v4, v5);
   v7 = v6;
   v9 = v8;
@@ -141,9 +141,9 @@
   return result;
 }
 
-- (CGRect)boundsForRep:(id)a3
+- (CGRect)boundsForRep:(id)rep
 {
-  v3 = objc_msgSend_styledLayout(a3, a2, a3);
+  v3 = objc_msgSend_styledLayout(rep, a2, rep);
   objc_msgSend_shadowedNaturalBoundsWithoutOffset(v3, v4, v5);
   v7 = v6;
   v9 = v8;
@@ -161,10 +161,10 @@
   return result;
 }
 
-- (CGImage)newShadowImageForRep:(id)a3 withSize:(CGSize)a4 drawSelector:(SEL)a5 unflipped:(BOOL)a6
+- (CGImage)newShadowImageForRep:(id)rep withSize:(CGSize)size drawSelector:(SEL)selector unflipped:(BOOL)unflipped
 {
-  v6 = a6;
-  v9 = a3;
+  unflippedCopy = unflipped;
+  repCopy = rep;
   TSURoundedSize();
   v11 = v10;
   v13 = v12;
@@ -190,8 +190,8 @@
         if (v30)
         {
           v33 = v30;
-          v112 = a5;
-          v34 = objc_msgSend_layout(v9, v31, v32);
+          selectorCopy = selector;
+          v34 = objc_msgSend_layout(repCopy, v31, v32);
           v37 = v34;
           v38 = v29;
           if (v34)
@@ -209,11 +209,11 @@
           TSUTransformAngleInDegrees();
           sub_2766477E4(v33, v39);
 
-          v42 = objc_msgSend_canvas(v9, v40, v41);
+          v42 = objc_msgSend_canvas(repCopy, v40, v41);
           isPrinting = objc_msgSend_isPrinting(v42, v43, v44);
-          v48 = objc_msgSend_canvas(v9, v46, v47);
+          v48 = objc_msgSend_canvas(repCopy, v46, v47);
           isDrawingIntoPDF = objc_msgSend_isDrawingIntoPDF(v48, v49, v50);
-          v54 = objc_msgSend_canvas(v9, v52, v53);
+          v54 = objc_msgSend_canvas(repCopy, v52, v53);
           objc_msgSend_contentsScale(v54, v55, v56);
           TSDSetCGContextInfo(v33, isPrinting, isDrawingIntoPDF, 1, 0, v57);
 
@@ -221,12 +221,12 @@
           v61 = v60;
           CGContextTranslateCTM(v33, -v22, -v25);
           CGContextTranslateCTM(v33, -(v24 + 10.0), -0.0);
-          if (v6)
+          if (unflippedCopy)
           {
             v115 = 0u;
             v116 = 0u;
             v114 = 0u;
-            v64 = objc_msgSend_layout(v9, v62, v63);
+            v64 = objc_msgSend_layout(repCopy, v62, v63);
             v67 = objc_msgSend_geometry(v64, v65, v66);
             v70 = v67;
             if (v67)
@@ -265,14 +265,14 @@
           v117.width = v24 + 10.0;
           CGContextSetShadowWithColor(v33, v117, v61, v38);
           CGContextTranslateCTM(v33, v61, v61);
-          if (objc_msgSend_canDrawShadowInOneStepWithChildren_(v9, v72, 1))
+          if (objc_msgSend_canDrawShadowInOneStepWithChildren_(repCopy, v72, 1))
           {
-            objc_msgSend_performSelector_withObject_(v9, v73, v112, v33);
+            objc_msgSend_performSelector_withObject_(repCopy, v73, selectorCopy, v33);
           }
 
           else
           {
-            objc_msgSend_naturalBounds(v9, v73, v74);
+            objc_msgSend_naturalBounds(repCopy, v73, v74);
             TSURectWithSize();
             v76 = v75;
             v78 = v77;
@@ -283,7 +283,7 @@
               v82 = v80 / v78;
               v83 = CGLayerCreateWithContext(v33, *&v79, 0);
               Context = CGLayerGetContext(v83);
-              v87 = objc_msgSend_layout(v9, v85, v86);
+              v87 = objc_msgSend_layout(repCopy, v85, v86);
               v90 = v87;
               if (v87)
               {
@@ -300,16 +300,16 @@
               TSUTransformAngleInDegrees();
               sub_2766477E4(Context, v91);
 
-              v94 = objc_msgSend_canvas(v9, v92, v93);
+              v94 = objc_msgSend_canvas(repCopy, v92, v93);
               v97 = objc_msgSend_isPrinting(v94, v95, v96);
-              v100 = objc_msgSend_canvas(v9, v98, v99);
+              v100 = objc_msgSend_canvas(repCopy, v98, v99);
               v103 = objc_msgSend_isDrawingIntoPDF(v100, v101, v102);
-              v106 = objc_msgSend_canvas(v9, v104, v105);
+              v106 = objc_msgSend_canvas(repCopy, v104, v105);
               objc_msgSend_contentsScale(v106, v107, v108);
               TSDSetCGContextInfo(Context, v97, v103, 0, 0, v109);
 
               CGContextScaleCTM(Context, v81, v82);
-              objc_msgSend_performSelector_withObject_(v9, v110, v112, Context);
+              objc_msgSend_performSelector_withObject_(repCopy, v110, selectorCopy, Context);
               TSDClearCGContextInfo(Context);
               TSURectWithSize();
               CGContextDrawLayerInRect(v33, v118, v83);
@@ -333,9 +333,9 @@
   return Image;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   v6 = TSUDynamicCast();
 
@@ -383,54 +383,54 @@
   return v20;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v6 = self;
-  v7 = a4;
+  selfCopy = self;
+  objectCopy = object;
   objc_opt_class();
   v8 = TSUDynamicCast();
 
-  objc_msgSend_opacity(v6, v9, v10);
+  objc_msgSend_opacity(selfCopy, v9, v10);
   objc_msgSend_opacity(v8, v11, v12);
-  if (objc_msgSend_isEnabled(v6, v13, v14) & 1) != 0 || (objc_msgSend_isEnabled(v8, v15, v16))
+  if (objc_msgSend_isEnabled(selfCopy, v13, v14) & 1) != 0 || (objc_msgSend_isEnabled(v8, v15, v16))
   {
-    if ((objc_msgSend_isEnabled(v6, v15, v16) & 1) == 0 && v8)
+    if ((objc_msgSend_isEnabled(selfCopy, v15, v16) & 1) == 0 && v8)
     {
       v19 = v8;
 
-      v6 = v19;
+      selfCopy = v19;
     }
 
     if ((objc_msgSend_isEnabled(v8, v17, v18) & 1) == 0)
     {
-      v22 = v6;
+      v22 = selfCopy;
 
       v8 = v22;
     }
 
-    objc_msgSend_angle(v6, v20, v21);
+    objc_msgSend_angle(selfCopy, v20, v21);
     objc_msgSend_angle(v8, v23, v24);
     TSUMixAnglesInDegrees();
     v26 = v25;
-    objc_msgSend_offset(v6, v27, v28);
+    objc_msgSend_offset(selfCopy, v27, v28);
     objc_msgSend_offset(v8, v29, v30);
     TSUMix();
     v32 = v31;
-    objc_msgSend_radius(v6, v33, v34);
+    objc_msgSend_radius(selfCopy, v33, v34);
     objc_msgSend_radius(v8, v35, v36);
     TSUMix();
     v38 = round(v37);
     TSUMix();
     v40 = v39;
-    v43 = objc_msgSend_color(v6, v41, v42);
+    v43 = objc_msgSend_color(selfCopy, v41, v42);
     v46 = objc_msgSend_color(v8, v44, v45);
     isEqual = objc_msgSend_isEqual_(v43, v47, v46);
 
-    v53 = objc_msgSend_color(v6, v49, v50);
+    v53 = objc_msgSend_color(selfCopy, v49, v50);
     if ((isEqual & 1) == 0)
     {
       v54 = objc_msgSend_color(v8, v51, v52);
-      v56 = objc_msgSend_blendedColorWithFraction_ofColor_(v53, v55, v54, a3);
+      v56 = objc_msgSend_blendedColorWithFraction_ofColor_(v53, v55, v54, fraction);
 
       v53 = v56;
     }
@@ -441,20 +441,20 @@
 
   else
   {
-    v6 = v6;
-    v59 = v6;
+    selfCopy = selfCopy;
+    v59 = selfCopy;
   }
 
   return v59;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
-  if (TSD::ShadowArchive::ByteSizeLong(a3))
+  unarchiverCopy = unarchiver;
+  if (TSD::ShadowArchive::ByteSizeLong(archive))
   {
     v8 = [TSDDropShadow alloc];
-    v10 = objc_msgSend_initWithArchive_unarchiver_(v8, v9, a3, v5);
+    v10 = objc_msgSend_initWithArchive_unarchiver_(v8, v9, archive, unarchiverCopy);
   }
 
   else
@@ -467,18 +467,18 @@
   return v11;
 }
 
-- (TSDDropShadow)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSDDropShadow)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
   v5.receiver = self;
   v5.super_class = TSDDropShadow;
-  return [(TSDShadow *)&v5 initWithArchive:a3 unarchiver:a4];
+  return [(TSDShadow *)&v5 initWithArchive:archive unarchiver:unarchiver];
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v4.receiver = self;
   v4.super_class = TSDDropShadow;
-  [(TSDShadow *)&v4 saveToArchive:a3 archiver:a4];
+  [(TSDShadow *)&v4 saveToArchive:archive archiver:archiver];
 }
 
 @end

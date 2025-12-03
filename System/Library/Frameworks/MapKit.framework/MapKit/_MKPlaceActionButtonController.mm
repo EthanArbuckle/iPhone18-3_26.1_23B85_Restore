@@ -1,6 +1,6 @@
 @interface _MKPlaceActionButtonController
-+ (_MKPlaceActionButtonController)actionButtonControllerWithTitle:(id)a3 subTitle:(id)a4 selectedBlock:(id)a5 disabled:(BOOL)a6 symbolName:(id)a7;
-- (_MKPlaceActionButtonController)initWithTitle:(id)a3 subTitle:(id)a4 analyticsAction:(int)a5 selectedBlock:(id)a6 disabled:(BOOL)a7 symbolName:(id)a8;
++ (_MKPlaceActionButtonController)actionButtonControllerWithTitle:(id)title subTitle:(id)subTitle selectedBlock:(id)block disabled:(BOOL)disabled symbolName:(id)name;
+- (_MKPlaceActionButtonController)initWithTitle:(id)title subTitle:(id)subTitle analyticsAction:(int)action selectedBlock:(id)block disabled:(BOOL)disabled symbolName:(id)name;
 - (_MKPlaceActionControlledButton)delegate;
 - (id)infoCardChildPossibleActions;
 - (void)buttonTextChanged;
@@ -39,61 +39,61 @@
   [WeakRetained placeActionButtonControllerTextDidChange:self];
 }
 
-- (_MKPlaceActionButtonController)initWithTitle:(id)a3 subTitle:(id)a4 analyticsAction:(int)a5 selectedBlock:(id)a6 disabled:(BOOL)a7 symbolName:(id)a8
+- (_MKPlaceActionButtonController)initWithTitle:(id)title subTitle:(id)subTitle analyticsAction:(int)action selectedBlock:(id)block disabled:(BOOL)disabled symbolName:(id)name
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
-  if (v14)
+  titleCopy = title;
+  subTitleCopy = subTitle;
+  blockCopy = block;
+  nameCopy = name;
+  if (titleCopy)
   {
-    v18 = [v14 length];
-    v19 = 0;
-    if (v16 && v18)
+    v18 = [titleCopy length];
+    selfCopy = 0;
+    if (blockCopy && v18)
     {
       v28.receiver = self;
       v28.super_class = _MKPlaceActionButtonController;
       v20 = [(_MKPlaceActionButtonController *)&v28 init];
       if (v20)
       {
-        v21 = [v14 copy];
+        v21 = [titleCopy copy];
         buttonTitle = v20->_buttonTitle;
         v20->_buttonTitle = v21;
 
-        v23 = [v15 copy];
+        v23 = [subTitleCopy copy];
         buttonSubTitle = v20->_buttonSubTitle;
         v20->_buttonSubTitle = v23;
 
-        v25 = [v16 copy];
+        v25 = [blockCopy copy];
         buttonSelectedBlock = v20->_buttonSelectedBlock;
         v20->_buttonSelectedBlock = v25;
 
-        v20->_analyticsAction = a5;
-        v20->_disabled = a7;
-        objc_storeStrong(&v20->_symbolName, a8);
+        v20->_analyticsAction = action;
+        v20->_disabled = disabled;
+        objc_storeStrong(&v20->_symbolName, name);
       }
 
       self = v20;
-      v19 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-+ (_MKPlaceActionButtonController)actionButtonControllerWithTitle:(id)a3 subTitle:(id)a4 selectedBlock:(id)a5 disabled:(BOOL)a6 symbolName:(id)a7
++ (_MKPlaceActionButtonController)actionButtonControllerWithTitle:(id)title subTitle:(id)subTitle selectedBlock:(id)block disabled:(BOOL)disabled symbolName:(id)name
 {
-  v7 = a6;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[a1 alloc] initWithTitle:v15 subTitle:v14 analyticsAction:0 selectedBlock:v13 disabled:v7 symbolName:v12];
+  disabledCopy = disabled;
+  nameCopy = name;
+  blockCopy = block;
+  subTitleCopy = subTitle;
+  titleCopy = title;
+  v16 = [[self alloc] initWithTitle:titleCopy subTitle:subTitleCopy analyticsAction:0 selectedBlock:blockCopy disabled:disabledCopy symbolName:nameCopy];
 
   return v16;
 }

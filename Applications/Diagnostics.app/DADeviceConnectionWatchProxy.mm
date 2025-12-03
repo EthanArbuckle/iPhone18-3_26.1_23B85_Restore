@@ -1,27 +1,27 @@
 @interface DADeviceConnectionWatchProxy
-- (DADeviceConnectionWatchProxy)initWithState:(id)a3 nanoDevice:(id)a4;
+- (DADeviceConnectionWatchProxy)initWithState:(id)state nanoDevice:(id)device;
 - (id)destination;
 - (void)connect;
 - (void)dealloc;
-- (void)deviceDidBecomeActive:(id)a3;
-- (void)deviceDidBecomeInactive:(id)a3;
+- (void)deviceDidBecomeActive:(id)active;
+- (void)deviceDidBecomeInactive:(id)inactive;
 - (void)end;
-- (void)quickSwitchToNRDevice:(id)a3 completion:(id)a4;
+- (void)quickSwitchToNRDevice:(id)device completion:(id)completion;
 - (void)start;
 @end
 
 @implementation DADeviceConnectionWatchProxy
 
-- (DADeviceConnectionWatchProxy)initWithState:(id)a3 nanoDevice:(id)a4
+- (DADeviceConnectionWatchProxy)initWithState:(id)state nanoDevice:(id)device
 {
-  v7 = a4;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = DADeviceConnectionWatchProxy;
-  v8 = [(DADeviceConnectionIDSProxy *)&v13 initWithState:a3];
+  v8 = [(DADeviceConnectionIDSProxy *)&v13 initWithState:state];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_nanoDevice, a4);
+    objc_storeStrong(&v8->_nanoDevice, device);
     v10 = +[NSNotificationCenter defaultCenter];
     [v10 addObserver:v9 selector:"deviceDidBecomeActive:" name:NRPairedDeviceRegistryDeviceDidBecomeActive object:0];
 
@@ -45,7 +45,7 @@
     v17 = sub_1000054E8;
     v18 = 0;
     v4 = dispatch_semaphore_create(0);
-    v5 = [(DADeviceConnectionIDSProxy *)self messenger];
+    messenger = [(DADeviceConnectionIDSProxy *)self messenger];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000054F0;
@@ -54,7 +54,7 @@
     v11 = &v13;
     v6 = v4;
     v10 = v6;
-    [v5 availableDestinationsWithCompletion:v9];
+    [messenger availableDestinationsWithCompletion:v9];
 
     dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
     objc_storeStrong(&self->_destination, v14[5]);
@@ -74,13 +74,13 @@
 - (void)connect
 {
   v3 = +[NRPairedDeviceRegistry sharedInstance];
-  v4 = [v3 getActivePairedDevice];
+  getActivePairedDevice = [v3 getActivePairedDevice];
 
-  v5 = [(DADeviceConnectionWatchProxy *)self nanoDevice];
-  v6 = [v5 valueForProperty:NRDevicePropertyIsAltAccount];
-  v7 = [v6 BOOLValue];
+  nanoDevice = [(DADeviceConnectionWatchProxy *)self nanoDevice];
+  v6 = [nanoDevice valueForProperty:NRDevicePropertyIsAltAccount];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = +[NRPairedDeviceRegistry sharedInstance];
     v14[0] = _NSConcreteStackBlock;
@@ -89,13 +89,13 @@
     v14[3] = &unk_1001BC648;
     v14[4] = self;
     v9 = [v8 getAllDevicesWithArchivedAltAccountDevicesMatching:v14];
-    v10 = [v9 firstObject];
+    firstObject = [v9 firstObject];
 
-    v4 = v10;
+    getActivePairedDevice = firstObject;
   }
 
-  v11 = [(DADeviceConnectionWatchProxy *)self nanoDevice];
-  v12 = [v4 isEqual:v11];
+  nanoDevice2 = [(DADeviceConnectionWatchProxy *)self nanoDevice];
+  v12 = [getActivePairedDevice isEqual:nanoDevice2];
 
   if (v12)
   {
@@ -114,13 +114,13 @@
   v16[4] = self;
   v3 = objc_retainBlock(v16);
   v4 = +[NRPairedDeviceRegistry sharedInstance];
-  v5 = [v4 getActivePairedDevice];
+  getActivePairedDevice = [v4 getActivePairedDevice];
 
-  v6 = [(DADeviceConnectionWatchProxy *)self nanoDevice];
-  v7 = [v6 valueForProperty:NRDevicePropertyIsAltAccount];
-  v8 = [v7 BOOLValue];
+  nanoDevice = [(DADeviceConnectionWatchProxy *)self nanoDevice];
+  v7 = [nanoDevice valueForProperty:NRDevicePropertyIsAltAccount];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = +[NRPairedDeviceRegistry sharedInstance];
     v15[0] = _NSConcreteStackBlock;
@@ -129,18 +129,18 @@
     v15[3] = &unk_1001BC648;
     v15[4] = self;
     v10 = [v9 getAllDevicesWithArchivedAltAccountDevicesMatching:v15];
-    v11 = [v10 firstObject];
+    firstObject = [v10 firstObject];
 
-    v5 = v11;
+    getActivePairedDevice = firstObject;
   }
 
-  v12 = [(DADeviceConnectionWatchProxy *)self nanoDevice];
-  v13 = v8 | ~[v5 isEqual:v12];
+  nanoDevice2 = [(DADeviceConnectionWatchProxy *)self nanoDevice];
+  v13 = bOOLValue | ~[getActivePairedDevice isEqual:nanoDevice2];
 
   if (v13)
   {
-    v14 = [(DADeviceConnectionWatchProxy *)self nanoDevice];
-    [(DADeviceConnectionWatchProxy *)self quickSwitchToNRDevice:v14 completion:v3];
+    nanoDevice3 = [(DADeviceConnectionWatchProxy *)self nanoDevice];
+    [(DADeviceConnectionWatchProxy *)self quickSwitchToNRDevice:nanoDevice3 completion:v3];
   }
 
   else
@@ -154,17 +154,17 @@
   v11.receiver = self;
   v11.super_class = DADeviceConnectionWatchProxy;
   [(DADeviceConnectionIDSProxy *)&v11 end];
-  v3 = [(DADeviceConnectionWatchProxy *)self activeDeviceAssertion];
+  activeDeviceAssertion = [(DADeviceConnectionWatchProxy *)self activeDeviceAssertion];
 
-  if (v3)
+  if (activeDeviceAssertion)
   {
     v4 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(DADeviceConnectionWatchProxy *)self activeDeviceAssertion];
-      v6 = [v5 device];
+      activeDeviceAssertion2 = [(DADeviceConnectionWatchProxy *)self activeDeviceAssertion];
+      device = [activeDeviceAssertion2 device];
       *buf = 138412290;
-      v13 = v6;
+      v13 = device;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Invalidating Active Device Assertion for Device: %@", buf, 0xCu);
     }
 
@@ -183,15 +183,15 @@
   }
 }
 
-- (void)quickSwitchToNRDevice:(id)a3 completion:(id)a4
+- (void)quickSwitchToNRDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v8 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Switching to Watch: %@", buf, 0xCu);
   }
 
@@ -203,9 +203,9 @@
   v12[3] = &unk_1001BC6E8;
   objc_copyWeak(&v15, buf);
   v12[4] = self;
-  v10 = v6;
+  v10 = deviceCopy;
   v13 = v10;
-  v11 = v7;
+  v11 = completionCopy;
   v14 = v11;
   [v9 setActivePairedDevice:v10 withActiveDeviceAssertionHandler:v12];
 
@@ -213,45 +213,45 @@
   objc_destroyWeak(buf);
 }
 
-- (void)deviceDidBecomeActive:(id)a3
+- (void)deviceDidBecomeActive:(id)active
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:NRPairedDeviceRegistryDevice];
-  v6 = [(DADeviceConnectionWatchProxy *)self nanoDevice];
-  v7 = [v5 isEqual:v6];
+  userInfo = [active userInfo];
+  v5 = [userInfo objectForKeyedSubscript:NRPairedDeviceRegistryDevice];
+  nanoDevice = [(DADeviceConnectionWatchProxy *)self nanoDevice];
+  v7 = [v5 isEqual:nanoDevice];
 
   if (v7)
   {
-    v8 = [(DADeviceConnectionIDSProxy *)self state];
-    [v8 removeErrorCode:7];
+    state = [(DADeviceConnectionIDSProxy *)self state];
+    [state removeErrorCode:7];
   }
 }
 
-- (void)deviceDidBecomeInactive:(id)a3
+- (void)deviceDidBecomeInactive:(id)inactive
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:NRPairedDeviceRegistryDevice];
-  v6 = [(DADeviceConnectionWatchProxy *)self nanoDevice];
-  v7 = [v5 isEqual:v6];
+  userInfo = [inactive userInfo];
+  v5 = [userInfo objectForKeyedSubscript:NRPairedDeviceRegistryDevice];
+  nanoDevice = [(DADeviceConnectionWatchProxy *)self nanoDevice];
+  v7 = [v5 isEqual:nanoDevice];
 
   if (v7)
   {
-    v11 = [(DADeviceConnectionIDSProxy *)self state];
-    if ([v11 phase])
+    state = [(DADeviceConnectionIDSProxy *)self state];
+    if ([state phase])
     {
-      v8 = [(DADeviceConnectionIDSProxy *)self state];
-      v9 = [v8 phase];
+      state2 = [(DADeviceConnectionIDSProxy *)self state];
+      phase = [state2 phase];
 
-      if (v9 == 1)
+      if (phase == 1)
       {
         return;
       }
 
-      v10 = [(DADeviceConnectionIDSProxy *)self state];
-      [v10 setPhase:1];
+      state3 = [(DADeviceConnectionIDSProxy *)self state];
+      [state3 setPhase:1];
 
-      v11 = [(DADeviceConnectionIDSProxy *)self state];
-      [v11 addErrorCode:7 userInfo:0];
+      state = [(DADeviceConnectionIDSProxy *)self state];
+      [state addErrorCode:7 userInfo:0];
     }
   }
 }

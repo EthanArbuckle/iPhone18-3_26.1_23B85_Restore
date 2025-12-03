@@ -1,46 +1,46 @@
 @interface DashboardSplitViewController
-- (int64_t)splitViewController:(id)a3 displayModeForExpandingToProposedDisplayMode:(int64_t)a4;
-- (int64_t)splitViewController:(id)a3 topColumnForCollapsingToProposedTopColumn:(int64_t)a4;
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4;
+- (int64_t)splitViewController:(id)controller displayModeForExpandingToProposedDisplayMode:(int64_t)mode;
+- (int64_t)splitViewController:(id)controller topColumnForCollapsingToProposedTopColumn:(int64_t)column;
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DashboardSplitViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DashboardSplitViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  DashboardSplitViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  DashboardSplitViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = self;
-  DashboardSplitViewController.splitViewController(_:willChangeTo:)(&v7->super.super, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  DashboardSplitViewController.splitViewController(_:willChangeTo:)(&selfCopy->super.super, mode);
 }
 
-- (int64_t)splitViewController:(id)a3 topColumnForCollapsingToProposedTopColumn:(int64_t)a4
+- (int64_t)splitViewController:(id)controller topColumnForCollapsingToProposedTopColumn:(int64_t)column
 {
-  v6 = a3;
-  v7 = self;
-  v8 = DashboardSplitViewController.splitViewController(_:topColumnForCollapsingToProposedTopColumn:)(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v8 = DashboardSplitViewController.splitViewController(_:topColumnForCollapsingToProposedTopColumn:)(controllerCopy, column);
 
   return v8;
 }
 
-- (int64_t)splitViewController:(id)a3 displayModeForExpandingToProposedDisplayMode:(int64_t)a4
+- (int64_t)splitViewController:(id)controller displayModeForExpandingToProposedDisplayMode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = self;
-  v8 = DashboardSplitViewController.splitViewController(_:displayModeForExpandingToProposedDisplayMode:)(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v8 = DashboardSplitViewController.splitViewController(_:displayModeForExpandingToProposedDisplayMode:)(controllerCopy, mode);
 
   return v8;
 }

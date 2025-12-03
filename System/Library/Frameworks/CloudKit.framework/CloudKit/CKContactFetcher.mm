@@ -1,24 +1,24 @@
 @interface CKContactFetcher
-+ (id)contactForUserIdentity:(id)a3 contactStore:(id)a4;
++ (id)contactForUserIdentity:(id)identity contactStore:(id)store;
 @end
 
 @implementation CKContactFetcher
 
-+ (id)contactForUserIdentity:(id)a3 contactStore:(id)a4
++ (id)contactForUserIdentity:(id)identity contactStore:(id)store
 {
   v218 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v184 = a4;
-  v9 = sub_1886A64AC(v184, v7, v8);
-  if (!v6 || !v9)
+  identityCopy = identity;
+  storeCopy = store;
+  v9 = sub_1886A64AC(storeCopy, v7, v8);
+  if (!identityCopy || !v9)
   {
-    v65 = sub_1886A658C(v6);
+    v65 = sub_1886A658C(identityCopy);
     goto LABEL_106;
   }
 
-  if (v184)
+  if (storeCopy)
   {
-    v12 = v184;
+    v12 = storeCopy;
     v15 = v12;
 LABEL_5:
     v16 = sub_1886A6B04(v12, v13, v14);
@@ -75,7 +75,7 @@ LABEL_5:
         _os_log_error_impl(&dword_1883EA000, v75, OS_LOG_TYPE_ERROR, "Timed out waiting for store access authorization.", buf, 2u);
       }
 
-      v65 = sub_1886A658C(v6);
+      v65 = sub_1886A658C(identityCopy);
       v19 = 0;
     }
 
@@ -132,10 +132,10 @@ LABEL_6:
         _Block_object_dispose(&v200, 8);
         if (!v20)
         {
-          v6 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v23, v24);
+          identityCopy = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v23, v24);
           v165 = objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], v164, "NSString *getCNContactGivenNameKey(void)");
           v166 = dlerror();
-          objc_msgSend_handleFailureInFunction_file_lineNumber_description_(v6, v167, v165, @"CKContactFetcher.m", 25, @"%s", v166);
+          objc_msgSend_handleFailureInFunction_file_lineNumber_description_(identityCopy, v167, v165, @"CKContactFetcher.m", 25, @"%s", v166);
 
           goto LABEL_114;
         }
@@ -165,10 +165,10 @@ LABEL_6:
         _Block_object_dispose(&v200, 8);
         if (!v28)
         {
-          v6 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v31, v32);
+          identityCopy = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v31, v32);
           v169 = objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], v168, "NSString *getCNContactFamilyNameKey(void)");
           v170 = dlerror();
-          objc_msgSend_handleFailureInFunction_file_lineNumber_description_(v6, v171, v169, @"CKContactFetcher.m", 26, @"%s", v170);
+          objc_msgSend_handleFailureInFunction_file_lineNumber_description_(identityCopy, v171, v169, @"CKContactFetcher.m", 26, @"%s", v170);
 
           goto LABEL_114;
         }
@@ -181,7 +181,7 @@ LABEL_6:
         v4 = 0x1E695D000uLL;
         v181 = objc_msgSend_array(MEMORY[0x1E695DF70], v36, v37);
         v182 = objc_msgSend_array(MEMORY[0x1E695DF70], v38, v39);
-        v183 = objc_msgSend_lookupInfo(v6, v40, v41);
+        v183 = objc_msgSend_lookupInfo(identityCopy, v40, v41);
         v44 = objc_msgSend_emailAddress(v183, v42, v43);
         v47 = objc_msgSend_length(v44, v45, v46) == 0;
 
@@ -227,10 +227,10 @@ LABEL_6:
         _Block_object_dispose(&v200, 8);
         if (!v60)
         {
-          v6 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v63, v64);
+          identityCopy = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v63, v64);
           v173 = objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], v172, "NSString *getCNContactEmailAddressesKey(void)");
           v174 = dlerror();
-          objc_msgSend_handleFailureInFunction_file_lineNumber_description_(v6, v175, v173, @"CKContactFetcher.m", 23, @"%s", v174);
+          objc_msgSend_handleFailureInFunction_file_lineNumber_description_(identityCopy, v175, v173, @"CKContactFetcher.m", 23, @"%s", v174);
 
           goto LABEL_114;
         }
@@ -332,10 +332,10 @@ LABEL_70:
             goto LABEL_69;
           }
 
-          v6 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v107, v108);
+          identityCopy = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v107, v108);
           v177 = objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], v176, "NSString *getCNContactPhoneNumbersKey(void)");
           v178 = dlerror();
-          objc_msgSend_handleFailureInFunction_file_lineNumber_description_(v6, v179, v177, @"CKContactFetcher.m", 24, @"%s", v178);
+          objc_msgSend_handleFailureInFunction_file_lineNumber_description_(identityCopy, v179, v177, @"CKContactFetcher.m", 24, @"%s", v178);
 
 LABEL_114:
           __break(1u);
@@ -436,7 +436,7 @@ LABEL_50:
                     _os_log_error_impl(&dword_1883EA000, v153, OS_LOG_TYPE_ERROR, "Failed to fetch contacts from contact store: %@", &v213, 0xCu);
                   }
 
-                  v65 = sub_1886A658C(v6);
+                  v65 = sub_1886A658C(identityCopy);
 
                   goto LABEL_101;
                 }
@@ -475,7 +475,7 @@ LABEL_50:
 
           else
           {
-            v65 = sub_1886A658C(v6);
+            v65 = sub_1886A658C(identityCopy);
             v152 = 0;
           }
 
@@ -484,7 +484,7 @@ LABEL_101:
 
         else
         {
-          v65 = sub_1886A658C(v6);
+          v65 = sub_1886A658C(identityCopy);
         }
       }
 
@@ -502,7 +502,7 @@ LABEL_101:
           _os_log_error_impl(&dword_1883EA000, v69, OS_LOG_TYPE_ERROR, "Contacts access denied or restricted. Returning synthetic contact.", &v213, 2u);
         }
 
-        v65 = sub_1886A658C(v6);
+        v65 = sub_1886A658C(identityCopy);
       }
 
       v68 = v15;
@@ -534,7 +534,7 @@ LABEL_101:
     _os_log_error_impl(&dword_1883EA000, v67, OS_LOG_TYPE_ERROR, "CNContactStore not available. Returning synthetic contact.", &v213, 2u);
   }
 
-  v65 = sub_1886A658C(v6);
+  v65 = sub_1886A658C(identityCopy);
   v68 = 0;
 LABEL_105:
 

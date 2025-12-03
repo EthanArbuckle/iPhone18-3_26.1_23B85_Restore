@@ -23,13 +23,13 @@
 - (id)_rt_toString
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 street];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
-  v5 = [a1 city];
-  v6 = [a1 state];
-  v7 = [a1 postalCode];
-  v8 = [a1 country];
-  v9 = [v2 stringWithFormat:@"street, %@, city, %@, state, %@, postalCode, %@, country, %@", v4, v5, v6, v7, v8];
+  street = [self street];
+  v4 = [street stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
+  city = [self city];
+  state = [self state];
+  postalCode = [self postalCode];
+  country = [self country];
+  v9 = [v2 stringWithFormat:@"street, %@, city, %@, state, %@, postalCode, %@, country, %@", v4, city, state, postalCode, country];
 
   return v9;
 }

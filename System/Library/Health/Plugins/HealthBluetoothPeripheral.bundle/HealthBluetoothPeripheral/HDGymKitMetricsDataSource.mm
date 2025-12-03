@@ -1,21 +1,21 @@
 @interface HDGymKitMetricsDataSource
 + (id)requiredEntitlements;
-- (HDGymKitMetricsDataSource)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDGymKitMetricsDataSource)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_startObservingMetrics;
 - (void)dealloc;
-- (void)metricsCollector:(id)a3 didCollectMetrics:(id)a4;
+- (void)metricsCollector:(id)collector didCollectMetrics:(id)metrics;
 - (void)remote_startTaskServerIfNeeded;
-- (void)workoutDataDestination:(id)a3 requestsDataFrom:(id)a4 to:(id)a5;
-- (void)workoutDataDestination:(id)a3 requestsFinalDataFrom:(id)a4 to:(id)a5 completion:(id)a6;
+- (void)workoutDataDestination:(id)destination requestsDataFrom:(id)from to:(id)to;
+- (void)workoutDataDestination:(id)destination requestsFinalDataFrom:(id)from to:(id)to completion:(id)completion;
 @end
 
 @implementation HDGymKitMetricsDataSource
 
-- (HDGymKitMetricsDataSource)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDGymKitMetricsDataSource)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
   v15.receiver = self;
   v15.super_class = HDGymKitMetricsDataSource;
-  v6 = [(HDGymKitMetricsDataSource *)&v15 initWithUUID:a3 configuration:a4 client:a5 delegate:a6];
+  v6 = [(HDGymKitMetricsDataSource *)&v15 initWithUUID:d configuration:configuration client:client delegate:delegate];
   if (v6)
   {
     _HKInitializeLogging();
@@ -39,9 +39,9 @@
 - (void)dealloc
 {
   v3 = +[NSNotificationCenter defaultCenter];
-  v4 = [(HDGymKitMetricsDataSource *)self profile];
-  v5 = [v4 fitnessMachineManager];
-  [v3 removeObserver:self name:@"HDFitnessMachineMetricsCollectorDidChangeNotification" object:v5];
+  profile = [(HDGymKitMetricsDataSource *)self profile];
+  fitnessMachineManager = [profile fitnessMachineManager];
+  [v3 removeObserver:self name:@"HDFitnessMachineMetricsCollectorDidChangeNotification" object:fitnessMachineManager];
 
   sub_32E68(self);
   v6.receiver = self;
@@ -57,43 +57,43 @@
   return v2;
 }
 
-- (void)workoutDataDestination:(id)a3 requestsDataFrom:(id)a4 to:(id)a5
+- (void)workoutDataDestination:(id)destination requestsDataFrom:(id)from to:(id)to
 {
   lock = self->_lock;
-  v7 = a3;
+  destinationCopy = destination;
   [(NSLock *)lock lock];
   v8 = [(NSMutableDictionary *)self->_accumulatedMetadata copy];
   [(NSLock *)self->_lock unlock];
-  [v7 addMetadata:v8 dataSource:self];
+  [destinationCopy addMetadata:v8 dataSource:self];
 }
 
-- (void)workoutDataDestination:(id)a3 requestsFinalDataFrom:(id)a4 to:(id)a5 completion:(id)a6
+- (void)workoutDataDestination:(id)destination requestsFinalDataFrom:(id)from to:(id)to completion:(id)completion
 {
-  v10 = a6;
-  [(HDGymKitMetricsDataSource *)self workoutDataDestination:a3 requestsDataFrom:a4 to:a5];
-  v10[2](v10, 1, 0);
+  completionCopy = completion;
+  [(HDGymKitMetricsDataSource *)self workoutDataDestination:destination requestsDataFrom:from to:to];
+  completionCopy[2](completionCopy, 1, 0);
 }
 
 - (void)remote_startTaskServerIfNeeded
 {
   [(HDGymKitMetricsDataSource *)self _startObservingMetrics];
   v5 = +[NSNotificationCenter defaultCenter];
-  v3 = [(HDGymKitMetricsDataSource *)self profile];
-  v4 = [v3 fitnessMachineManager];
-  [v5 addObserver:self selector:"_startObservingMetrics" name:@"HDFitnessMachineMetricsCollectorDidChangeNotification" object:v4];
+  profile = [(HDGymKitMetricsDataSource *)self profile];
+  fitnessMachineManager = [profile fitnessMachineManager];
+  [v5 addObserver:self selector:"_startObservingMetrics" name:@"HDFitnessMachineMetricsCollectorDidChangeNotification" object:fitnessMachineManager];
 }
 
-- (void)metricsCollector:(id)a3 didCollectMetrics:(id)a4
+- (void)metricsCollector:(id)collector didCollectMetrics:(id)metrics
 {
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_187D0;
   v17[3] = &unk_5D2D8;
   v17[4] = self;
-  v5 = a4;
+  metricsCopy = metrics;
   v6 = [(HDGymKitMetricsDataSource *)self remoteObjectProxyWithErrorHandler:v17];
-  [v6 clientRemote_didReceiveMetrics:v5];
-  v7 = sub_32EEC(self, v5);
+  [v6 clientRemote_didReceiveMetrics:metricsCopy];
+  v7 = sub_32EEC(self, metricsCopy);
 
   lock = self->_lock;
   v15[0] = _NSConcreteStackBlock;
@@ -110,18 +110,18 @@
   v12[2] = sub_1884C;
   v12[3] = &unk_5D168;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   v11 = v9;
   [(HKDataFlowLink *)workoutDataFlowLink sendToDestinationProcessors:v12];
 }
 
 - (void)_startObservingMetrics
 {
-  v3 = [(HDGymKitMetricsDataSource *)self profile];
-  v4 = [v3 fitnessMachineManager];
-  v5 = [v4 metricsCollector];
+  profile = [(HDGymKitMetricsDataSource *)self profile];
+  fitnessMachineManager = [profile fitnessMachineManager];
+  metricsCollector = [fitnessMachineManager metricsCollector];
 
-  [v5 addObserver:self];
+  [metricsCollector addObserver:self];
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface PXStoryMemoryFeedViewLayoutSpecManager
 - (PXStoryMemoryFeedViewLayoutSpecManager)init;
-- (PXStoryMemoryFeedViewLayoutSpecManager)initWithLayoutKind:(int64_t)a3 extendedTraitCollection:(id)a4;
+- (PXStoryMemoryFeedViewLayoutSpecManager)initWithLayoutKind:(int64_t)kind extendedTraitCollection:(id)collection;
 - (void)_invalidateSpec;
 - (void)_updateSpec;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXStoryMemoryFeedViewLayoutSpecManager
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (MemoriesSpecManagerObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (MemoriesSpecManagerObservationContext != context)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedViewLayoutSpecManager.m" lineNumber:92 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedViewLayoutSpecManager.m" lineNumber:92 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
-  if (v6)
+  v10 = observableCopy;
+  if (changeCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -35,27 +35,27 @@
 
 - (void)_updateSpec
 {
-  v3 = [(PXStoryMemoryFeedViewLayoutSpecManager *)self memoriesSpecManager];
-  v13 = [v3 spec];
+  memoriesSpecManager = [(PXStoryMemoryFeedViewLayoutSpecManager *)self memoriesSpecManager];
+  spec = [memoriesSpecManager spec];
 
-  v4 = [[PXStoryMemoryFeedViewLayoutSpec alloc] initWithMemoriesSpec:v13];
+  v4 = [[PXStoryMemoryFeedViewLayoutSpec alloc] initWithMemoriesSpec:spec];
   [(PXFeedViewLayoutSpecManager *)self setSpec:v4];
 
-  v5 = [v13 extendedTraitCollection];
-  [v5 layoutReferenceSize];
+  extendedTraitCollection = [spec extendedTraitCollection];
+  [extendedTraitCollection layoutReferenceSize];
   v7 = v6;
-  v8 = [v13 extendedTraitCollection];
-  v9 = [v8 rootExtendedTraitCollection];
-  [v9 layoutReferenceSize];
+  extendedTraitCollection2 = [spec extendedTraitCollection];
+  rootExtendedTraitCollection = [extendedTraitCollection2 rootExtendedTraitCollection];
+  [rootExtendedTraitCollection layoutReferenceSize];
   v11 = v7 == v10;
-  v12 = [(PXFeedViewLayoutSpecManager *)self spec];
-  [v12 setIsFullScreen:v11];
+  spec2 = [(PXFeedViewLayoutSpecManager *)self spec];
+  [spec2 setIsFullScreen:v11];
 }
 
 - (void)_invalidateSpec
 {
-  v2 = [(PXStoryMemoryFeedViewLayoutSpecManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSpec];
+  updater = [(PXStoryMemoryFeedViewLayoutSpecManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSpec];
 }
 
 - (void)didPerformChanges
@@ -63,17 +63,17 @@
   v4.receiver = self;
   v4.super_class = PXStoryMemoryFeedViewLayoutSpecManager;
   [(PXStoryMemoryFeedViewLayoutSpecManager *)&v4 didPerformChanges];
-  v3 = [(PXStoryMemoryFeedViewLayoutSpecManager *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXStoryMemoryFeedViewLayoutSpecManager *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (PXStoryMemoryFeedViewLayoutSpecManager)initWithLayoutKind:(int64_t)a3 extendedTraitCollection:(id)a4
+- (PXStoryMemoryFeedViewLayoutSpecManager)initWithLayoutKind:(int64_t)kind extendedTraitCollection:(id)collection
 {
-  v7 = a4;
-  v8 = v7;
-  if (a3 == 1)
+  collectionCopy = collection;
+  v8 = collectionCopy;
+  if (kind == 1)
   {
-    if (v7)
+    if (collectionCopy)
     {
       goto LABEL_3;
     }
@@ -81,8 +81,8 @@
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedViewLayoutSpecManager.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"layoutKind == PXStoryMemoryFeedLayoutKindVerticalFeed"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedViewLayoutSpecManager.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"layoutKind == PXStoryMemoryFeedLayoutKindVerticalFeed"}];
 
     if (v8)
     {
@@ -90,8 +90,8 @@
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedViewLayoutSpecManager.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"extendedTraitCollection != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedViewLayoutSpecManager.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"extendedTraitCollection != nil"}];
 
 LABEL_3:
   v20.receiver = self;
@@ -100,7 +100,7 @@ LABEL_3:
   v10 = v9;
   if (v9)
   {
-    v9->_layoutKind = a3;
+    v9->_layoutKind = kind;
     v11 = [[PXMemoriesSpecManager alloc] initWithExtendedTraitCollection:v8 options:0 style:0];
     memoriesSpecManager = v10->_memoriesSpecManager;
     v10->_memoriesSpecManager = v11;
@@ -124,8 +124,8 @@ LABEL_3:
 
 - (PXStoryMemoryFeedViewLayoutSpecManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedViewLayoutSpecManager.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXStoryMemoryFeedViewLayoutSpecManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedViewLayoutSpecManager.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXStoryMemoryFeedViewLayoutSpecManager init]"}];
 
   abort();
 }

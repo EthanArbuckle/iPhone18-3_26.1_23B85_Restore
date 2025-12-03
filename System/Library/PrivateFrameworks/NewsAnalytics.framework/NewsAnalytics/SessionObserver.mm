@@ -1,50 +1,50 @@
 @interface SessionObserver
 - (NSString)sceneSessionIdentifier;
 - (_TtC13NewsAnalytics15SessionObserver)init;
-- (void)bundleSubscriptionDidChange:(id)a3 previousBundleSubscription:(id)a4;
-- (void)bundleSubscriptionDidSubscribe:(void *)a3;
-- (void)configurationManagerScienceExperimentFieldsDidChange:(id)a3;
+- (void)bundleSubscriptionDidChange:(id)change previousBundleSubscription:(id)subscription;
+- (void)bundleSubscriptionDidSubscribe:(void *)subscribe;
+- (void)configurationManagerScienceExperimentFieldsDidChange:(id)change;
 - (void)contentSizeCategoryDidChange;
-- (void)familySharingStatusDidChange:(id)a3;
-- (void)networkReachabilityConnectivityDidChange:(id)a3;
-- (void)newsletterSubscriptionChangedFromSubscription:(int64_t)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)offerDidChange:(id)a3;
+- (void)familySharingStatusDidChange:(id)change;
+- (void)networkReachabilityConnectivityDidChange:(id)change;
+- (void)newsletterSubscriptionChangedFromSubscription:(int64_t)subscription;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)offerDidChange:(id)change;
 - (void)pushContentEnvironmentData;
 - (void)pushOrientationData;
 - (void)pushUserSubscriptionContextData;
-- (void)sessionDidStartWithSessionID:(id)a3 sourceApplication:(id)a4 url:(id)a5;
-- (void)sessionWillEndWithEndReason:(id)a3;
-- (void)setSceneSessionIdentifier:(id)a3;
-- (void)shortcutList:(id)a3 didAddShortcuts:(id)a4 changedShortcuts:(id)a5 removedShortcuts:(id)a6;
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8;
-- (void)userInfoDidChangeMarketingNotificationsEnabled:(void *)a1 fromCloud:;
+- (void)sessionDidStartWithSessionID:(id)d sourceApplication:(id)application url:(id)url;
+- (void)sessionWillEndWithEndReason:(id)reason;
+- (void)setSceneSessionIdentifier:(id)identifier;
+- (void)shortcutList:(id)list didAddShortcuts:(id)shortcuts changedShortcuts:(id)changedShortcuts removedShortcuts:(id)removedShortcuts;
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type;
+- (void)userInfoDidChangeMarketingNotificationsEnabled:(void *)enabled fromCloud:;
 @end
 
 @implementation SessionObserver
 
 - (void)pushOrientationData
 {
-  v2 = self;
+  selfCopy = self;
   sub_217A4CAE8();
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a3)
+  if (path)
   {
     v10 = sub_217D8954C();
     v12 = v11;
-    if (a4)
+    if (object)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     memset(v18, 0, sizeof(v18));
-    v16 = a5;
-    v17 = self;
-    if (a5)
+    changeCopy = change;
+    selfCopy = self;
+    if (change)
     {
       goto LABEL_4;
     }
@@ -56,18 +56,18 @@ LABEL_7:
 
   v10 = 0;
   v12 = 0;
-  if (!a4)
+  if (!object)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   swift_unknownObjectRetain();
-  v13 = a5;
-  v14 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
   sub_217D8996C();
   swift_unknownObjectRelease();
-  if (!a5)
+  if (!change)
   {
     goto LABEL_7;
   }
@@ -78,7 +78,7 @@ LABEL_4:
   v15 = sub_217D8948C();
 
 LABEL_8:
-  SessionObserver.observeValue(forKeyPath:of:change:context:)(v10, v12, v18, v15, a6);
+  SessionObserver.observeValue(forKeyPath:of:change:context:)(v10, v12, v18, v15, context);
 
   sub_217A576FC(v18);
 }
@@ -86,7 +86,7 @@ LABEL_8:
 - (void)contentSizeCategoryDidChange
 {
   *(swift_allocObject() + 16) = self;
-  v3 = self;
+  selfCopy = self;
   sub_217D88E4C();
 }
 
@@ -109,7 +109,7 @@ LABEL_8:
   return v4;
 }
 
-- (void)sessionDidStartWithSessionID:(id)a3 sourceApplication:(id)a4 url:(id)a5
+- (void)sessionDidStartWithSessionID:(id)d sourceApplication:(id)application url:(id)url
 {
   sub_217A4BFDC(0, &qword_2811C8CA0, MEMORY[0x277CC9260], MEMORY[0x277D83D88]);
   v9 = *(*(v8 - 8) + 64);
@@ -117,10 +117,10 @@ LABEL_8:
   v11 = &v20 - v10;
   v12 = sub_217D8954C();
   v14 = v13;
-  if (!a4)
+  if (!application)
   {
     v15 = 0;
-    if (a5)
+    if (url)
     {
       goto LABEL_3;
     }
@@ -132,8 +132,8 @@ LABEL_5:
   }
 
   v15 = sub_217D8954C();
-  a4 = v16;
-  if (!a5)
+  application = v16;
+  if (!url)
   {
     goto LABEL_5;
   }
@@ -143,45 +143,45 @@ LABEL_3:
   v17 = sub_217D87BAC();
   (*(*(v17 - 8) + 56))(v11, 0, 1, v17);
 LABEL_6:
-  v19 = self;
-  SessionObserver.sessionDidStart(withSessionID:sourceApplication:url:)(v12, v14, v15, a4, v11);
+  selfCopy = self;
+  SessionObserver.sessionDidStart(withSessionID:sourceApplication:url:)(v12, v14, v15, application, v11);
 
   sub_217A61CE8(v11, &qword_2811C8CA0, MEMORY[0x277CC9260]);
 }
 
-- (void)bundleSubscriptionDidSubscribe:(void *)a3
+- (void)bundleSubscriptionDidSubscribe:(void *)subscribe
 {
-  v4 = a3;
-  v5 = a1;
-  _s13NewsAnalytics15SessionObserverC27bundleSubscriptionDidExpireyySo08FCBundleF0CF_0(v4);
+  subscribeCopy = subscribe;
+  selfCopy = self;
+  _s13NewsAnalytics15SessionObserverC27bundleSubscriptionDidExpireyySo08FCBundleF0CF_0(subscribeCopy);
 }
 
-- (void)userInfoDidChangeMarketingNotificationsEnabled:(void *)a1 fromCloud:
+- (void)userInfoDidChangeMarketingNotificationsEnabled:(void *)enabled fromCloud:
 {
-  v1 = a1;
+  enabledCopy = enabled;
   SessionObserver.pushNotificationSettingsData()();
 }
 
-- (void)bundleSubscriptionDidChange:(id)a3 previousBundleSubscription:(id)a4
+- (void)bundleSubscriptionDidChange:(id)change previousBundleSubscription:(id)subscription
 {
-  v5 = a3;
-  v6 = self;
-  _s13NewsAnalytics15SessionObserverC27bundleSubscriptionDidExpireyySo08FCBundleF0CF_0(v5);
+  changeCopy = change;
+  selfCopy = self;
+  _s13NewsAnalytics15SessionObserverC27bundleSubscriptionDidExpireyySo08FCBundleF0CF_0(changeCopy);
 }
 
-- (void)configurationManagerScienceExperimentFieldsDidChange:(id)a3
+- (void)configurationManagerScienceExperimentFieldsDidChange:(id)change
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = [a3 configuration];
-  if (v6)
+  selfCopy = self;
+  configuration = [change configuration];
+  if (configuration)
   {
-    v7 = v6;
-    v8 = *(v5 + OBJC_IVAR____TtC13NewsAnalytics15SessionObserver_sessionManager);
+    v7 = configuration;
+    v8 = *(selfCopy + OBJC_IVAR____TtC13NewsAnalytics15SessionObserver_sessionManager);
     v9 = swift_allocObject();
-    *(v9 + 16) = v5;
+    *(v9 + 16) = selfCopy;
     *(v9 + 24) = v7;
-    v10 = v5;
+    v10 = selfCopy;
     swift_unknownObjectRetain();
     sub_217D8833C();
     swift_unknownObjectRelease();
@@ -197,11 +197,11 @@ LABEL_6:
 
 - (void)pushContentEnvironmentData
 {
-  v2 = self;
+  selfCopy = self;
   sub_217A4E670();
 }
 
-- (void)familySharingStatusDidChange:(id)a3
+- (void)familySharingStatusDidChange:(id)change
 {
   v4 = sub_217D87A0C();
   v5 = *(v4 - 8);
@@ -209,15 +209,15 @@ LABEL_6:
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_217D879EC();
-  v9 = self;
+  selfCopy = self;
   sub_217B74874();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)setSceneSessionIdentifier:(id)a3
+- (void)setSceneSessionIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_217D8954C();
     v6 = v5;
@@ -243,19 +243,19 @@ LABEL_6:
   return result;
 }
 
-- (void)sessionWillEndWithEndReason:(id)a3
+- (void)sessionWillEndWithEndReason:(id)reason
 {
-  v4 = a3;
-  v5 = self;
-  SessionObserver.sessionWillEnd(withEndReason:)(v4);
+  reasonCopy = reason;
+  selfCopy = self;
+  SessionObserver.sessionWillEnd(withEndReason:)(reasonCopy);
 }
 
-- (void)networkReachabilityConnectivityDidChange:(id)a3
+- (void)networkReachabilityConnectivityDidChange:(id)change
 {
   v4 = *(self + OBJC_IVAR____TtC13NewsAnalytics15SessionObserver_tracker);
-  *(swift_allocObject() + 16) = a3;
+  *(swift_allocObject() + 16) = change;
   swift_unknownObjectRetain_n();
-  v5 = self;
+  selfCopy = self;
   sub_217D8894C();
 
   swift_unknownObjectRelease();
@@ -263,17 +263,17 @@ LABEL_6:
 
 - (void)pushUserSubscriptionContextData
 {
-  v2 = self;
+  selfCopy = self;
   sub_217A4EEA4();
 }
 
-- (void)newsletterSubscriptionChangedFromSubscription:(int64_t)a3
+- (void)newsletterSubscriptionChangedFromSubscription:(int64_t)subscription
 {
-  v3 = self;
+  selfCopy = self;
   SessionObserver.pushNotificationSettingsData()();
 }
 
-- (void)offerDidChange:(id)a3
+- (void)offerDidChange:(id)change
 {
   v4 = sub_217D87A0C();
   v5 = *(v4 - 8);
@@ -281,24 +281,24 @@ LABEL_6:
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_217D879EC();
-  v9 = self;
+  selfCopy = self;
   sub_217D0E6CC();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type
 {
-  if (a3)
+  if (controller)
   {
     v9 = *(self + OBJC_IVAR____TtC13NewsAnalytics15SessionObserver_cloudContext);
-    v12 = self;
-    v10 = a3;
-    v11 = [v9 shortcutList];
-    sub_217A54D60(v10, v11);
+    selfCopy = self;
+    controllerCopy = controller;
+    shortcutList = [v9 shortcutList];
+    sub_217A54D60(controllerCopy, shortcutList);
 
-    sub_217A4DFD8(v10);
-    sub_217A4F918(v10);
+    sub_217A4DFD8(controllerCopy);
+    sub_217A4F918(controllerCopy);
     SessionObserver.pushNotificationSettingsData()();
   }
 
@@ -308,16 +308,16 @@ LABEL_6:
   }
 }
 
-- (void)shortcutList:(id)a3 didAddShortcuts:(id)a4 changedShortcuts:(id)a5 removedShortcuts:(id)a6
+- (void)shortcutList:(id)list didAddShortcuts:(id)shortcuts changedShortcuts:(id)changedShortcuts removedShortcuts:(id)removedShortcuts
 {
   v7 = *(self + OBJC_IVAR____TtC13NewsAnalytics15SessionObserver_cloudContext);
-  v8 = a3;
-  v11 = self;
-  v9 = [v7 subscriptionController];
-  if (v9)
+  listCopy = list;
+  selfCopy = self;
+  subscriptionController = [v7 subscriptionController];
+  if (subscriptionController)
   {
-    v10 = v9;
-    sub_217A54D60(v9, v8);
+    v10 = subscriptionController;
+    sub_217A54D60(subscriptionController, listCopy);
   }
 
   else

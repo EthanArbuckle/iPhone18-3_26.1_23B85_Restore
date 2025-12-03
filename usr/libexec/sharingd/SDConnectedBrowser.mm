@@ -1,19 +1,19 @@
 @interface SDConnectedBrowser
 + (id)sharedBrowser;
-- (BOOL)opticalDisk:(id)a3;
+- (BOOL)opticalDisk:(id)disk;
 - (NSArray)airDropNodes;
 - (SDConnectedBrowser)init;
-- (id)URLForRemounting:(id)a3;
+- (id)URLForRemounting:(id)remounting;
 - (id)connectedNodes;
 - (id)recentNodes;
-- (void)addAirDropPerson:(__SFNode *)a3;
-- (void)browseAfterDelay:(double)a3;
-- (void)combineRecentAndConnectedNodes:(BOOL)a3;
+- (void)addAirDropPerson:(__SFNode *)person;
+- (void)browseAfterDelay:(double)delay;
+- (void)combineRecentAndConnectedNodes:(BOOL)nodes;
 - (void)postNotification;
-- (void)removeAirDropPerson:(__SFNode *)a3;
-- (void)removeAirDropPersonInternal:(__SFNode *)a3;
-- (void)setODiskServers:(id)a3;
-- (void)setServers:(id)a3;
+- (void)removeAirDropPerson:(__SFNode *)person;
+- (void)removeAirDropPersonInternal:(__SFNode *)internal;
+- (void)setODiskServers:(id)servers;
+- (void)setServers:(id)servers;
 - (void)start;
 - (void)stop;
 @end
@@ -61,22 +61,22 @@
   return v3;
 }
 
-- (void)setServers:(id)a3
+- (void)setServers:(id)servers
 {
-  v5 = a3;
-  if (sub_100118058(self->_servers, v5))
+  serversCopy = servers;
+  if (sub_100118058(self->_servers, serversCopy))
   {
-    objc_storeStrong(&self->_servers, a3);
+    objc_storeStrong(&self->_servers, servers);
     self->_sendNotification = 1;
   }
 }
 
-- (void)setODiskServers:(id)a3
+- (void)setODiskServers:(id)servers
 {
-  v5 = a3;
-  if (sub_100118058(self->_odiskServers, v5))
+  serversCopy = servers;
+  if (sub_100118058(self->_odiskServers, serversCopy))
   {
-    objc_storeStrong(&self->_odiskServers, a3);
+    objc_storeStrong(&self->_odiskServers, servers);
     self->_sendNotification = 1;
   }
 }
@@ -91,10 +91,10 @@
   }
 }
 
-- (void)browseAfterDelay:(double)a3
+- (void)browseAfterDelay:(double)delay
 {
   timer = self->_timer;
-  v4 = sub_1001F0530(a3);
+  v4 = sub_1001F0530(delay);
 
   sub_1001F05F0(timer, v4);
 }
@@ -102,12 +102,12 @@
 - (id)recentNodes
 {
   v2 = objc_opt_new();
-  v3 = [v2 allValues];
+  allValues = [v2 allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (BOOL)opticalDisk:(id)a3
+- (BOOL)opticalDisk:(id)disk
 {
   cf = 0;
   if (_CFURLGetVolumePropertyFlags())
@@ -125,11 +125,11 @@
   return 0;
 }
 
-- (id)URLForRemounting:(id)a3
+- (id)URLForRemounting:(id)remounting
 {
   v9 = 0;
   v8 = 0;
-  v3 = [a3 getResourceValue:&v9 forKey:NSURLVolumeURLForRemountingKey error:&v8];
+  v3 = [remounting getResourceValue:&v9 forKey:NSURLVolumeURLForRemountingKey error:&v8];
   v4 = v9;
   v5 = v8;
   if ((v3 & 1) == 0)
@@ -170,7 +170,7 @@
     v38 = kSFNodeProtocolFile;
     v41 = *v49;
     v42 = v6;
-    v46 = self;
+    selfCopy = self;
     do
     {
       v10 = 0;
@@ -188,12 +188,12 @@
         v14 = v13;
         if ((v12 & 1) != 0 || v13)
         {
-          v15 = [v13 host];
-          v16 = [v14 scheme];
-          v17 = v16;
+          host = [v13 host];
+          scheme = [v14 scheme];
+          v17 = scheme;
           if (v12)
           {
-            v47 = v16;
+            v47 = scheme;
             v18 = variable initialization expression of HeadphoneProxFeatureClient.delegate();
             v17 = v47;
             if (v18)
@@ -206,9 +206,9 @@ LABEL_31:
             goto LABEL_32;
           }
 
-          if (v15)
+          if (host)
           {
-            v22 = v16 == 0;
+            v22 = scheme == 0;
           }
 
           else
@@ -221,15 +221,15 @@ LABEL_31:
             goto LABEL_31;
           }
 
-          v47 = v16;
-          v23 = [v16 isEqual:v38];
+          v47 = scheme;
+          v23 = [scheme isEqual:v38];
           v17 = v47;
           if (v23)
           {
             goto LABEL_31;
           }
 
-          v18 = [(SDStatusMonitor *)self->_monitor serverNameForHost:v15];
+          v18 = [(SDStatusMonitor *)self->_monitor serverNameForHost:host];
           if (v18)
           {
 LABEL_10:
@@ -243,16 +243,16 @@ LABEL_10:
             {
               if (![v47 isEqual:v37] || (sub_1001F23A8(v11), (v18 = objc_claimAutoreleasedReturnValue()) == 0))
               {
-                v18 = v15;
+                v18 = host;
               }
 
               goto LABEL_10;
             }
           }
 
-          if ([(__CFString *)v15 isEqual:v19])
+          if ([(__CFString *)host isEqual:v19])
           {
-            v20 = sub_1001F2B40(v15);
+            v20 = sub_1001F2B40(host);
             v21 = SFNodeCreate();
             CFRelease(v20);
           }
@@ -267,14 +267,14 @@ LABEL_10:
           v28 = v19;
           if ((v12 & 1) == 0)
           {
-            v29 = [v14 port];
-            v30 = [v29 intValue];
+            port = [v14 port];
+            intValue = [port intValue];
 
             SFNodeSetHostName();
-            v31 = sub_1001174F4(v47, 0, 0, v15, v30, 0, 0, 0);
+            v31 = sub_1001174F4(v47, 0, 0, host, intValue, 0, 0, 0);
             v27 = v39;
             v26 = v40;
-            v28 = v15;
+            v28 = host;
             if (v31)
             {
               v32 = v31;
@@ -282,12 +282,12 @@ LABEL_10:
               CFRelease(v32);
               v27 = v39;
               v26 = v40;
-              v28 = v15;
+              v28 = host;
             }
           }
 
           SFNodeAddKind();
-          [(SDConnectedBrowser *)v46 setNodeModel:v21 protocol:v47 url:v14];
+          [(SDConnectedBrowser *)selfCopy setNodeModel:v21 protocol:v47 url:v14];
           [v26 setValue:v21 forKey:v28];
           CFRelease(v21);
           v33 = [v27 objectForKeyedSubscript:v19];
@@ -300,7 +300,7 @@ LABEL_10:
           [v33 addObject:v11];
 
           v8 = v45;
-          self = v46;
+          self = selfCopy;
           v9 = v41;
           v6 = v42;
           v17 = v47;
@@ -322,26 +322,26 @@ LABEL_32:
   [(SDStatusMonitor *)self->_monitor setODiskMountPoints:v44];
   [(SDStatusMonitor *)self->_monitor setServerMountPoints:v39];
   [(SDConnectedBrowser *)self setODiskServers:v43];
-  v34 = [v40 allValues];
+  allValues = [v40 allValues];
 
-  return v34;
+  return allValues;
 }
 
-- (void)combineRecentAndConnectedNodes:(BOOL)a3
+- (void)combineRecentAndConnectedNodes:(BOOL)nodes
 {
-  v31 = a3;
-  v3 = self;
-  v33 = [(SDConnectedBrowser *)self recentNodes];
-  v4 = [(SDConnectedBrowser *)v3 connectedNodes];
+  nodesCopy = nodes;
+  selfCopy = self;
+  recentNodes = [(SDConnectedBrowser *)self recentNodes];
+  connectedNodes = [(SDConnectedBrowser *)selfCopy connectedNodes];
   v5 = objc_opt_new();
-  v30 = [v4 count];
+  v30 = [connectedNodes count];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v4;
+  obj = connectedNodes;
   v6 = [obj countByEnumeratingWithState:&v40 objects:v45 count:16];
-  v35 = v3;
+  v35 = selfCopy;
   if (v6)
   {
     v7 = v6;
@@ -357,7 +357,7 @@ LABEL_32:
 
         v10 = *(*(&v40 + 1) + 8 * i);
         v11 = SFNodeCopyRealName();
-        servers = v3->_servers;
+        servers = selfCopy->_servers;
         if (servers && ([(NSDictionary *)servers objectForKeyedSubscript:v11], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
         {
           v14 = SFNodeCopyURL();
@@ -376,7 +376,7 @@ LABEL_32:
             CFRelease(v14);
           }
 
-          v3 = v35;
+          selfCopy = v35;
         }
 
         else
@@ -397,23 +397,23 @@ LABEL_32:
     while (v7);
   }
 
-  if (v30 != v3->_connectedCount)
+  if (v30 != selfCopy->_connectedCount)
   {
-    v3->_connectedCount = v30;
-    v3->_sendNotification = 1;
+    selfCopy->_connectedCount = v30;
+    selfCopy->_sendNotification = 1;
   }
 
-  if (v31)
+  if (nodesCopy)
   {
-    [(SDConnectedBrowser *)v3 addToRecents:v5];
+    [(SDConnectedBrowser *)selfCopy addToRecents:v5];
   }
 
-  v32 = [v33 count];
+  v32 = [recentNodes count];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v18 = v33;
+  v18 = recentNodes;
   v19 = [v18 countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v19)
   {
@@ -483,7 +483,7 @@ LABEL_32:
   [(SDConnectedBrowser *)v35 setServers:v5];
 }
 
-- (void)addAirDropPerson:(__SFNode *)a3
+- (void)addAirDropPerson:(__SFNode *)person
 {
   airDropPeople = self->_airDropPeople;
   if (!airDropPeople)
@@ -492,8 +492,8 @@ LABEL_32:
     self->_airDropPeople = airDropPeople;
   }
 
-  CFBagAddValue(airDropPeople, a3);
-  if (CFBagGetCountOfValue(self->_airDropPeople, a3) == 1)
+  CFBagAddValue(airDropPeople, person);
+  if (CFBagGetCountOfValue(self->_airDropPeople, person) == 1)
   {
     SFNodeAddKind();
     block[0] = _NSConcreteStackBlock;
@@ -511,22 +511,22 @@ LABEL_32:
   if (v2)
   {
     v3 = v2;
-    v4 = [(__CFSet *)v2 allObjects];
+    allObjects = [(__CFSet *)v2 allObjects];
     CFRelease(v3);
   }
 
   else
   {
-    v4 = 0;
+    allObjects = 0;
   }
 
-  return v4;
+  return allObjects;
 }
 
-- (void)removeAirDropPersonInternal:(__SFNode *)a3
+- (void)removeAirDropPersonInternal:(__SFNode *)internal
 {
-  CFBagRemoveValue(self->_airDropPeople, a3);
-  if (!CFBagGetCountOfValue(self->_airDropPeople, a3))
+  CFBagRemoveValue(self->_airDropPeople, internal);
+  if (!CFBagGetCountOfValue(self->_airDropPeople, internal))
   {
     SFNodeRemoveKind();
 
@@ -534,12 +534,12 @@ LABEL_32:
   }
 }
 
-- (void)removeAirDropPerson:(__SFNode *)a3
+- (void)removeAirDropPerson:(__SFNode *)person
 {
-  CFRetain(a3);
-  v5 = [(SDStatusMonitor *)self->_monitor wirelessEnabled];
+  CFRetain(person);
+  wirelessEnabled = [(SDStatusMonitor *)self->_monitor wirelessEnabled];
   v6 = 0.0;
-  if (v5)
+  if (wirelessEnabled)
   {
     v6 = 2.0;
   }
@@ -550,7 +550,7 @@ LABEL_32:
   v8[2] = sub_1002125E8;
   v8[3] = &unk_1008CFD30;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = person;
   dispatch_after(v7, &_dispatch_main_q, v8);
 }
 

@@ -1,33 +1,33 @@
 @interface ODDSiriSchemaODDmacOSAssistantProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDmacOSAssistantProperties)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDmacOSAssistantProperties)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDmacOSAssistantProperties)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDmacOSAssistantProperties)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDmacOSAssistantProperties
 
-- (ODDSiriSchemaODDmacOSAssistantProperties)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDmacOSAssistantProperties)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = ODDSiriSchemaODDmacOSAssistantProperties;
   v5 = [(ODDSiriSchemaODDmacOSAssistantProperties *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isExternalMicrophoneHSEnabled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isExternalMicrophoneHSEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDmacOSAssistantProperties setIsExternalMicrophoneHSEnabled:](v5, "setIsExternalMicrophoneHSEnabled:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"headGestures"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"headGestures"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDmacOSAssistantProperties)initWithJSON:(id)a3
+- (ODDSiriSchemaODDmacOSAssistantProperties)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDmacOSAssistantProperties *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDmacOSAssistantProperties *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDmacOSAssistantProperties *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,32 +77,32 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_headGestures)
   {
-    v4 = [(ODDSiriSchemaODDmacOSAssistantProperties *)self headGestures];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    headGestures = [(ODDSiriSchemaODDmacOSAssistantProperties *)self headGestures];
+    dictionaryRepresentation = [headGestures dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"headGestures"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"headGestures"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"headGestures"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"headGestures"];
     }
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDmacOSAssistantProperties isExternalMicrophoneHSEnabled](self, "isExternalMicrophoneHSEnabled")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isExternalMicrophoneHSEnabled"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isExternalMicrophoneHSEnabled"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -120,22 +120,22 @@
   return [(ODDSiriSchemaODDHeadGestureProperties *)self->_headGestures hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (isExternalMicrophoneHSEnabled = self->_isExternalMicrophoneHSEnabled, isExternalMicrophoneHSEnabled == [v4 isExternalMicrophoneHSEnabled]))
+      if ((*&self->_has & 1) == 0 || (isExternalMicrophoneHSEnabled = self->_isExternalMicrophoneHSEnabled, isExternalMicrophoneHSEnabled == [equalCopy isExternalMicrophoneHSEnabled]))
       {
-        v6 = [(ODDSiriSchemaODDmacOSAssistantProperties *)self headGestures];
-        v7 = [v4 headGestures];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        headGestures = [(ODDSiriSchemaODDmacOSAssistantProperties *)self headGestures];
+        headGestures2 = [equalCopy headGestures];
+        v8 = headGestures2;
+        if ((headGestures != 0) != (headGestures2 == 0))
         {
-          v9 = [(ODDSiriSchemaODDmacOSAssistantProperties *)self headGestures];
-          if (!v9)
+          headGestures3 = [(ODDSiriSchemaODDmacOSAssistantProperties *)self headGestures];
+          if (!headGestures3)
           {
 
 LABEL_13:
@@ -143,10 +143,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(ODDSiriSchemaODDmacOSAssistantProperties *)self headGestures];
-          v12 = [v4 headGestures];
-          v13 = [v11 isEqual:v12];
+          v10 = headGestures3;
+          headGestures4 = [(ODDSiriSchemaODDmacOSAssistantProperties *)self headGestures];
+          headGestures5 = [equalCopy headGestures];
+          v13 = [headGestures4 isEqual:headGestures5];
 
           if (v13)
           {
@@ -167,37 +167,37 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v4 = [(ODDSiriSchemaODDmacOSAssistantProperties *)self headGestures];
+  headGestures = [(ODDSiriSchemaODDmacOSAssistantProperties *)self headGestures];
 
-  v5 = v7;
-  if (v4)
+  v5 = toCopy;
+  if (headGestures)
   {
-    v6 = [(ODDSiriSchemaODDmacOSAssistantProperties *)self headGestures];
+    headGestures2 = [(ODDSiriSchemaODDmacOSAssistantProperties *)self headGestures];
     PBDataWriterWriteSubmessage();
 
-    v5 = v7;
+    v5 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODDSiriSchemaODDmacOSAssistantProperties;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODDSiriSchemaODDmacOSAssistantProperties *)self headGestures:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ODDSiriSchemaODDmacOSAssistantProperties *)self deleteHeadGestures];
   }

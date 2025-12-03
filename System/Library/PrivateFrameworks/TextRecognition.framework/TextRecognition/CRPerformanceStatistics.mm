@@ -1,24 +1,24 @@
 @interface CRPerformanceStatistics
 + (uint64_t)_canEnableRecentPeakReset;
-- (CRPerformanceStatistics)initWithDictionary:(id)a3;
-- (CRPerformanceStatistics)initWithName:(id)a3 measureRecentPeak:(BOOL)a4;
-- (CRPerformanceStatistics)initWithStatistics:(id)a3;
+- (CRPerformanceStatistics)initWithDictionary:(id)dictionary;
+- (CRPerformanceStatistics)initWithName:(id)name measureRecentPeak:(BOOL)peak;
+- (CRPerformanceStatistics)initWithStatistics:(id)statistics;
 - (id)_startMeasurement;
 - (id)description;
 - (id)dictionary;
-- (void)_addMetricWithKey:(void *)a3 name:(void *)a4 unit:(uint64_t)a5 denominator:(double)a6 pcMetricID:;
-- (void)_endMeasurement:(id)a3;
-- (void)_evaluateEndedSession:(double)a3 duration:;
-- (void)addStatistics:(id)a3;
-- (void)measureBlock:(id)a3;
+- (void)_addMetricWithKey:(void *)key name:(void *)name unit:(uint64_t)unit denominator:(double)denominator pcMetricID:;
+- (void)_endMeasurement:(id)measurement;
+- (void)_evaluateEndedSession:(double)session duration:;
+- (void)addStatistics:(id)statistics;
+- (void)measureBlock:(id)block;
 @end
 
 @implementation CRPerformanceStatistics
 
-- (CRPerformanceStatistics)initWithName:(id)a3 measureRecentPeak:(BOOL)a4
+- (CRPerformanceStatistics)initWithName:(id)name measureRecentPeak:(BOOL)peak
 {
-  v4 = a4;
-  v7 = a3;
+  peakCopy = peak;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = CRPerformanceStatistics;
   v8 = [(CRPerformanceStatistics *)&v12 init];
@@ -27,8 +27,8 @@
     v9 = objc_opt_new();
     [(CRPerformanceStatistics *)v8 setMetrics:v9];
 
-    objc_storeStrong(&v8->_name, a3);
-    if (v4)
+    objc_storeStrong(&v8->_name, name);
+    if (peakCopy)
     {
       canEnableRecentPeak = +[CRPerformanceStatistics _canEnableRecentPeakReset];
     }
@@ -56,60 +56,60 @@
 + (uint64_t)_canEnableRecentPeakReset
 {
   objc_opt_self();
-  v0 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v1 = [v0 BOOLForKey:@"com.apple.CoreRecognition.enable_recent_peak_reset"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v1 = [standardUserDefaults BOOLForKey:@"com.apple.CoreRecognition.enable_recent_peak_reset"];
 
   return v1;
 }
 
-- (void)_addMetricWithKey:(void *)a3 name:(void *)a4 unit:(uint64_t)a5 denominator:(double)a6 pcMetricID:
+- (void)_addMetricWithKey:(void *)key name:(void *)name unit:(uint64_t)unit denominator:(double)denominator pcMetricID:
 {
-  v18 = a3;
-  v11 = a4;
+  keyCopy = key;
+  nameCopy = name;
   v12 = MEMORY[0x1E695DF90];
   v13 = a2;
-  v14 = [a1 metrics];
-  v15 = [v12 dictionaryWithDictionary:v14];
+  metrics = [self metrics];
+  v15 = [v12 dictionaryWithDictionary:metrics];
 
-  if (a5)
+  if (unit)
   {
-    [CRPerformanceMetric pcMetricWithDisplayName:v18 pcMetricID:a5 unit:v11 denominator:v13 serializationKey:a6];
+    [CRPerformanceMetric pcMetricWithDisplayName:keyCopy pcMetricID:unit unit:nameCopy denominator:v13 serializationKey:denominator];
   }
 
   else
   {
-    [CRPerformanceMetric metricWithDisplayName:v18 unit:v11 denominator:v13 serializationKey:a6];
+    [CRPerformanceMetric metricWithDisplayName:keyCopy unit:nameCopy denominator:v13 serializationKey:denominator];
   }
   v16 = ;
   [v15 setObject:v16 forKeyedSubscript:v13];
 
   v17 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v15];
-  [a1 setMetrics:v17];
+  [self setMetrics:v17];
 }
 
-- (CRPerformanceStatistics)initWithStatistics:(id)a3
+- (CRPerformanceStatistics)initWithStatistics:(id)statistics
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 copy];
-  v7 = -[CRPerformanceStatistics initWithName:measureRecentPeak:](self, "initWithName:measureRecentPeak:", v6, [v4 measureRecentPeak]);
+  statisticsCopy = statistics;
+  name = [statisticsCopy name];
+  v6 = [name copy];
+  v7 = -[CRPerformanceStatistics initWithName:measureRecentPeak:](self, "initWithName:measureRecentPeak:", v6, [statisticsCopy measureRecentPeak]);
 
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x1E695DF20]);
-    v9 = [v4 metrics];
-    v10 = [v8 initWithDictionary:v9 copyItems:1];
+    metrics = [statisticsCopy metrics];
+    v10 = [v8 initWithDictionary:metrics copyItems:1];
     [(CRPerformanceStatistics *)v7 setMetrics:v10];
   }
 
   return v7;
 }
 
-- (CRPerformanceStatistics)initWithDictionary:(id)a3
+- (CRPerformanceStatistics)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"CRPerformanceStatisticsName"];
-  v6 = [v4 objectForKey:@"CRPerformanceMetricMeasureRecentPeak"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"CRPerformanceStatisticsName"];
+  v6 = [dictionaryCopy objectForKey:@"CRPerformanceMetricMeasureRecentPeak"];
   if ([v6 BOOLValue])
   {
     canEnableRecentPeak = +[CRPerformanceStatistics _canEnableRecentPeakReset];
@@ -123,7 +123,7 @@
   v8 = [(CRPerformanceStatistics *)self initWithName:v5 measureRecentPeak:canEnableRecentPeak];
   if (v8)
   {
-    v9 = [v4 objectForKeyedSubscript:@"CRPerformanceStatisticsMetrics"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"CRPerformanceStatisticsMetrics"];
     v10 = objc_opt_new();
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -155,19 +155,19 @@ void __46__CRPerformanceStatistics_initWithDictionary___block_invoke(uint64_t a1
   v15 = __Block_byref_object_copy__15;
   v16 = __Block_byref_object_dispose__15;
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CRPerformanceStatistics *)self name];
-  v5 = [(CRPerformanceStatistics *)self metrics];
-  v6 = [v5 allValues];
-  v7 = [v6 objectAtIndexedSubscript:0];
-  v17 = [v3 stringWithFormat:@"\n===========%@ (# Samples = %ld)===========\n", v4, objc_msgSend(v7, "numSamples")];
+  name = [(CRPerformanceStatistics *)self name];
+  metrics = [(CRPerformanceStatistics *)self metrics];
+  allValues = [metrics allValues];
+  v7 = [allValues objectAtIndexedSubscript:0];
+  v17 = [v3 stringWithFormat:@"\n===========%@ (# Samples = %ld)===========\n", name, objc_msgSend(v7, "numSamples")];
 
-  v8 = [(CRPerformanceStatistics *)self metrics];
+  metrics2 = [(CRPerformanceStatistics *)self metrics];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __38__CRPerformanceStatistics_description__block_invoke;
   v11[3] = &unk_1E7BC3540;
   v11[4] = &v12;
-  [v8 enumerateKeysAndObjectsUsingBlock:v11];
+  [metrics2 enumerateKeysAndObjectsUsingBlock:v11];
 
   v9 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -199,12 +199,12 @@ void __38__CRPerformanceStatistics_description__block_invoke(uint64_t a1, uint64
   }
 }
 
-- (void)measureBlock:(id)a3
+- (void)measureBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = pc_session_create();
-  v6 = [MEMORY[0x1E696AE30] processInfo];
-  [v6 processIdentifier];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  [processInfo processIdentifier];
   pc_session_set_procpid();
 
   if (self->_measureRecentPeak)
@@ -215,7 +215,7 @@ void __38__CRPerformanceStatistics_description__block_invoke(uint64_t a1, uint64
 
   v9 = objc_opt_new();
   pc_session_begin();
-  v4[2](v4);
+  blockCopy[2](blockCopy);
 
   pc_session_end();
   v7 = objc_opt_new();
@@ -225,42 +225,42 @@ void __38__CRPerformanceStatistics_description__block_invoke(uint64_t a1, uint64
   pc_session_destroy();
 }
 
-- (void)_evaluateEndedSession:(double)a3 duration:
+- (void)_evaluateEndedSession:(double)session duration:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = [v5 metrics];
-    v7 = [v6 objectForKeyedSubscript:@"CRPerformanceMetricExecutionTime"];
-    [v7 addSample:a3 * 1000.0];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    metrics = [selfCopy metrics];
+    v7 = [metrics objectForKeyedSubscript:@"CRPerformanceMetricExecutionTime"];
+    [v7 addSample:session * 1000.0];
 
-    v8 = [v5 metrics];
+    metrics2 = [selfCopy metrics];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __58__CRPerformanceStatistics__evaluateEndedSession_duration___block_invoke;
     v9[3] = &__block_descriptor_40_e46_v32__0__NSString_8__CRPerformanceMetric_16_B24l;
     v9[4] = a2;
-    [v8 enumerateKeysAndObjectsUsingBlock:v9];
+    [metrics2 enumerateKeysAndObjectsUsingBlock:v9];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)addStatistics:(id)a3
+- (void)addStatistics:(id)statistics
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 metrics];
+  statisticsCopy = statistics;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  metrics = [statisticsCopy metrics];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__CRPerformanceStatistics_addStatistics___block_invoke;
   v7[3] = &unk_1E7BC3568;
-  v7[4] = v5;
-  [v6 enumerateKeysAndObjectsUsingBlock:v7];
+  v7[4] = selfCopy;
+  [metrics enumerateKeysAndObjectsUsingBlock:v7];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __41__CRPerformanceStatistics_addStatistics___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -292,14 +292,14 @@ void __41__CRPerformanceStatistics_addStatistics___block_invoke(uint64_t a1, voi
   [v4 setObject:v6 forKey:@"CRPerformanceMetricMeasureRecentPeak"];
 
   v7 = objc_opt_new();
-  v8 = [(CRPerformanceStatistics *)self metrics];
+  metrics = [(CRPerformanceStatistics *)self metrics];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __37__CRPerformanceStatistics_dictionary__block_invoke;
   v12[3] = &unk_1E7BC3568;
   v13 = v7;
   v9 = v7;
-  [v8 enumerateKeysAndObjectsUsingBlock:v12];
+  [metrics enumerateKeysAndObjectsUsingBlock:v12];
 
   [v4 setObject:v9 forKeyedSubscript:@"CRPerformanceStatisticsMetrics"];
   v10 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v4];
@@ -329,8 +329,8 @@ void __58__CRPerformanceStatistics__evaluateEndedSession_duration___block_invoke
 - (id)_startMeasurement
 {
   v3 = pc_session_create();
-  v4 = [MEMORY[0x1E696AE30] processInfo];
-  [v4 processIdentifier];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  [processInfo processIdentifier];
   pc_session_set_procpid();
 
   if (self->_measureRecentPeak)
@@ -348,18 +348,18 @@ void __58__CRPerformanceStatistics__evaluateEndedSession_duration___block_invoke
   return v6;
 }
 
-- (void)_endMeasurement:(id)a3
+- (void)_endMeasurement:(id)measurement
 {
-  v4 = a3;
-  [v4 session];
+  measurementCopy = measurement;
+  [measurementCopy session];
   pc_session_end();
-  v5 = [v4 session];
+  session = [measurementCopy session];
   v6 = objc_opt_new();
-  v7 = [v4 start];
-  [v6 timeIntervalSinceDate:v7];
-  [(CRPerformanceStatistics *)self _evaluateEndedSession:v5 duration:v8];
+  start = [measurementCopy start];
+  [v6 timeIntervalSinceDate:start];
+  [(CRPerformanceStatistics *)self _evaluateEndedSession:session duration:v8];
 
-  [v4 session];
+  [measurementCopy session];
 
   pc_session_destroy();
 }

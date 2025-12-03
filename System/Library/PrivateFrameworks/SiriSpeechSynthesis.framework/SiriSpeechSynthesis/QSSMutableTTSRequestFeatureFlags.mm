@@ -4,62 +4,62 @@
 - (BOOL)fe_feature;
 - (BOOL)fe_feature_only;
 - (QSSMutableTTSRequestFeatureFlags)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)phoneset_type;
-- (void)setPhoneset_type:(int64_t)a3;
+- (void)setPhoneset_type:(int64_t)phoneset_type;
 @end
 
 @implementation QSSMutableTTSRequestFeatureFlags
 
-- (void)setPhoneset_type:(int64_t)a3
+- (void)setPhoneset_type:(int64_t)phoneset_type
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:phoneset_type];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
 - (int64_t)phoneset_type
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"phoneset_type"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)cache_only
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"cache_only"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)disable_prompts
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"disable_prompts"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)fe_feature_only
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"fe_feature_only"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)fe_feature
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"fe_feature"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -74,9 +74,9 @@
   v2 = [(QSSMutableTTSRequestFeatureFlags *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;

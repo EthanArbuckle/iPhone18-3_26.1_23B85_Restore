@@ -15,27 +15,27 @@
   {
     if (v11)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:a1 file:@"UIButton+PhotosUICore.m" lineNumber:43 description:@"can't set both title and attributed title on a button"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIButton+PhotosUICore.m" lineNumber:43 description:@"can't set both title and attributed title on a button"];
     }
 
-    [a1 setTitle:0 forState:a5];
-    [a1 setAttributedTitle:v9 forState:a5];
+    [self setTitle:0 forState:a5];
+    [self setAttributedTitle:v9 forState:a5];
   }
 
   else
   {
-    [a1 setAttributedTitle:0 forState:a5];
-    [a1 setTitle:v11 forState:a5];
+    [self setAttributedTitle:0 forState:a5];
+    [self setTitle:v11 forState:a5];
   }
 }
 
 - (void)px_updateTitleUsingBlock:()PhotosUICore
 {
   (*(a3 + 16))(a3);
-  v5 = [a1 titleLabel];
-  v4 = [v5 layer];
-  [v4 removeAllAnimations];
+  titleLabel = [self titleLabel];
+  layer = [titleLabel layer];
+  [layer removeAllAnimations];
 }
 
 + (id)px_buttonBackgroundImageForType:()PhotosUICore color:cornerRadius:controlState:
@@ -50,7 +50,7 @@
   v11 = [px_buttonBackgroundImageForType_color_cornerRadius_controlState__cachedBackgroundImages objectForKeyedSubscript:v10];
   if (!v11)
   {
-    v12 = ceil(a1 * 1.528665);
+    v12 = ceil(self * 1.528665);
     height = v12 * 2.0 + 1.0;
     y = 0.0;
     v21.width = height;
@@ -66,7 +66,7 @@
       v23 = CGRectInset(v22, 0.5, 0.5);
       y = v23.origin.y;
       height = v23.size.height;
-      a1 = a1 + -0.5;
+      self = self + -0.5;
     }
 
     else
@@ -75,7 +75,7 @@
       v23.origin.x = 0.0;
     }
 
-    v15 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:v23.origin.x cornerRadius:{y, v23.size.width, height, a1}];
+    v15 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:v23.origin.x cornerRadius:{y, v23.size.width, height, self}];
     v16 = v15;
     if (a4)
     {
@@ -117,21 +117,21 @@
 
   if (a3)
   {
-    v8 = v5;
+    whiteColor = v5;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  v9 = v8;
+  v9 = whiteColor;
   v10 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
-  v11 = [v6 titleLabel];
-  [v11 setFont:v10];
+  titleLabel = [v6 titleLabel];
+  [titleLabel setFont:v10];
 
-  v12 = [v6 titleLabel];
-  [v12 setAdjustsFontForContentSizeCategory:1];
+  titleLabel2 = [v6 titleLabel];
+  [titleLabel2 setAdjustsFontForContentSizeCategory:1];
 
   [v6 setTitleColor:v9 forState:0];
 

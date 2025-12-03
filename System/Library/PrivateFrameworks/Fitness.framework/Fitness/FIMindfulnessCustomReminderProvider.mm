@@ -2,7 +2,7 @@
 - (FIMindfulnessCustomReminderProvider)init;
 - (id)reminders;
 - (void)reminders;
-- (void)updateReminders:(id)a3;
+- (void)updateReminders:(id)reminders;
 @end
 
 @implementation FIMindfulnessCustomReminderProvider
@@ -63,13 +63,13 @@
   return v10;
 }
 
-- (void)updateReminders:(id)a3
+- (void)updateReminders:(id)reminders
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAAB0];
-  v5 = [a3 allObjects];
+  allObjects = [reminders allObjects];
   v15 = 0;
-  v6 = [v4 archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v15];
+  v6 = [v4 archivedDataWithRootObject:allObjects requiringSecureCoding:1 error:&v15];
   v7 = v15;
 
   if (v6)
@@ -113,7 +113,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_24B35E000, a2, OS_LOG_TYPE_ERROR, "Error to unarchiving reminders %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

@@ -1,34 +1,34 @@
 @interface CBCombinedConfigProvider
-- (BOOL)loadFixedFloat:(id)a3 toDestination:(float *)a4;
-- (BOOL)loadFixedFloat:(id)a3 withScaler:(float)a4 toDestination:(float *)a5;
-- (BOOL)loadFloat:(id)a3 toDestination:(float *)a4;
-- (BOOL)loadInt:(id)a3 toDestination:(int *)a4;
-- (BOOL)loadUint:(id)a3 toDestination:(unsigned int *)a4;
-- (CBCombinedConfigProvider)initWithProviders:(id)a3;
-- (unint64_t)loadFloatArray:(id)a3 toDestination:(float *)a4;
-- (unint64_t)loadIOFixedArray:(id)a3 toDestination:(float *)a4;
-- (unint64_t)loadInt16Array:(id)a3 toDestination:(signed __int16 *)a4;
-- (unint64_t)loadUintArray:(id)a3 toDestination:(unsigned int *)a4;
+- (BOOL)loadFixedFloat:(id)float toDestination:(float *)destination;
+- (BOOL)loadFixedFloat:(id)float withScaler:(float)scaler toDestination:(float *)destination;
+- (BOOL)loadFloat:(id)float toDestination:(float *)destination;
+- (BOOL)loadInt:(id)int toDestination:(int *)destination;
+- (BOOL)loadUint:(id)uint toDestination:(unsigned int *)destination;
+- (CBCombinedConfigProvider)initWithProviders:(id)providers;
+- (unint64_t)loadFloatArray:(id)array toDestination:(float *)destination;
+- (unint64_t)loadIOFixedArray:(id)array toDestination:(float *)destination;
+- (unint64_t)loadInt16Array:(id)array toDestination:(signed __int16 *)destination;
+- (unint64_t)loadUintArray:(id)array toDestination:(unsigned int *)destination;
 - (void)dealloc;
 @end
 
 @implementation CBCombinedConfigProvider
 
-- (CBCombinedConfigProvider)initWithProviders:(id)a3
+- (CBCombinedConfigProvider)initWithProviders:(id)providers
 {
   v21 = *MEMORY[0x1E69E9840];
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
-  v16 = a3;
+  providersCopy = providers;
   v15.receiver = self;
   v15.super_class = CBCombinedConfigProvider;
-  v18 = [(CBCombinedConfigProvider *)&v15 init];
-  if ([v16 count])
+  selfCopy = [(CBCombinedConfigProvider *)&v15 init];
+  if ([providersCopy count])
   {
-    if ([v16 count] == 1)
+    if ([providersCopy count] == 1)
     {
-      *&v3 = MEMORY[0x1E69E5920](v18).n128_u64[0];
-      v4 = [v16 objectAtIndexedSubscript:{0, v3}];
+      *&v3 = MEMORY[0x1E69E5920](selfCopy).n128_u64[0];
+      v4 = [providersCopy objectAtIndexedSubscript:{0, v3}];
       v19 = MEMORY[0x1E69E5928](v4);
     }
 
@@ -36,8 +36,8 @@
     {
       v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
       memset(__b, 0, sizeof(__b));
-      obj = v16;
-      v11 = [v16 countByEnumeratingWithState:__b objects:v20 count:16];
+      obj = providersCopy;
+      v11 = [providersCopy countByEnumeratingWithState:__b objects:v20 count:16];
       if (v11)
       {
         v7 = *__b[2];
@@ -77,15 +77,15 @@
         }
       }
 
-      v18->_providers = v14;
-      v18->_logHandle = 0;
-      v19 = v18;
+      selfCopy->_providers = v14;
+      selfCopy->_logHandle = 0;
+      v19 = selfCopy;
     }
   }
 
   else
   {
-    MEMORY[0x1E69E5920](v18);
+    MEMORY[0x1E69E5920](selfCopy);
     v19 = 0;
   }
 
@@ -95,24 +95,24 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   MEMORY[0x1E69E5920](self->_providers);
-  *&v2 = MEMORY[0x1E69E5920](v5->_logHandle).n128_u64[0];
-  v3.receiver = v5;
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_logHandle).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = CBCombinedConfigProvider;
   [(CBCombinedConfigProvider *)&v3 dealloc];
 }
 
-- (BOOL)loadFixedFloat:(id)a3 toDestination:(float *)a4
+- (BOOL)loadFixedFloat:(id)float toDestination:(float *)destination
 {
   v21 = *MEMORY[0x1E69E9840];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = a4;
+  floatCopy = float;
+  destinationCopy = destination;
   memset(__b, 0, sizeof(__b));
-  obj = v17->_providers;
+  obj = selfCopy->_providers;
   v11 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v20 count:16];
   if (v11)
   {
@@ -129,7 +129,7 @@
 
       v13 = 0;
       v13 = *(__b[1] + 8 * v8);
-      if ([v13 loadFixedFloat:v15 toDestination:v14])
+      if ([v13 loadFixedFloat:floatCopy toDestination:destinationCopy])
       {
         break;
       }
@@ -146,12 +146,12 @@
       }
     }
 
-    if (v17->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v17->_logHandle;
+      logHandle = selfCopy->_logHandle;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
       {
-        __os_log_helper_16_2_3_8_64_8_0_8_64(v19, v15, COERCE__INT64(*v14), v13);
+        __os_log_helper_16_2_3_8_64_8_0_8_64(v19, floatCopy, COERCE__INT64(*destinationCopy), v13);
         _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "Loaded %@ = %f from %@", v19, 0x20u);
       }
     }
@@ -169,16 +169,16 @@ LABEL_12:
   return v18 & 1;
 }
 
-- (BOOL)loadFixedFloat:(id)a3 withScaler:(float)a4 toDestination:(float *)a5
+- (BOOL)loadFixedFloat:(id)float withScaler:(float)scaler toDestination:(float *)destination
 {
   v24 = *MEMORY[0x1E69E9840];
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
-  v17 = a4;
-  v16 = a5;
+  floatCopy = float;
+  scalerCopy = scaler;
+  destinationCopy = destination;
   memset(__b, 0, sizeof(__b));
-  obj = v20->_providers;
+  obj = selfCopy->_providers;
   v13 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v23 count:16];
   if (v13)
   {
@@ -195,8 +195,8 @@ LABEL_12:
 
       v15 = 0;
       v15 = *(__b[1] + 8 * v10);
-      *&v5 = v17;
-      if ([v15 loadFixedFloat:v18 withScaler:v16 toDestination:v5])
+      *&v5 = scalerCopy;
+      if ([v15 loadFixedFloat:floatCopy withScaler:destinationCopy toDestination:v5])
       {
         break;
       }
@@ -213,12 +213,12 @@ LABEL_12:
       }
     }
 
-    if (v20->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v20->_logHandle;
+      logHandle = selfCopy->_logHandle;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
       {
-        __os_log_helper_16_2_3_8_64_8_0_8_64(v22, v18, COERCE__INT64(*v16), v15);
+        __os_log_helper_16_2_3_8_64_8_0_8_64(v22, floatCopy, COERCE__INT64(*destinationCopy), v15);
         _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "Loaded %@ = %f from %@", v22, 0x20u);
       }
     }
@@ -236,15 +236,15 @@ LABEL_12:
   return v21 & 1;
 }
 
-- (BOOL)loadFloat:(id)a3 toDestination:(float *)a4
+- (BOOL)loadFloat:(id)float toDestination:(float *)destination
 {
   v21 = *MEMORY[0x1E69E9840];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = a4;
+  floatCopy = float;
+  destinationCopy = destination;
   memset(__b, 0, sizeof(__b));
-  obj = v17->_providers;
+  obj = selfCopy->_providers;
   v11 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v20 count:16];
   if (v11)
   {
@@ -261,7 +261,7 @@ LABEL_12:
 
       v13 = 0;
       v13 = *(__b[1] + 8 * v8);
-      if ([v13 loadFloat:v15 toDestination:v14])
+      if ([v13 loadFloat:floatCopy toDestination:destinationCopy])
       {
         break;
       }
@@ -278,12 +278,12 @@ LABEL_12:
       }
     }
 
-    if (v17->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v17->_logHandle;
+      logHandle = selfCopy->_logHandle;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
       {
-        __os_log_helper_16_2_3_8_64_8_0_8_64(v19, v15, COERCE__INT64(*v14), v13);
+        __os_log_helper_16_2_3_8_64_8_0_8_64(v19, floatCopy, COERCE__INT64(*destinationCopy), v13);
         _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "Loaded %@ = %f from %@", v19, 0x20u);
       }
     }
@@ -301,15 +301,15 @@ LABEL_12:
   return v18 & 1;
 }
 
-- (unint64_t)loadFloatArray:(id)a3 toDestination:(float *)a4
+- (unint64_t)loadFloatArray:(id)array toDestination:(float *)destination
 {
   v21 = *MEMORY[0x1E69E9840];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = a4;
+  arrayCopy = array;
+  destinationCopy = destination;
   memset(__b, 0, sizeof(__b));
-  obj = v17->_providers;
+  obj = selfCopy->_providers;
   v11 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v20 count:16];
   if (v11)
   {
@@ -326,7 +326,7 @@ LABEL_12:
 
       v13 = 0;
       v13 = *(__b[1] + 8 * v8);
-      if ([v13 loadFloatArray:v15 toDestination:v14])
+      if ([v13 loadFloatArray:arrayCopy toDestination:destinationCopy])
       {
         break;
       }
@@ -343,12 +343,12 @@ LABEL_12:
       }
     }
 
-    if (v17->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v17->_logHandle;
+      logHandle = selfCopy->_logHandle;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
       {
-        __os_log_helper_16_2_2_8_64_8_64(v19, v15, v13);
+        __os_log_helper_16_2_2_8_64_8_64(v19, arrayCopy, v13);
         _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "Loaded %@ from %@", v19, 0x16u);
       }
     }
@@ -366,15 +366,15 @@ LABEL_12:
   return v18;
 }
 
-- (unint64_t)loadIOFixedArray:(id)a3 toDestination:(float *)a4
+- (unint64_t)loadIOFixedArray:(id)array toDestination:(float *)destination
 {
   v21 = *MEMORY[0x1E69E9840];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = a4;
+  arrayCopy = array;
+  destinationCopy = destination;
   memset(__b, 0, sizeof(__b));
-  obj = v17->_providers;
+  obj = selfCopy->_providers;
   v11 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v20 count:16];
   if (v11)
   {
@@ -391,7 +391,7 @@ LABEL_12:
 
       v13 = 0;
       v13 = *(__b[1] + 8 * v8);
-      if ([v13 loadIOFixedArray:v15 toDestination:v14])
+      if ([v13 loadIOFixedArray:arrayCopy toDestination:destinationCopy])
       {
         break;
       }
@@ -408,12 +408,12 @@ LABEL_12:
       }
     }
 
-    if (v17->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v17->_logHandle;
+      logHandle = selfCopy->_logHandle;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
       {
-        __os_log_helper_16_2_2_8_64_8_64(v19, v15, v13);
+        __os_log_helper_16_2_2_8_64_8_64(v19, arrayCopy, v13);
         _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "Loaded %@ from %@", v19, 0x16u);
       }
     }
@@ -431,15 +431,15 @@ LABEL_12:
   return v18;
 }
 
-- (unint64_t)loadInt16Array:(id)a3 toDestination:(signed __int16 *)a4
+- (unint64_t)loadInt16Array:(id)array toDestination:(signed __int16 *)destination
 {
   v21 = *MEMORY[0x1E69E9840];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = a4;
+  arrayCopy = array;
+  destinationCopy = destination;
   memset(__b, 0, sizeof(__b));
-  obj = v17->_providers;
+  obj = selfCopy->_providers;
   v11 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v20 count:16];
   if (v11)
   {
@@ -456,7 +456,7 @@ LABEL_12:
 
       v13 = 0;
       v13 = *(__b[1] + 8 * v8);
-      if ([v13 loadInt16Array:v15 toDestination:v14])
+      if ([v13 loadInt16Array:arrayCopy toDestination:destinationCopy])
       {
         break;
       }
@@ -473,12 +473,12 @@ LABEL_12:
       }
     }
 
-    if (v17->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v17->_logHandle;
+      logHandle = selfCopy->_logHandle;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
       {
-        __os_log_helper_16_2_2_8_64_8_64(v19, v15, v13);
+        __os_log_helper_16_2_2_8_64_8_64(v19, arrayCopy, v13);
         _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "Loaded %@ from %@", v19, 0x16u);
       }
     }
@@ -496,15 +496,15 @@ LABEL_12:
   return v18;
 }
 
-- (BOOL)loadInt:(id)a3 toDestination:(int *)a4
+- (BOOL)loadInt:(id)int toDestination:(int *)destination
 {
   v21 = *MEMORY[0x1E69E9840];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = a4;
+  intCopy = int;
+  destinationCopy = destination;
   memset(__b, 0, sizeof(__b));
-  obj = v17->_providers;
+  obj = selfCopy->_providers;
   v11 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v20 count:16];
   if (v11)
   {
@@ -521,7 +521,7 @@ LABEL_12:
 
       v13 = 0;
       v13 = *(__b[1] + 8 * v8);
-      if ([v13 loadInt:v15 toDestination:v14])
+      if ([v13 loadInt:intCopy toDestination:destinationCopy])
       {
         break;
       }
@@ -538,12 +538,12 @@ LABEL_12:
       }
     }
 
-    if (v17->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v17->_logHandle;
+      logHandle = selfCopy->_logHandle;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
       {
-        __os_log_helper_16_2_3_8_64_4_0_8_64(v19, v15, *v14, v13);
+        __os_log_helper_16_2_3_8_64_4_0_8_64(v19, intCopy, *destinationCopy, v13);
         _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "Loaded %@ = %d from %@", v19, 0x1Cu);
       }
     }
@@ -561,15 +561,15 @@ LABEL_12:
   return v18 & 1;
 }
 
-- (BOOL)loadUint:(id)a3 toDestination:(unsigned int *)a4
+- (BOOL)loadUint:(id)uint toDestination:(unsigned int *)destination
 {
   v21 = *MEMORY[0x1E69E9840];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = a4;
+  uintCopy = uint;
+  destinationCopy = destination;
   memset(__b, 0, sizeof(__b));
-  obj = v17->_providers;
+  obj = selfCopy->_providers;
   v11 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v20 count:16];
   if (v11)
   {
@@ -586,7 +586,7 @@ LABEL_12:
 
       v13 = 0;
       v13 = *(__b[1] + 8 * v8);
-      if ([v13 loadUint:v15 toDestination:v14])
+      if ([v13 loadUint:uintCopy toDestination:destinationCopy])
       {
         break;
       }
@@ -603,12 +603,12 @@ LABEL_12:
       }
     }
 
-    if (v17->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v17->_logHandle;
+      logHandle = selfCopy->_logHandle;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
       {
-        __os_log_helper_16_2_3_8_64_4_0_8_64(v19, v15, *v14, v13);
+        __os_log_helper_16_2_3_8_64_4_0_8_64(v19, uintCopy, *destinationCopy, v13);
         _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "Loaded %@ = %u from %@", v19, 0x1Cu);
       }
     }
@@ -626,15 +626,15 @@ LABEL_12:
   return v18 & 1;
 }
 
-- (unint64_t)loadUintArray:(id)a3 toDestination:(unsigned int *)a4
+- (unint64_t)loadUintArray:(id)array toDestination:(unsigned int *)destination
 {
   v21 = *MEMORY[0x1E69E9840];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = a4;
+  arrayCopy = array;
+  destinationCopy = destination;
   memset(__b, 0, sizeof(__b));
-  obj = v17->_providers;
+  obj = selfCopy->_providers;
   v11 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v20 count:16];
   if (v11)
   {
@@ -651,7 +651,7 @@ LABEL_12:
 
       v13 = 0;
       v13 = *(__b[1] + 8 * v8);
-      if ([v13 loadUintArray:v15 toDestination:v14])
+      if ([v13 loadUintArray:arrayCopy toDestination:destinationCopy])
       {
         break;
       }
@@ -668,12 +668,12 @@ LABEL_12:
       }
     }
 
-    if (v17->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v17->_logHandle;
+      logHandle = selfCopy->_logHandle;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
       {
-        __os_log_helper_16_2_2_8_64_8_64(v19, v15, v13);
+        __os_log_helper_16_2_2_8_64_8_64(v19, arrayCopy, v13);
         _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "Loaded %@ from %@", v19, 0x16u);
       }
     }

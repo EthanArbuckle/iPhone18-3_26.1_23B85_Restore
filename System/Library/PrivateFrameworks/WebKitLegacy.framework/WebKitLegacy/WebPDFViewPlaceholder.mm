@@ -1,22 +1,22 @@
 @interface WebPDFViewPlaceholder
 + (void)setAsPDFDocRepAndView;
 - (CGPDFDocument)document;
-- (CGRect)_getPDFPageBounds:(CGPDFPage *)a3;
-- (CGRect)rectForPageNumber:(unint64_t)a3;
-- (CGSize)_computePageRects:(CGPDFDocument *)a3;
+- (CGRect)_getPDFPageBounds:(CGPDFPage *)bounds;
+- (CGRect)rectForPageNumber:(unint64_t)number;
+- (CGSize)_computePageRects:(CGPDFDocument *)rects;
 - (CGSize)containerSize;
 - (unint64_t)totalPages;
 - (void)_doPostLoadOrUnlockTasks;
-- (void)_evaluateJSForDocument:(CGPDFDocument *)a3;
+- (void)_evaluateJSForDocument:(CGPDFDocument *)document;
 - (void)_notifyDidCompleteLayout;
 - (void)_updateTitleForDocumentIfAvailable;
-- (void)_updateTitleForURL:(id)a3;
+- (void)_updateTitleForURL:(id)l;
 - (void)dealloc;
-- (void)finishedLoadingWithDataSource:(id)a3;
+- (void)finishedLoadingWithDataSource:(id)source;
 - (void)layout;
-- (void)setDataSource:(id)a3;
-- (void)setDocument:(CGPDFDocument *)a3;
-- (void)simulateClickOnLinkToURL:(id)a3;
+- (void)setDataSource:(id)source;
+- (void)setDocument:(CGPDFDocument *)document;
+- (void)simulateClickOnLinkToURL:(id)l;
 @end
 
 @implementation WebPDFViewPlaceholder
@@ -37,26 +37,26 @@
     return 0;
   }
 
-  v5 = [(WebPDFViewPlaceholder *)self delegate];
+  delegate = [(WebPDFViewPlaceholder *)self delegate];
 
-  return [(WebPDFViewPlaceholderDelegate *)v5 cgPDFDocument];
+  return [(WebPDFViewPlaceholderDelegate *)delegate cgPDFDocument];
 }
 
-- (void)setDocument:(CGPDFDocument *)a3
+- (void)setDocument:(CGPDFDocument *)document
 {
   objc_sync_enter(self);
-  CGPDFDocumentRetain(a3);
+  CGPDFDocumentRetain(document);
   CGPDFDocumentRelease(self->_document);
-  self->_document = a3;
+  self->_document = document;
 
   objc_sync_exit(self);
 }
 
 - (unint64_t)totalPages
 {
-  v2 = [(WebPDFViewPlaceholder *)self document];
+  document = [(WebPDFViewPlaceholder *)self document];
 
-  return CGPDFDocumentGetNumberOfPages(v2);
+  return CGPDFDocumentGetNumberOfPages(document);
 }
 
 + (void)setAsPDFDocRepAndView
@@ -84,19 +84,19 @@
   [(WebPDFViewPlaceholder *)&v3 dealloc];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
   [(WebPDFViewPlaceholder *)self dataSourceUpdated:?];
-  if ([a3 request])
+  if ([source request])
   {
-    -[WebPDFViewPlaceholder _updateTitleForURL:](self, "_updateTitleForURL:", [objc_msgSend(a3 "request")]);
+    -[WebPDFViewPlaceholder _updateTitleForURL:](self, "_updateTitleForURL:", [objc_msgSend(source "request")]);
   }
 
-  v5 = [(WebPDFViewPlaceholder *)self superview];
-  if (v5)
+  superview = [(WebPDFViewPlaceholder *)self superview];
+  if (superview)
   {
-    v6 = v5;
-    [v5 bounds];
+    v6 = superview;
+    [superview bounds];
     [(WebPDFViewPlaceholder *)self convertRect:v6 fromView:?];
 
     [(WebPDFViewPlaceholder *)self setBoundsSize:v7, v8];
@@ -110,9 +110,9 @@
     [(WebPDFViewPlaceholder *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v3 = [(WebPDFViewPlaceholder *)self delegate];
+      delegate = [(WebPDFViewPlaceholder *)self delegate];
 
-      [(WebPDFViewPlaceholderDelegate *)v3 didCompleteLayout];
+      [(WebPDFViewPlaceholderDelegate *)delegate didCompleteLayout];
     }
   }
 
@@ -146,11 +146,11 @@
   }
 }
 
-- (void)finishedLoadingWithDataSource:(id)a3
+- (void)finishedLoadingWithDataSource:(id)source
 {
   [(WebPDFViewPlaceholder *)self dataSourceUpdated:?];
   self->_didFinishLoad = 1;
-  v5 = CGDataProviderCreateWithCFData([a3 data]);
+  v5 = CGDataProviderCreateWithCFData([source data]);
   if (v5)
   {
     v6 = v5;
@@ -161,14 +161,14 @@
   }
 }
 
-- (void)_evaluateJSForDocument:(CGPDFDocument *)a3
+- (void)_evaluateJSForDocument:(CGPDFDocument *)document
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (document)
   {
-    if (CGPDFDocumentIsUnlocked(a3))
+    if (CGPDFDocumentIsUnlocked(document))
     {
-      v5 = allScriptsInPDFDocument(a3);
+      v5 = allScriptsInPDFDocument(document);
       if ([v5 count])
       {
         v6 = JSGlobalContextCreate(0);
@@ -252,18 +252,18 @@ LABEL_9:
   }
 }
 
-- (void)_updateTitleForURL:(id)a3
+- (void)_updateTitleForURL:(id)l
 {
-  v5 = [a3 lastPathComponent];
-  if (![v5 length] || objc_msgSend(v5, "isEqualToString:", @"/"))
+  lastPathComponent = [l lastPathComponent];
+  if (![lastPathComponent length] || objc_msgSend(lastPathComponent, "isEqualToString:", @"/"))
   {
-    v5 = [objc_msgSend(a3 "_web_hostString")];
+    lastPathComponent = [objc_msgSend(l "_web_hostString")];
   }
 
-  [(WebPDFViewPlaceholder *)self setTitle:v5];
-  v6 = [(WAKView *)self _frame];
+  [(WebPDFViewPlaceholder *)self setTitle:lastPathComponent];
+  _frame = [(WAKView *)self _frame];
 
-  [v6 _dispatchDidReceiveTitle:v5];
+  [_frame _dispatchDidReceiveTitle:lastPathComponent];
 }
 
 - (void)_updateTitleForDocumentIfAvailable
@@ -294,16 +294,16 @@ LABEL_9:
   }
 }
 
-- (CGRect)_getPDFPageBounds:(CGPDFPage *)a3
+- (CGRect)_getPDFPageBounds:(CGPDFPage *)bounds
 {
-  if (a3)
+  if (bounds)
   {
-    BoxRect = CGPDFPageGetBoxRect(a3, kCGPDFCropBox);
+    BoxRect = CGPDFPageGetBoxRect(bounds, kCGPDFCropBox);
     x = BoxRect.origin.x;
     y = BoxRect.origin.y;
     width = BoxRect.size.width;
     height = BoxRect.size.height;
-    v8 = CGPDFPageGetRotationAngle(a3) * 0.0174532925;
+    v8 = CGPDFPageGetRotationAngle(bounds) * 0.0174532925;
     if (v8 != 0.0)
     {
       CGAffineTransformMakeRotation(&v17, v8);
@@ -343,7 +343,7 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)_computePageRects:(CGPDFDocument *)a3
+- (CGSize)_computePageRects:(CGPDFDocument *)rects
 {
   if ([(WebPDFViewPlaceholder *)self pageRects])
   {
@@ -352,7 +352,7 @@ LABEL_9:
     v8 = v7;
   }
 
-  else if (a3 && CGPDFDocumentIsUnlocked(a3) && (NumberOfPages = CGPDFDocumentGetNumberOfPages(a3)) != 0 && (v10 = NumberOfPages, (v11 = [MEMORY[0x1E695DF70] array]) != 0) && (v12 = v11, (v13 = objc_msgSend(MEMORY[0x1E695DF70], "array")) != 0))
+  else if (rects && CGPDFDocumentIsUnlocked(rects) && (NumberOfPages = CGPDFDocumentGetNumberOfPages(rects)) != 0 && (v10 = NumberOfPages, (v11 = [MEMORY[0x1E695DF70] array]) != 0) && (v12 = v11, (v13 = objc_msgSend(MEMORY[0x1E695DF70], "array")) != 0))
   {
     v14 = v13;
     v15 = 0;
@@ -363,7 +363,7 @@ LABEL_9:
     v18 = 0.0;
     while (1)
     {
-      Page = CGPDFDocumentGetPage(a3, v15 + 1);
+      Page = CGPDFDocumentGetPage(rects, v15 + 1);
       if (!Page)
       {
         break;
@@ -500,11 +500,11 @@ LABEL_27:
   return result;
 }
 
-- (CGRect)rectForPageNumber:(unint64_t)a3
+- (CGRect)rectForPageNumber:(unint64_t)number
 {
-  if (a3 && [(NSArray *)self->_pageRects count]>= a3)
+  if (number && [(NSArray *)self->_pageRects count]>= number)
   {
-    [-[NSArray objectAtIndex:](self->_pageRects objectAtIndex:{a3 - 1), "_web_CGRectValue"}];
+    [-[NSArray objectAtIndex:](self->_pageRects objectAtIndex:{number - 1), "_web_CGRectValue"}];
   }
 
   else
@@ -522,11 +522,11 @@ LABEL_27:
   return result;
 }
 
-- (void)simulateClickOnLinkToURL:(id)a3
+- (void)simulateClickOnLinkToURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 736);
     if (!v5 || (self = *(v5 + 96)) == 0)
     {
@@ -551,10 +551,10 @@ LABEL_27:
     LOBYTE(v26) = 0;
     WebCore::MouseEvent::create();
     v40[0] = 0;
-    v6 = [objc_loadWeak(&v4->_dataSource) webFrame];
-    if (v6)
+    webFrame = [objc_loadWeak(&selfCopy->_dataSource) webFrame];
+    if (webFrame)
     {
-      v7 = *(*(v6 + 8) + 8);
+      v7 = *(*(webFrame + 8) + 8);
     }
 
     else
@@ -566,7 +566,7 @@ LABEL_27:
     v8[7] += 2;
     v44 = v8;
     v9 = WebCore::SecurityContext::securityOrigin((v8 + 52));
-    MEMORY[0x1CCA63960](v40, a3);
+    MEMORY[0x1CCA63960](v40, l);
     WebCore::ResourceRequestBase::RequestData::RequestData(v29, v40, 0);
     v31 = 0;
     v10 = *MEMORY[0x1E696EBA8];

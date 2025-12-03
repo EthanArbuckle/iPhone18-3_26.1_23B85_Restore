@@ -3,198 +3,198 @@
 - (CGRect)pr_horizontalTitleBoundingRect;
 - (CGRect)pr_verticalTitleBoundingRect;
 - (CGRect)pui_salientContentRectangle;
-- (_PRUISPosterStagedSceneSettings)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)applyToMutableSceneSettings:(id)a3 role:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (_PRUISPosterStagedSceneSettings)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)applyToMutableSceneSettings:(id)settings role:(id)role;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _PRUISPosterStagedSceneSettings
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v17 = a3;
-  v4 = [(_PRUISPosterStagedSceneSettings *)self pui_role];
-  [v17 encodeObject:v4 forKey:@"pui_role"];
+  coderCopy = coder;
+  pui_role = [(_PRUISPosterStagedSceneSettings *)self pui_role];
+  [coderCopy encodeObject:pui_role forKey:@"pui_role"];
 
-  v5 = [(_PRUISPosterStagedSceneSettings *)self pui_provider];
-  [v17 encodeObject:v5 forKey:@"pui_provider"];
+  pui_provider = [(_PRUISPosterStagedSceneSettings *)self pui_provider];
+  [coderCopy encodeObject:pui_provider forKey:@"pui_provider"];
 
-  v6 = [(_PRUISPosterStagedSceneSettings *)self pui_previewIdentifier];
-  [v17 encodeObject:v6 forKey:@"pui_previewIdentifier"];
+  pui_previewIdentifier = [(_PRUISPosterStagedSceneSettings *)self pui_previewIdentifier];
+  [coderCopy encodeObject:pui_previewIdentifier forKey:@"pui_previewIdentifier"];
 
-  v7 = [(_PRUISPosterStagedSceneSettings *)self pr_caseColor];
-  [v17 encodeObject:v7 forKey:@"pr_caseColor"];
+  pr_caseColor = [(_PRUISPosterStagedSceneSettings *)self pr_caseColor];
+  [coderCopy encodeObject:pr_caseColor forKey:@"pr_caseColor"];
 
-  [v17 encodeInteger:-[_PRUISPosterStagedSceneSettings pui_userInterfaceStyle](self forKey:{"pui_userInterfaceStyle"), @"pui_userInterfaceStyle"}];
-  [v17 encodeInteger:-[_PRUISPosterStagedSceneSettings pui_deviceOrientation](self forKey:{"pui_deviceOrientation"), @"pui_deviceOrientation"}];
-  v8 = [(_PRUISPosterStagedSceneSettings *)self pui_posterContents];
-  [v17 encodeObject:v8 forKey:@"pui_posterContents"];
+  [coderCopy encodeInteger:-[_PRUISPosterStagedSceneSettings pui_userInterfaceStyle](self forKey:{"pui_userInterfaceStyle"), @"pui_userInterfaceStyle"}];
+  [coderCopy encodeInteger:-[_PRUISPosterStagedSceneSettings pui_deviceOrientation](self forKey:{"pui_deviceOrientation"), @"pui_deviceOrientation"}];
+  pui_posterContents = [(_PRUISPosterStagedSceneSettings *)self pui_posterContents];
+  [coderCopy encodeObject:pui_posterContents forKey:@"pui_posterContents"];
 
-  v9 = [(_PRUISPosterStagedSceneSettings *)self pr_posterConfigurableOptions];
-  [v17 encodeObject:v9 forKey:@"pr_posterConfigurableOptions"];
+  pr_posterConfigurableOptions = [(_PRUISPosterStagedSceneSettings *)self pr_posterConfigurableOptions];
+  [coderCopy encodeObject:pr_posterConfigurableOptions forKey:@"pr_posterConfigurableOptions"];
 
-  v10 = [(_PRUISPosterStagedSceneSettings *)self pr_posterConfiguredProperties];
-  [v17 encodeObject:v10 forKey:@"pr_posterConfiguredProperties"];
+  pr_posterConfiguredProperties = [(_PRUISPosterStagedSceneSettings *)self pr_posterConfiguredProperties];
+  [coderCopy encodeObject:pr_posterConfiguredProperties forKey:@"pr_posterConfiguredProperties"];
 
-  v11 = [(_PRUISPosterStagedSceneSettings *)self pr_posterTitleStyleConfiguration];
-  [v17 encodeObject:v11 forKey:@"pr_posterTitleStyleConfiguration"];
+  pr_posterTitleStyleConfiguration = [(_PRUISPosterStagedSceneSettings *)self pr_posterTitleStyleConfiguration];
+  [coderCopy encodeObject:pr_posterTitleStyleConfiguration forKey:@"pr_posterTitleStyleConfiguration"];
 
-  v12 = [(_PRUISPosterStagedSceneSettings *)self pr_posterAmbientConfiguration];
-  [v17 encodeObject:v12 forKey:@"pr_posterAmbientConfiguration"];
+  pr_posterAmbientConfiguration = [(_PRUISPosterStagedSceneSettings *)self pr_posterAmbientConfiguration];
+  [coderCopy encodeObject:pr_posterAmbientConfiguration forKey:@"pr_posterAmbientConfiguration"];
 
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings pr_isDepthEffectDisallowed](self forKey:{"pr_isDepthEffectDisallowed"), @"pr_depthEffectDisallowed"}];
-  [v17 encodeInteger:-[_PRUISPosterStagedSceneSettings pr_effectiveMotionEffectsMode](self forKey:{"pr_effectiveMotionEffectsMode"), @"pr_effectiveMotionEffectsMode"}];
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings pui_isInlineComplicationConfigured](self forKey:{"pui_isInlineComplicationConfigured"), @"pui_inlineComplicationConfigured"}];
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings pui_isComplicationRowConfigured](self forKey:{"pui_isComplicationRowConfigured"), @"pui_complicationRowConfigured"}];
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings pui_isComplicationSidebarConfigured](self forKey:{"pui_isComplicationSidebarConfigured"), @"pui_complicationSidebarConfigured"}];
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings pr_isAlternateDateEnabled](self forKey:{"pr_isAlternateDateEnabled"), @"pr_alternateDateEnabled"}];
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings pui_isExtensionUserInteractionEnabled](self forKey:{"pui_isExtensionUserInteractionEnabled"), @"pui_extensionUserInteractionEnabled"}];
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings pui_showsHeaderElements](self forKey:{"pui_showsHeaderElements"), @"pui_showsHeaderElements"}];
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings pui_showsComplications](self forKey:{"pui_showsComplications"), @"pui_showsComplications"}];
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings pui_isWallpaperObscured](self forKey:{"pui_isWallpaperObscured"), @"pui_wallpaperObscured"}];
-  [v17 encodeInteger:-[_PRUISPosterStagedSceneSettings pui_posterBoundingShape](self forKey:{"pui_posterBoundingShape"), @"pui_posterBoundingShape"}];
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings pui_isComplicationRowAtBottom](self forKey:{"pui_isComplicationRowAtBottom"), @"pui_complicationRowAtBottom"}];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings pr_isDepthEffectDisallowed](self forKey:{"pr_isDepthEffectDisallowed"), @"pr_depthEffectDisallowed"}];
+  [coderCopy encodeInteger:-[_PRUISPosterStagedSceneSettings pr_effectiveMotionEffectsMode](self forKey:{"pr_effectiveMotionEffectsMode"), @"pr_effectiveMotionEffectsMode"}];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings pui_isInlineComplicationConfigured](self forKey:{"pui_isInlineComplicationConfigured"), @"pui_inlineComplicationConfigured"}];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings pui_isComplicationRowConfigured](self forKey:{"pui_isComplicationRowConfigured"), @"pui_complicationRowConfigured"}];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings pui_isComplicationSidebarConfigured](self forKey:{"pui_isComplicationSidebarConfigured"), @"pui_complicationSidebarConfigured"}];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings pr_isAlternateDateEnabled](self forKey:{"pr_isAlternateDateEnabled"), @"pr_alternateDateEnabled"}];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings pui_isExtensionUserInteractionEnabled](self forKey:{"pui_isExtensionUserInteractionEnabled"), @"pui_extensionUserInteractionEnabled"}];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings pui_showsHeaderElements](self forKey:{"pui_showsHeaderElements"), @"pui_showsHeaderElements"}];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings pui_showsComplications](self forKey:{"pui_showsComplications"), @"pui_showsComplications"}];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings pui_isWallpaperObscured](self forKey:{"pui_isWallpaperObscured"), @"pui_wallpaperObscured"}];
+  [coderCopy encodeInteger:-[_PRUISPosterStagedSceneSettings pui_posterBoundingShape](self forKey:{"pui_posterBoundingShape"), @"pui_posterBoundingShape"}];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings pui_isComplicationRowAtBottom](self forKey:{"pui_isComplicationRowAtBottom"), @"pui_complicationRowAtBottom"}];
   [(_PRUISPosterStagedSceneSettings *)self pr_horizontalTitleBoundingRect];
-  [v17 encodeCGRect:@"pr_horizontalTitleBoundingRect" forKey:?];
+  [coderCopy encodeCGRect:@"pr_horizontalTitleBoundingRect" forKey:?];
   [(_PRUISPosterStagedSceneSettings *)self pr_verticalTitleBoundingRect];
-  [v17 encodeCGRect:@"pr_verticalTitleBoundingRect" forKey:?];
-  [v17 encodeInteger:-[_PRUISPosterStagedSceneSettings pui_mode](self forKey:{"pui_mode"), @"pui_mode"}];
-  [v17 encodeInteger:-[_PRUISPosterStagedSceneSettings pui_content](self forKey:{"pui_content"), @"pui_content"}];
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings pui_isSnapshot](self forKey:{"pui_isSnapshot"), @"pui_snapshot"}];
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings pui_isFloatingLayerSnapshot](self forKey:{"pui_isFloatingLayerSnapshot"), @"pui_floatingLayerSnapshot"}];
+  [coderCopy encodeCGRect:@"pr_verticalTitleBoundingRect" forKey:?];
+  [coderCopy encodeInteger:-[_PRUISPosterStagedSceneSettings pui_mode](self forKey:{"pui_mode"), @"pui_mode"}];
+  [coderCopy encodeInteger:-[_PRUISPosterStagedSceneSettings pui_content](self forKey:{"pui_content"), @"pui_content"}];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings pui_isSnapshot](self forKey:{"pui_isSnapshot"), @"pui_snapshot"}];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings pui_isFloatingLayerSnapshot](self forKey:{"pui_isFloatingLayerSnapshot"), @"pui_floatingLayerSnapshot"}];
   [(_PRUISPosterStagedSceneSettings *)self pr_unlockProgress];
   *&v13 = v13;
-  [v17 encodeFloat:@"pr_unlockProgress" forKey:v13];
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings pr_wakeSourceIsSwipeToUnlock](self forKey:{"pr_wakeSourceIsSwipeToUnlock"), @"pr_wakeSourceIsSwipeToUnlock"}];
-  [v17 encodeInteger:-[_PRUISPosterStagedSceneSettings pui_significantEventsCounter](self forKey:{"pui_significantEventsCounter"), @"pui_significantEventsCounter"}];
-  [v17 encodeInteger:-[_PRUISPosterStagedSceneSettings pr_titleAlignment](self forKey:{"pr_titleAlignment"), @"pr_titleAlignment"}];
-  [v17 encodeInteger:-[_PRUISPosterStagedSceneSettings pr_adjustedLuminance](self forKey:{"pr_adjustedLuminance"), @"pr_adjustedLuminance"}];
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings isAmbientPresented](self forKey:{"isAmbientPresented"), @"ambientPresented"}];
-  [v17 encodeInteger:-[_PRUISPosterStagedSceneSettings ambientDisplayStyle](self forKey:{"ambientDisplayStyle"), @"ambientDisplayStyle"}];
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings pr_appliesCountertransformForRotation](self forKey:{"pr_appliesCountertransformForRotation"), @"pr_appliesCountertransformForRotation"}];
-  v14 = [(_PRUISPosterStagedSceneSettings *)self pui_sceneAttachments];
-  [v17 encodeObject:v14 forKey:@"pui_sceneAttachments"];
+  [coderCopy encodeFloat:@"pr_unlockProgress" forKey:v13];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings pr_wakeSourceIsSwipeToUnlock](self forKey:{"pr_wakeSourceIsSwipeToUnlock"), @"pr_wakeSourceIsSwipeToUnlock"}];
+  [coderCopy encodeInteger:-[_PRUISPosterStagedSceneSettings pui_significantEventsCounter](self forKey:{"pui_significantEventsCounter"), @"pui_significantEventsCounter"}];
+  [coderCopy encodeInteger:-[_PRUISPosterStagedSceneSettings pr_titleAlignment](self forKey:{"pr_titleAlignment"), @"pr_titleAlignment"}];
+  [coderCopy encodeInteger:-[_PRUISPosterStagedSceneSettings pr_adjustedLuminance](self forKey:{"pr_adjustedLuminance"), @"pr_adjustedLuminance"}];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings isAmbientPresented](self forKey:{"isAmbientPresented"), @"ambientPresented"}];
+  [coderCopy encodeInteger:-[_PRUISPosterStagedSceneSettings ambientDisplayStyle](self forKey:{"ambientDisplayStyle"), @"ambientDisplayStyle"}];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings pr_appliesCountertransformForRotation](self forKey:{"pr_appliesCountertransformForRotation"), @"pr_appliesCountertransformForRotation"}];
+  pui_sceneAttachments = [(_PRUISPosterStagedSceneSettings *)self pui_sceneAttachments];
+  [coderCopy encodeObject:pui_sceneAttachments forKey:@"pui_sceneAttachments"];
 
   [(_PRUISPosterStagedSceneSettings *)self pui_salientContentRectangle];
-  [v17 encodeCGRect:@"pui_salientContentRectangle" forKey:?];
-  v15 = [(_PRUISPosterStagedSceneSettings *)self pui_contentOcclusionRectangles];
-  [v17 encodeObject:v15 forKey:@"pui_contentOcclusionRectangles"];
+  [coderCopy encodeCGRect:@"pui_salientContentRectangle" forKey:?];
+  pui_contentOcclusionRectangles = [(_PRUISPosterStagedSceneSettings *)self pui_contentOcclusionRectangles];
+  [coderCopy encodeObject:pui_contentOcclusionRectangles forKey:@"pui_contentOcclusionRectangles"];
 
   [(_PRUISPosterStagedSceneSettings *)self pr_deviceMotionUpdateInterval];
-  [v17 encodeDouble:@"pr_deviceMotionUpdateInterval" forKey:?];
-  [v17 encodeDouble:@"pui_adaptiveTimeDisabled" forKey:{-[_PRUISPosterStagedSceneSettings pui_isAdaptiveTimeDisabled](self, "pui_isAdaptiveTimeDisabled")}];
-  v16 = [(_PRUISPosterStagedSceneSettings *)self pr_posterHostedContentSettings];
-  [v17 encodeObject:v16 forKey:@"pr_posterHostedContentSettings"];
+  [coderCopy encodeDouble:@"pr_deviceMotionUpdateInterval" forKey:?];
+  [coderCopy encodeDouble:@"pui_adaptiveTimeDisabled" forKey:{-[_PRUISPosterStagedSceneSettings pui_isAdaptiveTimeDisabled](self, "pui_isAdaptiveTimeDisabled")}];
+  pr_posterHostedContentSettings = [(_PRUISPosterStagedSceneSettings *)self pr_posterHostedContentSettings];
+  [coderCopy encodeObject:pr_posterHostedContentSettings forKey:@"pr_posterHostedContentSettings"];
 
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings pui_isShowingIdealizedTime](self forKey:{"pui_isShowingIdealizedTime"), @"pui_isShowingIdealizedTime"}];
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings pui_isIdle](self forKey:{"pui_isIdle"), @"pui_isIdle"}];
-  [v17 encodeBool:-[_PRUISPosterStagedSceneSettings pui_isEditorPreview](self forKey:{"pui_isEditorPreview"), @"pui_isEditorPreview"}];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings pui_isShowingIdealizedTime](self forKey:{"pui_isShowingIdealizedTime"), @"pui_isShowingIdealizedTime"}];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings pui_isIdle](self forKey:{"pui_isIdle"), @"pui_isIdle"}];
+  [coderCopy encodeBool:-[_PRUISPosterStagedSceneSettings pui_isEditorPreview](self forKey:{"pui_isEditorPreview"), @"pui_isEditorPreview"}];
 }
 
-- (_PRUISPosterStagedSceneSettings)initWithCoder:(id)a3
+- (_PRUISPosterStagedSceneSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v34.receiver = self;
   v34.super_class = _PRUISPosterStagedSceneSettings;
   v5 = [(_PRUISPosterStagedSceneSettings *)&v34 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"pui_role"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"pui_role"];
     [(_PRUISPosterStagedSceneSettings *)v5 pui_setRole:v7];
 
     v8 = objc_opt_self();
-    v9 = [v4 decodeObjectOfClass:v8 forKey:@"pui_provider"];
+    v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"pui_provider"];
     [(_PRUISPosterStagedSceneSettings *)v5 pui_setProvider:v9];
 
     v10 = objc_opt_self();
-    v11 = [v4 decodeObjectOfClass:v10 forKey:@"pui_previewIdentifier"];
+    v11 = [coderCopy decodeObjectOfClass:v10 forKey:@"pui_previewIdentifier"];
     [(_PRUISPosterStagedSceneSettings *)v5 pui_setPreviewIdentifier:v11];
 
     v12 = objc_opt_self();
-    v13 = [v4 decodeObjectOfClass:v12 forKey:@"pr_caseColor"];
+    v13 = [coderCopy decodeObjectOfClass:v12 forKey:@"pr_caseColor"];
     [(_PRUISPosterStagedSceneSettings *)v5 pr_setCaseColor:v13];
 
-    -[_PRUISPosterStagedSceneSettings pui_setUserInterfaceStyle:](v5, "pui_setUserInterfaceStyle:", [v4 decodeIntegerForKey:@"pui_userInterfaceStyle"]);
-    -[_PRUISPosterStagedSceneSettings pui_setDeviceOrientation:](v5, "pui_setDeviceOrientation:", [v4 decodeIntegerForKey:@"pui_deviceOrientation"]);
+    -[_PRUISPosterStagedSceneSettings pui_setUserInterfaceStyle:](v5, "pui_setUserInterfaceStyle:", [coderCopy decodeIntegerForKey:@"pui_userInterfaceStyle"]);
+    -[_PRUISPosterStagedSceneSettings pui_setDeviceOrientation:](v5, "pui_setDeviceOrientation:", [coderCopy decodeIntegerForKey:@"pui_deviceOrientation"]);
     v14 = objc_opt_self();
-    v15 = [v4 decodeObjectOfClass:v14 forKey:@"pui_posterContents"];
+    v15 = [coderCopy decodeObjectOfClass:v14 forKey:@"pui_posterContents"];
     [(_PRUISPosterStagedSceneSettings *)v5 pui_setPosterContents:v15];
 
     v16 = objc_opt_self();
-    v17 = [v4 decodeObjectOfClass:v16 forKey:@"pr_posterConfigurableOptions"];
+    v17 = [coderCopy decodeObjectOfClass:v16 forKey:@"pr_posterConfigurableOptions"];
     [(_PRUISPosterStagedSceneSettings *)v5 pr_setPosterConfigurableOptions:v17];
 
     v18 = objc_opt_self();
-    v19 = [v4 decodeObjectOfClass:v18 forKey:@"pr_posterConfiguredProperties"];
+    v19 = [coderCopy decodeObjectOfClass:v18 forKey:@"pr_posterConfiguredProperties"];
     [(_PRUISPosterStagedSceneSettings *)v5 pr_setPosterConfiguredProperties:v19];
 
     v20 = objc_opt_self();
-    v21 = [v4 decodeObjectOfClass:v20 forKey:@"pr_posterTitleStyleConfiguration"];
+    v21 = [coderCopy decodeObjectOfClass:v20 forKey:@"pr_posterTitleStyleConfiguration"];
     [(_PRUISPosterStagedSceneSettings *)v5 pr_setPosterTitleStyleConfiguration:v21];
 
     v22 = objc_opt_self();
-    v23 = [v4 decodeObjectOfClass:v22 forKey:@"pr_posterAmbientConfiguration"];
+    v23 = [coderCopy decodeObjectOfClass:v22 forKey:@"pr_posterAmbientConfiguration"];
     [(_PRUISPosterStagedSceneSettings *)v5 pr_setPosterAmbientConfiguration:v23];
 
-    -[_PRUISPosterStagedSceneSettings pr_setDepthEffectDisallowed:](v5, "pr_setDepthEffectDisallowed:", [v4 decodeBoolForKey:@"pr_depthEffectDisallowed"]);
-    -[_PRUISPosterStagedSceneSettings pr_setEffectiveMotionEffectsMode:](v5, "pr_setEffectiveMotionEffectsMode:", [v4 decodeBoolForKey:@"pr_effectiveMotionEffectsMode"]);
-    -[_PRUISPosterStagedSceneSettings pui_setInlineComplicationConfigured:](v5, "pui_setInlineComplicationConfigured:", [v4 decodeBoolForKey:@"pui_inlineComplicationConfigured"]);
-    -[_PRUISPosterStagedSceneSettings pui_setComplicationRowConfigured:](v5, "pui_setComplicationRowConfigured:", [v4 decodeBoolForKey:@"pui_complicationRowConfigured"]);
-    -[_PRUISPosterStagedSceneSettings pui_setComplicationSidebarConfigured:](v5, "pui_setComplicationSidebarConfigured:", [v4 decodeBoolForKey:@"pui_complicationSidebarConfigured"]);
-    -[_PRUISPosterStagedSceneSettings pr_setAlternateDateEnabled:](v5, "pr_setAlternateDateEnabled:", [v4 decodeBoolForKey:@"pr_alternateDateEnabled"]);
-    -[_PRUISPosterStagedSceneSettings pui_setExtensionUserInteractionEnabled:](v5, "pui_setExtensionUserInteractionEnabled:", [v4 decodeBoolForKey:@"pui_extensionUserInteractionEnabled"]);
-    -[_PRUISPosterStagedSceneSettings pui_setShowsHeaderElements:](v5, "pui_setShowsHeaderElements:", [v4 decodeBoolForKey:@"pui_showsHeaderElements"]);
-    -[_PRUISPosterStagedSceneSettings pui_setShowsComplications:](v5, "pui_setShowsComplications:", [v4 decodeBoolForKey:@"pui_showsComplications"]);
-    -[_PRUISPosterStagedSceneSettings pui_setWallpaperObscured:](v5, "pui_setWallpaperObscured:", [v4 decodeBoolForKey:@"pui_wallpaperObscured"]);
-    -[_PRUISPosterStagedSceneSettings pui_setPosterBoundingShape:](v5, "pui_setPosterBoundingShape:", [v4 decodeIntegerForKey:@"pui_posterBoundingShape"]);
-    -[_PRUISPosterStagedSceneSettings pui_setComplicationRowAtBottom:](v5, "pui_setComplicationRowAtBottom:", [v4 decodeBoolForKey:@"pui_complicationRowAtBottom"]);
-    -[_PRUISPosterStagedSceneSettings pui_setAdaptiveTimeDisabled:](v5, "pui_setAdaptiveTimeDisabled:", [v4 decodeBoolForKey:@"pui_adaptiveTimeDisabled"]);
-    [v4 decodeCGRectForKey:@"pr_horizontalTitleBoundingRect"];
+    -[_PRUISPosterStagedSceneSettings pr_setDepthEffectDisallowed:](v5, "pr_setDepthEffectDisallowed:", [coderCopy decodeBoolForKey:@"pr_depthEffectDisallowed"]);
+    -[_PRUISPosterStagedSceneSettings pr_setEffectiveMotionEffectsMode:](v5, "pr_setEffectiveMotionEffectsMode:", [coderCopy decodeBoolForKey:@"pr_effectiveMotionEffectsMode"]);
+    -[_PRUISPosterStagedSceneSettings pui_setInlineComplicationConfigured:](v5, "pui_setInlineComplicationConfigured:", [coderCopy decodeBoolForKey:@"pui_inlineComplicationConfigured"]);
+    -[_PRUISPosterStagedSceneSettings pui_setComplicationRowConfigured:](v5, "pui_setComplicationRowConfigured:", [coderCopy decodeBoolForKey:@"pui_complicationRowConfigured"]);
+    -[_PRUISPosterStagedSceneSettings pui_setComplicationSidebarConfigured:](v5, "pui_setComplicationSidebarConfigured:", [coderCopy decodeBoolForKey:@"pui_complicationSidebarConfigured"]);
+    -[_PRUISPosterStagedSceneSettings pr_setAlternateDateEnabled:](v5, "pr_setAlternateDateEnabled:", [coderCopy decodeBoolForKey:@"pr_alternateDateEnabled"]);
+    -[_PRUISPosterStagedSceneSettings pui_setExtensionUserInteractionEnabled:](v5, "pui_setExtensionUserInteractionEnabled:", [coderCopy decodeBoolForKey:@"pui_extensionUserInteractionEnabled"]);
+    -[_PRUISPosterStagedSceneSettings pui_setShowsHeaderElements:](v5, "pui_setShowsHeaderElements:", [coderCopy decodeBoolForKey:@"pui_showsHeaderElements"]);
+    -[_PRUISPosterStagedSceneSettings pui_setShowsComplications:](v5, "pui_setShowsComplications:", [coderCopy decodeBoolForKey:@"pui_showsComplications"]);
+    -[_PRUISPosterStagedSceneSettings pui_setWallpaperObscured:](v5, "pui_setWallpaperObscured:", [coderCopy decodeBoolForKey:@"pui_wallpaperObscured"]);
+    -[_PRUISPosterStagedSceneSettings pui_setPosterBoundingShape:](v5, "pui_setPosterBoundingShape:", [coderCopy decodeIntegerForKey:@"pui_posterBoundingShape"]);
+    -[_PRUISPosterStagedSceneSettings pui_setComplicationRowAtBottom:](v5, "pui_setComplicationRowAtBottom:", [coderCopy decodeBoolForKey:@"pui_complicationRowAtBottom"]);
+    -[_PRUISPosterStagedSceneSettings pui_setAdaptiveTimeDisabled:](v5, "pui_setAdaptiveTimeDisabled:", [coderCopy decodeBoolForKey:@"pui_adaptiveTimeDisabled"]);
+    [coderCopy decodeCGRectForKey:@"pr_horizontalTitleBoundingRect"];
     [(_PRUISPosterStagedSceneSettings *)v5 pr_setHorizontalTitleBoundingRect:?];
-    [v4 decodeCGRectForKey:@"pr_verticalTitleBoundingRect"];
+    [coderCopy decodeCGRectForKey:@"pr_verticalTitleBoundingRect"];
     [(_PRUISPosterStagedSceneSettings *)v5 pr_setVerticalTitleBoundingRect:?];
-    -[_PRUISPosterStagedSceneSettings pui_setMode:](v5, "pui_setMode:", [v4 decodeIntegerForKey:@"pui_mode"]);
-    -[_PRUISPosterStagedSceneSettings pui_setContent:](v5, "pui_setContent:", [v4 decodeIntegerForKey:@"pui_content"]);
-    -[_PRUISPosterStagedSceneSettings pui_setSnapshot:](v5, "pui_setSnapshot:", [v4 decodeBoolForKey:@"pui_snapshot"]);
-    -[_PRUISPosterStagedSceneSettings pui_setFloatingLayerSnapshot:](v5, "pui_setFloatingLayerSnapshot:", [v4 decodeBoolForKey:@"pui_floatingLayerSnapshot"]);
-    [v4 decodeFloatForKey:@"pr_unlockProgress"];
+    -[_PRUISPosterStagedSceneSettings pui_setMode:](v5, "pui_setMode:", [coderCopy decodeIntegerForKey:@"pui_mode"]);
+    -[_PRUISPosterStagedSceneSettings pui_setContent:](v5, "pui_setContent:", [coderCopy decodeIntegerForKey:@"pui_content"]);
+    -[_PRUISPosterStagedSceneSettings pui_setSnapshot:](v5, "pui_setSnapshot:", [coderCopy decodeBoolForKey:@"pui_snapshot"]);
+    -[_PRUISPosterStagedSceneSettings pui_setFloatingLayerSnapshot:](v5, "pui_setFloatingLayerSnapshot:", [coderCopy decodeBoolForKey:@"pui_floatingLayerSnapshot"]);
+    [coderCopy decodeFloatForKey:@"pr_unlockProgress"];
     [(_PRUISPosterStagedSceneSettings *)v5 pr_setUnlockProgress:v24];
-    -[_PRUISPosterStagedSceneSettings pui_setSignificantEventsCounter:](v5, "pui_setSignificantEventsCounter:", [v4 decodeIntegerForKey:@"pui_significantEventsCounter"]);
+    -[_PRUISPosterStagedSceneSettings pui_setSignificantEventsCounter:](v5, "pui_setSignificantEventsCounter:", [coderCopy decodeIntegerForKey:@"pui_significantEventsCounter"]);
     v25 = MEMORY[0x1E695DFD8];
     v26 = objc_opt_self();
     v27 = objc_opt_self();
     v28 = [v25 setWithObjects:{v26, v27, 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"pui_sceneAttachments"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"pui_sceneAttachments"];
     [(_PRUISPosterStagedSceneSettings *)v5 pui_setSceneAttachments:v29];
 
-    -[_PRUISPosterStagedSceneSettings pr_setWakeSourceIsSwipeToUnlock:](v5, "pr_setWakeSourceIsSwipeToUnlock:", [v4 decodeBoolForKey:@"pr_wakeSourceIsSwipeToUnlock"]);
-    -[_PRUISPosterStagedSceneSettings pr_setTitleAlignment:](v5, "pr_setTitleAlignment:", [v4 decodeIntegerForKey:@"pr_titleAlignment"]);
-    -[_PRUISPosterStagedSceneSettings pr_setAdjustedLuminance:](v5, "pr_setAdjustedLuminance:", [v4 decodeIntegerForKey:@"pr_adjustedLuminance"]);
-    -[_PRUISPosterStagedSceneSettings setAmbientPresented:](v5, "setAmbientPresented:", [v4 decodeBoolForKey:@"ambientPresented"]);
-    -[_PRUISPosterStagedSceneSettings setAmbientDisplayStyle:](v5, "setAmbientDisplayStyle:", [v4 decodeIntegerForKey:@"ambientDisplayStyle"]);
-    -[_PRUISPosterStagedSceneSettings pr_setAppliesCountertransformForRotation:](v5, "pr_setAppliesCountertransformForRotation:", [v4 decodeBoolForKey:@"pr_appliesCountertransformForRotation"]);
-    [v4 decodeCGRectForKey:@"pui_salientContentRectangle"];
+    -[_PRUISPosterStagedSceneSettings pr_setWakeSourceIsSwipeToUnlock:](v5, "pr_setWakeSourceIsSwipeToUnlock:", [coderCopy decodeBoolForKey:@"pr_wakeSourceIsSwipeToUnlock"]);
+    -[_PRUISPosterStagedSceneSettings pr_setTitleAlignment:](v5, "pr_setTitleAlignment:", [coderCopy decodeIntegerForKey:@"pr_titleAlignment"]);
+    -[_PRUISPosterStagedSceneSettings pr_setAdjustedLuminance:](v5, "pr_setAdjustedLuminance:", [coderCopy decodeIntegerForKey:@"pr_adjustedLuminance"]);
+    -[_PRUISPosterStagedSceneSettings setAmbientPresented:](v5, "setAmbientPresented:", [coderCopy decodeBoolForKey:@"ambientPresented"]);
+    -[_PRUISPosterStagedSceneSettings setAmbientDisplayStyle:](v5, "setAmbientDisplayStyle:", [coderCopy decodeIntegerForKey:@"ambientDisplayStyle"]);
+    -[_PRUISPosterStagedSceneSettings pr_setAppliesCountertransformForRotation:](v5, "pr_setAppliesCountertransformForRotation:", [coderCopy decodeBoolForKey:@"pr_appliesCountertransformForRotation"]);
+    [coderCopy decodeCGRectForKey:@"pui_salientContentRectangle"];
     [(_PRUISPosterStagedSceneSettings *)v5 pui_setSalientContentRectangle:?];
     v30 = objc_opt_self();
-    v31 = [v4 decodeObjectOfClass:v30 forKey:@"pui_contentOcclusionRectangles"];
+    v31 = [coderCopy decodeObjectOfClass:v30 forKey:@"pui_contentOcclusionRectangles"];
     [(_PRUISPosterStagedSceneSettings *)v5 pui_setContentOcclusionRectangles:v31];
 
-    [v4 decodeDoubleForKey:@"pr_deviceMotionUpdateInterval"];
+    [coderCopy decodeDoubleForKey:@"pr_deviceMotionUpdateInterval"];
     [(_PRUISPosterStagedSceneSettings *)v5 pr_setDeviceMotionUpdateInterval:?];
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pr_posterHostedContentSettings"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pr_posterHostedContentSettings"];
     [(_PRUISPosterStagedSceneSettings *)v5 pr_setPosterHostedContentSettings:v32];
 
-    -[_PRUISPosterStagedSceneSettings pui_setShowingIdealizedTime:](v5, "pui_setShowingIdealizedTime:", [v4 decodeBoolForKey:@"pui_isShowingIdealizedTime"]);
-    -[_PRUISPosterStagedSceneSettings pui_setIdle:](v5, "pui_setIdle:", [v4 decodeBoolForKey:@"pui_isIdle"]);
-    -[_PRUISPosterStagedSceneSettings pui_setEditorPreview:](v5, "pui_setEditorPreview:", [v4 decodeBoolForKey:@"pui_isEditorPreview"]);
+    -[_PRUISPosterStagedSceneSettings pui_setShowingIdealizedTime:](v5, "pui_setShowingIdealizedTime:", [coderCopy decodeBoolForKey:@"pui_isShowingIdealizedTime"]);
+    -[_PRUISPosterStagedSceneSettings pui_setIdle:](v5, "pui_setIdle:", [coderCopy decodeBoolForKey:@"pui_isIdle"]);
+    -[_PRUISPosterStagedSceneSettings pui_setEditorPreview:](v5, "pui_setEditorPreview:", [coderCopy decodeBoolForKey:@"pui_isEditorPreview"]);
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_PRUISPosterStagedSceneSettings allocWithZone:?]];
   v5 = [(NSString *)self->_role copy];
@@ -272,17 +272,17 @@
   return v4;
 }
 
-- (void)applyToMutableSceneSettings:(id)a3 role:(id)a4
+- (void)applyToMutableSceneSettings:(id)settings role:(id)role
 {
-  v8 = a3;
-  v6 = a4;
-  PRUISPosterSceneSettingsApplyPRSceneSettings(self, v8);
-  PRUISPosterSceneSettingsApplyPRRenderingSceneSettings(self, v8);
-  v7 = [v6 isEqualToString:*MEMORY[0x1E69C53A8]];
+  settingsCopy = settings;
+  roleCopy = role;
+  PRUISPosterSceneSettingsApplyPRSceneSettings(self, settingsCopy);
+  PRUISPosterSceneSettingsApplyPRRenderingSceneSettings(self, settingsCopy);
+  v7 = [roleCopy isEqualToString:*MEMORY[0x1E69C53A8]];
 
   if (v7)
   {
-    PRUISPosterSceneSettingsApplyAMUIAmbientPresentationSettings(self, v8);
+    PRUISPosterSceneSettingsApplyAMUIAmbientPresentationSettings(self, settingsCopy);
   }
 }
 

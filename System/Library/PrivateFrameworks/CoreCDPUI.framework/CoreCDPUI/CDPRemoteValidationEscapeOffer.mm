@@ -1,23 +1,23 @@
 @interface CDPRemoteValidationEscapeOffer
-- (CDPRemoteValidationEscapeOffer)initWithCDPContext:(id)a3;
+- (CDPRemoteValidationEscapeOffer)initWithCDPContext:(id)context;
 - (NSString)title;
 - (UIViewController)presentingViewController;
-- (id)_actionFromEscapeOption:(id)a3;
-- (id)_makeEventForEscapeOptionSelectedWithKey:(id)a3;
+- (id)_actionFromEscapeOption:(id)option;
+- (id)_makeEventForEscapeOptionSelectedWithKey:(id)key;
 - (id)escapeOptions;
-- (int64_t)_styleForEscapeOption:(id)a3;
-- (void)_performActionForEscapeOption:(id)a3;
-- (void)_sendEscapeOfferPresentedEventWithOptions:(id)a3;
-- (void)addEscapeOptionsObject:(id)a3;
-- (void)dismissOfferAnimated:(BOOL)a3 completion:(id)a4;
-- (void)handleEscapeAction:(id)a3;
+- (int64_t)_styleForEscapeOption:(id)option;
+- (void)_performActionForEscapeOption:(id)option;
+- (void)_sendEscapeOfferPresentedEventWithOptions:(id)options;
+- (void)addEscapeOptionsObject:(id)object;
+- (void)dismissOfferAnimated:(BOOL)animated completion:(id)completion;
+- (void)handleEscapeAction:(id)action;
 @end
 
 @implementation CDPRemoteValidationEscapeOffer
 
-- (CDPRemoteValidationEscapeOffer)initWithCDPContext:(id)a3
+- (CDPRemoteValidationEscapeOffer)initWithCDPContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = CDPRemoteValidationEscapeOffer;
   v6 = [(CDPRemoteValidationEscapeOffer *)&v10 init];
@@ -27,22 +27,22 @@
     escapeOptions = v6->_escapeOptions;
     v6->_escapeOptions = v7;
 
-    objc_storeStrong(&v6->_cdpContext, a3);
+    objc_storeStrong(&v6->_cdpContext, context);
   }
 
   return v6;
 }
 
-- (void)addEscapeOptionsObject:(id)a3
+- (void)addEscapeOptionsObject:(id)object
 {
-  v4 = a3;
-  if (!v4)
+  objectCopy = object;
+  if (!objectCopy)
   {
     [CDPRemoteValidationEscapeOffer addEscapeOptionsObject:];
   }
 
-  v5 = v4;
-  [(NSMutableArray *)self->_escapeOptions addObject:v4];
+  v5 = objectCopy;
+  [(NSMutableArray *)self->_escapeOptions addObject:objectCopy];
 }
 
 - (id)escapeOptions
@@ -65,34 +65,34 @@
   return v3;
 }
 
-- (void)handleEscapeAction:(id)a3
+- (void)handleEscapeAction:(id)action
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(CDPRemoteValidationEscapeOffer *)self escapeOptions];
-  if ([v5 count] != 1)
+  escapeOptions = [(CDPRemoteValidationEscapeOffer *)self escapeOptions];
+  if ([escapeOptions count] != 1)
   {
 
     goto LABEL_8;
   }
 
-  v6 = [(CDPRemoteValidationEscapeOffer *)self escapeOptions];
-  v7 = [v6 firstObject];
-  v8 = [v7 style];
+  escapeOptions2 = [(CDPRemoteValidationEscapeOffer *)self escapeOptions];
+  firstObject = [escapeOptions2 firstObject];
+  style = [firstObject style];
 
-  if (v8 != 4)
+  if (style != 4)
   {
 LABEL_8:
     v18 = MEMORY[0x277D75110];
-    v19 = [(CDPRemoteValidationEscapeOffer *)self title];
-    v20 = [(CDPRemoteValidationEscapeOffer *)self message];
-    v21 = [v18 alertControllerWithTitle:v19 message:v20 preferredStyle:1];
+    title = [(CDPRemoteValidationEscapeOffer *)self title];
+    message = [(CDPRemoteValidationEscapeOffer *)self message];
+    v21 = [v18 alertControllerWithTitle:title message:message preferredStyle:1];
 
-    v22 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-    v23 = [(CDPRemoteValidationEscapeOffer *)self titleTelemetryKey];
-    v24 = [(CDPRemoteValidationEscapeOffer *)self _makeEventForEscapeOptionSelectedWithKey:v23];
-    [v22 sendEvent:v24];
+    rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+    titleTelemetryKey = [(CDPRemoteValidationEscapeOffer *)self titleTelemetryKey];
+    v24 = [(CDPRemoteValidationEscapeOffer *)self _makeEventForEscapeOptionSelectedWithKey:titleTelemetryKey];
+    [rtcAnalyticsReporter sendEvent:v24];
 
-    v25 = [(CDPRemoteValidationEscapeOffer *)self escapeOptions];
+    escapeOptions3 = [(CDPRemoteValidationEscapeOffer *)self escapeOptions];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __53__CDPRemoteValidationEscapeOffer_handleEscapeAction___block_invoke;
@@ -101,42 +101,42 @@ LABEL_8:
     v31 = v21;
     v26 = v4;
     v32 = v26;
-    v10 = v21;
-    [v25 enumerateObjectsUsingBlock:v30];
+    firstObject2 = v21;
+    [escapeOptions3 enumerateObjectsUsingBlock:v30];
 
-    v27 = [(CDPRemoteValidationEscapeOffer *)self presentingViewController];
+    presentingViewController = [(CDPRemoteValidationEscapeOffer *)self presentingViewController];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __53__CDPRemoteValidationEscapeOffer_handleEscapeAction___block_invoke_2;
     v28[3] = &unk_278E2B2D0;
     v28[4] = self;
     v29 = v26;
-    [v27 presentViewController:v10 animated:1 completion:v28];
+    [presentingViewController presentViewController:firstObject2 animated:1 completion:v28];
 
     goto LABEL_9;
   }
 
-  v9 = [(CDPRemoteValidationEscapeOffer *)self escapeOptions];
-  v10 = [v9 firstObject];
+  escapeOptions4 = [(CDPRemoteValidationEscapeOffer *)self escapeOptions];
+  firstObject2 = [escapeOptions4 firstObject];
 
-  v11 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  v12 = [v10 titleTelemetryKey];
-  v13 = [(CDPRemoteValidationEscapeOffer *)self _makeEventForEscapeOptionSelectedWithKey:v12];
-  [v11 sendEvent:v13];
+  rtcAnalyticsReporter2 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  titleTelemetryKey2 = [firstObject2 titleTelemetryKey];
+  v13 = [(CDPRemoteValidationEscapeOffer *)self _makeEventForEscapeOptionSelectedWithKey:titleTelemetryKey2];
+  [rtcAnalyticsReporter2 sendEvent:v13];
 
-  v14 = [v10 escapeAction];
+  escapeAction = [firstObject2 escapeAction];
 
-  if (v14)
+  if (escapeAction)
   {
-    v15 = [v10 escapeAction];
-    v15[2]();
+    escapeAction2 = [firstObject2 escapeAction];
+    escapeAction2[2]();
 
-    v16 = [v10 titleTelemetryKey];
+    titleTelemetryKey3 = [firstObject2 titleTelemetryKey];
 
-    if (v16)
+    if (titleTelemetryKey3)
     {
-      v17 = [v10 titleTelemetryKey];
-      [v4 addObject:v17];
+      titleTelemetryKey4 = [firstObject2 titleTelemetryKey];
+      [v4 addObject:titleTelemetryKey4];
     }
 
     [(CDPRemoteValidationEscapeOffer *)self _sendEscapeOfferPresentedEventWithOptions:v4];
@@ -170,20 +170,20 @@ void __53__CDPRemoteValidationEscapeOffer_handleEscapeAction___block_invoke(uint
   }
 }
 
-- (id)_actionFromEscapeOption:(id)a3
+- (id)_actionFromEscapeOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   v5 = MEMORY[0x277D750F8];
-  v6 = [v4 title];
-  v7 = [(CDPRemoteValidationEscapeOffer *)self _styleForEscapeOption:v4];
+  title = [optionCopy title];
+  v7 = [(CDPRemoteValidationEscapeOffer *)self _styleForEscapeOption:optionCopy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__CDPRemoteValidationEscapeOffer__actionFromEscapeOption___block_invoke;
   v11[3] = &unk_278E2B7F8;
   v11[4] = self;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v5 actionWithTitle:v6 style:v7 handler:v11];
+  v12 = optionCopy;
+  v8 = optionCopy;
+  v9 = [v5 actionWithTitle:title style:v7 handler:v11];
 
   return v9;
 }
@@ -200,56 +200,56 @@ void __58__CDPRemoteValidationEscapeOffer__actionFromEscapeOption___block_invoke
   dispatch_async(MEMORY[0x277D85CD0], v2);
 }
 
-- (void)_performActionForEscapeOption:(id)a3
+- (void)_performActionForEscapeOption:(id)option
 {
-  v9 = a3;
-  v4 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  v5 = [v9 titleTelemetryKey];
-  v6 = [(CDPRemoteValidationEscapeOffer *)self _makeEventForEscapeOptionSelectedWithKey:v5];
-  [v4 sendEvent:v6];
+  optionCopy = option;
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  titleTelemetryKey = [optionCopy titleTelemetryKey];
+  v6 = [(CDPRemoteValidationEscapeOffer *)self _makeEventForEscapeOptionSelectedWithKey:titleTelemetryKey];
+  [rtcAnalyticsReporter sendEvent:v6];
 
-  v7 = [v9 escapeAction];
+  escapeAction = [optionCopy escapeAction];
 
-  if (v7)
+  if (escapeAction)
   {
-    v8 = [v9 escapeAction];
-    v8[2]();
+    escapeAction2 = [optionCopy escapeAction];
+    escapeAction2[2]();
   }
 }
 
-- (int64_t)_styleForEscapeOption:(id)a3
+- (int64_t)_styleForEscapeOption:(id)option
 {
-  v3 = [a3 style];
-  if (v3 == 1)
+  style = [option style];
+  if (style == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v3 == 2);
+    return 2 * (style == 2);
   }
 }
 
-- (void)dismissOfferAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissOfferAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CDPRemoteValidationEscapeOffer *)self presentingViewController];
-  [v7 dismissViewControllerAnimated:v4 completion:v6];
+  animatedCopy = animated;
+  completionCopy = completion;
+  presentingViewController = [(CDPRemoteValidationEscapeOffer *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:animatedCopy completion:completionCopy];
 }
 
-- (void)_sendEscapeOfferPresentedEventWithOptions:(id)a3
+- (void)_sendEscapeOfferPresentedEventWithOptions:(id)options
 {
-  v4 = a3;
-  if ([v4 count])
+  optionsCopy = options;
+  if ([optionsCopy count])
   {
     v5 = [MEMORY[0x277CE44D8] analyticsEventWithContext:self->_cdpContext eventName:*MEMORY[0x277CFD6D0] category:*MEMORY[0x277CFD930]];
-    v6 = [v4 aaf_arrayAsCommaSeperatedString];
-    [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x277CFD6C8]];
+    aaf_arrayAsCommaSeperatedString = [optionsCopy aaf_arrayAsCommaSeperatedString];
+    [v5 setObject:aaf_arrayAsCommaSeperatedString forKeyedSubscript:*MEMORY[0x277CFD6C8]];
 
-    v7 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-    [v7 sendEvent:v5];
+    rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+    [rtcAnalyticsReporter sendEvent:v5];
   }
 
   else
@@ -262,14 +262,14 @@ void __58__CDPRemoteValidationEscapeOffer__actionFromEscapeOption___block_invoke
   }
 }
 
-- (id)_makeEventForEscapeOptionSelectedWithKey:(id)a3
+- (id)_makeEventForEscapeOptionSelectedWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [MEMORY[0x277CE44D8] analyticsEventWithContext:self->_cdpContext eventName:*MEMORY[0x277CFD6E0] category:*MEMORY[0x277CFD930]];
   v6 = v5;
-  if (v4)
+  if (keyCopy)
   {
-    [v5 setObject:v4 forKeyedSubscript:*MEMORY[0x277CFD6D8]];
+    [v5 setObject:keyCopy forKeyedSubscript:*MEMORY[0x277CFD6D8]];
   }
 
   return v6;

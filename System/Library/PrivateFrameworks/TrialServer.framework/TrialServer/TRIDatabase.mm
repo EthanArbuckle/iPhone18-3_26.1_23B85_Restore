@@ -1,12 +1,12 @@
 @interface TRIDatabase
-- (BOOL)dropTableWithName:(id)a3 transaction:(id)a4;
-- (TRIDatabase)initWithPaths:(id)a3 databasePath:(id)a4 storageManagement:(id)a5 performMigrations:(BOOL)a6;
-- (TRIDatabase)initWithPaths:(id)a3 storageManagement:(id)a4;
-- (_PASDBTransactionCompletion_)readTransactionWithFailableBlock:(id)a3;
-- (_PASDBTransactionCompletion_)writeTransactionWithFailableBlock:(id)a3;
-- (id)createTempTableContainingRowsFromQuery:(id)a3 bind:(id)a4 namePrefix:(id)a5 transaction:(id)a6;
+- (BOOL)dropTableWithName:(id)name transaction:(id)transaction;
+- (TRIDatabase)initWithPaths:(id)paths databasePath:(id)path storageManagement:(id)management performMigrations:(BOOL)migrations;
+- (TRIDatabase)initWithPaths:(id)paths storageManagement:(id)management;
+- (_PASDBTransactionCompletion_)readTransactionWithFailableBlock:(id)block;
+- (_PASDBTransactionCompletion_)writeTransactionWithFailableBlock:(id)block;
+- (id)createTempTableContainingRowsFromQuery:(id)query bind:(id)bind namePrefix:(id)prefix transaction:(id)transaction;
 - (id)migrations;
-- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)a3;
+- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)version;
 - (unsigned)migration_addTaskCapability;
 - (unsigned)migration_conditionallyRemoveBMLTFactorPackInfo;
 - (unsigned)migration_dropBMLTDatabasesAndShadowEvaluationRolloutsAndExperiments;
@@ -19,37 +19,37 @@
 
 @implementation TRIDatabase
 
-- (TRIDatabase)initWithPaths:(id)a3 storageManagement:(id)a4
+- (TRIDatabase)initWithPaths:(id)paths storageManagement:(id)management
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  pathsCopy = paths;
+  managementCopy = management;
+  if (!pathsCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"paths"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"paths"}];
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = [v7 databaseDir];
-  v11 = [v10 stringByAppendingPathComponent:@"triald.db"];
+  databaseDir = [pathsCopy databaseDir];
+  v11 = [databaseDir stringByAppendingPathComponent:@"triald.db"];
 
   objc_autoreleasePoolPop(v9);
-  v12 = [(TRIDatabase *)self initWithPaths:v7 databasePath:v11 storageManagement:v8 performMigrations:1];
+  v12 = [(TRIDatabase *)self initWithPaths:pathsCopy databasePath:v11 storageManagement:managementCopy performMigrations:1];
 
   return v12;
 }
 
-- (TRIDatabase)initWithPaths:(id)a3 databasePath:(id)a4 storageManagement:(id)a5 performMigrations:(BOOL)a6
+- (TRIDatabase)initWithPaths:(id)paths databasePath:(id)path storageManagement:(id)management performMigrations:(BOOL)migrations
 {
-  v6 = a6;
+  migrationsCopy = migrations;
   v70 = *MEMORY[0x277D85DE8];
-  v53 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = v13;
-  if (v12)
+  pathsCopy = paths;
+  pathCopy = path;
+  managementCopy = management;
+  v14 = managementCopy;
+  if (pathCopy)
   {
-    if (v13)
+    if (managementCopy)
     {
       goto LABEL_3;
     }
@@ -57,8 +57,8 @@
 
   else
   {
-    v51 = [MEMORY[0x277CCA890] currentHandler];
-    [v51 handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"databasePath"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"databasePath"}];
 
     if (v14)
     {
@@ -66,8 +66,8 @@
     }
   }
 
-  v52 = [MEMORY[0x277CCA890] currentHandler];
-  [v52 handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"storageManagement"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"storageManagement"}];
 
 LABEL_3:
   v59.receiver = self;
@@ -76,9 +76,9 @@ LABEL_3:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_paths, a3);
-    objc_storeStrong(&v16->_storageManagement, a5);
-    objc_storeStrong(&v16->_databasePath, a4);
+    objc_storeStrong(&v15->_paths, paths);
+    objc_storeStrong(&v16->_storageManagement, management);
+    objc_storeStrong(&v16->_databasePath, path);
     if (([MEMORY[0x277D42630] isInMemoryPath:v16->_databasePath] & 1) == 0 && objc_msgSend(MEMORY[0x277D42598], "isClassCLocked"))
     {
       v17 = TRILogCategory_Server();
@@ -95,9 +95,9 @@ LABEL_3:
     {
       if (([MEMORY[0x277D42630] isInMemoryPath:v16->_databasePath] & 1) == 0)
       {
-        v21 = [(NSString *)v16->_databasePath stringByDeletingLastPathComponent];
-        v22 = [MEMORY[0x277CCAA00] defaultManager];
-        [v22 createDirectoryAtPath:v21 withIntermediateDirectories:1 attributes:0 error:0];
+        stringByDeletingLastPathComponent = [(NSString *)v16->_databasePath stringByDeletingLastPathComponent];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
       }
 
       v20 = 1;
@@ -160,8 +160,8 @@ LABEL_3:
       }
 
       v31 = MEMORY[0x277D42630];
-      v32 = [(_PASSqliteDatabase *)v16->_db filename];
-      [v31 truncateDatabaseAtPath:v32];
+      filename = [(_PASSqliteDatabase *)v16->_db filename];
+      [v31 truncateDatabaseAtPath:filename];
 
       [(_PASSqliteDatabase *)v16->_db closePermanently];
       [(TRIStorageManagementProtocol *)v16->_storageManagement requestTrialStorageResetOnNextLaunch];
@@ -229,9 +229,9 @@ LABEL_39:
       }
     }
 
-    v37 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     defaults = v16->_defaults;
-    v16->_defaults = v37;
+    v16->_defaults = standardUserDefaults;
 
     v39 = objc_opt_new();
     kvoHandler = v16->_kvoHandler;
@@ -248,7 +248,7 @@ LABEL_39:
     objc_copyWeak(&v55, &buf);
     [(_PASKVOHandler *)v41 reactAfterChangesToKeyPath:@"queryPlanLoggingEnabled" ofObject:v42 usingBlock:v54];
     [(TRIDatabase *)v16 _updateQueryPlanLogging];
-    if (v6 && ![(TRIDatabase *)v16 migrateToVersion:*MEMORY[0x277D426A0]])
+    if (migrationsCopy && ![(TRIDatabase *)v16 migrateToVersion:*MEMORY[0x277D426A0]])
     {
       v48 = TRILogCategory_Server();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -287,30 +287,30 @@ void __78__TRIDatabase_initWithPaths_databasePath_storageManagement_performMigra
   [WeakRetained _updateQueryPlanLogging];
 }
 
-- (_PASDBTransactionCompletion_)readTransactionWithFailableBlock:(id)a3
+- (_PASDBTransactionCompletion_)readTransactionWithFailableBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
-  v6.var0 = [MEMORY[0x277D42640] readTransactionWithHandle:self->_db failableBlock:v5];
+  v6.var0 = [MEMORY[0x277D42640] readTransactionWithHandle:self->_db failableBlock:blockCopy];
 
   return v6;
 }
 
-- (_PASDBTransactionCompletion_)writeTransactionWithFailableBlock:(id)a3
+- (_PASDBTransactionCompletion_)writeTransactionWithFailableBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:189 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:189 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
-  v6.var0 = [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db failableBlock:v5];
+  v6.var0 = [MEMORY[0x277D42640] writeTransactionWithHandle:self->_db failableBlock:blockCopy];
 
   return v6;
 }
@@ -331,17 +331,17 @@ uint64_t __21__TRIDatabase_vacuum__block_invoke(uint64_t a1, void *a2)
   return *MEMORY[0x277D42698];
 }
 
-- (id)createTempTableContainingRowsFromQuery:(id)a3 bind:(id)a4 namePrefix:(id)a5 transaction:(id)a6
+- (id)createTempTableContainingRowsFromQuery:(id)query bind:(id)bind namePrefix:(id)prefix transaction:(id)transaction
 {
   v33 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (v11)
+  queryCopy = query;
+  bindCopy = bind;
+  prefixCopy = prefix;
+  transactionCopy = transaction;
+  v15 = transactionCopy;
+  if (queryCopy)
   {
-    if (v14)
+    if (transactionCopy)
     {
       goto LABEL_3;
     }
@@ -349,8 +349,8 @@ uint64_t __21__TRIDatabase_vacuum__block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:218 description:{@"Invalid parameter not satisfying: %@", @"query"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:218 description:{@"Invalid parameter not satisfying: %@", @"query"}];
 
     if (v15)
     {
@@ -358,15 +358,15 @@ uint64_t __21__TRIDatabase_vacuum__block_invoke(uint64_t a1, void *a2)
     }
   }
 
-  v31 = [MEMORY[0x277CCA890] currentHandler];
-  [v31 handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:219 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:219 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
 
 LABEL_3:
-  v16 = [(__CFString *)v13 length];
+  v16 = [(__CFString *)prefixCopy length];
   v17 = @"temp";
   if (v16)
   {
-    v17 = v13;
+    v17 = prefixCopy;
   }
 
   v18 = v17;
@@ -374,15 +374,15 @@ LABEL_3:
   arc4random_buf(__buf, 0x10uLL);
   v19 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:__buf length:16 freeWhenDone:0];
   v20 = objc_alloc(MEMORY[0x277CCACA8]);
-  v21 = [v19 triHexlify];
-  v22 = [v20 initWithFormat:@"%@_%@", v18, v21];
+  triHexlify = [v19 triHexlify];
+  v22 = [v20 initWithFormat:@"%@_%@", v18, triHexlify];
 
   v23 = [v15 db];
-  v24 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"CREATE TEMP TABLE %@ AS %@;", v22, v11];
+  queryCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"CREATE TEMP TABLE %@ AS %@;", v22, queryCopy];
   v25 = [(TRIDatabase *)self generalErrorHandlerWithOutError:0];
-  LODWORD(v21) = [v23 prepAndRunQuery:v24 onPrep:v12 onRow:0 onError:v25];
+  LODWORD(triHexlify) = [v23 prepAndRunQuery:queryCopy onPrep:bindCopy onRow:0 onError:v25];
 
-  if (v21)
+  if (triHexlify)
   {
     v26 = v22;
   }
@@ -398,15 +398,15 @@ LABEL_3:
   return v26;
 }
 
-- (BOOL)dropTableWithName:(id)a3 transaction:(id)a4
+- (BOOL)dropTableWithName:(id)name transaction:(id)transaction
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  nameCopy = name;
+  transactionCopy = transaction;
+  v9 = transactionCopy;
+  if (!nameCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:239 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:239 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
     if (v9)
     {
@@ -414,22 +414,22 @@ LABEL_3:
     }
 
 LABEL_5:
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:240 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIDatabase.m" lineNumber:240 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!transactionCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DROP TABLE %@;", v7];
+  nameCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DROP TABLE %@;", nameCopy];
   v11 = [v9 db];
   v12 = [(TRIDatabase *)self generalErrorHandlerWithOutError:0];
-  v13 = [v11 prepAndRunQuery:v10 onPrep:0 onRow:0 onError:v12];
+  v13 = [v11 prepAndRunQuery:nameCopy onPrep:0 onRow:0 onError:v12];
 
   return v13;
 }
@@ -462,23 +462,23 @@ LABEL_3:
   paths = self->_paths;
   if (paths)
   {
-    v5 = [(TRIPaths *)paths logDir];
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    [v6 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:0];
+    logDir = [(TRIPaths *)paths logDir];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager createDirectoryAtPath:logDir withIntermediateDirectories:1 attributes:0 error:0];
 
     v7 = objc_opt_new();
     [v7 setFormatOptions:51];
     v8 = objc_alloc(MEMORY[0x277CCACA8]);
     v9 = objc_opt_new();
     v10 = [v7 stringFromDate:v9];
-    v11 = [MEMORY[0x277CCAC38] processInfo];
-    v12 = [v8 initWithFormat:@"explainQueryPlan-%@-pid_%d-handle_%p.log", v10, objc_msgSend(v11, "processIdentifier"), self->_db];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v12 = [v8 initWithFormat:@"explainQueryPlan-%@-pid_%d-handle_%p.log", v10, objc_msgSend(processInfo, "processIdentifier"), self->_db];
 
-    v13 = [v5 stringByAppendingPathComponent:v12];
-    LODWORD(v11) = [(_PASSqliteDatabase *)self->_db enableQueryPlanLoggingWithPath:v13];
+    v13 = [logDir stringByAppendingPathComponent:v12];
+    LODWORD(processInfo) = [(_PASSqliteDatabase *)self->_db enableQueryPlanLoggingWithPath:v13];
     v14 = TRILogCategory_Server();
     v15 = v14;
-    if (v11)
+    if (processInfo)
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
@@ -503,11 +503,11 @@ LABEL_3:
 
   else
   {
-    v5 = TRILogCategory_Server();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    logDir = TRILogCategory_Server();
+    if (os_log_type_enabled(logDir, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_26F567000, v5, OS_LOG_TYPE_ERROR, "Can't enable query plan logging, TRIPaths not available", buf, 2u);
+      _os_log_error_impl(&dword_26F567000, logDir, OS_LOG_TYPE_ERROR, "Can't enable query plan logging, TRIPaths not available", buf, 2u);
     }
   }
 
@@ -1023,11 +1023,11 @@ uint64_t __83__TRIDatabase_migration_dropBMLTDatabasesAndShadowEvaluationRollout
   return 4;
 }
 
-- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)a3
+- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)version
 {
-  if (a3)
+  if (version)
   {
-    *a3 = 0;
+    *version = 0;
   }
 
   return MEMORY[0x277CBEBF8];

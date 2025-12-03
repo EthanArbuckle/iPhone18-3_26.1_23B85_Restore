@@ -27,12 +27,12 @@ void __65__SBSUIScreenSharingOverlaySceneSpecification_uiSceneSessionRole__block
   v8[1] = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = SBSUIScreenSharingOverlaySceneSpecification;
-  v2 = [(UIApplicationSceneSpecification *)&v7 defaultExtensions];
-  v3 = [v2 count];
+  defaultExtensions = [(UIApplicationSceneSpecification *)&v7 defaultExtensions];
+  v3 = [defaultExtensions count];
   v4 = objc_opt_class();
   if (v3)
   {
-    [v2 arrayByAddingObject:v4];
+    [defaultExtensions arrayByAddingObject:v4];
   }
 
   else

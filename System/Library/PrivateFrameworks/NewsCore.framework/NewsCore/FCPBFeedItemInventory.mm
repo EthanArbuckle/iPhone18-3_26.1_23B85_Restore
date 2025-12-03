@@ -1,12 +1,12 @@
 @interface FCPBFeedItemInventory
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addFeedItems:(id)a3;
+- (void)addFeedItems:(id)items;
 - (void)dealloc;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FCPBFeedItemInventory
@@ -20,7 +20,7 @@
   [(FCPBFeedItemInventory *)&v3 dealloc];
 }
 
-- (void)addFeedItems:(id)a3
+- (void)addFeedItems:(id)items
 {
   feedItems = self->_feedItems;
   if (!feedItems)
@@ -29,7 +29,7 @@
     self->_feedItems = feedItems;
   }
 
-  [(NSMutableArray *)feedItems addObject:a3];
+  [(NSMutableArray *)feedItems addObject:items];
 }
 
 - (id)description
@@ -42,23 +42,23 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_inventoryVersion), @"inventory_version"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_inventoryVersion), @"inventory_version"}];
     has = self->_has;
   }
 
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_feedItemVersion), @"feed_item_version"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_feedItemVersion), @"feed_item_version"}];
   }
 
   lastRefreshed = self->_lastRefreshed;
   if (lastRefreshed)
   {
-    [v3 setObject:-[NTPBDate dictionaryRepresentation](lastRefreshed forKey:{"dictionaryRepresentation"), @"last_refreshed"}];
+    [dictionary setObject:-[NTPBDate dictionaryRepresentation](lastRefreshed forKey:{"dictionaryRepresentation"), @"last_refreshed"}];
   }
 
   if ([(NSMutableArray *)self->_feedItems count])
@@ -92,14 +92,14 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"feed_items"];
+    [dictionary setObject:v6 forKey:@"feed_items"];
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
   has = self->_has;
@@ -153,10 +153,10 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -172,7 +172,7 @@
     *(v5 + 40) |= 1u;
   }
 
-  v6[4] = [(NTPBDate *)self->_lastRefreshed copyWithZone:a3];
+  v6[4] = [(NTPBDate *)self->_lastRefreshed copyWithZone:zone];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -192,7 +192,7 @@
           objc_enumerationMutation(feedItems);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:zone];
         [v6 addFeedItems:v13];
       }
 
@@ -206,21 +206,21 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 40);
+    v6 = *(equal + 40);
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 40) & 2) == 0 || self->_inventoryVersion != *(a3 + 6))
+      if ((*(equal + 40) & 2) == 0 || self->_inventoryVersion != *(equal + 6))
       {
         goto LABEL_16;
       }
     }
 
-    else if ((*(a3 + 40) & 2) != 0)
+    else if ((*(equal + 40) & 2) != 0)
     {
 LABEL_16:
       LOBYTE(v5) = 0;
@@ -229,22 +229,22 @@ LABEL_16:
 
     if (*&self->_has)
     {
-      if ((*(a3 + 40) & 1) == 0 || self->_feedItemVersion != *(a3 + 2))
+      if ((*(equal + 40) & 1) == 0 || self->_feedItemVersion != *(equal + 2))
       {
         goto LABEL_16;
       }
     }
 
-    else if (*(a3 + 40))
+    else if (*(equal + 40))
     {
       goto LABEL_16;
     }
 
     lastRefreshed = self->_lastRefreshed;
-    if (!(lastRefreshed | *(a3 + 4)) || (v5 = [(NTPBDate *)lastRefreshed isEqual:?]) != 0)
+    if (!(lastRefreshed | *(equal + 4)) || (v5 = [(NTPBDate *)lastRefreshed isEqual:?]) != 0)
     {
       feedItems = self->_feedItems;
-      if (feedItems | *(a3 + 2))
+      if (feedItems | *(equal + 2))
       {
 
         LOBYTE(v5) = [(NSMutableArray *)feedItems isEqual:?];

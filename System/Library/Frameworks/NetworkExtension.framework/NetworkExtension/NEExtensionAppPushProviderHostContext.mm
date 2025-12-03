@@ -1,12 +1,12 @@
 @interface NEExtensionAppPushProviderHostContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (void)reportIncomingCall:(id)a3;
-- (void)reportPushToTalkMessage:(id)a3;
-- (void)sendOutgoingCallMessage:(id)a3 completionHandler:(id)a4;
+- (void)reportIncomingCall:(id)call;
+- (void)reportPushToTalkMessage:(id)message;
+- (void)sendOutgoingCallMessage:(id)message completionHandler:(id)handler;
 - (void)sendTimerEvent;
-- (void)setProviderConfiguration:(id)a3;
-- (void)startConnectionWithProviderConfig:(id)a3 completionHandler:(id)a4;
+- (void)setProviderConfiguration:(id)configuration;
+- (void)startConnectionWithProviderConfig:(id)config completionHandler:(id)handler;
 - (void)unmatchEthernet;
 @end
 
@@ -52,51 +52,51 @@ uint64_t __74__NEExtensionAppPushProviderHostContext__extensionAuxiliaryVendorPr
 
 - (void)unmatchEthernet
 {
-  v2 = [(NEExtensionProviderHostContext *)&self->super.super.super.isa delegate];
-  [v2 didReceiveUnmatchEthernet];
+  delegate = [(NEExtensionProviderHostContext *)&self->super.super.super.isa delegate];
+  [delegate didReceiveUnmatchEthernet];
 }
 
-- (void)reportPushToTalkMessage:(id)a3
+- (void)reportPushToTalkMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(NEExtensionProviderHostContext *)&self->super.super.super.isa delegate];
-  [v5 didReceivePushToTalkMessageWithUserInfo:v4];
+  messageCopy = message;
+  delegate = [(NEExtensionProviderHostContext *)&self->super.super.super.isa delegate];
+  [delegate didReceivePushToTalkMessageWithUserInfo:messageCopy];
 }
 
-- (void)reportIncomingCall:(id)a3
+- (void)reportIncomingCall:(id)call
 {
-  v4 = a3;
-  v5 = [(NEExtensionProviderHostContext *)&self->super.super.super.isa delegate];
-  [v5 didReceiveIncomingCallWithUserInfo:v4];
+  callCopy = call;
+  delegate = [(NEExtensionProviderHostContext *)&self->super.super.super.isa delegate];
+  [delegate didReceiveIncomingCallWithUserInfo:callCopy];
 }
 
 - (void)sendTimerEvent
 {
-  v2 = [(NEExtensionProviderHostContext *)&self->super.super.super.isa vendorContext];
-  [v2 sendTimerEvent];
+  vendorContext = [(NEExtensionProviderHostContext *)&self->super.super.super.isa vendorContext];
+  [vendorContext sendTimerEvent];
 }
 
-- (void)sendOutgoingCallMessage:(id)a3 completionHandler:(id)a4
+- (void)sendOutgoingCallMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NEExtensionProviderHostContext *)&self->super.super.super.isa vendorContext];
-  [v8 sendOutgoingCallMessage:v7 completionHandler:v6];
+  handlerCopy = handler;
+  messageCopy = message;
+  vendorContext = [(NEExtensionProviderHostContext *)&self->super.super.super.isa vendorContext];
+  [vendorContext sendOutgoingCallMessage:messageCopy completionHandler:handlerCopy];
 }
 
-- (void)setProviderConfiguration:(id)a3
+- (void)setProviderConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(NEExtensionProviderHostContext *)&self->super.super.super.isa vendorContext];
-  [v5 setProviderConfiguration:v4];
+  configurationCopy = configuration;
+  vendorContext = [(NEExtensionProviderHostContext *)&self->super.super.super.isa vendorContext];
+  [vendorContext setProviderConfiguration:configurationCopy];
 }
 
-- (void)startConnectionWithProviderConfig:(id)a3 completionHandler:(id)a4
+- (void)startConnectionWithProviderConfig:(id)config completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NEExtensionProviderHostContext *)&self->super.super.super.isa vendorContext];
-  [v8 startConnectionWithProviderConfig:v7 completionHandler:v6];
+  handlerCopy = handler;
+  configCopy = config;
+  vendorContext = [(NEExtensionProviderHostContext *)&self->super.super.super.isa vendorContext];
+  [vendorContext startConnectionWithProviderConfig:configCopy completionHandler:handlerCopy];
 }
 
 @end

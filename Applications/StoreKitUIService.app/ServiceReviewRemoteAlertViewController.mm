@@ -1,39 +1,39 @@
 @interface ServiceReviewRemoteAlertViewController
-+ (int64_t)convertInterfaceOrientation:(unint64_t)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
++ (int64_t)convertInterfaceOrientation:(unint64_t)orientation;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation ServiceReviewRemoteAlertViewController
 
-+ (int64_t)convertInterfaceOrientation:(unint64_t)a3
++ (int64_t)convertInterfaceOrientation:(unint64_t)orientation
 {
-  if (a3 - 1 >= 4)
+  if (orientation - 1 >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return orientation;
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ServiceReviewRemoteAlertViewController *)self _remoteViewControllerProxy];
-  [v8 setAllowsMenuButtonDismissal:1];
-  [v8 setAllowsAlertStacking:1];
-  v9 = [v7 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"orientation"];
+  completionCopy = completion;
+  contextCopy = context;
+  _remoteViewControllerProxy = [(ServiceReviewRemoteAlertViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setAllowsMenuButtonDismissal:1];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
+  userInfo = [contextCopy userInfo];
+  v10 = [userInfo objectForKeyedSubscript:@"orientation"];
 
-  [v8 setLaunchingInterfaceOrientation:{+[ServiceReviewRemoteAlertViewController convertInterfaceOrientation:](ServiceReviewRemoteAlertViewController, "convertInterfaceOrientation:", v10)}];
+  [_remoteViewControllerProxy setLaunchingInterfaceOrientation:{+[ServiceReviewRemoteAlertViewController convertInterfaceOrientation:](ServiceReviewRemoteAlertViewController, "convertInterfaceOrientation:", v10)}];
   v11 = objc_alloc_init(ServiceReviewViewController);
   v26[0] = SKUIServiceReviewSandboxMode;
-  v12 = [v7 userInfo];
-  v13 = [v12 objectForKeyedSubscript:@"sandboxed"];
+  userInfo2 = [contextCopy userInfo];
+  v13 = [userInfo2 objectForKeyedSubscript:@"sandboxed"];
   v14 = v13;
   if (v13)
   {
@@ -47,9 +47,9 @@
 
   v26[1] = @"bundleID";
   v27[0] = v15;
-  v16 = [v7 userInfo];
+  userInfo3 = [contextCopy userInfo];
 
-  v17 = [v16 objectForKeyedSubscript:@"bundleIdentifier"];
+  v17 = [userInfo3 objectForKeyedSubscript:@"bundleIdentifier"];
   v18 = v17;
   if (!v17)
   {
@@ -65,33 +65,33 @@
   }
 
   [(ServiceReviewRemoteAlertViewController *)self setChildViewController:v11];
-  v20 = [(ServiceReviewRemoteAlertViewController *)self childViewController];
-  [(ServiceReviewRemoteAlertViewController *)self addChildViewController:v20];
+  childViewController = [(ServiceReviewRemoteAlertViewController *)self childViewController];
+  [(ServiceReviewRemoteAlertViewController *)self addChildViewController:childViewController];
 
-  v21 = [(ServiceReviewRemoteAlertViewController *)self childViewController];
-  v22 = [v21 view];
+  childViewController2 = [(ServiceReviewRemoteAlertViewController *)self childViewController];
+  view = [childViewController2 view];
 
-  v23 = [(ServiceReviewRemoteAlertViewController *)self view];
-  [v23 bounds];
-  [v22 setFrame:?];
+  view2 = [(ServiceReviewRemoteAlertViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  v24 = [(ServiceReviewRemoteAlertViewController *)self view];
-  [v24 addSubview:v22];
+  view3 = [(ServiceReviewRemoteAlertViewController *)self view];
+  [view3 addSubview:view];
 
-  v25 = [(ServiceReviewRemoteAlertViewController *)self childViewController];
-  [v25 didMoveToParentViewController:self];
+  childViewController3 = [(ServiceReviewRemoteAlertViewController *)self childViewController];
+  [childViewController3 didMoveToParentViewController:self];
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 

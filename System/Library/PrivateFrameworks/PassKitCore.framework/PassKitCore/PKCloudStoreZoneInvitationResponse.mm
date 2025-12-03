@@ -1,24 +1,24 @@
 @interface PKCloudStoreZoneInvitationResponse
-+ (id)cloudStoreZoneInvitationResponseWithProtobuf:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKCloudStoreZoneInvitationResponse)initWithCoder:(id)a3;
++ (id)cloudStoreZoneInvitationResponseWithProtobuf:(id)protobuf;
+- (BOOL)isEqual:(id)equal;
+- (PKCloudStoreZoneInvitationResponse)initWithCoder:(id)coder;
 - (id)description;
 - (id)protobuf;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudStoreZoneInvitationResponse
 
-+ (id)cloudStoreZoneInvitationResponseWithProtobuf:(id)a3
++ (id)cloudStoreZoneInvitationResponseWithProtobuf:(id)protobuf
 {
-  v3 = a3;
+  protobufCopy = protobuf;
   v4 = objc_alloc_init(PKCloudStoreZoneInvitationResponse);
-  v5 = [v3 invitation];
-  v6 = [PKCloudStoreZoneInvitation cloudStoreZoneInvitationWithProtobuf:v5];
+  invitation = [protobufCopy invitation];
+  v6 = [PKCloudStoreZoneInvitation cloudStoreZoneInvitationWithProtobuf:invitation];
   [(PKCloudStoreZoneInvitationResponse *)v4 setInvitation:v6];
 
-  LODWORD(v6) = [v3 status];
+  LODWORD(v6) = [protobufCopy status];
   [(PKCloudStoreZoneInvitationResponse *)v4 setStatus:v6];
 
   return v4;
@@ -27,29 +27,29 @@
 - (id)protobuf
 {
   v3 = objc_alloc_init(PKProtobufCloudStoreZoneInvitationResponse);
-  v4 = [(PKCloudStoreZoneInvitationResponse *)self invitation];
-  v5 = [v4 protobuf];
-  [(PKProtobufCloudStoreZoneInvitationResponse *)v3 setInvitation:v5];
+  invitation = [(PKCloudStoreZoneInvitationResponse *)self invitation];
+  protobuf = [invitation protobuf];
+  [(PKProtobufCloudStoreZoneInvitationResponse *)v3 setInvitation:protobuf];
 
   [(PKProtobufCloudStoreZoneInvitationResponse *)v3 setStatus:[(PKCloudStoreZoneInvitationResponse *)self status]];
 
   return v3;
 }
 
-- (PKCloudStoreZoneInvitationResponse)initWithCoder:(id)a3
+- (PKCloudStoreZoneInvitationResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKCloudStoreZoneInvitationResponse;
   v5 = [(PKCloudStoreZoneInvitationResponse *)&v11 init];
   if (v5)
   {
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"invitation"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"status"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"invitation"];
     invitation = v5->_invitation;
     v5->_invitation = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destination"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destination"];
     destination = v5->_destination;
     v5->_destination = v8;
   }
@@ -57,33 +57,33 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   status = self->_status;
-  v5 = a3;
-  [v5 encodeInteger:status forKey:@"status"];
-  [v5 encodeObject:self->_invitation forKey:@"invitation"];
-  [v5 encodeObject:self->_destination forKey:@"destination"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:status forKey:@"status"];
+  [coderCopy encodeObject:self->_invitation forKey:@"invitation"];
+  [coderCopy encodeObject:self->_destination forKey:@"destination"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_invitation];
-  [v3 safelyAddObject:self->_destination];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_invitation];
+  [array safelyAddObject:self->_destination];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_status - v4 + 32 * v4;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else

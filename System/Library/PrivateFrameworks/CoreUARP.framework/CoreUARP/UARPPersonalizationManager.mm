@@ -1,33 +1,33 @@
 @interface UARPPersonalizationManager
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)xpcConnectionHasEntitlement:(id)a3;
-- (UARPPersonalizationManager)initWithMachServiceName:(id)a3 entitlement:(id)a4 delegate:(id)a5 queue:(id)a6;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)xpcConnectionHasEntitlement:(id)entitlement;
+- (UARPPersonalizationManager)initWithMachServiceName:(id)name entitlement:(id)entitlement delegate:(id)delegate queue:(id)queue;
 - (void)dealloc;
-- (void)getOutstandingPersonalizationRequests:(id)a3 reply:(id)a4;
-- (void)personalizationResponse:(id)a3 updaterName:(id)a4;
+- (void)getOutstandingPersonalizationRequests:(id)requests reply:(id)reply;
+- (void)personalizationResponse:(id)response updaterName:(id)name;
 @end
 
 @implementation UARPPersonalizationManager
 
-- (UARPPersonalizationManager)initWithMachServiceName:(id)a3 entitlement:(id)a4 delegate:(id)a5 queue:(id)a6
+- (UARPPersonalizationManager)initWithMachServiceName:(id)name entitlement:(id)entitlement delegate:(id)delegate queue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  entitlementCopy = entitlement;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v25.receiver = self;
   v25.super_class = UARPPersonalizationManager;
   v14 = [(UARPPersonalizationManager *)&v25 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_delegate, v12);
-    objc_storeStrong(&v15->_queue, a6);
-    v16 = [v10 copy];
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    objc_storeStrong(&v15->_queue, queue);
+    v16 = [nameCopy copy];
     serviceName = v15->_serviceName;
     v15->_serviceName = v16;
 
-    v18 = [v11 copy];
+    v18 = [entitlementCopy copy];
     entitlement = v15->_entitlement;
     v15->_entitlement = v18;
 
@@ -54,11 +54,11 @@
   [(UARPPersonalizationManager *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -66,9 +66,9 @@
   v8 = self->_log;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v7 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     *buf = 67109120;
-    v23 = v9;
+    v23 = processIdentifier;
     _os_log_impl(&dword_247AA7000, v8, OS_LOG_TYPE_INFO, "Connection from PID %d", buf, 8u);
   }
 
@@ -78,9 +78,9 @@
   block[2] = __65__UARPPersonalizationManager_listener_shouldAcceptNewConnection___block_invoke;
   block[3] = &unk_278EC2480;
   block[4] = self;
-  v16 = v7;
+  v16 = connectionCopy;
   v17 = &v18;
-  v11 = v7;
+  v11 = connectionCopy;
   dispatch_sync(queue, block);
   v12 = *(v19 + 24);
 
@@ -155,16 +155,16 @@ void __65__UARPPersonalizationManager_listener_shouldAcceptNewConnection___block
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)xpcConnectionHasEntitlement:(id)a3
+- (BOOL)xpcConnectionHasEntitlement:(id)entitlement
 {
-  v4 = a3;
+  entitlementCopy = entitlement;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
   {
-    [(UARPPersonalizationManager *)log xpcConnectionHasEntitlement:v4];
+    [(UARPPersonalizationManager *)log xpcConnectionHasEntitlement:entitlementCopy];
   }
 
-  v6 = [v4 valueForEntitlement:self->_entitlement];
+  v6 = [entitlementCopy valueForEntitlement:self->_entitlement];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v6 BOOLValue])
   {
@@ -176,7 +176,7 @@ void __65__UARPPersonalizationManager_listener_shouldAcceptNewConnection___block
     v8 = self->_log;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(UARPPersonalizationManager *)v8 xpcConnectionHasEntitlement:v4];
+      [(UARPPersonalizationManager *)v8 xpcConnectionHasEntitlement:entitlementCopy];
     }
 
     v7 = 0;
@@ -185,11 +185,11 @@ void __65__UARPPersonalizationManager_listener_shouldAcceptNewConnection___block
   return v7;
 }
 
-- (void)getOutstandingPersonalizationRequests:(id)a3 reply:(id)a4
+- (void)getOutstandingPersonalizationRequests:(id)requests reply:(id)reply
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -197,7 +197,7 @@ void __65__UARPPersonalizationManager_listener_shouldAcceptNewConnection___block
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v10 = [WeakRetained personalizationHelperQueryPendingTssRequests:v6];
+  v10 = [WeakRetained personalizationHelperQueryPendingTssRequests:requestsCopy];
 
   v11 = self->_log;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -205,21 +205,21 @@ void __65__UARPPersonalizationManager_listener_shouldAcceptNewConnection___block
     v13 = 136315650;
     v14 = "[UARPPersonalizationManager getOutstandingPersonalizationRequests:reply:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = requestsCopy;
     v17 = 2112;
     v18 = v10;
     _os_log_impl(&dword_247AA7000, v11, OS_LOG_TYPE_INFO, "%s: Updater Name %@, pending tss requests %@", &v13, 0x20u);
   }
 
-  v7[2](v7, v10);
+  replyCopy[2](replyCopy, v10);
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)personalizationResponse:(id)a3 updaterName:(id)a4
+- (void)personalizationResponse:(id)response updaterName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  nameCopy = name;
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
     [UARPPersonalizationManager personalizationResponse:updaterName:];
@@ -237,7 +237,7 @@ void __65__UARPPersonalizationManager_listener_shouldAcceptNewConnection___block
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained personalizationHelperTssResponse:v6 updaterName:v7];
+  [WeakRetained personalizationHelperTssResponse:responseCopy updaterName:nameCopy];
 }
 
 void __65__UARPPersonalizationManager_listener_shouldAcceptNewConnection___block_invoke_2_cold_1(uint64_t a1, NSObject *a2)

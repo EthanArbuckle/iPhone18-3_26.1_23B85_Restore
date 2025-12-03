@@ -1,26 +1,26 @@
 @interface PGFeatureExtractorAssetFormat
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorAssetFormat
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 pixelWidth];
-  v7 = [v5 pixelHeight];
+  entityCopy = entity;
+  pixelWidth = [entityCopy pixelWidth];
+  pixelHeight = [entityCopy pixelHeight];
 
   v8 = [MEMORY[0x277D22C68] zerosOfCount:{-[PGFeatureExtractorAssetFormat featureLength](self, "featureLength")}];
   v10 = v8;
-  if (v6 == v7)
+  if (pixelWidth == pixelHeight)
   {
     v11 = 0;
   }
 
-  else if (v7 <= v6)
+  else if (pixelHeight <= pixelWidth)
   {
-    if (v6 <= v7)
+    if (pixelWidth <= pixelHeight)
     {
       goto LABEL_8;
     }

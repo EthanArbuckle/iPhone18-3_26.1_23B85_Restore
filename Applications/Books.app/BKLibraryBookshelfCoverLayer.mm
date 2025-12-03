@@ -9,8 +9,8 @@
 - (void)_layoutImagelayer;
 - (void)_reloadCoverImage;
 - (void)dealloc;
-- (void)preloadCoverImageAtSize:(CGSize)a3;
-- (void)setLibraryAsset:(id)a3 size:(CGSize)a4;
+- (void)preloadCoverImageAtSize:(CGSize)size;
+- (void)setLibraryAsset:(id)asset size:(CGSize)size;
 @end
 
 @implementation BKLibraryBookshelfCoverLayer
@@ -50,8 +50,8 @@
   rect_16.origin.y = v5;
   if ([(BKLibraryBookshelfCoverLayer *)self animateFrameChange])
   {
-    v11 = [(BKLibraryBookshelfCoverLayer *)self imageLayer];
-    [v11 bounds];
+    imageLayer = [(BKLibraryBookshelfCoverLayer *)self imageLayer];
+    [imageLayer bounds];
     v13 = v12;
     rect = v12;
     rect_8 = v14;
@@ -84,9 +84,9 @@
     }
 
     CGAffineTransformMakeScale(&v35, v22, v22);
-    v23 = [(BKLibraryBookshelfCoverLayer *)self imageLayer];
+    imageLayer2 = [(BKLibraryBookshelfCoverLayer *)self imageLayer];
     v34 = v35;
-    [v23 setAffineTransform:&v34];
+    [imageLayer2 setAffineTransform:&v34];
   }
 
   else
@@ -95,12 +95,12 @@
     [CATransaction setDisableActions:1];
   }
 
-  v24 = [(BKLibraryBookshelfCoverLayer *)self bottomAligned];
-  v25 = [(BKLibraryBookshelfCoverLayer *)self imageLayer];
-  v26 = v25;
-  if (v24)
+  bottomAligned = [(BKLibraryBookshelfCoverLayer *)self bottomAligned];
+  imageLayer3 = [(BKLibraryBookshelfCoverLayer *)self imageLayer];
+  v26 = imageLayer3;
+  if (bottomAligned)
   {
-    [v25 setAnchorPoint:{0.5, 1.0}];
+    [imageLayer3 setAnchorPoint:{0.5, 1.0}];
 
     MidX = CGRectGetMidX(rect_16);
     MaxY = CGRectGetMaxY(rect_16);
@@ -108,15 +108,15 @@
 
   else
   {
-    [v25 setAnchorPoint:{0.5, 0.5}];
+    [imageLayer3 setAnchorPoint:{0.5, 0.5}];
 
     MidX = CGRectGetMidX(rect_16);
     MaxY = CGRectGetMidY(rect_16);
   }
 
   v29 = MaxY;
-  v30 = [(BKLibraryBookshelfCoverLayer *)self imageLayer];
-  [v30 setPosition:{MidX, v29}];
+  imageLayer4 = [(BKLibraryBookshelfCoverLayer *)self imageLayer];
+  [imageLayer4 setPosition:{MidX, v29}];
 
   if (![(BKLibraryBookshelfCoverLayer *)self animateFrameChange])
   {
@@ -126,8 +126,8 @@
 
 - (CGRect)coverBounds
 {
-  v2 = [(BKLibraryBookshelfCoverLayer *)self imageLayer];
-  [v2 frame];
+  imageLayer = [(BKLibraryBookshelfCoverLayer *)self imageLayer];
+  [imageLayer frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -144,14 +144,14 @@
   return result;
 }
 
-- (void)setLibraryAsset:(id)a3 size:(CGSize)a4
+- (void)setLibraryAsset:(id)asset size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
   libraryAsset = self->_libraryAsset;
-  v14 = v8;
-  if (libraryAsset == v8)
+  v14 = assetCopy;
+  if (libraryAsset == assetCopy)
   {
     [(BKLibraryBookshelfCoverLayer *)self coverSize];
     if (v11 == width && v10 == height)
@@ -160,15 +160,15 @@
     }
 
     libraryAsset = self->_libraryAsset;
-    v8 = v14;
+    assetCopy = v14;
   }
 
-  if (libraryAsset != v8)
+  if (libraryAsset != assetCopy)
   {
     [(BKLibraryBookshelfCoverLayer *)self setPreloadedImageLayer:0];
   }
 
-  objc_storeStrong(&self->_libraryAsset, a3);
+  objc_storeStrong(&self->_libraryAsset, asset);
   boundingPath = self->_boundingPath;
   self->_boundingPath = 0;
 
@@ -177,28 +177,28 @@
 LABEL_10:
 }
 
-- (void)preloadCoverImageAtSize:(CGSize)a3
+- (void)preloadCoverImageAtSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(BKLibraryBookshelfCoverLayer *)self libraryAsset];
-  v7 = [v6 permanentOrTemporaryAssetID];
-  v8 = [v7 length];
+  height = size.height;
+  width = size.width;
+  libraryAsset = [(BKLibraryBookshelfCoverLayer *)self libraryAsset];
+  permanentOrTemporaryAssetID = [libraryAsset permanentOrTemporaryAssetID];
+  v8 = [permanentOrTemporaryAssetID length];
 
   if (v8)
   {
-    v9 = [(BKLibraryBookshelfCoverLayer *)self libraryAsset];
-    v10 = [(BKLibraryBookshelfCoverLayer *)self coverEffectsEnvironment];
-    v11 = [BKLibraryManager processingOptionsFor:v9 coverEffectsEnvironment:v10];
+    libraryAsset2 = [(BKLibraryBookshelfCoverLayer *)self libraryAsset];
+    coverEffectsEnvironment = [(BKLibraryBookshelfCoverLayer *)self coverEffectsEnvironment];
+    v11 = [BKLibraryManager processingOptionsFor:libraryAsset2 coverEffectsEnvironment:coverEffectsEnvironment];
 
     objc_opt_class();
     v12 = +[BCCacheManager defaultCacheManager];
-    v13 = [(BKLibraryBookshelfCoverLayer *)self _cachedCoverIdentifier];
-    v14 = [v12 fetchLayerForAssetID:v13 size:v11 options:{width, height}];
+    _cachedCoverIdentifier = [(BKLibraryBookshelfCoverLayer *)self _cachedCoverIdentifier];
+    v14 = [v12 fetchLayerForAssetID:_cachedCoverIdentifier size:v11 options:{width, height}];
     v16 = BUDynamicCast();
 
-    v15 = [(BKLibraryBookshelfCoverLayer *)self vendedLayerDelegate];
-    [v16 setVendedLayerDelegate:v15];
+    vendedLayerDelegate = [(BKLibraryBookshelfCoverLayer *)self vendedLayerDelegate];
+    [v16 setVendedLayerDelegate:vendedLayerDelegate];
 
     [(BKLibraryBookshelfCoverLayer *)self setPreloadedImageLayer:v16];
   }
@@ -206,20 +206,20 @@ LABEL_10:
 
 - (void)_reloadCoverImage
 {
-  v3 = [(BKLibraryBookshelfCoverLayer *)self imageLayer];
-  [v3 removeFromSuperlayer];
+  imageLayer = [(BKLibraryBookshelfCoverLayer *)self imageLayer];
+  [imageLayer removeFromSuperlayer];
 
-  v4 = [(BKLibraryBookshelfCoverLayer *)self libraryAsset];
-  v5 = [v4 permanentOrTemporaryAssetID];
-  v6 = [v5 length];
+  libraryAsset = [(BKLibraryBookshelfCoverLayer *)self libraryAsset];
+  permanentOrTemporaryAssetID = [libraryAsset permanentOrTemporaryAssetID];
+  v6 = [permanentOrTemporaryAssetID length];
 
   if (!v6)
   {
     return;
   }
 
-  v24 = [(BKLibraryBookshelfCoverLayer *)self preloadedImageLayer];
-  if (!v24)
+  preloadedImageLayer = [(BKLibraryBookshelfCoverLayer *)self preloadedImageLayer];
+  if (!preloadedImageLayer)
   {
     goto LABEL_8;
   }
@@ -228,8 +228,8 @@ LABEL_10:
   CGSizeScaleToScreen();
   v8 = v7;
   v10 = v9;
-  v11 = [v24 describedImageRequested];
-  [v11 imageSize];
+  describedImageRequested = [preloadedImageLayer describedImageRequested];
+  [describedImageRequested imageSize];
   v13 = v12;
   v15 = v14;
 
@@ -237,19 +237,19 @@ LABEL_10:
   {
     [(BKLibraryBookshelfCoverLayer *)self setPreloadedImageLayer:0];
 LABEL_8:
-    v16 = [(BKLibraryBookshelfCoverLayer *)self libraryAsset];
-    v17 = [(BKLibraryBookshelfCoverLayer *)self coverEffectsEnvironment];
-    v18 = [BKLibraryManager processingOptionsFor:v16 coverEffectsEnvironment:v17];
+    libraryAsset2 = [(BKLibraryBookshelfCoverLayer *)self libraryAsset];
+    coverEffectsEnvironment = [(BKLibraryBookshelfCoverLayer *)self coverEffectsEnvironment];
+    v18 = [BKLibraryManager processingOptionsFor:libraryAsset2 coverEffectsEnvironment:coverEffectsEnvironment];
 
     objc_opt_class();
     v19 = +[BCCacheManager defaultCacheManager];
-    v20 = [(BKLibraryBookshelfCoverLayer *)self _cachedCoverIdentifier];
+    _cachedCoverIdentifier = [(BKLibraryBookshelfCoverLayer *)self _cachedCoverIdentifier];
     [(BKLibraryBookshelfCoverLayer *)self coverSize];
-    v21 = [v19 fetchLayerForAssetID:v20 size:v18 options:?];
+    v21 = [v19 fetchLayerForAssetID:_cachedCoverIdentifier size:v18 options:?];
     v22 = BUDynamicCast();
 
-    v23 = [(BKLibraryBookshelfCoverLayer *)self vendedLayerDelegate];
-    [v22 setVendedLayerDelegate:v23];
+    vendedLayerDelegate = [(BKLibraryBookshelfCoverLayer *)self vendedLayerDelegate];
+    [v22 setVendedLayerDelegate:vendedLayerDelegate];
 
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
@@ -263,8 +263,8 @@ LABEL_8:
 
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  [(BKLibraryBookshelfCoverLayer *)self addSublayer:v24];
-  [(BKLibraryBookshelfCoverLayer *)self setImageLayer:v24];
+  [(BKLibraryBookshelfCoverLayer *)self addSublayer:preloadedImageLayer];
+  [(BKLibraryBookshelfCoverLayer *)self setImageLayer:preloadedImageLayer];
   [(BKLibraryBookshelfCoverLayer *)self _layoutImagelayer];
   +[CATransaction commit];
   [(BKLibraryBookshelfCoverLayer *)self setPreloadedImageLayer:0];
@@ -273,17 +273,17 @@ LABEL_9:
 
 - (id)_cachedCoverIdentifier
 {
-  v3 = [(BKLibraryBookshelfCoverLayer *)self libraryAsset];
-  v4 = [v3 iTunesU];
-  if (v4 && ([v3 temporaryAssetID], v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "length")))
+  libraryAsset = [(BKLibraryBookshelfCoverLayer *)self libraryAsset];
+  iTunesU = [libraryAsset iTunesU];
+  if (iTunesU && ([libraryAsset temporaryAssetID], v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "length")))
   {
-    v5 = [v3 temporaryAssetID];
+    temporaryAssetID = [libraryAsset temporaryAssetID];
   }
 
   else
   {
-    v5 = [v3 permanentOrTemporaryAssetID];
-    if (!v4)
+    temporaryAssetID = [libraryAsset permanentOrTemporaryAssetID];
+    if (!iTunesU)
     {
       goto LABEL_6;
     }
@@ -291,20 +291,20 @@ LABEL_9:
 
 LABEL_6:
 
-  return v5;
+  return temporaryAssetID;
 }
 
 - (UIBezierPath)boundingPath
 {
   if (!self->_boundingPath)
   {
-    v3 = [(BKLibraryBookshelfCoverLayer *)self imageLayer];
-    v4 = [v3 describedImageShown];
-    v5 = [v4 stackOutline];
+    imageLayer = [(BKLibraryBookshelfCoverLayer *)self imageLayer];
+    describedImageShown = [imageLayer describedImageShown];
+    stackOutline = [describedImageShown stackOutline];
 
-    if (v5)
+    if (stackOutline)
     {
-      v6 = [UIBezierPath bezierPathWithCGPath:v5];
+      v6 = [UIBezierPath bezierPathWithCGPath:stackOutline];
       boundingPath = self->_boundingPath;
       self->_boundingPath = v6;
 

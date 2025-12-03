@@ -1,11 +1,11 @@
 @interface FBAActionControllerAction
 - (NSString)title;
 - (_TtC18Feedback_Assistant25FBAActionControllerAction)init;
-- (_TtC18Feedback_Assistant25FBAActionControllerAction)initWithTitle:(id)a3 image:(id)a4 actionHandler:(id)a5;
+- (_TtC18Feedback_Assistant25FBAActionControllerAction)initWithTitle:(id)title image:(id)image actionHandler:(id)handler;
 - (id)actionHandler;
-- (void)setActionHandler:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setActionHandler:(id)handler;
+- (void)setImage:(id)image;
+- (void)setTitle:(id)title;
 @end
 
 @implementation FBAActionControllerAction
@@ -20,7 +20,7 @@
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC18Feedback_Assistant25FBAActionControllerAction_title);
@@ -29,11 +29,11 @@
   v5[1] = v7;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v4 = *(self + OBJC_IVAR____TtC18Feedback_Assistant25FBAActionControllerAction_image);
-  *(self + OBJC_IVAR____TtC18Feedback_Assistant25FBAActionControllerAction_image) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC18Feedback_Assistant25FBAActionControllerAction_image) = image;
+  imageCopy = image;
 }
 
 - (id)actionHandler
@@ -50,9 +50,9 @@
   return v3;
 }
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR____TtC18Feedback_Assistant25FBAActionControllerAction_actionHandler);
@@ -61,9 +61,9 @@
   v6[1] = v5;
 }
 
-- (_TtC18Feedback_Assistant25FBAActionControllerAction)initWithTitle:(id)a3 image:(id)a4 actionHandler:(id)a5
+- (_TtC18Feedback_Assistant25FBAActionControllerAction)initWithTitle:(id)title image:(id)image actionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   v11 = swift_allocObject();
@@ -74,13 +74,13 @@
   v13 = (self + OBJC_IVAR____TtC18Feedback_Assistant25FBAActionControllerAction_title);
   *v13 = v8;
   v13[1] = v10;
-  *(self + v12) = a4;
+  *(self + v12) = image;
   v14 = (self + OBJC_IVAR____TtC18Feedback_Assistant25FBAActionControllerAction_actionHandler);
   *v14 = sub_10006C004;
   v14[1] = v11;
   v17.receiver = self;
   v17.super_class = type metadata accessor for FBAActionControllerAction();
-  v15 = a4;
+  imageCopy = image;
   return [(FBAActionControllerAction *)&v17 init];
 }
 

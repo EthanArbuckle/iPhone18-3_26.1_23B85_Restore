@@ -1,45 +1,45 @@
 @interface CMOnBodyStatus
-- (CMOnBodyStatus)initWithCoder:(id)a3;
-- (CMOnBodyStatus)initWithOnBodyResult:(int)a3 confidence:(int)a4 timestamp:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMOnBodyStatus)initWithCoder:(id)coder;
+- (CMOnBodyStatus)initWithOnBodyResult:(int)result confidence:(int)confidence timestamp:(double)timestamp;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMOnBodyStatus
 
-- (CMOnBodyStatus)initWithOnBodyResult:(int)a3 confidence:(int)a4 timestamp:(double)a5
+- (CMOnBodyStatus)initWithOnBodyResult:(int)result confidence:(int)confidence timestamp:(double)timestamp
 {
   v8.receiver = self;
   v8.super_class = CMOnBodyStatus;
-  result = [(CMLogItem *)&v8 initWithTimestamp:a5];
+  result = [(CMLogItem *)&v8 initWithTimestamp:timestamp];
   if (result)
   {
-    result->fResult = a3;
-    result->fConfidence = a4;
+    result->fResult = result;
+    result->fConfidence = confidence;
   }
 
   return result;
 }
 
-- (CMOnBodyStatus)initWithCoder:(id)a3
+- (CMOnBodyStatus)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CMOnBodyStatus;
   v5 = [(CMLogItem *)&v8 initWithCoder:?];
   if (v5)
   {
-    v5->fResult = objc_msgSend_decodeIntForKey_(a3, v4, @"kCMOnBodyStatusResult");
-    v5->fConfidence = objc_msgSend_decodeIntForKey_(a3, v6, @"kCMOnBodyStatusConfidence");
+    v5->fResult = objc_msgSend_decodeIntForKey_(coder, v4, @"kCMOnBodyStatusResult");
+    v5->fConfidence = objc_msgSend_decodeIntForKey_(coder, v6, @"kCMOnBodyStatusConfidence");
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   fResult = self->fResult;
   fConfidence = self->fConfidence;
   v12.receiver = self;
@@ -48,13 +48,13 @@
   return objc_msgSend_initWithOnBodyResult_confidence_timestamp_(v7, v10, fResult, fConfidence);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CMOnBodyStatus;
   [(CMLogItem *)&v7 encodeWithCoder:?];
-  objc_msgSend_encodeInt_forKey_(a3, v5, self->fResult, @"kCMOnBodyStatusResult");
-  objc_msgSend_encodeInt_forKey_(a3, v6, self->fConfidence, @"kCMOnBodyStatusConfidence");
+  objc_msgSend_encodeInt_forKey_(coder, v5, self->fResult, @"kCMOnBodyStatusResult");
+  objc_msgSend_encodeInt_forKey_(coder, v6, self->fConfidence, @"kCMOnBodyStatusConfidence");
 }
 
 - (id)description

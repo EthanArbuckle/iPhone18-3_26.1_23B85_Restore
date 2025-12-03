@@ -1,16 +1,16 @@
 @interface SUUIPageControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
 @end
 
 @implementation SUUIPageControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIGiftThemeBackgroundView" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIGiftThemeCollectionView" isKindOfClass:@"UICollectionView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIGiftThemeBackgroundView" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIGiftThemeCollectionView" isKindOfClass:@"UICollectionView"];
 }
 
 - (void)accessibilityIncrement
@@ -18,8 +18,8 @@
   v8.receiver = self;
   v8.super_class = SUUIPageControlAccessibility;
   [(SUUIPageControlAccessibility *)&v8 accessibilityIncrement];
-  v3 = [(SUUIPageControlAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"GiftThemePageControl"];
+  accessibilityIdentifier = [(SUUIPageControlAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"GiftThemePageControl"];
 
   if (v4)
   {
@@ -37,8 +37,8 @@
   v8.receiver = self;
   v8.super_class = SUUIPageControlAccessibility;
   [(SUUIPageControlAccessibility *)&v8 accessibilityDecrement];
-  v3 = [(SUUIPageControlAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"GiftThemePageControl"];
+  accessibilityIdentifier = [(SUUIPageControlAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"GiftThemePageControl"];
 
   if (v4)
   {

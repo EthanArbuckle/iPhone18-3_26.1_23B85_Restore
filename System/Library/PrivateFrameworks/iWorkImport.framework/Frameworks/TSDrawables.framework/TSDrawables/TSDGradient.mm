@@ -1,57 +1,57 @@
 @interface TSDGradient
-+ (id)evenlyDistributedLinearGradientWithColors:(id)a3;
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
-+ (id)linearGradientWithGradientStops:(id)a3;
-+ (id)linearGradientWithStartColor:(id)a3 endColor:(id)a4;
-+ (id)radialGradientWithGradientStops:(id)a3;
-+ (id)radialGradientWithStartColor:(id)a3 endColor:(id)a4;
-+ (void)bootstrapPresetsOfKind:(id)a3 inTheme:(id)a4 alternate:(unint64_t)a5;
++ (id)evenlyDistributedLinearGradientWithColors:(id)colors;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
++ (id)linearGradientWithGradientStops:(id)stops;
++ (id)linearGradientWithStartColor:(id)color endColor:(id)endColor;
++ (id)radialGradientWithGradientStops:(id)stops;
++ (id)radialGradientWithStartColor:(id)color endColor:(id)endColor;
++ (void)bootstrapPresetsOfKind:(id)kind inTheme:(id)theme alternate:(unint64_t)alternate;
 - (BOOL)isAdvancedGradient;
 - (BOOL)isAdvancedGradientIgnoringFlag;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOpaque;
 - (BOOL)p_isAnyStopP3;
 - (BOOL)p_stopsHaveAlpha;
-- (CGAffineTransform)centeredRadialTransformInRect:(SEL)a3;
-- (CGContext)p_beginBitmapWrapperContextInContext:(CGContext *)a3 returningIntegralBounds:(CGRect *)a4;
+- (CGAffineTransform)centeredRadialTransformInRect:(SEL)rect;
+- (CGContext)p_beginBitmapWrapperContextInContext:(CGContext *)context returningIntegralBounds:(CGRect *)bounds;
 - (CGGradient)p_CGGradient;
-- (CGPoint)endPointForPath:(id)a3 andBounds:(CGRect)a4;
-- (CGPoint)startPointForPath:(id)a3 andBounds:(CGRect)a4;
+- (CGPoint)endPointForPath:(id)path andBounds:(CGRect)bounds;
+- (CGPoint)startPointForPath:(id)path andBounds:(CGRect)bounds;
 - (TSDGradient)init;
-- (TSDGradient)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSDGradient)initWithGradientStops:(id)a3 type:(unint64_t)a4 opacity:(double)a5;
-- (TSDGradient)initWithStartColor:(id)a3 endColor:(id)a4 type:(unint64_t)a5;
+- (TSDGradient)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSDGradient)initWithGradientStops:(id)stops type:(unint64_t)type opacity:(double)opacity;
+- (TSDGradient)initWithStartColor:(id)color endColor:(id)endColor type:(unint64_t)type;
 - (TSUColor)firstColor;
 - (TSUColor)lastColor;
 - (id)description;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)p_insertStopAtFraction:(double)a3;
-- (id)p_insertStopAtFraction:(double)a3 withColor:(id)a4;
-- (id)p_newColorAtFraction:(double)a3;
-- (id)p_removeStopAtIndex:(unint64_t)a3;
-- (id)stopAfterFraction:(double)a3;
-- (id)stopBeforeFraction:(double)a3;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)p_insertStopAtFraction:(double)fraction;
+- (id)p_insertStopAtFraction:(double)fraction withColor:(id)color;
+- (id)p_newColorAtFraction:(double)fraction;
+- (id)p_removeStopAtIndex:(unint64_t)index;
+- (id)stopAfterFraction:(double)fraction;
+- (id)stopBeforeFraction:(double)fraction;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
 - (unint64_t)hash;
 - (unint64_t)p_blendingColorSpace;
 - (void)dealloc;
-- (void)p_endBitmapWrapperContext:(CGContext *)a3 inContext:(CGContext *)a4 withIntegralBounds:(CGRect)a5;
+- (void)p_endBitmapWrapperContext:(CGContext *)context inContext:(CGContext *)inContext withIntegralBounds:(CGRect)bounds;
 - (void)p_evenlyDistributeStops;
-- (void)p_insertGradientStop:(id)a3;
+- (void)p_insertGradientStop:(id)stop;
 - (void)p_invalidateCGGradient;
-- (void)p_moveStopAtIndex:(unint64_t)a3 toFraction:(double)a4;
-- (void)p_prepareForDrawingInContext:(CGContext *)a3;
-- (void)p_removeStop:(id)a3;
+- (void)p_moveStopAtIndex:(unint64_t)index toFraction:(double)fraction;
+- (void)p_prepareForDrawingInContext:(CGContext *)context;
+- (void)p_removeStop:(id)stop;
 - (void)p_reverseStopOrder;
-- (void)p_setColorOfStopAtIndex:(unint64_t)a3 toColor:(id)a4;
-- (void)p_setGradientStops:(id)a3;
-- (void)p_setInflectionOfStopAtIndex:(unint64_t)a3 toInflection:(double)a4;
-- (void)p_swapStopAtIndex:(unint64_t)a3 withStopAtIndex:(unint64_t)a4;
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4;
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4;
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4 atAngle:(double)a5;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)p_setColorOfStopAtIndex:(unint64_t)index toColor:(id)color;
+- (void)p_setGradientStops:(id)stops;
+- (void)p_setInflectionOfStopAtIndex:(unint64_t)index toInflection:(double)inflection;
+- (void)p_swapStopAtIndex:(unint64_t)index withStopAtIndex:(unint64_t)atIndex;
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context;
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context;
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context atAngle:(double)angle;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSDGradient
@@ -73,9 +73,9 @@
   return v2;
 }
 
-- (TSDGradient)initWithGradientStops:(id)a3 type:(unint64_t)a4 opacity:(double)a5
+- (TSDGradient)initWithGradientStops:(id)stops type:(unint64_t)type opacity:(double)opacity
 {
-  v8 = a3;
+  stopsCopy = stops;
   v11 = objc_msgSend_init(self, v9, v10);
   v14 = v11;
   if (v11)
@@ -83,36 +83,36 @@
     v15 = *(v11 + 8);
     if (v15)
     {
-      objc_msgSend_setArray_(v15, v12, v8);
+      objc_msgSend_setArray_(v15, v12, stopsCopy);
     }
 
     else
     {
-      v16 = objc_msgSend_mutableCopy(v8, v12, v13);
+      v16 = objc_msgSend_mutableCopy(stopsCopy, v12, v13);
       stops = v14->_stops;
       v14->_stops = v16;
     }
 
-    v14->_gradientType = a4;
-    v14->_opacity = a5;
+    v14->_gradientType = type;
+    v14->_opacity = opacity;
     v14->_blendingColorSpace = 2;
   }
 
   return v14;
 }
 
-- (TSDGradient)initWithStartColor:(id)a3 endColor:(id)a4 type:(unint64_t)a5
+- (TSDGradient)initWithStartColor:(id)color endColor:(id)endColor type:(unint64_t)type
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v10 = objc_msgSend_gradientStopWithColor_fraction_(TSDGradientStop, v9, a3, 0.0);
+  endColorCopy = endColor;
+  v10 = objc_msgSend_gradientStopWithColor_fraction_(TSDGradientStop, v9, color, 0.0);
   v18[0] = v10;
-  v12 = objc_msgSend_gradientStopWithColor_fraction_(TSDGradientStop, v11, v8, 1.0);
+  v12 = objc_msgSend_gradientStopWithColor_fraction_(TSDGradientStop, v11, endColorCopy, 1.0);
 
   v18[1] = v12;
   v14 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v13, v18, 2);
 
-  v16 = objc_msgSend_initWithGradientStops_type_(self, v15, v14, a5);
+  v16 = objc_msgSend_initWithGradientStops_type_(self, v15, v14, type);
   return v16;
 }
 
@@ -145,16 +145,16 @@
   return TSUHashWithSeed();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v22) = 1;
   }
 
   else
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = TSUDynamicCast();
 
@@ -173,51 +173,51 @@
   return v22;
 }
 
-+ (id)linearGradientWithStartColor:(id)a3 endColor:(id)a4
++ (id)linearGradientWithStartColor:(id)color endColor:(id)endColor
 {
-  v5 = a4;
-  v6 = a3;
+  endColorCopy = endColor;
+  colorCopy = color;
   v7 = objc_alloc(objc_opt_class());
-  started = objc_msgSend_initWithStartColor_endColor_type_(v7, v8, v6, v5, 0);
+  started = objc_msgSend_initWithStartColor_endColor_type_(v7, v8, colorCopy, endColorCopy, 0);
 
   return started;
 }
 
-+ (id)linearGradientWithGradientStops:(id)a3
++ (id)linearGradientWithGradientStops:(id)stops
 {
-  v3 = a3;
+  stopsCopy = stops;
   v4 = objc_alloc(objc_opt_class());
-  v6 = objc_msgSend_initWithGradientStops_type_(v4, v5, v3, 0);
+  v6 = objc_msgSend_initWithGradientStops_type_(v4, v5, stopsCopy, 0);
 
   return v6;
 }
 
-+ (id)evenlyDistributedLinearGradientWithColors:(id)a3
++ (id)evenlyDistributedLinearGradientWithColors:(id)colors
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6) > 1)
+  colorsCopy = colors;
+  if (objc_msgSend_count(colorsCopy, v5, v6) > 1)
   {
-    v17 = objc_msgSend_count(v4, v7, v8);
+    v17 = objc_msgSend_count(colorsCopy, v7, v8);
     v18 = MEMORY[0x277CBEB18];
-    v21 = objc_msgSend_count(v4, v19, v20);
+    v21 = objc_msgSend_count(colorsCopy, v19, v20);
     v23 = objc_msgSend_arrayWithCapacity_(v18, v22, v21);
-    if (objc_msgSend_count(v4, v24, v25))
+    if (objc_msgSend_count(colorsCopy, v24, v25))
     {
       v27 = 0;
       v28 = (v17 - 1);
       do
       {
-        v29 = objc_msgSend_objectAtIndexedSubscript_(v4, v26, v27);
+        v29 = objc_msgSend_objectAtIndexedSubscript_(colorsCopy, v26, v27);
         v31 = objc_msgSend_gradientStopWithColor_fraction_(TSDGradientStop, v30, v29, v27 / v28);
         objc_msgSend_addObject_(v23, v32, v31);
 
         ++v27;
       }
 
-      while (v27 < objc_msgSend_count(v4, v33, v34));
+      while (v27 < objc_msgSend_count(colorsCopy, v33, v34));
     }
 
-    v35 = [a1 alloc];
+    v35 = [self alloc];
     v16 = objc_msgSend_initWithGradientStops_type_(v35, v36, v23, 0);
   }
 
@@ -235,21 +235,21 @@
   return v16;
 }
 
-+ (id)radialGradientWithStartColor:(id)a3 endColor:(id)a4
++ (id)radialGradientWithStartColor:(id)color endColor:(id)endColor
 {
-  v5 = a4;
-  v6 = a3;
+  endColorCopy = endColor;
+  colorCopy = color;
   v7 = objc_alloc(objc_opt_class());
-  started = objc_msgSend_initWithStartColor_endColor_type_(v7, v8, v6, v5, 1);
+  started = objc_msgSend_initWithStartColor_endColor_type_(v7, v8, colorCopy, endColorCopy, 1);
 
   return started;
 }
 
-+ (id)radialGradientWithGradientStops:(id)a3
++ (id)radialGradientWithGradientStops:(id)stops
 {
-  v3 = a3;
+  stopsCopy = stops;
   v4 = objc_alloc(objc_opt_class());
-  v6 = objc_msgSend_initWithGradientStops_type_(v4, v5, v3, 1);
+  v6 = objc_msgSend_initWithGradientStops_type_(v4, v5, stopsCopy, 1);
 
   return v6;
 }
@@ -293,7 +293,7 @@
   space = v6;
   v9 = 2 * objc_msgSend_count(self->_stops, v7, v8) - 1;
   Mutable = CFArrayCreateMutable(0, v9, MEMORY[0x277CBF128]);
-  v79 = self;
+  selfCopy = self;
   locations = malloc_type_calloc(v9, 8uLL, 0x100004000313F17uLL);
   v82 = 0u;
   v83 = 0u;
@@ -348,7 +348,7 @@
         v31 = v30;
       }
 
-      if (v31 != 1.0 || (objc_msgSend_gradientStops(v79, v25, v26), v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend_lastObject(v32, v33, v34), v35 = objc_claimAutoreleasedReturnValue(), isEqual = objc_msgSend_isEqual_(v24, v36, v35), v35, Mutable = v21, v32, v31 = 1.0, (isEqual & 1) != 0) || (v31 = 0.99999999, v20 < 0.999999989))
+      if (v31 != 1.0 || (objc_msgSend_gradientStops(selfCopy, v25, v26), v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend_lastObject(v32, v33, v34), v35 = objc_claimAutoreleasedReturnValue(), isEqual = objc_msgSend_isEqual_(v24, v36, v35), v35, Mutable = v21, v32, v31 = 1.0, (isEqual & 1) != 0) || (v31 = 0.99999999, v20 < 0.999999989))
       {
         if (v23)
         {
@@ -433,13 +433,13 @@ LABEL_37:
 
   v62 = CGGradientCreateWithColors(space, Mutable, locations);
   v64 = 0;
-  atomic_compare_exchange_strong(v79 + 2, &v64, v62);
+  atomic_compare_exchange_strong(selfCopy + 2, &v64, v62);
   if (v64)
   {
     CFRelease(v62);
   }
 
-  if (!atomic_load(v79 + 2))
+  if (!atomic_load(selfCopy + 2))
   {
     v66 = MEMORY[0x277D81150];
     v67 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v63, "[TSDGradient p_CGGradient]");
@@ -527,7 +527,7 @@ LABEL_42:
   return v16;
 }
 
-- (id)stopBeforeFraction:(double)a3
+- (id)stopBeforeFraction:(double)fraction
 {
   v27 = *MEMORY[0x277D85DE8];
   TSUClamp();
@@ -577,7 +577,7 @@ LABEL_11:
   return v20;
 }
 
-- (id)stopAfterFraction:(double)a3
+- (id)stopAfterFraction:(double)fraction
 {
   v27 = *MEMORY[0x277D85DE8];
   TSUClamp();
@@ -636,9 +636,9 @@ LABEL_14:
   return v7;
 }
 
-- (id)p_newColorAtFraction:(double)a3
+- (id)p_newColorAtFraction:(double)fraction
 {
-  if (a3 == 0.0)
+  if (fraction == 0.0)
   {
     v5 = objc_msgSend_firstColor(self, a2, v3);
 LABEL_5:
@@ -646,14 +646,14 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (a3 == 1.0)
+  if (fraction == 1.0)
   {
     v5 = objc_msgSend_lastColor(self, a2, v3);
     goto LABEL_5;
   }
 
-  v9 = objc_msgSend_stopBeforeFraction_(self, a2, v3, a3);
-  v14 = objc_msgSend_stopAfterFraction_(self, v10, v11, a3);
+  v9 = objc_msgSend_stopBeforeFraction_(self, a2, v3, fraction);
+  v14 = objc_msgSend_stopAfterFraction_(self, v10, v11, fraction);
   if (v9 == v14)
   {
     v7 = objc_msgSend_color(v9, v12, v13);
@@ -696,10 +696,10 @@ LABEL_6:
   return v7;
 }
 
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDGradient paintRect:inContext:]", a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDGradient paintRect:inContext:]", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDGradient.m");
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
@@ -718,10 +718,10 @@ LABEL_6:
   objc_exception_throw(v21);
 }
 
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4 atAngle:(double)a5
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context atAngle:(double)angle
 {
   v5 = MEMORY[0x277D81150];
-  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDGradient paintRect:inContext:atAngle:]", a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a5);
+  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDGradient paintRect:inContext:atAngle:]", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, angle);
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDGradient.m");
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
@@ -740,10 +740,10 @@ LABEL_6:
   objc_exception_throw(v22);
 }
 
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDGradient paintPath:inContext:]", a4);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDGradient paintPath:inContext:]", context);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDGradient.m");
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
@@ -762,7 +762,7 @@ LABEL_6:
   objc_exception_throw(v21);
 }
 
-- (CGAffineTransform)centeredRadialTransformInRect:(SEL)a3
+- (CGAffineTransform)centeredRadialTransformInRect:(SEL)rect
 {
   height = a4.size.height;
   width = a4.size.width;
@@ -855,9 +855,9 @@ LABEL_12:
   return v19;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(TSDMutableGradient, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(TSDMutableGradient, a2, zone);
   v6 = objc_msgSend_initWithGradientStops_type_opacity_(v4, v5, self->_stops, self->_gradientType, self->_opacity);
   v9 = objc_msgSend_i_advancedGradientFlag(self, v7, v8);
   objc_msgSend_i_setAdvancedGradientFlag_(v6, v10, v9);
@@ -956,10 +956,10 @@ LABEL_11:
   return v6;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   objc_opt_class();
   v10 = TSUDynamicCast();
   if (!v10)
@@ -997,7 +997,7 @@ LABEL_11:
           v48 = objc_msgSend_gradientStops(v10, v46, v47);
           v50 = objc_msgSend_objectAtIndexedSubscript_(v48, v49, v41);
 
-          v52 = objc_msgSend_mixingTypeWithObject_context_(v45, v51, v50, v7);
+          v52 = objc_msgSend_mixingTypeWithObject_context_(v45, v51, v50, contextCopy);
           v42 = TSDMixingTypeBestFromMixingTypes(v42, v52);
 
           ++v41;
@@ -1028,9 +1028,9 @@ LABEL_11:
   return v42;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   objc_opt_class();
   v7 = TSUDynamicCast();
   v8 = MEMORY[0x277CBEB18];
@@ -1052,7 +1052,7 @@ LABEL_11:
       v31 = objc_msgSend_gradientStops(v7, v29, v30);
       v33 = objc_msgSend_objectAtIndexedSubscript_(v31, v32, v25);
 
-      v35 = objc_msgSend_mixedObjectWithFraction_ofObject_(v28, v34, v33, a3);
+      v35 = objc_msgSend_mixedObjectWithFraction_ofObject_(v28, v34, v33, fraction);
       objc_msgSend_addObject_(v16, v36, v35);
 
       ++v25;
@@ -1074,10 +1074,10 @@ LABEL_11:
   return v52;
 }
 
-- (CGPoint)startPointForPath:(id)a3 andBounds:(CGRect)a4
+- (CGPoint)startPointForPath:(id)path andBounds:(CGRect)bounds
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDGradient startPointForPath:andBounds:]", a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDGradient startPointForPath:andBounds:]", bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDGradient.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 628, 0, "Subclasses should override.");
 
@@ -1089,10 +1089,10 @@ LABEL_11:
   return result;
 }
 
-- (CGPoint)endPointForPath:(id)a3 andBounds:(CGRect)a4
+- (CGPoint)endPointForPath:(id)path andBounds:(CGRect)bounds
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDGradient endPointForPath:andBounds:]", a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDGradient endPointForPath:andBounds:]", bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDGradient.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 633, 0, "Subclasses should override.");
 
@@ -1104,31 +1104,31 @@ LABEL_11:
   return result;
 }
 
-- (void)p_prepareForDrawingInContext:(CGContext *)a3
+- (void)p_prepareForDrawingInContext:(CGContext *)context
 {
-  objc_msgSend_opacity(self, a2, a3);
-  CGContextSetAlpha(a3, v4);
+  objc_msgSend_opacity(self, a2, context);
+  CGContextSetAlpha(context, v4);
 
-  CGContextSetInterpolationQuality(a3, kCGInterpolationHigh);
+  CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
 }
 
-- (CGContext)p_beginBitmapWrapperContextInContext:(CGContext *)a3 returningIntegralBounds:(CGRect *)a4
+- (CGContext)p_beginBitmapWrapperContextInContext:(CGContext *)context returningIntegralBounds:(CGRect *)bounds
 {
-  if (!a3)
+  if (!context)
   {
     return 0;
   }
 
-  ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+  ClipBoundingBox = CGContextGetClipBoundingBox(context);
   width = ClipBoundingBox.size.width;
   height = ClipBoundingBox.size.height;
   v20 = CGRectIntegral(ClipBoundingBox);
-  if (a4)
+  if (bounds)
   {
-    *a4 = v20;
+    *bounds = v20;
   }
 
-  v8 = TSDCGContextGetBitmapQualityInfo(a3);
+  v8 = TSDCGContextGetBitmapQualityInfo(context);
   v11 = v8;
   if (v8)
   {
@@ -1160,56 +1160,56 @@ LABEL_11:
   return v14;
 }
 
-- (void)p_endBitmapWrapperContext:(CGContext *)a3 inContext:(CGContext *)a4 withIntegralBounds:(CGRect)a5
+- (void)p_endBitmapWrapperContext:(CGContext *)context inContext:(CGContext *)inContext withIntegralBounds:(CGRect)bounds
 {
-  if (a3)
+  if (context)
   {
-    if (a4)
+    if (inContext)
     {
-      height = a5.size.height;
-      width = a5.size.width;
-      y = a5.origin.y;
-      x = a5.origin.x;
-      Image = CGBitmapContextCreateImage(a3);
+      height = bounds.size.height;
+      width = bounds.size.width;
+      y = bounds.origin.y;
+      x = bounds.origin.x;
+      Image = CGBitmapContextCreateImage(context);
       if (Image)
       {
         v12 = Image;
-        CGContextSaveGState(a4);
+        CGContextSaveGState(inContext);
         v14.origin.x = x;
         v14.origin.y = y;
         v14.size.width = width;
         v14.size.height = height;
-        CGContextDrawImage(a4, v14, v12);
-        CGContextRestoreGState(a4);
+        CGContextDrawImage(inContext, v14, v12);
+        CGContextRestoreGState(inContext);
         CGImageRelease(v12);
       }
     }
 
-    CGContextRelease(a3);
+    CGContextRelease(context);
   }
 }
 
-+ (void)bootstrapPresetsOfKind:(id)a3 inTheme:(id)a4 alternate:(unint64_t)a5
++ (void)bootstrapPresetsOfKind:(id)kind inTheme:(id)theme alternate:(unint64_t)alternate
 {
   v62[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ((objc_msgSend_isEqual_(v7, v9, *MEMORY[0x277D80B28]) & 1) == 0)
+  kindCopy = kind;
+  themeCopy = theme;
+  if ((objc_msgSend_isEqual_(kindCopy, v9, *MEMORY[0x277D80B28]) & 1) == 0)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "+[TSDGradient bootstrapPresetsOfKind:inTheme:alternate:]");
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDGradient.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v16, v13, v15, 726, 0, "Attempt to bootstrap gradient presets for kind %@ in theme <%p>.", v7, v8);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v16, v13, v15, 726, 0, "Attempt to bootstrap gradient presets for kind %@ in theme <%p>.", kindCopy, themeCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
   }
 
-  v20 = objc_msgSend_colors(v8, v10, v11);
+  v20 = objc_msgSend_colors(themeCopy, v10, v11);
   if (v20)
   {
     v21 = objc_alloc(MEMORY[0x277CBEB18]);
     v24 = objc_msgSend_initWithCapacity_(v21, v22, 6);
-    if (a5 >= 7)
+    if (alternate >= 7)
     {
       v53 = MEMORY[0x277D81150];
       v54 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v23, "+[TSDGradient bootstrapPresetsOfKind:inTheme:alternate:]");
@@ -1221,9 +1221,9 @@ LABEL_11:
 
     else
     {
-      v60 = v8;
-      v61 = v7;
-      v25 = (*(&off_27A6CC480 + a5) + 16);
+      v60 = themeCopy;
+      v61 = kindCopy;
+      v25 = (*(&off_27A6CC480 + alternate) + 16);
       v26 = 6;
       do
       {
@@ -1248,8 +1248,8 @@ LABEL_11:
 
       while (v26);
       v44 = objc_msgSend_copy(v24, v23, v43);
-      v8 = v60;
-      v7 = v61;
+      themeCopy = v60;
+      kindCopy = v61;
       objc_msgSend_setPresets_ofKind_(v60, v45, v44, v61);
     }
   }
@@ -1265,13 +1265,13 @@ LABEL_11:
   }
 }
 
-- (void)p_setGradientStops:(id)a3
+- (void)p_setGradientStops:(id)stops
 {
-  v4 = a3;
-  if (self->_stops != v4)
+  stopsCopy = stops;
+  if (self->_stops != stopsCopy)
   {
-    v48 = v4;
-    v5 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEB18], v4, v4);
+    v48 = stopsCopy;
+    v5 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEB18], stopsCopy, stopsCopy);
     if (objc_msgSend_count(v48, v6, v7))
     {
       v10 = 0;
@@ -1307,13 +1307,13 @@ LABEL_11:
     objc_msgSend_addObjectsFromArray_(self->_stops, v45, v5);
     objc_msgSend_p_invalidateCGGradient(self, v46, v47);
 
-    v4 = v48;
+    stopsCopy = v48;
   }
 }
 
-- (void)p_insertGradientStop:(id)a3
+- (void)p_insertGradientStop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   if (objc_msgSend_count(self->_stops, v5, v6))
   {
     v21 = 0;
@@ -1325,7 +1325,7 @@ LABEL_11:
     v16 = 3221225472;
     v17 = sub_27664D1FC;
     v18 = &unk_27A6CC460;
-    v10 = v4;
+    v10 = stopCopy;
     v19 = v10;
     v20 = &v21;
     objc_msgSend_enumerateObjectsUsingBlock_(stops, v11, &v15);
@@ -1337,13 +1337,13 @@ LABEL_11:
 
   else
   {
-    objc_msgSend_addObject_(self->_stops, v7, v4);
+    objc_msgSend_addObject_(self->_stops, v7, stopCopy);
   }
 }
 
-- (void)p_removeStop:(id)a3
+- (void)p_removeStop:(id)stop
 {
-  v9 = a3;
+  stopCopy = stop;
   if (objc_msgSend_count(self->_stops, v4, v5) < 3)
   {
     objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], v6, *MEMORY[0x277CBE648], @"Attempted to remove too many gradient stops. Must have at least 2.");
@@ -1351,38 +1351,38 @@ LABEL_11:
 
   else
   {
-    objc_msgSend_removeObject_(self->_stops, v6, v9);
+    objc_msgSend_removeObject_(self->_stops, v6, stopCopy);
   }
 
   objc_msgSend_p_invalidateCGGradient(self, v7, v8);
 }
 
-- (id)p_removeStopAtIndex:(unint64_t)a3
+- (id)p_removeStopAtIndex:(unint64_t)index
 {
-  if (objc_msgSend_count(self->_stops, a2, a3) < 3)
+  if (objc_msgSend_count(self->_stops, a2, index) < 3)
   {
     v11 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x277CBEAD8], v5, *MEMORY[0x277CBE660], @"Attempted to remove too many gradient stops. Must have at least 2.", 0);
     objc_exception_throw(v11);
   }
 
-  v6 = objc_msgSend_objectAtIndexedSubscript_(self->_stops, v5, a3);
-  objc_msgSend_removeObjectAtIndex_(self->_stops, v7, a3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(self->_stops, v5, index);
+  objc_msgSend_removeObjectAtIndex_(self->_stops, v7, index);
   objc_msgSend_p_invalidateCGGradient(self, v8, v9);
 
   return v6;
 }
 
-- (id)p_insertStopAtFraction:(double)a3
+- (id)p_insertStopAtFraction:(double)fraction
 {
   v6 = objc_msgSend_p_newColorAtFraction_(self, a2, v3);
-  v8 = objc_msgSend_p_insertStopAtFraction_withColor_(self, v7, v6, a3);
+  v8 = objc_msgSend_p_insertStopAtFraction_withColor_(self, v7, v6, fraction);
 
   return v8;
 }
 
-- (id)p_insertStopAtFraction:(double)a3 withColor:(id)a4
+- (id)p_insertStopAtFraction:(double)fraction withColor:(id)color
 {
-  v5 = objc_msgSend_gradientStopWithColor_fraction_(TSDGradientStop, a2, a4, a3);
+  v5 = objc_msgSend_gradientStopWithColor_fraction_(TSDGradientStop, a2, color, fraction);
   objc_msgSend_p_insertGradientStop_(self, v6, v5);
   objc_msgSend_p_invalidateCGGradient(self, v7, v8);
 
@@ -1508,65 +1508,65 @@ LABEL_11:
   objc_msgSend_p_invalidateCGGradient(self, v15, v16);
 }
 
-- (void)p_moveStopAtIndex:(unint64_t)a3 toFraction:(double)a4
+- (void)p_moveStopAtIndex:(unint64_t)index toFraction:(double)fraction
 {
-  v7 = objc_msgSend_objectAtIndexedSubscript_(self->_stops, a2, a3);
+  v7 = objc_msgSend_objectAtIndexedSubscript_(self->_stops, a2, index);
   v18 = objc_msgSend_mutableCopy(v7, v8, v9);
 
-  objc_msgSend_setFraction_(v18, v10, v11, a4);
+  objc_msgSend_setFraction_(v18, v10, v11, fraction);
   v12 = [TSDGradientStop alloc];
   v14 = objc_msgSend_initWithGradientStop_(v12, v13, v18);
-  objc_msgSend_setObject_atIndexedSubscript_(self->_stops, v15, v14, a3);
+  objc_msgSend_setObject_atIndexedSubscript_(self->_stops, v15, v14, index);
   objc_msgSend_p_invalidateCGGradient(self, v16, v17);
 }
 
-- (void)p_swapStopAtIndex:(unint64_t)a3 withStopAtIndex:(unint64_t)a4
+- (void)p_swapStopAtIndex:(unint64_t)index withStopAtIndex:(unint64_t)atIndex
 {
-  v7 = objc_msgSend_objectAtIndexedSubscript_(self->_stops, a2, a3);
+  v7 = objc_msgSend_objectAtIndexedSubscript_(self->_stops, a2, index);
   v25 = objc_msgSend_mutableCopy(v7, v8, v9);
 
-  v11 = objc_msgSend_objectAtIndexedSubscript_(self->_stops, v10, a4);
+  v11 = objc_msgSend_objectAtIndexedSubscript_(self->_stops, v10, atIndex);
   v14 = objc_msgSend_mutableCopy(v11, v12, v13);
 
   v15 = [TSDGradientStop alloc];
   v17 = objc_msgSend_initWithGradientStop_(v15, v16, v14);
   v18 = [TSDGradientStop alloc];
   v20 = objc_msgSend_initWithGradientStop_(v18, v19, v25);
-  objc_msgSend_setObject_atIndexedSubscript_(self->_stops, v21, v17, a3);
-  objc_msgSend_setObject_atIndexedSubscript_(self->_stops, v22, v20, a4);
+  objc_msgSend_setObject_atIndexedSubscript_(self->_stops, v21, v17, index);
+  objc_msgSend_setObject_atIndexedSubscript_(self->_stops, v22, v20, atIndex);
   objc_msgSend_p_invalidateCGGradient(self, v23, v24);
 }
 
-- (void)p_setColorOfStopAtIndex:(unint64_t)a3 toColor:(id)a4
+- (void)p_setColorOfStopAtIndex:(unint64_t)index toColor:(id)color
 {
   stops = self->_stops;
-  v7 = a4;
-  v9 = objc_msgSend_objectAtIndexedSubscript_(stops, v8, a3);
+  colorCopy = color;
+  v9 = objc_msgSend_objectAtIndexedSubscript_(stops, v8, index);
   v19 = objc_msgSend_mutableCopy(v9, v10, v11);
 
-  objc_msgSend_setColor_(v19, v12, v7);
+  objc_msgSend_setColor_(v19, v12, colorCopy);
   v13 = [TSDGradientStop alloc];
   v15 = objc_msgSend_initWithGradientStop_(v13, v14, v19);
-  objc_msgSend_setObject_atIndexedSubscript_(self->_stops, v16, v15, a3);
+  objc_msgSend_setObject_atIndexedSubscript_(self->_stops, v16, v15, index);
   objc_msgSend_p_invalidateCGGradient(self, v17, v18);
 }
 
-- (void)p_setInflectionOfStopAtIndex:(unint64_t)a3 toInflection:(double)a4
+- (void)p_setInflectionOfStopAtIndex:(unint64_t)index toInflection:(double)inflection
 {
-  v7 = objc_msgSend_objectAtIndexedSubscript_(self->_stops, a2, a3);
+  v7 = objc_msgSend_objectAtIndexedSubscript_(self->_stops, a2, index);
   v18 = objc_msgSend_mutableCopy(v7, v8, v9);
 
-  objc_msgSend_setInflection_(v18, v10, v11, a4);
+  objc_msgSend_setInflection_(v18, v10, v11, inflection);
   v12 = [TSDGradientStop alloc];
   v14 = objc_msgSend_initWithGradientStop_(v12, v13, v18);
-  objc_msgSend_setObject_atIndexedSubscript_(self->_stops, v15, v14, a3);
+  objc_msgSend_setObject_atIndexedSubscript_(self->_stops, v15, v14, index);
   objc_msgSend_p_invalidateCGGradient(self, v16, v17);
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
-  v6 = *(a3 + 7);
+  unarchiverCopy = unarchiver;
+  v6 = *(archive + 7);
   if (!v6)
   {
     v6 = &TSD::_GradientArchive_default_instance_;
@@ -1589,17 +1589,17 @@ LABEL_11:
   }
 
   v9 = objc_alloc(*v8);
-  v11 = objc_msgSend_initWithArchive_unarchiver_(v9, v10, a3, v5);
+  v11 = objc_msgSend_initWithArchive_unarchiver_(v9, v10, archive, unarchiverCopy);
 
   return v11;
 }
 
-- (TSDGradient)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSDGradient)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 7))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 7))
   {
-    v7 = *(a3 + 7);
+    v7 = *(archive + 7);
   }
 
   else
@@ -1617,7 +1617,7 @@ LABEL_11:
     do
     {
       v15 = [TSDGradientStop alloc];
-      v17 = objc_msgSend_initWithArchive_unarchiver_(v15, v16, *(*(v7 + 5) + v14), v6);
+      v17 = objc_msgSend_initWithArchive_unarchiver_(v15, v16, *(*(v7 + 5) + v14), unarchiverCopy);
       objc_msgSend_addObject_(v13, v18, v17);
 
       v14 += 8;
@@ -1637,22 +1637,22 @@ LABEL_11:
   return v21;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  *(a3 + 10) |= 2u;
-  v9 = *(a3 + 7);
+  archiverCopy = archiver;
+  *(archive + 10) |= 2u;
+  v9 = *(archive + 7);
   if (!v9)
   {
-    v10 = *(a3 + 1);
+    v10 = *(archive + 1);
     if (v10)
     {
       v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v9 = google::protobuf::Arena::CreateMaybeMessage<TSD::GradientArchive>(v10);
-    *(a3 + 7) = v9;
+    *(archive + 7) = v9;
   }
 
   v11 = objc_msgSend_gradientType(self, v6, v7);
@@ -1704,7 +1704,7 @@ LABEL_10:
         if (v23 < *v22)
         {
           *(v9 + 32) = v23 + 1;
-          objc_msgSend_saveToArchive_archiver_(v21, v17, *&v22[2 * v23 + 2], v8);
+          objc_msgSend_saveToArchive_archiver_(v21, v17, *&v22[2 * v23 + 2], archiverCopy);
           continue;
         }
 
@@ -1722,7 +1722,7 @@ LABEL_20:
         v27 = *(v9 + 40) + 8 * v26;
         *(v9 + 32) = v26 + 1;
         *(v27 + 8) = v25;
-        objc_msgSend_saveToArchive_archiver_(v21, v28, v25, v8);
+        objc_msgSend_saveToArchive_archiver_(v21, v28, v25, archiverCopy);
       }
 
       v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v17, &v35, v39, 16);

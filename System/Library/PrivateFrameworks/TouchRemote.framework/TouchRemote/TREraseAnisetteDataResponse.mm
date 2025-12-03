@@ -1,32 +1,32 @@
 @interface TREraseAnisetteDataResponse
-- (TREraseAnisetteDataResponse)initWithCoder:(id)a3;
+- (TREraseAnisetteDataResponse)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TREraseAnisetteDataResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = TREraseAnisetteDataResponse;
-  [(TRMessage *)&v5 encodeWithCoder:v4];
+  [(TRMessage *)&v5 encodeWithCoder:coderCopy];
   if (self->_didSucceed)
   {
-    [v4 encodeBool:1 forKey:@"TRAnisetteDataMessages_dS"];
+    [coderCopy encodeBool:1 forKey:@"TRAnisetteDataMessages_dS"];
   }
 }
 
-- (TREraseAnisetteDataResponse)initWithCoder:(id)a3
+- (TREraseAnisetteDataResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = TREraseAnisetteDataResponse;
-  v5 = [(TRMessage *)&v7 initWithCoder:v4];
+  v5 = [(TRMessage *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_didSucceed = [v4 decodeBoolForKey:@"TRAnisetteDataMessages_dS"];
+    v5->_didSucceed = [coderCopy decodeBoolForKey:@"TRAnisetteDataMessages_dS"];
   }
 
   return v5;

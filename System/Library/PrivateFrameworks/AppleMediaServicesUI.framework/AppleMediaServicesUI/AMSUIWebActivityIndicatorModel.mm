@@ -1,22 +1,22 @@
 @interface AMSUIWebActivityIndicatorModel
-- (AMSUIWebActivityIndicatorModel)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebActivityIndicatorModel)initWithJSObject:(id)object context:(id)context;
 - (NSString)debugDescription;
 @end
 
 @implementation AMSUIWebActivityIndicatorModel
 
-- (AMSUIWebActivityIndicatorModel)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebActivityIndicatorModel)initWithJSObject:(id)object context:(id)context
 {
-  v5 = a3;
+  objectCopy = object;
   v10.receiver = self;
   v10.super_class = AMSUIWebActivityIndicatorModel;
   v6 = [(AMSUIWebActivityIndicatorModel *)&v10 init];
   if (v6)
   {
-    v7 = [v5 objectForKeyedSubscript:@"animate"];
+    v7 = [objectCopy objectForKeyedSubscript:@"animate"];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v5 objectForKeyedSubscript:@"animate"];
+      v8 = [objectCopy objectForKeyedSubscript:@"animate"];
       v6->_animate = [v8 BOOLValue];
     }
 
@@ -33,9 +33,9 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = @"animate";
-  v2 = [(AMSUIWebActivityIndicatorModel *)self animate];
+  animate = [(AMSUIWebActivityIndicatorModel *)self animate];
   v3 = @"false";
-  if (v2)
+  if (animate)
   {
     v3 = @"true";
   }

@@ -1,40 +1,40 @@
 @interface PLCIFilterUtilities
-+ (id)filterCopiesFromFilters:(id)a3;
-+ (id)outputImageFromFilters:(id)a3 inputImage:(id)a4 orientation:(int)a5 copyFiltersFirst:(BOOL)a6;
++ (id)filterCopiesFromFilters:(id)filters;
++ (id)outputImageFromFilters:(id)filters inputImage:(id)image orientation:(int)orientation copyFiltersFirst:(BOOL)first;
 @end
 
 @implementation PLCIFilterUtilities
 
-+ (id)outputImageFromFilters:(id)a3 inputImage:(id)a4 orientation:(int)a5 copyFiltersFirst:(BOOL)a6
++ (id)outputImageFromFilters:(id)filters inputImage:(id)image orientation:(int)orientation copyFiltersFirst:(BOOL)first
 {
-  v6 = a6;
-  v7 = *&a5;
-  v10 = a3;
-  v11 = a4;
-  if (v6)
+  firstCopy = first;
+  v7 = *&orientation;
+  filtersCopy = filters;
+  imageCopy = image;
+  if (firstCopy)
   {
-    v12 = [a1 filterCopiesFromFilters:v10];
+    v12 = [self filterCopiesFromFilters:filtersCopy];
 
-    v10 = v12;
+    filtersCopy = v12;
   }
 
-  if ([v10 count])
+  if ([filtersCopy count])
   {
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __86__PLCIFilterUtilities_outputImageFromFilters_inputImage_orientation_copyFiltersFirst___block_invoke;
     v21 = &unk_1E792FDC0;
-    v22 = v11;
-    v13 = v10;
+    v22 = imageCopy;
+    v13 = filtersCopy;
     v23 = v13;
     [v13 enumerateObjectsUsingBlock:&v18];
-    v14 = [v13 lastObject];
-    v15 = [v14 valueForKey:@"outputImage"];
+    lastObject = [v13 lastObject];
+    v15 = [lastObject valueForKey:@"outputImage"];
   }
 
   else
   {
-    v15 = v11;
+    v15 = imageCopy;
   }
 
   if (v7 >= 2)
@@ -44,7 +44,7 @@
     v15 = v16;
   }
 
-  [v10 enumerateObjectsUsingBlock:&__block_literal_global_2041];
+  [filtersCopy enumerateObjectsUsingBlock:&__block_literal_global_2041];
 
   return v15;
 }
@@ -69,20 +69,20 @@ void __86__PLCIFilterUtilities_outputImageFromFilters_inputImage_orientation_cop
   }
 }
 
-+ (id)filterCopiesFromFilters:(id)a3
++ (id)filterCopiesFromFilters:(id)filters
 {
-  if (a3)
+  if (filters)
   {
     v3 = MEMORY[0x1E695DF70];
-    v4 = a3;
-    v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    filtersCopy = filters;
+    v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(filtersCopy, "count")}];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __47__PLCIFilterUtilities_filterCopiesFromFilters___block_invoke;
     v8[3] = &unk_1E792FD98;
     v6 = v5;
     v9 = v6;
-    [v4 enumerateObjectsUsingBlock:v8];
+    [filtersCopy enumerateObjectsUsingBlock:v8];
   }
 
   else

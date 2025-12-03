@@ -1,10 +1,10 @@
 @interface NavTrafficIncidentHeaderView
-- (NavTrafficIncidentHeaderView)initWithFrame:(CGRect)a3;
+- (NavTrafficIncidentHeaderView)initWithFrame:(CGRect)frame;
 - (NavTrafficIncidentHeaderViewDelegate)delegate;
 - (id)_initialConstraints;
 - (void)_setupViews;
-- (void)dismissButtonTapped:(id)a3;
-- (void)setImageSource:(id)a3;
+- (void)dismissButtonTapped:(id)tapped;
+- (void)setImageSource:(id)source;
 @end
 
 @implementation NavTrafficIncidentHeaderView
@@ -16,17 +16,17 @@
   return WeakRetained;
 }
 
-- (void)dismissButtonTapped:(id)a3
+- (void)dismissButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navTrafficIncidentHeaderViewTappedDismissButton:self];
 }
 
-- (void)setImageSource:(id)a3
+- (void)setImageSource:(id)source
 {
   [(MKArtworkImageView *)self->_artworkImageView setImageSource:?];
   v5 = 52.0;
-  if (a3)
+  if (source)
   {
     v6 = -10.0;
   }
@@ -39,15 +39,15 @@
 
   [(NSLayoutConstraint *)self->_imageViewWidthConstraint setConstant:v5];
   [(NSLayoutConstraint *)self->_imageViewToPrimaryLabelVerticalConstraint setConstant:v6];
-  if (!a3)
+  if (!source)
   {
     primaryLabelTrailingConstraint = self->_primaryLabelTrailingConstraint;
     v7 = [NSArray arrayWithObjects:&primaryLabelTrailingConstraint count:1];
     [NSLayoutConstraint deactivateConstraints:v7];
 
-    v8 = [(UILabel *)self->_primaryLabel trailingAnchor];
-    v9 = [(MapsCircularProgressButton *)self->_dismissButton leadingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9 constant:-18.0];
+    trailingAnchor = [(UILabel *)self->_primaryLabel trailingAnchor];
+    leadingAnchor = [(MapsCircularProgressButton *)self->_dismissButton leadingAnchor];
+    v10 = [trailingAnchor constraintEqualToAnchor:leadingAnchor constant:-18.0];
     v11 = self->_primaryLabelTrailingConstraint;
     self->_primaryLabelTrailingConstraint = v10;
 
@@ -59,82 +59,82 @@
 
 - (id)_initialConstraints
 {
-  v3 = [(MKArtworkImageView *)self->_artworkImageView widthAnchor];
-  v4 = [v3 constraintEqualToConstant:52.0];
+  widthAnchor = [(MKArtworkImageView *)self->_artworkImageView widthAnchor];
+  v4 = [widthAnchor constraintEqualToConstant:52.0];
   imageViewWidthConstraint = self->_imageViewWidthConstraint;
   self->_imageViewWidthConstraint = v4;
 
-  v6 = [(MKArtworkImageView *)self->_artworkImageView bottomAnchor];
-  v7 = [(UILabel *)self->_primaryLabel topAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:10.0];
+  bottomAnchor = [(MKArtworkImageView *)self->_artworkImageView bottomAnchor];
+  topAnchor = [(UILabel *)self->_primaryLabel topAnchor];
+  v8 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:10.0];
   imageViewToPrimaryLabelVerticalConstraint = self->_imageViewToPrimaryLabelVerticalConstraint;
   self->_imageViewToPrimaryLabelVerticalConstraint = v8;
 
-  v10 = [(UILabel *)self->_primaryLabel trailingAnchor];
-  v11 = [(NavTrafficIncidentHeaderView *)self trailingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:-4.0];
+  trailingAnchor = [(UILabel *)self->_primaryLabel trailingAnchor];
+  trailingAnchor2 = [(NavTrafficIncidentHeaderView *)self trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-4.0];
   primaryLabelTrailingConstraint = self->_primaryLabelTrailingConstraint;
   self->_primaryLabelTrailingConstraint = v12;
 
-  v14 = [(UILabel *)self->_secondaryLabel firstBaselineAnchor];
-  v15 = [(UILabel *)self->_primaryLabel lastBaselineAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:27.0];
+  firstBaselineAnchor = [(UILabel *)self->_secondaryLabel firstBaselineAnchor];
+  lastBaselineAnchor = [(UILabel *)self->_primaryLabel lastBaselineAnchor];
+  v16 = [firstBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor constant:27.0];
   primaryToSecondaryLabelBaselineConstraint = self->_primaryToSecondaryLabelBaselineConstraint;
   self->_primaryToSecondaryLabelBaselineConstraint = v16;
 
-  v57 = [(MKArtworkImageView *)self->_artworkImageView leadingAnchor];
-  v56 = [(NavTrafficIncidentHeaderView *)self leadingAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56 constant:2.0];
+  leadingAnchor = [(MKArtworkImageView *)self->_artworkImageView leadingAnchor];
+  leadingAnchor2 = [(NavTrafficIncidentHeaderView *)self leadingAnchor];
+  v55 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:2.0];
   v18 = self->_imageViewToPrimaryLabelVerticalConstraint;
   v58[0] = v55;
   v58[1] = v18;
   v58[2] = self->_imageViewWidthConstraint;
-  v54 = [(UILabel *)self->_primaryLabel leadingAnchor];
-  v53 = [(NavTrafficIncidentHeaderView *)self leadingAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53 constant:4.0];
+  leadingAnchor3 = [(UILabel *)self->_primaryLabel leadingAnchor];
+  leadingAnchor4 = [(NavTrafficIncidentHeaderView *)self leadingAnchor];
+  v52 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:4.0];
   v19 = self->_primaryLabelTrailingConstraint;
   v58[3] = v52;
   v58[4] = v19;
-  v51 = [(UILabel *)self->_secondaryLabel leadingAnchor];
-  v50 = [(UILabel *)self->_primaryLabel leadingAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  leadingAnchor5 = [(UILabel *)self->_secondaryLabel leadingAnchor];
+  leadingAnchor6 = [(UILabel *)self->_primaryLabel leadingAnchor];
+  v49 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v58[5] = v49;
-  v48 = [(UILabel *)self->_secondaryLabel trailingAnchor];
-  v47 = [(UILabel *)self->_primaryLabel trailingAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  trailingAnchor3 = [(UILabel *)self->_secondaryLabel trailingAnchor];
+  trailingAnchor4 = [(UILabel *)self->_primaryLabel trailingAnchor];
+  v46 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v58[6] = v46;
-  v45 = [(MKArtworkImageView *)self->_artworkImageView topAnchor];
-  v44 = [(NavTrafficIncidentHeaderView *)self topAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44 constant:22.0];
+  topAnchor2 = [(MKArtworkImageView *)self->_artworkImageView topAnchor];
+  topAnchor3 = [(NavTrafficIncidentHeaderView *)self topAnchor];
+  v43 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:22.0];
   v58[7] = v43;
-  v42 = [(MKArtworkImageView *)self->_artworkImageView heightAnchor];
-  v41 = [(MKArtworkImageView *)self->_artworkImageView widthAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  heightAnchor = [(MKArtworkImageView *)self->_artworkImageView heightAnchor];
+  widthAnchor2 = [(MKArtworkImageView *)self->_artworkImageView widthAnchor];
+  v40 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
   v20 = self->_primaryToSecondaryLabelBaselineConstraint;
   v58[8] = v40;
   v58[9] = v20;
-  v39 = [(NavTrafficIncidentHeaderView *)self bottomAnchor];
-  v38 = [(UILabel *)self->_secondaryLabel lastBaselineAnchor];
-  v37 = [v39 constraintGreaterThanOrEqualToAnchor:v38 constant:26.0];
+  bottomAnchor2 = [(NavTrafficIncidentHeaderView *)self bottomAnchor];
+  lastBaselineAnchor2 = [(UILabel *)self->_secondaryLabel lastBaselineAnchor];
+  v37 = [bottomAnchor2 constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor2 constant:26.0];
   v58[10] = v37;
-  v36 = [(NavTrafficIncidentHeaderView *)self bottomAnchor];
-  v35 = [(UILabel *)self->_secondaryLabel lastBaselineAnchor];
+  bottomAnchor3 = [(NavTrafficIncidentHeaderView *)self bottomAnchor];
+  lastBaselineAnchor3 = [(UILabel *)self->_secondaryLabel lastBaselineAnchor];
   LODWORD(v21) = 1148829696;
-  v34 = [v36 constraintEqualToAnchor:v35 constant:26.0 priority:v21];
+  v34 = [bottomAnchor3 constraintEqualToAnchor:lastBaselineAnchor3 constant:26.0 priority:v21];
   v58[11] = v34;
-  v22 = [(MapsCircularProgressButton *)self->_dismissButton trailingAnchor];
-  v23 = [(NavTrafficIncidentHeaderView *)self trailingAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23 constant:1.20000005];
+  trailingAnchor5 = [(MapsCircularProgressButton *)self->_dismissButton trailingAnchor];
+  trailingAnchor6 = [(NavTrafficIncidentHeaderView *)self trailingAnchor];
+  v24 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:1.20000005];
   v58[12] = v24;
-  v25 = [(MapsCircularProgressButton *)self->_dismissButton topAnchor];
-  v26 = [(MKArtworkImageView *)self->_artworkImageView topAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26 constant:-3.79999995];
+  topAnchor4 = [(MapsCircularProgressButton *)self->_dismissButton topAnchor];
+  topAnchor5 = [(MKArtworkImageView *)self->_artworkImageView topAnchor];
+  v27 = [topAnchor4 constraintEqualToAnchor:topAnchor5 constant:-3.79999995];
   v58[13] = v27;
-  v28 = [(MapsCircularProgressButton *)self->_dismissButton heightAnchor];
-  v29 = [v28 constraintEqualToConstant:50.0];
+  heightAnchor2 = [(MapsCircularProgressButton *)self->_dismissButton heightAnchor];
+  v29 = [heightAnchor2 constraintEqualToConstant:50.0];
   v58[14] = v29;
-  v30 = [(MapsCircularProgressButton *)self->_dismissButton widthAnchor];
-  v31 = [v30 constraintEqualToConstant:50.0];
+  widthAnchor3 = [(MapsCircularProgressButton *)self->_dismissButton widthAnchor];
+  v31 = [widthAnchor3 constraintEqualToConstant:50.0];
   v58[15] = v31;
   v33 = [NSArray arrayWithObjects:v58 count:16];
 
@@ -147,9 +147,9 @@
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = [(MapsThemeLabel *)v3 initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [(MapsThemeLabel *)v3 initWithFrame:CGRectZero.origin.x, y, width, height];
   primaryLabel = self->_primaryLabel;
-  self->_primaryLabel = v7;
+  self->_primaryLabel = height;
 
   v9 = [UIFont systemFontOfSize:25.0 weight:UIFontWeightSemibold];
   [(UILabel *)self->_primaryLabel setFont:v9];
@@ -164,9 +164,9 @@
 
   [(UILabel *)self->_primaryLabel setAccessibilityIdentifier:@"PrimaryLabel"];
   [(NavTrafficIncidentHeaderView *)self addSubview:self->_primaryLabel];
-  v12 = [[MapsThemeLabel alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height2 = [[MapsThemeLabel alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   secondaryLabel = self->_secondaryLabel;
-  self->_secondaryLabel = &v12->super;
+  self->_secondaryLabel = &height2->super;
 
   v14 = [UIFont systemFontOfSize:17.0 weight:UIFontWeightMedium];
   [(UILabel *)self->_secondaryLabel setFont:v14];
@@ -200,26 +200,26 @@
   [(MapsCircularProgressButton *)self->_dismissButton setContentHuggingPriority:0 forAxis:v22];
   [(MapsCircularProgressButton *)self->_dismissButton setHidden:1];
   [(MapsCircularProgressButton *)self->_dismissButton setProgressionHidden:1];
-  v23 = [(MapsCircularProgressButton *)self->_dismissButton progressView];
-  [v23 setLineWidth:3.5];
+  progressView = [(MapsCircularProgressButton *)self->_dismissButton progressView];
+  [progressView setLineWidth:3.5];
 
   v24 = self->_dismissButton;
 
   [(NavTrafficIncidentHeaderView *)self addSubview:v24];
 }
 
-- (NavTrafficIncidentHeaderView)initWithFrame:(CGRect)a3
+- (NavTrafficIncidentHeaderView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = NavTrafficIncidentHeaderView;
-  v3 = [(NavTrafficIncidentHeaderView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NavTrafficIncidentHeaderView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(NavTrafficIncidentHeaderView *)v3 _setupViews];
     [(NavTrafficIncidentHeaderView *)v4 setAccessibilityIdentifier:@"NavTrafficIncidentHeaderView"];
-    v5 = [(NavTrafficIncidentHeaderView *)v4 _initialConstraints];
-    [NSLayoutConstraint activateConstraints:v5];
+    _initialConstraints = [(NavTrafficIncidentHeaderView *)v4 _initialConstraints];
+    [NSLayoutConstraint activateConstraints:_initialConstraints];
   }
 
   return v4;
